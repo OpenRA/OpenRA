@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 
@@ -35,51 +36,53 @@ namespace OpenRA.Traits
 			Info = info;
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			if (self.World.FogObscures(self))
-				return;
+			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer) && self.World.FogObscures(self))
+				yield break;
 
+			var b = self.Bounds.Value;
 			var pos = wr.ScreenPxPosition(self.CenterPosition);
-			var bounds = self.Bounds.Value;
-			bounds.Offset(pos.X, pos.Y);
+			var tl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Top));
+			var bl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Bottom));
+			var tm = wr.Viewport.WorldToViewPx(pos + new int2((b.Left + b.Right) / 2, b.Top));
 
-			var xy = new int2(bounds.Left, bounds.Top);
-			var xY = new int2(bounds.Left, bounds.Bottom);
+			foreach (var r in DrawControlGroup(wr, self, tl))
+				yield return r;
 
-			DrawControlGroup(wr, self, xy);
-			DrawPips(wr, self, xY);
-			DrawTags(wr, self, new int2((bounds.Left + bounds.Right) / 2, bounds.Top));
+			foreach (var r in DrawPips(wr, self, bl))
+				yield return r;
+
+			foreach (var r in DrawTags(wr, self, tm))
+				yield return r;
 		}
 
-		void DrawControlGroup(WorldRenderer wr, Actor self, int2 basePosition)
+		IEnumerable<IRenderable> DrawControlGroup(WorldRenderer wr, Actor self, int2 basePosition)
 		{
 			var group = self.World.Selection.GetControlGroupForActor(self);
-			if (group == null) return;
+			if (group == null)
+				yield break;
 
 			var pipImages = new Animation(self.World, "pips");
 			var pal = wr.Palette(Info.Palette);
 			pipImages.PlayFetchIndex("groups", () => (int)group);
 			pipImages.Tick();
 
-			var pos = wr.Viewport.WorldToViewPx(basePosition) - (0.5f * pipImages.Image.size).ToInt2() + new int2(9, 5);
-			Game.Renderer.SpriteRenderer.DrawSprite(pipImages.Image, pos, pal);
+			var pos = basePosition - (0.5f * pipImages.Image.size).ToInt2() + new int2(9, 5);
+			yield return new UISpriteRenderable(pipImages.Image, pos, 0, pal, 1f);
 		}
 
-		void DrawPips(WorldRenderer wr, Actor self, int2 basePosition)
+		IEnumerable<IRenderable> DrawPips(WorldRenderer wr, Actor self, int2 basePosition)
 		{
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				return;
-
 			var pipSources = self.TraitsImplementing<IPips>();
 			if (!pipSources.Any())
-				return;
+				yield break;
 
 			var pipImages = new Animation(self.World, "pips");
 			pipImages.PlayRepeating(pipStrings[0]);
 
 			var pipSize = pipImages.Image.size.ToInt2();
-			var pipxyBase = wr.Viewport.WorldToViewPx(basePosition) + new int2(1 - pipSize.X / 2, - (3 + pipSize.Y / 2));
+			var pipxyBase = basePosition + new int2(1 - pipSize.X / 2, - (3 + pipSize.Y / 2));
 			var pipxyOffset = new int2(0, 0);
 			var pal = wr.Palette(Info.Palette);
 			var width = self.Bounds.Value.Width;
@@ -101,7 +104,7 @@ namespace OpenRA.Traits
 					pipImages.PlayRepeating(pipStrings[(int)pip]);
 					pipxyOffset += new int2(pipSize.X, 0);
 
-					Game.Renderer.SpriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, pal);
+					yield return new UISpriteRenderable(pipImages.Image, pipxyBase + pipxyOffset, 0, pal, 1f);
 				}
 
 				// Increment row
@@ -110,15 +113,11 @@ namespace OpenRA.Traits
 			}
 		}
 
-		void DrawTags(WorldRenderer wr, Actor self, int2 basePosition)
+		IEnumerable<IRenderable> DrawTags(WorldRenderer wr, Actor self, int2 basePosition)
 		{
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				return;
-
 			var tagImages = new Animation(self.World, "pips");
 			var pal = wr.Palette(Info.Palette);
 			var tagxyOffset = new int2(0, 6);
-			var tagBase = wr.Viewport.WorldToViewPx(basePosition);
 
 			foreach (var tags in self.TraitsImplementing<ITags>())
 			{
@@ -128,8 +127,8 @@ namespace OpenRA.Traits
 						continue;
 
 					tagImages.PlayRepeating(tagStrings[(int)tag]);
-					var pos = tagBase + tagxyOffset - (0.5f * tagImages.Image.size).ToInt2();
-					Game.Renderer.SpriteRenderer.DrawSprite(tagImages.Image, pos, pal);
+					var pos = basePosition + tagxyOffset - (0.5f * tagImages.Image.size).ToInt2();
+					yield return new UISpriteRenderable(tagImages.Image, pos, 0, pal, 1f);
 
 					// Increment row
 					tagxyOffset.Y += 8;

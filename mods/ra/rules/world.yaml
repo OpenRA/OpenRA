@@ -16,7 +16,8 @@ World:
 	LightPaletteRotator:
 		ExcludePalettes: terrain, effect
 	BuildingInfluence:
-	ChooseBuildTabOnSelect:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
 	BridgeLayer:
 		Bridges: bridge1, bridge2, br1, br2, br3, sbridge1, sbridge2, sbridge3, sbridge4
 	CrateSpawner:
@@ -98,6 +99,13 @@ World:
 		Name: Soviet
 		Race: soviet
 	DomainIndex:
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokePercentage: 50
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
 	ResourceLayer:
 	ResourceClaimLayer:
 	ResourceType@ore:
@@ -124,22 +132,17 @@ World:
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
 		TerrainType: Gems
-	SmudgeLayer@SCORCH:
-		Type: Scorch
-		Sequence: scorches
-		SmokePercentage: 50
-	SmudgeLayer@CRATER:
-		Type: Crater
-		Sequence: craters
 	PathfinderDebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
 		Class: none
+		ClassName: MCV Only
 		Races: soviet, allies
 		BaseActor: mcv
 	MPStartUnits@lightallies:
 		Class: light
+		ClassName: Light Support
 		Races: allies
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk
@@ -147,6 +150,7 @@ World:
 		OuterSupportRadius: 5
 	MPStartUnits@lightsoviet:
 		Class: light
+		ClassName: Light Support
 		Races: soviet
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk
@@ -154,6 +158,7 @@ World:
 		OuterSupportRadius: 5
 	MPStartUnits@heavyallies:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: allies
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk,2tnk,2tnk,2tnk
@@ -161,6 +166,7 @@ World:
 		OuterSupportRadius: 5
 	MPStartUnits@heavysoviet:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: soviet
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk,3tnk,3tnk
@@ -173,4 +179,6 @@ World:
 	DebugPauseState:
 	RadarPings:
 	StartGameNotification:
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
 

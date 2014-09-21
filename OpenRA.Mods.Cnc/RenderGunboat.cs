@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class RenderGunboatInfo : RenderSpritesInfo, Requires<IBodyOrientationInfo>
+	class RenderGunboatInfo : RenderSpritesInfo, IQuantizeBodyOrientationInfo, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
@@ -25,6 +25,11 @@ namespace OpenRA.Mods.RA.Render
 		public readonly string WakeRightSequence = "wake-right";
 
 		public override object Create(ActorInitializer init) { return new RenderGunboat(init.self, this); }
+
+		public int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai)
+		{
+			return 2;
+		}
 	}
 
 	class RenderGunboat : RenderSprites, INotifyDamageStateChanged
@@ -54,8 +59,6 @@ namespace OpenRA.Mods.RA.Render
 			var rightWake = new Animation(self.World, name);
 			rightWake.Play(info.WakeRightSequence);
 			Add(info.WakeRightSequence, new AnimationWithOffset(rightWake, null, () => facing.Facing <= 128, -87));
-
-			self.Trait<IBodyOrientation>().SetAutodetectedFacings(2);
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)

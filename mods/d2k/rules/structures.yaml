@@ -3,7 +3,6 @@
 		Adjacent: 4
 		TerrainTypes: Rock
 		BuildSounds: CHUNG.WAV
-		SellSounds: CHUNG.WAV
 		AllowInvalidPlacement: true
 	LaysTerrain:
 		Template: 88
@@ -12,7 +11,7 @@
 		Name: Concrete
 		Description: Provides a strong foundation that prevents\ndamage from the terrain.
 	RenderSprites:
-	RemoveImmediately:
+	RemoveOnConditions:
 
 CONCRETEA:
 	Inherits: ^CONCRETE
@@ -22,7 +21,7 @@ CONCRETEA:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
-		Owner: atreides, harkonnen, ordos
+		Prerequisites: ~conyard
 	Valued:
 		Cost: 20
 
@@ -34,14 +33,13 @@ CONCRETEB:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
-		Owner: atreides, harkonnen, ordos
+		Prerequisites: ~conyard
 	Valued:
 		Cost: 50
 
 ^CONYARD:
 	Inherits: ^Building
 	Building:
-		Power: 20
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Adjacent: 4
@@ -52,7 +50,7 @@ CONCRETEB:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
-		Owner: None
+		Prerequisites: ~disabled
 	Selectable:
 		Bounds: 96,64
 	Health:
@@ -72,17 +70,18 @@ CONCRETEB:
 	BaseBuilding:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Conyard
+		Prerequisite: conyard
 	WithBuildingPlacedOverlay:
 		Palette: d2k
+	Power:
+		Amount: 20
 
 ^POWER:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Conyard
+		Prerequisites: ~conyard
 		Queue: Building
 		BuildPaletteOrder: 10
-		Hotkey: w
 	Selectable:
 		Bounds: 64,64
 	Valued:
@@ -91,7 +90,6 @@ CONCRETEB:
 		Name: Windtrap
 		Description: Provides power for other structures
 	Building:
-		Power: 100
 		Footprint: xx xx
 		Dimensions: 2,2
 	Bib:
@@ -102,17 +100,19 @@ CONCRETEB:
 	RevealsShroud:
 		Range: 4c0
 	ProvidesCustomPrerequisite:
-		Prerequisite: Power
+		Prerequisite: power
 	WithIdleOverlay@ZAPS:
 		Sequence: idle-zaps
+	Power:
+		Amount: 100
+	ScalePowerWithHealth:
 
 ^BARRACKS:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Power
+		Prerequisites: ~conyard, power
 		Queue: Building
 		BuildPaletteOrder: 40
-		Hotkey: b
 	Selectable:
 		Bounds: 64,64
 	Valued:
@@ -121,7 +121,6 @@ CONCRETEB:
 		Name: Barracks
 		Description: Trains infantry
 	Building:
-		Power: -20
 		Footprint: =x xx
 		Dimensions: 2,2
 	Bib:
@@ -146,15 +145,16 @@ CONCRETEB:
 	RepairsUnits:
 		ValuePercentage: 0
 	ProvidesCustomPrerequisite:
-		Prerequisite: Barracks
+		Prerequisite: barracks
+	Power:
+		Amount: -20
 
 ^REFINERY:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Power
+		Prerequisites: ~conyard, ~power
 		Queue: Building
 		BuildPaletteOrder: 20
-		Hotkey: r
 	Selectable:
 		Bounds: 96,64
 	Valued:
@@ -163,7 +163,6 @@ CONCRETEB:
 		Name: Spice Refinery
 		Description: Harvesters unload Spice here for processing
 	Building:
-		Power: -30
 		Footprint: =xx xx=
 		Dimensions: 3,2
 	Bib:
@@ -173,7 +172,6 @@ CONCRETEB:
 		Type: Wood
 	RevealsShroud:
 		Range: 6c0
-	-RenderBuilding:
 	OreRefinery:
 		DockOffset: 2,1
 		DockAngle: 160
@@ -190,17 +188,20 @@ CONCRETEB:
 		SpawnOffset: 2,1
 		Facing: 160
 	ProvidesCustomPrerequisite:
-		Prerequisite: Refinery
+		Prerequisite: refinery
 	WithDockingOverlay@SMOKE:
 		Sequence: smoke
+	Power:
+		Amount: -30
+	WithIdleOverlay@TOP:
+		Sequence: idle-top
 
 ^SILO:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Refinery
+		Prerequisites: ~conyard, refinery
 		Queue: Building
 		BuildPaletteOrder: 30
-		Hotkey: i
 	Selectable:
 		Bounds: 32,32
 	Valued:
@@ -209,7 +210,6 @@ CONCRETEB:
 		Name: Silo
 		Description: Stores excess harvested Spice
 	Building:
-		Power: -5
 		Adjacent: 4
 	-GivesBuildableArea:
 	Health:
@@ -225,14 +225,15 @@ CONCRETEB:
 		PipCount: 5
 		Capacity: 2000
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -5
 
 ^LIGHT:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Refinery
+		Prerequisites: ~conyard, refinery
 		Queue: Building
 		BuildPaletteOrder: 70
-		Hotkey: l
 	Selectable:
 		Bounds: 96,64
 	Valued:
@@ -241,7 +242,6 @@ CONCRETEB:
 		Name: Light Factory
 		Description: Produces light vehicles
 	Building:
-		Power: -20
 		Footprint: xxx xx=
 		Dimensions: 3,2
 	Bib:
@@ -251,7 +251,6 @@ CONCRETEB:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	-RenderBuilding:
 	RallyPoint:
 		RallyPoint: 2,2
 	Exit@1:
@@ -262,17 +261,20 @@ CONCRETEB:
 	PrimaryBuilding:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Light
+		Prerequisite: light
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
+	WithIdleOverlay@TOP:
+		Sequence: idle-top
+	Power:
+		Amount: -20
 
 ^HEAVY:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Refinery
+		Prerequisites: ~conyard, refinery
 		Queue: Building
 		BuildPaletteOrder: 100
-		Hotkey: h
 	Selectable:
 		Bounds: 96,96
 	Valued:
@@ -281,7 +283,6 @@ CONCRETEB:
 		Name: Heavy Factory
 		Description: Produces heavy vehicles
 	Building:
-		Power: -30
 		Footprint: _x_ xxx =xx
 		Dimensions: 3,3
 	Bib:
@@ -291,7 +292,6 @@ CONCRETEB:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	-RenderBuilding:
 	RallyPoint:
 		RallyPoint: 0,3
 	Exit@1:
@@ -302,9 +302,13 @@ CONCRETEB:
 	PrimaryBuilding:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Heavy
+		Prerequisite: heavy
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
+	WithIdleOverlay@TOP:
+		Sequence: idle-top
+	Power:
+		Amount: -30
 
 ^RADAR:
 	Inherits: ^Building
@@ -312,10 +316,9 @@ CONCRETEB:
 	CanPowerDown:
 	DisabledOverlay:
 	Buildable:
-		Prerequisites: Barracks, ~techlevel.medium
+		Prerequisites: ~conyard, barracks, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 50
-		Hotkey: o
 	Selectable:
 		Bounds: 96,64
 	Valued:
@@ -324,7 +327,6 @@ CONCRETEB:
 		Name: Outpost
 		Description: Provides a radar map of the battlefield\n  Requires power to operate
 	Building:
-		Power: -40
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Bib:
@@ -339,10 +341,12 @@ CONCRETEB:
 		Range: 6
 	RenderDetectionCircle:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Outpost
+		Prerequisite: radar
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
+	Power:
+		Amount: -40
 
 ^STARPORT:
 	Inherits: ^Building
@@ -352,17 +356,14 @@ CONCRETEB:
 		Name: Starport
 		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
 	Buildable:
-		Prerequisites: Outpost, ~techlevel.high
+		Prerequisites: ~conyard, radar, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 80
-		Hotkey: c
 	Building:
-		Power: -40
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 96,64
-	Bib:
 	Health:
 		HP: 1000
 	Armor:
@@ -388,12 +389,14 @@ CONCRETEB:
 	CanPowerDown:
 	DisabledOverlay:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Starport
+		Prerequisite: starport
+	Power:
+		Amount: -40
 
 ^WALL:
 	Buildable:
 		Queue: Building
-		Prerequisites: Barracks
+		Prerequisites: ~conyard, barracks
 		BuildPaletteOrder: 60
 	SoundOnDamageTransition:
 		DamagedSound:
@@ -405,19 +408,18 @@ CONCRETEB:
 	Tooltip:
 		Name: Concrete Wall
 		Description: Stop units and blocks enemy fire.
-		Hotkey: o
 	AppearsOnRadar:
 	Building:
 		BuildSounds: CHUNG.WAV
-		SellSounds: CHUNG.WAV
 		Adjacent: 7
 		TerrainTypes: Rock, Concrete
 	Health:
 		HP: 300
 	Armor:
 		Type: Concrete
-	Wall:
+	Crushable:
 		CrushClasses: Concretewall
+	BlocksBullets:
 	LineBuild:
 		Range: 8
 		NodeTypes: wall, turret
@@ -433,6 +435,7 @@ CONCRETEB:
 	ProximityCaptor:
 		Types: Wall
 	Sellable:
+		SellSounds: CHUNG.WAV
 	Guardable:
 	BodyOrientation:
 	ThrowsShrapnel:
@@ -443,24 +446,23 @@ CONCRETEB:
 WALL:
 	Inherits: ^WALL
 	Buildable:
-		Owner:
+		Prerequisites: ~disabled
 
 ^GUNTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Barracks
+		Prerequisites: ~conyard, barracks
 		BuildPaletteOrder: 90
-		Hotkey: g
 	Valued:
 		Cost: 650
 	Tooltip:
 		Name: Gun Tower
 		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
-		Power: -20
 		Adjacent: 4
 		BuildSounds: CHUNG.WAV
+	Sellable:
 		SellSounds: CHUNG.WAV
 	Selectable:
 		Bounds: 32,40,0,-8
@@ -496,23 +498,24 @@ WALL:
 	-WithMakeAnimation:
 	LineBuildNode:
 		Types: turret
+	Power:
+		Amount: -20
 
 ^ROCKETTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost, ~techlevel.medium
+		Prerequisites: ~conyard, radar, ~techlevel.medium
 		BuildPaletteOrder: 120
-		Hotkey: m
 	Valued:
 		Cost: 850
 	Tooltip:
 		Name: Rocket Tower
 		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
 	Building:
-		Power: -30
 		Adjacent: 4
 		BuildSounds: CHUNG.WAV
+	Sellable:
 		SellSounds: CHUNG.WAV
 	Selectable:
 		Bounds: 32,40,0,-8
@@ -548,21 +551,21 @@ WALL:
 	-WithMakeAnimation:
 	LineBuildNode:
 		Types: turret
+	Power:
+		Amount: -30
 
 ^REPAIR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Heavy, ~techlevel.medium
+		Prerequisites: ~conyard, heavy, ~techlevel.medium
 		BuildPaletteOrder: 130
-		Hotkey: e
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Repair Pad
 		Description: Repairs vehicles\n Allows construction of MCVs
 	Building:
-		Power: -10
 		Footprint: =x= =x= ===
 		Dimensions: 3,3
 	Health:
@@ -578,17 +581,18 @@ WALL:
 	RallyPoint:
 		RallyPoint: 1,3
 	ProvidesCustomPrerequisite:
-		Prerequisite: Repair
+		Prerequisite: repair
 	WithRepairOverlay:
 		Palette: repairlights
+	Power:
+		Amount: -10
 
 ^HIGHTECH:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Outpost, ~techlevel.medium
+		Prerequisites: ~conyard, radar, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 110
-		Hotkey: t
 	Selectable:
 		Bounds: 96,96
 	Valued:
@@ -597,7 +601,6 @@ WALL:
 		Name: High Tech Facility
 		Description: Unlocks advanced technology
 	Building:
-		Power: -40
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
 	Bib:
@@ -608,17 +611,18 @@ WALL:
 	RevealsShroud:
 		Range: 4c0
 	ProvidesCustomPrerequisite:
-		Prerequisite: Hitech
+		Prerequisite: hightech
 #	WithProductionOverlay@WELDING:
 #		Sequence: production-welding
+	Power:
+		Amount: -40
 
 ^RESEARCH:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Hitech, ~techlevel.high
+		Prerequisites: ~conyard, hightech, ~techlevel.high
 		BuildPaletteOrder: 140
-		Hotkey: v
 	Selectable:
 		Bounds: 96,64
 	Valued:
@@ -638,7 +642,6 @@ WALL:
 		SelectTargetSound:
 		FlareType:
 	Building:
-		Power: -40
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
 	Bib:
@@ -649,17 +652,18 @@ WALL:
 	RevealsShroud:
 		Range: 4c0
 	ProvidesCustomPrerequisite:
-		Prerequisite: Research
+		Prerequisite: research
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -40
 
 ^PALACE:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Research, ~techlevel.high
+		Prerequisites: ~conyard, research, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 150
-		Hotkey: p
 	Selectable:
 		Bounds: 96,96
 	Valued:
@@ -668,10 +672,10 @@ WALL:
 		Name: Palace
 		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
 	Building:
-		Power: -50
-		Footprint: xx= xxx
-		Dimensions: 3,2
+		Footprint: xx= xxx =xx
+		Dimensions: 3,3
 	Bib:
+		HasMinibib: True
 	Health:
 		HP: 2000
 	Armor:
@@ -682,14 +686,15 @@ WALL:
 	DetectCloaked:
 		Range: 4
 	ProvidesCustomPrerequisite:
-		Prerequisite: Palace
+		Prerequisite: palace
+	Power:
+		Amount: -50
 
 SIETCH:
 	Inherits: ^Building
 	Tooltip:
 		Name: Fremen Sietch
 	Building:
-		Power: 0
 		Footprint: xx xx
 		Dimensions: 2,2
 		TerrainTypes: Cliff
@@ -703,6 +708,8 @@ SIETCH:
 	-Sellable:
 	-ExternalCapturable:
 	-ExternalCapturableBar:
+	Power:
+		Amount: 0
 
 STARPORTC:
 	Inherits: ^STARPORT
@@ -713,21 +720,26 @@ PALACEC:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
-		Owner: None
+		Prerequisites: ~disabled
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: =x= xxx xxx
+		Dimensions: 3,3
 	RenderBuilding:
 
 HEAVYC:
 	Inherits: ^HEAVY
-	-Buildable:
-	RenderBuildingWarFactory:
-		Image: HEAVYC
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1100
+		Prerequisites: ~disabled
 
 CONYARD:
 	Tooltip:
 		Name: Construction Yard
+
+BARRACKS:
+	Tooltip:
+		Name: Barracks
 
 LIGHT:
 	Tooltip:
@@ -737,7 +749,7 @@ HEAVY:
 	Tooltip:
 		Name: Heavy Factory
 
-HITECH:
+HIGHTECH:
 	Tooltip:
 		Name: High-Tech Facility
 
@@ -749,3 +761,14 @@ RESEARCH:
 	Tooltip:
 		Name: Ix Lab
 
+RADAR:
+	Tooltip:
+		Name: Outpost
+
+POWER:
+	Tooltip:
+		Name: Windtrap
+
+REFINERY:
+	Tooltip:
+		Name: Spice Refinery

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,14 +9,29 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingTurretedInfo : RenderBuildingInfo, Requires<TurretedInfo>
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingTurreted( init, this ); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingTurreted(init, this); }
+
+		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		{
+			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
+				.FirstOrDefault();
+	
+			// Show the correct turret facing
+			var anim = new Animation(init.World, image, () => t.InitialFacing);
+			anim.PlayRepeating("idle");
+
+			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
+		}
 	}
 
 	class RenderBuildingTurreted : RenderBuilding

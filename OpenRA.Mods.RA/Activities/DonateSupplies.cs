@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Activities
 			self.Destroy();
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				self.World.AddFrameEndTask(w =>	w.Add(new CashTick(targetActor.CenterPosition, targetActor.Owner.Color.RGB, payload)));
+				self.World.AddFrameEndTask(w => w.Add(new FloatingText(targetActor.CenterPosition, targetActor.Owner.Color.RGB, FloatingText.FormatCashTick(payload), 30)));
 
 			return this;
 		}

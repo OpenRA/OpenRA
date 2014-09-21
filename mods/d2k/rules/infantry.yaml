@@ -3,8 +3,7 @@ RIFLE:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: atreides,harkonnen,ordos
-		Hotkey: r
+		Prerequisites: ~barracks
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -20,18 +19,13 @@ RIFLE:
 		Weapon: LMG
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
-		IdleAnimations: stand,stand2
 
 ENGINEER:
 	Inherits: ^Infantry
 	Buildable:
-		Prerequisites: Outpost, ~techlevel.medium
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Owner: atreides,harkonnen,ordos
-		Hotkey: e
+		Prerequisites: ~barracks, radar, ~techlevel.medium
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -56,11 +50,9 @@ ENGINEER:
 BAZOOKA:
 	Inherits: ^Infantry
 	Buildable:
-		Prerequisites: Outpost, ~techlevel.medium
 		Queue: Infantry
 		BuildPaletteOrder: 20
-		Owner: atreides,harkonnen,ordos
-		Hotkey: t
+		Prerequisites: ~barracks, radar, ~techlevel.medium
 	Valued:
 		Cost: 250
 	Tooltip:
@@ -77,18 +69,13 @@ BAZOOKA:
 		LocalOffset: 0,0,555
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
-		IdleAnimations: stand,stand2
 
 MEDIC:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Owner: atreides, ordos
-		Prerequisites: Research, ~techlevel.high
-		Hotkey: m
+		Prerequisites: ~medics, ~techlevel.high
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -107,6 +94,8 @@ MEDIC:
 	AttackMedic:
 		Cursor: ability
 		OutsideRangeCursor: ability
+	RenderInfantry:
+		AttackAnimation: heal
 	Passenger:
 		PipType: Blue
 	-AutoTarget:

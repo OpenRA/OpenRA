@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using Eluant;
 using OpenRA.Scripting;
@@ -28,16 +29,47 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Returns a table of all actors within the requested region, filtered using the specified function.")]
-		public LuaTable ActorsInCircle(WPos location, WRange radius, LuaFunction filter)
+		public LuaTable ActorsInCircle(WPos location, WRange radius, LuaFunction filter = null)
 		{
 			var actors = context.World.FindActorsInCircle(location, radius)
-				.Select(a => a.ToLuaValue(context))
-				.Where(a => 
+				.Select(a => a.ToLuaValue(context));
+
+			if (filter != null)
+				actors = actors.Where(a =>
 				{
 					using (var f = filter.Call(a))
 						return f.First().ToBoolean();
 				});
+
 			return actors.ToLuaTable(context);
+		}
+
+		[Desc("Returns a table of all actors within the requested rectangle, filtered using the specified function.")]
+		public LuaTable ActorsInBox(WPos topLeft, WPos bottomRight, LuaFunction filter = null)
+		{
+			var actors = context.World.ActorMap.ActorsInBox(topLeft, bottomRight)
+				.Select(a => a.ToLuaValue(context));
+
+			if (filter != null)
+				actors = actors.Where(a =>
+				{
+					using (var f = filter.Call(a))
+						return f.First().ToBoolean();
+				});
+
+			return actors.ToLuaTable(context);
+		}
+
+		[Desc("Returns the location of the top-left corner of the map.")]
+		public WPos TopLeft
+		{
+			get { return new WPos(context.World.Map.Bounds.Left * 1024, context.World.Map.Bounds.Top * 1024, 0); }
+		}
+
+		[Desc("Returns the location of the bottom-right corner of the map.")]
+		public WPos BottomRight
+		{
+			get { return new WPos(context.World.Map.Bounds.Right * 1024, context.World.Map.Bounds.Bottom * 1024, 0); }
 		}
 
 		[Desc("Returns a random cell inside the visible region of the map.")]
@@ -68,11 +100,15 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Returns the actor that was specified with a given name in " +
-			"the map file (or nil, if the actor is dead or not found")]
+			"the map file (or nil, if the actor is dead or not found).")]
 		public Actor NamedActor(string actorName)
 		{
 			Actor ret;
+
 			if (!sma.Actors.TryGetValue(actorName, out ret))
+				return null;
+
+			if (ret.Destroyed)
 				return null;
 
 			return ret;

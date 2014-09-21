@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.RA.Effects
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WRange Inaccuracy = WRange.Zero;
 		public readonly string Image = null;
-		[Desc("Check for whether an actor with Wall: trait blocks fire")]
+		[Desc("Check for whether an actor with BlocksBullets: trait blocks fire")]
 		public readonly bool High = false;
 		public readonly bool Shadow = false;
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
@@ -69,8 +70,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (info.Angle.Length > 1 && info.Speed.Length > 1)
 			{
-				angle = new WAngle(args.SourceActor.World.SharedRandom.Next(info.Angle[0].Angle, info.Angle[1].Angle));
-				speed = new WRange(args.SourceActor.World.SharedRandom.Next(info.Speed[0].Range, info.Speed[1].Range));
+				angle = new WAngle(world.SharedRandom.Next(info.Angle[0].Angle, info.Angle[1].Angle));
+				speed = new WRange(world.SharedRandom.Next(info.Speed[0].Range, info.Speed[1].Range));
 			}
 			else
 			{
@@ -81,8 +82,9 @@ namespace OpenRA.Mods.RA.Effects
 			target = args.PassiveTarget;
 			if (info.Inaccuracy.Range > 0)
 			{
-				var maxOffset = info.Inaccuracy.Range * (target - pos).Length / args.Weapon.Range.Range;
-				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024;
+				var inaccuracy = Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, args.InaccuracyModifiers);
+				var maxOffset = inaccuracy * (target - pos).Length / args.Weapon.Range.Range;
+				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}
 
 			facing = Traits.Util.GetFacing(target - pos, 0);
@@ -97,7 +99,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (info.ContrailLength > 0)
 			{
 				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
-				trail = new ContrailRenderable(args.SourceActor.World, color, info.ContrailLength, info.ContrailDelay, 0);
+				trail = new ContrailRenderable(world, color, info.ContrailLength, info.ContrailDelay, 0);
 			}
 
 			smokeTicks = info.TrailDelay;
@@ -171,7 +173,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			world.AddFrameEndTask(w => w.Remove(this));
 
-			Combat.DoImpacts(pos, args.SourceActor, args.Weapon, args.FirepowerModifier);
+			args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
 		}
 	}
 }

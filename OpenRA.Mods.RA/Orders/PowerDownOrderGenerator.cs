@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Power;
 
 namespace OpenRA.Mods.RA.Orders
 {
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Orders
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		public void RenderAfterWorld(WorldRenderer wr, World world) { }
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world) { yield break; }
 
 		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{

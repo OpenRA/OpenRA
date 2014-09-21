@@ -34,20 +34,16 @@ Player:
 		LowPowerSlowdown: 3
 		SpeedUp: True
 		RequireOwner: false
-	ClassicProductionQueue@Plane:
-		Type: Plane
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		SpeedUp: True
-		RequireOwner: false
-	ClassicProductionQueue@Helicopter:
-		Type: Helicopter
+	ClassicProductionQueue@Aircraft:
+		Type: Aircraft
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		SpeedUp: True
 		RequireOwner: false
 	PlaceBuilding:
 	SupportPowerManager:
+	ScriptTriggers:
+	MissionObjectives:
 	ConquestVictoryConditions:
 	PowerManager:
 	AllyRepair:

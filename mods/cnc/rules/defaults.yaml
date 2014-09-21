@@ -33,7 +33,7 @@
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Cloak:
-		RequiresCrate: true
+		RequiresUpgrade: cloak
 		InitialDelay: 15
 		CloakDelay: 90
 		CloakSound: trans1.aud
@@ -41,6 +41,7 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Tank:
 	AppearsOnRadar:
@@ -80,7 +81,7 @@
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Cloak:
-		RequiresCrate: true
+		RequiresUpgrade: cloak
 		InitialDelay: 15
 		CloakDelay: 90
 		CloakSound: trans1.aud
@@ -88,6 +89,7 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -119,6 +121,7 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -148,8 +151,9 @@
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	TakeCover:
-		ProneSpeed: 0.6
-	RenderInfantryProne:
+		SpeedModifier: 60
+	RenderInfantry:
+	WithDeathAnimation:
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
@@ -161,8 +165,9 @@
 	ActorLostNotification:
 	SpawnViceroid:
 		Probability: 10
-	CrushableInfantry:
+	Crushable:
 		WarnProbability: 67
+		CrushSound: squish2.aud
 	CombatDebugOverlay:
 	Guard:
 	Guardable:
@@ -180,19 +185,19 @@
 		Range: 1
 	ScriptTriggers:
 	DeathSounds@NORMAL:
-		InfDeaths: 1, 2, 3, 4
+		DeathTypes: 1, 2, 3, 4
 	DeathSounds@BURNED:
 		DeathSound: Burned
-		InfDeaths: 5
+		DeathTypes: 5
 	DeathSounds@POISONED:
 		DeathSound: Poisoned
-		InfDeaths: 6
+		DeathTypes: 6
+	GainsStatUpgrades:
 
 ^CivInfantry:
 	Inherits: ^Infantry
 	-AutoTarget:
 	-TakeCover:
-	-RenderInfantryProne:
 	AppearsOnRadar:
 	SelectionDecorations:
 	Selectable:
@@ -215,8 +220,8 @@
 		Notification: CivilianKilled
 		NotifyAll: true
 	ScaredyCat:
-	RenderInfantryPanic:
-	CrushableInfantry:
+	Crushable:
+		CrushSound: squish2.aud
 
 ^DINO:
 	AppearsOnRadar:
@@ -252,6 +257,8 @@
 	GivesExperience:
 	RenderInfantry:
 		Palette: terrain
+	WithDeathAnimation:
+		UseDeathTypeSuffix: false
 	EditorAppearance:
 		UseTerrainPalette: true
 	BodyOrientation:
@@ -285,6 +292,7 @@
 	AttackMove:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Ship:
 	AppearsOnRadar:
@@ -311,6 +319,7 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Building:
 	AppearsOnRadar:
@@ -318,7 +327,7 @@
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
-		TargetTypes: Ground, C4
+		TargetTypes: Ground, C4, Structure
 	Armor:
 		Type: Wood
 	Building:
@@ -327,7 +336,6 @@
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: constru2.aud, hvydoor1.aud
-		SellSounds: cashturn.aud
 		TerrainTypes: Clear,Road
 	SoundOnDamageTransition:
 		DamagedSound: xplos.aud
@@ -367,6 +375,7 @@
 	GivesBuildableArea:
 	EngineerRepairable:
 	Sellable:
+		SellSounds: cashturn.aud
 	Capturable:
 
 ^CivBuilding:
@@ -401,6 +410,8 @@
 ^TechBuilding:
 	Inherits: ^CivBuilding
 	Capturable:
+	CaptureNotification:
+		Notification: CivilianBuildingCaptured
 	RepairableBuilding:
 		RepairPercent: 40
 		RepairStep: 14
@@ -451,9 +462,10 @@
 		TerrainTypes: Clear,Road
 	TargetableBuilding:
 		TargetTypes: Ground, Wall
-	Wall:
+	Crushable:
 		CrushClasses: wall
 		CrushSound: sandbag2.aud
+	BlocksBullets:
 	LineBuild:
 		Range: 8
 		NodeTypes: wall
@@ -466,6 +478,7 @@
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
 	Sellable:
+		SellSounds: cashturn.aud
 	Guardable:
 	BodyOrientation:
 	FrozenUnderFog:

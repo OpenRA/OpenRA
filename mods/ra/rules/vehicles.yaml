@@ -4,7 +4,6 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
 		Prerequisites: dome, ~vehicles.soviet, ~techlevel.medium
-		Hotkey: v
 	Valued:
 		Cost: 900
 	Tooltip:
@@ -33,7 +32,6 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Prerequisites: ~vehicles.allies, ~techlevel.low
-		Hotkey: l
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -45,6 +43,7 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 128
+		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 4c0
 	Turreted:
@@ -72,7 +71,6 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 120
 		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
-		Hotkey: m
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -114,7 +112,6 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
-		Hotkey: h
 	Valued:
 		Cost: 1150
 	Tooltip:
@@ -156,7 +153,6 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 190
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.unrestricted
-		Hotkey: m
 	Valued:
 		Cost: 2000
 	CustomBuildTimeValue:
@@ -212,7 +208,6 @@ ARTY:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
 		Prerequisites: dome, ~vehicles.allies, ~techlevel.medium
-		Hotkey: r
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -245,7 +240,6 @@ HARV:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: proc, ~techlevel.infonly
-		Hotkey: e
 	Valued:
 		Cost: 1100
 	Tooltip:
@@ -288,7 +282,6 @@ MCV:
 		Queue: Vehicle
 		BuildPaletteOrder: 90
 		Prerequisites: fix, ~techlevel.medium
-		Hotkey: b
 	CustomBuildTimeValue:
 		Value: 2000
 	Valued:
@@ -297,7 +290,7 @@ MCV:
 		Name: Mobile Construction Vehicle
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
-		Priority: 3
+		Priority: 4
 		Bounds: 42,42
 	Health:
 		HP: 600
@@ -329,7 +322,6 @@ JEEP:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Prerequisites: ~vehicles.allies, ~techlevel.low
-		Hotkey: n
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -368,7 +360,6 @@ APC:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Hotkey: c
 		Prerequisites: ~vehicles.soviet, ~techlevel.low
 	Valued:
 		Cost: 850
@@ -381,6 +372,7 @@ APC:
 		Type: Heavy
 	Mobile:
 		Speed: 142
+		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 5c0
 	Armament:
@@ -405,7 +397,6 @@ MNLY.AP:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
-		Hotkey: i
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -417,6 +408,7 @@ MNLY.AP:
 		Type: Heavy
 	Mobile:
 		Speed: 128
+		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 5c0
 	RenderUnit:
@@ -439,7 +431,6 @@ MNLY.AT:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
 		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
-		Hotkey: i
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -451,6 +442,7 @@ MNLY.AT:
 		Type: Heavy
 	Mobile:
 		Speed: 128
+		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 5c0
 	RenderUnit:
@@ -473,7 +465,6 @@ TRUK:
 		Queue: Vehicle
 		BuildPaletteOrder: 20
 		Prerequisites: weap, ~techlevel.low
-		Hotkey: u
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -493,6 +484,8 @@ TRUK:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	LeavesHusk:
+		HuskActor: moneycrate
 
 MGG:
 	Inherits: ^Vehicle
@@ -500,7 +493,6 @@ MGG:
 		Queue: Vehicle
 		BuildPaletteOrder: 160
 		Prerequisites: atek, ~vehicles.allies, ~techlevel.unrestricted
-		Hotkey: y
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -538,7 +530,6 @@ MRJ:
 		Queue: Vehicle
 		BuildPaletteOrder: 150
 		Prerequisites: atek, ~vehicles.allies, ~techlevel.unrestricted
-		Hotkey: k
 	Health:
 		HP: 220
 	Armor:
@@ -569,7 +560,6 @@ TTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 180
 		Prerequisites: tsla, stek, ~vehicles.soviet, ~techlevel.unrestricted
-		Hotkey: t
 	Valued:
 		Cost: 1350
 	Tooltip:
@@ -603,7 +593,6 @@ FTRK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
-		Hotkey: k
 		Prerequisites: ~vehicles.soviet, ~techlevel.low
 	Valued:
 		Cost: 600
@@ -644,7 +633,6 @@ DTRK:
 		Queue: Vehicle
 		BuildPaletteOrder: 170
 		Prerequisites: stek, ~vehicles.soviet, ~techlevel.unrestricted
-		Hotkey: o
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -673,7 +661,6 @@ CTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 210
 		Prerequisites: atek, pdox, ~vehicles.allies, ~techlevel.unrestricted
-		Hotkey: j
 	Valued:
 		Cost: 1350
 	Tooltip:
@@ -712,7 +699,6 @@ QTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 200
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.unrestricted
-		Hotkey: q
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -743,7 +729,6 @@ STNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 140
 		Prerequisites: atek, ~vehicles.allies, ~techlevel.unrestricted
-		Hotkey: p
 	Valued:
 		Cost: 1350
 	Tooltip:
@@ -777,7 +762,6 @@ STNK:
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 250
-		UncloakOnUnload: True
 	DetectCloaked:
 		Range: 6
 	Explodes:

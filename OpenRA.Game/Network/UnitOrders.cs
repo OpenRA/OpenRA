@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -241,8 +241,8 @@ namespace OpenRA.Network
 
 						SetPlayerStance(world, order.Player, targetPlayer, newStance);
 
-						Game.Debug("{0} has set diplomatic stance vs {1} to {2}".F(
-							order.Player.PlayerName, targetPlayer.PlayerName, newStance));
+						Game.Debug("{0} has set diplomatic stance vs {1} to {2}",
+							order.Player.PlayerName, targetPlayer.PlayerName, newStance);
 
 						// automatically declare war reciprocally
 						if (newStance == Stance.Enemy && targetPlayer.Stances[order.Player] == Stance.Ally)

@@ -457,11 +457,17 @@ Rules:
 		PlayMusicOnMapLoad:
 			Music: aoi
 			Loop: false
-		LuaScriptInterface:
-			LuaScripts: gdi01.lua
+		LuaScript:
+			Scripts: gdi01.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	^Infantry:
+		MustBeDestroyed:
+	^Vehicle:
 		MustBeDestroyed:
 	PROC:
 		Buildable:
@@ -535,10 +541,10 @@ VoxelSequences:
 
 Weapons:
 	BoatMissile:
-		Warhead:
+		Warhead: SpreadDamage
 			Versus:
-				Heavy: 50%
-		Damage: 50
+				Heavy: 50
+			Damage: 50
 
 Voices:
 

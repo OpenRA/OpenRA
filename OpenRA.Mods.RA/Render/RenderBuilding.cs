@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
@@ -23,13 +24,14 @@ namespace OpenRA.Mods.RA.Render
 
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this);}
 
-		public void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
 			if (!ai.Traits.Get<BuildingInfo>().RequiresBaseProvider)
-				return;
+				yield break;
 
 			foreach (var a in w.ActorsWithTrait<BaseProvider>())
-				a.Trait.RenderAfterWorld(wr);
+				foreach (var r in a.Trait.RenderAfterWorld(wr))
+					yield return r;
 		}
 	}
 
@@ -47,8 +49,6 @@ namespace OpenRA.Mods.RA.Render
 			this.info = info;
 
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
-
-			self.Trait<IBodyOrientation>().SetAutodetectedFacings(DefaultAnimation.CurrentSequence.Facings);
 		}
 
 		public virtual void BuildingComplete(Actor self)

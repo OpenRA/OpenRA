@@ -14,9 +14,8 @@ World:
 		Name: player
 		Filename: unittem.pal
 		ShadowIndex: 1
-	PaletteFromFile@terrain:
+	PaletteFromCurrentTileset:
 		Name: terrain
-		Filename: isotem.pal
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: cameo.pal
@@ -85,6 +84,13 @@ World:
 		Name: Nod
 		Race: nod
 	DomainIndex:
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokePercentage: 50
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
 	ResourceLayer:
 	ResourceClaimLayer:
 	FixedColorPalette@GreenTiberium:
@@ -121,21 +127,17 @@ World:
 		AllowedTerrainTypes: Clear
 		AllowUnderActors: false
 		TerrainType: BlueTiberium
-	SmudgeLayer@SCORCH:
-		Type: Scorch
-		Sequence: scorches
-		SmokePercentage: 50
-	SmudgeLayer@CRATER:
-		Type: Crater
-		Sequence: craters
 	PathfinderDebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartUnits@MCV:
+		Class: none
+		ClassName: MCV Only
 		Races: gdi, nod
 		BaseActor: mcv
 	MPStartUnits@TEST:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: gdi,nod
 		BaseActor: mcv
 		SupportActors: e1,e2,e3,cyborg,cyc2,jumpjet,umagon,ghost,mmch,smech,hmec,bggy,bike,art2,ttnk,hvr,sonic,subtank,repair,4tnk

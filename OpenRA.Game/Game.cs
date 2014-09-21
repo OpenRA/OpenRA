@@ -14,6 +14,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using MaxMind.GeoIP2;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
@@ -42,10 +43,13 @@ namespace OpenRA
 
 		public static DatabaseReader GeoIpDatabase;
 
-		public static OrderManager JoinServer(string host, int port, string password)
+		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
 		{
-			var om = new OrderManager(host, port, password,
-				new ReplayRecorderConnection(new NetworkConnection(host, port), ChooseReplayFilename));
+			IConnection connection = new NetworkConnection(host, port);
+			if (recordReplay)
+				connection = new ReplayRecorderConnection(connection, ChooseReplayFilename);
+
+			var om = new OrderManager(host, port, password, connection);
 			JoinInner(om);
 			return om;
 		}
@@ -72,6 +76,10 @@ namespace OpenRA
 		{
 			JoinInner(new OrderManager("<no server>", -1, "", new EchoConnection()));
 		}
+
+		// More accurate replacement for Environment.TickCount
+		static Stopwatch stopwatch = Stopwatch.StartNew();
+		public static int RunTime { get { return (int)Game.stopwatch.ElapsedMilliseconds; } }
 
 		public static int RenderFrame = 0;
 		public static int NetFrameNumber { get { return orderManager.NetFrameNumber; } }
@@ -113,129 +121,6 @@ namespace OpenRA
 			}, parent, id);
 		}
 
-		// Note: These delayed actions should only be used by widgets or disposing objects
-		// - things that depend on a particular world should be queuing them on the worldactor.
-		static ActionQueue delayedActions = new ActionQueue();
-		public static void RunAfterTick(Action a) { delayedActions.Add(a); }
-		public static void RunAfterDelay(int delay, Action a) { delayedActions.Add(a, delay); }
-
-		static float cursorFrame = 0f;
-		static void Tick(OrderManager orderManager)
-		{
-			if (orderManager.Connection.ConnectionState != lastConnectionState)
-			{
-				lastConnectionState = orderManager.Connection.ConnectionState;
-				ConnectionStateChanged(orderManager);
-			}
-
-			TickInner(orderManager);
-			if (worldRenderer != null && orderManager.world != worldRenderer.world)
-				TickInner(worldRenderer.world.orderManager);
-
-			using (new PerfSample("render"))
-			{
-				++RenderFrame;
-
-				// worldRenderer is null during the initial install/download screen
-				if (worldRenderer != null)
-				{
-					Renderer.BeginFrame(worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.Zoom);
-					Sound.SetListenerPosition(worldRenderer.Position(worldRenderer.Viewport.CenterLocation));
-					worldRenderer.Draw();
-				}
-				else
-					Renderer.BeginFrame(int2.Zero, 1f);
-
-				using (new PerfSample("render_widgets"))
-				{
-					Ui.Draw();
-					if (modData != null && modData.CursorProvider != null)
-					{
-						var cursorName = Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-						modData.CursorProvider.DrawCursor(Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
-					}
-				}
-
-				using (new PerfSample("render_flip"))
-				{
-					Renderer.EndFrame(new DefaultInputHandler(orderManager.world));
-				}
-			}
-
-			PerfHistory.items["render"].Tick();
-			PerfHistory.items["batches"].Tick();
-			PerfHistory.items["render_widgets"].Tick();
-			PerfHistory.items["render_flip"].Tick();
-
-			delayedActions.PerformActions();
-		}
-
-		static void TickInner(OrderManager orderManager)
-		{
-			var tick = Environment.TickCount;
-
-			var world = orderManager.world;
-			var uiTickDelta = tick - Ui.LastTickTime;
-			if (uiTickDelta >= Timestep)
-			{
-				// Explained below for the world tick calculation
-				var integralTickTimestep = (uiTickDelta / Timestep) * Timestep;
-				Ui.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : Timestep;
-
-				Viewport.TicksSinceLastMove += uiTickDelta / Timestep;
-
-				Sync.CheckSyncUnchanged(world, Ui.Tick);
-				cursorFrame += 0.5f;
-			}
-
-			var worldTimestep = world == null ? Timestep : world.Timestep;
-			var worldTickDelta = (tick - orderManager.LastTickTime);
-			if (worldTimestep != 0 && worldTickDelta >= worldTimestep)
-				using (new PerfSample("tick_time"))
-				{
-					// Tick the world to advance the world time to match real time:
-					//    If dt < TickJankThreshold then we should try and catch up by repeatedly ticking
-					//    If dt >= TickJankThreshold then we should accept the jank and progress at the normal rate
-					// dt is rounded down to an integer tick count in order to preserve fractional tick components.
-
-					var integralTickTimestep = (worldTickDelta / worldTimestep) * worldTimestep;
-					orderManager.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : worldTimestep;
-
-					Sound.Tick();
-					Sync.CheckSyncUnchanged(world, orderManager.TickImmediate);
-
-					if (world != null)
-					{
-						var isNetTick = LocalTick % NetTickScale == 0;
-
-						if (!isNetTick || orderManager.IsReadyForNextFrame)
-						{
-							++orderManager.LocalFrameNumber;
-
-							Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
-
-							if (isNetTick)
-								orderManager.Tick();
-
-							Sync.CheckSyncUnchanged(world, () =>
-							{
-								world.OrderGenerator.Tick(world);
-								world.Selection.Tick(world);
-							});
-
-							world.Tick();
-
-							PerfHistory.Tick();
-						}
-						else
-							if (orderManager.NetFrameNumber == 0)
-								orderManager.LastTickTime = Environment.TickCount;
-
-						Sync.CheckSyncUnchanged(world, () => world.TickRender(worldRenderer));
-					}
-				}
-		}
-
 		public static event Action LobbyInfoChanged = () => { };
 
 		internal static void SyncLobbyInfo()
@@ -268,7 +153,7 @@ namespace OpenRA
 			Ui.KeyboardFocusWidget = null;
 
 			orderManager.LocalFrameNumber = 0;
-			orderManager.LastTickTime = Environment.TickCount;
+			orderManager.LastTickTime = RunTime;
 			orderManager.StartGame();
 			worldRenderer.RefreshPalette();
 
@@ -415,7 +300,7 @@ namespace OpenRA
 					CreateServer(new ServerSettings(Settings.Server));
 					while (true)
 					{
-						System.Threading.Thread.Sleep(100);
+						Thread.Sleep(100);
 
 						if (server.State == Server.ServerState.GameStarted && server.Conns.Count < 1)
 						{
@@ -502,10 +387,233 @@ namespace OpenRA
 		static RunStatus state = RunStatus.Running;
 		public static event Action OnQuit = () => { };
 
-		static double idealFrameTime;
-		public static void SetIdealFrameTime(int fps)
+		// Note: These delayed actions should only be used by widgets or disposing objects
+		// - things that depend on a particular world should be queuing them on the worldactor.
+		static ActionQueue delayedActions = new ActionQueue();
+		public static void RunAfterTick(Action a) { delayedActions.Add(a); }
+		public static void RunAfterDelay(int delay, Action a) { delayedActions.Add(a, delay); }
+
+		static float cursorFrame = 0f;
+
+		static void InnerLogicTick(OrderManager orderManager)
 		{
-			idealFrameTime = 1.0 / fps;
+			var tick = RunTime;
+
+			var world = orderManager.world;
+
+			var uiTickDelta = tick - Ui.LastTickTime;
+			if (uiTickDelta >= Timestep)
+			{
+				// Explained below for the world tick calculation
+				var integralTickTimestep = (uiTickDelta / Timestep) * Timestep;
+				Ui.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : Timestep;
+
+				Viewport.TicksSinceLastMove += uiTickDelta / Timestep;
+
+				Sync.CheckSyncUnchanged(world, Ui.Tick);
+				cursorFrame += 0.5f;
+			}
+
+			var worldTimestep = world == null ? Timestep : world.Timestep;
+			var worldTickDelta = (tick - orderManager.LastTickTime);
+			if (worldTimestep != 0 && worldTickDelta >= worldTimestep)
+			{
+				using (new PerfSample("tick_time"))
+				{
+					// Tick the world to advance the world time to match real time:
+					//    If dt < TickJankThreshold then we should try and catch up by repeatedly ticking
+					//    If dt >= TickJankThreshold then we should accept the jank and progress at the normal rate
+					// dt is rounded down to an integer tick count in order to preserve fractional tick components.
+
+					var integralTickTimestep = (worldTickDelta / worldTimestep) * worldTimestep;
+					orderManager.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : worldTimestep;
+
+					Sound.Tick();
+					Sync.CheckSyncUnchanged(world, orderManager.TickImmediate);
+
+					if (world != null)
+					{
+						var isNetTick = LocalTick % NetTickScale == 0;
+
+						if (!isNetTick || orderManager.IsReadyForNextFrame)
+						{
+							++orderManager.LocalFrameNumber;
+
+							Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
+
+							if (isNetTick)
+								orderManager.Tick();
+
+							Sync.CheckSyncUnchanged(world, () =>
+							{
+								world.OrderGenerator.Tick(world);
+								world.Selection.Tick(world);
+							});
+
+							world.Tick();
+
+							PerfHistory.Tick();
+						}
+						else
+							if (orderManager.NetFrameNumber == 0)
+								orderManager.LastTickTime = RunTime;
+
+						Sync.CheckSyncUnchanged(world, () => world.TickRender(worldRenderer));
+					}
+				}
+			}
+		}
+
+		static void LogicTick()
+		{
+			delayedActions.PerformActions();
+
+			if (orderManager.Connection.ConnectionState != lastConnectionState)
+			{
+				lastConnectionState = orderManager.Connection.ConnectionState;
+				ConnectionStateChanged(orderManager);
+			}
+
+			InnerLogicTick(orderManager);
+			if (worldRenderer != null && orderManager.world != worldRenderer.world)
+				InnerLogicTick(worldRenderer.world.orderManager);
+		}
+
+		static void RenderTick()
+		{
+			using (new PerfSample("render"))
+			{
+				++RenderFrame;
+
+				// worldRenderer is null during the initial install/download screen
+				if (worldRenderer != null)
+				{
+					Renderer.BeginFrame(worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.Zoom);
+					Sound.SetListenerPosition(worldRenderer.Position(worldRenderer.Viewport.CenterLocation));
+					worldRenderer.Draw();
+				}
+				else
+					Renderer.BeginFrame(int2.Zero, 1f);
+
+				using (new PerfSample("render_widgets"))
+				{
+					Ui.Draw();
+
+					if (modData != null && modData.CursorProvider != null)
+					{
+						var cursorName = Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default";
+						modData.CursorProvider.DrawCursor(Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
+					}
+				}
+
+				using (new PerfSample("render_flip"))
+					Renderer.EndFrame(new DefaultInputHandler(orderManager.world));
+			}
+
+			PerfHistory.items["render"].Tick();
+			PerfHistory.items["batches"].Tick();
+			PerfHistory.items["render_widgets"].Tick();
+			PerfHistory.items["render_flip"].Tick();
+		}
+
+		static void Loop()
+		{
+			// The game loop mainly does two things: logic updates and
+			// drawing on the screen.
+			// ---
+			// We ideally want the logic to run every 'Timestep' ms and
+			// rendering to be done at 'MaxFramerate', so 1000 / MaxFramerate ms.
+			// Any additional free time is used in 'Sleep' so we don't
+			// consume more CPU/GPU resources than necessary.
+			// ---
+			// In case logic or rendering takes more time than the ideal
+			// and we're getting behind, we can skip rendering some frames
+			// but there's a fail-safe minimum FPS to make sure the screen
+			// gets updated at least that often.
+			// ---
+			// TODO: Separate world/UI rendering
+			// It would be nice to separate the world rendering from the UI rendering
+			// so that we can update the UI more often than the world. This would
+			// help make the game playable (mouse/controls) even in low world
+			// framerates.
+			// It's not possible at the moment because the render buffer is cleared
+			// before rendering and we don't keep the last rendered world buffer.
+
+			// When the logic has fallen behind by this much, skip the pending
+			// updates and start fresh.
+			// For example, if we want to update logic every 10 ms but each loop
+			// temporarily takes 100 ms, the 'nextLogic' timestamp will be too low
+			// and the current timestamp ('now') will have moved on. Even if the
+			// update time returns to normal, it will take a long time to catch up
+			// (if ever).
+			// This also means that the 'logicInterval' cannot be longer than this
+			// value.
+			const int maxLogicTicksBehind = 250;
+
+			// Try to maintain at least this many FPS, even if it slows down logic.
+			// This is easily observed when playing back a replay at max speed,
+			// the frame rate will slow down to this value to allow the replay logic
+			// to run faster.
+			// However, if the user has enabled a framerate limit that is even lower
+			// than this, then that limit will be used.
+			const int minRenderFps = 10;
+
+			// Timestamps for when the next logic and rendering should run
+			var nextLogic = RunTime;
+			var nextRender = RunTime;
+			var forcedNextRender = RunTime;
+
+			while (state == RunStatus.Running)
+			{
+				// Ideal time between logic updates. Timestep = 0 means the game is paused
+				// but we still call LogicTick() because it handles pausing internally.
+				var logicInterval = worldRenderer != null && worldRenderer.world.Timestep != 0 ? worldRenderer.world.Timestep : Game.Timestep;
+
+				// Ideal time between screen updates
+				var maxFramerate = Settings.Graphics.CapFramerate ? Settings.Graphics.MaxFramerate.Clamp(1, 1000) : 1000;
+				var renderInterval = 1000 / maxFramerate;
+
+				var now = RunTime;
+
+				// If the logic has fallen behind too much, skip it and catch up
+				if (now - nextLogic > maxLogicTicksBehind)
+					nextLogic = now;
+
+				// When's the next update (logic or render)
+				var nextUpdate = Math.Min(nextLogic, nextRender);
+				if (now >= nextUpdate)
+				{
+					if (now >= nextLogic)
+					{
+						nextLogic += logicInterval;
+
+						LogicTick();
+					}
+
+					var haveSomeTimeUntilNextLogic = now < nextLogic;
+					var isTimeToRender = now >= nextRender;
+					var forceRender = now >= forcedNextRender;
+
+					if ((isTimeToRender && haveSomeTimeUntilNextLogic) || forceRender)
+					{
+						nextRender = now + renderInterval;
+
+						// Pick the minimum allowed FPS (the lower between 'minRenderFps'
+						// and the user's max frame rate) and convert it to maximum time
+						// allowed between screen updates.
+						// We do this before rendering to include the time rendering takes
+						// in this interval.
+						var maxRenderInterval = Math.Max(1000 / minRenderFps, renderInterval);
+						forcedNextRender = now + maxRenderInterval;
+
+						RenderTick();
+					}
+				}
+				else
+				{
+					Thread.Sleep(nextUpdate - now);
+				}
+			}
 		}
 
 		internal static RunStatus Run()
@@ -516,25 +624,9 @@ namespace OpenRA
 				Settings.Graphics.CapFramerate = false;
 			}
 
-			SetIdealFrameTime(Settings.Graphics.MaxFramerate);
-
 			try
 			{
-				while (state == RunStatus.Running)
-				{
-					if (Settings.Graphics.CapFramerate)
-					{
-						var sw = Stopwatch.StartNew();
-
-						Tick(orderManager);
-
-						var waitTime = Math.Min(idealFrameTime - sw.Elapsed.TotalSeconds, 1);
-						if (waitTime > 0)
-							System.Threading.Thread.Sleep(TimeSpan.FromSeconds(waitTime));
-					}
-					else
-						Tick(orderManager);
-				}
+				Loop();
 			}
 			finally
 			{

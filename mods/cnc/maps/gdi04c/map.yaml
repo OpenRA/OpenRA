@@ -60,6 +60,11 @@ Players:
 		Race: gdi
 		Enemies: Nod
 		NonCombatant: True
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: Random
+		Enemies: Nod,GDI
 
 Actors:
 	Actor0: v17
@@ -893,10 +898,14 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
-		LuaScriptInterface:
-			LuaScripts: gdi04c.lua
+		LuaScript:
+			Scripts: gdi04c.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	^Infantry:
 		MustBeDestroyed:
 	^Vehicle:
@@ -906,6 +915,8 @@ Rules:
 	^CivInfantry:
 		Health:
 			HP: 125
+	^Bridge:
+		Invulnerable:
 
 Sequences:
 
@@ -913,9 +924,12 @@ VoxelSequences:
 
 Weapons:
 	Rockets:
-		Warhead:
+		Range: 5c0
+		Warhead: SpreadDamage
 			Versus:
-				None: 20%
+				None: 10
+				Light: 66
+				Heavy: 66
 
 Voices:
 

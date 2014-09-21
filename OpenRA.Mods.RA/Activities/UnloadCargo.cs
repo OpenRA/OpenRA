@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,6 +11,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Mods.RA.Move;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
@@ -30,14 +32,15 @@ namespace OpenRA.Mods.RA.Activities
 			this.unloadAll = unloadAll;
 		}
 
-		public CPos? ChooseExitCell(Actor passenger)
+		public Pair<CPos, SubCell>? ChooseExitSubCell(Actor passenger)
 		{
 			var pos = passenger.Trait<IPositionable>();
 
 			return cargo.CurrentAdjacentCells
 				.Shuffle(self.World.SharedRandom)
-				.Cast<CPos?>()
-				.FirstOrDefault(c => pos.CanEnterCell(c.Value));
+				.Select(c => Pair.New(c, pos.GetAvailableSubCell(c)))
+				.Cast<Pair<CPos, SubCell>?>()
+				.FirstOrDefault(s => s.Value.Second != SubCell.Invalid);
 		}
 
 		IEnumerable<CPos> BlockedExitCells(Actor passenger)
@@ -60,10 +63,10 @@ namespace OpenRA.Mods.RA.Activities
 			var actor = cargo.Peek(self);
 			var spawn = self.CenterPosition;
 
-			var exitCell = ChooseExitCell(actor);
-			if (exitCell == null)
+			var exitSubCell = ChooseExitSubCell(actor);
+			if (exitSubCell == null)
 			{
-				foreach (var blocker in BlockedExitCells(actor).SelectMany(self.World.ActorMap.GetUnitsAt))
+				foreach (var blocker in BlockedExitCells(actor).SelectMany(p => self.World.ActorMap.GetUnitsAt(p)))
 				{
 					foreach (var nbm in blocker.TraitsImplementing<INotifyBlockingMove>())
 						nbm.OnNotifyBlockingMove(blocker, self);
@@ -83,8 +86,8 @@ namespace OpenRA.Mods.RA.Activities
 				w.Add(actor);
 				actor.CancelActivity();
 				pos.SetVisualPosition(actor, spawn);
-				actor.QueueActivity(move.MoveIntoWorld(actor, exitCell.Value));
-				actor.SetTargetLine(Target.FromCell(w, exitCell.Value), Color.Green, false);
+				actor.QueueActivity(move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
+				actor.SetTargetLine(Target.FromCell(w, exitSubCell.Value.First, exitSubCell.Value.Second), Color.Green, false);
 			});
 
 			if (!unloadAll || cargo.IsEmpty(self))

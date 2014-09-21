@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
+    <Compile Include="GameRules\Warhead.cs" />
     <Compile Include="Graphics\QuadRenderer.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Graphics\Viewport.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Group.cs" />
+    <Compile Include="IUtilityCommand.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="Network\Connection.cs" />
     <Compile Include="Network\FrameData.cs" />
@@ -148,7 +150,6 @@
     <Compile Include="Traits\RejectsOrders.cs" />
     <Compile Include="Traits\Player\DeveloperMode.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
-    <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\SelectionDecorations.cs" />
@@ -193,17 +194,12 @@
     <Compile Include="Network\UPnP.cs" />
     <Compile Include="Widgets\ClientTooltipRegionWidget.cs" />
     <Compile Include="Graphics\Renderable.cs" />
-    <Compile Include="Traits\Render\RenderSprites.cs" />
     <Compile Include="Graphics\Voxel.cs" />
     <Compile Include="Graphics\VoxelRenderer.cs" />
     <Compile Include="Graphics\VoxelLoader.cs" />
     <Compile Include="Graphics\VoxelProvider.cs" />
     <Compile Include="Traits\BodyOrientation.cs" />
     <Compile Include="Graphics\VoxelAnimation.cs" />
-    <Compile Include="Graphics\VoxelRenderable.cs" />
-    <Compile Include="Graphics\TextRenderable.cs" />
-    <Compile Include="Graphics\BeamRenderable.cs" />
-    <Compile Include="Graphics\ContrailRenderable.cs" />
     <Compile Include="Widgets\ViewportControllerWidget.cs" />
     <Compile Include="Traits\Player\FrozenActorLayer.cs" />
     <Compile Include="Graphics\Theater.cs" />
@@ -243,6 +239,11 @@
     <Compile Include="Sound\OpenAlSound.cs" />
     <Compile Include="Sound\NullSound.cs" />
     <Compile Include="Effects\SpriteEffect.cs" />
+    <Compile Include="Graphics\SelectionBoxRenderable.cs" />
+    <Compile Include="Graphics\SelectionBarsRenderable.cs" />
+    <Compile Include="Graphics\TargetLineRenderable.cs" />
+    <Compile Include="Graphics\UISpriteRenderable.cs" />
+    <Compile Include="GameRules\DamageWarhead.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="FileSystem\MixFile.cs" />
     <Compile Include="FileSystem\Pak.cs" />
     <Compile Include="FileSystem\ZipFile.cs" />
+    <Compile Include="FileSystem\BigFile.cs" />
     <Compile Include="Map\PlayerReference.cs" />
     <Compile Include="Map\SmudgeReference.cs" />
     <Compile Include="Map\TileReference.cs" />
@@ -260,6 +262,7 @@
     <Compile Include="InstallUtils.cs" />
     <Compile Include="Manifest.cs" />
     <Compile Include="Graphics\Vertex.cs" />
+    <Compile Include="FileFormats\ImaAdpcmLoader.cs" />
     <Compile Include="FileFormats\AudLoader.cs" />
     <Compile Include="FileFormats\Blast.cs" />
     <Compile Include="FileFormats\Blowfish.cs" />

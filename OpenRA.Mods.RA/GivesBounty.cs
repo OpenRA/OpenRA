@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA
 			var bounty = cost * GetMultiplier(self) * info.Percentage / 10000;
 
 			if (bounty > 0 && e.Attacker.Owner.IsAlliedWith(self.World.RenderPlayer))
-				e.Attacker.World.AddFrameEndTask(w => w.Add(new CashTick(self.CenterPosition, e.Attacker.Owner.Color.RGB, bounty)));
+				e.Attacker.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color.RGB, FloatingText.FormatCashTick(bounty), 30)));
 
 			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(bounty);
 		}

@@ -1,126 +1,96 @@
-chrome-allies: chrome-allies.png
-	specialbin-top: 0,0,30,51
-	specialbin-middle: 0,51,30,51
-	specialbin-bottom: 0,153,30,39
-	moneybin: 192,0,320,31
-	radar: 297,31,210,222
-	tooltip-bg: 0,288,272,136
+sidebar-allies: chrome.png
+	background-top: 0,167,238,290
+	background-iconrow: 0,457,238,47
+	background-bottom: 0,504,238,8
+	background-supportoverlay: 184,118,64,48
 
-power-allies: chrome-allies.png
-	power-indicator: 187,4,4,7
+sidebar-button-allies: chrome.png
+	background: 56,28,28,28
+sidebar-button-allies-hover: chrome.png
+	background: 56,0,28,28
+sidebar-button-allies-pressed: chrome.png
+	background: 56,28,28,28
+sidebar-button-allies-highlighted: chrome.png
+	background: 84,28,28,28
+sidebar-button-allies-highlighted-hover: chrome.png
+	background: 84,0,28,28
+sidebar-button-allies-highlighted-pressed: chrome.png
+	background: 84,28,28,28
+sidebar-button-allies-disabled: chrome.png
+	background: 112,0,28,28
+sidebar-button-allies-highlighted-disabled: chrome.png
+	background: 112,0,28,28
 
-palette-allies: chrome-allies.png
-	top: 297,288,201,9
-	dock-top: 498,274,14,23
-	bottom: 297,489,201,9
-	dock-bottom: 498,489,14,23
-	bg-0: 297,297,201,48
-	dock-0: 498,297,14,48
-	bg-1: 297,345,201,48
-	dock-1: 498,345,14,48
-	bg-2: 297,393,201,48
-	dock-2: 498,393,14,48
-	bg-3: 297,441,201,48
-	dock-3: 498,441,14,48
+sidebar-soviet: chrome.png
+	background-top: 274,167,238,290
+	background-iconrow: 274,457,238,47
+	background-bottom: 274,504,238,8
+	background-supportoverlay: 249,118,64,48
 
-digits-allies: chrome-allies.png
-	0: 32,0,13,17
-	1: 45,0,13,17
-	2: 58,0,13,17
-	3: 71,0,13,17
-	4: 84,0,13,17
-	5: 97,0,13,17
-	6: 110,0,13,17
-	7: 123,0,13,17
-	8: 136,0,13,17
-	9: 149,0,13,17
+sidebar-button-soviet: chrome.png
+	background: 0,28,28,28
+sidebar-button-soviet-hover: chrome.png
+	background: 0,0,28,28
+sidebar-button-soviet-pressed: chrome.png
+	background: 0,28,28,28
+sidebar-button-soviet-highlighted: chrome.png
+	background: 28,28,28,28
+sidebar-button-soviet-highlighted-hover: chrome.png
+	background: 28,0,28,28
+sidebar-button-soviet-highlighted-pressed: chrome.png
+	background: 28,28,28,28
+sidebar-button-soviet-disabled: chrome.png
+	background: 112,0,28,28
+sidebar-button-soviet-highlighted-disabled: chrome.png
+	background: 112,0,28,28
 
-chrome-soviet: chrome-soviet.png
-	specialbin-top: 0,0,30,51
-	specialbin-middle: 0,51,30,51
-	specialbin-bottom: 0,153,30,39
-	moneybin: 192,0,320,31
-	radar: 297,31,210,222
-	tooltip-bg: 0,288,272,136
+sidebar-bits: chrome.png
+	production-tooltip-time: 416, 80, 16, 16
+	production-tooltip-power: 432, 80, 16, 16
+	production-tooltip-cost: 448, 80, 16, 16
+	production-iconoverlay: 314,118,238,48
 
-power-soviet: chrome-soviet.png
-	power-indicator: 187,4,4,7
+production-icons: chrome.png
+	building: 384,0,16,16
+	building-disabled: 384,16,16,16
+	building-alert: 384,32,16,16
+	defense: 400,0,16,16
+	defense-disabled: 400,16,16,16
+	defense-alert: 400,32,16,16
+	infantry: 416,0,16,16
+	infantry-disabled: 416,16,16,16
+	infantry-alert: 416,32,16,16
+	vehicle: 432,0,16,16
+	vehicle-disabled: 432,16,16,16
+	vehicle-alert: 432,32,16,16
+	aircraft: 448,0,16,16
+	aircraft-disabled: 448,16,16,16
+	aircraft-alert: 448,32,16,16
+	ship: 496,48,16,16
+	ship-disabled: 496,64,16,16
+	ship-alert: 496,80,16,16
 
-palette-soviet: chrome-soviet.png
-	top: 297,288,201,9
-	dock-top: 498,274,14,23
-	bottom: 297,489,201,9
-	dock-bottom: 498,489,14,23
-	bg-0: 297,297,201,48
-	dock-0: 498,297,14,48
-	bg-1: 297,345,201,48
-	dock-1: 498,345,14,48
-	bg-2: 297,393,201,48
-	dock-2: 498,393,14,48
-	bg-3: 297,441,201,48
-	dock-3: 498,441,14,48
+order-icons: chrome.png
+	options: 480,0,16,16
+	options-disabled: 480,16,16,16
+	options-active: 480,32,16,16
+	diplomacy: 464,48,16,16
+	diplomacy-disabled: 464,64,16,16
+	diplomacy-active: 464,80,16,16
+	sell: 496,0,16,16
+	sell-disabled: 496,16,16,16
+	sell-active: 496,32,16,16
+	repair: 384,48,16,16
+	repair-disabled: 384,64,16,16
+	repair-active: 384,80,16,16
+	beacon: 400,48,16,16
+	beacon-disabled: 400,64,16,16
+	beacon-active: 400,80,16,16
+	power: 480,48,16,16
+	power-disabled: 480,64,16,16
+	power-active: 480,80,16,16
 
-digits-soviet: chrome-soviet.png
-	0: 32,0,13,17
-	1: 45,0,13,17
-	2: 58,0,13,17
-	3: 71,0,13,17
-	4: 84,0,13,17
-	5: 97,0,13,17
-	6: 110,0,13,17
-	7: 123,0,13,17
-	8: 136,0,13,17
-	9: 149,0,13,17
-
-tabs-selected: tabs.png
-	allies-Building: 0,0,27,41
-	allies-Defense: 0,40,27,41
-	allies-Infantry: 0,80,27,41
-	allies-Vehicle: 0,120,27,41
-	allies-Plane: 162,200,27,41
-	allies-Helicopter: 0,160,27,41
-	allies-Ship: 0,200,27,41
-	soviet-Building: 81,0,27,41
-	soviet-Defense: 81,40,27,41
-	soviet-Infantry: 81,80,27,41
-	soviet-Vehicle: 81,120,27,41
-	soviet-Plane: 81,160,27,41
-	soviet-Helicopter: 162,80,27,41
-	soviet-Ship: 81,200,27,41
-
-tabs-ready: tabs.png
-	allies-Building: 27,0,27,41
-	allies-Defense: 27,40,27,41
-	allies-Infantry: 27,80,27,41
-	allies-Vehicle: 27,120,27,41
-	allies-Plane: 162,160,27,41
-	allies-Helicopter: 27,160,27,41
-	allies-Ship: 27,200,27,41
-	soviet-Building: 108,0,27,41
-	soviet-Defense: 108,40,27,41
-	soviet-Infantry: 108,80,27,41
-	soviet-Vehicle: 108,120,27,41
-	soviet-Plane: 108,160,27,41
-	soviet-Helicopter: 162,40,27,41
-	soviet-Ship: 108,200,27,41
-
-tabs-normal: tabs.png
-	allies-Building: 54,0,27,41
-	allies-Defense: 54,40,27,41
-	allies-Infantry: 54,80,27,41
-	allies-Vehicle: 54,120,27,41
-	allies-Plane: 162,120,27,41
-	allies-Helicopter: 54,160,27,41
-	allies-Ship: 54,200,27,41
-	soviet-Building: 135,0,27,41
-	soviet-Defense: 135,40,27,41
-	soviet-Infantry: 135,80,27,41
-	soviet-Vehicle: 135,120,27,41
-	soviet-Plane: 135,160,27,41
-	soviet-Helicopter: 162,0,27,41
-	soviet-Ship: 135,200,27,41
-
-# Used for the menu
+# Used for the main menu frame
 dialog: dialog.png
 	background: 0,0,480,480
 	border-r: 489,0,9,192
@@ -132,7 +102,7 @@ dialog: dialog.png
 	corner-bl: 191,489,9,9
 	corner-br: 200,489,9,9
 
-# Same as normal button
+# Used for Music and Map selection (normal button)
 dialog2: dialog.png
 	background: 513,1,126,126
 	border-r: 639,1,1,126
@@ -144,7 +114,7 @@ dialog2: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
-# Same as pressed button
+# It's a Container, used in various places, like Hotkeys, ColorPicker, Asset Browser frames (looks like a pressed button)
 dialog3: dialog.png
 	background: 641,1,126,126
 	border-r: 767,1,1,126
@@ -156,7 +126,7 @@ dialog3: dialog.png
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
 
-# Same as the half transparent frame used in the Asset Browser
+# Used for tooltips and the video player
 dialog4: dialog.png
 	background: 517,392,54,54
 	border-t: 517,387,54,6
@@ -167,6 +137,18 @@ dialog4: dialog.png
 	corner-tr: 571,387,6,6
 	corner-bl: 512,446,6,6
 	corner-br: 571,446,6,6
+
+# completely black tile
+dialog5: dialog.png
+	background: 579,387,64,64
+	border-t: 579,387,64,1
+	border-b: 579,451,64,1
+	border-l: 579,387,1,64
+	border-r: 643,387,1,64
+	corner-tl: 579,387,1,1
+	corner-tr: 643,387,1,1
+	corner-bl: 579,446,1,1
+	corner-br: 643,446,1,1
 
 lobby-bits: spawnpoints.png
 	spawn-unclaimed: 37,5,22,22
@@ -180,20 +162,6 @@ strategic: strategic.png
 	critical_unowned: 0,32,32,32
 	enemy_owned: 32,32,32,32
 	player_owned: 96,0,32,32
-
-order-icons: buttons.png
-	sell: 0,0,34,28
-	sell-disabled: 68,0,34,28
-	sell-active: 34,0,34,28
-	repair: 0,28,34,28
-	repair-disabled: 68,28,34,28
-	repair-active: 34,28,34,28
-	power: 0,56,34,28
-	power-disabled: 68,56,34,28
-	power-active: 34,56,34,28
-	beacon: 0,84,34,28
-	beacon-disabled: 68,84,34,28
-	beacon-active: 34,84,34,28
 
 flags: buttons.png
 	allies: 30,112,30,15
@@ -252,7 +220,7 @@ button: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
-# 5% lighter than a normal button
+# 5% lighter than a normal button (mouseover)
 button-hover: dialog.png
 	background: 513,129,126,126
 	border-r: 639,129,1,126
@@ -276,7 +244,7 @@ button-pressed: dialog.png
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
 
-# 50% grey
+# 50% grey (disabled button)
 button-disabled: dialog.png
 	background: 513,257,126,126
 	border-r: 639,257,1,126
@@ -286,10 +254,80 @@ button-disabled: dialog.png
 	corner-tl: 512,256,1,1
 	corner-tr: 639,256,1,1
 	corner-bl: 512,383,1,1
-	corner-br: 639,383,1,1
-
-# 10% darker than a normal button
+	corner-br: 639,383,1,1  
+    
+# 10% darker than a normal button - Used in Settings when you select Display Audio Input or Advanced
 button-highlighted: dialog.png
+	background: 769,129,126,126
+	border-r: 895,129,1,126
+	border-l: 768,129,1,126
+	border-b: 769,255,126,1
+	border-t: 769,128,126,1
+	corner-tl: 768,128,1,1
+	corner-tr: 895,128,1,1
+	corner-bl: 768,255,1,1
+	corner-br: 895,255,1,1
+
+# A copy of button-highlighted - Used in Settings when you select Display Audio Input or Advanced
+button-highlighted-hover: dialog.png
+	background: 769,129,126,126
+	border-r: 895,129,1,126
+	border-l: 768,129,1,126
+	border-b: 769,255,126,1
+	border-t: 769,128,126,1
+	corner-tl: 768,128,1,1
+	corner-tr: 895,128,1,1
+	corner-bl: 768,255,1,1
+	corner-br: 895,255,1,1
+
+#  Used in Settings when you select Display Audio Input or Advanced
+button-highlighted-pressed: dialog.png
+	background: 897,129,126,126
+	border-r: 1023,129,1,126
+	border-l: 896,129,1,126
+	border-b: 897,255,126,1
+	border-t: 897,128,126,1
+	corner-tl: 896,128,1,1
+	corner-tr: 1023,128,1,1
+	corner-bl: 896,255,1,1
+	corner-br: 1023,255,1,1
+
+# A copy of button-highlighted - Used in Settings when you select Display Audio Input or Advanced
+button-highlighted-disabled: dialog.png
+	background: 769,129,126,126
+	border-r: 895,129,1,126
+	border-l: 768,129,1,126
+	border-b: 769,255,126,1
+	border-t: 769,128,126,1
+	corner-tl: 768,128,1,1
+	corner-tr: 895,128,1,1
+	corner-bl: 768,255,1,1
+	corner-br: 895,255,1,1
+	
+# vivid red - Used for the Battlefields News button
+newsbutton: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+newsbutton-hover: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+	
+newsbutton-highlighted: dialog.png
 	background: 769,1,126,126
 	border-r: 895,1,1,126
 	border-l: 768,1,1,126
@@ -299,9 +337,8 @@ button-highlighted: dialog.png
 	corner-tr: 895,0,1,1
 	corner-bl: 768,127,1,1
 	corner-br: 895,127,1,1
-
-# A copy of button-highlighted
-button-highlighted-hover: dialog.png
+    
+newsbutton-highlighted-hover: dialog.png
 	background: 769,1,126,126
 	border-r: 895,1,1,126
 	border-l: 768,1,1,126
@@ -312,28 +349,27 @@ button-highlighted-hover: dialog.png
 	corner-bl: 768,127,1,1
 	corner-br: 895,127,1,1
 	
-button-highlighted-pressed: dialog.png
-	background: 897,1,126,126
-	border-r: 1023,1,1,126
-	border-l: 896,1,1,126
-	border-b: 897,127,126,1
-	border-t: 897,0,126,1
-	corner-tl: 896,0,1,1
-	corner-tr: 1023,0,1,1
-	corner-bl: 896,127,1,1
-	corner-br: 1023,127,1,1
+newsbutton-highlighted-pressed: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
 
-# A copy of button-highlighted
-button-highlighted-disabled: dialog.png
-	background: 769,1,126,126
-	border-r: 639,1,1,126
-	border-l: 768,1,1,126
-	border-b: 769,127,126,1
-	border-t: 769,0,126,1
-	corner-tl: 768,0,1,1
-	corner-tr: 639,0,1,1
-	corner-bl: 768,127,1,1
-	corner-br: 639,127,1,1
+newsbutton-pressed: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
 
 # A copy of dialog2 (normal button)
 scrollthumb: dialog.png
@@ -471,7 +507,10 @@ checkbox: dialog.png
 	corner-br: 767,127,1,1
 
 checkbox-bits: buttons.png
-	checked: 0,140,16,16
+	checked: 0,157,16,16
+	checked-disabled: 0,173,16,16
+	crossed: 16,157,16,16
+	crossed-disabled: 16,173,16,16
 
 checkbox-hover: dialog.png
 	background: 641,129,126,126

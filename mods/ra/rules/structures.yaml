@@ -4,15 +4,13 @@ MSLO:
 		Cost: 2500
 	Tooltip:
 		Name: Missile Silo
-		Description: Provides an atomic bomb.\nSpecial Ability: Atom Bomb\n\nMaximum 1 can be built
+		Description: Provides an atomic bomb.\nRequires power to operate.\n  Special Ability: Atom Bomb\n\nMaximum 1 can be built
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 140
 		Prerequisites: techcenter, ~techlevel.unrestricted
 		BuildLimit: 1
-		Hotkey: m
 	Building:
-		Power: -100
 		Footprint: xx
 		Dimensions: 2,1
 	Health:
@@ -44,6 +42,9 @@ MSLO:
 	RequiresPower:
 	DisabledOverlay:
 	SupportPowerChargeBar:
+	Power:
+		Amount: -100
+	-MustBeDestroyed:
 
 GAP:
 	Inherits: ^Building
@@ -51,14 +52,12 @@ GAP:
 		Cost: 800
 	Tooltip:
 		Name: Gap Generator
-		Description: Obscures the enemy's view with shroud.
+		Description: Obscures the enemy's view with shroud.\nRequires power to operate.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 110
 		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
-		Hotkey: g
 	Building:
-		Power: -60
 		Footprint: _ x
 		Dimensions: 1,2
 	RequiresPower:
@@ -78,11 +77,12 @@ GAP:
 		Range: 6c0
 	IronCurtainable:
 	RenderShroudCircle:
+	Power:
+		Amount: -60
+	-MustBeDestroyed:
 
 SPEN:
 	Inherits: ^Building
-	Infiltratable:
-		Type: SupportPower
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
 	Valued:
@@ -94,11 +94,9 @@ SPEN:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.low
-		Hotkey: y
 	TargetableBuilding:
-		TargetTypes: Ground, Water
+		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
 	Building:
-		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Adjacent: 8
@@ -127,34 +125,32 @@ SPEN:
 		Facing: 224
 		ExitCell: 2,0
 	Production:
-		Produces: Ship
+		Produces: Ship, Submarine
 	PrimaryBuilding:
 	IronCurtainable:
 	-EmitInfantryOnSell:
 	RepairsUnits:
 	RallyPoint:
 	ProductionBar:
+	Power:
+		Amount: -30
 
 SYRD:
 	Inherits: ^Building
-	Infiltratable:
-		Type: SupportPower
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 40
 		Prerequisites: anypower, ~structures.allies, ~techlevel.low
-		Hotkey: y
 	Valued:
 		Cost: 1000
 	Tooltip:
 		Name: Shipyard
 		Description: Produces and repairs ships\nand transports.
 	TargetableBuilding:
-		TargetTypes: Ground, Water
+		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
 	Building:
-		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Adjacent: 8
@@ -183,13 +179,15 @@ SYRD:
 		Facing: 32
 		ExitCell: 2,0
 	Production:
-		Produces: Ship
+		Produces: Ship, Boat
 	PrimaryBuilding:
 	IronCurtainable:
 	-EmitInfantryOnSell:
 	RepairsUnits:
 	RallyPoint:
 	ProductionBar:
+	Power:
+		Amount: -30
 
 IRON:
 	Inherits: ^Building
@@ -198,14 +196,12 @@ IRON:
 		BuildPaletteOrder: 130
 		Prerequisites: stek, ~structures.soviet, ~techlevel.unrestricted
 		BuildLimit: 1
-		Hotkey: c
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Iron Curtain
-		Description: Makes a group of units invulnerable\nfor a short time.\n  Special Ability: Invulnerability\n\nMaximum 1 can be built
+		Description: Makes a group of units invulnerable\nfor a short time. Requires power to operate.\n  Special Ability: Invulnerability\n\nMaximum 1 can be built
 	Building:
-		Power: -200
 		Footprint: xx
 		Dimensions: 2,1
 	RequiresPower:
@@ -234,6 +230,9 @@ IRON:
 		EndChargeSound: ironrdy1.aud
 		DisplayRadarPing: True
 	SupportPowerChargeBar:
+	Power:
+		Amount: -200
+	-MustBeDestroyed:
 
 PDOX:
 	Inherits: ^Building
@@ -242,14 +241,12 @@ PDOX:
 		BuildPaletteOrder: 120
 		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
 		BuildLimit: 1
-		Hotkey: o
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Chronosphere
-		Description: Teleports a group of units across the\nmap for a short time.\n  Special Ability: Chronoshift\n\nMaximum 1 can be built
+		Description: Teleports a group of units across the\nmap for a short time. Requires power to operate.\n  Special Ability: Chronoshift\n\nMaximum 1 can be built
 	Building:
-		Power: -200
 		Footprint: xx xx
 		Dimensions: 2,2
 	RequiresPower:
@@ -278,21 +275,22 @@ PDOX:
 		DisplayRadarPing: True
 	SupportPowerChargeBar:
 	-AcceptsSupplies:
+	Power:
+		Amount: -200
+	-MustBeDestroyed:
 
 TSLA:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 80
 		Prerequisites: weap, ~structures.soviet, ~techlevel.medium
-		Hotkey: u
 	Valued:
 		Cost: 1200
 	Tooltip:
 		Name: Tesla Coil
-		Description: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+		Description: Advanced base defense. Requires power\nto operate. Can detect cloaked units.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
 	Building:
-		Power: -150
 		Footprint: _ x
 		Dimensions: 1,2
 	RequiresPower:
@@ -321,21 +319,23 @@ TSLA:
 	RenderRangeCircle:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	Power:
+		Amount: -150
+	DetectCloaked:
+		Range: 8
 
 AGUN:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
 		Prerequisites: dome, ~structures.allies, ~techlevel.medium
-		Hotkey: y
 	Valued:
 		Cost: 800
 	Tooltip:
 		Name: AA Gun
-		Description: Anti-Air base defense. Requires power\nto operate.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+		Description: Anti-Air base defense. Requires power\nto operate. Can detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Building:
-		Power: -50
 		Footprint: _ x
 		Dimensions: 1,2
 	RequiresPower:
@@ -367,6 +367,10 @@ AGUN:
 		RangeCircleType: aa
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	Power:
+		Amount: -50
+	DetectCloaked:
+		Range: 6
 
 DOME:
 	Inherits: ^Building
@@ -374,16 +378,16 @@ DOME:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Prerequisites: proc, ~techlevel.medium
-		Hotkey: r
 	Valued:
 		Cost: 1800
 	Tooltip:
 		Name: Radar Dome
 		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\n  Requires power to operate.
 	Building:
-		Power: -40
 		Footprint: xx xx
 		Dimensions: 2,2
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
@@ -396,25 +400,23 @@ DOME:
 	Bib:
 	ProvidesRadar:
 	IronCurtainable:
-	Infiltratable:
-		Type: Exploration
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10
 	RenderDetectionCircle:
+	Power:
+		Amount: -40
 
 PBOX:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Tooltip:
 		Name: Pillbox
-		Description: Static defense with a fireport for a\ngarrisoned soldier.
+		Description: Static defense with a fireport for a\ngarrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Building:
-		Power: -15
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
 		Prerequisites: tent, ~structures.allies, ~techlevel.low
-		Hotkey: p
 	-GivesBuildableArea:
 	Valued:
 		Cost: 400
@@ -447,19 +449,21 @@ PBOX:
 	RenderRangeCircle:
 		FallbackRange: 6c0
 	AutoTarget:
+	Power:
+		Amount: -15
+	DetectCloaked:
+		Range: 6
 
 HBOX:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Tooltip:
 		Name: Camo Pillbox
-		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.
+		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Building:
-		Power: -15
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 50
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
-		Hotkey: l
 	-GivesBuildableArea:
 	Valued:
 		Cost: 600
@@ -495,21 +499,21 @@ HBOX:
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
 		PortYaws: 0, 176, 341, 512, 682, 853
 		PortCones: 86, 86, 86, 86, 86, 86
+	Power:
+		Amount: -15
 
 GUN:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 70
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
-		Hotkey: t
 	Valued:
 		Cost: 600
 	Tooltip:
 		Name: Turret
-		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+		Description: Anti-Armor base defense.\nCan detect cloaked units.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
-		Power: -40
 	-GivesBuildableArea:
 	Health:
 		HP: 400
@@ -535,21 +539,23 @@ GUN:
 	RenderRangeCircle:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	Power:
+		Amount: -40
+	DetectCloaked:
+		Range: 7
 
 FTUR:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 60
 		Prerequisites: barr, ~structures.soviet, ~techlevel.low
-		Hotkey: t
 	Valued:
 		Cost: 600
 	Tooltip:
 		Name: Flame Tower
-		Description: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
+		Description: Anti-Infantry base defense.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Aircraft
 	Building:
-		Power: -20
 	-GivesBuildableArea:
 	Health:
 		HP: 400
@@ -573,21 +579,23 @@ FTUR:
 	RenderRangeCircle:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	Power:
+		Amount: -20
+	DetectCloaked:
+		Range: 6
 
 SAM:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
-		Hotkey: y
 	Valued:
 		Cost: 750
 	Tooltip:
 		Name: SAM Site
-		Description: Anti-Air base defense. Requires power\nto operate.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+		Description: Anti-Air base defense. Requires power\nto operate. Can detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Building:
-		Power: -40
 		Footprint: xx
 		Dimensions: 2,1
 	RequiresPower:
@@ -618,6 +626,10 @@ SAM:
 		RangeCircleType: aa
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	Power:
+		Amount: -40
+	DetectCloaked:
+		Range: 5
 
 ATEK:
 	Inherits: ^Building
@@ -625,7 +637,6 @@ ATEK:
 		Queue: Building
 		BuildPaletteOrder: 140
 		Prerequisites: weap, dome, ~structures.allies, ~techlevel.unrestricted
-		Hotkey: t
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -634,7 +645,6 @@ ATEK:
 	ProvidesCustomPrerequisite:
 		Prerequisite: techcenter
 	Building:
-		Power: -200
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -657,6 +667,8 @@ ATEK:
 	SupportPowerChargeBar:
 	RequiresPower:
 	DisabledOverlay:
+	Power:
+		Amount: -200
 
 WEAP:
 	Inherits: ^Building
@@ -664,14 +676,12 @@ WEAP:
 		Queue: Building
 		BuildPaletteOrder: 80
 		Prerequisites: proc, ~techlevel.low
-		Hotkey: w
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: War Factory
 		Description: Produces vehicles.
 	Building:
-		Power: -30
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
@@ -704,11 +714,12 @@ WEAP:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
+	Power:
+		Amount: -30
 
 FACT:
 	Inherits: ^Building
 	Building:
-		Power: 0
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	Buildable:
@@ -751,6 +762,8 @@ FACT:
 	BaseProvider:
 		Range: 16
 	WithBuildingPlacedAnimation:
+	Power:
+		Amount: 0
 
 PROC:
 	Inherits: ^Building
@@ -758,16 +771,16 @@ PROC:
 		Queue: Building
 		BuildPaletteOrder: 60
 		Prerequisites: anypower, ~techlevel.infonly
-		Hotkey: e
 	Valued:
 		Cost: 1400
 	Tooltip:
 		Name: Ore Refinery
 		Description: Refines Ore and Gems into credits.
 	Building:
-		Power: -30
 		Footprint: _x_ xxx x==
 		Dimensions: 3,3
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	Health:
 		HP: 900
 	Armor:
@@ -788,8 +801,6 @@ PROC:
 		InitialActivity: FindResources
 		SpawnOffset: 1,2
 		Facing: 64
-	Infiltratable:
-		Type: Cash
 	InfiltrateForCash:
 		Percentage: 50
 		Minimum: 500
@@ -797,6 +808,8 @@ PROC:
 	DeadBuildingState:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
+	Power:
+		Amount: -30
 
 SILO:
 	Inherits: ^Building
@@ -804,14 +817,12 @@ SILO:
 		Queue: Building
 		BuildPaletteOrder: 70
 		Prerequisites: proc, ~techlevel.infonly
-		Hotkey: o
 	Valued:
 		Cost: 150
 	Tooltip:
 		Name: Silo
 		Description: Stores excess refined Ore and gems.
 	Building:
-		Power: -10
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -828,6 +839,8 @@ SILO:
 	IronCurtainable:
 	-RenderBuilding:
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -10
 
 HPAD:
 	Inherits: ^Building
@@ -835,14 +848,12 @@ HPAD:
 		Queue: Building
 		BuildPaletteOrder: 120
 		Prerequisites: dome, ~structures.allies, ~techlevel.medium
-		Hotkey: i
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Helipad
 		Description: Produces and reloads helicopters.
 	Building:
-		Power: -10
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -858,11 +869,13 @@ HPAD:
 		MoveIntoWorld: false
 	RallyPoint:
 	Production:
-		Produces: Helicopter
+		Produces: Aircraft, Helicopter
 	Reservable:
 	IronCurtainable:
 	ProductionBar:
 	PrimaryBuilding:
+	Power:
+		Amount: -10
 
 AFLD:
 	Inherits: ^Building
@@ -870,14 +883,12 @@ AFLD:
 		Queue: Building
 		BuildPaletteOrder: 130
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
-		Hotkey: i
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Airfield
 		Description: Produces and reloads aircraft.\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 	Building:
-		Power: -20
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
@@ -893,7 +904,7 @@ AFLD:
 		MoveIntoWorld: false
 	RallyPoint:
 	Production:
-		Produces: Plane
+		Produces: Aircraft, Plane
 	Reservable:
 	IronCurtainable:
 	AirstrikePower:
@@ -924,6 +935,8 @@ AFLD:
 	ProductionBar:
 	SupportPowerChargeBar:
 	PrimaryBuilding:
+	Power:
+		Amount: -20
 
 POWR:
 	Inherits: ^Building
@@ -931,7 +944,6 @@ POWR:
 		Queue: Building
 		BuildPaletteOrder: 10
 		Prerequisites: ~techlevel.infonly
-		Hotkey: p
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -940,7 +952,6 @@ POWR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Power: 100
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -952,6 +963,14 @@ POWR:
 	Bib:
 	IronCurtainable:
 	DeadBuildingState:
+	Power:
+		Amount: 100
+	InfiltrateForPowerOutage:
+	AffectedByPowerOutage:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+	ScalePowerWithHealth:
+	DisabledOverlay:
 
 APWR:
 	Inherits: ^Building
@@ -959,7 +978,6 @@ APWR:
 		Queue: Building
 		BuildPaletteOrder: 110
 		Prerequisites: dome, ~techlevel.medium
-		Hotkey: l
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -968,7 +986,6 @@ APWR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Power: 200
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
 	Health:
@@ -980,6 +997,14 @@ APWR:
 	Bib:
 	IronCurtainable:
 	DeadBuildingState:
+	Power:
+		Amount: 200
+	InfiltrateForPowerOutage:
+	AffectedByPowerOutage:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+	ScalePowerWithHealth:
+	DisabledOverlay:
 
 STEK:
 	Inherits: ^Building
@@ -987,7 +1012,6 @@ STEK:
 		Queue: Building
 		BuildPaletteOrder: 150
 		Prerequisites: weap, dome, ~structures.soviet, ~techlevel.unrestricted
-		Hotkey: t
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -996,7 +1020,6 @@ STEK:
 	ProvidesCustomPrerequisite:
 		Prerequisite: techcenter
 	Building:
-		Power: -100
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
@@ -1007,6 +1030,8 @@ STEK:
 		Range: 4c0
 	Bib:
 	IronCurtainable:
+	Power:
+		Amount: -100
 
 BARR:
 	Inherits: ^Building
@@ -1014,14 +1039,12 @@ BARR:
 		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
-		Hotkey: b
 	Valued:
 		Cost: 400
 	Tooltip:
 		Name: Soviet Barracks
 		Description: Trains infantry.
 	Building:
-		Power: -20
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -1039,10 +1062,49 @@ BARR:
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
 	Production:
-		Produces: Infantry
+		Produces: Infantry, Soldier
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
+	ProvidesCustomPrerequisite:
+		Prerequisite: barracks
+	Power:
+		Amount: -20
+
+KENN:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 25
+		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Kennel
+		Description: Trains Attack Dogs.
+	Building:
+	-GivesBuildableArea:
+	Health:
+		HP: 300
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	Bib:
+		HasMinibib: True
+	RallyPoint:
+		RallyPoint: 0,2
+	Exit:
+		SpawnOffset: -280,400,0
+		ExitCell: 0,1
+	Production:
+		Produces: Infantry, Dog
+	PrimaryBuilding:
+	IronCurtainable:
+	ProductionBar:
+	-EmitInfantryOnSell:
+	Power:
+		Amount: -10
 
 TENT:
 	Inherits: ^Building
@@ -1050,14 +1112,12 @@ TENT:
 		Queue: Building
 		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.allies, ~techlevel.infonly
-		Hotkey: b
 	Valued:
 		Cost: 400
 	Tooltip:
 		Name: Allied Barracks
 		Description: Trains infantry.
 	Building:
-		Power: -20
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -1075,27 +1135,14 @@ TENT:
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
 	Production:
-		Produces: Infantry
+		Produces: Infantry, Soldier
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
-
-KENN:
-	Inherits: ^Building
-	Tooltip:
-		Name: Kennel
-	Building:
-		Power: -10
-	-GivesBuildableArea:
-	Health:
-		HP: 300
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4c0
-	IronCurtainable:
-	-EmitInfantryOnSell:
-	-AcceptsSupplies:
+	ProvidesCustomPrerequisite:
+		Prerequisite: barracks
+	Power:
+		Amount: -20
 
 FIX:
 	Inherits: ^Building
@@ -1103,14 +1150,12 @@ FIX:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Prerequisites: weap, ~techlevel.medium
-		Hotkey: m
 	Valued:
 		Cost: 1200
 	Tooltip:
 		Name: Service Depot
 		Description: Repairs vehicles for credits.
 	Building:
-		Power: -30
 		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
 	Health:
@@ -1127,6 +1172,8 @@ FIX:
 	RepairsUnits:
 		Interval: 10
 	WithRepairAnimation:
+	Power:
+		Amount: -30
 
 FACF:
 	Inherits: ^Building
@@ -1141,7 +1188,6 @@ FACF:
 		Name: Fake Construction Yard
 		Description: Looks like a Construction Yard.
 	Building:
-		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	-GivesBuildableArea:
@@ -1155,6 +1201,9 @@ FACF:
 	Fake:
 	IronCurtainable:
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -2
+	-MustBeDestroyed:
 
 WEAF:
 	Inherits: ^Building
@@ -1169,7 +1218,6 @@ WEAF:
 		Name: Fake War Factory
 		Description: Looks like a War Factory.
 	Building:
-		Power: -2
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	-GivesBuildableArea:
@@ -1184,6 +1232,9 @@ WEAF:
 	Fake:
 	IronCurtainable:
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -2
+	-MustBeDestroyed:
 
 SYRF:
 	Inherits: ^Building
@@ -1200,7 +1251,6 @@ SYRF:
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
-		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Adjacent: 8
@@ -1214,6 +1264,9 @@ SYRF:
 		Image: SYRD
 	Fake:
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -2
+	-MustBeDestroyed:
 
 SPEF:
 	Inherits: ^Building
@@ -1230,7 +1283,6 @@ SPEF:
 		Name: Fake Sub Pen
 		Description: Looks like a Sub Pen.
 	Building:
-		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Adjacent: 8
@@ -1244,6 +1296,9 @@ SPEF:
 		Image: SPEN
 	Fake:
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -2
+	-MustBeDestroyed:
 
 DOMF:
 	Inherits: ^Building
@@ -1258,7 +1313,6 @@ DOMF:
 		Queue: Defense
 		Prerequisites: ~disabled
 	Building:
-		Power: -2
 		Footprint: xx xx
 		Dimensions: 2,2
 	-GivesBuildableArea:
@@ -1271,6 +1325,9 @@ DOMF:
 		Image: DOME
 	Fake:
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -2
+	-MustBeDestroyed:
 
 SBAG:
 	Inherits: ^Wall
@@ -1278,7 +1335,6 @@ SBAG:
 		Queue: Defense
 		BuildPaletteOrder: 10
 		Prerequisites: fact, ~structures.allies, ~techlevel.low
-		Hotkey: b
 	Valued:
 		Cost: 25
 	CustomSellValue:
@@ -1304,7 +1360,6 @@ FENC:
 		Queue: Defense
 		BuildPaletteOrder: 20
 		Prerequisites: fact, ~structures.soviet, ~techlevel.low
-		Hotkey: n
 	Valued:
 		Cost: 25
 	CustomSellValue:
@@ -1330,7 +1385,6 @@ BRIK:
 		Queue: Defense
 		BuildPaletteOrder: 30
 		Prerequisites: fact, ~techlevel.medium
-		Hotkey: w
 	Valued:
 		Cost: 100
 	CustomSellValue:
@@ -1345,7 +1399,7 @@ BRIK:
 		HP: 500
 	Armor:
 		Type: Concrete
-	Wall:
+	Crushable:
 		CrushClasses: heavywall
 	LineBuild:
 		Range: 8

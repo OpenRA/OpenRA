@@ -5,7 +5,9 @@ The OpenRA developers are:
     * Chris Forbes (chrisf)
     * Curtis Shmyr (hamb)
     * Matthias Mailänder (Mailaender)
+    * Oliver Brakmann (obrakmann)
     * Paul Chote (pchote)
+    * ScottNZ
 
 Previous developers included:
     * Alli Witheford (alzeih)
@@ -14,11 +16,11 @@ Previous developers included:
     * Megan Bowra-Dean (beedee)
     * Mike Bundy (kehaar)
     * Robert Pepperell (ytinasni)
-    * ScottNZ
 
 Also thanks to:
     * Adam Valy (Tschokky)
     * Akseli Virtanen (RAGEQUIT)
+    * Alexander Fast (mizipzor)
     * Allen262
     * Andrew Aldridge (i80and)
     * Andrew Perkins
@@ -33,14 +35,19 @@ Also thanks to:
     * D2k Sardaukar
     * Daniel Derejvanik (Harisson)
     * Danny Keary (Dan9550)
+    * DeadlySurprise
     * Erasmus Schroder (rasco)
     * Fahrradkette
     * Frank Razenberg (zzattack)
     * Gareth Needham (Ripley`)
     * Gordon Martin (Happy0)
+    * Guido Lipke (LipkeGu)
+    * Ian T. Jacobsen (Smilex)
     * Igor Popov (ihptru)
+    * Imago
     * Iran
     * James Dunne (jsd)
+    * Jason (atlimit8)
     * Jeff Harris (jeff_1amstudios)
     * Jes
     * Joakim Lindberg (booom3)
@@ -58,10 +65,10 @@ Also thanks to:
     * Max621
     * Max Ugrumov (katzsmile)
     * Mustafa Alperen Seki (MustaphaTR)
+    * Neil Shivkar (havok13888)
     * Nukem
     * Okunev Yu Dmitry (xaionaro)
     * Olaf van der Spek
-    * Oliver Brakmann
     * Paolo Chiodi (paolochiodi)
     * Paul Dovydaitis (pdovy)
     * Pavlos Touboulidis (pav)
@@ -74,6 +81,7 @@ Also thanks to:
     * Rikhardur Bjarni Einarsson (WolfGaming)
     * Sascha Biedermann (bidifx)
     * Sebastien Kerguen (xanax)
+    * Shawn Collins (UberWaffe)
     * Simon Verbeke (Saticmotion)
     * Taryn Hill (Phrohdoh)
     * Teemu Nieminen (Temeez)
@@ -84,7 +92,6 @@ Also thanks to:
     * Tristan Mühlbacher (MicroBit)
     * Vladimir Komarov (VrKomarov)
     * Wuschel
-    * Ian T. Jacobsen (Smilex)
 
 Using Simple DirectMedia Layer distributed under
 the terms of the zlib license.

@@ -109,17 +109,27 @@ rnull_LIBS = $(COMMON_LIBS) $(rnull_DEPS)
 PROGRAMS += rsdl2 rnull
 renderers: $(rsdl2_TARGET) $(rnull_TARGET)
 
+# Mods Common
+mod_common_SRCS := $(shell find OpenRA.Mods.Common/ -iname '*.cs')
+mod_common_TARGET = mods/common/OpenRA.Mods.Common.dll
+mod_common_KIND = library
+mod_common_DEPS = $(game_TARGET)
+mod_common_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS)
+PROGRAMS += mod_common
+mod_common: $(mod_common_TARGET)
+
 ##### Official Mods #####
 
 STD_MOD_LIBS	= $(game_TARGET) thirdparty/KopiLua.dll thirdparty/NLua.dll
 STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 
+
 # Red Alert
 mod_ra_SRCS := $(shell find OpenRA.Mods.RA/ -iname '*.cs')
 mod_ra_TARGET = mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND = library
-mod_ra_DEPS = $(STD_MOD_DEPS) $(irc_TARGET)
-mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(irc_TARGET)
+mod_ra_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET) $(irc_TARGET)
+mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET) $(irc_TARGET)
 PROGRAMS += mod_ra
 mod_ra: $(mod_ra_TARGET)
 
@@ -127,8 +137,8 @@ mod_ra: $(mod_ra_TARGET)
 mod_cnc_SRCS := $(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
 mod_cnc_TARGET = mods/cnc/OpenRA.Mods.Cnc.dll
 mod_cnc_KIND = library
-mod_cnc_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET)
-mod_cnc_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+mod_cnc_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET) $(mod_ra_TARGET)
+mod_cnc_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET) $(mod_ra_TARGET)
 PROGRAMS += mod_cnc
 mod_cnc: $(mod_cnc_TARGET)
 
@@ -145,8 +155,8 @@ mod_d2k: $(mod_d2k_TARGET)
 mod_ts_SRCS := $(shell find OpenRA.Mods.TS/ -iname '*.cs')
 mod_ts_TARGET = mods/ts/OpenRA.Mods.TS.dll
 mod_ts_KIND = library
-mod_ts_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET)
-mod_ts_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+mod_ts_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET) $(mod_ra_TARGET)
+mod_ts_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET) $(mod_ra_TARGET)
 PROGRAMS += mod_ts
 mod_ts: $(mod_ts_TARGET)
 
@@ -260,7 +270,7 @@ tools: editor tsbuild crashdialog
 
 package: dependencies core editor crashdialog docs version
 
-mods: mod_ra mod_cnc mod_d2k mod_ts
+mods: mod_common mod_ra mod_cnc mod_d2k mod_ts
 
 all: cli-dependencies core tools
 
@@ -292,8 +302,8 @@ version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mo
 
 # Documentation (d2k depends on all mod libraries)
 docs: utility
-	@mono --debug OpenRA.Utility.exe --docs d2k > DOCUMENTATION.md
-	@mono --debug OpenRA.Utility.exe --lua-docs ra > Lua-API.md
+	@mono --debug OpenRA.Utility.exe d2k --docs > DOCUMENTATION.md
+	@mono --debug OpenRA.Utility.exe ra --lua-docs > Lua-API.md
 
 install: install-core
 
@@ -307,6 +317,7 @@ install-core: default
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
 	@$(CP_R) mods/common "$(DATA_INSTALL_DIR)/mods/"
+	@$(INSTALL_PROGRAM) $(mod_common_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
 	@$(CP_R) mods/cnc "$(DATA_INSTALL_DIR)/mods/"
 	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) "$(DATA_INSTALL_DIR)/mods/cnc"
 	@$(CP_R) mods/ra "$(DATA_INSTALL_DIR)/mods/"

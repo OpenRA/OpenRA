@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -62,40 +62,46 @@ namespace OpenRA.FileSystem
 		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
 				return new MixFile(filename, order, content);
-			else if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
+			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(filename, order, content);
-			else if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
+			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(filename, order, content);
-			else if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
-				throw new NotImplementedException("Creating .RS archives is unsupported");
-			else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
-				throw new NotImplementedException("Creating .Z archives is unsupported");
-			else if (filename.EndsWith(".PAK", StringComparison.InvariantCultureIgnoreCase))
-				throw new NotImplementedException("Creating .PAK archives is unsupported");
-			else
-				return new Folder(filename, order, content);
+			if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
+				throw new NotImplementedException("The creation of .RS archives is unimplemented");
+			if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
+				throw new NotImplementedException("The creation of .Z archives is unimplemented");
+			if (filename.EndsWith(".PAK", StringComparison.InvariantCultureIgnoreCase))
+				throw new NotImplementedException("The creation of .PAK archives is unimplemented");
+			if (filename.EndsWith(".big", StringComparison.InvariantCultureIgnoreCase))
+				throw new NotImplementedException("The creation of .big archives is unimplemented");
+
+			return new Folder(filename, order, content);
 		}
 
 		public static IFolder OpenPackage(string filename, string annotation, int order)
 		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
 			{
-				var type = string.IsNullOrEmpty(annotation) ? PackageHashType.Classic :
-					FieldLoader.GetValue<PackageHashType>("(value)", annotation);
+				var type = string.IsNullOrEmpty(annotation)
+					? PackageHashType.Classic
+					: FieldLoader.GetValue<PackageHashType>("(value)", annotation);
+
 				return new MixFile(filename, type, order);
 			}
-			else if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
+			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(filename, order);
-			else if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
+			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(filename, order);
-			else if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
+			if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
 				return new D2kSoundResources(filename, order);
-			else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
+			if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
 				return new InstallShieldPackage(filename, order);
-			else if (filename.EndsWith(".PAK", StringComparison.InvariantCultureIgnoreCase))
+			if (filename.EndsWith(".PAK", StringComparison.InvariantCultureIgnoreCase))
 				return new PakFile(filename, order);
-			else
-				return new Folder(filename, order);
+			if (filename.EndsWith(".big", StringComparison.InvariantCultureIgnoreCase))
+				return new BigFile(filename, order);
+
+			return new Folder(filename, order);
 		}
 
 		public static void Mount(string name)

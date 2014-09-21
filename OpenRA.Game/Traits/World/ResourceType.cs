@@ -17,8 +17,10 @@ namespace OpenRA.Traits
 	{
 		// HACK: The editor is getting really unmaintanable...
 		public readonly string EditorSprite;
+
 		public readonly string[] Variants = { };
 		public readonly string Palette = "terrain";
+		public readonly string Sequence = "resources";
 		public readonly int ResourceType = 1;
 
 		public readonly int ValuePerUnit = 0;
@@ -47,7 +49,7 @@ namespace OpenRA.Traits
 			Variants = new Dictionary<string, Sprite[]>();
 			foreach (var v in info.Variants)
 			{
-				var seq = world.Map.SequenceProvider.GetSequence("resources", v);
+				var seq = world.Map.SequenceProvider.GetSequence(Info.Sequence, v);
 				var sprites = Exts.MakeArray(seq.Length, x => seq.GetSprite(x));
 				Variants.Add(v, sprites);
 			}

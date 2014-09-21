@@ -86,6 +86,7 @@ namespace OpenRA
 		public int2 FullscreenSize = new int2(0, 0);
 		public int2 WindowedSize = new int2(1024, 768);
 		public bool PixelDouble = false;
+		public bool CursorDouble = false;
 		public bool CapFramerate = true;
 		public int MaxFramerate = 60;
 
@@ -147,37 +148,72 @@ namespace OpenRA
 
 	public class KeySettings
 	{
-		public Hotkey CycleBaseKey = new Hotkey(Keycode.BACKSPACE, Modifiers.None);
+		public Hotkey CycleBaseKey = new Hotkey(Keycode.H, Modifiers.None);
 		public Hotkey ToLastEventKey = new Hotkey(Keycode.SPACE, Modifiers.None);
 		public Hotkey ToSelectionKey = new Hotkey(Keycode.HOME, Modifiers.None);
-		public Hotkey SelectAllUnitsKey = new Hotkey(Keycode.A, Modifiers.Ctrl);
-		public Hotkey SelectUnitsByTypeKey = new Hotkey(Keycode.T, Modifiers.Ctrl);
+		public Hotkey SelectAllUnitsKey = new Hotkey(Keycode.Q, Modifiers.None);
+		public Hotkey SelectUnitsByTypeKey = new Hotkey(Keycode.W, Modifiers.None);
 
-		public Hotkey PauseKey = new Hotkey(Keycode.F8, Modifiers.None);
-		public Hotkey PlaceBeaconKey = new Hotkey(Keycode.F9, Modifiers.None);
-		public Hotkey SellKey = new Hotkey(Keycode.F10, Modifiers.None);
-		public Hotkey PowerDownKey = new Hotkey(Keycode.F11, Modifiers.None);
-		public Hotkey RepairKey = new Hotkey(Keycode.F12, Modifiers.None);
+		public Hotkey PauseKey = new Hotkey(Keycode.PAUSE, Modifiers.None);
+		public Hotkey PlaceBeaconKey = new Hotkey(Keycode.B, Modifiers.None);
+		public Hotkey SellKey = new Hotkey(Keycode.Z, Modifiers.None);
+		public Hotkey PowerDownKey = new Hotkey(Keycode.X, Modifiers.None);
+		public Hotkey RepairKey = new Hotkey(Keycode.C, Modifiers.None);
 
 		public Hotkey NextProductionTabKey = new Hotkey(Keycode.PAGEDOWN, Modifiers.None);
 		public Hotkey PreviousProductionTabKey = new Hotkey(Keycode.PAGEUP, Modifiers.None);
 		public Hotkey CycleProductionBuildingsKey = new Hotkey(Keycode.TAB, Modifiers.None);
 
-		public Hotkey ToggleStatusBarsKey = new Hotkey(Keycode.INSERT, Modifiers.None);
-
 		public Hotkey AttackMoveKey = new Hotkey(Keycode.A, Modifiers.None);
 		public Hotkey StopKey = new Hotkey(Keycode.S, Modifiers.None);
-		public Hotkey ScatterKey = new Hotkey(Keycode.X, Modifiers.None);
+		public Hotkey ScatterKey = new Hotkey(Keycode.X, Modifiers.Ctrl);
 		public Hotkey DeployKey = new Hotkey(Keycode.F, Modifiers.None);
-		public Hotkey StanceCycleKey = new Hotkey(Keycode.Z, Modifiers.None);
+		public Hotkey StanceCycleKey = new Hotkey(Keycode.Z, Modifiers.Ctrl);
 		public Hotkey GuardKey = new Hotkey(Keycode.D, Modifiers.None);
 
 		public Hotkey ObserverCombinedView = new Hotkey(Keycode.MINUS, Modifiers.None);
 		public Hotkey ObserverWorldView = new Hotkey(Keycode.EQUALS, Modifiers.None);
 
+		public Hotkey ToggleStatusBarsKey = new Hotkey(Keycode.COMMA, Modifiers.None);
 		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
 
 		public Hotkey DevReloadChromeKey = new Hotkey(Keycode.C, Modifiers.Ctrl | Modifiers.Shift);
+
+		public Hotkey Production01Key = new Hotkey(Keycode.F1, Modifiers.None);
+		public Hotkey Production02Key = new Hotkey(Keycode.F2, Modifiers.None);
+		public Hotkey Production03Key = new Hotkey(Keycode.F3, Modifiers.None);
+		public Hotkey Production04Key = new Hotkey(Keycode.F4, Modifiers.None);
+		public Hotkey Production05Key = new Hotkey(Keycode.F5, Modifiers.None);
+		public Hotkey Production06Key = new Hotkey(Keycode.F6, Modifiers.None);
+		public Hotkey Production07Key = new Hotkey(Keycode.F7, Modifiers.None);
+		public Hotkey Production08Key = new Hotkey(Keycode.F8, Modifiers.None);
+		public Hotkey Production09Key = new Hotkey(Keycode.F9, Modifiers.None);
+		public Hotkey Production10Key = new Hotkey(Keycode.F10, Modifiers.None);
+		public Hotkey Production11Key = new Hotkey(Keycode.F11, Modifiers.None);
+		public Hotkey Production12Key = new Hotkey(Keycode.F12, Modifiers.None);
+
+		public Hotkey Production13Key = new Hotkey(Keycode.F1, Modifiers.Ctrl);
+		public Hotkey Production14Key = new Hotkey(Keycode.F2, Modifiers.Ctrl);
+		public Hotkey Production15Key = new Hotkey(Keycode.F3, Modifiers.Ctrl);
+		public Hotkey Production16Key = new Hotkey(Keycode.F4, Modifiers.Ctrl);
+		public Hotkey Production17Key = new Hotkey(Keycode.F5, Modifiers.Ctrl);
+		public Hotkey Production18Key = new Hotkey(Keycode.F6, Modifiers.Ctrl);
+		public Hotkey Production19Key = new Hotkey(Keycode.F7, Modifiers.Ctrl);
+		public Hotkey Production20Key = new Hotkey(Keycode.F8, Modifiers.Ctrl);
+		public Hotkey Production21Key = new Hotkey(Keycode.F9, Modifiers.Ctrl);
+		public Hotkey Production22Key = new Hotkey(Keycode.F10, Modifiers.Ctrl);
+		public Hotkey Production23Key = new Hotkey(Keycode.F11, Modifiers.Ctrl);
+		public Hotkey Production24Key = new Hotkey(Keycode.F12, Modifiers.Ctrl);
+
+
+		public Hotkey GetProductionHotkey(int index)
+		{
+			var field = GetType().GetField("Production{0:D2}Key".F(index + 1));
+			if (field == null)
+				return Hotkey.Invalid;
+
+			return (Hotkey)field.GetValue(this);
+		}
 	}
 
 	public class IrcSettings

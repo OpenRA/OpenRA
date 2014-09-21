@@ -238,6 +238,7 @@ namespace OpenRA.Renderer.Sdl2
 
 		public void Present() { SDL.SDL_GL_SwapWindow(window); }
 		public void PumpInput(IInputHandler inputHandler) { input.PumpInput(inputHandler); }
+		public string GetClipboardText() { return input.GetClipboardText(); }
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int size) { return new VertexBuffer<Vertex>(size); }
 		public ITexture CreateTexture() { return new Texture(); }
 		public ITexture CreateTexture(Bitmap bitmap) { return new Texture(bitmap); }

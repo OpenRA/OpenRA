@@ -11,6 +11,7 @@
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Mods.RA;
+using OpenRA.GameRules;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -43,8 +44,8 @@ namespace OpenRA.Mods.Cnc
 
 			var weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
 
-			self.InflictDamage(self.World.WorldActor, weapon.Warheads[0].Damage, weapon.Warheads[0]);
-			poisonTicks = weapon.ROF;
+			weapon.Impact(Target.FromActor(self), self.World.WorldActor, Enumerable.Empty<int>());
+			poisonTicks = weapon.ReloadDelay;
 		}
 	}
 }

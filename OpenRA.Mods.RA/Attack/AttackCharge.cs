@@ -17,15 +17,16 @@ namespace OpenRA.Mods.RA
 	[Desc("Charges up before being able to attack.")]
 	class AttackChargeInfo : AttackOmniInfo
 	{
+		[Desc("How many charges this actor has to attack with, once charged.")]
 		public readonly int MaxCharges = 1;
 
-		[Desc("Reload time (for all charges).")]
+		[Desc("Reload time for all charges (in ticks).")]
 		public readonly int ReloadTime = 120;
 
-		[Desc("Delay for first charge. Needs to match FireDelay for Obelisk.")]
+		[Desc("Delay for initial charge attack (in ticks).")]
 		public readonly int InitialChargeDelay = 22;
 
-		[Desc("Delay for additional charges if MaxCharge is larger than 1.")]
+		[Desc("Delay between charge attacks (in ticks).")]
 		public readonly int ChargeDelay = 3;
 
 		public override object Create(ActorInitializer init) { return new AttackCharge(init.self, this); }
@@ -49,6 +50,14 @@ namespace OpenRA.Mods.RA
 		{
 			if (--timeToRecharge <= 0)
 				charges = info.MaxCharges;
+		}
+
+		protected override bool CanAttack(Actor self, Target target)
+		{
+			if (!IsReachableTarget(target, true))
+				return false;
+
+			return base.CanAttack(self, target);
 		}
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
@@ -83,13 +92,14 @@ namespace OpenRA.Mods.RA
 
 			public override Activity Tick(Actor self)
 			{
-				if (IsCanceled || !target.IsValidFor(self))
+				if (IsCanceled || !attack.CanAttack(self, target))
 					return NextActivity;
 
-				if (attack.charges == 0 || !attack.CanAttack(self, target))
+				if (attack.charges == 0)
 					return this;
 
 				self.Trait<RenderBuildingCharge>().PlayCharge(self);
+
 				return Util.SequenceActivities(new Wait(attack.info.InitialChargeDelay), new ChargeFire(attack, target), this);
 			}
 		}
@@ -98,6 +108,7 @@ namespace OpenRA.Mods.RA
 		{
 			readonly AttackCharge attack;
 			readonly Target target;
+
 			public ChargeFire(AttackCharge attack, Target target) 
 			{ 
 				this.attack = attack;
@@ -106,7 +117,7 @@ namespace OpenRA.Mods.RA
 
 			public override Activity Tick(Actor self)
 			{
-				if (IsCanceled || !target.IsValidFor(self))
+				if (IsCanceled || !attack.CanAttack(self, target))
 					return NextActivity;
 
 				if (attack.charges == 0)

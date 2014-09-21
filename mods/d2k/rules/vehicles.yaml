@@ -1,10 +1,9 @@
 ^MCV:
 	Inherits: ^Vehicle
 	Buildable:
-		Prerequisites: Repair, ~techlevel.medium
+		Prerequisites: ~heavy, repair, ~techlevel.medium
 		Queue: Armor
 		BuildPaletteOrder: 110
-		Hotkey: m
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -45,10 +44,8 @@ HARVESTER:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy,Refinery
-		Owner: atreides, harkonnen, ordos
+		Prerequisites: ~heavy, refinery
 		BuildPaletteOrder: 10
-		Hotkey: h
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -97,7 +94,7 @@ HARVESTER.Husk:
 HARVESTER.starport:
 	Inherits: HARVESTER
 	Buildable:
-		Prerequisites: Starport
+		Prerequisites: ~starport
 		Queue: Starport
 	Valued:
 		Cost: 1500
@@ -107,8 +104,7 @@ TRIKE:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Hotkey: w
-		Owner: atreides, harkonnen
+		Prerequisites: ~trikes
 	Valued:
 		Cost: 250
 	Tooltip:
@@ -140,8 +136,8 @@ TRIKE:
 TRIKE.starport:
 	Inherits: TRIKE
 	Buildable:
-		Owner: atreides, harkonnen, ordos
 		Queue: Starport
+		Prerequisites: starport
 	Valued:
 		Cost: 315
 	RenderUnit:
@@ -151,10 +147,8 @@ QUAD:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		Prerequisites: Light,Outpost, ~techlevel.medium
-		Owner: atreides, ordos, harkonnen
+		Prerequisites: ~light, radar, ~techlevel.medium
 		BuildPaletteOrder: 20
-		Hotkey: q
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -183,7 +177,7 @@ QUAD:
 QUAD.starport:
 	Inherits: QUAD
 	Buildable:
-		Prerequisites: Starport
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 500
@@ -195,7 +189,6 @@ QUAD.starport:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 40
-		Hotkey: c
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -242,10 +235,8 @@ SIEGETANK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
-		Prerequisites: Outpost, ~techlevel.medium
-		Owner: atreides, harkonnen, ordos
+		Prerequisites: ~heavy, radar, ~techlevel.medium
 		BuildPaletteOrder: 50
-		Hotkey: t
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -298,6 +289,7 @@ SIEGETANK.Husk:
 SIEGETANK.starport:
 	Inherits: SIEGETANK
 	Buildable:
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 1075
@@ -311,10 +303,8 @@ MISSILETANK:
 		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Armor
-		Prerequisites: Hitech, ~techlevel.high
-		Owner: atreides, harkonnen, ordos
+		Prerequisites: ~heavy, hightech, ~techlevel.high
 		BuildPaletteOrder: 60
-		Hotkey: r
 	Mobile:
 		Speed: 64
 		ROT: 5
@@ -351,9 +341,8 @@ MISSILETANK.Husk:
 MISSILETANK.starport:
 	Inherits: MISSILETANK
 	Buildable:
-		Prerequisites: Hitech
+		Prerequisites: starport
 		Queue: Starport
-		Owner: atreides, harkonnen, ordos
 	Valued:
 		Cost: 1250
 

@@ -54,6 +54,11 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: gdi
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: Random
+		Enemies: Nod,GDI
 
 Actors:
 	Actor0: sbag
@@ -318,7 +323,7 @@ Actors:
 	Actor83: nuke
 		Location: 53,52
 		Owner: GDI
-		Health: 0.0390625
+		Health: 0.025
 		Facing: 0
 	NodRefinery: proc
 		Location: 57,34
@@ -734,10 +739,18 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
-		LuaScriptInterface:
-			LuaScripts: gdi02.lua
+		LuaScript:
+			Scripts: gdi02.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
+	^Infantry:
+		MustBeDestroyed:
+	^Vehicle:
+		MustBeDestroyed:
 	PROC:
 		Buildable:
 			Prerequisites: ~disabled

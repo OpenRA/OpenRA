@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
-* Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+* Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
 * This file is part of OpenRA, which is free software. It is made
 * available to you under the terms of the GNU General Public License
 * as published by the Free Software Foundation. For more information,
@@ -8,6 +8,8 @@
 */
 #endregion
 
+using System;
+using System.Runtime.InteropServices;
 using System.Text;
 using SDL2;
 
@@ -16,6 +18,8 @@ namespace OpenRA.Renderer.Sdl2
 	public class Sdl2Input
 	{
 		MouseButton lastButtonBits = (MouseButton)0;
+
+		public string GetClipboardText() { return SDL.SDL_GetClipboardText(); }
 
 		static MouseButton MakeButton(byte b)
 		{
@@ -126,24 +130,9 @@ namespace OpenRA.Renderer.Sdl2
 
 					case SDL.SDL_EventType.SDL_TEXTINPUT:
 					{
-						string input;
-						unsafe
-						{
-							var data = new byte[SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE];
-							var i = 0;
-							for (; i < SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE; i++)
-							{
-								var b = e.text.text[i];
-								if (b == '\0')
-									break;
-
-								data[i] = b;
-							}
-
-							input = Encoding.UTF8.GetString(data, 0, i);
-						}
-
-						inputHandler.OnTextInput(input);
+						var rawBytes = new byte[SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE];
+						unsafe { Marshal.Copy((IntPtr)e.text.text, rawBytes, 0, SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE); }
+						inputHandler.OnTextInput(Encoding.UTF8.GetString(rawBytes, 0, Array.IndexOf(rawBytes, (byte)0)));
 						break;
 					}
 

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
@@ -56,7 +57,7 @@ namespace OpenRA.Mods.RA.Effects
 			{
 				pos += new WVec(0, 0, args.PassiveTarget.Z - pos.Z);
 				world.AddFrameEndTask(w => w.Remove(this));
-				Combat.DoImpacts(pos, args.SourceActor, args.Weapon, args.FirepowerModifier);
+				args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
 			}
 
 			anim.Tick();

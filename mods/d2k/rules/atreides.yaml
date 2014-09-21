@@ -4,58 +4,61 @@ CONYARDA:
 PWRA:
 	Inherits: ^POWER
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda
 
 WALLA:
 	Inherits: ^WALL
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, barracks
 
 GUNTOWERA:
 	Inherits: ^GUNTOWER
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, barracks
 
 ROCKETTOWERA:
 	Inherits: ^ROCKETTOWER
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, radar
 
 REFA:
 	Inherits: ^REFINERY
 	Buildable:
-		Owner: atreides
-	RenderBuildingWarFactory:
-		Image: REFA
+		Prerequisites: ~conyarda, power
 
 BARRA:
 	Inherits: ^BARRACKS
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, power
+	ProvidesCustomPrerequisite@MEDICS:
+		Prerequisite: medics
+	ProvidesCustomPrerequisite@BARRACKS:
+		Prerequisite: barracks
 
 REPAIRA:
 	Inherits: ^REPAIR
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, heavy
 
 RESEARCHA:
 	Inherits: ^RESEARCH
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, hightech
 
 HIGHTECHA:
 	Inherits: ^HIGHTECH
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, radar
 
 PALACEA:
 	Inherits: ^PALACE
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, research
 	AirstrikePower:
 		Icon: ornistrike
 		Prerequisites: ~techlevel.superweapons
 		Description: Air Strike
+		SquadSize: 3
 		ChargeTime: 180
 		LongDesc: Ornithopter drops a load of parachuted\nbombs on your target
 		UnitType: orni.bomber
@@ -70,36 +73,36 @@ PALACEA:
 SILOA:
 	Inherits: ^SILO
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, refinery
 
 LIGHTA:
 	Inherits: ^LIGHT
 	Buildable:
-		Owner: atreides
-	RenderBuildingWarFactory:
-		Image: LIGHTA
+		Prerequisites: ~conyarda, refinery
+	ProvidesCustomPrerequisite@TRIKES:
+		Prerequisite: trikes
+	ProvidesCustomPrerequisite@LIGHT:
+		Prerequisite: light
 
 HEAVYA:
 	Inherits: ^HEAVY
 	Buildable:
-		Owner: atreides
-	RenderBuildingWarFactory:
-		Image: HEAVYA
+		Prerequisites: ~conyarda, refinery
 
 RADARA:
 	Inherits: ^RADAR
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, barracks
 
 STARPORTA:
 	Inherits: ^STARPORT
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, radar
 
 MCVA:
 	Inherits: ^MCV
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~heavya, repair
 	Transforms:
 		Facing: 16
 		IntoActor: conyarda
@@ -128,7 +131,7 @@ CARRYALLA.starport:
 COMBATA:
 	Inherits: ^COMBAT
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~heavya
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
@@ -164,9 +167,7 @@ SONICTANK:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: heavya, researcha, ~techlevel.high
-		Owner: atreides
-		Hotkey: o
+		Prerequisites: ~heavya, research, ~techlevel.high
 	Valued:
 		Cost: 1250
 	Tooltip:
@@ -213,9 +214,7 @@ FREMEN:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 85
-		Owner: atreides
-		Prerequisites: palacea, ~techlevel.high
-		Hotkey: f
+		Prerequisites: ~barra, palace, ~techlevel.high
 	Selectable:
 		Bounds: 12,17,0,0
 		Voice: FremenVoice
@@ -233,9 +232,6 @@ FREMEN:
 	Armament@SECONDARY:
 		Weapon: Slung
 	AttackFrontal:
-	RenderInfantryProne:
-		IdleAnimations: stand,stand2
-	-RenderInfantry:
 	TakeCover:
 	Cloak:
 		InitialDelay: 250
@@ -248,9 +244,7 @@ GRENADIER:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: atreides
-		Prerequisites: ~techlevel.medium
-		Hotkey: g
+		Prerequisites: ~barra, ~techlevel.medium
 	Valued:
 		Cost: 160
 	Tooltip:
@@ -268,9 +262,8 @@ GRENADIER:
 		FireDelay: 15
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
-		IdleAnimations: stand,stand2
+	RenderInfantry:
+		IdleAnimations: idle
 	Explodes:
 		Weapon: UnitExplodeSmall
 		Chance: 100

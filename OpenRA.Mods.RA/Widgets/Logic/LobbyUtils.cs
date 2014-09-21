@@ -454,7 +454,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			flag.GetImageCollection = () => "flags";
 
 			var playerName = template.Get<LabelWidget>("PLAYER");
-			playerName.GetText = () => player.PlayerName + (player.WinState == WinState.Undefined ? "" : " (" + player.WinState + ")");
+			var client = player.World.LobbyInfo.ClientWithIndex(player.ClientIndex);
+			playerName.GetText = () =>
+			{
+				if (client != null && client.State == Network.Session.ClientState.Disconnected)
+					return player.PlayerName + " (Gone)";
+				return player.PlayerName + (player.WinState == WinState.Undefined ? "" : " (" + player.WinState + ")");
+			};
 			playerName.GetColor = () => player.Color.RGB;
 		}
 	}

@@ -17,23 +17,33 @@ namespace OpenRA.Mods.RA
 	public class CrateActionInfo : ITraitInfo
 	{
 		[Desc("Chance of getting this crate, assuming the collector is compatible.")]
-		public int SelectionShares = 10;
+		public readonly int SelectionShares = 10;
+
 		[Desc("An animation defined in sequence yaml(s) to draw.")]
-		public string Effect = null;
+		public readonly string Effect = null;
+
 		[Desc("Palette to draw the animation in.")]
-		public string Palette = "effect";
+		public readonly string Palette = "effect";
+
 		[Desc("Audio clip to play when the crate is collected.")]
-		public string Notification = null;
-		[ActorReference]
-		public string[] ExcludedActorTypes = { };
+		public readonly string Notification = null;
+
+		[Desc("The earliest time (in ticks) that this crate action can occur on.")]
+		public readonly int TimeDelay = 0;
+		
+		[Desc("Only allow this crate action when the collector has these prerequisites")]
+		public readonly string[] Prerequisites = { };
+
+		[Desc("Actor types that this crate action will not occur for.")]
+		[ActorReference] public string[] ExcludedActorTypes = { };
 
 		public virtual object Create(ActorInitializer init) { return new CrateAction(init.self, this); }
 	}
 
 	public class CrateAction
 	{
-		public Actor self;
-		public CrateActionInfo info;
+		readonly Actor self;
+		readonly CrateActionInfo info;
 
 		public CrateAction(Actor self, CrateActionInfo info)
 		{
@@ -43,7 +53,13 @@ namespace OpenRA.Mods.RA
 
 		public int GetSelectionSharesOuter(Actor collector)
 		{
+			if (self.World.WorldTick < info.TimeDelay)
+				return 0;
+
 			if (info.ExcludedActorTypes.Contains(collector.Info.Name))
+				return 0;
+
+			if (info.Prerequisites.Any() && !collector.Owner.PlayerActor.Trait<TechTree>().HasPrerequisites(info.Prerequisites))
 				return 0;
 
 			return GetSelectionShares(collector);
@@ -59,8 +75,7 @@ namespace OpenRA.Mods.RA
 			Sound.PlayToPlayer(collector.Owner, info.Notification);
 
 			if (info.Effect != null)
-				collector.World.AddFrameEndTask(
-					w => w.Add(new CrateEffect(collector, info.Effect, info.Palette)));
+				collector.World.AddFrameEndTask(w => w.Add(new CrateEffect(collector, info.Effect, info.Palette)));
 		}
 	}
 }

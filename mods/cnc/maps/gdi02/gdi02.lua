@@ -1,59 +1,76 @@
+nodInBaseTeam = { RushBuggy, RushRifle1, RushRifle2, RushRifle3 }
 MobileConstructionVehicle = { "mcv" }
 EngineerReinforcements = { "e6", "e6", "e6" }
 VehicleReinforcements = { "jeep" }
 
 AttackerSquadSize = 3
 
-MissionAccomplished = function()
-	Mission.MissionOver({ player }, nil, false)
-	Media.PlayMovieFullscreen("flag.vqa")
-end
-
-MissionFailed = function()
-	Mission.MissionOver(nil, { player }, false)
-	Media.PlayMovieFullscreen("gameover.vqa")
-end
-
-ReinforceFromSea = function(passengers)
-	local hovercraft, troops = Reinforcements.Insert(player, "oldlst", passengers, { lstStart.Location, lstEnd.Location  }, { lstStart.Location })
-	Media.PlaySpeechNotification("Reinforce")
+Reinforce = function(passengers)
+	Reinforcements.ReinforceWithTransport(player, "oldlst", passengers, { lstStart.Location, lstEnd.Location  }, { lstStart.Location })
+	Media.PlaySpeechNotification(player, "Reinforce")
 end
 
 BridgeheadSecured = function()
-	ReinforceFromSea(MobileConstructionVehicle)
-	OpenRA.RunAfterDelay(25 * 15, NodAttack)
-	OpenRA.RunAfterDelay(25 * 30, function() ReinforceFromSea(EngineerReinforcements) end)
-	OpenRA.RunAfterDelay(25 * 60, function() ReinforceFromSea(VehicleReinforcements) end)
+	Reinforce(MobileConstructionVehicle)
+	Trigger.AfterDelay(Utils.Seconds(15), NodAttack)
+	Trigger.AfterDelay(Utils.Seconds(30), function() Reinforce(EngineerReinforcements) end)
+	Trigger.AfterDelay(Utils.Seconds(60), function() Reinforce(VehicleReinforcements) end)
 end
 
 NodAttack = function()
-	local nodUnits = Mission.GetGroundAttackersOf(enemy)
+	local nodUnits = enemy.GetGroundAttackers()
 	if #nodUnits > AttackerSquadSize * 2 then
-		attackers = Utils.Skip(nodUnits, #nodUnits - AttackerSquadSize)
-		local attackSquad = Team.New(attackers)
-		Team.Do(attackSquad, function(unit)
-			Actor.AttackMove(unit, waypoint2.location)
-			Actor.Hunt(unit)
+		local attackers = Utils.Skip(nodUnits, #nodUnits - AttackerSquadSize)
+		Utils.Do(attackers, function(unit)
+			unit.AttackMove(waypoint2.Location)
+			Trigger.OnIdle(unit, unit.Hunt)
 		end)
-		Team.AddEventHandler(attackSquad.OnAllKilled, OpenRA.RunAfterDelay(25 * 15, NodAttack))
+		Trigger.OnAllKilled(attackers, function() Trigger.AfterDelay(Utils.Seconds(15), NodAttack) end)
 	end
 end
 
 WorldLoaded = function()
-	player = OpenRA.GetPlayer("GDI")
-	enemy = OpenRA.GetPlayer("Nod")
+	player = Player.GetPlayer("GDI")
+	enemy = Player.GetPlayer("Nod")
+
+	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops")
+	gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
+	gdiObjective2 = player.AddSecondaryObjective("Capture the Tiberium Refinery")
+
+	Trigger.OnObjectiveCompleted(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
+	end)
+	Trigger.OnObjectiveFailed(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
+	end)
+
+	Trigger.OnPlayerWon(player, function()
+		Media.PlaySpeechNotification(player, "Win")
+		Trigger.AfterDelay(Utils.Seconds(1), function()
+			Media.PlayMovieFullscreen("flag.vqa")
+		end)
+	end)
+
+	Trigger.OnPlayerLost(player, function()
+		Media.PlaySpeechNotification(player, "Lose")
+		Trigger.AfterDelay(Utils.Seconds(1), function()
+			Media.PlayMovieFullscreen("gameover.vqa")
+		end)
+	end)
+
+	Trigger.OnCapture(NodRefinery, function() player.MarkCompletedObjective(gdiObjective2) end)
+	Trigger.OnKilled(NodRefinery, function() player.MarkFailedObjective(gdiObjective2) end)
+
+	Trigger.OnAllKilled(nodInBaseTeam, BridgeheadSecured)
 
 	Media.PlayMovieFullscreen("gdi2.vqa")
-
-	nodInBaseTeam = Team.New({ RushBuggy, RushRifle1, RushRifle2, RushRifle3 })
-	Team.AddEventHandler(nodInBaseTeam.OnAllKilled, BridgeheadSecured)
 end
 
 Tick = function()
-	if Mission.RequiredUnitsAreDestroyed(player) then
-		MissionFailed()
+	if player.HasNoRequiredUnits() then
+		enemy.MarkCompletedObjective(nodObjective)
 	end
-	if Mission.RequiredUnitsAreDestroyed(enemy) then
-		MissionAccomplished()
+	if enemy.HasNoRequiredUnits() then
+		player.MarkCompletedObjective(gdiObjective1)
 	end
 end

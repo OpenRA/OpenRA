@@ -38,15 +38,13 @@ namespace OpenRA.Mods.RA.Render
 			renderBuilding = self.Trait<RenderBuilding>();
 
 			var building = self.Trait<Building>();
-			if (!init.Contains<SkipMakeAnimsInit>())
+			if (!building.SkipMakeAnimation)
 			{
 				renderBuilding.PlayCustomAnimThen(self, info.Sequence, () => 
 				{
 					building.NotifyBuildingComplete(self);
 				});
 			}
-			else
-				building.NotifyBuildingComplete(self);
 		}
 
 		public void Reverse(Actor self, Activity activity)

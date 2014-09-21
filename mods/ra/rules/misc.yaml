@@ -89,31 +89,64 @@ CRATE:
 		SelectionShares: 5
 		Proxy: powerproxy.parabombs
 		Effect: parabombs
+	DuplicateUnitCrateAction:
+		SelectionShares: 10
+		MaxAmount: 5
+		MinAmount: 1
+		MaxDuplicateValue: 1500
 	GiveMcvCrateAction:
 		SelectionShares: 2
 		NoBaseSelectionShares: 100
-		Unit: mcv
+		Units: mcv
 	GiveUnitCrateAction@jeep:
 		SelectionShares: 7
-		Unit: jeep
+		Units: jeep
+		ValidRaces: allies
+		Prerequisites: techlevel.low
 	GiveUnitCrateAction@arty:
 		SelectionShares: 6
-		Unit: arty
+		Units: arty
+		ValidRaces: allies
+		Prerequisites: techlevel.medium, dome
 	GiveUnitCrateAction@v2rl:
 		SelectionShares: 6
-		Unit: v2rl
+		Units: v2rl
+		ValidRaces: soviet
+		Prerequisites: techlevel.medium, dome
 	GiveUnitCrateAction@1tnk:
 		SelectionShares: 5
-		Unit: 1tnk
+		Units: 1tnk
+		ValidRaces: allies
+		Prerequisites: techlevel.low
 	GiveUnitCrateAction@2tnk:
 		SelectionShares: 4
-		Unit: 2tnk
+		Units: 2tnk
+		ValidRaces: allies
+		Prerequisites: techlevel.medium, fix
 	GiveUnitCrateAction@3tnk:
 		SelectionShares: 4
-		Unit: 3tnk
+		Units: 3tnk
+		ValidRaces: soviet
+		Prerequisites: techlevel.medium, fix
 	GiveUnitCrateAction@4tnk:
 		SelectionShares: 3
-		Unit: 4tnk
+		Units: 4tnk
+		ValidRaces: soviet
+		Prerequisites: techlevel.unrestricted, fix, techcenter
+	GiveUnitCrateAction@squadlight:
+		SelectionShares: 7
+		Units: e1,e1,e1,e3,e3
+		ValidRaces: allies, soviet
+	GiveUnitCrateAction@squadheavyallies:
+		SelectionShares: 7
+		Units: e1,e1,e1,e1,e3,e3,e3,e6,medi
+		ValidRaces: allies
+		TimeDelay: 4500
+	GiveUnitCrateAction@squadheavysoviet:
+		SelectionShares: 7
+		Units: e1,e1,e4,e4,e3,e3,e3
+		ValidRaces: soviet
+		TimeDelay: 4500
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:
@@ -125,6 +158,28 @@ CRATE:
 	ProximityCaptor:
 		Types: Crate
 	Passenger:
+	BodyOrientation:
+
+MONEYCRATE:
+	Tooltip:
+		Name: Money Crate
+	Crate:
+		Lifetime: 180
+		TerrainTypes: Clear, Rough, Road, Ore, Beach
+	GiveCashCrateAction:
+		Amount: 500
+		SelectionShares: 1
+		UseCashTick: true
+	RenderSprites:
+		Palette: effect
+	WithCrateBody:
+		Images: wcrate
+		XmasImages: xcratea, xcrateb, xcratec, xcrated
+	Selectable:
+		Selectable: false
+		Bounds: 15,15,-1,-1
+	ProximityCaptor:
+		Types: Crate
 	BodyOrientation:
 
 CAMERA:

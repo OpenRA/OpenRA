@@ -8,16 +8,18 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	public interface IPlaceBuildingDecoration
 	{
-		void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
+		IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
 	}
 
 	[Desc("Draw a circle indicating my weapon's range.")]
@@ -28,7 +30,7 @@ namespace OpenRA.Mods.RA
 		[Desc("Range to draw if no armaments are available")]
 		public readonly WRange FallbackRange = WRange.Zero;
 
-		public void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
 			var armaments = ai.Traits.WithInterface<ArmamentInfo>();
 			var range = FallbackRange;
@@ -37,11 +39,12 @@ namespace OpenRA.Mods.RA
 				range = armaments.Select(a => w.Map.Rules.Weapons[a.Weapon.ToLowerInvariant()].Range).Max();
 
 			if (range == WRange.Zero)
-				return;
+				yield break;
 
-			wr.DrawRangeCircleWithContrast(
+			yield return new RangeCircleRenderable(
 				centerPosition,
 				range,
+				0,
 				Color.FromArgb(128, Color.Yellow),
 				Color.FromArgb(96, Color.Black)
 			);
@@ -49,7 +52,8 @@ namespace OpenRA.Mods.RA
 			foreach (var a in w.ActorsWithTrait<RenderRangeCircle>())
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
 					if (a.Actor.Info.Traits.Get<RenderRangeCircleInfo>().RangeCircleType == RangeCircleType)
-						a.Trait.RenderAfterWorld(wr);
+						foreach (var r in a.Trait.RenderAfterWorld(wr))
+							yield return r;
 		}
 
 		public object Create(ActorInitializer init) { return new RenderRangeCircle(init.self); }
@@ -66,14 +70,15 @@ namespace OpenRA.Mods.RA
 			attack = self.Trait<AttackBase>();
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
 			if (self.Owner != self.World.LocalPlayer)
-				return;
+				yield break;
 
-			wr.DrawRangeCircleWithContrast(
+			yield return new RangeCircleRenderable(
 				self.CenterPosition,
 				attack.GetMaximumRange(),
+				0,
 				Color.FromArgb(128, Color.Yellow),
 				Color.FromArgb(96, Color.Black)
 			);

@@ -92,6 +92,7 @@ Chrome:
 	mods/ts/chrome.yaml
 
 Assemblies:
+	mods/common/OpenRA.Mods.Common.dll
 	mods/ra/OpenRA.Mods.RA.dll
 	mods/d2k/OpenRA.Mods.D2k.dll
 	mods/cnc/OpenRA.Mods.Cnc.dll
@@ -99,15 +100,20 @@ Assemblies:
 
 ChromeLayout:
 	mods/ts/chrome/install.yaml
-	mods/ra/chrome/ingame.yaml
+	mods/ts/chrome/ingame.yaml
 	mods/ra/chrome/ingame-chat.yaml
 	mods/ra/chrome/ingame-diplomacy.yaml
 	mods/ra/chrome/ingame-fmvplayer.yaml
 	mods/ra/chrome/ingame-menu.yaml
-	mods/ra/chrome/ingame-objectives.yaml
+	mods/ra/chrome/ingame-info.yaml
+	mods/ra/chrome/ingame-infobriefing.yaml
+	mods/ra/chrome/ingame-infoobjectives.yaml
+	mods/ra/chrome/ingame-infostats.yaml
 	mods/ra/chrome/ingame-observer.yaml
 	mods/ra/chrome/ingame-observerstats.yaml
-	mods/ra/chrome/ingame-player.yaml
+	mods/ts/chrome/ingame-player.yaml
+	mods/ra/chrome/ingame-debug.yaml
+	mods/ra/chrome/ingame-leavemap.yaml
 	mods/ra/chrome/mainmenu.yaml
 	mods/ra/chrome/settings.yaml
 	mods/ra/chrome/credits.yaml
@@ -123,7 +129,6 @@ ChromeLayout:
 	mods/ra/chrome/directconnect.yaml
 	mods/ra/chrome/replaybrowser.yaml
 	mods/ra/chrome/dropdowns.yaml
-	mods/ra/chrome/cheats.yaml
 	mods/ra/chrome/musicplayer.yaml
 	mods/ra/chrome/tooltips.yaml
 	mods/ra/chrome/assetbrowser.yaml
@@ -145,6 +150,9 @@ TileSets:
 
 TileSize: 48,24
 TileShape: Diamond
+SubCells:
+	Offsets: 0,0,0, -256,128,0, 0,-128,0, 256,128,0
+	DefaultIndex: 2
 
 Music:
 	mods/ts/music.yaml
@@ -172,6 +180,8 @@ ServerTraits:
 	LobbyCommands
 	PlayerPinger
 	MasterServerPinger
+	LobbySettingsNotification
+	ColorValidator
 
 LobbyDefaults:
 	AllowCheats: true

@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	[Desc("Attach this to the world actor.")]
+	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
 	public class ResourceLayerInfo : TraitInfo<ResourceLayer>, Requires<ResourceTypeInfo> { }
 
 	public class ResourceLayer : IRenderOverlay, IWorldLoaded, ITickRender
@@ -34,15 +34,16 @@ namespace OpenRA.Mods.RA
 
 		public void Render(WorldRenderer wr)
 		{
+			var shroudObscured = world.ShroudObscuresTest(wr.Viewport.VisibleCells);
 			foreach (var cell in wr.Viewport.VisibleCells)
 			{
-				if (world.ShroudObscures(cell))
+				if (shroudObscured(cell))
 					continue;
 
 				var c = render[cell];
 				if (c.Sprite != null)
 					new SpriteRenderable(c.Sprite, wr.world.Map.CenterOfCell(cell),
-						WVec.Zero, -511, c.Type.Palette, 1f, true).Render(wr);
+						WVec.Zero, -511, c.Type.Palette, 1f, true).Render(wr); // TODO ZOffset is ignored
 			}
 		}
 

@@ -21,7 +21,8 @@ namespace OpenRA.Mods.RA.Scripting
 		readonly IFacing facing;
 		readonly AutoTarget autotarget;
 
-		public GeneralProperties(Actor self) : base(self)
+		public GeneralProperties(ScriptContext context, Actor self)
+			: base(context, self)
 		{
 			facing = self.TraitOrDefault<IFacing>();
 			autotarget = self.TraitOrDefault<AutoTarget>();
@@ -56,6 +57,9 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("The player that owns the actor.")]
 		public Player Owner { get { return self.Owner; } }
 
+		[Desc("The type of the actor (e.g. \"e1\").")]
+		public string Type { get { return self.Info.Name; } }
+
 		[Desc("The direction that the actor is facing.")]
 		public int Facing
 		{
@@ -76,7 +80,7 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Run an arbitrary lua function.")]
+		[Desc("Run an arbitrary Lua function.")]
 		public void CallFunc(LuaFunction func)
 		{
 			self.QueueActivity(new CallLuaFunc(func));

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Render;
@@ -15,14 +16,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	[Desc("Building can be sold")]
-	public class SellableInfo : TraitInfo<Sellable>
+
+	[Desc("Actor can be sold")]
+	public class SellableInfo : ITraitInfo
 	{
 		public readonly int RefundPercent = 50;
+		public readonly string[] SellSounds = { };
+
+		public object Create(ActorInitializer init) { return new Sellable(this); }
 	}
 
 	public class Sellable : IResolveOrder
 	{
+		readonly SellableInfo info;
+
+		public Sellable(SellableInfo info) { this.info = info; }
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Sell")
@@ -31,10 +40,14 @@ namespace OpenRA.Mods.RA
 
 		public void Sell(Actor self)
 		{
-			if (!self.Trait<Building>().Lock())
+			var building = self.TraitOrDefault<Building>();
+			if (building != null && !building.Lock())
 				return;
 
 			self.CancelActivity();
+
+			foreach (var s in info.SellSounds)
+				Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
 
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Selling(self);

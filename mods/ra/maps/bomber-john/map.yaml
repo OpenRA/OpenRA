@@ -39,63 +39,63 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: allies
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi2,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi2, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi5, Multi6, Multi7
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi1,Multi6,Multi7
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi1, Multi6, Multi7
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi1,Multi7
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi1, Multi7
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi1
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi6, Multi1
 
 Actors:
 	Actor69: ftur
@@ -848,8 +848,6 @@ Rules:
 			Offset: 0,0
 			Facing: 96
 		MustBeDestroyed:
-		Building:
-			Power: 0
 		CashTrickler:
 			Period: 150
 			Amount: 30
@@ -874,6 +872,8 @@ Rules:
 			BeginChargeSound: ironchg1.aud
 			EndChargeSound: ironrdy1.aud
 			Range: 1
+		Power:
+			Amount: 0
 	MINVV:
 		Building:
 			Adjacent: 99
@@ -884,7 +884,6 @@ Rules:
 			Queue: Building
 			BuildPaletteOrder: 30
 			Owner: allies, soviet
-			Hotkey: b
 		Valued:
 			Cost: 30
 		Health:

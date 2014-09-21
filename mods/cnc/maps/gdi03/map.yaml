@@ -55,6 +55,11 @@ Players:
 		LockTeam: True
 		Allies: GDI
 		Enemies: Nod
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: Random
+		Enemies: Nod,GDI
 
 Actors:
 	Actor0: wood
@@ -897,8 +902,12 @@ Rules:
 		-CrateSpawner:
 		LuaScriptInterface:
 			LuaScripts: gdi03.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	^Infantry:
 		MustBeDestroyed:
 	WEAP:
@@ -947,7 +956,8 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 		Building:
-			Power: -10
+		Power:
+			Amount: -10
 	HQ:
 		Buildable:
 			Prerequisites: ~disabled
@@ -967,7 +977,6 @@ Rules:
 			Prerequisites: proc
 			Queue: Building.GDI
 		Building:
-			Power: -40
 			Footprint: x_ xx
 			Dimensions: 2,2
 		Health:
@@ -978,6 +987,8 @@ Rules:
 		ProvidesRadar:
 		RenderBuilding:
 			Image: hq
+		Power:
+			Amount: -40
 	PowerProxy.AirSupport:
 		AirstrikePower:
 			Icon: airstrike

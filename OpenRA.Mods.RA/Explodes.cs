@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public readonly string EmptyWeapon = "UnitExplode";
 
 		public readonly int Chance = 100;
-		public readonly string[] InfDeath = null;
+		public readonly string[] DeathType = null;
 
 		public object Create(ActorInitializer init) { return new Explodes(this); }
 	}
@@ -40,12 +41,19 @@ namespace OpenRA.Mods.RA
 			if (self.World.SharedRandom.Next(100) > explodesInfo.Chance)
 				return;
 
-			if (explodesInfo.InfDeath != null && e.Warhead != null && !explodesInfo.InfDeath.Contains(e.Warhead.InfDeath))
+			if (explodesInfo.DeathType != null && e.Warhead != null && !explodesInfo.DeathType.Contains(e.Warhead.DeathType))
 				return;
 
-			var weapon = ChooseWeaponForExplosion(self);
-			if (weapon != null)
-				Combat.DoExplosion(e.Attacker, weapon, self.CenterPosition);
+			var weaponName = ChooseWeaponForExplosion(self);
+			if (weaponName != null)
+			{
+				var weapon = e.Attacker.World.Map.Rules.Weapons[weaponName.ToLowerInvariant()];
+				if (weapon.Report != null && weapon.Report.Any())
+					Sound.Play(weapon.Report.Random(e.Attacker.World.SharedRandom), self.CenterPosition);
+	
+				// Use .FromPos since this actor is killed. Cannot use Target.FromActor
+				weapon.Impact(Target.FromPos(self.CenterPosition), e.Attacker, Enumerable.Empty<int>());
+			}
 		}
 
 		string ChooseWeaponForExplosion(Actor self)

@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -28,7 +28,11 @@ namespace OpenRA.Traits
 		int generation;
 
 		public static Target FromPos(WPos p) { return new Target { pos = p, type = TargetType.Terrain }; }
-		public static Target FromCell(World w, CPos c) { return new Target { pos = w.Map.CenterOfCell(c), type = TargetType.Terrain }; }
+		public static Target FromCell(World w, CPos c, SubCell subCell = SubCell.FullCell)
+		{
+			return new Target { pos = w.Map.CenterOfSubCell(c, subCell), type = TargetType.Terrain };
+		}
+
 		public static Target FromOrder(World w, Order o)
 		{
 			return o.TargetActor != null

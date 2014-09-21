@@ -35,18 +35,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		enum PanelType { Players, Options, Kick, ForceStart }
 		PanelType panel = PanelType.Players;
 
-		Widget lobby;
+		readonly Widget lobby;
+		readonly Widget editablePlayerTemplate;
+		readonly Widget nonEditablePlayerTemplate;
+		readonly Widget emptySlotTemplate;
+		readonly Widget editableSpectatorTemplate;
+		readonly Widget nonEditableSpectatorTemplate;
+		readonly Widget newSpectatorTemplate;
 
-		Widget editablePlayerTemplate, nonEditablePlayerTemplate, emptySlotTemplate,
-			editableSpectatorTemplate, nonEditableSpectatorTemplate, newSpectatorTemplate;
+		readonly ScrollPanelWidget chatPanel;
+		readonly Widget chatTemplate;
 
-		ScrollPanelWidget chatPanel;
-		Widget chatTemplate;
+		readonly ScrollPanelWidget players;
+		readonly Dictionary<string, string> countryNames;
 
-		ScrollPanelWidget players;
-		Dictionary<string, string> countryNames;
+		readonly ColorPreviewManagerWidget colorPreview;
 
-		ColorPreviewManagerWidget colorPreview;
+		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
 
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
@@ -150,6 +155,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					var onSelect = new Action<string>(uid =>
 					{
+						// Don't select the same map again
+						if (uid == Map.Uid)
+							return;
+
 						orderManager.IssueOrder(Order.Command("map " + uid));
 						Game.Settings.Server.Map = uid;
 						Game.Settings.Save();
@@ -367,16 +376,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var startingUnits = optionsBin.GetOrNull<DropDownButtonWidget>("STARTINGUNITS_DROPDOWNBUTTON");
 			if (startingUnits != null)
 			{
-				var classNames = new Dictionary<string, string>()
+				var startUnitsInfo = modRules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>();
+				var classes = startUnitsInfo.Select(a => a.Class).Distinct();
+				Func<string, string> className = c =>
 				{
-					{ "none", "MCV Only" },
-					{ "light", "Light Support" },
-					{ "heavy", "Heavy Support" },
+					var selectedClass = startUnitsInfo.Where(s => s.Class == c).Select(u => u.ClassName).FirstOrDefault();
+					return selectedClass != null ? selectedClass : c;
 				};
-
-				Func<string, string> className = c => classNames.ContainsKey(c) ? classNames[c] : c;
-				var classes = modRules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>()
-					.Select(a => a.Class).Distinct();
 
 				startingUnits.IsDisabled = () => Map.Status != MapStatus.Available || !Map.Map.Options.ConfigurableStartingUnits || configurationDisabled();
 				startingUnits.GetText = () => Map.Status != MapStatus.Available || !Map.Map.Options.ConfigurableStartingUnits ? "Not Available" : className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
@@ -483,6 +489,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
 
+			chatTextField.TakeKeyboardFocus();
+
 			chatTextField.OnEnterKey = () =>
 			{
 				if (chatTextField.Text.Length == 0)
@@ -495,11 +503,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				chatTextField.Text = "";
 				return true;
 			};
-
-			chatTextField.OnTabKey = () =>
+			chatTextField.OnAltKey = () =>
 			{
 				teamChat ^= true;
 				chatLabel.Text = teamChat ? "Team:" : "Chat:";
+				return true;
+			};
+			chatTextField.OnTabKey = () =>
+			{
+				chatTextField.Text = tabCompletion.Complete(chatTextField.Text);
+				chatTextField.CursorPosition = chatTextField.Text.Length;
 				return true;
 			};
 
@@ -509,7 +522,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var musicButton = lobby.GetOrNull<ButtonWidget>("MUSIC_BUTTON");
 			if (musicButton != null)
-				musicButton.OnClick = () => Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs { { "onExit", DoNothing } });
+				musicButton.OnClick = () => Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs
+				{
+					{ "onExit", DoNothing },
+					{ "world", orderManager.world }
+				});
 
 			var settingsButton = lobby.GetOrNull<ButtonWidget>("SETTINGS_BUTTON");
 			if (settingsButton != null)
@@ -757,6 +774,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			while (players.Children.Count > idx)
 				players.RemoveChild(players.Children[idx]);
+
+			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
 		}
 
 		void OnGameStart()

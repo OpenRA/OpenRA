@@ -37,6 +37,20 @@ namespace OpenRA
 		public readonly Size TileSize = new Size(24, 24);
 		public readonly TileShape TileShape = TileShape.Rectangle;
 
+		[Desc("(x,y,z) offset of the full cell and each sub-cell", "X & Y should be between -512 ... 512 and Z >= 0")]
+		public readonly WVec[] SubCellOffsets =
+		{
+			new WVec(0, 0, 0),       // full cell - index 0
+			new WVec(-299, -256, 0), // top left - index 1
+			new WVec(256, -256, 0),  // top right - index 2
+			new WVec(0, 0, 0),       // center - index 3
+			new WVec(-299, 256, 0),  // bottom left - index 4
+			new WVec(256, 256, 0),   // bottom right - index 5
+		};
+
+		[Desc("Default subcell index used if SubCellInit is absent", "0 - full cell, 1 - first sub-cell")]
+		public readonly int SubCellDefaultIndex = 3;
+
 		public Manifest(string mod)
 		{
 			var path = new[] { "mods", mod, "mod.yaml" }.Aggregate(Path.Combine);
@@ -86,6 +100,24 @@ namespace OpenRA
 
 			if (yaml.ContainsKey("TileShape"))
 				TileShape = FieldLoader.GetValue<TileShape>("TileShape", yaml["TileShape"].Value);
+
+			if (yaml.ContainsKey("SubCells"))
+			{
+				var subcells = yaml["SubCells"].ToDictionary();
+
+				// Read (x,y,z) offset (relative to cell center) pairs for positioning subcells
+				if (subcells.ContainsKey("Offsets"))
+					SubCellOffsets = FieldLoader.GetValue<WVec[]>("Offsets", subcells["Offsets"].Value);
+
+				if (subcells.ContainsKey("DefaultIndex"))
+					SubCellDefaultIndex = FieldLoader.GetValue<int>("DefaultIndex", subcells["DefaultIndex"].Value);
+				else	// Otherwise set the default subcell index to the middle subcell entry
+					SubCellDefaultIndex = SubCellOffsets.Length / 2;
+			}
+
+			// Validate default index - 0 for no subcells, otherwise > 1 & <= subcell count (offset triples count - 1)
+			if (SubCellDefaultIndex < (SubCellOffsets.Length > 1 ? 1 : 0) || SubCellDefaultIndex >= SubCellOffsets.Length)
+				throw new InvalidDataException("Subcell default index must be a valid index into the offset triples and must be greater than 0 for mods with subcells");
 
 			// Allow inherited mods to import parent maps.
 			var compat = new List<string>();

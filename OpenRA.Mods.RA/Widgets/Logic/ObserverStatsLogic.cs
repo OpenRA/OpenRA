@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Power;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		public ObserverStatsLogic(World world, WorldRenderer worldRenderer, Widget widget)
+		public ObserverStatsLogic(World world, WorldRenderer worldRenderer, Widget widget, Action onExit)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
@@ -136,6 +136,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			ClearStats();
 			DisplayStats(BasicStats);
+
+			var close = widget.GetOrNull<ButtonWidget>("CLOSE");
+			if (close != null)
+				close.OnClick = () =>
+				{
+					Ui.CloseWindow();
+					Ui.Root.RemoveChild(widget);
+					onExit();
+				};
 		}
 
 		void ClearStats()

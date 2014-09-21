@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,8 +18,6 @@ namespace OpenRA.Mods.RA.Air
 {
 	class HelicopterInfo : AircraftInfo, IMoveInfo
 	{
-		public readonly WRange IdealSeparation = new WRange(1706);
-
 		[Desc("Allow the helicopter land after it has no more commands.")]
 		public readonly bool LandWhenIdle = true;
 
@@ -58,11 +56,16 @@ namespace OpenRA.Mods.RA.Air
 			if (order.OrderString == "Move")
 			{
 				var cell = self.World.Map.Clamp(order.TargetLocation);
-				var t = Target.FromCell(self.World, cell);
+				var explored = self.Owner.Shroud.IsExplored(cell);
 
-				self.SetTargetLine(t, Color.Green);
+				if (!explored && !Info.MoveIntoShroud)
+					return;
+
+				var target = Target.FromCell(self.World, cell);
+
+				self.SetTargetLine(target, Color.Green);
 				self.CancelActivity();
-				self.QueueActivity(new HeliFly(self, t));
+				self.QueueActivity(new HeliFly(self, target));
 
 				if (Info.LandWhenIdle)
 				{
@@ -135,41 +138,7 @@ namespace OpenRA.Mods.RA.Air
 				self.QueueActivity(new TakeOff());
 			}
 
-			// Repulsion only applies when we're flying!
-			var altitude = CenterPosition.Z;
-			if (altitude != Info.CruiseAltitude.Range)
-				return;
-
-			var otherHelis = self.World.FindActorsInCircle(self.CenterPosition, Info.IdealSeparation)
-				.Where(a => a.HasTrait<Helicopter>());
-
-			var f = otherHelis
-				.Select(h => GetRepulseForce(self, h))
-				.Aggregate(WVec.Zero, (a, b) => a + b);
-
-			var repulsionFacing = Util.GetFacing(f, -1);
-			if (repulsionFacing != -1)
-				SetPosition(self, CenterPosition + FlyStep(repulsionFacing));
-		}
-
-		public WVec GetRepulseForce(Actor self, Actor other)
-		{
-			if (self == other || other.CenterPosition.Z < self.CenterPosition.Z)
-				return WVec.Zero;
-
-			var d = self.CenterPosition - other.CenterPosition;
-			var distSq = d.HorizontalLengthSquared;
-			if (distSq > Info.IdealSeparation.Range * Info.IdealSeparation.Range)
-				return WVec.Zero;
-
-			if (distSq < 1)
-			{
-				var yaw = self.World.SharedRandom.Next(0, 1023);
-				var rot = new WRot(WAngle.Zero, WAngle.Zero, new WAngle(yaw));
-				return new WVec(1024, 0, 0).Rotate(rot);
-			}
-
-			return (d * 1024 * 8) / (int)distSq;
+			Repulse();
 		}
 
 		public Activity MoveTo(CPos cell, int nearEnough) { return new HeliFly(self, Target.FromCell(self.World, cell)); }
@@ -179,9 +148,9 @@ namespace OpenRA.Mods.RA.Air
 		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new Follow(self, target, minRange, maxRange); }
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
-		public Activity MoveIntoWorld(Actor self, CPos cell)
+		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
-			return new HeliFly(self, Target.FromCell(self.World, cell));
+			return new HeliFly(self, Target.FromCell(self.World, cell, subCell));
 		}
 
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)

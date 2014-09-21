@@ -8,12 +8,15 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.RA.Orders
 {
@@ -22,8 +25,8 @@ namespace OpenRA.Mods.RA.Orders
 		readonly Actor Producer;
 		readonly string Building;
 		readonly BuildingInfo BuildingInfo;
+		IActorPreview[] preview;
 
-		IEnumerable<IRenderable> preview;
 		Sprite buildOk, buildBlocked;
 		bool initialized = false;
 
@@ -78,9 +81,17 @@ namespace OpenRA.Mods.RA.Orders
 			}
 		}
 
-		public void Tick(World world) {}
+		public void Tick(World world)
+		{
+			if (preview == null)
+				return;
+
+			foreach (var p in preview)
+				p.Tick();
+		}
+
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		public void RenderAfterWorld(WorldRenderer wr, World world)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 		{
 			var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 			var topLeft = xy - FootprintUtils.AdjustForBuildingSize(BuildingInfo);
@@ -89,13 +100,17 @@ namespace OpenRA.Mods.RA.Orders
 
 			var actorInfo = rules.Actors[Building];
 			foreach (var dec in actorInfo.Traits.WithInterface<IPlaceBuildingDecoration>())
-				dec.Render(wr, world, actorInfo, world.Map.CenterOfCell(xy));
+				foreach (var r in dec.Render(wr, world, actorInfo, world.Map.CenterOfCell(xy)))
+					yield return r;
 
 			var cells = new Dictionary<CPos, bool>();
 			// Linebuild for walls.
-			// Assumes a 1x1 footprint; weird things will happen for other footprints
+			// Requires a 1x1 footprint
 			if (rules.Actors[Building].Traits.Contains<LineBuildInfo>())
 			{
+				if (BuildingInfo.Dimensions.X != 1 || BuildingInfo.Dimensions.Y != 1)
+					throw new InvalidOperationException("LineBuild requires a 1x1 sized Building");
+
 				foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, Building, BuildingInfo))
 					cells.Add(t, BuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, Building, t));
 			}
@@ -103,23 +118,22 @@ namespace OpenRA.Mods.RA.Orders
 			{
 				if (!initialized)
 				{
-					var rbi = rules.Actors[Building].Traits.GetOrDefault<RenderBuildingInfo>();
-					if (rbi == null)
-						preview = new IRenderable[0];
-					else
-					{
-						var palette = rbi.Palette ?? (Producer.Owner != null ?
-							rbi.PlayerPalette + Producer.Owner.InternalName : null);
-
-						preview = rbi.RenderPreview(world, rules.Actors[Building], wr.Palette(palette));
-					}
+					var init = new ActorPreviewInitializer(rules.Actors[Building], Producer.Owner, wr, new TypeDictionary());
+					preview = rules.Actors[Building].Traits.WithInterface<IRenderActorPreviewInfo>()
+						.SelectMany(rpi => rpi.RenderPreview(init))
+						.ToArray();
 
 					initialized = true;
 				}
 
-				var offset = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, BuildingInfo) - WPos.Zero;
-				foreach (var r in preview)
-					r.OffsetBy(offset).Render(wr);
+				var comparer = new RenderableComparer(wr);
+				var offset = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, BuildingInfo);
+				var previewRenderables = preview
+					.SelectMany(p => p.Render(wr, offset))
+					.OrderBy(r => r, comparer);
+
+				foreach (var r in previewRenderables)
+					yield return r;
 
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = BuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, Building, topLeft);
@@ -131,8 +145,8 @@ namespace OpenRA.Mods.RA.Orders
 			foreach (var c in cells)
 			{
 				var tile = c.Value ? buildOk : buildBlocked;
-				new SpriteRenderable(tile, world.Map.CenterOfCell(c.Key),
-					WVec.Zero, -511, pal, 1f, true).Render(wr);
+				yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c.Key),
+					WVec.Zero, -511, pal, 1f, true);
 			}
 		}
 

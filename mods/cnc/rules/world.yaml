@@ -8,6 +8,7 @@ World:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
 	MenuPaletteEffect:
+		MenuEffect: Desaturated
 	CloakPaletteEffect:
 	ScreenShaker:
 	NukePaletteEffect:
@@ -85,6 +86,13 @@ World:
 	ProductionQueueFromSelection:
 		ProductionTabsWidget: PRODUCTION_TABS
 	DomainIndex:
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokePercentage: 50
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
 	ResourceLayer:
 	ResourceClaimLayer:
 	ResourceType@green-tib:
@@ -116,63 +124,66 @@ World:
 		PipColor: Blue
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
-	SmudgeLayer@SCORCH:
-		Type: Scorch
-		Sequence: scorches
-		SmokePercentage: 50
-	SmudgeLayer@CRATER:
-		Type: Crater
-		Sequence: craters
 	PathfinderDebugOverlay:
 	SpawnMapActors:
 	MPStartLocations:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
 		Class: none
+		ClassName: MCV Only
 		Races: gdi, nod
 		BaseActor: mcv
 	MPStartUnits@defaultgdia:
 		Class: light
+		ClassName: Light Support
 		Races: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,jeep
 	MPStartUnits@defaultgdib:
 		Class: light
+		ClassName: Light Support
 		Races: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e1,e3,apc
 	MPStartUnits@defaultnoda:
 		Class: light
+		ClassName: Light Support
 		Races: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,bggy,bike
 	MPStartUnits@defaultnodb:
 		Class: light
+		ClassName: Light Support
 		Races: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,e3,bggy
 	MPStartUnits@defaultnodc:
 		Class: light
+		ClassName: Light Support
 		Races: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e1,e1,e3,bike
 	MPStartUnits@heavynoda:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,e3,ltnk,ltnk,ftnk
 	MPStartUnits@heavynodb:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,e3,ftnk,ftnk
 	MPStartUnits@heavygdia:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,e3,jeep,mtnk,mtnk
 	MPStartUnits@heavygdib:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
@@ -185,7 +196,7 @@ World:
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:
-	ConquestObjectivesPanel:
-		ObjectivesPanel: CONQUEST_OBJECTIVES
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
 	RadarPings:
 

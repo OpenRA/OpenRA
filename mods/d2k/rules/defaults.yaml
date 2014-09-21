@@ -39,6 +39,7 @@
 	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Tank:
 	AppearsOnRadar:
@@ -81,6 +82,7 @@
 	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Husk:
 	Health:
@@ -169,6 +171,8 @@
 	TargetableUnit:
 		TargetTypes: Ground
 	RenderInfantry:
+	TakeCover:
+	WithDeathAnimation:
 	AutoTarget:
 	AttackMove:
 	Passenger:
@@ -182,7 +186,7 @@
 	ProximityCaptor:
 		Types: Infantry
 	GivesBounty:
-	CrushableInfantry:
+	Crushable:
 		CrushSound: CRUSH1.WAV
 	RepairableNear:
 		Buildings: barra, barro
@@ -198,6 +202,7 @@
 	DeathSounds:
 	Parachutable:
 		FallRate: 130
+	GainsStatUpgrades:
 
 ^Plane:
 	AppearsOnRadar:
@@ -223,6 +228,7 @@
 	AttackMove:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -233,13 +239,12 @@
 	Selectable:
 		Priority: 2
 	TargetableBuilding:
-		TargetTypes: Ground, C4
+		TargetTypes: Ground, C4, Structure
 	Building:
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Rock, Concrete
 		BuildSounds: BUILD1.WAV
-		SellSounds: BUILD1.WAV
 		Adjacent: 3
 	GivesBuildableArea:
 	ExternalCapturable:
@@ -264,6 +269,7 @@
 	ProximityCaptor:
 		Types: Building
 	Sellable:
+		SellSounds: BUILD1.WAV
 	GivesBounty:
 	CombatDebugOverlay:
 	Guardable:

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
@@ -87,11 +88,11 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				var armament = Armaments.FirstOrDefault();
+				var armament = Armaments.FirstOrDefault(a => a.Weapon.Warheads.Any(w => (w is DamageWarhead)));
 				if (armament == null)
 					yield break;
 
-				var negativeDamage = armament.Weapon.Warheads[0].Damage < 0;
+				var negativeDamage = (armament.Weapon.Warheads.FirstOrDefault(w => (w is DamageWarhead)) as DamageWarhead).Damage < 0;
 				yield return new AttackOrderTargeter(this, "Attack", 6, negativeDamage);
 			}
 		}
@@ -134,13 +135,13 @@ namespace OpenRA.Mods.RA
 
 		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
 
-		public bool HasAnyValidWeapons(Target t) { return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World)); }
+		public bool HasAnyValidWeapons(Target t) { return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World, self)); }
 		public WRange GetMaximumRange()
 		{
 			return Armaments.Select(a => a.Weapon.Range).Append(WRange.Zero).Max();
 		}
 
-		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.Weapon.IsValidAgainst(t, self.World)); }
+		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.Weapon.IsValidAgainst(t, self.World, self)); }
 
 		public void AttackTarget(Target target, bool queued, bool allowMove)
 		{

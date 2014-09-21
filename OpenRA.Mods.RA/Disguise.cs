@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.RA.Orders;
+using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.RA
 	[Desc("Overrides the default ToolTip when this actor is disguised (aids in deceiving enemy players).")]
 	class DisguiseToolTipInfo : TooltipInfo, Requires<DisguiseInfo>
 	{
-		public override object Create (ActorInitializer init) { return new DisguiseToolTip(init.self, this); }
+		public override object Create(ActorInitializer init) { return new DisguiseToolTip(init.self, this); }
 	}
 
 	class DisguiseToolTip : IToolTip
@@ -75,7 +76,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter("Disguise", "Disguise", 7, "ability", true, true) { ForceAttack = false };
+				yield return new TargetTypeOrderTargeter(new[] { "Disguise" }, "Disguise", 7, "ability", true, true) { ForceAttack = false };
 			}
 		}
 
@@ -134,6 +135,6 @@ namespace OpenRA.Mods.RA
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { DisguiseAs(self, null); }
 	}
 
-	class IgnoresDisguiseInfo : TraitInfo<IgnoresDisguise> {}
-	class IgnoresDisguise {}
+	class IgnoresDisguiseInfo : TraitInfo<IgnoresDisguise> { }
+	class IgnoresDisguise { }
 }

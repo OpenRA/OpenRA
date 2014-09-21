@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Primitives;
@@ -59,8 +60,8 @@ namespace OpenRA.Mods.RA
 			var spawn = self.CenterPosition + exitinfo.SpawnOffset;
 			var to = self.World.Map.CenterOfCell(exit);
 
-			var fi = producee.Traits.Get<IFacingInfo>();
-			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi.GetInitialFacing()) : exitinfo.Facing;
+			var fi = producee.Traits.GetOrDefault<IFacingInfo>();
+			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi == null ? 0 : fi.GetInitialFacing()) : exitinfo.Facing;
 
 			var exitLocation = rp.Value != null ? rp.Value.Location : exit;
 			var target = Target.FromCell(self.World, exitLocation);
@@ -96,6 +97,12 @@ namespace OpenRA.Mods.RA
 				if (!self.IsDead())
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())
 						t.UnitProduced(self, newUnit, exit);
+
+				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>()
+					.Where(a => a.Actor.Owner == self.Owner);
+
+				foreach (var notify in notifyOthers)
+					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
 			});
 		}
 
@@ -129,7 +136,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			return mobileInfo == null ||
-				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCell, self, true, true);
+				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCell, self);
 		}
 	}
 }

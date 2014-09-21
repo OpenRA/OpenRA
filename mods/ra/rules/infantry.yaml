@@ -2,9 +2,9 @@ DOG:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Dog
 		BuildPaletteOrder: 50
-		Prerequisites: ~barr, ~techlevel.infonly
-		Hotkey: o
+		Prerequisites: ~kenn, ~techlevel.infonly
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -32,9 +32,9 @@ E1:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 10
-		Prerequisites: ~techlevel.infonly
-		Hotkey: i
+		Prerequisites: ~barracks, ~techlevel.infonly
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -54,8 +54,7 @@ E1:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 
@@ -63,9 +62,9 @@ E2:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 20
 		Prerequisites: ~barr, ~techlevel.infonly
-		Hotkey: g
 	Valued:
 		Cost: 160
 	Tooltip:
@@ -87,8 +86,7 @@ E2:
 		FireDelay: 15
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 	Explodes:
@@ -99,9 +97,9 @@ E3:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 30
-		Prerequisites: ~techlevel.infonly
-		Hotkey: r
+		Prerequisites: ~barracks, ~techlevel.infonly
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -124,8 +122,7 @@ E3:
 		Weapon: Dragon
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 
@@ -133,9 +130,9 @@ E4:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 70
 		Prerequisites: ~barr, ftur, ~techlevel.low
-		Hotkey: t
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -156,8 +153,7 @@ E4:
 		Weapon: Flamer
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 
@@ -165,9 +161,9 @@ E6:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 60
-		Prerequisites: ~techlevel.infonly
-		Hotkey: e
+		Prerequisites: ~barracks, ~techlevel.infonly
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -188,8 +184,7 @@ E6:
 		Type: building
 	TakeCover:
 	-AutoTarget:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 
@@ -197,14 +192,14 @@ SPY:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 90
 		Prerequisites: dome, ~tent, ~techlevel.medium
-		Hotkey: p
 	Valued:
 		Cost: 500
 	DisguiseToolTip:
 		Name: Spy
-		Description: Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
+		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
 	Selectable:
 		Voice: SpyVoice
 		Bounds: 12,17,0,-9
@@ -219,7 +214,7 @@ SPY:
 	TakeCover:
 	Disguise:
 	Infiltrates:
-		Types: Cash, SupportPower, Exploration
+		Types: SpyInfiltrate
 	-AutoTarget:
 	-RenderInfantry:
 	RenderDisguise:
@@ -233,9 +228,9 @@ E7:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 120
 		Prerequisites: ~tent, atek, ~techlevel.unrestricted
-		Hotkey: y
 		BuildLimit: 1
 	Valued:
 		Cost: 1200
@@ -265,17 +260,16 @@ E7:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 MEDI:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 40
 		Prerequisites: ~tent, ~techlevel.infonly
-		Hotkey: m
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -300,17 +294,17 @@ MEDI:
 		OutsideRangeCursor: heal
 	TakeCover:
 	-AutoTarget:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+		AttackAnimation: heal
 
 MECH:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 100
 		Prerequisites: ~tent, fix, ~techlevel.medium
-		Hotkey: c
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -337,9 +331,9 @@ MECH:
 		CaptureTypes: husk
 	TakeCover:
 	-AutoTarget:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+		AttackAnimation: heal
 
 EINSTEIN:
 	Inherits: ^Infantry
@@ -359,8 +353,7 @@ EINSTEIN:
 	-AutoTarget:
 	ProximityCaptor:
 		Types: CivilianInfantry
-	-RenderInfantry:
-	RenderInfantryPanic:
+	RenderInfantry:
 	ScaredyCat:
 
 DELPHI:
@@ -381,8 +374,7 @@ DELPHI:
 	-AutoTarget:
 	ProximityCaptor:
 		Types: CivilianInfantry
-	-RenderInfantry:
-	RenderInfantryPanic:
+	RenderInfantry:
 	ScaredyCat:
 
 CHAN:
@@ -424,9 +416,9 @@ HIJACKER:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 110
 		Prerequisites: ~barr, fix, ~techlevel.medium
-		Hotkey: j
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -451,9 +443,9 @@ SHOK:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 130
 		Prerequisites: ~barr, stek, tsla, ~techlevel.unrestricted
-		Hotkey: l
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -476,8 +468,7 @@ SHOK:
 		Weapon: PortaTesla
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 
@@ -490,9 +481,9 @@ SNIPER:
 		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 80
 		Prerequisites: ~barr, dome, ~techlevel.medium
-		Hotkey: h
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -513,8 +504,7 @@ SNIPER:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 	Cloak:
@@ -576,4 +566,6 @@ Ant:
 	AttackFrontal:
 	Armament:
 		Weapon: mandible
+	WithDeathAnimation:
+		UseDeathTypeSuffix: false
 

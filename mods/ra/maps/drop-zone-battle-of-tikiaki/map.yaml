@@ -306,21 +306,26 @@ Rules:
 		-ExplodeCrateAction@fire:
 		-SupportPowerCrateAction@parabombs:
 		-GiveCashCrateAction:
+		-DuplicateUnitCrateAction:
+		-GiveUnitCrateAction@squadlight:
+		-GiveUnitCrateAction@squadheavysoviet:
 		GiveUnitCrateAction@ttnk:
 			SelectionShares: 4
-			Unit: ttnk
+			Units: ttnk
 		GiveUnitCrateAction@ftrk:
 			SelectionShares: 6
-			Unit: ftrk
+			Units: ftrk
 		GiveUnitCrateAction@harv:
 			SelectionShares: 1
-			Unit: harv
+			Units: harv
 		GiveUnitCrateAction@shok:
 			SelectionShares: 1
-			Unit: shok
+			Units: shok
 		GiveUnitCrateAction@dog:
 			SelectionShares: 1
-			Unit: dog
+			Units: dog
+		Crate:
+			TerrainTypes: Clear, Road, Ore, Beach
 	^Infantry:
 		GivesBounty:
 			Percentage: 0
@@ -362,11 +367,11 @@ VoxelSequences:
 
 Weapons:
 	PortaTesla:
-		ROF: 20
+		ReloadDelay: 20
 		Range: 10c0
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 42
-			InfDeath: 5
+			DeathType: 5
 			Damage: 80
 
 Voices:

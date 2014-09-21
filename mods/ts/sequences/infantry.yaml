@@ -45,6 +45,12 @@ e1:
 		Start: 0
 		Length: *
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -122,6 +128,12 @@ e2:
 		Start: 0
 		Length: *
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -199,6 +211,12 @@ e3:
 		Start: 0
 		Length: *
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -267,19 +285,19 @@ weedguy:
 		Facings: 8
 		Stride: 6
 		ShadowStart: 288
-	die2: weed
-		Start: 160
-		Length: 6
-		ShadowStart: 362
-		Tick: 80
 	die1: weed
 		Start: 149
 		Length: 11
 		ShadowStart: 351
 		Tick: 80
+	die2: weed
+		Start: 160
+		Length: 6
+		ShadowStart: 362
+		Tick: 80
 	die3: weed
 		Start: 166
-		Length: 10
+		Length: 11
 		ShadowStart: 368
 		Tick: 80
 	die4: weed
@@ -296,6 +314,11 @@ weedguy:
 		Start: 0
 		Length: *
 		Tick: 80
+	die-crushed: weed
+		Start: 174
+		Length: 3
+		ShadowStart: 376
+		Tick: 1000
 	icon: weaticon
 		Start: 0
 
@@ -347,6 +370,12 @@ medic:
 		Length: 15
 		ShadowStart: 455
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -427,6 +456,12 @@ engineer:
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	standup-0:
 		Start: 260
 		Length: 2
@@ -493,6 +528,12 @@ umagon:
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -571,6 +612,12 @@ ghost: # TODO unused GUNFIRE.SHP
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -647,6 +694,12 @@ jumpjet: # TODO: ShadowStart:
 		Length: 15
 		ShadowStart: 887
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -725,6 +778,12 @@ mhijack:
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -803,6 +862,12 @@ chamspy:
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -1036,6 +1101,12 @@ mutant:
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -1114,6 +1185,12 @@ mwmn:
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -1192,6 +1269,12 @@ mutant3: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -1270,6 +1353,12 @@ tratos:
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -1348,6 +1437,12 @@ oxanna:
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -1426,6 +1521,12 @@ slav:
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 164
 		Length: 6
@@ -1482,6 +1583,12 @@ doggie: # TODO: not sure what frame 88 and following is
 		Length: 10
 		ShadowStart: 218
 		Tick: 80
+	die-crushed:
+		Start: 105
+		Length: 4
+		ShadowStart: 224
+		Tick: 800
+		ZOffset: -511
 	shoot:
 		Start: 56
 		Length: 4
@@ -1566,6 +1673,12 @@ civ1:
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	die5: flameguy # TODO: walking animation unused
 		Start: 42
 		Length: 104
@@ -1622,6 +1735,12 @@ civ2:
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	die5: flameguy # TODO: walking animation unused
 		Start: 42
 		Length: 104
@@ -1678,6 +1797,12 @@ civ3:
 		Length: 15
 		ShadowStart: 441
 		Tick: 80
+	die-crushed:
+		Start: 159
+		Length: 5
+		ShadowStart: 451
+		Tick: 800
+		ZOffset: -511
 	die5: flameguy # TODO: walking animation unused
 		Start: 42
 		Length: 104

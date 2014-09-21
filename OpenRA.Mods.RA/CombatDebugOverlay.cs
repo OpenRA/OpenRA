@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA
 {
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new CombatDebugOverlay(init.self); }
 	}
 
-	public class CombatDebugOverlay : IPostRender
+	public class CombatDebugOverlay : IPostRender, INotifyDamage
 	{
 		Lazy<AttackBase> attack;
 		Lazy<IBodyOrientation> coords;
@@ -86,6 +87,20 @@ namespace OpenRA.Mods.RA
 					wr.DrawTargetMarker(c, sm);
 				}
 			}
+		}
+
+		public void Damaged(Actor self, AttackInfo e)
+		{
+			if (devMode == null || !devMode.ShowCombatGeometry || e.Damage == 0)
+				return;
+
+			var health = self.TraitOrDefault<Health>();
+			if (health == null)
+				return;
+
+			var damageText = "{0} ({1}%)".F(-e.Damage, e.Damage * 100 / health.MaxHP);
+
+			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color.RGB, damageText, 30)));
 		}
 	}
 }

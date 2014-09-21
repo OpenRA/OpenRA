@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -43,13 +44,23 @@ namespace OpenRA.Scripting
 	public abstract class ScriptActorProperties
 	{
 		protected readonly Actor self;
-		public ScriptActorProperties(Actor self) { this.self = self; }
+		protected readonly ScriptContext context;
+		public ScriptActorProperties(ScriptContext context, Actor self)
+		{
+			this.self = self;
+			this.context = context;
+		}
 	}
 
 	public abstract class ScriptPlayerProperties
 	{
 		protected readonly Player player;
-		public ScriptPlayerProperties(Player player) { this.player = player; }
+		protected readonly ScriptContext context;
+		public ScriptPlayerProperties(ScriptContext context, Player player)
+		{
+			this.player = player;
+			this.context = context;
+		}
 	}
 
 	// For global-level bindings
@@ -162,6 +173,7 @@ namespace OpenRA.Scripting
 		public void FatalError(string message)
 		{
 			Console.WriteLine("Fatal Lua Error: {0}", message);
+			Game.AddChatLine(Color.White, "Fatal Lua Error", message);
 			error = true;
 		}
 

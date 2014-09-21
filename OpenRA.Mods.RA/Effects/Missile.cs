@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
@@ -22,19 +23,24 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		[Desc("Projectile speed in WRange / tick")]
 		public readonly WRange Speed = new WRange(8);
+		[Desc("Maximum vertical pitch when changing altitude.")]
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(30);
+		[Desc("How many ticks before this missile is armed and can explode.")]
 		public readonly int Arm = 0;
-		[Desc("Check for whether an actor with Wall: trait blocks fire")]
+		[Desc("Check for whether an actor with BlocksBullets: trait blocks fire")]
 		public readonly bool High = false;
 		public readonly bool Shadow = false;
 		public readonly string Trail = null;
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WRange Inaccuracy = WRange.Zero;
+		[Desc("Probability of locking onto and following target.")]
+		public readonly int LockOnProbability = 100;
 		public readonly string Image = null;
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 5;
 		[Desc("Explode when following the target longer than this.")]
 		public readonly int RangeLimit = 0;
+		[Desc("If fired at aircraft, increase speed by 50%.")]
 		public readonly bool TurboBoost = false;
 		public readonly int TrailInterval = 2;
 		public readonly int ContrailLength = 0;
@@ -44,18 +50,16 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly bool Jammable = true;
 		[Desc("Explodes when leaving the following terrain type, e.g., Water for torpedoes.")]
 		public readonly string BoundToTerrainType = "";
+		[Desc("Explodes when inside this proximity radius to target.",
+			"Note: If this value is lower than the missile speed, this check might", 
+			"not trigger fast enough, causing the missile to fly past the target.")]
+		public readonly WRange CloseEnough = new WRange(298);
 
 		public IEffect Create(ProjectileArgs args) { return new Missile(this, args); }
 	}
 
 	class Missile : IEffect, ISync
 	{
-		// HACK: the missile movement code isn't smart enough to explode
-		// when the projectile passes the actor.  This defines an arbitrary
-		// proximity radius that they will explode within, which makes
-		// missiles difficult to consistently balance.
-		static readonly WRange MissileCloseEnough = new WRange(298);
-
 		readonly MissileInfo info;
 		readonly ProjectileArgs args;
 		readonly Animation anim;
@@ -70,6 +74,8 @@ namespace OpenRA.Mods.RA.Effects
 		[Sync] WVec offset;
 		[Sync] int ticks;
 
+		[Sync] bool lockOn = false;
+
 		[Sync] public Actor SourceActor { get { return args.SourceActor; } }
 		[Sync] public Target GuidedTarget { get { return args.GuidedTarget; } }
 
@@ -83,19 +89,27 @@ namespace OpenRA.Mods.RA.Effects
 
 			targetPosition = args.PassiveTarget;
 
+			var world = args.SourceActor.World;
+
+			if (world.SharedRandom.Next(100) <= info.LockOnProbability)
+				lockOn = true;
+
 			if (info.Inaccuracy.Range > 0)
-				offset = WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * info.Inaccuracy.Range / 1024;
+			{
+				var inaccuracy = Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, args.InaccuracyModifiers);
+				offset = WVec.FromPDF(world.SharedRandom, 2) * inaccuracy / 1024;
+			}
 
 			if (info.Image != null)
 			{
-				anim = new Animation(args.SourceActor.World, info.Image, () => facing);
+				anim = new Animation(world, info.Image, () => facing);
 				anim.PlayRepeating("idle");
 			}
 
 			if (info.ContrailLength > 0)
 			{
 				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
-				trail = new ContrailRenderable(args.SourceActor.World, color, info.ContrailLength, info.ContrailDelay, 0);
+				trail = new ContrailRenderable(world, color, info.ContrailLength, info.ContrailDelay, 0);
 			}
 		}
 
@@ -116,7 +130,7 @@ namespace OpenRA.Mods.RA.Effects
 			anim.Tick();
 
 			// Missile tracks target
-			if (args.GuidedTarget.IsValidFor(args.SourceActor))
+			if (args.GuidedTarget.IsValidFor(args.SourceActor) && lockOn)
 				targetPosition = args.GuidedTarget.CenterPosition;
 
 			var dist = targetPosition + offset - pos;
@@ -158,7 +172,7 @@ namespace OpenRA.Mods.RA.Effects
 			var cell = world.Map.CellContaining(pos);
 
 			var shouldExplode = (pos.Z < 0) // Hit the ground
-				|| (dist.LengthSquared < MissileCloseEnough.Range * MissileCloseEnough.Range) // Within range
+				|| (dist.LengthSquared < info.CloseEnough.Range * info.CloseEnough.Range) // Within range
 				|| (info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
 				|| (!info.High && world.ActorMap.GetUnitsAt(cell).Any(a => a.HasTrait<IBlocksBullets>())) // Hit a wall
 				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
@@ -179,7 +193,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (ticks <= info.Arm)
 				return;
 
-			Combat.DoImpacts(pos, args.SourceActor, args.Weapon, args.FirepowerModifier);
+			args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

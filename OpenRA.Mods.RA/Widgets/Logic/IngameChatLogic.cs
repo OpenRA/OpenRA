@@ -30,7 +30,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		readonly List<INotifyChat> chatTraits;
 
+		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
+
 		bool teamChat;
+		bool inDialog;
 
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, Ruleset modRules)
@@ -43,10 +46,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var disableTeamChat = world.LocalPlayer == null || world.LobbyInfo.IsSinglePlayer || !players.Any(p => p.IsAlliedWith(world.LocalPlayer));
 			teamChat = !disableTeamChat;
 
+			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).ToList();
+			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
+
 			var chatPanel = (ContainerWidget)widget;
-			chatOverlay = chatPanel.Get<ContainerWidget>("CHAT_OVERLAY");
-			chatOverlayDisplay = chatOverlay.Get<ChatDisplayWidget>("CHAT_DISPLAY");
-			chatOverlay.Visible = false;
+			chatOverlay = chatPanel.GetOrNull<ContainerWidget>("CHAT_OVERLAY");
+			if (chatOverlay != null)
+			{
+				chatOverlayDisplay = chatOverlay.Get<ChatDisplayWidget>("CHAT_DISPLAY");
+				chatOverlay.Visible = false;
+			}
+			else
+				inDialog = true;
 
 			chatChrome = chatPanel.Get<ContainerWidget>("CHAT_CHROME");
 			chatChrome.Visible = true;
@@ -57,7 +68,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			chatMode.IsDisabled = () => disableTeamChat;
 
 			chatText = chatChrome.Get<TextFieldWidget>("CHAT_TEXTFIELD");
-			chatText.OnTabKey = () =>
+			chatText.OnAltKey = () =>
 			{
 				if (!disableTeamChat)
 					teamChat ^= true;
@@ -71,34 +82,48 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
 					else
 						if (chatTraits != null)
-							chatTraits.All(x => x.OnChat(orderManager.LocalClient.Name, chatText.Text.Trim()));
+						{
+							var text = chatText.Text.Trim();
+							foreach (var trait in chatTraits)
+								trait.OnChat(orderManager.LocalClient.Name, text);
+						}
 
+				chatText.Text = "";
 				CloseChat();
+				return true;
+			};
+			chatText.OnTabKey = () =>
+			{
+				chatText.Text = tabCompletion.Complete(chatText.Text);
+				chatText.CursorPosition = chatText.Text.Length;
 				return true;
 			};
 
 			chatText.OnEscKey = () => { CloseChat(); return true; };
 
-			var chatClose = chatChrome.Get<ButtonWidget>("CHAT_CLOSE");
-			chatClose.OnClick += () => CloseChat();
-
-			chatPanel.OnKeyPress = (e) =>
+			if (!inDialog)
 			{
-				if (e.Event == KeyInputEvent.Up)
-					return false;
+				var chatClose = chatChrome.Get<ButtonWidget>("CHAT_CLOSE");
+				chatClose.OnClick += CloseChat;
 
-				if (!chatChrome.IsVisible() && (e.Key == Keycode.RETURN || e.Key == Keycode.KP_ENTER))
+				chatPanel.OnKeyPress = e =>
 				{
-					OpenChat();
-					return true;
-				}
+					if (e.Event == KeyInputEvent.Up)
+						return false;
 
-				return false;
-			};
+					if (!chatChrome.IsVisible() && (e.Key == Keycode.RETURN || e.Key == Keycode.KP_ENTER))
+					{
+						OpenChat();
+						return true;
+					}
 
+					return false;
+				};
+			}
 			chatScrollPanel = chatChrome.Get<ScrollPanelWidget>("CHAT_SCROLLPANEL");
 			chatTemplate = chatScrollPanel.Get<ContainerWidget>("CHAT_TEMPLATE");
 			chatScrollPanel.RemoveChildren();
+			chatScrollPanel.ScrollToBottom();
 
 			Game.AddChatLine += AddChatLine;
 			Game.BeforeGameStart += UnregisterEvents;
@@ -115,22 +140,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public void OpenChat()
 		{
 			chatText.Text = "";
-			chatOverlay.Visible = false;
 			chatChrome.Visible = true;
 			chatScrollPanel.ScrollToBottom();
 			chatText.TakeKeyboardFocus();
+			if (!inDialog)
+				chatOverlay.Visible = false;
 		}
 
 		public void CloseChat()
 		{
-			chatOverlay.Visible = true;
+			if (inDialog)
+				return;
 			chatChrome.Visible = false;
 			chatText.YieldKeyboardFocus();
+			chatOverlay.Visible = true;
 		}
 
 		public void AddChatLine(Color c, string from, string text)
 		{
-			chatOverlayDisplay.AddLine(c, from, text);
+			if (!inDialog)
+				chatOverlayDisplay.AddLine(c, from, text);
 
 			var template = chatTemplate.Clone();
 			var nameLabel = template.Get<LabelWidget>("NAME");

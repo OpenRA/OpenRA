@@ -3,113 +3,334 @@ Container@PLAYER_WIDGETS:
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
-		Button@INGAME_DIPLOMACY_BUTTON:
-			X: 162
-			Y: 0
-			Width: 160
-			Height: 25
-			Text: Diplomacy (F1)
-			Font: Bold
-			Key: f1
-		Button@CHEATS_BUTTON:
-			X: 324
-			Y: 0
-			Width: 160
-			Height: 25
-			Text: Cheats (F2)
-			Visible: false
-			Font: Bold
-			Key: f2
-		Button@OBJECTIVES_BUTTON:
-			X: 486
-			Y: 0
-			Width: 160
-			Height: 25
-			Text: Objectives (F3)
-			Visible: false
-			Font: Bold
-			Key: f3
-		SlidingContainer@INGAME_RADAR_BIN:
-			X: WINDOW_RIGHT-215
-			Y: 0
-			OpenOffset: 0,29
-			ClosedOffset: 0,-166
-			AnimationLength: 15
+		Container@SUPPORT_POWERS:
+			Logic: SupportPowerBinLogic
+			X: 10
+			Y: 10
 			Children:
-				Image@RADAR_BIN_BG:
-					ImageName: radar
-				Radar@RADAR_MINIMAP:
-					WorldInteractionController: INTERACTION_CONTROLLER
+				SupportPowers@SUPPORT_PALETTE:
+					IconSize: 62, 46
+					IconSpriteOffset: -1, -1
+					TooltipContainer: TOOLTIP_CONTAINER
+					ReadyText: READY
+					HoldText: ON HOLD
+				Container@PALETTE_FOREGROUND:
+					Children:
+						Image@ICON_TEMPLATE:
+							Logic: AddRaceSuffixLogic
+							X:0-2
+							Y:0-2
+							Width: 62
+							Height: 46
+							IgnoreMouseOver: true
+							ImageCollection: sidebar
+							ImageName: background-supportoverlay
+		Image@SIDEBAR_BACKGROUND_TOP:
+			Logic: AddRaceSuffixLogic
+			X: WINDOW_RIGHT - 250
+			Y: 10
+			Width: 238
+			Height: 291
+			ImageCollection: sidebar
+			ImageName: background-top
+			ClickThrough: false
+			Children:
+				Container@TOP_BUTTONS:
+					Logic: OrderButtonsChromeLogic
 					X: 9
-					Width: 192
-					Height: 192
-				ResourceBar@POWERBAR:
-					X: 42
-					Y: 205
-					Width: 138
-					Height: 5
+					Y: 7
+					Children:
+						Button@BEACON_BUTTON:
+							Logic: AddRaceSuffixLogic
+							Width: 28
+							Height: 28
+							Background: sidebar-button
+							TooltipText: Place Beacon
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+						Button@SELL_BUTTON:
+							Logic: AddRaceSuffixLogic
+							X: 32
+							Width: 28
+							Height: 28
+							Background: sidebar-button
+							TooltipText: Sell
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+						Button@POWER_BUTTON:
+							Logic: AddRaceSuffixLogic
+							X: 64
+							Width: 28
+							Height: 28
+							Background: sidebar-button
+							TooltipText: Power Down
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+						Button@REPAIR_BUTTON:
+							Logic: AddRaceSuffixLogic
+							X: 96
+							Width: 28
+							Height: 28
+							Background: sidebar-button
+							TooltipText: Repair
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+						MenuButton@DEBUG_BUTTON:
+							Logic: AddRaceSuffixLogic
+							Key: escape Shift
+							X: 128
+							Width: 28
+							Height: 28
+							Background: sidebar-button
+							TooltipText: Debug Menu
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+									ImageName: options
+						MenuButton@DIPLOMACY_BUTTON:
+							Logic: AddRaceSuffixLogic
+							MenuContainer: INGAME_DIPLOMACY_BG
+							HideIngameUI: false
+							Pause: false
+							Key: P
+							X: 160
+							Width: 28
+							Height: 28
+							Background: sidebar-button
+							TooltipText: Diplomacy
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+									ImageName: diplomacy
+						MenuButton@OPTIONS_BUTTON:
+							Logic: AddRaceSuffixLogic
+							Key: escape
+							X: 192
+							Width: 28
+							Height: 28
+							Background: sidebar-button
+							TooltipText: Options
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+									ImageName: options
+				Container@RADAR:
+					Logic: IngameRadarDisplayLogic
+					Children:
+						LogicTicker@RADAR_TICKER:
+						ColorBlock@RADAR_FADETOBLACK:
+							X: 8
+							Y: 40
+							Width: 222
+							Height: 222
+						Radar@RADAR_MINIMAP:
+							WorldInteractionController: INTERACTION_CONTROLLER
+							X: 9
+							Y: 41
+							Width: 220
+							Height: 220
+							Children:
+				Label@GAME_TIMER:
+					Logic: GameTimerLogic
+					Y: 263
+					Width: PARENT_RIGHT
+					Height: 22
+					Align: Center
+					Font: TinyBold
+				LabelWithTooltip@CASH:
+					Logic: IngameCashCounterLogic
+					X: 35
+					Y: 262
+					Width: 50
+					Height: 22
+					Font: Bold
+					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
-					IndicatorImage: power-indicator
-					Orientation: Horizontal
-					Style: Bevelled
-		MoneyBin@INGAME_MONEY_BIN:
-			Logic: OrderButtonsChromeLogic
-			X: WINDOW_RIGHT - WIDTH
-			Width: 320
-			Height: 32
-			Children:
-				Button@BEACON_BUTTON:
-					X: 3-36
-					Width: 34
-					Height: 28
-					TooltipText: Place Beacon
+				LabelWithTooltip@POWER:
+					Logic: IngamePowerCounterLogic
+					X: PARENT_RIGHT - WIDTH - 30
+					Y: 262
+					Width: 50
+					Height: 22
+					Align: Right
+					Font: Bold
+					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
-					VisualHeight: 0
-					Children:
-						Image@ICON:
-							ImageCollection: order-icons
-				Button@SELL_BUTTON:
-					X: 3
-					Width: 34
-					Height: 28
-					TooltipText: Sell
-					TooltipContainer: TOOLTIP_CONTAINER
-					VisualHeight: 0
-					Children:
-						Image@ICON:
-							ImageCollection: order-icons
-				Button@POWER_BUTTON:
-					X: 39
-					Width: 34
-					Height: 28
-					TooltipText: Power Down
-					TooltipContainer: TOOLTIP_CONTAINER
-					VisualHeight: 0
-					Children:
-						Image@ICON:
-							ImageCollection: order-icons
-				Button@REPAIR_BUTTON:
-					X: 75
-					Width: 34
-					Height: 28
-					TooltipText: Repair
-					TooltipContainer: TOOLTIP_CONTAINER
-					VisualHeight: 0
-					Children:
-						Image@ICON:
-							ImageCollection: order-icons
-		SupportPowerBin@INGAME_POWERS_BIN:
-			X: 0
-			Y: 25
-			ReadyText: READY
-			HoldText: ON HOLD
-		BuildPalette@INGAME_BUILD_PALETTE:
+					TooltipTemplate: SIMPLE_TOOLTIP
+		Container@SIDEBAR_PRODUCTION:
+			Logic: ClassicProductionLogic
 			X: WINDOW_RIGHT - 250
-			Y: 280
-			Width: 250
-			Height: 500
-			ReadyText: READY
-			HoldText: ON HOLD
-			RequiresText: Requires {0}
-
+			Y: 300
+			Width: 238
+			Height: 250
+			Children:
+				Container@PALETTE_BACKGROUND:
+					Children:
+						Image@ROW_TEMPLATE:
+							Logic: AddRaceSuffixLogic
+							Width: 238
+							Height: 47
+							ClickThrough: false
+							ImageCollection: sidebar
+							ImageName: background-iconrow
+						Image@BOTTOM_CAP:
+							Logic: AddRaceSuffixLogic
+							Width: 238
+							Height: 8
+							ClickThrough: false
+							ImageCollection: sidebar
+							ImageName: background-bottom
+				LogicTicker@PRODUCTION_TICKER:
+				ProductionPalette@PRODUCTION_PALETTE:
+					X: 42
+					Y: 1
+					TooltipContainer: TOOLTIP_CONTAINER
+					ReadyText: READY
+					HoldText: ON HOLD
+					IconSize: 62, 46
+					IconMargin: 1, 1
+					IconSpriteOffset: -1, -1
+				Container@PALETTE_FOREGROUND:
+					X: 40
+					Y: 0-1
+					Children:
+						Image@ROW_TEMPLATE:
+							Width: 238
+							Height: 47
+							IgnoreMouseOver: true
+							ImageCollection: sidebar-bits
+							ImageName: production-iconoverlay
+				Container@PRODUCTION_TYPES:
+					X: 7
+					Y: 2
+					Width: 29
+					Height: 240
+					Children:
+						ProductionTypeButton@BUILDING:
+							Logic: AddRaceSuffixLogic
+							Key: e
+							Width: 28
+							Height: 28
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Buildings
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Building
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: production-icons
+						ProductionTypeButton@DEFENSE:
+							Logic: AddRaceSuffixLogic
+							Key: r
+							Y: 31
+							Width: 28
+							Height: 28
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Defense
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Defense
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: production-icons
+						ProductionTypeButton@INFANTRY:
+							Logic: AddRaceSuffixLogic
+							Key: t
+							Y: 62
+							Width: 28
+							Height: 28
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Infantry
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Infantry
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: production-icons
+						ProductionTypeButton@VEHICLE:
+							Logic: AddRaceSuffixLogic
+							Key: y
+							Y: 93
+							Width: 28
+							Height: 28
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Vehicles
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Vehicle
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: production-icons
+						ProductionTypeButton@AIRCRAFT:
+							Logic: AddRaceSuffixLogic
+							Key: u
+							Y: 124
+							Width: 28
+							Height: 28
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Aircraft
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Aircraft
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: production-icons
+						ProductionTypeButton@NAVAL:
+							Logic: AddRaceSuffixLogic
+							Key: i
+							Y: 155
+							Width: 28
+							Height: 28
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Naval
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Ship
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: production-icons

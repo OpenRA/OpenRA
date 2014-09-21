@@ -28,7 +28,7 @@ Options:
 	FragileAlliances: False
 	StartingCash: 2000
 	ConfigurableStartingUnits: False
-	Difficulties: Medium,Hard
+	Difficulties: Medium, Hard
 
 Players:
 	PlayerReference@Neutral:
@@ -38,10 +38,10 @@ Players:
 		Race: allies
 	PlayerReference@Civilians:
 		Name: Civilians
+		NonCombatant: True
 		Race: allies
 		ColorRamp: 0,0,0
 		Allies: Allies
-		NonCombatant: True
 	PlayerReference@Allies:
 		Name: Allies
 		Playable: True
@@ -59,7 +59,7 @@ Players:
 		Name: Soviets
 		Race: soviet
 		ColorRamp: 3,255,127
-		Enemies: Civilians,Allies
+		Enemies: Civilians, Allies
 
 Actors:
 	EasyMine: mine
@@ -1280,7 +1280,7 @@ Actors:
 		Location: 73,63
 		Owner: Soviets
 		FreeActor: False
-	Actor397: kenn
+	Kennel: kenn
 		Location: 64,61
 		Owner: Soviets
 	Actor484: silo
@@ -2214,12 +2214,16 @@ Smudges:
 Rules:
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScriptInterface:
 			LuaScripts: mission.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	CAMERA:
 		RevealsShroud:
 			Range: 18c0
@@ -2259,13 +2263,13 @@ Rules:
 		Valued:
 			Cost: 1500
 	SAM:
-		Building:
-			Power: -5
 		RevealsShroud:
 			Range: 7c0
+		Power:
+			Amount: -5
 	TSLA:
-		Building:
-			Power: -50
+		Power:
+			Amount: -50
 	^Vehicles:
 		MustBeDestroyed:
 	^Tank:
@@ -2333,7 +2337,7 @@ Weapons:
 	Nike:
 		Range: 9c0
 	Maverick:
-		Warhead:
+		Warhead: SpreadDamage
 			Damage: 175
 
 Voices:

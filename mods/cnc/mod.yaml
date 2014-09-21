@@ -68,6 +68,7 @@ Chrome:
 	mods/cnc/chrome.yaml
 
 Assemblies:
+	mods/common/OpenRA.Mods.Common.dll
 	mods/ra/OpenRA.Mods.RA.dll
 	mods/cnc/OpenRA.Mods.Cnc.dll
 	mods/d2k/OpenRA.Mods.D2k.dll
@@ -88,13 +89,18 @@ ChromeLayout:
 	mods/cnc/chrome/replaybrowser.yaml
 	mods/cnc/chrome/ingame.yaml
 	mods/cnc/chrome/ingame-chat.yaml
-	mods/cnc/chrome/ingamemenu.yaml
+	mods/cnc/chrome/ingame-menu.yaml
+	mods/cnc/chrome/ingame-debug.yaml
+	mods/cnc/chrome/ingame-info.yaml
+	mods/cnc/chrome/ingame-infobriefing.yaml
+	mods/cnc/chrome/ingame-infoobjectives.yaml
+	mods/cnc/chrome/ingame-infostats.yaml
+	mods/cnc/chrome/ingame-leavemap.yaml
+	mods/cnc/chrome/ingame-observerstats.yaml
 	mods/cnc/chrome/music.yaml
 	mods/cnc/chrome/settings.yaml
 	mods/cnc/chrome/credits.yaml
-	mods/cnc/chrome/cheats.yaml
 	mods/cnc/chrome/dialogs.yaml
-	mods/cnc/chrome/objectives.yaml
 	mods/cnc/chrome/tooltips.yaml
 	mods/cnc/chrome/irc.yaml
 	mods/cnc/chrome/assetbrowser.yaml
@@ -148,6 +154,8 @@ ServerTraits:
 	LobbyCommands
 	PlayerPinger
 	MasterServerPinger
+	LobbySettingsNotification
+	ColorValidator
 
 LobbyDefaults:
 	AllowCheats: false

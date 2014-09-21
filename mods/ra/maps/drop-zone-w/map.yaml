@@ -214,12 +214,7 @@ Rules:
 		-LevelUpCrateAction:
 		-GiveMcvCrateAction:
 		-GiveUnitCrateAction@jeep:
-		-GiveUnitCrateAction@arty:
-		-GiveUnitCrateAction@v2rl:
 		-GiveUnitCrateAction@1tnk:
-		-GiveUnitCrateAction@2tnk:
-		-GiveUnitCrateAction@3tnk:
-		-GiveUnitCrateAction@4tnk:
 		-RevealMapCrateAction:
 		-HideMapCrateAction:
 		-ExplodeCrateAction@nuke:
@@ -227,29 +222,29 @@ Rules:
 		-ExplodeCrateAction@fire:
 		-SupportPowerCrateAction@parabombs:
 		-GiveCashCrateAction:
+		-DuplicateUnitCrateAction:
+		-GiveUnitCrateAction@squadlight:
+		-GiveUnitCrateAction@squadheavyallies:
 		GiveUnitCrateAction@pt:
 			SelectionShares: 7
-			Unit: pt
+			Units: pt
 		GiveUnitCrateAction@dd:
 			SelectionShares: 6
-			Unit: dd
+			Units: dd
 		GiveUnitCrateAction@ca:
 			SelectionShares: 4
-			Unit: ca
+			Units: ca
 		GiveUnitCrateAction@ss:
 			SelectionShares: 6
-			Unit: ss
+			Units: ss
 		GiveUnitCrateAction@msub:
 			SelectionShares: 4
-			Unit: msub
+			Units: msub
+		Crate:
+			TerrainTypes: Water
 	LST:
-		Buildable:
-			Queue: Ship
-			BuildPaletteOrder: 30
-			Owner: allies
 		Tooltip:
 			Name: Naval Mobile HQ
-			Description: Naval mobile HQ.\n Protect it at all costs.
 		Health:
 			HP: 1000
 		Mobile:
@@ -268,24 +263,14 @@ Rules:
 		MustBeDestroyed:
 		-GivesBounty:
 	PT:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 	DD:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 	CA:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 	SS:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 	MSUB:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 
 Sequences:
@@ -302,7 +287,7 @@ VoxelSequences:
 
 Weapons:
 	8Inch:
-		ROF: 200
+		ReloadDelay: 200
 		Range: 32c0
 		Burst: 4
 		Report: TURRET1
@@ -313,22 +298,24 @@ Weapons:
 			Inaccuracy: 3c341
 			Image: 120MM
 			ContrailLength: 30
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 128
 			Versus:
-				None: 60%
-				Wood: 75%
-				Light: 60%
-				Heavy: 25%
+				None: 60
+				Wood: 75
+				Light: 60
+				Heavy: 25
+			DeathType: 2
+			Damage: 250
+		Warhead@1Eff: CreateEffect
 			Explosion: large_explosion
 			WaterExplosion: large_splash
-			InfDeath: 2
-			SmudgeType: Crater
-			Damage: 250
 			ImpactSound: kaboom12.aud
 			WaterImpactSound: splash9.aud
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Crater
 	SubMissile:
-		ROF: 250
+		ReloadDelay: 250
 		Range: 32c0
 		Burst: 4
 		Report: MISSILE6
@@ -340,19 +327,21 @@ Weapons:
 			Image: MISSILE
 			Trail: smokey
 			ContrailLength: 30
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 426
 			Versus:
-				None: 40%
-				Light: 30%
-				Heavy: 30%
+				None: 40
+				Light: 30
+				Heavy: 30
+			DeathType: blownaway
+			Damage: 400
+		Warhead@1Eff: CreateEffect
 			Explosion: large_explosion
 			WaterExplosion: large_splash
-			InfDeath: blownaway
-			SmudgeType: Crater
-			Damage: 400
 			ImpactSound: kaboom12.aud
 			WaterImpactSound: splash9.aud
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Crater
 
 Voices:
 

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -89,13 +89,13 @@ namespace OpenRA.Mods.RA.Move
 				var rangeSquared = range.Range*range.Range;
 
 				// Correct for SubCell offset
-				target -= MobileInfo.SubCellOffsets[srcSub];
+				target -= self.World.Map.OffsetOfSubCell(srcSub);
 
 				// Select only the tiles that are within range from the requested SubCell
 				// This assumes that the SubCell does not change during the path traversal
 				var tilesInRange = world.Map.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
 					.Where(t => (world.Map.CenterOfCell(t) - target).LengthSquared <= rangeSquared
-					       && mi.CanEnterCell(self.World, self, t, null, true, true));
+					       && mi.CanEnterCell(self.World, self, t));
 
 				// See if there is any cell within range that does not involve a cross-domain request
 				// Really, we only need to check the circle perimeter, but it's not clear that would be a performance win

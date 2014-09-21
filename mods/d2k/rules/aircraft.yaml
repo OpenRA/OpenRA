@@ -42,6 +42,7 @@ FRIGATE:
 		Speed: 350
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
+		Repulsable: False
 	Health:
 		HP: 500
 	-TargetableAircraft:
@@ -106,6 +107,7 @@ ORNI.bomber:
 		Speed: 350
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
+		Repulsable: False
 	LimitedAmmo:
 		Ammo: 5
 	RenderUnit:
@@ -135,6 +137,7 @@ CARRYALL.infantry:
 		Speed: 280
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
+		Repulsable: False
 	RenderUnit:
 		Image: carryall
 	WithShadow:

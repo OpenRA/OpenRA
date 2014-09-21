@@ -3,32 +3,27 @@ Container@PLAYER_WIDGETS:
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
-		Button@INGAME_DIPLOMACY_BUTTON:
+		MenuButton@DIPLOMACY_BUTTON:
+			Logic: OrderButtonsChromeLogic
+			MenuContainer: INGAME_DIPLOMACY_BG
+			HideIngameUI: False
 			X: 162
 			Y: 0
 			Width: 160
 			Height: 25
-			Text: Diplomacy (F1)
+			Text: Diplomacy (P)
 			Font: Bold
-			Key: f1
-		Button@CHEATS_BUTTON:
+			Key: p
+		MenuButton@DEBUG_BUTTON:
+			Logic: OrderButtonsChromeLogic
+			MenuContainer: INGAME_MENU
 			X: 324
 			Y: 0
 			Width: 160
 			Height: 25
-			Text: Cheats (F2)
-			Visible: false
+			Text: Debug (Shift + Esc)
 			Font: Bold
-			Key: f2
-		Button@OBJECTIVES_BUTTON:
-			X: 486
-			Y: 0
-			Width: 160
-			Height: 25
-			Text: Objectives (F3)
-			Visible: false
-			Font: Bold
-			Key: f3
+			Key: escape Shift
 		SlidingContainer@INGAME_RADAR_BIN:
 			X: WINDOW_RIGHT-215
 			Y: 0

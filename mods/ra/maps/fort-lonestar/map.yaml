@@ -39,34 +39,34 @@ Players:
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Allies: Multi1,Multi2,Multi3
+		Allies: Multi1, Multi2, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Allies: Multi0,Multi2,Multi3
+		Allies: Multi0, Multi2, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Allies: Multi0,Multi1,Multi3
+		Allies: Multi0, Multi1, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Allies: Multi0,Multi1,Multi2
+		Allies: Multi0, Multi1, Multi2
 		Enemies: Soviets
 	PlayerReference@Soviets:
 		Name: Soviets
 		Race: soviet
 		ColorRamp: 0,255,128
-		Enemies: Multi0,Multi1,Multi2,Multi3
+		Enemies: Multi0, Multi1, Multi2, Multi3
 
 Actors:
 	Actor76: t11
@@ -510,19 +510,13 @@ Rules:
 			UseCashTick: yes
 			SelectionShares: 30
 		GiveUnitCrateAction@e7:
-			Unit: e7
+			Units: e7
 			SelectionShares: 10
 	Player:
 		PlayerResources:
 			InitialCash: 50
 		ClassicProductionQueue@Infantry:
-			Type: Infantry
 			BuildSpeed: 1
-			LowPowerSlowdown: 3
-		ClassicProductionQueue@Defense:
-			Type: Defense
-			BuildSpeed: .4
-			LowPowerSlowdown: 3
 	^Infantry:
 		MustBeDestroyed:
 	^Vehicle:
@@ -541,36 +535,36 @@ Rules:
 			Period: 250
 			Amount: 50
 	BARR:
-		Buildable:
-			Owner: allies,soviet
-		Building:
-			Power: 0
 		Health:
 			HP: 1000
 		Production:
-			Produces: Defense,Infantry
+			Produces: Defense, Infantry, Soldier, Dog
 		-Sellable:
 		BaseProvider:
 			Range: 12
+		Power:
+			Amount: 0
 	FTUR:
-		Building:
-			Power: 0
+		Buildable:
+			Prerequisites: barracks
 		Valued:
 			Cost: 400
+		Power:
+			Amount: 0
 	PBOX:
-		Building:
-			Power: 0
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 400
 		Health:
 			HP: 200
 		Armor:
 			Type: Heavy
+		Power:
+			Amount: 0
 	HBOX:
-		Building:
-			Power: 0
+		Buildable:
+			Prerequisites: ~disabled
 	GUN:
 		Buildable:
 			Prerequisites: ~disabled
@@ -603,20 +597,17 @@ Rules:
 			Prerequisites: ~disabled
 	DOG:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 20
 	E1:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 20
 	E2:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 40
 		Explodes:
@@ -624,26 +615,22 @@ Rules:
 			Chance: 20
 	E3:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 60
 	E4:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 100
 	E6:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr
+			Prerequisites: barracks
 		Valued:
 			Cost: 100
 	E7:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 750
 	3TNK:
@@ -661,22 +648,19 @@ Rules:
 			Prerequisites: ~disabled
 	MEDI:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 100
 	SHOK:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 150
 	SNIPER:
 		Valued:
 			Cost: 200
 		Buildable:
-			Owner: soviet, allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Health:
 			HP: 200
 		AutoTarget:
@@ -687,8 +671,7 @@ Rules:
 		Buildable:
 			Queue: Infantry
 			BuildPaletteOrder: 60
-			Prerequisites: barr,oilb
-			Owner: allies, soviet
+			Prerequisites: barracks
 		Valued:
 			Cost: 300
 	ARTY:
@@ -761,7 +744,7 @@ VoxelSequences:
 
 Weapons:
 	120mm:
-		ROF: 150
+		ReloadDelay: 150
 		Range: 10c0
 		Report: CANNON1.AUD
 		Burst: 6
@@ -771,20 +754,22 @@ Weapons:
 			Inaccuracy: 1c682
 			Image: 120MM
 			ContrailLength: 50
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 256
 			Versus:
-				None: 75%
-				Wood: 75%
-				Light: 75%
-				Concrete: 100%
+				None: 75
+				Wood: 75
+				Light: 75
+				Concrete: 100
+			DeathType: 4
+			Damage: 150
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Crater
+		Warhead@3Eff: CreateEffect
 			Explosion: self_destruct
 			WaterExplosion: self_destruct
-			InfDeath: 4
-			SmudgeType: Crater
-			Damage: 150
 	MammothTusk:
-		ROF: 300
+		ReloadDelay: 300
 		Range: 10c0
 		Report: MISSILE6.AUD
 		Burst: 2
@@ -801,21 +786,24 @@ Weapons:
 			Image: DRAGON
 			ROT: 10
 			RangeLimit: 80
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 640
+			ValidTargets: Ground, Air
 			Versus:
-				None: 125%
-				Wood: 110%
-				Light: 110%
-				Heavy: 100%
-				Concrete: 200%
+				None: 125
+				Wood: 110
+				Light: 110
+				Heavy: 100
+				Concrete: 200
+			DeathType: 3
+			Damage: 250
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Crater
+		Warhead@3Eff: CreateEffect
 			Explosion: nuke
 			WaterExplosion: nuke
-			InfDeath: 3
-			SmudgeType: Crater
-			Damage: 250
 	TankNapalm:
-		ROF: 40
+		ReloadDelay: 40
 		Range: 8c0
 		Report: AACANON3.AUD
 		ValidTargets: Ground
@@ -827,41 +815,46 @@ Weapons:
 			Inaccuracy: 2c512
 			Trail: smokey
 			ContrailLength: 2
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 341
+			ValidTargets: Ground
 			Versus:
-				None: 90%
-				Wood: 170%
-				Light: 100%
-				Heavy: 100%
-				Concrete: 100%
+				None: 90
+				Wood: 170
+				Light: 100
+				Heavy: 100
+				Concrete: 100
+			DeathType: 4
+			Damage: 15
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Scorch
+		Warhead@3Eff: CreateEffect
 			Explosion: small_explosion
 			WaterExplosion: small_explosion
-			InfDeath: 4
-			SmudgeType: Scorch
 			ImpactSound: firebl3.aud
-			Damage: 15
 	ParaBomb:
-		ROF: 5
+		ReloadDelay: 5
 		Range: 5c0
 		Report: CHUTE1.AUD
 		Projectile: GravityBomb
 			Image: BOMBLET
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 426
 			Versus:
-				None: 125%
-				Wood: 100%
-				Light: 60%
-				Concrete: 25%
+				None: 125
+				Wood: 100
+				Light: 60
+				Concrete: 25
+			DeathType: 5
+			Damage: 200
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Crater
+		Warhead@3Eff: CreateEffect
 			Explosion: napalm
 			ImpactSound: firebl3.aud
 			WaterExplosion: napalm
-			InfDeath: 5
-			SmudgeType: Crater
-			Damage: 200
 	155mm:
-		ROF: 10
+		ReloadDelay: 10
 		Range: 7c5
 		Burst: 20
 		MinRange: 3c0
@@ -874,40 +867,46 @@ Weapons:
 			Angle: 30
 			Inaccuracy: 1c682
 			ContrailLength: 2
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 426
 			Versus:
-				None: 80%
-				Wood: 100%
-				Light: 60%
-				Heavy: 75%
-				Concrete: 35%
+				None: 80
+				Wood: 100
+				Light: 60
+				Heavy: 75
+				Concrete: 35
+			DeathType: 5
+			Damage: 10
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Scorch
+		Warhead@3Eff: CreateEffect
 			Explosion: small_napalm
 			WaterExplosion: small_napalm
-			InfDeath: 5
-			SmudgeType: Scorch
 			ImpactSound: firebl3.aud
-			Damage: 10
 	FLAK-23:
-		ROF: 10
+		ReloadDelay: 10
 		Range: 8c0
 		Report: AACANON3.AUD
-		ValidTargets: Air,Ground
+		ValidTargets: Air, Ground
 		Projectile: Bullet
 			Speed: 1c682
 			High: true
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 213
+			ValidTargets: Air, Ground
 			Versus:
-				None: 35%
-				Wood: 30%
-				Light: 30%
-				Heavy: 40%
-				Concrete: 30%
-			Explosion: med_explosion
+				None: 35
+				Wood: 30
+				Light: 30
+				Heavy: 40
+				Concrete: 30
 			Damage: 25
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Scorch
+		Warhead@3Eff: CreateEffect
+			Explosion: med_explosion
 	SCUD:
-		ROF: 280
+		ReloadDelay: 280
 		Range: 7c0
 		MinRange: 3c0
 		Report: MISSILE1.AUD
@@ -921,36 +920,39 @@ Weapons:
 			Inaccuracy: 426
 			Image: V2
 			Angle: 216
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 853
 			Versus:
-				None: 100%
-				Wood: 90%
-				Light: 80%
-				Heavy: 70%
+				None: 100
+				Wood: 90
+				Light: 80
+				Heavy: 70
+			DeathType: 3
+			Damage: 500
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Crater
+		Warhead@3Eff: CreateEffect
 			Explosion: nuke
 			WaterExplosion: large_splash
-			InfDeath: 3
-			SmudgeType: Crater
-			Damage: 500
 			ImpactSound: kaboom1.aud
 			WaterImpactSound: kaboom1.aud
 	SilencedPPK:
-		ROF: 80
+		ReloadDelay: 80
 		Range: 25c0
 		Report: silppk.aud
 		Projectile: Bullet
 			Speed: 1c682
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 128
 			Versus:
-				Wood: 0%
-				Light: 0%
-				Heavy: 50%
-				Concrete: 0%
-			Explosion: piffs
-			InfDeath: 2
+				Wood: 0
+				Light: 0
+				Heavy: 50
+				Concrete: 0
+			DeathType: 2
 			Damage: 150
+		Warhead@2Eff: CreateEffect
+			Explosion: piffs
 
 Voices:
 

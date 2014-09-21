@@ -56,6 +56,11 @@ Players:
 		LockTeam: True
 		Allies: Nod
 		Enemies: GDI
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: Random
+		Enemies: Nod,GDI
 
 Actors:
 	Actor0: sbag
@@ -346,11 +351,6 @@ Actors:
 		Owner: Neutral
 		Health: 1
 		Facing: 0
-	Actor80: bike
-		Location: 52,38
-		Owner: Nod
-		Health: 1
-		Facing: 128
 	Actor82: jeep
 		Location: 21,22
 		Owner: GDI
@@ -366,31 +366,11 @@ Actors:
 		Owner: GDI
 		Health: 1
 		Facing: 128
-	Actor86: mcv
-		Location: 50,36
-		Owner: Nod
-		Health: 1
-		Facing: 128
-	Actor87: bike
-		Location: 51,38
-		Owner: Nod
-		Health: 1
-		Facing: 128
 	Actor89: jeep
 		Location: 29,34
 		Owner: GDI
 		Health: 1
 		Facing: 96
-	Actor90: bggy
-		Location: 48,38
-		Owner: Nod
-		Health: 1
-		Facing: 128
-	Actor92: bggy
-		Location: 49,38
-		Owner: Nod
-		Health: 1
-		Facing: 128
 	TibFieldHumvee01: jeep
 		Location: 52,19
 		Owner: GDI
@@ -484,12 +464,6 @@ Actors:
 		Health: 1
 		Facing: 160
 		SubCell: 2
-	Actor110: e1
-		Location: 48,39
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 4
 	Actor111: e1
 		Location: 39,31
 		Owner: GDI
@@ -502,12 +476,6 @@ Actors:
 		Health: 1
 		Facing: 96
 		SubCell: 0
-	Actor113: e1
-		Location: 49,39
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 3
 	Actor116: e2
 		Location: 34,22
 		Owner: GDI
@@ -532,23 +500,17 @@ Actors:
 		Health: 1
 		Facing: 128
 		SubCell: 0
-	Actor122: e3
-		Location: 51,39
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 4
-	Actor123: e3
-		Location: 52,39
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 1
 	AttackWaveSpawnA: waypoint
 		Location: 45,16
 		Owner: Neutral
+	NodEntry: waypoint
+		Location: 54,40
+		Owner: Neutral
 	PlayerBase: waypoint
 		Location: 50,38
+		Owner: Neutral
+	NodRallyPoint: waypoint
+		Location: 45,42
 		Owner: Neutral
 	AttackWaveSpawnC: waypoint
 		Location: 33,16
@@ -565,12 +527,20 @@ Smudges:
 Rules:
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		LuaScriptInterface:
-			LuaScripts: nod03a.lua
+		LuaScript:
+			Scripts: nod03a.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
+	^Infantry:
+		MustBeDestroyed:
+	^Vehicle:
+		MustBeDestroyed:
 	NUK2:
 		Buildable:
 			Prerequisites: ~disabled
@@ -626,6 +596,7 @@ Rules:
 		Tooltip:
 			Name: Prison
 		Capturable:
+			CaptureThreshold: 1
 	HQ.NOAIRSTRIKE:
 		RequiresPower:
 		CanPowerDown:
@@ -642,7 +613,6 @@ Rules:
 			Prerequisites: proc
 			Queue: Building.GDI, Building.Nod
 		Building:
-			Power: -40
 			Footprint: x_ xx
 			Dimensions: 2,2
 		Health:
@@ -656,6 +626,8 @@ Rules:
 			Range: 8
 		RenderBuilding:
 			Image: hq
+		Power:
+			Amount: -40
 
 Sequences:
 

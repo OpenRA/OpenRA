@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,6 +13,8 @@ using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Traits;
+using OpenRA.Mods.Common.Graphics;
 
 namespace OpenRA.Mods.RA.Effects
 {
@@ -68,7 +70,7 @@ namespace OpenRA.Mods.RA.Effects
 				if (hitanim != null)
 					hitanim.PlayThen("idle", () => animationComplete = true);
 
-				Combat.DoImpacts(target, args.SourceActor, args.Weapon, args.FirepowerModifier);
+				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
 				doneDamage = true;
 			}
 
@@ -81,6 +83,10 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
+			if (wr.world.FogObscures(wr.world.Map.CellContaining(target)) &&
+				wr.world.FogObscures(wr.world.Map.CellContaining(args.Source)))
+				yield break;
+
 			if (ticks < info.BeamDuration)
 			{
 				var rc = Color.FromArgb((info.BeamDuration - ticks) * 255 / info.BeamDuration, color);

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Attach this to the player actor to collect observer stats.")]
 	public class PlayerStatisticsInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new PlayerStatistics(init.self); }
@@ -108,12 +109,16 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
+	[Desc("Attach this to a unit to update observer stats.")]
 	public class UpdatesPlayerStatisticsInfo : TraitInfo<UpdatesPlayerStatistics> { }
 
 	public class UpdatesPlayerStatistics : INotifyKilled
 	{
 		public void Killed(Actor self, AttackInfo e)
 		{
+			if (self.Owner.WinState != WinState.Undefined)
+				return;
+
 			var attackerStats = e.Attacker.Owner.PlayerActor.Trait<PlayerStatistics>();
 			var defenderStats = self.Owner.PlayerActor.Trait<PlayerStatistics>();
 			if (self.HasTrait<Building>())

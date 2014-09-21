@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -23,8 +23,8 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled || target.Type != TargetType.Actor || target.Actor.Owner == self.Owner)
 				return NextActivity;
 
-			foreach (var t in target.Actor.TraitsImplementing<IAcceptInfiltrator>())
-				t.OnInfiltrate(target.Actor, self);
+			foreach (var t in target.Actor.TraitsImplementing<INotifyInfiltrated>())
+				t.Infiltrated(target.Actor, self);
 
 			self.Destroy();
 

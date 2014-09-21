@@ -10,6 +10,7 @@
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Hides the entire map in shroud.")]
 	class HideMapCrateActionInfo : CrateActionInfo
 	{
 		public override object Create(ActorInitializer init) { return new HideMapCrateAction(init.self, this); }
@@ -31,9 +32,10 @@ namespace OpenRA.Mods.RA
 
 		public override void Activate(Actor collector)
 		{
-			base.Activate(collector);
 			if (collector.Owner == collector.World.LocalPlayer)
 				collector.Owner.Shroud.ResetExploration();
+
+			base.Activate(collector);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,6 +10,8 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Orders;
@@ -68,7 +70,11 @@ namespace OpenRA.Mods.RA
 			if (++tick >= info.ThumpInterval)
 			{
 				if (info.ThumpDamageWeapon != null)
-					Combat.DoExplosion(self, info.ThumpDamageWeapon, self.CenterPosition);
+				{
+					var weapon = self.World.Map.Rules.Weapons[info.ThumpDamageWeapon.ToLowerInvariant()];
+					// Use .FromPos since this weapon needs to affect more than just the MadTank actor
+					weapon.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
+				}
 				screenShaker.AddEffect(info.ThumpShakeTime, self.CenterPosition, info.ThumpShakeIntensity, info.ThumpShakeMultiplier);
 				tick = 0;
 			}
@@ -78,7 +84,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter("DetonateAttack", "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
+				yield return new TargetTypeOrderTargeter(new[] { "DetonateAttack" }, "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
 				yield return new DeployOrderTargeter("Detonate", 5);
 			}
 		}
@@ -104,7 +110,11 @@ namespace OpenRA.Mods.RA
 			self.World.AddFrameEndTask(w =>
 			{
 				if (info.DetonationWeapon != null)
-					Combat.DoExplosion(self, info.DetonationWeapon, self.CenterPosition);
+				{
+					var weapon = self.World.Map.Rules.Weapons[info.DetonationWeapon.ToLowerInvariant()];
+					// Use .FromPos since this actor is killed. Cannot use Target.FromActor
+					weapon.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
+				}
 				self.Kill(self);
 			});
 		}
@@ -123,6 +133,9 @@ namespace OpenRA.Mods.RA
 
 		void StartDetonationSequence()
 		{
+			if (deployed)
+				return;
+
 			self.World.AddFrameEndTask(w => EjectDriver());
 			if (info.ThumpSequence != null)
 				renderUnit.PlayCustomAnimRepeating(self, info.ThumpSequence);

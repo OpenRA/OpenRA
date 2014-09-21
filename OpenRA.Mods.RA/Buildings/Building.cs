@@ -23,8 +23,6 @@ namespace OpenRA.Mods.RA.Buildings
 
 	public class BuildingInfo : ITraitInfo, IOccupySpaceInfo, UsesInit<LocationInit>
 	{
-		[Desc("If negative, it will drain power, if positive, it will provide power.")]
-		public readonly int Power = 0;
 		[Desc("Where you are allowed to place the building (Water, Clear, ...)")]
 		public readonly string[] TerrainTypes = {};
 		[Desc("The range to the next building it can be constructed. Set it higher for walls.")]
@@ -36,7 +34,6 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly bool AllowInvalidPlacement = false;
 
 		public readonly string[] BuildSounds = { "placbldg.aud", "build5.aud" };
-		public readonly string[] SellSounds = { "cashturn.aud" };
 		public readonly string[] UndeploySounds = { "cashturn.aud" };
 
 		public object Create(ActorInitializer init) { return new Building(init, this); }
@@ -101,15 +98,13 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 	}
 
-	public class Building : INotifyDamage, IOccupySpace, INotifyCapture, ITick, INotifySold, INotifyTransform, ISync, ITechTreePrerequisite, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class Building : IOccupySpace, INotifySold, INotifyTransform, ISync, ITechTreePrerequisite, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly BuildingInfo Info;
 		public bool BuildComplete { get; private set; }
 		[Sync] readonly CPos topLeft;
 		readonly Actor self;
-		readonly bool skipMakeAnimation;
-
-		PowerManager PlayerPower;
+		public readonly bool SkipMakeAnimation;
 
 		/* shared activity lock: undeploy, sell, capture, etc */
 		[Sync] public bool Locked = true;
@@ -135,37 +130,21 @@ namespace OpenRA.Mods.RA.Buildings
 			this.self = init.self;
 			this.topLeft = init.Get<LocationInit, CPos>();
 			this.Info = info;
-			this.PlayerPower = init.self.Owner.PlayerActor.Trait<PowerManager>();
 
 			occupiedCells = FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft )
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
 			CenterPosition = init.world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.world, Info);
-			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
-		}
-
-		public int GetPowerUsage()
-		{
-			if (Info.Power <= 0)
-				return Info.Power;
-
-			var health = self.TraitOrDefault<Health>();
-			return health != null ? (Info.Power * health.HP / health.MaxHP) : Info.Power;
-		}
-
-		public void Damaged(Actor self, AttackInfo e)
-		{
-			// Power plants lose power with damage
-			if (Info.Power > 0)
-				PlayerPower.UpdateActor(self, GetPowerUsage());
+			SkipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
 		Pair<CPos, SubCell>[] occupiedCells;
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupiedCells; }
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void Created(Actor self)
 		{
-			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
+			if (SkipMakeAnimation || !self.HasTrait<WithMakeAnimation>())
+				NotifyBuildingComplete(self);
 		}
 
 		public void AddedToWorld(Actor self)
@@ -182,12 +161,6 @@ namespace OpenRA.Mods.RA.Buildings
 			self.World.ScreenMap.Remove(self);
 		}
 
-		public void Tick(Actor self)
-		{
-			if (!BuildComplete && (skipMakeAnimation || !self.HasTrait<WithMakeAnimation>()))
-				NotifyBuildingComplete(self);
-		}
-
 		public void NotifyBuildingComplete(Actor self)
 		{
 			if (BuildComplete)
@@ -202,9 +175,6 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public void Selling(Actor self)
 		{
-			foreach (var s in Info.SellSounds)
-				Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
-
 			BuildComplete = false;
 		}
 

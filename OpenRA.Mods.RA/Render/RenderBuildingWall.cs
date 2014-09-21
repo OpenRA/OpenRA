@@ -8,7 +8,10 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
@@ -19,6 +22,15 @@ namespace OpenRA.Mods.RA.Render
 		public readonly string Sequence = "idle";
 
 		public override object Create(ActorInitializer init) { return new RenderBuildingWall(init, this); }
+
+		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		{
+			// Show a static frame instead of animating all of the wall states
+			var anim = new Animation(init.World, image, () => 0);
+			anim.PlayFetchIndex("idle", () => 0);
+
+			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
+		}
 	}
 
 	class RenderBuildingWall : RenderBuilding, INotifyAddedToWorld, INotifyRemovedFromWorld

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -20,6 +20,7 @@ namespace OpenRA.Graphics
 		public readonly TextureChannel channel;
 		public readonly float2 size;
 		public readonly float2 offset;
+		public readonly float2 fractionalOffset;
 		readonly float2[] textureCoords;
 
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
@@ -36,6 +37,8 @@ namespace OpenRA.Graphics
 			this.channel = channel;
 			this.size = new float2(bounds.Size);
 			this.blendMode = blendMode;
+
+			this.fractionalOffset = offset / this.size;
 
 			var left = (float)(bounds.Left) / sheet.Size.Width;
 			var top = (float)(bounds.Top) / sheet.Size.Height;

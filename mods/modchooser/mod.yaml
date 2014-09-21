@@ -15,6 +15,7 @@ Chrome:
 	mods/modchooser/chrome.yaml
 
 Assemblies:
+	mods/common/OpenRA.Mods.Common.dll
 	mods/ra/OpenRA.Mods.RA.dll
 
 ChromeLayout:

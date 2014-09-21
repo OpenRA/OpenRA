@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -59,10 +59,9 @@ namespace OpenRA.Network
 
 				return session;
 			}
-			catch (InvalidOperationException)
+			catch (InvalidOperationException e)
 			{
-				Log.Write("exception", "Session deserialized invalid MiniYaml:\n{0}".F(data));
-				throw;
+				throw new InvalidOperationException("Session deserialized invalid MiniYaml:\n{0}".F(data), e);
 			}
 		}
 

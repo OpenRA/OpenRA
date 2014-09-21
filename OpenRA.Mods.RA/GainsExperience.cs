@@ -8,9 +8,12 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -18,83 +21,104 @@ namespace OpenRA.Mods.RA
 	[Desc("This actor's experience increases when it has killed a GivesExperience actor.")]
 	public class GainsExperienceInfo : ITraitInfo, Requires<ValuedInfo>
 	{
-		[Desc("XP requirements for each level, as multiples of our own cost.")]
-		public readonly float[] CostThreshold = { 2, 4, 8, 16 };
-		public readonly float[] FirepowerModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
-		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 1.5f };
-		public readonly decimal[] SpeedModifier = { 1.1m, 1.15m, 1.2m, 1.5m };
+		[FieldLoader.LoadUsing("LoadUpgrades")]
+		[Desc("Upgrades to grant at each level",
+			"Key is the XP requirements for each level as a percentage of our own value.",
+			"Value is a list of the upgrade types to grant")]
+		public readonly Dictionary<int, string[]> Upgrades = null;
+
+		[Desc("Palette for the chevron glyph rendered in the selection box.")]
 		public readonly string ChevronPalette = "effect";
+
+		[Desc("Palette for the level up sprite.")]
 		public readonly string LevelUpPalette = "effect";
+
 		public object Create(ActorInitializer init) { return new GainsExperience(init, this); }
+
+		static object LoadUpgrades(MiniYaml y)
+		{
+			MiniYaml upgrades;
+
+			if (!y.ToDictionary().TryGetValue("Upgrades", out upgrades))
+			{
+				return new Dictionary<int, string[]>()
+				{
+					{ 200, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
+					{ 400, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
+					{ 800, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
+					{ 1600, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } }
+				};
+			}
+
+			return upgrades.Nodes.ToDictionary(
+				kv => FieldLoader.GetValue<int>("(key)", kv.Key),
+				kv => FieldLoader.GetValue<string[]>("(value)", kv.Value.Value));
+		}
 	}
 
-	public class GainsExperience : IFirepowerModifier, ISpeedModifier, IDamageModifier, ISync
+	public class GainsExperience : ISync
 	{
 		readonly Actor self;
-		readonly int[] levels;
 		readonly GainsExperienceInfo info;
+
+		readonly List<Pair<int, string[]>> nextLevel = new List<Pair<int, string[]>>();
+
+		// Stored as a percentage of our value
+		[Sync] int experience = 0;
+
+		[Sync] public int Level { get; private set; }
+		public readonly int MaxLevel;
 
 		public GainsExperience(ActorInitializer init, GainsExperienceInfo info)
 		{
 			self = init.self;
 			this.info = info;
+
+			MaxLevel = info.Upgrades.Count;
+
 			var cost = self.Info.Traits.Get<ValuedInfo>().Cost;
-			levels = info.CostThreshold.Select(t => (int)(t * cost)).ToArray();
+			foreach (var kv in info.Upgrades)
+				nextLevel.Add(Pair.New(kv.Key * cost, kv.Value));
 
 			if (init.Contains<ExperienceInit>())
 				GiveExperience(init.Get<ExperienceInit, int>());
 		}
 
-		[Sync] int experience = 0;
-		[Sync] public int Level { get; private set; }
-
-		int MaxLevel { get { return levels.Length; } }
 		public bool CanGainLevel { get { return Level < MaxLevel; } }
-
-		public void GiveOneLevel()
-		{
-			if (Level < MaxLevel)
-				GiveExperience(levels[Level] - experience);
-		}
 
 		public void GiveLevels(int numLevels)
 		{
-			for (var i = 0; i < numLevels; i++)
-				GiveOneLevel();
+			var newLevel = Math.Min(Level + numLevels, MaxLevel);
+			GiveExperience(nextLevel[newLevel - 1].First - experience);
 		}
 
 		public void GiveExperience(int amount)
 		{
 			experience += amount;
 
-			while (Level < MaxLevel && experience >= levels[Level])
+			while (Level < MaxLevel && experience >= nextLevel[Level].First)
 			{
+				var upgrades = nextLevel[Level].Second;
+
 				Level++;
+
+				foreach (var up in self.TraitsImplementing<IUpgradable>())
+					foreach (var u in upgrades)
+						if (up.AcceptsUpgrade(u))
+							up.UpgradeAvailable(self, u, true);
 
 				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "LevelUp", self.Owner.Country.Race);
 				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", info.LevelUpPalette)));
+
 				if (Level == 1)
+				{
 					self.World.AddFrameEndTask(w =>
 					{
 						if (!self.IsDead())
 							w.Add(new Rank(self, info.ChevronPalette));
 					});
+				}
 			}
-		}
-
-		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
-		{
-			return Level > 0 ? 1 / info.ArmorModifier[Level - 1] : 1;
-		}
-
-		public float GetFirepowerModifier()
-		{
-			return Level > 0 ? info.FirepowerModifier[Level - 1] : 1;
-		}
-
-		public decimal GetSpeedModifier()
-		{
-			return Level > 0 ? info.SpeedModifier[Level - 1] : 1m;
 		}
 	}
 

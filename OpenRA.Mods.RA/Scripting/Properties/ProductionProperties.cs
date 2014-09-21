@@ -20,14 +20,14 @@ namespace OpenRA.Mods.RA.Scripting
 	{
 		readonly Production p;
 
-		public ProductionProperties(Actor self)
-			: base(self)
+		public ProductionProperties(ScriptContext context, Actor self)
+			: base(context, self)
 		{
 			p = self.Trait<Production>();
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Build a unit, ignoring the production queue. The activity will wait if the exit is blocked")]
+		[Desc("Build a unit, ignoring the production queue. The activity will wait if the exit is blocked.")]
 		public void Produce(string actorType, string raceVariant = null)
 		{
 			ActorInfo actorInfo;

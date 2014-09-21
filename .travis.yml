@@ -17,6 +17,10 @@ script:
  - make all
  - make test
 
+# Automatically update the trait documentation and Lua API
+after_success:
+ - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && make docs && cd packaging && ./update-wiki.sh
+
 # Only watch the development branch and tagged release.
 branches:
  only:

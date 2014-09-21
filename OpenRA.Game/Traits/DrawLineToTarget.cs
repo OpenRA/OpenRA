@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -58,25 +58,21 @@ namespace OpenRA.Traits
 			lifetime = Info.Ticks;
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
-				return;
+				yield break;
 
 			if (targets == null || targets.Count == 0)
-				return;
+				yield break;
 
-			var from = wr.ScreenPxPosition(self.CenterPosition);
 			foreach (var target in targets)
 			{
 				if (target.Type == TargetType.Invalid)
 					continue;
 
-				var to = wr.ScreenPxPosition(target.CenterPosition);
-				Game.Renderer.WorldLineRenderer.DrawLine(from, to, c, c);
-				wr.DrawTargetMarker(c, from);
-				wr.DrawTargetMarker(c, to);
+				yield return new TargetLineRenderable(new [] { self.CenterPosition, target.CenterPosition }, c);
 			}
 		}
 

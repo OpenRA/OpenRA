@@ -10,7 +10,7 @@ MCV:
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.GDI, Vehicle.Nod
 	Selectable:
-		Priority: 3
+		Priority: 4
 	Mobile:
 		Speed: 71
 		Crushes: crate, infantry
@@ -170,9 +170,9 @@ FTNK:
 		Queue: Vehicle.Nod
 	Mobile:
 		ROT: 7
-		Speed: 113
+		Speed: 99
 	Health:
-		HP: 300
+		HP: 270
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -531,7 +531,7 @@ STNK:
 	RevealsShroud:
 		Range: 7c0
 	Cloak:
-		RequiresCrate: false
+		-RequiresUpgrade:
 		InitialDelay: 90
 		CloakDelay: 90
 		CloakSound: trans1.aud

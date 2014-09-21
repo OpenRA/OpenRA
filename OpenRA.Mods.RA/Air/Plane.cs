@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -50,19 +50,39 @@ namespace OpenRA.Mods.RA.Air
 
 				self.QueueActivity(new TakeOff());
 			}
+
+			Repulse();
+		}
+
+		public override WVec GetRepulsionForce()
+		{
+			var repulsionForce = base.GetRepulsionForce();
+			if (repulsionForce == WVec.Zero)
+				return WVec.Zero;
+
+			var currentDir = FlyStep(Facing);
+
+			var dot = WVec.Dot(currentDir, repulsionForce) / (currentDir.HorizontalLength * repulsionForce.HorizontalLength);
+			// avoid stalling the plane
+			return dot >= 0 ? repulsionForce : WVec.Zero;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Move")
 			{
+				var cell = self.World.Map.Clamp(order.TargetLocation);
+				var explored = self.Owner.Shroud.IsExplored(cell);
+
+				if (!explored && !Info.MoveIntoShroud)
+					return;
+
 				UnReserve();
 
-				var cell = self.World.Map.Clamp(order.TargetLocation);
-				var t = Target.FromCell(self.World, cell);
-				self.SetTargetLine(t, Color.Green);
+				var target = Target.FromCell(self.World, cell);
+				self.SetTargetLine(target, Color.Green);
 				self.CancelActivity();
-				self.QueueActivity(new Fly(self, t));
+				self.QueueActivity(new Fly(self, target));
 				self.QueueActivity(new FlyCircle());
 			}
 			else if (order.OrderString == "Enter")
@@ -92,7 +112,6 @@ namespace OpenRA.Mods.RA.Air
 				self.SetTargetLine(Target.FromActor(airfield), Color.Green);
 				self.QueueActivity(new ReturnToBase(self, airfield));
 				self.QueueActivity(new ResupplyAircraft());
-				self.QueueActivity(new TakeOff());
 			}
 			else
 			{
@@ -108,7 +127,7 @@ namespace OpenRA.Mods.RA.Air
 		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new FlyFollow(self, target, minRange, maxRange); }
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
-		public Activity MoveIntoWorld(Actor self, CPos cell) { return new Fly(self, Target.FromCell(self.World, cell)); }
+		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any) { return new Fly(self, Target.FromCell(self.World, cell)); }
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos) { return Util.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)), new Fly(self, Target.FromPos(toPos))); }
 	}
 }

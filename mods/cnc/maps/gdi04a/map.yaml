@@ -58,7 +58,8 @@ Players:
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: gdi
+		Race: Random
+		Enemies: Nod,GDI
 
 Actors:
 	Actor0: cycl
@@ -546,8 +547,12 @@ Rules:
 		-CrateSpawner:
 		LuaScriptInterface:
 			LuaScripts: gdi04a.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	^Infantry:
 		MustBeDestroyed:
 	^Vehicle:
@@ -563,7 +568,7 @@ Rules:
 		-GiveMcvCrateAction:
 		-GiveCashCrateAction:
 		-ExplodeCrateAction@fire:
-		-CloakCrateAction:
+		-UnitUpgradeCrateAction@cloak:
 		ScriptTriggers:
 
 Sequences:
@@ -572,7 +577,7 @@ VoxelSequences:
 
 Weapons:
 	Tiberium:
-		Warhead:
+		Warhead: SpreadDamage
 			Damage: 6
 
 Voices:

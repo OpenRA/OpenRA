@@ -22,7 +22,14 @@ rm OpenRA.app/Contents/Resources/OpenRA.ico
 rm OpenRA.app/Contents/Resources/OpenRA.Editor.exe
 rm OpenRA.app/Contents/Resources/OpenRA.CrashDialog.exe
 
+# Set version string
+sed "s/{DEV_VERSION}/${1}/" OpenRA.app/Contents/Info.plist.template > OpenRA.app/Contents/Info.plist
+rm OpenRA.app/Contents/Info.plist.template
+
+# Add a symlink to libgdiplus.dylib to work around an issue in mono 3.8
+ln -s /Library/Frameworks/Mono.framework/Versions/Current/lib/libgdiplus.dylib OpenRA.app/Contents/Resources/libgdiplus.dylib
+
 # Package app bundle into a zip and clean up
-zip OpenRA-$1 -r -9 OpenRA.app --quiet
+zip OpenRA-$1 -r -9 OpenRA.app --quiet --symlinks
 mv OpenRA-$1.zip $4
 rm -rf OpenRA.app

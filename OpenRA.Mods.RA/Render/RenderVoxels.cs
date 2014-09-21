@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,12 +9,16 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Mods.Common.Graphics;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class RenderVoxelsInfo : ITraitInfo, Requires<IBodyOrientationInfo>
+	public interface IRenderActorPreviewVoxelsInfo { IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p); }
+
+	public class RenderVoxelsInfo : ITraitInfo, IRenderActorPreviewInfo, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Defaults to the actor name.")]
 		public readonly string Image = null;
@@ -33,7 +37,28 @@ namespace OpenRA.Mods.RA.Render
 		public readonly WAngle LightYaw = WAngle.FromDegrees(240);
 		public readonly float[] LightAmbientColor = new float[] {0.6f, 0.6f, 0.6f};
 		public readonly float[] LightDiffuseColor = new float[] {0.4f, 0.4f, 0.4f};
+
 		public virtual object Create(ActorInitializer init) { return new RenderVoxels(init.self, this); }
+
+		public virtual IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
+		{
+			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var sequenceProvider = init.World.Map.SequenceProvider;
+			var image = Image ?? init.Actor.Name;
+			var facings = body.QuantizedFacings == -1 ? init.Actor.Traits.Get<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(sequenceProvider, init.Actor) : body.QuantizedFacings;
+			var palette = init.WorldRenderer.Palette(Palette ?? (init.Owner != null ? PlayerPalette + init.Owner.InternalName : null));
+
+			var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
+			var orientation = WRot.FromFacing(facing);
+			var components = init.Actor.Traits.WithInterface<IRenderActorPreviewVoxelsInfo>()
+				.SelectMany(rvpi => rvpi.RenderPreviewVoxels(init, this, image, orientation, facings, palette))
+				.ToArray();
+
+			yield return new VoxelPreview(components, WVec.Zero, 0, this.Scale, this.LightPitch, 
+				this.LightYaw, this.LightAmbientColor, this.LightDiffuseColor, body.CameraPitch, 
+				palette, init.WorldRenderer.Palette(NormalsPalette), init.WorldRenderer.Palette("shadow"));
+		}
+
 	}
 
 	public class RenderVoxels : IRender, INotifyOwnerChanged

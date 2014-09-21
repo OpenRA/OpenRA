@@ -1,49 +1,57 @@
 UnitExplode:
-	Warhead:
-		Damage: 500
+	Warhead@1Dam: SpreadDamage
 		Spread: 426
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		DeathType: 2
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+	Warhead@2Eff: CreateEffect
 		Explosion: large_twlt
-		InfDeath: 2
 		ImpactSound: expnew09.aud
 
 UnitExplodeSmall:
-	Warhead:
-		Damage: 40
+	Warhead@1Dam: SpreadDamage
 		Spread: 426
+		Damage: 40
+		DeathType: 2
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+	Warhead@2Eff: CreateEffect
 		Explosion: medium_brnl
-		InfDeath: 2
 		ImpactSound: expnew13.aud
 
 Minigun:
-	ROF: 21
+	ReloadDelay: 21
 	Range: 4c0
 	Report: INFGUN3.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
-		Explosion: piffpiff
-		InfDeath: 1
 		Damage: 12
+		DeathType: 1
 		ProneModifier: 70
+		Versus:
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 Grenade:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 4c512
 	Projectile: Bullet
 		Speed: 85
@@ -52,50 +60,69 @@ Grenade:
 		Angle: 62
 		Inaccuracy: 554
 		Image: DISCUS
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 171
-		Versus:
-			None: 100%
-			Wood: 85%
-			Light: 70%
-			Heavy: 35%
-			Concrete: 28%
-		InfDeath: 3
 		Damage: 40
+		DeathType: 3
 		ProneModifier: 70
+		Versus:
+			None: 100
+			Wood: 85
+			Light: 70
+			Heavy: 35
+			Concrete: 28
+	Warhead@2Eff: CreateEffect
 		Explosion: large_grey_explosion
 		ImpactSound: expnew13.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 Bazooka:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 6c0
 	Report: RKETINF1.AUD
 	ValidTargets: Ground, Air
 	Palette: ra
 	Projectile: Missile
 		Speed: 213
-		Arm: 2
-		High: yes
+		Arm: 3
+		High: true
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
-		RangeLimit: 35
-	Warhead:
+		RangeLimit: 50
+		CloseEnough: 256
+		LockOnProbability: 80
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 35
+		DeathType: 2
+		ValidTargets: Ground, Air
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
-		InfDeath: 2
-		Damage: 25
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_twlt
+		ImpactSound: expnew12.aud
+		ValidImpactTypes: Air, AirHit
 
 MultiCluster:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 6c0
 	Report: MISL1.AUD
 	ValidTargets: Ground
@@ -109,74 +136,86 @@ MultiCluster:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
-		InfDeath: 3
 		Damage: 65
+		DeathType: 3
+		ValidTargets: Ground
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash2.aud
+		ValidImpactTypes: Water
 
 Heal:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 2c849
 	Report: HEALER1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Versus:
-			Wood: 0%
-			Light: 0%
-			Heavy: 0%
-			Concrete: 0%
-		InfDeath: 1
 		Damage: -50
+		DeathType: 1
 		ProneModifier: 100
+		Versus:
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
 
 Sniper:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 6c768
 	Report: SILENCER.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
-		Damage: 150
-		ProneModifier: 100
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
+		Damage: 150
+		DeathType: 1
+		ProneModifier: 100
 		Versus:
-			None: 100%
-			Wood: 0%
-			Light: 0%
-			Heavy: 0%
-			Concrete: 0%
-		InfDeath: 1
+			None: 100
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
 
 M1Carbine:
-	ROF: 20
+	ReloadDelay: 20
 	Range: 4c0
 	Report: INFGUN3.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
-		Explosion: piffpiff
-		InfDeath: 1
 		Damage: 15
+		DeathType: 1
 		ProneModifier: 70
+		Versus:
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 LtRail:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 6c0
 	Report: BIGGGUN1.AUD
 	Projectile: LaserZap
@@ -184,20 +223,20 @@ LtRail:
 		BeamWidth: 1
 		BeamDuration: 10
 		Color: 200,0,128,255
-	Warhead:
-		Damage: 150
-		ProneModifier: 100
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
+		Damage: 150
+		DeathType: 2
+		ProneModifier: 100
 		Versus:
-			None: 100%
-			Wood: 130%
-			Light: 150%
-			Heavy: 110%
-			Concrete: 5%
-		InfDeath: 2
+			None: 100
+			Wood: 130
+			Light: 150
+			Heavy: 110
+			Concrete: 5
 
 CyCannon:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 7c0
 	Report: SCRIN5B.AUD
 	ValidTargets: Ground
@@ -206,79 +245,101 @@ CyCannon:
 		High: yes
 		Shadow: true
 		Image: TORPEDO
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Versus:
-			None: 100%
-			Wood: 65%
-			Light: 75%
-			Heavy: 50%
-			Concrete: 40%
-		InfDeath: 6
 		Damage: 120
+		DeathType: 6
 		ProneModifier: 100
+		ValidTargets: Ground
+		Versus:
+			None: 100
+			Wood: 65
+			Light: 75
+			Heavy: 50
+			Concrete: 40
+	Warhead@2Eff: CreateEffect
 		Explosion: large_bang
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 Vulcan3:
-	ROF: 30
+	ReloadDelay: 30
 	Burst: 3
 	Range: 4c0
 	Report: CYGUN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
-		Explosion: piffpiff
-		InfDeath: 1
 		Damage: 10
+		DeathType: 1
 		ProneModifier: 70
+		Versus:
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 Vulcan2:
-	ROF: 50
+	ReloadDelay: 50
 	Burst: 3
 	Range: 6c0
 	Report: TSGUN4.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			None: 100%
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
-		Explosion: piffpiff
-		InfDeath: 1
 		Damage: 50
+		DeathType: 1
 		ProneModifier: 70
+		Versus:
+			None: 100
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 Vulcan:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 4c0
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
-		Explosion: piffpiff
-		InfDeath: 1
 		Damage: 20
+		DeathType: 1
 		ProneModifier: 70
+		Versus:
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 FiendShard:
-	ROF: 30
+	ReloadDelay: 30
 	Burst: 3
 	Range: 5c0
 	Report: FIEND2.AUD
@@ -289,37 +350,46 @@ FiendShard:
 		Inaccuracy: 512
 		Shadow: true
 		Angle: 88
-	Warhead:
-		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
-		InfDeath: 1
+	Warhead@1Dam: SpreadDamage
 		Damage: 35
+		DeathType: 1
 		ProneModifier: 100
+		Versus:
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 JumpCannon:
-	ROF: 40
+	ReloadDelay: 40
 	Burst: 2
 	Range: 5c0
 	Report: JUMPJET1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
-		Explosion: piffpiff
-		InfDeath: 1
 		Damage: 15
+		DeathType: 1
 		ProneModifier: 70
+		Versus:
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 HoverMissile:
-	ROF: 68
+	ReloadDelay: 68
 	Burst: 2
 	Range: 8c0
 	Report: HOVRMIS1.AUD
@@ -334,21 +404,32 @@ HoverMissile:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
-		InfDeath: 2
 		Damage: 30
+		DeathType: 2
+		ValidTargets: Ground, Air
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_twlt
+		ImpactSound: expnew12.aud
+		ValidImpactTypes: Air, AirHit
 
 120mmx:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 6c768
 	Report: 120MMF.AUD
 	Burst: 2
@@ -359,21 +440,27 @@ HoverMissile:
 		Image: 120mm
 		Shadow: true
 		Angle: 62
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
-		InfDeath: 2
 		Damage: 50
+		DeathType: 2
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
 		Explosion: medium_clsn
 		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 MammothTusk:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 6c0
 	Report: MISL1.AUD
 	ValidTargets: Air
@@ -388,91 +475,105 @@ MammothTusk:
 		ROT: 10
 		Speed: 170
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 171
-		Versus:
-			None: 100%
-			Wood: 85%
-			Light: 70%
-			Heavy: 35%
-			Concrete: 28%
-		InfDeath: 3
 		Damage: 40
+		DeathType: 3
 		ProneModifier: 70
+		ValidTargets: Air
+		Versus:
+			None: 100
+			Wood: 85
+			Light: 70
+			Heavy: 35
+			Concrete: 28
+	Warhead@2Eff: CreateEffect
 		Explosion: medium_bang
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 Repair:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 1c819
 	Report: REPAIR11.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Versus:
-			None: 0%
-			Wood: 0%
-			Light: 100%
-			Heavy: 100%
-			Concrete: 0%
-		InfDeath: 1
 		Damage: -50
+		DeathType: 1
 		ProneModifier: 100
+		Versus:
+			None: 0
+			Wood: 0
+			Light: 100
+			Heavy: 100
+			Concrete: 0
 
 SlimeAttack:
-	ROF: 80
+	ReloadDelay: 80
 	Burst: 3
 	Range: 5c0
 	Report: VICER1.AUD
 	Projectile: Bullet
 		Speed: 426
-	Warhead:
-		Versus:
-			Wood: 25%
-			Light: 30%
-			Heavy: 10%
-			Concrete: 10%
-		InfDeath: 2
+	Warhead@1Dam: SpreadDamage
 		Damage: 100
+		DeathType: 2
 		ProneModifier: 100
+		Versus:
+			Wood: 25
+			Light: 30
+			Heavy: 10
+			Concrete: 10
 
 SuicideBomb:
-	ROF: 1
+	ReloadDelay: 1
 	Range: 0c512
 	Report: HUNTER2.AUD
-	Warhead:
-		Damage: 11000
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		DestroyResources: true
+		Damage: 110
+		Falloff: 10000, 3680, 1350, 500, 180, 70, 0
+		DeathType: 5
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
-		InfDeath: 5
+			None: 90
+			Light: 60
+			Heavy: 25
+			Concrete: 50
+	Warhead@2Res: DestroyResource
 
 120mm:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 6c768
 	Report: 120MMF.AUD
 	Projectile: Bullet
 		Speed: 1c512
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
-		InfDeath: 2
 		Damage: 70
+		DeathType: 2
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
 		Explosion: large_clsn
 		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 MechRailgun:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 8c0
 	Burst: 2
 	BurstDelay: 10
@@ -480,38 +581,43 @@ MechRailgun:
 	Projectile: LaserZap
 		Color: 200,0,255,255
 		BeamWidth: 3
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Versus:
-			None: 200%
-			Wood: 175%
-			Light: 160%
-			Heavy: 100%
-			Concrete: 25%
-		InfDeath: 5
 		Damage: 200
+		DeathType: 5
 		ProneModifier: 100
+		Versus:
+			None: 200
+			Wood: 175
+			Light: 160
+			Heavy: 100
+			Concrete: 25
 
 AssaultCannon:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 5c0
 	Report: TSGUN4.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
-		Explosion: piffpiff
-		InfDeath: 1
 		Damage: 40
+		DeathType: 1
 		ProneModifier: 70
+		Versus:
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 BikeMissile:
-	ROF: 60
+	ReloadDelay: 60
 	Burst: 2
 	BurstDelay: 60
 	Range: 5c0
@@ -527,41 +633,53 @@ BikeMissile:
 		ROT: 8
 		Speed: 213
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
-		InfDeath: 2
 		Damage: 40
+		DeathType: 2
+		ValidTargets: Ground
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 RaiderCannon:
-	ROF: 55
+	ReloadDelay: 55
 	Range: 4c0
-	Burst: 2	#purely cosmetical, for alternate muzzle position
+	Burst: 2
 	BurstDelay: 55
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
-		Explosion: piffpiff
-		InfDeath: 1
 		Damage: 40
+		DeathType: 1
 		ProneModifier: 70
+		Versus:
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 FireballLauncher:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 4c256
 	Report: FLAMTNK1.AUD
 	Projectile: Bullet
@@ -570,20 +688,20 @@ FireballLauncher:
 		Inacuracy: 384
 	Burst: 5
 	BurstDelay: 5
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Versus:
-			None: 600%
-			Wood: 148%
-			Light: 59%
-			Heavy: 6%
-			Concrete: 2%
-		InfDeath: 5
 		Damage: 25
+		DeathType: 5
 		ProneModifier: 100
+		Versus:
+			None: 600
+			Wood: 148
+			Light: 59
+			Heavy: 6
+			Concrete: 2
 
 SonicZap:
-	ROF: 120
+	ReloadDelay: 120
 	Range: 6c0
 	Charges: yes
 	Report: SONIC4.AUD
@@ -591,16 +709,16 @@ SonicZap:
 		Color: 200,0,255,255
 		BeamWidth: 12
 		BeamDuration: 50
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Versus:
-			Heavy: 80%
-			Concrete: 60%
-		InfDeath: 5
 		Damage: 100
+		DeathType: 5
+		Versus:
+			Heavy: 80
+			Concrete: 60
 
 Dragon:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 6c0
 	Burst: 2
 	Report: MISL1.AUD
@@ -615,21 +733,32 @@ Dragon:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
-		InfDeath: 2
 		Damage: 30
+		DeathType: 2
+		ValidTargets: Ground, Air
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_twlt
+		ImpactSound: expnew12.aud
+		ValidImpactTypes: Air, AirHit
 
 90mm:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 6c768
 	Report: 120MMF.AUD
 	Palette: ra
@@ -638,21 +767,27 @@ Dragon:
 		Image: 120mm
 		Shadow: true
 		Angle: 62
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
-		InfDeath: 2
 		Damage: 36
+		DeathType: 2
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
 		Explosion: medium_clsn
 		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 155mm:
-	ROF: 110
+	ReloadDelay: 110
 	Range: 18c0
 	Report: 120MMF.AUD
 	Palette: ra
@@ -663,22 +798,28 @@ Dragon:
 		Shadow: true
 		High: yes
 	MinRange: 5c0
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 298
-		Versus:
-			None: 100%
-			Wood: 85%
-			Light: 68%
-			Heavy: 35%
-			Concrete: 35%
-		InfDeath: 3
 		Damage: 150
+		DeathType: 3
 		ProneModifier: 100
+		Versus:
+			None: 100
+			Wood: 85
+			Light: 68
+			Heavy: 35
+			Concrete: 35
+	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
-		ImpactSound: expnew09.aud
+		ImpactSound: expnew06.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash2.aud
+		ValidImpactTypes: Water
 
 Hellfire:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 6c0
 	Report: ORCAMIS1.AUD
 	Burst: 2
@@ -693,43 +834,60 @@ Hellfire:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 85
-		Versus:
-			None: 30%
-			Wood: 65%
-			Light: 150%
-			Heavy: 100%
-			Concrete: 30%
-		InfDeath: 2
 		Damage: 30
+		DeathType: 2
+		ValidTargets: Ground, Air
+		Versus:
+			None: 30
+			Wood: 65
+			Light: 150
+			Heavy: 100
+			Concrete: 30
+	Warhead@2Eff: CreateEffect
 		Explosion: small_bang
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_twlt
+		ImpactSound: expnew12.aud
+		ValidImpactTypes: Air, AirHit
 
 Bomb:
-	ROF: 10
+	ReloadDelay: 10
 	Range: 5c0
 	Palette: player
 	Projectile: Bullet
 		Speed: 170
 		Image: canister
 		Shadow: true
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 298
-		Versus:
-			None: 200%
-			Wood: 90%
-			Light: 75%
-			Heavy: 32%
-			Concrete: 100%
-		InfDeath: 3
 		Damage: 160
+		DeathType: 3
 		ProneModifier: 100
+		Versus:
+			None: 200
+			Wood: 90
+			Light: 75
+			Heavy: 32
+			Concrete: 100
+	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 Proton:
-	ROF: 3
+	ReloadDelay: 3
 	Range: 5c0
 	Report: SCRIN5B.AUD
 	Burst: 2
@@ -743,107 +901,136 @@ Proton:
 		Image: TORPEDO
 		ROT: 1
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
-		InfDeath: 3
 		Damage: 20
+		DeathType: 3
+		ValidTargets: Ground, Air
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
 		Explosion: small_bang
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 HarpyClaw:
-	ROF: 36
+	ReloadDelay: 36
 	Range: 5c0
 	Report: CYGUN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
 	ValidTargets: Ground, Air
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
-		Explosion: piffpiff
-		InfDeath: 1
 		Damage: 60
+		DeathType: 1
 		ProneModifier: 70
+		ValidTargets: Ground, Air
+		Versus:
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 Pistola:
-	ROF: 20
+	ReloadDelay: 20
 	Range: 3c0
 	Report: GUN18.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
-		Explosion: piff
-		InfDeath: 1
 		Damage: 2
+		DeathType: 1
 		ProneModifier: 70
+		Versus:
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piff
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piff
+		ValidImpactTypes: Water
 
 Tiberium:
-	ROF: 16
-	Warhead:
+	ReloadDelay: 16
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		InfDeath: 6
 		Damage: 2
+		DeathType: 6
 		PreventProne: yes
 
 TiberiumHeal:
-	ROF: 16
-	Warhead:
+	ReloadDelay: 16
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		InfDeath: 6
 		Damage: -2
+		DeathType: 6
 		PreventProne: yes
 
 IonCannon:
 	ValidTargets: Ground, Air
-	Warhead@impact:
-		Damage: 1000
+	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		InfDeath: 5
-		Explosion: ring1
+		Damage: 100
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		DeathType: 5
 		ProneModifier: 100
-	Warhead@area:
-		DamageModel: PerCell
+		ValidTargets: Ground, Air
+	Warhead@2Eff_impact: CreateEffect
+		Explosion: ring1
+	Warhead@3Dam_area: PerCellDamage
+		Size: 2
 		Damage: 250
+		DeathType: 5
+		Delay: 3
+		ValidTargets: Ground, Air
+	Warhead@4Smu_area: LeaveSmudge
 		SmudgeType: Scorch
 		Size: 2,1
 		Delay: 3
-		InfDeath: 5
 
 VulcanTower:
-	ROF: 26
+	ReloadDelay: 26
 	Range: 6c0
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
-		Explosion: piffpiff
-		InfDeath: 1
 		Damage: 18
+		DeathType: 1
+		Versus:
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 RPGTower:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 8c0
 	Report: GLNCH4.AUD
 	Palette: player
@@ -853,22 +1040,28 @@ RPGTower:
 		Shadow: true
 		Angle: 62
 		Image: canister
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 90%
-			Heavy: 100%
-			Concrete: 70%
-		InfDeath: 2
 		Damage: 110
+		DeathType: 2
 		ProneModifier: 70
+		Versus:
+			None: 30
+			Wood: 75
+			Light: 90
+			Heavy: 100
+			Concrete: 70
+	Warhead@2Eff: CreateEffect
 		Explosion: large_clsn
 		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash2.aud
+		ValidImpactTypes: Water
 
 SAMTower:
-	ROF: 55
+	ReloadDelay: 55
 	Range: 15c0
 	Report: SAMSHOT1.AUD
 	ValidTargets: Air
@@ -882,52 +1075,59 @@ SAMTower:
 		Image: DRAGON
 		ROT: 5
 		RangeLimit: 60
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		InfDeath: 2
 		Damage: 33
+		DeathType: 2
+		ValidTargets: Air
+	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
 
 ObeliskLaser:
-	ROF: 120
+	ReloadDelay: 120
 	Range: 10c512
 	Charges: true
 	Report: OBELRAY1.AUD
 	Projectile: LaserZap
 		BeamWidth: 4
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		InfDeath: 5
-		SmudgeType: Scorch
 		Damage: 250
+		DeathType: 5
 		ProneModifier: 60
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
 
 TurretLaser:
-	ROF: 40
+	ReloadDelay: 40
 	Range: 5c512
 	Report: LASTUR1.AUD
 	Projectile: LaserZap
 		BeamWidth: 2
 		BeamDuration: 5
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		InfDeath: 5
-		SmudgeType: Scorch
 		Damage: 30
+		DeathType: 5
 		ProneModifier: 60
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
 
 TiberiumExplosion:
-	Warhead:
-		Damage: 10
+	Warhead@1Dam: SpreadDamage
 		Spread: 9
-		Size: 1,1
+		Damage: 10
+		DeathType: 3
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
-		InfDeath: 3
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+	Warhead@2Res: CreateResource
+		AddsResourceType: Tiberium
+		Size: 1,1
+	Warhead@3Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
-		AddsResourceType: Tiberium
+

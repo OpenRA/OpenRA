@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Power;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -74,7 +75,7 @@ namespace OpenRA.Mods.RA
 		// Will change if the owner changes
 		PowerManager playerPower;
 		PlayerResources playerResources;
-		DeveloperMode developerMode;
+		protected DeveloperMode developerMode;
 
 		// A list of things we could possibly build
 		Dictionary<ActorInfo, ProductionState> produceable;

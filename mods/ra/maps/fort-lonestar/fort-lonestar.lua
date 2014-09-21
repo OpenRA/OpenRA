@@ -117,6 +117,7 @@ SendUnits = function(entryCell, unitTypes, interval, targetCell)
 		SendWave()
 	else
 		Trigger.AfterDelay(3000, SovietsRetreating)
+		Media.DisplayMessage("You survived the onslaught!")
 	end
 end
 
@@ -149,6 +150,8 @@ WorldLoaded = function()
 			a.Invulnerable = true
 		end
 	end)
+
+	Media.DisplayMessage("Defend Fort Lonestar at all costs!")
 
 	SendWave()
 end

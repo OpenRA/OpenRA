@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -32,7 +32,10 @@ namespace OpenRA.GameRules
 
 			Exists = true;
 			using (var s = GlobalFileSystem.Open(Filename))
-				Length = (int)AudLoader.SoundLength(s);
+				if (Filename.ToLowerInvariant().EndsWith("wav"))
+					Length = (int)WavLoader.WaveLength(s);
+				else
+					Length = (int)AudLoader.SoundLength(s);
 		}
 
 		public void Reload()
@@ -42,7 +45,10 @@ namespace OpenRA.GameRules
 
 			Exists = true;
 			using (var s = GlobalFileSystem.Open(Filename))
-				Length = (int)AudLoader.SoundLength(s);
+				if (Filename.ToLowerInvariant().EndsWith("wav"))
+					Length = (int)WavLoader.WaveLength(s);
+				else
+					Length = (int)AudLoader.SoundLength(s);
 		}
 	}
 }

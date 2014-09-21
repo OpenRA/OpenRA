@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -31,8 +31,8 @@ namespace OpenRA.Mods.RA
 		public readonly int HarvestFacings = 0;
 		[Desc("Which resources it can harvest.")]
 		public readonly string[] Resources = { };
-		[Desc("How much it is slowed down when returning to the refinery.")]
-		public readonly decimal FullyLoadedSpeed = .85m;
+		[Desc("Percentage of maximum speed when fully loaded.")]
+		public readonly int FullyLoadedSpeed = 85;
 		[Desc("Initial search radius (in cells) from the refinery that created us.")]
 		public readonly int SearchFromProcRadius = 24;
 		[Desc("Search radius (in cells) from the last harvest order location to find more resources.")]
@@ -418,9 +418,9 @@ namespace OpenRA.Mods.RA
 
 		public bool ShouldExplode(Actor self) { return !IsEmpty; }
 
-		public decimal GetSpeedModifier()
+		public int GetSpeedModifier()
 		{
-			return 1m - (1m - Info.FullyLoadedSpeed) * contents.Values.Sum() / Info.Capacity;
+			return 100 - (100 - Info.FullyLoadedSpeed) * contents.Values.Sum() / Info.Capacity;
 		}
 
 		class HarvestOrderTargeter : IOrderTargeter

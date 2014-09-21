@@ -11,6 +11,8 @@
 		Footprint: x
 		BuildSounds: place2.aud
 		TerrainTypes: Clear, Road
+		Adjacent: 4
+	FrozenUnderFog:
 	GivesBuildableArea:
 	Capturable:
 	SoundOnDamageTransition:
@@ -29,6 +31,7 @@
 	ProximityCaptor:
 		Types: Building
 	Sellable:
+		SellSounds: cashturn.aud
 	AcceptsSupplies:
 	GivesBounty:
 	UpdatesPlayerStatistics:
@@ -53,19 +56,18 @@
 	SoundOnDamageTransition:
 		DamagedSound: expnew01.aud
 		DestroyedSound: crmble2.aud
-	Wall:
+	Crushable:
 		CrushClasses: wall
+	BlocksBullets:
 	LineBuild:
 		Range: 8
 		NodeTypes: wall
 	LineBuildNode:
 		Types: wall
-	SelectionDecorations:
-	Selectable:
-		Priority: 1
 	TargetableBuilding:
 		TargetTypes: Ground, C4
 	RenderBuildingWall:
+		Type: wall
 	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
@@ -74,6 +76,7 @@
 	ProximityCaptor:
 		Types: Wall
 	Sellable:
+		SellSounds: cashturn.aud
 	UpdatesPlayerStatistics:
 	BodyOrientation:
 	LuaScriptEvents:
@@ -105,6 +108,7 @@
 	TargetableUnit:
 		TargetTypes: Ground
 	RenderInfantry:
+	WithDeathAnimation:
 	AutoTarget:
 	AttackMove:
 	Passenger:
@@ -112,17 +116,21 @@
 	HiddenUnderFog:
 	GainsExperience:
 		ChevronPalette: ra
-		CostThreshold: 5, 10
-		FirepowerModifier: 1.2, 1.5
-		ArmorModifier: 1.2, 1.5
-		SpeedModifier: 1.2, 1.5
+		Upgrades:
+			500: firepower, damage, speed, reload
+			1000: firepower, damage, speed, reload
+	GainsStatUpgrades:
+		FirepowerModifier: 110, 130
+		DamageModifier: 83, 66
+		SpeedModifier: 120, 150
+		ReloadModifier: 90, 75
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Infantry
 	GivesBounty:
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squish6.aud
 	PoisonedByTiberium:
 	SpawnViceroid:
@@ -136,13 +144,13 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 	DeathSounds@NORMAL:
-		InfDeaths: 1, 2, 3
+		DeathTypes: 1, 2, 3
 	DeathSounds@BURNED:
 		DeathSound: Burned
-		InfDeaths: 5
+		DeathTypes: 5
 	DeathSounds@ZAPPED:
 		DeathSound: Zapped
-		InfDeaths: 6
+		DeathTypes: 6
 
 ^CivilianInfantry:
 	Inherits: ^Infantry
@@ -168,8 +176,7 @@
 	AttackFrontal:
 	ProximityCaptor:
 		Types: CivilianInfantry
-	-RenderInfantry:
-	RenderInfantryPanic:
+	RenderInfantry:
 	ScaredyCat:
 
 ^Vehicle:
@@ -198,10 +205,14 @@
 	HiddenUnderFog:
 	GainsExperience:
 		ChevronPalette: ra
-		CostThreshold: 5, 10
-		FirepowerModifier: 1.2, 1.5
-		ArmorModifier: 1.2, 1.5
-		SpeedModifier: 1.2, 1.5
+		Upgrades:
+			500: firepower, damage, speed, reload
+			1000: firepower, damage, speed, reload
+	GainsStatUpgrades:
+		FirepowerModifier: 110, 130
+		DamageModifier: 83, 66
+		SpeedModifier: 120, 150
+		ReloadModifier: 90, 75
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -247,10 +258,14 @@
 	HiddenUnderFog:
 	GainsExperience:
 		ChevronPalette: ra
-		CostThreshold: 5, 10
-		FirepowerModifier: 1.2, 1.5
-		ArmorModifier: 1.2, 1.5
-		SpeedModifier: 1.2, 1.5
+		Upgrades:
+			500: firepower, damage, speed, reload
+			1000: firepower, damage, speed, reload
+	GainsStatUpgrades:
+		FirepowerModifier: 110, 130
+		DamageModifier: 83, 66
+		SpeedModifier: 120, 150
+		ReloadModifier: 90, 75
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -290,10 +305,14 @@
 	AttackMove:
 	GainsExperience:
 		ChevronPalette: ra
-		CostThreshold: 5, 10
-		FirepowerModifier: 1.2, 1.5
-		ArmorModifier: 1.2, 1.5
-		SpeedModifier: 1.2, 1.5
+		Upgrades:
+			500: firepower, damage, speed, reload
+			1000: firepower, damage, speed, reload
+	GainsStatUpgrades:
+		FirepowerModifier: 110, 130
+		DamageModifier: 83, 66
+		SpeedModifier: 120, 150
+		ReloadModifier: 90, 75
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -303,6 +322,8 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	Guard:
+	Guardable:
 
 ^BlossomTree:
 	Tooltip:

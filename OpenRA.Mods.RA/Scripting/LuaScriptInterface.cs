@@ -25,6 +25,7 @@ using WorldRenderer = OpenRA.Graphics.WorldRenderer;
 
 namespace OpenRA.Mods.RA.Scripting
 {
+	[Desc("Part of the legacy Lua API.")]
 	public class LuaScriptInterfaceInfo : ITraitInfo, Requires<SpawnMapActorsInfo>
 	{
 		public readonly string[] LuaScripts = { };
@@ -318,7 +319,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public bool RequiredUnitsAreDestroyed(Player player)
 		{
-			return world.ActorsWithTrait<MustBeDestroyed>().All(p => p.Actor.Owner != player);
+			return player.HasNoRequiredUnits();
 		}
 
 		[LuaGlobal]

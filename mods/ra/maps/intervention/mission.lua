@@ -45,7 +45,7 @@ HunterSubs		= { { SubPen, {"ss", "ss"} } }
 
 GroundPatrolWpts	= { PatrolWpt1, PatrolWpt2 }
 GroundPatrolUnits	= {
-				{ { Barracks, {"e1", "e1", "e1", "e3", "e3", "dog"} } },
+				{ { Barracks, {"e1", "e1", "e1", "e3", "e3"} }, { Kennel, {"dog"} } },
 				{ { WarFactory, {"apc", "apc", "ftrk"} } },
 				{ { WarFactory, {"3tnk", "3tnk"} } }
 			  }
@@ -264,9 +264,9 @@ WorldLoaded = function()
 end
 
 MissionFailed = function()
-	Mission.MissionOver(nil, { player }, false)
+	Mission.MissionOver(nil, { player }, true)
 end
 
 MissionAccomplished = function()
-	Mission.MissionOver({ player }, nil, false)
+	Mission.MissionOver({ player }, nil, true)
 end

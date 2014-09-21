@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 		public readonly int FireDelay = 0;
 
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
-		public readonly WRange[] LocalOffset = {};
+		public readonly WVec[] LocalOffset = {};
 		[Desc("Muzzle yaw relative to turret or body.")]
 		public readonly WAngle[] LocalYaw = {};
 		[Desc("Move the turret backwards when firing.")]
@@ -85,15 +85,12 @@ namespace OpenRA.Mods.RA
 			Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
 			Burst = Weapon.Burst;
 
-			if (info.LocalOffset.Length % 3 != 0)
-				throw new InvalidOperationException("Invalid LocalOffset array length");
-
 			var barrels = new List<Barrel>();
-			for (var i = 0; i < info.LocalOffset.Length / 3; i++)
+			for (var i = 0; i < info.LocalOffset.Length; i++)
 			{
 				barrels.Add(new Barrel
 				{
-					Offset = new WVec(info.LocalOffset[3*i], info.LocalOffset[3*i + 1], info.LocalOffset[3*i + 2]),
+					Offset = info.LocalOffset[i],
 					Yaw = info.LocalYaw.Length > i ? info.LocalYaw[i] : WAngle.Zero
 				});
 			}
@@ -145,7 +142,7 @@ namespace OpenRA.Mods.RA
 			if (Weapon.MinRange != WRange.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange))
 				return null;
 
-			if (!Weapon.IsValidAgainst(target, self.World))
+			if (!Weapon.IsValidAgainst(target, self.World, self))
 				return null;
 
 			var barrel = Barrels[Burst % Barrels.Length];
@@ -156,9 +153,12 @@ namespace OpenRA.Mods.RA
 			{
 				Weapon = Weapon,
 				Facing = legacyFacing,
-				FirepowerModifier = self.TraitsImplementing<IFirepowerModifier>()
-					.Select(a => a.GetFirepowerModifier())
-					.Product(),
+
+				DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
+					.Select(a => a.GetFirepowerModifier()),
+
+				InaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>()
+					.Select(a => a.GetInaccuracyModifier()),
 
 				Source = muzzlePosition,
 				SourceActor = self,
@@ -188,7 +188,9 @@ namespace OpenRA.Mods.RA
 				FireDelay = Weapon.BurstDelay;
 			else
 			{
-				FireDelay = Weapon.ROF;
+				var modifiers = self.TraitsImplementing<IReloadModifier>()
+					.Select(m => m.GetReloadModifier());
+				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
 				Burst = Weapon.Burst;
 			}
 

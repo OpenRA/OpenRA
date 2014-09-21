@@ -3,17 +3,21 @@
 # Checks for a sufficiently recent mono version, then launches the game from the resources directory.
 # Based on code from the monodevelop project
 
-REQUIRED_MAJOR=2
-REQUIRED_MINOR=10
+REQUIRED_MAJOR=3
+REQUIRED_MINOR=2
+
+# Require a framework build of mono.
+# The game files assume that mono-installed libraries are present in /Library/Frameworks/Mono.framework/Libraries
+MONO_BIN="/Library/Frameworks/Mono.framework/Commands/mono"
 
 TITLE="Cannot launch OpenRA"
-MESSAGE="OpenRA requires the Mono Framework version $REQUIRED_MAJOR.$REQUIRED_MINOR or later."
-MONO_URL="http://www.go-mono.com/mono-downloads/download.html"
+MESSAGE="OpenRA requires Mono $REQUIRED_MAJOR.$REQUIRED_MINOR or later. Please install the Mono MRE package and try again."
+MONO_URL="http://www.mono-project.com/download/"
 
 DIR=$(cd "$(dirname "$0")"; pwd)
 RESOURCES="$DIR/../Resources"
 
-MONO_VERSION="$(mono --version | grep 'Mono JIT compiler version ' |  cut -f5 -d\ )"
+MONO_VERSION="$($MONO_BIN --version | grep 'Mono JIT compiler version ' |  cut -f5 -d\ )"
 MONO_VERSION_MAJOR="$(echo $MONO_VERSION | cut -f1 -d.)"
 MONO_VERSION_MINOR="$(echo $MONO_VERSION | cut -f2 -d.)"
 
@@ -23,11 +27,12 @@ if [ -z "$MONO_VERSION" ] \
 then
 	osascript \
 	-e "tell application \"Finder\"" \
-	-e "	set question to display dialog \"$MESSAGE\" with title \"$TITLE\" with icon alias (POSIX file \"$RESOURCES/OpenRA.icns\") buttons {\"Cancel\", \"Download...\"} default button 2" \
-	-e "	if button returned of question is equal to \"Download...\" then open location \"$MONO_URL\"" \
+	-e "	set question to display dialog \"$MESSAGE\" with title \"$TITLE\" with icon alias (POSIX file \"$RESOURCES/OpenRA.icns\") buttons {\"Quit\", \"Download Mono\"} default button 2" \
+	-e "	if button returned of question is equal to \"Download Mono\" then open location \"$MONO_URL\"" \
 	-e "	activate" \
 	-e "end tell"
 	exit 1
 fi
 
-cd "$RESOURCES" && mono --debug OpenRA.Game.exe Graphics.Renderer=Sdl2
+# Override fontconfig with our own dummy config that prevents long cache delays
+cd "$RESOURCES" && FONTCONFIG_PATH="." $MONO_BIN --debug OpenRA.Game.exe Graphics.Renderer=Sdl2

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public enum SubCell { FullCell, TopLeft, TopRight, Center, BottomLeft, BottomRight }
+	public enum SubCell { Invalid = int.MinValue, Any = int.MinValue / 2, FullCell = 0, First = 1 }
 
 	public class ActorMapInfo : ITraitInfo
 	{
@@ -33,22 +33,16 @@ namespace OpenRA.Traits
 			public Actor Actor;
 		}
 
-		static readonly SubCell[] SubCells =
-		{
-			SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
-			SubCell.BottomLeft, SubCell.BottomRight
-		};
-
 		readonly ActorMapInfo info;
 		readonly Map map;
 		readonly CellLayer<InfluenceNode> influence;
 
-		List<Actor>[] actors;
-		int rows, cols;
+		readonly List<Actor>[] actors;
+		readonly int rows, cols;
 
 		// Position updates are done in one pass
 		// to ensure consistency during a tick
-		readonly List<Actor> addActorPosition = new List<Actor>();
+		readonly HashSet<Actor> addActorPosition = new HashSet<Actor>();
 		readonly HashSet<Actor> removeActorPosition = new HashSet<Actor>();
 		readonly Predicate<Actor> actorShouldBeRemoved;
 
@@ -89,32 +83,70 @@ namespace OpenRA.Traits
 					yield return i.Actor;
 		}
 
-		public bool HasFreeSubCell(CPos a)
+		public bool HasFreeSubCell(CPos a, bool checkTransient = true)
 		{
+			return FreeSubCell(a, SubCell.Any, checkTransient) != SubCell.Invalid;
+		}
+
+		public SubCell FreeSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, bool checkTransient = true)
+		{
+			if (preferredSubCell > SubCell.Any && !AnyUnitsAt(a, preferredSubCell, checkTransient))
+				return preferredSubCell;
+
 			if (!AnyUnitsAt(a))
-				return true;
+				return map.DefaultSubCell;
 
-			return SubCells.Any(b => !AnyUnitsAt(a, b));
+			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
+				if (i != (int)preferredSubCell && !AnyUnitsAt(a, (SubCell)i, checkTransient))
+					return (SubCell)i;
+			return SubCell.Invalid;
 		}
 
-		public SubCell? FreeSubCell(CPos a)
+		public SubCell FreeSubCell(CPos a, SubCell preferredSubCell, Func<Actor, bool> checkIfBlocker)
 		{
-			if (!HasFreeSubCell(a))
-				return null;
+			if (preferredSubCell > SubCell.Any && !AnyUnitsAt(a, preferredSubCell, checkIfBlocker))
+				return preferredSubCell;
 
-			return SubCells.First(b => !AnyUnitsAt(a, b));
+			if (!AnyUnitsAt(a))
+				return map.DefaultSubCell;
+
+			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
+				if (i != (int)preferredSubCell && !AnyUnitsAt(a, (SubCell)i, checkIfBlocker))
+					return (SubCell)i;
+			return SubCell.Invalid;
 		}
 
+		// NOTE: always includes transients with influence
 		public bool AnyUnitsAt(CPos a)
 		{
 			return influence[a] != null;
 		}
 
-		public bool AnyUnitsAt(CPos a, SubCell sub)
+		// NOTE: can not check aircraft
+		public bool AnyUnitsAt(CPos a, SubCell sub, bool checkTransient = true)
 		{
+			bool always = sub == SubCell.FullCell || sub == SubCell.Any;
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (i.SubCell == sub || i.SubCell == SubCell.FullCell)
-					return true;
+				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
+				{
+					if (checkTransient)
+						return true;
+					var pos = i.Actor.TraitOrDefault<IPositionable>();
+					if (pos == null || !pos.IsLeavingCell(a, i.SubCell))
+						return true;
+				}
+
+			return false;
+		}
+
+		// NOTE: can not check aircraft
+		public bool AnyUnitsAt(CPos a, SubCell sub, Func<Actor, bool> withCondition)
+		{
+			bool always = sub == SubCell.FullCell || sub == SubCell.Any;
+			for (var i = influence[a]; i != null; i = i.Next)
+				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
+					if (withCondition(i.Actor))
+						return true;
 
 			return false;
 		}
@@ -169,7 +201,7 @@ namespace OpenRA.Traits
 
 		public void AddPosition(Actor a, IOccupySpace ios)
 		{
-			addActorPosition.Add(a);
+			UpdatePosition(a, ios);
 		}
 
 		public void RemovePosition(Actor a, IOccupySpace ios)
@@ -180,7 +212,7 @@ namespace OpenRA.Traits
 		public void UpdatePosition(Actor a, IOccupySpace ios)
 		{
 			RemovePosition(a, ios);
-			AddPosition(a, ios);
+			addActorPosition.Add(a);
 		}
 
 		public IEnumerable<Actor> ActorsInBox(WPos a, WPos b)
@@ -194,14 +226,13 @@ namespace OpenRA.Traits
 			var j1 = (top / info.BinSize).Clamp(0, rows - 1);
 			var j2 = (bottom / info.BinSize).Clamp(0, rows - 1);
 
-			var actorsChecked = new HashSet<Actor>();
 			for (var j = j1; j <= j2; j++)
 			{
 				for (var i = i1; i <= i2; i++)
 				{
 					foreach (var actor in actors[j * cols + i])
 					{
-						if (actor.IsInWorld && actorsChecked.Add(actor))
+						if (actor.IsInWorld)
 						{
 							var c = actor.CenterPosition;
 							if (left <= c.X && c.X <= right && top <= c.Y && c.Y <= bottom)
@@ -214,8 +245,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> ActorsInWorld()
 		{
-			return actors.SelectMany(a => a.Where(b => b.IsInWorld))
-				.Distinct();
+			return actors.SelectMany(bin => bin.Where(actor => actor.IsInWorld));
 		}
 	}
 }

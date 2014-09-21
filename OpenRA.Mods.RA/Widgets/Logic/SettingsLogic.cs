@@ -149,6 +149,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var gs = Game.Settings.Game;
 
 			BindCheckboxPref(panel, "PIXELDOUBLE_CHECKBOX", ds, "PixelDouble");
+			BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
 			BindCheckboxPref(panel, "SHOW_SHELLMAP", gs, "ShowShellmap");
 			BindCheckboxPref(panel, "ALWAYS_SHOW_STATUS_BARS_CHECKBOX", gs, "AlwaysShowStatusBars");
@@ -165,12 +166,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			// Update zoom immediately
 			var pixelDoubleCheckbox = panel.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
-			var oldOnClick = pixelDoubleCheckbox.OnClick;
+			var pixelDoubleOnClick = pixelDoubleCheckbox.OnClick;
 			pixelDoubleCheckbox.OnClick = () =>
 			{
-				oldOnClick();
+				pixelDoubleOnClick();
 				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
 			};
+
+			var cursorDoubleCheckbox = panel.Get<CheckboxWidget>("CURSORDOUBLE_CHECKBOX");
+			cursorDoubleCheckbox.IsDisabled = () => !ds.PixelDouble;
 
 			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
@@ -185,9 +189,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				int fps;
 				Exts.TryParseIntegerInvariant(frameLimitTextfield.Text, out fps);
-				ds.MaxFramerate = fps.Clamp(20, 200);
+				ds.MaxFramerate = fps.Clamp(1, 1000);
 				frameLimitTextfield.Text = ds.MaxFramerate.ToString();
-				Game.SetIdealFrameTime(ds.MaxFramerate);
 			};
 			frameLimitTextfield.OnEnterKey = () => { frameLimitTextfield.YieldKeyboardFocus(); return true; };
 			frameLimitTextfield.IsDisabled = () => !ds.CapFramerate;
@@ -213,13 +216,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				gs.ShowShellmap = dgs.ShowShellmap;
 
 				ds.CapFramerate = dds.CapFramerate;
-				Game.SetIdealFrameTime(ds.MaxFramerate);
 				ds.MaxFramerate = dds.MaxFramerate;
 				ds.Language = dds.Language;
 				ds.Mode = dds.Mode;
 				ds.WindowedSize = dds.WindowedSize;
 
 				ds.PixelDouble = dds.PixelDouble;
+				ds.CursorDouble = dds.CursorDouble;
 				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
 			};
 		}
@@ -307,6 +310,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var hotkeyHeader = hotkeyList.Get<ScrollItemWidget>("HEADER");
 			var globalTemplate = hotkeyList.Get("GLOBAL_TEMPLATE");
 			var unitTemplate = hotkeyList.Get("UNIT_TEMPLATE");
+			var productionTemplate = hotkeyList.Get("PRODUCTION_TEMPLATE");
 			hotkeyList.RemoveChildren();
 
 			// Game
@@ -376,6 +380,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				foreach (var kv in hotkeys)
 					BindHotkeyPref(kv, ks, unitTemplate, hotkeyList);
+			}
+
+			// Production
+			{
+				var hotkeys = new Dictionary<string, string>();
+				for (var i = 1; i <= 24; i++)
+					hotkeys.Add("Production{0:D2}Key".F(i), "Slot {0}".F(i));
+
+				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				header.Get<LabelWidget>("LABEL").GetText = () => "Production Commands";
+				hotkeyList.AddChild(header);
+
+				foreach (var kv in hotkeys)
+					BindHotkeyPref(kv, ks, productionTemplate, hotkeyList);
 			}
 
 			// Developer

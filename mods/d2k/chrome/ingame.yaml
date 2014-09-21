@@ -46,12 +46,13 @@ Container@INGAME_ROOT:
 			Y: 34
 			Order: Descending
 		Container@PLAYER_ROOT:
-		Button@INGAME_OPTIONS_BUTTON:
+		MenuButton@OPTIONS_BUTTON:
+			Logic: OrderButtonsChromeLogic
 			X: 0
 			Y: 0
 			Width: 160
 			Height: 25
-			Text: Options (ESC)
+			Text: Options (Esc)
 			Font: Bold
 			Key: escape
 		Container@PERFORMANCE_INFO:

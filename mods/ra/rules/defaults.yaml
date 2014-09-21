@@ -15,7 +15,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground, C4, Repair
+		TargetTypes: Ground, Repair, Vehicle
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -54,6 +54,7 @@
 	CaptureNotification:
 		Notification: UnitStolen
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Tank:
 	AppearsOnRadar:
@@ -72,7 +73,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground, C4, Repair
+		TargetTypes: Ground, C4, Repair, Tank
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -111,6 +112,7 @@
 	CaptureNotification:
 		Notification: UnitStolen
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -137,6 +139,7 @@
 	TargetableUnit:
 		TargetTypes: Ground, Infantry, Disguise
 	RenderInfantry:
+	WithDeathAnimation:
 	AutoTarget:
 	AttackMove:
 	Passenger:
@@ -151,7 +154,7 @@
 	GivesBounty:
 	GpsDot:
 		String: Infantry
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squishy2.aud
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
@@ -168,18 +171,23 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 	DeathSounds@NORMAL:
-		InfDeaths: 1, 2, 3, 4
+		DeathTypes: 1, 2, 3, 4
 	DeathSounds@BURNED:
 		DeathSound: Burned
-		InfDeaths: 5
+		DeathTypes: 5
 	DeathSounds@ZAPPED:
 		DeathSound: Zapped
-		InfDeaths: 6
+		DeathTypes: 6
 	Parachutable:
 		ParachuteOffset: 0,0,427
 		KilledOnImpassableTerrain: true
 		ParachuteSequence: parach
 		ShadowSequence: parach-shadow
+		GroundImpactSound: squishy2.aud
+		WaterImpactSound: splash9.aud
+	Cloneable:
+		Types: Infantry
+	GainsStatUpgrades:
 
 ^Ship:
 	AppearsOnRadar:
@@ -213,6 +221,7 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Plane:
 	AppearsOnRadar:
@@ -249,6 +258,7 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -261,7 +271,7 @@
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
-		TargetTypes: Ground, C4, DetonateAttack
+		TargetTypes: Ground, C4, DetonateAttack, Structure
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -289,6 +299,7 @@
 	ProximityCaptor:
 		Types: Building
 	Sellable:
+		SellSounds: cashturn.aud
 	AcceptsSupplies:
 	GivesBounty:
 	UpdatesPlayerStatistics:
@@ -303,6 +314,12 @@
 	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
+	
+^Defense:
+	Inherits: ^Building
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
+	-MustBeDestroyed:
 
 ^Wall:
 	AppearsOnRadar:
@@ -315,8 +332,9 @@
 	SoundOnDamageTransition:
 		DamagedSound: sandbag2.aud
 		DestroyedSound: sandbag2.aud
-	Wall:
+	Crushable:
 		CrushClasses: wall
+	BlocksBullets:
 	LineBuild:
 		Range: 8
 		NodeTypes: wall
@@ -334,6 +352,7 @@
 	ProximityCaptor:
 		Types: Wall
 	Sellable:
+		SellSounds: cashturn.aud
 	Guardable:
 	BodyOrientation:
 	FrozenUnderFog:
@@ -399,8 +418,7 @@
 	AttackFrontal:
 	ProximityCaptor:
 		Types: CivilianInfantry
-	-RenderInfantry:
-	RenderInfantryPanic:
+	RenderInfantry:
 	ScaredyCat:
 
 ^CivBuilding:

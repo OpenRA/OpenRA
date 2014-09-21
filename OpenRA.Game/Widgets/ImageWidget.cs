@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -17,6 +17,7 @@ namespace OpenRA.Widgets
 	{
 		public string ImageCollection = "";
 		public string ImageName = "";
+		public bool ClickThrough = true;
 		public Func<string> GetImageName;
 		public Func<string> GetImageCollection;
 
@@ -29,6 +30,7 @@ namespace OpenRA.Widgets
 		protected ImageWidget(ImageWidget other)
 			: base(other)
 		{
+			ClickThrough = other.ClickThrough;
 			ImageName = other.ImageName;
 			GetImageName = other.GetImageName;
 			ImageCollection = other.ImageCollection;
@@ -47,6 +49,11 @@ namespace OpenRA.Widgets
 				throw new ArgumentException("Sprite {0}/{1} was not found.".F(collection, name));
 
 			WidgetUtils.DrawRGBA(sprite, RenderOrigin);
+		}
+
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			return !ClickThrough && RenderBounds.Contains(mi.Location);
 		}
 	}
 }

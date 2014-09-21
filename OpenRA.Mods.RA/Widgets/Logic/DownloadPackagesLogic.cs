@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -27,6 +27,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly LabelWidget statusLabel;
 		readonly Action afterInstall;
 		string mirror;
+		static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
 		[ObjectCreator.UseCtor]
 		public DownloadPackagesLogic(Widget widget, Action afterInstall, string mirrorListUrl)
@@ -57,10 +58,31 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			Action<DownloadProgressChangedEventArgs> onDownloadProgress = i =>
 			{
+				var dataReceived = 0.0f;
+				var dataTotal = 0.0f;
+				var mag = 0;
+				var dataSuffix = "";
+
+				if (i.TotalBytesToReceive < 0)
+				{
+					dataTotal = float.NaN;
+					dataReceived = i.BytesReceived;
+					dataSuffix = SizeSuffixes[0];
+				}
+				else
+				{
+					mag = (int)Math.Log(i.TotalBytesToReceive, 1024);
+					dataTotal = i.TotalBytesToReceive / (float)(1L << (mag * 10));
+					dataReceived = i.BytesReceived / (float)(1L << (mag * 10));
+					dataSuffix = SizeSuffixes[mag];
+				}
+
+
 				progressBar.Indeterminate = false;
 				progressBar.Percentage = i.ProgressPercentage;
-				statusLabel.GetText = () => "Downloading from {3} {1}/{2} kB ({0}%)".F(i.ProgressPercentage,
-					i.BytesReceived / 1024, i.TotalBytesToReceive / 1024, 
+
+				statusLabel.GetText = () => "Downloading from {4} {1:0.00}/{2:0.00} {3} ({0}%)".F(i.ProgressPercentage,
+					dataReceived, dataTotal, dataSuffix,
 					mirror != null ? new Uri(mirror).Host : "unknown host");
 			};
 

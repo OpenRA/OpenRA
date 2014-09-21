@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
+	[Desc("Part of the new Lua API.")]
 	public class LuaScriptInfo : ITraitInfo, Requires<SpawnMapActorsInfo>
 	{
 		public readonly string[] Scripts = { };
