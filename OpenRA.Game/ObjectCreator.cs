@@ -78,15 +78,9 @@ namespace OpenRA
 		{
 			var flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
 			var ctors = type.GetConstructors(flags).Where(x => x.HasAttribute<UseCtorAttribute>());
-			using (var e = ctors.GetEnumerator())
-			{
-				if (!e.MoveNext())
-					return null;
-				var ctor = e.Current;
-				if (!e.MoveNext())
-					return ctor;
-			}
-			throw new InvalidOperationException("ObjectCreator: UseCtor on multiple constructors; invalid.");
+			if (ctors.Count() > 1)
+				throw new InvalidOperationException("ObjectCreator: UseCtor on multiple constructors; invalid.");
+			return ctors.FirstOrDefault();
 		}
 
 		public object CreateBasic(Type type)
