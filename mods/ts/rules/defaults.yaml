@@ -98,8 +98,8 @@
 			Clear: 90
 			Rough: 80
 			Road: 100
-			Tiberium: 80
-			BlueTiberium: 80
+			Tiberium: 50
+			BlueTiberium: 50
 			Beach: 80
 	SelectionDecorations:
 		Palette: pips
@@ -241,8 +241,8 @@
 			Rough: 70
 			Road: 100
 			Beach: 80
-			Tiberium: 80
-			BlueTiberium: 80
+			Tiberium: 75
+			BlueTiberium: 75
 		ROT: 5
 	SelectionDecorations:
 		Palette: pips
