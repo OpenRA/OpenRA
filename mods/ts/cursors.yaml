@@ -33,7 +33,7 @@ Cursors:
 			start: 15
 		scroll-l-blocked: #TODO
 			start: 16
-		scroll-tl-blocked:#TODO
+		scroll-tl-blocked: #TODO
 			start: 17
 		select:
 			start:18
