@@ -386,26 +386,31 @@ namespace OpenRA
 				var width = dataStream.ReadUInt16();
 				var height = dataStream.ReadUInt16();
 
-				if (width != MapSize.X || height != MapSize.Y)
-					throw new InvalidDataException("Invalid tile data");
+                		if (width == MapSize.X && height == MapSize.Y)
+                		{
+                    			// Load tile data
+                    			var data = dataStream.ReadBytes(MapSize.X * MapSize.Y * 3);
+                    			var d = 0;
+                    			for (var i = 0; i < MapSize.X; i++)
+                    			{
+                        			for (var j = 0; j < MapSize.Y; j++)
+                        			{
+                            				var tile = BitConverter.ToUInt16(data, d);
+                            				d += 2;
 
-				// Load tile data
-				var data = dataStream.ReadBytes(MapSize.X * MapSize.Y * 3);
-				var d = 0;
-				for (var i = 0; i < MapSize.X; i++)
-				{
-					for (var j = 0; j < MapSize.Y; j++)
-					{
-						var tile = BitConverter.ToUInt16(data, d);
-						d += 2;
+                            				var index = data[d++];
+                            				if (index == byte.MaxValue)
+                                			index = (byte)(i % 4 + (j % 4) * 4);
 
-						var index = data[d++];
-						if (index == byte.MaxValue)
-							index = (byte)(i % 4 + (j % 4) * 4);
-
-						tiles[i, j] = new TerrainTile(tile, index);
-					}
-				}
+                            				tiles[i, j] = new TerrainTile(tile, index);
+                        			}
+                    			}
+                      		}
+                		else
+                		{
+                    			// Something is wrong with this Map ...
+                    			throw new InvalidDataException("One Map contains invalid Informations!\nGot Map size `" + MapSize.X + "*" + MapSize.Y + "` but Map has `" + width + "*`" + height + "`");
+                		}
 			}
 
 			return tiles;
