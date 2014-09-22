@@ -1,4 +1,4 @@
-﻿Palettes:
+Palettes:
 	cursor: cursor.pal
 
 Cursors:
@@ -110,7 +110,7 @@ Cursors:
 			start:1
 			length:1
 
-	mouse4.shp:cursor
+	mouse4.shp: cursor
 		move:
 			start:0
 			length:8
@@ -179,3 +179,9 @@ Cursors:
 			length:8
 		attackoutsiderange-minimap:
 			start:8
+
+	cursor-hand.shp: cursor
+		default-hand:
+			start:0
+			x: -5
+			y: -13				

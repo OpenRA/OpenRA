@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -150,7 +151,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
 			if (mapButton != null)
 			{
-				mapButton.IsDisabled = configurationDisabled; 
+				mapButton.IsDisabled = configurationDisabled;
 				mapButton.OnClick = () =>
 				{
 					var onSelect = new Action<string>(uid =>
@@ -316,7 +317,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
 				allowCheats.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Cheats.HasValue || configurationDisabled();
-				allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
+				allowCheats.OnClick = () => orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 			}
 
@@ -572,6 +573,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			textLabel.Bounds.X += nameSize.X;
 			textLabel.Bounds.Width -= nameSize.X;
 
+			var regex = new Regex(@"^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_=]*)?$");
+			var matches = regex.Matches(text);
+			if (matches.Count == 1)
+			{
+				textLabel.Contrast = true;
+				textLabel.GetColor = () => textLabel.URLColor;
+				textLabel.ClickURL = matches[0].Value;
+			}
+
 			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
 			text = WidgetUtils.WrapText(text, textLabel.Bounds.Width, font);
 			textLabel.GetText = () => text;
@@ -600,7 +610,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (Map.Status == MapStatus.Available)
 			{
 				// Maps need to be validated and pre-loaded before they can be accessed
-				new Thread(_ => 
+				new Thread(_ =>
 				{
 					var map = Map;
 					map.CacheRules();
@@ -624,7 +634,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				}).Start();
 			}
 			else if (Game.Settings.Game.AllowDownloading)
-				Game.modData.MapCache.QueryRemoteMapDetails(new [] { uid });
+				Game.modData.MapCache.QueryRemoteMapDetails(new[] { uid });
 		}
 
 		void UpdatePlayerList()
