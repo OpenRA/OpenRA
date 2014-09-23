@@ -239,6 +239,8 @@ GAWEAP:
 		Sequence: bib
 	Power:
 		Amount: -30
+	Selectable:
+		Bounds: 110, 70, 0, 0
 
 NAPOWR:
 	Inherits: ^Building
@@ -698,6 +700,8 @@ GARADR:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
 		Amount: -50
+	Selectable:
+		Bounds: 70, 100, 0, -20
 
 NARADR:
 	Inherits: ^Building
@@ -736,6 +740,8 @@ NARADR:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
 		Amount: -50
+	Selectable:
+		Bounds: 70, 70, 0, 0
 
 GATECH:
 	Inherits: ^Building
@@ -764,6 +770,8 @@ GATECH:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+	Selectable:
+		Bounds: 80, 60, 0, 10
 
 NATECH:
 	Inherits: ^Building
@@ -792,6 +800,8 @@ NATECH:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+	Selectable:
+		Bounds: 60, 48, 0, 20
 
 GAHPAD:
 	Inherits: ^Building
@@ -828,6 +838,8 @@ GAHPAD:
 		Sequence: idle-lights
 	Power:
 		Amount: -10
+	Selectable:
+		Bounds: 60, 60, 0, 0
 
 NAHPAD:
 	Inherits: ^Building
