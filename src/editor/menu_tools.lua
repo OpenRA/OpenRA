@@ -25,7 +25,7 @@ tool = {
 
 ]=]
 
-local toolArgs = {{},}
+local toolArgs = {}
 local cnt = 1
 
 -- fill in tools that have a automatic execution
