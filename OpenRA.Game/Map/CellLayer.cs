@@ -48,8 +48,20 @@ namespace OpenRA
 		/// <summary>Gets or sets the <see cref="OpenRA.CellLayer"/> using cell coordinates</summary>
 		public T this[CPos cell]
 		{
-			get { return entries[Index(cell)]; }
-			set { entries[Index(cell)] = value; }
+			get
+			{
+				if (Index(cell) < (entries.Length - 1))
+					return entries[Index(cell)];
+				else
+					return entries[(entries.Length - 1)];
+			}
+			set
+			{
+				if (Index(cell) < (entries.Length - 1))
+					entries[Index(cell)] = value;
+				else
+					entries[(entries.Length - 1)] = value;
+			}
 		}
 
 		/// <summary>Gets or sets the layer contents using raw map coordinates (not CPos!)</summary>
