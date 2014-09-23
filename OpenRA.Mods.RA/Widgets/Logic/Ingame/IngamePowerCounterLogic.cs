@@ -10,6 +10,7 @@
 
 using OpenRA.Mods.RA.Power;
 using OpenRA.Widgets;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
@@ -20,7 +21,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var powerManager = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var power = widget.Get<LabelWithTooltipWidget>("POWER");
+			var powerIcon = widget.Get<ImageWidget>("POWER_ICON");
 
+			powerIcon.GetImageName = () => powerManager.ExcessPower < 0 ? "power-critical" : "power-normal";
+			power.GetColor = () => powerManager.ExcessPower < 0 ? Color.Red : Color.White;
 			power.GetText = () => powerManager.PowerProvided == 1000000 ? "inf" : powerManager.ExcessPower.ToString();
 			power.GetTooltipText = () => "Power Usage: " + powerManager.PowerDrained.ToString() + (powerManager.PowerProvided != 1000000 ? "/" + powerManager.PowerProvided.ToString() : "");
 		}

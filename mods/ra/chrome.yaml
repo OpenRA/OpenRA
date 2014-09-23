@@ -50,6 +50,10 @@ sidebar-bits: chrome.png
 	production-tooltip-cost: 448, 80, 16, 16
 	production-iconoverlay: 314,118,238,48
 
+power-icons: chrome.png
+	power-normal: 350,0,12,18
+	power-critical: 363,0,12,18
+
 production-icons: chrome.png
 	building: 384,0,16,16
 	building-disabled: 384,16,16,16

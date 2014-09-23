@@ -164,6 +164,7 @@ Container@PLAYER_WIDGETS:
 							Children:
 				Label@GAME_TIMER:
 					Logic: GameTimerLogic
+					X: 3
 					Y: 263
 					Width: PARENT_RIGHT
 					Height: 22
@@ -190,6 +191,12 @@ Container@PLAYER_WIDGETS:
 					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
+					Children:
+						Image@POWER_ICON:
+							X: PARENT_RIGHT + 4
+							Y: 5
+							ImageCollection: power-icons
+							ImageName: power-normal
 		Container@SIDEBAR_PRODUCTION:
 			Logic: ClassicProductionLogic
 			X: WINDOW_RIGHT - 250
