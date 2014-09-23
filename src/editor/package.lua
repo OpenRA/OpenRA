@@ -158,6 +158,7 @@ function ide:RemoveMenuItem(id, menu)
 
     local positem = menu:FindItemByPosition(pos)
     if (not positem or positem:GetKind() == wx.wxITEM_SEPARATOR)
+    and pos > 0
     and (menu:FindItemByPosition(pos-1):GetKind() == wx.wxITEM_SEPARATOR) then
       menu:Destroy(menu:FindItemByPosition(pos-1))
     end
