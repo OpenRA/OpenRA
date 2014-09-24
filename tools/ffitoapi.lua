@@ -50,13 +50,14 @@ local function ffiToApi(ffidef)
 
   local description = header:match("|%s*(.*)")
   local descrprefixes = header:match("(.-)%s*|")
+  if not descrprefixes then return end
+
   local prefixes = {}
   for prefix in descrprefixes:gmatch("([_%w]+)") do
     table.insert(prefixes,prefix)
   end
-  if (not prefixes[1]) then return end
-
   local ns = prefixes[1]
+  if not ns then return end
 
   local lktypes = {
     ["string"] = "string",
@@ -284,11 +285,11 @@ end
 local function exec(wxfname,projectdir)
   -- get cur editor text
   local editor = GetEditor()
-  if (not editor) then end
+  if (not editor) then return end
   local tx = editor:GetText()
   tx = ffiToApi(tx)
   -- replace text
-  editor:SetText(tx)
+  if tx then editor:SetText(tx) end
 end
 
 if (not ide) then
