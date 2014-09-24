@@ -64,7 +64,9 @@ function PackageRegister(file, ...)
   return PackageEventHandleOne(file, "onRegister", ...)
 end
 
-function ide:GetRootPath() return GetPathWithSep(ide.editorFilename) end
+function ide:GetRootPath(path)
+  return MergeFullPath(GetPathWithSep(ide.editorFilename), path or '')
+end
 function ide:GetPackagePath(packname)
   return MergeFullPath(
     ide.oshome and MergeFullPath(ide.oshome, '.zbstudio/') or ide:GetRootPath(),
