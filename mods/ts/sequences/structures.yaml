@@ -686,7 +686,7 @@ nasam:
 	turret: gtctwr_d
 		Start: 0
 		Facings: 32
-		Offset: 0,20
+		Offset: 0,10
 	make: ntsammk
 		Start: 0
 		Length: 8
