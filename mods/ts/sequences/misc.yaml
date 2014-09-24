@@ -1,24 +1,34 @@
 overlay:
 	build-valid-interior: place
 		Start: 0
+		Offset: 0, 12
 	build-valid-snow: place
 		Start: 0
+		Offset: 0, 12
 	build-valid-temperat: place
 		Start: 0
+		Offset: 0, 12
 	build-invalid: place
 		Start: 1
+		Offset: 0, 12
 	target-select: place
 		Start: 1
+		Offset: 0, 12
 	target-valid-desert: place
 		Start: 1
+		Offset: 0, 12
 	target-valid-interior: place
 		Start: 1
+		Offset: 0, 12
 	target-valid-snow: place
 		Start: 1
+		Offset: 0, 12
 	target-valid-temperat: place
 		Start: 1
+		Offset: 0, 12
 	target-invalid: place
 		Start: 1
+		Offset: 0, 12
 
 poweroff:
 	offline: poweroff
