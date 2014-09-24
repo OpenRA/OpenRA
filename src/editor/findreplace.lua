@@ -329,15 +329,8 @@ function findReplace:RunInFiles(replace)
 end
 
 local function getExts()
-  local knownexts = {}
-  for _, spec in pairs(ide.specs) do
-    if (spec.exts) then
-      for _, ext in ipairs(spec.exts) do
-        table.insert(knownexts, "*."..ext)
-      end
-    end
-  end
-  return #knownexts > 0 and table.concat(knownexts, "; ") or nil
+  local knownexts = ide:GetKnownExtensions()
+  return #knownexts > 0 and "*."..table.concat(knownexts, "; *.") or nil
 end
 
 function findReplace:createDialog(replace,infiles)

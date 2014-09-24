@@ -214,18 +214,10 @@ function ActivateFile(filename)
 end
 
 local function getExtsString()
-  local knownexts = ""
-  for _,spec in pairs(ide.specs) do
-    if (spec.exts) then
-      for _,ext in ipairs(spec.exts) do
-        knownexts = knownexts.."*."..ext..";"
-      end
-    end
-  end
-  knownexts = knownexts:len() > 0 and knownexts:sub(1,-2) or nil
-
-  local exts = knownexts and TR("Known Files").." ("..knownexts..")|"..knownexts.."|" or ""
-  return exts..TR("All files").." (*)|*"
+  local exts = ide:GetKnownExtensions()
+  local knownexts = #exts > 0 and "*."..table.concat(exts, ";*.") or nil
+  return (knownexts and TR("Known Files").." ("..knownexts..")|"..knownexts.."|" or "")
+  .. TR("All files").." (*)|*"
 end
 
 function ReportError(msg)
