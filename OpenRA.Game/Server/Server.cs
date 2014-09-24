@@ -46,8 +46,6 @@ namespace OpenRA.Server
 		public List<Connection> PreConns = new List<Connection>();
 
 		TcpListener listener = null;
-		Dictionary<int, List<Connection>> inFlightFrames
-			= new Dictionary<int, List<Connection>>();
 
 		TypeDictionary serverTraits = new TypeDictionary();
 		public Session LobbyInfo;
@@ -389,20 +387,6 @@ namespace OpenRA.Server
 			SyncLobbyGlobalSettings();
 		}
 
-		public void UpdateInFlightFrames(Connection conn)
-		{
-			if (conn.Frame == 0)
-				return;
-
-			if (!inFlightFrames.ContainsKey(conn.Frame))
-				inFlightFrames[conn.Frame] = new List<Connection> { conn };
-			else
-				inFlightFrames[conn.Frame].Add(conn);
-
-			if (Conns.All(c => inFlightFrames[conn.Frame].Contains(c)))
-				inFlightFrames.Remove(conn.Frame);
-		}
-
 		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
 		{
 			try
@@ -528,6 +512,11 @@ namespace OpenRA.Server
 
 		public void DropClient(Connection toDrop)
 		{
+			DropClient(toDrop, toDrop.MostRecentFrame);
+		}
+
+		public void DropClient(Connection toDrop, int frame)
+		{
 			if (PreConns.Contains(toDrop))
 				PreConns.Remove(toDrop);
 			else
@@ -565,7 +554,7 @@ namespace OpenRA.Server
 					}
 				}
 
-				DispatchOrders(toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf });
+				DispatchOrders(toDrop, frame, new byte[] { 0xbf });
 
 				if (!Conns.Any())
 				{
