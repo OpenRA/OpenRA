@@ -119,22 +119,31 @@ namespace OpenRA.Traits
 		// NOTE: always includes transients with influence
 		public bool AnyUnitsAt(CPos a)
 		{
+			if (!map.Contains(a))
+				return false;
+
 			return influence[a] != null;
 		}
 
 		// NOTE: can not check aircraft
 		public bool AnyUnitsAt(CPos a, SubCell sub, bool checkTransient = true)
 		{
-			bool always = sub == SubCell.FullCell || sub == SubCell.Any;
+			if (!map.Contains(a))
+				return false;
+
+			var always = sub == SubCell.FullCell || sub == SubCell.Any;
 			for (var i = influence[a]; i != null; i = i.Next)
+			{
 				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
 				{
 					if (checkTransient)
 						return true;
+
 					var pos = i.Actor.TraitOrDefault<IPositionable>();
 					if (pos == null || !pos.IsLeavingCell(a, i.SubCell))
 						return true;
 				}
+			}
 
 			return false;
 		}
@@ -142,7 +151,10 @@ namespace OpenRA.Traits
 		// NOTE: can not check aircraft
 		public bool AnyUnitsAt(CPos a, SubCell sub, Func<Actor, bool> withCondition)
 		{
-			bool always = sub == SubCell.FullCell || sub == SubCell.Any;
+			if (!map.Contains(a))
+				return false;
+
+			var always = sub == SubCell.FullCell || sub == SubCell.Any;
 			for (var i = influence[a]; i != null; i = i.Next)
 				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
 					if (withCondition(i.Actor))
