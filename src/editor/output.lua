@@ -151,6 +151,11 @@ end
 function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   if (not cmd) then return end
 
+  -- expand ~ at the beginning of the command
+  if ide.oshome and cmd:find('~') then
+    cmd = cmd:gsub([[^(['"]?)~]], '%1'..ide.oshome:gsub('[\\/]$',''), 1)
+  end
+
   -- try to extract the name of the executable from the command
   -- the executable may not have the extension and may be in quotes
   local exename = string.gsub(cmd, "\\", "/")
