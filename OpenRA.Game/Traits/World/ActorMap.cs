@@ -154,13 +154,17 @@ namespace OpenRA.Traits
 		public void AddInfluence(Actor self, IOccupySpace ios)
 		{
 			foreach (var c in ios.OccupiedCells())
-				influence[c.First] = new InfluenceNode { Next = influence[c.First], SubCell = c.Second, Actor = self };
+				if (map.Contains(c.First))
+					influence[c.First] = new InfluenceNode { Next = influence[c.First], SubCell = c.Second, Actor = self };
 		}
 
 		public void RemoveInfluence(Actor self, IOccupySpace ios)
 		{
 			foreach (var c in ios.OccupiedCells())
 			{
+				if (!map.Contains(c.First))
+					continue;
+
 				var temp = influence[c.First];
 				RemoveInfluenceInner(ref temp, self);
 				influence[c.First] = temp;
