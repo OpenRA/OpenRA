@@ -214,6 +214,7 @@ SCRIN:
 		Owner: nod
 	Selectable:
 		Bounds: 30,24
+		Voice: Scrin
 	Helicopter:
 		RearmBuildings: nahpad
 		ROT: 3
