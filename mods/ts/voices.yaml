@@ -191,3 +191,10 @@ CivilianFemale: #can be used for female mutant as well
 		Die: DEDGIRL1, DEDGIRL2, DEDGIRL4
 		Burned: DEDGIRL3
 		Zapped: ELECTRO1
+
+Scrin:
+	Voices:
+		Select: 32-I000
+		Move: 32-I002, 32-I004
+		Attack: 32-I006
+		Die: 32-I008
