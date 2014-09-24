@@ -63,9 +63,7 @@ namespace OpenRA.Mods.RA.Scripting
 			context.RegisterType(typeof(int2), "int2", true);
 			context.RegisterType(typeof(float2), "float2", true);
 
-			var sharedScripts = Game.modData.Manifest.LuaScripts ?? new string[0];
-			if (sharedScripts.Any())
-				context.LoadLuaScripts(f => GlobalFileSystem.Open(f).ReadAllText(), sharedScripts);
+			context.LoadLuaScripts(f => GlobalFileSystem.Open(f).ReadAllText(), Game.modData.Manifest.LuaScripts);
 
 			AddMapActorGlobals();
 
