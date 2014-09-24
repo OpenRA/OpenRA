@@ -5,8 +5,8 @@ return {
   exec = {
     name = "Perforce revert",
     description = "does p4 revert",
-    fn = function(wxfname,projectdir)
-      local cmd = 'p4 revert "'..wxfname:GetFullPath()..'"'
+    fn = function(fname,projectdir)
+      local cmd = 'p4 revert "'..fname..'"'
 
       CommandLineRun(cmd,nil,true)
     end,
