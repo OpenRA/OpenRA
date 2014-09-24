@@ -95,6 +95,9 @@ namespace OpenRA.Mods.RA
 		{
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(pos);
+			if (!world.Map.Contains(targetTile))
+				return false;
+
 			var impactType = GetImpactType(world, targetTile, pos);
 			if (!ValidImpactTypes.HasFlag(impactType) || InvalidImpactTypes.HasFlag(impactType))
 				return false;
