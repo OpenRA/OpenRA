@@ -752,8 +752,8 @@ GATECH:
 	ProvidesCustomPrerequisite:
 		Prerequisite: tech
 	Building:
-		Footprint: xxx xxx xxx
-		Dimensions: 3,3
+		Footprint: xxx xxx
+		Dimensions: 3,2
 	Health:
 		HP: 500
 	Armor:
