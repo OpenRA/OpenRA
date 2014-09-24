@@ -268,3 +268,11 @@ function ide:AddPanel(ctrl, panel, name, conf)
 
   return notebook
 end
+
+function ide:AddTool(name, command, updateui)
+  return ToolsAddTool(name, command, updateui)
+end
+
+function ide:RemoveTool(name)
+  return ToolsRemoveTool(name)
+end
