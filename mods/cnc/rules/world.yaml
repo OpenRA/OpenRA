@@ -126,7 +126,7 @@ World:
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
 	PathfinderDebugOverlay:
-	CellDebugOverlay:
+	CellGridDebugOverlay:
 	SpawnMapActors:
 	MPStartLocations:
 	CreateMPPlayers:

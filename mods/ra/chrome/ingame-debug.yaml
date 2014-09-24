@@ -100,13 +100,6 @@ Container@DEBUG_PANEL:
 			Width: 200
 			Font: Regular
 			Text: Show A* Cost
-		Checkbox@SHOW_CELL_OVERLAY:
-			X: 175
-			Y: 315
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: Show Cells
 		Checkbox@SHOW_COMBATOVERLAY:
 			X: 290
 			Y: 285
@@ -121,4 +114,87 @@ Container@DEBUG_PANEL:
 			Width: 200
 			Font: Regular
 			Text: Show Render Geometry
-
+Container@GRID_TOOLS:
+	Logic: DebugGridToolsLogic
+	X: 500
+	Y: 41
+	Width: 200
+	Height: 400
+	Children:
+		Background@BACKGROUND:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+		Label@GRID_TITLE:
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 20
+			Width: 140
+			Height: 30
+			Text: Grid Tools
+			Align: Center
+			Font: Bold
+		Button@TOGGLE_GRID:
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 60
+			Width: 140
+			Height: 30
+			Font: Bold
+			Text: Toggle Grid
+		Button@TOGGLE_GRID_FULL:
+			X: 30
+			Y: 100
+			Width: 65
+			Height: 25
+			Font: Bold
+			Text: Full
+		Button@TOGGLE_GRID_HALF:
+			X: 105
+			Y: 100
+			Width: 65
+			Height: 25
+			Font: Bold
+			Text: Half
+		Button@TOGGLE_RENDER_ORDER:
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 135
+			Width: 140
+			Height: 30
+			Font: Bold
+			Text: Render Order
+		DropDownButton@COLOR_FULL:
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 175
+			Width: 140
+			Height: 25
+		DropDownButton@COLOR_HALF:
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 210
+			Width: 140
+			Height: 25
+		Button@TOGGLE_GRID_TYPE:
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 245
+			Width: 140
+			Height: 30
+			Font: Bold
+			Text: Toggle Grid Type
+		Label@GRID_RADIUS_TEXT:
+			Y: 283
+			X: 30
+			Height: 20
+			Font: Bold
+			Text: Radius:
+			Align: Left
+			Width: 100
+		TextField@GRID_RADIUS:
+			MaxLength: 2
+			X: 110
+			Y: 285
+			Width: 60
+			Height: 20
+		Button@RESET_GRID:
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 315
+			Width: 140
+			Height: 30
+			Font: Bold
+			Text: Reset Grid Options

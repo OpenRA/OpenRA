@@ -18,7 +18,7 @@ using OpenRA.Graphics;
 namespace OpenRA.Mods.RA
 {
 	[Desc("Used to show cell size and location. Attach this to the world actor.")]
-	public class CellDebugOverlayInfo : ITraitInfo
+	public class CellGridDebugOverlayInfo : ITraitInfo
 	{
 		[Desc("TileShape of cell artwork. RA/D2k/CNC use `Rectangle`, TS uses `Diamond`.")]
 		public readonly TileShape TileShape = TileShape.Rectangle;
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 		[Desc("If GridType is `SurroundingMouse` the grid will be rendered in a radius of this many cells.")]
 		public readonly int GridRadius = 5;
 
-		public object Create(ActorInitializer init) { return new CellDebugOverlay(this); }
+		public object Create(ActorInitializer init) { return new CellGridDebugOverlay(this); }
 	}
 
 	public enum RenderOrder
@@ -59,31 +59,73 @@ namespace OpenRA.Mods.RA
 		FullMap
 	}
 
-	public class CellDebugOverlay : IRenderOverlay, IPostRender, IResolveOrder
+	public class CellGridDebugOverlay : IRenderOverlay, IPostRender, IResolveOrder
 	{
-		readonly CellDebugOverlayInfo info;
 		readonly TileShape tileShape;
 
-		bool renderFullGrid;
-		bool renderHalfGrid;
-		RenderOrder renderOrder;
-		GridType gridType;
-		int gridRadius;
-
+		public readonly CellGridDebugOverlayInfo Info;
+		public bool RenderFullGrid;
+		public bool RenderHalfGrid;
+		public GridType GridType;
+		public int GridRadius;
+		public RenderOrder RenderOrder;
+		public Color FullCellColor;
+		public Color HalfCellColor;
 		public bool Visible;
 
-		public CellDebugOverlay(CellDebugOverlayInfo info)
+		public CellGridDebugOverlay(CellGridDebugOverlayInfo info)
 		{
-			this.info = info;
+			Info = info;
 			tileShape = info.TileShape;
 
-			renderFullGrid = info.RenderFullGrid;
-			renderHalfGrid = info.RenderHalfGrid;
-			renderOrder = info.RenderOrder;
-			gridType = info.GridType;
-			gridRadius = info.GridRadius;
-
+			RenderFullGrid = info.RenderFullGrid;
+			RenderHalfGrid = info.RenderHalfGrid;
+			GridType = info.GridType;
+			GridRadius = info.GridRadius;
+			RenderOrder = info.RenderOrder;
+			FullCellColor = info.FullCellColor;
+			HalfCellColor = info.HalfCellColor;
 			Visible = false;
+		}
+
+		public void SwapRenderOrder()
+		{
+			if (RenderOrder == RenderOrder.BeforeActors)
+				RenderOrder = RenderOrder.AfterActors;
+			else
+				RenderOrder = RenderOrder.BeforeActors;
+		}
+
+		public void SwapGridType()
+		{
+			if (GridType == GridType.FullMap)
+				GridType = GridType.MouseRadius;
+			else if (GridType == GridType.MouseRadius)
+				GridType = GridType.FullMap;
+		}
+
+		public void SetRadius(int radius)
+		{
+			if (radius < 0)
+				radius = Math.Abs(radius);
+
+			// `Map` has a hard-coded limit
+			if (radius > 50)
+				radius = 50;
+
+			GridRadius = radius;
+		}
+
+		public void ResetAll()
+		{
+			RenderFullGrid = Info.RenderFullGrid;
+			RenderHalfGrid = Info.RenderHalfGrid;
+			GridType = Info.GridType;
+			GridRadius = Info.GridRadius;
+			RenderOrder = Info.RenderOrder;
+			FullCellColor = Info.FullCellColor;
+			HalfCellColor = Info.HalfCellColor;
+			Visible = true;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -92,48 +134,35 @@ namespace OpenRA.Mods.RA
 				Visible = !Visible;
 
 			if (order.OrderString == "DevCellDebug.above")
-				renderOrder = RenderOrder.AfterActors;
+				RenderOrder = RenderOrder.AfterActors;
 
 			if (order.OrderString == "DevCellDebug.below")
-				renderOrder = RenderOrder.BeforeActors;
+				RenderOrder = RenderOrder.BeforeActors;
 
 			if (order.OrderString == "DevCellDebug.full")
-				renderFullGrid = !renderFullGrid;
+				RenderFullGrid = !RenderFullGrid;
 
 			if (order.OrderString == "DevCellDebug.half")
-				renderHalfGrid = !renderHalfGrid;
+				RenderHalfGrid = !RenderHalfGrid;
 
 			if (order.OrderString == "DevCellDebug.type")
-			{
-				if (gridType == GridType.FullMap)
-					gridType = GridType.MouseRadius;
-				else if (gridType == GridType.MouseRadius)
-					gridType = GridType.FullMap;
-			}
+				SwapGridType();
 
 			if (order.OrderString.StartsWith("DevCellDebug.range"))
 			{
 				var value = order.OrderString.Split(' ')[1];
-				if (!int.TryParse(value, out gridRadius))
+				var radius = 0;
+				if (!int.TryParse(value, out radius))
 				{
-					gridRadius = info.GridRadius;
-					Game.Debug("{0} is not a valid integer.", value);
+					Game.Debug("`{0}` is not a valid integer.", value);
+					return;
 				}
 
-				if (gridRadius < 0)
-					gridRadius = Math.Abs(gridRadius);
+				SetRadius(radius);
 			}
 
 			if (order.OrderString == "DevCellDebug.reset")
-			{
-				renderOrder = info.RenderOrder;
-				renderFullGrid = info.RenderFullGrid;
-				renderHalfGrid = info.RenderHalfGrid;
-				renderOrder = info.RenderOrder;
-				gridType = info.GridType;
-				gridRadius = info.GridRadius;
-				Visible = true;
-			}
+				ResetAll();
 
 		}
 
@@ -143,25 +172,23 @@ namespace OpenRA.Mods.RA
 			{
 				var lr = Game.Renderer.WorldLineRenderer;
 				var pos = wr.world.Map.CenterOfCell(cell);
-				var fullColor = info.FullCellColor;
-				var halfColor = info.HalfCellColor;
 
 				if (tileShape == TileShape.Diamond)
 				{
-					if (renderFullGrid)
+					if (RenderFullGrid)
 					{
 						var top = wr.ScreenPxPosition(pos + new WVec(0, -512, 0)).ToFloat2();
 						var right = wr.ScreenPxPosition(pos + new WVec(512, 0, 0)).ToFloat2();
 						var bottom = wr.ScreenPxPosition(pos + new WVec(0, 512, 0)).ToFloat2();
 						var left = wr.ScreenPxPosition(pos + new WVec(-512, 0, 0)).ToFloat2();
 
-						lr.DrawLine(top, right, fullColor, fullColor);
-						lr.DrawLine(right, bottom, fullColor, fullColor);
-						lr.DrawLine(bottom, left, fullColor, fullColor);
-						lr.DrawLine(left, top, fullColor, fullColor);
+						lr.DrawLine(top, right, FullCellColor, FullCellColor);
+						lr.DrawLine(right, bottom, FullCellColor, FullCellColor);
+						lr.DrawLine(bottom, left, FullCellColor, FullCellColor);
+						lr.DrawLine(left, top, FullCellColor, FullCellColor);
 					}
 
-					if (renderHalfGrid)
+					if (RenderHalfGrid)
 					{
 						var center = wr.ScreenPxPosition(pos);
 						var topRight = wr.ScreenPxPosition(pos + new WVec(256, -256, 0)).ToFloat2();
@@ -169,28 +196,28 @@ namespace OpenRA.Mods.RA
 						var bottomLeft = wr.ScreenPxPosition(pos + new WVec(-256, 256, 0)).ToFloat2();
 						var topLeft = wr.ScreenPxPosition(pos + new WVec(-256, -256, 0)).ToFloat2();
 
-						lr.DrawLine(center, topRight, halfColor, halfColor);
-						lr.DrawLine(center, bottomRight, halfColor, halfColor);
-						lr.DrawLine(center, bottomLeft, halfColor, halfColor);
-						lr.DrawLine(center, topLeft, halfColor, halfColor);
+						lr.DrawLine(center, topRight, HalfCellColor, HalfCellColor);
+						lr.DrawLine(center, bottomRight, HalfCellColor, HalfCellColor);
+						lr.DrawLine(center, bottomLeft, HalfCellColor, HalfCellColor);
+						lr.DrawLine(center, topLeft, HalfCellColor, HalfCellColor);
 					}
 				}
 				else if (tileShape == TileShape.Rectangle)
 				{
-					if (renderFullGrid)
+					if (RenderFullGrid)
 					{
 						var topLeft = wr.ScreenPxPosition(pos + new WVec(-512, -512, 0)).ToFloat2();
 						var topRight = wr.ScreenPxPosition(pos + new WVec(512, -512, 0)).ToFloat2();
 						var bottomRight = wr.ScreenPxPosition(pos + new WVec(512, 512, 0)).ToFloat2();
 						var bottomLeft = wr.ScreenPxPosition(pos + new WVec(-512, 512, 0)).ToFloat2();
 
-						lr.DrawLine(topLeft, topRight, fullColor, fullColor);
-						lr.DrawLine(topRight, bottomRight, fullColor, fullColor);
-						lr.DrawLine(bottomRight, bottomLeft, fullColor, fullColor);
-						lr.DrawLine(bottomLeft, topLeft, fullColor, fullColor);
+						lr.DrawLine(topLeft, topRight, FullCellColor, FullCellColor);
+						lr.DrawLine(topRight, bottomRight, FullCellColor, FullCellColor);
+						lr.DrawLine(bottomRight, bottomLeft, FullCellColor, FullCellColor);
+						lr.DrawLine(bottomLeft, topLeft, FullCellColor, FullCellColor);
 					}
 
-					if (renderHalfGrid)
+					if (RenderHalfGrid)
 					{
 						var center = wr.ScreenPxPosition(pos);
 						var top = wr.ScreenPxPosition(pos + new WVec(0, -512, 0)).ToFloat2();
@@ -198,10 +225,10 @@ namespace OpenRA.Mods.RA
 						var left = wr.ScreenPxPosition(pos + new WVec(-512, 0, 0)).ToFloat2();
 						var right = wr.ScreenPxPosition(pos + new WVec(512, 0, 0)).ToFloat2();
 
-						lr.DrawLine(center, top, halfColor, halfColor);
-						lr.DrawLine(center, bottom, halfColor, halfColor);
-						lr.DrawLine(center, left, halfColor, halfColor);
-						lr.DrawLine(center, right, halfColor, halfColor);
+						lr.DrawLine(center, top, HalfCellColor, HalfCellColor);
+						lr.DrawLine(center, bottom, HalfCellColor, HalfCellColor);
+						lr.DrawLine(center, left, HalfCellColor, HalfCellColor);
+						lr.DrawLine(center, right, HalfCellColor, HalfCellColor);
 					}
 				}
 			}
@@ -209,13 +236,13 @@ namespace OpenRA.Mods.RA
 
 		public void Render(WorldRenderer wr)
 		{
-			if (renderOrder == RenderOrder.BeforeActors)
+			if (RenderOrder == RenderOrder.BeforeActors)
 				RenderDecision(wr);
 		}
 
 		public void RenderAfterWorld(WorldRenderer wr, Actor self)
 		{
-			if (renderOrder == RenderOrder.AfterActors)
+			if (RenderOrder == RenderOrder.AfterActors)
 				RenderDecision(wr);
 		}
 
@@ -224,10 +251,10 @@ namespace OpenRA.Mods.RA
 			if (!Visible)
 				return;
 
-			if (gridType == GridType.MouseRadius)
+			if (GridType == GridType.MouseRadius)
 			{
 				var mouseCenter = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-				var cellsInRange = wr.world.Map.FindTilesInCircle(mouseCenter, gridRadius);
+				var cellsInRange = wr.world.Map.FindTilesInCircle(mouseCenter, GridRadius);
 				DoRender(wr, cellsInRange);
 			}
 			else

@@ -129,7 +129,7 @@ World:
 		AllowUnderActors: false
 		TerrainType: BlueTiberium
 	PathfinderDebugOverlay:
-	CellDebugOverlay:
+	CellGridDebugOverlay:
 		TileShape: Diamond
 	SpawnMapActors:
 	CreateMPPlayers:
