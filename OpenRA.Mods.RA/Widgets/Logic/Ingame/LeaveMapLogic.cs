@@ -9,8 +9,9 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Drawing;
+using System.Linq;
+using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -19,13 +20,16 @@ namespace OpenRA.Mods.RA.Widgets
 	class LeaveMapLogic
 	{
 		enum Tab { Objectives, Chat };
-
 		Tab currentTab;
+
+		OrderManager orderManager;
 		bool newChatMessage;
 
 		[ObjectCreator.UseCtor]
-		public LeaveMapLogic(Widget widget, World world)
+		public LeaveMapLogic(Widget widget, World world, OrderManager orderManager)
 		{
+			this.orderManager = orderManager;
+
 			widget.Get<LabelWidget>("VERSION_LABEL").Text = Game.modData.Manifest.Mod.Version;
 
 			var showStats = false;
@@ -70,7 +74,7 @@ namespace OpenRA.Mods.RA.Widgets
 				chatButton.IsHighlighted = () => currentTab == Tab.Chat || (newChatMessage && Game.LocalTick % 50 < 25);
 
 				Game.BeforeGameStart += UnregisterChatNotification;
-				Game.AddChatLine += NotifyNewChatMessage;
+				orderManager.AddChatLine += NotifyNewChatMessage;
 			}
 
 			var statsButton = dialog.Get<ButtonWidget>("STATS_BUTTON");
@@ -130,7 +134,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		void UnregisterChatNotification()
 		{
-			Game.AddChatLine -= NotifyNewChatMessage;
+			orderManager.AddChatLine -= NotifyNewChatMessage;
 			Game.BeforeGameStart -= UnregisterChatNotification;
 		}
 	}

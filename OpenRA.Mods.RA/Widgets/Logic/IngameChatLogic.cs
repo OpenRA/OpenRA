@@ -18,6 +18,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class IngameChatLogic
 	{
+		readonly OrderManager orderManager;
 		readonly Ruleset modRules;
 
 		readonly ContainerWidget chatOverlay;
@@ -38,6 +39,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, Ruleset modRules)
 		{
+			this.orderManager = orderManager;
 			this.modRules = modRules;
 
 			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToList();
@@ -125,7 +127,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			chatScrollPanel.RemoveChildren();
 			chatScrollPanel.ScrollToBottom();
 
-			Game.AddChatLine += AddChatLine;
+			foreach (var chatLine in orderManager.ChatCache)
+				AddChatLine(chatLine.Color, chatLine.Name, chatLine.Text, true);
+
+			orderManager.AddChatLine += AddChatLineWrapper;
 			Game.BeforeGameStart += UnregisterEvents;
 
 			CloseChat();
@@ -133,7 +138,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void UnregisterEvents()
 		{
-			Game.AddChatLine -= AddChatLine;
+			orderManager.AddChatLine -= AddChatLineWrapper;
 			Game.BeforeGameStart -= UnregisterEvents;
 		}
 
@@ -156,9 +161,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			chatOverlay.Visible = true;
 		}
 
-		public void AddChatLine(Color c, string from, string text)
+		public void AddChatLineWrapper(Color c, string from, string text)
 		{
-			if (!inDialog)
+			AddChatLine(c, from, text, false);
+		}
+
+		void AddChatLine(Color c, string from, string text, bool replayCache)
+		{
+			if (!(inDialog || replayCache))
 				chatOverlayDisplay.AddLine(c, from, text);
 
 			var template = chatTemplate.Clone();
@@ -193,7 +203,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (scrolledToBottom)
 				chatScrollPanel.ScrollToBottom(smooth: true);
 
-			Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
+			if (!replayCache)
+				Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
 		}
 	}
 }
