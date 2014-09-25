@@ -43,14 +43,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			Game.LoadWidget(world, "CHAT_PANEL", ingameRoot, new WidgetArgs());
 
-			var showLeaveMapWidget = false;
-			var leaveMapWidget = Game.LoadWidget(world, "LEAVE_MAP_WIDGET", Ui.Root, new WidgetArgs());
-			leaveMapWidget.IsVisible = () => showLeaveMapWidget;
-
 			Action ShowLeaveMapWidget = () =>
 			{
 				ingameRoot.RemoveChildren();
-				showLeaveMapWidget = true;
+				Game.LoadWidget(world, "LEAVE_MAP_WIDGET", Ui.Root, new WidgetArgs());
 			};
 			world.GameOver += ShowLeaveMapWidget;
 		}
