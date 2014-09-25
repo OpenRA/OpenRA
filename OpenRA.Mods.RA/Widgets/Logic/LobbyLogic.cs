@@ -84,10 +84,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void CloseWindow()
 		{
+			orderManager.AddChatLine -= AddChatLine;
 			Game.LobbyInfoChanged -= UpdateCurrentMap;
 			Game.LobbyInfoChanged -= UpdatePlayerList;
 			Game.BeforeGameStart -= OnGameStart;
-			Game.AddChatLine -= AddChatLine;
 			Game.ConnectionStateChanged -= ConnectionStateChanged;
 
 			Ui.CloseWindow();
@@ -104,10 +104,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.skirmishMode = skirmishMode;
 			this.modRules = modRules;
 
+			orderManager.AddChatLine += AddChatLine;
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			Game.LobbyInfoChanged += UpdatePlayerList;
 			Game.BeforeGameStart += OnGameStart;
-			Game.AddChatLine += AddChatLine;
 			Game.ConnectionStateChanged += ConnectionStateChanged;
 
 			var name = lobby.GetOrNull<LabelWidget>("SERVER_NAME");

@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Primitives;
 
@@ -44,6 +45,9 @@ namespace OpenRA.Network
 
 		List<Order> localOrders = new List<Order>();
 
+		List<ChatLine> chatCache = new List<ChatLine>();
+		public readonly ReadOnlyList<ChatLine> ChatCache;
+
 		public void StartGame()
 		{
 			if (GameStarted) return;
@@ -60,6 +64,8 @@ namespace OpenRA.Network
 			Password = password;
 			Connection = conn;
 			syncReport = new SyncReport(this);
+			ChatCache = new ReadOnlyList<ChatLine>(chatCache);
+			AddChatLine += CacheChatLine;
 		}
 
 		public void IssueOrders(Order[] orders)
@@ -71,6 +77,12 @@ namespace OpenRA.Network
 		public void IssueOrder(Order order)
 		{
 			localOrders.Add(order);
+		}
+
+		public Action<Color, string, string> AddChatLine = (c, n, s) => { };
+		void CacheChatLine(Color color, string name, string text)
+		{
+			chatCache.Add(new ChatLine(color, name, text));
 		}
 
 		public void TickImmediate()
@@ -201,6 +213,20 @@ namespace OpenRA.Network
 		{
 			if (Connection != null)
 				Connection.Dispose();
+		}
+	}
+
+	public class ChatLine
+	{
+		public readonly Color Color;
+		public readonly string Name;
+		public readonly string Text;
+
+		public ChatLine(Color c, string n, string t)
+		{
+			Color = c;
+			Name = n;
+			Text = t;
 		}
 	}
 }
