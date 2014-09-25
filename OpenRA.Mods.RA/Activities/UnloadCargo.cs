@@ -54,6 +54,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			cargo.Unloading = false;
 			if (IsCanceled || cargo.IsEmpty(self))
 				return NextActivity;
 
@@ -93,6 +94,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (!unloadAll || cargo.IsEmpty(self))
 				return NextActivity;
 
+			cargo.Unloading = true;
 			return this;
 		}
 	}
