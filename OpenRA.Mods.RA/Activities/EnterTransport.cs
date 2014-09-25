@@ -8,39 +8,42 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class EnterTransport : Activity
+	class EnterTransport : Enter
 	{
 		readonly Actor transport;
-		readonly Cargo cargo;
+		readonly Passenger passenger;
+		readonly int maxTries;
+		Cargo cargo;
 
-		public EnterTransport(Actor self, Actor transport)
+		public EnterTransport(Actor self, Actor transport, int maxTries = 0)
+			: base(self, transport, maxTries)
 		{
 			this.transport = transport;
+			this.maxTries = maxTries;
 			cargo = transport.Trait<Cargo>();
+			passenger = self.Trait<Passenger>();
 		}
 
-		public override Activity Tick(Actor self)
+		protected override void Unreserve(Actor self, bool abort) { passenger.Unreserve(self); }
+		protected override bool CanReserve(Actor self) { return cargo.Unloading || cargo.CanLoad(transport, self); }
+		protected override ReserveStatus Reserve(Actor self)
 		{
-			if (IsCanceled)
-				return NextActivity;
+			var status = base.Reserve(self);
+			if (status != ReserveStatus.Ready)
+				return status;
+			if (passenger.Reserve(self, cargo))
+				return ReserveStatus.Ready;
+			return ReserveStatus.Pending;
+		}
 
-			if (transport == null || !transport.IsInWorld)
-				return NextActivity;
-
-			if (!cargo.CanLoad(transport, self))
-				return NextActivity;
-
-			// TODO: Queue a move order to the transport? need to be
-			// careful about units that can't path to the transport
-			var cells = Util.AdjacentCells(self.World, Target.FromActor(transport));
-			if (!cells.Contains(self.Location))
-				return NextActivity;
-
+		protected override void OnInside(Actor self)
+		{
 			self.World.AddFrameEndTask(w => 
 			{
 				if (self.IsDead() || transport.IsDead() || !cargo.CanLoad(transport, self))
@@ -50,7 +53,19 @@ namespace OpenRA.Mods.RA.Activities
 				w.Remove(self);
 			});
 
-			return this;
+			Done(self);
+		}
+
+		protected override bool TryGetAlternateTarget(Actor self, int tries, ref Target target)
+		{
+			if (tries > maxTries)
+				return false;
+			var type = target.Actor.Info.Name;
+			return TryGetAlternateTargetInCircle(
+				self, passenger.Info.AlternateTransportScanRange,
+				t => cargo = t.Actor.Trait<Cargo>(), // update cargo
+				a => { var c = a.TraitOrDefault<Cargo>(); return c != null && (c.Unloading || c.CanLoad(a, self)); },
+				new Func<Actor, bool>[] { a => a.Info.Name == type }); // Prefer transports of the same type
 		}
 	}
 }

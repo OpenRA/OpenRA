@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -17,34 +18,113 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	public enum AlternateTransportsMode { None, Force, Default, Always }
+
+	public class EnterTransportTargeter : EnterAlliedActorTargeter<Cargo>
+	{
+		readonly AlternateTransportsMode mode;
+
+		public EnterTransportTargeter(string order, int priority,
+			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor,
+			AlternateTransportsMode mode)
+			: base (order, priority, canTarget, useEnterCursor) { this.mode = mode; }
+
+		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+		{
+			switch (mode)
+			{
+				case AlternateTransportsMode.None:
+					break;
+				case AlternateTransportsMode.Force:
+					if (modifiers.HasModifier(TargetModifiers.ForceMove))
+						return false;
+					break;
+				case AlternateTransportsMode.Default:
+					if (!modifiers.HasModifier(TargetModifiers.ForceMove))
+						return false;
+					break;
+				case AlternateTransportsMode.Always:
+					return false;
+			}
+
+			return base.CanTargetActor(self, target, modifiers, ref cursor);
+		}
+	}
+
+	public class EnterTransportsTargeter : EnterAlliedActorTargeter<Cargo>
+	{
+		readonly AlternateTransportsMode mode;
+
+		public EnterTransportsTargeter(string order, int priority,
+			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor,
+			AlternateTransportsMode mode)
+			: base (order, priority, canTarget, useEnterCursor) { this.mode = mode; }
+
+		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+		{
+			switch (mode)
+			{
+				case AlternateTransportsMode.None:
+					return false;
+				case AlternateTransportsMode.Force:
+					if (!modifiers.HasModifier(TargetModifiers.ForceMove))
+						return false;
+					break;
+				case AlternateTransportsMode.Default:
+					if (modifiers.HasModifier(TargetModifiers.ForceMove))
+						return false;
+					break;
+				case AlternateTransportsMode.Always:
+					break;
+			}
+			return base.CanTargetActor(self, target, modifiers, ref cursor);
+		}
+	}
+
 	[Desc("This actor can enter Cargo actors.")]
 	public class PassengerInfo : ITraitInfo
 	{
 		public readonly string CargoType = null;
 		public readonly PipType PipType = PipType.Green;
-		public int Weight = 1;
+		public readonly int Weight = 1;
+
+		[Desc("Use to set when to use alternate transports (Never, Force, Default, Always).",
+			"Force - use force move modifier (Alt) to enable.",
+			"Default - use force move modifier (Alt) to disable.")]
+		public readonly AlternateTransportsMode AlternateTransportsMode = AlternateTransportsMode.Force;
+
+		[Desc("Number of retries using alternate transports.")]
+		public readonly int MaxAlternateTransportAttempts = 1;
+
+		[Desc("Range from self for looking for an alternate transport (default: 5.5 cells).")]
+		public readonly WRange AlternateTransportScanRange = WRange.FromCells(11) / 2;
 
 		public object Create(ActorInitializer init) { return new Passenger(this); }
 	}
 
-	public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice
+	public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice, INotifyRemovedFromWorld
 	{
-		public readonly PassengerInfo info;
-		public Passenger(PassengerInfo info) { this.info = info; }
+		public readonly PassengerInfo Info;
+		public Passenger(PassengerInfo info) { Info = info; }
 		public Actor Transport;
+		public Cargo ReservedCargo { get; private set; }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<Cargo>("EnterTransport", 6,
-					target => IsCorrectCargoType(target), target => CanEnter(target));
+				yield return new EnterTransportTargeter("EnterTransport", 6,
+					target => IsCorrectCargoType(target), target => CanEnter(target),
+					Info.AlternateTransportsMode);
+				yield return new EnterTransportsTargeter("EnterTransports", 6,
+					target => IsCorrectCargoType(target), target => CanEnter(target),
+					Info.AlternateTransportsMode);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "EnterTransport")
+			if (order.OrderID == "EnterTransport" || order.OrderID == "EnterTransports")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
@@ -53,25 +133,29 @@ namespace OpenRA.Mods.RA
 		bool IsCorrectCargoType(Actor target)
 		{
 			var ci = target.Info.Traits.Get<CargoInfo>();
-			return ci.Types.Contains(info.CargoType);
+			return ci.Types.Contains(Info.CargoType);
+		}
+
+		bool CanEnter(Cargo cargo)
+		{
+			return cargo != null && cargo.HasSpace(Info.Weight);
 		}
 
 		bool CanEnter(Actor target)
 		{
-			var cargo = target.TraitOrDefault<Cargo>();
-			return cargo != null && cargo.HasSpace(info.Weight);
+			return CanEnter(target.TraitOrDefault<Cargo>());
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "EnterTransport" ||
+			if ((order.OrderString != "EnterTransport" && order.OrderString != "EnterTransports") ||
 				!CanEnter(order.TargetActor)) return null;
 			return "Move";
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "EnterTransport")
+			if (order.OrderString == "EnterTransport" || order.OrderString == "EnterTransports")
 			{
 				if (order.TargetActor == null) return;
 				if (!CanEnter(order.TargetActor)) return;
@@ -81,9 +165,26 @@ namespace OpenRA.Mods.RA
 				self.SetTargetLine(target, Color.Green);
 
 				self.CancelActivity();
-				self.QueueActivity(new MoveAdjacentTo(self, target));
-				self.QueueActivity(new EnterTransport(self, order.TargetActor));
+				self.QueueActivity(new EnterTransport(self, order.TargetActor, order.OrderString == "EnterTransport" ? 0 : Info.MaxAlternateTransportAttempts));
 			}
+		}
+
+		public bool Reserve(Actor self, Cargo cargo)
+		{
+			Unreserve(self);
+			if (!cargo.ReserveSpace(self))
+				return false;
+			ReservedCargo = cargo;
+			return true;
+		}
+
+		public void RemovedFromWorld(Actor self) { Unreserve(self); }
+		public void Unreserve(Actor self)
+		{
+			if (ReservedCargo == null)
+				return;
+			ReservedCargo.UnreserveSpace(self);
+			ReservedCargo = null;
 		}
 	}
 }
