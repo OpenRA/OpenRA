@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Red);
-			self.QueueActivity(new Enter(target.Actor, new CaptureActor(target)));
+			self.QueueActivity(new Enter(self, target.Actor, new CaptureActor(target)));
 		}
 
 		class CaptureOrderTargeter : UnitOrderTargeter
