@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -151,6 +152,12 @@ namespace OpenRA.Mods.RA.Air
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
 			return new HeliFly(self, Target.FromCell(self.World, cell, subCell));
+		}
+
+		public Activity MoveIntoTarget(Actor self, Target target) { return new HeliLand(false); }
+		public Activity MoveToTarget(Actor self, Target target)
+		{
+			return Util.SequenceActivities(new HeliFly(self, target), new Turn(Info.InitialFacing));
 		}
 
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
