@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
@@ -129,5 +130,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any) { return new Fly(self, Target.FromCell(self.World, cell)); }
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos) { return Util.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)), new Fly(self, Target.FromPos(toPos))); }
+		public Activity MoveToTarget(Actor self, Target target)	{ return new Fly(self, target, WRange.FromCells(3), WRange.FromCells(5)); }
+		public Activity MoveIntoTarget(Actor self, Target target) { return new Land(target); }
 	}
 }

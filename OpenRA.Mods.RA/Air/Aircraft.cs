@@ -135,7 +135,7 @@ namespace OpenRA.Mods.RA.Air
 			if (afld == null)
 				return;
 
-			var res = afld.Trait<Reservable>();
+			var res = afld.TraitOrDefault<Reservable>();
 
 			if (res != null)
 			{
@@ -203,6 +203,18 @@ namespace OpenRA.Mods.RA.Air
 		public SubCell GetValidSubCell(SubCell preferred) { return SubCell.Invalid; }
 		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true) { return SubCell.Invalid; } // Does not use any subcell
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true) { return true; }
+
+		public bool CanEnterTargetNow(Actor self, Target target)
+		{
+			if (target.Positions.Any(p => self.World.ActorMap.GetUnitsAt(self.World.Map.CellContaining(p)).Any(a => a != self && a != target.Actor)))
+				return false;
+			var res = target.Actor.TraitOrDefault<Reservable>();
+			if (res == null)
+				return true;
+			UnReserve();
+			Reservation = res.Reserve(target.Actor, self, this);
+			return true;
+		}
 
 		public int MovementSpeed
 		{

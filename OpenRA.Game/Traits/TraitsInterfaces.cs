@@ -206,9 +206,12 @@ namespace OpenRA.Traits
 		Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange);
 		Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange);
 		Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any);
+		Activity MoveToTarget(Actor self, Target target);
+		Activity MoveIntoTarget(Actor self, Target target);
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);
 		bool IsMoving { get; set; }
+		bool CanEnterTargetNow(Actor self, Target target);
 	}
 
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }

@@ -660,18 +660,38 @@ namespace OpenRA.Mods.RA.Move
 			SetPosition(self, cell, subCell);
 			SetVisualPosition(self, pos);
 
-			// Animate transition
-			var to = self.World.Map.CenterOfSubCell(cell, subCell);
-			var speed = MovementSpeedForCell(self, cell);
-			var length = speed > 0 ? (to - pos).Length / speed : 0;
+			return VisualMove(self, pos, self.World.Map.CenterOfSubCell(cell, subCell), cell);
+		}
 
-			var facing = Util.GetFacing(to - pos, Facing);
-			return Util.SequenceActivities(new Turn(facing), new Drag(pos, to, length));
+		public Activity MoveToTarget(Actor self, Target target)
+		{
+			if (target.Type == TargetType.Invalid)
+				return null;
+
+			return new MoveAdjacentTo(self, target);
+		}
+
+		public Activity MoveIntoTarget(Actor self, Target target)
+		{
+			if (target.Type == TargetType.Invalid)
+				return null;
+
+			return VisualMove(self, self.CenterPosition, target.CenterPosition);
+		}
+
+		public bool CanEnterTargetNow(Actor self, Target target)
+		{
+			return self.Location == self.World.Map.CellContaining(target.CenterPosition) || Util.AdjacentCells(self.World, target).Any(c => c == self.Location);
 		}
 
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
 		{
-			var speed = MovementSpeedForCell(self, self.Location);
+			return VisualMove(self, fromPos, toPos, self.Location);
+		}
+
+		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos, CPos cell)
+		{
+			var speed = MovementSpeedForCell(self, cell);
 			var length = speed > 0 ? (toPos - fromPos).Length / speed : 0;
 
 			var facing = Util.GetFacing(toPos - fromPos, Facing);
