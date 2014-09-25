@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA.Infiltration
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Red);
-			self.QueueActivity(new Enter(target.Actor, new Infiltrate(target.Actor)));
+			self.QueueActivity(new Enter(self, target.Actor, new Infiltrate(target.Actor)));
 		}
 	}
 }

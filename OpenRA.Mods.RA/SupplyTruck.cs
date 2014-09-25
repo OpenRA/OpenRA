@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Yellow);
-			self.QueueActivity(new Enter(target.Actor, new DonateSupplies(target.Actor, info.Payload)));
+			self.QueueActivity(new Enter(self, target.Actor, new DonateSupplies(target.Actor, info.Payload)));
 		}
 
 		class SupplyTruckOrderTargeter : UnitOrderTargeter
