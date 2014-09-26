@@ -862,16 +862,17 @@ Rules:
 			Duration: 999999
 			KillCargo: yes
 			Range: 3
-		IronCurtainPower:
+		GrantUpgradePower@IRONCURTAIN:
 			Icon: invuln
 			ChargeTime: 30
 			Description: Invulnerability
 			LongDesc: Makes a unit invulnerable\nfor 3 seconds.
-			Duration: 3
+			Duration: 75
 			SelectTargetSound: slcttgt1.aud
 			BeginChargeSound: ironchg1.aud
 			EndChargeSound: ironrdy1.aud
 			Range: 1
+			Upgrades: invulnerability
 		Power:
 			Amount: 0
 	MINVV:
@@ -928,16 +929,17 @@ Rules:
 			Duration: 999999
 			KillCargo: yes
 			Range: 3
-		IronCurtainPower:
+		GrantUpgradePower@IRONCURTAIN:
 			Icon: invuln
 			ChargeTime: 30
 			Description: Invulnerability
 			LongDesc: Makes a unit invulnerable\nfor 3 seconds.
-			Duration: 3
+			Duration: 75
 			SelectTargetSound: slcttgt1.aud
 			BeginChargeSound: ironchg1.aud
 			EndChargeSound: ironrdy1.aud
 			Range: 1
+			Upgrades: invulnerability
 
 Sequences:
 	miner:

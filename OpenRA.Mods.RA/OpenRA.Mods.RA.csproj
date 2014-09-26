@@ -220,7 +220,6 @@
     <Compile Include="Effects\GpsDot.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\GravityBomb.cs" />
-    <Compile Include="Effects\InvulnEffect.cs" />
     <Compile Include="Effects\LaserZap.cs" />
     <Compile Include="Effects\Missile.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
@@ -245,7 +244,6 @@
     <Compile Include="Husk.cs" />
     <Compile Include="Infiltration\InfiltrateForSupportPower.cs" />
     <Compile Include="Invulnerable.cs" />
-    <Compile Include="IronCurtainable.cs" />
     <Compile Include="JamsMissiles.cs" />
     <Compile Include="LeavesHusk.cs" />
     <Compile Include="Captures.cs" />
@@ -359,7 +357,6 @@
     <Compile Include="SupportPowers\AirstrikePower.cs" />
     <Compile Include="SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="SupportPowers\GpsPower.cs" />
-    <Compile Include="SupportPowers\IronCurtainPower.cs" />
     <Compile Include="SupportPowers\NukePower.cs" />
     <Compile Include="SupportPowers\ParatroopersPower.cs" />
     <Compile Include="SupportPowers\SupportPower.cs" />
