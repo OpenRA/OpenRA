@@ -497,6 +497,9 @@ end
 -- register all the plugins
 PackageEventHandle("onRegister")
 
+-- initialization that was delayed until configs processed and packages loaded
+ProjectUpdateInterpreters()
+
 -- load rest of settings
 SettingsRestoreEditorSettings()
 SettingsRestoreFramePosition(ide.frame, "MainFrame")

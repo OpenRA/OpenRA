@@ -82,7 +82,7 @@ local function evSelectInterpreter(event)
   selectInterpreter(event:GetId())
 end
 
-function UpdateInterpreters()
+function ProjectUpdateInterpreters()
   assert(ide.interpreters, "no interpreters defined")
 
   -- delete all existing items (if any)
@@ -117,8 +117,6 @@ function UpdateInterpreters()
   selectInterpreter(id)
 end
 
-UpdateInterpreters()
-
 -----------------------------
 -- Project directory handling
 
@@ -135,7 +133,6 @@ function ProjectUpdateProjectDir(projdir,skiptree)
     ide.filetree:updateProjectDir(projdir)
   end
 end
-ProjectUpdateProjectDir(ide.config.path.projectdir)
 
 local function projChoose(event)
   local editor = GetEditor()
@@ -143,8 +140,7 @@ local function projChoose(event)
     editor and openDocuments[editor:GetId()].filePath or "")
   fn:Normalize() -- want absolute path for dialog
 
-  local projectdir = ide.config.path.projectdir
-
+  local projectdir = ide:GetProject()
   local filePicker = wx.wxDirDialog(frame, TR("Choose a project directory"),
     projectdir ~= "" and projectdir or wx.wxGetCwd(), wx.wxDIRP_DIR_MUST_EXIST)
   if filePicker:ShowModal(true) == wx.wxID_OK then

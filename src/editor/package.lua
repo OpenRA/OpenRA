@@ -212,11 +212,11 @@ end
 
 function ide:AddInterpreter(name, interpreter)
   self.interpreters[name] = setmetatable(interpreter, ide.proto.Interpreter)
-  UpdateInterpreters()
+  ProjectUpdateInterpreters()
 end
 function ide:RemoveInterpreter(name)
   self.interpreters[name] = nil
-  UpdateInterpreters()
+  ProjectUpdateInterpreters()
 end
 
 function ide:AddSpec(name, spec)
