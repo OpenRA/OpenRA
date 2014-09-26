@@ -29,6 +29,15 @@ namespace OpenRA.Traits
 
 	public class DeveloperMode : IResolveOrder, ISync
 	{
+		/// <summary>
+		/// The default cheats to enable when quick-starting the map via a command-line argument.
+		/// </summary>
+		public static string[] DefaultCheats = new[] {
+			"DevShroudDisable", "DevFastBuild", "DevBuildAnywhere",
+			"DevUnlimitedPower", "DevEnableTech", "DevFastCharge",
+			"DevGiveCash", "DevGiveCash", "DevGiveCash"
+		};
+
 		DeveloperModeInfo Info;
 		[Sync] public bool FastCharge;
 		[Sync] public bool AllTech;
