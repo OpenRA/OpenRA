@@ -24,6 +24,7 @@ ide.proto.Plugin = {__index = {
 ide.proto.Interpreter = {__index = {
   GetName = function(self) return self.name end,
   GetFileName = function(self) return self.fname end,
+  GetAPI = function(self) return self.api end,
 }}
 
 ide.proto.Debugger = {__index = {
