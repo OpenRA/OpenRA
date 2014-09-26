@@ -71,7 +71,15 @@ namespace OpenRA.Mods.RA
 		public void UpgradeAvailable(Actor self, string type, bool available)
 		{
 			if (type == Info.RequiresUpgrade)
+			{
 				disabled = !available;
+
+				if (disabled)
+				{
+					Uncloak();
+					remainingTime = Info.InitialDelay;
+				}
+			}
 		}
 
 		public void Uncloak() { Uncloak(Info.CloakDelay); }
@@ -86,7 +94,7 @@ namespace OpenRA.Mods.RA
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { if (Info.UncloakOnAttack) Uncloak(); }
 
-		public bool Cloaked { get { return remainingTime <= 0; } }
+		public bool Cloaked { get { return !disabled && remainingTime <= 0; } }
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
@@ -97,20 +105,25 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			if (remainingTime > 0)
+			if (remainingTime > 0 || disabled)
 				return r;
 
 			if (Cloaked && IsVisible(self, self.World.RenderPlayer))
+			{
 				if (string.IsNullOrEmpty(Info.Palette))
 					return r;
 				else
 					return r.Select(a => a.WithPalette(wr.Palette(Info.Palette)));
+			}
 			else
 				return SpriteRenderable.None;
 		}
 
 		public void Tick(Actor self)
 		{
+			if (disabled)
+				return;
+
 			if (remainingTime > 0 && !disabled && !damageDisabled && --remainingTime <= 0)
 				Sound.Play(Info.CloakSound, self.CenterPosition);
 
