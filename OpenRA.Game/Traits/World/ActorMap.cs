@@ -33,8 +33,58 @@ namespace OpenRA.Traits
 			public Actor Actor;
 		}
 
+		class CellTrigger
+		{
+			public readonly int Id;
+			public readonly CPos[] Footprint;
+			public bool Dirty;
+
+			Action<Actor> onActorEntered;
+			Action<Actor> onActorExited;
+
+			IEnumerable<Actor> currentActors = Enumerable.Empty<Actor>();
+
+			public CellTrigger(int id, CPos[] footprint, Action<Actor> onActorEntered, Action<Actor> onActorExited)
+			{
+				Id = id;
+				Footprint = footprint;
+
+				this.onActorEntered = onActorEntered;
+				this.onActorExited = onActorExited;
+
+				// Notify any actors that are initially inside the trigger zone
+				Dirty = true;
+			}
+
+			public void Tick(ActorMap am)
+			{
+				if (!Dirty)
+					return;
+
+				var oldActors = currentActors;
+				currentActors = Footprint.SelectMany(c => am.GetUnitsAt(c)).ToList();
+
+				var entered = currentActors.Except(oldActors);
+				var exited = oldActors.Except(currentActors);
+
+				if (onActorEntered != null)
+					foreach (var a in entered)
+						onActorEntered(a);
+
+				if (onActorExited != null)
+					foreach (var a in exited)
+						onActorExited(a);
+
+				Dirty = false;
+			}
+		}
+
 		readonly ActorMapInfo info;
 		readonly Map map;
+		readonly Dictionary<int, CellTrigger> cellTriggers = new Dictionary<int, CellTrigger>();
+		readonly Dictionary<CPos, List<CellTrigger>> cellTriggerInfluence = new Dictionary<CPos, List<CellTrigger>>();
+		int nextTriggerId;
+
 		readonly CellLayer<InfluenceNode> influence;
 
 		readonly List<Actor>[] actors;
@@ -166,8 +216,17 @@ namespace OpenRA.Traits
 		public void AddInfluence(Actor self, IOccupySpace ios)
 		{
 			foreach (var c in ios.OccupiedCells())
-				if (map.Contains(c.First))
-					influence[c.First] = new InfluenceNode { Next = influence[c.First], SubCell = c.Second, Actor = self };
+			{
+				if (!map.Contains(c.First))
+					continue;
+
+				influence[c.First] = new InfluenceNode { Next = influence[c.First], SubCell = c.Second, Actor = self };
+
+				List<CellTrigger> triggers;
+				if (cellTriggerInfluence.TryGetValue(c.First, out triggers))
+					foreach (var t in triggers)
+						t.Dirty = true;
+			}
 		}
 
 		public void RemoveInfluence(Actor self, IOccupySpace ios)
@@ -180,6 +239,11 @@ namespace OpenRA.Traits
 				var temp = influence[c.First];
 				RemoveInfluenceInner(ref temp, self);
 				influence[c.First] = temp;
+
+				List<CellTrigger> triggers;
+				if (cellTriggerInfluence.TryGetValue(c.First, out triggers))
+					foreach (var t in triggers)
+						t.Dirty = true;
 			}
 		}
 
@@ -213,6 +277,44 @@ namespace OpenRA.Traits
 			}
 
 			addActorPosition.Clear();
+
+			foreach (var t in cellTriggers)
+				t.Value.Tick(this);
+		}
+
+		public int AddCellTrigger(CPos[] cells, Action<Actor> onEntry, Action<Actor> onExit)
+		{
+			var id = nextTriggerId++;
+			var t = new CellTrigger(id, cells, onEntry, onExit);
+			cellTriggers.Add(id, t);
+
+			foreach (var c in cells)
+			{
+				if (!map.Contains(c))
+					continue;
+
+				if (!cellTriggerInfluence.ContainsKey(c))
+					cellTriggerInfluence.Add(c, new List<CellTrigger>());
+
+				cellTriggerInfluence[c].Add(t);
+			}
+
+			return id;
+		}
+
+		public void RemoveCellTrigger(int id)
+		{
+			CellTrigger trigger;
+			if (!cellTriggers.TryGetValue(id, out trigger))
+				return;
+
+			foreach (var c in trigger.Footprint)
+			{
+				if (!cellTriggerInfluence.ContainsKey(c))
+					continue;
+
+				cellTriggerInfluence[c].RemoveAll(t => t == trigger);
+			}
 		}
 
 		public void AddPosition(Actor a, IOccupySpace ios)

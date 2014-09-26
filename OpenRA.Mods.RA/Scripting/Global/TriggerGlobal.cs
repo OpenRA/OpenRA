@@ -197,6 +197,65 @@ namespace OpenRA.Mods.RA.Scripting
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnCapture, func, context);
 		}
 
+		static CPos[] MakeCellFootprint(LuaTable table)
+		{
+			var cells = new List<CPos>();
+			foreach (var kv in table)
+			{
+				CPos cell;
+				if (!kv.Value.TryGetClrValue<CPos>(out cell))
+					throw new LuaException("Cell footprints must be specified as a table of int,Cell pairs. Recieved {0},{1}".F(kv.Key.GetType().Name, kv.Value.GetType().Name));
+
+				cells.Add(cell);
+			}
+
+			return cells.ToArray();
+		}
+
+		[Desc("Call a function when a ground-based actor enters this cell footprint." +
+			"Returns the trigger id for later removal using RemoveFootprintTrigger(int id)." +
+			"The callback function will be called as func(Actor a, int id).")]
+		public int OnEnteredFootprint(LuaTable cells, LuaFunction func)
+		{
+			var triggerId = 0;
+			var onEntry = (LuaFunction)func.CopyReference();
+			Action<Actor> invokeEntry = a =>
+			{
+				using (var luaActor = a.ToLuaValue(context))
+				using (var id = triggerId.ToLuaValue(context))
+					onEntry.Call(luaActor, id).Dispose();
+			};
+
+			triggerId = context.World.ActorMap.AddCellTrigger(MakeCellFootprint(cells), invokeEntry, null);
+
+			return triggerId;
+		}
+
+		[Desc("Call a function when a ground-based actor leaves this cell footprint." +
+			"Returns the trigger id for later removal using RemoveFootprintTrigger(int id)." +
+			"The callback function will be called as func(Actor a, int id).")]
+		public int OnExitedFootprint(LuaTable cells, LuaFunction func)
+		{
+			var triggerId = 0;
+			var onExit = (LuaFunction)func.CopyReference();
+			Action<Actor> invokeExit = a =>
+			{
+				using (var luaActor = a.ToLuaValue(context))
+				using (var id = triggerId.ToLuaValue(context))
+					onExit.Call(luaActor, id).Dispose();
+			};
+
+			triggerId = context.World.ActorMap.AddCellTrigger(MakeCellFootprint(cells), null, invokeExit);
+
+			return triggerId;
+		}
+
+		[Desc("Removes a previously created footprint trigger.")]
+		public void RemoveFootprintTrigger(int id)
+		{
+			context.World.ActorMap.RemoveCellTrigger(id);
+		}
+
 		[Desc("Removes all triggers from this actor.")]
 		public void ClearAll(Actor a)
 		{
