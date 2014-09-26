@@ -165,6 +165,11 @@ local function projFromFile(event)
     ProjectUpdateProjectDir(ide.interpreter:fprojdir(fn)) end
 end
 frame:Connect(ID_PROJECTDIRFROMFILE, wx.wxEVT_COMMAND_MENU_SELECTED, projFromFile)
+frame:Connect(ID_PROJECTDIRFROMFILE, wx.wxEVT_UPDATE_UI,
+  function (event)
+    local editor = GetEditor()
+    event:Enable(editor ~= nil and ide:GetDocument(editor):GetFilePath() ~= nil)
+  end)
 
 ----------------------
 -- Interpreter Running
