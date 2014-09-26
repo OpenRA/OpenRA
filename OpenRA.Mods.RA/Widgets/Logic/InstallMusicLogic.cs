@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var cancelButton = installMusicContainer.GetOrNull<ButtonWidget>("CANCEL_BUTTON");
 			if (cancelButton != null)
 			{
-				cancelButton.OnClick = () => Game.InitializeMod(Game.Settings.Game.Mod, null);
+				cancelButton.OnClick = () => Game.InitializeMod(Game.Settings.Game.Mod, Arguments.Empty);
 			}
 
 			var copyFromDiscButton = installMusicContainer.GetOrNull<ButtonWidget>("COPY_FROM_CD_BUTTON");
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				copyFromDiscButton.OnClick = () =>
 				{
 					Ui.OpenWindow("INSTALL_FROMCD_PANEL", new WidgetArgs() {
-						{ "continueLoading", () => Game.InitializeMod(Game.Settings.Game.Mod, null) },
+						{ "continueLoading", () => Game.InitializeMod(Game.Settings.Game.Mod, Arguments.Empty) },
 					});
 				};
 			}
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				downloadButton.OnClick = () =>
 				{
 					Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", new WidgetArgs() {
-						{ "afterInstall", () => Game.InitializeMod(Game.Settings.Game.Mod, null) },
+						{ "afterInstall", () => Game.InitializeMod(Game.Settings.Game.Mod, Arguments.Empty) },
 						{ "mirrorListUrl", mirrorListUrl },
 					});
 				};

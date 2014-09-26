@@ -254,6 +254,9 @@ namespace OpenRA
 
 		public static void InitializeMod(string mod, Arguments args)
 		{
+			if (args == null)
+				throw new ArgumentNullException("args", "Use Arguments.Empty instead of null");
+
 			// Clear static state if we have switched mods
 			LobbyInfoChanged = () => { };
 			ConnectionStateChanged = om => { };
@@ -323,7 +326,7 @@ namespace OpenRA
 			}
 			else
 			{
-				var window = args != null ? args.GetValue("Launch.Window", null) : null;
+				var window = args.GetValue("Launch.Window", null);
 				if (!string.IsNullOrEmpty(window))
 				{
 					var installData = modData.Manifest.ContentInstaller;
@@ -351,7 +354,7 @@ namespace OpenRA
 			{
 				var args = new WidgetArgs()
 				{
-					{ "continueLoading", () => InitializeMod(Game.Settings.Game.Mod, null) },
+					{ "continueLoading", () => InitializeMod(Game.Settings.Game.Mod, Arguments.Empty) },
 				};
 
 				if (installData.InstallerBackgroundWidget != null)

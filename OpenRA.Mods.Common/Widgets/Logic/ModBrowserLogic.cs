@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.RunAfterTick(() =>
 			{
 				Ui.CloseWindow();
-				Game.InitializeMod(mod.Id, null);
+				Game.InitializeMod(mod.Id, Arguments.Empty);
 			});
 		}
 	}
