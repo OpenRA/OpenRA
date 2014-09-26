@@ -42,6 +42,12 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Tank:
 	AppearsOnRadar:
@@ -90,6 +96,12 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -122,6 +134,12 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Infantry:
 	AppearsOnRadar:
@@ -172,7 +190,7 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
-	SelfHealing:
+	SelfHealing@HOSPITAL:
 		Step: 5
 		Ticks: 100
 		HealIfBelow: 1
@@ -196,6 +214,12 @@
 		DeathSound: Poisoned
 		DeathTypes: 6
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -296,6 +320,12 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Ship:
 	AppearsOnRadar:
@@ -323,6 +353,12 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Building:
 	AppearsOnRadar:
