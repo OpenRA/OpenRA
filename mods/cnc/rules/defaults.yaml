@@ -47,6 +47,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Tank:
 	AppearsOnRadar:
@@ -100,6 +101,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -138,6 +140,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -218,6 +221,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -324,6 +328,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Ship:
 	AppearsOnRadar:
@@ -357,6 +362,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Building:
 	AppearsOnRadar:

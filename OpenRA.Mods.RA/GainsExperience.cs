@@ -102,10 +102,10 @@ namespace OpenRA.Mods.RA
 
 				Level++;
 
-				foreach (var up in self.TraitsImplementing<IUpgradable>())
+				var um = self.TraitOrDefault<UpgradeManager>();
+				if (um != null)
 					foreach (var u in upgrades)
-						if (up.AcceptsUpgrade(u))
-							up.UpgradeAvailable(self, u, true);
+						um.GrantUpgrade(self, u, this);
 
 				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "LevelUp", self.Owner.Country.Race);
 				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", info.LevelUpPalette)));
