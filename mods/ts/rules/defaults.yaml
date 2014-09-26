@@ -118,12 +118,18 @@
 		ChevronPalette: ra
 		Upgrades:
 			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload
+			1000: firepower, damage, speed, reload, selfheal
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
 		SpeedModifier: 120, 150
 		ReloadModifier: 90, 75
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -207,12 +213,18 @@
 		ChevronPalette: ra
 		Upgrades:
 			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload
+			1000: firepower, damage, speed, reload, selfheal
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
 		SpeedModifier: 120, 150
 		ReloadModifier: 90, 75
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -260,12 +272,18 @@
 		ChevronPalette: ra
 		Upgrades:
 			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload
+			1000: firepower, damage, speed, reload, selfheal
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
 		SpeedModifier: 120, 150
 		ReloadModifier: 90, 75
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -307,12 +325,18 @@
 		ChevronPalette: ra
 		Upgrades:
 			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload
+			1000: firepower, damage, speed, reload, selfheal
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
 		SpeedModifier: 120, 150
 		ReloadModifier: 90, 75
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
