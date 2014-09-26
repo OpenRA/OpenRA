@@ -301,19 +301,20 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
         if editor then editor:SetFocus() end
       end
       nameTab(errorlog, TR("Output"))
-      local runtime = TimeGet() - customprocs[pid].started
 
       streamins[pid] = nil
       streamerrs[pid] = nil
       streamouts[pid] = nil
-      if (customprocs[pid].endcallback) then
+      if (customprocs[pid] and customprocs[pid].endcallback) then
         customprocs[pid].endcallback()
       end
-      customprocs[pid] = nil
       unHideWindow(0)
       DebuggerStop(true)
-      DisplayOutputLn(TR("Program completed in %.2f seconds (pid: %d).")
-        :format(runtime, pid))
+      if customprocs[pid] then
+        DisplayOutputLn(TR("Program completed in %.2f seconds (pid: %d).")
+          :format(TimeGet() - customprocs[pid].started, pid))
+      end
+      customprocs[pid] = nil
     end
   end)
 
