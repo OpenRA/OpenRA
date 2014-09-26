@@ -46,6 +46,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Tank:
 	AppearsOnRadar:
@@ -95,6 +96,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Husk:
 	Health:
@@ -221,6 +223,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Plane:
 	AppearsOnRadar:
@@ -253,6 +256,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Helicopter:
 	Inherits: ^Plane

@@ -60,6 +60,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Tank:
 	AppearsOnRadar:
@@ -123,6 +124,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -207,6 +209,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Ship:
 	AppearsOnRadar:
@@ -248,6 +251,7 @@
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
 	IronCurtainable:
+	UpgradeManager:
 
 ^Plane:
 	AppearsOnRadar:
@@ -292,6 +296,7 @@
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
 	IronCurtainable:
+	UpgradeManager:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -348,6 +353,7 @@
 	Demolishable:
 	ScriptTriggers:
 	IronCurtainable:
+	UpgradeManager:
 
 ^Defense:
 	Inherits: ^Building

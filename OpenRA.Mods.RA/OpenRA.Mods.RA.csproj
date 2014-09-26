@@ -564,6 +564,13 @@
     <Compile Include="Scripting\Properties\HarvesterProperties.cs" />
     <Compile Include="Scripting\Properties\HelicopterProperties.cs" />
     <Compile Include="Scripting\Properties\PlaneProperties.cs" />
+    <Compile Include="SupportPowers\GrantUpgradePower.cs" />
+    <Compile Include="Modifiers\UpgradeOverlay.cs" />
+    <Compile Include="TimedUpgradeBar.cs" />
+    <Compile Include="InvulnerabilityUpgrade.cs" />
+    <Compile Include="Warheads\TimedUpgradeWarhead.cs" />
+    <Compile Include="DisableUpgrade.cs" />
+    <Compile Include="UpgradeManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

@@ -157,6 +157,7 @@
 	DeathSounds@ZAPPED:
 		DeathSound: Zapped
 		DeathTypes: 6
+	UpgradeManager:
 
 ^CivilianInfantry:
 	Inherits: ^Infantry
@@ -243,6 +244,7 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	UpgradeManager:
 
 ^Tank:
 	AppearsOnRadar:
@@ -302,6 +304,7 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	UpgradeManager:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -348,6 +351,7 @@
 	ScriptTriggers:
 	Guard:
 	Guardable:
+	UpgradeManager:
 
 ^BlossomTree:
 	Tooltip:

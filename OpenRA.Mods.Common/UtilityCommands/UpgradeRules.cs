@@ -575,6 +575,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Routed unit upgrades via the UnitUpgradeManager trait
+				if (engineVersion < 20141001)
+				{
+					if (depth == 0 && node.Value.Nodes.Any(n => n.Key.StartsWith("GainsStatUpgrades")))
+						node.Value.Nodes.Add(new MiniYamlNode("UnitUpgradeManager", new MiniYaml("")));
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
