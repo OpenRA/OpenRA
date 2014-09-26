@@ -247,6 +247,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	IronCurtainable:
 
 ^Plane:
 	AppearsOnRadar:
@@ -290,6 +291,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	IronCurtainable:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -345,7 +347,8 @@
 	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
-	
+	IronCurtainable:
+
 ^Defense:
 	Inherits: ^Building
 	TargetableBuilding:

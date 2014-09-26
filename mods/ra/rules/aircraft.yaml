@@ -1,7 +1,7 @@
 BADR:
+	Inherits: ^Plane
 	ParaDrop:
 		DropRange: 4c0
-	Inherits: ^Plane
 	Health:
 		HP: 300
 	Armor:
@@ -12,7 +12,6 @@ BADR:
 		Repulsable: False
 	RenderUnit:
 	WithShadow:
-	IronCurtainable:
 	Cargo:
 		MaxWeight: 10
 	-Selectable:
@@ -36,10 +35,10 @@ BADR:
 	RejectsOrders:
 
 BADR.Bomber:
+	Inherits: ^Plane
 	AttackBomber:
 	Armament:
 		Weapon: ParaBomb
-	Inherits: ^Plane
 	Health:
 		HP: 300
 	Armor:
@@ -53,7 +52,6 @@ BADR.Bomber:
 	RenderUnit:
 		Image: badr
 	WithShadow:
-	IronCurtainable:
 	-Selectable:
 	-GainsExperience:
 	Tooltip:
@@ -113,7 +111,6 @@ MIG:
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 8
-	IronCurtainable:
 	ReturnOnIdle:
 	Selectable:
 		Bounds: 40,29,0,1
@@ -173,7 +170,6 @@ YAK:
 		Ammo: 18
 		PipCount: 6
 		ReloadTicks: 11
-	IronCurtainable:
 	ReturnOnIdle:
 	Selectable:
 		Bounds: 30,28,0,2
@@ -224,7 +220,6 @@ TRAN:
 		Types: Infantry
 		MaxWeight: 8
 		PipCount: 8
-	IronCurtainable:
 	LeavesHusk:
 		HuskActor: TRAN.Husk
 
@@ -270,7 +265,6 @@ HELI:
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 8
-	IronCurtainable:
 	Selectable:
 		Bounds: 36,28,0,0
 	LeavesHusk:
@@ -324,7 +318,6 @@ HIND:
 		Ammo: 24
 		PipCount: 6
 		ReloadTicks: 8
-	IronCurtainable:
 	Selectable:
 		Bounds: 38,32,0,0
 	WithMuzzleFlash:
@@ -345,7 +338,6 @@ U2:
 		Repulsable: False
 	RenderUnit:
 	WithShadow:
-	IronCurtainable:
 	AttackBomber:
 	-Selectable:
 	-GainsExperience:

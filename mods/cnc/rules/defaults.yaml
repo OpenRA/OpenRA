@@ -19,7 +19,6 @@
 	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
-	IronCurtainable:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -70,7 +69,6 @@
 	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
-	IronCurtainable:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
