@@ -213,17 +213,18 @@ IRON:
 		Range: 10c0
 	Bib:
 		HasMinibib: Yes
-	IronCurtainPower:
+	GrantUpgradePower@IRONCURTAIN:
 		Icon: invuln
 		ChargeTime: 120
 		Description: Invulnerability
 		LongDesc: Makes a group of units invulnerable\nfor 20 seconds.
-		Duration: 20
+		Duration: 500
 		SelectTargetSound: slcttgt1.aud
 		InsufficientPowerSound: nopowr1.aud
 		BeginChargeSound: ironchg1.aud
 		EndChargeSound: ironrdy1.aud
 		DisplayRadarPing: True
+		Upgrades: invulnerability
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200

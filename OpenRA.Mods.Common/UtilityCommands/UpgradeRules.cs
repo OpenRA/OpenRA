@@ -575,11 +575,51 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				// Routed unit upgrades via the UnitUpgradeManager trait
 				if (engineVersion < 20141001)
 				{
+					// Routed unit upgrades via the UnitUpgradeManager trait
 					if (depth == 0 && node.Value.Nodes.Any(n => n.Key.StartsWith("GainsStatUpgrades")))
 						node.Value.Nodes.Add(new MiniYamlNode("UnitUpgradeManager", new MiniYaml("")));
+
+					// Replaced IronCurtainPower -> GrantUpgradePower
+					if (depth == 1 && node.Key == "IronCurtainPower")
+					{
+						node.Key = "GrantUpgradePower@IRONCURTAIN";
+						node.Value.Nodes.Add(new MiniYamlNode("Upgrades", "invulnerability"));
+
+						var durationNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Duration");
+						if (durationNode != null)
+							durationNode.Value.Value = (int.Parse(durationNode.Value.Value) * 25).ToString();
+						else
+							node.Value.Nodes.Add(new MiniYamlNode("Duration", "600"));
+
+						var soundNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "IronCurtainSound");
+						if (soundNode != null)
+							soundNode.Key = "GrantUpgradeSound";
+					}
+
+					if (depth == 0 && node.Value.Nodes.Any(n => n.Key.StartsWith("IronCurtainable")))
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key.StartsWith("IronCurtainable"));
+
+						var overlayKeys = new List<MiniYamlNode>();
+						overlayKeys.Add(new MiniYamlNode("RequiresUpgrade", "invulnerability"));
+						node.Value.Nodes.Add(new MiniYamlNode("UpgradeOverlay@IRONCURTAIN", new MiniYaml("", overlayKeys)));
+
+						var invulnKeys = new List<MiniYamlNode>();
+						invulnKeys.Add(new MiniYamlNode("RequiresUpgrade", "invulnerability"));
+						node.Value.Nodes.Add(new MiniYamlNode("InvulnerabilityUpgrade@IRONCURTAIN", new MiniYaml("", invulnKeys)));
+
+						var barKeys = new List<MiniYamlNode>();
+						barKeys.Add(new MiniYamlNode("Upgrade", "invulnerability"));
+						node.Value.Nodes.Add(new MiniYamlNode("TimedUpgradeBar", new MiniYaml("", barKeys)));
+
+						if (!node.Value.Nodes.Any(n => n.Key.StartsWith("UnitUpgradeManager")))
+							node.Value.Nodes.Add(new MiniYamlNode("UnitUpgradeManager", new MiniYaml("")));
+					}
+
+					if (depth == 1 && node.Key == "-IronCurtainable")
+						node.Key = "-InvulnerabilityUpgrade@IRONCURTAIN";
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

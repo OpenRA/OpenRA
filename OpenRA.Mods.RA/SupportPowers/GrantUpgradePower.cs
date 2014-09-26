@@ -17,22 +17,27 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class IronCurtainPowerInfo : SupportPowerInfo
+	class GrantUpgradePowerInfo : SupportPowerInfo
 	{
-		[Desc("Seconds")]
-		public readonly int Duration = 10;
+		[Desc("The upgrades to apply.")]
+		public readonly string[] Upgrades = { };
+
+		[Desc("Duration of the upgrade (in ticks). Set to 0 for a permanent upgrade.")]
+		public readonly int Duration = 0;
+
 		[Desc("Cells")]
 		public readonly int Range = 1;
-		public readonly string IronCurtainSound = "ironcur9.aud";
+		public readonly string GrantUpgradeSound = "ironcur9.aud";
 
-		public override object Create(ActorInitializer init) { return new IronCurtainPower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new GrantUpgradePower(init.self, this); }
 	}
 
-	class IronCurtainPower : SupportPower
+	class GrantUpgradePower : SupportPower
 	{
-		IronCurtainPowerInfo info;
+		GrantUpgradePowerInfo info;
 
-		public IronCurtainPower(Actor self, IronCurtainPowerInfo info) : base(self, info)
+		public GrantUpgradePower(Actor self, GrantUpgradePowerInfo info)
+			: base(self, info)
 		{
 			this.info = info;
 		}
@@ -49,38 +54,59 @@ namespace OpenRA.Mods.RA
 
 			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 
-			Sound.Play(info.IronCurtainSound, self.World.Map.CenterOfCell(order.TargetLocation));
+			Sound.Play(info.GrantUpgradeSound, self.World.Map.CenterOfCell(order.TargetLocation));
 
-			foreach (var target in UnitsInRange(order.TargetLocation)
-				.Where(a => a.Owner.Stances[self.Owner] == Stance.Ally))
-				target.Trait<IronCurtainable>().Activate(target, ((IronCurtainPowerInfo)Info).Duration * 25);
+			foreach (var a in UnitsInRange(order.TargetLocation))
+			{
+				var um = a.TraitOrDefault<UpgradeManager>();
+				if (um == null)
+					continue;
+
+				foreach (var u in info.Upgrades)
+				{
+					if (!um.AcceptsUpgrade(a, u))
+						continue;
+
+					if (info.Duration > 0)
+						um.GrantTimedUpgrade(a, u, info.Duration);
+					else
+						um.GrantUpgrade(a, u, this);
+				}
+			}
 		}
 
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
-			var range = ((IronCurtainPowerInfo)Info).Range;
+			var range = info.Range;
 			var tiles = self.World.Map.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
 				units.AddRange(self.World.ActorMap.GetUnitsAt(t));
 
-			return units.Distinct().Where(a => a.HasTrait<IronCurtainable>());
+			return units.Distinct().Where(a =>
+			{
+				if (!a.Owner.IsAlliedWith(self.Owner))
+					return false;
+	
+				var um = a.TraitOrDefault<UpgradeManager>();
+				return um != null && info.Upgrades.Any(u => um.AcceptsUpgrade(a, u));
+			});
 		}
 
 		class SelectTarget : IOrderGenerator
 		{
-			readonly IronCurtainPower power;
+			readonly GrantUpgradePower power;
 			readonly int range;
 			readonly Sprite tile;
 			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectTarget(World world, string order, SupportPowerManager manager, IronCurtainPower power)
+			public SelectTarget(World world, string order, SupportPowerManager manager, GrantUpgradePower power)
 			{
 				this.manager = manager;
 				this.order = order;
 				this.power = power;
-				this.range = ((IronCurtainPowerInfo)power.Info).Range;
+				this.range = power.info.Range;
 				tile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
@@ -101,8 +127,7 @@ namespace OpenRA.Mods.RA
 			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-				var targetUnits = power.UnitsInRange(xy).Where(a => a.Owner.Stances[power.self.Owner] == Stance.Ally);
-				foreach (var unit in targetUnits)
+				foreach (var unit in power.UnitsInRange(xy))
 					yield return new SelectionBoxRenderable(unit, Color.Red);
 			}
 
@@ -117,7 +142,7 @@ namespace OpenRA.Mods.RA
 
 			public string GetCursor(World world, CPos xy, MouseInput mi)
 			{
-				return power.UnitsInRange(xy).Any(a => a.Owner.Stances[power.self.Owner] == Stance.Ally) ? "ability" : "move-blocked";
+				return power.UnitsInRange(xy).Any() ? "ability" : "move-blocked";
 			}
 		}
 	}
