@@ -489,8 +489,13 @@ GATICK:
 		Offset: 170,0,213
 	Armament:
 		Weapon: 90mm
+		EliteWeapon: 115mm
 		LocalOffset: 384,0,128
 		MuzzleSequence: muzzle
+	GainsExperience:
+		Upgrades:
+			500: firepower, damage, speed, reload
+			1000: firepower, damage, speed, reload, eliteweapon
 	AttackTurreted:
 	BodyOrientation:
 		QuantizedFacings: 32

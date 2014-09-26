@@ -46,8 +46,13 @@ E1:
 		HP: 50
 	Mobile:
 		Speed: 56
+	GainsExperience:
+		Upgrades:
+			200: E1eliteweapon
 	Armament@PRIMARY:
 		Weapon: M1Carbine
+		EliteWeapon: Vulcan
+		EliteWeaponRequiresUpgrade: E1eliteweapon
 	Armament@GARRISONED:
 		Name: garrisoned
 		Weapon: Vulcan

@@ -564,7 +564,34 @@ SuicideBomb:
 			Heavy: 100
 			Concrete: 60
 	Warhead@2Eff: CreateEffect
-		Explosion: large_clsn
+		Explosion: medium_clsn
+		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+
+120mmRailgun:
+	ReloadDelay: 80
+	Range: 7c0
+	Report: RAILUSE5.AUD
+	Projectile: LaserZap
+		Color: 160,0,160,255
+		BeamWidth: 3
+	Warhead@1Dam: SpreadDamage
+		Spread: 85
+		Damage: 80
+		DeathType: 5
+		ProneModifier: 100
+		Versus:
+			None: 60
+			Wood: 75
+			Light: 100
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
+		Explosion: large_bang
 		ImpactSound: expnew14.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
@@ -777,6 +804,35 @@ Dragon:
 			Light: 75
 			Heavy: 100
 			Concrete: 60
+	Warhead@2Eff: CreateEffect
+		Explosion: small_clsn
+		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+
+115mm:
+	ReloadDelay: 50
+	Range: 6c768
+	Report: 120MMF.AUD
+	Palette: ra
+	Projectile: Bullet
+		Speed: 853
+		Image: 120mm
+		Shadow: true
+		Angle: 62
+	Warhead@1Dam: SpreadDamage
+		Spread: 171
+		Damage: 40
+		DeathType: 2
+		Versus:
+			None: 35
+			Wood: 75
+			Light: 85
+			Heavy: 100
+			Concrete: 70
 	Warhead@2Eff: CreateEffect
 		Explosion: medium_clsn
 		ImpactSound: expnew14.aud

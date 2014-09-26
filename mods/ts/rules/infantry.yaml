@@ -17,6 +17,7 @@ E1:
 		Speed: 71
 	Armament:
 		Weapon: Minigun
+		EliteWeapon: M1Carbine
 	AttackFrontal:
 	TakeCover:
 	RenderInfantry:
