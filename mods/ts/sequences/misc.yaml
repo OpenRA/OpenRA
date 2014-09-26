@@ -161,7 +161,6 @@ explosion:
 	pulse_explosion: pulsefx2
 		Start: 0
 		Length: *
-		Tick: 160
 		BlendMode: Additive
 	small_watersplash: h2o_exp2
 		Start: 0
@@ -275,6 +274,11 @@ discus:
 		Length: *
 
 canister:
+	idle:
+		Start: 0
+		Length: *
+
+pulsball:
 	idle:
 		Start: 0
 		Length: *
