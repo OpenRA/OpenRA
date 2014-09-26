@@ -563,6 +563,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20140927)
+				{
+					if (depth == 0)
+						node.Value.Nodes.RemoveAll(n => n.Key == "SelfHealingTech");
+
+					if (depth == 2 && node.Key == "RequiresTech" && parentKey.StartsWith("SelfHealing"))
+					{
+						node.Key = "RequiresUpgrade";
+						node.Value.Value = "selfhealing-needs-reconfiguration";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

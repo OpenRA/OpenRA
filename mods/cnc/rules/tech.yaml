@@ -27,8 +27,6 @@ HOSP:
 		Dimensions: 2,2
 	Health:
 		HP: 1000
-	SelfHealingTech:
-		Type: InfantryHealing
 	Tooltip:
 		Name: Hospital
 	LeavesHusk:

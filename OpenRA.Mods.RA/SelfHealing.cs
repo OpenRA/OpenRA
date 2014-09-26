@@ -21,31 +21,49 @@ namespace OpenRA.Mods.RA
 		public readonly float HealIfBelow = .5f;
 		public readonly int DamageCooldown = 0;
 
-		[Desc("The Type defined by SelfHealingTech required to enable this.")]
-		public readonly string RequiresTech = null;
+		[Desc("Enable only if this upgrade is enabled.")]
+		public readonly string RequiresUpgrade = null;
 
-		public virtual object Create(ActorInitializer init) { return new SelfHealing(this); }
+		public virtual object Create(ActorInitializer init) { return new SelfHealing(init.self, this); }
 	}
 
-	class SelfHealing : ITick, ISync, INotifyDamage
+	class SelfHealing : ITick, ISync, INotifyDamage, IUpgradable
 	{
+		readonly SelfHealingInfo info;
+		readonly Health health;
+
 		[Sync] int ticks;
 		[Sync] int damageTicks;
-		SelfHealingInfo Info;
+		[Sync] bool disabled;
 
-		public SelfHealing(SelfHealingInfo info) { Info = info; }
+
+		public SelfHealing(Actor self, SelfHealingInfo info)
+		{
+			this.info = info;
+
+			health = self.Trait<Health>();
+
+			// Disable if an upgrade is required
+			disabled = info.RequiresUpgrade != null;
+		}
+
+		public bool AcceptsUpgrade(string type)
+		{
+			return type == info.RequiresUpgrade;
+		}
+
+		public void UpgradeAvailable(Actor self, string type, bool available)
+		{
+			if (type == info.RequiresUpgrade)
+				disabled = !available;
+		}
 
 		public void Tick(Actor self)
 		{
-			if (self.IsDead())
+			if (self.IsDead() || disabled)
 				return;
 
-			if (Info.RequiresTech != null && !self.World.ActorsWithTrait<SelfHealingTech>()
-				.Any(a => !a.Actor.IsDead() && a.Actor.Owner.IsAlliedWith(self.Owner) && Info.RequiresTech == a.Trait.Type))
-					return;
-
-			var health = self.Trait<Health>();
-			if (health.HP >= Info.HealIfBelow*health.MaxHP)
+			if (health.HP >= info.HealIfBelow * health.MaxHP)
 				return;
 			
 			if (damageTicks > 0)
@@ -56,35 +74,15 @@ namespace OpenRA.Mods.RA
 
 			if (--ticks <= 0)
 			{
-				ticks = Info.Ticks;
-				self.InflictDamage(self, -Info.Step, null);
+				ticks = info.Ticks;
+				self.InflictDamage(self, -info.Step, null);
 			}
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (e.Damage > 0)
-				damageTicks = Info.DamageCooldown;
-		}
-	}
-
-	[Desc("Attach this to an actor required as prerequisite for all owned units to regenerate health.")]
-	class SelfHealingTechInfo : ITraitInfo
-	{
-		public readonly string Type = null;
-
-		public object Create(ActorInitializer init) { return new SelfHealingTech(this); }
-	}
-
-	class SelfHealingTech
-	{
-		public string Type { get { return info.Type; } }
-
-		readonly SelfHealingTechInfo info;
-
-		public SelfHealingTech(SelfHealingTechInfo info)
-		{
-			this.info = info;
+				damageTicks = info.DamageCooldown;
 		}
 	}
 }

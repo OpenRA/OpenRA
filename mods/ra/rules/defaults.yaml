@@ -166,7 +166,10 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresTech: InfantryHealing
+		RequiresUpgrade: hospitalheal
+	GlobalUpgradable:
+		Upgrades: hospitalheal
+		Prerequisites: hosp
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
