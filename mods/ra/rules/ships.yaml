@@ -38,7 +38,6 @@ SS:
 	Selectable:
 		Bounds: 38,38
 	Chronoshiftable:
-	IronCurtainable:
 	RepairableNear:
 	AutoTarget:
 		InitialStance: ReturnFire
@@ -90,7 +89,6 @@ MSUB:
 	Selectable:
 		Bounds: 44,44
 	Chronoshiftable:
-	IronCurtainable:
 	RepairableNear:
 	AutoTarget:
 		InitialStance: ReturnFire
@@ -141,7 +139,6 @@ DD:
 	WithTurret:
 	AutoTarget:
 	Chronoshiftable:
-	IronCurtainable:
 	RepairableNear:
 	DetectCloaked:
 		CloakTypes: Underwater
@@ -206,7 +203,6 @@ CA:
 		Turret: secondary
 	AutoTarget:
 	Chronoshiftable:
-	IronCurtainable:
 	RepairableNear:
 	Explodes:
 		Weapon: UnitExplodeShip
@@ -238,7 +234,6 @@ LST:
 		Types: Infantry, Vehicle
 		MaxWeight: 5
 		PipCount: 5
-	IronCurtainable:
 	RepairableNear:
 	Explodes:
 		Weapon: UnitExplodeShip
@@ -284,7 +279,6 @@ PT:
 	WithTurret:
 	AutoTarget:
 	Chronoshiftable:
-	IronCurtainable:
 	RepairableNear:
 	DetectCloaked:
 		CloakTypes: Underwater

@@ -113,7 +113,6 @@ GAPILE:
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
-	IronCurtainable:
 	ProductionBar:
 	WithProductionOverlay@LIGHTS:
 		Sequence: production-lights
@@ -338,7 +337,6 @@ NAHAND:
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
-	IronCurtainable:
 	ProductionBar:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
