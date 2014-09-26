@@ -1114,6 +1114,27 @@ TurretLaser:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 
+EMPulseCannon:
+	ReloadDelay: 100
+	Range: 10c0
+	Report: PLSECAN2.AUD
+	Projectile: Bullet
+		Speed: 425
+		High: yes
+		Shadow: true
+		Angle: 62
+		Image: pulsball
+	Warhead@2Eff: CreateEffect
+		Explosion: pulse_explosion
+# Dummy warhead to allow targeting
+	Warhead@target: SpreadDamage
+		Spread: 0
+		Damage: 0
+	Warhead@emp: GrantUpgrade
+		Range: 3c0
+		Duration: 250
+		Upgrades: empdisable
+
 TiberiumExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9

@@ -565,9 +565,10 @@
     <Compile Include="Modifiers\UpgradeOverlay.cs" />
     <Compile Include="TimedUpgradeBar.cs" />
     <Compile Include="InvulnerabilityUpgrade.cs" />
-    <Compile Include="Warheads\TimedUpgradeWarhead.cs" />
     <Compile Include="DisableUpgrade.cs" />
     <Compile Include="UpgradeManager.cs" />
+    <Compile Include="KillsSelf.cs" />
+    <Compile Include="Warheads\GrantUpgradeWarhead.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
