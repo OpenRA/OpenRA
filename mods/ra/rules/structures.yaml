@@ -758,6 +758,7 @@ FACT:
 		ProductionType: Building
 	ProductionBar@Defense:
 		ProductionType: Defense
+		Color: 138,138,138
 	DeadBuildingState:
 	BaseProvider:
 		Range: 16

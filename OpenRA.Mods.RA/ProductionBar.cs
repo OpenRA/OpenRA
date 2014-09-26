@@ -21,6 +21,8 @@ namespace OpenRA.Mods.RA
 		[Desc("Production queue type, for actors with multiple queues.")]
 		public readonly string ProductionType = null;
 
+		public readonly Color Color = Color.SkyBlue;
+
 		public object Create(ActorInitializer init) { return new ProductionBar(init.self, this); }
 	}
 
@@ -72,6 +74,6 @@ namespace OpenRA.Mods.RA
 			return value;
 		}
 
-		public Color GetColor() { return Color.SkyBlue; }
+		public Color GetColor() { return info.Color; }
 	}
 }
