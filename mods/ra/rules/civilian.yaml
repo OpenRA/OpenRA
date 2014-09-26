@@ -83,8 +83,6 @@ HOSP:
 	ExternalCapturable:
 	ExternalCapturableBar:
 	EngineerRepairable:
-	SelfHealingTech:
-		Type: InfantryHealing
 	Tooltip:
 		Name: Hospital
 	RevealsShroud:
