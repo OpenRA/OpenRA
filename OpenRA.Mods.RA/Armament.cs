@@ -53,10 +53,16 @@ namespace OpenRA.Mods.RA
 		[Desc("Use multiple muzzle images if non-zero")]
 		public readonly int MuzzleSplitFacings = 0;
 
+		[Desc("Enable only if this upgrade is enabled.")]
+		public readonly string RequiresUpgrade = null;
+
+		[Desc("Disable if this upgrade is enabled.")]
+		public readonly string RestrictedByUpgrade = null;
+
 		public object Create(ActorInitializer init) { return new Armament(init.self, this); }
 	}
 
-	public class Armament : ITick, IExplodeModifier
+	public class Armament : ITick, IExplodeModifier, IUpgradable
 	{
 		public readonly ArmamentInfo Info;
 		public readonly WeaponInfo Weapon;
@@ -71,6 +77,9 @@ namespace OpenRA.Mods.RA
 		public WRange Recoil;
 		public int FireDelay { get; private set; }
 		public int Burst { get; private set; }
+
+		bool requiresUpgrade;
+		bool restrictedByUpgrade;
 
 		public Armament(Actor self, ArmamentInfo info)
 		{
@@ -99,12 +108,32 @@ namespace OpenRA.Mods.RA
 				barrels.Add(new Barrel { Offset = WVec.Zero, Yaw = WAngle.Zero });
 
 			Barrels = barrels.ToArray();
+
+			// Disable if an upgrade is required
+			requiresUpgrade = info.RequiresUpgrade != null;
+		}
+
+		public bool AcceptsUpgrade(string type)
+		{
+			return type == Info.RequiresUpgrade || type == Info.RestrictedByUpgrade;
+		}
+
+		public void UpgradeAvailable(Actor self, string type, bool available)
+		{
+			if (type == Info.RequiresUpgrade)
+				requiresUpgrade = !available;
+			else if (type == Info.RestrictedByUpgrade)
+				restrictedByUpgrade = available;
 		}
 
 		public void Tick(Actor self)
 		{
+			if (requiresUpgrade || restrictedByUpgrade)
+				return;
+
 			if (FireDelay > 0)
 				--FireDelay;
+
 			Recoil = new WRange(Math.Max(0, Recoil.Range - Info.RecoilRecovery.Range));
 
 			for (var i = 0; i < delayedActions.Count; i++)
@@ -130,7 +159,7 @@ namespace OpenRA.Mods.RA
 		// The world coordinate model uses Actor.Orientation
 		public Barrel CheckFire(Actor self, IFacing facing, Target target)
 		{
-			if (FireDelay > 0)
+			if (IsReloading)
 				return null;
 
 			if (limitedAmmo.Value != null && !limitedAmmo.Value.HasAmmo())
@@ -197,7 +226,7 @@ namespace OpenRA.Mods.RA
 			return barrel;
 		}
 
-		public bool IsReloading { get { return FireDelay > 0; } }
+		public bool IsReloading { get { return FireDelay > 0 || requiresUpgrade || restrictedByUpgrade; } }
 		public bool ShouldExplode(Actor self) { return !IsReloading; }
 
 		public WVec MuzzleOffset(Actor self, Barrel b)
