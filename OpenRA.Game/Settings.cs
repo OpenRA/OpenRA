@@ -30,7 +30,6 @@ namespace OpenRA
 		public bool NatDeviceAvailable = false; // internal check if discovery succeeded
 		public int NatDiscoveryTimeout = 1000; // ms to search for UPnP enabled NATs
 		public bool VerboseNatDiscovery = false; // print very detailed logs for debugging
-		public bool AllowCheats = false;
 		public string Map = null;
 		public string[] Ban = { };
 		public int TimeOut = 0;
@@ -54,7 +53,6 @@ namespace OpenRA
 			NatDeviceAvailable = other.NatDeviceAvailable;
 			NatDiscoveryTimeout = other.NatDiscoveryTimeout;
 			VerboseNatDiscovery = other.VerboseNatDiscovery;
-			AllowCheats = other.AllowCheats;
 			Map = other.Map;
 			Ban = other.Ban;
 			TimeOut = other.TimeOut;
