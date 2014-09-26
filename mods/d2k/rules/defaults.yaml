@@ -40,6 +40,12 @@
 	Demolishable:
 	ScriptTriggers:
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Tank:
 	AppearsOnRadar:
@@ -83,6 +89,12 @@
 	Demolishable:
 	ScriptTriggers:
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Husk:
 	Health:
@@ -203,6 +215,12 @@
 	Parachutable:
 		FallRate: 130
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Plane:
 	AppearsOnRadar:
@@ -229,6 +247,12 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Helicopter:
 	Inherits: ^Plane
