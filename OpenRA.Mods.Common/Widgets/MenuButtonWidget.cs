@@ -10,7 +10,7 @@
 
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets
+namespace OpenRA.Mods.Common.Widgets
 {
 	public class MenuButtonWidget : ButtonWidget
 	{

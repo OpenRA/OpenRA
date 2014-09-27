@@ -11,7 +11,7 @@
 using System;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets.Logic
+namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class LoadIngamePlayerOrObserverUILogic
 	{
@@ -37,18 +37,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							playerRoot.RemoveChildren();
 							Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
 						});
-
 				};
 			}
 
 			Game.LoadWidget(world, "CHAT_PANEL", ingameRoot, new WidgetArgs());
 
-			Action ShowLeaveMapWidget = () =>
+			Action showLeaveMapWidget = () =>
 			{
 				ingameRoot.RemoveChildren();
 				Game.LoadWidget(world, "LEAVE_MAP_WIDGET", Ui.Root, new WidgetArgs());
 			};
-			world.GameOver += ShowLeaveMapWidget;
+			world.GameOver += showLeaveMapWidget;
 		}
 	}
 }

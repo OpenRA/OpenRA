@@ -18,6 +18,8 @@ using OpenRA.Mods.RA.Widgets.Logic;
 using OpenRA.Mods.D2k.Widgets;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using OpenRA.Mods.Common.Widgets;
+using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.D2k.Widgets.Logic
 {

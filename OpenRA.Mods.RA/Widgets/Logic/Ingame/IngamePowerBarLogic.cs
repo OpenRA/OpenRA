@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Mods.RA.Power;
 using OpenRA.Widgets;
 
