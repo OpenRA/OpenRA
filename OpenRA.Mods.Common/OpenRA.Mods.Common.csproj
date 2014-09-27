@@ -46,6 +46,8 @@
     <Compile Include="Graphics\ContrailRenderable.cs" />
     <Compile Include="Graphics\RangeCircleRenderable.cs" />
     <Compile Include="ModChooserLoadScreen.cs" />
+    <Compile Include="PaletteFromFile.cs" />
+    <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="ServerTraits\MasterServerPinger.cs" />
     <Compile Include="ServerTraits\PlayerPinger.cs" />
@@ -69,8 +71,24 @@
     <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
+    <Compile Include="Widgets\ConfirmationDialogs.cs" />
+    <Compile Include="Widgets\HueSliderWidget.cs" />
+    <Compile Include="Widgets\LabelWithTooltipWidget.cs" />
+    <Compile Include="Widgets\LogicKeyListenerWidget.cs" />
+    <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
+    <Compile Include="Widgets\ColorMixerWidget.cs" />
+    <Compile Include="Widgets\LogicTickerWidget.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
+    <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
+    <Compile Include="Widgets\ColorPreviewManagerWidget.cs" />
+    <Compile Include="Widgets\Logic\DisconnectWatcherLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\IngameRadarDisplayLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\LoadIngamePlayerOrObserverUILogic.cs" />
     <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
+    <Compile Include="Widgets\MenuButtonWidget.cs" />
+    <Compile Include="Widgets\RadarWidget.cs" />
+    <Compile Include="Widgets\ResourceBarWidget.cs" />
+    <Compile Include="World\RadarPings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -11,7 +11,7 @@
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor enables the radar minimap.")]
 	public class ProvidesRadarInfo : TraitInfo<ProvidesRadar> { }
@@ -35,11 +35,11 @@ namespace OpenRA.Mods.RA
 	}
 
 	[Desc("When an actor with this trait is in range of an actor with ProvidesRadar, it will temporarily disable the radar minimap for the enemy player.")]
-	class JamsRadarInfo : TraitInfo<JamsRadar>
+	public class JamsRadarInfo : TraitInfo<JamsRadar>
 	{
 		[Desc("Range for jamming.")]
 		public readonly int Range = 0;
 	}
 
-	class JamsRadar { }
+	public class JamsRadar { }
 }

@@ -13,7 +13,7 @@ using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets
+namespace OpenRA.Mods.Common.Widgets
 {
 	public enum ResourceBarOrientation { Vertical, Horizontal }
 	public enum ResourceBarStyle { Flat, Bevelled }
