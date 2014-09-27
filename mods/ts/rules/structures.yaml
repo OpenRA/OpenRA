@@ -487,9 +487,15 @@ GATICK:
 		ROT: 6
 		InitialFacing: 128
 		Offset: 170,0,213
-	Armament:
+	Armament@PRIMARY:
 		Weapon: 90mm
 		LocalOffset: 384,0,128
+		RestrictedByUpgrade: eliteweapon
+		MuzzleSequence: muzzle
+	Armament@ELITE:
+		Weapon: 120mmx
+		LocalOffset: 384,0,128
+		RequiresUpgrade: eliteweapon
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	BodyOrientation:

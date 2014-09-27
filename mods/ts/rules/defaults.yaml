@@ -118,7 +118,7 @@
 		ChevronPalette: ra
 		Upgrades:
 			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload, selfheal
+			1000: firepower, damage, speed, reload, selfheal, eliteweapon
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
@@ -213,7 +213,7 @@
 		ChevronPalette: ra
 		Upgrades:
 			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload, selfheal
+			1000: firepower, damage, speed, reload, selfheal, eliteweapon
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
@@ -272,7 +272,7 @@
 		ChevronPalette: ra
 		Upgrades:
 			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload, selfheal
+			1000: firepower, damage, speed, reload, selfheal, eliteweapon
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
@@ -325,7 +325,7 @@
 		ChevronPalette: ra
 		Upgrades:
 			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload, selfheal
+			1000: firepower, damage, speed, reload, selfheal, eliteweapon
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66

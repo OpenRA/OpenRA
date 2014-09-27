@@ -604,8 +604,13 @@ BIKE:
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
-	Armament:
+	Armament@PRIMARY:
 		Weapon: BikeMissile
+		RestrictedByUpgrade: eliteweapon
+		LocalOffset: -128,-170,213, -128,170,213
+	Armament@ELITE:
+		Weapon: HoverMissile
+		RequiresUpgrade: eliteweapon
 		LocalOffset: -128,-170,213, -128,170,213
 	AttackFrontal:
 	AutoTarget:
@@ -750,6 +755,18 @@ TTNK:
 		HP: 350
 	Armor:
 		Type: Light
+	AttackFrontal:
+	Armament@PRIMARY:
+		Weapon: 90mm
+		LocalOffset: 256,0,256
+		RestrictedByUpgrade: eliteweapon
+		MuzzleSequence: muzzle
+	Armament@ELITE:
+		Weapon: 120mmx
+		LocalOffset: 256,0,256
+		RequiresUpgrade: eliteweapon
+		MuzzleSequence: muzzle
+	WithMuzzleFlash:
 	RevealsShroud:
 		Range: 5c0
 	RenderSprites:
@@ -759,7 +776,7 @@ TTNK:
 		IntoActor: gatick
 		Offset: -1,-1
 		Facing: 96
-		TransformSounds:
+		TransformSounds: place2.aud
 		NoTransformSounds:
 
 STNK:
