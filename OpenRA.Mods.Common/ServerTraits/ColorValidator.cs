@@ -203,9 +203,11 @@ namespace OpenRA.Mods.Common.Server
 		public void ClientJoined(S server, Connection conn)
 		{
 			var client = server.GetClient(conn);
+			var slot = server.LobbyInfo.Clients[client.Index].Slot;
 
-			// Validate if color is allowed and get an alternative if it isn't
-			client.Color = ColorValidator.ValidatePlayerColorAndGetAlternative(server, client.Color, client.Index);
+			// Validate whether color is allowed and get an alternative if it isn't
+			if (!server.LobbyInfo.Slots[slot].LockColor)
+				client.Color = ColorValidator.ValidatePlayerColorAndGetAlternative(server, client.Color, client.Index);
 		}
 
 		#endregion
