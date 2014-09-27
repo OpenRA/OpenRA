@@ -144,10 +144,10 @@ Actors:
 		Location: 38,96
 		Owner: Neutral
 	Actor40: mpspawn
-		Location: 95,43
+		Location: 96,44
 		Owner: Neutral
 	Actor41: mpspawn
-		Location: 82,30
+		Location: 83,31
 		Owner: Neutral
 	Actor177: wall
 		Location: 103,93
@@ -165,10 +165,10 @@ Actors:
 		Location: 103,92
 		Owner: Neutral
 	Actor44: mpspawn
-		Location: 29,86
+		Location: 30,87
 		Owner: Neutral
 	Actor45: mpspawn
-		Location: 39,96
+		Location: 40,97
 		Owner: Neutral
 	Actor66: wall
 		Location: 38,97
@@ -363,10 +363,10 @@ Actors:
 		Location: 93,97
 		Owner: Neutral
 	Actor144: mpspawn
-		Location: 104,93
+		Location: 105,94
 		Owner: Neutral
 	Actor47: mpspawn
-		Location: 104,75
+		Location: 105,76
 		Owner: Neutral
 	Actor0: spicebloom
 		Location: 18,27
@@ -513,7 +513,7 @@ Actors:
 		Location: 50,24
 		Owner: Neutral
 	Actor48: mpspawn
-		Location: 50,21
+		Location: 51,22
 		Owner: Neutral
 	Actor227: wall
 		Location: 31,20
@@ -564,7 +564,7 @@ Actors:
 		Location: 34,20
 		Owner: Neutral
 	Actor42: mpspawn
-		Location: 32,21
+		Location: 33,22
 		Owner: Neutral
 	Actor12: spicebloom
 		Location: 91,86
@@ -633,22 +633,12 @@ Actors:
 		Location: 90,36
 		Owner: Neutral
 	Actor83: mpspawn
-		Location: 88,37
+		Location: 89,38
 		Owner: Neutral
 
 Smudges:
 
 Rules:
-	World:
-		MPStartUnits@atreides:
-			Races: atreides
-			BaseActor: conyarda
-		MPStartUnits@harkonnen:
-			Races: harkonnen
-			BaseActor: conyardh
-		MPStartUnits@ordos:
-			Races: ordos
-			BaseActor: conyardo
 
 Sequences:
 
