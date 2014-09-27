@@ -55,6 +55,12 @@
 		Notification: UnitStolen
 	ScriptTriggers:
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Tank:
 	AppearsOnRadar:
@@ -113,6 +119,12 @@
 		Notification: UnitStolen
 	ScriptTriggers:
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Infantry:
 	AppearsOnRadar:
@@ -161,12 +173,15 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
-	SelfHealing:
+	SelfHealing@HOSPITAL:
 		Step: 5
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresTech: InfantryHealing
+		RequiresUpgrade: hospitalheal
+	GlobalUpgradable:
+		Upgrades: hospitalheal
+		Prerequisites: hosp
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
@@ -188,6 +203,12 @@
 	Cloneable:
 		Types: Infantry
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Ship:
 	AppearsOnRadar:
@@ -222,6 +243,12 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Plane:
 	AppearsOnRadar:
@@ -259,6 +286,12 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresUpgrade: selfheal
 
 ^Helicopter:
 	Inherits: ^Plane
