@@ -119,8 +119,10 @@ ORCAB:
 		Owner: gdi
 	Selectable:
 		Bounds: 30,24
-	Helicopter:
+	-Helicopter:
+	Plane:
 		RearmBuildings: gahpad
+		RepairBuildings:
 		ROT: 5
 		Speed: 112
 	Health:
@@ -135,7 +137,7 @@ ORCAB:
 		AmmoPipCount: 2
 		AmmoPipType: Ammo
 		AmmoPipTypeEmpty: AmmoEmpty
-	AttackHeli:
+	AttackPlane:
 		FacingTolerance: 20
 	AutoTarget:
 	RenderSprites:
