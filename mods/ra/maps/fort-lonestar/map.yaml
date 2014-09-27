@@ -714,6 +714,7 @@ Rules:
 		AttackBomber:
 		Armament:
 			Weapon: ParaBomb
+			LimitedAmmo: 30
 		Health:
 			HP: 60
 		Armor:
@@ -721,8 +722,6 @@ Rules:
 		Plane:
 			ROT: 5
 			Speed: 280
-		LimitedAmmo:
-			Ammo: 30
 		RenderUnit:
 			Image: mig
 		WithShadow:
