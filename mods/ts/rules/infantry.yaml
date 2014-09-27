@@ -15,8 +15,12 @@ E1:
 		HP: 125
 	Mobile:
 		Speed: 71
-	Armament:
+	Armament@PRIMARY:
 		Weapon: Minigun
+		RestrictedByUpgrade: eliteweapon
+	Armament@ELITE:
+		Weapon: M1Carbine
+		RequiresUpgrade: eliteweapon
 	AttackFrontal:
 	TakeCover:
 	RenderInfantry:
