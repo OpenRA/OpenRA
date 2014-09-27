@@ -25,6 +25,13 @@ ide.proto.Interpreter = {__index = {
   GetName = function(self) return self.name end,
   GetFileName = function(self) return self.fname end,
   GetAPI = function(self) return self.api end,
+  fprojdir = function(self,wfilename)
+    return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
+  end,
+  fworkdir = function (self,wfilename)
+    local proj = ide:GetProject()
+    return proj and proj:gsub("[\\/]$","") or wfilename:GetPath(wx.wxPATH_GET_VOLUME)
+  end,
 }}
 
 ide.proto.Debugger = {__index = {

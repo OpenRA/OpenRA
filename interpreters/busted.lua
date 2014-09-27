@@ -55,12 +55,6 @@ return {
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() if rundebug then wx.wxRemoveFile(file) end end)
   end,
-  fprojdir = function(self,wfilename)
-    return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
-  end,
-  fworkdir = function(self,wfilename)
-    return ide.config.path.projectdir or wfilename:GetPath(wx.wxPATH_GET_VOLUME)
-  end,
   hasdebugger = true,
   fattachdebug = function(self) DebuggerAttachDefault() end,
 }

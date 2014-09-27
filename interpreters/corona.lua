@@ -93,12 +93,6 @@ return {
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,true,nil,nil,
       function() if uhw and cfg.showconsole then uhw.ConsoleWindowClass = cwc end end)
   end,
-  fprojdir = function(self,wfilename)
-    return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
-  end,
-  fworkdir = function(self,wfilename)
-    return ide.config.path.projectdir or wfilename:GetPath(wx.wxPATH_GET_VOLUME)
-  end,
   hasdebugger = true,
   fattachdebug = function(self) DebuggerAttachDefault() end,
   scratchextloop = true,

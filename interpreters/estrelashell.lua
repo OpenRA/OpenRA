@@ -9,7 +9,4 @@ return {
 
     ShellExecuteFile(wfilename)
   end,
-  fprojdir = function(self,wfilename)
-    return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
-  end,
 }

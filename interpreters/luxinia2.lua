@@ -64,12 +64,6 @@ return {
     return CommandLineRun(cmd,wdir,true,true,nil,self:fuid(wfilename))
   end,
   fuid = function(self,wfilename) return "luxinia2: luajit "..wfilename:GetFullName() end,
-  fprojdir = function(self,wfilename)
-    return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
-  end,
-  fworkdir = function (self,wfilename)
-    return ide.config.path.projectdir or wfilename:GetPath(wx.wxPATH_GET_VOLUME)
-  end,
   hasdebugger = true,
   fattachdebug = function(self) DebuggerAttachDefault() end,
   scratchextloop = true,
