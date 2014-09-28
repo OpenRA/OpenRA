@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Crates
 {
 	[Desc("Grants an upgrade to the collector.")]
-	public class UnitUpgradeCrateActionInfo : CrateActionInfo
+	public class GrantUpgradeCrateActionInfo : CrateActionInfo
 	{
 		[Desc("The upgrades to apply.")]
 		public readonly string[] Upgrades = { };
@@ -28,15 +28,15 @@ namespace OpenRA.Mods.RA.Crates
 		[Desc("The maximum number of extra collectors to grant the crate action to.", "-1 = no limit")]
 		public readonly int MaxExtraCollectors = 4;
 
-		public override object Create(ActorInitializer init) { return new UnitUpgradeCrateAction(init.self, this); }
+		public override object Create(ActorInitializer init) { return new GrantUpgradeCrateAction(init.self, this); }
 	}
 
-	public class UnitUpgradeCrateAction : CrateAction
+	public class GrantUpgradeCrateAction : CrateAction
 	{
 		readonly Actor self;
-		readonly UnitUpgradeCrateActionInfo info;
+		readonly GrantUpgradeCrateActionInfo info;
 
-		public UnitUpgradeCrateAction(Actor self, UnitUpgradeCrateActionInfo info)
+		public GrantUpgradeCrateAction(Actor self, GrantUpgradeCrateActionInfo info)
 			: base(self, info) 
 		{
 			this.self = self;
