@@ -911,6 +911,7 @@ GAVULC:
 		Queue: Defense
 		BuildPaletteOrder: 30
 		Owner: gdi
+		Prerequisites: radar
 	Building:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -967,6 +968,7 @@ GAROCK:
 		Description: GDI Advanced base defense.\nRequires power to operate.\n  Strong vs armored ground units\n  Cannot target Aircraft
 	Buildable:
 		Queue: Defense
+		Prerequisites: radar
 		BuildPaletteOrder: 40
 		Owner: gdi
 	Building:
@@ -1018,6 +1020,7 @@ GACSAM:
 		Queue: Defense
 		BuildPaletteOrder: 60
 		Owner: gdi
+		Prerequisites: radar
 	Building:
 	RequiresPower:
 	DisabledOverlay:
@@ -1066,6 +1069,7 @@ NASAM:
 		Queue: Defense
 		BuildPaletteOrder: 60
 		Owner: nod
+		Prerequisites: radar
 	Building:
 	RequiresPower:
 	DisabledOverlay:
@@ -1107,6 +1111,7 @@ NALASR:
 		Queue: Defense
 		BuildPaletteOrder: 50
 		Owner: nod
+		Prerequisites: radar
 	Building:
 	RequiresPower:
 	DisabledOverlay:
@@ -1201,4 +1206,3 @@ TECH:
 	Tooltip:
 		Name: Tech Center
 		Description: Tech Center
-

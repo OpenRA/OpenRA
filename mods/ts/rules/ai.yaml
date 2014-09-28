@@ -4,11 +4,15 @@ Player:
 		BuildingCommonNames:
 			ConstructionYard: gacnst
 			Refinery: proc
+			Radar: garadr, naradr
 			Power: gapowr, napowr, naapwr
 			Barracks: gapile, nahand
 			VehiclesFactory: gaweap, naweap
 			Production: gapile, nahand, gaweap, naweap
 			Silo: gasilo
+			Tech: gatech, natech
+			AntiAir: gacsam, nasam
+
 		UnitsCommonNames:
 			Mcv: mcv
 		BuildingLimits:
@@ -18,23 +22,36 @@ Player:
 			gapile: 1
 			nahand: 1
 			garadr: 1
+			naradr: 1
 			gaweap: 1
 			naweap: 1
+			gavulc: 9
+			garock: 9
+			gacsam: 9
+			nalasr: 9
+			nasam: 9
 		BuildingFractions:
 			proc: 30%
 			gapowr: 35%
 			napowr: 35%
+			garadr: 60%
+			naradr: 60%
 			gapile: 1%
 			nahand: 1%
 			gaweap: 1%
 			naweap: 1%
+			gavulc: 49%
+			garock: 49%
+			gacsam: 49%
+			nasam: 49%
+			nalasr: 49%
 		UnitsToBuild:
 			e1: 80%
 			e2: 8%
 			e3: 30%
 			medic: 2%
 			jumpjet: 15%
-			apc: 3%
+			mmech: 3%
 			smech: 25%
 			bike: 60%
 			bggy: 75%
