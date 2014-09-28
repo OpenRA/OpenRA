@@ -627,6 +627,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "KillsSelf";
 						node.Value.Nodes.Add(new MiniYamlNode("RemoveInstead", new MiniYaml("true")));
 					}
+
+					if (depth == 1 && node.Key.StartsWith("UnitUpgradeCrateAction"))
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "GrantUpgradeCrateAction";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
+
+					if (depth == 1 && node.Key.StartsWith("-UnitUpgradeCrateAction"))
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "-GrantUpgradeCrateAction";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

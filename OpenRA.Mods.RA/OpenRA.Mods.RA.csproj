@@ -127,7 +127,6 @@
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Player\PlaceBeacon.cs" />
     <Compile Include="MenuPaletteEffect.cs" />
-    <Compile Include="Crates\UnitUpgradeCrateAction.cs" />
     <Compile Include="EjectOnDeath.cs" />
     <Compile Include="Air\FallsToEarth.cs" />
     <Compile Include="Air\Fly.cs" />
@@ -568,6 +567,7 @@
     <Compile Include="UpgradeManager.cs" />
     <Compile Include="KillsSelf.cs" />
     <Compile Include="Warheads\GrantUpgradeWarhead.cs" />
+    <Compile Include="Crates\GrantUpgradeCrateAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

@@ -14,7 +14,7 @@ CRATE:
 	ExplodeCrateAction@fire:
 		Weapon: Napalm.Crate
 		SelectionShares: 5
-	UnitUpgradeCrateAction@cloak:
+	GrantUpgradeCrateAction@cloak:
 		SelectionShares: 5
 		Effect: cloak
 		Upgrades: cloak
