@@ -1,120 +1,41 @@
 GACNST:
-	Inherits: ^Building
-	Building:
-		Footprint: xxx xxx xxx
-		BuildSounds: facbld1.aud
-		Dimensions: 3,3
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 1000
-		Owner: None
-	Health:
-		HP: 1500
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 5c0
-	Production:
-		Produces: Building,Defense
-	Valued:
-		Cost: 2500
-	Tooltip:
-		Name: Construction Yard
-		Description: Builds base structures.
-	CustomSellValue:
-		Value: 2500
-	BaseBuilding:
-	Transforms:
-		IntoActor: mcv
-		Offset: 1,1
-		Facing: 96
-	ProductionBar@Building:
-		ProductionType: Building
-	ProductionBar@Defense:
-		ProductionType: Defense
-	-Sellable:
-	WithIdleOverlay@TOP:
-		Sequence: idle-top
-	WithIdleOverlay@SIDE:
-		Sequence: idle-side
-	WithIdleOverlay@FRONT:
-		Sequence: idle-front
-	WithBuildingPlacedOverlay:
-	Power:
-		Amount: 0
-	Selectable:
-		Bounds: 120, 90, 0, 20
+	Inherits: ^ConstructionYard
 
 GAPOWR:
-	Inherits: ^Building
+	Inherits: ^PowerPlant
 	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 0
 		Owner: gdi
-	Valued:
-		Cost: 300
 	Tooltip:
 		Name: GDI Power Plant
-		Description: Provides power for other structures
-	ProvidesCustomPrerequisite:
-		Prerequisite: anypower
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Health:
-		HP: 750
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	WithIdleOverlay@PLUG:
 		Sequence: idle-plug
-	Selectable:
-		Bounds: 64, 64
-	Power:
-		Amount: 100
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
-	TargetableBuilding:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
-	ScalePowerWithHealth:
-	DisabledOverlay:
+
+NAPOWR:
+	Inherits: ^PowerPlant
+	Buildable:
+		Owner: nod
+	Tooltip:
+		Name: Nod Power Plant
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
 
 GAPILE:
-	Inherits: ^Building
+	Inherits: ^Barracks
 	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 30
-		Prerequisites: anypower
 		Owner: gdi
-	Valued:
-		Cost: 300
 	Tooltip:
 		Name: GDI Barracks
-		Description: Produces infantry
-	ProvidesCustomPrerequisite:
-		Prerequisite: barracks
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Health:
-		HP: 800
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 5c0
-	RallyPoint:
-		RallyPoint: 2,3
 	Exit@1:
 		SpawnOffset: -256,1051,0
 		ExitCell: 2,3
-	Production:
-		Produces: Infantry
-	PrimaryBuilding:
-	IronCurtainable:
-	ProductionBar:
 	WithProductionOverlay@LIGHTS:
 		Sequence: production-lights
 	WithIdleOverlay@LIGHT:
@@ -123,160 +44,56 @@ GAPILE:
 		Sequence: idle-flag
 	Power:
 		Amount: -20
+	Selectable:
+		Bounds: 64, 64
 
-PROC:
-	Inherits: ^Building
-	Valued:
-		Cost: 2000
-	Tooltip:
-		Name: Tiberium Refinery
-		Description: Processes raw Tiberium\ninto useable resources
+NAHAND:
+	Inherits: ^Barracks
 	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 20
-		Prerequisites: anypower
-		Owner: gdi,nod
-	Building:
-		Footprint: xxx= xxx= xxx=
-		Dimensions: 4,3
-	Health:
-		HP: 900
-	RevealsShroud:
-		Range: 6c0
-	TiberianSunRefinery:
-		DockOffset: 3,1
-	StoresResources:
-		PipColor: Green
-		PipCount: 15
-		Capacity: 3000
-	CustomSellValue:
-		Value: 600
-	FreeActor:
-		Actor: HARV
-		InitialActivity: FindResources
-		SpawnOffset: 3,4
-		Facing: 64
-	WithIdleOverlay@REDLIGHTS:
-		Sequence: idle-redlights
-	WithIdleOverlay@BIB:
-		Sequence: bib
-	Power:
-		Amount: -30
-
-GASILO:
-	Inherits: ^Building
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 70
-		Prerequisites: proc
-		Owner: gdi, nod
-	Valued:
-		Cost: 150
+		Owner: nod
 	Tooltip:
-		Name: Silo
-		Description: Stores excess Tiberium.
+		Name: Hand of Nod
 	Building:
-		Footprint: xx xx
-		Dimensions: 2, 2
-	-GivesBuildableArea:
-	Health:
-		HP: 300
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4c0
-	-RenderBuilding:
-	RenderBuildingSilo:
-	WithIdleOverlay@UNDERLAY:
-		Sequence: idle-underlay
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Exit@1:
+		SpawnOffset: 0,2048,0
+		ExitCell: 3,3
+	RallyPoint:
+		RallyPoint: 3,3
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
-	StoresResources:
-		PipCount: 5
-		Capacity: 1500
-	Power:
-		Amount: -10
+	WithProductionOverlay@LIGHT:
+		Sequence: production-light
+	Selectable:
+		Bounds: 96, 64, -10, 10
+PROC:
+	Inherits: ^Refinery
+
+GASILO:
+	Inherits: ^TiberiumSilo
 
 GAWEAP:
-	Inherits: ^Building
-	Valued:
-		Cost: 2000
-	Tooltip:
-		Name: GDI War Factory
-		Description: Assembly point for\nvehicle reinforcements
-	ProvidesCustomPrerequisite:
-		Prerequisite: factory
+	Inherits: ^WeaponFactory
 	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 50
 		Owner: gdi
-		Prerequisites: proc
-	Building:
-		Footprint: xxx= xxx= xxx=
-		Dimensions: 4,3
-	Health:
-		HP: 1000
-	RevealsShroud:
-		Range: 4c0
-	-RenderBuilding:
-	RenderBuildingWarFactory:
-	RallyPoint:
-		RallyPoint: 6,5
-	Exit@1:
-		SpawnOffset: -170,0,0
-		ExitCell: 4,2
-	Production:
-		Produces: Vehicle
-	PrimaryBuilding:
-	ProductionBar:
 	WithProductionOverlay@WHITELIGHTS:
 		Sequence: production-lights-white
 	WithProductionOverlay@REDLIGHTS:
 		Sequence: production-lights-red
 	WithIdleOverlay@TURBINES:
 		Sequence: idle-turbines
-	WithIdleOverlay@BIB:
-		Sequence: bib
-	Power:
-		Amount: -30
 
-NAPOWR:
-	Inherits: ^Building
+NAWEAP:
+	Inherits: ^WeaponFactory
 	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 0
 		Owner: nod
-	Valued:
-		Cost: 300
-	Tooltip:
-		Name: Nod Power Plant
-		Description: Provides power for other structures
-	ProvidesCustomPrerequisite:
-		Prerequisite: anypower
-	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Health:
-		HP: 750
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4c0
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
-	Power:
-		Amount: 100
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
-	TargetableBuilding:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
-	ScalePowerWithHealth:
-	DisabledOverlay:
+	WithProductionOverlay@LIGHTS:
+		Sequence: production-lights
 
 NAAPWR:
-	Inherits: ^Building
+	Inherits: ^PowerPlant
 	Buildable:
-		Queue: Building
 		BuildPaletteOrder: 5
 		Prerequisites: factory
 		Owner: nod
@@ -285,121 +102,26 @@ NAAPWR:
 	Tooltip:
 		Name: Advanced Power Plant
 		Description: Provides more power for structures
-	ProvidesCustomPrerequisite:
-		Prerequisite: anypower
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 2,3
 	Health:
 		HP: 900
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4c0
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
 	Power:
 		Amount: 200
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
-	TargetableBuilding:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
-	ScalePowerWithHealth:
-	DisabledOverlay:
-
-NAHAND:
-	Inherits: ^Building
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 30
-		Prerequisites: anypower
-		Owner: nod
-	Valued:
-		Cost: 300
-	Tooltip:
-		Name: Hand of Nod
-		Description: Produces infantry
-	ProvidesCustomPrerequisite:
-		Prerequisite: barracks
-	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
-	Health:
-		HP: 800
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 5c0
-	Exit@1:
-		SpawnOffset: 0,2048,0
-		ExitCell: 3,3
-	RallyPoint:
-		RallyPoint: 3,3
-	Production:
-		Produces: Infantry
-	PrimaryBuilding:
-	IronCurtainable:
-	ProductionBar:
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
-	WithProductionOverlay@LIGHT:
-		Sequence: production-light
-	Power:
-		Amount: -20
-
-NAWEAP:
-	Inherits: ^Building
-	Valued:
-		Cost: 2000
-	Tooltip:
-		Name: Nod War Factory
-		Description: Assembly point for\nvehicle reinforcements
-	ProvidesCustomPrerequisite:
-		Prerequisite: factory
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 50
-		Owner: nod
-		Prerequisites: proc
-	Building:
-		Footprint: xxx= xxx= xxx=
-		Dimensions: 4,3
-	Health:
-		HP: 1000
-	RevealsShroud:
-		Range: 4c0
-	-RenderBuilding:
-	RenderBuildingWarFactory:
-	RallyPoint:
-		RallyPoint: 6,5
-	Exit@1:
-		SpawnOffset: -170,0,0
-		ExitCell: 4,2
-	Production:
-		Produces: Vehicle
-	PrimaryBuilding:
-	ProductionBar:
-	WithProductionOverlay@LIGHTS:
-		Sequence: production-lights
-	WithIdleOverlay@BIB:
-		Sequence: bib
-	Power:
-		Amount: -30
+	Selectable:
+		Bounds: 110, 64, -10, 20
 
 GASAND:
 	Inherits: ^Wall
 	Buildable:
-		Queue: Defense
 		BuildPaletteOrder: 1000
-		Prerequisites: gacnst
 		Owner: gdi
 	SoundOnDamageTransition:
 		DamagedSound: sandbag1.aud
 		DestroyedSound: sandbag1.aud
 	Valued:
 		Cost: 25
-	CustomSellValue:
-		Value: 0
 	Tooltip:
 		Name: Sandbags
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
@@ -413,70 +135,28 @@ GASAND:
 		Types: sandbags
 	RenderBuildingWall:
 		Type: sandbags
+	Crushable:
+		CrushClasses: wall
 
 GAWALL:
 	Inherits: ^Wall
 	Buildable:
-		Queue: Defense
 		BuildPaletteOrder: 1001
-		Prerequisites: gacnst
 		Owner: gdi
-	SoundOnDamageTransition:
-		DamagedSound:
-		DestroyedSound:
-	Valued:
-		Cost: 50
-	CustomSellValue:
-		Value: 0
-	Tooltip:
-		Name: Concrete Wall
-		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
-	Health:
-		HP: 300
-	Armor:
-		Type: Concrete
-	Crushable:
-		CrushClasses: heavywall
-	LineBuild:
-		NodeTypes: wall, turret
 
 NAWALL:
 	Inherits: ^Wall
 	Buildable:
-		Queue: Defense
 		BuildPaletteOrder: 1001
-		Prerequisites: gacnst
 		Owner: nod
-	SoundOnDamageTransition:
-		DamagedSound:
-		DestroyedSound:
-	Valued:
-		Cost: 50
-	CustomSellValue:
-		Value: 0
-	Tooltip:
-		Name: Concrete Wall
-		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
-	Health:
-		HP: 300
-	Armor:
-		Type: Concrete
-	Crushable:
-		CrushClasses: heavywall
-	LineBuild:
-		NodeTypes: wall, turret
 
 GATICK:
-	Inherits: ^Building
-	Valued:
-		Cost: 800
-	-AcceptsSupplies:
+	Inherits: ^DeployedUnit
 	Tooltip:
 		Name: Deployed Tick Tank
 	Building:
 		Footprint: x
 		Dimensions: 1,1
-	-GivesBuildableArea:
 	Health:
 		HP: 350
 	Armor:
@@ -487,15 +167,9 @@ GATICK:
 		ROT: 6
 		InitialFacing: 128
 		Offset: 170,0,213
-	Armament@PRIMARY:
+	Armament:
 		Weapon: 90mm
 		LocalOffset: 384,0,128
-		RestrictedByUpgrade: eliteweapon
-		MuzzleSequence: muzzle
-	Armament@ELITE:
-		Weapon: 120mmx
-		LocalOffset: 384,0,128
-		RequiresUpgrade: eliteweapon
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	BodyOrientation:
@@ -510,82 +184,46 @@ GATICK:
 	WithVoxelTurret:
 	Transforms:
 		IntoActor: ttnk
-		Offset: 1,1
-		Facing: 96
-		TransformSounds: place2.aud
-		NoTransformSounds:
 	WithMuzzleFlash:
 
 GAICBM:
-	Inherits: ^Building
-	Valued:
-		Cost: 800
-	-AcceptsSupplies:
+	Inherits: ^DeployedUnit
 	Tooltip:
 		Name: Deployed ICBM
-	Building:
-		Footprint: _ x
-		Dimensions: 1,2
-	-GivesBuildableArea:
 	Health:
 		HP: 400
-	Armor:
-		Type: Wood
 	RevealsShroud:
 		Range: 5c0
 	Transforms:
 		IntoActor: icbm
-		Offset: 1,1
-		Facing: 96
-		TransformSounds: place2.aud
-		NoTransformSounds:
 
 GADPSA:
-	Inherits: ^Building
-	Valued:
-		Cost: 950
-	-AcceptsSupplies:
+	Inherits: ^DeployedUnit
 	Tooltip:
 		Name: Deployed Sensor Array
-	Building:
-		Footprint: _ x
-		Dimensions: 1,2
-	-GivesBuildableArea:
 	Health:
 		HP: 600
-	Armor:
-		Type: Wood
 	RevealsShroud:
 		Range: 8c0
 	Transforms:
 		IntoActor: lpst
-		Offset: 1,1
-		Facing: 96
-		TransformSounds: place2.aud
-		NoTransformSounds:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
 
 GAARTY:
-	Inherits: ^Building
-	Valued:
-		Cost: 975
-	-AcceptsSupplies:
+	Inherits: ^DeployedUnit
 	Tooltip:
 		Name: Deployed Artillery
 	Building:
 		Footprint: x
 		Dimensions: 1,1
-	-GivesBuildableArea:
 	Health:
 		HP: 300
 	Armor:
 		Type: Light
 	RevealsShroud:
 		Range: 9c0
-	Selectable:
-		Voice: Vehicle
 	Turreted:
 		ROT: 5
 		InitialFacing: 128
@@ -607,10 +245,6 @@ GAARTY:
 	WithVoxelTurret:
 	Transforms:
 		IntoActor: art2
-		Offset: 1,1
-		Facing: 96
-		TransformSounds: place2.aud
-		NoTransformSounds:
 	WithMuzzleFlash:
 
 GASPOT:
@@ -639,259 +273,77 @@ GASPOT:
 		Sequence: idle-lights
 	Power:
 		Amount: -10
+	Selectable:
+		Bounds: 34, 92, 0, -15
 
 GALITE:
-	Inherits: ^Building
+	Inherits: ^LightPost
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 10
 		Owner: gdi, nod
 	Valued:
 		Cost: 200
-	Tooltip:
-		Name: Light Post
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
-		Palette: terrain
-	-WithMakeAnimation:
-	Health:
-		HP: 600
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 2c0
-	Power:
-		Amount: 0
-#	WithIdleOverlay@LIGHTING:
-#		Sequence: lighting
 
 GARADR:
-	Inherits: ^Building
+	Inherits: ^Radar
 	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 90
 		Owner: gdi
-		Prerequisites: anypower, factory
-	Valued:
-		Cost: 1000
 	Tooltip:
 		Name: GDI Radar
-		Description: Provides radar screen
-	ProvidesCustomPrerequisite:
-		Prerequisite: radar
-	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Health:
-		HP: 800
-	Armor:
-		Type: Wood
-	RequiresPower:
-	CanPowerDown:
-	ProvidesRadar:
-	InfiltrateForExploration:
-	DetectCloaked:
-		Range: 10
-	RenderDetectionCircle:
-	RevealsShroud:
-		Range: 10c0
-	WithIdleOverlay@DISH:
-		Sequence: idle-dish
-		PauseOnLowPower: yes
-	TargetableBuilding:
-		TargetTypes: Ground, C4, SpyInfiltrate
-	Power:
-		Amount: -50
+	Selectable:
+		Bounds: 64, 110, 0, -20
 
 NARADR:
-	Inherits: ^Building
+	Inherits: ^Radar
 	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 90
 		Owner: nod
-		Prerequisites: anypower, factory
-	Valued:
-		Cost: 1000
 	Tooltip:
 		Name: Nod Radar
-		Description: Provides radar screen
-	ProvidesCustomPrerequisite:
-		Prerequisite: radar
-	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Health:
-		HP: 800
-	Armor:
-		Type: Wood
-	RequiresPower:
-	CanPowerDown:
-	ProvidesRadar:
-	InfiltrateForExploration:
-	DetectCloaked:
-		Range: 10
-	RenderDetectionCircle:
-	RevealsShroud:
-		Range: 10c0
-	WithIdleOverlay@DISH:
-		Sequence: idle-dish
-		PauseOnLowPower: yes
-	TargetableBuilding:
-		TargetTypes: Ground, C4, SpyInfiltrate
-	Power:
-		Amount: -50
+	Selectable:
+		Bounds: 64, 64, 0, 0
 
 GATECH:
-	Inherits: ^Building
+	Inherits: ^TechCenter
 	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 100
 		Owner: gdi
-		Prerequisites: radar
-	Valued:
-		Cost: 2000
 	Tooltip:
 		Name: GDI Tech Center
-		Description: Required for high-\ntech research
-	ProvidesCustomPrerequisite:
-		Prerequisite: tech
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
-	Health:
-		HP: 500
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4c0
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
-	Power:
-		Amount: -150
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Selectable:
+		Bounds: 110, 64, 10, 20
 
 NATECH:
-	Inherits: ^Building
+	Inherits: ^TechCenter
 	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 100
 		Owner: nod
-		Prerequisites: radar
-	Valued:
-		Cost: 2000
 	Tooltip:
 		Name: Nod Tech Center
-		Description: Required for high-\ntech research
-	ProvidesCustomPrerequisite:
-		Prerequisite: tech
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Health:
-		HP: 500
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4c0
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
-	Power:
-		Amount: -150
 
 GAHPAD:
-	Inherits: ^Building
-	Valued:
-		Cost: 500
-	Tooltip:
-		Name: Helipad
-		Description: Produces, rearms and\nrepairs helicopters
+	Inherits: ^HeliPad
 	Buildable:
-		BuildPaletteOrder: 60
 		Owner: gdi
-		Queue: Building
-		Prerequisites: radar
-	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Health:
-		HP: 600
-	RevealsShroud:
-		Range: 5c0
-	Exit@1:
-		SpawnOffset: 0,-256,0
-	RallyPoint:
-	Production:
-		Produces: Air
-	PrimaryBuilding:
-	BelowUnits:
-	Reservable:
-	RepairsUnits:
-	ProductionBar:
-	WithIdleOverlay@PLATFORM:
-		Sequence: idle-platform
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
-	Power:
-		Amount: -10
 
 NAHPAD:
-	Inherits: ^Building
-	Valued:
-		Cost: 500
-	Tooltip:
-		Name: Nod Helipad
-		Description: Produces, rearms and\nrepairs helicopters
+	Inherits: ^HeliPad
 	Buildable:
-		BuildPaletteOrder: 60
 		Owner: nod
-		Queue: Building
-	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Health:
-		HP: 600
-	RevealsShroud:
-		Range: 5c0
-	Exit@1:
-		SpawnOffset: 0,-256,0
-	RallyPoint:
-	Production:
-		Produces: Air
-	PrimaryBuilding:
-	BelowUnits:
-	Reservable:
-	RepairsUnits:
-	ProductionBar:
-	WithIdleOverlay@PLATFORM:
-		Sequence: idle-platform
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
-	Power:
-		Amount: -10
+	Selectable:
+		Bounds: 64, 64, 0, 20
 
 GADEPT:
-	Inherits: ^Building
-	Valued:
-		Cost: 1200
-	Tooltip:
-		Name: Service Depot
-		Description: Repairs vehicles
+	Inherits: ^RepairBay
 	Buildable:
-		BuildPaletteOrder: 80
-		Prerequisites: factory
 		Owner: gdi
-		Queue: Building
 	Building:
 		Footprint: =x= xxx =x=
 		Dimensions: 3,3
-	Health:
-		HP: 1100
-	RevealsShroud:
-		Range: 5c0
-	Reservable:
-	RepairsUnits:
-	RallyPoint:
 	WithIdleOverlay@LIGHT:
 		Sequence: idle-light
 	WithIdleOverlay@GROUND:
@@ -902,44 +354,17 @@ GADEPT:
 		Sequence: crane
 	WithRepairOverlay@PLATFORM:
 		Sequence: platform
-	Power:
-		Amount: -30
 
 #TODO: Placeholder, replace with Component Tower + Vulcan Upgrade
 GAVULC:
-	Inherits: ^Building
+	Inherits: ^ComponentTower
 	Valued:
 		Cost: 600
+	Buildable:
+		BuildPaletteOrder: 30
 	Tooltip:
 		Name: Vulcan Tower
 		Description: Basic base defense. \nRequires no power to operate.\n  Strong vs infantry and light armor\n  Cannot target Aircraft
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 30
-		Owner: gdi
-		Prerequisites: radar
-	Building:
-	DisabledOverlay:
-	-GivesBuildableArea:
-	Health:
-		HP: 500
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 6c0
-	BodyOrientation:
-		QuantizedFacings: 32
-	RenderRangeCircle:
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 5
-	AutoTarget:
-	Turreted:
-		ROT: 10
-		InitialFacing: 50
-	AttackTurreted:
-	WithTurret:
-		Recoils: no
 	Armament@PRIMARY:
 		Weapon: VulcanTower
 		LocalOffset: 768,85,512
@@ -954,106 +379,34 @@ GAVULC:
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	WithMuzzleFlash:
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
-	LineBuildNode:
-		Types: turret
-	-RenderBuilding:
-	RenderBuildingWall:
-		Type: wall
 	Power:
 		Amount: -20
 
 #TODO: Placeholder, replace with Component Tower + RPG Upgrade
 GAROCK:
-	Inherits: ^Building
+	Inherits: ^ComponentTower
 	Valued:
 		Cost: 1000
 	Tooltip:
 		Name: RPG Tower
 		Description: GDI Advanced base defense.\nRequires power to operate.\n  Strong vs armored ground units\n  Cannot target Aircraft
 	Buildable:
-		Queue: Defense
-		Prerequisites: radar
 		BuildPaletteOrder: 40
-		Owner: gdi
-	Building:
-	RequiresPower:
-	DisabledOverlay:
-	-GivesBuildableArea:
-	Health:
-		HP: 500
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 6c0
-	BodyOrientation:
-		QuantizedFacings: 32
-	RenderRangeCircle:
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 5
-	AutoTarget:
-	Turreted:
-		ROT: 10
-		InitialFacing: 50
-	AttackTurreted:
-	WithTurret:
-		Recoils: no
 	Armament:
 		Weapon: RPGTower
 		LocalOffset: 512,-128,512
 		Recoil: 0
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
-	LineBuildNode:
-		Types: turret
-	-RenderBuilding:
-	RenderBuildingWall:
-		Type: wall
 	Power:
 		Amount: -50
 
 #TODO: Placeholder, replace with Component Tower + SAM Upgrade
 GACSAM:
-	Inherits: ^Building
-	Valued:
-		Cost: 600
+	Inherits: ^SamSite
 	Tooltip:
 		Name: S.A.M. Tower
 		Description: GDI Anti-Air base defense. \nRequires power to operate.\n  Strong vs all Aircraft\n  Cannot target ground units
 	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 60
 		Owner: gdi
-		Prerequisites: radar
-	Building:
-	RequiresPower:
-	DisabledOverlay:
-	-GivesBuildableArea:
-	Health:
-		HP: 500
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 6c0
-	BodyOrientation:
-		QuantizedFacings: 32
-	RenderRangeCircle:
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 5
-	AutoTarget:
-	Turreted:
-		ROT: 10
-		InitialFacing: 50
-	AttackTurreted:
-	WithTurret:
-		Recoils: no
-	Armament:
-		Weapon: SAMTower
-		LocalOffset: 512,0,512
-		Recoil: 0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	LineBuildNode:
@@ -1061,50 +414,15 @@ GACSAM:
 	-RenderBuilding:
 	RenderBuildingWall:
 		Type: wall
-	Power:
-		Amount: -30
+	Selectable:
+		Bounds: 48, 48, 0, 0
 
 NASAM:
-	Inherits: ^Building
-	Valued:
-		Cost: 600
-	Tooltip:
-		Name: S.A.M. Site
-		Description: Nod Anti-Air base defense. \nRequires power to operate.\n  Strong vs all Aircraft\n  Cannot target ground units
+	Inherits: ^SamSite
 	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 60
 		Owner: nod
-		Prerequisites: radar
-	Building:
-	RequiresPower:
-	DisabledOverlay:
-	-GivesBuildableArea:
-	Health:
-		HP: 500
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 6c0
-	BodyOrientation:
-		QuantizedFacings: 32
-	RenderRangeCircle:
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 5
-	AutoTarget:
-	Turreted:
-		ROT: 10
-		InitialFacing: 50
-	AttackTurreted:
-	WithTurret:
-		Recoils: no
-	Armament:
-		Weapon: SAMTower
-		LocalOffset: 512,0,512
-		Recoil: 0
-	Power:
-		Amount: -30
+	Selectable:
+		Bounds: 48, 48, 0, 0
 
 NALASR:
 	Inherits: ^Building
@@ -1144,6 +462,8 @@ NALASR:
 	AutoTarget:
 	Power:
 		Amount: -40
+	Selectable:
+		Bounds: 48, 48, 0, 0
 
 NAOBEL:
 	Inherits: ^Building
@@ -1187,6 +507,8 @@ NAOBEL:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+	Selectable:
+		Bounds: 64, 64, 0, 0
 
 ANYPOWER:
 	Tooltip:

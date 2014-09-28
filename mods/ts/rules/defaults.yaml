@@ -2,6 +2,9 @@
 	AppearsOnRadar:
 	SelectionDecorations:
 		Palette: pips
+	Valued:				# to prevent a crash when it is missing
+	Buildable:
+		Owner: none
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
@@ -47,21 +50,35 @@
 
 ^Wall:
 	AppearsOnRadar:
+	Buildable:
+		Queue: Defense
+		Prerequisites: gacnst
 	Building:
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: place2.aud
 		Adjacent: 7
 		TerrainTypes: Clear, Road
+	Valued:
+		Cost: 50
+	Health:
+		HP: 300
+	Armor:
+		Type: Concrete
+	CustomSellValue:
+		Value: 0
 	SoundOnDamageTransition:
-		DamagedSound: expnew01.aud
-		DestroyedSound: crmble2.aud
+		DamagedSound:
+		DestroyedSound:
 	Crushable:
-		CrushClasses: wall
+		CrushClasses: heavywall
+	Tooltip:
+		Name: Concrete Wall
+		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	BlocksBullets:
 	LineBuild:
 		Range: 8
-		NodeTypes: wall
+		NodeTypes: wall, turret
 	LineBuildNode:
 		Types: wall
 	TargetableBuilding:
@@ -157,7 +174,6 @@
 	DeathSounds@ZAPPED:
 		DeathSound: Zapped
 		DeathTypes: 6
-
 ^CivilianInfantry:
 	Inherits: ^Infantry
 	Selectable:
@@ -303,6 +319,436 @@
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 
+^Radar:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 90
+		Prerequisites: anypower, factory
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Radar
+		Description: Provides radar screen
+	ProvidesCustomPrerequisite:
+		Prerequisite: radar
+	DetectCloaked:
+		Range: 10
+	RevealsShroud:
+		Range: 10c0
+	WithIdleOverlay@DISH:
+		Sequence: idle-dish
+		PauseOnLowPower: yes
+	TargetableBuilding:
+		TargetTypes: Ground, C4, SpyInfiltrate
+	Power:
+		Amount: -50
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	RequiresPower:
+	CanPowerDown:
+	ProvidesRadar:
+	InfiltrateForExploration:
+	RenderDetectionCircle:
+
+^PowerPlant:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 0
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Power Plant
+		Description: Provides power for other structures
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 750
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	Selectable:
+		Bounds: 64, 64
+	Power:
+		Amount: 100
+	InfiltrateForPowerOutage:
+	AffectedByPowerOutage:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+	ScalePowerWithHealth:
+	DisabledOverlay:
+
+^RepairBay:
+	Inherits: ^Building
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Service Depot
+		Description: Repairs vehicles
+	Buildable:
+		BuildPaletteOrder: 80
+		Prerequisites: factory
+		Queue: Building
+	Health:
+		HP: 1100
+	RevealsShroud:
+		Range: 5c0
+	Reservable:
+	RepairsUnits:
+	RallyPoint:
+	Power:
+		Amount: -30
+	Selectable:
+		Bounds: 96, 96, 0, 20
+
+^ComponentTower:
+	Inherits: ^Building
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	Selectable:
+		Bounds: 48, 48, 0, 0
+	Building:
+	DisabledOverlay:
+	-GivesBuildableArea:
+	RenderRangeCircle:
+	BodyOrientation:
+		QuantizedFacings: 32
+	RenderDetectionCircle:
+	AutoTarget:
+	DetectCloaked:
+		Range: 5
+	RevealsShroud:
+		Range: 6c0
+	Buildable:
+		Queue: Defense
+		Owner: gdi
+		Prerequisites: radar
+	AttackTurreted:
+	Turreted:
+		ROT: 10
+		InitialFacing: 50
+	WithTurret:
+		Recoils: no
+	LineBuildNode:
+		Types: turret
+	-RenderBuilding:
+	RenderBuildingWall:
+		Type: wall
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+
+^SamSite:
+	Inherits: ^Building
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: S.A.M.
+		Description: Anti-Air base defense. \nRequires power to operate.\n  Strong vs all Aircraft\n  Cannot target ground units
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 60
+		Owner: nod
+		Prerequisites: radar
+	Building:
+	RequiresPower:
+	DisabledOverlay:
+	-GivesBuildableArea:
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6c0
+	BodyOrientation:
+		QuantizedFacings: 32
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 5
+	AutoTarget:
+	Turreted:
+		ROT: 10
+		InitialFacing: 50
+	AttackTurreted:
+	WithTurret:
+		Recoils: no
+	Armament:
+		Weapon: SAMTower
+		LocalOffset: 512,0,512
+		Recoil: 0
+	Power:
+		Amount: -30
+
+^Barracks:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 30
+		Prerequisites: anypower
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Barracks
+		Description: Produces infantry
+	ProvidesCustomPrerequisite:
+		Prerequisite: barracks
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5c0
+	RallyPoint:
+		RallyPoint: 2,3
+	Production:
+		Produces: Infantry
+	PrimaryBuilding:
+	IronCurtainable:
+	ProductionBar:
+	Power:
+		Amount: -20
+
+^ConstructionYard:
+	Inherits: ^Building
+	Building:
+		Footprint: xxx xxx xxx
+		BuildSounds: facbld1.aud
+		Dimensions: 3,3
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1000
+		Owner: None
+	Health:
+		HP: 1500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5c0
+	Production:
+		Produces: Building,Defense
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: Construction Yard
+		Description: Builds base structures.
+	CustomSellValue:
+		Value: 2500
+	BaseBuilding:
+	Transforms:
+		IntoActor: mcv
+		Offset: 1,1
+		Facing: 96
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionBar@Defense:
+		ProductionType: Defense
+	-Sellable:
+	WithIdleOverlay@TOP:
+		Sequence: idle-top
+	WithIdleOverlay@SIDE:
+		Sequence: idle-side
+	WithIdleOverlay@FRONT:
+		Sequence: idle-front
+	WithBuildingPlacedOverlay:
+	Power:
+		Amount: 0
+	Selectable:
+		Bounds: 120, 90, 0, 20
+
+^TiberiumSilo:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 70
+		Prerequisites: proc
+		Owner: gdi, nod
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Silo
+		Description: Stores excess Tiberium.
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	-GivesBuildableArea:
+	Health:
+		HP: 300
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	-RenderBuilding:
+	RenderBuildingSilo:
+	WithIdleOverlay@UNDERLAY:
+		Sequence: idle-underlay
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	StoresResources:
+		PipCount: 5
+		Capacity: 1500
+	Power:
+		Amount: -10
+	Selectable:
+		Bounds: 64, 64, 0, 20
+
+^TechCenter: 
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 100
+		Prerequisites: radar
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Tech Center
+		Description: Required for high-\ntech research
+	ProvidesCustomPrerequisite:
+		Prerequisite: tech
+	Building:
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	Power:
+		Amount: -150
+	Selectable:
+		Bounds: 64, 64, 0, 20
+
+^HeliPad:
+	Inherits: ^Building
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Helipad
+		Description: Produces, rearms and\nrepairs helicopters
+	Buildable:
+		BuildPaletteOrder: 60
+		Queue: Building
+		Prerequisites: radar
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 600
+	RevealsShroud:
+		Range: 5c0
+	Exit@1:
+		SpawnOffset: 0,-256,0
+	RallyPoint:
+	Production:
+		Produces: Air
+	PrimaryBuilding:
+	BelowUnits:
+	Reservable:
+	RepairsUnits:
+	ProductionBar:
+	WithIdleOverlay@PLATFORM:
+		Sequence: idle-platform
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	Power:
+		Amount: -10
+	Selectable:
+		Bounds: 64, 64, 0, 0
+
+^Refinery:
+	Inherits: ^Building
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Tiberium Refinery
+		Description: Processes raw Tiberium\ninto useable resources
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 20
+		Prerequisites: anypower
+		Owner: gdi,nod
+	Building:
+		Footprint: xxx= xxx= xxx=
+		Dimensions: 4,3
+	Health:
+		HP: 900
+	RevealsShroud:
+		Range: 6c0
+	TiberianSunRefinery:
+		DockOffset: 3,1
+	StoresResources:
+		PipColor: Green
+		PipCount: 15
+		Capacity: 3000
+	CustomSellValue:
+		Value: 600
+	FreeActor:
+		Actor: HARV
+		InitialActivity: FindResources
+		SpawnOffset: 3,4
+		Facing: 64
+	WithIdleOverlay@REDLIGHTS:
+		Sequence: idle-redlights
+	WithIdleOverlay@BIB:
+		Sequence: bib
+	Power:
+		Amount: -30
+
+^WeaponFactory:
+	Inherits: ^Building
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: War Factory
+		Description: Assembly point for\nvehicle reinforcements
+	ProvidesCustomPrerequisite:
+		Prerequisite: factory
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+		Prerequisites: proc
+	Building:
+		Footprint: xxx= xxx= xxx=
+		Dimensions: 4,3
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 4c0
+	-RenderBuilding:
+	RenderBuildingWarFactory:
+	RallyPoint:
+		RallyPoint: 6,5
+	Exit@1:
+		SpawnOffset: -170,0,0
+		ExitCell: 4,2
+	Production:
+		Produces: Vehicle
+	PrimaryBuilding:
+	ProductionBar:
+	WithIdleOverlay@BIB:
+		Sequence: bib
+	Power:
+		Amount: -30
+
 ^Helicopter:
 	AppearsOnRadar:
 		UseLocation: yes
@@ -369,3 +815,39 @@
 		Interval: 55
 	WithActiveAnimation:
 
+^DeployedUnit:
+	Inherits: ^Building
+	-AcceptsSupplies:
+	-GivesBuildableArea:
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Armor:
+		Type: Wood
+	Transforms:
+		Offset: 1,1
+		Facing: 96
+		TransformSounds: place2.aud
+	Selectable:
+		Voice: Vehicle
+
+^LightPost:
+	Inherits: ^Building
+	Tooltip:
+		Name: Light Post
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+		Palette: terrain
+	-WithMakeAnimation:
+	Health:
+		HP: 6000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 2c0
+	Power:
+		Amount: 0
+#	WithIdleOverlay@LIGHTING:
+#		Sequence: lighting
