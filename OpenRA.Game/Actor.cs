@@ -212,6 +212,9 @@ namespace OpenRA
 
 				World.traitDict.RemoveActor(this);
 				Destroyed = true;
+
+				if (luaInterface != null)
+					luaInterface.Value.OnActorDestroyed();
 			});
 		}
 
