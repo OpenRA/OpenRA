@@ -1,151 +1,202 @@
 InsertionHelicopterType = "tran.insertion"
+InsertionPath = { InsertionEntry.Location, InsertionLZ.Location }
 ExtractionHelicopterType = "tran.extraction"
+ExtractionPath = { SouthReinforcementsPoint.Location, ExtractionLZ.Location }
 JeepReinforcements = { "jeep", "jeep" }
-JeepInterval = 50
-JeepDelay = 125
-TanyaType = "e7"
+TanyaReinforcements = { "e7" }
 EinsteinType = "einstein"
 FlareType = "flare"
-Cruisers = { "ca", "ca", "ca", "ca" }
-CruiserDelay = 250
-CameraDelay = 125
-CivilianWait = 150
-BaseAlertDelay = 300
+CruisersReinforcements = { "ca", "ca", "ca", "ca" }
 
 SendInsertionHelicopter = function()
-	local heli, passengers = Reinforcements.Insert(player, InsertionHelicopterType, { TanyaType },
-		{ InsertionEntry.Location, InsertionLZ.Location }, { InsertionEntry.Location })
-	tanya = passengers[1]
-	Actor.OnKilled(tanya, TanyaKilled)
+	local passengers = Reinforcements.ReinforceWithTransport(player, InsertionHelicopterType,
+		TanyaReinforcements, InsertionPath, { InsertionEntry.Location })[2]
+	local tanya = passengers[1]
+	Trigger.OnKilled(tanya, RescueFailed)
+	tanya.Stance = "HoldFire"
 end
 
 SendJeeps = function()
-	Media.PlaySpeechNotification("ReinforcementsArrived")
-	Reinforcements.Reinforce(player, JeepReinforcements, InsertionEntry.Location, InsertionLZ.Location, JeepInterval)
+	Reinforcements.Reinforce(player, JeepReinforcements, InsertionPath, Utils.Seconds(2))
+	Media.PlaySpeechNotification(player, "ReinforcementsArrived")
 end
 
 RunInitialActivities = function()
 	SendInsertionHelicopter()
-	Actor.Hunt(Patrol1)
-	Actor.Hunt(Patrol2)
-	Actor.Hunt(Patrol3)
-	Actor.Hunt(Patrol4)
-	Actor.Harvest(Harvester)
-	Team.Do(civiliansTeam, function(c)
-		Actor.Wait(c, CivilianWait)
-		Actor.Hunt(c)
-	end)
+	Patrol1.Hunt()
+	Patrol2.Hunt()
+	Patrol3.Hunt()
+	Patrol4.Hunt()
+	Harvester.FindResources()
+	Civilian1.Wait(Utils.Seconds(6))
+	Civilian2.Wait(Utils.Seconds(6))
+	Civilian1.Hunt()
+	Civilian2.Hunt()
 end
 
 LabGuardsKilled = function()
 	CreateEinstein()
-	
-	Actor.Create(FlareType, { Owner = england, Location = ExtractionFlarePoint.Location })
-	Media.PlaySpeechNotification("SignalFlareNorth")
-	SendExtractionHelicopter()
-	
-	OpenRA.RunAfterDelay(BaseAlertDelay, function()
-		local ussrUnits = Mission.GetGroundAttackersOf(ussr)
-		for i, unit in ipairs(ussrUnits) do
-			Actor.Hunt(unit)
-		end
+
+	Trigger.AfterDelay(Utils.Seconds(2), function()
+		Actor.Create(FlareType, true, { Owner = england, Location = ExtractionFlarePoint.Location })
+		Media.PlaySpeechNotification(player, "SignalFlareNorth")
+		SendExtractionHelicopter()
 	end)
-	
-	OpenRA.RunAfterDelay(CruiserDelay, function()
-		Media.PlaySpeechNotification("AlliedReinforcementsArrived")
-		Actor.Create("camera", { Owner = player, Location = CruiserCameraPoint.Location })
+
+	Trigger.AfterDelay(Utils.Seconds(10), function()
+		Media.PlaySpeechNotification(player, "AlliedReinforcementsArrived")
+		Actor.Create("camera", true, { Owner = player, Location = CruiserCameraPoint.Location })
 		SendCruisers()
+	end)
+
+	Trigger.AfterDelay(Utils.Seconds(12), function()
+		for i = 0, 2 do
+			Trigger.AfterDelay(Utils.Seconds(i), function()
+				Media.PlaySoundNotification(player, "AlertBuzzer")
+			end)
+		end
+		Utils.Do(sovietArmy, function(a)
+			if not a.IsDead and a.HasProperty("Hunt") then
+				Trigger.OnIdle(a, a.Hunt)
+			end
+		end)
 	end)
 end
 
 SendExtractionHelicopter = function()
-	local heli = Reinforcements.Extract(player, ExtractionHelicopterType, { einstein },
-		{ SouthReinforcementsPoint.Location, ExtractionLZ.Location }, { ExtractionExitPoint.Location })
-	Actor.OnKilled(heli, HelicopterDestroyed)
-	Actor.OnRemovedFromWorld(heli, HelicopterExtractionCompleted)
+	heli = Reinforcements.ReinforceWithTransport(player, ExtractionHelicopterType, nil, ExtractionPath)[1]
+	if not einstein.IsDead then
+		Trigger.OnRemovedFromWorld(einstein, EvacuateHelicopter)
+	end
+	Trigger.OnKilled(heli, RescueFailed)
+	Trigger.OnRemovedFromWorld(heli, HelicopterGone)
 end
 
-HelicopterExtractionCompleted = function()
-	MissionAccomplished()
+EvacuateHelicopter = function()
+	if heli.HasPassengers then
+		heli.Move(ExtractionExitPoint.Location)
+		Trigger.OnIdle(heli, heli.Destroy)
+	end
 end
 
 SendCruisers = function()
-	for i, cruiser in ipairs(Cruisers) do
-		local ca = Actor.Create(cruiser, { Owner = england, Location = SouthReinforcementsPoint.Location })
-		Actor.Move(ca, Map.GetNamedActor("CruiserPoint" .. i).Location)
-	end
+	local i = 1
+	Utils.Do(CruisersReinforcements, function(cruiser)
+		local ca = Actor.Create(cruiser, true, { Owner = england, Location = SouthReinforcementsPoint.Location + CVec.New(2 * i, 0) })
+		ca.Move(Map.NamedActor("CruiserPoint" .. i).Location)
+		i = i + 1
+	end)
 end
 
-LabDestroyed = function(self, e)
+LabDestroyed = function()
 	if not einstein then
-		MissionFailed()
+		RescueFailed()
 	end
 end
 
-EinsteinKilled = function(self, e)
-	MissionFailed()
+RescueFailed = function()
+	player.MarkFailedObjective(SurviveObjective)
+	ussr.MarkCompletedObjective(DefendObjective)
 end
 
-HelicopterDestroyed = function(self, e)
-	MissionFailed()
+OilPumpDestroyed = function()
+	Trigger.AfterDelay(Utils.Seconds(5), SendJeeps)
 end
 
-TanyaKilled = function(self, e)
-	MissionFailed()
-end
-
-OilPumpDestroyed = function(self, e)
-	OpenRA.RunAfterDelay(JeepDelay, SendJeeps)
+CiviliansKilled = function()
+	player.MarkFailedObjective(CivilProtectionObjective)
+	Media.PlaySpeechNotification(player, "ObjectiveNotMet")
+	collateralDamage = true
 end
 
 CreateEinstein = function()
-	einstein = Actor.Create(EinsteinType, { Location = EinsteinSpawnPoint.Location, Owner = player })
-	Actor.Scatter(einstein)
-	Actor.OnKilled(einstein, EinsteinKilled)
+	player.MarkCompletedObjective(FindEinsteinObjective)
+	Media.PlaySpeechNotification(player, "ObjectiveMet")
+	einstein = Actor.Create(EinsteinType, true, { Location = EinsteinSpawnPoint.Location, Owner = player })
+	einstein.Scatter()
+	Trigger.OnKilled(einstein, RescueFailed)
+	ExtractObjective = player.AddPrimaryObjective("Wait for the helicopter and extract Einstein.")
+	Trigger.AfterDelay(Utils.Seconds(1), function() Media.PlaySpeechNotification(player, "TargetFreed") end)
 end
 
-MissionAccomplished = function()
-	Mission.MissionOver({ player }, nil, true)
-	--Media.PlayMovieFullscreen("snowbomb.vqa")
-end
-
-MissionFailed = function()
-	Mission.MissionOver(nil, { player }, true)
-	Media.PlayMovieFullscreen("bmap.vqa")
-end
-
-SetUnitStances = function()
-	local playerUnits = Mission.GetGroundAttackersOf(player)
-	local ussrUnits = Mission.GetGroundAttackersOf(ussr)
-	for i, unit in ipairs(playerUnits) do
-		Actor.SetStance(unit, "Defend")
+HelicopterGone = function()
+	if not heli.IsDead then
+		Media.PlaySpeechNotification(player, "TargetRescued")
+		Trigger.AfterDelay(Utils.Seconds(1), function()
+			player.MarkCompletedObjective(ExtractObjective)
+			player.MarkCompletedObjective(SurviveObjective)
+			ussr.MarkFailedObjective(DefendObjective)
+			if not collateralDamage then
+				player.MarkCompletedObjective(CivilProtectionObjective)
+			end
+		end)
 	end
 end
 
+MissionAccomplished = function()
+	Media.PlaySpeechNotification(player, "Win")
+	--Trigger.AfterDelay(Utils.Seconds(1), function()
+		--Media.PlayMovieFullscreen("snowbomb.vqa")  -- https://github.com/OpenRA/OpenRA/issues/4224
+	--end)
+end
+
+MissionFailed = function()
+	Media.PlaySpeechNotification(player, "Lose")
+	Trigger.AfterDelay(Utils.Seconds(1), function() Media.PlayMovieFullscreen("bmap.vqa") end)
+end
+
+SetUnitStances = function()
+	Utils.Do(Map.NamedActors, function(a)
+		if a.Owner == player then
+			a.Stance = "Defend"
+		end
+	end)
+end
+
 Tick = function()
-	Mission.TickTakeOre(ussr)
+	ussr.Resources = ussr.Resources - (0.01 * ussr.ResourceCapacity / 25)
 end
 
 WorldLoaded = function()
-	player = OpenRA.GetPlayer("Greece")
-	england = OpenRA.GetPlayer("England")
-	ussr = OpenRA.GetPlayer("USSR")
-	
-	Actor.OnKilled(Lab, LabDestroyed)
-	Actor.OnKilled(OilPump, OilPumpDestroyed)
-	
-	labGuardsTeam = Team.New({ LabGuard1, LabGuard2, LabGuard3 })
-	Team.AddEventHandler(labGuardsTeam.OnAllKilled, LabGuardsKilled)
-	
-	civiliansTeam = Team.New({ Civilian1, Civilian2 })
-	
+	player = Player.GetPlayer("Greece")
+	england = Player.GetPlayer("England")
+	ussr = Player.GetPlayer("USSR")
+
+	FindEinsteinObjective = player.AddPrimaryObjective("Find Einstein.")
+	SurviveObjective = player.AddPrimaryObjective("Tanya and Einstein must survive.")
+	england.AddPrimaryObjective("Destroy the soviet base after a successful rescue.")
+	CivilProtectionObjective = player.AddSecondaryObjective("Protect all civilians.")
+	DefendObjective = ussr.AddPrimaryObjective("Kill Tanya and keep Einstein hostage.")
+
+	Trigger.OnObjectiveCompleted(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
+	end)
+	Trigger.OnObjectiveFailed(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
+	end)
+
+	Trigger.OnPlayerLost(player, MissionFailed)
+	Trigger.OnPlayerWon(player, MissionAccomplished)
+
+	Trigger.OnKilled(Lab, LabDestroyed)
+	Trigger.OnKilled(OilPump, OilPumpDestroyed)
+
+	sovietArmy = ussr.GetGroundAttackers()
+
+	labGuardsTeam = { LabGuard1, LabGuard2, LabGuard3 }
+	Trigger.OnAllKilled(labGuardsTeam, LabGuardsKilled)
+
+	collateralDamage = false
+	civilianTeam = { Civilian1, Civilian2 }
+	Trigger.OnAnyKilled(civilianTeam, CiviliansKilled)
+
 	RunInitialActivities()
-	
+
 	SetUnitStances()
-	
-	OpenRA.RunAfterDelay(CameraDelay, function() Actor.Create("camera", { Owner = player, Location = BaseCameraPoint.Location }) end)
-	
-	OpenRA.SetViewportCenterPosition(InsertionLZ.CenterPosition)
-	
-	Media.PlayMovieFullscreen("ally1.vqa", function() Media.PlayMovieFullscreen("landing.vqa", Media.PlayRandomMusic) end)
+
+	Trigger.AfterDelay(Utils.Seconds(5), function() Actor.Create("camera", true, { Owner = player, Location = BaseCameraPoint.Location }) end)
+
+	Camera.Position = InsertionLZ.CenterPosition
+
+	Media.PlayMovieFullscreen("ally1.vqa", function() Media.PlayMovieFullscreen("landing.vqa") end)
 end
