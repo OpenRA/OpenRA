@@ -1093,7 +1093,7 @@ DepthCharge:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: large_splash
-		ImpactSound: splash9.aud
+		ImpactSound: h2obomb2.aud
 	Warhead@4EffHit: CreateEffect
 		Explosion: small_explosion
 		ImpactSound: kaboom15.aud
