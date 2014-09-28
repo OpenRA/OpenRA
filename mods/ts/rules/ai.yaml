@@ -30,8 +30,8 @@ Player:
 			proc: 30%
 			gapowr: 35%
 			napowr: 35%
-			garadr: 60%
-			naradr: 60%
+			garadr: 1%
+			naradr: 1%
 			gapile: 1%
 			nahand: 1%
 			gaweap: 1%
