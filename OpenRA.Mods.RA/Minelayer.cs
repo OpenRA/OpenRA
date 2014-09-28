@@ -23,6 +23,8 @@ namespace OpenRA.Mods.RA
 		[ActorReference] public readonly string Mine = "minv";
 		[ActorReference] public readonly string[] RearmBuildings = { "fix" };
 
+		public readonly string RearmSound = "minelay1.aud";
+
 		public readonly float MinefieldDepth = 1.5f;
 
 		public object Create(ActorInitializer init) { return new Minelayer(init.self); }
@@ -30,7 +32,7 @@ namespace OpenRA.Mods.RA
 
 	class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection, ISync
 	{
-		/* [Sync] when sync can cope with arrays! */
+		/* TODO: [Sync] when sync can cope with arrays! */
 		public CPos[] Minefield = null;
 		[Sync] CPos minefieldStart;
 		Actor self;
