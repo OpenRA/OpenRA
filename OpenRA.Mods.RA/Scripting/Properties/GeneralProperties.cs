@@ -15,18 +15,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
+	[ExposedForDestroyedActors]
 	[ScriptPropertyGroup("General")]
-	public class GeneralProperties : ScriptActorProperties
+	public class BaseActorProperties : ScriptActorProperties
 	{
-		readonly IFacing facing;
-		readonly AutoTarget autotarget;
-
-		public GeneralProperties(ScriptContext context, Actor self)
-			: base(context, self)
-		{
-			facing = self.TraitOrDefault<IFacing>();
-			autotarget = self.TraitOrDefault<AutoTarget>();
-		}
+		// Note: This class must not make any trait queries so that this
+		// remains safe to call on dead actors.
+		public BaseActorProperties(ScriptContext context, Actor self)
+			: base(context, self) { }
 
 		[Desc("Specifies whether the actor is in the world.")]
 		public bool IsInWorld
@@ -45,20 +41,43 @@ namespace OpenRA.Mods.RA.Scripting
 			}
 		}
 
+		[Desc("Specifies whether the actor is alive or dead.")]
+		public bool IsDead { get { return self.IsDead(); } }
+
 		[Desc("Specifies whether the actor is idle (not performing any activities).")]
 		public bool IsIdle { get { return self.IsIdle; } }
-
-		[Desc("The actor position in cell coordinates.")]
-		public CPos Location { get { return self.Location; } }
-
-		[Desc("The actor position in world coordinates.")]
-		public WPos CenterPosition { get { return self.CenterPosition; } }
 
 		[Desc("The player that owns the actor.")]
 		public Player Owner { get { return self.Owner; } }
 
 		[Desc("The type of the actor (e.g. \"e1\").")]
 		public string Type { get { return self.Info.Name; } }
+
+		[Desc("Test whether an actor has a specific property.")]
+		public bool HasProperty(string name)
+		{
+			return self.HasScriptProperty(name);
+		}
+	}
+
+	[ScriptPropertyGroup("General")]
+	public class GeneralProperties : ScriptActorProperties
+	{
+		readonly IFacing facing;
+		readonly AutoTarget autotarget;
+
+		public GeneralProperties(ScriptContext context, Actor self)
+			: base(context, self)
+		{
+			facing = self.TraitOrDefault<IFacing>();
+			autotarget = self.TraitOrDefault<AutoTarget>();
+		}
+
+		[Desc("The actor position in cell coordinates.")]
+		public CPos Location { get { return self.Location; } }
+
+		[Desc("The actor position in world coordinates.")]
+		public WPos CenterPosition { get { return self.CenterPosition; } }
 
 		[Desc("The direction that the actor is facing.")]
 		public int Facing
@@ -128,12 +147,6 @@ namespace OpenRA.Mods.RA.Scripting
 
 				autotarget.Stance = stance;
 			}
-		}
-
-		[Desc("Test whether an actor has a specific property.")]
-		public bool HasProperty(string name)
-		{
-			return self.HasScriptProperty(name);
 		}
 	}
 }
