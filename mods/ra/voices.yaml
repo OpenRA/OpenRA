@@ -46,11 +46,14 @@ MechanicVoice:
 TanyaVoice:
 	Voices:
 		Select: yo1,yes1,yeah1
-		Move: rokroll1,onit1,cmon1
-		Attack: tuffguy1,bombit1,gotit1
+		Move: onit1,cmon1,rokroll1
+		Attack: tuffguy1,bombit1
 		Die: tandeth1
 		Burned: tandeth1
 		Zapped: tandeth1
+		Build: laugh1
+		Kill: gotit1,lefty1
+		Demolish: keepem1,tuffguy1
 
 DogVoice:
 	Voices:

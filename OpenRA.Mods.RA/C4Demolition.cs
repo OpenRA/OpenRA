@@ -30,6 +30,8 @@ namespace OpenRA.Mods.RA
 		public readonly int FlashInterval = 4;
 		[Desc("Duration of each flash")]
 		public readonly int FlashDuration = 3;
+		[Desc("Voice string when planting explosive charges.")]
+		public readonly string Voice = "Attack";
 
 		public object Create(ActorInitializer init) { return new C4Demolition(this); }
 	}
@@ -82,7 +84,7 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "C4" ? "Attack" : null;
+			return order.OrderString == "C4" ? info.Voice : null;
 		}
 
 		class C4DemolitionOrderTargeter : UnitOrderTargeter
