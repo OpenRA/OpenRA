@@ -12,7 +12,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class AnnounceOnKillInfo : TraitInfo<AnnounceOnKill> {}
+	[Desc("Play the Kill voice of this actor when eliminating enemies.")]
+	public class AnnounceOnKillInfo : TraitInfo<AnnounceOnKill> { }
 
 	public class AnnounceOnKill : INotifyAppliedDamage
 	{
@@ -23,4 +24,3 @@ namespace OpenRA.Mods.RA
 		}
 	}
 }
-
