@@ -39,6 +39,9 @@ namespace OpenRA.Scripting
 		public ScriptPropertyGroupAttribute(string category) { Category = category; }
 	}
 
+	// For property groups that are safe to initialize invoke on destroyed actors
+	public sealed class ExposedForDestroyedActors : Attribute { }
+
 	public sealed class ScriptActorPropertyActivityAttribute : Attribute { }
 
 	public abstract class ScriptActorProperties

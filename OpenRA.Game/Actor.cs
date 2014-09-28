@@ -212,6 +212,9 @@ namespace OpenRA
 
 				World.traitDict.RemoveActor(this);
 				Destroyed = true;
+
+				if (luaInterface != null)
+					luaInterface.Value.OnActorDestroyed();
 			});
 		}
 
@@ -262,7 +265,8 @@ namespace OpenRA
 		Lazy<ScriptActorInterface> luaInterface;
 		public void OnScriptBind(ScriptContext context)
 		{
-			luaInterface = Exts.Lazy(() => new ScriptActorInterface(context, this));
+			if (luaInterface == null)
+				luaInterface = Exts.Lazy(() => new ScriptActorInterface(context, this));
 		}
 
 		public LuaValue this[LuaRuntime runtime, LuaValue keyValue]

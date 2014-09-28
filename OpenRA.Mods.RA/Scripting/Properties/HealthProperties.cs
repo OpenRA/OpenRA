@@ -32,9 +32,6 @@ namespace OpenRA.Mods.RA.Scripting
 
 		[Desc("Maximum health of the actor.")]
 		public int MaxHealth { get { return health.MaxHP; } }
-
-		[Desc("Specifies whether the actor is alive or dead.")]
-		public bool IsDead { get { return health.IsDead; } }
 	}
 
 	[ScriptPropertyGroup("General")]
