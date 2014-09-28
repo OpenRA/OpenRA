@@ -58,12 +58,18 @@ namespace OpenRA.Widgets
 
 		public void RemovePanel()
 		{
-			if (panel == null)
-				return;
+			if (!IsDisabled())
+			{
+				if (panel == null)
+					return;
 
-			Ui.Root.RemoveChild(fullscreenMask);
-			Ui.Root.RemoveChild(panel);
-			panel = fullscreenMask = null;
+				Ui.Root.RemoveChild(fullscreenMask);
+				Ui.Root.RemoveChild(panel);
+				panel = fullscreenMask = null;
+				Sound.PlayNotification(ModRules, null, "Sounds", "ClickSound", null);
+			}
+			else
+				Sound.PlayNotification(ModRules, null, "Sounds", "ClickDisabledSound", null);
 		}
 
 		public void AttachPanel(Widget p) { AttachPanel(p, null); }
