@@ -620,6 +620,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					if (depth == 1 && node.Key == "-IronCurtainable")
 						node.Key = "-InvulnerabilityUpgrade@IRONCURTAIN";
+
+					// Replaced RemoveOnConditions with KillsSelf
+					if (depth == 1 && node.Key == "RemoveOnConditions")
+					{
+						node.Key = "KillsSelf";
+						node.Value.Nodes.Add(new MiniYamlNode("RemoveInstead", new MiniYaml("true")));
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

@@ -295,7 +295,6 @@
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
     <Compile Include="Warheads\LeaveSmudgeWarhead.cs" />
-    <Compile Include="RemoveOnConditions.cs" />
     <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
     <Compile Include="World\RadarPings.cs" />
     <Compile Include="Player\TechTree.cs" />
