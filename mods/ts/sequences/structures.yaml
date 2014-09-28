@@ -718,6 +718,31 @@ napuls:
 	icon: pulsicon
 		Start: 0
 
+nastlh:
+	idle: ntstlh
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: ntstlh
+		Start: 1
+		ShadowStart: 4
+	critical-idle: ntstlh
+		Start: 2
+		ShadowStart: 5
+	pulse: ntstlh_a
+		Start: 0
+		Length: 4
+		Tick: 480
+	damaged-pulse: ntstlh_a
+		Start: 4
+		Length: 4
+		Tick: 480
+	make: ntstlhmk
+		Start: 0
+		Length: 18
+		ShadowStart: 20
+	icon: clckicon
+		Start: 0
+
 gavulc:
 	idle: gtctwr
 		Start: 0
