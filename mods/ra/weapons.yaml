@@ -750,6 +750,7 @@ CrateNapalm:
 			Light: 60
 			Heavy: 25
 			Concrete: 50
+		AffectsParent: true
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -767,6 +768,7 @@ CrateExplosion:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		AffectsParent: true
 	Warhead@2Eff: CreateEffect
 		Explosion: self_destruct
 		ImpactSound: kaboom15.aud
@@ -782,6 +784,7 @@ CrateNuke:
 			Light: 60
 			Heavy: 25
 			Concrete: 50
+		AffectsParent: true
 	Warhead@2Res_impact: DestroyResource
 	Warhead@3Eff_impact: CreateEffect
 		Explosion: nuke
@@ -796,6 +799,7 @@ CrateNuke:
 			Light: 60
 			Heavy: 25
 			Concrete: 50
+		AffectsParent: true
 	Warhead@5Dam_areanuke: SpreadDamage
 		Damage: 250
 		DeathType: 5
@@ -805,6 +809,7 @@ CrateNuke:
 			Light: 60
 			Heavy: 25
 			Concrete: 50
+		AffectsParent: true
 	Warhead@6Res_areanuke: DestroyResource
 		Size: 5,4
 		Delay: 4
@@ -1475,6 +1480,7 @@ ATMine:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 400
+		AffectsParent: true
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: mineblo1.aud
@@ -1483,6 +1489,7 @@ APMine:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 400
+		AffectsParent: true
 		DeathType: 3
 	Warhead@2Eff: CreateEffect
 		Explosion: napalm
