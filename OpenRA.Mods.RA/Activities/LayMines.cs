@@ -26,8 +26,9 @@ namespace OpenRA.Mods.RA.Activities
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (!limitedAmmo.HasAmmo())
 			{
+				var info = self.Info.Traits.Get<MinelayerInfo>();
 				// rearm & repair at fix, then back out here to refill the minefield some more
-				var buildings = self.Info.Traits.Get<MinelayerInfo>().RearmBuildings;
+				var buildings = info.RearmBuildings;
 				var rearmTarget = self.World.Actors.Where(a => self.Owner.Stances[a.Owner] == Stance.Ally
 					&& buildings.Contains(a.Info.Name))
 					.ClosestTo(self);
@@ -38,26 +39,27 @@ namespace OpenRA.Mods.RA.Activities
 				return Util.SequenceActivities(
 					new MoveAdjacentTo(self, Target.FromActor(rearmTarget)),
 					movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget),
-					new Rearm(self),
+					new Rearm(self, info.RearmSound),
 					new Repair(rearmTarget),
 					this);
 			}
 
 			var ml = self.Trait<Minelayer>();
-			if (ml.Minefield.Contains(self.Location) &&
-				ShouldLayMine(self, self.Location))
+			if (ml.Minefield.Contains(self.Location) && ShouldLayMine(self, self.Location))
 			{
 				LayMine(self);
 				return Util.SequenceActivities(new Wait(20), this); // a little wait after placing each mine, for show
 			}
 
 			if (ml.Minefield.Length > 0)
+			{
 				for (var n = 0; n < 20; n++)		// dont get stuck forever here
 				{
 					var p = ml.Minefield.Random(self.World.SharedRandom);
 					if (ShouldLayMine(self, p))
 						return Util.SequenceActivities( movement.MoveTo(p, 0), this );
 				}
+			}
 
 			// TODO: return somewhere likely to be safe (near fix) so we're not sitting out in the minefield.
 

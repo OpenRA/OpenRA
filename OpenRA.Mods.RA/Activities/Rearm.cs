@@ -19,18 +19,21 @@ namespace OpenRA.Mods.RA.Activities
 		readonly LimitedAmmo limitedAmmo;
 		int ticksPerPip = 25 * 2;
 		int remainingTicks = 25 * 2;
+		string sound = null;
 
-		public Rearm(Actor self)
+		public Rearm(Actor self, string sound = null)
 		{
 			limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null)
 				ticksPerPip = limitedAmmo.ReloadTimePerAmmo();
 			remainingTicks = ticksPerPip;
+			this.sound = sound;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || limitedAmmo == null) return NextActivity;
+			if (IsCanceled || limitedAmmo == null)
+				return NextActivity;
 
 			if (--remainingTicks == 0)
 			{
@@ -44,6 +47,8 @@ namespace OpenRA.Mods.RA.Activities
 					return NextActivity;
 
 				hostBuilding.Trait<RenderBuilding>().PlayCustomAnim(hostBuilding, "active");
+				if (sound != null)
+					Sound.Play(sound, self.CenterPosition);
 
 				remainingTicks = limitedAmmo.ReloadTimePerAmmo();
 			}
