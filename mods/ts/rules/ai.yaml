@@ -4,15 +4,11 @@ Player:
 		BuildingCommonNames:
 			ConstructionYard: gacnst
 			Refinery: proc
-			Radar: garadr, naradr
 			Power: gapowr, napowr, naapwr
 			Barracks: gapile, nahand
 			VehiclesFactory: gaweap, naweap
 			Production: gapile, nahand, gaweap, naweap
 			Silo: gasilo
-			Tech: gatech, natech
-			AntiAir: gacsam, nasam
-
 		UnitsCommonNames:
 			Mcv: mcv
 		BuildingLimits:

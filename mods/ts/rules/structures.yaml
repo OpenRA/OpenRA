@@ -743,7 +743,7 @@ GATECH:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Owner: gdi
-		Prerequisites: garadr
+		Prerequisites: radar
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -771,7 +771,7 @@ NATECH:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Owner: nod
-		Prerequisites: naradr
+		Prerequisites: radar
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -804,7 +804,7 @@ GAHPAD:
 		BuildPaletteOrder: 60
 		Owner: gdi
 		Queue: Building
-		Prerequisites: garadr
+		Prerequisites: radar
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
