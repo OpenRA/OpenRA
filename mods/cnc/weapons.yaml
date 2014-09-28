@@ -900,6 +900,7 @@ Napalm.Crate:
 			Wood: 100
 			Light: 60
 			Heavy: 25
+		AffectsParent: true
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect

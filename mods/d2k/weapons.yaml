@@ -571,6 +571,7 @@ CrateNuke:
 			Light: 25
 			Heavy: 25
 			Concrete: 50
+		AffectsParent: true
 	Warhead@2Eff: CreateEffect
 		Explosion: nuke
 		ImpactSound: EXPLLG2.WAV
@@ -586,6 +587,7 @@ CrateExplosion:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		AffectsParent: true
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: EXPLSML4.WAV
