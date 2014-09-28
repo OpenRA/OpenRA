@@ -82,6 +82,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				Game.LoadWidget(world, "DEBUG_PANEL", debugPanelContainer, new WidgetArgs());
 
+				var gridToolContainer = widget.Get<ContainerWidget>("GRID_TOOLS");
+				Game.LoadWidget(world, "GRID_TOOLS", gridToolContainer, new WidgetArgs());
 				if (activePanel == IngameInfoPanel.AutoSelect)
 					activePanel = IngameInfoPanel.Debug;
 			}

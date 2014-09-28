@@ -2,6 +2,7 @@ World:
 	ChatCommands:
 	DevCommands:
 	PlayerCommands:
+	WorldCommands:
 	HelpCommand:
 	ScreenMap:
 	ActorMap:
@@ -133,6 +134,7 @@ World:
 		AllowUnderActors: false
 		TerrainType: Gems
 	PathfinderDebugOverlay:
+	CellGridDebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:

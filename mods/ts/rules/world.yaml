@@ -2,6 +2,7 @@ World:
 	ChatCommands:
 	DevCommands:
 	PlayerCommands:
+	WorldCommands:
 	HelpCommand:
 	ScreenMap:
 	ActorMap:
@@ -128,6 +129,8 @@ World:
 		AllowUnderActors: false
 		TerrainType: BlueTiberium
 	PathfinderDebugOverlay:
+	CellGridDebugOverlay:
+		TileShape: Diamond
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartUnits@MCV:

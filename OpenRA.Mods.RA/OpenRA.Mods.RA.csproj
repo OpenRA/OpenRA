@@ -561,6 +561,9 @@
     <Compile Include="Warheads\SpreadDamageWarhead.cs" />
     <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
     <Compile Include="Scripting\Global\DateGlobal.cs" />
+    <Compile Include="Console\WorldCommands.cs" />
+    <Compile Include="Widgets\Logic\DebugGridToolsLogic.cs" />
+    <Compile Include="World\CellGridDebugOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
