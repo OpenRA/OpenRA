@@ -46,7 +46,6 @@
 		AllowUnsuitableCell: false
 	Huntable:
 	LuaScriptEvents:
-	Demolishable:
 	Capturable:
 		Type: vehicle
 		CaptureThreshold: 1
@@ -110,7 +109,6 @@
 		AllowUnsuitableCell: false
 	Huntable:
 	LuaScriptEvents:
-	Demolishable:
 	Capturable:
 		Type: vehicle
 		CaptureThreshold: 1
