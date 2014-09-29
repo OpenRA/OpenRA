@@ -860,18 +860,11 @@ Actors:
 	waypoint0: waypoint
 		Location: 55,54
 		Owner: Neutral
-	TownAttackTrigger: waypoint
-#		Location: 46,44
-		Location: 56,38
-		Owner: Neutral
 	TownAttackWpt: waypoint
 		Location: 24,48
 		Owner: Neutral
 	NodReinfEntry: waypoint
 		Location: 61,55
-		Owner: Neutral
-	GDIReinfTrigger: waypoint
-		Location: 32,52
 		Owner: Neutral
 	GDIReinfEntry1: waypoint
 		Location: 14,51

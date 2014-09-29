@@ -1,4 +1,6 @@
 LoseTriggerHouses = { TrigLos2Farm1, TrigLos2Farm2, TrigLos2Farm3, TrigLos2Farm4 }
+TownAttackTrigger = { CPos.New(54, 38), CPos.New(55, 38), CPos.New(56, 38), CPos.New(57, 38) }
+GDIReinforcementsTrigger = { CPos.New(32, 51), CPos.New(32, 52), CPos.New(33, 52) }
 
 GDIReinforcementsPart1 = { "jeep", "jeep" }
 GDIReinforcementsPart2 = { "e2", "e2", "e2", "e2", "e2" }
@@ -34,8 +36,6 @@ TownAttackAction = function(actor)
 end
 
 AttackTown = function()
-	TownAttackTriggered = true
-
 	Reinforcements.Reinforce(nod, TownAttackWave1, { NodReinfEntry.Location, waypoint0.Location }, Utils.Seconds(0.25), TownAttackAction)
 	Trigger.AfterDelay(Utils.Seconds(2), function()
 		Reinforcements.Reinforce(nod, TownAttackWave2, { NodReinfEntry.Location, waypoint0.Location }, Utils.Seconds(1), TownAttackAction)
@@ -46,8 +46,6 @@ AttackTown = function()
 end
 
 SendGDIReinforcements = function()
-	GDIReinforcementsTriggered = true
-
 	Reinforcements.Reinforce(player, GDIReinforcementsPart1, { GDIReinfEntry1.Location, waypoint12.Location }, Utils.Seconds(1), function(actor)
 		Media.PlaySpeechNotification(player, "Reinforce")
 		actor.Move(waypoint10.Location)
@@ -61,17 +59,6 @@ SendGDIReinforcements = function()
 			Utils.Do(team, function(unit) unit.Stance = "Defend" end)
 		end)
 	end)
-end
-
--- FIXME: replace with real cell trigger when available
-CellTrigger = function(player, trigger, radius, func)
-	local units = Map.ActorsInCircle(trigger.CenterPosition, WRange.FromCells(radius), function(actor)
-		return actor.Owner == player and actor.HasProperty("Move")
-	end)
-
-	if #units > 0 then
-		func()
-	end
 end
 
 WorldLoaded = function()
@@ -107,6 +94,20 @@ WorldLoaded = function()
 		end)
 	end)
 
+	Trigger.OnExitedFootprint(TownAttackTrigger, function(a, id)
+		if a.Owner == player then
+			Trigger.RemoveFootprintTrigger(id)
+			AttackTown()
+		end
+	end)
+
+	Trigger.OnEnteredFootprint(GDIReinforcementsTrigger, function(a, id)
+		if a.Owner == player then
+			Trigger.RemoveFootprintTrigger(id)
+			SendGDIReinforcements()
+		end
+	end)
+
 	Utils.Do(player.GetGroundAttackers(), function(unit)
 		unit.Stance = "Defend"
 	end)
@@ -121,8 +122,6 @@ WorldLoaded = function()
 	Media.PlayMovieFullscreen("bkground.vqa", function() Media.PlayMovieFullscreen("gdi4a.vqa", function() Media.PlayMovieFullscreen("nodsweep.vqa") end) end)
 end
 
-TownAttackTriggered = false
-GDIReinforcementsTriggered = false
 Tick = function()
 	if player.HasNoRequiredUnits() then
 		nod.MarkCompletedObjective(nodObjective)
@@ -130,11 +129,5 @@ Tick = function()
 	if nod.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(gdiObjective1)
 		player.MarkCompletedObjective(gdiObjective2)
-	end
-
-	if not TownAttackTriggered then
-		CellTrigger(player, TownAttackTrigger, 2, AttackTown)
-	elseif not GDIReinforcementsTriggered then
-		CellTrigger(player, GDIReinfTrigger, 2, SendGDIReinforcements)
 	end
 end
