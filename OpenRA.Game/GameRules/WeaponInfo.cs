@@ -62,6 +62,7 @@ namespace OpenRA.GameRules
 
 		[FieldLoader.LoadUsing("LoadProjectile")]
 		public readonly IProjectileInfo Projectile;
+
 		[FieldLoader.LoadUsing("LoadWarheads")]
 		public readonly List<Warhead> Warheads = new List<Warhead>();
 
@@ -93,7 +94,7 @@ namespace OpenRA.GameRules
 			return retList;
 		}
 
-		///<summary>Checks if the weapon is valid against (can target) the target.</summary>
+		/// <summary>Checks if the weapon is valid against (can target) the target.</summary>
 		public bool IsValidAgainst(Target target, World world, Actor firedBy)
 		{
 			if (target.Type == TargetType.Actor)
@@ -119,7 +120,7 @@ namespace OpenRA.GameRules
 			return false;
 		}
 
-		///<summary>Checks if the weapon is valid against (can target) the actor.</summary>
+		/// <summary>Checks if the weapon is valid against (can target) the actor.</summary>
 		public bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
 			var targetable = victim.TraitOrDefault<ITargetable>();
@@ -133,7 +134,7 @@ namespace OpenRA.GameRules
 			return true;
 		}
 
-		///<summary>Checks if the weapon is valid against (can target) the frozen actor.</summary>
+		/// <summary>Checks if the weapon is valid against (can target) the frozen actor.</summary>
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
 			var targetable = victim.Info.Traits.GetOrDefault<ITargetableInfo>();
@@ -147,17 +148,16 @@ namespace OpenRA.GameRules
 			return true;
 		}
 
-		///<summary>Applies all the weapon's warheads to the target.</summary>
+		/// <summary>Applies all the weapon's warheads to the target.</summary>
 		public void Impact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
-			foreach (var wh in Warheads)
+			foreach (var warhead in Warheads)
 			{
-				Action a;
+				var wh = warhead; // force the closure to bind to the current warhead
 
-				a = () => wh.DoImpact(target, firedBy, damageModifiers);
+				Action a = () => wh.DoImpact(target, firedBy, damageModifiers);
 				if (wh.Delay > 0)
-					firedBy.World.AddFrameEndTask(
-						w => w.Add(new DelayedAction(wh.Delay, a)));
+					firedBy.World.AddFrameEndTask(w => w.Add(new DelayedAction(wh.Delay, a)));
 				else
 					a();
 			}
