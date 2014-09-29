@@ -150,8 +150,9 @@ namespace OpenRA.GameRules
 		///<summary>Applies all the weapon's warheads to the target.</summary>
 		public void Impact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
-			foreach (var wh in Warheads)
+			foreach (var warhead in Warheads)
 			{
+				var wh = warhead; // force the closure to bind to the current warhead
 				Action a;
 
 				a = () => wh.DoImpact(target, firedBy, damageModifiers);
