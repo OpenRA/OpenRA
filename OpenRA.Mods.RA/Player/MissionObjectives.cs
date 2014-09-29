@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA
 
 		public void MarkCompleted(Player player, int objectiveID)
 		{
-			if (objectiveID >= objectives.Count || objectives[objectiveID].State == ObjectiveState.Completed)
+			if (objectiveID >= objectives.Count || objectives[objectiveID].State != ObjectiveState.Incomplete)
 				return;
 
 			var inous = player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>();
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.RA
 
 		public void MarkFailed(Player player, int objectiveID)
 		{
-			if (objectiveID >= objectives.Count || objectives[objectiveID].State != ObjectiveState.Incomplete)
+			if (objectiveID >= objectives.Count || objectives[objectiveID].State == ObjectiveState.Failed)
 				return;
 
 			var inous = player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>();
