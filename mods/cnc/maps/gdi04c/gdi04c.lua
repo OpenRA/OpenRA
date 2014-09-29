@@ -7,10 +7,10 @@ GDIReinforcementsPart2 = { "e2", "e2", "e2", "e2", "e2" }
 TownAttackWave1 = { "bggy", "bggy" }
 TownAttackWave2 = { "ltnk", "ltnk" }
 TownAttackWave3 = { "e1", "e1", "e1", "e1", "e3", "e3", "e3", "e3" }
-TownAttackWpts  = { waypoint1, waypoint2 }
+TownAttackWpts = { waypoint1, waypoint2 }
 
-Civvie1Wpts	= { waypoint3, waypoint17 }
-Civvie2Wpts	= { waypoint26, waypoint3, waypoint9, waypoint4, waypoint5, waypoint6, waypoint8, waypoint7, waypoint1, waypoint2 }
+Civvie1Wpts = { waypoint3, waypoint17 }
+Civvie2Wpts = { waypoint26, waypoint3, waypoint9, waypoint4, waypoint5, waypoint6, waypoint8, waypoint7, waypoint1, waypoint2 }
 
 FollowCivvieWpts = function(actor, wpts)
 	Utils.Do(wpts, function(wpt)
@@ -62,8 +62,8 @@ SendGDIReinforcements = function()
 end
 
 WorldLoaded = function()
-	player	= Player.GetPlayer("GDI")
-	nod	= Player.GetPlayer("Nod")
+	player = Player.GetPlayer("GDI")
+	nod = Player.GetPlayer("Nod")
 
 	nodObjective = nod.AddPrimaryObjective("Destroy all GDI troops")
 	gdiObjective1 = player.AddPrimaryObjective("Defend the town of Białystok")
