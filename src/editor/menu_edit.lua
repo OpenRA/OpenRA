@@ -183,11 +183,6 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
     local lc = editor.spec.linecomment
     if not lc then return end
 
-    -- capture the current position in line to restore later
-    local curline = editor:GetCurrentLine()
-    local curlen = #editor:GetLine(curline)
-    local curpos = editor:GetCurrentPos()-editor:PositionFromLine(curline)
-
     -- for multi-line selection, always start the first line at the beginning
     local ssel, esel = editor:GetSelectionStart(), editor:GetSelectionEnd()
     local sline = editor:LineFromPosition(ssel)
@@ -224,18 +219,12 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
         editor:DeleteRange(cpos-#lc+editor:PositionFromLine(line), #lc)
       elseif comment and text:find("%S")
       and (line == sline or line < eline or esel-editor:PositionFromLine(line) > 0) then
-        editor:InsertText(pos+editor:PositionFromLine(line)-1, lc)
+        editor:SetTargetStart(pos+editor:PositionFromLine(line)-1)
+        editor:SetTargetEnd(editor:GetTargetStart())
+        editor:ReplaceTarget(lc)
       end
     end
     editor:EndUndoAction()
-
-    -- fix position if it was after where the selection started
-    if editor:PositionFromLine(curline)+curpos > ssel then
-      -- position the cursor exactly where its position was, which
-      -- could have shifted depending on whether the text was added or removed.
-      editor:GotoPos(editor:PositionFromLine(curline)
-        + math.max(0, curpos+#editor:GetLine(curline)-curlen))
-    end
   end)
 
 local function processSelection(editor, func)
