@@ -78,12 +78,12 @@ E3:
 	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
-WEEDGUY:
+WEEDGUY: #Not Buildable by Default..
 	Inherits: ^Infantry
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Chem Spray Infantry
+		Name: Flame Spray Infantry
 		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Buildable:
 		Queue: Infantry
@@ -562,7 +562,7 @@ DOGGIE:
 	PoisonedByTiberium:
 		Weapon: TiberiumHeal
 	Valued:
-		Cost: 100
+		Cost: 1
 	Armor:
 		Type: Light
 	RevealsShroud:

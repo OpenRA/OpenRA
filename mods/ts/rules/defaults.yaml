@@ -170,7 +170,7 @@
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 1000
-		Owner: gdi, nod
+		Owner: none
 	Health:
 		HP: 50
 	Mobile:
@@ -369,3 +369,134 @@
 		Interval: 55
 	WithActiveAnimation:
 
+^ConstructionYard:
+	Inherits: ^Building
+	Production:
+		Produces: Building,Defense
+	BaseBuilding:
+	Transforms:
+		IntoActor: mcv
+		Offset: 1,1
+		Facing: 96
+	Tooltip:
+		Name: Construction Yard
+		Description: Builds base structures.
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionBar@Defense:
+		ProductionType: Defense
+
+^Barracks:
+	Inherits: ^Building
+	Tooltip:
+		Name: Barracks
+		Description: Produces infantry
+	ProvidesCustomPrerequisite:
+		Prerequisite: barracks
+	Production:
+		Produces: Infantry
+	PrimaryBuilding:
+	ProductionBar:
+
+^WeaponFactory:
+	Inherits: ^Building
+	Tooltip:
+		Name: War Factory
+		Description: Assembly point for\nvehicle reinforcements
+	ProvidesCustomPrerequisite:
+		Prerequisite: factory
+	Production:
+		Produces: Vehicle
+	PrimaryBuilding:
+	ProductionBar:
+	RenderBuildingWarFactory:
+
+^Radar:
+	Inherits: ^Building
+	Tooltip:
+		Name: Radar
+		Description: Provides radar screen
+	ProvidesCustomPrerequisite:
+		Prerequisite: radar
+	RequiresPower:
+	CanPowerDown:
+	ProvidesRadar:
+	InfiltrateForExploration:
+	DetectCloaked:
+		Range: 10
+	RenderDetectionCircle:
+
+^TechCenter:
+	Inherits: ^Building
+	Tooltip:
+		Name: Tech Center
+		Description: Required for high-\ntech research
+	ProvidesCustomPrerequisite:
+		Prerequisite: tech
+
+^HeliPad:
+	Inherits: ^Building
+	Production:
+		Produces: Air
+	Tooltip:
+		Name: Helipad
+		Description: Produces, rearms and\nrepairs helicopters
+	RallyPoint:
+	PrimaryBuilding:
+	BelowUnits:
+	Reservable:
+	RepairsUnits:
+	ProductionBar:
+
+^PowerPlant:
+	Inherits: ^Building
+	Tooltip:
+		Name: Power Plant
+		Description: Provides power for other structures
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
+	Power:
+		Amount: 100
+	ScalePowerWithHealth:
+	InfiltrateForPowerOutage:
+	AffectedByPowerOutage:
+
+^Refinery:
+	Inherits: ^Building
+	Tooltip:
+		Name: Tiberium Refinery
+		Description: Processes raw Tiberium\ninto useable resources
+	TiberianSunRefinery:
+		DockOffset: 3,1
+	StoresResources:
+		PipColor: Green
+		PipCount: 15
+		Capacity: 3000
+	FreeActor:
+		Actor: HARV
+		InitialActivity: FindResources
+		SpawnOffset: 3,4
+		Facing: 64
+
+^TiberiumSilo:
+	Inherits: ^Building
+	Buildable:
+		Prerequisites: proc
+	Tooltip:
+		Name: Silo
+		Description: Stores excess Tiberium.
+	StoresResources:
+		PipCount: 5
+		Capacity: 1500
+
+# This is the Generic Template for the other 7 light posts!)
+^LightPost:
+	Inherits: ^Building
+		Tooltip:
+		Name: Light Post
+	Power:
+		Amount: 0
+	RenderBuilding:
+		Palette: terrain
+#	WithIdleOverlay@LIGHTING:
+#		Sequence: lighting

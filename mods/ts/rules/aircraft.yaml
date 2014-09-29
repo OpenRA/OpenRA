@@ -7,7 +7,7 @@ DPOD:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
-		Owner: gdi
+		Owner: none
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -46,7 +46,7 @@ DSHP:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
-		Owner: gdi
+		Owner: none
 		Prerequisites: gaweap
 	Helicopter:
 		LandWhenIdle: yes
@@ -277,4 +277,3 @@ APACHE:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
-

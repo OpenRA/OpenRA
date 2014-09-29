@@ -1,5 +1,5 @@
 GACNST:
-	Inherits: ^Building
+	Inherits: ^ConstructionYard
 	Building:
 		Footprint: xxx xxx xxx
 		BuildSounds: facbld1.aud
@@ -14,24 +14,10 @@ GACNST:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
-	Production:
-		Produces: Building,Defense
 	Valued:
 		Cost: 2500
-	Tooltip:
-		Name: Construction Yard
-		Description: Builds base structures.
 	CustomSellValue:
 		Value: 2500
-	BaseBuilding:
-	Transforms:
-		IntoActor: mcv
-		Offset: 1,1
-		Facing: 96
-	ProductionBar@Building:
-		ProductionType: Building
-	ProductionBar@Defense:
-		ProductionType: Defense
 	-Sellable:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
@@ -46,7 +32,7 @@ GACNST:
 		Bounds: 120, 90, 0, 20
 
 GAPOWR:
-	Inherits: ^Building
+	Inherits: ^PowerPlant
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 0
@@ -55,9 +41,6 @@ GAPOWR:
 		Cost: 300
 	Tooltip:
 		Name: GDI Power Plant
-		Description: Provides power for other structures
-	ProvidesCustomPrerequisite:
-		Prerequisite: anypower
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -71,19 +54,14 @@ GAPOWR:
 		Sequence: idle-lights
 	WithIdleOverlay@PLUG:
 		Sequence: idle-plug
-	Selectable:
-		Bounds: 64, 64
-	Power:
-		Amount: 100
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
 	TargetableBuilding:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
-	ScalePowerWithHealth:
 	DisabledOverlay:
+	Selectable:
+		Bounds: 64, 64
 
 GAPILE:
-	Inherits: ^Building
+	Inherits: ^Barracks
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
@@ -93,9 +71,6 @@ GAPILE:
 		Cost: 300
 	Tooltip:
 		Name: GDI Barracks
-		Description: Produces infantry
-	ProvidesCustomPrerequisite:
-		Prerequisite: barracks
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -110,11 +85,7 @@ GAPILE:
 	Exit@1:
 		SpawnOffset: -256,1051,0
 		ExitCell: 2,3
-	Production:
-		Produces: Infantry
-	PrimaryBuilding:
 	IronCurtainable:
-	ProductionBar:
 	WithProductionOverlay@LIGHTS:
 		Sequence: production-lights
 	WithIdleOverlay@LIGHT:
@@ -123,14 +94,13 @@ GAPILE:
 		Sequence: idle-flag
 	Power:
 		Amount: -20
+	Selectable:
+		Bounds: 64, 64
 
 PROC:
-	Inherits: ^Building
+	Inherits: ^Refinery
 	Valued:
 		Cost: 2000
-	Tooltip:
-		Name: Tiberium Refinery
-		Description: Processes raw Tiberium\ninto useable resources
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 20
@@ -143,19 +113,8 @@ PROC:
 		HP: 900
 	RevealsShroud:
 		Range: 6c0
-	TiberianSunRefinery:
-		DockOffset: 3,1
-	StoresResources:
-		PipColor: Green
-		PipCount: 15
-		Capacity: 3000
 	CustomSellValue:
 		Value: 600
-	FreeActor:
-		Actor: HARV
-		InitialActivity: FindResources
-		SpawnOffset: 3,4
-		Facing: 64
 	WithIdleOverlay@REDLIGHTS:
 		Sequence: idle-redlights
 	WithIdleOverlay@BIB:
@@ -164,17 +123,13 @@ PROC:
 		Amount: -30
 
 GASILO:
-	Inherits: ^Building
+	Inherits: ^TiberiumSilo
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 70
-		Prerequisites: proc
 		Owner: gdi, nod
 	Valued:
 		Cost: 150
-	Tooltip:
-		Name: Silo
-		Description: Stores excess Tiberium.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -191,21 +146,17 @@ GASILO:
 		Sequence: idle-underlay
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
-	StoresResources:
-		PipCount: 5
-		Capacity: 1500
 	Power:
 		Amount: -10
+	Selectable:
+		Bounds: 64, 64, 0, 20
 
 GAWEAP:
-	Inherits: ^Building
+	Inherits: ^WeaponFactory
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: GDI War Factory
-		Description: Assembly point for\nvehicle reinforcements
-	ProvidesCustomPrerequisite:
-		Prerequisite: factory
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
@@ -219,16 +170,11 @@ GAWEAP:
 	RevealsShroud:
 		Range: 4c0
 	-RenderBuilding:
-	RenderBuildingWarFactory:
 	RallyPoint:
 		RallyPoint: 6,5
 	Exit@1:
 		SpawnOffset: -170,0,0
 		ExitCell: 4,2
-	Production:
-		Produces: Vehicle
-	PrimaryBuilding:
-	ProductionBar:
 	WithProductionOverlay@WHITELIGHTS:
 		Sequence: production-lights-white
 	WithProductionOverlay@REDLIGHTS:
@@ -239,9 +185,11 @@ GAWEAP:
 		Sequence: bib
 	Power:
 		Amount: -30
+	Selectable:
+		Bounds: 96, 64, 0, 10
 
 NAPOWR:
-	Inherits: ^Building
+	Inherits: ^PowerPlant
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 0
@@ -250,9 +198,6 @@ NAPOWR:
 		Cost: 300
 	Tooltip:
 		Name: Nod Power Plant
-		Description: Provides power for other structures
-	ProvidesCustomPrerequisite:
-		Prerequisite: anypower
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -264,17 +209,14 @@ NAPOWR:
 		Range: 4c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
-	Power:
-		Amount: 100
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
 	TargetableBuilding:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
-	ScalePowerWithHealth:
 	DisabledOverlay:
+	Selectable:
+		Bounds: 64, 64
 
 NAAPWR:
-	Inherits: ^Building
+	Inherits: ^PowerPlant
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 5
@@ -285,8 +227,6 @@ NAAPWR:
 	Tooltip:
 		Name: Advanced Power Plant
 		Description: Provides more power for structures
-	ProvidesCustomPrerequisite:
-		Prerequisite: anypower
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 2,3
@@ -300,15 +240,14 @@ NAAPWR:
 		Sequence: idle-lights
 	Power:
 		Amount: 200
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
 	TargetableBuilding:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
-	ScalePowerWithHealth:
 	DisabledOverlay:
+	Selectable:
+		Bounds: 110, 64, 0, 10
 
 NAHAND:
-	Inherits: ^Building
+	Inherits: ^Barracks
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
@@ -318,9 +257,6 @@ NAHAND:
 		Cost: 300
 	Tooltip:
 		Name: Hand of Nod
-		Description: Produces infantry
-	ProvidesCustomPrerequisite:
-		Prerequisite: barracks
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
@@ -335,27 +271,22 @@ NAHAND:
 		ExitCell: 3,3
 	RallyPoint:
 		RallyPoint: 3,3
-	Production:
-		Produces: Infantry
-	PrimaryBuilding:
 	IronCurtainable:
-	ProductionBar:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	WithProductionOverlay@LIGHT:
 		Sequence: production-light
 	Power:
 		Amount: -20
+	Selectable:
+		Bounds: 96, 64, 0, 10
 
 NAWEAP:
-	Inherits: ^Building
+	Inherits: ^WeaponFactory
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Nod War Factory
-		Description: Assembly point for\nvehicle reinforcements
-	ProvidesCustomPrerequisite:
-		Prerequisite: factory
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
@@ -369,22 +300,19 @@ NAWEAP:
 	RevealsShroud:
 		Range: 4c0
 	-RenderBuilding:
-	RenderBuildingWarFactory:
 	RallyPoint:
 		RallyPoint: 6,5
 	Exit@1:
 		SpawnOffset: -170,0,0
 		ExitCell: 4,2
-	Production:
-		Produces: Vehicle
-	PrimaryBuilding:
-	ProductionBar:
 	WithProductionOverlay@LIGHTS:
 		Sequence: production-lights
 	WithIdleOverlay@BIB:
 		Sequence: bib
 	Power:
 		Amount: -30
+	Selectable:
+		Bounds: 96, 64, 0, 10
 
 GASAND:
 	Inherits: ^Wall
@@ -613,62 +541,8 @@ GAARTY:
 		NoTransformSounds:
 	WithMuzzleFlash:
 
-GASPOT:
-	Inherits: ^Building
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 10
-		Owner: gdi, nod
-	Valued:
-		Cost: 300
-	Tooltip:
-		Name: Light Tower
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	Health:
-		HP: 400
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4c0
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 3
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
-	Power:
-		Amount: -10
-
-GALITE:
-	Inherits: ^Building
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 10
-		Owner: gdi, nod
-	Valued:
-		Cost: 200
-	Tooltip:
-		Name: Light Post
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
-		Palette: terrain
-	-WithMakeAnimation:
-	Health:
-		HP: 600
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 2c0
-	Power:
-		Amount: 0
-#	WithIdleOverlay@LIGHTING:
-#		Sequence: lighting
-
 GARADR:
-	Inherits: ^Building
+	Inherits: ^Radar
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
@@ -678,9 +552,6 @@ GARADR:
 		Cost: 1000
 	Tooltip:
 		Name: GDI Radar
-		Description: Provides radar screen
-	ProvidesCustomPrerequisite:
-		Prerequisite: radar
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -688,13 +559,6 @@ GARADR:
 		HP: 800
 	Armor:
 		Type: Wood
-	RequiresPower:
-	CanPowerDown:
-	ProvidesRadar:
-	InfiltrateForExploration:
-	DetectCloaked:
-		Range: 10
-	RenderDetectionCircle:
 	RevealsShroud:
 		Range: 10c0
 	WithIdleOverlay@DISH:
@@ -704,9 +568,11 @@ GARADR:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
 		Amount: -50
+	Selectable:
+		Bounds: 64, 110, 0, -10
 
 NARADR:
-	Inherits: ^Building
+	Inherits: ^Radar
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
@@ -717,8 +583,6 @@ NARADR:
 	Tooltip:
 		Name: Nod Radar
 		Description: Provides radar screen
-	ProvidesCustomPrerequisite:
-		Prerequisite: radar
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -726,13 +590,6 @@ NARADR:
 		HP: 800
 	Armor:
 		Type: Wood
-	RequiresPower:
-	CanPowerDown:
-	ProvidesRadar:
-	InfiltrateForExploration:
-	DetectCloaked:
-		Range: 10
-	RenderDetectionCircle:
 	RevealsShroud:
 		Range: 10c0
 	WithIdleOverlay@DISH:
@@ -742,21 +599,20 @@ NARADR:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
 		Amount: -50
+	Selectable:
+		Bounds: 64, 64, 0, 0
 
 GATECH:
-	Inherits: ^Building
+	Inherits: ^TechCenter
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Owner: gdi
-		Prerequisites: garadr
+		Prerequisites: radar
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: GDI Tech Center
-		Description: Required for high-\ntech research
-	ProvidesCustomPrerequisite:
-		Prerequisite: tech
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
@@ -770,21 +626,20 @@ GATECH:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+	Selectable:
+		Bounds: 110, 64, 10, 20
 
 NATECH:
-	Inherits: ^Building
+	Inherits: ^TechCenter
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Owner: nod
-		Prerequisites: naradr
+		Prerequisites: radar
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Nod Tech Center
-		Description: Required for high-\ntech research
-	ProvidesCustomPrerequisite:
-		Prerequisite: tech
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -798,19 +653,18 @@ NATECH:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+	Selectable:
+		Bounds: 64, 64, 0, 20
 
 GAHPAD:
-	Inherits: ^Building
+	Inherits: ^HeliPad
 	Valued:
 		Cost: 500
-	Tooltip:
-		Name: Helipad
-		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
 		BuildPaletteOrder: 60
 		Owner: gdi
 		Queue: Building
-		Prerequisites: garadr
+		Prerequisites: radar
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -820,32 +674,24 @@ GAHPAD:
 		Range: 5c0
 	Exit@1:
 		SpawnOffset: 0,-256,0
-	RallyPoint:
-	Production:
-		Produces: Air
-	PrimaryBuilding:
-	BelowUnits:
-	Reservable:
-	RepairsUnits:
-	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
 		Amount: -10
+	Selectable:
+		Bounds: 64, 64, 0, 10
 
 NAHPAD:
-	Inherits: ^Building
+	Inherits: ^HeliPad
 	Valued:
 		Cost: 500
-	Tooltip:
-		Name: Nod Helipad
-		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
 		BuildPaletteOrder: 60
 		Owner: nod
 		Queue: Building
+		Prerequisites: radar
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -855,20 +701,14 @@ NAHPAD:
 		Range: 5c0
 	Exit@1:
 		SpawnOffset: 0,-256,0
-	RallyPoint:
-	Production:
-		Produces: Air
-	PrimaryBuilding:
-	BelowUnits:
-	Reservable:
-	RepairsUnits:
-	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
 		Amount: -10
+	Selectable:
+		Bounds: 64, 64, 0, 10
 
 GADEPT:
 	Inherits: ^Building
@@ -904,6 +744,8 @@ GADEPT:
 		Sequence: platform
 	Power:
 		Amount: -30
+	Selectable:
+		Bounds: 96, 80, 0, 20
 
 #TODO: Placeholder, replace with Component Tower + Vulcan Upgrade
 GAVULC:
@@ -917,6 +759,7 @@ GAVULC:
 		Queue: Defense
 		BuildPaletteOrder: 30
 		Owner: gdi
+		Prerequisites: radar
 	Building:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -962,6 +805,8 @@ GAVULC:
 		Type: wall
 	Power:
 		Amount: -20
+	Selectable:
+		Bounds: 48, 48, 0, 10
 
 #TODO: Placeholder, replace with Component Tower + RPG Upgrade
 GAROCK:
@@ -975,6 +820,7 @@ GAROCK:
 		Queue: Defense
 		BuildPaletteOrder: 40
 		Owner: gdi
+		Prerequisites: radar
 	Building:
 	RequiresPower:
 	DisabledOverlay:
@@ -1011,6 +857,8 @@ GAROCK:
 		Type: wall
 	Power:
 		Amount: -50
+	Selectable:
+		Bounds: 48, 48, 0, 10
 
 #TODO: Placeholder, replace with Component Tower + SAM Upgrade
 GACSAM:
@@ -1024,6 +872,7 @@ GACSAM:
 		Queue: Defense
 		BuildPaletteOrder: 60
 		Owner: gdi
+		Prerequisites: radar
 	Building:
 	RequiresPower:
 	DisabledOverlay:
@@ -1060,6 +909,8 @@ GACSAM:
 		Type: wall
 	Power:
 		Amount: -30
+	Selectable:
+		Bounds: 48, 48, 0, 10
 
 NASAM:
 	Inherits: ^Building
@@ -1072,6 +923,7 @@ NASAM:
 		Queue: Defense
 		BuildPaletteOrder: 60
 		Owner: nod
+		Prerequisites: radar
 	Building:
 	RequiresPower:
 	DisabledOverlay:
@@ -1101,6 +953,8 @@ NASAM:
 		Recoil: 0
 	Power:
 		Amount: -30
+	Selectable:
+		Bounds: 48, 48, 0, 10
 
 NALASR:
 	Inherits: ^Building
@@ -1113,6 +967,7 @@ NALASR:
 		Queue: Defense
 		BuildPaletteOrder: 50
 		Owner: nod
+		Prerequisites: radar
 	Building:
 	RequiresPower:
 	DisabledOverlay:
@@ -1139,6 +994,8 @@ NALASR:
 	AutoTarget:
 	Power:
 		Amount: -40
+	Selectable:
+		Bounds: 48, 48, 0, 0
 
 NAOBEL:
 	Inherits: ^Building
@@ -1182,6 +1039,8 @@ NAOBEL:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+	Selectable:
+		Bounds: 64, 64, 0, 0
 
 ANYPOWER:
 	Tooltip:
@@ -1207,4 +1066,3 @@ TECH:
 	Tooltip:
 		Name: Tech Center
 		Description: Tech Center
-
