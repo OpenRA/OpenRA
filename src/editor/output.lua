@@ -248,6 +248,8 @@ local function getStreams()
       local processed = 0
       while (v.stream:CanRead() and processed <= maxread) do
         local str = v.stream:Read(readonce)
+        -- the buffer has readonce bytes, so cut it to the actual size
+        str = str:sub(1, v.stream:LastRead())
         processed = processed + #str
 
         local pfn
