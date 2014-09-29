@@ -109,6 +109,8 @@ Rules:
 	World:
 		LoadWidgetAtGameStart:
 			Widget: MAINMENU
+		PlayMusicOnMapLoad:
+			Loop: true
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:

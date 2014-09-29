@@ -1277,6 +1277,8 @@ Rules:
 		LoadWidgetAtGameStart:
 			Widget: MAINMENU
 		-StartGameNotification:
+		PlayMusicOnMapLoad:
+			Loop: true
 	OILB:
 		CashTrickler:
 			ShowTicks: false
