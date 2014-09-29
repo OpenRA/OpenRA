@@ -256,7 +256,9 @@ local function getStreams()
         if (v.callback) then
           str,pfn = v.callback(str)
         end
-        if (v.toshell) then
+        if not str then
+          -- skip if nothing to display
+        elseif (v.toshell) then
           DisplayShell(str)
         else
           DisplayOutputNoMarker(str)
@@ -295,6 +297,14 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
     local pid = event:GetPid()
     if (pid ~= -1) then
       getStreams()
+      streamins[pid] = nil
+      streamerrs[pid] = nil
+      streamouts[pid] = nil
+
+      -- this process wasn't started with CommandLineRun,
+      -- so don't need any of this processing
+      if not customprocs[pid] then return end
+
       -- delete markers and set focus to the editor if there is an input marker
       if errorlog:MarkerPrevious(errorlog:GetLineCount(), PROMPT_MARKER_VALUE) > -1 then
         errorlog:MarkerDeleteAll(PROMPT_MARKER)
@@ -304,18 +314,11 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
       end
       nameTab(errorlog, TR("Output"))
 
-      streamins[pid] = nil
-      streamerrs[pid] = nil
-      streamouts[pid] = nil
-      if (customprocs[pid] and customprocs[pid].endcallback) then
-        customprocs[pid].endcallback()
-      end
+      if customprocs[pid].endcallback then customprocs[pid].endcallback() end
       unHideWindow(0)
       DebuggerStop(true)
-      if customprocs[pid] then
-        DisplayOutputLn(TR("Program completed in %.2f seconds (pid: %d).")
-          :format(TimeGet() - customprocs[pid].started, pid))
-      end
+      DisplayOutputLn(TR("Program completed in %.2f seconds (pid: %d).")
+        :format(TimeGet() - customprocs[pid].started, pid))
       customprocs[pid] = nil
     end
   end)
