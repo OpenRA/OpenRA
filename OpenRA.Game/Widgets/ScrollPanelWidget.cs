@@ -43,6 +43,8 @@ namespace OpenRA.Widgets
 
 		protected bool UpPressed;
 		protected bool DownPressed;
+		protected bool UpDisabled;
+		protected bool DownDisabled;
 		protected bool ThumbPressed;
 		protected Rectangle upButtonRect;
 		protected Rectangle downButtonRect;
@@ -55,6 +57,8 @@ namespace OpenRA.Widgets
 
 		// The current value is the actual list offset at the moment
 		float currentListOffset;
+
+		readonly Ruleset modRules;
 
 		// Setting "smooth" to true will only update the target list offset.
 		// Setting "smooth" to false will also set the current list offset,
@@ -71,8 +75,11 @@ namespace OpenRA.Widgets
 				currentListOffset = value;
 		}
 
-		public ScrollPanelWidget()
+		[ObjectCreator.UseCtor]
+		public ScrollPanelWidget(Ruleset modRules)
 		{
+			this.modRules = modRules;
+
 			Layout = new ListLayout(this);
 		}
 
@@ -126,26 +133,26 @@ namespace OpenRA.Widgets
 			thumbRect = new Rectangle(rb.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
 
 			var upHover = Ui.MouseOverWidget == this && upButtonRect.Contains(Viewport.LastMousePos);
-			var upDisabled = thumbHeight == 0 || currentListOffset >= 0;
+			UpDisabled = thumbHeight == 0 || currentListOffset >= 0;
 
 			var downHover = Ui.MouseOverWidget == this && downButtonRect.Contains(Viewport.LastMousePos);
-			var downDisabled = thumbHeight == 0 || currentListOffset <= Bounds.Height - ContentHeight;
+			DownDisabled = thumbHeight == 0 || currentListOffset <= Bounds.Height - ContentHeight;
 
 			var thumbHover = Ui.MouseOverWidget == this && thumbRect.Contains(Viewport.LastMousePos);
 			WidgetUtils.DrawPanel(Background, backgroundRect);
 			WidgetUtils.DrawPanel("scrollpanel-bg", scrollbarRect);
-			ButtonWidget.DrawBackground("button", upButtonRect, upDisabled, UpPressed, upHover, false);
-			ButtonWidget.DrawBackground("button", downButtonRect, downDisabled, DownPressed, downHover, false);
+			ButtonWidget.DrawBackground("button", upButtonRect, UpDisabled, UpPressed, upHover, false);
+			ButtonWidget.DrawBackground("button", downButtonRect, DownDisabled, DownPressed, downHover, false);
 
 			if (thumbHeight > 0)
 				ButtonWidget.DrawBackground("scrollthumb", thumbRect, false, HasMouseFocus && thumbHover, thumbHover, false);
 
-			var upOffset = !UpPressed || upDisabled ? 4 : 4 + ButtonDepth;
-			var downOffset = !DownPressed || downDisabled ? 4 : 4 + ButtonDepth;
+			var upOffset = !UpPressed || UpDisabled ? 4 : 4 + ButtonDepth;
+			var downOffset = !DownPressed || DownDisabled ? 4 : 4 + ButtonDepth;
 
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", UpPressed || upDisabled ? "up_pressed" : "up_arrow"),
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", UpPressed || UpDisabled ? "up_pressed" : "up_arrow"),
 				new float2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", DownPressed || downDisabled ? "down_pressed" : "down_arrow"),
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", DownPressed || DownDisabled ? "down_pressed" : "down_arrow"),
 				new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 
 			Game.Renderer.EnableScissor(backgroundRect.InflateBy(-1, -1, -1, -1));
@@ -281,6 +288,9 @@ namespace OpenRA.Widgets
 				ThumbPressed = thumbRect.Contains(mi.Location);
 				if (ThumbPressed)
 					lastMouseLocation = mi.Location;
+
+				if (mi.Event == MouseInputEvent.Down && ((UpPressed && !UpDisabled) || (DownPressed && !DownDisabled) || ThumbPressed))
+					Sound.PlayNotification(modRules, null, "Sounds", "ClickSound", null);
 			}
 
 			return UpPressed || DownPressed || ThumbPressed;
