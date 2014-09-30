@@ -43,7 +43,7 @@ namespace OpenRA
 					return LoadWave(new WavLoader(s));
 
 			using (var s = GlobalFileSystem.Open(filename))
-				return LoadSoundRaw(AudLoader.LoadSound(s));
+				return LoadSoundRaw(AudLoader.LoadSound(s), 1, 16, 22050);
 		}
 
 		static ISoundSource LoadWave(WavLoader wave)
@@ -51,9 +51,9 @@ namespace OpenRA
 			return soundEngine.AddSoundSourceFromMemory(wave.RawOutput, wave.Channels, wave.BitsPerSample, wave.SampleRate);
 		}
 
-		static ISoundSource LoadSoundRaw(byte[] rawData)
+		static ISoundSource LoadSoundRaw(byte[] rawData, int channels, int sampleBits, int sampleRate)
 		{
-			return soundEngine.AddSoundSourceFromMemory(rawData, 1, 16, 22050);
+			return soundEngine.AddSoundSourceFromMemory(rawData, channels, sampleBits, sampleRate);
 		}
 
 		static ISoundEngine CreateEngine(string engine)
@@ -120,9 +120,9 @@ namespace OpenRA
 		public static ISound PlayToPlayer(Player player, string name) { return Play(player, name, true, WPos.Zero, 1); }
 		public static ISound PlayToPlayer(Player player, string name, WPos pos) { return Play(player, name, false, pos, 1); }
 
-		public static void PlayVideo(byte[] raw)
+		public static void PlayVideo(byte[] raw, int channels, int sampleBits, int sampleRate)
 		{
-			rawSource = LoadSoundRaw(raw);
+			rawSource = LoadSoundRaw(raw, channels, sampleBits, sampleRate);
 			video = soundEngine.Play2D(rawSource, false, true, WPos.Zero, InternalSoundVolume, false);
 		}
 
@@ -356,7 +356,7 @@ namespace OpenRA
 			if (!string.IsNullOrEmpty(name) && (p == null || p == p.World.LocalPlayer))
 				soundEngine.Play2D(sounds[name],
 					false, relative, pos,
-					(InternalSoundVolume * volumeModifier), attenuateVolume);
+					InternalSoundVolume * volumeModifier, attenuateVolume);
 
 			return true;
 		}

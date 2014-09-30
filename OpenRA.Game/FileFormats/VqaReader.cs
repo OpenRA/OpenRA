@@ -25,16 +25,24 @@ namespace OpenRA.FileFormats
 		ushort numColors;
 		ushort blockWidth;
 		ushort blockHeight;
-		byte cbParts;
+		byte chunkBufferParts;
 		int2 blocks;
-		UInt32[] offsets;
+		uint[] offsets;
 		uint[] palette;
+		uint videoFlags; // if 0x10 is set the video is a 16 bit hq video (ts and later)
+		int sampleRate;
+		int sampleBits;
+		int audioChannels;
 
 		// Stores a list of subpixels, referenced by the VPTZ chunk
 		byte[] cbf;
 		byte[] cbp;
-		int cbChunk = 0;
-		int cbOffset = 0;
+		byte[] cbfBuffer;
+		byte[] fileBuffer = new byte[256000]; // Buffer for loading file subchunks, the maximum chunk size of a file is not defined
+		int maxCbfzSize = 256000;             // and the header definition for the size of the biggest chunks (color data) isn't accurate. But 256k is large enough for all TS videos(< 200k).
+		int vtprSize = 0;
+		int currentChunkBuffer = 0;
+		int chunkBufferOffset = 0;
 
 		// Top half contains block info, bottom half contains references to cbf array
 		byte[] origData;
@@ -42,9 +50,14 @@ namespace OpenRA.FileFormats
 		// Final frame output
 		uint[,] frameData;
 		byte[] audioData;		// audio for this frame: 22050Hz 16bit mono pcm, uncompressed.
+		bool hasAudio;
 
 		public byte[] AudioData { get { return audioData; } }
 		public int CurrentFrame { get { return currentFrame; } }
+		public int SampleRate { get { return sampleRate; } }
+		public int SampleBits { get { return sampleBits; } }
+		public int AudioChannels { get { return audioChannels; } }
+		public bool HasAudio { get { return hasAudio; } }
 
 		public VqaReader(Stream stream)
 		{
@@ -53,14 +66,14 @@ namespace OpenRA.FileFormats
 			// Decode FORM chunk
 			if (stream.ReadASCII(4) != "FORM")
 				throw new InvalidDataException("Invalid vqa (invalid FORM section)");
-			/*var length = */ stream.ReadUInt32();
+			/*var length = */stream.ReadUInt32();
 
 			if (stream.ReadASCII(8) != "WVQAVQHD")
 				throw new InvalidDataException("Invalid vqa (not WVQAVQHD)");
-			/* var length = */stream.ReadUInt32();
+			/*var length2 = */stream.ReadUInt32();
 
 			/*var version = */stream.ReadUInt16();
-			/*var flags = */stream.ReadUInt16();
+			videoFlags = stream.ReadUInt16(); 
 			Frames = stream.ReadUInt16();
 			Width = stream.ReadUInt16();
 			Height = stream.ReadUInt16();
@@ -68,7 +81,7 @@ namespace OpenRA.FileFormats
 			blockWidth = stream.ReadUInt8();
 			blockHeight = stream.ReadUInt8();
 			Framerate = stream.ReadUInt8();
-			cbParts = stream.ReadUInt8();
+			chunkBufferParts = stream.ReadUInt8();
 			blocks = new int2(Width / blockWidth, Height / blockHeight);
 
 			numColors = stream.ReadUInt16();
@@ -77,18 +90,34 @@ namespace OpenRA.FileFormats
 			/*var unknown2 = */stream.ReadUInt32();
 
 			// Audio
-			/*var freq = */stream.ReadUInt16();
-			/*var channels = */stream.ReadByte();
-			/*var bits = */stream.ReadByte();
-			/*var unknown3 = */stream.ReadBytes(14);
+			sampleRate = stream.ReadUInt16();
+			audioChannels = stream.ReadByte();
+			sampleBits = stream.ReadByte();
+
+			/*var unknown3 =*/stream.ReadUInt32();
+			/*var unknown4 =*/stream.ReadUInt16();
+			/*maxCbfzSize =*/stream.ReadUInt32(); // Unreliable
+
+			/*var unknown5 =*/stream.ReadUInt32();
 
 			var frameSize = Exts.NextPowerOf2(Math.Max(Width, Height));
-			cbf = new byte[Width*Height];
-			cbp = new byte[Width*Height];
-			palette = new uint[numColors];
-			origData = new byte[2*blocks.X*blocks.Y];
-			frameData = new uint[frameSize, frameSize];
 
+			if (IsHqVqa)
+			{
+				cbfBuffer = new byte[maxCbfzSize];
+				cbf = new byte[maxCbfzSize * 3];
+				origData = new byte[maxCbfzSize];
+			}
+			else
+			{
+				cbfBuffer = new byte[Width * Height];
+				cbf = new byte[Width * Height];
+				cbp = new byte[Width * Height];
+				origData = new byte[2 * blocks.X * blocks.Y];
+			}
+
+			palette = new uint[numColors];
+			frameData = new uint[frameSize, frameSize];
 			var type = stream.ReadASCII(4);
 			while (type != "FINF")
 			{
@@ -107,7 +136,7 @@ namespace OpenRA.FileFormats
 			/*var unknown4 = */stream.ReadUInt16();
 
 			// Frame offsets
-			offsets = new UInt32[Frames];
+			offsets = new uint[Frames];
 			for (var i = 0; i < Frames; i++)
 			{
 				offsets[i] = stream.ReadUInt32();
@@ -123,15 +152,15 @@ namespace OpenRA.FileFormats
 
 		public void Reset()
 		{
-			currentFrame = cbOffset = cbChunk = 0;
+			currentFrame = chunkBufferOffset = currentChunkBuffer = 0;
 			LoadFrame();
 		}
 
 		void CollectAudioData()
 		{
-			var ms = new MemoryStream();
+			var audio1 = new MemoryStream(); // left channel / mono
+			var audio2 = new MemoryStream(); // right channel
 			var adpcmIndex = 0;
-
 			var compressed = false;
 			for (var i = 0; i < Frames; i++)
 			{
@@ -141,19 +170,37 @@ namespace OpenRA.FileFormats
 				while (stream.Position < end)
 				{
 					var type = stream.ReadASCII(4);
+					if (type == "SN2J")
+					{
+						var jmp = int2.Swap(stream.ReadUInt32());
+						stream.Seek(jmp, SeekOrigin.Current);
+						type = stream.ReadASCII(4);
+					}	
+				
 					var length = int2.Swap(stream.ReadUInt32());
 
 					switch (type)
 					{
 						case "SND0":
 						case "SND2":
-							var rawAudio = stream.ReadBytes((int)length);
-							ms.Write(rawAudio);
-							compressed = (type == "SND2");
-							break;
+							if (audioChannels == 1)
+							{
+								var rawAudio = stream.ReadBytes((int)length);
+								audio1.Write(rawAudio);
+							}
+							else
+							{
+								var rawAudio = stream.ReadBytes((int)length / 2);
+								audio1.Write(rawAudio);
+								rawAudio = stream.ReadBytes((int)length / 2);
+								audio2.Write(rawAudio);
+							}
+
+							compressed = type == "SND2";
+						break;
 						default:
 							stream.ReadBytes((int)length);
-							break;
+						break;
 					}
 
 					// Chunks are aligned on even bytes; advance by a byte if the next one is null
@@ -161,7 +208,39 @@ namespace OpenRA.FileFormats
 				}
 			}
 
-			audioData = (compressed) ? AudLoader.LoadSound(ms.ToArray(), ref adpcmIndex) : ms.ToArray();
+			if (audioChannels == 1)
+			{
+				audioData = compressed ? AudLoader.LoadSound(audio1.ToArray(), ref adpcmIndex) : audio1.ToArray();
+			}
+			else
+			{
+				byte[] leftData, rightData;
+				if (!compressed)
+				{
+					leftData = audio1.ToArray();
+					rightData = audio2.ToArray();
+				}
+				else
+				{
+					adpcmIndex = 0;
+					leftData = AudLoader.LoadSound(audio1.ToArray(), ref adpcmIndex);
+					adpcmIndex = 0;
+					rightData = AudLoader.LoadSound(audio2.ToArray(), ref adpcmIndex);
+				}
+
+				audioData = new byte[rightData.Length + leftData.Length];
+				var rightIndex = 0;
+				var leftIndex = 0;				
+				for (var i = 0; i < audioData.Length;)
+				{
+					audioData[i++] = leftData[leftIndex++];
+					audioData[i++] = leftData[leftIndex++];
+					audioData[i++] = rightData[rightIndex++];
+					audioData[i++] = rightData[rightIndex++];
+				}
+			}
+
+			hasAudio = audioData.Length > 0;
 		}
 
 		public void AdvanceFrame()
@@ -177,22 +256,45 @@ namespace OpenRA.FileFormats
 
 			// Seek to the start of the frame
 			stream.Seek(offsets[currentFrame], SeekOrigin.Begin);
-			var end = (currentFrame < Frames - 1) ? offsets[currentFrame+1] : stream.Length;
+			var end = (currentFrame < Frames - 1) ? offsets[currentFrame + 1] : stream.Length;
 
 			while (stream.Position < end)
 			{
 				var type = stream.ReadASCII(4);
-				var length = int2.Swap(stream.ReadUInt32());
-
-				switch(type)
+				var length = 0U;
+				if (type == "SN2J")
+				{
+					var jmp = int2.Swap(stream.ReadUInt32());
+					stream.Seek(jmp, SeekOrigin.Current);
+					type = stream.ReadASCII(4);
+					if (type == "SND2")
+					{
+						length = int2.Swap(stream.ReadUInt32());
+						stream.Seek(length, SeekOrigin.Current);
+						type = stream.ReadASCII(4);
+					}
+					else					
+						throw new NotSupportedException();
+				}		
+	
+				length = int2.Swap(stream.ReadUInt32());
+	
+				switch (type)
 				{
 					case "VQFR":
 						DecodeVQFR(stream);
 					break;
+					case "\0VQF":
+						stream.ReadByte();
+						DecodeVQFR(stream);
+					break;
+				    case "VQFL":
+						DecodeVQFR(stream, "VQFL");
+					break;
 					default:
 						// Don't parse sound here.
 						stream.ReadBytes((int)length);
-						break;
+					break;
 				}
 
 				// Chunks are aligned on even bytes; advance by a byte if the next one is null
@@ -201,7 +303,7 @@ namespace OpenRA.FileFormats
 		}
 
 		// VQA Frame
-		public void DecodeVQFR(Stream s)
+		public void DecodeVQFR(Stream s, string parentType = "VQFR")
 		{
 			while (true)
 			{
@@ -210,11 +312,37 @@ namespace OpenRA.FileFormats
 				var type = s.ReadASCII(4);
 				var subchunkLength = (int)int2.Swap(s.ReadUInt32());
 
-				switch(type)
+				switch (type)
 				{
 					// Full frame-modifier
 					case "CBFZ":
-						Format80.DecodeInto(s.ReadBytes(subchunkLength), cbf);
+						var decodeMode = s.Peek() == 0;
+						s.Read(fileBuffer, 0, subchunkLength);
+						Array.Clear(cbf, 0, cbf.Length);
+						Array.Clear(cbfBuffer, 0, cbfBuffer.Length);
+						var decodeCount = 0;
+						decodeCount = Format80.DecodeInto(fileBuffer, cbfBuffer, decodeMode ? 1 : 0, decodeMode);
+						if ((videoFlags & 0x10) == 16)
+						{
+							var p = 0;
+							for (var i = 0; i < decodeCount; i += 2)
+							{
+								var packed = cbfBuffer[i + 1] << 8 | cbfBuffer[i];
+								/* 15      bit      0
+								   0rrrrrgg gggbbbbb
+								   HI byte  LO byte*/
+								cbf[p++] = (byte)((packed & 0x7C00) >> 7);
+								cbf[p++] = (byte)((packed & 0x3E0) >> 2);
+								cbf[p++] = (byte)((packed & 0x1f) << 3);
+							}
+						}
+						else
+						{
+							cbf = cbfBuffer;
+						}
+
+						if (parentType == "VQFL")
+							return;
 					break;
 					case "CBF0":
 						cbf = s.ReadBytes(subchunkLength);
@@ -224,20 +352,20 @@ namespace OpenRA.FileFormats
 					case "CBP0":
 					case "CBPZ":
 						// Partial buffer is full; dump and recreate
-						if (cbChunk == cbParts)
+						if (currentChunkBuffer == chunkBufferParts)
 						{
 							if (type == "CBP0")
 								cbf = (byte[])cbp.Clone();
 							else
 								Format80.DecodeInto(cbp, cbf);
 
-							cbOffset = cbChunk = 0;
+							chunkBufferOffset = currentChunkBuffer = 0;
 						}
 
 						var bytes = s.ReadBytes(subchunkLength);
-						bytes.CopyTo(cbp,cbOffset);
-						cbOffset += subchunkLength;
-						cbChunk++;
+						bytes.CopyTo(cbp, chunkBufferOffset);
+						chunkBufferOffset += subchunkLength;
+						currentChunkBuffer++;
 					break;
 
 					// Palette
@@ -249,12 +377,27 @@ namespace OpenRA.FileFormats
 							var b = (byte)(s.ReadUInt8() << 2);
 							palette[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
 						}
+
 					break;
 
 					// Frame data
 					case "VPTZ":
 						Format80.DecodeInto(s.ReadBytes(subchunkLength), origData);
+
 						// This is the last subchunk
+						return;
+					case "VPRZ":
+						Array.Clear(origData, 0, origData.Length);
+						s.Read(fileBuffer, 0, subchunkLength);
+						if (fileBuffer[0] != 0)
+							vtprSize = Format80.DecodeInto(fileBuffer, origData);						
+						else
+							Format80.DecodeInto(fileBuffer, origData, 1, true);						
+						return;
+					case "VPTR":
+						Array.Clear(origData, 0, origData.Length);
+						s.Read(origData, 0, subchunkLength);
+						vtprSize = subchunkLength;
 						return;
 					default:
 						throw new InvalidDataException("Unknown sub-chunk {0}".F(type));
@@ -267,19 +410,76 @@ namespace OpenRA.FileFormats
 		void DecodeFrameData()
 		{
 			cachedFrame = currentFrame;
-			for (var y = 0; y < blocks.Y; y++)
-				for (var x = 0; x < blocks.X; x++)
+			if (IsHqVqa)
+			{
+				/* The VP?? chunks of the video file contains an array of instructions for
+				 * how the blocks of the finished frame will be filled with color data blocks 
+				 * contained in the CBF? chunks.
+				 */
+				var p = 0;
+				for (var y = 0; y < blocks.Y;)
 				{
-					var px = origData[x + y*blocks.X];
-					var mod = origData[x + (y + blocks.Y)*blocks.X];
-					for (var j = 0; j < blockHeight; j++)
-						for (var i = 0; i < blockWidth; i++)
+					for (var x = 0; x < blocks.X;)
+					{
+						if (y >= blocks.Y)
+							break;
+
+						// The first 3 bits of the short determine the type of instruction with the rest being one or two parameters.						
+						var val = (int)origData[p++];
+						val |= origData[p++] << 8;
+						var para_A = val & 0x1fff;
+						var para_B1 = val & 0xFF;
+						var para_B2 = (((val / 256) & 0x1f) + 1) * 2;
+						switch (val >> 13)
 						{
-							var cbfi = (mod*256 + px)*8 + j*blockWidth + i;
-							var color = (mod == 0x0f) ? px : cbf[cbfi];
-							frameData[y*blockHeight + j, x*blockWidth + i] = palette[color];
+							case 0:
+								x += para_A;
+							break;
+							case 1:
+								WriteBlock(para_B1, para_B2, ref x, ref y);
+							break;
+							case 2:
+								WriteBlock(para_B1, 1, ref x, ref y);
+								for (var i = 0; i < para_B2; i++)								
+									WriteBlock(origData[p++], 1, ref x, ref y);							
+							break;
+							case 3:
+								WriteBlock(para_A, 1, ref x, ref y);
+							break;
+							case 5:
+								WriteBlock(para_A, origData[p++], ref x, ref y);
+							break;
+							default:
+								throw new NotSupportedException();
 						}
+					}
+
+					y++;
 				}
+
+				if (p != vtprSize)
+					throw new IndexOutOfRangeException();
+			}
+			else
+			{
+				for (var y = 0; y < blocks.Y; y++)
+				{
+					for (var x = 0; x < blocks.X; x++)
+					{
+						var px = origData[x + y * blocks.X];
+						var mod = origData[x + (y + blocks.Y) * blocks.X];
+						for (var j = 0; j < blockHeight; j++)
+						{
+							for (var i = 0; i < blockWidth; i++)
+							{
+								var cbfi = (mod * 256 + px) * 8 + j * blockWidth + i;
+								var color = (mod == 0x0f) ? px : cbf[cbfi];
+								frameData[y * blockHeight + j, x * blockWidth + i] = palette[color];
+							}
+						}
+					}
+				}
+			}
 		}
 
 		public uint[,] FrameData
@@ -290,6 +490,34 @@ namespace OpenRA.FileFormats
 					DecodeFrameData();
 
 				return frameData;
+			}
+		}
+
+		public bool IsHqVqa { get { return (videoFlags & 0x10) == 16; } }
+
+		void WriteBlock(int blockNumber, int count, ref int x, ref int y)
+		{
+			for (var i = 0; i < count; i++)
+			{
+				var frameX = x * blockWidth;
+				var frameY = y * blockHeight;
+				var offset = blockNumber * blockHeight * blockWidth * 3;
+				for (var by = 0; by < blockHeight; by++)
+					for (var bx = 0; bx < blockWidth; bx++)
+					{
+						var p = (bx + by * blockWidth) * 3;
+
+						frameData[frameY + by, frameX + bx] = (uint)(0xFF << 24 | cbf[offset + p] << 16 | cbf[offset + p + 1] << 8 | cbf[offset + p + 2]);
+					}
+
+				x++;
+				if (x >= blocks.X)
+				{
+					x = 0;
+					y++;
+					if (y >= blocks.Y && i != count - 1)
+						throw new IndexOutOfRangeException();
+				}
 			}
 		}
 	}

@@ -61,3 +61,5 @@ Lua-API.md
 # SublimeText
 *.sublime-project
 *.sublime-workspace
+*.mix
+*.vqa
