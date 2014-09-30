@@ -3,11 +3,11 @@ Background@MAPCHOOSER_PANEL:
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
 	Logic: MapChooserLogic
 	Width: 858
-	Height: 600
+	Height: 618
 	Children:
 		Label@MAPCHOOSER_TITLE:
 			X: 0
-			Y: 17
+			Y: 15
 			Align: Center
 			Width: 858
 			Height: 20
@@ -15,7 +15,7 @@ Background@MAPCHOOSER_PANEL:
 			Font: Bold
 		ScrollPanel@MAP_LIST:
 			X: 20
-			Y: 47
+			Y: 76
 			Width: PARENT_RIGHT - 40
 			Height: 474
 			Children:
@@ -56,9 +56,30 @@ Background@MAPCHOOSER_PANEL:
 							Y: PARENT_BOTTOM-10
 							Align: Center
 							Font: Tiny
+		Label@FILTER_DESC:
+			X: PARENT_RIGHT - 467
+			Y: 48
+			Width: 60
+			Height: 24
+			Font: Bold
+			Align: Right
+			Text: Filter:
+		TextField@MAPFILTER_INPUT:
+			X: PARENT_RIGHT - 401
+			Y: 48
+			Width: 150
+			Height: 25
+		Label@FILTER_DESC_JOINER:
+			X: PARENT_RIGHT - 250
+			Y: 48
+			Width: 30
+			Height: 24
+			Font: Bold
+			Align: Center
+			Text: in
 		DropDownButton@GAMEMODE_FILTER:
 			X: PARENT_RIGHT - 220
-			Y: 17
+			Y: 48
 			Width: 200
 			Height: 25
 		Button@RANDOMMAP_BUTTON:

@@ -25,6 +25,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		ScrollPanelWidget scrollpanel;
 		ScrollItemWidget itemTemplate;
+		string mapFilter;
 		string gameMode;
 
 		[ObjectCreator.UseCtor]
@@ -32,8 +33,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			selectedUid = WidgetUtils.ChooseInitialMap(initialMap);
 
-			widget.Get<ButtonWidget>("BUTTON_OK").OnClick = () => { Ui.CloseWindow(); onSelect(selectedUid); };
-			widget.Get<ButtonWidget>("BUTTON_CANCEL").OnClick = () => { Ui.CloseWindow(); onExit(); };
+			var approving = new Action(() => { Ui.CloseWindow(); onSelect(selectedUid); });
+			var canceling = new Action(() => { Ui.CloseWindow(); onExit(); });
+
+			widget.Get<ButtonWidget>("BUTTON_OK").OnClick = approving;
+			widget.Get<ButtonWidget>("BUTTON_CANCEL").OnClick = canceling;
 
 			scrollpanel = widget.Get<ScrollPanelWidget>("MAP_LIST");
 			scrollpanel.Layout = new GridLayout(scrollpanel);
@@ -69,6 +73,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				gameModeDropdown.GetText = () => showItem(gameModes.First(m => m.First == gameMode));
 			}
 
+			var mapfilterInput = widget.GetOrNull<TextFieldWidget>("MAPFILTER_INPUT");
+			if (mapfilterInput != null)
+			{
+				mapfilterInput.TakeKeyboardFocus();
+				mapfilterInput.OnEscKey = () =>
+				{ 
+					if (mapfilterInput.Text.Length == 0)
+						canceling();
+					else
+					{
+						mapFilter = mapfilterInput.Text = null;
+						EnumerateMaps(onSelect);
+					}
+					return true; 
+				};
+				mapfilterInput.OnEnterKey = () => { approving(); return true; };
+				mapfilterInput.OnTextEdited = () =>
+					{ mapFilter = mapfilterInput.Text; EnumerateMaps(onSelect); };
+			}
+
 			var randomMapButton = widget.GetOrNull<ButtonWidget>("RANDOMMAP_BUTTON");
 			if (randomMapButton != null)
 			{
@@ -88,7 +112,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var maps = Game.modData.MapCache
 				.Where(m => m.Status == MapStatus.Available && m.Map.Selectable)
-				.Where(m => m.Type == gameMode || gameMode == null)
+				.Where(m => gameMode == null || m.Type == gameMode)
+				.Where(m => mapFilter == null || m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0 || m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0)
 				.OrderBy(m => m.PlayerCount)
 				.ThenBy(m => m.Title);
 
