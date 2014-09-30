@@ -32,7 +32,7 @@ namespace OpenRA.Traits
 		public IRenderable[] Renderables { private get; set; }
 		public Player Owner;
 
-		public string TooltipName;
+		public ITooltipInfo TooltipInfo;
 		public Player TooltipOwner;
 
 		public int HP;
