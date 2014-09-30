@@ -26,6 +26,7 @@ namespace OpenRA.Traits
 	[Flags]
 	public enum Stance
 	{
+		None = 0,
 		Enemy = 1,
 		Neutral = 2,
 		Ally = 4,
@@ -126,10 +127,17 @@ namespace OpenRA.Traits
 		bool Disguised { get; }
 		Player Owner { get; }
 	}
+
 	public interface IToolTip
 	{
-		string Name();
-		Player Owner();
+		ITooltipInfo TooltipInfo { get; }
+		Player Owner { get; }
+	}
+
+	public interface ITooltipInfo
+	{
+		string TooltipForPlayerStance(Stance stance);
+		bool IsOwnerRowVisible { get; }
 	}
 
 	public interface IDisable { bool Disabled { get; } }

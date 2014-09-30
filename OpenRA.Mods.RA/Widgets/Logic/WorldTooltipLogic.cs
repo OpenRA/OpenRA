@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -17,7 +18,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class WorldTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public WorldTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, ViewportControllerWidget viewport)
+		public WorldTooltipLogic(Widget widget, World world, TooltipContainerWidget tooltipContainer, ViewportControllerWidget viewport)
 		{
 			widget.IsVisible = () => viewport.TooltipType != WorldTooltipType.None;
 			var label = widget.Get<LabelWidget>("LABEL");
@@ -41,20 +42,32 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (viewport == null || viewport.TooltipType == WorldTooltipType.None)
 					return;
 
+				showOwner = false;
+
 				Player o = null;
 				switch (viewport.TooltipType)
 				{
-				case WorldTooltipType.Unexplored:
-					labelText = "Unexplored Terrain";
-					break;
-				case WorldTooltipType.Actor:
-					labelText = viewport.ActorTooltip.Name();
-					o = viewport.ActorTooltip.Owner();
-					break;
-				case WorldTooltipType.FrozenActor:
-					labelText = viewport.FrozenActorTooltip.TooltipName;
-					o = viewport.FrozenActorTooltip.TooltipOwner;
-					break;
+					case WorldTooltipType.Unexplored:
+						labelText = "Unexplored Terrain";
+						break;
+					case WorldTooltipType.Actor:
+					{
+						o = viewport.ActorTooltip.Owner;
+						showOwner = !o.NonCombatant && viewport.ActorTooltip.TooltipInfo.IsOwnerRowVisible;
+
+						var stance = o == null || world.RenderPlayer == null? Stance.None : o.Stances[world.RenderPlayer];
+						labelText = viewport.ActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
+						break;
+					}
+					case WorldTooltipType.FrozenActor:
+					{
+						o = viewport.FrozenActorTooltip.TooltipOwner;
+						showOwner = !o.NonCombatant && viewport.FrozenActorTooltip.TooltipInfo.IsOwnerRowVisible;
+
+						var stance = o == null || world.RenderPlayer == null? Stance.None : o.Stances[world.RenderPlayer];
+						labelText = viewport.FrozenActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
+						break;
+					}
 				}
 
 				var textWidth = font.Measure(labelText).X;
@@ -63,8 +76,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					label.Bounds.Width = textWidth;
 					widget.Bounds.Width = 2*label.Bounds.X + textWidth;
 				}
-
-				showOwner = o != null && !o.NonCombatant;
 
 				if (showOwner)
 				{

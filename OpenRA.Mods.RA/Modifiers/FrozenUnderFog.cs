@@ -101,8 +101,8 @@ namespace OpenRA.Mods.RA
 
 				if (tooltip.Value != null)
 				{
-					actor.TooltipName = tooltip.Value.Name();
-					actor.TooltipOwner = tooltip.Value.Owner();
+					actor.TooltipInfo = tooltip.Value.TooltipInfo;
+					actor.TooltipOwner = tooltip.Value.Owner;
 				}
 			}
 		}
