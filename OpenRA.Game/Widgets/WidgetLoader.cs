@@ -45,6 +45,9 @@ namespace OpenRA
 
 		public Widget LoadWidget(WidgetArgs args, Widget parent, MiniYamlNode node)
 		{
+			if (!args.ContainsKey("modRules"))
+				args = new WidgetArgs(args) { { "modRules", modData.DefaultRules } };
+			
 			var widget = NewWidget(node.Key, args);
 
 			if (parent != null)
@@ -57,8 +60,6 @@ namespace OpenRA
 				if (child.Key != "Children")
 					FieldLoader.LoadField(widget, child.Key, child.Value.Value);
 
-			if (!args.ContainsKey("modRules"))
-				args = new WidgetArgs(args) { { "modRules", modData.DefaultRules } };
 			widget.Initialize(args);
 
 			foreach (var child in node.Value.Nodes)
