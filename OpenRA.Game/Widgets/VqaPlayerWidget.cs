@@ -65,13 +65,20 @@ namespace OpenRA.Widgets
 
 			videoSheet.Texture.ScaleFilter = TextureScaleFilter.Linear;
 			videoSheet.Texture.SetData(video.FrameData);
-			videoSprite = new Sprite(videoSheet, new Rectangle(0, 0, video.Width, video.Height), TextureChannel.Alpha);
 
-			var scale = Math.Min(RenderBounds.Width / video.Width, RenderBounds.Height / (video.Height * AspectRatio));
-			videoOrigin = new float2(RenderBounds.X + (RenderBounds.Width - scale * video.Width) / 2, RenderBounds.Y + (RenderBounds.Height - scale * AspectRatio * video.Height) / 2);
+			videoSprite = new Sprite(videoSheet,
+				new Rectangle(
+					0,
+					0,
+					video.Width,
+					video.Height), 
+				TextureChannel.Alpha);
+			var videoDisplayHeight = video.IsHqVqa ? video.Height : video.Height * AspectRatio;
+			var scale = Math.Min((float)RenderBounds.Width / video.Width, (float)RenderBounds.Height / videoDisplayHeight);
+			videoOrigin = new float2(RenderBounds.X + (RenderBounds.Width - scale * video.Width) / 2, RenderBounds.Y + (RenderBounds.Height - scale * videoDisplayHeight) / 2);
 
 			// Round size to integer pixels. Round up to be consistent with the scale calcuation.
-			videoSize = new float2((int)Math.Ceiling(video.Width * scale), (int)Math.Ceiling(video.Height * scale * AspectRatio));
+			videoSize = new float2((int)Math.Ceiling(video.Width * scale), (int)Math.Ceiling(videoDisplayHeight * scale));
 
 			if (!DrawOverlay)
 				return;
@@ -94,23 +101,35 @@ namespace OpenRA.Widgets
 
 			if (!stopped && !paused)
 			{
-				var nextFrame = (int)float2.Lerp(0, video.Frames, Sound.VideoSeekPosition * invLength);
+				var nextFrame = 0;
+				if (video.HasAudio)
+					nextFrame = (int)float2.Lerp(0, video.Frames, Sound.VideoSeekPosition * invLength);
+				else
+					nextFrame = video.CurrentFrame + 1;
+
 				if (nextFrame > video.Frames)
 				{
 					Stop();
 					return;
 				}
 
+				var skippedFrames = 0;
 				while (nextFrame > video.CurrentFrame)
 				{
 					video.AdvanceFrame();
-					if (nextFrame == video.CurrentFrame)
-						videoSprite.sheet.Texture.SetData(video.FrameData);
+					videoSprite.sheet.Texture.SetData(video.FrameData);
+					skippedFrames++;
 				}
+
+				if (skippedFrames > 1)				
+					Log.Write("perf", "VqaPlayer : {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrame);				
 			}
 
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(videoSprite, videoOrigin, videoSize);
-
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(
+				videoSprite,
+				videoOrigin,
+				videoSize);
+			
 			if (DrawOverlay)
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(overlaySprite, videoOrigin, videoSize);
 		}
@@ -141,7 +160,7 @@ namespace OpenRA.Widgets
 
 			onComplete = after;
 			if (stopped)
-				Sound.PlayVideo(video.AudioData);
+				Sound.PlayVideo(video.AudioData, video.AudioChannels, video.SampleBits, video.SampleRate);
 			else
 				Sound.PlayVideo();
 

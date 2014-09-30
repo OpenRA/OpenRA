@@ -21,6 +21,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class AssetBrowserLogic
 	{
+		static readonly string[] AllowedExtensions = { ".shp", ".r8", "tmp", ".tem", ".des", ".sno", ".int", ".jun", ".vqa" };
+
+		readonly World world;
+
 		Widget panel;
 
 		TextFieldWidget filenameInput;
@@ -38,10 +42,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		VqaPlayerWidget player = null;
 		bool isVideoLoaded = false;
 		int currentFrame;
-
-		readonly World world;
-
-		static readonly string[] AllowedExtensions = { ".shp", ".r8", "tmp", ".tem", ".des", ".sno", ".int", ".jun", ".vqa" };
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, World world)
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var frameContainer = panel.GetOrNull("FRAME_SELECTOR");
 			if (frameContainer != null)
-				frameContainer.IsVisible = () => (currentSprites != null && currentSprites.Length > 1) || (player != null && player.Video != null && player.Video.Frames > 1);
+				frameContainer.IsVisible = () => (currentSprites != null && currentSprites.Length > 1) || (isVideoLoaded && player != null && player.Video != null && player.Video.Frames > 1);
 
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
 			if (frameSlider != null)
@@ -301,9 +301,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				player = panel.Get<VqaPlayerWidget>("PLAYER");
 				currentFilename = filename;
 				player.Load(filename);
+				player.DrawOverlay = false;
 				isVideoLoaded = true;
 				frameSlider.MaximumValue = (float)player.Video.Frames - 1;
 				frameSlider.Ticks = 0;
+				return true;
 			}
 			else
 			{
@@ -330,7 +332,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// TODO: Re-enable "All Packages" once list generation is done in a background thread
 			// var sources = new[] { (IFolder)null }.Concat(GlobalFileSystem.MountedFolders);
-
 			var sources = GlobalFileSystem.MountedFolders;
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, sources, setupItem);
 			return true;
@@ -344,7 +345,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// TODO: This is too slow to run in the main thread
 			// var files = AssetSource != null ? AssetSource.AllFileNames() :
 			// GlobalFileSystem.MountedFolders.SelectMany(f => f.AllFileNames());
-
 			if (assetSource == null)
 				return;
 
