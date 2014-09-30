@@ -18,6 +18,8 @@ namespace OpenRA.Traits
 		public readonly int[] SelectableCash = { 2500, 5000, 10000, 20000 };
 		public readonly int DefaultCash = 5000;
 		public readonly int AdviceInterval = 250;
+		[Desc("Multiply cash trickle volume with this factor.")]
+		public readonly float CashTrickleVolume = 1f;
 
 		public object Create(ActorInitializer init) { return new PlayerResources(init.self, this); }
 	}
@@ -26,6 +28,7 @@ namespace OpenRA.Traits
 	{
 		readonly Player Owner;
 		int AdviceInterval;
+		float CashTrickleVolume;
 
 		public PlayerResources(Actor self, PlayerResourcesInfo info)
 		{
@@ -33,6 +36,7 @@ namespace OpenRA.Traits
 
 			Cash = self.World.LobbyInfo.GlobalSettings.StartingCash;
 			AdviceInterval = info.AdviceInterval;
+			CashTrickleVolume = info.CashTrickleVolume;
 		}
 
 		[Sync] public int Cash;
@@ -158,19 +162,18 @@ namespace OpenRA.Traits
 				playCashTickDown(self);
 			}
 		}
-		
-		
+
 		public void playCashTickUp(Actor self)
 		{
 			if (Game.Settings.Sound.CashTicks)
-				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "CashTickUp", self.Owner.Country.Race);
+				Sound.PlayCustomVolumeNotification(self.World.Map.Rules, self.Owner, "Sounds", "CashTickUp", self.Owner.Country.Race, CashTrickleVolume);
 		}
-		
+
 		public void playCashTickDown(Actor self)
 		{
 			if (Game.Settings.Sound.CashTicks && nextCashTickTime == 0)
 			{
-				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "CashTickDown", self.Owner.Country.Race);
+				Sound.PlayCustomVolumeNotification(self.World.Map.Rules, self.Owner, "Sounds", "CashTickDown", self.Owner.Country.Race, CashTrickleVolume);
 				nextCashTickTime = 2;
 			}
 		}
