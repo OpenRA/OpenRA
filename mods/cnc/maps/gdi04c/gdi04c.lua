@@ -1,14 +1,16 @@
 LoseTriggerHouses = { TrigLos2Farm1, TrigLos2Farm2, TrigLos2Farm3, TrigLos2Farm4 }
+TownAttackTrigger = { CPos.New(54, 38), CPos.New(55, 38), CPos.New(56, 38), CPos.New(57, 38) }
+GDIReinforcementsTrigger = { CPos.New(32, 51), CPos.New(32, 52), CPos.New(33, 52) }
 
 GDIReinforcementsPart1 = { "jeep", "jeep" }
 GDIReinforcementsPart2 = { "e2", "e2", "e2", "e2", "e2" }
 TownAttackWave1 = { "bggy", "bggy" }
 TownAttackWave2 = { "ltnk", "ltnk" }
 TownAttackWave3 = { "e1", "e1", "e1", "e1", "e3", "e3", "e3", "e3" }
-TownAttackWpts  = { waypoint1, waypoint2 }
+TownAttackWpts = { waypoint1, waypoint2 }
 
-Civvie1Wpts	= { waypoint3, waypoint17 }
-Civvie2Wpts	= { waypoint26, waypoint3, waypoint9, waypoint4, waypoint5, waypoint6, waypoint8, waypoint7, waypoint1, waypoint2 }
+Civvie1Wpts = { waypoint3, waypoint17 }
+Civvie2Wpts = { waypoint26, waypoint3, waypoint9, waypoint4, waypoint5, waypoint6, waypoint8, waypoint7, waypoint1, waypoint2 }
 
 FollowCivvieWpts = function(actor, wpts)
 	Utils.Do(wpts, function(wpt)
@@ -34,8 +36,6 @@ TownAttackAction = function(actor)
 end
 
 AttackTown = function()
-	TownAttackTriggered = true
-
 	Reinforcements.Reinforce(nod, TownAttackWave1, { NodReinfEntry.Location, waypoint0.Location }, Utils.Seconds(0.25), TownAttackAction)
 	Trigger.AfterDelay(Utils.Seconds(2), function()
 		Reinforcements.Reinforce(nod, TownAttackWave2, { NodReinfEntry.Location, waypoint0.Location }, Utils.Seconds(1), TownAttackAction)
@@ -46,8 +46,6 @@ AttackTown = function()
 end
 
 SendGDIReinforcements = function()
-	GDIReinforcementsTriggered = true
-
 	Reinforcements.Reinforce(player, GDIReinforcementsPart1, { GDIReinfEntry1.Location, waypoint12.Location }, Utils.Seconds(1), function(actor)
 		Media.PlaySpeechNotification(player, "Reinforce")
 		actor.Move(waypoint10.Location)
@@ -63,20 +61,9 @@ SendGDIReinforcements = function()
 	end)
 end
 
--- FIXME: replace with real cell trigger when available
-CellTrigger = function(player, trigger, radius, func)
-	local units = Map.ActorsInCircle(trigger.CenterPosition, WRange.FromCells(radius), function(actor)
-		return actor.Owner == player and actor.HasProperty("Move")
-	end)
-
-	if #units > 0 then
-		func()
-	end
-end
-
 WorldLoaded = function()
-	player	= Player.GetPlayer("GDI")
-	nod	= Player.GetPlayer("Nod")
+	player = Player.GetPlayer("GDI")
+	nod = Player.GetPlayer("Nod")
 
 	nodObjective = nod.AddPrimaryObjective("Destroy all GDI troops")
 	gdiObjective1 = player.AddPrimaryObjective("Defend the town of Białystok")
@@ -107,6 +94,20 @@ WorldLoaded = function()
 		end)
 	end)
 
+	Trigger.OnExitedFootprint(TownAttackTrigger, function(a, id)
+		if a.Owner == player then
+			Trigger.RemoveFootprintTrigger(id)
+			AttackTown()
+		end
+	end)
+
+	Trigger.OnEnteredFootprint(GDIReinforcementsTrigger, function(a, id)
+		if a.Owner == player then
+			Trigger.RemoveFootprintTrigger(id)
+			SendGDIReinforcements()
+		end
+	end)
+
 	Utils.Do(player.GetGroundAttackers(), function(unit)
 		unit.Stance = "Defend"
 	end)
@@ -121,8 +122,6 @@ WorldLoaded = function()
 	Media.PlayMovieFullscreen("bkground.vqa", function() Media.PlayMovieFullscreen("gdi4a.vqa", function() Media.PlayMovieFullscreen("nodsweep.vqa") end) end)
 end
 
-TownAttackTriggered = false
-GDIReinforcementsTriggered = false
 Tick = function()
 	if player.HasNoRequiredUnits() then
 		nod.MarkCompletedObjective(nodObjective)
@@ -130,11 +129,5 @@ Tick = function()
 	if nod.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(gdiObjective1)
 		player.MarkCompletedObjective(gdiObjective2)
-	end
-
-	if not TownAttackTriggered then
-		CellTrigger(player, TownAttackTrigger, 2, AttackTown)
-	elseif not GDIReinforcementsTriggered then
-		CellTrigger(player, GDIReinfTrigger, 2, SendGDIReinforcements)
 	end
 end
