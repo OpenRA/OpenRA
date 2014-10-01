@@ -568,6 +568,7 @@
     <Compile Include="KillsSelf.cs" />
     <Compile Include="Warheads\GrantUpgradeWarhead.cs" />
     <Compile Include="Crates\GrantUpgradeCrateAction.cs" />
+    <Compile Include="Scripting\Properties\UpgradeProperties.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
