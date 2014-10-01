@@ -74,6 +74,7 @@ HARV:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Owner: gdi,nod
+		InitialActivity: FindResources
 	Selectable:
 		Priority: 7
 		Bounds: 36,36

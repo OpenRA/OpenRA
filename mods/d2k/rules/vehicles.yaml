@@ -46,6 +46,7 @@ HARVESTER:
 		Queue: Armor
 		Prerequisites: ~heavy, refinery
 		BuildPaletteOrder: 10
+		InitialActivity: FindResources
 	Valued:
 		Cost: 1000
 	Tooltip:
