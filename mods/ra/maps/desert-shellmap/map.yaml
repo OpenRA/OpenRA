@@ -1295,19 +1295,20 @@ Rules:
 		Health:
 			HP: 200
 	^Vehicle:
-		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
 			Upgrades:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			RequiresUpgrade: unkillable
 	^Tank:
-		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
 			Upgrades:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			RequiresUpgrade: unkillable
 	^Infantry:
-		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
@@ -1318,20 +1319,25 @@ Rules:
 			VolumeMultiplier: 0.1
 		DeathSounds@ZAPPED:
 			VolumeMultiplier: 0.1
+		InvulnerabilityUpgrade@UNKILLABLE:
+			RequiresUpgrade: unkillable
 	^Ship:
-		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
 			Upgrades:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			RequiresUpgrade: unkillable
 	^Plane:
-		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
+		InvulnerabilityUpgrade@UNKILLABLE:
+			RequiresUpgrade: unkillable
 	^Building:
-		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
+		InvulnerabilityUpgrade@UNKILLABLE:
+			RequiresUpgrade: unkillable
 
 Sequences:
 

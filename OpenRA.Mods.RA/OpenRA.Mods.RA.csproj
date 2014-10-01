@@ -502,7 +502,6 @@
     <Compile Include="Scripting\Properties\TransportProperties.cs" />
     <Compile Include="Scripting\Global\CameraGlobal.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
-    <Compile Include="Scripting\ScriptInvulnerable.cs" />
     <Compile Include="Console\ChatCommands.cs" />
     <Compile Include="Console\DevCommands.cs" />
     <Compile Include="Console\HelpCommand.cs" />
