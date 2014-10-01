@@ -147,7 +147,7 @@ WorldLoaded = function()
 
 	Utils.Do(Snipers, function(a)
 		if a.Owner == soviets then
-			a.Invulnerable = true
+			a.GrantUpgrade("unkillable")
 		end
 	end)
 

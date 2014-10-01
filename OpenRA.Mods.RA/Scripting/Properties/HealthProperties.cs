@@ -33,22 +33,4 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Maximum health of the actor.")]
 		public int MaxHealth { get { return health.MaxHP; } }
 	}
-
-	[ScriptPropertyGroup("General")]
-	public class InvulnerableProperties : ScriptActorProperties, Requires<ScriptInvulnerableInfo>
-	{
-		ScriptInvulnerable invulnerable;
-		public InvulnerableProperties(ScriptContext context, Actor self)
-			: base(context, self)
-		{
-			invulnerable = self.Trait<ScriptInvulnerable>();
-		}
-
-		[Desc("Set or query unit invulnerablility.")]
-		public bool Invulnerable
-		{
-			get { return invulnerable.Invulnerable; }
-			set { invulnerable.Invulnerable = value; }
-		}
-	}
 }
