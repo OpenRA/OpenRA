@@ -33,6 +33,9 @@ namespace OpenRA.Mods.RA
 		[Desc("Disable production when there are more than this many of this actor on the battlefield. Set to 0 to disable.")]
 		public readonly int BuildLimit = 0;
 
+		[Desc("What the unit should start doing. Warning: If this is not a harvester", "it will break if you use FindResources.")] 
+		public readonly string InitialActivity = null;
+
 		// TODO: UI fluff; doesn't belong here
 		public readonly int BuildPaletteOrder = 9999;
 	}
