@@ -599,6 +599,9 @@ function IndicateAll(editor, lines, linee)
     local var = vars and vars[name]
     local token = {op, name=name, fpos=lineinfo, at=at, context=vars,
       self = (op == 'VarSelf') or nil }
+    if op == 'Function' then
+      vars['function'] = (vars['function'] or 0) + 1
+    end
     if op == 'FunctionCall' then
       if indic.fncall and edcfg.showfncall then
         IndicateOne(indicator.FNCALL, lineinfo, #name)

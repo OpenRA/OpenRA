@@ -31,6 +31,7 @@ end
    'Scope', opt - beginning of scope block.
    'EndScope', nil, lineinfo - end of scope block.
    'FunctionCall', name, lineinfo - function call (in addition to other events).
+   'Function', name, lineinfo - function definition.
 --]]
 function PARSE.parse_scope(lx, f, level)
   local cprev = {tag='Eof'}
@@ -52,7 +53,7 @@ function PARSE.parse_scope(lx, f, level)
     f('EndScope', opt, lineinfo)
   end
   
-  local function parse_function_list(has_self)
+  local function parse_function_list(has_self, name)
     local c = lx:next(); assert(c[1] == '(')
     f('Statement', c[1], c.lineinfo) -- generate Statement for function definition
     scope_begin(c[1], c.lineinfo)
@@ -65,7 +66,10 @@ function PARSE.parse_scope(lx, f, level)
       f('Var', c[1], c.lineinfo)
       if lx:peek()[1] == ',' then lx:next() end
     end
-    if lx:peek()[1] == ')' then lx:next() end
+    if lx:peek()[1] == ')' then
+      local n = lx:next()
+      f('Function', name, c.lineinfo)
+    end
   end
   
   while 1 do
@@ -101,24 +105,26 @@ function PARSE.parse_scope(lx, f, level)
         if lx:peek().tag == 'Id' then
           c = lx:next()
           f('Var', c[1], c.lineinfo)
-          if lx:peek()[1] == '(' then parse_function_list() end
+          if lx:peek()[1] == '(' then parse_function_list(nil, c[1]) end
         end
       elseif c[1] == 'function' then
         if lx:peek()[1] == '(' then -- inline function
           parse_function_list()
         elseif lx:peek().tag == 'Id' then -- function definition statement
           c = lx:next(); assert(c.tag == 'Id')
+          local name = c[1]
           f('Id', c[1], c.lineinfo)
           local has_self
           while lx:peek()[1] ~= '(' and lx:peek().tag ~= 'Eof' do
             c = lx:next()
+            name = name .. c[1]
             if c.tag == 'Id' then
               f('String', c[1], c.lineinfo)
             elseif c.tag == 'Keyword' and c[1] == ':' then
               has_self = true
             end
           end
-          if lx:peek()[1] == '(' then parse_function_list(has_self) end
+          if lx:peek()[1] == '(' then parse_function_list(has_self, name) end
         end
       elseif c[1] == 'local' and lx:peek().tag == 'Id' then
         c = lx:next()
@@ -226,9 +232,8 @@ function PARSE.parse_scope_resolve(lx, f, vars)
       else
         vars = mt.__index
       end
-    elseif op == 'Id' then
-      -- Just make callback
-    elseif op == 'String' or op == 'FunctionCall' then
+    elseif op == 'Id'
+    or op == 'String' or op == 'FunctionCall' or op == 'Function' then
       -- Just make callback
     elseif op == 'Statement' then -- beginning of statement
       -- Apply vars that come into scope upon beginning of statement.
