@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Effects\Explosion.cs" />
+    <Compile Include="Effects\FloatingText.cs" />
     <Compile Include="Graphics\ActorPreview.cs" />
     <Compile Include="Graphics\BeamRenderable.cs" />
     <Compile Include="Graphics\ContrailRenderable.cs" />
