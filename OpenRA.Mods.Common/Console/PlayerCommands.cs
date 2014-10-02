@@ -11,7 +11,7 @@
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common
 {
 	[Desc("Allows the player to pause or surrender the game via the chatbox. Attach this to the world actor.")]
 	public class PlayerCommandsInfo : TraitInfo<PlayerCommands> { }
