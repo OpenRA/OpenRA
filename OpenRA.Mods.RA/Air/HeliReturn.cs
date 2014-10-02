@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Air
 									.ClosestTo(self);
 
 				if (nearestHpad == null)
-					return Util.SequenceActivities(new Turn(initialFacing), new HeliLand(true), NextActivity);
+					return Util.SequenceActivities(new Turn(self, initialFacing), new HeliLand(true), NextActivity);
 				else
 					return Util.SequenceActivities(new HeliFly(self, Target.FromActor(nearestHpad)));
 			}
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Air
 
 			return Util.SequenceActivities(
 				new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
-				new Turn(initialFacing),
+				new Turn(self, initialFacing),
 				new HeliLand(false),
 				new ResupplyAircraft());
 		}

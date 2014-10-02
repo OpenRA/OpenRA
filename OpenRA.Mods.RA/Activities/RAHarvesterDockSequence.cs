@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 					return this;
 				case State.Turn:
 					state = State.Dock;
-					return Util.SequenceActivities(new Turn(angle), this);
+					return Util.SequenceActivities(new Turn(self, angle), this);
 				case State.Dock:
 					ru.PlayCustomAnimation(self, "dock", () => {
 						ru.PlayCustomAnimRepeating(self, "dock-loop");

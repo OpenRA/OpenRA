@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 
 			if (self.HasTrait<IFacing>())
-				self.QueueActivity(new Turn(info.Facing));
+				self.QueueActivity(new Turn(self, info.Facing));
 
 			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
 				nt.BeforeTransform(self);

@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			var desiredFacing = Util.GetFacing(Target.CenterPosition - self.CenterPosition, 0);
 			if (facing.Facing != desiredFacing)
-				return Util.SequenceActivities(new Turn(desiredFacing), this);
+				return Util.SequenceActivities(new Turn(self, desiredFacing), this);
 
 			attack.DoAttack(self, Target);
 

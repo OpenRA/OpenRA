@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 			var finalPos = init.world.Map.CenterOfCell(TopLeft);
 			var distance = (finalPos - CenterPosition).Length;
 			if (speed > 0 && distance > 0)
-				self.QueueActivity(new Drag(CenterPosition, finalPos, distance / speed));
+				self.QueueActivity(new Drag(init.self, CenterPosition, finalPos, distance / speed));
 		}
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }

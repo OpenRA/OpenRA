@@ -41,7 +41,7 @@ namespace OpenRA.Mods.TS
 			{
 				case State.Turn:
 					state = State.Dock;
-					return Util.SequenceActivities(new Turn(160), this);
+					return Util.SequenceActivities(new Turn(self, 160), this);
 				case State.Dock:
 					if (proc.IsInWorld && !proc.IsDead())
 						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())

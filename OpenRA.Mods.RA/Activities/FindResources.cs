@@ -153,7 +153,7 @@ namespace OpenRA.Mods.RA.Activities
 				var facing = self.Trait<IFacing>().Facing;
 				var desired = Util.QuantizeFacing(facing, harvInfo.HarvestFacings) * (256 / harvInfo.HarvestFacings);
 				if (desired != facing)
-					return Util.SequenceActivities(new Turn(desired), this);
+					return Util.SequenceActivities(new Turn(self, desired), this);
 			}
 
 			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
