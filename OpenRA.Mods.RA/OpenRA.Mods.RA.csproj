@@ -215,7 +215,6 @@
     <Compile Include="Effects\Contrail.cs" />
     <Compile Include="Effects\Corpse.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
-    <Compile Include="Effects\Explosion.cs" />
     <Compile Include="Effects\GpsDot.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\GravityBomb.cs" />

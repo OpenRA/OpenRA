@@ -13,7 +13,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Effects;
+using OpenRA.Mods.Common.Effects;
 
 namespace OpenRA.Mods.RA
 {
