@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled, INotifyCapture, ITick, INotifySold
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled, INotifyCapture, ITick, INotifySold, IDisableMove
 	{
 		public readonly CargoInfo Info;
 		readonly Actor self;
@@ -155,6 +155,7 @@ namespace OpenRA.Mods.RA
 			return self.HasVoice("Unload") ? "Unload" : "Move";
 		}
 
+		public bool MoveDisabled(Actor self) { return reserves.Any(); }
 		public bool HasSpace(int weight) { return totalWeight + reservedWeight + weight <= Info.MaxWeight; }
 		public bool IsEmpty(Actor self) { return cargo.Count == 0; }
 
