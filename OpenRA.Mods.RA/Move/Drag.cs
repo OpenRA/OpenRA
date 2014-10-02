@@ -9,18 +9,25 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Move
 {
 	public class Drag : Activity
 	{
+		readonly IPositionable positionable;
+		readonly IMove movement;
+		readonly IEnumerable<IDisableMove> moveDisablers;
 		WPos start, end;
 		int length;
 		int ticks = 0;
 
-		public Drag(WPos start, WPos end, int length)
+		public Drag(Actor self, WPos start, WPos end, int length)
 		{
+			positionable = self.Trait<IPositionable>();
+			movement = self.TraitOrDefault<IMove>();
+			moveDisablers = self.TraitsImplementing<IDisableMove>();
 			this.start = start;
 			this.end = end;
 			this.length = length;
@@ -28,8 +35,8 @@ namespace OpenRA.Mods.RA.Move
 
 		public override Activity Tick(Actor self)
 		{
-			var positionable = self.Trait<IPositionable>();
-			var movement = self.TraitOrDefault<IMove>();
+			if (moveDisablers.Any(d => d.MoveDisabled(self)))
+				return this;
 
 			var pos = length > 1
 				? WPos.Lerp(start, end, ticks, length - 1)

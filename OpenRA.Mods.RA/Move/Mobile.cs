@@ -695,7 +695,7 @@ namespace OpenRA.Mods.RA.Move
 			var length = speed > 0 ? (toPos - fromPos).Length / speed : 0;
 
 			var facing = Util.GetFacing(toPos - fromPos, Facing);
-			return Util.SequenceActivities(new Turn(facing), new Drag(fromPos, toPos, length));
+			return Util.SequenceActivities(new Turn(self, facing), new Drag(self, fromPos, toPos, length));
 		}
 	}
 }

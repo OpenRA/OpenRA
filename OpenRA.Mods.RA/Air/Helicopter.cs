@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Air
 				if (Info.LandWhenIdle)
 				{
 					if (Info.TurnToLand)
-						self.QueueActivity(new Turn(Info.InitialFacing));
+						self.QueueActivity(new Turn(self, Info.InitialFacing));
 
 					self.QueueActivity(new HeliLand(true));
 				}
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA.Air
 
 					self.CancelActivity();
 					self.QueueActivity(new HeliFly(self, Target.FromPos(order.TargetActor.CenterPosition + offset)));
-					self.QueueActivity(new Turn(Info.InitialFacing));
+					self.QueueActivity(new Turn(self, Info.InitialFacing));
 					self.QueueActivity(new HeliLand(false));
 					self.QueueActivity(new ResupplyAircraft());
 					self.QueueActivity(new TakeOff());
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA.Air
 				if (Info.LandWhenIdle)
 				{
 					if (Info.TurnToLand)
-						self.QueueActivity(new Turn(Info.InitialFacing));
+						self.QueueActivity(new Turn(self, Info.InitialFacing));
 
 					self.QueueActivity(new HeliLand(true));
 				}
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.RA.Air
 		public Activity MoveIntoTarget(Actor self, Target target) { return new HeliLand(false); }
 		public Activity MoveToTarget(Actor self, Target target)
 		{
-			return Util.SequenceActivities(new HeliFly(self, target), new Turn(Info.InitialFacing));
+			return Util.SequenceActivities(new HeliFly(self, target), new Turn(self, Info.InitialFacing));
 		}
 
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
