@@ -94,7 +94,7 @@ return {
       local varnext = {}
       PARSE.parse_scope_resolve(lx, function(op, name, lineinfo, vars)
         if not(op == 'Id' or op == 'Statement' or op == 'Var'
-            or op == 'Function'
+            or op == 'Function' or op == 'String'
             or op == 'VarNext' or op == 'VarInside' or op == 'VarSelf'
             or op == 'FunctionCall' or op == 'Scope' or op == 'EndScope') then
           return end -- "normal" return; not interested in other events
