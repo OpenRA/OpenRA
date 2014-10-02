@@ -265,7 +265,8 @@ namespace OpenRA
 			Uid = ComputeHash();
 
 			if (Container.Exists("map.png"))
-				CustomPreview = new Bitmap(Container.GetContent("map.png"));
+				using (var dataStream = Container.GetContent("map.png"))
+					CustomPreview = new Bitmap(dataStream);
 
 			PostInit();
 		}
