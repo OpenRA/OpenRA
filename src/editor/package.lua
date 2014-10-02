@@ -181,6 +181,25 @@ function ide:RemoveMenuItem(id, menu)
   return false
 end
 
+function ide:ExecuteCommand(cmd, wdir, callback, endcallback)
+  local proc = wx.wxProcess(ide:GetOutput())
+  proc:Redirect()
+
+  local cwd
+  if (wdir and #wdir > 0) then -- ignore empty directory
+    cwd = wx.wxFileName.GetCwd()
+    cwd = wx.wxFileName.SetCwd(wdir) and cwd
+  end
+
+  local pid = wx.wxExecute(cmd, wx.wxEXEC_ASYNC, proc)
+  pid = pid ~= -1 and pid ~= 0 and pid or nil
+  if cwd then wx.wxFileName.SetCwd(cwd) end -- restore workdir
+  if not pid then return pid, wx.wxSysErrorMsg() end
+
+  OutputSetCallbacks(pid, proc, callback or function() end, endcallback)
+  return pid
+end
+
 function ide:AddWatch(watch, value)
   local mgr = ide.frame.uimgr
   local pane = mgr:GetPane("watchpanel")
