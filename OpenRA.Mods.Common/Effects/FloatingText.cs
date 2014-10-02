@@ -15,7 +15,7 @@ using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 
-namespace OpenRA.Mods.RA.Effects
+namespace OpenRA.Mods.Common.Effects
 {
 	public class FloatingText : IEffect
 	{

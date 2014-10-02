@@ -120,7 +120,6 @@
     <Compile Include="Air\AttackPlane.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
     <Compile Include="Crates\DuplicateUnitCrateAction.cs" />
-    <Compile Include="Effects\FloatingText.cs" />
     <Compile Include="Infiltration\InfiltrateForPowerOutage.cs" />
     <Compile Include="Power\AffectedByPowerOutage.cs" />
     <Compile Include="Power\Power.cs" />
