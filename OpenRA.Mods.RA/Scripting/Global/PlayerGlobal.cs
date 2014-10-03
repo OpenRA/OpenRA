@@ -25,17 +25,14 @@ namespace OpenRA.Scripting
 		}
 
 		[Desc("Returns a table of players filtered by the specified function.")]
-		public LuaTable GetPlayers(LuaFunction filter)
+		public Player[] GetPlayers(LuaFunction filter)
 		{
-			var players = context.World.Players
-				.Select(p => p.ToLuaValue(context))
-				.Where(a =>
+			return context.World.Players
+				.Where(p =>
 				{
-					using (var f = filter.Call(a))
+					using (var f = filter.Call(p.ToLuaValue(context)))
 						return f.First().ToBoolean();
-				});
-
-			return players.ToLuaTable(context);
+				}).ToArray();
 		}
 	}
 }

@@ -75,18 +75,9 @@ namespace OpenRA.Mods.RA.Scripting
 
 		[Desc("Call a function when all of the actors in a group are killed. The callback " +
 			"function will be called as func().")]
-		public void OnAllKilled(LuaTable actors, LuaFunction func)
+		public void OnAllKilled(Actor[] actors, LuaFunction func)
 		{
-			var group = new List<Actor>();
-			foreach (var kv in actors)
-			{
-				Actor actor;
-				if (!kv.Value.TryGetClrValue<Actor>(out actor))
-					throw new LuaException("OnAllKilled requires a table of int,Actor pairs. Recieved {0},{1}".F(kv.Key.GetType().Name, kv.Value.GetType().Name));
-
-				group.Add(actor);
-			}
-
+			var group = actors.ToList();
 			var copy = (LuaFunction)func.CopyReference();
 			Action<Actor> OnMemberKilled = m =>
 			{
@@ -104,18 +95,8 @@ namespace OpenRA.Mods.RA.Scripting
 
 		[Desc("Call a function when one of the actors in a group is killed. The callback " +
 			"function will be called as func(Actor killed).")]
-		public void OnAnyKilled(LuaTable actors, LuaFunction func)
+		public void OnAnyKilled(Actor[] actors, LuaFunction func)
 		{
-			var group = new List<Actor>();
-			foreach (var kv in actors)
-			{
-				Actor actor;
-				if (!kv.Value.TryGetClrValue<Actor>(out actor))
-					throw new LuaException("OnAnyKilled requires a table of int,Actor pairs. Recieved {0},{1}".F(kv.Key.GetType().Name, kv.Value.GetType().Name));
-
-				group.Add(actor);
-			}
-
 			var called = false;
 			var copy = (LuaFunction)func.CopyReference();
 			Action<Actor> OnMemberKilled = m =>
@@ -130,7 +111,7 @@ namespace OpenRA.Mods.RA.Scripting
 				called = true;
 			};
 
-			foreach (var a in group)
+			foreach (var a in actors)
 				GetScriptTriggers(a).OnKilledInternal += OnMemberKilled;
 		}
 
@@ -197,25 +178,10 @@ namespace OpenRA.Mods.RA.Scripting
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnCapture, func, context);
 		}
 
-		static CPos[] MakeCellFootprint(LuaTable table)
-		{
-			var cells = new List<CPos>();
-			foreach (var kv in table)
-			{
-				CPos cell;
-				if (!kv.Value.TryGetClrValue<CPos>(out cell))
-					throw new LuaException("Cell footprints must be specified as a table of int,Cell pairs. Recieved {0},{1}".F(kv.Key.GetType().Name, kv.Value.GetType().Name));
-
-				cells.Add(cell);
-			}
-
-			return cells.ToArray();
-		}
-
 		[Desc("Call a function when a ground-based actor enters this cell footprint." +
 			"Returns the trigger id for later removal using RemoveFootprintTrigger(int id)." +
 			"The callback function will be called as func(Actor a, int id).")]
-		public int OnEnteredFootprint(LuaTable cells, LuaFunction func)
+		public int OnEnteredFootprint(CPos[] cells, LuaFunction func)
 		{
 			var triggerId = 0;
 			var onEntry = (LuaFunction)func.CopyReference();
@@ -226,7 +192,7 @@ namespace OpenRA.Mods.RA.Scripting
 					onEntry.Call(luaActor, id).Dispose();
 			};
 
-			triggerId = context.World.ActorMap.AddCellTrigger(MakeCellFootprint(cells), invokeEntry, null);
+			triggerId = context.World.ActorMap.AddCellTrigger(cells, invokeEntry, null);
 
 			return triggerId;
 		}
@@ -234,7 +200,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Call a function when a ground-based actor leaves this cell footprint." +
 			"Returns the trigger id for later removal using RemoveFootprintTrigger(int id)." +
 			"The callback function will be called as func(Actor a, int id).")]
-		public int OnExitedFootprint(LuaTable cells, LuaFunction func)
+		public int OnExitedFootprint(CPos[] cells, LuaFunction func)
 		{
 			var triggerId = 0;
 			var onExit = (LuaFunction)func.CopyReference();
@@ -245,7 +211,7 @@ namespace OpenRA.Mods.RA.Scripting
 					onExit.Call(luaActor, id).Dispose();
 			};
 
-			triggerId = context.World.ActorMap.AddCellTrigger(MakeCellFootprint(cells), null, invokeExit);
+			triggerId = context.World.ActorMap.AddCellTrigger(cells, null, invokeExit);
 
 			return triggerId;
 		}
