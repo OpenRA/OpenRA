@@ -91,6 +91,29 @@ namespace OpenRA.Scripting
 				return true;
 			}
 
+			// Translate LuaTable<int, object> -> object[]
+			if (value is LuaTable && t.IsArray)
+			{
+				var innerType = t.GetElementType();
+				var table = (LuaTable)value;
+				var array = Array.CreateInstance(innerType, table.Count);
+				var i = 0;
+
+				foreach (var kv in table)
+				{
+					object element;
+					if (innerType == typeof(LuaValue))
+						element = kv.Value;
+					else if (!kv.Value.TryGetClrValue(innerType, out element))
+						throw new LuaException("Unable to convert table value of type {0} to type {1}".F(kv.Value.WrappedClrType(), innerType));
+
+					array.SetValue(element, i++);
+				}
+
+				clrObject = array;
+				return true;
+			}
+
 			// Value isn't of the requested type.
 			// Set a default output value and return false
 			// Value types are assumed to specify a default constructor
@@ -127,7 +150,18 @@ namespace OpenRA.Scripting
 
 				return new LuaCustomClrObject(obj);
 			}
-	
+
+			if (obj is Array)
+			{
+				var array = obj as Array;
+				var i = 1;
+				var table = context.CreateTable();
+				foreach (var x in array)
+					table.Add(i++, x.ToLuaValue(context));
+
+				return table;
+			}
+
 			throw new InvalidOperationException("Cannot convert type '{0}' to Lua. Class must implement IScriptBindable.".F(obj.GetType()));
 		}
 
