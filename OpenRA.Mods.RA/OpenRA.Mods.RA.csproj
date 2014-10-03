@@ -274,7 +274,6 @@
     <Compile Include="OreRefinery.cs" />
     <Compile Include="PlayerPaletteFromCurrentTileset.cs" />
     <Compile Include="PaletteFromCurrentTileset.cs" />
-    <Compile Include="PaletteFromFile.cs" />
     <Compile Include="PaletteFromRGBA.cs" />
     <Compile Include="ParaDrop.cs" />
     <Compile Include="Passenger.cs" />
@@ -295,12 +294,10 @@
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
     <Compile Include="Warheads\LeaveSmudgeWarhead.cs" />
     <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
-    <Compile Include="World\RadarPings.cs" />
     <Compile Include="Player\TechTree.cs" />
     <Compile Include="PrimaryBuilding.cs" />
     <Compile Include="Production.cs" />
     <Compile Include="ProductionBar.cs" />
-    <Compile Include="ProvidesRadar.cs" />
     <Compile Include="ProximityCaptor.cs" />
     <Compile Include="ProximityCapturable.cs" />
     <Compile Include="DefaultLoadScreen.cs" />
@@ -372,7 +369,6 @@
     <Compile Include="Turreted.cs" />
     <Compile Include="Valued.cs" />
     <Compile Include="WaterPaletteRotation.cs" />
-    <Compile Include="Widgets\LogicTickerWidget.cs" />
     <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />
     <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
@@ -383,7 +379,6 @@
     <Compile Include="Widgets\Logic\Ingame\LeaveMapLogic.cs" />
     <Compile Include="Widgets\Logic\IrcLogic.cs" />
     <Compile Include="Widgets\Logic\KickClientLogic.cs" />
-    <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
     <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
     <Compile Include="Widgets\Logic\DiplomacyLogic.cs" />
     <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
@@ -402,7 +397,6 @@
     <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
     <Compile Include="Widgets\ObserverProductionIconsWidget.cs" />
     <Compile Include="Widgets\ObserverSupportPowerIconsWidget.cs" />
-    <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="Widgets\StrategicProgressWidget.cs" />
     <Compile Include="Widgets\SupportPowerTimerWidget.cs" />
     <Compile Include="Widgets\WorldCommandWidget.cs" />
@@ -416,7 +410,6 @@
     <Compile Include="Infiltration\InfiltrateForCash.cs" />
     <Compile Include="RenderShroudCircle.cs" />
     <Compile Include="CloakPaletteEffect.cs" />
-    <Compile Include="Widgets\ColorPreviewManagerWidget.cs" />
     <Compile Include="Infiltration\Infiltrates.cs" />
     <Compile Include="Armament.cs" />
     <Compile Include="Buildings\BaseProvider.cs" />
@@ -427,11 +420,8 @@
     <Compile Include="Lint\CheckSequences.cs" />
     <Compile Include="Widgets\Logic\SpawnSelectorTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\ClientTooltipLogic.cs" />
-    <Compile Include="Widgets\ColorMixerWidget.cs" />
-    <Compile Include="Widgets\HueSliderWidget.cs" />
     <Compile Include="Render\WithTurret.cs" />
     <Compile Include="Render\WithBarrel.cs" />
-    <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
     <Compile Include="VoxelNormalsPalette.cs" />
     <Compile Include="Render\RenderVoxels.cs" />
     <Compile Include="Render\WithVoxelTurret.cs" />
@@ -440,7 +430,6 @@
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
     <Compile Include="Render\WithResources.cs" />
     <Compile Include="Render\WithHarvestAnimation.cs" />
-    <Compile Include="Widgets\ResourceBarWidget.cs" />
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
     <Compile Include="World\DomainIndex.cs" />
     <Compile Include="MPStartUnits.cs" />
@@ -465,7 +454,6 @@
     <Compile Include="ShroudRenderer.cs" />
     <Compile Include="Render\WithCrateBody.cs" />
     <Compile Include="Buildings\Demolishable.cs" />
-    <Compile Include="Widgets\Logic\DisconnectWatcherLogic.cs" />
     <Compile Include="Activities\FlyFollow.cs" />
     <Compile Include="Modifiers\DisabledOverlay.cs" />
     <Compile Include="Widgets\Logic\GameTimerLogic.cs" />
@@ -477,12 +465,10 @@
     <Compile Include="Attack\AttackGarrisoned.cs" />
     <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
-    <Compile Include="Widgets\LogicKeyListenerWidget.cs" />
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
     <Compile Include="Buildings\LineBuildNode.cs" />
     <Compile Include="Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="StartGameNotification.cs" />
-    <Compile Include="Widgets\ConfirmationDialogs.cs" />
     <Compile Include="Scripting\LuaScript.cs" />
     <Compile Include="Scripting\CallLuaFunc.cs" />
     <Compile Include="Scripting\Global\ActorGlobal.cs" />
@@ -529,7 +515,6 @@
     <Compile Include="Widgets\ProductionTabsWidget.cs" />
     <Compile Include="Widgets\ProductionTypeButtonWidget.cs" />
     <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
-    <Compile Include="Widgets\Logic\Ingame\IngameRadarDisplayLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngameCashCounterLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngamePowerCounterLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngamePowerBarLogic.cs" />
@@ -539,10 +524,7 @@
     <Compile Include="Widgets\SupportPowersWidget.cs" />
     <Compile Include="Widgets\Logic\SupportPowerTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\SupportPowerBinLogic.cs" />
-    <Compile Include="Widgets\Logic\Ingame\LoadIngamePlayerOrObserverUILogic.cs" />
-    <Compile Include="Widgets\MenuButtonWidget.cs" />
     <Compile Include="Widgets\Logic\DebugMenuLogic.cs" />
-    <Compile Include="Widgets\LabelWithTooltipWidget.cs" />
     <Compile Include="ProductionQueueFromSelection.cs" />
     <Compile Include="Scripting\Global\MediaGlobal.cs" />
     <Compile Include="GlobalUpgradable.cs" />

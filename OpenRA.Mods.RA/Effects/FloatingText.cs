@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 
 namespace OpenRA.Mods.RA.Effects
 {

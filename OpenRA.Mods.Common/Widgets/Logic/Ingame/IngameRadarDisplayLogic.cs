@@ -10,10 +10,10 @@
 
 using System.Drawing;
 using System.Linq;
-using OpenRA.Mods.RA.Widgets;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets.Logic
+namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class IngameRadarDisplayLogic
 	{

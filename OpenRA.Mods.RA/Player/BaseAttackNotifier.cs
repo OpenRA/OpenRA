@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 

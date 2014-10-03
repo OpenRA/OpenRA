@@ -8,9 +8,10 @@
  */
 #endregion
 
+using System.Drawing;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Mods.RA.Power;
 using OpenRA.Widgets;
-using System.Drawing;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {

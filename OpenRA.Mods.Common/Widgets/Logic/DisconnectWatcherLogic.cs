@@ -11,7 +11,7 @@
 using OpenRA.Network;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets.Logic
+namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class DisconnectWatcherLogic
 	{
@@ -21,20 +21,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var disconnected = false;
 			widget.Get<LogicTickerWidget>("DISCONNECT_WATCHER").OnTick = () => 
 			{
-				if (!disconnected && orderManager.Connection.ConnectionState == ConnectionState.NotConnected)
-				{
-					Game.RunAfterTick(() =>
-					{
-						Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
-						{
-							{ "orderManager", orderManager },
-							{ "onAbort", null },
-							{ "onRetry", null }
-						});
-					});
+				if (disconnected || orderManager.Connection.ConnectionState != ConnectionState.NotConnected)
+					return;
 
-					disconnected = true;
-				}
+				Game.RunAfterTick(() => Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs {
+					{ "orderManager", orderManager },
+					{ "onAbort", null },
+					{ "onRetry", null }
+				}));
+
+				disconnected = true;
 			};
 		}
 	}

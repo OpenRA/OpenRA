@@ -12,11 +12,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	//todo: remove all the Render*Circle duplication
+	// TODO: remove all the Render*Circle duplication
 	class RenderJammerCircleInfo : ITraitInfo, IPlaceBuildingDecoration
 	{
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
@@ -29,8 +30,7 @@ namespace OpenRA.Mods.RA
 					WRange.FromCells(jamsMissiles.Range),
 					0,
 					Color.FromArgb(128, Color.Red),
-					Color.FromArgb(96, Color.Black)
-				);
+					Color.FromArgb(96, Color.Black));
 			}
 
 			var jamsRadar = ai.Traits.GetOrDefault<JamsRadarInfo>();
@@ -41,8 +41,7 @@ namespace OpenRA.Mods.RA
 					WRange.FromCells(jamsRadar.Range),
 					0,
 					Color.FromArgb(128, Color.Blue),
-					Color.FromArgb(96, Color.Black)
-				);
+					Color.FromArgb(96, Color.Black));
 			}
 
 			foreach (var a in w.ActorsWithTrait<RenderJammerCircle>())
@@ -73,8 +72,7 @@ namespace OpenRA.Mods.RA
 					WRange.FromCells(jamsMissiles.Range),
 					0,
 					Color.FromArgb(128, Color.Red),
-					Color.FromArgb(96, Color.Black)
-				);
+					Color.FromArgb(96, Color.Black));
 			}
 
 			var jamsRadar = self.Info.Traits.GetOrDefault<JamsRadarInfo>();
@@ -85,8 +83,7 @@ namespace OpenRA.Mods.RA
 					WRange.FromCells(jamsRadar.Range),
 					0,
 					Color.FromArgb(128, Color.Blue),
-					Color.FromArgb(96, Color.Black)
-				);
+					Color.FromArgb(96, Color.Black));
 			}
 		}
 	}

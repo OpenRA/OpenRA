@@ -12,7 +12,7 @@ using System;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets.Logic
+namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ColorPickerLogic
 	{
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var preview = widget.Get<SpriteSequenceWidget>("PREVIEW");
 				var anim = preview.GetAnimation();
 				anim.PlayRepeating(anim.CurrentSequence.Name);
-				ticker.OnTick = () => anim.Tick();
+				ticker.OnTick = anim.Tick;
 			}
 
 			var hueSlider = widget.Get<SliderWidget>("HUE");
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var randomButton = widget.GetOrNull<ButtonWidget>("RANDOM_BUTTON");
 
 			hueSlider.OnChange += _ => mixer.Set(hueSlider.Value);
-			mixer.OnChange += () =>	onChange(mixer.Color);
+			mixer.OnChange += () => onChange(mixer.Color);
 
 			if (randomButton != null)
 				randomButton.OnClick = () =>

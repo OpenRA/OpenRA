@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Network;
 using OpenRA.Widgets;
 

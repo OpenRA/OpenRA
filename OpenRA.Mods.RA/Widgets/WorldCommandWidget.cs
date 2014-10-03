@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
 using OpenRA.Orders;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
