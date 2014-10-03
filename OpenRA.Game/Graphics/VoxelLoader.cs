@@ -90,10 +90,10 @@ namespace OpenRA.Graphics
 			var channels = new float2(channelSelect[(int)s.channel], channelSelect[(int)s.channel + 1]);
 			return new Vertex[4]
 			{
-				new Vertex(coord(0, 0), s.FastMapTextureCoords(0), channels),
-				new Vertex(coord(su, 0), s.FastMapTextureCoords(1), channels),
-				new Vertex(coord(su, sv), s.FastMapTextureCoords(3), channels),
-				new Vertex(coord(0, sv), s.FastMapTextureCoords(2), channels)
+				new Vertex(coord(0, 0), s.TopLeftTextureCoords, channels),
+				new Vertex(coord(su, 0), s.TopRightTextureCoords, channels),
+				new Vertex(coord(su, sv), s.BottomRightTextureCoords, channels),
+				new Vertex(coord(0, sv), s.BottomLeftTextureCoords, channels)
 			};
 		}
 
