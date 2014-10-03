@@ -168,6 +168,8 @@
 		Bounds: 12,17,0,-9
 	Tooltip:
 		Name: Civilian
+	Valued:
+		Cost: 0
 	Health:
 		HP: 50
 	Mobile:
