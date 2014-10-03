@@ -72,51 +72,36 @@ namespace OpenRA.Mods.RA.Scripting
 		      "while the last one will be their destination.  If actionFunc is given, " +
 		      "it will be executed once a unit has reached its destination. actionFunc " +
 		      "will be called as actionFunc(Actor actor)")]
-		public LuaTable Reinforce(Player owner, LuaTable actorTypes, LuaTable entryPath, int interval = 25, LuaFunction actionFunc = null)
+		public Actor[] Reinforce(Player owner, string[] actorTypes, CPos[] entryPath, int interval = 25, LuaFunction actionFunc = null)
 		{
 			var actors = new List<Actor>();
-			for (var i = 1; i <= actorTypes.Count; i++)
+			for (var i = 0; i < actorTypes.Length; i++)
 			{
-				string actorType;
-				if (!(actorTypes[i].TryGetClrValue<String>(out actorType)))
-					throw new LuaException("Invalid data in actorTypes array");
-
-				CPos entry, next = new CPos();
-				if (!(entryPath[1].TryGetClrValue<CPos>(out entry)
-					&& (entryPath.Count < 2 || entryPath[2].TryGetClrValue<CPos>(out next))))
-					throw new LuaException("Invalid data in entryPath array");
-
-				var actor = CreateActor(owner, actorType, false, entry, entryPath.Count > 1 ? next : (CPos?)null);
+				var af = actionFunc != null ? actionFunc.CopyReference() as LuaFunction : null;
+				var actor = CreateActor(owner, actorTypes[i], false, entryPath[0], entryPath.Length > 1 ? entryPath[1] : (CPos?)null);
 				actors.Add(actor);
 
-				var ep = entryPath.CopyReference() as LuaTable;
-				var af = actionFunc != null ? actionFunc.CopyReference() as LuaFunction : null;
-
-				var actionDelay = (i - 1) * interval;
+				var actionDelay = i * interval;
 				Action actorAction = () =>
 				{
 					context.World.Add(actor);
-					for (var j = 2; j <= ep.Count; j++)
-					{
-						CPos wpt;
-						if (!(ep[j].TryGetClrValue<CPos>(out wpt)))
-							throw new LuaException("Invalid data in entryPath array");
-
-						Move(actor, wpt);
-					}
-					ep.Dispose();
+					for (var j = 1; j < entryPath.Length; j++)
+						Move(actor, entryPath[j]);
 
 					if (af != null)
+					{
 					    actor.QueueActivity(new CallFunc(() =>
 						{
 							af.Call(actor.ToLuaValue(context));
 							af.Dispose();
 						}));
+					}
 				};
 
 				context.World.AddFrameEndTask(w => w.Add(new DelayedAction(actionDelay, actorAction)));
 			}
-			return actors.Select(a => a.ToLuaValue(context)).ToLuaTable(context);
+
+			return actors.ToArray();
 		}
 
 		[Desc("Send reinforcements in a transport. A transport can be a ground unit (APC etc.), ships and aircraft. " +
@@ -127,48 +112,32 @@ namespace OpenRA.Mods.RA.Scripting
 		      "been supplied. Afterwards, the transport will follow the exitPath and leave the map, " +
 		      "unless a custom exitFunc has been supplied. actionFunc will be called as " +
 		      "actionFunc(Actor transport, Actor[] cargo). exitFunc will be called as exitFunc(Actor transport).")]
-		public LuaTable ReinforceWithTransport(Player owner, string actorType, LuaTable cargoTypes, LuaTable entryPath, LuaTable exitPath = null,
+		public LuaTable ReinforceWithTransport(Player owner, string actorType, string[] cargoTypes, CPos[] entryPath, CPos[] exitPath = null,
 			LuaFunction actionFunc = null, LuaFunction exitFunc = null)
 		{
-			CPos entry, next = new CPos();
-			if (!(entryPath[1].TryGetClrValue<CPos>(out entry)
-				&& (entryPath.Count < 2 || entryPath[2].TryGetClrValue<CPos>(out next))))
-				throw new LuaException("Invalid data in entryPath array");
-
-			var transport = CreateActor(owner, actorType, true, entry, entryPath.Count > 1 ? next : (CPos?)null);
+			var transport = CreateActor(owner, actorType, true, entryPath[0], entryPath.Length > 1 ? entryPath[1] : (CPos?)null);
 			var cargo = transport.TraitOrDefault<Cargo>();
 
-			var passengers = context.CreateTable();
-
+			var passengers = new List<Actor>();
 			if (cargo != null && cargoTypes != null)
 			{
-				for (var i = 1; i <= cargoTypes.Count; i++)
+				foreach (var cargoType in cargoTypes)
 				{
-					string cargoType;
-					if (!(cargoTypes [i].TryGetClrValue<String>(out cargoType)))
-						throw new LuaException("Invalid data in cargoTypes array");
-
 					var passenger = CreateActor(owner, cargoType, false);
-					passengers.Add(passengers.Count + 1, passenger.ToLuaValue(context));
+					passengers.Add(passenger);
 					cargo.Load(transport, passenger);
 				}
 			}
 
-			for (var i = 2; i <= entryPath.Count; i++)
-			{
-				CPos wpt;
-				if (!(entryPath[i].TryGetClrValue<CPos>(out wpt)))
-					throw new LuaException("Invalid data in entryPath array");
-
-				Move(transport, wpt);
-			}
+			for (var i = 1; i < entryPath.Length; i++)
+				Move(transport, entryPath[i]);
 
 			if (actionFunc != null)
 			{
 				var af = actionFunc.CopyReference() as LuaFunction;
 				transport.QueueActivity(new CallFunc(() =>
 				{
-					af.Call(transport.ToLuaValue(context), passengers);
+					af.Call(transport.ToLuaValue(context), passengers.ToArray().ToLuaValue(context));
 					af.Dispose();
 				}));
 			}
@@ -181,11 +150,13 @@ namespace OpenRA.Mods.RA.Scripting
 					transport.QueueActivity(new HeliLand(true));
 					transport.QueueActivity(new Wait(15));
 				}
+
 				if (cargo != null)
 				{
 					transport.QueueActivity(new UnloadCargo(transport, true));
 					transport.QueueActivity(new WaitFor(() => cargo.IsEmpty(transport)));
 				}
+
 				transport.QueueActivity(new Wait(heli != null ? 50 : 25));
 			}
 
@@ -200,20 +171,15 @@ namespace OpenRA.Mods.RA.Scripting
 			}
 			else if (exitPath != null)
 			{
-				for (var i = 1; i <= exitPath.Count; i++)
-				{
-					CPos wpt;
-					if (!(exitPath[i].TryGetClrValue<CPos>(out wpt)))
-						throw new LuaException("Invalid data in exitPath array.");
-
+				foreach (var wpt in exitPath)
 					Move(transport, wpt);
-				}
+
 				transport.QueueActivity(new RemoveSelf());
 			}
 
 			var ret = context.CreateTable();
 			ret.Add(1, transport.ToLuaValue(context));
-			ret.Add(2, passengers);
+			ret.Add(2, passengers.ToArray().ToLuaValue(context));
 			return ret;
 		}
 	}

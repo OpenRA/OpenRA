@@ -29,35 +29,37 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Returns a table of all actors within the requested region, filtered using the specified function.")]
-		public LuaTable ActorsInCircle(WPos location, WRange radius, LuaFunction filter = null)
+		public Actor[] ActorsInCircle(WPos location, WRange radius, LuaFunction filter = null)
 		{
-			var actors = context.World.FindActorsInCircle(location, radius)
-				.Select(a => a.ToLuaValue(context));
+			var actors = context.World.FindActorsInCircle(location, radius);
 
 			if (filter != null)
+			{
 				actors = actors.Where(a =>
 				{
-					using (var f = filter.Call(a))
+					using (var f = filter.Call(a.ToLuaValue(context)))
 						return f.First().ToBoolean();
 				});
+			}
 
-			return actors.ToLuaTable(context);
+			return actors.ToArray();
 		}
 
 		[Desc("Returns a table of all actors within the requested rectangle, filtered using the specified function.")]
-		public LuaTable ActorsInBox(WPos topLeft, WPos bottomRight, LuaFunction filter = null)
+		public Actor[] ActorsInBox(WPos topLeft, WPos bottomRight, LuaFunction filter = null)
 		{
-			var actors = context.World.ActorMap.ActorsInBox(topLeft, bottomRight)
-				.Select(a => a.ToLuaValue(context));
+			var actors = context.World.ActorMap.ActorsInBox(topLeft, bottomRight);
 
 			if (filter != null)
+			{
 				actors = actors.Where(a =>
 				{
-					using (var f = filter.Call(a))
+					using (var f = filter.Call(a.ToLuaValue(context)))
 						return f.First().ToBoolean();
 				});
+			}
 
-			return actors.ToLuaTable(context);
+			return actors.ToArray();
 		}
 
 		[Desc("Returns the location of the top-left corner of the map.")]
@@ -91,13 +93,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public string Difficulty { get { return context.World.LobbyInfo.GlobalSettings.Difficulty; } }
 
 		[Desc("Returns a table of all the actors that were specified in the map file.")]
-		public LuaTable NamedActors
-		{
-			get
-			{
-				return sma.Actors.Values.ToLuaTable(context);
-			}
-		}
+		public Actor[] NamedActors { get { return sma.Actors.Values.ToArray(); } }
 
 		[Desc("Returns the actor that was specified with a given name in " +
 			"the map file (or nil, if the actor is dead or not found).")]

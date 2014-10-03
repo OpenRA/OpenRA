@@ -164,14 +164,5 @@ namespace OpenRA.Scripting
 
 			throw new InvalidOperationException("Cannot convert type '{0}' to Lua. Class must implement IScriptBindable.".F(obj.GetType()));
 		}
-
-		public static LuaTable ToLuaTable(this IEnumerable collection, ScriptContext context)
-		{
-			var i = 1;
-			var table = context.CreateTable();
-			foreach (var x in collection)
-				table.Add(i++, x.ToLuaValue(context));
-			return table;
-		}
 	}
 }

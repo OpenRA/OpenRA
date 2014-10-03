@@ -19,19 +19,19 @@ namespace OpenRA.Mods.RA.Scripting
 	{
 		public UtilsGlobal(ScriptContext context) : base(context) { }
 
-		[Desc("Calls a function on every value in table.")]
-		public void Do(LuaTable table, LuaFunction func)
+		[Desc("Calls a function on every element in a collection.")]
+		public void Do(LuaValue[] collection, LuaFunction func)
 		{
-			foreach (var kv in table)
-				func.Call(kv.Value).Dispose();
+			foreach (var c in collection)
+				func.Call(c).Dispose();
 		}
 
-		[Desc("Returns true if func returns true for any value in table.")]
-		public bool Any(LuaTable table, LuaFunction func)
+		[Desc("Returns true if func returns true for any element in a collection.")]
+		public bool Any(LuaValue[] collection, LuaFunction func)
 		{
-			foreach (var kv in table)
+			foreach (var c in collection)
 			{
-				using (var ret = func.Call(kv.Value))
+				using (var ret = func.Call(c))
 				{
 					var result = ret.FirstOrDefault();
 					if (result != null && result.ToBoolean())
@@ -42,12 +42,12 @@ namespace OpenRA.Mods.RA.Scripting
 			return false;
 		}
 
-		[Desc("Returns true if func returns true for all values in table.")]
-		public bool All(LuaTable table, LuaFunction func)
+		[Desc("Returns true if func returns true for all elements in a collection.")]
+		public bool All(LuaValue[] collection, LuaFunction func)
 		{
-			foreach (var kv in table)
+			foreach (var c in collection)
 			{
-				using (var ret = func.Call(kv.Value))
+				using (var ret = func.Call(c))
 				{
 					var result = ret.FirstOrDefault();
 					if (result == null || !result.ToBoolean())
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Scripting
 			return true;
 		}
 
-		[Desc("Skips over the first numElements members of the array and returns the rest.")]
+		[Desc("Skips over the first numElements members of a table and return the rest.")]
 		public LuaTable Skip(LuaTable table, int numElements)
 		{
 			var t = context.CreateTable();
@@ -69,26 +69,16 @@ namespace OpenRA.Mods.RA.Scripting
 			return t;
 		}
 
-		[Desc("Returns a random value from table.")]
-		public LuaValue Random(LuaTable table)
+		[Desc("Returns a random value from a collection.")]
+		public LuaValue Random(LuaValue[] collection)
 		{
-			return table.Values.Random<LuaValue>(context.World.SharedRandom);
+			return collection.Random(context.World.SharedRandom);
 		}
 
 		[Desc("Expands the given footprint one step along the coordinate axes, and (if requested) diagonals.")]
-		public LuaTable ExpandFootprint(LuaTable cells, bool allowDiagonal)
+		public CPos[] ExpandFootprint(CPos[] footprint, bool allowDiagonal)
 		{
-			var footprint = cells.Values.Select(c =>
-			{
-				CPos cell;
-				if (!c.TryGetClrValue<CPos>(out cell))
-					throw new LuaException("ExpandFootprint only accepts a table of CPos");
-
-				return cell;
-			});
-
-			var expanded = Traits.Util.ExpandFootprint(footprint, allowDiagonal);
-			return expanded.ToLuaTable(context);
+			return Traits.Util.ExpandFootprint(footprint, allowDiagonal).ToArray();
 		}
 
 		[Desc("Returns a random integer x in the range low &lt;= x &lt; high.")]

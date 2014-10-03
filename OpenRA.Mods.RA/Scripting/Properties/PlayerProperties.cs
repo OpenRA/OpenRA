@@ -26,11 +26,11 @@ namespace OpenRA.Mods.RA.Scripting
 		public string Name { get { return player.PlayerName; } }
 
 		[Desc("Returns an array of actors representing all ground attack units of this player.")]
-		public LuaTable GetGroundAttackers()
+		public Actor[] GetGroundAttackers()
 		{
 			return player.World.ActorsWithTrait<AttackBase>().Select(a => a.Actor)
 				.Where(a => a.Owner == player && !a.IsDead() && a.IsInWorld && a.HasTrait<Mobile>())
-				.Select(a => a.ToLuaValue(context)).ToLuaTable(context);
+				.ToArray();
 		}
 	}
 }
