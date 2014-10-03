@@ -458,7 +458,6 @@ local function indicateFunctionsOnly(editor, lines, linee)
 end
 
 local delayed = {}
-local tokenlists = {}
 
 -- indicator.MASKED is handled separately, so don't include in MAX
 local indicator = {FNCALL = 0, LOCAL = 1, GLOBAL = 2, MASKING = 3, MASKED = 4, MAX = 3}
@@ -473,7 +472,7 @@ end
 -- find all instances of a symbol at pos
 -- return table with [0] as the definition position (if local)
 local function indicateFindInstances(editor, name, pos)
-  local tokens = tokenlists[editor] or {}
+  local tokens = editor:GetTokenList()
   local instances = {{[-1] = 1}}
   local this
   for _, token in ipairs(tokens) do
@@ -527,8 +526,7 @@ function IndicateAll(editor, lines, linee)
     pos, vars = 1, nil
   end
 
-  tokenlists[editor] = tokenlists[editor] or {}
-  local tokens = tokenlists[editor]
+  local tokens = editor:GetTokenList()
 
   if start then -- if the range is specified
     local curindic = editor:GetIndicatorCurrent()
@@ -574,8 +572,7 @@ function IndicateAll(editor, lines, linee)
     end
   else
     if pos == 1 then -- if not continuing, then trim the list
-      tokens = {}
-      tokenlists[editor] = tokens
+      tokens = editor:ResetTokenList()
     end
   end
 
@@ -664,6 +661,7 @@ function CreateEditor()
   editor.bom = false
   editor.jumpstack = {}
   editor.ctrlcache = {}
+  editor.tokenlist = {}
   -- populate cache with Ctrl-<letter> combinations for workaround on Linux
   -- http://wxwidgets.10942.n7.nabble.com/Menu-shortcuts-inconsistentcy-issue-td85065.html
   for id, shortcut in pairs(ide.config.keymap) do
@@ -781,6 +779,9 @@ function CreateEditor()
     self:GotoPos(pos)
     self:EnsureVisibleEnforcePolicy(self:LineFromPosition(pos))
   end
+
+  function editor:GetTokenList() return self.tokenlist end
+  function editor:ResetTokenList() self.tokenlist = {}; return self.tokenlist end
 
   -- GotoPos should work by itself, but it doesn't (wx 2.9.5).
   -- This is likely because the editor window hasn't been refreshed yet,
