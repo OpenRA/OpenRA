@@ -71,7 +71,7 @@ namespace OpenRA.GameRules
 			// Used by traits that damage a single actor, rather than a position
 			if (target.Type == TargetType.Actor)
 				DoImpact(target.Actor, firedBy, damageModifiers);
-			else
+			else if (target.Type != TargetType.Invalid)
 				DoImpact(target.CenterPosition, firedBy, damageModifiers);
 		}
 
