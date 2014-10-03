@@ -29,13 +29,16 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled, INotifyCapture, ITick, INotifySold
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled, INotifyCapture, ITick, INotifySold, IDisableMove
 	{
-		readonly Actor self;
 		public readonly CargoInfo Info;
+		readonly Actor self;
 
+		public bool Unloading { get; internal set; }
 		int totalWeight = 0;
+		int reservedWeight = 0;
 		List<Actor> cargo = new List<Actor>();
+		HashSet<Actor> reserves = new HashSet<Actor>();
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
 
 		CPos currentCell;
@@ -45,6 +48,7 @@ namespace OpenRA.Mods.RA
 		{
 			self = init.self;
 			Info = info;
+			Unloading = false;
 
 			if (init.Contains<RuntimeCargoInit>())
 			{
@@ -97,6 +101,7 @@ namespace OpenRA.Mods.RA
 				if (!CanUnload())
 					return;
 
+				Unloading = true;
 				self.CancelActivity();
 				self.QueueActivity(new UnloadCargo(self, true));
 			}
@@ -115,7 +120,27 @@ namespace OpenRA.Mods.RA
 
 		public bool CanLoad(Actor self, Actor a)
 		{
-			return HasSpace(GetWeight(a)) && self.CenterPosition.Z == 0;
+			return (reserves.Contains(a) || HasSpace(GetWeight(a))) && self.CenterPosition.Z == 0;
+		}
+
+		internal bool ReserveSpace(Actor a)
+		{
+			if (reserves.Contains(a))
+				return true;
+			var w = GetWeight(a);
+			if (!HasSpace(w))
+				return false;
+			reserves.Add(a);
+			reservedWeight += w;
+			return true;
+		}
+
+		internal void UnreserveSpace(Actor a)
+		{
+			if (!reserves.Contains(a))
+				return;
+			reservedWeight -= GetWeight(a);
+			reserves.Remove(a);
 		}
 
 		public string CursorForOrder(Actor self, Order order)
@@ -130,7 +155,8 @@ namespace OpenRA.Mods.RA
 			return self.HasVoice("Unload") ? "Unload" : "Move";
 		}
 
-		public bool HasSpace(int weight) { return totalWeight + weight <= Info.MaxWeight; }
+		public bool MoveDisabled(Actor self) { return reserves.Any(); }
+		public bool HasSpace(int weight) { return totalWeight + reservedWeight + weight <= Info.MaxWeight; }
 		public bool IsEmpty(Actor self) { return cargo.Count == 0; }
 
 		public Actor Peek(Actor self) { return cargo[0]; }
@@ -177,7 +203,13 @@ namespace OpenRA.Mods.RA
 		public void Load(Actor self, Actor a)
 		{
 			cargo.Add(a);
-			totalWeight += GetWeight(a);
+			var w = GetWeight(a);
+			totalWeight += w;
+			if (reserves.Contains(a))
+			{
+				reservedWeight -= w;
+				reserves.Remove(a);
+			}
 
 			foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
 				npe.PassengerEntered(self, a);

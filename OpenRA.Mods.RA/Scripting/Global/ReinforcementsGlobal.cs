@@ -177,7 +177,7 @@ namespace OpenRA.Mods.RA.Scripting
 				var heli = transport.TraitOrDefault<Helicopter>();
 				if (heli != null)
 				{
-					transport.QueueActivity(new Turn(heli.Info.InitialFacing));
+					transport.QueueActivity(new Turn(transport, heli.Info.InitialFacing));
 					transport.QueueActivity(new HeliLand(true));
 					transport.QueueActivity(new Wait(15));
 				}

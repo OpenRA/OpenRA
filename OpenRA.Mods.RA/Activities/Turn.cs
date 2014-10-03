@@ -8,22 +8,30 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
 	public class Turn : Activity
 	{
-		int desiredFacing;
+		readonly IEnumerable<IDisableMove> moveDisablers;
+		readonly int desiredFacing;
 
-		public Turn( int desiredFacing )
+		public Turn(Actor self, int desiredFacing)
 		{
+			moveDisablers = self.TraitsImplementing<IDisableMove>();
 			this.desiredFacing = desiredFacing;
 		}
 
 		public override Activity Tick( Actor self )
 		{
-			if (IsCanceled) return NextActivity;
+			if (IsCanceled)
+				return NextActivity;
+			if (moveDisablers.Any(d => d.MoveDisabled(self)))
+				return this;
+
 			var facing = self.Trait<IFacing>();
 
 			if( desiredFacing == facing.Facing )

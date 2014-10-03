@@ -47,10 +47,10 @@ namespace OpenRA.Mods.Cnc
 					return this;
 				case State.Turn:
 					state = State.DragIn;
-					return Util.SequenceActivities(new Turn(112), this);
+					return Util.SequenceActivities(new Turn(self, 112), this);
 				case State.DragIn:
 					state = State.Dock;
-					return Util.SequenceActivities(new Drag(startDock, endDock, 12), this);
+					return Util.SequenceActivities(new Drag(self, startDock, endDock, 12), this);
 				case State.Dock:
 					ru.PlayCustomAnimation(self, "dock", () => {
 						ru.PlayCustomAnimRepeating(self, "dock-loop");
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Cnc
 					state = State.Wait;
 					return this;
 				case State.DragOut:
-					return Util.SequenceActivities(new Drag(endDock, startDock, 12), NextActivity);
+					return Util.SequenceActivities(new Drag(self, endDock, startDock, 12), NextActivity);
 			}
 
 			throw new InvalidOperationException("Invalid harvester dock state");
