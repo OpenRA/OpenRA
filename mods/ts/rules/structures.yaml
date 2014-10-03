@@ -113,7 +113,6 @@ GAPILE:
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
-	IronCurtainable:
 	ProductionBar:
 	WithProductionOverlay@LIGHTS:
 		Sequence: production-lights
@@ -338,7 +337,6 @@ NAHAND:
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
-	IronCurtainable:
 	ProductionBar:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
@@ -1180,6 +1178,46 @@ NAOBEL:
 		Range: 5
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -150
+
+NAPULS:
+	Inherits: ^Building
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: EMP Cannon
+		Description: Disables vehicles. \nRequires power to operate.\n  Strong vs all ground units\n  Cannot target Aircraft
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 90
+		Prerequisites: radar
+		Owner: nod,gdi
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	RequiresPower:
+	DisabledOverlay:
+	-GivesBuildableArea:
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 8c0
+	Turreted:
+		ROT: 10
+		InitialFacing: 300
+	AttackTurreted:
+	Armament:
+		Weapon: EMPulseCannon
+	AutoTarget:
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 5
+	WithTurret:
+		Sequence: turret
 	Power:
 		Amount: -150
 

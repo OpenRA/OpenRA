@@ -19,7 +19,6 @@
 	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
-	IronCurtainable:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -48,6 +47,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Tank:
 	AppearsOnRadar:
@@ -70,7 +70,6 @@
 	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
-	IronCurtainable:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -102,6 +101,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -140,6 +140,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -220,6 +221,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -326,6 +328,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Ship:
 	AppearsOnRadar:
@@ -359,6 +362,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Building:
 	AppearsOnRadar:

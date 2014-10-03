@@ -20,7 +20,6 @@
 	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
-	IronCurtainable:
 	AttackMove:
 	HiddenUnderFog:
 	GainsExperience:
@@ -60,6 +59,13 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
+	UpgradeOverlay@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	InvulnerabilityUpgrade@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	TimedUpgradeBar:
+		Upgrade: invulnerability
 
 ^Tank:
 	AppearsOnRadar:
@@ -83,7 +89,6 @@
 	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
-	IronCurtainable:
 	AttackMove:
 	HiddenUnderFog:
 	GainsExperience:
@@ -123,6 +128,13 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
+	UpgradeOverlay@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	InvulnerabilityUpgrade@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	TimedUpgradeBar:
+		Upgrade: invulnerability
 
 ^Infantry:
 	AppearsOnRadar:
@@ -207,6 +219,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
 
 ^Ship:
 	AppearsOnRadar:
@@ -247,6 +260,13 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
+	UpgradeOverlay@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	InvulnerabilityUpgrade@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	TimedUpgradeBar:
+		Upgrade: invulnerability
 
 ^Plane:
 	AppearsOnRadar:
@@ -290,6 +310,13 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresUpgrade: selfheal
+	UpgradeManager:
+	UpgradeOverlay@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	InvulnerabilityUpgrade@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	TimedUpgradeBar:
+		Upgrade: invulnerability
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -345,7 +372,14 @@
 	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
-	
+	UpgradeManager:
+	UpgradeOverlay@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	InvulnerabilityUpgrade@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	TimedUpgradeBar:
+		Upgrade: invulnerability
+
 ^Defense:
 	Inherits: ^Building
 	TargetableBuilding:

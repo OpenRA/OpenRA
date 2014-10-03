@@ -19,7 +19,6 @@ MSLO:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
-	IronCurtainable:
 	NukePower:
 		Icon: abomb
 		ChargeTime: 540
@@ -75,7 +74,6 @@ GAP:
 		HasMinibib: Yes
 	CreatesShroud:
 		Range: 6c0
-	IronCurtainable:
 	RenderShroudCircle:
 	Power:
 		Amount: -60
@@ -127,7 +125,6 @@ SPEN:
 	Production:
 		Produces: Ship, Submarine
 	PrimaryBuilding:
-	IronCurtainable:
 	-EmitInfantryOnSell:
 	RepairsUnits:
 	RallyPoint:
@@ -181,7 +178,6 @@ SYRD:
 	Production:
 		Produces: Ship, Boat
 	PrimaryBuilding:
-	IronCurtainable:
 	-EmitInfantryOnSell:
 	RepairsUnits:
 	RallyPoint:
@@ -217,18 +213,18 @@ IRON:
 		Range: 10c0
 	Bib:
 		HasMinibib: Yes
-	IronCurtainable:
-	IronCurtainPower:
+	GrantUpgradePower@IRONCURTAIN:
 		Icon: invuln
 		ChargeTime: 120
 		Description: Invulnerability
 		LongDesc: Makes a group of units invulnerable\nfor 20 seconds.
-		Duration: 20
+		Duration: 500
 		SelectTargetSound: slcttgt1.aud
 		InsufficientPowerSound: nopowr1.aud
 		BeginChargeSound: ironchg1.aud
 		EndChargeSound: ironrdy1.aud
 		DisplayRadarPing: True
+		Upgrades: invulnerability
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
@@ -260,7 +256,6 @@ PDOX:
 		Range: 10c0
 	Bib:
 		HasMinibib: Yes
-	IronCurtainable:
 	ChronoshiftPower:
 		Icon: chrono
 		ChargeTime: 120
@@ -314,7 +309,6 @@ TSLA:
 		MaxCharges: 3
 		ReloadTime: 120
 	AutoTarget:
-	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
 	-AcceptsSupplies:
@@ -361,7 +355,6 @@ AGUN:
 	AttackTurreted:
 	WithMuzzleFlash:
 	AutoTarget:
-	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
 		RangeCircleType: aa
@@ -399,7 +392,6 @@ DOME:
 		Range: 10c0
 	Bib:
 	ProvidesRadar:
-	IronCurtainable:
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10
@@ -428,7 +420,6 @@ PBOX:
 		Range: 6c0
 	Bib:
 		HasMinibib: Yes
-	IronCurtainable:
 	-AcceptsSupplies:
 	Turreted:
 		ROT: 255
@@ -476,7 +467,6 @@ HBOX:
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 60
-	IronCurtainable:
 	-AcceptsSupplies:
 	Turreted:
 		ROT: 255
@@ -534,7 +524,6 @@ GUN:
 	AttackTurreted:
 	WithMuzzleFlash:
 	AutoTarget:
-	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
 	-AcceptsSupplies:
@@ -575,7 +564,6 @@ FTUR:
 	BodyOrientation:
 		QuantizedFacings: 8
 	AutoTarget:
-	IronCurtainable:
 	RenderRangeCircle:
 	-AcceptsSupplies:
 	DrawLineToTarget:
@@ -620,7 +608,6 @@ SAM:
 	AttackTurreted:
 	WithMuzzleFlash:
 	AutoTarget:
-	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
 		RangeCircleType: aa
@@ -654,7 +641,6 @@ ATEK:
 	RevealsShroud:
 		Range: 10c0
 	Bib:
-	IronCurtainable:
 	GpsPower:
 		Icon: gps
 		OneShot: yes
@@ -712,7 +698,6 @@ WEAP:
 		RequiresPrerequisites: structures.soviet
 		Prerequisite: vehicles.soviet
 	PrimaryBuilding:
-	IronCurtainable:
 	ProductionBar:
 	Power:
 		Amount: -30
@@ -741,7 +726,6 @@ FACT:
 	Bib:
 	Production:
 		Produces: Building,Defense
-	IronCurtainable:
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -793,7 +777,6 @@ PROC:
 	StoresResources:
 		PipCount: 17
 		Capacity: 2000
-	IronCurtainable:
 	DrawLineToTarget:
 	CustomSellValue:
 		Value: 600
@@ -837,7 +820,6 @@ SILO:
 	StoresResources:
 		PipCount: 5
 		Capacity: 1500
-	IronCurtainable:
 	-RenderBuilding:
 	-EmitInfantryOnSell:
 	Power:
@@ -872,7 +854,6 @@ HPAD:
 	Production:
 		Produces: Aircraft, Helicopter
 	Reservable:
-	IronCurtainable:
 	ProductionBar:
 	PrimaryBuilding:
 	Power:
@@ -907,7 +888,6 @@ AFLD:
 	Production:
 		Produces: Aircraft, Plane
 	Reservable:
-	IronCurtainable:
 	AirstrikePower:
 		Icon: spyplane
 		ChargeTime: 180
@@ -962,7 +942,6 @@ POWR:
 	RevealsShroud:
 		Range: 4c0
 	Bib:
-	IronCurtainable:
 	DeadBuildingState:
 	Power:
 		Amount: 100
@@ -996,7 +975,6 @@ APWR:
 	RevealsShroud:
 		Range: 4c0
 	Bib:
-	IronCurtainable:
 	DeadBuildingState:
 	Power:
 		Amount: 200
@@ -1030,7 +1008,6 @@ STEK:
 	RevealsShroud:
 		Range: 4c0
 	Bib:
-	IronCurtainable:
 	Power:
 		Amount: -100
 
@@ -1065,7 +1042,6 @@ BARR:
 	Production:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
-	IronCurtainable:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
 		Prerequisite: barracks
@@ -1101,7 +1077,6 @@ KENN:
 	Production:
 		Produces: Infantry, Dog
 	PrimaryBuilding:
-	IronCurtainable:
 	ProductionBar:
 	-EmitInfantryOnSell:
 	Power:
@@ -1138,7 +1113,6 @@ TENT:
 	Production:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
-	IronCurtainable:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
 		Prerequisite: barracks
@@ -1169,7 +1143,6 @@ FIX:
 		HasMinibib: Yes
 	Reservable:
 	RallyPoint:
-	IronCurtainable:
 	RepairsUnits:
 		Interval: 10
 	WithRepairAnimation:
@@ -1200,7 +1173,6 @@ FACF:
 	RenderBuilding:
 		Image: FACT
 	Fake:
-	IronCurtainable:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -2
@@ -1231,7 +1203,6 @@ WEAF:
 	RenderBuildingWarFactory:
 		Image: WEAP
 	Fake:
-	IronCurtainable:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -2

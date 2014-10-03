@@ -652,7 +652,9 @@ DTRK:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
 	DemoTruck:
-	-IronCurtainable:
+	-InvulnerabilityUpgrade@IRONCURTAIN:
+	KillsSelf:
+		RequiresUpgrade: invulnerability
 	Chronoshiftable:
 		ExplodeInstead: yes
 

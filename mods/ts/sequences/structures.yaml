@@ -698,6 +698,26 @@ nasam:
 	icon: samicon
 		Start: 0
 
+napuls:
+	idle: ntpuls
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: ntpuls
+		Start: 1
+		ShadowStart: 4
+	critical-idle: ntpuls
+		Start: 2
+		ShadowStart: 5
+	turret: ntpuls_a
+		Start: 0
+		Facings: 32
+	make: ntpulsmk
+		Start: 0
+		Length: 20
+		ShadowStart: 20
+	icon: pulsicon
+		Start: 0
+
 gavulc:
 	idle: gtctwr
 		Start: 0
