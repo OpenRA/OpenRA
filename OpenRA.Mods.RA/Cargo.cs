@@ -33,16 +33,16 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly CargoInfo Info;
 		readonly Actor self;
+		readonly List<Actor> cargo = new List<Actor>();
+		readonly HashSet<Actor> reserves = new HashSet<Actor>();
 
-		public bool Unloading { get; internal set; }
+		CPos cachedLocation;
 		int totalWeight = 0;
 		int reservedWeight = 0;
-		List<Actor> cargo = new List<Actor>();
-		HashSet<Actor> reserves = new HashSet<Actor>();
-		public IEnumerable<Actor> Passengers { get { return cargo; } }
 
-		CPos currentCell;
 		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
+		public bool Unloading { get; internal set; }
+		public IEnumerable<Actor> Passengers { get { return cargo; } }
 
 		public Cargo(ActorInitializer init, CargoInfo info)
 		{
@@ -80,6 +80,8 @@ namespace OpenRA.Mods.RA
 				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
 		}
+
+		static int GetWeight(Actor a) { return a.Info.Traits.Get<PassengerInfo>().Weight; }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -127,11 +129,14 @@ namespace OpenRA.Mods.RA
 		{
 			if (reserves.Contains(a))
 				return true;
+
 			var w = GetWeight(a);
 			if (!HasSpace(w))
 				return false;
+
 			reserves.Add(a);
 			reservedWeight += w;
+
 			return true;
 		}
 
@@ -139,19 +144,24 @@ namespace OpenRA.Mods.RA
 		{
 			if (!reserves.Contains(a))
 				return;
+
 			reservedWeight -= GetWeight(a);
 			reserves.Remove(a);
 		}
 
 		public string CursorForOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "Unload") return null;
+			if (order.OrderString != "Unload")
+				return null;
+
 			return CanUnload() ? "deploy" : "deploy-blocked";
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "Unload" || IsEmpty(self)) return null;
+			if (order.OrderString != "Unload" || IsEmpty(self))
+				return null;
+
 			return self.HasVoice("Unload") ? "Unload" : "Move";
 		}
 
@@ -160,8 +170,6 @@ namespace OpenRA.Mods.RA
 		public bool IsEmpty(Actor self) { return cargo.Count == 0; }
 
 		public Actor Peek(Actor self) { return cargo[0]; }
-
-		static int GetWeight(Actor a) { return a.Info.Traits.Get<PassengerInfo>().Weight; }
 
 		public Actor Unload(Actor self)
 		{
@@ -221,6 +229,7 @@ namespace OpenRA.Mods.RA
 		{
 			foreach (var c in cargo)
 				c.Kill(e.Attacker);
+
 			cargo.Clear();
 		}
 
@@ -240,6 +249,7 @@ namespace OpenRA.Mods.RA
 			{
 				w.Add(passenger);
 				passenger.Trait<IPositionable>().SetPosition(passenger, self.Location);
+
 				// TODO: this won't work well for >1 actor as they should move towards the next enterable (sub) cell instead
 			});
 		}
@@ -259,7 +269,7 @@ namespace OpenRA.Mods.RA
 		public void AddedToWorld(Actor self)
 		{
 			// Force location update to avoid issues when initial spawn is outside map
-			currentCell = self.Location;
+			cachedLocation = self.Location;
 			CurrentAdjacentCells = GetAdjacentCells();
 		}
 
@@ -276,13 +286,13 @@ namespace OpenRA.Mods.RA
 					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
 						npe.PassengerEntered(self, c);
 				}
+
 				initialized = true;
 			}
 
-			var cell = self.World.Map.CellContaining(self.CenterPosition);
-			if (currentCell != cell)
+			if (cachedLocation != self.Location)
 			{
-				currentCell = cell;
+				cachedLocation = self.Location;
 				CurrentAdjacentCells = GetAdjacentCells();
 			}
 		}
@@ -294,7 +304,7 @@ namespace OpenRA.Mods.RA
 	public class RuntimeCargoInit : IActorInit<Actor[]>
 	{
 		[FieldFromYamlKey]
-		public readonly Actor[] value = { };
+		readonly Actor[] value = { };
 		public RuntimeCargoInit() { }
 		public RuntimeCargoInit(Actor[] init) { value = init; }
 		public Actor[] Value(World world) { return value; }
@@ -303,7 +313,7 @@ namespace OpenRA.Mods.RA
 	public class CargoInit : IActorInit<string[]>
 	{
 		[FieldFromYamlKey]
-		public readonly string[] value = { };
+		readonly string[] value = { };
 		public CargoInit() { }
 		public CargoInit(string[] init) { value = init; }
 		public string[] Value(World world) { return value; }
