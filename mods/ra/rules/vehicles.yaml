@@ -245,6 +245,7 @@ HARV:
 		Cost: 1100
 	Tooltip:
 		Name: Ore Truck
+		GenericName: Harvester
 		Description: Collects Ore and Gems for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
