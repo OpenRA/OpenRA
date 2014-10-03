@@ -158,7 +158,7 @@ namespace OpenRA.Mods.RA.AI
 		bool enabled;
 		int ticks;
 
-		HashSet<int> resourceTypeIndices;
+		HashSet<byte> resourceTypeIndices;
 
 		RushFuzzy rushFuzzy = new RushFuzzy();
 
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.RA.AI
 
 			random = new MersenneTwister((int)p.PlayerActor.ActorID);
 
-			resourceTypeIndices = new HashSet<int>(
+			resourceTypeIndices = new HashSet<byte>(
 				Map.Rules.Actors["world"].Traits
 				.WithInterface<ResourceTypeInfo>()
 				.Select(t => world.TileSet.GetTerrainIndex(t.TerrainType)));

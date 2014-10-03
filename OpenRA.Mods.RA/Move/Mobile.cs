@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Move
 
 			foreach (var kvp in TerrainSpeeds)
 			{
-				int index;
+				byte index;
 				if (tileSet.TryGetTerrainIndex(kvp.Key, out index))
 					info[index] = kvp.Value;
 			}
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.RA.Move
 				return int.MaxValue;
 
 			var index = world.Map.GetTerrainIndex(cell);
-			if (index == -1)
+			if (index == byte.MaxValue)
 				return int.MaxValue;
 
 			return TilesetTerrainInfo[world.TileSet][index].Cost;
@@ -526,7 +526,7 @@ namespace OpenRA.Mods.RA.Move
 		public int MovementSpeedForCell(Actor self, CPos cell)
 		{
 			var index = self.World.Map.GetTerrainIndex(cell);
-			if (index == -1)
+			if (index == byte.MaxValue)
 				return 0;
 
 			// TODO: Convert to integers
