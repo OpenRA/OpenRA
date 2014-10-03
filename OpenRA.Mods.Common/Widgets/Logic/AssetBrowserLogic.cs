@@ -35,11 +35,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string currentPalette;
 		string currentFilename;
 		Sprite[] currentSprites;
+		VqaPlayerWidget player = null;
+		bool isVideoLoaded = false;
 		int currentFrame;
 
 		readonly World world;
 
-		static readonly string[] AllowedExtensions = { ".shp", ".r8", "tmp", ".tem", ".des", ".sno", ".int", ".jun" };
+		static readonly string[] AllowedExtensions = { ".shp", ".r8", "tmp", ".tem", ".des", ".sno", ".int", ".jun", ".vqa" };
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, World world)
@@ -79,7 +81,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				spriteWidget.GetSprite = () => currentSprites != null ? currentSprites[currentFrame] : null;
 				currentPalette = spriteWidget.Palette;
 				spriteWidget.GetPalette = () => currentPalette;
+				spriteWidget.IsVisible = () => !isVideoLoaded;
 			}
+
+			var playerWidget = panel.GetOrNull<VqaPlayerWidget>("PLAYER");
+			if (playerWidget != null)			
+				playerWidget.IsVisible = () => isVideoLoaded;
 
 			var paletteDropDown = panel.GetOrNull<DropDownButtonWidget>("PALETTE_SELECTOR");
 			if (paletteDropDown != null)
@@ -105,28 +112,56 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var frameContainer = panel.GetOrNull("FRAME_SELECTOR");
 			if (frameContainer != null)
-				frameContainer.IsVisible = () => currentSprites != null && currentSprites.Length > 1;
+				frameContainer.IsVisible = () => (currentSprites != null && currentSprites.Length > 1) || (player != null && player.Video != null && player.Video.Frames > 1);
 
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
-			frameSlider.OnChange += x => { currentFrame = (int)Math.Round(x); };
-			frameSlider.GetValue = () => currentFrame;
+			if (frameSlider != null)
+			{
+				frameSlider.OnChange += x => 
+				{
+					if (!isVideoLoaded)					
+						currentFrame = (int)Math.Round(x);					
+				};
+
+				frameSlider.GetValue = () => isVideoLoaded ? player.Video.CurrentFrame : currentFrame;
+				frameSlider.IsDisabled = () => isVideoLoaded;				
+			}
 
 			var frameText = panel.GetOrNull<LabelWidget>("FRAME_COUNT");
 			if (frameText != null)
-				frameText.GetText = () => "{0} / {1}".F(currentFrame + 1, currentSprites.Length);
+			{
+				frameText.GetText = () => 
+					isVideoLoaded ? 
+					"{0} / {1}".F(player.Video.CurrentFrame + 1, player.Video.Frames) : 
+					"{0} / {1}".F(currentFrame + 1, currentSprites.Length);
+			}
 
 			var playButton = panel.GetOrNull<ButtonWidget>("BUTTON_PLAY");
 			if (playButton != null)
 			{
-				playButton.OnClick = () => animateFrames = true;
-				playButton.IsVisible = () => !animateFrames;
+				playButton.OnClick = () =>
+				{
+					if (isVideoLoaded)
+						player.Play();
+					else
+						animateFrames = true;
+				};
+
+				playButton.IsVisible = () => isVideoLoaded ? player.Paused : !animateFrames;
 			}
 
 			var pauseButton = panel.GetOrNull<ButtonWidget>("BUTTON_PAUSE");
 			if (pauseButton != null)
 			{
-				pauseButton.OnClick = () => animateFrames = false;
-				pauseButton.IsVisible = () => animateFrames;
+				pauseButton.OnClick = () =>
+				{
+					if (isVideoLoaded)
+						player.Pause();
+					else
+						animateFrames = false;
+				};
+
+				pauseButton.IsVisible = () => isVideoLoaded ? !player.Paused : animateFrames;
 			}
 
 			var stopButton = panel.GetOrNull<ButtonWidget>("BUTTON_STOP");
@@ -134,19 +169,40 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				stopButton.OnClick = () =>
 				{
-					frameSlider.Value = 0;
-					currentFrame = 0;
-					animateFrames = false;
+					if (isVideoLoaded)
+						player.Stop();
+					else
+					{
+						frameSlider.Value = 0;
+						currentFrame = 0;
+						animateFrames = false;
+					}
 				};
 			}
 
 			var nextButton = panel.GetOrNull<ButtonWidget>("BUTTON_NEXT");
 			if (nextButton != null)
-				nextButton.OnClick = SelectNextFrame;
+			{
+				nextButton.OnClick = () =>
+				{
+					if (!isVideoLoaded)						
+						nextButton.OnClick = SelectNextFrame;
+				};
+
+				nextButton.IsVisible = () => !isVideoLoaded;
+			}
 
 			var prevButton = panel.GetOrNull<ButtonWidget>("BUTTON_PREV");
 			if (prevButton != null)
-				prevButton.OnClick = SelectPreviousFrame;
+			{
+				prevButton.OnClick = () =>
+				{
+					if (!isVideoLoaded)
+						SelectPreviousFrame();
+				};
+
+				prevButton.IsVisible = () => !isVideoLoaded;
+			}
 
 			assetList = panel.Get<ScrollPanelWidget>("ASSET_LIST");
 			template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
@@ -154,7 +210,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var closeButton = panel.GetOrNull<ButtonWidget>("CLOSE_BUTTON");
 			if (closeButton != null)
-				closeButton.OnClick = () => { Ui.CloseWindow(); onExit(); };
+				closeButton.OnClick = () => 
+				{
+					if (isVideoLoaded)
+						player.Stop();
+					Ui.CloseWindow();
+					onExit(); 
+				};
 		}
 
 		void SelectNextFrame()
@@ -221,17 +283,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool LoadAsset(string filename)
 		{
+			if (isVideoLoaded)
+			{
+				player.Stop();
+				player = null;
+				isVideoLoaded = false;
+			}
+			
 			if (string.IsNullOrEmpty(filename))
 				return false;
 
 			if (!GlobalFileSystem.Exists(filename))
 				return false;
 
-			currentFilename = filename;
-			currentSprites = world.Map.SequenceProvider.SpriteLoader.LoadAllSprites(filename);
-			currentFrame = 0;
-			frameSlider.MaximumValue = (float)currentSprites.Length - 1;
-			frameSlider.Ticks = currentSprites.Length;
+			if (Path.GetExtension(filename) == ".vqa")
+			{
+				player = panel.Get<VqaPlayerWidget>("PLAYER");
+				currentFilename = filename;
+				player.Load(filename);
+				isVideoLoaded = true;
+				frameSlider.MaximumValue = (float)player.Video.Frames - 1;
+				frameSlider.Ticks = 0;
+			}
+			else
+			{
+				currentFilename = filename;
+				currentSprites = world.Map.SequenceProvider.SpriteLoader.LoadAllSprites(filename);
+				currentFrame = 0;
+				frameSlider.MaximumValue = (float)currentSprites.Length - 1;
+				frameSlider.Ticks = currentSprites.Length;
+			}
 
 			return true;
 		}
