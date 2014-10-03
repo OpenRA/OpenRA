@@ -492,8 +492,9 @@
 # This is the Generic Template for the other 7 light posts!)
 ^LightPost:
 	Inherits: ^Building
-		Tooltip:
+	Tooltip:
 		Name: Light Post
+		Description: Light Post
 	Power:
 		Amount: 0
 	RenderBuilding:
