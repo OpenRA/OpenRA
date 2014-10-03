@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled, INotifyCapture, ITick, INotifySold, IDisableMove
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled, INotifyCapture, INotifyAddedToWorld, ITick, INotifySold, IDisableMove
 	{
 		public readonly CargoInfo Info;
 		readonly Actor self;
@@ -254,6 +254,13 @@ namespace OpenRA.Mods.RA
 				foreach (var p in Passengers)
 					p.Owner = newOwner;
 			});
+		}
+
+		public void AddedToWorld(Actor self)
+		{
+			// Force location update to avoid issues when initial spawn is outside map
+			currentCell = self.Location;
+			CurrentAdjacentCells = GetAdjacentCells();
 		}
 
 		bool initialized;
