@@ -31,10 +31,10 @@ namespace OpenRA.Graphics
 		{
 			var attrib = new float2(palette / (float)HardwarePalette.MaxPalettes, channelSelect[(int)r.channel]);
 
-			vertices[nv] = new Vertex(a, r.FastMapTextureCoords(0), attrib);
-			vertices[nv + 1] = new Vertex(b, r.FastMapTextureCoords(1), attrib);
-			vertices[nv + 2] = new Vertex(c, r.FastMapTextureCoords(3), attrib);
-			vertices[nv + 3] = new Vertex(d, r.FastMapTextureCoords(2), attrib);
+			vertices[nv] = new Vertex(a, r.TopLeftTextureCoords, attrib);
+			vertices[nv + 1] = new Vertex(b, r.TopRightTextureCoords, attrib);
+			vertices[nv + 2] = new Vertex(c, r.BottomRightTextureCoords, attrib);
+			vertices[nv + 3] = new Vertex(d, r.BottomLeftTextureCoords, attrib);
 		}
 
 		static readonly int[] channelMasks = { 2, 1, 0, 3 };	// yes, our channel order is nuts.
