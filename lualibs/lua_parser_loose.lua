@@ -68,7 +68,7 @@ function PARSE.parse_scope(lx, f, level)
     end
     if lx:peek()[1] == ')' then
       local n = lx:next()
-      f('Function', name, c.lineinfo)
+      f('Function', name, c.lineinfo-(name and #name or 0))
     end
   end
   
