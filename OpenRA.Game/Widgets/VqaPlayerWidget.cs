@@ -30,6 +30,7 @@ namespace OpenRA.Widgets
 		Action onComplete;
 
 		public bool Paused { get { return paused; } }
+		public VqaReader Video { get { return video; } }
 
 		readonly World world;
 		[ObjectCreator.UseCtor]
