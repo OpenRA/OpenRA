@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA
 				self.World.Map.CustomTerrain[c] = GetTerrainType(c);
 		}
 
-		int GetTerrainType(CPos cell)
+		byte GetTerrainType(CPos cell)
 		{
 			var dx = cell - self.Location;
 			var index = dx.X + self.World.TileSet.Templates[template].Size.X * dx.Y;

@@ -385,7 +385,7 @@ namespace OpenRA.TilesetBuilder
 			ushort cur = 0;
 			foreach (var tp in surface1.Templates)
 			{
-				var tiles = new int[tp.Width * tp.Height];
+				var tiles = new byte[tp.Width * tp.Height];
 				foreach (var t in tp.Cells)
 				{
 					var ttype = TerrainType[surface1.TerrainTypes[t.Key.X, t.Key.Y]].Type;

@@ -203,7 +203,7 @@ namespace OpenRA.Mods.RA
 			if (--c.Density < 0)
 			{
 				content[cell] = EmptyCell;
-				world.Map.CustomTerrain[cell] = -1;
+				world.Map.CustomTerrain[cell] = byte.MaxValue;
 			}
 			else
 				content[cell] = c;
@@ -222,7 +222,7 @@ namespace OpenRA.Mods.RA
 
 			// Clear cell
 			content[cell] = EmptyCell;
-			world.Map.CustomTerrain[cell] = -1;
+			world.Map.CustomTerrain[cell] = byte.MaxValue;
 
 			if (!dirty.Contains(cell))
 				dirty.Add(cell);
