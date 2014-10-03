@@ -1,0 +1,39 @@
+GASPOT:
+	Inherits: ^Building
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Light Tower
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 3
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	Power:
+		Amount: -10
+	Selectable:
+		Bounds: 34, 92, 0, -10
+
+GALITE:
+	Inherits: ^LightPost
+	Valued:
+		Cost: 0
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	-WithMakeAnimation:
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 2c0

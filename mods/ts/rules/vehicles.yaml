@@ -151,6 +151,7 @@ HVR:
 	WithVoxelBody:
 	WithVoxelTurret:
 
+# Campaign unit... 
 4TNK:
 	Inherits: ^Tank
 	Valued:
@@ -158,10 +159,6 @@ HVR:
 	Tooltip:
 		Name: Mammoth Tank
 		Description: Heavily armored GDI Tank.\n  Strong vs Everything
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 60
-		Owner: gdi
 	Mobile:
 		Speed: 56
 		ROT: 5
@@ -195,10 +192,6 @@ HVR:
 
 TRUCKB:
 	Inherits: ^Vehicle
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 120
-		Owner: gdi, nod
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -247,16 +240,13 @@ LPST:
 		TransformSounds:
 		NoTransformSounds:
 
+# Campaign unit... 
 ICBM:
 	Inherits: ^Vehicle
 	Valued:
 		Cost: 1400
 	Tooltip:
 		Name: Ballistic Missile Launcher
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 100
-		Owner: gdi
 	Health:
 		HP: 500
 	Armor:
@@ -363,10 +353,6 @@ BUS:
 		Cost: 800
 	Tooltip:
 		Name: School Bus
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Owner: gdi
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -390,10 +376,6 @@ PICK:
 		Cost: 800
 	Tooltip:
 		Name: Pickup
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Owner: gdi
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -417,10 +399,6 @@ CAR:
 		Cost: 800
 	Tooltip:
 		Name: Automobile
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Owner: gdi
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -444,10 +422,6 @@ GGHUNT:
 		Cost: 1000
 	Tooltip:
 		Name: Hunter-Seeker Droid
-	Buildable:
-		BuildPaletteOrder: 20
-		Owner: gdi, nod
-		Queue: Vehicle
 	Mobile:
 		ROT: 16
 		Speed: 355
@@ -469,10 +443,6 @@ WINI:
 		Cost: 800
 	Tooltip:
 		Name: Recreational Vehicle
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Owner: gdi
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -814,4 +784,3 @@ STNK:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
-

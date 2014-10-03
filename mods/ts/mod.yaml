@@ -70,6 +70,7 @@ Rules:
 	mods/ts/rules/aircraft.yaml
 	mods/ts/rules/defaults.yaml
 	mods/ts/rules/infantry.yaml
+	mods/ts/rules/civilian.yaml
 	mods/ts/rules/structures.yaml
 	mods/ts/rules/vehicles.yaml
 	mods/ts/rules/trees.yaml
@@ -78,6 +79,7 @@ Sequences:
 	mods/ts/sequences/aircraft.yaml
 	mods/ts/sequences/infantry.yaml
 	mods/ts/sequences/misc.yaml
+	mods/ts/sequences/civilian.yaml
 	mods/ts/sequences/structures.yaml
 	mods/ts/sequences/vehicles.yaml
 	mods/ts/sequences/trees.yaml

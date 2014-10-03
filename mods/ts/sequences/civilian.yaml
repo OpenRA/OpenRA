@@ -1,0 +1,51 @@
+gaspot:
+	idle:
+		Start: 0
+		ShadowStart: 3
+		Offset: 0, 12
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+		Offset: 0, 12
+	critical-idle:
+		Start: 2
+		ShadowStart: 5
+		Offset: 0, 12
+	idle-lights: gaspot_a
+		Start: 0
+		Length: 8
+		Tick: 200
+		Offset: 0, 12
+	damaged-idle-lights: gaspot_a
+		Start: 8
+		Length: 8
+		Tick: 200
+		Offset: 0, 12
+	critical-idle-lights: gaspot_a
+		Start: 16
+		Length: 8
+		Tick: 200
+		Offset: 0, 12
+	make: gaspotmk
+		Start: 0
+		Length: 14
+		ShadowStart: 14
+		Offset: 0, 12
+	icon: spoticon
+		Start: 0
+
+galite:
+	idle: gtlite
+		Start: 0
+		ShadowStart: 2
+		Offset: 0, 12
+	damaged-idle: gtlite
+		Start: 1
+		ShadowStart: 3
+		Offset: 0, 12
+#	lighting: alphatst
+#		Start: 0
+#		ZOffset: -1c511
+#		BlendMode: Alpha
+	icon: liteicon
+		Start: 0
