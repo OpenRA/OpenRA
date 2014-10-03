@@ -1239,6 +1239,30 @@ Actors:
 	ChronoshiftLocation: waypoint
 		Location: 80,65
 		Owner: Neutral
+	Mig11: waypoint
+		Location: 94,1
+		Owner: Neutral
+	Mig12: waypoint
+		Location: 68,33
+		Owner: Neutral
+	Mig13: waypoint
+		Location: 41,38
+		Owner: Neutral
+	Mig14: waypoint
+		Location: 1,26
+		Owner: Neutral
+	Mig21: waypoint
+		Location: 96,3
+		Owner: Neutral
+	Mig22: waypoint
+		Location: 70,35
+		Owner: Neutral
+	Mig23: waypoint
+		Location: 41,40
+		Owner: Neutral
+	Mig24: waypoint
+		Location: 1,28
+		Owner: Neutral
 
 Rules: rules.yaml
 
