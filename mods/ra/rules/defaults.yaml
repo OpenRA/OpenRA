@@ -38,6 +38,8 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Tooltip:
+		GenericName: Vehicle
 	EjectOnDeath:
 		PilotActor: e1
 		SuccessRate: 20
@@ -101,6 +103,8 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Tooltip:
+		GenericName: Tank
 	EjectOnDeath:
 		PilotActor: e1
 		SuccessRate: 20
@@ -171,6 +175,8 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Tooltip:
+		GenericName: Soldier
 	SelfHealing@HOSPITAL:
 		Step: 5
 		Ticks: 100
@@ -237,6 +243,8 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Tooltip:
+		GenericName: Ship
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
@@ -280,6 +288,8 @@
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	BodyOrientation:
+	Tooltip:
+		GenericName: Plane
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
@@ -293,6 +303,8 @@
 
 ^Helicopter:
 	Inherits: ^Plane
+	Tooltip:
+		GenericName: Helicopter
 	GpsDot:
 		String: Helicopter
 
@@ -339,6 +351,8 @@
 		Range: 3
 	BodyOrientation:
 	FrozenUnderFog:
+	Tooltip:
+		GenericName: Structure
 	GpsDot:
 		String: Structure
 	Huntable:
@@ -400,6 +414,7 @@
 		Type: Wood
 	Tooltip:
 		Name: Civilian Building
+		GenericVisibility: None
 	ProximityCaptor:
 		Types: CivilianBuilding
 	-WithMakeAnimation:
@@ -438,6 +453,7 @@
 		Cost: 70
 	Tooltip:
 		Name: Civilian
+		GenericVisibility: None
 	Health:
 		HP: 20
 	Mobile:
@@ -517,6 +533,8 @@
 	TargetableUnit:
 		TargetTypes: Ground
 		RequiresForceFire: true
+	Tooltip:
+		GenericName: Destroyed Vehicle
 	AutoTargetIgnore:
 	Capturable:
 		Type: husk
