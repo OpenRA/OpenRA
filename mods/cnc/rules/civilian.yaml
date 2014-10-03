@@ -288,9 +288,9 @@ WOOD:
 	Inherits: ^Wall
 	Health:
 		HP: 100
-		Armor:
-			Type: Wood
-		Tooltip:
+	Armor:
+		Type: Wood
+	Tooltip:
 		Name: Wooden Fence
 		Icon: woodicnh
 
