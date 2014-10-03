@@ -4,10 +4,6 @@ GACNST:
 		Footprint: xxx xxx xxx
 		BuildSounds: facbld1.aud
 		Dimensions: 3,3
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 1000
-		Owner: None
 	Health:
 		HP: 1500
 	Armor:

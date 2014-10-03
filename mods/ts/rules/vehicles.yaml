@@ -158,10 +158,6 @@ HVR:
 	Tooltip:
 		Name: Mammoth Tank
 		Description: Heavily armored GDI Tank.\n  Strong vs Everything
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 60
-		Owner: none
 	Mobile:
 		Speed: 56
 		ROT: 5
@@ -195,10 +191,6 @@ HVR:
 
 TRUCKB:
 	Inherits: ^Vehicle
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 120
-		Owner: none
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -254,10 +246,6 @@ ICBM:
 		Cost: 1400
 	Tooltip:
 		Name: Ballistic Missile Launcher
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 100
-		Owner: none
 	Health:
 		HP: 500
 	Armor:
@@ -364,10 +352,6 @@ BUS:
 		Cost: 800
 	Tooltip:
 		Name: School Bus
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Owner: none
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -391,10 +375,6 @@ PICK:
 		Cost: 800
 	Tooltip:
 		Name: Pickup
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Owner: none
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -418,10 +398,6 @@ CAR:
 		Cost: 800
 	Tooltip:
 		Name: Automobile
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Owner: none
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -445,10 +421,6 @@ GGHUNT:
 		Cost: 1000
 	Tooltip:
 		Name: Hunter-Seeker Droid
-	Buildable:
-		BuildPaletteOrder: 20
-		Owner: none
-		Queue: Vehicle
 	Mobile:
 		ROT: 16
 		Speed: 355
@@ -470,10 +442,6 @@ WINI:
 		Cost: 800
 	Tooltip:
 		Name: Recreational Vehicle
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Owner: none
 	Mobile:
 		ROT: 5
 		Speed: 113

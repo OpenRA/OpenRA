@@ -1,9 +1,5 @@
 GASPOT:
 	Inherits: ^Building
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 10
-		Owner: none
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -29,10 +25,6 @@ GASPOT:
 
 GALITE:
 	Inherits: ^LightPost
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 10
-		Owner: none
 	Valued:
 		Cost: 0
 	Building:

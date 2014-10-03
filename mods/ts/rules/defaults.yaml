@@ -4,6 +4,9 @@
 		Palette: pips
 	Selectable:
 		Priority: 3
+	Tooltip:
+		Name: Building
+		Description: Building
 	TargetableBuilding:
 		TargetTypes: Ground, C4
 	Building:
@@ -163,14 +166,8 @@
 	Selectable:
 		Voice: Civilian
 		Bounds: 12,17,0,-9
-	Valued:
-		Cost: 10
 	Tooltip:
 		Name: Civilian
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 1000
-		Owner: none
 	Health:
 		HP: 50
 	Mobile:
@@ -203,6 +200,8 @@
 		Voice: Vehicle
 	TargetableUnit:
 		TargetTypes: Ground
+	Tooltip:
+		Name: Vehicle
 	Repairable:
 		RepairBuildings: gadept
 	Passenger:
@@ -256,6 +255,8 @@
 			Tiberium: 80
 			BlueTiberium: 80
 		ROT: 5
+	Tooltip:
+		Name: Tank
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -494,7 +495,6 @@
 	Inherits: ^Building
 	Tooltip:
 		Name: Light Post
-		Description: Light Post
 	Power:
 		Amount: 0
 	RenderBuilding:

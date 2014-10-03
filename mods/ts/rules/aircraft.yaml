@@ -4,10 +4,6 @@ DPOD:
 		Cost: 10
 	Tooltip:
 		Name: Drop Pod
-	Buildable:
-		Queue: Air
-		BuildPaletteOrder: 10
-		Owner: none
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -43,11 +39,6 @@ DSHP:
 		Cost: 1000
 	Tooltip:
 		Name: Dropship
-	Buildable:
-		Queue: Air
-		BuildPaletteOrder: 10
-		Owner: none
-		Prerequisites: gaweap
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
