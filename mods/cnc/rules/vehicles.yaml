@@ -43,6 +43,7 @@ HARV:
 		Cost: 1000
 	Tooltip:
 		Name: Harvester
+		GenericName: Harvester
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 10
