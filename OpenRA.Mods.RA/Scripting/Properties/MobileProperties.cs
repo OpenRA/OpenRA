@@ -25,14 +25,14 @@ namespace OpenRA.Mods.RA.Scripting
 			"(in cells) that will be considered close enough to complete the activity.")]
 		public void Move(CPos cell, int closeEnough = 0)
 		{
-			self.QueueActivity(new Move.Move(cell, WRange.FromCells(closeEnough)));
+			self.QueueActivity(new Move.Move(self, cell, WRange.FromCells(closeEnough)));
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Moves within the cell grid, ignoring lane biases.")]
 		public void ScriptedMove(CPos cell)
 		{
-			self.QueueActivity(new Move.Move(cell));
+			self.QueueActivity(new Move.Move(self, cell));
 		}
 
 		[ScriptActorPropertyActivity]
