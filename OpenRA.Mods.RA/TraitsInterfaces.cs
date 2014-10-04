@@ -42,11 +42,6 @@ namespace OpenRA.Mods.RA
 		IEnumerable<string> ProvidesPrerequisites {get;}
 	}
 
-	public interface INotifyResourceClaimLost
-	{
-		void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer);
-	}
-
 	public interface INotifyParachuteLanded { void OnLanded(); }
 	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
 	public interface INotifyAttack { void Attacking(Actor self, Target target, Armament a, Barrel barrel); }

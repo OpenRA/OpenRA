@@ -100,6 +100,8 @@
     <Compile Include="Widgets\ResourceBarWidget.cs" />
     <Compile Include="World\PlayMusicOnMapLoad.cs" />
     <Compile Include="World\RadarPings.cs" />
+    <Compile Include="World\ResourceClaim.cs" />
+    <Compile Include="World\ResourceClaimLayer.cs" />
     <Compile Include="World\SmudgeLayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
