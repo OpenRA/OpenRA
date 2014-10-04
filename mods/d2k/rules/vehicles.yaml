@@ -207,7 +207,7 @@ QUAD.starport:
 		Range: 7c0
 	Turreted:
 		ROT: 6
-		AlignWhenIdle: true
+		RealignDelay: 0
 	Armament:
 		Weapon: 90mm
 		Recoil: 128
