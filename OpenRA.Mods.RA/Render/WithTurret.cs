@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Render
 			arms = self.TraitsImplementing<Armament>()
 				.Where(w => w.Info.Turret == info.Turret);
 
-			anim = new Animation(self.World, rs.GetImage(self), () => t.turretFacing);
+			anim = new Animation(self.World, rs.GetImage(self), () => t.TurretFacing);
 			anim.Play(info.Sequence);
 			rs.Add("turret_{0}".F(info.Turret), new AnimationWithOffset(
 				anim, () => TurretOffset(self), null, () => false, p => ZOffsetFromCenter(self, p, 1)));

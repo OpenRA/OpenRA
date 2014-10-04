@@ -44,11 +44,11 @@ namespace OpenRA.Mods.RA.Render
 			var turret = self.TraitsImplementing<Turreted>()
 				.First(t => t.Name == info.Turret);
 
-			left = new Animation(self.World, name, () => turret.turretFacing);
+			left = new Animation(self.World, name, () => turret.TurretFacing);
 			left.Play(info.LeftSequence);
 			Add(info.LeftSequence, new AnimationWithOffset(left, null, () => facing.Facing > 128, 0));
 
-			right = new Animation(self.World, name, () => turret.turretFacing);
+			right = new Animation(self.World, name, () => turret.TurretFacing);
 			right.Play(info.RightSequence);
 			Add(info.RightSequence, new AnimationWithOffset(right, null, () => facing.Facing <= 128, 0));
 

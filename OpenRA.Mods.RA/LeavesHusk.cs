@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA
 				// This isn't a problem with the current units, but may be a problem for mods
 				var turreted = self.TraitsImplementing<Turreted>().FirstOrDefault();
 				if (turreted != null)
-					td.Add(new TurretFacingInit(turreted.turretFacing));
+					td.Add(new TurretFacingInit(turreted.TurretFacing));
 
 				var chronoshiftable = self.TraitOrDefault<Chronoshiftable>();
 				if (chronoshiftable != null && chronoshiftable.ReturnTicks > 0)
