@@ -309,8 +309,10 @@ namespace OpenRA.Mods.Common.Traits
 						upgradeManager.RevokeUpgrade(self, u, this);
 			}
 
-			foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
-				npe.OnPassengerEntered(self, a);
+			// If not initialized then this will be notified in the first tick
+			if (initialized)
+				foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+					npe.OnPassengerEntered(self, a);
 
 			var p = a.Trait<Passenger>();
 			p.Transport = self;
