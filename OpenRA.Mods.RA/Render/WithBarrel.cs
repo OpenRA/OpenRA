@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Render
 				.First(tt => tt.Name == armament.Info.Turret);
 
 			var rs = self.Trait<RenderSprites>();
-			anim = new Animation(self.World, rs.GetImage(self), () => turreted.turretFacing);
+			anim = new Animation(self.World, rs.GetImage(self), () => turreted.TurretFacing);
 			anim.Play(info.Sequence);
 			rs.Add("barrel_{0}".F(info.Barrel), new AnimationWithOffset(
 				anim, () => BarrelOffset(), null, () => false, p => WithTurret.ZOffsetFromCenter(self, p, 0)));

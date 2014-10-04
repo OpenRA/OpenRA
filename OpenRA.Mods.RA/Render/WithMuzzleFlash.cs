@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Render
 					var turreted = self.TraitsImplementing<Turreted>()
 						.FirstOrDefault(t => t.Name ==  arm.Info.Turret);
 
-					getFacing = turreted != null ? () => turreted.turretFacing :
+					getFacing = turreted != null ? () => turreted.TurretFacing :
 						facing != null ? (Func<int>)(() => facing.Facing) : () => 0;
 
 					var muzzleFlash = new Animation(self.World, render.GetImage(self), getFacing);
