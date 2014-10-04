@@ -98,9 +98,7 @@ namespace OpenRA.Mods.RA
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())
 						t.UnitProduced(self, newUnit, exit);
 
-				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>()
-					.Where(a => a.Actor.Owner == self.Owner);
-
+				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
 				foreach (var notify in notifyOthers)
 					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
 
