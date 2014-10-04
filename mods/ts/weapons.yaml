@@ -1130,10 +1130,13 @@ EMPulseCannon:
 	Warhead@target: SpreadDamage
 		Spread: 0
 		Damage: 0
+		PreventProne: true
+		ValidTargets: Vehicle
 	Warhead@emp: GrantUpgrade
 		Range: 3c0
 		Duration: 250
 		Upgrades: empdisable
+		ValidTargets: Vehicle
 
 TiberiumExplosion:
 	Warhead@1Dam: SpreadDamage

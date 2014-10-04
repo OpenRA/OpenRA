@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new DisableUpgrade(this); }
 	}
 
-	public class DisableUpgrade : IUpgradable, IDisable
+	public class DisableUpgrade : IUpgradable, IDisable, IDisableMove
 	{
 		readonly DisableUpgradeInfo info;
 		bool enabled;
@@ -44,5 +44,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		public bool Disabled { get { return enabled; } }
+
+		public bool MoveDisabled(Actor self) { return enabled; }
 	}
 }
