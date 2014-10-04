@@ -76,8 +76,8 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Red);
-			self.QueueActivity(new Enter(self, target.Actor, new Demolish(
-				target.Actor, info.C4Delay, info.Flashes, info.FlashesDelay, info.FlashInterval, info.FlashDuration)));
+			self.QueueActivity(new Demolish(self,
+				target.Actor, info.C4Delay, info.Flashes, info.FlashesDelay, info.FlashInterval, info.FlashDuration));
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
