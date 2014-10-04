@@ -62,7 +62,6 @@ namespace OpenRA.FileFormats
 		}
 
 		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
-		public bool CacheWhenLoadingTileset { get { return true; } }
 
 		public readonly int ImageCount;
 		public R8Reader(Stream stream)
