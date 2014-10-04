@@ -197,8 +197,10 @@ SPY:
 		Prerequisites: dome, ~tent, ~techlevel.medium
 	Valued:
 		Cost: 500
+	-Tooltip:
 	DisguiseToolTip:
 		Name: Spy
+		GenericName: Soldier
 		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
 	Selectable:
 		Voice: SpyVoice
