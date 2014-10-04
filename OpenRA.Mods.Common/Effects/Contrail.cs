@@ -11,11 +11,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Effects
 {
 	[Desc("Draw a colored contrail behind this actor when they move.")]
 	class ContrailInfo : ITraitInfo, Requires<IBodyOrientationInfo>

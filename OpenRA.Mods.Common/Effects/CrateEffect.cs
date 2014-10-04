@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 
-namespace OpenRA.Mods.RA.Effects
+namespace OpenRA.Mods.Common.Effects
 {
-	class CrateEffect : IEffect
+	public class CrateEffect : IEffect
 	{
 		readonly string palette;
 		readonly Actor a;

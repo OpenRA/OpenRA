@@ -14,7 +14,7 @@ using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Effects
+namespace OpenRA.Mods.Common.Effects
 {
 	public class GravityBombInfo : IProjectileInfo
 	{
