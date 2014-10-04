@@ -29,14 +29,15 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new Turreted(init, this); }
 	}
 
-	public class Turreted : ITick, ISync
+	public class Turreted : ITick, ISync, INotifyCreated
 	{
+		readonly TurretedInfo info;
+		AttackTurreted attack;
+		IFacing facing;
+
 		[Sync] public int QuantizedFacings = 0;
 		[Sync] public int turretFacing = 0;
 		public int? desiredFacing;
-		TurretedInfo info;
-		IFacing facing;
-		Lazy<AttackTurreted> attack;
 		int realignTick = 0;
 
 		// For subclasses that want to move the turret relative to the body
@@ -60,13 +61,17 @@ namespace OpenRA.Mods.RA
 		{
 			this.info = info;
 			turretFacing = GetInitialTurretFacing(init, info.InitialFacing);
-			facing = init.self.TraitOrDefault<IFacing>();
-			attack = Exts.Lazy(() => init.self.TraitOrDefault<AttackTurreted>());
+		}
+
+		public void Created(Actor self)
+		{
+			attack = self.TraitOrDefault<AttackTurreted>();
+			facing = self.TraitOrDefault<IFacing>();
 		}
 
 		public virtual void Tick(Actor self)
 		{
-			if (attack.Value != null && !attack.Value.IsAttacking)
+			if (attack != null && !attack.IsAttacking)
 			{
 				if (realignTick < info.RealignDelay)
 					realignTick++;
