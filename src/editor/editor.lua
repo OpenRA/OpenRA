@@ -639,7 +639,13 @@ function IndicateAll(editor, lines, linee)
   -- these indicators should be up-to-date to the end of the code fragment.
   for indic = 0, indicator.MAX do IndicateOne(indic, pos, 0) end
 
-  return delayed[editor] ~= nil -- request more events if still need to work
+  local needmore = delayed[editor] ~= nil
+  if ide.config.outlineinactivity then
+    if needmore then ide.outline.timer:Stop()
+    else ide.outline.timer:Start(ide.config.outlineinactivity*1000, wx.wxTIMER_ONE_SHOT)
+    end
+  end
+  return needmore -- request more events if still need to work
 end
 
 if ide.wxver < "2.9.5" or not ide.config.autoanalyzer then
