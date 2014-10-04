@@ -552,10 +552,6 @@ DOGGIE:
 	Inherits: ^Infantry
 	Tooltip:
 		Name: Tiberian Fiend
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 100
-		Owner: None
 	Health:
 		Radius: 213
 		HP: 250
@@ -582,10 +578,6 @@ VISSML:
 	Inherits: ^Infantry
 	Tooltip:
 		Name: Baby Visceroid
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 100
-		Owner: None
 	Health:
 		HP: 200
 	PoisonedByTiberium:
@@ -613,10 +605,6 @@ VISLRG:
 	Inherits: ^Infantry
 	Tooltip:
 		Name: Adult Visceroid
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 100
-		Owner: None
 	Health:
 		HP: 500
 	PoisonedByTiberium:

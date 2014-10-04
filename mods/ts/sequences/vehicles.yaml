@@ -21,6 +21,10 @@ hvr:
 	icon: xxicon
 		Start: 0
 
+trucka:
+	icon: xxicon
+		Start: 0
+
 truckb:
 	icon: xxicon
 		Start: 0
@@ -169,4 +173,16 @@ smech:
 		Tick: 100
 		Offset: 0, 8
 	icon: smchicon
+		Start: 0
+
+monoeng:
+	icon: xxicon
+		Start: 0
+
+monocar:
+	icon: xxicon
+		Start: 0
+
+cargocar:
+	icon: xxicon
 		Start: 0

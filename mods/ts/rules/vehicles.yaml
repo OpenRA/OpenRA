@@ -2,6 +2,7 @@ MCV:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
+		Prerequisites: factory, tech
 		BuildPaletteOrder: 110
 		Owner: gdi,nod
 	Valued:
@@ -42,6 +43,7 @@ APC:
 		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Vehicles\n  Weak vs Infantry
 	Buildable:
 		Queue: Vehicle
+		Prerequisites: factory, barracks
 		BuildPaletteOrder: 30
 		Owner: gdi
 	Mobile:
@@ -72,6 +74,7 @@ HARV:
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
+		Prerequisites: factory, proc
 		BuildPaletteOrder: 10
 		Owner: gdi,nod
 		InitialActivity: FindResources
@@ -121,6 +124,7 @@ HVR:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
+		Prerequisites: factory, radar
 		Owner: gdi
 		Hothey: v
 	Mobile:
@@ -154,14 +158,10 @@ HVR:
 4TNK:
 	Inherits: ^Tank
 	Valued:
-		Cost: 1700
+		Cost: 0
 	Tooltip:
 		Name: Mammoth Tank
 		Description: Heavily armored GDI Tank.\n  Strong vs Everything
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 60
-		Owner: gdi
 	Mobile:
 		Speed: 56
 		ROT: 5
@@ -193,19 +193,36 @@ HVR:
 	WithVoxelBarrel:
 	WithMuzzleFlash:
 
-TRUCKB:
+TRUCKA:
 	Inherits: ^Vehicle
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 120
-		Owner: gdi, nod
 	Valued:
-		Cost: 500
+		Cost: 0
 	Tooltip:
-		Name: Truck
+		Name: Truck (unloaded)
 		Description: Transports cash to other players.\n  Unarmed
 	Health:
 		HP: 2000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 5c0
+	SupplyTruck:
+		Payload: 500
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+TRUCKB:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 0
+	Tooltip:
+		Name: Truck (Loaded)
+		Description: Transports cash to other players.\n  Unarmed
+	Health:
+		HP: 800
 	Armor:
 		Type: Light
 	Mobile:
@@ -226,6 +243,7 @@ LPST:
 		Name: Mobile Sensor Array
 	Buildable:
 		Queue: Vehicle
+		Prerequisites: factory, radar
 		BuildPaletteOrder: 100
 		Owner: gdi, nod
 	Health:
@@ -250,13 +268,9 @@ LPST:
 ICBM:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 1400
+		Cost: 0
 	Tooltip:
 		Name: Ballistic Missile Launcher
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 100
-		Owner: gdi
 	Health:
 		HP: 500
 	Armor:
@@ -280,6 +294,7 @@ REPAIR:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
+		Prerequisites: factory
 		BuildPaletteOrder: 70
 		Owner: nod
 	Valued:
@@ -311,6 +326,7 @@ ART2:
 		Name: Artillery
 	Buildable:
 		Queue: Vehicle
+		Prerequisites: factory, radar
 		BuildPaletteOrder: 100
 		Owner: nod
 	Health:
@@ -341,6 +357,7 @@ WEED:
 		Description: Collects veins for processing.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
+		Prerequisites: factory, natech # nawast (not implemented atm)
 		BuildPaletteOrder: 10
 		Owner: nod
 	Mobile:
@@ -360,13 +377,9 @@ WEED:
 BUS:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 800
+		Cost: 0
 	Tooltip:
 		Name: School Bus
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Owner: gdi
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -387,13 +400,9 @@ BUS:
 PICK:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 800
+		Cost: 0
 	Tooltip:
 		Name: Pickup
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Owner: gdi
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -414,13 +423,9 @@ PICK:
 CAR:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 800
+		Cost: 0
 	Tooltip:
 		Name: Automobile
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Owner: gdi
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -441,13 +446,9 @@ CAR:
 GGHUNT:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 1000
+		Cost: 0
 	Tooltip:
 		Name: Hunter-Seeker Droid
-	Buildable:
-		BuildPaletteOrder: 20
-		Owner: gdi, nod
-		Queue: Vehicle
 	Mobile:
 		ROT: 16
 		Speed: 355
@@ -466,13 +467,9 @@ GGHUNT:
 WINI:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 800
+		Cost: 0
 	Tooltip:
 		Name: Recreational Vehicle
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Owner: gdi
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -498,6 +495,7 @@ MMCH:
 		Name: Titan
 	Buildable:
 		Queue: Vehicle
+		Prerequisite: factory
 		BuildPaletteOrder: 30
 		Owner: gdi
 	Mobile:
@@ -532,6 +530,7 @@ HMEC:
 		Name: Mammoth Mk. II
 	Buildable:
 		Queue: Vehicle
+		Prerequisite: factory, tech
 		BuildPaletteOrder: 80
 		Owner: gdi
 	Mobile:
@@ -565,6 +564,7 @@ SMECH:
 		Description: Small Mech
 	Buildable:
 		Queue: Vehicle
+		Prerequisite: factory
 		BuildPaletteOrder: 10
 		Owner: gdi
 	Mobile:
@@ -594,6 +594,7 @@ BIKE:
 		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Buildable:
 		Queue: Vehicle
+		Prerequisite: factory
 		BuildPaletteOrder: 30
 		Owner: nod
 	Mobile:
@@ -628,6 +629,7 @@ BGGY:
 		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry, Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
 		Queue: Vehicle
+		Prerequisite: factory
 		BuildPaletteOrder: 40
 		Owner: nod
 	Mobile:
@@ -657,6 +659,7 @@ SAPC:
 		Cost: 800
 	Tooltip:
 		Name: Subterranean APC
+		Prerequisite: factory, tech
 		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Vehicles\n  Weak vs Infantry
 	Buildable:
 		Queue: Vehicle
@@ -688,6 +691,7 @@ SUBTANK:
 		Description: Subterranean Tank
 	Buildable:
 		Queue: Vehicle
+		Prerequisite: factory, tech
 		BuildPaletteOrder: 40
 		Owner: nod
 	Mobile:
@@ -715,6 +719,7 @@ SONIC:
 		Name: Disruptor
 	Buildable:
 		Queue: Vehicle
+		Prerequisite: factory, tech
 		BuildPaletteOrder: 70
 		Owner: gdi
 	Mobile:
@@ -747,6 +752,7 @@ TTNK:
 		Name: Tick Tank
 	Buildable:
 		Queue: Vehicle
+		Prerequisite: factory, tech
 		BuildPaletteOrder: 60
 		Owner: nod
 	Mobile:
@@ -789,6 +795,7 @@ STNK:
 		Description: Long-range missile tank that can cloak.\nHas weak armor. Can be spotted by infantry.\n  Strong vs Vehicles, Tanks, Aircraft\n  Weak vs Infantry.
 	Buildable:
 		BuildPaletteOrder: 90
+		Prerequisite: factory, tech
 		Queue: Vehicle
 		Owner: nod
 	Mobile:
@@ -815,3 +822,73 @@ STNK:
 	RenderVoxels:
 	WithVoxelBody:
 
+MONOENG:
+	Inherits: ^Train
+	Valued:
+		Cost: 0
+	Tooltip:
+		Name: Train Locomotive
+	Mobile:
+		ROT: 5
+		Speed: 170
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	Cargo:
+		Types: Infantry
+		MaxWeight: 20
+		PipCount: 10
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+MONOCAR:
+	Inherits: ^Train
+	Valued:
+		Cost: 0
+	Tooltip:
+		Name: Train Car (Passengers)
+		Description: Can transport Passengers\n
+	Mobile:
+		ROT: 5
+		Speed: 170
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	Cargo:
+		Types: Infantry
+		MaxWeight: 20
+		PipCount: 10
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+CARGOCAR:
+	Inherits: ^Train
+	Valued:
+		Cost: 0
+	Tooltip:
+		Name: Train Car (Cargo)
+		Description: Can transport Vehicles\n
+	Mobile:
+		ROT: 5
+		Speed: 170
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	Cargo:
+		Types: Vehicle
+		MaxWeight: 20
+		PipCount: 10
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:

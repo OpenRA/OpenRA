@@ -168,10 +168,6 @@
 		Cost: 10
 	Tooltip:
 		Name: Civilian
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 1000
-		Owner: gdi, nod
 	Health:
 		HP: 50
 	Mobile:
@@ -389,3 +385,16 @@
 		Interval: 55
 	WithActiveAnimation:
 
+^Train:
+	Inherits: ^Vehicle
+		Mobile:
+		Crushes: wall, crate
+		TerrainSpeeds:
+			Clear: 0
+			Rough: 0
+			Road: 0
+			Beach: 0
+			Tiberium: 0
+			BlueTiberium: 0
+#			rail: 100
+		ROT: 5
