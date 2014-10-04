@@ -36,23 +36,23 @@ namespace OpenRA.Mods.RA
 		IFacing facing;
 
 		[Sync] public int QuantizedFacings = 0;
-		[Sync] public int turretFacing = 0;
-		public int? desiredFacing;
+		[Sync] public int TurretFacing = 0;
+		public int? DesiredFacing;
 		int realignTick = 0;
 
 		// For subclasses that want to move the turret relative to the body
-		protected WVec LocalOffset = WVec.Zero;
+		protected WVec localOffset = WVec.Zero;
 
-		public WVec Offset { get { return info.Offset + LocalOffset; } }
+		public WVec Offset { get { return info.Offset + localOffset; } }
 		public string Name { get { return info.Turret; } }
 
 		public static int GetInitialTurretFacing(ActorInitializer init, int def)
 		{
 			if (init.Contains<TurretFacingInit>())
-				return init.Get<TurretFacingInit,int>();
+				return init.Get<TurretFacingInit, int>();
 
 			if (init.Contains<FacingInit>())
-				return init.Get<FacingInit,int>();
+				return init.Get<FacingInit, int>();
 
 			return def;
 		}
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 		public Turreted(ActorInitializer init, TurretedInfo info)
 		{
 			this.info = info;
-			turretFacing = GetInitialTurretFacing(init, info.InitialFacing);
+			TurretFacing = GetInitialTurretFacing(init, info.InitialFacing);
 		}
 
 		public void Created(Actor self)
@@ -76,19 +76,19 @@ namespace OpenRA.Mods.RA
 				if (realignTick < info.RealignDelay)
 					realignTick++;
 				else if (info.RealignDelay > -1)
-					desiredFacing = null;
+					DesiredFacing = null;
 			}
 			else
 				realignTick = 0;
 
-			var df = desiredFacing ?? ( facing != null ? facing.Facing : turretFacing );
-			turretFacing = Util.TickFacing(turretFacing, df, info.ROT);
+			var df = DesiredFacing ?? (facing != null ? facing.Facing : TurretFacing);
+			TurretFacing = Util.TickFacing(TurretFacing, df, info.ROT);
 		}
 
 		public bool FaceTarget(Actor self, Target target)
 		{
-			desiredFacing = Util.GetFacing(target.CenterPosition - self.CenterPosition, turretFacing);
-			return turretFacing == desiredFacing;
+			DesiredFacing = Util.GetFacing(target.CenterPosition - self.CenterPosition, TurretFacing);
+			return TurretFacing == DesiredFacing;
 		}
 
 		// Turret offset in world-space
@@ -102,9 +102,8 @@ namespace OpenRA.Mods.RA
 		// Orientation in unit-space
 		public WRot LocalOrientation(Actor self)
 		{
-
 			// Hack: turretFacing is relative to the world, so subtract the body yaw
-			var local = WRot.FromYaw(WAngle.FromFacing(turretFacing) - self.Orientation.Yaw);
+			var local = WRot.FromYaw(WAngle.FromFacing(TurretFacing) - self.Orientation.Yaw);
 
 			if (QuantizedFacings == 0)
 				return local;

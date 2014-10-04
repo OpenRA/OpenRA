@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 			if (e.Damage > 0 && (e.Warhead == null || !e.Warhead.PreventProne)) /* Don't go prone when healed */
 			{
 				if (!isProne)
-					LocalOffset = info.ProneOffset;
+					localOffset = info.ProneOffset;
 
 				remainingProneTime = info.ProneTime;
 			}
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 			base.Tick(self);
 
 			if (isProne && --remainingProneTime == 0)
-				LocalOffset = WVec.Zero;
+				localOffset = WVec.Zero;
 		}
 
 		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)

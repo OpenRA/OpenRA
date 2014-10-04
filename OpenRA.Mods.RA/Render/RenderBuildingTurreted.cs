@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			// Turret artwork is baked into the sprite, so only the first turret makes sense.
 			var turreted = self.TraitsImplementing<Turreted>().FirstOrDefault();
-			return () => turreted.turretFacing;
+			return () => turreted.TurretFacing;
 		}
 
 		public RenderBuildingTurreted(ActorInitializer init, RenderBuildingInfo info)

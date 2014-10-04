@@ -80,17 +80,17 @@ namespace OpenRA.Mods.RA
 		{
 			if (state == PopupState.Open && idleTicks++ > info.CloseDelay)
 			{
-				turret.desiredFacing = info.DefaultFacing;
+				turret.DesiredFacing = info.DefaultFacing;
 				state = PopupState.Rotating;
 			}
-			else if (state == PopupState.Rotating && turret.turretFacing == info.DefaultFacing)
+			else if (state == PopupState.Rotating && turret.TurretFacing == info.DefaultFacing)
 			{
 				state = PopupState.Transitioning;
 				rb.PlayCustomAnimThen(self, "closing", () =>
 				{
 					state = PopupState.Closed;
 					rb.PlayCustomAnimRepeating(self, "closed-idle");
-					turret.desiredFacing = null;
+					turret.DesiredFacing = null;
 				});
 			}
 		}
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA
 			{
 				state = PopupState.Closed;
 				rb.PlayCustomAnimRepeating(self, "closed-idle");
-				turret.desiredFacing = null;
+				turret.DesiredFacing = null;
 			}
 		}
 
