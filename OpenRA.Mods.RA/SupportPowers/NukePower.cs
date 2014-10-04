@@ -10,6 +10,7 @@
 
 using System;
 using OpenRA.Effects;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Render;

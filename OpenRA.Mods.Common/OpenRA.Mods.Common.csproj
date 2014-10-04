@@ -42,9 +42,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonTraitsInterfaces.cs" />
+    <Compile Include="Effects\Beacon.cs" />
+    <Compile Include="Effects\Bullet.cs" />
+    <Compile Include="Effects\Contrail.cs" />
     <Compile Include="Effects\ContrailFader.cs" />
+    <Compile Include="Effects\Corpse.cs" />
+    <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\Explosion.cs" />
     <Compile Include="Effects\FloatingText.cs" />
+    <Compile Include="Effects\GravityBomb.cs" />
+    <Compile Include="Effects\LaserZap.cs" />
+    <Compile Include="Effects\Missile.cs" />
+    <Compile Include="Effects\RallyPoint.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Console\ChatCommands.cs" />
     <Compile Include="Console\DevCommands.cs" />
@@ -60,9 +69,11 @@
     <Compile Include="Graphics\VoxelRenderable.cs" />
     <Compile Include="ModChooserLoadScreen.cs" />
     <Compile Include="PaletteFromFile.cs" />
+    <Compile Include="RallyPoint.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="ServerTraits\MasterServerPinger.cs" />
     <Compile Include="ServerTraits\PlayerPinger.cs" />
+    <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />

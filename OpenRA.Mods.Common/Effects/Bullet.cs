@@ -15,11 +15,10 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Effects
+namespace OpenRA.Mods.Common.Effects
 {
 	public class BulletInfo : IProjectileInfo
 	{
@@ -83,12 +82,12 @@ namespace OpenRA.Mods.RA.Effects
 			target = args.PassiveTarget;
 			if (info.Inaccuracy.Range > 0)
 			{
-				var inaccuracy = Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, args.InaccuracyModifiers);
+				var inaccuracy = OpenRA.Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, args.InaccuracyModifiers);
 				var maxOffset = inaccuracy * (target - pos).Length / args.Weapon.Range.Range;
 				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}
 
-			facing = Traits.Util.GetFacing(target - pos, 0);
+			facing = OpenRA.Traits.Util.GetFacing(target - pos, 0);
 			length = Math.Max((target - pos).Length / speed.Range, 1);
 
 			if (info.Image != null)
