@@ -53,7 +53,7 @@ function PARSE.parse_scope(lx, f, level)
     f('EndScope', opt, lineinfo)
   end
   
-  local function parse_function_list(has_self, name)
+  local function parse_function_list(has_self, name, pos)
     local c = lx:next(); assert(c[1] == '(')
     f('Statement', c[1], c.lineinfo) -- generate Statement for function definition
     scope_begin(c[1], c.lineinfo)
@@ -71,7 +71,7 @@ function PARSE.parse_scope(lx, f, level)
     end
     if lx:peek()[1] == ')' then
       local n = lx:next()
-      f('Function', name, c.lineinfo-(name and #name or 0))
+      f('Function', name, pos or c.lineinfo)
     end
   end
   
@@ -108,7 +108,7 @@ function PARSE.parse_scope(lx, f, level)
         if lx:peek().tag == 'Id' then
           c = lx:next()
           f('Var', c[1], c.lineinfo)
-          if lx:peek()[1] == '(' then parse_function_list(nil, c[1]) end
+          if lx:peek()[1] == '(' then parse_function_list(nil, c[1], c.lineinfo) end
         end
       elseif c[1] == 'function' then
         if lx:peek()[1] == '(' then -- inline function
@@ -116,7 +116,8 @@ function PARSE.parse_scope(lx, f, level)
         elseif lx:peek().tag == 'Id' then -- function definition statement
           c = lx:next(); assert(c.tag == 'Id')
           local name = c[1]
-          f('Id', c[1], c.lineinfo)
+          local pos = c.lineinfo
+          f('Id', name, pos)
           local has_self
           while lx:peek()[1] ~= '(' and lx:peek().tag ~= 'Eof' do
             c = lx:next()
@@ -127,7 +128,7 @@ function PARSE.parse_scope(lx, f, level)
               has_self = true
             end
           end
-          if lx:peek()[1] == '(' then parse_function_list(has_self, name) end
+          if lx:peek()[1] == '(' then parse_function_list(has_self, name, pos) end
         end
       elseif c[1] == 'local' and lx:peek().tag == 'Id' then
         c = lx:next()
