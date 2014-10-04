@@ -61,9 +61,12 @@ function PARSE.parse_scope(lx, f, level)
       local lineinfo = c.lineinfo+1 -- zero size
       f('VarSelf', 'self', lineinfo)
     end
-    while lx:peek().tag == 'Id' do
+    while true do
+      local n = lx:peek()
+      if not (n.tag == 'Id' or n.tag == 'Keyword' and n[1] == '...') then break end
       local c = lx:next()
-      f('Var', c[1], c.lineinfo)
+      if c.tag == 'Id' then f('Var', c[1], c.lineinfo) end
+      -- ignore '...' in this case
       if lx:peek()[1] == ',' then lx:next() end
     end
     if lx:peek()[1] == ')' then
