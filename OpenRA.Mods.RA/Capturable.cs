@@ -14,9 +14,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
 	[Desc("This actor can be captured by a unit with Captures: trait.")]
-	class CapturableInfo : TraitInfo<Capturable>
+	class CapturableInfo : ITraitInfo
 	{
-		[Desc("Type of actor (the Captures: trait defines what Types it can capture).")]
+		[Desc("Type listed under Types in Captures: trait of actors that can capture this).")]
 		public readonly string Type = "building";
 		public readonly bool AllowAllies = false;
 		public readonly bool AllowNeutral = true;
@@ -24,6 +24,8 @@ namespace OpenRA.Mods.RA
 		[Desc("Health percentage the target must be at (or below) before it can be captured.")]
 		public readonly float CaptureThreshold = 0.5f;
 		public readonly bool CancelActivity = false;
+
+		public object Create(ActorInitializer init) { return new Capturable(this); }
 
 		public bool CanBeTargetedBy(Actor captor, Player owner)
 		{
@@ -50,10 +52,16 @@ namespace OpenRA.Mods.RA
 
 	class Capturable : INotifyCapture
 	{
+		public readonly CapturableInfo Info;
+		public bool BeingCaptured { get; private set; }
+		public Capturable(CapturableInfo info) { Info = info; }
+
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
-			var info = self.Info.Traits.Get<CapturableInfo>();
-			if (info.CancelActivity)
+			BeingCaptured = true;
+			self.World.AddFrameEndTask(w => BeingCaptured = false);
+
+			if (Info.CancelActivity)
 			{
 				var stop = new Order("Stop", self, false);
 				foreach (var t in self.TraitsImplementing<IResolveOrder>())

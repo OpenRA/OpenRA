@@ -24,6 +24,7 @@ namespace OpenRA.Mods.RA.Activities
 		readonly Activity inside;
 		readonly IMove move;
 		readonly int maxTries = 0;
+		public Target Target { get { return target; } }
 		Target target;
 		State nextState = State.ApproachingOrEntering; // Hint/starting point for next state
 		bool isEnteringOrInside = false; // Used to know if exiting should be used
@@ -97,7 +98,6 @@ namespace OpenRA.Mods.RA.Activities
 				inner.Cancel(self);
 			if (isEnteringOrInside)
 				Unreserve(self, true);
-			isEnteringOrInside = false;
 		}
 
 		// Cancel inner activity and mark as done unless already leaving or done
@@ -178,6 +178,7 @@ namespace OpenRA.Mods.RA.Activities
 					// Entering
 					isEnteringOrInside = true;
 					savedPos = self.CenterPosition; // Save position of self, before entering, for returning on exit
+
 					inner = move.MoveIntoTarget(self, target); // Enter
 
 					if (inner != null)
