@@ -96,8 +96,23 @@ World:
 		Name: Allies
 		Race: allies
 	Country@1:
+		Name: England
+		Race: england
+	Country@2:
+		Name: France
+		Race: france
+	Country@3:
+		Name: Germany
+		Race: germany
+	Country@4:
 		Name: Soviet
 		Race: soviet
+	Country@5:
+		Name: Russia
+		Race: russia
+	Country@6:
+		Name: Ukraine
+		Race: ukraine
 	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
@@ -139,12 +154,12 @@ World:
 	MPStartUnits@mcvonly:
 		Class: none
 		ClassName: MCV Only
-		Races: soviet, allies
+		Races: allies, england, france, germany, soviet, russia, ukraine
 		BaseActor: mcv
 	MPStartUnits@lightallies:
 		Class: light
 		ClassName: Light Support
-		Races: allies
+		Races: allies, england, france, germany
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk
 		InnerSupportRadius: 3
@@ -152,7 +167,7 @@ World:
 	MPStartUnits@lightsoviet:
 		Class: light
 		ClassName: Light Support
-		Races: soviet
+		Races: soviet, russia, ukraine
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk
 		InnerSupportRadius: 3
@@ -160,7 +175,7 @@ World:
 	MPStartUnits@heavyallies:
 		Class: heavy
 		ClassName: Heavy Support
-		Races: allies
+		Races: allies, england, france, germany
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk,2tnk,2tnk,2tnk
 		InnerSupportRadius: 3
@@ -168,7 +183,7 @@ World:
 	MPStartUnits@heavysoviet:
 		Class: heavy
 		ClassName: Heavy Support
-		Races: soviet
+		Races: soviet, russia, ukraine
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk,3tnk,3tnk
 		InnerSupportRadius: 3
