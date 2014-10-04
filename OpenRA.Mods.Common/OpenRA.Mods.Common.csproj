@@ -98,6 +98,7 @@
     <Compile Include="Widgets\MenuButtonWidget.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="Widgets\ResourceBarWidget.cs" />
+    <Compile Include="World\PlayMusicOnMapLoad.cs" />
     <Compile Include="World\RadarPings.cs" />
     <Compile Include="World\SmudgeLayer.cs" />
   </ItemGroup>

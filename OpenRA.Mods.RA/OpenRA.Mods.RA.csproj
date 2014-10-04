@@ -398,7 +398,6 @@
     <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="World\ResourceClaim.cs" />
     <Compile Include="World\ResourceClaimLayer.cs" />
-    <Compile Include="World\PlayMusicOnMapLoad.cs" />
     <Compile Include="Player\BaseAttackNotifier.cs" />
     <Compile Include="Player\HarvesterAttackNotifier.cs" />
     <Compile Include="Infiltration\InfiltrateForExploration.cs" />
