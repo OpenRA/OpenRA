@@ -13,5 +13,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
 {
+	public interface INotifyResourceClaimLost
+	{
+		void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer);
+	}
+
 	public interface INotifyChat { bool OnChat(string from, string message); }
 }
