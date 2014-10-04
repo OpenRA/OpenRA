@@ -12,25 +12,27 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class RepairBuilding : Activity
+	class RepairBuilding : Enter
 	{
-		Target target;
+		readonly Actor target;
+		readonly Health health;
 
-		public RepairBuilding(Actor target) { this.target = Target.FromActor(target); }
-
-		public override Activity Tick(Actor self)
+		public RepairBuilding(Actor self, Actor target)
+			: base(self, target)
 		{
-			if (IsCanceled || target.Type != TargetType.Actor)
-				return NextActivity;
+			this.target = target;
+			health = target.Trait<Health>();
+		}
 
-			var health = target.Actor.Trait<Health>();
-			if (health.DamageState == DamageState.Undamaged)
-				return NextActivity;
+		protected override bool CanReserve(Actor self)
+		{
+			return health.DamageState != DamageState.Undamaged;
+		}
 
-			target.Actor.InflictDamage(self, -health.MaxHP, null);
+		protected override void OnInside(Actor self)
+		{
+			target.InflictDamage(self, -health.MaxHP, null);
 			self.Destroy();
-
-			return this;
 		}
 	}
 }

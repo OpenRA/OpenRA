@@ -13,34 +13,43 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class CaptureActor : Activity
+	class CaptureActor : Enter
 	{
-		Target target;
+		readonly Actor actor;
+		readonly CapturableInfo capturableInfo;
+		readonly CapturesInfo capturesInfo;
 
-		public CaptureActor(Target target) { this.target = target; }
-
-		public override Activity Tick(Actor self)
+		public CaptureActor(Actor self, Actor target)
+			: base(self, target)
 		{
-			if (IsCanceled || !target.IsValidFor(self))
-				return NextActivity;
+			actor = target;
+			capturesInfo = self.Info.Traits.Get<CapturesInfo>();
+			capturableInfo = target.Info.Traits.Get<CapturableInfo>();
+		}
 
-			if (target.Type != TargetType.Actor)
-				return NextActivity;
+		protected override bool CanReserve(Actor self)
+		{
+			return capturableInfo.CanBeTargetedBy(self, actor.Owner);
+		}
 
-			var actor = target.Actor;
+		protected override void OnInside(Actor self)
+		{
+			if (actor.IsDead() || actor.Owner == self.Owner)
+				return;
+
 			var b = actor.TraitOrDefault<Building>();
-			if (b != null && b.Locked)
-				return NextActivity;
-
-			var capturesInfo = self.Info.Traits.Get<CapturesInfo>();
-			var capturableInfo = actor.Info.Traits.Get<CapturableInfo>();
-
-			var health = actor.Trait<Health>();
+			if (b != null && !b.Lock())
+				return;
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (actor.IsDead())
+				if (b != null && b.Locked)
+					b.Unlock();
+
+				if (actor.IsDead() || actor.Owner == self.Owner)
 					return;
+
+				var health = actor.Trait<Health>();
 
 				var lowEnoughHealth = health.HP <= capturableInfo.CaptureThreshold * health.MaxHP;
 				if (!capturesInfo.Sabotage || lowEnoughHealth || actor.Owner.NonCombatant)
@@ -63,8 +72,6 @@ namespace OpenRA.Mods.RA.Activities
 
 				self.Destroy();
 			});
-
-			return this;
 		}
 	}
 }
