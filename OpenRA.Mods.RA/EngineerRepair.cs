@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Yellow);
-			self.QueueActivity(new Enter(self, target.Actor, new RepairBuilding(target.Actor)));
+			self.QueueActivity(new RepairBuilding(self, target.Actor));
 		}
 
 		class EngineerRepairOrderTargeter : UnitOrderTargeter

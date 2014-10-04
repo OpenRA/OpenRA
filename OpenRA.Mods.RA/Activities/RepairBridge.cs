@@ -12,25 +12,24 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class RepairBridge : Activity
+	class RepairBridge : Enter
 	{
-		Target target;
+		readonly BridgeHut hut;
 
-		public RepairBridge(Actor target) { this.target = Target.FromActor(target); }
+		public RepairBridge(Actor self, Actor target)
+			: base(self, target) { hut = target.Trait<BridgeHut>(); }
 
-		public override Activity Tick(Actor self)
+		protected override bool CanReserve(Actor self)
 		{
-			if (IsCanceled || target.Type != TargetType.Actor)
-				return NextActivity;
+			return hut.BridgeDamageState != DamageState.Undamaged;
+		}
 
-			var hut = target.Actor.Trait<BridgeHut>();
+		protected override void OnInside(Actor self)
+		{
 			if (hut.BridgeDamageState == DamageState.Undamaged)
-				return NextActivity;
-
+				return;
 			hut.Repair(self);
 			self.Destroy();
-
-			return this;
 		}
 	}
 }
