@@ -30,6 +30,8 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Tooltip:
+		GenericName: Vehicle
 	UpdatesPlayerStatistics:
 	Cloak:
 		RequiresUpgrade: cloak
@@ -84,6 +86,8 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Tooltip:
+		GenericName: Tank
 	UpdatesPlayerStatistics:
 	Cloak:
 		RequiresUpgrade: cloak
@@ -133,6 +137,8 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	Tooltip:
+		GenericName: Helicopter
 	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
@@ -191,6 +197,8 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Tooltip:
+		GenericName: Soldier
 	SelfHealing@HOSPITAL:
 		Step: 5
 		Ticks: 100
@@ -236,6 +244,7 @@
 		Cost: 70
 	Tooltip:
 		Name: Civilian
+		GenericVisibility: None
 	Mobile:
 		Speed: 56
 	Health:
@@ -400,6 +409,8 @@
 	Guardable:
 		Range: 3
 	BodyOrientation:
+	Tooltip:
+		GenericName: Structure
 	FrozenUnderFog:
 	UpdatesPlayerStatistics:
 	Huntable:
@@ -430,6 +441,7 @@
 	Building:
 	Tooltip:
 		Name: Civilian Building
+		GenericVisibility: None
 	FrozenUnderFog:
 		StartsRevealed: true
 
@@ -443,6 +455,7 @@
 		RelativeToTopLeft: yes
 	Tooltip:
 		Name: Civilian Building (Destroyed)
+		GenericVisibility: None
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
@@ -485,6 +498,7 @@
 		RelativeToTopLeft: yes
 	Tooltip:
 		Name: Field (Destroyed)
+		GenericVisibility: None
 	BelowUnits:
 	BodyOrientation:
 	RenderBuilding:
@@ -614,6 +628,8 @@
 		ForceHealthPercentage: 25
 	BelowUnits:
 	BodyOrientation:
+	Tooltip:
+		GenericName: Destroyed Vehicle
 	LuaScriptEvents:
 	DisabledOverlay:
 	ScriptTriggers:

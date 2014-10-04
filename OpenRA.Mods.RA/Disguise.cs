@@ -36,28 +36,28 @@ namespace OpenRA.Mods.RA
 			disguise = self.Trait<Disguise>();
 		}
 
-		public string Name()
+		public ITooltipInfo TooltipInfo
 		{
-			if (disguise.Disguised)
+			get
 			{
-				if (self.Owner == self.World.LocalPlayer)
-					return "{0} ({1})".F(info.Name, disguise.AsName);
-
-				return disguise.AsName;
+				return disguise.Disguised ? disguise.AsTooltipInfo : info;
 			}
-			return info.Name;
 		}
 
-		public Player Owner()
+		public Player Owner
 		{
-			if (disguise.Disguised)
+			get
 			{
-				if (self.Owner == self.World.LocalPlayer)
-					return self.Owner;
+				if (disguise.Disguised)
+				{
+					if (self.Owner == self.World.LocalPlayer)
+						return self.Owner;
 
-				return disguise.AsPlayer;
+					return disguise.AsPlayer;
+				}
+
+				return self.Owner;
 			}
-			return self.Owner;
 		}
 	}
 
@@ -65,9 +65,9 @@ namespace OpenRA.Mods.RA
 
 	class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
 	{
-		public Player AsPlayer;
-		public string AsSprite;
-		public string AsName;
+		public Player AsPlayer { get; private set; }
+		public string AsSprite { get; private set; }
+		public ITooltipInfo AsTooltipInfo { get; private set; }
 
 		public bool Disguised { get { return AsPlayer != null; } }
 		public Player Owner { get { return AsPlayer; } }
@@ -117,13 +117,13 @@ namespace OpenRA.Mods.RA
 			if (target != null)
 			{
 				var tooltip = target.TraitsImplementing<IToolTip>().FirstOrDefault();
-				AsName = tooltip.Name();
-				AsPlayer = tooltip.Owner();
+				AsTooltipInfo = tooltip.TooltipInfo;
+				AsPlayer = tooltip.Owner;
 				AsSprite = target.Trait<RenderSprites>().GetImage(target);
 			}
 			else
 			{
-				AsName = null;
+				AsTooltipInfo = null;
 				AsPlayer = null;
 				AsSprite = null;
 			}
