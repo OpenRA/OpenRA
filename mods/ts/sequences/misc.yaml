@@ -1,34 +1,34 @@
 overlay:
 	build-valid-interior: place
 		Start: 0
-		Offset: 0, 12
+		Offset: 0, -12
 	build-valid-snow: place
 		Start: 0
-		Offset: 0, 12
+		Offset: 0, -12
 	build-valid-temperat: place
 		Start: 0
-		Offset: 0, 12
+		Offset: 0, -12
 	build-invalid: place
 		Start: 1
-		Offset: 0, 12
+		Offset: 0, -12
 	target-select: place
 		Start: 1
-		Offset: 0, 12
+		Offset: 0, -12
 	target-valid-desert: place
 		Start: 1
-		Offset: 0, 12
+		Offset: 0, -12
 	target-valid-interior: place
 		Start: 1
-		Offset: 0, 12
+		Offset: 0, -12
 	target-valid-snow: place
 		Start: 1
-		Offset: 0, 12
+		Offset: 0, -12
 	target-valid-temperat: place
 		Start: 1
-		Offset: 0, 12
+		Offset: 0, -12
 	target-invalid: place
 		Start: 1
-		Offset: 0, 12
+		Offset: 0, -12
 
 poweroff:
 	offline: poweroff
@@ -327,82 +327,102 @@ resources:
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib02: tib02
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib03: tib03
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib04: tib04
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib05: tib05
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib06: tib06
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib07: tib07
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib08: tib08
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib09: tib09
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib10: tib10
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib11: tib11
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib12: tib12
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib13: tib13
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib14: tib14
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib15: tib15
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib16: tib16
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib17: tib17
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib18: tib18
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib19: tib19
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 	tib20: tib20
 		Start: 0
 		Length: 12
 		ShadowStart: 12
+		Offset: 0, -12
 
 shroud:
 	shroud: shroud
@@ -413,27 +433,39 @@ shroud:
 scorches: #TODO: make use of 07-12 as well
 	sc1: burnt01
 		Length: *
+		Offset: 0, -12
 	sc2: burnt02
 		Length: *
+		Offset: 0, -12
 	sc3: burnt03
 		Length: *
+		Offset: 0, -12
 	sc4: burnt04
 		Length: *
+		Offset: 0, -12
 	sc5: burnt05
 		Length: *
+		Offset: 0, -12
 	sc6: burnt06
 		Length: *
+		Offset: 0, -12
 
 craters: #TODO: make use of 07-12 as well
 	cr1: crater01
 		Length: *
+		Offset: 0, -12
 	cr2: crater02
 		Length: *
+		Offset: 0, -12
 	cr3: crater03
 		Length: *
+		Offset: 0, -12
 	cr4: crater04
 		Length: *
+		Offset: 0, -12
 	cr5: crater05
 		Length: *
+		Offset: 0, -12
 	cr6: crater06
 		Length: *
+		Offset: 0, -12

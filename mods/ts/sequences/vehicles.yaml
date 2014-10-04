@@ -154,19 +154,16 @@ smech:
 		Start: 96
 		Facings: -8
 		ShadowStart: 232
-		Offset: 0, 8
 	run:
 		Start: 0
 		Facings: -8
 		Length: 12
 		ShadowStart: 136
-		Offset: 0, 8
 	shoot:
 		Start: 104
 		Length: 4
 		Facings: -8
 		ShadowStart: 240
 		Tick: 100
-		Offset: 0, 8
 	icon: smchicon
 		Start: 0
