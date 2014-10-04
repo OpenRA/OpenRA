@@ -337,7 +337,12 @@ strategic: strategic.png
 
 flags: buttons.png
 	allies: 30,112,30,15
+	england: 30,112,30,15
+	france: 30,112,30,15
+	germany: 30,112,30,15
 	soviet: 0,112,30,15
+	russia: 0,112,30,15
+	ukraine: 0,112,30,15
 	random: 60,112,30,15
 	spectator: 60,112,30,15
 

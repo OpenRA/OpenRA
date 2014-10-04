@@ -33,5 +33,17 @@ namespace OpenRA.Widgets
 		{
 			return FieldLoader.GetValue<T>(key, data[key]);
 		}
+
+		public static bool TryGet<T>(string key, out T result)
+		{
+			string s;
+			if (!data.TryGetValue(key, out s))
+			{
+				result = default(T);
+				return false;
+			}
+			result = FieldLoader.GetValue<T>(key, s);
+			return true;
+		}
 	}
 }
