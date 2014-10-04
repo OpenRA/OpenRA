@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
 				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Yellow);
 
 				self.CancelActivity();
-				self.QueueActivity(new Enter(self, order.TargetActor, new RepairBridge(order.TargetActor)));
+				self.QueueActivity(new RepairBridge(self, order.TargetActor));
 			}
 		}
 
