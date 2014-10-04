@@ -25,8 +25,10 @@ namespace OpenRA
 		public readonly int Range;
 
 		public WRange(int r) { Range = r; }
+		public WRange(double cells) { Range = (int)(1024.0 * cells); }
 		public static readonly WRange Zero = new WRange(0);
-		public static WRange FromCells(int cells) { return new WRange(1024*cells); }
+		public static readonly WRange OneCell = new WRange(1024);
+		public static WRange FromCells(int cells) { return new WRange(1024 * cells); }
 
 		public static WRange operator +(WRange a, WRange b) { return new WRange(a.Range + b.Range); }
 		public static WRange operator -(WRange a, WRange b) { return new WRange(a.Range - b.Range); }

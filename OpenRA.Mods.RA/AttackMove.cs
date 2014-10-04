@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 		void Activate(Actor self)
 		{
 			self.CancelActivity();
-			self.QueueActivity(new AttackMoveActivity(self, move.MoveTo(TargetLocation.Value, 1)));
+			self.QueueActivity(new AttackMoveActivity(self, move.MoveTo(TargetLocation.Value, SubCell.Any, WRange.OneCell)));
 		}
 
 		public void TickIdle(Actor self)

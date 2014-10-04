@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
 			if (self.Location != proc.Location + iao.DeliverOffset)
-				return Util.SequenceActivities(movement.MoveTo(proc.Location + iao.DeliverOffset, 0), this);
+				return Util.SequenceActivities(movement.MoveTo(proc.Location + iao.DeliverOffset, SubCell.Any, WRange.Zero), this);
 
 			if (!isDocking)
 			{

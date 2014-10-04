@@ -23,80 +23,66 @@ namespace OpenRA.Mods.RA.Move
 		static readonly List<CPos> NoPath = new List<CPos>();
 
 		CPos? destination;
+		SubCell subCellHint = SubCell.Any;
 		WRange nearEnough;
 		List<CPos> path;
 		Func<Actor, Mobile, List<CPos>> getPath;
 		Actor ignoreBuilding;
+		Mobile mobile;
 
 		// For dealing with blockers
 		bool hasWaited;
 		bool hasNotifiedBlocker;
 		int waitTicksRemaining;
+		int retries = 1;
 
 		// Scriptable move order
 		// Ignores lane bias and nearby units
-		public Move(CPos destination)
+		public Move(Actor self, CPos destination, SubCell subCell = SubCell.Any)
 		{
-			this.getPath = (self, mobile) =>
-				self.World.WorldActor.Trait<PathFinder>().FindPath(
-					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, destination, false)
+			this.getPath = (me, mobile) =>
+				me.World.WorldActor.Trait<PathFinder>().FindPath(
+					PathSearch.FromPoint(me.World, mobile.Info, me, mobile.toCell, destination, false)
 					.WithoutLaneBias());
 			this.destination = destination;
+			subCellHint = subCell;
 			this.nearEnough = WRange.Zero;
+			this.mobile = self.Trait<Mobile>();
 		}
 
-		// HACK: for legacy code
-		public Move(CPos destination, int nearEnough)
-			: this(destination, WRange.FromCells(nearEnough)) { }
+		public Move(Actor self, CPos destination, SubCell subCell, WRange range) : this(self, destination, subCell, range, range) { }
 
-		public Move(CPos destination, WRange nearEnough)
+		public Move(Actor self, CPos destination, SubCell subCell, WRange minRange, WRange maxRange)
 		{
-			this.getPath = (self, mobile) => self.World.WorldActor.Trait<PathFinder>()
-				.FindUnitPath(mobile.toCell, destination, self);
+			this.getPath = (me, mobile) => me.World.WorldActor.Trait<PathFinder>()
+				.FindUnitPathToRange(mobile.fromCell, mobile.fromSubCell, me.World.Map.CenterOfSubCell(destination, subCell), minRange, this.nearEnough, me);
 			this.destination = destination;
-			this.nearEnough = nearEnough;
+			subCellHint = subCell;
+			nearEnough = maxRange;
+			this.mobile = self.Trait<Mobile>();
 		}
 
-		public Move(CPos destination, SubCell subCell, WRange nearEnough)
+		public Move(Actor self, CPos destination, SubCell subCell, Actor ignoreBuilding)
 		{
-			this.getPath = (self, mobile) => self.World.WorldActor.Trait<PathFinder>()
-				.FindUnitPathToRange(mobile.fromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
-			this.destination = destination;
-			this.nearEnough = nearEnough;
-		}
-
-		public Move(CPos destination, Actor ignoreBuilding)
-		{
-			this.getPath = (self, mobile) =>
-				self.World.WorldActor.Trait<PathFinder>().FindPath(
-					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, destination, false)
+			this.getPath = (me, mobile) =>
+				me.World.WorldActor.Trait<PathFinder>().FindPath(
+					PathSearch.FromPoint(me.World, mobile.Info, me, mobile.toCell, destination, false)
 					.WithIgnoredBuilding(ignoreBuilding));
 
 			this.destination = destination;
-			this.nearEnough = WRange.Zero;
+			subCellHint = subCell;
+			nearEnough = WRange.Zero;
 			this.ignoreBuilding = ignoreBuilding;
+			this.mobile = self.Trait<Mobile>();
 		}
 
-		public Move(Target target, WRange range)
-		{
-			this.getPath = (self, mobile) =>
-			{
-				if (!target.IsValidFor(self))
-					return NoPath;
-
-				return self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(
-					mobile.toCell, mobile.toSubCell, target.CenterPosition, range, self);
-			};
-
-			this.destination = null;
-			this.nearEnough = range;
-		}
-
-		public Move(Func<List<CPos>> getPath)
+		// TODO: merge MoveAdjacentTo & MoveWithinRange into Move or better expose Move to them
+		public Move(Actor self, Func<List<CPos>> getPath)
 		{
 			this.getPath = (_1, _2) => getPath();
-			this.destination = null;
-			this.nearEnough = WRange.Zero;
+			destination = null;
+			nearEnough = WRange.Zero;
+			mobile = self.Trait<Mobile>();
 		}
 
 		static int HashList<T>(List<T> xs)
@@ -111,15 +97,14 @@ namespace OpenRA.Mods.RA.Move
 
 		List<CPos> EvalPath(Actor self, Mobile mobile)
 		{
-			var path = getPath(self, mobile).TakeWhile(a => a != mobile.toCell).ToList();
-			mobile.PathHash = HashList(path);
-			return path;
+			var path = getPath(self, mobile);
+			if (path == null || !path.Any())
+				return null;
+			return path.TakeWhile(a => a != mobile.toCell).ToList();
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			var mobile = self.Trait<Mobile>();
-
 			if (destination == mobile.toCell)
 				return NextActivity;
 
@@ -132,6 +117,15 @@ namespace OpenRA.Mods.RA.Move
 				}
 
 				path = EvalPath(self, mobile);
+				if (path == null)
+				{
+					if (--retries <= 0)
+						return NextActivity;
+					Log.Write("debug", "Move.Tick(Actor #{0} at ({1})) to repath.", self.ActorID, self.Location);
+					return Util.SequenceActivities(new Wait(self.World.SharedRandom.Next(0, mobile.Info.WaitSpread)), this);
+				}
+
+				mobile.PathHash = HashList(path);
 				SanityCheckPath(mobile);
 			}
 
@@ -200,7 +194,9 @@ namespace OpenRA.Mods.RA.Move
 			{
 				// Are we close enough?
 				var cellRange = nearEnough.Range / 1024;
-				if ((mobile.toCell - destination.Value).LengthSquared <= cellRange * cellRange)
+				var cellRangePlus = cellRange + Math.Min(cellRange, 2);
+				var cellDistance = (mobile.toCell - destination.Value).LengthSquared;
+				if (cellDistance <= cellRange * cellRange || (cellDistance <= cellRangePlus * cellRangePlus && self.World.SharedRandom.Next(0, 2) == 0))
 				{
 					path.Clear();
 					return null;
@@ -231,12 +227,13 @@ namespace OpenRA.Mods.RA.Move
 				}
 
 				// Calculate a new path
-				mobile.RemoveInfluence();
 				var newPath = EvalPath(self, mobile);
-				mobile.AddInfluence();
 
-				if (newPath.Count != 0)
+				if (newPath != null && newPath.Count != 0)
+				{
 					path = newPath;
+					mobile.PathHash = HashList(path);
+				}
 
 				return null;
 			}
@@ -245,7 +242,7 @@ namespace OpenRA.Mods.RA.Move
 			hasWaited = false;
 			path.RemoveAt(path.Count - 1);
 
-			var subCell = mobile.GetAvailableSubCell(nextCell, SubCell.Any, ignoreBuilding);
+			var subCell = mobile.GetAvailableSubCell(nextCell, subCellHint, ignoreBuilding);
 			return Pair.New(nextCell, subCell);
 		}
 

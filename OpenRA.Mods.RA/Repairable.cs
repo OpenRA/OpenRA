@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA
 
 				self.CancelActivity();
 				self.QueueActivity(new MoveAdjacentTo(self, target));
-				self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(order.TargetActor.CenterPosition), order.TargetActor));
+				self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(order.TargetActor.CenterPosition), SubCell.Any, order.TargetActor));
 				self.QueueActivity(new Rearm(self));
 				self.QueueActivity(new Repair(order.TargetActor));
 
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA
 					self.QueueActivity(new CallFunc(() =>
 					{
 						self.SetTargetLine(Target.FromCell(self.World, rp.Location), Color.Green);
-						self.QueueActivity(movement.MoveTo(rp.Location, order.TargetActor));
+						self.QueueActivity(movement.MoveTo(rp.Location, SubCell.Any, order.TargetActor));
 					}));
 			}
 		}

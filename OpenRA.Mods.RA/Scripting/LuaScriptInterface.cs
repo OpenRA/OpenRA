@@ -17,6 +17,7 @@ using OpenRA.Effects;
 using OpenRA.FileSystem;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Network;
 using OpenRA.Scripting;
 using OpenRA.Support;
@@ -324,9 +325,9 @@ namespace OpenRA.Mods.RA.Scripting
 		public void AttackMove(Actor actor, CPos location, double nearEnough)
 		{
 			if (actor.HasTrait<AttackMove>())
-				actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(location, (int)nearEnough)));
+				actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(actor, location, SubCell.Any, new WRange(nearEnough))));
 			else
-				actor.QueueActivity(new Move.Move(location, (int)nearEnough));
+				actor.QueueActivity(new Move.Move(actor, location, SubCell.Any, new WRange(nearEnough)));
 		}
 
 		[LuaGlobal]

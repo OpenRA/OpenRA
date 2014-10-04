@@ -19,6 +19,7 @@ using OpenRA.Scripting;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Scripting
 {
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.RA.Scripting
 			}
 			else
 			{
-				actor.QueueActivity(new Move.Move(dest, 2));
+				actor.QueueActivity(new Move.Move(actor, dest, SubCell.Any, WRange.Zero, WRange.FromCells(2)));
 			}
 		}
 

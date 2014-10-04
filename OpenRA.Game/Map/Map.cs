@@ -81,6 +81,7 @@ namespace OpenRA
 		public readonly WVec[] SubCellOffsets;
 		public readonly SubCell DefaultSubCell;
 		public readonly SubCell LastSubCell;
+		public readonly int SharedSubCellCount;
 
 		public WVec OffsetOfSubCell(SubCell subCell) { return SubCellOffsets[(int)subCell]; }
 
@@ -253,7 +254,8 @@ namespace OpenRA
 			MapResources = Exts.Lazy(() => LoadResourceTiles());
 			TileShape = Game.modData.Manifest.TileShape;
 			SubCellOffsets = Game.modData.Manifest.SubCellOffsets;
-			LastSubCell = (SubCell)(SubCellOffsets.Length - 1);
+			SharedSubCellCount = SubCellOffsets.Length - 1;
+			LastSubCell = (SubCell)SharedSubCellCount;
 			DefaultSubCell = (SubCell)Game.modData.Manifest.SubCellDefaultIndex;
 
 			// The Uid is calculated from the data on-disk, so

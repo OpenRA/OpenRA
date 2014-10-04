@@ -169,7 +169,7 @@ namespace OpenRA.Mods.RA
 					var harv = self.Trait<Harvester>();
 
 					var moveTo = harv.LastHarvestedCell ?? (deliveryLoc + new CVec(0, 4));
-					self.QueueActivity(mobile.MoveTo(moveTo, 1));
+					self.QueueActivity(mobile.MoveTo(moveTo, SubCell.Any, WRange.OneCell));
 					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 
 					var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
@@ -193,7 +193,7 @@ namespace OpenRA.Mods.RA
 
 				var cell = self.Location;
 				var moveTo = mobile.NearestMoveableCell(cell, 2, 5);
-				self.QueueActivity(mobile.MoveTo(moveTo, 0));
+				self.QueueActivity(mobile.MoveTo(moveTo, SubCell.Any, WRange.Zero));
 				self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 
 				// Find more resources but not at this location:
@@ -298,7 +298,7 @@ namespace OpenRA.Mods.RA
 						loc = mobile.NearestCell(loc, p => mobile.CanEnterCell(p) && taken.Add(p), 1, 6);
 					}
 
-					self.QueueActivity(mobile.MoveTo(loc, 0));
+					self.QueueActivity(mobile.MoveTo(loc, SubCell.Any, WRange.Zero));
 					self.SetTargetLine(Target.FromCell(self.World, loc), Color.Red);
 
 					LastOrderLocation = loc;
@@ -311,7 +311,7 @@ namespace OpenRA.Mods.RA
 					if (!loc.HasValue)
 						return;
 
-					self.QueueActivity(mobile.MoveTo(loc.Value, 0));
+					self.QueueActivity(mobile.MoveTo(loc.Value, SubCell.Any, WRange.Zero));
 					self.SetTargetLine(Target.FromCell(self.World, loc.Value), Color.Red);
 
 					LastOrderLocation = loc;

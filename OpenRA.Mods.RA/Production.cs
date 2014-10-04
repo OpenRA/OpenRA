@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA
 					{
 						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
 						newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
-							newUnit, move.MoveTo(exitLocation, 1)));
+							newUnit, move.MoveTo(exitLocation, SubCell.Any, WRange.Zero, WRange.FromCells(2))));
 					}
 				}
 

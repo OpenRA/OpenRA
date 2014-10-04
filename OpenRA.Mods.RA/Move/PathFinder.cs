@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -26,94 +27,218 @@ namespace OpenRA.Mods.RA.Move
 
 	public class PathFinder
 	{
-		readonly static List<CPos> emptyPath = new List<CPos>(0);
+		const int MaxPathAge = 50;	/* x 40ms ticks */
+		const int ShortWindow = 15;	// Tick window for grouping move orders
+		static readonly List<CPos> EmptyPath = new List<CPos>(0);
 
 		readonly World world;
 		public PathFinder(World world) { this.world = world; }
 
 		class CachedPath
 		{
-			public CPos from;
-			public CPos to;
-			public List<CPos> result;
-			public int tick;
-			public Actor actor;
+			public CPos From;
+			public CPos To;
+			public List<CPos> Result;
+			public int Tick;
+			public Actor Actor;
+			public WRange Range;
+			public int ShareCount;
 		}
 
-		List<CachedPath> CachedPaths = new List<CachedPath>();
-		const int MaxPathAge = 50;	/* x 40ms ticks */
+		ConcurrentDictionary<CPos, List<CachedPath>> fromCellCachedPaths = new ConcurrentDictionary<CPos, List<CachedPath>>();
+		int lastCleanTick = -1;
+		int lastSweepTick = -1;
 
-		public List<CPos> FindUnitPath(CPos from, CPos target, Actor self)
-		{
-			using (new PerfSample("Pathfinder"))
-			{
-				var cached = CachedPaths.FirstOrDefault(p => p.from == from && p.to == target && p.actor == self);
-				if (cached != null)
-				{
-					Log.Write("debug", "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, world.WorldTick - cached.tick);
-					if (world.WorldTick - cached.tick > MaxPathAge)
-						CachedPaths.Remove(cached);
-					return new List<CPos>(cached.result);
-				}
+		// Number of counterclockwise eighth turns from (1, 0) to (x, y) rounded to the nearest eighth turn
+		uint EighthTurns(int x, int y) { return (uint)((WAngle.ArcTan(y, x).Angle + 64) >> 7); }
 
-				var mi = self.Info.Traits.Get<MobileInfo>();
+		// Vector of integral point ajacent to (0, 0) specified number of eighth turns counterclockwise from (1, 0)
+		CVec AdjacentVecOfEighthTurn(uint eighthTurns) { return CVec.directions[eighthTurns & 7]; }
 
-				// If a water-land transition is required, bail early
-				var domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
-				if (domainIndex != null)
-				{
-					var passable = mi.GetMovementClass(world.TileSet);
-					if (!domainIndex.IsPassable(from, target, (uint)passable))
-						return emptyPath;
-				}
-
-				var pb = FindBidiPath(
-					PathSearch.FromPoint(world, mi, self, target, from, true),
-					PathSearch.FromPoint(world, mi, self, from, target, true).Reverse()
-				);
-
-				CheckSanePath2(pb, from, target);
-
-				CachedPaths.RemoveAll(p => world.WorldTick - p.tick > MaxPathAge);
-				CachedPaths.Add(new CachedPath { from = from, to = target, actor = self, result = pb, tick = world.WorldTick });
-				return new List<CPos>(pb);
-			}
-		}
-
-		public List<CPos> FindUnitPathToRange(CPos src, SubCell srcSub, WPos target, WRange range, Actor self)
+		public List<CPos> FindUnitPathToRange(CPos src, SubCell srcSub, WPos target, WRange minRange, WRange maxRange, Actor self)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
 				var mi = self.Info.Traits.Get<MobileInfo>();
 				var targetCell = self.World.Map.CellContaining(target);
-				var rangeSquared = range.Range*range.Range;
+				var rangeSquared = minRange.Range * minRange.Range;
+				var srcPos = self.World.Map.CenterOfSubCell(src, srcSub);
+				var moveVec = target - srcPos;
 
-				// Correct for SubCell offset
-				target -= self.World.Map.OffsetOfSubCell(srcSub);
+				if (moveVec.LengthSquared <= rangeSquared)
+					return null;
 
-				// Select only the tiles that are within range from the requested SubCell
-				// This assumes that the SubCell does not change during the path traversal
-				var tilesInRange = world.Map.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
-					.Where(t => (world.Map.CenterOfCell(t) - target).LengthSquared <= rangeSquared
-					       && mi.CanEnterCell(self.World, self, t));
+				var canEnterTarget = mi.CanEnterCell(world, self, targetCell);
+				var push = false;
 
-				// See if there is any cell within range that does not involve a cross-domain request
-				// Really, we only need to check the circle perimeter, but it's not clear that would be a performance win
-				var domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
-				if (domainIndex != null)
+				// If within range, change range to mid-distance
+				if (moveVec.HorizontalLengthSquared <= rangeSquared)
 				{
-					var passable = mi.GetMovementClass(world.TileSet);
-					tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(src, t, (uint)passable)));
-					if (!tilesInRange.Any())
-						return emptyPath;
+					Log.Write("debug", "PathFinder.FindUnitPathToRange(Actor #{0} at ({1})) - using mid-distance", self.ActorID, self.Location);
+					rangeSquared = (int)moveVec.HorizontalLengthSquared / 4;
+					minRange = new WRange(Exts.ISqrt(rangeSquared, Exts.ISqrtRoundMode.Nearest));
 				}
 
-				var path = FindBidiPath(
-					PathSearch.FromPoints(world, mi, self, tilesInRange, src, true),
-					PathSearch.FromPoint(world, mi, self, src, targetCell, true).Reverse()
-				);
+				// Push if within pushing range
+				if (moveVec.HorizontalLengthSquared <= maxRange.Range * maxRange.Range)
+				{
+					if (!canEnterTarget)
+						push = self.World.ActorMap.GetUnitsAt(targetCell).All(a => a.TraitsImplementing<INotifyBlockingMove>().Any());
+					if (push)
+						Log.Write("debug", "PathFinder.FindUnitPathToRange(Actor #{0} at ({1})) - might nudge at destination", self.ActorID, self.Location);
+				}
 
-				return path;
+				Func<CPos, CachedPath> selectCachedPath = start =>
+				{
+					if (!mi.CanEnterCell(self.World, self, start) || !fromCellCachedPaths.ContainsKey(start))
+						return null;
+					return fromCellCachedPaths[start]
+						.Where(p => p.To == targetCell && p.Range >= minRange && p.Range <= maxRange)
+						.MinByOrDefault(p => p.Range);
+				};
+
+				// TODO: handle multiple terrain crossing actors such as water-land
+				var cached = selectCachedPath(src);
+				if (cached != null)
+				{
+					Log.Write("debug", "Actor {0} #{1} {2} path from {3} or {4} tick(s) ago",
+						self.Info.Name, self.ActorID, cached.Actor == self ? "asked for a" : "using",
+						world.WorldTick - cached.Tick, world.WorldTick - cached.Tick + ShortWindow);
+					//if (world.WorldTick - cached.Tick > MaxPathAge)
+						//fromCellCachedPaths[src].Remove(cached);
+					var result = new List<CPos>(cached.Result);
+					var shouldTrimPath = true;
+
+					// Path can not be trimmed
+					if (push || result.Count <= 1 || cached.Range.Range + 1024 >= minRange.Range)
+						shouldTrimPath = false;
+
+					// Probably not a co-path and target is not reserved/occupied
+					else if (cached.Tick > world.WorldTick + ShortWindow && canEnterTarget)
+						shouldTrimPath = false;
+
+					// Target is not fully allocated
+					else if (mi.SharesCell && cached.ShareCount < world.Map.SharedSubCellCount)
+						shouldTrimPath = false;
+
+					if (shouldTrimPath)
+					{
+						result.RemoveAt(0);
+						fromCellCachedPaths.GetOrAdd(src, c => new List<CachedPath>()).Add(new CachedPath
+						{
+							From = src, To = targetCell, Actor = self, Result = new List<CPos>(result), Tick = world.WorldTick + ShortWindow,
+							Range = new WRange((self.World.Map.CenterOfCell(targetCell) - self.World.Map.CenterOfCell(result.First())).Length),
+							ShareCount = mi.SharesCell ? 1 : world.Map.SharedSubCellCount
+						});
+					}
+					else
+						cached.ShareCount = mi.SharesCell ? cached.ShareCount + 1 : world.Map.SharedSubCellCount;
+					return result;
+				}
+				else
+				{
+					// Get direction
+					var eighthTurns = EighthTurns(moveVec.X, moveVec.Y);
+					var adjacent = src + CVec.directions[eighthTurns];
+
+					// Try finding an adjacent neighbor path forward
+					cached = selectCachedPath(adjacent);
+					if (cached == null)
+					{
+						adjacent = src + CVec.directions[(eighthTurns + 1) & 7];
+						cached = selectCachedPath(adjacent);
+						if (cached == null)
+						{
+							adjacent = src + CVec.directions[(eighthTurns + 7) & 7];
+							cached = selectCachedPath(adjacent);
+						}
+					}
+
+					if (cached != null)
+					{
+						Log.Write("debug", "Actor {0} #{1} using adjacent neighbor path forward from {2} or {3} tick(s) ago from ({4}) to ({5}), which is {6} from ({7}) linking to ({8}) in direction {9} - sign-x: {10}, sign-y: {11}",
+								self.Info.Name, self.ActorID, world.WorldTick - cached.Tick, world.WorldTick - cached.Tick + ShortWindow,
+								src.ToString(), cached.Result.First().ToString(), (targetCell - cached.Result.First()).Length,
+								targetCell.ToString(), cached.From.ToString(),
+								EighthTurns(cached.From.X - src.X, cached.From.Y - src.Y), cached.From.X - src.X, cached.From.Y - src.Y);
+						if (world.WorldTick - cached.Tick > MaxPathAge)
+							fromCellCachedPaths[cached.From].Remove(cached);
+						var result = new List<CPos>(cached.Result);
+						result.Add(adjacent);
+						return new List<CPos>(result);
+					}
+				}
+
+				List<CPos> path;
+
+				if (minRange.Range > 0)
+				{
+					// Correct for SubCell offset
+					target -= self.World.Map.OffsetOfSubCell(srcSub);
+
+					// Select only the tiles that are within range from the requested SubCell
+					// This assumes that the SubCell does not change during the path traversal
+					var tilesInRange = world.Map.FindTilesInCircle(targetCell, minRange.Range / 1024 + 1)
+						.Where(t => (world.Map.CenterOfCell(t) - target).LengthSquared <= rangeSquared
+							&& mi.CanEnterCell(self.World, self, t));
+
+					// See if there is any cell within range that does not involve a cross-domain request
+					// Really, we only need to check the circle perimeter, but it's not clear that would be a performance win
+					// TODO: handle transitions such as water-land
+					var domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
+					if (domainIndex != null)
+					{
+						var passable = mi.GetMovementClass(world.TileSet);
+						tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(src, t, (uint)passable)));
+						if (!tilesInRange.Any())
+							return EmptyPath;
+					}
+
+					path = FindBidiPath(
+						PathSearch.FromPoints(world, mi, self, tilesInRange, src, true),
+						PathSearch.FromPoint(world, mi, self, src, targetCell, true).Reverse());
+				}
+				else
+					path = FindBidiPath(
+						PathSearch.FromPoint(world, mi, self, targetCell, src, true),
+						PathSearch.FromPoint(world, mi, self, src, targetCell, true).Reverse());
+
+				// Remove stale paths and empty lists from the cache at most once per tick
+				if (lastCleanTick != world.WorldTick)
+				{
+					lastCleanTick = world.WorldTick;
+
+					// Periodically remove empty lists while path-finding is busy
+					if (lastCleanTick > lastSweepTick + MaxPathAge * 4)
+					{
+						lastSweepTick = lastCleanTick;
+						List<CachedPath> o;
+						var emptyLists = fromCellCachedPaths.Where(kv => kv.Value.Count == 0).Select(kv => kv.Key);
+						foreach (var empty in emptyLists)
+							fromCellCachedPaths.TryRemove(empty, out o);
+					}
+
+					// Remove stale paths from the cache
+					foreach (var cachedPaths in fromCellCachedPaths)
+						cachedPaths.Value.RemoveAll(p => world.WorldTick - p.Tick > MaxPathAge);
+				}
+
+				if (path.Count == 0)
+					Log.Write("debug", "Actor {0} #{1} failed pathing from ({2}) to ({3})", self.Info.Name, self.ActorID, src.ToString(), targetCell.ToString());
+				else
+				{
+					Log.Write("debug", "Actor {0} #{1} pathing from ({2}) to ({3}), which is {4} from ({5})",
+							self.Info.Name, self.ActorID, src.ToString(), path.First().ToString(), (targetCell - path.First()).Length, targetCell.ToString());
+					if (path.Count > 1)
+						fromCellCachedPaths.GetOrAdd(src, c => new List<CachedPath>()).Add(new CachedPath
+						{
+							From = src, To = targetCell, Actor = self, Result = path, Tick = world.WorldTick,
+							Range = new WRange((world.Map.CenterOfCell(targetCell) - world.Map.CenterOfCell(path.First())).Length),
+							ShareCount = mi.SharesCell ? 1 : world.Map.SharedSubCellCount
+						});
+				}
+
+				return new List<CPos>(path);
 			}
 		}
 
@@ -144,7 +269,7 @@ namespace OpenRA.Mods.RA.Move
 				}
 
 				// no path exists
-				return emptyPath;
+				return EmptyPath;
 			}
 		}
 
@@ -208,7 +333,7 @@ namespace OpenRA.Mods.RA.Move
 						return path;
 				}
 
-				return emptyPath;
+				return EmptyPath;
 			}
 		}
 
@@ -225,6 +350,7 @@ namespace OpenRA.Mods.RA.Move
 				ret.Add(q);
 				q = ca[q].Path;
 			}
+
 			ret.Add(q);
 
 			ret.Reverse();
