@@ -25,10 +25,13 @@ namespace OpenRA.Mods.RA
 		public int GetInitialFacing() { return 128; }
 	}
 
-	class Husk : IPositionable, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisable
+	class Husk : IPositionable, IFacing, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisable
 	{
 		readonly HuskInfo info;
 		readonly Actor self;
+
+		readonly int dragSpeed;
+		readonly WPos finalPosition;
 
 		[Sync] public CPos TopLeft { get; private set; }
 		[Sync] public WPos CenterPosition { get; private set; }
@@ -45,11 +48,15 @@ namespace OpenRA.Mods.RA
 			CenterPosition = init.Contains<CenterPositionInit>() ? init.Get<CenterPositionInit, WPos>() : init.world.Map.CenterOfCell(TopLeft);
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 128;
 
-			var speed = init.Contains<HuskSpeedInit>() ? init.Get<HuskSpeedInit, int>() : 0;
-			var finalPos = init.world.Map.CenterOfCell(TopLeft);
-			var distance = (finalPos - CenterPosition).Length;
-			if (speed > 0 && distance > 0)
-				self.QueueActivity(new Drag(init.self, CenterPosition, finalPos, distance / speed));
+			dragSpeed = init.Contains<HuskSpeedInit>() ? init.Get<HuskSpeedInit, int>() : 0;
+			finalPosition = init.world.Map.CenterOfCell(TopLeft);
+		}
+
+		public void Created(Actor self)
+		{
+			var distance = (finalPosition - CenterPosition).Length;
+			if (dragSpeed > 0 && distance > 0)
+				self.QueueActivity(new Drag(self, CenterPosition, finalPosition, distance / dragSpeed));
 		}
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
