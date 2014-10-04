@@ -1387,6 +1387,12 @@ CYCL:
 		HP: 100
 	Armor:
 		Type: Wood
+	LineBuild:
+		NodeTypes: chain
+	LineBuildNode:
+		Types: chain
+	RenderBuildingWall:
+		Type: chain
 
 BARB:
 	Inherits: ^Wall
@@ -1394,6 +1400,12 @@ BARB:
 		HP: 100
 	Armor:
 		Type: Wood
+	LineBuild:
+		NodeTypes: barbwire
+	LineBuildNode:
+		Types: barbwire
+	RenderBuildingWall:
+		Type: barbwire
 
 WOOD:
 	Inherits: ^Wall
@@ -1401,6 +1413,12 @@ WOOD:
 		HP: 100
 	Armor:
 		Type: Wood
+	LineBuild:
+		NodeTypes: woodfence
+	LineBuildNode:
+		Types: woodfence
+	RenderBuildingWall:
+		Type: woodfence
 
 BARRACKS:
 	Tooltip:
