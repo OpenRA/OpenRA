@@ -283,6 +283,12 @@ BARB:
 	Tooltip:
 		Name: Wire Fence
 		Icon: barbicnh
+	LineBuild:
+		NodeTypes: barbwire
+	LineBuildNode:
+		Types: barbwire
+	RenderBuildingWall:
+		Type: barbwire
 
 WOOD:
 	Inherits: ^Wall
@@ -293,6 +299,12 @@ WOOD:
 	Tooltip:
 		Name: Wooden Fence
 		Icon: woodicnh
+	LineBuild:
+		NodeTypes: woodfence
+	LineBuildNode:
+		Types: woodfence
+	RenderBuildingWall:
+		Type: woodfence
 
 BRIDGE1:
 	Inherits: ^Bridge
