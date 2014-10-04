@@ -432,7 +432,7 @@ namespace OpenRA.Mods.RA.Move
 
 			ticksBeforePathing = avgTicksBeforePathing + self.World.SharedRandom.Next(-spreadTicksBeforePathing, spreadTicksBeforePathing);
 
-			self.QueueActivity(new Move(currentLocation, 8));
+			self.QueueActivity(new Move(self, currentLocation, 8));
 
 			self.SetTargetLine(Target.FromCell(self.World, currentLocation), Color.Green);
 		}
@@ -585,7 +585,7 @@ namespace OpenRA.Mods.RA.Move
 			{
 				self.CancelActivity();
 				self.SetTargetLine(Target.FromCell(self.World, moveTo.Value), Color.Green, false);
-				self.QueueActivity(new Move(moveTo.Value, 0));
+				self.QueueActivity(new Move(self, moveTo.Value, 0));
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
 					self.ActorID, self.Location, moveTo.Value);
@@ -631,13 +631,13 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public Activity ScriptedMove(CPos cell) { return new Move(cell); }
-		public Activity MoveTo(CPos cell, int nearEnough) { return new Move(cell, nearEnough); }
-		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new Move(cell, ignoredActor); }
+		public Activity ScriptedMove(CPos cell) { return new Move(self, cell); }
+		public Activity MoveTo(CPos cell, int nearEnough) { return new Move(self, cell, nearEnough); }
+		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new Move(self, cell, ignoredActor); }
 		public Activity MoveWithinRange(Target target, WRange range) { return new MoveWithinRange(self, target, WRange.Zero, range); }
 		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return new MoveWithinRange(self, target, minRange, maxRange); }
 		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new Follow(self, target, minRange, maxRange); }
-		public Activity MoveTo(Func<List<CPos>> pathFunc) { return new Move(pathFunc); }
+		public Activity MoveTo(Func<List<CPos>> pathFunc) { return new Move(self, pathFunc); }
 
 		public void OnNotifyBlockingMove(Actor self, Actor blocking)
 		{
