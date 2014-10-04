@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new UpgradeActorsNear(init.self, this); }
 	}
 
-	public class UpgradeActorsNear : ITick, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class UpgradeActorsNear : ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction
 	{
 		readonly UpgradeActorsNearInfo info;
 		readonly Actor self;
@@ -101,6 +101,22 @@ namespace OpenRA.Mods.RA
 			if (um != null)
 				foreach (var u in info.Upgrades)
 					um.GrantUpgrade(a, u, this);
+		}
+
+		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
+		{
+			// Work around for actors produced within the region not triggering until the second tick
+			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= info.Range.Range * info.Range.Range)
+			{
+				var stance = self.Owner.Stances[produced.Owner];
+				if (!info.ValidStances.HasFlag(stance))
+					return;
+
+				var um = produced.TraitOrDefault<UpgradeManager>();
+				if (um != null)
+					foreach (var u in info.Upgrades)
+						um.GrantTimedUpgrade(produced, u, 1);
+			}
 		}
 
 		void ActorExited(Actor a)
