@@ -8,24 +8,28 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class Demolish : Activity
+	class Demolish : Enter
 	{
-		readonly Target target;
+		readonly Actor target;
+		readonly IEnumerable<IDemolishable> demolishables;
 		readonly int delay;
 		readonly int flashes;
 		readonly int flashesDelay;
 		readonly int flashInterval;
 		readonly int flashDuration;
 
-		public Demolish(Actor target, int delay, int flashes, int flashesDelay, int flashInterval, int flashDuration)
+		public Demolish(Actor self, Actor target, int delay, int flashes, int flashesDelay, int flashInterval, int flashDuration)
+			: base(self, target)
 		{
-			this.target = Target.FromActor(target);
+			this.target = target;
+			demolishables = target.TraitsImplementing<IDemolishable>();
 			this.delay = delay;
 			this.flashes = flashes;
 			this.flashesDelay = flashesDelay;
@@ -33,39 +37,38 @@ namespace OpenRA.Mods.RA.Activities
 			this.flashDuration = flashDuration;
 		}
 
-		public override Activity Tick(Actor self)
+		protected override bool CanReserve(Actor self)
 		{
-			if (IsCanceled || !target.IsValidFor(self))
-				return NextActivity;
+			return demolishables.Any(i => i.IsValidTarget(target, self));
+		}
+
+		protected override void OnInside(Actor self)
+		{
+			if (target.IsDead())
+				return;
 
 			self.World.AddFrameEndTask(w =>
 			{
+				if (target.IsDead())
+					return;
+
 				for (var f = 0; f < flashes; f++)
 					w.Add(new DelayedAction(flashesDelay + f * flashInterval, () =>
-						w.Add(new FlashTarget(target.Actor, ticks: flashDuration))));
+						w.Add(new FlashTarget(target, ticks: flashDuration))));
 
 				w.Add(new DelayedAction(delay, () =>
 				{
-					// Can't demolish an already dead actor
-					if (target.Type != TargetType.Actor)
+					if (target.IsDead())
 						return;
 
-
-
-					var demolishable = target.Actor.TraitOrDefault<IDemolishable>();
-					if (demolishable == null || !demolishable.IsValidTarget(target.Actor, self))
-						return;
-
-					var modifiers = target.Actor.TraitsImplementing<IDamageModifier>()
+					var modifiers = target.TraitsImplementing<IDamageModifier>()
 						.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
 						.Select(t => t.GetDamageModifier(self, null));
 
 					if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
-						demolishable.Demolish(target.Actor, self);
+						demolishables.Do(d => d.Demolish(target, self));
 				}));
 			});
-
-			return NextActivity;
 		}
 	}
 }
