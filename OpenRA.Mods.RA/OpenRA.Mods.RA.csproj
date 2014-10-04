@@ -120,7 +120,6 @@
     <Compile Include="Air\AttackPlane.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
     <Compile Include="Crates\DuplicateUnitCrateAction.cs" />
-    <Compile Include="Effects\FloatingText.cs" />
     <Compile Include="Infiltration\InfiltrateForPowerOutage.cs" />
     <Compile Include="Power\AffectedByPowerOutage.cs" />
     <Compile Include="Power\Power.cs" />
@@ -215,7 +214,6 @@
     <Compile Include="Effects\Contrail.cs" />
     <Compile Include="Effects\Corpse.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
-    <Compile Include="Effects\Explosion.cs" />
     <Compile Include="Effects\GpsDot.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\GravityBomb.cs" />
@@ -488,10 +486,6 @@
     <Compile Include="Scripting\Properties\TransportProperties.cs" />
     <Compile Include="Scripting\Global\CameraGlobal.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
-    <Compile Include="Console\ChatCommands.cs" />
-    <Compile Include="Console\DevCommands.cs" />
-    <Compile Include="Console\HelpCommand.cs" />
-    <Compile Include="Console\PlayerCommands.cs" />
     <Compile Include="Render\WithRepairAnimation.cs" />
     <Compile Include="Render\WithRepairOverlay.cs" />
     <Compile Include="Activities\MoveWithinRange.cs" />

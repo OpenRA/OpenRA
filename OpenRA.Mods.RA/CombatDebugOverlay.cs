@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA
