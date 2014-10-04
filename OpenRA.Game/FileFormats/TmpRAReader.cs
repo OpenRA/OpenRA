@@ -17,7 +17,6 @@ namespace OpenRA.FileFormats
 	public class TmpRAReader : ISpriteSource
 	{
 		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
-		public bool CacheWhenLoadingTileset { get { return false; } }
 
 		public TmpRAReader(Stream s)
 		{

@@ -50,7 +50,6 @@ namespace OpenRA.FileFormats
 	public class TmpTSReader : ISpriteSource
 	{
 		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
-		public bool CacheWhenLoadingTileset { get { return false; } }
 
 		public TmpTSReader(Stream s)
 		{

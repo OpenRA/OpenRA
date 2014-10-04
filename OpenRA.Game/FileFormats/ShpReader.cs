@@ -60,7 +60,6 @@ namespace OpenRA.FileFormats
 		}
 
 		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
-		public bool CacheWhenLoadingTileset { get { return false; } }
 		public readonly Size Size;
 
 		int recurseDepth = 0;

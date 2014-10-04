@@ -25,7 +25,6 @@ namespace OpenRA.Graphics
 	public interface ISpriteSource
 	{
 		IReadOnlyList<ISpriteFrame> Frames { get; }
-		bool CacheWhenLoadingTileset { get; }
 	}
 
 	// TODO: Most of this should be moved into the format parsers themselves.

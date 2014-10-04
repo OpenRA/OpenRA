@@ -18,6 +18,7 @@ namespace OpenRA.Graphics
 	{
 		public readonly SheetBuilder SheetBuilder;
 		readonly Cache<string, Sprite[]> sprites;
+		readonly Cache<string, ISpriteFrame[]> frames;
 		readonly string[] exts;
 
 		public SpriteLoader(string[] exts, SheetBuilder sheetBuilder)
@@ -26,17 +27,24 @@ namespace OpenRA.Graphics
 
 			// Include extension-less version
 			this.exts = exts.Append("").ToArray();
-			sprites = new Cache<string, Sprite[]>(CacheSpriteFrames);
+			sprites = new Cache<string, Sprite[]>(CacheSprites);
+			frames = new Cache<string, ISpriteFrame[]>(CacheFrames);
 		}
 
-		Sprite[] CacheSpriteFrames(string filename)
+		Sprite[] CacheSprites(string filename)
+		{
+			return frames[filename].Select(a => SheetBuilder.Add(a))
+				.ToArray();
+		}
+
+		ISpriteFrame[] CacheFrames(string filename)
 		{
 			using (var stream = GlobalFileSystem.OpenWithExts(filename, exts))
 				return SpriteSource.LoadSpriteSource(stream, filename).Frames
-					.Select(a => SheetBuilder.Add(a))
 					.ToArray();
 		}
 
 		public Sprite[] LoadAllSprites(string filename) { return sprites[filename]; }
+		public ISpriteFrame[] LoadAllFrames(string filename) { return frames[filename]; }
 	}
 }

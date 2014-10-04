@@ -22,7 +22,7 @@ namespace OpenRA.Editor
 	{
 		public readonly int TileSize;
 		public TileSet TileSet;
-		Dictionary<ushort, List<byte[]>> templates;
+		Dictionary<ushort, byte[][]> templates;
 
 		// Extract a square tile that the editor can render
 		byte[] ExtractSquareTile(ISpriteFrame frame)
@@ -44,42 +44,19 @@ namespace OpenRA.Editor
 			return data;
 		}
 
-		List<byte[]> LoadTemplate(string filename, string[] exts, Dictionary<string, ISpriteSource> sourceCache, int[] frames)
-		{
-			ISpriteSource source;
-			if (!sourceCache.ContainsKey(filename))
-			{
-				using (var s = GlobalFileSystem.OpenWithExts(filename, exts))
-					source = SpriteSource.LoadSpriteSource(s, filename);
-
-				if (source.CacheWhenLoadingTileset)
-					sourceCache.Add(filename, source);
-			}
-			else
-				source = sourceCache[filename];
-
-			if (frames != null)
-			{
-				var ret = new List<byte[]>();
-				var srcFrames = source.Frames;
-				foreach (var i in frames)
-					ret.Add(ExtractSquareTile(srcFrames[i]));
-
-				return ret;
-			}
-
-			return source.Frames.Select(f => ExtractSquareTile(f)).ToList();
-		}
-
 		public TileSetRenderer(TileSet tileset, Size tileSize)
 		{
 			this.TileSet = tileset;
 			this.TileSize = Math.Min(tileSize.Width, tileSize.Height);
 
-			templates = new Dictionary<ushort, List<byte[]>>();
-			var sourceCache = new Dictionary<string, ISpriteSource>();
-			foreach (var t in TileSet.Templates)
-				templates.Add(t.Key, LoadTemplate(t.Value.Image, tileset.Extensions, sourceCache, t.Value.Frames));
+			templates = new Dictionary<ushort, byte[][]>();
+			var spriteLoader = new SpriteLoader(tileset.Extensions, null);
+			foreach (var t in tileset.Templates)
+			{
+				var allFrames = spriteLoader.LoadAllFrames(t.Value.Image);
+				var frames = t.Value.Frames != null ? t.Value.Frames.Select(f => allFrames[f]).ToArray() : allFrames;
+				templates.Add(t.Value.Id, frames.Select(f => ExtractSquareTile(f)).ToArray());
+			}
 		}
 
 		public Bitmap RenderTemplate(ushort id, IPalette p)
