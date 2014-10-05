@@ -30,11 +30,6 @@ namespace OpenRA.Graphics
 		bool DisableExportPadding { get; }
 	}
 
-	public interface ISpriteSource
-	{
-		IReadOnlyList<ISpriteFrame> Frames { get; }
-	}
-
 	public class SpriteLoader
 	{
 		public readonly SheetBuilder SheetBuilder;
@@ -69,9 +64,7 @@ namespace OpenRA.Graphics
 					if (loader.TryParseSprite(stream, out frames))
 						return frames;
 
-				// Fall back to the hardcoded types (for now).
-				return SpriteSource.LoadSpriteSource(stream, filename).Frames
-					.ToArray();
+				throw new InvalidDataException(filename + " is not a valid sprite file");
 			}
 		}
 
