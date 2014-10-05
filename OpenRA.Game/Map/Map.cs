@@ -457,7 +457,7 @@ namespace OpenRA
 				for (var i = 0; i < MapSize.X; i++)
 					for (var j = 0; j < MapSize.Y; j++)
 					{
-						var tile = MapTiles.Value[new CPos(i, j)];
+						var tile = MapTiles.Value[i, j];
 						writer.Write(tile.Type);
 						writer.Write(tile.Index);
 					}
@@ -467,7 +467,7 @@ namespace OpenRA
 				{
 					for (var j = 0; j < MapSize.Y; j++)
 					{
-						var tile = MapResources.Value[new CPos(i, j)];
+						var tile = MapResources.Value[i, j];
 						writer.Write(tile.Type);
 						writer.Write(tile.Index);
 					}
@@ -654,9 +654,8 @@ namespace OpenRA
 			{
 				for (var i = Bounds.Left; i < Bounds.Right; i++)
 				{
-					var cell = new CPos(i, j);
-					var type = MapTiles.Value[cell].Type;
-					var index = MapTiles.Value[cell].Index;
+					var type = MapTiles.Value[i, j].Type;
+					var index = MapTiles.Value[i, j].Index;
 					if (!tileset.Templates.ContainsKey(type))
 					{
 						Console.WriteLine("Unknown Tile ID {0}".F(type));
@@ -668,7 +667,7 @@ namespace OpenRA
 						continue;
 
 					index = (byte)r.Next(0, template.TilesCount);
-					MapTiles.Value[cell] = new TerrainTile(type, index);
+					MapTiles.Value[i, j] = new TerrainTile(type, index);
 				}
 			}
 		}
@@ -730,7 +729,7 @@ namespace OpenRA
 			for (var j = -max; j <= max; j++)
 				for (var i = -max; i <= max; i++)
 					if (max * max >= i * i + j * j)
-						ts [Exts.ISqrt(i * i + j * j, Exts.ISqrtRoundMode.Ceiling)].Add(new CVec(i, j));
+						ts[Exts.ISqrt(i * i + j * j, Exts.ISqrtRoundMode.Ceiling)].Add(new CVec(i, j));
 
 			// Sort each integer-distance group by the actual distance
 			foreach (var list in ts)

@@ -271,8 +271,9 @@ namespace OpenRA.Editor
 				for (var i = 0; i < ChunkSize; i++)
 					for (var j = 0; j < ChunkSize; j++)
 					{
-						var cell = new CPos(u * ChunkSize + i, v * ChunkSize + j);
-						var tr = Map.MapTiles.Value[cell];
+						var ui = u * ChunkSize + i;
+						var vj = v * ChunkSize + j;
+						var tr = Map.MapTiles.Value[ui, vj];
 						var tile = TileSetRenderer.Data(tr.Type);
 						var index = (tr.Index < tile.Length) ? tr.Index : (byte)0;
 						var rawImage = tile[index];
@@ -280,9 +281,9 @@ namespace OpenRA.Editor
 							for (var y = 0; y < TileSetRenderer.TileSize; y++)
 								p[(j * TileSetRenderer.TileSize + y) * stride + i * TileSetRenderer.TileSize + x] = Palette.GetColor(rawImage[x + TileSetRenderer.TileSize * y]).ToArgb();
 
-						if (Map.MapResources.Value[cell].Type != 0)
+						if (Map.MapResources.Value[ui, vj].Type != 0)
 						{
-							var resourceImage = ResourceTemplates[Map.MapResources.Value[cell].Type].Bitmap;
+							var resourceImage = ResourceTemplates[Map.MapResources.Value[ui, vj].Type].Bitmap;
 							var srcdata = resourceImage.LockBits(resourceImage.Bounds(),
 								ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
