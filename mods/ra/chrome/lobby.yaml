@@ -8,7 +8,7 @@ Background@SERVER_LOBBY:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
 			X: 0
-			Y: 17
+			Y: 15
 			Align: Center
 			Width: PARENT_RIGHT
 			Height: 20
