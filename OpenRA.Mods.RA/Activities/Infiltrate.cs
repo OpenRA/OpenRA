@@ -13,25 +13,27 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class Infiltrate : Activity
+	class Infiltrate : Enter
 	{
-		Target target;
-		public Infiltrate(Actor target) { this.target = Target.FromActor(target); }
-
-		public override Activity Tick(Actor self)
+		readonly Actor target;
+		public Infiltrate(Actor self, Actor target)
+			: base(self, target)
 		{
-			if (IsCanceled || target.Type != TargetType.Actor || target.Actor.Owner == self.Owner)
-				return NextActivity;
+			this.target = target;
+		}
 
-			foreach (var t in target.Actor.TraitsImplementing<INotifyInfiltrated>())
-				t.Infiltrated(target.Actor, self);
+		protected override void OnInside(Actor self)
+		{
+			if (target.IsDead() || target.Owner == self.Owner)
+				return;
+
+			foreach (var t in target.TraitsImplementing<INotifyInfiltrated>())
+				t.Infiltrated(target, self);
 
 			self.Destroy();
 
-			if (target.Actor.HasTrait<Building>())
+			if (target.HasTrait<Building>())
 				Sound.PlayToPlayer(self.Owner, "bldginf1.aud");
-
-			return this;
 		}
 	}
 }
