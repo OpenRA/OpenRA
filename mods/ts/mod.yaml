@@ -230,4 +230,4 @@ LuaScripts:
 
 SupportsMapsFrom: ts
 
-SpriteFormats: ShpTD
+SpriteFormats: ShpTD, ShpTS

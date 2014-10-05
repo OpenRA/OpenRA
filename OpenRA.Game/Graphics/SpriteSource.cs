@@ -15,7 +15,7 @@ using OpenRA.FileFormats;
 namespace OpenRA.Graphics
 {
 	// TODO: Most of this should be moved into the format parsers themselves.
-	public enum SpriteType { Unknown, ShpTS, ShpD2, TmpTD, TmpRA, TmpTS, R8 }
+	public enum SpriteType { Unknown, ShpD2, TmpTD, TmpRA, TmpTS, R8 }
 	public static class SpriteSource
 	{
 		static bool IsTmpRA(Stream s)
@@ -64,43 +64,6 @@ namespace OpenRA.Graphics
 
 			s.Position = start;
 			return test == sx * sy / 2 + 52;
-		}
-
-		static bool IsShpTS(Stream s)
-		{
-			var start = s.Position;
-
-			// First word is zero
-			if (s.ReadUInt16() != 0)
-			{
-				s.Position = start;
-				return false;
-			}
-
-			// Sanity Check the image count
-			s.Position += 4;
-			var imageCount = s.ReadUInt16();
-			if (s.Position + 24 * imageCount > s.Length)
-			{
-				s.Position = start;
-				return false;
-			}
-
-			// Check the size and format flag
-			// Some files define bogus frames, so loop until we find a valid one
-			s.Position += 4;
-			ushort w, h, f = 0;
-			byte type;
-			do
-			{
-				w = s.ReadUInt16();
-				h = s.ReadUInt16();
-				type = s.ReadUInt8();
-			}
-			while (w == 0 && h == 0 && f++ < imageCount);
-
-			s.Position = start;
-			return type < 4;
 		}
 
 		static bool IsShpD2(Stream s)
@@ -162,9 +125,6 @@ namespace OpenRA.Graphics
 
 		public static SpriteType DetectSpriteType(Stream s)
 		{
-			if (IsShpTS(s))
-				return SpriteType.ShpTS;
-
 			if (IsR8(s))
 				return SpriteType.R8;
 
@@ -188,8 +148,6 @@ namespace OpenRA.Graphics
 			var type = DetectSpriteType(s);
 			switch (type)
 			{
-				case SpriteType.ShpTS:
-					return new ShpTSReader(s);
 				case SpriteType.R8:
 					return new R8Reader(s);
 				case SpriteType.TmpRA:
