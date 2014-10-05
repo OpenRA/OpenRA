@@ -278,7 +278,6 @@
     <Compile Include="FileFormats\HvaReader.cs" />
     <Compile Include="FileFormats\PngLoader.cs" />
     <Compile Include="FileFormats\ShpD2Reader.cs" />
-    <Compile Include="FileFormats\TmpTSReader.cs" />
     <Compile Include="FileFormats\VqaReader.cs" />
     <Compile Include="FileFormats\VxlReader.cs" />
     <Compile Include="Primitives\ActionQueue.cs" />
