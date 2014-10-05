@@ -13,33 +13,28 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class DonateSupplies : Activity
+	class DonateSupplies : Enter
 	{
-		Target target;
-		int payload;
+		readonly Actor target;
+		readonly int payload;
 
-		public DonateSupplies(Actor target, int payload)
+		public DonateSupplies(Actor self, Actor target, int payload)
+			: base(self, target)
 		{
-			this.target = Target.FromActor(target);
+			this.target = target;
 			this.payload = payload;
 		}
 
-		public override Activity Tick(Actor self)
+		protected override void OnInside(Actor self)
 		{
-			if (IsCanceled || !target.IsValidFor(self))
-				return NextActivity;
+			if (target.IsDead())
+				return;
 
-			if (target.Type != TargetType.Actor)
-				return NextActivity;
-
-			var targetActor = target.Actor;
-			targetActor.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);
+			target.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);
 			self.Destroy();
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				self.World.AddFrameEndTask(w => w.Add(new FloatingText(targetActor.CenterPosition, targetActor.Owner.Color.RGB, FloatingText.FormatCashTick(payload), 30)));
-
-			return this;
+				self.World.AddFrameEndTask(w => w.Add(new FloatingText(target.CenterPosition, target.Owner.Color.RGB, FloatingText.FormatCashTick(payload), 30)));
 		}
 	}
 }
