@@ -15,21 +15,9 @@ using OpenRA.FileFormats;
 namespace OpenRA.Graphics
 {
 	// TODO: Most of this should be moved into the format parsers themselves.
-	public enum SpriteType { Unknown, ShpD2, TmpTD, TmpTS }
+	public enum SpriteType { Unknown, ShpD2, TmpTS }
 	public static class SpriteSource
 	{
-		static bool IsTmpTD(Stream s)
-		{
-			var start = s.Position;
-
-			s.Position += 16;
-			var a = s.ReadUInt32();
-			var b = s.ReadUInt32();
-
-			s.Position = start;
-			return a == 0 && b == 0x0D1AFFFF;
-		}
-
 		static bool IsTmpTS(Stream s)
 		{
 			var start = s.Position;
@@ -93,9 +81,6 @@ namespace OpenRA.Graphics
 
 		public static SpriteType DetectSpriteType(Stream s)
 		{
-			if (IsTmpTD(s))
-				return SpriteType.TmpTD;
-
 			if (IsTmpTS(s))
 				return SpriteType.TmpTS;
 
@@ -110,8 +95,6 @@ namespace OpenRA.Graphics
 			var type = DetectSpriteType(s);
 			switch (type)
 			{
-				case SpriteType.TmpTD:
-					return new TmpTDReader(s);
 				case SpriteType.TmpTS:
 					return new TmpTSReader(s);
 				case SpriteType.ShpD2:
