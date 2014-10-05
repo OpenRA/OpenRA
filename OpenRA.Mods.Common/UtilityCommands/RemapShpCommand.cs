@@ -18,6 +18,7 @@ using OpenRA.Traits;
 using OpenRA.Graphics;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
+using OpenRA.Mods.Common.SpriteLoaders;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -65,11 +66,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						.Where(a => !remap.ContainsValue(a))
 						.MinBy(a => ColorDistance(destPalette[a], srcPalette[i]));
 
-			var srcImage = ShpReader.Load(args[3]);
-
+			using (var s = File.OpenRead(args[3]))
 			using (var destStream = File.Create(args[4]))
-				ShpReader.Write(destStream, srcImage.Size,
+			{
+				var srcImage = new ShpTDSprite(s);
+				ShpTDSprite.Write(destStream, srcImage.Size,
 					srcImage.Frames.Select(im => im.Data.Select(px => (byte)remap[px]).ToArray()));
+			}
 		}
 
 		static int ColorDistance(uint a, uint b)

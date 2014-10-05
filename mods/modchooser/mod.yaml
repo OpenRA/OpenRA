@@ -50,3 +50,5 @@ Fonts:
 		Size:10
 
 LobbyDefaults:
+
+SpriteFormats: ShpTD
