@@ -18,42 +18,43 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets
 {
-	public class ProductionTab
-	{
-		public string Name;
-		public ProductionQueue Queue;
-	}
-
 	public class ProductionTabGroup
 	{
-		public List<ProductionTab> Tabs = new List<ProductionTab>();
+		public List<ProductionQueue> Tabs = new List<ProductionQueue>();
 		public string Group;
-		public int NextQueueName = 1;
-		public bool Alert { get { return Tabs.Any(t => t.Queue.CurrentDone); } }
+		public bool Alert { get { return Tabs.Any(t => t.CurrentDone); } }
 
 		public void Update(IEnumerable<ProductionQueue> allQueues)
 		{
 			var queues = allQueues.Where(q => q.Info.Group == Group).ToList();
-			var tabs = new List<ProductionTab>();
+			var names = new Queue<int>(Enumerable.Range(1, queues.Count).Except(queues.Select(q => q.Name)));
 
-			// Remove stale queues
-			foreach (var t in Tabs)
+			// Assign names based on available numbers
+			foreach (var queue in queues.Where(q => q.Name == 0))
 			{
-				if (!queues.Contains(t.Queue))
-					continue;
-
-				tabs.Add(t);
-				queues.Remove(t.Queue);
+				foreach (var q in queues.Where(q => q.Name > 0))
+					if (queue.Actor == q.Actor)
+						queue.Name = q.Name;
+				
+				if (queue.Name == 0)
+					queue.Name = names.Dequeue();
 			}
 
-			// Add new queues
-			foreach (var queue in queues)
-				tabs.Add(new ProductionTab()
+			Tabs = queues.OrderBy(q => q.Name).ToList();
+
+			// distinction between tabs of the same actor
+			foreach (var group in queues.GroupBy(q => q.Actor))
+			{
+				if (group.Count() > 1)
 				{
-					Name = (NextQueueName++).ToString(),
-					Queue = queue
-				});
-			Tabs = tabs;
+					var n = 'a';
+					foreach (var queue in group)
+						queue.DisplayName = queue.Name + (n++).ToString();
+				}
+				else
+					group.First().DisplayName = group.First().Name.ToString();
+ 
+			}
 		}
 	}
 
@@ -98,7 +99,7 @@ namespace OpenRA.Mods.RA.Widgets
 				return true;
 
 			// Prioritize alerted queues
-			var queues = Groups[queueGroup].Tabs.Select(t => t.Queue)
+			var queues = Groups[queueGroup].Tabs.Select(t => t)
 					.OrderByDescending(q => q.CurrentDone ? 1 : 0)
 					.ToList();
 
@@ -171,13 +172,13 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				var rect = new Rectangle(origin.X + contentWidth, origin.Y, TabWidth, rb.Height);
 				var hover = !leftHover && !rightHover && Ui.MouseOverWidget == this && rect.Contains(Viewport.LastMousePos);
-				var baseName = tab.Queue == CurrentQueue ? "button-highlighted" : "button";
+				var baseName = tab == CurrentQueue ? "button-highlighted" : "button";
 				ButtonWidget.DrawBackground(baseName, rect, false, false, hover, false);
 				contentWidth += TabWidth - 1;
 
-				var textSize = font.Measure(tab.Name);
+				var textSize = font.Measure(tab.DisplayName);
 				var position = new int2(rect.X + (rect.Width - textSize.X) / 2, rect.Y + (rect.Height - textSize.Y) / 2);
-				font.DrawTextWithContrast(tab.Name, position, tab.Queue.CurrentDone ? Color.Gold : Color.White, Color.Black, 1);
+				font.DrawTextWithContrast(tab.DisplayName, position, tab.CurrentDone ? Color.Gold : Color.White, Color.Black, 1);
 			}
 
 			Game.Renderer.DisableScissor();
@@ -210,7 +211,7 @@ namespace OpenRA.Mods.RA.Widgets
 						.Select(g => g.Key).FirstOrDefault();
 
 				// Queue destroyed, others of same type: switch to another tab
-				else if (!Groups[queueGroup].Tabs.Select(t => t.Queue).Contains(CurrentQueue))
+				else if (!Groups[queueGroup].Tabs.Contains(CurrentQueue))
 					SelectNextTab(false);
 			}
 		}
@@ -264,7 +265,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var offsetloc = mi.Location - new int2(leftButtonRect.Right - 1 + (int)listOffset, leftButtonRect.Y);
 			if (offsetloc.X > 0 && offsetloc.X < contentWidth)
 			{
-				CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X / (TabWidth - 1)].Queue;
+				CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X / (TabWidth - 1)];
 				Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 			}
 
