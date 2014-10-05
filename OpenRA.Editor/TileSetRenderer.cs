@@ -50,7 +50,7 @@ namespace OpenRA.Editor
 			this.TileSize = Math.Min(tileSize.Width, tileSize.Height);
 
 			templates = new Dictionary<ushort, byte[][]>();
-			var spriteLoader = new SpriteLoader(tileset.Extensions, null);
+			var spriteLoader = new SpriteLoader(Game.modData.SpriteLoaders, tileset.Extensions, null);
 			foreach (var t in tileset.Templates)
 			{
 				var allFrames = spriteLoader.LoadAllFrames(t.Value.Image);
@@ -102,7 +102,7 @@ namespace OpenRA.Editor
 			return bitmap;
 		}
 
-		public List<byte[]> Data(ushort id)
+		public byte[][] Data(ushort id)
 		{
 			return templates[id];
 		}
