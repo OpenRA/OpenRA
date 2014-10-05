@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (colorDropdown != null)
 			{
 				colorDropdown.IsDisabled = () => currentPalette != colorPreview.PaletteName;
-				colorDropdown.OnMouseDown = _ => ShowColorDropDown(colorDropdown, colorPreview, world);
+				colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorPreview, world);
 				panel.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => Game.Settings.Player.Color.RGB;
 			}
 
@@ -375,27 +375,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var palettes = world.WorldActor.TraitsImplementing<PaletteFromFile>();
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, palettes, setupItem);
 			return true;
-		}
-
-		static void ShowColorDropDown(DropDownButtonWidget color, ColorPreviewManagerWidget preview, World world)
-		{
-			Action onExit = () =>
-			{
-				Game.Settings.Player.Color = preview.Color;
-				Game.Settings.Save();
-			};
-
-			color.RemovePanel();
-
-			Action<HSLColor> onChange = c => preview.Color = c;
-
-			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
-			{
-				{ "onChange", onChange },
-				{ "initialColor", Game.Settings.Player.Color }
-			});
-
-			color.AttachPanel(colorChooser, onExit);
 		}
 	}
 }

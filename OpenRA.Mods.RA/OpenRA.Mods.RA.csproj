@@ -420,7 +420,6 @@
     <Compile Include="Widgets\Logic\InstallLogic.cs" />
     <Compile Include="CombatDebugOverlay.cs" />
     <Compile Include="World\PathfinderDebugOverlay.cs" />
-    <Compile Include="Widgets\Logic\SettingsLogic.cs" />
     <Compile Include="AttackBomber.cs" />
     <Compile Include="ShroudRenderer.cs" />
     <Compile Include="Render\WithCrateBody.cs" />
