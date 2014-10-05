@@ -33,6 +33,12 @@ namespace OpenRA.Mods.RA.Scripting
 
 		[Desc("Maximum health of the actor.")]
 		public int MaxHealth { get { return health.MaxHP; } }
+
+		[Desc("Kill the actor.")]
+		public void Kill()
+		{
+			health.InflictDamage(self, self, health.MaxHP, null, true);
+		}
 	}
 
 	[ScriptPropertyGroup("General")]
