@@ -165,7 +165,8 @@ namespace OpenRA.Mods.RA
 				self.SetTargetLine(target, Color.Green);
 
 				self.CancelActivity();
-				self.QueueActivity(new EnterTransport(self, order.TargetActor, order.OrderString == "EnterTransport" ? 0 : Info.MaxAlternateTransportAttempts));
+				var transports = order.OrderString == "EnterTransports";
+				self.QueueActivity(new EnterTransport(self, order.TargetActor, transports ? Info.MaxAlternateTransportAttempts : 0, transports));
 			}
 		}
 

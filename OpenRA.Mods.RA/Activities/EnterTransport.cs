@@ -21,8 +21,8 @@ namespace OpenRA.Mods.RA.Activities
 		readonly int maxTries;
 		Cargo cargo;
 
-		public EnterTransport(Actor self, Actor transport, int maxTries = 0)
-			: base(self, transport, maxTries)
+		public EnterTransport(Actor self, Actor transport, int maxTries = 0, bool targetCenter = false)
+			: base(self, transport, maxTries, targetCenter)
 		{
 			this.transport = transport;
 			this.maxTries = maxTries;
