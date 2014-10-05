@@ -16,12 +16,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Enter : Activity
+	public abstract class Enter : Activity
 	{
 		public enum ReserveStatus { None, TooFar, Pending, Ready }
 		enum State { ApproachingOrEntering, Inside, Exiting, Done }
 
-		readonly Activity inside;
 		readonly IMove move;
 		readonly int maxTries = 0;
 		public Target Target { get { return target; } }
@@ -33,16 +32,10 @@ namespace OpenRA.Mods.RA.Activities
 		bool firstApproach = true;
 
 		protected Enter(Actor self, Actor target, int maxTries = 1)
-			: this(self, target, null)
-		{
-			this.maxTries = maxTries;
-		}
-
-		public Enter(Actor self, Actor target, Activity inside)
 		{
 			this.move = self.Trait<IMove>();
 			this.target = Target.FromActor(target);
-			this.inside = inside;
+			this.maxTries = maxTries;
 		}
 
 		// CanEnter(target) should to be true; othwise, Enter may abort.
@@ -84,7 +77,7 @@ namespace OpenRA.Mods.RA.Activities
 		}
 
 		// Called when inner activity is this and returns inner activity for next tick.
-		protected virtual Activity InsideTick(Actor self) { return Util.RunActivity(self, inside); }
+		protected virtual Activity InsideTick(Actor self) { return null; }
 
 		// Abort entering and/or leave if necessary
 		protected virtual void AbortOrExit(Actor self)
