@@ -11,16 +11,17 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Widgets;
-using OpenRA.Traits;
 using OpenRA.Mods.RA;
+using OpenRA.Network;
+using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	class GameInfoStatsLogic
 	{
 		[ObjectCreator.UseCtor]
-		public GameInfoStatsLogic(Widget widget, World world)
+		public GameInfoStatsLogic(Widget widget, World world, OrderManager orderManager)
 		{
 			var lp = world.LocalPlayer;
 
@@ -44,7 +45,22 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var pp = p;
 				var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
+
 				var item = playerTemplate.Clone();
+
+				item.Get("ADMIN_INDICATOR").IsVisible = () => client.IsAdmin;
+				var block = item.Get("LATENCY");
+				var visible = client.Bot == null;
+				block.IsVisible = () => visible;
+
+				if (visible)
+					block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () =>
+						LobbyUtils.LatencyColor(orderManager.LobbyInfo.PingFromClient(client));
+
+				var tooltip = item.Get<ClientTooltipRegionWidget>("CLIENT_REGION");
+				tooltip.IsVisible = () => visible;
+				tooltip.Bind(orderManager, client.Index);
+
 				var nameLabel = item.Get<LabelWidget>("NAME");
 				nameLabel.GetText = () =>
 				{
