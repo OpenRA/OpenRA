@@ -544,6 +544,8 @@
     <Compile Include="Warheads\GrantUpgradeWarhead.cs" />
     <Compile Include="Crates\GrantUpgradeCrateAction.cs" />
     <Compile Include="Scripting\Properties\UpgradeProperties.cs" />
+    <Compile Include="UpgradeActorsNear.cs" />
+    <Compile Include="WithRangeCircle.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

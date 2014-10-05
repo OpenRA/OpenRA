@@ -33,6 +33,12 @@ namespace OpenRA.Traits
 			public Actor Actor;
 		}
 
+		class Bin
+		{
+			public readonly List<Actor> Actors = new List<Actor>();
+			public readonly List<ProximityTrigger> ProximityTriggers = new List<ProximityTrigger>();
+		}
+
 		class CellTrigger
 		{
 			public readonly int Id;
@@ -79,15 +85,84 @@ namespace OpenRA.Traits
 			}
 		}
 
+		class ProximityTrigger : IDisposable
+		{
+			public readonly int Id;
+			public WPos Position { get; private set; }
+			public WRange Range { get; private set; }
+
+			public WPos TopLeft { get; private set; }
+			public WPos BottomRight { get; private set; }
+
+			public bool Dirty;
+
+			Action<Actor> onActorEntered;
+			Action<Actor> onActorExited;
+
+			IEnumerable<Actor> currentActors = Enumerable.Empty<Actor>();
+
+			public ProximityTrigger(int id, WPos pos, WRange range, Action<Actor> onActorEntered, Action<Actor> onActorExited)
+			{
+				Id = id;
+
+				this.onActorEntered = onActorEntered;
+				this.onActorExited = onActorExited;
+
+				Update(pos, range);
+			}
+
+			public void Update(WPos newPos, WRange newRange)
+			{
+				Position = newPos;
+				Range = newRange;
+
+				var offset = new WVec(newRange, newRange, WRange.Zero);
+				TopLeft = newPos - offset;
+				BottomRight = newPos + offset;
+
+				Dirty = true;
+			}
+
+			public void Tick(ActorMap am)
+			{
+				if (!Dirty)
+					return;
+
+				var oldActors = currentActors;
+				var delta = new WVec(Range, Range, WRange.Zero);
+				currentActors = am.ActorsInBox(Position - delta, Position + delta)
+					.Where(a => (a.CenterPosition - Position).HorizontalLengthSquared < Range.Range * Range.Range)
+					.ToList();
+
+				var entered = currentActors.Except(oldActors);
+				var exited = oldActors.Except(currentActors);
+
+				foreach (var a in entered)
+					onActorEntered(a);
+
+				foreach (var a in exited)
+					onActorExited(a);
+
+				Dirty = false;
+			}
+
+			public void Dispose()
+			{
+				foreach (var a in currentActors)
+					onActorExited(a);
+			}
+		}
+
 		readonly ActorMapInfo info;
 		readonly Map map;
 		readonly Dictionary<int, CellTrigger> cellTriggers = new Dictionary<int, CellTrigger>();
 		readonly Dictionary<CPos, List<CellTrigger>> cellTriggerInfluence = new Dictionary<CPos, List<CellTrigger>>();
+		readonly Dictionary<int, ProximityTrigger> proximityTriggers = new Dictionary<int, ProximityTrigger>();
 		int nextTriggerId;
 
 		readonly CellLayer<InfluenceNode> influence;
 
-		readonly List<Actor>[] actors;
+		readonly Bin[] bins;
 		readonly int rows, cols;
 
 		// Position updates are done in one pass
@@ -104,10 +179,10 @@ namespace OpenRA.Traits
 
 			cols = world.Map.MapSize.X / info.BinSize + 1;
 			rows = world.Map.MapSize.Y / info.BinSize + 1;
-			actors = new List<Actor>[rows * cols];
+			bins = new Bin[rows * cols];
 			for (var j = 0; j < rows; j++)
 				for (var i = 0; i < cols; i++)
-					actors[j * cols + i] = new List<Actor>();
+					bins[j * cols + i] = new Bin();
 
 			// Cache this delegate so it does not have to be allocated repeatedly.
 			actorShouldBeRemoved = removeActorPosition.Contains;
@@ -263,8 +338,13 @@ namespace OpenRA.Traits
 		{
 			// Position updates are done in one pass
 			// to ensure consistency during a tick
-			foreach (var bin in actors)
-				bin.RemoveAll(actorShouldBeRemoved);
+			foreach (var bin in bins)
+			{
+				var removed = bin.Actors.RemoveAll(actorShouldBeRemoved);
+				if (removed > 0)
+					foreach (var t in bin.ProximityTriggers)
+						t.Dirty = true;
+			}
 
 			removeActorPosition.Clear();
 
@@ -273,12 +353,19 @@ namespace OpenRA.Traits
 				var pos = a.OccupiesSpace.CenterPosition;
 				var i = (pos.X / info.BinSize).Clamp(0, cols - 1);
 				var j = (pos.Y / info.BinSize).Clamp(0, rows - 1);
-				actors[j * cols + i].Add(a);
+				var bin = bins[j * cols + i];
+
+				bin.Actors.Add(a);
+				foreach (var t in bin.ProximityTriggers)
+					t.Dirty = true;
 			}
 
 			addActorPosition.Clear();
 
 			foreach (var t in cellTriggers)
+				t.Value.Tick(this);
+
+			foreach (var t in proximityTriggers)
 				t.Value.Tick(this);
 		}
 
@@ -317,6 +404,45 @@ namespace OpenRA.Traits
 			}
 		}
 
+		public int AddProximityTrigger(WPos pos, WRange range, Action<Actor> onEntry, Action<Actor> onExit)
+		{
+			var id = nextTriggerId++;
+			var t = new ProximityTrigger(id, pos, range, onEntry, onExit);
+			proximityTriggers.Add(id, t);
+
+			foreach (var bin in BinsInBox(t.TopLeft, t.BottomRight))
+				bin.ProximityTriggers.Add(t);
+
+			return id;
+		}
+
+		public void RemoveProximityTrigger(int id)
+		{
+			ProximityTrigger t;
+			if (!proximityTriggers.TryGetValue(id, out t))
+				return;
+
+			foreach (var bin in BinsInBox(t.TopLeft, t.BottomRight))
+				bin.ProximityTriggers.Remove(t);
+
+			t.Dispose();
+		}
+
+		public void UpdateProximityTrigger(int id, WPos newPos, WRange newRange)
+		{
+			ProximityTrigger t;
+			if (!proximityTriggers.TryGetValue(id, out t))
+				return;
+
+			foreach (var bin in BinsInBox(t.TopLeft, t.BottomRight))
+				bin.ProximityTriggers.Remove(t);
+
+			t.Update(newPos, newRange);
+
+			foreach (var bin in BinsInBox(t.TopLeft, t.BottomRight))
+				bin.ProximityTriggers.Add(t);
+		}
+
 		public void AddPosition(Actor a, IOccupySpace ios)
 		{
 			UpdatePosition(a, ios);
@@ -333,6 +459,23 @@ namespace OpenRA.Traits
 			addActorPosition.Add(a);
 		}
 
+		IEnumerable<Bin> BinsInBox(WPos a, WPos b)
+		{
+			var left = Math.Min(a.X, b.X);
+			var top = Math.Min(a.Y, b.Y);
+			var right = Math.Max(a.X, b.X);
+			var bottom = Math.Max(a.Y, b.Y);
+			var i1 = (left / info.BinSize).Clamp(0, cols - 1);
+			var i2 = (right / info.BinSize).Clamp(0, cols - 1);
+			var j1 = (top / info.BinSize).Clamp(0, rows - 1);
+			var j2 = (bottom / info.BinSize).Clamp(0, rows - 1);
+
+			for (var j = j1; j <= j2; j++)
+				for (var i = i1; i <= i2; i++)
+					yield return bins[j * cols + i];
+		}
+
+
 		public IEnumerable<Actor> ActorsInBox(WPos a, WPos b)
 		{
 			var left = Math.Min(a.X, b.X);
@@ -348,7 +491,7 @@ namespace OpenRA.Traits
 			{
 				for (var i = i1; i <= i2; i++)
 				{
-					foreach (var actor in actors[j * cols + i])
+					foreach (var actor in bins[j * cols + i].Actors)
 					{
 						if (actor.IsInWorld)
 						{
@@ -363,7 +506,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> ActorsInWorld()
 		{
-			return actors.SelectMany(bin => bin.Where(actor => actor.IsInWorld));
+			return bins.SelectMany(bin => bin.Actors.Where(actor => actor.IsInWorld));
 		}
 	}
 }

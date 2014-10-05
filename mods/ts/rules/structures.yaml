@@ -903,6 +903,44 @@ GADEPT:
 	Power:
 		Amount: -30
 
+NASTLH:
+	Inherits: ^Building
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: Stealth Generator
+		Description: Generates a cloaking field
+	Buildable:
+		BuildPaletteOrder: 80
+		Prerequisites: proc,natech
+		Owner: nod
+		Queue: Building
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 6c0
+	WithIdleOverlay@pulse:
+		Sequence: pulse
+		PauseOnLowPower: true
+	WithRangeCircle:
+		Range: 12c0
+		Type: cloakgenerator
+	Power:
+		Amount: -350
+	RequiresPower:
+	CanPowerDown:
+	UpgradeActorsNear:
+		Upgrades: cloakgenerator
+		Range: 12c0
+		EnableSound: cloak5.aud
+		DisableSound: cloak5.aud
+		AffectsParent: true
+
 #TODO: Placeholder, replace with Component Tower + Vulcan Upgrade
 GAVULC:
 	Inherits: ^Building
