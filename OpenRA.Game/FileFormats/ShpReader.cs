@@ -27,6 +27,7 @@ namespace OpenRA.FileFormats
 			public Size FrameSize { get { return reader.Size; } }
 			public float2 Offset { get { return float2.Zero; } }
 			public byte[] Data { get; set; }
+			public bool DisableExportPadding { get { return false; } }
 
 			public uint FileOffset;
 			public Format Format;

@@ -20,6 +20,7 @@ namespace OpenRA.Graphics
 		Size FrameSize { get; }
 		float2 Offset { get; }
 		byte[] Data { get; }
+		bool DisableExportPadding { get; }
 	}
 
 	public interface ISpriteSource

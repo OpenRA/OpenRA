@@ -22,6 +22,7 @@ namespace OpenRA.FileFormats
 			public Size FrameSize { get; private set; }
 			public float2 Offset { get; private set; }
 			public byte[] Data { get; set; }
+			public bool DisableExportPadding { get { return false; } }
 
 			public readonly uint FileOffset;
 			public readonly byte Format;
