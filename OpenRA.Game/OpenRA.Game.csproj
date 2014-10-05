@@ -277,7 +277,6 @@
     <Compile Include="FileFormats\XccLocalDatabase.cs" />
     <Compile Include="FileFormats\HvaReader.cs" />
     <Compile Include="FileFormats\PngLoader.cs" />
-    <Compile Include="FileFormats\R8Reader.cs" />
     <Compile Include="FileFormats\ShpD2Reader.cs" />
     <Compile Include="FileFormats\TmpRAReader.cs" />
     <Compile Include="FileFormats\TmpTDReader.cs" />

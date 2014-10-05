@@ -84,6 +84,7 @@
     <Compile Include="Widgets\SlidingContainerWidget.cs" />
     <Compile Include="Widgets\Logic\IngameChromeLogic.cs" />
     <Compile Include="ChooseBuildTabOnSelect.cs" />
+    <Compile Include="R8Loader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
