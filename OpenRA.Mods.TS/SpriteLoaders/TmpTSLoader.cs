@@ -30,26 +30,31 @@ namespace OpenRA.Mods.TS.SpriteLoaders
 
 			public TmpTSFrame(Stream s, Size size)
 			{
-				Size = size;
-
-				// Ignore tile header for now
-				s.Position += 52;
-
-				Data = new byte[size.Width * size.Height];
-
-				// Unpack tile data
-				var width = 4;
-				for (var i = 0; i < size.Height; i++)
+				if (s.Position != 0)
 				{
-					var start = i * size.Width + (size.Width - width) / 2;
-					for (var j = 0; j < width; j++)
-						Data[start + j] = s.ReadUInt8();
+					Size = size;
 
-					width += (i < size.Height / 2 - 1 ? 1 : -1) * 4;
+					// Ignore tile header for now
+					s.Position += 52;
+
+					Data = new byte[size.Width * size.Height];
+
+					// Unpack tile data
+					var width = 4;
+					for (var i = 0; i < size.Height; i++)
+					{
+						var start = i * size.Width + (size.Width - width) / 2;
+						for (var j = 0; j < width; j++)
+							Data[start + j] = s.ReadUInt8();
+
+						width += (i < size.Height / 2 - 1 ? 1 : -1) * 4;
+					}
+
+					// Ignore Z-data for now
+					// Ignore extra data for now
 				}
-
-				// Ignore Z-data for now
-				// Ignore extra data for now
+				else
+					Data = new byte[0];
 			}
 		}
 
@@ -60,8 +65,10 @@ namespace OpenRA.Mods.TS.SpriteLoaders
 			var sx = s.ReadUInt32();
 			var sy = s.ReadUInt32();
 
-			// Find the first frame
+			// Find the first non-empty frame
 			var offset = s.ReadUInt32();
+			while (offset == 0)
+				offset = s.ReadUInt32();
 
 			if (offset > s.Length - 52)
 			{
