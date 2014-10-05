@@ -148,6 +148,18 @@ function OutlineRefresh(editor)
   if not root or not root:IsOk() then return end
 
   local cache = caches[editor] or {}
+
+  -- add file
+  local filename = ide:GetDocument(editor):GetFileName()
+  local fileitem = cache.fileitem
+  if not fileitem then
+    fileitem = ctrl:AppendItem(root, filename, image.FILE)
+    setData(ctrl, fileitem, editor)
+    ctrl:SetItemBold(fileitem, true)
+    ctrl:SortChildren(root)
+    cache.fileitem = fileitem
+  end
+
   do -- check if any changes in the cached function list
     local prevfuncs = cache.funcs or {}
     local nochange = #funcs == #prevfuncs
@@ -166,16 +178,6 @@ function OutlineRefresh(editor)
   end
 
   -- refresh the tree
-  local filename = ide:GetDocument(editor):GetFileName()
-  local fileitem = cache.fileitem
-  if not fileitem then
-    fileitem = ctrl:AppendItem(root, filename, image.FILE)
-    setData(ctrl, fileitem, editor)
-    ctrl:SetItemBold(fileitem, true)
-    ctrl:SortChildren(root)
-    cache.fileitem = fileitem
-  end
-
   ctrl:Freeze()
   ctrl:DeleteChildren(fileitem)
 
