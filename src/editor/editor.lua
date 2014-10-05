@@ -8,7 +8,6 @@ local editorID = 100 -- window id to create editor pages with, incremented for n
 local openDocuments = ide.openDocuments
 local statusBar = ide.frame.statusBar
 local notebook = ide.frame.notebook
-local funclist = ide.frame.toolBar.funclist
 local edcfg = ide.config.editor
 local styles = ide.config.styles
 local unpack = table.unpack or unpack
@@ -36,8 +35,6 @@ local foldtypes = {
 -- Update the statusbar text of the frame using the given editor.
 -- Only update if the text has changed.
 local statusTextTable = { "OVR?", "R/O?", "Cursor Pos" }
-
-funclist:SetFont(ide.font.dNormal)
 
 local function updateStatusText(editor)
   local texts = { "", "", "" }
@@ -176,9 +173,6 @@ function SetEditorSelection(selection)
   ide.frame:SetTitle(ExpandPlaceholders(ide.config.format.apptitle))
 
   if editor then
-    if funclist:IsEmpty() then funclist:Append(TR("Jump to a function definition..."), 0) end
-    funclist:SetSelection(0)
-
     editor:SetFocus()
     editor:SetSTCFocus(true)
 
@@ -1482,66 +1476,3 @@ function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
   StylesApplyToEditor(styles or ide.config.styles, editor,
     font or ide.font.eNormal,fontitalic or ide.font.eItalic,lexerstyleconvert)
 end
-
-----------------------------------------------------
--- function list for current file
-
-local function refreshFunctionList(event)
-  event:Skip()
-
-  local editor = GetEditor()
-  if (editor and not (editor.spec and editor.spec.isfndef)) then return end
-
-  -- parse current file and update list
-  -- first populate with the current label to minimize flicker
-  -- then populate the list and update the label
-  local current = funclist:GetCurrentSelection()
-  local label = funclist:GetString(current)
-  local default = funclist:GetString(0)
-  funclist:Clear()
-  funclist:Append(current ~= wx.wxNOT_FOUND and label or default, 0)
-  funclist:SetSelection(0)
-
-  local lines = 0
-  local linee = (editor and editor:GetLineCount() or 0)-1
-  for line=lines,linee do
-    local tx = editor:GetLine(line)
-    local s,_,cap,l = editor.spec.isfndef(tx)
-    if (s) then
-      local ls = editor:PositionFromLine(line)
-      local style = bit.band(editor:GetStyleAt(ls+s),31)
-      if not (editor.spec.iscomment[style] or editor.spec.isstring[style]) then
-        funclist:Append((l and "  " or "")..cap,line)
-      end
-    end
-  end
-
-  funclist:SetString(0, default)
-  funclist:SetSelection(current ~= wx.wxNOT_FOUND and current or 0)
-end
-
--- wx.wxEVT_SET_FOCUS is not triggered for wxChoice on Mac (wx 2.8.12),
--- so use wx.wxEVT_LEFT_DOWN instead; none of the events are triggered for
--- wxChoice on Linux (wx 2.9.5+), so use EVT_ENTER_WINDOW attached to the
--- toolbar itself until something better is available.
-if ide.osname == 'Unix' then
-  ide.frame.toolBar:Connect(wx.wxEVT_ENTER_WINDOW, refreshFunctionList)
-else
-  local event = ide.osname == 'Macintosh' and wx.wxEVT_LEFT_DOWN or wx.wxEVT_SET_FOCUS
-  funclist:Connect(event, refreshFunctionList)
-end
-
-funclist:Connect(wx.wxEVT_COMMAND_CHOICE_SELECTED,
-  function (event)
-    -- test if updated
-    -- jump to line
-    event:Skip()
-    local l = event:GetClientData()
-    if (l and l > 0) then
-      local editor = GetEditor()
-      editor:GotoLine(l)
-      editor:SetFocus()
-      editor:SetSTCFocus(true)
-      editor:EnsureVisibleEnforcePolicy(l)
-    end
-  end)
