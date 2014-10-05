@@ -43,7 +43,7 @@ GACNST:
 	Power:
 		Amount: 0
 	Selectable:
-		Bounds: 120, 90, 0, 20
+		Bounds: 144, 72, 0, -12
 
 GAPOWR:
 	Inherits: ^Building
@@ -72,7 +72,7 @@ GAPOWR:
 	WithIdleOverlay@PLUG:
 		Sequence: idle-plug
 	Selectable:
-		Bounds: 64, 64
+		Bounds: 96, 60, 0, -12
 	Power:
 		Amount: 100
 	InfiltrateForPowerOutage:
@@ -99,6 +99,8 @@ GAPILE:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Selectable:
+		Bounds: 96, 48, 0, -8
 	Health:
 		HP: 800
 	Armor:
@@ -108,8 +110,8 @@ GAPILE:
 	RallyPoint:
 		RallyPoint: 2,3
 	Exit@1:
-		SpawnOffset: -256,1051,0
-		ExitCell: 2,3
+		SpawnOffset: -256,1024,0
+		ExitCell: 2,2
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
@@ -136,14 +138,16 @@ PROC:
 		Prerequisites: anypower
 		Owner: gdi,nod
 	Building:
-		Footprint: xxx= xxx= xxx=
+		Footprint: xxx= xx== xxx=
 		Dimensions: 4,3
+	Selectable:
+		Bounds: 120, 60, -12, -12
 	Health:
 		HP: 900
 	RevealsShroud:
 		Range: 6c0
 	TiberianSunRefinery:
-		DockOffset: 3,1
+		DockOffset: 2,1
 	StoresResources:
 		PipColor: Green
 		PipCount: 15
@@ -153,8 +157,8 @@ PROC:
 	FreeActor:
 		Actor: HARV
 		InitialActivity: FindResources
-		SpawnOffset: 3,4
-		Facing: 64
+		SpawnOffset: 3,1
+		Facing: 160
 	WithIdleOverlay@REDLIGHTS:
 		Sequence: idle-redlights
 	WithIdleOverlay@BIB:
@@ -177,6 +181,8 @@ GASILO:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
+	Selectable:
+		Bounds: 96, 48
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -213,6 +219,8 @@ GAWEAP:
 	Building:
 		Footprint: xxx= xxx= xxx=
 		Dimensions: 4,3
+	Selectable:
+		Bounds: 120, 60, 0, -12
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -220,10 +228,10 @@ GAWEAP:
 	-RenderBuilding:
 	RenderBuildingWarFactory:
 	RallyPoint:
-		RallyPoint: 6,5
+		RallyPoint: 6,1
 	Exit@1:
-		SpawnOffset: -170,0,0
-		ExitCell: 4,2
+		SpawnOffset: 0,0,0
+		ExitCell: 4,1
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
@@ -255,6 +263,8 @@ NAPOWR:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Selectable:
+		Bounds: 96, 60, 0, -12
 	Health:
 		HP: 750
 	Armor:
@@ -289,6 +299,8 @@ NAAPWR:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 2,3
+	Selectable:
+		Bounds: 120, 84, 0, -12
 	Health:
 		HP: 900
 	Armor:
@@ -323,6 +335,8 @@ NAHAND:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
+	Selectable:
+		Bounds: 120, 60, 0, -8
 	Health:
 		HP: 800
 	Armor:
@@ -330,8 +344,8 @@ NAHAND:
 	RevealsShroud:
 		Range: 5c0
 	Exit@1:
-		SpawnOffset: 0,2048,0
-		ExitCell: 3,3
+		SpawnOffset: 384,768,0
+		ExitCell: 3,2
 	RallyPoint:
 		RallyPoint: 3,3
 	Production:
@@ -362,6 +376,8 @@ NAWEAP:
 	Building:
 		Footprint: xxx= xxx= xxx=
 		Dimensions: 4,3
+	Selectable:
+		Bounds: 144,72, 0,-12
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -369,10 +385,10 @@ NAWEAP:
 	-RenderBuilding:
 	RenderBuildingWarFactory:
 	RallyPoint:
-		RallyPoint: 6,5
+		RallyPoint: 6,1
 	Exit@1:
-		SpawnOffset: -170,0,0
-		ExitCell: 4,2
+		SpawnOffset: 0,0,0
+		ExitCell: 4,1
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
@@ -471,9 +487,6 @@ GATICK:
 	-AcceptsSupplies:
 	Tooltip:
 		Name: Deployed Tick Tank
-	Building:
-		Footprint: x
-		Dimensions: 1,1
 	-GivesBuildableArea:
 	Health:
 		HP: 350
@@ -521,9 +534,6 @@ GAICBM:
 	-AcceptsSupplies:
 	Tooltip:
 		Name: Deployed ICBM
-	Building:
-		Footprint: _ x
-		Dimensions: 1,2
 	-GivesBuildableArea:
 	Health:
 		HP: 400
@@ -545,9 +555,6 @@ GADPSA:
 	-AcceptsSupplies:
 	Tooltip:
 		Name: Deployed Sensor Array
-	Building:
-		Footprint: _ x
-		Dimensions: 1,2
 	-GivesBuildableArea:
 	Health:
 		HP: 600
@@ -572,9 +579,6 @@ GAARTY:
 	-AcceptsSupplies:
 	Tooltip:
 		Name: Deployed Artillery
-	Building:
-		Footprint: x
-		Dimensions: 1,1
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -624,6 +628,8 @@ GASPOT:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
+	Selectable:
+		Bounds: 48, 72
 	Health:
 		HP: 400
 	Armor:
@@ -648,9 +654,6 @@ GALITE:
 		Cost: 200
 	Tooltip:
 		Name: Light Post
-	Building:
-		Footprint: x
-		Dimensions: 1,1
 	RenderBuilding:
 		Palette: terrain
 	-WithMakeAnimation:
@@ -682,6 +685,8 @@ GARADR:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Selectable:
+		Bounds: 96, 96, 0, -12
 	Health:
 		HP: 800
 	Armor:
@@ -720,6 +725,8 @@ NARADR:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Selectable:
+		Bounds: 96, 72, 0, -12
 	Health:
 		HP: 800
 	Armor:
@@ -758,6 +765,8 @@ GATECH:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
+	Selectable:
+		Bounds: 120, 60, 0, -12
 	Health:
 		HP: 500
 	Armor:
@@ -786,6 +795,8 @@ NATECH:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Selectable:
+		Bounds: 96, 48
 	Health:
 		HP: 500
 	Armor:
@@ -883,6 +894,8 @@ GADEPT:
 	Building:
 		Footprint: =x= xxx =x=
 		Dimensions: 3,3
+	Selectable:
+		Bounds: 120, 60, 12, -6
 	Health:
 		HP: 1100
 	RevealsShroud:
@@ -954,6 +967,8 @@ GAVULC:
 		BuildPaletteOrder: 30
 		Owner: gdi
 	Building:
+	Selectable:
+		Bounds: 48, 48, 0, -12
 	DisabledOverlay:
 	-GivesBuildableArea:
 	Health:
@@ -1012,6 +1027,8 @@ GAROCK:
 		BuildPaletteOrder: 40
 		Owner: gdi
 	Building:
+	Selectable:
+		Bounds: 48, 48, 0, -12
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1061,6 +1078,8 @@ GACSAM:
 		BuildPaletteOrder: 60
 		Owner: gdi
 	Building:
+	Selectable:
+		Bounds: 48, 48, 0, -12
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1109,6 +1128,8 @@ NASAM:
 		BuildPaletteOrder: 60
 		Owner: nod
 	Building:
+	Selectable:
+		Bounds: 48, 24
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1150,6 +1171,8 @@ NALASR:
 		BuildPaletteOrder: 50
 		Owner: nod
 	Building:
+	Selectable:
+		Bounds: 48, 24
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1166,7 +1189,7 @@ NALASR:
 	Turreted:
 		ROT: 10
 		InitialFacing: 300
-		Offset: 298,-171,256
+		Offset: 298,-171,0
 	AttackTurreted:
 	Armament:
 		Weapon: TurretLaser
@@ -1191,6 +1214,8 @@ NAOBEL:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Selectable:
+		Bounds: 96, 72, 0, -12
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1234,6 +1259,8 @@ NAPULS:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Selectable:
+		Bounds: 96, 72, 0, -12
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
