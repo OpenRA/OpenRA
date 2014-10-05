@@ -34,6 +34,11 @@ namespace OpenRA.Network
 
 		public void ClientQuit( int clientId, int lastClientFrame )
 		{
+			if (lastClientFrame == -1)
+				lastClientFrame = framePackets
+					.Where(x => x.Value.ContainsKey(clientId))
+					.Select(x => x.Key).OrderBy(x => x).LastOrDefault();
+
 			clientQuitTimes[clientId] = lastClientFrame;
 		}
 

@@ -25,6 +25,10 @@ namespace OpenRA.Server
 		public int MostRecentFrame = 0;
 		public const int MaxOrderLength = 131072;
 
+		public int TimeSinceLastResponse { get { return Game.RunTime - lastReceivedTime; } }
+		public bool TimeoutMessageShown = false;
+		int lastReceivedTime = 0;
+
 		/* client data */
 		public int PlayerIndex;
 
@@ -69,6 +73,9 @@ namespace OpenRA.Server
 				}
 			}
 
+			lastReceivedTime = Game.RunTime;
+			TimeoutMessageShown = false;
+
 			return true;
 		}
 
@@ -101,7 +108,6 @@ namespace OpenRA.Server
 								ExpectLength = 8;
 								State = ReceiveState.Header;
 
-								server.UpdateInFlightFrames(this);
 							} break;
 					}
 				}
