@@ -13,11 +13,63 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Common.SpriteLoaders
 {
-	public class ShpReader : ISpriteSource
+	public class ShpTDLoader : ISpriteLoader
+	{
+		static bool IsShpTD(Stream s)
+		{
+			var start = s.Position;
+
+			// First word is the image count
+			var imageCount = s.ReadUInt16();
+			if (imageCount == 0)
+			{
+				s.Position = start;
+				return false;
+			}
+
+			// Last offset should point to the end of file
+			var finalOffset = start + 14 + 8 * imageCount;
+			if (finalOffset > s.Length)
+			{
+				s.Position = start;
+				return false;
+			}
+
+			s.Position = finalOffset;
+			var eof = s.ReadUInt32();
+			if (eof != s.Length)
+			{
+				s.Position = start;
+				return false;
+			}
+
+			// Check the format flag on the first frame
+			s.Position = start + 17;
+			var b = s.ReadUInt8();
+
+			s.Position = start;
+			return b == 0x20 || b == 0x40 || b == 0x80;
+		}
+
+		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames)
+		{
+			if (!IsShpTD(s))
+			{
+				frames = null;
+				return false;
+			}
+
+			frames = new ShpTDSprite(s).Frames.ToArray();
+			return true;
+		}
+	}
+
+	public class ShpTDSprite
 	{
 		enum Format { Format20 = 0x20, Format40 = 0x40, Format80 = 0x80 }
 
@@ -36,12 +88,12 @@ namespace OpenRA.FileFormats
 			public Format RefFormat;
 			public ImageHeader RefImage;
 
-			ShpReader reader;
+			ShpTDSprite reader;
 
 			// Used by ShpWriter
 			public ImageHeader() { }
 
-			public ImageHeader(Stream stream, ShpReader reader)
+			public ImageHeader(Stream stream, ShpTDSprite reader)
 			{
 				this.reader = reader;
 				var data = stream.ReadUInt32();
@@ -69,7 +121,7 @@ namespace OpenRA.FileFormats
 		readonly long shpBytesFileOffset;
 		readonly byte[] shpBytes;
 
-		public ShpReader(Stream stream)
+		public ShpTDSprite(Stream stream)
 		{
 			imageCount = stream.ReadUInt16();
 			stream.Position += 4;
@@ -147,12 +199,6 @@ namespace OpenRA.FileFormats
 			var imageData = new byte[Size.Width * Size.Height];
 			Array.Copy(baseImage, imageData, imageData.Length);
 			return imageData;
-		}
-
-		public static ShpReader Load(string filename)
-		{
-			using (var s = File.OpenRead(filename))
-				return new ShpReader(s);
 		}
 
 		public static void Write(Stream s, Size size, IEnumerable<byte[]> frames)
