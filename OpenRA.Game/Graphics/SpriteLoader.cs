@@ -8,21 +8,44 @@
  */
 #endregion
 
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
+	public interface ISpriteLoader
+	{
+		bool TryParseSprite(Stream s, out ISpriteFrame[] frames);
+	}
+
+	public interface ISpriteFrame
+	{
+		Size Size { get; }
+		Size FrameSize { get; }
+		float2 Offset { get; }
+		byte[] Data { get; }
+		bool DisableExportPadding { get; }
+	}
+
+	public interface ISpriteSource
+	{
+		IReadOnlyList<ISpriteFrame> Frames { get; }
+	}
+
 	public class SpriteLoader
 	{
 		public readonly SheetBuilder SheetBuilder;
+		readonly ISpriteLoader[] loaders;
 		readonly Cache<string, Sprite[]> sprites;
 		readonly Cache<string, ISpriteFrame[]> frames;
 		readonly string[] exts;
 
-		public SpriteLoader(string[] exts, SheetBuilder sheetBuilder)
+		public SpriteLoader(ISpriteLoader[] loaders, string[] exts, SheetBuilder sheetBuilder)
 		{
+			this.loaders = loaders;
 			SheetBuilder = sheetBuilder;
 
 			// Include extension-less version
@@ -40,8 +63,16 @@ namespace OpenRA.Graphics
 		ISpriteFrame[] CacheFrames(string filename)
 		{
 			using (var stream = GlobalFileSystem.OpenWithExts(filename, exts))
+			{
+				ISpriteFrame[] frames;
+				foreach (var loader in loaders)
+					if (loader.TryParseSprite(stream, out frames))
+						return frames;
+
+				// Fall back to the hardcoded types (for now).
 				return SpriteSource.LoadSpriteSource(stream, filename).Frames
 					.ToArray();
+			}
 		}
 
 		public Sprite[] LoadAllSprites(string filename) { return sprites[filename]; }
