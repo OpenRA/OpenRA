@@ -110,8 +110,8 @@ GAPILE:
 	RallyPoint:
 		RallyPoint: 2,3
 	Exit@1:
-		SpawnOffset: -256,1051,0
-		ExitCell: 2,3
+		SpawnOffset: -256,1024,0
+		ExitCell: 2,2
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
@@ -344,8 +344,8 @@ NAHAND:
 	RevealsShroud:
 		Range: 5c0
 	Exit@1:
-		SpawnOffset: 0,2048,0
-		ExitCell: 3,3
+		SpawnOffset: 384,768,0
+		ExitCell: 3,2
 	RallyPoint:
 		RallyPoint: 3,3
 	Production:
