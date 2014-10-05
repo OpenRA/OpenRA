@@ -138,7 +138,7 @@ PROC:
 		Prerequisites: anypower
 		Owner: gdi,nod
 	Building:
-		Footprint: xxx= xxx= xxx=
+		Footprint: xxx= xx== xxx=
 		Dimensions: 4,3
 	Selectable:
 		Bounds: 120, 60, -12, -12
@@ -147,7 +147,7 @@ PROC:
 	RevealsShroud:
 		Range: 6c0
 	TiberianSunRefinery:
-		DockOffset: 3,1
+		DockOffset: 2,1
 	StoresResources:
 		PipColor: Green
 		PipCount: 15
@@ -157,8 +157,8 @@ PROC:
 	FreeActor:
 		Actor: HARV
 		InitialActivity: FindResources
-		SpawnOffset: 3,4
-		Facing: 64
+		SpawnOffset: 3,1
+		Facing: 160
 	WithIdleOverlay@REDLIGHTS:
 		Sequence: idle-redlights
 	WithIdleOverlay@BIB:
