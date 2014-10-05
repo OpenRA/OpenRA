@@ -38,7 +38,7 @@ namespace OpenRA.Graphics
 			templates = new Dictionary<ushort, Sprite[]>();
 
 			// We manage the SheetBuilder ourselves, to avoid loading all of the tileset images
-			var spriteLoader = new SpriteLoader(tileset.Extensions, null);
+			var spriteLoader = new SpriteLoader(Game.modData.SpriteLoaders, tileset.Extensions, null);
 			foreach (var t in tileset.Templates)
 			{
 				var allFrames = spriteLoader.LoadAllFrames(t.Value.Image);

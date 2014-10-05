@@ -37,6 +37,8 @@ namespace OpenRA
 		public readonly Size TileSize = new Size(24, 24);
 		public readonly TileShape TileShape = TileShape.Rectangle;
 
+		public readonly string[] SpriteFormats = { };
+
 		[Desc("(x,y,z) offset of the full cell and each sub-cell", "X & Y should be between -512 ... 512 and Z >= 0")]
 		public readonly WVec[] SubCellOffsets =
 		{
@@ -128,6 +130,9 @@ namespace OpenRA
 					compat.Add(c.Trim());
 
 			MapCompatibility = compat.ToArray();
+
+			if (yaml.ContainsKey("SpriteFormats"))
+				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", yaml["SpriteFormats"].Value);
 		}
 
 		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key)

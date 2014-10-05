@@ -14,20 +14,6 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
-	public interface ISpriteFrame
-	{
-		Size Size { get; }
-		Size FrameSize { get; }
-		float2 Offset { get; }
-		byte[] Data { get; }
-		bool DisableExportPadding { get; }
-	}
-
-	public interface ISpriteSource
-	{
-		IReadOnlyList<ISpriteFrame> Frames { get; }
-	}
-
 	// TODO: Most of this should be moved into the format parsers themselves.
 	public enum SpriteType { Unknown, ShpTD, ShpTS, ShpD2, TmpTD, TmpRA, TmpTS, R8 }
 	public static class SpriteSource
