@@ -278,6 +278,13 @@ namespace OpenRA.Mods.RA.Scripting
 			context.World.ActorMap.RemoveCellTrigger(id);
 		}
 
+		[Desc("Call a function when this actor is infiltrated. The callback function " +
+		      "will be called as func(Actor self, Actor infiltrator).")]
+		public void OnInfiltrated(Actor a, LuaFunction func)
+		{
+			GetScriptTriggers(a).RegisterCallback(Trigger.OnInfiltrated, func, context);
+		}
+
 		[Desc("Removes all triggers from this actor.")]
 		public void ClearAll(Actor a)
 		{

@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Scripting
 {
 	public enum Trigger { OnIdle, OnDamaged, OnKilled, OnProduction, OnOtherProduction, OnPlayerWon, OnPlayerLost,
-		OnObjectiveAdded, OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnAddedToWorld, OnRemovedFromWorld };
+		OnObjectiveAdded, OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnInfiltrated, OnAddedToWorld, OnRemovedFromWorld };
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
 	public class ScriptTriggersInfo : ITraitInfo
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public object Create(ActorInitializer init) { return new ScriptTriggers(init.world); }
 	}
 
-	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyOtherProduction, INotifyObjectivesUpdated, INotifyCapture, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable
+	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyOtherProduction, INotifyObjectivesUpdated, INotifyCapture, INotifyInfiltrated, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable
 	{
 		readonly World world;
 
@@ -229,6 +229,24 @@ namespace OpenRA.Mods.RA.Scripting
 					using (var c = oldOwner.ToLuaValue(f.Second))
 					using (var d = newOwner.ToLuaValue(f.Second))
 						f.First.Call(a, b, c, d).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
+		}
+
+		public void Infiltrated(Actor self, Actor infiltrator)
+		{
+			foreach (var f in Triggers[Trigger.OnInfiltrated])
+			{
+				try
+				{
+					using (var a = self.ToLuaValue(f.Second))
+					using (var b = infiltrator.ToLuaValue(f.Second))
+						f.First.Call(a, b).Dispose();
 				}
 				catch (Exception ex)
 				{
