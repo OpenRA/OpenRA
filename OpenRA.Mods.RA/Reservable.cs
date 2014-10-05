@@ -15,7 +15,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ReservableInfo : TraitInfo<Reservable> {}
+	[Desc("Reserve landing places for aircraft.")]
+	class ReservableInfo : TraitInfo<Reservable> { }
 
 	public class Reservable : ITick, INotifyKilled, INotifyCapture, INotifySold
 	{

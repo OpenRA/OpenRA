@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Allows to execute build orders.", " Attach this to the player actor.")]
 	class PlaceBuildingInfo : TraitInfo<PlaceBuilding> { }
 
 	class PlaceBuilding : IResolveOrder
