@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		readonly IMove move;
 		readonly int maxTries = 0;
+		readonly bool targetCenter;
 		public Target Target { get { return target; } }
 		Target target;
 		State nextState = State.ApproachingOrEntering; // Hint/starting point for next state
@@ -31,11 +32,12 @@ namespace OpenRA.Mods.RA.Activities
 		Activity inner;
 		bool firstApproach = true;
 
-		protected Enter(Actor self, Actor target, int maxTries = 1)
+		protected Enter(Actor self, Actor target, int maxTries = 1, bool targetCenter = false)
 		{
 			this.move = self.Trait<IMove>();
 			this.target = Target.FromActor(target);
 			this.maxTries = maxTries;
+			this.targetCenter = targetCenter;
 		}
 
 		// CanEnter(target) should to be true; othwise, Enter may abort.
@@ -160,7 +162,7 @@ namespace OpenRA.Mods.RA.Activities
 						case ReserveStatus.None:
 							return State.Done; // No available target -> abort to next activity
 						case ReserveStatus.TooFar:
-							inner = move.MoveToTarget(self, Target.FromPos(target.CenterPosition)); // Approach
+							inner = move.MoveToTarget(self, targetCenter ? Target.FromPos(target.CenterPosition) : target); // Approach
 							return State.ApproachingOrEntering;
 						case ReserveStatus.Pending:
 							return State.ApproachingOrEntering; // Retry next tick
