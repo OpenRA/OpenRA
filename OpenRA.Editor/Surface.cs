@@ -274,7 +274,7 @@ namespace OpenRA.Editor
 						var cell = new CPos(u * ChunkSize + i, v * ChunkSize + j);
 						var tr = Map.MapTiles.Value[cell];
 						var tile = TileSetRenderer.Data(tr.Type);
-						var index = (tr.Index < tile.Count) ? tr.Index : (byte)0;
+						var index = (tr.Index < tile.Length) ? tr.Index : (byte)0;
 						var rawImage = tile[index];
 						for (var x = 0; x < TileSetRenderer.TileSize; x++)
 							for (var y = 0; y < TileSetRenderer.TileSize; y++)
