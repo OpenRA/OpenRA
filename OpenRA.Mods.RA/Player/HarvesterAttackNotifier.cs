@@ -14,11 +14,20 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Plays an audio notification and shows a radar ping when a harvester is attacked.",
+		"Attach this to the player actor.")]
 	public class HarvesterAttackNotifierInfo : ITraitInfo
 	{
-		public readonly int NotifyInterval = 30;	// seconds
+		[Desc("Minimum duration (in seconds) between notification events.")]
+		public readonly int NotifyInterval = 30;
+
 		public readonly Color RadarPingColor = Color.Red;
+
+		[Desc("Length of time (in ticks) to display a location ping in the minimap.")]
 		public readonly int RadarPingDuration = 10 * 25;
+
+		[Desc("The audio notification type to play.")]
+		public string Notification = "HarvesterAttack";
 
 		public object Create(ActorInitializer init) { return new HarvesterAttackNotifier(init.self, this); }
 	}
@@ -49,7 +58,7 @@ namespace OpenRA.Mods.RA
 
 			if (self.World.WorldTick - lastAttackTime > info.NotifyInterval * 25)
 			{
-				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", "HarvesterAttack", self.Owner.Country.Race);
+				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.Notification, self.Owner.Country.Race);
 
 				if (radarPings != null)
 					radarPings.Add(() => self.Owner == self.World.LocalPlayer, self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);
