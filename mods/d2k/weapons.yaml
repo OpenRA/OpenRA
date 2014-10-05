@@ -366,7 +366,7 @@ DevBullet:
 		Explosion: mini_explosion
 		ImpactSound: EXPLMD3.WAV
 
-FakeMissile:
+NerveGasMissile:
 	ReloadDelay: 120
 	Range: 8c0
 	Burst: 1
@@ -392,6 +392,9 @@ FakeMissile:
 	Warhead@3Eff: CreateEffect
 		Explosion: deviator
 		ImpactSound: EXPLSML2.WAV
+	Warhead@4OwnerChange: ChangeOwner
+		Range: 1c0
+		Duration: 750
 
 155mm:
 	ReloadDelay: 75

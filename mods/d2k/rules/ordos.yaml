@@ -234,9 +234,9 @@ DEVIATORTANK:
 		Range: 5c0
 	RenderUnit:
 	Armament:
-		Weapon: FakeMissile
+		Weapon: NerveGasMissile
 		LocalOffset: -299,0,85
-	AttackLoyalty:
+	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend
 	Explodes:

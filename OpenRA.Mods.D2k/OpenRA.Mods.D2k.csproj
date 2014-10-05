@@ -92,6 +92,8 @@
     <Compile Include="AutoCarryall\Carryable.cs" />
     <Compile Include="AutoCarryall\CarryUnit.cs" />
     <Compile Include="WormManager.cs" />
+    <Compile Include="ChangeOwnerWarhead.cs" />
+    <Compile Include="TemporaryOwnerManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
