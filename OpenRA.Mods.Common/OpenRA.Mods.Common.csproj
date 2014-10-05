@@ -117,6 +117,7 @@
     <Compile Include="SpriteLoaders\ShpTSLoader.cs" />
     <Compile Include="SpriteLoaders\TmpRALoader.cs" />
     <Compile Include="SpriteLoaders\TmpTDLoader.cs" />
+    <Compile Include="SpriteLoaders\ShpD2Loader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

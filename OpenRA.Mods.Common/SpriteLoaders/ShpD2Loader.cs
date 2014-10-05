@@ -9,13 +9,16 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Common.SpriteLoaders
 {
-	public class ShpD2Reader : ISpriteSource
+	public class ShpD2Loader : ISpriteLoader
 	{
 		[Flags] enum FormatFlags : int
 		{
@@ -24,7 +27,7 @@ namespace OpenRA.FileFormats
 			VariableLengthTable = 4
 		}
 
-		class Frame : ISpriteFrame
+		class ShpD2Frame : ISpriteFrame
 		{
 			public Size Size { get; private set; }
 			public Size FrameSize { get { return Size; } }
@@ -32,7 +35,7 @@ namespace OpenRA.FileFormats
 			public byte[] Data { get; set; }
 			public bool DisableExportPadding { get { return false; } }
 
-			public Frame(Stream s)
+			public ShpD2Frame(Stream s)
 			{
 				var flags = (FormatFlags)s.ReadUInt16();
 				s.Position += 1;
@@ -84,10 +87,48 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
-
-		public ShpD2Reader(Stream s)
+		bool IsShpD2(Stream s)
 		{
+			var start = s.Position;
+
+			// First word is the image count
+			var imageCount = s.ReadUInt16();
+			if (imageCount == 0)
+			{
+				s.Position = start;
+				return false;
+			}
+
+			// Test for two vs four byte offset
+			var testOffset = s.ReadUInt32();
+			var offsetSize = (testOffset & 0xFF0000) > 0 ? 2 : 4;
+
+			// Last offset should point to the end of file
+			var finalOffset = start + 2 + offsetSize * imageCount;
+			if (finalOffset > s.Length)
+			{
+				s.Position = start;
+				return false;
+			}
+
+			s.Position = finalOffset;
+			var eof = offsetSize == 2 ? s.ReadUInt16() : s.ReadUInt32();
+			if (eof + 2 != s.Length)
+			{
+				s.Position = start;
+				return false;
+			}
+
+			// Check the format flag on the first frame
+			var b = s.ReadUInt16();
+			s.Position = start;
+			return b == 5 || b <= 3;
+		}
+
+		ShpD2Frame[] ParseFrames(Stream s)
+		{
+			var start = s.Position;
+
 			var imageCount = s.ReadUInt16();
 
 			// Last offset is pointer to end of file.
@@ -101,13 +142,27 @@ namespace OpenRA.FileFormats
 			for (var i = 0; i < imageCount + 1; i++)
 				offsets[i] = (twoByteOffset ? s.ReadUInt16() : s.ReadUInt32()) + 2;
 
-			var frames = new Frame[imageCount];
-			Frames = frames.AsReadOnly();
+			var frames = new ShpD2Frame[imageCount];
 			for (var i = 0; i < frames.Length; i++)
 			{
 				s.Position = offsets[i];
-				frames[i] = new Frame(s);
+				frames[i] = new ShpD2Frame(s);
 			}
+
+			s.Position = start;
+			return frames;
+		}
+
+		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames)
+		{
+			if (!IsShpD2(s))
+			{
+				frames = null;
+				return false;
+			}
+
+			frames = ParseFrames(s);
+			return true;
 		}
 	}
 }
