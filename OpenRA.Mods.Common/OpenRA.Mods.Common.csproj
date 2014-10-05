@@ -87,7 +87,6 @@
     <Compile Include="UtilityCommands\ImportLegacyMapCommand.cs" />
     <Compile Include="UtilityCommands\LegacyMapImporter.cs" />
     <Compile Include="UtilityCommands\RemapShpCommand.cs" />
-    <Compile Include="UtilityCommands\TransposeShpCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeMapCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeModCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeRules.cs" />
