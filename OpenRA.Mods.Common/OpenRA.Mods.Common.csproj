@@ -115,6 +115,7 @@
     <Compile Include="World\SmudgeLayer.cs" />
     <Compile Include="SpriteLoaders\ShpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpTSLoader.cs" />
+    <Compile Include="SpriteLoaders\TmpRALoader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
