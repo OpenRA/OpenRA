@@ -19,6 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Move
 {
+	[Desc("Calculates routes for mobile units based on the A* search algorithm.", " Attach this to the world actor.")]
 	public class PathFinderInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new PathFinder(init.world); }

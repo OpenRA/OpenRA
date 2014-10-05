@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Manages build limits and pre-requisites.", " Attach this to the player actor.")]
 	public class TechTreeInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new TechTree(init); }
