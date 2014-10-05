@@ -278,6 +278,7 @@ MEDI:
 		Name: Medic
 		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
+		Priority: 5
 		Voice: MedicVoice
 		Bounds: 12,17,0,-9
 	Health:
@@ -313,6 +314,7 @@ MECH:
 		Name: Mechanic
 		Description: Repairs nearby vehicles and restores\nhusks to working condition.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
+		Priority: 6
 		Voice: MechanicVoice
 		Bounds: 12,17,0,-9
 	Health:
