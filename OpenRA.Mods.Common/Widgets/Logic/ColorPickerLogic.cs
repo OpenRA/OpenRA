@@ -52,6 +52,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			hueSlider.Value = initialColor.H / 255f;
 			onChange(mixer.Color);
 		}
+
+		public static void ShowColorDropDown(DropDownButtonWidget color, ColorPreviewManagerWidget preview, World world)
+		{
+			Action onExit = () =>
+			{
+				Game.Settings.Player.Color = preview.Color;
+				Game.Settings.Save();
+			};
+
+			color.RemovePanel();
+
+			Action<HSLColor> onChange = c => preview.Color = c;
+
+			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
+			{
+				{ "onChange", onChange },
+				{ "initialColor", Game.Settings.Player.Color }
+			});
+
+			color.AttachPanel(colorChooser, onExit);
+		}
 	}
 }
 
