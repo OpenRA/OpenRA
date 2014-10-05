@@ -42,8 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonTraitsInterfaces.cs" />
+    <Compile Include="Effects\ContrailFader.cs" />
     <Compile Include="Effects\Explosion.cs" />
     <Compile Include="Effects\FloatingText.cs" />
+    <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Console\ChatCommands.cs" />
     <Compile Include="Console\DevCommands.cs" />
     <Compile Include="Console\HelpCommand.cs" />
@@ -52,12 +54,16 @@
     <Compile Include="Graphics\BeamRenderable.cs" />
     <Compile Include="Graphics\ContrailRenderable.cs" />
     <Compile Include="Graphics\RangeCircleRenderable.cs" />
+    <Compile Include="Graphics\SpriteActorPreview.cs" />
+    <Compile Include="Graphics\TextRenderable.cs" />
+    <Compile Include="Graphics\VoxelActorPreview.cs" />
+    <Compile Include="Graphics\VoxelRenderable.cs" />
     <Compile Include="ModChooserLoadScreen.cs" />
     <Compile Include="PaletteFromFile.cs" />
-    <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="ServerTraits\MasterServerPinger.cs" />
     <Compile Include="ServerTraits\PlayerPinger.cs" />
+    <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
     <Compile Include="UtilityCommands\ExtractFilesCommand.cs" />
@@ -74,10 +80,7 @@
     <Compile Include="UtilityCommands\UpgradeMapCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeModCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeRules.cs" />
-    <Compile Include="Graphics\SpriteActorPreview.cs" />
-    <Compile Include="Graphics\TextRenderable.cs" />
-    <Compile Include="Graphics\VoxelActorPreview.cs" />
-    <Compile Include="Graphics\VoxelRenderable.cs" />
+    <Compile Include="Warheads\LeaveSmudgeWarhead.cs" />
     <Compile Include="Widgets\ConfirmationDialogs.cs" />
     <Compile Include="Widgets\HueSliderWidget.cs" />
     <Compile Include="Widgets\LabelWithTooltipWidget.cs" />
@@ -95,7 +98,11 @@
     <Compile Include="Widgets\MenuButtonWidget.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="Widgets\ResourceBarWidget.cs" />
+    <Compile Include="World\PlayMusicOnMapLoad.cs" />
     <Compile Include="World\RadarPings.cs" />
+    <Compile Include="World\ResourceClaim.cs" />
+    <Compile Include="World\ResourceClaimLayer.cs" />
+    <Compile Include="World\SmudgeLayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -13,9 +13,9 @@ using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 
-namespace OpenRA.Mods.RA.Effects
+namespace OpenRA.Mods.Common.Effects
 {
-	class ContrailFader : IEffect
+	public class ContrailFader : IEffect
 	{
 		WPos pos;
 		ContrailRenderable trail;

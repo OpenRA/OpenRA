@@ -88,6 +88,11 @@
       <Name>OpenRA.Game</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
+      <Project>{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}</Project>
+      <Name>OpenRA.Mods.Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\OpenRA.Mods.RA\OpenRA.Mods.RA.csproj">
       <Project>{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}</Project>
       <Name>OpenRA.Mods.RA</Name>
