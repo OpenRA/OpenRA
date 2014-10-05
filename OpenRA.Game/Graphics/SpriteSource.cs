@@ -15,7 +15,7 @@ using OpenRA.FileFormats;
 namespace OpenRA.Graphics
 {
 	// TODO: Most of this should be moved into the format parsers themselves.
-	public enum SpriteType { Unknown, ShpD2, TmpTD, TmpRA, TmpTS, R8 }
+	public enum SpriteType { Unknown, ShpD2, TmpTD, TmpRA, TmpTS }
 	public static class SpriteSource
 	{
 		static bool IsTmpRA(Stream s)
@@ -104,30 +104,8 @@ namespace OpenRA.Graphics
 			return b == 5 || b <= 3;
 		}
 
-		static bool IsR8(Stream s)
-		{
-			var start = s.Position;
-
-			// First byte is nonzero
-			if (s.ReadUInt8() == 0)
-			{
-				s.Position = start;
-				return false;
-			}
-
-			// Check the format of the first frame
-			s.Position = start + 25;
-			var d = s.ReadUInt8();
-
-			s.Position = start;
-			return d == 8;
-		}
-
 		public static SpriteType DetectSpriteType(Stream s)
 		{
-			if (IsR8(s))
-				return SpriteType.R8;
-
 			if (IsTmpRA(s))
 				return SpriteType.TmpRA;
 
@@ -148,8 +126,6 @@ namespace OpenRA.Graphics
 			var type = DetectSpriteType(s);
 			switch (type)
 			{
-				case SpriteType.R8:
-					return new R8Reader(s);
 				case SpriteType.TmpRA:
 					return new TmpRAReader(s);
 				case SpriteType.TmpTD:

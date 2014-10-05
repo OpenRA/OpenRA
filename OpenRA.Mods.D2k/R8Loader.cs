@@ -1,23 +1,25 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using OpenRA.Graphics;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.D2k.SpriteLoaders
 {
-	public class R8Reader : ISpriteSource
+	public class R8Loader : ISpriteLoader
 	{
-		class R8Image : ISpriteFrame
+		class R8Frame : ISpriteFrame
 		{
 			public Size Size { get; private set; }
 			public Size FrameSize { get; private set; }
@@ -25,7 +27,7 @@ namespace OpenRA.FileFormats
 			public byte[] Data { get; set; }
 			public bool DisableExportPadding { get { return true; } }
 
-			public R8Image(Stream s)
+			public R8Frame(Stream s)
 			{
 				// Scan forward until we find some data
 				var type = s.ReadUInt8();
@@ -62,19 +64,41 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
-
-		public readonly int ImageCount;
-		public R8Reader(Stream stream)
+		bool IsR8(Stream s)
 		{
-			var frames = new List<R8Image>();
-			while (stream.Position < stream.Length)
+			var start = s.Position;
+
+			// First byte is nonzero
+			if (s.ReadUInt8() == 0)
 			{
-				frames.Add(new R8Image(stream));
-				ImageCount++;
+				s.Position = start;
+				return false;
 			}
 
-			Frames = frames.ToArray().AsReadOnly();
+			// Check the format of the first frame
+			s.Position = start + 25;
+			var d = s.ReadUInt8();
+
+			s.Position = start;
+			return d == 8;
+		}
+
+		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames)
+		{
+			if (!IsR8(s))
+			{
+				frames = null;
+				return false;
+			}
+
+			var start = s.Position;
+			var tmp = new List<R8Frame>();
+			while (s.Position < s.Length)
+				tmp.Add(new R8Frame(s));
+			s.Position = start;
+
+			frames = tmp.ToArray();
+			return true;
 		}
 	}
 }

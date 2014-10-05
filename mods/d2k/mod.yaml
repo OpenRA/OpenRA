@@ -189,4 +189,4 @@ LuaScripts:
 
 SupportsMapsFrom: d2k
 
-SpriteFormats: ShpTD
+SpriteFormats: R8, ShpTD
