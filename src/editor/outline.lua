@@ -80,7 +80,7 @@ local function outlineCreateOutlineWindow()
     end)
 
   local layout = ide:GetSetting("/view", "uimgrlayout")
-  if layout and not layout:find("outlinepanel") then
+  if not layout or not layout:find("outlinepanel") then
     ide.frame.projnotebook:AddPage(ctrl, TR("Outline"), true)
     return
   end
