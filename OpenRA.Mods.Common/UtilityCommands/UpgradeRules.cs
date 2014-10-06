@@ -691,6 +691,93 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20141212)
+				{
+					// Moved LimitedAmmo and Reloads onto Armament
+					if (depth == 0)
+					{
+						var limitedAmmo = node.Value.Nodes.Where(n => n.Key.StartsWith("LimitedAmmo"));
+						var reloads = node.Value.Nodes.Where(n => n.Key.StartsWith("Reloads"));
+						var armaments = node.Value.Nodes.Where(n => n.Key.StartsWith("Armament"));
+						var minelayer = node.Value.Nodes.Where(n => n.Key.StartsWith("Minelayer"));
+
+						// Shift LimitedAmmo definitions to Armament
+						if (limitedAmmo != null)
+						{
+							var limitedAmmoCountNode = limitedAmmo.SingleOrDefault(n => n.Key == "Ammo");
+							var limitedAmmoPipCountNode = limitedAmmo.SingleOrDefault(n => n.Key == "PipCount");
+							var limitedAmmoPipTypeNode = limitedAmmo.SingleOrDefault(n => n.Key == "PipType");
+							var limitedAmmoPipTypeEmptyNode = limitedAmmo.SingleOrDefault(n => n.Key == "PipTypeEmpty");
+							var limitedAmmoReloadTicksNode = limitedAmmo.SingleOrDefault(n => n.Key == "ReloadTicks");
+
+							var limitedAmmoCount = limitedAmmoCountNode != null ? FieldLoader.GetValue<int>("Ammo", limitedAmmoCountNode.Value.Value) : -1;
+							var limitedAmmoPipCount = limitedAmmoPipCountNode != null ? FieldLoader.GetValue<int>("PipCount", limitedAmmoPipCountNode.Value.Value) : -1;
+							var limitedAmmoPipType = limitedAmmoPipTypeNode != null ? limitedAmmoPipTypeNode.Value.Value.Trim() : "Green";
+							var limitedAmmoPipTypeEmpty = limitedAmmoPipTypeEmptyNode != null ? limitedAmmoPipTypeEmptyNode.Value.Value.Trim() : "Transparent";
+							var limitedAmmoReloadTicks = limitedAmmoReloadTicksNode != null ? FieldLoader.GetValue<int>("ReloadTicks", limitedAmmoReloadTicksNode.Value.Value) : 50;
+
+							foreach (var a in armaments)
+							{
+								a.Value.Nodes.Add(new MiniYamlNode("LimitedAmmo", limitedAmmoCount.ToString()));
+								a.Value.Nodes.Add(new MiniYamlNode("AmmoPipCount", limitedAmmoPipCount.ToString()));
+								a.Value.Nodes.Add(new MiniYamlNode("AmmoPipType", limitedAmmoPipType));
+								a.Value.Nodes.Add(new MiniYamlNode("AmmoPipTypeEmpty", limitedAmmoPipTypeEmpty));
+								a.Value.Nodes.Add(new MiniYamlNode("AmmoReloadTicks", limitedAmmoReloadTicks.ToString()));
+							}
+
+							// Minelayers special case
+							foreach (var m in minelayer)
+							{
+								var payloadCount = limitedAmmoCountNode != null ? FieldLoader.GetValue<int>("Ammo", limitedAmmoCountNode.Value.Value) : 3;
+								var payloadPipCount = limitedAmmoPipCountNode != null ? FieldLoader.GetValue<int>("PipCount", limitedAmmoPipCountNode.Value.Value) : 3;
+
+								m.Value.Nodes.Add(new MiniYamlNode("Payload", payloadCount.ToString()));
+								m.Value.Nodes.Add(new MiniYamlNode("PipCount", payloadPipCount.ToString()));
+								m.Value.Nodes.Add(new MiniYamlNode("PipType", limitedAmmoPipType));
+								m.Value.Nodes.Add(new MiniYamlNode("PipTypeEmpty", limitedAmmoPipTypeEmpty));
+								m.Value.Nodes.Add(new MiniYamlNode("ReloadTicks", limitedAmmoReloadTicks.ToString()));
+							}
+						}
+
+						// Shift Reloads definitions to Armament
+						if (reloads != null)
+						{
+							var reloadsCountNode = reloads.SingleOrDefault(n => n.Key == "Count");
+							// "Period" is intentionally omitted here, as Armament.ReloadTicks 
+							// will be used instead which should already exist at this point.
+							var reloadsResetOnFireNode = reloads.SingleOrDefault(n => n.Key == "ResetOnFire");
+
+							var reloadsCount = reloadsCountNode != null ? FieldLoader.GetValue<int>("Ammo", reloadsCountNode.Value.Value) : -1;
+							var reloadsResetOnFire = reloadsResetOnFireNode != null ? FieldLoader.GetValue<bool>("ResetsOnFire", reloadsResetOnFireNode.Value.Value) : false;
+
+							foreach (var a in armaments)
+							{
+								a.Value.Nodes.Add(new MiniYamlNode("ReloadsAmmo", "true"));
+								a.Value.Nodes.Add(new MiniYamlNode("AmmoReloadCount", reloadsCount.ToString()));
+								a.Value.Nodes.Add(new MiniYamlNode("ResetReloadOnFire", reloadsResetOnFire.ToString()));
+							}
+						}
+						
+						// Delete old trait nodes
+						var limitedAmmoRemoval1 = node.Value.Nodes.FirstOrDefault(n => n.Key == "LimitedAmmo");
+						var limitedAmmoRemoval2 = node.Value.Nodes.FirstOrDefault(n => n.Key == "-LimitedAmmo");
+						var reloadsRemoval1 = node.Value.Nodes.FirstOrDefault(n => n.Key == "Reloads");
+						var reloadsRemoval2 = node.Value.Nodes.FirstOrDefault(n => n.Key == "-Reloads");
+
+						if (depth == 1 && limitedAmmoRemoval1 != null)
+							node.Value.Nodes.Remove(limitedAmmoRemoval1);
+						
+						if (depth == 1 && limitedAmmoRemoval2 != null)
+							node.Value.Nodes.Remove(limitedAmmoRemoval2);
+
+						if (depth == 1 && reloadsRemoval1 != null)
+							node.Value.Nodes.Remove(reloadsRemoval1);
+
+						if (depth == 1 && reloadsRemoval2 != null)
+							node.Value.Nodes.Remove(reloadsRemoval2);
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
