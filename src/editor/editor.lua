@@ -528,7 +528,7 @@ function IndicateAll(editor, lines, linee)
     for n = #tokens, 1, -1 do
       local token = tokens[n]
       -- find the last token before the range
-      if token.name and token.fpos+#token.name < start then
+      if not token.nobreak and token.name and token.fpos+#token.name < start then
         pos, vars = token.fpos+#token.name, token.context
         break
       end
@@ -583,13 +583,12 @@ function IndicateAll(editor, lines, linee)
   local s = TimeGet()
   local canwork = start and 0.010 or 0.100 -- use shorter interval when typing
   local f = editor.spec.markvars(editor:GetText(), pos, vars)
-  local ops, lastinfo = 0, 0
   while true do
-    local op, name, lineinfo, vars, at = f()
+    local op, name, lineinfo, vars, at, nobreak = f()
     if not op then break end
     local var = vars and vars[name]
     local token = {op, name=name, fpos=lineinfo, at=at, context=vars,
-      self = (op == 'VarSelf') or nil }
+      self = (op == 'VarSelf') or nil, nobreak=nobreak}
     if op == 'Function' then
       vars['function'] = (vars['function'] or 0) + 1
     end
@@ -614,16 +613,15 @@ function IndicateAll(editor, lines, linee)
       if indic.varmasked and not var.masked.self then
         editor:SetIndicatorCurrent(indicator.MASKED)
         editor:IndicatorFillRange(fpos-1, #name)
-        table.insert(tokens, {"Masked", name=name, fpos=fpos})
+        table.insert(tokens, {"Masked", name=name, fpos=fpos, nobreak=nobreak})
       end
 
       if indic.varmasking then IndicateOne(indicator.MASKING, lineinfo, #name) end
     end
-    if lineinfo and lineinfo > lastinfo and ops % 10 == 0 and TimeGet()-s > canwork then
+    if lineinfo and not nobreak and (op == 'Statement' or op == 'String') and TimeGet()-s > canwork then
       delayed[editor] = {lineinfo, vars}
       break
     end
-    lastinfo = lineinfo or lastinfo
   end
 
   -- clear indicators till the end of processed fragment
