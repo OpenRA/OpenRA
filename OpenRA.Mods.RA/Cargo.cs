@@ -37,11 +37,11 @@ namespace OpenRA.Mods.RA
 		readonly List<Actor> cargo = new List<Actor>();
 		readonly HashSet<Actor> reserves = new HashSet<Actor>();
 
-		CPos cachedLocation;
 		int totalWeight = 0;
 		int reservedWeight = 0;
 		Helicopter helicopter;
 
+		CPos currentCell;
 		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
 		public bool Unloading { get; internal set; }
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
@@ -278,7 +278,7 @@ namespace OpenRA.Mods.RA
 		public void AddedToWorld(Actor self)
 		{
 			// Force location update to avoid issues when initial spawn is outside map
-			cachedLocation = self.Location;
+			currentCell = self.Location;
 			CurrentAdjacentCells = GetAdjacentCells();
 		}
 
@@ -295,13 +295,13 @@ namespace OpenRA.Mods.RA
 					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
 						npe.PassengerEntered(self, c);
 				}
-
 				initialized = true;
 			}
 
-			if (cachedLocation != self.Location)
+			var cell = self.World.Map.CellContaining(self.CenterPosition);
+			if (currentCell != cell)
 			{
-				cachedLocation = self.Location;
+				currentCell = cell;
 				CurrentAdjacentCells = GetAdjacentCells();
 			}
 		}
