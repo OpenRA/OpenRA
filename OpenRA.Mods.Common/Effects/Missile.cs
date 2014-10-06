@@ -14,11 +14,11 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Effects
+namespace OpenRA.Mods.Common.Effects
 {
 	class MissileInfo : IProjectileInfo
 	{
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (info.Inaccuracy.Range > 0)
 			{
-				var inaccuracy = Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, args.InaccuracyModifiers);
+				var inaccuracy = OpenRA.Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, args.InaccuracyModifiers);
 				offset = WVec.FromPDF(world.SharedRandom, 2) * inaccuracy / 1024;
 			}
 
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.RA.Effects
 				targetPosition = args.GuidedTarget.CenterPosition;
 
 			var dist = targetPosition + offset - pos;
-			var desiredFacing = Traits.Util.GetFacing(dist, facing);
+			var desiredFacing = OpenRA.Traits.Util.GetFacing(dist, facing);
 			var desiredAltitude = targetPosition.Z;
 			var jammed = info.Jammable && world.ActorsWithTrait<JamsMissiles>().Any(JammedBy);
 
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Effects
 			else if (!args.GuidedTarget.IsValidFor(args.SourceActor))
 				desiredFacing = facing;
 
-			facing = Traits.Util.TickFacing(facing, desiredFacing, info.ROT);
+			facing = OpenRA.Traits.Util.TickFacing(facing, desiredFacing, info.ROT);
 			var move = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing)) * info.Speed.Range / 1024;
 			if (targetPosition.Z > 0 && info.TurboBoost)
 				move = (move * 3) / 2;

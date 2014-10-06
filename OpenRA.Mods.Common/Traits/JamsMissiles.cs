@@ -10,9 +10,9 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
-	class JamsMissilesInfo : ITraitInfo
+	public class JamsMissilesInfo : ITraitInfo
 	{
 		public readonly int Range = 0;
 		public readonly bool AlliedMissiles = true;
