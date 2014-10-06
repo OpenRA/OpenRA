@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -21,28 +23,34 @@ namespace OpenRA.Mods.RA
 
 	class BridgeHut : IDemolishable
 	{
-		public Bridge bridge;
+		Lazy<Bridge> firstBridge;
+		int repairDirections = 0;
+		public readonly Bridge Bridge;
+		public Bridge FirstBridge { get { return firstBridge.Value; } }
+		public DamageState BridgeDamageState { get { return Bridge.AggregateDamageState(); } }
+		public bool Repairing { get { return repairDirections > 0; } }
 
 		public BridgeHut(ActorInitializer init)
 		{
-			bridge = init.Get<ParentActorInit>().value.Trait<Bridge>();
+			Bridge = init.Get<ParentActorInit>().value.Trait<Bridge>();
+			Bridge.Hut = this;
+			firstBridge = new Lazy<Bridge>(() => Bridge.Enumerate(0, true).Last());
 		}
 
 		public void Repair(Actor repairer)
 		{
-			bridge.Repair(repairer, true, true);
+			repairDirections = Bridge.GetHut(0) != this && Bridge.GetHut(1) != this ? 2 : 1;
+			Bridge.Do((b, d) => b.Repair(repairer, d, () => repairDirections--));
 		}
 
 		public void Demolish(Actor self, Actor saboteur)
 		{
-			bridge.Demolish(saboteur, true, true);
+			Bridge.Do((b, d) => b.Demolish(saboteur, d));
 		}
 
 		public bool IsValidTarget(Actor self, Actor saboteur)
 		{
 			return BridgeDamageState != DamageState.Dead;
 		}
-
-		public DamageState BridgeDamageState { get { return bridge.AggregateDamageState(); } }
 	}
 }
