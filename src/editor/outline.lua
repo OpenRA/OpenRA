@@ -79,17 +79,17 @@ local function outlineCreateOutlineWindow()
       ctrl:ActivateItem(event:GetItem())
     end)
 
+  local function reconfigure(pane)
+    pane:TopDockable(false):BottomDockable(false)
+        :MinSize(150,-1):BestSize(300,-1):FloatingSize(200,300)
+  end
+
   local layout = ide:GetSetting("/view", "uimgrlayout")
   if not layout or not layout:find("outlinepanel") then
-    ide.frame.projnotebook:AddPage(ctrl, TR("Outline"), true)
-    return
+    ide:AddPanelDocked(ide.frame.projnotebook, ctrl, "outlinepanel", TR("Outline"), reconfigure, false)
+  else
+    ide:AddPanel(ctrl, "outlinepanel", TR("Outline"), reconfigure)
   end
-  OutlineAddWindow()
-  return ctrl
-end
-
-function OutlineAddWindow()
-  return ide:AddPanel(ide.outline.outlineCtrl, "outlinepanel", TR("Outline"))
 end
 
 local function eachNode(eachFunc, root)
