@@ -44,10 +44,9 @@ WorldLoaded = function()
 	player = Player.GetPlayer("GDI")
 	enemy = Player.GetPlayer("Nod")
 
-	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops")
-	gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
-	gdiObjective2 = player.AddSecondaryObjective("Establish a beachhead")
-
+	Trigger.OnObjectiveAdded(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
+	end)
 	Trigger.OnObjectiveCompleted(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
@@ -68,6 +67,10 @@ WorldLoaded = function()
 			Media.PlayMovieFullscreen("gameover.vqa")
 		end)
 	end)
+
+	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops")
+	gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
+	gdiObjective2 = player.AddSecondaryObjective("Establish a beachhead")
 
 	Trigger.OnIdle(Gunboat, function() SetGunboatPath(Gunboat) end)
 

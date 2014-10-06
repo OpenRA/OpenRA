@@ -97,6 +97,18 @@ WorldLoaded = function()
 	ussr = Player.GetPlayer("USSR")
 	ukraine = Player.GetPlayer("Ukraine")
 
+	Trigger.OnObjectiveAdded(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
+	end)
+	Trigger.OnObjectiveCompleted(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
+	end)
+	Trigger.OnObjectiveFailed(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
+	end)
+	Trigger.OnPlayerLost(player, MissionFailed)
+	Trigger.OnPlayerWon(player, MissionAccomplished)
+
 	ConquestObjective = player.AddPrimaryObjective("Secure the area.")
 	ussr.AddPrimaryObjective("Defend your base.")
 	ukraine.AddPrimaryObjective("Destroy the convoy.")
@@ -108,16 +120,6 @@ WorldLoaded = function()
 	Trigger.AfterDelay(Utils.Seconds(10), SendJeepReinforcements)
 
 	Trigger.AfterDelay(Utils.Minutes(10), SendTrucks)
-
-	Trigger.OnPlayerLost(player, MissionFailed)
-	Trigger.OnPlayerWon(player, MissionAccomplished)
-
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
 
 	Camera.Position = ReinforcementsEntryPoint.CenterPosition
 

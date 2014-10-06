@@ -65,10 +65,9 @@ WorldLoaded = function()
 	player = Player.GetPlayer("GDI")
 	nod = Player.GetPlayer("Nod")
 
-	nodObjective = nod.AddPrimaryObjective("Destroy all GDI troops")
-	gdiObjective1 = player.AddPrimaryObjective("Defend the town of Białystok")
-	gdiObjective2 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
-
+	Trigger.OnObjectiveAdded(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
+	end)
 	Trigger.OnObjectiveCompleted(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
@@ -93,6 +92,10 @@ WorldLoaded = function()
 			Media.PlayMovieFullscreen("gameover.vqa")
 		end)
 	end)
+
+	nodObjective = nod.AddPrimaryObjective("Destroy all GDI troops")
+	gdiObjective1 = player.AddPrimaryObjective("Defend the town of Bialystok")
+	gdiObjective2 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
 
 	Trigger.OnExitedFootprint(TownAttackTrigger, function(a, id)
 		if a.Owner == player then

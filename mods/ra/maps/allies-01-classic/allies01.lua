@@ -162,12 +162,9 @@ WorldLoaded = function()
 	england = Player.GetPlayer("England")
 	ussr = Player.GetPlayer("USSR")
 
-	FindEinsteinObjective = player.AddPrimaryObjective("Find Einstein.")
-	SurviveObjective = player.AddPrimaryObjective("Tanya and Einstein must survive.")
-	england.AddPrimaryObjective("Destroy the soviet base after a successful rescue.")
-	CivilProtectionObjective = player.AddSecondaryObjective("Protect all civilians.")
-	DefendObjective = ussr.AddPrimaryObjective("Kill Tanya and keep Einstein hostage.")
-
+	Trigger.OnObjectiveAdded(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
+	end)
 	Trigger.OnObjectiveCompleted(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
@@ -177,6 +174,12 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerLost(player, MissionFailed)
 	Trigger.OnPlayerWon(player, MissionAccomplished)
+
+	FindEinsteinObjective = player.AddPrimaryObjective("Find Einstein.")
+	SurviveObjective = player.AddPrimaryObjective("Tanya and Einstein must survive.")
+	england.AddPrimaryObjective("Destroy the soviet base after a successful rescue.")
+	CivilProtectionObjective = player.AddSecondaryObjective("Protect all civilians.")
+	DefendObjective = ussr.AddPrimaryObjective("Kill Tanya and keep Einstein hostage.")
 
 	Trigger.OnKilled(Lab, LabDestroyed)
 	Trigger.OnKilled(OilPump, OilPumpDestroyed)

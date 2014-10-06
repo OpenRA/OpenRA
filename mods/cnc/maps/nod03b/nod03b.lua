@@ -35,27 +35,14 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Nod")
 	enemy = Player.GetPlayer("GDI")
 
-	gdiObjective = enemy.AddPrimaryObjective("Eliminate all Nod forces in the area")
-	nodObjective1 = player.AddPrimaryObjective("Capture the prison")
-	nodObjective2 = player.AddSecondaryObjective("Destroy all GDI forces")
-
-	InsertNodUnits()
+	Trigger.OnObjectiveAdded(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
+	end)
 	Trigger.OnObjectiveCompleted(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
 	Trigger.OnObjectiveFailed(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.AfterDelay(Utils.Seconds(40), function() SendAttackWave(FirstAttackWaveUnits, FirstAttackWave) end)
-	Trigger.AfterDelay(Utils.Seconds(80), function() SendAttackWave(SecondAttackWaveUnits, SecondAttackWave) end)
-	Trigger.AfterDelay(Utils.Seconds(140), function() SendAttackWave(ThirdAttackWaveUnits, FirstAttackWave) end)
-
-	Trigger.OnKilled(TechCenter, function() player.MarkFailedObjective(nodObjective1) end)
-	Trigger.OnCapture(TechCenter, function()
-		Trigger.AfterDelay(Utils.Seconds(2), function()
-			player.MarkCompletedObjective(nodObjective1)
-		end)
 	end)
 
 	Trigger.OnPlayerWon(player, function()
@@ -71,6 +58,22 @@ WorldLoaded = function()
 			Media.PlayMovieFullscreen("flag.vqa")
 		end)
 	end)
+
+	gdiObjective = enemy.AddPrimaryObjective("Eliminate all Nod forces in the area")
+	nodObjective1 = player.AddPrimaryObjective("Capture the prison")
+	nodObjective2 = player.AddSecondaryObjective("Destroy all GDI forces")
+
+	Trigger.OnKilled(TechCenter, function() player.MarkFailedObjective(nodObjective1) end)
+	Trigger.OnCapture(TechCenter, function()
+		Trigger.AfterDelay(Utils.Seconds(2), function()
+			player.MarkCompletedObjective(nodObjective1)
+		end)
+	end)
+
+	InsertNodUnits()
+	Trigger.AfterDelay(Utils.Seconds(40), function() SendAttackWave(FirstAttackWaveUnits, FirstAttackWave) end)
+	Trigger.AfterDelay(Utils.Seconds(80), function() SendAttackWave(SecondAttackWaveUnits, SecondAttackWave) end)
+	Trigger.AfterDelay(Utils.Seconds(140), function() SendAttackWave(ThirdAttackWaveUnits, FirstAttackWave) end)
 
 	Media.PlayMovieFullscreen("nod3.vqa")
 end
