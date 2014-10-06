@@ -17,16 +17,19 @@ namespace OpenRA.Mods.RA.Activities
 		readonly BridgeHut hut;
 
 		public RepairBridge(Actor self, Actor target)
-			: base(self, target) { hut = target.Trait<BridgeHut>(); }
+			: base(self, target)
+		{
+			hut = target.Trait<BridgeHut>();
+		}
 
 		protected override bool CanReserve(Actor self)
 		{
-			return hut.BridgeDamageState != DamageState.Undamaged;
+			return hut.BridgeDamageState != DamageState.Undamaged && !hut.Repairing && hut.Bridge.GetHut(0) != null && hut.Bridge.GetHut(1) != null;
 		}
 
 		protected override void OnInside(Actor self)
 		{
-			if (hut.BridgeDamageState == DamageState.Undamaged)
+			if (hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.GetHut(0) == null || hut.Bridge.GetHut(1) == null)
 				return;
 			hut.Repair(self);
 			self.Destroy();
