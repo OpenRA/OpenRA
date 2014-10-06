@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Orders;
+using OpenRA.Mods.RA.Air;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled, INotifyCapture, INotifyAddedToWorld, ITick, INotifySold, IDisableMove
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, INotifyKilled, INotifyCapture, INotifyAddedToWorld, ITick, INotifySold, IDisableMove
 	{
 		public readonly CargoInfo Info;
 		readonly Actor self;
@@ -39,6 +40,7 @@ namespace OpenRA.Mods.RA
 		CPos cachedLocation;
 		int totalWeight = 0;
 		int reservedWeight = 0;
+		Helicopter helicopter;
 
 		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
 		public bool Unloading { get; internal set; }
@@ -81,6 +83,11 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
+		public void Created(Actor self)
+		{
+			helicopter = self.TraitOrDefault<Helicopter>();
+		}
+
 		static int GetWeight(Actor a) { return a.Info.Traits.Get<PassengerInfo>().Weight; }
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -105,6 +112,8 @@ namespace OpenRA.Mods.RA
 
 				Unloading = true;
 				self.CancelActivity();
+				if (helicopter != null)
+					self.QueueActivity(new HeliLand(true));
 				self.QueueActivity(new UnloadCargo(self, true));
 			}
 		}
@@ -116,7 +125,7 @@ namespace OpenRA.Mods.RA
 
 		bool CanUnload()
 		{
-			return !IsEmpty(self) && self.CenterPosition.Z == 0
+			return !IsEmpty(self) && (helicopter == null || helicopter.CanLand(self.Location))
 				&& CurrentAdjacentCells != null && CurrentAdjacentCells.Any(c => Passengers.Any(p => p.Trait<IPositionable>().CanEnterCell(c)));
 		}
 
