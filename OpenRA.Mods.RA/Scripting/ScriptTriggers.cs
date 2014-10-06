@@ -26,7 +26,8 @@ namespace OpenRA.Mods.RA.Scripting
 
 	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyObjectivesUpdated, INotifyCapture, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable
 	{
-		public event Action<Actor> OnKilledInternal = _ => {};
+		public event Action<Actor> OnKilledInternal = _ => { };
+		public event Action<Actor> OnRemovedInternal = _ => { };
 
 		public Dictionary<Trigger, List<Pair<LuaFunction, ScriptContext>>> Triggers = new Dictionary<Trigger, List<Pair<LuaFunction, ScriptContext>>>();
 
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			// Run lua callbacks
+			// Run Lua callbacks
 			foreach (var f in Triggers[Trigger.OnKilled])
 				using (var a = self.ToLuaValue(f.Second))
 				using (var b = e.Attacker.ToLuaValue(f.Second))
@@ -133,9 +134,13 @@ namespace OpenRA.Mods.RA.Scripting
 
 		public void RemovedFromWorld(Actor self)
 		{
+			// Run Lua callbacks
 			foreach (var f in Triggers[Trigger.OnRemovedFromWorld])
 				using (var a = self.ToLuaValue(f.Second))
 					f.First.Call(a).Dispose();
+
+			// Run any internally bound callbacks
+			OnRemovedInternal(self);
 		}
 
 		public void Clear(Trigger trigger)

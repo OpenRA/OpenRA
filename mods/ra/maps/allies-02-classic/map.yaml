@@ -6,7 +6,7 @@ RequiresMod: ra
 
 Title: Allies 02: Five to one
 
-Description: A critical supply convoy is due through this area in 25 minutes, but Soviet forces have blocked the road in several places.\n\nUnless you can clear them out, those supplies will never make it to the front.\n\nThe convoy will come from the northwest, and time is short so work quickly.
+Description: A critical supply convoy is due through this area in 10 minutes, but Soviet forces have blocked the road in several places.\n\nUnless you can clear them out, those supplies will never make it to the front.\n\nThe convoy will come from the northwest, and time is short so work quickly.
 
 Author: Westwood Studios
 
@@ -34,26 +34,26 @@ Players:
 		Name: USSR
 		Race: soviet
 		ColorRamp: 3,255,127
-		Allies: BadGuy
-		Enemies: Greece
+		Allies: Ukraine
+		Enemies: Greece, France
 	PlayerReference@France:
 		Name: France
 		Race: allies
+		NonCombatant: True
 		ColorRamp: 115,115,143
-		Allies: Greece
-		Enemies: USSR,BadGuy
+		Allies: Greece, France
+		Enemies: USSR, Ukraine
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
 		Race: allies
-		Enemies: Greece
-	PlayerReference@BadGuy:
-		Name: BadGuy
+	PlayerReference@Ukraine:
+		Name: Ukraine
 		Race: soviet
 		ColorRamp: 3,255,127
 		Allies: USSR
-		Enemies: Greece
+		Enemies: Greece, France
 	PlayerReference@Greece:
 		Name: Greece
 		Playable: True
@@ -66,7 +66,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: France
-		Enemies: USSR,BadGuy
+		Enemies: USSR, Ukraine
 
 Actors:
 	EntryPoint: t06
@@ -240,7 +240,7 @@ Actors:
 	Actor56: tc03
 		Location: 43,70
 		Owner: Neutral
-	Actor57: weap
+	SovietWarfactory: weap
 		Location: 60,66
 		Owner: USSR
 		Health: 1
@@ -480,7 +480,7 @@ Actors:
 		SubCell: 0
 	Actor103: e1
 		Location: 77,74
-		Owner: BadGuy
+		Owner: Ukraine
 		Health: 1
 		Facing: 128
 		SubCell: 2
@@ -612,67 +612,67 @@ Actors:
 		SubCell: 1
 	Actor125: dog
 		Location: 78,75
-		Owner: BadGuy
+		Owner: Ukraine
 		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor126: e1
 		Location: 71,61
-		Owner: BadGuy
+		Owner: Ukraine
 		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor127: dog
 		Location: 70,61
-		Owner: BadGuy
+		Owner: Ukraine
 		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor128: e1
 		Location: 50,46
-		Owner: BadGuy
+		Owner: Ukraine
 		Health: 1
 		Facing: 32
 		SubCell: 1
 	Actor129: e1
 		Location: 49,47
-		Owner: BadGuy
+		Owner: Ukraine
 		Health: 1
 		Facing: 64
 		SubCell: 0
 	Actor130: e2
 		Location: 49,49
-		Owner: BadGuy
+		Owner: Ukraine
 		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor131: e2
 		Location: 47,46
-		Owner: BadGuy
+		Owner: Ukraine
 		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor132: e2
 		Location: 48,63
-		Owner: BadGuy
+		Owner: Ukraine
 		Health: 1
 		Facing: 0
 		SubCell: 1
 	Actor133: e1
 		Location: 49,63
-		Owner: BadGuy
+		Owner: Ukraine
 		Health: 1
 		Facing: 96
 		SubCell: 2
 	Actor134: e1
 		Location: 74,81
-		Owner: BadGuy
+		Owner: Ukraine
 		Health: 1
 		Facing: 64
 		SubCell: 3
 	Actor135: e2
 		Location: 75,83
-		Owner: BadGuy
+		Owner: Ukraine
 		Health: 1
 		Facing: 96
 		SubCell: 0
@@ -751,7 +751,7 @@ Actors:
 	waypoint94: waypoint
 		Location: 90,46
 		Owner: Neutral
-	McvDeployPoint: waypoint
+	DeployPoint: waypoint
 		Location: 89,51
 		Owner: Neutral
 	waypoint96: waypoint
@@ -875,8 +875,8 @@ Rules:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		LuaScriptInterface:
-			LuaScripts: allies02.lua
+		LuaScript:
+			Scripts: allies02.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	^Vehicle:
