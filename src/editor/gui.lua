@@ -373,19 +373,12 @@ local function createBottomNotebook(frame)
       local idx = event:GetSelection() -- index within the current tab ctrl
       local selection = bottomnotebook:GetPageIndex(tabctrl:GetPage(idx).window)
       local label = bottomnotebook:GetPageText(selection)
+      local pane = ide:RestorePanelByLabel(label)
+      if not pane then return end
 
-      -- names are translated on labels, so need to translate here as well
-      local dragout = ({
-          [TR("Watch")] = DebuggerAddWatchWindow,
-          [TR("Stack")] = DebuggerAddStackWindow,
-          })[label]
-      if not dragout then return end
-
-      bottomnotebook:RemovePage(selection)
-
-      local pane = mgr:GetPane(dragout())
       pane:FloatingPosition(mx-10, my-10)
       pane:Show()
+      bottomnotebook:RemovePage(selection)
       mgr:Update()
     end)
 
