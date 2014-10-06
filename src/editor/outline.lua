@@ -148,6 +148,7 @@ function OutlineRefresh(editor)
   if not root or not root:IsOk() then return end
 
   local cache = caches[editor] or {}
+  caches[editor] = cache
 
   -- add file
   local filename = ide:GetDocument(editor):GetFileName()
@@ -180,8 +181,6 @@ function OutlineRefresh(editor)
   -- refresh the tree
   ctrl:Freeze()
   ctrl:DeleteChildren(fileitem)
-
-  ctrl:SetItemHasChildren(fileitem, #funcs > 0)
   local stack = {fileitem}
   for n, func in ipairs(funcs) do
     local name, pos, depth = func.name, func.pos, func.depth
@@ -190,12 +189,9 @@ function OutlineRefresh(editor)
     func.item = item
     stack[depth+1] = item
   end
-  if not ctrl:IsExpanded(fileitem) then ctrl:ExpandAllChildren(fileitem) end
-
+  ctrl:ExpandAllChildren(fileitem)
   ctrl:ScrollTo(fileitem)
   ctrl:Thaw()
-
-  caches[editor] = cache
 end
 
 outlineCreateOutlineWindow()
