@@ -19,9 +19,10 @@ namespace OpenRA.Mods.Common
 
 	public class HelpCommand : IChatCommand, IWorldLoaded
 	{
+		readonly Dictionary<string, string> helpDescriptions;
+
 		World world;
 		ChatCommands console;
-		Dictionary<string, string> helpDescriptions;
 
 		public HelpCommand() 
 		{
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common
 
 			foreach (var key in console.Commands.Keys)
 			{
-				var description = "";
+				string description;
 				if (!helpDescriptions.TryGetValue(key, out description))
 					description = "no description available.";
 
