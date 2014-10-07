@@ -9,8 +9,6 @@ ide.config.toolbar.icons = {
   ID_SEPARATOR,
   ID_TOGGLEBREAKPOINT, ID_BOOKMARKTOGGLE, ID_VIEWCALLSTACK, ID_VIEWWATCHWINDOW,
   [ID_FINDINFILES] = false,
-  [ID_RUN] = false,
-  [ID_RUNNOW] = false,
 }
 
 ide.config.toolbar.iconmap = {
