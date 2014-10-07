@@ -55,10 +55,10 @@
     <Compile Include="Effects\Missile.cs" />
     <Compile Include="Effects\RallyPoint.cs" />
     <Compile Include="Effects\Smoke.cs" />
-    <Compile Include="Console\ChatCommands.cs" />
-    <Compile Include="Console\DevCommands.cs" />
-    <Compile Include="Console\HelpCommand.cs" />
-    <Compile Include="Console\PlayerCommands.cs" />
+    <Compile Include="Commands\ChatCommands.cs" />
+    <Compile Include="Commands\DevCommands.cs" />
+    <Compile Include="Commands\HelpCommand.cs" />
+    <Compile Include="Commands\PlayerCommands.cs" />
     <Compile Include="Graphics\ActorPreview.cs" />
     <Compile Include="Graphics\BeamRenderable.cs" />
     <Compile Include="Graphics\ContrailRenderable.cs" />
