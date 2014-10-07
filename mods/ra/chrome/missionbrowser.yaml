@@ -19,7 +19,20 @@ Background@MISSIONBROWSER_PANEL:
 			Width: 260
 			Height: 330
 			Children:
-				ScrollItem@MISSION_TEMPLATE:
+				ScrollItem@HEADER:
+					BaseName: scrollheader
+					Width: PARENT_RIGHT-27
+					Height: 13
+					X: 2
+					Y: 0
+					Visible: false
+					Children:
+						Label@LABEL:
+							Font: TinyBold
+							Width: PARENT_RIGHT
+							Height: 10
+							Align: Center
+				ScrollItem@TEMPLATE:
 					Width: PARENT_RIGHT-27
 					Height: 25
 					X: 2
