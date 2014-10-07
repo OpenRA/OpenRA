@@ -22,33 +22,6 @@ namespace OpenRA.Graphics
 		Dictionary<ushort, Sprite[]> templates;
 		Sprite missingTile;
 
-		Sprite[] LoadTemplate(string filename, string[] exts, Dictionary<string, ISpriteSource> sourceCache, int[] frames)
-		{
-			ISpriteSource source;
-			if (!sourceCache.ContainsKey(filename))
-			{
-				using (var s = GlobalFileSystem.OpenWithExts(filename, exts))
-					source = SpriteSource.LoadSpriteSource(s, filename);
-
-				if (source.CacheWhenLoadingTileset)
-					sourceCache.Add(filename, source);
-			}
-			else
-				source = sourceCache[filename];
-
-			if (frames != null)
-			{
-				var ret = new List<Sprite>();
-				var srcFrames = source.Frames.ToArray();
-				foreach (var i in frames)
-					ret.Add(sheetBuilder.Add(srcFrames[i]));
-
-				return ret.ToArray();
-			}
-
-			return source.Frames.Select(f => sheetBuilder.Add(f)).ToArray();
-		}
-
 		public Theater(TileSet tileset)
 		{
 			var allocated = false;
@@ -61,11 +34,17 @@ namespace OpenRA.Graphics
 				return new Sheet(new Size(tileset.SheetSize, tileset.SheetSize), true);
 			};
 
-			var sourceCache = new Dictionary<string, ISpriteSource>();
-			templates = new Dictionary<ushort, Sprite[]>();
 			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
+			templates = new Dictionary<ushort, Sprite[]>();
+
+			// We manage the SheetBuilder ourselves, to avoid loading all of the tileset images
+			var spriteLoader = new SpriteLoader(Game.modData.SpriteLoaders, tileset.Extensions, null);
 			foreach (var t in tileset.Templates)
-				templates.Add(t.Value.Id, LoadTemplate(t.Value.Image, tileset.Extensions, sourceCache, t.Value.Frames));
+			{
+				var allFrames = spriteLoader.LoadAllFrames(t.Value.Image);
+				var frames = t.Value.Frames != null ? t.Value.Frames.Select(f => allFrames[f]).ToArray() : allFrames;
+				templates.Add(t.Value.Id, frames.Select(f => sheetBuilder.Add(f)).ToArray());
+			}
 
 			// 1x1px transparent tile
 			missingTile = sheetBuilder.Add(new byte[1], new Size(1, 1));

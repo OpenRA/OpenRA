@@ -45,7 +45,7 @@ namespace OpenRA.Graphics
 			foreach (var p in nodesDict["Palettes"].Nodes)
 				palette.AddPalette(p.Key, new ImmutablePalette(GlobalFileSystem.Open(p.Value.Value), shadowIndex), false);
 
-			var spriteLoader = new SpriteLoader(new string[0], new SheetBuilder(SheetType.Indexed));
+			var spriteLoader = new SpriteLoader(modData.SpriteLoaders, new string[0], new SheetBuilder(SheetType.Indexed));
 			foreach (var s in nodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(spriteLoader, s.Key, s.Value);
 			spriteLoader.SheetBuilder.Current.ReleaseBuffer();

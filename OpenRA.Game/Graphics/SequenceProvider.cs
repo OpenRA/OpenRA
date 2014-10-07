@@ -79,7 +79,7 @@ namespace OpenRA.Graphics
 		{
 			this.modData = modData;
 
-			spriteLoader = Exts.Lazy(() => new SpriteLoader(tileSet.Extensions, new SheetBuilder(SheetType.Indexed)));
+			spriteLoader = Exts.Lazy(() => new SpriteLoader(modData.SpriteLoaders, tileSet.Extensions, new SheetBuilder(SheetType.Indexed)));
 		}
 
 		public Sequences LoadSequences(Map map)

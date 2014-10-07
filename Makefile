@@ -166,7 +166,7 @@ mod_ts: $(mod_ts_TARGET)
 editor_SRCS := $(shell find OpenRA.Editor/ -iname '*.cs')
 editor_TARGET = OpenRA.Editor.exe
 editor_KIND = winexe
-editor_DEPS = $(game_TARGET)
+editor_DEPS = $(game_TARGET) $(mod_common_TARGET)
 editor_LIBS = System.Windows.Forms.dll System.Data.dll System.Drawing.dll $(editor_DEPS) thirdparty/Eluant.dll
 editor_EXTRA = -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
 editor_FLAGS = -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico

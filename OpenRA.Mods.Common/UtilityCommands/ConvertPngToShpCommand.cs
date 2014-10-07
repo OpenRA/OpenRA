@@ -17,6 +17,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using OpenRA.FileFormats;
+using OpenRA.Mods.Common.SpriteLoaders;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				throw new InvalidOperationException("All frames must be the same size");
 
 			using (var destStream = File.Create(dest))
-				ShpReader.Write(destStream, size, frames.Select(f => ToBytes(f)));
+				ShpTDSprite.Write(destStream, size, frames.Select(f => ToBytes(f)));
 
 			Console.WriteLine(dest + " saved.");
 		}

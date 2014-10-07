@@ -277,13 +277,6 @@
     <Compile Include="FileFormats\XccLocalDatabase.cs" />
     <Compile Include="FileFormats\HvaReader.cs" />
     <Compile Include="FileFormats\PngLoader.cs" />
-    <Compile Include="FileFormats\R8Reader.cs" />
-    <Compile Include="FileFormats\ShpD2Reader.cs" />
-    <Compile Include="FileFormats\ShpReader.cs" />
-    <Compile Include="FileFormats\ShpTSReader.cs" />
-    <Compile Include="FileFormats\TmpRAReader.cs" />
-    <Compile Include="FileFormats\TmpTDReader.cs" />
-    <Compile Include="FileFormats\TmpTSReader.cs" />
     <Compile Include="FileFormats\VqaReader.cs" />
     <Compile Include="FileFormats\VxlReader.cs" />
     <Compile Include="Primitives\ActionQueue.cs" />
@@ -320,7 +313,6 @@
     <Compile Include="Map\ActorReference.cs" />
     <Compile Include="Support\Evaluator.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Graphics\SpriteSource.cs" />
     <Compile Include="Graphics\PlayerColorRemap.cs" />
     <Compile Include="Graphics\Palette.cs" />
     <Compile Include="FileSystem\GlobalFileSystem.cs" />

@@ -41,19 +41,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var palette = new ImmutablePalette(args[2], shadowIndex);
 
-			ISpriteSource source;
-			using (var stream = File.OpenRead(src))
-				source = SpriteSource.LoadSpriteSource(stream, src);
+			var frames = new SpriteLoader(modData.SpriteLoaders, new string[0], null)
+				.LoadAllFrames(src);
 
-			// The r8 padding requires external information that we can't access here.
-			var usePadding = !(args.Contains("--nopadding") || source is R8Reader);
+			var usePadding = !args.Contains("--nopadding");
 			var count = 0;
 			var prefix = Path.GetFileNameWithoutExtension(src);
 
-			foreach (var frame in source.Frames)
+			foreach (var frame in frames)
 			{
-				var frameSize = usePadding ? frame.FrameSize : frame.Size;
-				var offset = usePadding ? (frame.Offset - 0.5f * new float2(frame.Size - frame.FrameSize)).ToInt2() : int2.Zero;
+				var frameSize = usePadding && !frame.DisableExportPadding ? frame.FrameSize : frame.Size;
+				var offset = usePadding && !frame.DisableExportPadding ? (frame.Offset - 0.5f * new float2(frame.Size - frame.FrameSize)).ToInt2() : int2.Zero;
 
 				// shp(ts) may define empty frames
 				if (frameSize.Width == 0 && frameSize.Height == 0)
@@ -69,7 +67,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
 					// Clear the frame
-					if (usePadding)
+					if (usePadding && !frame.DisableExportPadding)
 					{
 						var clearRow = new byte[data.Stride];
 						for (var i = 0; i < frameSize.Height; i++)

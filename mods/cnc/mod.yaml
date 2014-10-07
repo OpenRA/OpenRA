@@ -210,3 +210,5 @@ Missions:
 	mods/cnc/missions.yaml
 
 SupportsMapsFrom: cnc
+
+SpriteFormats: ShpTD, TmpTD, ShpTS, TmpRA

@@ -188,3 +188,5 @@ LuaScripts:
 	mods/common/lua/facing.lua
 
 SupportsMapsFrom: d2k
+
+SpriteFormats: R8, ShpTD, TmpRA

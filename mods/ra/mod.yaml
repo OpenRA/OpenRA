@@ -207,3 +207,5 @@ Missions:
 	mods/ra/missions.yaml
 
 SupportsMapsFrom: ra
+
+SpriteFormats: ShpTD, TmpRA, TmpTD, ShpTS

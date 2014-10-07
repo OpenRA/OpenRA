@@ -87,7 +87,6 @@
     <Compile Include="UtilityCommands\ImportLegacyMapCommand.cs" />
     <Compile Include="UtilityCommands\LegacyMapImporter.cs" />
     <Compile Include="UtilityCommands\RemapShpCommand.cs" />
-    <Compile Include="UtilityCommands\TransposeShpCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeMapCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeModCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeRules.cs" />
@@ -114,6 +113,11 @@
     <Compile Include="World\ResourceClaim.cs" />
     <Compile Include="World\ResourceClaimLayer.cs" />
     <Compile Include="World\SmudgeLayer.cs" />
+    <Compile Include="SpriteLoaders\ShpTDLoader.cs" />
+    <Compile Include="SpriteLoaders\ShpTSLoader.cs" />
+    <Compile Include="SpriteLoaders\TmpRALoader.cs" />
+    <Compile Include="SpriteLoaders\TmpTDLoader.cs" />
+    <Compile Include="SpriteLoaders\ShpD2Loader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

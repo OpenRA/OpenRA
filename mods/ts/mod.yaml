@@ -229,3 +229,5 @@ LuaScripts:
 	mods/common/lua/facing.lua
 
 SupportsMapsFrom: ts
+
+SpriteFormats: ShpTS, TmpTS, ShpTD
