@@ -75,7 +75,6 @@ WorldLoaded = function()
 	Trigger.AfterDelay(Utils.Seconds(80), function() SendAttackWave(SecondAttackWaveUnits, SecondAttackWave) end)
 	Trigger.AfterDelay(Utils.Seconds(140), function() SendAttackWave(ThirdAttackWaveUnits, FirstAttackWave) end)
 
-	Media.PlayMovieFullscreen("nod3.vqa")
 end
 
 Tick = function()

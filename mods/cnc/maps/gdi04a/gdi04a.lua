@@ -111,7 +111,7 @@ SetupWorld = function()
 end
 
 WorldLoaded = function()
-	Media.PlayMovieFullscreen("bkground.vqa", function() Media.PlayMovieFullscreen("gdi4b.vqa", function() Media.PlayMovieFullscreen("nitejump.vqa") end) end)
+	Media.PlayMovieFullscreen("bkground.vqa", function() Media.PlayMovieFullscreen("nitejump.vqa") end)
 
 	player	= OpenRA.GetPlayer("GDI")
 	nod	= OpenRA.GetPlayer("Nod")

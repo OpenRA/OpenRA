@@ -1,10 +1,12 @@
-Missions:
+GDI Campaign:
 	./mods/cnc/maps/gdi01
 	./mods/cnc/maps/gdi02
 	./mods/cnc/maps/gdi03
 	./mods/cnc/maps/gdi04a
 	./mods/cnc/maps/gdi04b
 	./mods/cnc/maps/gdi04c
+
+Nod Campaign:
 	./mods/cnc/maps/nod01
 	./mods/cnc/maps/nod03a
 	./mods/cnc/maps/nod03b
