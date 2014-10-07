@@ -175,10 +175,12 @@ namespace OpenRA.FileSystem
 		public static Stream OpenWithExts(string filename, params string[] exts)
 		{
 			Stream s;
-			if (!TryOpenWithExts(filename, exts, out s))
-				throw new FileNotFoundException("File not found: {0}".F(filename), filename);
+			bool _tmp = TryOpenWithExts(filename, exts, out s);
 
-			return s;
+			if (_tmp && s != null)
+				return s;
+			else
+				throw new FileNotFoundException("File not found: {0}".F(filename), filename);
 		}
 
 		public static bool TryOpenWithExts(string filename, string[] exts, out Stream s)
