@@ -10,6 +10,8 @@ Author: Westwood Studios
 
 Description: Nod is moving to capture and hold a civilian town.\n\nYour mission is to reach the town first and hold off invading Nod units until GDI reinforcements can arrive.\n\nAll invading Nod units must be destroyed.
 
+PreviewVideo: gdi4a.vqa
+
 Tileset: TEMPERAT
 
 MapSize: 64,64

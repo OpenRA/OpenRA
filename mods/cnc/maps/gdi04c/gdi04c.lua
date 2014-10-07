@@ -122,7 +122,7 @@ WorldLoaded = function()
 
 	Camera.Position = Actor141.CenterPosition
 
-	Media.PlayMovieFullscreen("bkground.vqa", function() Media.PlayMovieFullscreen("gdi4a.vqa", function() Media.PlayMovieFullscreen("nodsweep.vqa") end) end)
+	Media.PlayMovieFullscreen("bkground.vqa", function() Media.PlayMovieFullscreen("nodsweep.vqa") end)
 end
 
 Tick = function()

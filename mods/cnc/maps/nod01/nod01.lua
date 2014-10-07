@@ -56,8 +56,6 @@ WorldLoaded = function()
 
 	Trigger.AfterDelay(Utils.Seconds(30), SendFirstInfantryReinforcements)
 	Trigger.AfterDelay(Utils.Seconds(60), SendSecondInfantryReinforcements)
-
-	Media.PlayMovieFullscreen("nod1pre.vqa", function() Media.PlayMovieFullscreen("nod1.vqa") end)
 end
 
 Tick = function()

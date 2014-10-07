@@ -65,8 +65,6 @@ WorldLoaded = function()
 	Trigger.OnKilled(NodRefinery, function() player.MarkFailedObjective(gdiObjective2) end)
 
 	Trigger.OnAllKilled(nodInBaseTeam, BridgeheadSecured)
-
-	Media.PlayMovieFullscreen("gdi2.vqa")
 end
 
 Tick = function()
