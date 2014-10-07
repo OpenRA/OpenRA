@@ -199,13 +199,14 @@ namespace OpenRA.FileSystem
 
 			foreach (var ext in exts)
 			{
+				var possibleName = filename + ext;
 				var folder = MountedFolders
-					.Where(x => x.Exists(filename + ext))
+					.Where(x => x.Exists(possibleName))
 					.MaxByOrDefault(x => x.Priority);
 
 				if (folder != null)
 				{
-					s = folder.GetContent(filename + ext);
+					s = folder.GetContent(possibleName);
 					return true;
 				}
 			}
