@@ -286,11 +286,18 @@ local function createNotebook(frame)
 end
 
 local function addDND(notebook)
-  -- this handler allows dragging tabs into this bottom notebook
+  -- this handler allows dragging tabs into this notebook
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_ALLOW_DND,
     function (event)
       local notebookfrom = event:GetDragSource()
       if notebookfrom ~= ide.frame.notebook then
+        -- disable cross-notebook movement of specific tabs
+        local winid = notebookfrom:GetPage(event:GetSelection()):GetId()
+        if winid == ide:GetOutput():GetId()
+        or winid == ide:GetConsole():GetId()
+        or winid == ide:GetProjectTree():GetId()
+        then return end
+
         local mgr = ide.frame.uimgr
         local pane = mgr:GetPane(notebookfrom)
         if not pane:IsOk() then return end -- not a managed window
@@ -313,7 +320,7 @@ local function addDND(notebook)
       end
     end)
 
-  -- these handlers allow dragging tabs out of this bottom notebook.
+  -- these handlers allow dragging tabs out of this notebook.
   -- I couldn't find a good way to stop dragging event as it's not known
   -- where the event is going to end when it's started, so we manipulate
   -- the flag that allows splits and disable it when needed.
