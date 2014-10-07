@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 			{
 				var um = a.TraitOrDefault<UpgradeManager>();
 				if (um == null)
-					return;
+					continue;
 
 				foreach (var u in Upgrades)
 				{
