@@ -25,13 +25,6 @@ do local gui, config = wx.wxTreeCtrl():GetFont(), ide.config.filetree
   ide.font.fNormal = gui
 end
 
--- funcList font requires similar handling
-do local gui, config = wx.wxTreeCtrl():GetFont(), ide.config.funclist
-  if config.fontsize then gui:SetPointSize(config.fontsize) end
-  if config.fontname then gui:SetFaceName(config.fontname) end
-  ide.font.dNormal = gui
-end
-
 -- ----------------------------------------------------------------------------
 -- Create the wxFrame
 -- ----------------------------------------------------------------------------
@@ -90,9 +83,6 @@ end
 local function createToolBar(frame)
   local toolBar = wxaui.wxAuiToolBar(frame, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize,
     wxaui.wxAUI_TB_PLAIN_BACKGROUND)
-  -- wxChoice is a bit too narrow on Linux, so make it a bit larger
-  local funclist = wx.wxChoice.new(toolBar, ID "toolBar.funclist",
-    wx.wxDefaultPosition, wx.wxSize.new(240, ide.osname == 'Unix' and 28 or 24))
 
   -- there are two sets of icons: use 24 on OSX and 16 on others.
   local iconsize = tbIconSize()
@@ -117,7 +107,6 @@ local function createToolBar(frame)
       prev = id
     end
   end
-  toolBar:AddControl(funclist)
 
   toolBar:SetToolDropDown(ID_OPEN, true)
   toolBar:Connect(ID_OPEN, wxaui.wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, function(event)
@@ -144,7 +133,6 @@ local function createToolBar(frame)
   toolBar:GetArtProvider():SetElementSize(wxaui.wxAUI_TBART_GRIPPER_SIZE, 0)
   toolBar:Realize()
 
-  toolBar.funclist = funclist
   frame.toolBar = toolBar
   return toolBar
 end
@@ -297,18 +285,19 @@ local function createNotebook(frame)
   return notebook
 end
 
-local function createBottomNotebook(frame)
-  -- bottomnotebook (errorlog,shellbox)
-  local bottomnotebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxDefaultSize,
-    wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
-    - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
-
-  -- this handler allows dragging tabs into this bottom notebook
-  bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_ALLOW_DND,
+local function addDND(notebook)
+  -- this handler allows dragging tabs into this notebook
+  notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_ALLOW_DND,
     function (event)
       local notebookfrom = event:GetDragSource()
       if notebookfrom ~= ide.frame.notebook then
+        -- disable cross-notebook movement of specific tabs
+        local winid = notebookfrom:GetPage(event:GetSelection()):GetId()
+        if winid == ide:GetOutput():GetId()
+        or winid == ide:GetConsole():GetId()
+        or winid == ide:GetProjectTree():GetId()
+        then return end
+
         local mgr = ide.frame.uimgr
         local pane = mgr:GetPane(notebookfrom)
         if not pane:IsOk() then return end -- not a managed window
@@ -331,19 +320,19 @@ local function createBottomNotebook(frame)
       end
     end)
 
-  -- these handlers allow dragging tabs out of this bottom notebook.
+  -- these handlers allow dragging tabs out of this notebook.
   -- I couldn't find a good way to stop dragging event as it's not known
   -- where the event is going to end when it's started, so we manipulate
   -- the flag that allows splits and disable it when needed.
   -- It is then enabled in BEGIN_DRAG event.
-  bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_BEGIN_DRAG,
+  notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_BEGIN_DRAG,
     function (event)
       event:Skip()
 
       -- allow dragging if it was disabled earlier
-      local flags = bottomnotebook:GetWindowStyleFlag()
+      local flags = notebook:GetWindowStyleFlag()
       if bit.band(flags, wxaui.wxAUI_NB_TAB_SPLIT) == 0 then
-        bottomnotebook:SetWindowStyleFlag(flags + wxaui.wxAUI_NB_TAB_SPLIT)
+        notebook:SetWindowStyleFlag(flags + wxaui.wxAUI_NB_TAB_SPLIT)
       end
     end)
 
@@ -352,12 +341,12 @@ local function createBottomNotebook(frame)
   -- recreating it with the right control. This is complicated by the fact
   -- that tabs can be split, so if the destination is withing the area where
   -- splits happen, the tab is not removed.
-  bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_END_DRAG,
+  notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_END_DRAG,
     function (event)
       event:Skip()
 
       local mgr = ide.frame.uimgr
-      local win = mgr:GetPane(bottomnotebook).window
+      local win = mgr:GetPane(notebook).window
       local x = win:GetScreenPosition():GetX()
       local y = win:GetScreenPosition():GetY()
       local w, h = win:GetSize():GetWidth(), win:GetSize():GetHeight()
@@ -368,14 +357,10 @@ local function createBottomNotebook(frame)
       if mx >= x and mx <= x + w and my >= y and my <= y + h then return end
 
       -- disallow split as the target is outside the notebook
-      local flags = bottomnotebook:GetWindowStyleFlag()
+      local flags = notebook:GetWindowStyleFlag()
       if bit.band(flags, wxaui.wxAUI_NB_TAB_SPLIT) ~= 0 then
-        bottomnotebook:SetWindowStyleFlag(flags - wxaui.wxAUI_NB_TAB_SPLIT)
+        notebook:SetWindowStyleFlag(flags - wxaui.wxAUI_NB_TAB_SPLIT)
       end
-
-      -- don't allow any dragging to the are of the pane header as it
-      -- splits already split notebooks incorrectly (wxwidgets bug).
-      if my >= y - 30 then return end
 
       -- don't allow dragging out single tabs from tab ctrl
       -- as wxwidgets doesn't like removing pages from split notebooks.
@@ -383,23 +368,26 @@ local function createBottomNotebook(frame)
       if tabctrl:GetPageCount() == 1 then return end
 
       local idx = event:GetSelection() -- index within the current tab ctrl
-      local selection = bottomnotebook:GetPageIndex(tabctrl:GetPage(idx).window)
-      local label = bottomnotebook:GetPageText(selection)
+      local selection = notebook:GetPageIndex(tabctrl:GetPage(idx).window)
+      local label = notebook:GetPageText(selection)
+      local pane = ide:RestorePanelByLabel(label)
+      if not pane then return end
 
-      -- names are translated on labels, so need to translate here as well
-      local dragout = ({
-          [TR("Watch")] = DebuggerAddWatchWindow,
-          [TR("Stack")] = DebuggerAddStackWindow,
-          })[label]
-      if not dragout then return end
-
-      bottomnotebook:RemovePage(selection)
-
-      local pane = mgr:GetPane(dragout())
       pane:FloatingPosition(mx-10, my-10)
       pane:Show()
+      notebook:RemovePage(selection)
       mgr:Update()
     end)
+end
+
+local function createBottomNotebook(frame)
+  -- bottomnotebook (errorlog,shellbox)
+  local bottomnotebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxDefaultSize,
+    wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
+    - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
+
+  addDND(bottomnotebook)
 
   -- disallow tabs closing
   bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
@@ -446,8 +434,10 @@ end
 local function createProjNotebook(frame)
   local projnotebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize,
-    wxaui.wxAUI_NB_DEFAULT_STYLE
+    wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
     - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
+
+  addDND(projnotebook)
 
   -- disallow tabs closing
   projnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,

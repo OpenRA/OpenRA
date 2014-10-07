@@ -942,14 +942,6 @@ debugger.quickeval = function(var, callback)
   end
 end
 
-function DebuggerAddStackWindow()
-  return ide:AddPanel(debugger.stackCtrl, "stackpanel", TR("Stack"))
-end
-
-function DebuggerAddWatchWindow()
-  return ide:AddPanel(debugger.watchCtrl, "watchpanel", TR("Watch"))
-end
-
 local width, height = 360, 200
 
 local keyword = {}
@@ -1033,10 +1025,10 @@ local function debuggerCreateStackWindow()
 
   local layout = ide:GetSetting("/view", "uimgrlayout")
   if layout and not layout:find("stackpanel") then
-    ide.frame.bottomnotebook:AddPage(stackCtrl, TR("Stack"), true)
-    return
+    ide:AddPanelDocked(ide.frame.bottomnotebook, stackCtrl, "stackpanel", TR("Stack"))
+  else
+    ide:AddPanel(stackCtrl, "stackpanel", TR("Stack"))
   end
-  DebuggerAddStackWindow()
 end
 
 local function debuggerCreateWatchWindow()
@@ -1233,10 +1225,10 @@ local function debuggerCreateWatchWindow()
 
   local layout = ide:GetSetting("/view", "uimgrlayout")
   if layout and not layout:find("watchpanel") then
-    ide.frame.bottomnotebook:AddPage(watchCtrl, TR("Watch"), true)
-    return
+    ide:AddPanelDocked(ide.frame.bottomnotebook, watchCtrl, "watchpanel", TR("Watch"))
+  else
+    ide:AddPanel(watchCtrl, "watchpanel", TR("Watch"))
   end
-  DebuggerAddWatchWindow()
 end
 
 debuggerCreateStackWindow()

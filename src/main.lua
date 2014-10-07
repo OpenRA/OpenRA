@@ -106,7 +106,8 @@ ide = {
     unhidewindow = false, -- to unhide a gui window
     allowinteractivescript = true, -- allow interaction in the output window
     projectautoopen = true,
-    autorecoverinactivity = 10,
+    autorecoverinactivity = 10, -- seconds
+    outlineinactivity = 0.250, -- seconds
     filehistorylength = 20,
     projecthistorylength = 20,
     savebak = false,
@@ -161,7 +162,6 @@ ide = {
     oNormal = nil,
     oItalic = nil,
     fNormal = nil,
-    dNormal = nil,
   },
 
   osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName(),
@@ -486,7 +486,7 @@ loadPackages()
 
 for _, file in ipairs({
     "markup", "settings", "singleinstance", "iofilters",
-    "package", "gui", "filetree", "output", "debugger",
+    "package", "gui", "filetree", "output", "debugger", "outline",
     "editor", "findreplace", "commands", "autocomplete", "shellbox",
     "menu_file", "menu_edit", "menu_search",
     "menu_view", "menu_project", "menu_tools", "menu_help",

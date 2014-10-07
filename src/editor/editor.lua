@@ -8,7 +8,6 @@ local editorID = 100 -- window id to create editor pages with, incremented for n
 local openDocuments = ide.openDocuments
 local statusBar = ide.frame.statusBar
 local notebook = ide.frame.notebook
-local funclist = ide.frame.toolBar.funclist
 local edcfg = ide.config.editor
 local styles = ide.config.styles
 local unpack = table.unpack or unpack
@@ -36,8 +35,6 @@ local foldtypes = {
 -- Update the statusbar text of the frame using the given editor.
 -- Only update if the text has changed.
 local statusTextTable = { "OVR?", "R/O?", "Cursor Pos" }
-
-funclist:SetFont(ide.font.dNormal)
 
 local function updateStatusText(editor)
   local texts = { "", "", "" }
@@ -176,9 +173,6 @@ function SetEditorSelection(selection)
   ide.frame:SetTitle(ExpandPlaceholders(ide.config.format.apptitle))
 
   if editor then
-    if funclist:IsEmpty() then funclist:Append(TR("Jump to a function definition..."), 0) end
-    funclist:SetSelection(0)
-
     editor:SetFocus()
     editor:SetSTCFocus(true)
 
@@ -458,7 +452,6 @@ local function indicateFunctionsOnly(editor, lines, linee)
 end
 
 local delayed = {}
-local tokenlists = {}
 
 -- indicator.MASKED is handled separately, so don't include in MAX
 local indicator = {FNCALL = 0, LOCAL = 1, GLOBAL = 2, MASKING = 3, MASKED = 4, MAX = 3}
@@ -473,7 +466,7 @@ end
 -- find all instances of a symbol at pos
 -- return table with [0] as the definition position (if local)
 local function indicateFindInstances(editor, name, pos)
-  local tokens = tokenlists[editor] or {}
+  local tokens = editor:GetTokenList()
   local instances = {{[-1] = 1}}
   local this
   for _, token in ipairs(tokens) do
@@ -527,8 +520,7 @@ function IndicateAll(editor, lines, linee)
     pos, vars = 1, nil
   end
 
-  tokenlists[editor] = tokenlists[editor] or {}
-  local tokens = tokenlists[editor]
+  local tokens = editor:GetTokenList()
 
   if start then -- if the range is specified
     local curindic = editor:GetIndicatorCurrent()
@@ -536,7 +528,7 @@ function IndicateAll(editor, lines, linee)
     for n = #tokens, 1, -1 do
       local token = tokens[n]
       -- find the last token before the range
-      if token[1] == 'EndScope' and token.name and token.fpos+#token.name < start then
+      if not token.nobreak and token.name and token.fpos+#token.name < start then
         pos, vars = token.fpos+#token.name, token.context
         break
       end
@@ -574,8 +566,7 @@ function IndicateAll(editor, lines, linee)
     end
   else
     if pos == 1 then -- if not continuing, then trim the list
-      tokens = {}
-      tokenlists[editor] = tokens
+      tokens = editor:ResetTokenList()
     end
   end
 
@@ -592,18 +583,20 @@ function IndicateAll(editor, lines, linee)
   local s = TimeGet()
   local canwork = start and 0.010 or 0.100 -- use shorter interval when typing
   local f = editor.spec.markvars(editor:GetText(), pos, vars)
-
   while true do
-    local op, name, lineinfo, vars, at = f()
+    local op, name, lineinfo, vars, at, nobreak = f()
     if not op then break end
     local var = vars and vars[name]
     local token = {op, name=name, fpos=lineinfo, at=at, context=vars,
-      self = (op == 'VarSelf') or nil }
+      self = (op == 'VarSelf') or nil, nobreak=nobreak}
+    if op == 'Function' then
+      vars['function'] = (vars['function'] or 0) + 1
+    end
     if op == 'FunctionCall' then
       if indic.fncall and edcfg.showfncall then
         IndicateOne(indicator.FNCALL, lineinfo, #name)
       end
-    elseif op ~= 'VarNext' and op ~= 'VarInside' and op ~= 'Statement' then
+    elseif op ~= 'VarNext' and op ~= 'VarInside' and op ~= 'Statement' and op ~= 'String' then
       table.insert(tokens, token)
     end
 
@@ -620,13 +613,13 @@ function IndicateAll(editor, lines, linee)
       if indic.varmasked and not var.masked.self then
         editor:SetIndicatorCurrent(indicator.MASKED)
         editor:IndicatorFillRange(fpos-1, #name)
-        table.insert(tokens, {"Masked", name=name, fpos=fpos})
+        table.insert(tokens, {"Masked", name=name, fpos=fpos, nobreak=nobreak})
       end
 
       if indic.varmasking then IndicateOne(indicator.MASKING, lineinfo, #name) end
     end
-    if op == 'EndScope' and name and TimeGet()-s > canwork then
-      delayed[editor] = {lineinfo+#name, vars}
+    if lineinfo and not nobreak and (op == 'Statement' or op == 'String') and TimeGet()-s > canwork then
+      delayed[editor] = {lineinfo, vars}
       break
     end
   end
@@ -639,7 +632,13 @@ function IndicateAll(editor, lines, linee)
   -- these indicators should be up-to-date to the end of the code fragment.
   for indic = 0, indicator.MAX do IndicateOne(indic, pos, 0) end
 
-  return delayed[editor] ~= nil -- request more events if still need to work
+  local needmore = delayed[editor] ~= nil
+  if ide.config.outlineinactivity then
+    if needmore then ide.outline.timer:Stop()
+    else ide.outline.timer:Start(ide.config.outlineinactivity*1000, wx.wxTIMER_ONE_SHOT)
+    end
+  end
+  return needmore -- request more events if still need to work
 end
 
 if ide.wxver < "2.9.5" or not ide.config.autoanalyzer then
@@ -661,6 +660,7 @@ function CreateEditor()
   editor.bom = false
   editor.jumpstack = {}
   editor.ctrlcache = {}
+  editor.tokenlist = {}
   -- populate cache with Ctrl-<letter> combinations for workaround on Linux
   -- http://wxwidgets.10942.n7.nabble.com/Menu-shortcuts-inconsistentcy-issue-td85065.html
   for id, shortcut in pairs(ide.config.keymap) do
@@ -778,6 +778,9 @@ function CreateEditor()
     self:GotoPos(pos)
     self:EnsureVisibleEnforcePolicy(self:LineFromPosition(pos))
   end
+
+  function editor:GetTokenList() return self.tokenlist end
+  function editor:ResetTokenList() self.tokenlist = {}; return self.tokenlist end
 
   -- GotoPos should work by itself, but it doesn't (wx 2.9.5).
   -- This is likely because the editor window hasn't been refreshed yet,
@@ -1472,66 +1475,3 @@ function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
   StylesApplyToEditor(styles or ide.config.styles, editor,
     font or ide.font.eNormal,fontitalic or ide.font.eItalic,lexerstyleconvert)
 end
-
-----------------------------------------------------
--- function list for current file
-
-local function refreshFunctionList(event)
-  event:Skip()
-
-  local editor = GetEditor()
-  if (editor and not (editor.spec and editor.spec.isfndef)) then return end
-
-  -- parse current file and update list
-  -- first populate with the current label to minimize flicker
-  -- then populate the list and update the label
-  local current = funclist:GetCurrentSelection()
-  local label = funclist:GetString(current)
-  local default = funclist:GetString(0)
-  funclist:Clear()
-  funclist:Append(current ~= wx.wxNOT_FOUND and label or default, 0)
-  funclist:SetSelection(0)
-
-  local lines = 0
-  local linee = (editor and editor:GetLineCount() or 0)-1
-  for line=lines,linee do
-    local tx = editor:GetLine(line)
-    local s,_,cap,l = editor.spec.isfndef(tx)
-    if (s) then
-      local ls = editor:PositionFromLine(line)
-      local style = bit.band(editor:GetStyleAt(ls+s),31)
-      if not (editor.spec.iscomment[style] or editor.spec.isstring[style]) then
-        funclist:Append((l and "  " or "")..cap,line)
-      end
-    end
-  end
-
-  funclist:SetString(0, default)
-  funclist:SetSelection(current ~= wx.wxNOT_FOUND and current or 0)
-end
-
--- wx.wxEVT_SET_FOCUS is not triggered for wxChoice on Mac (wx 2.8.12),
--- so use wx.wxEVT_LEFT_DOWN instead; none of the events are triggered for
--- wxChoice on Linux (wx 2.9.5+), so use EVT_ENTER_WINDOW attached to the
--- toolbar itself until something better is available.
-if ide.osname == 'Unix' then
-  ide.frame.toolBar:Connect(wx.wxEVT_ENTER_WINDOW, refreshFunctionList)
-else
-  local event = ide.osname == 'Macintosh' and wx.wxEVT_LEFT_DOWN or wx.wxEVT_SET_FOCUS
-  funclist:Connect(event, refreshFunctionList)
-end
-
-funclist:Connect(wx.wxEVT_COMMAND_CHOICE_SELECTED,
-  function (event)
-    -- test if updated
-    -- jump to line
-    event:Skip()
-    local l = event:GetClientData()
-    if (l and l > 0) then
-      local editor = GetEditor()
-      editor:GotoLine(l)
-      editor:SetFocus()
-      editor:SetSTCFocus(true)
-      editor:EnsureVisibleEnforcePolicy(l)
-    end
-  end)

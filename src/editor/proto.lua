@@ -11,6 +11,7 @@ ide.proto.Document = {__index = {
   IsModified = function(self) return self.isModified end,
   SetModified = function(self, modified) SetDocumentModified(self.editor:GetId(), modified) end,
   SetTabText = function(self, text) SetDocumentModified(self.editor:GetId(), self.isModified, text) end,
+  SetActive = function(self) SetEditorSelection(self.index) end,
 }}
 
 ide.proto.Plugin = {__index = {

@@ -3,6 +3,7 @@
 
 local ide = ide
 local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
+local unpack = table.unpack or unpack
 local q = EscapeMagic
 
 function PackageEventHandle(event, ...)
@@ -146,6 +147,7 @@ function ide:GetInterpreter() return self.interpreter end
 function ide:GetInterpreters() return self.interpreters end
 function ide:GetConfig() return self.config end
 function ide:GetOutput() return self.frame.bottomnotebook.errorlog end
+function ide:GetConsole() return self.frame.bottomnotebook.shellbox end
 function ide:GetEditorNotebook() return self.frame.notebook end
 function ide:GetProject() return FileTreeGetDir() end
 function ide:GetLaunchedProcess() return self.debugger and self.debugger.pid end
@@ -276,6 +278,7 @@ function ide:RemoveConfig(name)
   ReApplySpecAndStyles() -- apply current config to the UI
 end
 
+local panels = {}
 function ide:AddPanel(ctrl, panel, name, conf)
   local width, height = 360, 200
   local notebook = wxaui.wxAuiNotebook(ide.frame, wx.wxID_ANY,
@@ -295,7 +298,19 @@ function ide:AddPanel(ctrl, panel, name, conf)
   if type(conf) == "function" then conf(mgr:GetPane(panel)) end
   mgr.defaultPerspective = mgr:SavePerspective() -- resave default perspective
 
+  panels[name] = {ctrl, panel, name, conf}
+  return mgr:GetPane(panel), notebook
+end
+
+function ide:AddPanelDocked(notebook, ctrl, panel, name, conf, activate)
+  notebook:AddPage(ctrl, name, activate ~= false)
+  panels[name] = {ctrl, panel, name, conf}
   return notebook
+end
+
+function ide:RestorePanelByLabel(name)
+  if not panels[name] then return end
+  return ide:AddPanel(unpack(panels[name]))
 end
 
 function ide:AddTool(name, command, updateui)

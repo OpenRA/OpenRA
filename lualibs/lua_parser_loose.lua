@@ -31,6 +31,7 @@ end
    'Scope', opt - beginning of scope block.
    'EndScope', nil, lineinfo - end of scope block.
    'FunctionCall', name, lineinfo - function call (in addition to other events).
+   'Function', name, lineinfo - function definition.
 --]]
 function PARSE.parse_scope(lx, f, level)
   local cprev = {tag='Eof'}
@@ -39,36 +40,47 @@ function PARSE.parse_scope(lx, f, level)
   local scopes = {{}}
   for l = 2, (level or 1) do scopes[l] = {} end
   
-  local function scope_begin(opt, lineinfo)
+  local function scope_begin(opt, lineinfo, nobreak)
     scopes[#scopes+1] = {}
-    f('Scope', opt, lineinfo)
+    f('Scope', opt, lineinfo, nobreak)
   end
   local function scope_end(opt, lineinfo)
-    if #scopes <= 1 then
+    local scope = #scopes
+    if scope <= 1 then
       warn("'end' without opening block", lineinfo)
     else
       table.remove(scopes)
     end
-    f('EndScope', opt, lineinfo)
+    local inside_local = false
+    for scope = scope-1, 1, -1 do
+      if scopes[scope].inside_local then inside_local = true; break end
+    end
+    f('EndScope', opt, lineinfo, inside_local)
   end
   
-  local function parse_function_list(has_self)
+  local function parse_function_list(has_self, name, pos)
     local c = lx:next(); assert(c[1] == '(')
-    f('Statement', c[1], c.lineinfo) -- generate Statement for function definition
-    scope_begin(c[1], c.lineinfo)
+    f('Statement', c[1], c.lineinfo, true) -- generate Statement for function definition
+    scope_begin(c[1], c.lineinfo, true)
     if has_self then
       local lineinfo = c.lineinfo+1 -- zero size
-      f('VarSelf', 'self', lineinfo)
+      f('VarSelf', 'self', lineinfo, true)
     end
-    while lx:peek().tag == 'Id' do
+    while true do
+      local n = lx:peek()
+      if not (n.tag == 'Id' or n.tag == 'Keyword' and n[1] == '...') then break end
       local c = lx:next()
-      f('Var', c[1], c.lineinfo)
+      if c.tag == 'Id' then f('Var', c[1], c.lineinfo, true) end
+      -- ignore '...' in this case
       if lx:peek()[1] == ',' then lx:next() end
     end
-    if lx:peek()[1] == ')' then lx:next() end
+    if lx:peek()[1] == ')' then
+      local n = lx:next()
+      f('Function', name, pos or c.lineinfo, true)
+    end
   end
   
-  while 1 do
+  while true do
     local c = lx:next()
 
     -- Detect end of previous statement
@@ -87,7 +99,10 @@ function PARSE.parse_scope(lx, f, level)
             cprev.tag == 'Number' or cprev.tag == 'String')
     then
       if scopes[#scopes].inside_until then scope_end(nil, c.lineinfo) end
-      f('Statement', c[1], c.lineinfo)
+      local scope = #scopes
+      if not scopes[scope].inside_table then scopes[scope].inside_local = nil end
+      f('Statement', c[1], c.lineinfo,
+        scopes[scope].inside_local or c[1] == 'local' or c[1] == 'function' or c[1] == 'end')
     end
 
     if c.tag == 'Eof' then break end
@@ -100,41 +115,45 @@ function PARSE.parse_scope(lx, f, level)
         local c = lx:next(); assert(c[1] == 'function')
         if lx:peek().tag == 'Id' then
           c = lx:next()
-          f('Var', c[1], c.lineinfo)
-          if lx:peek()[1] == '(' then parse_function_list() end
+          f('Var', c[1], c.lineinfo, true)
+          if lx:peek()[1] == '(' then parse_function_list(nil, c[1], c.lineinfo) end
         end
       elseif c[1] == 'function' then
         if lx:peek()[1] == '(' then -- inline function
           parse_function_list()
         elseif lx:peek().tag == 'Id' then -- function definition statement
           c = lx:next(); assert(c.tag == 'Id')
-          f('Id', c[1], c.lineinfo)
+          local name = c[1]
+          local pos = c.lineinfo
+          f('Id', name, pos, true)
           local has_self
           while lx:peek()[1] ~= '(' and lx:peek().tag ~= 'Eof' do
             c = lx:next()
+            name = name .. c[1]
             if c.tag == 'Id' then
-              f('String', c[1], c.lineinfo)
+              f('String', c[1], c.lineinfo, true)
             elseif c.tag == 'Keyword' and c[1] == ':' then
               has_self = true
             end
           end
-          if lx:peek()[1] == '(' then parse_function_list(has_self) end
+          if lx:peek()[1] == '(' then parse_function_list(has_self, name, pos) end
         end
       elseif c[1] == 'local' and lx:peek().tag == 'Id' then
+        scopes[#scopes].inside_local = true
         c = lx:next()
-        f('VarNext', c[1], c.lineinfo)
+        f('VarNext', c[1], c.lineinfo, true)
         while lx:peek().tag == 'Keyword' and lx:peek()[1] == ',' do
           c = lx:next(); if lx:peek().tag ~= 'Id' then break end
           c = lx:next()
-          f('VarNext', c[1], c.lineinfo)
+          f('VarNext', c[1], c.lineinfo, true)
         end
       elseif c[1] == 'for' and lx:peek().tag == 'Id' then
          c = lx:next()
-         f('VarInside', c[1], c.lineinfo)
+         f('VarInside', c[1], c.lineinfo, true)
          while lx:peek().tag == 'Keyword' and lx:peek()[1] == ',' do
           c = lx:next(); if lx:peek().tag ~= 'Id' then break end
           c = lx:next()
-          f('VarInside', c[1], c.lineinfo)
+          f('VarInside', c[1], c.lineinfo, true)
         end
       elseif c[1] == 'do' then
         scope_begin('do', c.lineinfo)
@@ -159,15 +178,18 @@ function PARSE.parse_scope(lx, f, level)
       local cnext = lx:peek()
       if cnext.tag == 'Keyword' and (cnext[1] == '(' or cnext[1] == '{')
       or cnext.tag == 'String' then
-        f('FunctionCall', c[1], c.lineinfo)
+        f('FunctionCall', c[1], c.lineinfo, scopes[#scopes].inside_local ~= nil)
       end
-      if scopes[#scopes].inside_table and cnext.tag == 'Keyword' and cnext[1] == '=' then
+      local scope = #scopes
+      local inside_local = scopes[scope].inside_local ~= nil
+      if (scopes[scope].inside_table or cprev[1] == ',')
+      and cnext.tag == 'Keyword' and cnext[1] == '=' then
         -- table field
-        f('String', c[1], c.lineinfo)
+        f('String', c[1], c.lineinfo, inside_local)
       elseif cprev.tag == 'Keyword' and (cprev[1] == ':' or cprev[1] == '.') then
-        f('String', c[1], c.lineinfo)
+        f('String', c[1], c.lineinfo, inside_local)
       else
-        f('Id', c[1], c.lineinfo)
+        f('Id', c[1], c.lineinfo, inside_local)
       end
     end
     
@@ -203,7 +225,7 @@ function PARSE.parse_scope_resolve(lx, f, vars)
   vars = vars or newscope({[0] = 0}, nil, 1)
   vars[NEXT] = false -- vars that come into scope upon next statement
   vars[INSIDE] = false -- vars that come into scope upon entering block
-  PARSE.parse_scope(lx, function(op, name, lineinfo)
+  PARSE.parse_scope(lx, function(op, name, lineinfo, nobreak)
     -- in some (rare) cases VarNext can follow Statement event (which copies
     -- vars[NEXT]). This may cause vars[0] to be `nil`, so default to 1.
     local var = op:find("^Var") and
@@ -226,9 +248,8 @@ function PARSE.parse_scope_resolve(lx, f, vars)
       else
         vars = mt.__index
       end
-    elseif op == 'Id' then
-      -- Just make callback
-    elseif op == 'String' or op == 'FunctionCall' then
+    elseif op == 'Id'
+    or op == 'String' or op == 'FunctionCall' or op == 'Function' then
       -- Just make callback
     elseif op == 'Statement' then -- beginning of statement
       -- Apply vars that come into scope upon beginning of statement.
@@ -240,7 +261,7 @@ function PARSE.parse_scope_resolve(lx, f, vars)
     else
       assert(false)
     end
-    f(op, name, lineinfo, vars)
+    f(op, name, lineinfo, vars, nobreak)
   end, vars[0])
 end
 
