@@ -13,7 +13,7 @@ using System.Globalization;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Commands
 {
 	[Desc("Enables developer cheats via the chatbox. Attach this to the world actor.")]
 	public class DevCommandsInfo : TraitInfo<DevCommands> { }

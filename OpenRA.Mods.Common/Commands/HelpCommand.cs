@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Commands
 {
 	[Desc("Shows a list of available commands in the chatbox. Attach this to the world actor.")]
 	public class HelpCommandInfo : TraitInfo<HelpCommand> { }
