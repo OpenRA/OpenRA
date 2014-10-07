@@ -151,7 +151,7 @@ PROC:
 	StoresResources:
 		PipColor: Green
 		PipCount: 15
-		Capacity: 3000
+		Capacity: 6000
 	CustomSellValue:
 		Value: 600
 	FreeActor:
@@ -197,8 +197,8 @@ GASILO:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	StoresResources:
-		PipCount: 5
-		Capacity: 1500
+		PipCount: 10
+		Capacity: 10000
 	Power:
 		Amount: -10
 
