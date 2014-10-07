@@ -201,5 +201,5 @@ WorldLoaded = function()
 
 	Camera.Position = InsertionLZ.CenterPosition
 
-	Media.PlayMovieFullscreen("ally1.vqa", function() Media.PlayMovieFullscreen("landing.vqa") end)
+	Media.PlayMovieFullscreen("landing.vqa")
 end

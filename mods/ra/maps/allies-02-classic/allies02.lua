@@ -123,7 +123,7 @@ WorldLoaded = function()
 
 	Camera.Position = ReinforcementsEntryPoint.CenterPosition
 
-	Media.PlayMovieFullscreen("ally2.vqa", function() Media.PlayMovieFullscreen("mcv.vqa") end)
+	Media.PlayMovieFullscreen("mcv.vqa")
 
 	ConvoyTimer(Utils.Seconds(3), "TenMinutesRemaining")
 	ConvoyTimer(Utils.Minutes(5), "WarningFiveMinutesRemaining")
