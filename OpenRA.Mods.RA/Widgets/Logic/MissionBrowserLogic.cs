@@ -33,7 +33,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.onStart = onStart;
 
 			var missionList = widget.Get<ScrollPanelWidget>("MISSION_LIST");
-			var template = widget.Get<ScrollItemWidget>("MISSION_TEMPLATE");
+			var headerTemplate = widget.Get<ScrollItemWidget>("HEADER");
+			var template = widget.Get<ScrollItemWidget>("TEMPLATE");
 
 			widget.Get("MISSION_INFO").IsVisible = () => selectedMapPreview != null;
 
@@ -46,28 +47,40 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var yaml = new MiniYaml(null, Game.modData.Manifest.Missions.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal)).ToDictionary();
 
-			var missionMapPaths = yaml["Missions"].Nodes.Select(n => Platform.ResolvePath(n.Key));
-
-			var maps = Game.modData.MapCache
-				.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(Path.GetFullPath(p.Map.Path)))
-				.Select(p => p.Map);
-
 			missionList.RemoveChildren();
-			foreach (var m in maps)
+
+			var selectedFirst = false;
+			foreach (var kv in yaml)
 			{
-				var map = m;
+				var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => {});
+				header.Get<LabelWidget>("LABEL").GetText = () => kv.Key;
+				missionList.AddChild(header);
 
-				var item = ScrollItemWidget.Setup(template,
-					() => selectedMapPreview != null && selectedMapPreview.Uid == map.Uid,
-					() => SelectMap(map),
-					StartMission);
+				var missionMapPaths = kv.Value.Nodes.Select(n => Platform.ResolvePath(n.Key));
 
-				item.Get<LabelWidget>("TITLE").GetText = () => map.Title;
-				missionList.AddChild(item);
+				var maps = Game.modData.MapCache
+					.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(Path.GetFullPath(p.Map.Path)))
+					.Select(p => p.Map);
+
+				foreach (var m in maps)
+				{
+					var map = m;
+
+					var item = ScrollItemWidget.Setup(template,
+						() => selectedMapPreview != null && selectedMapPreview.Uid == map.Uid,
+						() => SelectMap(map),
+						StartMission);
+
+					item.Get<LabelWidget>("TITLE").GetText = () => map.Title;
+					missionList.AddChild(item);
+
+					if (!selectedFirst)
+					{
+						SelectMap(map);
+						selectedFirst = true;
+					}
+				}
 			}
-
-			if (maps.Any())
-				SelectMap(maps.First());
 
 			widget.Get<ButtonWidget>("STARTGAME_BUTTON").OnClick = StartMission;
 
