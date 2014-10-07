@@ -10,6 +10,7 @@ Container@MISSIONBROWSER_PANEL:
 			Width: PARENT_RIGHT
 			Text: Missions
 			Align: Center
+			Contrast: true
 			Font: BigBold
 		Background@BG:
 			Width: 629
