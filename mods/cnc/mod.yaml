@@ -170,6 +170,9 @@ ChromeMetrics:
 	./mods/cnc/metrics.yaml
 
 Fonts:
+	Small:
+		Font:FreeSans.ttf
+		Size:12
 	Regular:
 		Font:./FreeSans.ttf
 		Size:14
