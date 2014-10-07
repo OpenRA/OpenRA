@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			missionsButton.OnClick = () =>
 			{
 				menuType = MenuType.None;
-				Ui.OpenWindow("MISSIONBROWSER_PANEL", new WidgetArgs
+				Game.OpenWindow("MISSIONBROWSER_PANEL", new WidgetArgs
 				{
 					{ "onExit", () => menuType = MenuType.Singleplayer },
 					{ "onStart", RemoveShellmapUI }

@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Widgets;
@@ -24,8 +25,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly ScrollPanelWidget descriptionPanel;
 		readonly LabelWidget description;
 		readonly SpriteFont descriptionFont;
+		readonly ButtonWidget startVideoButton;
+		readonly ButtonWidget stopVideoButton;
+		readonly VqaPlayerWidget videoPlayer;
 
 		MapPreview selectedMapPreview;
+
+		bool showVideoPlayer;
 
 		[ObjectCreator.UseCtor]
 		public MissionBrowserLogic(Widget widget, Action onStart, Action onExit)
@@ -33,17 +39,32 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.onStart = onStart;
 
 			var missionList = widget.Get<ScrollPanelWidget>("MISSION_LIST");
+
 			var headerTemplate = widget.Get<ScrollItemWidget>("HEADER");
 			var template = widget.Get<ScrollItemWidget>("TEMPLATE");
+
+			var title = widget.GetOrNull<LabelWidget>("MISSIONBROWSER_TITLE");
+			if (title != null)
+				title.GetText = () => showVideoPlayer ? selectedMapPreview.Title : title.Text;
 
 			widget.Get("MISSION_INFO").IsVisible = () => selectedMapPreview != null;
 
 			var previewWidget = widget.Get<MapPreviewWidget>("MISSION_PREVIEW");
 			previewWidget.Preview = () => selectedMapPreview;
+			previewWidget.IsVisible = () => !showVideoPlayer;
+
+			videoPlayer = widget.Get<VqaPlayerWidget>("MISSION_VIDEO");
+			widget.Get("MISSION_BIN").IsVisible = () => showVideoPlayer;
 
 			descriptionPanel = widget.Get<ScrollPanelWidget>("MISSION_DESCRIPTION_PANEL");
-			description = widget.Get<LabelWidget>("MISSION_DESCRIPTION");
+
+			description = descriptionPanel.Get<LabelWidget>("MISSION_DESCRIPTION");
 			descriptionFont = Game.Renderer.Fonts[description.Font];
+
+			startVideoButton = widget.Get<ButtonWidget>("START_VIDEO_BUTTON");
+			stopVideoButton = widget.Get<ButtonWidget>("STOP_VIDEO_BUTTON");
+			stopVideoButton.IsVisible = () => showVideoPlayer;
+			stopVideoButton.OnClick = StopVideo;
 
 			var yaml = new MiniYaml(null, Game.modData.Manifest.Missions.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal)).ToDictionary();
 
@@ -86,15 +107,37 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
+				StopVideo();
 				Game.Disconnect();
 				Ui.CloseWindow();
 				onExit();
 			};
 		}
 
+		float cachedSoundVolume;
+		float cachedMusicVolume;
 		void SelectMap(Map map)
 		{
+			StopVideo();
+
 			selectedMapPreview = Game.modData.MapCache[map.Uid];
+			var video = selectedMapPreview.Map.PreviewVideo;
+			var videoVisible = video != null;
+			var videoDisabled = !(videoVisible && GlobalFileSystem.Exists(video));
+
+			startVideoButton.IsVisible = () => videoVisible && !showVideoPlayer;
+			startVideoButton.IsDisabled = () => videoDisabled;
+			startVideoButton.OnClick = () =>
+			{
+				showVideoPlayer = true;
+				videoPlayer.Load(video);
+				videoPlayer.PlayThen(StopVideo);
+
+				// Mute other distracting sounds
+				cachedSoundVolume = Sound.SoundVolume;
+				cachedMusicVolume = Sound.MusicVolume;
+				Sound.SoundVolume = Sound.MusicVolume = 0;
+			};
 
 			var text = map.Description != null ? map.Description.Replace("\\n", "\n") : "";
 			text = WidgetUtils.WrapText(text, description.Bounds.Width, descriptionFont);
@@ -104,8 +147,22 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			descriptionPanel.Layout.AdjustChildren();
 		}
 
+		void StopVideo()
+		{
+			if (!showVideoPlayer)
+				return;
+
+			Sound.SoundVolume = cachedSoundVolume;
+			Sound.MusicVolume = cachedMusicVolume;
+
+			videoPlayer.Stop();
+			showVideoPlayer = false;
+		}
+
 		void StartMission()
 		{
+			StopVideo();
+
 			OrderManager om = null;
 
 			Action lobbyReady = null;
