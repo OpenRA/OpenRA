@@ -38,6 +38,8 @@ namespace OpenRA.Mods.RA.Render
 
 			foreach (var arm in self.TraitsImplementing<Armament>())
 			{
+				var armClosure = arm;	// closure hazard in AnimationWithOffset
+
 				// Skip armaments that don't define muzzles
 				if (arm.Info.MuzzleSequence == null)
 					continue;
@@ -55,7 +57,7 @@ namespace OpenRA.Mods.RA.Render
 					visible.Add(barrel, false);
 					anims.Add(barrel,
 						new AnimationWithOffset(muzzleFlash,
-							() => info.IgnoreOffset ? WVec.Zero : arm.MuzzleOffset(self, barrel),
+							() => info.IgnoreOffset ? WVec.Zero : armClosure.MuzzleOffset(self, barrel),
 							() => !visible[barrel],
 							() => false,
 							p => WithTurret.ZOffsetFromCenter(self, p, 2)));
