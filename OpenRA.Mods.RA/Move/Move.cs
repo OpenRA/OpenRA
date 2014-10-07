@@ -22,11 +22,14 @@ namespace OpenRA.Mods.RA.Move
 	{
 		static readonly List<CPos> NoPath = new List<CPos>();
 
-		CPos? destination;
-		WRange nearEnough;
+		readonly Mobile mobile;
+		readonly IEnumerable<IDisableMove> moveDisablers;
+		readonly WRange nearEnough;
+		readonly Func<List<CPos>> getPath;
+		readonly Actor ignoreBuilding;
+
 		List<CPos> path;
-		Func<Actor, Mobile, List<CPos>> getPath;
-		Actor ignoreBuilding;
+		CPos? destination;
 
 		// For dealing with blockers
 		bool hasWaited;
@@ -35,9 +38,12 @@ namespace OpenRA.Mods.RA.Move
 
 		// Scriptable move order
 		// Ignores lane bias and nearby units
-		public Move(CPos destination)
+		public Move(Actor self, CPos destination)
 		{
-			this.getPath = (self, mobile) =>
+			mobile = self.Trait<Mobile>();
+			moveDisablers = self.TraitsImplementing<IDisableMove>();
+
+			getPath = () =>
 				self.World.WorldActor.Trait<PathFinder>().FindPath(
 					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, destination, false)
 					.WithoutLaneBias());
@@ -46,28 +52,37 @@ namespace OpenRA.Mods.RA.Move
 		}
 
 		// HACK: for legacy code
-		public Move(CPos destination, int nearEnough)
-			: this(destination, WRange.FromCells(nearEnough)) { }
+		public Move(Actor self, CPos destination, int nearEnough)
+			: this(self, destination, WRange.FromCells(nearEnough)) { }
 
-		public Move(CPos destination, WRange nearEnough)
+		public Move(Actor self, CPos destination, WRange nearEnough)
 		{
-			this.getPath = (self, mobile) => self.World.WorldActor.Trait<PathFinder>()
+			mobile = self.Trait<Mobile>();
+			moveDisablers = self.TraitsImplementing<IDisableMove>();
+
+			getPath = () => self.World.WorldActor.Trait<PathFinder>()
 				.FindUnitPath(mobile.toCell, destination, self);
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
 
-		public Move(CPos destination, SubCell subCell, WRange nearEnough)
+		public Move(Actor self, CPos destination, SubCell subCell, WRange nearEnough)
 		{
-			this.getPath = (self, mobile) => self.World.WorldActor.Trait<PathFinder>()
+			mobile = self.Trait<Mobile>();
+			moveDisablers = self.TraitsImplementing<IDisableMove>();
+
+			getPath = () => self.World.WorldActor.Trait<PathFinder>()
 				.FindUnitPathToRange(mobile.fromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
 
-		public Move(CPos destination, Actor ignoreBuilding)
+		public Move(Actor self, CPos destination, Actor ignoreBuilding)
 		{
-			this.getPath = (self, mobile) =>
+			mobile = self.Trait<Mobile>();
+			moveDisablers = self.TraitsImplementing<IDisableMove>();
+
+			getPath = () =>
 				self.World.WorldActor.Trait<PathFinder>().FindPath(
 					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, destination, false)
 					.WithIgnoredBuilding(ignoreBuilding));
@@ -77,9 +92,12 @@ namespace OpenRA.Mods.RA.Move
 			this.ignoreBuilding = ignoreBuilding;
 		}
 
-		public Move(Target target, WRange range)
+		public Move(Actor self, Target target, WRange range)
 		{
-			this.getPath = (self, mobile) =>
+			mobile = self.Trait<Mobile>();
+			moveDisablers = self.TraitsImplementing<IDisableMove>();
+
+			getPath = () =>
 			{
 				if (!target.IsValidFor(self))
 					return NoPath;
@@ -88,15 +106,19 @@ namespace OpenRA.Mods.RA.Move
 					mobile.toCell, mobile.toSubCell, target.CenterPosition, range, self);
 			};
 
-			this.destination = null;
-			this.nearEnough = range;
+			destination = null;
+			nearEnough = range;
 		}
 
-		public Move(Func<List<CPos>> getPath)
+		public Move(Actor self, Func<List<CPos>> getPath)
 		{
-			this.getPath = (_1, _2) => getPath();
-			this.destination = null;
-			this.nearEnough = WRange.Zero;
+			mobile = self.Trait<Mobile>();
+			moveDisablers = self.TraitsImplementing<IDisableMove>();
+
+			this.getPath = getPath;
+
+			destination = null;
+			nearEnough = WRange.Zero;
 		}
 
 		static int HashList<T>(List<T> xs)
@@ -111,14 +133,15 @@ namespace OpenRA.Mods.RA.Move
 
 		List<CPos> EvalPath(Actor self, Mobile mobile)
 		{
-			var path = getPath(self, mobile).TakeWhile(a => a != mobile.toCell).ToList();
+			var path = getPath().TakeWhile(a => a != mobile.toCell).ToList();
 			mobile.PathHash = HashList(path);
 			return path;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			var mobile = self.Trait<Mobile>();
+			if (moveDisablers.Any(d => d.MoveDisabled(self)))
+				return this;
 
 			if (destination == mobile.toCell)
 				return NextActivity;
@@ -297,7 +320,7 @@ namespace OpenRA.Mods.RA.Move
 			public override Activity Tick(Actor self)
 			{
 				var mobile = self.Trait<Mobile>();
-				var ret = InnerTick(self, mobile);
+				var ret = InnerTick(self, move.mobile);
 				mobile.IsMoving = ret is MovePart;
 
 				if (moveFraction > moveFractionTotal)

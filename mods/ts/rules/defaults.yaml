@@ -5,7 +5,7 @@
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
-		TargetTypes: Ground, C4
+		TargetTypes: Ground, Building, C4
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -70,7 +70,7 @@
 	LineBuildNode:
 		Types: wall
 	TargetableBuilding:
-		TargetTypes: Ground, C4
+		TargetTypes: Ground, Wall, C4
 	RenderBuildingWall:
 		Type: wall
 	GivesExperience:
@@ -116,7 +116,7 @@
 	Selectable:
 		Voice: Infantry
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, Infantry
 	RenderInfantry:
 	WithDeathAnimation:
 	AutoTarget:
@@ -217,7 +217,7 @@
 	Selectable:
 		Voice: Vehicle
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, Vehicle
 	Repairable:
 		RepairBuildings: gadept
 	Passenger:
@@ -289,7 +289,7 @@
 	Selectable:
 		Voice: Vehicle
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, Vehicle
 	Repairable:
 		RepairBuildings: gadept
 	Passenger:

@@ -54,17 +54,11 @@ namespace OpenRA.Mods.RA.Scripting
 
 		void Move(Actor actor, CPos dest)
 		{
-			if (actor.HasTrait<Aircraft>())
-			{
-				if (actor.HasTrait<Helicopter>())
-					actor.QueueActivity(new HeliFly(actor, Target.FromCell(actor.World, dest)));
-				else
-					actor.QueueActivity(new Fly(actor, Target.FromCell(actor.World, dest)));
-			}
-			else
-			{
-				actor.QueueActivity(new Move.Move(dest, 2));
-			}
+			var move = actor.TraitOrDefault<IMove>();
+			if (move == null)
+				return;
+
+			actor.QueueActivity(move.MoveTo(dest, 2));
 		}
 
 		[Desc("Send reinforcements consisting of multiple units. Supports ground-based, naval and air units. " +
