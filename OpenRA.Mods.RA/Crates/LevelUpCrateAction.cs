@@ -68,9 +68,10 @@ namespace OpenRA.Mods.RA
 
 			foreach (var actor in inRange.Append(collector))
 			{
-				actor.World.AddFrameEndTask(w =>
+				var recipient = actor;	// loop variable in closure hazard
+				recipient.World.AddFrameEndTask(w =>
 				{
-					var gainsExperience = actor.TraitOrDefault<GainsExperience>();
+					var gainsExperience = recipient.TraitOrDefault<GainsExperience>();
 					if (gainsExperience != null)
 						gainsExperience.GiveLevels(((LevelUpCrateActionInfo)info).Levels);
 				});
