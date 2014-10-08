@@ -16,7 +16,7 @@ namespace OpenRA
 {
 	public class ModMetadata
 	{
-		public static readonly Dictionary<string, ModMetadata> AllMods = ValidateMods(Directory.GetDirectories("mods").Select(x => x.Substring(5)).ToArray());
+		public static readonly Dictionary<string, ModMetadata> AllMods = ValidateMods();
 
 		public string Id;
 		public string Title;
@@ -24,12 +24,16 @@ namespace OpenRA
 		public string Version;
 		public string Author;
 
-		public static Dictionary<string, ModMetadata> ValidateMods(string[] mods)
+		static Dictionary<string, ModMetadata> ValidateMods()
 		{
+			var basePath = Platform.ResolvePath(".", "mods");
+			var mods = Directory.GetDirectories(basePath)
+				.Select(x => x.Substring(basePath.Length + 1));
+
 			var ret = new Dictionary<string, ModMetadata>();
 			foreach (var m in mods)
 			{
-				var yamlPath = new[] { "mods", m, "mod.yaml" }.Aggregate(Path.Combine);
+				var yamlPath = Platform.ResolvePath(".", "mods", m, "mod.yaml");
 				if (!File.Exists(yamlPath))
 					continue;
 

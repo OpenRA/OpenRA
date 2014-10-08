@@ -149,7 +149,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				newsStatus = newsPanel.Get<LabelWidget>("NEWS_STATUS");
 				SetNewsStatus("Loading news");
 
-				var cacheFile = Path.Combine(Platform.SupportDir, "news.yaml");
+				var cacheFile = Platform.ResolvePath("^", "news.yaml");
 				var currentNews = ParseNews(cacheFile);
 				if (currentNews != null)
 					DisplayNews(currentNews);

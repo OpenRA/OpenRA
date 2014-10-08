@@ -24,100 +24,100 @@ Packages:
 	SOUND.RS
 
 Rules:
-	mods/d2k/rules/misc.yaml
-	mods/d2k/rules/ai.yaml
-	mods/d2k/rules/player.yaml
-	mods/d2k/rules/world.yaml
-	mods/d2k/rules/defaults.yaml
-	mods/d2k/rules/vehicles.yaml
-	mods/d2k/rules/structures.yaml
-	mods/d2k/rules/aircraft.yaml
-	mods/d2k/rules/infantry.yaml
-	mods/d2k/rules/atreides.yaml
-	mods/d2k/rules/harkonnen.yaml
-	mods/d2k/rules/ordos.yaml
+	./mods/d2k/rules/misc.yaml
+	./mods/d2k/rules/ai.yaml
+	./mods/d2k/rules/player.yaml
+	./mods/d2k/rules/world.yaml
+	./mods/d2k/rules/defaults.yaml
+	./mods/d2k/rules/vehicles.yaml
+	./mods/d2k/rules/structures.yaml
+	./mods/d2k/rules/aircraft.yaml
+	./mods/d2k/rules/infantry.yaml
+	./mods/d2k/rules/atreides.yaml
+	./mods/d2k/rules/harkonnen.yaml
+	./mods/d2k/rules/ordos.yaml
 
 Sequences:
-	mods/d2k/sequences/aircraft.yaml
-	mods/d2k/sequences/vehicles.yaml
-	mods/d2k/sequences/infantry.yaml
-	mods/d2k/sequences/structures.yaml
-	mods/d2k/sequences/misc.yaml
+	./mods/d2k/sequences/aircraft.yaml
+	./mods/d2k/sequences/vehicles.yaml
+	./mods/d2k/sequences/infantry.yaml
+	./mods/d2k/sequences/structures.yaml
+	./mods/d2k/sequences/misc.yaml
 
 Cursors:
-	mods/d2k/cursors.yaml
+	./mods/d2k/cursors.yaml
 
 Chrome:
-	mods/d2k/chrome.yaml
+	./mods/d2k/chrome.yaml
 
 Assemblies:
-	mods/common/OpenRA.Mods.Common.dll
-	mods/ra/OpenRA.Mods.RA.dll
-	mods/cnc/OpenRA.Mods.Cnc.dll
-	mods/d2k/OpenRA.Mods.D2k.dll
+	./mods/common/OpenRA.Mods.Common.dll
+	./mods/ra/OpenRA.Mods.RA.dll
+	./mods/cnc/OpenRA.Mods.Cnc.dll
+	./mods/d2k/OpenRA.Mods.D2k.dll
 
 ChromeLayout:
-	mods/d2k/chrome/install.yaml
-	mods/d2k/chrome/ingame.yaml
-	mods/ra/chrome/ingame-chat.yaml
-	mods/ra/chrome/ingame-diplomacy.yaml
-	mods/ra/chrome/ingame-fmvplayer.yaml
-	mods/d2k/chrome/ingame-menu.yaml
-	mods/ra/chrome/ingame-info.yaml
-	mods/ra/chrome/ingame-infobriefing.yaml
-	mods/ra/chrome/ingame-infoobjectives.yaml
-	mods/ra/chrome/ingame-infostats.yaml
-	mods/d2k/chrome/ingame-observer.yaml
-	mods/ra/chrome/ingame-observerstats.yaml
-	mods/d2k/chrome/ingame-player.yaml
-	mods/ra/chrome/ingame-debug.yaml
-	mods/d2k/chrome/ingame-leavemap.yaml
-	mods/d2k/chrome/mainmenu.yaml
-	mods/ra/chrome/settings.yaml
-	mods/ra/chrome/credits.yaml
-	mods/ra/chrome/lobby.yaml
-	mods/ra/chrome/lobby-mappreview.yaml
-	mods/d2k/chrome/lobby-playerbin.yaml
-	mods/ra/chrome/lobby-dialogs.yaml
-	mods/d2k/chrome/color-picker.yaml
-	mods/ra/chrome/map-chooser.yaml
-	mods/ra/chrome/create-server.yaml
-	mods/ra/chrome/serverbrowser.yaml
-	mods/ra/chrome/connection.yaml
-	mods/ra/chrome/directconnect.yaml
-	mods/ra/chrome/replaybrowser.yaml
-	mods/d2k/chrome/dropdowns.yaml
-	mods/ra/chrome/musicplayer.yaml
-	mods/d2k/chrome/tooltips.yaml
-	mods/ra/chrome/assetbrowser.yaml
-	mods/ra/chrome/irc.yaml
-	mods/ra/chrome/missionbrowser.yaml
-	mods/ra/chrome/confirmation-dialogs.yaml
+	./mods/d2k/chrome/install.yaml
+	./mods/d2k/chrome/ingame.yaml
+	./mods/ra/chrome/ingame-chat.yaml
+	./mods/ra/chrome/ingame-diplomacy.yaml
+	./mods/ra/chrome/ingame-fmvplayer.yaml
+	./mods/d2k/chrome/ingame-menu.yaml
+	./mods/ra/chrome/ingame-info.yaml
+	./mods/ra/chrome/ingame-infobriefing.yaml
+	./mods/ra/chrome/ingame-infoobjectives.yaml
+	./mods/ra/chrome/ingame-infostats.yaml
+	./mods/d2k/chrome/ingame-observer.yaml
+	./mods/ra/chrome/ingame-observerstats.yaml
+	./mods/d2k/chrome/ingame-player.yaml
+	./mods/ra/chrome/ingame-debug.yaml
+	./mods/d2k/chrome/ingame-leavemap.yaml
+	./mods/d2k/chrome/mainmenu.yaml
+	./mods/ra/chrome/settings.yaml
+	./mods/ra/chrome/credits.yaml
+	./mods/ra/chrome/lobby.yaml
+	./mods/ra/chrome/lobby-mappreview.yaml
+	./mods/d2k/chrome/lobby-playerbin.yaml
+	./mods/ra/chrome/lobby-dialogs.yaml
+	./mods/d2k/chrome/color-picker.yaml
+	./mods/ra/chrome/map-chooser.yaml
+	./mods/ra/chrome/create-server.yaml
+	./mods/ra/chrome/serverbrowser.yaml
+	./mods/ra/chrome/connection.yaml
+	./mods/ra/chrome/directconnect.yaml
+	./mods/ra/chrome/replaybrowser.yaml
+	./mods/d2k/chrome/dropdowns.yaml
+	./mods/ra/chrome/musicplayer.yaml
+	./mods/d2k/chrome/tooltips.yaml
+	./mods/ra/chrome/assetbrowser.yaml
+	./mods/ra/chrome/irc.yaml
+	./mods/ra/chrome/missionbrowser.yaml
+	./mods/ra/chrome/confirmation-dialogs.yaml
 
 Weapons:
-	mods/d2k/weapons.yaml
+	./mods/d2k/weapons.yaml
 
 Voices:
-	mods/d2k/voices.yaml
+	./mods/d2k/voices.yaml
 
 Notifications:
-	mods/d2k/notifications.yaml
+	./mods/d2k/notifications.yaml
 
 TileSets:
-	mods/d2k/tilesets/arrakis.yaml
+	./mods/d2k/tilesets/arrakis.yaml
 
 TileSize: 32,32
 
 Music:
-	mods/d2k/music.yaml
+	./mods/d2k/music.yaml
 
 Movies:
 
 Translations:
-	mods/d2k/languages/english.yaml
+	./mods/d2k/languages/english.yaml
 
 LoadScreen: DefaultLoadScreen
-	Image: mods/d2k/uibits/loadscreen.png
+	Image: ./mods/d2k/uibits/loadscreen.png
 	Text: Filling Crates..., Breeding Sandworms...
 
 ContentInstaller:
@@ -148,44 +148,44 @@ LobbyDefaults:
 	TechLevel: Unrestricted
 
 ChromeMetrics:
-	mods/d2k/metrics.yaml
+	./mods/d2k/metrics.yaml
 
 Fonts:
 	Regular:
-		Font:FreeSans.ttf
+		Font:./FreeSans.ttf
 		Size:14
 	Bold:
-		Font:FreeSansBold.ttf
+		Font:./FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:mods/d2k/Dune2k.ttf
+		Font:./mods/d2k/Dune2k.ttf
 		Size:32
 	MediumBold:
-		Font:FreeSansBold.ttf
+		Font:./FreeSansBold.ttf
 		Size:18
 	BigBold:
-		Font:FreeSansBold.ttf
+		Font:./FreeSansBold.ttf
 		Size:24
 	Tiny:
-		Font:FreeSans.ttf
+		Font:./FreeSans.ttf
 		Size:10
 	TinyBold:
-		Font:FreeSansBold.ttf
+		Font:./FreeSansBold.ttf
 		Size:10
 
 LuaScripts:
-	mods/common/lua/utils.lua
-	mods/common/lua/openra.lua
-	mods/common/lua/map.lua
-	mods/common/lua/actor.lua
-	mods/common/lua/team.lua
-	mods/common/lua/media.lua
-	mods/common/lua/mission.lua
-	mods/common/lua/reinforcements.lua
-	mods/common/lua/supportpowers.lua
-	mods/common/lua/rules.lua
-	mods/common/lua/production.lua
-	mods/common/lua/facing.lua
+	./mods/common/lua/utils.lua
+	./mods/common/lua/openra.lua
+	./mods/common/lua/map.lua
+	./mods/common/lua/actor.lua
+	./mods/common/lua/team.lua
+	./mods/common/lua/media.lua
+	./mods/common/lua/mission.lua
+	./mods/common/lua/reinforcements.lua
+	./mods/common/lua/supportpowers.lua
+	./mods/common/lua/rules.lua
+	./mods/common/lua/production.lua
+	./mods/common/lua/facing.lua
 
 SupportsMapsFrom: d2k
 

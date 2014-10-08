@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var yaml = new MiniYaml(null, Game.modData.Manifest.Missions.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal)).ToDictionary();
 
-			var missionMapPaths = yaml["Missions"].Nodes.Select(n => Path.GetFullPath(n.Key));
+			var missionMapPaths = yaml["Missions"].Nodes.Select(n => Platform.ResolvePath(n.Key));
 
 			var maps = Game.modData.MapCache
 				.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(Path.GetFullPath(p.Map.Path)))

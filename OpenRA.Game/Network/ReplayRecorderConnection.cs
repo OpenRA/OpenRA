@@ -37,7 +37,7 @@ namespace OpenRA.Network
 		{
 			var filename = chooseFilename();
 			var mod = Game.modData.Manifest.Mod;
-			var dir = new[] { Platform.SupportDir, "Replays", mod.Id, mod.Version }.Aggregate(Path.Combine);
+			var dir = Platform.ResolvePath("^", "Replays", mod.Id, mod.Version);
 
 			if (!Directory.Exists(dir))
 				Directory.CreateDirectory(dir);

@@ -129,7 +129,8 @@ namespace OpenRA.Scripting
 				.GetTypesImplementing<ScriptPlayerProperties>()
 				.ToArray();
 
-			runtime.DoBuffer(GlobalFileSystem.Open(Path.Combine("lua", "scriptwrapper.lua")).ReadAllText(), "scriptwrapper.lua").Dispose();
+			runtime.Globals["GameDir"] = Platform.GameDir;
+			runtime.DoBuffer(GlobalFileSystem.Open(Platform.ResolvePath(".", "lua", "scriptwrapper.lua")).ReadAllText(), "scriptwrapper.lua").Dispose();
 			tick = (LuaFunction)runtime.Globals["Tick"];
 
 			// Register globals
