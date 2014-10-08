@@ -240,11 +240,12 @@ ide.packages['core.outline'] = setmetatable({
       local name = doc:GetFileName()
       eachNode(function(ctrl, item)
           local found = ctrl:GetItemText(item) == name
-          ctrl:SetItemBold(item, found)
-          if found then
+          if found and not ctrl:IsBold(item) then
+            ctrl:SetItemBold(item, true)
             ctrl:ExpandAllChildren(item)
             ctrl:ScrollTo(item)
-          else
+          elseif not found and ctrl:IsBold(item) then
+            ctrl:SetItemBold(item, false)
             ctrl:Collapse(item)
           end
         end)
