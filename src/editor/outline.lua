@@ -195,6 +195,12 @@ function OutlineRefresh(editor)
   end
 
   -- refresh the tree
+  -- refreshing shouldn't change the focus of the current element,
+  -- but it appears that DeleteChildren (wxwidgets 2.9.5 on Windows)
+  -- moves the focus from the current element to wxTreeCtrl.
+  -- need to save the window having focus and restore after the refresh.
+  local win = ide:GetMainFrame():FindFocus()
+
   ctrl:Freeze()
   ctrl:DeleteChildren(fileitem)
   local stack = {fileitem}
@@ -207,6 +213,8 @@ function OutlineRefresh(editor)
   ctrl:ExpandAllChildren(fileitem)
   ctrl:ScrollTo(fileitem)
   ctrl:Thaw()
+
+  if win and win ~= ide:GetMainFrame():FindFocus() then win:SetFocus() end
 end
 
 outlineCreateOutlineWindow()
