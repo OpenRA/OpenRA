@@ -63,6 +63,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\Eluant.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

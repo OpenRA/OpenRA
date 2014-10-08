@@ -51,12 +51,15 @@
   <ItemGroup>
     <Reference Include="FuzzyLogicLibrary">
       <HintPath>..\thirdparty\FuzzyLogicLibrary.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="KopiLua">
       <HintPath>..\thirdparty\KopiLua.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="NLua">
       <HintPath>..\thirdparty\NLua.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -71,12 +74,15 @@
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MaxMind.GeoIP2">
       <HintPath>..\thirdparty\MaxMind.GeoIP2.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\Eluant.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -539,10 +545,12 @@
     <ProjectReference Include="..\OpenRA.Irc\OpenRA.Irc.csproj">
       <Project>{85B48234-8B31-4BE6-AF9C-665CC6866841}</Project>
       <Name>OpenRA.Irc</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
       <Project>{fe6c8cc0-2f07-442a-b29f-17617b3b7fc6}</Project>
       <Name>OpenRA.Mods.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

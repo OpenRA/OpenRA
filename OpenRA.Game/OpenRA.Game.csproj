@@ -50,6 +50,7 @@
     <Reference Include="SharpFont">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\SharpFont.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Mono.Nat, Version=1.1.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
@@ -59,18 +60,23 @@
     </Reference>
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\Eluant.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MaxMind.GeoIP2">
       <HintPath>..\thirdparty\MaxMind.GeoIP2.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MaxMind.Db">
       <HintPath>..\thirdparty\MaxMind.Db.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SDL2-CS">
       <HintPath>..\thirdparty\SDL2-CS.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
