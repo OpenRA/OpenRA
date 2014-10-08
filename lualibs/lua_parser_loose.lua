@@ -6,6 +6,7 @@
 
 local PARSE = {}
 
+local unpack = table.unpack or unpack
 local LEX = require 'lua_lexer_loose'
 
 local function warn(message, position)
@@ -62,22 +63,25 @@ function PARSE.parse_scope(lx, f, level)
     local c = lx:next(); assert(c[1] == '(')
     f('Statement', c[1], c.lineinfo, true) -- generate Statement for function definition
     scope_begin(c[1], c.lineinfo, true)
+
+    local vars = {} -- accumulate vars (if any) to send after 'Function'
     if has_self then
       local lineinfo = c.lineinfo+1 -- zero size
-      f('VarSelf', 'self', lineinfo, true)
+      table.insert(vars, {'VarSelf', 'self', lineinfo, true})
     end
     while true do
       local n = lx:peek()
       if not (n.tag == 'Id' or n.tag == 'Keyword' and n[1] == '...') then break end
       local c = lx:next()
-      if c.tag == 'Id' then f('Var', c[1], c.lineinfo, true) end
+      if c.tag == 'Id' then table.insert(vars, {'Var', c[1], c.lineinfo, true}) end
       -- ignore '...' in this case
       if lx:peek()[1] == ',' then lx:next() end
     end
     if lx:peek()[1] == ')' then
-      local n = lx:next()
+      lx:next()
       f('Function', name, pos or c.lineinfo, true)
     end
+    for _, var in ipairs(vars) do f(unpack(var)) end
   end
   
   while true do
