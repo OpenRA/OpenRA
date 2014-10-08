@@ -234,8 +234,10 @@ ide.packages['core.outline'] = setmetatable({
           local found = ctrl:GetItemText(item) == name
           ctrl:SetItemBold(item, found)
           if found then
-            if not ctrl:IsExpanded(item) then ctrl:ExpandAllChildren(item) end
+            ctrl:ExpandAllChildren(item)
             ctrl:ScrollTo(item)
+          else
+            ctrl:Collapse(item)
           end
         end)
     end,
