@@ -27,8 +27,7 @@ namespace OpenRA.Editor
 
 		public MapSelect(string currentMod)
 		{
-			MapFolderPath = new string[] { Platform.SupportDir, "maps", currentMod }
-				.Aggregate(Path.Combine);
+			MapFolderPath = Platform.ResolvePath("^", "maps", currentMod);
 
 			if (!Directory.Exists(MapFolderPath))
 				Directory.CreateDirectory(MapFolderPath);

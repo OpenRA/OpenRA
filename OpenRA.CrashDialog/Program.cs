@@ -24,7 +24,7 @@ namespace OpenRA.CrashDialog
 		[STAThread]
 		public static void Main(string[] args)
 		{
-			settings = new Settings(Platform.SupportDir + "settings.yaml", new Arguments());
+			settings = new Settings(Platform.ResolvePath("^", "settings.yaml"), new Arguments());
 
 			var form = new Form
 			{
@@ -95,7 +95,7 @@ namespace OpenRA.CrashDialog
 		{
 			try
 			{
-				Process.Start(Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar);
+				Process.Start(Platform.ResolvePath("^", "Logs"));
 			}
 			catch { }
 		}

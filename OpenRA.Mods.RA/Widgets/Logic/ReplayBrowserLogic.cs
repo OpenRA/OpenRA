@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var template = panel.Get<ScrollItemWidget>("REPLAY_TEMPLATE");
 
 			var mod = Game.modData.Manifest.Mod;
-			var dir = new[] { Platform.SupportDir, "Replays", mod.Id, mod.Version }.Aggregate(Path.Combine);
+			var dir = Platform.ResolvePath("^", "Replays", mod.Id, mod.Version);
 
 			replayList.RemoveChildren();
 			if (Directory.Exists(dir))

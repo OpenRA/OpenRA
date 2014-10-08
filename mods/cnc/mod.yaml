@@ -34,106 +34,106 @@ Packages:
 	~transit.mix
 
 Rules:
-	mods/cnc/rules/misc.yaml
-	mods/cnc/rules/ai.yaml
-	mods/cnc/rules/player.yaml
-	mods/cnc/rules/world.yaml
-	mods/cnc/rules/defaults.yaml
-	mods/cnc/rules/structures.yaml
-	mods/cnc/rules/infantry.yaml
-	mods/cnc/rules/vehicles.yaml
-	mods/cnc/rules/trees.yaml
-	mods/cnc/rules/civilian.yaml
-	mods/cnc/rules/civilian-desert.yaml
-	mods/cnc/rules/tech.yaml
-	mods/cnc/rules/ships.yaml
-	mods/cnc/rules/aircraft.yaml
-	mods/cnc/rules/husks.yaml
+	./mods/cnc/rules/misc.yaml
+	./mods/cnc/rules/ai.yaml
+	./mods/cnc/rules/player.yaml
+	./mods/cnc/rules/world.yaml
+	./mods/cnc/rules/defaults.yaml
+	./mods/cnc/rules/structures.yaml
+	./mods/cnc/rules/infantry.yaml
+	./mods/cnc/rules/vehicles.yaml
+	./mods/cnc/rules/trees.yaml
+	./mods/cnc/rules/civilian.yaml
+	./mods/cnc/rules/civilian-desert.yaml
+	./mods/cnc/rules/tech.yaml
+	./mods/cnc/rules/ships.yaml
+	./mods/cnc/rules/aircraft.yaml
+	./mods/cnc/rules/husks.yaml
 
 Sequences:
-	mods/cnc/sequences/structures.yaml
-	mods/cnc/sequences/vehicles.yaml
-	mods/cnc/sequences/infantry.yaml
-	mods/cnc/sequences/aircraft.yaml
-	mods/cnc/sequences/decorations.yaml
-	mods/cnc/sequences/misc.yaml
-	mods/cnc/sequences/funpark.yaml
-	mods/cnc/sequences/civilian.yaml
-	mods/cnc/sequences/campaign.yaml
+	./mods/cnc/sequences/structures.yaml
+	./mods/cnc/sequences/vehicles.yaml
+	./mods/cnc/sequences/infantry.yaml
+	./mods/cnc/sequences/aircraft.yaml
+	./mods/cnc/sequences/decorations.yaml
+	./mods/cnc/sequences/misc.yaml
+	./mods/cnc/sequences/funpark.yaml
+	./mods/cnc/sequences/civilian.yaml
+	./mods/cnc/sequences/campaign.yaml
 
 Cursors:
-	mods/cnc/cursors.yaml
+	./mods/cnc/cursors.yaml
 
 Chrome:
-	mods/cnc/chrome.yaml
+	./mods/cnc/chrome.yaml
 
 Assemblies:
-	mods/common/OpenRA.Mods.Common.dll
-	mods/ra/OpenRA.Mods.RA.dll
-	mods/cnc/OpenRA.Mods.Cnc.dll
-	mods/d2k/OpenRA.Mods.D2k.dll
+	./mods/common/OpenRA.Mods.Common.dll
+	./mods/ra/OpenRA.Mods.RA.dll
+	./mods/cnc/OpenRA.Mods.Cnc.dll
+	./mods/d2k/OpenRA.Mods.D2k.dll
 
 ChromeLayout:
-	mods/cnc/chrome/install.yaml
-	mods/cnc/chrome/mainmenu.yaml
-	mods/cnc/chrome/serverbrowser.yaml
-	mods/cnc/chrome/createserver.yaml
-	mods/cnc/chrome/directconnect.yaml
-	mods/cnc/chrome/lobby.yaml
-	mods/cnc/chrome/lobby-mappreview.yaml
-	mods/cnc/chrome/lobby-playerbin.yaml
-	mods/cnc/chrome/lobby-dialogs.yaml
-	mods/cnc/chrome/connection.yaml
-	mods/cnc/chrome/color-picker.yaml
-	mods/cnc/chrome/mapchooser.yaml
-	mods/cnc/chrome/replaybrowser.yaml
-	mods/cnc/chrome/ingame.yaml
-	mods/cnc/chrome/ingame-chat.yaml
-	mods/cnc/chrome/ingame-menu.yaml
-	mods/cnc/chrome/ingame-debug.yaml
-	mods/cnc/chrome/ingame-info.yaml
-	mods/cnc/chrome/ingame-infobriefing.yaml
-	mods/cnc/chrome/ingame-infoobjectives.yaml
-	mods/cnc/chrome/ingame-infostats.yaml
-	mods/cnc/chrome/ingame-leavemap.yaml
-	mods/cnc/chrome/ingame-observerstats.yaml
-	mods/cnc/chrome/music.yaml
-	mods/cnc/chrome/settings.yaml
-	mods/cnc/chrome/credits.yaml
-	mods/cnc/chrome/dialogs.yaml
-	mods/cnc/chrome/tooltips.yaml
-	mods/cnc/chrome/irc.yaml
-	mods/cnc/chrome/assetbrowser.yaml
-	mods/cnc/chrome/missionbrowser.yaml
+	./mods/cnc/chrome/install.yaml
+	./mods/cnc/chrome/mainmenu.yaml
+	./mods/cnc/chrome/serverbrowser.yaml
+	./mods/cnc/chrome/createserver.yaml
+	./mods/cnc/chrome/directconnect.yaml
+	./mods/cnc/chrome/lobby.yaml
+	./mods/cnc/chrome/lobby-mappreview.yaml
+	./mods/cnc/chrome/lobby-playerbin.yaml
+	./mods/cnc/chrome/lobby-dialogs.yaml
+	./mods/cnc/chrome/connection.yaml
+	./mods/cnc/chrome/color-picker.yaml
+	./mods/cnc/chrome/mapchooser.yaml
+	./mods/cnc/chrome/replaybrowser.yaml
+	./mods/cnc/chrome/ingame.yaml
+	./mods/cnc/chrome/ingame-chat.yaml
+	./mods/cnc/chrome/ingame-menu.yaml
+	./mods/cnc/chrome/ingame-debug.yaml
+	./mods/cnc/chrome/ingame-info.yaml
+	./mods/cnc/chrome/ingame-infobriefing.yaml
+	./mods/cnc/chrome/ingame-infoobjectives.yaml
+	./mods/cnc/chrome/ingame-infostats.yaml
+	./mods/cnc/chrome/ingame-leavemap.yaml
+	./mods/cnc/chrome/ingame-observerstats.yaml
+	./mods/cnc/chrome/music.yaml
+	./mods/cnc/chrome/settings.yaml
+	./mods/cnc/chrome/credits.yaml
+	./mods/cnc/chrome/dialogs.yaml
+	./mods/cnc/chrome/tooltips.yaml
+	./mods/cnc/chrome/irc.yaml
+	./mods/cnc/chrome/assetbrowser.yaml
+	./mods/cnc/chrome/missionbrowser.yaml
 
 Weapons:
-	mods/cnc/weapons.yaml
+	./mods/cnc/weapons.yaml
 
 Movies:
-	mods/cnc/movies-gdi.yaml
-	mods/cnc/movies-nod.yaml
+	./mods/cnc/movies-gdi.yaml
+	./mods/cnc/movies-nod.yaml
 	
 Translations:
-	mods/cnc/languages/english.yaml
+	./mods/cnc/languages/english.yaml
 
 Voices:
-	mods/cnc/voices.yaml
+	./mods/cnc/voices.yaml
 
 Notifications:
-	mods/cnc/notifications.yaml
+	./mods/cnc/notifications.yaml
 
 Music:
-	mods/cnc/music.yaml
+	./mods/cnc/music.yaml
 
 TileSets:
-	mods/cnc/tilesets/desert.yaml
-	mods/cnc/tilesets/winter.yaml
-	mods/cnc/tilesets/snow.yaml
-	mods/cnc/tilesets/temperat.yaml
-	mods/cnc/tilesets/jungle.yaml
+	./mods/cnc/tilesets/desert.yaml
+	./mods/cnc/tilesets/winter.yaml
+	./mods/cnc/tilesets/snow.yaml
+	./mods/cnc/tilesets/temperat.yaml
+	./mods/cnc/tilesets/jungle.yaml
 
 LoadScreen: CncLoadScreen
-	Image: mods/cnc/uibits/chrome.png
+	Image: ./mods/cnc/uibits/chrome.png
 	Text: Loading
 
 ContentInstaller:
@@ -167,47 +167,47 @@ LobbyDefaults:
 	TechLevel: Unrestricted
 
 ChromeMetrics:
-	mods/cnc/metrics.yaml
+	./mods/cnc/metrics.yaml
 
 Fonts:
 	Regular:
-		Font:FreeSans.ttf
+		Font:./FreeSans.ttf
 		Size:14
 	Bold:
-		Font:FreeSansBold.ttf
+		Font:./FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:FreeSansBold.ttf
+		Font:./FreeSansBold.ttf
 		Size:32
 	MediumBold:
-		Font:FreeSansBold.ttf
+		Font:./FreeSansBold.ttf
 		Size:18
 	BigBold:
-		Font:FreeSansBold.ttf
+		Font:./FreeSansBold.ttf
 		Size:24
 	Tiny:
-		Font:FreeSans.ttf
+		Font:./FreeSans.ttf
 		Size:10
 	TinyBold:
-		Font:FreeSansBold.ttf
+		Font:./FreeSansBold.ttf
 		Size:10
 
 LuaScripts:
-	mods/common/lua/utils.lua
-	mods/common/lua/openra.lua
-	mods/common/lua/map.lua
-	mods/common/lua/actor.lua
-	mods/common/lua/team.lua
-	mods/common/lua/media.lua
-	mods/common/lua/mission.lua
-	mods/common/lua/reinforcements.lua
-	mods/common/lua/supportpowers.lua
-	mods/common/lua/rules.lua
-	mods/common/lua/production.lua
-	mods/common/lua/facing.lua
+	./mods/common/lua/utils.lua
+	./mods/common/lua/openra.lua
+	./mods/common/lua/map.lua
+	./mods/common/lua/actor.lua
+	./mods/common/lua/team.lua
+	./mods/common/lua/media.lua
+	./mods/common/lua/mission.lua
+	./mods/common/lua/reinforcements.lua
+	./mods/common/lua/supportpowers.lua
+	./mods/common/lua/rules.lua
+	./mods/common/lua/production.lua
+	./mods/common/lua/facing.lua
 
 Missions:
-	mods/cnc/missions.yaml
+	./mods/cnc/missions.yaml
 
 SupportsMapsFrom: cnc
 

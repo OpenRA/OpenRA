@@ -1,7 +1,7 @@
 environment = {}
 
 -- Reset package path
-package.path = "./lua/?.lua;./mods/common/lua/?.lua"
+package.path = GameDir .. "/lua/?.lua"
 
 -- Note: sandbox has been customized to remove math.random
 local sandbox = require('sandbox')

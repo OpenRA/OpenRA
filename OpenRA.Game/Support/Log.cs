@@ -22,7 +22,7 @@ namespace OpenRA
 
 	public static class Log
 	{
-		static string LogPathPrefix = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar;
+		static string LogPathPrefix = ".";
 		public static readonly Dictionary<string, ChannelInfo> Channels = new Dictionary<string, ChannelInfo>();
 
 		public static string LogPath

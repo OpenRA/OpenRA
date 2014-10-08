@@ -341,7 +341,7 @@ namespace OpenRA.TilesetBuilder
 
 		public void Export(string outputDir)
 		{
-			var dir = Path.Combine(Path.GetDirectoryName(srcfile), Platform.SupportDir + outputDir);
+			var dir = Platform.ResolvePath("^", outputDir);
 			Directory.CreateDirectory(dir);
 			var tilesetName = txtTilesetName.Text;
 			var tilesetID = txtID.Text;

@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				try
 				{
-					var preview = new Bitmap(new[] { "mods", mod.Id, "preview.png" }.Aggregate(Path.Combine));
+					var preview = new Bitmap(Platform.ResolvePath(".", "mods", mod.Id, "preview.png"));
 					if (preview.Width != 296 || preview.Height != 196)
 						continue;
 
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				try
 				{
-					var logo = new Bitmap(new[] { "mods", mod.Id, "logo.png" }.Aggregate(Path.Combine));
+					var logo = new Bitmap(Platform.ResolvePath(".", "mods", mod.Id, "logo.png"));
 					if (logo.Width != 96 || logo.Height != 96)
 						continue;
 

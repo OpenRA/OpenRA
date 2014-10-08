@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			insertDiskContainer.IsVisible = () => false;
 			installingContainer.IsVisible = () => true;
 
-			var dest = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mod.Id }.Aggregate(Path.Combine);
+			var dest = Platform.ResolvePath("^", "Content", Game.modData.Manifest.Mod.Id);
 			var copyFiles = Game.modData.Manifest.ContentInstaller.CopyFilesFromCD;
 
 			var packageToExtract = Game.modData.Manifest.ContentInstaller.PackageToExtractFromCD.Split(':');

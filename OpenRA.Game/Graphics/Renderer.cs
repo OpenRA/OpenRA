@@ -60,7 +60,7 @@ namespace OpenRA.Graphics
 
 		public void InitializeFonts(Manifest m)
 		{
-			Fonts = m.Fonts.ToDictionary(x => x.Key, x => new SpriteFont(x.Value.First, x.Value.Second));
+			Fonts = m.Fonts.ToDictionary(x => x.Key, x => new SpriteFont(Platform.ResolvePath(x.Value.First), x.Value.Second));
 		}
 
 		internal IGraphicsDevice Device { get { return device; } }
@@ -146,7 +146,7 @@ namespace OpenRA.Graphics
 			var resolution = GetResolution(windowMode);
 
 			var renderer = Game.Settings.Server.Dedicated ? "Null" : Game.Settings.Graphics.Renderer;
-			var rendererPath = Path.GetFullPath("OpenRA.Renderer.{0}.dll".F(renderer));
+			var rendererPath = Platform.ResolvePath(".", "OpenRA.Renderer." + renderer + ".dll");
 
 			device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, windowMode);
 		}

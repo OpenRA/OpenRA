@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			messages = info["Text"].Split(',');
-			var s = new Sheet(info["Image"]);
+			var s = new Sheet(Platform.ResolvePath(info["Image"]));
 			logo = new Sprite(s, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
 			stripe = new Sprite(s, new Rectangle(256, 0, 256, 256), TextureChannel.Alpha);
 			stripeRect = new Rectangle(0, r.Resolution.Height / 2 - 128, r.Resolution.Width, 256);

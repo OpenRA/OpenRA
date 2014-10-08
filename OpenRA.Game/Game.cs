@@ -180,9 +180,9 @@ namespace OpenRA
 
 			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
-			Settings = new Settings(Platform.SupportDir + "settings.yaml", args);
+			Settings = new Settings(Platform.ResolvePath("^", "settings.yaml"), args);
 
-			Log.LogPath = Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
+			Log.LogPath = Platform.ResolvePath("^", "Logs");
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");
 			Log.AddChannel("sync", "syncreport.log");
@@ -208,7 +208,7 @@ namespace OpenRA
 				Log.Write("geoip", "DatabaseReader failed: {0}", e);
 			}
 
-			GlobalFileSystem.Mount("."); // Needed to access shaders
+			GlobalFileSystem.Mount(Platform.GameDir); // Needed to access shaders
 			var renderers = new[] { Settings.Graphics.Renderer, "Sdl2", null };
 			foreach (var r in renderers)
 			{

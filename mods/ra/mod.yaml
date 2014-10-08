@@ -34,106 +34,106 @@ Packages:
 	~movies2.mix
 
 Rules:
-	mods/ra/rules/misc.yaml
-	mods/ra/rules/ai.yaml
-	mods/ra/rules/player.yaml
-	mods/ra/rules/world.yaml
-	mods/ra/rules/defaults.yaml
-	mods/ra/rules/vehicles.yaml
-	mods/ra/rules/husks.yaml
-	mods/ra/rules/structures.yaml
-	mods/ra/rules/infantry.yaml
-	mods/ra/rules/civilian.yaml
-	mods/ra/rules/decoration.yaml
-	mods/ra/rules/aircraft.yaml
-	mods/ra/rules/ships.yaml
+	./mods/ra/rules/misc.yaml
+	./mods/ra/rules/ai.yaml
+	./mods/ra/rules/player.yaml
+	./mods/ra/rules/world.yaml
+	./mods/ra/rules/defaults.yaml
+	./mods/ra/rules/vehicles.yaml
+	./mods/ra/rules/husks.yaml
+	./mods/ra/rules/structures.yaml
+	./mods/ra/rules/infantry.yaml
+	./mods/ra/rules/civilian.yaml
+	./mods/ra/rules/decoration.yaml
+	./mods/ra/rules/aircraft.yaml
+	./mods/ra/rules/ships.yaml
 
 Sequences:
-	mods/ra/sequences/ships.yaml
-	mods/ra/sequences/vehicles.yaml
-	mods/ra/sequences/structures.yaml
-	mods/ra/sequences/infantry.yaml
-	mods/ra/sequences/aircraft.yaml
-	mods/ra/sequences/misc.yaml
-	mods/ra/sequences/decorations.yaml
+	./mods/ra/sequences/ships.yaml
+	./mods/ra/sequences/vehicles.yaml
+	./mods/ra/sequences/structures.yaml
+	./mods/ra/sequences/infantry.yaml
+	./mods/ra/sequences/aircraft.yaml
+	./mods/ra/sequences/misc.yaml
+	./mods/ra/sequences/decorations.yaml
 
 Cursors:
-	mods/ra/cursors.yaml
+	./mods/ra/cursors.yaml
 
 Chrome:
-	mods/ra/chrome.yaml
+	./mods/ra/chrome.yaml
 
 Assemblies:
-	mods/common/OpenRA.Mods.Common.dll
-	mods/ra/OpenRA.Mods.RA.dll
-	mods/cnc/OpenRA.Mods.Cnc.dll
-	mods/d2k/OpenRA.Mods.D2k.dll
+	./mods/common/OpenRA.Mods.Common.dll
+	./mods/ra/OpenRA.Mods.RA.dll
+	./mods/cnc/OpenRA.Mods.Cnc.dll
+	./mods/d2k/OpenRA.Mods.D2k.dll
 
 ChromeLayout:
-	mods/ra/chrome/install.yaml
-	mods/ra/chrome/ingame.yaml
-	mods/ra/chrome/ingame-chat.yaml
-	mods/ra/chrome/ingame-diplomacy.yaml
-	mods/ra/chrome/ingame-fmvplayer.yaml
-	mods/ra/chrome/ingame-info.yaml
-	mods/ra/chrome/ingame-infobriefing.yaml
-	mods/ra/chrome/ingame-infoobjectives.yaml
-	mods/ra/chrome/ingame-infostats.yaml
-	mods/ra/chrome/ingame-leavemap.yaml
-	mods/ra/chrome/ingame-menu.yaml
-	mods/ra/chrome/ingame-observer.yaml
-	mods/ra/chrome/ingame-observerstats.yaml
-	mods/ra/chrome/ingame-player.yaml
-	mods/ra/chrome/ingame-debug.yaml
-	mods/ra/chrome/mainmenu.yaml
-	mods/ra/chrome/settings.yaml
-	mods/ra/chrome/credits.yaml
-	mods/ra/chrome/lobby.yaml
-	mods/ra/chrome/lobby-mappreview.yaml
-	mods/ra/chrome/lobby-playerbin.yaml
-	mods/ra/chrome/lobby-dialogs.yaml
-	mods/ra/chrome/color-picker.yaml
-	mods/ra/chrome/map-chooser.yaml
-	mods/ra/chrome/create-server.yaml
-	mods/ra/chrome/serverbrowser.yaml
-	mods/ra/chrome/connection.yaml
-	mods/ra/chrome/directconnect.yaml
-	mods/ra/chrome/replaybrowser.yaml
-	mods/ra/chrome/dropdowns.yaml
-	mods/ra/chrome/musicplayer.yaml
-	mods/ra/chrome/tooltips.yaml
-	mods/ra/chrome/assetbrowser.yaml
-	mods/ra/chrome/irc.yaml
-	mods/ra/chrome/missionbrowser.yaml
-	mods/ra/chrome/confirmation-dialogs.yaml
+	./mods/ra/chrome/install.yaml
+	./mods/ra/chrome/ingame.yaml
+	./mods/ra/chrome/ingame-chat.yaml
+	./mods/ra/chrome/ingame-diplomacy.yaml
+	./mods/ra/chrome/ingame-fmvplayer.yaml
+	./mods/ra/chrome/ingame-info.yaml
+	./mods/ra/chrome/ingame-infobriefing.yaml
+	./mods/ra/chrome/ingame-infoobjectives.yaml
+	./mods/ra/chrome/ingame-infostats.yaml
+	./mods/ra/chrome/ingame-leavemap.yaml
+	./mods/ra/chrome/ingame-menu.yaml
+	./mods/ra/chrome/ingame-observer.yaml
+	./mods/ra/chrome/ingame-observerstats.yaml
+	./mods/ra/chrome/ingame-player.yaml
+	./mods/ra/chrome/ingame-debug.yaml
+	./mods/ra/chrome/mainmenu.yaml
+	./mods/ra/chrome/settings.yaml
+	./mods/ra/chrome/credits.yaml
+	./mods/ra/chrome/lobby.yaml
+	./mods/ra/chrome/lobby-mappreview.yaml
+	./mods/ra/chrome/lobby-playerbin.yaml
+	./mods/ra/chrome/lobby-dialogs.yaml
+	./mods/ra/chrome/color-picker.yaml
+	./mods/ra/chrome/map-chooser.yaml
+	./mods/ra/chrome/create-server.yaml
+	./mods/ra/chrome/serverbrowser.yaml
+	./mods/ra/chrome/connection.yaml
+	./mods/ra/chrome/directconnect.yaml
+	./mods/ra/chrome/replaybrowser.yaml
+	./mods/ra/chrome/dropdowns.yaml
+	./mods/ra/chrome/musicplayer.yaml
+	./mods/ra/chrome/tooltips.yaml
+	./mods/ra/chrome/assetbrowser.yaml
+	./mods/ra/chrome/irc.yaml
+	./mods/ra/chrome/missionbrowser.yaml
+	./mods/ra/chrome/confirmation-dialogs.yaml
 
 Weapons:
-	mods/ra/weapons.yaml
+	./mods/ra/weapons.yaml
 	
 Voices:
-	mods/ra/voices.yaml
+	./mods/ra/voices.yaml
 
 Notifications:
-	mods/ra/notifications.yaml
+	./mods/ra/notifications.yaml
 	
 TileSets:
-	mods/ra/tilesets/snow.yaml
-	mods/ra/tilesets/interior.yaml
-	mods/ra/tilesets/temperat.yaml
-	mods/ra/tilesets/desert.yaml
+	./mods/ra/tilesets/snow.yaml
+	./mods/ra/tilesets/interior.yaml
+	./mods/ra/tilesets/temperat.yaml
+	./mods/ra/tilesets/desert.yaml
 
 Music:
-	mods/ra/music.yaml
+	./mods/ra/music.yaml
 
 Movies:
-	mods/ra/movies1.yaml
-	mods/ra/movies2.yaml
+	./mods/ra/movies1.yaml
+	./mods/ra/movies2.yaml
 
 Translations:
-	mods/ra/languages/english.yaml
+	./mods/ra/languages/english.yaml
 
 LoadScreen: DefaultLoadScreen
-	Image: mods/ra/uibits/loadscreen.png
+	Image: ./mods/ra/uibits/loadscreen.png
 	Text: Filling Crates..., Charging Capacitors..., Reticulating Splines..., Planting Trees..., Building Bridges..., Aging Empires..., Compiling EVA..., Constructing Pylons..., Activating Skynet..., Splitting Atoms...
 
 ContentInstaller:
@@ -164,47 +164,47 @@ LobbyDefaults:
 	TechLevel: Unrestricted
 
 ChromeMetrics:
-	mods/ra/metrics.yaml
+	./mods/ra/metrics.yaml
 
 Fonts:
 	Regular:
-		Font:FreeSans.ttf
+		Font:./FreeSans.ttf
 		Size:14
 	Bold:
-		Font:FreeSansBold.ttf
+		Font:./FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:mods/ra/ZoodRangmah.ttf
+		Font:./mods/ra/ZoodRangmah.ttf
 		Size:48
 	MediumBold:
-		Font:FreeSansBold.ttf
+		Font:./FreeSansBold.ttf
 		Size:18
 	BigBold:
-		Font:FreeSansBold.ttf
+		Font:./FreeSansBold.ttf
 		Size:24
 	Tiny:
-		Font:FreeSans.ttf
+		Font:./FreeSans.ttf
 		Size:10
 	TinyBold:
-		Font:FreeSansBold.ttf
+		Font:./FreeSansBold.ttf
 		Size:10
 
 LuaScripts:
-	mods/common/lua/utils.lua
-	mods/common/lua/openra.lua
-	mods/common/lua/map.lua
-	mods/common/lua/actor.lua
-	mods/common/lua/team.lua
-	mods/common/lua/media.lua
-	mods/common/lua/mission.lua
-	mods/common/lua/reinforcements.lua
-	mods/common/lua/supportpowers.lua
-	mods/common/lua/rules.lua
-	mods/common/lua/production.lua
-	mods/common/lua/facing.lua
+	./mods/common/lua/utils.lua
+	./mods/common/lua/openra.lua
+	./mods/common/lua/map.lua
+	./mods/common/lua/actor.lua
+	./mods/common/lua/team.lua
+	./mods/common/lua/media.lua
+	./mods/common/lua/mission.lua
+	./mods/common/lua/reinforcements.lua
+	./mods/common/lua/supportpowers.lua
+	./mods/common/lua/rules.lua
+	./mods/common/lua/production.lua
+	./mods/common/lua/facing.lua
 
 Missions:
-	mods/ra/missions.yaml
+	./mods/ra/missions.yaml
 
 SupportsMapsFrom: ra
 

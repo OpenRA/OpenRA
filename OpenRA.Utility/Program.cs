@@ -28,7 +28,7 @@ namespace OpenRA.Utility
 
 			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
-			Log.LogPath = Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
+			Log.LogPath = Platform.ResolvePath("^", "Logs");
 			Log.AddChannel("perf", null);
 
 			var modName = args[0];

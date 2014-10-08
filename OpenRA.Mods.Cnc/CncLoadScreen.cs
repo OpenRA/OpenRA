@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc
 			r = Game.Renderer;
 			if (r == null) return;
 
-			var s = new Sheet(loadInfo["Image"]);
+			var s = new Sheet(Platform.ResolvePath(loadInfo["Image"]));
 			var res = r.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);
 
