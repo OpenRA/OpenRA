@@ -9,12 +9,12 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+using OpenRA.Traits;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Orders;
-using OpenRA.Traits;
+using OpenRA.Mods.Common.Orders;
 
 namespace OpenRA.Mods.RA
 {
