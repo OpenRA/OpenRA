@@ -124,6 +124,11 @@ namespace OpenRA.Widgets
 			return true;
 		}
 
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			return RenderBounds.Contains(mi.Location);
+		}
+
 		public void Play()
 		{
 			PlayThen(() => { });
