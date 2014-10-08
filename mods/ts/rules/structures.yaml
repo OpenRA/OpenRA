@@ -136,7 +136,7 @@ PROC:
 		Queue: Building
 		BuildPaletteOrder: 20
 		Prerequisites: anypower
-		Owner: gdi,nod
+		Owner: gdi, nod
 	Building:
 		Footprint: xxx= xx== xxx=
 		Dimensions: 4,3
@@ -405,7 +405,7 @@ GASAND:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000
-		Prerequisites: gacnst
+		Prerequisites: proc
 		Owner: gdi
 	SoundOnDamageTransition:
 		DamagedSound: sandbag1.aud
@@ -433,7 +433,7 @@ GAWALL:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1001
-		Prerequisites: gacnst
+		Prerequisites: gapile
 		Owner: gdi
 	SoundOnDamageTransition:
 		DamagedSound:
@@ -459,7 +459,7 @@ NAWALL:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1001
-		Prerequisites: gacnst
+		Prerequisites: nahand
 		Owner: nod
 	SoundOnDamageTransition:
 		DamagedSound:
@@ -674,7 +674,7 @@ GARADR:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Owner: gdi
-		Prerequisites: anypower, factory
+		Prerequisites: proc
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -714,7 +714,7 @@ NARADR:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Owner: nod
-		Prerequisites: anypower, factory
+		Prerequisites: proc
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -754,7 +754,7 @@ GATECH:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Owner: gdi
-		Prerequisites: garadr
+		Prerequisites: gaweap, garadr
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -784,7 +784,7 @@ NATECH:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Owner: nod
-		Prerequisites: naradr
+		Prerequisites: naweap, naradr
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -855,6 +855,7 @@ NAHPAD:
 		BuildPaletteOrder: 60
 		Owner: nod
 		Queue: Building
+		Prerequisites: naradr
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -925,7 +926,7 @@ NASTLH:
 		Description: Generates a cloaking field
 	Buildable:
 		BuildPaletteOrder: 80
-		Prerequisites: proc,natech
+		Prerequisites: proc, natech
 		Owner: nod
 		Queue: Building
 	Building:
@@ -965,6 +966,7 @@ GAVULC:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 30
+		Prerequisites: gapile
 		Owner: gdi
 	Building:
 	Selectable:
@@ -1025,6 +1027,7 @@ GAROCK:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
+		Prerequisites: gapile
 		Owner: gdi
 	Building:
 	Selectable:
@@ -1076,6 +1079,7 @@ GACSAM:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 60
+		Prerequisites: garadr
 		Owner: gdi
 	Building:
 	Selectable:
@@ -1125,6 +1129,7 @@ NASAM:
 		Description: Nod Anti-Air base defense. \nRequires power to operate.\n  Strong vs all Aircraft\n  Cannot target ground units
 	Buildable:
 		Queue: Defense
+		Prerequisites: naradr
 		BuildPaletteOrder: 60
 		Owner: nod
 	Building:
@@ -1168,6 +1173,7 @@ NALASR:
 		Description: Basic base defense. \nRequires power to operate.\n  Strong vs all ground units\n  Cannot target Aircraft
 	Buildable:
 		Queue: Defense
+		Prerequisites: nahand
 		BuildPaletteOrder: 50
 		Owner: nod
 	Building:
@@ -1209,7 +1215,7 @@ NAOBEL:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
-		Prerequisites: tech
+		Prerequisites: natech
 		Owner: nod
 	Building:
 		Footprint: xx xx
@@ -1255,7 +1261,7 @@ NAPULS:
 		Queue: Defense
 		BuildPaletteOrder: 90
 		Prerequisites: radar
-		Owner: nod,gdi
+		Owner: nod, gdi
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2

@@ -3,7 +3,8 @@ MCV:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
-		Owner: gdi,nod
+		Owner: gdi, nod
+		Prerequisites: factory, tech
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -43,6 +44,7 @@ APC:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
+		Prerequisites: gaweap, gapile
 		Owner: gdi
 	Mobile:
 		ROT: 5
@@ -73,7 +75,8 @@ HARV:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Owner: gdi,nod
+		Prerequisites: factory, proc
+		Owner: gdi, nod
 		InitialActivity: FindResources
 	Selectable:
 		Priority: 7
@@ -121,6 +124,7 @@ HVR:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
+		Prerequisites: gaweap, garadr 
 		Owner: gdi
 		Hothey: v
 	Mobile:
@@ -227,6 +231,7 @@ LPST:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
+		Prerequisites: factory, radar
 		Owner: gdi, nod
 	Health:
 		HP: 600
@@ -281,6 +286,7 @@ REPAIR:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
+		Prerequisites: naweap
 		Owner: nod
 	Valued:
 		Cost: 1000
@@ -312,6 +318,7 @@ ART2:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
+		Prerequisites: naweap, naradr
 		Owner: nod
 	Health:
 		HP: 300
@@ -342,6 +349,7 @@ WEED:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
+		Prerequisites: naweap, natech # TODO: natech must be nawast
 		Owner: nod
 	Mobile:
 		Speed: 71
@@ -499,6 +507,7 @@ MMCH:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
+		Prerequisites: gaweap
 		Owner: gdi
 	Mobile:
 		ROT: 5
@@ -533,6 +542,7 @@ HMEC:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
+		Prerequisites: gaweap, gatech
 		Owner: gdi
 	Mobile:
 		ROT: 3
@@ -566,6 +576,7 @@ SMECH:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
+		Prerequisites: gaweap
 		Owner: gdi
 	Mobile:
 		ROT: 5
@@ -595,6 +606,7 @@ BIKE:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
+		Prerequisites: naweap
 		Owner: nod
 	Mobile:
 		ROT: 8
@@ -629,6 +641,7 @@ BGGY:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
+		Prerequisites: naweap
 		Owner: nod
 	Mobile:
 		ROT: 8
@@ -661,6 +674,7 @@ SAPC:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
+		Prerequisites: naweap, natech
 		Owner: nod
 	Mobile:
 		ROT: 5
@@ -689,6 +703,7 @@ SUBTANK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
+		Prerequisites: naweap, natech
 		Owner: nod
 	Mobile:
 		ROT: 6
@@ -716,6 +731,7 @@ SONIC:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
+		Prerequisites: gaweap, gatech
 		Owner: gdi
 	Mobile:
 		ROT: 4
@@ -748,6 +764,7 @@ TTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
+		Prerequisites: naweap
 		Owner: nod
 	Mobile:
 		ROT: 5
@@ -789,6 +806,7 @@ STNK:
 		Description: Long-range missile tank that can cloak.\nHas weak armor. Can be spotted by infantry.\n  Strong vs Vehicles, Tanks, Aircraft\n  Weak vs Infantry.
 	Buildable:
 		BuildPaletteOrder: 90
+		Prerequisites: naweap, natech
 		Queue: Vehicle
 		Owner: nod
 	Mobile:
