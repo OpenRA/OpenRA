@@ -80,6 +80,7 @@ namespace OpenRA.Renderer.Null
 
 	public class NullTexture : ITexture
 	{
+		public TextureScaleFilter ScaleFilter { get { return TextureScaleFilter.Nearest; } set { } }
 		public void SetData(Bitmap bitmap) { }
 		public void SetData(uint[,] colors) { }
 		public void SetData(byte[] colors, int width, int height) { }

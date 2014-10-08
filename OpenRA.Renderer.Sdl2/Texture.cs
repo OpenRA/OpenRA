@@ -19,10 +19,28 @@ namespace OpenRA.Renderer.Sdl2
 	public class Texture : ITexture
 	{
 		int texture;
+		TextureScaleFilter scaleFilter;
+		Size size;
+
 		public int ID { get { return texture; } }
 
-		Size size;
 		public Size Size { get { return size; } }
+
+		public TextureScaleFilter ScaleFilter
+		{
+			get
+			{
+				return scaleFilter;
+			}
+			set
+			{
+				if (scaleFilter == value)
+					return;
+
+				scaleFilter = value;
+				PrepareTexture();
+			}
+		}
 
 		public Texture()
 		{
@@ -45,9 +63,11 @@ namespace OpenRA.Renderer.Sdl2
 			ErrorHandler.CheckGlError();
 			GL.BindTexture(TextureTarget.Texture2D, texture);
 			ErrorHandler.CheckGlError();
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMinFilter.Nearest);
+
+			var filter = scaleFilter == TextureScaleFilter.Linear ? (int)TextureMinFilter.Linear : (int)TextureMinFilter.Nearest;
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, filter);
 			ErrorHandler.CheckGlError();
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, filter);
 			ErrorHandler.CheckGlError();
 
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (float)TextureWrapMode.ClampToEdge);
