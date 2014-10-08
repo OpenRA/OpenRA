@@ -18,6 +18,7 @@ namespace OpenRA.Widgets
 {
 	public class VqaPlayerWidget : Widget
 	{
+		public Hotkey CancelKey = new Hotkey(Keycode.ESCAPE, Modifiers.None);
 		public float AspectRatio = 1.2f;
 		public bool DrawOverlay = true;
 
@@ -116,16 +117,11 @@ namespace OpenRA.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (e.Event == KeyInputEvent.Down)
-			{
-				if (e.Key == Keycode.ESCAPE)
-				{
-					Stop();
-					return true;
-				}
-			}
+			if (Hotkey.FromKeyInput(e) != CancelKey || e.Event != KeyInputEvent.Down)
+				return false;
 
-			return false;
+			Stop();
+			return true;
 		}
 
 		public void Play()
