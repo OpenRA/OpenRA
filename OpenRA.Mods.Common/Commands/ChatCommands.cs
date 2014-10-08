@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Commands
 {
 	[Desc("Enables commands triggered by typing them into the chatbox. Attach this to the world actor.")]
 	public class ChatCommandsInfo : TraitInfo<ChatCommands> { }

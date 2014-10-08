@@ -12,16 +12,17 @@ using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Commands
 {
 	[Desc("Shows a list of available commands in the chatbox. Attach this to the world actor.")]
 	public class HelpCommandInfo : TraitInfo<HelpCommand> { }
 
 	public class HelpCommand : IChatCommand, IWorldLoaded
 	{
+		readonly Dictionary<string, string> helpDescriptions;
+
 		World world;
 		ChatCommands console;
-		Dictionary<string, string> helpDescriptions;
 
 		public HelpCommand() 
 		{
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common
 
 			foreach (var key in console.Commands.Keys)
 			{
-				var description = "";
+				string description;
 				if (!helpDescriptions.TryGetValue(key, out description))
 					description = "no description available.";
 

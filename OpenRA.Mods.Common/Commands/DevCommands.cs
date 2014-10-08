@@ -9,10 +9,11 @@
 #endregion
 
 using System;
+using System.Globalization;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Commands
 {
 	[Desc("Enables developer cheats via the chatbox. Attach this to the world actor.")]
 	public class DevCommandsInfo : TraitInfo<DevCommands> { }
@@ -56,12 +57,12 @@ namespace OpenRA.Mods.Common
 			{
 				case "givecash":
 					var order = new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false);
-					var cash = 0;
+					int cash;
 
 					if (int.TryParse(arg, out cash))
 						order.ExtraData = (uint)cash;
 
-					Game.Debug("Giving {0} credits to player {1}.", (cash == 0 ? "cheat default" : cash.ToString()), world.LocalPlayer.PlayerName);
+					Game.Debug("Giving {0} credits to player {1}.", cash == 0 ? "cheat default" : cash.ToString(CultureInfo.InvariantCulture), world.LocalPlayer.PlayerName);
 					world.IssueOrder(order);
 
 					break;
