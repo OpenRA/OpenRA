@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Orders
+namespace OpenRA.Mods.Common.Orders
 {
 	public class DeployOrderTargeter : IOrderTargeter
 	{

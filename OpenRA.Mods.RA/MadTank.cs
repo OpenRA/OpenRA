@@ -8,16 +8,16 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using OpenRA.GameRules;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Move;
-using OpenRA.Mods.RA.Orders;
-using OpenRA.Mods.RA.Render;
-using OpenRA.Primitives;
+using System.Drawing;
+using System.Collections.Generic;
 using OpenRA.Traits;
+using OpenRA.Primitives;
+using OpenRA.Mods.RA.Move;
+using OpenRA.Mods.RA.Render;
+using OpenRA.Mods.RA.Orders;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.Common.Orders;
 
 namespace OpenRA.Mods.RA
 {

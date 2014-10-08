@@ -9,11 +9,11 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Orders;
-using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Render;
+using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.Common.Orders;
 
 namespace OpenRA.Mods.RA
 {
