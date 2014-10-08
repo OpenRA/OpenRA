@@ -42,6 +42,7 @@ Player:
 	Shroud:
 	FrozenActorLayer:
 	BaseAttackNotifier:
+	HarvesterAttackNotifier:
 	PlayerStatistics:
 	PlaceBeacon:
 
