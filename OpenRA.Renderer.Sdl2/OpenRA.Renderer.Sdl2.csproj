@@ -25,6 +25,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="SDL2-CS">
       <HintPath>..\thirdparty\SDL2-CS.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +43,7 @@
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
       <Name>OpenRA.Game</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
 </Project>
