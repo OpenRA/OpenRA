@@ -127,11 +127,11 @@ function OutlineRefresh(editor)
       end
       local name, pos = token.name, token.fpos
       if not name then
-        local s = editor:PositionFromLine(editor:LineFromPosition(pos))
+        local s = editor:PositionFromLine(editor:LineFromPosition(pos-1))
         local rest
-        rest, pos, name = text:sub(s, pos-1):match('%s*(.-)()'..varname..'%s*=%s*function%s*$')
+        rest, pos, name = text:sub(s+1, pos-1):match('%s*(.-)()'..varname..'%s*=%s*function%s*$')
         if rest then
-          pos = s + pos - 1
+          pos = s + pos
           -- guard against "foo, bar = function() end" as it would get "bar"
           if #rest>0 and rest:find(',') then name = nil end
         end
