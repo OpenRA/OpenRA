@@ -255,7 +255,6 @@
     <Compile Include="NukePaletteEffect.cs" />
     <Compile Include="NullLoadScreen.cs" />
     <Compile Include="LoadWidgetAtGameStart.cs" />
-    <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Orders\PowerDownOrderGenerator.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
