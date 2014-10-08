@@ -685,7 +685,7 @@ FireballLauncher:
 	Projectile: Bullet
 		Speed: 64
 		Image: FLAMEALL
-		Inacuracy: 384
+		Inaccuracy: 384
 	Burst: 5
 	BurstDelay: 5
 	Warhead@1Dam: SpreadDamage

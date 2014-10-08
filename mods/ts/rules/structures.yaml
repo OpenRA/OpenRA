@@ -993,14 +993,12 @@ GAVULC:
 	Armament@PRIMARY:
 		Weapon: VulcanTower
 		LocalOffset: 768,85,512
-		Recoil: 0
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: VulcanTower
 		LocalOffset: 768,-85,512
-		Recoil: 0
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	WithMuzzleFlash:
@@ -1054,7 +1052,6 @@ GAROCK:
 	Armament:
 		Weapon: RPGTower
 		LocalOffset: 512,-128,512
-		Recoil: 0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	LineBuildNode:
@@ -1105,7 +1102,6 @@ GACSAM:
 	Armament:
 		Weapon: SAMTower
 		LocalOffset: 512,0,512
-		Recoil: 0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	LineBuildNode:
@@ -1155,7 +1151,6 @@ NASAM:
 	Armament:
 		Weapon: SAMTower
 		LocalOffset: 512,0,512
-		Recoil: 0
 	Power:
 		Amount: -30
 
