@@ -3,14 +3,15 @@
 local ide = ide
 ide.outline = {}
 
-local image = { FILE = 0, FUNCTION = 1 }
+local image = { FILE = 0, LFUNCTION = 1, GFUNCTION = 2 }
 
 do
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local size = wx.wxSize(16,16)
   local imglist = wx.wxImageList(16,16)
   imglist:Add(getBitmap("FILE-NORMAL", "OTHER", size)) -- 0 = file known spec
-  imglist:Add(getBitmap("VALUE-CALL", "OTHER", size)) -- 1 = stack call
+  imglist:Add(getBitmap("VALUE-CALL", "OTHER", size)) -- 1
+  imglist:Add(getBitmap("VALUE-CALL-GLOBAL", "OTHER", size)) -- 2
   ide.outline.imglist = imglist
 end
 
@@ -42,7 +43,7 @@ local function outlineCreateOutlineWindow()
       -- activate tab and move cursor based on stored pos
       -- get file parent
       local parent = ctrl:GetItemParent(item_id)
-      while parent:IsOk() and ctrl:GetItemImage(parent) == image.FUNCTION do
+      while parent:IsOk() and ctrl:GetItemImage(parent) ~= image.FILE do
         parent = ctrl:GetItemParent(parent)
       end
       if not parent:IsOk() then return end
@@ -118,8 +119,12 @@ function OutlineRefresh(editor)
   local sep = editor.spec.sep
   local varname = "([%w_][%w_"..q(sep:sub(1,1)).."]*)"
   local funcs = {}
+  local var = {}
   for _, token in ipairs(tokens) do
-    if token[1] == 'Function' then
+    local op = token[1]
+    if op == 'Var' or op == 'Id' then
+      var = {name = token.name, fpos = token.fpos, global = token.context[token.name] == nil}
+    elseif op == 'Function' then
       local depth = token.context['function']
       local _, _, rname, params = text:find('([^%(]*)(%b())', token.fpos)
       if token.name and rname:find(token.name, 1, true) ~= 1 then
@@ -136,9 +141,15 @@ function OutlineRefresh(editor)
           if #rest>0 and rest:find(',') then name = nil end
         end
       end
+      local ftype = image.LFUNCTION
+      if name and (var.name == name and var.fpos == pos
+        or name:find('^'..var.name..'['..q(sep)..']')) then
+        ftype = var.global and image.GFUNCTION or image.LFUNCTION
+      end
       funcs[#funcs+1] = {
         name = (name or '[anonymous]')..params,
         depth = depth,
+        image = ftype,
         pos = name and pos or token.fpos}
     end
   end
@@ -169,8 +180,13 @@ function OutlineRefresh(editor)
         func.item = prevfuncs[n].item -- carry over cached items
         if func.depth ~= prevfuncs[n].depth then
           nochange = false
-        elseif nochange and func.name ~= prevfuncs[n].name then
-          ctrl:SetItemText(prevfuncs[n].item, func.name)
+        elseif nochange then
+          if func.name ~= prevfuncs[n].name then
+            ctrl:SetItemText(prevfuncs[n].item, func.name)
+          end
+          if func.image ~= prevfuncs[n].image then
+            ctrl:SetItemImage(prevfuncs[n].item, func.image)
+          end
         end
       end
     end
@@ -183,11 +199,10 @@ function OutlineRefresh(editor)
   ctrl:DeleteChildren(fileitem)
   local stack = {fileitem}
   for n, func in ipairs(funcs) do
-    local name, pos, depth = func.name, func.pos, func.depth
-    local item = ctrl:AppendItem(stack[depth], name, image.FUNCTION)
+    local item = ctrl:AppendItem(stack[func.depth], func.name, func.image)
     setData(ctrl, item, n)
     func.item = item
-    stack[depth+1] = item
+    stack[func.depth+1] = item
   end
   ctrl:ExpandAllChildren(fileitem)
   ctrl:ScrollTo(fileitem)
