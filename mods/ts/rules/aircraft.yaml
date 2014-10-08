@@ -115,7 +115,7 @@ ORCAB:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: gahpad
+		Prerequisites: gahpad, gatech
 		Owner: gdi
 	Selectable:
 		Bounds: 30,24
@@ -184,7 +184,7 @@ TRNSPORT:
 		Queue: Air
 		BuildPaletteOrder: 10
 		Owner: gdi
-		Prerequisites: gahpad
+		Prerequisites: gahpad, gadept
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -210,7 +210,7 @@ SCRIN:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: nahpad
+		Prerequisites: nahpad, natech
 		Owner: nod
 	Selectable:
 		Bounds: 30,24
