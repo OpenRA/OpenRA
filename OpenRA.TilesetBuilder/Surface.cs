@@ -50,7 +50,7 @@ namespace OpenRA.TilesetBuilder
 				return;
 
 			/* draw the background */
-			e.Graphics.DrawImageUnscaled(Image, 0, 0);
+			e.Graphics.DrawImage(Image, 0, 0, Image.Width, Image.Height);
 			/* draw terrain type overlays */
 			if (ShowTerrainTypes)
 			{
