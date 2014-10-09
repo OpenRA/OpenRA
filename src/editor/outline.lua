@@ -95,8 +95,7 @@ end
 
 local function eachNode(eachFunc, root)
   local ctrl = ide.outline.outlineCtrl
-  root = root or ctrl:GetRootItem()
-  local item = ctrl:GetFirstChild(root)
+  local item = ctrl:GetFirstChild(root or ctrl:GetRootItem())
   while true do
     if not item:IsOk() then break end
     if eachFunc and eachFunc(ctrl, item) then break end
@@ -155,9 +154,6 @@ function OutlineRefresh(editor)
   end
 
   local ctrl = ide.outline.outlineCtrl
-  local root = ctrl:GetRootItem()
-  if not root or not root:IsOk() then return end
-
   local cache = caches[editor] or {}
   caches[editor] = cache
 
@@ -165,6 +161,9 @@ function OutlineRefresh(editor)
   local filename = ide:GetDocument(editor):GetFileName()
   local fileitem = cache.fileitem
   if not fileitem then
+    local root = ctrl:GetRootItem()
+    if not root or not root:IsOk() then return end
+
     fileitem = ctrl:AppendItem(root, filename, image.FILE)
     setData(ctrl, fileitem, editor)
     ctrl:SetItemBold(fileitem, true)
@@ -222,24 +221,29 @@ outlineCreateOutlineWindow()
 ide.packages['core.outline'] = setmetatable({
     -- remove the editor from the list
     onEditorClose = function(self, editor)
+      local cache = caches[editor]
+      local fileitem = cache and cache.fileitem
+      if fileitem then ide.outline.outlineCtrl:Delete(fileitem) end
       caches[editor] = nil -- remove from cache
-      local doc = ide:GetDocument(editor)
-      if not doc then return end
-      local name = doc:GetFileName()
-      eachNode(function(ctrl, item)
-          if ctrl:GetItemText(item) == name then
-            ctrl:Delete(item)
-            return true
-          end
-        end)
     end,
-    -- go over the editors
-    onEditorFocusSet = function(self, editor)
+
+    -- handle rename of the file in the current editor
+    onEditorSave = function(self, editor)
+      local cache = caches[editor]
+      local fileitem = cache and cache.fileitem
       local doc = ide:GetDocument(editor)
-      if not doc then return end
-      local name = doc:GetFileName()
+      local ctrl = ide.outline.outlineCtrl
+      if doc and fileitem and ctrl:GetItemText(fileitem) ~= doc:GetFileName() then
+        ctrl:SetItemText(fileitem, doc:GetFileName())
+      end
+    end,
+
+    -- go over the file items to turn bold on/off or collapse/expand
+    onEditorFocusSet = function(self, editor)
+      local cache = caches[editor]
+      local fileitem = cache and cache.fileitem
       eachNode(function(ctrl, item)
-          local found = ctrl:GetItemText(item) == name
+          local found = fileitem and item:GetValue() == fileitem:GetValue()
           if found and not ctrl:IsBold(item) then
             ctrl:SetItemBold(item, true)
             ctrl:ExpandAllChildren(item)
