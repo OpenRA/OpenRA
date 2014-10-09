@@ -264,7 +264,6 @@
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Orders\PowerDownOrderGenerator.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
-    <Compile Include="Orders\UnitOrderTargeter.cs" />
     <Compile Include="OreRefinery.cs" />
     <Compile Include="PlayerPaletteFromCurrentTileset.cs" />
     <Compile Include="PaletteFromCurrentTileset.cs" />
@@ -423,7 +422,6 @@
     <Compile Include="MPStartUnits.cs" />
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
     <Compile Include="Buildings\Bib.cs" />
-    <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Render\WithIdleOverlay.cs" />
     <Compile Include="Tooltip.cs" />
     <Compile Include="AI\Squad.cs" />
