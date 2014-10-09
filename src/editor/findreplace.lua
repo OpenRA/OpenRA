@@ -532,6 +532,8 @@ function findReplace:createDialog(replace,infiles)
   -- https://groups.google.com/d/msg/wx-users/EVJr8GqyNUA/CUALp585E78J
   if (mac and ide.wxver >= "2.9.5") then
     local function simulateEnter()
+      -- the button may be disabled, so check its state first
+      if not findButton:IsEnabled() then return end
       findDialog:AddPendingEvent(wx.wxCommandEvent(
         wx.wxEVT_COMMAND_BUTTON_CLICKED, ID_FIND_NEXT))
     end
