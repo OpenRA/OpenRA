@@ -69,6 +69,8 @@
     <Compile Include="Graphics\VoxelRenderable.cs" />
     <Compile Include="ModChooserLoadScreen.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
+    <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
+    <Compile Include="Orders\UnitOrderTargeter.cs" />
     <Compile Include="PaletteFromFile.cs" />
     <Compile Include="RallyPoint.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />

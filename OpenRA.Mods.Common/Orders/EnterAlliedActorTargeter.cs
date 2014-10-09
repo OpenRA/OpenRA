@@ -11,7 +11,7 @@
 using System;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Orders
+namespace OpenRA.Mods.Common.Orders
 {
 	public class EnterAlliedActorTargeter<T> : UnitOrderTargeter
 	{
