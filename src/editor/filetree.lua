@@ -148,7 +148,7 @@ local function treeSetConnectorsAndIcons(tree)
   function tree:IsRoot(item_id) return not tree:GetItemParent(item_id):IsOk() end
 
   function tree:FindItem(match)
-    return findItem(self, wx.wxIsAbsolutePath(match) and match
+    return findItem(self, (wx.wxIsAbsolutePath(match) or match == '') and match
       or MergeFullPath(ide:GetProject(), match))
   end
 
