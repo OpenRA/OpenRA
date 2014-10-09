@@ -264,7 +264,7 @@ return {
     childs = {
       config = {
         type = "value",
-        description = "A string describing some compile-time configurations for packages.\nThis string is a sequence of lines:\n* The first line is the directory separator string. Default is '\\' for Windows and '/' for all other systems.\n* The second line is the character that separates templates in a path. Default is ';'.\n* The third line is the string that marks the substitution points in a template. Default is '?'.\n* The fourth line is a string that, in a path in Windows, is replaced by the executable's directory. Default is '!'.\n* The fifth line is a mark to ignore all text before it when building the luaopen_ function name. Default is '-'.\nVALUE ADDED IN Lua 5.2.",
+        description = "A string describing some compile-time configurations for packages.\nThis string is a sequence of lines:\n* The first line is the directory separator string. Default is '\\' for Windows and '/' for all other systems.\n* The second line is the character that separates templates in a path. Default is ';'.\n* The third line is the string that marks the substitution points in a template. Default is '?'.\n* The fourth line is a string that, in a path in Windows, is replaced by the executable's directory. Default is '!'.\n* The fifth line is a mark to ignore all text before it when building the luaopen_ function name. Default is '-'.",
       },
       cpath = {
         type = "value",
