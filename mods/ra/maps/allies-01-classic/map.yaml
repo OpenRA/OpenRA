@@ -646,6 +646,10 @@ Rules:
 	JEEP:
 		Cargo:
 			Types: Infantry, Einstein
+	E7:
+		AutoTarget:
+			EnableStances: false
+		-AttackMove:
 
 Sequences:
 
