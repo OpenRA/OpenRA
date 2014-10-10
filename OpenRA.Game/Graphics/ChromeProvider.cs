@@ -25,22 +25,11 @@ namespace OpenRA.Graphics
 		static Dictionary<string, Sheet> cachedSheets;
 		static Dictionary<string, Dictionary<string, Sprite>> cachedSprites;
 
-		static string[] storedChromeFiles;
-
-		public static void Initialize(params string[] chromeFiles)
+		public static void Initialize(IEnumerable<string> chromeFiles)
 		{
 			collections = new Dictionary<string, Collection>();
 			cachedSheets = new Dictionary<string, Sheet>();
 			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
-
-			if (chromeFiles.Length == 0)
-			{
-				chromeFiles = storedChromeFiles;
-				if (chromeFiles == null || chromeFiles.Length == 0)
-					return;
-			}
-			else
-				storedChromeFiles = chromeFiles;
 
 			var chrome = chromeFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal);
 
