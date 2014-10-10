@@ -61,7 +61,7 @@ local function outlineRefresh(editor)
         ftype = var.global and image.GFUNCTION or image.LFUNCTION
       end
       funcs[#funcs+1] = {
-        name = (name or '[anonymous]')..params,
+        name = (name or '~')..params,
         depth = depth,
         image = ftype,
         pos = name and pos or token.fpos}
