@@ -62,35 +62,35 @@ namespace OpenRA
 			}
 		}
 
-		public static string SupportDir
+		public static string SupportDir { get { return supportDir.Value; } }
+		static Lazy<string> supportDir = Exts.Lazy(GetSupportDir);
+
+		static string GetSupportDir()
 		{
-			get
+			// Use a local directory in the game root if it exists
+			if (Directory.Exists("Support"))
+				return "Support" + Path.DirectorySeparatorChar;
+
+			var dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+
+			switch (CurrentPlatform)
 			{
-				// Use a local directory in the game root if it exists
-				if (Directory.Exists("Support"))
-					return "Support" + Path.DirectorySeparatorChar;
-
-				var dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-
-				switch (CurrentPlatform)
-				{
-				case PlatformType.Windows:
-					dir += Path.DirectorySeparatorChar + "OpenRA";
-					break;
-				case PlatformType.OSX:
-					dir += "/Library/Application Support/OpenRA";
-					break;
-				case PlatformType.Linux:
-				default:
-					dir += "/.openra";
-					break;
-				}
-
-				if (!Directory.Exists(dir))
-					Directory.CreateDirectory(dir);
-
-				return dir + Path.DirectorySeparatorChar;
+			case PlatformType.Windows:
+				dir += Path.DirectorySeparatorChar + "OpenRA";
+				break;
+			case PlatformType.OSX:
+				dir += "/Library/Application Support/OpenRA";
+				break;
+			case PlatformType.Linux:
+			default:
+				dir += "/.openra";
+				break;
 			}
+
+			if (!Directory.Exists(dir))
+				Directory.CreateDirectory(dir);
+
+			return dir + Path.DirectorySeparatorChar;
 		}
 
 		public static string GameDir { get { return AppDomain.CurrentDomain.BaseDirectory; } }
