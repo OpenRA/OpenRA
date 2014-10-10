@@ -87,13 +87,14 @@ namespace OpenRA.Graphics
 			Util.FastCopyIntoChannel(s, 1, normals);
 			s.sheet.CommitData();
 
-			var channels = new float2(channelSelect[(int)s.channel], channelSelect[(int)s.channel + 1]);
+			var channelP =channelSelect[(int)s.channel];
+			var channelC = channelSelect[(int)s.channel + 1];
 			return new Vertex[4]
 			{
-				new Vertex(coord(0, 0), s.TopLeftTextureCoords, channels),
-				new Vertex(coord(su, 0), s.TopRightTextureCoords, channels),
-				new Vertex(coord(su, sv), s.BottomRightTextureCoords, channels),
-				new Vertex(coord(0, sv), s.BottomLeftTextureCoords, channels)
+				new Vertex(coord(0, 0), s.left, s.top, channelP, channelC),
+				new Vertex(coord(su, 0),s.right, s.top, channelP, channelC),
+				new Vertex(coord(su, sv), s.right, s.bottom, channelP, channelC),
+				new Vertex(coord(0, sv), s.left, s.bottom, channelP, channelC)
 			};
 		}
 

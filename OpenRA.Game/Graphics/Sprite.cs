@@ -21,7 +21,7 @@ namespace OpenRA.Graphics
 		public readonly float2 size;
 		public readonly float2 offset;
 		public readonly float2 fractionalOffset;
-		readonly float top, left, bottom, right;
+		public readonly float top, left, bottom, right;
 
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
 			: this(sheet, bounds, float2.Zero, channel, BlendMode.Alpha) {}
@@ -44,26 +44,6 @@ namespace OpenRA.Graphics
 			top = (float)(bounds.Top) / sheet.Size.Height;
 			right = (float)(bounds.Right) / sheet.Size.Width;
 			bottom = (float)(bounds.Bottom) / sheet.Size.Height;
-		}
-
-		public float2 TopLeftTextureCoords
-		{
-			get { return new float2(left, top); }
-		}
-
-		public float2 TopRightTextureCoords
-		{
-			get { return new float2(right, top); }
-		}
-
-		public float2 BottomLeftTextureCoords
-		{
-			get { return new float2(left, bottom); }
-		}
-
-		public float2 BottomRightTextureCoords
-		{
-			get { return new float2(right, bottom); }
 		}
 	}
 
