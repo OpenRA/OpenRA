@@ -310,9 +310,33 @@ flameall:
 		Facings: -8
 		Tick: 160
 
-#TODO: placeholder to fix crashes related to smoke
-smoke_m:
+largesmoke:
+	idle: lgrysmk1
+		Start: 0
+		Length: *
+
+smallsmoke:
+	idle: sgrysmk1
+		Start: 0
+		Length: *
+
+largefire:
+	idle: fire1
+		Start: 0
+		Length: *
+
+mediumfire:
+	idle: fire2
+		Start: 0
+		Length: *
+
+smallfire:
 	idle: fire3
+		Start: 0
+		Length: *
+
+tinyfire:
+	idle: fire4
 		Start: 0
 		Length: *
 
@@ -430,42 +454,86 @@ shroud:
 	fog: fog
 		Length: *
 
-scorches: #TODO: make use of 07-12 as well
+smallscorches:
 	sc1: burnt01
-		Length: *
+		Length: 1
 		Offset: 0, -12
 	sc2: burnt02
-		Length: *
+		Length: 1
 		Offset: 0, -12
 	sc3: burnt03
-		Length: *
+		Length: 1
 		Offset: 0, -12
 	sc4: burnt04
-		Length: *
+		Length: 1
 		Offset: 0, -12
 	sc5: burnt05
-		Length: *
+		Length: 1
 		Offset: 0, -12
 	sc6: burnt06
-		Length: *
+		Length: 1
 		Offset: 0, -12
 
-craters: #TODO: make use of 07-12 as well
+mediumscorches:
+	sc7: burnt07
+		Length: 1
+		Offset: 0, -18
+	sc8: burnt08
+		Length: 1
+		Offset: 0, -18
+	sc9: burnt09
+		Length: 1
+		Offset: 0, -18
+	sc10: burnt10
+		Length: 1
+		Offset: 0, -18
+
+largescorches:
+	sc11: burnt11
+		Length: 1
+		Offset: 0, -24
+	sc12: burnt12
+		Length: 1
+		Offset: 0, -24
+
+smallcraters:
 	cr1: crater01
-		Length: *
+		Length: 1
 		Offset: 0, -12
 	cr2: crater02
-		Length: *
+		Length: 1
 		Offset: 0, -12
 	cr3: crater03
-		Length: *
+		Length: 1
 		Offset: 0, -12
 	cr4: crater04
-		Length: *
+		Length: 1
 		Offset: 0, -12
 	cr5: crater05
-		Length: *
+		Length: 1
 		Offset: 0, -12
 	cr6: crater06
-		Length: *
+		Length: 1
 		Offset: 0, -12
+
+mediumcraters:
+	cr7: crater07
+		Length: 1
+		Offset: 0, -12
+	cr8: crater08
+		Length: 1
+		Offset: 0, -12
+	cr9: crater09
+		Length: 1
+		Offset: 0, -12
+	cr10: crater10
+		Length: 1
+		Offset: 0, -12
+
+largecraters:
+	cr11: crater11
+		Length: 1
+		Offset: 0, -24
+	cr12: crater12
+		Length: 1
+		Offset: 0, -24
