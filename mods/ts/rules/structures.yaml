@@ -1125,7 +1125,7 @@ NASAM:
 		Owner: nod
 	Building:
 	Selectable:
-		Bounds: 48, 24
+		Bounds: 36, 36, -2, -8
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1167,7 +1167,7 @@ NALASR:
 		Owner: nod
 	Building:
 	Selectable:
-		Bounds: 48, 24
+		Bounds: 36, 36, -2, -8
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
