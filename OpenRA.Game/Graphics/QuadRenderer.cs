@@ -43,17 +43,21 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void FillRect(RectangleF r, Color color)
+		public void FillRect(RectangleF rect, Color color)
 		{
 			Renderer.CurrentBatchRenderer = this;
 
 			if (nv + 4 > Renderer.TempBufferSize)
 				Flush();
 
-			vertices[nv] = new Vertex(new float2(r.Left, r.Top), new float2(color.R / 255.0f, color.G / 255.0f), new float2(color.B / 255.0f, color.A / 255.0f));
-			vertices[nv + 1] = new Vertex(new float2(r.Right, r.Top), new float2(color.R / 255.0f, color.G / 255.0f), new float2(color.B / 255.0f, color.A / 255.0f));
-			vertices[nv + 2] = new Vertex(new float2(r.Right, r.Bottom), new float2(color.R / 255.0f, color.G / 255.0f), new float2(color.B / 255.0f, color.A / 255.0f));
-			vertices[nv + 3] = new Vertex(new float2(r.Left, r.Bottom), new float2(color.R / 255.0f, color.G / 255.0f), new float2(color.B / 255.0f, color.A / 255.0f));
+			var r = color.R / 255.0f;
+			var g = color.G / 255.0f;
+			var b = color.B / 255.0f;
+			var a = color.A / 255.0f;
+			vertices[nv] = new Vertex(new float2(rect.Left, rect.Top), r, g, b, a);
+			vertices[nv + 1] = new Vertex(new float2(rect.Right, rect.Top), r, g, b, a);
+			vertices[nv + 2] = new Vertex(new float2(rect.Right, rect.Bottom), r, g, b, a);
+			vertices[nv + 3] = new Vertex(new float2(rect.Left, rect.Bottom), r, g, b, a);
 
 			nv += 4;
 		}

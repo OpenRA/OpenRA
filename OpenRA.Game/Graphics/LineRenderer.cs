@@ -77,12 +77,12 @@ namespace OpenRA.Graphics
 				Flush();
 
 			vertices[nv++] = new Vertex(start + offset,
-				new float2(startColor.R / 255.0f, startColor.G / 255.0f),
-				new float2(startColor.B / 255.0f, startColor.A / 255.0f));
+				startColor.R / 255.0f, startColor.G / 255.0f,
+				startColor.B / 255.0f, startColor.A / 255.0f);
 
 			vertices[nv++] = new Vertex(end + offset,
-				new float2(endColor.R / 255.0f, endColor.G / 255.0f),
-				new float2(endColor.B / 255.0f, endColor.A / 255.0f));
+				endColor.R / 255.0f, endColor.G / 255.0f,
+				endColor.B / 255.0f, endColor.A / 255.0f);
 		}
 
 		public void FillRect(RectangleF r, Color color)
