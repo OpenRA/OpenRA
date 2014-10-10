@@ -79,6 +79,8 @@ Grenade:
 		Explosion: small_watersplash
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
 
 Bazooka:
 	ReloadDelay: 60
@@ -120,6 +122,8 @@ Bazooka:
 		Explosion: small_twlt
 		ImpactSound: expnew12.aud
 		ValidImpactTypes: Air, AirHit
+	Warhead@5Smu: LeaveSmudge
+		SmudgeType: SmallCrater
 
 MultiCluster:
 	ReloadDelay: 80
@@ -155,6 +159,8 @@ MultiCluster:
 		Explosion: small_watersplash
 		ImpactSound: ssplash2.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
 
 Heal:
 	ReloadDelay: 80
@@ -265,6 +271,8 @@ CyCannon:
 		Explosion: small_watersplash
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: SmallScorch
 
 Vulcan3:
 	ReloadDelay: 30
@@ -427,6 +435,8 @@ HoverMissile:
 		Explosion: small_twlt
 		ImpactSound: expnew12.aud
 		ValidImpactTypes: Air, AirHit
+	Warhead@5: LeaveSmudge
+		SmudgeType: SmallCrater
 
 120mmx:
 	ReloadDelay: 80
@@ -458,6 +468,8 @@ HoverMissile:
 		Explosion: small_watersplash
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
 
 MammothTusk:
 	ReloadDelay: 80
@@ -571,6 +583,8 @@ SuicideBomb:
 		Explosion: small_watersplash
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
 
 MechRailgun:
 	ReloadDelay: 60
@@ -652,6 +666,8 @@ BikeMissile:
 		Explosion: small_watersplash
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: SmallCrater
 
 RaiderCannon:
 	ReloadDelay: 55
@@ -699,6 +715,8 @@ FireballLauncher:
 			Light: 59
 			Heavy: 6
 			Concrete: 2
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SmallScorch
 
 SonicZap:
 	ReloadDelay: 120
@@ -756,6 +774,8 @@ Dragon:
 		Explosion: small_twlt
 		ImpactSound: expnew12.aud
 		ValidImpactTypes: Air, AirHit
+	Warhead@5Smu: LeaveSmudge
+		SmudgeType: SmallCrater
 
 90mm:
 	ReloadDelay: 50
@@ -785,6 +805,8 @@ Dragon:
 		Explosion: small_watersplash
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: SmallCrater
 
 155mm:
 	ReloadDelay: 110
@@ -817,6 +839,8 @@ Dragon:
 		Explosion: small_watersplash
 		ImpactSound: ssplash2.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
 
 Hellfire:
 	ReloadDelay: 50
@@ -857,6 +881,8 @@ Hellfire:
 		Explosion: small_twlt
 		ImpactSound: expnew12.aud
 		ValidImpactTypes: Air, AirHit
+	Warhead@5Smu: LeaveSmudge
+		SmudgeType: SmallCrater
 
 Bomb:
 	ReloadDelay: 10
@@ -885,6 +911,8 @@ Bomb:
 		Explosion: small_watersplash
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
 
 Proton:
 	ReloadDelay: 3
@@ -1003,7 +1031,7 @@ IonCannon:
 		Delay: 3
 		ValidTargets: Ground, Air
 	Warhead@4Smu_area: LeaveSmudge
-		SmudgeType: Scorch
+		SmudgeType: SmallScorch
 		Size: 2,1
 		Delay: 3
 
@@ -1059,6 +1087,8 @@ RPGTower:
 		Explosion: small_watersplash
 		ImpactSound: ssplash2.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
 
 SAMTower:
 	ReloadDelay: 55
@@ -1096,8 +1126,6 @@ ObeliskLaser:
 		Damage: 250
 		DeathType: 5
 		ProneModifier: 60
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Scorch
 
 TurretLaser:
 	ReloadDelay: 40
@@ -1111,8 +1139,6 @@ TurretLaser:
 		Damage: 30
 		DeathType: 5
 		ProneModifier: 60
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Scorch
 
 EMPulseCannon:
 	ReloadDelay: 100
