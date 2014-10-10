@@ -16,14 +16,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Enter : Activity
+	public abstract class Enter : Activity
 	{
 		public enum ReserveStatus { None, TooFar, Pending, Ready }
 		enum State { ApproachingOrEntering, Inside, Exiting, Done }
 
-		readonly Activity inside;
 		readonly IMove move;
 		readonly int maxTries = 0;
+		readonly bool targetCenter;
+		public Target Target { get { return target; } }
 		Target target;
 		State nextState = State.ApproachingOrEntering; // Hint/starting point for next state
 		bool isEnteringOrInside = false; // Used to know if exiting should be used
@@ -31,17 +32,12 @@ namespace OpenRA.Mods.RA.Activities
 		Activity inner;
 		bool firstApproach = true;
 
-		protected Enter(Actor self, Actor target, int maxTries = 1)
-			: this(self, target, null)
-		{
-			this.maxTries = maxTries;
-		}
-
-		public Enter(Actor self, Actor target, Activity inside)
+		protected Enter(Actor self, Actor target, int maxTries = 1, bool targetCenter = false)
 		{
 			this.move = self.Trait<IMove>();
 			this.target = Target.FromActor(target);
-			this.inside = inside;
+			this.maxTries = maxTries;
+			this.targetCenter = targetCenter;
 		}
 
 		// CanEnter(target) should to be true; othwise, Enter may abort.
@@ -83,7 +79,7 @@ namespace OpenRA.Mods.RA.Activities
 		}
 
 		// Called when inner activity is this and returns inner activity for next tick.
-		protected virtual Activity InsideTick(Actor self) { return Util.RunActivity(self, inside); }
+		protected virtual Activity InsideTick(Actor self) { return null; }
 
 		// Abort entering and/or leave if necessary
 		protected virtual void AbortOrExit(Actor self)
@@ -97,7 +93,6 @@ namespace OpenRA.Mods.RA.Activities
 				inner.Cancel(self);
 			if (isEnteringOrInside)
 				Unreserve(self, true);
-			isEnteringOrInside = false;
 		}
 
 		// Cancel inner activity and mark as done unless already leaving or done
@@ -167,7 +162,7 @@ namespace OpenRA.Mods.RA.Activities
 						case ReserveStatus.None:
 							return State.Done; // No available target -> abort to next activity
 						case ReserveStatus.TooFar:
-							inner = move.MoveToTarget(self, Target.FromPos(target.CenterPosition)); // Approach
+							inner = move.MoveToTarget(self, targetCenter ? Target.FromPos(target.CenterPosition) : target); // Approach
 							return State.ApproachingOrEntering;
 						case ReserveStatus.Pending:
 							return State.ApproachingOrEntering; // Retry next tick
@@ -178,6 +173,7 @@ namespace OpenRA.Mods.RA.Activities
 					// Entering
 					isEnteringOrInside = true;
 					savedPos = self.CenterPosition; // Save position of self, before entering, for returning on exit
+
 					inner = move.MoveIntoTarget(self, target); // Enter
 
 					if (inner != null)
