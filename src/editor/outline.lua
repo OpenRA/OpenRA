@@ -18,91 +18,6 @@ end
 local q = EscapeMagic
 local caches = {}
 
-local function outlineCreateOutlineWindow()
-  local width, height = 360, 200
-  local ctrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxSize(width, height),
-    wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE
-    + wx.wxTR_HIDE_ROOT)
-
-  ide.outline.outlineCtrl = ctrl
-  ide.outline.timer = wx.wxTimer(ctrl)
-
-  local root = ctrl:AddRoot("Outline")
-  ctrl:SetImageList(ide.outline.imglist)
-  ctrl:SetFont(ide.font.fNormal)
-
-  function ctrl:ActivateItem(item_id)
-    ctrl:SelectItem(item_id, true)
-    local data = ctrl:GetItemData(item_id)
-    if ctrl:GetItemImage(item_id) == image.FILE then
-      -- activate editor tab
-      local editor = data:GetData()
-      if editor then ide:GetDocument(editor):SetActive() end
-    else
-      -- activate tab and move cursor based on stored pos
-      -- get file parent
-      local parent = ctrl:GetItemParent(item_id)
-      while parent:IsOk() and ctrl:GetItemImage(parent) ~= image.FILE do
-        parent = ctrl:GetItemParent(parent)
-      end
-      if not parent:IsOk() then return end
-      -- activate editor tab
-      local editor = ctrl:GetItemData(parent):GetData()
-      local cache = caches[editor]
-      if editor and cache then
-        ide:GetDocument(editor):SetActive()
-        -- move to position in the file
-        editor:GotoPosEnforcePolicy(cache.funcs[data:GetData()].pos-1)
-      end
-    end
-  end
-
-  local function activateByPosition(event)
-    -- only toggle if this is a folder and the click is on the item line
-    -- (exclude the label as it's used for renaming and dragging)
-    local mask = (wx.wxTREE_HITTEST_ONITEMINDENT + wx.wxTREE_HITTEST_ONITEMLABEL
-      + wx.wxTREE_HITTEST_ONITEMICON + wx.wxTREE_HITTEST_ONITEMRIGHT)
-    local item_id, flags = ctrl:HitTest(event:GetPosition())
-
-    if item_id and bit.band(flags, mask) > 0 then
-      ctrl:ActivateItem(item_id)
-    else
-      event:Skip()
-    end
-    return true
-  end
-
-  ctrl:Connect(wx.wxEVT_TIMER, function() OutlineRefresh(GetEditor()) end)
-  ctrl:Connect(wx.wxEVT_LEFT_DOWN, activateByPosition)
-  ctrl:Connect(wx.wxEVT_LEFT_DCLICK, activateByPosition)
-  ctrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED, function(event)
-      ctrl:ActivateItem(event:GetItem())
-    end)
-
-  local function reconfigure(pane)
-    pane:TopDockable(false):BottomDockable(false)
-        :MinSize(150,-1):BestSize(300,-1):FloatingSize(200,300)
-  end
-
-  local layout = ide:GetSetting("/view", "uimgrlayout")
-  if not layout or not layout:find("outlinepanel") then
-    ide:AddPanelDocked(ide.frame.projnotebook, ctrl, "outlinepanel", TR("Outline"), reconfigure, false)
-  else
-    ide:AddPanel(ctrl, "outlinepanel", TR("Outline"), reconfigure)
-  end
-end
-
-local function eachNode(eachFunc, root)
-  local ctrl = ide.outline.outlineCtrl
-  local item = ctrl:GetFirstChild(root or ctrl:GetRootItem())
-  while true do
-    if not item:IsOk() then break end
-    if eachFunc and eachFunc(ctrl, item) then break end
-    item = ctrl:GetNextSibling(item)
-  end
-end
-
 local function setData(ctrl, item, value)
   if ide.wxver >= "2.9.5" then
     local data = wx.wxLuaTreeItemData()
@@ -111,7 +26,7 @@ local function setData(ctrl, item, value)
   end
 end
 
-function OutlineRefresh(editor)
+local function outlineRefresh(editor)
   if not editor then return end
   local tokens = editor:GetTokenList()
   local text = editor:GetText()
@@ -214,6 +129,91 @@ function OutlineRefresh(editor)
   ctrl:Thaw()
 
   if win and win ~= ide:GetMainFrame():FindFocus() then win:SetFocus() end
+end
+
+local function outlineCreateOutlineWindow()
+  local width, height = 360, 200
+  local ctrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxSize(width, height),
+    wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE
+    + wx.wxTR_HIDE_ROOT)
+
+  ide.outline.outlineCtrl = ctrl
+  ide.outline.timer = wx.wxTimer(ctrl)
+
+  local root = ctrl:AddRoot("Outline")
+  ctrl:SetImageList(ide.outline.imglist)
+  ctrl:SetFont(ide.font.fNormal)
+
+  function ctrl:ActivateItem(item_id)
+    ctrl:SelectItem(item_id, true)
+    local data = ctrl:GetItemData(item_id)
+    if ctrl:GetItemImage(item_id) == image.FILE then
+      -- activate editor tab
+      local editor = data:GetData()
+      if editor then ide:GetDocument(editor):SetActive() end
+    else
+      -- activate tab and move cursor based on stored pos
+      -- get file parent
+      local parent = ctrl:GetItemParent(item_id)
+      while parent:IsOk() and ctrl:GetItemImage(parent) ~= image.FILE do
+        parent = ctrl:GetItemParent(parent)
+      end
+      if not parent:IsOk() then return end
+      -- activate editor tab
+      local editor = ctrl:GetItemData(parent):GetData()
+      local cache = caches[editor]
+      if editor and cache then
+        ide:GetDocument(editor):SetActive()
+        -- move to position in the file
+        editor:GotoPosEnforcePolicy(cache.funcs[data:GetData()].pos-1)
+      end
+    end
+  end
+
+  local function activateByPosition(event)
+    -- only toggle if this is a folder and the click is on the item line
+    -- (exclude the label as it's used for renaming and dragging)
+    local mask = (wx.wxTREE_HITTEST_ONITEMINDENT + wx.wxTREE_HITTEST_ONITEMLABEL
+      + wx.wxTREE_HITTEST_ONITEMICON + wx.wxTREE_HITTEST_ONITEMRIGHT)
+    local item_id, flags = ctrl:HitTest(event:GetPosition())
+
+    if item_id and bit.band(flags, mask) > 0 then
+      ctrl:ActivateItem(item_id)
+    else
+      event:Skip()
+    end
+    return true
+  end
+
+  ctrl:Connect(wx.wxEVT_TIMER, function() outlineRefresh(GetEditor()) end)
+  ctrl:Connect(wx.wxEVT_LEFT_DOWN, activateByPosition)
+  ctrl:Connect(wx.wxEVT_LEFT_DCLICK, activateByPosition)
+  ctrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED, function(event)
+      ctrl:ActivateItem(event:GetItem())
+    end)
+
+  local function reconfigure(pane)
+    pane:TopDockable(false):BottomDockable(false)
+        :MinSize(150,-1):BestSize(300,-1):FloatingSize(200,300)
+  end
+
+  local layout = ide:GetSetting("/view", "uimgrlayout")
+  if not layout or not layout:find("outlinepanel") then
+    ide:AddPanelDocked(ide.frame.projnotebook, ctrl, "outlinepanel", TR("Outline"), reconfigure, false)
+  else
+    ide:AddPanel(ctrl, "outlinepanel", TR("Outline"), reconfigure)
+  end
+end
+
+local function eachNode(eachFunc, root)
+  local ctrl = ide.outline.outlineCtrl
+  local item = ctrl:GetFirstChild(root or ctrl:GetRootItem())
+  while true do
+    if not item:IsOk() then break end
+    if eachFunc and eachFunc(ctrl, item) then break end
+    item = ctrl:GetNextSibling(item)
+  end
 end
 
 outlineCreateOutlineWindow()
