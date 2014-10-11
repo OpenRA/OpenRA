@@ -39,12 +39,12 @@ local function outlineRefresh(editor)
     if op == 'Var' or op == 'Id' then
       var = {name = token.name, fpos = token.fpos, global = token.context[token.name] == nil}
     elseif op == 'Function' then
-      local depth = token.context['function']
-      local _, _, rname, params = text:find('([^%(]*)(%b())', token.fpos)
-      if token.name and rname:find(token.name, 1, true) ~= 1 then
-        token.name = rname:gsub("%s+$","")
-      end
+      local depth = token.context['function'] or 1
       local name, pos = token.name, token.fpos
+      local _, _, rname, params = text:find('([^%(]*)(%b())', pos)
+      if name and rname:find(token.name, 1, true) ~= 1 then
+        name = rname:gsub("%s+$","")
+      end
       if not name then
         local s = editor:PositionFromLine(editor:LineFromPosition(pos-1))
         local rest
@@ -57,7 +57,7 @@ local function outlineRefresh(editor)
       end
       local ftype = image.LFUNCTION
       if name and (var.name == name and var.fpos == pos
-        or name:find('^'..var.name..'['..q(sep)..']')) then
+        or var.name and name:find('^'..var.name..'['..q(sep)..']')) then
         ftype = var.global and image.GFUNCTION or image.LFUNCTION
       end
       funcs[#funcs+1] = {
