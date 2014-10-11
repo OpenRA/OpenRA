@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -29,6 +30,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly ButtonWidget stopVideoButton;
 		readonly VqaPlayerWidget videoPlayer;
 
+		readonly ScrollPanelWidget missionList;
+		readonly ScrollItemWidget headerTemplate;
+		readonly ScrollItemWidget template;
+
 		MapPreview selectedMapPreview;
 
 		bool showVideoPlayer;
@@ -38,10 +43,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			this.onStart = onStart;
 
-			var missionList = widget.Get<ScrollPanelWidget>("MISSION_LIST");
+			missionList = widget.Get<ScrollPanelWidget>("MISSION_LIST");
 
-			var headerTemplate = widget.Get<ScrollItemWidget>("HEADER");
-			var template = widget.Get<ScrollItemWidget>("TEMPLATE");
+			headerTemplate = widget.Get<ScrollItemWidget>("HEADER");
+			template = widget.Get<ScrollItemWidget>("TEMPLATE");
 
 			var title = widget.GetOrNull<LabelWidget>("MISSIONBROWSER_TITLE");
 			if (title != null)
@@ -66,42 +71,41 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			stopVideoButton.IsVisible = () => showVideoPlayer;
 			stopVideoButton.OnClick = StopVideo;
 
-			var yaml = new MiniYaml(null, Game.modData.Manifest.Missions.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal)).ToDictionary();
-
+			var allMaps = new List<Map>();
 			missionList.RemoveChildren();
 
-			var selectedFirst = false;
-			foreach (var kv in yaml)
+			// Add a group for each campaign
+			if (Game.modData.Manifest.Missions.Any())
 			{
-				var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => {});
-				header.Get<LabelWidget>("LABEL").GetText = () => kv.Key;
-				missionList.AddChild(header);
+				var yaml = Game.modData.Manifest.Missions.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
 
-				var missionMapPaths = kv.Value.Nodes.Select(n => Platform.ResolvePath(n.Key));
-
-				var maps = Game.modData.MapCache
-					.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(Path.GetFullPath(p.Map.Path)))
-					.Select(p => p.Map);
-
-				foreach (var m in maps)
+				foreach (var kv in yaml)
 				{
-					var map = m;
+					var missionMapPaths = kv.Value.Nodes.Select(n => Path.GetFullPath(n.Key));
 
-					var item = ScrollItemWidget.Setup(template,
-						() => selectedMapPreview != null && selectedMapPreview.Uid == map.Uid,
-						() => SelectMap(map),
-						StartMission);
+					var maps = Game.modData.MapCache
+						.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(Path.GetFullPath(p.Map.Path)))
+						.Select(p => p.Map);
 
-					item.Get<LabelWidget>("TITLE").GetText = () => map.Title;
-					missionList.AddChild(item);
-
-					if (!selectedFirst)
-					{
-						SelectMap(map);
-						selectedFirst = true;
-					}
+					CreateMissionGroup(kv.Key, maps);
+					allMaps.AddRange(maps);
 				}
 			}
+
+			// Add an additional group for loose missions
+			// Loose missions must define Type: Mission and Selectable: false.
+			var looseMissions = Game.modData.MapCache
+				.Where(p => p.Status == MapStatus.Available && p.Map.Type == "Mission" && !p.Map.Selectable && !allMaps.Contains(p.Map))
+				.Select(p => p.Map);
+
+			if (looseMissions.Any())
+			{
+				CreateMissionGroup("Missions", looseMissions);
+				allMaps.AddRange(looseMissions);
+			}
+
+			if (allMaps.Any())
+				SelectMap(allMaps.First());
 
 			widget.Get<ButtonWidget>("STARTGAME_BUTTON").OnClick = StartMission;
 
@@ -112,6 +116,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Ui.CloseWindow();
 				onExit();
 			};
+		}
+
+		void CreateMissionGroup(string title, IEnumerable<Map> maps)
+		{
+			var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => {});
+			header.Get<LabelWidget>("LABEL").GetText = () => title;
+			missionList.AddChild(header);
+
+			foreach (var m in maps)
+			{
+				var map = m;
+
+				var item = ScrollItemWidget.Setup(template,
+					() => selectedMapPreview != null && selectedMapPreview.Uid == map.Uid,
+					() => SelectMap(map),
+					StartMission);
+
+				item.Get<LabelWidget>("TITLE").GetText = () => map.Title;
+				missionList.AddChild(item);
+			}
 		}
 
 		float cachedSoundVolume;

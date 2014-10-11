@@ -85,7 +85,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{ "onStart", RemoveShellmapUI }
 				});
 			};
-			missionsButton.Disabled = !Game.modData.Manifest.Missions.Any();
+
+			var hasCampaign = Game.modData.Manifest.Missions.Any();
+			var hasMissions = Game.modData.MapCache
+				.Any(p => p.Status == MapStatus.Available && p.Map.Type == "Mission" && !p.Map.Selectable);
+
+			missionsButton.Disabled = !hasCampaign && !hasMissions;
 
 			singleplayerMenu.Get<ButtonWidget>("SKIRMISH_BUTTON").OnClick = StartSkirmishGame;
 
