@@ -2337,7 +2337,7 @@ Weapons:
 	Nike:
 		Range: 9c0
 	Maverick:
-		Warhead: SpreadDamage
+		Warhead@1Dam: SpreadDamage
 			Damage: 175
 
 Voices:
