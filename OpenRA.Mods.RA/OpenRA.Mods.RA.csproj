@@ -112,7 +112,6 @@
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="ActorExts.cs" />
-    <Compile Include="ActorLostNotification.cs" />
     <Compile Include="Air\Aircraft.cs" />
     <Compile Include="Air\AttackHeli.cs" />
     <Compile Include="Air\AttackPlane.cs" />
@@ -147,8 +146,6 @@
     <Compile Include="Air\TargetableAircraft.cs" />
     <Compile Include="AI\RushFuzzy.cs" />
     <Compile Include="AI\StateMachine.cs" />
-    <Compile Include="AnnounceOnBuild.cs" />
-    <Compile Include="AnnounceOnKill.cs" />
     <Compile Include="AppearsOnRadar.cs" />
     <Compile Include="AttackMove.cs" />
     <Compile Include="Attack\AttackBase.cs" />
@@ -182,7 +179,6 @@
     <Compile Include="Buildings\ShakeOnDeath.cs" />
     <Compile Include="Buildings\SoundOnDamageTransition.cs" />
     <Compile Include="Buildings\Util.cs" />
-    <Compile Include="BlocksBullets.cs" />
     <Compile Include="Burns.cs" />
     <Compile Include="C4Demolition.cs" />
     <Compile Include="ExternalCapturable.cs" />
@@ -209,7 +205,6 @@
     <Compile Include="Crates\SupportPowerCrateAction.cs" />
     <Compile Include="CreateMPPlayers.cs" />
     <Compile Include="Crushable.cs" />
-    <Compile Include="DeathSounds.cs" />
     <Compile Include="DemoTruck.cs" />
     <Compile Include="DetectCloaked.cs" />
     <Compile Include="Effects\GpsDot.cs" />
