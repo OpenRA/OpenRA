@@ -15,9 +15,15 @@ namespace OpenRA.Traits
 {
 	public class HealthInfo : ITraitInfo, UsesInit<HealthInit>
 	{
+		[Desc("HitPoints")]
 		public readonly int HP = 0;
+
 		[Desc("Physical size of the unit used for damage calculations.  Impacts within this radius apply full damage")]
 		public readonly WRange Radius = new WRange(426);
+
+		[Desc("Don't trigger interfaces such as AnnounceOnKill.")]
+		public readonly bool NotifyAppliedDamage = true;
+
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 
@@ -92,7 +98,7 @@ namespace OpenRA.Traits
 			foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
 				nd.DamageStateChanged(self, ai);
 
-			if (repairer != null && repairer.IsInWorld && !repairer.IsDead())
+			if (Info.NotifyAppliedDamage && repairer != null && repairer.IsInWorld && !repairer.IsDead())
 				foreach (var nd in repairer.TraitsImplementing<INotifyAppliedDamage>()
 				         .Concat(repairer.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
 					nd.AppliedDamage(repairer, self, ai);
@@ -135,7 +141,7 @@ namespace OpenRA.Traits
 				foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
 					nd.DamageStateChanged(self, ai);
 
-			if (attacker != null && attacker.IsInWorld && !attacker.IsDead())
+			if (Info.NotifyAppliedDamage && attacker != null && attacker.IsInWorld && !attacker.IsDead())
 				foreach (var nd in attacker.TraitsImplementing<INotifyAppliedDamage>()
 					 .Concat(attacker.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
 				nd.AppliedDamage(attacker, self, ai);

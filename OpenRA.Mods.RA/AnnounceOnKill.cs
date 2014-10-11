@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 
 		public void AppliedDamage(Actor self, Actor damaged, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead)
+			if (e.DamageState == DamageState.Dead && damaged != e.Attacker) // don't notify suicides
 			{
 				if (self.World.WorldTick - lastAnnounce > info.Interval * 25)
 					Sound.PlayVoice("Kill", self, self.Owner.Country.Race);

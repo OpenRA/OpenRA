@@ -7,6 +7,7 @@ MINP:
 		Weapon: APMine
 	Health:
 		HP: 100
+		NotifyAppliedDamage: false
 	Armor:
 		Type: Light
 	RenderSimple:
@@ -35,6 +36,7 @@ MINV:
 		Weapon: ATMine
 	Health:
 		HP: 100
+		NotifyAppliedDamage: false
 	Armor:
 		Type: Light
 	RenderSimple:
