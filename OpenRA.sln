@@ -71,7 +71,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "Syste
 		lua\stacktraceplus.lua = lua\stacktraceplus.lua
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.CrashDialog", "OpenRA.CrashDialog\OpenRA.CrashDialog.csproj", "{47F1B0EE-EB35-47F2-93E4-273C70909157}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.GameMonitor", "OpenRA.GameMonitor\OpenRA.GameMonitor.csproj", "{68295755-7902-4602-AC2C-9A8AC36D5EF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,8 +102,8 @@ Global
 		{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}.Debug|x86.Build.0 = Debug|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.ActiveCfg = Debug|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.Build.0 = Debug|x86
-		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Debug|x86.ActiveCfg = Debug|x86
-		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Debug|x86.Build.0 = Debug|x86
+		{68295755-7902-4602-AC2C-9A8AC36D5EF7}.Debug|x86.ActiveCfg = Debug|x86
+		{68295755-7902-4602-AC2C-9A8AC36D5EF7}.Debug|x86.Build.0 = Debug|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
