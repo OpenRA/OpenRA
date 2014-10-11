@@ -24,14 +24,14 @@ Actor.Move = function(actor, location)
 end
 
 Actor.MoveNear = function(actor, location, nearEnough)
-	actor:QueueActivity(OpenRA.New("Move", { location, WRange.FromCells(nearEnough) }))
+	actor:QueueActivity(OpenRA.New("Move", { actor, location, WRange.FromCells(nearEnough) }))
 end
 
 Actor.ScriptedMove = function(actor, location)
 	if Actor.HasTrait(actor, "Helicopter") then
 		Internal.HeliFlyToPos(actor, Map.CenterOfCell(location))
 	else
-		actor:QueueActivity(OpenRA.New("Move", { location }))
+		actor:QueueActivity(OpenRA.New("Move", { actor, location }))
 	end
 end
 
