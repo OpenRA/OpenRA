@@ -27,7 +27,7 @@
   <ItemGroup>
     <Reference Include="Eluant, Version=1.0.5229.27703, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Eluant.dll</HintPath>
+      <HintPath>..\thirdparty\Eluant.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
