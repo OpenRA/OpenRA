@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common;
@@ -158,7 +159,7 @@ namespace OpenRA.Mods.RA.AI
 		bool enabled;
 		int ticks;
 
-		HashSet<int> resourceTypeIndices;
+		BitArray resourceTypeIndices;
 
 		RushFuzzy rushFuzzy = new RushFuzzy();
 
@@ -208,10 +209,9 @@ namespace OpenRA.Mods.RA.AI
 
 			random = new MersenneTwister((int)p.PlayerActor.ActorID);
 
-			resourceTypeIndices = new HashSet<int>(
-				Map.Rules.Actors["world"].Traits
-				.WithInterface<ResourceTypeInfo>()
-				.Select(t => world.TileSet.GetTerrainIndex(t.TerrainType)));
+			resourceTypeIndices = new BitArray(world.TileSet.TerrainInfo.Length); // Big enough
+			foreach (var t in Map.Rules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>())
+				resourceTypeIndices.Set(world.TileSet.GetTerrainIndex(t.TerrainType), true);
 		}
 
 		ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)
@@ -371,7 +371,7 @@ namespace OpenRA.Mods.RA.AI
 
 					// Try and place the refinery near a resource field
 					var nearbyResources = Map.FindTilesInCircle(baseCenter, Info.MaxBaseRadius)
-						.Where(a => resourceTypeIndices.Contains(Map.GetTerrainIndex(a)))
+						.Where(a => resourceTypeIndices.Get(Map.GetTerrainIndex(a)))
 						.Shuffle(random);
 
 					foreach (var c in nearbyResources)

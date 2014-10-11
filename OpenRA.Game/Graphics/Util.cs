@@ -29,12 +29,13 @@ namespace OpenRA.Graphics
 
 		public static void FastCreateQuad(Vertex[] vertices, float2 a, float2 b, float2 c, float2 d, Sprite r, int palette, int nv)
 		{
-			var attrib = new float2(palette / (float)HardwarePalette.MaxPalettes, channelSelect[(int)r.channel]);
+			var attribP = palette / (float)HardwarePalette.MaxPalettes;
+			var attribC = channelSelect[(int)r.channel];
 
-			vertices[nv] = new Vertex(a, r.FastMapTextureCoords(0), attrib);
-			vertices[nv + 1] = new Vertex(b, r.FastMapTextureCoords(1), attrib);
-			vertices[nv + 2] = new Vertex(c, r.FastMapTextureCoords(3), attrib);
-			vertices[nv + 3] = new Vertex(d, r.FastMapTextureCoords(2), attrib);
+			vertices[nv] = new Vertex(a, r.left, r.top, attribP, attribC);
+			vertices[nv + 1] = new Vertex(b, r.right, r.top, attribP, attribC);
+			vertices[nv + 2] = new Vertex(c, r.right, r.bottom, attribP, attribC);
+			vertices[nv + 3] = new Vertex(d, r.left, r.bottom, attribP, attribC);
 		}
 
 		static readonly int[] channelMasks = { 2, 1, 0, 3 };	// yes, our channel order is nuts.

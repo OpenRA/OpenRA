@@ -122,7 +122,7 @@ namespace OpenRA
 
 		[FieldLoader.Ignore] public Lazy<CellLayer<TerrainTile>> MapTiles;
 		[FieldLoader.Ignore] public Lazy<CellLayer<ResourceTile>> MapResources;
-		[FieldLoader.Ignore] public CellLayer<int> CustomTerrain;
+		[FieldLoader.Ignore] public CellLayer<byte> CustomTerrain;
 
 		[FieldLoader.Ignore] Lazy<TileSet> cachedTileSet;
 		[FieldLoader.Ignore] Lazy<Ruleset> rules;
@@ -281,9 +281,9 @@ namespace OpenRA
 			var br = Map.MapToCell(TileShape, new CPos(Bounds.Right - 1, Bounds.Bottom - 1));
 			Cells = new CellRegion(TileShape, tl, br);
 
-			CustomTerrain = new CellLayer<int>(this);
+			CustomTerrain = new CellLayer<byte>(this);
 			foreach (var cell in Cells)
-				CustomTerrain[cell] = -1;
+				CustomTerrain[cell] = byte.MaxValue;
 		}
 
 		public Ruleset PreloadRules()
@@ -673,10 +673,10 @@ namespace OpenRA
 			}
 		}
 
-		public int GetTerrainIndex(CPos cell)
+		public byte GetTerrainIndex(CPos cell)
 		{
 			var custom = CustomTerrain[cell];
-			return custom != -1 ? custom : cachedTileSet.Value.GetTerrainIndex(MapTiles.Value[cell]);
+			return custom != byte.MaxValue ? custom : cachedTileSet.Value.GetTerrainIndex(MapTiles.Value[cell]);
 		}
 
 		public TerrainTypeInfo GetTerrainInfo(CPos cell)

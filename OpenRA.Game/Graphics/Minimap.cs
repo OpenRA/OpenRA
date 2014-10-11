@@ -115,7 +115,7 @@ namespace OpenRA.Graphics
 						var mapX = x + b.Left;
 						var mapY = y + b.Top;
 						var custom = map.CustomTerrain[mapX, mapY];
-						if (custom == -1)
+						if (custom == byte.MaxValue)
 							continue;
 						colors[y * stride + x] = world.TileSet[custom].Color.ToArgb();
 					}
