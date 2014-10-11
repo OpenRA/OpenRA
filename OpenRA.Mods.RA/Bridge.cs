@@ -73,26 +73,25 @@ namespace OpenRA.Mods.RA
 	class Bridge : IRender, INotifyDamageStateChanged
 	{
 		readonly Building building;
-
 		readonly Bridge[] neighbours = new Bridge[2];
 		readonly BridgeHut[] huts = new BridgeHut[2]; // Huts before this / first & after this / last
-		public readonly Health Health;
+		readonly Health health;
+		readonly Actor self;
+		readonly BridgeInfo info;
+		readonly string type;
 
 		ushort template;
 		Dictionary<CPos, byte> footprint;
-		Actor self;
 
-		public BridgeInfo Info;
-		public string Type;
 		public BridgeHut Hut { get; internal set; }
 
 		public Bridge(Actor self, BridgeInfo info)
 		{
 			this.self = self;
-			Health = self.Trait<Health>();
-			Health.RemoveOnDeath = false;
-			this.Info = info;
-			this.Type = self.Info.Name;
+			health = self.Trait<Health>();
+			health.RemoveOnDeath = false;
+			this.info = info;
+			type = self.Info.Name;
 			building = self.Trait<Building>();
 		}
 
@@ -135,7 +134,7 @@ namespace OpenRA.Mods.RA
 				if (neighbours[d] != null)
 					continue; // Already linked by reverse lookup
 
-				var offset = d == 0 ? Info.NorthOffset : Info.SouthOffset;
+				var offset = d == 0 ? info.NorthOffset : info.SouthOffset;
 				if (offset == null)
 					continue; // End piece type
 
@@ -182,7 +181,7 @@ namespace OpenRA.Mods.RA
 			{
 				var palette = wr.Palette("terrain");
 				renderables = new Dictionary<ushort, IRenderable[]>();
-				foreach (var t in Info.Templates)
+				foreach (var t in info.Templates)
 					renderables.Add(t.First, TemplateRenderables(wr, palette, t.First));
 
 				initialized = true;
@@ -201,42 +200,42 @@ namespace OpenRA.Mods.RA
 
 		bool NeighbourIsDeadShore(Bridge neighbour)
 		{
-			return neighbour != null && Info.ShorePieces.Contains(neighbour.Type) && neighbour.Health.IsDead;
+			return neighbour != null && info.ShorePieces.Contains(neighbour.type) && neighbour.health.IsDead;
 		}
 
 		bool LongBridgeSegmentIsDead()
 		{
 			// The long bridge artwork requires a hack to display correctly
 			// if the adjacent shore piece is dead
-			if (!Info.Long)
-				return Health.IsDead;
+			if (!info.Long)
+				return health.IsDead;
 
 			if (NeighbourIsDeadShore(neighbours[0]) || NeighbourIsDeadShore(neighbours[1]))
 				return true;
 
-			return Health.IsDead;
+			return health.IsDead;
 		}
 
 		ushort ChooseTemplate()
 		{
-			if (Info.Long && LongBridgeSegmentIsDead())
+			if (info.Long && LongBridgeSegmentIsDead())
 			{
 				// Long bridges have custom art for multiple segments being destroyed
 				var previousIsDead = neighbours[0] != null && neighbours[0].LongBridgeSegmentIsDead();
 				var nextIsDead = neighbours[1] != null && neighbours[1].LongBridgeSegmentIsDead();
 				if (previousIsDead && nextIsDead)
-					return Info.DestroyedPlusBothTemplate;
+					return info.DestroyedPlusBothTemplate;
 				if (previousIsDead)
-					return Info.DestroyedPlusNorthTemplate;
+					return info.DestroyedPlusNorthTemplate;
 				if (nextIsDead)
-					return Info.DestroyedPlusSouthTemplate;
+					return info.DestroyedPlusSouthTemplate;
 
-				return Info.DestroyedTemplate;
+				return info.DestroyedTemplate;
 			}
 
-			var ds = Health.DamageState;
-			return (ds == DamageState.Dead && Info.DestroyedTemplate > 0) ? Info.DestroyedTemplate :
-				   (ds >= DamageState.Heavy && Info.DamagedTemplate > 0) ? Info.DamagedTemplate : Info.Template;
+			var ds = health.DamageState;
+			return (ds == DamageState.Dead && info.DestroyedTemplate > 0) ? info.DestroyedTemplate :
+				   (ds >= DamageState.Heavy && info.DamagedTemplate > 0) ? info.DamagedTemplate : info.Template;
 		}
 
 		bool killedUnits = false;
@@ -268,17 +267,17 @@ namespace OpenRA.Mods.RA
 		public void Repair(Actor repairer, int direction, Action onComplete)
 		{
 			// Repair self
-			var initialDamage = Health.DamageState;
+			var initialDamage = health.DamageState;
 			self.World.AddFrameEndTask(w =>
 			{
-				if (Health.IsDead)
+				if (health.IsDead)
 				{
-					Health.Resurrect(self, repairer);
+					health.Resurrect(self, repairer);
 					killedUnits = false;
 					KillUnitsOnBridge();
 				}
 				else
-					Health.InflictDamage(self, repairer, -Health.MaxHP, null, true);
+					health.InflictDamage(self, repairer, -health.MaxHP, null, true);
 				if (direction < 0 ? neighbours[0] == null && neighbours[1] == null : Hut != null || neighbours[direction] == null)
 					onComplete(); // Done if single or reached other hut
 			});
@@ -287,7 +286,7 @@ namespace OpenRA.Mods.RA
 			if (direction >= 0 && Hut == null && neighbours[direction] != null)
 			{
 				var delay = initialDamage == DamageState.Undamaged || NeighbourIsDeadShore(neighbours[direction]) ?
-					0 : Info.RepairPropagationDelay;
+					0 : info.RepairPropagationDelay;
 
 				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
 					neighbours[direction].Repair(repairer, direction, onComplete))));
@@ -300,7 +299,7 @@ namespace OpenRA.Mods.RA
 
 			// Need to update the neighbours neighbour to correctly
 			// display the broken shore hack
-			if (Info.ShorePieces.Contains(Type))
+			if (info.ShorePieces.Contains(type))
 				for (var d = 0; d <= 1; d++)
 					if (neighbours[d] != null && neighbours[d].neighbours[d] != null)
 						neighbours[d].neighbours[d].UpdateState();
@@ -308,8 +307,8 @@ namespace OpenRA.Mods.RA
 
 		void AggregateDamageState(Bridge b, int d, ref DamageState damage)
 		{
-			if (b.Health.DamageState > damage)
-				damage = b.Health.DamageState;
+			if (b.health.DamageState > damage)
+				damage = b.health.DamageState;
 			if (b.Hut == null && b.neighbours[d] != null)
 				AggregateDamageState(b.neighbours[d], d, ref damage);
 		}
@@ -317,17 +316,17 @@ namespace OpenRA.Mods.RA
 		// Find the worst span damage before other hut
 		public DamageState AggregateDamageState()
 		{
-			var damage = Health.DamageState;
+			var damage = health.DamageState;
 			Do((b, d) => AggregateDamageState(b, d, ref damage));
 			return damage;
 		}
 
 		public void Demolish(Actor saboteur, int direction)
 		{
-			var initialDamage = Health.DamageState;
+			var initialDamage = health.DamageState;
 			self.World.AddFrameEndTask(w =>
 			{
-				var weapon = saboteur.World.Map.Rules.Weapons[Info.DemolishWeapon.ToLowerInvariant()];
+				var weapon = saboteur.World.Map.Rules.Weapons[info.DemolishWeapon.ToLowerInvariant()];
 
 				// Use .FromPos since this actor is killed. Cannot use Target.FromActor
 				weapon.Impact(Target.FromPos(self.CenterPosition), saboteur, Enumerable.Empty<int>());
@@ -340,7 +339,7 @@ namespace OpenRA.Mods.RA
 			if (direction >= 0 && Hut == null && neighbours[direction] != null)
 			{
 				var delay = initialDamage == DamageState.Dead || NeighbourIsDeadShore(neighbours[direction]) ?
-					0 : Info.RepairPropagationDelay;
+					0 : info.RepairPropagationDelay;
 
 				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
 					neighbours[direction].Demolish(saboteur, direction))));
