@@ -2,31 +2,42 @@ Container@MISSIONBROWSER_PANEL:
 	Logic: MissionBrowserLogic
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
-	Width: 629
-	Height: 399
+	Width: 642
+	Height: 377
 	Children:
-		Label@MISSIONBROWSER_LABEL_TITLE:
+		Label@MISSIONBROWSER_TITLE:
 			Y: 0-25
 			Width: PARENT_RIGHT
 			Text: Missions
 			Align: Center
+			Contrast: true
 			Font: BigBold
 		Background@BG:
-			Width: 629
-			Height: 360
+			Width: 642
+			Height: 377
 			Background: panel-black
 			Children:
 				ScrollPanel@MISSION_LIST:
 					X: 15
 					Y: 15
-					Width: 260
-					Height: 330
+					Width: 239
+					Height: 347
 					Children:
-						ScrollItem@MISSION_TEMPLATE:
+						ScrollItem@HEADER:
+							Width: PARENT_RIGHT-27
+							Height: 13
+							X: 2
+							Visible: false
+							Children:
+								Label@LABEL:
+									Font: TinyBold
+									Width: PARENT_RIGHT
+									Height: 10
+									Align: Center
+						ScrollItem@TEMPLATE:
 							Width: PARENT_RIGHT-27
 							Height: 25
 							X: 2
-							Y: 0
 							Visible: False
 							Children:
 								Label@TITLE:
@@ -34,50 +45,67 @@ Container@MISSIONBROWSER_PANEL:
 									Width: PARENT_RIGHT-20
 									Height: 25
 				Container@MISSION_INFO:
-					X: 290
+					X: 265
 					Y: 15
-					Width: 324
-					Height: 334
+					Width: 362
+					Height: 349
 					Children:
 						Background@MISSION_BG:
-							X: 0
-							Y: 0
-							Width: 324
-							Height: 160
-							Background: panel-gray
+							Width: PARENT_RIGHT
+							Height: 202
+							Background: panel-black
 							Children:
 								MapPreview@MISSION_PREVIEW:
-									X: 2
-									Y: 2
-									Width: PARENT_RIGHT-4
-									Height: PARENT_BOTTOM-4
+									X: 1
+									Y: 1
+									Width: PARENT_RIGHT-2
+									Height: PARENT_BOTTOM-2
 									IgnoreMouseOver: True
 									IgnoreMouseInput: True
 									ShowSpawnPoints: False
 						ScrollPanel@MISSION_DESCRIPTION_PANEL:
-							X: 0
-							Y: 171
-							Width: 324
-							Height: 159
+							Y: 213
+							Width: PARENT_RIGHT
+							Height: 134
 							Children:
 								Label@MISSION_DESCRIPTION:
-									X: 5
-									Y: 5
-									Width: 290
+									X: 4
+									Y: 1
+									Width: PARENT_RIGHT - 32
 									VAlign: Top
+									Font: Small
 		Button@BACK_BUTTON:
-			X: 0
-			Y: 359
+			Y: 376
 			Width: 140
 			Height: 35
 			Text: Back
 			Font: Bold
 			Key: escape
-		Button@STARTGAME_BUTTON:
-			X: PARENT_RIGHT - 140
-			Y: 359
+		Button@START_VIDEO_BUTTON:
+			X: PARENT_RIGHT - 290
+			Y: 376
 			Width: 140
 			Height: 35
-			Text: Start Game
+			Text: View Briefing
 			Font: Bold
-
+		Button@STOP_VIDEO_BUTTON:
+			X: PARENT_RIGHT - 290
+			Y: 376
+			Width: 140
+			Height: 35
+			Text: Stop Briefing
+			Font: Bold
+		Button@STARTGAME_BUTTON:
+			X: PARENT_RIGHT - 140
+			Y: 376
+			Width: 140
+			Height: 35
+			Text: Play
+			Font: Bold
+		Container@MISSION_BIN:
+			Children:
+				VqaPlayer@MISSION_VIDEO:
+					X: 1
+					Y: 1
+					Width: 640
+					Height: 375

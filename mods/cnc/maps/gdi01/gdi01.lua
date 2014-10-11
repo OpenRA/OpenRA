@@ -39,7 +39,7 @@ CheckForBase = function()
 end
 
 WorldLoaded = function()
-	Media.PlayMovieFullscreen("gdi1.vqa", function() Media.PlayMovieFullscreen("landing.vqa") end)
+	Media.PlayMovieFullscreen("landing.vqa")
 
 	player = Player.GetPlayer("GDI")
 	enemy = Player.GetPlayer("Nod")

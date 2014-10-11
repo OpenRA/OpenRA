@@ -24,7 +24,7 @@ WorldLoaded = function()
 	player = OpenRA.GetPlayer("GDI")
 	enemy = OpenRA.GetPlayer("Nod")
 
-	Media.PlayMovieFullscreen("gdi3.vqa", function() Media.PlayMovieFullscreen("samdie.vqa") end)
+	Media.PlayMovieFullscreen("samdie.vqa")
 
 	samSites = Team.New({ Sam1, Sam2, Sam3, Sam4 })
 	Team.AddEventHandler(samSites.OnAllKilled, function() Actor.Create("PowerProxy.AirSupport", { Owner = player }) end)

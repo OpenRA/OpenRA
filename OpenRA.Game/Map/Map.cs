@@ -70,6 +70,7 @@ namespace OpenRA
 
 		public string Title;
 		public string Type = "Conquest";
+		public string PreviewVideo;
 		public string Description;
 		public string Author;
 		public string Tileset;

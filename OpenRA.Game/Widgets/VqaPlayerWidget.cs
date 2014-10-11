@@ -18,6 +18,13 @@ namespace OpenRA.Widgets
 {
 	public class VqaPlayerWidget : Widget
 	{
+		public Hotkey CancelKey = new Hotkey(Keycode.ESCAPE, Modifiers.None);
+		public float AspectRatio = 1.2f;
+		public bool DrawOverlay = true;
+
+		public bool Paused { get { return paused; } }
+		public VqaReader Video { get { return video; } }
+
 		Sprite videoSprite, overlaySprite;
 		VqaReader video = null;
 		string cachedVideo;
@@ -29,17 +36,14 @@ namespace OpenRA.Widgets
 
 		Action onComplete;
 
-		public bool Paused { get { return paused; } }
-		public VqaReader Video { get { return video; } }
-
 		readonly World world;
+
 		[ObjectCreator.UseCtor]
 		public VqaPlayerWidget(World world)
 		{
 			this.world = world;
 		}
 
-		public bool DrawOverlay = true;
 		public void Load(string filename)
 		{
 			if (filename == cachedVideo)
@@ -58,25 +62,29 @@ namespace OpenRA.Widgets
 			var size = Math.Max(video.Width, video.Height);
 			var textureSize = Exts.NextPowerOf2(size);
 			var videoSheet = new Sheet(new Size(textureSize, textureSize), false);
+
+			videoSheet.Texture.ScaleFilter = TextureScaleFilter.Linear;
 			videoSheet.Texture.SetData(video.FrameData);
 			videoSprite = new Sprite(videoSheet, new Rectangle(0, 0, video.Width, video.Height), TextureChannel.Alpha);
 
-			var scale = Math.Min(RenderBounds.Width / video.Width, RenderBounds.Height / video.Height);
-			videoOrigin = new float2(RenderBounds.X + (RenderBounds.Width - scale * video.Width) / 2, RenderBounds.Y + (RenderBounds.Height - scale * video.Height) / 2);
-			videoSize = new float2(video.Width * scale, video.Height * scale);
+			var scale = Math.Min(RenderBounds.Width / video.Width, RenderBounds.Height / (video.Height * AspectRatio));
+			videoOrigin = new float2(RenderBounds.X + (RenderBounds.Width - scale * video.Width) / 2, RenderBounds.Y + (RenderBounds.Height - scale * AspectRatio * video.Height) / 2);
+
+			// Round size to integer pixels. Round up to be consistent with the scale calcuation.
+			videoSize = new float2((int)Math.Ceiling(video.Width * scale), (int)Math.Ceiling(video.Height * scale * AspectRatio));
 
 			if (!DrawOverlay)
 				return;
 
-			overlay = new uint[2 * textureSize, 2 * textureSize];
+			var scaledHeight = (int)videoSize.Y;
+			overlay = new uint[Exts.NextPowerOf2(scaledHeight), 1];
 			var black = (uint)255 << 24;
-			for (var y = 0; y < video.Height; y++)
-				for (var x = 0; x < video.Width; x++)
-					overlay[2 * y, x] = black;
+			for (var y = 0; y < scaledHeight; y += 2)
+				overlay[y, 0] = black;
 
-			var overlaySheet = new Sheet(new Size(2 * textureSize, 2 * textureSize), false);
+			var overlaySheet = new Sheet(new Size(1, Exts.NextPowerOf2(scaledHeight)), false);
 			overlaySheet.Texture.SetData(overlay);
-			overlaySprite = new Sprite(overlaySheet, new Rectangle(0, 0, video.Width, 2 * video.Height), TextureChannel.Alpha);
+			overlaySprite = new Sprite(overlaySheet, new Rectangle(0, 0, 1, scaledHeight), TextureChannel.Alpha);
 		}
 
 		public override void Draw()
@@ -84,7 +92,7 @@ namespace OpenRA.Widgets
 			if (video == null)
 				return;
 
-			if (!(stopped || paused))
+			if (!stopped && !paused)
 			{
 				var nextFrame = (int)float2.Lerp(0, video.Frames, Sound.VideoSeekPosition * invLength);
 				if (nextFrame > video.Frames)
@@ -109,16 +117,16 @@ namespace OpenRA.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (e.Event == KeyInputEvent.Down)
-			{
-				if (e.Key == Keycode.ESCAPE)
-				{
-					Stop();
-					return true;
-				}
-			}
+			if (Hotkey.FromKeyInput(e) != CancelKey || e.Event != KeyInputEvent.Down)
+				return false;
 
-			return false;
+			Stop();
+			return true;
+		}
+
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			return RenderBounds.Contains(mi.Location);
 		}
 
 		public void Play()

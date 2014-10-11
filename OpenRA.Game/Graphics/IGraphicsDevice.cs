@@ -79,6 +79,7 @@ namespace OpenRA
 		void Render(Action a);
 	}
 
+	public enum TextureScaleFilter { Nearest, Linear }
 	public interface ITexture
 	{
 		void SetData(Bitmap bitmap);
@@ -86,6 +87,7 @@ namespace OpenRA
 		void SetData(byte[] colors, int width, int height);
 		byte[] GetData();
 		Size Size { get; }
+		TextureScaleFilter ScaleFilter { get; set; }
 	}
 
 	public interface IFrameBuffer

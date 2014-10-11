@@ -166,6 +166,9 @@ Fonts:
 	BigBold:
 		Font:./FreeSansBold.ttf
 		Size:24
+	Small:
+		Font:FreeSans.ttf
+		Size:12
 	Tiny:
 		Font:./FreeSans.ttf
 		Size:10
