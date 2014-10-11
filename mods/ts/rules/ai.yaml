@@ -17,9 +17,13 @@ Player:
 			napowr: 8
 			gapile: 1
 			nahand: 1
-			garadr: 1
 			gaweap: 1
 			naweap: 1
+			garadr: 1
+			naradr: 1
+			gatech: 1
+			natech: 1
+			nastlh: 1
 		BuildingFractions:
 			proc: 30%
 			gapowr: 35%
@@ -28,13 +32,18 @@ Player:
 			nahand: 1%
 			gaweap: 1%
 			naweap: 1%
+			garadr: 1%
+			naradr: 1%
+			gatech: 1%
+			natech: 1%
+			nastlh: 1%
 		UnitsToBuild:
 			e1: 80%
 			e2: 8%
 			e3: 30%
 			medic: 2%
 			jumpjet: 15%
-			apc: 3%
+			mmch: 15%
 			smech: 25%
 			bike: 60%
 			bggy: 75%
