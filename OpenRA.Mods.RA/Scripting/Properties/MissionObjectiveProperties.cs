@@ -98,6 +98,16 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
+		[Desc("Returns the type of an objective.")]
+		public string GetObjectiveType(int id)
+		{
+			if (id < 0 || id >= mo.Objectives.Count)
+				throw new LuaException("Objective ID is out of range.");
+
+			return mo.Objectives[id].Type == ObjectiveType.Primary ? "Primary" : "Secondary";
+		}
+
+		[ScriptActorPropertyActivity]
 		[Desc("Returns true if this player has lost all units/actors that have the MustBeDestroyed trait.")]
 		public bool HasNoRequiredUnits()
 		{
