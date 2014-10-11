@@ -9,23 +9,45 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Media;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace OpenRA.CrashDialog
+namespace OpenRA
 {
-	class FatalErrorDialog
+	class GameMonitor
 	{
-		static Settings settings;
+		static string processName = "OpenRA.Game.exe";
+		static Process gameProcess;
+		
 		[STAThread]
-		public static void Main(string[] args)
+		static void Main(string[] args)
 		{
-			settings = new Settings(Platform.ResolvePath("^", "settings.yaml"), new Arguments());
+			var psi = new ProcessStartInfo(processName, string.Join(" ", args));
 
+			try
+			{
+				gameProcess = Process.Start(psi);
+			}
+			catch
+			{
+				return;
+			}
+
+			if (gameProcess == null)
+				return;
+
+			gameProcess.EnableRaisingEvents = true;
+			gameProcess.Exited += GameProcessExited;
+
+			Application.Run();
+		}
+
+		static void ShowErrorDialog()
+		{
 			var form = new Form
 			{
 				Size = new Size(315, 140),
@@ -34,6 +56,7 @@ namespace OpenRA.CrashDialog
 				MaximizeBox = false,
 				FormBorderStyle = FormBorderStyle.FixedDialog,
 				StartPosition = FormStartPosition.CenterScreen,
+				TopLevel = true,
 				Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)
 			};
 
@@ -44,51 +67,48 @@ namespace OpenRA.CrashDialog
 				Text = "OpenRA has encountered a fatal error and must close.{0}Refer to the crash logs and FAQ for more information.".F(Environment.NewLine),
 				TextAlign = ContentAlignment.TopCenter
 			};
-			form.Controls.Add(notice);
-
-			var dontShowAgain = new CheckBox
-			{
-				Location = new Point(25, 50),
-				AutoSize = true,
-				Text = "Don't show this message again",
-			};
-			form.Controls.Add(dontShowAgain);
-
+			
 			var viewLogs = new Button
 			{
 				Location = new Point(10, 80),
 				Size = new Size(75, 23),
 				Text = "View Logs"
 			};
-			viewLogs.Click += ViewLogsClicked;
-			form.Controls.Add(viewLogs);
-
+			
 			var viewFaq = new Button
 			{
 				Location = new Point(90, 80),
 				Size = new Size(75, 23),
 				Text = "View FAQ"
 			};
-			viewFaq.Click += ViewFaqClicked;
-			form.Controls.Add(viewFaq);
 
 			var quit = new Button
 			{
 				Location = new Point(225, 80),
 				Size = new Size(75, 23),
-				Text = "Quit"
+				Text = "Quit",
+				DialogResult = DialogResult.Cancel
 			};
-			quit.DialogResult = DialogResult.Cancel;
+			
+			form.Controls.Add(notice);
+			form.Controls.Add(viewLogs);
+			form.Controls.Add(viewFaq);
 			form.Controls.Add(quit);
 
-			form.FormClosed += (sender, e) =>
-			{
-				settings.Debug.ShowFatalErrorDialog = !dontShowAgain.Checked;
-				settings.Save();
-			};
+			viewLogs.Click += ViewLogsClicked;
+			viewFaq.Click += ViewFaqClicked;
+			form.FormClosed += FormClosed;
 
 			SystemSounds.Exclamation.Play();
 			form.ShowDialog();
+		}
+
+		static void GameProcessExited(object sender, EventArgs e)
+		{
+			if (gameProcess.ExitCode != 0)
+				ShowErrorDialog();
+
+			Exit();
 		}
 
 		static void ViewLogsClicked(object sender, EventArgs e)
@@ -97,16 +117,28 @@ namespace OpenRA.CrashDialog
 			{
 				Process.Start(Platform.ResolvePath("^", "Logs"));
 			}
-			catch { }
+			catch
+			{ }
 		}
 
 		static void ViewFaqClicked(object sender, EventArgs e)
 		{
 			try
 			{
-				Process.Start(settings.Debug.FatalErrorDialogFaq);
+				Process.Start("http://wiki.openra.net/FAQ");
 			}
-			catch { }
+			catch
+			{ }
+		}
+
+		static void FormClosed(object sender, EventArgs e)
+		{
+			Exit();
+		}
+
+		static void Exit()
+		{
+			Environment.Exit(0);
 		}
 	}
 }
