@@ -194,7 +194,7 @@ SetupWorld = function()
 		end
 	end)
 
-	Production.SetRallyPoint(WarFactory, Rallypoint)
+--	Production.SetRallyPoint(WarFactory, Rallypoint)
 	Production.EventHandlers.Setup(soviets)
 
 	-- RunAfterDelay is used so that the 'Building captured' and 'Mission accomplished' sounds don't play at the same time
