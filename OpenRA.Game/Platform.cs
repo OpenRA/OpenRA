@@ -62,35 +62,69 @@ namespace OpenRA
 			}
 		}
 
-		public static string SupportDir
+		public static string SupportDir { get { return supportDir.Value; } }
+		static Lazy<string> supportDir = Exts.Lazy(GetSupportDir);
+
+		static string GetSupportDir()
 		{
-			get
+			// Use a local directory in the game root if it exists
+			if (Directory.Exists("Support"))
+				return "Support" + Path.DirectorySeparatorChar;
+
+			var dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+
+			switch (CurrentPlatform)
 			{
-				// Use a local directory in the game root if it exists
-				if (Directory.Exists("Support"))
-					return "Support" + Path.DirectorySeparatorChar;
-
-				var dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-
-				switch (CurrentPlatform)
-				{
-				case PlatformType.Windows:
-					dir += Path.DirectorySeparatorChar + "OpenRA";
-					break;
-				case PlatformType.OSX:
-					dir += "/Library/Application Support/OpenRA";
-					break;
-				case PlatformType.Linux:
-				default:
-					dir += "/.openra";
-					break;
-				}
-
-				if (!Directory.Exists(dir))
-					Directory.CreateDirectory(dir);
-
-				return dir + Path.DirectorySeparatorChar;
+			case PlatformType.Windows:
+				dir += Path.DirectorySeparatorChar + "OpenRA";
+				break;
+			case PlatformType.OSX:
+				dir += "/Library/Application Support/OpenRA";
+				break;
+			case PlatformType.Linux:
+			default:
+				dir += "/.openra";
+				break;
 			}
+
+			if (!Directory.Exists(dir))
+				Directory.CreateDirectory(dir);
+
+			return dir + Path.DirectorySeparatorChar;
+		}
+
+		public static string GameDir { get { return AppDomain.CurrentDomain.BaseDirectory; } }
+
+		/// <summary>Replace special character prefixes with full paths</summary>
+		public static string ResolvePath(string path)
+		{
+			// paths starting with ^ are relative to the support dir
+			if (path.StartsWith("^"))
+				path = SupportDir + path.Substring(1);
+
+			// paths starting with . are relative to the game dir
+			if (path.StartsWith("./") || path.StartsWith(".\\"))
+				path = GameDir + path.Substring(2);
+
+			return path;
+		}
+
+		/// <summary>Replace special character prefixes with full paths</summary>
+		public static string ResolvePath(params string[] path)
+		{
+			return ResolvePath(path.Aggregate(Path.Combine));
+		}
+
+		/// <summary>Replace the full path prefix with the special notation characters ^ or .</summary>
+		public static string UnresolvePath(string path)
+		{
+			if (path.StartsWith(SupportDir))
+				path = "^" + path.Substring(SupportDir.Length);
+
+			if (path.StartsWith(GameDir))
+				path = "." + path.Substring(GameDir.Length);
+
+			return path;
 		}
 
 		public static void ShowFatalErrorDialog()

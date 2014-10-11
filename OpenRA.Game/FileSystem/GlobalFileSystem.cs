@@ -104,20 +104,13 @@ namespace OpenRA.FileSystem
 			return new Folder(filename, order);
 		}
 
-		public static void Mount(string name)
-		{
-			Mount(name, null);
-		}
-
-		public static void Mount(string name, string annotation)
+		public static void Mount(string name, string annotation = null)
 		{
 			var optional = name.StartsWith("~");
 			if (optional)
 				name = name.Substring(1);
 
-			// paths starting with ^ are relative to the support dir
-			if (name.StartsWith("^"))
-				name = Platform.SupportDir + name.Substring(1);
+			name = Platform.ResolvePath(name);
 
 			FolderPaths.Add(name);
 			Action a = () => MountInner(OpenPackage(name, annotation, order++));

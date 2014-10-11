@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -26,7 +27,7 @@ namespace OpenRA
 			Folders, Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Movies, Translations, TileSets,
-			ChromeMetrics, PackageContents, LuaScripts, MapCompatibility, Missions;
+			ChromeMetrics, LuaScripts, MapCompatibility, Missions;
 
 		public readonly IReadOnlyDictionary<string, string> Packages;
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
@@ -55,36 +56,35 @@ namespace OpenRA
 
 		public Manifest(string mod)
 		{
-			var path = new[] { "mods", mod, "mod.yaml" }.Aggregate(Path.Combine);
+			var path = Platform.ResolvePath(".", "mods", mod, "mod.yaml");
 			var yaml = new MiniYaml(null, MiniYaml.FromFile(path)).ToDictionary();
 
 			Mod = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
 			Mod.Id = mod;
 
 			// TODO: Use fieldloader
-			Folders = YamlList(yaml, "Folders");
-			MapFolders = YamlDictionary(yaml, "MapFolders");
-			Packages = YamlDictionary(yaml, "Packages");
-			Rules = YamlList(yaml, "Rules");
-			ServerTraits = YamlList(yaml, "ServerTraits");
-			Sequences = YamlList(yaml, "Sequences");
-			VoxelSequences = YamlList(yaml, "VoxelSequences");
-			Cursors = YamlList(yaml, "Cursors");
-			Chrome = YamlList(yaml, "Chrome");
-			Assemblies = YamlList(yaml, "Assemblies");
-			ChromeLayout = YamlList(yaml, "ChromeLayout");
-			Weapons = YamlList(yaml, "Weapons");
-			Voices = YamlList(yaml, "Voices");
-			Notifications = YamlList(yaml, "Notifications");
-			Music = YamlList(yaml, "Music");
-			Movies = YamlList(yaml, "Movies");
-			Translations = YamlList(yaml, "Translations");
-			TileSets = YamlList(yaml, "TileSets");
-			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
-			PackageContents = YamlList(yaml, "PackageContents");
-			LuaScripts = YamlList(yaml, "LuaScripts");
-			Missions = YamlList(yaml, "Missions");
+			Folders = YamlList(yaml, "Folders", true);
+			MapFolders = YamlDictionary(yaml, "MapFolders", true);
+			Packages = YamlDictionary(yaml, "Packages", true);
+			Rules = YamlList(yaml, "Rules", true);
+			Sequences = YamlList(yaml, "Sequences", true);
+			VoxelSequences = YamlList(yaml, "VoxelSequences", true);
+			Cursors = YamlList(yaml, "Cursors", true);
+			Chrome = YamlList(yaml, "Chrome", true);
+			Assemblies = YamlList(yaml, "Assemblies", true);
+			ChromeLayout = YamlList(yaml, "ChromeLayout", true);
+			Weapons = YamlList(yaml, "Weapons", true);
+			Voices = YamlList(yaml, "Voices", true);
+			Notifications = YamlList(yaml, "Notifications", true);
+			Music = YamlList(yaml, "Music", true);
+			Movies = YamlList(yaml, "Movies", true);
+			Translations = YamlList(yaml, "Translations", true);
+			TileSets = YamlList(yaml, "TileSets", true);
+			ChromeMetrics = YamlList(yaml, "ChromeMetrics", true);
+			LuaScripts = YamlList(yaml, "LuaScripts", true);
+			Missions = YamlList(yaml, "Missions", true);
 
+			ServerTraits = YamlList(yaml, "ServerTraits");
 			LoadScreen = yaml["LoadScreen"];
 			LobbyDefaults = yaml["LobbyDefaults"];
 
@@ -135,20 +135,23 @@ namespace OpenRA
 				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", yaml["SpriteFormats"].Value);
 		}
 
-		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key)
+		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key, bool parsePaths = false)
 		{
 			if (!yaml.ContainsKey(key))
 				return new string[] { };
 
-			return yaml[key].ToDictionary().Keys.ToArray();
+			var list = yaml[key].ToDictionary().Keys.ToArray();
+			return parsePaths ? list.Select(Platform.ResolvePath).ToArray() : list;
 		}
 
-		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key)
+		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key, bool parsePaths = false)
 		{
 			if (!yaml.ContainsKey(key))
 				return new ReadOnlyDictionary<string, string>();
 
-			var inner = yaml[key].ToDictionary(my => my.Value);
+			Func<string, string> keySelector = parsePaths ? (Func<string, string>)Platform.ResolvePath : k => k;
+			var inner = yaml[key].ToDictionary(keySelector, my => my.Value);
+
 			return new ReadOnlyDictionary<string, string>(inner);
 		}
 	}

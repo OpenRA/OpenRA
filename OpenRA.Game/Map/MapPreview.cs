@@ -164,7 +164,7 @@ namespace OpenRA
 				return;
 
 			Status = MapStatus.Downloading;
-			var baseMapPath = new[] { Platform.SupportDir, "maps", Game.modData.Manifest.Mod.Id }.Aggregate(Path.Combine);
+			var baseMapPath = Platform.ResolvePath("^", "maps", Game.modData.Manifest.Mod.Id);
 
 			// Create the map directory if it doesn't exist
 			if (!Directory.Exists(baseMapPath))

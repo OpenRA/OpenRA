@@ -18,7 +18,7 @@ namespace OpenRA.Widgets
 	{
 		static Dictionary<string, string> data = new Dictionary<string, string>();
 
-		public static void Initialize(string[] yaml)
+		public static void Initialize(IEnumerable<string> yaml)
 		{
 			data = new Dictionary<string, string>();
 			var metrics = yaml.Select(y => MiniYaml.FromFile(y))
