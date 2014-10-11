@@ -6,27 +6,27 @@ Container@MAP_PANEL:
 		Background@PREVIEW_BG:
 			X: (PARENT_RIGHT - WIDTH) / 2
 			Y: 20
-			Width: 324
-			Height: 160
-			Background: panel-gray
+			Width: 362
+			Height: 202
+			Background: dialog3
 			Children:
 				MapPreview@MAP_PREVIEW:
-					Width: 320
-					Height: 156
-					X: 2
-					Y: 2
+					X: 1
+					Y: 1
+					Width: PARENT_RIGHT-2
+					Height: PARENT_BOTTOM-2
 					IgnoreMouseOver: True
 					IgnoreMouseInput: True
 					ShowSpawnPoints: False
 		ScrollPanel@MAP_DESCRIPTION_PANEL:
 			X: 20
-			Y: 195
-			Width: 482
-			Height: 175
+			Y: 232
+			Width: PARENT_RIGHT - 40
+			Height: 138
 			Children:
 				Label@MAP_DESCRIPTION:
-					X: 5
-					Y: 180
-					Width: 452
-					Height: 145
+					X: 4
+					Y: 1
+					Width: PARENT_RIGHT - 32
+
 
