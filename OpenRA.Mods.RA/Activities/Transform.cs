@@ -9,6 +9,8 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -54,6 +56,12 @@ namespace OpenRA.Mods.RA.Activities
 					new OwnerInit(self.Owner),
 					new FacingInit(Facing),
 				};
+
+				var mobile = self.TraitOrDefault<Mobile>();
+				if (mobile != null)
+					init.Add(new SubCellInit(mobile.fromSubCell));
+				else if (!self.HasTrait<Building>() && !self.World.Map.Rules.Actors[ToActor].Traits.Contains<BuildingInfo>())
+					init.Add(new CenterPositionInit(self.CenterPosition));
 
 				if (SkipMakeAnims)
 					init.Add(new SkipMakeAnimsInit());
