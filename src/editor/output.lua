@@ -215,7 +215,7 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   DisplayOutputLn(TR("Program '%s' started in '%s' (pid: %d).")
     :format(uid, (wdir and wdir or wx.wxFileName.GetCwd()), pid))
 
-  OutputSetCallbacks(pid, proc, callback, endcallback)
+  OutputSetCallbacks(pid, proc, stringcallback, endcallback)
   customprocs[pid].uid=uid
   customprocs[pid].started = TimeGet()
 
