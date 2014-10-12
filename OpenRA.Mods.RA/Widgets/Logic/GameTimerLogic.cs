@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -34,7 +35,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (world.Timestep == 1)
 					return "Max Speed";
 
-				return "{0:F1}x Speed".F(Game.Timestep * 1f / world.Timestep);
+				return "{0:F1}x Speed".F((Game.Timestep * 1f / world.Timestep).ToString(CultureInfo.InvariantCulture));
 			};
 
 			if (timer != null)

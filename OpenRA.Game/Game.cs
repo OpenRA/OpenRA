@@ -633,7 +633,7 @@ namespace OpenRA
 				if (orderManager != null)
 					orderManager.Dispose();
 			}
-				
+
 			Renderer.Device.Dispose();
 
 			OnQuit();

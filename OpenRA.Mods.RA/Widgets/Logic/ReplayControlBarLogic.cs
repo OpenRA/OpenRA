@@ -28,21 +28,47 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				container.Visible = true;
 
-				var pauseButton = widget.Get<ButtonWidget>("BUTTON_PAUSE");
-				pauseButton.IsHighlighted = () => world.Timestep == 0;
-				pauseButton.OnClick = () => world.Timestep = 0;
+				var pauseButton = widget.GetOrNull<ButtonWidget>("BUTTON_PAUSE");
+				if (pauseButton != null)
+				{
+					pauseButton.IsHighlighted = () => world.Timestep == 0;
+					pauseButton.OnClick = () => world.Timestep = 0;
+				}
 
-				var slowButton = widget.Get<ButtonWidget>("BUTTON_SLOW");
-				slowButton.IsHighlighted = () => world.Timestep > Game.Timestep;
-				slowButton.OnClick = () => world.Timestep = Game.Timestep * 2;
+				var slowButton = widget.GetOrNull<ButtonWidget>("BUTTON_SLOW");
+				if (slowButton != null)
+				{
+					slowButton.IsHighlighted = () => world.Timestep > Game.Timestep;
+					slowButton.OnClick = () => world.Timestep = Game.Timestep * 2;
+				}
 
-				var normalSpeedButton = widget.Get<ButtonWidget>("BUTTON_NORMALSPEED");
-				normalSpeedButton.IsHighlighted = () => world.Timestep == Game.Timestep;
-				normalSpeedButton.OnClick = () => world.Timestep = Game.Timestep;
+				var normalSpeedButton = widget.GetOrNull<ButtonWidget>("BUTTON_NORMALSPEED");
+				if (normalSpeedButton != null)
+				{
+					normalSpeedButton.IsHighlighted = () => world.Timestep == Game.Timestep;
+					normalSpeedButton.OnClick = () => world.Timestep = Game.Timestep;
+				}
 
-				var fastforwardButton = widget.Get<ButtonWidget>("BUTTON_FASTFORWARD");
-				fastforwardButton.IsHighlighted = () => world.Timestep == 1;
-				fastforwardButton.OnClick = () => world.Timestep = 1;
+				var twoTimesSpeedButton = widget.GetOrNull<ButtonWidget>("BUTTON_2XSPEED");
+				if (twoTimesSpeedButton != null)
+				{
+					twoTimesSpeedButton.IsHighlighted = () => world.Timestep == Game.Timestep / 2;
+					twoTimesSpeedButton.OnClick = () => world.Timestep = Game.Timestep / 2;
+				}
+
+				var tenTimesSpeedButton = widget.GetOrNull<ButtonWidget>("BUTTON_10XSPEED");
+				if (tenTimesSpeedButton != null)
+				{
+					tenTimesSpeedButton.IsHighlighted = () => world.Timestep == Game.Timestep / 10;
+					tenTimesSpeedButton.OnClick = () => world.Timestep = Game.Timestep / 10;
+				}
+
+				var maxSpeedButton = widget.GetOrNull<ButtonWidget>("BUTTON_MAXSPEED");
+				if (maxSpeedButton != null)
+				{
+					maxSpeedButton.IsHighlighted = () => world.Timestep == 1;
+					maxSpeedButton.OnClick = () => world.Timestep = 1;
+				}
 			}
 		}
 	}
