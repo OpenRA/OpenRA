@@ -65,7 +65,7 @@ Container@OBSERVER_WIDGETS:
 		MenuButton@OPTIONS_BUTTON:
 			Logic: OrderButtonsChromeLogic
 			Key: escape
-			X: WINDOW_RIGHT-202
+			X: WINDOW_RIGHT-260-WIDTH
 			Y: 5
 			Width: 30
 			Height: 25
@@ -79,10 +79,10 @@ Container@OBSERVER_WIDGETS:
 					ImageCollection: order-icons
 					ImageName: options
 		Background@RADAR:
-			X: WINDOW_RIGHT-173
+			X: WINDOW_RIGHT-WIDTH-5
 			Y: 5
-			Width: 168
-			Height: 168
+			Width: 256
+			Height: 256
 			Background: panel-gray
 			Children:
 				Radar:
@@ -92,15 +92,15 @@ Container@OBSERVER_WIDGETS:
 					Height: PARENT_BOTTOM-2
 		Background@REPLAY_PLAYER:
 			Logic: ReplayControlBarLogic
-			X: WINDOW_RIGHT-173
-			Y: 195
-			Width: 168
+			X: WINDOW_RIGHT-WIDTH-5
+			Y: 283
+			Width: 256
 			Height: 46
 			Background: panel-black
 			Visible: false
 			Children:
 				Button@BUTTON_PAUSE:
-					X: 14
+					X: 16
 					Y: 10
 					Width: 26
 					Height: 26
@@ -113,22 +113,8 @@ Container@OBSERVER_WIDGETS:
 							Height: 16
 							ImageCollection: music
 							ImageName: pause
-				Button@BUTTON_SLOW:
-					X: 14 + 38
-					Y: 10
-					Width: 26
-					Height: 26
-					IgnoreChildMouseOver: true
-					Children:
-						Image@IMAGE_SLOW:
-							X: 5
-							Y: 5
-							Width: 16
-							Height: 16
-							ImageCollection: music
-							ImageName: slowmo
-				Button@BUTTON_NORMALSPEED:
-					X: 14 + 38*2
+				Button@BUTTON_PLAY:
+					X: 16
 					Y: 10
 					Width: 26
 					Height: 26
@@ -141,25 +127,55 @@ Container@OBSERVER_WIDGETS:
 							Height: 16
 							ImageCollection: music
 							ImageName: play
-				Button@BUTTON_FASTFORWARD:
-					X: 14 + 38*3
-					Y: 10
-					Width: 26
-					Height: 26
-					IgnoreChildMouseOver: true
-					Children:
-						Image@IMAGE_FASTFORWARD:
-							X: 5
-							Y: 5
-							Width: 16
-							Height: 16
-							ImageCollection: music
-							ImageName: fastforward
+				Button@BUTTON_SLOW:
+					X: 57
+					Y: 13
+					Width: 36
+					Height: 20
+					BaseLine: 1
+					TooltipText: Slow speed
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Text: 50%
+					Font: TinyBold
+				Button@BUTTON_REGULAR:
+					X: 57 + 48
+					Y: 13
+					Width: 38
+					Height: 20
+					BaseLine: 1
+					TooltipText: Regular speed
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Text: 100%
+					Font: TinyBold
+				Button@BUTTON_FAST:
+					X: 57 + 48*2
+					Y: 13
+					Width: 38
+					Height: 20
+					BaseLine: 1
+					TooltipText: Fast speed
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Text: 200%
+					Font: TinyBold
+				Button@BUTTON_MAXIMUM:
+					X: 57 + 48*3
+					Y: 13
+					Width: 38
+					Height: 20
+					BaseLine: 1
+					TooltipText: Maximum speed
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Text: MAX
+					Font: TinyBold
 		DropDownButton@SHROUD_SELECTOR:
 			Logic: ObserverShroudSelectorLogic
-			X: WINDOW_RIGHT-173
-			Y: 172
-			Width: 168
+			X: WINDOW_RIGHT-WIDTH-5
+			Y: 260
+			Width:256
 			Height: 25
 			Font: Bold
 			Children:

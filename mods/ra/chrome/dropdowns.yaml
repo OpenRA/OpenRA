@@ -60,9 +60,11 @@ ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
 
 ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 	Width: DROPDOWN_WIDTH
+	Background: observer-scrollpanel-button-pressed
+	Button: observer-scrollpanel-button
 	Children:
 		ScrollItem@HEADER:
-			BaseName: scrollheader
+			BaseName: observer-scrollheader
 			Width: PARENT_RIGHT-27
 			Height: 13
 			X: 2
@@ -75,6 +77,7 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 					Height: 10
 					Align: Center
 		ScrollItem@TEMPLATE:
+			BaseName: observer-scrollitem
 			Width: PARENT_RIGHT-27
 			Height: 25
 			X: 2
@@ -83,7 +86,7 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 			Children:
 				Image@FLAG:
 					X: 4
-					Y: 4
+					Y: 6
 					Width: 32
 					Height: 16
 				Label@LABEL:

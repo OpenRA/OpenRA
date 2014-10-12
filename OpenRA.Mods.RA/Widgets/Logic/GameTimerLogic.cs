@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (world.Timestep == 1)
 					return "Max Speed";
 
-				return "{0:F1}x Speed".F(Game.Timestep * 1f / world.Timestep);
+				return "{0}% Speed".F(Game.Timestep * 100 / world.Timestep);
 			};
 
 			if (timer != null)
@@ -53,6 +53,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				// Blink the status line
 				status.IsVisible = shouldShowStatus;
 				status.GetText = statusText;
+			}
+
+			var percentage = widget.GetOrNull<LabelWidget>("GAME_TIMER_PERCENTAGE");
+			if (percentage != null)
+			{
+				var connection = orderManager.Connection as ReplayConnection;
+				if (connection != null && connection.TickCount != 0)
+					percentage.GetText = () => "({0}%)".F(orderManager.NetFrameNumber * 100 / connection.TickCount);
+				else
+					timer.Bounds.Width += percentage.Bounds.Width;
 			}
 		}
 	}
