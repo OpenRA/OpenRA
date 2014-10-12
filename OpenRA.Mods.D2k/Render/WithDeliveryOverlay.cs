@@ -11,9 +11,10 @@
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.D2k.Render
 {
 	[Desc("Rendered when ProductionAirdrop is in progress.")]
 	public class WithDeliveryOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>

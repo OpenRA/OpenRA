@@ -13,9 +13,9 @@ using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.D2k
 {
-	class FogPaletteFromR8Info : ITraitInfo
+	class PaletteFromR8Info : ITraitInfo
 	{
 		[Desc("Internal palette name")]
 		public readonly string Name = null;
@@ -25,14 +25,14 @@ namespace OpenRA.Mods.RA
 		public readonly long Offset = 0;
 		public readonly bool AllowModifiers = true;
 		public readonly bool InvertColor = false;
-
-		public object Create(ActorInitializer init) { return new FogPaletteFromR8(this); }
+		
+		public object Create(ActorInitializer init) { return new PaletteFromR8(this); }
 	}
 
-	class FogPaletteFromR8 : ILoadsPalettes
+	class PaletteFromR8 : ILoadsPalettes
 	{
-		readonly FogPaletteFromR8Info info;
-		public FogPaletteFromR8(FogPaletteFromR8Info info) { this.info = info; }
+		readonly PaletteFromR8Info info;
+		public PaletteFromR8(PaletteFromR8Info info) { this.info = info; }
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
@@ -44,9 +44,7 @@ namespace OpenRA.Mods.RA
 				for (var i = 0; i < Palette.Size; i++)
 				{
 					var packed = s.ReadUInt16();
-
-					// Fog is rendered with half opacity
-					colors[i] = (uint)((255 << 24) | ((packed & 0xF800) << 7) | ((packed & 0x7E0) << 4) | ((packed & 0x1f) << 2));
+					colors[i] = (uint)((255 << 24) | ((packed & 0xF800) << 8) | ((packed & 0x7E0) << 5) | ((packed & 0x1f) << 3));
 
 					if (info.InvertColor)
 						colors[i] ^= 0x00FFFFFF;
