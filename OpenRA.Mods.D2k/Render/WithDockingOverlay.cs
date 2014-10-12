@@ -11,9 +11,10 @@
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.D2k.Render
 {
 	[Desc("Rendered when a harvester is docked.")]
 	public class WithDockingOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
