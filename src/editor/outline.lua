@@ -3,15 +3,20 @@
 local ide = ide
 ide.outline = {}
 
-local image = { FILE = 0, LFUNCTION = 1, GFUNCTION = 2 }
+local image = { FILE = 0, LFUNCTION = 1, GFUNCTION = 2, AFUNCTION = 3,
+  SMETHOD = 4, METHOD = 5,
+}
 
 do
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local size = wx.wxSize(16,16)
   local imglist = wx.wxImageList(16,16)
   imglist:Add(getBitmap("FILE-NORMAL", "OTHER", size)) -- 0 = file known spec
-  imglist:Add(getBitmap("VALUE-CALL", "OTHER", size)) -- 1
-  imglist:Add(getBitmap("VALUE-CALL-GLOBAL", "OTHER", size)) -- 2
+  imglist:Add(getBitmap("VALUE-LCALL", "OTHER", size)) -- 1
+  imglist:Add(getBitmap("VALUE-GCALL", "OTHER", size)) -- 2
+  imglist:Add(getBitmap("VALUE-ACALL", "OTHER", size)) -- 3
+  imglist:Add(getBitmap("VALUE-SCALL", "OTHER", size)) -- 4
+  imglist:Add(getBitmap("VALUE-SCALL", "OTHER", size)) -- 5
   ide.outline.imglist = imglist
 end
 
@@ -34,6 +39,7 @@ local function outlineRefresh(editor)
   local varname = "([%w_][%w_"..q(sep:sub(1,1)).."]*)"
   local funcs = {}
   local var = {}
+  local outcfg = ide.config.outline or {}
   for _, token in ipairs(tokens) do
     local op = token[1]
     if op == 'Var' or op == 'Id' then
@@ -56,15 +62,20 @@ local function outlineRefresh(editor)
         end
       end
       local ftype = image.LFUNCTION
-      if name and (var.name == name and var.fpos == pos
-        or var.name and name:find('^'..var.name..'['..q(sep)..']')) then
+      if not name then
+        ftype = image.AFUNCTION
+      elseif outcfg.showmethodindicator and name:find('['..q(sep)..']') then
+        ftype = name:find(q(sep:sub(1,1))) and image.SMETHOD or image.METHOD
+      elseif var.name == name and var.fpos == pos
+      or var.name and name:find('^'..var.name..'['..q(sep)..']') then
         ftype = var.global and image.GFUNCTION or image.LFUNCTION
       end
       funcs[#funcs+1] = {
         name = (name or '~')..params,
         depth = depth,
         image = ftype,
-        pos = name and pos or token.fpos}
+        pos = name and pos or token.fpos,
+      }
     end
   end
 

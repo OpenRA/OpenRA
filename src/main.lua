@@ -72,7 +72,7 @@ ide = {
     filetree = {
       mousemove = true,
     },
-    funclist = {},
+    outline = {},
 
     toolbar = {
       icons = {},
