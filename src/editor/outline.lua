@@ -151,7 +151,7 @@ local function outlineCreateOutlineWindow()
     if ctrl:GetItemImage(item_id) == image.FILE then
       -- activate editor tab
       local editor = data:GetData()
-      if editor then ide:GetDocument(editor):SetActive() end
+      if not ide:GetEditorWithFocus(editor) then ide:GetDocument(editor):SetActive() end
     else
       -- activate tab and move cursor based on stored pos
       -- get file parent
@@ -164,7 +164,7 @@ local function outlineCreateOutlineWindow()
       local editor = ctrl:GetItemData(parent):GetData()
       local cache = caches[editor]
       if editor and cache then
-        ide:GetDocument(editor):SetActive()
+        if not ide:GetEditorWithFocus(editor) then ide:GetDocument(editor):SetActive() end
         -- move to position in the file
         editor:GotoPosEnforcePolicy(cache.funcs[data:GetData()].pos-1)
       end
