@@ -1,5 +1,5 @@
 Container@MAP_PANEL:
-	Height:	PARENT_BOTTOM
+	Height: PARENT_BOTTOM
 	Width: PARENT_RIGHT
 	Logic: GameInfoBriefingLogic
 	Children:

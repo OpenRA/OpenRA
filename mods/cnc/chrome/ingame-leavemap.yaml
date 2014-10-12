@@ -18,7 +18,7 @@ Container@LEAVE_MAP_WIDGET:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
 			Background: shellmapborder
-		Container@LEAVE_MAP_SIMPLE
+		Container@LEAVE_MAP_SIMPLE:
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
 			Width: 370
