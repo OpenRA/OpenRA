@@ -72,7 +72,9 @@ ide = {
     filetree = {
       mousemove = true,
     },
-    outline = {},
+    outline = {
+      showanonymous = true,
+    },
 
     toolbar = {
       icons = {},

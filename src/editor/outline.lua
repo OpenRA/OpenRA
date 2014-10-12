@@ -70,12 +70,14 @@ local function outlineRefresh(editor)
       or var.name and name:find('^'..var.name..'['..q(sep)..']') then
         ftype = var.global and image.GFUNCTION or image.LFUNCTION
       end
-      funcs[#funcs+1] = {
-        name = (name or '~')..params,
-        depth = depth,
-        image = ftype,
-        pos = name and pos or token.fpos,
-      }
+      if name or outcfg.showanonymous then
+        funcs[#funcs+1] = {
+          name = (name or '~')..params,
+          depth = depth,
+          image = ftype,
+          pos = name and pos or token.fpos,
+        }
+      end
     end
   end
 
@@ -130,7 +132,10 @@ local function outlineRefresh(editor)
   ctrl:DeleteChildren(fileitem)
   local stack = {fileitem}
   for n, func in ipairs(funcs) do
-    local item = ctrl:AppendItem(stack[func.depth], func.name, func.image)
+    local depth = func.depth
+    local parent = stack[depth]
+    while not parent do depth = depth - 1; parent = stack[depth] end
+    local item = ctrl:AppendItem(parent, func.name, func.image)
     setData(ctrl, item, n)
     func.item = item
     stack[func.depth+1] = item
