@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Orders
 		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
-			return cursor + (OrderInner(world, mi).Any()	? "" : "-blocked");
+			return cursor + (OrderInner(world, mi).Any() ? "" : "-blocked");
 		}
 	}
 
