@@ -223,7 +223,7 @@
     <Compile Include="Move\PathFinder.cs" />
     <Compile Include="Move\PathSearch.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
-    <Compile Include="Orders\PowerDownOrderGenerator.cs" />
+    <Compile Include="Orders\GlobalButtonOrderGenerator.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="OreRefinery.cs" />
     <Compile Include="ParaDrop.cs" />
