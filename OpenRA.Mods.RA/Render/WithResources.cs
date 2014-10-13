@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Render
 		public object Create(ActorInitializer init) { return new WithResources(init.self, this); }
 	}
 
-	class WithResources : INotifyBuildComplete, INotifySold, INotifyCapture, INotifyDamageStateChanged
+	class WithResources : INotifyBuildComplete, INotifySold, INotifyOwnerChanged, INotifyDamageStateChanged
 	{
 		WithResourcesInfo info;
 		Animation anim;
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Render
 				anim.ReplaceAnim(rs.NormalizeSequence(self, info.Sequence));
 		}
 
-		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}

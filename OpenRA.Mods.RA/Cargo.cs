@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, INotifyKilled, INotifyCapture, INotifyAddedToWorld, ITick, INotifySold, IDisableMove
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, INotifyKilled, INotifyOwnerChanged, INotifyAddedToWorld, ITick, INotifySold, IDisableMove
 	{
 		public readonly CargoInfo Info;
 		readonly Actor self;
@@ -263,7 +263,7 @@ namespace OpenRA.Mods.RA
 			});
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			if (cargo == null)
 				return;

@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Power
 		public object Create(ActorInitializer init) { return new AffectedByPowerOutage(init.self); }
 	}
 
-	public class AffectedByPowerOutage : INotifyCapture, ISelectionBar, IPowerModifier, IDisable
+	public class AffectedByPowerOutage : INotifyOwnerChanged, ISelectionBar, IPowerModifier, IDisable
 	{
 		PowerManager playerPower;
 
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Power
 			get { return playerPower.PowerOutageRemainingTicks > 0; }
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			playerPower = newOwner.PlayerActor.Trait<PowerManager>();
 		}

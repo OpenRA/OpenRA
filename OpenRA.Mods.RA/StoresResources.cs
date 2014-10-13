@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new StoresResources(init.self, this); }
 	}
 
-	class StoresResources : IPips, INotifyCapture, INotifyKilled, IExplodeModifier, IStoreResources, ISync
+	class StoresResources : IPips, INotifyOwnerChanged, INotifyCapture, INotifyKilled, IExplodeModifier, IStoreResources, ISync
 	{
 		readonly StoresResourcesInfo Info;
 
@@ -38,12 +38,16 @@ namespace OpenRA.Mods.RA
 
 		public int Capacity { get { return Info.Capacity; } }
 
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			Player = newOwner.PlayerActor.Trait<PlayerResources>();
+		}
+
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			var resources = Stored;
-			Player.TakeResources(resources);
-			Player = newOwner.PlayerActor.Trait<PlayerResources>();
-			Player.GiveResources(resources);
+			oldOwner.PlayerActor.Trait<PlayerResources>().TakeResources(resources);
+			newOwner.PlayerActor.Trait<PlayerResources>().GiveResources(resources);
 		}
 
 		public void Killed(Actor self, AttackInfo e)
