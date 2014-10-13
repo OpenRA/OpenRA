@@ -126,7 +126,7 @@ namespace OpenRA.Mods.RA.Render
 				anim.OwnerChanged();
 		}
 
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UpdatePalette(); }
+		public virtual void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UpdatePalette(); }
 		public void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner) { UpdatePalette(); }
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)

@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
 	}
 
-	public class OreRefinery : ITick, IAcceptOre, INotifyKilled, INotifySold, INotifyCapture, IExplodeModifier, ISync
+	public class OreRefinery : ITick, IAcceptOre, INotifyKilled, INotifySold, INotifyCapture, INotifyOwnerChanged, IExplodeModifier, ISync
 	{
 		readonly Actor self;
 		readonly OreRefineryInfo Info;
@@ -117,18 +117,25 @@ namespace OpenRA.Mods.RA
 			harv.QueueActivity(new CallFunc(() => harv.Trait<Harvester>().ContinueHarvesting(harv)));
 		}
 
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			// Unlink any harvesters
+			foreach (var harv in GetLinkedHarvesters())
+				harv.Trait.UnlinkProc(harv.Actor, self);
+
+			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
+		}
+
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			// Steal any docked harv too
 			if (dockedHarv != null)
+			{
 				dockedHarv.ChangeOwner(newOwner);
 
-			// Unlink any non-docked harvs
-			foreach (var harv in GetLinkedHarvesters())
-				if (harv.Actor.Owner == oldOwner)
-					harv.Trait.UnlinkProc(harv.Actor, self);
-
-			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
+				// Relink to this refinery
+				dockedHarv.Trait<Harvester>().LinkProc(dockedHarv, self);
+			}
 		}
 
 		public void Selling(Actor self) { CancelDock(self); }

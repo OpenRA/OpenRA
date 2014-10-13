@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	class RenderBuildingSilo : RenderBuilding, INotifyBuildComplete, INotifyCapture
+	class RenderBuildingSilo : RenderBuilding, INotifyBuildComplete, INotifyOwnerChanged
 	{
 		PlayerResources playerResources;
 
@@ -49,9 +49,10 @@ namespace OpenRA.Mods.RA.Render
 					: 0);
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public override void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
+			base.OnOwnerChanged(self, oldOwner, newOwner);
 		}
 	}
 }
