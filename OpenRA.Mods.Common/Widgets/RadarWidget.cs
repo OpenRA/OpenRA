@@ -73,14 +73,14 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var r = new Rectangle(0, 0, width, height);
 				var s = new Size(terrainBitmap.Width, terrainBitmap.Height);
-				var terrainSheet = new Sheet(s, false);
+				var terrainSheet = new Sheet(s);
 				terrainSheet.Texture.SetData(terrainBitmap);
 				terrainSprite = new Sprite(terrainSheet, r, TextureChannel.Alpha);
 
 				// Data is set in Tick()
-				customTerrainSprite = new Sprite(new Sheet(s, false), r, TextureChannel.Alpha);
-				actorSprite = new Sprite(new Sheet(s, false), r, TextureChannel.Alpha);
-				shroudSprite = new Sprite(new Sheet(s, false), r, TextureChannel.Alpha);
+				customTerrainSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
+				actorSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
+				shroudSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
 			}
 		}
 
