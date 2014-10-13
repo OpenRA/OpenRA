@@ -45,7 +45,8 @@
 	WithMakeAnimation:
 	UpgradeManager:
 	Cloak@CLOAKGENERATOR:
-		RequiresUpgrade: cloakgenerator
+		UpgradeTypes: cloakgenerator
+		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
 
@@ -87,7 +88,8 @@
 	ScriptTriggers:
 	UpgradeManager:
 	Cloak@CLOAKGENERATOR:
-		RequiresUpgrade: cloakgenerator
+		UpgradeTypes: cloakgenerator
+		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
 
@@ -138,7 +140,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -167,7 +170,8 @@
 		DeathTypes: 6
 	UpgradeManager:
 	Cloak@CLOAKGENERATOR:
-		RequiresUpgrade: cloakgenerator
+		UpgradeTypes: cloakgenerator
+		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
 
@@ -238,7 +242,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -258,15 +263,21 @@
 		EmptyWeapon: UnitExplodeSmall
 	UpgradeManager:
 	UpgradeOverlay@EMPDISABLE:
-		RequiresUpgrade: empdisable
+		UpgradeTypes: empdisable
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
 		Palette: disabled
 	DisableUpgrade@EMPDISABLE:
-		RequiresUpgrade: empdisable
+		UpgradeTypes: empdisable
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
 	TimedUpgradeBar@EMPDISABLE:
 		Upgrade: empdisable
 		Color: 255,255,255
 	Cloak@CLOAKGENERATOR:
-		RequiresUpgrade: cloakgenerator
+		UpgradeTypes: cloakgenerator
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
 		InitialDelay: 0
 		CloakDelay: 90
 
@@ -310,7 +321,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -330,15 +342,21 @@
 		EmptyWeapon: UnitExplodeSmall
 	UpgradeManager:
 	UpgradeOverlay@EMPDISABLE:
-		RequiresUpgrade: empdisable
+		UpgradeTypes: empdisable
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
 		Palette: disabled
 	DisableUpgrade@EMPDISABLE:
-		RequiresUpgrade: empdisable
+		UpgradeTypes: empdisable
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
 	TimedUpgradeBar@EMPDISABLE:
 		Upgrade: empdisable
 		Color: 255,255,255
 	Cloak@CLOAKGENERATOR:
-		RequiresUpgrade: cloakgenerator
+		UpgradeTypes: cloakgenerator
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
 		InitialDelay: 0
 		CloakDelay: 90
 
@@ -375,7 +393,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:

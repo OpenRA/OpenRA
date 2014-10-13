@@ -11,40 +11,23 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class DisableUpgradeInfo : ITraitInfo
+	public class DisableUpgradeInfo : UpgradableTraitInfo, ITraitInfo
 	{
-		public readonly string RequiresUpgrade = "disable";
-
 		public object Create(ActorInitializer init) { return new DisableUpgrade(this); }
 	}
 
-	public class DisableUpgrade : IUpgradable, IDisable, IDisableMove
+	public class DisableUpgrade : UpgradableTrait<DisableUpgradeInfo>, IDisable, IDisableMove
 	{
-		readonly DisableUpgradeInfo info;
-		bool enabled;
-
 		public DisableUpgrade(DisableUpgradeInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
-		public bool AcceptsUpgrade(string type)
-		{
-			return type == info.RequiresUpgrade;
-		}
-
-		public void UpgradeAvailable(Actor self, string type, bool available)
-		{
-			if (type == info.RequiresUpgrade)
-				enabled = available;
-		}
-
-		public bool Disabled { get { return enabled; } }
-
-		public bool MoveDisabled(Actor self) { return enabled; }
+		// Disable the actor when this trait is enabled.
+		public bool Disabled { get { return !IsTraitDisabled; } }
+		public bool MoveDisabled(Actor self) { return !IsTraitDisabled; }
 	}
 }

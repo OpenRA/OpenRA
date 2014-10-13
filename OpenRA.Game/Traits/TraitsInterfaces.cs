@@ -104,12 +104,6 @@ namespace OpenRA.Traits
 	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
 	public interface IDisableMove { bool MoveDisabled(Actor self); }
 
-	public interface IUpgradable
-	{
-		bool AcceptsUpgrade(string type);
-		void UpgradeAvailable(Actor self, string type, bool available);
-	}
-
 	public interface ISeedableResource { void Seed(Actor self); }
 
 	public interface IDemolishableInfo { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
@@ -140,6 +134,7 @@ namespace OpenRA.Traits
 		bool IsOwnerRowVisible { get; }
 	}
 
+	public interface IDisabledTrait { bool IsTraitDisabled { get; } }
 	public interface IDisable { bool Disabled { get; } }
 	public interface IExplodeModifier { bool ShouldExplode(Actor self); }
 	public interface IHuskModifier { string HuskActor(Actor self); }

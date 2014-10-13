@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Support;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -407,6 +408,16 @@ namespace OpenRA
 		public static bool TryParseIntegerInvariant(string s, out int i)
 		{
 			return int.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
+		}
+
+		public static bool IsTraitEnabled(this object trait)
+		{
+			return trait as IDisabledTrait == null || !(trait as IDisabledTrait).IsTraitDisabled;
+		}
+
+		public static bool IsTraitEnabled<T>(T t)
+		{
+			return IsTraitEnabled(t as object);
 		}
 	}
 
