@@ -31,7 +31,7 @@ local function setData(ctrl, item, value)
   end
 end
 
-local function outlineRefresh(editor)
+local function outlineRefresh(editor, force)
   if not editor then return end
   local tokens = editor:GetTokenList()
   local text = editor:GetText()
@@ -92,10 +92,14 @@ local function outlineRefresh(editor)
     local root = ctrl:GetRootItem()
     if not root or not root:IsOk() then return end
 
-    fileitem = ctrl:AppendItem(root, filename, image.FILE)
-    setData(ctrl, fileitem, editor)
-    ctrl:SetItemBold(fileitem, true)
-    ctrl:SortChildren(root)
+    if outcfg.showonefile then
+      fileitem = root
+    else
+      fileitem = ctrl:AppendItem(root, filename, image.FILE)
+      setData(ctrl, fileitem, editor)
+      ctrl:SetItemBold(fileitem, true)
+      ctrl:SortChildren(root)
+    end
     cache.fileitem = fileitem
   end
 
@@ -118,7 +122,7 @@ local function outlineRefresh(editor)
       end
     end
     cache.funcs = funcs -- set new cache as positions may change
-    if nochange then return end -- return if no visible changes
+    if nochange and not force then return end -- return if no visible changes
   end
 
   -- refresh the tree
@@ -141,7 +145,8 @@ local function outlineRefresh(editor)
     stack[func.depth+1] = item
   end
   ctrl:ExpandAllChildren(fileitem)
-  ctrl:ScrollTo(fileitem)
+  -- scroll to the item, but only if it's not a root item (as it's hidden)
+  if fileitem:GetValue() ~= ctrl:GetRootItem():GetValue() then ctrl:ScrollTo(fileitem) end
   ctrl:Thaw()
 
   if win and win ~= ide:GetMainFrame():FindFocus() then win:SetFocus() end
@@ -239,12 +244,14 @@ ide.packages['core.outline'] = setmetatable({
     onEditorClose = function(self, editor)
       local cache = caches[editor]
       local fileitem = cache and cache.fileitem
-      if fileitem then ide.outline.outlineCtrl:Delete(fileitem) end
       caches[editor] = nil -- remove from cache
+      if (ide.config.outline or {}).showonefile then return end
+      if fileitem then ide.outline.outlineCtrl:Delete(fileitem) end
     end,
 
     -- handle rename of the file in the current editor
     onEditorSave = function(self, editor)
+      if (ide.config.outline or {}).showonefile then return end
       local cache = caches[editor]
       local fileitem = cache and cache.fileitem
       local doc = ide:GetDocument(editor)
@@ -256,6 +263,11 @@ ide.packages['core.outline'] = setmetatable({
 
     -- go over the file items to turn bold on/off or collapse/expand
     onEditorFocusSet = function(self, editor)
+      if (ide.config.outline or {}).showonefile then
+        outlineRefresh(editor, true)
+        return
+      end
+
       local cache = caches[editor]
       local fileitem = cache and cache.fileitem
       eachNode(function(ctrl, item)
