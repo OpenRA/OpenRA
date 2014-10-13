@@ -27,13 +27,7 @@ namespace OpenRA.Graphics
 		public readonly Size Size;
 		public byte[] GetData()
 		{
-				if (data != null)
-					return data;
-				if (texture == null)
-					data = new byte[4 * Size.Width * Size.Height];
-				else
-					data = texture.GetData();
-				releaseBufferOnCommit = false;
+			CreateBuffer();
 			return data;
 		}
 		public bool Buffered { get { return data != null || texture == null; } }
@@ -142,6 +136,17 @@ namespace OpenRA.Graphics
 			bitmap.UnlockBits(bd);
 
 			return bitmap;
+		}
+
+		public void CreateBuffer()
+		{
+			if (data != null)
+				return;
+			if (texture == null)
+				data = new byte[4 * Size.Width * Size.Height];
+			else
+				data = texture.GetData();
+			releaseBufferOnCommit = false;
 		}
 
 		public void CommitData()
