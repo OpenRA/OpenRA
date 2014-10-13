@@ -508,7 +508,7 @@ function IndicateAll(editor, lines, linee)
   if not pcall(function() editor:GetId() end) then return end
 
   -- if markvars is not set in the spec, check for functions-only indicators
-  if not (editor.spec and editor.spec.markvars) then
+  if not (editor.spec and editor.spec.marksymbols) then
     return indicateFunctionsOnly(editor, lines, linee)
   end
   local indic = styles.indicator or {}
@@ -582,7 +582,7 @@ function IndicateAll(editor, lines, linee)
 
   local s = TimeGet()
   local canwork = start and 0.010 or 0.100 -- use shorter interval when typing
-  local f = editor.spec.markvars(editor:GetText(), pos, vars)
+  local f = editor.spec.marksymbols(editor:GetText(), pos, vars)
   while true do
     local op, name, lineinfo, vars, at, nobreak = f()
     if not op then break end

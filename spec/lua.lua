@@ -86,7 +86,7 @@ return {
 
     return opened - closed + func + terminc - ended
   end,
-  markvars = function(code, pos, vars)
+  marksymbols = function(code, pos, vars)
     local PARSE = require 'lua_parser_loose'
     local LEX = require 'lua_lexer_loose'
     local lx = LEX.lexc(code, nil, pos)
