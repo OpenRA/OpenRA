@@ -25,14 +25,25 @@ namespace OpenRA.Graphics
 		byte[] data;
 
 		public readonly Size Size;
-		public byte[] Data { get { return data ?? texture.GetData(); } }
-		public bool Buffered { get { return data != null; } }
+		public byte[] Data
+		{
+			get
+			{
+				if (data != null)
+					return data;
+				if (texture == null)
+					data = new byte[4 * Size.Width * Size.Height];
+				else
+					data = texture.GetData();
+				releaseBufferOnCommit = false;
+				return data;
+			}
+		}
+		public bool Buffered { get { return data != null || texture == null; } }
 
-		public Sheet(Size size, bool buffered)
+		public Sheet(Size size)
 		{
 			Size = size;
-			if (buffered)
-				data = new byte[4 * Size.Width * Size.Height];
 		}
 
 		public Sheet(ITexture texture)
@@ -80,7 +91,7 @@ namespace OpenRA.Graphics
 				dirty = true;
 			}
 
-			if (Buffered)
+			if (data != null)
 			{
 				lock (textureLock)
 				{
@@ -141,20 +152,28 @@ namespace OpenRA.Graphics
 
 		public void CommitData()
 		{
-			if (!Buffered)
-				throw new InvalidOperationException(
-					"This sheet is unbuffered. You cannot call CommitData on an unbuffered sheet. " +
-					"If you need to completely replace the texture data you should set data into the texture directly. " +
-					"If you need to make only small changes to the texture data consider creating a buffered sheet instead.");
-
-			lock (textureLock)
-				dirty = true;
+			CommitData(false);
 		}
 
 		public void ReleaseBuffer()
 		{
+			CommitData(true);
+		}
+
+		void CommitData(bool releaseBuffer)
+		{
 			lock (textureLock)
-				releaseBufferOnCommit = true;
+			{
+				if (!Buffered)
+					throw new InvalidOperationException(
+						"This sheet is unbuffered. You cannot call CommitData on an unbuffered sheet. " +
+						"If you need to completely replace the texture data you should set data into the texture directly. " +
+						"If you need to make only small changes to the texture data consider creating a buffered sheet instead.");
+
+				dirty = true;
+				if (releaseBuffer)
+					releaseBufferOnCommit = true;
+			}
 		}
 	}
 }
