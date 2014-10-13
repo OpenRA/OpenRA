@@ -28,6 +28,7 @@ namespace OpenRA
 		readonly ModData modData;
 		readonly SheetBuilder sheetBuilder;
 		Thread previewLoaderThread;
+		bool previewLoaderThreadShutDown = true;
 		object syncRoot = new object();
 		Queue<MapPreview> generateMinimap = new Queue<MapPreview>();
 
@@ -135,13 +136,20 @@ namespace OpenRA
 			var maxKeepAlive = 5000 / emptyDelay;
 			var keepAlive = maxKeepAlive;
 
-			while (keepAlive-- > 0)
+			for (;;)
 			{
 				List<MapPreview> todo;
 				lock (syncRoot)
 				{
 					todo = generateMinimap.Where(p => p.GetMinimap() == null).ToList();
 					generateMinimap.Clear();
+					if (keepAlive > 0)
+						keepAlive--;
+					if (keepAlive == 0 && todo.Count == 0)
+					{
+						previewLoaderThreadShutDown = true;
+						break;
+					}
 				}
 				if (todo.Count == 0)
 				{
@@ -170,20 +178,38 @@ namespace OpenRA
 					Thread.Sleep(Environment.ProcessorCount == 1 ? 25 : 5);
 				}
 			}
+			sheetBuilder.Current.ReleaseBuffer();
+			// The buffer is not fully reclaimed until changes are written out to the texture.
+			// We will access the texture in order to force changes to be written out, allowing the buffer to be freed.
+			Game.RunAfterTick(() => sheetBuilder.Current.GetTexture());
 			Log.Write("debug", "MapCache.LoadAsyncInternal ended");
 		}
 
 		public void CacheMinimap(MapPreview preview)
 		{
+			bool launchPreviewLoaderThread;
 			lock (syncRoot)
-				generateMinimap.Enqueue(preview);
-
-			if (previewLoaderThread == null || !previewLoaderThread.IsAlive)
 			{
-				previewLoaderThread = new Thread(LoadAsyncInternal);
-				previewLoaderThread.IsBackground = true;
-				previewLoaderThread.Start();
+				generateMinimap.Enqueue(preview);
+				launchPreviewLoaderThread = previewLoaderThreadShutDown;
+				previewLoaderThreadShutDown = false;
 			}
+
+			if (launchPreviewLoaderThread)
+				Game.RunAfterTick(() =>
+				{
+					// Wait for any existing thread to exit before starting a new one.
+					if (previewLoaderThread != null)
+						previewLoaderThread.Join();
+
+					sheetBuilder.Current.CreateBuffer();
+					previewLoaderThread = new Thread(LoadAsyncInternal)
+					{
+						Name = "Map Preview Loader",
+						IsBackground = true
+					};
+					previewLoaderThread.Start();
+				});
 		}
 
 		public MapPreview this[string key]
