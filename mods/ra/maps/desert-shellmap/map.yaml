@@ -1300,14 +1300,16 @@ Rules:
 		GainsExperience:
 			Upgrades:
 		InvulnerabilityUpgrade@UNKILLABLE:
-			RequiresUpgrade: unkillable
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
 	^Tank:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
 			Upgrades:
 		InvulnerabilityUpgrade@UNKILLABLE:
-			RequiresUpgrade: unkillable
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
 	^Infantry:
 		GivesBounty:
 			Percentage: 0
@@ -1320,24 +1322,28 @@ Rules:
 		DeathSounds@ZAPPED:
 			VolumeMultiplier: 0.1
 		InvulnerabilityUpgrade@UNKILLABLE:
-			RequiresUpgrade: unkillable
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
 	^Ship:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
 			Upgrades:
 		InvulnerabilityUpgrade@UNKILLABLE:
-			RequiresUpgrade: unkillable
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
 	^Plane:
 		GivesBounty:
 			Percentage: 0
 		InvulnerabilityUpgrade@UNKILLABLE:
-			RequiresUpgrade: unkillable
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
 	^Building:
 		GivesBounty:
 			Percentage: 0
 		InvulnerabilityUpgrade@UNKILLABLE:
-			RequiresUpgrade: unkillable
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
 	E7:
 		-Selectable:
 

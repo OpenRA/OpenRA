@@ -658,7 +658,8 @@ Rules:
 		AutoTarget:
 			InitialStance: Defend
 		InvulnerabilityUpgrade@UNKILLABLE:
-			RequiresUpgrade: unkillable
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
 	SPY:
 		Inherits: ^Infantry
 		Buildable:

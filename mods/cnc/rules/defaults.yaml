@@ -34,7 +34,8 @@
 		GenericName: Vehicle
 	UpdatesPlayerStatistics:
 	Cloak:
-		RequiresUpgrade: cloak
+		UpgradeTypes: cloak
+		UpgradeMinEnabledLevel: 1
 		InitialDelay: 15
 		CloakDelay: 90
 		CloakSound: trans1.aud
@@ -47,7 +48,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 
 ^Tank:
@@ -89,7 +91,8 @@
 		GenericName: Tank
 	UpdatesPlayerStatistics:
 	Cloak:
-		RequiresUpgrade: cloak
+		UpgradeTypes: cloak
+		UpgradeMinEnabledLevel: 1
 		InitialDelay: 15
 		CloakDelay: 90
 		CloakSound: trans1.aud
@@ -102,7 +105,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 
 ^Helicopter:
@@ -142,7 +146,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 
 ^Infantry:
@@ -201,7 +206,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: hospitalheal
+		UpgradeTypes: hospitalheal
+		UpgradeMinEnabledLevel: 1
 	GlobalUpgradable:
 		Upgrades: hospitalheal
 		Prerequisites: hosp
@@ -224,7 +230,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 
 ^CivInfantry:
@@ -330,7 +337,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 
 ^Ship:
@@ -363,7 +371,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 
 ^Building:

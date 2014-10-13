@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.RA
 	}
 
 	[Desc("Allows you to attach weapons to the unit (use @IdentifierSuffix for > 1)")]
-	public class ArmamentInfo : ITraitInfo, Requires<AttackBaseInfo>
+	public class ArmamentInfo : UpgradableTraitInfo, ITraitInfo, Requires<AttackBaseInfo>
 	{
 		public readonly string Name = "primary";
 
@@ -53,18 +54,11 @@ namespace OpenRA.Mods.RA
 		[Desc("Use multiple muzzle images if non-zero")]
 		public readonly int MuzzleSplitFacings = 0;
 
-		[Desc("Enable only if this upgrade is enabled.")]
-		public readonly string RequiresUpgrade = null;
-
-		[Desc("Disable if this upgrade is enabled.")]
-		public readonly string RestrictedByUpgrade = null;
-
 		public object Create(ActorInitializer init) { return new Armament(init.self, this); }
 	}
 
-	public class Armament : ITick, IExplodeModifier, IUpgradable
+	public class Armament : UpgradableTrait<ArmamentInfo>, ITick, IExplodeModifier
 	{
-		public readonly ArmamentInfo Info;
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
 
@@ -78,13 +72,10 @@ namespace OpenRA.Mods.RA
 		public int FireDelay { get; private set; }
 		public int Burst { get; private set; }
 
-		bool requiresUpgrade;
-		bool restrictedByUpgrade;
-
 		public Armament(Actor self, ArmamentInfo info)
+			: base(info)
 		{
 			this.self = self;
-			Info = info;
 
 			// We can't resolve these until runtime
 			Turret = Exts.Lazy(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
@@ -108,27 +99,11 @@ namespace OpenRA.Mods.RA
 				barrels.Add(new Barrel { Offset = WVec.Zero, Yaw = WAngle.Zero });
 
 			Barrels = barrels.ToArray();
-
-			// Disable if an upgrade is required
-			requiresUpgrade = info.RequiresUpgrade != null;
-		}
-
-		public bool AcceptsUpgrade(string type)
-		{
-			return type == Info.RequiresUpgrade || type == Info.RestrictedByUpgrade;
-		}
-
-		public void UpgradeAvailable(Actor self, string type, bool available)
-		{
-			if (type == Info.RequiresUpgrade)
-				requiresUpgrade = !available;
-			else if (type == Info.RestrictedByUpgrade)
-				restrictedByUpgrade = available;
 		}
 
 		public void Tick(Actor self)
 		{
-			if (requiresUpgrade || restrictedByUpgrade)
+			if (IsTraitDisabled)
 				return;
 
 			if (FireDelay > 0)
@@ -226,7 +201,7 @@ namespace OpenRA.Mods.RA
 			return barrel;
 		}
 
-		public bool IsReloading { get { return FireDelay > 0 || requiresUpgrade || restrictedByUpgrade; } }
+		public bool IsReloading { get { return FireDelay > 0 || IsTraitDisabled; } }
 		public bool ShouldExplode(Actor self) { return !IsReloading; }
 
 		public WVec MuzzleOffset(Actor self, Barrel b)

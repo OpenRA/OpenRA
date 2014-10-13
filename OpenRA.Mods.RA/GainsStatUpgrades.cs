@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new GainsStatUpgrades(this); }
 	}
 
-	public class GainsStatUpgrades : IUpgradable, IFirepowerModifier, IDamageModifier, ISpeedModifier, IReloadModifier, IInaccuracyModifier
+	public class GainsStatUpgrades : IUpgradable, IFirepowerModifier, IDamageModifier, ISpeedModifier, IReloadModifier, IInaccuracyModifier, IDisabledTrait
 	{
 		readonly GainsStatUpgradesInfo info;
 		[Sync] int firepowerLevel = 0;
@@ -44,34 +45,59 @@ namespace OpenRA.Mods.RA
 		[Sync] int damageLevel = 0;
 		[Sync] int reloadLevel = 0;
 		[Sync] int inaccuracyLevel = 0;
+		public bool IsTraitDisabled { get { return firepowerLevel == 0 && speedLevel == 0 && damageLevel == 0 && reloadLevel == 0 && inaccuracyLevel == 0; } }
+		public IEnumerable<string> UpgradeTypes
+		{
+			get
+			{
+				yield return info.FirepowerUpgrade;
+				yield return info.DamageUpgrade;
+				yield return info.SpeedUpgrade;
+				yield return info.ReloadUpgrade;
+				yield return info.InaccuracyUpgrade;
+			}
+		}
 
 		public GainsStatUpgrades(GainsStatUpgradesInfo info)
 		{
 			this.info = info;
 		}
 
-		public bool AcceptsUpgrade(string type)
+		public bool AcceptsUpgradeLevel(Actor self, string type, int level)
 		{
-			return (type == info.FirepowerUpgrade && firepowerLevel < info.FirepowerModifier.Length)
-				|| (type == info.DamageUpgrade && damageLevel < info.DamageModifier.Length)
-				|| (type == info.SpeedUpgrade && speedLevel < info.SpeedModifier.Length)
-				|| (type == info.ReloadUpgrade && reloadLevel < info.ReloadModifier.Length)
-				|| (type == info.InaccuracyUpgrade && inaccuracyLevel < info.InaccuracyModifier.Length);
+			if (level < 0)
+				return false;
+
+			if (type == info.FirepowerUpgrade)
+				return level <= info.FirepowerModifier.Length;
+
+			if (type == info.DamageUpgrade)
+				return level <= info.DamageModifier.Length;
+
+			if (type == info.SpeedUpgrade)
+				return level <= info.SpeedModifier.Length;
+
+			if (type == info.ReloadUpgrade)
+				return level <= info.ReloadModifier.Length;
+
+			if (type == info.InaccuracyUpgrade)
+				return level <= info.InaccuracyModifier.Length;
+
+			return false;
 		}
 
-		public void UpgradeAvailable(Actor self, string type, bool available)
+		public void UpgradeLevelChanged(Actor self, string type, int oldLevel, int newLevel)
 		{
-			var mod = available ? 1 : -1;
 			if (type == info.FirepowerUpgrade)
-				firepowerLevel = (firepowerLevel + mod).Clamp(0, info.FirepowerModifier.Length);
+				firepowerLevel = newLevel.Clamp(0, info.FirepowerModifier.Length);
 			else if (type == info.DamageUpgrade)
-				damageLevel = (damageLevel + mod).Clamp(0, info.DamageModifier.Length);
+				damageLevel = newLevel.Clamp(0, info.DamageModifier.Length);
 			else if (type == info.SpeedUpgrade)
-				speedLevel = (speedLevel + mod).Clamp(0, info.SpeedModifier.Length);
+				speedLevel = newLevel.Clamp(0, info.SpeedModifier.Length);
 			else if (type == info.ReloadUpgrade)
-				reloadLevel = (reloadLevel + mod).Clamp(0, info.ReloadModifier.Length);
+				reloadLevel = newLevel.Clamp(0, info.ReloadModifier.Length);
 			else if (type == info.InaccuracyUpgrade)
-				inaccuracyLevel = (inaccuracyLevel + mod).Clamp(0, info.InaccuracyModifier.Length);
+				inaccuracyLevel = newLevel.Clamp(0, info.InaccuracyModifier.Length);
 		}
 
 		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)

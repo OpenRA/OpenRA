@@ -80,6 +80,7 @@
     <Compile Include="LoadWidgetAtGameStart.cs" />
     <Compile Include="ModChooserLoadScreen.cs" />
     <Compile Include="NullLoadScreen.cs" />
+    <Compile Include="Modifiers\TimedUpgradeBar.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
@@ -136,6 +137,8 @@
     <Compile Include="Traits\World\SpawnMapActors.cs" />
     <Compile Include="Traits\World\StartGameNotification.cs" />
     <Compile Include="Traits\World\TerrainGeometryOverlay.cs" />
+    <Compile Include="Upgrades\UpgradableTrait.cs" />
+    <Compile Include="Upgrades\UpgradeManager.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
     <Compile Include="UtilityCommands\ExtractFilesCommand.cs" />

@@ -655,7 +655,8 @@ DTRK:
 	DemoTruck:
 	-InvulnerabilityUpgrade@IRONCURTAIN:
 	KillsSelf:
-		RequiresUpgrade: invulnerability
+		UpgradeTypes: invulnerability
+		UpgradeMinEnabledLevel: 1
 	Chronoshiftable:
 		ExplodeInstead: yes
 

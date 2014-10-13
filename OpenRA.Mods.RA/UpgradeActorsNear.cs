@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA

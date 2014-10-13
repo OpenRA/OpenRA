@@ -12,57 +12,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenRA.Effects;
+using OpenRA.Mods.Common;
 using OpenRA.Primitives;
 using OpenRA.Traits;
-using OpenRA.Effects;
 
 namespace OpenRA.Mods.RA
 {
-	class KillsSelfInfo : ITraitInfo
+	class KillsSelfInfo : UpgradableTraitInfo, ITraitInfo
 	{
-		[Desc("Enable only if this upgrade is enabled.")]
-		public readonly string RequiresUpgrade = null;
-
 		[Desc("Remove the actor from the world (and destroy it) instead of killing it.")]
 		public readonly bool RemoveInstead = false;
 
-		public object Create(ActorInitializer init) { return new KillsSelf(init.self, this); }
+		public object Create(ActorInitializer init) { return new KillsSelf(this); }
 	}
 
-	class KillsSelf : INotifyAddedToWorld, IUpgradable
+	class KillsSelf : UpgradableTrait<KillsSelfInfo>, INotifyAddedToWorld
 	{
-		readonly KillsSelfInfo info;
-		readonly Actor self;
-
-		public KillsSelf(Actor self, KillsSelfInfo info)
-		{
-			this.info = info;
-			this.self = self;
-		}
+		public KillsSelf(KillsSelfInfo info)
+			: base(info) { }
 
 		public void AddedToWorld(Actor self)
 		{
-			if (info.RequiresUpgrade == null)
-				Kill();
+			if (!IsTraitDisabled)
+				UpgradeEnabled(self);
 		}
 
-		public bool AcceptsUpgrade(string type)
-		{
-			return type == info.RequiresUpgrade;
-		}
-
-		public void UpgradeAvailable(Actor self, string type, bool available)
-		{
-			if (type == info.RequiresUpgrade)
-				Kill();
-		}
-
-		void Kill()
+		protected override void UpgradeEnabled(Actor self)
 		{
 			if (self.IsDead)
 				return;
 
-			if (info.RemoveInstead || !self.HasTrait<Health>())
+			if (Info.RemoveInstead || !self.HasTrait<Health>())
 				self.Destroy();
 			else
 				self.Kill(self);

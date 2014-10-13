@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 					{ 200, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
 					{ 400, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
 					{ 800, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
-					{ 1600, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "selfheal" } }
+					{ 1600, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "eliteweapon", "selfheal" } }
 				};
 			}
 
