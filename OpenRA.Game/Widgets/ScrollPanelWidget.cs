@@ -34,6 +34,7 @@ namespace OpenRA.Widgets
 		public int ItemSpacing = 2;
 		public int ButtonDepth = ChromeMetrics.Get<int>("ButtonDepth");
 		public string Background = "scrollpanel-bg";
+		public string Button = "scrollpanel-button";
 		public int ContentHeight;
 		public ILayout Layout;
 		public int MinimumThumbSize = 10;
@@ -140,12 +141,12 @@ namespace OpenRA.Widgets
 
 			var thumbHover = Ui.MouseOverWidget == this && thumbRect.Contains(Viewport.LastMousePos);
 			WidgetUtils.DrawPanel(Background, backgroundRect);
-			WidgetUtils.DrawPanel("scrollpanel-bg", scrollbarRect);
-			ButtonWidget.DrawBackground("button", upButtonRect, UpDisabled, UpPressed, upHover, false);
-			ButtonWidget.DrawBackground("button", downButtonRect, DownDisabled, DownPressed, downHover, false);
+			WidgetUtils.DrawPanel(Background, scrollbarRect);
+			ButtonWidget.DrawBackground(Button, upButtonRect, UpDisabled, UpPressed, upHover, false);
+			ButtonWidget.DrawBackground(Button, downButtonRect, DownDisabled, DownPressed, downHover, false);
 
 			if (thumbHeight > 0)
-				ButtonWidget.DrawBackground("scrollthumb", thumbRect, false, HasMouseFocus && thumbHover, thumbHover, false);
+				ButtonWidget.DrawBackground(Button, thumbRect, false, HasMouseFocus && thumbHover, thumbHover, false);
 
 			var upOffset = !UpPressed || UpDisabled ? 4 : 4 + ButtonDepth;
 			var downOffset = !DownPressed || DownDisabled ? 4 : 4 + ButtonDepth;

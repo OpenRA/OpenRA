@@ -397,54 +397,6 @@ newsbutton-pressed: dialog.png
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
 
-# A copy of dialog2 (normal button)
-scrollthumb: dialog.png
-	background: 513,1,126,126
-	border-r: 639,1,1,126
-	border-l: 512,1,1,126
-	border-b: 513,127,126,1
-	border-t: 513,0,126,1
-	corner-tl: 512,0,1,1
-	corner-tr: 639,0,1,1
-	corner-bl: 512,127,1,1
-	corner-br: 639,127,1,1
-
-# A copy of button-hover
-scrollthumb-hover: dialog.png
-	background: 513,129,126,126
-	border-r: 639,129,1,126
-	border-l: 512,129,1,126
-	border-b: 513,255,126,1
-	border-t: 513,128,126,1
-	corner-tl: 512,128,1,1
-	corner-tr: 639,128,1,1
-	corner-bl: 512,255,1,1
-	corner-br: 639,255,1,1	
-
-# A copy of dialog3 (pressed button)
-scrollthumb-pressed: dialog.png
-	background: 641,1,126,126
-	border-r: 767,1,1,126
-	border-l: 640,1,1,126
-	border-b: 641,127,126,1
-	border-t: 641,0,126,1
-	corner-tl: 640,0,1,1
-	corner-tr: 767,0,1,1
-	corner-bl: 640,127,1,1
-	corner-br: 767,127,1,1
-	
-# A copy of dialog2 (normal button)
-scrollthumb-disabled: dialog.png
-	background: 513,1,126,126
-	border-r: 639,1,1,126
-	border-l: 512,1,1,126
-	border-b: 513,127,126,1
-	border-t: 513,0,126,1
-	corner-tl: 512,0,1,1
-	corner-tr: 639,0,1,1
-	corner-bl: 512,127,1,1
-	corner-br: 639,127,1,1
-
 # A copy of dialog3 (pressed button)
 textfield: dialog.png
 	background: 641,1,126,126
@@ -504,6 +456,54 @@ scrollpanel-bg: dialog.png
 	corner-tr: 767,0,1,1
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
+
+# A copy of dialog2 (normal button)
+scrollpanel-button: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+# A copy of button-hover
+scrollpanel-button-hover: dialog.png
+	background: 513,129,126,126
+	border-r: 639,129,1,126
+	border-l: 512,129,1,126
+	border-b: 513,255,126,1
+	border-t: 513,128,126,1
+	corner-tl: 512,128,1,1
+	corner-tr: 639,128,1,1
+	corner-bl: 512,255,1,1
+	corner-br: 639,255,1,1
+
+# A copy of dialog3 (pressed button)
+scrollpanel-button-pressed: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+# A copy of dialog2 (normal button)
+scrollpanel-button-disabled: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
 
 slider: dialog.png
 	tick: 512,1,1,4
