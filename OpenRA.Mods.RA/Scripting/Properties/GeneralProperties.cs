@@ -48,7 +48,19 @@ namespace OpenRA.Mods.RA.Scripting
 		public bool IsIdle { get { return self.IsIdle; } }
 
 		[Desc("The player that owns the actor.")]
-		public Player Owner { get { return self.Owner; } }
+		public Player Owner
+		{
+			get
+			{
+				return self.Owner;
+			}
+
+			set
+			{
+				if (self.Owner != value)
+					self.ChangeOwner(value);
+			}
+		}
 
 		[Desc("The type of the actor (e.g. \"e1\").")]
 		public string Type { get { return self.Info.Name; } }
