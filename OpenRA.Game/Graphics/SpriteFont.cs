@@ -118,7 +118,7 @@ namespace OpenRA.Graphics
 				unsafe
 				{
 					var p = (byte*)bitmap.Buffer;
-					var dest = s.sheet.Data;
+					var dest = s.sheet.GetData();
 					var destStride = s.sheet.Size.Width * 4;
 
 					for (var j = 0; j < s.size.Y; j++)
