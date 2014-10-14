@@ -1,60 +1,63 @@
 Container@INGAME_ROOT:
 	Logic: LoadIngamePlayerOrObserverUILogic
 	Children:
-		LogicTicker@DISCONNECT_WATCHER:
-			Logic: DisconnectWatcherLogic
-		Container@GAME_TIMER_BLOCK:
-			Logic: GameTimerLogic
-			X: WINDOW_RIGHT/2 - WIDTH
-			Width: 100
-			Height: 55
+		Container@WORLD_ROOT:
 			Children:
-				Label@GAME_TIMER:
-					Width: PARENT_RIGHT
-					Height: 30
-					Align: Center
-					Font: Title
-					Contrast: true
-				Label@GAME_TIMER_STATUS:
-					Y: 35
-					Width: PARENT_RIGHT
-					Height: 15
-					Align: Center
-					Font: Bold
-					Contrast: true
-		StrategicProgress@STRATEGIC_PROGRESS:
-			X: WINDOW_RIGHT/2
-			Y: 40
-		Container@PERFORMANCE_INFO:
-			Logic: PerfDebugLogic
-			Children:
-				Label@PERF_TEXT:
-					X: WINDOW_RIGHT - 200
-					Y: WINDOW_BOTTOM - 70
-					Width: 170
-					Height: 40
-					Contrast: true
-					VAlign: Top
-				Background@GRAPH_BG:
-					X: 10
-					Y: WINDOW_BOTTOM-HEIGHT-10
-					Width: 220
-					Height: 220
-					Background: panel-black
+				LogicTicker@DISCONNECT_WATCHER:
+					Logic: DisconnectWatcherLogic
+				Container@GAME_TIMER_BLOCK:
+					Logic: GameTimerLogic
+					X: WINDOW_RIGHT/2 - WIDTH
+					Width: 100
+					Height: 55
 					Children:
-						PerfGraph@GRAPH:
+						Label@GAME_TIMER:
+							Width: PARENT_RIGHT
+							Height: 30
+							Align: Center
+							Font: Title
+							Contrast: true
+						Label@GAME_TIMER_STATUS:
+							Y: 35
+							Width: PARENT_RIGHT
+							Height: 15
+							Align: Center
+							Font: Bold
+							Contrast: true
+				StrategicProgress@STRATEGIC_PROGRESS:
+					X: WINDOW_RIGHT/2
+					Y: 40
+				Container@PERFORMANCE_INFO:
+					Logic: PerfDebugLogic
+					Children:
+						Label@PERF_TEXT:
+							X: WINDOW_RIGHT - 200
+							Y: WINDOW_BOTTOM - 70
+							Width: 170
+							Height: 40
+							Contrast: true
+							VAlign: Top
+						Background@GRAPH_BG:
 							X: 10
-							Y: 10
-							Width: 200
-							Height: 200
-		WorldInteractionController@INTERACTION_CONTROLLER:
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
-		ViewportController:
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
-			TooltipContainer: TOOLTIP_CONTAINER
-		Container@PLAYER_ROOT:
+							Y: WINDOW_BOTTOM-HEIGHT-10
+							Width: 220
+							Height: 220
+							Background: panel-black
+							Children:
+								PerfGraph@GRAPH:
+									X: 10
+									Y: 10
+									Width: 200
+									Height: 200
+				WorldInteractionController@INTERACTION_CONTROLLER:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
+				ViewportController:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
+					TooltipContainer: TOOLTIP_CONTAINER
+				Container@PLAYER_ROOT:
+		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 Container@OBSERVER_WIDGETS:
