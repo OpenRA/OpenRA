@@ -25,10 +25,8 @@ namespace OpenRA.Graphics
 		byte[] data;
 
 		public readonly Size Size;
-		public byte[] Data
+		public byte[] GetData()
 		{
-			get
-			{
 				if (data != null)
 					return data;
 				if (texture == null)
@@ -36,8 +34,7 @@ namespace OpenRA.Graphics
 				else
 					data = texture.GetData();
 				releaseBufferOnCommit = false;
-				return data;
-			}
+			return data;
 		}
 		public bool Buffered { get { return data != null || texture == null; } }
 
@@ -72,15 +69,12 @@ namespace OpenRA.Graphics
 			ReleaseBuffer();
 		}
 
-		public ITexture Texture
+		public ITexture GetTexture()
 		{
 			// This is only called from the main thread but 'dirty'
 			// is set from other threads too via CommitData().
-			get
-			{
-				GenerateTexture();
-				return texture;
-			}
+			GenerateTexture();
+			return texture;
 		}
 
 		void GenerateTexture()
@@ -108,7 +102,7 @@ namespace OpenRA.Graphics
 
 		public Bitmap AsBitmap()
 		{
-			var d = Data;
+			var d = GetData();
 			var dataStride = 4 * Size.Width;
 			var bitmap = new Bitmap(Size.Width, Size.Height);
 
@@ -123,7 +117,7 @@ namespace OpenRA.Graphics
 
 		public Bitmap AsBitmap(TextureChannel channel, IPalette pal)
 		{
-			var d = Data;
+			var d = GetData();
 			var dataStride = 4 * Size.Width;
 			var bitmap = new Bitmap(Size.Width, Size.Height);
 			var channelOffset = (int)channel;

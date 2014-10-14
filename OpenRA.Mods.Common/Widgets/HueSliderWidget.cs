@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 						*(c + h) = HSLColor.FromHSV(h / 255f, 1, 1).RGB.ToArgb();
 				}
 				hueBitmap.UnlockBits(bitmapData);
-				hueSheet.Texture.SetData(hueBitmap);
+				hueSheet.GetTexture().SetData(hueBitmap);
 			}
 		}
 

@@ -32,7 +32,7 @@ namespace OpenRA.Graphics
 		{
 			if (nv > 0)
 			{
-				shader.SetTexture("DiffuseTexture", currentSheet.Texture);
+				shader.SetTexture("DiffuseTexture", currentSheet.GetTexture());
 
 				renderer.Device.SetBlendMode(currentBlend);
 				shader.Render(() =>
@@ -109,7 +109,7 @@ namespace OpenRA.Graphics
 
 		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveType type, Sheet sheet)
 		{
-			shader.SetTexture("DiffuseTexture", sheet.Texture);
+			shader.SetTexture("DiffuseTexture", sheet.GetTexture());
 			renderer.Device.SetBlendMode(BlendMode.Alpha);
 			shader.Render(() => renderer.DrawBatch(buffer, start, length, type));
 			renderer.Device.SetBlendMode(BlendMode.None);

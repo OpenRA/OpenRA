@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var rect = new Rectangle((int)(255*SRange[0]), (int)(255*(1 - VRange[1])), (int)(255*(SRange[1] - SRange[0]))+1, (int)(255*(VRange[1] - VRange[0])) + 1);
 			var mixerSheet = new Sheet(new Size(256, 256));
-			mixerSheet.Texture.SetData(front, 256, 256);
+			mixerSheet.GetTexture().SetData(front, 256, 256);
 			mixerSprite = new Sprite(mixerSheet, rect, TextureChannel.Alpha);
 		}
 
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				try
 				{
-					mixerSprite.sheet.Texture.SetData(front, 256, 256);
+					mixerSprite.sheet.GetTexture().SetData(front, 256, 256);
 				}
 				finally
 				{
