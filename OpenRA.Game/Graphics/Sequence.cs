@@ -29,7 +29,7 @@ namespace OpenRA.Graphics
 		public readonly int ShadowZOffset;
 		public readonly int[] Frames;
 
-		public Sequence(SpriteLoader loader, string unit, string name, MiniYaml info)
+		public Sequence(SpriteCache cache, string unit, string name, MiniYaml info)
 		{
 			var srcOverride = info.Value;
 			Name = name;
@@ -50,7 +50,7 @@ namespace OpenRA.Graphics
 
 				// Apply offset to each sprite in the sequence
 				// Different sequences may apply different offsets to the same frame
-				sprites = loader.LoadAllSprites(srcOverride ?? unit).Select(
+				sprites = cache[srcOverride ?? unit].Select(
 					s => new Sprite(s.sheet, s.bounds, s.offset + offset, s.channel, blendMode)).ToArray();
 
 				if (!d.ContainsKey("Length"))

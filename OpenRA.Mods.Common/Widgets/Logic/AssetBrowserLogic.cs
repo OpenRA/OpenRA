@@ -308,7 +308,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			else
 			{
 				currentFilename = filename;
-				currentSprites = world.Map.SequenceProvider.SpriteLoader.LoadAllSprites(filename);
+				currentSprites = world.Map.SequenceProvider.SpriteCache[filename];
 				currentFrame = 0;
 				frameSlider.MaximumValue = (float)currentSprites.Length - 1;
 				frameSlider.Ticks = currentSprites.Length;
