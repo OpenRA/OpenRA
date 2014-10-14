@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Network;
 using OpenRA.Widgets;
 using OpenRA.Traits;
 using OpenRA.Mods.RA;
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	class GameInfoStatsLogic
 	{
 		[ObjectCreator.UseCtor]
-		public GameInfoStatsLogic(Widget widget, World world)
+		public GameInfoStatsLogic(Widget widget, World world, OrderManager orderManager)
 		{
 			var lp = world.LocalPlayer;
 
@@ -45,6 +46,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var pp = p;
 				var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
 				var item = playerTemplate.Clone();
+
+				LobbyUtils.SetupClientWidget(item, client, orderManager, client.Bot == null);
+
 				var nameLabel = item.Get<LabelWidget>("NAME");
 				nameLabel.GetText = () =>
 				{
