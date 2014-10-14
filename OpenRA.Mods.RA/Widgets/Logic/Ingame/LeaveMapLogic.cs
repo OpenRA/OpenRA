@@ -31,6 +31,10 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			this.orderManager = orderManager;
 
+			var mpe = world.WorldActor.TraitOrDefault<MenuPaletteEffect>();
+			if (mpe != null)
+				mpe.Fade(mpe.Info.MenuEffect);
+
 			widget.Get<LabelWidget>("VERSION_LABEL").Text = Game.modData.Manifest.Mod.Version;
 
 			var showStats = false;
@@ -95,7 +99,6 @@ namespace OpenRA.Mods.RA.Widgets
 			leaveButton.OnClick = () =>
 			{
 				leaveButton.Disabled = true;
-				var mpe = world.WorldActor.TraitOrDefault<MenuPaletteEffect>();
 
 				Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave",
 					world.LocalPlayer == null ? null : world.LocalPlayer.Country.Race);
