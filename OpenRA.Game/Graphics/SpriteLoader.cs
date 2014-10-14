@@ -30,32 +30,42 @@ namespace OpenRA.Graphics
 		bool DisableExportPadding { get; }
 	}
 
-	public class SpriteLoader
+	public class SpriteCache
 	{
 		public readonly SheetBuilder SheetBuilder;
-		readonly ISpriteLoader[] loaders;
 		readonly Cache<string, Sprite[]> sprites;
-		readonly Cache<string, ISpriteFrame[]> frames;
-		readonly string[] exts;
 
-		public SpriteLoader(ISpriteLoader[] loaders, string[] exts, SheetBuilder sheetBuilder)
+		public SpriteCache(ISpriteLoader[] loaders, string[] exts, SheetBuilder sheetBuilder)
 		{
-			this.loaders = loaders;
 			SheetBuilder = sheetBuilder;
-
 			// Include extension-less version
-			this.exts = exts.Append("").ToArray();
-			sprites = new Cache<string, Sprite[]>(CacheSprites);
-			frames = new Cache<string, ISpriteFrame[]>(CacheFrames);
+			exts = exts.Append("").ToArray();
+			sprites = new Cache<string, Sprite[]>(filename => SpriteLoader.GetSprites(filename, exts, loaders, sheetBuilder));
 		}
 
-		Sprite[] CacheSprites(string filename)
+		public Sprite[] this[string filename] { get { return sprites[filename]; } }
+	}
+
+	public class FrameCache
+	{
+		readonly Cache<string, ISpriteFrame[]> frames;
+
+		public FrameCache(ISpriteLoader[] loaders, string[] exts)
 		{
-			return frames[filename].Select(a => SheetBuilder.Add(a))
-				.ToArray();
+			frames = new Cache<string, ISpriteFrame[]>(filename => SpriteLoader.GetFrames(filename, exts, loaders));
 		}
 
-		ISpriteFrame[] CacheFrames(string filename)
+		public ISpriteFrame[] this[string filename] { get { return frames[filename]; } }
+	}
+
+	public static class SpriteLoader
+	{
+		public static Sprite[] GetSprites(string filename, string[] exts, ISpriteLoader[] loaders, SheetBuilder sheetBuilder)
+		{
+			return GetFrames(filename, exts, loaders).Select(a => sheetBuilder.Add(a)).ToArray();
+		}
+
+		public static ISpriteFrame[] GetFrames(string filename, string[] exts, ISpriteLoader[] loaders)
 		{
 			using (var stream = GlobalFileSystem.OpenWithExts(filename, exts))
 			{
@@ -67,8 +77,5 @@ namespace OpenRA.Graphics
 				throw new InvalidDataException(filename + " is not a valid sprite file");
 			}
 		}
-
-		public Sprite[] LoadAllSprites(string filename) { return sprites[filename]; }
-		public ISpriteFrame[] LoadAllFrames(string filename) { return frames[filename]; }
 	}
 }

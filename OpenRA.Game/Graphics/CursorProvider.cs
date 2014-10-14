@@ -45,10 +45,10 @@ namespace OpenRA.Graphics
 			foreach (var p in nodesDict["Palettes"].Nodes)
 				palette.AddPalette(p.Key, new ImmutablePalette(GlobalFileSystem.Open(p.Value.Value), shadowIndex), false);
 
-			var spriteLoader = new SpriteLoader(modData.SpriteLoaders, new string[0], new SheetBuilder(SheetType.Indexed));
+			var spriteCache = new SpriteCache(modData.SpriteLoaders, new string[0], new SheetBuilder(SheetType.Indexed));
 			foreach (var s in nodesDict["Cursors"].Nodes)
-				LoadSequencesForCursor(spriteLoader, s.Key, s.Value);
-			spriteLoader.SheetBuilder.Current.ReleaseBuffer();
+				LoadSequencesForCursor(spriteCache, s.Key, s.Value);
+			spriteCache.SheetBuilder.Current.ReleaseBuffer();
 
 			palette.Initialize();
 		}
@@ -59,10 +59,10 @@ namespace OpenRA.Graphics
 			return new PaletteReference(name, palette.GetPaletteIndex(name), pal);
 		}
 
-		void LoadSequencesForCursor(SpriteLoader loader, string cursorSrc, MiniYaml cursor)
+		void LoadSequencesForCursor(SpriteCache cache, string cursorSrc, MiniYaml cursor)
 		{
 			foreach (var sequence in cursor.Nodes)
-				cursors.Add(sequence.Key, new CursorSequence(loader, cursorSrc, cursor.Value, sequence.Value));
+				cursors.Add(sequence.Key, new CursorSequence(cache, cursorSrc, cursor.Value, sequence.Value));
 		}
 
 		public bool HasCursorSequence(string cursor)

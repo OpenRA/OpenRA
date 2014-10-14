@@ -50,10 +50,10 @@ namespace OpenRA.Editor
 			this.TileSize = Math.Min(tileSize.Width, tileSize.Height);
 
 			templates = new Dictionary<ushort, byte[][]>();
-			var spriteLoader = new SpriteLoader(Game.modData.SpriteLoaders, tileset.Extensions, null);
+			var frameCache = new FrameCache(Game.modData.SpriteLoaders, tileset.Extensions);
 			foreach (var t in tileset.Templates)
 			{
-				var allFrames = spriteLoader.LoadAllFrames(t.Value.Image);
+				var allFrames = frameCache[t.Value.Image];
 				var frames = t.Value.Frames != null ? t.Value.Frames.Select(f => allFrames[f]).ToArray() : allFrames;
 				templates.Add(t.Value.Id, frames.Select(f => ExtractSquareTile(f)).ToArray());
 			}

@@ -23,9 +23,9 @@ namespace OpenRA.Graphics
 
 		Sprite[] sprites;
 
-		public CursorSequence(SpriteLoader loader, string cursorSrc, string palette, MiniYaml info)
+		public CursorSequence(SpriteCache cache, string cursorSrc, string palette, MiniYaml info)
 		{
-			sprites = loader.LoadAllSprites(cursorSrc);
+			sprites = cache[cursorSrc];
 			var d = info.ToDictionary();
 
 			start = Exts.ParseIntegerInvariant(d["start"].Value);
