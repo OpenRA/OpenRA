@@ -25,7 +25,9 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 {
 	public class IngameChromeLogic
 	{
-		readonly Widget gameRoot;
+		readonly Widget ingameRoot;
+		readonly Widget worldRoot;
+		readonly Widget menuRoot;
 		readonly Widget playerRoot;
 		readonly World world;
 
@@ -33,8 +35,10 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 		public IngameChromeLogic(World world)
 		{
 			this.world = world;
-			gameRoot = Ui.Root.Get("INGAME_ROOT");
-			playerRoot = gameRoot.Get("PLAYER_ROOT");
+			ingameRoot = Ui.Root.Get("INGAME_ROOT");
+			worldRoot = ingameRoot.Get("WORLD_ROOT");
+			menuRoot = ingameRoot.Get("MENU_ROOT");
+			playerRoot = worldRoot.Get("PLAYER_ROOT");
 
 			InitRootWidgets();
 			if (world.LocalPlayer == null)
@@ -45,14 +49,14 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 
 		void InitRootWidgets()
 		{
-			Game.LoadWidget(world, "CHAT_PANEL", gameRoot, new WidgetArgs());
+			Game.LoadWidget(world, "CHAT_PANEL", worldRoot, new WidgetArgs());
 
-			Action ShowLeaveMapWidget = () =>
+			world.GameOver += () =>
 			{
-				gameRoot.RemoveChildren();
-				Game.LoadWidget(world, "LEAVE_MAP_WIDGET", Ui.Root, new WidgetArgs());
+				worldRoot.RemoveChildren();
+				menuRoot.RemoveChildren();
+				Game.LoadWidget(world, "LEAVE_MAP_WIDGET", menuRoot, new WidgetArgs());
 			};
-			world.GameOver += ShowLeaveMapWidget;
 		}
 
 		void InitObserverWidgets()

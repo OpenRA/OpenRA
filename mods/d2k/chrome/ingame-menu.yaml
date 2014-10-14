@@ -9,6 +9,7 @@ Container@INGAME_MENU:
 			Align: Right
 			Font: Regular
 			Contrast: True
+		Container@PANEL_ROOT:
 		Background@MENU_BUTTONS:
 			X: 13 + (WINDOW_RIGHT - 522) / 4 - WIDTH / 2
 			Y: (WINDOW_BOTTOM - HEIGHT)/2

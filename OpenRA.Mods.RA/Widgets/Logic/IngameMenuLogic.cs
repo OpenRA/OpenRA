@@ -56,7 +56,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Action closeMenu = () =>
 			{
 				Ui.CloseWindow();
-				Ui.Root.RemoveChild(menu);
 				if (mpe != null)
 					mpe.Fade(MenuPaletteEffect.EffectType.None);
 				onExit();
@@ -110,12 +109,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			resumeButton.IsDisabled = () => resumeDisabled;
 			resumeButton.OnClick = closeMenu;
 
-			// Game info panel
-			var gameInfoPanel = Game.LoadWidget(world, "GAME_INFO_PANEL", menu, new WidgetArgs()
+			var panelRoot = widget.GetOrNull("PANEL_ROOT");
+			if (panelRoot != null)
 			{
-				{ "activePanel", activePanel }
-			});
-			gameInfoPanel.IsVisible = () => !hideMenu;
+				var gameInfoPanel = Game.LoadWidget(world, "GAME_INFO_PANEL", panelRoot, new WidgetArgs()
+				{
+					{ "activePanel", activePanel }
+				});
+
+				gameInfoPanel.IsVisible = () => !hideMenu;
+			}
 		}
 	}
 }
