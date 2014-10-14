@@ -3,6 +3,15 @@ Container@PLAYER_WIDGETS:
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
+		MenuButton@OPTIONS_BUTTON:
+			Logic: OrderButtonsChromeLogic
+			X: 0
+			Y: 0
+			Width: 160
+			Height: 25
+			Text: Options (Esc)
+			Font: Bold
+			Key: escape
 		MenuButton@DIPLOMACY_BUTTON:
 			Logic: OrderButtonsChromeLogic
 			MenuContainer: INGAME_DIPLOMACY_BG

@@ -1,5 +1,14 @@
 Container@OBSERVER_WIDGETS:
 	Children:
+		MenuButton@OPTIONS_BUTTON:
+			Logic: OrderButtonsChromeLogic
+			X: 0
+			Y: 0
+			Width: 160
+			Height: 25
+			Text: Options (Esc)
+			Font: Bold
+			Key: escape
 		MenuButton@OBSERVER_STATS_BUTTON:
 			Logic: OrderButtonsChromeLogic
 			MenuContainer: INGAME_OBSERVERSTATS_BG

@@ -20,6 +20,7 @@ Container@INGAME_MENU:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
 			Background: shellmapborder
+		Container@PANEL_ROOT:
 		Container@MENU_BUTTONS:
 			X: (WINDOW_RIGHT-WIDTH)/2
 			Y: WINDOW_BOTTOM-33-HEIGHT-10

@@ -19,7 +19,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public LoadIngamePlayerOrObserverUILogic(Widget widget, World world)
 		{
 			var ingameRoot = widget.Get("INGAME_ROOT");
-			var playerRoot = ingameRoot.Get("PLAYER_ROOT");
+			var worldRoot = ingameRoot.Get("WORLD_ROOT");
+			var menuRoot = ingameRoot.Get("MENU_ROOT");
+			var playerRoot = worldRoot.Get("PLAYER_ROOT");
 
 			if (world.LocalPlayer == null)
 				Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
@@ -40,14 +42,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
-			Game.LoadWidget(world, "CHAT_PANEL", ingameRoot, new WidgetArgs());
+			Game.LoadWidget(world, "CHAT_PANEL", worldRoot, new WidgetArgs());
 
-			Action showLeaveMapWidget = () =>
+			world.GameOver += () =>
 			{
-				ingameRoot.RemoveChildren();
-				Game.LoadWidget(world, "LEAVE_MAP_WIDGET", Ui.Root, new WidgetArgs());
+				worldRoot.RemoveChildren();
+				menuRoot.RemoveChildren();
+				Game.LoadWidget(world, "LEAVE_MAP_WIDGET", menuRoot, new WidgetArgs());
 			};
-			world.GameOver += showLeaveMapWidget;
 		}
 	}
 }

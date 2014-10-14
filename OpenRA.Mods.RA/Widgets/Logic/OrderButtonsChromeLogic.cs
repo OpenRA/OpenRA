@@ -20,7 +20,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class OrderButtonsChromeLogic
 	{
 		readonly World world;
-		readonly Widget ingameRoot;
+		readonly Widget worldRoot;
+		readonly Widget menuRoot;
 		bool disableSystemButtons;
 		Widget currentWidget;
 
@@ -28,9 +29,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public OrderButtonsChromeLogic(Widget widget, World world)
 		{
 			this.world = world;
-			ingameRoot = Ui.Root.Get("INGAME_ROOT");
+			var ingameRoot = Ui.Root.Get("INGAME_ROOT");
+			worldRoot = ingameRoot.Get("WORLD_ROOT");
+			menuRoot = ingameRoot.Get("MENU_ROOT");
 
-			Action removeCurrentWidget = () => Ui.Root.RemoveChild(currentWidget);
+			Action removeCurrentWidget = () => menuRoot.RemoveChild(currentWidget);
 			world.GameOver += removeCurrentWidget;
 
 			// Order Buttons
@@ -127,7 +130,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var cachedPause = world.PredictedPaused;
 
 			if (button.HideIngameUI)
-				ingameRoot.IsVisible = () => false;
+				worldRoot.IsVisible = () => false;
 
 			if (button.Pause && world.LobbyInfo.IsSinglePlayer)
 				world.SetPauseState(true);
@@ -136,15 +139,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			widgetArgs.Add("onExit", () =>
 			{
 				if (button.HideIngameUI)
-					ingameRoot.IsVisible = () => true;
+					worldRoot.IsVisible = () => true;
 
 				if (button.Pause && world.LobbyInfo.IsSinglePlayer)
 					world.SetPauseState(cachedPause);
 
+				menuRoot.RemoveChild(currentWidget);
 				disableSystemButtons = false;
 			});
 
-			currentWidget = Game.LoadWidget(world, button.MenuContainer, Ui.Root, widgetArgs);
+			currentWidget = Game.LoadWidget(world, button.MenuContainer, menuRoot, widgetArgs);
 		}
 
 		static void BindOrderButton<T>(World world, ButtonWidget w, string icon)
