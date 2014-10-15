@@ -597,21 +597,6 @@ Actors:
 	crate: CRATE
 		Location: 14,13
 		Owner: Neutral
-	BhndTrigger: waypoint
-		Location: 40,21
-		Owner: Neutral
-	Atk1Trigger: waypoint
-		Location: 35,37
-		Owner: Neutral
-	Atk2Trigger: waypoint
-		Location: 11,44
-		Owner: Neutral
-	AutoTrigger: waypoint
-		Location: 12,30
-		Owner: Neutral
-	HeliTrigger: waypoint
-		Location: 13,15
-		Owner: Neutral
 	HeliEntry: waypoint
 		Location: 4,26
 		Owner: Neutral
@@ -626,8 +611,8 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
-		LuaScriptInterface:
-			LuaScripts: gdi04b.lua
+		LuaScript:
+			Scripts: gdi04b.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	Player:
@@ -674,21 +659,20 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
-	HARV:
-		-MustBeDestroyed:
 	E3:
 		AutoTarget:
 			ScanRadius: 5
 	CRATE:
 		Crate:
 			Lifetime: 9999
-		LuaScriptEvents:
 		HealUnitsCrateAction:
 		-RevealMapCrateAction:
 		-GiveMcvCrateAction:
 		-GiveCashCrateAction:
 		-ExplodeCrateAction@fire:
 		-GrantUpgradeCrateAction@cloak:
+		-DuplicateUnitCrateAction:
+		ScriptTriggers:
 
 Sequences:
 
@@ -696,7 +680,7 @@ VoxelSequences:
 
 Weapons:
 	Tiberium:
-		Warhead: SpreadDamage
+		Warhead@1Dam: SpreadDamage
 			Damage: 4
 
 Voices:
