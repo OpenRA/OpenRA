@@ -397,5 +397,16 @@ namespace OpenRA
 
 			return PlayPredefined(rules, player, null, type.ToLowerInvariant(), notification, variant, true, WPos.Zero, 1f, false);
 		}
+
+		public static bool PlayCustomVolumeNotification(Ruleset rules, Player player, string type, string notification, string variant, float volume)
+		{
+			if (rules == null)
+				throw new ArgumentNullException("rules");
+
+			if (type == null || notification == null)
+				return false;
+
+			return PlayPredefined(rules, player, null, type.ToLowerInvariant(), notification, variant, true, WPos.Zero, volume, false);
+		}
 	}
 }

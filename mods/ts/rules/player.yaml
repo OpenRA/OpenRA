@@ -32,6 +32,7 @@ Player:
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
+		CashTrickleVolume: 0.25
 	ActorGroupProxy:
 	DeveloperMode:
 	PlayerColorPalette:
