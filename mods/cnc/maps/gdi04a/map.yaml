@@ -326,6 +326,12 @@ Actors:
 		Health: 1
 		Facing: 0
 		SubCell: 3
+	Actor710: e1
+		Location: 12,54
+		Owner: GDI
+		Health: 1
+		Facing: 0
+		SubCell: 5
 	Actor71: e1
 		Location: 12,54
 		Owner: GDI
@@ -416,6 +422,12 @@ Actors:
 		Health: 1
 		Facing: 64
 		SubCell: 4
+	Actor860: e2
+		Location: 14,54
+		Owner: GDI
+		Health: 1
+		Facing: 0
+		SubCell: 5
 	Actor86: e2
 		Location: 14,54
 		Owner: GDI
@@ -524,9 +536,6 @@ Actors:
 	GDIReinforcementsEntry: waypoint
 		Location: 7,50
 		Owner: Neutral
-	Auto1Trigger: waypoint
-		Location: 52,47
-		Owner: Neutral
 	NodHeliEntry: waypoint
 		Location: 41,23
 		Owner: Neutral
@@ -547,8 +556,8 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
-		LuaScriptInterface:
-			LuaScripts: gdi04a.lua
+		LuaScript:
+			Scripts: gdi04a.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	Player:
@@ -595,18 +604,16 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
-	HARV:
-		-MustBeDestroyed:
 	CRATE:
 		Crate:
 			Lifetime: 9999
-		LuaScriptEvents:
 		HealUnitsCrateAction:
 		-RevealMapCrateAction:
 		-GiveMcvCrateAction:
 		-GiveCashCrateAction:
 		-ExplodeCrateAction@fire:
 		-GrantUpgradeCrateAction@cloak:
+		-DuplicateUnitCrateAction:
 		ScriptTriggers:
 
 Sequences:
@@ -615,7 +622,7 @@ VoxelSequences:
 
 Weapons:
 	Tiberium:
-		Warhead: SpreadDamage
+		Warhead@1Dam: SpreadDamage
 			Damage: 6
 
 Voices:
