@@ -2205,7 +2205,7 @@ Actors:
 	Actor14: wood
 		Location: 23,57
 		Owner: Neutral
-	Camera: CAMERA
+	CameraSpot: CAMERA
 		Location: 79,137
 		Owner: Allies
 
@@ -2220,8 +2220,8 @@ Rules:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		LuaScriptInterface:
-			LuaScripts: mission.lua
+		LuaScript:
+			Scripts: intervention.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	CAMERA:
@@ -2229,17 +2229,26 @@ Rules:
 			Range: 18c0
 	MISS:
 		Tooltip:
-			Name: Air Force HQ
+			Name: Soviet Air Force HQ
 		Capturable:
 			Type: building
 			AllowAllies: False
 			AllowNeutral: False
 			AllowEnemies: True
 			CaptureThreshold: 1.0
-	E6:
+	E6.MOD:
+		Inherits: E6
+		Buildable:
+			Prerequisites: ~barracks
+		-RepairsBridges:
 		Captures:
 			CaptureTypes: building
 			Sabotage: False
+		RenderInfantry:
+			Image: e6
+	E6:
+		Buildable:
+			Prerequisites: ~disabled
 	HPAD:
 		ProvidesCustomPrerequisite:
 			Prerequisite: givefix
@@ -2254,12 +2263,12 @@ Rules:
 			Name: Weapons Factory or Helipad
 	MIG:
 		Buildable:
-			Prerequisites: afld
+			Prerequisites: ~afld
 		LimitedAmmo:
 			Ammo: 2
 	HELI:
 		Buildable:
-			Prerequisites: hpad
+			Prerequisites: ~hpad
 		Valued:
 			Cost: 1500
 	SAM:
@@ -2270,17 +2279,47 @@ Rules:
 	TSLA:
 		Power:
 			Amount: -50
-	^Vehicles:
+	^Building:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Vehicle:
 		MustBeDestroyed:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
 	^Tank:
 		MustBeDestroyed:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
 	^Infantry:
 		MustBeDestroyed:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
 	^Plane:
 		MustBeDestroyed:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
 	^Ship:
 		MustBeDestroyed:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Wall:
+		Tooltip:
+			ShowOwnerRow: false
+	^Husk:
+		Tooltip:
+			GenericVisibility: Enemy, Ally, Neutral
+			GenericStancePrefix: false
+			ShowOwnerRow: false
 	ATEK:
+		Buildable:
+			Prerequisites: ~disabled
+	STEK:
 		Buildable:
 			Prerequisites: ~disabled
 	GAP:
@@ -2292,7 +2331,22 @@ Rules:
 	PDOX:
 		Buildable:
 			Prerequisites: ~disabled
+	E4:
+		Buildable:
+			Prerequisites: ~disabled
 	E7:
+		Buildable:
+			Prerequisites: ~disabled
+	THF:
+		Buildable:
+			Prerequisites: ~disabled
+	HIJACKER:
+		Buildable:
+			Prerequisites: ~disabled
+	SHOK:
+		Buildable:
+			Prerequisites: ~disabled
+	SNIPER:
 		Buildable:
 			Prerequisites: ~disabled
 	2TNK:
@@ -2310,6 +2364,9 @@ Rules:
 	MNLY.AT:
 		Buildable:
 			Prerequisites: ~disabled
+	MNLY.AP:
+		Buildable:
+			Prerequisites: ~disabled
 	MRJ:
 		Buildable:
 			Prerequisites: ~disabled
@@ -2317,6 +2374,9 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 	HIND:
+		Buildable:
+			Prerequisites: ~disabled
+	YAK:
 		Buildable:
 			Prerequisites: ~disabled
 	CA:
