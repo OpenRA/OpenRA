@@ -69,7 +69,6 @@ INSTALL_DATA = $(INSTALL) -m644
 # program targets
 CORE = rsdl2 rnull game utility ralint
 TOOLS = editor tsbuild crashdialog
-
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
 
@@ -207,14 +206,14 @@ tsbuild: OpenRA.TilesetBuilder.FormBuilder.resources OpenRA.TilesetBuilder.FormN
 
 ##### Launchers / Utilities #####
 
-crashdialog_SRCS := $(shell find OpenRA.CrashDialog/ -iname '*.cs')
-crashdialog_TARGET = OpenRA.CrashDialog.exe
-crashdialog_KIND = exe
-crashdialog_DEPS = $(game_TARGET)
-crashdialog_LIBS = $(COMMON_LIBS) $(crashdialog_DEPS) System.Windows.Forms.dll
-crashdialog_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
-PROGRAMS += crashdialog
-crashdialog: $(crashdialog_TARGET)
+gamemonitor_SRCS := $(shell find OpenRA.GameMonitor/ -iname '*.cs')
+gamemonitor_TARGET = OpenRA.exe
+gamemonitor_KIND = winexe
+gamemonitor_DEPS = $(game_TARGET)
+gamemonitor_LIBS = $(COMMON_LIBS) $(gamemonitor_DEPS) System.Windows.Forms.dll
+gamemonitor_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
+PROGRAMS += gamemonitor
+gamemonitor: $(gamemonitor_TARGET)
 
 # Backend for the launcher apps - queries game/mod info and applies actions to an install
 utility_SRCS := $(shell find OpenRA.Utility/ -iname '*.cs')
@@ -257,9 +256,9 @@ default: cli-dependencies core
 
 core: game renderers mods utility ralint
 
-tools: editor tsbuild crashdialog
+tools: editor tsbuild gamemonitor
 
-package: dependencies core editor crashdialog docs version
+package: dependencies core editor gamemonitor docs version
 
 mods: mod_common mod_ra mod_cnc mod_d2k mod_ts
 
