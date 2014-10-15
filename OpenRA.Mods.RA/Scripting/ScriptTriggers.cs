@@ -18,8 +18,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
-	public enum Trigger { OnIdle, OnDamaged, OnKilled, OnProduction, OnPlayerWon, OnPlayerLost, OnObjectiveAdded,
-		OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnAddedToWorld, OnRemovedFromWorld };
+	public enum Trigger { OnIdle, OnDamaged, OnKilled, OnProduction, OnOtherProduction, OnPlayerWon, OnPlayerLost,
+		OnObjectiveAdded, OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnAddedToWorld, OnRemovedFromWorld };
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
 	public class ScriptTriggersInfo : ITraitInfo
@@ -27,12 +27,14 @@ namespace OpenRA.Mods.RA.Scripting
 		public object Create(ActorInitializer init) { return new ScriptTriggers(init.world); }
 	}
 
-	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyObjectivesUpdated, INotifyCapture, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable
+	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyOtherProduction, INotifyObjectivesUpdated, INotifyCapture, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable
 	{
 		readonly World world;
 
 		public event Action<Actor> OnKilledInternal = _ => { };
 		public event Action<Actor> OnRemovedInternal = _ => { };
+		public event Action<Actor, Actor> OnProducedInternal = (a, b) => { };
+		public event Action<Actor, Actor> OnOtherProducedInternal = (a, b) => { };
 
 		public Dictionary<Trigger, List<Pair<LuaFunction, ScriptContext>>> Triggers = new Dictionary<Trigger, List<Pair<LuaFunction, ScriptContext>>>();
 
@@ -108,6 +110,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		public void UnitProduced(Actor self, Actor other, CPos exit)
 		{
+			// Run Lua callbacks
 			foreach (var f in Triggers[Trigger.OnProduction])
 			{
 				try
@@ -122,6 +125,9 @@ namespace OpenRA.Mods.RA.Scripting
 					return;
 				}
 			}
+
+			// Run any internally bound callbacks
+			OnProducedInternal(self, other);
 		}
 
 		public void OnPlayerWon(Player player)
@@ -268,6 +274,28 @@ namespace OpenRA.Mods.RA.Scripting
 
 			// Run any internally bound callbacks
 			OnRemovedInternal(self);
+		}
+
+		public void UnitProducedByOther(Actor self, Actor producee, Actor produced)
+		{
+			// Run Lua callbacks
+			foreach (var f in Triggers[Trigger.OnOtherProduction])
+			{
+				try
+				{
+					using (var a = producee.ToLuaValue(f.Second))
+					using (var b = produced.ToLuaValue(f.Second))
+						f.First.Call(a, b).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
+
+			// Run any internally bound callbacks
+			OnOtherProducedInternal(producee, produced);
 		}
 
 		public void Clear(Trigger trigger)
