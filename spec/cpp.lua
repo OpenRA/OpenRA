@@ -3,6 +3,7 @@
 
 local funccall = "([A-Za-z_][A-Za-z0-9_]*)%s*"
 
+if not CMarkSymbols then dofile "spec/cbase.lua" end
 return {
   exts = {"cpp", "c", "hpp", "h"},
   lexer = wxstc.wxSTC_LEX_CPP,
@@ -13,6 +14,8 @@ return {
   isfncall = function(str)
     return string.find(str, funccall .. "%(")
   end,
+
+  marksymbols = CMarkSymbols,
 
   lexerstyleconvert = {
     text = {wxstc.wxSTC_C_IDENTIFIER,},

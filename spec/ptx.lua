@@ -1,6 +1,7 @@
 -- author: Christoph Kubisch
 ---------------------------------------------------------
 
+if not CMarkSymbols then dofile "spec/cbase.lua" end
 return {
   exts = {"ptx",},
   lexer = wxstc.wxSTC_LEX_CPP,
@@ -8,15 +9,7 @@ return {
   sep = ".",
   linecomment = "//",
 
-  isfndef = function(str)
-    local l
-    local s,e,cap = string.find(str,"^%s*([A-Za-z0-9_]+%s+[A-Za-z0-9_]+%s*%(.+%))")
-    if (not s) then
-      s,e,cap = string.find(str,"^%s*([A-Za-z0-9_]+%s+[A-Za-z0-9_]+)%s*%(")
-    end
-    if (cap and (string.find(cap,"^return") or string.find(cap,"else"))) then return end
-    return s,e,cap,l
-  end,
+  marksymbols = CMarkSymbols,
 
   lexerstyleconvert = {
     text = {wxstc.wxSTC_C_IDENTIFIER,
