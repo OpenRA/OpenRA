@@ -9,6 +9,10 @@
 #endregion
 
 using Eluant;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -35,6 +39,236 @@ namespace OpenRA.Mods.RA.Scripting
 				throw new LuaException("Unknown actor type '{0}'".F(actorType));
 
 			self.QueueActivity(new WaitFor(() => p.Produce(self, actorInfo, raceVariant)));
+		}
+	}
+
+	[ScriptPropertyGroup("Production")]
+	public class RallyPointProperties : ScriptActorProperties, Requires<RallyPointInfo>
+	{
+		readonly RallyPoint rp;
+
+		public RallyPointProperties(ScriptContext context, Actor self)
+			: base(context, self)
+		{
+			rp = self.Trait<RallyPoint>();
+		}
+
+		[Desc("Query or set a factory's rally point")]
+		public CPos RallyPoint
+		{
+			get { return rp.Location; }
+			set { rp.Location = value; }
+		}
+	}
+
+	[ScriptPropertyGroup("Production")]
+	public class PrimaryBuildingProperties : ScriptActorProperties, Requires<PrimaryBuildingInfo>
+	{
+		readonly PrimaryBuilding pb;
+
+		public PrimaryBuildingProperties(ScriptContext context, Actor self)
+			: base(context, self)
+		{
+			pb = self.Trait<PrimaryBuilding>();
+		}
+
+		[Desc("Query or set the factory's primary building status")]
+		public bool IsPrimaryBuilding
+		{
+			get { return pb.IsPrimary; }
+			set { pb.SetPrimaryProducer(self, value); }
+		}
+	}
+
+	[ScriptPropertyGroup("Production")]
+	public class ProductionQueueProperties : ScriptActorProperties, Requires<ProductionQueueInfo>, Requires<ScriptTriggersInfo>
+	{
+		readonly List<ProductionQueue> queues;
+		readonly ScriptTriggers triggers;
+
+		public ProductionQueueProperties(ScriptContext context, Actor self)
+			: base(context, self)
+		{
+			queues = self.TraitsImplementing<ProductionQueue>().Where(q => q.Enabled).ToList();
+			triggers = TriggerGlobal.GetScriptTriggers(self);
+		}
+
+		[Desc("Build the specified set of actors using a TD-style (per building) production queue. " +
+		      "The function will return true if production could be started, false otherwise. " +
+		      "If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
+		      "production of all actors has been completed.  The actors array is guaranteed to " +
+		      "only contain alive actors.")]
+		public bool Build(string[] actorTypes, LuaFunction actionFunc = null)
+		{
+			if (triggers.Triggers[Trigger.OnProduction].Any())
+				return false;
+
+			var queue = queues.Where(q => actorTypes.All(t => GetBuildableInfo(t).Queue.Contains(q.Info.Type)))
+				.FirstOrDefault(q => q.CurrentItem() == null);
+
+			if (queue == null)
+				return false;
+
+			if (actionFunc != null)
+			{
+				var playerIndex = self.Owner.ClientIndex;
+				var squadSize = actorTypes.Length;
+				var squad = new List<Actor>();
+				var func = actionFunc.CopyReference() as LuaFunction;
+
+				Action<Actor, Actor> productionHandler = (_, __) => { };
+				productionHandler = (factory, unit) =>
+				{
+					if (playerIndex != factory.Owner.ClientIndex)
+					{
+						triggers.OnProducedInternal -= productionHandler;
+						return;
+					}
+
+					squad.Add(unit);
+					if (squad.Count >= squadSize)
+					{
+						using (func)
+						using (var luaSquad = squad.Where(u => !u.IsDead()).ToArray().ToLuaValue(context))
+							func.Call(luaSquad).Dispose();
+
+						triggers.OnProducedInternal -= productionHandler;
+					}
+				};
+
+				triggers.OnProducedInternal += productionHandler;
+			}
+
+			foreach (var actorType in actorTypes)
+				queue.ResolveOrder(self, Order.StartProduction(self, actorType, 1));
+
+			return true;
+		}
+
+		[Desc("Checks whether the factory is currently producing anything on the queue that produces this type of actor.")]
+		public bool IsProducing(string actorType)
+		{
+			if (triggers.Triggers[Trigger.OnProduction].Any())
+				return true;
+
+			return queues.Where(q => GetBuildableInfo(actorType).Queue.Contains(q.Info.Type))
+				.Any(q => q.CurrentItem() != null);
+		}
+
+		BuildableInfo GetBuildableInfo(string actorType)
+		{
+			var ri = self.World.Map.Rules.Actors[actorType];
+			var bi = ri.Traits.GetOrDefault<BuildableInfo>();
+
+			if (bi == null)
+				throw new LuaException("Actor of type {0} cannot be produced".F(actorType));
+			else
+				return bi;
+		}
+	}
+
+	[ScriptPropertyGroup("Production")]
+	public class ClassicProductionQueueProperties : ScriptPlayerProperties, Requires<ClassicProductionQueueInfo>, Requires<ScriptTriggersInfo>
+	{
+		readonly Dictionary<string, Action<Actor, Actor>> productionHandlers;
+		readonly Dictionary<string, ClassicProductionQueue> queues;
+
+		public ClassicProductionQueueProperties(ScriptContext context, Player player)
+			: base(context, player)
+		{
+			productionHandlers = new Dictionary<string, Action<Actor, Actor>>();
+
+			queues = new Dictionary<string, ClassicProductionQueue>();
+			foreach (var q in player.PlayerActor.TraitsImplementing<ClassicProductionQueue>().Where(q => q.Enabled))
+				queues.Add(q.Info.Type, q);
+
+			Action<Actor, Actor> globalProductionHandler = (factory, unit) =>
+			{
+				if (factory.Owner != player)
+					return;
+
+				var queue = GetBuildableInfo(unit.Info.Name).Queue.First();
+
+				if (productionHandlers.ContainsKey(queue))
+					productionHandlers[queue](factory, unit);
+			};
+
+			var triggers = TriggerGlobal.GetScriptTriggers(player.PlayerActor);
+			triggers.OnOtherProducedInternal += globalProductionHandler;
+		}
+
+		[Desc("Build the specified set of actors using classic (RA-style) production queues. " +
+		      "The function will return true if production could be started, false otherwise. " +
+		      "If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
+		      "production of all actors has been completed.  The actors array is guaranteed to " +
+		      "only contain alive actors.")]
+		public bool Build(string[] actorTypes, LuaFunction actionFunc = null)
+		{
+			var typeToQueueMap = new Dictionary<string, string>();
+			foreach (var actorType in actorTypes.Distinct())
+				typeToQueueMap.Add(actorType, GetBuildableInfo(actorType).Queue.First());
+
+			var queueTypes = typeToQueueMap.Values.Distinct();
+
+			if (queueTypes.Any(t => !queues.ContainsKey(t) || productionHandlers.ContainsKey(t)))
+				return false;
+
+			if (queueTypes.Any(t => queues[t].CurrentItem() != null))
+				return false;
+
+			if (actionFunc != null)
+			{
+				var squadSize = actorTypes.Length;
+				var squad = new List<Actor>();
+				var func = actionFunc.CopyReference() as LuaFunction;
+
+				Action<Actor, Actor> productionHandler = (factory, unit) =>
+				{
+					squad.Add(unit);
+					if (squad.Count >= squadSize)
+					{
+						using (func)
+						using (var luaSquad = squad.Where(u => !u.IsDead()).ToArray().ToLuaValue(context))
+							func.Call(luaSquad).Dispose();
+
+						foreach (var q in queueTypes)
+							productionHandlers.Remove(q);
+					}
+				};
+
+				foreach (var q in queueTypes)
+					productionHandlers.Add(q, productionHandler);
+			}
+
+			foreach (var actorType in actorTypes)
+			{
+				var queue = queues[typeToQueueMap[actorType]];
+				queue.ResolveOrder(queue.Actor, Order.StartProduction(queue.Actor, actorType, 1));
+			}
+
+			return true;
+		}
+
+		[Desc("Checks whether the player is currently producing anything on the queue that produces this type of actor.")]
+		public bool IsProducing(string actorType)
+		{
+			var queue = GetBuildableInfo(actorType).Queue.First();
+
+			if (!queues.ContainsKey(queue))
+				return true;
+
+			return productionHandlers.ContainsKey(queue) || queues[queue].CurrentItem() != null;
+		}
+
+		BuildableInfo GetBuildableInfo(string actorType)
+		{
+			var ri = player.World.Map.Rules.Actors[actorType];
+			var bi = ri.Traits.GetOrDefault<BuildableInfo>();
+
+			if (bi == null)
+				throw new LuaException("Actor of type {0} cannot be produced".F(actorType));
+			else
+				return bi;
 		}
 	}
 }
