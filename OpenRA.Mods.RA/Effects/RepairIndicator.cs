@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			rb = building.TraitOrDefault<RepairableBuilding>();
 			anim = new Animation(building.World, "allyrepair");
-			anim.Paused = () => !rb.RepairActive;
+			anim.Paused = () => !rb.RepairActive || rb.IsTraitDisabled;
 
 			CycleRepairer();
 		}

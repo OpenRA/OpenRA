@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Buildings
 {
 	[Desc("Building can be repaired by the repair button.")]
-	public class RepairableBuildingInfo : ITraitInfo, Requires<HealthInfo>
+	public class RepairableBuildingInfo : UpgradableTraitInfo, ITraitInfo, Requires<HealthInfo>
 	{
 		public readonly int RepairPercent = 20;
 		public readonly int RepairInterval = 24;
@@ -31,25 +31,24 @@ namespace OpenRA.Mods.RA.Buildings
 		public object Create(ActorInitializer init) { return new RepairableBuilding(init.self, this); }
 	}
 
-	public class RepairableBuilding : ITick, ISync
+	public class RepairableBuilding : UpgradableTrait<RepairableBuildingInfo>, ITick
 	{
 		[Sync]
 		public int RepairersHash { get { return Repairers.Aggregate(0, (code, player) => code ^ Sync.hash_player(player)); } }
 		public List<Player> Repairers = new List<Player>();
 
 		Health Health;
-		RepairableBuildingInfo Info;
 		public bool RepairActive = false;
 
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
+			: base (info)
 		{
 			Health = self.Trait<Health>();
-			Info = info;
 		}
 
 		public void RepairBuilding(Actor self, Player player)
 		{
-			if (self.AppearsFriendlyTo(player.PlayerActor))
+			if (!IsTraitDisabled && self.AppearsFriendlyTo(player.PlayerActor))
 			{
 				// If the player won't affect the repair, we won't add him
 				if (!Repairers.Remove(player) && Repairers.Count < Info.RepairBonuses.Length) 
@@ -70,6 +69,9 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public void Tick(Actor self)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			if (remainingTicks == 0)
 			{
 				Repairers = Repairers.Where(player => player.WinState == WinState.Undefined
