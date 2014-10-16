@@ -1,25 +1,14 @@
 -- Copyright 2014 Paul Kulchenko, ZeroBrane LLC
 
 local ide = ide
-ide.outline = {}
+ide.outline = {
+  imglist = ide:CreateImageList("OUTLINE", "FILE-NORMAL", "VALUE-LCALL",
+    "VALUE-GCALL", "VALUE-ACALL", "VALUE-SCALL", "VALUE-MCALL"),
+}
 
 local image = { FILE = 0, LFUNCTION = 1, GFUNCTION = 2, AFUNCTION = 3,
   SMETHOD = 4, METHOD = 5,
 }
-
-do
-  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
-  local size = wx.wxSize(16,16)
-  local imglist = wx.wxImageList(16,16)
-  imglist:Add(getBitmap("FILE-NORMAL", "OUTLINE", size)) -- 0 = file known spec
-  imglist:Add(getBitmap("VALUE-LCALL", "OUTLINE", size)) -- 1
-  imglist:Add(getBitmap("VALUE-GCALL", "OUTLINE", size)) -- 2
-  imglist:Add(getBitmap("VALUE-ACALL", "OUTLINE", size)) -- 3
-  imglist:Add(getBitmap("VALUE-SCALL", "OUTLINE", size)) -- 4
-  imglist:Add(getBitmap("VALUE-MCALL", "OUTLINE", size)) -- 5
-  ide.outline.imglist = imglist
-end
-
 local q = EscapeMagic
 local caches = {}
 

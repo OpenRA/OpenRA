@@ -23,19 +23,9 @@ debugger.hostname = ide.config.debugger.hostname or (function()
   local hostname = socket.dns.gethostname()
   return hostname and socket.dns.toip(hostname) and hostname or "localhost"
 end)()
+debugger.imglist = ide:CreateImageList("STACK", "VALUE-CALL", "VALUE-LOCAL", "VALUE-UP")
 
 local image = { STACK = 0, LOCAL = 1, UPVALUE = 2 }
-
-do
-  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
-  local size = wx.wxSize(16,16)
-  local imglist = wx.wxImageList(16,16)
-  imglist:Add(getBitmap("VALUE-CALL", "OTHER", size)) -- 0 = stack call
-  imglist:Add(getBitmap("VALUE-LOCAL", "OTHER", size)) -- 1 = local variables
-  imglist:Add(getBitmap("VALUE-UP", "OTHER", size)) -- 2 = upvalues
-  debugger.imglist = imglist
-end
-
 local notebook = ide.frame.notebook
 
 local CURRENT_LINE_MARKER = StylesGetMarker("currentline")

@@ -12,26 +12,16 @@ ide.filetree = {
   projdirlist = {},
   projdirpartmap = {},
   projtree = nil,
+  imglist = ide:CreateImageList("PROJECT", "FOLDER", "FILE-KNOWN", "FILE-NORMAL"),
 }
 local filetree = ide.filetree
-
 local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
 local pathsep = GetPathSeparator()
 local q = EscapeMagic
+local image = { DIRECTORY = 0, FILEKNOWN = 1, FILEOTHER = 2 }
 
 -- generic tree
 -- ------------
-
-local image = { DIRECTORY = 0, FILEKNOWN = 1, FILEOTHER = 2 }
-
-do
-  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
-  local size = wx.wxSize(16, 16)
-  filetree.imglist = wx.wxImageList(16,16)
-  filetree.imglist:Add(getBitmap("FOLDER", "OTHER", size)) -- 0 = directory
-  filetree.imglist:Add(getBitmap("FILE-KNOWN", "OTHER", size)) -- 1 = file known spec
-  filetree.imglist:Add(getBitmap("FILE-NORMAL", "OTHER", size)) -- 2 = file other
-end
 
 local function treeAddDir(tree,parent_id,rootdir)
   local items = {}

@@ -202,6 +202,16 @@ function ide:ExecuteCommand(cmd, wdir, callback, endcallback)
   return pid
 end
 
+function ide:CreateImageList(group, ...)
+  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
+  local size = wx.wxSize(16,16)
+  local imglist = wx.wxImageList(16,16)
+  for i = 1, select('#', ...) do
+    imglist:Add(getBitmap(select(i, ...), group, size))
+  end
+  return imglist
+end
+
 function ide:AddWatch(watch, value)
   local mgr = ide.frame.uimgr
   local pane = mgr:GetPane("watchpanel")
