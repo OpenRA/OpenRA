@@ -395,6 +395,7 @@ namespace OpenRA.Mods.RA.Move
 							Util.GetNearestFacing(mobile.Facing, self.World.Map.FacingBetween(mobile.toCell, nextCell.Value.First, mobile.Facing)),
 							moveFraction - moveFractionTotal);
 
+						mobile.FinishedMoving(self);
 						mobile.SetLocation(mobile.toCell, mobile.toSubCell, nextCell.Value.First, nextCell.Value.Second);
 						return ret;
 					}
