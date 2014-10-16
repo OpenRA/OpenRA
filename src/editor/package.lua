@@ -204,13 +204,33 @@ function ide:ExecuteCommand(cmd, wdir, callback, endcallback)
 end
 
 function ide:CreateImageList(group, ...)
-  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local size = wx.wxSize(16,16)
   local imglist = wx.wxImageList(16,16)
   for i = 1, select('#', ...) do
-    imglist:Add(getBitmap(select(i, ...), group, size))
+    imglist:Add(self:GetBitmap(select(i, ...), group, size))
   end
   return imglist
+end
+
+local icons = {} -- icon cache to avoid reloading the same icons
+function ide:GetBitmap(id, client, size)
+  local im = ide.config.imagemap
+  local width = size:GetWidth()
+  local key = width .. "/" .. id
+  local keyclient = key.."-"..client
+  local mapped = im[keyclient] or im[id.."-"..client] or im[key] or im[id]
+  if im[keyclient] then keyclient = im[keyclient] end
+  if im[id.."-"..client] then keyclient = width.."/"..im[id.."-"..client] end
+  local fileClient = ide:GetAppName().."/res/" .. keyclient .. ".png"
+  local fileKey = ide:GetAppName().."/res/" .. key .. ".png"
+  local file
+  if mapped and wx.wxFileName(mapped):FileExists() then file = mapped
+  elseif wx.wxFileName(fileClient):FileExists() then file = fileClient
+  elseif wx.wxFileName(fileKey):FileExists() then file = fileKey
+  else return wx.wxArtProvider.GetBitmap(id, client, size) end
+  local icon = icons[file] or wx.wxBitmap(file)
+  icons[file] = icon
+  return icon
 end
 
 function ide:AddWatch(watch, value)

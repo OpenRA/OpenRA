@@ -87,7 +87,6 @@ local function createToolBar(frame)
   -- there are two sets of icons: use 24 on OSX and 16 on others.
   local iconsize = tbIconSize()
   local toolBmpSize = wx.wxSize(iconsize, iconsize)
-  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local icons, prev = ide.config.toolbar.icons
   for _, id in ipairs(icons) do
     if icons[id] ~= false then -- skip explicitly disabled icons
@@ -100,7 +99,7 @@ local function createToolBar(frame)
         if iconmap then
           local icon, description = unpack(iconmap)
           local isbitmap = type(icon) == "userdata" and icon:GetClassInfo():GetClassName() == "wxBitmap"
-          local bitmap = isbitmap and icon or getBitmap(icon, "TOOLBAR", toolBmpSize)
+          local bitmap = isbitmap and icon or ide:GetBitmap(icon, "TOOLBAR", toolBmpSize)
           toolBar:AddTool(id, "", bitmap, TR(description)..SCinB(id))
         end
       end

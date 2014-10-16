@@ -1,26 +1,4 @@
-local icons = {}
-local im = ide.config.imagemap
-local CreateBitmap = function(id, client, size)
-  local width = size:GetWidth()
-  local key = width .. "/" .. id
-  local keyclient = key.."-"..client
-  local mapped = im[keyclient] or im[id.."-"..client] or im[key] or im[id]
-  if im[keyclient] then keyclient = im[keyclient] end
-  if im[id.."-"..client] then keyclient = width.."/"..im[id.."-"..client] end
-  local fileClient = ide:GetAppName().."/res/" .. keyclient .. ".png"
-  local fileKey = ide:GetAppName().."/res/" .. key .. ".png"
-  local file
-  if mapped and wx.wxFileName(mapped):FileExists() then file = mapped
-  elseif wx.wxFileName(fileClient):FileExists() then file = fileClient
-  elseif wx.wxFileName(fileKey):FileExists() then file = fileKey
-  else return wx.wxArtProvider.GetBitmap(id, client, size) end
-  local icon = icons[file] or wx.wxBitmap(file)
-  icons[file] = icon
-  return icon
-end
-local ide = ide
-local app = {
-  createbitmap = CreateBitmap,
+return {
   loadfilters = {
     tools = function(file) return false end,
     specs = function(file) return file:find('spec[/\\]lua%.lua$') end,
@@ -28,6 +6,7 @@ local app = {
   },
 
   postinit = function ()
+    local ide = ide
     local bundle = wx.wxIconBundle()
     local files = FileSysGetRecursive(ide:GetAppName().."/res", false, "*.ico")
     local icons = 0
@@ -68,5 +47,3 @@ local app = {
     help = "zerobranestudio",
   },
 }
-
-return app
