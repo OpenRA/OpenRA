@@ -1,11 +1,17 @@
 local icons = {}
+local im = ide.config.imagemap
 local CreateBitmap = function(id, client, size)
   local width = size:GetWidth()
   local key = width .. "/" .. id
-  local fileClient = "zbstudio/res/" .. key .. "-" .. client .. ".png"
+  local keyclient = key.."-"..client
+  local mapped = im[keyclient] or im[id.."-"..client] or im[key] or im[id]
+  if im[keyclient] then keyclient = im[keyclient] end
+  if im[id.."-"..client] then keyclient = width.."/"..im[id.."-"..client] end
+  local fileClient = "zbstudio/res/" .. keyclient .. ".png"
   local fileKey = "zbstudio/res/" .. key .. ".png"
   local file
-  if wx.wxFileName(fileClient):FileExists() then file = fileClient
+  if mapped and wx.wxFileName(mapped):FileExists() then file = mapped
+  elseif wx.wxFileName(fileClient):FileExists() then file = fileClient
   elseif wx.wxFileName(fileKey):FileExists() then file = fileKey
   else return wx.wxArtProvider.GetBitmap(id, client, size) end
   local icon = icons[file] or wx.wxBitmap(file)

@@ -82,6 +82,9 @@ ide = {
     },
 
     keymap = {},
+    imagemap = {
+      ['VALUE-MCALL'] = 'VALUE-SCALL',
+    },
     messages = {},
     language = "en",
 

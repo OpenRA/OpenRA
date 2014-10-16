@@ -11,12 +11,12 @@ do
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local size = wx.wxSize(16,16)
   local imglist = wx.wxImageList(16,16)
-  imglist:Add(getBitmap("FILE-NORMAL", "OTHER", size)) -- 0 = file known spec
-  imglist:Add(getBitmap("VALUE-LCALL", "OTHER", size)) -- 1
-  imglist:Add(getBitmap("VALUE-GCALL", "OTHER", size)) -- 2
-  imglist:Add(getBitmap("VALUE-ACALL", "OTHER", size)) -- 3
-  imglist:Add(getBitmap("VALUE-SCALL", "OTHER", size)) -- 4
-  imglist:Add(getBitmap("VALUE-SCALL", "OTHER", size)) -- 5
+  imglist:Add(getBitmap("FILE-NORMAL", "OUTLINE", size)) -- 0 = file known spec
+  imglist:Add(getBitmap("VALUE-LCALL", "OUTLINE", size)) -- 1
+  imglist:Add(getBitmap("VALUE-GCALL", "OUTLINE", size)) -- 2
+  imglist:Add(getBitmap("VALUE-ACALL", "OUTLINE", size)) -- 3
+  imglist:Add(getBitmap("VALUE-SCALL", "OUTLINE", size)) -- 4
+  imglist:Add(getBitmap("VALUE-MCALL", "OUTLINE", size)) -- 5
   ide.outline.imglist = imglist
 end
 
