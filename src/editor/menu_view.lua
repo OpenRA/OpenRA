@@ -70,7 +70,7 @@ end
 
 local function checkPanel(event)
   local pane = uimgr:GetPane(panels[event:GetId()])
-  menuBar:Enable(event:GetId(), pane:IsOk()) -- disable if doesn't exist
+  event:Enable(pane:IsOk()) -- disable if doesn't exist
   menuBar:Check(event:GetId(), pane:IsOk() and pane:IsShown())
 end
 
