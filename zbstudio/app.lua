@@ -7,8 +7,8 @@ local CreateBitmap = function(id, client, size)
   local mapped = im[keyclient] or im[id.."-"..client] or im[key] or im[id]
   if im[keyclient] then keyclient = im[keyclient] end
   if im[id.."-"..client] then keyclient = width.."/"..im[id.."-"..client] end
-  local fileClient = "zbstudio/res/" .. keyclient .. ".png"
-  local fileKey = "zbstudio/res/" .. key .. ".png"
+  local fileClient = ide:GetAppName().."/res/" .. keyclient .. ".png"
+  local fileKey = ide:GetAppName().."/res/" .. key .. ".png"
   local file
   if mapped and wx.wxFileName(mapped):FileExists() then file = mapped
   elseif wx.wxFileName(fileClient):FileExists() then file = fileClient
@@ -29,7 +29,7 @@ local app = {
 
   postinit = function ()
     local bundle = wx.wxIconBundle()
-    local files = FileSysGetRecursive("zbstudio/res", false, "*.ico")
+    local files = FileSysGetRecursive(ide:GetAppName().."/res", false, "*.ico")
     local icons = 0
     for i,file in ipairs(files) do
       icons = icons + 1

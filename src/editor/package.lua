@@ -70,11 +70,12 @@ function ide:GetRootPath(path)
 end
 function ide:GetPackagePath(packname)
   return MergeFullPath(
-    ide.oshome and MergeFullPath(ide.oshome, '.zbstudio/') or ide:GetRootPath(),
+    ide.oshome and MergeFullPath(ide.oshome, '.'..ide:GetAppName()..'/') or ide:GetRootPath(),
     MergeFullPath('packages', packname or '')
   )
 end
 function ide:GetApp() return self.editorApp end
+function ide:GetAppName() return ide.appname end
 function ide:GetEditor(index) return GetEditor(index) end
 function ide:GetEditorWithFocus(ed) return GetEditorWithFocus(ed) end
 function ide:GetEditorWithLastFocus()

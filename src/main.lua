@@ -287,8 +287,8 @@ do
   end
 
   ide.editorFilename = fullPath
-  ide.config.path.app = fullPath:match("([%w_-%.]+)$"):gsub("%.[^%.]*$","")
-  assert(ide.config.path.app, "no application path defined")
+  ide.appname = fullPath:match("([%w_-%.]+)$"):gsub("%.[^%.]*$","")
+  assert(ide.appname, "no application path defined")
 
   for index = 2, #arg do
     if (arg[index] == "-cfg" and index+1 <= #arg) then
@@ -306,7 +306,7 @@ end
 ----------------------
 -- process application
 
-ide.app = dofile(ide.config.path.app.."/app.lua")
+ide.app = dofile(ide.appname.."/app.lua")
 local app = assert(ide.app)
 
 local function loadToTab(filter, folder, tab, recursive, proto)
@@ -334,7 +334,7 @@ end
 local function loadPackages(filter)
   loadToTab(filter, "packages", ide.packages, false, ide.proto.Plugin)
   if ide.oshome then
-    local userpackages = MergeFullPath(ide.oshome, ".zbstudio/packages")
+    local userpackages = MergeFullPath(ide.oshome, "."..ide.appname.."/packages")
     if wx.wxDirExists(userpackages) then
       loadToTab(filter, userpackages, ide.packages, false, ide.proto.Plugin)
     end
@@ -437,7 +437,7 @@ do
   end
 end
 
-LoadLuaConfig(ide.config.path.app.."/config.lua")
+LoadLuaConfig(ide.appname.."/config.lua")
 
 ide.editorApp:SetAppName(GetIDEString("settingsapp"))
 
@@ -467,7 +467,7 @@ loadTools()
 do
   ide.configs = {
     system = MergeFullPath("cfg", "user.lua"),
-    user = ide.oshome and MergeFullPath(ide.oshome, ".zbstudio/user.lua"),
+    user = ide.oshome and MergeFullPath(ide.oshome, "."..ide.appname.."/user.lua"),
   }
 
   -- process configs

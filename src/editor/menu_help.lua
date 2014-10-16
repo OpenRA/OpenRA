@@ -33,7 +33,7 @@ local helpMenu = wx.wxMenu{
 menuBar:Append(helpMenu, ide.osname == 'Macintosh' and "&Help" or TR("&Help"))
 
 local function DisplayAbout(event)
-  local logo = ide.config.path.app.."/"..GetIDEString("logo")
+  local logo = ide:GetAppName().."/"..GetIDEString("logo")
   local logoimg = wx.wxFileName(logo):FileExists() and
     ([[<tr><td><img src="%s"></td></tr>]]):format(logo) or ""
   local page = ([[
@@ -58,7 +58,7 @@ local function DisplayAbout(event)
 		Christoph Kubisch, Eike Decker<br>
 		Licensed under the MIT License.
 		</td>
-		<td><img align="right" src="zbstudio/res/estrela.png"></td>
+		<td><img align="right" src="%s/res/estrela.png"></td>
 	  </tr>
 	  <tr>
 		<td>
@@ -77,7 +77,7 @@ local function DisplayAbout(event)
 	</td></tr></table>
       </body>
     </html>]])
-  :format(logoimg, ide.VERSION, mobdebug._VERSION,
+  :format(logoimg, ide.VERSION, mobdebug._VERSION, ide:GetAppName(),
     wxlua.wxLUA_VERSION_STRING, wx.wxVERSION_STRING)
 
   local dlg = wx.wxDialog(frame, wx.wxID_ANY, TR("About %s"):format(GetIDEString("editor")))

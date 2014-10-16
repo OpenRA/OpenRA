@@ -78,11 +78,8 @@ style = {
 -- content is optional
 -- config is loaded into existing config table
 config = {
-  appname = "zbstudio", -- by default the launcher name
-
   path = { -- path for tools/interpreters
-    luxinia = "C:/luxbin/", -- path to luxinia exe
-    projectdir = "", -- the project directory, used by some tools/interpreters
+    lua = "C:/lua/lua.exe", -- path to lua exe
   },
   editor = {
     fontname = "Courier New", -- default font
