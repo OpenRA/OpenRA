@@ -176,18 +176,23 @@ local function outlineCreateOutlineWindow()
     else
       -- activate tab and move cursor based on stored pos
       -- get file parent
+      local onefile = (ide.config.outline or {}).showonefile
       local parent = ctrl:GetItemParent(item_id)
-      while parent:IsOk() and ctrl:GetItemImage(parent) ~= image.FILE do
-        parent = ctrl:GetItemParent(parent)
+      if not onefile then -- find the proper parent
+        while parent:IsOk() and ctrl:GetItemImage(parent) ~= image.FILE do
+          parent = ctrl:GetItemParent(parent)
+        end
+        if not parent:IsOk() then return end
       end
-      if not parent:IsOk() then return end
       -- activate editor tab
-      local editor = ctrl:GetItemData(parent):GetData()
+      local editor = onefile and GetEditor() or ctrl:GetItemData(parent):GetData()
       local cache = caches[editor]
       if editor and cache then
-        if not ide:GetEditorWithFocus(editor) then ide:GetDocument(editor):SetActive() end
         -- move to position in the file
         editor:GotoPosEnforcePolicy(cache.funcs[data:GetData()].pos-1)
+        -- only set editor active after positioning as this may change focus,
+        -- which may regenerate the outline, which may invalidate `data` value
+        if not ide:GetEditorWithFocus(editor) then ide:GetDocument(editor):SetActive() end
       end
     end
   end
@@ -199,7 +204,7 @@ local function outlineCreateOutlineWindow()
       + wx.wxTREE_HITTEST_ONITEMICON + wx.wxTREE_HITTEST_ONITEMRIGHT)
     local item_id, flags = ctrl:HitTest(event:GetPosition())
 
-    if item_id and bit.band(flags, mask) > 0 then
+    if item_id and item_id:IsOk() and bit.band(flags, mask) > 0 then
       ctrl:ActivateItem(item_id)
     else
       event:Skip()
