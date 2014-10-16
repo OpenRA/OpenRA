@@ -626,6 +626,11 @@ Rules:
 			ShowOwnerRow: false
 	HARV:
 		-MustBeDestroyed:
+	HQ:
+		AirstrikePower:
+			Prerequisites: ~disabled
+		Tooltip:
+			Description: Provides an overview of the battlefield.\nRequires power to operate.
 	NUK2:
 		Buildable:
 			Prerequisites: ~disabled
@@ -665,9 +670,6 @@ Rules:
 	ATWR:
 		Buildable:
 			Prerequisites: ~disabled
-	HQ:
-		Buildable:
-			Prerequisites: ~disabled
 	E4:
 		Buildable:
 			Prerequisites: ~disabled
@@ -682,37 +684,6 @@ Rules:
 			Name: Prison
 		Capturable:
 			CaptureThreshold: 1
-	HQ.NOAIRSTRIKE:
-		RequiresPower:
-		CanPowerDown:
-		Inherits: ^Building
-		Valued:
-			Cost: 1000
-		Tooltip:
-			Name: Communications Center
-			Description: Provides an overview of the battlefield.\n  Requires power to operate.
-		ProvidesCustomPrerequisite:
-			Prerequisite: anyhq
-		Buildable:
-			BuildPaletteOrder: 70
-			Prerequisites: proc
-			Queue: Building.GDI, Building.Nod
-		Building:
-			Footprint: x_ xx
-			Dimensions: 2,2
-		Health:
-			HP: 750
-		RevealsShroud:
-			Range: 10c0
-		Bib:
-		ProvidesRadar:
-		RenderDetectionCircle:
-		DetectCloaked:
-			Range: 8
-		RenderBuilding:
-			Image: hq
-		Power:
-			Amount: -40
 
 Sequences:
 
