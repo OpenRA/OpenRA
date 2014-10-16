@@ -88,6 +88,7 @@ WEEDGUY:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
+		Prerequisites: nahand
 		Owner: gdi
 		Hothey: c
 	Selectable:
@@ -116,6 +117,7 @@ MEDIC:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
+		Prerequisites: gapile
 		Owner: gdi
 	Selectable:
 		Bounds: 12,17,0,-6
@@ -147,7 +149,8 @@ ENGINEER:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30
-		Owner: gdi,nod
+		Prerequisites: barracks
+		Owner: gdi, nod
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Engineer
@@ -177,6 +180,7 @@ UMAGON:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
+		Prerequisites: gapile, gatech
 		Owner: gdi
 	Selectable:
 		Bounds: 12,17,0,-6
@@ -208,6 +212,7 @@ GHOST:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
+		Prerequisites: gapile, gatech
 		Owner: gdi
 	Selectable:
 		Bounds: 12,17,0,-6
@@ -242,6 +247,7 @@ JUMPJET:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
+		Prerequisites: gapile, garadr
 		Owner: gdi
 	Selectable:
 		Bounds: 12,17,0,-6
@@ -268,6 +274,7 @@ CHAMSPY:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
+		Prerequisites: nahand, natech
 		Owner: nod
 	Valued:
 		Cost: 700
@@ -305,6 +312,7 @@ CYBORG:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
+		Prerequisites: nahand
 		Owner: nod
 	-Crushable:
 	Selectable:
@@ -338,6 +346,7 @@ CYC2:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
+		Prerequisites: nahand, natech
 		Owner: nod
 	-Crushable:
 	Selectable:
@@ -365,7 +374,6 @@ MUTANT:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: forgotten
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -394,7 +402,6 @@ MWMN:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: forgotten
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -423,7 +430,6 @@ MUTANT3:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: forgotten
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -452,7 +458,8 @@ MHIJACK:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: forgotten
+		Prerequisites: nahand, natech # natech must be natmpl
+		Owner: nod
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -479,7 +486,6 @@ TRATOS:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: forgotten
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -505,7 +511,6 @@ OXANNA:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: forgotten
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -529,7 +534,6 @@ SLAV:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: forgotten
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -555,7 +559,6 @@ DOGGIE:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
-		Owner: None
 	Health:
 		Radius: 213
 		HP: 250
@@ -585,7 +588,6 @@ VISSML:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
-		Owner: None
 	Health:
 		HP: 200
 	PoisonedByTiberium:
@@ -616,7 +618,6 @@ VISLRG:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
-		Owner: None
 	Health:
 		HP: 500
 	PoisonedByTiberium:
