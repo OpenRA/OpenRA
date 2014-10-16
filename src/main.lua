@@ -73,7 +73,7 @@ ide = {
       mousemove = true,
     },
     outline = {
-      showanonymous = true,
+      showanonymous = '~',
     },
 
     toolbar = {
