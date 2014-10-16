@@ -43,6 +43,7 @@ namespace OpenRA.Mods.RA.Activities
 					nt.OnTransform(self);
 
 				var selected = w.Selection.Contains(self);
+				var controlgroup = w.Selection.GetControlGroupForActor(self);
 
 				self.Destroy();
 				foreach (var s in Sounds)
@@ -81,6 +82,8 @@ namespace OpenRA.Mods.RA.Activities
 
 				if (selected)
 					w.Selection.Add(w, a);
+				if (controlgroup.HasValue)
+					w.Selection.AddToControlGroup(a, controlgroup.Value);
 			});
 
 			return this;

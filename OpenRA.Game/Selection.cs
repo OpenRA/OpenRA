@@ -99,6 +99,12 @@ namespace OpenRA
 			Combine(world, groupActors, mods.HasModifier(Modifiers.Shift), false);
 		}
 
+		public void AddToControlGroup(Actor a, int group)
+		{
+			if (!controlGroups[group].Contains(a))
+				controlGroups[group].Add(a);
+		}
+
 		public int? GetControlGroupForActor(Actor a)
 		{
 			return controlGroups.Where(g => g.Value.Contains(a))
