@@ -1,15 +1,15 @@
 function CMarkSymbols(code, pos, vars)
   local idtmpl = "[A-Za-z_][A-Za-z0-9_ ]*"
-  local funcdeftmpl = "("..idtmpl.."%s+%*?"..idtmpl..")%s*%([A-Za-z_][A-Za-z0-9_ %*,]*%)%s*%{"
+  local funcdeftmpl = "("..idtmpl.."%s+%*?"..idtmpl..")%s*%(([A-Za-z0-9_ %*,]*)%)%s*%{"
   local isfndef = function(str, pos)
     local s,e,pref,cap
     while true do
-      s,e,pref,cap = string.find(str,"([\r\n]%s*)"..funcdeftmpl, pos)
+      s,e,pref,cap,parms = str:find("([\r\n]%s*)"..funcdeftmpl, pos)
       if (not s) then
-        s,e,pref,cap = string.find(str,"^(%s*)"..funcdeftmpl, pos)
+        s,e,pref,cap,parms = str:find("^(%s*)"..funcdeftmpl, pos)
       end
-      if (cap and (string.find(cap,"^return") or string.find(cap,"else"))) then
-        pos = s+#pref+#cap
+      if parms and #parms > 0 and not parms:find(idtmpl) then
+        pos = s+#pref+#cap+#parms
       else
         break
       end
