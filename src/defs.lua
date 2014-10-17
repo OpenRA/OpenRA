@@ -64,12 +64,6 @@ style = {
   caretlinebg = nil,
   fold = nil,
   whitespace = nil,
-
-  -- special, functioncall indicator
-  fncall = {
-    fg = {r,g,b},
-    st = wxstc.wxSTC_INDIC_BOX,
-  },
 }
 
 -- config definition

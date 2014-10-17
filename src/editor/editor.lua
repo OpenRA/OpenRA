@@ -408,7 +408,7 @@ end
 -- indicator.MASKED is handled separately, so don't include in MAX
 local indicator = {FNCALL = 0, LOCAL = 1, GLOBAL = 2, MASKING = 3, MASKED = 4, MAX = 3}
 
-local function indicateFunctionsOnly(editor, lines, linee)
+local function IndicateFunctionsOnly(editor, lines, linee)
   local sindic = styles.indicator
   if not (edcfg.showfncall and editor.spec and editor.spec.isfncall)
   or not (sindic and sindic.fncall and sindic.fncall.st ~= wxstc.wxSTC_INDIC_HIDDEN) then return end
@@ -502,10 +502,9 @@ function IndicateAll(editor, lines, linee)
   -- when there are still some pending events for it, so handle it.
   if not pcall(function() editor:GetId() end) then return end
 
-  -- if markvars is not set in the spec, check for functions-only indicators
-  if not (editor.spec and editor.spec.marksymbols) then
-    return indicateFunctionsOnly(editor, lines, linee)
-  end
+  -- if markvars is not set in the spec, nothing else to do
+  if not (editor.spec and editor.spec.marksymbols) then return end
+
   local indic = styles.indicator or {}
 
   local pos, vars = d and d[1] or 1, d and d[2] or nil
@@ -625,7 +624,12 @@ function IndicateAll(editor, lines, linee)
   -- don't clear "masked" indicators as those can be set out of order (so
   -- last updated fragment is not always the last in terms of its position);
   -- these indicators should be up-to-date to the end of the code fragment.
-  for indic = 0, indicator.MAX do IndicateOne(indic, pos, 0) end
+  -- also don't clear "funccall" indicators as those can be set based on
+  -- IndicateFunctionsOnly processing, which is dealt with separately
+  local funconly = ide.config.editor.showfncall and editor.spec.isfncall
+  for indic = funconly and indicator.LOCAL or indicator.FNCALL, indicator.MAX do
+    IndicateOne(indic, pos, 0)
+  end
 
   local needmore = delayed[editor] ~= nil
   if ide.config.outlineinactivity then
@@ -636,9 +640,7 @@ function IndicateAll(editor, lines, linee)
   return needmore -- request more events if still need to work
 end
 
-if ide.wxver < "2.9.5" or not ide.config.autoanalyzer then
-  IndicateAll = indicateFunctionsOnly
-end
+if not ide.config.autoanalyzer then IndicateAll = IndicateFunctionsOnly end
 
 -- ----------------------------------------------------------------------------
 -- Create an editor
@@ -1066,6 +1068,7 @@ function CreateEditor()
         if not minupdated or line < minupdated then minupdated = line end
         local ok, res = pcall(IndicateAll, editor,line,line+iv[2])
         if not ok then DisplayOutputLn("Internal error: ",res,line,line+iv[2]) end
+        if IndicateAll ~= IndicateFunctionsOnly then IndicateFunctionsOnly(editor,line,line+iv[2]) end
       end
       local firstvisible = editor:DocLineFromVisible(editor:GetFirstVisibleLine())
       local lastline = math.min(editor:GetLineCount(),
