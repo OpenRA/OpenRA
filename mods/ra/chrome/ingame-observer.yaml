@@ -52,7 +52,7 @@ Container@OBSERVER_WIDGETS:
 									X: 6
 									Y: 6
 									ImageCollection: order-icons
-									ImageName: diplomacy
+									ImageName: stats
 						MenuButton@OPTIONS_BUTTON:
 							Key: escape
 							X: 192

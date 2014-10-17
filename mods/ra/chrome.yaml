@@ -93,6 +93,9 @@ order-icons: chrome.png
 	power: 480,48,16,16
 	power-disabled: 480,64,16,16
 	power-active: 480,80,16,16
+	stats: 368,48,16,16
+	stats-disabled: 368,64,16,16
+	stats-active: 368,80,16,16
 
 sidebar-observer: chrome.png
 	background: 512,167,238,287
