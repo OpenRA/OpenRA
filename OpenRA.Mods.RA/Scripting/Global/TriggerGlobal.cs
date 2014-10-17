@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Scripting
 					using (f)
 						f.Call();
 				}
-				catch (LuaException e)
+				catch (Exception e)
 				{
 					context.FatalError(e.Message);
 				}
@@ -81,11 +81,18 @@ namespace OpenRA.Mods.RA.Scripting
 			var copy = (LuaFunction)func.CopyReference();
 			Action<Actor> OnMemberKilled = m =>
 			{
-				group.Remove(m);
-				if (!group.Any())
+				try
 				{
-					copy.Call();
-					copy.Dispose();
+					group.Remove(m);
+					if (!group.Any())
+					{
+						copy.Call();
+						copy.Dispose();
+					}
+				}
+				catch (Exception e)
+				{
+					context.FatalError(e.Message);
 				}
 			};
 
@@ -101,14 +108,21 @@ namespace OpenRA.Mods.RA.Scripting
 			var copy = (LuaFunction)func.CopyReference();
 			Action<Actor> OnMemberKilled = m =>
 			{
-				if (called)
-					return;
+				try
+				{
+					if (called)
+						return;
 
-				using (var killed = m.ToLuaValue(context))
-					copy.Call(killed).Dispose();
+					using (var killed = m.ToLuaValue(context))
+						copy.Call(killed).Dispose();
 
-				copy.Dispose();
-				called = true;
+					copy.Dispose();
+					called = true;
+				}
+				catch (Exception e)
+				{
+					context.FatalError(e.Message);
+				}
 			};
 
 			foreach (var a in actors)
@@ -180,11 +194,18 @@ namespace OpenRA.Mods.RA.Scripting
 			var copy = (LuaFunction)func.CopyReference();
 			Action<Actor> OnMemberRemoved = m =>
 			{
-				group.Remove(m);
-				if (!group.Any())
+				try
 				{
-					copy.Call().Dispose();
-					copy.Dispose();
+					group.Remove(m);
+					if (!group.Any())
+					{
+						copy.Call().Dispose();
+						copy.Dispose();
+					}
+				}
+				catch (Exception e)
+				{
+					context.FatalError(e.Message);
 				}
 			};
 
@@ -208,9 +229,16 @@ namespace OpenRA.Mods.RA.Scripting
 			var onEntry = (LuaFunction)func.CopyReference();
 			Action<Actor> invokeEntry = a =>
 			{
-				using (var luaActor = a.ToLuaValue(context))
-				using (var id = triggerId.ToLuaValue(context))
-					onEntry.Call(luaActor, id).Dispose();
+				try
+				{
+					using (var luaActor = a.ToLuaValue(context))
+					using (var id = triggerId.ToLuaValue(context))
+						onEntry.Call(luaActor, id).Dispose();
+				}
+				catch (Exception e)
+				{
+					context.FatalError(e.Message);
+				}
 			};
 
 			triggerId = context.World.ActorMap.AddCellTrigger(cells, invokeEntry, null);
@@ -227,9 +255,16 @@ namespace OpenRA.Mods.RA.Scripting
 			var onExit = (LuaFunction)func.CopyReference();
 			Action<Actor> invokeExit = a =>
 			{
-				using (var luaActor = a.ToLuaValue(context))
-				using (var id = triggerId.ToLuaValue(context))
-					onExit.Call(luaActor, id).Dispose();
+				try
+				{
+					using (var luaActor = a.ToLuaValue(context))
+					using (var id = triggerId.ToLuaValue(context))
+						onExit.Call(luaActor, id).Dispose();
+				}
+				catch (Exception e)
+				{
+					context.FatalError(e.Message);
+				}
 			};
 
 			triggerId = context.World.ActorMap.AddCellTrigger(cells, null, invokeExit);
