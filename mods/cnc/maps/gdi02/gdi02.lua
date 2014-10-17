@@ -14,7 +14,7 @@ BridgeheadSecured = function()
 	Reinforce(MobileConstructionVehicle)
 	Trigger.AfterDelay(Utils.Seconds(15), NodAttack)
 	Trigger.AfterDelay(Utils.Seconds(30), function() Reinforce(EngineerReinforcements) end)
-	Trigger.AfterDelay(Utils.Seconds(60), function() Reinforce(VehicleReinforcements) end)
+	Trigger.AfterDelay(Utils.Seconds(120), function() Reinforce(VehicleReinforcements) end)
 end
 
 NodAttack = function()
