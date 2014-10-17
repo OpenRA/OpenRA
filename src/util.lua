@@ -7,6 +7,8 @@
 -- Equivalent to C's "cond ? a : b", all terms will be evaluated
 function iff(cond, a, b) if cond then return a else return b end end
 
+function EscapeMagic(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
+
 -- Does the num have all the bits in value
 function HasBit(value, num)
   for n = 32, 0, -1 do
@@ -182,7 +184,7 @@ function FileSysGetRecursive(path, recursive, spec, skip)
         -- check if this name already appears in the path earlier;
         -- Skip the processing if it does as it could lead to infinite
         -- recursion with circular references created by symlinks.
-        if recursive and select(2, fname:gsub(file..sep,'')) <= 2 then
+        if recursive and select(2, fname:gsub(EscapeMagic(file..sep),'')) <= 2 then
           getDir(fname, spec) end
       end
       found, file = dir:GetNext()
@@ -450,8 +452,6 @@ function LoadSafe(data)
   debug.sethook()
   return ok, res
 end
-
-function EscapeMagic(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
 local function isCtrlFocused(e)
   local ctrl = e and e:FindFocus()
