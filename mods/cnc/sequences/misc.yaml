@@ -23,12 +23,18 @@ smoke_m:
 	idle:
 		Start: 0
 		Length: *
+		Offset: 2, -5
+		ZOffset: 512
 	loop:
 		Start: 49
 		Length: 42
+		Offset: 2, -5
+		ZOffset: 512
 	end:
 		Start: 0
 		Length: 26
+		Offset: 2, -5
+		ZOffset: 512
 
 laserfire:
 	idle:veh-hit3
