@@ -73,15 +73,15 @@
     <Compile Include="IonCannonPower.cs" />
     <Compile Include="PoisonedByTiberium.cs" />
     <Compile Include="ProductionAirdrop.cs" />
-    <Compile Include="WithCargo.cs" />
-    <Compile Include="RenderGunboat.cs" />
     <Compile Include="SpawnViceroid.cs" />
     <Compile Include="TiberiumRefinery.cs" />
     <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
-    <Compile Include="WithFire.cs" />
-    <Compile Include="WithRoof.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
-    <Compile Include="WithDeliveryAnimation.cs" />
+    <Compile Include="Render\RenderGunboat.cs" />
+    <Compile Include="Render\WithCargo.cs" />
+    <Compile Include="Render\WithDeliveryAnimation.cs" />
+    <Compile Include="Render\WithFire.cs" />
+    <Compile Include="Render\WithRoof.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
