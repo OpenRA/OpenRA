@@ -405,9 +405,13 @@ function EditorIsModified(editor)
 end
 
 -- Indicator handling for functions and local/global variables
+-- indicator.MASKED is handled separately, so don't include in MAX
+local indicator = {FNCALL = 0, LOCAL = 1, GLOBAL = 2, MASKING = 3, MASKED = 4, MAX = 3}
+
 local function indicateFunctionsOnly(editor, lines, linee)
+  local sindic = styles.indicator
   if not (edcfg.showfncall and editor.spec and editor.spec.isfncall)
-  or not (styles.indicator and styles.indicator.fncall) then return end
+  or not (sindic and sindic.fncall and sindic.fncall.st ~= wxstc.wxSTC_INDIC_HIDDEN) then return end
 
   local es = editor:GetEndStyled()
   local lines = lines or 0
@@ -421,18 +425,14 @@ local function indicateFunctionsOnly(editor, lines, linee)
   for i,v in pairs(editor.spec.iskeyword0) do isinvalid[i] = v end
   for i,v in pairs(editor.spec.isstring) do isinvalid[i] = v end
 
-  local INDICS_MASK = wxstc.wxSTC_INDICS_MASK
-  local INDIC0_MASK = wxstc.wxSTC_INDIC0_MASK
-
+  editor:SetIndicatorCurrent(indicator.FNCALL)
   for line=lines,linee do
     local tx = editor:GetLine(line)
     local ls = editor:PositionFromLine(line)
+    editor:IndicatorClearRange(ls, #tx)
 
     local from = 1
     local off = -1
-
-    editor:StartStyling(ls,INDICS_MASK)
-    editor:SetStyling(#tx,0)
     while from do
       tx = from==1 and tx or string.sub(tx,from)
 
@@ -441,20 +441,15 @@ local function indicateFunctionsOnly(editor, lines, linee)
       if (f) then
         local p = ls+f+off
         local s = bit.band(editor:GetStyleAt(p),31)
-        editor:StartStyling(p,INDICS_MASK)
-        editor:SetStyling(#w,isinvalid[s] and 0 or (INDIC0_MASK + 1))
+        if not isinvalid[s] then editor:IndicatorFillRange(p, #w) end
         off = off + t
       end
       from = t and (t+1)
     end
   end
-  editor:StartStyling(es,31)
 end
 
 local delayed = {}
-
--- indicator.MASKED is handled separately, so don't include in MAX
-local indicator = {FNCALL = 0, LOCAL = 1, GLOBAL = 2, MASKING = 3, MASKED = 4, MAX = 3}
 
 function IndicateIfNeeded()
   local editor = GetEditor()
