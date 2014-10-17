@@ -137,6 +137,7 @@ local function outlineRefresh(editor, force)
   -- scroll to the fileitem, but only if it's not a root item (as it's hidden)
   if fileitem:GetValue() ~= ctrl:GetRootItem():GetValue() then
     ctrl:ScrollTo(fileitem)
+    ctrl:SetScrollPos(wx.wxHORIZONTAL, 0, true)
   else -- otherwise, scroll to the top
     ctrl:SetScrollPos(wx.wxVERTICAL, 0, true)
   end
@@ -270,14 +271,18 @@ ide.packages['core.outline'] = setmetatable({
       local fileitem = cache and cache.fileitem
       eachNode(function(ctrl, item)
           local found = fileitem and item:GetValue() == fileitem:GetValue()
-          if found and not ctrl:IsBold(item) then
-            ctrl:SetItemBold(item, true)
-            ctrl:ExpandAllChildren(item)
-            ctrl:ScrollTo(item)
-          elseif not found and ctrl:IsBold(item) then
+          if not found and ctrl:IsBold(item) then
             ctrl:SetItemBold(item, false)
             ctrl:CollapseAllChildren(item)
           end
         end)
+
+      local ctrl = ide.outline.outlineCtrl
+      if fileitem and not ctrl:IsBold(fileitem) then
+        ctrl:SetItemBold(fileitem, true)
+        ctrl:ExpandAllChildren(fileitem)
+        ctrl:ScrollTo(fileitem)
+        ctrl:SetScrollPos(wx.wxHORIZONTAL, 0, true)
+      end
     end,
   }, ide.proto.Plugin)
