@@ -17,10 +17,10 @@ BOAT:
 		Range: 7c0
 	Turreted:
 		ROT: 7
-		Offset: 640,0,171
+		Offset: 0,896,171
 	Armament:
 		Weapon: BoatMissile
-		LocalOffset: 213,-180,0, 213,128,0, 213,0,0
+		LocalOffset: 85,-85,0, 85,85,0
 	AttackTurreted:
 	RenderGunboat:
 	Selectable:

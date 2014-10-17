@@ -53,11 +53,11 @@ namespace OpenRA.Mods.RA.Render
 			Add(info.RightSequence, new AnimationWithOffset(right, null, () => facing.Facing <= 128, 0));
 
 			var leftWake = new Animation(self.World, name);
-			leftWake.Play(info.WakeLeftSequence);
+			leftWake.PlayRepeating(info.WakeLeftSequence);
 			Add(info.WakeLeftSequence, new AnimationWithOffset(leftWake, null, () => facing.Facing > 128, -87));
 
 			var rightWake = new Animation(self.World, name);
-			rightWake.Play(info.WakeRightSequence);
+			rightWake.PlayRepeating(info.WakeRightSequence);
 			Add(info.WakeRightSequence, new AnimationWithOffset(rightWake, null, () => facing.Facing <= 128, -87));
 		}
 
