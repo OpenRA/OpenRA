@@ -728,7 +728,7 @@ Actors:
 		Location: 35,33
 		Owner: Neutral
 	lstEnd: waypoint
-		Location: 58,56
+		Location: 58,57
 		Owner: GDI
 	lstStart: waypoint
 		Location: 58,61
@@ -791,6 +791,9 @@ Rules:
 			ShowOwnerRow: false
 	HARV:
 		-MustBeDestroyed:
+		Harvester:
+			SearchFromProcRadius: 32
+			SearchFromOrderRadius: 20
 	PROC:
 		Buildable:
 			Prerequisites: ~disabled
@@ -822,6 +825,9 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 	ATWR:
+		Buildable:
+			Prerequisites: ~disabled
+	BRIK:
 		Buildable:
 			Prerequisites: ~disabled
 	E2:
