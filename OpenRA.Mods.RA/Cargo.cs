@@ -190,7 +190,10 @@ namespace OpenRA.Mods.RA
 			foreach (var npe in self.TraitsImplementing<INotifyPassengerExited>())
 				npe.PassengerExited(self, a);
 
-			a.Trait<Passenger>().Transport = null;
+			var p = a.Trait<Passenger>();
+			p.Transport = null;
+			foreach (var u in p.Info.GrantUpgrades)
+				self.Trait<UpgradeManager>().RevokeUpgrade(self, u, p);
 			return a;
 		}
 
@@ -232,7 +235,10 @@ namespace OpenRA.Mods.RA
 			foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
 				npe.PassengerEntered(self, a);
 
-			a.Trait<Passenger>().Transport = self;
+			var p = a.Trait<Passenger>();
+			p.Transport = self;
+			foreach (var u in p.Info.GrantUpgrades)
+				self.Trait<UpgradeManager>().GrantUpgrade(self, u, p);
 		}
 
 		public void Killed(Actor self, AttackInfo e)
