@@ -21,12 +21,12 @@ namespace OpenRA.Graphics
 	public class SequenceProvider
 	{
 		readonly Lazy<Sequences> sequences;
-		public readonly SpriteLoader SpriteLoader;
+		public readonly SpriteCache SpriteCache;
 
 		public SequenceProvider(SequenceCache cache, Map map)
 		{
 			this.sequences = Exts.Lazy(() => cache.LoadSequences(map));
-			this.SpriteLoader = cache.SpriteLoader;
+			this.SpriteCache = cache.SpriteCache;
 		}
 
 		public Sequence GetSequence(string unitName, string sequenceName)
@@ -70,8 +70,8 @@ namespace OpenRA.Graphics
 	public class SequenceCache
 	{
 		readonly ModData modData;
-		readonly Lazy<SpriteLoader> spriteLoader;
-		public SpriteLoader SpriteLoader { get { return spriteLoader.Value; } }
+		readonly Lazy<SpriteCache> spriteCache;
+		public SpriteCache SpriteCache { get { return spriteCache.Value; } }
 
 		readonly Dictionary<string, UnitSequences> sequenceCache = new Dictionary<string, UnitSequences>();
 
@@ -79,7 +79,7 @@ namespace OpenRA.Graphics
 		{
 			this.modData = modData;
 
-			spriteLoader = Exts.Lazy(() => new SpriteLoader(modData.SpriteLoaders, tileSet.Extensions, new SheetBuilder(SheetType.Indexed)));
+			spriteCache = Exts.Lazy(() => new SpriteCache(modData.SpriteLoaders, tileSet.Extensions, new SheetBuilder(SheetType.Indexed)));
 		}
 
 		public Sequences LoadSequences(Map map)
@@ -128,7 +128,7 @@ namespace OpenRA.Graphics
 				{
 					try
 					{
-						unitSequences.Add(kvp.Key, new Sequence(spriteLoader.Value, node.Key, kvp.Key, kvp.Value));
+						unitSequences.Add(kvp.Key, new Sequence(spriteCache.Value, node.Key, kvp.Key, kvp.Value));
 					}
 					catch (FileNotFoundException ex)
 					{
