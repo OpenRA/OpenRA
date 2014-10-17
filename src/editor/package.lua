@@ -204,10 +204,15 @@ function ide:ExecuteCommand(cmd, wdir, callback, endcallback)
 end
 
 function ide:CreateImageList(group, ...)
+  local log = wx.wxLogNull() -- disable error reporting in popup
   local size = wx.wxSize(16,16)
   local imglist = wx.wxImageList(16,16)
   for i = 1, select('#', ...) do
-    imglist:Add(self:GetBitmap(select(i, ...), group, size))
+    local icon, file = self:GetBitmap(select(i, ...), group, size)
+    if imglist:Add(icon) == -1 then
+      DisplayOutputLn(("Failed to add image '%s' to the image list.")
+        :format(file or select(i, ...)))
+    end
   end
   return imglist
 end
@@ -216,13 +221,19 @@ local icons = {} -- icon cache to avoid reloading the same icons
 function ide:GetBitmap(id, client, size)
   local im = ide.config.imagemap
   local width = size:GetWidth()
-  local key = width .. "/" .. id
+  local key = width.."/"..id
   local keyclient = key.."-"..client
   local mapped = im[keyclient] or im[id.."-"..client] or im[key] or im[id]
-  if im[keyclient] then keyclient = im[keyclient] end
-  if im[id.."-"..client] then keyclient = width.."/"..im[id.."-"..client] end
-  local fileClient = ide:GetAppName().."/res/" .. keyclient .. ".png"
-  local fileKey = ide:GetAppName().."/res/" .. key .. ".png"
+  if im[id.."-"..client] then keyclient = width.."/"..im[id.."-"..client]
+  elseif im[keyclient] then keyclient = im[keyclient]
+  elseif im[id] then
+    id = im[id]
+    key = width.."/"..id
+    keyclient = key.."-"..client
+  end
+
+  local fileClient = ide:GetAppName() .. "/res/" .. keyclient .. ".png"
+  local fileKey = ide:GetAppName() .. "/res/" .. key .. ".png"
   local file
   if mapped and wx.wxFileName(mapped):FileExists() then file = mapped
   elseif wx.wxFileName(fileClient):FileExists() then file = fileClient
@@ -230,7 +241,7 @@ function ide:GetBitmap(id, client, size)
   else return wx.wxArtProvider.GetBitmap(id, client, size) end
   local icon = icons[file] or wx.wxBitmap(file)
   icons[file] = icon
-  return icon
+  return icon, file
 end
 
 function ide:AddWatch(watch, value)
