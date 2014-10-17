@@ -1,11 +1,11 @@
 local G = ... -- this now points to the global environment
-local mac = G.ide.osname == 'Macintosh'
-local win = G.ide.osname == "Windows"
+local ide, wx = G.ide, G.wx
+local mac = ide.osname == 'Macintosh'
+local win = ide.osname == "Windows"
 if mac then
   local defaultsize = 11
   filetree.fontsize = defaultsize
-  funclist.fontsize = defaultsize
-  if G.ide.wxver >= "2.9.5" then
+  if ide.wxver >= "2.9.5" then
     editor.fontsize = defaultsize+1
     outputshell.fontsize = defaultsize
   end
@@ -17,7 +17,7 @@ else
   editor.fontsize = defaultsize+1
   outputshell.fontsize = defaultsize
 
-  local sysid, major, minor = G.wx.wxGetOsVersion()
+  local sysid, major, minor = wx.wxGetOsVersion()
   editor.fontname =
     win and (major == 5 and "Courier New" or "Consolas") or "Monospace"
   outputshell.fontname = editor.fontname
