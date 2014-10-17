@@ -1393,19 +1393,26 @@ end
 -- Add an editor to the notebook
 function AddEditor(editor, name)
   assert(notebook:GetPageIndex(editor) == -1, "Editor being added is not in the notebook: failed")
-  if notebook:AddPage(editor, name, true) then
-    local id = editor:GetId()
-    local document = setmetatable({}, ide.proto.Document)
-    document.editor = editor
+
+  -- set the document properties
+  local id = editor:GetId()
+  local document = setmetatable({}, ide.proto.Document)
+  document.editor = editor
+  document.fileName = name
+  document.filePath = nil
+  document.modTime = nil
+  document.isModified = false
+  openDocuments[id] = document
+
+  -- add page only after document is created as there may be handlers
+  -- that expect the document (for example, onEditorFocusSet)
+  if not notebook:AddPage(editor, name, true) then
+    openDocuments[id] = nil
+    return
+  else
     document.index = notebook:GetPageIndex(editor)
-    document.fileName = name
-    document.filePath = nil
-    document.modTime = nil
-    document.isModified = false
-    openDocuments[id] = document
     return document
   end
-  return
 end
 
 function GetSpec(ext,forcespec)
