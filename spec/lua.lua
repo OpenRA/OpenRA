@@ -1,11 +1,29 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
+local funcdef = "([A-Za-z_][A-Za-z0-9_%.%:]*)%s*"
 local decindent = {
   ['else'] = true, ['elseif'] = true, ['until'] = true, ['end'] = true}
 local incindent = {
   ['else'] = true, ['elseif'] = true, ['for'] = true, ['do'] = true,
   ['if'] = true, ['repeat'] = true, ['while'] = true}
+local function isfndef(str)
+  local l
+  local s,e,cap,par = string.find(str, "function%s+" .. funcdef .. "(%(.-%))")
+  -- try to match without brackets now, but only at the beginning of the line
+  if (not s) then
+    s,e,cap = string.find(str, "^%s*function%s+" .. funcdef)
+  end
+  -- try to match "foo = function()"
+  if (not s) then
+    s,e,cap,par = string.find(str, funcdef .. "=%s*function%s*(%(.-%))")
+  end
+  if (s) then
+    l = string.find(string.sub(str,1,s-1),"local%s+$")
+    cap = cap .. " " .. (par or "(?)")
+  end
+  return s,e,cap,l
+end
 local q = EscapeMagic
 
 return {
