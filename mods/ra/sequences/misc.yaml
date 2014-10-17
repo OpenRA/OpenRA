@@ -150,15 +150,18 @@ smoke_m:
 	idle:
 		Start: 0
 		Length: *
-		ZOffset: 1023
+		Offset: 2, -5
+		ZOffset: 512
 	loop:
 		Start: 49
 		Length: 42
-		ZOffset: 1023
+		Offset: 2, -5
+		ZOffset: 512
 	end:
 		Start: 0
 		Length: 26
-		ZOffset: 1023
+		Offset: 2, -5
+		ZOffset: 512
 
 dragon:
 	idle:
