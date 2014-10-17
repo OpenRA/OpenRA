@@ -134,8 +134,12 @@ local function outlineRefresh(editor, force)
     stack[func.depth+1] = item
   end
   ctrl:ExpandAllChildren(fileitem)
-  -- scroll to the item, but only if it's not a root item (as it's hidden)
-  if fileitem:GetValue() ~= ctrl:GetRootItem():GetValue() then ctrl:ScrollTo(fileitem) end
+  -- scroll to the fileitem, but only if it's not a root item (as it's hidden)
+  if fileitem:GetValue() ~= ctrl:GetRootItem():GetValue() then
+    ctrl:ScrollTo(fileitem)
+  else -- otherwise, scroll to the top
+    ctrl:SetScrollPos(wx.wxVERTICAL, 0, true)
+  end
   ctrl:Thaw()
 
   if win and win ~= ide:GetMainFrame():FindFocus() then win:SetFocus() end
