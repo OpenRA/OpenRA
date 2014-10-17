@@ -173,12 +173,12 @@ namespace OpenRA.Scripting
 			}
 		}
 
-		bool error;
+		public bool FatalErrorOccurred { get; private set; }
 		public void FatalError(string message)
 		{
 			Console.WriteLine("Fatal Lua Error: {0}", message);
 			Game.AddChatLine(Color.White, "Fatal Lua Error", message);
-			error = true;
+			FatalErrorOccurred = true;
 		}
 
 		public void RegisterMapActor(string name, Actor a)
@@ -195,7 +195,7 @@ namespace OpenRA.Scripting
 
 		public void WorldLoaded()
 		{
-			if (error)
+			if (FatalErrorOccurred)
 				return;
 
 			using (var worldLoaded = (LuaFunction)runtime.Globals["WorldLoaded"])
@@ -204,7 +204,7 @@ namespace OpenRA.Scripting
 
 		public void Tick(Actor self)
 		{
-			if (error || disposed)
+			if (FatalErrorOccurred || disposed)
 				return;
 
 			using (new PerfSample("tick_lua"))
@@ -215,6 +215,7 @@ namespace OpenRA.Scripting
 		{
 			if (disposed)
 				return;
+
 			disposed = true;
 			if (runtime != null)
 				runtime.Dispose();
