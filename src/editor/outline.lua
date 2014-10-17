@@ -272,7 +272,7 @@ ide.packages['core.outline'] = setmetatable({
             ctrl:ScrollTo(item)
           elseif not found and ctrl:IsBold(item) then
             ctrl:SetItemBold(item, false)
-            ctrl:Collapse(item)
+            ctrl:CollapseAllChildren(item)
           end
         end)
     end,
