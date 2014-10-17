@@ -116,6 +116,8 @@ Container@LEAVE_MAP_WIDGET:
 					Font: Bold
 					Text: Statistics
 				Container@OBJECTIVES_PANEL:
+					Width: PARENT_RIGHT
+					Height: 365
 				Container@DIALOG_CHAT_PANEL:
 					X: 15
 					Y: 15

@@ -106,6 +106,7 @@ ChromeLayout:
 	./mods/ra/chrome/ingame-fmvplayer.yaml
 	./mods/ra/chrome/ingame-menu.yaml
 	./mods/ra/chrome/ingame-info.yaml
+	./mods/ra/chrome/ingame-infoscripterror.yaml
 	./mods/ra/chrome/ingame-infobriefing.yaml
 	./mods/ra/chrome/ingame-infoobjectives.yaml
 	./mods/ra/chrome/ingame-infostats.yaml
