@@ -93,6 +93,7 @@ ChromeLayout:
 	./mods/cnc/chrome/ingame-debug.yaml
 	./mods/cnc/chrome/ingame-info.yaml
 	./mods/cnc/chrome/ingame-infobriefing.yaml
+	./mods/cnc/chrome/ingame-infoscripterror.yaml
 	./mods/cnc/chrome/ingame-infoobjectives.yaml
 	./mods/cnc/chrome/ingame-infostats.yaml
 	./mods/cnc/chrome/ingame-leavemap.yaml

@@ -126,6 +126,7 @@ Container@LEAVE_MAP_WIDGET:
 					Text: Leave
 				Container@OBJECTIVES_PANEL:
 					Y: 65
+					Width: PARENT_RIGHT
 				Container@DIALOG_CHAT_PANEL:
 					X: 20
 					Y: 65

@@ -193,6 +193,13 @@ namespace OpenRA.Scripting
 			Log.Write("lua", stacktrace);
 
 			FatalErrorOccurred = true;
+
+			World.AddFrameEndTask(w =>
+			{
+				World.EndGame();
+				World.SetPauseState(true);
+				World.PauseStateLocked = true;
+			});
 		}
 
 		public void RegisterMapActor(string name, Actor a)
