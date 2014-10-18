@@ -654,6 +654,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20141019)
+				{
+					// Rename RenderInfantry to RenderUnitAnimated
+					if (depth == 1)
+					{
+						if (node.Key == "RenderInfantry")
+							node.Key = "RenderUnitAnimated";
+
+						if (node.Key == "-RenderInfantry")
+							node.Key = "-RenderUnitAnimated";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
