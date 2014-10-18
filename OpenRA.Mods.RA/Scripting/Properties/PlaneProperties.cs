@@ -27,4 +27,17 @@ namespace OpenRA.Mods.RA.Scripting
 			self.QueueActivity(new Fly(self, Target.FromCell(self.World, cell)));
 		}
 	}
+
+	[ScriptPropertyGroup("Combat")]
+	public class PlaneCombatProperties : ScriptActorProperties, Requires<AttackPlaneInfo>
+	{
+		public PlaneCombatProperties(ScriptContext context, Actor self)
+			: base(context, self) { }
+
+		[Desc("Fly an attack against the target actor.")]
+		public void Attack(Actor target)
+		{
+			self.QueueActivity(new FlyAttack(Target.FromActor(target)));
+		}
+	}
 }
