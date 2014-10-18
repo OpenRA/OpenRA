@@ -9,7 +9,7 @@ General:
 Terrain:
 	TerrainType@Clear:
 		Type: Clear
-		AcceptsSmudgeType: Crater, Scorch
+		AcceptsSmudgeType: SmallCrater, MediumCrater, LargeCrater, SmallScorch, MediumScorch, LargeScorch
 		Color: 116, 85, 55
 		TargetTypes: Ground
 	TerrainType@Road:
@@ -42,12 +42,12 @@ Terrain:
 		TargetTypes: Ground
 	TerrainType@Tiberium:
 		Type: Tiberium
-		AcceptsSmudgeType: Crater, Scorch
+		AcceptsSmudgeType: SmallCrater, MediumCrater, LargeCrater, SmallScorch, MediumScorch, LargeScorch
 		Color: 161, 226, 28
 		TargetTypes: Ground
 	TerrainType@BlueTiberium:
 		Type: BlueTiberium
-		AcceptsSmudgeType: Crater, Scorch
+		AcceptsSmudgeType: SmallCrater, MediumCrater, LargeCrater, SmallScorch, MediumScorch, LargeScorch
 		Color: 28, 64, 248
 		TargetTypes: Ground
 
