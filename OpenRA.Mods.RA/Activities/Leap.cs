@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Activities
 			to = self.World.Map.CenterOfSubCell(targetMobile.fromCell, targetMobile.fromSubCell);
 			length = Math.Max((to - from).Length / speed.Range, 1);
 
-			self.Trait<RenderInfantry>().Attacking(self, Target.FromActor(target));
+			self.Trait<RenderUnitAnimated>().Attacking(self, Target.FromActor(target));
 
 			if (weapon.Report != null && weapon.Report.Any())
 				Sound.Play(weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);

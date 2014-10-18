@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new TakeCover(init, this); }
 	}
 
-	public class TakeCover : Turreted, INotifyDamage, IDamageModifier, ISpeedModifier, ISync, IRenderInfantrySequenceModifier
+	public class TakeCover : Turreted, INotifyDamage, IDamageModifier, ISpeedModifier, ISync, IRenderUnitAnimatedSequenceModifier
 	{
 		readonly TakeCoverInfo info;
 		[Sync] int remainingProneTime = 0;
