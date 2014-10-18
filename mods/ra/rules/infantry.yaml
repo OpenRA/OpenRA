@@ -216,7 +216,7 @@ SPY:
 	TakeCover:
 	Disguise:
 	Infiltrates:
-		Types: SpyInfiltrate
+		Types: SpyInfiltrate, DisableVehicle
 	-AutoTarget:
 	-RenderInfantry:
 	RenderDisguise:
