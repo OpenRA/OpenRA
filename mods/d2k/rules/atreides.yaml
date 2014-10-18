@@ -262,7 +262,7 @@ GRENADIER:
 		FireDelay: 15
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
+	RenderUnitAnimated:
 		IdleAnimations: idle
 	Explodes:
 		Weapon: UnitExplodeSmall

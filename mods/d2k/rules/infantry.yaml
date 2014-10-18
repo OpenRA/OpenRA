@@ -94,7 +94,7 @@ MEDIC:
 	AttackMedic:
 		Cursor: ability
 		OutsideRangeCursor: ability
-	RenderInfantry:
+	RenderUnitAnimated:
 		AttackAnimation: heal
 	Passenger:
 		PipType: Blue

@@ -177,7 +177,7 @@
 		TargetTypes: Ground, Infantry
 	TakeCover:
 		SpeedModifier: 60
-	RenderInfantry:
+	RenderUnitAnimated:
 	WithDeathAnimation:
 	AttackMove:
 	Passenger:
@@ -293,7 +293,7 @@
 		TargetTypes: Ground, Infantry
 	HiddenUnderFog:
 	GivesExperience:
-	RenderInfantry:
+	RenderUnitAnimated:
 		Palette: terrain
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false
