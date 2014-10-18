@@ -67,7 +67,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = rsdl2 rnull game utility irc ralint
+CORE = rsdl2 rnull game utility ralint
 TOOLS = editor tsbuild crashdialog
 
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
@@ -85,14 +85,6 @@ game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/SDL2-CS.dll thirdparty/SharpF
 game_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
 PROGRAMS += game
 game: $(game_TARGET)
-
-irc_SRCS := $(shell find OpenRA.Irc/ -iname '*.cs')
-irc_TARGET = OpenRA.Irc.dll
-irc_KIND = library
-irc_DEPS = $(game_TARGET)
-irc_LIBS = $(COMMON_LIBS) $(irc_DEPS)
-PROGRAMS += irc
-irc: $(irc_TARGET)
 
 # Renderer dlls
 rsdl2_SRCS := $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
@@ -123,13 +115,12 @@ mod_common: $(mod_common_TARGET)
 STD_MOD_LIBS	= $(game_TARGET)
 STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 
-
 # Red Alert
 mod_ra_SRCS := $(shell find OpenRA.Mods.RA/ -iname '*.cs')
 mod_ra_TARGET = mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND = library
-mod_ra_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET) $(irc_TARGET)
-mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET) $(irc_TARGET)
+mod_ra_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET)
+mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
 PROGRAMS += mod_ra
 mod_ra: $(mod_ra_TARGET)
 

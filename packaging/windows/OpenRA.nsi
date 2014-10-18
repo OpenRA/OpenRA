@@ -70,7 +70,6 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.CrashDialog.exe"
 	File "${SRCDIR}\OpenRA.Renderer.Null.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Sdl2.dll"
-	File "${SRCDIR}\OpenRA.Irc.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
 	File "${SRCDIR}\Mono.Nat.dll"
@@ -190,7 +189,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Editor.exe
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll
 	Delete $INSTDIR\OpenRA.Renderer.Sdl2.dll
-	Delete $INSTDIR\OpenRA.Irc.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
 	Delete $INSTDIR\Mono.Nat.dll

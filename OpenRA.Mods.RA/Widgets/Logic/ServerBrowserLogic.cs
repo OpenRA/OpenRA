@@ -107,7 +107,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				showIncompatibleCheckbox.OnClick = () => { showIncompatible ^= true; RefreshServerList(); };
 			}
 
-			// Game.LoadWidget(null, "SERVERBROWSER_IRC", panel.Get("IRC_ROOT"), new WidgetArgs());
 			RefreshServerList();
 		}
 

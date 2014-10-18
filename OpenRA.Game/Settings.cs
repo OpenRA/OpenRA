@@ -214,22 +214,6 @@ namespace OpenRA
 		}
 	}
 
-	public class IrcSettings
-	{
-		public string Hostname = "irc.openra.net";
-		public int Port = 6667;
-		public string Nickname = null;
-		public string Username = "openra";
-		public string Realname = null;
-		public string DefaultNickname = "Newbie";
-		public string Channel = "global";
-		public string TimestampFormat = "HH:mm:ss";
-		public int ReconnectDelay = 10000;
-		public int ConnectionTimeout = 300000;
-		public bool Debug = false;
-		public bool ConnectAutomatically = false;
-	}
-
 	public class Settings
 	{
 		string settingsFile;
@@ -241,7 +225,6 @@ namespace OpenRA
 		public ServerSettings Server = new ServerSettings();
 		public DebugSettings Debug = new DebugSettings();
 		public KeySettings Keys = new KeySettings();
-		public IrcSettings Irc = new IrcSettings();
 
 		public Dictionary<string, object> Sections;
 
@@ -257,7 +240,6 @@ namespace OpenRA
 				{ "Server", Server },
 				{ "Debug", Debug },
 				{ "Keys", Keys },
-				{ "Irc", Irc }
 			};
 
 			// Override fieldloader to ignore invalid entries

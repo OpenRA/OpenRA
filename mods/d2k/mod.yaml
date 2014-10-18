@@ -91,7 +91,6 @@ ChromeLayout:
 	./mods/ra/chrome/musicplayer.yaml
 	./mods/d2k/chrome/tooltips.yaml
 	./mods/ra/chrome/assetbrowser.yaml
-	./mods/ra/chrome/irc.yaml
 	./mods/ra/chrome/missionbrowser.yaml
 	./mods/ra/chrome/confirmation-dialogs.yaml
 

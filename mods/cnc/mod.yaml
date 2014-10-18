@@ -103,7 +103,6 @@ ChromeLayout:
 	./mods/cnc/chrome/credits.yaml
 	./mods/cnc/chrome/dialogs.yaml
 	./mods/cnc/chrome/tooltips.yaml
-	./mods/cnc/chrome/irc.yaml
 	./mods/cnc/chrome/assetbrowser.yaml
 	./mods/cnc/chrome/missionbrowser.yaml
 
