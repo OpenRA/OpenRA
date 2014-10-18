@@ -58,11 +58,7 @@ cp thirdparty/SDL2-CS* packaging/built
 # Mono.NAT for UPnP support
 cp thirdparty/Mono.Nat.dll packaging/built
 
-# (legacy) Lua
-cp thirdparty/KopiLua.dll packaging/built
-cp thirdparty/NLua.dll packaging/built
-
-# Eluant (new lua)
+# Eluant (Lua integration)
 cp thirdparty/Eluant* packaging/built
 
 # GeoIP database access
