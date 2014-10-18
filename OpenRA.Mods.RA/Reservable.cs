@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 	[Desc("Reserve landing places for aircraft.")]
 	class ReservableInfo : TraitInfo<Reservable> { }
 
-	public class Reservable : ITick, INotifyKilled, INotifyCapture, INotifySold
+	public class Reservable : ITick, INotifyKilled, INotifyOwnerChanged, INotifySold
 	{
 		Actor reservedFor;
 		Aircraft reservedForAircraft;
@@ -60,15 +60,15 @@ namespace OpenRA.Mods.RA
 				reservedForAircraft.UnReserve();
 		}
 
-		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			if (reservedForAircraft != null)
 				reservedForAircraft.UnReserve();
 		}
 
-		public void Selling (Actor self) { Sold(self); }
+		public void Selling(Actor self) { Sold(self); }
 
-		public void Sold (Actor self)
+		public void Sold(Actor self)
 		{
 			if (reservedForAircraft != null)
 				reservedForAircraft.UnReserve();

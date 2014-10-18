@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Power
 		public object Create(ActorInitializer init) { return new RequiresPower(init.self); }
 	}
 
-	class RequiresPower : IDisable, INotifyCapture
+	class RequiresPower : IDisable, INotifyOwnerChanged
 	{
 		PowerManager playerPower;
 
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Power
 			get { return playerPower.PowerProvided < playerPower.PowerDrained; }
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			playerPower = newOwner.PlayerActor.Trait<PowerManager>();
 		}

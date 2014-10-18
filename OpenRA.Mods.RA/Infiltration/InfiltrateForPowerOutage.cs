@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Infiltration
 		public object Create(ActorInitializer init) { return new InfiltrateForPowerOutage(init.self, this); }
 	}
 
-	class InfiltrateForPowerOutage : INotifyCapture, INotifyInfiltrated
+	class InfiltrateForPowerOutage : INotifyOwnerChanged, INotifyInfiltrated
 	{
 		readonly InfiltrateForPowerOutageInfo info;
 		PowerManager playerPower;
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Infiltration
 			playerPower.TriggerPowerOutage(info.Duration);
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			playerPower = self.Owner.PlayerActor.Trait<PowerManager>();
 		}

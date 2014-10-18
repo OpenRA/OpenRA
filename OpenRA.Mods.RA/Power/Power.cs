@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Power
 		public object Create(ActorInitializer init) { return new Power(init.self, this); }
 	}
 
-	public class Power : INotifyCapture
+	public class Power : INotifyOwnerChanged
 	{
 		readonly PowerInfo info;
 		readonly Lazy<IPowerModifier[]> powerModifiers;
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Power
 			powerModifiers = Exts.Lazy(() => self.TraitsImplementing<IPowerModifier>().ToArray());
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
 		}
