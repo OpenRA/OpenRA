@@ -124,7 +124,7 @@ HVR:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
-		Prerequisites: gaweap, garadr 
+		Prerequisites: gaweap, garadr
 		Owner: gdi
 		Hothey: v
 	Mobile:
