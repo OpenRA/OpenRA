@@ -120,7 +120,7 @@ mod_common: $(mod_common_TARGET)
 
 ##### Official Mods #####
 
-STD_MOD_LIBS	= $(game_TARGET) thirdparty/KopiLua.dll thirdparty/NLua.dll
+STD_MOD_LIBS	= $(game_TARGET)
 STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 
 
@@ -341,8 +341,6 @@ install-core: default
 	@$(INSTALL_PROGRAM) SharpFont.dll "$(DATA_INSTALL_DIR)"
 	@$(CP) SharpFont.dll.config "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) Mono.Nat.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) KopiLua.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) NLua.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"

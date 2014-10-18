@@ -90,8 +90,6 @@ Section "Game" GAME
 	File "${SRCDIR}\Newtonsoft.Json.dll"
 	File "${SRCDIR}\RestSharp.dll"
 	File "${SRCDIR}\GeoLite2-Country.mmdb"
-	File "${SRCDIR}\KopiLua.dll"
-	File "${SRCDIR}\NLua.dll"
 	File "${SRCDIR}\eluant.dll"
 	File "${DEPSDIR}\soft_oal.dll"
 	File "${DEPSDIR}\SDL2.dll"
@@ -212,8 +210,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\RestSharp.dll
 	Delete $INSTDIR\GeoLite2-Country.mmdb
 	Delete $INSTDIR\KopiLua.dll
-	Delete $INSTDIR\NLua.dll
-	Delete $INSTDIR\SDL2-CS.dll
 	Delete $INSTDIR\soft_oal.dll
 	Delete $INSTDIR\SDL2.dll
 	Delete $INSTDIR\lua51.dll
