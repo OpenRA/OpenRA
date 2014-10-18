@@ -40,66 +40,66 @@ Players:
 		Playable: True
 		LockRace: True
 		Race: nod
-		Enemies: Multi9,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7,Multi8
+		Enemies: Multi9, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		LockRace: True
 		Race: nod
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7,Multi8,Multi9
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		LockRace: True
 		Race: nod
-		Enemies: Multi0,Multi1,Multi3,Multi4,Multi5,Multi6,Multi7,Multi8,Multi9
+		Enemies: Multi0, Multi1, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		LockRace: True
 		Race: nod
-		Enemies: Multi0,Multi1,Multi2,Multi4,Multi5,Multi6,Multi7,Multi8,Multi9
+		Enemies: Multi0, Multi1, Multi2, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
 		LockRace: True
 		Race: nod
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi5,Multi6,Multi7,Multi8,Multi9
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi5, Multi6, Multi7, Multi8, Multi9
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
 		LockRace: True
 		Race: nod
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi6,Multi7,Multi8,Multi9
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi6, Multi7, Multi8, Multi9
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
 		LockRace: True
 		Race: nod
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi7,Multi8,Multi9
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi7, Multi8, Multi9
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
 		LockRace: True
 		Race: nod
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi8,Multi9
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi8, Multi9
 	PlayerReference@Multi8:
 		Name: Multi8
 		Playable: True
 		LockRace: True
 		Race: nod
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7,Multi9
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi9
 	PlayerReference@Multi9:
 		Name: Multi9
 		Playable: True
 		LockRace: True
 		Race: nod
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7,Multi8
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
 		Race: gdi
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7,Multi8,Multi9
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9
 
 Actors:
 	Actor0: apc

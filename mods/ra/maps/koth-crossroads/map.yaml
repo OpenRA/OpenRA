@@ -52,7 +52,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: Random
-		Enemies: Multi0,Multi1,Multi2,Multi3
+		Enemies: Multi0, Multi1, Multi2, Multi3
 
 Actors:
 	Actor0: miss

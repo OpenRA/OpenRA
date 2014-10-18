@@ -8,9 +8,9 @@ Title: Storm the Beachhead
 
 Description: Use the units provided to protect the Mobile Construction Vehicle. (MCV)\n\nYou should then deploy the MCV by double clicking on it.\n\nThen you can begin to build up a base. Start with a Power Plant.\n\nFinally, search out and destroy all enemy Nod units in the surrounding area.
 
-PreviewVideo: gdi1.vqa
-
 Author: Westwood Studios
+
+PreviewVideo: gdi1.vqa
 
 Tileset: TEMPERAT
 
@@ -37,7 +37,7 @@ Players:
 		Race: nod
 		ColorRamp: 3,255,127
 		Allies: Nod
-		Enemies: GDI,Creeps
+		Enemies: GDI, Creeps
 	PlayerReference@GDI:
 		Name: GDI
 		Playable: True
@@ -50,7 +50,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: GDI
-		Enemies: Nod,Creeps
+		Enemies: Nod, Creeps
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
@@ -60,7 +60,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: Random
-		Enemies: Nod,GDI
+		Enemies: Nod, GDI
 
 Actors:
 	Actor0: sbag

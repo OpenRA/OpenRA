@@ -8,9 +8,9 @@ Title: Allies 02: Five to one
 
 Description: A critical supply convoy is due through this area in 10 minutes, but Soviet forces have blocked the road in several places.\n\nUnless you can clear them out, those supplies will never make it to the front.\n\nThe convoy will come from the northwest, and time is short so work quickly.
 
-PreviewVideo: ally2.vqa
-
 Author: Westwood Studios
+
+PreviewVideo: ally2.vqa
 
 Tileset: SNOW
 
@@ -40,8 +40,8 @@ Players:
 		Enemies: Greece, France
 	PlayerReference@France:
 		Name: France
-		Race: allies
 		NonCombatant: True
+		Race: allies
 		ColorRamp: 115,115,143
 		Allies: Greece, France
 		Enemies: USSR, Ukraine
