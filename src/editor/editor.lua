@@ -408,7 +408,7 @@ end
 -- indicator.MASKED is handled separately, so don't include in MAX
 local indicator = {FNCALL = 0, LOCAL = 1, GLOBAL = 2, MASKING = 3, MASKED = 4, MAX = 3}
 
-local function IndicateFunctionsOnly(editor, lines, linee)
+function IndicateFunctionsOnly(editor, lines, linee)
   local sindic = styles.indicator
   if not (edcfg.showfncall and editor.spec and editor.spec.isfncall)
   or not (sindic and sindic.fncall and sindic.fncall.st ~= wxstc.wxSTC_INDIC_HIDDEN) then return end
