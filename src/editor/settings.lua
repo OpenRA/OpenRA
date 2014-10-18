@@ -392,18 +392,18 @@ function SettingsRestoreView()
   local layoutcur = uimgr:SavePerspective()
   local layout = settingsReadSafe(settings,"uimgrlayout",layoutcur)
   if (layout ~= layoutcur) then
-    -- save the current toolbar configuration and restore re-apply it
-    -- as it's always correct (to avoid storing minh and minw values)
+    -- save the current toolbar besth and re-apply after perspective is loaded
+    -- bestw and besth has two separate issues:
+    -- (1) layout includes bestw that is only as wide as the toolbar size,
+    -- this leaves default background on the right side of the toolbar;
+    -- fix it by explicitly replacing with the screen width.
+    -- (2) besth may be wrong after icon size changes.
     local toolbar = frame.uimgr:GetPane("toolbar")
-    local toolbarlayout = (toolbar:IsOk()
-      -- layout includes bestw that is only as wide as the toolbar size,
-      -- this leaves default background on the right side of the toolbar;
-      -- fix it by explicitly replacing with the screen width
-      and uimgr:SavePaneInfo(toolbar):gsub("(bestw=)[^;]+",
-        function(s) return s..wx.wxSystemSettings.GetMetric(wx.wxSYS_SCREEN_X) end)
-      or nil)
+    local besth = toolbar:IsOk() and tonumber(uimgr:SavePaneInfo(toolbar):match("besth=([^;]+)"))
     uimgr:LoadPerspective(layout, false)
-    if toolbarlayout then uimgr:LoadPaneInfo(toolbarlayout, toolbar) end
+    if toolbar:IsOk() then -- fix bestw and besth values
+      toolbar:BestSize(wx.wxSystemSettings.GetMetric(wx.wxSYS_SCREEN_X), besth or -1)
+    end
 
     -- check if debugging panes are not mentioned and float them
     for _, name in pairs({"stackpanel", "watchpanel"}) do
