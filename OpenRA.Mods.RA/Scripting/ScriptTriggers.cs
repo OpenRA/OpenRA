@@ -45,25 +45,55 @@ namespace OpenRA.Mods.RA.Scripting
 		public void TickIdle(Actor self)
 		{
 			foreach (var f in Triggers[Trigger.OnIdle])
-				using (var a = self.ToLuaValue(f.Second))
-					f.First.Call(a).Dispose();
+			{
+				try
+				{
+					using (var a = self.ToLuaValue(f.Second))
+						f.First.Call(a).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			foreach (var f in Triggers[Trigger.OnDamaged])
-				using (var a = self.ToLuaValue(f.Second))
-				using (var b = e.Attacker.ToLuaValue(f.Second))
-					f.First.Call(a, b).Dispose();
+			{
+				try
+				{
+					using (var a = self.ToLuaValue(f.Second))
+					using (var b = e.Attacker.ToLuaValue(f.Second))
+						f.First.Call(a, b).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
 			// Run Lua callbacks
 			foreach (var f in Triggers[Trigger.OnKilled])
-				using (var a = self.ToLuaValue(f.Second))
-				using (var b = e.Attacker.ToLuaValue(f.Second))
-					f.First.Call(a, b).Dispose();
+			{
+				try
+				{
+					using (var a = self.ToLuaValue(f.Second))
+					using (var b = e.Attacker.ToLuaValue(f.Second))
+						f.First.Call(a, b).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
 
 			// Run any internally bound callbacks
 			OnKilledInternal(self);
@@ -72,72 +102,162 @@ namespace OpenRA.Mods.RA.Scripting
 		public void UnitProduced(Actor self, Actor other, CPos exit)
 		{
 			foreach (var f in Triggers[Trigger.OnProduction])
-				using (var a = self.ToLuaValue(f.Second))
-				using (var b = other.ToLuaValue(f.Second))
-					f.First.Call(a, b).Dispose();
+			{
+				try
+				{
+					using (var a = self.ToLuaValue(f.Second))
+					using (var b = other.ToLuaValue(f.Second))
+						f.First.Call(a, b).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
 		}
 
 		public void OnPlayerWon(Player player)
 		{
 			foreach (var f in Triggers[Trigger.OnPlayerWon])
-				using (var a = player.ToLuaValue(f.Second))
-					f.First.Call(a).Dispose();
+			{
+				try
+				{
+					using (var a = player.ToLuaValue(f.Second))
+						f.First.Call(a).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
 		}
 
 		public void OnPlayerLost(Player player)
 		{
 			foreach (var f in Triggers[Trigger.OnPlayerLost])
-				using (var a = player.ToLuaValue(f.Second))
-					f.First.Call(a).Dispose();
+			{
+				try
+				{
+					using (var a = player.ToLuaValue(f.Second))
+						f.First.Call(a).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
 		}
 
 		public void OnObjectiveAdded(Player player, int id)
 		{
 			foreach (var f in Triggers[Trigger.OnObjectiveAdded])
-				using (var a = player.ToLuaValue(f.Second))
-				using (var b = id.ToLuaValue(f.Second))
-					f.First.Call(a, b).Dispose();
+			{
+				try
+				{
+					using (var a = player.ToLuaValue(f.Second))
+					using (var b = id.ToLuaValue(f.Second))
+						f.First.Call(a, b).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
 		}
 
 		public void OnObjectiveCompleted(Player player, int id)
 		{
 			foreach (var f in Triggers[Trigger.OnObjectiveCompleted])
-				using (var a = player.ToLuaValue(f.Second))
-				using (var b = id.ToLuaValue(f.Second))
-					f.First.Call(a, b).Dispose();
+			{
+				try
+				{
+					using (var a = player.ToLuaValue(f.Second))
+					using (var b = id.ToLuaValue(f.Second))
+						f.First.Call(a, b).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
 		}
 
 		public void OnObjectiveFailed(Player player, int id)
 		{
 			foreach (var f in Triggers[Trigger.OnObjectiveFailed])
-				using (var a = player.ToLuaValue(f.Second))
-				using (var b = id.ToLuaValue(f.Second))
-					f.First.Call(a, b).Dispose();
+			{
+				try
+				{
+					using (var a = player.ToLuaValue(f.Second))
+					using (var b = id.ToLuaValue(f.Second))
+						f.First.Call(a, b).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
 		}
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			foreach (var f in Triggers[Trigger.OnCapture])
-				using (var a = self.ToLuaValue(f.Second))
-				using (var b = captor.ToLuaValue(f.Second))
-				using (var c = oldOwner.ToLuaValue(f.Second))
-				using (var d = newOwner.ToLuaValue(f.Second))
-					f.First.Call(a, b, c, d).Dispose();
+			{
+				try
+				{
+					using (var a = self.ToLuaValue(f.Second))
+					using (var b = captor.ToLuaValue(f.Second))
+					using (var c = oldOwner.ToLuaValue(f.Second))
+					using (var d = newOwner.ToLuaValue(f.Second))
+						f.First.Call(a, b, c, d).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
 		}
 
 		public void AddedToWorld(Actor self)
 		{
 			foreach (var f in Triggers[Trigger.OnAddedToWorld])
-				using (var a = self.ToLuaValue(f.Second))
-					f.First.Call(a).Dispose();
+			{
+				try
+				{
+					using (var a = self.ToLuaValue(f.Second))
+						f.First.Call(a).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
 			// Run Lua callbacks
 			foreach (var f in Triggers[Trigger.OnRemovedFromWorld])
-				using (var a = self.ToLuaValue(f.Second))
-					f.First.Call(a).Dispose();
+			{
+				try
+				{
+					using (var a = self.ToLuaValue(f.Second))
+						f.First.Call(a).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
 
 			// Run any internally bound callbacks
 			OnRemovedInternal(self);

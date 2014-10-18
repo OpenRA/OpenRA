@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Mods.RA.Scripting;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -34,9 +35,11 @@ namespace OpenRA.Mods.RA.Widgets
 
 			var showStats = false;
 
+			var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 			var isMultiplayer = !world.LobbyInfo.IsSinglePlayer && !world.IsReplay;
-			var hasObjectives = iop != null && iop.PanelName != null && world.LocalPlayer != null;
+			var hasError = scriptContext != null && scriptContext.FatalErrorOccurred;
+			var hasObjectives = hasError || (iop != null && iop.PanelName != null && world.LocalPlayer != null);
 			var showTabs = hasObjectives && isMultiplayer;
 			currentTab = hasObjectives ? Tab.Objectives : Tab.Chat;
 
@@ -114,8 +117,9 @@ namespace OpenRA.Mods.RA.Widgets
 
 			if (hasObjectives)
 			{
+				var panel = hasError ? "SCRIPT_ERROR_PANEL" : iop.PanelName;
 				var objectivesContainer = dialog.Get<ContainerWidget>("OBJECTIVES_PANEL");
-				Game.LoadWidget(world, iop.PanelName, objectivesContainer, new WidgetArgs());
+				Game.LoadWidget(world, panel, objectivesContainer, new WidgetArgs());
 				objectivesContainer.IsVisible = () => currentTab == Tab.Objectives;
 			}
 

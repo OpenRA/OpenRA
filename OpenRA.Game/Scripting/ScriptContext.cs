@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -118,6 +119,8 @@ namespace OpenRA.Scripting
 		{
 			runtime = new MemoryConstrainedLuaRuntime();
 
+			Log.AddChannel("lua", "lua.log");
+
 			World = world;
 			WorldRenderer = worldRenderer;
 			knownActorCommands = Game.modData.ObjectCreator
@@ -141,7 +144,7 @@ namespace OpenRA.Scripting
 
 			using (var registerGlobal = (LuaFunction)runtime.Globals["RegisterSandboxedGlobal"])
 			{
-				using (var fn = runtime.CreateFunctionFromDelegate((Action<string>)Console.WriteLine))
+				using (var fn = runtime.CreateFunctionFromDelegate((Action<string>)LogDebugMessage))
 					registerGlobal.Call("print", fn).Dispose();
 
 				// Register global tables
@@ -173,12 +176,30 @@ namespace OpenRA.Scripting
 			}
 		}
 
-		bool error;
+		void LogDebugMessage(string message)
+		{
+			Console.WriteLine("Lua debug: {0}", message);
+			Log.Write("lua", message);
+		}
+
+		public bool FatalErrorOccurred { get; private set; }
 		public void FatalError(string message)
 		{
+			var stacktrace = new StackTrace().ToString();
 			Console.WriteLine("Fatal Lua Error: {0}", message);
-			Game.AddChatLine(Color.White, "Fatal Lua Error", message);
-			error = true;
+			Console.WriteLine(stacktrace);
+
+			Log.Write("lua", "Fatal Lua Error: {0}", message);
+			Log.Write("lua", stacktrace);
+
+			FatalErrorOccurred = true;
+
+			World.AddFrameEndTask(w =>
+			{
+				World.EndGame();
+				World.SetPauseState(true);
+				World.PauseStateLocked = true;
+			});
 		}
 
 		public void RegisterMapActor(string name, Actor a)
@@ -195,7 +216,7 @@ namespace OpenRA.Scripting
 
 		public void WorldLoaded()
 		{
-			if (error)
+			if (FatalErrorOccurred)
 				return;
 
 			using (var worldLoaded = (LuaFunction)runtime.Globals["WorldLoaded"])
@@ -204,7 +225,7 @@ namespace OpenRA.Scripting
 
 		public void Tick(Actor self)
 		{
-			if (error || disposed)
+			if (FatalErrorOccurred || disposed)
 				return;
 
 			using (new PerfSample("tick_lua"))
@@ -215,6 +236,7 @@ namespace OpenRA.Scripting
 		{
 			if (disposed)
 				return;
+
 			disposed = true;
 			if (runtime != null)
 				runtime.Dispose();

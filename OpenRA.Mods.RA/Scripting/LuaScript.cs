@@ -50,5 +50,7 @@ namespace OpenRA.Mods.RA.Scripting
 			if (context != null)
 				context.Dispose();
 		}
+
+		public bool FatalErrorOccurred { get { return context.FatalErrorOccurred; } }
 	}
 }
