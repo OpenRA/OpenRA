@@ -46,7 +46,6 @@
 		EjectInAir: false
 		AllowUnsuitableCell: false
 	Huntable:
-	LuaScriptEvents:
 	Capturable:
 		Type: vehicle
 		CaptureThreshold: 1
@@ -117,7 +116,6 @@
 		EjectInAir: false
 		AllowUnsuitableCell: false
 	Huntable:
-	LuaScriptEvents:
 	Capturable:
 		Type: vehicle
 		CaptureThreshold: 1
@@ -199,7 +197,6 @@
 		Upgrades: hospitalheal
 		Prerequisites: hosp
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
 	DeathSounds@NORMAL:
 		DeathTypes: 1, 2, 3, 4
@@ -259,7 +256,6 @@
 	Tooltip:
 		GenericName: Ship
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
 	SelfHealing@ELITE:
@@ -311,7 +307,6 @@
 	Tooltip:
 		GenericName: Plane
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
 	SelfHealing@ELITE:
@@ -383,7 +378,6 @@
 	GpsDot:
 		String: Structure
 	Huntable:
-	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
 	UpgradeManager:
@@ -435,7 +429,6 @@
 	Guardable:
 	BodyOrientation:
 	FrozenUnderFog:
-	LuaScriptEvents:
 	ScriptTriggers:
 
 ^TechBuilding:
@@ -544,7 +537,6 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 	ScriptTriggers:
 
 ^Husk:
@@ -563,7 +555,6 @@
 	BelowUnits:
 	BodyOrientation:
 	Chronoshiftable:
-	LuaScriptEvents:
 	TargetableUnit:
 		TargetTypes: Ground
 		RequiresForceFire: true
@@ -621,7 +612,6 @@
 		Type: Concrete
 	AutoTargetIgnore:
 	BodyOrientation:
-	LuaScriptEvents:
 	ScriptTriggers:
 
 ^Rock:
@@ -643,7 +633,6 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 	ScriptTriggers:
 
 ^DesertCivBuilding:
