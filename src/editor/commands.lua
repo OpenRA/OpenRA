@@ -335,7 +335,6 @@ function SaveFileAs(editor)
         editor:ClearDocumentStyle() -- remove styles from the document
         editor:SetupKeywords(GetFileExt(filePath))
         IndicateAll(editor)
-        IndicateFunctionsOnly(editor)
         MarkupStyle(editor)
       end
       saved = true
