@@ -28,13 +28,13 @@ Players:
 		Race: nod
 		ColorRamp: 3,255,127
 		Allies: Nod
-		Enemies: GDI,Creeps
+		Enemies: GDI, Creeps
 	PlayerReference@GDI:
 		Name: GDI
 		Race: gdi
 		ColorRamp: 31,222,183
 		Allies: GDI
-		Enemies: Nod,Creeps
+		Enemies: Nod, Creeps
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
@@ -74,7 +74,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: Random
-		Enemies: Nod,GDI,Multi0,Multi1,Multi2,Multi3,Multi4,Multi5
+		Enemies: Nod, GDI, Multi0, Multi1, Multi2, Multi3, Multi4, Multi5
 
 Actors:
 	boat1: boat

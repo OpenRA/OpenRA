@@ -8,9 +8,9 @@ Title: Nikoomba's Demise
 
 Description: In order for the Brotherhood to gain a foothold, we must begin by eliminating certain elements.\n\nNikoomba, the nearby village's leader, is one such element.\n\nHis views and ours do not coincide.\n\nHe and his whole group must be eliminated.
 
-PreviewVideo: nod1.vqa
-
 Author: Westwood Studios
+
+PreviewVideo: nod1.vqa
 
 Tileset: DESERT
 
@@ -58,12 +58,12 @@ Players:
 		ColorRamp: 3,255,127
 		LockSpawn: True
 		LockTeam: True
-		Enemies: GDI,Villagers
+		Enemies: GDI, Villagers
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
 		Race: Random
-		Enemies: Nod,GDI
+		Enemies: Nod, GDI
 
 Actors:
 	Actor46: e1
@@ -367,6 +367,7 @@ Rules:
 			ShowOwnerRow: false
 	HARV:
 		-MustBeDestroyed:
+
 Sequences:
 
 VoxelSequences:

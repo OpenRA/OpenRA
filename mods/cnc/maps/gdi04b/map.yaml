@@ -6,9 +6,9 @@ RequiresMod: cnc
 
 Title: Get the Rods back (b)
 
-Author: Westwood Studios
-
 Description: Nod has captured classified GDI property.\n\nYou must find and retrieve the stolen equipment.\n\nIt is being transported in a shipping crate.\n\nUse the new APC to strategically transport infantry through Nod forces.
+
+Author: Westwood Studios
 
 PreviewVideo: gdi4b.vqa
 
@@ -60,7 +60,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: Random
-		Enemies: Nod,GDI
+		Enemies: Nod, GDI
 
 Actors:
 	Actor0: sbag
@@ -688,4 +688,3 @@ Voices:
 Notifications:
 
 Translations:
-

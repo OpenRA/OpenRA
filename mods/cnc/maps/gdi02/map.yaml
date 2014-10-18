@@ -8,9 +8,9 @@ Title: Knock out the Refinery
 
 Description: Defend your position, deploy the MCV, then build a sizable force to search out and destroy the Nod base in the area.\n\nAll Nod units and structures must be either destroyed or captured to complete objective.
 
-PreviewVideo: gdi2.vqa
-
 Author: Westwood Studios
+
+PreviewVideo: gdi2.vqa
 
 Tileset: TEMPERAT
 
@@ -60,7 +60,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: Random
-		Enemies: Nod,GDI
+		Enemies: Nod, GDI
 
 Actors:
 	Actor0: sbag

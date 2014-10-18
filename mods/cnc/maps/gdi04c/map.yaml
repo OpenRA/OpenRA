@@ -6,9 +6,9 @@ RequiresMod: cnc
 
 Title: Take Białystok
 
-Author: Westwood Studios
-
 Description: Nod is moving to capture and hold a civilian town.\n\nYour mission is to reach the town first and hold off invading Nod units until GDI reinforcements can arrive.\n\nAll invading Nod units must be destroyed.
+
+Author: Westwood Studios
 
 PreviewVideo: gdi4a.vqa
 
@@ -37,13 +37,13 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: gdi
-		Enemies: Nod,GDI
+		Enemies: Nod, GDI
 	PlayerReference@Nod:
 		Name: Nod
 		Race: nod
 		ColorRamp: 3,255,127
 		Allies: Nod
-		Enemies: GDI,Civillians
+		Enemies: GDI, Civillians
 	PlayerReference@GDI:
 		Name: GDI
 		Playable: True
@@ -59,14 +59,14 @@ Players:
 		Enemies: Nod
 	PlayerReference@Civillians:
 		Name: Civillians
+		NonCombatant: True
 		Race: gdi
 		Enemies: Nod
-		NonCombatant: True
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
 		Race: Random
-		Enemies: Nod,GDI
+		Enemies: Nod, GDI
 
 Actors:
 	Actor0: v17
