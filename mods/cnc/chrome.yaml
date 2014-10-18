@@ -466,3 +466,6 @@ order-icons: chrome.png
 	beacon: 400,48,16,16
 	beacon-disabled: 400,64,16,16
 	beacon-active: 400,80,16,16
+	stats: 480,96,16,16
+	stats-disabled: 480,112,16,16
+	stats-active: 480,128,16,16

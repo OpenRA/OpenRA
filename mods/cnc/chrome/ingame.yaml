@@ -61,15 +61,14 @@ Container@INGAME_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 Container@OBSERVER_WIDGETS:
+	Logic: OrderButtonsChromeLogic
 	Children:
 		MenuButton@OPTIONS_BUTTON:
-			Logic: OrderButtonsChromeLogic
 			Key: escape
 			X: WINDOW_RIGHT-260-WIDTH
 			Y: 5
 			Width: 30
 			Height: 25
-			Font: Bold
 			TooltipText: Menu
 			TooltipContainer: TOOLTIP_CONTAINER
 			Children:
@@ -78,6 +77,23 @@ Container@OBSERVER_WIDGETS:
 					Y: 5
 					ImageCollection: order-icons
 					ImageName: options
+		MenuButton@OBSERVER_STATS_BUTTON:
+			Key: F1
+			X: WINDOW_RIGHT-260-WIDTH
+			Y: 35
+			Width: 30
+			Height: 25
+			TooltipText: Statistics
+			TooltipContainer: TOOLTIP_CONTAINER
+			MenuContainer: INGAME_OBSERVERSTATS_BG
+			HideIngameUI: false
+			Pause: false
+			Children:
+				Image@ICON:
+					X: 7
+					Y: 5
+					ImageCollection: order-icons
+					ImageName: stats
 		Background@RADAR:
 			X: WINDOW_RIGHT-WIDTH-5
 			Y: 5
