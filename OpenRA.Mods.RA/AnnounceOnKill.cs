@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 			if (e.DamageState == DamageState.Dead && damaged != e.Attacker) // don't notify suicides
 			{
 				if (self.World.WorldTick - lastAnnounce > info.Interval * 25)
-					Sound.PlayVoice("Kill", self, self.Owner.Country.Race);
+					Sound.PlayVoice("Kill", self, self.Owner.Country.Race, self.Owner);
 
 				lastAnnounce = self.World.WorldTick;
 			}
