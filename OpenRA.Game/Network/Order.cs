@@ -47,7 +47,7 @@ namespace OpenRA
 		public bool IsImmediate;
 		public bool SuppressVisualFeedback;
 
-		public Player Player { get { return Subject.Owner; } }
+		public Player Player { get { return Subject != null ? Subject.Owner : null; } }
 
 		Order(string orderString, Actor subject,
 			Actor targetActor, CPos targetLocation, string targetString, bool queued, CPos extraLocation, uint extraData)
@@ -78,6 +78,9 @@ namespace OpenRA
 						var queued = flags.HasField(OrderFields.Queued);
 						var extraLocation = (CPos)(flags.HasField(OrderFields.ExtraLocation) ? r.ReadInt2() : int2.Zero);
 						var extraData = flags.HasField(OrderFields.ExtraData) ? r.ReadUInt32() : 0;
+
+						if (world == null)
+							return new Order(order, null, null, targetLocation, targetString, queued, extraLocation, extraData);
 
 						Actor subject, targetActor;
 						if (!TryGetActorFromUInt(world, subjectId, out subject) || !TryGetActorFromUInt(world, targetActorId, out targetActor))
