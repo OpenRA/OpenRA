@@ -23,18 +23,17 @@ namespace OpenRA.Mods.RA
 
 	class BridgeHut : IDemolishable
 	{
-		Lazy<Bridge> firstBridge;
-		int repairDirections = 0;
+		public readonly Bridge FirstBridge;
 		public readonly Bridge Bridge;
-		public Bridge FirstBridge { get { return firstBridge.Value; } }
 		public DamageState BridgeDamageState { get { return Bridge.AggregateDamageState(); } }
 		public bool Repairing { get { return repairDirections > 0; } }
+		int repairDirections = 0;
 
 		public BridgeHut(ActorInitializer init)
 		{
 			Bridge = init.Get<ParentActorInit>().value.Trait<Bridge>();
-			Bridge.Hut = this;
-			firstBridge = new Lazy<Bridge>(() => Bridge.Enumerate(0, true).Last());
+			Bridge.AddHut(this);
+			FirstBridge = Bridge.Enumerate(0, true).Last();
 		}
 
 		public void Repair(Actor repairer)
