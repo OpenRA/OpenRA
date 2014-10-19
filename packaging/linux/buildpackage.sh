@@ -26,8 +26,8 @@ cp $DEPSDIR/* $PWD/packaging/linux/$ROOTDIR/usr/lib/openra/
 # Install startup scripts, desktop files and icons
 make install-linux-shortcuts prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 
-# Remove the WinForms dialog which is replaced with a native one provided by zenity
-rm $PWD/packaging/linux/$ROOTDIR/usr/lib/openra/OpenRA.CrashDialog.exe
+# Remove the windows launcher
+rm $PWD/packaging/linux/$ROOTDIR/usr/lib/openra/OpenRA.exe
 
 # Remove the WinForms tileset builder which does not work outside the source tree
 rm $PWD/packaging/linux/$ROOTDIR/usr/lib/openra/OpenRA.TilesetBuilder.exe
