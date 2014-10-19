@@ -84,8 +84,8 @@ end
 
 ParadropSovietUnits = function()
 	local lz = Utils.Random(ParadropWaypoints).Location
-	local start = Utils.CenterOfCell(Map.RandomEdgeCell()) + WVec.New(0, 0, Actor.CruiseAltitude("badr"))
-	local transport = Actor.Create("badr", true, { CenterPosition = start, Owner = soviets, Facing = (Utils.CenterOfCell(lz) - start).Facing })
+	local start = Map.CenterOfCell(Map.RandomEdgeCell()) + WVec.New(0, 0, Actor.CruiseAltitude("badr"))
+	local transport = Actor.Create("badr", true, { CenterPosition = start, Owner = soviets, Facing = (Map.CenterOfCell(lz) - start).Facing })
 
 	Utils.Do(ParadropUnitTypes, function(type)
 		local a = Actor.Create(type, false, { Owner = soviets })
