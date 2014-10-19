@@ -68,6 +68,9 @@ cp thirdparty/RestSharp.dll packaging/built
 # Copy game icon for windows package
 cp OpenRA.Game/OpenRA.ico packaging/built
 
+# Copy the batch script showing usage instructions
+cp utility.cmd packaging/built
+
 cd packaging
 echo "Creating packages..."
 

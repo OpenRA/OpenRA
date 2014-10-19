@@ -67,6 +67,7 @@ Section "Game" GAME
 	SetOutPath "$INSTDIR"
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Utility.exe"
+	File "${SRCDIR}\utility.cmd"
 	File "${SRCDIR}\OpenRA.CrashDialog.exe"
 	File "${SRCDIR}\OpenRA.Renderer.Null.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Sdl2.dll"
@@ -101,6 +102,8 @@ Section "Game" GAME
 			"$OUTDIR\OpenRA.Game.exe" "" "" "" ""
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\README.lnk" $OUTDIR\README.html "" \
 			"$OUTDIR\README.html" "" "" "" ""
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Utility.lnk" $OUTDIR\utility.cmd "" \
+			"$OUTDIR\utility.cmd" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 
 	SetOutPath "$INSTDIR\lua"
@@ -184,6 +187,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Launcher.exe
 	Delete $INSTDIR\OpenRA.Game.exe
 	Delete $INSTDIR\OpenRA.Utility.exe
+	Delete $INSTDIR\utility.cmd
 	Delete $INSTDIR\OpenRA.CrashDialog.exe
 	Delete $INSTDIR\OpenRA.Editor.exe
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll
