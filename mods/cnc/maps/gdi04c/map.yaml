@@ -613,7 +613,7 @@ Actors:
 		Health: 1
 		Facing: 0
 		SubCell: 0
-	Actor155: e3
+	Actor155: e1
 		Location: 55,29
 		Owner: Nod
 		Health: 1
@@ -763,30 +763,12 @@ Actors:
 		Health: 1
 		Facing: 0
 		SubCell: 4
-	Actor180: e3
-		Location: 27,24
-		Owner: Nod
-		Health: 1
-		Facing: 0
-		SubCell: 3
-	Actor181: e3
-		Location: 27,25
-		Owner: Nod
-		Health: 1
-		Facing: 0
-		SubCell: 2
 	Actor182: e3
 		Location: 26,25
 		Owner: Nod
 		Health: 1
 		Facing: 0
 		SubCell: 2
-	Actor183: e3
-		Location: 50,28
-		Owner: Nod
-		Health: 1
-		Facing: 160
-		SubCell: 3
 	Actor184: e3
 		Location: 56,29
 		Owner: Nod

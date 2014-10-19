@@ -6,7 +6,7 @@ GDIReinforcementsPart1 = { "jeep", "jeep" }
 GDIReinforcementsPart2 = { "e2", "e2", "e2", "e2", "e2" }
 TownAttackWave1 = { "bggy", "bggy" }
 TownAttackWave2 = { "ltnk", "ltnk" }
-TownAttackWave3 = { "e1", "e1", "e1", "e1", "e3", "e3", "e3", "e3" }
+TownAttackWave3 = { "e1", "e1", "e1", "e3", "e3", "e3" }
 TownAttackWpts = { waypoint1, waypoint2 }
 
 Civvie1Wpts = { waypoint3, waypoint17 }
@@ -97,15 +97,19 @@ WorldLoaded = function()
 	gdiObjective1 = player.AddPrimaryObjective("Defend the town of Bialystok")
 	gdiObjective2 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
 
+	townAttackTrigger = false
 	Trigger.OnExitedFootprint(TownAttackTrigger, function(a, id)
-		if a.Owner == player then
+		if not townAttackTrigger and a.Owner == player then
+			townAttackTrigger = true
 			Trigger.RemoveFootprintTrigger(id)
 			AttackTown()
 		end
 	end)
 
+	gdiReinforcementsTrigger = false
 	Trigger.OnEnteredFootprint(GDIReinforcementsTrigger, function(a, id)
-		if a.Owner == player then
+		if not gdiReinforcementsTrigger and a.Owner == player then
+			gdiReinforcementsTrigger = true
 			Trigger.RemoveFootprintTrigger(id)
 			SendGDIReinforcements()
 		end
