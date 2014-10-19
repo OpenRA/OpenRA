@@ -324,7 +324,6 @@ install-core: default
 
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
-	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
 	@$(CP) SDL2-CS* "$(DATA_INSTALL_DIR)"
 	@$(CP) Eluant* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
