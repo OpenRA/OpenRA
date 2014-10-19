@@ -8,9 +8,9 @@ Title: Allies 01: In the thick of it
 
 Description: Rescue Einstein from the Headquarters inside this Soviet complex.\n\nOnce found, evacuate him via the helicopter at the signal flare.\n\nEinstein and Tanya must be kept alive at all costs.\n\nBeware the Soviet's Tesla Coils.\n\nDirect Tanya to destroy the westmost power plants to take them off-line.
 
-PreviewVideo: ally1.vqa
-
 Author: Westwood Studios
+
+PreviewVideo: ally1.vqa
 
 Tileset: SNOW
 
@@ -36,13 +36,13 @@ Players:
 		Name: USSR
 		Race: soviet
 		ColorRamp: 3,255,127
-		Enemies: Greece,England
+		Enemies: Greece, England
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
 		Race: allies
-		Enemies: USSR,Greece,England
+		Enemies: USSR, Greece, England
 	PlayerReference@Greece:
 		Name: Greece
 		Playable: True
@@ -55,7 +55,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: England
-		Enemies: Neutral,USSR
+		Enemies: Neutral, USSR
 	PlayerReference@England:
 		Name: England
 		Race: allies

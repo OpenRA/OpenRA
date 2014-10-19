@@ -327,6 +327,7 @@ namespace OpenRA
 				"Title",
 				"Description",
 				"Author",
+				"PreviewVideo",
 				"Tileset",
 				"MapSize",
 				"Bounds",
