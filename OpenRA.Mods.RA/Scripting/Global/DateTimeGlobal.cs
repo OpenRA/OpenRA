@@ -14,7 +14,7 @@ using OpenRA.Scripting;
 
 namespace OpenRA.Mods.RA.Scripting
 {
-	[ScriptGlobal("Date")]
+	[ScriptGlobal("DateTime")]
 	public class DateGlobal : ScriptGlobal
 	{
 		public DateGlobal(ScriptContext context)
@@ -25,18 +25,23 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			get { return DateTime.Today.Month == 10 && DateTime.Today.Day == 31; }
 		}
-	}
-
-	[ScriptGlobal("Time")]
-	public class TimeGlobal : ScriptGlobal
-	{
-		public TimeGlobal(ScriptContext context)
-			: base(context) { }
 
 		[Desc("Get the current game time (in ticks)")]
 		public int GameTime
 		{
 			get { return context.World.WorldTick; }
+		}
+
+		[Desc("Converts the number of seconds into game time (ticks).")]
+		public int Seconds(int seconds)
+		{
+			return seconds * 25;
+		}
+
+		[Desc("Converts the number of minutes into game time (ticks).")]
+		public int Minutes(int minutes)
+		{
+			return Seconds(minutes * 60);
 		}
 	}
 }

@@ -28,7 +28,7 @@ SendGDIReinforcements = function()
 	Media.PlaySpeechNotification(gdi, "Reinforce")
 	Reinforcements.ReinforceWithTransport(gdi, "apc", GDIReinforcements, GDIReinforcementsWaypoints, nil, function(apc, team)
 		table.insert(team, apc)
-		Trigger.OnAllKilled(team, function() Trigger.AfterDelay(Utils.Seconds(5), SendGDIReinforcements) end)
+		Trigger.OnAllKilled(team, function() Trigger.AfterDelay(DateTime.Seconds(5), SendGDIReinforcements) end)
 		Utils.Do(team, function(unit) unit.Stance = "Defend" end)
 	end)
 end
@@ -48,7 +48,7 @@ Build = function(unitTypes, repeats, func)
 	end
 
 	if not HandOfNod.Build(unitTypes, innerFunc) then
-		Trigger.AfterDelay(Utils.Seconds(5), function()
+		Trigger.AfterDelay(DateTime.Seconds(5), function()
 			Build(unitTypes, repeats, func)
 		end)
 	end
@@ -90,7 +90,7 @@ Tick = function()
 	end
 
 	if gdi.HasNoRequiredUnits() then
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			gdi.MarkFailedObjective(gdiObjective)
 		end)
 	end
@@ -126,14 +126,14 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerWon(gdi, function()
 		Media.PlaySpeechNotification(gdi, "Win")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlayMovieFullscreen("burdet1.vqa")
 		end)
 	end)
 
 	Trigger.OnPlayerLost(gdi, function()
 		Media.PlaySpeechNotification(gdi, "Lose")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlayMovieFullscreen("gameover.vqa")
 		end)
 	end)
@@ -177,7 +177,7 @@ WorldLoaded = function()
 			autoTrigger = true
 			Trigger.RemoveFootprintTrigger(id)
 			BuildAuto()
-			Trigger.AfterDelay(Utils.Seconds(4), function()
+			Trigger.AfterDelay(DateTime.Seconds(4), function()
 				tank.Hunt()
 			end)
 		end

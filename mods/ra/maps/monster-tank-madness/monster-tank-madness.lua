@@ -1,8 +1,8 @@
 AlliedUnits =
 {
 	{ 0, { "1tnk", "1tnk", "2tnk", "2tnk" } },
-	{ Utils.Seconds(3), { "e1", "e1", "e1", "e3", "e3" } },
-	{ Utils.Seconds(7), { "e6" } }
+	{ DateTime.Seconds(3), { "e1", "e1", "e1", "e3", "e3" } },
+	{ DateTime.Seconds(7), { "e6" } }
 }
 ReinforceBaseUnits = { "1tnk", "1tnk", "2tnk", "arty", "arty" }
 CivilianEvacuees = { "c1", "c2", "c5", "c7", "c8" }
@@ -66,11 +66,11 @@ SetupAlliedBase = function()
 	DefendOutpost = player.AddSecondaryObjective("Defend and repair our outpost.")
 	player.MarkCompletedObjective(FindOutpost)
 
-	Trigger.AfterDelay(Utils.Seconds(1), function() -- don't fail the Objective instantly
+	Trigger.AfterDelay(DateTime.Seconds(1), function() -- don't fail the Objective instantly
 		Trigger.OnAllRemovedFromWorld(alliedOutpost, function() player.MarkFailedObjective(DefendOutpost) end)
 	end)
 
-	Trigger.AfterDelay(Utils.Minutes(1) + Utils.Seconds(40), function()
+	Trigger.AfterDelay(DateTime.Minutes(1) + DateTime.Seconds(40), function()
 		if not SuperTankDomeIsInfiltrated then
 			SuperTankAttack = true
 			Utils.Do(SuperTanks, function(tnk)
@@ -101,7 +101,7 @@ SendAlliedUnits = function()
 	Actor.Create("camera" ,true , { Owner = player, Location = ProvingGroundsCameraPoint.Location })
 	Actor.Create("camera" ,true , { Owner = ussr, Location = USSRSpen.Location })
 
-	Trigger.AfterDelay(Utils.Seconds(1), function() Media.PlaySpeechNotification(player, "ReinforcementsArrived") end)
+	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(player, "ReinforcementsArrived") end)
 		--To avoid overlapping "battlecontrol initialized" and "reinforcements have arrived"
 	Utils.Do(AlliedUnits, function(table)
 		Trigger.AfterDelay(table[1], function()
@@ -109,7 +109,7 @@ SendAlliedUnits = function()
 		end)
 	end)
 
-	Trigger.AfterDelay(Utils.Seconds(1), function() InitialUnitsArrived = true end)
+	Trigger.AfterDelay(DateTime.Seconds(1), function() InitialUnitsArrived = true end)
 end
 
 SuperTankDomeInfiltrated = function()
@@ -145,12 +145,12 @@ SuperTankDomeInfiltrated = function()
 	end)
 
 	player.MarkCompletedObjective(InfiltrateRadarDome)
-	Trigger.AfterDelay(Utils.Minutes(3), SuperTanksDestruction)
+	Trigger.AfterDelay(DateTime.Minutes(3), SuperTanksDestruction)
 
-	Trigger.AfterDelay(Utils.Seconds(2), function()
+	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		Media.PlaySpeechNotification(player, "ControlCenterDeactivated")
 
-		Trigger.AfterDelay(Utils.Seconds(3), function()
+		Trigger.AfterDelay(DateTime.Seconds(3), function()
 			Media.DisplayMessage("In 3 minutes the super tanks will self destruct.")
 			Media.PlaySpeechNotification(player, "WarningThreeMinutesRemaining")
 		end)
@@ -185,7 +185,7 @@ CreateDemitri = function()
 
 	local flarepos = CPos.New(DemitriLZ.Location.X, DemitriLZ.Location.Y - 1)
 	local demitriLZFlare = Actor.Create("flare", true, { Owner = player, Location = flarepos })
-	Trigger.AfterDelay(Utils.Seconds(3), function() Media.PlaySpeechNotification(player, "SignalFlareNorth") end)
+	Trigger.AfterDelay(DateTime.Seconds(3), function() Media.PlaySpeechNotification(player, "SignalFlareNorth") end)
 
 	local demitriChinook = Reinforcements.ReinforceWithTransport(player, ExtractionHeli, nil, { ExtractionWaypoint, ExtractionLZ })[1]
 
@@ -196,8 +196,8 @@ CreateDemitri = function()
 	Trigger.OnRemovedFromWorld(demitriChinook, function()
 		if not demitriChinook.IsDead then
 			Media.PlaySpeechNotification(player, "TargetRescued")
-			Trigger.AfterDelay(Utils.Seconds(1), function() player.MarkCompletedObjective(EvacuateDemitri) end)
-			Trigger.AfterDelay(Utils.Seconds(3), SpawnAndMoveAlliedBaseUnits)
+			Trigger.AfterDelay(DateTime.Seconds(1), function() player.MarkCompletedObjective(EvacuateDemitri) end)
+			Trigger.AfterDelay(DateTime.Seconds(3), SpawnAndMoveAlliedBaseUnits)
 		end
 	end)
 	Trigger.OnRemovedFromWorld(demitri, function()
@@ -280,7 +280,7 @@ end
 
 InitTriggers = function()
 	Trigger.OnAllKilled(SuperTanks, function()
-		Trigger.AfterDelay(Utils.Seconds(3), function() player.MarkCompletedObjective(EliminateSuperTanks) end)
+		Trigger.AfterDelay(DateTime.Seconds(3), function() player.MarkCompletedObjective(EliminateSuperTanks) end)
 	end)
 
 	Trigger.OnKilled(SuperTankDome, function()

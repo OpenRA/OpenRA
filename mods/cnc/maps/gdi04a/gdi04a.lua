@@ -11,9 +11,9 @@ GDIReinforcements = { "e2", "e2", "e2", "e2", "e2" }
 GDIReinforcementsWaypoints = { GDIReinforcementsEntry.Location, GDIReinforcementsWP1.Location }
 
 NodHelis = {
-		{ Utils.Seconds(HeliDelay[1]), { NodHeliEntry.Location, NodHeliLZ1.Location }, { "e1", "e1", "e3" } },
-		{ Utils.Seconds(HeliDelay[2]), { NodHeliEntry.Location, NodHeliLZ2.Location }, { "e1", "e1", "e1", "e1" } },
-		{ Utils.Seconds(HeliDelay[3]), { NodHeliEntry.Location, NodHeliLZ3.Location }, { "e1", "e1", "e3" } }
+		{ DateTime.Seconds(HeliDelay[1]), { NodHeliEntry.Location, NodHeliLZ1.Location }, { "e1", "e1", "e3" } },
+		{ DateTime.Seconds(HeliDelay[2]), { NodHeliEntry.Location, NodHeliLZ2.Location }, { "e1", "e1", "e1", "e1" } },
+		{ DateTime.Seconds(HeliDelay[3]), { NodHeliEntry.Location, NodHeliLZ3.Location }, { "e1", "e1", "e3" } }
 	   }
 
 SendHeli = function(heli)
@@ -30,7 +30,7 @@ SendGDIReinforcements = function()
 	Media.PlaySpeechNotification(gdi, "Reinforce")
 	Reinforcements.ReinforceWithTransport(gdi, "apc", GDIReinforcements, GDIReinforcementsWaypoints, nil, function(apc, team)
 		table.insert(team, apc)
-		Trigger.OnAllKilled(team, function() Trigger.AfterDelay(Utils.Seconds(5), SendGDIReinforcements) end)
+		Trigger.OnAllKilled(team, function() Trigger.AfterDelay(DateTime.Seconds(5), SendGDIReinforcements) end)
 		Utils.Do(team, function(unit) unit.Stance = "Defend" end)
 	end)
 end
@@ -49,7 +49,7 @@ BuildNod1 = function()
 	end
 
 	if not HandOfNod.Build(Nod1Units, func) then
-		Trigger.AfterDelay(Utils.Seconds(5), BuildNod1)
+		Trigger.AfterDelay(DateTime.Seconds(5), BuildNod1)
 	end
 end
 
@@ -66,7 +66,7 @@ BuildAuto1 = function()
 	end
 
 	if not HandOfNod.IsDead and HandOfNod.Build(Auto1Units, func) then
-		Trigger.AfterDelay(Utils.Seconds(5), BuildAuto1)
+		Trigger.AfterDelay(DateTime.Seconds(5), BuildAuto1)
 	end
 end
 
@@ -84,7 +84,7 @@ Tick = function()
 	end
 
 	if gdi.HasNoRequiredUnits() then
-		Trigger.AfterDelay(Utils.Seconds(1), function() gdi.MarkFailedObjective(gdiObjective) end)
+		Trigger.AfterDelay(DateTime.Seconds(1), function() gdi.MarkFailedObjective(gdiObjective) end)
 	end
 end
 
@@ -121,14 +121,14 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerWon(gdi, function()
 		Media.PlaySpeechNotification(gdi, "Win")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlayMovieFullscreen("burdet1.vqa")
 		end)
 	end)
 
 	Trigger.OnPlayerLost(gdi, function()
 		Media.PlaySpeechNotification(gdi, "Lose")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlayMovieFullscreen("gameover.vqa")
 		end)
 	end)
