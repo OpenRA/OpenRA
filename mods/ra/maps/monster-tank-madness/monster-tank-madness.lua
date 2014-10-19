@@ -76,17 +76,19 @@ SetupAlliedBase = function()
 			Utils.Do(SuperTanks, function(tnk)
 				if not tnk.IsDead then
 					Trigger.ClearAll(tnk)
-					Trigger.OnIdle(tnk, function()
-						if SuperTankAttack then
-							if tnk.Location == SuperTankMoveWaypoints[SuperTankMove].Location then
-								SuperTankMove = SuperTankMove + 1
-								if SuperTankMove == 5 then
-									SuperTankAttack = false
+					Trigger.AfterDelay(0, function()
+						Trigger.OnIdle(tnk, function()
+							if SuperTankAttack then
+								if tnk.Location == SuperTankMoveWaypoints[SuperTankMove].Location then
+									SuperTankMove = SuperTankMove + 1
+									if SuperTankMove == 5 then
+										SuperTankAttack = false
+									end
+								else
+									tnk.AttackMove(SuperTankMoveWaypoints[SuperTankMove].Location, 2)
 								end
-							else
-								tnk.AttackMove(SuperTankMoveWaypoints[SuperTankMove].Location, 2)
 							end
-						end
+						end)
 					end)
 				end
 			end)
@@ -123,19 +125,21 @@ SuperTankDomeInfiltrated = function()
 				SuperTankHunt = 4
 				SuperTankHuntCounter = -1
 			end
-			Trigger.OnIdle(tnk, function()
-				if SuperTankAttack then
-					if tnk.Location == SuperTankHuntWaypoints[SuperTankHunt].Location then
-						SuperTankHunt = SuperTankHunt + SuperTankHuntCounter
-						if SuperTankHunt == 0 or SuperTankHunt == 5 then
-							SuperTankAttack = false
+			Trigger.AfterDelay(0, function()
+				Trigger.OnIdle(tnk, function()
+					if SuperTankAttack then
+						if tnk.Location == SuperTankHuntWaypoints[SuperTankHunt].Location then
+							SuperTankHunt = SuperTankHunt + SuperTankHuntCounter
+							if SuperTankHunt == 0 or SuperTankHunt == 5 then
+								SuperTankAttack = false
+							end
+						else
+							tnk.AttackMove(SuperTankHuntWaypoints[SuperTankHunt].Location, 2)
 						end
 					else
-						tnk.AttackMove(SuperTankHuntWaypoints[SuperTankHunt].Location, 2)
+						tnk.Hunt()
 					end
-				else
-					tnk.Hunt()
-				end
+				end)
 			end)
 		end
 	end)
@@ -228,8 +232,8 @@ InitPlayers = function()
 
 	player.Cash = 0
 	ussr.Cash = 2000
-	--badguy.Resources = badguy.ResourceCapacity -- doesn't work, workaround below
-	Trigger.OnCapture(Actor479, function()
+	Trigger.AfterDelay(0, function() badguy.Resources = badguy.ResourceCapacity * 0.75 end)
+	Trigger.OnCapture(USSROutpostSilo, function() -- getting money through capturing doesn't work
 		player.Cash = player.Cash + Utils.RandomInteger(1200, 1300)
 	end)
 end
