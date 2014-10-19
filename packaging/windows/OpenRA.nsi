@@ -79,7 +79,6 @@ Section "Game" GAME
 	File "${SRCDIR}\CHANGELOG.html"
 	File "${SRCDIR}\CONTRIBUTING.html"
 	File "${SRCDIR}\DOCUMENTATION.html"
-	File "${SRCDIR}\*.ttf"
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\SDL2-CS.dll"
@@ -200,7 +199,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\CONTRIBUTING.html
 	Delete $INSTDIR\DOCUMENTATION.html
 	Delete $INSTDIR\OpenRA.ico
-	Delete $INSTDIR\*.ttf
 	Delete "$INSTDIR\global mix database.dat"
 	Delete $INSTDIR\MaxMind.Db.dll
 	Delete $INSTDIR\MaxMind.GeoIP2.dll
