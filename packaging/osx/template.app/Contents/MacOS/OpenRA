@@ -14,6 +14,10 @@ TITLE="Cannot launch OpenRA"
 MESSAGE="OpenRA requires Mono $REQUIRED_MAJOR.$REQUIRED_MINOR or later. Please install the Mono MRE package and try again."
 MONO_URL="http://www.mono-project.com/download/"
 
+CRASH_TITLE="Fatal Error"
+CRASH_MESSAGE="OpenRA has encountered a fatal error.\nRefer to the crash logs and FAQ for more information."
+FAQ_URL="http://wiki.openra.net/FAQ"
+
 DIR=$(cd "$(dirname "$0")"; pwd)
 RESOURCES="$DIR/../Resources"
 
@@ -36,3 +40,22 @@ fi
 
 # Override fontconfig with our own dummy config that prevents long cache delays
 cd "$RESOURCES" && FONTCONFIG_PATH="." $MONO_BIN --debug OpenRA.Game.exe Graphics.Renderer=Sdl2
+
+# Display an error dialog on game crash
+if [ $? != 0 ]
+then
+	osascript \
+	-e "set logsPath to ((path to application support folder from user domain) as text) & \"OpenRA:Logs:\"" \
+	-e "log logsPath" \
+	-e "tell application \"Finder\"" \
+	-e "	repeat" \
+	-e "		set question to display dialog \"$CRASH_MESSAGE\" with title \"$CRASH_TITLE\" with icon alias (POSIX file \"$RESOURCES/OpenRA.icns\") buttons {\"View Logs\", \"View FAQ\", \"Quit\"} default button 3" \
+	-e "		if button returned of question is equal to \"View Logs\" then open logsPath" \
+	-e "		if button returned of question is equal to \"View FAQ\" then open location \"$FAQ_URL\"" \
+	-e "		if button returned of question is equal to \"Quit\" then exit repeat" \
+	-e "		if button returned of question is equal to \"Download Mono\" then open location \"$MONO_URL\"" \
+	-e "		activate" \
+	-e "	end repeat" \
+	-e "end tell"
+	exit 1
+fi
