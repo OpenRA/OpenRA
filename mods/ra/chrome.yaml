@@ -17,9 +17,9 @@ sidebar-button-allies-highlighted-hover: chrome.png
 sidebar-button-allies-highlighted-pressed: chrome.png
 	background: 84,28,28,28
 sidebar-button-allies-disabled: chrome.png
-	background: 112,0,28,28
+	background: 168,0,28,28
 sidebar-button-allies-highlighted-disabled: chrome.png
-	background: 112,0,28,28
+	background: 168,0,28,28
 
 sidebar-soviet: chrome.png
 	background-top: 274,167,238,290
@@ -40,9 +40,9 @@ sidebar-button-soviet-highlighted-hover: chrome.png
 sidebar-button-soviet-highlighted-pressed: chrome.png
 	background: 28,28,28,28
 sidebar-button-soviet-disabled: chrome.png
-	background: 112,0,28,28
+	background: 168,0,28,28
 sidebar-button-soviet-highlighted-disabled: chrome.png
-	background: 112,0,28,28
+	background: 168,0,28,28
 
 sidebar-bits: chrome.png
 	production-tooltip-time: 416, 80, 16, 16
@@ -93,6 +93,174 @@ order-icons: chrome.png
 	power: 480,48,16,16
 	power-disabled: 480,64,16,16
 	power-active: 480,80,16,16
+	stats: 368,48,16,16
+	stats-disabled: 368,64,16,16
+	stats-active: 368,80,16,16
+
+sidebar-observer: chrome.png
+	background: 512,167,238,287
+	replay-bottom: 512,454,238,40
+	observer-bottom: 512,495,238,8
+
+sidebar-button-observershroud: chrome.png
+
+sidebar-button-observer: chrome.png
+	background: 117,33,18,18
+	border-r: 135,33,5,18
+	border-l: 112,33,5,18
+	border-b: 117,51,18,5
+	border-t: 117,28,18,5
+	corner-tl: 112,28,5,5
+	corner-tr: 135,28,5,5
+	corner-bl: 112,51,5,5
+	corner-br: 135,51,5,5
+sidebar-button-observer-hover: chrome.png
+	background: 117,5,18,18
+	border-r: 135,5,5,18
+	border-l: 112,5,5,18
+	border-b: 117,23,18,5
+	border-t: 117,0,18,5
+	corner-tl: 112,0,5,5
+	corner-tr: 135,0,5,5
+	corner-bl: 112,23,5,5
+	corner-br: 135,23,5,5
+sidebar-button-observer-pressed: chrome.png
+	background: 117,33,18,18
+	border-r: 135,33,5,18
+	border-l: 112,33,5,18
+	border-b: 117,51,18,5
+	border-t: 117,28,18,5
+	corner-tl: 112,28,5,5
+	corner-tr: 135,28,5,5
+	corner-bl: 112,51,5,5
+	corner-br: 135,51,5,5
+sidebar-button-observer-highlighted: chrome.png
+	background: 145,33,18,18
+	border-r: 163,33,5,18
+	border-l: 140,33,5,18
+	border-b: 145,51,18,5
+	border-t: 145,28,18,5
+	corner-tl: 140,28,5,5
+	corner-tr: 163,28,5,5
+	corner-bl: 140,51,5,5
+	corner-br: 163,51,5,5
+sidebar-button-observer-highlighted-hover: chrome.png
+	background: 145,5,18,18
+	border-r: 163,5,5,18
+	border-l: 140,5,5,18
+	border-b: 145,23,18,5
+	border-t: 145,0,18,5
+	corner-tl: 140,0,5,5
+	corner-tr: 163,0,5,5
+	corner-bl: 140,23,5,5
+	corner-br: 163,23,5,5
+sidebar-button-observer-highlighted-pressed: chrome.png
+	background: 33,33,18,18
+	border-r: 51,33,5,18
+	border-l: 28,33,5,18
+	border-b: 33,51,18,5
+	border-t: 33,28,18,5
+	corner-tl: 28,28,5,5
+	corner-tr: 51,28,5,5
+	corner-bl: 28,51,5,5
+	corner-br: 51,51,5,5
+sidebar-button-observer-disabled: chrome.png
+	background: 173,5,18,18
+	border-r: 191,5,5,18
+	border-l: 168,5,5,18
+	border-b: 173,23,18,5
+	border-t: 173,0,18,5
+	corner-tl: 168,0,5,5
+	corner-tr: 191,0,5,5
+	corner-bl: 168,23,5,5
+	corner-br: 191,23,5,5
+sidebar-button-observer-highlighted-disabled: chrome.png
+	background: 173,5,18,18
+	border-r: 191,5,5,18
+	border-l: 168,5,5,18
+	border-b: 173,23,18,5
+	border-t: 173,0,18,5
+	corner-tl: 168,0,5,5
+	corner-tr: 191,0,5,5
+	corner-bl: 168,23,5,5
+	corner-br: 191,23,5,5
+
+observer-scrollpanel-button: dialog.png
+	background: 769,257,126,126
+	border-r: 895,257,1,126
+	border-l: 768,257,1,126
+	border-b: 769,383,126,1
+	border-t: 769,256,126,1
+	corner-tl: 768,256,1,1
+	corner-tr: 895,256,1,1
+	corner-bl: 768,383,1,1
+	corner-br: 895,383,1,1
+
+observer-scrollpanel-button-hover: dialog.png
+	background: 769,257,126,126
+	border-r: 895,257,1,126
+	border-l: 768,257,1,126
+	border-b: 769,383,126,1
+	border-t: 769,256,126,1
+	corner-tl: 768,256,1,1
+	corner-tr: 895,256,1,1
+	corner-bl: 768,383,1,1
+	corner-br: 895,383,1,1
+
+observer-scrollpanel-button-pressed: dialog.png
+	background: 897,257,126,126
+	border-r: 1023,257,1,126
+	border-l: 896,257,1,126
+	border-b: 897,383,126,1
+	border-t: 897,256,126,1
+	corner-tl: 896,256,1,1
+	corner-tr: 1023,256,1,1
+	corner-bl: 896,383,1,1
+	corner-br: 1023,383,1,1
+
+observer-scrollpanel-button-disabled: dialog.png
+	background: 769,385,126,126
+	border-r: 895,385,1,126
+	border-l: 768,385,1,126
+	border-b: 769,511,126,1
+	border-t: 769,384,126,1
+	corner-tl: 768,384,1,1
+	corner-tr: 895,384,1,1
+	corner-bl: 768,511,1,1
+	corner-br: 895,511,1,1
+
+observer-scrollheader-selected: dialog.png
+	background: 769,385,126,126
+	border-r: 895,385,1,126
+	border-l: 768,385,1,126
+	border-b: 769,511,126,1
+	border-t: 769,384,126,1
+	corner-tl: 768,384,1,1
+	corner-tr: 895,384,1,1
+	corner-bl: 768,511,1,1
+	corner-br: 895,511,1,1
+
+observer-scrollitem-selected: dialog.png
+	background: 897,257,126,126
+	border-r: 1023,257,1,126
+	border-l: 896,257,1,126
+	border-b: 897,383,126,1
+	border-t: 897,256,126,1
+	corner-tl: 896,256,1,1
+	corner-tr: 1023,256,1,1
+	corner-bl: 896,383,1,1
+	corner-br: 1023,383,1,1
+
+observer-scrollitem-hover: dialog.png
+	background: 769,257,126,126
+	border-r: 895,257,1,126
+	border-l: 768,257,1,126
+	border-b: 769,383,126,1
+	border-t: 769,256,126,1
+	corner-tl: 768,256,1,1
+	corner-tr: 895,256,1,1
+	corner-bl: 768,383,1,1
+	corner-br: 895,383,1,1
 
 # Used for the main menu frame
 dialog: dialog.png
@@ -375,54 +543,6 @@ newsbutton-pressed: dialog.png
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
 
-# A copy of dialog2 (normal button)
-scrollthumb: dialog.png
-	background: 513,1,126,126
-	border-r: 639,1,1,126
-	border-l: 512,1,1,126
-	border-b: 513,127,126,1
-	border-t: 513,0,126,1
-	corner-tl: 512,0,1,1
-	corner-tr: 639,0,1,1
-	corner-bl: 512,127,1,1
-	corner-br: 639,127,1,1
-
-# A copy of button-hover
-scrollthumb-hover: dialog.png
-	background: 513,129,126,126
-	border-r: 639,129,1,126
-	border-l: 512,129,1,126
-	border-b: 513,255,126,1
-	border-t: 513,128,126,1
-	corner-tl: 512,128,1,1
-	corner-tr: 639,128,1,1
-	corner-bl: 512,255,1,1
-	corner-br: 639,255,1,1	
-	
-# A copy of dialog3 (pressed button)
-scrollthumb-pressed: dialog.png
-	background: 641,1,126,126
-	border-r: 767,1,1,126
-	border-l: 640,1,1,126
-	border-b: 641,127,126,1
-	border-t: 641,0,126,1
-	corner-tl: 640,0,1,1
-	corner-tr: 767,0,1,1
-	corner-bl: 640,127,1,1
-	corner-br: 767,127,1,1
-
-# A copy of dialog2 (normal button)
-scrollthumb-disabled: dialog.png
-	background: 513,1,126,126
-	border-r: 639,1,1,126
-	border-l: 512,1,1,126
-	border-b: 513,127,126,1
-	border-t: 513,0,126,1
-	corner-tl: 512,0,1,1
-	corner-tr: 639,0,1,1
-	corner-bl: 512,127,1,1
-	corner-br: 639,127,1,1
-
 # A copy of dialog3 (pressed button)
 textfield: dialog.png
 	background: 641,1,126,126
@@ -482,6 +602,55 @@ scrollpanel-bg: dialog.png
 	corner-tr: 767,0,1,1
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
+
+
+# A copy of dialog2 (normal button)
+scrollpanel-button: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+# A copy of button-hover
+scrollpanel-button-hover: dialog.png
+	background: 513,129,126,126
+	border-r: 639,129,1,126
+	border-l: 512,129,1,126
+	border-b: 513,255,126,1
+	border-t: 513,128,126,1
+	corner-tl: 512,128,1,1
+	corner-tr: 639,128,1,1
+	corner-bl: 512,255,1,1
+	corner-br: 639,255,1,1
+
+# A copy of dialog3 (pressed button)
+scrollpanel-button-pressed: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+# A copy of dialog2 (normal button)
+scrollpanel-button-disabled: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
 
 slider: dialog.png
 	tick: 512,1,2,4

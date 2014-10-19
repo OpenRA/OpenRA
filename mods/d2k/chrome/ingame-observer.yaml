@@ -63,66 +63,77 @@ Container@OBSERVER_WIDGETS:
 							Height: 25
 				Container@REPLAY_PLAYER:
 					Logic: ReplayControlBarLogic
-					X: PARENT_RIGHT/2 - 80
-					Y: 35
+					Y: 39
 					Width: 160
 					Height: 35
 					Visible: false
 					Children:
 						Button@BUTTON_PAUSE:
 							X: 15
-							Y: 15
-							Width: 25
-							Height: 25
+							Y: 10
+							Width: 26
+							Height: 26
 							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_PAUSE:
-									X: 0
-									Y: 0
+									Y: 1
 									Width: 25
 									Height: 25
 									ImageCollection: music
 									ImageName: pause
-						Button@BUTTON_SLOW:
-							X: 50
-							Y: 15
-							Width: 25
-							Height: 25
-							IgnoreChildMouseOver: true
-							Children:
-								Image@IMAGE_SLOW:
-									X: 4
-									Y: 0
-									Width: 25
-									Height: 25
-									ImageCollection: music
-									ImageName: slowmo
-						Button@BUTTON_NORMALSPEED:
-							X: 85
-							Y: 15
-							Width: 25
-							Height: 25
+						Button@BUTTON_PLAY:
+							X: 15
+							Y: 10
+							Width: 26
+							Height: 26
 							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_PLAY:
-									X: 0
-									Y: 0
 									Width: 25
 									Height: 25
 									ImageCollection: music
 									ImageName: play
-						Button@BUTTON_FASTFORWARD:
-							X: 120
-							Y: 15
-							Width: 25
-							Height: 25
-							IgnoreChildMouseOver: true
-							Children:
-								Image@IMAGE_FASTFORWARD:
-									X: 4
-									Y: 0
-									Width: 25
-									Height: 25
-									ImageCollection: music
-									ImageName: fastforward
-
+						Button@BUTTON_SLOW:
+							X: 55
+							Y: 13
+							Width: 36
+							Height: 20
+							BaseLine: 1
+							TooltipText: Slow speed
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Text: 50%
+							Font: TinyBold
+						Button@BUTTON_REGULAR:
+							X: 55 + 45
+							Y: 13
+							Width: 38
+							Height: 20
+							BaseLine: 1
+							TooltipText: Regular speed
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Text: 100%
+							Font: TinyBold
+						Button@BUTTON_FAST:
+							X: 55 + 45*2
+							Y: 13
+							Width: 38
+							Height: 20
+							BaseLine: 1
+							TooltipText: Fast speed
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Text: 200%
+							Font: TinyBold
+						Button@BUTTON_MAXIMUM:
+							X: 55 + 45*3
+							Y: 13
+							Width: 38
+							Height: 20
+							BaseLine: 1
+							TooltipText: Maximum speed
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Text: MAX
+							Font: TinyBold

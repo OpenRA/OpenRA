@@ -98,50 +98,6 @@ button-highlighted-disabled: chrome.png
 	corner-bl: 288,191,1,1
 	corner-br: 319,191,1,1
 
-scrollthumb: chrome.png
-	background: 2,194,60,60
-	border-r: 62,194,2,60
-	border-l: 0,194,2,60
-	border-b: 2,254,60,2
-	border-t: 2,192,60,2
-	corner-tl: 0,192,2,2
-	corner-tr: 62,192,2,2
-	corner-bl: 0,254,2,2
-	corner-br: 62,254,2,2
-
-scrollthumb-hover: chrome.png
-	background: 2,130,60,60
-	border-r: 62,130,2,60
-	border-l: 0,130,2,60
-	border-b: 2,190,60,2
-	border-t: 2,128,60,2
-	corner-tl: 0,128,2,2
-	corner-tr: 62,128,2,2
-	corner-bl: 0,190,2,2
-	corner-br: 62,190,2,2
-
-scrollthumb-disabled: chrome.png
-	background: 66,130,60,60
-	border-r: 126,130,2,60
-	border-l: 64,130,2,60
-	border-b: 66,190,60,2
-	border-t: 66,128,60,2
-	corner-tl: 64,128,2,2
-	corner-tr: 126,128,2,2
-	corner-bl: 64,190,2,2
-	corner-br: 126,190,2,2
-
-scrollthumb-pressed: chrome.png
-	background: 66,194,60,60
-	border-r: 126,194,2,60
-	border-l: 64,194,2,60
-	border-b: 66,254,60,2
-	border-t: 66,192,60,2
-	corner-tl: 64,192,2,2
-	corner-tr: 126,192,2,2
-	corner-bl: 64,254,2,2
-	corner-br: 126,254,2,2
-
 # A copy of button
 textfield: chrome.png
 	background: 2,194,60,60
@@ -226,6 +182,50 @@ scrollpanel-bg: chrome.png
 	corner-tr: 126,64,2,2
 	corner-bl: 64,126,2,2
 	corner-br: 126,126,2,2
+
+scrollpanel-button: chrome.png
+	background: 2,194,60,60
+	border-r: 62,194,2,60
+	border-l: 0,194,2,60
+	border-b: 2,254,60,2
+	border-t: 2,192,60,2
+	corner-tl: 0,192,2,2
+	corner-tr: 62,192,2,2
+	corner-bl: 0,254,2,2
+	corner-br: 62,254,2,2
+
+scrollpanel-button-hover: chrome.png
+	background: 2,130,60,60
+	border-r: 62,130,2,60
+	border-l: 0,130,2,60
+	border-b: 2,190,60,2
+	border-t: 2,128,60,2
+	corner-tl: 0,128,2,2
+	corner-tr: 62,128,2,2
+	corner-bl: 0,190,2,2
+	corner-br: 62,190,2,2
+
+scrollpanel-button-disabled: chrome.png
+	background: 66,130,60,60
+	border-r: 126,130,2,60
+	border-l: 64,130,2,60
+	border-b: 66,190,60,2
+	border-t: 66,128,60,2
+	corner-tl: 64,128,2,2
+	corner-tr: 126,128,2,2
+	corner-bl: 64,190,2,2
+	corner-br: 126,190,2,2
+
+scrollpanel-button-pressed: chrome.png
+	background: 66,194,60,60
+	border-r: 126,194,2,60
+	border-l: 64,194,2,60
+	border-b: 66,254,60,2
+	border-t: 66,192,60,2
+	corner-tl: 64,192,2,2
+	corner-tr: 126,192,2,2
+	corner-bl: 64,254,2,2
+	corner-br: 126,254,2,2
 
 # A copy of button-hover
 scrollitem-hover: chrome.png
@@ -466,3 +466,6 @@ order-icons: chrome.png
 	beacon: 400,48,16,16
 	beacon-disabled: 400,64,16,16
 	beacon-active: 400,80,16,16
+	stats: 480,96,16,16
+	stats-disabled: 480,112,16,16
+	stats-active: 480,128,16,16

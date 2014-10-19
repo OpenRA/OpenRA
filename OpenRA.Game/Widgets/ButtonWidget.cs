@@ -26,6 +26,7 @@ namespace OpenRA.Widgets
 		public string Background = "button";
 		public bool Depressed = false;
 		public int VisualHeight = ChromeMetrics.Get<int>("ButtonDepth");
+		public int BaseLine = 0;
 		public string Font = ChromeMetrics.Get<string>("ButtonFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("ButtonTextColor");
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("ButtonTextColorDisabled");
@@ -78,6 +79,7 @@ namespace OpenRA.Widgets
 
 			Text = other.Text;
 			Font = other.Font;
+			BaseLine = other.BaseLine;
 			TextColor = other.TextColor;
 			TextColorDisabled = other.TextColorDisabled;
 			Contrast = other.Contrast;
@@ -202,7 +204,7 @@ namespace OpenRA.Widgets
 			var contrast = GetContrastColor();
 			var s = font.Measure(text);
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
-			var position = new int2(rb.X + (UsableWidth - s.X) / 2, rb.Y + (Bounds.Height - s.Y) / 2);
+			var position = new int2(rb.X + (UsableWidth - s.X) / 2, rb.Y - BaseLine + (Bounds.Height - s.Y) / 2);
 
 			DrawBackground(rb, disabled, Depressed, Ui.MouseOverWidget == this, highlighted);
 			if (Contrast)

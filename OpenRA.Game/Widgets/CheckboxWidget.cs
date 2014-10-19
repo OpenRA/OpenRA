@@ -19,7 +19,6 @@ namespace OpenRA.Widgets
 		public string CheckType = "checked";
 		public Func<string> GetCheckType;
 		public Func<bool> IsChecked = () => false;
-		public int BaseLine = 1;
 		public int CheckOffset = 2;
 		public bool HasPressedState = ChromeMetrics.Get<bool>("CheckboxPressedState");
 
@@ -36,7 +35,6 @@ namespace OpenRA.Widgets
 			CheckType = other.CheckType;
 			GetCheckType = other.GetCheckType;
 			IsChecked = other.IsChecked;
-			BaseLine = other.BaseLine;
 			CheckOffset = other.CheckOffset;
 			HasPressedState = other.HasPressedState;
 		}
