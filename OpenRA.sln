@@ -29,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts",
 	ProjectSection(SolutionItems) = preProject
 		mods\cnc\maps\gdi01\gdi01.lua = mods\cnc\maps\gdi01\gdi01.lua
 		mods\cnc\maps\gdi02\gdi02.lua = mods\cnc\maps\gdi02\gdi02.lua
+		mods\cnc\maps\gdi03\gdi03.lua = mods\cnc\maps\gdi03\gdi03.lua
 		mods\cnc\maps\gdi04a\gdi04a.lua = mods\cnc\maps\gdi04a\gdi04a.lua
 		mods\cnc\maps\gdi04b\gdi04b.lua = mods\cnc\maps\gdi04b\gdi04b.lua
 		mods\cnc\maps\gdi04c\gdi04c.lua = mods\cnc\maps\gdi04c\gdi04c.lua
