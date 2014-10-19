@@ -13,7 +13,7 @@ end
 
 SendJeepReinforcements = function()
 	Media.PlaySpeechNotification(player, "ReinforcementsArrived")
-	Reinforcements.Reinforce(player, JeepReinforcements, JeepPath, Utils.Seconds(1))
+	Reinforcements.Reinforce(player, JeepReinforcements, JeepPath, DateTime.Seconds(1))
 end
 
 RunInitialActivities = function()
@@ -22,14 +22,14 @@ end
 
 MissionAccomplished = function()
 	Media.PlaySpeechNotification(player, "Win")
-	Trigger.AfterDelay(Utils.Seconds(1), function()
+	Trigger.AfterDelay(DateTime.Seconds(1), function()
 		Media.PlayMovieFullscreen("montpass.vqa")
 	end)
 end
 
 MissionFailed = function()
 	Media.PlaySpeechNotification(player, "Lose")
-	Trigger.AfterDelay(Utils.Seconds(1), function()
+	Trigger.AfterDelay(DateTime.Seconds(1), function()
 		Media.PlayMovieFullscreen("frozen.vqa")
 	end)
 end
@@ -53,9 +53,9 @@ SendTrucks = function()
 		ConvoyOnSite = true
 		ConvoyObjective = player.AddPrimaryObjective("Escort the convoy")
 		Media.PlaySpeechNotification(player, "ConvoyApproaching")
-		Trigger.AfterDelay(Utils.Seconds(3), function()
+		Trigger.AfterDelay(DateTime.Seconds(3), function()
 			ConvoyUnharmed = true
-			local trucks = Reinforcements.Reinforce(france, TruckReinforcements, TruckPath, Utils.Seconds(1),
+			local trucks = Reinforcements.Reinforce(france, TruckReinforcements, TruckPath, DateTime.Seconds(1),
 				function(truck)
 					Trigger.OnIdle(truck, function() truck.Move(TruckExitPoint.Location) end)
 				end)
@@ -79,7 +79,7 @@ ConvoyCasualites = function()
 	Media.PlaySpeechNotification(player, "ConvoyUnitLost")
 	if ConvoyUnharmed then
 		ConvoyUnharmed = false
-		Trigger.AfterDelay(Utils.Seconds(1), function() player.MarkFailedObjective(ConvoyObjective) end)
+		Trigger.AfterDelay(DateTime.Seconds(1), function() player.MarkFailedObjective(ConvoyObjective) end)
 	end
 end
 
@@ -116,19 +116,19 @@ WorldLoaded = function()
 	RunInitialActivities()
 
 	SendConstructionVehicleReinforcements()
-	Trigger.AfterDelay(Utils.Seconds(5), SendJeepReinforcements)
-	Trigger.AfterDelay(Utils.Seconds(10), SendJeepReinforcements)
+	Trigger.AfterDelay(DateTime.Seconds(5), SendJeepReinforcements)
+	Trigger.AfterDelay(DateTime.Seconds(10), SendJeepReinforcements)
 
-	Trigger.AfterDelay(Utils.Minutes(10), SendTrucks)
+	Trigger.AfterDelay(DateTime.Minutes(10), SendTrucks)
 
 	Camera.Position = ReinforcementsEntryPoint.CenterPosition
 
 	Media.PlayMovieFullscreen("mcv.vqa")
 
-	ConvoyTimer(Utils.Seconds(3), "TenMinutesRemaining")
-	ConvoyTimer(Utils.Minutes(5), "WarningFiveMinutesRemaining")
-	ConvoyTimer(Utils.Minutes(6), "WarningFourMinutesRemaining")
-	ConvoyTimer(Utils.Minutes(7), "WarningThreeMinutesRemaining")
-	ConvoyTimer(Utils.Minutes(8), "WarningTwoMinutesRemaining")
-	ConvoyTimer(Utils.Minutes(9), "WarningOneMinuteRemaining")
+	ConvoyTimer(DateTime.Seconds(3), "TenMinutesRemaining")
+	ConvoyTimer(DateTime.Minutes(5), "WarningFiveMinutesRemaining")
+	ConvoyTimer(DateTime.Minutes(6), "WarningFourMinutesRemaining")
+	ConvoyTimer(DateTime.Minutes(7), "WarningThreeMinutesRemaining")
+	ConvoyTimer(DateTime.Minutes(8), "WarningTwoMinutesRemaining")
+	ConvoyTimer(DateTime.Minutes(9), "WarningOneMinuteRemaining")
 end

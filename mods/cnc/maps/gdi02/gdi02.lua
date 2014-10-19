@@ -12,9 +12,9 @@ end
 
 BridgeheadSecured = function()
 	Reinforce(MobileConstructionVehicle)
-	Trigger.AfterDelay(Utils.Seconds(15), NodAttack)
-	Trigger.AfterDelay(Utils.Seconds(30), function() Reinforce(EngineerReinforcements) end)
-	Trigger.AfterDelay(Utils.Seconds(120), function() Reinforce(VehicleReinforcements) end)
+	Trigger.AfterDelay(DateTime.Seconds(15), NodAttack)
+	Trigger.AfterDelay(DateTime.Seconds(30), function() Reinforce(EngineerReinforcements) end)
+	Trigger.AfterDelay(DateTime.Seconds(120), function() Reinforce(VehicleReinforcements) end)
 end
 
 NodAttack = function()
@@ -25,7 +25,7 @@ NodAttack = function()
 			unit.AttackMove(waypoint2.Location)
 			Trigger.OnIdle(unit, unit.Hunt)
 		end)
-		Trigger.OnAllKilled(attackers, function() Trigger.AfterDelay(Utils.Seconds(15), NodAttack) end)
+		Trigger.OnAllKilled(attackers, function() Trigger.AfterDelay(DateTime.Seconds(15), NodAttack) end)
 	end
 end
 
@@ -45,14 +45,14 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "Win")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlayMovieFullscreen("flag.vqa")
 		end)
 	end)
 
 	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlayMovieFullscreen("gameover.vqa")
 		end)
 	end)

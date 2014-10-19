@@ -76,10 +76,10 @@ WorldLoaded = function()
 
 	SendNodPatrol()
 
-	Trigger.AfterDelay(Utils.Seconds(5), function() Reinforce(InfantryReinforcements) end)
-	Trigger.AfterDelay(Utils.Seconds(15), function() Reinforce(InfantryReinforcements) end)
-	Trigger.AfterDelay(Utils.Seconds(30), function() Reinforce(VehicleReinforcements) end)
-	Trigger.AfterDelay(Utils.Seconds(60), function() Reinforce(VehicleReinforcements) end)
+	Trigger.AfterDelay(DateTime.Seconds(5), function() Reinforce(InfantryReinforcements) end)
+	Trigger.AfterDelay(DateTime.Seconds(15), function() Reinforce(InfantryReinforcements) end)
+	Trigger.AfterDelay(DateTime.Seconds(30), function() Reinforce(VehicleReinforcements) end)
+	Trigger.AfterDelay(DateTime.Seconds(60), function() Reinforce(VehicleReinforcements) end)
 end
 
 tick = 0
@@ -94,7 +94,7 @@ Tick = function()
 		enemy.MarkCompletedObjective(nodObjective)
 	end
 
-	if not baseEstablished and tick % Utils.Seconds(1) == 0 and CheckForBase() then
+	if not baseEstablished and tick % DateTime.Seconds(1) == 0 and CheckForBase() then
 		baseEstablished = true
 		player.MarkCompletedObjective(gdiObjective2)
 	end

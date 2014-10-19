@@ -3,14 +3,14 @@ FirstAttackWave = { "e1", "e1", "e1", "e2", }
 SecondThirdAttackWave = { "e1", "e1", "e2", }
 
 SendAttackWave = function(units, spawnPoint)
-	Reinforcements.Reinforce(enemy, units, { spawnPoint }, Utils.Seconds(1), function(actor)
+	Reinforcements.Reinforce(enemy, units, { spawnPoint }, DateTime.Seconds(1), function(actor)
 		actor.AttackMove(PlayerBase.Location)
 	end)
 end
 
 InsertNodUnits = function()
 	Reinforcements.Reinforce(player, NodUnits, { NodEntry.Location, NodRallyPoint.Location })
-	Trigger.AfterDelay(Utils.Seconds(9), function()
+	Trigger.AfterDelay(DateTime.Seconds(9), function()
 		Reinforcements.Reinforce(player, { "mcv" }, { NodEntry.Location, PlayerBase.Location })
 	end)
 end
@@ -31,14 +31,14 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "Win")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlayMovieFullscreen("desflees.vqa")
 		end)
 	end)
 
 	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlayMovieFullscreen("flag.vqa")
 		end)
 	end)
@@ -48,7 +48,7 @@ WorldLoaded = function()
 	nodObjective2 = player.AddSecondaryObjective("Destroy all GDI forces")
 
 	Trigger.OnCapture(TechCenter, function()
-		Trigger.AfterDelay(Utils.Seconds(2), function()
+		Trigger.AfterDelay(DateTime.Seconds(2), function()
 			player.MarkCompletedObjective(nodObjective1)
 		end)
 	end)
@@ -58,9 +58,9 @@ WorldLoaded = function()
 	end)
 
 	InsertNodUnits()
-	Trigger.AfterDelay(Utils.Seconds(20), function() SendAttackWave(FirstAttackWave, AttackWaveSpawnA.Location) end)
-	Trigger.AfterDelay(Utils.Seconds(50), function() SendAttackWave(SecondThirdAttackWave, AttackWaveSpawnB.Location) end)
-	Trigger.AfterDelay(Utils.Seconds(100), function() SendAttackWave(SecondThirdAttackWave, AttackWaveSpawnC.Location) end)
+	Trigger.AfterDelay(DateTime.Seconds(20), function() SendAttackWave(FirstAttackWave, AttackWaveSpawnA.Location) end)
+	Trigger.AfterDelay(DateTime.Seconds(50), function() SendAttackWave(SecondThirdAttackWave, AttackWaveSpawnB.Location) end)
+	Trigger.AfterDelay(DateTime.Seconds(100), function() SendAttackWave(SecondThirdAttackWave, AttackWaveSpawnC.Location) end)
 end
 
 Tick = function()
