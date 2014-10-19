@@ -99,6 +99,7 @@ config = {
     nomousezoom = nil, -- disable zooming using mouse wheel
     autoreload = nil, -- trigger auto-reload when file is updated
     saveallonrun = nil, -- save all modified files before Run/Debug
+    indentguide = true, -- show indentation bar
   },
 
   default = {

@@ -53,6 +53,7 @@ ide = {
       smartindent = true,
       fold = true,
       autoreload = true,
+      indentguide = true,
     },
     debugger = {
       verbose = false,
