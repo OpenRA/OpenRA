@@ -357,7 +357,14 @@ install-linux-desktop:
 install-linux-scripts:
 	@echo "#!/bin/sh" > openra
 	@echo 'cd "$(gameinstalldir)"' >> openra
-	@echo 'exec mono OpenRA.Game.exe "$$@"' >> openra
+	@echo 'mono OpenRA.Game.exe "$$@"' >> openra
+	@echo 'if [ $$? != 0 ]' >> openra
+	@echo 'then' >> openra
+	@echo 'ZENITY=`which zenity` || echo "OpenRA needs zenity installed to display a graphical error dialog. See ~/.openra. for log files."' >> openra
+	@echo '$$ZENITY --question --title "OpenRA" --text "OpenRA has encountered a fatal error.\nLog Files are available in ~/.openra." --ok-label "Quit" --cancel-label "View FAQ" || xdg-open https://github.com/OpenRA/OpenRA/wiki/FAQ' >> openra
+	@echo 'exit 1' >> openra
+	@echo 'fi' >> openra
+
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra
