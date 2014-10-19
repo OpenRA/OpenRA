@@ -47,7 +47,7 @@ Container@SETTINGS_PANEL:
 							Y: 20
 							Width: PARENT_RIGHT
 							Font: Bold
-							Text: Graphics
+							Text: Display
 							Align: Center
 						Label@MODE_LABEL:
 							X: 120
