@@ -40,7 +40,6 @@
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
 	SelfHealing@ELITE:
@@ -96,7 +95,6 @@
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
 	SelfHealing@ELITE:
@@ -135,7 +133,6 @@
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
 	Tooltip:
 		GenericName: Helicopter
@@ -210,7 +207,6 @@
 		Prerequisites: hosp
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	DetectCloaked:
 		Range: 1
 	ScriptTriggers:
@@ -307,7 +303,6 @@
 	AttackFrontal:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
 	DeathSounds:
 
@@ -328,7 +323,6 @@
 	BodyOrientation:
 	Huntable:
 	AttackMove:
-	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
 	SelfHealing@ELITE:
@@ -362,7 +356,6 @@
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
 	SelfHealing@ELITE:
@@ -414,7 +407,6 @@
 	FrozenUnderFog:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
 	WithMakeAnimation:
@@ -459,7 +451,6 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 	ScriptTriggers:
 	WithMakeAnimation:
 
@@ -505,7 +496,6 @@
 		Palette: terrain
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 	ScriptTriggers:
 	WithMakeAnimation:
 
@@ -539,7 +529,6 @@
 	Guardable:
 	BodyOrientation:
 	FrozenUnderFog:
-	LuaScriptEvents:
 	ScriptTriggers:
 
 ^Tree:
@@ -564,7 +553,6 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 	ScriptTriggers:
 	WithMakeAnimation:
 
@@ -583,7 +571,6 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 	WithMakeAnimation:
 
 ^Rock:
@@ -602,7 +589,6 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 	ScriptTriggers:
 	WithMakeAnimation:
 
@@ -630,7 +616,6 @@
 	BodyOrientation:
 	Tooltip:
 		GenericName: Destroyed Vehicle
-	LuaScriptEvents:
 	DisabledOverlay:
 	ScriptTriggers:
 
@@ -660,6 +645,5 @@
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
 	BodyOrientation:
-	LuaScriptEvents:
 	ScriptTriggers:
 

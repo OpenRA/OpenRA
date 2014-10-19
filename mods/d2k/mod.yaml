@@ -91,7 +91,6 @@ ChromeLayout:
 	./mods/ra/chrome/musicplayer.yaml
 	./mods/d2k/chrome/tooltips.yaml
 	./mods/ra/chrome/assetbrowser.yaml
-	./mods/ra/chrome/irc.yaml
 	./mods/ra/chrome/missionbrowser.yaml
 	./mods/ra/chrome/confirmation-dialogs.yaml
 
@@ -153,28 +152,28 @@ ChromeMetrics:
 
 Fonts:
 	Regular:
-		Font:./FreeSans.ttf
+		Font:./mods/common/FreeSans.ttf
 		Size:14
 	Bold:
-		Font:./FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:14
 	Title:
 		Font:./mods/d2k/Dune2k.ttf
 		Size:32
 	MediumBold:
-		Font:./FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:18
 	BigBold:
-		Font:./FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:24
 	Small:
-		Font:./FreeSans.ttf
+		Font:./mods/common/FreeSans.ttf
 		Size:12
 	Tiny:
-		Font:./FreeSans.ttf
+		Font:./mods/common/FreeSans.ttf
 		Size:10
 	TinyBold:
-		Font:./FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:10
 
 LuaScripts:

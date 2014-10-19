@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.D2k", "OpenRA.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.TS", "OpenRA.Mods.TS\OpenRA.Mods.TS.csproj", "{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Irc", "OpenRA.Irc\OpenRA.Irc.csproj", "{85B48234-8B31-4BE6-AF9C-665CC6866841}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Renderer.Sdl2", "OpenRA.Renderer.Sdl2\OpenRA.Renderer.Sdl2.csproj", "{33D03738-C154-4028-8EA8-63A3C488A651}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.Common", "OpenRA.Mods.Common\OpenRA.Mods.Common.csproj", "{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}"
@@ -47,7 +45,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts",
 	ProjectSection(SolutionItems) = preProject
 		mods\cnc\maps\gdi01\gdi01.lua = mods\cnc\maps\gdi01\gdi01.lua
 		mods\cnc\maps\gdi02\gdi02.lua = mods\cnc\maps\gdi02\gdi02.lua
-		mods\cnc\maps\gdi03\gdi03.lua = mods\cnc\maps\gdi03\gdi03.lua
 		mods\cnc\maps\gdi04a\gdi04a.lua = mods\cnc\maps\gdi04a\gdi04a.lua
 		mods\cnc\maps\gdi04b\gdi04b.lua = mods\cnc\maps\gdi04b\gdi04b.lua
 		mods\cnc\maps\gdi04c\gdi04c.lua = mods\cnc\maps\gdi04c\gdi04c.lua
@@ -102,8 +99,6 @@ Global
 		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Debug|x86.Build.0 = Debug|x86
 		{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}.Debug|x86.ActiveCfg = Debug|x86
 		{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}.Debug|x86.Build.0 = Debug|x86
-		{85B48234-8B31-4BE6-AF9C-665CC6866841}.Debug|x86.ActiveCfg = Debug|x86
-		{85B48234-8B31-4BE6-AF9C-665CC6866841}.Debug|x86.Build.0 = Debug|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.ActiveCfg = Debug|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.Build.0 = Debug|x86
 		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Debug|x86.ActiveCfg = Debug|x86

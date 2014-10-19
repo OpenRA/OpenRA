@@ -31,11 +31,9 @@ markdown Lua-API.md > Lua-API.html
 
 # List of files that are packaged on all platforms
 FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' 'OpenRA.CrashDialog.exe' \
-'OpenRA.Renderer.Sdl2.dll' 'OpenRA.Renderer.Null.dll' 'OpenRA.Irc.dll' \
-'FreeSans.ttf' 'FreeSansBold.ttf' 'lua' \
-'glsl' 'mods/common' 'mods/ra' 'mods/cnc' 'mods/d2k' 'mods/modchooser' \
-'AUTHORS' 'COPYING' \
-'README.html' 'CONTRIBUTING.html' 'DOCUMENTATION.html' 'CHANGELOG.html' \
+'OpenRA.Renderer.Sdl2.dll' 'OpenRA.Renderer.Null.dll' \
+ 'lua' 'glsl' 'mods/common' 'mods/ra' 'mods/cnc' 'mods/d2k' 'mods/modchooser' \
+'AUTHORS' 'COPYING' 'README.html' 'CONTRIBUTING.html' 'DOCUMENTATION.html' 'CHANGELOG.html' \
 'global mix database.dat' 'GeoLite2-Country.mmdb')
 
 echo "Copying files..."
@@ -58,11 +56,7 @@ cp thirdparty/SDL2-CS* packaging/built
 # Mono.NAT for UPnP support
 cp thirdparty/Mono.Nat.dll packaging/built
 
-# (legacy) Lua
-cp thirdparty/KopiLua.dll packaging/built
-cp thirdparty/NLua.dll packaging/built
-
-# Eluant (new lua)
+# Eluant (Lua integration)
 cp thirdparty/Eluant* packaging/built
 
 # GeoIP database access

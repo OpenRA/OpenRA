@@ -70,7 +70,6 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.CrashDialog.exe"
 	File "${SRCDIR}\OpenRA.Renderer.Null.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Sdl2.dll"
-	File "${SRCDIR}\OpenRA.Irc.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
 	File "${SRCDIR}\Mono.Nat.dll"
@@ -80,7 +79,6 @@ Section "Game" GAME
 	File "${SRCDIR}\CHANGELOG.html"
 	File "${SRCDIR}\CONTRIBUTING.html"
 	File "${SRCDIR}\DOCUMENTATION.html"
-	File "${SRCDIR}\*.ttf"
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\SDL2-CS.dll"
@@ -90,8 +88,6 @@ Section "Game" GAME
 	File "${SRCDIR}\Newtonsoft.Json.dll"
 	File "${SRCDIR}\RestSharp.dll"
 	File "${SRCDIR}\GeoLite2-Country.mmdb"
-	File "${SRCDIR}\KopiLua.dll"
-	File "${SRCDIR}\NLua.dll"
 	File "${SRCDIR}\eluant.dll"
 	File "${DEPSDIR}\soft_oal.dll"
 	File "${DEPSDIR}\SDL2.dll"
@@ -192,7 +188,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Editor.exe
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll
 	Delete $INSTDIR\OpenRA.Renderer.Sdl2.dll
-	Delete $INSTDIR\OpenRA.Irc.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
 	Delete $INSTDIR\Mono.Nat.dll
@@ -204,7 +199,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\CONTRIBUTING.html
 	Delete $INSTDIR\DOCUMENTATION.html
 	Delete $INSTDIR\OpenRA.ico
-	Delete $INSTDIR\*.ttf
 	Delete "$INSTDIR\global mix database.dat"
 	Delete $INSTDIR\MaxMind.Db.dll
 	Delete $INSTDIR\MaxMind.GeoIP2.dll
@@ -212,8 +206,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\RestSharp.dll
 	Delete $INSTDIR\GeoLite2-Country.mmdb
 	Delete $INSTDIR\KopiLua.dll
-	Delete $INSTDIR\NLua.dll
-	Delete $INSTDIR\SDL2-CS.dll
 	Delete $INSTDIR\soft_oal.dll
 	Delete $INSTDIR\SDL2.dll
 	Delete $INSTDIR\lua51.dll

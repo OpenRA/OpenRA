@@ -103,7 +103,6 @@ ChromeLayout:
 	./mods/cnc/chrome/credits.yaml
 	./mods/cnc/chrome/dialogs.yaml
 	./mods/cnc/chrome/tooltips.yaml
-	./mods/cnc/chrome/irc.yaml
 	./mods/cnc/chrome/assetbrowser.yaml
 	./mods/cnc/chrome/missionbrowser.yaml
 
@@ -172,28 +171,28 @@ ChromeMetrics:
 
 Fonts:
 	Small:
-		Font:./FreeSans.ttf
+		Font:./mods/common/FreeSans.ttf
 		Size:12
 	Regular:
-		Font:./FreeSans.ttf
+		Font:./mods/common/FreeSans.ttf
 		Size:14
 	Bold:
-		Font:./FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:./FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:32
 	MediumBold:
-		Font:./FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:18
 	BigBold:
-		Font:./FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:24
 	Tiny:
-		Font:./FreeSans.ttf
+		Font:./mods/common/FreeSans.ttf
 		Size:10
 	TinyBold:
-		Font:./FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:10
 
 LuaScripts:

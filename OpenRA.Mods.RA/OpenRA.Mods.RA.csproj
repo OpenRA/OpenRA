@@ -53,14 +53,6 @@
       <HintPath>..\thirdparty\FuzzyLogicLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="KopiLua">
-      <HintPath>..\thirdparty\KopiLua.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="NLua">
-      <HintPath>..\thirdparty\NLua.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -324,10 +316,7 @@
     <Compile Include="RepairsUnits.cs" />
     <Compile Include="Reservable.cs" />
     <Compile Include="ScaredyCat.cs" />
-    <Compile Include="Scripting\LuaScriptEvents.cs" />
-    <Compile Include="Scripting\LuaScriptInterface.cs" />
     <Compile Include="Scripting\Media.cs" />
-    <Compile Include="Scripting\LuaScriptContext.cs" />
     <Compile Include="SeedsResource.cs" />
     <Compile Include="SelfHealing.cs" />
     <Compile Include="Sellable.cs" />
@@ -368,7 +357,6 @@
     <Compile Include="Widgets\Logic\Ingame\GameInfoObjectivesLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoStatsLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LeaveMapLogic.cs" />
-    <Compile Include="Widgets\Logic\IrcLogic.cs" />
     <Compile Include="Widgets\Logic\KickClientLogic.cs" />
     <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
     <Compile Include="Widgets\Logic\DiplomacyLogic.cs" />
@@ -540,11 +528,6 @@
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
       <Name>OpenRA.Game</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenRA.Irc\OpenRA.Irc.csproj">
-      <Project>{85B48234-8B31-4BE6-AF9C-665CC6866841}</Project>
-      <Name>OpenRA.Irc</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">

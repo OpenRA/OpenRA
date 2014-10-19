@@ -36,7 +36,6 @@
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
 	GainsStatUpgrades:
@@ -86,7 +85,6 @@
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
 	GainsStatUpgrades:
@@ -113,7 +111,6 @@
 	Tooltip:
 		Name: Wreck
 	BodyOrientation:
-	LuaScriptEvents:
 	TargetableUnit:
 		TargetTypes: Ground
 		RequiresForceFire: yes
@@ -144,7 +141,6 @@
 	ProximityCaptor:
 		Types: Husk
 	BodyOrientation:
-	LuaScriptEvents:
 	ScriptTriggers:
 
 ^AircraftHusk:
@@ -211,7 +207,6 @@
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
 	DeathSounds:
 	Parachutable:
@@ -247,7 +242,6 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	AttackMove:
-	LuaScriptEvents:
 	ScriptTriggers:
 	GainsStatUpgrades:
 	SelfHealing@ELITE:
@@ -306,7 +300,6 @@
 	UpdatesPlayerStatistics:
 	WithCrumbleOverlay:
 	Huntable:
-	LuaScriptEvents:
 	Demolishable:
 	DamagedWithoutFoundation:
 	ThrowsShrapnel:
