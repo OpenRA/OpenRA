@@ -80,10 +80,12 @@ namespace OpenRA.Mods.RA
 		readonly BridgeInfo info;
 		readonly string type;
 
+		readonly Lazy<bool> isDangling;
 		ushort template;
 		Dictionary<CPos, byte> footprint;
 
-		public BridgeHut Hut { get; internal set; }
+		public BridgeHut Hut { get; private set; }
+		public bool IsDangling { get { return isDangling.Value; } }
 
 		public Bridge(Actor self, BridgeInfo info)
 		{
@@ -92,6 +94,7 @@ namespace OpenRA.Mods.RA
 			health.RemoveOnDeath = false;
 			this.info = info;
 			type = self.Info.Name;
+			isDangling = new Lazy<bool>(() => huts[0] == huts[1] && (neighbours[0] == null || neighbours[1] == null));
 			building = self.Trait<Building>();
 		}
 
@@ -144,18 +147,24 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public BridgeHut GetHut(int index)
+		internal void AddHut(BridgeHut hut)
 		{
-			if (huts[index] != null)
-				return huts[index]; // Already found
-
-			var n = neighbours[index];
-			if (n == null)
-				return huts[index] = Hut; // End piece
-
-			return huts[index] = n.Hut ?? n.GetHut(index);
+			if (huts[0] == huts[1])
+				huts[1] = hut;
+			if (Hut == null)
+			{
+				Hut = hut; // Assume only one until called again
+				if (huts[0] == null)
+					huts[0] = hut; // Set only first time
+				for (var d = 0; d <= 1; d++)
+					for (var b = neighbours[d]; b != null; b = b.Hut == null ? b.neighbours[d] : null)
+						b.huts[1 - d] = hut;
+			}
+			else
+				Hut = null;
 		}
 
+		public BridgeHut GetHut(int index) { return huts[index]; }
 		public Bridge GetNeighbor(int[] offset, BridgeLayer bridges)
 		{
 			if (offset == null)
@@ -309,7 +318,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (b.health.DamageState > damage)
 				damage = b.health.DamageState;
-			if (b.Hut == null && b.neighbours[d] != null)
+			if (b.Hut == null && d >= 0 && b.neighbours[d] != null)
 				AggregateDamageState(b.neighbours[d], d, ref damage);
 		}
 

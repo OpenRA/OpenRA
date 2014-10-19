@@ -2240,7 +2240,6 @@ Rules:
 		Inherits: E6
 		Buildable:
 			Prerequisites: ~barracks
-		-RepairsBridges:
 		Captures:
 			CaptureTypes: building
 			Sabotage: False
