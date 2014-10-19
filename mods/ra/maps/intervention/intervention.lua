@@ -48,7 +48,7 @@ Paratroopers = { "e1", "e1", "e1", "e3", "e3" }
 
 ParadropSovietUnits = function()
 	local start = BaseRaidEntrypoint.CenterPosition + WVec.New(0, 0, Actor.CruiseAltitude("badr"))
-	local transport = Actor.Create("badr", true, { CenterPosition = start, Owner = soviets, Facing = (Utils.CenterOfCell(MCVDeployLocation.Location) - start).Facing })
+	local transport = Actor.Create("badr", true, { CenterPosition = start, Owner = soviets, Facing = (Map.CenterOfCell(MCVDeployLocation.Location) - start).Facing })
 
 	Utils.Do(Paratroopers, function(type)
 		local a = Actor.Create(type, false, { Owner = soviets })
@@ -66,8 +66,8 @@ AirRaid = function(planeTypes, ingress, egress, target)
 
 	for i = 1, #planeTypes do
 		Trigger.AfterDelay((i - 1) * DateTime.Seconds(1), function()
-			local start = Utils.CenterOfCell(ingress[1]) + WVec.New(0, 0, Actor.CruiseAltitude(planeTypes[i]))
-			local plane = Actor.Create(planeTypes[i], true, { CenterPosition = start, Owner = soviets, Facing = (Utils.CenterOfCell(ingress[2]) - start).Facing })
+			local start = Map.CenterOfCell(ingress[1]) + WVec.New(0, 0, Actor.CruiseAltitude(planeTypes[i]))
+			local plane = Actor.Create(planeTypes[i], true, { CenterPosition = start, Owner = soviets, Facing = (Map.CenterOfCell(ingress[2]) - start).Facing })
 
 			Utils.Do(ingress, function(wpt) plane.Move(wpt) end)
 			plane.Attack(target)

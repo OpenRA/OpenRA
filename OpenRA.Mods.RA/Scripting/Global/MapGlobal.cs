@@ -86,6 +86,12 @@ namespace OpenRA.Mods.RA.Scripting
 			return context.World.Map.ChooseRandomEdgeCell(context.World.SharedRandom);
 		}
 
+		[Desc("Returns the center of a cell in world coordinates.")]
+		public WPos CenterOfCell(CPos cell)
+		{
+			return context.World.Map.CenterOfCell(cell);
+		}
+
 		[Desc("Returns true if there is only one human player.")]
 		public bool IsSinglePlayer { get { return context.World.LobbyInfo.IsSinglePlayer; } }
 

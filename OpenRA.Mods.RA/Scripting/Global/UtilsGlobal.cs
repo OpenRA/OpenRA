@@ -89,11 +89,5 @@ namespace OpenRA.Mods.RA.Scripting
 
 			return context.World.SharedRandom.Next(low, high);
 		}
-
-		[Desc("Returns the center of a cell in world coordinates.")]
-		public WPos CenterOfCell(CPos cell)
-		{
-			return context.World.Map.CenterOfCell(cell);
-		}
 	}
 }
