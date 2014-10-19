@@ -237,16 +237,8 @@ namespace OpenRA
 			if (RuleStatus != MapRuleStatus.Unknown)
 				return;
 
-			try
-			{
-				Map.PreloadRules();
-				RuleStatus = MapRuleStatus.Cached;
-			}
-			catch (Exception e)
-			{
-				Log.Write("debug", "Map {0} failed validation with an exception:\n{1}", Uid, e.Message);
-				RuleStatus = MapRuleStatus.Invalid;
-			}
+			Map.PreloadRules();
+			RuleStatus = Map.InvalidCustomRules ? MapRuleStatus.Invalid : MapRuleStatus.Cached;
 		}
 	}
 }
