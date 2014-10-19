@@ -76,6 +76,7 @@ namespace OpenRA
 		public string Tileset;
 		public bool AllowStartUnitConfig = true;
 		public Bitmap CustomPreview;
+		public bool InvalidCustomRules { get; private set; }
 
 		public readonly TileShape TileShape;
 		[FieldLoader.Ignore]
@@ -274,7 +275,21 @@ namespace OpenRA
 
 		void PostInit()
 		{
-			rules = Exts.Lazy(() => Game.modData.RulesetCache.LoadMapRules(this));
+			rules = Exts.Lazy(() =>
+			{
+				try
+				{
+					return Game.modData.RulesetCache.LoadMapRules(this);
+				}
+				catch (Exception e)
+				{
+					InvalidCustomRules = true;
+					Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e.Message);
+				}
+
+				return Game.modData.DefaultRules;
+			});
+
 			cachedTileSet = Exts.Lazy(() => Rules.TileSets[Tileset]);
 
 			var tl = Map.MapToCell(TileShape, new CPos(Bounds.Left, Bounds.Top));
