@@ -32,12 +32,13 @@ namespace OpenRA.Graphics
 	public sealed class SheetBuilder : IDisposable
 	{
 		readonly List<Sheet> sheets = new List<Sheet>();
+		readonly SheetType type;
+		readonly Func<Sheet> allocateSheet;
+
 		Sheet current;
 		TextureChannel channel;
-		SheetType type;
 		int rowHeight = 0;
 		Point p;
-		Func<Sheet> allocateSheet;
 
 		public static Sheet AllocateSheet(int sheetSize)
 		{

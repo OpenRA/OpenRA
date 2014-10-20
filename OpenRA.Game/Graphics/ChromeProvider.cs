@@ -17,8 +17,8 @@ namespace OpenRA.Graphics
 	{
 		struct Collection
 		{
-			public string src;
-			public Dictionary<string, MappedImage> regions;
+			public string Src;
+			public Dictionary<string, MappedImage> Regions;
 		}
 
 		static Dictionary<string, Collection> collections;
@@ -62,10 +62,10 @@ namespace OpenRA.Graphics
 		static MiniYaml SaveCollection(Collection collection)
 		{
 			var root = new List<MiniYamlNode>();
-			foreach (var kv in collection.regions)
-				root.Add(new MiniYamlNode(kv.Key, kv.Value.Save(collection.src)));
+			foreach (var kv in collection.Regions)
+				root.Add(new MiniYamlNode(kv.Key, kv.Value.Save(collection.Src)));
 
-			return new MiniYaml(collection.src, root);
+			return new MiniYaml(collection.Src, root);
 		}
 
 		static void LoadCollection(string name, MiniYaml yaml)
@@ -73,8 +73,8 @@ namespace OpenRA.Graphics
 			Game.modData.LoadScreen.Display();
 			var collection = new Collection()
 			{
-				src = yaml.Value,
-				regions = yaml.Nodes.ToDictionary(n => n.Key, n => new MappedImage(yaml.Value, n.Value))
+				Src = yaml.Value,
+				Regions = yaml.Nodes.ToDictionary(n => n.Key, n => new MappedImage(yaml.Value, n.Value))
 			};
 
 			collections.Add(name, collection);
@@ -96,7 +96,7 @@ namespace OpenRA.Graphics
 			}
 
 			MappedImage mi;
-			if (!collection.regions.TryGetValue(imageName, out mi))
+			if (!collection.Regions.TryGetValue(imageName, out mi))
 				return null;
 
 			// Cached sheet
@@ -115,6 +115,7 @@ namespace OpenRA.Graphics
 				cachedCollection = new Dictionary<string, Sprite>();
 				cachedSprites.Add(collectionName, cachedCollection);
 			}
+
 			var image = mi.GetImage(sheet);
 			cachedCollection.Add(imageName, image);
 

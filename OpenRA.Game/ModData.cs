@@ -25,9 +25,9 @@ namespace OpenRA
 		public readonly WidgetLoader WidgetLoader;
 		public readonly MapCache MapCache;
 		public readonly ISpriteLoader[] SpriteLoaders;
-		public ILoadScreen LoadScreen = null;
-		public VoxelLoader VoxelLoader;
 		public readonly RulesetCache RulesetCache;
+		public ILoadScreen LoadScreen { get; private set; }
+		public VoxelLoader VoxelLoader { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
 
 		Lazy<Ruleset> defaultRules;

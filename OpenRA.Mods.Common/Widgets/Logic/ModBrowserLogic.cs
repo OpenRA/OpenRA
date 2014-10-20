@@ -20,16 +20,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ModBrowserLogic
 	{
-		Widget modList;
-		ButtonWidget modTemplate;
-		ModMetadata[] allMods;
+		readonly Widget modList;
+		readonly ButtonWidget modTemplate;
+		readonly ModMetadata[] allMods;
+		readonly Dictionary<string, Sprite> previews = new Dictionary<string, Sprite>();
+		readonly Dictionary<string, Sprite> logos = new Dictionary<string, Sprite>();
 		readonly SheetBuilder sheetBuilder;
 		ModMetadata selectedMod;
 		string selectedAuthor;
 		string selectedDescription;
 		int modOffset = 0;
-		Dictionary<string, Sprite> previews;
-		Dictionary<string, Sprite> logos;
 
 		[ObjectCreator.UseCtor]
 		public ModBrowserLogic(Widget widget)
@@ -65,8 +65,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			sheetBuilder = new SheetBuilder(SheetType.BGRA);
-			previews = new Dictionary<string, Sprite>();
-			logos = new Dictionary<string, Sprite>();
 			allMods = ModMetadata.AllMods.Values.Where(m => m.Id != "modchooser")
 				.OrderBy(m => m.Title)
 				.ToArray();
