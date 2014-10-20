@@ -18,9 +18,9 @@ namespace OpenRA.Graphics
 {
 	public sealed class Theater : IDisposable
 	{
-		SheetBuilder sheetBuilder;
-		Dictionary<ushort, Sprite[]> templates;
-		Sprite missingTile;
+		readonly Dictionary<ushort, Sprite[]> templates = new Dictionary<ushort, Sprite[]>();
+		readonly SheetBuilder sheetBuilder;
+		readonly Sprite missingTile;
 		TileSet tileset;
 
 		public Theater(TileSet tileset)
