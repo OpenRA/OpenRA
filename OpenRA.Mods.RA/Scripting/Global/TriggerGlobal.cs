@@ -285,13 +285,17 @@ namespace OpenRA.Mods.RA.Scripting
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnInfiltrated, func, context);
 		}
 
-		[Desc("Removes all triggers from this actor.")]
+		[Desc("Removes all triggers from this actor." +
+			"Note that the removal will only take effect at the end of a tick, " +
+			"so you must not add new triggers at the same time that you are calling this function.")]
 		public void ClearAll(Actor a)
 		{
 			GetScriptTriggers(a).ClearAll();
 		}
 
-		[Desc("Removes the specified trigger from this actor.")]
+		[Desc("Removes the specified trigger from this actor."  +
+			"Note that the removal will only take effect at the end of a tick, " +
+			"so you must not add new triggers at the same time that you are calling this function.")]
 		public void Clear(Actor a, string triggerName)
 		{
 			var trigger = (Trigger)Enum.Parse(typeof(Trigger), triggerName);

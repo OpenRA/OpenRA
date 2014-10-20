@@ -145,7 +145,8 @@ namespace OpenRA.Mods.RA.Scripting
 			return true;
 		}
 
-		[Desc("Checks whether the factory is currently producing anything on the queue that produces this type of actor.")]
+		[Desc("Check whether the factory's production queue that builds this type of actor is currently busy." +
+			"Note: it does not check whether this particular type of actor is being produced.")]
 		public bool IsProducing(string actorType)
 		{
 			if (triggers.Triggers[Trigger.OnProduction].Any())
@@ -249,7 +250,8 @@ namespace OpenRA.Mods.RA.Scripting
 			return true;
 		}
 
-		[Desc("Checks whether the player is currently producing anything on the queue that produces this type of actor.")]
+		[Desc("Check whether the production queue that builds this type of actor is currently busy." +
+			"Note: it does not check whether this particular type of actor is being produced.")]
 		public bool IsProducing(string actorType)
 		{
 			var queue = GetBuildableInfo(actorType).Queue.First();
