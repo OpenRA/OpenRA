@@ -1,5 +1,5 @@
 --
--- MobDebug 0.606
+-- MobDebug -- Lua remote debugger
 -- Copyright 2011-14 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
@@ -19,7 +19,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.606,
+  _VERSION = 0.607,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -642,6 +642,7 @@ local function debug_hook(event, line)
     -- return something else (for example, 'exit'), which needs to be handled
     if status and res and res ~= 'stack' then
       if not abort and res == "exit" then os.exit(1, true); return end
+      if not abort and res == "done" then mobdebug.done(); return end
       abort = res
       -- only abort if safe; if not, there is another (earlier) check inside
       -- debug_hook, which will abort execution at the first safe opportunity
@@ -907,7 +908,7 @@ local function debugger_loop(sev, svars, sfile, sline)
       -- do nothing; it already fulfilled its role
     elseif command == "DONE" then
       server:send("200 OK\n")
-      done()
+      coroyield("done")
       return -- done with all the debugging
     elseif command == "STACK" then
       -- first check if we can execute the stack command
