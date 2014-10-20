@@ -299,7 +299,7 @@
     <Compile Include="Render\RenderEditorOnly.cs" />
     <Compile Include="Render\RenderFlare.cs" />
     <Compile Include="Render\RenderHarvester.cs" />
-    <Compile Include="Render\RenderInfantry.cs" />
+    <Compile Include="Render\RenderUnitAnimated.cs" />
     <Compile Include="Render\RenderDisguise.cs" />
     <Compile Include="Render\RenderLandingCraft.cs" />
     <Compile Include="Render\RenderUnit.cs" />

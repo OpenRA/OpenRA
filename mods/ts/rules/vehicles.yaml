@@ -520,7 +520,7 @@ MMCH:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	RenderInfantry:
+	RenderUnitAnimated:
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -593,7 +593,7 @@ SMECH:
 	AutoTarget:
 	Armament:
 		Weapon: AssaultCannon
-	RenderInfantry:
+	RenderUnitAnimated:
 	Selectable:
 		Voices: Mech
 		Bounds: 16, 32

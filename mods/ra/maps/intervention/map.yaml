@@ -2244,7 +2244,7 @@ Rules:
 		Captures:
 			CaptureTypes: building
 			Sabotage: False
-		RenderInfantry:
+		RenderUnitAnimated:
 			Image: e6
 	E6:
 		Buildable:

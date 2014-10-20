@@ -180,7 +180,7 @@
 		Voice: InfantryVoice
 	TargetableUnit:
 		TargetTypes: Ground
-	RenderInfantry:
+	RenderUnitAnimated:
 	TakeCover:
 	WithDeathAnimation:
 	AutoTarget:

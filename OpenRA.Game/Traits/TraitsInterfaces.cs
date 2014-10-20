@@ -264,7 +264,7 @@ namespace OpenRA.Traits
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
 	public interface IBlocksBullets { }
-	public interface IRenderInfantrySequenceModifier
+	public interface IRenderUnitAnimatedSequenceModifier
 	{
 		bool IsModifyingSequence { get; }
 		string SequencePrefix { get; }

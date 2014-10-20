@@ -22,7 +22,7 @@ DOG:
 	Armament:
 		Weapon: DogJaw
 	AttackLeap:
-	RenderInfantry:
+	RenderUnitAnimated:
 		IdleAnimations: idle1,idle2
 	IgnoresDisguise:
 	DetectCloaked:
@@ -54,7 +54,7 @@ E1:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
+	RenderUnitAnimated:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 
@@ -86,7 +86,7 @@ E2:
 		FireDelay: 15
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
+	RenderUnitAnimated:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 	Explodes:
@@ -122,7 +122,7 @@ E3:
 		Weapon: Dragon
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
+	RenderUnitAnimated:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 
@@ -153,7 +153,7 @@ E4:
 		Weapon: Flamer
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
+	RenderUnitAnimated:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 
@@ -184,7 +184,7 @@ E6:
 		Type: building
 	TakeCover:
 	-AutoTarget:
-	RenderInfantry:
+	RenderUnitAnimated:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 
@@ -218,7 +218,7 @@ SPY:
 	Infiltrates:
 		Types: SpyInfiltrate
 	-AutoTarget:
-	-RenderInfantry:
+	-RenderUnitAnimated:
 	RenderDisguise:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
@@ -263,7 +263,7 @@ E7:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
+	RenderUnitAnimated:
 		IdleAnimations: idle1,idle2
 	AnnounceOnBuild:
 	AnnounceOnKill:
@@ -299,7 +299,7 @@ MEDI:
 		OutsideRangeCursor: heal
 	TakeCover:
 	-AutoTarget:
-	RenderInfantry:
+	RenderUnitAnimated:
 		IdleAnimations: idle1,idle2
 		AttackAnimation: heal
 
@@ -336,7 +336,7 @@ MECH:
 		CaptureTypes: husk
 	TakeCover:
 	-AutoTarget:
-	RenderInfantry:
+	RenderUnitAnimated:
 		IdleAnimations: idle1,idle2
 		AttackAnimation: heal
 
@@ -358,7 +358,7 @@ EINSTEIN:
 	-AutoTarget:
 	ProximityCaptor:
 		Types: CivilianInfantry
-	RenderInfantry:
+	RenderUnitAnimated:
 	ScaredyCat:
 
 DELPHI:
@@ -379,7 +379,7 @@ DELPHI:
 	-AutoTarget:
 	ProximityCaptor:
 		Types: CivilianInfantry
-	RenderInfantry:
+	RenderUnitAnimated:
 	ScaredyCat:
 
 CHAN:
@@ -473,7 +473,7 @@ SHOK:
 		Weapon: PortaTesla
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
+	RenderUnitAnimated:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 
@@ -509,7 +509,7 @@ SNIPER:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
+	RenderUnitAnimated:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 	Cloak:

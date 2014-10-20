@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new ScaredyCat(init.self, this); }
 	}
 
-	class ScaredyCat : ITick, INotifyIdle, INotifyDamage, INotifyAttack, ISpeedModifier, ISync, IRenderInfantrySequenceModifier
+	class ScaredyCat : ITick, INotifyIdle, INotifyDamage, INotifyAttack, ISpeedModifier, ISync, IRenderUnitAnimatedSequenceModifier
 	{
 		readonly ScaredyCatInfo info;
 		[Sync] readonly Actor self;
