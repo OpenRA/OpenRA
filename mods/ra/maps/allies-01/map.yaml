@@ -610,6 +610,7 @@ Rules:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+		Demolishable:
 	^Tank:
 		Tooltip:
 			GenericVisibility: Enemy
