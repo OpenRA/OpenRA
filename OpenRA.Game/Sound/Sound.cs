@@ -361,7 +361,7 @@ namespace OpenRA
 			return true;
 		}
 
-		public static bool PlayVoice(string phrase, Actor voicedUnit, string variant)
+		public static bool PlayVoice(string phrase, Actor voicedUnit, string variant, Player player = null)
 		{
 			if (voicedUnit == null || phrase == null)
 				return false;
@@ -371,9 +371,9 @@ namespace OpenRA
 				return false;
 
 			var type = mi.Voice.ToLowerInvariant();
-			return PlayPredefined(voicedUnit.World.Map.Rules, null, voicedUnit, type, phrase, variant, true, WPos.Zero, 1f, true);
+			return PlayPredefined(voicedUnit.World.Map.Rules, player, voicedUnit, type, phrase, variant, true, WPos.Zero, 1f, true);
 		}
-		
+
 		public static bool PlayVoiceLocal(string phrase, Actor voicedUnit, string variant, WPos pos, float volume)
 		{
 			if (voicedUnit == null || phrase == null)

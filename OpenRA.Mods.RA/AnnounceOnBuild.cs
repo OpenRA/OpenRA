@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 	{
 		public AnnounceOnBuild(Actor self)
 		{
-			Sound.PlayVoice("Build", self, self.Owner.Country.Race);
+			Sound.PlayVoice("Build", self, self.Owner.Country.Race, self.Owner);
 		}
 	}
 }
