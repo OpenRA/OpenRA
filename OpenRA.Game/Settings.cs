@@ -72,9 +72,6 @@ namespace OpenRA
 		public bool SanityCheckUnsyncedCode = false;
 		public int Samples = 25;
 		public bool IgnoreVersionMismatch = false;
-
-		public bool ShowFatalErrorDialog = true;
-		public string FatalErrorDialogFaq = "http://wiki.openra.net/FAQ";
 	}
 
 	public class GraphicSettings

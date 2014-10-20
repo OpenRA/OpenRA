@@ -438,13 +438,6 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Enable Network Discovery (UPnP)
-				Checkbox@CRASH_DIALOG_CHECKBOX:
-					X: 310
-					Y: 40
-					Width: 300
-					Height: 20
-					Font: Regular
-					Text: Show Fatal Error dialog
 				Checkbox@PERFTEXT_CHECKBOX:
 					X: 15
 					Y: 70
@@ -452,6 +445,13 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Show Performance Text
+				Checkbox@FETCH_NEWS_CHECKBOX:
+					X: 310
+					Y: 40
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Fetch Community News
 				Checkbox@PERFGRAPH_CHECKBOX:
 					X: 310
 					Y: 70
@@ -459,13 +459,6 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Show Performance Graph
-				Checkbox@FETCH_NEWS_CHECKBOX:
-					X: 15
-					Y: 100
-					Width: 300
-					Height: 20
-					Font: Regular
-					Text: Fetch Community News
 				Label@DEBUG_TITLE:
 					Y: 140
 					Width: PARENT_RIGHT

@@ -60,12 +60,6 @@ namespace OpenRA
 			var rpt = BuildExceptionReport(e).ToString();
 			Log.Write("exception", "{0}", rpt);
 			Console.Error.WriteLine(rpt);
-
-			if (Game.Settings.Debug.ShowFatalErrorDialog && !Game.Settings.Server.Dedicated)
-			{
-				Game.Renderer.Device.Dispose();
-				Platform.ShowFatalErrorDialog();
-			}
 		}
 
 		static StringBuilder BuildExceptionReport(Exception e)
