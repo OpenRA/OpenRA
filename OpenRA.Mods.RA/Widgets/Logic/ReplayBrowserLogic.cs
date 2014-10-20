@@ -624,7 +624,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void WatchReplay()
 		{
-			if (selectedReplay != null)
+			if (selectedReplay != null && selectedReplay.GameInfo.MapPreview.Status == MapStatus.Available)
 			{
 				Game.JoinReplay(selectedReplay.FilePath);
 				Ui.CloseWindow();
