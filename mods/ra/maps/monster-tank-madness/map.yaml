@@ -1530,7 +1530,7 @@ Actors:
 		Location: 32,56
 		Owner: BadGuy
 		Health: 0.6875
-	Actor479: silo
+	USSROutpostSilo: silo
 		Location: 37,61
 		Owner: BadGuy
 	Actor480: powr
