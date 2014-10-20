@@ -250,6 +250,7 @@ E7:
 		Range: 6c0
 	C4Demolition:
 		C4Delay: 45
+		Voice: Demolish
 	Passenger:
 		PipType: Red
 	Armament@PRIMARY:
@@ -264,6 +265,8 @@ E7:
 	TakeCover:
 	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	AnnounceOnBuild:
+	AnnounceOnKill:
 
 MEDI:
 	Inherits: ^Infantry

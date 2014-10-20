@@ -1338,6 +1338,8 @@ Rules:
 			Percentage: 0
 		InvulnerabilityUpgrade@UNKILLABLE:
 			RequiresUpgrade: unkillable
+	E7:
+		-Selectable:
 
 Sequences:
 
