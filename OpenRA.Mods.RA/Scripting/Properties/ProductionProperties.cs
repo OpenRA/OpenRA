@@ -94,10 +94,10 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Build the specified set of actors using a TD-style (per building) production queue. " +
-		      "The function will return true if production could be started, false otherwise. " +
-		      "If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
-		      "production of all actors has been completed.  The actors array is guaranteed to " +
-		      "only contain alive actors.")]
+			"The function will return true if production could be started, false otherwise. " +
+			"If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
+			"production of all actors has been completed.  The actors array is guaranteed to " +
+			"only contain alive actors.")]
 		public bool Build(string[] actorTypes, LuaFunction actionFunc = null)
 		{
 			if (triggers.Triggers[Trigger.OnProduction].Any())
@@ -199,10 +199,10 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Build the specified set of actors using classic (RA-style) production queues. " +
-		      "The function will return true if production could be started, false otherwise. " +
-		      "If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
-		      "production of all actors has been completed.  The actors array is guaranteed to " +
-		      "only contain alive actors.")]
+			"The function will return true if production could be started, false otherwise. " +
+			"If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
+			"production of all actors has been completed.  The actors array is guaranteed to " +
+			"only contain alive actors.")]
 		public bool Build(string[] actorTypes, LuaFunction actionFunc = null)
 		{
 			var typeToQueueMap = new Dictionary<string, string>();

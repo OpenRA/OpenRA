@@ -172,14 +172,14 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Call a function when this actor is added to the world. " +
-		      "The callback function will be called as func(Actor self).")]
+			"The callback function will be called as func(Actor self).")]
 		public void OnAddedToWorld(Actor a, LuaFunction func)
 		{
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnAddedToWorld, func, context);
 		}
 
 		[Desc("Call a function when this actor is removed from the world. " +
-		      "The callback function will be called as func(Actor self).")]
+			"The callback function will be called as func(Actor self).")]
 		public void OnRemovedFromWorld(Actor a, LuaFunction func)
 		{
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnRemovedFromWorld, func, context);
@@ -214,7 +214,7 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Call a function when this actor is captured. The callback function " +
-		      "will be called as func(Actor self, Actor captor, Player oldOwner, Player newOwner).")]
+			"will be called as func(Actor self, Actor captor, Player oldOwner, Player newOwner).")]
 		public void OnCapture(Actor a, LuaFunction func)
 		{
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnCapture, func, context);
@@ -279,7 +279,7 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Call a function when this actor is infiltrated. The callback function " +
-		      "will be called as func(Actor self, Actor infiltrator).")]
+			"will be called as func(Actor self, Actor infiltrator).")]
 		public void OnInfiltrated(Actor a, LuaFunction func)
 		{
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnInfiltrated, func, context);
