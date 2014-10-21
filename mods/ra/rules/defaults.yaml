@@ -640,3 +640,26 @@
 	RenderBuilding:
 		Palette: terrain
 
+^Crate:
+	Tooltip:
+		Name: Crate
+		GenericName: Crate
+	Crate:
+		Lifetime: 180
+		TerrainTypes: Clear, Rough, Road, Ore, Beach
+	RenderSprites:
+		Palette: effect
+	WithCrateBody:
+		Images: scrate
+		XmasImages: xcratea, xcrateb, xcratec, xcrated
+	Selectable:
+		Selectable: false
+		Bounds: 15,15,-1,-1
+	ProximityCaptor:
+		Types: Crate
+	BodyOrientation:
+	Parachutable:
+		KilledOnImpassableTerrain: false
+		ParachuteSequence: parach
+	Passenger:
+

@@ -57,14 +57,7 @@ MINV:
 		OccupiesSpace: true
 
 CRATE:
-	Tooltip:
-		Name: Crate
-	Crate:
-		Lifetime: 120
-		TerrainTypes: Clear, Rough, Road, Water, Ore, Beach
-	Parachutable:
-		KilledOnImpassableTerrain: false
-		ParachuteSequence: parach
+	Inherits: ^Crate
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 50
@@ -155,40 +148,26 @@ CRATE:
 		Notification: ironcur9.aud
 		Upgrades: invulnerability
 		Duration: 600
-	RenderSprites:
-		Palette: effect
-	WithCrateBody:
-		Images: scrate
-		XmasImages: xcratea, xcrateb, xcratec, xcrated
-	Selectable:
-		Selectable: false
-		Bounds: 15,15,-1,-1
-	ProximityCaptor:
-		Types: Crate
-	Passenger:
-	BodyOrientation:
 
 MONEYCRATE:
+	Inherits: ^Crate
 	Tooltip:
 		Name: Money Crate
-	Crate:
-		Lifetime: 180
-		TerrainTypes: Clear, Rough, Road, Ore, Beach
 	GiveCashCrateAction:
 		Amount: 500
 		SelectionShares: 1
 		UseCashTick: true
-	RenderSprites:
-		Palette: effect
 	WithCrateBody:
 		Images: wcrate
-		XmasImages: xcratea, xcrateb, xcratec, xcrated
-	Selectable:
-		Selectable: false
-		Bounds: 15,15,-1,-1
-	ProximityCaptor:
-		Types: Crate
-	BodyOrientation:
+
+HEALCRATE:
+	Inherits: ^Crate
+	Tooltip:
+		Name: Heal Crate
+	HealUnitsCrateAction:
+		Notification: heal2.aud
+		SelectionShares: 1
+		Effect: heal
 
 CAMERA:
 	Immobile:
