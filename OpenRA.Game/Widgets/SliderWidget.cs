@@ -20,7 +20,8 @@ namespace OpenRA.Widgets
 		public event Action<float> OnChange = _ => {};
 		public int Ticks = 0;
 		public int TrackHeight = 5;
-
+		public string Thumb = "slider-thumb";
+		public string Track = "slider-track";
 		public float MinimumValue = 0;
 		public float MaximumValue = 1;
 		public float Value = 0;
@@ -124,11 +125,11 @@ namespace OpenRA.Widgets
 			}
 
 			// Track
-			WidgetUtils.DrawPanel("slider-track", trackRect);
+			WidgetUtils.DrawPanel(Track, trackRect);
 
 			// Thumb
 			var thumbHover = Ui.MouseOverWidget == this && tr.Contains(Viewport.LastMousePos);
-			ButtonWidget.DrawBackground("scrollthumb", tr, IsDisabled(), isMoving, thumbHover, false);
+			ButtonWidget.DrawBackground(Thumb, tr, IsDisabled(), isMoving, thumbHover, false);
 		}
 	}
 }
