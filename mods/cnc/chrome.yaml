@@ -266,7 +266,50 @@ slider-track: chrome.png
 	corner-bl: 64,126,2,2
 	corner-br: 126,126,2,2
 
+slider-thumb: chrome.png
+	background: 2,194,60,60
+	border-r: 62,194,2,60
+	border-l: 0,194,2,60
+	border-b: 2,254,60,2
+	border-t: 2,192,60,2
+	corner-tl: 0,192,2,2
+	corner-tr: 62,192,2,2
+	corner-bl: 0,254,2,2
+	corner-br: 62,254,2,2
 
+slider-thumb-hover: chrome.png
+	background: 2,130,60,60
+	border-r: 62,130,2,60
+	border-l: 0,130,2,60
+	border-b: 2,190,60,2
+	border-t: 2,128,60,2
+	corner-tl: 0,128,2,2
+	corner-tr: 62,128,2,2
+	corner-bl: 0,190,2,2
+	corner-br: 62,190,2,2
+
+slider-thumb-disabled: chrome.png
+	background: 66,130,60,60
+	border-r: 126,130,2,60
+	border-l: 64,130,2,60
+	border-b: 66,190,60,2
+	border-t: 66,128,60,2
+	corner-tl: 64,128,2,2
+	corner-tr: 126,128,2,2
+	corner-bl: 64,190,2,2
+	corner-br: 126,190,2,2
+
+slider-thumb-pressed: chrome.png
+	background: 66,194,60,60
+	border-r: 126,194,2,60
+	border-l: 64,194,2,60
+	border-b: 66,254,60,2
+	border-t: 66,192,60,2
+	corner-tl: 64,192,2,2
+	corner-tr: 126,192,2,2
+	corner-bl: 64,254,2,2
+	corner-br: 126,254,2,2
+	
 # A copy of button
 checkbox: chrome.png
 	background: 2,194,60,60
