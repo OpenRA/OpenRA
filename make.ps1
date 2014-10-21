@@ -40,13 +40,14 @@ else
 if ($command -eq "all")
 {
 	$msBuild = FindMSBuild
+	$msBuildArguments = "/t:Rebuild /nr:false"
 	if ($msBuild -eq $null)
 	{
 		echo "Unable to locate an appropriate version of MSBuild."
 	}
 	else
 	{
-		$proc = Start-Process $msBuild /t:Rebuild -NoNewWindow -PassThru -Wait
+		$proc = Start-Process $msBuild $msBuildArguments -NoNewWindow -PassThru -Wait
 		if ($proc.ExitCode -ne 0)
 		{
 			echo "Build failed. If just the development tools failed to build, try installing Visual Studio. You may also still be able to run the game."
@@ -60,13 +61,14 @@ if ($command -eq "all")
 elseif ($command -eq "clean")
 {
 	$msBuild = FindMSBuild
+	$msBuildArguments = "/t:Clean /nr:false"
 	if ($msBuild -eq $null)
 	{
 		echo "Unable to locate an appropriate version of MSBuild."
 	}
 	else
 	{
-		$proc = Start-Process $msBuild /t:Clean -NoNewWindow -PassThru -Wait
+		$proc = Start-Process $msBuild $msBuildArguments -NoNewWindow -PassThru -Wait
 		rm *.dll # delete third party dependencies
 		rm *.config
 		rm mods/*/*.dll
@@ -129,5 +131,12 @@ else
 if ($args.Length -eq 0)
 {
 	echo "Press enter to continue."
-	[System.Console]::ReadKey($true) >$null
+	while ($true)
+	{
+		if ([System.Console]::KeyAvailable)
+		{
+			break
+		}
+		Start-Sleep -Milliseconds 50
+	}
 }
