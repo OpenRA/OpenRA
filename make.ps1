@@ -30,7 +30,7 @@ if ($args.Length -eq 0)
 	echo "                  'dependencies' commands to restore removed files."
 	echo "  test            Tests the default mods for errors."
 	echo ""
-	$command = Read-Host "Enter command"
+	$command = (Read-Host "Enter command").Split(' ', 2)
 }
 else
 {
@@ -74,19 +74,34 @@ elseif ($command -eq "clean")
 	}
 }
 elseif ($command -eq "version")
-{
-	$version = git name-rev --name-only --tags --no-undefined HEAD 2>$null
-	if ($version -eq $null)
+{	
+	if ($command.Length -gt 1)
 	{
-		$version = "git-" + (git rev-parse --short HEAD)
+		$version = $command[1]
 	}
-	$mods = @("mods/ra/mod.yaml", "mods/cnc/mod.yaml", "mods/d2k/mod.yaml", "mods/modchooser/mod.yaml")
-	foreach ($mod in $mods)
+	elseif (Get-Command 'git' -ErrorAction SilentlyContinue)
 	{
-		$replacement = (gc $mod) -Replace "Version:.*", ("Version: {0}" -f $version)
-		sc $mod $replacement
+		$version = git name-rev --name-only --tags --no-undefined HEAD 2>$null
+		if ($version -eq $null)
+		{
+			$version = "git-" + (git rev-parse --short HEAD)
+		}
 	}
-	echo ("Version strings set to '{0}'." -f $version)
+	else
+	{	
+		echo "Unable to locate Git. The version will remain unchanged."
+	}
+	
+	if ($version -ne $null)
+	{
+		$mods = @("mods/ra/mod.yaml", "mods/cnc/mod.yaml", "mods/d2k/mod.yaml", "mods/modchooser/mod.yaml")
+		foreach ($mod in $mods)
+		{
+			$replacement = (gc $mod) -Replace "Version:.*", ("Version: {0}" -f $version)
+			sc $mod $replacement
+		}
+		echo ("Version strings set to '{0}'." -f $version)
+	}
 }
 elseif ($command -eq "dependencies")
 {
