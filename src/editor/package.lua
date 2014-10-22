@@ -169,6 +169,8 @@ end
 function ide:RemoveMenuItem(id, menu)
   local _, menu, pos = ide:FindMenuItem(id, menu)
   if menu then
+    ide:GetMainFrame():Disconnect(id, wx.wxID_ANY, wx.wxEVT_COMMAND_MENU_SELECTED)
+    ide:GetMainFrame():Disconnect(id, wx.wxID_ANY, wx.wxEVT_UPDATE_UI)
     menu:Disconnect(id, wx.wxID_ANY, wx.wxEVT_COMMAND_MENU_SELECTED)
     menu:Disconnect(id, wx.wxID_ANY, wx.wxEVT_UPDATE_UI)
     menu:Remove(id)
