@@ -32,6 +32,7 @@ local events = {
   onEditorUserlistSelection = function(self, editor, event) end, -- return false
   onEditorUpdateUI =   function(self, editor, event) end, -- return false
   onEditorPainted =    function(self, editor, event) end, -- return false
+  onEditorCallTip =    function(self, editor, tip, value, eval) end, -- return false
   onFiletreeActivate = function(self, tree, event, item) end, -- return false
   onFiletreeLDown =    function(self, tree, event, item) end,
   onFiletreeRDown =    function(self, tree, event, item) end,

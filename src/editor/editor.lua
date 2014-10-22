@@ -378,10 +378,13 @@ function EditorCallTip(editor, pos, x, y)
           local mpos = wx.wxGetMousePosition()
           if mpos.x ~= x or mpos.y ~= y then return end
         end
-        callTipFitAndShow(editor, pos, val)
+        if PackageEventHandle("onEditorCallTip", editor, val, funccall or var, true) ~= false then
+          callTipFitAndShow(editor, pos, val)
+        end
       end)
     end
   elseif tip then
+    local oncalltip = PackageEventHandle("onEditorCallTip", editor, tip, funccall or var, false)
     -- only shorten if shown on mouse-over. Use shortcut to get full info.
     local shortento = 450
     local showtooltip = ide.frame.menuBar:FindItem(ID_SHOWTOOLTIP)
@@ -390,7 +393,7 @@ function EditorCallTip(editor, pos, x, y)
     if x and y and #tip > shortento then
       tip = tip:sub(1, shortento-#suffix):gsub("%W*%w*$","")..suffix
     end
-    callTipFitAndShow(editor, pos, tip)
+    if oncalltip ~= false then callTipFitAndShow(editor, pos, tip) end
   end
 end
 
@@ -928,7 +931,9 @@ function CreateEditor()
         local tip = GetTipInfo(editor,linetxtopos,ide.config.acandtip.shorttip)
         if tip then
           if editor:CallTipActive() then editor:CallTipCancel() end
-          callTipFitAndShow(editor, pos, tip)
+          if PackageEventHandle("onEditorCallTip", editor, tip) ~= false then
+            callTipFitAndShow(editor, pos, tip)
+          end
         end
 
       elseif ide.config.autocomplete then -- code completion prompt
