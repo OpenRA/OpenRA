@@ -31,21 +31,58 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			public readonly uint FileOffset;
 			public readonly byte Format;
 
-			public ShpTSFrame(Stream stream, Size frameSize)
+			public ShpTSFrame(Stream s, Size frameSize)
 			{
-				var x = stream.ReadUInt16();
-				var y = stream.ReadUInt16();
-				var width = stream.ReadUInt16();
-				var height = stream.ReadUInt16();
+				var x = s.ReadUInt16();
+				var y = s.ReadUInt16();
+				var width = s.ReadUInt16();
+				var height = s.ReadUInt16();
 
-				// Note: the mixed Integer / fp division is intentional, and required for calculating the correct offset.
-				Offset = new float2(x + width / 2 - 0.5f * frameSize.Width, y + height / 2 - 0.5f * frameSize.Height);
-				Size = new Size(width, height);
+				// Pad the dimensions to an even number to avoid issues with half-integer offsets
+				var dataWidth = width;
+				var dataHeight = height;
+				if (dataWidth % 2 == 1)
+					dataWidth += 1;
+
+				if (dataHeight % 2 == 1)
+					dataHeight += 1;
+
+				Offset = new int2(x + (dataWidth - frameSize.Width) / 2, y + (dataHeight - frameSize.Height) / 2);
+				Size = new Size(dataWidth, dataHeight);
 				FrameSize = frameSize;
 
-				Format = stream.ReadUInt8();
-				stream.Position += 11;
-				FileOffset = stream.ReadUInt32();
+				Format = s.ReadUInt8();
+				s.Position += 11;
+				FileOffset = s.ReadUInt32();
+
+				if (FileOffset == 0)
+					return;
+
+				// Parse the frame data as we go (but remember to jump back to the header before returning!)
+				var start = s.Position;
+				s.Position = FileOffset;
+
+				Data = new byte[dataWidth * dataHeight];
+
+				if (Format == 3)
+				{
+					// Format 3 provides RLE-zero compressed scanlines
+					for (var j = 0; j < height; j++)
+					{
+						var length = s.ReadUInt16() - 2;
+						Format2.DecodeInto(s.ReadBytes(length), Data, dataWidth * j);
+					}
+				}
+				else
+				{
+					// Format 2 provides uncompressed length-prefixed scanlines
+					// Formats 1 and 0 provide an uncompressed full-width row
+					var length = Format == 2 ? s.ReadUInt16() - 2 : width;
+					for (var j = 0; j < height; j++)
+						s.ReadBytes(Data, dataWidth * j, length);
+				}
+
+				s.Position = start;
 			}
 		}
 
@@ -99,45 +136,6 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			var frames = new ShpTSFrame[frameCount];
 			for (var i = 0; i < frames.Length; i++)
 				frames[i] = new ShpTSFrame(s, size);
-
-			for (var i = 0; i < frameCount; i++)
-			{
-				var f = frames[i];
-				if (f.FileOffset == 0)
-					continue;
-
-				s.Position = f.FileOffset;
-
-				var frameSize = f.Size.Width * f.Size.Height;
-
-				// Uncompressed
-				if (f.Format == 1 || f.Format == 0)
-					f.Data = s.ReadBytes(frameSize);
-
-				// Uncompressed scanlines
-				else if (f.Format == 2)
-				{
-					f.Data = new byte[frameSize];
-					for (var j = 0; j < f.Size.Height; j++)
-					{
-						var length = s.ReadUInt16() - 2;
-						var offset = f.Size.Width * j;
-						s.ReadBytes(f.Data, offset, length);
-					}
-				}
-
-				// RLE-zero compressed scanlines
-				else if (f.Format == 3)
-				{
-					f.Data = new byte[frameSize];
-					for (var j = 0; j < f.Size.Height; j++)
-					{
-						var length = s.ReadUInt16() - 2;
-						var offset = f.Size.Width * j;
-						Format2.DecodeInto(s.ReadBytes(length), f.Data, offset);
-					}
-				}
-			}
 
 			s.Position = start;
 			return frames;
