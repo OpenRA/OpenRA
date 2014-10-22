@@ -104,7 +104,14 @@ namespace OpenRA.Editor
 
 		public byte[][] Data(ushort id)
 		{
-			return templates[id];
+			byte[][] template;
+			if (!templates.TryGetValue(id, out template))
+			{
+				Console.WriteLine("warning: Unknown tile template {0}", id);
+				return null;
+			}
+
+			return template;
 		}
 	}
 }
