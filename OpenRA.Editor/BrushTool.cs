@@ -41,7 +41,7 @@ namespace OpenRA.Editor
 					if (surface.Map.Contains(cell))
 					{
 						var z = u + v * template.Size.X;
-						if (tile[z].Length > 0)
+						if (tile != null && tile[z].Length > 0)
 						{
 							var index = template.PickAny ? (byte)((u + pos.X) % 4 + ((v + pos.Y) % 4) * 4) : (byte)z;
 							surface.Map.MapTiles.Value[cell] = new TerrainTile(brushTemplate.N, index);
