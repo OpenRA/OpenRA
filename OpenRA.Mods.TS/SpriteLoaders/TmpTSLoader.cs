@@ -24,34 +24,69 @@ namespace OpenRA.Mods.TS.SpriteLoaders
 		{
 			public Size Size { get; private set; }
 			public Size FrameSize { get { return Size; } }
-			public float2 Offset { get { return float2.Zero; } }
+			public float2 Offset { get; private set; }
 			public byte[] Data { get; set; }
 			public bool DisableExportPadding { get { return false; } }
 
-			public TmpTSFrame(Stream s, Size size)
+			public TmpTSFrame(Stream s, Size size, int u, int v)
 			{
 				if (s.Position != 0)
 				{
 					Size = size;
 
-					// Ignore tile header for now
-					s.Position += 52;
+					// Skip unnecessary header data
+					s.Position += 20;
 
-					Data = new byte[size.Width * size.Height];
+					// Extra data is specified relative to the top-left of the template
+					var extraX = s.ReadInt32() - (u - v) * size.Width / 2;
+					var extraY = s.ReadInt32() - (u + v) * size.Height / 2;
+					var extraWidth = s.ReadInt32();
+					var extraHeight = s.ReadInt32();
+					var flags = s.ReadUInt32();
+
+					var bounds = new Rectangle(0, 0, size.Width, size.Height);
+					if ((flags & 0x01) != 0)
+					{
+						var extraBounds = new Rectangle(extraX, extraY, extraWidth, extraHeight);
+						bounds = Rectangle.Union(bounds, extraBounds);
+
+						Offset = new float2(bounds.X + 0.5f * (bounds.Width - size.Width), bounds.Y + 0.5f * (bounds.Height - size.Height));
+						Size = new Size(bounds.Width, bounds.Height);
+					}
+
+					// Skip unnecessary header data
+					s.Position += 12;
+
+					Data = new byte[bounds.Width * bounds.Height];
 
 					// Unpack tile data
 					var width = 4;
-					for (var i = 0; i < size.Height; i++)
+					for (var j = 0; j < size.Height; j++)
 					{
-						var start = i * size.Width + (size.Width - width) / 2;
-						for (var j = 0; j < width; j++)
-							Data[start + j] = s.ReadUInt8();
+						var start = (j - bounds.Y) * bounds.Width + (size.Width - width) / 2 - bounds.X;
+						for (var i = 0; i < width; i++)
+							Data[start + i] = s.ReadUInt8();
 
-						width += (i < size.Height / 2 - 1 ? 1 : -1) * 4;
+						width += (j < size.Height / 2 - 1 ? 1 : -1) * 4;
 					}
 
-					// Ignore Z-data for now
-					// Ignore extra data for now
+					// TODO: Load Z-data once the renderer can handle it
+					s.Position += size.Width * size.Height / 2;
+
+					if ((flags & 0x01) == 0)
+						return;
+
+					// Load extra data (cliff faces, etc)
+					for (var j = 0; j < extraHeight; j++)
+					{
+						var start = (j + extraY - bounds.Y) * bounds.Width + extraX - bounds.X;
+						for (var i = 0; i < extraWidth; i++)
+						{
+							var extra = s.ReadUInt8();
+							if (extra != 0)
+								Data[start + i] = extra;
+						}
+					}
 				}
 				else
 					Data = new byte[0];
@@ -96,10 +131,15 @@ namespace OpenRA.Mods.TS.SpriteLoaders
 				offsets[i] = s.ReadUInt32();
 
 			var tiles = new TmpTSFrame[offsets.Length];
-			for (var i = 0; i < offsets.Length; i++)
+
+			for (var j = 0; j < templateHeight; j++)
 			{
-				s.Position = offsets[i];
-				tiles[i] = new TmpTSFrame(s, size);
+				for (var i = 0; i < templateWidth; i++)
+				{
+					var k = j * templateWidth + i;
+					s.Position = offsets[k];
+					tiles[k] = new TmpTSFrame(s, size, i, j);
+				}
 			}
 
 			s.Position = start;

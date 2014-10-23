@@ -31,7 +31,7 @@ namespace OpenRA.Graphics
 			foreach (var cell in map.Cells)
 			{
 				var tile = wr.Theater.TileSprite(map.MapTiles.Value[cell]);
-				var pos = wr.ScreenPosition(map.CenterOfCell(cell)) - 0.5f * tile.size;
+				var pos = wr.ScreenPosition(map.CenterOfCell(cell)) + tile.offset - 0.5f * tile.size;
 				Util.FastCreateQuad(vertices, pos, tile, terrainPalette, nv, tile.size);
 				nv += 4;
 			}
