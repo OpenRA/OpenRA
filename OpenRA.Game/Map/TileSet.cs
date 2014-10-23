@@ -44,6 +44,8 @@ namespace OpenRA
 
 	public class TileTemplate
 	{
+		static readonly string[] Fields = { "Id", "Image", "Frames", "Size", "PickAny", "Category" };
+
 		public readonly ushort Id;
 		public readonly string Image;
 		public readonly int[] Frames;
@@ -113,8 +115,6 @@ namespace OpenRA
 			return tile;
 		}
 
-		static readonly string[] Fields = { "Id", "Image", "Frames", "Size", "PickAny" };
-
 		public TerrainTileInfo this[int index] { get { return tileInfo[index]; } }
 
 		public bool Contains(int index)
@@ -148,6 +148,8 @@ namespace OpenRA
 
 	public class TileSet
 	{
+		static readonly string[] Fields = { "Name", "Id", "SheetSize", "Palette", "PlayerPalette", "Extensions", "WaterPaletteRotationBase", "EditorTemplateOrder" };
+
 		public readonly string Name;
 		public readonly string Id;
 		public readonly int SheetSize = 512;
@@ -162,8 +164,6 @@ namespace OpenRA
 		readonly Dictionary<string, byte> terrainIndexByType = new Dictionary<string, byte>();
 		readonly byte defaultWalkableTerrainIndex;
 
-		static readonly string[] Fields = { "Name", "Id", "SheetSize", "Palette", "Extensions" };
-
 		public TileSet(ModData modData, string filepath)
 		{
 			var yaml = MiniYaml.DictFromFile(filepath);
@@ -176,8 +176,10 @@ namespace OpenRA
 				.Select(y => new TerrainTypeInfo(y))
 				.OrderBy(tt => tt.Type)
 				.ToArray();
+
 			if (TerrainInfo.Length >= byte.MaxValue)
 				throw new InvalidDataException("Too many terrain types.");
+
 			for (byte i = 0; i < TerrainInfo.Length; i++)
 			{
 				var tt = TerrainInfo[i].Type;
@@ -197,33 +199,30 @@ namespace OpenRA
 
 		public TileSet(string name, string id, string palette, string[] extensions, TerrainTypeInfo[] terrainInfo)
 		{
-			this.Name = name;
-			this.Id = id;
-			this.Palette = palette;
-			this.Extensions = extensions;
-			this.TerrainInfo = terrainInfo;
+			Name = name;
+			Id = id;
+			Palette = palette;
+			Extensions = extensions;
+			TerrainInfo = terrainInfo;
+
 			if (TerrainInfo.Length >= byte.MaxValue)
 				throw new InvalidDataException("Too many terrain types.");
+
 			for (byte i = 0; i < terrainInfo.Length; i++)
 			{
 				var tt = terrainInfo[i].Type;
-
 				if (terrainIndexByType.ContainsKey(tt))
 					throw new InvalidDataException("Duplicate terrain type '{0}'.".F(tt));
 
 				terrainIndexByType.Add(tt, i);
 			}
+
 			defaultWalkableTerrainIndex = GetTerrainIndex("Clear");
 		}
 
 		public TerrainTypeInfo this[byte index]
 		{
 			get { return TerrainInfo[index]; }
-		}
-
-		public int TerrainsCount
-		{
-			get { return TerrainInfo.Length; }
 		}
 
 		public bool TryGetTerrainIndex(string type, out byte index)
@@ -282,11 +281,6 @@ namespace OpenRA
 			root.Add(new MiniYamlNode("Templates", null,
 				Templates.Select(t => new MiniYamlNode("Template@{0}".F(t.Value.Id), t.Value.Save(this))).ToList()));
 			root.WriteToFile(filepath);
-		}
-
-		public TerrainTypeInfo GetTerrainInfo(TerrainTile r)
-		{
-			return this[GetTerrainIndex(r)];
 		}
 	}
 }

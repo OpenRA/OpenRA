@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Move
 
 		TerrainInfo[] LoadTilesetSpeeds(TileSet tileSet)
 		{
-			var info = new TerrainInfo[tileSet.TerrainsCount];
+			var info = new TerrainInfo[tileSet.TerrainInfo.Length];
 			for (var i = 0; i < info.Length; i++)
 				info[i] = TerrainInfo.Impassable;
 
