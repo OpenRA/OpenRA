@@ -275,6 +275,9 @@ namespace OpenRA.Editor
 						var vj = v * ChunkSize + j;
 						var tr = Map.MapTiles.Value[ui, vj];
 						var tile = TileSetRenderer.Data(tr.Type);
+						if (tile == null)
+							continue;
+
 						var index = (tr.Index < tile.Length) ? tr.Index : (byte)0;
 						var rawImage = tile[index];
 						for (var x = 0; x < TileSetRenderer.TileSize; x++)
