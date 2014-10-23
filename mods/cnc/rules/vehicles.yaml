@@ -233,7 +233,7 @@ BGGY:
 BIKE:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 500
+		Cost: 600
 	Tooltip:
 		Name: Recon Bike
 		Description: Fast scout vehicle, armed with \nrockets. \nCan attack Aircraft.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
