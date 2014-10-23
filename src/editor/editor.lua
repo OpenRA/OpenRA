@@ -430,7 +430,6 @@ function IndicateFunctionsOnly(editor, lines, linee)
   if not (edcfg.showfncall and editor.spec and editor.spec.isfncall)
   or not (sindic and sindic.fncall and sindic.fncall.st ~= wxstc.wxSTC_INDIC_HIDDEN) then return end
 
-  local es = editor:GetEndStyled()
   local lines = lines or 0
   local linee = linee or editor:GetLineCount()-1
 
@@ -511,7 +510,9 @@ local function indicateFindInstances(editor, name, pos)
   return this and instances[#instances] or {}
 end
 
-function IndicateAll(editor, lines, linee)
+function IndicateAll(editor, lines)
+  if not ide.config.autoanalyzer then return end
+
   local d = delayed[editor]
   delayed[editor] = nil -- assume this can be finished for now
 
@@ -656,8 +657,6 @@ function IndicateAll(editor, lines, linee)
   end
   return needmore -- request more events if still need to work
 end
-
-if not ide.config.autoanalyzer then IndicateAll = IndicateFunctionsOnly end
 
 -- ----------------------------------------------------------------------------
 -- Create an editor
@@ -1085,9 +1084,9 @@ function CreateEditor()
       for _,iv in ipairs(editor.ev) do
         local line = editor:LineFromPosition(iv[1])
         if not minupdated or line < minupdated then minupdated = line end
-        local ok, res = pcall(IndicateAll, editor,line,line+iv[2])
+        local ok, res = pcall(IndicateAll, editor, line)
         if not ok then DisplayOutputLn("Internal error: ",res,line,line+iv[2]) end
-        if IndicateAll ~= IndicateFunctionsOnly then IndicateFunctionsOnly(editor,line,line+iv[2]) end
+        IndicateFunctionsOnly(editor,line,line+iv[2])
       end
       local firstvisible = editor:DocLineFromVisible(editor:GetFirstVisibleLine())
       local lastline = math.min(editor:GetLineCount(),
