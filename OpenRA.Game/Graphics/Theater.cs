@@ -42,7 +42,13 @@ namespace OpenRA.Graphics
 			{
 				var allFrames = frameCache[t.Value.Image];
 				var frames = t.Value.Frames != null ? t.Value.Frames.Select(f => allFrames[f]).ToArray() : allFrames;
-				templates.Add(t.Value.Id, frames.Select(f => sheetBuilder.Add(f)).ToArray());
+				var sprites = frames.Select(f => sheetBuilder.Add(f));
+
+				// Ignore the offsets baked into R8 sprites
+				if (tileset.IgnoreTileSpriteOffsets)
+					sprites = sprites.Select(s => new Sprite(s.sheet, s.bounds, float2.Zero, s.channel, s.blendMode));
+
+				templates.Add(t.Value.Id, sprites.ToArray());
 			}
 
 			// 1x1px transparent tile
