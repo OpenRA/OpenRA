@@ -322,6 +322,21 @@ local function getValAtPosition(editor, pos)
   return var, funccall
 end
 
+local function formatUpToX(s)
+  local x = math.max(20, ide.config.acandtip.width)
+  local splitstr = "([ \t]*)(%S*)([ \t]*)(\n?)"
+  local t = {""}
+  for prefix, word, suffix, newline in s:gmatch(splitstr) do
+    if #(t[#t]) + #prefix + #word > x and #t > 0 then
+      table.insert(t, word..suffix)
+    else
+      t[#t] = t[#t]..prefix..word..suffix
+    end
+    if #newline > 0 then table.insert(t, "") end
+  end
+  return table.concat(t, "\n")
+end
+
 local function callTipFitAndShow(editor, pos, tip)
   local point = editor:PointFromPosition(pos)
   local height = editor:TextHeight(pos)
@@ -333,7 +348,7 @@ local function callTipFitAndShow(editor, pos, tip)
   -- find the longest line in terms of width in pixels.
   local maxwidth = 0
   local lines = {}
-  for line in tip:gmatch("[^\n]*\n?") do
+  for line in formatUpToX(tip):gmatch("[^\n]*\n?") do
     local width = editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, line)
     if width > maxwidth then maxwidth = width end
     table.insert(lines, line)
@@ -367,9 +382,9 @@ function EditorCallTip(editor, pos, x, y)
   -- if this is a value type rather than a function/method call, then use
   -- full match to avoid calltip about coroutine.status for "status" vars
   local tip = GetTipInfo(editor, funccall or var, false, not funccall)
+  local limit = 450
   if ide.debugger and ide.debugger.server then
     if var then
-      local limit = 128
       ide.debugger.quickeval(var, function(val)
         if #val > limit then val = val:sub(1, limit-3).."..." end
         -- check if the mouse position is specified and the mouse has moved,
@@ -386,12 +401,11 @@ function EditorCallTip(editor, pos, x, y)
   elseif tip then
     local oncalltip = PackageEventHandle("onEditorCallTip", editor, tip, funccall or var, false)
     -- only shorten if shown on mouse-over. Use shortcut to get full info.
-    local shortento = 450
     local showtooltip = ide.frame.menuBar:FindItem(ID_SHOWTOOLTIP)
     local suffix = "...\n"
         ..TR("Use '%s' to see full description."):format(showtooltip:GetLabel())
-    if x and y and #tip > shortento then
-      tip = tip:sub(1, shortento-#suffix):gsub("%W*%w*$","")..suffix
+    if x and y and #tip > limit then
+      tip = tip:sub(1, limit-#suffix):gsub("%W*%w*$","")..suffix
     end
     if oncalltip ~= false then callTipFitAndShow(editor, pos, tip) end
   end

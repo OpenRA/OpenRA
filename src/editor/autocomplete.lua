@@ -111,24 +111,9 @@ end
 -- ToolTip and reserved words list
 -- also fixes function descriptions
 
-local function formatUpToX(s, x)
-  local splitstr = "([ \t]*)(%S*)([ \t]*)(\n?)"
-  local t = {""}
-  for prefix, word, suffix, newline in s:gmatch(splitstr) do
-    if #(t[#t]) + #prefix + #word > x and #t > 0 then
-      table.insert(t, word..suffix)
-    else
-      t[#t] = t[#t]..prefix..word..suffix
-    end
-    if #newline > 0 then table.insert(t, "") end
-  end
-  return table.concat(t, "\n")
-end
-
 local function fillTips(api,apibasename)
   local apiac = api.ac
   local tclass = api.tip
-  local tipwidth = math.max(20, ide.config.acandtip.width)
 
   tclass.staticnames = {}
   tclass.keys = {}
@@ -152,8 +137,8 @@ local function fillTips(api,apibasename)
 
       if info.type == "function" or info.type == "method" or info.type == "value" then
         local frontname = (info.returns or "(?)").." "..fullkey.." "..(info.args or "(?)")
-        frontname = formatUpToX(frontname:gsub("\n"," "):gsub("\t",""), tipwidth)
-        local description = formatUpToX(info.description or "", tipwidth)
+        frontname = frontname:gsub("\n"," "):gsub("\t","")
+        local description = info.description or ""
 
         -- build info
         local inf = ((info.type == "value" and "" or frontname.."\n")
