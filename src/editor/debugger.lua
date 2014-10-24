@@ -714,7 +714,7 @@ end
 local function nameOutputTab(name)
   local nbk = ide.frame.bottomnotebook
   local index = nbk:GetPageIndex(ide:GetOutput())
-  if index then nbk:SetPageText(index, name) end
+  if index ~= -1 then nbk:SetPageText(index, name) end
 end
 
 debugger.handle = function(command, server, options)
