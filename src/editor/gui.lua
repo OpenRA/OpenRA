@@ -291,7 +291,9 @@ local function addDND(notebook)
       local notebookfrom = event:GetDragSource()
       if notebookfrom ~= ide.frame.notebook then
         -- disable cross-notebook movement of specific tabs
-        local winid = notebookfrom:GetPage(event:GetSelection()):GetId()
+        local win = notebookfrom:GetPage(event:GetSelection())
+        if not win then return end
+        local winid = win:GetId()
         if winid == ide:GetOutput():GetId()
         or winid == ide:GetConsole():GetId()
         or winid == ide:GetProjectTree():GetId()
