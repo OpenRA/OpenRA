@@ -56,8 +56,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Red Alert Lua scripts", "{B35D533F-BEB6-4674-A466-324EEFD97259}"
 	ProjectSection(SolutionItems) = preProject
-		mods\ra\maps\allies-01-classic\allies01.lua = mods\ra\maps\allies-01-classic\allies01.lua
-		mods\ra\maps\allies-02-classic\allies02.lua = mods\ra\maps\allies-02-classic\allies02.lua
+		mods\ra\maps\allies-01\allies01.lua = mods\ra\maps\allies-01\allies01.lua
+		mods\ra\maps\allies-02\allies02.lua = mods\ra\maps\allies-02\allies02.lua
+		mods\ra\maps\allies-03a\allies03a.lua = mods\ra\maps\allies-03a\allies03a.lua
 		mods\ra\maps\desert-shellmap\desert-shellmap.lua = mods\ra\maps\desert-shellmap\desert-shellmap.lua
 		mods\ra\maps\intervention\intervention.lua = mods\ra\maps\intervention\intervention.lua
 		mods\ra\maps\fort-lonestar\fort-lonestar.lua = mods\ra\maps\fort-lonestar\fort-lonestar.lua
