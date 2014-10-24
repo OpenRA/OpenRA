@@ -6,7 +6,7 @@ GDIReinforcementsPart1 = { "jeep", "jeep" }
 GDIReinforcementsPart2 = { "e2", "e2", "e2", "e2", "e2" }
 TownAttackWave1 = { "bggy", "bggy" }
 TownAttackWave2 = { "ltnk", "ltnk" }
-TownAttackWave3 = { "e1", "e1", "e1", "e1", "e3", "e3", "e3", "e3" }
+TownAttackWave3 = { "e1", "e1", "e1", "e3", "e3", "e3" }
 TownAttackWpts = { waypoint1, waypoint2 }
 
 Civvie1Wpts = { waypoint3, waypoint17 }
@@ -15,7 +15,7 @@ Civvie2Wpts = { waypoint26, waypoint3, waypoint9, waypoint4, waypoint5, waypoint
 FollowCivvieWpts = function(actor, wpts)
 	Utils.Do(wpts, function(wpt)
 		actor.Move(wpt.Location, 2)
-		actor.Wait(Utils.Seconds(2))
+		actor.Wait(DateTime.Seconds(2))
 	end)
 end
 
@@ -36,22 +36,22 @@ TownAttackAction = function(actor)
 end
 
 AttackTown = function()
-	Reinforcements.Reinforce(nod, TownAttackWave1, { NodReinfEntry.Location, waypoint0.Location }, Utils.Seconds(0.25), TownAttackAction)
-	Trigger.AfterDelay(Utils.Seconds(2), function()
-		Reinforcements.Reinforce(nod, TownAttackWave2, { NodReinfEntry.Location, waypoint0.Location }, Utils.Seconds(1), TownAttackAction)
+	Reinforcements.Reinforce(nod, TownAttackWave1, { NodReinfEntry.Location, waypoint0.Location }, DateTime.Seconds(0.25), TownAttackAction)
+	Trigger.AfterDelay(DateTime.Seconds(2), function()
+		Reinforcements.Reinforce(nod, TownAttackWave2, { NodReinfEntry.Location, waypoint0.Location }, DateTime.Seconds(1), TownAttackAction)
 	end)
-	Trigger.AfterDelay(Utils.Seconds(4), function()
-		Reinforcements.Reinforce(nod, TownAttackWave3, { NodReinfEntry.Location, waypoint0.Location }, Utils.Seconds(1), TownAttackAction)
+	Trigger.AfterDelay(DateTime.Seconds(4), function()
+		Reinforcements.Reinforce(nod, TownAttackWave3, { NodReinfEntry.Location, waypoint0.Location }, DateTime.Seconds(1), TownAttackAction)
 	end)
 end
 
 SendGDIReinforcements = function()
-	Reinforcements.Reinforce(player, GDIReinforcementsPart1, { GDIReinfEntry1.Location, waypoint12.Location }, Utils.Seconds(1), function(actor)
+	Reinforcements.Reinforce(player, GDIReinforcementsPart1, { GDIReinfEntry1.Location, waypoint12.Location }, DateTime.Seconds(1), function(actor)
 		Media.PlaySpeechNotification(player, "Reinforce")
 		actor.Move(waypoint10.Location)
 		actor.Stance = "Defend"
 	end)
-	Trigger.AfterDelay(Utils.Seconds(5), function()
+	Trigger.AfterDelay(DateTime.Seconds(5), function()
 		Reinforcements.ReinforceWithTransport(player, "apc", GDIReinforcementsPart2, { GDIReinfEntry2.Location, waypoint13.Location }, nil, function(apc, team)
 			Media.PlaySpeechNotification(player, "Reinforce")
 			apc.Move(GDIUnloadWpt.Location)
@@ -81,14 +81,14 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "Win")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlayMovieFullscreen("burdet1.vqa")
 		end)
 	end)
 
 	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlayMovieFullscreen("gameover.vqa")
 		end)
 	end)
@@ -97,15 +97,19 @@ WorldLoaded = function()
 	gdiObjective1 = player.AddPrimaryObjective("Defend the town of Bialystok")
 	gdiObjective2 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
 
+	townAttackTrigger = false
 	Trigger.OnExitedFootprint(TownAttackTrigger, function(a, id)
-		if a.Owner == player then
+		if not townAttackTrigger and a.Owner == player then
+			townAttackTrigger = true
 			Trigger.RemoveFootprintTrigger(id)
 			AttackTown()
 		end
 	end)
 
+	gdiReinforcementsTrigger = false
 	Trigger.OnEnteredFootprint(GDIReinforcementsTrigger, function(a, id)
-		if a.Owner == player then
+		if not gdiReinforcementsTrigger and a.Owner == player then
+			gdiReinforcementsTrigger = true
 			Trigger.RemoveFootprintTrigger(id)
 			SendGDIReinforcements()
 		end

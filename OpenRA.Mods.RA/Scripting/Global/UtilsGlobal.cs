@@ -89,23 +89,5 @@ namespace OpenRA.Mods.RA.Scripting
 
 			return context.World.SharedRandom.Next(low, high);
 		}
-
-		[Desc("Returns the center of a cell in world coordinates.")]
-		public WPos CenterOfCell(CPos cell)
-		{
-			return context.World.Map.CenterOfCell(cell);
-		}
-
-		[Desc("Converts the number of seconds into game time (ticks).")]
-		public int Seconds(int seconds)
-		{
-			return seconds * 25;
-		}
-
-		[Desc("Converts the number of minutes into game time (ticks).")]
-		public int Minutes(int minutes)
-		{
-			return Seconds(minutes * 60);
-		}
 	}
 }

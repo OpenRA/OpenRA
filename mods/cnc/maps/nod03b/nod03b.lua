@@ -26,7 +26,7 @@ end
 InsertNodUnits = function()
 	Reinforcements.Reinforce(player, { "mcv" }, { McvEntry.Location, McvDeploy.Location })
 	Reinforcements.Reinforce(player, NodUnits, { NodEntry.Location, NodRallypoint.Location })
-	Trigger.AfterDelay(Utils.Seconds(15), function()
+	Trigger.AfterDelay(DateTime.Seconds(15), function()
 		Reinforcements.Reinforce(player, Engineers, { McvEntry.Location, PlayerBase.Location })
 	end)
 end
@@ -47,14 +47,14 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "Win")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlayMovieFullscreen("desflees.vqa")
 		end)
 	end)
 
 	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlayMovieFullscreen("flag.vqa")
 		end)
 	end)
@@ -65,15 +65,15 @@ WorldLoaded = function()
 
 	Trigger.OnKilled(TechCenter, function() player.MarkFailedObjective(nodObjective1) end)
 	Trigger.OnCapture(TechCenter, function()
-		Trigger.AfterDelay(Utils.Seconds(2), function()
+		Trigger.AfterDelay(DateTime.Seconds(2), function()
 			player.MarkCompletedObjective(nodObjective1)
 		end)
 	end)
 
 	InsertNodUnits()
-	Trigger.AfterDelay(Utils.Seconds(40), function() SendAttackWave(FirstAttackWaveUnits, FirstAttackWave) end)
-	Trigger.AfterDelay(Utils.Seconds(80), function() SendAttackWave(SecondAttackWaveUnits, SecondAttackWave) end)
-	Trigger.AfterDelay(Utils.Seconds(140), function() SendAttackWave(ThirdAttackWaveUnits, FirstAttackWave) end)
+	Trigger.AfterDelay(DateTime.Seconds(40), function() SendAttackWave(FirstAttackWaveUnits, FirstAttackWave) end)
+	Trigger.AfterDelay(DateTime.Seconds(80), function() SendAttackWave(SecondAttackWaveUnits, SecondAttackWave) end)
+	Trigger.AfterDelay(DateTime.Seconds(140), function() SendAttackWave(ThirdAttackWaveUnits, FirstAttackWave) end)
 
 end
 

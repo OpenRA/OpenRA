@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		[ScriptActorPropertyActivity]
 		[Desc("Add a primary mission objective for this player. The function returns the " +
-		      "ID of the newly created objective, so that it can be referred to later.")]
+			"ID of the newly created objective, so that it can be referred to later.")]
 		public int AddPrimaryObjective(string description)
 		{
 			return mo.Add(player, description, ObjectiveType.Primary);
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		[ScriptActorPropertyActivity]
 		[Desc("Add a secondary mission objective for this player. The function returns the " +
-		      "ID of the newly created objective, so that it can be referred to later.")]
+			"ID of the newly created objective, so that it can be referred to later.")]
 		public int AddSecondaryObjective(string description)
 		{
 			return mo.Add(player, description, ObjectiveType.Secondary);

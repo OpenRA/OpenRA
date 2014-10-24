@@ -17,7 +17,7 @@ SendInsertionHelicopter = function()
 end
 
 SendJeeps = function()
-	Reinforcements.Reinforce(player, JeepReinforcements, InsertionPath, Utils.Seconds(2))
+	Reinforcements.Reinforce(player, JeepReinforcements, InsertionPath, DateTime.Seconds(2))
 	Media.PlaySpeechNotification(player, "ReinforcementsArrived")
 end
 
@@ -28,8 +28,8 @@ RunInitialActivities = function()
 	Patrol3.Hunt()
 	Patrol4.Hunt()
 	Harvester.FindResources()
-	Civilian1.Wait(Utils.Seconds(6))
-	Civilian2.Wait(Utils.Seconds(6))
+	Civilian1.Wait(DateTime.Seconds(6))
+	Civilian2.Wait(DateTime.Seconds(6))
 	Civilian1.Hunt()
 	Civilian2.Hunt()
 end
@@ -37,21 +37,21 @@ end
 LabGuardsKilled = function()
 	CreateEinstein()
 
-	Trigger.AfterDelay(Utils.Seconds(2), function()
+	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		Actor.Create(FlareType, true, { Owner = england, Location = ExtractionFlarePoint.Location })
 		Media.PlaySpeechNotification(player, "SignalFlareNorth")
 		SendExtractionHelicopter()
 	end)
 
-	Trigger.AfterDelay(Utils.Seconds(10), function()
+	Trigger.AfterDelay(DateTime.Seconds(10), function()
 		Media.PlaySpeechNotification(player, "AlliedReinforcementsArrived")
 		Actor.Create("camera", true, { Owner = player, Location = CruiserCameraPoint.Location })
 		SendCruisers()
 	end)
 
-	Trigger.AfterDelay(Utils.Seconds(12), function()
+	Trigger.AfterDelay(DateTime.Seconds(12), function()
 		for i = 0, 2 do
-			Trigger.AfterDelay(Utils.Seconds(i), function()
+			Trigger.AfterDelay(DateTime.Seconds(i), function()
 				Media.PlaySoundNotification(player, "AlertBuzzer")
 			end)
 		end
@@ -100,7 +100,7 @@ RescueFailed = function()
 end
 
 OilPumpDestroyed = function()
-	Trigger.AfterDelay(Utils.Seconds(5), SendJeeps)
+	Trigger.AfterDelay(DateTime.Seconds(5), SendJeeps)
 end
 
 CiviliansKilled = function()
@@ -116,13 +116,13 @@ CreateEinstein = function()
 	einstein.Scatter()
 	Trigger.OnKilled(einstein, RescueFailed)
 	ExtractObjective = player.AddPrimaryObjective("Wait for the helicopter and extract Einstein.")
-	Trigger.AfterDelay(Utils.Seconds(1), function() Media.PlaySpeechNotification(player, "TargetFreed") end)
+	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(player, "TargetFreed") end)
 end
 
 HelicopterGone = function()
 	if not heli.IsDead then
 		Media.PlaySpeechNotification(player, "TargetRescued")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			player.MarkCompletedObjective(ExtractObjective)
 			player.MarkCompletedObjective(SurviveObjective)
 			ussr.MarkFailedObjective(DefendObjective)
@@ -135,14 +135,14 @@ end
 
 MissionAccomplished = function()
 	Media.PlaySpeechNotification(player, "Win")
-	--Trigger.AfterDelay(Utils.Seconds(1), function()
+	--Trigger.AfterDelay(DateTime.Seconds(1), function()
 		--Media.PlayMovieFullscreen("snowbomb.vqa")  -- https://github.com/OpenRA/OpenRA/issues/4224
 	--end)
 end
 
 MissionFailed = function()
 	Media.PlaySpeechNotification(player, "Lose")
-	Trigger.AfterDelay(Utils.Seconds(1), function() Media.PlayMovieFullscreen("bmap.vqa") end)
+	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlayMovieFullscreen("bmap.vqa") end)
 end
 
 SetUnitStances = function()
@@ -197,7 +197,7 @@ WorldLoaded = function()
 
 	SetUnitStances()
 
-	Trigger.AfterDelay(Utils.Seconds(5), function() Actor.Create("camera", true, { Owner = player, Location = BaseCameraPoint.Location }) end)
+	Trigger.AfterDelay(DateTime.Seconds(5), function() Actor.Create("camera", true, { Owner = player, Location = BaseCameraPoint.Location }) end)
 
 	Camera.Position = InsertionLZ.CenterPosition
 

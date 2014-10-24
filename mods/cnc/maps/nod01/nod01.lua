@@ -37,7 +37,7 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerLost(nod, function()
 		Media.PlaySpeechNotification(nod, "Lose")
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlayMovieFullscreen("nodlose.vqa")
 		end)
 	end)
@@ -49,13 +49,13 @@ WorldLoaded = function()
 
 	Trigger.OnKilled(Nikoomba, function()
 		nod.MarkCompletedObjective(NodObjective1)
-		Trigger.AfterDelay(Utils.Seconds(1), function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			SendLastInfantryReinforcements()
 		end)
 	end)
 
-	Trigger.AfterDelay(Utils.Seconds(30), SendFirstInfantryReinforcements)
-	Trigger.AfterDelay(Utils.Seconds(60), SendSecondInfantryReinforcements)
+	Trigger.AfterDelay(DateTime.Seconds(30), SendFirstInfantryReinforcements)
+	Trigger.AfterDelay(DateTime.Seconds(60), SendSecondInfantryReinforcements)
 end
 
 Tick = function()

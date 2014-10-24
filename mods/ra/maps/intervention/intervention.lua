@@ -9,14 +9,14 @@ BeachheadTrigger =
 	CPos.New(137, 104), CPos.New(137, 105), CPos.New(137, 106), CPos.New(136, 106), CPos.New(136, 107)
 }
 
-BaseRaidInterval = Utils.Minutes(3)
-BaseFrontAttackInterval = Utils.Minutes(3) + Utils.Seconds(30)
-BaseRearAttackInterval = Utils.Minutes(8)
-UBoatPatrolDelay = Utils.Minutes(2) + Utils.Seconds(30)
+BaseRaidInterval = DateTime.Minutes(3)
+BaseFrontAttackInterval = DateTime.Minutes(3) + DateTime.Seconds(30)
+BaseRearAttackInterval = DateTime.Minutes(8)
+UBoatPatrolDelay = DateTime.Minutes(2) + DateTime.Seconds(30)
 BaseFrontAttackWpts = { PatrolWpt1.Location, BaseRaidWpt1.Location }
 
 Village = { FarmHouse1, FarmHouse2, FarmHouse3, FarmHouse4, FarmHouse5, FarmHouse6, FarmHouse7, FarmHouse8, FarmHouse9, Church }
-VillageRaidInterval = Utils.Minutes(3)
+VillageRaidInterval = DateTime.Minutes(3)
 VillageRaidAircraft = { "mig", "mig" }
 VillageRaidWpts = { VillageRaidEntrypoint.Location, VillageRaidWpt1.Location, VillageRaidWpt2.Location }
 
@@ -48,7 +48,7 @@ Paratroopers = { "e1", "e1", "e1", "e3", "e3" }
 
 ParadropSovietUnits = function()
 	local start = BaseRaidEntrypoint.CenterPosition + WVec.New(0, 0, Actor.CruiseAltitude("badr"))
-	local transport = Actor.Create("badr", true, { CenterPosition = start, Owner = soviets, Facing = (Utils.CenterOfCell(MCVDeployLocation.Location) - start).Facing })
+	local transport = Actor.Create("badr", true, { CenterPosition = start, Owner = soviets, Facing = (Map.CenterOfCell(MCVDeployLocation.Location) - start).Facing })
 
 	Utils.Do(Paratroopers, function(type)
 		local a = Actor.Create(type, false, { Owner = soviets })
@@ -65,9 +65,9 @@ AirRaid = function(planeTypes, ingress, egress, target)
 	end
 
 	for i = 1, #planeTypes do
-		Trigger.AfterDelay((i - 1) * Utils.Seconds(1), function()
-			local start = Utils.CenterOfCell(ingress[1]) + WVec.New(0, 0, Actor.CruiseAltitude(planeTypes[i]))
-			local plane = Actor.Create(planeTypes[i], true, { CenterPosition = start, Owner = soviets, Facing = (Utils.CenterOfCell(ingress[2]) - start).Facing })
+		Trigger.AfterDelay((i - 1) * DateTime.Seconds(1), function()
+			local start = Map.CenterOfCell(ingress[1]) + WVec.New(0, 0, Actor.CruiseAltitude(planeTypes[i]))
+			local plane = Actor.Create(planeTypes[i], true, { CenterPosition = start, Owner = soviets, Facing = (Map.CenterOfCell(ingress[2]) - start).Facing })
 
 			Utils.Do(ingress, function(wpt) plane.Move(wpt) end)
 			plane.Attack(target)
@@ -116,7 +116,7 @@ SendUboatPatrol = function(team)
 		Utils.Do(team, function(uboat)
 			if not uboat.IsDead then
 				uboat.PatrolUntil(UboatPatrolWpts1, function()
-					return Time.GameTime > Utils.Minutes(2) + UBoatPatrolDelay
+					return DateTime.GameTime > DateTime.Minutes(2) + UBoatPatrolDelay
 				end)
 				uboat.Patrol(UboatPatrolWpts2)
 			end
@@ -125,7 +125,7 @@ SendUboatPatrol = function(team)
 end
 
 SendGroundPatrol = function(team)
-	Utils.Do(team, function(unit) unit.Patrol(GroundPatrolWpts, true, Utils.Seconds(3)) end)
+	Utils.Do(team, function(unit) unit.Patrol(GroundPatrolWpts, true, DateTime.Seconds(3)) end)
 	Utils.Do(team, function(unit)
 		Trigger.OnIdle(unit, function(actor) actor.Hunt() end)
 	end)
@@ -152,7 +152,7 @@ end
 
 Build = function(units, action)
 	if not soviets.Build(units, action) then
-		Trigger.AfterDelay(Utils.Seconds(15), function()
+		Trigger.AfterDelay(DateTime.Seconds(15), function()
 			Build(units, action)
 		end)
 	end
@@ -235,7 +235,7 @@ WorldLoaded = function()
 
 			captureObjective = player.AddPrimaryObjective("Locate and capture the enemy's Air Force HQ.")
 			Trigger.OnCapture(AirForceHQ, function()
-				Trigger.AfterDelay(Utils.Seconds(3), function()
+				Trigger.AfterDelay(DateTime.Seconds(3), function()
 					player.MarkCompletedObjective(captureObjective)
 					player.MarkCompletedObjective(villageObjective)
 				end)
@@ -275,5 +275,5 @@ WorldLoaded = function()
 	end)
 
 	Camera.Position = CameraSpot.CenterPosition
-	Trigger.AfterDelay(Utils.Seconds(5), function() CameraSpot.Destroy() end)
+	Trigger.AfterDelay(DateTime.Seconds(5), function() CameraSpot.Destroy() end)
 end

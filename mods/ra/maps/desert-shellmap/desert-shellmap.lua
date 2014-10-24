@@ -1,4 +1,4 @@
-if Date.IsHalloween then
+if DateTime.IsHalloween then
 	UnitTypes = { "ant", "ant", "ant" }
 	BeachUnitTypes = { "ant", "ant" }
 	ParadropUnitTypes = { "zombie", "zombie", "zombie", "zombie", "zombie" }
@@ -68,7 +68,7 @@ ShipAlliedUnits = function()
 		BindActorTriggers(unit)
 	end)
 
-	Trigger.AfterDelay(Utils.Seconds(60), ShipAlliedUnits)
+	Trigger.AfterDelay(DateTime.Seconds(60), ShipAlliedUnits)
 end
 
 InsertAlliedChinookReinforcements = function(entry, hpad)
@@ -79,13 +79,13 @@ InsertAlliedChinookReinforcements = function(entry, hpad)
 		BindActorTriggers(unit)
 	end)
 
-	Trigger.AfterDelay(Utils.Seconds(60), function() InsertAlliedChinookReinforcements(entry, hpad) end)
+	Trigger.AfterDelay(DateTime.Seconds(60), function() InsertAlliedChinookReinforcements(entry, hpad) end)
 end
 
 ParadropSovietUnits = function()
 	local lz = Utils.Random(ParadropWaypoints).Location
-	local start = Utils.CenterOfCell(Map.RandomEdgeCell()) + WVec.New(0, 0, Actor.CruiseAltitude("badr"))
-	local transport = Actor.Create("badr", true, { CenterPosition = start, Owner = soviets, Facing = (Utils.CenterOfCell(lz) - start).Facing })
+	local start = Map.CenterOfCell(Map.RandomEdgeCell()) + WVec.New(0, 0, Actor.CruiseAltitude("badr"))
+	local transport = Actor.Create("badr", true, { CenterPosition = start, Owner = soviets, Facing = (Map.CenterOfCell(lz) - start).Facing })
 
 	Utils.Do(ParadropUnitTypes, function(type)
 		local a = Actor.Create(type, false, { Owner = soviets })
@@ -94,7 +94,7 @@ ParadropSovietUnits = function()
 	end)
 
 	transport.Paradrop(lz)
-	Trigger.AfterDelay(Utils.Seconds(35), ParadropSovietUnits)
+	Trigger.AfterDelay(DateTime.Seconds(35), ParadropSovietUnits)
 end
 
 ProduceUnits = function(t)
@@ -131,7 +131,7 @@ ChronoshiftAlliedUnits = function()
 		units[unit] = cells[i]
 	end
 	Chronosphere.Chronoshift(units)
-	Trigger.AfterDelay(Utils.Seconds(60), ChronoshiftAlliedUnits)
+	Trigger.AfterDelay(DateTime.Seconds(60), ChronoshiftAlliedUnits)
 end
 
 ticks = 0
@@ -155,7 +155,7 @@ WorldLoaded = function()
 	InsertAlliedChinookReinforcements(Chinook1Entry, HeliPad1)
 	InsertAlliedChinookReinforcements(Chinook2Entry, HeliPad2)
 	ParadropSovietUnits()
-	Trigger.AfterDelay(Utils.Seconds(5), ChronoshiftAlliedUnits)
+	Trigger.AfterDelay(DateTime.Seconds(5), ChronoshiftAlliedUnits)
 	Utils.Do(ProducedUnitTypes, ProduceUnits)
 
 	SendSovietUnits(Entry1.Location, UnitTypes, 50)

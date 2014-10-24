@@ -172,14 +172,14 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Call a function when this actor is added to the world. " +
-		      "The callback function will be called as func(Actor self).")]
+			"The callback function will be called as func(Actor self).")]
 		public void OnAddedToWorld(Actor a, LuaFunction func)
 		{
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnAddedToWorld, func, context);
 		}
 
 		[Desc("Call a function when this actor is removed from the world. " +
-		      "The callback function will be called as func(Actor self).")]
+			"The callback function will be called as func(Actor self).")]
 		public void OnRemovedFromWorld(Actor a, LuaFunction func)
 		{
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnRemovedFromWorld, func, context);
@@ -214,7 +214,7 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Call a function when this actor is captured. The callback function " +
-		      "will be called as func(Actor self, Actor captor, Player oldOwner, Player newOwner).")]
+			"will be called as func(Actor self, Actor captor, Player oldOwner, Player newOwner).")]
 		public void OnCapture(Actor a, LuaFunction func)
 		{
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnCapture, func, context);
@@ -279,19 +279,23 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Call a function when this actor is infiltrated. The callback function " +
-		      "will be called as func(Actor self, Actor infiltrator).")]
+			"will be called as func(Actor self, Actor infiltrator).")]
 		public void OnInfiltrated(Actor a, LuaFunction func)
 		{
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnInfiltrated, func, context);
 		}
 
-		[Desc("Removes all triggers from this actor.")]
+		[Desc("Removes all triggers from this actor." +
+			"Note that the removal will only take effect at the end of a tick, " +
+			"so you must not add new triggers at the same time that you are calling this function.")]
 		public void ClearAll(Actor a)
 		{
 			GetScriptTriggers(a).ClearAll();
 		}
 
-		[Desc("Removes the specified trigger from this actor.")]
+		[Desc("Removes the specified trigger from this actor."  +
+			"Note that the removal will only take effect at the end of a tick, " +
+			"so you must not add new triggers at the same time that you are calling this function.")]
 		public void Clear(Actor a, string triggerName)
 		{
 			var trigger = (Trigger)Enum.Parse(typeof(Trigger), triggerName);

@@ -176,20 +176,6 @@ Fonts:
 		Font:./mods/common/FreeSansBold.ttf
 		Size:10
 
-LuaScripts:
-	./mods/common/lua/utils.lua
-	./mods/common/lua/openra.lua
-	./mods/common/lua/map.lua
-	./mods/common/lua/actor.lua
-	./mods/common/lua/team.lua
-	./mods/common/lua/media.lua
-	./mods/common/lua/mission.lua
-	./mods/common/lua/reinforcements.lua
-	./mods/common/lua/supportpowers.lua
-	./mods/common/lua/rules.lua
-	./mods/common/lua/production.lua
-	./mods/common/lua/facing.lua
-
 SupportsMapsFrom: d2k
 
 SpriteFormats: R8, ShpTD, TmpRA

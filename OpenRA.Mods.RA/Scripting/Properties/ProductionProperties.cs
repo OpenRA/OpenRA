@@ -94,10 +94,10 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Build the specified set of actors using a TD-style (per building) production queue. " +
-		      "The function will return true if production could be started, false otherwise. " +
-		      "If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
-		      "production of all actors has been completed.  The actors array is guaranteed to " +
-		      "only contain alive actors.")]
+			"The function will return true if production could be started, false otherwise. " +
+			"If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
+			"production of all actors has been completed.  The actors array is guaranteed to " +
+			"only contain alive actors.")]
 		public bool Build(string[] actorTypes, LuaFunction actionFunc = null)
 		{
 			if (triggers.Triggers[Trigger.OnProduction].Any())
@@ -145,7 +145,8 @@ namespace OpenRA.Mods.RA.Scripting
 			return true;
 		}
 
-		[Desc("Checks whether the factory is currently producing anything on the queue that produces this type of actor.")]
+		[Desc("Check whether the factory's production queue that builds this type of actor is currently busy." +
+			"Note: it does not check whether this particular type of actor is being produced.")]
 		public bool IsProducing(string actorType)
 		{
 			if (triggers.Triggers[Trigger.OnProduction].Any())
@@ -198,10 +199,10 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Build the specified set of actors using classic (RA-style) production queues. " +
-		      "The function will return true if production could be started, false otherwise. " +
-		      "If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
-		      "production of all actors has been completed.  The actors array is guaranteed to " +
-		      "only contain alive actors.")]
+			"The function will return true if production could be started, false otherwise. " +
+			"If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
+			"production of all actors has been completed.  The actors array is guaranteed to " +
+			"only contain alive actors.")]
 		public bool Build(string[] actorTypes, LuaFunction actionFunc = null)
 		{
 			var typeToQueueMap = new Dictionary<string, string>();
@@ -249,7 +250,8 @@ namespace OpenRA.Mods.RA.Scripting
 			return true;
 		}
 
-		[Desc("Checks whether the player is currently producing anything on the queue that produces this type of actor.")]
+		[Desc("Check whether the production queue that builds this type of actor is currently busy." +
+			"Note: it does not check whether this particular type of actor is being produced.")]
 		public bool IsProducing(string actorType)
 		{
 			var queue = GetBuildableInfo(actorType).Queue.First();
