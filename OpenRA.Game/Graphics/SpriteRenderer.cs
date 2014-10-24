@@ -17,8 +17,8 @@ namespace OpenRA.Graphics
 		Renderer renderer;
 		IShader shader;
 
-		Vertex[] vertices = new Vertex[Renderer.TempBufferSize];
-		Sheet currentSheet = null;
+		readonly Vertex[] vertices;
+		Sheet currentSheet;
 		BlendMode currentBlend = BlendMode.Alpha;
 		int nv = 0;
 
@@ -26,6 +26,7 @@ namespace OpenRA.Graphics
 		{
 			this.renderer = renderer;
 			this.shader = shader;
+			vertices = new Vertex[renderer.TempBufferSize];
 		}
 
 		public void Flush()
@@ -60,7 +61,7 @@ namespace OpenRA.Graphics
 
 		void DrawSprite(Sprite s, float2 location, int paletteIndex, float2 size)
 		{
-			Renderer.CurrentBatchRenderer = this;
+			renderer.CurrentBatchRenderer = this;
 
 			if (s.sheet != currentSheet)
 				Flush();
@@ -68,7 +69,7 @@ namespace OpenRA.Graphics
 			if (s.blendMode != currentBlend)
 				Flush();
 
-			if (nv + 4 > Renderer.TempBufferSize)
+			if (nv + 4 > renderer.TempBufferSize)
 				Flush();
 
 			currentBlend = s.blendMode;
@@ -90,7 +91,7 @@ namespace OpenRA.Graphics
 
 		public void DrawSprite(Sprite s, float2 a, float2 b, float2 c, float2 d)
 		{
-			Renderer.CurrentBatchRenderer = this;
+			renderer.CurrentBatchRenderer = this;
 
 			if (s.sheet != currentSheet)
 				Flush();
@@ -98,7 +99,7 @@ namespace OpenRA.Graphics
 			if (s.blendMode != currentBlend)
 				Flush();
 
-			if (nv + 4 > Renderer.TempBufferSize)
+			if (nv + 4 > renderer.TempBufferSize)
 				Flush();
 
 			currentSheet = s.sheet;

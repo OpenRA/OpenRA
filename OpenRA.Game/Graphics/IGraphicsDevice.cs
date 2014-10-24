@@ -63,7 +63,7 @@ namespace OpenRA
 		void ReleaseWindowMouseFocus();
 	}
 
-	public interface IVertexBuffer<T>
+	public interface IVertexBuffer<T> : IDisposable
 	{
 		void Bind();
 		void SetData(T[] vertices, int length);
@@ -80,7 +80,8 @@ namespace OpenRA
 	}
 
 	public enum TextureScaleFilter { Nearest, Linear }
-	public interface ITexture
+	
+	public interface ITexture : IDisposable
 	{
 		void SetData(Bitmap bitmap);
 		void SetData(uint[,] colors);
@@ -90,7 +91,7 @@ namespace OpenRA
 		TextureScaleFilter ScaleFilter { get; set; }
 	}
 
-	public interface IFrameBuffer
+	public interface IFrameBuffer : IDisposable
 	{
 		void Bind();
 		void Unbind();

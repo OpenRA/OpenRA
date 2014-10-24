@@ -29,7 +29,7 @@ namespace OpenRA.Graphics
 		}
 	}
 
-	public class WorldRenderer
+	public sealed class WorldRenderer : IDisposable
 	{
 		public readonly World world;
 		public readonly Theater Theater;
@@ -250,6 +250,13 @@ namespace OpenRA.Graphics
 		{
 			var ts = Game.modData.Manifest.TileSize;
 			return new WPos(1024 * screenPx.X / ts.Width, 1024 * screenPx.Y / ts.Height, 0);
+		}
+
+		public void Dispose()
+		{
+			palette.Dispose();
+			Theater.Dispose();
+			terrainRenderer.Dispose();
 		}
 	}
 }

@@ -27,6 +27,8 @@ namespace OpenRA.Graphics
 
 		public static void Initialize(IEnumerable<string> chromeFiles)
 		{
+			Deinitialize();
+
 			collections = new Dictionary<string, Collection>();
 			cachedSheets = new Dictionary<string, Sheet>();
 			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
@@ -35,6 +37,17 @@ namespace OpenRA.Graphics
 
 			foreach (var c in chrome)
 				LoadCollection(c.Key, c.Value);
+		}
+
+		public static void Deinitialize()
+		{
+			if (cachedSheets != null)
+				foreach (var sheet in cachedSheets.Values)
+					sheet.Dispose();
+
+			collections = null;
+			cachedSheets = null;
+			cachedSprites = null;
 		}
 
 		public static void Save(string file)

@@ -140,7 +140,10 @@ namespace OpenRA
 				orderManager.World = new World(map, orderManager, isShellmap);
 				orderManager.World.Timestep = Timestep;
 			}
+			if (worldRenderer != null)
+				worldRenderer.Dispose();
 			worldRenderer = new WorldRenderer(orderManager.World);
+			
 			using (new PerfTimer("LoadComplete"))
 				orderManager.World.LoadComplete(worldRenderer);
 
@@ -215,7 +218,7 @@ namespace OpenRA
 				Settings.Graphics.Renderer = r;
 				try
 				{
-					Renderer.Initialize(Settings.Graphics.Mode);
+					Renderer = new Renderer(Settings.Graphics, Settings.Server);
 					break;
 				}
 				catch (Exception e)
@@ -224,8 +227,6 @@ namespace OpenRA
 					Console.WriteLine("Renderer initialization failed. Fallback in place. Check graphics.log for details.");
 				}
 			}
-
-			Renderer = new Renderer();
 
 			try
 			{
@@ -257,11 +258,17 @@ namespace OpenRA
 			BeforeGameStart = () => { };
 			Ui.ResetAll();
 
+			if (worldRenderer != null)
+				worldRenderer.Dispose();
 			worldRenderer = null;
 			if (server != null)
 				server.Shutdown();
 			if (orderManager != null)
 				orderManager.Dispose();
+
+			if (modData != null)
+				modData.Dispose();
+			modData = null;
 
 			// Fall back to default if the mod doesn't exist
 			if (!ModMetadata.AllMods.ContainsKey(mod))
@@ -274,7 +281,7 @@ namespace OpenRA
 			Sound.StopVideo();
 			Sound.Initialize();
 
-			modData = new ModData(mod);
+			modData = new ModData(mod, true);
 			Renderer.InitializeFonts(modData.Manifest);
 			modData.InitializeLoaders();
 			using (new PerfTimer("LoadMaps"))
@@ -632,8 +639,12 @@ namespace OpenRA
 				if (orderManager != null)
 					orderManager.Dispose();
 			}
-				
-			Renderer.Device.Dispose();
+
+			if (worldRenderer != null)
+				worldRenderer.Dispose();
+			modData.Dispose();
+			ChromeProvider.Deinitialize();
+			Renderer.Dispose();
 
 			OnQuit();
 

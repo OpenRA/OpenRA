@@ -8,11 +8,12 @@
  */
 #endregion
 
+using System;
 using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
-	class TerrainRenderer
+	sealed class TerrainRenderer : IDisposable
 	{
 		IVertexBuffer<Vertex> vertexBuffer;
 
@@ -57,6 +58,11 @@ namespace OpenRA.Graphics
 
 			foreach (var r in world.WorldActor.TraitsImplementing<IRenderOverlay>())
 				r.Render(wr);
+		}
+
+		public void Dispose()
+		{
+			vertexBuffer.Dispose();
 		}
 	}
 }
