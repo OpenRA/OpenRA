@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Buildings
 		readonly LaysTerrainInfo info;
 		readonly BuildableTerrainLayer layer;
 		readonly BuildingInfluence bi;
-		readonly TileTemplate template;
+		readonly TerrainTemplateInfo template;
 
 		public LaysTerrain(Actor self, LaysTerrainInfo info)
 		{

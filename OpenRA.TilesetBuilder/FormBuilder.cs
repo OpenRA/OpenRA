@@ -393,7 +393,7 @@ namespace OpenRA.TilesetBuilder
 					tiles[idx] = tileset.GetTerrainIndex(ttype);
 				}
 
-				var template = new TileTemplate(
+				var template = new TerrainTemplateInfo(
 					id: cur,
 					image: "{0}{1:00}".F(txtTilesetName.Text, cur),
 					size: new int2(tp.Width, tp.Height),
