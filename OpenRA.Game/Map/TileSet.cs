@@ -42,7 +42,7 @@ namespace OpenRA
 		public MiniYaml Save() { return FieldSaver.Save(this); }
 	}
 
-	public class TileTemplate
+	public class TerrainTemplateInfo
 	{
 		static readonly string[] Fields = { "Id", "Image", "Frames", "Size", "PickAny", "Category" };
 
@@ -55,14 +55,14 @@ namespace OpenRA
 
 		TerrainTileInfo[] tileInfo;
 
-		public TileTemplate(ushort id, string image, int2 size, byte[] tiles)
+		public TerrainTemplateInfo(ushort id, string image, int2 size, byte[] tiles)
 		{
 			this.Id = id;
 			this.Image = image;
 			this.Size = size;
 		}
 
-		public TileTemplate(TileSet tileSet, MiniYaml my)
+		public TerrainTemplateInfo(TileSet tileSet, MiniYaml my)
 		{
 			FieldLoader.Load(this, my);
 
@@ -157,7 +157,7 @@ namespace OpenRA
 		public readonly string PlayerPalette;
 		public readonly string[] Extensions;
 		public readonly int WaterPaletteRotationBase = 0x60; 
-		public readonly Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
+		public readonly Dictionary<ushort, TerrainTemplateInfo> Templates = new Dictionary<ushort, TerrainTemplateInfo>();
 		public readonly string[] EditorTemplateOrder;
 
 		public readonly TerrainTypeInfo[] TerrainInfo;
@@ -194,7 +194,7 @@ namespace OpenRA
 
 			// Templates
 			Templates = yaml["Templates"].ToDictionary().Values
-				.Select(y => new TileTemplate(this, y)).ToDictionary(t => t.Id);
+				.Select(y => new TerrainTemplateInfo(this, y)).ToDictionary(t => t.Id);
 		}
 
 		public TileSet(string name, string id, string palette, string[] extensions, TerrainTypeInfo[] terrainInfo)
