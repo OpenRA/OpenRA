@@ -382,7 +382,7 @@ function EditorCallTip(editor, pos, x, y)
   -- if this is a value type rather than a function/method call, then use
   -- full match to avoid calltip about coroutine.status for "status" vars
   local tip = GetTipInfo(editor, funccall or var, false, not funccall)
-  local limit = 450
+  local limit = ide.config.acandtip.maxlength
   if ide.debugger and ide.debugger.server then
     if var then
       ide.debugger.quickeval(var, function(val)

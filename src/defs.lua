@@ -148,11 +148,12 @@ config = {
     nodynwords = false, -- no dynamic words (user entered words)
     ignorecase = false, -- ignores case when performing comparison with autocomplete list
     startat = 2,        -- start suggesting dynamic words after 2 characters
-    strategy = 0,
+    strategy = 2,
     -- 0: is string comparison
     -- 1: substring leading characters (camel case or _ separated)
     -- 2: leading + any correctly ordered fragments (default)
     width = 60, -- width of the tooltip text (in characters)
+    maxlength = 450,   -- max length of the tooltip on the screen
   },
 
   arg = {}, -- command line arguments
