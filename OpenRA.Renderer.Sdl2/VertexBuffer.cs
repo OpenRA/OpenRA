@@ -14,11 +14,12 @@ using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Renderer.Sdl2
 {
-	public class VertexBuffer<T> : IVertexBuffer<T>
+	public sealed class VertexBuffer<T> : IVertexBuffer<T>
 			where T : struct
 	{
 		static readonly int VertexSize = Marshal.SizeOf(typeof(T));
 		int buffer;
+		bool disposed;
 
 		public VertexBuffer(int size)
 		{
@@ -52,7 +53,23 @@ namespace OpenRA.Renderer.Sdl2
 			ErrorHandler.CheckGlError();
 		}
 
-		void FinalizeInner() { GL.DeleteBuffers(1, ref buffer); }
-		~VertexBuffer() { Game.RunAfterTick(FinalizeInner); }
+		~VertexBuffer()
+		{
+			Game.RunAfterTick(() => Dispose(false));
+		}
+
+		public void Dispose()
+		{
+			Game.RunAfterTick(() => Dispose(true));
+			GC.SuppressFinalize(this);
+		}
+
+		void Dispose(bool disposing)
+		{
+			if (disposed)
+				return;
+			disposed = true;
+			GL.DeleteBuffers(1, ref buffer);
+		}
 	}
 }

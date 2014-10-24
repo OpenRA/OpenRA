@@ -32,7 +32,7 @@ namespace OpenRA.Graphics
 		}
 	}
 
-	public class VoxelRenderer
+	public sealed class VoxelRenderer : IDisposable
 	{
 		Renderer renderer;
 		IShader shader;
@@ -68,7 +68,7 @@ namespace OpenRA.Graphics
 
 		public void SetViewportParams(Size screen, float zoom, int2 scroll)
 		{
-			var a = 2f / Renderer.SheetSize;
+			var a = 2f / renderer.SheetSize;
 			var view = new float[]
 			{
 				a, 0, 0, 0,
@@ -169,8 +169,8 @@ namespace OpenRA.Graphics
 			var spriteCenter = new float2(sb.Left + sb.Width / 2, sb.Top + sb.Height / 2);
 			var shadowCenter = new float2(ssb.Left + ssb.Width / 2, ssb.Top + ssb.Height / 2);
 
-			var translateMtx = Util.TranslationMatrix(spriteCenter.X - spriteOffset.X, Renderer.SheetSize - (spriteCenter.Y - spriteOffset.Y), 0);
-			var shadowTranslateMtx = Util.TranslationMatrix(shadowCenter.X - shadowSpriteOffset.X, Renderer.SheetSize - (shadowCenter.Y - shadowSpriteOffset.Y), 0);
+			var translateMtx = Util.TranslationMatrix(spriteCenter.X - spriteOffset.X, renderer.SheetSize - (spriteCenter.Y - spriteOffset.Y), 0);
+			var shadowTranslateMtx = Util.TranslationMatrix(shadowCenter.X - shadowSpriteOffset.X, renderer.SheetSize - (shadowCenter.Y - shadowSpriteOffset.Y), 0);
 			var correctionTransform = Util.MatrixMultiply(translateMtx, flipMtx);
 			var shadowCorrectionTransform = Util.MatrixMultiply(shadowTranslateMtx, shadowScaleFlipMtx);
 
@@ -330,12 +330,24 @@ namespace OpenRA.Graphics
 				return kv.Key;
 			}
 
-			var size = new Size(Renderer.SheetSize, Renderer.SheetSize);
+			var size = new Size(renderer.SheetSize, renderer.SheetSize);
 			var framebuffer = renderer.Device.CreateFrameBuffer(size);
 			var sheet = new Sheet(framebuffer.Texture);
 			mappedBuffers.Add(sheet, framebuffer);
 
 			return sheet;
+		}
+
+		public void Dispose()
+		{
+			foreach (var kvp in mappedBuffers.Concat(unmappedBuffers))
+			{
+				kvp.Key.Dispose();
+				kvp.Value.Dispose();
+			}
+
+			mappedBuffers.Clear();
+			unmappedBuffers.Clear();
 		}
 	}
 }

@@ -18,11 +18,11 @@ using OpenRA.Support;
 
 namespace OpenRA.Graphics
 {
-	public class Renderer
+	public sealed class Renderer : IDisposable
 	{
-		internal static int SheetSize;
-		internal static int TempBufferSize;
-		internal static int TempBufferCount;
+		internal int SheetSize { get; private set; }
+		internal int TempBufferSize { get; private set; }
+		internal int TempBufferCount { get; private set; }
 
 		public SpriteRenderer WorldSpriteRenderer { get; private set; }
 		public SpriteRenderer WorldRgbaSpriteRenderer { get; private set; }
@@ -38,11 +38,13 @@ namespace OpenRA.Graphics
 		public Dictionary<string, SpriteFont> Fonts;
 		Stack<Rectangle> scissorState;
 
-		public Renderer()
+		public Renderer(GraphicSettings graphicSettings, ServerSettings serverSettings)
 		{
-			TempBufferSize = Game.Settings.Graphics.BatchSize;
-			TempBufferCount = Game.Settings.Graphics.NumTempBuffers;
-			SheetSize = Game.Settings.Graphics.SheetSize;
+			Initialize(graphicSettings, serverSettings);
+
+			TempBufferSize = graphicSettings.BatchSize;
+			TempBufferCount = graphicSettings.NumTempBuffers;
+			SheetSize = graphicSettings.SheetSize;
 			scissorState = new Stack<Rectangle>();
 
 			WorldSpriteRenderer = new SpriteRenderer(this, device.CreateShader("shp"));
@@ -142,21 +144,21 @@ namespace OpenRA.Graphics
 
 		public Size Resolution { get { return device.WindowSize; } }
 
-		internal static void Initialize(WindowMode windowMode)
+		void Initialize(GraphicSettings graphicSettings, ServerSettings serverSettings)
 		{
-			var resolution = GetResolution(windowMode);
+			var resolution = GetResolution(graphicSettings);
 
-			var renderer = Game.Settings.Server.Dedicated ? "Null" : Game.Settings.Graphics.Renderer;
-			var rendererPath = Platform.ResolvePath(".", "OpenRA.Renderer." + renderer + ".dll");
+			var rendererName = serverSettings.Dedicated ? "Null" : graphicSettings.Renderer;
+			var rendererPath = Platform.ResolvePath(".", "OpenRA.Renderer." + rendererName + ".dll");
 
-			device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, windowMode);
+			device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, graphicSettings.Mode);
 		}
 
-		static Size GetResolution(WindowMode windowmode)
+		static Size GetResolution(GraphicSettings graphicsSettings)
 		{
-			var size = (windowmode == WindowMode.Windowed)
-				? Game.Settings.Graphics.WindowedSize
-				: Game.Settings.Graphics.FullscreenSize;
+			var size = (graphicsSettings.Mode == WindowMode.Windowed)
+				? graphicsSettings.WindowedSize
+				: graphicsSettings.FullscreenSize;
 			return new Size(size.X, size.Y);
 		}
 
@@ -180,8 +182,8 @@ namespace OpenRA.Graphics
 
 		public interface IBatchRenderer	{ void Flush();	}
 
-		static IBatchRenderer currentBatchRenderer;
-		public static IBatchRenderer CurrentBatchRenderer
+		IBatchRenderer currentBatchRenderer;
+		public IBatchRenderer CurrentBatchRenderer
 		{
 			get { return currentBatchRenderer; }
 			set
@@ -239,6 +241,15 @@ namespace OpenRA.Graphics
 		public void ReleaseWindowMouseFocus()
 		{
 			device.ReleaseWindowMouseFocus();
+		}
+
+		public void Dispose()
+		{
+			Device.Dispose();
+			WorldVoxelRenderer.Dispose();
+			foreach (var buffer in tempBuffers)
+				buffer.Dispose();
+			tempBuffers.Clear();
 		}
 	}
 }

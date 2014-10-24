@@ -20,13 +20,14 @@ namespace OpenRA.Graphics
 		Renderer renderer;
 		IShader shader;
 
-		Vertex[] vertices = new Vertex[Renderer.TempBufferSize];
+		readonly Vertex[] vertices;
 		int nv = 0;
 
 		public LineRenderer(Renderer renderer, IShader shader)
 		{
 			this.renderer = renderer;
 			this.shader = shader;
+			vertices = new Vertex[renderer.TempBufferSize];
 		}
 
 
@@ -71,9 +72,9 @@ namespace OpenRA.Graphics
 
 		public void DrawLine(float2 start, float2 end, Color startColor, Color endColor)
 		{
-			Renderer.CurrentBatchRenderer = this;
+			renderer.CurrentBatchRenderer = this;
 
-			if (nv + 2 > Renderer.TempBufferSize)
+			if (nv + 2 > renderer.TempBufferSize)
 				Flush();
 
 			vertices[nv++] = new Vertex(start + offset,

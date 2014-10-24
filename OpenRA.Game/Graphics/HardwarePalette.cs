@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
-	public class HardwarePalette
+	public sealed class HardwarePalette : IDisposable
 	{
 		public const int MaxPalettes = 256;
 
@@ -110,6 +110,11 @@ namespace OpenRA.Graphics
 				var modifiedPalette = kvp.Value;
 				modifiedPalette.SetFromPalette(originalPalette);
 			}
+		}
+
+		public void Dispose()
+		{
+			Texture.Dispose();
 		}
 	}
 }

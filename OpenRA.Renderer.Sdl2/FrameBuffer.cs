@@ -16,11 +16,12 @@ using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Renderer.Sdl2
 {
-	public class FrameBuffer : IFrameBuffer
+	public sealed class FrameBuffer : IFrameBuffer
 	{
 		Texture texture;
 		Size size;
 		int framebuffer, depth;
+		bool disposed;
 
 		public FrameBuffer(Size size)
 		{
@@ -81,16 +82,6 @@ namespace OpenRA.Renderer.Sdl2
 			return v;
 		}
 
-		void FinalizeInner()
-		{
-			GL.Ext.DeleteFramebuffers(1, ref framebuffer);
-			ErrorHandler.CheckGlError();
-			GL.Ext.DeleteRenderbuffers(1, ref depth);
-			ErrorHandler.CheckGlError();
-		}
-
-		~FrameBuffer() { Game.RunAfterTick(FinalizeInner); }
-
 		int[] cv = new int[4];
 		public void Bind()
 		{
@@ -120,5 +111,29 @@ namespace OpenRA.Renderer.Sdl2
 		}
 
 		public ITexture Texture { get { return texture; } }
+
+		~FrameBuffer()
+		{
+			Game.RunAfterTick(() => Dispose(false));
+		}
+
+		public void Dispose()
+		{
+			Game.RunAfterTick(() => Dispose(true));
+			GC.SuppressFinalize(this);
+		}
+
+		void Dispose(bool disposing)
+		{
+			if (disposed)
+				return;
+			disposed = true;
+			if (disposing)
+				texture.Dispose();
+			GL.Ext.DeleteFramebuffers(1, ref framebuffer);
+			ErrorHandler.CheckGlError();
+			GL.Ext.DeleteRenderbuffers(1, ref depth);
+			ErrorHandler.CheckGlError();
+		}
 	}
 }
