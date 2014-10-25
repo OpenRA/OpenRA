@@ -88,6 +88,15 @@ WorldLoaded = function()
 	gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
 	gdiObjective2 = player.AddSecondaryObjective("Capture the Tiberium Refinery")
 
+	-- Work around limitations with the yaml merger that prevent MustBeDestroyed from working on the silos
+	siloARemoved = false
+	Trigger.OnCapture(SiloA, function() siloARemoved = true end)
+	Trigger.OnKilled(SiloA, function() siloARemoved = true end)
+
+	siloBRemoved = false
+	Trigger.OnCapture(SiloB, function() siloBRemoved = true end)
+	Trigger.OnKilled(SiloB, function() siloBRemoved = true end)
+
 	Trigger.OnCapture(NodRefinery, function() player.MarkCompletedObjective(gdiObjective2) end)
 	Trigger.OnKilled(NodRefinery, function() player.MarkFailedObjective(gdiObjective2) end)
 
@@ -98,7 +107,7 @@ Tick = function()
 	if player.HasNoRequiredUnits() then
 		enemy.MarkCompletedObjective(nodObjective)
 	end
-	if enemy.HasNoRequiredUnits() then
+	if enemy.HasNoRequiredUnits() and siloARemoved and siloBRemoved then
 		player.MarkCompletedObjective(gdiObjective1)
 	end
 end
