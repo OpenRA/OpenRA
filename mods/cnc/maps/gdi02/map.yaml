@@ -871,9 +871,7 @@ Sequences:
 		idle: lst
 			Start: 0
 			Facings: 1
-		unload: lst
-			Start: 0
-			Facings: 1
+			ZOffset: -1024
 
 VoxelSequences:
 

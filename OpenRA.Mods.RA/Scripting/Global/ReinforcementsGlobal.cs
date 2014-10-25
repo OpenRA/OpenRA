@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA.Scripting
 			{
 				foreach (var cargoType in cargoTypes)
 				{
-					var passenger = CreateActor(owner, cargoType, false);
+					var passenger = CreateActor(owner, cargoType, false, entryPath[0]);
 					passengers.Add(passenger);
 					cargo.Load(transport, passenger);
 				}
