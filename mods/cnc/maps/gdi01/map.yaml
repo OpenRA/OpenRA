@@ -327,40 +327,11 @@ Actors:
 		Owner: Nod
 		Health: 0.1875
 		Facing: 160
-	mcv: mcv
-		Location: 56,53
-		Owner: GDI
-		Health: 1
-		Facing: 0
 	Gunboat: boat
-		Location: 53,59
+		Location: 51,59
 		Owner: GDI
 		Health: 1
 		Facing: 64
-	Actor88: e1
-		Location: 56,55
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 2
-	Actor89: e1
-		Location: 56,55
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 4
-	Actor90: e1
-		Location: 56,55
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 3
-	Actor91: e1
-		Location: 56,55
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 1
 	Actor92: e1
 		Location: 57,45
 		Owner: Nod
@@ -447,6 +418,12 @@ Actors:
 		Owner: Neutral
 	lstEnd: waypoint
 		Location: 54,57
+		Owner: Neutral
+	mcvTarget: waypoint
+		Location: 56,53
+		Owner: Neutral
+	reinforcementsTarget: waypoint
+		Location: 54,53
 		Owner: Neutral
 
 Smudges:
@@ -541,6 +518,9 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 	ATWR:
+		Buildable:
+			Prerequisites: ~disabled
+	BRIK:
 		Buildable:
 			Prerequisites: ~disabled
 	E2:
