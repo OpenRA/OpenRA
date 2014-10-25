@@ -634,6 +634,8 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Infantry:
+		SpawnViceroid:
+			Probability: 0
 		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
