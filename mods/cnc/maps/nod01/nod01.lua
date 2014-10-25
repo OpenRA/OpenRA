@@ -1,5 +1,14 @@
+InitialForcesA = { "bggy", "e1", "e1", "e1", "e1" }
+InitialForcesB = { "e1", "e1", "bggy", "e1", "e1"  }
+
 RifleInfantryReinforcements = { "e1", "e1" }
-RocketInfantryReinforcements = { "e3", "e3", "e3" }
+RocketInfantryReinforcements = { "e3", "e3", "e3", "e3", "e3" }
+
+SendInitialForces = function()
+	Media.PlaySpeechNotification(nod, "Reinforce")
+	Reinforcements.Reinforce(nod, InitialForcesA, { StartSpawnPointLeft.Location, StartRallyPoint.Location }, 5)
+	Reinforcements.Reinforce(nod, InitialForcesB, { StartSpawnPointRight.Location, StartRallyPoint.Location }, 10)
+end
 
 SendFirstInfantryReinforcements = function()
 	Media.PlaySpeechNotification(nod, "Reinforce")
@@ -13,7 +22,13 @@ end
 
 SendLastInfantryReinforcements = function()
 	Media.PlaySpeechNotification(nod, "Reinforce")
-	Reinforcements.Reinforce(nod, RocketInfantryReinforcements, { VillageSpawnPoint.Location, VillageRallyPoint.Location }, 15)
+	
+	-- Move the units properly into the map before they start attacking
+	local forces = Reinforcements.Reinforce(nod, RocketInfantryReinforcements, { VillageSpawnPoint.Location, VillageRallyPoint.Location }, 8)
+	Utils.Do(forces, function(a)
+		a.Stance = "Defend"
+		a.CallFunc(function() a.Stance = "AttackAnything" end)
+	end)
 end
 
 WorldLoaded = function()
@@ -54,6 +69,9 @@ WorldLoaded = function()
 		end)
 	end)
 
+	Camera.Position = StartRallyPoint.CenterPosition
+
+	SendInitialForces()
 	Trigger.AfterDelay(DateTime.Seconds(30), SendFirstInfantryReinforcements)
 	Trigger.AfterDelay(DateTime.Seconds(60), SendSecondInfantryReinforcements)
 end
