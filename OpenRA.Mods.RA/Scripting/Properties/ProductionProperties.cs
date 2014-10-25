@@ -202,7 +202,8 @@ namespace OpenRA.Mods.RA.Scripting
 			"The function will return true if production could be started, false otherwise. " +
 			"If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
 			"production of all actors has been completed.  The actors array is guaranteed to " +
-			"only contain alive actors.")]
+			"only contain alive actors. Note: This function will fail to work when called " +
+			"during the first tick")]
 		public bool Build(string[] actorTypes, LuaFunction actionFunc = null)
 		{
 			var typeToQueueMap = new Dictionary<string, string>();
