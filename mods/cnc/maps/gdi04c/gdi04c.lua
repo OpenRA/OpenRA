@@ -93,9 +93,13 @@ WorldLoaded = function()
 		end)
 	end)
 
-	nodObjective = nod.AddPrimaryObjective("Destroy all GDI troops")
-	gdiObjective1 = player.AddPrimaryObjective("Defend the town of Bialystok")
-	gdiObjective2 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
+	Media.PlayMovieFullscreen("bkground.vqa", function()
+		Media.PlayMovieFullscreen("nodsweep.vqa", function()
+			nodObjective = nod.AddPrimaryObjective("Destroy all GDI troops")
+			gdiObjective1 = player.AddPrimaryObjective("Defend the town of Bialystok")
+			gdiObjective2 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
+		end)
+	end)
 
 	townAttackTrigger = false
 	Trigger.OnExitedFootprint(TownAttackTrigger, function(a, id)
@@ -125,8 +129,6 @@ WorldLoaded = function()
 	end)
 
 	Camera.Position = Actor141.CenterPosition
-
-	Media.PlayMovieFullscreen("bkground.vqa", function() Media.PlayMovieFullscreen("nodsweep.vqa") end)
 end
 
 Tick = function()

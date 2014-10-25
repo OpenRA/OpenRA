@@ -133,9 +133,14 @@ WorldLoaded = function()
 		end)
 	end)
 
-	gdiObjective = gdi.AddPrimaryObjective("Retrieve the crate with the stolen rods.")
-	reinforcementsObjective = gdi.AddSecondaryObjective("Eliminate " .. KillsUntilReinforcements .. " Nod units for reinforcements.")
-	nod.AddPrimaryObjective("Defend against the GDI forces.")
+
+	Media.PlayMovieFullscreen("bkground.vqa", function()
+		Media.PlayMovieFullscreen("nitejump.vqa", function()
+			gdiObjective = gdi.AddPrimaryObjective("Retrieve the crate with the stolen rods.")
+			reinforcementsObjective = gdi.AddSecondaryObjective("Eliminate " .. KillsUntilReinforcements .. " Nod units for reinforcements.")
+			nod.AddPrimaryObjective("Defend against the GDI forces.")
+		end)
+	end)
 
 	BuildNod1()
 	Utils.Do(NodHelis, function(heli)
@@ -161,6 +166,4 @@ WorldLoaded = function()
 	end)
 
 	Camera.Position = Actor56.CenterPosition
-
-	Media.PlayMovieFullscreen("bkground.vqa", function() Media.PlayMovieFullscreen("nitejump.vqa") end)
 end

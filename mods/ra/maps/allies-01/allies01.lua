@@ -175,11 +175,15 @@ WorldLoaded = function()
 	Trigger.OnPlayerLost(player, MissionFailed)
 	Trigger.OnPlayerWon(player, MissionAccomplished)
 
-	FindEinsteinObjective = player.AddPrimaryObjective("Find Einstein.")
-	SurviveObjective = player.AddPrimaryObjective("Tanya and Einstein must survive.")
-	england.AddPrimaryObjective("Destroy the soviet base after a successful rescue.")
-	CivilProtectionObjective = player.AddSecondaryObjective("Protect all civilians.")
-	DefendObjective = ussr.AddPrimaryObjective("Kill Tanya and keep Einstein hostage.")
+	Media.PlayMovieFullscreen("landing.vqa", function()
+		FindEinsteinObjective = player.AddPrimaryObjective("Find Einstein.")
+		SurviveObjective = player.AddPrimaryObjective("Tanya and Einstein must survive.")
+		england.AddPrimaryObjective("Destroy the soviet base after a successful rescue.")
+		CivilProtectionObjective = player.AddSecondaryObjective("Protect all civilians.")
+		DefendObjective = ussr.AddPrimaryObjective("Kill Tanya and keep Einstein hostage.")
+
+		RunInitialActivities()
+	end)
 
 	Trigger.OnKilled(Lab, LabDestroyed)
 	Trigger.OnKilled(OilPump, OilPumpDestroyed)
@@ -193,13 +197,9 @@ WorldLoaded = function()
 	civilianTeam = { Civilian1, Civilian2 }
 	Trigger.OnAnyKilled(civilianTeam, CiviliansKilled)
 
-	RunInitialActivities()
-
 	SetUnitStances()
 
 	Trigger.AfterDelay(DateTime.Seconds(5), function() Actor.Create("camera", true, { Owner = player, Location = BaseCameraPoint.Location }) end)
 
 	Camera.Position = InsertionLZ.CenterPosition
-
-	Media.PlayMovieFullscreen("landing.vqa")
 end
