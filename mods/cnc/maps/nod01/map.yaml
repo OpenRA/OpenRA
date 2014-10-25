@@ -249,51 +249,21 @@ Actors:
 	Nikoomba: c10
 		Location: 29,16
 		Owner: Villagers
-	Actor61: e1
-		Location: 52,17
-		Owner: Nod
-	Actor62: e1
-		Location: 51,17
-		Owner: Nod
-	Actor63: e1
-		Location: 51,16
-		Owner: Nod
-	Actor64: e1
-		Location: 52,16
-		Owner: Nod
-	Actor65: e1
-		Location: 55,17
-		Owner: Nod
-	Actor66: e1
-		Location: 56,17
-		Owner: Nod
-	Actor67: e1
-		Location: 56,16
-		Owner: Nod
-	Actor68: e1
-		Location: 55,16
-		Owner: Nod
-	Actor69: bggy
-		Location: 53,16
-		Owner: Nod
-	Actor70: bggy
-		Location: 54,16
-		Owner: Nod
 	StartSpawnPointLeft: waypoint
-		Location: 52,14
-		Owner: Nod
+		Location: 50,14
+		Owner: Neutral
 	StartSpawnPointRight: waypoint
-		Location: 56,14
-		Owner: Nod
+		Location: 52,14
+		Owner: Neutral
 	StartRallyPoint: waypoint
-		Location: 54,16
-		Owner: Nod
+		Location: 53,17
+		Owner: Neutral
 	VillageSpawnPoint: waypoint
 		Location: 24,14
-		Owner: Nod
+		Owner: Neutral
 	VillageRallyPoint: waypoint
 		Location: 24,17
-		Owner: Nod
+		Owner: Neutral
 	Actor27: jeep
 		Location: 31,28
 		Owner: GDI
