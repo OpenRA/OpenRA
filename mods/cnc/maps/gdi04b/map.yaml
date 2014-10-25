@@ -594,7 +594,7 @@ Actors:
 	GDIReinforcementsWP1: waypoint
 		Location: 50,45
 		Owner: Neutral
-	crate: CRATE
+	crate: CRATE.plain
 		Location: 14,13
 		Owner: Neutral
 	HeliEntry: waypoint
@@ -630,7 +630,6 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Helicopter:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
@@ -662,17 +661,6 @@ Rules:
 	E3:
 		AutoTarget:
 			ScanRadius: 5
-	CRATE:
-		Crate:
-			Lifetime: 9999
-		HealUnitsCrateAction:
-		-RevealMapCrateAction:
-		-GiveMcvCrateAction:
-		-GiveCashCrateAction:
-		-ExplodeCrateAction@fire:
-		-GrantUpgradeCrateAction@cloak:
-		-DuplicateUnitCrateAction:
-		ScriptTriggers:
 
 Sequences:
 

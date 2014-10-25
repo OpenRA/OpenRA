@@ -545,7 +545,7 @@ Actors:
 	GDIHeliLZ: waypoint
 		Location: 27,58
 		Owner: Neutral
-	crate: CRATE
+	crate: CRATE.plain
 		Location: 25,58
 		Owner: Neutral
 
@@ -575,7 +575,6 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Helicopter:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
@@ -604,17 +603,6 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
-	CRATE:
-		Crate:
-			Lifetime: 9999
-		HealUnitsCrateAction:
-		-RevealMapCrateAction:
-		-GiveMcvCrateAction:
-		-GiveCashCrateAction:
-		-ExplodeCrateAction@fire:
-		-GrantUpgradeCrateAction@cloak:
-		-DuplicateUnitCrateAction:
-		ScriptTriggers:
 
 Sequences:
 
