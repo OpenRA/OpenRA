@@ -5,9 +5,36 @@ VehicleReinforcements = { "jeep" }
 
 AttackerSquadSize = 3
 
-Reinforce = function(passengers)
-	Reinforcements.ReinforceWithTransport(player, "oldlst", passengers, { lstStart.Location, lstEnd.Location  }, { lstStart.Location })
+ReinforceWithLandingCraft = function(units, transportStart, transportUnload, rallypoint)
+	local transport = Actor.Create("oldlst", true, { Owner = player, Facing = 0, Location = transportStart })
+	local subcell = 0
+	Utils.Do(units, function(a)
+		transport.LoadPassenger(Actor.Create(a, false, { Owner = transport.Owner, Facing = transport.Facing, Location = transportUnload, SubCell = subcell }))
+		subcell = subcell + 1
+	end)
+
+	transport.ScriptedMove(transportUnload)
+
+	transport.CallFunc(function()
+		Utils.Do(units, function()
+			local a = transport.UnloadPassenger()
+			a.IsInWorld = true
+			a.MoveIntoWorld(transport.Location - CVec.New(0, 1))
+
+			if rallypoint ~= nil then
+				a.Move(rallypoint)
+			end
+		end)
+	end)
+
+	transport.Wait(5)
+	transport.ScriptedMove(transportStart)
+	transport.Destroy()
+end
+
+Reinforce = function(units)
 	Media.PlaySpeechNotification(player, "Reinforce")
+	ReinforceWithLandingCraft(units, lstStart.Location, lstEnd.Location)
 end
 
 BridgeheadSecured = function()

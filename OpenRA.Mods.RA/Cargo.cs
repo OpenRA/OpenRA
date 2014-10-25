@@ -45,6 +45,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
 		public bool Unloading { get; internal set; }
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
+		public int PassengerCount { get { return cargo.Count; } }
 
 		public Cargo(ActorInitializer init, CargoInfo info)
 		{
