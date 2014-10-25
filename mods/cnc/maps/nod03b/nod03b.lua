@@ -59,9 +59,11 @@ WorldLoaded = function()
 		end)
 	end)
 
-	gdiObjective = enemy.AddPrimaryObjective("Eliminate all Nod forces in the area")
-	nodObjective1 = player.AddPrimaryObjective("Capture the prison")
-	nodObjective2 = player.AddSecondaryObjective("Destroy all GDI forces")
+	Media.PlayMovieFullscreen("dessweep.vqa", function()
+		gdiObjective = enemy.AddPrimaryObjective("Eliminate all Nod forces in the area")
+		nodObjective1 = player.AddPrimaryObjective("Capture the prison")
+		nodObjective2 = player.AddSecondaryObjective("Destroy all GDI forces")
+	end)
 
 	Trigger.OnKilled(TechCenter, function() player.MarkFailedObjective(nodObjective1) end)
 	Trigger.OnCapture(TechCenter, function()
@@ -74,7 +76,6 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Seconds(40), function() SendAttackWave(FirstAttackWaveUnits, FirstAttackWave) end)
 	Trigger.AfterDelay(DateTime.Seconds(80), function() SendAttackWave(SecondAttackWaveUnits, SecondAttackWave) end)
 	Trigger.AfterDelay(DateTime.Seconds(140), function() SendAttackWave(ThirdAttackWaveUnits, FirstAttackWave) end)
-
 end
 
 Tick = function()
