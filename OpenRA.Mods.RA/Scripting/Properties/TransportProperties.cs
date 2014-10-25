@@ -33,6 +33,9 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Teleport an existing actor inside this transport.")]
 		public void LoadPassenger(Actor a) { cargo.Load(self, a); }
 
+		[Desc("Remove the first actor from the transport.  This actor is not added to the world.")]
+		public Actor UnloadPassenger() { return cargo.Unload(self); }
+
 		[ScriptActorPropertyActivity]
 		[Desc("Command transport to unload passengers.")]
 		public void UnloadPassengers()

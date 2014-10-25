@@ -64,7 +64,8 @@ namespace OpenRA.Mods.Cnc
 				var cargoPassenger = c.Trait<Passenger>();
 				if (cargoInfo.DisplayTypes.Contains(cargoPassenger.Info.CargoType))
 				{
-					var offset = pos - c.CenterPosition + body.LocalToWorld(cargoInfo.LocalOffset[i++ % cargoInfo.LocalOffset.Length].Rotate(bodyOrientation));
+					var localOffset = cargo.PassengerCount > 1 ? cargoInfo.LocalOffset[i++ % cargoInfo.LocalOffset.Length] : WVec.Zero;
+					var offset = pos - c.CenterPosition + body.LocalToWorld(localOffset.Rotate(bodyOrientation));
 					foreach (var cr in c.Render(wr))
 						yield return cr.OffsetBy(offset).WithZOffset(1);
 				}

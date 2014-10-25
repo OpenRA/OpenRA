@@ -17,8 +17,13 @@ namespace OpenRA.Mods.RA.Scripting
 	[ScriptPropertyGroup("Movement")]
 	public class MobileProperties : ScriptActorProperties, Requires<MobileInfo>
 	{
+		readonly Mobile mobile;
+
 		public MobileProperties(ScriptContext context, Actor self)
-			: base(context, self) { }
+			: base(context, self)
+		{
+			mobile = self.Trait<Mobile>();
+		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Moves within the cell grid. closeEnough defines an optional range " +
@@ -33,6 +38,13 @@ namespace OpenRA.Mods.RA.Scripting
 		public void ScriptedMove(CPos cell)
 		{
 			self.QueueActivity(new Move.Move(self, cell));
+		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Moves from outside the world into the cell grid")]
+		public void MoveIntoWorld(CPos cell)
+		{
+			self.QueueActivity(mobile.MoveIntoWorld(self, cell, mobile.toSubCell));
 		}
 
 		[ScriptActorPropertyActivity]

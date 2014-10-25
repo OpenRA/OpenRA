@@ -64,7 +64,7 @@ LST:
 	WithRoof:
 	WithCargo:
 		DisplayTypes: Infantry, Vehicle
-		LocalOffset: 0,0,0, -390,-256,0, 390,-256,0, -390,256,0, 390,256,0
+		LocalOffset: 390,-256,0, 390,256,0, 0,0,0, -390,-256,0, -390,256,0
 	Cargo:
 		Types: Infantry, Vehicle
 		MaxWeight: 5
