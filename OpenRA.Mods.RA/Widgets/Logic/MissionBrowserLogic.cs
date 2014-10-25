@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
@@ -107,7 +108,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (allMaps.Any())
 				SelectMap(allMaps.First());
 
-			widget.Get<ButtonWidget>("STARTGAME_BUTTON").OnClick = StartMission;
+			var startButton = widget.Get<ButtonWidget>("STARTGAME_BUTTON");
+			startButton.OnClick = StartMission;
+			startButton.IsDisabled = () => selectedMapPreview.RuleStatus != MapRuleStatus.Cached;
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
@@ -145,6 +148,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			StopVideo();
 
 			selectedMapPreview = Game.modData.MapCache[map.Uid];
+
+			// Cache the rules on a background thread to avoid jank
+			new Thread(selectedMapPreview.CacheRules).Start();
+
 			var video = selectedMapPreview.Map.PreviewVideo;
 			var videoVisible = video != null;
 			var videoDisabled = !(videoVisible && GlobalFileSystem.Exists(video));
@@ -186,6 +193,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void StartMission()
 		{
 			StopVideo();
+
+			if (selectedMapPreview.RuleStatus != MapRuleStatus.Cached)
+				return;
 
 			OrderManager om = null;
 
