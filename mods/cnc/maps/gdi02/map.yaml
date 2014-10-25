@@ -800,6 +800,7 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 	SILO:
+		MustBeDestroyed:
 		Buildable:
 			Prerequisites: ~disabled
 	WEAP:

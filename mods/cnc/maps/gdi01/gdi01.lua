@@ -1,3 +1,4 @@
+MCVReinforcements = { "mcv" }
 InfantryReinforcements = { "e1", "e1", "e1" }
 VehicleReinforcements = { "jeep" }
 NodPatrol = { "e1", "e1" }
@@ -44,7 +45,7 @@ end
 
 Reinforce = function(units)
 	Media.PlaySpeechNotification(player, "Reinforce")
-	ReinforceWithLandingCraft(units, lstStart.Location, lstEnd.Location)
+	ReinforceWithLandingCraft(units, lstStart.Location, lstEnd.Location, reinforcementsTarget.Location)
 end
 
 triggerAdded = false
@@ -66,7 +67,6 @@ CheckForBase = function()
 end
 
 WorldLoaded = function()
-	Media.PlayMovieFullscreen("landing.vqa")
 
 	player = Player.GetPlayer("GDI")
 	enemy = Player.GetPlayer("Nod")
@@ -95,17 +95,20 @@ WorldLoaded = function()
 		end)
 	end)
 
-	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops")
-	gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
-	gdiObjective2 = player.AddSecondaryObjective("Establish a beachhead")
+	Media.PlayMovieFullscreen("landing.vqa", function()
+		nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops")
+		gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
+		gdiObjective2 = player.AddSecondaryObjective("Establish a beachhead")
+		
+		ReinforceWithLandingCraft(MCVReinforcements, lstStart.Location + CVec.New(2, 0), lstEnd.Location + CVec.New(2, 0), mcvTarget.Location)
+		Reinforce(InfantryReinforcements)
+	end)
 
 	Trigger.OnIdle(Gunboat, function() SetGunboatPath(Gunboat) end)
 
 	SendNodPatrol()
 
-	Trigger.AfterDelay(DateTime.Seconds(5), function() Reinforce(InfantryReinforcements) end)
-	Trigger.AfterDelay(DateTime.Seconds(15), function() Reinforce(InfantryReinforcements) end)
-	Trigger.AfterDelay(DateTime.Seconds(30), function() Reinforce(VehicleReinforcements) end)
+	Trigger.AfterDelay(DateTime.Seconds(10), function() Reinforce(InfantryReinforcements) end)
 	Trigger.AfterDelay(DateTime.Seconds(60), function() Reinforce(VehicleReinforcements) end)
 end
 
@@ -117,7 +120,7 @@ Tick = function()
 		player.MarkCompletedObjective(gdiObjective1)
 	end
 
-	if player.HasNoRequiredUnits() then
+	if tick > DateTime.Seconds(5) and player.HasNoRequiredUnits() then
 		enemy.MarkCompletedObjective(nodObjective)
 	end
 
