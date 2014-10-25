@@ -10,23 +10,33 @@
 
 using System;
 using Eluant;
+using OpenRA.Scripting;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
 	public sealed class CallLuaFunc : Activity, IDisposable
 	{
+		readonly ScriptContext context;
 		LuaFunction function;
 
-		public CallLuaFunc(LuaFunction func)
+		public CallLuaFunc(LuaFunction function, ScriptContext context)
 		{
-			function = (LuaFunction)func.CopyReference();
+			this.function = (LuaFunction)function.CopyReference();
+			this.context = context;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (function != null)
-				function.Call().Dispose();
+			try
+			{
+				if (function != null)
+					function.Call().Dispose();
+			}
+			catch (Exception ex)
+			{
+				context.FatalError(ex.Message);
+			}
 
 			Dispose();
 			return NextActivity;
@@ -40,7 +50,9 @@ namespace OpenRA.Mods.RA.Activities
 
 		public void Dispose()
 		{
-			if (function == null) return;
+			if (function == null)
+				return;
+
 			function.Dispose();
 			function = null;
 		}
