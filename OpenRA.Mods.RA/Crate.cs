@@ -20,8 +20,9 @@ namespace OpenRA.Mods.RA
 {
 	class CrateInfo : ITraitInfo, IOccupySpaceInfo, Requires<RenderSpritesInfo>
 	{
-		[Desc("Seconds")]
-		public readonly int Lifetime = 5;
+		[Desc("Length of time (in seconds) until the crate gets removed automatically. " +
+			"A value of zero disables auto-removal.")]
+		public readonly int Lifetime = 0;
 
 		[Desc("Allowed to land on.")]
 		public readonly string[] TerrainTypes = { };
@@ -57,24 +58,27 @@ namespace OpenRA.Mods.RA
 			if (collected)
 				return;
 
-			var shares = self.TraitsImplementing<CrateAction>()
-				.Select(a => Pair.New(a, a.GetSelectionSharesOuter(crusher)));
-
-			var totalShares = shares.Sum(a => a.Second);
-			var n = self.World.SharedRandom.Next(totalShares);
+			var crateActions = self.TraitsImplementing<CrateAction>();
 
 			self.Destroy();
 			collected = true;
 
-			foreach (var s in shares)
+			if (crateActions.Any())
 			{
-				if (n < s.Second)
+				var shares = crateActions.Select(a => Pair.New(a, a.GetSelectionSharesOuter(crusher)));
+
+				var totalShares = shares.Sum(a => a.Second);
+				var n = self.World.SharedRandom.Next(totalShares);
+
+				foreach (var s in shares)
 				{
-					s.First.Activate(crusher);
-					return;
+					if (n < s.Second)
+					{
+						s.First.Activate(crusher);
+						return;
+					} else
+						n -= s.Second;
 				}
-				else
-					n -= s.Second;
 			}
 		}
 
@@ -107,7 +111,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			if (++ticks >= info.Lifetime * 25)
+			if (info.Lifetime != 0 && ++ticks >= info.Lifetime * 25)
 				self.Destroy();
 		}
 

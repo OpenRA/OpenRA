@@ -646,4 +646,18 @@
 		DestroyedSound: xplobig4.aud
 	BodyOrientation:
 	ScriptTriggers:
+^Crate:
+	Tooltip:
+		Name: Crate
+		GenericName: Crate
+	Crate:
+		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
+	RenderSprites:
+		Palette: effect
+	WithCrateBody:
+		XmasImages: xcratea, xcrateb, xcratec, xcrated
+	Selectable:
+		Selectable: false
+		Bounds: 15,15,-1,-1
+	BodyOrientation:
 
