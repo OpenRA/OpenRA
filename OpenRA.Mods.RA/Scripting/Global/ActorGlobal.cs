@@ -39,11 +39,12 @@ namespace OpenRA.Scripting
 				var genericType = initType.GetInterfaces()
 					.First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IActorInit<>));
 				var innerType = genericType.GetGenericArguments().First();
+				var valueType = innerType.IsEnum ? typeof(int) : innerType;
 
 				// Try and coerce the table value to the required type
 				object value;
-				if (!kv.Value.TryGetClrValue(innerType, out value))
-					throw new LuaException("Invalid data type for '{0}' (expected '{1}')".F(typeName, innerType.Name));
+				if (!kv.Value.TryGetClrValue(valueType, out value))
+					throw new LuaException("Invalid data type for '{0}' (expected '{1}')".F(typeName, valueType.Name));
 
 				// Construct the ActorInit. Phew!
 				var test = initType.GetConstructor(new[] { innerType }).Invoke(new[] { value });
