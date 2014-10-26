@@ -586,6 +586,7 @@ Rules:
 			Scripts: allies01.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		-StartGameNotification:
 	TRAN.Extraction:
 		Inherits: TRAN
 		RenderUnit:

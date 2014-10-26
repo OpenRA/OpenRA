@@ -1372,6 +1372,7 @@ Rules:
 			Scripts: allies03a.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		-StartGameNotification:
 	^Infantry:
 		MustBeDestroyed:
 		Tooltip:

@@ -881,6 +881,7 @@ Rules:
 			Scripts: allies02.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		-StartGameNotification:
 	^Vehicle:
 		MustBeDestroyed:
 		Tooltip:
