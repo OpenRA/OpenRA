@@ -302,12 +302,12 @@ Actors:
 		Owner: GDI
 		Health: 0.34375
 		Facing: 0
-	Actor79: silo
+	SiloA: silo
 		Location: 57,32
 		Owner: Nod
 		Health: 1
 		Facing: 0
-	Actor80: silo
+	SiloB: silo
 		Location: 59,32
 		Owner: Nod
 		Health: 1
@@ -800,6 +800,7 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 	SILO:
+		MustBeDestroyed:
 		Buildable:
 			Prerequisites: ~disabled
 	WEAP:
@@ -873,9 +874,7 @@ Sequences:
 		idle: lst
 			Start: 0
 			Facings: 1
-		unload: lst
-			Start: 0
-			Facings: 1
+			ZOffset: -1024
 
 VoxelSequences:
 
