@@ -22,7 +22,7 @@ end
 
 SendLastInfantryReinforcements = function()
 	Media.PlaySpeechNotification(nod, "Reinforce")
-	
+
 	-- Move the units properly into the map before they start attacking
 	local forces = Reinforcements.Reinforce(nod, RocketInfantryReinforcements, { VillageSpawnPoint.Location, VillageRallyPoint.Location }, 8)
 	Utils.Do(forces, function(a)
