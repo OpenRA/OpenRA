@@ -11,10 +11,12 @@
 using System;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.D2k.Render
 {
 	[Desc("Renders an animation when the Production trait of the actor is activated.",
 		"Works both with per player ClassicProductionQueue and per building ProductionQueue, but needs any of these.")]

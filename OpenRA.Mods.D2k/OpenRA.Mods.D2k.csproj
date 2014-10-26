@@ -69,23 +69,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ThrowsShrapnel.cs" />
-    <Compile Include="Render\WithCrumbleOverlay.cs" />
-    <Compile Include="PaletteFromR8.cs" />
-    <Compile Include="D2kResourceLayer.cs" />
-    <Compile Include="FogPaletteFromR8.cs" />
     <Compile Include="DamagedWithoutFoundation.cs" />
-    <Compile Include="Render\WithBuildingPlacedOverlayInfo.cs" />
+    <Compile Include="SpriteLoaders\R8Loader.cs" />
+    <Compile Include="Render\WithBuildingPlacedOverlay.cs" />
+    <Compile Include="Render\WithCrumbleOverlay.cs" />
     <Compile Include="Render\WithProductionOverlay.cs" />
     <Compile Include="Render\WithDockingOverlay.cs" />
     <Compile Include="Render\WithDeliveryOverlay.cs" />
-    <Compile Include="PaletteFromScaledPalette.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\SupportPowerBinWidget.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Widgets\SlidingContainerWidget.cs" />
     <Compile Include="Widgets\Logic\IngameChromeLogic.cs" />
-    <Compile Include="ChooseBuildTabOnSelect.cs" />
-    <Compile Include="R8Loader.cs" />
+    <Compile Include="World\ChooseBuildTabOnSelect.cs" />
+    <Compile Include="World\PaletteFromR8.cs" />
+    <Compile Include="World\FogPaletteFromR8.cs" />
+    <Compile Include="World\D2kResourceLayer.cs" />
+    <Compile Include="World\PaletteFromScaledPalette.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
