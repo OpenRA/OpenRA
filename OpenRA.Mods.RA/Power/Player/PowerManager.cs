@@ -17,6 +17,8 @@ namespace OpenRA.Mods.RA.Power
 	public class PowerManagerInfo : ITraitInfo, Requires<DeveloperModeInfo>
 	{
 		public readonly int AdviceInterval = 250;
+		public readonly string SpeechNotification = "LowPower";
+
 		public object Create(ActorInitializer init) { return new PowerManager(init.self, this); }
 	}
 
@@ -118,7 +120,7 @@ namespace OpenRA.Mods.RA.Power
 			if (--nextPowerAdviceTime <= 0)
 			{
 				if (lowPower)
-					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", "LowPower", self.Owner.Country.Race);
+					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.SpeechNotification, self.Owner.Country.Race);
 				nextPowerAdviceTime = info.AdviceInterval;
 			}
 
