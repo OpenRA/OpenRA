@@ -235,14 +235,14 @@ MINE:
 	BodyOrientation:
 	SeedsResource:
 
-RAILMINE:
+GMINE:
 	Tooltip:
 		Name: Gem Mine
 	RenderBuilding:
 		Palette: player
 	Building:
-		Footprint: xx
-		Dimensions: 2,1
+		Footprint: x
+		Dimensions: 1,1
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Gems
@@ -253,6 +253,20 @@ RAILMINE:
 	BodyOrientation:
 	SeedsResource:
 		ResourceType: Gems
+
+RAILMINE:
+	Tooltip:
+		Name: Abandoned Mine
+	RenderBuilding:
+		Palette: player
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	EditorAppearance:
+		RelativeToTopLeft: yes
+		UseTerrainPalette: no
+	AutoTargetIgnore:
+	BodyOrientation:
 
 QUEE:
 	Tooltip:
