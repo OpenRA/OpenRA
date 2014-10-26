@@ -1,9 +1,11 @@
+CRATE.plain:
+	Inherits: ^Crate
+	ScriptTriggers:
+
 CRATE:
-	Tooltip:
-		Name: Crate
+	Inherits: ^Crate
 	Crate:
 		Lifetime: 240
-		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 20
@@ -27,14 +29,6 @@ CRATE:
 		SelectionShares: 0
 		NoBaseSelectionShares: 120
 		Units: mcv
-	RenderSprites:
-		Palette: effect
-	WithCrateBody:
-		XmasImages: xcratea, xcrateb, xcratec, xcrated
-	Selectable:
-		Selectable: false
-		Bounds: 15,15,-1,-1
-	BodyOrientation:
 
 mpspawn:
 	Immobile:

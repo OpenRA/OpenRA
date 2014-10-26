@@ -100,8 +100,6 @@ InitPlayers = function()
 	ussr = Player.GetPlayer("USSR")
 
 	ussr.Cash = 10000
-
-	Media.PlayMovieFullscreen("brdgtilt.vqa")
 end
 
 InitObjectives = function()
@@ -263,8 +261,10 @@ end
 WorldLoaded = function()
 
 	InitPlayers()
-	InitObjectives()
-	InitTriggers()
 
-	SendAlliedUnits()
+	Media.PlayMovieFullscreen("brdgtilt.vqa", function()
+		InitObjectives()
+		InitTriggers()
+		SendAlliedUnits()
+	end)
 end

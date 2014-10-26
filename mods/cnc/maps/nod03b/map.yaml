@@ -24,7 +24,7 @@ Type: Campaign
 
 Options:
 	Crates: False
-	Fog: False
+	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
@@ -595,6 +595,8 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Helicopter:
+		SpawnViceroid:
+			Probability: 0
 		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy

@@ -109,9 +109,11 @@ WorldLoaded = function()
 	Trigger.OnPlayerLost(player, MissionFailed)
 	Trigger.OnPlayerWon(player, MissionAccomplished)
 
-	ConquestObjective = player.AddPrimaryObjective("Secure the area.")
-	ussr.AddPrimaryObjective("Defend your base.")
-	ukraine.AddPrimaryObjective("Destroy the convoy.")
+	Media.PlayMovieFullscreen("mcv.vqa", function()
+		ConquestObjective = player.AddPrimaryObjective("Secure the area.")
+		ussr.AddPrimaryObjective("Defend your base.")
+		ukraine.AddPrimaryObjective("Destroy the convoy.")
+	end)
 
 	RunInitialActivities()
 
@@ -122,8 +124,6 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Minutes(10), SendTrucks)
 
 	Camera.Position = ReinforcementsEntryPoint.CenterPosition
-
-	Media.PlayMovieFullscreen("mcv.vqa")
 
 	ConvoyTimer(DateTime.Seconds(3), "TenMinutesRemaining")
 	ConvoyTimer(DateTime.Minutes(5), "WarningFiveMinutesRemaining")

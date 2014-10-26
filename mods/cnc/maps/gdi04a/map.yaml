@@ -25,7 +25,7 @@ Type: Campaign
 Options:
 	Cheats: False
 	Crates: False
-	Fog: False
+	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
@@ -545,7 +545,7 @@ Actors:
 	GDIHeliLZ: waypoint
 		Location: 27,58
 		Owner: Neutral
-	crate: CRATE
+	crate: CRATE.plain
 		Location: 25,58
 		Owner: Neutral
 
@@ -575,11 +575,12 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Helicopter:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Infantry:
+		SpawnViceroid:
+			Probability: 0
 		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
@@ -604,17 +605,6 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
-	CRATE:
-		Crate:
-			Lifetime: 9999
-		HealUnitsCrateAction:
-		-RevealMapCrateAction:
-		-GiveMcvCrateAction:
-		-GiveCashCrateAction:
-		-ExplodeCrateAction@fire:
-		-GrantUpgradeCrateAction@cloak:
-		-DuplicateUnitCrateAction:
-		ScriptTriggers:
 
 Sequences:
 
