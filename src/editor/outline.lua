@@ -267,6 +267,13 @@ ide.packages['core.outline'] = setmetatable({
         return
       end
 
+      -- if the editor is not in the cache, which may happen if the user
+      -- quickly switches between tabs that don't have outline generated,
+      -- regenerate it manually
+      if not caches[editor] then
+        ide.outline.timer:Start(ide.config.outlineinactivity*1000, wx.wxTIMER_ONE_SHOT)
+      end
+
       local cache = caches[editor]
       local fileitem = cache and cache.fileitem
       eachNode(function(ctrl, item)
