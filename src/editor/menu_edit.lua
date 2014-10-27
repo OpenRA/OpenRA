@@ -26,7 +26,7 @@ local editMenu = wx.wxMenu {
 }
 
 editMenu:Append(ID_SOURCE, TR("Source"), wx.wxMenu {
-  { ID_COMMENT, TR("&Comment/Uncomment")..KSC(ID_COMMENT), TR("Comment or uncomment current or selected lines") },
+  { ID_COMMENT, TR("C&omment/Uncomment")..KSC(ID_COMMENT), TR("Comment or uncomment current or selected lines") },
   { ID_REINDENT, TR("Correct &Indentation")..KSC(ID_REINDENT), TR("Re-indent selected lines") },
   { ID_FOLD, TR("&Fold/Unfold All")..KSC(ID_FOLD), TR("Fold or unfold all code folds") },
   { ID_SORT, TR("&Sort")..KSC(ID_SORT), TR("Sort selected lines") },
