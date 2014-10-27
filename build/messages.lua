@@ -61,8 +61,13 @@ for _, mask in ipairs({"zbstudio/*.lua", "src/main.lua", "src/editor/*.lua"}) do
       -- remove brackets aroung ("foo")
       -- extract message from ("foo", count)
       msg = msg:gsub("^%(", ""):gsub("%)$", ""):gsub([[(["']), .+]], "%1")
-      messages[msg] = messages[msg] or {}
-      messages[msg][file] = (messages[msg][file] or 0) + 1
+      if not msg:find([=[^["']]=]) or not msg:find([=[["']$]=]) then
+        io.stderr:write(("Call with a non-string 'TR(%s)' ignored in '%s'.\n")
+          :format(msg, file))
+      else
+        messages[msg] = messages[msg] or {}
+        messages[msg][file] = (messages[msg][file] or 0) + 1
+      end
     end
   end
 end
@@ -90,7 +95,7 @@ end
 table.sort(msgs)
 print("return {\n"..plural..table.concat(msgs, "\n").."\n}")
 if next(existing) then
-  local str = "-- no match found for the following elements: "
+  local str = "No match found for the following elements: "
   for msg in pairs(existing) do str = str .. msg .. ", " end
-  print((str:gsub(", $", "")))
+  io.stderr:write((str:gsub(", $", "\n")))
 end
