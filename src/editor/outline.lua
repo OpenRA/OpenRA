@@ -154,7 +154,7 @@ local function outlineCreateOutlineWindow()
     + wx.wxTR_HIDE_ROOT)
 
   ide.outline.outlineCtrl = ctrl
-  ide.outline.timer = wx.wxTimer(ctrl)
+  ide.timers.outline = wx.wxTimer(ctrl)
 
   local root = ctrl:AddRoot("Outline")
   ctrl:SetImageList(ide.outline.imglist)
@@ -271,7 +271,7 @@ ide.packages['core.outline'] = setmetatable({
       -- quickly switches between tabs that don't have outline generated,
       -- regenerate it manually
       if not caches[editor] then
-        ide.outline.timer:Start(ide.config.outlineinactivity*1000, wx.wxTIMER_ONE_SHOT)
+        ide.timers.outline:Start(ide.config.outlineinactivity*1000, wx.wxTIMER_ONE_SHOT)
       end
 
       local cache = caches[editor]

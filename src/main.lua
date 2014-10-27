@@ -134,6 +134,7 @@ ide = {
   interpreters = {},
   packages = {},
   apis = {},
+  timers = {},
 
   proto = {}, -- prototypes for various classes
 

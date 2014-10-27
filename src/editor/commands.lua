@@ -930,7 +930,8 @@ local function closeWindow(event)
   frame.uimgr:UnInit()
   frame:Hide() -- hide the main frame while the IDE exits
 
-  if ide.session.timer then ide.session.timer:Stop() end
+  -- stop all the timers
+  for _, timer in pairs(ide.timers) do timer:Stop() end
 
   event:Skip()
 end
@@ -1010,9 +1011,9 @@ ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
   end)
 
 if ide.config.autorecoverinactivity then
-  ide.session.timer = wx.wxTimer(frame)
+  ide.timers.session = wx.wxTimer(frame)
   -- check at least 5s to be never more than 5s off
-  ide.session.timer:Start(math.min(5, ide.config.autorecoverinactivity)*1000)
+  ide.timers.session:Start(math.min(5, ide.config.autorecoverinactivity)*1000)
 end
 
 function PaneFloatToggle(window)

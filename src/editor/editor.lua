@@ -651,8 +651,8 @@ function IndicateAll(editor, lines)
 
   local needmore = delayed[editor] ~= nil
   if ide.config.outlineinactivity then
-    if needmore then ide.outline.timer:Stop()
-    else ide.outline.timer:Start(ide.config.outlineinactivity*1000, wx.wxTIMER_ONE_SHOT)
+    if needmore then ide.timers.outline:Stop()
+    else ide.timers.outline:Start(ide.config.outlineinactivity*1000, wx.wxTIMER_ONE_SHOT)
     end
   end
   return needmore -- request more events if still need to work
