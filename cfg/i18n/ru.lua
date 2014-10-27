@@ -253,6 +253,7 @@ return {
   ["Text not found."] = "Текст не найден.", -- src\editor\findreplace.lua
   ["The API file must be located in a subdirectory of the API directory."] = "Файл определений API должен быть расположен внутри папки API.", -- src\editor\autocomplete.lua
   ["Toggle Bookmark"] = "Установить/Снять закладку", -- src\editor\menu_edit.lua
+  ["Toggle bookmark"] = "Установить/Снять закладку", -- src\editor\menu_edit.lua
   ["Toggle Break&point"] = "&Точка останова", -- src\editor\menu_project.lua
   ["Toggle breakpoint"] = "Переключить точку останова", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["Tr&ace"] = "Т&рассировка", -- src\editor\menu_project.lua

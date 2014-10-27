@@ -32,7 +32,7 @@ editMenu:Append(ID_SOURCE, TR("Source"), wx.wxMenu {
   { ID_SORT, TR("&Sort")..KSC(ID_SORT), TR("Sort selected lines") },
 })
 editMenu:Append(ID_BOOKMARK, TR("Bookmark"), wx.wxMenu {
-  { ID_BOOKMARKTOGGLE, TR("Toggle Bookmark")..KSC(ID_BOOKMARKTOGGLE) },
+  { ID_BOOKMARKTOGGLE, TR("Toggle Bookmark")..KSC(ID_BOOKMARKTOGGLE), TR("Toggle bookmark") },
   { ID_BOOKMARKNEXT, TR("Go To Next Bookmark")..KSC(ID_BOOKMARKNEXT) },
   { ID_BOOKMARKPREV, TR("Go To Previous Bookmark")..KSC(ID_BOOKMARKPREV) },
 })
