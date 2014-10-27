@@ -26,6 +26,13 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			self.QueueActivity(new Fly(self, Target.FromCell(self.World, cell)));
 		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Return to the base, which is either the airfield given, or an auto-selected one otherwise.")]
+		public void ReturnToBase(Actor airfield = null)
+		{
+			self.QueueActivity(new ReturnToBase(self, airfield));
+		}
 	}
 
 	[ScriptPropertyGroup("Combat")]
