@@ -499,7 +499,7 @@ projtree:SetFont(ide.font.fNormal)
 filetree.projtree = projtree
 
 local projnotebook = ide.frame.projnotebook
-projnotebook:AddPage(projtree, "Project", true)
+projnotebook:AddPage(projtree, TR("Project"), true)
 
 -- proj connectors
 -- ---------------
