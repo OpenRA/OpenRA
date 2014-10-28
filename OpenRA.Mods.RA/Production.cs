@@ -105,6 +105,9 @@ namespace OpenRA.Mods.RA
 				var bi = newUnit.Info.Traits.GetOrDefault<BuildableInfo>();
 				if (bi != null && bi.InitialActivity != null)
 					newUnit.QueueActivity(Game.CreateObject<Activity>(bi.InitialActivity));
+
+				foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
+					t.BuildingComplete(newUnit);
 			});
 		}
 
