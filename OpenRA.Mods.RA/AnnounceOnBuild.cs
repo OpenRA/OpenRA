@@ -13,14 +13,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
 	[Desc("Play the Build voice of this actor when trained.")]
-	public class AnnounceOnBuildInfo : ITraitInfo
-	{
-		public object Create(ActorInitializer init) { return new AnnounceOnBuild(init.self); }
-	}
+	public class AnnounceOnBuildInfo : TraitInfo<AnnounceOnBuild> { }
 
-	public class AnnounceOnBuild
+	public class AnnounceOnBuild : INotifyBuildComplete
 	{
-		public AnnounceOnBuild(Actor self)
+		public void BuildingComplete(Actor self)
 		{
 			Sound.PlayVoice("Build", self, self.Owner.Country.Race);
 		}
