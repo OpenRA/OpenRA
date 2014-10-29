@@ -152,7 +152,7 @@ COMBATH:
 COMBATH.Husk:
 	Inherits: ^COMBAT.Husk
 	RenderUnit:
-		Image: COMBATH
+		Image: combath.destroyed
 	TransformOnCapture:
 		IntoActor: combath
 
@@ -205,7 +205,7 @@ DEVAST.Husk:
 	Health:
 		HP: 125
 	RenderUnit:
-		Image: DEVAST
+		Image: devast.destroyed
 	TransformOnCapture:
 		IntoActor: devast
 

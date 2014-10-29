@@ -3,7 +3,7 @@
 	Tooltip:
 		Name: Husk (Light Tank)
 	RenderUnit:
-		Image: 1tnk
+		Image: 1tnk.destroyed
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
@@ -14,7 +14,7 @@
 	Tooltip:
 		Name: Husk (Medium Tank)
 	RenderUnit:
-		Image: 2tnk
+		Image: 2tnk.destroyed
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
@@ -25,7 +25,7 @@
 	Tooltip:
 		Name: Husk (Heavy Tank)
 	RenderUnit:
-		Image: 3tnk
+		Image: 3tnk.destroyed
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
@@ -36,7 +36,7 @@
 	Tooltip:
 		Name: Husk (Mammoth Tank)
 	RenderUnit:
-		Image: 4tnk
+		Image: 4tnk.destroyed
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
@@ -74,7 +74,7 @@ MGG.Husk:
 	Tooltip:
 		Name: Husk (Mobile Gap Generator)
 	RenderUnit:
-		Image: mgg
+		Image: mgg.destroyed
 	ThrowsParticle@spinner:
 		Anim: spinner-idle
 		Offset: -299,0,171

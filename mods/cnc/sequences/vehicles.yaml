@@ -5,6 +5,12 @@ mcv:
 	icon: mcvicnh
 		Start: 0
 
+mcv.destroyed:
+	idle: mcv
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+
 harv:
 	idle:
 		Start: 0
@@ -23,6 +29,12 @@ harv:
 	icon: harvicnh
 		Start: 0
 
+harv.destroyed:
+	idle: harv
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+
 bggy:
 	idle:
 		Start: 0
@@ -37,6 +49,16 @@ bggy:
 	icon: bggyicnh
 		Start: 0
 
+bggy.destroyed:
+	idle: bggy
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: bggy
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
 mtnk:
 	idle:
 		Start: 0
@@ -49,6 +71,16 @@ mtnk:
 		Length: *
 	icon: mtnkicnh
 		Start: 0
+
+mtnk.destroyed:
+	idle: mtnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: mtnk
+		Start: 32
+		Facings: 32
+		ZOffset: -512
 
 ltnk:
 	idle:
@@ -63,6 +95,16 @@ ltnk:
 	icon: ltnkicnh
 		Start: 0
 
+ltnk.destroyed:
+	idle: ltnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: ltnk
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
 htnk:
 	idle:
 		Start: 0
@@ -75,6 +117,16 @@ htnk:
 		Length: *
 	icon: htnkicnh
 		Start: 0
+
+htnk.destroyed:
+	idle: htnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: htnk
+		Start: 32
+		Facings: 32
+		ZOffset: -512
 
 jeep:
 	idle:
@@ -90,12 +142,28 @@ jeep:
 	icon: jeepicnh
 		Start: 0
 
+jeep.destroyed:
+	idle: jeep
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: jeep
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
 bike:
 	idle:
 		Start: 0
 		Facings: 32
 	icon: bikeicnh
 		Start: 0
+
+bike.destroyed:
+	idle: bike
+		Start: 0
+		Facings: 32
+		ZOffset: -512
 
 ftnk:
 	idle:
@@ -136,6 +204,12 @@ ftnk:
 	icon: ftnkicnh
 		Start: 0
 
+ftnk.destroyed:
+	idle: ftnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+
 mhq:
 	idle:
 		Start: 0
@@ -162,6 +236,16 @@ msam:
 	icon: msamicnh
 		Start: 0
 
+msam.destroyed:
+	idle: msam
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: msam
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
 mlrs:
 	idle:
 		Start: 0
@@ -178,12 +262,28 @@ mlrs:
 	icon: mlrsicnh
 		Start: 0
 
+mlrs.destroyed:
+	idle: mlrs
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: mlrs
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
 stnk:
 	idle:
 		Start: 0
 		Facings: 32
 	icon: stnkicnh
 		Start: 0
+
+stnk.destroyed:
+	idle: stnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
 
 arty:
 	idle:
@@ -194,6 +294,12 @@ arty:
 		Length: *
 	icon: artyicnh
 		Start: 0
+
+arty.destroyed:
+	idle: arty
+		Start: 0
+		Facings: 32
+		ZOffset: -512
 
 apc:
 	idle:
@@ -214,3 +320,13 @@ apc:
 		Start: 32
 	icon: apcicnh
 		Start: 0
+
+apc.destroyed:
+	idle: apc
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: apctur
+		Start: 0
+		Facings: 32
+		ZOffset: -512

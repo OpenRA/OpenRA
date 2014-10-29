@@ -135,7 +135,7 @@ COMBATO:
 COMBATO.Husk:
 	Inherits: ^COMBAT.Husk
 	RenderUnit:
-		Image: COMBATO
+		Image: combato.destroyed
 	TransformOnCapture:
 		IntoActor: combato
 
@@ -268,7 +268,7 @@ DEVIATORTANK:
 DEVIATORTANK.Husk:
 	Inherits: ^Husk
 	RenderUnit:
-		Image: DEVIATORTANK
+		Image: deviatortank.destroyed
 	TransformOnCapture:
 		IntoActor: deviatortank
 

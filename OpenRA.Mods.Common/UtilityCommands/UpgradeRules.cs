@@ -654,6 +654,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Replaced BelowUnits with per sequence ZOffsets
+				if (engineVersion < 20141030)
+				{
+					if (depth == 0)
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key == "BelowUnits");
+						node.Value.Nodes.RemoveAll(n => n.Key == "-BelowUnits");
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

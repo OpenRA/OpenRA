@@ -892,7 +892,6 @@ Rules:
 		RenderBuilding:
 			Image: miner
 			HasMakeAnimation: false
-		BelowUnits:
 		Tooltip:
 			Name: Bomb
 			Description: Bomb (Hotkey B)
@@ -946,12 +945,15 @@ Sequences:
 		idle:
 			Start: 0
 			Length: 1
+			ZOffset: -512
 		damaged-idle:
 			Start: 1
 			Length: *
+			ZOffset: -512
 		damaged-build:
 			Start: 1
 			Length: *
+			ZOffset: -512
 		icon: jmin
 			Start: 0
 	mnlyr:

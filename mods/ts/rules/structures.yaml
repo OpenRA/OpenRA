@@ -833,7 +833,6 @@ GAHPAD:
 	Production:
 		Produces: Air
 	PrimaryBuilding:
-	BelowUnits:
 	Reservable:
 	RepairsUnits:
 	ProductionBar:
@@ -869,7 +868,6 @@ NAHPAD:
 	Production:
 		Produces: Air
 	PrimaryBuilding:
-	BelowUnits:
 	Reservable:
 	RepairsUnits:
 	ProductionBar:
