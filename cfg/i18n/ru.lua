@@ -15,7 +15,7 @@ return {
   ["&Documentation"] = "Документация", -- src\editor\menu_help.lua
   ["&Down"] = "Вниз", -- src\editor\findreplace.lua
   ["&Edit Project Directory"] = "&Редактировать папку проекта", -- src\editor\filetree.lua
-  ["&Edit Value"] = nil, -- src\editor\debugger.lua
+  ["&Edit Value"] = "&Редактировать значение", -- src\editor\debugger.lua
   ["&Edit Watch"] = "&Редактировать выражение", -- src\editor\debugger.lua
   ["&Edit"] = "&Правка", -- src\editor\menu_edit.lua
   ["&File"] = "&Файл", -- src\editor\menu_file.lua
@@ -69,7 +69,7 @@ return {
   ["Can't debug the script in the active editor window."] = "Невозможно отладить скрипт в текущем окне редактирования.", -- src\editor\debugger.lua
   ["Can't evaluate the expression while the application is running."] = nil, -- src\editor\debugger.lua
   ["Can't find file '%s' in the current project to activate for debugging. Update the project or open the file in the editor before debugging."] = "Файл '%s', необходимый для отладки, не найден в текущем проекте. Обновите проект или откройте файл в редакторе перед началом отладки.", -- src\editor\debugger.lua
-  ["Can't open file '%s': %s"] = nil, -- src\editor\singleinstance.lua
+  ["Can't open file '%s': %s"] = "Ошибка открытия файла '%s': %s", -- src\editor\singleinstance.lua
   ["Can't process auto-recovery record; invalid format: %s."] = "Ошибка обработки записи автоматического восстановления; неверный формат: %s.", -- src\editor\commands.lua
   ["Can't run the entry point script ('%s')."] = "Ошибка выполнения стартового скрипта ('%s').", -- src\editor\debugger.lua
   ["Can't start debugger server at %s:%d: %s."] = "Невозможно запустить сервер отладки %s:%d: %s", -- src\editor\debugger.lua
@@ -99,7 +99,7 @@ return {
   ["Consider removing backslash from escape sequence '%s'."] = "Рассмотрите вариант удаления backslash из строки '%s'.", -- src\editor\commands.lua
   ["Copy Full Path"] = "Скопировать полный путь", -- src\editor\gui.lua, src\editor\filetree.lua
   ["Copy selected text to clipboard"] = "Скопировать выделенный текст в буфер обмена", -- src\editor\menu_edit.lua
-  ["Correct &Indentation"] = nil, -- src\editor\menu_edit.lua
+  ["Correct &Indentation"] = "Откорректировать отступ", -- src\editor\menu_edit.lua
   ["Couldn't activate file '%s' for debugging; continuing without it."] = "Невозможно открыть файл '%s' для отладки; выполнение будет продолжено без него.", -- src\editor\debugger.lua
   ["Create an empty document"] = "Создать новый документ", -- src\editor\menu_file.lua
   ["Cu&t"] = "Вы&резать", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
@@ -119,7 +119,7 @@ return {
   ["Enter Lua code and press Enter to run it."] = "Введите код на Lua и нажмите Enter для выполнения.", -- src\editor\shellbox.lua
   ["Enter command line parameters (use Cancel to clear)"] = "Введите параметры командной строки (Cancel чтобы очистить)", -- src\editor\menu_project.lua
   ["Enter line number"] = "Введите номер строки", -- src\editor\menu_search.lua
-  ["Enter replacement text"] = nil, -- src\editor\editor.lua
+  ["Enter replacement text"] = "Введите текст замены", -- src\editor\editor.lua
   ["Error while loading API file: %s"] = "Ошибка загрузки файла определений API: %s", -- src\editor\autocomplete.lua
   ["Error while loading configuration file: %s"] = "Ошибка загрузки файла конфигурации: %s", -- src\editor\style.lua
   ["Error while processing API file: %s"] = "Ошибка обработки файла определений API: %s", -- src\editor\autocomplete.lua
@@ -174,14 +174,14 @@ return {
   ["Open an existing document"] = "Открыть существующий документ", -- src\editor\menu_file.lua
   ["Open file"] = "Открыть файл", -- src\editor\commands.lua
   ["Options"] = "Установки", -- src\editor\findreplace.lua
-  ["Outline Window"] = nil, -- src\editor\menu_view.lua
-  ["Outline"] = nil, -- src\editor\outline.lua
+  ["Outline Window"] = "Окно структуры", -- src\editor\menu_view.lua
+  ["Outline"] = "Структура", -- src\editor\outline.lua
   ["Output (running)"] = "Вывод (запущен)", -- src\editor\debugger.lua, src\editor\output.lua
-  ["Output (suspended)"] = nil, -- src\editor\debugger.lua
+  ["Output (suspended)"] = "Вывод (приостановлен)", -- src\editor\debugger.lua
   ["Output"] = "Вывод", -- src\editor\debugger.lua, src\editor\output.lua, src\editor\gui.lua, src\editor\settings.lua
   ["Paste text from the clipboard"] = "Вставить текст из буфера обмена", -- src\editor\menu_edit.lua
   ["Preferences"] = "Настройки", -- src\editor\menu_edit.lua
-  ["Prepend '!' to force local execution."] = nil, -- src\editor\shellbox.lua
+  ["Prepend '!' to force local execution."] = "Укажите '=' в начале выражения для выполнения в локальной консоли", -- src\editor\shellbox.lua
   ["Prepend '=' to show complex values on multiple lines."] = "Укажите '=' в начале выражения для отображения сложных значений на нескольких строках.", -- src\editor\shellbox.lua
   ["Press cancel to abort."] = "Нажмите Отмена для завершения.", -- src\editor\commands.lua
   ["Program '%s' started in '%s' (pid: %d)."] = "Программа '%s' запущена в '%s' (pid: %d).", -- src\editor\output.lua
@@ -247,7 +247,7 @@ return {
   ["Show/Hide the status bar"] = "Показать/спрятать панель состояния", -- src\editor\menu_view.lua
   ["Show/Hide the toolbar"] = "Показать/спрятать панель инструментов", -- src\editor\menu_view.lua
   ["Sort selected lines"] = "Отсортировать выделенные строки", -- src\editor\menu_edit.lua
-  ["Source"] = nil, -- src\editor\menu_edit.lua
+  ["Source"] = "Исходный код", -- src\editor\menu_edit.lua
   ["Stack"] = "Стек", -- src\editor\debugger.lua
   ["Start &Debugging"] = "Начать &отладку", -- src\editor\menu_project.lua
   ["Start or continue debugging"] = "Начать или продолжить отладку", -- src\editor\menu_project.lua
