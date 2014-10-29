@@ -241,7 +241,9 @@ local function treeSetConnectorsAndIcons(tree)
         doc.filePath = nil -- remove path to avoid "file no longer exists" message
         -- when moving folders, /foo/bar/file.lua can be replaced with
         -- /foo/baz/bar/file.lua, so change /foo/bar to /foo/baz/bar
-        LoadFile(fullpath:gsub(q(source), target), doc.editor)
+        local path = (not iscaseinsensitive and fullpath:gsub(q(source), target)
+          or fullpath:lower():gsub(q(source:lower()), target))
+        LoadFile(path, doc.editor)
       end
     else -- refresh the tree and select the new item
       local itemdst = tree:FindItem(target)
