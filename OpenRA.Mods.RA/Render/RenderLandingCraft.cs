@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class RenderLandingCraftInfo : RenderUnitInfo, Requires<IMoveInfo>
+	public class RenderLandingCraftInfo : RenderUnitInfo, Requires<IMoveInfo>, Requires<CargoInfo>
 	{
 		public readonly string[] OpenTerrainTypes = { "Clear" };
 		public readonly string OpenAnim = "open";
