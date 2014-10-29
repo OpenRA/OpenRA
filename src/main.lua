@@ -98,6 +98,7 @@ ide = {
       shorttip = true,
       nodynwords = true,
       ignorecase = false,
+      symbols = true,
       strategy = 2,
       width = 60,
       maxlength = 450,

@@ -147,6 +147,7 @@ config = {
     shorttip = false,   -- tooltips are compact during typing
     nodynwords = false, -- no dynamic words (user entered words)
     ignorecase = false, -- ignores case when performing comparison with autocomplete list
+    symbols = true,     -- include local/global symbols
     startat = 2,        -- start suggesting dynamic words after 2 characters
     strategy = 2,
     -- 0: is string comparison

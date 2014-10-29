@@ -246,7 +246,7 @@ function EditorAutoComplete(editor)
   lt = lt:match("[^%[%(%{%s,]*$")
 
   -- know now which string is to be completed
-  local userList = CreateAutoCompList(editor,lt)
+  local userList = CreateAutoCompList(editor, lt, pos)
 
   -- remove any suggestions that match the word the cursor is on
   -- for example, if typing 'foo' in front of 'bar', 'foobar' is not offered

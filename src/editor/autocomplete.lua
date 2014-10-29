@@ -493,7 +493,7 @@ local function getAutoCompApiList(childs,fragment,method)
 end
 
 -- make syntype dependent
-function CreateAutoCompList(editor,key)
+function CreateAutoCompList(editor,key,pos)
   local api = editor.api
   local tip = api.tip
   local ac = api.ac
@@ -572,6 +572,27 @@ function CreateAutoCompList(editor,key)
 
   -- handle (multiple) inheritance; add matches from the parent class/lib
   addInheritance(tab, apilist, {[tab] = true})
+
+  -- include local/global variables
+  if ide.config.acandtip.symbols and not key:find(q(sep)) then
+    local vars, context = {}
+    local tokens = editor:GetTokenList()
+    for _, token in ipairs(tokens) do
+      if token.fpos > pos then break end
+      if token[1] == 'Id' or token[1] == 'Var' then
+        local var = token.name
+        if var ~= key and var:find(key, 1, true) == 1 then
+          -- if it's a global variable, store in the auto-complete list,
+          -- but if it's local, store separately as it needs to be checked
+          table.insert(token.context[var] and vars or apilist, var)
+        end
+        context = token.context
+      end
+    end
+    for _, var in pairs(context and vars or {}) do
+      if context[var] then table.insert(apilist, var) end
+    end
+  end
 
   local compstr = ""
   if apilist then
