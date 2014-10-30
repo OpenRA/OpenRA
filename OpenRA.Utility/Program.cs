@@ -30,6 +30,7 @@ namespace OpenRA.Utility
 
 			Log.LogPath = Platform.ResolvePath("^", "Logs");
 			Log.AddChannel("perf", null);
+			Log.AddChannel("debug", null);
 
 			var modName = args[0];
 			if (!ModMetadata.AllMods.Keys.Contains(modName))
