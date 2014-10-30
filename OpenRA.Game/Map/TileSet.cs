@@ -148,7 +148,7 @@ namespace OpenRA
 
 	public class TileSet
 	{
-		static readonly string[] Fields = { "Name", "Id", "SheetSize", "Palette", "PlayerPalette", "Extensions", "WaterPaletteRotationBase", "EditorTemplateOrder", "IgnoreTileSpriteOffsets" };
+		static readonly string[] Fields = { "Name", "Id", "SheetSize", "Palette", "PlayerPalette", "Extensions", "WaterPaletteRotationBase", "EditorTemplateOrder", "IgnoreTileSpriteOffsets", "MaximumHeight" };
 
 		public readonly string Name;
 		public readonly string Id;
@@ -156,10 +156,12 @@ namespace OpenRA
 		public readonly string Palette;
 		public readonly string PlayerPalette;
 		public readonly string[] Extensions;
-		public readonly int WaterPaletteRotationBase = 0x60; 
-		public readonly Dictionary<ushort, TerrainTemplateInfo> Templates = new Dictionary<ushort, TerrainTemplateInfo>();
+		public readonly int WaterPaletteRotationBase = 0x60;
+		public readonly byte MaxGroundHeight = 0;
 		public readonly string[] EditorTemplateOrder;
 		public readonly bool IgnoreTileSpriteOffsets;
+
+		public readonly Dictionary<ushort, TerrainTemplateInfo> Templates = new Dictionary<ushort, TerrainTemplateInfo>();
 
 		public readonly TerrainTypeInfo[] TerrainInfo;
 		readonly Dictionary<string, byte> terrainIndexByType = new Dictionary<string, byte>();
