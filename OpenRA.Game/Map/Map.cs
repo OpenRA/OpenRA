@@ -24,6 +24,38 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
+	struct BinaryDataHeader
+	{
+		public readonly byte Format;
+		public readonly uint TilesOffset;
+		public readonly uint HeightsOffset;
+		public readonly uint ResourcesOffset;
+
+		public BinaryDataHeader(Stream s, int2 expectedSize)
+		{
+			Format = s.ReadUInt8();
+			var width = s.ReadUInt16();
+			var height = s.ReadUInt16();
+			if (width != expectedSize.X || height != expectedSize.Y)
+				throw new InvalidDataException("Invalid tile data");
+
+			if (Format == 1)
+			{
+				TilesOffset = 5;
+				HeightsOffset = 0;
+				ResourcesOffset = (uint)(3 * width * height + 5);
+			}
+			else if (Format == 2)
+			{
+				TilesOffset = s.ReadUInt32();
+				HeightsOffset = s.ReadUInt32();
+				ResourcesOffset = s.ReadUInt32();
+			}
+			else
+				throw new InvalidDataException("Unknown binary map format '{0}'".F(Format));
+		}
+	}
+
 	public class MapOptions
 	{
 		public bool? Cheats;
@@ -118,11 +150,14 @@ namespace OpenRA
 		[FieldLoader.Ignore] public List<MiniYamlNode> TranslationDefinitions = new List<MiniYamlNode>();
 
 		// Binary map data
-		[FieldLoader.Ignore] public byte TileFormat = 1;
+		[FieldLoader.Ignore] public byte TileFormat = 2;
+
 		public int2 MapSize;
 
 		[FieldLoader.Ignore] public Lazy<CellLayer<TerrainTile>> MapTiles;
 		[FieldLoader.Ignore] public Lazy<CellLayer<ResourceTile>> MapResources;
+		[FieldLoader.Ignore] public Lazy<CellLayer<byte>> MapHeight;
+
 		[FieldLoader.Ignore] public CellLayer<byte> CustomTerrain;
 
 		[FieldLoader.Ignore] Lazy<TileSet> cachedTileSet;
@@ -145,6 +180,13 @@ namespace OpenRA
 				return ret;
 			});
 
+			var makeMapHeight =  Exts.Lazy(() =>
+			{
+				var ret = new CellLayer<byte>(tileShape, size);
+				ret.Clear(0);
+				return ret;
+			});
+
 			var map = new Map()
 			{
 				Title = "Name your map here",
@@ -155,6 +197,7 @@ namespace OpenRA
 				Options = new MapOptions(),
 				MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(tileShape, size)),
 				MapTiles = makeMapTiles,
+				MapHeight = makeMapHeight,
 				Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>()),
 				Smudges = Exts.Lazy(() => new List<SmudgeReference>())
 			};
@@ -253,6 +296,8 @@ namespace OpenRA
 
 			MapTiles = Exts.Lazy(() => LoadMapTiles());
 			MapResources = Exts.Lazy(() => LoadResourceTiles());
+			MapHeight = Exts.Lazy(() => LoadMapHeight());
+
 			TileShape = Game.modData.Manifest.TileShape;
 			SubCellOffsets = Game.modData.Manifest.SubCellOffsets;
 			LastSubCell = (SubCell)(SubCellOffsets.Length - 1);
@@ -395,34 +440,45 @@ namespace OpenRA
 		public CellLayer<TerrainTile> LoadMapTiles()
 		{
 			var tiles = new CellLayer<TerrainTile>(this);
-			using (var dataStream = Container.GetContent("map.bin"))
+			using (var s = Container.GetContent("map.bin"))
 			{
-				if (dataStream.ReadUInt8() != 1)
-					throw new InvalidDataException("Unknown binary map format");
-
-				// Load header info
-				var width = dataStream.ReadUInt16();
-				var height = dataStream.ReadUInt16();
-
-				if (width != MapSize.X || height != MapSize.Y)
-					throw new InvalidDataException("Invalid tile data");
-
-				// Load tile data
-				var data = dataStream.ReadBytes(MapSize.X * MapSize.Y * 3);
-				var d = 0;
-				for (var i = 0; i < MapSize.X; i++)
+				var header = new BinaryDataHeader(s, MapSize);
+				if (header.TilesOffset > 0)
 				{
-					for (var j = 0; j < MapSize.Y; j++)
+					s.Position = header.TilesOffset;
+					for (var i = 0; i < MapSize.X; i++)
 					{
-						var tile = BitConverter.ToUInt16(data, d);
-						d += 2;
+						for (var j = 0; j < MapSize.Y; j++)
+						{
+							var tile = s.ReadUInt16();
+							var index = s.ReadUInt8();
 
-						var index = data[d++];
-						if (index == byte.MaxValue)
-							index = (byte)(i % 4 + (j % 4) * 4);
+							// TODO: Remember to remove this when rewriting tile variants / PickAny
+							if (index == byte.MaxValue)
+								index = (byte)(i % 4 + (j % 4) * 4);
 
-						tiles[i, j] = new TerrainTile(tile, index);
+							tiles[i, j] = new TerrainTile(tile, index);
+						}
 					}
+				}
+			}
+
+			return tiles;
+		}
+
+		public CellLayer<byte> LoadMapHeight()
+		{
+			var maxHeight = cachedTileSet.Value.MaxGroundHeight;
+			var tiles = new CellLayer<byte>(this);
+			using (var s = Container.GetContent("map.bin"))
+			{
+				var header = new BinaryDataHeader(s, MapSize);
+				if (header.HeightsOffset > 0)
+				{
+					s.Position = header.HeightsOffset;
+					for (var i = 0; i < MapSize.X; i++)
+						for (var j = 0; j < MapSize.Y; j++)
+							tiles[i, j] = s.ReadUInt8().Clamp((byte)0, maxHeight);
 				}
 			}
 
@@ -433,28 +489,22 @@ namespace OpenRA
 		{
 			var resources = new CellLayer<ResourceTile>(this);
 
-			using (var dataStream = Container.GetContent("map.bin"))
+			using (var s = Container.GetContent("map.bin"))
 			{
-				if (dataStream.ReadUInt8() != 1)
-					throw new InvalidDataException("Unknown binary map format");
-
-				// Load header info
-				var width = dataStream.ReadUInt16();
-				var height = dataStream.ReadUInt16();
-
-				if (width != MapSize.X || height != MapSize.Y)
-					throw new InvalidDataException("Invalid tile data");
-
-				// Skip past tile data
-				dataStream.Seek(3 * MapSize.X * MapSize.Y, SeekOrigin.Current);
-
-				var data = dataStream.ReadBytes(MapSize.X * MapSize.Y * 2);
-				var d = 0;
-
-				// Load resource data
-				for (var i = 0; i < MapSize.X; i++)
-					for (var j = 0; j < MapSize.Y; j++)
-						resources[i, j] = new ResourceTile(data[d++], data[d++]);
+				var header = new BinaryDataHeader(s, MapSize);
+				if (header.ResourcesOffset > 0)
+				{
+					s.Position = header.ResourcesOffset;
+					for (var i = 0; i < MapSize.X; i++)
+					{
+						for (var j = 0; j < MapSize.Y; j++)
+						{
+							var type = s.ReadUInt8();
+							var density = s.ReadUInt8();
+							resources[i, j] = new ResourceTile(type, density);
+						}
+					}
+				}
 			}
 
 			return resources;
@@ -465,28 +515,53 @@ namespace OpenRA
 			var dataStream = new MemoryStream();
 			using (var writer = new BinaryWriter(dataStream))
 			{
-				// File header consists of a version byte, followed by 2 ushorts for width and height
+				// Binary data version
 				writer.Write(TileFormat);
+
+				// Size
 				writer.Write((ushort)MapSize.X);
 				writer.Write((ushort)MapSize.Y);
 
+				// Data offsets
+				var tilesOffset = 17;
+				var heightsOffset = cachedTileSet.Value.MaxGroundHeight > 0 ? 3 * MapSize.X * MapSize.Y + 17 : 0;
+				var resourcesOffset = (cachedTileSet.Value.MaxGroundHeight > 0 ? 4 : 3) * MapSize.X * MapSize.Y + 17;
+
+				writer.Write((uint)tilesOffset);
+				writer.Write((uint)heightsOffset);
+				writer.Write((uint)resourcesOffset);
+
 				// Tile data
-				for (var i = 0; i < MapSize.X; i++)
-					for (var j = 0; j < MapSize.Y; j++)
+				if (tilesOffset != 0)
+				{
+					for (var i = 0; i < MapSize.X; i++)
 					{
-						var tile = MapTiles.Value[i, j];
-						writer.Write(tile.Type);
-						writer.Write(tile.Index);
+						for (var j = 0; j < MapSize.Y; j++)
+						{
+							var tile = MapTiles.Value[i, j];
+							writer.Write(tile.Type);
+							writer.Write(tile.Index);
+						}
 					}
+				}
+
+				// Height data
+				if (heightsOffset != 0)
+					for (var i = 0; i < MapSize.X; i++)
+						for (var j = 0; j < MapSize.Y; j++)
+							writer.Write(MapHeight.Value[i, j]);
 
 				// Resource data
-				for (var i = 0; i < MapSize.X; i++)
+				if (resourcesOffset != 0)
 				{
-					for (var j = 0; j < MapSize.Y; j++)
+					for (var i = 0; i < MapSize.X; i++)
 					{
-						var tile = MapResources.Value[i, j];
-						writer.Write(tile.Type);
-						writer.Write(tile.Index);
+						for (var j = 0; j < MapSize.Y; j++)
+						{
+							var tile = MapResources.Value[i, j];
+							writer.Write(tile.Type);
+							writer.Write(tile.Index);
+						}
 					}
 				}
 			}
@@ -513,7 +588,9 @@ namespace OpenRA
 			// (b) Therefore:
 			//  - ax + by adds (a - b) * 512 + 512 to u
 			//  - ax + by adds (a + b) * 512 + 512 to v
-			return new WPos(512 * (cell.X - cell.Y + 1), 512 * (cell.X + cell.Y + 1), 0);
+
+			var z = Contains(cell) ? 512 * MapHeight.Value[cell] : 0;
+			return new WPos(512 * (cell.X - cell.Y + 1), 512 * (cell.X + cell.Y + 1), z);
 		}
 
 		public WPos CenterOfSubCell(CPos cell, SubCell subCell)
@@ -588,10 +665,12 @@ namespace OpenRA
 		{
 			var oldMapTiles = MapTiles.Value;
 			var oldMapResources = MapResources.Value;
+			var oldMapHeight = MapHeight.Value;
 			var newSize = new Size(width, height);
 
 			MapTiles = Exts.Lazy(() => CellLayer.Resize(oldMapTiles, newSize, oldMapTiles[0, 0]));
 			MapResources = Exts.Lazy(() => CellLayer.Resize(oldMapResources, newSize, oldMapResources[0, 0]));
+			MapHeight = Exts.Lazy(() => CellLayer.Resize(oldMapHeight, newSize, oldMapHeight[0, 0]));
 			MapSize = new int2(newSize);
 		}
 

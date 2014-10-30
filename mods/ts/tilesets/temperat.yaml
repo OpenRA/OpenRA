@@ -3,6 +3,7 @@ General:
 	Id: TEMPERAT
 	Extensions: .tem, .shp
 	Palette: isotem.pal
+	MaxGroundHeight: 16
 	EditorTemplateOrder: Misc Buildings, Clear, Cliff Pieces, Ice Flow, House, Blank, Ice Ramps, Cliff Set, Civilian Buildings, Shore Pieces, Rough LAT tile, Clear/Rough LAT, Cliff/Water pieces, Bendy Dirt Roads, Dirt Road Junctions, Straight Dirt Roads, Bridges, Paved Roads, Water, Dirt Road Slopes, Slope Set Pieces, Dead Oil Tanker, Ruins, Waterfalls, Ground 01, Ground 02, Sand, Sand/Clear LAT, Rough ground, Paved Road Ends, TrainBridges, Pavement, Pavement/Clear LAT, Paved road bits, Green, Green/Clear LAT, Ramp edge fixup, Water slopes, Pavement (Use for LAT), Paved Road Slopes, Monorail Slopes, Waterfalls-B, Waterfalls-C, Waterfalls-D, Tunnel Floor, Tunnel Side, TrackTunnel Floor, Destroyable Cliffs, Water Caves, Scrin Wreckage, DirtTrackTunnel Floor, DirtTunnel Floor
 	SheetSize: 2048
 
