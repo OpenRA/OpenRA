@@ -14,17 +14,18 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Power
 {
 	[Desc("The player can disable the power individually on this actor.")]
-	public class CanPowerDownInfo : ITraitInfo, Requires<PowerInfo>
+	public class CanPowerDownInfo : UpgradableTraitInfo, ITraitInfo, Requires<PowerInfo>
 	{
-		public object Create(ActorInitializer init) { return new CanPowerDown(init.self); }
+		public object Create(ActorInitializer init) { return new CanPowerDown(init.self, this); }
 	}
 
-	public class CanPowerDown : IPowerModifier, IResolveOrder, IDisable, ISync
+	public class CanPowerDown : UpgradableTrait<CanPowerDownInfo>, IPowerModifier, IResolveOrder, IDisable
 	{
 		[Sync] bool disabled = false;
 		readonly Power power;
 
-		public CanPowerDown(Actor self)
+		public CanPowerDown(Actor self, CanPowerDownInfo info)
+			: base(info)
 		{
 			power = self.Trait<Power>();
 		}
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Common.Power
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "PowerDown")
+			if (!IsTraitDisabled && order.OrderString == "PowerDown")
 			{
 				disabled = !disabled;
 				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", disabled ? "EnablePower" : "DisablePower", self.Owner.Country.Race);
@@ -46,7 +47,7 @@ namespace OpenRA.Mods.Common.Power
 
 		public int GetPowerModifier()
 		{
-			return disabled ? 0 : 100;
+			return !IsTraitDisabled && disabled ? 0 : 100;
 		}
 	}
 }

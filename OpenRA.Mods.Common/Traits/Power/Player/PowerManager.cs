@@ -45,59 +45,38 @@ namespace OpenRA.Mods.Common.Power
 			this.self = self;
 			this.info = info;
 
-			self.World.ActorAdded += UpdateActor;
-			self.World.ActorRemoved += RemoveActor;
-
 			devMode = self.Trait<DeveloperMode>();
 			wasHackEnabled = devMode.UnlimitedPower;
 		}
 
 		public void UpdateActor(Actor a)
 		{
-			UpdateActors(new[] { a });
-		}
-
-		public void UpdateActors(IEnumerable<Actor> actors)
-		{
-			foreach (var a in actors)
-			{
-				if (a.Owner != self.Owner)
-					return;
-
-				var power = a.TraitOrDefault<Power>();
-				if (power == null)
-					return;
-
-				powerDrain[a] = power.GetCurrentPower();
-			}
-			UpdateTotals();
-		}
-
-		void RemoveActor(Actor a)
-		{
-			if (a.Owner != self.Owner || !a.HasTrait<Power>())
+			int old;
+			powerDrain.TryGetValue(a, out old); // old is 0 if a is not in powerDrain
+			var amount = a.TraitsImplementing<Power>().Where(t => !t.IsTraitDisabled).Aggregate(0, (v, p) => v + p.GetEnabledPower());
+			powerDrain[a] = amount;
+			if (amount == old || devMode.UnlimitedPower)
 				return;
-
-			powerDrain.Remove(a);
-			UpdateTotals();
+			if (old > 0)
+				totalProvided -= old;
+			else if (old < 0)
+				totalDrained += old;
+			if (amount > 0)
+				totalProvided += amount;
+			else if (amount < 0)
+				totalDrained -= amount;
 		}
 
-		public void UpdateTotals()
+		public void RemoveActor(Actor a)
 		{
-			totalProvided = 0;
-			totalDrained = 0;
-
-			foreach (var kv in powerDrain)
-			{
-				var p = kv.Value;
-				if (p > 0)
-					totalProvided += p;
-				else
-					totalDrained -= p;
-			}
-
-			if (devMode.UnlimitedPower)
-				totalProvided = 1000000;
+			int amount;
+			if (!powerDrain.TryGetValue(a, out amount))
+				return;
+			if (amount > 0)
+				totalProvided -= amount;
+			else if (amount < 0)
+				totalDrained += amount;
+			powerDrain.Remove(a);
 		}
 
 		int nextPowerAdviceTime = 0;
@@ -108,7 +87,16 @@ namespace OpenRA.Mods.Common.Power
 		{
 			if (wasHackEnabled != devMode.UnlimitedPower)
 			{
-				UpdateTotals();
+				totalProvided = 0;
+				totalDrained = 0;
+
+				if (!devMode.UnlimitedPower)
+					foreach (var kv in powerDrain)
+						if (kv.Value > 0)
+							totalProvided += kv.Value;
+						else if (kv.Value < 0)
+							totalDrained -= kv.Value;
+
 				wasHackEnabled = devMode.UnlimitedPower;
 			}
 
@@ -150,7 +138,8 @@ namespace OpenRA.Mods.Common.Power
 				.Select(tp => tp.Actor)
 				.Where(a => !a.IsDead && a.IsInWorld && a.Owner == self.Owner);
 
-			UpdateActors(actors);
+			foreach (var a in actors)
+				UpdateActor(a);
 		}
 	}
 }
