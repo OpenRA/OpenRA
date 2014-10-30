@@ -38,22 +38,22 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString != "RepairBridge")
 				return null;
 
-			var bridge = order.TargetActor.TraitOrDefault<BridgeHut>();
-			if (bridge == null)
+			var hut = order.TargetActor.TraitOrDefault<BridgeHut>();
+			if (hut == null)
 				return null;
 
-			return bridge.BridgeDamageState > DamageState.Undamaged ? "Attack" : null;
+			return hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.IsDangling ? null : "Attack";
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "RepairBridge")
 			{
-				var bridge = order.TargetActor.TraitOrDefault<BridgeHut>();
-				if (bridge == null)
+				var hut = order.TargetActor.TraitOrDefault<BridgeHut>();
+				if (hut == null)
 					return;
 
-				if (bridge.BridgeDamageState == DamageState.Undamaged)
+				if (hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.IsDangling)
 					return;
 
 				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Yellow);
@@ -70,12 +70,12 @@ namespace OpenRA.Mods.RA
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var bridge = target.TraitOrDefault<BridgeHut>();
-				if (bridge == null)
+				var hut = target.TraitOrDefault<BridgeHut>();
+				if (hut == null)
 					return false;
 
 				// Require force attack to heal partially damaged bridges to avoid unnecessary cursor noise
-				var damage = bridge.BridgeDamageState;
+				var damage = hut.BridgeDamageState;
 				if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && damage != DamageState.Dead)
 					return false;
 
@@ -83,8 +83,8 @@ namespace OpenRA.Mods.RA
 				if (modifiers.HasModifier(TargetModifiers.ForceMove))
 					return false;
 
-				// Can't repair an undamaged bridge
-				if (damage == DamageState.Undamaged)
+				// Can't repair a bridge that is undamaged, already under repair, or dangling
+				if (damage == DamageState.Undamaged || hut.Repairing || hut.Bridge.IsDangling)
 					cursor = "goldwrench-blocked";
 
 				return true;
