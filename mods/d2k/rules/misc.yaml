@@ -16,8 +16,17 @@ CRATE:
 		Amount: 1500
 		SelectionShares: 25
 		UseCashTick: yes
+	ExplodeCrateAction@1:
+		Weapon: CrateExplosion
+		SelectionShares: 5
+	HideMapCrateAction:
+		SelectionShares: 5
+		Effect: hide-map
 	LevelUpCrateAction:
 		SelectionShares: 40
+	RevealMapCrateAction:
+		SelectionShares: 2
+		Effect: reveal-map
 	GiveUnitCrateAction@Trike:
 		SelectionShares: 20
 		Units: trike
@@ -104,6 +113,10 @@ CRATE:
 		NoBaseSelectionShares: 9001
 		Units: mcvo
 		ValidRaces: ordos
+	GrantUpgradeCrateAction@cloak:
+		SelectionShares: 5
+		Effect: cloak
+		Upgrades: cloak
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:
