@@ -60,6 +60,70 @@ namespace OpenRA.FileFormats
 			}
 		}
 
+		public static unsafe uint DecodeInto(byte* src, byte* dest) {
+			byte* pdest = dest;
+			byte* readp = src;
+			byte* writep = dest;
+
+			while (true) {
+				byte code = *readp++;
+				byte* copyp;
+				int count;
+				if ((~code & 0x80) != 0) {
+					//bit 7 = 0
+					//command 0 (0cccpppp p): copy
+					count = (code >> 4) + 3;
+					copyp = writep - (((code & 0xf) << 8) + *readp++);
+					while (count-- != 0)
+						*writep++ = *copyp++;
+				}
+				else {
+					//bit 7 = 1
+					count = code & 0x3f;
+					if ((~code & 0x40) != 0) {
+						//bit 6 = 0
+						if (count == 0)
+							//end of image
+							break;
+						//command 1 (10cccccc): copy
+						while (count-- != 0)
+							*writep++ = *readp++;
+					}
+					else {
+						//bit 6 = 1
+						if (count < 0x3e) {
+							//command 2 (11cccccc p p): copy
+							count += 3;
+							copyp = &pdest[*(ushort*) readp];
+
+							readp += 2;
+							while (count-- != 0)
+								*writep++ = *copyp++;
+						}
+						else if (count == 0x3e) {
+							//command 3 (11111110 c c v): fill
+							count = *(ushort*) readp;
+							readp += 2;
+							code = *readp++;
+							while (count-- != 0)
+								*writep++ = code;
+						}
+						else {
+							//command 4 (copy 11111111 c c p p): copy
+							count = *(ushort*) readp;
+							readp += 2;
+							copyp = &pdest[*(ushort*) readp];
+							readp += 2;
+							while (count-- != 0)
+								*writep++ = *copyp++;
+						}
+					}
+				}
+			}
+
+			return (uint) (dest - pdest);
+		}
+
 		public static int DecodeInto(byte[] src, byte[] dest, int srcOffset = 0, bool reverse = false)
 		{
 			var ctx = new FastByteReader(src, srcOffset);
