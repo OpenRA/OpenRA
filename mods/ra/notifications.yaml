@@ -47,6 +47,7 @@ Speech:
 		WarningFiveMinutesRemaining: 5minr
 		ControlCenterDeactivated: cntlded1
 		OperationControlTerminated: opterm1
+		MissionTimerInitialised: mtimein1
 
 Sounds:
 	Notifications:
