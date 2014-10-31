@@ -100,8 +100,13 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public void Render(WorldRenderer wr)
 		{
+			// TODO: This is a temporary workaround until we have a proper ramp-aware height calculation
+			var groundPos = wr.world.Map.CenterOfCell(wr.world.Map.CellContaining(pos));
+
+			var ts = Game.modData.Manifest.TileSize;
+			var groundZ = ts.Height * (groundPos.Z - pos.Z) / 1024f;
+
 			var pxOrigin = wr.ScreenPosition(pos);
-			var groundZ = 0.5f*(pxOrigin.Y - wr.ScreenZPosition(pos, 0));
 			var shadowOrigin = pxOrigin - groundZ*(new float2(renderProxy.ShadowDirection, 1));
 
 			var psb = renderProxy.ProjectedShadowBounds;
