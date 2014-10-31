@@ -329,7 +329,7 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
 
     if (lexerconvert and lexerconvert[name]) then
       local targets = lexerconvert[name]
-      for n,outid in pairs(targets) do
+      for _, outid in pairs(targets) do
         applystyle(style,outid)
       end
     -- allow to specify style numbers, but exclude those styles
@@ -378,11 +378,8 @@ function ReApplySpecAndStyles()
   SetupKeywords(shellbox,"lua",nil,ide.config.stylesoutshell,ide.font.oNormal,ide.font.oItalic)
   StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font.oNormal,ide.font.oItalic)
 
-  local openDocuments = ide.openDocuments
-  for i,doc in pairs(openDocuments) do
-    if (doc.editor.spec) then
-      doc.editor:SetupKeywords(nil,doc.editor.spec)
-    end
+  for _, doc in pairs(ide:GetDocuments()) do
+    if doc.editor.spec then doc.editor:SetupKeywords(nil, doc.editor.spec) end
   end
 end
 

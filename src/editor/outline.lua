@@ -156,7 +156,7 @@ local function outlineCreateOutlineWindow()
   ide.outline.outlineCtrl = ctrl
   ide.timers.outline = wx.wxTimer(ctrl)
 
-  local root = ctrl:AddRoot("Outline")
+  ctrl:AddRoot("Outline")
   ctrl:SetImageList(ide.outline.imglist)
   ctrl:SetFont(ide.font.fNormal)
 

@@ -281,7 +281,7 @@ local function saveNotebook(nb)
   
   local function sortedPages(tab)
     local t = {}
-    for i,v in pairs(tab) do
+    for i in pairs(tab) do
       table.insert(t,i)
     end
     table.sort(t)
@@ -309,9 +309,9 @@ local function saveNotebook(nb)
     split = "<Y>"
   end
   
-  for i,v in ipairs(sortedUse) do
+  for _, v in ipairs(sortedUse) do
     local pages = pagesUse[v]
-    for n,id in ipairs(pages) do
+    for _, id in ipairs(pages) do
       str = str..id.."|"
     end
     str = str..split.."|"
@@ -428,8 +428,8 @@ function SettingsRestoreView()
 
   uimgr:Update()
   
-  local layoutcur = saveNotebook(frame.bottomnotebook)
-  local layout = settingsReadSafe(settings,"nbbtmlayout",layoutcur)
+  layoutcur = saveNotebook(frame.bottomnotebook)
+  layout = settingsReadSafe(settings,"nbbtmlayout",layoutcur)
   if (layout ~= layoutcur) then
     loadNotebook(ide.frame.bottomnotebook,layout,
       -- treat "Output (running)" same as "Output"
@@ -442,8 +442,8 @@ function SettingsRestoreView()
   local index = bottomnotebook:GetPageIndex(bottomnotebook.errorlog)
   if index >= 0 then bottomnotebook:SetSelection(index) end
 
-  local layoutcur = saveNotebook(frame.notebook)
-  local layout = settingsReadSafe(settings,"nblayout",layoutcur)
+  layoutcur = saveNotebook(frame.notebook)
+  layout = settingsReadSafe(settings,"nblayout",layoutcur)
   if (layout ~= layoutcur) then
     loadNotebook(ide.frame.notebook,layout)
     local openDocuments = ide.openDocuments
@@ -457,7 +457,6 @@ function SettingsRestoreView()
   -- restore configuration for notebook pages that have been split;
   -- load saved dock_size values and update current values with saved ones
   -- where dock_size configuration matches
-  local docksizemask = '(dock_size[^=]+=)(%d+)'
   for l, m in pairs({
     nbdocklayout = frame.notebook:GetAuiManager(),
     nbbtmdocklayout = frame.bottomnotebook:GetAuiManager(),
@@ -469,7 +468,7 @@ function SettingsRestoreView()
         local val = prevlayout:match(EscapeMagic(t)..'(%d+)')
         return t..(val or v)
       end)
-    if newlayout ~= curlayour then m:LoadPerspective(newlayout) end
+    if newlayout ~= curlayout then m:LoadPerspective(newlayout) end
   end
 
   local editor = GetEditor()
@@ -504,6 +503,8 @@ function SettingsRestoreEditorSettings()
 
   ide.config.interpreter = settingsReadSafe(settings,"interpreter",ide.config.interpreter)
   ProjectSetInterpreter(ide.config.interpreter)
+
+  settings:SetPath(path)
 end
 
 function SettingsSaveEditorSettings()

@@ -6,7 +6,6 @@
 local ide = ide
 local frame = ide.frame
 local menuBar = frame.menuBar
-local notebook = frame.notebook
 local openDocuments = ide.openDocuments
 
 local fileMenu = wx.wxMenu({
@@ -210,7 +209,7 @@ frame:Connect(ID_SAVEALL, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_SAVEALL, wx.wxEVT_UPDATE_UI,
   function (event)
     local atLeastOneModifiedDocument = false
-    for id, document in pairs(openDocuments) do
+    for _, document in pairs(openDocuments) do
       if document.isModified or not document.filePath then
         atLeastOneModifiedDocument = true
         break

@@ -276,7 +276,7 @@ function ide:AddWatch(watch, value)
     item = watchCtrl:GetNextSibling(item)
   end
 
-  local item = watchCtrl:AppendItem(root, watch, 1)
+  item = watchCtrl:AppendItem(root, watch, 1)
   watchCtrl:SetItemExpression(item, watch, value)
   return item
 end

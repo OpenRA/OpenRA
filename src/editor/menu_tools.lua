@@ -5,7 +5,6 @@
 local ide = ide
 local frame = ide.frame
 local menuBar = frame.menuBar
-local openDocuments = ide.openDocuments
 local unpack = table.unpack or unpack
 
 --[=[
@@ -44,7 +43,7 @@ do
   table.sort(tools,function(a,b) return a.exec.name < b.exec.name end)
 
   -- todo config specifc ignore/priority list
-  for i,tool in ipairs(tools) do
+  for _, tool in ipairs(tools) do
     local exec = tool.exec
     if (exec and cnt < maxcnt and exec.name and exec.fn and exec.description) then
       local id = name2id(tool.fname)
@@ -79,18 +78,14 @@ if (cnt > 1) then
   menuBar:Append(toolMenu, "&Tools")
 
   -- connect auto execs
-  for name,tool in pairs(ide.tools) do
-    if (tool._execid) then
-      addHandler(toolMenu, tool._execid, tool.exec.fn)
-    end
+  for _, tool in pairs(ide.tools) do
+    if tool._execid then addHandler(toolMenu, tool._execid, tool.exec.fn) end
   end
 end
 
 -- Generate Custom Menus/Init
-for name,tool in pairs(ide.tools) do
-  if (tool.fninit) then
-    tool.fninit(frame,menuBar)
-  end
+for _, tool in pairs(ide.tools) do
+  if tool.fninit then tool.fninit(frame, menuBar) end
 end
 
 function ToolsAddTool(name, command, updateui)

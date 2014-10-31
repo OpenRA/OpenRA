@@ -86,7 +86,7 @@ local function updateWatchesSync(onlyitem)
           watchCtrl:SetItemValueIfExpandable(item, nil)
         else
           if #values == 0 then values = {'nil'} end
-          local ok, res = LoadSafe("return "..values[1])
+          local _, res = LoadSafe("return "..values[1])
           watchCtrl:SetItemValueIfExpandable(item, res)
         end
 
