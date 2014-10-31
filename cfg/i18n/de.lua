@@ -15,7 +15,7 @@ return {
   ["&Documentation"] = "&Dokumentation", -- src\editor\menu_help.lua
   ["&Down"] = "&Runter", -- src\editor\findreplace.lua
   ["&Edit Project Directory"] = "Projektverzeichnis ändern", -- src\editor\filetree.lua
-  ["&Edit Value"] = nil, -- src\editor\debugger.lua
+  ["&Edit Value"] = "Wert editieren", -- src\editor\debugger.lua
   ["&Edit Watch"] = "&Beobachtungspunkt bearbeiten", -- src\editor\debugger.lua
   ["&Edit"] = "&Bearbeiten", -- src\editor\menu_edit.lua
   ["&File"] = "&Datei", -- src\editor\menu_file.lua
@@ -67,9 +67,9 @@ return {
   ["C&lear Output Window"] = "Ausgabefenster l&öschen", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["C&omment/Uncomment"] = "(Aus-)/K&ommentieren", -- src\editor\menu_edit.lua
   ["Can't debug the script in the active editor window."] = "Script kann im aktiven Editorfenster nicht gedebuggt werden.", -- src\editor\debugger.lua
-  ["Can't evaluate the expression while the application is running."] = nil, -- src\editor\debugger.lua
+  ["Can't evaluate the expression while the application is running."] = "Kann den Ausdruck nicht auswerten solange die Anwendung läuft.", -- src\editor\debugger.lua
   ["Can't find file '%s' in the current project to activate for debugging. Update the project or open the file in the editor before debugging."] = "Kann Datei '%s' zwecks Debugging im aktuellen Projekt nicht finden. Bitte Projekt aktualisieren oder Datei in den Editor laden.", -- src\editor\debugger.lua
-  ["Can't open file '%s': %s"] = nil, -- src\editor\singleinstance.lua
+  ["Can't open file '%s': %s"] = "Kann Datei '%s' nicht öffnen: %s", -- src\editor\singleinstance.lua
   ["Can't process auto-recovery record; invalid format: %s."] = "Auto-Wiederherstellen nicht möglich; ungültiges Format: %s.", -- src\editor\commands.lua
   ["Can't run the entry point script ('%s')."] = "Kann Script für Einsprungspunkt ('%s') nicht ausführen.", -- src\editor\debugger.lua
   ["Can't start debugger server at %s:%d: %s."] = "Kann Debugserver nicht starten (%s:%d): %s.", -- src\editor\debugger.lua
@@ -99,7 +99,7 @@ return {
   ["Consider removing backslash from escape sequence '%s'."] = "Möglicherweise muß `\' aus '%s' entfernt werden.", -- src\editor\commands.lua
   ["Copy Full Path"] = "Kopiere Pfadangabe", -- src\editor\gui.lua, src\editor\filetree.lua
   ["Copy selected text to clipboard"] = "Text in Zwischenablage kopieren", -- src\editor\menu_edit.lua
-  ["Correct &Indentation"] = nil, -- src\editor\menu_edit.lua
+  ["Correct &Indentation"] = "E&inzug korrigieren", -- src\editor\menu_edit.lua
   ["Couldn't activate file '%s' for debugging; continuing without it."] = "Konnte Datei '%s' zwecks nicht Debugging aktivieren; fahre ohne die Datei fort.", -- src\editor\debugger.lua
   ["Create an empty document"] = "Leeres Dokument anlegen", -- src\editor\menu_file.lua
   ["Cu&t"] = "A&usschneiden", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
@@ -119,7 +119,7 @@ return {
   ["Enter Lua code and press Enter to run it."] = "Lua-Code eingeben und Enter drücken zum Ausführen.", -- src\editor\shellbox.lua
   ["Enter command line parameters (use Cancel to clear)"] = "Kommandozeilenparameter eingeben (Cancel zum löschen)", -- src\editor\menu_project.lua
   ["Enter line number"] = "Zeilennummer eingeben", -- src\editor\menu_search.lua
-  ["Enter replacement text"] = nil, -- src\editor\editor.lua
+  ["Enter replacement text"] = "Neuen Text eingeben", -- src\editor\editor.lua
   ["Error while loading API file: %s"] = "Fehler beim Laden von API-Datei: %s", -- src\editor\autocomplete.lua
   ["Error while loading configuration file: %s"] = "Fehler beim Laden von Konfigurationsdatei: %s", -- src\editor\style.lua
   ["Error while processing API file: %s"] = "Fehler beim Lesen von API-Datei: %s", -- src\editor\autocomplete.lua
@@ -132,7 +132,7 @@ return {
   ["Exit program"] = "Programm beenden", -- src\editor\menu_file.lua
   ["File '%s' has been modified on disk."] = "Datei '%s' wurde auf der Festplatte geändert.", -- src\editor\editor.lua
   ["File '%s' has more recent timestamp than restored '%s'; please review before saving."] = "Datei '%s' hat neueren Zeitstempel als wiederhergestellte Datei '%s'; bitte vor dem Speichern kontrollieren.", -- src\editor\commands.lua
-  ["File '%s' is missing and can't be recovered."] = nil, -- src\editor\commands.lua
+  ["File '%s' is missing and can't be recovered."] = "Datei '%s' fehlt und kann nicht wiederhergestellt werden.", -- src\editor\commands.lua
   ["File '%s' no longer exists."] = "Datei '%s' existiert nicht mehr.", -- src\editor\menu_file.lua, src\editor\editor.lua
   ["File Type"] = "Dateityp", -- src\editor\findreplace.lua
   ["File already exists."] = "Datei existiert bereits.", -- src\editor\commands.lua
@@ -158,7 +158,7 @@ return {
   ["Go To Previous Bookmark"] = "Zu vorherigem Lesezeichen", -- src\editor\menu_edit.lua
   ["Go to a selected line"] = "Gehe zu ausgewählter Zeile", -- src\editor\menu_search.lua
   ["INS"] = "INS", -- src\editor\editor.lua
-  ["Ignored error in debugger initialization code: %s."] = nil, -- src\editor\debugger.lua
+  ["Ignored error in debugger initialization code: %s."] = "Ignorierter Fehler im Debugger-Init-Code: %s.", -- src\editor\debugger.lua
   ["In Files"] = "In Dateien", -- src\editor\findreplace.lua
   ["Known Files"] = "Bekannte Dateien", -- src\editor\commands.lua
   ["Ln: %d"] = "Zeile: %d", -- src\editor\editor.lua
@@ -174,14 +174,14 @@ return {
   ["Open an existing document"] = "Öffne existierendes Dokument", -- src\editor\menu_file.lua
   ["Open file"] = "Öffne Datei", -- src\editor\commands.lua
   ["Options"] = "Optionen", -- src\editor\findreplace.lua
-  ["Outline Window"] = nil, -- src\editor\menu_view.lua
-  ["Outline"] = nil, -- src\editor\outline.lua
+  ["Outline Window"] = "Übersichtsfenster", -- src\editor\menu_view.lua
+  ["Outline"] = "Übersicht", -- src\editor\outline.lua
   ["Output (running)"] = "Ausgabe (ausgeführt)", -- src\editor\debugger.lua, src\editor\output.lua
-  ["Output (suspended)"] = nil, -- src\editor\debugger.lua
+  ["Output (suspended)"] = "Ausgabe (angehalten)", -- src\editor\debugger.lua
   ["Output"] = "Ausgabe", -- src\editor\debugger.lua, src\editor\output.lua, src\editor\gui.lua, src\editor\settings.lua
   ["Paste text from the clipboard"] = "Text aus Zwischenablage einfügen", -- src\editor\menu_edit.lua
   ["Preferences"] = "Einstellungen", -- src\editor\menu_edit.lua
-  ["Prepend '!' to force local execution."] = nil, -- src\editor\shellbox.lua
+  ["Prepend '!' to force local execution."] = "'!' voranstellen um lokale Ausführung zu erzwingen.", -- src\editor\shellbox.lua
   ["Prepend '=' to show complex values on multiple lines."] = "'=' voranstellen, um komplexe Ausdrücke auf mehrere Zeilen zu verteilen.", -- src\editor\shellbox.lua
   ["Press cancel to abort."] = "Abbrechen Drücken zum Beenden.", -- src\editor\commands.lua
   ["Program '%s' started in '%s' (pid: %d)."] = "Programm '%s' gestartet in '%s' (pid : %d).", -- src\editor\output.lua
@@ -198,7 +198,7 @@ return {
   ["R/O"] = "R/O", -- src\editor\editor.lua
   ["R/W"] = "R/W", -- src\editor\editor.lua
   ["Re&place In Files"] = "Ersetze in &Dateien", -- src\editor\menu_search.lua
-  ["Re-indent selected lines"] = nil, -- src\editor\menu_edit.lua
+  ["Re-indent selected lines"] = "Ausgewählte Zeilen neu einrücken", -- src\editor\menu_edit.lua
   ["Recent &Projects"] = "Letzte &Projekte", -- src\editor\menu_file.lua
   ["Recent Files"] = "Letzte Dateien", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Stelle letzte rückgängig gemachte Bearbeitung wieder her", -- src\editor\menu_edit.lua
@@ -207,7 +207,7 @@ return {
   ["Remote console"] = "Fensteuerungs-Konsole", -- src\editor\shellbox.lua
   ["Rename All Instances"] = "Umbenennen aller Instanzen", -- src\editor\editor.lua
   ["Replace A&ll"] = "A&lles ersetzen", -- src\editor\findreplace.lua
-  ["Replace All Selections"] = nil, -- src\editor\editor.lua
+  ["Replace All Selections"] = "Alle Auswahlen ersetzen", -- src\editor\editor.lua
   ["Replace"] = "Ersetzen", -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "Unbekanntes UTF8-Symbol ersetzt mit %s.", -- src\editor\commands.lua
   ["Replaced"] = "Ersetzt:", -- src\editor\findreplace.lua
@@ -247,7 +247,7 @@ return {
   ["Show/Hide the status bar"] = "Statuszeile zeigen/verstecken", -- src\editor\menu_view.lua
   ["Show/Hide the toolbar"] = "Werkzeugleiste zeigen/verstecken", -- src\editor\menu_view.lua
   ["Sort selected lines"] = "Ausgewählte Zeilen sortieren", -- src\editor\menu_edit.lua
-  ["Source"] = nil, -- src\editor\menu_edit.lua
+  ["Source"] = "Source", -- src\editor\menu_edit.lua
   ["Stack"] = "Stack", -- src\editor\debugger.lua
   ["Start &Debugging"] = "&Debugging starten", -- src\editor\menu_project.lua
   ["Start or continue debugging"] = "Debuggen starten/fortsetzen", -- src\editor\menu_project.lua
@@ -270,9 +270,9 @@ return {
   ["Trace execution showing each executed line"] = "Ablaufverfolgung zeigt jede ausgeführte Zeile an", -- src\editor\menu_project.lua
   ["Unable to create directory '%s'."] = "Kann kein Verzeichnis '%s' erstellen.", -- src\editor\filetree.lua
   ["Unable to create file '%s'."] = "Kann Datei '%s' nicht erstellen.", -- src\editor\filetree.lua
-  ["Unable to delete directory '%s': %s"] = nil, -- src\editor\filetree.lua
+  ["Unable to delete directory '%s': %s"] = "Scheitern beim Löschen von Verzeichnis '%s': %s", -- src\editor\filetree.lua
   ["Unable to load file '%s'."] = "Scheitern beim Laden von Datei '%s'.", -- src\editor\commands.lua
-  ["Unable to rename file '%s'."] = "Kann Datei '%s' nicht umbenennen.", -- src\editor\filetree.lua
+  ["Unable to rename file '%s'."] = "Scheitern beim umbenennen von Datei '%s'.", -- src\editor\filetree.lua
   ["Unable to save file '%s': %s"] = "Scheitern beim Speichern von Datei '%s' : %s", -- src\editor\commands.lua
   ["Unable to stop program (pid: %d), code %d."] = "Scheitern beim Stoppen des Prozesses (pid : %d), code %d.", -- src\editor\debugger.lua
   ["Undo last edit"] = "Letzte Änderung rückgängig machen", -- src\editor\menu_edit.lua
@@ -280,7 +280,7 @@ return {
   ["Use '%s' to show line endings and '%s' to convert them."] = "'%s' um Zeilenende-Codes zu sehen, und '%s' um sie zu konvertieren.", -- src\editor\commands.lua
   ["Use 'clear' to clear the shell output and the history."] = "'clear' um Ausgabefenster und Verlauf zu löschen.", -- src\editor\shellbox.lua
   ["Use Shift-Enter for multiline code."] = "<Umsch-Eingabetaste> für Code in mehreren Zeilen.", -- src\editor\shellbox.lua
-  ["View the outline window"] = nil, -- src\editor\menu_view.lua
+  ["View the outline window"] = "Übersichtsfenster ansehen", -- src\editor\menu_view.lua
   ["View the output/console window"] = "Ausgabe-/Konsolenfenster ansehen", -- src\editor\menu_view.lua
   ["View the project/filetree window"] = "Projekt-/Dateifenster ansehen", -- src\editor\menu_view.lua
   ["View the stack window"] = "Stapel/Stack-Fenster ansehen", -- src\editor\menu_view.lua
