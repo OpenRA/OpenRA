@@ -246,6 +246,12 @@ function ide:GetBitmap(id, client, size)
   return icon, file
 end
 
+function ide:AddPackage(name, package)
+  ide.packages[name] = setmetatable(package, ide.proto.Plugin)
+  return ide.packages[name]
+end
+function ide:RemovePackage(name) ide.packages[name] = nil end
+
 function ide:AddWatch(watch, value)
   local mgr = ide.frame.uimgr
   local pane = mgr:GetPane("watchpanel")
