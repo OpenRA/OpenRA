@@ -238,7 +238,7 @@ end
 
 outlineCreateOutlineWindow()
 
-ide.packages['core.outline'] = setmetatable({
+ide:AddPackage('core.outline', {
     -- remove the editor from the list
     onEditorClose = function(self, editor)
       local cache = caches[editor]
@@ -292,4 +292,4 @@ ide.packages['core.outline'] = setmetatable({
         ctrl:SetScrollPos(wx.wxHORIZONTAL, 0, true)
       end
     end,
-  }, ide.proto.Plugin)
+  })
