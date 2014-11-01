@@ -383,7 +383,7 @@ namespace OpenRA.Mods.D2k.Widgets
 
 					if (producing.Paused)
 					{
-						world.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, item, false));
+						world.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, CurrentQueue.QueueID, item, false));
 						return;
 					}
 				}
@@ -412,12 +412,12 @@ namespace OpenRA.Mods.D2k.Widgets
 						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, world.LocalPlayer.Country.Race);
 						var numberToCancel = Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1;
 
-						world.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, item, numberToCancel));
+						world.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, CurrentQueue.QueueID, item, numberToCancel));
 					}
 					else
 					{
 						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, world.LocalPlayer.Country.Race);
-						world.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, item, true));
+						world.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, CurrentQueue.QueueID, item, true));
 					}
 				}
 			}
@@ -425,7 +425,7 @@ namespace OpenRA.Mods.D2k.Widgets
 
 		void StartProduction(World world, string item)
 		{
-			world.IssueOrder(Order.StartProduction(CurrentQueue.Actor, item,
+			world.IssueOrder(Order.StartProduction(CurrentQueue.Actor, CurrentQueue.QueueID, item,
 				Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 		}
 
