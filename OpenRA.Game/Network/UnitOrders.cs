@@ -80,13 +80,14 @@ namespace OpenRA.Network
 								var player = world.FindPlayerByClient(client);
 								if (player == null) return;
 
-								if (world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally || player.WinState == WinState.Lost)
+								if ((world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally) || player.WinState == WinState.Lost)
 								{
 									var suffix = player.WinState == WinState.Lost ? " (Dead)" : " (Team)";
 									Game.AddChatLine(client.Color.RGB, client.Name + suffix, order.TargetString);
 								}
 							}
 						}
+
 						break;
 					}
 
@@ -112,6 +113,7 @@ namespace OpenRA.Network
 							orderManager.World.Paused = pause;
 							orderManager.World.PredictedPaused = pause;
 						}
+
 						break;
 					}
 
@@ -248,7 +250,7 @@ namespace OpenRA.Network
 						if (newStance == Stance.Enemy && targetPlayer.Stances[order.Player] == Stance.Ally)
 						{
 							targetPlayer.SetStance(order.Player, newStance);
-							Game.Debug("{0} has reciprocated",targetPlayer.PlayerName);
+							Game.Debug("{0} has reciprocated", targetPlayer.PlayerName);
 						}
 
 						break;
@@ -270,6 +272,7 @@ namespace OpenRA.Network
 								foreach (var t in self.TraitsImplementing<IResolveOrder>())
 									t.ResolveOrder(self, order);
 						}
+
 						break;
 					}
 			}
