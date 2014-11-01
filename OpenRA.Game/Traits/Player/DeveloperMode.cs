@@ -23,6 +23,7 @@ namespace OpenRA.Traits
 		public bool BuildAnywhere;
 		public bool ShowCombatGeometry;
 		public bool ShowDebugGeometry;
+		public bool ShowTerrainGeometry;
 
 		public object Create(ActorInitializer init) { return new DeveloperMode(this); }
 	}
@@ -41,6 +42,7 @@ namespace OpenRA.Traits
 		// Client side only
 		public bool ShowCombatGeometry;
 		public bool ShowDebugGeometry;
+		public bool ShowTerrainGeometry;
 
 		public DeveloperMode(DeveloperModeInfo info)
 		{
@@ -53,6 +55,7 @@ namespace OpenRA.Traits
 			BuildAnywhere = info.BuildAnywhere;
 			ShowCombatGeometry = info.ShowCombatGeometry;
 			ShowDebugGeometry = info.ShowDebugGeometry;
+			ShowTerrainGeometry = info.ShowTerrainGeometry;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
