@@ -60,7 +60,8 @@ namespace OpenRA.Graphics
 
 		public void InitializeFonts(Manifest m)
 		{
-			Fonts = m.Fonts.ToDictionary(x => x.Key, x => new SpriteFont(Platform.ResolvePath(x.Value.First), x.Value.Second));
+			using (new Support.PerfTimer("SpriteFonts"))
+				Fonts = m.Fonts.ToDictionary(x => x.Key, x => new SpriteFont(Platform.ResolvePath(x.Value.First), x.Value.Second));
 		}
 
 		internal IGraphicsDevice Device { get { return device; } }

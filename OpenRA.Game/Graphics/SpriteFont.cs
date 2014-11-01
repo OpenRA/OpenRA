@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using SharpFont;
 
 namespace OpenRA.Graphics
@@ -19,10 +20,12 @@ namespace OpenRA.Graphics
 	public class SpriteFont
 	{
 		int size;
+		string name;
 
 		public SpriteFont(string name, int size)
 		{
 			this.size = size;
+			this.name = name;
 
 			face = library.NewFace(name, 0);
 			face.SetPixelSizes((uint)size, (uint)size);
@@ -41,10 +44,10 @@ namespace OpenRA.Graphics
 
 		void PrecacheColor(Color c)
 		{
-			// precache glyphs for U+0020 - U+007f
-			for (var n = (char)0x20; n < (char)0x7f; n++)
-				if (glyphs[Pair.New(n, c)] == null)
-					throw new InvalidOperationException();
+			using (new PerfTimer("PrecacheColor {0} {1}px {2}".F(name, size, c.Name)))
+				for (var n = (char)0x20; n < (char)0x7f; n++)
+					if (glyphs[Pair.New(n, c)] == null)
+						throw new InvalidOperationException();
 		}
 
 		public void DrawText(string text, float2 location, Color c)
