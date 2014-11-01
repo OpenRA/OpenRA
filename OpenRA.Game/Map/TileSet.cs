@@ -158,6 +158,7 @@ namespace OpenRA
 		public readonly string[] Extensions;
 		public readonly int WaterPaletteRotationBase = 0x60;
 		public readonly byte MaxGroundHeight = 0;
+		public readonly Color[] HeightDebugColors = new[] { Color.Red };
 		public readonly string[] EditorTemplateOrder;
 		public readonly bool IgnoreTileSpriteOffsets;
 

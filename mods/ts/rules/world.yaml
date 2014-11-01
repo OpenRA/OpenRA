@@ -148,6 +148,7 @@ World:
 		AllowUnderActors: false
 		TerrainType: BlueTiberium
 	PathfinderDebugOverlay:
+	TerrainGeometryOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartUnits@MCV:

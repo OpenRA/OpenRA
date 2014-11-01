@@ -1,6 +1,6 @@
 Container@DEBUG_PANEL:
 	Logic: DebugMenuLogic
-	Y: 20
+	Y: 10
 	Width: PARENT_RIGHT
 	Height: PARENT_BOTTOM
 	Children:
@@ -88,30 +88,36 @@ Container@DEBUG_PANEL:
 			Width: PARENT_RIGHT
 		Checkbox@SHOW_UNIT_PATHS:
 			X: 45
-			Y: 285
+			Y: 275
 			Width: 200
 			Height: 20
 			Font: Regular
 			Text: Show Unit Paths
 		Checkbox@SHOW_ASTAR:
 			X: 45
-			Y: 315
+			Y: 305
 			Height: 20
 			Width: 200
 			Font: Regular
 			Text: Show A* Cost
 		Checkbox@SHOW_COMBATOVERLAY:
 			X: 290
-			Y: 285
+			Y: 275
 			Height: 20
 			Width: 200
 			Font: Regular
 			Text: Show Combat Geometry
 		Checkbox@SHOW_GEOMETRY:
 			X: 290
-			Y: 315
+			Y: 305
 			Height: 20
 			Width: 200
 			Font: Regular
 			Text: Show Render Geometry
-
+		Checkbox@SHOW_TERRAIN_OVERLAY:
+			X: 290
+			Y: 335
+			Height: 20
+			Width: 200
+			Font: Regular
+			Text: Show Terrain Geometry

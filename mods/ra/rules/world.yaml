@@ -133,6 +133,7 @@ World:
 		AllowUnderActors: false
 		TerrainType: Gems
 	PathfinderDebugOverlay:
+	TerrainGeometryOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:

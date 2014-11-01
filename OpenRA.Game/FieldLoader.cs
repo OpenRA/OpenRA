@@ -188,6 +188,27 @@ namespace OpenRA
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
+			else if (fieldType == typeof(Color[]))
+			{
+				var parts = value.Split(',');
+
+				if (parts.Length % 4 != 0)
+					return InvalidValueAction(value, fieldType, fieldName);
+
+				var colors = new Color[parts.Length / 4];
+
+				for (var i = 0; i < colors.Length; i++)
+				{
+					colors[i] = Color.FromArgb(
+						Exts.ParseIntegerInvariant(parts[4 * i]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[4 * i + 1]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[4 * i + 2]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[4 * i + 3]).Clamp(0, 255));
+				}
+
+				return colors;
+			}
+
 			else if (fieldType == typeof(HSLColor))
 			{
 				var parts = value.Split(',');
