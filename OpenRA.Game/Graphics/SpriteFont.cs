@@ -19,6 +19,9 @@ namespace OpenRA.Graphics
 {
 	public class SpriteFont
 	{
+		static Library library = new Library();
+		static SheetBuilder builder;
+
 		int size;
 		string name;
 
@@ -30,8 +33,7 @@ namespace OpenRA.Graphics
 			face = new Face(library, name);
 			face.SetPixelSizes((uint)size, (uint)size);
 
-			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, 
-			         Pair<char,Color>.EqualityComparer);
+			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, Pair<char, Color>.EqualityComparer);
 
 			// setup a SheetBuilder for our private use
 			// TODO: SheetBuilder state is leaked between mod switches
@@ -92,7 +94,7 @@ namespace OpenRA.Graphics
 			return new int2((int)Math.Ceiling(lines.Max(s => s.Sum(a => glyphs[Pair.New(a, Color.White)].Advance))), lines.Length * size);
 		}
 
-		Cache<Pair<char,Color>, GlyphInfo> glyphs;
+		Cache<Pair<char, Color>, GlyphInfo> glyphs;
 		Face face;
 
 		GlyphInfo CreateGlyph(Pair<char, Color> c)
@@ -112,6 +114,7 @@ namespace OpenRA.Graphics
 
 			// A new bitmap is generated each time this property is accessed, so we do need to dispose it.
 			using (var bitmap = face.Glyph.Bitmap)
+			{
 				unsafe
 				{
 					var p = (byte*)bitmap.Buffer;
@@ -133,13 +136,12 @@ namespace OpenRA.Graphics
 						p += bitmap.Pitch;
 					}
 				}
+			}
+
 			s.sheet.CommitData();
 
 			return g;
 		}
-
-		static Library library = new Library();  
-		static SheetBuilder builder;
 	}
 
 	class GlyphInfo
