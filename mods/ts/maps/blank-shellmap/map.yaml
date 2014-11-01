@@ -40,7 +40,8 @@ Rules:
 		-StartGameNotification:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		LoadWidgetAtGameStart:
+		LuaScript:
+			Scripts: shellmap.lua
 
 Sequences:
 
