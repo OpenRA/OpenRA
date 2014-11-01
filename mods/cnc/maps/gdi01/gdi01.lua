@@ -56,8 +56,13 @@ CheckForBase = function()
 	return #baseBuildings >= 3
 end
 
-WorldLoaded = function()
+initialSong = "aoi"
+PlayMusic = function()
+	Media.PlayMusic(initialSong, PlayMusic)
+	initialSong = nil
+end
 
+WorldLoaded = function()
 	player = Player.GetPlayer("GDI")
 	enemy = Player.GetPlayer("Nod")
 
@@ -84,6 +89,8 @@ WorldLoaded = function()
 
 	ReinforceWithLandingCraft(MCVReinforcements, lstStart.Location + CVec.New(2, 0), lstEnd.Location + CVec.New(2, 0), mcvTarget.Location)
 	Reinforce(InfantryReinforcements)
+
+	PlayMusic()
 
 	Trigger.OnIdle(Gunboat, function() SetGunboatPath(Gunboat) end)
 

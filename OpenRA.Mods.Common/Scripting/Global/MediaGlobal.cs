@@ -10,8 +10,11 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using Eluant;
+using OpenRA.GameRules;
 using OpenRA.Scripting;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
 {
@@ -49,7 +52,7 @@ namespace OpenRA.Mods.Common.Scripting
 					try
 					{
 						using (f)
-							f.Call();
+							f.Call().Dispose();
 					}
 					catch (LuaException e)
 					{
@@ -61,6 +64,46 @@ namespace OpenRA.Mods.Common.Scripting
 				onComplete = () => { };
 
 			Media.PlayFMVFullscreen(world, movie, onComplete);
+		}
+
+		MusicInfo previousMusic;
+		[Desc("Play track defined in music.yaml or keep it empty for a random song.")]
+		public void PlayMusic(string track = null, LuaFunction func = null)
+		{
+			if (!Game.Settings.Sound.MapMusic)
+				return;
+
+			var music = world.Map.Rules.InstalledMusic.Select(a => a.Value).ToArray();
+			if (!music.Any())
+				return;
+
+			var musicInfo = !string.IsNullOrEmpty(track) ? world.Map.Rules.Music[track]
+				: Game.Settings.Sound.Repeat && previousMusic != null ? previousMusic
+				: Game.Settings.Sound.Shuffle ? music.Random(Game.CosmeticRandom)
+				: previousMusic == null ? music.First()
+				: music.SkipWhile(s => s != previousMusic).Skip(1).First();
+
+			if (func != null)
+			{
+				var f = func.CopyReference() as LuaFunction;
+				onComplete = () =>
+				{
+					try
+					{
+						using (f)
+							f.Call().Dispose();
+					}
+					catch (LuaException e)
+					{
+						Context.FatalError(e.Message);
+					}
+				};
+			}
+			else
+				onComplete = () => { };
+
+			Sound.PlayMusicThen(musicInfo, onComplete);
+			previousMusic = Sound.CurrentMusic;
 		}
 
 		[Desc("Display a text message to the player.")]
