@@ -16,4 +16,5 @@ WorldLoaded = function()
 	atreides = Player.GetPlayer("Atreides")
 
 	InsertHarvester()
+	Media.PlayMusic("score")
 end

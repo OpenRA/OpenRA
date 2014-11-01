@@ -162,4 +162,6 @@ WorldLoaded = function()
 	SendSovietUnits(Entry5.Location, UnitTypes, 50)
 	SendSovietUnits(Entry6.Location, UnitTypes, 50)
 	SendSovietUnits(Entry7.Location, BeachUnitTypes, 15)
+
+	Media.PlayMusic()
 end
