@@ -192,10 +192,12 @@ namespace OpenRA
 
 			switch (OrderString)
 			{
-				// Format:
-				//		u8    : orderID.
-				//					0xFF: Full serialized order.
-				//		varies: rest of order.
+				/* 
+				 * Format:
+				 * u8: orderID.
+				 * 0xFF: Full serialized order.
+				 * varies: rest of order.
+				 */
 				default:
 					// TODO: specific serializers for specific orders.
 					{
