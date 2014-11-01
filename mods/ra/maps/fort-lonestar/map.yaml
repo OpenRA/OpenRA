@@ -487,20 +487,41 @@ Rules:
 		LuaScript:
 			Scripts: fort-lonestar.lua
 	CRATE:
-		-LevelUpCrateAction:
-		-GiveMcvCrateAction:
-		-RevealMapCrateAction:
-		-HideMapCrateAction:
-		-ExplodeCrateAction@nuke:
-		-ExplodeCrateAction@boom:
-		-ExplodeCrateAction@fire:
-		-GiveUnitCrateAction@jeep:
-		-GiveUnitCrateAction@arty:
-		-GiveUnitCrateAction@v2rl:
-		-GiveUnitCrateAction@1tnk:
-		-GiveUnitCrateAction@2tnk:
-		-GiveUnitCrateAction@3tnk:
-		-GiveUnitCrateAction@4tnk:
+		LevelUpCrateAction:
+			SelectionShares: 0
+		GiveMcvCrateAction:
+			SelectionShares: 0
+			NoBaseSelectionShares: 0
+		RevealMapCrateAction:
+			SelectionShares: 0
+		HideMapCrateAction:
+			SelectionShares: 0
+		ExplodeCrateAction@boom:
+			SelectionShares: 0
+		ExplodeCrateAction@fire:
+			SelectionShares: 0
+		GiveUnitCrateAction@jeep:
+			SelectionShares: 0
+		GiveUnitCrateAction@arty:
+			SelectionShares: 0
+		GiveUnitCrateAction@v2rl:
+			SelectionShares: 0
+		GiveUnitCrateAction@1tnk:
+			SelectionShares: 0
+		GiveUnitCrateAction@2tnk:
+			SelectionShares: 0
+		GiveUnitCrateAction@3tnk:
+			SelectionShares: 0
+		GiveUnitCrateAction@4tnk:
+			SelectionShares: 0
+		GiveUnitCrateAction@squadlight:
+			SelectionShares: 0
+		GiveUnitCrateAction@squadheavyallies:
+			SelectionShares: 0
+		GiveUnitCrateAction@squadheavysoviet:
+			SelectionShares: 0
+		GrantUpgradeCrateAction@invuln:
+			SelectionShares: 0
 		SupportPowerCrateAction@parabombs:
 			SelectionShares: 30
 		HealUnitsCrateAction:
