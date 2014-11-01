@@ -106,6 +106,12 @@ namespace OpenRA.Mods.Common.Scripting
 			previousMusic = Sound.CurrentMusic;
 		}
 
+		[Desc("Stop the current song.")]
+		public void StopMusic()
+		{
+			Sound.StopMusic();
+		}
+
 		[Desc("Display a text message to the player.")]
 		public void DisplayMessage(string text, string prefix = "Mission") // TODO: expose HSLColor to Lua and add as parameter
 		{
