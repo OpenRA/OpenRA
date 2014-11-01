@@ -27,7 +27,7 @@ namespace OpenRA.Graphics
 			this.size = size;
 			this.name = name;
 
-			face = library.NewFace(name, 0);
+			face = new Face(library, name);
 			face.SetPixelSizes((uint)size, (uint)size);
 
 			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, 
