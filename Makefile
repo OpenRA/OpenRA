@@ -170,6 +170,12 @@ mod_ts_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
 PROGRAMS += mod_ts
 mod_ts: $(mod_ts_TARGET)
 
+check-scripts:
+	@echo
+	@echo "Checking for Lua syntax errors..."
+	@luac -p $(shell find mods/*/maps/* -iname '*.lua')
+	@luac -p $(shell find lua/* -iname '*.lua')
+
 check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Game..."
