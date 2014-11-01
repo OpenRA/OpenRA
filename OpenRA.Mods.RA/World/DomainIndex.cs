@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
+using OpenRA.Support;
 
 namespace OpenRA.Mods.RA
 {
@@ -66,7 +67,8 @@ namespace OpenRA.Mods.RA
 			domains = new CellLayer<int>(world.Map);
 			transientConnections = new Dictionary<int, HashSet<int>>();
 
-			BuildDomains(world);
+			using (new PerfTimer("BuildDomains: {0}".F(world.Map.Title)))
+				BuildDomains(world);
 		}
 
 		public bool IsPassable(CPos p1, CPos p2)
@@ -164,7 +166,6 @@ namespace OpenRA.Mods.RA
 
 		void BuildDomains(World world)
 		{
-			var timer = Stopwatch.StartNew();
 			var map = world.Map;
 
 			var domain = 1;
@@ -218,7 +219,7 @@ namespace OpenRA.Mods.RA
 				domain += 1;
 			}
 
-			Log.Write("debug", "{0}: Found {1} domains.  Took {2} s", map.Title, domain-1, timer.Elapsed.TotalSeconds);
+			Log.Write("debug", "Found {0} domains on map {1}.", domain - 1, map.Title);
 		}
 	}
 }
