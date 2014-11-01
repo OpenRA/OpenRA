@@ -992,9 +992,6 @@ Rules:
 		-CrateSpawner:
 		MenuPaletteEffect:
 			Effect: Desaturated
-		PlayMusicOnMapLoad:
-			Music: map1
-			Loop: true
 		LuaScript:
 			Scripts: shellmap.lua
 	LST:

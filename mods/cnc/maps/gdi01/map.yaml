@@ -424,9 +424,6 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
-		PlayMusicOnMapLoad:
-			Music: aoi
-			Loop: false
 		LuaScript:
 			Scripts: gdi01.lua
 		ObjectivesPanel:
