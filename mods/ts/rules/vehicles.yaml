@@ -171,6 +171,7 @@ HVR:
 	Mobile:
 		Speed: 56
 		ROT: 5
+		Crushes: wall, crate, infantry
 	Health:
 		HP: 600
 	Armor:
@@ -514,6 +515,7 @@ MMCH:
 	Mobile:
 		ROT: 5
 		Speed: 56
+		Crushes: wall, crate, infantry
 	Health:
 		HP: 400
 	Armor:
@@ -549,6 +551,7 @@ HMEC:
 	Mobile:
 		ROT: 3
 		Speed: 42
+		Crushes: wall, crate, infantry
 	Health:
 		HP: 800
 	SelfHealing:
@@ -710,6 +713,7 @@ SUBTANK:
 	Mobile:
 		ROT: 6
 		Speed: 71
+		Crushes: wall, crate, infantry
 	Health:
 		HP: 300
 	Armor:
@@ -738,6 +742,7 @@ SONIC:
 	Mobile:
 		ROT: 4
 		Speed: 56
+		Crushes: wall, crate, infantry
 	Health:
 		HP: 500
 	Armor:
@@ -771,6 +776,7 @@ TTNK:
 	Mobile:
 		ROT: 5
 		Speed: 85
+		Crushes: wall, crate, infantry
 	Health:
 		HP: 350
 	Armor:
@@ -814,6 +820,7 @@ STNK:
 	Mobile:
 		ROT: 5
 		Speed: 85
+		Crushes: wall, crate, infantry
 	Health:
 		HP: 180
 	Armor:
