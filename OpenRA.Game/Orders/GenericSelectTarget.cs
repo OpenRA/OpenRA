@@ -29,22 +29,13 @@ namespace OpenRA.Orders
 		}
 
 		public GenericSelectTarget(IEnumerable<Actor> subjects, string order, string cursor)
-			: this(subjects, order, cursor, MouseButton.Left)
-		{
-
-		}
+			: this(subjects, order, cursor, MouseButton.Left) { }
 
 		public GenericSelectTarget(Actor subject, string order, string cursor)
-			: this(new Actor[] { subject }, order, cursor)
-		{
-
-		}
+			: this(new Actor[] { subject }, order, cursor) { }
 
 		public GenericSelectTarget(Actor subject, string order, string cursor, MouseButton button)
-			: this(new Actor[] { subject }, order, cursor, button)
-		{
-
-		}
+			: this(new Actor[] { subject }, order, cursor, button) { }
 
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
