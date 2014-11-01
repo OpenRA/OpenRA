@@ -103,14 +103,14 @@ namespace OpenRA.Network
 						if (client != null)
 						{
 							var pause = order.TargetString == "Pause";
-							if (orderManager.world.Paused != pause && !world.LobbyInfo.IsSinglePlayer)
+							if (orderManager.World.Paused != pause && !world.LobbyInfo.IsSinglePlayer)
 							{
 								var pausetext = "The game is {0} by {1}".F(pause ? "paused" : "un-paused", client.Name);
 								Game.AddChatLine(Color.White, "", pausetext);
 							}
 
-							orderManager.world.Paused = pause;
-							orderManager.world.PredictedPaused = pause;
+							orderManager.World.Paused = pause;
+							orderManager.World.PredictedPaused = pause;
 						}
 						break;
 					}

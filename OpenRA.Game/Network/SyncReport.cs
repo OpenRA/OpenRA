@@ -45,10 +45,10 @@ namespace OpenRA.Network
 		void GenerateSyncReport(Report report)
 		{
 			report.Frame = orderManager.NetFrameNumber;
-			report.SyncedRandom = orderManager.world.SharedRandom.Last;
-			report.TotalCount = orderManager.world.SharedRandom.TotalCount;
+			report.SyncedRandom = orderManager.World.SharedRandom.Last;
+			report.TotalCount = orderManager.World.SharedRandom.TotalCount;
 			report.Traits.Clear();
-			foreach (var a in orderManager.world.ActorsWithTrait<ISync>())
+			foreach (var a in orderManager.World.ActorsWithTrait<ISync>())
 			{
 				var sync = Sync.CalculateSyncHash(a.Trait);
 				if (sync != 0)
@@ -63,7 +63,7 @@ namespace OpenRA.Network
 					});
 			}
 
-			foreach (var e in orderManager.world.Effects)
+			foreach (var e in orderManager.World.Effects)
 			{
 				var sync = e as ISync;
 				if (sync != null)
