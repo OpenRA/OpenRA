@@ -94,10 +94,14 @@ namespace OpenRA.Network
 
 		public class Client
 		{
+			public static Client Deserialize(MiniYaml data)
+			{
+				return FieldLoader.Load<Client>(data);
+			}
+
 			public int Index;
 			public HSLColor PreferredColor; // Color that the client normally uses from settings.yaml.
-			public HSLColor Color; // Actual color that the client is using.
-								   // Usually the same as PreferredColor but can be different on maps with locked colors.
+			public HSLColor Color; // Actual color that the client is using. Usually the same as PreferredColor but can be different on maps with locked colors.
 			public string Country;
 			public int SpawnPoint;
 			public string Name;
@@ -116,11 +120,6 @@ namespace OpenRA.Network
 			{
 				return new MiniYamlNode("Client@{0}".F(this.Index), FieldSaver.Save(this));
 			}
-
-			public static Client Deserialize(MiniYaml data)
-			{
-				return FieldLoader.Load<Client>(data);
-			}
 		}
 
 		public ClientPing PingFromClient(Client client)
@@ -135,14 +134,14 @@ namespace OpenRA.Network
 			public int LatencyJitter = -1;
 			public int[] LatencyHistory = { };
 
-			public MiniYamlNode Serialize()
-			{
-				return new MiniYamlNode("ClientPing@{0}".F(this.Index), FieldSaver.Save(this));
-			}
-
 			public static ClientPing Deserialize(MiniYaml data)
 			{
 				return FieldLoader.Load<ClientPing>(data);
+			}
+
+			public MiniYamlNode Serialize()
+			{
+				return new MiniYamlNode("ClientPing@{0}".F(this.Index), FieldSaver.Save(this));
 			}
 		}
 
@@ -158,14 +157,14 @@ namespace OpenRA.Network
 			public bool LockSpawn;
 			public bool Required;
 
-			public MiniYamlNode Serialize()
-			{
-				return new MiniYamlNode("Slot@{0}".F(this.PlayerReference), FieldSaver.Save(this));
-			}
-
 			public static Slot Deserialize(MiniYaml data)
 			{
 				return FieldLoader.Load<Slot>(data);
+			}
+
+			public MiniYamlNode Serialize()
+			{
+				return new MiniYamlNode("Slot@{0}".F(this.PlayerReference), FieldSaver.Save(this));
 			}
 		}
 
@@ -185,19 +184,19 @@ namespace OpenRA.Network
 			public bool Fog = true;
 			public bool AllyBuildRadius = true;
 			public int StartingCash = 5000;
-			public String TechLevel = "none";
+			public string TechLevel = "none";
 			public string StartingUnitsClass = "none";
 			public bool AllowVersionMismatch;
 			public string GameUid;
 
-			public MiniYamlNode Serialize()
-			{
-				return new MiniYamlNode("GlobalSettings", FieldSaver.Save(this));
-			}
-
 			public static Global Deserialize(MiniYaml data)
 			{
 				return FieldLoader.Load<Global>(data);
+			}
+
+			public MiniYamlNode Serialize()
+			{
+				return new MiniYamlNode("GlobalSettings", FieldSaver.Save(this));
 			}
 		}
 
