@@ -39,6 +39,8 @@ namespace OpenRA.Graphics
 		// Map bounds (world-px)
 		readonly Rectangle mapBounds;
 
+		readonly int maxGroundHeight;
+
 		// Viewport geometry (world-px)
 		public int2 CenterLocation { get; private set; }
 
@@ -96,6 +98,7 @@ namespace OpenRA.Graphics
 			var br = wr.ScreenPxPosition(map.CenterOfCell(Map.MapToCell(map.TileShape, new CPos(b.Right, b.Bottom))) + new WVec(511, 511, 0));
 			mapBounds = Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
 
+			maxGroundHeight = wr.world.TileSet.MaxGroundHeight;
 			CenterLocation = (tl + br) / 2;
 			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 		}
@@ -144,8 +147,8 @@ namespace OpenRA.Graphics
 				var cbr = map.CenterOfCell(VisibleCells.BottomRight) + new WVec(512, 512, 0);
 
 				// Convert to screen coordinates
-				var tl = WorldToViewPx(worldRenderer.ScreenPxPosition(ctl)).Clamp(ScreenClip);
-				var br = WorldToViewPx(worldRenderer.ScreenPxPosition(cbr)).Clamp(ScreenClip);
+				var tl = WorldToViewPx(worldRenderer.ScreenPxPosition(ctl - new WVec(0, 0, ctl.Z))).Clamp(ScreenClip);
+				var br = WorldToViewPx(worldRenderer.ScreenPxPosition(cbr - new WVec(0, 0, cbr.Z))).Clamp(ScreenClip);
 				return Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
 			}
 		}
@@ -156,14 +159,20 @@ namespace OpenRA.Graphics
 			{
 				if (cellsDirty)
 				{
-					// Visible rectangle in map coordinates
 					var map = worldRenderer.world.Map;
-					var ctl = Map.CellToMap(map.TileShape, map.CellContaining(worldRenderer.Position(TopLeft)));
-					var cbr = Map.CellToMap(map.TileShape, map.CellContaining(worldRenderer.Position(BottomRight)));
+					var wtl = worldRenderer.Position(TopLeft);
+					var wbr = worldRenderer.Position(BottomRight);
 
-					// Add a 2 cell cordon to prevent holes, then convert back to cell coordinates
-					var tl = map.Clamp(Map.MapToCell(map.TileShape, ctl - new CVec(2, 2)));
-					var br = map.Clamp(Map.MapToCell(map.TileShape, cbr + new CVec(2, 2)));
+					// Visible rectangle in map coordinates
+					var ctl = new CPos(wtl.X / 1024, wtl.Y / 1024);
+					var dy = map.TileShape == TileShape.Diamond ? 512 : 1024;
+					var cbr = new CPos((wbr.X + 1023) / 1024, (wbr.Y + dy - 1) / dy);
+
+					// Add a 1 cell cordon to prevent holes, then convert back to cell coordinates
+					var tl = map.Clamp(Map.MapToCell(map.TileShape, ctl - new CVec(1, 1)));
+
+					// Also need to account for height of cells in rows below the bottom
+					var br = map.Clamp(Map.MapToCell(map.TileShape, cbr + new CVec(1, 2 + maxGroundHeight / 2)));
 
 					cells = new CellRegion(map.TileShape, tl, br);
 					cellsDirty = false;
