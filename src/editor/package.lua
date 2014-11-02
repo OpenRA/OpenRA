@@ -248,6 +248,7 @@ end
 
 function ide:AddPackage(name, package)
   ide.packages[name] = setmetatable(package, ide.proto.Plugin)
+  ide.packages[name].fname = name
   return ide.packages[name]
 end
 function ide:RemovePackage(name) ide.packages[name] = nil end
