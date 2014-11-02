@@ -267,6 +267,11 @@ waypoint:
 		Start: 0
 		Length: *
 
+wormspawner:
+	idle:
+		Start: 0
+		Length: *
+
 sietch:
 	idle: DATA
 		Start: 2998

@@ -100,7 +100,6 @@
     <Compile Include="World\D2kResourceLayer.cs" />
     <Compile Include="World\PaletteFromScaledPalette.cs" />
     <Compile Include="WormManager.cs" />
-    <Compile Include="WormSpawner.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

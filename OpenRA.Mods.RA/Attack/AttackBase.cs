@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -25,7 +26,8 @@ namespace OpenRA.Mods.RA
 
 		public readonly string Cursor = "attack";
 		public readonly string OutsideRangeCursor = "attackoutsiderange";
-		[Desc("Does the attack type requires the attacker to enter the target's cell?")]
+
+		[Desc("Does the attack type require the attacker to enter the target's cell?")]
 		public readonly bool AttackRequiresEnteringCell = false;
 
 		public abstract object Create(ActorInitializer init);
@@ -59,6 +61,9 @@ namespace OpenRA.Mods.RA
 		protected virtual bool CanAttack(Actor self, Target target)
 		{
 			if (!self.IsInWorld)
+				return false;
+
+			if (!HasAnyValidWeapons(target))
 				return false;
 
 			// Building is under construction or is being sold
@@ -137,7 +142,18 @@ namespace OpenRA.Mods.RA
 
 		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
 
-		public bool HasAnyValidWeapons(Target t) { return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World, self)); }
+		public bool HasAnyValidWeapons(Target t)
+		{
+			if (Info.AttackRequiresEnteringCell)
+			{
+				var positionable = self.TraitOrDefault<IPositionable>();
+				if (positionable == null || !positionable.CanEnterCell(t.Actor.Location, null, false))
+					return false;
+			}
+
+			return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World, self));
+		}
+
 		public WRange GetMaximumRange()
 		{
 			return Armaments.Select(a => a.Weapon.Range).Append(WRange.Zero).Max();

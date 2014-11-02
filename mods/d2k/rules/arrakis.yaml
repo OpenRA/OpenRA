@@ -34,30 +34,21 @@ SANDWORM:
 			Sand: 100
 			Dune: 100
 			Spice: 100
-			Rock: 100  # TEMP
 	TargetableUnit:
 		TargetTypes: Underground
 	RevealsShroud:
 		Range: 32c0
 	RenderUnit:
 	BodyOrientation:
- 	BelowUnits:
 	HiddenUnderFog:
 	Sandworm:
-		WanderMoveRadius: 10
-	SelectionDecorations: # TEMP
-	Selectable: # TEMP
-		Voice: WormVoice # TEMP
 	AppearsOnRadar:
 		UseLocation: yes
 	AttackSwallow:
-		AttackRequiresEnteringCell: TRUE
+		AttackRequiresEnteringCell: true
 	AttackMove:
+	AttackWander:
 	AutoTarget:
 		ScanRadius: 32
 	Armament:
 		Weapon: WormJaw
-		
-WormSpawnLocation:
-	Immobile:
-	WormSpawner:

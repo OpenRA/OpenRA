@@ -43,7 +43,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: atreides
-		Enemies: Atreides,Harkonnen
+		Enemies: Atreides, Harkonnen
 
 Actors:
 	Actor4: spicebloom
@@ -106,7 +106,7 @@ Actors:
 	Actor41: guntowera
 		Location: 46,39
 		Owner: Harkonnen
-	Actor42: WormSpawnLocation
+	Actor42: wormspawner
 		Location: 46,64
 		Owner: Creeps
 
