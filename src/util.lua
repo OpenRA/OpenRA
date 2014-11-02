@@ -137,19 +137,13 @@ function GetFileModTime(filePath)
 end
 
 function GetFileExt(filePath)
-  local match = filePath and filePath:match("%.([a-zA-Z_0-9]+)$")
-  return match and (string.lower(match))
+  local match = filePath and filePath:match("%.([^./\\]*)$")
+  return match and match:lower() or ''
 end
 
 function IsLuaFile(filePath)
   return filePath and (string.len(filePath) > 4) and
   (string.lower(string.sub(filePath, -4)) == ".lua")
-end
-
-function GetFileNameExt(filePath)
-  if (not filePath) then return end
-  local wxn = wx.wxFileName(filePath)
-  return (wxn:GetName()..(wxn:HasExt() and ("."..wxn:GetExt()) or ""))
 end
 
 function GetPathWithSep(wxfn)
