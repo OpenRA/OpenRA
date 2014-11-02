@@ -10,7 +10,6 @@
 
 using System.Drawing;
 using System.Linq;
-using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -164,15 +163,12 @@ namespace OpenRA.Mods.RA
 			nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
 			var inRange = self.World.FindActorsInCircle(self.CenterPosition, range);
 
-			var mobile = self.TraitOrDefault<Mobile>();
 			return inRange
 				.Where(a =>
-						a.AppearsHostileTo(self) &&
-						!a.HasTrait<AutoTargetIgnore>() &&
-						attack.HasAnyValidWeapons(Target.FromActor(a)) &&
-						self.Owner.Shroud.IsTargetable(a) &&
-						(!attack.Info.AttackRequiresEnteringCell || (mobile != null && mobile.MovementSpeedForCell(self, a.Location) != 0))
-					  )
+					a.AppearsHostileTo(self) &&
+					!a.HasTrait<AutoTargetIgnore>() &&
+					attack.HasAnyValidWeapons(Target.FromActor(a)) &&
+					self.Owner.Shroud.IsTargetable(a))
 				.ClosestTo(self);
 		}
 	}

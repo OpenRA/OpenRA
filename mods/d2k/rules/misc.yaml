@@ -149,3 +149,9 @@ CAMERA:
 		Range: 8c0
 	BodyOrientation:
 
+wormspawner:
+	Immobile:
+		OccupiesSpace: false
+	RenderEditorOnly:
+	BodyOrientation:
+	WormSpawner:

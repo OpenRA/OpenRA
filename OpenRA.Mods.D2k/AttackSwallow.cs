@@ -17,24 +17,28 @@ namespace OpenRA.Mods.D2k
 	[Desc("Sandworms use this attack model.")]
 	class AttackSwallowInfo : AttackFrontalInfo, Requires<SandwormInfo>
 	{
+		[Desc("The number of ticks it takes to return underground.")]
+		public int ReturnTime = 60;
+		[Desc("The number of ticks it takes to get in place under the target to attack.")]
+		public int AttackTime = 30;
+
 		public override object Create(ActorInitializer init) { return new AttackSwallow(init.self, this); }
 	}
+
 	class AttackSwallow : AttackFrontal
 	{
-		readonly Sandworm sandworm;
+		public readonly AttackSwallowInfo AttackSwallowInfo;
 
 		public AttackSwallow(Actor self, AttackSwallowInfo attackSwallowInfo)
 			: base(self, attackSwallowInfo)
 		{
-			sandworm = self.Trait<Sandworm>();
+			AttackSwallowInfo = attackSwallowInfo;
 		}
 
 		public override void DoAttack(Actor self, Target target)
 		{
-			// TODO: Worm should ignore Fremen as targets unless they are firing/being fired upon (even moving fremen do not attract worms)
-
-			if (target.Type != TargetType.Actor || !CanAttack(self, target) || !sandworm.CanAttackAtLocation(self, target.Actor.Location))
-				// this is so that the worm does not launch an attack against a target that has reached solid rock
+			// This is so that the worm does not launch an attack against a target that has reached solid rock
+			if (target.Type != TargetType.Actor || !CanAttack(self, target))
 			{
 				self.CancelActivity();
 				return;
@@ -48,7 +52,7 @@ namespace OpenRA.Mods.D2k
 				return;
 
 			self.CancelActivity();
-			self.QueueActivity(new SwallowActor(self, target.Actor, a.Weapon));
+			self.QueueActivity(new SwallowActor(self, target, a.Weapon));
 		}
 	}
 }
