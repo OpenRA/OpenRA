@@ -139,12 +139,12 @@ namespace OpenRA
 				map = modData.PrepareMap(mapUID);
 			using (new PerfTimer("NewWorld"))
 			{
-				orderManager.world = new World(map, orderManager, isShellmap);
-				orderManager.world.Timestep = Timestep;
+				orderManager.World = new World(map, orderManager, isShellmap);
+				orderManager.World.Timestep = Timestep;
 			}
-			worldRenderer = new WorldRenderer(orderManager.world);
+			worldRenderer = new WorldRenderer(orderManager.World);
 			using (new PerfTimer("LoadComplete"))
-				orderManager.world.LoadComplete(worldRenderer);
+				orderManager.World.LoadComplete(worldRenderer);
 
 			if (orderManager.GameStarted)
 				return;
@@ -398,7 +398,7 @@ namespace OpenRA
 		{
 			var tick = RunTime;
 
-			var world = orderManager.world;
+			var world = orderManager.World;
 
 			var uiTickDelta = tick - Ui.LastTickTime;
 			if (uiTickDelta >= Timestep)
@@ -474,7 +474,7 @@ namespace OpenRA
 			}
 
 			InnerLogicTick(orderManager);
-			if (worldRenderer != null && orderManager.world != worldRenderer.world)
+			if (worldRenderer != null && orderManager.World != worldRenderer.world)
 				InnerLogicTick(worldRenderer.world.orderManager);
 		}
 
@@ -506,7 +506,7 @@ namespace OpenRA
 				}
 
 				using (new PerfSample("render_flip"))
-					Renderer.EndFrame(new DefaultInputHandler(orderManager.world));
+					Renderer.EndFrame(new DefaultInputHandler(orderManager.World));
 			}
 
 			PerfHistory.items["render"].Tick();
@@ -663,8 +663,8 @@ namespace OpenRA
 
 		public static void Disconnect()
 		{
-			if (orderManager.world != null)
-				orderManager.world.traitDict.PrintReport();
+			if (orderManager.World != null)
+				orderManager.World.traitDict.PrintReport();
 
 			orderManager.Dispose();
 			CloseServer();
@@ -704,7 +704,7 @@ namespace OpenRA
 
 		public static bool IsCurrentWorld(World world)
 		{
-			return orderManager != null && orderManager.world == world;
+			return orderManager != null && orderManager.World == world;
 		}
 	}
 }

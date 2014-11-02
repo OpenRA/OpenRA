@@ -43,6 +43,7 @@ namespace OpenRA.Network
 			public int FromClient;
 			public byte[] Data;
 		}
+
 		protected List<ReceivedPacket> receivedPackets = new List<ReceivedPacket>();
 
 		public virtual int LocalClientId
@@ -120,7 +121,7 @@ namespace OpenRA.Network
 
 		public NetworkConnection(string host, int port)
 		{
-			t = new Thread( _ =>
+			t = new Thread(_ =>
 			{
 				try
 				{
@@ -145,7 +146,7 @@ namespace OpenRA.Network
 						if (len == 0)
 							throw new NotImplementedException();
 						lock (this)
-							receivedPackets.Add(new ReceivedPacket { FromClient = client, Data = buf } );
+							receivedPackets.Add(new ReceivedPacket { FromClient = client, Data = buf });
 					}
 				}
 				catch { }
@@ -155,8 +156,7 @@ namespace OpenRA.Network
 					if (socket != null)
 						socket.Close();
 				}
-			}
-			) { IsBackground = true };
+			}) { IsBackground = true };
 			t.Start();
 		}
 
@@ -182,12 +182,14 @@ namespace OpenRA.Network
 				var ms = new MemoryStream();
 				ms.Write(BitConverter.GetBytes((int)packet.Length));
 				ms.Write(packet);
+
 				foreach (var q in queuedSyncPackets)
 				{
 					ms.Write(BitConverter.GetBytes((int)q.Length));
 					ms.Write(q);
 					base.Send(q);
 				}
+
 				queuedSyncPackets.Clear();
 				ms.WriteTo(socket.GetStream());
 			}
@@ -209,11 +211,13 @@ namespace OpenRA.Network
 			if (disposing)
 				if (socket != null)
 					socket.Client.Close();
+
 			using (new PerfSample("Thread.Join"))
 			{
 				if (!t.Join(1000))
 					return;
 			}
+
 			base.Dispose(disposing);
 		}
 

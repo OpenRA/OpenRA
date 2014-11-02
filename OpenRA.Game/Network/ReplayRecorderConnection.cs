@@ -25,6 +25,17 @@ namespace OpenRA.Network
 		Func<string> chooseFilename;
 		MemoryStream preStartBuffer = new MemoryStream();
 
+		static bool IsGameStart(byte[] data)
+		{
+			if (data.Length == 5 && data[4] == 0xbf)
+				return false;
+			if (data.Length >= 5 && data[4] == 0x65)
+				return false;
+
+			var frame = BitConverter.ToInt32(data, 0);
+			return frame == 0 && data.ToOrderList(null).Any(o => o.OrderString == "StartGame");
+		}
+
 		public ReplayRecorderConnection(IConnection inner, Func<string> chooseFilename)
 		{
 			this.chooseFilename = chooseFilename;
@@ -83,17 +94,6 @@ namespace OpenRA.Network
 					writer.Write(data);
 					packetFn(client, data);
 				});
-		}
-
-		static bool IsGameStart(byte[] data)
-		{
-			if (data.Length == 5 && data[4] == 0xbf)
-				return false;
-			if (data.Length >= 5 && data[4] == 0x65)
-				return false;
-
-			var frame = BitConverter.ToInt32(data, 0);
-			return frame == 0 && data.ToOrderList(null).Any(o => o.OrderString == "StartGame");
 		}
 
 		bool disposed;

@@ -29,6 +29,21 @@ namespace OpenRA.Network
 		readonly Report[] syncReports = new Report[NumSyncReports];
 		int curIndex = 0;
 
+		static NamesValuesPair DumpSyncTrait(ISync sync)
+		{
+			var type = sync.GetType();
+			TypeInfo typeInfo;
+			lock (typeInfoCache)
+				typeInfo = typeInfoCache[type];
+			var values = new string[typeInfo.Names.Length];
+			var index = 0;
+
+			foreach (var func in typeInfo.MemberToStringFunctions)
+				values[index++] = func(sync);
+
+			return Pair.New(typeInfo.Names, values);
+		}
+
 		public SyncReport(OrderManager orderManager)
 		{
 			this.orderManager = orderManager;
@@ -45,10 +60,10 @@ namespace OpenRA.Network
 		void GenerateSyncReport(Report report)
 		{
 			report.Frame = orderManager.NetFrameNumber;
-			report.SyncedRandom = orderManager.world.SharedRandom.Last;
-			report.TotalCount = orderManager.world.SharedRandom.TotalCount;
+			report.SyncedRandom = orderManager.World.SharedRandom.Last;
+			report.TotalCount = orderManager.World.SharedRandom.TotalCount;
 			report.Traits.Clear();
-			foreach (var a in orderManager.world.ActorsWithTrait<ISync>())
+			foreach (var a in orderManager.World.ActorsWithTrait<ISync>())
 			{
 				var sync = Sync.CalculateSyncHash(a.Trait);
 				if (sync != 0)
@@ -63,7 +78,7 @@ namespace OpenRA.Network
 					});
 			}
 
-			foreach (var e in orderManager.world.Effects)
+			foreach (var e in orderManager.World.Effects)
 			{
 				var sync = e as ISync;
 				if (sync != null)
@@ -78,21 +93,6 @@ namespace OpenRA.Network
 						});
 				}
 			}
-		}
-
-		static NamesValuesPair DumpSyncTrait(ISync sync)
-		{
-			var type = sync.GetType();
-			TypeInfo typeInfo;
-			lock (typeInfoCache)
-				typeInfo = typeInfoCache[type];
-			var values = new string[typeInfo.Names.Length];
-			var index = 0;
-
-			foreach (var func in typeInfo.MemberToStringFunctions)
-				values[index++] = func(sync);
-
-			return Pair.New(typeInfo.Names, values);
 		}
 
 		internal void DumpSyncReport(int frame)
@@ -182,11 +182,10 @@ namespace OpenRA.Network
 							"Invalid Property: " + prop.DeclaringType.FullName + "." + prop.Name);
 
 				var sync = Expression.Convert(syncParam, type);
-				MemberToStringFunctions = fields.Select(
-					fi => MemberToString(Expression.Field(sync, fi), fi.FieldType, fi.Name))
-					.Concat(properties.Select(
-					pi => MemberToString(Expression.Property(sync, pi), pi.PropertyType, pi.Name))
-					).ToArray();
+				MemberToStringFunctions = fields
+					.Select(fi => MemberToString(Expression.Field(sync, fi), fi.FieldType, fi.Name))
+					.Concat(properties.Select(pi => MemberToString(Expression.Property(sync, pi), pi.PropertyType, pi.Name)))
+					.ToArray();
 
 				Names = fields.Select(fi => fi.Name).Concat(properties.Select(pi => pi.Name)).ToArray();
 			}
@@ -198,7 +197,6 @@ namespace OpenRA.Network
 				var toString = memberType.GetMethod("ToString", Type.EmptyTypes);
 				Expression getString;
 				if (memberType.IsValueType)
-					// (ISync sync) => ((TSync)sync).Foo.ToString()
 					getString = Expression.Call(getMember, toString);
 				else
 				{
@@ -210,6 +208,7 @@ namespace OpenRA.Network
 					var nullMember = Expression.Constant(null, memberType);
 					getString = Expression.Condition(Expression.Equal(member, nullMember), nullString, getString);
 				}
+
 				return Expression.Lambda<Func<ISync, string>>(getString, name, new[] { syncParam }).Compile();
 			}
 		}
