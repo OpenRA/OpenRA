@@ -316,9 +316,12 @@ local function treeSetConnectorsAndIcons(tree)
     end)
 
   -- save configuration and refresh the tree
-  local function saveAndRefresh()
+  local function saveSettingsAndRefresh()
     ide:AddPackage('core.filetree', {}):SetSettings(filetree.settings)
     tree:RefreshChildren()
+    -- now mark the current file (if it was previously disabled)
+    local editor = ide:GetEditor()
+    if editor then FileTreeMarkSelected(ide:GetDocument(editor):GetFilePath()) end
   end
 
   -- handle context menu
@@ -383,12 +386,12 @@ local function treeSetConnectorsAndIcons(tree)
     function()
       local ext = GetFileExt(tree:GetItemText(tree:GetSelection()))
       filetree.settings.extensionignore[ext] = true
-      saveAndRefresh()
+      saveSettingsAndRefresh()
     end)
   tree:Connect(ID_SHOWEXTENSIONALL, wx.wxEVT_COMMAND_MENU_SELECTED,
     function()
       filetree.settings.extensionignore = {}
-      saveAndRefresh()
+      saveSettingsAndRefresh()
     end)
 
   tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_MENU,
@@ -423,7 +426,7 @@ local function treeSetConnectorsAndIcons(tree)
         table.insert(extlist, 1, {id, '.'..ext})
         menu:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, function()
           filetree.settings.extensionignore[ext] = nil
-          saveAndRefresh()
+          saveSettingsAndRefresh()
         end)
       end
       menu:Insert(7, wx.wxMenuItem(menu, ID_SHOWEXTENSION,
