@@ -16,7 +16,7 @@ using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	public interface IRenderActorPreviewSpritesInfo { IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p); }
 

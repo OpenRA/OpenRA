@@ -84,6 +84,7 @@
     <Compile Include="ServerTraits\PlayerPinger.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
+    <Compile Include="Traits\Render\RenderSprites.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
     <Compile Include="UtilityCommands\ExtractFilesCommand.cs" />
