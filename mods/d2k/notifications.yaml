@@ -31,6 +31,8 @@ Speech:
 		UnitLost: ULOST
 		BuildingLost: BLOST
 		BuildingCaptured: CAPT
+		WormSign: WSIGN
+		WormAttack: WATTK
 
 Sounds:
 	DefaultVariant: .WAV

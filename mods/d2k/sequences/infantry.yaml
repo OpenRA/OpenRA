@@ -442,3 +442,19 @@ grenadier: # 2502 - 2749 in 1.06 DATA.R8
 		Tick: 120
 	icon: grenadiericon
 		Start: 0 # 4281 in 1.06 DATA.R8
+
+sandworm:
+	mouth: DATA
+		Start: 3549
+		Length: 15
+		Tick: 100
+	sand: DATA
+		Start: 3565
+		Length: 20
+	idle: DATA
+		Start: 3586
+		Length: 35
+		Tick: 180
+		BlendMode: Additive
+	icon: wormicon
+		Start: 0

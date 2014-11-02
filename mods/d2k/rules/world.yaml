@@ -10,6 +10,8 @@ World:
 	ScreenShaker:
 	BuildingInfluence:
 	ChooseBuildTabOnSelect:
+	WormManager:
+		SpawnInterval: 10
 	CrateSpawner:
 		Minimum: 0
 		Maximum: 2
