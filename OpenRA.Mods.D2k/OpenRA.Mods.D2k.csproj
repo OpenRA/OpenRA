@@ -68,6 +68,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttackSwallow.cs" />
+    <Compile Include="Sandworm.cs" />
+    <Compile Include="SwallowActor.cs" />
+    <Compile Include="ThrowsShrapnel.cs" />
+    <Compile Include="DamagedWithoutFoundation.cs" />
     <Compile Include="SpriteLoaders\R8Loader.cs" />
     <Compile Include="Traits\Buildings\DamagedWithoutFoundation.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedOverlay.cs" />
@@ -89,6 +94,13 @@
     <Compile Include="AutoCarryall\AutoCarryall.cs" />
     <Compile Include="AutoCarryall\Carryable.cs" />
     <Compile Include="AutoCarryall\CarryUnit.cs" />
+    <Compile Include="World\ChooseBuildTabOnSelect.cs" />
+    <Compile Include="World\PaletteFromR8.cs" />
+    <Compile Include="World\FogPaletteFromR8.cs" />
+    <Compile Include="World\D2kResourceLayer.cs" />
+    <Compile Include="World\PaletteFromScaledPalette.cs" />
+    <Compile Include="WormManager.cs" />
+    <Compile Include="WormSpawner.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

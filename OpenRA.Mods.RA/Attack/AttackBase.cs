@@ -25,6 +25,8 @@ namespace OpenRA.Mods.RA
 
 		public readonly string Cursor = "attack";
 		public readonly string OutsideRangeCursor = "attackoutsiderange";
+		[Desc("Does the attack type requires the attacker to enter the target's cell?")]
+		public readonly bool AttackRequiresEnteringCell = false;
 
 		public abstract object Create(ActorInitializer init);
 	}
@@ -38,12 +40,12 @@ namespace OpenRA.Mods.RA
 		protected Func<IEnumerable<Armament>> GetArmaments;
 
 		readonly Actor self;
-		readonly AttackBaseInfo info;
+		public readonly AttackBaseInfo Info;
 
 		public AttackBase(Actor self, AttackBaseInfo info)
 		{
 			this.self = self;
-			this.info = info;
+			Info = info;
 
 			var armaments = Exts.Lazy(() => self.TraitsImplementing<Armament>()
 				.Where(a => info.Armaments.Contains(a.Info.Name)));
@@ -179,8 +181,8 @@ namespace OpenRA.Mods.RA
 
 				var a = ab.ChooseArmamentForTarget(target);
 				cursor = a != null && !target.IsInRange(self.CenterPosition, a.Weapon.Range)
-					? ab.info.OutsideRangeCursor
-					: ab.info.Cursor;
+					? ab.Info.OutsideRangeCursor
+					: ab.Info.Cursor;
 
 				if (target.Type == TargetType.Actor && target.Actor == self)
 					return false;
@@ -210,7 +212,7 @@ namespace OpenRA.Mods.RA
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				cursor = ab.info.Cursor;
+				cursor = ab.Info.Cursor;
 
 				if (negativeDamage)
 					return false;
@@ -223,7 +225,7 @@ namespace OpenRA.Mods.RA
 					var maxRange = ab.GetMaximumRange().Range;
 					var targetRange = (self.World.Map.CenterOfCell(location) - self.CenterPosition).HorizontalLengthSquared;
 					if (targetRange > maxRange * maxRange)
-						cursor = ab.info.OutsideRangeCursor;
+						cursor = ab.Info.OutsideRangeCursor;
 
 					return true;
 				}
