@@ -786,6 +786,8 @@ Rules:
 	^Wall:
 		Tooltip:
 			ShowOwnerRow: false
+	SBAG:
+		-Crushable:
 	^Husk:
 		Tooltip:
 			GenericVisibility: Enemy, Ally, Neutral
