@@ -44,10 +44,11 @@ local function treeAddDir(tree,parent_id,rootdir)
 
   for _, file in ipairs(FileSysGetRecursive(rootdir)) do
     local name, dir = file:match("([^"..pathsep.."]+)("..pathsep.."?)$")
+    local isdir = #dir>0
     local ext = GetFileExt(name)
-    if not filetree.settings.extensionignore[ext] then
+    if isdir or not filetree.settings.extensionignore[ext] then
       local known = GetSpec(ext)
-      local icon = #dir>0 and image.DIRECTORY or known and image.FILEKNOWN or image.FILEOTHER
+      local icon = isdir and image.DIRECTORY or known and image.FILEKNOWN or image.FILEOTHER
       local item = items[name .. icon]
       if item then -- existing item
         -- keep deleting items until we find item
@@ -65,7 +66,7 @@ local function treeAddDir(tree,parent_id,rootdir)
         curr = (curr
           and tree:InsertItem(parent_id, curr, name, icon)
           or tree:PrependItem(parent_id, name, icon))
-        if #dir>0 then tree:SetItemHasChildren(curr, FileDirHasContent(file)) end
+        if isdir then tree:SetItemHasChildren(curr, FileDirHasContent(file)) end
       end
       if curr:IsOk() then cache[iscaseinsensitive and name:lower() or name] = curr end
     end
