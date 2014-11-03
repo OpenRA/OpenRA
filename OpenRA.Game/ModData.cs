@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
+using OpenRA.Support;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
@@ -39,8 +40,10 @@ namespace OpenRA
 			Manifest = new Manifest(mod);
 			ObjectCreator = new ObjectCreator(Manifest);
 			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
-			LoadScreen.Init(Manifest, Manifest.LoadScreen.ToDictionary(my => my.Value));
-			LoadScreen.Display();
+			using (new PerfTimer("LoadScreen.Init"))
+				LoadScreen.Init(Manifest, Manifest.LoadScreen.ToDictionary(my => my.Value));
+			using (new PerfTimer("LoadScreen.Display"))
+				LoadScreen.Display();
 			WidgetLoader = new WidgetLoader(this);
 			RulesetCache = new RulesetCache(this);
 			RulesetCache.LoadingProgress += HandleLoadingProgress;
