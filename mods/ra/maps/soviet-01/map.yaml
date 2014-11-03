@@ -1,0 +1,852 @@
+Selectable: False
+
+MapFormat: 6
+
+RequiresMod: ra
+
+Title: Soviet 01: Lesson in Blood
+
+Description: A pitiful excuse for resistance has blockaded itself in this village.\n\nStalin has decided to make an example of them. Kill them all and destroy their homes. You will have Yak aircraft to use in teaching these rebels a lesson.
+
+Author: Westwood Studios
+
+Tileset: SNOW
+
+MapSize: 128,128
+
+Bounds: 32,47,32,38
+
+UseAsShellmap: False
+
+Type: Campaign
+
+PreviewVideo: soviet1.vqa
+
+Options:
+	Crates: False
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
+	StartingCash: 0
+	ConfigurableStartingUnits: False
+
+Players:
+	PlayerReference@France:
+		Name: France
+		Race: allies
+		ColorRamp: 115,115,143
+		Allies: Germany, Turkey
+		Enemies: USSR
+	PlayerReference@Germany:
+		Name: Germany
+		Race: allies
+		ColorRamp: 0,0,80
+		Allies: France, Turkey
+		Enemies: USSR
+		NonCombatant: True
+	PlayerReference@USSR:
+		Name: USSR
+		Playable: True
+		AllowBots: False
+		Required: True
+		LockRace: True
+		Race: soviet
+		LockColor: True
+		ColorRamp: 3,255,127
+		LockSpawn: True
+		LockTeam: True
+		Enemies: France, Germany, Turkey
+	PlayerReference@Turkey:
+		Name: Turkey
+		Race: allies
+		ColorRamp: 14,123,167
+		Allies: France, Germany
+		Enemies: USSR
+		NonCombatant: True
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: allies
+
+Actors:
+	Actor0: wood
+		Location: 44,50
+		Owner: Neutral
+	Actor1: wood
+		Location: 44,51
+		Owner: Neutral
+	Actor2: wood
+		Location: 44,52
+		Owner: Neutral
+	Actor3: wood
+		Location: 44,53
+		Owner: Neutral
+	Actor4: wood
+		Location: 45,53
+		Owner: Neutral
+	Actor5: wood
+		Location: 56,65
+		Owner: Neutral
+	Actor6: v14
+		Location: 54,66
+		Owner: Neutral
+	Actor7: v14
+		Location: 55,66
+		Owner: Neutral
+	Actor8: wood
+		Location: 56,66
+		Owner: Neutral
+	Actor9: wood
+		Location: 53,67
+		Owner: Neutral
+	Actor10: wood
+		Location: 55,67
+		Owner: Neutral
+	Actor11: wood
+		Location: 56,67
+		Owner: Neutral
+	Actor12: wood
+		Location: 45,69
+		Owner: Neutral
+	Actor13: wood
+		Location: 46,69
+		Owner: Neutral
+	Actor14: wood
+		Location: 47,69
+		Owner: Neutral
+	Actor15: wood
+		Location: 45,70
+		Owner: Neutral
+	Actor16: wood
+		Location: 51,70
+		Owner: Neutral
+	Actor17: wood
+		Location: 53,71
+		Owner: Neutral
+	Actor18: wood
+		Location: 52,72
+		Owner: Neutral
+	Actor19: wood
+		Location: 53,72
+		Owner: Neutral
+	Actor20: t16
+		Location: 53,52
+		Owner: Neutral
+	Actor21: tc03
+		Location: 60,61
+		Owner: Neutral
+	Actor22: tc01
+		Location: 48,47
+		Owner: Neutral
+	Actor23: t06
+		Location: 73,59
+		Owner: Neutral
+	Actor24: t01
+		Location: 49,74
+		Owner: Neutral
+	Actor25: t14
+		Location: 60,69
+		Owner: Neutral
+	Actor26: t16
+		Location: 59,72
+		Owner: Neutral
+	Actor27: t14
+		Location: 60,72
+		Owner: Neutral
+	Actor28: t07
+		Location: 62,72
+		Owner: Neutral
+	Actor29: t10
+		Location: 54,74
+		Owner: Neutral
+	Actor30: tc02
+		Location: 46,49
+		Owner: Neutral
+	Actor31: t01
+		Location: 53,57
+		Owner: Neutral
+	Actor32: tc05
+		Location: 41,51
+		Owner: Neutral
+	Actor33: t06
+		Location: 44,53
+		Owner: Neutral
+	Actor34: t01
+		Location: 44,70
+		Owner: Neutral
+	Actor35: t16
+		Location: 52,72
+		Owner: Neutral
+	Actor36: tc02
+		Location: 32,51
+		Owner: Neutral
+	Actor37: tc04
+		Location: 32,55
+		Owner: Neutral
+	Actor38: tc05
+		Location: 32,60
+		Owner: Neutral
+	Actor39: tc02
+		Location: 42,57
+		Owner: Neutral
+	Actor40: tc02
+		Location: 43,68
+		Owner: Neutral
+	Actor41: tc01
+		Location: 42,67
+		Owner: Neutral
+	Actor42: tc04
+		Location: 32,72
+		Owner: Neutral
+	Actor43: tc03
+		Location: 51,77
+		Owner: Neutral
+	Actor44: tc01
+		Location: 39,72
+		Owner: Neutral
+	Actor45: t17
+		Location: 35,76
+		Owner: Neutral
+	Actor46: t15
+		Location: 59,75
+		Owner: Neutral
+	Actor47: tc03
+		Location: 35,65
+		Owner: Neutral
+	Actor48: t01
+		Location: 35,56
+		Owner: Neutral
+	Actor49: t10
+		Location: 47,59
+		Owner: Neutral
+	Actor50: t08
+		Location: 48,64
+		Owner: Neutral
+	Actor51: barl
+		Location: 33,54
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor52: brl3
+		Location: 57,53
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor53: v08
+		Location: 41,54
+		Owner: France
+		Health: 0.5195313
+		Facing: 0
+	Actor54: v07
+		Location: 54,65
+		Owner: France
+		Health: 0.4375
+		Facing: 0
+	Actor55: v07
+		Location: 38,52
+		Owner: France
+		Health: 0.4375
+		Facing: 0
+	Actor56: v06
+		Location: 46,51
+		Owner: France
+		Health: 0.9921875
+		Facing: 0
+	Actor57: v05
+		Location: 36,55
+		Owner: France
+		Health: 0.5
+		Facing: 0
+	Actor58: v04
+		Location: 35,51
+		Owner: France
+		Health: 0.3515625
+		Facing: 0
+	Actor59: v02
+		Location: 36,57
+		Owner: France
+		Health: 0.5625
+		Facing: 0
+	Actor60: brl3
+		Location: 34,52
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor61: barl
+		Location: 57,54
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor62: barl
+		Location: 55,54
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor63: brl3
+		Location: 51,72
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor64: brl3
+		Location: 51,71
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor65: brl3
+		Location: 47,71
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	BridgeBarrel: barl
+		Location: 46,71
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor67: barl
+		Location: 47,70
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor68: brl3
+		Location: 43,50
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor69: brl3
+		Location: 45,52
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor70: barl
+		Location: 41,51
+		Owner: France
+		Health: 1
+		Facing: 0
+	Actor71: barl
+		Location: 50,72
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor72: barl
+		Location: 42,50
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Airfield3: afld
+		Location: 35,81
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Powerplant1: powr
+		Location: 43,82
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor75: barl
+		Location: 56,53
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor76: barl
+		Location: 58,53
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor77: brl3
+		Location: 59,53
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor78: brl3
+		Location: 54,53
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor79: barl
+		Location: 59,56
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor80: brl3
+		Location: 48,66
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor81: barl
+		Location: 45,65
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor82: barl
+		Location: 34,57
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor83: brl3
+		Location: 35,58
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor84: barl
+		Location: 46,67
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor85: barl
+		Location: 48,67
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor86: brl3
+		Location: 38,65
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor87: barl
+		Location: 40,52
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor88: barl
+		Location: 39,64
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor89: brl3
+		Location: 41,53
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor90: brl3
+		Location: 46,66
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Airfield1: afld
+		Location: 39,77
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Powerplant2: powr
+		Location: 45,82
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Airfield2: afld
+		Location: 37,79
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor94: barl
+		Location: 35,56
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor95: brl3
+		Location: 38,64
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor96: brl3
+		Location: 34,55
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor97: barl
+		Location: 35,55
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor98: barl
+		Location: 45,50
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor99: v04
+		Location: 58,54
+		Owner: France
+		Health: 0.4140625
+		Facing: 0
+	Actor100: v02
+		Location: 56,54
+		Owner: France
+		Health: 0.7070313
+		Facing: 0
+	Actor101: dome
+		Location: 45,79
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor102: barl
+		Location: 46,61
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor103: brl3
+		Location: 43,66
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor104: barl
+		Location: 43,67
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor105: brl3
+		Location: 59,57
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor106: barl
+		Location: 57,58
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor107: barl
+		Location: 58,58
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor108: brl3
+		Location: 59,58
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor109: brl3
+		Location: 56,58
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor110: barl
+		Location: 56,59
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor111: barl
+		Location: 56,60
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor112: barl
+		Location: 41,68
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor113: barl
+		Location: 42,67
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor114: brl3
+		Location: 49,55
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor115: barl
+		Location: 48,55
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor116: barl
+		Location: 47,56
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor117: brl3
+		Location: 46,56
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor118: pbox
+		Location: 46,55
+		Owner: France
+		Health: 1
+		Facing: 0
+	Actor119: pbox
+		Location: 48,54
+		Owner: France
+		Health: 1
+		Facing: 0
+	Actor120: barl
+		Location: 34,51
+		Owner: Germany
+		Health: 1
+		Facing: 0
+	Actor121: v05
+		Location: 48,62
+		Owner: France
+		Health: 0.4140625
+		Facing: 0
+	Church: v01
+		Location: 40,63
+		Owner: France
+		Health: 0.5390625
+		Facing: 0
+	Actor123: jeep
+		Location: 46,52
+		Owner: France
+		Health: 0.6640625
+		Facing: 96
+	StartJeep: jeep
+		Location: 44,76
+		Owner: France
+		Health: 0.5195313
+		Facing: 32
+	Actor125: jeep
+		Location: 55,57
+		Owner: France
+		Health: 1
+		Facing: 160
+	Actor126: jeep
+		Location: 39,65
+		Owner: France
+		Health: 0.625
+		Facing: 64
+	Actor127: c9
+		Location: 50,64
+		Owner: France
+		Health: 1
+		Facing: 192
+		SubCell: 1
+	Actor128: c8
+		Location: 47,61
+		Owner: France
+		Health: 1
+		Facing: 0
+		SubCell: 3
+	Actor129: c8
+		Location: 41,50
+		Owner: Turkey
+		Health: 1
+		Facing: 224
+		SubCell: 3
+	Actor130: c6
+		Location: 46,61
+		Owner: France
+		Health: 1
+		Facing: 128
+		SubCell: 2
+	Actor131: c5
+		Location: 46,61
+		Owner: France
+		Health: 1
+		Facing: 0
+		SubCell: 1
+	Actor132: c4
+		Location: 44,67
+		Owner: France
+		Health: 1
+		Facing: 96
+		SubCell: 1
+	Actor133: c2
+		Location: 40,54
+		Owner: France
+		Health: 1
+		Facing: 160
+		SubCell: 2
+	Actor134: c2
+		Location: 45,61
+		Owner: France
+		Health: 1
+		Facing: 64
+		SubCell: 4
+	Actor135: e1
+		Location: 54,60
+		Owner: France
+		Health: 1
+		Facing: 160
+		SubCell: 4
+	Actor136: e1
+		Location: 49,60
+		Owner: France
+		Health: 1
+		Facing: 128
+		SubCell: 2
+	Actor137: c5
+		Location: 45,51
+		Owner: France
+		Health: 1
+		Facing: 224
+		SubCell: 0
+	Actor138: e1
+		Location: 34,58
+		Owner: France
+		Health: 1
+		Facing: 96
+		SubCell: 0
+	Actor139: e1
+		Location: 53,54
+		Owner: France
+		Health: 1
+		Facing: 128
+		SubCell: 2
+	Actor140: e1
+		Location: 58,56
+		Owner: France
+		Health: 1
+		Facing: 128
+		SubCell: 1
+	Actor141: e1
+		Location: 58,52
+		Owner: France
+		Health: 1
+		Facing: 160
+		SubCell: 0
+	Actor142: e1
+		Location: 54,64
+		Owner: France
+		Health: 1
+		Facing: 160
+		SubCell: 3
+	Actor143: c7
+		Location: 56,54
+		Owner: France
+		Health: 1
+		Facing: 0
+		SubCell: 3
+	Actor144: e1
+		Location: 40,51
+		Owner: France
+		Health: 1
+		Facing: 160
+		SubCell: 0
+	Actor145: e1
+		Location: 35,53
+		Owner: France
+		Health: 1
+		Facing: 96
+		SubCell: 1
+	Actor146: e1
+		Location: 35,54
+		Owner: France
+		Health: 1
+		Facing: 0
+		SubCell: 4
+	Actor147: e1
+		Location: 43,64
+		Owner: France
+		Health: 1
+		Facing: 96
+		SubCell: 0
+	Actor148: e1
+		Location: 56,63
+		Owner: France
+		Health: 1
+		Facing: 192
+		SubCell: 2
+	Actor149: e1
+		Location: 40,67
+		Owner: France
+		Health: 1
+		Facing: 32
+		SubCell: 4
+	LonelyGuard: e1
+		Location: 42,81
+		Owner: USSR
+		Health: 0.1367188
+		Facing: 0
+		SubCell: 2
+	StartJeepMovePoint: waypoint
+		Location: 47,66
+		Owner: Neutral
+	ParadropEntryPoint1: waypoint
+		Location: 67,65
+		Owner: Neutral
+	BridgeWaypoint: waypoint
+		Location: 47,70
+		Owner: Neutral
+	YakEntry: waypoint
+		Location: 51,84
+		Owner: Neutral
+	Flare: flare
+		Location: 47,65
+		Owner: France
+	ParadropPoint1: waypoint
+		Location: 47,67
+		Owner: Neutral
+
+Smudges:
+
+Rules:
+	Player:
+		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
+	World:
+		-CrateSpawner:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		LuaScript:
+			Scripts: soviet01.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
+		-StartGameNotification:
+	V01:
+		LeavesHusk:
+			HuskActor: healcrate
+	HEALCRATE:
+		Tooltip:
+			GenericStancePrefix: false
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^CivInfantry:
+		MustBeDestroyed:
+	^CivBuilding:
+		MustBeDestroyed:
+	^Plane:
+		MustBeDestroyed:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Vehicle:
+		MustBeDestroyed:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Infantry:
+		MustBeDestroyed:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Building:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Husk:
+		Tooltip:
+			GenericVisibility: Enemy, Ally, Neutral
+			GenericStancePrefix: false
+			ShowOwnerRow: false
+	PBOX:
+		MustBeDestroyed:
+	JEEP:
+		Explodes:
+		JamsRadar:
+			Range: 10
+	YAK:
+		Buildable:
+			Prerequisites: ~disabled
+	MIG:
+		Buildable:
+			Prerequisites: ~disabled
+	AFLD:
+		AirstrikePower:
+			Prerequisites: ~disabled
+		ParatroopersPower:
+			ChargeTime: 60
+			DropItems: E1,E1,E1,E2,E2
+		#-RallyPoint: # TODO https://github.com/OpenRA/OpenRA/issues/6818
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:
