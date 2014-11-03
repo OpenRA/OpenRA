@@ -54,6 +54,7 @@ ide = {
       fold = true,
       autoreload = true,
       indentguide = true,
+      backspaceunindent = true,
     },
     debugger = {
       verbose = false,

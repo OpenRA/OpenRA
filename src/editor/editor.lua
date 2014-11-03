@@ -1208,6 +1208,20 @@ function CreateEditor()
           -- auto-complete suggestions.
           local style = bit.band(editor:GetStyleAt(pos), 31)
           if not MarkupIsSpecial or not MarkupIsSpecial(style) then
+            -- if BACKSPACE is used at tab stop, with spaces for indentation,
+            -- and only whilespaces on the left, reduce indent
+            if edcfg.backspaceunindent and keycode == wx.WXK_BACK and not editor:GetUseTabs() then
+              -- get the line number from the *current* position of the cursor
+              local line = editor:LineFromPosition(pos+1)
+              local text = editor:GetLine(line):sub(1, pos-editor:PositionFromLine(line)+1)
+              local tw = editor:GetIndent()
+              -- if on the tab stop position and only white spaces on the left
+              if text:find('^%s+$') and #text % tw == 0 then
+                editor:SetLineIndentation(line, editor:GetLineIndentation(line) - tw)
+                editor:GotoPos(pos+1-tw)
+                return
+              end
+            end
             event:Skip()
             return
           end

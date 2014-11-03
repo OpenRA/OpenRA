@@ -100,6 +100,7 @@ config = {
     autoreload = nil, -- trigger auto-reload when file is updated
     saveallonrun = nil, -- save all modified files before Run/Debug
     indentguide = true, -- show indentation guides
+    backspaceunindent = true, -- unindent when backspace is used
   },
 
   default = {
