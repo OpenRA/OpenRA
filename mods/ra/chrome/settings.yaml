@@ -165,6 +165,29 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Show Shellmap
+				Label@PLAYER:
+					Text: Player:
+					X: 15
+					Y: 215
+				TextField@PLAYERNAME:
+					Text: Name
+					X: 65
+					Y: 205
+					Width: 145
+					Height: 25
+					MaxLength: 16
+				ColorPreviewManager@COLOR_MANAGER:
+				DropDownButton@PLAYERCOLOR:
+					X: 215
+					Y: 205
+					Width: 70
+					Height: 25
+					Children:
+						ColorBlock@COLORBLOCK:
+							X: 5
+							Y: 6
+							Width: PARENT_RIGHT-35
+							Height: PARENT_BOTTOM-12
 				Checkbox@ALWAYS_SHOW_STATUS_BARS_CHECKBOX:
 					X: 310
 					Y: 205

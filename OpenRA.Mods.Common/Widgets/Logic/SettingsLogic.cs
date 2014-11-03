@@ -13,10 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Widgets;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets.Logic
+namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class SettingsLogic
 	{
@@ -196,6 +195,21 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			frameLimitTextfield.OnEnterKey = () => { frameLimitTextfield.YieldKeyboardFocus(); return true; };
 			frameLimitTextfield.IsDisabled = () => !ds.CapFramerate;
 
+			// Player profile
+			var ps = Game.Settings.Player;
+
+			var nameTextfield = panel.Get<TextFieldWidget>("PLAYERNAME");
+			nameTextfield.Text = ps.Name;
+			nameTextfield.OnEnterKey = () => { nameTextfield.YieldKeyboardFocus(); return true; };
+			nameTextfield.OnLoseFocus = () => { ps.Name = nameTextfield.Text; };
+
+			var colorPreview = panel.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
+			colorPreview.Color = ps.Color;
+
+			var colorDropdown = panel.Get<DropDownButtonWidget>("PLAYERCOLOR");
+			colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorPreview, worldRenderer.world);
+			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => ps.Color.RGB;
+
 			return () =>
 			{
 				int x, y;
@@ -203,6 +217,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Exts.TryParseIntegerInvariant(windowHeight.Text, out y);
 				ds.WindowedSize = new int2(x, y);
 				frameLimitTextfield.YieldKeyboardFocus();
+				nameTextfield.YieldKeyboardFocus();
 			};
 		}
 
@@ -210,8 +225,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var ds = Game.Settings.Graphics;
 			var gs = Game.Settings.Game;
+			var ps = Game.Settings.Player;
 			var dds = new GraphicSettings();
 			var dgs = new GameSettings();
+			var dps = new PlayerSettings();
 			return () =>
 			{
 				gs.ShowShellmap = dgs.ShowShellmap;
@@ -225,6 +242,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				ds.PixelDouble = dds.PixelDouble;
 				ds.CursorDouble = dds.CursorDouble;
 				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
+
+				ps.Color = dps.Color;
+				ps.Name = dps.Name;
 			};
 		}
 
