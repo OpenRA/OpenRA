@@ -122,7 +122,7 @@ namespace OpenRA
 				path = "^" + path.Substring(SupportDir.Length);
 
 			if (path.StartsWith(GameDir))
-				path = "." + path.Substring(GameDir.Length);
+				path = "./" + path.Substring(GameDir.Length);
 
 			return path;
 		}
