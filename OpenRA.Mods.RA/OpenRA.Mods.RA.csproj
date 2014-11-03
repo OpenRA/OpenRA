@@ -473,7 +473,6 @@
     <Compile Include="Render\WithActiveAnimation.cs" />
     <Compile Include="SupportPowers\SpawnActorPower.cs" />
     <Compile Include="Render\RenderSimple.cs" />
-    <Compile Include="Render\RenderSprites.cs" />
     <Compile Include="Air\FlyAwayOnIdle.cs" />
     <Compile Include="Buildings\ClonesProducedUnits.cs" />
     <Compile Include="Cloneable.cs" />
