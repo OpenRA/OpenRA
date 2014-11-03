@@ -294,21 +294,11 @@ Rules:
 		CrateSpawner:
 			Maximum: 3
 			SpawnInterval: 5
+			CrateActors: unitcrate
 		-SpawnMPUnits:
 		-MPStartLocations:
-	CRATE:
-		-LevelUpCrateAction:
-		-GiveMcvCrateAction:
-		-RevealMapCrateAction:
-		-HideMapCrateAction:
-		-ExplodeCrateAction@nuke:
-		-ExplodeCrateAction@boom:
-		-ExplodeCrateAction@fire:
-		-SupportPowerCrateAction@parabombs:
-		-GiveCashCrateAction:
-		-DuplicateUnitCrateAction:
-		-GiveUnitCrateAction@squadlight:
-		-GiveUnitCrateAction@squadheavysoviet:
+	UNITCRATE:
+		Inherits: ^Crate
 		GiveUnitCrateAction@ttnk:
 			SelectionShares: 4
 			Units: ttnk

@@ -203,35 +203,26 @@ Rules:
 		CrateSpawner:
 			Maximum: 4
 			SpawnInterval: 5
+			CrateActors: unitcrate
 		-SpawnMPUnits:
 		-MPStartLocations:
-	CRATE:
-		-HealUnitsCrateAction:
-		-LevelUpCrateAction:
-		-GiveMcvCrateAction:
-		-RevealMapCrateAction:
-		-HideMapCrateAction:
-		-GrantUpgradeCrateAction@cloak:
-		-ExplodeCrateAction@nuke:
-		-ExplodeCrateAction@boom:
-		-ExplodeCrateAction@fire:
-		-SupportPowerCrateAction@parabombs:
-		-GiveCashCrateAction:
+	UNITCRATE:
+		Inherits: ^Crate
 		GiveUnitCrateAction@stnk:
 			SelectionShares: 4
-			Unit: stnk
+			Units: stnk
 		GiveUnitCrateAction@bike:
 			SelectionShares: 6
-			Unit: bike
+			Units: bike
 		GiveUnitCrateAction@htnk:
 			SelectionShares: 1
-			Unit: htnk
+			Units: htnk
 		GiveUnitCrateAction@e5:
 			SelectionShares: 1
-			Unit: e5
+			Units: e5
 		GiveUnitCrateAction@e1:
 			SelectionShares: 1
-			Unit: e1
+			Units: e1
 	APC:
 		Health:
 			HP: 1000
