@@ -145,12 +145,12 @@ namespace OpenRA.Mods.RA
 			newOwner.PlayerActor.Trait<TechTree>().Update();
 		}
 
-		public void Killed(Actor killed, AttackInfo e) { if (killed == self) ClearQueue(); }
-		public void Selling(Actor self) { }
-		public void Sold(Actor self) { ClearQueue(); }
+		public void Killed(Actor killed, AttackInfo e) { if (killed == self) { ClearQueue(); Enabled = false; } }
+		public void Selling(Actor self) { ClearQueue(); Enabled = false; }
+		public void Sold(Actor self) { }
 
-		public void BeforeTransform(Actor self) { }
-		public void OnTransform(Actor self) { ClearQueue(); }
+		public void BeforeTransform(Actor self) { ClearQueue(); Enabled = false; }
+		public void OnTransform(Actor self) { }
 		public void AfterTransform(Actor self) { }
 
 		void CacheProduceables(Actor playerActor)
@@ -225,6 +225,8 @@ namespace OpenRA.Mods.RA
 
 		public virtual IEnumerable<ActorInfo> BuildableItems()
 		{
+			if (!Enabled)
+				return Enumerable.Empty<ActorInfo>();
 			if (self.World.AllowDevCommands && developerMode.AllTech)
 				return produceable.Select(a => a.Key);
 

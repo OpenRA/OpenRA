@@ -55,6 +55,9 @@ namespace OpenRA.Mods.RA
 			{
 				if (x.Actor.Owner == self.Owner && x.Trait.Info.Produces.Contains(Info.Type))
 				{
+					var b = x.Actor.TraitOrDefault<Building>();
+					if (b != null && b.Locked)
+						continue;
 					isActive = true;
 					break;
 				}
