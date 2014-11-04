@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Play the Build voice of this actor when trained.")]
 	public class AnnounceOnBuildInfo : TraitInfo<AnnounceOnBuild> { }

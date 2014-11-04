@@ -82,9 +82,14 @@
     <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="ServerTraits\MasterServerPinger.cs" />
     <Compile Include="ServerTraits\PlayerPinger.cs" />
+    <Compile Include="Traits\BlocksBullets.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />
+    <Compile Include="Traits\Sound\ActorLostNotification.cs" />
+    <Compile Include="Traits\Sound\AnnounceOnBuild.cs" />
+    <Compile Include="Traits\Sound\AnnounceOnKill.cs" />
+    <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
     <Compile Include="UtilityCommands\ExtractFilesCommand.cs" />

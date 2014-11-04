@@ -11,7 +11,7 @@
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	//TODO: Add functionality like a customizable Height that is compared to projectile altitude
 	[Desc("This actor blocks bullets and missiles without 'High' property.")]

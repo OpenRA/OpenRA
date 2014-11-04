@@ -11,7 +11,7 @@
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Sounds to play when killed.")]
 	public class DeathSoundsInfo : ITraitInfo
