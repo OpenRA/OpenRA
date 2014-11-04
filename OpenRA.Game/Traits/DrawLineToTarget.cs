@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Input;
 
 namespace OpenRA.Traits
 {
@@ -60,7 +61,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
+			var force = Game.InputHandler.GetModifierKeys().HasModifier(Modifiers.Alt);
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
 				yield break;
 

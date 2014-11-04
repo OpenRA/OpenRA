@@ -72,9 +72,9 @@ namespace OpenRA
 			Console.WriteLine("Using OpenAL sound engine");
 
 			if (Game.Settings.Sound.Device != null)
-				Console.WriteLine("Using device `{0}`", Game.Settings.Sound.Device);
+				Console.WriteLine("Using sound device `{0}`", Game.Settings.Sound.Device);
 			else
-				Console.WriteLine("Using default device");
+				Console.WriteLine("Using default sound device");
 
 			var dev = Alc.OpenDevice(Game.Settings.Sound.Device);
 			if (dev == IntPtr.Zero)

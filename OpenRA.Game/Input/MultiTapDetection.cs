@@ -11,21 +11,21 @@
 using System;
 using OpenRA.Primitives;
 
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Input
 {
 	public static class MultiTapDetection
 	{
 		static Cache<Keycode, TapHistory> keyHistoryCache =
 			new Cache<Keycode, TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
-		static Cache<byte, TapHistory> clickHistoryCache =
-			new Cache<byte, TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
+		static Cache<MouseButton, TapHistory> clickHistoryCache =
+			new Cache<MouseButton, TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
 
-		public static int DetectFromMouse(byte button, int2 xy)
+		public static int DetectFromMouse(MouseButton button, int2 xy)
 		{
 			return clickHistoryCache[button].GetTapCount(xy);
 		}
 
-		public static int InfoFromMouse(byte button)
+		public static int InfoFromMouse(MouseButton button)
 		{
 			return clickHistoryCache[button].LastTapCount();
 		}

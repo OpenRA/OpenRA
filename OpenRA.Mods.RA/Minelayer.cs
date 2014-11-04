@@ -13,6 +13,7 @@ using System.Linq;
 using System.Collections.Generic;
 using OpenRA.Traits;
 using OpenRA.Graphics;
+using OpenRA.Input;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.Common.Orders;
 

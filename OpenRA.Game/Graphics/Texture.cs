@@ -14,7 +14,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using OpenTK.Graphics.OpenGL;
 
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Rendering
 {
 	public class Texture : ITexture
 	{

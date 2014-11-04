@@ -39,7 +39,7 @@ namespace OpenRA.Graphics
 				{
 					var vb = renderer.GetTempVertexBuffer();
 					vb.SetData(vertices, nv);
-					renderer.DrawBatch(vb, 0, nv, PrimitiveType.QuadList);
+					renderer.DrawBatch(vb, 0, nv, PrimitiveList.QuadList);
 				});
 				renderer.Device.SetBlendMode(BlendMode.None);
 
@@ -107,7 +107,7 @@ namespace OpenRA.Graphics
 			nv += 4;
 		}
 
-		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveType type, Sheet sheet)
+		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveList type, Sheet sheet)
 		{
 			shader.SetTexture("DiffuseTexture", sheet.Texture);
 			renderer.Device.SetBlendMode(BlendMode.Alpha);

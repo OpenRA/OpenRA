@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project OpenTkTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{33D03738-C154-4028-8EA8-63A3C488A651}</ProjectGuid>
+    <ProjectGuid>{422F37CF-8827-47E9-BCAD-77DCCDB9105E}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>OpenRA.Renderer.Sdl2</RootNamespace>
-    <AssemblyName>OpenRA.Renderer.Sdl2</AssemblyName>
+    <RootNamespace>OpenRA.Renderer.OpenTk</RootNamespace>
+    <AssemblyName>OpenRA.Renderer.OpenTk</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -23,17 +23,13 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
-    <Reference Include="SDL2-CS">
-      <HintPath>..\thirdparty\SDL2-CS.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Sdl2Input.cs" />
-    <Compile Include="Sdl2GraphicsDevice.cs" />
     <Reference Include="OpenTK">
       <HintPath>..\thirdparty\OpenTK.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GameWindowInput.cs" />
+    <Compile Include="GameWindowConnector.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

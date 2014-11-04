@@ -14,7 +14,7 @@ using System.Drawing;
 using System.IO;
 using OpenTK.Graphics.OpenGL;
 
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Rendering
 {
 	public class FrameBuffer : IFrameBuffer
 	{

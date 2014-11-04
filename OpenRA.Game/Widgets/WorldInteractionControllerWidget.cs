@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
+using OpenRA.Input;
 using OpenRA.Orders;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -165,7 +166,7 @@ namespace OpenRA.Widgets
 				{
 					Location = screenPos,
 					Button = MouseButton.Right,
-					Modifiers = Game.GetModifierKeys()
+					Modifiers = Game.InputHandler.GetModifierKeys()
 				};
 
 				return World.OrderGenerator.GetCursor(World, cell, mi);

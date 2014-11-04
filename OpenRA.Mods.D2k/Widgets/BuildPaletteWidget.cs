@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Input;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Power;
 using OpenRA.Mods.RA;
@@ -413,7 +414,7 @@ namespace OpenRA.Mods.D2k.Widgets
 					if (producing.Paused || producing.Done || producing.TotalCost == producing.RemainingCost)
 					{
 						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, world.LocalPlayer.Country.Race);
-						var numberToCancel = Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1;
+						var numberToCancel = Game.InputHandler.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1;
 
 						world.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, item, numberToCancel));
 					}
@@ -429,7 +430,7 @@ namespace OpenRA.Mods.D2k.Widgets
 		void StartProduction(World world, string item)
 		{
 			world.IssueOrder(Order.StartProduction(CurrentQueue.Actor, item,
-				Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
+				Game.InputHandler.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 		}
 
 		void DrawBuildTabs(World world)

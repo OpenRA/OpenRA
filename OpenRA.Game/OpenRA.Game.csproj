@@ -75,8 +75,8 @@
       <HintPath>..\thirdparty\MaxMind.Db.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SDL2-CS">
-      <HintPath>..\thirdparty\SDL2-CS.dll</HintPath>
+    <Reference Include="OpenTK">
+      <HintPath>..\thirdparty\OpenTK.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -236,7 +236,6 @@
     <Compile Include="Widgets\RootWidget.cs" />
     <Compile Include="Map\CellLayer.cs" />
     <Compile Include="Map\CellRegion.cs" />
-    <Compile Include="Input\IInputHandler.cs" />
     <Compile Include="Input\InputHandler.cs" />
     <Compile Include="Input\Keycode.cs" />
     <Compile Include="Input\Hotkey.cs" />
@@ -251,6 +250,12 @@
     <Compile Include="Graphics\TargetLineRenderable.cs" />
     <Compile Include="Graphics\UISpriteRenderable.cs" />
     <Compile Include="GameRules\DamageWarhead.cs" />
+    <Compile Include="Input\MultiTapDetection.cs" />
+    <Compile Include="Graphics\ErrorHandler.cs" />
+    <Compile Include="Graphics\FrameBuffer.cs" />
+    <Compile Include="Graphics\Shader.cs" />
+    <Compile Include="Graphics\Texture.cs" />
+    <Compile Include="Graphics\VertexBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />

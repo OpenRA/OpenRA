@@ -53,7 +53,7 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
 				vertexBuffer, verticesPerRow * firstRow, verticesPerRow * (lastRow - firstRow),
-				PrimitiveType.QuadList, wr.Theater.Sheet);
+				PrimitiveList.QuadList, wr.Theater.Sheet);
 
 			foreach (var r in world.WorldActor.TraitsImplementing<IRenderOverlay>())
 				r.Render(wr);

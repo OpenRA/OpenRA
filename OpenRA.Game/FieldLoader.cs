@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using OpenRA.Graphics;
+using OpenRA.Input;
 using OpenRA.Primitives;
 
 namespace OpenRA

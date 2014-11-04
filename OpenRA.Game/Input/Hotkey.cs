@@ -8,7 +8,7 @@
  */
 #endregion
 
-namespace OpenRA
+namespace OpenRA.Input
 {
 	public struct Hotkey
 	{

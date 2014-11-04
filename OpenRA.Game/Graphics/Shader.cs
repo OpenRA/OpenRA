@@ -15,7 +15,7 @@ using System.Text;
 using OpenRA.FileSystem;
 using OpenTK.Graphics.OpenGL;
 
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Rendering
 {
 	public class Shader : IShader
 	{
@@ -68,7 +68,7 @@ namespace OpenRA.Renderer.Sdl2
 
 			GL.LinkProgram(program);
 			ErrorHandler.CheckGlError();
-			GL.GetProgram(program, ProgramParameter.LinkStatus, out success);
+			GL.GetProgram(program, GetProgramParameterName.LinkStatus, out success);
 			ErrorHandler.CheckGlError();
 			if (success == (int)All.False)
 				throw new InvalidProgramException("Linking error in {0} shader".F(name));
@@ -77,7 +77,7 @@ namespace OpenRA.Renderer.Sdl2
 			ErrorHandler.CheckGlError();
 
 			int numUniforms;
-			GL.GetProgram(program, ProgramParameter.ActiveUniforms, out numUniforms);
+			GL.GetProgram(program, GetProgramParameterName.ActiveUniforms, out numUniforms);
 			ErrorHandler.CheckGlError();
 
 			var nextTexUnit = 0;

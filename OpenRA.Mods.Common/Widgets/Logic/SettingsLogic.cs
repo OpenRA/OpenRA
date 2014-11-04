@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Input;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic

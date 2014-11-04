@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using OpenRA.Input;
 using OpenRA.Support;
 using OpenRA.Traits;
 

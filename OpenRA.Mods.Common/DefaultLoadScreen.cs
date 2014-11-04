@@ -64,7 +64,8 @@ namespace OpenRA.Mods.Common
 			WidgetUtils.FillRectWithSprite(stripeRect, stripe);
 			r.RgbaSpriteRenderer.DrawSprite(logo, logoPos);
 			r.Fonts["Bold"].DrawText(text, new float2(r.Resolution.Width - textSize.X - 20, r.Resolution.Height - textSize.Y - 20), Color.White);
-			r.EndFrame(new NullInputHandler());
+			r.EndFrame();
+			Game.InputHandler.Enabled = false;
 		}
 
 		public void StartGame()

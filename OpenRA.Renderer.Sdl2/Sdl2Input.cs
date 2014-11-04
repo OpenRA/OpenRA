@@ -12,6 +12,8 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using SDL2;
+using OpenRA.Input;
+using OpenRA.Rendering;
 
 namespace OpenRA.Renderer.Sdl2
 {
@@ -38,11 +40,11 @@ namespace OpenRA.Renderer.Sdl2
 				 | ((raw & (int)SDL.SDL_Keymod.KMOD_SHIFT) != 0 ? Modifiers.Shift : 0);
 		}
 
-		public void PumpInput(IInputHandler inputHandler)
+		public void PumpInput()
 		{
 			var mods = MakeModifiers((int)SDL.SDL_GetModState());
 			var scrollDelta = 0;
-			inputHandler.ModifierKeys(mods);
+			Game.InputHandler.ModifierKeys(mods);
 			MouseInput? pendingMotion = null;
 
 			SDL.SDL_Event e;
@@ -74,7 +76,7 @@ namespace OpenRA.Renderer.Sdl2
 					{
 						if (pendingMotion != null)
 						{
-							inputHandler.OnMouseInput(pendingMotion.Value);
+							Game.InputHandler.OnMouseInput(pendingMotion.Value);
 							pendingMotion = null;
 						}
 
@@ -83,9 +85,9 @@ namespace OpenRA.Renderer.Sdl2
 
 						var pos = new int2(e.button.x, e.button.y);
 
-						inputHandler.OnMouseInput(new MouseInput(
+						Game.InputHandler.OnMouseInput(new MouseInput(
 							MouseInputEvent.Down, button, scrollDelta, pos, mods,
-							MultiTapDetection.DetectFromMouse(e.button.button, pos)));
+							MultiTapDetection.DetectFromMouse(button, pos)));
 
 						break;
 					}
@@ -94,7 +96,7 @@ namespace OpenRA.Renderer.Sdl2
 					{
 						if (pendingMotion != null)
 						{
-							inputHandler.OnMouseInput(pendingMotion.Value);
+							Game.InputHandler.OnMouseInput(pendingMotion.Value);
 							pendingMotion = null;
 						}
 
@@ -102,9 +104,9 @@ namespace OpenRA.Renderer.Sdl2
 						lastButtonBits &= ~button;
 
 						var pos = new int2(e.button.x, e.button.y);
-						inputHandler.OnMouseInput(new MouseInput(
+						Game.InputHandler.OnMouseInput(new MouseInput(
 							MouseInputEvent.Up, button, scrollDelta, pos, mods,
-							MultiTapDetection.InfoFromMouse(e.button.button)));
+							MultiTapDetection.InfoFromMouse(button)));
 
 						break;
 					}
@@ -123,7 +125,7 @@ namespace OpenRA.Renderer.Sdl2
 						int x, y;
 						SDL.SDL_GetMouseState(out x, out y);
 						scrollDelta = e.wheel.y;
-						inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, scrollDelta, new int2(x, y), Modifiers.None, 0));
+						Game.InputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, scrollDelta, new int2(x, y), Modifiers.None, 0));
 
 						break;
 					}
@@ -132,7 +134,7 @@ namespace OpenRA.Renderer.Sdl2
 					{
 						var rawBytes = new byte[SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE];
 						unsafe { Marshal.Copy((IntPtr)e.text.text, rawBytes, 0, SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE); }
-						inputHandler.OnTextInput(Encoding.UTF8.GetString(rawBytes, 0, Array.IndexOf(rawBytes, (byte)0)));
+						Game.InputHandler.OnTextInput(Encoding.UTF8.GetString(rawBytes, 0, Array.IndexOf(rawBytes, (byte)0)));
 						break;
 					}
 
@@ -161,7 +163,7 @@ namespace OpenRA.Renderer.Sdl2
 							Platform.CurrentPlatform == PlatformType.Windows)
 							Game.Exit();
 						else
-							inputHandler.OnKeyInput(keyEvent);
+							Game.InputHandler.OnKeyInput(keyEvent);
 
 						break;
 					}
@@ -170,7 +172,7 @@ namespace OpenRA.Renderer.Sdl2
 
 			if (pendingMotion != null)
 			{
-				inputHandler.OnMouseInput(pendingMotion.Value);
+				Game.InputHandler.OnMouseInput(pendingMotion.Value);
 				pendingMotion = null;
 			}
 

@@ -33,6 +33,9 @@ namespace OpenRA.Renderer.Null
 		{
 			Console.WriteLine("Using Null renderer");
 			WindowSize = size;
+
+			Game.HasInputFocus = false;
+			Game.InputHandler.Enabled = false;
 		}
 
 		public void Dispose() { }
@@ -52,13 +55,9 @@ namespace OpenRA.Renderer.Null
 		public void Present() { }
 
 		public string GetClipboardText() { return ""; }
-		public void PumpInput(IInputHandler ih)
-		{
-			Game.HasInputFocus = false;
-			ih.ModifierKeys(Modifiers.None);
-		}
+		public void PumpInput() { }
 
-		public void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices) { }
+		public void DrawPrimitives(PrimitiveList pt, int firstVertex, int numVertices) { }
 		public void SetLineWidth(float width) { }
 
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int size) { return new NullVertexBuffer<Vertex>(); }

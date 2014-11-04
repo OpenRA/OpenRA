@@ -35,7 +35,7 @@ namespace OpenRA.Graphics
 				{
 					var vb = renderer.GetTempVertexBuffer();
 					vb.SetData(vertices, nv);
-					renderer.DrawBatch(vb, 0, nv, PrimitiveType.QuadList);
+					renderer.DrawBatch(vb, 0, nv, PrimitiveList.QuadList);
 				});
 				renderer.Device.SetBlendMode(BlendMode.None);
 

@@ -112,15 +112,15 @@ namespace OpenRA.Graphics
 			WorldVoxelRenderer.SetPalette(currentPaletteTexture);
 		}
 
-		public void EndFrame(IInputHandler inputHandler)
+		public void EndFrame()
 		{
 			Flush();
-			device.PumpInput(inputHandler);
+			device.PumpInput();
 			device.Present();
 		}
 
 		public void DrawBatch<T>(IVertexBuffer<T> vertices,
-			int firstVertex, int numVertices, PrimitiveType type)
+			int firstVertex, int numVertices, PrimitiveList type)
 			where T : struct
 		{
 			vertices.Bind();

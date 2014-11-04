@@ -10,6 +10,7 @@
 
 using System;
 using OpenRA.Graphics;
+using OpenRA.Input;
 
 namespace OpenRA.Widgets
 {

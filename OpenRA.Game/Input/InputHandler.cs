@@ -8,45 +8,90 @@
  */
 #endregion
 
+using System;
 using OpenRA.Widgets;
 
-namespace OpenRA
+namespace OpenRA.Input
 {
-	public class NullInputHandler : IInputHandler
+	public class InputHandler
 	{
-		// ignore all input
-		public void ModifierKeys(Modifiers mods) { }
-		public void OnKeyInput(KeyInput input) { }
-		public void OnTextInput(string text) { }
-		public void OnMouseInput(MouseInput input) { }
-	}
+		public bool Enabled = false;
 
-	public class DefaultInputHandler : IInputHandler
-	{
-		readonly World world;
-		public DefaultInputHandler(World world)
-		{
-			this.world = world;
-		}
+		Modifiers modifiers;
+		public Modifiers GetModifierKeys() { return modifiers; }
 
 		public void ModifierKeys(Modifiers mods)
 		{
-			Game.HandleModifierKeys(mods);
+			if (Enabled)
+				modifiers = mods;
 		}
 
 		public void OnKeyInput(KeyInput input)
 		{
-			Sync.CheckSyncUnchanged(world, () => Ui.HandleKeyPress(input));
+			if (Enabled)
+				Sync.CheckSyncUnchanged(Game.orderManager.World, () => Ui.HandleKeyPress(input));
 		}
 
 		public void OnTextInput(string text)
 		{
-			Sync.CheckSyncUnchanged(world, () => Ui.HandleTextInput(text));
+			if (Enabled)
+				Sync.CheckSyncUnchanged(Game.orderManager.World, () => Ui.HandleTextInput(text));
 		}
 
 		public void OnMouseInput(MouseInput input)
 		{
-			Sync.CheckSyncUnchanged(world, () => Ui.HandleInput(input));
+			if (Enabled)
+				Sync.CheckSyncUnchanged(Game.orderManager.World, () => Ui.HandleInput(input));
 		}
+	}
+
+	public enum MouseInputEvent { Down, Move, Up, Scroll }
+	public struct MouseInput
+	{
+		public MouseInputEvent Event;
+		public MouseButton Button;
+		public int ScrollDelta;
+		public int2 Location;
+		public Modifiers Modifiers;
+		public int MultiTapCount;
+
+		public MouseInput(MouseInputEvent ev, MouseButton button, int scrollDelta, int2 location, Modifiers mods, int multiTapCount)
+		{
+			Event = ev;
+			Button = button;
+			ScrollDelta = scrollDelta;
+			Location = location;
+			Modifiers = mods;
+			MultiTapCount = multiTapCount;
+		}
+	}
+
+	[Flags]
+	public enum MouseButton
+	{
+		None = 0,
+		Left = 1,
+		Right = 2,
+		Middle = 4
+	}
+
+	[Flags]
+	public enum Modifiers
+	{
+		None = 0,
+		Shift = 1,
+		Alt = 2,
+		Ctrl = 4,
+		Meta = 8,
+	}
+
+	public enum KeyInputEvent { Down, Up }
+	public struct KeyInput
+	{
+		public KeyInputEvent Event;
+		public Keycode Key;
+		public Modifiers Modifiers;
+		public int MultiTapCount;
+		public char UnicodeChar;
 	}
 }

@@ -16,8 +16,6 @@ using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
 using OpenRA.Traits;
-using OpenTK;
-using OpenTK.Audio.OpenAL;
 
 namespace OpenRA
 {
