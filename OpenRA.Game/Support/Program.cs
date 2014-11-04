@@ -16,7 +16,7 @@ using System.Text;
 
 namespace OpenRA
 {
-	enum RunStatus
+	public enum RunStatus
 	{
 		Error = -1,
 		Success = 0,
