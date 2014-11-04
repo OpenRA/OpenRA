@@ -1,7 +1,7 @@
 -- Traduko fare de cosmotect
 return {
   [0] = function(c) return c == 1 and 1 or 2 end, -- plural
-  ["%d instance"] = "%d aperaĵo", -- src\editor\findreplace.lua
+  ["%d instance"] = {"%d aperaĵo", "%d aperaĵoj"}, -- src\editor\findreplace.lua
   ["%s event failed: %s"] = "%s evento malplenumiĝas: %s", -- src\editor\package.lua
   ["&About"] = "&Pri", -- src\editor\menu_help.lua
   ["&Add Watch"] = "&Aldoni observadaĵon", -- src\editor\debugger.lua
@@ -16,7 +16,7 @@ return {
   ["&Documentation"] = "&Dokumentado", -- src\editor\menu_help.lua
   ["&Down"] = "&Malsupren", -- src\editor\findreplace.lua
   ["&Edit Project Directory"] = "&Redakti projektan dosierujon", -- src\editor\filetree.lua
-  ["&Edit Value"] = nil, -- src\editor\debugger.lua
+  ["&Edit Value"] = "&Redakti valoron", -- src\editor\debugger.lua
   ["&Edit Watch"] = "&Redakti observadaĵon", -- src\editor\debugger.lua
   ["&Edit"] = "&Redakti", -- src\editor\menu_edit.lua
   ["&File"] = "&Dosiero", -- src\editor\menu_file.lua
@@ -68,9 +68,9 @@ return {
   ["C&lear Output Window"] = "Viŝi eligan fenestron", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["C&omment/Uncomment"] = "F&orkomenti/Eksforkomenti", -- src\editor\menu_edit.lua
   ["Can't debug the script in the active editor window."] = "Ne povas sencimigi la skripton en la aktiva redaktila fenestro.", -- src\editor\debugger.lua
-  ["Can't evaluate the expression while the application is running."] = nil, -- src\editor\debugger.lua
+  ["Can't evaluate the expression while the application is running."] = "Ne povas malkodi la esprimon dum funkciatas la aplikaĵo.", -- src\editor\debugger.lua
   ["Can't find file '%s' in the current project to activate for debugging. Update the project or open the file in the editor before debugging."] = "Ne povas trovi la dosieron '%s' en la kuranta projekto por aktivi por sencimigo. Ĝisdatigu la projekton aŭ malfermu la dosieron en redaktilo antaŭ sencimigo.", -- src\editor\debugger.lua
-  ["Can't open file '%s': %s"] = nil, -- src\editor\singleinstance.lua
+  ["Can't open file '%s': %s"] = "Ne povas malfermi la dosieron '%s': %s", -- src\editor\singleinstance.lua
   ["Can't process auto-recovery record; invalid format: %s."] = "Ne povas analizi aŭtomatrestaŭran dosieron; neprava dosierformo: %s.", -- src\editor\commands.lua
   ["Can't run the entry point script ('%s')."] = "Ne povas plenumi la enirejan skripton", -- src\editor\debugger.lua
   ["Can't start debugger server at %s:%d: %s."] = "Ne povas ekfunkciigi sencimigilo-servilon ĉe %s:%d: %s.", -- src\editor\debugger.lua
@@ -120,7 +120,7 @@ return {
   ["Enter Lua code and press Enter to run it."] = "Enigu fontkodon de Lua kaj premu enenklavon por plenumi ĝin.", -- src\editor\shellbox.lua
   ["Enter command line parameters (use Cancel to clear)"] = "Enigu komandliniajn parametrojn (uzu nulig-butonon por viŝi)", -- src\editor\menu_project.lua
   ["Enter line number"] = "Enigu linian numeron", -- src\editor\menu_search.lua
-  ["Enter replacement text"] = nil, -- src\editor\editor.lua
+  ["Enter replacement text"] = "Enigu anstataŭigan tekston", -- src\editor\editor.lua
   ["Error while loading API file: %s"] = "Eraro okazis dum ŝargado de API-a dosiero: %s", -- src\editor\autocomplete.lua
   ["Error while loading configuration file: %s"] = "Eraro okazis dum ŝargado de agorda dosiero: %s", -- src\editor\style.lua
   ["Error while processing API file: %s"] = "Eraro okazis dum analizado de API-a dosiero: %s", -- src\editor\autocomplete.lua
@@ -133,7 +133,7 @@ return {
   ["Exit program"] = "Eliri programon", -- src\editor\menu_file.lua
   ["File '%s' has been modified on disk."] = "La dosiero nome de '%s' ŝanĝitis en disko.", -- src\editor\editor.lua
   ["File '%s' has more recent timestamp than restored '%s'; please review before saving."] = "La dosiero nome de '%s' havas pli freŝan tempindikon, ol la ripardosiero '%s'; bonvolu ekzameni ĝin antaû konservi.", -- src\editor\commands.lua
-  ["File '%s' is missing and can't be recovered."] = nil, -- src\editor\commands.lua
+  ["File '%s' is missing and can't be recovered."] = "La dosiero nome de '%s' forestas kaj ne povas esti reakirita.", -- src\editor\commands.lua
   ["File '%s' no longer exists."] = "La dosiero nome de '%s' ne plu ekzistas.", -- src\editor\menu_file.lua, src\editor\editor.lua
   ["File Type"] = "Dosierspeco", -- src\editor\findreplace.lua
   ["File already exists."] = "Jam ekzistas tiu ĉi dosiero.", -- src\editor\commands.lua
@@ -159,7 +159,7 @@ return {
   ["Go To Previous Bookmark"] = "Iri al antaŭanta legosigno", -- src\editor\menu_edit.lua
   ["Go to a selected line"] = "Iri al elektita linio", -- src\editor\menu_search.lua
   ["INS"] = "INS", -- src\editor\editor.lua
-  ["Ignored error in debugger initialization code: %s."] = nil, -- src\editor\debugger.lua
+  ["Ignored error in debugger initialization code: %s."] = "Ignoris eraron en pravaloriza kodo de sencimigilo: %s.", -- src\editor\debugger.lua
   ["In Files"] = "Ene de dosieroj", -- src\editor\findreplace.lua
   ["Known Files"] = "Konataj dosieroj", -- src\editor\commands.lua
   ["Ln: %d"] = "Ln: %d", -- src\editor\editor.lua
@@ -175,10 +175,10 @@ return {
   ["Open an existing document"] = "Malfermi jaman dokumenton", -- src\editor\menu_file.lua
   ["Open file"] = "Malfermi dosieron", -- src\editor\commands.lua
   ["Options"] = "Opcioj", -- src\editor\findreplace.lua
-  ["Outline Window"] = nil, -- src\editor\menu_view.lua
-  ["Outline"] = nil, -- src\editor\outline.lua
+  ["Outline Window"] = "Skemo-fenestro", -- src\editor\menu_view.lua
+  ["Outline"] = "Skemo", -- src\editor\outline.lua
   ["Output (running)"] = "Eligo (funkciata)", -- src\editor\debugger.lua, src\editor\output.lua
-  ["Output (suspended)"] = nil, -- src\editor\debugger.lua
+  ["Output (suspended)"] = "Eligo (finetita)", -- src\editor\debugger.lua
   ["Output"] = "Eligo", -- src\editor\debugger.lua, src\editor\output.lua, src\editor\gui.lua, src\editor\settings.lua
   ["Paste text from the clipboard"] = "Alglui tekston el la tondejo", -- src\editor\menu_edit.lua
   ["Preferences"] = "Preferoj", -- src\editor\menu_edit.lua
@@ -199,7 +199,7 @@ return {
   ["R/O"] = "L/A", -- src\editor\editor.lua
   ["R/W"] = "L/S", -- src\editor\editor.lua
   ["Re&place In Files"] = "Anstataŭi en dosieroj", -- src\editor\menu_search.lua
-  ["Re-indent selected lines"] = nil, -- src\editor\menu_edit.lua
+  ["Re-indent selected lines"] = "Realinei elektitajn liniojn", -- src\editor\menu_edit.lua
   ["Recent &Projects"] = "Antaŭnelongaj &projektoj", -- src\editor\menu_file.lua
   ["Recent Files"] = "Antaŭnelongaj dosieroj", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Refari lastan redakton", -- src\editor\menu_edit.lua
@@ -208,7 +208,7 @@ return {
   ["Remote console"] = "Fora konzolo", -- src\editor\shellbox.lua
   ["Rename All Instances"] = "Renomigi ĉiujn aperaĵojn", -- src\editor\editor.lua
   ["Replace A&ll"] = "Anstataŭi ĉ&ion", -- src\editor\findreplace.lua
-  ["Replace All Selections"] = nil, -- src\editor\editor.lua
+  ["Replace All Selections"] = "Anstatataŭi ĉiujn elektojn", -- src\editor\editor.lua
   ["Replace"] = "Anstataŭi", -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "Anstataŭis UTF8-an signon per %s.", -- src\editor\commands.lua
   ["Replaced"] = "Anstataŭita", -- src\editor\findreplace.lua
@@ -271,7 +271,7 @@ return {
   ["Trace execution showing each executed line"] = "Spurili plenumon per montri ĉiun plenumitan linion", -- src\editor\menu_project.lua
   ["Unable to create directory '%s'."] = "Ne kapablas krei je la dosierujo '%s'.", -- src\editor\filetree.lua
   ["Unable to create file '%s'."] = "Ne kapablas krei je la dosiero '%s'.", -- src\editor\filetree.lua
-  ["Unable to delete directory '%s': %s"] = nil, -- src\editor\filetree.lua
+  ["Unable to delete directory '%s': %s"] = "Ne kapablas forigi je la dosierujo '%s': %s", -- src\editor\filetree.lua
   ["Unable to load file '%s'."] = "Ne kapablas ŝarĝi je la dosiero '%s'.", -- src\editor\commands.lua
   ["Unable to rename file '%s'."] = "Ne kapablas renomigi je la dosiero '%s'.", -- src\editor\filetree.lua
   ["Unable to save file '%s': %s"] = "Ne kapablas konservi je la dosiero '%s': %s", -- src\editor\commands.lua
@@ -281,7 +281,7 @@ return {
   ["Use '%s' to show line endings and '%s' to convert them."] = "Uzu je '%s' por montri linifinojn kaj je '%s' por konverti ilin", -- src\editor\commands.lua
   ["Use 'clear' to clear the shell output and the history."] = "Tajpu 'clear' por viŝi la eligon kaj historion de la ŝelo.", -- src\editor\shellbox.lua
   ["Use Shift-Enter for multiline code."] = "Uzu <Majuskligklavon-Enenklavon> por plurlinia fontkodo.", -- src\editor\shellbox.lua
-  ["View the outline window"] = nil, -- src\editor\menu_view.lua
+  ["View the outline window"] = "Vidi la skemo-fenestron", -- src\editor\menu_view.lua
   ["View the output/console window"] = "Vidi la eligo/konzolo-fenestron", -- src\editor\menu_view.lua
   ["View the project/filetree window"] = "Vidi la projekto/dosierarbo-fenestron", -- src\editor\menu_view.lua
   ["View the stack window"] = "Vidi la stako-fenestron", -- src\editor\menu_view.lua
