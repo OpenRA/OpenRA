@@ -15,6 +15,7 @@ namespace OpenRA.Mods.Common
 	[Desc("Overrides the build time calculated by actor value.")]
 	public class CustomBuildTimeValueInfo : TraitInfo<CustomBuildTimeValue>
 	{
+		[Desc("Measured in ticks.")]
 		public readonly int Value = 0;
 	}
 
