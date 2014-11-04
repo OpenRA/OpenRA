@@ -12,6 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Power
 {
+	[Desc("Needs power to operate.")]
 	class RequiresPowerInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new RequiresPower(init.self); }

@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
 {
+	[Desc("Limits the zone where buildings can be constructed to a radius around this actor.")]
 	public class BaseProviderInfo : ITraitInfo
 	{
 		public readonly int Range = 10;

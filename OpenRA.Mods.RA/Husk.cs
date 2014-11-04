@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Spawns remains of a husk actor with the correct facing.")]
 	class HuskInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo
 	{
 		public readonly string[] AllowedTerrain = { };

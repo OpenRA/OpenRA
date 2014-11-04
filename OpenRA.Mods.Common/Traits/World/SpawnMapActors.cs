@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
 {
+	[Desc("Spawns the initial units for each player upon game start.")]
 	public class SpawnMapActorsInfo : TraitInfo<SpawnMapActors> { }
 
 	public class SpawnMapActors : IWorldLoaded
@@ -40,5 +41,5 @@ namespace OpenRA.Mods.Common
 		}
 	}
 
-	public class SkipMakeAnimsInit : IActorInit {}
+	public class SkipMakeAnimsInit : IActorInit { }
 }

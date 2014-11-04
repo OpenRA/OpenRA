@@ -61,6 +61,7 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
+	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
 	class DisguiseInfo : TraitInfo<Disguise> { }
 
 	class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
@@ -135,6 +136,7 @@ namespace OpenRA.Mods.RA
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { DisguiseAs(self, null); }
 	}
 
+	[Desc("Allows automatic targeting of disguised actors.")]
 	class IgnoresDisguiseInfo : TraitInfo<IgnoresDisguise> { }
 	class IgnoresDisguise { }
 }

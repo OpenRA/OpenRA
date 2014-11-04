@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Provides access to the attack-move command, which will make the actor automatically engage viable targets while moving to the destination.")]
 	class AttackMoveInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new AttackMove(init.self, this); }

@@ -16,7 +16,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class EngineerRepairInfo : TraitInfo<EngineerRepair> {}
+	[Desc("Can instantly repair other actors, but gets consumed afterwards.")]
+	class EngineerRepairInfo : TraitInfo<EngineerRepair> { }
 
 	class EngineerRepair : IIssueOrder, IResolveOrder, IOrderVoice
 	{
@@ -116,6 +117,7 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
+	[Desc("Eligible for instant repair.")]
 	class EngineerRepairableInfo : TraitInfo<EngineerRepairable> { }
 
 	class EngineerRepairable { }

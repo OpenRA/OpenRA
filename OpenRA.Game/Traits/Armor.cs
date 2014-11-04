@@ -10,6 +10,7 @@
 
 namespace OpenRA.Traits
 {
+	[Desc("Used to define weapon efficiency modifiers with different percentages per Type.")]
 	public class ArmorInfo : TraitInfo<Armor>
 	{
 		public readonly string Type = null;
