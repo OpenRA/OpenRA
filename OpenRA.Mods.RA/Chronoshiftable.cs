@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Can be teleported via Chronoshift power.")]
 	public class ChronoshiftableInfo : ITraitInfo
 	{
 		public readonly bool ExplodeInstead = false;

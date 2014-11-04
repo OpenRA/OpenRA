@@ -41,6 +41,7 @@ namespace OpenRA.Mods.RA.Activities
 		}
 	}
 
+	[Desc("Can be targeted by the Hunt activity.")]
 	public class HuntableInfo : TraitInfo<Huntable> { }
 	public class Huntable { }
 }

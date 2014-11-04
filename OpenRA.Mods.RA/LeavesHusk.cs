@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Spawn another actor immediately upon death.")]
 	public class LeavesHuskInfo : ITraitInfo
 	{
 		[ActorReference]

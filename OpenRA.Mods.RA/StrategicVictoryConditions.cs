@@ -14,19 +14,21 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class StrategicPointInfo : TraitInfo<StrategicPoint> {}
-	public class StrategicPoint {}
+	[Desc("Used to mark a place that needs to be in possession for StrategicVictoryConditions.")]
+	public class StrategicPointInfo : TraitInfo<StrategicPoint> { }
+	public class StrategicPoint { }
 
+	[Desc("Allows King of the Hill (KotH) style gameplay.")]
 	public class StrategicVictoryConditionsInfo : ITraitInfo, Requires<MissionObjectivesInfo>
 	{
-		[Desc("Amount of time (in game ticks) that the player has to hold all the strategic points.")]
-		public readonly int TicksToHold = 25 * 60 * 5; // ~5 minutes
+		[Desc("Amount of time (in game ticks) that the player has to hold all the strategic points.", "Defaults to 5 minutes.")]
+		public readonly int TicksToHold = 25 * 60 * 5;
 
 		[Desc("Should the timer reset when the player loses hold of a strategic point.")]
 		public readonly bool ResetOnHoldLost = true;
 
-		[Desc("Percentage of strategic points the player has to hold to win.")]
-		public readonly float RatioRequired = 0.5f; // 50% required of all koth locations
+		[Desc("Percentage of all strategic points the player has to hold to win.")]
+		public readonly float RatioRequired = 0.5f;
 
 		[Desc("Delay for the end game notification in milliseconds.")]
 		public int NotificationDelay = 1500;

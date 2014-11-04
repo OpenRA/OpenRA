@@ -12,13 +12,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Infiltration
 {
+	[Desc("Steal and reset the owner's exploration.")]
 	class InfiltrateForExplorationInfo : TraitInfo<InfiltrateForExploration> { }
 
 	class InfiltrateForExploration : INotifyInfiltrated
 	{
 		public void Infiltrated(Actor self, Actor infiltrator)
 		{
-			// Steal and reset the owners exploration
 			infiltrator.Owner.Shroud.Explore(self.Owner.Shroud);
 			if (!self.Owner.Shroud.HasFogVisibility())
 				self.Owner.Shroud.ResetExploration();

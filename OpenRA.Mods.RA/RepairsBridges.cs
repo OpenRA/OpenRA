@@ -16,7 +16,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class RepairsBridgesInfo : TraitInfo<RepairsBridges> {}
+	[Desc("Can enter a BridgeHut to trigger a repair.")]
+	class RepairsBridgesInfo : TraitInfo<RepairsBridges> { }
 
 	class RepairsBridges : IIssueOrder, IResolveOrder, IOrderVoice
 	{

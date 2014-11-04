@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Power
 {
+	[Desc("Disables the actor when a power outage is triggered (see `InfiltrateForPowerOutage` for more information).")]
 	public class AffectedByPowerOutageInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new AffectedByPowerOutage(init.self); }
