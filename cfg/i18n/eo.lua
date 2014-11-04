@@ -159,7 +159,7 @@ return {
   ["Go To Previous Bookmark"] = "Iri al antaŭanta legosigno", -- src\editor\menu_edit.lua
   ["Go to a selected line"] = "Iri al elektita linio", -- src\editor\menu_search.lua
   ["INS"] = "INS", -- src\editor\editor.lua
-  ["Ignored error in debugger initialization code: %s."] = "Ignoris eraron en pravaloriza kodo de sencimigilo: %s.", -- src\editor\debugger.lua
+  ["Ignored error in debugger initialization code: %s."] = "Ignoris eraron en pravaloriza kodo de la sencimigilo: %s.", -- src\editor\debugger.lua
   ["In Files"] = "Ene de dosieroj", -- src\editor\findreplace.lua
   ["Known Files"] = "Konataj dosieroj", -- src\editor\commands.lua
   ["Ln: %d"] = "Ln: %d", -- src\editor\editor.lua
@@ -208,7 +208,7 @@ return {
   ["Remote console"] = "Fora konzolo", -- src\editor\shellbox.lua
   ["Rename All Instances"] = "Renomigi ĉiujn aperaĵojn", -- src\editor\editor.lua
   ["Replace A&ll"] = "Anstataŭi ĉ&ion", -- src\editor\findreplace.lua
-  ["Replace All Selections"] = "Anstatataŭi ĉiujn elektojn", -- src\editor\editor.lua
+  ["Replace All Selections"] = "Anstataŭi ĉiujn elektojn", -- src\editor\editor.lua
   ["Replace"] = "Anstataŭi", -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "Anstataŭis UTF8-an signon per %s.", -- src\editor\commands.lua
   ["Replaced"] = "Anstataŭita", -- src\editor\findreplace.lua
