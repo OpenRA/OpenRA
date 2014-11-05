@@ -5,6 +5,7 @@ General:
 	Palette: d2k.pal
 	Extensions: .R8, .r8, .shp, .tmp
 	EditorTemplateOrder: Basic, Dune, Sand-Detail, Brick, Sand-Cliff, Sand-Smooth, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rock-Cliff-Rock, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform, Unidentified
+	IgnoreTileSpriteOffsets: true
 
 Terrain:
 	TerrainType@Clear: # TODO: workaround for the stupid WinForms editor

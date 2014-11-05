@@ -134,6 +134,7 @@
     <Compile Include="SpriteLoaders\TmpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpD2Loader.cs" />
     <Compile Include="Widgets\Logic\SettingsLogic.cs" />
+    <Compile Include="Widgets\TerrainTemplatePreviewWidget.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -91,19 +91,22 @@ namespace OpenRA.Mods.TS.UtilityCommands
 									continue;
 
 								s.Position = offsets[j] + 40;
-								/* var height = */s.ReadUInt8();
+								var height = s.ReadUInt8();
 								var terrainType = s.ReadUInt8();
-								/* var rampType = */s.ReadUInt8();
-								/* var height = */s.ReadUInt8();
+								var rampType = s.ReadUInt8();
+
 								if (!terrainTypes.ContainsKey(terrainType))
 									throw new InvalidDataException("Unknown terrain type {0} in {1}".F(terrainType, templateFilename));
 
 								Console.WriteLine("\t\t\t{0}: {1}", j, terrainTypes[terrainType]);
-								// Console.WriteLine("\t\t\t\tHeight: {0}", height);
-								// Console.WriteLine("\t\t\t\tTerrainType: {0}", terrainType);
-								// Console.WriteLine("\t\t\t\tRampType: {0}", rampType);
-								// Console.WriteLine("\t\t\t\tLeftColor: {0},{1},{2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
-								// Console.WriteLine("\t\t\t\tRightColor: {0},{1},{2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
+								if (height != 0)
+									Console.WriteLine("\t\t\t\tHeight: {0}", height);
+
+								if (rampType != 0)
+									Console.WriteLine("\t\t\t\tRampType: {0}", rampType);
+
+								Console.WriteLine("\t\t\t\tMinimapLeftColor: {0},{1},{2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
+								Console.WriteLine("\t\t\t\tMinimapRightColor: {0},{1},{2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
 							}
 						}
 					}

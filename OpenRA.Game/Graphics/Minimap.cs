@@ -44,7 +44,7 @@ namespace OpenRA.Graphics
 					{
 						var mapX = x + b.Left;
 						var mapY = y + b.Top;
-						var type = tileset.GetTerrainInfo(mapTiles[mapX, mapY]);
+						var type = tileset[tileset.GetTerrainIndex(mapTiles[mapX, mapY])];
 						colors[y * stride + x] = type.Color.ToArgb();
 					}
 				}
