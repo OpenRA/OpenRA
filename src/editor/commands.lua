@@ -991,6 +991,9 @@ ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
   event:Skip()
 end)
 
+local updateInterval = 250 -- time in ms
+wx.wxUpdateUIEvent.SetUpdateInterval(updateInterval)
+
 ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
   function(event)
     if not ide.exitingProgram then
@@ -1001,11 +1004,14 @@ ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
         pcall(function() ide.infocus:SetFocus() end)
       end
 
+      local active = event:GetActive()
       -- save auto-recovery record when making the app inactive
-      if not event:GetActive() then saveAutoRecovery(true) end
+      if not active then saveAutoRecovery(true) end
 
-      local event = event:GetActive() and "onAppFocusSet" or "onAppFocusLost"
-      PackageEventHandle(event, ide.editorApp)
+      -- disable UI refresh when app is inactive
+      wx.wxUpdateUIEvent.SetUpdateInterval(active and updateInterval or -1)
+
+      PackageEventHandle(active and "onAppFocusSet" or "onAppFocusLost", ide.editorApp)
     end
     event:Skip()
   end)
