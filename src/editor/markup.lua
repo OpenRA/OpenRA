@@ -99,7 +99,7 @@ local function ismarkup (tx)
   local marksep = "[%s!%?%.,;:%(%)]"
   while true do
     -- find a separator first
-    local st,_,sep,more = string.find(tx, "(["..MD_MARK_PTRN.."])(.)", start)
+    local st,_,sep,more = string.find(tx, "(["..MD_MARK_PTRN.."]+)(.)", start)
     if not st then return end
 
     -- check if this is a first character of a multi-character separator
