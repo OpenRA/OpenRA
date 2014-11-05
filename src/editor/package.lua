@@ -360,6 +360,10 @@ function ide:AddPanelDocked(notebook, ctrl, panel, name, conf, activate)
   panels[name] = {ctrl, panel, name, conf}
   return notebook
 end
+function ide:IsPanelDocked(panel)
+  local layout = ide:GetSetting("/view", "uimgrlayout")
+  return layout and not layout:find(panel)
+end
 
 function ide:RestorePanelByLabel(name)
   if not panels[name] then return end
