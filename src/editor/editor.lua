@@ -1070,8 +1070,24 @@ function CreateEditor()
       end
     end)
 
+  local alreadyProcessed = 0
   editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
     function (event)
+      -- some of UPDATEUI events are triggered by blinking cursor, and since
+      -- there are no changes, the rest of the processing can be skipped;
+      -- the reason for `alreadyProcessed` is that it is not possible
+      -- to completely skip all of these updates as this causes the issue
+      -- of markup styling becoming visible after text deletion by Backspace.
+      -- to avoid this, we allow the first update after any updates caused
+      -- by real changes; the rest of UPDATEUI events are skipped.
+      if event:GetUpdated() == wxstc.wxSTC_UPDATE_CONTENT
+      and not next(editor.ev) then
+         if alreadyProcessed > 1 then return end
+      else
+         alreadyProcessed = 0
+      end
+      alreadyProcessed = alreadyProcessed + 1
+
       PackageEventHandle("onEditorUpdateUI", editor, event)
 
       if ide.osname ~= 'Windows' then updateStatusText(editor) end
