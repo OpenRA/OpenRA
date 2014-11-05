@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Network;
 using OpenRA.Server;
 
