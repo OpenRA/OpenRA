@@ -62,8 +62,8 @@ function MarkupHotspotClick(pos, editor)
   local _,_,text = string.find(tx, q(MD_MARK_LINZ).."(%b"..MD_MARK_LINA..MD_MARK_LINT..")", pos)
   if text then
     text = text:gsub("^"..q(MD_MARK_LINA), ""):gsub(q(MD_MARK_LINT).."$", "")
-    local filepath = ide.openDocuments[editor:GetId()].filePath
-      or FileTreeGetDir()
+    local doc = ide:GetDocument(editor)
+    local filepath = doc and doc.filePath or FileTreeGetDir()
     local _,_,http = string.find(text, [[^(https?:%S+)$]])
     local _,_,command,code = string.find(text, [[^macro:(%w+)%((.*%S)%)$]])
     if not command then _,_,command = string.find(text, [[^macro:(%w+)$]]) end
@@ -80,7 +80,7 @@ function MarkupHotspotClick(pos, editor)
       wx.wxLaunchDefaultBrowser(http, 0)
     elseif filepath then -- only check for saved files
       -- check if requested to open in a new window
-      local newwindow = string.find(text, MD_LINK_NEWWINDOW, 1, true) -- plain search
+      local newwindow = not doc or string.find(text, MD_LINK_NEWWINDOW, 1, true)
       if newwindow then text = string.gsub(text, "^%" .. MD_LINK_NEWWINDOW, "") end
       local filename = GetFullPathIfExists(
         wx.wxFileName(filepath):GetPath(wx.wxPATH_GET_VOLUME), text)
