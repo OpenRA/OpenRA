@@ -1523,6 +1523,12 @@ function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
   editor:SetProperty("lexer.cpp.track.preprocessor", "0")
   editor:SetProperty("lexer.cpp.update.preprocessor", "0")
 
+  -- create italic font if only main font is provided
+  if font and not fontitalic then
+    fontitalic = wx.wxFont(font)
+    fontitalic:SetStyle(wx.wxFONTSTYLE_ITALIC)
+  end
+
   StylesApplyToEditor(styles or ide.config.styles, editor,
     font or ide.font.eNormal,fontitalic or ide.font.eItalic,lexerstyleconvert)
 end
