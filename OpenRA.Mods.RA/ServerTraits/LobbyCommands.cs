@@ -17,6 +17,7 @@ using OpenRA.Network;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
 using OpenRA.Mods.Common.Server;
+using OpenRA.Mods.Common;
 
 namespace OpenRA.Mods.RA.Server
 {

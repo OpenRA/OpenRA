@@ -10,6 +10,7 @@
 
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
