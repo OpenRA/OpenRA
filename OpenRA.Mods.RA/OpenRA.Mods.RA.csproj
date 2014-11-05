@@ -203,7 +203,6 @@
     <Compile Include="Crates\LevelUpCrateAction.cs" />
     <Compile Include="Crates\RevealMapCrateAction.cs" />
     <Compile Include="Crates\SupportPowerCrateAction.cs" />
-    <Compile Include="CreateMPPlayers.cs" />
     <Compile Include="Crushable.cs" />
     <Compile Include="DemoTruck.cs" />
     <Compile Include="DetectCloaked.cs" />
@@ -234,7 +233,6 @@
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
     <Compile Include="MadTank.cs" />
-    <Compile Include="MPStartLocations.cs" />
     <Compile Include="Mine.cs" />
     <Compile Include="Minelayer.cs" />
     <Compile Include="Modifiers\FrozenUnderFog.cs" />
@@ -318,7 +316,6 @@
     <Compile Include="ShroudPalette.cs" />
     <Compile Include="SmokeTrailWhenDamaged.cs" />
     <Compile Include="SpawnMPUnits.cs" />
-    <Compile Include="SpawnMapActors.cs" />
     <Compile Include="Disguise.cs" />
     <Compile Include="StoresResources.cs" />
     <Compile Include="StrategicVictoryConditions.cs" />
@@ -401,7 +398,6 @@
     <Compile Include="Render\WithHarvestAnimation.cs" />
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
     <Compile Include="World\DomainIndex.cs" />
-    <Compile Include="MPStartUnits.cs" />
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
     <Compile Include="Buildings\Bib.cs" />
     <Compile Include="Render\WithIdleOverlay.cs" />
