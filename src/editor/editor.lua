@@ -40,8 +40,6 @@ local function updateStatusText(editor)
   local texts = { "", "", "" }
   if ide.frame and editor then
     local pos = editor:GetCurrentPos()
-    local line = editor:LineFromPosition(pos)
-    local col = 1 + pos - editor:PositionFromLine(line)
     local selected = #editor:GetSelectedText()
     local selections = ide.wxver >= "2.9.5" and editor:GetSelections() or 1
 
@@ -49,8 +47,8 @@ local function updateStatusText(editor)
       iff(editor:GetOvertype(), TR("OVR"), TR("INS")),
       iff(editor:GetReadOnly(), TR("R/O"), TR("R/W")),
       table.concat({
-        TR("Ln: %d"):format(line + 1),
-        TR("Col: %d"):format(col),
+        TR("Ln: %d"):format(editor:LineFromPosition(pos) + 1),
+        TR("Col: %d"):format(editor:GetColumn(pos) + 1),
         selected > 0 and TR("Sel: %d/%d"):format(selected, selections) or "",
       }, ' ')}
   end
