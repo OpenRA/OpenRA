@@ -658,7 +658,7 @@ end
 
 -- ----------------------------------------------------------------------------
 -- Create an editor
-function CreateEditor()
+function CreateEditor(bare)
   local editor = wxstc.wxStyledTextCtrl(notebook, editorID,
     wx.wxDefaultPosition, wx.wxSize(0, 0),
     wx.wxBORDER_NONE)
@@ -822,6 +822,8 @@ function CreateEditor()
   end
 
   function editor:SetupKeywords(...) return SetupKeywords(self, ...) end
+
+  if bare then return editor end -- bare editor doesn't have any event handlers
 
   editor.ev = {}
   editor:Connect(wxstc.wxEVT_STC_MARGINCLICK,

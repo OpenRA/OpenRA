@@ -156,6 +156,7 @@ function ide:GetProjectTree() return ide.filetree.projtree end
 function ide:GetWatch() return self.debugger and self.debugger.watchCtrl end
 function ide:GetStack() return self.debugger and self.debugger.stackCtrl end
 function ide:Yield() wx.wxYield() end
+function ide:CreateBareEditor() return CreateEditor(true) end
 
 function ide:GetSetting(path, setting)
   local settings = self.settings
