@@ -1,5 +1,177 @@
 # ZeroBrane Studio Changelog
 
+## Current master (Nov 05 2014)
+
+### Highlights
+  - Added function outline.
+  - Added Lua 5.3 (beta) binaries and debugging support.
+  - Added scope-aware auto-complete for local/global variables.
+  - Added hiding/showing files by type in the project/filetree.
+  - Added Esperanto (eo) translation.
+  - Improved compatibility with Lua 5.2 interpreter.
+  - Improved compatibility with system/custom Lua interpreter.
+
+### Special thanks
+  - To [cosmotect](https://github.com/cosmotect) for added Esperanto translation.
+  - To [riidom](https://github.com/riidom) for updated German translation.
+  - To [Christoph Kubisch](https://github.com/pixeljetstream) for glsl improvements.
+  - To [Wojciech Milkowski](https://github.com/milkowski) for making indentation guide configurable.
+  - To [sclark39](https://github.com/sclark39) for adding project dir to find dialog paths.
+
+### Improvements
+  - Added Lua 5.3 (beta) support and binaries.
+  - Added Russian translation for new messages (#70).
+  - Added `AddPackage` and `RemovePackage` methods (#166).
+  - Added `CreateBareEditor` package method (#166).
+  - Added `GetAPI` method for interpreter (#166).
+  - Added `GetOutputNotebook` package method (#166).
+  - Added `IsPanelDocked` package method (#166).
+  - Added `Run` and `Run as Scratchpad` buttons to the toolbar.
+  - Added `acandtip.maxlength` option for setting the length of a tooltip.
+  - Added `function` handling to the token processing.
+  - Added `imagemap` setting to support custom images.
+  - Added `onEditorCallTip` method (#166).
+  - Added `showonefile` option for the outline to always show one file (#337).
+  - Added an Esperanto (eo) translation.
+  - Added build support for Lua 5.3-alpha and luasocket for Lua 5.3.
+  - Added check for existing process id before stopping the process.
+  - Added check for pending data to improve re-starting debugging session.
+  - Added collapsing outlines for files in inactive tabs (#337).
+  - Added creating italic font if only the main one is provided.
+  - Added document `SetActive` method (#166).
+  - Added drag-and-drop support for the Outline tab (#337).
+  - Added example of enabling `Opt+Shift+Left/Right` shortcut on OSX.
+  - Added function outline (closes #337, closes #222).
+  - Added handling of `~` in launch command path.
+  - Added hiding/showing files by type in the project/filetree (closes #375).
+  - Added local/global indicators to function outline (#337).
+  - Added marking file after showing files in the tree (#375).
+  - Added navigation based on 'filename:line:pos' in the Output window.
+  - Added option for not/showing anonymous functions in the outline (#337).
+  - Added package `AddTool` and `RemoveTool` methods (#166).
+  - Added package `CreateImageList` method (#166).
+  - Added package `ExecuteCommand` method (#166).
+  - Added package `FindTopMenu` method (#166).
+  - Added package `GetAppName` method and removed hardcoded name references (#166).
+  - Added package `GetConsole` method (#166).
+  - Added package `GetKnownExtensions` method (#166).
+  - Added project dir to find dialog paths; thanks to @sclark39 (closes #358).
+  - Added rule to enable `Set From Current File` only when available.
+  - Added scope-aware auto-complete for local/global variables (closes #291).
+  - Added scrolling to the top of the outline when `showonefile` is set (#337).
+  - Added sending Corona SDK simulator output to the Output window on Windows.
+  - Added translation label for `Toggle Bookmark` toolbar icon (#70, #373).
+  - Added unindent on backspace (controlled by `editor.backspaceunindent`).
+  - Added view menu for the Outline window (#337).
+  - bugfix in output callback for commandline tools
+  - bugfix on extension change save-as, related to new indication handling
+  - cg/hlsl/glsl refine isfndef capture, mostly to react on GLSL's layout mechanism
+  - Disabled moving of Output/Console/Project tabs between panels.
+  - Improved `ffitoapi` tool logic when no replacement is made.
+  - Improved compatibility with Lua 5.2 interpreter (closes #357).
+  - Improved scroll positioning in the outline after tab changes (#337).
+  - Improved support for non-lua specs in the outline (#337).
+  - Minor update to indentation guides handling (#371).
+  - Moved 'default' search path to be searched first (#357).
+  - Reduced rate of toolbar UI checks to improve performance (fixes #352).
+  - Reduced the number of focus changes in the outline (#337).
+  - Reduced unnecessary editor processing to improve performance (#352).
+  - Refactored `GetBitmap` package method (#166).
+  - Refactored `tools` interface to make it easy to add/remove tools.
+  - Refactored adding editor tab to ensure callbacks have document data.
+  - Refactored default `fprojdir` and `fworkdir` from the interpreter code.
+  - Refactored drag-and-drop processing for Project/Output window tabs (#377).
+  - Refactored panel docking; added `AddPanelDocked` package method (#166).
+  - Refactored timer usage for consistency.
+  - Remove function dropdown from the toolbar (#337).
+  - Removed menu separator from the Tools menu.
+  - Removed prepending libraries for debugging to LUA_CPATH when custom interpreter is specified.
+  - Removed reference to `funclist`, which is no longer needed.
+  - Removed unused image files.
+  - Renamed `markvars` method used in spec files to `marksymbols`.
+  - Renamed image files to have names correspond to the content.
+  - Reorganized default config settings.
+  - Reorganized token list processing to keep it within the editor.
+  - Restored removed function in Lua spec (partial revert of 713d0935).
+  - Switched to using `Is{Input|Error}Available` instead of `stream:CanRead`.
+  - updated luxinia2 related files
+  - Update de.lua
+  - Updated C-based specs to handle function calls without parameters.
+  - Updated C-based specs to use `marksymbols` to provide outline for C functions.
+  - Updated Lua 5.3 build scripts.
+  - Updated `AddPackage` to assign package file name (#166).
+  - Updated `RemoveMenuItem` to disconnect handlers attached to the main frame (#166).
+  - Updated `package.config` description to remove reference to Lua 5.2.
+  - Updated `showanonymous` to a label for anon functions in the outline (#337).
+  - Updated code based on static analysis suggestions.
+  - Updated command launch handling to allow output suppression.
+  - Updated function call indicator to support `isfncall` and `marksymbols`.
+  - Updated function indicator processing to use ranges.
+  - Updated handling of extensions to allow more symbols in extensions.
+  - Updated images in the outline; added `showmethodindicator` option (#337).
+  - Updated indicator processing to improve performance on large files.
+  - Updated interpreter processing to run after packages are loaded.
+  - Updated label for anonymous functions in the outline (#337).
+  - Updated language files with new messages (#70).
+  - Updated markup processing to allow for 3+ markup sequences.
+  - Updated markup processing to support links in non-editor documents.
+  - Updated messages for to match translations (#70).
+  - Updated method of collapsing outline to fix crash on OSX (#337, fixes #368).
+  - Updated outline logic to show on the very first launch (#337).
+  - Updated outline to always expand functions in the current file (#337).
+  - Updated outline to show files without functions (#337).
+  - Updated outline to track filename changes after `Save As` (#337).
+  - Updated outline to use `AddPackage` method (#337).
+  - Updated output callback processing not to run when nothing to process.
+  - Updated package `GetRootPath` to accept file/directory name (#166).
+  - Updated parser to avoid 'breaking' statements during incremental processing.
+  - Updated parser to handle `...` in function parameters.
+  - Updated parser to report function token before parameters (#337).
+  - Updated parser to store position for not-quite-valid function names.
+  - Updated processing of function indicators when auto-analyzer is off.
+  - Updated search/replace to always use the current editor/output/console tab.
+  - Updated static analizer to accept typedlua parser in addition to metalua.
+  - Updated tooltip processing to make it more consistent and better use space.
+  - Updated translation building script to handle non-string parameters (#70).
+  - Updated un/comment to keep the current selection and caret position (#360).
+  - Upgraded MobDebug (0.606) for `Detach Process` to correctly close debugging.
+  - Upgraded Mobdebug (0.607) to fix debugging after `Detach Process` command.
+
+### Incompatibilities
+  - Renamed `markvars` method used in spec files to `marksymbols`.
+
+### Fixes
+  - Fixed 'slow' mode of static analysis to work with Metalua 0.7.2.
+  - Fixed `Output` tab name after stopping/completing remote debugging.
+  - Fixed `Project` label shown untranslated in other languages (#70, #373).
+  - Fixed `Run` toolbar label not being translated (#70, #373).
+  - Fixed activation in `tree:FindItem` when new editor tab is opened (#166).
+  - Fixed an error when dragging Stack/Watch/other tabs between notebooks.
+  - Fixed an issue with removing first menu item in RemoveMenuItem (#166).
+  - Fixed an issue with searching in Output and Console windows.
+  - Fixed column indicator on lines with tabs (fixes #379).
+  - Fixed disabling Stack/Watch icons in the toolbar.
+  - Fixed error after using Enter multiple times in `Find in Files` on OSX.
+  - Fixed file renaming in the filetree after using `SaveAs`.
+  - Fixed flicker in the outline when auto-complete is shown (#337).
+  - Fixed focus switch after selecting a function in the outline and editing (#337).
+  - Fixed handling of remapped image files; improved error reporting.
+  - Fixed incorrect `binary not` calculation with wxlua and LuaJIT 2.1.
+  - Fixed index check during tab name update.
+  - Fixed keeping toolbar status after hiding it.
+  - Fixed localization in function outline (#337).
+  - Fixed localization to avoid error in `SaveAs` processing.
+  - Fixed navigation in function outline when `showonefile` is set (#337).
+  - Fixed not hiding directories when files without extension are hidden (#375).
+  - Fixed off-by-one error in function outline position tracking (#337).
+  - Fixed outline refresh after quick tab switches (#337).
+  - Fixed refresh of 'background' markers during debugging.
+  - Fixed replacement when selection doesn't match the text being searched for.
+  - Fixed search in files/directories with `%` in the name (fixes #369).
+  - Fixed storing position in `function` handling.
+  - Fixed stream reading for the Output to only include actually read chars.
+  - Fixed unused variables and constants based on static analysis.
+
 ## v0.80 (Aug 31 2014)
 
 ### Highlights
