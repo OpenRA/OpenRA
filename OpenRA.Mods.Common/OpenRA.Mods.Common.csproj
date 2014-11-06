@@ -59,6 +59,7 @@
     <Compile Include="Effects\GravityBomb.cs" />
     <Compile Include="Effects\LaserZap.cs" />
     <Compile Include="Effects\Missile.cs" />
+    <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPoint.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Commands\ChatCommands.cs" />
@@ -85,6 +86,12 @@
     <Compile Include="Traits\BlocksBullets.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
+    <Compile Include="Traits\Power\AffectedByPowerOutage.cs" />
+    <Compile Include="Traits\Power\CanPowerDown.cs" />
+    <Compile Include="Traits\Power\Player\PowerManager.cs" />
+    <Compile Include="Traits\Power\Power.cs" />
+    <Compile Include="Traits\Power\RequiresPower.cs" />
+    <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />
     <Compile Include="Traits\Sound\ActorLostNotification.cs" />
     <Compile Include="Traits\Sound\AnnounceOnBuild.cs" />
