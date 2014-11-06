@@ -19,7 +19,7 @@ using S = OpenRA.Server.Server;
 using OpenRA.Mods.Common.Server;
 using OpenRA.Mods.Common;
 
-namespace OpenRA.Mods.RA.Server
+namespace OpenRA.Mods.Common.Server
 {
 	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart
 	{

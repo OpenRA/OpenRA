@@ -13,7 +13,7 @@ using OpenRA.Mods.Common;
 using OpenRA.Network;
 using OpenRA.Server;
 
-namespace OpenRA.Mods.RA.Server
+namespace OpenRA.Mods.Common.Server
 {
 	public class LobbySettingsNotification : ServerTrait, IClientJoined
 	{
