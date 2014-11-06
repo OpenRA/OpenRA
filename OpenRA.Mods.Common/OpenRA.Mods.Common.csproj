@@ -76,12 +76,17 @@
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
     <Compile Include="ModChooserLoadScreen.cs" />
+    <Compile Include="Modifiers\DisabledOverlay.cs" />
+    <Compile Include="Modifiers\HiddenUnderFog.cs" />
+    <Compile Include="Modifiers\UpgradeOverlay.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
     <Compile Include="PaletteFromFile.cs" />
     <Compile Include="RallyPoint.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />
+    <Compile Include="ServerTraits\LobbyCommands.cs" />
+    <Compile Include="ServerTraits\LobbySettingsNotification.cs" />
     <Compile Include="ServerTraits\MasterServerPinger.cs" />
     <Compile Include="ServerTraits\PlayerPinger.cs" />
     <Compile Include="Traits\BlocksBullets.cs" />
