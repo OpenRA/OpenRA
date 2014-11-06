@@ -228,6 +228,9 @@ local function treeSetConnectorsAndIcons(tree)
         and ide:FindDocumentsByPartialPath(source)
         or {ide:FindDocument(source)})
       for _, doc in ipairs(docs) do
+        if not isdir and PackageEventHandle("onEditorPreSave", doc.editor, source) == false then
+          return false
+        end
         if SaveModifiedDialog(doc.editor, true) == wx.wxID_CANCEL then return end
       end
     end
@@ -267,6 +270,7 @@ local function treeSetConnectorsAndIcons(tree)
         local path = (not iscaseinsensitive and fullpath:gsub(q(source), target)
           or fullpath:lower():gsub(q(source:lower()), target))
         LoadFile(path, doc.editor)
+        if not isdir then PackageEventHandle("onEditorSave", doc.editor) end
       end
     else -- refresh the tree and select the new item
       local itemdst = tree:FindItem(target)
