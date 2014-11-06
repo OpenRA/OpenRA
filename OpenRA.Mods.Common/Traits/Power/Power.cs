@@ -12,7 +12,7 @@ using System;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Power
+namespace OpenRA.Mods.Common.Power
 {
 	public class PowerInfo : ITraitInfo
 	{

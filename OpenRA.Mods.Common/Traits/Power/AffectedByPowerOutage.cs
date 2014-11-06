@@ -11,7 +11,7 @@
 using System.Drawing;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Power
+namespace OpenRA.Mods.Common.Power
 {
 	public class AffectedByPowerOutageInfo : ITraitInfo
 	{
