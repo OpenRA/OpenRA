@@ -12,7 +12,7 @@ using System.Linq;
 using OpenRA.Network;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common
 {
 	[Desc("Attach this to the world actor.")]
 	public class CreateMPPlayersInfo : TraitInfo<CreateMPPlayers> { }
