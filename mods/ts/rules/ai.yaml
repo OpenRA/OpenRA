@@ -24,6 +24,12 @@ Player:
 			gatech: 1
 			natech: 1
 			nastlh: 1
+			gavulc: 4
+			garock: 4
+			gacsam: 4
+			naobel: 2
+			nalasr: 8
+			nasam: 4
 		BuildingFractions:
 			proc: 30%
 			gapowr: 35%
@@ -37,6 +43,12 @@ Player:
 			gatech: 1%
 			natech: 1%
 			nastlh: 1%
+			nalasr: 10%
+			gavulc: 10%
+			garock: 10%
+			gacsam: 6%
+			nasam: 6%
+			naobel: 3%
 		UnitsToBuild:
 			e1: 80%
 			e2: 8%
