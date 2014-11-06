@@ -12,7 +12,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Power;
+using OpenRA.Mods.Common.Power;
 using OpenRA.Mods.RA.Widgets;
 using OpenRA.Mods.RA.Widgets.Logic;
 using OpenRA.Mods.D2k.Widgets;

@@ -124,8 +124,6 @@
     <Compile Include="TeslaZapRenderable.cs" />
     <Compile Include="GainsExperience.cs" />
     <Compile Include="Infiltration\InfiltrateForPowerOutage.cs" />
-    <Compile Include="Power\AffectedByPowerOutage.cs" />
-    <Compile Include="Power\Power.cs" />
     <Compile Include="Player\PlaceBeacon.cs" />
     <Compile Include="MenuPaletteEffect.cs" />
     <Compile Include="EjectOnDeath.cs" />
@@ -167,15 +165,12 @@
     <Compile Include="CaptureNotification.cs" />
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Buildings\BuildingInfluence.cs" />
-    <Compile Include="Power\CanPowerDown.cs" />
     <Compile Include="Buildings\CustomSellValue.cs" />
     <Compile Include="Buildings\CustomBuildTimeValue.cs" />
     <Compile Include="Buildings\DeadBuildingState.cs" />
     <Compile Include="Buildings\FootprintUtils.cs" />
     <Compile Include="Buildings\LineBuild.cs" />
-    <Compile Include="Power\Player\PowerManager.cs" />
     <Compile Include="Buildings\RepairableBuilding.cs" />
-    <Compile Include="Power\RequiresPower.cs" />
     <Compile Include="Buildings\ShakeOnDeath.cs" />
     <Compile Include="Buildings\SoundOnDamageTransition.cs" />
     <Compile Include="Buildings\Util.cs" />
@@ -209,7 +204,6 @@
     <Compile Include="Effects\GpsDot.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Effects\Parachute.cs" />
-    <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />
     <Compile Include="EngineerRepair.cs" />
@@ -265,7 +259,6 @@
     <Compile Include="PortableChrono.cs" />
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Scripting\Properties\PlayerProperties.cs" />
-    <Compile Include="Power\ScalePowerWithHealth.cs" />
     <Compile Include="Warheads\DestroyResourceWarhead.cs" />
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />

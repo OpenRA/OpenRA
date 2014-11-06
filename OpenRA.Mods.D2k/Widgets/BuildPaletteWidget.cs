@@ -16,7 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
-using OpenRA.Mods.RA.Power;
+using OpenRA.Mods.Common.Power;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Network;
 using OpenRA.Primitives;

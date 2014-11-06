@@ -8,10 +8,10 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Effects;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Power
+namespace OpenRA.Mods.Common.Power
 {
 	[Desc("The player can disable the power individually on this actor.")]
 	public class CanPowerDownInfo : ITraitInfo, Requires<PowerInfo>
