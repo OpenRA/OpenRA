@@ -281,7 +281,7 @@ namespace OpenRA
 		// For things that want to update their render state once per tick, ignoring pause state
 		public void TickRender(WorldRenderer wr)
 		{
-			ActorsWithTrait<ITickRender>().Do(x => x.Trait.TickRender(wr, x.Actor));
+			ActorsWithTrait<ITickRender>().DoTimed(x => x.Trait.TickRender(wr, x.Actor), "Render");
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
