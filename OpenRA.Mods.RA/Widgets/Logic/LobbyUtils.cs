@@ -233,7 +233,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			try
 			{
-				return Game.GeoIpDatabase.Omni(ip).Country.Name;
+				return Game.GeoIpDatabase.Country(ip).Country.Name;
 			}
 			catch (Exception e)
 			{
