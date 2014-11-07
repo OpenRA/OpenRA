@@ -121,7 +121,10 @@
     <Compile Include="UtilityCommands\UpgradeMapCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeModCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeRules.cs" />
+    <Compile Include="Warheads\CreateEffectWarhead.cs" />
+    <Compile Include="Warheads\HealthPercentageDamageWarhead.cs" />
     <Compile Include="Warheads\LeaveSmudgeWarhead.cs" />
+    <Compile Include="Warheads\SpreadDamageWarhead.cs" />
     <Compile Include="Widgets\ConfirmationDialogs.cs" />
     <Compile Include="Widgets\HueSliderWidget.cs" />
     <Compile Include="Widgets\LabelWithTooltipWidget.cs" />
