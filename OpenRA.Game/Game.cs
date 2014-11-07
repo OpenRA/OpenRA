@@ -549,13 +549,10 @@ namespace OpenRA
 			// value.
 			const int maxLogicTicksBehind = 250;
 
-			// Try to maintain at least this many FPS, even if it slows down logic.
-			// This is easily observed when playing back a replay at max speed,
-			// the frame rate will slow down to this value to allow the replay logic
-			// to run faster.
+			// Try to maintain at least this many FPS during replays, even if it slows down logic.
 			// However, if the user has enabled a framerate limit that is even lower
 			// than this, then that limit will be used.
-			const int minRenderFps = 10;
+			const int minReplayFps = 10;
 
 			// Timestamps for when the next logic and rendering should run
 			var nextLogic = RunTime;
@@ -582,27 +579,32 @@ namespace OpenRA
 				var nextUpdate = Math.Min(nextLogic, nextRender);
 				if (now >= nextUpdate)
 				{
+					var forceRender = now >= forcedNextRender;
+
 					if (now >= nextLogic)
 					{
 						nextLogic += logicInterval;
 
 						LogicTick();
+
+						// Force at least one render per tick during regular gameplay
+						if (orderManager.World != null && !orderManager.World.IsReplay)
+							forceRender = true;
 					}
 
 					var haveSomeTimeUntilNextLogic = now < nextLogic;
 					var isTimeToRender = now >= nextRender;
-					var forceRender = now >= forcedNextRender;
 
 					if ((isTimeToRender && haveSomeTimeUntilNextLogic) || forceRender)
 					{
 						nextRender = now + renderInterval;
 
-						// Pick the minimum allowed FPS (the lower between 'minRenderFps'
+						// Pick the minimum allowed FPS (the lower between 'minReplayFPS'
 						// and the user's max frame rate) and convert it to maximum time
 						// allowed between screen updates.
 						// We do this before rendering to include the time rendering takes
 						// in this interval.
-						var maxRenderInterval = Math.Max(1000 / minRenderFps, renderInterval);
+						var maxRenderInterval = Math.Max(1000 / minReplayFps, renderInterval);
 						forcedNextRender = now + maxRenderInterval;
 
 						RenderTick();
