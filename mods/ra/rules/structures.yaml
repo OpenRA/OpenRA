@@ -1381,6 +1381,72 @@ BRIK:
 	RenderBuildingWall:
 		Type: concrete
 
+^VGATE:
+	Inherits: ^Building
+	Building:
+		Dimensions: 1,3
+	Tooltip:
+		Name: Gate
+		Description: Vertical Gate
+	Valued:
+		Cost: 100
+	Health:
+		HP: 100
+	Armor:
+		Type: Concrete
+	LineBuildNode:
+		Types: concrete
+	RenderBuilding:
+		Palette: terrain
+	-FrozenUnderFog:
+
+VGATE.open:
+	Inherits: ^VGATE
+	Building:
+		Footprint: _ _ _
+	Transforms:
+		IntoActor: vgate.close
+
+VGATE.close:
+	Inherits: ^VGATE
+	Building:
+		Footprint: x x x
+	Transforms:
+		IntoActor: vgate.open
+
+^AGATE:
+	Inherits: ^Building
+	Building:
+		Dimensions: 3,1
+	Tooltip:
+		Name: Gate
+		Description: Horizontal Gate
+	Valued:
+		Cost: 100
+	Health:
+		HP: 100
+	Armor:
+		Type: Concrete
+	LineBuildNode:
+		Types: concrete
+	RenderBuilding:
+		Palette: terrain
+	-FrozenUnderFog:
+
+AGATE.open:
+	Inherits: ^AGATE
+	Building:
+		Footprint: ___
+	Transforms:
+		IntoActor: agate.close
+
+AGATE.close:
+	Inherits: ^AGATE
+	Building:
+		Footprint: xxx
+	Transforms:
+		IntoActor: agate.open
+
 CYCL:
 	Inherits: ^Wall
 	Health:
