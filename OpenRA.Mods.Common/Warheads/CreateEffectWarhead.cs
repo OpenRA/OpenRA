@@ -15,7 +15,7 @@ using OpenRA.GameRules;
 using OpenRA.Traits;
 using OpenRA.Mods.Common.Effects;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common
 {
 	public class CreateEffectWarhead : Warhead
 	{
