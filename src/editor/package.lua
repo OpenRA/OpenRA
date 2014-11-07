@@ -341,6 +341,8 @@ function ide:AddPanel(ctrl, panel, name, conf)
   notebook:AddPage(ctrl, name, true)
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_BG_DCLICK,
     function() PaneFloatToggle(notebook) end)
+  notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
+    function(event) event:Veto() end)
 
   local mgr = ide.frame.uimgr
   mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
