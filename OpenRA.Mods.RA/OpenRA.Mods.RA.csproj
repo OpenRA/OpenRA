@@ -230,7 +230,6 @@
     <Compile Include="Mine.cs" />
     <Compile Include="Minelayer.cs" />
     <Compile Include="Modifiers\FrozenUnderFog.cs" />
-    <Compile Include="Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Move\Drag.cs" />
     <Compile Include="Move\Mobile.cs" />
     <Compile Include="Move\Move.cs" />
@@ -305,7 +304,6 @@
     <Compile Include="SeedsResource.cs" />
     <Compile Include="SelfHealing.cs" />
     <Compile Include="Sellable.cs" />
-    <Compile Include="ServerTraits\LobbyCommands.cs" />
     <Compile Include="ShroudPalette.cs" />
     <Compile Include="SmokeTrailWhenDamaged.cs" />
     <Compile Include="SpawnMPUnits.cs" />
@@ -408,7 +406,6 @@
     <Compile Include="Render\WithCrateBody.cs" />
     <Compile Include="Buildings\Demolishable.cs" />
     <Compile Include="Activities\FlyFollow.cs" />
-    <Compile Include="Modifiers\DisabledOverlay.cs" />
     <Compile Include="Widgets\Logic\GameTimerLogic.cs" />
     <Compile Include="Immobile.cs" />
     <Compile Include="Widgets\Logic\ReplayControlBarLogic.cs" />
@@ -480,7 +477,6 @@
     <Compile Include="Player\GlobalUpgradeManager.cs" />
     <Compile Include="GainsStatUpgrades.cs" />
     <Compile Include="Player\Extensions.cs" />
-    <Compile Include="ServerTraits\LobbySettingsNotification.cs" />
     <Compile Include="Warheads\HealthPercentageDamageWarhead.cs" />
     <Compile Include="Warheads\PerCellDamageWarhead.cs" />
     <Compile Include="Warheads\SpreadDamageWarhead.cs" />
@@ -490,7 +486,6 @@
     <Compile Include="Scripting\Properties\HelicopterProperties.cs" />
     <Compile Include="Scripting\Properties\PlaneProperties.cs" />
     <Compile Include="SupportPowers\GrantUpgradePower.cs" />
-    <Compile Include="Modifiers\UpgradeOverlay.cs" />
     <Compile Include="TimedUpgradeBar.cs" />
     <Compile Include="InvulnerabilityUpgrade.cs" />
     <Compile Include="DisableUpgrade.cs" />
@@ -502,9 +497,9 @@
     <Compile Include="UpgradeActorsNear.cs" />
     <Compile Include="WithRangeCircle.cs" />
     <Compile Include="Scripting\Properties\TransformProperties.cs" />
+    <Compile Include="UtilityCommands\ActorStatsExport.cs" />
     <Compile Include="UtilityCommands\ExportCharacterSeparatedRules.cs" />
     <Compile Include="UtilityCommands\Extensions.cs" />
-    <Compile Include="UtilityCommands\ActorStatsExport.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
