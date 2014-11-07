@@ -1399,6 +1399,7 @@ BRIK:
 	RenderBuilding:
 		Palette: terrain
 	-FrozenUnderFog:
+	-Selectable:
 
 VGATE.open:
 	Inherits: ^VGATE
@@ -1406,6 +1407,9 @@ VGATE.open:
 		Footprint: _ _ _
 	Transforms:
 		IntoActor: vgate.close
+	ProxmityTransforms:
+		CheckFriendly: false
+		WhenAlone: true
 
 VGATE.close:
 	Inherits: ^VGATE
@@ -1413,6 +1417,9 @@ VGATE.close:
 		Footprint: x x x
 	Transforms:
 		IntoActor: vgate.open
+	ProxmityTransforms:
+		CheckFriendly: true
+		WhenAlone: false
 
 ^AGATE:
 	Inherits: ^Building
@@ -1432,6 +1439,7 @@ VGATE.close:
 	RenderBuilding:
 		Palette: terrain
 	-FrozenUnderFog:
+	-Selectable:
 
 AGATE.open:
 	Inherits: ^AGATE
@@ -1439,6 +1447,9 @@ AGATE.open:
 		Footprint: ___
 	Transforms:
 		IntoActor: agate.close
+	ProxmityTransforms:
+		CheckFriendly: false
+		WhenAlone: true
 
 AGATE.close:
 	Inherits: ^AGATE
@@ -1446,6 +1457,9 @@ AGATE.close:
 		Footprint: xxx
 	Transforms:
 		IntoActor: agate.open
+	ProxmityTransforms:
+		CheckFriendly: true
+		WhenAlone: false
 
 CYCL:
 	Inherits: ^Wall
