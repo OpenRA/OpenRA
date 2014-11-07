@@ -12,7 +12,7 @@ using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common
 {
 	public class LoadWidgetAtGameStartInfo : ITraitInfo
 	{

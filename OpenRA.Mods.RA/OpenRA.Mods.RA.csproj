@@ -236,8 +236,6 @@
     <Compile Include="Move\PathFinder.cs" />
     <Compile Include="Move\PathSearch.cs" />
     <Compile Include="NukePaletteEffect.cs" />
-    <Compile Include="NullLoadScreen.cs" />
-    <Compile Include="LoadWidgetAtGameStart.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Orders\PowerDownOrderGenerator.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
@@ -268,7 +266,6 @@
     <Compile Include="ProductionBar.cs" />
     <Compile Include="ProximityCaptor.cs" />
     <Compile Include="ProximityCapturable.cs" />
-    <Compile Include="DefaultLoadScreen.cs" />
     <Compile Include="RadarColorFromTerrain.cs" />
     <Compile Include="Reloads.cs" />
     <Compile Include="RenderDetectionCircle.cs" />

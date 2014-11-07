@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common
 {
 	public class NullLoadScreen : ILoadScreen
 	{
