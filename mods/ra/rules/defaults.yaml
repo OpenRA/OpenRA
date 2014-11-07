@@ -69,6 +69,11 @@
 		Upgrade: invulnerability
 	DisableUpgrade:
 	InfiltrateToUpgrade:
+	TimedUpgradeBar@DISABLE:
+		Upgrade: disable
+		Color: Yellow
+		Visibility: All
+	DisabledOverlay:
 
 ^Tank:
 	AppearsOnRadar:
@@ -141,6 +146,11 @@
 		Upgrade: invulnerability
 	DisableUpgrade:
 	InfiltrateToUpgrade:
+	TimedUpgradeBar@DISABLE:
+		Upgrade: disable
+		Color: Yellow
+		Visibility: All
+	DisabledOverlay:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -399,6 +409,11 @@
 	-MustBeDestroyed:
 	DisableUpgrade:
 	InfiltrateToUpgrade:
+	TimedUpgradeBar@DISABLE:
+		Upgrade: disable
+		Color: Yellow
+		Visibility: All
+	DisabledOverlay:
 
 ^Wall:
 	AppearsOnRadar:

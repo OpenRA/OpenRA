@@ -18,19 +18,19 @@ namespace OpenRA.Mods.RA
 		public static bool AppearsFriendlyTo(this Actor self, Actor toActor)
 		{
 			var stance = toActor.Owner.Stances[self.Owner];
-			if (stance == Stance.Ally)
+			if (stance.Allied())
 				return true;
 
 			if (self.IsDisguised() && !toActor.HasTrait<IgnoresDisguise>())
-				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Ally;
+				return toActor.Owner.Stances[self.EffectiveOwner.Owner].Allied();
 
-			return stance == Stance.Ally;
+			return stance.Allied();
 		}
 
 		public static bool AppearsHostileTo(this Actor self, Actor toActor)
 		{
 			var stance = toActor.Owner.Stances[self.Owner];
-			if (stance == Stance.Ally)
+			if (stance.Allied())
 				return false;		/* otherwise, we'll hate friendly disguised spies */
 
 			if (self.IsDisguised() && !toActor.HasTrait<IgnoresDisguise>())

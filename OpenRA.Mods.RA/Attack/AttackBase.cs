@@ -200,10 +200,10 @@ namespace OpenRA.Mods.RA
 				if (target.RequiresForceFire)
 					return false;
 
-				var targetableRelationship = negativeDamage ? Stance.Ally : Stance.Enemy;
+				var targetableRelationship = negativeDamage ? Stance.SameOrAlly : Stance.Enemy;
 
 				var owner = target.Type == TargetType.FrozenActor ? target.FrozenActor.Owner : target.Actor.Owner;
-				return self.Owner.Stances[owner] == targetableRelationship;
+				return self.Owner.Stances[owner].AnyFlag(targetableRelationship);
 			}
 
 			bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)

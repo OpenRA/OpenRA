@@ -91,7 +91,7 @@ namespace OpenRA.Mods.RA
 				if (!target.HasTrait<EngineerRepairable>())
 					return false;
 
-				if (self.Owner.Stances[target.Owner] != Stance.Ally)
+				if (self.Owner.Stances[target.Owner].Allied())
 					return false;
 
 				if (target.GetDamageState() == DamageState.Undamaged)
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.RA
 				if (!target.Info.Traits.Contains<EngineerRepairable>())
 					return false;
 
-				if (self.Owner.Stances[target.Owner] != Stance.Ally)
+				if (!self.Owner.Stances[target.Owner].Allied())
 					return false;
 
 				if (target.DamageState == DamageState.Undamaged)

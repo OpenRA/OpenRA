@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -17,13 +18,13 @@ namespace OpenRA.Mods.RA.Infiltration
 	{
 		[Desc("Upgrade provided by infiltration.",
 			"Default upgrade types for this and DisableUpgrade match to allow disabling on infiltration without changing types.")]
-		public readonly string ProvidesUpgrade = "disable";
+		public readonly string GrantsUpgrade = "disable";
 
-		[Desc("Duration of upgrade in ticks. 0 - no duration limit")]
+		[Desc("Duration of the upgrade (in ticks). Set to 0 for a permanent upgrade.")]
 		public readonly int Duration = 25 * 30;
 
-		[Desc("Whether to remove upgrade if captured by same owner as infiltration", "Duration must be 0.")]
-		public readonly bool RemoveWhenCapturedByOwner = true;
+		[Desc("Rremove upgrade if captured by actor of given stance with respect to infiltrator")]
+		public readonly Stance RemovalCaptureStances = Stance.SameOwner;
 
 		public object Create(ActorInitializer init) { return new InfiltrateToUpgrade(init.self, this); }
 	}
@@ -33,6 +34,7 @@ namespace OpenRA.Mods.RA.Infiltration
 		readonly InfiltrateToUpgradeInfo info;
 		readonly UpgradeManager upgradeManager;
 		Player infiltratingPlayer;
+		object source;
 
 		public InfiltrateToUpgrade(Actor self, InfiltrateToUpgradeInfo info)
 		{
@@ -43,16 +45,15 @@ namespace OpenRA.Mods.RA.Infiltration
 		public void Infiltrated(Actor self, Actor infiltrator)
 		{
 			infiltratingPlayer = infiltrator.Owner;
-			if (info.Duration > 0)
-				upgradeManager.GrantTimedUpgrade(self, info.ProvidesUpgrade, info.Duration);
-			else
-				upgradeManager.GrantUpgrade(self, info.ProvidesUpgrade, this);
+			source = info.Duration > 0 ?
+				upgradeManager.GrantTimedUpgrade(self, info.GrantsUpgrade, info.Duration) :
+				upgradeManager.GrantUpgrade(self, info.GrantsUpgrade, this);
 		}
 
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		public virtual void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			if (newOwner == infiltratingPlayer && info.RemoveWhenCapturedByOwner && info.Duration == 0)
-				upgradeManager.RevokeUpgrade(self, info.ProvidesUpgrade, this);
+			if (infiltratingPlayer != null && infiltratingPlayer.Stances[newOwner].AnyFlag(info.RemovalCaptureStances))
+				upgradeManager.RevokeUpgrade(self, info.GrantsUpgrade, source);
 		}
 	}
 }

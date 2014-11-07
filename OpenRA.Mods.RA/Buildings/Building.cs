@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Buildings
 			var center = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, this);
 			foreach (var bp in world.ActorsWithTrait<BaseProvider>())
 			{
-				var validOwner = bp.Actor.Owner == p || (world.LobbyInfo.GlobalSettings.AllyBuildRadius && bp.Actor.Owner.Stances[p] == Stance.Ally);
+				var validOwner = bp.Actor.Owner == p || (world.LobbyInfo.GlobalSettings.AllyBuildRadius && bp.Actor.Owner.Stances[p].Allied());
 				if (!validOwner || !bp.Trait.Ready())
 					continue;
 
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA.Buildings
 					if (at == null || !at.IsInWorld || !at.HasTrait<GivesBuildableArea>())
 						continue;
 
-					if (at.Owner == p || (allyBuildRadius && at.Owner.Stances[p] == Stance.Ally))
+					if (at.Owner == p || (allyBuildRadius && at.Owner.Stances[p].Allied()))
 						nearnessCandidates.Add(pos);
 				}
 			}

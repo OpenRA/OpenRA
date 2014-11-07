@@ -25,7 +25,7 @@ namespace OpenRA.GameRules
 		public readonly string[] InvalidTargets = { };
 		
 		[Desc("What diplomatic stances are affected.")]
-		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+		public readonly Stance ValidStances = Stance.All;
 		
 		[Desc("Can this warhead affect the actor that fired it.")]
 		public readonly bool AffectsParent = false;

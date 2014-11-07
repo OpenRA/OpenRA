@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 		public void Killed(Actor self, AttackInfo e)
 		{
 			// Prevent TK from giving exp
-			if (e.Attacker == null || e.Attacker.Destroyed || (!info.FriendlyFire && e.Attacker.Owner.Stances[self.Owner] == Stance.Ally))
+			if (e.Attacker == null || e.Attacker.Destroyed || (!info.FriendlyFire && e.Attacker.Owner.Stances[self.Owner].Allied()))
 				return;
 
 			var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();

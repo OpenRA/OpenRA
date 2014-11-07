@@ -30,6 +30,18 @@ namespace OpenRA.Traits
 		Enemy = 1,
 		Neutral = 2,
 		Ally = 4,
+		SameOwner = 8,
+		NotEnemy = Neutral | Ally | SameOwner,
+		NotAlly = Enemy | Neutral,
+		SameOrAlly = Ally | SameOwner,
+		All = Enemy | Neutral | Ally | SameOwner
+	}
+
+	public static class StanceExts
+	{
+		public static bool AnyFlag(this Stance stance) { return stance != Stance.None; }
+		public static bool AnyFlag(this Stance stance, Stance flags) { return (stance & flags) != Stance.None; }
+		public static bool Allied(this Stance stance) { return (stance & Stance.SameOrAlly) != Stance.None; }
 	}
 
 	[Flags]

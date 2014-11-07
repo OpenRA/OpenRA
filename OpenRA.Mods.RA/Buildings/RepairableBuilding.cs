@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA.Buildings
 			if (remainingTicks == 0)
 			{
 				Repairers = Repairers.Where(player => player.WinState == WinState.Undefined
-						&& player.Stances[self.Owner] == Stance.Ally).ToList();
+						&& player.Stances[self.Owner].Allied()).ToList();
 
 				// If after the previous operation there's no repairers left, stop
 				if (!Repairers.Any()) return;

@@ -80,7 +80,7 @@ namespace OpenRA.Network
 								var player = world.FindPlayerByClient(client);
 								if (player == null) return;
 
-								if ((world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally) || player.WinState == WinState.Lost)
+								if ((world.LocalPlayer != null && player.Stances[world.LocalPlayer].HasFlag(Stance.Ally)) || player.WinState == WinState.Lost)
 								{
 									var suffix = player.WinState == WinState.Lost ? " (Dead)" : " (Team)";
 									Game.AddChatLine(client.Color.RGB, client.Name + suffix, order.TargetString);
@@ -247,7 +247,7 @@ namespace OpenRA.Network
 							order.Player.PlayerName, targetPlayer.PlayerName, newStance);
 
 						// automatically declare war reciprocally
-						if (newStance == Stance.Enemy && targetPlayer.Stances[order.Player] == Stance.Ally)
+						if (newStance == Stance.Enemy && targetPlayer.Stances[order.Player].HasFlag(Stance.Ally))
 						{
 							targetPlayer.SetStance(order.Player, newStance);
 							Game.Debug("{0} has reciprocated", targetPlayer.PlayerName);
