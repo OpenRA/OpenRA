@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA
 			if (!info.KilledOnImpassableTerrain)
 				return;
 
-			if (positionable.CanEnterCell(self.Location))
+			if (positionable.CanEnterCell(self.Location, self))
 				return;
 
 			var terrain = self.World.Map.GetTerrainInfo(self.Location);
@@ -79,7 +79,8 @@ namespace OpenRA.Mods.RA
 
 			var sequence = terrain.IsWater ? info.WaterCorpseSequence : info.GroundCorpseSequence;
 			var palette = terrain.IsWater ? info.WaterCorpsePalette : info.GroundCorpsePalette;
-			self.World.AddFrameEndTask(w => w.Add(new Explosion(w, self.OccupiesSpace.CenterPosition, sequence, palette)));
+			if (sequence != null && palette != null)
+				self.World.AddFrameEndTask(w => w.Add(new Explosion(w, self.OccupiesSpace.CenterPosition, sequence, palette)));
 
 			self.Kill(self);
 		}
