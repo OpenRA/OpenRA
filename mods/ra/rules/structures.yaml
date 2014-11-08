@@ -717,11 +717,32 @@ FACT:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 	ProvidesCustomPrerequisite@allies:
-		Race: allies
+		Race: allies, england, france, germany
 		Prerequisite: structures.allies
+	ProvidesCustomPrerequisite@alliesvanilla:
+		Race: allies
+		Prerequisite: structures.alliesvanilla
+	ProvidesCustomPrerequisite@england:
+		Race: england
+		Prerequisite: structures.england
+	ProvidesCustomPrerequisite@france:
+		Race: france
+		Prerequisite: structures.france
+	ProvidesCustomPrerequisite@germany:
+		Race: germany
+		Prerequisite: structures.germany
 	ProvidesCustomPrerequisite@soviet:
-		Race: soviet
+		Race: soviet, russia, ukraine
 		Prerequisite: structures.soviet
+	ProvidesCustomPrerequisite@sovietvanilla:
+		Race: soviet
+		Prerequisite: structures.sovietvanilla
+	ProvidesCustomPrerequisite@russia:
+		Race: russia
+		Prerequisite: structures.russia
+	ProvidesCustomPrerequisite@ukraine:
+		Race: ukraine
+		Prerequisite: structures.ukraine
 	Health:
 		HP: 1500
 	Armor:
