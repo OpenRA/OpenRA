@@ -62,8 +62,8 @@ Player:
 			ttnk: 10%
 			stnk: 5%
 		SquadSize: 20
-		SupportPowerDecision@Airstrike:
-			OrderName: AirstrikePowerInfoOrder
+		SupportPowerDecision@spyplane:
+			OrderName: SovietSpyPlane
 			MinimumAttractiveness: 1
 			Consideration@1:
 				Against: Enemy
@@ -71,8 +71,8 @@ Player:
 				Attractiveness: 1
 				TargetMetric: None
 				CheckRadius: 5c0
-		SupportPowerDecision@Paratroopers:
-			OrderName: ParatroopersPowerInfoOrder
+		SupportPowerDecision@paratroopers:
+			OrderName: SovietParatroopers
 			MinimumAttractiveness: 5
 			Consideration@1:
 				Against: Enemy
@@ -86,7 +86,31 @@ Player:
 				Attractiveness: -10
 				TargetMetric: None
 				CheckRadius: 10c0
-		SupportPowerDecision@NukePower:
+		SupportPowerDecision@armordrop:
+			OrderName: RussiaArmorDrop
+			MinimumAttractiveness: 5
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 10c0
+			Consideration@2:
+				Against: Enemy
+				Types: Vehicle, Tank, Infantry, Defense
+				Attractiveness: -10
+				TargetMetric: None
+				CheckRadius: 10c0
+		SupportPowerDecision@parabombs:
+			OrderName: UkraineParabombs
+			MinimumAttractiveness: 1
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 5c0
+		SupportPowerDecision@nukepower:
 			OrderName: NukePowerInfoOrder
 			MinimumAttractiveness: 3000
 			Consideration@1:
@@ -180,8 +204,8 @@ Player:
 			ca: 10%
 			pt: 10%
 		SquadSize: 40
-		SupportPowerDecision@Airstrike:
-			OrderName: AirstrikePowerInfoOrder
+		SupportPowerDecision@spyplane:
+			OrderName: SovietSpyPlane
 			MinimumAttractiveness: 1
 			Consideration@1:
 				Against: Enemy
@@ -189,8 +213,8 @@ Player:
 				Attractiveness: 1
 				TargetMetric: None
 				CheckRadius: 5c0
-		SupportPowerDecision@Paratroopers:
-			OrderName: ParatroopersPowerInfoOrder
+		SupportPowerDecision@paratroopers:
+			OrderName: SovietParatroopers
 			MinimumAttractiveness: 5
 			Consideration@1:
 				Against: Enemy
@@ -204,7 +228,31 @@ Player:
 				Attractiveness: -10
 				TargetMetric: None
 				CheckRadius: 10c0
-		SupportPowerDecision@NukePower:
+		SupportPowerDecision@armordrop:
+			OrderName: RussiaArmorDrop
+			MinimumAttractiveness: 5
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 10c0
+			Consideration@2:
+				Against: Enemy
+				Types: Vehicle, Tank, Infantry, Defense
+				Attractiveness: -10
+				TargetMetric: None
+				CheckRadius: 10c0
+		SupportPowerDecision@parabombs:
+			OrderName: UkraineParabombs
+			MinimumAttractiveness: 1
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 5c0
+		SupportPowerDecision@nukepower:
 			OrderName: NukePowerInfoOrder
 			MinimumAttractiveness: 3000
 			Consideration@1:
@@ -297,8 +345,8 @@ Player:
 			ca: 10%
 			pt: 10%
 		SquadSize: 10
-		SupportPowerDecision@Airstrike:
-			OrderName: AirstrikePowerInfoOrder
+		SupportPowerDecision@spyplane:
+			OrderName: SovietSpyPlane
 			MinimumAttractiveness: 1
 			Consideration@1:
 				Against: Enemy
@@ -306,8 +354,8 @@ Player:
 				Attractiveness: 1
 				TargetMetric: None
 				CheckRadius: 5c0
-		SupportPowerDecision@Paratroopers:
-			OrderName: ParatroopersPowerInfoOrder
+		SupportPowerDecision@paratroopers:
+			OrderName: SovietParatroopers
 			MinimumAttractiveness: 5
 			Consideration@1:
 				Against: Enemy
@@ -321,7 +369,31 @@ Player:
 				Attractiveness: -10
 				TargetMetric: None
 				CheckRadius: 10c0
-		SupportPowerDecision@NukePower:
+		SupportPowerDecision@armordrop:
+			OrderName: RussiaArmorDrop
+			MinimumAttractiveness: 5
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 10c0
+			Consideration@2:
+				Against: Enemy
+				Types: Vehicle, Tank, Infantry, Defense
+				Attractiveness: -10
+				TargetMetric: None
+				CheckRadius: 10c0
+		SupportPowerDecision@parabombs:
+			OrderName: UkraineParabombs
+			MinimumAttractiveness: 1
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 5c0
+		SupportPowerDecision@nukepower:
 			OrderName: NukePowerInfoOrder
 			MinimumAttractiveness: 3000
 			Consideration@1:
@@ -389,8 +461,8 @@ Player:
 			ca: 20%
 			pt: 10%
 		SquadSize: 1
-		SupportPowerDecision@Airstrike:
-			OrderName: AirstrikePowerInfoOrder
+		SupportPowerDecision@spyplane:
+			OrderName: SovietSpyPlane
 			MinimumAttractiveness: 1
 			Consideration@1:
 				Against: Enemy
@@ -398,8 +470,8 @@ Player:
 				Attractiveness: 1
 				TargetMetric: None
 				CheckRadius: 5c0
-		SupportPowerDecision@Paratroopers:
-			OrderName: ParatroopersPowerInfoOrder
+		SupportPowerDecision@paratroopers:
+			OrderName: SovietParatroopers
 			MinimumAttractiveness: 5
 			Consideration@1:
 				Against: Enemy
@@ -413,7 +485,31 @@ Player:
 				Attractiveness: -10
 				TargetMetric: None
 				CheckRadius: 10c0
-		SupportPowerDecision@NukePower:
+		SupportPowerDecision@armordrop:
+			OrderName: RussiaArmorDrop
+			MinimumAttractiveness: 5
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 10c0
+			Consideration@2:
+				Against: Enemy
+				Types: Vehicle, Tank, Infantry, Defense
+				Attractiveness: -10
+				TargetMetric: None
+				CheckRadius: 10c0
+		SupportPowerDecision@parabombs:
+			OrderName: UkraineParabombs
+			MinimumAttractiveness: 1
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 5c0
+		SupportPowerDecision@nukepower:
 			OrderName: NukePowerInfoOrder
 			MinimumAttractiveness: 3000
 			Consideration@1:

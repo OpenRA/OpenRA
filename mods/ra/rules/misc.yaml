@@ -78,10 +78,6 @@ CRATE:
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map
-	SupportPowerCrateAction@parabombs:
-		SelectionShares: 5
-		Proxy: powerproxy.parabombs
-		Effect: parabombs
 	DuplicateUnitCrateAction:
 		SelectionShares: 10
 		MaxAmount: 5
