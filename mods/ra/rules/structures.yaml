@@ -1238,6 +1238,9 @@ FACF:
 		Icon: fake-icon
 		Name: Fake Construction Yard
 		Description: Looks like a Construction Yard.
+		GenericName: Construction Yard
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -1267,6 +1270,9 @@ WEAF:
 		Icon: fake-icon
 		Name: Fake War Factory
 		Description: Looks like a War Factory.
+		GenericName: War Factory
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
@@ -1297,6 +1303,9 @@ SYRF:
 		Icon: fake-icon
 		Name: Fake Shipyard
 		Description: Looks like a Shipyard.
+		GenericName: Shipyard
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
@@ -1331,6 +1340,9 @@ SPEF:
 		Icon: fake-icon
 		Name: Fake Sub Pen
 		Description: Looks like a Sub Pen.
+		GenericName: Sub Pen
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -1357,6 +1369,9 @@ DOMF:
 		Icon: fake-icon
 		Name: Fake Radar Dome
 		Description: Looks like a Radar Dome.
+		GenericName: Radar Dome
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
 	Buildable:
 		BuildPaletteOrder: 930
 		Queue: Defense
