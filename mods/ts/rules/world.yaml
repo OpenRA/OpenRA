@@ -133,7 +133,7 @@ World:
 	FixedColorPalette@BlueTiberium:
 		Base: player
 		Name: bluetiberium
-		Color: 154, 220, 184
+		Color: 160, 255, 172
 		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
 	ResourceType@BlueTiberium:
 		ResourceType: 2
