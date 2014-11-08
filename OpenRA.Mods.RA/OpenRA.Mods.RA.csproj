@@ -236,8 +236,6 @@
     <Compile Include="Move\PathFinder.cs" />
     <Compile Include="Move\PathSearch.cs" />
     <Compile Include="NukePaletteEffect.cs" />
-    <Compile Include="NullLoadScreen.cs" />
-    <Compile Include="LoadWidgetAtGameStart.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Orders\PowerDownOrderGenerator.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
@@ -258,9 +256,6 @@
     <Compile Include="PortableChrono.cs" />
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Scripting\Properties\PlayerProperties.cs" />
-    <Compile Include="Warheads\DestroyResourceWarhead.cs" />
-    <Compile Include="Warheads\CreateEffectWarhead.cs" />
-    <Compile Include="Warheads\CreateResourceWarhead.cs" />
     <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
     <Compile Include="Player\TechTree.cs" />
     <Compile Include="PrimaryBuilding.cs" />
@@ -268,7 +263,6 @@
     <Compile Include="ProductionBar.cs" />
     <Compile Include="ProximityCaptor.cs" />
     <Compile Include="ProximityCapturable.cs" />
-    <Compile Include="DefaultLoadScreen.cs" />
     <Compile Include="RadarColorFromTerrain.cs" />
     <Compile Include="Reloads.cs" />
     <Compile Include="RenderDetectionCircle.cs" />
@@ -477,9 +471,9 @@
     <Compile Include="Player\GlobalUpgradeManager.cs" />
     <Compile Include="GainsStatUpgrades.cs" />
     <Compile Include="Player\Extensions.cs" />
-    <Compile Include="Warheads\HealthPercentageDamageWarhead.cs" />
+    <Compile Include="Warheads\CreateResourceWarhead.cs" />
+    <Compile Include="Warheads\DestroyResourceWarhead.cs" />
     <Compile Include="Warheads\PerCellDamageWarhead.cs" />
-    <Compile Include="Warheads\SpreadDamageWarhead.cs" />
     <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
     <Compile Include="Scripting\Global\DateTimeGlobal.cs" />
     <Compile Include="Scripting\Properties\HarvesterProperties.cs" />

@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonTraitsInterfaces.cs" />
+    <Compile Include="DefaultLoadScreen.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Contrail.cs" />
@@ -75,10 +76,12 @@
     <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
+    <Compile Include="LoadWidgetAtGameStart.cs" />
     <Compile Include="ModChooserLoadScreen.cs" />
     <Compile Include="Modifiers\DisabledOverlay.cs" />
     <Compile Include="Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Modifiers\UpgradeOverlay.cs" />
+    <Compile Include="NullLoadScreen.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
@@ -118,7 +121,10 @@
     <Compile Include="UtilityCommands\UpgradeMapCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeModCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeRules.cs" />
+    <Compile Include="Warheads\CreateEffectWarhead.cs" />
+    <Compile Include="Warheads\HealthPercentageDamageWarhead.cs" />
     <Compile Include="Warheads\LeaveSmudgeWarhead.cs" />
+    <Compile Include="Warheads\SpreadDamageWarhead.cs" />
     <Compile Include="Widgets\ConfirmationDialogs.cs" />
     <Compile Include="Widgets\HueSliderWidget.cs" />
     <Compile Include="Widgets\LabelWithTooltipWidget.cs" />

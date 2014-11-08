@@ -16,7 +16,7 @@ using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common
 {
 	public class DefaultLoadScreen : ILoadScreen
 	{
