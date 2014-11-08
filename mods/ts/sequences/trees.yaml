@@ -38,12 +38,12 @@ tibtre03:
 		Offset: 0, -12
 
 bigblue:
-	idle:
+	idle: bigblue2
 		Start: 0
 		Length: 1
 		ShadowStart: 10
 		Offset: 0, -12
-	active:
+	active: bigblue2
 		Start: 1
 		Length: 9
 		ShadowStart: 11
