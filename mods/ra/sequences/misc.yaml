@@ -141,6 +141,10 @@ beacon:
 		Start: 0
 		Length: *
 		Offset: 0,-42
+	armordropicon: lores-pinficon
+		Start: 0
+		Length: *
+		Offset: 0,-42
 	clock: beaconclock
 		Start: 0
 		Length: *
@@ -515,6 +519,8 @@ icon:
 	spyplane: smigicon
 		Start: 0
 	paratroopers: pinficon
+		Start: 0
+	armordrop: armordropicon
 		Start: 0
 	gps: gpssicon
 		Start: 0
