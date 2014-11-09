@@ -125,7 +125,6 @@
     <Compile Include="GainsExperience.cs" />
     <Compile Include="Infiltration\InfiltrateForPowerOutage.cs" />
     <Compile Include="Player\PlaceBeacon.cs" />
-    <Compile Include="MenuPaletteEffect.cs" />
     <Compile Include="EjectOnDeath.cs" />
     <Compile Include="Air\FallsToEarth.cs" />
     <Compile Include="Air\Fly.cs" />
@@ -202,7 +201,6 @@
     <Compile Include="DemoTruck.cs" />
     <Compile Include="DetectCloaked.cs" />
     <Compile Include="Effects\GpsDot.cs" />
-    <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Effects\Parachute.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />
@@ -220,7 +218,6 @@
     <Compile Include="Invulnerable.cs" />
     <Compile Include="LeavesHusk.cs" />
     <Compile Include="Captures.cs" />
-    <Compile Include="LightPaletteRotator.cs" />
     <Compile Include="LimitedAmmo.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
@@ -235,14 +232,10 @@
     <Compile Include="Move\Move.cs" />
     <Compile Include="Move\PathFinder.cs" />
     <Compile Include="Move\PathSearch.cs" />
-    <Compile Include="NukePaletteEffect.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Orders\PowerDownOrderGenerator.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="OreRefinery.cs" />
-    <Compile Include="PlayerPaletteFromCurrentTileset.cs" />
-    <Compile Include="PaletteFromCurrentTileset.cs" />
-    <Compile Include="PaletteFromRGBA.cs" />
     <Compile Include="ParaDrop.cs" />
     <Compile Include="Passenger.cs" />
     <Compile Include="Player\PlayerStatistics.cs" />
@@ -324,7 +317,6 @@
     <Compile Include="Transforms.cs" />
     <Compile Include="Turreted.cs" />
     <Compile Include="Valued.cs" />
-    <Compile Include="WaterPaletteRotation.cs" />
     <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />
     <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
@@ -360,7 +352,6 @@
     <Compile Include="Infiltration\InfiltrateForExploration.cs" />
     <Compile Include="Infiltration\InfiltrateForCash.cs" />
     <Compile Include="RenderShroudCircle.cs" />
-    <Compile Include="CloakPaletteEffect.cs" />
     <Compile Include="Infiltration\Infiltrates.cs" />
     <Compile Include="Armament.cs" />
     <Compile Include="Buildings\BaseProvider.cs" />
@@ -401,7 +392,6 @@
     <Compile Include="Buildings\Demolishable.cs" />
     <Compile Include="Activities\FlyFollow.cs" />
     <Compile Include="Widgets\Logic\GameTimerLogic.cs" />
-    <Compile Include="Immobile.cs" />
     <Compile Include="Widgets\Logic\ReplayControlBarLogic.cs" />
     <Compile Include="World\BuildableTerrainLayer.cs" />
     <Compile Include="Buildings\LaysTerrain.cs" />
