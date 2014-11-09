@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Nov 05 2014)
+## v0.90 (Nov 08 2014)
 
 ### Highlights
   - Added function outline.
@@ -67,6 +67,7 @@
   - bugfix on extension change save-as, related to new indication handling
   - cg/hlsl/glsl refine isfndef capture, mostly to react on GLSL's layout mechanism
   - Disabled moving of Output/Console/Project tabs between panels.
+  - Disabled closing tabs in floating panels.
   - Improved `ffitoapi` tool logic when no replacement is made.
   - Improved compatibility with Lua 5.2 interpreter (closes #357).
   - Improved scroll positioning in the outline after tab changes (#337).
