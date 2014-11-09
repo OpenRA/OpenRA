@@ -281,9 +281,10 @@ namespace OpenRA.Traits
 
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
-					if (withCondition(i.Actor))
-						return true;
+				if (!i.Actor.Destroyed)
+					if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
+						if (withCondition(i.Actor))
+							return true;
 
 			return false;
 		}
