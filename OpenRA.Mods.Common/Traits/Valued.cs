@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common
 {
 	[Desc("How much the unit is worth.")]
 	public class ValuedInfo : TraitInfo<Valued>

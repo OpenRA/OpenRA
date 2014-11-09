@@ -164,8 +164,6 @@
     <Compile Include="CaptureNotification.cs" />
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Buildings\BuildingInfluence.cs" />
-    <Compile Include="Buildings\CustomSellValue.cs" />
-    <Compile Include="Buildings\CustomBuildTimeValue.cs" />
     <Compile Include="Buildings\DeadBuildingState.cs" />
     <Compile Include="Buildings\FootprintUtils.cs" />
     <Compile Include="Buildings\LineBuild.cs" />
@@ -312,7 +310,6 @@
     <Compile Include="TransformOnPassenger.cs" />
     <Compile Include="Transforms.cs" />
     <Compile Include="Turreted.cs" />
-    <Compile Include="Valued.cs" />
     <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />
     <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
