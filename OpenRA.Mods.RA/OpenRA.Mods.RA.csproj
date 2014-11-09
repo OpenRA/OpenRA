@@ -289,7 +289,6 @@
     <Compile Include="SeedsResource.cs" />
     <Compile Include="SelfHealing.cs" />
     <Compile Include="Sellable.cs" />
-    <Compile Include="ShroudPalette.cs" />
     <Compile Include="SmokeTrailWhenDamaged.cs" />
     <Compile Include="SpawnMPUnits.cs" />
     <Compile Include="Disguise.cs" />
@@ -385,7 +384,6 @@
     <Compile Include="CombatDebugOverlay.cs" />
     <Compile Include="World\PathfinderDebugOverlay.cs" />
     <Compile Include="AttackBomber.cs" />
-    <Compile Include="ShroudRenderer.cs" />
     <Compile Include="Render\WithCrateBody.cs" />
     <Compile Include="Activities\FlyFollow.cs" />
     <Compile Include="Widgets\Logic\GameTimerLogic.cs" />
@@ -399,7 +397,6 @@
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
     <Compile Include="Buildings\LineBuildNode.cs" />
     <Compile Include="Render\WithBuildingPlacedAnimation.cs" />
-    <Compile Include="StartGameNotification.cs" />
     <Compile Include="Scripting\LuaScript.cs" />
     <Compile Include="Scripting\CallLuaFunc.cs" />
     <Compile Include="Scripting\Global\ActorGlobal.cs" />
