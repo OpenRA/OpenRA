@@ -171,7 +171,6 @@
     <Compile Include="Buildings\LineBuild.cs" />
     <Compile Include="Buildings\RepairableBuilding.cs" />
     <Compile Include="Buildings\Util.cs" />
-    <Compile Include="Burns.cs" />
     <Compile Include="C4Demolition.cs" />
     <Compile Include="ExternalCapturable.cs" />
     <Compile Include="ExternalCapturableBar.cs" />

@@ -91,7 +91,6 @@
     <Compile Include="PaletteEffects\MenuPaletteEffect.cs" />
     <Compile Include="PaletteEffects\NukePaletteEffect.cs" />
     <Compile Include="PaletteEffects\WaterPaletteRotation.cs" />
-    <Compile Include="RallyPoint.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="ServerTraits\LobbyCommands.cs" />
     <Compile Include="ServerTraits\LobbySettingsNotification.cs" />
@@ -99,9 +98,11 @@
     <Compile Include="ServerTraits\PlayerPinger.cs" />
     <Compile Include="Traits\BlocksBullets.cs" />
     <Compile Include="Traits\Immobile.cs" />
+    <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
+    <Compile Include="Traits\RallyPoint.cs" />
     <Compile Include="Traits\ShakeOnDeath.cs" />
     <Compile Include="Traits\Power\AffectedByPowerOutage.cs" />
     <Compile Include="Traits\Power\CanPowerDown.cs" />
