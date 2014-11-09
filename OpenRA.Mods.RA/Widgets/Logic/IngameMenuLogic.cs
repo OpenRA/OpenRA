@@ -10,6 +10,7 @@
 
 using System;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Widgets;
 

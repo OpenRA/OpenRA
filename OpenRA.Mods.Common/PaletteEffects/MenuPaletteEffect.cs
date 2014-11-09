@@ -13,7 +13,7 @@ using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common
 {
 	[Desc("Fades the world from/to black at the start/end of the game, and can (optionally) desaturate the world")]
 	public class MenuPaletteEffectInfo : ITraitInfo

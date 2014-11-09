@@ -61,6 +61,7 @@
     <Compile Include="Effects\GravityBomb.cs" />
     <Compile Include="Effects\LaserZap.cs" />
     <Compile Include="Effects\Missile.cs" />
+    <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPoint.cs" />
     <Compile Include="Effects\Smoke.cs" />
@@ -85,7 +86,11 @@
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
-    <Compile Include="PaletteFromFile.cs" />
+    <Compile Include="PaletteEffects\CloakPaletteEffect.cs" />
+    <Compile Include="PaletteEffects\LightPaletteRotator.cs" />
+    <Compile Include="PaletteEffects\MenuPaletteEffect.cs" />
+    <Compile Include="PaletteEffects\NukePaletteEffect.cs" />
+    <Compile Include="PaletteEffects\WaterPaletteRotation.cs" />
     <Compile Include="RallyPoint.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="ServerTraits\LobbyCommands.cs" />
@@ -93,6 +98,7 @@
     <Compile Include="ServerTraits\MasterServerPinger.cs" />
     <Compile Include="ServerTraits\PlayerPinger.cs" />
     <Compile Include="Traits\BlocksBullets.cs" />
+    <Compile Include="Traits\Immobile.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\Power\AffectedByPowerOutage.cs" />
@@ -145,6 +151,10 @@
     <Compile Include="World\CreateMPPlayers.cs" />
     <Compile Include="World\MPStartLocations.cs" />
     <Compile Include="World\MPStartUnits.cs" />
+    <Compile Include="World\PaletteFromCurrentTileset.cs" />
+    <Compile Include="World\PaletteFromFile.cs" />
+    <Compile Include="World\PaletteFromRGBA.cs" />
+    <Compile Include="World\PlayerPaletteFromCurrentTileset.cs" />
     <Compile Include="World\PlayMusicOnMapLoad.cs" />
     <Compile Include="World\RadarPings.cs" />
     <Compile Include="World\ResourceClaim.cs" />

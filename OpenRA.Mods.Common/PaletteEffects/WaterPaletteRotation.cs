@@ -13,7 +13,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common
 {
 	[Desc("Palette effect used for sprinkle \"animations\" on terrain tiles.")]
 	class WaterPaletteRotationInfo : ITraitInfo

@@ -12,26 +12,26 @@ using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common
 {
-	class PlayerPaletteFromCurrentTilesetInfo : ITraitInfo
+	[Desc("Loads the palette specified in the tileset definition")]
+	class PaletteFromCurrentTilesetInfo : ITraitInfo
 	{
 		[Desc("internal palette name")]
 		public readonly string Name = null;
-		[Desc("Map listed indices to shadow.")]
+		[Desc("Map listed indices to shadow. Ignores previous color.")]
 		public readonly int[] ShadowIndex = { };
-		[Desc("Apply palette rotatotors or not.")]
 		public readonly bool AllowModifiers = true;
 
-		public object Create(ActorInitializer init) { return new PlayerPaletteFromCurrentTileset(init.world, this); }
+		public object Create(ActorInitializer init) { return new PaletteFromCurrentTileset(init.world, this); }
 	}
 
-	class PlayerPaletteFromCurrentTileset : ILoadsPalettes
+	class PaletteFromCurrentTileset : ILoadsPalettes
 	{
 		readonly World world;
-		readonly PlayerPaletteFromCurrentTilesetInfo info;
+		readonly PaletteFromCurrentTilesetInfo info;
 
-		public PlayerPaletteFromCurrentTileset(World world, PlayerPaletteFromCurrentTilesetInfo info)
+		public PaletteFromCurrentTileset(World world, PaletteFromCurrentTilesetInfo info)
 		{
 			this.world = world;
 			this.info = info;
@@ -39,8 +39,7 @@ namespace OpenRA.Mods.RA
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			var filename = world.TileSet.PlayerPalette ?? world.TileSet.Palette;
-			wr.AddPalette(info.Name, new ImmutablePalette(GlobalFileSystem.Open(filename), info.ShadowIndex), info.AllowModifiers);
+			wr.AddPalette(info.Name, new ImmutablePalette(GlobalFileSystem.Open(world.TileSet.Palette), info.ShadowIndex), info.AllowModifiers);
 		}
 	}
 }
