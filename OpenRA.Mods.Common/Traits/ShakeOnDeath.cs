@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.Common
 {
 	public class ShakeOnDeathInfo : ITraitInfo
 	{

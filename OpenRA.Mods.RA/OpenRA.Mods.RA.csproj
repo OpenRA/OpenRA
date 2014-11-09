@@ -170,8 +170,6 @@
     <Compile Include="Buildings\FootprintUtils.cs" />
     <Compile Include="Buildings\LineBuild.cs" />
     <Compile Include="Buildings\RepairableBuilding.cs" />
-    <Compile Include="Buildings\ShakeOnDeath.cs" />
-    <Compile Include="Buildings\SoundOnDamageTransition.cs" />
     <Compile Include="Buildings\Util.cs" />
     <Compile Include="Burns.cs" />
     <Compile Include="C4Demolition.cs" />
@@ -389,7 +387,6 @@
     <Compile Include="AttackBomber.cs" />
     <Compile Include="ShroudRenderer.cs" />
     <Compile Include="Render\WithCrateBody.cs" />
-    <Compile Include="Buildings\Demolishable.cs" />
     <Compile Include="Activities\FlyFollow.cs" />
     <Compile Include="Widgets\Logic\GameTimerLogic.cs" />
     <Compile Include="Widgets\Logic\ReplayControlBarLogic.cs" />

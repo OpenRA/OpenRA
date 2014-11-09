@@ -99,8 +99,10 @@
     <Compile Include="ServerTraits\PlayerPinger.cs" />
     <Compile Include="Traits\BlocksBullets.cs" />
     <Compile Include="Traits\Immobile.cs" />
+    <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
+    <Compile Include="Traits\ShakeOnDeath.cs" />
     <Compile Include="Traits\Power\AffectedByPowerOutage.cs" />
     <Compile Include="Traits\Power\CanPowerDown.cs" />
     <Compile Include="Traits\Power\Player\PowerManager.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="Traits\Sound\AnnounceOnBuild.cs" />
     <Compile Include="Traits\Sound\AnnounceOnKill.cs" />
     <Compile Include="Traits\Sound\DeathSounds.cs" />
+    <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
     <Compile Include="UtilityCommands\ExtractFilesCommand.cs" />
