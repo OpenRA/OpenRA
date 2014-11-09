@@ -99,6 +99,8 @@
     <Compile Include="Traits\BlocksBullets.cs" />
     <Compile Include="Traits\Immobile.cs" />
     <Compile Include="Traits\Burns.cs" />
+    <Compile Include="Traits\CustomBuildTimeValue.cs" />
+    <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />

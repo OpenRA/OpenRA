@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.Common
 {
 	[Desc("Allow a non-standard sell/repair value to avoid buy-sell exploits.")]
 	public class CustomSellValueInfo : TraitInfo<CustomSellValue>
