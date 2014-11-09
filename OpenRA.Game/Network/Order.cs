@@ -157,17 +157,17 @@ namespace OpenRA
 
 		public static Order StartProduction(Actor subject, int queueID, string item, int count)
 		{
-			return new Order("StartProduction", subject, false) { TargetString = item, ExtraLocation = new CPos(queueID, count) };
+			return new Order("StartProduction", subject, false) { TargetString = item, ExtraLocation = new CPos(queueID, count) }; // HACK: abuse of the coordinate system
 		}
 
 		public static Order PauseProduction(Actor subject, int queueID, string item, bool pause)
 		{
-			return new Order("PauseProduction", subject, false) { TargetString = item, ExtraLocation = new CPos(queueID, pause ? 1 : 0) };
+			return new Order("PauseProduction", subject, false) { TargetString = item, ExtraLocation = new CPos(queueID, pause ? 1 : 0) }; // HACK: abuse of the coordinate system
 		}
 
 		public static Order CancelProduction(Actor subject, int queueID, string item, int count)
 		{
-			return new Order("CancelProduction", subject, false) { TargetString = item, ExtraLocation = new CPos(queueID, count) };
+			return new Order("CancelProduction", subject, false) { TargetString = item, ExtraLocation = new CPos(queueID, count) }; // HACK: abuse of the coordinate system
 		}
 
 		// For scripting special powers
