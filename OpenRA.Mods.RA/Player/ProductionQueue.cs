@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA
 
 	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyOwnerChanged, INotifyKilled, INotifySold, ISync, INotifyTransform
 	{
-		static int nextQueueID = 1;
+		int nextQueueID = 1;
 
 		public readonly ProductionQueueInfo Info;
 		public readonly int QueueID;
