@@ -30,7 +30,7 @@ if ($args.Length -eq 0)
 	echo "                  'dependencies' commands to restore removed files."
 	echo "  test            Tests the default mods for errors."
 	echo ""
-	$command = Read-Host "Enter command"
+	$command = (Read-Host "Enter command").Split(' ', 2)
 }
 else
 {
@@ -40,13 +40,14 @@ else
 if ($command -eq "all")
 {
 	$msBuild = FindMSBuild
+	$msBuildArguments = "/t:Rebuild /nr:false"
 	if ($msBuild -eq $null)
 	{
 		echo "Unable to locate an appropriate version of MSBuild."
 	}
 	else
 	{
-		$proc = Start-Process $msBuild /t:Rebuild -NoNewWindow -PassThru -Wait
+		$proc = Start-Process $msBuild $msBuildArguments -NoNewWindow -PassThru -Wait
 		if ($proc.ExitCode -ne 0)
 		{
 			echo "Build failed. If just the development tools failed to build, try installing Visual Studio. You may also still be able to run the game."
@@ -60,13 +61,14 @@ if ($command -eq "all")
 elseif ($command -eq "clean")
 {
 	$msBuild = FindMSBuild
+	$msBuildArguments = "/t:Clean /nr:false"
 	if ($msBuild -eq $null)
 	{
 		echo "Unable to locate an appropriate version of MSBuild."
 	}
 	else
 	{
-		$proc = Start-Process $msBuild /t:Clean -NoNewWindow -PassThru -Wait
+		$proc = Start-Process $msBuild $msBuildArguments -NoNewWindow -PassThru -Wait
 		rm *.dll # delete third party dependencies
 		rm *.config
 		rm mods/*/*.dll
@@ -74,19 +76,34 @@ elseif ($command -eq "clean")
 	}
 }
 elseif ($command -eq "version")
-{
-	$version = git name-rev --name-only --tags --no-undefined HEAD 2>$null
-	if ($version -eq $null)
+{	
+	if ($command.Length -gt 1)
 	{
-		$version = "git-" + (git rev-parse --short HEAD)
+		$version = $command[1]
 	}
-	$mods = @("mods/ra/mod.yaml", "mods/cnc/mod.yaml", "mods/d2k/mod.yaml", "mods/modchooser/mod.yaml")
-	foreach ($mod in $mods)
+	elseif (Get-Command 'git' -ErrorAction SilentlyContinue)
 	{
-		$replacement = (gc $mod) -Replace "Version:.*", ("Version: {0}" -f $version)
-		sc $mod $replacement
+		$version = git name-rev --name-only --tags --no-undefined HEAD 2>$null
+		if ($version -eq $null)
+		{
+			$version = "git-" + (git rev-parse --short HEAD)
+		}
 	}
-	echo ("Version strings set to '{0}'." -f $version)
+	else
+	{	
+		echo "Unable to locate Git. The version will remain unchanged."
+	}
+	
+	if ($version -ne $null)
+	{
+		$mods = @("mods/ra/mod.yaml", "mods/cnc/mod.yaml", "mods/d2k/mod.yaml", "mods/modchooser/mod.yaml")
+		foreach ($mod in $mods)
+		{
+			$replacement = (gc $mod) -Replace "Version:.*", ("Version: {0}" -f $version)
+			sc $mod $replacement
+		}
+		echo ("Version strings set to '{0}'." -f $version)
+	}
 }
 elseif ($command -eq "dependencies")
 {
@@ -114,5 +131,12 @@ else
 if ($args.Length -eq 0)
 {
 	echo "Press enter to continue."
-	[System.Console]::ReadKey($true) >$null
+	while ($true)
+	{
+		if ([System.Console]::KeyAvailable)
+		{
+			break
+		}
+		Start-Sleep -Milliseconds 50
+	}
 }
