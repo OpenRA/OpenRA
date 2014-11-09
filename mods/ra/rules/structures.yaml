@@ -1229,7 +1229,7 @@ FIX:
 FACF:
 	Inherits: ^Building
 	Valued:
-		Cost: 50
+		Cost: 200
 	Buildable:
 		BuildPaletteOrder: 940
 		Queue: Defense
@@ -1246,7 +1246,7 @@ FACF:
 		Dimensions: 3,3
 	-GivesBuildableArea:
 	Health:
-		HP: 30
+		HP: 100
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -1254,14 +1254,12 @@ FACF:
 		Image: FACT
 	Fake:
 	-EmitInfantryOnSell:
-	Power:
-		Amount: -2
 	-MustBeDestroyed:
 
 WEAF:
 	Inherits: ^Building
 	Valued:
-		Cost: 50
+		Cost: 200
 	Buildable:
 		BuildPaletteOrder: 920
 		Prerequisites: ~disabled
@@ -1278,7 +1276,7 @@ WEAF:
 		Dimensions: 3,2
 	-GivesBuildableArea:
 	Health:
-		HP: 30
+		HP: 100
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -1287,14 +1285,12 @@ WEAF:
 		Image: WEAP
 	Fake:
 	-EmitInfantryOnSell:
-	Power:
-		Amount: -2
 	-MustBeDestroyed:
 
 SYRF:
 	Inherits: ^Building
 	Valued:
-		Cost: 50
+		Cost: 200
 	Buildable:
 		BuildPaletteOrder: 900
 		Queue: Defense
@@ -1315,21 +1311,19 @@ SYRF:
 		TerrainTypes: Water
 	-GivesBuildableArea:
 	Health:
-		HP: 30
+		HP: 100
 	RevealsShroud:
 		Range: 4c0
 	RenderBuilding:
 		Image: SYRD
 	Fake:
 	-EmitInfantryOnSell:
-	Power:
-		Amount: -2
 	-MustBeDestroyed:
 
 SPEF:
 	Inherits: ^Building
 	Valued:
-		Cost: 50
+		Cost: 200
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Buildable:
@@ -1350,21 +1344,19 @@ SPEF:
 		TerrainTypes: Water
 	-GivesBuildableArea:
 	Health:
-		HP: 30
+		HP: 100
 	RevealsShroud:
 		Range: 4c0
 	RenderBuilding:
 		Image: SPEN
 	Fake:
 	-EmitInfantryOnSell:
-	Power:
-		Amount: -2
 	-MustBeDestroyed:
 
 DOMF:
 	Inherits: ^Building
 	Valued:
-		Cost: 50
+		Cost: 200
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Radar Dome
@@ -1381,7 +1373,7 @@ DOMF:
 		Dimensions: 2,2
 	-GivesBuildableArea:
 	Health:
-		HP: 30
+		HP: 100
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -1389,8 +1381,6 @@ DOMF:
 		Image: DOME
 	Fake:
 	-EmitInfantryOnSell:
-	Power:
-		Amount: -2
 	-MustBeDestroyed:
 
 SBAG:
