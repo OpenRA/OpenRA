@@ -1233,7 +1233,7 @@ FACF:
 	Buildable:
 		BuildPaletteOrder: 940
 		Queue: Defense
-		Prerequisites: ~disabled
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Construction Yard
@@ -1262,7 +1262,7 @@ WEAF:
 		Cost: 200
 	Buildable:
 		BuildPaletteOrder: 920
-		Prerequisites: ~disabled
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
 		Queue: Defense
 	Tooltip:
 		Icon: fake-icon
@@ -1294,7 +1294,7 @@ SYRF:
 	Buildable:
 		BuildPaletteOrder: 900
 		Queue: Defense
-		Prerequisites: ~disabled
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Shipyard
@@ -1367,7 +1367,7 @@ DOMF:
 	Buildable:
 		BuildPaletteOrder: 930
 		Queue: Defense
-		Prerequisites: ~disabled
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
