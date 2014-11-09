@@ -1191,8 +1191,14 @@ TENT:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
 	ProductionBar:
-	ProvidesCustomPrerequisite:
+	ProvidesCustomPrerequisite@barracks:
 		Prerequisite: barracks
+	ProvidesCustomPrerequisite@england:
+		Race: england
+		Prerequisite: infantry.england
+	ProvidesCustomPrerequisite@englishstructure:
+		RequiresPrerequisites: structures.england
+		Prerequisite: infantry.england
 	Power:
 		Amount: -20
 

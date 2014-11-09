@@ -194,7 +194,7 @@ SPY:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 90
-		Prerequisites: dome, ~tent, ~techlevel.medium
+		Prerequisites: ~!infantry.england, dome, ~tent, ~techlevel.medium
 	Valued:
 		Cost: 500
 	-Tooltip:
@@ -225,6 +225,17 @@ SPY:
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
+
+SPY.England:
+	Inherits: SPY
+	RenderDisguise:
+		Image: spy
+	Buildable:
+		Prerequisites: ~infantry.england, dome, ~tent, ~techlevel.medium
+	Valued:
+		Cost: 250
+	DisguiseToolTip:
+		Name: British Spy
 
 E7:
 	Inherits: ^Infantry
