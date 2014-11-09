@@ -4,11 +4,16 @@ bin/clibs/mime/core.dylib
 bin/clibs/socket/core.dylib
 bin/clibs52/mime/core.dylib
 bin/clibs52/socket/core.dylib
+bin/clibs53/mime/core.dylib
+bin/clibs53/socket/core.dylib
 bin/libwx.dylib
 bin/liblua.dylib
 bin/liblua52.dylib
+bin/liblua53.dylib
 bin/lua
 bin/lua.app/Contents/Info.plist
 bin/lua.app/Contents/MacOS/lua
 bin/lua.app/Contents/MacOS/lua52
+bin/lua.app/Contents/MacOS/lua53
 bin/lua52
+bin/lua53
