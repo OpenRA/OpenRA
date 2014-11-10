@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Effects
 				circles.Play("circles");
 			}
 
-			if (!building.IsInWorld || building.IsDead())
+			if (!building.Flagged(ActorFlag.InWorld) || building.Flagged(ActorFlag.Dead))
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (building.Owner != building.World.LocalPlayer)
 				return SpriteRenderable.None;
 
-			if (!building.IsInWorld || !building.World.Selection.Actors.Contains(building))
+			if (!building.Flagged(ActorFlag.InWorld) || !building.World.Selection.Actors.Contains(building))
 				return SpriteRenderable.None;
 
 			var pos = wr.world.Map.CenterOfCell(cachedLocation);

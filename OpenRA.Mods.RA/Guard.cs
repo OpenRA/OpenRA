@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA
 
 			var target = FriendlyGuardableUnits(world, mi).FirstOrDefault();
 
-			if (target == null || subjects.All(s => s.IsDead()))
+			if (target == null || subjects.All(s => s.Flagged(ActorFlag.Dead)))
 				yield break;
 
 			foreach (var subject in subjects)
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(World world)
 		{
-			if (subjects.All(s => s.IsDead() || !s.HasTrait<Guard>()))
+			if (subjects.All(s => s.Flagged(ActorFlag.Dead) || !s.HasTrait<Guard>()))
 				world.CancelInputMode();
 		}
 
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA
 		static IEnumerable<Actor> FriendlyGuardableUnits(World world, MouseInput mi)
 		{
 			return world.ScreenMap.ActorsAt(mi)
-				.Where(a => !world.FogObscures(a) && !a.IsDead() &&
+				.Where(a => !world.FogObscures(a) && !a.Flagged(ActorFlag.Dead) &&
 					a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) &&
 					a.HasTrait<Guardable>());
 		}

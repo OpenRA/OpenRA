@@ -243,11 +243,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var assets = template.Get<LabelWidget>("ASSETS");
 			assets.GetText = () => "$" + world.Actors
-				.Where(a => a.Owner == player && !a.IsDead() && a.Info.Traits.WithInterface<ValuedInfo>().Any())
+				.Where(a => a.Owner == player && !a.Flagged(ActorFlag.Dead) && a.Info.Traits.WithInterface<ValuedInfo>().Any())
 				.Sum(a => a.Info.Traits.WithInterface<ValuedInfo>().First().Cost);
 
 			var harvesters = template.Get<LabelWidget>("HARVESTERS");
-			harvesters.GetText = () => world.Actors.Count(a => a.Owner == player && !a.IsDead() && a.HasTrait<Harvester>()).ToString();
+			harvesters.GetText = () => world.Actors.Count(a => a.Owner == player && !a.Flagged(ActorFlag.Dead) && a.HasTrait<Harvester>()).ToString();
 
 			return template;
 		}
@@ -281,7 +281,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			return ScrollItemWidget.Setup(template, () => false, () =>
 			{
-				var playerBase = world.Actors.FirstOrDefault(a => !a.IsDead() && a.HasTrait<BaseBuilding>() && a.Owner == player);
+				var playerBase = world.Actors.FirstOrDefault(a => !a.Flagged(ActorFlag.Dead) && a.HasTrait<BaseBuilding>() && a.Owner == player);
 				if (playerBase != null)
 					worldRenderer.Viewport.Center(playerBase.CenterPosition);
 			});

@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Power
 		{
 			var actors = self.World.ActorsWithTrait<AffectedByPowerOutage>()
 				.Select(tp => tp.Actor)
-				.Where(a => !a.IsDead() && a.IsInWorld && a.Owner == self.Owner);
+				.Where(a => !a.Flagged(ActorFlag.Dead) && a.Flagged(ActorFlag.InWorld) && a.Owner == self.Owner);
 
 			UpdateActors(actors);
 		}

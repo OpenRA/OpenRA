@@ -76,14 +76,14 @@ namespace OpenRA.Mods.RA
 			preventDock = true;
 
 			// Cancel the dock sequence
-			if (dockedHarv != null && !dockedHarv.IsDead())
+			if (dockedHarv != null && !dockedHarv.Flagged(ActorFlag.Dead))
 				dockedHarv.CancelActivity();
 		}
 
 		public void Tick(Actor self)
 		{
 			// Harvester was killed while unloading
-			if (dockedHarv != null && dockedHarv.IsDead())
+			if (dockedHarv != null && dockedHarv.Flagged(ActorFlag.Dead))
 			{
 				self.Trait<RenderBuilding>().CancelCustomAnim(self);
 				dockedHarv = null;

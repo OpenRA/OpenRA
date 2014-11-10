@@ -85,11 +85,11 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick(World world)
 		{
-			if (self.Destroyed)
+			if (self.Flagged(ActorFlag.Destroyed))
 				world.AddFrameEndTask(w => w.Remove(this));
 
 			show = false;
-			if (!self.IsInWorld || self.IsDead() || self.World.RenderPlayer == null)
+			if (!self.Flagged(ActorFlag.InWorld) || self.Flagged(ActorFlag.Dead) || self.World.RenderPlayer == null)
 				return;
 
 			var gps = watcher[self.World.RenderPlayer];
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (!show || self.Destroyed)
+			if (!show || self.Flagged(ActorFlag.Destroyed))
 				return SpriteRenderable.None;
 
 			var palette = wr.Palette(info.IndicatorPalettePrefix + self.Owner.InternalName);

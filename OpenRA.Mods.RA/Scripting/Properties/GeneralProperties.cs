@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			get
 			{
-				return self.IsInWorld;
+				return self.Flagged(ActorFlag.InWorld);
 			}
 
 			set
@@ -42,10 +42,10 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Specifies whether the actor is alive or dead.")]
-		public bool IsDead { get { return self.IsDead(); } }
+		public bool IsDead { get { return self.Flagged(ActorFlag.Dead); } }
 
 		[Desc("Specifies whether the actor is idle (not performing any activities).")]
-		public bool IsIdle { get { return self.IsIdle; } }
+		public bool IsIdle { get { return self.Flagged(ActorFlag.Idle); } }
 
 		[Desc("The player that owns the actor.")]
 		public Player Owner

@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.Destroyed || captor.Destroyed) return;
+				if (self.Flagged(ActorFlag.Destroyed) || captor.Flagged(ActorFlag.Destroyed)) return;
 
 				var previousOwner = self.Owner;
 
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA
 		IEnumerable<Actor> UnitsInRange()
 		{
 			return Self.World.FindActorsInCircle(Self.CenterPosition, WRange.FromCells(Info.Range))
-				.Where(a => a.IsInWorld && a != Self && !a.Destroyed && !a.Owner.NonCombatant);
+				.Where(a => a.Flagged(ActorFlag.InWorld) && a != Self && !a.Flagged(ActorFlag.Destroyed) && !a.Owner.NonCombatant);
 		}
 
 		bool IsClear(Actor self, Player currentOwner, Player originalOwner)

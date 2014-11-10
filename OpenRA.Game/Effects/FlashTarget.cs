@@ -31,13 +31,13 @@ namespace OpenRA.Effects
 
 		public void Tick(World world)
 		{
-			if (--remainingTicks == 0 || !target.IsInWorld)
+			if (--remainingTicks == 0 || !target.Flagged(ActorFlag.InWorld))
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (target.IsInWorld && remainingTicks % 2 == 0)
+			if (target.Flagged(ActorFlag.InWorld) && remainingTicks % 2 == 0)
 			{
 				var palette = wr.Palette(player == null ? "highlight" : "highlight" + player.InternalName);
 				return target.Render(wr)

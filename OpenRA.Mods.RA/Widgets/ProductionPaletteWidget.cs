@@ -91,7 +91,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void Tick()
 		{
-			if (CurrentQueue != null && !CurrentQueue.Actor.IsInWorld)
+			if (CurrentQueue != null && !CurrentQueue.Actor.Flagged(ActorFlag.InWorld))
 				CurrentQueue = null;
 
 			if (CurrentQueue != null)

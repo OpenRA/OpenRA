@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.AI
 
 		protected static bool BusyAttack(Actor a)
 		{
-			if (a.IsIdle)
+			if (a.Flagged(ActorFlag.Idle))
 				return false;
 
 			var type = a.GetCurrentActivity().GetType();

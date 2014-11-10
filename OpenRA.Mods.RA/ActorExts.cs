@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 			if (stance == Stance.Ally)
 				return true;
 
-			if (self.IsDisguised() && !toActor.HasTrait<IgnoresDisguise>())
+			if (self.Flagged(ActorFlag.Disguised) && !toActor.HasTrait<IgnoresDisguise>())
 				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Ally;
 
 			return stance == Stance.Ally;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 			if (stance == Stance.Ally)
 				return false;		/* otherwise, we'll hate friendly disguised spies */
 
-			if (self.IsDisguised() && !toActor.HasTrait<IgnoresDisguise>())
+			if (self.Flagged(ActorFlag.Disguised) && !toActor.HasTrait<IgnoresDisguise>())
 				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Enemy;
 
 			return stance == Stance.Enemy;
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 			self.SetTargetLine(frozen, targetLine, true);
 
 			// Target is still alive - resolve the real order
-			if (frozen.Actor != null && frozen.Actor.IsInWorld)
+			if (frozen.Actor != null && frozen.Actor.Flagged(ActorFlag.InWorld))
 				return Target.FromActor(frozen.Actor);
 
 			if (!order.Queued)

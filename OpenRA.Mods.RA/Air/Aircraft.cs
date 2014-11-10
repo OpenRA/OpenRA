@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA.Air
 				return WVec.Zero;
 
 			return self.World.FindActorsInCircle(self.CenterPosition, info.IdealSeparation)
-				.Where(a => !a.IsDead() && a.HasTrait<Aircraft>())
+				.Where(a => !a.Flagged(ActorFlag.Dead) && a.HasTrait<Aircraft>())
 				.Select(GetRepulsionForce)
 				.Aggregate(WVec.Zero, (a, b) => a + b);
 		}
@@ -162,7 +162,7 @@ namespace OpenRA.Mods.RA.Air
 		{
 			CenterPosition = pos;
 
-			if (self.IsInWorld)
+			if (self.Flagged(ActorFlag.InWorld))
 			{
 				self.World.ScreenMap.Update(self);
 				self.World.ActorMap.UpdatePosition(self, this);

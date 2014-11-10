@@ -51,7 +51,7 @@ namespace OpenRA.Traits
 
 		public void Selected(Actor a)
 		{
-			if (a.IsIdle)
+			if (a.Flagged(ActorFlag.Idle))
 				return;
 
 			// Reset the order line timeout.
@@ -78,7 +78,7 @@ namespace OpenRA.Traits
 
 		public void OnBecomingIdle(Actor a)
 		{
-			if (a.IsIdle)
+			if (a.Flagged(ActorFlag.Idle))
 				targets = null;
 		}
 	}
@@ -104,7 +104,7 @@ namespace OpenRA.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.Destroyed)
+				if (self.Flagged(ActorFlag.Destroyed))
 					return;
 
 				var line = self.TraitOrDefault<DrawLineToTarget>();
@@ -120,7 +120,7 @@ namespace OpenRA.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.Destroyed)
+				if (self.Flagged(ActorFlag.Destroyed))
 					return;
 
 				target.Flash();

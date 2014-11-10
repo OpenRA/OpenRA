@@ -133,7 +133,7 @@ namespace OpenRA.Traits
 		public void UpdateVisibility(Actor a)
 		{
 			// Actors outside the world don't have any vis
-			if (!a.IsInWorld)
+			if (!a.Flagged(ActorFlag.InWorld))
 				return;
 
 			RemoveVisibility(a);

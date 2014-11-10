@@ -125,7 +125,7 @@ namespace OpenRA.Mods.RA
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				if (self.IsInWorld && self.Owner.Shroud.IsExplored(xy))
+				if (self.Flagged(ActorFlag.InWorld) && self.Owner.Shroud.IsExplored(xy))
 				{
 					cursor = "chrono-target";
 					return true;
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA
 				yield break;
 			}
 
-			if (self.IsInWorld && self.Location != xy
+			if (self.Flagged(ActorFlag.InWorld) && self.Location != xy
 				&& self.Trait<PortableChrono>().CanTeleport && self.Owner.Shroud.IsExplored(xy))
 			{
 				world.CancelInputMode();
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(World world)
 		{
-			if (!self.IsInWorld || self.IsDead())
+			if (!self.Flagged(ActorFlag.InWorld) || self.Flagged(ActorFlag.Dead))
 				world.CancelInputMode();
 		}
 
@@ -175,7 +175,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 		{
-			if (!self.IsInWorld || self.Owner != self.World.LocalPlayer)
+			if (!self.Flagged(ActorFlag.InWorld) || self.Owner != self.World.LocalPlayer)
 				yield break;
 
 			if (!self.Trait<PortableChrono>().Info.HasDistanceLimit)
@@ -192,7 +192,7 @@ namespace OpenRA.Mods.RA
 
 		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
-			if (self.IsInWorld && self.Location != xy
+			if (self.Flagged(ActorFlag.InWorld) && self.Location != xy
 				&& self.Trait<PortableChrono>().CanTeleport && self.Owner.Shroud.IsExplored(xy))
 				return "chrono-target";
 			else

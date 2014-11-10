@@ -21,6 +21,17 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
+	[Flags]
+	public enum ActorFlag
+	{
+		None		= 0,
+		InWorld		= 1 << 0,
+		Idle		= 1 << 1,
+		Dead		= 1 << 2,
+		Destroyed	= 1 << 3,
+		Disguised	= 1 << 4,
+	}
+
 	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>
 	{
 		public readonly ActorInfo Info;
@@ -52,9 +63,20 @@ namespace OpenRA
 
 		[Sync] public Player Owner;
 
+		ActorFlag actorFlags;
 		Activity currentActivity;
 		public Group Group;
 		public int Generation;
+
+		public bool Flagged(ActorFlag flag)
+		{
+			return (actorFlags & flag) != 0;
+		}
+
+		internal void SetFlag(ActorFlag flag, bool on)
+		{
+			actorFlags = on ? actorFlags | flag : actorFlags ^ flag;
+		}
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -97,16 +119,14 @@ namespace OpenRA
 
 		public void Tick()
 		{
-			var wasIdle = IsIdle;
+			var wasIdle = Flagged(ActorFlag.Idle);
 			currentActivity = Traits.Util.RunActivity(this, currentActivity);
-			if (!wasIdle && IsIdle)
+
+			SetFlag(ActorFlag.Idle, currentActivity == null);
+
+			if (!wasIdle && Flagged(ActorFlag.Idle))
 				foreach (var n in TraitsImplementing<INotifyBecomingIdle>())
 					n.OnBecomingIdle(this);
-		}
-
-		public bool IsIdle
-		{
-			get { return currentActivity == null; }
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
@@ -123,8 +143,6 @@ namespace OpenRA
 				foreach (var renderable in render.Render(this, wr))
 					yield return renderable;
 		}
-
-		public bool IsInWorld { get; internal set; }
 
 		public void QueueActivity(bool queued, Activity nextActivity)
 		{
@@ -170,7 +188,7 @@ namespace OpenRA
 
 		public override string ToString()
 		{
-			return "{0} {1}{2}".F(Info.Name, ActorID, IsInWorld ? "" : " (not in world)");
+			return "{0} {1}{2}".F(Info.Name, ActorID, Flagged(ActorFlag.InWorld) ? "" : " (not in world)");
 		}
 
 		public T Trait<T>()
@@ -198,20 +216,19 @@ namespace OpenRA
 			World.traitDict.AddTrait(this, trait);
 		}
 
-		public bool Destroyed { get; private set; }
-
 		public void Destroy()
 		{
 			World.AddFrameEndTask(w =>
 			{
-				if (Destroyed)
+				if (Flagged(ActorFlag.Destroyed))
 					return;
 
-				if (IsInWorld)
+				if (Flagged(ActorFlag.InWorld))
 					World.Remove(this);
 
 				World.traitDict.RemoveActor(this);
-				Destroyed = true;
+				SetFlag(ActorFlag.Destroyed, true);
+				SetFlag(ActorFlag.Dead, true);
 
 				if (luaInterface != null)
 					luaInterface.Value.OnActorDestroyed();
@@ -223,7 +240,7 @@ namespace OpenRA
 		{
 			World.AddFrameEndTask(w =>
 			{
-				if (this.Destroyed)
+				if (Flagged(ActorFlag.Destroyed))
 					return;
 
 				var oldOwner = Owner;
@@ -239,17 +256,10 @@ namespace OpenRA
 			});
 		}
 
-		public bool IsDead()
+		public void ChangeDisguise()
 		{
-			if (Destroyed)
-				return true;
-
-			return (health.Value == null) ? false : health.Value.IsDead;
-		}
-
-		public bool IsDisguised()
-		{
-			return effectiveOwner.Value != null && effectiveOwner.Value.Disguised;
+			if (effectiveOwner.Value != null)
+				SetFlag(ActorFlag.Disguised, effectiveOwner.Value.Disguised);
 		}
 
 		public void Kill(Actor attacker)

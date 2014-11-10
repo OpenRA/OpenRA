@@ -132,7 +132,7 @@ namespace OpenRA.Traits
 			var i = (worldPx.X / info.BinSize).Clamp(0, cols - 1);
 			var j = (worldPx.Y / info.BinSize).Clamp(0, rows - 1);
 			return actors[j * cols + i]
-				.Where(kv => kv.Key.IsInWorld && kv.Value.Contains(worldPx))
+				.Where(kv => kv.Key.Flagged(ActorFlag.InWorld) && kv.Value.Contains(worldPx))
 				.Select(kv => kv.Key);
 		}
 
@@ -159,7 +159,7 @@ namespace OpenRA.Traits
 					foreach (var kvp in actors[j * cols + i])
 					{
 						var actor = kvp.Key;
-						if (actor.IsInWorld && kvp.Value.IntersectsWith(r) && actorsChecked.Add(actor))
+						if (actor.Flagged(ActorFlag.InWorld) && kvp.Value.IntersectsWith(r) && actorsChecked.Add(actor))
 							yield return actor;
 					}
 		}

@@ -98,7 +98,7 @@ namespace OpenRA.Traits
 			foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
 				nd.DamageStateChanged(self, ai);
 
-			if (Info.NotifyAppliedDamage && repairer != null && repairer.IsInWorld && !repairer.IsDead())
+			if (Info.NotifyAppliedDamage && repairer != null && repairer.Flagged(ActorFlag.InWorld) && !repairer.Flagged(ActorFlag.Dead))
 				foreach (var nd in repairer.TraitsImplementing<INotifyAppliedDamage>()
 				         .Concat(repairer.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
 					nd.AppliedDamage(repairer, self, ai);
@@ -141,7 +141,7 @@ namespace OpenRA.Traits
 				foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
 					nd.DamageStateChanged(self, ai);
 
-			if (Info.NotifyAppliedDamage && attacker != null && attacker.IsInWorld && !attacker.IsDead())
+			if (Info.NotifyAppliedDamage && attacker != null && attacker.Flagged(ActorFlag.InWorld) && !attacker.Flagged(ActorFlag.Dead))
 				foreach (var nd in attacker.TraitsImplementing<INotifyAppliedDamage>()
 					 .Concat(attacker.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
 				nd.AppliedDamage(attacker, self, ai);
@@ -181,7 +181,7 @@ namespace OpenRA.Traits
 	{
 		public static DamageState GetDamageState(this Actor self)
 		{
-			if (self.Destroyed)
+			if (self.Flagged(ActorFlag.Destroyed))
 				return DamageState.Dead;
 
 			var health = self.TraitOrDefault<Health>();
@@ -190,7 +190,7 @@ namespace OpenRA.Traits
 
 		public static void InflictDamage(this Actor self, Actor attacker, int damage, DamageWarhead warhead)
 		{
-			if (self.Destroyed) return;
+			if (self.Flagged(ActorFlag.Destroyed)) return;
 			var health = self.TraitOrDefault<Health>();
 			if (health == null) return;
 			health.InflictDamage(self, attacker, damage, warhead, false);

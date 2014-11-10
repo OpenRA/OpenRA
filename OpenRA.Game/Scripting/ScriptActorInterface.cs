@@ -22,7 +22,7 @@ namespace OpenRA.Scripting
 		protected override string MemberNotFoundError(string memberName)
 		{
 			var actorName = actor.Info.Name;
-			if (actor.IsDead())
+			if (actor.Flagged(ActorFlag.Dead))
 				actorName += " (dead)";
 
 			return "Actor '{0}' does not define a property '{1}'".F(actorName, memberName);
@@ -41,7 +41,7 @@ namespace OpenRA.Scripting
 			var commandClasses = context.ActorCommands[actor.Info].AsEnumerable();
 
 			// Destroyed actors cannot have their traits queried
-			if (actor.Destroyed)
+			if (actor.Flagged(ActorFlag.Destroyed))
 				commandClasses = commandClasses.Where(c => c.HasAttribute<ExposedForDestroyedActors>());
 
 			var args = new object[] { context, actor };

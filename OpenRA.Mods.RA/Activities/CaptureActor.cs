@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		protected override void OnInside(Actor self)
 		{
-			if (actor.IsDead() || capturable.BeingCaptured)
+			if (actor.Flagged(ActorFlag.Dead) || capturable.BeingCaptured)
 				return;
 
 			var b = actor.TraitOrDefault<Building>();
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Activities
 				if (b != null && b.Locked)
 					b.Unlock();
 
-				if (actor.IsDead() || capturable.BeingCaptured)
+				if (actor.Flagged(ActorFlag.Dead) || capturable.BeingCaptured)
 					return;
 
 				var health = actor.Trait<Health>();

@@ -33,9 +33,9 @@ namespace OpenRA.Mods.Common
 		{
 			if (claimByActor.Remove(claim.Claimer) & claimByCell.Remove(claim.Cell))
 			{
-				if (claim.Claimer.Destroyed) return;
-				if (!claim.Claimer.IsInWorld) return;
-				if (claim.Claimer.IsDead()) return;
+				if (claim.Claimer.Flagged(ActorFlag.Destroyed)) return;
+				if (!claim.Claimer.Flagged(ActorFlag.InWorld)) return;
+				if (claim.Claimer.Flagged(ActorFlag.Dead)) return;
 
 				claim.Claimer.Trait<INotifyResourceClaimLost>().OnNotifyResourceClaimLost(claim.Claimer, claim, claimer);
 			}

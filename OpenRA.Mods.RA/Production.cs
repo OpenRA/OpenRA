@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 		public Production(ProductionInfo info, Actor self)
 		{
 			Info = info;
-			rp = Exts.Lazy(() => self.IsDead() ? null : self.TraitOrDefault<RallyPoint>());
+			rp = Exts.Lazy(() => self.Flagged(ActorFlag.Dead) ? null : self.TraitOrDefault<RallyPoint>());
 		}
 
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string raceVariant)
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA
 
 				newUnit.SetTargetLine(target, rp.Value != null ? Color.Red : Color.Green, false);
 
-				if (!self.IsDead())
+				if (!self.Flagged(ActorFlag.Dead))
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())
 						t.UnitProduced(self, newUnit, exit);
 

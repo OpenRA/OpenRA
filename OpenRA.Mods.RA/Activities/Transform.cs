@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.IsDead())
+				if (self.Flagged(ActorFlag.Dead))
 					return;
 
 				foreach (var nt in self.TraitsImplementing<INotifyTransform>())

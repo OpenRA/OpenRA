@@ -70,7 +70,7 @@ namespace OpenRA
 				if (o == null)
 					continue;
 
-				if (o.Subject.Destroyed)
+				if (o.Subject.Flagged(ActorFlag.Destroyed))
 					continue;
 
 				foreach (var v in o.Subject.TraitsImplementing<IOrderVoice>())

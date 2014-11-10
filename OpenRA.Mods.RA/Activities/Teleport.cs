@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Activities
 				foreach (var a in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())
 					a.Trait.Enable();
 
-			if (chronosphere != null && !chronosphere.Destroyed && chronosphere.HasTrait<RenderBuilding>())
+			if (chronosphere != null && !chronosphere.Flagged(ActorFlag.Destroyed) && chronosphere.HasTrait<RenderBuilding>())
 				chronosphere.Trait<RenderBuilding>().PlayCustomAnim(chronosphere, "active");
 
 			return NextActivity;
