@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				if (target.IsDead())
+				if (target.IsDead)
 					return;
 
 				for (var f = 0; f < flashes; f++)
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Activities
 
 				w.Add(new DelayedAction(delay, () =>
 				{
-					if (target.IsDead())
+					if (target.IsDead)
 						return;
 
 					var modifiers = target.TraitsImplementing<IDamageModifier>()

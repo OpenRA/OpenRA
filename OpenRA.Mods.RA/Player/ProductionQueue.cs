@@ -372,7 +372,7 @@ namespace OpenRA.Mods.RA
 		protected virtual bool BuildUnit(string name)
 		{
 			// Cannot produce if i'm dead
-			if (!self.IsInWorld || self.IsDead())
+			if (!self.IsInWorld || self.IsDead)
 			{
 				CancelProduction(name, 1);
 				return true;

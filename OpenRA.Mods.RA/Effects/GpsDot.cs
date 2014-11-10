@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA.Effects
 				world.AddFrameEndTask(w => w.Remove(this));
 
 			show = false;
-			if (!self.IsInWorld || self.IsDead() || self.World.RenderPlayer == null)
+			if (!self.IsInWorld || self.IsDead || self.World.RenderPlayer == null)
 				return;
 
 			var gps = watcher[self.World.RenderPlayer];

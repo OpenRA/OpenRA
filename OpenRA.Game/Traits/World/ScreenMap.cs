@@ -84,7 +84,7 @@ namespace OpenRA.Traits
 		public void Add(Actor a)
 		{
 			var pos = worldRenderer.ScreenPxPosition(a.CenterPosition);
-			var bounds = a.Bounds.Value;
+			var bounds = a.Bounds;
 			bounds.Offset(pos.X, pos.Y);
 
 			var top = Math.Max(0, bounds.Top / info.BinSize);

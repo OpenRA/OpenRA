@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 				case State.Dock:
 					ru.PlayCustomAnimation(self, "dock", () => {
 						ru.PlayCustomAnimRepeating(self, "dock-loop");
-						if (proc.IsInWorld && !proc.IsDead())
+						if (proc.IsInWorld && !proc.IsDead)
 							foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
 								nd.Docked(proc, self);
 						state = State.Loop;
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 					state = State.Wait;
 					return this;
 				case State.Loop:
-					if (!proc.IsInWorld || proc.IsDead() || harv.TickUnload(self, proc))
+					if (!proc.IsInWorld || proc.IsDead || harv.TickUnload(self, proc))
 						state = State.Undock;
 					return this;
 				case State.Undock:
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA
 				case State.Complete:
 					harv.LastLinkedProc = harv.LinkedProc;
 					harv.LinkProc(self, null);
-					if (proc.IsInWorld && !proc.IsDead())
+					if (proc.IsInWorld && !proc.IsDead)
 						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
 							nd.Undocked(proc, self);
 					return NextActivity;

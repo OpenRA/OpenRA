@@ -81,7 +81,8 @@ namespace OpenRA.Graphics
 			if (Game.Settings.Game.TeamHealthColors)
 			{
 				var isAlly = actor.Owner.IsAlliedWith(actor.World.LocalPlayer)
-					|| (actor.IsDisguised() && actor.World.LocalPlayer.IsAlliedWith(actor.EffectiveOwner.Owner));
+					|| (actor.EffectiveOwner != null && actor.EffectiveOwner.Disguised
+					&& actor.World.LocalPlayer.IsAlliedWith(actor.EffectiveOwner.Owner));
 				return isAlly ?	Color.LimeGreen : actor.Owner.NonCombatant ? Color.Tan : Color.Red;
 			}
 			else
@@ -137,13 +138,13 @@ namespace OpenRA.Graphics
 		public void BeforeRender(WorldRenderer wr) {}
 		public void Render(WorldRenderer wr)
 		{
-			if (!actor.IsInWorld || actor.IsDead())
+			if (!actor.IsInWorld || actor.IsDead)
 				return;
 
 			var health = actor.TraitOrDefault<Health>();
 
 			var screenPos = wr.ScreenPxPosition(pos);
-			var bounds = actor.Bounds.Value;
+			var bounds = actor.Bounds;
 			bounds.Offset(screenPos.X, screenPos.Y);
 
 			var xy = new float2(bounds.Left, bounds.Top);

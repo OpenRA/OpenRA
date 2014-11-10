@@ -41,7 +41,7 @@ namespace OpenRA.Traits
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer) && self.World.FogObscures(self))
 				yield break;
 
-			var b = self.Bounds.Value;
+			var b = self.Bounds;
 			var pos = wr.ScreenPxPosition(self.CenterPosition);
 			var tl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Top));
 			var bl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Bottom));
@@ -85,7 +85,7 @@ namespace OpenRA.Traits
 			var pipxyBase = basePosition + new int2(1 - pipSize.X / 2, - (3 + pipSize.Y / 2));
 			var pipxyOffset = new int2(0, 0);
 			var pal = wr.Palette(Info.Palette);
-			var width = self.Bounds.Value.Width;
+			var width = self.Bounds.Width;
 
 			foreach (var pips in pipSources)
 			{

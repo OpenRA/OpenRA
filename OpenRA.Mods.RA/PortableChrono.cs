@@ -164,7 +164,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(World world)
 		{
-			if (!self.IsInWorld || self.IsDead())
+			if (!self.IsInWorld || self.IsDead)
 				world.CancelInputMode();
 		}
 

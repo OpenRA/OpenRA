@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 				{
 					var prevItems = GetNumBuildables(self.Owner);
 
-					if (order.TargetActor.IsDead())
+					if (order.TargetActor.IsDead)
 						return;
 
 					var unit = self.World.Map.Rules.Actors[order.TargetString];

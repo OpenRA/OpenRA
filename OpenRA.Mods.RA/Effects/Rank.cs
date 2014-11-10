@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick(World world)
 		{
-			if (self.IsDead())
+			if (self.IsDead)
 				world.AddFrameEndTask(w => w.Remove(this));
 			else
 				anim.Tick();
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (!self.IsInWorld)
 				yield break;
 
-			if (self.IsDead())
+			if (self.IsDead)
 				yield break;
 
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Effects
 				yield break;
 
 			var pos = wr.ScreenPxPosition(self.CenterPosition);
-			var bounds = self.Bounds.Value;
+			var bounds = self.Bounds;
 			bounds.Offset(pos.X, pos.Y);
 
 			var palette = wr.Palette(paletteName);

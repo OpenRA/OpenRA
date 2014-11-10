@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Specifies whether the actor is alive or dead.")]
-		public bool IsDead { get { return self.IsDead(); } }
+		public bool IsDead { get { return self.IsDead; } }
 
 		[Desc("Specifies whether the actor is idle (not performing any activities).")]
 		public bool IsIdle { get { return self.IsIdle; } }
