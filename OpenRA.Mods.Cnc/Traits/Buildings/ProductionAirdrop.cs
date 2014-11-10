@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() =>
 				{
-					if (!self.IsInWorld || self.IsDead())
+					if (!self.IsInWorld || self.IsDead)
 						return;
 
 					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())

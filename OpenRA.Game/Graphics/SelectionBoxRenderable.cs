@@ -22,7 +22,7 @@ namespace OpenRA.Graphics
 		readonly Color color;
 
 		public SelectionBoxRenderable(Actor actor, Color color)
-			: this(actor.CenterPosition, actor.Bounds.Value, 1f, color) { }
+			: this(actor.CenterPosition, actor.Bounds, 1f, color) { }
 
 		public SelectionBoxRenderable(WPos pos, Rectangle bounds, float scale, Color color)
 		{

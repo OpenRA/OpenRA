@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Effects
 				circles.Play("circles");
 			}
 
-			if (!building.IsInWorld || building.IsDead())
+			if (!building.IsInWorld || building.IsDead)
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 

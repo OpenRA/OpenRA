@@ -88,7 +88,7 @@ namespace OpenRA
 				return;
 			}
 
-			var groupActors = controlGroups[group].Where(a => !a.IsDead());
+			var groupActors = controlGroups[group].Where(a => !a.IsDead);
 
 			if (mods.HasModifier(Modifiers.Alt) || MultiTapCount >= 2)
 			{

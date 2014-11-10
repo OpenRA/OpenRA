@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA.Crates
 			{
 				foreach (var a in actorsInRange.Append(collector))
 				{
-					if (!a.IsInWorld || a.IsDead())
+					if (!a.IsInWorld || a.IsDead)
 						continue;
 
 					var um = a.TraitOrDefault<UpgradeManager>();

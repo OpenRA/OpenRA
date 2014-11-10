@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			self.World.AddFrameEndTask(w => 
 			{
-				if (self.IsDead() || transport.IsDead() || !cargo.CanLoad(transport, self))
+				if (self.IsDead || transport.IsDead || !cargo.CanLoad(transport, self))
 					return;
 
 				cargo.Load(transport, self);

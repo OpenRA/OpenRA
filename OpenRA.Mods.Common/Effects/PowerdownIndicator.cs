@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public void Tick(World world)
 		{
-			if (!a.IsInWorld || a.IsDead() || !a.Trait<CanPowerDown>().Disabled)
+			if (!a.IsInWorld || a.IsDead || !a.Trait<CanPowerDown>().Disabled)
 				world.AddFrameEndTask(w => w.Remove(this));
 
 			anim.Tick();

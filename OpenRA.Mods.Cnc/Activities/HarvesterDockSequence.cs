@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Cnc
 				case State.Dock:
 					ru.PlayCustomAnimation(self, "dock", () => {
 						ru.PlayCustomAnimRepeating(self, "dock-loop");
-						if (proc.IsInWorld && !proc.IsDead())
+						if (proc.IsInWorld && !proc.IsDead)
 							foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
 								nd.Docked(proc, self);
 						state = State.Loop;
@@ -63,12 +63,12 @@ namespace OpenRA.Mods.Cnc
 					state = State.Wait;
 					return this;
 				case State.Loop:
-					if (!proc.IsInWorld || proc.IsDead() || harv.TickUnload(self, proc))
+					if (!proc.IsInWorld || proc.IsDead || harv.TickUnload(self, proc))
 						state = State.Undock;
 					return this;
 				case State.Undock:
 					ru.PlayCustomAnimBackwards(self, "dock", () => state = State.DragOut);
-					if (proc.IsInWorld && !proc.IsDead())
+					if (proc.IsInWorld && !proc.IsDead)
 						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
 							nd.Undocked(proc, self);
 					state = State.Wait;

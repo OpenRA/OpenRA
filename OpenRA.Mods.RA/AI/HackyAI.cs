@@ -475,7 +475,7 @@ namespace OpenRA.Mods.RA.AI
 
 		List<Actor> FindEnemyConstructionYards()
 		{
-			return world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy && !a.IsDead()
+			return world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy && !a.IsDead
 				&& a.HasTrait<BaseBuilding>() && !a.HasTrait<Mobile>()).ToList();
 		}
 
@@ -483,7 +483,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			squads.RemoveAll(s => !s.IsValid);
 			foreach (var s in squads)
-				s.units.RemoveAll(a => a.IsDead() || a.Owner != p);
+				s.units.RemoveAll(a => a.IsDead || a.Owner != p);
 		}
 
 		// Use of this function requires that one squad of this type. Hence it is a piece of shit
@@ -506,8 +506,8 @@ namespace OpenRA.Mods.RA.AI
 		void AssignRolesToIdleUnits(Actor self)
 		{
 			CleanSquads();
-			activeUnits.RemoveAll(a => a.IsDead() || a.Owner != p); 
-			unitsHangingAroundTheBase.RemoveAll(a => a.IsDead() || a.Owner != p);
+			activeUnits.RemoveAll(a => a.IsDead || a.Owner != p); 
+			unitsHangingAroundTheBase.RemoveAll(a => a.IsDead || a.Owner != p);
 
 			if (--rushTicks <= 0)
 			{

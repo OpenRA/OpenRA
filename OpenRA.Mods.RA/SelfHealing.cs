@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			if (self.IsDead() || disabled)
+			if (self.IsDead || disabled)
 				return;
 
 			if (health.HP >= info.HealIfBelow * health.MaxHP)

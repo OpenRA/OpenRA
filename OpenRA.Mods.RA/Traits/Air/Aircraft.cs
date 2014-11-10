@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA.Traits
 				return WVec.Zero;
 
 			return self.World.FindActorsInCircle(self.CenterPosition, info.IdealSeparation)
-				.Where(a => !a.IsDead() && a.HasTrait<Aircraft>())
+				.Where(a => !a.IsDead && a.HasTrait<Aircraft>())
 				.Select(GetRepulsionForce)
 				.Aggregate(WVec.Zero, (a, b) => a + b);
 		}

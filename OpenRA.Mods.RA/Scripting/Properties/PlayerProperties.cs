@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public Actor[] GetGroundAttackers()
 		{
 			return player.World.ActorsWithTrait<AttackBase>().Select(a => a.Actor)
-				.Where(a => a.Owner == player && !a.IsDead() && a.IsInWorld && a.HasTrait<Mobile>())
+				.Where(a => a.Owner == player && !a.IsDead && a.IsInWorld && a.HasTrait<Mobile>())
 				.ToArray();
 		}
 	}

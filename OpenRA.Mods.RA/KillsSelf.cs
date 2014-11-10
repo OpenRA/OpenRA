@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
 
 		void Kill()
 		{
-			if (self.IsDead())
+			if (self.IsDead)
 				return;
 
 			if (info.RemoveInstead || !self.HasTrait<Health>())

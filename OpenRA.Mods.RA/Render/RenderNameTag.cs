@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Render
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			var pos = wr.ScreenPxPosition(self.CenterPosition);
-			var bounds = self.Bounds.Value;
+			var bounds = self.Bounds;
 			bounds.Offset(pos.X, pos.Y);
 			var spaceBuffer = (int)(10 / wr.Viewport.Zoom);
 			var effectPos = wr.Position(new int2(pos.X, bounds.Y - spaceBuffer));
