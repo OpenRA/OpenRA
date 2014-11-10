@@ -238,7 +238,7 @@ PDOX:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
-		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
+		Prerequisites: atek, ~structures.allies, ~!structures.germany, ~techlevel.unrestricted
 		BuildLimit: 1
 	Valued:
 		Cost: 1500
@@ -277,6 +277,20 @@ PDOX:
 		Amount: -200
 	MustBeDestroyed:
 		RequiredForShortGame: false
+
+PDOX.Germany:
+	Inherits: PDOX
+	Buildable:
+		Prerequisites: atek, ~structures.germany, ~techlevel.unrestricted
+	RenderBuilding:
+		Image: pdox
+	Tooltip:
+		Name: Advanced Chronosphere
+		Description: Teleports a large group of units across the\nmap for a short time. Requires power to operate.\n  Special Ability: Chronoshift\n\nMaximum 1 can be built
+	ChronoshiftPower:
+		Description: Advanced Chronoshift
+		LongDesc: Teleports a large group of units across the\nmap for 20 seconds.
+		Range: 2
 
 TSLA:
 	Inherits: ^Defense
