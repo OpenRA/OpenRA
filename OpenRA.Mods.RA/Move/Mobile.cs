@@ -350,7 +350,7 @@ namespace OpenRA.Mods.RA.Move
 		public void SetVisualPosition(Actor self, WPos pos)
 		{
 			CenterPosition = pos;
-			if (self.IsInWorld)
+			if (self.Flagged(ActorFlag.InWorld))
 			{
 				self.World.ScreenMap.Update(self);
 				self.World.ActorMap.UpdatePosition(self, this);
@@ -453,7 +453,7 @@ namespace OpenRA.Mods.RA.Move
 					return;
 
 				PerformMove(self, self.World.Map.Clamp(order.TargetLocation),
-					order.Queued && !self.IsIdle);
+					order.Queued && !self.Flagged(ActorFlag.Idle));
 			}
 
 			if (order.OrderString == "Stop")
@@ -543,13 +543,13 @@ namespace OpenRA.Mods.RA.Move
 
 		public void AddInfluence()
 		{
-			if (self.IsInWorld)
+			if (self.Flagged(ActorFlag.InWorld))
 				self.World.ActorMap.AddInfluence(self, this);
 		}
 
 		public void RemoveInfluence()
 		{
-			if (self.IsInWorld)
+			if (self.Flagged(ActorFlag.InWorld))
 				self.World.ActorMap.RemoveInfluence(self, this);
 		}
 
@@ -560,7 +560,7 @@ namespace OpenRA.Mods.RA.Move
 				return;		/* don't allow ourselves to be pushed around
 							 * by the enemy! */
 
-			if (!force && !self.IsIdle)
+			if (!force && !self.Flagged(ActorFlag.Idle))
 				return;		/* don't nudge if we're busy doing something! */
 
 			// pick an adjacent available cell.
@@ -641,7 +641,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public void OnNotifyBlockingMove(Actor self, Actor blocking)
 		{
-			if (self.IsIdle && self.AppearsFriendlyTo(blocking))
+			if (self.Flagged(ActorFlag.Idle) && self.AppearsFriendlyTo(blocking))
 				Nudge(self, blocking, true);
 		}
 

@@ -43,18 +43,18 @@ namespace OpenRA.Mods.TS
 					state = State.Dock;
 					return Util.SequenceActivities(new Turn(self, 160), this);
 				case State.Dock:
-					if (proc.IsInWorld && !proc.IsDead())
+					if (proc.Flagged(ActorFlag.InWorld) && !proc.Flagged(ActorFlag.Dead))
 						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
 							nd.Docked(proc, self);
 					state = State.Loop;
 					body.Docked = true;
 					return this;
 				case State.Loop:
-					if (!proc.IsInWorld || proc.IsDead() || harv.TickUnload(self, proc))
+					if (!proc.Flagged(ActorFlag.InWorld) || proc.Flagged(ActorFlag.Dead) || harv.TickUnload(self, proc))
 						state = State.Undock;
 					return this;
 				case State.Undock:
-					if (proc.IsInWorld && !proc.IsDead())
+					if (proc.Flagged(ActorFlag.InWorld) && !proc.Flagged(ActorFlag.Dead))
 						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
 							nd.Undocked(proc, self);
 					body.Docked = false;

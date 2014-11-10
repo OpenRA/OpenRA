@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				if (!self.Destroyed)
+				if (!self.Flagged(ActorFlag.Destroyed))
 					w.Add(new Corpse(w, self.CenterPosition, renderSimple.GetImage(self), sequence, palette));
 			});
 		}

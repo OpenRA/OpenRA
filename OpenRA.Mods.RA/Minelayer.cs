@@ -166,7 +166,7 @@ namespace OpenRA.Mods.RA
 
 			public void Tick(World world)
 			{
-				if (!minelayer.IsInWorld || minelayer.IsDead())
+				if (!minelayer.Flagged(ActorFlag.InWorld) || minelayer.Flagged(ActorFlag.Dead))
 					world.CancelInputMode();
 			}
 
@@ -174,7 +174,7 @@ namespace OpenRA.Mods.RA
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
-				if (!minelayer.IsInWorld)
+				if (!minelayer.Flagged(ActorFlag.InWorld))
 					yield break;
 
 				var movement = minelayer.Trait<IPositionable>();

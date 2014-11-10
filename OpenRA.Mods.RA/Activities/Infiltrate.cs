@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		protected override void OnInside(Actor self)
 		{
-			if (target.IsDead() || target.Owner == self.Owner)
+			if (target.Flagged(ActorFlag.Dead) || target.Owner == self.Owner)
 				return;
 
 			foreach (var t in target.TraitsImplementing<INotifyInfiltrated>())

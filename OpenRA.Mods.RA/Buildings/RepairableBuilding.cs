@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 					self.World.AddFrameEndTask(w =>
 					{
-						if (!self.IsDead())
+						if (!self.Flagged(ActorFlag.Dead))
 							w.Add(new RepairIndicator(self, Info.IndicatorPalettePrefix));
 					});
 				}

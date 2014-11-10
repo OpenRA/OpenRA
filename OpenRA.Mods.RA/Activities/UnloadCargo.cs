@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA.Activities
 			cargo.Unload(self);
 			self.World.AddFrameEndTask(w =>
 			{
-				if (actor.Destroyed)
+				if (actor.Flagged(ActorFlag.Destroyed))
 					return;
 
 				var move = actor.Trait<IMove>();

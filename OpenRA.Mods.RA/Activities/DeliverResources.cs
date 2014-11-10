@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Activities
 			var harv = self.Trait<Harvester>();
 
 			// Find the nearest best refinery if not explicitly ordered to a specific refinery:
-			if (harv.OwnerLinkedProc == null || !harv.OwnerLinkedProc.IsInWorld)
+			if (harv.OwnerLinkedProc == null || !harv.OwnerLinkedProc.Flagged(ActorFlag.InWorld))
 			{
 				// Maybe we lost the owner-linked refinery:
 				harv.OwnerLinkedProc = null;
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Activities
 				harv.LinkProc(self, harv.OwnerLinkedProc);
 			}
 
-			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
+			if (harv.LinkedProc == null || !harv.LinkedProc.Flagged(ActorFlag.InWorld))
 				harv.ChooseNewProc(self, null);
 
 			if (harv.LinkedProc == null)	// no procs exist; check again in 1s.

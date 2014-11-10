@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 		{
 			var info = self.Info.Traits.Get<GivesBountyInfo>();
 
-			if (e.Attacker == null || e.Attacker.Destroyed)	return;
+			if (e.Attacker == null || e.Attacker.Flagged(ActorFlag.Destroyed))	return;
 
 			if (!info.Stances.Contains(e.Attacker.Owner.Stances[self.Owner])) return;
 

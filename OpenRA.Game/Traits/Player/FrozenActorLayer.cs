@@ -53,7 +53,7 @@ namespace OpenRA.Traits
 		public uint ID { get { return actor.ActorID; } }
 		public bool IsValid { get { return Owner != null && HasRenderables; } }
 		public ActorInfo Info { get { return actor.Info; } }
-		public Actor Actor { get { return !actor.IsDead() ? actor : null; } }
+		public Actor Actor { get { return !actor.Flagged(ActorFlag.Dead) ? actor : null; } }
 
 		int flashTicks;
 		public void Tick(World world, Shroud shroud)

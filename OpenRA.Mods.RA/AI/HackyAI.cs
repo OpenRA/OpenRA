@@ -361,7 +361,7 @@ namespace OpenRA.Mods.RA.AI
 				case BuildingType.Defense:
 
 					// Build near the closest enemy structure
-					var closestEnemy = world.Actors.Where(a => !a.Destroyed && a.HasTrait<Building>() && p.Stances[a.Owner] == Stance.Enemy)
+					var closestEnemy = world.Actors.Where(a => !a.Flagged(ActorFlag.Destroyed) && a.HasTrait<Building>() && p.Stances[a.Owner] == Stance.Enemy)
 						.ClosestTo(world.Map.CenterOfCell(defenseCenter));
 
 					var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
@@ -475,7 +475,7 @@ namespace OpenRA.Mods.RA.AI
 
 		List<Actor> FindEnemyConstructionYards()
 		{
-			return world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy && !a.IsDead()
+			return world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy && !a.Flagged(ActorFlag.Dead)
 				&& a.HasTrait<BaseBuilding>() && !a.HasTrait<Mobile>()).ToList();
 		}
 
@@ -483,7 +483,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			squads.RemoveAll(s => !s.IsValid);
 			foreach (var s in squads)
-				s.units.RemoveAll(a => a.IsDead() || a.Owner != p);
+				s.units.RemoveAll(a => a.Flagged(ActorFlag.Dead) || a.Owner != p);
 		}
 
 		// Use of this function requires that one squad of this type. Hence it is a piece of shit
@@ -506,8 +506,8 @@ namespace OpenRA.Mods.RA.AI
 		void AssignRolesToIdleUnits(Actor self)
 		{
 			CleanSquads();
-			activeUnits.RemoveAll(a => a.IsDead() || a.Owner != p); 
-			unitsHangingAroundTheBase.RemoveAll(a => a.IsDead() || a.Owner != p);
+			activeUnits.RemoveAll(a => a.Flagged(ActorFlag.Dead) || a.Owner != p); 
+			unitsHangingAroundTheBase.RemoveAll(a => a.Flagged(ActorFlag.Dead) || a.Owner != p);
 
 			if (--rushTicks <= 0)
 			{
@@ -542,7 +542,7 @@ namespace OpenRA.Mods.RA.AI
 				if (harv == null)
 					continue;
 
-				if (!a.IsIdle)
+				if (!a.Flagged(ActorFlag.Idle))
 				{
 					var act = a.GetCurrentActivity();
 
@@ -609,7 +609,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			var allEnemyBaseBuilder = FindEnemyConstructionYards();
 			var ownUnits = activeUnits
-				.Where(unit => unit.HasTrait<AttackBase>() && !unit.HasTrait<Aircraft>() && unit.IsIdle).ToList();
+				.Where(unit => unit.HasTrait<AttackBase>() && !unit.HasTrait<Aircraft>() && unit.Flagged(ActorFlag.Idle)).ToList();
 
 			if (!allEnemyBaseBuilder.Any() || (ownUnits.Count < Info.SquadSize))
 				return;
@@ -920,7 +920,7 @@ namespace OpenRA.Mods.RA.AI
 				}
 			}
 
-			if (e.Attacker.Destroyed)
+			if (e.Attacker.Flagged(ActorFlag.Destroyed))
 				return;
 
 			if (!e.Attacker.HasTrait<ITargetable>())

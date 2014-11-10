@@ -155,7 +155,7 @@ namespace OpenRA.Mods.RA
 			Location = cell;
 			CenterPosition = self.World.Map.CenterOfCell(cell);
 
-			if (self.IsInWorld)
+			if (self.Flagged(ActorFlag.InWorld))
 			{
 				self.World.ActorMap.UpdatePosition(self, this);
 				self.World.ScreenMap.Update(self);

@@ -97,7 +97,7 @@ namespace OpenRA.Mods.D2k.Widgets
 				.Where(p => p.Actor.Owner == world.LocalPlayer)
 				.Select(p => p.Trait);
 
-			if (CurrentQueue != null && CurrentQueue.Actor.Destroyed)
+			if (CurrentQueue != null && CurrentQueue.Actor.Flagged(ActorFlag.Destroyed))
 				CurrentQueue = null;
 
 			foreach (var queue in queues)

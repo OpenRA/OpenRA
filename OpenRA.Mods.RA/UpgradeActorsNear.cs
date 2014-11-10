@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA
 
 		void ActorEntered(Actor a)
 		{
-			if (a.Destroyed)
+			if (a.Flagged(ActorFlag.Destroyed))
 				return;
 
 			if (a == self && !info.AffectsParent)
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA
 
 		void ActorExited(Actor a)
 		{
-			if (a == self || a.Destroyed)
+			if (a == self || a.Flagged(ActorFlag.Destroyed))
 				return;
 
 			var um = a.TraitOrDefault<UpgradeManager>();

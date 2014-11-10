@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Cnc
 				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() =>
 				{
-					if (!self.IsInWorld || self.IsDead())
+					if (!self.Flagged(ActorFlag.InWorld) || self.Flagged(ActorFlag.Dead))
 						return;
 
 					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())

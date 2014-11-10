@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 
 			var target = inRange
 				.Where(a => a != self && a.AppearsFriendlyTo(self))
-				.Where(a => a.IsInWorld && !a.IsDead())
+				.Where(a => a.Flagged(ActorFlag.InWorld) && !a.Flagged(ActorFlag.Dead))
 				.Where(a => a.GetDamageState() > DamageState.Undamaged)
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
 				.ClosestTo(self);

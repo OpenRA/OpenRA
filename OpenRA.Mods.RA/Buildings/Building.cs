@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA.Buildings
 				{
 					var pos = new CPos(x, y);
 					var at = bi.GetBuildingAt(pos);
-					if (at == null || !at.IsInWorld || !at.HasTrait<GivesBuildableArea>())
+					if (at == null || !at.Flagged(ActorFlag.InWorld) || !at.HasTrait<GivesBuildableArea>())
 						continue;
 
 					if (at.Owner == p || (allyBuildRadius && at.Owner.Stances[p] == Stance.Ally))

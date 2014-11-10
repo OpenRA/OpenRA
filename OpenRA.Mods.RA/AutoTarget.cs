@@ -71,14 +71,14 @@ namespace OpenRA.Mods.RA
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (!self.IsIdle || !info.TargetWhenDamaged)
+			if (!self.Flagged(ActorFlag.Idle) || !info.TargetWhenDamaged)
 				return;
 
 			var attacker = e.Attacker;
-			if (attacker.Destroyed || Stance < UnitStance.ReturnFire)
+			if (attacker.Flagged(ActorFlag.Destroyed) || Stance < UnitStance.ReturnFire)
 				return;
 
-			if (!attacker.IsInWorld && !attacker.Destroyed)
+			if (!attacker.Flagged(ActorFlag.InWorld) && !attacker.Flagged(ActorFlag.Destroyed))
 			{
 				// If the aggressor is in a transport, then attack the transport instead
 				var passenger = attacker.TraitOrDefault<Passenger>();
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.RA
 			if (nextScanTime <= 0)
 			{
 				var range = info.ScanRadius > 0 ? WRange.FromCells(info.ScanRadius) : attack.GetMaximumRange();
-				if (self.IsIdle || currentTarget == null || !Target.FromActor(currentTarget).IsInRange(self.CenterPosition, range))
+				if (self.Flagged(ActorFlag.Idle) || currentTarget == null || !Target.FromActor(currentTarget).IsInRange(self.CenterPosition, range))
 					return ChooseTarget(self, range);
 			}
 

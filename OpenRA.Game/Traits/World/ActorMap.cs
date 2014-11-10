@@ -194,7 +194,7 @@ namespace OpenRA.Traits
 				yield break;
 
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (!i.Actor.Destroyed)
+				if (!i.Actor.Flagged(ActorFlag.Destroyed))
 					yield return i.Actor;
 		}
 
@@ -204,7 +204,7 @@ namespace OpenRA.Traits
 				yield break;
 
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (!i.Actor.Destroyed && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
+				if (!i.Actor.Flagged(ActorFlag.Destroyed) && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
 					yield return i.Actor;
 		}
 
@@ -493,7 +493,7 @@ namespace OpenRA.Traits
 				{
 					foreach (var actor in bins[j * cols + i].Actors)
 					{
-						if (actor.IsInWorld)
+						if (actor.Flagged(ActorFlag.InWorld))
 						{
 							var c = actor.CenterPosition;
 							if (left <= c.X && c.X <= right && top <= c.Y && c.Y <= bottom)
@@ -506,7 +506,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> ActorsInWorld()
 		{
-			return bins.SelectMany(bin => bin.Actors.Where(actor => actor.IsInWorld));
+			return bins.SelectMany(bin => bin.Actors.Where(actor => actor.Flagged(ActorFlag.InWorld)));
 		}
 	}
 }

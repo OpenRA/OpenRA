@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA.Scripting
 			if (!sma.Actors.TryGetValue(actorName, out ret))
 				return null;
 
-			if (ret.Destroyed)
+			if (ret.Flagged(ActorFlag.Destroyed))
 				return null;
 
 			return ret;

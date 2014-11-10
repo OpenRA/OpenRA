@@ -79,7 +79,7 @@ namespace OpenRA
 
 		static void CheckDestroyed(Actor actor)
 		{
-			if (actor.Destroyed)
+			if (actor.Flagged(ActorFlag.Destroyed))
 				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
 		}
 

@@ -129,7 +129,7 @@ namespace OpenRA.Mods.RA.Scripting
 					if (squad.Count >= squadSize)
 					{
 						using (func)
-						using (var luaSquad = squad.Where(u => !u.IsDead()).ToArray().ToLuaValue(context))
+						using (var luaSquad = squad.Where(u => !u.Flagged(ActorFlag.Dead)).ToArray().ToLuaValue(context))
 							func.Call(luaSquad).Dispose();
 
 						triggers.OnProducedInternal -= productionHandler;
@@ -230,7 +230,7 @@ namespace OpenRA.Mods.RA.Scripting
 					if (squad.Count >= squadSize)
 					{
 						using (func)
-						using (var luaSquad = squad.Where(u => !u.IsDead()).ToArray().ToLuaValue(context))
+						using (var luaSquad = squad.Where(u => !u.Flagged(ActorFlag.Dead)).ToArray().ToLuaValue(context))
 							func.Call(luaSquad).Dispose();
 
 						foreach (var q in queueTypes)

@@ -114,7 +114,7 @@ namespace OpenRA.Mods.RA
 				{
 					self.World.AddFrameEndTask(w =>
 					{
-						if (!self.IsDead())
+						if (!self.Flagged(ActorFlag.Dead))
 							w.Add(new Rank(self, info.ChevronPalette));
 					});
 				}

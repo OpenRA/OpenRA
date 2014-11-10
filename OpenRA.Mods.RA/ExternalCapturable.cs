@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			if (Captor != null && (!Captor.IsInWorld || Captor.IsDead()))
+			if (Captor != null && (!Captor.Flagged(ActorFlag.InWorld) || Captor.Flagged(ActorFlag.Dead)))
 				EndCapture();
 
 			if (!CaptureInProgress)

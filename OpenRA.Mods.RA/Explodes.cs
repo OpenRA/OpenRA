@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (!self.IsInWorld)
+			if (!self.Flagged(ActorFlag.InWorld))
 				return;
 
 			if (self.World.SharedRandom.Next(100) > explodesInfo.Chance)

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Activities
 			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
 				PathSearch.Search(self.World, mobileInfo, self, true)
 						.WithCustomCost(loc => self.World.FindActorsInCircle(self.World.Map.CenterOfCell(loc), WRange.FromCells(8))
-						.Where(u => !u.Destroyed && self.Owner.Stances[u.Owner] == Stance.Enemy)
+						.Where(u => !u.Flagged(ActorFlag.Destroyed) && self.Owner.Stances[u.Owner] == Stance.Enemy)
 						.Sum(u => Math.Max(0, 64 - (loc - u.Location).LengthSquared)))
 					.WithHeuristic(loc =>
 					{

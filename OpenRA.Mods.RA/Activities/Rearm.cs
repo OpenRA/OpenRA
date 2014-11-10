@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Activities
 				var hostBuilding = self.World.ActorMap.GetUnitsAt(self.Location)
 					.FirstOrDefault(a => a.HasTrait<RenderBuilding>());
 
-				if (hostBuilding == null || !hostBuilding.IsInWorld)
+				if (hostBuilding == null || !hostBuilding.Flagged(ActorFlag.InWorld))
 					return NextActivity;
 
 				if (!limitedAmmo.GiveAmmo())

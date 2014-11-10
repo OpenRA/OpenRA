@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public void Tick(World world)
 		{
-			if (!a.IsInWorld || a.IsDead() || !a.Trait<CanPowerDown>().Disabled)
+			if (!a.Flagged(ActorFlag.InWorld) || a.Flagged(ActorFlag.Dead) || !a.Trait<CanPowerDown>().Disabled)
 				world.AddFrameEndTask(w => w.Remove(this));
 
 			anim.Tick();
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (a.Destroyed || wr.world.FogObscures(a))
+			if (a.Flagged(ActorFlag.Destroyed) || wr.world.FogObscures(a))
 				return SpriteRenderable.None;
 
 			return anim.Render(a.CenterPosition, wr.Palette("chrome"));

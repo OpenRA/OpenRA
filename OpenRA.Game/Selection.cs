@@ -45,7 +45,7 @@ namespace OpenRA
 			else
 				actors = (isCombine ? oldSelection.Union(newSelection) : newSelection).ToList();
 
-			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoices());
+			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.Flagged(ActorFlag.InWorld) && a.HasVoices());
 			if (voicedUnit != null)
 				Sound.PlayVoice("Select", voicedUnit, voicedUnit.Owner.Country.Race);
 
@@ -61,11 +61,11 @@ namespace OpenRA
 
 		public void Tick(World world)
 		{
-			actors.RemoveAll(a => !a.IsInWorld || (!a.Owner.IsAlliedWith(world.RenderPlayer) && world.FogObscures(a)));
+			actors.RemoveAll(a => !a.Flagged(ActorFlag.InWorld) || (!a.Owner.IsAlliedWith(world.RenderPlayer) && world.FogObscures(a)));
 
 			foreach (var cg in controlGroups.Values)
-				// note: NOT `!a.IsInWorld`, since that would remove things that are in transports.
-				cg.RemoveAll(a => a.Destroyed || a.Owner != world.LocalPlayer);
+				// note: NOT `!a.Flagged(ActorFlag.InWorld)`, since that would remove things that are in transports.
+				cg.RemoveAll(a => a.Flagged(ActorFlag.Destroyed) || a.Owner != world.LocalPlayer);
 		}
 
 		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
@@ -88,7 +88,7 @@ namespace OpenRA
 				return;
 			}
 
-			var groupActors = controlGroups[group].Where(a => !a.IsDead());
+			var groupActors = controlGroups[group].Where(a => !a.Flagged(ActorFlag.Dead));
 
 			if (mods.HasModifier(Modifiers.Alt) || MultiTapCount >= 2)
 			{

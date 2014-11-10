@@ -208,7 +208,7 @@ namespace OpenRA
 
 		public void Add(Actor a)
 		{
-			a.IsInWorld = true;
+			a.SetFlag(ActorFlag.InWorld, true);
 			actors.Add(a);
 			ActorAdded(a);
 
@@ -218,7 +218,7 @@ namespace OpenRA
 
 		public void Remove(Actor a)
 		{
-			a.IsInWorld = false;
+			a.SetFlag(ActorFlag.InWorld, false);
 			actors.Remove(a);
 			ActorRemoved(a);
 
@@ -262,7 +262,7 @@ namespace OpenRA
 
 				using (new PerfSample("tick_idle"))
 					foreach (var ni in ActorsWithTrait<INotifyIdle>())
-						if (ni.Actor.IsIdle)
+						if (ni.Actor.Flagged(ActorFlag.Idle))
 							ni.Trait.TickIdle(ni.Actor);
 
 				using (new PerfSample("tick_activities"))

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick(World world)
 		{
-			if (!building.IsInWorld || building.IsDead() || 
+			if (!building.Flagged(ActorFlag.InWorld) || building.Flagged(ActorFlag.Dead) || 
 				rb == null || !rb.Repairers.Any()) 
 				world.AddFrameEndTask(w => w.Remove(this));
 
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (building.Destroyed || wr.world.FogObscures(building) || rb.Repairers.Count == 0)
+			if (building.Flagged(ActorFlag.Destroyed) || wr.world.FogObscures(building) || rb.Repairers.Count == 0)
 				return SpriteRenderable.None;
 
 			var palette = wr.Palette(palettePrefix + rb.Repairers[shownPlayer % rb.Repairers.Count].InternalName);

@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 
 		protected virtual bool CanAttack(Actor self, Target target)
 		{
-			if (!self.IsInWorld)
+			if (!self.Flagged(ActorFlag.InWorld))
 				return false;
 
 			// Building is under construction or is being sold

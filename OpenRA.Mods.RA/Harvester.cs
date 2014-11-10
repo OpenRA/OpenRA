@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA
 		public void SetProcLines(Actor proc)
 		{
 			if (proc == null) return;
-			if (proc.Destroyed) return;
+			if (proc.Flagged(ActorFlag.Destroyed)) return;
 
 			var linkedHarvs = proc.World.ActorsWithTrait<Harvester>()
 				.Where(a => a.Trait.LinkedProc == proc)
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.RA
 		{
 			// Check that we're not in a critical location and being useless (refinery drop-off):
 			var lastproc = LastLinkedProc ?? LinkedProc;
-			if (lastproc != null && !lastproc.Destroyed)
+			if (lastproc != null && !lastproc.Flagged(ActorFlag.Destroyed))
 			{
 				var deliveryLoc = lastproc.Location + lastproc.Trait<IAcceptOre>().DeliverOffset;
 				if (self.Location == deliveryLoc)

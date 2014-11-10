@@ -406,7 +406,7 @@ namespace OpenRA.Mods.RA
 		protected virtual bool BuildUnit(string name)
 		{
 			// Cannot produce if i'm dead
-			if (!self.IsInWorld || self.IsDead())
+			if (!self.Flagged(ActorFlag.InWorld) || self.Flagged(ActorFlag.Dead))
 			{
 				CancelProduction(name, 1);
 				return true;

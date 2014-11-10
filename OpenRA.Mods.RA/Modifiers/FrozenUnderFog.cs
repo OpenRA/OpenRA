@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			if (self.Destroyed)
+			if (self.Flagged(ActorFlag.Destroyed))
 				return;
 
 			VisibilityHash = 0;
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA
 
 		public void TickRender(WorldRenderer wr, Actor self)
 		{
-			if (self.Destroyed || !initialized || !visible.Values.Any(v => v))
+			if (self.Flagged(ActorFlag.Destroyed) || !initialized || !visible.Values.Any(v => v))
 				return;
 
 			var renderables = self.Render(wr).ToArray();

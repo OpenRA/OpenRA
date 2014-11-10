@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			var capturable = target.Actor.Trait<ExternalCapturable>();
 
-			if (IsCanceled || !self.IsInWorld || self.IsDead() || !target.IsValidFor(self))
+			if (IsCanceled || !self.Flagged(ActorFlag.InWorld) || self.Flagged(ActorFlag.Dead) || !target.IsValidFor(self))
 			{
 				if (capturable.CaptureInProgress)
 					capturable.EndCapture();
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Activities
 
 					self.World.AddFrameEndTask(w =>
 					{
-						if (target.Actor.IsDead())
+						if (target.Actor.Flagged(ActorFlag.Dead))
 							return;
 
 						var oldOwner = target.Actor.Owner;

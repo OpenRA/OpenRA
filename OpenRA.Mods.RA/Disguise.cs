@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "Disguise")
 			{
-				var target = order.TargetActor != self && order.TargetActor.IsInWorld ? order.TargetActor : null;
+				var target = order.TargetActor != self && order.TargetActor.Flagged(ActorFlag.InWorld) ? order.TargetActor : null;
 				DisguiseAs(self, target);
 			}
 		}
@@ -127,6 +127,8 @@ namespace OpenRA.Mods.RA
 				AsPlayer = null;
 				AsSprite = null;
 			}
+
+			self.ChangeDisguise();
 
 			foreach (var t in self.TraitsImplementing<INotifyEffectiveOwnerChanged>())
 				t.OnEffectiveOwnerChanged(self, oldEffectiveOwner, AsPlayer);

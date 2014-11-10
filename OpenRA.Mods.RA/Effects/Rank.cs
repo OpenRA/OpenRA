@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick(World world)
 		{
-			if (self.IsDead())
+			if (self.Flagged(ActorFlag.Dead))
 				world.AddFrameEndTask(w => w.Remove(this));
 			else
 				anim.Tick();
@@ -41,10 +41,10 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (!self.IsInWorld)
+			if (!self.Flagged(ActorFlag.InWorld))
 				yield break;
 
-			if (self.IsDead())
+			if (self.Flagged(ActorFlag.Dead))
 				yield break;
 
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
