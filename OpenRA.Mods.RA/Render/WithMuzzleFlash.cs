@@ -51,8 +51,14 @@ namespace OpenRA.Mods.RA.Render
 					var turreted = self.TraitsImplementing<Turreted>()
 						.FirstOrDefault(t => t.Name ==  arm.Info.Turret);
 
-					getFacing = turreted != null ? () => turreted.TurretFacing :
-						facing != null ? (Func<int>)(() => facing.Facing) : () => 0;
+					// Workaround for broken ternary operators in certain versions of mono (3.10 and  
+					// certain versions of the 3.8 series): https://bugzilla.xamarin.com/show_bug.cgi?id=23319
+					if (turreted != null)
+						getFacing = () => turreted.TurretFacing;
+					else if (facing != null)
+						getFacing = (Func<int>)(() => facing.Facing);
+					else
+						getFacing = () => 0;
 
 					var muzzleFlash = new Animation(self.World, render.GetImage(self), getFacing);
 					visible.Add(barrel, false);
