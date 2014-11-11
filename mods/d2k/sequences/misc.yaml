@@ -167,7 +167,6 @@ crate-effects:
 		Length: 18
 	hide-map: DATA
 		Frames: 3965, 3964, 3963, 3962, 3961, 3960, 3959, 3958, 3957, 3956, 3955, 3954, 3953, 3952, 3951, 3950, 3949, 3948
-		Start: 3965
 		Length: 18
 	levelup: levelup
 		Start: 0
