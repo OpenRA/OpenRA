@@ -181,37 +181,15 @@ RAIDER:
 		EmptyWeapon: UnitExplodeTiny
 
 STEALTHRAIDER:
-	Inherits: ^Vehicle
+	Inherits: RAIDER
 	Buildable:
-		Queue: Vehicle
-		Prerequisites: ~heavyo, hightech, ~techlevel.medium
+		Prerequisites: ~lighto, hightech, ~techlevel.medium
 		BuildPaletteOrder: 30
 	Valued:
 		Cost: 400
 	Tooltip:
 		Name: Stealth Raider Trike
 		Description: Invisible Raider Trike\n Strong vs Infantry, Light Vehicles
-	Selectable:
-		Bounds: 24,24
-	Health:
-		HP: 110
-	Armor:
-		Type: Light
-	Mobile:
-		ROT: 10
-		Speed: 149
-	RevealsShroud:
-		Range: 7c0
-	RenderUnit:
-	WithMuzzleFlash:
-	Armament:
-		Weapon: HMGo
-		LocalOffset: 256,0,128
-		MuzzleSequence: muzzle
-	AttackFrontal:
-	Explodes:
-		Weapon: UnitExplodeTiny
-		EmptyWeapon: UnitExplodeTiny
 	Cloak:
 		InitialDelay: 45
 		CloakDelay: 90
