@@ -151,7 +151,7 @@ local function outlineCreateOutlineWindow()
   local ctrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(width, height),
     wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE
-    + wx.wxTR_HIDE_ROOT)
+    + wx.wxTR_HIDE_ROOT + wx.wxNO_BORDER)
 
   ide.outline.outlineCtrl = ctrl
   ide.timers.outline = wx.wxTimer(ctrl)
