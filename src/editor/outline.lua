@@ -270,7 +270,7 @@ ide:AddPackage('core.outline', {
       -- if the editor is not in the cache, which may happen if the user
       -- quickly switches between tabs that don't have outline generated,
       -- regenerate it manually
-      if not caches[editor] then
+      if not caches[editor] and ide.config.outlineinactivity then
         ide.timers.outline:Start(ide.config.outlineinactivity*1000, wx.wxTIMER_ONE_SHOT)
       end
 
