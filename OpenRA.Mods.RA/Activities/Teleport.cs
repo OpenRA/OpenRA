@@ -16,6 +16,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
+	public interface IPreventsTeleport { bool PreventsTeleport(Actor self); }
+
 	public class Teleport : Activity
 	{
 		Actor chronosphere;
@@ -45,6 +47,10 @@ namespace OpenRA.Mods.RA.Activities
 			var pc = self.TraitOrDefault<PortableChrono>();
 			if (pc != null && !pc.CanTeleport)
 				return NextActivity;
+
+			foreach (var condition in self.TraitsImplementing<IPreventsTeleport>())
+				if (condition.PreventsTeleport(self))
+					return NextActivity;
 
 			var bestCell = ChooseBestDestinationCell(self, destination);
 			if (bestCell == null)

@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new MadTank(init.self, this); }
 	}
 
-	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, ITick
+	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, ITick, IPreventsTeleport
 	{
 		readonly Actor self;
 		readonly MadTankInfo info;
@@ -130,6 +130,8 @@ namespace OpenRA.Mods.RA
 			if (driverMobile != null)
 				driverMobile.Nudge(driver, driver, true);
 		}
+
+		public bool PreventsTeleport(Actor self) { return deployed; }
 
 		void StartDetonationSequence()
 		{
