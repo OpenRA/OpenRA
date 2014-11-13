@@ -28,22 +28,22 @@ namespace OpenRA.Graphics
 			sprites = cache[cursorSrc];
 			var d = info.ToDictionary();
 
-			start = Exts.ParseIntegerInvariant(d["start"].Value);
+			start = Exts.ParseIntegerInvariant(d["Start"].Value);
 			this.palette = palette;
 
-			if ((d.ContainsKey("length") && d["length"].Value == "*") || (d.ContainsKey("end") && d["end"].Value == "*"))
+			if ((d.ContainsKey("Length") && d["Length"].Value == "*") || (d.ContainsKey("End") && d["End"].Value == "*"))
 				length = sprites.Length - start;
-			else if (d.ContainsKey("length"))
-				length = Exts.ParseIntegerInvariant(d["length"].Value);
-			else if (d.ContainsKey("end"))
-				length = Exts.ParseIntegerInvariant(d["end"].Value) - start;
+			else if (d.ContainsKey("Length"))
+				length = Exts.ParseIntegerInvariant(d["Length"].Value);
+			else if (d.ContainsKey("End"))
+				length = Exts.ParseIntegerInvariant(d["End"].Value) - start;
 			else
 				length = 1;
 
-			if (d.ContainsKey("x"))
-				Exts.TryParseIntegerInvariant(d["x"].Value, out Hotspot.X);
-			if (d.ContainsKey("y"))
-				Exts.TryParseIntegerInvariant(d["y"].Value, out Hotspot.Y);
+			if (d.ContainsKey("X"))
+				Exts.TryParseIntegerInvariant(d["X"].Value, out Hotspot.X);
+			if (d.ContainsKey("Y"))
+				Exts.TryParseIntegerInvariant(d["Y"].Value, out Hotspot.Y);
 		}
 
 		public Sprite GetSprite(int frame)

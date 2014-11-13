@@ -6,269 +6,268 @@ Palettes:
 Cursors:
 	mouse.r8: mouse
 		scroll-t:
-			start:112
-			x: 24
-			y: 24
+			Start: 112
+			X: 24
+			Y: 24
 		scroll-tr:
-			start: 120
-			x: 24
-			y: 24
+			Start: 120
+			X: 24
+			Y: 24
 		scroll-r:
-			start: 128
-			x: 24
-			y: 24
+			Start: 128
+			X: 24
+			Y: 24
 		scroll-br:
-			start: 136
-			x: 24
-			y: 24
+			Start: 136
+			X: 24
+			Y: 24
 		scroll-b:
-			start:148
-			x: 24
-			y: 24
+			Start: 148
+			X: 24
+			Y: 24
 		scroll-bl:
-			start:156
-			x: 24
-			y: 24
+			Start: 156
+			X: 24
+			Y: 24
 		scroll-l:
-			start:164
-			x: 24
-			y: 24
+			Start: 164
+			X: 24
+			Y: 24
 		scroll-tl:
-			start:172
-			x: 24
-			y: 24
+			Start: 172
+			X: 24
+			Y: 24
 		scroll-t-blocked:
-			start:180
-			x: 24
-			y: 24
+			Start: 180
+			X: 24
+			Y: 24
 		scroll-tr-blocked:
-			start:188
-			x: 24
-			y: 24
+			Start: 188
+			X: 24
+			Y: 24
 		scroll-r-blocked:
-			start:196
-			x: 24
-			y: 24
+			Start: 196
+			X: 24
+			Y: 24
 		scroll-br-blocked:
-			start:204
-			x: 24
-			y: 24
+			Start: 204
+			X: 24
+			Y: 24
 		scroll-b-blocked:
-			start:212
-			x: 24
-			y: 24
+			Start: 212
+			X: 24
+			Y: 24
 		scroll-bl-blocked:
-			start:220
-			x: 24
-			y: 24
+			Start: 220
+			X: 24
+			Y: 24
 		scroll-l-blocked:
-			start:228
-			x: 24
-			y: 24
+			Start: 228
+			X: 24
+			Y: 24
 		scroll-tl-blocked:
-			start:236
-			x: 24
-			y: 24
+			Start: 236
+			X: 24
+			Y: 24
 		select:
-			start:40
-			length: 8
-			x: 24
-			y: 24
+			Start: 40
+			Length: 8
+			X: 24
+			Y: 24
 		default:
-			start:0
-			x: 24
-			y: 24
+			Start: 0
+			X: 24
+			Y: 24
 		default-minimap:
-			start:0
-			x: 24
-			y: 24
+			Start: 0
+			X: 24
+			Y: 24
 		generic-blocked:
-			start:24
-			x: 24
-			y: 24
+			Start: 24
+			X: 24
+			Y: 24
 		generic-blocked-minimap:
-			start:24
-			x: 24
-			y: 24
+			Start: 24
+			X: 24
+			Y: 24
 		move:
-			start:8
-			length: 8
-			x: 24
-			y: 24
+			Start: 8
+			Length: 8
+			X: 24
+			Y: 24
 		move-minimap:
-			start:48
-			length: 8
-			x: 24
-			y: 24
+			Start: 48
+			Length: 8
+			X: 24
+			Y: 24
 		move-blocked:
-			start:24
-			x: 24
-			y: 24
+			Start: 24
+			X: 24
+			Y: 24
 		move-blocked-minimap:
-			start:24
-			x: 24
-			y: 24
+			Start: 24
+			X: 24
+			Y: 24
 		attack:
-			start:16
-			length: 8
-			x: 24
-			y: 24
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
 		attack-minimap:
-			start:16
-			length: 8
-			x: 24
-			y: 24
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
 		attackoutsiderange:
-			start:16
-			length: 8
-			x: 24
-			y: 24
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
 		attackoutsiderange-minimap:
-			start:16
-			length: 8
-			x: 24
-			y: 24
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
 		attackmove:
-			start:16
-			length: 8
-			x: 24
-			y: 24
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
 		attackmove-minimap:
-			start:16
-			length: 8
-			x: 24
-			y: 24
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
 		harvest:
-			start:16
-			length: 8
-			x: 24
-			y: 24
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
 		harvest-minimap:
-			start:203
-			length: 8
-			x: 24
-			y: 24
+			Start: 203
+			Length: 8
+			X: 24
+			Y: 24
 		enter:
-			start:32
-			length: 8
-			x: 24
-			y: 24
+			Start: 32
+			Length: 8
+			X: 24
+			Y: 24
 		enter-minimap:
-			start:32
-			length: 8
-			x: 24
-			y: 24
+			Start: 32
+			Length: 8
+			X: 24
+			Y: 24
 		enter-blocked:
-			start:104
-			length: 1
-			x: 24
-			y: 24
+			Start: 104
+			Length: 1
+			X: 24
+			Y: 24
 		enter-blocked-minimap:
-			start:104
-			x: 24
-			y: 24
+			Start: 104
+			X: 24
+			Y: 24
 		c4:
-			start:248
-			length: 8
-			x: 24
-			y: 24
+			Start: 248
+			Length: 8
+			X: 24
+			Y: 24
 		c4-minimap:
-			start:248
-			length: 8
-			x: 24
-			y: 24
+			Start: 248
+			Length: 8
+			X: 24
+			Y: 24
 		guard:
-			start:72
-			length: 8
-			x: 24
-			y: 24
+			Start: 72
+			Length: 8
+			X: 24
+			Y: 24
 		guard-minimap:
-			start:72
-			length: 8
-			x: 24
-			y: 24
+			Start: 72
+			Length: 8
+			X: 24
+			Y: 24
 		capture:
-			start:32
-			length: 8
-			x: 24
-			y: 24
+			Start: 32
+			Length: 8
+			X: 24
+			Y: 24
 		capture-minimap:
-			start:32
-			length: 8
-			x: 24
-			y: 24
+			Start: 32
+			Length: 8
+			X: 24
+			Y: 24
 		ability:
-			start:72
-			length: 8
-			x: 24
-			y: 24
+			Start: 72
+			Length: 8
+			X: 24
+			Y: 24
 		ability-minimap:
-			start:72
-			length: 8
-			x: 24
-			y: 24
+			Start: 72
+			Length: 8
+			X: 24
+			Y: 24
 
 # Cursors that need minimap variants
 		deploy:
-			start:96
-			length: 8
-			x: 24
-			y: 24
+			Start: 96
+			Length: 8
+			X: 24
+			Y: 24
 		deploy-blocked:
-			start:104
-			length: 1
-			x: 24
-			y: 24
+			Start: 104
+			Length: 1
+			X: 24
+			Y: 24
 		nuke:
-			start:240
-			length: 8
-			x: 24
-			y: 24
-
+			Start: 240
+			Length: 8
+			X: 24
+			Y: 24
 		sell:
-			start:80
-			length: 8
-			x: 24
-			y: 24
+			Start: 80
+			Length: 8
+			X: 24
+			Y: 24
 		sell-blocked:
-			start:56
-			length: 1
-			x: 24
-			y: 24
+			Start: 56
+			Length: 1
+			X: 24
+			Y: 24
 		repair:
-			start:88
-			length: 8
-			x: 24
-			y: 24
+			Start: 88
+			Length: 8
+			X: 24
+			Y: 24
 		repair-blocked:
-			start:64
-			length: 1
-			x: 24
-			y: 24
+			Start: 64
+			Length: 1
+			X: 24
+			Y: 24
 		goldwrench:
-			start:88
-			length: 8
-			x: 24
-			y: 24
+			Start: 88
+			Length: 8
+			X: 24
+			Y: 24
 		goldwrench-blocked:
-			start:64
-			length: 1
-			x: 24
-			y: 24
+			Start: 64
+			Length: 1
+			X: 24
+			Y: 24
 		move-rough:
-			start:256
-			length: 8
-			x: 24
-			y: 24
-
+			Start: 256
+			Length: 8
+			X: 24
+			Y: 24
 	nopower.shp: mouse
 		powerdown-blocked:
-			start:0
-			length: 1
-			x: 12
-			y: 12
+			Start: 0
+			Length: 1
+			X: 12
+			Y: 12
 		powerdown:
-			start:1
-			length: 3
-			x: 12
-			y: 12
+			Start: 1
+			Length: 3
+			X: 12
+			Y: 12
+
