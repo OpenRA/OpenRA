@@ -122,6 +122,10 @@
     <Compile Include="Traits\World\CreateMPPlayers.cs" />
     <Compile Include="Traits\World\MPStartLocations.cs" />
     <Compile Include="Traits\World\MPStartUnits.cs" />
+    <Compile Include="Traits\World\PaletteFromCurrentTileset.cs" />
+    <Compile Include="Traits\World\PaletteFromFile.cs" />
+    <Compile Include="Traits\World\PaletteFromRGBA.cs" />
+    <Compile Include="Traits\World\PlayerPaletteFromCurrentTileset.cs" />
     <Compile Include="Traits\World\PlayMusicOnMapLoad.cs" />
     <Compile Include="Traits\World\RadarPings.cs" />
     <Compile Include="Traits\World\ResourceClaim.cs" />
@@ -168,10 +172,6 @@
     <Compile Include="Widgets\MenuButtonWidget.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="Widgets\ResourceBarWidget.cs" />
-    <Compile Include="World\PaletteFromCurrentTileset.cs" />
-    <Compile Include="World\PaletteFromFile.cs" />
-    <Compile Include="World\PaletteFromRGBA.cs" />
-    <Compile Include="World\PlayerPaletteFromCurrentTileset.cs" />
     <Compile Include="SpriteLoaders\ShpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpTSLoader.cs" />
     <Compile Include="SpriteLoaders\TmpRALoader.cs" />
