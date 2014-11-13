@@ -46,6 +46,10 @@ namespace OpenRA.Mods.RA.Activities
 			if (pc != null && !pc.CanTeleport)
 				return NextActivity;
 
+			foreach (var conditional in self.TraitsImplementing<IConditionalTeleport>())
+				if (!conditional.CanBeTeleported(self))
+					return NextActivity;
+
 			var bestCell = ChooseBestDestinationCell(self, destination);
 			if (bestCell == null)
 				return NextActivity;

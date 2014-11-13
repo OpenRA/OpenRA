@@ -104,6 +104,8 @@ namespace OpenRA.Traits
 	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
 	public interface IDisableMove { bool MoveDisabled(Actor self); }
 
+	public interface IConditionalTeleport { bool CanBeTeleported(Actor self); }
+
 	public interface IUpgradable
 	{
 		bool AcceptsUpgrade(string type);

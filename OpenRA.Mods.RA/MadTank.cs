@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new MadTank(init.self, this); }
 	}
 
-	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, ITick
+	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, ITick, IConditionalTeleport
 	{
 		readonly Actor self;
 		readonly MadTankInfo info;
@@ -61,6 +61,8 @@ namespace OpenRA.Mods.RA
 			renderUnit = self.Trait<RenderUnit>();
 			screenShaker = self.World.WorldActor.Trait<ScreenShaker>();
 		}
+
+		public bool CanBeTeleported(Actor self) { return !deployed; }
 
 		public void Tick(Actor self)
 		{

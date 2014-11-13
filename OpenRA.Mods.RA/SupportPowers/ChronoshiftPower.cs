@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -59,7 +60,8 @@ namespace OpenRA.Mods.RA
 			foreach (var t in tiles)
 				units.AddRange(self.World.ActorMap.GetUnitsAt(t));
 
-			return units.Distinct().Where(a => a.HasTrait<Chronoshiftable>());
+			return units.Distinct().Where(a => a.HasTrait<Chronoshiftable>() &&
+				!a.TraitsImplementing<IConditionalTeleport>().Any(c => !c.CanBeTeleported(a)));
 		}
 
 		public bool SimilarTerrain(CPos xy, CPos sourceLocation)
