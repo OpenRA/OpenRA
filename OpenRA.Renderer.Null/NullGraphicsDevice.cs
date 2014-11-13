@@ -66,6 +66,9 @@ namespace OpenRA.Renderer.Null
 		public ITexture CreateTexture(Bitmap bitmap) { return new NullTexture(); }
 		public IFrameBuffer CreateFrameBuffer(Size s) { return new NullFrameBuffer(); }
 		public IShader CreateShader(string name) { return new NullShader(); }
+
+		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot) { return null; }
+		public void SetHardwareCursor(IHardwareCursor cursor) { }
 	}
 
 	public class NullShader : IShader

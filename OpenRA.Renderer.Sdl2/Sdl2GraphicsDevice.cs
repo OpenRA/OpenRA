@@ -10,6 +10,8 @@
 
 using System;
 using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices;
 using OpenRA;
 using OpenRA.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -80,7 +82,6 @@ namespace OpenRA.Renderer.Sdl2
 				SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
 			}
 
-			SDL.SDL_ShowCursor(0);
 			context = SDL.SDL_GL_CreateContext(window);
 			SDL.SDL_GL_MakeCurrent(window, context);
 			GL.LoadAll();
@@ -103,10 +104,53 @@ namespace OpenRA.Renderer.Sdl2
 			input = new Sdl2Input();
 		}
 
+		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot)
+		{
+			var c = new SDL2HardwareCursor(size, data, hotspot);
+			if (c.Cursor == IntPtr.Zero)
+				throw new InvalidDataException("Failed to create hardware cursor `{0}`: {1}".F(name, SDL.SDL_GetError()));
+
+			return c;
+		}
+
+		public void SetHardwareCursor(IHardwareCursor cursor)
+		{
+			var c = cursor as SDL2HardwareCursor;
+			if (c == null)
+				SDL.SDL_ShowCursor(0);
+			else
+			{
+				SDL.SDL_ShowCursor(1);
+				SDL.SDL_SetCursor(c.Cursor);
+			}
+		}
+
+		class SDL2HardwareCursor : IHardwareCursor
+		{
+			public readonly IntPtr Cursor;
+			readonly IntPtr surface;
+
+			public SDL2HardwareCursor(Size size, byte[] data, int2 hotspot)
+			{
+				surface = SDL.SDL_CreateRGBSurface(0, size.Width, size.Height, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+
+				var sur = (SDL2.SDL.SDL_Surface)Marshal.PtrToStructure(surface, typeof(SDL2.SDL.SDL_Surface));
+				Marshal.Copy(data, 0, sur.pixels, data.Length);
+				Cursor = SDL.SDL_CreateColorCursor(surface, hotspot.X, hotspot.Y);
+			}
+
+			public void Dispose()
+			{
+				SDL.SDL_FreeCursor(Cursor);
+				SDL.SDL_FreeSurface(surface);
+			}
+		}
+
 		public void Dispose()
 		{
 			if (disposed)
 				return;
+
 			disposed = true;
 			if (context != IntPtr.Zero)
 			{
