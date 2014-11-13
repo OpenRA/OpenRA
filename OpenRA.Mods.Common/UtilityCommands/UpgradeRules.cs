@@ -1041,5 +1041,27 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			nodes.AddRange(addNodes);
 		}
+
+		internal static void UpgradeCursors(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		{
+			foreach (var node in nodes)
+			{
+				if (engineVersion < 20141113 && depth == 3)
+				{
+					if (node.Key == "start")
+						node.Key = "Start";
+					else if (node.Key == "length")
+						node.Key = "Length";
+					else if (node.Key == "end")
+						node.Key = "End";
+					else if (node.Key == "x")
+						node.Key = "X";
+					else if (node.Key == "y")
+						node.Key = "Y";
+				}
+
+				UpgradeCursors(engineVersion, ref node.Value.Nodes, node, depth + 1);
+			}
+		}
 	}
 }
