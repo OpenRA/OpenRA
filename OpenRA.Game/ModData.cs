@@ -90,8 +90,6 @@ namespace OpenRA
 				VoxelLoader.Dispose();
 			VoxelLoader = new VoxelLoader();
 
-			if (CursorProvider != null)
-				CursorProvider.Dispose();
 			CursorProvider = new CursorProvider(this);
 		}
 
@@ -175,8 +173,6 @@ namespace OpenRA
 			MapCache.Dispose();
 			if (VoxelLoader != null)
 				VoxelLoader.Dispose();
-			if (CursorProvider != null)
-				CursorProvider.Dispose();
 		}
 	}
 
