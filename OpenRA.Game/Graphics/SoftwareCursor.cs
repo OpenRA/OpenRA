@@ -50,6 +50,8 @@ namespace OpenRA.Graphics
 			}
 
 			sheetBuilder.Current.ReleaseBuffer();
+
+			Game.Renderer.Device.SetHardwareCursor(null);
 		}
 
 		PaletteReference CreatePaletteReference(string name)
