@@ -8,47 +8,46 @@
  */
 #endregion
 
+using System.Linq;
+
 namespace OpenRA.Graphics
 {
 	public class CursorSequence
 	{
-		readonly int start, length;
-		readonly string palette;
-
-		public int Start { get { return start; } }
-		public int End { get { return start + length; } }
-		public int Length { get { return length; } }
-		public string Palette { get { return palette; } }
+		public readonly string Name;
+		public readonly int Start;
+		public readonly int Length;
+		public readonly string Palette;
 		public readonly int2 Hotspot;
 
-		Sprite[] sprites;
+		public readonly ISpriteFrame[] Frames;
 
-		public CursorSequence(SpriteCache cache, string cursorSrc, string palette, MiniYaml info)
+		public CursorSequence(FrameCache cache, string name, string cursorSrc, string palette, MiniYaml info)
 		{
-			sprites = cache[cursorSrc];
 			var d = info.ToDictionary();
 
-			start = Exts.ParseIntegerInvariant(d["Start"].Value);
-			this.palette = palette;
+			Start = Exts.ParseIntegerInvariant(d["Start"].Value);
+			Palette = palette;
+			Name = name;
 
 			if ((d.ContainsKey("Length") && d["Length"].Value == "*") || (d.ContainsKey("End") && d["End"].Value == "*"))
-				length = sprites.Length - start;
+				Length = Frames.Length - Start;
 			else if (d.ContainsKey("Length"))
-				length = Exts.ParseIntegerInvariant(d["Length"].Value);
+				Length = Exts.ParseIntegerInvariant(d["Length"].Value);
 			else if (d.ContainsKey("End"))
-				length = Exts.ParseIntegerInvariant(d["End"].Value) - start;
+				Length = Exts.ParseIntegerInvariant(d["End"].Value) - Start;
 			else
-				length = 1;
+				Length = 1;
+
+			Frames = cache[cursorSrc]
+				.Skip(Start)
+				.Take(Length)
+				.ToArray();
 
 			if (d.ContainsKey("X"))
 				Exts.TryParseIntegerInvariant(d["X"].Value, out Hotspot.X);
 			if (d.ContainsKey("Y"))
 				Exts.TryParseIntegerInvariant(d["Y"].Value, out Hotspot.Y);
-		}
-
-		public Sprite GetSprite(int frame)
-		{
-			return sprites[(frame % length) + start];
 		}
 	}
 }

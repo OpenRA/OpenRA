@@ -29,6 +29,7 @@ namespace OpenRA
 	{
 		public static ModData modData;
 		public static Settings Settings;
+		public static ICursor Cursor;
 		static WorldRenderer worldRenderer;
 
 		internal static OrderManager orderManager;
@@ -129,6 +130,7 @@ namespace OpenRA
 		public static event Action BeforeGameStart = () => { };
 		internal static void StartGame(string mapUID, bool isShellmap)
 		{
+			Cursor.SetCursor(null);
 			BeforeGameStart();
 
 			Map map;
@@ -157,6 +159,7 @@ namespace OpenRA
 			orderManager.LastTickTime = RunTime;
 			orderManager.StartGame();
 			worldRenderer.RefreshPalette();
+			Cursor.SetCursor("default");
 
 			GC.Collect();
 		}
@@ -287,10 +290,13 @@ namespace OpenRA
 			Sound.Initialize();
 
 			modData = new ModData(mod, true);
+
 			Renderer.InitializeFonts(modData.Manifest);
 			modData.InitializeLoaders();
 			using (new PerfTimer("LoadMaps"))
 				modData.MapCache.LoadMaps();
+
+			Cursor = new SoftwareCursor(modData.CursorProvider);
 
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
@@ -401,8 +407,6 @@ namespace OpenRA
 		public static void RunAfterTick(Action a) { delayedActions.Add(a); }
 		public static void RunAfterDelay(int delay, Action a) { delayedActions.Add(a, delay); }
 
-		static float cursorFrame = 0f;
-
 		static void InnerLogicTick(OrderManager orderManager)
 		{
 			var tick = RunTime;
@@ -419,7 +423,7 @@ namespace OpenRA
 				Viewport.TicksSinceLastMove += uiTickDelta / Timestep;
 
 				Sync.CheckSyncUnchanged(world, Ui.Tick);
-				cursorFrame += 0.5f;
+				Cursor.Tick();
 			}
 
 			var worldTimestep = world == null ? Timestep : world.Timestep;
@@ -509,8 +513,8 @@ namespace OpenRA
 
 					if (modData != null && modData.CursorProvider != null)
 					{
-						var cursorName = Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-						modData.CursorProvider.DrawCursor(Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
+						Cursor.SetCursor(Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default");
+						Cursor.Render(Renderer);
 					}
 				}
 

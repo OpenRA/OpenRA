@@ -252,6 +252,7 @@
     <Compile Include="Graphics\TargetLineRenderable.cs" />
     <Compile Include="Graphics\UISpriteRenderable.cs" />
     <Compile Include="GameRules\DamageWarhead.cs" />
+    <Compile Include="Graphics\SoftwareCursor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
