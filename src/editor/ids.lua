@@ -61,6 +61,8 @@ ID_BOOKMARK         = NewID()
 ID_BOOKMARKTOGGLE   = NewID()
 ID_BOOKMARKNEXT     = NewID()
 ID_BOOKMARKPREV     = NewID()
+ID_NAVIGATE         = NewID()
+ID_NAVIGATETOFILE   = NewID()
 -- don't use wx.wxID_PREFERENCES to avoid merging with OSX app menu, because
 -- Apple guidelines describe Preferences as a "normal" item without submenus.
 ID_PREFERENCES      = NewID()

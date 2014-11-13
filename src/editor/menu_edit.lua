@@ -25,6 +25,9 @@ local editMenu = wx.wxMenu {
   { },
 }
 
+editMenu:Append(ID_NAVIGATE, TR("Navigate"), wx.wxMenu {
+  { ID_NAVIGATETOFILE, TR("To File...")..KSC(ID_NAVIGATETOFILE), TR("Navigate to file") },
+})
 editMenu:Append(ID_SOURCE, TR("Source"), wx.wxMenu {
   { ID_COMMENT, TR("C&omment/Uncomment")..KSC(ID_COMMENT), TR("Comment or uncomment current or selected lines") },
   { ID_REINDENT, TR("Correct &Indentation")..KSC(ID_REINDENT), TR("Re-indent selected lines") },
@@ -359,3 +362,31 @@ end
 frame:Connect(ID_BOOKMARKTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkToggle)
 frame:Connect(ID_BOOKMARKNEXT, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkNext)
 frame:Connect(ID_BOOKMARKPREV, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkPrev)
+
+local function navigateToFile()
+  CommandBarShow(
+    function(index) DisplayOutputLn("done", index) end,
+    function(text)
+      local lines = {}
+      for ch in text:gmatch('.') do
+        table.insert(lines, {"new "..ch, "long "..ch})
+      end
+      return lines
+    end,
+    function(t) return unpack(t) end,
+    function(index)
+      local nb = ide:GetEditorNotebook()
+      local win = nb:GetPage(index-1)
+      if not win then return end
+      local file = ide:GetDocument(win):GetFilePath()
+      win:SetEvtHandlerEnabled(false)
+      nb:SetEvtHandlerEnabled(false)
+      LoadFile(file, nil, true, false)
+      nb:SetEvtHandlerEnabled(true)
+      win:SetEvtHandlerEnabled(true)
+    end,
+    ""
+  )
+end
+
+frame:Connect(ID_NAVIGATETOFILE, wx.wxEVT_COMMAND_MENU_SELECTED, navigateToFile)
