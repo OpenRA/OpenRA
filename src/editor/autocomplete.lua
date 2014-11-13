@@ -462,7 +462,6 @@ local function getAutoCompApiList(childs,fragment,method)
       ((method and v.type ~= "value")
         or (not method and v.type ~= "method"))) then
       local used = {}
-      --
       local kl = key:lower()
       for i=0,#key do
         local k = kl:sub(1,i)
@@ -492,7 +491,6 @@ local function getAutoCompApiList(childs,fragment,method)
   return t
 end
 
--- make syntype dependent
 function CreateAutoCompList(editor,key,pos)
   local api = editor.api
   local tip = api.tip

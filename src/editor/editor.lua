@@ -11,6 +11,7 @@ local notebook = ide.frame.notebook
 local edcfg = ide.config.editor
 local styles = ide.config.styles
 local unpack = table.unpack or unpack
+local q = EscapeMagic
 
 local margin = { LINENUMBER = 0, MARKER = 1, FOLD = 2 }
 local linenummask = "99999"
@@ -240,8 +241,8 @@ function EditorAutoComplete(editor)
   lt = lt:gsub("%b()","")
   lt = lt:gsub("%b{}","")
   lt = lt:gsub("%b[]",".0")
-  -- match from starting brace
-  lt = lt:match("[^%[%(%{%s,]*$")
+  -- remove everything that can't be auto-completed
+  lt = lt:match("[%w_"..q(editor.spec.sep).."]*$")
 
   -- know now which string is to be completed
   local userList = CreateAutoCompList(editor, lt, pos)
