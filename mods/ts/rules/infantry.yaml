@@ -192,6 +192,9 @@ UMAGON:
 	PoisonedByTiberium:
 		Weapon: TiberiumHeal
 	Passenger:
+		#TEST
+		Weight: 2
+		#TEST END
 	RevealsShroud:
 		Range: 7c0
 	Armament:
@@ -652,4 +655,3 @@ CIV2:
 
 CIV3:
 	Inherits: ^CivilianInfantry
-
