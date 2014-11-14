@@ -382,7 +382,7 @@ Container@SETTINGS_PANEL:
 							Y: 155
 							Width: 560
 							ItemSpacing: 4
-							Height: 180
+							Height: 190
 							Children:
 								ScrollItem@HEADER:
 									Width: 528
