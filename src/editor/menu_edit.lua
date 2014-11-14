@@ -364,26 +364,39 @@ frame:Connect(ID_BOOKMARKNEXT, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkNext)
 frame:Connect(ID_BOOKMARKPREV, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkPrev)
 
 local function navigateToFile()
+  local nb = ide:GetEditorNotebook()
+  local selection = nb:GetSelection()
   CommandBarShow(
-    function(index) DisplayOutputLn("done", index) end,
+    function(t, index)
+      if index then
+        local _, _, tabindex = unpack(t)
+        SetEditorSelection(tabindex)
+      elseif nb:GetSelection() ~= selection then
+        nb:SetSelection(selection)
+      end
+    end,
     function(text)
       local lines = {}
-      for ch in text:gmatch('.') do
-        table.insert(lines, {"new "..ch, "long "..ch})
+      if text and #text > 0 then
+        -- populate the list of files
+      else
+        for _, doc in pairs(ide:GetDocuments()) do
+          lines[doc:GetTabIndex()+1] = {doc:GetFileName(), doc:GetFilePath(), doc:GetTabIndex()}
+        end
       end
       return lines
     end,
     function(t) return unpack(t) end,
-    function(index)
-      local nb = ide:GetEditorNotebook()
-      local win = nb:GetPage(index-1)
-      if not win then return end
-      local file = ide:GetDocument(win):GetFilePath()
-      win:SetEvtHandlerEnabled(false)
-      nb:SetEvtHandlerEnabled(false)
-      LoadFile(file, nil, true, false)
-      nb:SetEvtHandlerEnabled(true)
-      win:SetEvtHandlerEnabled(true)
+    function(t, index)
+      local _, file, tabindex = unpack(t)
+      if tabindex then
+        local ed = nb:GetPage(tabindex)
+        ed:SetEvtHandlerEnabled(false)
+        nb:SetEvtHandlerEnabled(false)
+        nb:SetSelection(tabindex)
+        nb:SetEvtHandlerEnabled(true)
+        ed:SetEvtHandlerEnabled(true)
+      end
     end,
     ""
   )
