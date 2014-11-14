@@ -39,20 +39,3 @@ if [ $? -ne 0 ]; then
     echo "Debian package build failed."
 fi
 popd
-
-pushd pkgbuild
-echo "Building Arch-Linux package."
-bash buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR"
-if [ $? -ne 0 ]; then
-    echo "Arch-Linux package build failed."
-fi
-popd
-
-pushd rpm
-echo "Building RPM package."
-bash buildpackage.sh "$TAG" ../$ROOTDIR ~/rpmbuild "$PACKAGEDIR"
-if [ $? -ne 0 ]; then
-    echo "RPM package build failed."
-fi
-popd
-
