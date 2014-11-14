@@ -635,7 +635,7 @@ DTRK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 170
-		Prerequisites: stek, ~vehicles.soviet, ~techlevel.unrestricted
+		Prerequisites: stek, ~vehicles.ukraine, ~techlevel.unrestricted
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -666,7 +666,7 @@ CTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 210
-		Prerequisites: atek, pdox, ~vehicles.allies, ~techlevel.unrestricted
+		Prerequisites: atek, pdox, ~vehicles.germany, ~techlevel.unrestricted
 	Valued:
 		Cost: 1350
 	Tooltip:
@@ -704,7 +704,7 @@ QTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 200
-		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.unrestricted
+		Prerequisites: fix, stek, ~vehicles.russia, ~techlevel.unrestricted
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -734,7 +734,7 @@ STNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 140
-		Prerequisites: atek, ~vehicles.allies, ~techlevel.unrestricted
+		Prerequisites: atek, ~vehicles.england, ~techlevel.unrestricted
 	Valued:
 		Cost: 1350
 	Tooltip:
