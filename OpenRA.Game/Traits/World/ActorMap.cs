@@ -137,11 +137,13 @@ namespace OpenRA.Traits
 				var entered = currentActors.Except(oldActors);
 				var exited = oldActors.Except(currentActors);
 
-				foreach (var a in entered)
-					onActorEntered(a);
+				if (onActorEntered != null)
+					foreach (var a in entered)
+						onActorEntered(a);
 
-				foreach (var a in exited)
-					onActorExited(a);
+				if (onActorExited != null)
+					foreach (var a in exited)
+						onActorExited(a);
 
 				Dirty = false;
 			}
