@@ -4,6 +4,8 @@
 ---------------------------------------------------------
 
 local ide = ide
+local unpack = table.unpack or unpack
+
 -- ---------------------------------------------------------------------------
 -- Create the Edit menu and attach the callback functions
 
@@ -363,22 +365,44 @@ frame:Connect(ID_BOOKMARKTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkToggle)
 frame:Connect(ID_BOOKMARKNEXT, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkNext)
 frame:Connect(ID_BOOKMARKPREV, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkPrev)
 
+local projectFiles
+local pathsep = GetPathSeparator()
 local function navigateToFile()
   local nb = ide:GetEditorNotebook()
   local selection = nb:GetSelection()
   CommandBarShow(
     function(t, index)
       if index then
-        local _, _, tabindex = unpack(t)
-        SetEditorSelection(tabindex)
+        local _, file, tabindex = unpack(t)
+        if tabindex then
+          SetEditorSelection(tabindex)
+        else
+          LoadFile(file, nil, true)
+        end
       elseif nb:GetSelection() ~= selection then
         nb:SetSelection(selection)
       end
     end,
     function(text)
       local lines = {}
-      if text and #text > 0 then
+      local projdir = ide:GetProject()
+      if text and #text > 0 and projdir and #projdir > 0 then
         -- populate the list of files
+        projectFiles = projectFiles or FileSysGetRecursive(projdir, true)
+        local topscore
+        for _, item in ipairs(CommandBarScoreFiles(projectFiles, text)) do
+          local file, score = unpack(item)
+          local dir = file:match(pathsep.."$")
+          if not dir then
+            topscore = topscore or score
+            if score > topscore / 2 and score > 0 then
+              table.insert(lines, {
+                  ("%2d %s"):format(score, wx.wxFileName(file):GetFullName()),
+                  file,
+              })
+            end
+          end
+        end
       else
         for _, doc in pairs(ide:GetDocuments()) do
           lines[doc:GetTabIndex()+1] = {doc:GetFileName(), doc:GetFilePath(), doc:GetTabIndex()}
