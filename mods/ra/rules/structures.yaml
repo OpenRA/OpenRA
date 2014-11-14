@@ -56,7 +56,7 @@ GAP:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 110
-		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
+		Prerequisites: atek, ~!structures.france, ~structures.allies, ~techlevel.unrestricted
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
