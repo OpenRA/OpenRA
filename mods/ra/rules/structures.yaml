@@ -705,17 +705,59 @@ WEAP:
 	Production:
 		Produces: Vehicle
 	ProvidesCustomPrerequisite@allies:
-		Race: allies
+		Race: allies, england, france, germany
 		Prerequisite: vehicles.allies
+	ProvidesCustomPrerequisite@alliesvanilla:
+		Race: allies
+		Prerequisite: vehicles.alliesvanilla
+	ProvidesCustomPrerequisite@england:
+		Race: england
+		Prerequisite: vehicles.england
+	ProvidesCustomPrerequisite@france:
+		Race: france
+		Prerequisite: vehicles.france
+	ProvidesCustomPrerequisite@germany:
+		Race: germany
+		Prerequisite: vehicles.germany
 	ProvidesCustomPrerequisite@soviet:
-		Race: soviet
+		Race: soviet, russia, ukraine
 		Prerequisite: vehicles.soviet
+	ProvidesCustomPrerequisite@sovietvanilla:
+		Race: soviet
+		Prerequisite: vehicles.sovietvanilla
+	ProvidesCustomPrerequisite@russia:
+		Race: russia
+		Prerequisite: vehicles.russia
+	ProvidesCustomPrerequisite@ukraine:
+		Race: ukraine
+		Prerequisite: vehicles.ukraine
 	ProvidesCustomPrerequisite@alliedstructure:
 		RequiresPrerequisites: structures.allies
 		Prerequisite: vehicles.allies
+	ProvidesCustomPrerequisite@alliedvanillastructure:
+		RequiresPrerequisites: structures.alliesvanilla
+		Prerequisite: vehicles.alliesvanilla
+	ProvidesCustomPrerequisite@englishstructure:
+		RequiresPrerequisites: structures.england
+		Prerequisite: vehicles.england
+	ProvidesCustomPrerequisite@frenchstructure:
+		RequiresPrerequisites: structures.france
+		Prerequisite: vehicles.france
+	ProvidesCustomPrerequisite@germanstructure:
+		RequiresPrerequisites: structures.germany
+		Prerequisite: vehicles.germany
 	ProvidesCustomPrerequisite@sovietstructure:
 		RequiresPrerequisites: structures.soviet
 		Prerequisite: vehicles.soviet
+	ProvidesCustomPrerequisite@sovietvanillastructure:
+		RequiresPrerequisites: structures.sovietvanilla
+		Prerequisite: vehicles.sovietvanilla
+	ProvidesCustomPrerequisite@russianstructure:
+		RequiresPrerequisites: structures.russia
+		Prerequisite: vehicles.russia
+	ProvidesCustomPrerequisite@ukrainianstructure:
+		RequiresPrerequisites: structures.ukraine
+		Prerequisite: vehicles.ukraine
 	PrimaryBuilding:
 	ProductionBar:
 	Power:
