@@ -155,19 +155,19 @@ namespace OpenRA
 			return new Order("Command", null, false) { IsImmediate = true, TargetString = text };
 		}
 
-		public static Order StartProduction(Actor subject, int queueID, string item, int count)
+		public static Order StartProduction(Actor subject, string item, int count)
 		{
-			return new Order("StartProduction", subject, false) { TargetString = item, ExtraLocation = new CPos(queueID, count) };
+			return new Order("StartProduction", subject, false) { ExtraData = (uint)count, TargetString = item };
 		}
 
-		public static Order PauseProduction(Actor subject, int queueID, string item, bool pause)
+		public static Order PauseProduction(Actor subject, string item, bool pause)
 		{
-			return new Order("PauseProduction", subject, false) { TargetString = item, ExtraLocation = new CPos(queueID, pause ? 1 : 0) };
+			return new Order("PauseProduction", subject, false) { ExtraData = pause ? 1u : 0u, TargetString = item };
 		}
 
-		public static Order CancelProduction(Actor subject, int queueID, string item, int count)
+		public static Order CancelProduction(Actor subject, string item, int count)
 		{
-			return new Order("CancelProduction", subject, false) { TargetString = item, ExtraLocation = new CPos(queueID, count) };
+			return new Order("CancelProduction", subject, false) { ExtraData = (uint)count, TargetString = item };
 		}
 
 		// For scripting special powers
