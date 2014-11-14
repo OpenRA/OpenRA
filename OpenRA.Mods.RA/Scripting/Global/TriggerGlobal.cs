@@ -278,6 +278,64 @@ namespace OpenRA.Mods.RA.Scripting
 			context.World.ActorMap.RemoveCellTrigger(id);
 		}
 
+		[Desc("Call a function when an actor enters this range." +
+			"Returns the trigger id for later removal using RemoveProximityTrigger(int id)." +
+			"The callback function will be called as func(Actor a, int id).")]
+		public int OnEnteredProximityTrigger(WPos pos, WRange range, LuaFunction func)
+		{
+			var triggerId = 0;
+			var onEntry = (LuaFunction)func.CopyReference();
+			Action<Actor> invokeEntry = a =>
+			{
+				try
+				{
+					using (var luaActor = a.ToLuaValue(context))
+					using (var id = triggerId.ToLuaValue(context))
+						onEntry.Call(luaActor, id).Dispose();
+				}
+				catch (Exception e)
+				{
+					context.FatalError(e.Message);
+				}
+			};
+
+			triggerId = context.World.ActorMap.AddProximityTrigger(pos, range, invokeEntry, null);
+
+			return triggerId;
+		}
+
+		[Desc("Call a function when an actor leaves this range." +
+			"Returns the trigger id for later removal using RemoveProximityTrigger(int id)." +
+			"The callback function will be called as func(Actor a, int id).")]
+		public int OnExitedProximityTrigger(WPos pos, WRange range, LuaFunction func)
+		{
+			var triggerId = 0;
+			var onExit = (LuaFunction)func.CopyReference();
+			Action<Actor> invokeExit = a =>
+			{
+				try
+				{
+					using (var luaActor = a.ToLuaValue(context))
+					using (var id = triggerId.ToLuaValue(context))
+						onExit.Call(luaActor, id).Dispose();
+				}
+				catch (Exception e)
+				{
+					context.FatalError(e.Message);
+				}
+			};
+
+			triggerId = context.World.ActorMap.AddProximityTrigger(pos, range, null, invokeExit);
+
+			return triggerId;
+		}
+
+		[Desc("Removes a previously created proximitry trigger.")]
+		public void RemoveProximityTrigger(int id)
+		{
+			context.World.ActorMap.RemoveProximityTrigger(id);
+		}
+
 		[Desc("Call a function when this actor is infiltrated. The callback function " +
 			"will be called as func(Actor self, Actor infiltrator).")]
 		public void OnInfiltrated(Actor a, LuaFunction func)
