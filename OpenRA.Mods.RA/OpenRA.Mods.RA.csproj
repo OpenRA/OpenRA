@@ -143,7 +143,6 @@
     <Compile Include="Widgets\Logic\Ingame\AddRaceSuffixLogic.cs" />
     <Compile Include="Widgets\Logic\ClassicProductionLogic.cs" />
     <Compile Include="Widgets\Logic\DebugMenuLogic.cs" />
-    <Compile Include="Warheads\PerCellDamageWarhead.cs" />
     <Compile Include="Scripting\Properties\HarvesterProperties.cs" />
     <Compile Include="Scripting\Properties\TransportProperties.cs" />
     <Compile Include="Traits\InvulnerabilityUpgrade.cs" />
