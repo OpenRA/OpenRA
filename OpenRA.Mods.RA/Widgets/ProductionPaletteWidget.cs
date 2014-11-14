@@ -150,14 +150,14 @@ namespace OpenRA.Mods.RA.Widgets
 				{
 					// Resume a paused item
 					Sound.Play(TabClick);
-					World.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, CurrentQueue.QueueID, icon.Name, false));
+					World.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, icon.Name, false));
 				}
 				else if (CurrentQueue.BuildableItems().Any(a => a.Name == icon.Name))
 				{
 					// Queue a new item
 					Sound.Play(TabClick);
 					Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, World.LocalPlayer.Country.Race);
-					World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, CurrentQueue.QueueID, icon.Name,
+					World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name,
 						handleMultiple ? 5 : 1));
 				}
 				else
@@ -174,13 +174,13 @@ namespace OpenRA.Mods.RA.Widgets
 					if (first.Paused || first.Done || first.TotalCost == first.RemainingCost)
 					{
 						Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Country.Race);
-						World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, CurrentQueue.QueueID, icon.Name,
+						World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, icon.Name,
 							handleMultiple ? 5 : 1));
 					}
 					else
 					{
 						Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, World.LocalPlayer.Country.Race);
-						World.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, CurrentQueue.QueueID, icon.Name, true));
+						World.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, icon.Name, true));
 					}
 				}
 				else

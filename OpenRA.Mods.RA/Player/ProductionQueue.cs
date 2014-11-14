@@ -69,10 +69,7 @@ namespace OpenRA.Mods.RA
 
 	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyOwnerChanged, INotifyKilled, INotifySold, ISync, INotifyTransform
 	{
-		static int nextQueueID = 1;
-
 		public readonly ProductionQueueInfo Info;
-		public readonly int QueueID;
 		readonly Actor self;
 
 		// Will change if the owner changes
@@ -83,7 +80,6 @@ namespace OpenRA.Mods.RA
 		// A list of things we could possibly build
 		Dictionary<ActorInfo, ProductionState> produceable;
 		List<ProductionItem> queue = new List<ProductionItem>();
-		bool allTech = false;
 
 		// A list of things we are currently building
 		public Actor Actor { get { return self; } }
@@ -97,8 +93,6 @@ namespace OpenRA.Mods.RA
 		[Sync] public bool Enabled { get; private set; }
 
 		public string Race { get; private set; }
-		public int Name = 0;
-		public string DisplayName = "";
 
 		public ProductionQueue(ActorInitializer init, Actor playerActor, ProductionQueueInfo info)
 		{
@@ -109,8 +103,7 @@ namespace OpenRA.Mods.RA
 			developerMode = playerActor.Trait<DeveloperMode>();
 
 			Race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.Race;
-			Enabled = (!Info.Race.Any() || Info.Race.Contains(Race)) || developerMode.AllTech;
-			QueueID = nextQueueID++;
+			Enabled = !info.Race.Any() || info.Race.Contains(Race);
 
 			CacheProduceables(playerActor);
 		}
@@ -136,7 +129,7 @@ namespace OpenRA.Mods.RA
 			if (!Info.Sticky)
 			{
 				Race = self.Owner.Country.Race;
-				Enabled = (!Info.Race.Any() || Info.Race.Contains(Race)) || developerMode.AllTech;
+				Enabled = !Info.Race.Any() || Info.Race.Contains(Race);
 			}
 
 			// Regenerate the produceables and tech tree state
@@ -244,27 +237,6 @@ namespace OpenRA.Mods.RA
 
 		public virtual void Tick(Actor self)
 		{
-			if (self.World.AllowDevCommands && developerMode.AllTech != allTech)
-			{
-				allTech = developerMode.AllTech;
-				
-				Enabled = (!Info.Race.Any() || Info.Race.Contains(Race)) || developerMode.AllTech;
-				OnOwnerChanged(self, self.Owner, self.Owner);
-
-				self.World.AddFrameEndTask((World w) => {
-					var selected = w.Selection.Contains(self);
-					var controlgroup = w.Selection.GetControlGroupForActor(self);
-
-					w.Remove(self); // force production palettes to update
-					w.Add(self);
-
-					if (selected)
-						w.Selection.Add(w, self);
-					if (controlgroup.HasValue)
-						w.Selection.AddToControlGroup(self, controlgroup.Value);
-				});
-			}
-
 			while (queue.Count > 0 && BuildableItems().All(b => b.Name != queue[0].Item))
 			{
 				playerResources.GiveCash(queue[0].TotalCost - queue[0].RemainingCost); // refund what's been paid so far.
@@ -284,9 +256,6 @@ namespace OpenRA.Mods.RA
 			{
 			case "StartProduction":
 				{
-					if (order.ExtraLocation.X != QueueID)
-						return;
-
 					var unit = self.World.Map.Rules.Actors[order.TargetString];
 					var bi = unit.Traits.Get<BuildableInfo>();
 					if (!bi.Queue.Contains(Info.Type))
@@ -310,7 +279,7 @@ namespace OpenRA.Mods.RA
 							return;
 					}
 
-					var amountToBuild = Math.Min(fromLimit, order.ExtraLocation.Y);
+					var amountToBuild = Math.Min(fromLimit, order.ExtraData);
 					for (var n = 0; n < amountToBuild; n++)
 					{
 						var hasPlayedSound = false;
@@ -338,19 +307,15 @@ namespace OpenRA.Mods.RA
 
 			case "PauseProduction":
 				{
-					if (order.ExtraLocation.X != QueueID)
-						return;
 					if (queue.Count > 0 && queue[0].Item == order.TargetString)
-						queue[0].Pause(order.ExtraLocation.Y != 0);
+						queue[0].Pause(order.ExtraData != 0);
 
 					break;
 				}
 
 			case "CancelProduction":
 				{
-					if (order.ExtraLocation.X != QueueID)
-						return;
-					CancelProduction(order.TargetString, (uint)order.ExtraLocation.Y);
+					CancelProduction(order.TargetString, order.ExtraData);
 					break;
 				}
 			}

@@ -140,7 +140,7 @@ namespace OpenRA.Mods.RA.Scripting
 			}
 
 			foreach (var actorType in actorTypes)
-				queue.ResolveOrder(self, Order.StartProduction(self, queue.QueueID, actorType, 1));
+				queue.ResolveOrder(self, Order.StartProduction(self, actorType, 1));
 
 			return true;
 		}
@@ -245,7 +245,7 @@ namespace OpenRA.Mods.RA.Scripting
 			foreach (var actorType in actorTypes)
 			{
 				var queue = queues[typeToQueueMap[actorType]];
-				queue.ResolveOrder(queue.Actor, Order.StartProduction(queue.Actor, queue.QueueID, actorType, 1));
+				queue.ResolveOrder(queue.Actor, Order.StartProduction(queue.Actor, actorType, 1));
 			}
 
 			return true;
