@@ -49,25 +49,4 @@ namespace OpenRA
 			Sync.CheckSyncUnchanged(world, () => Ui.HandleInput(input));
 		}
 	}
-
-	public class MouseButtonPreference
-	{
-
-		public MouseButton Action
-		{
-			get 
-			{ 
-				return Game.Settings.Game.UseClassicMouseStyle ? MouseButton.Left : MouseButton.Right; 
-			}
-		}
-
-		public MouseButton Cancel
-		{
-			get 
-			{ 
-				return Game.Settings.Game.UseClassicMouseStyle ? MouseButton.Right : MouseButton.Left; 
-			}
-		}
-	}
-
 }

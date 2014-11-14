@@ -27,8 +27,6 @@ namespace OpenRA
 {
 	public static class Game
 	{
-		public static MouseButtonPreference mouseButtonPreference = new MouseButtonPreference();
-
 		public static ModData modData;
 		public static Settings Settings;
 		static WorldRenderer worldRenderer;
