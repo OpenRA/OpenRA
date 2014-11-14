@@ -304,7 +304,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var gs = Game.Settings.Game;
 			var ks = Game.Settings.Keys;
 
-			BindCheckboxPref(panel, "CLASSICORDERS_CHECKBOX", gs, "UseClassicMouseStyle");
 			BindCheckboxPref(panel, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");
 			BindCheckboxPref(panel, "LOCKMOUSE_CHECKBOX", gs, "LockMouseWindow");
 			BindSliderPref(panel, "SCROLLSPEED_SLIDER", gs, "ViewportEdgeScrollStep");
@@ -453,7 +452,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			return () =>
 			{
-				gs.UseClassicMouseStyle = dgs.UseClassicMouseStyle;
 				gs.MouseScroll = dgs.MouseScroll;
 				gs.LockMouseWindow = dgs.LockMouseWindow;
 				gs.ViewportEdgeScroll = dgs.ViewportEdgeScroll;
