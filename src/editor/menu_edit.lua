@@ -372,7 +372,8 @@ local function navigateToFile()
   local projectFiles, preview
   CommandBarShow(
     function(t, index)
-      nb:Freeze()
+      local mac = ide.osname == 'Macintosh'
+      if not mac then nb:Freeze() end
       -- close preview
       if preview then
         ClosePage(nb:GetPageIndex(preview))
@@ -389,7 +390,7 @@ local function navigateToFile()
       elseif nb:GetSelection() ~= selection then
         nb:SetSelection(selection)
       end
-      nb:Thaw()
+      if not mac then nb:Thaw() end
     end,
     function(text)
       local lines = {}
