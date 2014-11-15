@@ -54,9 +54,6 @@ namespace OpenRA.Widgets
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			var xy = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
-
-			var useClassicMouseStyle = Game.Settings.Game.UseClassicMouseStyle;
-
 			var hasBox = SelectionBox != null;
 			var multiClick = mi.MultiTapCount >= 2;
 
@@ -68,7 +65,7 @@ namespace OpenRA.Widgets
 				dragStart = dragEnd = xy;
 
 				// place buildings
-				if (!useClassicMouseStyle || !World.Selection.Actors.Any())
+				if (!World.Selection.Actors.Any())
 					ApplyOrders(World, xy, mi);
 			}
 
@@ -77,17 +74,6 @@ namespace OpenRA.Widgets
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-				if (useClassicMouseStyle && HasMouseFocus)
-				{
-					// order units around
-					if (!hasBox && World.Selection.Actors.Any() && !multiClick)
-					{
-						ApplyOrders(World, xy, mi);
-						YieldMouseFocus(mi);
-						return true;
-					}
-				}
-
 				if (World.OrderGenerator is UnitOrderGenerator)
 				{
 					if (multiClick)
@@ -114,14 +100,9 @@ namespace OpenRA.Widgets
 			if (mi.Button == MouseButton.None && mi.Event == MouseInputEvent.Move)
 				dragStart = dragEnd = xy;
 
-			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
-			{
-				if (useClassicMouseStyle)
-					World.Selection.Clear();
-
-				if (!hasBox) // don't issue orders while selecting
-					ApplyOrders(World, xy, mi);
-			}
+			// don't issue orders while selecting
+			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down && !hasBox) 
+				ApplyOrders(World, xy, mi);
 
 			return true;
 		}
@@ -184,7 +165,7 @@ namespace OpenRA.Widgets
 				var mi = new MouseInput
 				{
 					Location = screenPos,
-					Button = Game.mouseButtonPreference.Action,
+					Button = MouseButton.Right,
 					Modifiers = Game.GetModifierKeys()
 				};
 
