@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (info.IncludeAllies)
 				return collectingPlayer.World.LocalPlayer != null &&
-					collectingPlayer.Stances[collectingPlayer.World.LocalPlayer] == Stance.Ally;
+					collectingPlayer.Stances[collectingPlayer.World.LocalPlayer].Allied();
 
 			return collectingPlayer == collectingPlayer.World.LocalPlayer;
 		}

@@ -15,7 +15,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground, Repair, Vehicle
+		TargetTypes: Ground, Repair, Vehicle, DisableVehicle
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -67,6 +67,13 @@
 		RequiresUpgrade: invulnerability
 	TimedUpgradeBar:
 		Upgrade: invulnerability
+	DisableUpgrade:
+	InfiltrateToUpgrade:
+	TimedUpgradeBar@DISABLE:
+		Upgrade: disable
+		Color: Yellow
+		Visibility: All
+	DisabledOverlay:
 
 ^Tank:
 	AppearsOnRadar:
@@ -85,7 +92,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground, C4, Repair, Tank
+		TargetTypes: Ground, C4, Repair, Tank, DisableVehicle
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -137,6 +144,13 @@
 		RequiresUpgrade: invulnerability
 	TimedUpgradeBar:
 		Upgrade: invulnerability
+	DisableUpgrade:
+	InfiltrateToUpgrade:
+	TimedUpgradeBar@DISABLE:
+		Upgrade: disable
+		Color: Yellow
+		Visibility: All
+	DisabledOverlay:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -391,8 +405,15 @@
 ^Defense:
 	Inherits: ^Building
 	TargetableBuilding:
-		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
+		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense, SpyInfiltrate
 	-MustBeDestroyed:
+	DisableUpgrade:
+	InfiltrateToUpgrade:
+	TimedUpgradeBar@DISABLE:
+		Upgrade: disable
+		Color: Yellow
+		Visibility: All
+	DisabledOverlay:
 
 ^Wall:
 	AppearsOnRadar:

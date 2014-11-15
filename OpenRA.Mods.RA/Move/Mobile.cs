@@ -178,7 +178,7 @@ namespace OpenRA.Mods.RA.Move
 						continue;
 
 					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
-					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a)) continue;
+					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner].Allied() && IsMovingInMyDirection(self, a)) continue;
 					
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
 					if (needsCellExclusively)
@@ -211,7 +211,7 @@ namespace OpenRA.Mods.RA.Move
 						return false;
 
 					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
-					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a))
+					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner].Allied() && IsMovingInMyDirection(self, a))
 						return false;
 					
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
@@ -556,7 +556,7 @@ namespace OpenRA.Mods.RA.Move
 		public void Nudge(Actor self, Actor nudger, bool force)
 		{
 			/* initial fairly braindead implementation. */
-			if (!force && self.Owner.Stances[nudger.Owner] != Stance.Ally)
+			if (!force && !self.Owner.Stances[nudger.Owner].Allied())
 				return;		/* don't allow ourselves to be pushed around
 							 * by the enemy! */
 

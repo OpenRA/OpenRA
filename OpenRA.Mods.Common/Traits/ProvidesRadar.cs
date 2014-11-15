@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Check if powered
 			if (self.IsDisabled()) return false;
 
-			var isJammed = self.World.ActorsWithTrait<JamsRadar>().Any(a => a.Actor.Owner.Stances[self.Owner] != Stance.Ally
+			var isJammed = self.World.ActorsWithTrait<JamsRadar>().Any(a => !a.Actor.Owner.Stances[self.Owner].Allied()
 				&& (self.Location - a.Actor.Location).Length <= a.Actor.Info.Traits.Get<JamsRadarInfo>().Range);
 
 			return !isJammed;

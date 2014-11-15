@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public readonly WRange Range = WRange.FromCells(3);
 
 		[Desc("What diplomatic stances are affected.")]
-		public readonly Stance ValidStances = Stance.Ally;
+		public readonly Stance ValidStances = Stance.SameOrAlly;
 
 		[Desc("Grant the upgrades apply to this actor.")]
 		public readonly bool AffectsParent = false;
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			var stance = self.Owner.Stances[a.Owner];
-			if (!info.ValidStances.HasFlag(stance))
+			if (!info.ValidStances.AnyFlag(stance))
 				return;
 
 			var um = a.TraitOrDefault<UpgradeManager>();
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA
 			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= info.Range.Range * info.Range.Range)
 			{
 				var stance = self.Owner.Stances[produced.Owner];
-				if (!info.ValidStances.HasFlag(stance))
+				if (!info.ValidStances.AnyFlag(stance))
 					return;
 
 				var um = produced.TraitOrDefault<UpgradeManager>();

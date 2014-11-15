@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			var playerRelationship = owner.Stances[captor.Owner];
-			if (playerRelationship == Stance.Ally && !AllowAllies)
+			if (playerRelationship.Allied() && !AllowAllies)
 				return false;
 
 			if (playerRelationship == Stance.Enemy && !AllowEnemies)

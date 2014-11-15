@@ -174,6 +174,8 @@ namespace OpenRA
 			else if (fieldType == typeof(Color))
 			{
 				var parts = value.Split(',');
+				if (parts.Length == 1)
+					return Color.FromName(parts[0]);
 				if (parts.Length == 3)
 					return Color.FromArgb(
 						Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),

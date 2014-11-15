@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common
 		static Stance ChooseInitialStance(Player p, Player q)
 		{
 			if (p == q)
-				return Stance.Ally;
+				return Stance.SameOrAlly;
 
 			if (q.Spectating && !p.NonCombatant && p.Playable)
 				return Stance.Ally;

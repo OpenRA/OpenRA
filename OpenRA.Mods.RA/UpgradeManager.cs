@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 
 	public class UpgradeManager : ITick
 	{
-		class TimedUpgrade
+		public class TimedUpgrade
 		{
 			public readonly string Upgrade;
 			public readonly int Duration;
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 			upgradable = Exts.Lazy(() => init.self.TraitsImplementing<IUpgradable>());
 		}
 
-		public void GrantTimedUpgrade(Actor self, string upgrade, int duration)
+		public object GrantTimedUpgrade(Actor self, string upgrade, int duration)
 		{
 			var timed = timedUpgrades.FirstOrDefault(u => u.Upgrade == upgrade);
 			if (timed == null)
@@ -62,9 +62,10 @@ namespace OpenRA.Mods.RA
 			}
 			else
 				timed.Remaining = Math.Max(duration, timed.Remaining);
+			return timed;
 		}
 
-		public void GrantUpgrade(Actor self, string upgrade, object source)
+		public object GrantUpgrade(Actor self, string upgrade, object source)
 		{
 			List<object> ss;
 			if (!sources.TryGetValue(upgrade, out ss))
@@ -79,6 +80,7 @@ namespace OpenRA.Mods.RA
 
 			// Track the upgrade source so that the upgrade can be removed without conflicts
 			ss.Add(source);
+			return source;
 		}
 
 		public void RevokeUpgrade(Actor self, string upgrade, object source)
@@ -99,6 +101,14 @@ namespace OpenRA.Mods.RA
 
 				sources.Remove(upgrade);
 			}
+
+			if (source is TimedUpgrade)
+			{
+				var u = source as TimedUpgrade;
+				u.Remaining = 0;
+				NotifyWatchers(u);
+				timedUpgrades.Remove(u);
+			}
 		}
 
 		public bool AcceptsUpgrade(Actor self, string upgrade)
@@ -114,21 +124,27 @@ namespace OpenRA.Mods.RA
 			watchers[upgrade].Add(action);
 		}
 
+		void NotifyWatchers(TimedUpgrade u)
+		{
+			List<Action<int, int>> actions;
+			if (watchers.TryGetValue(u.Upgrade, out actions))
+				foreach (var a in actions)
+					a(u.Duration, u.Remaining);
+		}
+
 		public void Tick(Actor self)
 		{
 			foreach (var u in timedUpgrades)
 			{
 				u.Tick();
 				if (u.Remaining <= 0)
+				{
 					RevokeUpgrade(self, u.Upgrade, u);
-
-				List<Action<int, int>> actions;
-				if (watchers.TryGetValue(u.Upgrade, out actions))
-					foreach (var a in actions)
-						a(u.Duration, u.Remaining);
+					timedUpgrades.Remove(u);
+				}
+				else
+					NotifyWatchers(u);
 			}
-
-			timedUpgrades.RemoveAll(u => u.Remaining <= 0);
 		}
 	}
 }
