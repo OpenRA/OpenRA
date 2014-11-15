@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common
 {
 	[Desc("Handle demolitions from C4 explosives.")]
 	public class DemolishableInfo : IDemolishableInfo, ITraitInfo

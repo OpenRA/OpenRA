@@ -164,16 +164,11 @@
     <Compile Include="CaptureNotification.cs" />
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Buildings\BuildingInfluence.cs" />
-    <Compile Include="Buildings\CustomSellValue.cs" />
-    <Compile Include="Buildings\CustomBuildTimeValue.cs" />
     <Compile Include="Buildings\DeadBuildingState.cs" />
     <Compile Include="Buildings\FootprintUtils.cs" />
     <Compile Include="Buildings\LineBuild.cs" />
     <Compile Include="Buildings\RepairableBuilding.cs" />
-    <Compile Include="Buildings\ShakeOnDeath.cs" />
-    <Compile Include="Buildings\SoundOnDamageTransition.cs" />
     <Compile Include="Buildings\Util.cs" />
-    <Compile Include="Burns.cs" />
     <Compile Include="C4Demolition.cs" />
     <Compile Include="ExternalCapturable.cs" />
     <Compile Include="ExternalCapturableBar.cs" />
@@ -291,7 +286,6 @@
     <Compile Include="SeedsResource.cs" />
     <Compile Include="SelfHealing.cs" />
     <Compile Include="Sellable.cs" />
-    <Compile Include="ShroudPalette.cs" />
     <Compile Include="SmokeTrailWhenDamaged.cs" />
     <Compile Include="SpawnMPUnits.cs" />
     <Compile Include="Disguise.cs" />
@@ -316,7 +310,6 @@
     <Compile Include="TransformOnPassenger.cs" />
     <Compile Include="Transforms.cs" />
     <Compile Include="Turreted.cs" />
-    <Compile Include="Valued.cs" />
     <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />
     <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
@@ -387,9 +380,7 @@
     <Compile Include="CombatDebugOverlay.cs" />
     <Compile Include="World\PathfinderDebugOverlay.cs" />
     <Compile Include="AttackBomber.cs" />
-    <Compile Include="ShroudRenderer.cs" />
     <Compile Include="Render\WithCrateBody.cs" />
-    <Compile Include="Buildings\Demolishable.cs" />
     <Compile Include="Activities\FlyFollow.cs" />
     <Compile Include="Widgets\Logic\GameTimerLogic.cs" />
     <Compile Include="Widgets\Logic\ReplayControlBarLogic.cs" />
@@ -402,7 +393,6 @@
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
     <Compile Include="Buildings\LineBuildNode.cs" />
     <Compile Include="Render\WithBuildingPlacedAnimation.cs" />
-    <Compile Include="StartGameNotification.cs" />
     <Compile Include="Scripting\LuaScript.cs" />
     <Compile Include="Scripting\CallLuaFunc.cs" />
     <Compile Include="Scripting\Global\ActorGlobal.cs" />
