@@ -5,6 +5,7 @@
 
 local ide = ide
 local unpack = table.unpack or unpack
+local q = EscapeMagic
 
 -- ---------------------------------------------------------------------------
 -- Create the Edit menu and attach the callback functions
@@ -384,7 +385,7 @@ local function navigateToFile()
         if tabindex then -- switch to existing tab
           SetEditorSelection(tabindex)
         else -- load a new file
-          LoadFile(file, nil, true)
+          LoadFile(MergeFullPath(ide:GetProject(), file), nil, true)
         end
       -- restore original selection if canceled
       elseif nb:GetSelection() ~= selection then
@@ -397,19 +398,25 @@ local function navigateToFile()
       local projdir = ide:GetProject()
       if text and #text > 0 and projdir and #projdir > 0 then
         -- populate the list of files
-        projectFiles = projectFiles or FileSysGetRecursive(projdir, true)
+        if not projectFiles then
+          projectFiles = FileSysGetRecursive(projdir, true)
+          for k = #projectFiles, 1, -1 do
+            if IsDirectory(projectFiles[k]) then
+              table.remove(projectFiles, k)
+            else
+              projectFiles[k] = projectFiles[k]:gsub("^"..q(projdir), "")
+            end
+          end
+        end
         local topscore
         for _, item in ipairs(CommandBarScoreFiles(projectFiles, text)) do
           local file, score = unpack(item)
-          local dir = file:match(pathsep.."$")
-          if not dir then
-            topscore = topscore or score
-            if score > topscore / 2 and score > 0 then
-              table.insert(lines, {
-                  ("%2d %s"):format(score, wx.wxFileName(file):GetFullName()),
-                  file,
-              })
-            end
+          topscore = topscore or score
+          if score > topscore / 2 and score > 0 then
+            table.insert(lines, {
+                ("%2d %s"):format(score, wx.wxFileName(file):GetFullName()),
+                file,
+            })
           end
         end
       else
@@ -422,8 +429,9 @@ local function navigateToFile()
     function(t) return unpack(t) end,
     function(t, index)
       local _, file, tabindex = unpack(t)
+      if file then file = MergeFullPath(ide:GetProject(), file) end
       nb:SetEvtHandlerEnabled(false)
-      local doc = ide:FindDocument(file)
+      local doc = file and ide:FindDocument(file)
       if doc and not tabindex then tabindex = doc:GetTabIndex() end
       if tabindex then
         local ed = nb:GetPage(tabindex)
