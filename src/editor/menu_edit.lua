@@ -365,23 +365,31 @@ frame:Connect(ID_BOOKMARKTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkToggle)
 frame:Connect(ID_BOOKMARKNEXT, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkNext)
 frame:Connect(ID_BOOKMARKPREV, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkPrev)
 
-local projectFiles
-local pathsep = GetPathSeparator()
 local function navigateToFile()
   local nb = ide:GetEditorNotebook()
   local selection = nb:GetSelection()
+  local pathsep = GetPathSeparator()
+  local projectFiles, preview
   CommandBarShow(
     function(t, index)
-      if index then
-        local _, file, tabindex = unpack(t)
-        if tabindex then
+      nb:Freeze()
+      -- close preview
+      if preview then
+        ClosePage(nb:GetPageIndex(preview))
+        preview = nil
+      end
+      local _, file, tabindex = unpack(t or {})
+      if file then
+        if tabindex then -- switch to existing tab
           SetEditorSelection(tabindex)
-        else
+        else -- load a new file
           LoadFile(file, nil, true)
         end
+      -- restore original selection if canceled
       elseif nb:GetSelection() ~= selection then
         nb:SetSelection(selection)
       end
+      nb:Thaw()
     end,
     function(text)
       local lines = {}
@@ -413,14 +421,21 @@ local function navigateToFile()
     function(t) return unpack(t) end,
     function(t, index)
       local _, file, tabindex = unpack(t)
+      nb:SetEvtHandlerEnabled(false)
+      local doc = ide:FindDocument(file)
+      if doc and not tabindex then tabindex = doc:GetTabIndex() end
       if tabindex then
         local ed = nb:GetPage(tabindex)
         ed:SetEvtHandlerEnabled(false)
-        nb:SetEvtHandlerEnabled(false)
         nb:SetSelection(tabindex)
-        nb:SetEvtHandlerEnabled(true)
         ed:SetEvtHandlerEnabled(true)
+      elseif file then
+        preview = preview or NewFile()
+        preview:SetEvtHandlerEnabled(false)
+        LoadFile(file, preview, true, true)
+        preview:SetEvtHandlerEnabled(true)
       end
+      nb:SetEvtHandlerEnabled(true)
     end,
     ""
   )
