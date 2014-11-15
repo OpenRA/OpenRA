@@ -144,15 +144,12 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText, defa
     dc:delete()
   end
 
+  local linewas -- line that was reported when updated
   local function onTextUpdated(event)
     local text = search:GetValue()
     lines = onUpdate(text)
-
-    if linenow > #lines then
-      linenow = #lines
-    elseif #text > 0 and linenow == 0 then
-      linenow = 1
-    end
+    linenow = #text > 0 and #lines > 0 and 1 or 0
+    linewas = nil
 
     if #lines ~= linesnow and (#lines < maxlines or linesnow < maxlines) then
       results:SetScrollbars(1, 1, 1, 1, 0, 0, false)
@@ -183,6 +180,19 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText, defa
     if linenow < starty+1 then results:Scroll(-1, linenow-1)
     elseif linenow > starty+maxlines then results:Scroll(-1, linenow-maxlines) end
     results:Refresh()
+  end
+
+  local function onMouseLeftDown(event)
+    local pos = event:GetPosition()
+    local x, y = results:CalcUnscrolledPosition(pos.x, pos.y)
+    onExit(math.floor(y / row_height)+1)
+    frame:Close()
+  end
+
+  local function onIdle(event)
+    if linewas == linenow then return end
+    linewas = linenow
+    if linenow == 0 then return end
 
     -- save the selection/insertion point as it's reset on Linux (wxwidgets 2.9.5)
     local ip = search:GetInsertionPoint()
@@ -200,17 +210,11 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText, defa
     end
   end
 
-  local function onMouseLeftDown(event)
-    local pos = event:GetPosition()
-    local x, y = results:CalcUnscrolledPosition(pos.x, pos.y)
-    onExit(math.floor(y / row_height)+1)
-    frame:Close()
-  end
-
   frame:Connect(wx.wxEVT_CLOSE_WINDOW, function() frame:Destroy() end)
 
   panel:Connect(wx.wxEVT_PAINT, onPanelPaint)
   panel:Connect(wx.wxEVT_ERASE_BACKGROUND, function() end)
+  panel:Connect(wx.wxEVT_IDLE, onIdle)
 
   results:Connect(wx.wxEVT_PAINT, onPaint)
   results:Connect(wx.wxEVT_LEFT_DOWN, onMouseLeftDown)
