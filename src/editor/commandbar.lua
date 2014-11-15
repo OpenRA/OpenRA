@@ -12,9 +12,14 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText, defa
   local linenow = defaultIndex or 0
 
   local ed = ide:GetEditor()
-  local pos = ed and (win and ed:GetScreenPosition() or ed:GetPosition()) or wx.wxDefaultPosition
-  pos:SetX(pos:GetX()+ide:GetEditorNotebook():GetClientSize():GetWidth()-row_width-12)
-  pos:SetY(pos:GetY()+2)
+  local pos = ed and ed:GetScreenPosition() or ide:GetEditorNotebook():GetScreenPosition()
+  if pos then
+    pos:SetX(pos:GetX()+ide:GetEditorNotebook():GetClientSize():GetWidth()-row_width-16)
+    pos:SetY(pos:GetY()+2)
+    if not win then pos = ide:GetMainFrame():ScreenToClient(pos) end
+  else
+    pos = wx.wxDefaultPosition
+  end
 
   local frame = win and wx.wxFrame(ide:GetMainFrame(), wx.wxID_ANY, "Command Bar",
     pos, wx.wxDefaultSize,
