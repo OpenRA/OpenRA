@@ -455,14 +455,6 @@ Actors:
 		Location: 22,29
 		Owner: Nod
 		Facing: 128
-	MCVwaypoint: waypoint
-		Location: 9,60
-		Owner: GDI
-		Health: 1
-		Facing: 0
-	VehicleStop: waypoint
-		Location: 10,55
-		Owner: GDI
 	Actor134: bggy
 		Location: 21,29
 		Owner: Nod
@@ -633,9 +625,6 @@ Actors:
 		Owner: Nod
 		Facing: 96
 		SubCell: 4
-	InfantryStop: waypoint
-		Location: 14,57
-		Owner: GDI
 	Actor177: e3
 		Location: 14,32
 		Owner: Nod
@@ -713,12 +702,27 @@ Actors:
 		SubCell: 1
 	InfantryStart: waypoint
 		Location: 14,61
-		Owner: GDI
+		Owner: Neutral
 	VehicleStart: waypoint
 		Location: 9,61
-		Owner: GDI
+		Owner: Neutral
 	AttackWaypoint: waypoint
 		Location: 6,52
+		Owner: Neutral
+	MCVwaypoint: waypoint
+		Location: 9,60
+		Owner: Neutral
+	VehicleStop: waypoint
+		Location: 10,55
+		Owner: Neutral
+	InfantryStop: waypoint
+		Location: 14,57
+		Owner: Neutral
+	AttackRallypoint1: waypoint
+		Location: 43,36
+		Owner: Neutral
+	AttackRallypoint2: waypoint
+		Location: 37,51
 		Owner: Neutral
 
 Smudges:

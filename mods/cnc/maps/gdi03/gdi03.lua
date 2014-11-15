@@ -1,6 +1,7 @@
 SamSites = { Sam1, Sam2, Sam3, Sam4 }
 Sam4Guards = { Sam4Guard0, Sam4Guard1, Sam4Guard2, Sam4Guard3, Sam4Guard4, HiddenBuggy }
 NodInfantrySquad = { "e1", "e1", "e1", "e1", "e1" }
+NodAttackRoutes = { { AttackWaypoint }, { AttackWaypoint }, { AttackRallypoint1, AttackRallypoint2, AttackWaypoint } }
 InfantryReinforcements = { "e1", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "e2" }
 JeepReinforcements = { "jeep", "jeep", "jeep" }
 
@@ -10,9 +11,23 @@ AttackPlayer = function()
 	end
 
 	local after = function(team)
+		local count = 1
+		local route = Utils.Random(NodAttackRoutes)
 		Utils.Do(team, function(actor)
-			actor.AttackMove(AttackWaypoint.Location)
-			Trigger.OnIdle(actor, actor.Hunt)
+			Trigger.OnIdle(actor, function()
+				if actor.Location == route[count].Location then
+					if not count == #route then
+						count = count + 1
+					else
+						Trigger.ClearAll(actor)
+						Trigger.AfterDelay(0, function()
+							Trigger.OnIdle(actor, actor.Hunt)
+						end)
+					end
+				else
+					actor.AttackMove(route[count].Location)
+				end
+			end)
 		end)
 		Trigger.OnAllKilled(team, function() Trigger.AfterDelay(DateTime.Seconds(15), AttackPlayer) end)
 	end
