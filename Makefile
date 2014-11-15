@@ -258,7 +258,7 @@ core: game renderers mods utility ralint
 
 tools: editor tsbuild gamemonitor
 
-package: dependencies core editor gamemonitor docs version
+package: cli-dependencies core editor gamemonitor docs version
 
 mods: mod_common mod_ra mod_cnc mod_d2k mod_ts
 
