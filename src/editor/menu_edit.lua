@@ -434,6 +434,7 @@ local function navigateToFile()
         preview = preview or NewFile()
         preview:SetEvtHandlerEnabled(false)
         LoadFile(file, preview, true, true)
+        preview:SetFocus()
         preview:SetEvtHandlerEnabled(true)
       end
       nb:SetEvtHandlerEnabled(true)
