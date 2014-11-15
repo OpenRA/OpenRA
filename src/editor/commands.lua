@@ -107,6 +107,7 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   end
 
   editor:Colourise(0, -1)
+  editor:ResetTokenList() -- reset list of tokens if this is a reused editor
   editor:Thaw()
 
   local edcfg = ide.config.editor
