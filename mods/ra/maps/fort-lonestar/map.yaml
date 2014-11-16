@@ -21,6 +21,7 @@ UseAsShellmap: False
 Type: Minigame
 
 Options:
+	ShortGame: False
 	Fog: True
 	Shroud: True
 	AllyBuildRadius: False

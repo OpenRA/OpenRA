@@ -249,6 +249,7 @@ Rules:
 		WithMuzzleFlash@SECONDARY:
 			Armament: secondary
 		MustBeDestroyed:
+			RequiredForShortGame: true
 		-GivesBounty:
 	PT:
 		-GivesBounty:

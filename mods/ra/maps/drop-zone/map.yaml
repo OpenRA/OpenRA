@@ -226,6 +226,7 @@ Rules:
 		RevealsShroud:
 			Range: 40c0
 		MustBeDestroyed:
+			RequiredForShortGame: true
 		-AttackMove:
 	HARV:
 		Tooltip:
