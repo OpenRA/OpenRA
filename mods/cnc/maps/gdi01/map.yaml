@@ -23,6 +23,7 @@ UseAsShellmap: False
 Type: Campaign
 
 Options:
+	ShortGame: False
 	Crates: False
 	Fog: True
 	Shroud: True
@@ -445,24 +446,20 @@ Rules:
 		MissionObjectives:
 			EarlyGameOver: true
 	^Vehicle:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Tank:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Helicopter:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Infantry:
 		SpawnViceroid:
 			Probability: 0
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
@@ -486,8 +483,6 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
-	HARV:
-		-MustBeDestroyed:
 	PROC:
 		Buildable:
 			Prerequisites: ~disabled
@@ -515,7 +510,6 @@ Rules:
 	GUN:
 		Buildable:
 			Prerequisites: ~disabled
-		MustBeDestroyed:
 	GTWR:
 		Buildable:
 			Prerequisites: ~disabled
