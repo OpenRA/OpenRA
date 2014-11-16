@@ -68,24 +68,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ThrowsShrapnel.cs" />
-    <Compile Include="DamagedWithoutFoundation.cs" />
     <Compile Include="SpriteLoaders\R8Loader.cs" />
-    <Compile Include="Render\WithBuildingPlacedOverlay.cs" />
-    <Compile Include="Render\WithCrumbleOverlay.cs" />
-    <Compile Include="Render\WithProductionOverlay.cs" />
-    <Compile Include="Render\WithDockingOverlay.cs" />
-    <Compile Include="Render\WithDeliveryOverlay.cs" />
+    <Compile Include="Traits\Buildings\DamagedWithoutFoundation.cs" />
+    <Compile Include="Traits\Render\WithBuildingPlacedOverlay.cs" />
+    <Compile Include="Traits\Render\WithCrumbleOverlay.cs" />
+    <Compile Include="Traits\Render\WithProductionOverlay.cs" />
+    <Compile Include="Traits\Render\WithDockingOverlay.cs" />
+    <Compile Include="Traits\Render\WithDeliveryOverlay.cs" />
+    <Compile Include="Traits\ThrowsShrapnel.cs" />
+    <Compile Include="Traits\World\ChooseBuildTabOnSelect.cs" />
+    <Compile Include="Traits\World\PaletteFromR8.cs" />
+    <Compile Include="Traits\World\FogPaletteFromR8.cs" />
+    <Compile Include="Traits\World\D2kResourceLayer.cs" />
+    <Compile Include="Traits\World\PaletteFromScaledPalette.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\SupportPowerBinWidget.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Widgets\SlidingContainerWidget.cs" />
     <Compile Include="Widgets\Logic\IngameChromeLogic.cs" />
-    <Compile Include="World\ChooseBuildTabOnSelect.cs" />
-    <Compile Include="World\PaletteFromR8.cs" />
-    <Compile Include="World\FogPaletteFromR8.cs" />
-    <Compile Include="World\D2kResourceLayer.cs" />
-    <Compile Include="World\PaletteFromScaledPalette.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

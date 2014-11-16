@@ -14,7 +14,7 @@ using OpenRA.Mods.RA;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.D2k
+namespace OpenRA.Mods.D2k.Traits
 {
 	class ChooseBuildTabOnSelectInfo : ITraitInfo
 	{
