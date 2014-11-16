@@ -12,7 +12,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Renders a flame sprite on top of the actor.")]
 	class WithFireInfo : ITraitInfo, Requires<RenderSpritesInfo>

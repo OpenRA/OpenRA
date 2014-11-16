@@ -12,7 +12,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Provides an overlay for the Tiberian Dawn hover craft.")]
 	public class WithRoofInfo : ITraitInfo, Requires<RenderSpritesInfo>
