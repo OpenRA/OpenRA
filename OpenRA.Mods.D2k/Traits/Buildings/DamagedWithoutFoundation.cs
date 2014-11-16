@@ -12,7 +12,7 @@ using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k
+namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Reduces health points over time when the actor is placed on unsafe terrain.")]
 	class DamagedWithoutFoundationInfo : ITraitInfo, Requires<HealthInfo>

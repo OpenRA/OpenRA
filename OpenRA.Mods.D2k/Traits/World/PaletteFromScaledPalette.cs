@@ -12,7 +12,7 @@ using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k
+namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Create a palette by applying a scale and offset to the colors in another palette.")]
 	class PaletteFromScaledPaletteInfo : ITraitInfo

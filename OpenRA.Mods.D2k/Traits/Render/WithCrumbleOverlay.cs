@@ -14,7 +14,7 @@ using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Mods.RA;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k.Render
+namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Rendered together with the \"make\" animation.")]
 	public class WithCrumbleOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
