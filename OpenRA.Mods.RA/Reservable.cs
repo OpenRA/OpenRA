@@ -9,7 +9,7 @@
 #endregion
 
 using System;
-using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 

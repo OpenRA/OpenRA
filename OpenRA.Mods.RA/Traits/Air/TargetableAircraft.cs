@@ -8,7 +8,11 @@
  */
 #endregion
 
-namespace OpenRA.Mods.RA.Air
+using System.Collections.Generic;
+using OpenRA.Mods.RA;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.RA.Traits
 {
 	public class TargetableAircraftInfo : TargetableUnitInfo
 	{

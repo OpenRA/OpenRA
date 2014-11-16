@@ -11,7 +11,8 @@
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common;
-using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Primitives;
 

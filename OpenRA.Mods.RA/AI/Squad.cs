@@ -10,6 +10,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.RA;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -39,7 +41,7 @@ namespace OpenRA.Mods.RA.AI
 			this.world = bot.world;
 			this.random = bot.random;
 			this.type = type;
-			this.target = Traits.Target.FromActor(target);
+			this.target = OpenRA.Traits.Target.FromActor(target);
 			fsm = new StateMachine();
 
 			switch (type)
@@ -68,7 +70,7 @@ namespace OpenRA.Mods.RA.AI
 		public Actor Target
 		{
 			get { return target.Actor; }
-			set { target = Traits.Target.FromActor(value); }
+			set { target = OpenRA.Traits.Target.FromActor(value); }
 		}
 
 		public bool TargetIsValid

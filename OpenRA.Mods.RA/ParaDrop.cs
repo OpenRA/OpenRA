@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 

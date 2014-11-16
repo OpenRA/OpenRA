@@ -8,9 +8,11 @@
  */
 #endregion
 
+using OpenRA.Mods.RA;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Air
+namespace OpenRA.Mods.RA.Traits
 {
 	class AttackPlaneInfo : AttackFrontalInfo
 	{

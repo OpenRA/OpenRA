@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
@@ -79,7 +80,7 @@ namespace OpenRA.Mods.RA.Render
 				return;
 
 			if (a.Info.MuzzleSplitFacings > 0)
-				sequence += Traits.Util.QuantizeFacing(getFacing(), a.Info.MuzzleSplitFacings).ToString();
+				sequence += OpenRA.Traits.Util.QuantizeFacing(getFacing(), a.Info.MuzzleSplitFacings).ToString();
 
 			visible[barrel] = true;
 			anims[barrel].Animation.PlayThen(sequence, () => visible[barrel] = false);

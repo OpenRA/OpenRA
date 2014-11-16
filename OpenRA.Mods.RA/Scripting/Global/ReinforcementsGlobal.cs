@@ -18,7 +18,7 @@ using OpenRA.Traits;
 using OpenRA.Scripting;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
