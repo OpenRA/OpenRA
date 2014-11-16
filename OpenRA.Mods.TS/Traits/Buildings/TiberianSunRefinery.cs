@@ -11,7 +11,7 @@
 using OpenRA.Mods.RA;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.TS
+namespace OpenRA.Mods.TS.Traits
 {
 	public class TiberianSunRefineryInfo : OreRefineryInfo
 	{
