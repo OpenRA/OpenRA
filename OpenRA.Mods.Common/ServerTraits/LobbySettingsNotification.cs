@@ -57,6 +57,9 @@ namespace OpenRA.Mods.Common.Server
 
 			if (server.LobbyInfo.GlobalSettings.TechLevel != defaults.TechLevel)
 				server.SendOrderTo(conn, "Message", "Tech Level: {0}".F(server.LobbyInfo.GlobalSettings.TechLevel));
+
+			if (server.LobbyInfo.GlobalSettings.ShortGame != defaults.ShortGame)
+				server.SendOrderTo(conn, "Message", "Short Game: {0}".F(server.LobbyInfo.GlobalSettings.ShortGame));
 		}
 	}
 }
