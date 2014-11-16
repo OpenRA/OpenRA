@@ -78,7 +78,7 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText, defa
   -- needed because KILL_FOCUS handler can be called after closing window
   local function onExit(index)
     onExit = function() end
-    onDone(index and lines[index], index)
+    onDone(index and lines[index])
     frame:Close()
   end
 
@@ -189,7 +189,7 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText, defa
 
   local function onMouseLeftDown(event)
     local pos = event:GetPosition()
-    local x, y = results:CalcUnscrolledPosition(pos.x, pos.y)
+    local _, y = results:CalcUnscrolledPosition(pos.x, pos.y)
     onExit(math.floor(y / row_height)+1)
   end
 
@@ -205,7 +205,7 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText, defa
     -- this may set focus to a different object/tab,
     -- so disable the focus event and then set the focus back
     search:SetEvtHandlerEnabled(false)
-    onSelection(lines[linenow], linenow)
+    onSelection(lines[linenow])
     search:SetFocus()
     search:SetEvtHandlerEnabled(true)
     if ide.osname == 'Unix' then

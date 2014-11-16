@@ -369,10 +369,9 @@ frame:Connect(ID_BOOKMARKPREV, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkPrev)
 local function navigateToFile()
   local nb = ide:GetEditorNotebook()
   local selection = nb:GetSelection()
-  local pathsep = GetPathSeparator()
   local projectFiles, preview
   CommandBarShow(
-    function(t, index)
+    function(t)
       local mac = ide.osname == 'Macintosh'
       if not mac then nb:Freeze() end
       -- close preview
@@ -427,7 +426,7 @@ local function navigateToFile()
       return lines
     end,
     function(t) return unpack(t) end,
-    function(t, index)
+    function(t)
       local _, file, tabindex = unpack(t)
       if file then file = MergeFullPath(ide:GetProject(), file) end
       nb:SetEvtHandlerEnabled(false)
