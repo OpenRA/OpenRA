@@ -65,8 +65,7 @@ namespace OpenRA.Widgets
 				dragStart = dragEnd = xy;
 
 				// place buildings
-				if (!World.Selection.Actors.Any())
-					ApplyOrders(World, xy, mi);
+				ApplyOrders(World, xy, mi);
 			}
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move)
