@@ -13,7 +13,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.TS
+namespace OpenRA.Mods.TS.Traits
 {
 	[Desc("Adds the hard-coded shroud palette to the game")]
 	class TSShroudPaletteInfo : ITraitInfo

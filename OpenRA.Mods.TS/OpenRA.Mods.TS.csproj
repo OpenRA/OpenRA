@@ -55,12 +55,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ShroudPalette.cs" />
     <Compile Include="Activities\VoxelHarvesterDockSequence.cs" />
-    <Compile Include="TiberianSunRefinery.cs" />
-    <Compile Include="Render\WithVoxelWalkerBody.cs" />
-    <Compile Include="Render\WithVoxelUnloadBody.cs" />
     <Compile Include="SpriteLoaders\TmpTSLoader.cs" />
+    <Compile Include="Traits\Buildings\TiberianSunRefinery.cs" />
+    <Compile Include="Traits\Render\WithVoxelWalkerBody.cs" />
+    <Compile Include="Traits\Render\WithVoxelUnloadBody.cs" />
+    <Compile Include="Traits\World\ShroudPalette.cs" />
     <Compile Include="UtilityCommands\LegacyTilesetImporter.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
