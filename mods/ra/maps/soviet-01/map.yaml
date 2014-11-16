@@ -23,6 +23,7 @@ Type: Campaign
 PreviewVideo: soviet1.vqa
 
 Options:
+	ShortGame: False
 	Crates: False
 	Fog: True
 	Shroud: True
@@ -796,17 +797,14 @@ Rules:
 	^CivBuilding:
 		MustBeDestroyed:
 	^Plane:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Vehicle:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Infantry:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
@@ -820,7 +818,6 @@ Rules:
 			GenericStancePrefix: false
 			ShowOwnerRow: false
 	PBOX:
-		MustBeDestroyed:
 	JEEP:
 		Explodes:
 		JamsRadar:

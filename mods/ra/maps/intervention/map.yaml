@@ -21,6 +21,7 @@ UseAsShellmap: False
 Type: Mission
 
 Options:
+	ShortGame: False
 	Crates: False
 	Fog: True
 	Shroud: True
@@ -2296,27 +2297,22 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Vehicle:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Tank:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Infantry:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Plane:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Ship:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false

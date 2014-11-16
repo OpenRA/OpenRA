@@ -201,12 +201,14 @@ SetupWorld = function()
 end
 
 Tick = function()
-	if soviets.Resources > soviets.ResourceCapacity * 0.75 then
-		soviets.Resources = soviets.Resources - ((soviets.ResourceCapacity * 0.01) / 25)
-	end
+	if DateTime.GameTime > 2 then
+		if soviets.Resources > soviets.ResourceCapacity * 0.75 then
+			soviets.Resources = soviets.Resources - ((soviets.ResourceCapacity * 0.01) / 25)
+		end
 
-	if player.HasNoRequiredUnits() then
-		player.MarkFailedObjective(villageObjective)
+		if player.HasNoRequiredUnits() then
+			player.MarkFailedObjective(villageObjective)
+		end
 	end
 end
 

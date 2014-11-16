@@ -79,11 +79,13 @@ WorldLoaded = function()
 end
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		enemy.MarkCompletedObjective(gdiObjective)
-	end
+	if DateTime.GameTime > 2 then
+		if player.HasNoRequiredUnits() then
+			enemy.MarkCompletedObjective(gdiObjective)
+		end
 
-	if enemy.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(nodObjective2)
+		if enemy.HasNoRequiredUnits() then
+			player.MarkCompletedObjective(nodObjective2)
+		end
 	end
 end
