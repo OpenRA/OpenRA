@@ -833,6 +833,7 @@ Rules:
 		RenderUnit:
 			Image: MNLY
 		MustBeDestroyed:
+			RequiredForShortGame: true
 		Transforms:
 			IntoActor: ftur
 			Offset: 0,0
@@ -848,6 +849,7 @@ Rules:
 			Offset: 0,0
 			Facing: 96
 		MustBeDestroyed:
+			RequiredForShortGame: true
 		CashTrickler:
 			Period: 150
 			Amount: 30
