@@ -13,7 +13,7 @@ using OpenRA.Traits;
 using OpenRA.Mods.RA;
 using OpenRA.GameRules;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.Cnc.Traits
 {
 	class PoisonedByTiberiumInfo : ITraitInfo
 	{

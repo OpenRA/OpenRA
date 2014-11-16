@@ -70,18 +70,18 @@
     <Compile Include="Activities\HarvesterDockSequence.cs" />
     <Compile Include="CncLoadScreen.cs" />
     <Compile Include="Effects\IonCannon.cs" />
-    <Compile Include="IonCannonPower.cs" />
-    <Compile Include="PoisonedByTiberium.cs" />
-    <Compile Include="ProductionAirdrop.cs" />
-    <Compile Include="SpawnViceroid.cs" />
-    <Compile Include="TiberiumRefinery.cs" />
+    <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
+    <Compile Include="Traits\Buildings\TiberiumRefinery.cs" />
+    <Compile Include="Traits\PoisonedByTiberium.cs" />
+    <Compile Include="Traits\Render\RenderGunboat.cs" />
+    <Compile Include="Traits\Render\WithCargo.cs" />
+    <Compile Include="Traits\Render\WithDeliveryAnimation.cs" />
+    <Compile Include="Traits\Render\WithFire.cs" />
+    <Compile Include="Traits\Render\WithRoof.cs" />
+    <Compile Include="Traits\SpawnViceroid.cs" />
+    <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
     <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
-    <Compile Include="Render\RenderGunboat.cs" />
-    <Compile Include="Render\WithCargo.cs" />
-    <Compile Include="Render\WithDeliveryAnimation.cs" />
-    <Compile Include="Render\WithFire.cs" />
-    <Compile Include="Render\WithRoof.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

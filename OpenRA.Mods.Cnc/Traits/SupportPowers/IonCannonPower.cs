@@ -14,7 +14,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.Cnc.Traits
 {
 	class IonCannonPowerInfo : SupportPowerInfo
 	{
