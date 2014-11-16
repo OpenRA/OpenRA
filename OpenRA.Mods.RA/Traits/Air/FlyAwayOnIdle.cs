@@ -8,24 +8,21 @@
  */
 #endregion
 
+using OpenRA.Mods.RA;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Air
+namespace OpenRA.Mods.RA.Traits
 {
-	public class FlyCircle : Activity
+	[Desc("Leave the map when idle.")]
+	class FlyAwayOnIdleInfo : TraitInfo<FlyAwayOnIdle> { }
+
+	class FlyAwayOnIdle : INotifyIdle
 	{
-		public override Activity Tick(Actor self)
+		public void TickIdle(Actor self)
 		{
-			if (IsCanceled)
-				return NextActivity;
-
-			var plane = self.Trait<Plane>();
-
-			// We can't possibly turn this fast
-			var desiredFacing = plane.Facing + 64;
-			Fly.FlyToward(self, plane, desiredFacing, plane.Info.CruiseAltitude);
-
-			return this;
+			self.QueueActivity(new FlyOffMap());
+			self.QueueActivity(new RemoveSelf());
 		}
 	}
 }

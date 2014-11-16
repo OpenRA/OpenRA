@@ -10,9 +10,10 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Air
+namespace OpenRA.Mods.RA.Activities
 {
 	public class ReturnToBase : Activity
 	{

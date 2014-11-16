@@ -12,12 +12,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Air
+namespace OpenRA.Mods.RA.Traits
 {
 	public class AircraftInfo : ITraitInfo, IFacingInfo, IOccupySpaceInfo, UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
@@ -293,21 +294,6 @@ namespace OpenRA.Mods.RA.Air
 				return "Move";
 			default: return null;
 			}
-		}
-	}
-
-	public class ResupplyAircraft : Activity
-	{
-		public override Activity Tick(Actor self)
-		{
-			var aircraft = self.Trait<Aircraft>();
-			var host = aircraft.GetActorBelow();
-
-			if (host == null)
-				return NextActivity;
-
-			return Util.SequenceActivities(
-				aircraft.GetResupplyActivities(host).Append(NextActivity).ToArray());
 		}
 	}
 

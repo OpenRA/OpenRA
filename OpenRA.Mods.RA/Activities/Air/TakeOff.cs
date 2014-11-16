@@ -9,9 +9,10 @@
 #endregion
 
 using OpenRA.Mods.Common;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Air
+namespace OpenRA.Mods.RA.Activities
 {
 	public class TakeOff : Activity
 	{

@@ -9,11 +9,12 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Air
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Return to a player owned RearmBuildings. If none available, head back to base and circle over it.")]
 	class ReturnOnIdleInfo : TraitInfo<ReturnOnIdle> { }

@@ -13,7 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Render;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -140,7 +142,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			var pos = self.CenterPosition;
-			var targetYaw = WAngle.FromFacing(Traits.Util.GetFacing(target.CenterPosition - self.CenterPosition, 0));
+			var targetYaw = WAngle.FromFacing(OpenRA.Traits.Util.GetFacing(target.CenterPosition - self.CenterPosition, 0));
 
 			foreach (var a in Armaments)
 			{
@@ -160,7 +162,7 @@ namespace OpenRA.Mods.RA
 					var sequence = a.Info.MuzzleSequence;
 
 					if (a.Info.MuzzleSplitFacings > 0)
-						sequence += Traits.Util.QuantizeFacing(muzzleFacing, a.Info.MuzzleSplitFacings).ToString();
+						sequence += OpenRA.Traits.Util.QuantizeFacing(muzzleFacing, a.Info.MuzzleSplitFacings).ToString();
 
 					var muzzleFlash = new AnimationWithOffset(muzzleAnim,
 						() => PortOffset(self, port),

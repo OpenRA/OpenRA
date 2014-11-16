@@ -10,10 +10,11 @@
 
 using System;
 using System.Drawing;
+using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Air
+namespace OpenRA.Mods.RA.Traits
 {
 	public class PlaneInfo : AircraftInfo, IMoveInfo
 	{
