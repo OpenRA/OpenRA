@@ -122,20 +122,27 @@ Background@LOBBY_OPTIONS_BIN:
 					Font: Regular
 					Text: Fog of War
 				Checkbox@CRATES_CHECKBOX:
-					X: 160
+					X: 140
 					Width: 230
 					Height: 20
 					Font: Regular
-					Text: Crates Appear
+					Text: Crates
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
-					X: 160
+					X: 140
 					Y: 35
 					Width: 230
 					Height: 20
 					Font: Regular
-					Text: Build off Ally ConYards
+					Text: Build off Allies' ConYards
+				Checkbox@SHORTGAME_CHECKBOX:
+					X: 365
+					Width: 230
+					Height: 20
+					Font: Regular
+					Text: Short Game
 				Checkbox@ALLOWCHEATS_CHECKBOX:
-					X: 325
+					X: 365
+					Y: 35
 					Width: 230
 					Height: 20
 					Font: Regular

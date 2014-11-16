@@ -352,6 +352,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					"fragilealliance {0}".F(!orderManager.LobbyInfo.GlobalSettings.FragileAlliances)));
 			}
 
+			var shortGame = optionsBin.GetOrNull<CheckboxWidget>("SHORTGAME_CHECKBOX");
+			if (shortGame != null)
+			{
+				shortGame.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.ShortGame;
+				shortGame.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.ShortGame.HasValue || configurationDisabled();
+				shortGame.OnClick = () => orderManager.IssueOrder(Order.Command(
+					"shortgame {0}".F(!orderManager.LobbyInfo.GlobalSettings.ShortGame)));
+			}
+
 			var difficulty = optionsBin.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 			if (difficulty != null)
 			{
