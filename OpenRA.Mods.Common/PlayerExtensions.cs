@@ -17,7 +17,11 @@ namespace OpenRA.Mods.Common
 	{
 		public static bool HasNoRequiredUnits(this Player player)
 		{
-			return player.World.ActorsWithTrait<MustBeDestroyed>().All(p => p.Actor.Owner != player);
+			return !player.World.ActorsWithTrait<MustBeDestroyed>().Any(p =>
+			{
+				return p.Actor.Owner == player &&
+					(player.World.LobbyInfo.GlobalSettings.ShortGame ? p.Trait.Info.RequiredForShortGame : p.Actor.IsInWorld);
+			});
 		}
 	}
 }
