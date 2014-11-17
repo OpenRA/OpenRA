@@ -235,6 +235,8 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText, defa
   search:SetValue(defaultText or "")
 end
 
+local sep = "[/\\%-_ ]+"
+local weights = {onegram = 0.1, digram = 0.4, trigram = 0.5}
 local function score(p, v)
   local function ngrams(str, num)
     local t, p = {}, 0
@@ -253,15 +255,15 @@ local function score(p, v)
     for k in pairs(ph) do
       is = is + (vh[k] and 1 or (vh[k:upper()] or vh[k:lower()]) and 0.5 or 0)
     end
-    return is / (ps + vs)
+    return (ps + vs > 0) and (is / (ps + vs)) or 0
   end
 
-  local sep = "[/\\%.%-_ ]+"
-  local digram = overlap(p:gsub(sep, " "), v:gsub(sep, " "), 2)
-  local trigram = overlap(p:gsub(sep, " "), v:gsub(sep, " "), 3)
-  local firstgram = overlap(p:gsub(sep, ""):gsub("(.)", " %1"),
-    v:gsub("(%f[%u])", " %1"):gsub(sep, " "):lower(), 2)
-  return math.floor(50 * digram + 60 * firstgram + 90 * trigram)
+  local score = weights.onegram * overlap(p, v, 1)
+  p = ' '..(p:gsub(sep, ' '))
+  v = ' '..(v:gsub(sep, ' '))
+  score = score + weights.digram * overlap(p, v, 2)
+  score = score + weights.trigram * overlap(' '..p, ' '..v, 3)
+  return 2 * 100 * score
 end
 
 function CommandBarScoreFiles(t, pattern)
