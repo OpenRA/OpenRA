@@ -495,8 +495,8 @@ loadPackages()
 -- Load App
 
 for _, file in ipairs({
-    "markup", "settings", "singleinstance", "iofilters",
-    "package", "gui", "filetree", "output", "debugger", "outline",
+    "markup", "settings", "singleinstance", "iofilters", "package",
+    "gui", "filetree", "output", "debugger", "outline", "commandbar",
     "editor", "findreplace", "commands", "autocomplete", "shellbox",
     "menu_file", "menu_edit", "menu_search",
     "menu_view", "menu_project", "menu_tools", "menu_help",
