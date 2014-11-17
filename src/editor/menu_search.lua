@@ -133,6 +133,8 @@ frame:Connect(ID_FINDSELECTPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_FINDSELECTPREV, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)
 
 local markername = "commandbar.background"
+local mac = ide.osname == 'Macintosh'
+local win = ide.osname == 'Windows'
 local function navigateTo(default)
   local styles = ide.config.styles
   local marker = ide:AddMarker(markername,
@@ -144,7 +146,6 @@ local function navigateTo(default)
 
   CommandBarShow(
     function(t, enter, text) -- onDone
-      local mac = ide.osname == 'Macintosh'
       if not mac then nb:Freeze() end
 
       -- delete all current line markers if any; restore line position
@@ -254,6 +255,9 @@ local function navigateTo(default)
         preview:SetEvtHandlerEnabled(false)
         LoadFile(file, preview, true, true)
         preview:SetFocus()
+        -- force refresh since the panel covers the editor on OSX/Linux
+        -- this fixes the preview window not always redrawn on Linux
+        if not win then preview:Update() preview:Refresh() end
         preview:SetEvtHandlerEnabled(true)
       end
       nb:SetEvtHandlerEnabled(true)
