@@ -156,10 +156,11 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText)
     linenow = #text > 0 and #lines > 0 and 1 or 0
     linewas = nil
 
-    if #lines ~= linesnow and (#lines < maxlines or linesnow < maxlines) then
+    local size = frame:GetClientSize()
+    local height = minheight + row_height*math.min(maxlines,#lines)
+    if height ~= size:GetHeight() then
       results:SetScrollbars(1, 1, 1, 1, 0, 0, false)
-      local size = frame:GetClientSize()
-      size:SetHeight(minheight + row_height*math.min(maxlines,#lines))
+      size:SetHeight(height)
       frame:SetClientSize(size)
     end
 
