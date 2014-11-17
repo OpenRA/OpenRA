@@ -30,6 +30,7 @@ local editMenu = wx.wxMenu {
 
 editMenu:Append(ID_NAVIGATE, TR("Navigate"), wx.wxMenu {
   { ID_NAVIGATETOFILE, TR("To File...")..KSC(ID_NAVIGATETOFILE), TR("Navigate to file") },
+  { ID_NAVIGATETOLINE, TR("To Line...")..KSC(ID_NAVIGATETOLINE), TR("Navigate to line") },
 })
 editMenu:Append(ID_SOURCE, TR("Source"), wx.wxMenu {
   { ID_COMMENT, TR("C&omment/Uncomment")..KSC(ID_COMMENT), TR("Comment or uncomment current or selected lines") },
@@ -497,3 +498,5 @@ end
 
 frame:Connect(ID_NAVIGATETOFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function() navigateTo("") end)
+frame:Connect(ID_NAVIGATETOLINE, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function() navigateTo(":") end)

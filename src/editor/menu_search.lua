@@ -21,8 +21,6 @@ local findMenu = wx.wxMenu{
   { },
   { ID_FINDINFILES, TR("Find &In Files")..KSC(ID_FINDINFILES), TR("Find text in files") },
   { ID_REPLACEINFILES, TR("Re&place In Files")..KSC(ID_REPLACEINFILES), TR("Find and replace text in files") },
-  { },
-  { ID_GOTOLINE, TR("&Go To Line...")..KSC(ID_GOTOLINE), TR("Go to a selected line") },
 }
 menuBar:Append(findMenu, TR("&Search"))
 
@@ -128,21 +126,3 @@ frame:Connect(ID_FINDSELECTPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
     end
   end)
 frame:Connect(ID_FINDSELECTPREV, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)
-
--------------------- Find replace end
-
-frame:Connect(ID_GOTOLINE, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    local editor = GetEditor()
-    local linecur = editor:LineFromPosition(editor:GetCurrentPos())
-    local linemax = editor:LineFromPosition(editor:GetLength()) + 1
-    local linenum = wx.wxGetNumberFromUser(TR("Enter line number"),
-      "1 .. "..tostring(linemax),
-      TR("Go To Line"),
-      linecur, 1, linemax,
-      frame)
-    if linenum > 0 then
-      editor:GotoLine(linenum-1)
-    end
-  end)
-frame:Connect(ID_GOTOLINE, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)

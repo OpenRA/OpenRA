@@ -54,6 +54,7 @@ ide.config.keymap = {
   [ID_BOOKMARKNEXT]     = "F2",
   [ID_BOOKMARKPREV]     = "Shift-F2",
   [ID_NAVIGATETOFILE]   = "Ctrl-P",
+  [ID_NAVIGATETOLINE]   = "Ctrl-G",
 -- Search menu
   [ID_FIND]             = "Ctrl-F",
   [ID_FINDNEXT]         = "F3",
@@ -63,7 +64,6 @@ ide.config.keymap = {
   [ID_REPLACE]          = "Ctrl-R",
   [ID_FINDINFILES]      = "Ctrl-Shift-F",
   [ID_REPLACEINFILES]   = "Ctrl-Shift-R",
-  [ID_GOTOLINE]         = "Ctrl-G",
   [ID_SORT]             = "",
 -- View menu
   [ID_VIEWFILETREE]     = "Ctrl-Shift-P",
