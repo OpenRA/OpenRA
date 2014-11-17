@@ -311,6 +311,7 @@ MCV:
 		NoTransformSounds: nodeply1.aud
 	RenderUnit:
 	MustBeDestroyed:
+		RequiredForShortGame: true
 	BaseBuilding:
 	LeavesHusk:
 		HuskActor: MCV.Husk
@@ -772,4 +773,5 @@ STNK:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	-MustBeDestroyed:
 

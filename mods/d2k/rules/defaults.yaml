@@ -48,6 +48,7 @@
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	TemporaryOwnerManager:
+	MustBeDestroyed:
 
 ^Tank:
 	AppearsOnRadar:
@@ -99,6 +100,7 @@
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	TemporaryOwnerManager:
+	MustBeDestroyed:
 
 ^Husk:
 	Health:
@@ -224,6 +226,7 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	MustBeDestroyed:
 
 ^Plane:
 	AppearsOnRadar:
@@ -286,6 +289,7 @@
 	EmitInfantryOnSell:
 		ActorTypes: rifle,rifle,rifle,rifle,rifle,bazooka,bazooka,bazooka,engineer
 	MustBeDestroyed:
+		RequiredForShortGame: true
 	GivesExperience:
 	FrozenUnderFog:
 	CaptureNotification:

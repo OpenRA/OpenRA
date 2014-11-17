@@ -242,6 +242,7 @@ FREMEN:
 		CloakDelay: 250
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
+	-MustBeDestroyed:
 
 GRENADIER:
 	Inherits: ^Infantry

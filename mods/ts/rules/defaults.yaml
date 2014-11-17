@@ -23,6 +23,7 @@
 	RepairableBuilding:
 	EngineerRepairable:
 	MustBeDestroyed:
+		RequiredForShortGame: true
 	GivesExperience:
 	CaptureNotification:
 	EditorAppearance:
@@ -92,6 +93,7 @@
 		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
+	MustBeDestroyed:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -174,6 +176,7 @@
 		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
+	MustBeDestroyed:
 
 ^CivilianInfantry:
 	Inherits: ^Infantry
@@ -201,6 +204,7 @@
 		Types: CivilianInfantry
 	RenderInfantry:
 	ScaredyCat:
+	-MustBeDestroyed:
 
 ^Vehicle:
 	AppearsOnRadar:
@@ -280,6 +284,7 @@
 		UpgradeMaxAcceptedLevel: 2
 		InitialDelay: 0
 		CloakDelay: 90
+	MustBeDestroyed:
 
 ^Tank:
 	AppearsOnRadar:
@@ -359,6 +364,7 @@
 		UpgradeMaxAcceptedLevel: 2
 		InitialDelay: 0
 		CloakDelay: 90
+	MustBeDestroyed:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -406,6 +412,7 @@
 	Guard:
 	Guardable:
 	UpgradeManager:
+	MustBeDestroyed:
 
 ^BlossomTree:
 	Tooltip:

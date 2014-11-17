@@ -228,6 +228,8 @@ CONCRETEB:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -5
+	MustBeDestroyed:
+		RequiredForShortGame: false
 
 ^LIGHT:
 	Inherits: ^Building
@@ -501,6 +503,8 @@ WALL:
 		Types: turret
 	Power:
 		Amount: -20
+	MustBeDestroyed:
+		RequiredForShortGame: false
 
 ^ROCKETTOWER:
 	Inherits: ^Building
@@ -554,6 +558,8 @@ WALL:
 		Types: turret
 	Power:
 		Amount: -30
+	MustBeDestroyed:
+		RequiredForShortGame: false
 
 ^REPAIR:
 	Inherits: ^Building
