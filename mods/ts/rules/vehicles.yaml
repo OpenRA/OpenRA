@@ -23,6 +23,7 @@ MCV:
 	RevealsShroud:
 		Range: 4c0
 	MustBeDestroyed:
+		RequiredForShortGame: true
 	BaseBuilding:
 	Transforms:
 		IntoActor: gacnst
@@ -848,4 +849,5 @@ STNK:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	-MustBeDestroyed:
 

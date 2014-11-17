@@ -197,6 +197,7 @@ STEALTHRAIDER:
 		UncloakSound: STEALTH2.WAV
 	AutoTarget:
 		InitialStance: HoldFire
+	-MustBeDestroyed:
 
 CARRYALLO:
 	Inherits: ^CARRYALL

@@ -520,6 +520,7 @@ SNIPER:
 		UncloakOnMove: yes
 	DetectCloaked:
 		Range: 6
+	-MustBeDestroyed:
 
 Zombie:
 	Inherits: ^Infantry

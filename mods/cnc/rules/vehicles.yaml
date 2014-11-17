@@ -28,6 +28,7 @@ MCV:
 		NoTransformSounds: deploy1.aud
 	RenderUnit:
 	MustBeDestroyed:
+		RequiredForShortGame: true
 	BaseBuilding:
 	LeavesHusk:
 		HuskActor: MCV.Husk
@@ -548,6 +549,7 @@ STNK:
 	TargetableUnit:
 	LeavesHusk:
 		HuskActor: STNK.Husk
+	-MustBeDestroyed:
 
 MHQ:
 	Inherits: ^Vehicle
