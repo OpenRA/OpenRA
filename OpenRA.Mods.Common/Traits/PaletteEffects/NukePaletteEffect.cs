@@ -13,7 +13,7 @@ using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Apply palette full screen rotations during atom bomb explosions. Add this to the world actor.")]
 	class NukePaletteEffectInfo : TraitInfo<NukePaletteEffect> { }
