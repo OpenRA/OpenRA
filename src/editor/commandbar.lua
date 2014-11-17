@@ -237,15 +237,20 @@ end
 
 local sep = "[/\\%-_ ]+"
 local weights = {onegram = 0.1, digram = 0.4, trigram = 0.5}
+local cache = {}
 local function score(p, v)
   local function ngrams(str, num)
-    local t, p = {}, 0
-    for i = 1, #str-num+1 do
-      local pair = str:sub(i, i+num-1)
-      p = p + (t[pair] and 0 or 1)
-      t[pair] = (t[pair] or 0) + 1
+    local key = str..'\1'..num
+    if not cache[key] then
+      local t, p = {}, 0
+      for i = 1, #str-num+1 do
+        local pair = str:sub(i, i+num-1)
+        p = p + (t[pair] and 0 or 1)
+        t[pair] = (t[pair] or 0) + 1
+      end
+      cache[key] = {t, p}
     end
-    return t, p
+    return unpack(cache[key])
   end
 
   local function overlap(pattern, value, num)
@@ -258,12 +263,16 @@ local function score(p, v)
     return (ps + vs > 0) and (is / (ps + vs)) or 0
   end
 
-  local score = weights.onegram * overlap(p, v, 1)
-  p = ' '..(p:gsub(sep, ' '))
-  v = ' '..(v:gsub(sep, ' '))
-  score = score + weights.digram * overlap(p, v, 2)
-  score = score + weights.trigram * overlap(' '..p, ' '..v, 3)
-  return 2 * 100 * score
+  local key = p..'\1'..v
+  if not cache[key] then
+    local score = weights.onegram * overlap(p, v, 1)
+    p = ' '..(p:gsub(sep, ' '))
+    v = ' '..(v:gsub(sep, ' '))
+    score = score + weights.digram * overlap(p, v, 2)
+    score = score + weights.trigram * overlap(' '..p, ' '..v, 3)
+    cache[key] = 2 * 100 * score
+  end
+  return cache[key]
 end
 
 function CommandBarScoreFiles(t, pattern)
@@ -272,3 +281,8 @@ function CommandBarScoreFiles(t, pattern)
   table.sort(r, function(a, b) return a[2] > b[2] end)
   return r
 end
+
+ide:AddPackage('core.commandbar', {
+    -- reset ngram cache when switching projects to conserve memory
+    onProjectLoad = function() cache = {} end
+  })

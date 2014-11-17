@@ -411,7 +411,7 @@ local function navigateToFile()
         for _, item in ipairs(CommandBarScoreFiles(projectFiles, text)) do
           local file, score = unpack(item)
           topscore = topscore or score
-          if score > topscore / 2 and score > 0 then
+          if score > topscore / 2 and score > 1 then
             table.insert(lines, {
                 ("%2d %s"):format(score, wx.wxFileName(file):GetFullName()),
                 file,
