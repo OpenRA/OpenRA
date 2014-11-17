@@ -259,7 +259,7 @@ local function score(p, v)
     local vh, vs = ngrams(value, num)
     local is = 0 -- intersection
     for k in pairs(ph) do
-      is = is + (vh[k] and 1 or (vh[k:upper()] or vh[k:lower()]) and 0.5 or 0)
+      is = is + (vh[k] and 1 or (vh[k:upper()] or vh[k:lower()]) and 0.9 or 0)
     end
     return (ps + vs > 0) and (is / (ps + vs)) or 0
   end
