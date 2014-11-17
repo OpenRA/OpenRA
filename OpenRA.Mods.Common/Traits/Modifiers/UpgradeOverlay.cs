@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Display a colored overlay when a timed upgrade is active.")]
 	public class UpgradeOverlayInfo : ITraitInfo

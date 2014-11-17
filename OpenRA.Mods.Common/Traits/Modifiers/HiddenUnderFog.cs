@@ -9,27 +9,25 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Use together with CanPowerDown/RequiresPower on buildings or Husk for vehicles.")]
-	public class DisabledOverlayInfo : TraitInfo<DisabledOverlay> { }
+	[Desc("The actor stays invisible under fog of war.")]
+	public class HiddenUnderFogInfo : TraitInfo<HiddenUnderFog> { }
 
-	public class DisabledOverlay : IRenderModifier
+	public class HiddenUnderFog : IRenderModifier, IVisibilityModifier
 	{
+		public bool IsVisible(Actor self, Player byPlayer)
+		{
+			return byPlayer == null || Shroud.GetVisOrigins(self).Any(o => byPlayer.Shroud.IsVisible(o));
+		}
+
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			var disabled = self.IsDisabled();
-			foreach (var a in r)
-			{
-				yield return a;
-				if (disabled && !a.IsDecoration)
-					yield return a.WithPalette(wr.Palette("disabled"))
-						.WithZOffset(a.ZOffset + 1)
-						.AsDecoration();
-			}
+			return IsVisible(self, self.World.RenderPlayer) ? r : SpriteRenderable.None;
 		}
 	}
 }
