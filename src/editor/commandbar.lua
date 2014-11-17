@@ -1,8 +1,8 @@
 -- Copyright 2011-14 Paul Kulchenko, ZeroBrane LLC
 ---------------------------------------------------------
 
-local maxlines = 10
-local row_height = 42
+local maxlines = 8
+local row_height = 46
 local row_width = 450
 local win = ide.osname == 'Windows'
 
@@ -69,7 +69,7 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText)
 
   local tfont = ide:GetProjectTree():GetFont()
   local ffont = (ide:GetEditor() or ide:CreateBareEditor()):GetFont()
-  ffont:SetPointSize(ffont:GetPointSize())
+  ffont:SetPointSize(ffont:GetPointSize()+2)
   local sfont = wx.wxFont(tfont)
   tfont:SetPointSize(tfont:GetPointSize()+2)
   search:SetFont(tfont)
@@ -121,7 +121,7 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText)
       end
       if sline then
         dc:SetFont(sfont)
-        dc:DrawText(sline, hoffset, row_height*(r-1)+row_height/2+voffset-2)
+        dc:DrawText(sline, hoffset, row_height*(r-1)+row_height/2+voffset)
       end
     end
 
