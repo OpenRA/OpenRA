@@ -366,36 +366,79 @@ frame:Connect(ID_BOOKMARKTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkToggle)
 frame:Connect(ID_BOOKMARKNEXT, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkNext)
 frame:Connect(ID_BOOKMARKPREV, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkPrev)
 
-local function navigateToFile()
+local markername = "commandbar.background"
+local function navigateTo(default)
+  local styles = ide.config.styles
+  local marker = ide:AddMarker(markername,
+    wxstc.wxSTC_MARK_BACKGROUND, styles.text.fg, styles.caretlinebg.bg)
+
   local nb = ide:GetEditorNotebook()
   local selection = nb:GetSelection()
-  local projectFiles, preview
+  local projectFiles, preview, origline
+
   CommandBarShow(
-    function(t)
+    function(t, enter, text) -- onDone
       local mac = ide.osname == 'Macintosh'
       if not mac then nb:Freeze() end
+
+      -- delete all current line markers if any; restore line position
+      local ed = ide:GetEditor()
+      if ed and origline then
+        ed:MarkerDeleteAll(marker)
+        ed:EnsureVisibleEnforcePolicy(origline-1)
+      end
+
       -- close preview
       if preview then
         ClosePage(nb:GetPageIndex(preview))
         preview = nil
       end
       local _, file, tabindex = unpack(t or {})
-      if file then
+      if enter then
         if tabindex then -- switch to existing tab
           SetEditorSelection(tabindex)
-        else -- load a new file
+        elseif file then -- load a new file
           LoadFile(MergeFullPath(ide:GetProject(), file), nil, true)
         end
+
+        -- set line position in the new editor if requested
+        if text and text:find(':') then
+          local toline = tonumber(text:match(':(%d+)'))
+          local ed = ide:GetEditor()
+          if toline and ed then
+            ed:GotoLine(toline-1)
+            ed:EnsureVisibleEnforcePolicy(toline-1)
+          end
+        end
+
       -- restore original selection if canceled
       elseif nb:GetSelection() ~= selection then
         nb:SetSelection(selection)
       end
       if not mac then nb:Thaw() end
     end,
-    function(text)
+    function(text) -- onUpdate
       local lines = {}
       local projdir = ide:GetProject()
-      if text and #text > 0 and projdir and #projdir > 0 then
+
+      -- delete all current line markers if any
+      -- restore the original position in case "goto line" is removed from bar
+      local ed = ide:GetEditor()
+      if ed and origline then
+        ed:MarkerDeleteAll(marker)
+        ed:EnsureVisibleEnforcePolicy(origline-1)
+      end
+
+      if text and text:find(':') then
+        local toline = tonumber(text:match(':(%d+)'))
+        if toline and ed then
+          ed:MarkerDefine(ide:GetMarker(markername))
+          ed:MarkerAdd(toline-1, marker)
+          local curline = ed:GetCurrentLine() -- TODO find the middle line
+          origline = origline or (curline+1)
+          ed:EnsureVisibleEnforcePolicy(toline-1)
+        end
+      elseif text and #text > 0 and projdir and #projdir > 0 then
         -- populate the list of files
         if not projectFiles then
           projectFiles = FileSysGetRecursive(projdir, true)
@@ -425,10 +468,13 @@ local function navigateToFile()
       end
       return lines
     end,
-    function(t) return unpack(t) end,
-    function(t)
+    function(t) return unpack(t) end, -- onItem
+    function(t) -- onSelection
       local _, file, tabindex = unpack(t)
       if file then file = MergeFullPath(ide:GetProject(), file) end
+      -- disabling event handlers for the notebook and the editor
+      -- to minimize changes in the UI when editors are switched
+      -- or files in the preview are updated.
       nb:SetEvtHandlerEnabled(false)
       local doc = file and ide:FindDocument(file)
       if doc and not tabindex then tabindex = doc:GetTabIndex() end
@@ -446,8 +492,9 @@ local function navigateToFile()
       end
       nb:SetEvtHandlerEnabled(true)
     end,
-    ""
+    default or ""
   )
 end
 
-frame:Connect(ID_NAVIGATETOFILE, wx.wxEVT_COMMAND_MENU_SELECTED, navigateToFile)
+frame:Connect(ID_NAVIGATETOFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function() navigateTo("") end)

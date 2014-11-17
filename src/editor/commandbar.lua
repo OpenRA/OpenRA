@@ -6,10 +6,10 @@ local row_height = 42
 local row_width = 450
 local win = ide.osname == 'Windows'
 
-function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText, defaultIndex)
+function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText)
   local lines = {}
   local linesnow = #lines
-  local linenow = defaultIndex or 0
+  local linenow = 0
 
   local ed = ide:GetEditor()
   local pos = ed and ed:GetScreenPosition() or ide:GetEditorNotebook():GetScreenPosition()
@@ -78,7 +78,7 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText, defa
   -- needed because KILL_FOCUS handler can be called after closing window
   local function onExit(index)
     onExit = function() end
-    onDone(index and lines[index])
+    onDone(index and lines[index], index ~= nil, search:GetValue())
     frame:Close()
   end
 
@@ -233,6 +233,7 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText, defa
   frame:Show(true)
 
   search:SetValue(defaultText or "")
+  search:SetInsertionPointEnd()
 end
 
 local sep = "[/\\%-_ ]+"
