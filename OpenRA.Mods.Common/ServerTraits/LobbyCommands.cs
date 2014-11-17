@@ -809,6 +809,29 @@ namespace OpenRA.Mods.Common.Server
 						server.SyncLobbyClients();
 						return true;
 					}
+				},
+				{ "shortgame",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							return true;
+						}
+
+						if (server.Map.Options.ShortGame.HasValue)
+						{
+							server.SendOrderTo(conn, "Message", "Map has disabled short game configuration");
+							return true;
+						}
+
+						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.ShortGame);
+						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} {1} Short Game."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.ShortGame ? "enabled" : "disabled"));
+
+						return true;
+					}
 				}
 			};
 

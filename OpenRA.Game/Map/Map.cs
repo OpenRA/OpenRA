@@ -68,6 +68,7 @@ namespace OpenRA
 		public string TechLevel;
 		public bool ConfigurableStartingUnits = true;
 		public string[] Difficulties = { };
+		public bool? ShortGame;
 
 		public void UpdateServerSettings(Session.Global settings)
 		{
@@ -85,6 +86,8 @@ namespace OpenRA
 				settings.StartingCash = StartingCash.Value;
 			if (FragileAlliances.HasValue)
 				settings.FragileAlliances = FragileAlliances.Value;
+			if (ShortGame.HasValue)
+				settings.ShortGame = ShortGame.Value;
 		}
 	}
 

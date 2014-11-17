@@ -690,6 +690,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Adjust MustBeDestroyed for short games
+				if (engineVersion < 20141218)
+					if (depth == 1 && node.Key == "MustBeDestroyed")
+						node.Value.Nodes.Add(new MiniYamlNode("RequiredForShortGame", "true"));
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

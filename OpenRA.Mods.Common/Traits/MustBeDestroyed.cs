@@ -12,7 +12,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Tag trait for things that must be destroyed for a short game to end.")]
-	public class MustBeDestroyedInfo : TraitInfo<MustBeDestroyed> { }
-	public class MustBeDestroyed { }
+	[Desc("Actors with this trait must be destroyed for a game to end.")]
+	public class MustBeDestroyedInfo : ITraitInfo
+	{
+		[Desc("In a short game only actors that have this value set to true need to be destroyed.")]
+		public bool RequiredForShortGame = false;
+
+		public object Create(ActorInitializer init) { return new MustBeDestroyed(this); }
+	}
+
+	public class MustBeDestroyed
+	{
+		public readonly MustBeDestroyedInfo Info;
+
+		public MustBeDestroyed(MustBeDestroyedInfo info)
+		{
+			Info = info;
+		}
+	}
 }
