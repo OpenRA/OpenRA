@@ -388,15 +388,10 @@ local function navigateTo(default)
         ed:EnsureVisibleEnforcePolicy(origline-1)
       end
 
-      -- close preview
-      if preview then
-        ClosePage(nb:GetPageIndex(preview))
-        preview = nil
-      end
-      local _, file, tabindex = unpack(t or {})
       if enter then
-        if tabindex then -- switch to existing tab
-          SetEditorSelection(tabindex)
+        local _, file, tabindex = unpack(t or {})
+        if tabindex or preview then -- switch to existing tab
+          SetEditorSelection(tabindex or nb:GetPageIndex(preview))
         elseif file then -- load a new file
           LoadFile(MergeFullPath(ide:GetProject(), file), nil, true)
         end
@@ -410,10 +405,14 @@ local function navigateTo(default)
             ed:EnsureVisibleEnforcePolicy(toline-1)
           end
         end
-
-      -- restore original selection if canceled
-      elseif nb:GetSelection() ~= selection then
-        nb:SetSelection(selection)
+      else
+        -- close preview
+        if preview then
+          ClosePage(nb:GetPageIndex(preview))
+          preview = nil
+        end
+        -- restore original selection if canceled
+        if nb:GetSelection() ~= selection then nb:SetSelection(selection) end
       end
       if not mac then nb:Thaw() end
     end,
