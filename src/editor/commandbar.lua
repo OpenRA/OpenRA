@@ -241,28 +241,29 @@ local sep = "[/\\%-_ ]+"
 local weights = {onegram = 0.1, digram = 0.4, trigram = 0.5}
 local cache = {}
 local function score(p, v)
-  local function ngrams(str, num)
+  local function ngrams(str, num, low)
     local key = str..'\1'..num
     if not cache[key] then
-      local t, p = {}, 0
+      local t, l, p = {}, {}, 0
       for i = 1, #str-num+1 do
         local pair = str:sub(i, i+num-1)
         p = p + (t[pair] and 0 or 1)
-        t[pair] = (t[pair] or 0) + 1
+        if low and pair:find('%u') then l[pair:lower()] = 0.9 end
+        t[pair] = 1
       end
-      cache[key] = {t, p}
+      cache[key] = {t, p, l}
     end
     return unpack(cache[key])
   end
 
   local function overlap(pattern, value, num)
     local ph, ps = ngrams(pattern, num)
-    local vh, vs = ngrams(value, num)
+    local vh, vs, vl = ngrams(value, num, true)
+    if ps + vs == 0 then return 0 end
+
     local is = 0 -- intersection
-    for k in pairs(ph) do
-      is = is + (vh[k] and 1 or (vh[k:upper()] or vh[k:lower()]) and 0.9 or 0)
-    end
-    return (ps + vs > 0) and (is / (ps + vs)) or 0
+    for k in pairs(ph) do is = is + (vh[k] or vl[k:lower()] or 0) end
+    return is / (ps + vs)
   end
 
   local key = p..'\1'..v
