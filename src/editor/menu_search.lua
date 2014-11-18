@@ -5,6 +5,7 @@
 
 local ide = ide
 local q = EscapeMagic
+local unpack = table.unpack or unpack
 
 local frame = ide.frame
 local menuBar = frame.menuBar

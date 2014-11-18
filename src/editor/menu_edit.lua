@@ -4,7 +4,6 @@
 ---------------------------------------------------------
 
 local ide = ide
-local unpack = table.unpack or unpack
 
 -- ---------------------------------------------------------------------------
 -- Create the Edit menu and attach the callback functions
