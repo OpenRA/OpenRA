@@ -73,12 +73,12 @@ namespace OpenRA.Widgets
 					video.Width,
 					video.Height), 
 				TextureChannel.Alpha);
-			var videoDisplayHeight = video.IsHqVqa ? video.Height : video.Height * AspectRatio;
-			var scale = Math.Min((float)RenderBounds.Width / video.Width, (float)RenderBounds.Height / videoDisplayHeight);
-			videoOrigin = new float2(RenderBounds.X + (RenderBounds.Width - scale * video.Width) / 2, RenderBounds.Y + (RenderBounds.Height - scale * videoDisplayHeight) / 2);
+
+			var scale = Math.Min((float)RenderBounds.Width / video.Width, (float)RenderBounds.Height / video.Height * AspectRatio);
+			videoOrigin = new float2(RenderBounds.X + (RenderBounds.Width - scale * video.Width) / 2, RenderBounds.Y + (RenderBounds.Height - scale * video.Height * AspectRatio) / 2);
 
 			// Round size to integer pixels. Round up to be consistent with the scale calcuation.
-			videoSize = new float2((int)Math.Ceiling(video.Width * scale), (int)Math.Ceiling(videoDisplayHeight * scale));
+			videoSize = new float2((int)Math.Ceiling(video.Width * scale), (int)Math.Ceiling(video.Height * AspectRatio * scale));
 
 			if (!DrawOverlay)
 				return;

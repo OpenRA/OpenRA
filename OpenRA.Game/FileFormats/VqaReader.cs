@@ -493,7 +493,7 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		public bool IsHqVqa { get { return (videoFlags & 0x10) == 16; } }
+		bool IsHqVqa { get { return (videoFlags & 0x10) == 16; } }
 
 		void WriteBlock(int blockNumber, int count, ref int x, ref int y)
 		{
