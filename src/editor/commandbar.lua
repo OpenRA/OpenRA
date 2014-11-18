@@ -240,6 +240,8 @@ end
 local sep = "[/\\%-_ ]+"
 local weights = {onegram = 0.1, digram = 0.4, trigram = 0.5}
 local cache = {}
+local missing = 3 -- penalty for missing symbols (1 missing == N matching)
+local casemismatch = 0.9 -- score for case mismatch (%% of full match)
 local function score(p, v)
   local function ngrams(str, num, low)
     local key = str..'\1'..num
@@ -248,7 +250,7 @@ local function score(p, v)
       for i = 1, #str-num+1 do
         local pair = str:sub(i, i+num-1)
         p = p + (t[pair] and 0 or 1)
-        if low and pair:find('%u') then l[pair:lower()] = 0.9 end
+        if low and pair:find('%u') then l[pair:lower()] = casemismatch end
         t[pair] = 1
       end
       cache[key] = {t, p, l}
@@ -263,7 +265,7 @@ local function score(p, v)
 
     local is = 0 -- intersection
     for k in pairs(ph) do is = is + (vh[k] or vl[k:lower()] or 0) end
-    return is / (ps + vs)
+    return is / (ps + vs) - (num == 1 and missing * (ps - is) / (ps + vs) or 0)
   end
 
   local key = p..'\1'..v
@@ -279,8 +281,10 @@ local function score(p, v)
 end
 
 function CommandBarScoreFiles(t, pattern)
-  local r = {}
-  for _, v in ipairs(t) do table.insert(r, {v, score(pattern, v)}) end
+  local r, plen = {}, #pattern
+  for _, v in ipairs(t) do
+    if #v >= plen then table.insert(r, {v, score(pattern, v)}) end
+  end
   table.sort(r, function(a, b) return a[2] > b[2] end)
   return r
 end
