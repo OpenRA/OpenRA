@@ -90,10 +90,17 @@ namespace OpenRA.FileFormats
 			frameData = new uint[frameSize, frameSize];
 
 			var type = stream.ReadASCII(4);
-			if (type != "FINF")
+			while (type != "FINF")
 			{
-				stream.Seek(27, SeekOrigin.Current);
-				type = stream.ReadASCII(4);
+				// Sub type is a file tag
+				if (type[3] == 'F')
+				{
+					var jmp = int2.Swap(stream.ReadUInt32());
+					stream.Seek(jmp, SeekOrigin.Current);
+					type = stream.ReadASCII(4);
+				}
+				else
+					throw new NotSupportedException("Vqa uses unknown Subtype : {0}".F(type));
 			}
 
 			/*var length = */stream.ReadUInt16();
