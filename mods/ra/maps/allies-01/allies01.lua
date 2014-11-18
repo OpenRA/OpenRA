@@ -135,9 +135,9 @@ end
 
 MissionAccomplished = function()
 	Media.PlaySpeechNotification(player, "Win")
-	--Trigger.AfterDelay(DateTime.Seconds(1), function()
-		--Media.PlayMovieFullscreen("snowbomb.vqa")  -- https://github.com/OpenRA/OpenRA/issues/4224
-	--end)
+	Trigger.AfterDelay(DateTime.Seconds(1), function()
+		Media.PlayMovieFullscreen("snowbomb.vqa")
+	end)
 end
 
 MissionFailed = function()
