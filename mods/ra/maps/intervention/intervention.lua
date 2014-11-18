@@ -9,11 +9,21 @@ BeachheadTrigger =
 	CPos.New(137, 104), CPos.New(137, 105), CPos.New(137, 106), CPos.New(136, 106), CPos.New(136, 107)
 }
 
-BaseRaidInterval = DateTime.Minutes(3)
-BaseFrontAttackInterval = DateTime.Minutes(3) + DateTime.Seconds(30)
-BaseRearAttackInterval = DateTime.Minutes(8)
-UBoatPatrolDelay = DateTime.Minutes(2) + DateTime.Seconds(30)
-BaseFrontAttackWpts = { PatrolWpt1.Location, BaseRaidWpt1.Location }
+Difficulty = Map.Difficulty
+
+if Difficulty == "Medium" then
+	BaseRaidInterval = DateTime.Minutes(3)
+	BaseFrontAttackInterval = DateTime.Minutes(3) + DateTime.Seconds(30)
+	BaseRearAttackInterval = DateTime.Minutes(8)
+	UBoatPatrolDelay = DateTime.Minutes(2) + DateTime.Seconds(30)
+	BaseFrontAttackWpts = { PatrolWpt1.Location, BaseRaidWpt1.Location }
+else
+	BaseRaidInterval = DateTime.Minutes(2)
+	BaseFrontAttackInterval = DateTime.Minutes(2) + DateTime.Seconds(30)
+	BaseRearAttackInterval = DateTime.Minutes(5)
+	UBoatPatrolDelay = DateTime.Minutes(2)
+	BaseFrontAttackWpts = { PatrolWpt1.Location }
+end
 
 Village = { FarmHouse1, FarmHouse2, FarmHouse3, FarmHouse4, FarmHouse5, FarmHouse6, FarmHouse7, FarmHouse8, FarmHouse9, Church }
 VillageRaidInterval = DateTime.Minutes(3)

@@ -27,6 +27,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly ScrollPanelWidget descriptionPanel;
 		readonly LabelWidget description;
 		readonly SpriteFont descriptionFont;
+		readonly DropDownButtonWidget difficultyButton;
 		readonly ButtonWidget startVideoButton;
 		readonly ButtonWidget stopVideoButton;
 		readonly VqaPlayerWidget videoPlayer;
@@ -38,6 +39,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		MapPreview selectedMapPreview;
 
 		bool showVideoPlayer;
+
+		string difficulty;
 
 		[ObjectCreator.UseCtor]
 		public MissionBrowserLogic(Widget widget, Action onStart, Action onExit)
@@ -66,6 +69,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			description = descriptionPanel.Get<LabelWidget>("MISSION_DESCRIPTION");
 			descriptionFont = Game.Renderer.Fonts[description.Font];
+
+			difficultyButton = widget.Get<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 
 			startVideoButton = widget.Get<ButtonWidget>("START_VIDEO_BUTTON");
 			stopVideoButton = widget.Get<ButtonWidget>("STOP_VIDEO_BUTTON");
@@ -176,6 +181,28 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			description.Bounds.Height = descriptionFont.Measure(text).Y;
 			descriptionPanel.ScrollToTop();
 			descriptionPanel.Layout.AdjustChildren();
+
+			difficultyButton.IsVisible = () => map.Options.Difficulties.Any();
+			if (!map.Options.Difficulties.Any())
+				return;
+
+			difficulty = map.Options.Difficulties.First();
+			difficultyButton.OnMouseDown = _ =>
+			{
+				var options = map.Options.Difficulties.Select(d => new DropDownOption
+				{
+					Title = d,
+					IsSelected = () => difficulty == d,
+					OnClick = () => difficulty = d
+				});
+				Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+				{
+					var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+					item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+					return item;
+				};
+				difficultyButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+			};
 		}
 
 		void StopVideo()
@@ -202,6 +229,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Action lobbyReady = null;
 			lobbyReady = () =>
 			{
+				om.IssueOrder(Order.Command("difficulty {0}".F(difficulty)));
 				Game.LobbyInfoChanged -= lobbyReady;
 				onStart();
 				om.IssueOrder(Order.Command("state {0}".F(Session.ClientState.Ready)));
@@ -209,6 +237,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.LobbyInfoChanged += lobbyReady;
 
 			om = Game.JoinServer(IPAddress.Loopback.ToString(), Game.CreateLocalServer(selectedMapPreview.Uid), "", false);
+		}
+
+		class DropDownOption
+		{
+			public string Title;
+			public Func<bool> IsSelected;
+			public Action OnClick;
 		}
 	}
 }

@@ -1,4 +1,4 @@
-Difficulty = "Medium"
+Difficulty = Map.Difficulty
 
 if Difficulty == "Easy" then
 	AttackAtFrameIncrement = DateTime.Seconds(22)
