@@ -20,6 +20,17 @@ namespace OpenRA
 {
 	public static class Exts
 	{
+		public static Dictionary<V, K> ReverseKeyValues<K, V>(this Dictionary<K, V> dict)
+		{
+			var ret = new Dictionary<V, K>();
+
+			foreach (var kv in dict)
+				if (!ret.ContainsKey(kv.Value))
+					ret.Add(kv.Value, kv.Key);
+
+			return ret;
+		}
+
 		public static bool IsUppercase(this string str)
 		{
 			return string.Compare(str.ToUpperInvariant(), str, false) == 0;

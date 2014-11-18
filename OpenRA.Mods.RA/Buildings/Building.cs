@@ -132,7 +132,7 @@ namespace OpenRA.Mods.RA.Buildings
 			this.topLeft = init.Get<LocationInit, CPos>();
 			this.Info = info;
 
-			occupiedCells = FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft )
+			occupiedCells = FootprintUtils.TilesOfType(FootprintType.Unpathable, self.Info.Name, info, topLeft)
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
 			CenterPosition = init.world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.world, Info);
