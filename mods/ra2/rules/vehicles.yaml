@@ -623,6 +623,7 @@ MMCH:
 	WithVoxelBarrel:
 		LocalOffset: -128, 85, 256
 	AutoTarget:
+	WithDeathAnimation:
 
 HMEC:
 	Inherits: ^Vehicle
@@ -686,6 +687,7 @@ SMECH:
 		SpawnsCorpse: false
 	Selectable:
 		Voices: Mech
+	WithDeathAnimation:
 
 BIKE:
 	Inherits: ^Vehicle
@@ -905,3 +907,4 @@ STNK:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+

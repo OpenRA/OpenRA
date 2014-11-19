@@ -55,3 +55,4 @@ Player:
 		Name: Unrestricted
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.unrestricted
 	GlobalUpgradeManager:
+

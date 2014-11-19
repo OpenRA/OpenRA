@@ -38,11 +38,16 @@
 		Range: 3
 	BodyOrientation:
 	Huntable:
-	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
 	WithMakeAnimation:
-	IronCurtainable:
+	UpgradeOverlay@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	InvulnerabilityUpgrade@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	TimedUpgradeBar:
+		Upgrade: invulnerability
+	UpgradeManager:
 
 ^Wall:
 	AppearsOnRadar:
@@ -55,7 +60,7 @@
 	SoundOnDamageTransition:
 		DamagedSound: expnew01.aud
 		DestroyedSound: crmble2.aud
-	Wall:
+	Crushable:
 		CrushClasses: wall
 	LineBuild:
 		Range: 6
@@ -74,9 +79,9 @@
 	Sellable:
 	UpdatesPlayerStatistics:
 	BodyOrientation:
-	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
+	BlocksBullets:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -120,7 +125,7 @@
 	ProximityCaptor:
 		Types: Infantry
 	GivesBounty:
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squish6.aud
 	SpawnViceroid:
 		ViceroidActor: vissml
@@ -130,16 +135,18 @@
 	Guardable:
 	BodyOrientation:
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
 	DeathSounds@NORMAL:
-		InfDeaths: 1, 2, 3
+		DeathTypes: 1, 2, 3
 	DeathSounds@BURNED:
 		DeathSound: Burned
-		InfDeaths: 5
+		DeathTypes: 5
 	DeathSounds@ZAPPED:
 		DeathSound: Zapped
-		InfDeaths: 6
+		DeathTypes: 6
+	GainsStatUpgrades:
+	WithDeathAnimation:
+	UpgradeManager:
 
 ^CivilianInfantry:
 	Inherits: ^Infantry
@@ -165,9 +172,9 @@
 	AttackFrontal:
 	ProximityCaptor:
 		Types: CivilianInfantry
-	-RenderInfantry:
-	RenderInfantryPanic:
+	RenderInfantry:
 	ScaredyCat:
+	WithDeathAnimation:
 
 ^Vehicle:
 	AppearsOnRadar:
@@ -214,7 +221,6 @@
 		QuantizedFacings: 32
 		CameraPitch: 90
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -222,8 +228,10 @@
 	RenderVoxels:
 		LightPitch: 170
 		LightYaw: -150
-		LightAmbientColor: 0,0,0,0,0,0 
+		LightAmbientColor: 0,0,0,0,0,0
 		LightDiffuseColor: 1,1,1
+	GainsStatUpgrades:
+	UpgradeManager:
 
 ^Aircraft:
 	AppearsOnRadar:
@@ -256,8 +264,9 @@
 	BodyOrientation:
 		CameraPitch: 90
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
+	UpgradeManager:
 
 ^BlossomTree:
 	Tooltip:
@@ -273,9 +282,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 	SeedsResource:
 		ResourceType: Tiberium
 		Interval: 55
 	WithActiveAnimation:
-

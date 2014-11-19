@@ -20,9 +20,9 @@ E1:
 		Weapon: Minigun
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
 
 E2:
 	Inherits: ^Infantry
@@ -46,10 +46,10 @@ E2:
 		Weapon: Minigun
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 		Image: CONS
+	WithDeathAnimation:
 
 E3:
 	Inherits: ^Infantry
@@ -75,9 +75,9 @@ E3:
 		LocalOffset: 128,0,640
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
 
 WEEDGUY:
 	Inherits: ^Infantry
@@ -98,15 +98,15 @@ WEEDGUY:
 		Speed: 42
 	Health:
 		HP: 130
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squish2.aud
 	Armament:
 		Weapon: FireballLauncher
 		LocalOffset: 85,0,384
 	AttackFrontal:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 	TakeCover:
+	WithDeathAnimation:
 
 MEDIC:
 	Inherits: ^Infantry
@@ -127,18 +127,18 @@ MEDIC:
 		Speed: 56
 	Health:
 		HP: 125
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squish2.aud
 	Armament:
 		Weapon: Heal
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 	SelfHealing:
 	Passenger:
 		PipType: Red
+	WithDeathAnimation:
 
 ENGINEER:
 	Inherits: ^Infantry
@@ -166,11 +166,11 @@ ENGINEER:
 	Captures:
 		CaptureTypes: building
 	-AutoTarget:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 	TakeCover:
 	-GainsExperience:
+	WithDeathAnimation:
 
 UMAGON:
 	Inherits: ^Infantry
@@ -199,9 +199,9 @@ UMAGON:
 		Weapon: Sniper
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
 
 GHOST:
 	Inherits: ^Infantry
@@ -230,15 +230,15 @@ GHOST:
 	Armament:
 		Weapon: LtRail
 		LocalOffset: 85,0,384
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squish2.aud
 	AttackFrontal:
 	C4Demolition:
 		C4Delay: 45
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
 
 JUMPJET:
 	Inherits: ^Infantry
@@ -266,10 +266,11 @@ JUMPJET:
 		Range: 6c0
 	Armament:
 		Weapon: JumpCannon
-	-CrushableInfantry:
+	-Crushable:
 	AttackFrontal:
 	TakeCover:
 	RenderInfantry:
+	WithDeathAnimation:
 
 CHAMSPY:
 	Inherits: ^Infantry
@@ -316,7 +317,7 @@ CYBORG:
 		BuildPaletteOrder: 50
 		Owner: soviets
 		Hotkey: n
-	-CrushableInfantry:
+	-Crushable:
 		CrushSound: squish2.aud
 	Selectable:
 		Bounds: 14,30,0,-7
@@ -334,9 +335,9 @@ CYBORG:
 		Weapon: Vulcan3
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
 
 CYC2:
 	Inherits: ^Infantry
@@ -352,7 +353,7 @@ CYC2:
 		BuildPaletteOrder: 50
 		Owner: soviets
 		Hotkey: o
-	-CrushableInfantry:
+	-Crushable:
 		CrushSound: squish2.aud
 	Selectable:
 		Bounds: 14,30,0,-7
@@ -371,9 +372,9 @@ CYC2:
 		LocalOffset: 170,85,683
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
 
 MUTANT:
 	Inherits: ^Infantry
@@ -401,9 +402,9 @@ MUTANT:
 		Weapon: Vulcan
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
 
 MWMN:
 	Inherits: ^Infantry
@@ -431,9 +432,9 @@ MWMN:
 		Weapon: Vulcan
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
 
 MUTANT3:
 	Inherits: ^Infantry
@@ -461,9 +462,9 @@ MUTANT3:
 		Weapon: Vulcan
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
 
 MHIJACK:
 	Inherits: ^Infantry
@@ -489,9 +490,9 @@ MHIJACK:
 		Range: 6c0
 	-AutoTarget:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
 
 TRATOS:
 	Inherits: ^Infantry
@@ -516,9 +517,9 @@ TRATOS:
 		Range: 4c0
 	TakeCover:
 	-AutoTarget:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
 
 OXANNA:
 	Inherits: ^Infantry
@@ -541,9 +542,9 @@ OXANNA:
 		Range: 4c0
 	TakeCover:
 	-AutoTarget:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
 
 SLAV:
 	Inherits: ^Infantry
@@ -566,9 +567,9 @@ SLAV:
 		Range: 4c0
 	TakeCover:
 	-AutoTarget:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
 
 DOGGIE:
 	Inherits: ^Infantry
@@ -621,13 +622,12 @@ VISSML:
 	Mobile:
 		Speed: 113
 		ROT: 16
-	-CrushableInfantry:
+	-Crushable:
 	Selectable:
 		Voice: Fiend
 	TargetableUnit:
 		TargetTypes: Ground
 	-AutoTarget:
-	-RenderInfantry:
 	RenderUnit:
 
 VISLRG:
@@ -651,7 +651,7 @@ VISLRG:
 	Mobile:
 		Speed: 113
 		ROT: 16
-	-CrushableInfantry:
+	-Crushable:
 	Selectable:
 		Voice: Fiend
 	TargetableUnit:
@@ -660,7 +660,6 @@ VISLRG:
 		Weapon: SlimeAttack
 	AttackFrontal:
 	AttackWander:
-	-RenderInfantry:
 	RenderUnit:
 
 CIV1:
@@ -671,3 +670,4 @@ CIV2:
 
 CIV3:
 	Inherits: ^CivilianInfantry
+

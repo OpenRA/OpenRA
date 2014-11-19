@@ -43,6 +43,8 @@ GACNST:
 	WithBuildingPlacedOverlay:
 	ProvidesCustomPrerequisite:
 		Prerequisite: structures.allies
+	Power:
+		Amount: 0
 
 GAPOWR:
 	Inherits: ^Building
@@ -62,7 +64,6 @@ GAPOWR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: power
 	Building:
-		Power: 200
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -73,6 +74,9 @@ GAPOWR:
 		Range: 4c0
 	WithIdleOverlay@GLOW:
 		Sequence: idle-glow
+	Power:
+		Amount: 200
+	ScalePowerWithHealth:
 
 GAPILE:
 	Inherits: ^Building
@@ -92,7 +96,6 @@ GAPILE:
 	ProvidesCustomPrerequisite:
 		Prerequisite: barracks
 	Building:
-		Power: -10
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
@@ -114,6 +117,8 @@ GAPILE:
 	ProductionBar:
 	WithIdleOverlay@FLAG:
 		Sequence: idle-flag
+	Power:
+		Amount: -10
 
 GAREFN:
 	Inherits: ^Building
@@ -133,7 +138,6 @@ GAREFN:
 	ProvidesCustomPrerequisite:
 		Prerequisite: proc
 	Building:
-		Power: -50
 		Footprint: xxx= xxx= xxx=
 		Dimensions: 4,3
 	Health:
@@ -160,6 +164,8 @@ GAREFN:
 		Sequence: idle-bib
 	WithIdleOverlay@DRILL:
 		Sequence: idle-drill
+	Power:
+		Amount: -50
 
 GAWEAP:
 	Inherits: ^Building
@@ -182,7 +188,6 @@ GAWEAP:
 	ProvidesCustomPrerequisite:
 		Prerequisite: factory
 	Building:
-		Power: -25
 		Footprint: xxxxx xxxxx xxxxx
 		Dimensions: 5,3
 	Health:
@@ -209,6 +214,8 @@ GAWEAP:
 		Sequence: idle-flag
 	WithIdleOverlay@TURBINE:
 		Sequence: idle-turbine
+	Power:
+		Amount: -25
 
 GADEPT:
 	Inherits: ^Building
@@ -226,7 +233,6 @@ GADEPT:
 	Selectable:
 		Bounds: 96,96
 	Building:
-		Power: -25
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	Health:
@@ -242,6 +248,8 @@ GADEPT:
 		Sequence: idle-bib
 	WithRepairOverlay@CRANE:
 		Sequence: crane
+	Power:
+		Amount: -25
 
 GAAIRC:
 	Inherits: ^Building
@@ -261,7 +269,6 @@ GAAIRC:
 	ProvidesCustomPrerequisite:
 		Prerequisite: radar
 	Building:
-		Power: -50
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
@@ -302,6 +309,8 @@ GAAIRC:
 	WithIdleOverlay@LIGHTS2:
 		Sequence: idle-lights2
 		PauseOnLowPower: yes
+	Power:
+		Amount: -50
 
 GATECH:
 	Inherits: ^Building
@@ -321,7 +330,6 @@ GATECH:
 	ProvidesCustomPrerequisite:
 		Prerequisite: tech
 	Building:
-		Power: -100
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
@@ -332,6 +340,8 @@ GATECH:
 		Range: 6c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -100
 
 GAOREP:
 	Inherits: ^Building
@@ -349,7 +359,6 @@ GAOREP:
 		Name: Ore Purifier
 		Description: Increases the output of Refineries by 25%.
 	Building:
-		Power: -200
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	Health:
@@ -399,7 +408,6 @@ GAPILL:
 	Selectable:
 		Bounds: 32,32
 	Building:
-		Power: 0
 		Adjacent: 4
 	Valued:
 		Cost: 500
@@ -425,6 +433,8 @@ GAPILL:
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	WithMuzzleFlash:
+	Power:
+		Amount: 0
 
 GASPST:
 	Inherits: ^Building
@@ -440,7 +450,6 @@ GASPST:
 		Name: Allied Spy Satellite
 		Description: Reveals the battlefield.
 	Building:
-		Power: -100
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -449,10 +458,6 @@ GASPST:
 		Type: Wood
 	RequiresPower:
 	ProvidesRadar:
-#	GpsPower:
-#		Icon: gps
-#		DisplayTimer: false
-#		Prerequisites: gaspst
 	RevealsShroud:
 		Range: 5c0
 	WithIdleOverlay@DISH:
@@ -461,11 +466,12 @@ GASPST:
 #
 #	SOVIET STRUCTURES
 #
+	Power:
+		Amount: -100
 
 NACNST:
 	Inherits: ^Building
 	Building:
-		Power: 0
 		Footprint: xxxx xxxx xxxx xxxx
 		BuildSounds: facbld1.aud
 		Dimensions: 4,4
@@ -504,6 +510,8 @@ NACNST:
 	WithIdleOverlay@SIDE:
 		Sequence: idle-side
 	WithBuildingPlacedOverlay:
+	Power:
+		Amount: 0
 
 NAPOWR:
 	Inherits: ^Building
@@ -520,7 +528,6 @@ NAPOWR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Power: 100
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -531,6 +538,9 @@ NAPOWR:
 		Range: 4c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: 100
+	ScalePowerWithHealth:
 
 NAAPWR:
 	Inherits: ^Building
@@ -548,7 +558,6 @@ NAAPWR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Power: 200
 		Footprint: xxx xxx
 		Dimensions: 2,3
 	Health:
@@ -559,6 +568,9 @@ NAAPWR:
 		Range: 4c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: 200
+	ScalePowerWithHealth:
 
 NAHAND:
 	Inherits: ^Building
@@ -576,7 +588,6 @@ NAHAND:
 	ProvidesCustomPrerequisite:
 		Prerequisite: barracks
 	Building:
-		Power: -20
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
@@ -591,12 +602,20 @@ NAHAND:
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
-	IronCurtainable:
 	ProductionBar:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	WithProductionOverlay@LIGHT:
 		Sequence: production-light
+	Power:
+		Amount: -20
+	UpgradeOverlay@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	InvulnerabilityUpgrade@IRONCURTAIN:
+		RequiresUpgrade: invulnerability
+	TimedUpgradeBar:
+		Upgrade: invulnerability
+	UpgradeManager:
 
 NAWEAP:
 	Inherits: ^Building
@@ -619,7 +638,6 @@ NAWEAP:
 		Race: soviet
 		Prerequisite: vehicles.soviets
 	Building:
-		Power: -30
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
 	Health:
@@ -639,6 +657,8 @@ NAWEAP:
 	ProductionBar:
 	WithProductionOverlay@LIGHTS:
 		Sequence: production-lights
+	Power:
+		Amount: -30
 
 GASAND:
 	Inherits: ^Wall
@@ -845,7 +865,6 @@ GASPOT:
 	Tooltip:
 		Name: Light Tower
 	Building:
-		Power: -10
 		Footprint: x
 		Dimensions: 1,1
 	Health:
@@ -859,6 +878,8 @@ GASPOT:
 		Range: 3
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -10
 
 GALITE:
 	Inherits: ^Building
@@ -872,7 +893,6 @@ GALITE:
 	Tooltip:
 		Name: Light Post
 	Building:
-		Power: 0
 		Footprint: x
 		Dimensions: 1,1
 	RenderBuilding:
@@ -884,8 +904,8 @@ GALITE:
 		Type: Wood
 	RevealsShroud:
 		Range: 0c0
-#	WithIdleOverlay@LIGHTING:
-#		Sequence: lighting
+	Power:
+		Amount: 0
 
 NARADR:
 	Inherits: ^Building
@@ -903,7 +923,6 @@ NARADR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: radar
 	Building:
-		Power: -50
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -913,8 +932,6 @@ NARADR:
 	RequiresPower:
 	CanPowerDown:
 	ProvidesRadar:
-	Infiltratable:
-		Type: Exploration
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10
@@ -924,6 +941,8 @@ NARADR:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
+	Power:
+		Amount: -50
 
 NATECH:
 	Inherits: ^Building
@@ -941,7 +960,6 @@ NATECH:
 	ProvidesCustomPrerequisite:
 		Prerequisite: tech
 	Building:
-		Power: -150
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -952,6 +970,8 @@ NATECH:
 		Range: 4c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -150
 
 NAHPAD:
 	Inherits: ^Building
@@ -966,7 +986,6 @@ NAHPAD:
 		Queue: Building
 		Hotkey: j
 	Building:
-		Power: -10
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -978,7 +997,6 @@ NAHPAD:
 	Production:
 		Produces: Air
 	PrimaryBuilding:
-	BelowUnits:
 	Reservable:
 	RepairsUnits:
 	ProductionBar:
@@ -986,8 +1004,9 @@ NAHPAD:
 		Sequence: idle-platform
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -10
 
-#TODO: Placeholder, replace with Component Tower + Vulcan Upgrade
 GAVULC:
 	Inherits: ^Building
 	Valued:
@@ -1001,7 +1020,6 @@ GAVULC:
 		Owner: allies
 		Hotkey: v
 	Building:
-		Power: -20
 	DisabledOverlay:
 	-GivesBuildableArea:
 	Health:
@@ -1039,8 +1057,9 @@ GAVULC:
 	WithMuzzleFlash:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -20
 
-#TODO: Placeholder, replace with Component Tower + RPG Upgrade
 GAROCK:
 	Inherits: ^Building
 	Valued:
@@ -1054,7 +1073,6 @@ GAROCK:
 		Owner: allies
 		Hotkey: r
 	Building:
-		Power: -50
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1083,8 +1101,9 @@ GAROCK:
 		Recoil: 0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -50
 
-#TODO: Placeholder, replace with Component Tower + SAM Upgrade
 GACSAM:
 	Inherits: ^Building
 	Valued:
@@ -1098,7 +1117,6 @@ GACSAM:
 		Owner: allies
 		Hotkey: a
 	Building:
-		Power: -30
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1127,6 +1145,8 @@ GACSAM:
 		Recoil: 0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -30
 
 NASAM:
 	Inherits: ^Building
@@ -1141,7 +1161,6 @@ NASAM:
 		Owner: soviets
 		Hotkey: s
 	Building:
-		Power: -30
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1168,6 +1187,8 @@ NASAM:
 		Weapon: SAMTower
 		LocalOffset: 512,0,512
 		Recoil: 0
+	Power:
+		Amount: -30
 
 NALASR:
 	Inherits: ^Building
@@ -1182,7 +1203,6 @@ NALASR:
 		Owner: soviets
 		Hotkey: l
 	Building:
-		Power: -40
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1206,6 +1226,8 @@ NALASR:
 	RenderVoxels:
 	WithVoxelTurret:
 	AutoTarget:
+	Power:
+		Amount: -40
 
 NAOBEL:
 	Inherits: ^Building
@@ -1221,7 +1243,6 @@ NAOBEL:
 		Owner: soviets
 		Hotkey: o
 	Building:
-		Power: -150
 		Footprint: xx xx
 		Dimensions: 2,2
 	RequiresPower:
@@ -1249,6 +1270,8 @@ NAOBEL:
 		Range: 5
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -150
 
 ANYPOWER:
 	Tooltip:
