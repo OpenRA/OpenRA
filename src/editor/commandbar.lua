@@ -271,21 +271,29 @@ local function score(p, v)
   local key = p..'\1'..v
   if not cache[key] then
     local score = weights.onegram * overlap(p, v, 1)
-    p = ' '..(p:gsub(sep, ' '))
-    v = ' '..(v:gsub(sep, ' '))
-    score = score + weights.digram * overlap(p, v, 2)
-    score = score + weights.trigram * overlap(' '..p, ' '..v, 3)
+    if score > 0 then -- don't bother with those that can't even score 1grams
+      p = ' '..(p:gsub(sep, ' '))
+      v = ' '..(v:gsub(sep, ' '))
+      score = score + weights.digram * overlap(p, v, 2)
+      score = score + weights.trigram * overlap(' '..p, ' '..v, 3)
+    end
     cache[key] = 2 * 100 * score
   end
   return cache[key]
 end
 
-function CommandBarScoreFiles(t, pattern)
+function CommandBarScoreFiles(t, pattern, limit)
   local r, plen = {}, #pattern
+  local maxp = 0
   for _, v in ipairs(t) do
-    if #v >= plen then table.insert(r, {v, score(pattern, v)}) end
+    if #v >= plen then
+      local p = score(pattern, v)
+      maxp = math.max(p, maxp)
+      if p > 1 and p > maxp / 4 then table.insert(r, {v, p}) end
+    end
   end
   table.sort(r, function(a, b) return a[2] > b[2] end)
+  if limit then r[limit] = nil end -- limit the list to be displayed
   return r
 end
 
