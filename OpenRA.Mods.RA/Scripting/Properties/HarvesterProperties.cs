@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Scripting;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting

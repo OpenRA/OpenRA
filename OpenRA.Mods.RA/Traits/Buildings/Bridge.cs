@@ -18,7 +18,7 @@ using OpenRA.Mods.RA.Buildings;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	class BridgeInfo : ITraitInfo, Requires<HealthInfo>, Requires<BuildingInfo>
 	{

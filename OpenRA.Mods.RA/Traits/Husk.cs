@@ -14,7 +14,7 @@ using OpenRA.Mods.RA.Move;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Spawns remains of a husk actor with the correct facing.")]
 	class HuskInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo

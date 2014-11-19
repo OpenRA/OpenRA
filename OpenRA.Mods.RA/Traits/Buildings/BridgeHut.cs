@@ -12,7 +12,7 @@ using System;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Allows bridges to be targeted for demolition and repair.")]
 	class BridgeHutInfo : IDemolishableInfo, ITraitInfo

@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using OpenRA.Traits;
 using OpenRA.Mods.Common.Orders;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	static class PrimaryExts
 	{

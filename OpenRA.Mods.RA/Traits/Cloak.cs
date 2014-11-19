@@ -16,7 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("This unit can cloak and uncloak in specific situations.")]
 	public class CloakInfo : UpgradableTraitInfo, ITraitInfo

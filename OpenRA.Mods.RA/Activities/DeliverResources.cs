@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using OpenRA.Mods.Common;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities

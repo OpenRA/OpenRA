@@ -8,11 +8,16 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
-	[Desc("Tag trait for construction yard and MCVs. Used by the cycle bases hotkey to identify actors.")]
-	public class BaseBuildingInfo : TraitInfo<BaseBuilding> { }
-	public class BaseBuilding { }
+	[Desc("Display a sprite tag \"fake\" when selected.")]
+	class FakeInfo : TraitInfo<Fake> { }
+
+	class Fake : ITags
+	{
+		public IEnumerable<TagType> GetTags() {	yield return TagType.Fake; }
+	}
 }
