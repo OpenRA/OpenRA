@@ -1,4 +1,4 @@
-chrome-gdi: chrome-gdi.png
+chrome-allies: chrome-gdi.png
 	specialbin-top: 0,0,30,51
 	specialbin-middle: 0,51,30,51
 	specialbin-bottom: 0,153,30,39
@@ -6,10 +6,10 @@ chrome-gdi: chrome-gdi.png
 	tooltip-bg: 0,288,272,136
 	radar: 297,31,210,222
 
-power-gdi: chrome-gdi.png
+power-allies: chrome-gdi.png
 	power-indicator: 187,4,4,7
 
-palette-gdi: chrome-gdi.png
+palette-allies: chrome-gdi.png
 	top: 297,288,201,9
 	dock-top: 498,274,14,23
 	bottom: 297,489,201,9
@@ -23,7 +23,7 @@ palette-gdi: chrome-gdi.png
 	bg-3: 297,441,201,48
 	dock-3: 498,441,14,48
 
-digits-gdi: chrome-gdi.png
+digits-allies: chrome-gdi.png
 	0: 32,0,13,17
 	1: 45,0,13,17
 	2: 58,0,13,17
@@ -35,7 +35,7 @@ digits-gdi: chrome-gdi.png
 	8: 136,0,13,17
 	9: 149,0,13,17
 
-chrome-nod: chrome-nod.png
+chrome-soviets: chrome-nod.png
 	specialbin-top: 0,0,30,51
 	specialbin-middle: 0,51,30,51
 	specialbin-bottom: 0,153,30,39
@@ -43,10 +43,10 @@ chrome-nod: chrome-nod.png
 	tooltip-bg: 0,288,272,136
 	radar: 297,31,210,222
 
-power-nod: chrome-nod.png
+power-soviets: chrome-nod.png
 	power-indicator: 187,4,4,7
 
-palette-nod: chrome-nod.png
+palette-soviets: chrome-nod.png
 	top: 297,288,201,9
 	dock-top: 498,274,14,23
 	bottom: 297,489,201,9
@@ -60,7 +60,7 @@ palette-nod: chrome-nod.png
 	bg-3: 297,441,201,48
 	dock-3: 498,441,14,48
 
-digits-nod: chrome-nod.png
+digits-soviets: chrome-nod.png
 	0: 32,0,13,17
 	1: 45,0,13,17
 	2: 58,0,13,17
@@ -126,7 +126,7 @@ dialog: dialog.png
 	corner-bl: 437,481,21,21
 	corner-br: 459,481,21,21
 
-# Same as a normal button 
+# Same as a normal button
 dialog2: dialog.png
 	background: 513,1,126,126
 	border-r: 639,1,1,126
@@ -138,7 +138,7 @@ dialog2: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
-# Same as a pressed button 
+# Same as a pressed button
 dialog3: dialog.png
 	background: 641,1,126,126
 	border-r: 767,1,1,126
@@ -190,8 +190,8 @@ order-icons: buttons.png
 	beacon-active: 34,84,34,28
 
 flags: buttons.png
-	gdi: 30,112,30,15
-	nod: 0,112,30,15
+	allies: 30,112,30,15
+	soviets: 0,112,30,15
 	random: 60,112,30,15
 	spectator: 60,112,30,15
 
@@ -246,7 +246,7 @@ button: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
-# 5% lighter than a normal button	
+# 5% lighter than a normal button
 button-hover: dialog.png
 	background: 513,129,126,126
 	border-r: 639,129,1,126
@@ -256,8 +256,8 @@ button-hover: dialog.png
 	corner-tl: 512,128,1,1
 	corner-tr: 639,128,1,1
 	corner-bl: 512,255,1,1
-	corner-br: 639,255,1,1		
-	
+	corner-br: 639,255,1,1
+
 # A copy of dialog3 (pressed button)
 button-pressed: dialog.png
 	background: 641,1,126,126
@@ -268,8 +268,8 @@ button-pressed: dialog.png
 	corner-tl: 640,0,1,1
 	corner-tr: 767,0,1,1
 	corner-bl: 640,127,1,1
-	corner-br: 767,127,1,1	
-	
+	corner-br: 767,127,1,1
+
 # 10% darker than a normal button
 button-disabled: dialog.png
 	background: 513,257,126,126
@@ -281,7 +281,7 @@ button-disabled: dialog.png
 	corner-tr: 639,256,1,1
 	corner-bl: 512,383,1,1
 	corner-br: 639,383,1,1
-	
+
 # A yellow (normal) button
 button-highlighted: dialog.png
 	background: 769,1,126,126
@@ -351,7 +351,7 @@ scrollthumb-hover: dialog.png
 	corner-tl: 512,128,1,1
 	corner-tr: 639,128,1,1
 	corner-bl: 512,255,1,1
-	corner-br: 639,255,1,1	
+	corner-br: 639,255,1,1
 
 # A copy of dialog3 (pressed button)
 scrollthumb-pressed: dialog.png
@@ -364,7 +364,7 @@ scrollthumb-pressed: dialog.png
 	corner-tr: 767,0,1,1
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
-	
+
 # A copy of dialog2 (normal button)
 scrollthumb-disabled: dialog.png
 	background: 513,1,126,126
@@ -451,7 +451,7 @@ slider-track: dialog.png
 	corner-tr: 767,0,1,1
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
-	
+
 # A copy of dialog3 (pressed button)
 checkbox: dialog.png
 	background: 641,1,126,126

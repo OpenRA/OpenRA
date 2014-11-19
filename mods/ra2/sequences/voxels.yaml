@@ -1,12 +1,12 @@
 amcv:
-	idle:
+	idle: mcv
 
 cmin:
 	idle:
 	unload: cmon
-	
+
 smcv:
-	idle:
+	idle: mcv
 
 harv:
 	idle:
@@ -56,7 +56,7 @@ hvr:
 
 stnk:
 	idle:
-	
+
 orca:
 	idle:
 

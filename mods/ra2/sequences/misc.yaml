@@ -98,7 +98,7 @@ clock:
 		Length: *
 
 pips:
-	medic: 
+	medic:
 		Start: 6
 	groups: pipsra #TODO: backfall to RA asset
 		Start: 8
@@ -400,63 +400,63 @@ resources:
 		Offset: 0,-15,0
 	gem01: gem01
 		Start: 0
-		Length: 12
-		ShadowStart: 12
+		Length: 5
+		ShadowStart: 0
 		Offset: 0,-15,0
 	gem02: gem02
 		Start: 0
-		Length: 12
-		ShadowStart: 12
+		Length: 5
+		ShadowStart: 0
 		Offset: 0,-15,0
 	gem03: gem03
 		Start: 0
-		Length: 12
-		ShadowStart: 12
+		Length: 5
+		ShadowStart: 0
 		Offset: 0,-15,0
 	gem04: gem04
 		Start: 0
-		Length: 12
-		ShadowStart: 12
+		Length: 5
+		ShadowStart: 0
 		Offset: 0,-15,0
 	gem05: gem05
 		Start: 0
-		Length: 12
-		ShadowStart: 12
+		Length: 5
+		ShadowStart: 0
 		Offset: 0,-15,0
 	gem06: gem06
 		Start: 0
-		Length: 12
-		ShadowStart: 12
+		Length: 5
+		ShadowStart: 0
 		Offset: 0,-15,0
 	gem07: gem07
 		Start: 0
-		Length: 12
-		ShadowStart: 12
+		Length: 5
+		ShadowStart: 0
 		Offset: 0,-15,0
 	gem08: gem08
 		Start: 0
-		Length: 12
-		ShadowStart: 12
+		Length: 5
+		ShadowStart: 0
 		Offset: 0,-15,0
 	gem09: gem09
 		Start: 0
-		Length: 12
-		ShadowStart: 12
+		Length: 5
+		ShadowStart: 0
 		Offset: 0,-15,0
 	gem10: gem10
 		Start: 0
-		Length: 12
-		ShadowStart: 12
+		Length: 5
+		ShadowStart: 0
 		Offset: 0,-15,0
 	gem11: gem11
 		Start: 0
-		Length: 12
-		ShadowStart: 12
+		Length: 5
+		ShadowStart: 0
 		Offset: 0,-15,0
 	gem12: gem12
 		Start: 0
-		Length: 12
-		ShadowStart: 12
+		Length: 5
+		ShadowStart: 0
 		Offset: 0,-15,0
 
 shroud:
@@ -496,4 +496,3 @@ craters: #TODO: make use of 07-12 as well
 icon:
 	gps: asaticon
 		Start: 0
-

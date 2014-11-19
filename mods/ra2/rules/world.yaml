@@ -111,7 +111,7 @@ World:
 		ResourceType: 2
 		Palette: ore
 		EditorSprite: waypoint # TODO: editor can't handle the real ones
-		Variants: gem01, gem02, gem03, gem04, gem05, gem06, gem07, gem08, gem09, gem10, gem11, gem12
+		Variants: gem01#, gem02, gem03, gem04, gem05, gem06, gem07, gem08, gem09, gem10, gem11, gem12
 		MaxDensity: 12
 		ValuePerUnit: 100
 		Name: BlueTiberium
@@ -143,4 +143,3 @@ World:
 	ScreenShaker:
 	RadarPings:
 	StartGameNotification:
-

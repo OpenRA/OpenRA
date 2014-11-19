@@ -26,6 +26,8 @@ Player:
 		LowPowerSlowdown: 3
 	PlaceBuilding:
 	SupportPowerManager:
+	ScriptTriggers:
+	MissionObjectives:
 	ConquestVictoryConditions:
 	PowerManager:
 	AllyRepair:
@@ -55,4 +57,3 @@ Player:
 		Name: Unrestricted
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.unrestricted
 	GlobalUpgradeManager:
-
