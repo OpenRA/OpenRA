@@ -290,7 +290,7 @@ TRUCKB:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 120
-		Owner: allies, nod
+		Owner: allies, soviets
 		Hotkey: t
 	Valued:
 		Cost: 500
@@ -320,7 +320,7 @@ LPST:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
-		Owner: allies, nod
+		Owner: allies, soviets
 		Hotkey: y
 	Health:
 		HP: 600
@@ -544,7 +544,7 @@ GGHUNT:
 		Name: Hunter-Seeker Droid
 	Buildable:
 		BuildPaletteOrder: 20
-		Owner: allies, nod
+		Owner: allies, soviets
 		Queue: Vehicle
 	Mobile:
 		ROT: 16

@@ -858,7 +858,7 @@ GASPOT:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 10
-		Owner: allies, nod
+		Owner: allies, soviets
 		Hotkey: p
 	Valued:
 		Cost: 300
@@ -886,7 +886,7 @@ GALITE:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 10
-		Owner: allies, nod
+		Owner: allies, soviets
 		Hotkey: m
 	Valued:
 		Cost: 200

@@ -1,4 +1,4 @@
-chrome-allies: chrome-gdi.png
+chrome-allies: chrome-allies.png
 	specialbin-top: 0,0,30,51
 	specialbin-middle: 0,51,30,51
 	specialbin-bottom: 0,153,30,39
@@ -6,10 +6,10 @@ chrome-allies: chrome-gdi.png
 	tooltip-bg: 0,288,272,136
 	radar: 297,31,210,222
 
-power-allies: chrome-gdi.png
+power-allies: chrome-allies.png
 	power-indicator: 187,4,4,7
 
-palette-allies: chrome-gdi.png
+palette-allies: chrome-allies.png
 	top: 297,288,201,9
 	dock-top: 498,274,14,23
 	bottom: 297,489,201,9
@@ -23,7 +23,7 @@ palette-allies: chrome-gdi.png
 	bg-3: 297,441,201,48
 	dock-3: 498,441,14,48
 
-digits-allies: chrome-gdi.png
+digits-allies: chrome-allies.png
 	0: 32,0,13,17
 	1: 45,0,13,17
 	2: 58,0,13,17
@@ -35,7 +35,7 @@ digits-allies: chrome-gdi.png
 	8: 136,0,13,17
 	9: 149,0,13,17
 
-chrome-soviets: chrome-nod.png
+chrome-soviets: chrome-soviets.png
 	specialbin-top: 0,0,30,51
 	specialbin-middle: 0,51,30,51
 	specialbin-bottom: 0,153,30,39
@@ -43,10 +43,10 @@ chrome-soviets: chrome-nod.png
 	tooltip-bg: 0,288,272,136
 	radar: 297,31,210,222
 
-power-soviets: chrome-nod.png
+power-soviets: chrome-soviets.png
 	power-indicator: 187,4,4,7
 
-palette-soviets: chrome-nod.png
+palette-soviets: chrome-soviets.png
 	top: 297,288,201,9
 	dock-top: 498,274,14,23
 	bottom: 297,489,201,9
@@ -60,7 +60,7 @@ palette-soviets: chrome-nod.png
 	bg-3: 297,441,201,48
 	dock-3: 498,441,14,48
 
-digits-soviets: chrome-nod.png
+digits-soviets: chrome-soviets.png
 	0: 32,0,13,17
 	1: 45,0,13,17
 	2: 58,0,13,17
@@ -73,46 +73,46 @@ digits-soviets: chrome-nod.png
 	9: 149,0,13,17
 
 tabs-selected: tabs.png
-	gdi-Building: 0,0,27,41
-	gdi-Defense: 0,40,27,41
-	gdi-Infantry: 0,80,27,41
-	gdi-Vehicle: 0,120,27,41
-	gdi-Air: 0,160,27,41
-	gdi-Ship: 0,200,27,41
-	nod-Building: 80,0,27,41
-	nod-Defense: 80,40,27,41
-	nod-Infantry: 80,80,27,41
-	nod-Vehicle: 80,120,27,41
-	nod-Air: 80,160,27,41
-	nod-Ship: 80,200,27,41
+	allies-Building: 0,0,27,41
+	allies-Defense: 0,40,27,41
+	allies-Infantry: 0,80,27,41
+	allies-Vehicle: 0,120,27,41
+	allies-Air: 0,160,27,41
+	allies-Ship: 0,200,27,41
+	soviets-Building: 80,0,27,41
+	soviets-Defense: 80,40,27,41
+	soviets-Infantry: 80,80,27,41
+	soviets-Vehicle: 80,120,27,41
+	soviets-Air: 80,160,27,41
+	soviets-Ship: 80,200,27,41
 
 tabs-ready: tabs.png
-	gdi-Building: 27,0,27,41
-	gdi-Defense: 27,40,27,41
-	gdi-Infantry: 27,80,27,41
-	gdi-Vehicle: 27,120,27,41
-	gdi-Air: 27,160,27,41
-	gdi-Ship: 27,200,27,41
-	nod-Building: 107,0,27,41
-	nod-Defense: 107,40,27,41
-	nod-Infantry: 107,80,27,41
-	nod-Vehicle: 107,120,27,41
-	nod-Air: 107,160,27,41
-	nod-Ship: 107,200,27,41
+	allies-Building: 27,0,27,41
+	allies-Defense: 27,40,27,41
+	allies-Infantry: 27,80,27,41
+	allies-Vehicle: 27,120,27,41
+	allies-Air: 27,160,27,41
+	allies-Ship: 27,200,27,41
+	soviets-Building: 107,0,27,41
+	soviets-Defense: 107,40,27,41
+	soviets-Infantry: 107,80,27,41
+	soviets-Vehicle: 107,120,27,41
+	soviets-Air: 107,160,27,41
+	soviets-Ship: 107,200,27,41
 
 tabs-normal: tabs.png
-	gdi-Building: 54,0,27,41
-	gdi-Defense: 54,40,27,41
-	gdi-Infantry: 54,80,27,41
-	gdi-Vehicle: 54,120,27,41
-	gdi-Air: 54,160,27,41
-	gdi-Ship: 54,200,27,41
-	nod-Building: 134,0,27,41
-	nod-Defense: 134,40,27,41
-	nod-Infantry: 134,80,27,41
-	nod-Vehicle: 134,120,27,41
-	nod-Air: 134,160,27,41
-	nod-Ship: 134,200,27,41
+	allies-Building: 54,0,27,41
+	allies-Defense: 54,40,27,41
+	allies-Infantry: 54,80,27,41
+	allies-Vehicle: 54,120,27,41
+	allies-Air: 54,160,27,41
+	allies-Ship: 54,200,27,41
+	soviets-Building: 134,0,27,41
+	soviets-Defense: 134,40,27,41
+	soviets-Infantry: 134,80,27,41
+	soviets-Vehicle: 134,120,27,41
+	soviets-Air: 134,160,27,41
+	soviets-Ship: 134,200,27,41
 
 # Used for the menu
 dialog: dialog.png
