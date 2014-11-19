@@ -15,7 +15,7 @@ using OpenRA.Mods.RA.Render;
 using OpenRA.Support;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Lets the actor spread resources around it in a circle.")]
 	class SeedsResourceInfo : ITraitInfo

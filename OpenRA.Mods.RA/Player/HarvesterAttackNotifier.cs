@@ -12,7 +12,7 @@ using System.Drawing;
 using OpenRA.Mods.Common;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Plays an audio notification and shows a radar ping when a harvester is attacked.",
 		"Attach this to the player actor.")]

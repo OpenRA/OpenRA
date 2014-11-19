@@ -17,7 +17,7 @@ using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 using OpenRA.Support;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Identify untraversable regions of the map for faster pathfinding, especially with AI.",
 		"This trait is required. Every mod needs it attached to the world actor.")]

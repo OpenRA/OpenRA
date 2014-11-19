@@ -10,10 +10,10 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS

@@ -9,11 +9,10 @@
 #endregion
 
 using System;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Reserve landing places for aircraft.")]
 	class ReservableInfo : TraitInfo<Reservable> { }

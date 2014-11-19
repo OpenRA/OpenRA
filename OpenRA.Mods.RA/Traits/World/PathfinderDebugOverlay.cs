@@ -16,7 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Required for the A* PathDebug from DeveloperMode. Attach this to the world actor.")]
 	class PathfinderDebugOverlayInfo : TraitInfo<PathfinderDebugOverlay> { }

@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 

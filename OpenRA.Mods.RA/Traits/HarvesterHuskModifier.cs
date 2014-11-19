@@ -8,9 +8,10 @@
  */
 #endregion
 
+using OpenRA.Mods.RA;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	public class HarvesterHuskModifierInfo : ITraitInfo, Requires<HarvesterInfo>
 	{

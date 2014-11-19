@@ -15,16 +15,18 @@ using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	public class OreRefineryInfo : ITraitInfo
 	{
+		[Desc("Docking cell relative to top-left cell.")]
 		public readonly CVec DockOffset = new CVec(1, 2);
 
 		public readonly bool ShowTicks = true;
 		public readonly int TickLifetime = 30;
 		public readonly int TickVelocity = 2;
 		public readonly int TickRate = 10;
+		[Desc("Actually harvester facing when docking, 0-255 counter-clock-wise.")]
 		public readonly int DockAngle = 64;
 
 		public virtual object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using OpenRA.Mods.RA.Traits;
 using OpenRA;
 using OpenRA.Primitives;
 using OpenRA.Support;
