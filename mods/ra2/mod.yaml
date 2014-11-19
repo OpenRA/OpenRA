@@ -1,6 +1,6 @@
 Metadata:
 	Title: Red Alert 2
-	Description: The Soviet Union is back! This time to conquer the United States...
+	Description: The Soviet Union is back! This time to\nconquer the United States...
 	Version: {DEV_VERSION}
 	Author: OmegaBolt
 
@@ -16,7 +16,6 @@ Folders:
 	./mods/ra2/bits/themes
 	./mods/ra2/bits/animations
 	./mods/ra2/uibits
-	~^Content/ts
 	~^Content/ra2
 
 MapFolders:
@@ -88,38 +87,44 @@ Assemblies:
 	./mods/ts/OpenRA.Mods.TS.dll
 
 ChromeLayout:
-	./mods/ra2/chrome/install.yaml
+	./mods/ra/chrome/ingame-chat.yaml
+	./mods/ra/chrome/ingame-diplomacy.yaml
+	./mods/ra/chrome/ingame-fmvplayer.yaml
+	./mods/ra/chrome/ingame-menu.yaml
+	./mods/ra/chrome/ingame-info.yaml
+	./mods/ra/chrome/ingame-infoscripterror.yaml
+	./mods/ra/chrome/ingame-infobriefing.yaml
+	./mods/ra/chrome/ingame-infoobjectives.yaml
+	./mods/ra/chrome/ingame-infostats.yaml
+	./mods/ra/chrome/ingame-observerstats.yaml
+	./mods/ra/chrome/ingame-debug.yaml
+	./mods/ra/chrome/ingame-leavemap.yaml
+	./mods/ra/chrome/mainmenu.yaml
+	./mods/ra/chrome/settings.yaml
+	./mods/ra/chrome/credits.yaml
+	./mods/ra/chrome/lobby.yaml
+	./mods/ra/chrome/lobby-mappreview.yaml
+	./mods/ra/chrome/lobby-playerbin.yaml
+	./mods/ra/chrome/lobby-dialogs.yaml
+	./mods/ra/chrome/map-chooser.yaml
+	./mods/ra/chrome/create-server.yaml
+	./mods/ra/chrome/serverbrowser.yaml
+	./mods/ra/chrome/connection.yaml
+	./mods/ra/chrome/directconnect.yaml
+	./mods/ra/chrome/replaybrowser.yaml
+	./mods/ra/chrome/musicplayer.yaml
+	./mods/ra/chrome/tooltips.yaml
+	./mods/ra/chrome/assetbrowser.yaml
+	./mods/ra/chrome/missionbrowser.yaml
+	./mods/ra/chrome/confirmation-dialogs.yaml
+
 	./mods/ra2/chrome/ingame.yaml
-	./mods/ra2/chrome/ingame-chat.yaml
-	./mods/ra2/chrome/ingame-diplomacy.yaml
-	./mods/ra2/chrome/ingame-fmvplayer.yaml
-	./mods/ra2/chrome/ingame-menu.yaml
-	./mods/ra2/chrome/ingame-objectives.yaml
-	./mods/ra2/chrome/ingame-observer.yaml
-	./mods/ra2/chrome/ingame-observerstats.yaml
 	./mods/ra2/chrome/ingame-player.yaml
-	./mods/ra2/chrome/mainmenu.yaml
-	./mods/ra2/chrome/settings.yaml
-	./mods/ra2/chrome/credits.yaml
-	./mods/ra2/chrome/lobby.yaml
-	./mods/ra2/chrome/lobby-mappreview.yaml
-	./mods/ra2/chrome/lobby-playerbin.yaml
-	./mods/ra2/chrome/lobby-dialogs.yaml
+	./mods/ra2/chrome/ingame-observer.yaml
 	./mods/ra2/chrome/color-picker.yaml
-	./mods/ra2/chrome/map-chooser.yaml
-	./mods/ra2/chrome/create-server.yaml
-	./mods/ra2/chrome/serverbrowser.yaml
-	./mods/ra2/chrome/connection.yaml
-	./mods/ra2/chrome/directconnect.yaml
-	./mods/ra2/chrome/replaybrowser.yaml
+	./mods/ra2/chrome/install.yaml
 	./mods/ra2/chrome/dropdowns.yaml
-	./mods/ra2/chrome/cheats.yaml
-	./mods/ra2/chrome/musicplayer.yaml
-	./mods/ra2/chrome/tooltips.yaml
-	./mods/ra2/chrome/assetbrowser.yaml
-	./mods/ra2/chrome/irc.yaml
-	./mods/ra2/chrome/missionbrowser.yaml
-	./mods/ra2/chrome/confirmation-dialogs.yaml
+
 
 Weapons:
 	./mods/ra2/weapons.yaml
@@ -163,8 +168,8 @@ LobbyDefaults:
 	Crates: true
 	StartingUnitsClass: none
 	FragileAlliances: false
-	Shroud: true
-	Fog: true
+	Shroud: false
+	Fog: false
 
 ChromeMetrics:
 	./mods/ra2/metrics.yaml
@@ -192,6 +197,6 @@ Fonts:
 		Font:./mods/common/FreeSansBold.ttf
 		Size:10
 
-SupportsMapsFrom: ts
+SupportsMapsFrom: ra2
 
 SpriteFormats: ShpTS, TmpTS, ShpTD

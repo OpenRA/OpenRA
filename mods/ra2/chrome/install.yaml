@@ -18,7 +18,7 @@ Background@INSTALL_PANEL:
 			Y: 50
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: OpenRA requires the original Red Alert game content.
+			Text: OpenRA requires the original Red Alert 2 game content.
 			Align: Center
 		Label@DESC2:
 			X: 0
@@ -61,7 +61,7 @@ Background@INSTALL_DOWNLOAD_PANEL:
 			Y: 20
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: Downloading Red Alert Content
+			Text: Downloading Red Alert 2 Content
 			Align: Center
 			Font: Bold
 		ProgressBar@PROGRESS_BAR:
@@ -139,7 +139,7 @@ Background@INSTALL_FROMCD_PANEL:
 					Y: 70
 					Width: PARENT_RIGHT
 					Height: 25
-					Text: Please insert one of the Red Alert install CDs then click Retry.
+					Text: Please insert one of the Red Alert 2 install CDs then click Retry.
 					Align: Center
 		Button@RETRY_BUTTON:
 			X: PARENT_RIGHT - 280
@@ -157,4 +157,3 @@ Background@INSTALL_FROMCD_PANEL:
 			Text: Cancel
 			Font: Bold
 			Key: escape
-

@@ -7,6 +7,11 @@ gacnst:
 		Start: 0
 		ShadowStart: 3
 		Offset: 0,-55,0
+	make: gtcnstmk
+		Start: 0
+		Length: 28
+		ShadowStart: 0
+		Offset: 0,-55,0
 	damaged-idle: ggcnst
 		Start: 1
 		ShadowStart: 4
@@ -30,11 +35,6 @@ gacnst:
 		Start: 20
 		Length: 20
 		Tick: 150
-		Offset: 0,-55,0
-	make: ggcnstmk
-		Start: 0
-		Length: 28
-		ShadowStart: 28
 		Offset: 0,-55,0
 	icon: xxicon
 		Start: 0
@@ -60,10 +60,10 @@ gapowr:
 		ShadowStart: 24
 		Tick: 150
 		Offset: 0,-30,0
-	make: ggpowrmk
+	make: gtpowrmk
 		Start: 0
 		Length: 25
-		ShadowStart: 25
+		ShadowStart: 0
 		Offset: 0,-30,0
 	icon: powricon
 		Start: 0
@@ -87,10 +87,10 @@ gapile:
 		Length: 16
 		ShadowStart: 48
 		Offset: -15,-38,0
-	make: ggpilemk
+	make: gtpilemk
 		Start: 0
 		Length: 25
-		ShadowStart: 25
+		ShadowStart: 0
 		Offset: -15,-38,0
 	icon: brrkicon
 		Start: 0
@@ -104,10 +104,10 @@ garefn:
 		Start: 1
 		ShadowStart: 4
 		Offset: -15,-50,0
-	make: ggrefnmk
+	make: gurefnmk
 		Start: 0
 		Length: 25
-		ShadowStart: 25
+		ShadowStart: 0
 		Offset: -15,-50,0
 	idle-drill: ggrefnl1
 		Start: 0
@@ -170,10 +170,10 @@ gaweap:
 		Start: 1
 		ShadowStart: 3
 		Offset: -25,-60,0
-	make: ggweapmk
+	make: gtweapmk
 		Start: 0
 		Length: 25
-		ShadowStart: 25
+		ShadowStart: 0
 		Offset: -25,-60,0
 	icon: gwepicon
 		Start: 0
@@ -205,10 +205,10 @@ gadept:
 		Length: 10
 		ShadowStart: 30
 		Offset: 0,-40,0
-	make: ggdeptmk
+	make: gtdeptmk
 		Start: 0
-		Length: 25
-		ShadowStart: 25
+		Length: 18
+		ShadowStart: 0
 		Offset: 0,-40,0
 	icon: fixicon
 		Start: 0
@@ -263,7 +263,7 @@ gaairc:
 	make: ggaircmk
 		Start: 0
 		Length: 25
-		ShadowStart: 25
+		ShadowStart: 0
 		Offset: -15,-38,0
 	icon: heliicon
 		Start: 0
@@ -287,10 +287,10 @@ gatech:
 		Length: 12
 		Tick: 150
 		Offset: -15,-38,0
-	make: ggtechmk
+	make: gttechmk
 		Start: 0
 		Length: 25
-		ShadowStart: 25
+		ShadowStart: 0
 		Offset: -15,-38,0
 	icon: techicon
 		Start: 0
@@ -314,12 +314,12 @@ gaorep:
 		Length: 8
 		Tick: 150
 		Offset: 0,-40,0
-	make: ggorepmk
+	make: gtorepmk
 		Start: 0
 		Length: 25
-		ShadowStart: 25
+		ShadowStart: 0
 		Offset: 0,-40,0
-	icon: gorep
+	icon: ggorep
 		Start: 0
 
 gawall:
@@ -377,9 +377,9 @@ gapill:
 	make: ggpillmk
 		Start: 0
 		Length: 8
-		ShadowStart: 8
+		ShadowStart: 0
 		Offset: 0,-15,0
-	icon: pillicon
+	icon: ggpill # TODO: fix
 		Start: 0
 
 gaspst:
@@ -403,17 +403,17 @@ gaspst:
 		ShadowStart: 48
 		Tick: 150
 		Offset: 0,-30,0
-	make: ggspstmk
+	make: gtspstmk
 		Start: 0
 		Length: 25
-		ShadowStart: 25
+		ShadowStart: 0
 		Offset: 0,-30,0
 	icon: asaticon
 		Start: 0
 
 #
 #	SOVIET STRUCTURES
-#		
+#
 
 nacnst:
 	idle: ngcnst
@@ -865,7 +865,7 @@ gavulc:
 	make: gtctwrmk
 		Start: 0
 		Length: 11
-		ShadowStart: 11
+		ShadowStart: 0
 	icon: twr1icon
 		Start: 0
 
@@ -897,7 +897,7 @@ garock:
 	make: gtctwrmk
 		Start: 0
 		Length: 11
-		ShadowStart: 11
+		ShadowStart: 0
 	icon: twr2icon
 		Start: 0
 
@@ -929,7 +929,7 @@ gacsam:
 	make: gtctwrmk
 		Start: 0
 		Length: 11
-		ShadowStart: 11
+		ShadowStart: 0
 	icon: twr3icon
 		Start: 0
 

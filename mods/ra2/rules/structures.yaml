@@ -154,11 +154,11 @@ GAREFN:
 		Capacity: 3000
 	CustomSellValue:
 		Value: 300
-	FreeActor:
-		Actor: CMIN
-		InitialActivity: FindResources
-		SpawnOffset: -1,0
-		Facing: 64
+	# FreeActor: # vxl/hva loading isn't laid out too well
+	# 	Actor: CMIN
+	# 	InitialActivity: FindResources
+	# 	SpawnOffset: -1,0
+	# 	Facing: 64
 	WithDockingOverlay:
 	WithIdleOverlay@BIB:
 		Sequence: idle-bib
