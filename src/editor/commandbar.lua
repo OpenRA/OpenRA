@@ -243,27 +243,27 @@ local cache = {}
 local missing = 3 -- penalty for missing symbols (1 missing == N matching)
 local casemismatch = 0.9 -- score for case mismatch (%% of full match)
 local function score(p, v)
-  local function ngrams(str, num, low)
+  local function ngrams(str, num, low, needcache)
     local key = str..'\1'..num
-    if not cache[key] then
-      local t, l, p = {}, {}, 0
-      for i = 1, #str-num+1 do
-        local pair = str:sub(i, i+num-1)
-        p = p + (t[pair] and 0 or 1)
-        if low and pair:find('%u') then l[pair:lower()] = casemismatch end
-        t[pair] = 1
-      end
-      cache[key] = {t, p, l}
+    if cache[key] then return unpack(cache[key]) end
+
+    local t, l, p = {}, {}, 0
+    for i = 1, #str-num+1 do
+      local pair = str:sub(i, i+num-1)
+      p = p + (t[pair] and 0 or 1)
+      if low and pair:find('%u') then l[pair:lower()] = casemismatch end
+      t[pair] = 1
     end
-    return unpack(cache[key])
+    if needcache then cache[key] = {t, p, l} end
+    return t, p, l
   end
 
   local function overlap(pattern, value, num)
-    local ph, ps = ngrams(pattern, num)
+    local ph, ps = ngrams(pattern, num, false, true)
     local vh, vs, vl = ngrams(value, num, true)
     if ps + vs == 0 then return 0 end
 
-    local is = 0 -- intersection
+    local is = 0 -- intersection of two sets of ngrams
     for k in pairs(ph) do is = is + (vh[k] or vl[k:lower()] or 0) end
     return is / (ps + vs) - (num == 1 and missing * (ps - is) / (ps + vs) or 0)
   end
