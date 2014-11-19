@@ -234,7 +234,7 @@ WorldLoaded = function()
 
 	sovietObjective = soviets.AddPrimaryObjective("Destroy the village.")
 	villageObjective = player.AddPrimaryObjective("Save the village.")
-	beachheadObjective = player.AddSecondaryObjective("Get your MCV to the main island.")
+	beachheadObjective = player.AddPrimaryObjective("Get your MCV to the main island.")
 
 	beachheadTrigger = false
 	Trigger.OnExitedFootprint(BeachheadTrigger, function(a, id)
@@ -244,6 +244,17 @@ WorldLoaded = function()
 			player.MarkCompletedObjective(beachheadObjective)
 
 			captureObjective = player.AddPrimaryObjective("Locate and capture the enemy's Air Force HQ.")
+
+			if AirForceHQ.IsDead then
+				player.MarkFailedObjective(captureObjective)
+				return
+			end
+			if AirForceHQ.Owner == player then
+				player.MarkCompletedObjective(captureObjective)
+				player.MarkCompletedObjective(villageObjective)
+				return
+			end
+
 			Trigger.OnCapture(AirForceHQ, function()
 				Trigger.AfterDelay(DateTime.Seconds(3), function()
 					player.MarkCompletedObjective(captureObjective)
@@ -251,6 +262,8 @@ WorldLoaded = function()
 				end)
 			end)
 			Trigger.OnKilled(AirForceHQ, function() player.MarkFailedObjective(captureObjective) end)
+
+			Actor.Create("mainland", true, { Owner = player })
 
 			Trigger.AfterDelay(BaseFrontAttackInterval, function()
 				Build(BaseFrontAttackUnits, BaseFrontAttack)
