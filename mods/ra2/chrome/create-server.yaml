@@ -1,0 +1,105 @@
+Background@CREATESERVER_PANEL:
+	Logic: ServerCreationLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 400
+	Height: 300
+	Children:
+		Label@LABEL_TITLE:
+			X: 0
+			Y: 20
+			Width: 400
+			Height: 25
+			Text: Create Server
+			Align: Center
+			Font: Bold
+		Label@SERVER_NAME_LABEL:
+			X: 50
+			Y: 59
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: Game Title:
+		TextField@SERVER_NAME:
+			X: 150
+			Y: 60
+			Width: 210
+			MaxLength: 50
+			Height: 25
+			Text: OpenRA Game
+		Label@PASSWORD_LABEL:
+			X: 50
+			Y: 94
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: Password:
+		PasswordField@PASSWORD:
+			X: 150
+			Y: 95
+			Width: 145
+			MaxLength: 20
+			Height: 25
+		Label@AFTER_PASSWORD_LABEL:
+			X: 300
+			Y: 94
+			Width: 95
+			Height: 25
+			Align: Left
+			Text: (optional)
+		Label@EXTERNAL_PORT_LABEL:
+			X: 50
+			Y: 129
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: External Port:
+		TextField@EXTERNAL_PORT:
+			X: 150
+			Y: 130
+			Width: 50
+			MaxLength: 5
+			Height: 25
+			Text: OpenRA Game
+		Label@LISTEN_PORT_LABEL:
+			X: 210
+			Y: 129
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: Listen Port:
+		TextField@LISTEN_PORT:
+			X: 310
+			Y: 130
+			Width: 50
+			MaxLength: 5
+			Height: 25
+		Checkbox@UPNP_CHECKBOX:
+			X: 150
+			Y: 165
+			Width: 300
+			Height: 20
+			Text: Automatic port forwarding
+		Checkbox@ADVERTISE_CHECKBOX:
+			X: 150
+			Y: 200
+			Width: 300
+			Height: 20
+			Text: Advertise game Online
+		Button@CREATE_BUTTON:
+			X: 130
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Create
+			Font: Bold
+			Key: return
+		Button@BACK_BUTTON:
+			X: 260
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape
+

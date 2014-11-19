@@ -1,0 +1,33 @@
+General:
+	Name: Temperate
+	Id: TEMPERAT
+	Extensions: .tem, .shp
+	Palette: isotem.pal
+	EditorTemplateOrder: Placeholder
+
+Terrain:
+	TerrainType@Clear:
+		Type: Clear
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 116, 85, 55
+		TargetTypes: Ground
+	TerrainType@Tiberium:
+		Type: Tiberium
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 161, 226, 28
+		TargetTypes: Ground
+	TerrainType@BlueTiberium:
+		Type: BlueTiberium
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 28, 64, 248
+		TargetTypes: Ground
+
+Templates:
+	Template@255:
+		Id: 255
+		Image: clear01
+		Size: 1,1
+		Category: Placeholder
+		Tiles:
+			0: Clear
+

@@ -1,0 +1,43 @@
+Speech:
+	Notifications:
+		Repairing: 00-i040
+		LowPower: 00-i240
+		SilosNeeded: 00-i044
+		PrimaryBuildingSelected: 00-i034
+		BuildingCannotPlaceAudio: 00-i016
+		NewOptions: 00-i032
+		Win: 00-i284
+		Lose: 00-i286
+		BaseAttack: 00-i082
+		HarvesterAttack: 00-i090
+		Leave: 00-i012
+		StartGame: 00-i200
+		UnitReady: 00-i076
+		NoBuild:
+		Training: 00-i062
+		OnHold: 00-i218
+		Cancelled: 00-i220
+		Building: 00-i216
+		ConstructionComplete: 00-i018
+		UnitLost: 00-i074
+		NavalUnitLost: 00-i074
+		AirUnitLost: 00-i074
+		BuildingCaptured: 00-i056
+
+
+Sounds:
+	Notifications:
+		RadarUp:commup1
+		RadarDown:radardn1
+		CashTickUp: credup1
+		CashTickDown: creddwn1
+		LevelUp:
+		DisablePower:
+		EnablePower:
+		ChatLine:message1
+		BuildPaletteOpen:emblem
+		BuildPaletteClose:emblem
+		TabClick:
+		ClickSound:clicky1
+		ClickDisabledSound:wrong1
+		Beacon: message1

@@ -1,0 +1,92 @@
+Background@CONNECTIONFAILED_PANEL:
+	Logic: ConnectionFailedLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 450
+	Height: 160
+	Children:
+		LogicTicker@CONNECTION_FAILED_TICKER:
+		Label@CONNECTION_FAILED_TITLE:
+			X: 0
+			Y: 20
+			Width: 450
+			Height: 25
+			Text: Connection Failed
+			Align: Center
+			Font: Bold
+		Label@CONNECTING_DESC:
+			X: 0
+			Y: 45
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Could not connect to AAA.BBB.CCC.DDD:EEEE
+			Align: Center
+		Label@CONNECTION_ERROR:
+			X: 0
+			Y: 75
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: ServerError
+			Align: Center
+			Font: Bold
+		Label@PASSWORD_LABEL:
+			X: PARENT_RIGHT - 360
+			Y: 110
+			Width: 95
+			Height: 25
+			Text: Password:
+			Font: Bold
+		PasswordField@PASSWORD:
+			X: PARENT_RIGHT - 285
+			Y: 111
+			Width: 190
+			MaxLength: 20
+			Height: 25
+		Button@RETRY_BUTTON:
+			X: PARENT_RIGHT - 360
+			Y: PARENT_BOTTOM - 45
+			Width: 160
+			Height: 25
+			Text: Retry
+			Font: Bold
+			Key: return
+		Button@ABORT_BUTTON:
+			X: PARENT_RIGHT - 180
+			Y: PARENT_BOTTOM - 45
+			Width: 160
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape
+
+Background@CONNECTING_PANEL:
+	Logic: ConnectionLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 450
+	Height: 150
+	Children:
+		Label@CONNECTING_TITLE:
+			X: 0
+			Y: 20
+			Width: 450
+			Height: 25
+			Text: Connecting
+			Align: Center
+			Font: Bold
+		Label@CONNECTING_DESC:
+			X: 0
+			Y: 60
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Connecting to AAA.BBB.CCC.DDD:EEEE...
+			Align: Center
+		Button@ABORT_BUTTON:
+			X: PARENT_RIGHT - 180
+			Y: PARENT_BOTTOM - 45
+			Width: 160
+			Height: 25
+			Text: Abort
+			Font: Bold
+			Key: escape
+

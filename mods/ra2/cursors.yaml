@@ -1,0 +1,175 @@
+﻿Palettes:
+	cursor: mousepal.pal
+
+Cursors:
+	mouse.shp: cursor
+		scroll-t: #TODO
+			start: 2
+		scroll-tr: #TODO
+			start: 3
+		scroll-r: #TODO
+			start: 4
+		scroll-br: #TODO
+			start: 5
+		scroll-b: #TODO
+			start: 6
+		scroll-bl: #TODO
+			start: 7
+		scroll-l: #TODO
+			start: 8
+		scroll-tl: #TODO
+			start: 9
+		scroll-t-blocked: #TODO
+			start: 10
+		scroll-tr-blocked: #TODO
+			start: 11
+		scroll-r-blocked: #TODO
+			start: 12
+		scroll-br-blocked: #TODO
+			start: 13
+		scroll-b-blocked: #TODO
+			start: 14
+		scroll-bl-blocked: #TODO
+			start: 15
+		scroll-l-blocked: #TODO
+			start: 16
+		scroll-tl-blocked:#TODO
+			start: 17
+		select:
+			start:18
+			length: 12
+		default:
+			start:0
+			x: -26
+			y: -20
+		default-minimap:
+			start:1
+			x: -26
+			y: -20
+		generic-blocked:
+			start:9
+		generic-blocked-minimap:
+			start:52
+		move:
+			start:31
+			length: 10
+		move-minimap:
+			start:42
+			length: 10
+		move-rough:
+			start:31
+			length: 10
+		move-blocked:
+			start:41
+		move-blocked-minimap:
+			start:52
+		attack:
+			start: 53
+			length: 5
+		attack-blocked: # TODO: unused
+			start: 41
+			length: 1
+		attack-minimap:
+			start: 63
+			length: 5
+		attackoutsiderange:
+			start: 58
+			length: 5
+		attackoutsiderange-minimap:
+			start: 63
+			length: 5
+		attackmove: #TODO
+			start: 58
+			length: 5
+		attackmove-minimap: #TODO
+			start:68
+			length: 5
+		harvest: #TODO
+			start:53
+			length: 5
+		harvest-minimap: #TODO
+			start:134
+			length: 8
+		enter:
+			start: 89
+			length: 10
+		enter-minimap:
+			start: 100
+			length: 10
+		enter-blocked:
+			start: 99
+			length: 1
+		enter-blocked-minimap: #TODO
+			start:33
+		c4:
+			start: 309
+			length: 10
+		c4-minimap: #TODO
+			start:121
+			length: 3
+		guard:
+			start: 68
+			length: 5
+		guard-minimap:
+			start: 73
+			length: 5
+		capture:
+			start: 89
+			length: 10
+		capture-minimap:
+			start: 100
+			length: 10
+		heal:
+			start: 346
+			length: 10
+		heal-minimap: #TODO
+			start:194
+			length: 1
+		ability:
+			start: 78
+			length: 10
+		ability-minimap: #TODO
+			start:214
+			length: 8
+		deploy:
+			start: 110
+			length: 9
+		deploy-blocked:
+			start: 119
+			length: 1
+		undeploy: #TODO: unused
+			start:120
+			length: 9
+		goldwrench: #TODO
+			start:170
+			length: 24
+		goldwrench-blocked: #TODO
+			start:213
+			length: 1
+		nuke: #TODO
+			start:90
+			length: 7
+		sell:
+			start:129
+			length: 10
+		sell-minimap: #TODO: unused
+			start:139
+			length: 10
+		sell-blocked:
+			start:149
+			length: 1
+		repair:
+			start:170
+			length: 20
+		repair-blocked:
+			start:190
+			length: 1
+		sell2:
+			start:139
+			length: 10
+		powerdown-blocked:
+			start:345
+			length: 1
+		powerdown:
+			start:329
+			length: 15

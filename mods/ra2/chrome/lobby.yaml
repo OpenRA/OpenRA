@@ -1,0 +1,145 @@
+Background@SERVER_LOBBY:
+	Logic: LobbyLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 858
+	Height: 600
+	Children:
+		ColorPreviewManager@COLOR_MANAGER:
+		Label@SERVER_NAME:
+			X: 0
+			Y: 17
+			Align: Center
+			Width: PARENT_RIGHT
+			Height: 20
+			Font: Bold
+		Container@MAP_PREVIEW_ROOT:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+		Container@LABEL_CONTAINER:
+			X: 25
+			Y: 40
+			Children:
+				Label@LABEL_LOBBY_NAME:
+					X: 0
+					Width: 180
+					Height: 25
+					Text: Name
+					Align: Center
+					Font: Bold
+				Label@LABEL_LOBBY_COLOR:
+					X: 190
+					Width: 80
+					Height: 25
+					Text: Color
+					Align: Center
+					Font: Bold
+				Label@LABEL_LOBBY_FACTION:
+					X: 280
+					Width: 130
+					Height: 25
+					Text: Faction
+					Align: Center
+					Font: Bold
+				Label@LABEL_LOBBY_TEAM:
+					X: 420
+					Width: 48
+					Height: 25
+					Text: Team
+					Align: Center
+					Font: Bold
+				Label@LABEL_LOBBY_TEAM:
+					X: 478
+					Width: 48
+					Height: 25
+					Text: Spawn
+					Align: Center
+					Font: Bold
+				Label@LABEL_LOBBY_STATUS:
+					X: 535
+					Width: 20
+					Height: 25
+					Text: Ready
+					Align: Left
+					Font: Bold
+		Container@PLAYER_BIN_ROOT:
+		DropDownButton@SLOTS_DROPDOWNBUTTON:
+			X: 20
+			Y: PARENT_BOTTOM - 291
+			Width: 167
+			Height: 25
+			Font: Bold
+			Text: Slot Admin
+		Button@OPTIONS_BUTTON:
+			X: 194
+			Y: PARENT_BOTTOM - 291
+			Width: 135
+			Height: 25
+			Font: Bold
+			Text: Game Options
+		Button@CHANGEMAP_BUTTON:
+			X: 336
+			Y: PARENT_BOTTOM - 291
+			Width: 135
+			Height: 25
+			Text: Change Map
+			Font: Bold
+		Button@START_GAME_BUTTON:
+			X: 478
+			Y: PARENT_BOTTOM - 291
+			Width: 135
+			Height: 25
+			Text: Start Game
+			Font: Bold
+		ScrollPanel@CHAT_DISPLAY:
+			X: 20
+			Y: PARENT_BOTTOM - HEIGHT - 52
+			Width: 818
+			Height: 210
+			ItemSpacing: 1
+			Children:
+				Container@CHAT_TEMPLATE:
+					Width: PARENT_RIGHT-27
+					Height: 16
+					X: 2
+					Y: 0
+					Children:
+						Label@TIME:
+							X: 3
+							Width: 50
+							Height: 15
+							VAlign: Top
+						Label@NAME:
+							X: 45
+							Width: 50
+							Height: 15
+							VAlign: Top
+						Label@TEXT:
+							X: 55
+							Width: PARENT_RIGHT - 60
+							Height: 15
+							WordWrap: true
+							VAlign: Top
+		TextField@CHAT_TEXTFIELD:
+			X: 20
+			Y: PARENT_BOTTOM - HEIGHT - 20
+			Width: PARENT_RIGHT - 167
+			Height: 25
+			LeftMargin: 50
+			Children:
+				Label@LABEL_CHATTYPE:
+					Y: 0-1
+					Width: 45
+					Height: 25
+					Align: Right
+					Text: Chat:
+		Button@DISCONNECT_BUTTON:
+			X: PARENT_RIGHT - WIDTH - 20
+			Y: PARENT_BOTTOM - HEIGHT - 20
+			Width: 120
+			Height: 25
+			Text: Disconnect
+			Font: Bold
+			Key: escape
+		TooltipContainer@TOOLTIP_CONTAINER:
+
