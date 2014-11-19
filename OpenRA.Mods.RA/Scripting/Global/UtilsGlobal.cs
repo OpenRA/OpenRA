@@ -11,6 +11,7 @@
 using System.Linq;
 using Eluant;
 using OpenRA.Scripting;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
@@ -78,7 +79,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Expands the given footprint one step along the coordinate axes, and (if requested) diagonals.")]
 		public CPos[] ExpandFootprint(CPos[] footprint, bool allowDiagonal)
 		{
-			return Traits.Util.ExpandFootprint(footprint, allowDiagonal).ToArray();
+			return Util.ExpandFootprint(footprint, allowDiagonal).ToArray();
 		}
 
 		[Desc("Returns a random integer x in the range low &lt;= x &lt; high.")]
