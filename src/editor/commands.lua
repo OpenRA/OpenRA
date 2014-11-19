@@ -1009,8 +1009,9 @@ ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
       -- save auto-recovery record when making the app inactive
       if not active then saveAutoRecovery(true) end
 
-      -- disable UI refresh when app is inactive
-      wx.wxUpdateUIEvent.SetUpdateInterval(active and updateInterval or -1)
+      -- disable UI refresh when app is inactive, but only when not running
+      wx.wxUpdateUIEvent.SetUpdateInterval(
+        (active or ide:GetLaunchedProcess()) and updateInterval or -1)
 
       PackageEventHandle(active and "onAppFocusSet" or "onAppFocusLost", ide.editorApp)
     end
