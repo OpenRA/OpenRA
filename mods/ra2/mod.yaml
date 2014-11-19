@@ -25,9 +25,9 @@ MapFolders:
 
 Packages:
 # Red Alert 2
-	audio.mix:CRC32
+	# audio.mix:CRC32
 	cache.mix:CRC32
-	cameo.mix:CRC32
+	# cameo.mix:CRC32
 	conquer.mix:CRC32
 	generic.mix:CRC32
 	isogen.mix:CRC32
@@ -45,7 +45,7 @@ Packages:
 	snow.mix:CRC32
 	tem.mix:CRC32
 	temperat.mix:CRC32
-	theme.mix:CRC32
+	# theme.mix:CRC32
 	urb.mix:CRC32
 	urban.mix:CRC32
 
