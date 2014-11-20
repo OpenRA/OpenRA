@@ -28,4 +28,12 @@ namespace OpenRA.Mods.Common
 		bool AcceptsUpgradeLevel(Actor self, string type, int level);
 		void UpgradeLevelChanged(Actor self, string type, int oldLevel, int newLevel);
 	}
+
+	public interface INotifyHarvesterAction
+	{
+		void MovingToResources(Actor self, CPos targetCell, Activity next);
+		void MovingToRefinery(Actor self, CPos targetCell, Activity next);
+		void MovementCancelled(Actor self);
+		void Harvested(Actor self, ResourceType resource);
+	}
 }

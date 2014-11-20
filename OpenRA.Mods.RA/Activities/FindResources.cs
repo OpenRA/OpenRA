@@ -111,6 +111,12 @@ namespace OpenRA.Mods.RA.Activities
 				harv.LastOrderLocation = path[0];
 
 			self.SetTargetLine(Target.FromCell(self.World, path[0]), Color.Red, false);
+
+			var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+			var next = new FindResources();
+			foreach (var n in notify)
+				n.MovingToResources(self, path[0], next);
+
 			return Util.SequenceActivities(mobile.MoveTo(path[0], 1), new HarvestResource(), new FindResources());
 		}
 
@@ -163,7 +169,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			harv.AcceptResource(resource);
 
-			foreach (var t in self.TraitsImplementing<INotifyHarvest>())
+			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
 				t.Harvested(self, resource);
 
 			return Util.SequenceActivities(new Wait(harvInfo.LoadTicksPerBale), this);

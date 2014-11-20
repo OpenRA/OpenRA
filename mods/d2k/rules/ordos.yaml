@@ -202,11 +202,17 @@ CARRYALLO:
 	Inherits: ^CARRYALL
 	RenderUnit:
 		Image: CARRYALL
+	Buildable:
+		Queue: Armor
+		Prerequisites: ~heavyo, refinery, hightech
+		BuildPaletteOrder: 10
 
 CARRYALLO.starport:
 	Inherits: CARRYALLO
 	Valued:
 		Cost: 1500
+	Buildable:
+		Queue: Starport
 
 DEVIATORTANK:
 	Inherits: ^Tank

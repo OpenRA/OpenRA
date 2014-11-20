@@ -63,6 +63,7 @@ HARVESTER:
 		UnloadTicksPerBale: 5
 		SearchFromProcRadius: 24
 		SearchFromOrderRadius: 12
+	Carryable:
 	Health:
 		HP: 1000
 	Armor:

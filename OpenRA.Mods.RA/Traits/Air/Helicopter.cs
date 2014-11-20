@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	class HelicopterInfo : AircraftInfo, IMoveInfo
+	public class HelicopterInfo : AircraftInfo, IMoveInfo
 	{
 		[Desc("Allow the helicopter land after it has no more commands.")]
 		public readonly bool LandWhenIdle = true;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Traits
 		public override object Create(ActorInitializer init) { return new Helicopter(init, this); }
 	}
 
-	class Helicopter : Aircraft, ITick, IResolveOrder, IMove
+	public class Helicopter : Aircraft, ITick, IResolveOrder, IMove
 	{
 		public HelicopterInfo Info;
 		Actor self;

@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class HeliFly : Activity
+	public class HeliFly : Activity
 	{
 		readonly Helicopter helicopter;
 		readonly Target target;

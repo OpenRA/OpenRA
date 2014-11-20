@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.RA.Render
 		public object Create(ActorInitializer init) { return new WithHarvestAnimation(init.self, this); }
 	}
 
-	class WithHarvestAnimation : INotifyHarvest
+	class WithHarvestAnimation : INotifyHarvesterAction
 	{
 		WithHarvestAnimationInfo info;
 		Animation anim;
@@ -55,5 +56,9 @@ namespace OpenRA.Mods.RA.Render
 			visible = true;
 			anim.PlayThen(info.Sequence, () => visible = false);
 		}
+
+		public void MovingToResources(Actor self, CPos targetCell, Activity next) { }
+		public void MovingToRefinery(Actor self, CPos targetCell, Activity next) { }
+		public void MovementCancelled(Actor self) { }
 	}
 }

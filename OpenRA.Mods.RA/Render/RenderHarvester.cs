@@ -10,6 +10,7 @@
 
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Mods.Common;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderHarvester(init.self, this); }
 	}
 
-	class RenderHarvester : RenderUnit, INotifyHarvest
+	class RenderHarvester : RenderUnit, INotifyHarvesterAction
 	{
 		Harvester harv;
 		RenderHarvesterInfo info;
@@ -51,5 +52,9 @@ namespace OpenRA.Mods.RA.Render
 			if (DefaultAnimation.CurrentSequence.Name != "harvest")
 				PlayCustomAnim(self, "harvest");
 		}
+
+		public void MovingToResources(Actor self, CPos targetCell, Activity next) { }
+		public void MovingToRefinery(Actor self, CPos targetCell, Activity next) { }
+		public void MovementCancelled(Actor self) { }
 	}
 }
