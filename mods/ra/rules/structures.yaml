@@ -81,6 +81,19 @@ GAP:
 	MustBeDestroyed:
 		RequiredForShortGame: false
 
+GAP.France:
+	Inherits: GAP
+	RenderBuilding:
+		Image: gap
+	Tooltip:
+		Name: Advanced Gap Generator
+	Buildable:
+		Prerequisites: atek, ~structures.france, ~techlevel.unrestricted
+	RevealsShroud:
+		Range: 10c0
+	CreatesShroud:
+		Range: 10c0
+
 SPEN:
 	Inherits: ^Building
 	InfiltrateForSupportPower:
