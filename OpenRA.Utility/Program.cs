@@ -28,7 +28,6 @@ namespace OpenRA.Utility
 
 			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
-			Log.LogPath = Platform.ResolvePath("^", "Logs");
 			Log.AddChannel("perf", null);
 			Log.AddChannel("debug", null);
 
