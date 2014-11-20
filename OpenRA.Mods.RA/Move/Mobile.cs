@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Move
 		TransientActors,
 		BlockedByMovers,
 		All = TransientActors | BlockedByMovers
-	};
+	}
 
 	[Desc("Unit is able to move.")]
 	public class MobileInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo, IMoveInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA.Move
 			if (otherMobile == null) return false;
 
 			// Sign of dot-product indicates (roughly) if vectors are facing in same or opposite directions:
-			var dp = CVec.Dot((selfMobile.toCell - self.Location), (otherMobile.toCell - other.Location));
+			var dp = CVec.Dot(selfMobile.toCell - self.Location, otherMobile.toCell - other.Location);
 			if (dp <= 0) return false;
 
 			return true;
@@ -172,7 +172,7 @@ namespace OpenRA.Mods.RA.Move
 			{
 				var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
 				var needsCellExclusively = self == null || Crushes == null || !Crushes.Any();
-				foreach(var a in world.ActorMap.GetUnitsAt(cell))
+				foreach (var a in world.ActorMap.GetUnitsAt(cell))
 				{
 					if (a == ignoreActor)
 						continue;
@@ -252,7 +252,6 @@ namespace OpenRA.Mods.RA.Move
 		CPos __fromCell, __toCell;
 		public SubCell fromSubCell, toSubCell;
 
-		//int __altitude;
 
 		[Sync] public int Facing
 		{
@@ -328,6 +327,7 @@ namespace OpenRA.Mods.RA.Move
 				if (preferred != SubCell.FullCell)
 					return SubCell.FullCell;
 			}
+
 			return preferred;
 		}
 

@@ -47,7 +47,7 @@ namespace OpenRA.Orders
 				};
 
 			foreach (var o in orders)
-				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
+				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)), world);
 		}
 
 		public void Tick(World world) { }
@@ -122,12 +122,19 @@ namespace OpenRA.Orders
 			return null;
 		}
 
-		static Order CheckSameOrder(IOrderTargeter iot, Order order)
+		static Order CheckSameOrder(IOrderTargeter iot, Order order, World world)
 		{
 			if (order == null && iot.OrderID != null)
-				Game.Debug("BUG: in order targeter - decided on {0} but then didn't order", iot.OrderID);
+				Log.Write("debug", "Order targeter decided on {0} but then didn't order.", iot.OrderID);
 			else if (iot.OrderID != order.OrderString)
-				Game.Debug("BUG: in order targeter - decided on {0} but ordered {1}", iot.OrderID, order.OrderString);
+				Log.Write("debug", "Order targeter decided on {0} but ordered {1}.", iot.OrderID, order.OrderString);
+
+			if (order.TargetLocation != CPos.Zero && order.Subject.GetTargetQueue().Any(t => world.Map.CellContaining(t.CenterPosition) == order.TargetLocation))
+			{
+				Log.Write("debug", "Filtering repeated order {0} from actor {1} to location {2}.".F(order.OrderString, order.Subject, order.TargetLocation));
+				return null;
+			}
+
 			return order;
 		}
 
