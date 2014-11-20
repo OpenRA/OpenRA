@@ -176,7 +176,12 @@ namespace OpenRA.Mods.RA
 					var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 					if (territory != null) territory.ClaimResource(self, moveTo);
 
-					self.QueueActivity(new FindResources());
+					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+					var next = new FindResources();
+					foreach (var n in notify)
+						n.MovingToResources(self, moveTo, next);
+
+					self.QueueActivity(next);
 					return;
 				}
 			}
@@ -302,6 +307,11 @@ namespace OpenRA.Mods.RA
 					self.QueueActivity(mobile.MoveTo(loc, 0));
 					self.SetTargetLine(Target.FromCell(self.World, loc), Color.Red);
 
+					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+					var next = new FindResources();
+					foreach (var n in notify)
+						n.MovingToResources(self, loc, next);
+
 					LastOrderLocation = loc;
 				}
 				else
@@ -341,9 +351,18 @@ namespace OpenRA.Mods.RA
 
 				self.CancelActivity();
 				self.QueueActivity(new DeliverResources());
+
+				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+				var next = new FindResources();
+				foreach (var n in notify)
+					n.MovingToResources(self, order.TargetLocation, next);
 			}
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{
+				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+				foreach (var n in notify)
+					n.MovementCancelled(self);
+
 				// Turn off idle smarts to obey the stop/move:
 				idleSmart = false;
 			}

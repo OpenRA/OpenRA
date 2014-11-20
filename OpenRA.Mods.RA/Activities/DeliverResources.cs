@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Mods.Common;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
@@ -55,7 +56,14 @@ namespace OpenRA.Mods.RA.Activities
 
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
 			if (self.Location != proc.Location + iao.DeliverOffset)
+			{
+				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+				var next = new DeliverResources();
+				foreach (var n in notify)
+					n.MovingToRefinery(self, proc.Location + iao.DeliverOffset, next);
+
 				return Util.SequenceActivities(movement.MoveTo(proc.Location + iao.DeliverOffset, 0), this);
+			}
 
 			if (!isDocking)
 			{

@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class HeliLand : Activity
+	public class HeliLand : Activity
 	{
 		bool requireSpace;
 

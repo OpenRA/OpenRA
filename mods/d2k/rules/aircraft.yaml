@@ -4,31 +4,27 @@
 		Cost: 1200
 	Tooltip:
 		Name: Carryall
-		Description: Fast drop ship.\n  Unarmed
+		Description: Fully automated Carryall.\n  Automatically transports your harvesters.
 	Health:
 		HP: 250
 	Armor:
 		Type: Light
-	RevealsShroud:
-		Range: 12c0
 	Helicopter:
+		CruiseAltitude: 2100
 		InitialFacing: 0
 		ROT: 4
-		Speed: 210
+		Speed: 160
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
-		LandAltitude: 800
-	RenderUnit:
-	WithCargo:
-		LocalOffset: 0,0,-854
+		Repulsable: False
+		LandAltitude: 100
+		LandWhenIdle: False
 	WithShadow:
-	Cargo:
-		Types: Vehicle
-		MaxWeight: 1
-		PipCount: 1
 	LeavesHusk:
 		HuskActor: CARRYALL.Husk
+	-Selectable:
+	AutoCarryall:
 
 FRIGATE:
 	ParaDrop:
