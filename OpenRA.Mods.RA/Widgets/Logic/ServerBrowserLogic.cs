@@ -138,10 +138,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.RunAfterTick(() => RefreshServerListInner(games));
 			};
 
-			currentQuery = new Download(Game.Settings.Server.MasterServer + "list", _ => {}, onComplete);
+			currentQuery = new Download(Game.Settings.Server.MasterServer + "games", _ => {}, onComplete);
 		}
 
-		public void RefreshServerListInner(IEnumerable<GameServer> games)
+		void RefreshServerListInner(IEnumerable<GameServer> games)
 		{
 			if (games == null)
 				return;
@@ -166,7 +166,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var title = item.GetOrNull<LabelWidget>("TITLE");
 				if (title != null)
 				{
-					title.GetText = () => game.Name;
+					title.GetText = () => game.Protected ? ("(Password) " + game.Name) : game.Name;
 					title.GetColor = () => canJoin ? title.TextColor : Color.Gray;
 				}
 
@@ -180,7 +180,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var players = item.GetOrNull<LabelWidget>("PLAYERS");
 				if (players != null)
 				{
-					players.GetText = () => "{0} / {1}".F(game.Players, map.PlayerCount);
+					players.GetText = () => "{0} / {1}".F(game.Players, game.MaxPlayers)
+						+ (game.Spectators > 0 ? "  ({0} Spectator{1})".F(game.Spectators, game.Spectators > 1 ? "s" : "") : "");
 					players.GetColor = () => canJoin ? players.TextColor : Color.Gray;
 				}
 
@@ -287,15 +288,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			ConnectionLogic.Connect(host, port, "", OpenLobby, DoNothing);
 		}
 
-		static string GetPlayersLabel(GameServer game)
-		{
-			if (game == null || game.Players == 0)
-				return "";
-
-			var map = Game.modData.MapCache[game.Map];
-			return "{0} / {1}".F(game.Players, map.PlayerCount == 0 ? "?" : map.PlayerCount.ToString());
-		}
-
 		static string GetStateLabel(GameServer game)
 		{
 			if (game == null)
@@ -304,7 +296,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (game.State == (int)ServerState.WaitingPlayers)
 				return "Waiting for players";
 			if (game.State == (int)ServerState.GameStarted)
-				return "Playing";
+			{
+				try
+				{
+					var runTime = DateTime.Now - System.DateTime.Parse(game.Started);
+					return "In progress for {0} minute{1}".F(runTime.Minutes, runTime.Minutes > 1 ? "s" : "");
+				}
+				catch (Exception)
+				{
+					return "In progress";
+				}
+			}
 			if (game.State == (int)ServerState.ShuttingDown)
 				return "Server shutting down";
 
@@ -337,84 +339,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return true;
 
 			return false;
-		}
-
-		public void RefreshServerList(Widget panel, IEnumerable<GameServer> games)
-		{
-			var sl = panel.Get<ScrollPanelWidget>("SERVER_LIST");
-
-			searchStatus = SearchStatus.Fetching;
-
-			sl.RemoveChildren();
-			currentServer = null;
-
-			if (games == null)
-			{
-				searchStatus = SearchStatus.Failed;
-				return;
-			}
-
-			if (!games.Any())
-			{
-				searchStatus = SearchStatus.NoGames;
-				return;
-			}
-
-			searchStatus = SearchStatus.Hidden;
-			currentServer = games.FirstOrDefault();
-
-			foreach (var loop in games.OrderByDescending(g => g.CanJoin()).ThenByDescending(g => g.Players))
-			{
-				var game = loop;
-
-				var canJoin = game.CanJoin();
-
-				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game, () => Join(game));
-
-				var map = Game.modData.MapCache[game.Map];
-				var preview = item.Get<MapPreviewWidget>("MAP_PREVIEW");
-				preview.Preview = () => map;
-
-				var title = item.Get<LabelWidget>("TITLE");
-				title.GetText = () => game.Name;
-
-				// TODO: Use game.MapTitle once the server supports it
-				var maptitle = item.Get<LabelWidget>("MAP");
-				maptitle.GetText = () => map.Title;
-
-				// TODO: Use game.MaxPlayers once the server supports it
-				var players = item.Get<LabelWidget>("PLAYERS");
-				players.GetText = () => GetPlayersLabel(game);
-
-				var state = item.Get<LabelWidget>("STATE");
-				state.GetText = () => GetStateLabel(game);
-
-				var ip = item.Get<LabelWidget>("IP");
-				ip.GetText = () => game.Address;
-
-				var version = item.Get<LabelWidget>("VERSION");
-				version.GetText = () => GenerateModLabel(game);
-				version.IsVisible = () => !game.CompatibleVersion();
-
-				var location = item.Get<LabelWidget>("LOCATION");
-				var cachedServerLocation = LobbyUtils.LookupCountry(game.Address.Split(':')[0]);
-				location.GetText = () => cachedServerLocation;
-				location.IsVisible = () => game.CompatibleVersion();
-
-				if (!canJoin)
-				{
-					title.GetColor = () => Color.Gray;
-					maptitle.GetColor = () => Color.Gray;
-					players.GetColor = () => Color.Gray;
-					state.GetColor = () => Color.Gray;
-					ip.GetColor = () => Color.Gray;
-					version.GetColor = () => Color.Gray;
-					location.GetColor = () => Color.Gray;
-				}
-
-				if (!Filtered(game))
-					sl.AddChild(item);
-			}
 		}
 	}
 }

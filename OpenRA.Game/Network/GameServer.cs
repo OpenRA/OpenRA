@@ -17,11 +17,14 @@ namespace OpenRA.Network
 		public readonly string Address = null;
 		public readonly int State = 0;
 		public readonly int Players = 0;
+		public readonly int MaxPlayers = 0;
+		public readonly int Bots = 0;
+		public readonly int Spectators = 0;
 		public readonly string Map = null;
-
-		// Retained name compatibility with the master server
 		public readonly string Mods = "";
 		public readonly int TTL = 0;
+		public readonly bool Protected = false;
+		public readonly string Started = null;
 
 		public bool CanJoin()
 		{
