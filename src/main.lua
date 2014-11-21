@@ -253,7 +253,8 @@ local function setLuaPaths(mainpath, osname)
   wx.wxSetEnv("LUA_PATH",
     (os.getenv("LUA_PATH") or ';') .. ';'
     .. "./?.lua;./?/init.lua;./lua/?.lua;./lua/?/init.lua" .. ';'
-    .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua"
+    .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua;"
+    .. mainpath.."lualibs/?/?/init.lua;"..mainpath.."lualibs/?/init.lua"
     .. (luadev_path and (';' .. luadev_path) or ''))
 
   ide.osclibs = -- keep the list to use for other Lua versions
