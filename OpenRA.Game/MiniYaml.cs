@@ -83,20 +83,20 @@ namespace OpenRA
 
 	public class MiniYaml
 	{
-		static readonly Func<string, string> StringIdentity = s => s;
-		static readonly Func<MiniYaml, MiniYaml> MiniYamlIdentity = my => my;
-
+		const int SpacesPerLevel = 4;
+		static Func<string, string> stringIdentity = s => s;
+		static Func<MiniYaml, MiniYaml> miniYamlIdentity = my => my;
 		public string Value;
 		public List<MiniYamlNode> Nodes;
 
 		public Dictionary<string, MiniYaml> ToDictionary()
 		{
-			return ToDictionary(MiniYamlIdentity);
+			return ToDictionary(miniYamlIdentity);
 		}
 
 		public Dictionary<string, TElement> ToDictionary<TElement>(Func<MiniYaml, TElement> elementSelector)
 		{
-			return ToDictionary(StringIdentity, elementSelector);
+			return ToDictionary(stringIdentity, elementSelector);
 		}
 
 		public Dictionary<TKey, TElement> ToDictionary<TKey, TElement>(
@@ -154,13 +154,44 @@ namespace OpenRA
 			{
 				var line = ll;
 				++lineNo;
-				var commentIndex = line.IndexOf('#');
-				if (commentIndex != -1)
-					line = line.Substring(0, commentIndex).TrimEnd(' ', '\t');
-				var t = line.TrimStart(' ', '\t');
+
+				if (line.Contains('#'))
+					line = line.Substring(0, line.IndexOf('#')).TrimEnd(' ', '\t');
+				if (line.Length == 0)
+					continue;
+				var cp = 0;
+				var level = 0;
+				var spaces = 0;
+				var textStart = false;
+				var c = line[cp];
+				while (!(c == '\n' || c == '\r') && cp < line.Length && !textStart)
+				{
+					c = line[cp];
+					switch (c)
+					{
+					    case ' ':
+							spaces++;
+							if (spaces >= SpacesPerLevel)
+							{
+								spaces = 0;
+								level++;
+							}
+
+							cp++;
+							break;
+						case '\t':
+							level++;
+							cp++;
+							break;
+						default:
+							textStart = true;
+							break;
+					}					
+				}
+
+				var t = line.Substring(cp);
 				if (t.Length == 0)
 					continue;
-				var level = line.Length - t.Length;
 				var location = new MiniYamlNode.SourceLocation { Filename = filename, Line = lineNo };
 
 				if (levels.Count <= level)
@@ -211,15 +242,15 @@ namespace OpenRA
 			return FromLines(File.ReadAllLines(path), path);
 		}
 
-		public static List<MiniYamlNode> FromStream(Stream s)
+		public static List<MiniYamlNode> FromStream(Stream s, string fileName = "<no filename available>")
 		{
 			using (var reader = new StreamReader(s))
-				return FromString(reader.ReadToEnd());
+				return FromString(reader.ReadToEnd(), fileName);
 		}
 
-		public static List<MiniYamlNode> FromString(string text)
+		public static List<MiniYamlNode> FromString(string text, string fileName = "<no filename available>")
 		{
-			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), "<no filename available>");
+			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), fileName);
 		}
 
 		public static List<MiniYamlNode> MergeLiberal(List<MiniYamlNode> a, List<MiniYamlNode> b)

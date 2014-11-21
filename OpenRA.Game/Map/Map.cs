@@ -262,7 +262,7 @@ namespace OpenRA
 			AssertExists("map.yaml");
 			AssertExists("map.bin");
 
-			var yaml = new MiniYaml(null, MiniYaml.FromStream(Container.GetContent("map.yaml")));
+			var yaml = new MiniYaml(null, MiniYaml.FromStream(Container.GetContent("map.yaml"), path));
 			FieldLoader.Load(this, yaml);
 
 			// Support for formats 1-3 dropped 2011-02-11.
