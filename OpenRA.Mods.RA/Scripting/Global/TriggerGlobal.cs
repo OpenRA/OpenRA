@@ -220,6 +220,68 @@ namespace OpenRA.Mods.RA.Scripting
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnCapture, func, context);
 		}
 
+		[Desc("Call a function when this actor is killed or captured. " +
+			"The callback function will be called as func().")]
+		public void OnKilledOrCaptured(Actor a, LuaFunction func)
+		{
+			var called = false;
+
+			var copy = (LuaFunction)func.CopyReference();
+			Action<Actor> OnKilledOrCaptured = m =>
+			{
+				try
+				{
+					if (called)
+						return;
+
+					copy.Call().Dispose();
+					copy.Dispose();
+					called = true;
+				}
+				catch (Exception e)
+				{
+					context.FatalError(e.Message);
+				}
+			};
+
+			GetScriptTriggers(a).OnCapturedInternal += OnKilledOrCaptured;
+			GetScriptTriggers(a).OnKilledInternal += OnKilledOrCaptured;
+		}
+
+		[Desc("Call a function when all of the actors in a group have been killed or captured. " +
+			"The callback function will be called as func().")]
+		public void OnAllKilledOrCaptured(Actor[] actors, LuaFunction func)
+		{
+			var group = actors.ToList();
+
+			var copy = (LuaFunction)func.CopyReference();
+			Action<Actor> OnMemberKilledOrCaptured = m =>
+			{
+				try
+				{
+					if (!group.Contains(m))
+						return;
+
+					group.Remove(m);
+					if (!group.Any())
+					{
+						copy.Call().Dispose();
+						copy.Dispose();
+					}
+				}
+				catch (Exception e)
+				{
+					context.FatalError(e.Message);
+				}
+			};
+
+			foreach (var a in group)
+			{
+				GetScriptTriggers(a).OnCapturedInternal += OnMemberKilledOrCaptured;
+				GetScriptTriggers(a).OnKilledInternal += OnMemberKilledOrCaptured;
+			}
+		}
+
 		[Desc("Call a function when a ground-based actor enters this cell footprint." +
 			"Returns the trigger id for later removal using RemoveFootprintTrigger(int id)." +
 			"The callback function will be called as func(Actor a, int id).")]

@@ -63,7 +63,7 @@ SovietRallyPoints = { SovietRallyPoint1, SovietRallyPoint2, SovietRallyPoint3, S
 SovietGateRallyPoints = { AlliesBaseGate2, AlliesBaseGate2, AlliesBaseGate1, AlliesBaseGate1, AlliesBaseGate1 }
 
 Airfields = { SovietAirfield1, SovietAirfield2, SovietAirfield3 }
-SovietBuildings = { Barrack1, SubPen, RadarDome, AdvancedPowerPlant1, AdvancedPowerPlant2, AdvancedPowerPlant3, WarFactory, Refinery, Silo1, Silo2, FlameTower1, FlameTower2, FlameTower3, Sam3, Sam4 }
+SovietBuildings = { Barrack1, SubPen, RadarDome, AdvancedPowerPlant1, AdvancedPowerPlant2, AdvancedPowerPlant3, WarFactory, Refinery, Silo1, Silo2, FlameTower1, FlameTower2, FlameTower3, Sam1, Sam2, Sam3, Sam4, SovietAirfield1, SovietAirfield2, SovietAirfield3 }
 
 IdleTrigger = function(units, dest)
 	Utils.Do(units, function(unit)
@@ -321,7 +321,7 @@ InitMission = function()
 		end)
 	end)
 
-	Trigger.OnAllKilled(SovietBuildings, function()
+	Trigger.OnAllKilledOrCaptured(SovietBuildings, function()
 		if DestroyObj then
 			if not soviets.HasNoRequiredUnits() then
 				KillObj = allies.AddPrimaryObjective("Kill all remaining soviet forces.")
@@ -339,10 +339,7 @@ end
 SetupSoviets = function()
 	Barrack1.IsPrimaryBuilding = true
 	Barrack1.RallyPoint = SovietInfantryRally1.Location
-	Trigger.OnKilled(Barrack1, function()
-		SpawningInfantry = false
-	end)
-	Trigger.OnCapture(Barrack1, function()
+	Trigger.OnKilledOrCaptured(Barrack1, function()
 		SpawningInfantry = false
 	end)
 
