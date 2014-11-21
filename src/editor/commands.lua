@@ -1008,6 +1008,8 @@ ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
       local active = event:GetActive()
       -- save auto-recovery record when making the app inactive
       if not active then saveAutoRecovery(true) end
+      -- also collect all the garbage
+      if not active then collectgarbage() end
 
       -- disable UI refresh when app is inactive, but only when not running
       wx.wxUpdateUIEvent.SetUpdateInterval(
