@@ -32,6 +32,7 @@ namespace OpenRA.Mods.RA.Scripting
 		readonly World world;
 
 		public event Action<Actor> OnKilledInternal = _ => { };
+		public event Action<Actor> OnCapturedInternal = _ => { };
 		public event Action<Actor> OnRemovedInternal = _ => { };
 		public event Action<Actor, Actor> OnProducedInternal = (a, b) => { };
 		public event Action<Actor, Actor> OnOtherProducedInternal = (a, b) => { };
@@ -236,6 +237,9 @@ namespace OpenRA.Mods.RA.Scripting
 					return;
 				}
 			}
+
+			// Run any internally bound callbacks
+			OnCapturedInternal(self);
 		}
 
 		public void Infiltrated(Actor self, Actor infiltrator)
