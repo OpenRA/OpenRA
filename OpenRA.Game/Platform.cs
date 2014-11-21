@@ -98,6 +98,8 @@ namespace OpenRA
 		/// <summary>Replace special character prefixes with full paths</summary>
 		public static string ResolvePath(string path)
 		{
+			path = path.TrimEnd(new char[] { ' ', '\t' });
+
 			// paths starting with ^ are relative to the support dir
 			if (path.StartsWith("^"))
 				path = SupportDir + path.Substring(1);

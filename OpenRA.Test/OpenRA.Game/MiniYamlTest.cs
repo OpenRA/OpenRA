@@ -26,12 +26,40 @@ namespace OpenRA.Test
 	FromParent:
 	FromParentRemove:
 ";
+
 		readonly string yamlForChild = @"
 Child:
 	Inherits: ^Parent
 	FromChild:
 	-FromParentRemove:
 ";
+
+		readonly string yamlTabStyle = @"
+Root1:
+	Child1:
+		Attribute1: Test
+		Attribute2: Test
+	Child2:
+		Attribute1: Test
+		Attribute2: Test
+Root2:
+	Child1:
+		Attribute1: Test
+";
+
+		readonly string yamlMixedStyle = @"
+Root1:
+    Child1:
+        Attribute1: Test
+        Attribute2: Test
+	Child2:
+		Attribute1: Test
+	    Attribute2: Test
+Root2:
+    Child1:
+		Attribute1: Test
+";
+
 		List<MiniYamlNode> parentList;
 		List<MiniYamlNode> childList;
 		MiniYaml parent;
@@ -84,6 +112,16 @@ Child:
 			var res = MiniYaml.MergeLiberal(parentList, childList).Last();
 			Assert.That(res.Key, Is.EqualTo("Child"));
 			InheritanceTest(res.Value.Nodes);
+		}
+
+		[TestCase(TestName = "Mixed tabs & spaces indents")]
+		public void TestIndents()
+		{
+			var tabs = MiniYaml.FromString(yamlTabStyle, "yamlTabStyle").WriteToString();
+			Console.WriteLine(tabs);
+			var mixed = MiniYaml.FromString(yamlMixedStyle, "yamlMixedStyle").WriteToString();
+			Console.WriteLine(mixed);
+			Assert.That(tabs, Is.EqualTo(mixed));
 		}
 	}
 }
