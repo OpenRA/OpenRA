@@ -33,7 +33,6 @@ namespace OpenRA.Mods.RA.Move
 		MobileInfo mobileInfo;
 		Func<CPos, int> customCost;
 		Func<CPos, bool> customBlock;
-		Pair<CVec, int>[] nextDirections;
 		int laneBias = 1;
 
 		public PathSearch(World world, MobileInfo mobileInfo, Actor self)
@@ -46,7 +45,6 @@ namespace OpenRA.Mods.RA.Move
 			Queue = new PriorityQueue<PathDistance>();
 			Considered = new HashSet<CPos>();
 			MaxCost = 0;
-			nextDirections = CVec.directions.Select(d => new Pair<CVec, int>(d, 0)).ToArray();
 		}
 
 		public static PathSearch Search(World world, MobileInfo mi, Actor self, bool checkForBlocked)
@@ -170,10 +168,11 @@ namespace OpenRA.Mods.RA.Move
 			// This current cell is ok; check all immediate directions:
 			Considered.Add(p.Location);
 
-			for (var i = 0; i < nextDirections.Length; ++i)
+			var directions = CVec.directions;
+
+			for (var i = 0; i < directions.Length; ++i)
 			{
-				var d = nextDirections[i].First;
-				nextDirections[i].Second = int.MaxValue;
+				var d = directions[i];
 
 				var newHere = p.Location + d;
 
@@ -239,7 +238,6 @@ namespace OpenRA.Mods.RA.Move
 				hereCell.MinCost = newCost;
 				CellInfo[newHere] = hereCell;
 
-				nextDirections[i].Second = newCost + est;
 				Queue.Add(new PathDistance(newCost + est, newHere));
 
 				if (newCost > MaxCost)
@@ -248,8 +246,6 @@ namespace OpenRA.Mods.RA.Move
 				Considered.Add(newHere);
 			}
 
-			// Sort to prefer the cheaper direction:
-			// Array.Sort(nextDirections, (a, b) => a.Second.CompareTo(b.Second));
 			return p.Location;
 		}
 
