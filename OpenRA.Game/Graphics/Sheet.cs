@@ -73,16 +73,17 @@ namespace OpenRA.Graphics
 
 		void GenerateTexture()
 		{
-			if (texture == null)
+			lock (textureLock)
 			{
-				texture = Game.Renderer.Device.CreateTexture();
-				dirty = true;
-			}
-
-			if (data != null)
-			{
-				lock (textureLock)
+				if (texture == null)
 				{
+					texture = Game.Renderer.Device.CreateTexture();
+					dirty = true;
+				}
+
+				if (data != null)
+				{
+
 					if (dirty)
 					{
 						texture.SetData(data, Size.Width, Size.Height);
@@ -140,13 +141,16 @@ namespace OpenRA.Graphics
 
 		public void CreateBuffer()
 		{
-			if (data != null)
-				return;
-			if (texture == null)
-				data = new byte[4 * Size.Width * Size.Height];
-			else
-				data = texture.GetData();
-			releaseBufferOnCommit = false;
+			lock (textureLock)
+			{
+				if (data != null)
+					return;
+				if (texture == null)
+					data = new byte[4 * Size.Width * Size.Height];
+				else
+					data = texture.GetData();
+				releaseBufferOnCommit = false;
+			}
 		}
 
 		public void CommitData()
