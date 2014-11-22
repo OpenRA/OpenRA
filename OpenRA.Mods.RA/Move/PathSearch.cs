@@ -138,6 +138,32 @@ namespace OpenRA.Mods.RA.Move
 			return this;
 		}
 
+		// Sets of neighbors for each incoming direction. These exclude the neighbors which are guaranteed
+		// to be reached more cheaply by a path through our parent cell which does not include the current cell.
+		// For horizontal/vertical directions, the set is the three cells 'ahead'. For diagonal directions, the set
+		// is the three cells ahead, plus the two cells to the side, which we cannot exclude without knowing if
+		// the cell directly between them and our parent is passable.
+		static CVec[][] DirectedNeighbors = {
+			new CVec[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(-1, 0), new CVec(-1, 1) },
+			new CVec[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1) },
+			new CVec[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) },
+			new CVec[] { new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1) },
+			CVec.directions,
+			new CVec[] { new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) },
+			new CVec[] { new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },
+			new CVec[] { new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },
+			new CVec[] { new CVec(1, -1), new CVec(1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },
+		};
+
+		static CVec[] GetNeighbors(CPos p, CPos prev)
+		{
+			var dx = p.X - prev.X;
+			var dy = p.Y - prev.Y;
+			var index = dy * 3 + dx + 4;
+
+			return DirectedNeighbors[index];
+		}
+
 		public CPos Expand(World world)
 		{
 			var p = Queue.Pop();
@@ -165,10 +191,10 @@ namespace OpenRA.Mods.RA.Move
 					return p.Location;
 			}
 
-			// This current cell is ok; check all immediate directions:
+			// This current cell is ok; check useful immediate directions:
 			Considered.Add(p.Location);
 
-			var directions = CVec.directions;
+			var directions = GetNeighbors(p.Location, pCell.Path);
 
 			for (var i = 0; i < directions.Length; ++i)
 			{
