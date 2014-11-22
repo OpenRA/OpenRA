@@ -47,7 +47,7 @@ namespace OpenRA.Graphics
 		}
 	}
 
-	public enum TextureChannel
+	public enum TextureChannel : byte
 	{
 		Red = 0,
 		Green = 1,
