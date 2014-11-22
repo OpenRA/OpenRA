@@ -32,7 +32,7 @@ namespace OpenRA
 		IGraphicsDevice Create(Size size, WindowMode windowMode);
 	}
 
-	public enum BlendMode { None, Alpha, Additive, Subtractive, Multiply }
+	public enum BlendMode : byte { None, Alpha, Additive, Subtractive, Multiply }
 
 	public interface IGraphicsDevice : IDisposable
 	{
