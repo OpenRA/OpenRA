@@ -95,24 +95,38 @@ World:
 	Country@0:
 		Name: Allies
 		Race: allies
+		Side: Allies
+		Description: Allies: Deception\nSpecial Ability: Can build fake structures
 	Country@1:
 		Name: England
 		Race: england
+		Side: Allies
+		Description: England: Espionage\nSpecial Unit: British Spy\nSpecial Unit: Phase Transport
 	Country@2:
 		Name: France
 		Race: france
+		Side: Allies
+		Description: France: Concealment\nSpecial Structure: Advanced Gap Generator\nSpecial Unit: Mobile Gap Generator
 	Country@3:
 		Name: Germany
 		Race: germany
+		Side: Allies
+		Description: Germany: Technology\nSpecial Structure: Advanced Chronosphere\nSpecial Unit: Chrono Tank
 	Country@4:
 		Name: Soviet
 		Race: soviet
+		Side: Soviet
+		Description: Soviet: Infantry\nSpecial Ability: Paradrop\nSpecial Ability: Spy Plane
 	Country@5:
 		Name: Russia
 		Race: russia
+		Side: Soviet
+		Description: Russia: Tanks\nSpecial Ability: Armor Airdrop\nSpecial Unit: MAD Tank
 	Country@6:
 		Name: Ukraine
 		Race: ukraine
+		Side: Soviet
+		Description: Ukraine: Demolitions\nSpecial Ability: Parabombs\nSpecial Unit: Demolition Truck
 	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch

@@ -221,6 +221,7 @@
     <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
+    <Compile Include="Widgets\Logic\CountryTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\DisconnectWatcherLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngameRadarDisplayLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LoadIngamePlayerOrObserverUILogic.cs" />
