@@ -52,13 +52,8 @@ namespace OpenRA.Mods.RA.Activities
 			var searchRadiusSquared = searchRadius * searchRadius;
 
 			// Find harvestable resources nearby:
-			// Avoid enemy territory:
-			// TODO: calculate weapons ranges of units and factor those in instead of hard-coding 8.
 			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
 				PathSearch.Search(self.World, mobileInfo, self, true)
-						.WithCustomCost(loc => self.World.FindActorsInCircle(self.World.Map.CenterOfCell(loc), WRange.FromCells(8))
-						.Where(u => !u.Destroyed && self.Owner.Stances[u.Owner] == Stance.Enemy)
-						.Sum(u => Math.Max(0, 64 - (loc - u.Location).LengthSquared)))
 					.WithHeuristic(loc =>
 					{
 						// Avoid this cell:
