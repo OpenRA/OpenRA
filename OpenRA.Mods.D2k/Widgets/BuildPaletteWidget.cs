@@ -26,6 +26,8 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.D2k.Widgets
 {
+	[Desc("Classic BuildPaletteWidget. Needs ChooseBuildTabOnSelect trait to be added to world actor",
+	"in order to make the build palette open automatically when a production facility is deployed.")]
 	class BuildPaletteWidget : Widget
 	{
 		public enum ReadyTextStyleOptions { Solid, AlternatingColor, Blinking }
