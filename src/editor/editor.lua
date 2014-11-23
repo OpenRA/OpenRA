@@ -1061,7 +1061,11 @@ function CreateEditor(bare)
       PackageEventHandle("onEditorPainted", editor, event)
 
       if ide.osname == 'Windows' then
-        updateStatusText(editor)
+        -- STC_PAINTED is called on multiple editors when they point to
+        -- the same document; only update status for the active one
+        if notebook:GetSelection() == notebook:GetPageIndex(editor) then
+          updateStatusText(editor)
+        end
 
         if edcfg.usewrap ~= true and editor:AutoCompActive() then
           -- showing auto-complete list leaves artifacts on the screen,
