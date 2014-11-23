@@ -30,6 +30,7 @@ Container@SERVERBROWSER_PANEL:
 					Width: 100
 					Height: 20
 					Text: Waiting
+					TextColor: 50,205,50
 				Checkbox@EMPTY:
 					X: 180
 					Y: 468
@@ -37,17 +38,26 @@ Container@SERVERBROWSER_PANEL:
 					Height: 20
 					Text: Empty
 				Checkbox@ALREADY_STARTED:
-					X: 280
+					X: 270
 					Y: 468
 					Width: 100
 					Height: 20
 					Text: Started
+					TextColor: 255,165,0
+				Checkbox@PASSWORD_PROTECTED:
+					X: 370
+					Y: 468
+					Width: 100
+					Height: 20
+					Text: Protected
+					TextColor: 255,0,0
 				Checkbox@INCOMPATIBLE_VERSION:
-					X: 380
+					X: 480
 					Y: 468
 					Width: 100
 					Height: 20
 					Text: Incompatible
+					TextColor: 190,190,190
 				Button@REFRESH_BUTTON:
 					X: PARENT_RIGHT - WIDTH - 20
 					Y: 465
