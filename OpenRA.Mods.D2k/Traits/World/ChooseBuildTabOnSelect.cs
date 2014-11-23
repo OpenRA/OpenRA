@@ -16,6 +16,8 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.D2k.Traits
 {
+	[Desc("If the BuildPaletteWidget is used, this trait needs to be added to world actor",
+	"to make the build palette open automatically when a production facility is deployed.")]
 	class ChooseBuildTabOnSelectInfo : ITraitInfo
 	{
 		public readonly string BuildPaletteWidgetName = "INGAME_BUILD_PALETTE";
