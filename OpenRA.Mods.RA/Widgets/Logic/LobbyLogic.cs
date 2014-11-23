@@ -49,7 +49,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly Widget chatTemplate;
 
 		readonly ScrollPanelWidget players;
-		readonly Dictionary<string, string> countryNames;
+
+		readonly Dictionary<string, LobbyCountry> countries = new Dictionary<string, LobbyCountry>();
 
 		readonly ColorPreviewManagerWidget colorPreview;
 
@@ -142,10 +143,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			colorPreview = lobby.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
 			colorPreview.Color = Game.Settings.Player.Color;
 
-			countryNames = modRules.Actors["world"].Traits.WithInterface<CountryInfo>()
-				.Where(c => c.Selectable)
-				.ToDictionary(a => a.Race, a => a.Name);
-			countryNames.Add("random", "Any");
+			countries.Add("random", new LobbyCountry { Name = "Any" });
+			foreach (var c in modRules.Actors["world"].Traits.WithInterface<CountryInfo>().Where(c => c.Selectable))
+				countries.Add(c.Race, new LobbyCountry { Name = c.Name, Side = c.Side, Description = c.Description });
 
 			var gameStarting = false;
 			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting ||
@@ -691,7 +691,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						LobbyUtils.SetupEditableNameWidget(template, slot, client, orderManager);
 
 					LobbyUtils.SetupEditableColorWidget(template, slot, client, orderManager, colorPreview);
-					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, countryNames);
+					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, countries);
 					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, Map);
 					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, Map);
 					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, Map);
@@ -707,7 +707,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					LobbyUtils.SetupKickWidget(template, slot, client, orderManager, lobby,
 						() => panel = PanelType.Kick, () => panel = PanelType.Players);
 					LobbyUtils.SetupColorWidget(template, slot, client);
-					LobbyUtils.SetupFactionWidget(template, slot, client, countryNames);
+					LobbyUtils.SetupFactionWidget(template, slot, client, countries);
 					LobbyUtils.SetupTeamWidget(template, slot, client);
 					LobbyUtils.SetupSpawnWidget(template, slot, client);
 					LobbyUtils.SetupReadyWidget(template, slot, client);
@@ -809,5 +809,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			public Func<bool> IsSelected;
 			public Action OnClick;
 		}
+	}
+	
+	public class LobbyCountry
+	{
+		public string Name;
+		public string Description;
+		public string Side;
 	}
 }

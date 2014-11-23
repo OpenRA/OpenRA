@@ -19,12 +19,19 @@ namespace OpenRA.Widgets
 	{
 		Widget panel;
 		MaskWidget fullscreenMask;
+		Widget panelRoot;
+
+		public string PanelRoot;
 
 		[ObjectCreator.UseCtor]
 		public DropDownButtonWidget(Ruleset modRules)
 			: base(modRules) { }
 
-		protected DropDownButtonWidget(DropDownButtonWidget widget)	: base(widget) { }
+		protected DropDownButtonWidget(DropDownButtonWidget widget)
+			: base(widget)
+		{
+			PanelRoot = widget.PanelRoot;
+		}
 
 		public override void Draw()
 		{
@@ -34,7 +41,7 @@ namespace OpenRA.Widgets
 			var image = ChromeProvider.GetImage("scrollbar", IsDisabled() ? "down_pressed" : "down_arrow");
 			var rb = RenderBounds;
 			var color = GetColor();
-			var colordisabled = GetColorDisabled();
+			var colorDisabled = GetColorDisabled();
 
 			WidgetUtils.DrawRGBA( image,
 				stateOffset + new float2( rb.Right - rb.Height + 4,
@@ -42,7 +49,7 @@ namespace OpenRA.Widgets
 
 			WidgetUtils.FillRectWithColor(new Rectangle(stateOffset.X + rb.Right - rb.Height,
 				stateOffset.Y + rb.Top + 3, 1, rb.Height - 6),
-				IsDisabled() ? colordisabled : color);
+				IsDisabled() ? colorDisabled : color);
 		}
 
 		public override Widget Clone() { return new DropDownButtonWidget(this); }
@@ -61,8 +68,8 @@ namespace OpenRA.Widgets
 			if (panel == null)
 				return;
 
-			Ui.Root.RemoveChild(fullscreenMask);
-			Ui.Root.RemoveChild(panel);
+			panelRoot.RemoveChild(fullscreenMask);
+			panelRoot.RemoveChild(panel);
 			panel = fullscreenMask = null;
 		}
 
@@ -80,11 +87,17 @@ namespace OpenRA.Widgets
 			if (onCancel != null)
 				fullscreenMask.OnMouseDown += _ => onCancel();
 
-			Ui.Root.AddChild(fullscreenMask);
+			panelRoot = PanelRoot == null ? Ui.Root : Ui.Root.Get(PanelRoot);
+
+			panelRoot.AddChild(fullscreenMask);
 
 			var oldBounds = panel.Bounds;
-			panel.Bounds = new Rectangle(RenderOrigin.X, RenderOrigin.Y + Bounds.Height, oldBounds.Width, oldBounds.Height);
-			Ui.Root.AddChild(panel);
+			panel.Bounds = new Rectangle(
+				RenderOrigin.X - panelRoot.RenderOrigin.X,
+				RenderOrigin.Y + Bounds.Height - panelRoot.RenderOrigin.Y,
+				oldBounds.Width,
+				oldBounds.Height);
+			panelRoot.AddChild(panel);
 		}
 
 		public void ShowDropDown<T>(string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
@@ -116,14 +129,14 @@ namespace OpenRA.Widgets
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs()
 			                                             {{ "substitutions", substitutions }});
 
-			var headerTemplate = panel.Get<ScrollItemWidget>("HEADER");
+			var headerTemplate = panel.GetOrNull<ScrollItemWidget>("HEADER");
 			var itemTemplate = panel.Get<ScrollItemWidget>("TEMPLATE");
 			panel.RemoveChildren();
 
 			foreach (var kv in groups)
 			{
 				var group = kv.Key;
-				if (group.Length > 0)
+				if (group.Length > 0 && headerTemplate != null)
 				{
 					var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => {});
 					header.Get<LabelWidget>("LABEL").GetText = () => group;

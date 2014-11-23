@@ -19,9 +19,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var label = widget.Get<LabelWidget>("LABEL");
 			var font = Game.Renderer.Fonts[label.Font];
-			var labelWidth = font.Measure(button.TooltipText).X;
+			var text = button.GetTooltipText();
+			var labelWidth = font.Measure(text).X;
 
-			label.GetText = () => button.TooltipText;
+			label.GetText = () => text;
 			label.Bounds.Width = labelWidth;
 			widget.Bounds.Width = 2 * label.Bounds.X + labelWidth;
 
