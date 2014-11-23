@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public void Tick(Actor self)
 		{
-			var isFlying = movement.IsMoving && !self.IsDead();
+			var isFlying = movement.IsMoving && !self.IsDead;
 			if (isFlying ^ (rotorAnim.CurrentSequence.Name != info.Sequence))
 				return;
 

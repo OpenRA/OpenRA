@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		protected override void OnInside(Actor self)
 		{
-			if (target.IsDead())
+			if (target.IsDead)
 				return;
 
 			target.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);

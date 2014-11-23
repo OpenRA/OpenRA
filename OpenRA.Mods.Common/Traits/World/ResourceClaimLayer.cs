@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common
 			{
 				if (claim.Claimer.Destroyed) return;
 				if (!claim.Claimer.IsInWorld) return;
-				if (claim.Claimer.IsDead()) return;
+				if (claim.Claimer.IsDead) return;
 
 				claim.Claimer.Trait<INotifyResourceClaimLost>().OnNotifyResourceClaimLost(claim.Claimer, claim, claimer);
 			}

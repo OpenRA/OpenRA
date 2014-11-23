@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public SupportPowerTimerWidget(World world)
 		{
 			powers = world.ActorsWithTrait<SupportPowerManager>()
-				.Where(p => !p.Actor.IsDead() && !p.Actor.Owner.NonCombatant)
+				.Where(p => !p.Actor.IsDead && !p.Actor.Owner.NonCombatant)
 				.SelectMany(s => s.Trait.Powers.Values)
 				.Where(p => p.Instances.Any() && p.Info.DisplayTimer && !p.Disabled);
 		}

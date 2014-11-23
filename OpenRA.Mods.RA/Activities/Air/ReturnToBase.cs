@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || self.IsDead())
+			if (IsCanceled || self.IsDead)
 				return NextActivity;
 
 			if (!isCalculated)
