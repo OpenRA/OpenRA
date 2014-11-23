@@ -110,6 +110,12 @@ namespace OpenRA.Traits
 		void UpgradeAvailable(Actor self, string type, bool available);
 	}
 
+	public interface IResolvePredefinedUpgrades
+	{
+		/// <summary>Example: foo.[name] -> foo.e1 (resolved from actor.Info.Name)</summary>
+		string ResolveUpgrade(string upgrade);
+	}
+
 	public interface ISeedableResource { void Seed(Actor self); }
 
 	public interface IDemolishableInfo { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }

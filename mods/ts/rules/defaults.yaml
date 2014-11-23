@@ -122,6 +122,9 @@
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
+		#TEST
+		GrantUpgrades: passenger.[type], passenger.[name], passenger.weight.[weight]
+		#TEST END
 	HiddenUnderFog:
 	GainsExperience:
 		ChevronPalette: ra
@@ -406,4 +409,3 @@
 		ResourceType: Tiberium
 		Interval: 55
 	WithActiveAnimation:
-

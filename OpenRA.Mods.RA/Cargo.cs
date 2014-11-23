@@ -199,11 +199,11 @@ namespace OpenRA.Mods.RA
 			foreach (var npe in self.TraitsImplementing<INotifyPassengerExited>())
 				npe.PassengerExited(self, a);
 
+			foreach (var notify in a.TraitsImplementing<INotifyExitCargo>())
+				notify.OnExitCargo(a, self);
+
 			var p = a.Trait<Passenger>();
 			p.Transport = null;
-
-			foreach (var u in p.Info.GrantUpgrades)
-				self.Trait<UpgradeManager>().RevokeUpgrade(self, u, p);
 
 			return a;
 		}
@@ -262,8 +262,9 @@ namespace OpenRA.Mods.RA
 
 			var p = a.Trait<Passenger>();
 			p.Transport = self;
-			foreach (var u in p.Info.GrantUpgrades)
-				self.Trait<UpgradeManager>().GrantUpgrade(self, u, p);
+
+			foreach (var notify in a.TraitsImplementing<INotifyEnterCargo>())
+				notify.OnEnterCargo(a, self);
 		}
 
 		public void Killed(Actor self, AttackInfo e)

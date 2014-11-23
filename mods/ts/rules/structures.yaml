@@ -990,17 +990,32 @@ GAVULC:
 	AttackTurreted:
 	WithTurret:
 		Recoils: no
+	# Armament@PRIMARY:
+	# 	Weapon: VulcanTower
+	# 	LocalOffset: 768,85,512
+	# 	MuzzleSequence: muzzle
+	# 	MuzzleSplitFacings: 8
+	# Armament@SECONDARY:
+	# 	Name: secondary
+	# 	Weapon: VulcanTower
+	# 	LocalOffset: 768,-85,512
+	# 	MuzzleSequence: muzzle
+	# 	MuzzleSplitFacings: 8
+	#TEST
+	Cargo:
+		Types: Infantry
+		PipCount: 2
+		MaxWeight: 2
 	Armament@PRIMARY:
 		Weapon: VulcanTower
-		LocalOffset: 768,85,512
-		MuzzleSequence: muzzle
-		MuzzleSplitFacings: 8
-	Armament@SECONDARY:
-		Name: secondary
-		Weapon: VulcanTower
-		LocalOffset: 768,-85,512
-		MuzzleSequence: muzzle
-		MuzzleSplitFacings: 8
+		RestrictedByUpgrade: passenger.Infantry
+	Armament@WEIGHT:
+		Weapon: EMPulseCannon
+		RequiresUpgrade: passenger.weight.2
+	Armament@E3:
+		Weapon: SAMTower
+		RequiresUpgrade: passenger.e3
+	#TEST END
 	WithMuzzleFlash:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
@@ -1309,4 +1324,3 @@ TECH:
 	Tooltip:
 		Name: Tech Center
 		Description: Tech Center
-

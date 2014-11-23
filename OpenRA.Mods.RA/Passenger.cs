@@ -102,15 +102,29 @@ namespace OpenRA.Mods.RA
 		[Desc("Upgrade types to grant to transport.")]
 		public readonly string[] GrantUpgrades = { };
 
-		public object Create(ActorInitializer init) { return new Passenger(this); }
+		public object Create(ActorInitializer init) { return new Passenger(init.self, this); }
 	}
 
-	public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice, INotifyRemovedFromWorld
+	public interface INotifyExitCargo { void OnExitCargo(Actor self, Actor cargo); }
+	public interface INotifyEnterCargo { void OnEnterCargo(Actor self, Actor cargo); }
+
+	public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice, INotifyRemovedFromWorld, INotifyEnterCargo, INotifyExitCargo
 	{
+		public readonly Dictionary<string, string> PredefinedUpgradeStrings;
 		public readonly PassengerInfo Info;
-		public Passenger(PassengerInfo info) { Info = info; }
 		public Actor Transport;
 		public Cargo ReservedCargo { get; private set; }
+
+		public Passenger(Actor self, PassengerInfo info)
+		{
+			Info = info;
+			PredefinedUpgradeStrings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+			{
+				{ "[name]", self.Info.Name},
+				{ "[type]", info.CargoType },
+				{ "[weight]", info.Weight.ToString() }
+			};
+		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -182,11 +196,44 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
+		public string ResolveUpgrade(string upgrade)
+		{
+			var dict = PredefinedUpgradeStrings;
+
+			foreach (var k in dict.Keys)
+				if (upgrade.Contains(k))
+					return upgrade.Replace(k, dict[k]);
+
+			return upgrade;
+		}
+
+		public void OnEnterCargo(Actor self, Actor cargo)
+		{
+			Unreserve(self);
+
+			foreach (var u in Info.GrantUpgrades)
+			{
+				var upgrade = ResolveUpgrade(u);
+				cargo.Trait<UpgradeManager>().GrantUpgrade(cargo, upgrade, this);
+			}
+		}
+
+		public void OnExitCargo(Actor self, Actor cargo)
+		{
+			foreach (var u in Info.GrantUpgrades)
+			{
+				var upgrade = ResolveUpgrade(u);
+				cargo.Trait<UpgradeManager>().RevokeUpgrade(cargo, upgrade, this);
+			}
+		}
+
 		public void RemovedFromWorld(Actor self) { Unreserve(self); }
+
 		public void Unreserve(Actor self)
 		{
 			if (ReservedCargo == null)
 				return;
+
 			ReservedCargo.UnreserveSpace(self);
 			ReservedCargo = null;
 		}
