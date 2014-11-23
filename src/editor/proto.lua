@@ -12,6 +12,7 @@ ide.proto.Document = {__index = {
   SetModified = function(self, modified) SetDocumentModified(self.editor:GetId(), modified) end,
   SetTabText = function(self, text) SetDocumentModified(self.editor:GetId(), self.isModified, text) end,
   SetActive = function(self) SetEditorSelection(self.index) end,
+  Save = function(self) return SaveFile(self.editor, self.filePath) end
 }}
 
 ide.proto.Plugin = {__index = {
