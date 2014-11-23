@@ -102,6 +102,13 @@ Container@MISSIONBROWSER_PANEL:
 			Height: 35
 			Text: Play
 			Font: Bold
+		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+			X: PARENT_RIGHT - 290 - 150
+			Y: 376
+			Width: 140
+			Height: 35
+			Text: Difficulty
+			Font: Bold
 		Container@MISSION_BIN:
 			Children:
 				VqaPlayer@MISSION_VIDEO:

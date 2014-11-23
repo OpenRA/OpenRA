@@ -408,6 +408,7 @@
     <Compile Include="Scripting\Properties\HealthProperties.cs" />
     <Compile Include="Scripting\Properties\CombatProperties.cs" />
     <Compile Include="Scripting\Properties\DiplomacyProperties.cs" />
+    <Compile Include="Scripting\Properties\PowerProperties.cs" />
     <Compile Include="Scripting\Global\MapGlobal.cs" />
     <Compile Include="Scripting\Global\PlayerGlobal.cs" />
     <Compile Include="Scripting\Global\UtilsGlobal.cs" />
