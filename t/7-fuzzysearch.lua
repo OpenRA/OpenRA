@@ -16,7 +16,7 @@ check("paste", "Paste Selection Online", "Encrypt With Password")
 check("zerobrane", "zerobrane", "ZeroBraneStudio")
 check("barfileopen", "BarFileOpen", "BarFinderLabelOpen")
 check("readme", "readme", "README")
-check("ReadMe", "README", "readme")
+check("ReadMe", "READme", "readME")
 check("f", "fun", "funclist.lua")
 
 ok(1 == #CommandBarScoreFiles({"funclist.lua", "f"}, "fun"),

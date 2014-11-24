@@ -285,11 +285,15 @@ end
 function CommandBarScoreFiles(t, pattern, limit)
   local r, plen = {}, #pattern
   local maxp = 0
+  local num = 0
   for _, v in ipairs(t) do
     if #v >= plen then
       local p = score(pattern, v)
       maxp = math.max(p, maxp)
-      if p > 1 and p > maxp / 4 then table.insert(r, {v, p}) end
+      if p > 1 and p > maxp / 4 then
+        num = num + 1
+        r[num] = {v, p}
+      end
     end
   end
   table.sort(r, function(a, b) return a[2] > b[2] end)
