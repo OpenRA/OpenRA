@@ -22,14 +22,14 @@ namespace OpenRA.Test
 		[SetUp]
 		public void SetUp()
 		{
-			order = new Order("TestOrder", null, false) {
+			order = new Order(OrderCode.Ping, null, false) {
 				TargetString = "TestTarget",
 				TargetLocation = new CPos(1234, 5678),
 				ExtraData = 1234,
 				ExtraLocation = new CPos(555, 555)
 			};
 
-			immediateOrder = new Order("TestOrderImmediate", null, false) {
+			immediateOrder = new Order(OrderCode.Ping, null, false) {
 				IsImmediate = true,
 				TargetString = "TestTarget"
 			};

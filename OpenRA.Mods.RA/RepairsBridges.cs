@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "RepairBridge")
+			if (order.OrderID == OrderCode.RepairBridge)
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "RepairBridge")
+			if (order.ID != OrderCode.RepairBridge)
 				return null;
 
 			var hut = order.TargetActor.TraitOrDefault<BridgeHut>();
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "RepairBridge")
+			if (order.ID == OrderCode.RepairBridge)
 			{
 				var hut = order.TargetActor.TraitOrDefault<BridgeHut>();
 				if (hut == null)
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA
 		class RepairBridgeOrderTargeter : UnitOrderTargeter
 		{
 			public RepairBridgeOrderTargeter()
-				: base("RepairBridge", 6, "goldwrench", true, true) { }
+				: base(OrderCode.RepairBridge, 6, "goldwrench", true, true) { }
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{

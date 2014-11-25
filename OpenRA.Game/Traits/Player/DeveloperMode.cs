@@ -63,34 +63,34 @@ namespace OpenRA.Traits
 			if (!self.World.AllowDevCommands)
 				return;
 
-			switch(order.OrderString)
+			switch(order.ID)
 			{
-				case "DevEnableTech":
+				case OrderCode.DevEnableTech:
 					{
 						AllTech ^= true;
 						break;
 					}
 
-				case "DevFastCharge":
+				case OrderCode.DevFastCharge:
 					{
 						FastCharge ^= true;
 						break;
 					}
 
-				case "DevFastBuild":
+				case OrderCode.DevFastBuild:
 					{
 						FastBuild ^= true;
 						break;
 					}
 
-				case "DevGiveCash":
+				case OrderCode.DevGiveCash:
 					{
 						var amount = order.ExtraData != 0 ? (int)order.ExtraData : Info.Cash;
 						self.Trait<PlayerResources>().GiveCash(amount);
 						break;
 					}
 
-				case "DevGrowResources":
+				case OrderCode.DevGrowResources:
 					{
 						foreach (var a in self.World.ActorsWithTrait<ISeedableResource>())
 						{
@@ -100,7 +100,7 @@ namespace OpenRA.Traits
 						break;
 					}
 
-				case "DevShroudDisable":
+				case OrderCode.DevShroudDisable:
 					{
 						DisableShroud ^= true;
 						self.Owner.Shroud.Disabled = DisableShroud;
@@ -109,31 +109,31 @@ namespace OpenRA.Traits
 						break;
 					}
 
-				case "DevPathDebug":
+				case OrderCode.DevPathDebug:
 					{
 						PathDebug ^= true;
 						break;
 					}
 
-				case "DevGiveExploration":
+				case OrderCode.DevGiveExploration:
 					{
 						self.Owner.Shroud.ExploreAll(self.World);
 						break;
 					}
 
-				case "DevResetExploration":
+				case OrderCode.DevResetExploration:
 					{
 						self.Owner.Shroud.ResetExploration();
 						break;
 					}
 
-				case "DevUnlimitedPower":
+				case OrderCode.DevUnlimitedPower:
 					{
 						UnlimitedPower ^= true;
 						break;
 					}
 
-				case "DevBuildAnywhere":
+				case OrderCode.DevBuildAnywhere:
 					{
 						BuildAnywhere ^= true;
 						break;
@@ -143,7 +143,7 @@ namespace OpenRA.Traits
 					return;
 			}
 
-			Game.Debug("Cheat used: {0} by {1}", order.OrderString, self.Owner.PlayerName);
+			Game.Debug("Cheat used: {0} by {1}", order.ID, self.Owner.PlayerName);
 		}
 	}
 }

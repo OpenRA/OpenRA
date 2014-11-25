@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 	{
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "CreateGroup")
+			if (order.ID == OrderCode.CreateGroup)
 			{
 				/* create a group */
 				var actors = order.TargetString.Split(',')

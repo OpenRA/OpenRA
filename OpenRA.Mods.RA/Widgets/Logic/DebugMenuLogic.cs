@@ -26,38 +26,38 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (shroudCheckbox != null)
 			{
 				shroudCheckbox.IsChecked = () => devTrait.DisableShroud;
-				shroudCheckbox.OnClick = () => Order(world, "DevShroudDisable");
+				shroudCheckbox.OnClick = () => Order(world, OrderCode.DevShroudDisable);
 			}
 
 			var pathCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_UNIT_PATHS");
 			if (pathCheckbox != null)
 			{
 				pathCheckbox.IsChecked = () => devTrait.PathDebug;
-				pathCheckbox.OnClick = () => Order(world, "DevPathDebug");
+				pathCheckbox.OnClick = () => Order(world, OrderCode.DevPathDebug);
 			}
 
 			var cashButton = widget.GetOrNull<ButtonWidget>("GIVE_CASH");
 			if (cashButton != null)
 				cashButton.OnClick = () =>
-				world.IssueOrder(new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false));
+				world.IssueOrder(new Order(OrderCode.DevGiveCash, world.LocalPlayer.PlayerActor, false));
 
 			var growResourcesButton = widget.GetOrNull<ButtonWidget>("GROW_RESOURCES");
 			if (growResourcesButton != null)
 				growResourcesButton.OnClick = () =>
-				world.IssueOrder(new Order("DevGrowResources", world.LocalPlayer.PlayerActor, false));
+				world.IssueOrder(new Order(OrderCode.DevGrowResources, world.LocalPlayer.PlayerActor, false));
 
 			var fastBuildCheckbox = widget.GetOrNull<CheckboxWidget>("INSTANT_BUILD");
 			if (fastBuildCheckbox != null)
 			{
 				fastBuildCheckbox.IsChecked = () => devTrait.FastBuild;
-				fastBuildCheckbox.OnClick = () => Order(world, "DevFastBuild");
+				fastBuildCheckbox.OnClick = () => Order(world, OrderCode.DevFastBuild);
 			}
 
 			var fastChargeCheckbox = widget.GetOrNull<CheckboxWidget>("INSTANT_CHARGE");
 			if (fastChargeCheckbox != null)
 			{
 				fastChargeCheckbox.IsChecked = () => devTrait.FastCharge;
-				fastChargeCheckbox.OnClick = () => Order(world, "DevFastCharge");
+				fastChargeCheckbox.OnClick = () => Order(world, OrderCode.DevFastCharge);
 			}
 
 			var showCombatCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_COMBATOVERLAY");
@@ -85,32 +85,32 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (allTechCheckbox != null)
 			{
 				allTechCheckbox.IsChecked = () => devTrait.AllTech;
-				allTechCheckbox.OnClick = () => Order(world, "DevEnableTech");
+				allTechCheckbox.OnClick = () => Order(world, OrderCode.DevEnableTech);
 			}
 
 			var powerCheckbox = widget.GetOrNull<CheckboxWidget>("UNLIMITED_POWER");
 			if (powerCheckbox != null)
 			{
 				powerCheckbox.IsChecked = () => devTrait.UnlimitedPower;
-				powerCheckbox.OnClick = () => Order(world, "DevUnlimitedPower");
+				powerCheckbox.OnClick = () => Order(world, OrderCode.DevUnlimitedPower);
 			}
 
 			var buildAnywhereCheckbox = widget.GetOrNull<CheckboxWidget>("BUILD_ANYWHERE");
 			if (buildAnywhereCheckbox != null)
 			{
 				buildAnywhereCheckbox.IsChecked = () => devTrait.BuildAnywhere;
-				buildAnywhereCheckbox.OnClick = () => Order(world, "DevBuildAnywhere");
+				buildAnywhereCheckbox.OnClick = () => Order(world, OrderCode.DevBuildAnywhere);
 			}
 
 			var explorationButton = widget.GetOrNull<ButtonWidget>("GIVE_EXPLORATION");
 			if (explorationButton != null)
 				explorationButton.OnClick = () =>
-				world.IssueOrder(new Order("DevGiveExploration", world.LocalPlayer.PlayerActor, false));
+				world.IssueOrder(new Order(OrderCode.DevGiveExploration, world.LocalPlayer.PlayerActor, false));
 
 			var noexplorationButton = widget.GetOrNull<ButtonWidget>("RESET_EXPLORATION");
 			if (noexplorationButton != null)
 				noexplorationButton.OnClick = () =>
-				world.IssueOrder(new Order("DevResetExploration", world.LocalPlayer.PlayerActor, false));
+				world.IssueOrder(new Order(OrderCode.DevResetExploration, world.LocalPlayer.PlayerActor, false));
 
 			var dbgOverlay = world.WorldActor.TraitOrDefault<PathfinderDebugOverlay>();
 			var showAstarCostCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_ASTAR");
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		public void Order(World world, string order)
+		public void Order(World world, OrderCode order)
 		{
 			world.IssueOrder(new Order(order, world.LocalPlayer.PlayerActor, false));
 		}

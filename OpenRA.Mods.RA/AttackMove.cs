@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "AttackMove")
+			if (order.ID == OrderCode.AttackMove)
 				return "AttackMove";
 
 			return null;
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 		{
 			TargetLocation = null;
 
-			if (order.OrderString == "AttackMove")
+			if (order.ID == OrderCode.AttackMove)
 			{
 				TargetLocation = move.NearestMoveableCell(order.TargetLocation);
 				self.SetTargetLine(Target.FromCell(self.World, TargetLocation.Value), Color.Red);

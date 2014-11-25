@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Move")
+			if (order.ID == OrderCode.Move)
 			{
 				var cell = self.World.Map.Clamp(order.TargetLocation);
 				var explored = self.Owner.Shroud.IsExplored(cell);
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA.Traits
 				self.QueueActivity(new Fly(self, target));
 				self.QueueActivity(new FlyCircle());
 			}
-			else if (order.OrderString == "Enter")
+			else if (order.ID == OrderCode.Enter)
 			{
 				if (Reservable.IsReserved(order.TargetActor)) return;
 
@@ -99,12 +99,12 @@ namespace OpenRA.Mods.RA.Traits
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
 				self.QueueActivity(new ResupplyAircraft());
 			}
-			else if (order.OrderString == "Stop")
+			else if (order.ID == OrderCode.Stop)
 			{
 				UnReserve();
 				self.CancelActivity();
 			}
-			else if (order.OrderString == "ReturnToBase")
+			else if (order.ID == OrderCode.ReturnToBase)
 			{
 				var airfield = ReturnToBase.ChooseAirfield(self, true);
 				if (airfield == null) return;

@@ -62,9 +62,9 @@ namespace OpenRA.Network
 						var orders = packet.ToOrderList(null);
 						foreach (var o in orders)
 						{
-							if (o.OrderString == "StartGame")
+							if (o.ID == OrderCode.StartGame)
 								IsValid = true;
-							else if (o.OrderString == "SyncInfo" && !IsValid)
+							else if (o.ID == OrderCode.SyncInfo && !IsValid)
 								LobbyInfo = Session.Deserialize(o.TargetString);
 						}
 					}

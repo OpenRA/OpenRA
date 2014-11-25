@@ -253,9 +253,9 @@ namespace OpenRA.Mods.RA
 			if (!Enabled)
 				return;
 
-			switch (order.OrderString)
+			switch (order.ID)
 			{
-			case "StartProduction":
+			case OrderCode.StartProduction:
 				{
 					var unit = self.World.Map.Rules.Actors[order.TargetString];
 					var bi = unit.Traits.Get<BuildableInfo>();
@@ -306,7 +306,7 @@ namespace OpenRA.Mods.RA
 					break;
 				}
 
-			case "PauseProduction":
+			case OrderCode.PauseProduction:
 				{
 					if (queue.Count > 0 && queue[0].Item == order.TargetString)
 						queue[0].Pause(order.ExtraData != 0);
@@ -314,7 +314,7 @@ namespace OpenRA.Mods.RA
 					break;
 				}
 
-			case "CancelProduction":
+			case OrderCode.CancelProduction:
 				{
 					CancelProduction(order.TargetString, order.ExtraData);
 					break;

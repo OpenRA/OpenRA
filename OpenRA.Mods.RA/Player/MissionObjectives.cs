@@ -235,7 +235,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Surrender")
+			if (order.ID == OrderCode.Surrender)
 				ForceDefeat(self.Owner);
 		}
 	}

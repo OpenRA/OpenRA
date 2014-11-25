@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		public IonCannonPower(Actor self, IonCannonPowerInfo info) : base(self, info) { }
 
-		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
+		public override IOrderGenerator OrderGenerator(OrderCode order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
 			return new SelectGenericPowerTarget(order, manager, "ioncannon", MouseButton.Left);

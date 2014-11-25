@@ -556,7 +556,7 @@ namespace OpenRA.Mods.RA.AI
 					continue;
 
 				// Tell the idle harvester to quit slacking:
-				world.IssueOrder(new Order("Harvest", a, false));
+				world.IssueOrder(new Order(OrderCode.Harvest, a, false));
 			}   
 		}
 
@@ -570,7 +570,7 @@ namespace OpenRA.Mods.RA.AI
 			foreach (var a in newUnits)
 			{
 				if (a.HasTrait<Harvester>())
-					world.IssueOrder(new Order("Harvest", a, false));
+					world.IssueOrder(new Order(OrderCode.Harvest, a, false));
 				else
 					unitsHangingAroundTheBase.Add(a);
 
@@ -666,7 +666,7 @@ namespace OpenRA.Mods.RA.AI
 					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.Traits.GetOrDefault<BuildingInfo>())).ToArray();
 
 			foreach (var a in buildings)
-				world.IssueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor), SuppressVisualFeedback = true });
+				world.IssueOrder(new Order(OrderCode.SetRallyPoint, a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor), SuppressVisualFeedback = true });
 		}
 
 		// Won't work for shipyards...
@@ -698,7 +698,7 @@ namespace OpenRA.Mods.RA.AI
 				// Don't transform the mcv if it is a fact
 				// HACK: This needs to query against MCVs directly
 				if (mcv.HasTrait<Mobile>())
-					world.IssueOrder(new Order("DeployTransform", mcv, false));
+					world.IssueOrder(new Order(OrderCode.DeployTransform, mcv, false));
 			}
 			else
 				BotDebug("AI: Can't find BaseBuildUnit.");
@@ -723,8 +723,8 @@ namespace OpenRA.Mods.RA.AI
 				if (desiredLocation == null)
 					continue;
 
-				world.IssueOrder(new Order("Move", mcv, true) { TargetLocation = desiredLocation.Value });
-				world.IssueOrder(new Order("DeployTransform", mcv, true));
+				world.IssueOrder(new Order(OrderCode.Move, mcv, true) { TargetLocation = desiredLocation.Value });
+				world.IssueOrder(new Order(OrderCode.DeployTransform, mcv, true));
 			}
 		}
 
@@ -777,7 +777,7 @@ namespace OpenRA.Mods.RA.AI
 					// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
 					BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, p.PlayerName);
 					waitingPowers[sp] += 10;
-					world.IssueOrder(new Order(sp.Info.OrderName, supportPowerMngr.self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
+					world.IssueOrder(new Order(Order.CodeFromString(sp.Info.OrderName), supportPowerMngr.self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
 				}
 			}
 		}
@@ -915,7 +915,7 @@ namespace OpenRA.Mods.RA.AI
 				{
 					BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
 						self, e.PreviousDamageState, e.DamageState);
-					world.IssueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false)
+					world.IssueOrder(new Order(OrderCode.RepairBuilding, self.Owner.PlayerActor, false)
 						{ TargetActor = self });
 				}
 			}

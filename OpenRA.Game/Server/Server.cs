@@ -248,7 +248,7 @@ namespace OpenRA.Server
 					Map = LobbyInfo.GlobalSettings.Map
 				};
 
-				DispatchOrdersToClient(newConn, 0, 0, new ServerOrder("HandshakeRequest", request.Serialize()).Serialize());
+				DispatchOrdersToClient(newConn, 0, 0, new ServerOrder(OrderCode.HandshakeRequest, request.Serialize()).Serialize());
 			}
 			catch (Exception e)
 			{
@@ -266,7 +266,7 @@ namespace OpenRA.Server
 					Log.Write("server", "Rejected connection from {0}; game is already started.",
 						newConn.socket.RemoteEndPoint);
 
-					SendOrderTo(newConn, "ServerError", "The game has already started");
+					SendOrderTo(newConn, OrderCode.ServerError, "The game has already started");
 					DropClient(newConn);
 					return;
 				}
@@ -276,7 +276,7 @@ namespace OpenRA.Server
 				if (!string.IsNullOrEmpty(Settings.Password) && handshake.Password != Settings.Password)
 				{
 					var message = string.IsNullOrEmpty(handshake.Password) ? "Server requires a password" : "Incorrect password";
-					SendOrderTo(newConn, "AuthenticationError", message);
+					SendOrderTo(newConn, OrderCode.AuthenticationError, message);
 					DropClient(newConn);
 					return;
 				}
@@ -298,7 +298,7 @@ namespace OpenRA.Server
 
 				if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectators)
 				{
-					SendOrderTo(newConn, "ServerError", "The game is full");
+					SendOrderTo(newConn, OrderCode.ServerError, "The game is full");
 					DropClient(newConn);
 					return;
 				}
@@ -313,7 +313,7 @@ namespace OpenRA.Server
 					Log.Write("server", "Rejected connection from {0}; mods do not match.",
 						newConn.socket.RemoteEndPoint);
 
-					SendOrderTo(newConn, "ServerError", "Server is running an incompatible mod");
+					SendOrderTo(newConn, OrderCode.ServerError, "Server is running an incompatible mod");
 					DropClient(newConn);
 					return;
 				}
@@ -323,7 +323,7 @@ namespace OpenRA.Server
 					Log.Write("server", "Rejected connection from {0}; Not running the same version.",
 						newConn.socket.RemoteEndPoint);
 
-					SendOrderTo(newConn, "ServerError", "Server is running an incompatible version");
+					SendOrderTo(newConn, OrderCode.ServerError, "Server is running an incompatible version");
 					DropClient(newConn);
 					return;
 				}
@@ -333,7 +333,7 @@ namespace OpenRA.Server
 				if (bans.Contains(client.IpAddress))
 				{
 					Log.Write("server", "Rejected connection from {0}; Banned.", newConn.socket.RemoteEndPoint);
-					SendOrderTo(newConn, "ServerError", "You have been {0} from the server".F(Settings.Ban.Contains(client.IpAddress) ? "banned" : "temporarily banned"));
+					SendOrderTo(newConn, OrderCode.ServerError, "You have been {0} from the server".F(Settings.Ban.Contains(client.IpAddress) ? "banned" : "temporarily banned"));
 					DropClient(newConn);
 					return;
 				}
@@ -356,7 +356,7 @@ namespace OpenRA.Server
 				SendMessage("{0} has joined the game.".F(client.Name));
 
 				// Send initial ping
-				SendOrderTo(newConn, "Ping", Game.RunTime.ToString());
+				SendOrderTo(newConn, OrderCode.Ping, Game.RunTime.ToString());
 
 				if (Settings.Dedicated)
 				{
@@ -365,7 +365,7 @@ namespace OpenRA.Server
 						System.IO.File.WriteAllText(motdFile, "Welcome, have fun and good luck!");
 					var motd = System.IO.File.ReadAllText(motdFile);
 					if (!string.IsNullOrEmpty(motd))
-						SendOrderTo(newConn, "Message", motd);
+						SendOrderTo(newConn, OrderCode.Message, motd);
 				}
 
 				if (handshake.Mod == "{DEV_VERSION}")
@@ -436,21 +436,21 @@ namespace OpenRA.Server
 			catch (NotImplementedException) { }
 		}
 
-		public void SendOrderTo(Connection conn, string order, string data)
+		public void SendOrderTo(Connection conn, OrderCode order, string data)
 		{
 			DispatchOrdersToClient(conn, 0, 0, new ServerOrder(order, data).Serialize());
 		}
 
 		public void SendMessage(string text)
 		{
-			DispatchOrdersToClients(null, 0, new ServerOrder("Message", text).Serialize());
+			DispatchOrdersToClients(null, 0, new ServerOrder(OrderCode.Message, text).Serialize());
 		}
 
 		void InterpretServerOrder(Connection conn, ServerOrder so)
 		{
-			switch (so.Name)
+			switch (so.Order)
 			{
-				case "Command":
+				case OrderCode.Command:
 				{
 					var handled = false;
 					foreach (var t in serverTraits.WithInterface<IInterpretCommand>())
@@ -460,21 +460,21 @@ namespace OpenRA.Server
 					if (!handled)
 					{
 						Log.Write("server", "Unknown server command: {0}", so.Data);
-						SendOrderTo(conn, "Message", "Unknown server command: {0}".F(so.Data));
+						SendOrderTo(conn, OrderCode.Message, "Unknown server command: {0}".F(so.Data));
 					}
 
 					break;
 				}
 
-				case "HandshakeResponse":
+				case OrderCode.HandshakeResponse:
 					ValidateClient(conn, so.Data);
 					break;
-				case "Chat":
-				case "TeamChat":
-				case "PauseGame":
+				case OrderCode.Chat:
+				case OrderCode.TeamChat:
+				case OrderCode.PauseGame:
 					DispatchOrdersToClients(conn, 0, so.Serialize());
 					break;
-				case "Pong":
+				case OrderCode.Pong:
 				{
 					int pingSent;
 					if (!OpenRA.Exts.TryParseIntegerInvariant(so.Data, out pingSent))
@@ -533,7 +533,7 @@ namespace OpenRA.Server
 				SendMessage("{0}{1} has disconnected.".F(dropClient.Name, suffix));
 
 				// Send disconnected order, even if still in the lobby
-				DispatchOrdersToClients(toDrop, 0, new ServerOrder("Disconnected", "").Serialize());
+				DispatchOrdersToClients(toDrop, 0, new ServerOrder(OrderCode.Disconnected, "").Serialize());
 
 				LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
@@ -582,7 +582,7 @@ namespace OpenRA.Server
 		{
 			if (State == ServerState.WaitingPlayers) // Don't do this while the game is running, it breaks things!
 				DispatchOrders(null, 0,
-					new ServerOrder("SyncInfo", LobbyInfo.Serialize()).Serialize());
+					new ServerOrder(OrderCode.SyncInfo, LobbyInfo.Serialize()).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -599,7 +599,7 @@ namespace OpenRA.Server
 				clientData.Add(client.Serialize());
 
 			DispatchOrders(null, 0,
-				new ServerOrder("SyncLobbyClients", clientData.WriteToString()).Serialize());
+				new ServerOrder(OrderCode.SyncLobbyClients, clientData.WriteToString()).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -616,7 +616,7 @@ namespace OpenRA.Server
 				slotData.Add(slot.Value.Serialize());
 
 			DispatchOrders(null, 0,
-				new ServerOrder("SyncLobbySlots", slotData.WriteToString()).Serialize());
+				new ServerOrder(OrderCode.SyncLobbySlots, slotData.WriteToString()).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -631,7 +631,7 @@ namespace OpenRA.Server
 			sessionData.Add(LobbyInfo.GlobalSettings.Serialize());
 
 			DispatchOrders(null, 0,
-				new ServerOrder("SyncLobbyGlobalSettings", sessionData.WriteToString()).Serialize());
+				new ServerOrder(OrderCode.SyncLobbyGlobalSettings, sessionData.WriteToString()).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -645,7 +645,7 @@ namespace OpenRA.Server
 				clientPings.Add(ping.Serialize());
 
 			DispatchOrders(null, 0,
-				new ServerOrder("SyncClientPings", clientPings.WriteToString()).Serialize());
+				new ServerOrder(OrderCode.SyncClientPings, clientPings.WriteToString()).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -666,7 +666,7 @@ namespace OpenRA.Server
 			{
 				if (GetClient(c).IsInvalid)
 				{
-					SendOrderTo(c, "ServerError", "You have been kicked from the server");
+					SendOrderTo(c, OrderCode.ServerError, "You have been kicked from the server");
 					DropClient(c);
 				}
 			}
@@ -679,7 +679,7 @@ namespace OpenRA.Server
 					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF });
 
 			DispatchOrders(null, 0,
-				new ServerOrder("StartGame", "").Serialize());
+				new ServerOrder(OrderCode.StartGame, "").Serialize());
 
 			foreach (var t in serverTraits.WithInterface<IStartGame>())
 				t.GameStarted(this);

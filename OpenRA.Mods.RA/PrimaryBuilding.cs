@@ -39,12 +39,12 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter("PrimaryProducer", 1); }
+			get { yield return new DeployOrderTargeter(OrderCode.PrimaryProducer, 1); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "PrimaryProducer")
+			if (order.OrderID == OrderCode.PrimaryProducer)
 				return new Order(order.OrderID, self, false);
 
 			return null;
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "PrimaryProducer")
+			if (order.ID == OrderCode.PrimaryProducer)
 				SetPrimaryProducer(self, !isPrimary);
 		}
 

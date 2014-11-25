@@ -18,12 +18,13 @@ namespace OpenRA
 	[Flags]
 	enum OrderFields : byte
 	{
-		TargetActor = 0x01,
-		TargetLocation = 0x02,
-		TargetString = 0x04,
-		Queued = 0x08,
-		ExtraLocation = 0x10,
-		ExtraData = 0x20
+		None = 0,
+		TargetActor    = 1 << 0,
+		TargetLocation = 1 << 1,
+		TargetString   = 1 << 2,
+		Queued         = 1 << 3,
+		ExtraLocation  = 1 << 4,
+		ExtraData      = 1 << 5,
 	}
 
 	static class OrderFieldsExts
@@ -36,7 +37,7 @@ namespace OpenRA
 
 	public sealed class Order
 	{
-		public readonly string OrderString;
+		public readonly OrderCode ID;
 		public readonly Actor Subject;
 		public readonly bool Queued;
 		public Actor TargetActor;
@@ -49,10 +50,10 @@ namespace OpenRA
 
 		public Player Player { get { return Subject != null ? Subject.Owner : null; } }
 
-		Order(string orderString, Actor subject,
-			Actor targetActor, CPos targetLocation, string targetString, bool queued, CPos extraLocation, uint extraData)
+		Order(OrderCode orderID, Actor subject,
+					Actor targetActor, CPos targetLocation, string targetString, bool queued, CPos extraLocation, uint extraData)
 		{
-			this.OrderString = orderString;
+			this.ID = orderID;
 			this.Subject = subject;
 			this.TargetActor = targetActor;
 			this.TargetLocation = targetLocation;
@@ -68,7 +69,7 @@ namespace OpenRA
 			{
 				case 0xFF:
 					{
-						var order = r.ReadString();
+						var order = (OrderCode)r.ReadByte();
 						var subjectId = r.ReadUInt32();
 						var flags = (OrderFields)r.ReadByte();
 
@@ -91,7 +92,7 @@ namespace OpenRA
 
 				case 0xfe:
 					{
-						var name = r.ReadString();
+						var name = (OrderCode)r.ReadByte();
 						var data = r.ReadString();
 
 						return new Order(name, null, false) { IsImmediate = true, TargetString = data };
@@ -132,53 +133,53 @@ namespace OpenRA
 		// Now that Orders are resolved by individual Actors, these are weird; you unpack orders manually, but not pack them.
 		public static Order Chat(bool team, string text)
 		{
-			return new Order(team ? "TeamChat" : "Chat", null, false) { IsImmediate = true, TargetString = text };
+			return new Order(team ? OrderCode.TeamChat : OrderCode.Chat, null, false) { IsImmediate = true, TargetString = text };
 		}
 
 		public static Order HandshakeResponse(string text)
 		{
-			return new Order("HandshakeResponse", null, false) { IsImmediate = true, TargetString = text };
+			return new Order(OrderCode.HandshakeResponse, null, false) { IsImmediate = true, TargetString = text };
 		}
 
 		public static Order Pong(string pingTime)
 		{
-			return new Order("Pong", null, false) { IsImmediate = true, TargetString = pingTime };
+			return new Order(OrderCode.Pong, null, false) { IsImmediate = true, TargetString = pingTime };
 		}
 
 		public static Order PauseGame(bool paused)
 		{
-			return new Order("PauseGame", null, false) { TargetString = paused ? "Pause" : "UnPause" };
+			return new Order(OrderCode.PauseGame, null, false) { TargetString = paused ? "Pause" : "UnPause" };
 		}
 
 		public static Order Command(string text)
 		{
-			return new Order("Command", null, false) { IsImmediate = true, TargetString = text };
+			return new Order(OrderCode.Command, null, false) { IsImmediate = true, TargetString = text };
 		}
 
 		public static Order StartProduction(Actor subject, string item, int count)
 		{
-			return new Order("StartProduction", subject, false) { ExtraData = (uint)count, TargetString = item };
+			return new Order(OrderCode.StartProduction, subject, false) { ExtraData = (uint)count, TargetString = item };
 		}
 
 		public static Order PauseProduction(Actor subject, string item, bool pause)
 		{
-			return new Order("PauseProduction", subject, false) { ExtraData = pause ? 1u : 0u, TargetString = item };
+			return new Order(OrderCode.PauseProduction, subject, false) { ExtraData = pause ? 1u : 0u, TargetString = item };
 		}
 
 		public static Order CancelProduction(Actor subject, string item, int count)
 		{
-			return new Order("CancelProduction", subject, false) { ExtraData = (uint)count, TargetString = item };
+			return new Order(OrderCode.CancelProduction, subject, false) { ExtraData = (uint)count, TargetString = item };
 		}
 
 		// For scripting special powers
 		public Order()
-			: this(null, null, null, CPos.Zero, null, false, CPos.Zero, 0) { }
+			: this(OrderCode.None, null, null, CPos.Zero, null, false, CPos.Zero, 0) { }
 
-		public Order(string orderString, Actor subject, bool queued)
-			: this(orderString, subject, null, CPos.Zero, null, queued, CPos.Zero, 0) { }
+		public Order(OrderCode orderID, Actor subject, bool queued)
+			: this(orderID, subject, null, CPos.Zero, null, queued, CPos.Zero, 0) { }
 
-		public Order(string orderstring, Order order)
-			: this(orderstring, order.Subject, order.TargetActor, order.TargetLocation,
+		public Order(OrderCode orderID, Order order)
+			: this(orderID, order.Subject, order.TargetActor, order.TargetLocation,
 				   order.TargetString, order.Queued, order.ExtraLocation, order.ExtraData) { }
 
 		public byte[] Serialize()
@@ -188,12 +189,12 @@ namespace OpenRA
 				var ret = new MemoryStream();
 				var w = new BinaryWriter(ret);
 				w.Write((byte)0xfe);
-				w.Write(OrderString);
+				w.Write((byte)ID);
 				w.Write(TargetString);
 				return ret.ToArray();
 			}
 
-			switch (OrderString)
+			switch (ID)
 			{
 				/* 
 				 * Format:
@@ -207,7 +208,7 @@ namespace OpenRA
 						var ret = new MemoryStream();
 						var w = new BinaryWriter(ret);
 						w.Write((byte)0xFF);
-						w.Write(OrderString);
+						w.Write((byte)ID);
 						w.Write(UIntFromActor(Subject));
 
 						OrderFields fields = 0;
@@ -240,7 +241,14 @@ namespace OpenRA
 		{
 			return ("OrderString: \"{0}\" \n\t Subject: \"{1}\". \n\t TargetActor: \"{2}\" \n\t TargetLocation: {3}." +
 				"\n\t TargetString: \"{4}\".\n\t IsImmediate: {5}.\n\t Player(PlayerName): {6}\n").F(
-				OrderString, Subject, TargetActor != null ? TargetActor.Info.Name : null, TargetLocation, TargetString, IsImmediate, Player != null ? Player.PlayerName : null);
+				ID, Subject, TargetActor != null ? TargetActor.Info.Name : null, TargetLocation, TargetString, IsImmediate, Player != null ? Player.PlayerName : null);
+		}
+
+		public static OrderCode CodeFromString(string orderString)
+		{
+			if (string.IsNullOrEmpty(orderString))
+				return OrderCode.None;
+			return Enum<OrderCode>.Parse(orderString);
 		}
 	}
 }

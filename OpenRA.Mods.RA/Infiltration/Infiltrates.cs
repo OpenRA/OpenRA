@@ -35,12 +35,12 @@ namespace OpenRA.Mods.RA.Infiltration
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new TargetTypeOrderTargeter(info.Types, "Infiltrate", 7, "enter", true, false); }
+			get { yield return new TargetTypeOrderTargeter(info.Types, OrderCode.Infiltrate, 7, "enter", true, false); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID != "Infiltrate")
+			if (order.OrderID != OrderCode.Infiltrate)
 				return null;
 
 			if (target.Type == TargetType.FrozenActor)
@@ -79,13 +79,13 @@ namespace OpenRA.Mods.RA.Infiltration
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "Infiltrate" && IsValidOrder(self, order)
+			return order.ID == OrderCode.Infiltrate && IsValidOrder(self, order)
 				? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "Infiltrate" || !IsValidOrder(self, order))
+			if (order.ID != OrderCode.Infiltrate || !IsValidOrder(self, order))
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);

@@ -18,9 +18,9 @@ namespace OpenRA.Mods.RA.Orders
 	public class GlobalButtonOrderGenerator<T> : IOrderGenerator
 	{
 		string cursor;
-		string order;
+		OrderCode order;
 
-		public GlobalButtonOrderGenerator(string cursor, string order)
+		public GlobalButtonOrderGenerator(string cursor, OrderCode order)
 		{
 			this.cursor = cursor;
 			this.order = order;
@@ -65,11 +65,11 @@ namespace OpenRA.Mods.RA.Orders
 
 	public class PowerDownOrderGenerator : GlobalButtonOrderGenerator<CanPowerDown>
 	{
-		public PowerDownOrderGenerator() : base( "powerdown", "PowerDown" ) { }
+		public PowerDownOrderGenerator() : base( "powerdown", OrderCode.PowerDown ) { }
 	}
 
 	public class SellOrderGenerator : GlobalButtonOrderGenerator<Sellable>
 	{
-		public SellOrderGenerator() : base( "sell", "Sell" ) { }
+		public SellOrderGenerator() : base( "sell", OrderCode.Sell ) { }
 	}
 }

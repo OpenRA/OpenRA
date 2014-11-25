@@ -39,13 +39,13 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new EnterAlliedActorTargeter<Building>("Repair", 5,
+			get { yield return new EnterAlliedActorTargeter<Building>(OrderCode.Repair, 5,
 				target => CanRepairAt(target), _ => CanRepair()); }
 		}
 
 		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
-			if( order.OrderID == "Repair" )
+			if( order.OrderID == OrderCode.Repair )
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
@@ -64,12 +64,12 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Repair" && CanRepair()) ? "Move" : null;
+			return (order.ID == OrderCode.Repair && CanRepair()) ? "Move" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Repair")
+			if (order.ID == OrderCode.Repair)
 			{
 				if (!CanRepairAt(order.TargetActor) || !CanRepair())
 					return;

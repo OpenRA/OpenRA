@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "PlaceBeacon")
+			if (order.ID != OrderCode.PlaceBeacon)
 				return;
 
 			var pos = self.World.Map.CenterOfCell(order.TargetLocation);

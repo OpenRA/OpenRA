@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			Action onSurrender = () => 
 			{
-				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
+				world.IssueOrder(new Order(OrderCode.Surrender, world.LocalPlayer.PlayerActor, false));
 				closeMenu();
 			};
 			var surrenderButton = menu.Get<ButtonWidget>("SURRENDER");

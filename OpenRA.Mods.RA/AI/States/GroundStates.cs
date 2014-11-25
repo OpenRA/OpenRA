@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.AI
 				if (owner.attackOrFleeFuzzy.CanAttack(owner.units, enemyUnits))
 				{
 					foreach (var u in owner.units)
-						owner.world.IssueOrder(new Order("AttackMove", u, false) { TargetLocation = owner.Target.Location });
+						owner.world.IssueOrder(new Order(OrderCode.AttackMove, u, false) { TargetLocation = owner.Target.Location });
 
 					// We have gathered sufficient units. Attack the nearest enemy unit.
 					owner.fsm.ChangeState(owner, new GroundUnitsAttackMoveState(), true);
@@ -87,9 +87,9 @@ namespace OpenRA.Mods.RA.AI
 				.Where(a => a.Owner == owner.units.FirstOrDefault().Owner && owner.units.Contains(a)).ToList();
 			if (ownUnits.Count < owner.units.Count)
 			{
-				owner.world.IssueOrder(new Order("Stop", leader, false));
+				owner.world.IssueOrder(new Order(OrderCode.Stop, leader, false));
 				foreach (var unit in owner.units.Where(a => !ownUnits.Contains(a)))
-					owner.world.IssueOrder(new Order("AttackMove", unit, false) { TargetLocation = leader.Location });
+					owner.world.IssueOrder(new Order(OrderCode.AttackMove, unit, false) { TargetLocation = leader.Location });
 			}
 			else
 			{
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA.AI
 				}
 				else
 					foreach (var a in owner.units)
-						owner.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.Target.Location });
+						owner.world.IssueOrder(new Order(OrderCode.AttackMove, a, false) { TargetLocation = owner.Target.Location });
 			}
 
 			if (ShouldFlee(owner))
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.RA.AI
 
 			foreach (var a in owner.units)
 				if (!BusyAttack(a))
-					owner.world.IssueOrder(new Order("Attack", a, false) { TargetActor = owner.bot.FindClosestEnemy(a.CenterPosition) });
+					owner.world.IssueOrder(new Order(OrderCode.Attack, a, false) { TargetActor = owner.bot.FindClosestEnemy(a.CenterPosition) });
 
 			if (ShouldFlee(owner))
 			{

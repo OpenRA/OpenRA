@@ -248,7 +248,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IAcceptOre>("Deliver", 5,
+				yield return new EnterAlliedActorTargeter<IAcceptOre>(OrderCode.Deliver, 5,
 					proc => IsAcceptableProcType(proc),
 					proc => !IsEmpty && proc.Trait<IAcceptOre>().AllowDocking);
 				yield return new HarvestOrderTargeter();
@@ -257,10 +257,10 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Deliver")
+			if (order.OrderID == OrderCode.Deliver)
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
-			if (order.OrderID == "Harvest")
+			if (order.OrderID == OrderCode.Harvest)
 				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
 
 			return null;
@@ -268,12 +268,12 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Harvest" || (order.OrderString == "Deliver" && !IsEmpty)) ? "Move" : null;
+			return (order.ID == OrderCode.Harvest || (order.ID == OrderCode.Deliver && !IsEmpty)) ? "Move" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Harvest")
+			if (order.ID == OrderCode.Harvest)
 			{
 				// NOTE: An explicit harvest order allows the harvester to decide which refinery to deliver to.
 				LinkProc(self, OwnerLinkedProc = null);
@@ -322,7 +322,7 @@ namespace OpenRA.Mods.RA
 				LastHarvestedCell = LastOrderLocation;
 				self.QueueActivity(new FindResources());
 			}
-			else if (order.OrderString == "Deliver")
+			else if (order.ID == OrderCode.Deliver)
 			{
 				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
 				var iao = order.TargetActor.TraitOrDefault<IAcceptOre>();
@@ -342,7 +342,7 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 				self.QueueActivity(new DeliverResources());
 			}
-			else if (order.OrderString == "Stop" || order.OrderString == "Move")
+			else if (order.ID == OrderCode.Stop || order.ID == OrderCode.Move)
 			{
 				// Turn off idle smarts to obey the stop/move:
 				idleSmart = false;
@@ -426,7 +426,7 @@ namespace OpenRA.Mods.RA
 
 		class HarvestOrderTargeter : IOrderTargeter
 		{
-			public string OrderID { get { return "Harvest"; } }
+			public OrderCode OrderID { get { return OrderCode.Harvest; } }
 			public int OrderPriority { get { return 10; } }
 			public bool IsQueued { get; protected set; }
 

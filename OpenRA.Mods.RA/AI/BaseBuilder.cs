@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA.AI
 				}
 				else
 				{
-					world.IssueOrder(new Order("PlaceBuilding", player.PlayerActor, false)
+					world.IssueOrder(new Order(OrderCode.PlaceBuilding, player.PlayerActor, false)
 					{
 						TargetLocation = location.Value,
 						TargetString = currentBuilding.Item,

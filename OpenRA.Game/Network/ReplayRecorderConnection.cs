@@ -33,7 +33,7 @@ namespace OpenRA.Network
 				return false;
 
 			var frame = BitConverter.ToInt32(data, 0);
-			return frame == 0 && data.ToOrderList(null).Any(o => o.OrderString == "StartGame");
+			return frame == 0 && data.ToOrderList(null).Any(o => o.ID == OrderCode.StartGame);
 		}
 
 		public ReplayRecorderConnection(IConnection inner, Func<string> chooseFilename)

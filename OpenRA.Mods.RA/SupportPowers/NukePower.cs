@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 			body = self.Trait<IBodyOrientation>();
 		}
 
-		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
+		public override IOrderGenerator OrderGenerator(OrderCode order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
 			return new SelectGenericPowerTarget(order, manager, "nuke", MouseButton.Left);

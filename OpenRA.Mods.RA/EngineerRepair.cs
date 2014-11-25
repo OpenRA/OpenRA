@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID != "EngineerRepair")
+			if (order.OrderID != OrderCode.EngineerRepair)
 				return null;
 
 			if (target.Type == TargetType.FrozenActor)
@@ -61,13 +61,13 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "EngineerRepair" && IsValidOrder(self, order)
+			return order.ID == OrderCode.EngineerRepair && IsValidOrder(self, order)
 				? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "EngineerRepair" || !IsValidOrder(self, order))
+			if (order.ID != OrderCode.EngineerRepair || !IsValidOrder(self, order))
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Yellow);
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA
 		class EngineerRepairOrderTargeter : UnitOrderTargeter
 		{
 			public EngineerRepairOrderTargeter()
-				: base("EngineerRepair", 6, "goldwrench", false, true) { }
+				: base(OrderCode.EngineerRepair, 6, "goldwrench", false, true) { }
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{

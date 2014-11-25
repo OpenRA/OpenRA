@@ -15,12 +15,12 @@ namespace OpenRA.Server
 {
 	class ServerOrder
 	{
-		public readonly string Name;
+		public readonly OrderCode Order;
 		public readonly string Data;
 
-		public ServerOrder(string name, string data)
+		public ServerOrder(OrderCode order, string data)
 		{
-			Name = name;
+			Order = order;
 			Data = data;
 		}
 
@@ -35,7 +35,7 @@ namespace OpenRA.Server
 
 				case 0xfe:
 					{
-						var name = r.ReadString();
+						var name = (OrderCode)r.ReadByte();
 						var data = r.ReadString();
 
 						return new ServerOrder(name, data);
@@ -52,7 +52,7 @@ namespace OpenRA.Server
 			var bw = new BinaryWriter(ms);
 
 			bw.Write((byte)0xfe);
-			bw.Write(Name);
+			bw.Write((byte)Order);
 			bw.Write(Data);
 			return ms.ToArray();
 		}

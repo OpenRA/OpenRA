@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Server
 
 			if (requiresHost && !client.IsAdmin)
 			{
-				server.SendOrderTo(conn, "Message", "Only the host can do that");
+				server.SendOrderTo(conn, OrderCode.Message, "Only the host can do that");
 				return false;
 			}
 
@@ -44,12 +44,12 @@ namespace OpenRA.Mods.Common.Server
 		{
 			if (server.State == ServerState.GameStarted)
 			{
-				server.SendOrderTo(conn, "Message", "Cannot change state when game started. ({0})".F(cmd));
+				server.SendOrderTo(conn, OrderCode.Message, "Cannot change state when game started. ({0})".F(cmd));
 				return false;
 			}
 			else if (client.State == Session.ClientState.Ready && !(cmd.StartsWith("state") || cmd == "startgame"))
 			{
-				server.SendOrderTo(conn, "Message", "Cannot change state when marked as ready.");
+				server.SendOrderTo(conn, OrderCode.Message, "Cannot change state when marked as ready.");
 				return false;
 			}
 
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Server
 						var state = Session.ClientState.Invalid;
 						if (!Enum<Session.ClientState>.TryParse(s, false, out state))
 						{
-							server.SendOrderTo(conn, "Message", "Malformed state command");
+							server.SendOrderTo(conn, OrderCode.Message, "Malformed state command");
 							return true;
 						}
 
@@ -105,14 +105,14 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can start the game");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can start the game");
 							return true;
 						}
 
 						if (server.LobbyInfo.Slots.Any(sl => sl.Value.Required &&
 							server.LobbyInfo.ClientInSlot(sl.Key) == null))
 						{
-							server.SendOrderTo(conn, "Message", "Unable to start the game until required slots are full.");
+							server.SendOrderTo(conn, OrderCode.Message, "Unable to start the game until required slots are full.");
 							return true;
 						}
 
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Server
 						}
 						else
 						{
-							server.SendOrderTo(conn, "Message", "Malformed allow_spectate command");
+							server.SendOrderTo(conn, OrderCode.Message, "Malformed allow_spectate command");
 							return true;
 						}
 					}
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Server
 								var occupantConn = server.Conns.FirstOrDefault(c => c.PlayerIndex == occupant.Index);
 								if (occupantConn != null)
 								{
-									server.SendOrderTo(occupantConn, "ServerError", "Your slot was closed by the host");
+									server.SendOrderTo(occupantConn, OrderCode.ServerError, "Your slot was closed by the host");
 									server.DropClient(occupantConn);
 								}
 							}
@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Common.Server
 
 						if (parts.Length < 3)
 						{
-							server.SendOrderTo(conn, "Message", "Malformed slot_bot command");
+							server.SendOrderTo(conn, OrderCode.Message, "Malformed slot_bot command");
 							return true;
 						}
 
@@ -257,7 +257,7 @@ namespace OpenRA.Mods.Common.Server
 						// Invalid slot
 						if (bot != null && bot.Bot == null)
 						{
-							server.SendOrderTo(conn, "Message", "Can't add bots to a slot with another client");
+							server.SendOrderTo(conn, OrderCode.Message, "Can't add bots to a slot with another client");
 							return true;
 						}
 
@@ -310,13 +310,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can change the map");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can change the map");
 							return true;
 						}
 
 						if (server.ModData.MapCache[s].Status != MapStatus.Available)
 						{
-							server.SendOrderTo(conn, "Message", "Map was not found on server");
+							server.SendOrderTo(conn, OrderCode.Message, "Map was not found on server");
 							return true;
 						}
 
@@ -373,13 +373,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can set that option");
 							return true;
 						}
 
 						if (server.Map.Options.FragileAlliances.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled alliance configuration");
+							server.SendOrderTo(conn, OrderCode.Message, "Map has disabled alliance configuration");
 							return true;
 						}
 
@@ -396,13 +396,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can set that option");
 							return true;
 						}
 
 						if (server.Map.Options.Cheats.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled cheat configuration");
+							server.SendOrderTo(conn, OrderCode.Message, "Map has disabled cheat configuration");
 							return true;
 						}
 
@@ -419,13 +419,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can set that option");
 							return true;
 						}
 
 						if (server.Map.Options.Shroud.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled shroud configuration");
+							server.SendOrderTo(conn, OrderCode.Message, "Map has disabled shroud configuration");
 							return true;
 						}
 
@@ -442,13 +442,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can set that option");
 							return true;
 						}
 
 						if (server.Map.Options.Fog.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled fog configuration");
+							server.SendOrderTo(conn, OrderCode.Message, "Map has disabled fog configuration");
 							return true;
 						}
 
@@ -465,14 +465,14 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can set that option");
 							return true;
 						}
 
 						int teamCount;
 						if (!Exts.TryParseIntegerInvariant(s, out teamCount))
 						{
-							server.SendOrderTo(conn, "Message", "Number of teams could not be parsed: {0}".F(s));
+							server.SendOrderTo(conn, OrderCode.Message, "Number of teams could not be parsed: {0}".F(s));
 							return true;
 						}
 
@@ -506,13 +506,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can set that option");
 							return true;
 						}
 
 						if (server.Map.Options.Crates.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled crate configuration");
+							server.SendOrderTo(conn, OrderCode.Message, "Map has disabled crate configuration");
 							return true;
 						}
 
@@ -529,13 +529,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can set that option");
 							return true;
 						}
 
 						if (server.Map.Options.AllyBuildRadius.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled ally build radius configuration");
+							server.SendOrderTo(conn, OrderCode.Message, "Map has disabled ally build radius configuration");
 							return true;
 						}
 
@@ -552,14 +552,14 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can set that option");
 							return true;
 						}
 
 						if (s != null && !server.Map.Options.Difficulties.Contains(s))
 						{
-							server.SendOrderTo(conn, "Message", "Unsupported difficulty selected: {0}".F(s));
-							server.SendOrderTo(conn, "Message", "Supported difficulties: {0}".F(server.Map.Options.Difficulties.JoinWith(",")));
+							server.SendOrderTo(conn, OrderCode.Message, "Unsupported difficulty selected: {0}".F(s));
+							server.SendOrderTo(conn, OrderCode.Message, "Supported difficulties: {0}".F(server.Map.Options.Difficulties.JoinWith(",")));
 							return true;
 						}
 
@@ -575,13 +575,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can set that option");
 							return true;
 						}
 
 						if (!server.Map.Options.ConfigurableStartingUnits)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled start unit configuration");
+							server.SendOrderTo(conn, OrderCode.Message, "Map has disabled start unit configuration");
 							return true;
 						}
 
@@ -601,13 +601,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can set that option");
 							return true;
 						}
 
 						if (server.Map.Options.StartingCash.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled cash configuration");
+							server.SendOrderTo(conn, OrderCode.Message, "Map has disabled cash configuration");
 							return true;
 						}
 
@@ -623,13 +623,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can set that option");
 							return true;
 						}
 
 						if (server.Map.Options.TechLevel != null)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled Tech configuration");
+							server.SendOrderTo(conn, OrderCode.Message, "Map has disabled Tech configuration");
 							return true;
 						}
 
@@ -645,14 +645,14 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can kick players");
+							server.SendOrderTo(conn, OrderCode.Message, "Only the host can kick players");
 							return true;
 						}
 
 						var split = s.Split(' ');
 						if (split.Length < 2)
 						{
-							server.SendOrderTo(conn, "Message", "Malformed kick command");
+							server.SendOrderTo(conn, OrderCode.Message, "Malformed kick command");
 							return true;
 						}
 
@@ -662,7 +662,7 @@ namespace OpenRA.Mods.Common.Server
 						var kickConn = server.Conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == kickClientID);
 						if (kickConn == null)
 						{
-							server.SendOrderTo(conn, "Message", "Noone in that slot.");
+							server.SendOrderTo(conn, OrderCode.Message, "Noone in that slot.");
 							return true;
 						}
 
@@ -670,7 +670,7 @@ namespace OpenRA.Mods.Common.Server
 
 						Log.Write("server", "Kicking client {0} as requested", kickClientID);
 						server.SendMessage("{0} kicked {1} from the server.".F(client.Name, kickClient.Name));
-						server.SendOrderTo(kickConn, "ServerError", "You have been kicked from the server");
+						server.SendOrderTo(kickConn, OrderCode.ServerError, "You have been kicked from the server");
 						server.DropClient(kickConn);
 
 						bool tempBan;
@@ -772,7 +772,7 @@ namespace OpenRA.Mods.Common.Server
 
 						if (server.LobbyInfo.Clients.Where(cc => cc != client).Any(cc => (cc.SpawnPoint == spawnPoint) && (cc.SpawnPoint != 0)))
 						{
-							server.SendOrderTo(conn, "Message", "You can't be at the same spawn point as another player");
+							server.SendOrderTo(conn, OrderCode.Message, "You can't be at the same spawn point as another player");
 							return true;
 						}
 

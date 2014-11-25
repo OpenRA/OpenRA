@@ -16,11 +16,11 @@ namespace OpenRA.Orders
 	public class GenericSelectTarget : IOrderGenerator
 	{
 		readonly IEnumerable<Actor> subjects;
-		readonly string order;
+		readonly OrderCode order;
 		readonly string cursor;
 		readonly MouseButton expectedButton;
 
-		public GenericSelectTarget(IEnumerable<Actor> subjects, string order, string cursor, MouseButton button)
+		public GenericSelectTarget(IEnumerable<Actor> subjects, OrderCode order, string cursor, MouseButton button)
 		{
 			this.subjects = subjects;
 			this.order = order;
@@ -28,13 +28,13 @@ namespace OpenRA.Orders
 			expectedButton = button;
 		}
 
-		public GenericSelectTarget(IEnumerable<Actor> subjects, string order, string cursor)
+		public GenericSelectTarget(IEnumerable<Actor> subjects, OrderCode order, string cursor)
 			: this(subjects, order, cursor, MouseButton.Left) { }
 
-		public GenericSelectTarget(Actor subject, string order, string cursor)
+		public GenericSelectTarget(Actor subject, OrderCode order, string cursor)
 			: this(new Actor[] { subject }, order, cursor) { }
 
-		public GenericSelectTarget(Actor subject, string order, string cursor, MouseButton button)
+		public GenericSelectTarget(Actor subject, OrderCode order, string cursor, MouseButton button)
 			: this(new Actor[] { subject }, order, cursor, button) { }
 
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)

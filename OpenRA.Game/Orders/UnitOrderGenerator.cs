@@ -41,7 +41,7 @@ namespace OpenRA.Orders
 
 			var actorsInvolved = orders.Select(o => o.Actor).Distinct();
 			if (actorsInvolved.Any())
-				yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false)
+				yield return new Order(OrderCode.CreateGroup, actorsInvolved.First().Owner.PlayerActor, false)
 				{
 					TargetString = actorsInvolved.Select(a => a.ActorID).JoinWith(",")
 				};
@@ -124,10 +124,10 @@ namespace OpenRA.Orders
 
 		static Order CheckSameOrder(IOrderTargeter iot, Order order)
 		{
-			if (order == null && iot.OrderID != null)
+			if (order == null && iot.OrderID != OrderCode.None)
 				Game.Debug("BUG: in order targeter - decided on {0} but then didn't order", iot.OrderID);
-			else if (iot.OrderID != order.OrderString)
-				Game.Debug("BUG: in order targeter - decided on {0} but ordered {1}", iot.OrderID, order.OrderString);
+			else if (iot.OrderID != order.ID)
+				Game.Debug("BUG: in order targeter - decided on {0} but ordered {1}", iot.OrderID, order.ID);
 			return order;
 		}
 

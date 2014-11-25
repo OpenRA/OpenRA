@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 	{
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "PlaceBuilding" || order.OrderString == "LineBuild")
+			if (order.ID == OrderCode.PlaceBuilding || order.ID == OrderCode.LineBuild)
 			{
 				self.World.AddFrameEndTask(w =>
 				{
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 
 					var buildingInfo = unit.Traits.Get<BuildingInfo>();
 
-					if (order.OrderString == "LineBuild")
+					if (order.ID == OrderCode.LineBuild)
 					{
 						var playSounds = true;
 						foreach (var t in BuildingUtils.GetLineBuildCells(w, order.TargetLocation, order.TargetString, buildingInfo))

@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA
 					yield break;
 
 				var negativeDamage = (armament.Weapon.Warheads.FirstOrDefault(w => (w is DamageWarhead)) as DamageWarhead).Damage < 0;
-				yield return new AttackOrderTargeter(this, "Attack", 6, negativeDamage);
+				yield return new AttackOrderTargeter(this, OrderCode.Attack, 6, negativeDamage);
 			}
 		}
 
@@ -104,11 +104,11 @@ namespace OpenRA.Mods.RA
 				switch (target.Type)
 				{
 				case TargetType.Actor:
-					return new Order("Attack", self, queued) { TargetActor = target.Actor };
+					return new Order(OrderCode.Attack, self, queued) { TargetActor = target.Actor };
 				case TargetType.FrozenActor:
-					return new Order("Attack", self, queued) { ExtraData = target.FrozenActor.ID };
+					return new Order(OrderCode.Attack, self, queued) { ExtraData = target.FrozenActor.ID };
 				case TargetType.Terrain:
-					return new Order("Attack", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+					return new Order(OrderCode.Attack, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
 				}
 			}
 
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA
 
 		public virtual void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Attack")
+			if (order.ID == OrderCode.Attack)
 			{
 				var target = self.ResolveFrozenActorOrder(order, Color.Red);
 				if (!target.IsValidFor(self))
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "Attack" ? "Attack" : null;
+			return order.ID == OrderCode.Attack ? "Attack" : null;
 		}
 
 		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA
 			readonly bool negativeDamage;
 			readonly AttackBase ab;
 
-			public AttackOrderTargeter(AttackBase ab, string order, int priority, bool negativeDamage)
+			public AttackOrderTargeter(AttackBase ab, OrderCode order, int priority, bool negativeDamage)
 			{
 				this.ab = ab;
 				this.OrderID = order;
@@ -173,7 +173,7 @@ namespace OpenRA.Mods.RA
 				this.negativeDamage = negativeDamage;
 			}
 
-			public string OrderID { get; private set; }
+			public OrderCode OrderID { get; private set; }
 			public int OrderPriority { get; private set; }
 
 			bool CanTargetActor(Actor self, Target target, TargetModifiers modifiers, ref string cursor)

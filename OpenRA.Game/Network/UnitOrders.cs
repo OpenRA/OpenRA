@@ -34,9 +34,9 @@ namespace OpenRA.Network
 					return;
 			}
 
-			switch (order.OrderString)
+			switch (order.ID)
 			{
-				case "Chat":
+				case OrderCode.Chat:
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
 						if (client != null)
@@ -51,11 +51,11 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "Message": // Server message
+				case OrderCode.Message: // Server message
 						Game.AddChatLine(Color.White, "Server", order.TargetString);
 					break;
 
-				case "Disconnected": /* reports that the target player disconnected */
+				case OrderCode.Disconnected: /* reports that the target player disconnected */
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
 						if (client != null)
@@ -63,7 +63,7 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "TeamChat":
+				case OrderCode.TeamChat:
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
 
@@ -91,14 +91,14 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "StartGame":
+				case OrderCode.StartGame:
 					{
 						Game.AddChatLine(Color.White, "Server", "The game has started.");
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, false);
 						break;
 					}
 
-				case "PauseGame":
+				case OrderCode.PauseGame:
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
 						if (client != null)
@@ -117,7 +117,7 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "HandshakeRequest":
+				case OrderCode.HandshakeRequest:
 					{
 						// TODO: Switch to the server's mod if we have it
 						// Otherwise send the handshake with our current settings and let the server reject us
@@ -146,21 +146,21 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "ServerError":
+				case OrderCode.ServerError:
 					{
 						orderManager.ServerError = order.TargetString;
 						orderManager.AuthenticationFailed = false;
 						break;
 					}
 
-				case "AuthenticationError":
+				case OrderCode.AuthenticationError:
 					{
 						orderManager.ServerError = order.TargetString;
 						orderManager.AuthenticationFailed = true;
 						break;
 					}
 
-				case "SyncInfo":
+				case OrderCode.SyncInfo:
 					{
 						orderManager.LobbyInfo = Session.Deserialize(order.TargetString);
 						SetOrderLag(orderManager);
@@ -168,7 +168,7 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "SyncLobbyClients":
+				case OrderCode.SyncLobbyClients:
 					{
 						var clients = new List<Session.Client>();
 						var nodes = MiniYaml.FromString(order.TargetString);
@@ -184,7 +184,7 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "SyncLobbySlots":
+				case OrderCode.SyncLobbySlots:
 					{
 						var slots = new Dictionary<string, Session.Slot>();
 						var nodes = MiniYaml.FromString(order.TargetString);
@@ -203,7 +203,7 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "SyncLobbyGlobalSettings":
+				case OrderCode.SyncLobbyGlobalSettings:
 					{
 						var nodes = MiniYaml.FromString(order.TargetString);
 						foreach (var node in nodes)
@@ -218,7 +218,7 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "SyncClientPings":
+				case OrderCode.SyncClientPings:
 					{
 						var pings = new List<Session.ClientPing>();
 						var nodes = MiniYaml.FromString(order.TargetString);
@@ -233,7 +233,7 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "SetStance":
+				case OrderCode.SetStance:
 					{
 						if (!Game.orderManager.LobbyInfo.GlobalSettings.FragileAlliances)
 							return;
@@ -256,7 +256,7 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "Ping":
+				case OrderCode.Ping:
 					{
 						orderManager.IssueOrder(Order.Pong(order.TargetString));
 						break;

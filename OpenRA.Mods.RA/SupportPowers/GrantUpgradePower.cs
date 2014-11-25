@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
+		public override IOrderGenerator OrderGenerator(OrderCode order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
 			return new SelectTarget(self.World, order, manager, this);
@@ -99,9 +99,9 @@ namespace OpenRA.Mods.RA
 			readonly int range;
 			readonly Sprite tile;
 			readonly SupportPowerManager manager;
-			readonly string order;
+			readonly OrderCode order;
 
-			public SelectTarget(World world, string order, SupportPowerManager manager, GrantUpgradePower power)
+			public SelectTarget(World world, OrderCode order, SupportPowerManager manager, GrantUpgradePower power)
 			{
 				this.manager = manager;
 				this.order = order;
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.RA
 			public void Tick(World world)
 			{
 				// Cancel the OG if we can't use the power
-				if (!manager.Powers.ContainsKey(order))
+				if (!manager.Powers.ContainsKey(order.ToString()))
 					world.CancelInputMode();
 			}
 

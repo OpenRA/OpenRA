@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Server
 			if (!ValidateColorAgainstForbidden(askedColor, forbiddenColors, out forbiddenColor))
 			{
 				if (connectionToEcho != null)
-					server.SendOrderTo(connectionToEcho, "Message", "Color was too similar to the terrain, and has been adjusted.");
+					server.SendOrderTo(connectionToEcho, OrderCode.Message, "Color was too similar to the terrain, and has been adjusted.");
 
 				return false;
 			}
@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Server
 				if (connectionToEcho != null)
 				{
 					var client = playerColors[forbiddenColor];
-					server.SendOrderTo(connectionToEcho, "Message", "Color was too similar to {0}, and has been adjusted.".F(client));
+					server.SendOrderTo(connectionToEcho, OrderCode.Message, "Color was too similar to {0}, and has been adjusted.".F(client));
 				}
 
 				return false;
@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Server
 			if (!ValidateColorAgainstForbidden(askedColor, mapPlayerColors, out forbiddenColor))
 			{
 				if (connectionToEcho != null)
-					server.SendOrderTo(connectionToEcho, "Message", "Color was too similar to a non-combatant player, and has been adjusted.");
+					server.SendOrderTo(connectionToEcho, OrderCode.Message, "Color was too similar to a non-combatant player, and has been adjusted.");
 
 				return false;
 			}

@@ -76,13 +76,13 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter(new[] { "Disguise" }, "Disguise", 7, "ability", true, true) { ForceAttack = false };
+				yield return new TargetTypeOrderTargeter(new[] { "Disguise" }, OrderCode.Disguise, 7, "ability", true, true) { ForceAttack = false };
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Disguise")
+			if (order.OrderID == OrderCode.Disguise)
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Disguise")
+			if (order.ID == OrderCode.Disguise)
 			{
 				var target = order.TargetActor != self && order.TargetActor.IsInWorld ? order.TargetActor : null;
 				DisguiseAs(self, target);
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "Disguise" ? "Attack" : null;
+			return order.ID == OrderCode.Disguise ? "Attack" : null;
 		}
 
 		public Color RadarColorOverride(Actor self)

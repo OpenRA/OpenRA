@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "SetUnitStance" && info.EnableStances)
+			if (order.ID == OrderCode.SetUnitStance && info.EnableStances)
 				Stance = (UnitStance)order.ExtraData;
 		}
 

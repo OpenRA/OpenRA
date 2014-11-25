@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 
 			if (Info.CancelActivity)
 			{
-				var stop = new Order("Stop", self, false);
+				var stop = new Order(OrderCode.Stop, self, false);
 				foreach (var t in self.TraitsImplementing<IResolveOrder>())
 					t.ResolveOrder(self, stop);
 			}
