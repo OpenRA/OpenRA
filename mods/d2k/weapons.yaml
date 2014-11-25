@@ -23,6 +23,7 @@ LMG:
 Bazooka:
 	ReloadDelay: 50
 	Range: 5c0
+	MinRange: 0c512
 	Report: BAZOOK1.WAV
 	ValidTargets: Ground
 	Projectile: Missile
