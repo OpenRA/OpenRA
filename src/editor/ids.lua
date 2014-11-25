@@ -136,11 +136,10 @@ ID_QUICKEVAL        = NewID()
 ID_ADDTOSCRATCHPAD  = NewID()
 
 local ids = {}
-function ID (name)
-	ids[name] = ids[name] or NewID()
-	return ids[name]
+function IDgen (name)
+  ids[name] = ids[name] or NewID()
+  return ids[name]
 end
+function IDget (name) return ids[name] end
 
-function IDget (name)
-	return ids[name]
-end
+ID = setmetatable({}, ide.proto.ID)

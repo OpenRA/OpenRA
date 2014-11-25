@@ -218,7 +218,7 @@ end
 
 dofile "src/version.lua"
 
-for _, file in ipairs({"ids", "style", "keymap", "proto", "toolbar"}) do
+for _, file in ipairs({"proto", "ids", "style", "keymap", "toolbar"}) do
   dofile("src/editor/"..file..".lua")
 end
 
@@ -431,7 +431,7 @@ end
 -- process config
 
 -- set ide.config environment
-setmetatable(ide.config, {__index = {os = os, wxstc = wxstc, wx = wx}})
+setmetatable(ide.config, {__index = {os = os, wxstc = wxstc, wx = wx, ID = ID}})
 ide.config.load = { interpreters = loadInterpreters, specs = loadSpecs,
   tools = loadTools }
 do

@@ -42,3 +42,8 @@ ide.proto.Debugger = {__index = {
   GetHostName = function(self) return self.hostname end,
   GetPortNumber = function(self) return self.portnumber end,
 }}
+
+ide.proto.ID = {
+  __index = function(t, id) return _G['ID_'..id] end,
+  __call = function(t, id) return IDgen(id) end,
+}
