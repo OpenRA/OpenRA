@@ -125,7 +125,7 @@ local function outlineRefresh(editor, force)
   ctrl:DeleteChildren(fileitem)
   local stack = {fileitem}
   for n, func in ipairs(funcs) do
-    local depth = func.depth
+    local depth = outcfg.showflat and 1 or func.depth
     local parent = stack[depth]
     while not parent do depth = depth - 1; parent = stack[depth] end
     local item = ctrl:AppendItem(parent, func.name, func.image)
