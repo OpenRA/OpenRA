@@ -437,6 +437,12 @@ function SettingsRestoreView()
         name:match(TR("Output")) or name:match("Output") or name end)
   end
 
+  layoutcur = saveNotebook(frame.projnotebook)
+  layout = settingsReadSafe(settings,"nbprojlayout",layoutcur)
+  if (layout ~= layoutcur) then
+    loadNotebook(ide.frame.projnotebook,layout)
+  end
+
   -- always select Output tab
   local bottomnotebook = frame.bottomnotebook
   local index = bottomnotebook:GetPageIndex(bottomnotebook.errorlog)
@@ -460,6 +466,7 @@ function SettingsRestoreView()
   for l, m in pairs({
     nbdocklayout = frame.notebook:GetAuiManager(),
     nbbtmdocklayout = frame.bottomnotebook:GetAuiManager(),
+    nbprojdocklayout = frame.projnotebook:GetAuiManager(),
   }) do
     -- ...|dock_size(5,0,0)=20|dock_size(2,1,0)=200|...
     local prevlayout = settingsReadSafe(settings, l, "")
@@ -489,9 +496,11 @@ function SettingsSaveView()
   settings:Write("uimgrlayout", uimgr:SavePerspective())
   settings:Write("nblayout", saveNotebook(frame.notebook))
   settings:Write("nbbtmlayout", saveNotebook(frame.bottomnotebook))
+  settings:Write("nbprojlayout", saveNotebook(frame.projnotebook))
   settings:Write("statusbar", frame:GetStatusBar():IsShown())
   settings:Write("nbdocklayout", frame.notebook:GetAuiManager():SavePerspective())
   settings:Write("nbbtmdocklayout", frame.bottomnotebook:GetAuiManager():SavePerspective())
+  settings:Write("nbprojdocklayout", frame.projnotebook:GetAuiManager():SavePerspective())
 
   settings:SetPath(path)
 end
