@@ -142,7 +142,7 @@ namespace OpenRA.Graphics
 				var stride = bitmapData.Stride / 4;
 				foreach (var t in world.ActorsWithTrait<IRadarSignature>())
 				{
-					if (world.FogObscures(t.Actor))
+					if (!t.Actor.IsInWorld || world.FogObscures(t.Actor))
 						continue;
 
 					var color = t.Trait.RadarSignatureColor(t.Actor);
