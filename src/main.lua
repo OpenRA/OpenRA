@@ -12,7 +12,9 @@ local unpack = table.unpack or unpack
 if islinux then
   local file = io.popen("uname -m")
   if file then
-    arch = file:read("*a"):find("x86_64") and "x64" or "x86"
+    local machine=file:read("*l")
+    local archtype= { x86_64="x64", armv7l="armhf" }
+    arch = archtype[machine] or "x86"
     file:close()
   end
 end

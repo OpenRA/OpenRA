@@ -6,6 +6,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 if [[ $(uname) == 'Darwin' ]]; then
   (cd "$DIR"; open zbstudio/ZeroBraneStudio.app --args "$@")
 else
-  if [[ "$(uname -m)" == "x86_64" ]]; then ARCH="x64"; else ARCH="x86"; fi
+  case "$(uname -m)" in
+	x86_64) ARCH=x64;;
+	armv7l) ARCH=armhf;;
+	*)	ARCH=x86;;
+  esac
   (cd "$DIR"; bin/linux/$ARCH/lua src/main.lua zbstudio "$@") &
 fi

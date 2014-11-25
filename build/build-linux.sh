@@ -1,12 +1,19 @@
 #!/bin/bash
 
-if [ "$(uname -m)" = "x86_64" ]; then
-  FPIC="-fpic"
-  ARCH="x64"
-else
-  FPIC=""
-  ARCH="x86"
-fi
+case "$(uname -m)" in
+	x86_64)
+		FPIC="-fpic"
+		ARCH="x64"
+		;;
+	armv7l)
+		FPIC="-fpic"
+		ARCH="armhf"
+		;;
+	*)
+		FPIC=""
+		ARCH="x86"
+		;;
+esac
 
 # ZBS binary directory
 BIN_DIR="$(dirname "$PWD")/bin/linux/$ARCH"
