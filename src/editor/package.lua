@@ -154,6 +154,7 @@ function ide:GetOutputNotebook() return self.frame.bottomnotebook end
 function ide:GetProject() return FileTreeGetDir() end
 function ide:GetLaunchedProcess() return self.debugger and self.debugger.pid end
 function ide:GetProjectTree() return ide.filetree.projtree end
+function ide:GetOutlineTree() return ide.outline.outlineCtrl end
 function ide:GetWatch() return self.debugger and self.debugger.watchCtrl end
 function ide:GetStack() return self.debugger and self.debugger.stackCtrl end
 function ide:Yield() wx.wxYield() end
