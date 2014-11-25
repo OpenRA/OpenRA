@@ -11,7 +11,7 @@ ide.filetree = {
   projdir = "",
   projdirlist = {},
   projdirpartmap = {},
-  projtree = nil,
+  projtreeCtrl = nil,
   imglist = ide:CreateImageList("PROJECT", "FOLDER", "FILE-KNOWN", "FILE-NORMAL"),
   settings = {extensionignore = {}},
 }
@@ -566,7 +566,7 @@ local projtree = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
   wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_LINES_AT_ROOT
   + wx.wxTR_EDIT_LABELS + wx.wxNO_BORDER)
 projtree:SetFont(ide.font.fNormal)
-filetree.projtree = projtree
+filetree.projtreeCtrl = projtree
 
 local projnotebook = ide.frame.projnotebook
 projnotebook:AddPage(projtree, TR("Project"), true)
