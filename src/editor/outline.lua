@@ -95,6 +95,7 @@ local function outlineRefresh(editor, force)
   do -- check if any changes in the cached function list
     local prevfuncs = cache.funcs or {}
     local nochange = #funcs == #prevfuncs
+    local resort = {} -- items that need to be re-sorted
     if nochange then
       for n, func in ipairs(funcs) do
         func.item = prevfuncs[n].item -- carry over cached items
@@ -103,6 +104,7 @@ local function outlineRefresh(editor, force)
         elseif nochange then
           if func.name ~= prevfuncs[n].name then
             ctrl:SetItemText(prevfuncs[n].item, func.name)
+            if outcfg.sort then resort[ctrl:GetItemParent(prevfuncs[n].item)] = true end
           end
           if func.image ~= prevfuncs[n].image then
             ctrl:SetItemImage(prevfuncs[n].item, func.image)
@@ -111,7 +113,12 @@ local function outlineRefresh(editor, force)
       end
     end
     cache.funcs = funcs -- set new cache as positions may change
-    if nochange and not force then return end -- return if no visible changes
+    if nochange and not force then -- return if no visible changes
+      if outcfg.sort then -- resort items for all parents that have been modified
+        for item in pairs(resort) do ctrl:SortChildren(item) end
+      end
+      return
+    end
   end
 
   -- refresh the tree
@@ -124,14 +131,19 @@ local function outlineRefresh(editor, force)
   ctrl:Freeze()
   ctrl:DeleteChildren(fileitem)
   local stack = {fileitem}
+  local resort = {} -- items that need to be re-sorted
   for n, func in ipairs(funcs) do
     local depth = outcfg.showflat and 1 or func.depth
     local parent = stack[depth]
     while not parent do depth = depth - 1; parent = stack[depth] end
     local item = ctrl:AppendItem(parent, func.name, func.image)
+    if outcfg.sort then resort[parent] = true end
     setData(ctrl, item, n)
     func.item = item
     stack[func.depth+1] = item
+  end
+  if outcfg.sort then -- resort items for all parents that have been modified
+    for item in pairs(resort) do ctrl:SortChildren(item) end
   end
   ctrl:ExpandAllChildren(fileitem)
   -- scroll to the fileitem, but only if it's not a root item (as it's hidden)
