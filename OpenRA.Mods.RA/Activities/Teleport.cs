@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Activities
 
 	public class Teleport : Activity
 	{
-		Actor chronosphere;
+		Actor teleporter;
 		CPos destination;
 		int? maximumDistance;
 		bool killCargo;
@@ -29,12 +29,12 @@ namespace OpenRA.Mods.RA.Activities
 
 		const int maxCellSearchRange = Map.MaxTilesInCircleRange;
 
-		public Teleport(Actor chronosphere, CPos destination, int? maximumDistance, bool killCargo, bool screenFlash, string sound)
+		public Teleport(Actor teleporter, CPos destination, int? maximumDistance, bool killCargo, bool screenFlash, string sound)
 		{
 			if (maximumDistance > maxCellSearchRange)
 				throw new InvalidOperationException("Teleport cannot be used with a maximum teleport distance greater than {0}.".F(maxCellSearchRange));
 
-			this.chronosphere = chronosphere;
+			this.teleporter = teleporter;
 			this.destination = destination;
 			this.maximumDistance = maximumDistance;
 			this.killCargo = killCargo;
@@ -67,20 +67,20 @@ namespace OpenRA.Mods.RA.Activities
 			if (killCargo && self.HasTrait<Cargo>())
 			{
 				var cargo = self.Trait<Cargo>();
-				if (chronosphere != null)
+				if (teleporter != null)
 				{
 					while (!cargo.IsEmpty(self))
 					{
 						var a = cargo.Unload(self);
 						// Kill all the units that are unloaded into the void
 						// Kill() handles kill and death statistics
-						a.Kill(chronosphere);
+						a.Kill(teleporter);
 					}
 				}
 			}
 
 			// Consume teleport charges if this wasn't triggered via chronosphere
-			if (chronosphere == null && pc != null)
+			if (pc != null)
 				pc.ResetChargeTime();
 
 			// Trigger screen desaturate effect
@@ -88,8 +88,12 @@ namespace OpenRA.Mods.RA.Activities
 				foreach (var a in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())
 					a.Trait.Enable();
 
-			if (chronosphere != null && !chronosphere.Destroyed && chronosphere.HasTrait<RenderBuilding>())
-				chronosphere.Trait<RenderBuilding>().PlayCustomAnim(chronosphere, "active");
+			if (teleporter != null && !teleporter.Destroyed)
+			{
+				var building = teleporter.TraitOrDefault<RenderBuilding>();
+				if (building != null)
+					building.PlayCustomAnim(teleporter, "active");
+			}
 
 			return NextActivity;
 		}
@@ -102,13 +106,13 @@ namespace OpenRA.Mods.RA.Activities
 				destination = restrictTo.MinBy(x => (x - destination).LengthSquared);
 
 			var pos = self.Trait<IPositionable>();
-			if (pos.CanEnterCell(destination) && self.Owner.Shroud.IsExplored(destination))
+			if (pos.CanEnterCell(destination) && teleporter.Owner.Shroud.IsExplored(destination))
 				return destination;
 
 			var max = maximumDistance != null ? maximumDistance.Value : maxCellSearchRange;
 			foreach (var tile in self.World.Map.FindTilesInCircle(destination, max))
 			{
-				if (self.Owner.Shroud.IsExplored(tile)
+				if (teleporter.Owner.Shroud.IsExplored(tile)
 					&& (restrictTo == null || (restrictTo != null && restrictTo.Contains(tile)))
 					&& pos.CanEnterCell(tile))
 					return tile;
