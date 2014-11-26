@@ -78,6 +78,10 @@ ide = {
     },
     outline = {
       showanonymous = '~',
+      showflat = false,
+      showmethodindicator = false,
+      showonefile = false,
+      sort = false,
     },
 
     toolbar = {
