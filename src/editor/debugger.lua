@@ -1303,7 +1303,7 @@ function DebuggerRefreshScratchpad()
         debugger.scratchpad.running = now
       end
     else
-      local clear = ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT)
+      local clear = ide:GetMenuBar():IsChecked(ID_CLEAROUTPUT)
       local filePath = debuggerMakeFileName(scratchpadEditor)
 
       -- wrap into a function call to make "return" to work with scratchpad
@@ -1322,7 +1322,7 @@ function DebuggerRefreshScratchpad()
         debugger.scratchpad.updated = false
         debugger.scratchpad.runs = (debugger.scratchpad.runs or 0) + 1
 
-        if clear then ClearOutput() end
+        if clear then ClearOutput(true) end
 
         -- the code can be running in two ways under scratchpad:
         -- 1. controlled by the application, requires stopper (most apps)

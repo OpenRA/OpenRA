@@ -194,7 +194,7 @@ end
 local debugger = ide.debugger
 
 local function analyzeProgram(editor)
-  if ide:GetMenuBar():IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
+  ClearOutput()
   DisplayOutput("Analyzing the source code")
   frame:Update()
 

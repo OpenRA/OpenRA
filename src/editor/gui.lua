@@ -415,9 +415,7 @@ local function createBottomNotebook(frame)
     end)
 
   errorlog:Connect(ID_CLEAROUTPUT, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function(event)
-      ClearOutput()
-    end)
+    function(event) ClearOutput(true) end)
 
   local shellbox = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_NONE)

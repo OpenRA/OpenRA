@@ -210,7 +210,7 @@ function ActivateOutput()
 end
 
 local function runInterpreter(wfilename, withdebugger)
-  if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
+  ClearOutput()
   ActivateOutput()
 
   ClearAllCurrentLineMarkers()

@@ -584,9 +584,7 @@ function CompileProgram(editor, params)
   local func, err = loadstring(StripShebang(editor:GetText()), '@'..filePath)
   local line = not func and tonumber(err:match(":(%d+)%s*:")) or nil
 
-  if not params.keepoutput and ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then
-    ClearOutput()
-  end
+  if not params.keepoutput then ClearOutput() end
 
   compileTotal = compileTotal + 1
   if func then

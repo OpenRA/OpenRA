@@ -33,7 +33,8 @@ end
 
 StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font.oNormal,ide.font.oItalic)
 
-function ClearOutput()
+function ClearOutput(force)
+  if not (force or ide:GetMenuBar():IsChecked(ID_CLEAROUTPUT)) then return end
   errorlog:SetReadOnly(false)
   errorlog:ClearAll()
   errorlog:SetReadOnly(true)
