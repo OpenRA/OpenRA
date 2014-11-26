@@ -11,10 +11,9 @@
 using System;
 using System.Linq;
 using Eluant;
-using OpenRA.Mods.Common;
 using OpenRA.Scripting;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptGlobal("Map")]
 	public class MapGlobal : ScriptGlobal

@@ -13,7 +13,7 @@ using Eluant;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Activities
+namespace OpenRA.Mods.Common.Activities
 {
 	public sealed class CallLuaFunc : Activity, IDisposable
 	{

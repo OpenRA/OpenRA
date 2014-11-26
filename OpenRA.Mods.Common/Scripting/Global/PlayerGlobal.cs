@@ -10,8 +10,9 @@
 
 using System.Linq;
 using Eluant;
+using OpenRA.Scripting;
 
-namespace OpenRA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptGlobal("Player")]
 	public class PlayerGlobal : ScriptGlobal

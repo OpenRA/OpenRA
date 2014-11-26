@@ -12,7 +12,7 @@ using System;
 using System.IO;
 using OpenRA.Widgets;
 
-namespace OpenRA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	public static class Media
 	{
