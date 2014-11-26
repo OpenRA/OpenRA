@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 			{
 				var maxDistance = Info.HasDistanceLimit ? Info.MaxDistance : (int?)null;
 				self.CancelActivity();
-				self.QueueActivity(new Teleport(null, order.TargetLocation, maxDistance, true, false, Info.ChronoshiftSound));
+				self.QueueActivity(new Teleport(self, order.TargetLocation, maxDistance, true, false, Info.ChronoshiftSound));
 			}
 		}
 
