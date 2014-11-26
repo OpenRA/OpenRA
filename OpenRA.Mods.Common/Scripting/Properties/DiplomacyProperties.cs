@@ -14,7 +14,7 @@ using OpenRA.Network;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("Diplomacy")]
 	public class DiplomacyProperties : ScriptPlayerProperties

@@ -164,6 +164,7 @@
     <Compile Include="Buildings\LineBuild.cs" />
     <Compile Include="Buildings\RepairableBuilding.cs" />
     <Compile Include="Buildings\Util.cs" />
+    <Compile Include="Scripting\Properties\RepairableBuildingProperties.cs" />
     <Compile Include="C4Demolition.cs" />
     <Compile Include="ExternalCapturable.cs" />
     <Compile Include="ExternalCapturableBar.cs" />
@@ -238,7 +239,6 @@
     <Compile Include="Player\MissionObjectives.cs" />
     <Compile Include="PortableChrono.cs" />
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
-    <Compile Include="Scripting\Properties\PlayerProperties.cs" />
     <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
     <Compile Include="Player\TechTree.cs" />
     <Compile Include="PrimaryBuilding.cs" />
@@ -277,7 +277,6 @@
     <Compile Include="RepairsUnits.cs" />
     <Compile Include="Reservable.cs" />
     <Compile Include="ScaredyCat.cs" />
-    <Compile Include="Scripting\Media.cs" />
     <Compile Include="SeedsResource.cs" />
     <Compile Include="SelfHealing.cs" />
     <Compile Include="Sellable.cs" />
@@ -396,26 +395,14 @@
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
     <Compile Include="Buildings\LineBuildNode.cs" />
     <Compile Include="Render\WithBuildingPlacedAnimation.cs" />
-    <Compile Include="Scripting\LuaScript.cs" />
-    <Compile Include="Scripting\CallLuaFunc.cs" />
-    <Compile Include="Scripting\Global\ActorGlobal.cs" />
-    <Compile Include="Scripting\Global\CoordinateGlobals.cs" />
-    <Compile Include="Scripting\Properties\ResourceProperties.cs" />
+    <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
     <Compile Include="Scripting\Properties\ProductionProperties.cs" />
     <Compile Include="Scripting\Properties\MissionObjectiveProperties.cs" />
     <Compile Include="Scripting\Properties\MobileProperties.cs" />
     <Compile Include="Scripting\Properties\GeneralProperties.cs" />
-    <Compile Include="Scripting\Properties\HealthProperties.cs" />
     <Compile Include="Scripting\Properties\CombatProperties.cs" />
-    <Compile Include="Scripting\Properties\DiplomacyProperties.cs" />
-    <Compile Include="Scripting\Properties\PowerProperties.cs" />
-    <Compile Include="Scripting\Global\MapGlobal.cs" />
-    <Compile Include="Scripting\Global\PlayerGlobal.cs" />
-    <Compile Include="Scripting\Global\UtilsGlobal.cs" />
-    <Compile Include="Scripting\Global\TriggerGlobal.cs" />
-    <Compile Include="Scripting\ScriptTriggers.cs" />
+    <Compile Include="Scripting\Properties\PlayerProperties.cs" />
     <Compile Include="Scripting\Properties\TransportProperties.cs" />
-    <Compile Include="Scripting\Global\CameraGlobal.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
     <Compile Include="Render\WithRepairAnimation.cs" />
     <Compile Include="Render\WithRepairOverlay.cs" />
@@ -449,7 +436,6 @@
     <Compile Include="Widgets\Logic\SupportPowerBinLogic.cs" />
     <Compile Include="Widgets\Logic\DebugMenuLogic.cs" />
     <Compile Include="ProductionQueueFromSelection.cs" />
-    <Compile Include="Scripting\Global\MediaGlobal.cs" />
     <Compile Include="GlobalUpgradable.cs" />
     <Compile Include="Player\GlobalUpgradeManager.cs" />
     <Compile Include="GainsStatUpgrades.cs" />
@@ -457,8 +443,6 @@
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
     <Compile Include="Warheads\DestroyResourceWarhead.cs" />
     <Compile Include="Warheads\PerCellDamageWarhead.cs" />
-    <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
-    <Compile Include="Scripting\Global\DateTimeGlobal.cs" />
     <Compile Include="Scripting\Properties\HarvesterProperties.cs" />
     <Compile Include="Scripting\Properties\HelicopterProperties.cs" />
     <Compile Include="Scripting\Properties\PlaneProperties.cs" />
@@ -468,7 +452,6 @@
     <Compile Include="KillsSelf.cs" />
     <Compile Include="Warheads\GrantUpgradeWarhead.cs" />
     <Compile Include="Crates\GrantUpgradeCrateAction.cs" />
-    <Compile Include="Scripting\Properties\UpgradeProperties.cs" />
     <Compile Include="UpgradeActorsNear.cs" />
     <Compile Include="WithRangeCircle.cs" />
     <Compile Include="Scripting\Properties\TransformProperties.cs" />

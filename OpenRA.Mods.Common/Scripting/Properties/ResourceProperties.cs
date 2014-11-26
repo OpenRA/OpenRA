@@ -12,7 +12,7 @@ using System;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("Resources")]
 	public class ResourceProperties : ScriptPlayerProperties, Requires<PlayerResourcesInfo>

@@ -13,7 +13,7 @@ using Eluant;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptGlobal("Utils")]
 	public class UtilsGlobal : ScriptGlobal

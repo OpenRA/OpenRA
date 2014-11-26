@@ -7,8 +7,9 @@
  * see COPYING.
  */
 #endregion
+using OpenRA.Scripting;
 
-namespace OpenRA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptGlobal("CPos")]
 	public class CPosGlobal : ScriptGlobal

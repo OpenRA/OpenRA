@@ -12,7 +12,7 @@ using System;
 using Eluant;
 using OpenRA.Scripting;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptGlobal("DateTime")]
 	public class DateGlobal : ScriptGlobal
