@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 				var targetCell = target.Location + (order.TargetLocation - order.ExtraLocation);
 				var cpi = Info as ChronoshiftPowerInfo;
 
-				if (self.Owner.Shroud.IsExplored(targetCell) && cs.CanChronoshiftTo(target, targetCell))
+				if (order.Subject.Owner.Shroud.IsExplored(targetCell) && cs.CanChronoshiftTo(target, targetCell))
 					cs.Teleport(target, targetCell, cpi.Duration * 25, cpi.KillCargo, self);
 			}
 		}
