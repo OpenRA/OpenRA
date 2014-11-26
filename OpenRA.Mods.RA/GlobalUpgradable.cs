@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OpenRA.Mods.RA;
+using OpenRA.Mods.Common;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -30,6 +30,7 @@ namespace OpenRA.Mods.RA
 		readonly GlobalUpgradableInfo info;
 		readonly GlobalUpgradeManager globalManager;
 		readonly UpgradeManager manager;
+		bool wasAvailable;
 
 		public GlobalUpgradable(Actor self, GlobalUpgradableInfo info)
 		{
@@ -52,13 +53,17 @@ namespace OpenRA.Mods.RA
 
 		public void PrerequisitesUpdated(Actor self, bool available)
 		{
-			foreach (var u in info.Upgrades)
-			{
-				if (available)
+			if (available == wasAvailable)
+				return;
+			
+			if (available)
+				foreach (var u in info.Upgrades)
 					manager.GrantUpgrade(self, u, this);
-				else
+			else
+				foreach (var u in info.Upgrades)
 					manager.RevokeUpgrade(self, u, this);
-			}
+
+			wasAvailable = available;
 		}
 	}
 }

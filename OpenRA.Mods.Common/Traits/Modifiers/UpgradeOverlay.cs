@@ -15,26 +15,18 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Display a colored overlay when a timed upgrade is active.")]
-	public class UpgradeOverlayInfo : ITraitInfo
+	public class UpgradeOverlayInfo : UpgradableTraitInfo, ITraitInfo
 	{
-		[Desc("Upgrade that is required before this overlay is rendered")]
-		public readonly string RequiresUpgrade = null;
-
 		[Desc("Palette to use when rendering the overlay")]
 		public readonly string Palette = "invuln";
 
 		public object Create(ActorInitializer init) { return new UpgradeOverlay(this); }
 	}
 
-	public class UpgradeOverlay : IRenderModifier, IUpgradable
+	public class UpgradeOverlay : UpgradableTrait<UpgradeOverlayInfo>, IRenderModifier
 	{
-		readonly UpgradeOverlayInfo info;
-		bool enabled;
-
 		public UpgradeOverlay(UpgradeOverlayInfo info)
-		{
-			this.info = info;
-		}
+			: base (info) { }
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
@@ -42,22 +34,11 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				yield return a;
 
-				if (enabled && !a.IsDecoration)
-					yield return a.WithPalette(wr.Palette(info.Palette))
+				if (!IsTraitDisabled && !a.IsDecoration)
+					yield return a.WithPalette(wr.Palette(Info.Palette))
 						.WithZOffset(a.ZOffset + 1)
 						.AsDecoration();
 			}
-		}
-
-		public bool AcceptsUpgrade(string type)
-		{
-			return type == info.RequiresUpgrade;
-		}
-
-		public void UpgradeAvailable(Actor self, string type, bool available)
-		{
-			if (type == info.RequiresUpgrade)
-				enabled = available;
 		}
 	}
 }
