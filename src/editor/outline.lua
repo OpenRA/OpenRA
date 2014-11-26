@@ -232,7 +232,7 @@ local function outlineCreateOutlineWindow()
 
   local layout = ide:GetSetting("/view", "uimgrlayout")
   if not layout or not layout:find("outlinepanel") then
-    ide:AddPanelDocked(ide.frame.projnotebook, ctrl, "outlinepanel", TR("Outline"), reconfigure, false)
+    ide:AddPanelDocked(ide:GetProjectNotebook(), ctrl, "outlinepanel", TR("Outline"), reconfigure, false)
   else
     ide:AddPanel(ctrl, "outlinepanel", TR("Outline"), reconfigure)
   end

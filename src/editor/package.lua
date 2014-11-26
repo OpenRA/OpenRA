@@ -151,6 +151,7 @@ function ide:GetOutput() return self.frame.bottomnotebook.errorlog end
 function ide:GetConsole() return self.frame.bottomnotebook.shellbox end
 function ide:GetEditorNotebook() return self.frame.notebook end
 function ide:GetOutputNotebook() return self.frame.bottomnotebook end
+function ide:GetProjectNotebook() return self.frame.projnotebook end
 function ide:GetProject() return FileTreeGetDir() end
 function ide:GetLaunchedProcess() return self.debugger and self.debugger.pid end
 function ide:GetProjectTree() return ide.filetree.projtreeCtrl end

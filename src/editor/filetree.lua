@@ -568,8 +568,7 @@ local projtree = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
 projtree:SetFont(ide.font.fNormal)
 filetree.projtreeCtrl = projtree
 
-local projnotebook = ide.frame.projnotebook
-projnotebook:AddPage(projtree, TR("Project"), true)
+ide:GetProjectNotebook():AddPage(projtree, TR("Project"), true)
 
 -- proj connectors
 -- ---------------
