@@ -312,6 +312,7 @@ function findReplace:RunInFiles(replace)
     wx.wxDefaultPosition, wx.wxSize(1,1), wx.wxBORDER_NONE)
   findReplace.occurrences = 0
 
+  ClearOutput()
   ActivateOutput()
 
   local startdir = findReplace.filedirText
