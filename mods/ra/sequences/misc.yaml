@@ -640,3 +640,13 @@ railmine:
 	idle:
 		Start: 0
 		ZOffset: -512
+
+ctflag:
+	idle:
+		Start: 0
+		Length: 9
+		Tick: 50
+		Offset: 0,-12
+	bib: mbGAP
+		Start: 0
+		Length: *
