@@ -13,10 +13,11 @@ using OpenRA.Traits;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class PoisonedByTiberiumInfo : ITraitInfo
+	class PoisonedByTiberiumInfo : UpgradableTraitInfo, ITraitInfo
 	{
 		[WeaponReference] public readonly string Weapon = "Tiberium";
 		public readonly string[] Resources = { "Tiberium", "BlueTiberium" };
@@ -24,26 +25,28 @@ namespace OpenRA.Mods.Cnc.Traits
 		public object Create(ActorInitializer init) { return new PoisonedByTiberium(this); }
 	}
 
-	class PoisonedByTiberium : ITick, ISync
+	class PoisonedByTiberium : UpgradableTrait<PoisonedByTiberiumInfo>, ITick, ISync
 	{
-		PoisonedByTiberiumInfo info;
 		[Sync] int poisonTicks;
 
-		public PoisonedByTiberium(PoisonedByTiberiumInfo info) { this.info = info; }
+		public PoisonedByTiberium(PoisonedByTiberiumInfo info)
+			: base(info) { }
 
 		public void Tick(Actor self)
 		{
-			if (--poisonTicks > 0) return;
+			if (IsTraitDisabled || --poisonTicks > 0)
+				return;
 
 			// Prevents harming infantry in cargo.
-			if (!self.IsInWorld) return;
+			if (!self.IsInWorld)
+				return;
 
 			var rl = self.World.WorldActor.Trait<ResourceLayer>();
 			var r = rl.GetResource(self.Location);
-			if (r == null) return;
-			if (!info.Resources.Contains(r.Info.Name)) return;
+			if (r == null || !Info.Resources.Contains(r.Info.Name))
+				return;
 
-			var weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
+			var weapon = self.World.Map.Rules.Weapons[Info.Weapon.ToLowerInvariant()];
 
 			weapon.Impact(Target.FromActor(self), self.World.WorldActor, Enumerable.Empty<int>());
 			poisonTicks = weapon.ReloadDelay;
