@@ -25,6 +25,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly int RepairInterval = 24;
 		public readonly int RepairStep = 7;
 		public readonly int[] RepairBonuses = { 100, 150, 175, 200, 220, 240, 260, 280, 300 };
+		public readonly bool CancelWhenDisabled = false;
 
 		public readonly string IndicatorPalettePrefix = "player";
 
@@ -70,7 +71,15 @@ namespace OpenRA.Mods.RA.Buildings
 		public void Tick(Actor self)
 		{
 			if (IsTraitDisabled)
+			{
+				if (RepairActive && Info.CancelWhenDisabled)
+				{
+					Repairers.Clear();
+					RepairActive = false;
+				}
+
 				return;
+			}
 
 			if (remainingTicks == 0)
 			{
