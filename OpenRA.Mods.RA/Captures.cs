@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID != "CaptureActor")
+			if (order.OrderID != OrderCode.CaptureActor)
 				return null;
 
 			if (target.Type == TargetType.FrozenActor)
@@ -59,12 +59,12 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "CaptureActor" ? "Attack" : null;
+			return order.ID == OrderCode.CaptureActor ? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "CaptureActor")
+			if (order.ID != OrderCode.CaptureActor)
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA
 			readonly bool sabotage;
 
 			public CaptureOrderTargeter(bool sabotage)
-				: base("CaptureActor", 6, "enter", true, true)
+				: base(OrderCode.CaptureActor, 6, "enter", true, true)
 			{
 				this.sabotage = sabotage;
 			}

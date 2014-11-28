@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Sell")
+			if (order.ID == OrderCode.Sell)
 				Sell(self);
 		}
 

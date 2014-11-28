@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (!p.World.LobbyInfo.GlobalSettings.FragileAlliances)
 				return;	// stance changes are banned
 
-			world.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor, false)
+			world.IssueOrder(new Order(OrderCode.SetStance, world.LocalPlayer.PlayerActor, false)
 			{
 				ExtraData = (uint)ss,
 				TargetString = p.InternalName,

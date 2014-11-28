@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "SetRallyPoint")
+			if (order.OrderID == OrderCode.SetRallyPoint)
 				return new Order(order.OrderID, self, false) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition), SuppressVisualFeedback = true };
 
 			return null;
@@ -47,13 +47,13 @@ namespace OpenRA.Mods.Common
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "SetRallyPoint")
+			if (order.ID == OrderCode.SetRallyPoint)
 				Location = order.TargetLocation;
 		}
 
 		class RallyPointOrderTargeter : IOrderTargeter
 		{
-			public string OrderID { get { return "SetRallyPoint"; } }
+			public OrderCode OrderID { get { return OrderCode.SetRallyPoint; } }
 			public int OrderPriority { get { return 0; } }
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)

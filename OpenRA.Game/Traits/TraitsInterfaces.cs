@@ -73,7 +73,7 @@ namespace OpenRA.Traits
 
 	public interface IOrderTargeter
 	{
-		string OrderID { get; }
+		OrderCode OrderID { get; }
 		int OrderPriority { get; }
 		bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor);
 		bool IsQueued { get; }

@@ -212,7 +212,7 @@ namespace OpenRA.Mods.RA.AI
 					{
 						if (IsRearm(a))
 							continue;
-						owner.world.IssueOrder(new Order("ReturnToBase", a, false));
+						owner.world.IssueOrder(new Order(OrderCode.ReturnToBase, a, false));
 						continue;
 					}
 
@@ -221,7 +221,7 @@ namespace OpenRA.Mods.RA.AI
 				}
 
 				if (owner.Target.HasTrait<ITargetable>() && CanAttackTarget(a, owner.Target))
-					owner.world.IssueOrder(new Order("Attack", a, false) { TargetActor = owner.Target });
+					owner.world.IssueOrder(new Order(OrderCode.Attack, a, false) { TargetActor = owner.Target });
 			}
 		}
 
@@ -244,11 +244,11 @@ namespace OpenRA.Mods.RA.AI
 					if (IsRearm(a))
 						continue;
 
-					owner.world.IssueOrder(new Order("ReturnToBase", a, false));
+					owner.world.IssueOrder(new Order(OrderCode.ReturnToBase, a, false));
 					continue;
 				}
 
-				owner.world.IssueOrder(new Order("Move", a, false) { TargetLocation = RandomBuildingLocation(owner) });
+				owner.world.IssueOrder(new Order(OrderCode.Move, a, false) { TargetLocation = RandomBuildingLocation(owner) });
 			}
 
 			owner.fsm.ChangeState(owner, new AirIdleState(), true);

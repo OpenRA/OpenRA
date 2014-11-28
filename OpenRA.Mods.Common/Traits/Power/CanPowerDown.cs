@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Power
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "PowerDown")
+			if (order.ID == OrderCode.PowerDown)
 			{
 				disabled = !disabled;
 				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", disabled ? "EnablePower" : "DisablePower", self.Owner.Country.Race);

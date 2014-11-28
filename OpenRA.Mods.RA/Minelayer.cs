@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 			get
 			{
 				yield return new BeginMinefieldOrderTargeter();
-				yield return new DeployOrderTargeter("PlaceMine", 5);
+				yield return new DeployOrderTargeter(OrderCode.PlaceMine, 5);
 			}
 		}
 
@@ -59,12 +59,12 @@ namespace OpenRA.Mods.RA
 		{
 			switch (order.OrderID)
 			{
-				case "BeginMinefield":
+				case OrderCode.BeginMinefield:
 					var start = self.World.Map.CellContaining(target.CenterPosition);
 					self.World.OrderGenerator = new MinefieldOrderGenerator(self, start);
-					return new Order("BeginMinefield", self, false) { TargetLocation = start };
-				case "PlaceMine":
-					return new Order("PlaceMine", self, false) { TargetLocation = self.Location };
+					return new Order(OrderCode.BeginMinefield, self, false) { TargetLocation = start };
+				case OrderCode.PlaceMine:
+					return new Order(OrderCode.PlaceMine, self, false) { TargetLocation = self.Location };
 				default:
 					return null;
 			}
@@ -72,10 +72,10 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "BeginMinefield")
+			if (order.ID == OrderCode.BeginMinefield)
 				minefieldStart = order.TargetLocation;
 
-			if (order.OrderString == "PlaceMine")
+			if (order.ID == OrderCode.PlaceMine)
 			{
 				minefieldStart = order.TargetLocation;
 				Minefield = new CPos[] { order.TargetLocation };
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity(new LayMines());
 			}
 
-			if (order.OrderString == "PlaceMinefield")
+			if (order.ID == OrderCode.PlaceMinefield)
 			{
 				var movement = self.Trait<IPositionable>();
 
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.RA
 				if (mi.Button == MouseButton.Right && underCursor == null)
 				{
 					minelayer.World.CancelInputMode();
-					yield return new Order("PlaceMinefield", minelayer, false) { TargetLocation = xy };
+					yield return new Order(OrderCode.PlaceMinefield, minelayer, false) { TargetLocation = xy };
 				}
 			}
 
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.RA
 
 		class BeginMinefieldOrderTargeter : IOrderTargeter
 		{
-			public string OrderID { get { return "BeginMinefield"; } }
+			public OrderCode OrderID { get { return OrderCode.BeginMinefield; } }
 			public int OrderPriority { get { return 5; } }
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)

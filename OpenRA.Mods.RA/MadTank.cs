@@ -84,14 +84,14 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter(new[] { "DetonateAttack" }, "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
-				yield return new DeployOrderTargeter("Detonate", 5);
+				yield return new TargetTypeOrderTargeter(new[] { "DetonateAttack" }, OrderCode.DetonateAttack, 5, "attack", true, false) { ForceAttack = false };
+				yield return new DeployOrderTargeter(OrderCode.Detonate, 5);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID != "DetonateAttack" && order.OrderID != "Detonate")
+			if (order.OrderID != OrderCode.DetonateAttack && order.OrderID != OrderCode.Detonate)
 				return null;
 
 			if (target.Type == TargetType.FrozenActor)
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "DetonateAttack")
+			if (order.ID == OrderCode.DetonateAttack)
 			{
 				var target = self.ResolveFrozenActorOrder(order, Color.Red);
 				if (target.Type != TargetType.Actor)
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity(new CallFunc(StartDetonationSequence));
 			}
 
-			else if (order.OrderString == "Detonate")
+			else if (order.ID == OrderCode.Detonate)
 			{
 				self.CancelActivity();
 				self.QueueActivity(new CallFunc(StartDetonationSequence));

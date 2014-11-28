@@ -37,11 +37,11 @@ namespace OpenRA.Mods.Common.Commands
 			switch (name)
 			{
 				case "pause":
-					world.IssueOrder(new Order("PauseGame", null, false)
+					world.IssueOrder(new Order(OrderCode.PauseGame, null, false)
 						{ TargetString = world.Paused ? "UnPause" : "Pause" });
 					break;
 				case "surrender":
-					world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
+					world.IssueOrder(new Order(OrderCode.Surrender, world.LocalPlayer.PlayerActor, false));
 					break;
 			}
 		}

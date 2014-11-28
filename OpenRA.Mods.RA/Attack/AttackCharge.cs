@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA
 		{
 			base.ResolveOrder(self, order);
 
-			if (order.OrderString == "Stop")
+			if (order.ID == OrderCode.Stop)
 				self.CancelActivity();
 		}
 

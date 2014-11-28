@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID != "C4")
+			if (order.OrderID != OrderCode.C4)
 				return null;
 
 			if (target.Type == TargetType.FrozenActor)
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "C4")
+			if (order.ID != OrderCode.C4)
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
@@ -84,13 +84,13 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "C4" ? info.Voice : null;
+			return order.ID == OrderCode.C4 ? info.Voice : null;
 		}
 
 		class C4DemolitionOrderTargeter : UnitOrderTargeter
 		{
 			public C4DemolitionOrderTargeter()
-				: base("C4", 6, "c4", true, false) { }
+				: base(OrderCode.C4, 6, "c4", true, false) { }
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{

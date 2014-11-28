@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Orders
 
 				if (underCursor.Info.Traits.Contains<RepairableBuildingInfo>()
 					&& underCursor.GetDamageState() > DamageState.Undamaged)
-					yield return new Order("RepairBuilding", world.LocalPlayer.PlayerActor, false) { TargetActor = underCursor };
+					yield return new Order(OrderCode.RepairBuilding, world.LocalPlayer.PlayerActor, false) { TargetActor = underCursor };
 			}
 		}
 

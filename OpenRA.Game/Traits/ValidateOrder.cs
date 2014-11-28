@@ -36,11 +36,11 @@ namespace OpenRA.Traits
 			// Drop exploiting orders
 			if (subjectClientId != clientId && !isBotOrder)
 			{
-				Game.Debug("Detected exploit order from client {0}: {1}", clientId, order.OrderString);
+				Game.Debug("Detected exploit order from client {0}: {1}", clientId, order.ID);
 				return false;
 			}
 
-			return order.Subject.AcceptsOrder(order.OrderString);
+			return order.Subject.AcceptsOrder(order.ID.ToString());
 		}
 	}
 }

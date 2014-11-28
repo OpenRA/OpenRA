@@ -105,8 +105,8 @@ namespace OpenRA.Mods.RA
 		public void ResolveOrder(Actor self, Order order)
 		{
 			// order.OrderString is the key of the support power
-			if (Powers.ContainsKey(order.OrderString))
-				Powers[order.OrderString].Activate(order);
+			if (Powers.ContainsKey(order.ID.ToString()))
+				Powers[order.ID.ToString()].Activate(order);
 		}
 
 		// Deprecated. Remove after SupportPowerBinWidget is removed.
@@ -210,7 +210,7 @@ namespace OpenRA.Mods.RA
 			if (!Ready)
 				return;
 
-			Manager.self.World.OrderGenerator = Instances.First().OrderGenerator(Key, Manager);
+			Manager.self.World.OrderGenerator = Instances.First().OrderGenerator(Order.CodeFromString(Key), Manager);
 		}
 
 		public void Activate(Order order)
@@ -233,11 +233,11 @@ namespace OpenRA.Mods.RA
 	public class SelectGenericPowerTarget : IOrderGenerator
 	{
 		readonly SupportPowerManager manager;
-		readonly string order;
+		readonly OrderCode order;
 		readonly string cursor;
 		readonly MouseButton expectedButton;
 
-		public SelectGenericPowerTarget(string order, SupportPowerManager manager, string cursor, MouseButton button)
+		public SelectGenericPowerTarget(OrderCode order, SupportPowerManager manager, string cursor, MouseButton button)
 		{
 			this.manager = manager;
 			this.order = order;
@@ -255,7 +255,7 @@ namespace OpenRA.Mods.RA
 		public virtual void Tick(World world)
 		{
 			// Cancel the OG if we can't use the power
-			if (!manager.Powers.ContainsKey(order))
+			if (!manager.Powers.ContainsKey(order.ToString()))
 				world.CancelInputMode();
 		}
 

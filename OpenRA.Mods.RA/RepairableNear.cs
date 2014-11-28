@@ -37,14 +37,14 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<Building>("RepairNear", 5,
+				yield return new EnterAlliedActorTargeter<Building>(OrderCode.RepairNear, 5,
 					target => CanRepairAt(target), _ => ShouldRepair());
 			}
 		}
 
 		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
-			if( order.OrderID == "RepairNear" )
+			if( order.OrderID == OrderCode.RepairNear )
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "RepairNear" && CanRepairAt(order.TargetActor) && ShouldRepair())
+			if (order.ID == OrderCode.RepairNear && CanRepairAt(order.TargetActor) && ShouldRepair())
 			{
 				var movement = self.Trait<IMove>();
 				var target = Target.FromOrder(self.World, order);

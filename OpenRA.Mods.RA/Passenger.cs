@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 	{
 		readonly AlternateTransportsMode mode;
 
-		public EnterTransportTargeter(string order, int priority,
+		public EnterTransportTargeter(OrderCode order, int priority,
 			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor,
 			AlternateTransportsMode mode)
 			: base (order, priority, canTarget, useEnterCursor) { this.mode = mode; }
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 	{
 		readonly AlternateTransportsMode mode;
 
-		public EnterTransportsTargeter(string order, int priority,
+		public EnterTransportsTargeter(OrderCode order, int priority,
 			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor,
 			AlternateTransportsMode mode)
 			: base (order, priority, canTarget, useEnterCursor) { this.mode = mode; }
@@ -116,10 +116,10 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new EnterTransportTargeter("EnterTransport", 6,
+				yield return new EnterTransportTargeter(OrderCode.EnterTransport, 6,
 					target => IsCorrectCargoType(target), target => CanEnter(target),
 					Info.AlternateTransportsMode);
-				yield return new EnterTransportsTargeter("EnterTransports", 6,
+				yield return new EnterTransportsTargeter(OrderCode.EnterTransports, 6,
 					target => IsCorrectCargoType(target), target => CanEnter(target),
 					Info.AlternateTransportsMode);
 			}
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "EnterTransport" || order.OrderID == "EnterTransports")
+			if (order.OrderID == OrderCode.EnterTransport || order.OrderID == OrderCode.EnterTransports)
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
@@ -151,14 +151,14 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if ((order.OrderString != "EnterTransport" && order.OrderString != "EnterTransports") ||
+			if ((order.ID != OrderCode.EnterTransport && order.ID != OrderCode.EnterTransports) ||
 				!CanEnter(order.TargetActor)) return null;
 			return "Move";
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "EnterTransport" || order.OrderString == "EnterTransports")
+			if (order.ID == OrderCode.EnterTransport || order.ID == OrderCode.EnterTransports)
 			{
 				if (order.TargetActor == null) return;
 				if (!CanEnter(order.TargetActor)) return;
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.RA
 				self.SetTargetLine(target, Color.Green);
 
 				self.CancelActivity();
-				var transports = order.OrderString == "EnterTransports";
+				var transports = order.ID == OrderCode.EnterTransports;
 				self.QueueActivity(new EnterTransport(self, order.TargetActor, transports ? Info.MaxAlternateTransportAttempts : 0, transports));
 			}
 		}

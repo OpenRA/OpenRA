@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public virtual IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
+		public virtual IOrderGenerator OrderGenerator(OrderCode order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
 			return new SelectGenericPowerTarget(order, manager, "ability", MouseButton.Left);

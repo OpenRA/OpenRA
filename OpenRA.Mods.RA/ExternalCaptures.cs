@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID != "ExternalCaptureActor")
+			if (order.OrderID != OrderCode.ExternalCaptureActor)
 				return null;
 
 			if (target.Type == TargetType.FrozenActor)
@@ -82,13 +82,13 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "ExternalCaptureActor" && IsValidOrder(self, order)
+			return order.ID == OrderCode.ExternalCaptureActor && IsValidOrder(self, order)
 				? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "ExternalCaptureActor" || !IsValidOrder(self, order))
+			if (order.ID != OrderCode.ExternalCaptureActor || !IsValidOrder(self, order))
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.RA
 
 	class ExternalCaptureOrderTargeter : UnitOrderTargeter
 	{
-		public ExternalCaptureOrderTargeter() : base("ExternalCaptureActor", 6, "enter", true, true) { }
+		public ExternalCaptureOrderTargeter() : base(OrderCode.ExternalCaptureActor, 6, "enter", true, true) { }
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{

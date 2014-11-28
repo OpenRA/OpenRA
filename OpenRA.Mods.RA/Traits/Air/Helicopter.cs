@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Traits
 				Reservation = null;
 			}
 
-			if (order.OrderString == "Move")
+			if (order.ID == OrderCode.Move)
 			{
 				var cell = self.World.Map.Clamp(order.TargetLocation);
 				var explored = self.Owner.Shroud.IsExplored(cell);
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA.Traits
 				}
 			}
 
-			if (order.OrderString == "Enter")
+			if (order.ID == OrderCode.Enter)
 			{
 				if (Reservable.IsReserved(order.TargetActor))
 				{
@@ -105,13 +105,13 @@ namespace OpenRA.Mods.RA.Traits
 				}
 			}
 
-			if (order.OrderString == "ReturnToBase")
+			if (order.ID == OrderCode.ReturnToBase)
 			{
 				self.CancelActivity();
 				self.QueueActivity(new HeliReturn());
 			}
 
-			if (order.OrderString == "Stop")
+			if (order.ID == OrderCode.Stop)
 			{
 				self.CancelActivity();
 

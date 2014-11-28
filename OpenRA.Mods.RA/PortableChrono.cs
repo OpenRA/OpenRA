@@ -53,16 +53,16 @@ namespace OpenRA.Mods.RA
 			get
 			{
 				yield return new PortableChronoOrderTargeter();
-				yield return new DeployOrderTargeter("PortableChronoDeploy", 5, () => CanTeleport);
+				yield return new DeployOrderTargeter(OrderCode.PortableChronoDeploy, 5, () => CanTeleport);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "PortableChronoDeploy" && CanTeleport)
+			if (order.OrderID == OrderCode.PortableChronoDeploy && CanTeleport)
 				self.World.OrderGenerator = new PortableChronoOrderGenerator(self);
 
-			if (order.OrderID == "PortableChronoTeleport")
+			if (order.OrderID == OrderCode.PortableChronoTeleport)
 				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
 
 			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "PortableChronoTeleport" && CanTeleport)
+			if (order.ID == OrderCode.PortableChronoTeleport && CanTeleport)
 			{
 				var maxDistance = Info.HasDistanceLimit ? Info.MaxDistance : (int?)null;
 				self.CancelActivity();
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "PortableChronoTeleport" && CanTeleport ? "Move" : null;
+			return order.ID == OrderCode.PortableChronoTeleport && CanTeleport ? "Move" : null;
 		}
 
 		public void ResetChargeTime()
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.RA
 
 	class PortableChronoOrderTargeter : IOrderTargeter
 	{
-		public string OrderID { get { return "PortableChronoTeleport"; } }
+		public OrderCode OrderID { get { return OrderCode.PortableChronoTeleport; } }
 		public int OrderPriority { get { return 5; } }
 		public bool IsQueued { get; protected set; }
 
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.RA
 				&& self.Trait<PortableChrono>().CanTeleport && self.Owner.Shroud.IsExplored(xy))
 			{
 				world.CancelInputMode();
-				yield return new Order("PortableChronoTeleport", self, mi.Modifiers.HasModifier(Modifiers.Shift)) { TargetLocation = xy };
+				yield return new Order(OrderCode.PortableChronoTeleport, self, mi.Modifiers.HasModifier(Modifiers.Shift)) { TargetLocation = xy };
 			}
 		}
 

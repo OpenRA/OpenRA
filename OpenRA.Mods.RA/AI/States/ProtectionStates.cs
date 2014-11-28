@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.AI
 			}
 
 			foreach (var a in owner.units)
-				owner.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.Target.Location });
+				owner.world.IssueOrder(new Order(OrderCode.AttackMove, a, false) { TargetLocation = owner.Target.Location });
 		}
 
 		public void Deactivate(Squad owner) { }

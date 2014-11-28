@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "DeployTransform") ? "Move" : null;
+			return (order.ID == OrderCode.DeployTransform) ? "Move" : null;
 		}
 
 		bool CanDeploy()
@@ -60,12 +60,12 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter("DeployTransform", 5, () => CanDeploy()); }
+			get { yield return new DeployOrderTargeter(OrderCode.DeployTransform, 5, () => CanDeploy()); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "DeployTransform")
+			if (order.OrderID == OrderCode.DeployTransform)
 				return new Order(order.OrderID, self, queued);
 
 			return null;
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "DeployTransform")
+			if (order.ID == OrderCode.DeployTransform)
 				DeployTransform(order.Queued);
 		}
 	}

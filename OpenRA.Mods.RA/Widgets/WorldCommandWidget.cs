@@ -99,7 +99,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			if (actors.Any())
 				world.OrderGenerator = new GenericSelectTarget(actors,
-					"AttackMove", "attackmove", MouseButton.Right);
+					OrderCode.AttackMove, "attackmove", MouseButton.Right);
 
 			return true;
 		}
@@ -119,23 +119,23 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool PerformStop()
 		{
-			PerformKeyboardOrderOnSelection(a => new Order("Stop", a, false));
+			PerformKeyboardOrderOnSelection(a => new Order(OrderCode.Stop, a, false));
 			return true;
 		}
 
 		bool PerformScatter()
 		{
-			PerformKeyboardOrderOnSelection(a => new Order("Scatter", a, false));
+			PerformKeyboardOrderOnSelection(a => new Order(OrderCode.Scatter, a, false));
 			return true;
 		}
 
 		bool PerformDeploy()
 		{
 			// HACK: multiple orders here
-			PerformKeyboardOrderOnSelection(a => new Order("ReturnToBase", a, false));
-			PerformKeyboardOrderOnSelection(a => new Order("DeployTransform", a, false));
-			PerformKeyboardOrderOnSelection(a => new Order("Unload", a, false));
-			PerformKeyboardOrderOnSelection(a => new Order("Detonate", a, false));
+			PerformKeyboardOrderOnSelection(a => new Order(OrderCode.ReturnToBase, a, false));
+			PerformKeyboardOrderOnSelection(a => new Order(OrderCode.DeployTransform, a, false));
+			PerformKeyboardOrderOnSelection(a => new Order(OrderCode.Unload, a, false));
+			PerformKeyboardOrderOnSelection(a => new Order(OrderCode.Detonate, a, false));
 			return true;
 		}
 
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA.Widgets
 				if (at != null)
 					at.PredictedStance = nextStance;
 
-				return new Order("SetUnitStance", a, false) { ExtraData = (uint)nextStance };
+				return new Order(OrderCode.SetUnitStance, a, false) { ExtraData = (uint)nextStance };
 			});
 
 			Game.Debug("Unit stance set to: {0}".F(nextStance));

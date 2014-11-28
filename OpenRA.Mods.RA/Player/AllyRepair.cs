@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 	{
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "RepairBuilding")
+			if (order.ID == OrderCode.RepairBuilding)
 			{
 				var building = order.TargetActor;
 

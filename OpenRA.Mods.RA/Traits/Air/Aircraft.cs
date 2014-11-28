@@ -265,7 +265,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<Building>("Enter", 5,
+				yield return new EnterAlliedActorTargeter<Building>(OrderCode.Enter, 5,
 					target => AircraftCanEnter(target), target => !Reservable.IsReserved(target));
 
 				yield return new AircraftMoveOrderTargeter(info);
@@ -274,10 +274,10 @@ namespace OpenRA.Mods.RA.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Enter")
+			if (order.OrderID == OrderCode.Enter)
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
-			if (order.OrderID == "Move")
+			if (order.OrderID == OrderCode.Move)
 				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
 
 			return null;
@@ -285,12 +285,12 @@ namespace OpenRA.Mods.RA.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			switch (order.OrderString)
+			switch (order.ID)
 			{
-			case "Move":
-			case "Enter":
-			case "ReturnToBase":
-			case "Stop":
+			case OrderCode.Move:
+			case OrderCode.Enter:
+			case OrderCode.ReturnToBase:
+			case OrderCode.Stop:
 				return "Move";
 			default: return null;
 			}
@@ -299,7 +299,7 @@ namespace OpenRA.Mods.RA.Traits
 
 	class AircraftMoveOrderTargeter : IOrderTargeter
 	{
-		public string OrderID { get { return "Move"; } }
+		public OrderCode OrderID { get { return OrderCode.Move; } }
 		public int OrderPriority { get { return 4; } }
 
 		readonly AircraftInfo info;

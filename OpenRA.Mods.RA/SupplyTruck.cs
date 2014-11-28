@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID != "DeliverSupplies")
+			if (order.OrderID != OrderCode.DeliverSupplies)
 				return null;
 
 			if (target.Type == TargetType.FrozenActor)
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "DeliverSupplies")
+			if (order.ID != OrderCode.DeliverSupplies)
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Yellow);
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA
 		class SupplyTruckOrderTargeter : UnitOrderTargeter
 		{
 			public SupplyTruckOrderTargeter()
-				: base("DeliverSupplies", 5, "enter", false, true)
+				: base(OrderCode.DeliverSupplies, 5, "enter", false, true)
 			{
 			}
 

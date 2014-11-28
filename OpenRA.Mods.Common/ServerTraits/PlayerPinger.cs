@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Server
 				{
 					if (c.TimeSinceLastResponse < ConnTimeout)
 					{
-						server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
+						server.SendOrderTo(c, OrderCode.Ping, Game.RunTime.ToString());
 						if (!c.TimeoutMessageShown && c.TimeSinceLastResponse > PingInterval * 2)
 						{
 							server.SendMessage(server.GetClient(c).Name + " is experiencing connection problems.");

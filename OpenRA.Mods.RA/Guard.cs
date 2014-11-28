@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 	{
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Guard")
+			if (order.ID == OrderCode.Guard)
 			{
 				var target = Target.FromActor(order.TargetActor);
 
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "Guard" ? "Move" : null;
+			return order.ID == OrderCode.Guard ? "Move" : null;
 		}
 	}
 
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA
 
 			foreach (var subject in subjects)
 				if (subject != target)
-					yield return new Order("Guard", subject, false) { TargetActor = target };
+					yield return new Order(OrderCode.Guard, subject, false) { TargetActor = target };
 		}
 
 		public void Tick(World world)

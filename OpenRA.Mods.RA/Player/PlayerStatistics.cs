@@ -85,26 +85,26 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			switch (order.OrderString)
+			switch (order.ID)
 			{
-				case "Chat":
-				case "TeamChat":
-				case "HandshakeResponse":
-				case "PauseGame":
-				case "StartGame":
-				case "Disconnected":
-				case "ServerError":
-				case "AuthenticationError":
-				case "SyncLobbyInfo":
-				case "SyncClientInfo":
-				case "SyncLobbySlots":
-				case "SyncLobbyGlobalSettings":
-				case "SyncClientPing":
-				case "Ping":
-				case "Pong":
+				case OrderCode.Chat:
+				case OrderCode.TeamChat:
+				case OrderCode.HandshakeResponse:
+				case OrderCode.PauseGame:
+				case OrderCode.StartGame:
+				case OrderCode.Disconnected:
+				case OrderCode.ServerError:
+				case OrderCode.AuthenticationError:
+				case OrderCode.SyncLobbyInfo:
+				case OrderCode.SyncClientInfo:
+				case OrderCode.SyncLobbySlots:
+				case OrderCode.SyncLobbyGlobalSettings:
+				case OrderCode.SyncClientPing:
+				case OrderCode.Ping:
+				case OrderCode.Pong:
 					return;
 			}
-			if (order.OrderString.StartsWith("Dev"))
+			if (order.ID.ToString().StartsWith("Dev"))
 				return;
 			OrderCount++;
 		}

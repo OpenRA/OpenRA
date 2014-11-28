@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Orders
 		readonly string cursor;
 		readonly bool targetEnemyUnits, targetAllyUnits;
 
-		public UnitOrderTargeter(string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
+		public UnitOrderTargeter(OrderCode order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
 		{
 			this.OrderID = order;
 			this.OrderPriority = priority;
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Orders
 			this.targetAllyUnits = targetAllyUnits;
 		}
 
-		public string OrderID { get; private set; }
+		public OrderCode OrderID { get; private set; }
 		public int OrderPriority { get; private set; }
 		public bool? ForceAttack = null;
 
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Orders
 	{
 		readonly string[] targetTypes;
 
-		public TargetTypeOrderTargeter(string[] targetTypes, string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
+		public TargetTypeOrderTargeter(string[] targetTypes, OrderCode order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
 			: base(order, priority, cursor, targetEnemyUnits, targetAllyUnits)
 		{
 			this.targetTypes = targetTypes;

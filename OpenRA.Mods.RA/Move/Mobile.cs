@@ -381,7 +381,7 @@ namespace OpenRA.Mods.RA.Move
 				if (Info.OnRails)
 					return null;
 
-				return new Order("Move", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+				return new Order(OrderCode.Move, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
 			}
 			return null;
 		}
@@ -447,7 +447,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Move")
+			if (order.ID == OrderCode.Move)
 			{
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
 					return;
@@ -456,20 +456,20 @@ namespace OpenRA.Mods.RA.Move
 					order.Queued && !self.IsIdle);
 			}
 
-			if (order.OrderString == "Stop")
+			if (order.ID == OrderCode.Stop)
 				self.CancelActivity();
 
-			if (order.OrderString == "Scatter")
+			if (order.ID == OrderCode.Scatter)
 				Nudge(self, self, true);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			switch (order.OrderString)
+			switch (order.ID)
 			{
-				case "Move":
-				case "Scatter":
-				case "Stop":
+				case OrderCode.Move:
+				case OrderCode.Scatter:
+				case OrderCode.Stop:
 					return "Move";
 				default:
 					return null;
@@ -606,7 +606,7 @@ namespace OpenRA.Mods.RA.Move
 				this.rejectMove = !self.AcceptsOrder("Move");
 			}
 
-			public string OrderID { get { return "Move"; } }
+			public OrderCode OrderID { get { return OrderCode.Move; } }
 			public int OrderPriority { get { return 4; } }
 			public bool IsQueued { get; protected set; }
 

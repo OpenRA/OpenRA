@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Commands
 			switch (name)
 			{
 				case "givecash":
-					var order = new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false);
+					var order = new Order(OrderCode.DevGiveCash, world.LocalPlayer.PlayerActor, false);
 					int cash;
 
 					if (int.TryParse(arg, out cash))
@@ -67,21 +67,21 @@ namespace OpenRA.Mods.Common.Commands
 
 					break;
 
-				case "disableshroud": IssueDevCommand(world, "DevShroudDisable"); break;
-				case "instantbuild": IssueDevCommand(world, "DevFastBuild"); break;
-				case "buildanywhere": IssueDevCommand(world, "DevBuildAnywhere"); break;
-				case "unlimitedpower": IssueDevCommand(world, "DevUnlimitedPower"); break;
-				case "enabletech": IssueDevCommand(world, "DevEnableTech"); break;
-				case "instantcharge": IssueDevCommand(world, "DevFastCharge"); break;
+				case "disableshroud": IssueDevCommand(world, OrderCode.DevShroudDisable); break;
+				case "instantbuild": IssueDevCommand(world, OrderCode.DevFastBuild); break;
+				case "buildanywhere": IssueDevCommand(world, OrderCode.DevBuildAnywhere); break;
+				case "unlimitedpower": IssueDevCommand(world, OrderCode.DevUnlimitedPower); break;
+				case "enabletech": IssueDevCommand(world, OrderCode.DevEnableTech); break;
+				case "instantcharge": IssueDevCommand(world, OrderCode.DevFastCharge); break;
 
 				case "all":
-					IssueDevCommand(world, "DevShroudDisable");
-					IssueDevCommand(world, "DevFastBuild");
-					IssueDevCommand(world, "DevBuildAnywhere");
-					IssueDevCommand(world, "DevUnlimitedPower");
-					IssueDevCommand(world, "DevEnableTech");
-					IssueDevCommand(world, "DevFastCharge");
-					IssueDevCommand(world, "DevGiveCash");
+					IssueDevCommand(world, OrderCode.DevShroudDisable);
+					IssueDevCommand(world, OrderCode.DevFastBuild);
+					IssueDevCommand(world, OrderCode.DevBuildAnywhere);
+					IssueDevCommand(world, OrderCode.DevUnlimitedPower);
+					IssueDevCommand(world, OrderCode.DevEnableTech);
+					IssueDevCommand(world, OrderCode.DevFastCharge);
+					IssueDevCommand(world, OrderCode.DevGiveCash);
 					break;
 
 				case "crash":
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Commands
 			}
 		}
 
-		static void IssueDevCommand(World world, string command)
+		static void IssueDevCommand(World world, OrderCode command)
 		{
 			world.IssueOrder(new Order(command, world.LocalPlayer.PlayerActor, false));
 		}

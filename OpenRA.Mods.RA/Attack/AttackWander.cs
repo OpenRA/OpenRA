@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 		public void TickIdle(Actor self)
 		{
 			var target = self.CenterPosition + new WVec(0, -1024*Info.MoveRadius, 0).Rotate(WRot.FromFacing(self.World.SharedRandom.Next(255)));
-			self.Trait<AttackMove>().ResolveOrder(self, new Order("AttackMove", self, false) { TargetLocation = self.World.Map.CellContaining(target) });
+			self.Trait<AttackMove>().ResolveOrder(self, new Order(OrderCode.AttackMove, self, false) { TargetLocation = self.World.Map.CellContaining(target) });
 		}
 	}
 }

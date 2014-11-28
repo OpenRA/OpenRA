@@ -100,12 +100,12 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter("Unload", 10, CanUnload); }
+			get { yield return new DeployOrderTargeter(OrderCode.Unload, 10, CanUnload); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Unload")
+			if (order.OrderID == OrderCode.Unload)
 				return new Order(order.OrderID, self, queued);
 
 			return null;
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Unload")
+			if (order.ID == OrderCode.Unload)
 			{
 				if (!CanUnload())
 					return;
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.RA
 
 		public string CursorForOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "Unload")
+			if (order.ID != OrderCode.Unload)
 				return null;
 
 			return CanUnload() ? "deploy" : "deploy-blocked";
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "Unload" || IsEmpty(self))
+			if (order.ID != OrderCode.Unload || IsEmpty(self))
 				return null;
 
 			return self.HasVoice("Unload") ? "Unload" : "Move";
