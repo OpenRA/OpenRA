@@ -47,7 +47,7 @@ Container@SETTINGS_PANEL:
 							Y: 20
 							Width: PARENT_RIGHT
 							Font: Bold
-							Text: Graphics
+							Text: Display
 							Align: Center
 						Label@MODE_LABEL:
 							X: 120
@@ -152,6 +152,29 @@ Container@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Show Shellmap
+						Label@PLAYER:
+							Text: Player:
+							X: 15
+							Y: 215
+						TextField@PLAYERNAME:
+							Text: Name
+							X: 65
+							Y: 205
+							Width: 145
+							Height: 25
+							MaxLength: 16
+						ColorPreviewManager@COLOR_MANAGER:
+						DropDownButton@PLAYERCOLOR:
+							X: 215
+							Y: 205
+							Width: 70
+							Height: 25
+							Children:
+								ColorBlock@COLORBLOCK:
+									X: 5
+									Y: 6
+									Width: PARENT_RIGHT-35
+									Height: PARENT_BOTTOM-12
 						Checkbox@ALWAYS_SHOW_STATUS_BARS_CHECKBOX:
 							X: 310
 							Y: 205
@@ -289,52 +312,30 @@ Container@SETTINGS_PANEL:
 							Font: Bold
 							Text: Input
 							Align: Center
-						Checkbox@CLASSICORDERS_CHECKBOX:
-							X: 15
-							Y: 40
-							Width: 250
-							Height: 20
-							Font: Regular
-							Text: Left-Click Orders
-						Label@MOUSE_SCROLL_LABEL:
-							X: PARENT_RIGHT - WIDTH - 120
-							Y: 39
-							Width: 160
-							Height: 20
-							Font: Regular
-							Text: Middle-Mouse Scrolling:
-							Align: Right
-						DropDownButton@MOUSE_SCROLL:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 38
-							Width: 100
-							Height: 25
-							Font: Regular
-							Text: Enabled
 						Checkbox@EDGESCROLL_CHECKBOX:
 							X: 15
-							Y: 70
+							Y: 40
 							Width: 130
 							Height: 20
 							Font: Regular
 							Text: Edge Scrolling
 						Checkbox@LOCKMOUSE_CHECKBOX:
 							X: 15
-							Y: 100
+							Y: 70
 							Width: 130
 							Height: 20
 							Font: Regular
 							Text: Lock mouse to window
 						Label@SCROLL_SPEED_LABEL:
 							X: PARENT_RIGHT - WIDTH - 270
-							Y: 67
+							Y: 37
 							Width: 95
 							Height: 25
 							Text: Scroll Speed:
 							Align: Right
 						Slider@SCROLLSPEED_SLIDER:
 							X: PARENT_RIGHT - WIDTH - 15
-							Y: 73
+							Y: 43
 							Width: 250
 							Height: 20
 							Ticks: 5
@@ -342,19 +343,34 @@ Container@SETTINGS_PANEL:
 							MaximumValue: 50
 						Label@UI_SCROLL_SPEED_LABEL:
 							X: PARENT_RIGHT - WIDTH - 270
-							Y: 97
+							Y: 67
 							Width: 95
 							Height: 25
 							Text: UI Scroll Speed:
 							Align: Right
 						Slider@UI_SCROLLSPEED_SLIDER:
 							X: PARENT_RIGHT - WIDTH - 15
-							Y: 103
+							Y: 73
 							Width: 250
 							Height: 20
 							Ticks: 5
 							MinimumValue: 1
 							MaximumValue: 100
+						Label@MOUSE_SCROLL_LABEL:
+							X: PARENT_RIGHT - WIDTH - 120
+							Y: 99
+							Width: 160
+							Height: 20
+							Font: Regular
+							Text: Middle-Mouse Scrolling:
+							Align: Right
+						DropDownButton@MOUSE_SCROLL:
+							X: PARENT_RIGHT - WIDTH - 15
+							Y: 98
+							Width: 100
+							Height: 25
+							Font: Regular
+							Text: Enabled
 						Label@HOTKEYS_TITLE:
 							Y: 135
 							Width: PARENT_RIGHT
@@ -366,7 +382,7 @@ Container@SETTINGS_PANEL:
 							Y: 155
 							Width: 560
 							ItemSpacing: 4
-							Height: 180
+							Height: 190
 							Children:
 								ScrollItem@HEADER:
 									Width: 528

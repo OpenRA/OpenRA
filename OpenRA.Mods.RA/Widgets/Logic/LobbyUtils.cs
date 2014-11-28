@@ -138,7 +138,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			Action<HSLColor> onChange = c => preview.Color = c;
 
-			var colorChooser = Game.LoadWidget(orderManager.world, "COLOR_CHOOSER", null, new WidgetArgs()
+			var colorChooser = Game.LoadWidget(orderManager.World, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
 				{ "onChange", onChange },
 				{ "initialColor", client.Color }
@@ -233,7 +233,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			try
 			{
-				return Game.GeoIpDatabase.Omni(ip).Country.Name;
+				return Game.GeoIpDatabase.Country(ip).Country.Name;
 			}
 			catch (Exception e)
 			{

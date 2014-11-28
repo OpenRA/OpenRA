@@ -208,23 +208,11 @@ Rules:
 			Maximum: 3
 			SpawnInterval: 5
 			WaterChance: 1
+			CrateActors: unitcrate
 		-SpawnMPUnits:
 		-MPStartLocations:
-	CRATE:
-		-LevelUpCrateAction:
-		-GiveMcvCrateAction:
-		-GiveUnitCrateAction@jeep:
-		-GiveUnitCrateAction@1tnk:
-		-RevealMapCrateAction:
-		-HideMapCrateAction:
-		-ExplodeCrateAction@nuke:
-		-ExplodeCrateAction@boom:
-		-ExplodeCrateAction@fire:
-		-SupportPowerCrateAction@parabombs:
-		-GiveCashCrateAction:
-		-DuplicateUnitCrateAction:
-		-GiveUnitCrateAction@squadlight:
-		-GiveUnitCrateAction@squadheavyallies:
+	UNITCRATE:
+		Inherits: ^Crate
 		GiveUnitCrateAction@pt:
 			SelectionShares: 7
 			Units: pt

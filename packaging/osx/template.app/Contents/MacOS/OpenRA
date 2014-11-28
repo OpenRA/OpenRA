@@ -42,7 +42,7 @@ fi
 cd "$RESOURCES" && FONTCONFIG_PATH="." $MONO_BIN --debug OpenRA.Game.exe Graphics.Renderer=Sdl2
 
 # Display an error dialog on game crash
-if [ $? != 0 ]
+if [ $? != 0 -a $? != 1 ]
 then
 	osascript \
 	-e "set logsPath to ((path to application support folder from user domain) as text) & \"OpenRA:Logs:\"" \

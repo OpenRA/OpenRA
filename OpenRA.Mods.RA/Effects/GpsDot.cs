@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -88,7 +89,7 @@ namespace OpenRA.Mods.RA.Effects
 				world.AddFrameEndTask(w => w.Remove(this));
 
 			show = false;
-			if (!self.IsInWorld || self.IsDead() || self.World.RenderPlayer == null)
+			if (!self.IsInWorld || self.IsDead || self.World.RenderPlayer == null)
 				return;
 
 			var gps = watcher[self.World.RenderPlayer];

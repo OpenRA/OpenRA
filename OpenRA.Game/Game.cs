@@ -27,8 +27,6 @@ namespace OpenRA
 {
 	public static class Game
 	{
-		public static MouseButtonPreference mouseButtonPreference = new MouseButtonPreference();
-
 		public static ModData modData;
 		public static Settings Settings;
 		static WorldRenderer worldRenderer;
@@ -139,12 +137,12 @@ namespace OpenRA
 				map = modData.PrepareMap(mapUID);
 			using (new PerfTimer("NewWorld"))
 			{
-				orderManager.world = new World(map, orderManager, isShellmap);
-				orderManager.world.Timestep = Timestep;
+				orderManager.World = new World(map, orderManager, isShellmap);
+				orderManager.World.Timestep = Timestep;
 			}
-			worldRenderer = new WorldRenderer(orderManager.world);
+			worldRenderer = new WorldRenderer(orderManager.World);
 			using (new PerfTimer("LoadComplete"))
-				orderManager.world.LoadComplete(worldRenderer);
+				orderManager.World.LoadComplete(worldRenderer);
 
 			if (orderManager.GameStarted)
 				return;
@@ -398,7 +396,7 @@ namespace OpenRA
 		{
 			var tick = RunTime;
 
-			var world = orderManager.world;
+			var world = orderManager.World;
 
 			var uiTickDelta = tick - Ui.LastTickTime;
 			if (uiTickDelta >= Timestep)
@@ -474,7 +472,7 @@ namespace OpenRA
 			}
 
 			InnerLogicTick(orderManager);
-			if (worldRenderer != null && orderManager.world != worldRenderer.world)
+			if (worldRenderer != null && orderManager.World != worldRenderer.world)
 				InnerLogicTick(worldRenderer.world.orderManager);
 		}
 
@@ -506,7 +504,7 @@ namespace OpenRA
 				}
 
 				using (new PerfSample("render_flip"))
-					Renderer.EndFrame(new DefaultInputHandler(orderManager.world));
+					Renderer.EndFrame(new DefaultInputHandler(orderManager.World));
 			}
 
 			PerfHistory.items["render"].Tick();
@@ -549,13 +547,10 @@ namespace OpenRA
 			// value.
 			const int maxLogicTicksBehind = 250;
 
-			// Try to maintain at least this many FPS, even if it slows down logic.
-			// This is easily observed when playing back a replay at max speed,
-			// the frame rate will slow down to this value to allow the replay logic
-			// to run faster.
+			// Try to maintain at least this many FPS during replays, even if it slows down logic.
 			// However, if the user has enabled a framerate limit that is even lower
 			// than this, then that limit will be used.
-			const int minRenderFps = 10;
+			const int minReplayFps = 10;
 
 			// Timestamps for when the next logic and rendering should run
 			var nextLogic = RunTime;
@@ -582,27 +577,32 @@ namespace OpenRA
 				var nextUpdate = Math.Min(nextLogic, nextRender);
 				if (now >= nextUpdate)
 				{
+					var forceRender = now >= forcedNextRender;
+
 					if (now >= nextLogic)
 					{
 						nextLogic += logicInterval;
 
 						LogicTick();
+
+						// Force at least one render per tick during regular gameplay
+						if (orderManager.World != null && !orderManager.World.IsReplay)
+							forceRender = true;
 					}
 
 					var haveSomeTimeUntilNextLogic = now < nextLogic;
 					var isTimeToRender = now >= nextRender;
-					var forceRender = now >= forcedNextRender;
 
 					if ((isTimeToRender && haveSomeTimeUntilNextLogic) || forceRender)
 					{
 						nextRender = now + renderInterval;
 
-						// Pick the minimum allowed FPS (the lower between 'minRenderFps'
+						// Pick the minimum allowed FPS (the lower between 'minReplayFPS'
 						// and the user's max frame rate) and convert it to maximum time
 						// allowed between screen updates.
 						// We do this before rendering to include the time rendering takes
 						// in this interval.
-						var maxRenderInterval = Math.Max(1000 / minRenderFps, renderInterval);
+						var maxRenderInterval = Math.Max(1000 / minReplayFps, renderInterval);
 						forcedNextRender = now + maxRenderInterval;
 
 						RenderTick();
@@ -663,8 +663,8 @@ namespace OpenRA
 
 		public static void Disconnect()
 		{
-			if (orderManager.world != null)
-				orderManager.world.traitDict.PrintReport();
+			if (orderManager.World != null)
+				orderManager.World.traitDict.PrintReport();
 
 			orderManager.Dispose();
 			CloseServer();
@@ -704,7 +704,7 @@ namespace OpenRA
 
 		public static bool IsCurrentWorld(World world)
 		{
-			return orderManager != null && orderManager.world == world;
+			return orderManager != null && orderManager.World == world;
 		}
 	}
 }

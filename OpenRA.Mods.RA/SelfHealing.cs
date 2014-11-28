@@ -8,62 +8,43 @@
  */
 #endregion
 
+using System;
 using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	[Desc("Attach this to actors which should be able to regenerate their health points.")]
-	class SelfHealingInfo : ITraitInfo, Requires<HealthInfo>
+	class SelfHealingInfo : UpgradableTraitInfo, ITraitInfo, Requires<HealthInfo>
 	{
 		public readonly int Step = 5;
 		public readonly int Ticks = 5;
 		public readonly float HealIfBelow = .5f;
 		public readonly int DamageCooldown = 0;
 
-		[Desc("Enable only if this upgrade is enabled.")]
-		public readonly string RequiresUpgrade = null;
-
 		public virtual object Create(ActorInitializer init) { return new SelfHealing(init.self, this); }
 	}
 
-	class SelfHealing : ITick, ISync, INotifyDamage, IUpgradable
+	class SelfHealing : UpgradableTrait<SelfHealingInfo>, ITick, INotifyDamage
 	{
-		readonly SelfHealingInfo info;
 		readonly Health health;
 
 		[Sync] int ticks;
 		[Sync] int damageTicks;
-		[Sync] bool disabled;
-
 
 		public SelfHealing(Actor self, SelfHealingInfo info)
+			: base (info)
 		{
-			this.info = info;
-
 			health = self.Trait<Health>();
-
-			// Disable if an upgrade is required
-			disabled = info.RequiresUpgrade != null;
-		}
-
-		public bool AcceptsUpgrade(string type)
-		{
-			return type == info.RequiresUpgrade;
-		}
-
-		public void UpgradeAvailable(Actor self, string type, bool available)
-		{
-			if (type == info.RequiresUpgrade)
-				disabled = !available;
 		}
 
 		public void Tick(Actor self)
 		{
-			if (self.IsDead() || disabled)
+			if (self.IsDead || IsTraitDisabled)
 				return;
 
-			if (health.HP >= info.HealIfBelow * health.MaxHP)
+			if (health.HP >= Info.HealIfBelow * health.MaxHP)
 				return;
 			
 			if (damageTicks > 0)
@@ -74,15 +55,15 @@ namespace OpenRA.Mods.RA
 
 			if (--ticks <= 0)
 			{
-				ticks = info.Ticks;
-				self.InflictDamage(self, -info.Step, null);
+				ticks = Info.Ticks;
+				self.InflictDamage(self, -Info.Step, null);
 			}
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (e.Damage > 0)
-				damageTicks = info.DamageCooldown;
+				damageTicks = Info.DamageCooldown;
 		}
 	}
 }

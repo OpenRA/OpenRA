@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Network;
 using OpenRA.Traits;
@@ -526,7 +527,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				musicButton.OnClick = () => Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs
 				{
 					{ "onExit", DoNothing },
-					{ "world", orderManager.world }
+					{ "world", orderManager.World }
 				});
 
 			var settingsButton = lobby.GetOrNull<ButtonWidget>("SETTINGS_BUTTON");

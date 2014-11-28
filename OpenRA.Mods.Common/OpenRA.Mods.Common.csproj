@@ -38,6 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
@@ -48,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonTraitsInterfaces.cs" />
+    <Compile Include="DefaultLoadScreen.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Contrail.cs" />
@@ -59,6 +61,8 @@
     <Compile Include="Effects\GravityBomb.cs" />
     <Compile Include="Effects\LaserZap.cs" />
     <Compile Include="Effects\Missile.cs" />
+    <Compile Include="Effects\NukeLaunch.cs" />
+    <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPoint.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Commands\ChatCommands.cs" />
@@ -73,17 +77,68 @@
     <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
+    <Compile Include="LoadWidgetAtGameStart.cs" />
     <Compile Include="ModChooserLoadScreen.cs" />
+    <Compile Include="NullLoadScreen.cs" />
+    <Compile Include="Modifiers\TimedUpgradeBar.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
-    <Compile Include="PaletteFromFile.cs" />
-    <Compile Include="RallyPoint.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />
+    <Compile Include="ServerTraits\LobbyCommands.cs" />
+    <Compile Include="ServerTraits\LobbySettingsNotification.cs" />
     <Compile Include="ServerTraits\MasterServerPinger.cs" />
     <Compile Include="ServerTraits\PlayerPinger.cs" />
+    <Compile Include="Traits\BlocksBullets.cs" />
+    <Compile Include="Traits\Burns.cs" />
+    <Compile Include="Traits\CustomBuildTimeValue.cs" />
+    <Compile Include="Traits\CustomSellValue.cs" />
+    <Compile Include="Traits\Demolishable.cs" />
+    <Compile Include="Traits\Immobile.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
+    <Compile Include="Traits\Modifiers\DisabledOverlay.cs" />
+    <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
+    <Compile Include="Traits\Modifiers\UpgradeOverlay.cs" />
+    <Compile Include="Traits\PaletteEffects\CloakPaletteEffect.cs" />
+    <Compile Include="Traits\PaletteEffects\LightPaletteRotator.cs" />
+    <Compile Include="Traits\PaletteEffects\MenuPaletteEffect.cs" />
+    <Compile Include="Traits\PaletteEffects\NukePaletteEffect.cs" />
+    <Compile Include="Traits\PaletteEffects\WaterPaletteRotation.cs" />
+    <Compile Include="Traits\Power\AffectedByPowerOutage.cs" />
+    <Compile Include="Traits\Power\CanPowerDown.cs" />
+    <Compile Include="Traits\Power\Player\PowerManager.cs" />
+    <Compile Include="Traits\Power\Power.cs" />
+    <Compile Include="Traits\Power\RequiresPower.cs" />
+    <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
+    <Compile Include="Traits\RallyPoint.cs" />
+    <Compile Include="Traits\Render\RenderSprites.cs" />
+    <Compile Include="Traits\ShakeOnDeath.cs" />
+    <Compile Include="Traits\Sound\ActorLostNotification.cs" />
+    <Compile Include="Traits\Sound\AnnounceOnBuild.cs" />
+    <Compile Include="Traits\Sound\AnnounceOnKill.cs" />
+    <Compile Include="Traits\Sound\DeathSounds.cs" />
+    <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
+    <Compile Include="Traits\Valued.cs" />
+    <Compile Include="Traits\World\CreateMPPlayers.cs" />
+    <Compile Include="Traits\World\MPStartLocations.cs" />
+    <Compile Include="Traits\World\MPStartUnits.cs" />
+    <Compile Include="Traits\World\PaletteFromCurrentTileset.cs" />
+    <Compile Include="Traits\World\PaletteFromFile.cs" />
+    <Compile Include="Traits\World\PaletteFromRGBA.cs" />
+    <Compile Include="Traits\World\PlayerPaletteFromCurrentTileset.cs" />
+    <Compile Include="Traits\World\PlayMusicOnMapLoad.cs" />
+    <Compile Include="Traits\World\RadarPings.cs" />
+    <Compile Include="Traits\World\ResourceClaim.cs" />
+    <Compile Include="Traits\World\ResourceClaimLayer.cs" />
+    <Compile Include="Traits\World\ShroudPalette.cs" />
+    <Compile Include="Traits\World\ShroudRenderer.cs" />
+    <Compile Include="Traits\World\SmudgeLayer.cs" />
+    <Compile Include="Traits\World\SpawnMapActors.cs" />
+    <Compile Include="Traits\World\StartGameNotification.cs" />
+    <Compile Include="Traits\World\TerrainGeometryOverlay.cs" />
+    <Compile Include="Upgrades\UpgradableTrait.cs" />
+    <Compile Include="Upgrades\UpgradeManager.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
     <Compile Include="UtilityCommands\ExtractFilesCommand.cs" />
@@ -99,7 +154,10 @@
     <Compile Include="UtilityCommands\UpgradeMapCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeModCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeRules.cs" />
+    <Compile Include="Warheads\CreateEffectWarhead.cs" />
+    <Compile Include="Warheads\HealthPercentageDamageWarhead.cs" />
     <Compile Include="Warheads\LeaveSmudgeWarhead.cs" />
+    <Compile Include="Warheads\SpreadDamageWarhead.cs" />
     <Compile Include="Widgets\ConfirmationDialogs.cs" />
     <Compile Include="Widgets\HueSliderWidget.cs" />
     <Compile Include="Widgets\LabelWithTooltipWidget.cs" />
@@ -117,16 +175,13 @@
     <Compile Include="Widgets\MenuButtonWidget.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="Widgets\ResourceBarWidget.cs" />
-    <Compile Include="World\PlayMusicOnMapLoad.cs" />
-    <Compile Include="World\RadarPings.cs" />
-    <Compile Include="World\ResourceClaim.cs" />
-    <Compile Include="World\ResourceClaimLayer.cs" />
-    <Compile Include="World\SmudgeLayer.cs" />
     <Compile Include="SpriteLoaders\ShpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpTSLoader.cs" />
     <Compile Include="SpriteLoaders\TmpRALoader.cs" />
     <Compile Include="SpriteLoaders\TmpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpD2Loader.cs" />
+    <Compile Include="Widgets\Logic\SettingsLogic.cs" />
+    <Compile Include="Widgets\TerrainTemplatePreviewWidget.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -44,7 +44,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 
 ^Tank:
@@ -93,7 +94,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 
 ^Husk:
@@ -217,7 +219,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 
 ^Plane:
@@ -249,7 +252,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 
 ^Helicopter:

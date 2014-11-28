@@ -2240,7 +2240,6 @@ Rules:
 		Inherits: E6
 		Buildable:
 			Prerequisites: ~barracks
-		-RepairsBridges:
 		Captures:
 			CaptureTypes: building
 			Sabotage: False
@@ -2249,10 +2248,23 @@ Rules:
 	E6:
 		Buildable:
 			Prerequisites: ~disabled
-	HPAD:
+	TENT:
+		Buildable:
+			Prerequisites: anypower, ~structures.allies, ~techlevel.infonly, mainland
+	DOME:
+		Buildable:
+			Prerequisites: proc, ~techlevel.medium, mainland
+	WEAP:
+		Buildable:
+			Prerequisites: proc, ~techlevel.low, mainland
 		ProvidesCustomPrerequisite:
 			Prerequisite: givefix
-	WEAP:
+	MAINLAND:
+		Tooltip:
+			Name: Reach the mainland
+		ProvidesCustomPrerequisite:
+			Prerequisite: mainland
+	HPAD:
 		ProvidesCustomPrerequisite:
 			Prerequisite: givefix
 	FIX:

@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.IsDead())
+				if (self.IsDead)
 					return;
 
 				foreach (var nt in self.TraitsImplementing<INotifyTransform>())

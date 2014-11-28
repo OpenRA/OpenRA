@@ -62,15 +62,15 @@ namespace OpenRA.Network
 				NatDevice = args.Device;
 				Log.Write("server", "Type: {0}", NatDevice.GetType());
 				Log.Write("server", "Your external IP is: {0}", NatDevice.GetExternalIP());
-				
+
 				foreach (var mp in NatDevice.GetAllMappings())
 					Log.Write("server", "Existing port mapping: protocol={0}, public={1}, private={2}",
-					          mp.Protocol, mp.PublicPort, mp.PrivatePort);
+						mp.Protocol, mp.PublicPort, mp.PrivatePort);
 			}
 			catch (Exception e)
 			{
 				Log.Write("server", "Can't fetch information from NAT device: {0}", e);
-				
+
 				Game.Settings.Server.NatDeviceAvailable = false;
 				Game.Settings.Server.AllowPortForward = false;
 			}

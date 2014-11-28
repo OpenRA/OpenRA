@@ -148,7 +148,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
-			if (mi.Button == Game.mouseButtonPreference.Cancel)
+			if (mi.Button == MouseButton.Left)
 			{
 				world.CancelInputMode();
 				yield break;
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(World world)
 		{
-			if (!self.IsInWorld || self.IsDead())
+			if (!self.IsInWorld || self.IsDead)
 				world.CancelInputMode();
 		}
 

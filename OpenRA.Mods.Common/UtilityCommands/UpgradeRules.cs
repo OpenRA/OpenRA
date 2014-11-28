@@ -654,6 +654,43 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Replaced BelowUnits with per sequence ZOffsets
+				if (engineVersion < 20141030)
+				{
+					if (depth == 0)
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key == "BelowUnits");
+						node.Value.Nodes.RemoveAll(n => n.Key == "-BelowUnits");
+					}
+				}
+
+				if (engineVersion < 20141121)
+				{
+					if (depth == 1)
+					{
+						if (node.Value.Nodes.Exists(n => n.Key == "RestrictedByUpgrade"))
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("UpgradeMaxEnabledLevel", "0"));
+							node.Value.Nodes.Add(new MiniYamlNode("UpgradeMaxAcceptedLevel", "1"));
+						}
+						else if (node.Value.Nodes.Exists(n => n.Key == "RequiresUpgrade"))
+							node.Value.Nodes.Add(new MiniYamlNode("UpgradeMinEnabledLevel", "1"));
+
+						if (node.Key.StartsWith("DisableUpgrade") && !node.Value.Nodes.Any(n => n.Key == "RequiresUpgrade" || n.Key == "UpgradeTypes"))
+							node.Value.Nodes.Add(new MiniYamlNode("UpgradeTypes", "disable"));
+
+						if (node.Key.StartsWith("InvulnerabilityUpgrade") && !node.Value.Nodes.Any(n => n.Key == "RequiresUpgrade" || n.Key == "UpgradeTypes"))
+							node.Value.Nodes.Add(new MiniYamlNode("UpgradeTypes", "invulnerability"));
+					}
+					else if (depth == 2)
+					{
+						if (node.Key == "RequiresUpgrade" || node.Key == "RestrictedByUpgrade")
+							node.Key = "UpgradeTypes";
+						else if (node.Key == "-RequiresUpgrade" || node.Key == "-RestrictedByUpgrade")
+							node.Key = "-UpgradeTypes";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

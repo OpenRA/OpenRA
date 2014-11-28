@@ -27,6 +27,7 @@ namespace OpenRA
 			"You can remove inherited traits by adding a - infront of them as in -TraitName: to inherit everything, but this trait.")]
 		public readonly string Name;
 		public readonly TypeDictionary Traits = new TypeDictionary();
+		List<ITraitInfo> constructOrderCache = null;
 
 		public ActorInfo( string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits )
 		{
@@ -87,31 +88,46 @@ namespace OpenRA
 
 		public IEnumerable<ITraitInfo> TraitsInConstructOrder()
 		{
-			var ret = new List<ITraitInfo>();
-			var t = Traits.WithInterface<ITraitInfo>().ToList();
-			var index = 0;
-			while (t.Count != 0)
+			if (constructOrderCache != null)
+				return constructOrderCache;
+
+			var source = Traits.WithInterface<ITraitInfo>().Select(i => new {
+				Trait = i,
+				Type = i.GetType(),
+				Dependencies = PrerequisitesOf(i).ToList()
+			}).ToList();
+
+			var resolved = source.Where(s => !s.Dependencies.Any()).ToList();
+			var unresolved = source.Except(resolved);
+
+			var testResolve = new Func<Type, Type, bool>((a, b) => a == b || a.IsAssignableFrom(b));
+			var more = unresolved.Where(u => u.Dependencies.All( d => resolved.Exists(r => testResolve(d, r.Type)) ));
+
+			// Re-evaluate the vars above until sorted
+			while (more.Any())
+				resolved.AddRange(more);
+
+			if (unresolved.Any())
 			{
-				var prereqs = PrerequisitesOf(t[index]);
-				var unsatisfied = prereqs.Where(n => !ret.Any(x =>
+				var exceptionString = "ActorInfo(\"" + Name + "\") failed to initialize because of the following:\r\n";
+				var missing = unresolved.SelectMany(u => u.Dependencies.Where(d => !source.Any(s => testResolve(d, s.Type)))).Distinct();
+
+				exceptionString += "Missing:\r\n";
+				foreach (var m in missing)
+					exceptionString += m + " \r\n";
+
+				exceptionString += "Unresolved:\r\n";
+				foreach (var u in unresolved)
 				{
-					var type = x.GetType();
-					return type == n || n.IsAssignableFrom(type);
-				}));
-				if (!unsatisfied.Any())
-				{
-					ret.Add(t[index]);
-					t.RemoveAt(index);
-					index = 0;
+					var deps = u.Dependencies.Where(d => !resolved.Exists(r => r.Type == d));
+					exceptionString += u.Type + ": { " + string.Join(", ", deps) + " }\r\n";
 				}
-				else if (++index >= t.Count)
-					throw new InvalidOperationException("Trait prerequisites not satisfied (or prerequisite loop) Actor={0} Unresolved={1} Missing={2}".F(
-						Name,
-						t.Select(x => x.GetType().Name).JoinWith(","),
-						unsatisfied.Select(x => x.Name).JoinWith(",")));
+
+				throw new Exception(exceptionString);
 			}
 
-			return ret;
+			constructOrderCache = resolved.Select(r => r.Trait).ToList();
+			return constructOrderCache;
 		}
 
 		static IEnumerable<Type> PrerequisitesOf(ITraitInfo info)

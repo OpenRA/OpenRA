@@ -1,0 +1,188 @@
+Selectable: True
+
+MapFormat: 6
+
+RequiresMod: ts
+
+Title: A River Runs Near It
+
+Description: Describe your map here
+
+Author: Westwood Studios
+
+Tileset: TEMPERAT
+
+MapSize: 134,256
+
+Bounds: 2,4,130,234
+
+UseAsShellmap: False
+
+Type: Conquest
+
+Options:
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: gdi
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: gdi
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5
+
+Actors:
+	Actor0: tibtre01
+		Location: 133,-102
+		Owner: Neutral
+	Actor1: tibtre02
+		Location: 74,-39
+		Owner: Neutral
+	Actor2: tibtre03
+		Location: 52,21
+		Owner: Neutral
+	Actor3: tibtre02
+		Location: 110,88
+		Owner: Neutral
+	Actor4: tibtre03
+		Location: 177,39
+		Owner: Neutral
+	Actor5: tibtre01
+		Location: 208,-37
+		Owner: Neutral
+	Actor6: tibtre02
+		Location: 91,62
+		Owner: Neutral
+	Actor7: tibtre03
+		Location: 84,76
+		Owner: Neutral
+	Actor8: tibtre03
+		Location: 62,-7
+		Owner: Neutral
+	Actor9: tibtre03
+		Location: 179,-73
+		Owner: Neutral
+	Actor10: tibtre02
+		Location: 169,-63
+		Owner: Neutral
+	Actor11: tibtre01
+		Location: 111,-77
+		Owner: Neutral
+	Actor12: tibtre02
+		Location: 87,-66
+		Owner: Neutral
+	Actor13: tibtre03
+		Location: 99,-6
+		Owner: Neutral
+	Actor14: tibtre01
+		Location: 81,40
+		Owner: Neutral
+	Actor15: tibtre01
+		Location: 125,114
+		Owner: Neutral
+	Actor16: tibtre01
+		Location: 150,71
+		Owner: Neutral
+	Actor17: tibtre03
+		Location: 164,56
+		Owner: Neutral
+	Actor18: tibtre03
+		Location: 190,5
+		Owner: Neutral
+	Actor19: tibtre02
+		Location: 138,-66
+		Owner: Neutral
+	Actor20: tibtre01
+		Location: 181,-41
+		Owner: Neutral
+	Actor21: tibtre01
+		Location: 115,23
+		Owner: Neutral
+	Actor22: tibtre02
+		Location: 144,23
+		Owner: Neutral
+	Actor23: tibtre01
+		Location: 115,-24
+		Owner: Neutral
+	Actor24: tibtre01
+		Location: 150,-25
+		Owner: Neutral
+	Actor25: tibtre01
+		Location: 23,10
+		Owner: Neutral
+	Actor26: tibtre01
+		Location: 223,-1
+		Owner: Neutral
+	Actor27: mpspawn
+		Location: 59,26
+		Owner: Neutral
+	Actor28: mpspawn
+		Location: 207,-31
+		Owner: Neutral
+	Actor29: mpspawn
+		Location: 82,-35
+		Owner: Neutral
+	Actor30: mpspawn
+		Location: 178,34
+		Owner: Neutral
+	Actor31: mpspawn
+		Location: 137,-94
+		Owner: Neutral
+	Actor32: mpspawn
+		Location: 115,85
+		Owner: Neutral
+	Actor33: waypoint
+		Location: 132,-4
+		Owner: Neutral
+	Actor34: waypoint
+		Location: 132,-4
+		Owner: Neutral
+
+Smudges:
+
+Rules:
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:

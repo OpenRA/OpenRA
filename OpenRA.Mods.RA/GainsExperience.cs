@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Primitives;
@@ -46,7 +47,7 @@ namespace OpenRA.Mods.RA
 					{ 200, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
 					{ 400, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
 					{ 800, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
-					{ 1600, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "selfheal" } }
+					{ 1600, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "eliteweapon", "selfheal" } }
 				};
 			}
 
@@ -114,7 +115,7 @@ namespace OpenRA.Mods.RA
 				{
 					self.World.AddFrameEndTask(w =>
 					{
-						if (!self.IsDead())
+						if (!self.IsDead)
 							w.Add(new Rank(self, info.ChevronPalette));
 					});
 				}

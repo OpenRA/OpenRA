@@ -1,0 +1,314 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MaxMind.Db</name>
+    </assembly>
+    <members>
+        <member name="T:MaxMind.Db.ObjectType">
+            <summary>
+            Enumeration representing the types of objects read from the database
+            </summary>
+        </member>
+        <member name="T:MaxMind.Db.Result">
+            <summary>
+            A data structure to store an object read from the database
+            </summary>
+        </member>
+        <member name="M:MaxMind.Db.Result.#ctor(Newtonsoft.Json.Linq.JToken,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MaxMind.Db.Result"/> class.
+            </summary>
+            <param name="node">The node.</param>
+            <param name="offset">The offset.</param>
+        </member>
+        <member name="P:MaxMind.Db.Result.Node">
+            <summary>
+            The object read from the database
+            </summary>
+        </member>
+        <member name="P:MaxMind.Db.Result.Offset">
+            <summary>
+            The offset
+            </summary>
+        </member>
+        <member name="T:MaxMind.Db.Decoder">
+            <summary>
+            Given a stream, this class decodes the object graph at a particular location
+            </summary>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.#ctor(System.Threading.ThreadLocal{System.IO.Stream},System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MaxMind.Db.Decoder"/> class.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="pointerBase">The base address in the stream.</param>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.Decode(System.Int32)">
+            <summary>
+            Decodes the object at the specified offset.
+            </summary>
+            <param name="offset">The offset.</param>
+            <returns>An object containing the data read from the stream</returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.ReadOne(System.Int32)">
+            <summary>
+            Reads the one.
+            </summary>
+            <param name="position">The position.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.ReadMany(System.Int32,System.Int32)">
+            <summary>
+            Reads the many.
+            </summary>
+            <param name="position">The position.</param>
+            <param name="size">The size.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodeByType(MaxMind.Db.ObjectType,System.Int32,System.Int32)">
+            <summary>
+            Decodes the type of the by.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="offset">The offset.</param>
+            <param name="size">The size.</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">Unable to handle type!</exception>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.FromControlByte(System.Byte)">
+            <summary>
+            Froms the control byte.
+            </summary>
+            <param name="b">The attribute.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.SizeFromCtrlByte(System.Byte,System.Int32)">
+            <summary>
+            Sizes from control byte.
+            </summary>
+            <param name="ctrlByte">The control byte.</param>
+            <param name="offset">The offset.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodeBoolean(System.Int32)">
+            <summary>
+            Decodes the boolean.
+            </summary>
+            <param name="size">The size of the structure.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodeDouble(System.Byte[])">
+            <summary>
+            Decodes the double.
+            </summary>
+            <param name="buffer">The buffer.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodeFloat(System.Byte[])">
+            <summary>
+            Decodes the float.
+            </summary>
+            <param name="buffer">The buffer.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodeString(System.Byte[])">
+            <summary>
+            Decodes the string.
+            </summary>
+            <param name="buffer">The buffer.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodeMap(System.Int32,System.Int32)">
+            <summary>
+            Decodes the map.
+            </summary>
+            <param name="size">The size.</param>
+            <param name="offset">The offset.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodeLong(System.Byte[])">
+            <summary>
+            Decodes the long.
+            </summary>
+            <param name="buffer">The buffer.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodeIntegerToJValue(System.Byte[])">
+            <summary>
+            Decodes the integer.
+            </summary>
+            <param name="buffer">The buffer.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodeArray(System.Int32,System.Int32)">
+            <summary>
+            Decodes the array.
+            </summary>
+            <param name="size">The size.</param>
+            <param name="offset">The offset.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodeUInt64(System.Byte[])">
+            <summary>
+            Decodes the uint64.
+            </summary>
+            <param name="buffer">The buffer.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodeBigInteger(System.Byte[])">
+            <summary>
+            Decodes the big integer.
+            </summary>
+            <param name="buffer">The buffer.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodePointer(System.Int32,System.Int32,System.Int32@)">
+            <summary>
+            Decodes the pointer.
+            </summary>
+            <param name="ctrlByte">The control byte.</param>
+            <param name="offset">The offset.</param>
+            <param name="outOffset">The resulting offset</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodeInteger(System.Byte[])">
+            <summary>
+            Decodes the integer.
+            </summary>
+            <param name="buffer">The buffer.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MaxMind.Db.Decoder.DecodeInteger(System.Int32,System.Byte[])">
+            <summary>
+            Decodes the integer.
+            </summary>
+            <param name="baseValue">The base value.</param>
+            <param name="buffer">The buffer.</param>
+            <returns></returns>
+        </member>
+        <member name="T:MaxMind.Db.InvalidDatabaseException">
+            <summary>
+            Thrown when the MaxMind database file is incorrectly formatted
+            </summary>
+        </member>
+        <member name="M:MaxMind.Db.InvalidDatabaseException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MaxMind.Db.InvalidDatabaseException"/> class.
+            </summary>
+            <param name="message">A message that describes the error.</param>
+        </member>
+        <member name="M:MaxMind.Db.InvalidDatabaseException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MaxMind.Db.InvalidDatabaseException"/> class.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception. If the <paramref name="innerException"/> parameter is not a null reference, the current exception is raised in a catch block that handles the inner exception.</param>
+        </member>
+        <member name="T:MaxMind.Db.FileAccessMode">
+            <summary>
+            An enumeration specifying the API to use to read the database
+            </summary>
+        </member>
+        <member name="F:MaxMind.Db.FileAccessMode.MemoryMapped">
+            <summary>
+            Open the file in memory mapped mode. Does not load into real memory.
+            </summary>
+        </member>
+        <member name="F:MaxMind.Db.FileAccessMode.Memory">
+            <summary>
+            Load the file into memory.
+            </summary>
+        </member>
+        <member name="T:MaxMind.Db.Reader">
+            <summary>
+            Given a MaxMind DB file, this class will retrieve information about an IP address
+            </summary>
+        </member>
+        <member name="M:MaxMind.Db.Reader.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MaxMind.Db.Reader"/> class.
+            </summary>
+            <param name="file">The file.</param>
+        </member>
+        <member name="M:MaxMind.Db.Reader.#ctor(System.String,MaxMind.Db.FileAccessMode)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MaxMind.Db.Reader"/> class.
+            </summary>
+            <param name="file">The MaxMind DB file.</param>
+            <param name="mode">The mode by which to access the DB file.</param>
+        </member>
+        <member name="M:MaxMind.Db.Reader.#ctor(System.IO.Stream)">
+            <summary>
+            Initialize with Stream
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:MaxMind.Db.Reader.Find(System.String)">
+            <summary>
+            Finds the data related to the specified address.
+            </summary>
+            <param name="ipAddress">The IP address.</param>
+            <returns>An object containing the IP related data</returns>
+        </member>
+        <member name="M:MaxMind.Db.Reader.Find(System.Net.IPAddress)">
+            <summary>
+            Finds the data related to the specified address.
+            </summary>
+            <param name="ipAddress">The IP address.</param>
+            <returns>An object containing the IP related data</returns>
+        </member>
+        <member name="M:MaxMind.Db.Reader.Dispose">
+            <summary>
+            Release resources back to the system.
+            </summary>
+        </member>
+        <member name="P:MaxMind.Db.Reader.Metadata">
+            <summary>
+            The metadata for the open database.
+            </summary>
+            <value>
+            The metadata.
+            </value>
+        </member>
+        <member name="T:MaxMind.Db.Metadata">
+            <summary>
+            Data about the database file itself
+            </summary>
+        </member>
+        <member name="P:MaxMind.Db.Metadata.BinaryFormatMajorVersion">
+            <summary>
+            The major version number for the MaxMind DB binary format used by the database.
+            </summary>
+        </member>
+        <member name="P:MaxMind.Db.Metadata.BinaryFormatMinorVersion">
+            <summary>
+            The minor version number for the MaxMind DB binary format used by the database.
+            </summary>
+        </member>
+        <member name="P:MaxMind.Db.Metadata.BuildDate">
+            <summary>
+            The date-time of the database build.
+            </summary>
+        </member>
+        <member name="P:MaxMind.Db.Metadata.DatabaseType">
+            <summary>
+            The MaxMind DB database type.
+            </summary>
+        </member>
+        <member name="P:MaxMind.Db.Metadata.Description">
+            <summary>
+            A map from locale codes to the database description in that language.
+            </summary>
+        </member>
+        <member name="P:MaxMind.Db.Metadata.IPVersion">
+            <summary>
+            The IP version that the database supports. This will be 4 or 6.
+            </summary>
+        </member>
+        <member name="P:MaxMind.Db.Metadata.Languages">
+            <summary>
+            A list of locale codes for languages that the database supports.
+            </summary>
+        </member>
+    </members>
+</doc>

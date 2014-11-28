@@ -166,12 +166,15 @@ crate-effects:
 		Start: 3947
 		Length: 18
 	hide-map: DATA
-		Start: 3911
-		Length: 36
+		Frames: 3965, 3964, 3963, 3962, 3961, 3960, 3959, 3958, 3957, 3956, 3955, 3954, 3953, 3952, 3951, 3950, 3949, 3948
+		Length: 18
 	levelup: levelup
 		Start: 0
 		Length: *
 		Tick: 200
+	cloak: DATA
+		Start: 3911
+		Lenght: 36
 
 allyrepair:
 	repair: DATA

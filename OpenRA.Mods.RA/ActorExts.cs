@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 			if (stance == Stance.Ally)
 				return true;
 
-			if (self.IsDisguised() && !toActor.HasTrait<IgnoresDisguise>())
+			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised && !toActor.HasTrait<IgnoresDisguise>())
 				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Ally;
 
 			return stance == Stance.Ally;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 			if (stance == Stance.Ally)
 				return false;		/* otherwise, we'll hate friendly disguised spies */
 
-			if (self.IsDisguised() && !toActor.HasTrait<IgnoresDisguise>())
+			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised && !toActor.HasTrait<IgnoresDisguise>())
 				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Enemy;
 
 			return stance == Stance.Enemy;

@@ -80,13 +80,14 @@ namespace OpenRA.Network
 								var player = world.FindPlayerByClient(client);
 								if (player == null) return;
 
-								if (world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally || player.WinState == WinState.Lost)
+								if ((world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally) || player.WinState == WinState.Lost)
 								{
 									var suffix = player.WinState == WinState.Lost ? " (Dead)" : " (Team)";
 									Game.AddChatLine(client.Color.RGB, client.Name + suffix, order.TargetString);
 								}
 							}
 						}
+
 						break;
 					}
 
@@ -103,15 +104,16 @@ namespace OpenRA.Network
 						if (client != null)
 						{
 							var pause = order.TargetString == "Pause";
-							if (orderManager.world.Paused != pause && !world.LobbyInfo.IsSinglePlayer)
+							if (orderManager.World.Paused != pause && !world.LobbyInfo.IsSinglePlayer)
 							{
 								var pausetext = "The game is {0} by {1}".F(pause ? "paused" : "un-paused", client.Name);
 								Game.AddChatLine(Color.White, "", pausetext);
 							}
 
-							orderManager.world.Paused = pause;
-							orderManager.world.PredictedPaused = pause;
+							orderManager.World.Paused = pause;
+							orderManager.World.PredictedPaused = pause;
 						}
+
 						break;
 					}
 
@@ -248,7 +250,7 @@ namespace OpenRA.Network
 						if (newStance == Stance.Enemy && targetPlayer.Stances[order.Player] == Stance.Ally)
 						{
 							targetPlayer.SetStance(order.Player, newStance);
-							Game.Debug("{0} has reciprocated",targetPlayer.PlayerName);
+							Game.Debug("{0} has reciprocated", targetPlayer.PlayerName);
 						}
 
 						break;
@@ -270,6 +272,7 @@ namespace OpenRA.Network
 								foreach (var t in self.TraitsImplementing<IResolveOrder>())
 									t.ResolveOrder(self, order);
 						}
+
 						break;
 					}
 			}

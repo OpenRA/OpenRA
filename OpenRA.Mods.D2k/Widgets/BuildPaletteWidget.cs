@@ -13,10 +13,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Power;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
-using OpenRA.Mods.RA.Power;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -25,6 +26,8 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.D2k.Widgets
 {
+	[Desc("Classic BuildPaletteWidget. Needs ChooseBuildTabOnSelect trait to be added to world actor",
+	"in order to make the build palette open automatically when a production facility is deployed.")]
 	class BuildPaletteWidget : Widget
 	{
 		public enum ReadyTextStyleOptions { Solid, AlternatingColor, Blinking }

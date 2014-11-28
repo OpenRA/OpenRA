@@ -10,8 +10,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Power;
 using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Power;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -55,6 +56,9 @@ namespace OpenRA.Mods.RA
 			{
 				if (x.Actor.Owner == self.Owner && x.Trait.Info.Produces.Contains(Info.Type))
 				{
+					var b = x.Actor.TraitOrDefault<Building>();
+					if (b != null && b.Locked)
+						continue;
 					isActive = true;
 					break;
 				}

@@ -11,8 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Power;
 using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Power;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -138,12 +139,12 @@ namespace OpenRA.Mods.RA
 			newOwner.PlayerActor.Trait<TechTree>().Update();
 		}
 
-		public void Killed(Actor killed, AttackInfo e) { if (killed == self) ClearQueue(); }
-		public void Selling(Actor self) { }
-		public void Sold(Actor self) { ClearQueue(); }
+		public void Killed(Actor killed, AttackInfo e) { if (killed == self) { ClearQueue(); Enabled = false; } }
+		public void Selling(Actor self) { ClearQueue(); Enabled = false; }
+		public void Sold(Actor self) { }
 
-		public void BeforeTransform(Actor self) { }
-		public void OnTransform(Actor self) { ClearQueue(); }
+		public void BeforeTransform(Actor self) { ClearQueue(); Enabled = false; }
+		public void OnTransform(Actor self) { }
 		public void AfterTransform(Actor self) { }
 
 		void CacheProduceables(Actor playerActor)
@@ -218,6 +219,8 @@ namespace OpenRA.Mods.RA
 
 		public virtual IEnumerable<ActorInfo> BuildableItems()
 		{
+			if (!Enabled)
+				return Enumerable.Empty<ActorInfo>();
 			if (self.World.AllowDevCommands && developerMode.AllTech)
 				return produceable.Select(a => a.Key);
 
@@ -369,7 +372,7 @@ namespace OpenRA.Mods.RA
 		protected virtual bool BuildUnit(string name)
 		{
 			// Cannot produce if i'm dead
-			if (!self.IsInWorld || self.IsDead())
+			if (!self.IsInWorld || self.IsDead)
 			{
 				CancelProduction(name, 1);
 				return true;

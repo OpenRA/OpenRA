@@ -220,6 +220,68 @@ namespace OpenRA.Mods.RA.Scripting
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnCapture, func, context);
 		}
 
+		[Desc("Call a function when this actor is killed or captured. " +
+			"The callback function will be called as func().")]
+		public void OnKilledOrCaptured(Actor a, LuaFunction func)
+		{
+			var called = false;
+
+			var copy = (LuaFunction)func.CopyReference();
+			Action<Actor> OnKilledOrCaptured = m =>
+			{
+				try
+				{
+					if (called)
+						return;
+
+					copy.Call().Dispose();
+					copy.Dispose();
+					called = true;
+				}
+				catch (Exception e)
+				{
+					context.FatalError(e.Message);
+				}
+			};
+
+			GetScriptTriggers(a).OnCapturedInternal += OnKilledOrCaptured;
+			GetScriptTriggers(a).OnKilledInternal += OnKilledOrCaptured;
+		}
+
+		[Desc("Call a function when all of the actors in a group have been killed or captured. " +
+			"The callback function will be called as func().")]
+		public void OnAllKilledOrCaptured(Actor[] actors, LuaFunction func)
+		{
+			var group = actors.ToList();
+
+			var copy = (LuaFunction)func.CopyReference();
+			Action<Actor> OnMemberKilledOrCaptured = m =>
+			{
+				try
+				{
+					if (!group.Contains(m))
+						return;
+
+					group.Remove(m);
+					if (!group.Any())
+					{
+						copy.Call().Dispose();
+						copy.Dispose();
+					}
+				}
+				catch (Exception e)
+				{
+					context.FatalError(e.Message);
+				}
+			};
+
+			foreach (var a in group)
+			{
+				GetScriptTriggers(a).OnCapturedInternal += OnMemberKilledOrCaptured;
+				GetScriptTriggers(a).OnKilledInternal += OnMemberKilledOrCaptured;
+			}
+		}
+
 		[Desc("Call a function when a ground-based actor enters this cell footprint." +
 			"Returns the trigger id for later removal using RemoveFootprintTrigger(int id)." +
 			"The callback function will be called as func(Actor a, int id).")]
@@ -276,6 +338,64 @@ namespace OpenRA.Mods.RA.Scripting
 		public void RemoveFootprintTrigger(int id)
 		{
 			context.World.ActorMap.RemoveCellTrigger(id);
+		}
+
+		[Desc("Call a function when an actor enters this range." +
+			"Returns the trigger id for later removal using RemoveProximityTrigger(int id)." +
+			"The callback function will be called as func(Actor a, int id).")]
+		public int OnEnteredProximityTrigger(WPos pos, WRange range, LuaFunction func)
+		{
+			var triggerId = 0;
+			var onEntry = (LuaFunction)func.CopyReference();
+			Action<Actor> invokeEntry = a =>
+			{
+				try
+				{
+					using (var luaActor = a.ToLuaValue(context))
+					using (var id = triggerId.ToLuaValue(context))
+						onEntry.Call(luaActor, id).Dispose();
+				}
+				catch (Exception e)
+				{
+					context.FatalError(e.Message);
+				}
+			};
+
+			triggerId = context.World.ActorMap.AddProximityTrigger(pos, range, invokeEntry, null);
+
+			return triggerId;
+		}
+
+		[Desc("Call a function when an actor leaves this range." +
+			"Returns the trigger id for later removal using RemoveProximityTrigger(int id)." +
+			"The callback function will be called as func(Actor a, int id).")]
+		public int OnExitedProximityTrigger(WPos pos, WRange range, LuaFunction func)
+		{
+			var triggerId = 0;
+			var onExit = (LuaFunction)func.CopyReference();
+			Action<Actor> invokeExit = a =>
+			{
+				try
+				{
+					using (var luaActor = a.ToLuaValue(context))
+					using (var id = triggerId.ToLuaValue(context))
+						onExit.Call(luaActor, id).Dispose();
+				}
+				catch (Exception e)
+				{
+					context.FatalError(e.Message);
+				}
+			};
+
+			triggerId = context.World.ActorMap.AddProximityTrigger(pos, range, null, invokeExit);
+
+			return triggerId;
+		}
+
+		[Desc("Removes a previously created proximitry trigger.")]
+		public void RemoveProximityTrigger(int id)
+		{
+			context.World.ActorMap.RemoveProximityTrigger(id);
 		}
 
 		[Desc("Call a function when this actor is infiltrated. The callback function " +

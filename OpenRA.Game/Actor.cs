@@ -23,19 +23,32 @@ namespace OpenRA
 {
 	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>
 	{
-		public readonly ActorInfo Info;
+		[Sync] public Player Owner;
 
+		public readonly ActorInfo Info;
 		public readonly World World;
 		public readonly uint ActorID;
-		public Lazy<Rectangle> Bounds;
 
-		Lazy<IOccupySpace> occupySpace;
+		public bool IsInWorld { get; internal set; }
+		public bool Destroyed { get; private set; }
+
+		Activity currentActivity;
+
+		public Group Group;
+		public int Generation;
+
+		Lazy<Rectangle> bounds;
 		Lazy<IFacing> facing;
 		Lazy<Health> health;
+		Lazy<IOccupySpace> occupySpace;
 		Lazy<IEffectiveOwner> effectiveOwner;
 
+		public Rectangle Bounds { get { return bounds.Value; } }
 		public IOccupySpace OccupiesSpace { get { return occupySpace.Value; } }
 		public IEffectiveOwner EffectiveOwner { get { return effectiveOwner.Value; } }
+
+		public bool IsIdle { get { return currentActivity == null; } }
+		public bool IsDead { get { return Destroyed || (health.Value == null ? false : health.Value.IsDead); } }
 
 		public CPos Location { get { return occupySpace.Value.TopLeft; } }
 		public WPos CenterPosition { get { return occupySpace.Value.CenterPosition; } }
@@ -50,12 +63,6 @@ namespace OpenRA
 			}
 		}
 
-		[Sync] public Player Owner;
-
-		Activity currentActivity;
-		public Group Group;
-		public int Generation;
-
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
 			var init = new ActorInitializer(this, initDict);
@@ -69,10 +76,12 @@ namespace OpenRA
 
 			if (name != null)
 			{
-				if (!world.Map.Rules.Actors.ContainsKey(name.ToLowerInvariant()))
-					throw new NotImplementedException("No rules definition for unit {0}".F(name.ToLowerInvariant()));
+				name = name.ToLowerInvariant();
 
-				Info = world.Map.Rules.Actors[name.ToLowerInvariant()];
+				if (!world.Map.Rules.Actors.ContainsKey(name))
+					throw new NotImplementedException("No rules definition for unit " + name);
+
+				Info = world.Map.Rules.Actors[name];
 				foreach (var trait in Info.TraitsInConstructOrder())
 					AddTrait(trait.Create(init));
 			}
@@ -81,7 +90,7 @@ namespace OpenRA
 			health = Exts.Lazy(() => TraitOrDefault<Health>());
 			effectiveOwner = Exts.Lazy(() => TraitOrDefault<IEffectiveOwner>());
 
-			Bounds = Exts.Lazy(() =>
+			bounds = Exts.Lazy(() =>
 			{
 				var si = Info.Traits.GetOrDefault<SelectableInfo>();
 				var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
@@ -99,14 +108,10 @@ namespace OpenRA
 		{
 			var wasIdle = IsIdle;
 			currentActivity = Traits.Util.RunActivity(this, currentActivity);
+
 			if (!wasIdle && IsIdle)
 				foreach (var n in TraitsImplementing<INotifyBecomingIdle>())
 					n.OnBecomingIdle(this);
-		}
-
-		public bool IsIdle
-		{
-			get { return currentActivity == null; }
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
@@ -123,8 +128,6 @@ namespace OpenRA
 				foreach (var renderable in render.Render(this, wr))
 					yield return renderable;
 		}
-
-		public bool IsInWorld { get; internal set; }
 
 		public void QueueActivity(bool queued, Activity nextActivity)
 		{
@@ -198,8 +201,6 @@ namespace OpenRA
 			World.traitDict.AddTrait(this, trait);
 		}
 
-		public bool Destroyed { get; private set; }
-
 		public void Destroy()
 		{
 			World.AddFrameEndTask(w =>
@@ -237,19 +238,6 @@ namespace OpenRA
 				foreach (var t in this.TraitsImplementing<INotifyOwnerChanged>())
 					t.OnOwnerChanged(this, oldOwner, newOwner);
 			});
-		}
-
-		public bool IsDead()
-		{
-			if (Destroyed)
-				return true;
-
-			return (health.Value == null) ? false : health.Value.IsDead;
-		}
-
-		public bool IsDisguised()
-		{
-			return effectiveOwner.Value != null && effectiveOwner.Value.Disguised;
 		}
 
 		public void Kill(Actor attacker)

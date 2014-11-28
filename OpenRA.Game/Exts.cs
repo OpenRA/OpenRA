@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Support;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -374,8 +375,12 @@ namespace OpenRA
 			var result = new T[width, height];
 			for (var i = 0; i < width; i++)
 				for (var j = 0; j < height; j++)
-					result[i, j] = i <= ts.GetUpperBound(0) && j <= ts.GetUpperBound(1)
-						? ts[i, j] : t;
+					// Workaround for broken ternary operators in certain versions of mono (3.10 and  
+					// certain versions of the 3.8 series): https://bugzilla.xamarin.com/show_bug.cgi?id=23319
+					if (i <= ts.GetUpperBound(0) && j <= ts.GetUpperBound(1))
+						result[i, j] = ts[i, j];
+					else
+						result[i, j] = t;
 			return result;
 		}
 
@@ -403,6 +408,16 @@ namespace OpenRA
 		public static bool TryParseIntegerInvariant(string s, out int i)
 		{
 			return int.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
+		}
+
+		public static bool IsTraitEnabled(this object trait)
+		{
+			return trait as IDisabledTrait == null || !(trait as IDisabledTrait).IsTraitDisabled;
+		}
+
+		public static bool IsTraitEnabled<T>(T t)
+		{
+			return IsTraitEnabled(t as object);
 		}
 	}
 

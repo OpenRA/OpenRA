@@ -104,6 +104,7 @@ World:
 		Race: ordos
 	DomainIndex:
 	PathfinderDebugOverlay:
+	TerrainGeometryOverlay:
 	BuildableTerrainLayer:
 	D2kResourceLayer:
 	ResourceClaimLayer:

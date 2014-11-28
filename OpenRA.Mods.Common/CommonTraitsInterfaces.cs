@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
@@ -19,4 +20,12 @@ namespace OpenRA.Mods.Common
 	}
 
 	public interface INotifyChat { bool OnChat(string from, string message); }
+	public interface IRenderActorPreviewInfo { IEnumerable<IActorPreview> RenderPreview (ActorPreviewInitializer init); }
+
+	public interface IUpgradable
+	{
+		IEnumerable<string> UpgradeTypes { get; }
+		bool AcceptsUpgradeLevel(Actor self, string type, int level);
+		void UpgradeLevelChanged(Actor self, string type, int oldLevel, int newLevel);
+	}
 }

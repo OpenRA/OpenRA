@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		protected override void OnInside(Actor self)
 		{
-			if (actor.IsDead() || capturable.BeingCaptured)
+			if (actor.IsDead || capturable.BeingCaptured)
 				return;
 
 			var b = actor.TraitOrDefault<Building>();
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Activities
 				if (b != null && b.Locked)
 					b.Unlock();
 
-				if (actor.IsDead() || capturable.BeingCaptured)
+				if (actor.IsDead || capturable.BeingCaptured)
 					return;
 
 				var health = actor.Trait<Health>();

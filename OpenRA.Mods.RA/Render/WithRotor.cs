@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
@@ -68,7 +69,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public void Tick(Actor self)
 		{
-			var isFlying = movement.IsMoving && !self.IsDead();
+			var isFlying = movement.IsMoving && !self.IsDead;
 			if (isFlying ^ (rotorAnim.CurrentSequence.Name != info.Sequence))
 				return;
 

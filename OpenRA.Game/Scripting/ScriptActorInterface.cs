@@ -22,7 +22,7 @@ namespace OpenRA.Scripting
 		protected override string MemberNotFoundError(string memberName)
 		{
 			var actorName = actor.Info.Name;
-			if (actor.IsDead())
+			if (actor.IsDead)
 				actorName += " (dead)";
 
 			return "Actor '{0}' does not define a property '{1}'".F(actorName, memberName);

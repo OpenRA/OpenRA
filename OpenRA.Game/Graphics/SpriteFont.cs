@@ -12,23 +12,28 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using SharpFont;
 
 namespace OpenRA.Graphics
 {
 	public class SpriteFont
 	{
+		static Library library = new Library();
+		static SheetBuilder builder;
+
 		int size;
+		string name;
 
 		public SpriteFont(string name, int size)
 		{
 			this.size = size;
+			this.name = name;
 
-			face = library.NewFace(name, 0);
+			face = new Face(library, name);
 			face.SetPixelSizes((uint)size, (uint)size);
 
-			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, 
-			         Pair<char,Color>.EqualityComparer);
+			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, Pair<char, Color>.EqualityComparer);
 
 			// setup a SheetBuilder for our private use
 			// TODO: SheetBuilder state is leaked between mod switches
@@ -41,10 +46,10 @@ namespace OpenRA.Graphics
 
 		void PrecacheColor(Color c)
 		{
-			// precache glyphs for U+0020 - U+007f
-			for (var n = (char)0x20; n < (char)0x7f; n++)
-				if (glyphs[Pair.New(n, c)] == null)
-					throw new InvalidOperationException();
+			using (new PerfTimer("PrecacheColor {0} {1}px {2}".F(name, size, c.Name)))
+				for (var n = (char)0x20; n < (char)0x7f; n++)
+					if (glyphs[Pair.New(n, c)] == null)
+						throw new InvalidOperationException();
 		}
 
 		public void DrawText(string text, float2 location, Color c)
@@ -89,13 +94,12 @@ namespace OpenRA.Graphics
 			return new int2((int)Math.Ceiling(lines.Max(s => s.Sum(a => glyphs[Pair.New(a, Color.White)].Advance))), lines.Length * size);
 		}
 
-		Cache<Pair<char,Color>, GlyphInfo> glyphs;
+		Cache<Pair<char, Color>, GlyphInfo> glyphs;
 		Face face;
 
 		GlyphInfo CreateGlyph(Pair<char, Color> c)
 		{
-			var index = face.GetCharIndex(c.First);
-			face.LoadGlyph(index, LoadFlags.Default, LoadTarget.Normal);
+			face.LoadChar(c.First, LoadFlags.Default, LoadTarget.Normal);
 			face.Glyph.RenderGlyph(RenderMode.Normal);
 
 			var size = new Size((int)face.Glyph.Metrics.Width >> 6, (int)face.Glyph.Metrics.Height >> 6);
@@ -110,6 +114,7 @@ namespace OpenRA.Graphics
 
 			// A new bitmap is generated each time this property is accessed, so we do need to dispose it.
 			using (var bitmap = face.Glyph.Bitmap)
+			{
 				unsafe
 				{
 					var p = (byte*)bitmap.Buffer;
@@ -131,13 +136,12 @@ namespace OpenRA.Graphics
 						p += bitmap.Pitch;
 					}
 				}
+			}
+
 			s.sheet.CommitData();
 
 			return g;
 		}
-
-		static Library library = new Library();  
-		static SheetBuilder builder;
 	}
 
 	class GlyphInfo

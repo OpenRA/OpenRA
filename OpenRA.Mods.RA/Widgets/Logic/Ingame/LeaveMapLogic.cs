@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Scripting;
 using OpenRA.Network;
 using OpenRA.Traits;

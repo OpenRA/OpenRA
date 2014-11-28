@@ -98,7 +98,7 @@ namespace OpenRA.Traits
 			foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
 				nd.DamageStateChanged(self, ai);
 
-			if (Info.NotifyAppliedDamage && repairer != null && repairer.IsInWorld && !repairer.IsDead())
+			if (Info.NotifyAppliedDamage && repairer != null && repairer.IsInWorld && !repairer.IsDead)
 				foreach (var nd in repairer.TraitsImplementing<INotifyAppliedDamage>()
 				         .Concat(repairer.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
 					nd.AppliedDamage(repairer, self, ai);
@@ -141,7 +141,7 @@ namespace OpenRA.Traits
 				foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
 					nd.DamageStateChanged(self, ai);
 
-			if (Info.NotifyAppliedDamage && attacker != null && attacker.IsInWorld && !attacker.IsDead())
+			if (Info.NotifyAppliedDamage && attacker != null && attacker.IsInWorld && !attacker.IsDead)
 				foreach (var nd in attacker.TraitsImplementing<INotifyAppliedDamage>()
 					 .Concat(attacker.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
 				nd.AppliedDamage(attacker, self, ai);

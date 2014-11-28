@@ -11,7 +11,6 @@ MINP:
 	Armor:
 		Type: Light
 	RenderSimple:
-	BelowUnits:
 	Cloak:
 		CloakSound:
 		UncloakSound:
@@ -40,7 +39,6 @@ MINV:
 	Armor:
 		Type: Light
 	RenderSimple:
-	BelowUnits:
 	Cloak:
 		CloakSound:
 		UncloakSound:
@@ -240,7 +238,6 @@ MINE:
 	AutoTargetIgnore:
 	BodyOrientation:
 	SeedsResource:
-	BelowUnits:
 
 RAILMINE:
 	Tooltip:
@@ -260,7 +257,6 @@ RAILMINE:
 	BodyOrientation:
 	SeedsResource:
 		ResourceType: Gems
-	BelowUnits:
 
 QUEE:
 	Tooltip:
@@ -349,3 +345,15 @@ waypoint:
 	RenderEditorOnly:
 	BodyOrientation:
 
+CTFLAG:
+	Inherits: ^TechBuilding
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Tooltip:
+		Name: Flag
+	Bib:
+		HasMinibib: Yes
+	Invulnerable:
+	-Selectable:
+	-TargetableBuilding:

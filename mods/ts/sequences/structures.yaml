@@ -1016,46 +1016,56 @@ gahpad:
 		Start: 0
 		ShadowStart: 3
 		Offset: 0, -24
+		ZOffset: -1c511
 	damaged-idle: gthpad
 		Start: 1
 		ShadowStart: 4
 		Offset: 0, -24
+		ZOffset: -1c511
 	critical-idle: gthpad
 		Start: 2
 		ShadowStart: 5
 		Offset: 0, -24
+		ZOffset: -1c511
 	idle-platform: gthpadbb
 		Start: 0
 		ShadowStart: 3
 		Offset: 0, -24
+		ZOffset: -1c511
 	damaged-idle-platform: gthpadbb
 		Start: 1
 		ShadowStart: 4
 		Offset: 0, -24
+		ZOffset: -1c511
 	critical-idle-platform: gthpadbb
 		Start: 2
 		ShadowStart: 5
 		Offset: 0, -24
+		ZOffset: -1c511
 	idle-lights: gthpad_a
 		Start: 0
 		Length: 8
 		Tick: 200
 		Offset: 0, -36
+		ZOffset: -1c511
 	damaged-idle-lights: gthpad_a
 		Start: 8
 		Length: 8
 		Tick: 200
 		Offset: 0, -36
+		ZOffset: -1c511
 	critical-idle-lights: gthpad_a
 		Start: 16
 		Length: 8
 		Tick: 200
 		Offset: 0, -36
+		ZOffset: -1c511
 	make: gthpadmk
 		Start: 0
 		Length: 18
 		ShadowStart: 18
 		Offset: 0, -24
+		ZOffset: -1c511
 	icon: heliicon
 		Start: 0
 
@@ -1064,44 +1074,50 @@ nahpad:
 		Start: 0
 		ShadowStart: 3
 		Offset: 0, -24
+		ZOffset: -1c511
 	damaged-idle: nthpad
 		Start: 1
 		ShadowStart: 4
 		Offset: 0, -24
+		ZOffset: -1c511
 	critical-idle: nthpad
 		Start: 2
 		ShadowStart: 5
 		Offset: 0, -24
+		ZOffset: -1c511
 	idle-platform: nthpadbb
 		Start: 0
 		ShadowStart: 3
 		Offset: 0, -24
+		ZOffset: -1c511
 	damaged-idle-platform: nthpadbb
 		Start: 1
 		ShadowStart: 4
 		Offset: 0, -24
+		ZOffset: -1c511
 	critical-idle-platform: nthpadbb
 		Start: 2
 		ShadowStart: 5
 		Offset: 0, -24
+		ZOffset: -1c511
 	idle-lights: nthpad_a
 		Start: 0
 		Length: 46
-#		Offset: 2,-12
 		Offset: 0, -24
+		ZOffset: -1c511
 		Tick: 120
 	damaged-idle-lights: nthpad_a
 		Start: 46
 		Length: 46
-#		Offset: 16,-16
 		Tick: 120
 		Offset: 0, -24
+		ZOffset: -1c511
 	critical-idle-lights: nthpad_a
 		Start: 46
 		Length: 46
-#		Offset: 24,-24
 		Tick: 200
 		Offset: 0, -24
+		ZOffset: -1c511
 	make: nthpadmk
 		Start: 0
 		Length: 20

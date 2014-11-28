@@ -115,6 +115,8 @@ WorldLoaded = function()
 		ukraine.AddPrimaryObjective("Destroy the convoy.")
 	end)
 
+	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionTimerInitialised") end)
+
 	RunInitialActivities()
 
 	SendConstructionVehicleReinforcements()

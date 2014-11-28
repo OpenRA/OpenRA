@@ -96,7 +96,7 @@ namespace OpenRA.Orders
 			if (self.Destroyed || !target.IsValidFor(self))
 				return null;
 
-			if (mi.Button == Game.mouseButtonPreference.Action)
+			if (mi.Button == MouseButton.Right)
 			{
 				foreach (var o in self.TraitsImplementing<IIssueOrder>()
 					.SelectMany(trait => trait.Orders

@@ -58,6 +58,7 @@ namespace OpenRA.Mods.Common.Server
 			var numPlayers = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null && c1.Slot != null).Count();
 			var numBots = server.LobbyInfo.Clients.Where(c1 => c1.Bot != null).Count();
 			var numSpectators = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null && c1.Slot == null).Count();
+			var numSlots = server.LobbyInfo.Slots.Where(s => !s.Value.Closed).Count() - numBots;
 			var passwordProtected = string.IsNullOrEmpty(server.Settings.Password) ? 0 : 1;
 			var clients = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null).Select(c => Convert.ToBase64String(Encoding.UTF8.GetBytes(c.Name))).ToArray();
 
@@ -79,7 +80,7 @@ namespace OpenRA.Mods.Common.Server
 								numBots,
 								"{0}@{1}".F(mod.Id, mod.Version),
 								server.LobbyInfo.GlobalSettings.Map,
-								server.Map.PlayerCount,
+								numSlots,
 								numSpectators,
 								passwordProtected,
 								string.Join(",", clients)));

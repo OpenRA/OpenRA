@@ -33,7 +33,6 @@ namespace OpenRA.Mods.RA.Move
 		MobileInfo mobileInfo;
 		Func<CPos, int> customCost;
 		Func<CPos, bool> customBlock;
-		Pair<CVec, int>[] nextDirections;
 		int laneBias = 1;
 
 		public PathSearch(World world, MobileInfo mobileInfo, Actor self)
@@ -46,7 +45,6 @@ namespace OpenRA.Mods.RA.Move
 			Queue = new PriorityQueue<PathDistance>();
 			Considered = new HashSet<CPos>();
 			MaxCost = 0;
-			nextDirections = CVec.directions.Select(d => new Pair<CVec, int>(d, 0)).ToArray();
 		}
 
 		public static PathSearch Search(World world, MobileInfo mi, Actor self, bool checkForBlocked)
@@ -140,6 +138,32 @@ namespace OpenRA.Mods.RA.Move
 			return this;
 		}
 
+		// Sets of neighbors for each incoming direction. These exclude the neighbors which are guaranteed
+		// to be reached more cheaply by a path through our parent cell which does not include the current cell.
+		// For horizontal/vertical directions, the set is the three cells 'ahead'. For diagonal directions, the set
+		// is the three cells ahead, plus the two cells to the side, which we cannot exclude without knowing if
+		// the cell directly between them and our parent is passable.
+		static CVec[][] DirectedNeighbors = {
+			new CVec[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(-1, 0), new CVec(-1, 1) },
+			new CVec[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1) },
+			new CVec[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) },
+			new CVec[] { new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1) },
+			CVec.directions,
+			new CVec[] { new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) },
+			new CVec[] { new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },
+			new CVec[] { new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },
+			new CVec[] { new CVec(1, -1), new CVec(1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },
+		};
+
+		static CVec[] GetNeighbors(CPos p, CPos prev)
+		{
+			var dx = p.X - prev.X;
+			var dy = p.Y - prev.Y;
+			var index = dy * 3 + dx + 4;
+
+			return DirectedNeighbors[index];
+		}
+
 		public CPos Expand(World world)
 		{
 			var p = Queue.Pop();
@@ -167,13 +191,14 @@ namespace OpenRA.Mods.RA.Move
 					return p.Location;
 			}
 
-			// This current cell is ok; check all immediate directions:
+			// This current cell is ok; check useful immediate directions:
 			Considered.Add(p.Location);
 
-			for (var i = 0; i < nextDirections.Length; ++i)
+			var directions = GetNeighbors(p.Location, pCell.Path);
+
+			for (var i = 0; i < directions.Length; ++i)
 			{
-				var d = nextDirections[i].First;
-				nextDirections[i].Second = int.MaxValue;
+				var d = directions[i];
 
 				var newHere = p.Location + d;
 
@@ -239,7 +264,6 @@ namespace OpenRA.Mods.RA.Move
 				hereCell.MinCost = newCost;
 				CellInfo[newHere] = hereCell;
 
-				nextDirections[i].Second = newCost + est;
 				Queue.Add(new PathDistance(newCost + est, newHere));
 
 				if (newCost > MaxCost)
@@ -248,8 +272,6 @@ namespace OpenRA.Mods.RA.Move
 				Considered.Add(newHere);
 			}
 
-			// Sort to prefer the cheaper direction:
-			// Array.Sort(nextDirections, (a, b) => a.Second.CompareTo(b.Second));
 			return p.Location;
 		}
 

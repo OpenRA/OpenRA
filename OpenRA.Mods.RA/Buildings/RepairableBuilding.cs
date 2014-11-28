@@ -12,6 +12,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 					self.World.AddFrameEndTask(w =>
 					{
-						if (!self.IsDead())
+						if (!self.IsDead)
 							w.Add(new RepairIndicator(self, Info.IndicatorPalettePrefix));
 					});
 				}

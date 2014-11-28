@@ -8,7 +8,8 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -25,6 +26,13 @@ namespace OpenRA.Mods.RA.Scripting
 		public void Move(CPos cell)
 		{
 			self.QueueActivity(new Fly(self, Target.FromCell(self.World, cell)));
+		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Return to the base, which is either the airfield given, or an auto-selected one otherwise.")]
+		public void ReturnToBase(Actor airfield = null)
+		{
+			self.QueueActivity(new ReturnToBase(self, airfield));
 		}
 	}
 

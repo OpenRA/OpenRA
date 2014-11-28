@@ -501,12 +501,15 @@ GATICK:
 	Armament@PRIMARY:
 		Weapon: 90mm
 		LocalOffset: 384,0,128
-		RestrictedByUpgrade: eliteweapon
+		UpgradeTypes: eliteweapon
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
 		MuzzleSequence: muzzle
 	Armament@ELITE:
 		Weapon: 120mmx
 		LocalOffset: 384,0,128
-		RequiresUpgrade: eliteweapon
+		UpgradeTypes: eliteweapon
+		UpgradeMinEnabledLevel: 1
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	BodyOrientation:
@@ -833,7 +836,6 @@ GAHPAD:
 	Production:
 		Produces: Air
 	PrimaryBuilding:
-	BelowUnits:
 	Reservable:
 	RepairsUnits:
 	ProductionBar:
@@ -869,7 +871,6 @@ NAHPAD:
 	Production:
 		Produces: Air
 	PrimaryBuilding:
-	BelowUnits:
 	Reservable:
 	RepairsUnits:
 	ProductionBar:

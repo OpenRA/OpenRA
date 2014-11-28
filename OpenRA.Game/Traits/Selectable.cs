@@ -38,7 +38,7 @@ namespace OpenRA.Traits
 
 		IEnumerable<WPos> ActivityTargetPath()
 		{
-			if (!self.IsInWorld || self.IsDead())
+			if (!self.IsInWorld || self.IsDead)
 				yield break;
 
 			var activity = self.GetCurrentActivity();

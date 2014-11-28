@@ -59,12 +59,16 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	UpgradeOverlay@IRONCURTAIN:
-		RequiresUpgrade: invulnerability
+		UpgradeTypes: invulnerability
+		UpgradeMinEnabledLevel: 1
 	InvulnerabilityUpgrade@IRONCURTAIN:
-		RequiresUpgrade: invulnerability
+		UpgradeTypes: invulnerability
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
 	TimedUpgradeBar:
 		Upgrade: invulnerability
 
@@ -129,12 +133,16 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	UpgradeOverlay@IRONCURTAIN:
-		RequiresUpgrade: invulnerability
+		UpgradeTypes: invulnerability
+		UpgradeMinEnabledLevel: 1
 	InvulnerabilityUpgrade@IRONCURTAIN:
-		RequiresUpgrade: invulnerability
+		UpgradeTypes: invulnerability
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
 	TimedUpgradeBar:
 		Upgrade: invulnerability
 
@@ -192,7 +200,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: hospitalheal
+		UpgradeTypes: hospitalheal
+		UpgradeMinEnabledLevel: 1
 	GlobalUpgradable:
 		Upgrades: hospitalheal
 		Prerequisites: hosp
@@ -221,7 +230,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 
 ^Ship:
@@ -263,14 +273,19 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	UpgradeOverlay@IRONCURTAIN:
-		RequiresUpgrade: invulnerability
+		UpgradeTypes: invulnerability
+		UpgradeMinEnabledLevel: 1
 	InvulnerabilityUpgrade@IRONCURTAIN:
-		RequiresUpgrade: invulnerability
+		UpgradeTypes: invulnerability
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
 	TimedUpgradeBar:
 		Upgrade: invulnerability
+		UpgradeMinEnabledLevel: 1
 
 ^Plane:
 	AppearsOnRadar:
@@ -314,12 +329,16 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	UpgradeOverlay@IRONCURTAIN:
-		RequiresUpgrade: invulnerability
+		UpgradeTypes: invulnerability
+		UpgradeMinEnabledLevel: 1
 	InvulnerabilityUpgrade@IRONCURTAIN:
-		RequiresUpgrade: invulnerability
+		UpgradeTypes: invulnerability
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
 	TimedUpgradeBar:
 		Upgrade: invulnerability
 
@@ -382,9 +401,12 @@
 	ScriptTriggers:
 	UpgradeManager:
 	UpgradeOverlay@IRONCURTAIN:
-		RequiresUpgrade: invulnerability
+		UpgradeTypes: invulnerability
+		UpgradeMinEnabledLevel: 1
 	InvulnerabilityUpgrade@IRONCURTAIN:
-		RequiresUpgrade: invulnerability
+		UpgradeTypes: invulnerability
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
 	TimedUpgradeBar:
 		Upgrade: invulnerability
 
@@ -552,7 +574,6 @@
 		Damage: 2
 	ProximityCaptor:
 		Types: Husk
-	BelowUnits:
 	BodyOrientation:
 	Chronoshiftable:
 	TargetableUnit:
@@ -577,7 +598,6 @@
 	FallsToEarth:
 		Spins: True
 		Moves: False
-	-BelowUnits:
 	-TargetableUnit:
 	-Capturable:
 	-TransformOnCapture:
@@ -589,7 +609,6 @@
 	FallsToEarth:
 		Spins: False
 		Moves: True
-	-BelowUnits:
 	-TargetableUnit:
 	-Capturable:
 	-TransformOnCapture:
@@ -597,7 +616,6 @@
 ^Bridge:
 	Tooltip:
 		Name: Bridge
-	BelowUnits:
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 		RequiresForceFire: true

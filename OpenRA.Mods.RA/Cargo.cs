@@ -8,12 +8,14 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using OpenRA.Traits;
 using OpenRA.Primitives;
-using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Traits;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Orders;
 
 namespace OpenRA.Mods.RA
@@ -27,6 +29,9 @@ namespace OpenRA.Mods.RA
 		public readonly string[] InitialUnits = { };
 		public readonly bool EjectOnSell = true;
 
+		[Desc("Which direction the passenger will face (relative to the transport) when unloading.")]
+		public readonly int PassengerFacing = 128;
+
 		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
@@ -36,6 +41,7 @@ namespace OpenRA.Mods.RA
 		readonly Actor self;
 		readonly List<Actor> cargo = new List<Actor>();
 		readonly HashSet<Actor> reserves = new HashSet<Actor>();
+		readonly Lazy<IFacing> facing;
 
 		int totalWeight = 0;
 		int reservedWeight = 0;
@@ -82,6 +88,7 @@ namespace OpenRA.Mods.RA
 
 				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
+			facing = Exts.Lazy(self.TraitOrDefault<IFacing>);
 		}
 
 		public void Created(Actor self)
@@ -184,14 +191,36 @@ namespace OpenRA.Mods.RA
 		public Actor Unload(Actor self)
 		{
 			var a = cargo[0];
+
 			cargo.RemoveAt(0);
 			totalWeight -= GetWeight(a);
+
+			SetPassengerFacing(a);
 
 			foreach (var npe in self.TraitsImplementing<INotifyPassengerExited>())
 				npe.PassengerExited(self, a);
 
-			a.Trait<Passenger>().Transport = null;
+			var p = a.Trait<Passenger>();
+			p.Transport = null;
+
+			foreach (var u in p.Info.GrantUpgrades)
+				self.Trait<UpgradeManager>().RevokeUpgrade(self, u, p);
+
 			return a;
+		}
+
+		void SetPassengerFacing(Actor passenger)
+		{
+			if (facing.Value == null)
+				return;
+
+			var passengerFacing = passenger.TraitOrDefault<IFacing>();
+			if (passengerFacing != null)
+				passengerFacing.Facing = facing.Value.Facing + Info.PassengerFacing;
+
+			var passengerTurreted = passenger.TraitOrDefault<Turreted>();
+			if (passengerTurreted != null)
+				passengerTurreted.TurretFacing = facing.Value.Facing + Info.PassengerFacing;
 		}
 
 		public IEnumerable<PipType> GetPips(Actor self)
@@ -232,7 +261,10 @@ namespace OpenRA.Mods.RA
 			foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
 				npe.PassengerEntered(self, a);
 
-			a.Trait<Passenger>().Transport = self;
+			var p = a.Trait<Passenger>();
+			p.Transport = self;
+			foreach (var u in p.Info.GrantUpgrades)
+				self.Trait<UpgradeManager>().GrantUpgrade(self, u, p);
 		}
 
 		public void Killed(Actor self, AttackInfo e)
