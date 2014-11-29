@@ -43,7 +43,7 @@ namespace OpenRA.Graphics
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src) { FastCopyIntoChannel(dest, 0, src); }
 		public static void FastCopyIntoChannel(Sprite dest, int channelOffset, byte[] src)
 		{
-			var data = dest.sheet.Data;
+			var data = dest.sheet.GetData();
 			var srcStride = dest.bounds.Width;
 			var destStride = dest.sheet.Size.Width * 4;
 			var destOffset = destStride * dest.bounds.Top + dest.bounds.Left * 4 + channelMasks[(int)dest.channel + channelOffset];
@@ -64,7 +64,7 @@ namespace OpenRA.Graphics
 
 		public static void FastCopyIntoSprite(Sprite dest, Bitmap src)
 		{
-			var data = dest.sheet.Data;
+			var data = dest.sheet.GetData();
 			var dataStride = dest.sheet.Size.Width * 4;
 			var x = dest.bounds.Left * 4;
 			var width = dest.bounds.Width * 4;

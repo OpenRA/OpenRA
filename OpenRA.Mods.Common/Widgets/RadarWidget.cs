@@ -73,14 +73,14 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var r = new Rectangle(0, 0, width, height);
 				var s = new Size(terrainBitmap.Width, terrainBitmap.Height);
-				var terrainSheet = new Sheet(s, false);
-				terrainSheet.Texture.SetData(terrainBitmap);
+				var terrainSheet = new Sheet(s);
+				terrainSheet.GetTexture().SetData(terrainBitmap);
 				terrainSprite = new Sprite(terrainSheet, r, TextureChannel.Alpha);
 
 				// Data is set in Tick()
-				customTerrainSprite = new Sprite(new Sheet(s, false), r, TextureChannel.Alpha);
-				actorSprite = new Sprite(new Sheet(s, false), r, TextureChannel.Alpha);
-				shroudSprite = new Sprite(new Sheet(s, false), r, TextureChannel.Alpha);
+				customTerrainSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
+				actorSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
+				shroudSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
 			}
 		}
 
@@ -203,16 +203,16 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				updateTicks = 12;
 				using (var bitmap = Minimap.CustomTerrainBitmap(world))
-					customTerrainSprite.sheet.Texture.SetData(bitmap);
+					customTerrainSprite.sheet.GetTexture().SetData(bitmap);
 			}
 
 			if (updateTicks == 8)
 				using (var bitmap = Minimap.ActorsBitmap(world))
-					actorSprite.sheet.Texture.SetData(bitmap);
+					actorSprite.sheet.GetTexture().SetData(bitmap);
 
 			if (updateTicks == 4)
 				using (var bitmap = Minimap.ShroudBitmap(world))
-					shroudSprite.sheet.Texture.SetData(bitmap);
+					shroudSprite.sheet.GetTexture().SetData(bitmap);
 
 			// Enable/Disable the radar
 			var enabled = IsEnabled();

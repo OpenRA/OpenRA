@@ -61,10 +61,10 @@ namespace OpenRA.Widgets
 
 			var size = Math.Max(video.Width, video.Height);
 			var textureSize = Exts.NextPowerOf2(size);
-			var videoSheet = new Sheet(new Size(textureSize, textureSize), false);
+			var videoSheet = new Sheet(new Size(textureSize, textureSize));
 
-			videoSheet.Texture.ScaleFilter = TextureScaleFilter.Linear;
-			videoSheet.Texture.SetData(video.FrameData);
+			videoSheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
+			videoSheet.GetTexture().SetData(video.FrameData);
 
 			videoSprite = new Sprite(videoSheet,
 				new Rectangle(
@@ -89,8 +89,8 @@ namespace OpenRA.Widgets
 			for (var y = 0; y < scaledHeight; y += 2)
 				overlay[y, 0] = black;
 
-			var overlaySheet = new Sheet(new Size(1, Exts.NextPowerOf2(scaledHeight)), false);
-			overlaySheet.Texture.SetData(overlay);
+			var overlaySheet = new Sheet(new Size(1, Exts.NextPowerOf2(scaledHeight)));
+			overlaySheet.GetTexture().SetData(overlay);
 			overlaySprite = new Sprite(overlaySheet, new Rectangle(0, 0, 1, scaledHeight), TextureChannel.Alpha);
 		}
 
@@ -117,7 +117,7 @@ namespace OpenRA.Widgets
 				while (nextFrame > video.CurrentFrame)
 				{
 					video.AdvanceFrame();
-					videoSprite.sheet.Texture.SetData(video.FrameData);
+					videoSprite.sheet.GetTexture().SetData(video.FrameData);
 					skippedFrames++;
 				}
 
@@ -185,7 +185,7 @@ namespace OpenRA.Widgets
 			paused = true;
 			Sound.StopVideo();
 			video.Reset();
-			videoSprite.sheet.Texture.SetData(video.FrameData);
+			videoSprite.sheet.GetTexture().SetData(video.FrameData);
 			world.AddFrameEndTask(_ => onComplete());
 		}
 	}

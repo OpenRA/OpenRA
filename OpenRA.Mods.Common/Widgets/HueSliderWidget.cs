@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			using (var hueBitmap = new Bitmap(256, 256))
 			{
-				var hueSheet = new Sheet(new Size(256, 256), false);
+				var hueSheet = new Sheet(new Size(256, 256));
 				hueSprite = new Sprite(hueSheet, new Rectangle(0, 0, 256, 1), TextureChannel.Alpha);
 
 				var bitmapData = hueBitmap.LockBits(hueBitmap.Bounds(),
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 						*(c + h) = HSLColor.FromHSV(h / 255f, 1, 1).RGB.ToArgb();
 				}
 				hueBitmap.UnlockBits(bitmapData);
-				hueSheet.Texture.SetData(hueBitmap);
+				hueSheet.GetTexture().SetData(hueBitmap);
 			}
 		}
 

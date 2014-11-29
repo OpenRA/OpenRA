@@ -38,7 +38,7 @@ namespace OpenRA.Graphics
 
 		public static Sheet AllocateSheet()
 		{
-			return new Sheet(new Size(Renderer.SheetSize, Renderer.SheetSize), true);
+			return new Sheet(new Size(Renderer.SheetSize, Renderer.SheetSize));
 		}
 
 		public SheetBuilder(SheetType t)
