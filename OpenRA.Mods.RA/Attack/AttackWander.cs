@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 		"This conflicts with player orders and should only be added to animal creeps.")]
 	class AttackWanderInfo : ITraitInfo
 	{
-		readonly public int WanderMoveRadius = 10;
+		public readonly int WanderMoveRadius = 10;
 
 		[Desc("Number of ticks to wait until decreasing the effective move radius.")]
 		public readonly int MoveReductionRadiusScale = 5;

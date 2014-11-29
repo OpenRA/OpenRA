@@ -17,27 +17,30 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k
 {
-	public enum AttackState { Burrowed, EmergingAboveGround, ReturningUnderground }
+	enum AttackState { Burrowed, EmergingAboveGround, ReturningUnderground }
 
 	class SwallowActor : Activity
 	{
 		readonly Target target;
-		readonly Sandworm sandworm;
 		readonly WeaponInfo weapon;
+		readonly RenderUnit renderUnit;
 		readonly AttackSwallow swallow;
 		readonly IPositionable positionable;
 
 		int countdown;
-		AttackState stance = AttackState.Burrowed;
+		AttackState stance;
 
 		public SwallowActor(Actor self, Target target, WeaponInfo weapon)
 		{
 			this.target = target;
 			this.weapon = weapon;
 			positionable = self.TraitOrDefault<Mobile>();
-			sandworm = self.TraitOrDefault<Sandworm>();
 			swallow = self.TraitOrDefault<AttackSwallow>();
+			renderUnit = self.TraitOrDefault<RenderUnit>();
 			countdown = swallow.AttackSwallowInfo.AttackTime;
+
+			renderUnit.DefaultAnimation.ReplaceAnim("burrowed");
+			stance = AttackState.Burrowed;
 		}
 
 		bool WormAttack(Actor worm)
@@ -45,14 +48,14 @@ namespace OpenRA.Mods.D2k
 			var targetLocation = target.Actor.Location;
 
 			var lunch = worm.World.ActorMap.GetUnitsAt(targetLocation)
-			    .Where(t => !t.Equals(worm) && weapon.IsValidAgainst(t, worm));
+				.Where(t => !t.Equals(worm) && weapon.IsValidAgainst(t, worm));
 			if (!lunch.Any())
 				return false;
 
 			stance = AttackState.EmergingAboveGround;
 
 			lunch.Do(t => t.World.AddFrameEndTask(_ => { t.World.Remove(t); t.Kill(t); }));          // Dispose of the evidence (we don't want husks)
-			
+
 			positionable.SetPosition(worm, targetLocation);
 			PlayAttackAnimation(worm);
 
@@ -61,7 +64,6 @@ namespace OpenRA.Mods.D2k
 
 		void PlayAttackAnimation(Actor self)
 		{
-			var renderUnit = self.Trait<RenderUnit>();
 			renderUnit.PlayCustomAnim(self, "sand");
 			renderUnit.PlayCustomAnim(self, "mouth");
 		}
@@ -74,28 +76,27 @@ namespace OpenRA.Mods.D2k
 				return this;
 			}
 
-			if (stance == AttackState.ReturningUnderground)    // Wait for the worm to get back underground
+			if (stance == AttackState.ReturningUnderground)     // Wait for the worm to get back underground
 			{
-				if (self.World.SharedRandom.Next() % 2 == 0)   // There is a 50-50 chance that the worm would just go away
+				if (self.World.SharedRandom.Next()%2 == 0)      // There is a 50-50 chance that the worm would just go away
 				{
-					self.CancelActivity();
-					self.World.AddFrameEndTask(w => w.Remove(self));
-					var wormManager = self.World.WorldActor.TraitOrDefault<WormManager>();
-					if (wormManager != null)
-						wormManager.DecreaseWorms();
+				    self.CancelActivity();
+				    self.World.AddFrameEndTask(w => w.Remove(self));
+				    var wormManager = self.World.WorldActor.TraitOrDefault<WormManager>();
+				    if (wormManager != null)
+				        wormManager.DecreaseWorms();
 				}
-
-				// TODO: If the worm did not disappear, make the animation reappear here
-
+				else
+				{
+				    renderUnit.DefaultAnimation.ReplaceAnim("idle");
+				}
 				return NextActivity;
 			}
 
 			if (stance == AttackState.Burrowed)   // Wait for the worm to get in position
 			{
-				// TODO: Make the worm animation (currenty the lightning) disappear here
-
 				// This is so that the worm cancels an attack against a target that has reached solid rock
-				if (sandworm == null || positionable == null || !positionable.CanEnterCell(target.Actor.Location, null, false))
+				if (positionable == null || !positionable.CanEnterCell(target.Actor.Location, null, false))
 					return NextActivity;
 
 				var success = WormAttack(self);

@@ -41,7 +41,6 @@ SANDWORM:
 	RenderUnit:
 	BodyOrientation:
 	HiddenUnderFog:
-	Sandworm:
 	AppearsOnRadar:
 		UseLocation: yes
 	AttackSwallow:

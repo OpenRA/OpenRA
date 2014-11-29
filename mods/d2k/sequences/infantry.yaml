@@ -456,5 +456,7 @@ sandworm:
 		Length: 35
 		Tick: 180
 		BlendMode: Additive
+	burrowed: DATA
+		Start: 39
 	icon: wormicon
 		Start: 0
