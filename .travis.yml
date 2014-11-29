@@ -16,7 +16,7 @@ cache: apt
 # Run the build script
 # call RALint to check for YAML errors
 script:
- - make dependencies
+ - make cli-dependencies
  - make all
  - make test
 

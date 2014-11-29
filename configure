@@ -21,4 +21,7 @@ if [ "$os" == 'Linux' ]; then
 		sed "s/@LIBLUA51@/${liblua51}/" thirdparty/Eluant.dll.config.in > Eluant.dll.config
 		echo "Eluant.dll.config has been created successfully."
 	fi
+elif [ "$os" == 'Darwin' ]; then
+	cp thirdparty/osx/* .
+	echo "Copied Lua 5.1 and SDL2 libraries successfully."
 fi
