@@ -5,6 +5,8 @@
 	Tooltip:
 		Name: Carryall
 		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters.
+	Buildable:
+		BuildAtProductionType: Aircraft
 	Health:
 		HP: 250
 	Armor:
