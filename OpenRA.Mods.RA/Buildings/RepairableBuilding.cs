@@ -19,37 +19,37 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Buildings
 {
 	[Desc("Building can be repaired by the repair button.")]
-	public class RepairableBuildingInfo : ITraitInfo, Requires<HealthInfo>
+	public class RepairableBuildingInfo : UpgradableTraitInfo, ITraitInfo, Requires<HealthInfo>
 	{
 		public readonly int RepairPercent = 20;
 		public readonly int RepairInterval = 24;
 		public readonly int RepairStep = 7;
 		public readonly int[] RepairBonuses = { 100, 150, 175, 200, 220, 240, 260, 280, 300 };
+		public readonly bool CancelWhenDisabled = false;
 
 		public readonly string IndicatorPalettePrefix = "player";
 
 		public object Create(ActorInitializer init) { return new RepairableBuilding(init.self, this); }
 	}
 
-	public class RepairableBuilding : ITick, ISync
+	public class RepairableBuilding : UpgradableTrait<RepairableBuildingInfo>, ITick
 	{
 		[Sync]
 		public int RepairersHash { get { return Repairers.Aggregate(0, (code, player) => code ^ Sync.hash_player(player)); } }
 		public List<Player> Repairers = new List<Player>();
 
 		Health Health;
-		RepairableBuildingInfo Info;
 		public bool RepairActive = false;
 
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
+			: base (info)
 		{
 			Health = self.Trait<Health>();
-			Info = info;
 		}
 
 		public void RepairBuilding(Actor self, Player player)
 		{
-			if (self.AppearsFriendlyTo(player.PlayerActor))
+			if (!IsTraitDisabled && self.AppearsFriendlyTo(player.PlayerActor))
 			{
 				// If the player won't affect the repair, we won't add him
 				if (!Repairers.Remove(player) && Repairers.Count < Info.RepairBonuses.Length) 
@@ -70,6 +70,17 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public void Tick(Actor self)
 		{
+			if (IsTraitDisabled)
+			{
+				if (RepairActive && Info.CancelWhenDisabled)
+				{
+					Repairers.Clear();
+					RepairActive = false;
+				}
+
+				return;
+			}
+
 			if (remainingTicks == 0)
 			{
 				Repairers = Repairers.Where(player => player.WinState == WinState.Undefined
