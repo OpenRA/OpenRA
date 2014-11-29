@@ -85,6 +85,7 @@ Grenade:
 Bazooka:
 	ReloadDelay: 60
 	Range: 6c0
+	MinRange: 0c512
 	Report: RKETINF1.AUD
 	ValidTargets: Ground, Air
 	Palette: ra

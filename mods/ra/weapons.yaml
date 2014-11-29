@@ -341,6 +341,7 @@ M1Carbine:
 Dragon:
 	ReloadDelay: 50
 	Range: 5c0
+	MinRange: 0c512
 	Report: MISSILE6.AUD
 	ValidTargets: Ground, Water
 	Projectile: Missile
