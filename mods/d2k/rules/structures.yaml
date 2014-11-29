@@ -602,7 +602,7 @@ WALL:
 		Name: High Tech Facility
 		Description: Unlocks advanced technology
 	Production:
-		Produces: Aircraft
+		Produces: Aircraft, Armor
 	Exit:
 		SpawnOffset: 0,0,728
 		ExitCell: 0,0
@@ -618,8 +618,8 @@ WALL:
 		Range: 4c0
 	ProvidesCustomPrerequisite:
 		Prerequisite: hightech
-#	WithProductionOverlay@WELDING:
-#		Sequence: production-welding
+	WithProductionOverlay@WELDING:
+		Sequence: production-welding
 	Power:
 		Amount: -40
 
