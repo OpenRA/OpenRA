@@ -86,6 +86,9 @@
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Widgets\SlidingContainerWidget.cs" />
     <Compile Include="Widgets\Logic\IngameChromeLogic.cs" />
+    <Compile Include="AutoCarryall\AutoCarryall.cs" />
+    <Compile Include="AutoCarryall\Carryable.cs" />
+    <Compile Include="AutoCarryall\CarryUnit.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

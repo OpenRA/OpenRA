@@ -126,11 +126,17 @@ CARRYALLH:
 	Inherits: ^CARRYALL
 	RenderUnit:
 		Image: CARRYALL
+	Buildable:
+		Queue: Armor
+		Prerequisites: ~heavyh, refinery, hightech
+		BuildPaletteOrder: 10
 
 CARRYALLH.starport:
 	Inherits: CARRYALLH
 	Valued:
 		Cost: 1500
+	Buildable:
+		Queue: Starport
 
 COMBATH:
 	Inherits: ^COMBAT
