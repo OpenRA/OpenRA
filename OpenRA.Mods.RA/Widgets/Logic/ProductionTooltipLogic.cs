@@ -58,7 +58,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var tooltip = actor.Traits.Get<TooltipInfo>();
 				var buildable = actor.Traits.Get<BuildableInfo>();
 				var cost = actor.Traits.Get<ValuedInfo>().Cost;
-				var pi = actor.Traits.GetOrDefault<PowerInfo>();
 
 				nameLabel.GetText = () => tooltip.Name;
 
@@ -74,7 +73,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var requiresString = prereqs.Any() ? requiresLabel.Text.F(prereqs.JoinWith(", ")) : "";
 				requiresLabel.GetText = () => requiresString;
 
-				var power = pi != null ? pi.Amount : 0;
+				var power = actor.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(i => i.Amount);
 				var powerString = power.ToString();
 				powerLabel.GetText = () => powerString;
 				powerLabel.GetColor = () => ((pm.PowerProvided - pm.PowerDrained) >= -power || power > 0)
