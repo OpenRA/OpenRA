@@ -10,13 +10,10 @@
 
 using System.Linq;
 using Eluant;
-using OpenRA.Mods.Common;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Traits;
-using OpenRA.Mods.RA.Buildings;
 using OpenRA.Primitives;
+using OpenRA.Scripting;
 
-namespace OpenRA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptGlobal("Actor")]
 	public class ActorGlobal : ScriptGlobal
@@ -78,8 +75,8 @@ namespace OpenRA.Scripting
 			if (!context.World.Map.Rules.Actors.TryGetValue(type, out ai))
 				throw new LuaException("Unknown actor type '{0}'".F(type));
 
-			var pi = ai.Traits.GetOrDefault<PlaneInfo>();
-			return pi != null ? pi.CruiseAltitude.Range : 0;
+			var pi = ai.Traits.GetOrDefault<ICruiseAltitudeInfo>();
+			return pi != null ? pi.GetCruiseAltitude().Range : 0;
 		}
 	}
 }

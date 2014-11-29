@@ -8,11 +8,10 @@
  */
 #endregion
 
-using OpenRA.Mods.Common;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("General")]
 	public class UpgradeProperties : ScriptActorProperties, Requires<UpgradeManagerInfo>

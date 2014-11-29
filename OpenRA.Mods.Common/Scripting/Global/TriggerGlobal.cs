@@ -15,7 +15,7 @@ using Eluant;
 using OpenRA.Effects;
 using OpenRA.Scripting;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptGlobal("Trigger")]
 	public class TriggerGlobal : ScriptGlobal

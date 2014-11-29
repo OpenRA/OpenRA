@@ -14,7 +14,7 @@ using OpenRA.Mods.Common.Power;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("Power")]
 	public class PlayerPowerProperties : ScriptPlayerProperties, Requires<PowerManagerInfo>

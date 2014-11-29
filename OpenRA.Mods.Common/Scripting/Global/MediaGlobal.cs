@@ -13,7 +13,7 @@ using System.Drawing;
 using Eluant;
 using OpenRA.Scripting;
 
-namespace OpenRA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptGlobal("Media")]
 	public class MediaGlobal : ScriptGlobal

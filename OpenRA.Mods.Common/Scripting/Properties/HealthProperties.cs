@@ -8,11 +8,10 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Buildings;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("General")]
 	public class HealthProperties : ScriptActorProperties, Requires<HealthInfo>
@@ -38,36 +37,6 @@ namespace OpenRA.Mods.RA.Scripting
 		public void Kill()
 		{
 			health.InflictDamage(self, self, health.MaxHP, null, true);
-		}
-	}
-
-	[ScriptPropertyGroup("General")]
-	public class RepairableBuildingProperties : ScriptActorProperties, Requires<RepairableBuildingInfo>
-	{
-		readonly RepairableBuilding rb;
-
-		public RepairableBuildingProperties(ScriptContext context, Actor self)
-			: base(context, self)
-		{
-			rb = self.Trait<RepairableBuilding>();
-		}
-
-		[Desc("Start repairs on this building. `repairer` can be an allied player.")]
-		public void StartBuildingRepairs(Player repairer = null)
-		{
-			repairer = repairer ?? self.Owner;
-
-			if (!rb.Repairers.Contains(repairer))
-				rb.RepairBuilding(self, repairer);
-		}
-
-		[Desc("Stop repairs on this building. `repairer` can be an allied player.")]
-		public void StopBuildingRepairs(Player repairer = null)
-		{
-			repairer = repairer ?? self.Owner;
-
-			if (rb.RepairActive && rb.Repairers.Contains(repairer))
-				rb.RepairBuilding(self, repairer);
 		}
 	}
 }

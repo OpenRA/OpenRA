@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
@@ -20,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	public class AircraftInfo : ITraitInfo, IFacingInfo, IOccupySpaceInfo, UsesInit<LocationInit>, UsesInit<FacingInit>
+	public class AircraftInfo : ITraitInfo, IFacingInfo, IOccupySpaceInfo, ICruiseAltitudeInfo, UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
 		public readonly WRange CruiseAltitude = new WRange(1280);
 		public readonly WRange IdealSeparation = new WRange(1706);
@@ -43,6 +44,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
 		public int GetInitialFacing() { return InitialFacing; }
+		public WRange GetCruiseAltitude() { return CruiseAltitude; }
 	}
 
 	public class Aircraft : IFacing, IPositionable, ISync, INotifyKilled, IIssueOrder, IOrderVoice, INotifyAddedToWorld, INotifyRemovedFromWorld
