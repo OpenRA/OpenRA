@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -57,9 +58,9 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			return Exts.MakeArray(Info.PipCount,
-				i => (Player.Resources * Info.PipCount > i * Player.ResourceCapacity)
-					? Info.PipColor : PipType.Transparent);
+			return Enumerable.Range(0, Info.PipCount).Select(i =>
+				Player.Resources * Info.PipCount > i * Player.ResourceCapacity
+				? Info.PipColor : PipType.Transparent);
 		}
 
 		public bool ShouldExplode(Actor self) { return Stored > 0; }
