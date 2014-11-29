@@ -156,6 +156,7 @@ HVR:
 	RenderVoxels:
 	WithVoxelBody:
 	WithVoxelTurret:
+	Hovers:
 
 4TNK:
 	Inherits: ^Tank
