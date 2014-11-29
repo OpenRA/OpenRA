@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA
 		{
 			// Pick a random port that faces the target
 			var bodyYaw = facing.Value != null ? WAngle.FromFacing(facing.Value.Facing) : WAngle.Zero;
-			var indices = Exts.MakeArray(Ports.Length, i => i).Shuffle(self.World.SharedRandom);
+			var indices = Enumerable.Range(0, Ports.Length).Shuffle(self.World.SharedRandom);
 			foreach (var i in indices)
 			{
 				var yaw = bodyYaw + Ports[i].Yaw;

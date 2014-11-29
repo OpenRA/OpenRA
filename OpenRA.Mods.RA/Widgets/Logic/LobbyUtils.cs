@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return item;
 			};
 
-			var options = Exts.MakeArray(teamCount + 1, i => i).ToList();
+			var options = Enumerable.Range(0, teamCount + 1);
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 

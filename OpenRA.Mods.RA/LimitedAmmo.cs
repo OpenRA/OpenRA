@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -66,8 +67,9 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
 			var pips = Info.PipCount != 0 ? Info.PipCount : Info.Ammo;
-			return Exts.MakeArray(pips,
-				i => (ammo * pips) / Info.Ammo > i ? Info.PipType : Info.PipTypeEmpty);
+			return Enumerable.Range(0, pips).Select(i =>
+				(ammo * pips) / Info.Ammo > i ?
+				Info.PipType : Info.PipTypeEmpty);
 		}
 	}
 }
