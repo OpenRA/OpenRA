@@ -460,6 +460,7 @@
     <Compile Include="UtilityCommands\Extensions.cs" />
     <Compile Include="Lint\CheckMapRules.cs" />
     <Compile Include="Activities\Air\HeliFlyCircle.cs" />
+    <Compile Include="Render\Hovers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

@@ -32,7 +32,6 @@ TRAN:
 	WithRotor@SECONDARY:
 		Id: rotor_2
 		Offset: 597,0,85
-	WithShadow:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 10
@@ -87,7 +86,6 @@ HELI:
 	WithRotor:
 		Offset: 0,0,85
 	WithMuzzleFlash:
-	WithShadow:
 	LeavesHusk:
 		HuskActor: HELI.Husk
 	AutoTarget:
@@ -133,7 +131,6 @@ ORCA:
 		Count: 2
 		Period: 100
 	RenderUnit:
-	WithShadow:
 	LeavesHusk:
 		HuskActor: ORCA.Husk
 	AutoTarget:
@@ -159,7 +156,6 @@ C17:
 	Armor:
 		Type: Heavy
 	RenderUnit:
-	WithShadow:
 	Cargo:
 		MaxWeight: 10
 		PipCount: 10
@@ -198,7 +194,6 @@ A10:
 	Armor:
 		Type: Heavy
 	RenderUnit:
-	WithShadow:
 	AttackBomber:
 		Armaments: gun, bombs
 		Guns: gun
@@ -240,7 +235,6 @@ TRAN.Husk:
 		Offset: 597,0,85
 	RenderUnit:
 		Image: tran
-	WithShadow:
 
 HELI.Husk:
 	Inherits: ^HelicopterHusk
@@ -255,7 +249,6 @@ HELI.Husk:
 		Offset: 0,0,85
 	RenderUnit:
 		Image: heli
-	WithShadow:
 
 ORCA.Husk:
 	Inherits: ^HelicopterHusk
@@ -268,5 +261,4 @@ ORCA.Husk:
 		Range: 10c0
 	RenderUnit:
 		Image: orca
-	WithShadow:
 

@@ -67,6 +67,7 @@ DSHP:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	Hovers:
 
 ORCA:
 	Inherits: ^Helicopter
@@ -105,6 +106,7 @@ ORCA:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	Hovers:
 
 ORCAB:
 	Inherits: ^Helicopter
@@ -142,6 +144,7 @@ ORCAB:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	Hovers:
 
 ORCATRAN:
 	Inherits: ^Helicopter
@@ -173,6 +176,7 @@ ORCATRAN:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	Hovers:
 
 TRNSPORT:
 	Inherits: ^Helicopter
@@ -200,6 +204,7 @@ TRNSPORT:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	Hovers:
 
 SCRIN:
 	Inherits: ^Helicopter
@@ -277,4 +282,5 @@ APACHE:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	Hovers:
 

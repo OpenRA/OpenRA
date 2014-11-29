@@ -11,7 +11,6 @@ BADR:
 		Speed: 149
 		Repulsable: False
 	RenderUnit:
-	WithShadow:
 	Cargo:
 		MaxWeight: 10
 	-Selectable:
@@ -51,7 +50,6 @@ BADR.Bomber:
 		Ammo: 7
 	RenderUnit:
 		Image: badr
-	WithShadow:
 	-Selectable:
 	-GainsExperience:
 	Tooltip:
@@ -108,7 +106,6 @@ MIG:
 		EnableStances: false
 	RenderUnit:
 		CameraPitch: 99
-	WithShadow:
 	LimitedAmmo:
 		Ammo: 8
 	ReturnOnIdle:
@@ -165,7 +162,6 @@ YAK:
 		EnableStances: false
 	RenderUnit:
 		CameraPitch: 99
-	WithShadow:
 	LimitedAmmo:
 		Ammo: 18
 		PipCount: 6
@@ -215,7 +211,6 @@ TRAN:
 	WithRotor@SECONDARY:
 		Id: rotor_2
 		Offset: 597,0,213
-	WithShadow:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 8
@@ -262,7 +257,6 @@ HELI:
 	RenderUnit:
 	WithRotor:
 		Offset: 0,0,85
-	WithShadow:
 	LimitedAmmo:
 		Ammo: 8
 	Selectable:
@@ -313,7 +307,6 @@ HIND:
 		EnableStances: false
 	RenderUnit:
 	WithRotor:
-	WithShadow:
 	LimitedAmmo:
 		Ammo: 24
 		PipCount: 6
@@ -337,7 +330,6 @@ U2:
 		Speed: 373
 		Repulsable: False
 	RenderUnit:
-	WithShadow:
 	AttackBomber:
 	-Selectable:
 	-GainsExperience:
