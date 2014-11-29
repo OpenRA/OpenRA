@@ -508,10 +508,11 @@ namespace OpenRA.Mods.D2k.Widgets
 				* ((lowpower) ? CurrentQueue.Info.LowPowerSlowdown : 1);
 			DrawRightAligned(WidgetUtils.FormatTime(time), pos + new int2(-5, 35), lowpower ? Color.Red : Color.White);
 
-			var pi = info.Traits.GetOrDefault<PowerInfo>();
-			if (pi != null)
-				DrawRightAligned("{1}{0}".F(pi.Amount, pi.Amount > 0 ? "+" : ""), pos + new int2(-5, 20),
-					((power.PowerProvided - power.PowerDrained) >= -pi.Amount || pi.Amount > 0) ? Color.White : Color.Red);
+			var pis = info.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1);
+			var amount = pis.Sum(i => i.Amount);
+			if (pis != null)
+				DrawRightAligned("{1}{0}".F(amount, amount > 0 ? "+" : ""), pos + new int2(-5, 20),
+					((power.PowerProvided - power.PowerDrained) >= -amount || amount > 0) ? Color.White : Color.Red);
 
 			p += new int2(5, 35);
 			if (!canBuildThis)

@@ -16,18 +16,21 @@ namespace OpenRA.Mods.Common.Power
 	[Desc("The player can disable the power individually on this actor.")]
 	public class CanPowerDownInfo : UpgradableTraitInfo, ITraitInfo, Requires<PowerInfo>
 	{
+		[Desc("Restore power when this trait is disabled.")]
+		public readonly bool CancelWhenDisabled = false;
+
 		public object Create(ActorInitializer init) { return new CanPowerDown(init.self, this); }
 	}
 
-	public class CanPowerDown : UpgradableTrait<CanPowerDownInfo>, IPowerModifier, IResolveOrder, IDisable
+	public class CanPowerDown : UpgradableTrait<CanPowerDownInfo>, IPowerModifier, IResolveOrder, IDisable, INotifyOwnerChanged
 	{
 		[Sync] bool disabled = false;
-		readonly Power power;
+		PowerManager power;
 
 		public CanPowerDown(Actor self, CanPowerDownInfo info)
 			: base(info)
 		{
-			power = self.Trait<Power>();
+			power = self.Owner.PlayerActor.Trait<PowerManager>();
 		}
 
 		public bool Disabled { get { return disabled; } }
@@ -38,7 +41,7 @@ namespace OpenRA.Mods.Common.Power
 			{
 				disabled = !disabled;
 				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", disabled ? "EnablePower" : "DisablePower", self.Owner.Country.Race);
-				power.PlayerPower.UpdateActor(self);
+				power.UpdateActor(self);
 
 				if (disabled)
 					self.World.AddFrameEndTask(w => w.Add(new PowerdownIndicator(self)));
@@ -48,6 +51,20 @@ namespace OpenRA.Mods.Common.Power
 		public int GetPowerModifier()
 		{
 			return !IsTraitDisabled && disabled ? 0 : 100;
+		}
+
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			power = newOwner.PlayerActor.Trait<PowerManager>();
+		}
+
+		protected override void UpgradeDisabled(Actor self)
+		{
+			if (!disabled || !Info.CancelWhenDisabled)
+				return;
+			disabled = false;
+			Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "EnablePower", self.Owner.Country.Race);
+			power.UpdateActor(self);
 		}
 	}
 }

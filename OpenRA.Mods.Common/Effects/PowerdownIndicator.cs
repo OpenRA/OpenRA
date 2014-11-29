@@ -19,10 +19,12 @@ namespace OpenRA.Mods.Common.Effects
 	{
 		readonly Actor a;
 		readonly Animation anim;
+		readonly CanPowerDown canPowerDown;
 
 		public PowerdownIndicator(Actor a)
 		{
 			this.a = a;
+			canPowerDown = a.Trait<CanPowerDown>();
 
 			anim = new Animation(a.World, "poweroff");
 			anim.PlayRepeating("offline");
@@ -30,7 +32,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public void Tick(World world)
 		{
-			if (!a.IsInWorld || a.IsDead || !a.Trait<CanPowerDown>().Disabled)
+			if (!a.IsInWorld || a.IsDead || !canPowerDown.Disabled)
 				world.AddFrameEndTask(w => w.Remove(this));
 
 			anim.Tick();
