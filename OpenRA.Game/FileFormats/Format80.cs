@@ -60,11 +60,10 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		public static int DecodeInto(byte[] src, byte[] dest, int srcOffset = 0)
+		public static int DecodeInto(byte[] src, byte[] dest, int srcOffset = 0, bool reverse = false)
 		{
 			var ctx = new FastByteReader(src, srcOffset);
 			var destIndex = 0;
-
 			while (true)
 			{
 				var i = ctx.ReadByte();
@@ -104,7 +103,7 @@ namespace OpenRA.FileFormats
 					{
 						// case 5
 						var count = ctx.ReadWord();
-						var srcIndex = ctx.ReadWord();
+						var srcIndex = reverse ? destIndex - ctx.ReadWord() : ctx.ReadWord();
 						if (srcIndex >= destIndex)
 							throw new NotImplementedException("srcIndex >= destIndex {0} {1}".F(srcIndex, destIndex));
 
@@ -115,7 +114,7 @@ namespace OpenRA.FileFormats
 					{
 						// case 3
 						var count = count3 + 3;
-						var srcIndex = ctx.ReadWord();
+						var srcIndex = reverse ? destIndex - ctx.ReadWord() : ctx.ReadWord();
 						if (srcIndex >= destIndex)
 							throw new NotImplementedException("srcIndex >= destIndex {0} {1}".F(srcIndex, destIndex));
 
@@ -174,10 +173,13 @@ namespace OpenRA.FileFormats
 
 						// Command 4: Repeat byte n times
 						ms.WriteByte(0xFE);
+
 						// Low byte
 						ms.WriteByte((byte)(repeatCount & 0xFF));
+
 						// High byte
 						ms.WriteByte((byte)(repeatCount >> 8));
+
 						// Value to repeat
 						ms.WriteByte(src[offset]);
 

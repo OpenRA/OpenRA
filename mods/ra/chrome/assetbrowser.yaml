@@ -98,6 +98,7 @@ Background@ASSETBROWSER_PANEL:
 				VqaPlayer@PLAYER:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
+					AspectRatio: 1
 		Container@FRAME_SELECTOR:
 			X: 190
 			Y: 425
