@@ -27,6 +27,8 @@ namespace OpenRA.Mods.D2k
 		[Desc("Average time (seconds) between worm spawn")]
 		public readonly int SpawnInterval = 180;
 
+		public readonly string WormSignNotification = "WormSign";
+
 		public readonly string WormSignature = "sandworm";
 		public readonly string WormOwnerPlayer = "Creeps";
 
@@ -71,6 +73,8 @@ namespace OpenRA.Mods.D2k
 				new LocationInit(spawnLocation)
 			}));
 			wormsPresent++;
+
+			AnnounceWormSign(self);
 		}
 
 		CPos GetRandomSpawnPosition(Actor self)
@@ -81,6 +85,12 @@ namespace OpenRA.Mods.D2k
 		public void DecreaseWorms()
 		{
 			wormsPresent--;
+		}
+
+		void AnnounceWormSign(Actor self)
+		{
+			if (self.World.LocalPlayer != null)
+				Sound.PlayNotification(self.World.Map.Rules, self.World.LocalPlayer, "Speech", info.WormSignNotification, self.World.LocalPlayer.Country.Race);
 		}
 	}
 

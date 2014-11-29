@@ -13,9 +13,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k
 {
-	// TODO: This is a copy of AttackLeap. Maybe combine them in AttackMelee trait when the code is finalized?
 	[Desc("Sandworms use this attack model.")]
-	class AttackSwallowInfo : AttackFrontalInfo, Requires<SandwormInfo>
+	class AttackSwallowInfo : AttackFrontalInfo
 	{
 		[Desc("The number of ticks it takes to return underground.")]
 		public int ReturnTime = 60;
