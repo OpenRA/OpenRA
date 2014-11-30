@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA
 {
 	[Desc("Will AttackMove to a random location within MoveRadius when idle.",
 		"This conflicts with player orders and should only be added to animal creeps.")]
-	class AttackWanderInfo : ITraitInfo
+	class AttackWanderInfo : ITraitInfo, Requires<AttackMoveInfo>
 	{
 		public readonly int WanderMoveRadius = 10;
 
@@ -29,11 +29,14 @@ namespace OpenRA.Mods.RA
 	{
 		int ticksIdle;
 		int effectiveMoveRadius;
+		readonly AttackMove attackMove;
 		readonly AttackWanderInfo Info;
 
 		public AttackWander(Actor self, AttackWanderInfo info)
 		{
 			Info = info;
+			effectiveMoveRadius = info.WanderMoveRadius;
+			attackMove = self.TraitOrDefault<AttackMove>();
 		}
 
 		public void TickIdle(Actor self)
@@ -50,7 +53,7 @@ namespace OpenRA.Mods.RA
 				return;  // We'll be back the next tick; better to sit idle for a few seconds than prolongue this tick indefinitely with a loop
 			}
 
-			self.Trait<AttackMove>().ResolveOrder(self, new Order("AttackMove", self, false) { TargetLocation = targetCell });
+			attackMove.ResolveOrder(self, new Order("AttackMove", self, false) { TargetLocation = targetCell });
 
 			ticksIdle = 0;
 			effectiveMoveRadius = Info.WanderMoveRadius;
