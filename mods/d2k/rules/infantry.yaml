@@ -22,7 +22,7 @@ RIFLE:
 	AttractsWorms:
 		Intensity: 120
 
-ENGINEER:
+SUPPORT:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
@@ -31,11 +31,11 @@ ENGINEER:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Engineer
-		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
+		Name: Support
+		Description: Captures enemy structures, repairs vehicle\nhusks and heals nearby infantry.\n  Strong vs Buildings\n  Weak vs Everything
 	Selectable:
 		Bounds: 12,17,0,0
-		Voice: EngineerVoice
+		Voice: SupportVoice
 	Health:
 		HP: 25
 	Mobile:
@@ -47,9 +47,88 @@ ENGINEER:
 		Type: building
 	Captures:
 		CaptureTypes: husk
+	AutoHeal:
+	Armament:
+		Weapon: Heal
+	AttackMedic:
+		Cursor: ability
+		OutsideRangeCursor: ability
+	RenderInfantry:
+		AttackAnimation: heal
 	-AutoTarget:
 	AttractsWorms:
 		Intensity: 180
+
+THUMPER:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Prerequisites: ~barracks, radar, ~techlevel.medium
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Thumper
+		Description: Attracts sandsworm through vibrations.\n  Strong vs Nothing\n  Weak vs Everything
+	Selectable:
+		Bounds: 12,17,0,0
+	Health:
+		HP: 25
+	Mobile:
+		Speed: 53
+	Passenger:
+	-AutoTarget:
+	Transforms:
+		IntoActor: thumping
+		Facing: 1
+	AttractsWorms:
+		Intensity: 180
+
+THUMPING:
+	AppearsOnRadar:
+	SelectionDecorations:
+	Selectable:
+		Priority: 2
+	Building:
+		Power: 0
+		Footprint: x
+		Dimensions: 1,1
+		TerrainTypes: Sand, Dune
+	TargetableBuilding:
+		TargetTypes: Ground
+	RenderBuilding:
+	GivesBounty:
+	GivesExperience:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	CombatDebugOverlay:
+	BodyOrientation:
+	UpdatesPlayerStatistics:
+	Huntable:
+	ScriptTriggers:
+	FrozenUnderFog:
+	Health:
+		HP: 25
+	Armor:
+		Type: None
+	RevealsShroud:
+		Range: 5
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Thumper
+	WormSpawner:
+	Transforms:
+		IntoActor: thumper
+		Facing: 1
+	LoopedSound:
+		TickDelay: 18
+		Filename: THUMPER1.WAV
+	WithBuildingExplosion:
+	AttractsWorms:
+		Intensity: 1400
+		Falloff: 100, 50
+		Spread: 27648
 
 BAZOOKA:
 	Inherits: ^Infantry
@@ -75,36 +154,3 @@ BAZOOKA:
 	TakeCover:
 	AttractsWorms:
 		Intensity: 180
-
-MEDIC:
-	Inherits: ^Infantry
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 60
-		Prerequisites: ~medics, ~techlevel.high
-	Valued:
-		Cost: 500
-	Tooltip:
-		Name: Medic
-		Description: Heals nearby infantry\n  Strong vs Nothing\n  Weak vs Everything
-	Selectable:
-		Bounds: 12,17,0,0
-		Voice: EngineerVoice
-	Health:
-		HP: 60
-	Mobile:
-		Speed: 42
-	AutoHeal:
-	Armament:
-		Weapon: Heal
-	AttackMedic:
-		Cursor: ability
-		OutsideRangeCursor: ability
-	RenderInfantry:
-		AttackAnimation: heal
-	Passenger:
-		PipType: Blue
-	-AutoTarget:
-	AttractsWorms:
-		Intensity: 180
-

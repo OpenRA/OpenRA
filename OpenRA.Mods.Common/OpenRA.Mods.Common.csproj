@@ -506,6 +506,7 @@
     <Compile Include="LoadScreens\BlankLoadScreen.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\CheckCodeStyle.cs" />
+    <Compile Include="Traits\Sound\LoopedSound.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

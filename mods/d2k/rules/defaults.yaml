@@ -298,7 +298,7 @@
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
-		ActorTypes: rifle,rifle,rifle,rifle,rifle,bazooka,bazooka,bazooka,engineer
+		ActorTypes: rifle,rifle,rifle,rifle,rifle,bazooka,bazooka,bazooka,support
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	GivesExperience:

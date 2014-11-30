@@ -167,7 +167,7 @@ World:
 		ClassName: Light Support
 		Races: ordos
 		BaseActor: mcvo
-		SupportActors: rifle, rifle, rifle, bazooka, engineer, raider, quad
+		SupportActors: rifle, rifle, rifle, bazooka, support, raider, quad
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@heavyatreides:
@@ -183,7 +183,7 @@ World:
 		ClassName: Heavy Support
 		Races: harkonnen
 		BaseActor: mcvh
-		SupportActors: rifle, rifle, rifle, bazooka, engineer, quad, combath, siegetank
+		SupportActors: rifle, rifle, rifle, bazooka, support, quad, combath, siegetank
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@heavyordos:
@@ -191,7 +191,7 @@ World:
 		ClassName: Heavy Support
 		Races: ordos
 		BaseActor: mcvo
-		SupportActors: rifle, rifle, rifle, bazooka, engineer, raider, combato, missiletank
+		SupportActors: rifle, rifle, rifle, bazooka, support, raider, combato, missiletank
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	SpawnMPUnits:

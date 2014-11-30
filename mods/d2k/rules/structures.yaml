@@ -649,7 +649,7 @@ WALL:
 		ChargeTime: 180
 		Description: Paratroopers
 		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
-		DropItems: RIFLE, RIFLE, BAZOOKA, BAZOOKA, ENGINEER, BAZOOKA, RIFLE, RIFLE
+		DropItems: RIFLE, RIFLE, BAZOOKA, BAZOOKA, SUPPORT, BAZOOKA, RIFLE, RIFLE
 		SelectTargetSound:
 		FlareType:
 	Building:
