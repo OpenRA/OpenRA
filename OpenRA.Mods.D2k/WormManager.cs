@@ -9,7 +9,9 @@
 #endregion
 
 using System;
+using System.Drawing;
 using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -22,7 +24,7 @@ namespace OpenRA.Mods.D2k
 		public readonly int Minimum = 1;
 
 		[Desc("Maximum number of worms")]
-		public readonly int Maximum = 5;
+		public readonly int Maximum = 8;
 
 		[Desc("Average time (seconds) between worm spawn")]
 		public readonly int SpawnInterval = 180;
@@ -39,6 +41,7 @@ namespace OpenRA.Mods.D2k
 	{
 		int countdown;
 		int wormsPresent;
+		RadarPings radarPings;
 		readonly WormManagerInfo info;
 		readonly Lazy<Actor[]> spawnPoints;
 
@@ -66,7 +69,8 @@ namespace OpenRA.Mods.D2k
 
 		void SpawnWorm (Actor self)
 		{
-			var spawnLocation = GetRandomSpawnPosition(self);
+			var spawnPosition = GetRandomSpawnPosition(self);
+			var spawnLocation = self.World.Map.CellContaining(spawnPosition);
 			self.World.AddFrameEndTask(w => w.CreateActor(info.WormSignature, new TypeDictionary
 			{
 				new OwnerInit(w.Players.First(x => x.PlayerName == info.WormOwnerPlayer)),
@@ -74,12 +78,12 @@ namespace OpenRA.Mods.D2k
 			}));
 			wormsPresent++;
 
-			AnnounceWormSign(self);
+			AnnounceWormSign(self, spawnPosition);
 		}
 
-		CPos GetRandomSpawnPosition(Actor self)
+		WPos GetRandomSpawnPosition(Actor self)
 		{
-			return spawnPoints.Value.Random(self.World.SharedRandom).Location;
+			return spawnPoints.Value.Random(self.World.SharedRandom).CenterPosition;
 		}
 
 		public void DecreaseWorms()
@@ -87,10 +91,22 @@ namespace OpenRA.Mods.D2k
 			wormsPresent--;
 		}
 
-		void AnnounceWormSign(Actor self)
+		void AnnounceWormSign(Actor self, WPos wormSpawnPosition)
 		{
-			if (self.World.LocalPlayer != null)
-				Sound.PlayNotification(self.World.Map.Rules, self.World.LocalPlayer, "Speech", info.WormSignNotification, self.World.LocalPlayer.Country.Race);
+			if (self.World.LocalPlayer == null)
+				return;
+			
+			Sound.PlayNotification(self.World.Map.Rules, self.World.LocalPlayer, "Speech", info.WormSignNotification, self.World.LocalPlayer.Country.Race);
+
+			if (radarPings == null)
+			{
+				if (self.World.WorldActor == null)
+					return;
+
+				radarPings = self.World.WorldActor.TraitOrDefault<RadarPings>();
+			}
+			
+			radarPings.Add(() => true, wormSpawnPosition, Color.Red, 50);
 		}
 	}
 
