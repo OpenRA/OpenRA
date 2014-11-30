@@ -127,10 +127,12 @@
     <Compile Include="ActorExts.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
     <Compile Include="Crates\DuplicateUnitCrateAction.cs" />
+    <Compile Include="Crushable.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\Rank.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
+    <Compile Include="Render\RenderUnitReload.cs" />
     <Compile Include="TeslaZapRenderable.cs" />
     <Compile Include="GainsExperience.cs" />
     <Compile Include="Infiltration\InfiltrateForPowerOutage.cs" />
@@ -156,7 +158,6 @@
     <Compile Include="CaptureNotification.cs" />
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Buildings\BuildingInfluence.cs" />
-    <Compile Include="Buildings\DeadBuildingState.cs" />
     <Compile Include="Buildings\FootprintUtils.cs" />
     <Compile Include="Buildings\LineBuild.cs" />
     <Compile Include="Buildings\RepairableBuilding.cs" />
@@ -184,7 +185,6 @@
     <Compile Include="Crates\LevelUpCrateAction.cs" />
     <Compile Include="Crates\RevealMapCrateAction.cs" />
     <Compile Include="Crates\SupportPowerCrateAction.cs" />
-    <Compile Include="Crushable.cs" />
     <Compile Include="DemoTruck.cs" />
     <Compile Include="DetectCloaked.cs" />
     <Compile Include="Effects\GpsDot.cs" />
@@ -244,16 +244,11 @@
     <Compile Include="Render\RenderBuildingTurreted.cs" />
     <Compile Include="Render\RenderBuildingWall.cs" />
     <Compile Include="Render\RenderBuildingWarFactory.cs" />
-    <Compile Include="Render\RenderEditorOnly.cs" />
-    <Compile Include="Render\RenderFlare.cs" />
     <Compile Include="Render\RenderHarvester.cs" />
     <Compile Include="Render\RenderInfantry.cs" />
     <Compile Include="Render\RenderDisguise.cs" />
     <Compile Include="Render\RenderLandingCraft.cs" />
-    <Compile Include="Render\RenderUnit.cs" />
-    <Compile Include="Render\RenderUnitReload.cs" />
     <Compile Include="Render\WithBuildingExplosion.cs" />
-    <Compile Include="Render\WithDeathAnimation.cs" />
     <Compile Include="Render\WithMuzzleFlash.cs" />
     <Compile Include="Render\RenderNameTag.cs" />
     <Compile Include="Render\WithRotor.cs" />
@@ -371,7 +366,6 @@
     <Compile Include="Render\WithVoxelBody.cs" />
     <Compile Include="Render\WithVoxelBarrel.cs" />
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
-    <Compile Include="Render\WithResources.cs" />
     <Compile Include="Render\WithHarvestAnimation.cs" />
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
@@ -395,7 +389,6 @@
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
     <Compile Include="Buildings\LineBuildNode.cs" />
-    <Compile Include="Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
     <Compile Include="Scripting\Properties\ProductionProperties.cs" />
     <Compile Include="Scripting\Properties\MissionObjectiveProperties.cs" />
@@ -418,7 +411,6 @@
     <Compile Include="Widgets\Logic\InstallMusicLogic.cs" />
     <Compile Include="Render\WithActiveAnimation.cs" />
     <Compile Include="SupportPowers\SpawnActorPower.cs" />
-    <Compile Include="Render\RenderSimple.cs" />
     <Compile Include="Buildings\ClonesProducedUnits.cs" />
     <Compile Include="Cloneable.cs" />
     <Compile Include="Widgets\ProductionPaletteWidget.cs" />

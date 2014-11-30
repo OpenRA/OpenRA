@@ -11,11 +11,10 @@
 using System.Linq;
 using System.Drawing;
 using System.Collections.Generic;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 using OpenRA.Primitives;
 using OpenRA.Mods.RA.Move;
-using OpenRA.Mods.RA.Render;
-using OpenRA.Mods.RA.Orders;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.Common.Orders;
 

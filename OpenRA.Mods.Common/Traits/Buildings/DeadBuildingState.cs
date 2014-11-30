@@ -10,9 +10,8 @@
 
 using OpenRA.Effects;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Render;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.Common.Traits
 {
 	class DeadBuildingStateInfo : ITraitInfo, Requires<HealthInfo>, Requires<RenderSimpleInfo>
 	{
