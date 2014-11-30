@@ -166,7 +166,6 @@
     <Compile Include="CashTrickler.cs" />
     <Compile Include="Traits\PaletteEffects\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
-    <Compile Include="ConquestVictoryConditions.cs" />
     <Compile Include="Crate.cs" />
     <Compile Include="CrateAction.cs" />
     <Compile Include="CrateSpawner.cs" />
@@ -215,7 +214,6 @@
     <Compile Include="Player\ClassicProductionQueue.cs" />
     <Compile Include="Player\PlaceBuilding.cs" />
     <Compile Include="Player\ProductionQueue.cs" />
-    <Compile Include="Player\MissionObjectives.cs" />
     <Compile Include="Traits\PortableChrono.cs" />
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Traits\World\DomainIndex.cs" />
@@ -251,7 +249,6 @@
     <Compile Include="SpawnMPUnits.cs" />
     <Compile Include="Disguise.cs" />
     <Compile Include="StoresResources.cs" />
-    <Compile Include="StrategicVictoryConditions.cs" />
     <Compile Include="Traits\SupplyTruck.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />
     <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
@@ -326,7 +323,6 @@
     <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
     <Compile Include="Widgets\ObserverProductionIconsWidget.cs" />
     <Compile Include="Widgets\ObserverSupportPowerIconsWidget.cs" />
-    <Compile Include="Widgets\StrategicProgressWidget.cs" />
     <Compile Include="Widgets\SupportPowerTimerWidget.cs" />
     <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="Player\BaseAttackNotifier.cs" />
@@ -405,7 +401,6 @@
     <Compile Include="Widgets\Logic\DebugMenuLogic.cs" />
     <Compile Include="ProductionQueueFromSelection.cs" />
     <Compile Include="GainsStatUpgrades.cs" />
-    <Compile Include="Player\Extensions.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
     <Compile Include="Warheads\DestroyResourceWarhead.cs" />
     <Compile Include="Warheads\PerCellDamageWarhead.cs" />

@@ -9,11 +9,11 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.RA;
+using OpenRA.Mods.Common.Traits;
 
-namespace OpenRA
+namespace OpenRA.Mods.Common
 {
-	public static class Extensions
+	public static class PlayerExtensions
 	{
 		public static bool HasNoRequiredUnits(this Player player)
 		{
