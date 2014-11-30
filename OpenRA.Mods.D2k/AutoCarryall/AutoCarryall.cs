@@ -151,6 +151,7 @@ namespace OpenRA.Mods.D2k
 			// Create a new animation for our carryable unit
 			anim = new Animation(self.World, RenderSprites.GetImage(carryable.Info), RenderSprites.MakeFacingFunc(self));
 			anim.PlayRepeating("idle");
+			anim.IsDecoration = true;
 		}
 
 		// Called when released
