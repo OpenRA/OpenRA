@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Move
 		readonly IEnumerable<IDisableMove> moveDisablers;
 		readonly WRange nearEnough;
 		readonly Func<List<CPos>> getPath;
-		readonly Actor ignoreBuilding;
+		readonly Actor ignoredActor;
 
 		List<CPos> path;
 		CPos? destination;
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.Move
 			this.nearEnough = nearEnough;
 		}
 
-		public Move(Actor self, CPos destination, Actor ignoreBuilding)
+		public Move(Actor self, CPos destination, Actor ignoredActor)
 		{
 			mobile = self.Trait<Mobile>();
 			moveDisablers = self.TraitsImplementing<IDisableMove>();
@@ -85,11 +85,11 @@ namespace OpenRA.Mods.RA.Move
 			getPath = () =>
 				self.World.WorldActor.Trait<PathFinder>().FindPath(
 					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, destination, false)
-					.WithIgnoredBuilding(ignoreBuilding));
+					.WithIgnoredActor(ignoredActor));
 
 			this.destination = destination;
 			this.nearEnough = WRange.Zero;
-			this.ignoreBuilding = ignoreBuilding;
+			this.ignoredActor = ignoredActor;
 		}
 
 		public Move(Actor self, Target target, WRange range)
@@ -219,7 +219,7 @@ namespace OpenRA.Mods.RA.Move
 			var nextCell = path[path.Count - 1];
 
 			// Next cell in the move is blocked by another actor
-			if (!mobile.CanEnterCell(nextCell, ignoreBuilding, true))
+			if (!mobile.CanEnterCell(nextCell, ignoredActor, true))
 			{
 				// Are we close enough?
 				var cellRange = nearEnough.Range / 1024;
@@ -268,7 +268,7 @@ namespace OpenRA.Mods.RA.Move
 			hasWaited = false;
 			path.RemoveAt(path.Count - 1);
 
-			var subCell = mobile.GetAvailableSubCell(nextCell, SubCell.Any, ignoreBuilding);
+			var subCell = mobile.GetAvailableSubCell(nextCell, SubCell.Any, ignoredActor);
 			return Pair.New(nextCell, subCell);
 		}
 

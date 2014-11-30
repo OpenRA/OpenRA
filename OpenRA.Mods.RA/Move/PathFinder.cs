@@ -69,9 +69,14 @@ namespace OpenRA.Mods.RA.Move
 						return emptyPath;
 				}
 
+				var fromPoint = PathSearch.FromPoint(world, mi, self, target, from, true)
+				  .WithIgnoredActor(self);
+				var fromPointReverse = PathSearch.FromPoint(world, mi, self, from, target, true)
+				  .WithIgnoredActor(self)
+				  .Reverse();
 				var pb = FindBidiPath(
-					PathSearch.FromPoint(world, mi, self, target, from, true),
-					PathSearch.FromPoint(world, mi, self, from, target, true).Reverse()
+					fromPoint,
+					fromPointReverse
 				);
 
 				CheckSanePath2(pb, from, target);

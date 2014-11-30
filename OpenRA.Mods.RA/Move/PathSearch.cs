@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Move
 		public PriorityQueue<PathDistance> Queue;
 		public Func<CPos, int> Heuristic;
 		public bool CheckForBlocked;
-		public Actor IgnoreBuilding;
+		public Actor IgnoredActor;
 		public bool InReverse;
 		public HashSet<CPos> Considered;
 		public Player Owner { get { return self.Owner; } }
@@ -108,9 +108,9 @@ namespace OpenRA.Mods.RA.Move
 			return this;
 		}
 
-		public PathSearch WithIgnoredBuilding(Actor b)
+		public PathSearch WithIgnoredActor(Actor b)
 		{
-			IgnoreBuilding = b;
+			IgnoredActor = b;
 			return this;
 		}
 
@@ -215,7 +215,7 @@ namespace OpenRA.Mods.RA.Move
 				if (costHere == int.MaxValue)
 					continue;
 
-				if (!mobileInfo.CanEnterCell(world, self, newHere, IgnoreBuilding, CheckForBlocked ? CellConditions.TransientActors : CellConditions.None))
+				if (!mobileInfo.CanEnterCell(world, self, newHere, IgnoredActor, CheckForBlocked ? CellConditions.TransientActors : CellConditions.None))
 					continue;
 
 				if (customBlock != null && customBlock(newHere))
