@@ -258,7 +258,7 @@ core: game renderers mods utility ralint
 
 tools: editor tsbuild gamemonitor
 
-package: dependencies core editor gamemonitor docs version
+package: cli-dependencies core editor gamemonitor docs version
 
 mods: mod_common mod_ra mod_cnc mod_d2k mod_ts
 
@@ -270,11 +270,6 @@ clean:
 
 distclean: clean
 
-platformdeps = "linux"
-ifeq ($(shell uname),Darwin)
-	platformdeps = "osx"
-endif
-
 dependencies: cli-dependencies native-dependencies
 
 cli-dependencies:
@@ -282,7 +277,7 @@ cli-dependencies:
 	@ $(CP_R) thirdparty/*.dll.config .
 
 native-dependencies:
-	@ $(CP_R) thirdparty/${platformdeps}/* .
+	@./configure
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
 	@for i in $? ; do \

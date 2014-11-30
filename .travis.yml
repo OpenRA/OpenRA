@@ -16,7 +16,7 @@ cache: apt
 # Run the build script
 # call RALint to check for YAML errors
 script:
- - make dependencies
+ - make cli-dependencies
  - make all
  - make test
 
@@ -43,12 +43,7 @@ notifications:
     skip_join: true
 
 before_deploy:
- - sudo apt-get install nsis markdown dpkg rpm libarchive-dev m4 fakeroot bsdtar
- - wget ftp://ftp.archlinux.org/other/pacman/pacman-4.0.3.tar.gz -O /tmp/pacman-4.0.3.tar.gz
- - pushd /tmp
- - tar -xzvf pacman-4.0.3.tar.gz
- - cd pacman-4.0.3 && ./configure --disable-doc --prefix=/usr && make && sudo make install
- - popd
+ - sudo apt-get install nsis markdown dpkg
  - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
  - cd packaging
  - mkdir build
@@ -61,8 +56,6 @@ deploy:
     - build/OpenRA-${TRAVIS_TAG}.exe
     - build/OpenRA-${TRAVIS_TAG}.zip
     - build/openra_${DOTVERSION}_all.deb
-    - build/openra-${DOTVERSION}-1-any.pkg.tar.gz
-    - build/openra-${DOTVERSION}-1.noarch.rpm
   skip_cleanup: true
   on:
     all_branches: true
