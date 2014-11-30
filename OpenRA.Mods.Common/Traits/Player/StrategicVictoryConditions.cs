@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Used to mark a place that needs to be in possession for StrategicVictoryConditions.")]
 	public class StrategicPointInfo : TraitInfo<StrategicPoint> { }
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA
 				mo.MarkCompleted(player, objectiveID);
 
 			if (others.Any(p => p.WinState == WinState.Won))
-			    mo.MarkFailed(player, objectiveID);
+				mo.MarkFailed(player, objectiveID);
 
 			// See if any of the conditions are met to increase the count
 			if (Total > 0)
@@ -122,8 +122,8 @@ namespace OpenRA.Mods.RA
 				Game.RunAfterDelay(info.NotificationDelay, () => Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Win", player.Country.Race));
 		}
 
-		public void OnObjectiveAdded(Player player, int id) {}
-		public void OnObjectiveCompleted(Player player, int id) {}
-		public void OnObjectiveFailed(Player player, int id) {}
+		public void OnObjectiveAdded(Player player, int id) { }
+		public void OnObjectiveCompleted(Player player, int id) { }
+		public void OnObjectiveFailed(Player player, int id) { }
 	}
 }

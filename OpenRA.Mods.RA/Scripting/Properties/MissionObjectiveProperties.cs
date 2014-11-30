@@ -10,9 +10,10 @@
 
 using System;
 using Eluant;
-using OpenRA.Traits;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
-using OpenRA.Mods.RA;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
