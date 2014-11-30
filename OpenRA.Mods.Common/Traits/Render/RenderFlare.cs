@@ -8,9 +8,7 @@
  */
 #endregion
 
-using OpenRA.Traits;
-
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Common.Traits
 {
 	class RenderFlareInfo : RenderSimpleInfo
 	{

@@ -11,9 +11,8 @@
 using System;
 using OpenRA.Effects;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Effects;
-using OpenRA.Mods.RA.Render;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 

@@ -11,7 +11,7 @@
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Displays the fill status of PlayerResources with an extra sprite overlay on the actor.")]
 	class WithResourcesInfo : ITraitInfo, Requires<RenderSimpleInfo>

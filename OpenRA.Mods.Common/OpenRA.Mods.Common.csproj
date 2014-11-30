@@ -108,6 +108,7 @@
     <Compile Include="Scripting\Properties\ResourceProperties.cs" />
     <Compile Include="Scripting\Properties\UpgradeProperties.cs" />
     <Compile Include="Traits\BlocksBullets.cs" />
+    <Compile Include="Traits\Buildings\DeadBuildingState.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\CustomBuildTimeValue.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
@@ -130,7 +131,14 @@
     <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\RallyPoint.cs" />
+    <Compile Include="Traits\Render\RenderEditorOnly.cs" />
+    <Compile Include="Traits\Render\RenderFlare.cs" />
+    <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />
+    <Compile Include="Traits\Render\RenderUnit.cs" />
+    <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
+    <Compile Include="Traits\Render\WithDeathAnimation.cs" />
+    <Compile Include="Traits\Render\WithResources.cs" />
     <Compile Include="Traits\ShakeOnDeath.cs" />
     <Compile Include="Traits\Sound\ActorLostNotification.cs" />
     <Compile Include="Traits\Sound\AnnounceOnBuild.cs" />
