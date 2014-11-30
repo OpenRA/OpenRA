@@ -35,6 +35,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
 
+		bool disableTeamChat;
 		bool teamChat;
 		bool inDialog;
 
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToList();
 
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
-			var disableTeamChat = world.LocalPlayer == null || world.LobbyInfo.IsSinglePlayer || !players.Any(p => p.IsAlliedWith(world.LocalPlayer));
+			disableTeamChat = world.LocalPlayer == null || world.LobbyInfo.IsSinglePlayer || !players.Any(p => p.IsAlliedWith(world.LocalPlayer));
 			teamChat = !disableTeamChat;
 
 			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).ToList();
@@ -72,12 +73,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			chatMode.IsDisabled = () => disableTeamChat;
 
 			chatText = chatChrome.Get<TextFieldWidget>("CHAT_TEXTFIELD");
-			chatText.OnAltKey = () =>
-			{
-				if (!disableTeamChat)
-					teamChat ^= true;
-				return true;
-			};
 			chatText.OnEnterKey = () =>
 			{
 				var team = teamChat && !disableTeamChat;
@@ -98,11 +93,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			chatText.OnTabKey = () =>
 			{
+				var previousText = chatText.Text;
 				chatText.Text = tabCompletion.Complete(chatText.Text);
 				chatText.CursorPosition = chatText.Text.Length;
-				return true;
-			};
 
+				if (chatText.Text == previousText)
+					return SwitchTeamChat();
+				else
+					return true;
+			};
 			chatText.OnEscKey = () => { CloseChat(); return true; };
 
 			if (!inDialog)
@@ -136,6 +135,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.BeforeGameStart += UnregisterEvents;
 
 			CloseChat();
+		}
+
+		bool SwitchTeamChat()
+		{
+			if (!disableTeamChat)
+				teamChat ^= true;
+			return true;
 		}
 
 		void UnregisterEvents()

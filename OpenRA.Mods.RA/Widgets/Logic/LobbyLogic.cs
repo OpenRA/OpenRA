@@ -55,6 +55,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
 
+		readonly LabelWidget chatLabel;
+		bool teamChat;
+
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
 		{
@@ -487,8 +490,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (skirmishMode)
 				disconnectButton.Text = "Cancel";
 
-			var teamChat = false;
-			var chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
+			chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
 
 			chatTextField.TakeKeyboardFocus();
@@ -505,17 +507,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				chatTextField.Text = "";
 				return true;
 			};
-			chatTextField.OnAltKey = () =>
-			{
-				teamChat ^= true;
-				chatLabel.Text = teamChat ? "Team:" : "Chat:";
-				return true;
-			};
 			chatTextField.OnTabKey = () =>
 			{
+				var previousText = chatTextField.Text;
 				chatTextField.Text = tabCompletion.Complete(chatTextField.Text);
 				chatTextField.CursorPosition = chatTextField.Text.Length;
-				return true;
+
+				if (chatTextField.Text == previousText)
+					return SwitchTeamChat();
+				else
+					return true;
 			};
 
 			chatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
@@ -590,6 +591,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				chatPanel.ScrollToBottom(smooth: true);
 
 			Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
+		}
+
+		bool SwitchTeamChat()
+		{
+			teamChat ^= true;
+			chatLabel.Text = teamChat ? "Team:" : "Chat:";
+			return true;
 		}
 
 		void UpdateCurrentMap()
