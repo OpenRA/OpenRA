@@ -16,7 +16,6 @@
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
-	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
 	HiddenUnderFog:
@@ -70,7 +69,6 @@
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
-	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
 	HiddenUnderFog:
