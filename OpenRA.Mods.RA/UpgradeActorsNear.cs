@@ -125,6 +125,10 @@ namespace OpenRA.Mods.RA
 			if (a == self || a.Destroyed)
 				return;
 
+			var stance = self.Owner.Stances[a.Owner];
+			if (!info.ValidStances.HasFlag(stance))
+				return;
+
 			var um = a.TraitOrDefault<UpgradeManager>();
 			if (um != null)
 				foreach (var u in info.Upgrades)
