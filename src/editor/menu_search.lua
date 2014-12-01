@@ -176,13 +176,11 @@ local function navigateTo(default)
         end
       else
         -- close preview
-        if preview then
-          ClosePage(nb:GetPageIndex(preview))
-          preview = nil
-        end
+        if preview then ClosePage(nb:GetPageIndex(preview)) end
         -- restore original selection if canceled
         if nb:GetSelection() ~= selection then nb:SetSelection(selection) end
       end
+      preview = nil
       if not mac then nb:Thaw() end
     end,
     function(text) -- onUpdate
@@ -252,14 +250,21 @@ local function navigateTo(default)
         nb:SetSelection(tabindex)
         ed:SetEvtHandlerEnabled(true)
       elseif file then
-        preview = preview or NewFile()
-        preview:SetEvtHandlerEnabled(false)
-        LoadFile(file, preview, true, true)
-        preview:SetFocus()
-        -- force refresh since the panel covers the editor on OSX/Linux
-        -- this fixes the preview window not always redrawn on Linux
-        if not win then preview:Update() preview:Refresh() end
-        preview:SetEvtHandlerEnabled(true)
+        -- skip binary files with unknown extensions
+        if #ide:GetKnownExtensions(GetFileExt(file)) > 0
+        or not isBinary(FileRead(file, 2048)) then
+          preview = preview or NewFile()
+          preview:SetEvtHandlerEnabled(false)
+          LoadFile(file, preview, true, true)
+          preview:SetFocus()
+          -- force refresh since the panel covers the editor on OSX/Linux
+          -- this fixes the preview window not always redrawn on Linux
+          if not win then preview:Update() preview:Refresh() end
+          preview:SetEvtHandlerEnabled(true)
+        elseif preview then
+          ClosePage(nb:GetPageIndex(preview))
+          preview = nil
+        end
       end
       nb:SetEvtHandlerEnabled(true)
     end,
