@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Commands
 {
-	[Desc("Allows the player to pause or surrender the game via the chatbox. Attach this to the world actor.")]
+	[Desc("Allows the player to whisper to another player, pause, or surrender the game via the chatbox. Attach this to the world actor.")]
 	public class PlayerCommandsInfo : TraitInfo<PlayerCommands> { }
 
 	public class PlayerCommands : IChatCommand, IWorldLoaded
@@ -26,6 +26,8 @@ namespace OpenRA.Mods.Common.Commands
 			var console = world.WorldActor.Trait<ChatCommands>();
 			var help = world.WorldActor.Trait<HelpCommand>();
 
+			console.RegisterCommand("whisper", this);
+			help.RegisterHelp("whisper", "whisper to a player, /whisper (name of the player) (What you want to say)");
 			console.RegisterCommand("pause", this);
 			help.RegisterHelp("pause", "pause or unpause the game");
 			console.RegisterCommand("surrender", this);
@@ -36,6 +38,10 @@ namespace OpenRA.Mods.Common.Commands
 		{
 			switch (name)
 			{
+				case "whisper":
+					world.IssueOrder(new Order("Whisper", null, false)
+						{ TargetString = arg });
+					break;
 				case "pause":
 					world.IssueOrder(new Order("PauseGame", null, false)
 						{ TargetString = world.Paused ? "UnPause" : "Pause" });

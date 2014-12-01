@@ -91,6 +91,38 @@ namespace OpenRA.Network
 						break;
 					}
 
+				case "Whisper":
+					{
+						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
+						var text = order.TargetString.Trim();
+						var reciever = text.Split(' ')[0];
+
+						if (client != null && text.Length >= 1 + reciever.Length)
+						{
+							if (world == null)
+							{
+								if (orderManager.LocalClient != null &&
+									(client.Name == orderManager.LocalClient.Name || reciever == orderManager.LocalClient.Name))
+									Game.AddChatLine(client.Color.RGB, client.Name + " (whisper)",
+										text.Substring(1 + reciever.Length));
+							}
+							else
+							{
+								var player = world.FindPlayerByClient(client);
+								if (player == null) return;
+
+								if ((world.LocalPlayer != null && 
+									(client.Name == orderManager.LocalClient.Name || reciever == orderManager.LocalClient.Name)))
+								{
+									Game.AddChatLine(client.Color.RGB, client.Name + " (whisper)",
+										text.Substring(1 + reciever.Length));
+								}
+							}
+						}
+
+						break;
+					}
+
 				case "StartGame":
 					{
 						Game.AddChatLine(Color.White, "Server", "The game has started.");

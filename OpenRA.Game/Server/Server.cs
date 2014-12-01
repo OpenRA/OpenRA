@@ -471,6 +471,7 @@ namespace OpenRA.Server
 					break;
 				case "Chat":
 				case "TeamChat":
+				case "Whisper":
 				case "PauseGame":
 					DispatchOrdersToClients(conn, 0, so.Serialize());
 					break;
