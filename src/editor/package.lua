@@ -92,10 +92,14 @@ function ide:GetMainFrame() return self.frame end
 function ide:GetUIManager() return self.frame.uimgr end
 function ide:GetDocument(ed) return self.openDocuments[ed:GetId()] end
 function ide:GetDocuments() return self.openDocuments end
-function ide:GetKnownExtensions()
-  local knownexts = {}
+function ide:GetKnownExtensions(ext)
+  local knownexts, extmatch = {}, ext and ext:lower()
   for _, spec in pairs(ide.specs) do
-    for _, ext in ipairs(spec.exts or {}) do table.insert(knownexts, ext) end
+    for _, ext in ipairs(spec.exts or {}) do
+      if not extmatch or extmatch == ext:lower() then
+        table.insert(knownexts, ext)
+      end
+    end
   end
   return knownexts
 end
