@@ -17,6 +17,7 @@ using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Displays fireports, muzzle offsets, and hit areas in developer mode.")]
 	public class CombatDebugOverlayInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new CombatDebugOverlay(init.self); }

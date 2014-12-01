@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
+	[Desc("Invisible during games.")]
 	class RenderEditorOnlyInfo : RenderSimpleInfo
 	{
 		public override object Create(ActorInitializer init) { return new RenderEditorOnly(init.self); }

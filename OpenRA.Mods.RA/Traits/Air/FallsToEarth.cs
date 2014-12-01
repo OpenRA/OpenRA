@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
+	[Desc("Causes aircraft husks that are spawned in the air to crash to the ground.")]
 	public class FallsToEarthInfo : ITraitInfo
 	{
 		[WeaponReference]
