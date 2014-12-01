@@ -177,6 +177,7 @@ namespace OpenRA.Network
 			public bool FragileAlliances = false; // Allow diplomatic stance changes after game start.
 			public bool AllowCheats = false;
 			public bool AllowSpectators = true;
+			public int SpectatorDelay = 100;
 			public bool Dedicated;
 			public string Difficulty;
 			public bool Crates = true;

@@ -463,6 +463,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				};
 			}
 
+			var spectatorDelay = optionsBin.GetOrNull<TextFieldWidget>("SPECTATORDELAY_TEXTFIELD");
+			if (spectatorDelay != null)
+			{
+				spectatorDelay.IsDisabled = () => Map.Status != MapStatus.Available || configurationDisabled();
+				spectatorDelay.OnTextEdited = () =>
+				{
+					if (int.TryParse(spectatorDelay.Text, out orderManager.LobbyInfo.GlobalSettings.SpectatorDelay))
+					{
+						orderManager.LobbyInfo.GlobalSettings.SpectatorDelay *= 25;
+						orderManager.IssueOrder(Order.Command("spectator_delay {0}".F(orderManager.LobbyInfo.GlobalSettings.SpectatorDelay)));
+					}
+				};
+				spectatorDelay.OnLoseFocus = () =>
+				{
+					spectatorDelay.Text = "" + orderManager.LobbyInfo.GlobalSettings.SpectatorDelay;
+				};
+			}
+
 			var enableShroud = optionsBin.GetOrNull<CheckboxWidget>("SHROUD_CHECKBOX");
 			if (enableShroud != null)
 			{

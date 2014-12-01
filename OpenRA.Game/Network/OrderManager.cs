@@ -36,6 +36,8 @@ namespace OpenRA.Network
 		public bool AuthenticationFailed = false;
 
 		public int NetFrameNumber { get; private set; }
+		public int DelayedNetFrameNumber { get { return !LocalPrevention ? NetFrameNumber :
+			NetFrameNumber - LobbyInfo.GlobalSettings.SpectatorDelay; } }
 		public int LocalFrameNumber;
 		public int FramesAhead = 0;
 		bool LocalPrevention = false;
@@ -191,8 +193,8 @@ namespace OpenRA.Network
 		{
 			get
 			{
-				return NetFrameNumber >= 1
-					? frameData.ClientsNotReadyForFrame(NetFrameNumber)
+				return DelayedNetFrameNumber >= 1
+					? frameData.ClientsNotReadyForFrame(DelayedNetFrameNumber)
 						.Select(a => LobbyInfo.ClientWithIndex(a))
 					: NoClients;
 			}
@@ -210,14 +212,17 @@ namespace OpenRA.Network
 			var sync = new List<int>();
 			sync.Add(World.SyncHash());
 
-			foreach (var order in frameData.OrdersForFrame(World, NetFrameNumber))
+			if (DelayedNetFrameNumber > 0)
 			{
-				UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
-				sync.Add(World.SyncHash());
+				foreach (var order in frameData.OrdersForFrame(World, DelayedNetFrameNumber))
+				{
+					UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
+					sync.Add(World.SyncHash());
+				}
 			}
 
 			var ss = sync.SerializeSync();
-			Connection.SendSync(NetFrameNumber, ss);
+			Connection.SendSync(DelayedNetFrameNumber, ss);
 
 			syncReport.UpdateSyncReport();
 
