@@ -197,7 +197,6 @@
     <Compile Include="GivesExperience.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Infiltration\InfiltrateForSupportPower.cs" />
-    <Compile Include="Invulnerable.cs" />
     <Compile Include="Captures.cs" />
     <Compile Include="LimitedAmmo.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
@@ -438,7 +437,6 @@
     <Compile Include="ProductionQueueFromSelection.cs" />
     <Compile Include="GlobalUpgradable.cs" />
     <Compile Include="Player\GlobalUpgradeManager.cs" />
-    <Compile Include="GainsStatUpgrades.cs" />
     <Compile Include="Player\Extensions.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
     <Compile Include="Warheads\DestroyResourceWarhead.cs" />
@@ -447,7 +445,6 @@
     <Compile Include="Scripting\Properties\HelicopterProperties.cs" />
     <Compile Include="Scripting\Properties\PlaneProperties.cs" />
     <Compile Include="SupportPowers\GrantUpgradePower.cs" />
-    <Compile Include="InvulnerabilityUpgrade.cs" />
     <Compile Include="DisableUpgrade.cs" />
     <Compile Include="KillsSelf.cs" />
     <Compile Include="Warheads\GrantUpgradeWarhead.cs" />

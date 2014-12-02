@@ -38,7 +38,6 @@
 	Huntable:
 	Demolishable:
 	ScriptTriggers:
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -47,6 +46,11 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Tank:
 	AppearsOnRadar:
@@ -88,7 +92,6 @@
 	Huntable:
 	Demolishable:
 	ScriptTriggers:
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -97,6 +100,11 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Husk:
 	Health:
@@ -213,7 +221,6 @@
 	DeathSounds:
 	Parachutable:
 		FallRate: 130
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -222,6 +229,11 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Plane:
 	AppearsOnRadar:
@@ -246,7 +258,6 @@
 	Huntable:
 	AttackMove:
 	ScriptTriggers:
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -255,6 +266,11 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Helicopter:
 	Inherits: ^Plane

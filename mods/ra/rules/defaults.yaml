@@ -53,7 +53,6 @@
 	CaptureNotification:
 		Notification: UnitStolen
 	ScriptTriggers:
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -65,12 +64,16 @@
 	UpgradeOverlay@IRONCURTAIN:
 		UpgradeTypes: invulnerability
 		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
+	DamageMultiplier@IRONCURTAIN:
 		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
+		Modifier: 0, 0
 	TimedUpgradeBar:
 		Upgrade: invulnerability
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Tank:
 	AppearsOnRadar:
@@ -127,7 +130,6 @@
 	CaptureNotification:
 		Notification: UnitStolen
 	ScriptTriggers:
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -139,12 +141,16 @@
 	UpgradeOverlay@IRONCURTAIN:
 		UpgradeTypes: invulnerability
 		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
+	DamageMultiplier@IRONCURTAIN:
 		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
+		Modifier: 0, 0
 	TimedUpgradeBar:
 		Upgrade: invulnerability
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -224,7 +230,6 @@
 		WaterImpactSound: splash9.aud
 	Cloneable:
 		Types: Infantry
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -233,6 +238,11 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Ship:
 	AppearsOnRadar:
@@ -267,7 +277,6 @@
 		GenericName: Ship
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -279,13 +288,17 @@
 	UpgradeOverlay@IRONCURTAIN:
 		UpgradeTypes: invulnerability
 		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
+	DamageMultiplier@IRONCURTAIN:
 		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
+		Modifier: 0, 0
 	TimedUpgradeBar:
 		Upgrade: invulnerability
 		UpgradeMinEnabledLevel: 1
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Plane:
 	AppearsOnRadar:
@@ -323,7 +336,6 @@
 		GenericName: Plane
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -335,13 +347,17 @@
 	UpgradeOverlay@IRONCURTAIN:
 		UpgradeTypes: invulnerability
 		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
+	DamageMultiplier@IRONCURTAIN:
 		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
+		Modifier: 0, 0
 	TimedUpgradeBar:
 		Upgrade: invulnerability
 	WithShadow:
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -405,10 +421,9 @@
 	UpgradeOverlay@IRONCURTAIN:
 		UpgradeTypes: invulnerability
 		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
+	DamageMultiplier@IRONCURTAIN:
 		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
+		Modifier: 0, 0
 	TimedUpgradeBar:
 		Upgrade: invulnerability
 

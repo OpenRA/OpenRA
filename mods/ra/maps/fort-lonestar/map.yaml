@@ -657,9 +657,9 @@ Rules:
 			HP: 200
 		AutoTarget:
 			InitialStance: Defend
-		InvulnerabilityUpgrade@UNKILLABLE:
+		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
-			UpgradeMinEnabledLevel: 1
+			Modifier: 0, 0
 	SPY:
 		Inherits: ^Infantry
 		Buildable:

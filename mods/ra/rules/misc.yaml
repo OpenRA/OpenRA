@@ -354,6 +354,10 @@ CTFLAG:
 		Name: Flag
 	Bib:
 		HasMinibib: Yes
-	Invulnerable:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+		BaseLevel: 0
+		UpgradeTypes:
 	-Selectable:
 	-TargetableBuilding:
+

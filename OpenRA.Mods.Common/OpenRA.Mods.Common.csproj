@@ -117,6 +117,13 @@
     <Compile Include="Traits\Modifiers\DisabledOverlay.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Traits\Modifiers\UpgradeOverlay.cs" />
+    <Compile Include="Traits\Multipliers\UpgradableMultiplierTrait.cs" />
+    <Compile Include="Traits\Multipliers\DamageMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\FirepowerMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\InaccuracyMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\ReloadTimeMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\SpeedMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\PowerMultiplier.cs" />
     <Compile Include="Traits\PaletteEffects\CloakPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\LightPaletteRotator.cs" />
     <Compile Include="Traits\PaletteEffects\MenuPaletteEffect.cs" />
