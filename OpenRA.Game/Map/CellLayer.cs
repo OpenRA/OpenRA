@@ -20,6 +20,8 @@ namespace OpenRA
 	{
 		public readonly Size Size;
 		public readonly TileShape Shape;
+		public event Action<CPos> CellEntryChanged = null;
+
 		readonly T[] entries;
 
 		public CellLayer(Map map)
@@ -48,15 +50,35 @@ namespace OpenRA
 		/// <summary>Gets or sets the <see cref="OpenRA.CellLayer"/> using cell coordinates</summary>
 		public T this[CPos cell]
 		{
-			get { return entries[Index(cell)]; }
-			set { entries[Index(cell)] = value; }
+			get
+			{
+				return entries[Index(cell)];
+			}
+
+			set
+			{
+				entries[Index(cell)] = value;
+
+				if (CellEntryChanged != null)
+					CellEntryChanged(cell);
+			}
 		}
 
 		/// <summary>Gets or sets the layer contents using raw map coordinates (not CPos!)</summary>
 		public T this[int u, int v]
 		{
-			get { return entries[Index(u, v)]; }
-			set { entries[Index(u, v)] = value; }
+			get
+			{
+				return entries[Index(u, v)];
+			}
+
+			set
+			{
+				entries[Index(u, v)] = value;
+
+				if (CellEntryChanged != null)
+					CellEntryChanged(Map.MapToCell(Shape, new CPos(u, v)));
+			}
 		}
 
 		/// <summary>Clears the layer contents with a known value</summary>
