@@ -31,6 +31,9 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Actually harvester facing when docking, 0-255 counter-clock-wise.")]
 		public readonly int DockAngle = 64;
 
+		[Desc("Should dumped ore become Cash directly? (Cash does not need to be stored).")]
+		public readonly bool DepositAsCash = false;
+
 		public virtual object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
 	}
 
@@ -66,11 +69,15 @@ namespace OpenRA.Mods.RA.Traits
 				.Where(a => a.Trait.LinkedProc == self);
 		}
 
-		public bool CanGiveOre(int amount) { return PlayerResources.CanGiveResources(amount); }
+		public bool CanGiveOre(int amount) { return  Info.DepositAsCash || PlayerResources.CanGiveResources(amount); }
 
 		public void GiveOre(int amount)
 		{
-			PlayerResources.GiveResources(amount);
+			if (Info.DepositAsCash)
+				PlayerResources.GiveCash(amount);
+			else
+				PlayerResources.GiveResources(amount);
+
 			if (Info.ShowTicks)
 				currentDisplayValue += amount;
 		}
