@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Widgets
 		int2 previewOrigin = int2.Zero;
 		Rectangle mapRect = Rectangle.Empty;
 
+		Sheet radarSheet;
 		Sprite terrainSprite;
 		Sprite customTerrainSprite;
 		Sprite actorSprite;
@@ -46,6 +47,8 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly WorldRenderer worldRenderer;
 
 		readonly RadarPings radarPings;
+
+		bool terrainDirty = true;
 
 		[ObjectCreator.UseCtor]
 		public RadarWidget(World world, WorldRenderer worldRenderer)
@@ -68,20 +71,14 @@ namespace OpenRA.Mods.Common.Widgets
 			previewOrigin = new int2((int)(previewScale * (size - width) / 2), (int)(previewScale * (size - height) / 2));
 			mapRect = new Rectangle(previewOrigin.X, previewOrigin.Y, (int)(previewScale * width), (int)(previewScale * height));
 
-			// Only needs to be done once
-			using (var terrainBitmap = Minimap.TerrainBitmap(world.Map.Rules.TileSets[world.Map.Tileset], world.Map))
-			{
-				var r = new Rectangle(0, 0, width, height);
-				var s = new Size(terrainBitmap.Width, terrainBitmap.Height);
-				var terrainSheet = new Sheet(s);
-				terrainSheet.GetTexture().SetData(terrainBitmap);
-				terrainSprite = new Sprite(terrainSheet, r, TextureChannel.Alpha);
+			// The four layers are stored in a 2x2 grid within a single texture
+			radarSheet = new Sheet(new Size(2 * width, 2 * height).NextPowerOf2());
+			radarSheet.CreateBuffer();
 
-				// Data is set in Tick()
-				customTerrainSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
-				actorSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
-				shroudSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
-			}
+			terrainSprite = new Sprite(radarSheet, new Rectangle(0, 0, width, height), TextureChannel.Alpha);
+			customTerrainSprite = new Sprite(radarSheet, new Rectangle(width, 0, width, height), TextureChannel.Alpha);
+			actorSprite = new Sprite(radarSheet, new Rectangle(0, height, width, height), TextureChannel.Alpha);
+			shroudSprite = new Sprite(radarSheet, new Rectangle(width, height, width, height), TextureChannel.Alpha);
 		}
 
 		public override string GetCursor(int2 pos)
@@ -199,20 +196,40 @@ namespace OpenRA.Mods.Common.Widgets
 			// This avoids obviously stale data from being shown when first opened.
 			// TODO: This delayed updating is a giant hack
 			--updateTicks;
+
+			if (terrainDirty)
+			{
+				using (var bitmap = Minimap.TerrainBitmap(world.TileSet, world.Map))
+					Util.FastCopyIntoSprite(terrainSprite, bitmap);
+
+				radarSheet.CommitData();
+				terrainDirty = false;
+			}
+
 			if (updateTicks <= 0)
 			{
 				updateTicks = 12;
 				using (var bitmap = Minimap.CustomTerrainBitmap(world))
-					customTerrainSprite.sheet.GetTexture().SetData(bitmap);
+					Util.FastCopyIntoSprite(customTerrainSprite, bitmap);
+
+				radarSheet.CommitData();
 			}
 
 			if (updateTicks == 8)
+			{
 				using (var bitmap = Minimap.ActorsBitmap(world))
-					actorSprite.sheet.GetTexture().SetData(bitmap);
+					Util.FastCopyIntoSprite(actorSprite, bitmap);
+
+				radarSheet.CommitData();
+			}
 
 			if (updateTicks == 4)
+			{
 				using (var bitmap = Minimap.ShroudBitmap(world))
-					shroudSprite.sheet.GetTexture().SetData(bitmap);
+					Util.FastCopyIntoSprite(shroudSprite, bitmap);
+
+				radarSheet.CommitData();
+			}
 
 			// Enable/Disable the radar
 			var enabled = IsEnabled();
