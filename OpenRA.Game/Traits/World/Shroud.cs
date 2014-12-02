@@ -31,6 +31,23 @@ namespace OpenRA.Traits
 		readonly CellLayer<short> generatedShroudCount;
 		readonly CellLayer<bool> explored;
 
+		public event Action<CPos> CellEntryChanged
+		{
+			add
+			{
+				visibleCount.CellEntryChanged += value;
+				generatedShroudCount.CellEntryChanged += value;
+				explored.CellEntryChanged += value;
+			}
+
+			remove
+			{
+				visibleCount.CellEntryChanged -= value;
+				generatedShroudCount.CellEntryChanged -= value;
+				explored.CellEntryChanged -= value;
+			}
+		}
+
 		readonly Lazy<IFogVisibilityModifier[]> fogVisibilities;
 
 		// Cache of visibility that was added, so no matter what crazy trait code does, it

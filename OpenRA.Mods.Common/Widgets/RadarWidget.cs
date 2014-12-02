@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -31,24 +32,23 @@ namespace OpenRA.Mods.Common.Widgets
 		int frame;
 		bool hasRadar;
 		bool cachedEnabled;
-		int updateTicks;
 
 		float previewScale = 0;
 		int2 previewOrigin = int2.Zero;
 		Rectangle mapRect = Rectangle.Empty;
 
 		Sheet radarSheet;
+		byte[] radarData;
+
 		Sprite terrainSprite;
-		Sprite customTerrainSprite;
 		Sprite actorSprite;
 		Sprite shroudSprite;
+		Shroud renderShroud;
 
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
 
 		readonly RadarPings radarPings;
-
-		bool terrainDirty = true;
 
 		[ObjectCreator.UseCtor]
 		public RadarWidget(World world, WorldRenderer worldRenderer)
@@ -74,11 +74,60 @@ namespace OpenRA.Mods.Common.Widgets
 			// The four layers are stored in a 2x2 grid within a single texture
 			radarSheet = new Sheet(new Size(2 * width, 2 * height).NextPowerOf2());
 			radarSheet.CreateBuffer();
+			radarData = radarSheet.GetData();
 
 			terrainSprite = new Sprite(radarSheet, new Rectangle(0, 0, width, height), TextureChannel.Alpha);
-			customTerrainSprite = new Sprite(radarSheet, new Rectangle(width, 0, width, height), TextureChannel.Alpha);
 			actorSprite = new Sprite(radarSheet, new Rectangle(0, height, width, height), TextureChannel.Alpha);
 			shroudSprite = new Sprite(radarSheet, new Rectangle(width, height, width, height), TextureChannel.Alpha);
+
+			// Set initial terrain data
+			using (var bitmap = Minimap.TerrainBitmap(world.TileSet, world.Map))
+				OpenRA.Graphics.Util.FastCopyIntoSprite(terrainSprite, bitmap);
+
+			world.Map.MapTiles.Value.CellEntryChanged += UpdateTerrainCell;
+			world.Map.CustomTerrain.CellEntryChanged += UpdateTerrainCell;
+		}
+
+		void UpdateTerrainCell(CPos cell)
+		{
+			var stride = radarSheet.Size.Width;
+			var uv = Map.CellToMap(world.Map.TileShape, cell);
+			var terrain = world.Map.GetTerrainInfo(cell);
+
+			var dx = terrainSprite.bounds.Left - world.Map.Bounds.Left;
+			var dy = terrainSprite.bounds.Top - world.Map.Bounds.Top;
+
+			unsafe
+			{
+				fixed (byte* _colors = &radarData[0])
+				{
+					var colors = (int*)_colors;
+					colors[(uv.Y + dy) * stride + uv.X + dx] = terrain.Color.ToArgb();
+				}
+			}
+		}
+
+		void UpdateShroudCell(CPos cell)
+		{
+			var stride = radarSheet.Size.Width;
+			var uv = Map.CellToMap(world.Map.TileShape, cell);
+			var dx = shroudSprite.bounds.Left - world.Map.Bounds.Left;
+			var dy = shroudSprite.bounds.Top - world.Map.Bounds.Top;
+
+			var color = 0;
+			if (world.ShroudObscures(cell))
+				color = Color.Black.ToArgb();
+			else if (world.FogObscures(cell))
+				color = Color.FromArgb(128, Color.Black).ToArgb();
+
+			unsafe
+			{
+				fixed (byte* _colors = &radarData[0])
+				{
+					var colors = (int*)_colors;
+					colors[(uv.Y + dy) * stride + uv.X + dx] = color;
+				}
+			}
 		}
 
 		public override string GetCursor(int2 pos)
@@ -150,9 +199,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var rsr = Game.Renderer.RgbaSpriteRenderer;
 			rsr.DrawSprite(terrainSprite, o, s);
-			rsr.DrawSprite(customTerrainSprite, o, s);
 			rsr.DrawSprite(actorSprite, o, s);
-			rsr.DrawSprite(shroudSprite, o, s);
+
+			if (renderShroud != null)
+				rsr.DrawSprite(shroudSprite, o, s);
 
 			// Draw viewport rect
 			if (hasRadar)
@@ -192,50 +242,40 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Tick()
 		{
-			// Update the radar animation even when its closed
-			// This avoids obviously stale data from being shown when first opened.
-			// TODO: This delayed updating is a giant hack
-			--updateTicks;
-
-			if (terrainDirty)
-			{
-				using (var bitmap = Minimap.TerrainBitmap(world.TileSet, world.Map))
-					Util.FastCopyIntoSprite(terrainSprite, bitmap);
-
-				radarSheet.CommitData();
-				terrainDirty = false;
-			}
-
-			if (updateTicks <= 0)
-			{
-				updateTicks = 12;
-				using (var bitmap = Minimap.CustomTerrainBitmap(world))
-					Util.FastCopyIntoSprite(customTerrainSprite, bitmap);
-
-				radarSheet.CommitData();
-			}
-
-			if (updateTicks == 8)
-			{
-				using (var bitmap = Minimap.ActorsBitmap(world))
-					Util.FastCopyIntoSprite(actorSprite, bitmap);
-
-				radarSheet.CommitData();
-			}
-
-			if (updateTicks == 4)
-			{
-				using (var bitmap = Minimap.ShroudBitmap(world))
-					Util.FastCopyIntoSprite(shroudSprite, bitmap);
-
-				radarSheet.CommitData();
-			}
-
 			// Enable/Disable the radar
 			var enabled = IsEnabled();
 			if (enabled != cachedEnabled)
 				Sound.Play(enabled ? RadarOnlineSound : RadarOfflineSound);
 			cachedEnabled = enabled;
+
+			if (enabled)
+			{
+				var rp = world.RenderPlayer;
+				var newRenderShroud = rp != null ? rp.Shroud : null;
+				if (newRenderShroud != renderShroud)
+				{
+					if (renderShroud != null)
+						renderShroud.CellEntryChanged -= UpdateShroudCell;
+
+					if (newRenderShroud != null)
+					{
+						// Redraw the full shroud sprite
+						using (var bitmap = Minimap.ShroudBitmap(world))
+							OpenRA.Graphics.Util.FastCopyIntoSprite(shroudSprite, bitmap);
+
+						// Update the notification binding
+						newRenderShroud.CellEntryChanged += UpdateShroudCell;
+					}
+
+					renderShroud = newRenderShroud;
+				}
+
+				// The actor layer is updated every tick
+				using (var bitmap = Minimap.ActorsBitmap(world))
+					OpenRA.Graphics.Util.FastCopyIntoSprite(actorSprite, bitmap);
+
+				radarSheet.CommitData();
+			}
 
 			var targetFrame = enabled ? AnimationLength : 0;
 			hasRadar = enabled && frame == AnimationLength;
