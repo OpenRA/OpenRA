@@ -247,7 +247,7 @@ local function navigateTo(default)
       if tabindex then
         local ed = nb:GetPage(tabindex)
         ed:SetEvtHandlerEnabled(false)
-        nb:SetSelection(tabindex)
+        if nb:GetSelection() ~= tabindex then nb:SetSelection(tabindex) end
         ed:SetEvtHandlerEnabled(true)
       elseif file then
         -- skip binary files with unknown extensions
