@@ -576,7 +576,7 @@ function CreateAutoCompList(editor,key,pos)
     local vars, context = {}
     local tokens = editor:GetTokenList()
     for _, token in ipairs(tokens) do
-      if token.fpos > pos then break end
+      if token.fpos and token.fpos > pos then break end
       if token[1] == 'Id' or token[1] == 'Var' then
         local var = token.name
         if var ~= key and var:find(key, 1, true) == 1 then
