@@ -64,6 +64,9 @@ ide = {
       port = nil,
       runonstart = nil,
       redirect = nil,
+      maxdatalength = 400,
+      maxdatanum = 400,
+      maxdatalevel = 3,
     },
     default = {
       name = 'untitled',

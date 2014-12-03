@@ -37,9 +37,9 @@ local activate = {CHECKONLY = 1, NOREPORT = 2}
 
 local function serialize(value, options) return mobdebug.line(value, options) end
 
-local stackmaxlength = ide.config.debugger.stackmaxlength or 400
-local stackmaxnum = ide.config.debugger.stackmaxnum or 400
-local stackmaxlevel = ide.config.debugger.stackmaxlevel or 3
+local stackmaxlength = ide.config.debugger.maxdatalength
+local stackmaxnum = ide.config.debugger.maxdatanum
+local stackmaxlevel = ide.config.debugger.maxdatalevel
 local params = {comment = false, nocode = true, maxlevel = stackmaxlevel, maxnum = stackmaxnum}
 
 local function fixUTF8(...)
