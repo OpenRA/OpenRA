@@ -130,6 +130,7 @@ CARRYALLH:
 		Queue: Armor
 		Prerequisites: ~heavyh, refinery, hightech
 		BuildPaletteOrder: 10
+		EdgeSpawn: true
 
 CARRYALLH.starport:
 	Inherits: CARRYALLH
