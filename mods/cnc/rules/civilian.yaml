@@ -458,7 +458,7 @@ VICE:
 		MuzzleSplitFacings: 8
 	AttackFrontal:
 	AttackWander:
-		WanderMoveRadius: 4
+		WanderMoveRadius: 2
 	RenderUnit:
 	WithMuzzleFlash:
 		SplitFacings: true
