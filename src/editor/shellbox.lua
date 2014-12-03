@@ -4,9 +4,6 @@
 
 local ide = ide
 local unpack = table.unpack or unpack
---
--- shellbox - a lua testbed environment within the IDE
---
 
 local bottomnotebook = ide.frame.bottomnotebook
 local out = bottomnotebook.shellbox
@@ -147,8 +144,23 @@ local function shellPrint(marker, ...)
     local x = select(i,...)
     text = text .. tostring(x)..(i < cnt and "\t" or "")
   end
+
+  -- split the text into smaller chunks as one large line
+  -- is difficult to handle for the editor
+  local prev, maxlength = 0, ide.config.debugger.maxdatalength
+  if #text > maxlength and not text:find("\n.") then
+    text = text:gsub("()(%s+)", function(p, s)
+        if p-prev >= maxlength then
+          prev = p
+          return "\n"
+        else
+          return s
+        end
+      end)
+  end
+
   -- add "\n" if it is missing
-  if text then text = text:gsub("\n+$", "") .. "\n" end
+  text = text:gsub("\n+$", "") .. "\n"
 
   local lines = out:GetLineCount()
   local promptLine = isPrompt and getPromptLine() or nil
