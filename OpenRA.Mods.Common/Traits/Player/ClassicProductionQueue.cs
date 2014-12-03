@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var p in producers.Where(p => !p.Actor.IsDisabled()))
 			{
-				if (p.Trait.Produce(p.Actor, ai, Race))
+				if (p.Trait.Produce(p.Actor, new[] { ai }, Race))
 				{
 					FinishProduction();
 					return true;

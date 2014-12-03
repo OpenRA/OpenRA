@@ -253,6 +253,7 @@
     <Compile Include="Traits\Buildings\LineBuild.cs" />
     <Compile Include="Traits\Buildings\LineBuildNode.cs" />
     <Compile Include="Traits\Buildings\PrimaryBuilding.cs" />
+    <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
     <Compile Include="Traits\Buildings\RallyPoint.cs" />
     <Compile Include="Traits\Buildings\Refinery.cs" />
     <Compile Include="Traits\Buildings\RepairableBuilding.cs" />

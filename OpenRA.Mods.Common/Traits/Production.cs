@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Production
 	{
-		Lazy<RallyPoint> rp;
+		protected Lazy<RallyPoint> rp;
 
 		public ProductionInfo Info;
 		public Production(ProductionInfo info, Actor self)
@@ -38,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 			rp = Exts.Lazy(() => self.IsDead ? null : self.TraitOrDefault<RallyPoint>());
 		}
 
-		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string raceVariant)
+		public virtual Actor DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string raceVariant)
 		{
 			var exit = self.Location + exitinfo.ExitCell;
 			var spawn = self.CenterPosition + exitinfo.SpawnOffset;
@@ -50,21 +51,22 @@ namespace OpenRA.Mods.Common.Traits
 			var exitLocation = rp.Value != null ? rp.Value.Location : exit;
 			var target = Target.FromCell(self.World, exitLocation);
 
+			var td = new TypeDictionary
+			{
+				new OwnerInit(self.Owner),
+				new LocationInit(exit),
+				new CenterPositionInit(spawn),
+				new FacingInit(initialFacing)
+			};
+
+			if (raceVariant != null)
+				td.Add(new RaceInit(raceVariant));
+
+			var newUnit = self.World.CreateActor(false, producee.Name, td);
+
 			self.World.AddFrameEndTask(w =>
 			{
-				var td = new TypeDictionary
-				{
-					new OwnerInit(self.Owner),
-					new LocationInit(exit),
-					new CenterPositionInit(spawn),
-					new FacingInit(initialFacing)
-				};
-
-				if (raceVariant != null)
-					td.Add(new RaceInit(raceVariant));
-
-				var newUnit = self.World.CreateActor(producee.Name, td);
-
+				self.World.Add(newUnit);
 				var move = newUnit.TraitOrDefault<IMove>();
 				if (move != null)
 				{
@@ -93,24 +95,27 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
 					t.BuildingComplete(newUnit);
 			});
+
+			return newUnit;
 		}
 
-		public virtual bool Produce(Actor self, ActorInfo producee, string raceVariant)
+		public virtual bool Produce(Actor self, IEnumerable<ActorInfo> producees, string raceVariant)
 		{
 			if (Reservable.IsReserved(self))
 				return false;
 
-			// pick a spawn/exit point pair
-			var exit = self.Info.Traits.WithInterface<ExitInfo>().Shuffle(self.World.SharedRandom)
-				.FirstOrDefault(e => CanUseExit(self, producee, e));
+			var produced = self;
 
-			if (exit != null)
+			foreach (var producee in producees)
 			{
-				DoProduction(self, producee, exit, raceVariant);
-				return true;
+				// pick a spawn/exit point pair
+				var exit = self.Info.Traits.WithInterface<ExitInfo>().Shuffle(self.World.SharedRandom)
+					.FirstOrDefault(e => CanUseExit(self, producee, e));
+				if (exit != null)
+					DoProduction(self, producee, exit, raceVariant);
 			}
 
-			return false;
+			return produced != self ;
 		}
 
 		static bool CanUseExit(Actor self, ActorInfo producee, ExitInfo s)
