@@ -14,7 +14,7 @@ using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Can enter a BridgeHut to trigger a repair.")]
 	class RepairsBridgesInfo : TraitInfo<RepairsBridges> { }

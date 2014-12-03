@@ -11,6 +11,7 @@
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Mods.RA;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.GameRules;
 
 namespace OpenRA.Mods.Cnc.Traits

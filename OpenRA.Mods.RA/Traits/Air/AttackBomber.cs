@@ -10,9 +10,10 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.RA;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	class AttackBomberInfo : AttackBaseInfo
 	{

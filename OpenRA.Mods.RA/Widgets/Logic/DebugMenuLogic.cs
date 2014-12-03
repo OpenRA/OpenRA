@@ -10,6 +10,7 @@
 
 using System;
 using OpenRA.Support;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
