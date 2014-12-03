@@ -432,7 +432,7 @@ debugger.shell = function(expression, isstatement)
           if #values == 0 and (forceexpression or not isstatement) then
             values = {'nil'}
           end
-          DisplayShell(fixUTF8(unpack(values)))
+          DisplayShell(unpack(values))
         end
 
         -- refresh Stack and Watch windows if executed a statement (and no err)
