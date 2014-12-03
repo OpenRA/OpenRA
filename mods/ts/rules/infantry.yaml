@@ -583,7 +583,7 @@ DOGGIE:
 		Weapon: FiendShard
 	AttackFrontal:
 	AttackWander:
-		WanderMoveRadius: 4
+		WanderMoveRadius: 2
 
 VISSML:
 	Inherits: ^Infantry

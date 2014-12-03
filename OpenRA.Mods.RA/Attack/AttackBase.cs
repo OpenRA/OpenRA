@@ -14,7 +14,6 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -39,6 +38,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<Armament> Armaments { get { return GetArmaments(); } }
 		protected Lazy<IFacing> facing;
 		protected Lazy<Building> building;
+	    protected Lazy<IPositionable> positionable;
 		protected Func<IEnumerable<Armament>> GetArmaments;
 
 		readonly Actor self;
@@ -56,6 +56,7 @@ namespace OpenRA.Mods.RA
 
 			facing = Exts.Lazy(() => self.TraitOrDefault<IFacing>());
 			building = Exts.Lazy(() => self.TraitOrDefault<Building>());
+			positionable = Exts.Lazy(() => self.Trait<IPositionable>());
 		}
 
 		protected virtual bool CanAttack(Actor self, Target target)
@@ -146,8 +147,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (Info.AttackRequiresEnteringCell)
 			{
-				var positionable = self.TraitOrDefault<IPositionable>();
-				if (positionable == null || !positionable.CanEnterCell(t.Actor.Location, null, false))
+				if (!positionable.Value.CanEnterCell(t.Actor.Location, null, false))
 					return false;
 			}
 

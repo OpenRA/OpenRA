@@ -9,9 +9,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -21,33 +22,34 @@ namespace OpenRA.Mods.D2k
 	class WormManagerInfo : ITraitInfo
 	{
 		[Desc("Minimum number of worms")]
-		public readonly int Minimum = 1;
+		public readonly int Minimum = 2;
 
 		[Desc("Maximum number of worms")]
-		public readonly int Maximum = 8;
+		public readonly int Maximum = 4;
 
 		[Desc("Average time (seconds) between worm spawn")]
-		public readonly int SpawnInterval = 180;
+		public readonly int SpawnInterval = 120;
 
 		public readonly string WormSignNotification = "WormSign";
 
 		public readonly string WormSignature = "sandworm";
 		public readonly string WormOwnerPlayer = "Creeps";
 
-		public object Create (ActorInitializer init) { return new WormManager(this, init.self); }
+		public object Create(ActorInitializer init) { return new WormManager(this, init.self); }
 	}
 
 	class WormManager : ITick
 	{
 		int countdown;
 		int wormsPresent;
-		RadarPings radarPings;
 		readonly WormManagerInfo info;
 		readonly Lazy<Actor[]> spawnPoints;
+		readonly Lazy<RadarPings> radarPings;
 
 		public WormManager(WormManagerInfo info, Actor self)
 		{
 			this.info = info;
+			radarPings = Exts.Lazy(() => self.World.WorldActor.Trait<RadarPings>());
 			spawnPoints = Exts.Lazy(() => self.World.ActorsWithTrait<WormSpawner>().Select(x => x.Actor).ToArray());
 		}
 
@@ -59,31 +61,40 @@ namespace OpenRA.Mods.D2k
 			if (!spawnPoints.Value.Any())
 				return;
 
-			if (--countdown > 0)
+			// Apparantly someone doesn't want worms or the maximum number of worms has been reached
+			if (info.Maximum < 1 || wormsPresent >= info.Maximum)
+				return;
+
+			if (--countdown > 0 && wormsPresent >= info.Minimum)
 				return;
 
 			countdown = info.SpawnInterval * 25;
-			if (wormsPresent < info.Maximum)
-				SpawnWorm(self);
+
+			var wormLocations = new List<WPos>();
+
+			wormLocations.Add(SpawnWorm(self));
+			while (wormsPresent < info.Minimum)
+				wormLocations.Add(SpawnWorm(self));
+
+			AnnounceWormSign(self, wormLocations);
 		}
 
-		void SpawnWorm (Actor self)
+		WPos SpawnWorm(Actor self)
 		{
-			var spawnPosition = GetRandomSpawnPosition(self);
-			var spawnLocation = self.World.Map.CellContaining(spawnPosition);
+			var spawnPoint = GetRandomSpawnPoint(self);
 			self.World.AddFrameEndTask(w => w.CreateActor(info.WormSignature, new TypeDictionary
 			{
 				new OwnerInit(w.Players.First(x => x.PlayerName == info.WormOwnerPlayer)),
-				new LocationInit(spawnLocation)
+				new LocationInit(spawnPoint.Location)
 			}));
 			wormsPresent++;
-
-			AnnounceWormSign(self, spawnPosition);
+			
+			return spawnPoint.CenterPosition;
 		}
 
-		WPos GetRandomSpawnPosition(Actor self)
+		Actor GetRandomSpawnPoint(Actor self)
 		{
-			return spawnPoints.Value.Random(self.World.SharedRandom).CenterPosition;
+			return spawnPoints.Value.Random(self.World.SharedRandom);
 		}
 
 		public void DecreaseWorms()
@@ -91,22 +102,17 @@ namespace OpenRA.Mods.D2k
 			wormsPresent--;
 		}
 
-		void AnnounceWormSign(Actor self, WPos wormSpawnPosition)
+		void AnnounceWormSign(Actor self, IEnumerable<WPos> wormLocations)
 		{
-			if (self.World.LocalPlayer == null)
+			if (self.World.LocalPlayer != null)
+				Sound.PlayNotification(self.World.Map.Rules, self.World.LocalPlayer, "Speech", info.WormSignNotification, self.World.LocalPlayer.Country.Race);
+
+			if (radarPings.Value == null)
 				return;
-			
-			Sound.PlayNotification(self.World.Map.Rules, self.World.LocalPlayer, "Speech", info.WormSignNotification, self.World.LocalPlayer.Country.Race);
 
-			if (radarPings == null)
-			{
-				if (self.World.WorldActor == null)
-					return;
-
-				radarPings = self.World.WorldActor.TraitOrDefault<RadarPings>();
-			}
+			foreach (var wormLocation in wormLocations)
+				radarPings.Value.Add(() => true, wormLocation, Color.Red, 50);
 			
-			radarPings.Add(() => true, wormSpawnPosition, Color.Red, 50);
 		}
 	}
 

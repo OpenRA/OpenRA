@@ -21,17 +21,19 @@ namespace OpenRA.Mods.D2k
 		[Desc("The number of ticks it takes to get in place under the target to attack.")]
 		public int AttackTime = 30;
 
+		public readonly string WormAttackNotification = "WormAttack";
+
 		public override object Create(ActorInitializer init) { return new AttackSwallow(init.self, this); }
 	}
 
 	class AttackSwallow : AttackFrontal
 	{
-		public readonly AttackSwallowInfo AttackSwallowInfo;
+		new public readonly AttackSwallowInfo Info;
 
-		public AttackSwallow(Actor self, AttackSwallowInfo attackSwallowInfo)
-			: base(self, attackSwallowInfo)
+		public AttackSwallow(Actor self, AttackSwallowInfo info)
+			: base(self, info)
 		{
-			AttackSwallowInfo = attackSwallowInfo;
+			Info = info;
 		}
 
 		public override void DoAttack(Actor self, Target target)
