@@ -39,39 +39,18 @@ namespace OpenRA.Mods.RA
 		{
 			var exit = self.Location + exitinfo.ExitCell;
 			var spawn = self.CenterPosition + exitinfo.SpawnOffset;
-			var to = self.World.Map.CenterOfCell(exit);
-
-			var fi = producee.Traits.GetOrDefault<IFacingInfo>();
-			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi == null ? 0 : fi.GetInitialFacing()) : exitinfo.Facing;
-
-			var exitLocation = rp.Value != null ? rp.Value.Location : exit;
-			var target = Target.FromCell(self.World, exitLocation);
 
 			var td = new TypeDictionary
 				{
 					new OwnerInit(self.Owner),
 					new LocationInit(exit),
-					new CenterPositionInit(spawn),
-					new FacingInit(initialFacing)
+					new CenterPositionInit(spawn)
 				};
 
 			if (raceVariant != null)
 				td.Add(new RaceInit(raceVariant));
 
 			var newUnit = self.World.CreateActor(false, producee.Name, td);
-
-			var move = newUnit.TraitOrDefault<IMove>();
-			if (move != null)
-			{
-				if (exitinfo.MoveIntoWorld)
-				{
-					newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
-					newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
-						newUnit, move.MoveTo(exitLocation, 1)));
-				}
-			}
-
-			newUnit.SetTargetLine(target, rp.Value != null ? Color.Red : Color.Green, false);
 
 			if (!self.IsDead)
 				foreach (var t in self.TraitsImplementing<INotifyProduction>())
@@ -134,7 +113,7 @@ namespace OpenRA.Mods.RA
 
 				a.QueueActivity(new Fly(a, Target.FromCell(w, self.Location + new CVec(9, 0))));
 				a.QueueActivity(new Land(Target.FromActor(self)));
-				a.QueueActivity(new UnloadCargo(a, true));
+				a.QueueActivity(new UnloadCargo(a, true, rp.Value));
 				a.QueueActivity(new Fly(a, Target.FromCell(w, endPos)));
 				a.QueueActivity(new RemoveSelf());
 			});
