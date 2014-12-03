@@ -567,6 +567,12 @@ Templates:
 		Category: Debris
 		Tiles:
 			0: Tree
+	Template@61:
+		Id: 61
+		Image: br5
+		Size: 1,1
+		Tiles:
+			0: Wall
 	Template@62:
 		Id: 62
 		Image: br6
@@ -607,6 +613,13 @@ Templates:
 			3: Tree
 			4: Tree
 			5: Tree
+	Template@66:
+		Id: 66
+		Image: br10
+		Size: 2,1
+		Tiles:
+			0: Wall
+			1: Wall
 	Template@67:
 		Id: 67
 		Image: p01
