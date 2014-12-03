@@ -1,173 +1,121 @@
-chrome-atreides: chrome-atreides.png
-	specialbin-top: 0,0,30,51
-	specialbin-middle: 0,51,30,51
-	specialbin-bottom: 0,153,30,39
-	moneybin: 192,0,320,31
-	radar: 297,31,210,222
-	tooltip-bg: 0,288,272,136
+sidebar-atreides: chrome.png
+	background-top: 510,0,254,321
+	background-iconrow: 510,321,254,47
+	background-bottom: 510,368,254,10
+	background-supportoverlay: 800,150,64,48
 
-power-atreides: chrome-atreides.png
-	power-indicator: 187,4,4,7
+sidebar-button-atreides: chrome.png
+	background: 800,335,25,25
+sidebar-button-atreides-hover: chrome.png
+	background: 800,335,25,25
+sidebar-button-atreides-pressed: chrome.png
+	background: 800,335,25,25
+sidebar-button-atreides-highlighted: chrome.png
+	background: 825,335,25,25
+sidebar-button-atreides-highlighted-hover: chrome.png
+	background: 825,335,25,25
+sidebar-button-atreides-highlighted-pressed: chrome.png
+	background: 825,335,25,25
+sidebar-button-atreides-disabled: chrome.png
+	background: 850,335,25,25
+sidebar-button-atreides-highlighted-disabled: chrome.png
+	background: 850,335,25,25
 
-palette-atreides: chrome-atreides.png
-	top: 297,288,201,9
-	dock-top: 498,274,14,23
-	bottom: 297,489,201,9
-	dock-bottom: 498,489,14,23
-	bg-0: 297,297,201,48
-	dock-0: 498,297,14,48
-	bg-1: 297,345,201,48
-	dock-1: 498,345,14,48
-	bg-2: 297,393,201,48
-	dock-2: 498,393,14,48
-	bg-3: 297,441,201,48
-	dock-3: 498,441,14,48
- 
-digits-atreides: chrome-atreides.png
-	0: 32,0,13,17
-	1: 45,0,13,17
-	2: 58,0,13,17
-	3: 71,0,13,17
-	4: 84,0,13,17
-	5: 97,0,13,17
-	6: 110,0,13,17
-	7: 123,0,13,17
-	8: 136,0,13,17
-	9: 149,0,13,17
+sidebar-harkonnen: chrome.png
+	background-top: 510,0,254,321
+	background-iconrow: 510,321,254,47
+	background-bottom: 510,368,254,10
+	background-supportoverlay: 800,150,64,48
 
-chrome-harkonnen: chrome-harkonnen.png
-	specialbin-top: 0,0,30,51
-	specialbin-middle: 0,51,30,51
-	specialbin-bottom: 0,153,30,39
-	moneybin: 192,0,320,31
-	radar: 297,31,210,222
-	tooltip-bg: 0,288,272,136
+sidebar-button-harkonnen: chrome.png
+	background: 800,335,25,25
+sidebar-button-harkonnen-hover: chrome.png
+	background: 800,335,25,25
+sidebar-button-harkonnen-pressed: chrome.png
+	background: 800,335,25,25
+sidebar-button-harkonnen-highlighted: chrome.png
+	background: 825,335,25,25
+sidebar-button-harkonnen-highlighted-hover: chrome.png
+	background: 825,335,25,25
+sidebar-button-harkonnen-highlighted-pressed: chrome.png
+	background: 825,335,25,25
+sidebar-button-harkonnen-disabled: chrome.png
+	background: 850,335,25,25
+sidebar-button-harkonnen-highlighted-disabled: chrome.png
+	background: 850,335,25,25
 
-power-harkonnen: chrome-harkonnen.png
-	power-indicator: 187,4,4,7
+sidebar-ordos: chrome.png
+	background-top: 510,0,254,321
+	background-iconrow: 510,321,254,47
+	background-bottom: 510,368,254,10
+	background-supportoverlay: 500,150,64,48
 
-palette-harkonnen: chrome-harkonnen.png
-	top: 297,288,201,9
-	dock-top: 498,274,14,23
-	bottom: 297,489,201,9
-	dock-bottom: 498,489,14,23
-	bg-0: 297,297,201,48
-	dock-0: 498,297,14,48
-	bg-1: 297,345,201,48
-	dock-1: 498,345,14,48
-	bg-2: 297,393,201,48
-	dock-2: 498,393,14,48
-	bg-3: 297,441,201,48
-	dock-3: 498,441,14,48
+sidebar-button-ordos: chrome.png
+	background: 800,335,25,25
+sidebar-button-ordos-hover: chrome.png
+	background: 800,335,25,25
+sidebar-button-ordos-pressed: chrome.png
+	background: 800,335,25,25
+sidebar-button-ordos-highlighted: chrome.png
+	background: 825,335,25,25
+sidebar-button-ordos-highlighted-hover: chrome.png
+	background: 825,335,25,25
+sidebar-button-ordos-highlighted-pressed: chrome.png
+	background: 825,335,25,25
+sidebar-button-ordos-disabled: chrome.png
+	background: 850,335,25,25
+sidebar-button-ordos-highlighted-disabled: chrome.png
+	background: 850,335,25,25
+	
+sidebar-bits: chrome.png
+	production-tooltip-time: 812, 80, 16, 16
+	production-tooltip-power: 828, 80, 16, 16
+	production-tooltip-cost: 844, 80, 16, 16
+	production-iconoverlay: 314,118,254,48
 
-digits-harkonnen: chrome-harkonnen.png
-	0: 32,0,13,17
-	1: 45,0,13,17
-	2: 58,0,13,17
-	3: 71,0,13,17
-	4: 84,0,13,17
-	5: 97,0,13,17
-	6: 110,0,13,17
-	7: 123,0,13,17
-	8: 136,0,13,17
-	9: 149,0,13,17
+power-icons: chrome.png
+	power-normal: 350,0,12,18
+	power-critical: 363,0,12,18
 
-chrome-ordos: chrome-ordos.png
-	specialbin-top: 0,0,30,51
-	specialbin-middle: 0,51,30,51
-	specialbin-bottom: 0,153,30,39
-	moneybin: 192,0,320,31
-	radar: 297,31,210,222
-	tooltip-bg: 0,288,272,136
+production-icons: chrome.png
+	building: 780,0,16,16
+	building-disabled: 780,16,16,16
+	building-alert: 780,32,16,16
+	defense: 796,0,16,16
+	defense-disabled: 796,16,16,16
+	defense-alert: 796,32,16,16
+	infantry: 812,0,16,16
+	infantry-disabled: 812,16,16,16
+	infantry-alert: 812,32,16,16
+	vehicle: 828,0,16,16
+	vehicle-disabled: 828,16,16,16
+	vehicle-alert: 828,32,16,16
+	aircraft: 844,0,16,16
+	aircraft-disabled: 844,16,16,16
+	aircraft-alert: 844,32,16,16
+	ship: 860,48,0,16
+	ship-disabled: 860,16,16,16
+	ship-alert: 860,32,16,16
 
-power-ordos: chrome-ordos.png
-	power-indicator: 187,4,4,7
-
-palette-ordos: chrome-ordos.png
-	top: 297,288,201,9
-	dock-top: 498,274,14,23
-	bottom: 297,489,201,9
-	dock-bottom: 498,489,14,23
-	bg-0: 297,297,201,48
-	dock-0: 498,297,14,48
-	bg-1: 297,345,201,48
-	dock-1: 498,345,14,48
-	bg-2: 297,393,201,48
-	dock-2: 498,393,14,48
-	bg-3: 297,441,201,48
-	dock-3: 498,441,14,48
-
-digits-ordos: chrome-ordos.png
-	0: 32,0,13,17
-	1: 45,0,13,17
-	2: 58,0,13,17
-	3: 71,0,13,17
-	4: 84,0,13,17
-	5: 97,0,13,17
-	6: 110,0,13,17
-	7: 123,0,13,17
-	8: 136,0,13,17
-	9: 149,0,13,17
-
-tabs-selected: tabs.png
-	atreides-Building: 0,0,27,41
-	atreides-Armor: 0,40,27,41
-	atreides-Infantry: 0,80,27,41
-	atreides-Vehicle: 0,120,27,41
-	atreides-Aircraft: 0,160,27,41
-	atreides-Starport: 0,200,27,41
-	harkonnen-Building: 80,0,27,41
-	harkonnen-Armor: 80,40,27,41
-	harkonnen-Infantry: 80,80,27,41
-	harkonnen-Vehicle: 80,120,27,41
-	harkonnen-Aircraft: 80,160,27,41
-	harkonnen-Starport: 80,200,27,41
-	ordos-Building: 160,0,27,41
-	ordos-Armor: 160,40,27,41
-	ordos-Infantry: 160,80,27,41
-	ordos-Vehicle: 160,120,27,41
-	ordos-Aircraft: 160,160,27,41
-	ordos-Starport: 160,200,27,41
-
-tabs-ready: tabs.png
-	atreides-Building: 27,0,27,41
-	atreides-Armor: 27,40,27,41
-	atreides-Infantry: 27,80,27,41
-	atreides-Vehicle: 27,120,27,41
-	atreides-Aircraft: 27,160,27,41
-	atreides-Starport: 27,200,27,41
-	harkonnen-Building: 107,0,27,41
-	harkonnen-Armor: 107,40,27,41
-	harkonnen-Infantry: 107,80,27,41
-	harkonnen-Vehicle: 107,120,27,41
-	harkonnen-Aircraft: 107,160,27,41
-	harkonnen-Starport: 107,200,27,41
-	ordos-Building: 187,0,27,41
-	ordos-Armor: 187,40,27,41
-	ordos-Infantry: 187,80,27,41
-	ordos-Vehicle: 187,120,27,41
-	ordos-Aircraft: 187,160,27,41
-	ordos-Starport: 187,200,27,41
-
-tabs-normal: tabs.png
-	atreides-Building: 54,0,27,41
-	atreides-Armor: 54,40,27,41
-	atreides-Infantry: 54,80,27,41
-	atreides-Vehicle: 54,120,27,41
-	atreides-Aircraft: 54,160,27,41
-	atreides-Starport: 54,200,27,41
-	harkonnen-Building: 134,0,27,41
-	harkonnen-Armor: 134,40,27,41
-	harkonnen-Infantry: 134,80,27,41
-	harkonnen-Vehicle: 134,120,27,41
-	harkonnen-Aircraft: 134,160,27,41
-	harkonnen-Starport: 134,200,27,41
-	ordos-Building: 214,0,27,41
-	ordos-Armor: 214,40,27,41
-	ordos-Infantry: 214,80,27,41
-	ordos-Vehicle: 214,120,27,41
-	ordos-Aircraft: 214,160,27,41
-	ordos-Starport: 214,200,27,41
+order-icons: chrome.png
+	options: 876,0,16,16
+	options-disabled: 876,16,16,16
+	options-active: 876,32,16,16
+	diplomacy: 892,0,16,16
+	diplomacy-disabled: 892,16,16,16
+	diplomacy-active: 892,32,16,16
+	repair: 908,0,16,16
+	repair-disabled: 908,16,16,16
+	repair-active: 908,32,16,16
+	sell: 924,0,16,16
+	sell-disabled: 924,16,16,16
+	sell-active: 924,32,16,16
+	beacon: 940,0,16,16
+	beacon-disabled: 940,16,16,16
+	beacon-active: 940,32,16,16
+	power: 956,0,16,16
+	power-disabled: 956,16,16,16
+	power-active: 956,32,16,16
 
 flags: buttons.png
 	atreides: 0,114,22,21
@@ -236,20 +184,6 @@ strategic: strategic.png
 	critical_unowned: 0,32,32,32
 	enemy_owned: 32,32,32,32
 	player_owned: 96,0,32,32
-
-order-icons: buttons.png
-	sell: 0,0,34,28
-	sell-disabled: 68,0,34,28
-	sell-active: 34,0,34,28
-	repair: 0,28,34,28
-	repair-disabled: 68,28,34,28
-	repair-active: 34,28,34,28
-	power: 0,56,34,28
-	power-disabled: 68,56,34,28
-	power-active: 34,56,34,28
-	beacon: 0,84,34,28
-	beacon-disabled: 68,84,34,28
-	beacon-active: 34,84,34,28
 
 music: musicplayer.png
 	pause: 0,0,25,25
@@ -384,7 +318,55 @@ button-highlighted-disabled: dialog.png
 	corner-tr: 639,0,1,1
 	corner-bl: 768,127,1,1
 	corner-br: 639,127,1,1
+	
+# A copy of dialog2 (normal button)	
+scrollthumb: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
 
+# A copy of button-hover
+scrollthumb-hover: dialog.png
+	background: 513,129,126,126
+	border-r: 639,129,1,126
+	border-l: 512,129,1,126
+	border-b: 513,255,126,1
+	border-t: 513,128,126,1
+	corner-tl: 512,128,1,1
+	corner-tr: 639,128,1,1
+	corner-bl: 512,255,1,1
+	corner-br: 639,255,1,1
+
+# A copy of dialog3 (pressed button)
+scrollthumb-pressed: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+	
+# A copy of dialog2 (normal button)
+scrollthumb-disabled: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+	
 # A copy of dialog3 (pressed button)
 textfield: dialog.png
 	background: 641,1,126,126
@@ -445,107 +427,11 @@ scrollpanel-bg: dialog.png
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
 
-# A copy of dialog2 (normal button)
-scrollpanel-button: dialog.png
-	background: 513,1,126,126
-	border-r: 639,1,1,126
-	border-l: 512,1,1,126
-	border-b: 513,127,126,1
-	border-t: 513,0,126,1
-	corner-tl: 512,0,1,1
-	corner-tr: 639,0,1,1
-	corner-bl: 512,127,1,1
-	corner-br: 639,127,1,1
-
-# A copy of button-hover
-scrollpanel-button-hover: dialog.png
-	background: 513,129,126,126
-	border-r: 639,129,1,126
-	border-l: 512,129,1,126
-	border-b: 513,255,126,1
-	border-t: 513,128,126,1
-	corner-tl: 512,128,1,1
-	corner-tr: 639,128,1,1
-	corner-bl: 512,255,1,1
-	corner-br: 639,255,1,1
-
-# A copy of dialog3 (pressed button)
-scrollpanel-button-pressed: dialog.png
-	background: 641,1,126,126
-	border-r: 767,1,1,126
-	border-l: 640,1,1,126
-	border-b: 641,127,126,1
-	border-t: 641,0,126,1
-	corner-tl: 640,0,1,1
-	corner-tr: 767,0,1,1
-	corner-bl: 640,127,1,1
-	corner-br: 767,127,1,1
-
-# A copy of dialog2 (normal button)
-scrollpanel-button-disabled: dialog.png
-	background: 513,1,126,126
-	border-r: 639,1,1,126
-	border-l: 512,1,1,126
-	border-b: 513,127,126,1
-	border-t: 513,0,126,1
-	corner-tl: 512,0,1,1
-	corner-tr: 639,0,1,1
-	corner-bl: 512,127,1,1
-	corner-br: 639,127,1,1
-
 slider: dialog.png
 	tick: 512,1,2,4
 
 # A copy of dialog3 (pressed button)
 slider-track: dialog.png
-	background: 513,1,126,126
-	border-r: 639,1,1,126
-	border-l: 512,1,1,126
-	border-b: 513,127,126,1
-	border-t: 513,0,126,1
-	corner-tl: 512,0,1,1
-	corner-tr: 639,0,1,1
-	corner-bl: 512,127,1,1
-	corner-br: 639,127,1,1
-	
-# A copy of dialog2 (normal button)
-slider-thumb: dialog.png
-	background: 513,1,126,126
-	border-r: 639,1,1,126
-	border-l: 512,1,1,126
-	border-b: 513,127,126,1
-	border-t: 513,0,126,1
-	corner-tl: 512,0,1,1
-	corner-tr: 639,0,1,1
-	corner-bl: 512,127,1,1
-	corner-br: 639,127,1,1
-
-# A copy of button-hover
-slider-thumb-hover: dialog.png
-	background: 513,129,126,126
-	border-r: 639,129,1,126
-	border-l: 512,129,1,126
-	border-b: 513,255,126,1
-	border-t: 513,128,126,1
-	corner-tl: 512,128,1,1
-	corner-tr: 639,128,1,1
-	corner-bl: 512,255,1,1
-	corner-br: 639,255,1,1
-
-# A copy of dialog3 (pressed button)
-slider-thumb-pressed: dialog.png
-	background: 641,1,126,126
-	border-r: 767,1,1,126
-	border-l: 640,1,1,126
-	border-b: 641,127,126,1
-	border-t: 641,0,126,1
-	corner-tl: 640,0,1,1
-	corner-tr: 767,0,1,1
-	corner-bl: 640,127,1,1
-	corner-br: 767,127,1,1
-
-# A copy of dialog2 (normal button)
-slider-thumb-disabled: dialog.png
 	background: 513,1,126,126
 	border-r: 639,1,1,126
 	border-l: 512,1,1,126
