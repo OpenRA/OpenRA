@@ -134,6 +134,7 @@
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="Render\RenderUnitReload.cs" />
+    <Compile Include="ProductionAirdrop.cs" />
     <Compile Include="TeslaZapRenderable.cs" />
     <Compile Include="GainsExperience.cs" />
     <Compile Include="Infiltration\InfiltrateForPowerOutage.cs" />
