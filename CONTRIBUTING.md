@@ -1,6 +1,6 @@
 # Help
 
-For questions and feature discussions, please use the the maillist or the IRC channel as described in the [community section](http://studio.zerobrane.com/community.html) of the project website.
+For questions and feature discussions, please use the the maillist or the IRC channel as described in the [community section](http://studio.zerobrane.com/community) of the project website.
 
 # Bugs
 
@@ -23,8 +23,8 @@ _By contributing to ZeroBrane Studio you are agreeing to release your contributi
 Thank you for contributing to ZeroBrane Studio! Here are some things you can do to improve it:
 
 * **Fixing issues**: If you have ideas or suggestions on [fixing existing issues](https://github.com/pkulchenko/ZeroBraneStudio/issues), please update the tickets directly or send a pull request.
-* **Adding translations**: See [translation documentation](http://studio.zerobrane.com/doc-translation.html) for details.
-* **Implementing new features**: Please [discuss with us](http://studio.zerobrane.com/community.html) any significant changes you plan as early as possible.
-Try to implement the changes as a plugin first; the project already provides [plugin API](doc-plugin.html) with more than [45 plugins](https://github.com/pkulchenko/ZeroBranePackage) already available.
+* **Adding translations**: See [translation documentation](http://studio.zerobrane.com/doc-translation) for details.
+* **Implementing new features**: Please [discuss with us](http://studio.zerobrane.com/community) any significant changes you plan as early as possible.
+Try to implement the changes as a plugin first; the project already provides [plugin API](http://studio.zerobrane.com/doc-plugin) with more than [45 plugins](https://github.com/pkulchenko/ZeroBranePackage) already available.
 * **Improving documentation**: All the existing documentation is generated based on pages in [gh-pages branch](https://github.com/pkulchenko/ZeroBraneStudio/tree/gh-pages). You can provide clarifications, check the documentation for errors/typos, or fill any gaps.
 * **Spreading the word**!
