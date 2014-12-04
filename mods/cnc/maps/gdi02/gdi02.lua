@@ -72,16 +72,10 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "Win")
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlayMovieFullscreen("flag.vqa")
-		end)
 	end)
 
 	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlayMovieFullscreen("gameover.vqa")
-		end)
 	end)
 
 	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops")

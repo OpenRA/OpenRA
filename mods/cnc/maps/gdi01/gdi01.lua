@@ -83,26 +83,18 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "Win")
-		Trigger.AfterDelay(25, function()
-			Media.PlayMovieFullscreen("consyard.vqa")
-		end)
 	end)
 
 	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")
-		Trigger.AfterDelay(25, function()
-			Media.PlayMovieFullscreen("gameover.vqa")
-		end)
 	end)
 
-	Media.PlayMovieFullscreen("landing.vqa", function()
-		nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops")
-		gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
-		gdiObjective2 = player.AddSecondaryObjective("Establish a beachhead")
-		
-		ReinforceWithLandingCraft(MCVReinforcements, lstStart.Location + CVec.New(2, 0), lstEnd.Location + CVec.New(2, 0), mcvTarget.Location)
-		Reinforce(InfantryReinforcements)
-	end)
+	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops")
+	gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
+	gdiObjective2 = player.AddSecondaryObjective("Establish a beachhead")
+
+	ReinforceWithLandingCraft(MCVReinforcements, lstStart.Location + CVec.New(2, 0), lstEnd.Location + CVec.New(2, 0), mcvTarget.Location)
+	Reinforce(InfantryReinforcements)
 
 	Trigger.OnIdle(Gunboat, function() SetGunboatPath(Gunboat) end)
 

@@ -142,14 +142,10 @@ end
 
 MissionAccomplished = function()
 	Media.PlaySpeechNotification(player, "Win")
-	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		Media.PlayMovieFullscreen("snowbomb.vqa")
-	end)
 end
 
 MissionFailed = function()
 	Media.PlaySpeechNotification(player, "Lose")
-	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlayMovieFullscreen("bmap.vqa") end)
 end
 
 SetUnitStances = function()
@@ -182,14 +178,12 @@ WorldLoaded = function()
 	Trigger.OnPlayerLost(player, MissionFailed)
 	Trigger.OnPlayerWon(player, MissionAccomplished)
 
-	Media.PlayMovieFullscreen("landing.vqa", function()
-		FindEinsteinObjective = player.AddPrimaryObjective("Find Einstein.")
-		TanyaSurviveObjective = player.AddPrimaryObjective("Tanya must survive.")
-		EinsteinSurviveObjective = player.AddPrimaryObjective("Einstein must survive.")
-		CivilProtectionObjective = player.AddSecondaryObjective("Protect all civilians.")
+	FindEinsteinObjective = player.AddPrimaryObjective("Find Einstein.")
+	TanyaSurviveObjective = player.AddPrimaryObjective("Tanya must survive.")
+	EinsteinSurviveObjective = player.AddPrimaryObjective("Einstein must survive.")
+	CivilProtectionObjective = player.AddSecondaryObjective("Protect all civilians.")
 
-		RunInitialActivities()
-	end)
+	RunInitialActivities()
 
 	Trigger.OnKilled(Lab, LabDestroyed)
 	Trigger.OnKilled(OilPump, OilPumpDestroyed)

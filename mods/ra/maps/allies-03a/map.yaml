@@ -20,6 +20,11 @@ UseAsShellmap: False
 
 Type: Campaign
 
+Videos:
+	GameStart: brdgtilt.vqa
+	GameWon: toofar.vqa
+	GameLost: sovtstar.vqa
+
 Options:
 	ShortGame: False
 	Crates: False
@@ -1380,7 +1385,6 @@ Rules:
 			Scripts: allies03a.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
-		-StartGameNotification:
 	^Infantry:
 		Tooltip:
 			GenericVisibility: Enemy

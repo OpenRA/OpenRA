@@ -22,6 +22,12 @@ UseAsShellmap: False
 
 Type: Campaign
 
+Videos:
+	Briefing: nod3.vqa
+	GameStart: dessweep.vqa
+	GameWon: desflees.vqa
+	GameLost: flag.vqa
+
 Options:
 	ShortGame: False
 	Crates: False
