@@ -100,7 +100,7 @@ namespace OpenRA.Mods.RA
 
 			Aggressor = attacker;
 			if (at == null || !at.IsReachableTarget(at.Target, info.AllowMovement && Stance != UnitStance.Defend))
-				Attack(self, Aggressor);
+				self.QueueActivity(false, Attack(self, Aggressor));
 		}
 
 		public void TickIdle(Actor self)
@@ -110,7 +110,13 @@ namespace OpenRA.Mods.RA
 
 			var allowMovement = info.AllowMovement && Stance != UnitStance.Defend;
 			if (at == null || !at.IsReachableTarget(at.Target, allowMovement))
-				ScanAndAttack(self);
+			{
+				var act = ScanAndAttack(self);
+				if (act != null)
+				{
+					self.QueueActivity(false, act);
+				}
+			}
 		}
 
 		public void Tick(Actor self)
@@ -131,19 +137,25 @@ namespace OpenRA.Mods.RA
 			return currentTarget;
 		}
 
-		public void ScanAndAttack(Actor self)
+		public void ResetScanTimer()
+		{
+			nextScanTime = 0;
+		}
+
+		public Activity ScanAndAttack(Actor self)
 		{
 			var targetActor = ScanForTarget(self, null);
 			if (targetActor != null)
-				Attack(self, targetActor);
+				return Attack(self, targetActor);
+			return null;
 		}
 
-		void Attack(Actor self, Actor targetActor)
+		Activity Attack(Actor self, Actor targetActor)
 		{
 			TargetedActor = targetActor;
 			var target = Target.FromActor(targetActor);
 			self.SetTargetLine(target, Color.Red, false);
-			attack.AttackTarget(target, false, info.AllowMovement && Stance != UnitStance.Defend);
+			return attack.AttackTarget(target, info.AllowMovement && Stance != UnitStance.Defend);
 		}
 
 		Actor ChooseTarget(Actor self, WRange range)
