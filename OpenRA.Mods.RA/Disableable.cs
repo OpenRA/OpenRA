@@ -16,14 +16,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class DisableUpgradeInfo : UpgradableTraitInfo, ITraitInfo
+	[Desc("Actor is disabled when this trait is enabled.")]
+	public class DisableableInfo : ConditionalTraitInfo, ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new DisableUpgrade(this); }
+		public object Create(ActorInitializer init) { return new Disableable(this); }
 	}
 
-	public class DisableUpgrade : UpgradableTrait<DisableUpgradeInfo>, IDisable, IDisableMove
+	public class Disableable : ConditionalTrait<DisableableInfo>, IDisable, IDisableMove
 	{
-		public DisableUpgrade(DisableUpgradeInfo info)
+		public Disableable(DisableableInfo info)
 			: base(info) { }
 
 		// Disable the actor when this trait is enabled.

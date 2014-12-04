@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
 	[Desc("Attach this to actors which should be able to regenerate their health points.")]
-	class SelfHealingInfo : UpgradableTraitInfo, ITraitInfo, Requires<HealthInfo>
+	class SelfHealingInfo : ConditionalTraitInfo, ITraitInfo, Requires<HealthInfo>
 	{
 		public readonly int Step = 5;
 		public readonly int Ticks = 5;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new SelfHealing(init.self, this); }
 	}
 
-	class SelfHealing : UpgradableTrait<SelfHealingInfo>, ITick, INotifyDamage
+	class SelfHealing : ConditionalTrait<SelfHealingInfo>, ITick, INotifyDamage
 	{
 		readonly Health health;
 

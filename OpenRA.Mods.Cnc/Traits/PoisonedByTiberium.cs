@@ -17,7 +17,7 @@ using OpenRA.Mods.Common;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class PoisonedByTiberiumInfo : UpgradableTraitInfo, ITraitInfo
+	class PoisonedByTiberiumInfo : ConditionalTraitInfo, ITraitInfo
 	{
 		[WeaponReference] public readonly string Weapon = "Tiberium";
 		public readonly string[] Resources = { "Tiberium", "BlueTiberium" };
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public object Create(ActorInitializer init) { return new PoisonedByTiberium(this); }
 	}
 
-	class PoisonedByTiberium : UpgradableTrait<PoisonedByTiberiumInfo>, ITick, ISync
+	class PoisonedByTiberium : ConditionalTrait<PoisonedByTiberiumInfo>, ITick, ISync
 	{
 		[Sync] int poisonTicks;
 

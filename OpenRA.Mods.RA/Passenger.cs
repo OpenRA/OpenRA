@@ -99,8 +99,8 @@ namespace OpenRA.Mods.RA
 		[Desc("Range from self for looking for an alternate transport (default: 5.5 cells).")]
 		public readonly WRange AlternateTransportScanRange = WRange.FromCells(11) / 2;
 
-		[Desc("Upgrade types to grant to transport.")]
-		public readonly string[] GrantUpgrades = { };
+		[Desc("Condition types to grant a level to transport.")]
+		public readonly string[] GrantLevelToConditions = { };
 
 		public object Create(ActorInitializer init) { return new Passenger(this); }
 	}

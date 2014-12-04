@@ -33,23 +33,23 @@
 		GenericName: Vehicle
 	UpdatesPlayerStatistics:
 	Cloak:
-		UpgradeTypes: cloak
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: cloak
+		MinEnabledConditionLevel: 1
 		InitialDelay: 15
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
 
 ^Tank:
 	AppearsOnRadar:
@@ -89,23 +89,23 @@
 		GenericName: Tank
 	UpdatesPlayerStatistics:
 	Cloak:
-		UpgradeTypes: cloak
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: cloak
+		MinEnabledConditionLevel: 1
 		InitialDelay: 15
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -138,15 +138,15 @@
 	ScriptTriggers:
 	Tooltip:
 		GenericName: Helicopter
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
 	WithShadow:
 	Hovers:
 
@@ -206,10 +206,10 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: hospitalheal
-		UpgradeMinEnabledLevel: 1
-	GlobalUpgradable:
-		Upgrades: hospitalheal
+		ConditionTypes: hospitalheal
+		MinEnabledConditionLevel: 1
+	GlobalConditional:
+		Conditions: hospitalheal
 		Prerequisites: hosp
 	UpdatesPlayerStatistics:
 	Huntable:
@@ -224,15 +224,15 @@
 	DeathSounds@POISONED:
 		DeathSound: Poisoned
 		DeathTypes: 6
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -331,15 +331,15 @@
 	Huntable:
 	AttackMove:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
 	WithShadow:
 
 ^Ship:
@@ -366,15 +366,15 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
 
 ^Building:
 	AppearsOnRadar:
@@ -652,6 +652,7 @@
 		DestroyedSound: xplobig4.aud
 	BodyOrientation:
 	ScriptTriggers:
+
 ^Crate:
 	Tooltip:
 		Name: Crate

@@ -17,26 +17,26 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class GlobalUpgradableInfo : ITraitInfo, Requires<UpgradeManagerInfo>
+	public class GlobalConditionalInfo : ITraitInfo, Requires<ConditionManagerInfo>
 	{
-		public readonly string[] Upgrades = { };
+		public readonly string[] Conditions = { };
 		public readonly string[] Prerequisites = { };
 
-		public object Create(ActorInitializer init) { return new GlobalUpgradable(init.self, this); }
+		public object Create(ActorInitializer init) { return new GlobalConditional(init.self, this); }
 	}
 
-	public class GlobalUpgradable : INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class GlobalConditional : INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		readonly GlobalUpgradableInfo info;
-		readonly GlobalUpgradeManager globalManager;
-		readonly UpgradeManager manager;
+		readonly GlobalConditionalInfo info;
+		readonly GlobalConditionManager globalManager;
+		readonly ConditionManager manager;
 		bool wasAvailable;
 
-		public GlobalUpgradable(Actor self, GlobalUpgradableInfo info)
+		public GlobalConditional(Actor self, GlobalConditionalInfo info)
 		{
 			this.info = info;
-			globalManager = self.Owner.PlayerActor.Trait<GlobalUpgradeManager>();
-			manager = self.Trait<UpgradeManager>();
+			globalManager = self.Owner.PlayerActor.Trait<GlobalConditionManager>();
+			manager = self.Trait<ConditionManager>();
 		}
 
 		public void AddedToWorld(Actor self)
@@ -57,11 +57,11 @@ namespace OpenRA.Mods.RA
 				return;
 			
 			if (available)
-				foreach (var u in info.Upgrades)
-					manager.GrantUpgrade(self, u, this);
+				foreach (var u in info.Conditions)
+					manager.GrantCondition(self, u, this);
 			else
-				foreach (var u in info.Upgrades)
-					manager.RevokeUpgrade(self, u, this);
+				foreach (var u in info.Conditions)
+					manager.RevokeCondition(self, u, this);
 
 			wasAvailable = available;
 		}
