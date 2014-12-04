@@ -34,36 +34,45 @@ namespace OpenRA.Mods.Common.Server
 			{
 				isInitialPing = false;
 				lastPing = Game.RunTime;
-				foreach (var c in server.Conns.ToList())
+
+				if (server.LobbyInfo.IsSinglePlayer && server.Conns.Any() && server.GetClient(server.Conns.First()).IpAddress == "127.0.0.1")
 				{
-					if (c.TimeSinceLastResponse < ConnTimeout)
-					{
+					foreach (var c in server.Conns.ToList())
 						server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
-						if (!c.TimeoutMessageShown && c.TimeSinceLastResponse > PingInterval * 2)
+				}
+				else
+				{
+					foreach (var c in server.Conns.ToList())
+					{
+						if (c.TimeSinceLastResponse < ConnTimeout)
 						{
-							server.SendMessage(server.GetClient(c).Name + " is experiencing connection problems.");
-							c.TimeoutMessageShown = true;
+							server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
+							if (!c.TimeoutMessageShown && c.TimeSinceLastResponse > PingInterval * 2)
+							{
+								server.SendMessage(server.GetClient(c).Name + " is experiencing connection problems.");
+								c.TimeoutMessageShown = true;
+							}
+						}
+						else
+						{
+							server.SendMessage(server.GetClient(c).Name + " has been dropped after timing out.");
+							server.DropClient(c, -1);
 						}
 					}
-					else
+
+					if (Game.RunTime - lastConnReport > ConnReportInterval)
 					{
-						server.SendMessage(server.GetClient(c).Name + " has been dropped after timing out.");
-						server.DropClient(c, -1);
+						lastConnReport = Game.RunTime;
+
+						var timeouts = server.Conns
+							.Where(c => c.TimeSinceLastResponse > ConnReportInterval && c.TimeSinceLastResponse < ConnTimeout)
+							.OrderBy(c => c.TimeSinceLastResponse);
+
+						foreach (var c in timeouts)
+							server.SendMessage("{0} will be dropped in {1} seconds.".F(
+								server.GetClient(c).Name, (ConnTimeout - c.TimeSinceLastResponse) / 1000));
 					}
 				}
-			}
-
-			if (Game.RunTime - lastConnReport > ConnReportInterval)
-			{
-				lastConnReport = Game.RunTime;
-
-				var timeouts = server.Conns
-					.Where(c => c.TimeSinceLastResponse > ConnReportInterval && c.TimeSinceLastResponse < ConnTimeout)
-					.OrderBy(c => c.TimeSinceLastResponse);
-
-				foreach (var c in timeouts)
-					server.SendMessage("{0} will be dropped in {1} seconds.".F(
-						server.GetClient(c).Name, (ConnTimeout - c.TimeSinceLastResponse) / 1000));
 			}
 		}
 	}
