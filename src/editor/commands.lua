@@ -205,6 +205,12 @@ function ActivateFile(filename)
     filename = name
   end
 
+  -- check if non-existing file can be loaded from the project folder;
+  -- this is to handle: "project file" used on the command line
+  if not wx.wxFileExists(filename) and not wx.wxIsAbsolutePath(filename) then
+    filename = GetFullPathIfExists(ide:GetProject(), filename) or filename
+  end
+
   local opened = LoadFile(filename, nil, true)
   if opened and value then
     if suffix:upper() == 'P' then opened:GotoPosDelayed(tonumber(value))
