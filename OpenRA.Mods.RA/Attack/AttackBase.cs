@@ -124,7 +124,7 @@ namespace OpenRA.Mods.RA
 					return;
 
 				self.SetTargetLine(target, Color.Red);
-				AttackTarget(target, order.Queued, true);
+				self.QueueActivity(false, AttackTarget(target, true));
 			}
 		}
 
@@ -143,15 +143,12 @@ namespace OpenRA.Mods.RA
 
 		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.Weapon.IsValidAgainst(t, self.World, self)); }
 
-		public void AttackTarget(Target target, bool queued, bool allowMove)
+		public Activity AttackTarget(Target target, bool allowMove)
 		{
 			if (!target.IsValidFor(self))
-				return;
+				return null;
 
-			if (!queued)
-				self.CancelActivity();
-
-			self.QueueActivity(GetAttackActivity(self, target, allowMove));
+			return GetAttackActivity(self, target, allowMove);
 		}
 
 		public bool IsReachableTarget(Target target, bool allowMove)
