@@ -9,6 +9,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Power;
 using OpenRA.Scripting;
@@ -56,18 +58,18 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Power")]
 	public class ActorPowerProperties : ScriptActorProperties, Requires<PowerInfo>
 	{
-		readonly PowerInfo pi;
+		readonly IEnumerable<Power.Power> power;
 
 		public ActorPowerProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			pi = self.Info.Traits.GetOrDefault<PowerInfo>();
+			power = self.TraitsImplementing<Power.Power>();
 		}
 
 		[Desc("Returns the power drained/provided by this actor.")]
 		public int Power
 		{
-			get { return pi.Amount; }
+			get { return power.Sum(p => p.GetEnabledPower()); }
 		}
 	}
 }

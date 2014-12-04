@@ -18,14 +18,14 @@ namespace OpenRA.Mods.Common.Power
 		public object Create(ActorInitializer init) { return new ScalePowerWithHealth(init.self); }
 	}
 
-	public class ScalePowerWithHealth : IPowerModifier, INotifyDamage
+	public class ScalePowerWithHealth : IPowerModifier, INotifyDamage, INotifyOwnerChanged
 	{
-		readonly Power power;
 		readonly Health health;
+		PowerManager power;
 
 		public ScalePowerWithHealth(Actor self)
 		{
-			power = self.Trait<Power>();
+			power = self.Owner.PlayerActor.Trait<PowerManager>();
 			health = self.Trait<Health>();
 		}
 
@@ -34,9 +34,10 @@ namespace OpenRA.Mods.Common.Power
 			return 100 * health.HP / health.MaxHP;
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		public void Damaged(Actor self, AttackInfo e) { power.UpdateActor(self); }
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			power.PlayerPower.UpdateActor(self);
+			power = newOwner.PlayerActor.Trait<PowerManager>();
 		}
 	}
 }

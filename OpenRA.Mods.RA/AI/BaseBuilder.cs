@@ -140,8 +140,8 @@ namespace OpenRA.Mods.RA.AI
 			// First priority is to get out of a low power situation
 			if (playerPower.ExcessPower < 0)
 			{
-				var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.Get<PowerInfo>().Amount);
-				if (power != null && power.Traits.Get<PowerInfo>().Amount > 0)
+				var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(p => p.Amount));
+				if (power != null && power.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(p => p.Amount) > 0)
 				{
 					// TODO: Handle the case when of when we actually do need a power plant because we don't have enough but are also suffering from a power outage
 					if (playerPower.PowerOutageRemainingTicks <= 0)
@@ -204,12 +204,12 @@ namespace OpenRA.Mods.RA.AI
 
 				// Will this put us into low power?
 				var actor = world.Map.Rules.Actors[frac.Key];
-				var pi = actor.Traits.GetOrDefault<PowerInfo>();
-				if (playerPower.ExcessPower < 0 || (pi != null && playerPower.ExcessPower < pi.Amount))
+				var pis = actor.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1);
+				if (playerPower.ExcessPower < 0 || playerPower.ExcessPower < pis.Sum(pi => pi.Amount))
 				{
 					// Try building a power plant instead
-					var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.Get<PowerInfo>().Amount);
-					if (power != null && power.Traits.Get<PowerInfo>().Amount > 0)
+					var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(pi => pi.Amount));
+					if (power != null && power.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(pi => pi.Amount) > 0)
 					{
 						// TODO: Handle the case when of when we actually do need a power plant because we don't have enough but are also suffering from a power outage
 						if (playerPower.PowerOutageRemainingTicks > 0)
