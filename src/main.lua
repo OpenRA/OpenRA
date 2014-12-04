@@ -491,8 +491,17 @@ do
 
   -- process all other configs (if any)
   for _, v in ipairs(configs) do LoadLuaConfig(v, true) end
-
   configs = nil
+
+  -- check and apply default styles in case a user resets styles in the config
+  for _, styles in ipairs({"styles", "stylesoutshell"}) do
+    if not ide.config[styles] then
+      print(("Ignored incorrect value of '%s' setting in the configuration file")
+        :format(styles))
+      ide.config[styles] = StylesGetDefault()
+    end
+  end
+
   local sep = GetPathSeparator()
   if ide.config.language then
     LoadLuaFileExt(ide.config.messages, "cfg"..sep.."i18n"..sep..ide.config.language..".lua")
