@@ -77,8 +77,8 @@ namespace OpenRA.Mods.Common.Widgets
 			radarData = radarSheet.GetData();
 
 			terrainSprite = new Sprite(radarSheet, new Rectangle(0, 0, width, height), TextureChannel.Alpha);
+			shroudSprite = new Sprite(radarSheet, new Rectangle(width, 0, width, height), TextureChannel.Alpha);
 			actorSprite = new Sprite(radarSheet, new Rectangle(0, height, width, height), TextureChannel.Alpha);
-			shroudSprite = new Sprite(radarSheet, new Rectangle(width, height, width, height), TextureChannel.Alpha);
 
 			// Set initial terrain data
 			using (var bitmap = Minimap.TerrainBitmap(world.TileSet, world.Map))
@@ -271,8 +271,34 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 
 				// The actor layer is updated every tick
-				using (var bitmap = Minimap.ActorsBitmap(world))
-					OpenRA.Graphics.Util.FastCopyIntoSprite(actorSprite, bitmap);
+				var stride = radarSheet.Size.Width;
+				var dx = actorSprite.bounds.Left - world.Map.Bounds.Left;
+				var dy = actorSprite.bounds.Top - world.Map.Bounds.Top;
+	
+				Array.Clear(radarData, 4 * (actorSprite.bounds.Top * stride + actorSprite.bounds.Left), 4 * actorSprite.bounds.Height * stride);
+
+				unsafe
+				{
+					fixed (byte* _colors = &radarData[0])
+					{
+						var colors = (int*)_colors;
+
+						foreach (var t in world.ActorsWithTrait<IRadarSignature>())
+						{
+							if (!t.Actor.IsInWorld || world.FogObscures(t.Actor))
+								continue;
+
+							var color = t.Trait.RadarSignatureColor(t.Actor);
+							foreach (var cell in t.Trait.RadarSignatureCells(t.Actor))
+							{
+								var uv = Map.CellToMap(world.Map.TileShape, cell);
+
+								if (world.Map.Bounds.Contains(uv.X, uv.Y))
+									colors[(uv.Y + dy) * stride + uv.X + dx] = color.ToArgb();
+							}
+						}
+					}
+				}
 
 				radarSheet.CommitData();
 			}
