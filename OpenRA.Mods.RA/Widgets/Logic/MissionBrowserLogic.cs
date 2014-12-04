@@ -23,14 +23,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class MissionBrowserLogic
 	{
+		enum PlayingVideo { None, Info, Briefing, GameStart }
+
 		readonly Action onStart;
 		readonly ScrollPanelWidget descriptionPanel;
 		readonly LabelWidget description;
 		readonly SpriteFont descriptionFont;
 		readonly DropDownButtonWidget difficultyButton;
-		readonly ButtonWidget startVideoButton;
-		readonly ButtonWidget stopVideoButton;
+		readonly ButtonWidget startBriefingVideoButton;
+		readonly ButtonWidget stopBriefingVideoButton;
+		readonly ButtonWidget startInfoVideoButton;
+		readonly ButtonWidget stopInfoVideoButton;
 		readonly VqaPlayerWidget videoPlayer;
+		readonly BackgroundWidget fullscreenVideoPlayer;
 
 		readonly ScrollPanelWidget missionList;
 		readonly ScrollItemWidget headerTemplate;
@@ -38,12 +43,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		MapPreview selectedMapPreview;
 
-		bool showVideoPlayer;
+		PlayingVideo playingVideo;
 
 		string difficulty;
 
 		[ObjectCreator.UseCtor]
-		public MissionBrowserLogic(Widget widget, Action onStart, Action onExit)
+		public MissionBrowserLogic(Widget widget, World world, Action onStart, Action onExit)
 		{
 			this.onStart = onStart;
 
@@ -54,16 +59,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var title = widget.GetOrNull<LabelWidget>("MISSIONBROWSER_TITLE");
 			if (title != null)
-				title.GetText = () => showVideoPlayer ? selectedMapPreview.Title : title.Text;
+				title.GetText = () => playingVideo != PlayingVideo.None ? selectedMapPreview.Title : title.Text;
 
 			widget.Get("MISSION_INFO").IsVisible = () => selectedMapPreview != null;
 
 			var previewWidget = widget.Get<MapPreviewWidget>("MISSION_PREVIEW");
 			previewWidget.Preview = () => selectedMapPreview;
-			previewWidget.IsVisible = () => !showVideoPlayer;
+			previewWidget.IsVisible = () => playingVideo == PlayingVideo.None;
 
 			videoPlayer = widget.Get<VqaPlayerWidget>("MISSION_VIDEO");
-			widget.Get("MISSION_BIN").IsVisible = () => showVideoPlayer;
+			widget.Get("MISSION_BIN").IsVisible = () => playingVideo != PlayingVideo.None;
+			fullscreenVideoPlayer = Ui.LoadWidget<BackgroundWidget>("FULLSCREEN_PLAYER", Ui.Root, new WidgetArgs { { "world", world } });
 
 			descriptionPanel = widget.Get<ScrollPanelWidget>("MISSION_DESCRIPTION_PANEL");
 
@@ -72,10 +78,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			difficultyButton = widget.Get<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 
-			startVideoButton = widget.Get<ButtonWidget>("START_VIDEO_BUTTON");
-			stopVideoButton = widget.Get<ButtonWidget>("STOP_VIDEO_BUTTON");
-			stopVideoButton.IsVisible = () => showVideoPlayer;
-			stopVideoButton.OnClick = StopVideo;
+			startBriefingVideoButton = widget.Get<ButtonWidget>("START_BRIEFING_VIDEO_BUTTON");
+			stopBriefingVideoButton = widget.Get<ButtonWidget>("STOP_BRIEFING_VIDEO_BUTTON");
+			stopBriefingVideoButton.IsVisible = () => playingVideo == PlayingVideo.Briefing;
+			stopBriefingVideoButton.OnClick = () => StopVideo(videoPlayer);
+
+			startInfoVideoButton = widget.Get<ButtonWidget>("START_INFO_VIDEO_BUTTON");
+			stopInfoVideoButton = widget.Get<ButtonWidget>("STOP_INFO_VIDEO_BUTTON");
+			stopInfoVideoButton.IsVisible = () => playingVideo == PlayingVideo.Info;
+			stopInfoVideoButton.OnClick = () => StopVideo(videoPlayer);
 
 			var allMaps = new List<Map>();
 			missionList.RemoveChildren();
@@ -114,12 +125,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				SelectMap(allMaps.First());
 
 			var startButton = widget.Get<ButtonWidget>("STARTGAME_BUTTON");
-			startButton.OnClick = StartMission;
+			startButton.OnClick = StartMissionClicked;
 			startButton.IsDisabled = () => selectedMapPreview.RuleStatus != MapRuleStatus.Cached;
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
-				StopVideo();
+				StopVideo(videoPlayer);
 				Game.Disconnect();
 				Ui.CloseWindow();
 				onExit();
@@ -128,7 +139,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void CreateMissionGroup(string title, IEnumerable<Map> maps)
 		{
-			var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => {});
+			var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => { });
 			header.Get<LabelWidget>("LABEL").GetText = () => title;
 			missionList.AddChild(header);
 
@@ -139,41 +150,35 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var item = ScrollItemWidget.Setup(template,
 					() => selectedMapPreview != null && selectedMapPreview.Uid == map.Uid,
 					() => SelectMap(map),
-					StartMission);
+					StartMissionClicked);
 
 				item.Get<LabelWidget>("TITLE").GetText = () => map.Title;
 				missionList.AddChild(item);
 			}
 		}
 
-		float cachedSoundVolume;
-		float cachedMusicVolume;
 		void SelectMap(Map map)
 		{
-			StopVideo();
-
 			selectedMapPreview = Game.modData.MapCache[map.Uid];
 
 			// Cache the rules on a background thread to avoid jank
 			new Thread(selectedMapPreview.CacheRules).Start();
 
-			var video = selectedMapPreview.Map.PreviewVideo;
-			var videoVisible = video != null;
-			var videoDisabled = !(videoVisible && GlobalFileSystem.Exists(video));
+			var briefingVideo = selectedMapPreview.Map.Videos.Briefing;
+			var briefingVideoVisible = briefingVideo != null;
+			var briefingVideoDisabled = !(briefingVideoVisible && GlobalFileSystem.Exists(briefingVideo));
 
-			startVideoButton.IsVisible = () => videoVisible && !showVideoPlayer;
-			startVideoButton.IsDisabled = () => videoDisabled;
-			startVideoButton.OnClick = () =>
-			{
-				showVideoPlayer = true;
-				videoPlayer.Load(video);
-				videoPlayer.PlayThen(StopVideo);
+			var infoVideo = selectedMapPreview.Map.Videos.BackgroundInfo;
+			var infoVideoVisible = infoVideo != null;
+			var infoVideoDisabled = !(infoVideoVisible && GlobalFileSystem.Exists(infoVideo));
 
-				// Mute other distracting sounds
-				cachedSoundVolume = Sound.SoundVolume;
-				cachedMusicVolume = Sound.MusicVolume;
-				Sound.SoundVolume = Sound.MusicVolume = 0;
-			};
+			startBriefingVideoButton.IsVisible = () => briefingVideoVisible && playingVideo != PlayingVideo.Briefing;
+			startBriefingVideoButton.IsDisabled = () => briefingVideoDisabled || playingVideo != PlayingVideo.None;
+			startBriefingVideoButton.OnClick = () => PlayVideo(videoPlayer, briefingVideo, PlayingVideo.Briefing, () => StopVideo(videoPlayer));
+
+			startInfoVideoButton.IsVisible = () => infoVideoVisible && playingVideo != PlayingVideo.Info;
+			startInfoVideoButton.IsDisabled = () => infoVideoDisabled || playingVideo != PlayingVideo.None;
+			startInfoVideoButton.OnClick = () => PlayVideo(videoPlayer, infoVideo, PlayingVideo.Info, () => StopVideo(videoPlayer));
 
 			var text = map.Description != null ? map.Description.Replace("\\n", "\n") : "";
 			text = WidgetUtils.WrapText(text, description.Bounds.Width, descriptionFont);
@@ -205,25 +210,72 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 		}
 
-		void StopVideo()
+		float cachedSoundVolume;
+		float cachedMusicVolume;
+		void MuteSounds()
 		{
-			if (!showVideoPlayer)
-				return;
-
-			Sound.SoundVolume = cachedSoundVolume;
-			Sound.MusicVolume = cachedMusicVolume;
-
-			videoPlayer.Stop();
-			showVideoPlayer = false;
+			cachedSoundVolume = Sound.SoundVolume;
+			cachedMusicVolume = Sound.MusicVolume;
+			Sound.SoundVolume = Sound.MusicVolume = 0;
 		}
 
-		void StartMission()
+		void UnMuteSounds()
 		{
-			StopVideo();
+			if (cachedSoundVolume > 0)
+				Sound.SoundVolume = cachedSoundVolume;
+
+			if (cachedMusicVolume > 0)
+				Sound.MusicVolume = cachedMusicVolume;
+		}
+
+		void PlayVideo(VqaPlayerWidget player, string video, PlayingVideo pv, Action onComplete)
+		{
+			StopVideo(player);
+
+			playingVideo = pv;
+			player.Load(video);
+
+			// video playback runs asynchronously
+			player.PlayThen(onComplete);
+
+			// Mute other distracting sounds
+			MuteSounds();
+		}
+
+		void StopVideo(VqaPlayerWidget player)
+		{
+			if (playingVideo == PlayingVideo.None)
+				return;
+
+			UnMuteSounds();
+			player.Stop();
+			playingVideo = PlayingVideo.None;
+		}
+
+		void StartMissionClicked()
+		{
+			StopVideo(videoPlayer);
 
 			if (selectedMapPreview.RuleStatus != MapRuleStatus.Cached)
 				return;
 
+			var gameStartVideo = selectedMapPreview.Map.Videos.GameStart;
+			if (gameStartVideo != null && GlobalFileSystem.Exists(gameStartVideo))
+			{
+				var fsPlayer = fullscreenVideoPlayer.Get<VqaPlayerWidget>("PLAYER");
+				fullscreenVideoPlayer.Visible = true;
+				PlayVideo(fsPlayer, gameStartVideo, PlayingVideo.GameStart, () =>
+				{
+					StopVideo(fsPlayer);
+					StartMission();
+				});
+			}
+			else
+				StartMission();
+		}
+
+		void StartMission()
+		{
 			OrderManager om = null;
 
 			Action lobbyReady = null;
