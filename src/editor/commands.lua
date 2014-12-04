@@ -201,7 +201,7 @@ end
 
 function ActivateFile(filename)
   local name, suffix, value = filename:match('(.+):([lLpP]?)(%d+)$')
-  if name and not wx.wxFileExists(filename) and wx.wxFileExists(name) then
+  if name and not wx.wxFileExists(filename) and not wx.wxIsAbsolutePath(filename) then
     filename = name
   end
 
