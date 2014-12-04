@@ -741,7 +741,8 @@ function SetOpenTabs(params)
       DisplayOutputLn(TR("File '%s' is missing and can't be recovered.")
         :format(doc.filepath))
     else
-      local editor = doc.filepath and LoadFile(doc.filepath,nil,true,true) or NewFile(doc.filename)
+      local editor = (doc.filepath and LoadFile(doc.filepath,nil,true,true)
+        or findUnusedEditor() or NewFile(doc.filename))
       local opendoc = openDocuments[editor:GetId()]
       if doc.content then
         editor:SetText(doc.content)
