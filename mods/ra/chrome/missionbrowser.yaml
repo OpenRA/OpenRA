@@ -16,7 +16,7 @@ Background@MISSIONBROWSER_PANEL:
 			X: 20
 			Y: 50
 			Width: 270
-			Height: 377
+			Height: 332
 			Children:
 				ScrollItem@HEADER:
 					BaseName: scrollheader
@@ -69,19 +69,33 @@ Background@MISSIONBROWSER_PANEL:
 							Width: PARENT_RIGHT - 32
 							VAlign: Top
 							Font: Small
-		Button@START_VIDEO_BUTTON:
+		Button@START_BRIEFING_VIDEO_BUTTON:
 			X: 20
 			Y: PARENT_BOTTOM - 45
-			Width: 120
+			Width: 130
 			Height: 25
-			Text: Play Briefing
+			Text: Watch Briefing
 			Font: Bold
-		Button@STOP_VIDEO_BUTTON:
+		Button@STOP_BRIEFING_VIDEO_BUTTON:
 			X: 20
 			Y: PARENT_BOTTOM - 45
-			Width: 120
+			Width: 130
 			Height: 25
 			Text: Stop Briefing
+			Font: Bold
+		Button@START_INFO_VIDEO_BUTTON:
+			X: 160
+			Y: PARENT_BOTTOM - 45
+			Width: 130
+			Height: 25
+			Text: Watch Info Video
+			Font: Bold
+		Button@STOP_INFO_VIDEO_BUTTON:
+			X: 160
+			Y: PARENT_BOTTOM - 45
+			Width: 130
+			Height: 25
+			Text: Stop Info Video
 			Font: Bold
 		Button@STARTGAME_BUTTON:
 			X: PARENT_RIGHT - 140 - 130
@@ -99,9 +113,9 @@ Background@MISSIONBROWSER_PANEL:
 			Font: Bold
 			Key: escape
 		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-			X: PARENT_RIGHT - 140 - 130 - 150
-			Y: PARENT_BOTTOM - 45
-			Width: 140
+			X: 20
+			Y: 427 - HEIGHT
+			Width: 270
 			Height: 25
 			Text: Difficulty
 			Font: Bold
@@ -117,3 +131,14 @@ Background@MISSIONBROWSER_PANEL:
 					Y: 1
 					Width: 640
 					Height: 375
+Background@FULLSCREEN_PLAYER:
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Background: dialog5
+	Visible: False
+	Children:
+		VqaPlayer@PLAYER:
+			X: 0
+			Y: 0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
