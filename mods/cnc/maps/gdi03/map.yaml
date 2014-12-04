@@ -10,8 +10,6 @@ Description: Build up forces to destroy Nod base.\n\nOnce all Nod SAM sites are 
 
 Author: Westwood Studios
 
-PreviewVideo: gdi3.vqa
-
 Tileset: TEMPERAT
 
 MapSize: 64,64
@@ -21,6 +19,12 @@ Bounds: 1,25,45,37
 UseAsShellmap: False
 
 Type: Campaign
+
+Videos:
+	Briefing: gdi3.vqa
+	GameStart: samdie.vqa
+	GameWon: bombaway.vqa
+	GameLost: gameover.vqa
 
 Options:
 	Crates: False

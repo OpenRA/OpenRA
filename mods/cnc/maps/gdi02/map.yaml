@@ -10,8 +10,6 @@ Description: Defend your position, deploy the MCV, then build a sizable force to
 
 Author: Westwood Studios
 
-PreviewVideo: gdi2.vqa
-
 Tileset: TEMPERAT
 
 MapSize: 64,64
@@ -21,6 +19,11 @@ Bounds: 31,31,31,31
 UseAsShellmap: False
 
 Type: Campaign
+
+Videos:
+	Briefing: gdi2.vqa
+	GameWon: flag.vqa
+	GameLost: gameover.vqa
 
 Options:
 	Crates: False

@@ -20,6 +20,11 @@ UseAsShellmap: False
 
 Type: Campaign
 
+Videos:
+	GameStart: brdgtilt.vqa
+	GameWon: toofar.vqa
+	GameLost: sovtstar.vqa
+
 Options:
 	Crates: False
 	Fog: True
@@ -1379,7 +1384,6 @@ Rules:
 			Scripts: allies03a.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
-		-StartGameNotification:
 	^Infantry:
 		MustBeDestroyed:
 		Tooltip:

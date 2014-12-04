@@ -10,8 +10,6 @@ Description: A critical supply convoy is due through this area in 10 minutes, bu
 
 Author: Westwood Studios
 
-PreviewVideo: ally2.vqa
-
 Tileset: SNOW
 
 MapSize: 128,128
@@ -21,6 +19,12 @@ Bounds: 43,44,50,42
 UseAsShellmap: False
 
 Type: Campaign
+
+Videos:
+	Briefing: ally2.vqa
+	GameStart: mcv.vqa
+	GameWon: montpass.vqa
+	GameLost: frozen.vqa
 
 Options:
 	Crates: False
@@ -881,7 +885,6 @@ Rules:
 			Scripts: allies02.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
-		-StartGameNotification:
 	^Vehicle:
 		MustBeDestroyed:
 		Tooltip:

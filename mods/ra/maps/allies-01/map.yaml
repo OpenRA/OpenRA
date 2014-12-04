@@ -10,8 +10,6 @@ Description: Rescue Einstein from the Headquarters inside this Soviet complex.\n
 
 Author: Westwood Studios
 
-PreviewVideo: ally1.vqa
-
 Tileset: SNOW
 
 MapSize: 128,128
@@ -21,6 +19,12 @@ Bounds: 49,45,30,36
 UseAsShellmap: False
 
 Type: Campaign
+
+Videos:
+	Briefing: ally1.vqa
+	GameStart: landing.vqa
+	GameWon: snowbomb.vqa
+	GameLost: bmap.vqa
 
 Options:
 	Crates: False
@@ -586,7 +590,6 @@ Rules:
 			Scripts: allies01.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
-		-StartGameNotification:
 	TRAN.Extraction:
 		Inherits: TRAN
 		RenderUnit:

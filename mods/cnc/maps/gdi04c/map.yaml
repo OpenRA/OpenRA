@@ -10,8 +10,6 @@ Description: Nod is moving to capture and hold a civilian town.\n\nYour mission 
 
 Author: Westwood Studios
 
-PreviewVideo: gdi4a.vqa
-
 Tileset: TEMPERAT
 
 MapSize: 64,64
@@ -21,6 +19,13 @@ Bounds: 14,14,48,44
 UseAsShellmap: False
 
 Type: Campaign
+
+Videos:
+	BackgroundInfo: bkground.vqa
+	Briefing: gdi4a.vqa
+	GameStart: nodsweep.vqa
+	GameWon: burdet1.vqa
+	GameLost: gameover.vqa
 
 Options:
 	Crates: False
