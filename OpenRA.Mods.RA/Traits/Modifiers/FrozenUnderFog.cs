@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Sync] public int VisibilityHash;
 
 		readonly bool startsRevealed;
-		readonly CPos[] footprint;
+		readonly CPos[] footprintInMapsCoords;
 		readonly CellRegion footprintRegion;
 
 		readonly Lazy<IToolTip> tooltip;
@@ -45,7 +45,8 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			// Spawned actors (e.g. building husks) shouldn't be revealed
 			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
-			footprint = FootprintUtils.Tiles(init.self).ToArray();
+			var footprint = FootprintUtils.Tiles(init.self).ToList();
+			footprintInMapsCoords = footprint.Select(cell => Map.CellToMap(init.world.Map.TileShape, cell)).ToArray();
 			footprintRegion = CellRegion.BoundingRegion(init.world.Map.TileShape, footprint);
 			tooltip = Exts.Lazy(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
 			tooltip = Exts.Lazy(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
@@ -68,7 +69,17 @@ namespace OpenRA.Mods.RA.Traits
 			VisibilityHash = 0;
 			foreach (var p in self.World.Players)
 			{
-				var isVisible = footprint.Any(p.Shroud.IsVisibleTest(footprintRegion));
+				// We are doing the following LINQ manually to avoid allocating an extra delegate since this is a hot path.
+				// var isVisible = footprintInMapsCoords.Any(mapCoord => p.Shroud.IsVisibleTest(footprintRegion)(mapCoord.X, mapCoord.Y));
+				var isVisibleTest = p.Shroud.IsVisibleTest(footprintRegion);
+				var isVisible = false;
+				foreach (var mapCoord in footprintInMapsCoords)
+					if (isVisibleTest(mapCoord.X, mapCoord.Y))
+					{
+						isVisible = true;
+						break;
+					}
+
 				visible[p] = isVisible;
 				if (isVisible)
 					VisibilityHash += p.ClientIndex;
@@ -79,7 +90,7 @@ namespace OpenRA.Mods.RA.Traits
 				foreach (var p in self.World.Players)
 				{
 					visible[p] |= startsRevealed;
-					p.PlayerActor.Trait<FrozenActorLayer>().Add(frozen[p] = new FrozenActor(self, footprint, footprintRegion));
+					p.PlayerActor.Trait<FrozenActorLayer>().Add(frozen[p] = new FrozenActor(self, footprintInMapsCoords, footprintRegion));
 				}
 
 				initialized = true;

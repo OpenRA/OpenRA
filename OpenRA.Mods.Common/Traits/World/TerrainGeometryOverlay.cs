@@ -81,13 +81,13 @@ namespace OpenRA.Mods.Common.Traits
 			var rightDelta = ts == TileShape.Diamond ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
 			var bottomDelta = ts == TileShape.Diamond ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
 
-			foreach (var cell in wr.Viewport.VisibleCells)
+			foreach (var uv in wr.Viewport.VisibleCells.MapCoords)
 			{
 				var lr = Game.Renderer.WorldLineRenderer;
-				var pos = wr.world.Map.CenterOfCell(cell);
+				var pos = wr.world.Map.CenterOfCell(Map.MapToCell(wr.world.Map.TileShape, uv));
 
-				var height = (int)wr.world.Map.MapHeight.Value[cell];
-				var tile = wr.world.Map.MapTiles.Value[cell];
+				var height = (int)wr.world.Map.MapHeight.Value[uv.X, uv.Y];
+				var tile = wr.world.Map.MapTiles.Value[uv.X, uv.Y];
 
 				TerrainTileInfo tileInfo = null;
 
