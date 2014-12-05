@@ -25,7 +25,7 @@ or `OpenRA.Game.exe Game.Mod=cnc` for Tiberian Dawn.
 Linux
 =====
 
-Run `./configure` to map the native libraries to your system.
+Run `make dependencies` to map the native libraries to your system and copy the managed ones.
 
 To compile OpenRA, run `make all` from the command line.
 

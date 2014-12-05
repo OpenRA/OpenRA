@@ -10,7 +10,7 @@ install:
  - sudo apt-key add /tmp/mono.gpg
  - sudo sh -c "echo 'deb http://download.mono-project.com/repo/debian wheezy/snapshots/3.8.0 main' >> /etc/apt/sources.list.d/mono-xamarin.list"
  - sudo apt-get update -qq
- - sudo apt-get install -qq mono-gmcs cli-common-dev libgl1-mesa-glx libopenal1 libfreetype6 libgdiplus=2.10-3
+ - sudo apt-get install -qq mono-gmcs cli-common-dev libgdiplus=2.10-3
 cache: apt
 
 # Run the build script
