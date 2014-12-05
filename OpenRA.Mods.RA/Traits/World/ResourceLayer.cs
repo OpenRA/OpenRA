@@ -35,14 +35,14 @@ namespace OpenRA.Mods.RA.Traits
 		public void Render(WorldRenderer wr)
 		{
 			var shroudObscured = world.ShroudObscuresTest(wr.Viewport.VisibleCells);
-			foreach (var cell in wr.Viewport.VisibleCells)
+			foreach (var uv in wr.Viewport.VisibleCells.MapCoords)
 			{
-				if (shroudObscured(cell))
+				if (shroudObscured(uv.X, uv.Y))
 					continue;
 
-				var c = render[cell];
+				var c = render[uv.X, uv.Y];
 				if (c.Sprite != null)
-					new SpriteRenderable(c.Sprite, wr.world.Map.CenterOfCell(cell),
+					new SpriteRenderable(c.Sprite, wr.world.Map.CenterOfCell(Map.MapToCell(world.Map.TileShape, uv)),
 						WVec.Zero, -511, c.Type.Palette, 1f, true).Render(wr); // TODO ZOffset is ignored
 			}
 		}
