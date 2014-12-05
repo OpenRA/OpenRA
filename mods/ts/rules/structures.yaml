@@ -501,14 +501,14 @@ GATICK:
 	Armament@PRIMARY:
 		Weapon: 90mm
 		LocalOffset: 384,0,128
-		ConditionTypes: eliteweapon
+		ConditionTypes: elite
 		MaxEnabledConditionLevel: 0
 		MaxAcceptedConditionLevel: 1
 		MuzzleSequence: muzzle
 	Armament@ELITE:
 		Weapon: 120mmx
 		LocalOffset: 384,0,128
-		ConditionTypes: eliteweapon
+		ConditionTypes: elite
 		MinEnabledConditionLevel: 1
 		MuzzleSequence: muzzle
 	AttackTurreted:
@@ -944,13 +944,13 @@ NASTLH:
 		PauseOnLowPower: true
 	WithRangeCircle:
 		Range: 12c0
-		Type: cloakgenerator
+		Type: cloaked
 	Power:
 		Amount: -350
 	RequiresPower:
 	CanPowerDown:
 	ApplyConditionToActorsNear:
-		Conditions: cloakgenerator
+		Conditions: cloaked
 		Range: 12c0
 		EnableSound: cloak5.aud
 		DisableSound: cloak5.aud

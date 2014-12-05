@@ -1162,7 +1162,7 @@ EMPulseCannon:
 	Warhead@emp: GrantCondition
 		Range: 3c0
 		Duration: 250
-		Upgrades: empdisable
+		Upgrades: emp
 		ValidTargets: Vehicle
 
 TiberiumExplosion:

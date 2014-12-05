@@ -45,7 +45,7 @@
 	WithMakeAnimation:
 	ConditionManager:
 	Cloak@CLOAKGENERATOR:
-		ConditionTypes: cloakgenerator
+		ConditionTypes: cloaked
 		MinEnabledConditionLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
@@ -88,7 +88,7 @@
 	ScriptTriggers:
 	ConditionManager:
 	Cloak@CLOAKGENERATOR:
-		ConditionTypes: cloakgenerator
+		ConditionTypes: cloaked
 		MinEnabledConditionLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
@@ -128,8 +128,8 @@
 	GainsExperience:
 		ChevronPalette: ra
 		Conditions:
-			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload, selfheal, eliteweapon
+			500: experience, firepower, damage, speed, reload
+			1000: experience, firepower, damage, speed, reload, selfheal, elite
 	GainsStatConditions:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
@@ -170,7 +170,7 @@
 		DeathTypes: 6
 	ConditionManager:
 	Cloak@CLOAKGENERATOR:
-		ConditionTypes: cloakgenerator
+		ConditionTypes: cloaked
 		MinEnabledConditionLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
@@ -230,8 +230,8 @@
 	GainsExperience:
 		ChevronPalette: ra
 		Conditions:
-			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload, selfheal, eliteweapon
+			500: experience, firepower, damage, speed, reload
+			1000: experience, firepower, damage, speed, reload, selfheal, elite
 	GainsStatConditions:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
@@ -262,20 +262,20 @@
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	ConditionManager:
-	Overlay@EMPDISABLE:
-		ConditionTypes: empdisable
+	Overlay@EMP:
+		ConditionTypes: emp
 		MinEnabledConditionLevel: 1
 		MaxAcceptedConditionLevel: 2
 		Palette: disabled
-	Disableable@EMPDISABLE:
-		ConditionTypes: empdisable
+	Disableable@EMP:
+		ConditionTypes: emp
 		MinEnabledConditionLevel: 1
 		MaxAcceptedConditionLevel: 2
-	TimedConditionBar@EMPDISABLE:
-		Condition: empdisable
+	TimedConditionBar@EMP:
+		Condition: emp
 		Color: 255,255,255
 	Cloak@CLOAKGENERATOR:
-		ConditionTypes: cloakgenerator
+		ConditionTypes: cloaked
 		MinEnabledConditionLevel: 1
 		MaxAcceptedConditionLevel: 2
 		InitialDelay: 0
@@ -309,8 +309,8 @@
 	GainsExperience:
 		ChevronPalette: ra
 		Conditions:
-			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload, selfheal, eliteweapon
+			500: experience, firepower, damage, speed, reload
+			1000: experience, firepower, damage, speed, reload, selfheal, elite
 	GainsStatConditions:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
@@ -341,20 +341,20 @@
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	ConditionManager:
-	Overlay@EMPDISABLE:
-		ConditionTypes: empdisable
+	Overlay@EMP:
+		ConditionTypes: emp
 		MinEnabledConditionLevel: 1
 		MaxAcceptedConditionLevel: 2
 		Palette: disabled
-	Disableable@EMPDISABLE:
-		ConditionTypes: empdisable
+	Disableable@EMP:
+		ConditionTypes: emp
 		MinEnabledConditionLevel: 1
 		MaxAcceptedConditionLevel: 2
-	TimedConditionBar@EMPDISABLE:
-		Condition: empdisable
+	TimedConditionBar@EMP:
+		Condition: emp
 		Color: 255,255,255
 	Cloak@CLOAKGENERATOR:
-		ConditionTypes: cloakgenerator
+		ConditionTypes: cloaked
 		MinEnabledConditionLevel: 1
 		MaxAcceptedConditionLevel: 2
 		InitialDelay: 0
@@ -381,8 +381,8 @@
 	GainsExperience:
 		ChevronPalette: ra
 		Conditions:
-			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload, selfheal, eliteweapon
+			500: experience, firepower, damage, speed, reload
+			1000: experience, firepower, damage, speed, reload, selfheal, elite
 	GainsStatConditions:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66

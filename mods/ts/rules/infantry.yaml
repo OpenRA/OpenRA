@@ -17,12 +17,12 @@ E1:
 		Speed: 71
 	Armament@PRIMARY:
 		Weapon: Minigun
-		ConditionTypes: eliteweapon
+		ConditionTypes: elite
 		MaxEnabledConditionLevel: 0
 		MaxAcceptedConditionLevel: 1
 	Armament@ELITE:
 		Weapon: M1Carbine
-		ConditionTypes: eliteweapon
+		ConditionTypes: elite
 		MinEnabledConditionLevel: 1
 	AttackFrontal:
 	TakeCover:
