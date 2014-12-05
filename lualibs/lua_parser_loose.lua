@@ -191,7 +191,7 @@ function PARSE.parse_scope(lx, f, level)
         -- table field
         f('String', c[1], c.lineinfo, inside_local)
       elseif cprev.tag == 'Keyword' and (cprev[1] == ':' or cprev[1] == '.') then
-        f('String', c[1], c.lineinfo, inside_local)
+        f('String', c[1], c.lineinfo, true)
       else
         f('Id', c[1], c.lineinfo, inside_local)
       end
