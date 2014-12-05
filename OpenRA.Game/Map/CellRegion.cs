@@ -87,6 +87,11 @@ namespace OpenRA
 			return uv.X >= mapTopLeft.X && uv.X <= mapBottomRight.X && uv.Y >= mapTopLeft.Y && uv.Y <= mapBottomRight.Y;
 		}
 
+		public MapCoordsRegion MapCoords
+		{
+			get { return new MapCoordsRegion(this); }
+		}
+
 		public CellRegionEnumerator GetEnumerator()
 		{
 			return new CellRegionEnumerator(this);
@@ -102,7 +107,7 @@ namespace OpenRA
 			return GetEnumerator();
 		}
 
-		public class CellRegionEnumerator : IEnumerator<CPos>
+		public sealed class CellRegionEnumerator : IEnumerator<CPos>
 		{
 			readonly CellRegion r;
 
@@ -147,6 +152,73 @@ namespace OpenRA
 			public CPos Current { get { return current; } }
 			object IEnumerator.Current { get { return Current; } }
 			public void Dispose() { }
+		}
+
+		public struct MapCoordsRegion : IEnumerable<CPos>
+		{
+			public struct MapCoordsEnumerator : IEnumerator<CPos>
+			{
+				readonly CellRegion r;
+				CPos current;
+
+				public MapCoordsEnumerator(CellRegion region)
+					: this()
+				{
+					r = region;
+					Reset();
+				}
+
+				public bool MoveNext()
+				{
+					var u = current.X + 1;
+					var v = current.Y;
+
+					// Check for column overflow
+					if (u > r.mapBottomRight.X)
+					{
+						v += 1;
+						u = r.mapTopLeft.X;
+
+						// Check for row overflow
+						if (v > r.mapBottomRight.Y)
+							return false;
+					}
+
+					current = new CPos(u, v);
+					return true;
+				}
+
+				public void Reset()
+				{
+					current = new CPos(r.mapTopLeft.X - 1, r.mapTopLeft.Y);
+				}
+
+				public CPos Current { get { return current; } }
+				object IEnumerator.Current { get { return Current; } }
+				public void Dispose() { }
+			}
+
+			readonly CellRegion r;
+
+			public MapCoordsRegion(CellRegion region)
+			{
+				r = region;
+			}
+
+			public MapCoordsEnumerator GetEnumerator()
+			{
+				return new MapCoordsEnumerator(r);
+			}
+
+			IEnumerator<CPos> IEnumerable<CPos>.GetEnumerator()
+			{
+				return GetEnumerator();
+			}
+
+			IEnumerator IEnumerable.GetEnumerator()
+			{
+				return GetEnumerator();
+			}
 		}
 	}
 }
