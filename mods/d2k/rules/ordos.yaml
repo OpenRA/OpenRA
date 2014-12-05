@@ -206,6 +206,7 @@ CARRYALLO:
 		Queue: Armor
 		Prerequisites: ~heavyo, refinery, hightech
 		BuildPaletteOrder: 10
+		EdgeSpawn: true
 
 CARRYALLO.starport:
 	Inherits: CARRYALLO

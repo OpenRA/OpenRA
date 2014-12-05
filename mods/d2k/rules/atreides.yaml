@@ -126,6 +126,7 @@ CARRYALLA:
 		Queue: Armor
 		Prerequisites: ~heavya, refinery, hightech
 		BuildPaletteOrder: 10
+		EdgeSpawn: true
 
 CARRYALLA.starport:
 	Inherits: CARRYALLA

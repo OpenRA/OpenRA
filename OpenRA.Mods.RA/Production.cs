@@ -57,8 +57,13 @@ namespace OpenRA.Mods.RA
 
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string raceVariant)
 		{
+			var pbi = producee.Traits.WithInterface<BuildableInfo>().First();
+
 			var exit = self.Location + exitinfo.ExitCell;
 			var spawn = self.CenterPosition + exitinfo.SpawnOffset;
+			if (pbi.EdgeSpawn)
+				spawn = self.World.Map.CenterOfCell(self.World.Map.ChooseRandomEdgeCell(self.World.SharedRandom));
+
 			var to = self.World.Map.CenterOfCell(exit);
 
 			var fi = producee.Traits.GetOrDefault<IFacingInfo>();
