@@ -87,6 +87,8 @@ namespace OpenRA.Mods.Common
 		readonly Sprite[] shroudSprites, fogSprites;
 		readonly byte[] spriteMap;
 		readonly CellLayer<ShroudTile> tiles;
+		readonly CellLayer<bool> shroudVisible;
+		readonly CellLayer<bool> fogVisible;
 		readonly byte variantStride;
 		readonly Map map;
 		readonly Edges notVisibleEdges;
@@ -115,6 +117,8 @@ namespace OpenRA.Mods.Common
 			map = world.Map;
 
 			tiles = new CellLayer<ShroudTile>(map);
+			shroudVisible = new CellLayer<bool>(map);
+			fogVisible = new CellLayer<bool>(map);
 
 			// Load sprite variants
 			var variantCount = info.ShroudVariants.Length;
@@ -151,23 +155,23 @@ namespace OpenRA.Mods.Common
 			notVisibleEdges = info.UseExtendedIndex ? Edges.AllSides : Edges.AllCorners;
 		}
 
-		Edges GetEdges(CPos p, Func<CPos, bool> isVisible)
+		Edges GetEdges(CPos cell, CellLayer<bool> visible)
 		{
-			if (!isVisible(p))
+			if (!visible[cell])
 				return notVisibleEdges;
 
 			// If a side is shrouded then we also count the corners
 			var u = Edges.None;
-			if (!isVisible(p + new CVec(0, -1))) u |= Edges.Top;
-			if (!isVisible(p + new CVec(1, 0))) u |= Edges.Right;
-			if (!isVisible(p + new CVec(0, 1))) u |= Edges.Bottom;
-			if (!isVisible(p + new CVec(-1, 0))) u |= Edges.Left;
+			if (!visible[cell + new CVec(0, -1)]) u |= Edges.Top;
+			if (!visible[cell + new CVec(-1, 0)]) u |= Edges.Left;
+			if (!visible[cell + new CVec(1, 0)]) u |= Edges.Right;
+			if (!visible[cell + new CVec(0, 1)]) u |= Edges.Bottom;
 
 			var ucorner = u & Edges.AllCorners;
-			if (!isVisible(p + new CVec(-1, -1))) u |= Edges.TopLeft;
-			if (!isVisible(p + new CVec(1, -1))) u |= Edges.TopRight;
-			if (!isVisible(p + new CVec(1, 1))) u |= Edges.BottomRight;
-			if (!isVisible(p + new CVec(-1, 1))) u |= Edges.BottomLeft;
+			if (!visible[cell + new CVec(-1, -1)]) u |= Edges.TopLeft;
+			if (!visible[cell + new CVec(1, -1)]) u |= Edges.TopRight;
+			if (!visible[cell + new CVec(-1, 1)]) u |= Edges.BottomLeft;
+			if (!visible[cell + new CVec(1, 1)]) u |= Edges.BottomRight;
 
 			// RA provides a set of frames for tiles with shrouded
 			// corners but unshrouded edges. We want to detect this
@@ -254,8 +258,14 @@ namespace OpenRA.Mods.Common
 			var visibleUnderFog = shroud.IsVisibleTest(updatedRegion);
 			foreach (var cell in updatedRegion)
 			{
-				var shrouded = GetEdges(cell, visibleUnderShroud);
-				var fogged = GetEdges(cell, visibleUnderFog);
+				shroudVisible[cell] = visibleUnderShroud(cell);
+				fogVisible[cell] = visibleUnderFog(cell);
+			}
+
+			foreach (var cell in updatedRegion)
+			{
+				var shrouded = GetEdges(cell, shroudVisible);
+				var fogged = GetEdges(cell, fogVisible);
 				var shroudTile = tiles[cell];
 				var variant = shroudTile.Variant;
 				shroudTile.Shroud = GetTile(shroudSprites, shrouded, variant);
