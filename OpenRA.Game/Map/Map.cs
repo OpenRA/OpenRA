@@ -366,8 +366,8 @@ namespace OpenRA
 			Cells = new CellRegion(TileShape, tl, br);
 
 			CustomTerrain = new CellLayer<byte>(this);
-			foreach (var cell in Cells)
-				CustomTerrain[cell] = byte.MaxValue;
+			foreach (var uv in Cells.MapCoords)
+				CustomTerrain[uv.X, uv.Y] = byte.MaxValue;
 		}
 
 		public Ruleset PreloadRules()
@@ -597,7 +597,12 @@ namespace OpenRA
 		public bool Contains(CPos cell)
 		{
 			var uv = CellToMap(TileShape, cell);
-			return Bounds.Contains(uv.X, uv.Y);
+			return Contains(uv.X, uv.Y);
+		}
+
+		public bool Contains(int u, int v)
+		{
+			return Bounds.Contains(u, v);
 		}
 
 		public WPos CenterOfCell(CPos cell)
@@ -795,8 +800,11 @@ namespace OpenRA
 
 		public byte GetTerrainIndex(CPos cell)
 		{
-			var custom = CustomTerrain[cell];
-			return custom != byte.MaxValue ? custom : cachedTileSet.Value.GetTerrainIndex(MapTiles.Value[cell]);
+			var uv = Map.CellToMap(TileShape, cell);
+			var u = uv.X;
+			var v = uv.Y;
+			var custom = CustomTerrain[u, v];
+			return custom != byte.MaxValue ? custom : cachedTileSet.Value.GetTerrainIndex(MapTiles.Value[u, v]);
 		}
 
 		public TerrainTypeInfo GetTerrainInfo(CPos cell)
