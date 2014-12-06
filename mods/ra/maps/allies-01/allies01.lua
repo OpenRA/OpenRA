@@ -96,7 +96,6 @@ end
 
 RescueFailed = function()
 	player.MarkFailedObjective(SurviveObjective)
-	ussr.MarkCompletedObjective(DefendObjective)
 end
 
 OilPumpDestroyed = function()
@@ -125,7 +124,6 @@ HelicopterGone = function()
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			player.MarkCompletedObjective(ExtractObjective)
 			player.MarkCompletedObjective(SurviveObjective)
-			ussr.MarkFailedObjective(DefendObjective)
 			if not collateralDamage then
 				player.MarkCompletedObjective(CivilProtectionObjective)
 			end
@@ -178,9 +176,7 @@ WorldLoaded = function()
 	Media.PlayMovieFullscreen("landing.vqa", function()
 		FindEinsteinObjective = player.AddPrimaryObjective("Find Einstein.")
 		SurviveObjective = player.AddPrimaryObjective("Tanya and Einstein must survive.")
-		england.AddPrimaryObjective("Destroy the soviet base after a successful rescue.")
 		CivilProtectionObjective = player.AddSecondaryObjective("Protect all civilians.")
-		DefendObjective = ussr.AddPrimaryObjective("Kill Tanya and keep Einstein hostage.")
 
 		RunInitialActivities()
 	end)
