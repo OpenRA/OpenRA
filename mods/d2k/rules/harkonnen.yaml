@@ -127,9 +127,7 @@ CARRYALLH:
 	RenderUnit:
 		Image: CARRYALL
 	Buildable:
-		Queue: Armor
-		Prerequisites: ~heavyh, refinery, hightech
-		BuildPaletteOrder: 10
+		Prerequisites: refinery, ~hightechh
 
 CARRYALLH.starport:
 	Inherits: CARRYALLH

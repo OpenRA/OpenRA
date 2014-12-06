@@ -602,7 +602,7 @@ WALL:
 		Name: High Tech Facility
 		Description: Unlocks advanced technology
 	Production:
-		Produces: Aircraft, Armor
+		Produces: Aircraft
 	Exit:
 		SpawnOffset: 0,0,728
 		ExitCell: 0,0

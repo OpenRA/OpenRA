@@ -203,9 +203,7 @@ CARRYALLO:
 	RenderUnit:
 		Image: CARRYALL
 	Buildable:
-		Queue: Armor
-		Prerequisites: ~heavyo, refinery, hightech
-		BuildPaletteOrder: 10
+		Prerequisites: refinery, ~hightecho
 
 CARRYALLO.starport:
 	Inherits: CARRYALLO
