@@ -180,7 +180,6 @@ namespace OpenRA
 
 			Settings = new Settings(Platform.ResolvePath("^", "settings.yaml"), args);
 
-			Log.LogPath = Platform.ResolvePath("^", "Logs");
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");
 			Log.AddChannel("sync", "syncreport.log");
