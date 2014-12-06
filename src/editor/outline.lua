@@ -279,15 +279,23 @@ ide:AddPackage('core.outline', {
         return
       end
 
+      local cache = caches[editor]
+      local fileitem = cache and cache.fileitem
+      local ctrl = ide.outline.outlineCtrl
+      local itemname = ide:GetDocument(editor):GetFileName()
+
+      -- fix file name if it changed in the editor
+      if fileitem and ctrl:GetItemText(fileitem) ~= itemname then
+        ctrl:SetItemText(fileitem, itemname)
+      end
+
       -- if the editor is not in the cache, which may happen if the user
       -- quickly switches between tabs that don't have outline generated,
       -- regenerate it manually
-      if not caches[editor] and ide.config.outlineinactivity then
+      if not cache and ide.config.outlineinactivity then
         ide.timers.outline:Start(ide.config.outlineinactivity*1000, wx.wxTIMER_ONE_SHOT)
       end
 
-      local cache = caches[editor]
-      local fileitem = cache and cache.fileitem
       eachNode(function(ctrl, item)
           local found = fileitem and item:GetValue() == fileitem:GetValue()
           if not found and ctrl:IsBold(item) then
@@ -296,7 +304,6 @@ ide:AddPackage('core.outline', {
           end
         end)
 
-      local ctrl = ide.outline.outlineCtrl
       if fileitem and not ctrl:IsBold(fileitem) then
         ctrl:SetItemBold(fileitem, true)
         ctrl:ExpandAllChildren(fileitem)
