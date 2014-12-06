@@ -428,4 +428,130 @@ Player:
 				Attractiveness: -10
 				TargetMetric: Value
 				CheckRadius: 7c0
-
+	HackyAI@RAAI:
+		Name: RedAlertLike AI
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: powr,apwr
+			Barracks: barr,tent
+			VehiclesFactory: weap
+			Production: barr,tent,weap,afld,hpad,spen,syrd
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingLimits:
+			proc: 5
+			barr: 3
+			tent: 3
+			dome: 1
+			weap: 3
+			spen: 1
+			syrd: 1
+			hpad: 5
+			afld: 5
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			proc: 30%
+			powr: 1%
+			apwr: 30%
+			barr: 1%
+			tent: 1%
+			kenn: 0.1%
+			weap: 1%
+			pbox: 10%
+			hbox: 3%
+			gun: 10%
+			tsla: 10%
+			ftur: 10%
+			agun: 7%
+			sam: 7%
+			atek: 1%
+			stek: 1%
+			fix: 0.1%
+			dome: 10%
+			gap: 1%
+			hpad: 4%
+			afld: 4%
+			spen: 1%
+			syrd: 1%
+			mslo: 1%
+		UnitsToBuild:
+			e1: 50%
+			e2: 25%
+			e3: 10%
+			e4: 10%
+			e6: 0.1%
+			e7: 1%
+			dog: 1%
+			medi: 0.1%
+			mech: 0.1%
+			shok: 10%
+			sniper: 1%
+			harv: 1%
+			mcv: 0.1%
+			mgg: 1%
+			mrj: 1%
+			apc: 30%
+			jeep: 40%
+			arty: 15%
+			v2rl: 40%
+			ftrk: 50%
+			1tnk: 70%
+			2tnk: 25%
+			3tnk: 70%
+			4tnk: 80%
+			ttnk: 20%
+			ctnk: 10%
+			stnk: 5%
+			heli: 30%
+			hind: 30%
+			mig: 30%
+			yak: 30%
+			ss: 10%
+			msub: 30%
+			dd: 30%
+			ca: 20%
+			pt: 10%
+		SquadSize: 10
+		SupportPowerDecision@Airstrike:
+			OrderName: AirstrikePowerInfoOrder
+			MinimumAttractiveness: 1
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 5c0
+		SupportPowerDecision@Paratroopers:
+			OrderName: ParatroopersPowerInfoOrder
+			MinimumAttractiveness: 5
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 10c0
+			Consideration@2:
+				Against: Enemy
+				Types: Vehicle, Tank, Infantry, Defense
+				Attractiveness: -10
+				TargetMetric: None
+				CheckRadius: 10c0
+		SupportPowerDecision@NukePower:
+			OrderName: NukePowerInfoOrder
+			MinimumAttractiveness: 3000
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 5c0
+			Consideration@2:
+				Against: Ally
+				Types: Air, Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 7c0
