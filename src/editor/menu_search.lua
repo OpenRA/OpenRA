@@ -158,10 +158,10 @@ local function navigateTo(default)
 
       if enter then
         local _, file, tabindex = unpack(t or {})
-        if tabindex or preview then -- switch to existing tab
-          SetEditorSelection(tabindex or nb:GetPageIndex(preview))
-        elseif file then -- load a new file
-          LoadFile(MergeFullPath(ide:GetProject(), file), nil, true)
+        if tabindex then -- switch to existing tab
+          SetEditorSelection(tabindex)
+        elseif file then -- load a new file (into preview if set)
+          LoadFile(MergeFullPath(ide:GetProject(), file), preview or nil, true)
         end
 
         -- set line position in the (current) editor if requested
