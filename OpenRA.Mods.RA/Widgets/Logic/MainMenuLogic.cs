@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -33,6 +34,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public MainMenuLogic(Widget widget, World world)
 		{
+			Game.ConnectionStateChanged += ConnectionStateChanged;
+
 			rootMenu = widget;
 			rootMenu.Get<LabelWidget>("VERSION_LABEL").Text = Game.modData.Manifest.Mod.Version;
 
@@ -173,6 +176,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				newsButton.IsHighlighted = () => newsHighlighted && Game.LocalTick % 50 < 25;
 			}
+		}
+
+		void ConnectionStateChanged(OrderManager om)
+		{
+			if (om.Connection.ConnectionState == ConnectionState.Connected)
+				menuType = MenuType.None;
+			if (om.Connection.ConnectionState == ConnectionState.PreConnecting)
+				menuType = MenuType.Main;
 		}
 
 		void SetNewsStatus(string message)

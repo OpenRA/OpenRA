@@ -119,8 +119,8 @@ namespace OpenRA.Network
 
 				case "HandshakeRequest":
 					{
-						// TODO: Switch to the server's mod if we have it
-						// Otherwise send the handshake with our current settings and let the server reject us
+						Game.HandshakeRequest = HandshakeRequest.Deserialize(order.TargetString);
+
 						var mod = Game.modData.Manifest.Mod;
 
 						var info = new Session.Client()
