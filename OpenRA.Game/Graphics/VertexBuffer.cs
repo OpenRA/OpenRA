@@ -12,7 +12,7 @@ using System;
 using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
 
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Rendering
 {
 	public class VertexBuffer<T> : IVertexBuffer<T>
 			where T : struct

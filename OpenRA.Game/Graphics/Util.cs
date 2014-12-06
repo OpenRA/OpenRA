@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Graphics
 {
@@ -72,7 +73,7 @@ namespace OpenRA.Graphics
 			var height = dest.bounds.Height;
 
 			var bd = src.LockBits(src.Bounds(),
-				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+				ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 			for (var row = 0; row < height; row++)
 				Marshal.Copy(IntPtr.Add(bd.Scan0, row * bd.Stride), data, (y + row) * dataStride + x, width);
 			src.UnlockBits(bd);
@@ -288,6 +289,19 @@ namespace OpenRA.Graphics
 			}
 
 			return ret;
+		}
+
+		public static PrimitiveType ModeFromPrimitiveType(PrimitiveList pt)
+		{
+			switch (pt)
+			{
+				case PrimitiveList.PointList: return PrimitiveType.Points;
+				case PrimitiveList.LineList: return PrimitiveType.Lines;
+				case PrimitiveList.TriangleList: return PrimitiveType.Triangles;
+				case PrimitiveList.QuadList: return PrimitiveType.Quads;
+			}
+
+			throw new NotImplementedException();
 		}
 	}
 }

@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Input;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Commands;
 using OpenRA.Network;

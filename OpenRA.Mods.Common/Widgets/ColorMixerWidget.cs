@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.Threading;
 using OpenRA.Graphics;
+using OpenRA.Input;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets

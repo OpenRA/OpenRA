@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Input;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -96,7 +97,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				Location = location,
 				Button = MouseButton.Right,
-				Modifiers = Game.GetModifierKeys()
+				Modifiers = Game.InputHandler.GetModifierKeys()
 			};
 
 			var cursor = world.OrderGenerator.GetCursor(world, cell, mi);

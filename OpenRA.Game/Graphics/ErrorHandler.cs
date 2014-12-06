@@ -12,7 +12,7 @@ using System;
 using System.Diagnostics;
 using OpenTK.Graphics.OpenGL;
 
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Rendering
 {
 	public static class ErrorHandler
 	{

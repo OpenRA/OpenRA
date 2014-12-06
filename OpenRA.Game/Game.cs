@@ -18,6 +18,7 @@ using System.Threading;
 using MaxMind.GeoIP2;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Input;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -37,6 +38,8 @@ namespace OpenRA
 		public static MersenneTwister CosmeticRandom = new MersenneTwister(); // not synced
 
 		public static Renderer Renderer;
+
+		public static InputHandler InputHandler;
 		public static bool HasInputFocus = false;
 
 		public static DatabaseReader GeoIpDatabase;
@@ -147,6 +150,8 @@ namespace OpenRA
 			if (orderManager.GameStarted)
 				return;
 
+			InputHandler.Enabled = true;
+
 			Ui.MouseFocusWidget = null;
 			Ui.KeyboardFocusWidget = null;
 
@@ -168,13 +173,10 @@ namespace OpenRA
 			}
 		}
 
-		static Modifiers modifiers;
-		public static Modifiers GetModifierKeys() { return modifiers; }
-		internal static void HandleModifierKeys(Modifiers mods) { modifiers = mods; }
-
 		internal static void Initialize(Arguments args)
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
+			InputHandler = new InputHandler();
 
 			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
@@ -206,7 +208,7 @@ namespace OpenRA
 			}
 
 			GlobalFileSystem.Mount(Platform.GameDir); // Needed to access shaders
-			var renderers = new[] { Settings.Graphics.Renderer, "Sdl2", null };
+			var renderers = new[] { Settings.Graphics.Renderer, "Sdl2", "OpenTk", null };
 			foreach (var r in renderers)
 			{
 				if (r == null)
@@ -503,7 +505,7 @@ namespace OpenRA
 				}
 
 				using (new PerfSample("render_flip"))
-					Renderer.EndFrame(new DefaultInputHandler(orderManager.World));
+					Renderer.EndFrame();
 			}
 
 			PerfHistory.items["render"].Tick();

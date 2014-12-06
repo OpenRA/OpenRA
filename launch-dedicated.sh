@@ -7,9 +7,10 @@ DedicatedLoop="True"
 ListenPort=1234
 ExternalPort=1234
 AdvertiseOnline="False"
+PortForward="False"
 
 while true; do
      mono --debug OpenRA.Game.exe Game.Mod=$Mod Server.Dedicated=$Dedicated Server.DedicatedLoop=$DedicatedLoop \
      Server.Name=$Name Server.ListenPort=$ListenPort Server.ExternalPort=$ExternalPort \
-     Server.AdvertiseOnline=$AdvertiseOnline
+     Server.AdvertiseOnline=$AdvertiseOnline Server.AllowPortForward=$PortForward
 done

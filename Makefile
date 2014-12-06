@@ -37,7 +37,7 @@
 CSC         = dmcs
 CSFLAGS     = -nologo -warn:4 -debug:full -optimize- -codepage:utf8 -unsafe -warnaserror
 DEFINE      = DEBUG;TRACE
-COMMON_LIBS = System.dll System.Core.dll System.Data.dll System.Data.DataSetExtensions.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll thirdparty/MaxMind.Db.dll thirdparty/MaxMind.GeoIP2.dll thirdparty/Eluant.dll
+COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll
 
 
 
@@ -67,7 +67,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = rsdl2 rnull game utility ralint
+CORE = rsdl2 ropentk rnull game utility ralint
 TOOLS = editor tsbuild crashdialog
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
@@ -80,7 +80,7 @@ VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev
 game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET = OpenRA.Game.exe
 game_KIND = winexe
-game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/SDL2-CS.dll thirdparty/SharpFont.dll
+game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/OpenTK.dll thirdparty/SharpFont.dll thirdparty/Mono.Nat.dll thirdparty/MaxMind.Db.dll thirdparty/MaxMind.GeoIP2.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/Eluant.dll
 game_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
 PROGRAMS += game
 game: $(game_TARGET)
@@ -90,15 +90,22 @@ rsdl2_SRCS := $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
 rsdl2_TARGET = OpenRA.Renderer.Sdl2.dll
 rsdl2_KIND = library
 rsdl2_DEPS = $(game_TARGET)
-rsdl2_LIBS = $(COMMON_LIBS) thirdparty/SDL2-CS.dll $(rsdl2_DEPS)
+rsdl2_LIBS = $(COMMON_LIBS) thirdparty/OpenTK.dll thirdparty/SDL2-CS.dll $(rsdl2_DEPS)
+
+ropentk_SRCS := $(shell find OpenRA.Renderer.OpenTk/ -iname '*.cs')
+ropentk_TARGET = OpenRA.Renderer.OpenTk.dll
+ropentk_KIND = library
+ropentk_DEPS = $(game_TARGET)
+ropentk_LIBS = $(COMMON_LIBS) thirdparty/OpenTK.dll $(ropentk_DEPS)
 
 rnull_SRCS := $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
 rnull_TARGET = OpenRA.Renderer.Null.dll
 rnull_KIND = library
 rnull_DEPS = $(game_TARGET)
 rnull_LIBS = $(COMMON_LIBS) $(rnull_DEPS)
-PROGRAMS += rsdl2 rnull
-renderers: $(rsdl2_TARGET) $(rnull_TARGET)
+
+PROGRAMS += rsdl2 ropentk rnull
+renderers: $(rsdl2_TARGET) $(ropentk_TARGET) $(rnull_TARGET)
 
 # Mods Common
 mod_common_SRCS := $(shell find OpenRA.Mods.Common/ -iname '*.cs')
@@ -111,7 +118,7 @@ mod_common: $(mod_common_TARGET)
 
 ##### Official Mods #####
 
-STD_MOD_LIBS	= $(game_TARGET)
+STD_MOD_LIBS	= $(game_TARGET) thirdparty/Eluant.dll
 STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 
 # Red Alert
@@ -119,7 +126,7 @@ mod_ra_SRCS := $(shell find OpenRA.Mods.RA/ -iname '*.cs')
 mod_ra_TARGET = mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND = library
 mod_ra_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET)
-mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
+mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET) thirdparty/FuzzyLogicLibrary.dll System.Data.dll System.Data.DataSetExtensions.dll System.Xml.dll thirdparty/Mono.Nat.dll thirdparty/MaxMind.Db.dll thirdparty/MaxMind.GeoIP2.dll
 PROGRAMS += mod_ra
 mod_ra: $(mod_ra_TARGET)
 
@@ -319,6 +326,7 @@ install-core: default
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
 	@$(CP) SDL2-CS* "$(DATA_INSTALL_DIR)"
+	@$(CP) OpenTK* "$(DATA_INSTALL_DIR)"
 	@$(CP) Eluant* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"

@@ -70,6 +70,7 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.Utility.exe"
 	File "${SRCDIR}\OpenRA.Renderer.Null.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Sdl2.dll"
+	File "${SRCDIR}\OpenRA.Renderer.OpenTk.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
 	File "${SRCDIR}\Mono.Nat.dll"
@@ -82,6 +83,7 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\SDL2-CS.dll"
+	File "${SRCDIR}\OpenTK.dll"
 	File "${SRCDIR}\global mix database.dat"
 	File "${SRCDIR}\MaxMind.Db.dll"
 	File "${SRCDIR}\MaxMind.GeoIP2.dll"
@@ -187,6 +189,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Editor.exe
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll
 	Delete $INSTDIR\OpenRA.Renderer.Sdl2.dll
+	Delete $INSTDIR\OpenRA.Renderer.OpenTk.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
 	Delete $INSTDIR\Mono.Nat.dll

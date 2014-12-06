@@ -9,8 +9,9 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenTK.Input;
 
-namespace OpenRA
+namespace OpenRA.Input
 {
 	// List of keycodes, duplicated from SDL 2.0.1
 	public enum Keycode

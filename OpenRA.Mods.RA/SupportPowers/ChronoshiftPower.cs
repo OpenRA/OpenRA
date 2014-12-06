@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Input;
 using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA

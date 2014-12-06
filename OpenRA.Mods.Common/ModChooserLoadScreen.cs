@@ -36,12 +36,14 @@ namespace OpenRA.Mods.Common
 
 			r.BeginFrame(int2.Zero, 1f);
 			WidgetUtils.FillRectWithSprite(bounds, sprite);
-			r.EndFrame(new NullInputHandler());
+			r.EndFrame();
+			Game.InputHandler.Enabled = false;
 		}
 
 		public void StartGame()
 		{
 			Ui.LoadWidget("MODCHOOSER", Ui.Root, new WidgetArgs());
+			Game.InputHandler.Enabled = true;
 		}
 	}
 }

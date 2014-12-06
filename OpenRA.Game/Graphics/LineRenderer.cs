@@ -52,7 +52,7 @@ namespace OpenRA.Graphics
 					var vb = renderer.GetTempVertexBuffer();
 					vb.SetData(vertices, nv);
 					renderer.SetLineWidth(LineWidth);
-					renderer.DrawBatch(vb, 0, nv, PrimitiveType.LineList);
+					renderer.DrawBatch(vb, 0, nv, PrimitiveList.LineList);
 				});
 				renderer.Device.SetBlendMode(BlendMode.None);
 				nv = 0;

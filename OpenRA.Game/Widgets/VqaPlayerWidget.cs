@@ -13,6 +13,7 @@ using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Input;
 
 namespace OpenRA.Widgets
 {

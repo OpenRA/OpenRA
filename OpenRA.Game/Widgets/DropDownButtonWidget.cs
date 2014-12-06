@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Input;
 
 namespace OpenRA.Widgets
 {

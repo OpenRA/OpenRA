@@ -28,7 +28,6 @@ namespace OpenRA.Mods.Cnc
 		Sprite nodLogo, gdiLogo, evaLogo, brightBlock, dimBlock;
 		Rectangle bounds;
 		Renderer r;
-		NullInputHandler nih = new NullInputHandler();
 
 		public void Init(Manifest m, Dictionary<string, string> info)
 		{
@@ -116,7 +115,8 @@ namespace OpenRA.Mods.Cnc
 					new float2(bounds.Width / 2 + 114 + i * 32 - 16, barY));
 			}
 
-			r.EndFrame(nih);
+			r.EndFrame();
+			Game.InputHandler.Enabled = false;
 		}
 
 		public void StartGame()

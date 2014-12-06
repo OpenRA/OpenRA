@@ -46,9 +46,9 @@ namespace OpenRA
 
 		void Clear();
 		void Present();
-		void PumpInput(IInputHandler inputHandler);
 		string GetClipboardText();
-		void DrawPrimitives(PrimitiveType type, int firstVertex, int numVertices);
+		void PumpInput();
+		void DrawPrimitives(PrimitiveList type, int firstVertex, int numVertices);
 
 		void SetLineWidth(float width);
 		void EnableScissor(int left, int top, int width, int height);
@@ -97,7 +97,7 @@ namespace OpenRA
 		ITexture Texture { get; }
 	}
 
-	public enum PrimitiveType
+	public enum PrimitiveList
 	{
 		PointList,
 		LineList,

@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common
 {
 	public class NullLoadScreen : ILoadScreen
 	{
-		public void Init(Manifest m, Dictionary<string, string> info) {}
+		public void Init(Manifest m, Dictionary<string, string> info) { }
 
 		public void Display()
 		{
@@ -24,7 +24,8 @@ namespace OpenRA.Mods.Common
 
 			// Draw a black screen
 			Game.Renderer.BeginFrame(int2.Zero, 1f);
-			Game.Renderer.EndFrame( new NullInputHandler() );
+			Game.Renderer.EndFrame();
+			Game.InputHandler.Enabled = false;
 		}
 
 		public void StartGame()
