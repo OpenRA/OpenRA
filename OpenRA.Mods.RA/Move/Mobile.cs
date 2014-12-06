@@ -56,6 +56,9 @@ namespace OpenRA.Mods.RA.Move
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;
 
+		public readonly string Cursor = "move";
+		public readonly string BlockedCursor = "move-blocked";
+
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 
 		static object LoadSpeeds(MiniYaml y)
@@ -620,12 +623,10 @@ namespace OpenRA.Mods.RA.Move
 
 				var explored = self.Owner.Shroud.IsExplored(location);
 				cursor = self.World.Map.Contains(location) ?
-					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") :
-					"move-blocked";
+					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? unitType.Cursor) : unitType.BlockedCursor;
 
-				if ((!explored && !unitType.MoveIntoShroud) ||
-					(explored && unitType.MovementCostForCell(self.World, location) == int.MaxValue))
-					cursor = "move-blocked";
+				if ((!explored && !unitType.MoveIntoShroud) || (explored && unitType.MovementCostForCell(self.World, location) == int.MaxValue))
+					cursor = unitType.BlockedCursor;
 
 				return true;
 			}
