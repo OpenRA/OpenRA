@@ -12,7 +12,7 @@ SendInsertionHelicopter = function()
 	local passengers = Reinforcements.ReinforceWithTransport(player, InsertionHelicopterType,
 		TanyaReinforcements, InsertionPath, { InsertionEntry.Location })[2]
 	local tanya = passengers[1]
-	Trigger.OnKilled(tanya, RescueFailed)
+	Trigger.OnKilled(tanya, TanyaKilledInAction)
 	tanya.Stance = "HoldFire"
 end
 
@@ -95,7 +95,13 @@ LabDestroyed = function()
 end
 
 RescueFailed = function()
-	player.MarkFailedObjective(SurviveObjective)
+	Media.PlaySpeechNotification(player, "ObjectiveNotMet")
+	player.MarkFailedObjective(EinsteinSurviveObjective)
+end
+
+TanyaKilledInAction = function()
+	Media.PlaySpeechNotification(player, "ObjectiveNotMet")
+	player.MarkFailedObjective(TanyaSurviveObjective)
 end
 
 OilPumpDestroyed = function()
@@ -123,7 +129,10 @@ HelicopterGone = function()
 		Media.PlaySpeechNotification(player, "TargetRescued")
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			player.MarkCompletedObjective(ExtractObjective)
-			player.MarkCompletedObjective(SurviveObjective)
+			player.MarkCompletedObjective(EinsteinSurviveObjective)
+			if not Tanya.IsDead then
+				player.MarkCompletedObjective(TanyaSurviveObjective)
+			end
 			if not collateralDamage then
 				player.MarkCompletedObjective(CivilProtectionObjective)
 			end
@@ -175,7 +184,8 @@ WorldLoaded = function()
 
 	Media.PlayMovieFullscreen("landing.vqa", function()
 		FindEinsteinObjective = player.AddPrimaryObjective("Find Einstein.")
-		SurviveObjective = player.AddPrimaryObjective("Tanya and Einstein must survive.")
+		TanyaSurviveObjective = player.AddPrimaryObjective("Tanya must survive.")
+		EinsteinSurviveObjective = player.AddPrimaryObjective("Einstein must survive.")
 		CivilProtectionObjective = player.AddSecondaryObjective("Protect all civilians.")
 
 		RunInitialActivities()
