@@ -200,8 +200,8 @@ local function navigateTo(default)
         if toline and ed then
           ed:MarkerDefine(ide:GetMarker(markername))
           ed:MarkerAdd(toline-1, marker)
-          local curline = ed:GetCurrentLine() -- TODO find the middle line
-          origline = origline or (curline+1)
+          -- store the original line if not stored yet
+          origline = origline or (ed:GetCurrentLine()+1)
           ed:EnsureVisibleEnforcePolicy(toline-1)
         end
       elseif text and #text > 0 and projdir and #projdir > 0 then
