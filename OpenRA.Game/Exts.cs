@@ -21,6 +21,13 @@ namespace OpenRA
 {
 	public static class Exts
 	{
+		public static string Reversed(this string str)
+		{
+			var a = str.ToCharArray();
+			Array.Reverse(a);
+			return new string(a);
+		}
+
 		public static bool IsUppercase(this string str)
 		{
 			return string.Compare(str.ToUpperInvariant(), str, false) == 0;

@@ -74,6 +74,8 @@ namespace OpenRA.FileSystem
 				throw new NotImplementedException("The creation of .PAK archives is unimplemented");
 			if (filename.EndsWith(".big", StringComparison.InvariantCultureIgnoreCase))
 				throw new NotImplementedException("The creation of .big archives is unimplemented");
+			if (filename.EndsWith(".drs", StringComparison.InvariantCultureIgnoreCase))
+				throw new NotImplementedException("The creation of .drs archives is unimplemented");
 
 			return new Folder(filename, order, content);
 		}
@@ -100,6 +102,8 @@ namespace OpenRA.FileSystem
 				return new PakFile(filename, order);
 			if (filename.EndsWith(".big", StringComparison.InvariantCultureIgnoreCase))
 				return new BigFile(filename, order);
+			if (filename.EndsWith(".drs", StringComparison.InvariantCultureIgnoreCase))
+				return new DrsFile(filename, order);
 
 			return new Folder(filename, order);
 		}
