@@ -37,13 +37,6 @@ namespace OpenRA.Mods.RA.Render
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			var ios = self.Trait<IOccupySpace>();
-
-			/* rude hack */
-			var flying = ios.CenterPosition.Z > 0;
-			var visualOffset = (ios is Helicopter && flying)
-				? (int)Math.Abs((self.ActorID + Game.LocalTick) / 5 % 4 - 1) - 1 : 0;
-
 			// Contrails shouldn't cast shadows
 			var shadowSprites = r.Where(s => !s.IsDecoration)
 				.Select(a => a.WithPalette(wr.Palette(info.Palette))
@@ -51,11 +44,7 @@ namespace OpenRA.Mods.RA.Render
 				.WithZOffset(a.ZOffset + a.Pos.Z)
 				.AsDecoration());
 
-			var worldVisualOffset = new WVec(0,0,-43*visualOffset);
-			var flyingSprites = !flying ? r :
-				r.Select(a => a.OffsetBy(worldVisualOffset));
-
-			return shadowSprites.Concat(flyingSprites);
+			return shadowSprites.Concat(r);
 		}
 	}
 }

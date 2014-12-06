@@ -601,6 +601,11 @@ WALL:
 	Tooltip:
 		Name: High Tech Facility
 		Description: Unlocks advanced technology
+	Production:
+		Produces: Aircraft
+	Exit:
+		SpawnOffset: 0,0,728
+		ExitCell: 0,0
 	Building:
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
@@ -613,8 +618,8 @@ WALL:
 		Range: 4c0
 	ProvidesCustomPrerequisite:
 		Prerequisite: hightech
-#	WithProductionOverlay@WELDING:
-#		Sequence: production-welding
+	WithProductionOverlay@WELDING:
+		Sequence: production-welding
 	Power:
 		Amount: -40
 

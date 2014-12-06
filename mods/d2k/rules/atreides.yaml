@@ -123,9 +123,7 @@ CARRYALLA:
 	RenderUnit:
 		Image: CARRYALL
 	Buildable:
-		Queue: Armor
-		Prerequisites: ~heavya, refinery, hightech
-		BuildPaletteOrder: 10
+		Prerequisites: refinery, ~hightecha
 
 CARRYALLA.starport:
 	Inherits: CARRYALLA

@@ -341,6 +341,7 @@
 		UpgradeMaxAcceptedLevel: 2
 	TimedUpgradeBar:
 		Upgrade: invulnerability
+	WithShadow:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -348,6 +349,7 @@
 		GenericName: Helicopter
 	GpsDot:
 		String: Helicopter
+	Hovers:
 
 ^Building:
 	AppearsOnRadar:

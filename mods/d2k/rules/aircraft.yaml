@@ -4,7 +4,10 @@
 		Cost: 1200
 	Tooltip:
 		Name: Carryall
-		Description: Fully automated Carryall.\n  Automatically transports your harvesters.
+		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters.
+	Buildable:
+		Queue: Aircraft
+		BuildPaletteOrder: 10
 	Health:
 		HP: 250
 	Armor:

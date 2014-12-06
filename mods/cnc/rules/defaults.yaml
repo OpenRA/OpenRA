@@ -147,6 +147,8 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	WithShadow:
+	Hovers:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -338,6 +340,7 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	WithShadow:
 
 ^Ship:
 	AppearsOnRadar:
