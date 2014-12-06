@@ -1381,6 +1381,86 @@ BRIK:
 	RenderBuildingWall:
 		Type: concrete
 
+^VGATE:
+	Inherits: ^Building
+	Building:
+		Dimensions: 1,3
+	Tooltip:
+		Name: Gate
+		Description: Vertical Gate
+	Valued:
+		Cost: 100
+	Health:
+		HP: 100
+	Armor:
+		Type: Concrete
+	LineBuildNode:
+		Types: concrete
+	RenderBuilding:
+		Palette: terrain
+	-FrozenUnderFog:
+	-Selectable:
+
+VGATE.open:
+	Inherits: ^VGATE
+	Building:
+		Footprint: _ _ _
+	Transforms:
+		IntoActor: vgate.close
+	ProxmityTransforms:
+		CheckFriendly: false
+		WhenAlone: true
+
+VGATE.close:
+	Inherits: ^VGATE
+	Building:
+		Footprint: x x x
+	Transforms:
+		IntoActor: vgate.open
+	ProxmityTransforms:
+		CheckFriendly: true
+		WhenAlone: false
+
+^AGATE:
+	Inherits: ^Building
+	Building:
+		Dimensions: 3,1
+	Tooltip:
+		Name: Gate
+		Description: Horizontal Gate
+	Valued:
+		Cost: 100
+	Health:
+		HP: 100
+	Armor:
+		Type: Concrete
+	LineBuildNode:
+		Types: concrete
+	RenderBuilding:
+		Palette: terrain
+	-FrozenUnderFog:
+	-Selectable:
+
+AGATE.open:
+	Inherits: ^AGATE
+	Building:
+		Footprint: ___
+	Transforms:
+		IntoActor: agate.close
+	ProxmityTransforms:
+		CheckFriendly: false
+		WhenAlone: true
+
+AGATE.close:
+	Inherits: ^AGATE
+	Building:
+		Footprint: xxx
+	Transforms:
+		IntoActor: agate.open
+	ProxmityTransforms:
+		CheckFriendly: true
+		WhenAlone: false
+
 CYCL:
 	Inherits: ^Wall
 	Health:

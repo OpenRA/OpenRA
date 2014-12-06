@@ -650,6 +650,43 @@ brik:
 	icon: brikicon
 		Start: 0
 
+vgate.close:
+	icon: clock
+		Start: 0
+	make: vgate
+		Start: 0
+		Length: 7
+	idle: vgate
+		Start: 6
+
+vgate.open:
+	icon: clock
+		Start: 0
+	make: vgate
+		Start: 0
+	idle: vgate
+		Start: 0
+		ZOffset: -1c511
+
+agate.close:
+	icon: clock
+		Start: 0
+	make: agate
+		Start: 0
+		Length: 7
+	idle: agate
+		Start: 6
+
+agate.open:
+	icon: clock
+		Start: 0
+	make: agate
+		Start: 0
+	idle: agate
+		Start: 0
+		ZOffset: -1c511
+
+
 sbag:
 	idle:
 		Start: 0
