@@ -6,7 +6,8 @@
 		Name: Carryall
 		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters.
 	Buildable:
-		BuildAtProductionType: Aircraft
+		Queue: Aircraft
+		BuildPaletteOrder: 10
 	Health:
 		HP: 250
 	Armor:
