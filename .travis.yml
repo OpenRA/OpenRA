@@ -1,17 +1,7 @@
 # Travis-CI Build for OpenRA
 # see travis-ci.org for details
 
-# Mono/.NET are not officially supported. The following is a workaround.
-language: c
-
-# Make sure build dependencies are installed.
-install:
- - wget http://download.mono-project.com/repo/xamarin.gpg -O /tmp/mono.gpg
- - sudo apt-key add /tmp/mono.gpg
- - sudo sh -c "echo 'deb http://download.mono-project.com/repo/debian wheezy/snapshots/3.8.0 main' >> /etc/apt/sources.list.d/mono-xamarin.list"
- - sudo apt-get update -qq
- - sudo apt-get install -qq mono-gmcs cli-common-dev libgdiplus=2.10-3
-cache: apt
+language: csharp
 
 # Run the build script
 # call RALint to check for YAML errors
