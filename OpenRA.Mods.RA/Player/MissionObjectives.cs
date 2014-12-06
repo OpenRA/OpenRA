@@ -129,7 +129,7 @@ namespace OpenRA.Mods.RA
 				{
 					foreach (var inou in inous)
 						inou.OnPlayerLost(player);
-	
+
 					CheckIfGameIsOver(player);
 				}
 			}
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.RA
 		{
 			var players = player.World.Players.Where(p => !p.NonCombatant);
 
-			var gameOver = players.All(p => p.WinState != WinState.Undefined);
+			var gameOver = players.All(p => p.WinState != WinState.Undefined || !p.HasObjectives);
 			if (gameOver)
 				Game.RunAfterDelay(info.GameOverDelay, () =>
 				{
@@ -181,6 +181,8 @@ namespace OpenRA.Mods.RA
 					foreach (var p in enemies)
 						p.PlayerActor.Trait<MissionObjectives>().ForceDefeat(p);
 			}
+
+			CheckIfGameIsOver(player);
 		}
 
 		public void OnPlayerLost(Player player)
@@ -218,6 +220,8 @@ namespace OpenRA.Mods.RA
 						p.World.OnPlayerWinStateChanged(p);
 					}
 			}
+
+			CheckIfGameIsOver(player);
 		}
 
 		public void ForceDefeat(Player player)
@@ -227,7 +231,7 @@ namespace OpenRA.Mods.RA
 					MarkFailed(player, id);
 		}
 
-		public event Action<Player> ObjectiveAdded = player => { };
+		public event Action<Player> ObjectiveAdded = player => { player.HasObjectives = true; };
 
 		public void OnObjectiveAdded(Player player, int id) {}
 		public void OnObjectiveCompleted(Player player, int id) {}

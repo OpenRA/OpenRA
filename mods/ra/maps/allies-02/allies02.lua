@@ -111,8 +111,6 @@ WorldLoaded = function()
 
 	Media.PlayMovieFullscreen("mcv.vqa", function()
 		ConquestObjective = player.AddPrimaryObjective("Secure the area.")
-		ussr.AddPrimaryObjective("Defend your base.")
-		ukraine.AddPrimaryObjective("Destroy the convoy.")
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionTimerInitialised") end)
