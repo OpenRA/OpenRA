@@ -10,6 +10,13 @@ WaterTransportTriggerArea = { CPos.New(39, 54), CPos.New(40, 54), CPos.New(41, 5
 ParadropTriggerArea = { CPos.New(81, 60), CPos.New(82, 60), CPos.New(83, 60), CPos.New(63, 63), CPos.New(64, 63), CPos.New(65, 63), CPos.New(66, 63), CPos.New(67, 63), CPos.New(68, 63), CPos.New(69, 63), CPos.New(70, 63), CPos.New(71, 63), CPos.New(72, 63) }
 ReinforcementsTriggerArea = { CPos.New(96, 55), CPos.New(97, 55), CPos.New(97, 56), CPos.New(98, 56) }
 
+if Map.Difficulty == "Easy" then
+	TanyaType = "e7"
+else
+	TanyaType = "e7.noautotarget"
+	ChangeStance = true
+end
+
 IdleHunt = function(actor) Trigger.OnIdle(actor, actor.Hunt) end
 
 ProduceUnits = function(factory, count)
@@ -32,36 +39,20 @@ ProduceUnits = function(factory, count)
 	end
 end
 
-countFreed = 0
-FreePrisoner = function(unit, type)
-	if not unit.IsDead then
-		local newUnit = Actor.Create(type, true, { Owner = player, Location = unit.Location, CenterPosition = unit.CenterPosition })
-		unit.Destroy()
-		Trigger.AfterDelay(15, function()
-			if not newUnit.IsDead then
-				if not DefendPrisoners then
-					DefendPrisoners = player.AddSecondaryObjective("Keep all rescued Allied soldiers alive.")
-				end
-				Trigger.OnKilled(newUnit, function() player.MarkFailedObjective(DefendPrisoners) end)
-			else
-				player.MarkFailedObjective(FreePrisoners)
-			end
-
-			countFreed = countFreed + 1
-			if countFreed == 3 then
-				player.MarkCompletedObjective(FreePrisoners)
-			end
-		end)
-	end
-end
-
 SendAlliedUnits = function()
 	Camera.Position = TanyaWaypoint.CenterPosition
 
 	local Artillery = Actor.Create("arty", true, { Owner = player, Location = AlliedUnitsEntry.Location })
-	local Tanya = Actor.Create("e7", true, { Owner = player, Location = AlliedUnitsEntry.Location })
-	Tanya.Stance = "HoldFire"
+	local Tanya = Actor.Create(TanyaType, true, { Owner = player, Location = AlliedUnitsEntry.Location })
+
+	if ChangeStance then
+		Tanya.Stance = "HoldFire"
+		Trigger.AfterDelay(DateTime.Seconds(2), function()
+			Media.DisplayMessage("According to the rules of engagement I need your explicit orders to fire, Commander!", "Tanya")
+		end)
+	end
 	Artillery.Stance = "HoldFire"
+
 	Tanya.Move(TanyaWaypoint.Location)
 	Artillery.Move(ArtilleryWaypoint.Location)
 
@@ -110,7 +101,7 @@ InitObjectives = function()
 	KillBridges = player.AddPrimaryObjective("Destroy all bridges.")
 	TanyaSurvive = player.AddPrimaryObjective("Tanya must survive.")
 	KillUSSR = player.AddSecondaryObjective("Destroy all soviet Oil Pumps.")
-	FreePrisoners = player.AddSecondaryObjective("Free all imprisoned Allied soldiers.")
+	FreePrisoners = player.AddSecondaryObjective("Free all Allied soldiers and keep them alive.")
 	ussr.AddPrimaryObjective("Bridges must not be destroyed.")
 
 	Trigger.OnObjectiveCompleted(player, function(p, id)
@@ -140,9 +131,6 @@ InitTriggers = function()
 	end)
 
 	Trigger.OnAnyKilled(Prisoners, function() player.MarkFailedObjective(FreePrisoners) end)
-
-	Trigger.OnKilled(PGuard1, function() FreePrisoner(PrisonedMedi1, "medi") end)
-	Trigger.OnKilled(PGuard2, function() FreePrisoner(PrisonedMedi2, "medi") FreePrisoner(PrisonedEngi, "hacke6") end)
 
 	Trigger.OnKilled(USSRTechCenter, function()
 		Actor.Create("moneycrate", true, { Owner = ussr, Location = USSRMoneyCrateSpawn.Location })
@@ -247,7 +235,7 @@ InitTriggers = function()
 		Trigger.OnAllKilled(bridges, function()
 			player.MarkCompletedObjective(KillBridges)
 			player.MarkCompletedObjective(TanyaSurvive)
-			if DefendPrisoners then player.MarkCompletedObjective(DefendPrisoners) end
+			player.MarkCompletedObjective(FreePrisoners)
 		end)
 
 		local oilPumps = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(self) return self.Type == "v19" end)
