@@ -175,13 +175,18 @@ namespace OpenRA
 		public static Modifiers GetModifierKeys() { return modifiers; }
 		internal static void HandleModifierKeys(Modifiers mods) { modifiers = mods; }
 
+		public static void InitializeSettings(Arguments args)
+		{
+			Settings = new Settings(Platform.ResolvePath("^", "settings.yaml"), args);
+		}
+
 		internal static void Initialize(Arguments args)
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
 			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
-			Settings = new Settings(Platform.ResolvePath("^", "settings.yaml"), args);
+			InitializeSettings(args);
 
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");
