@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 
 namespace OpenRA.Graphics
@@ -104,6 +105,21 @@ namespace OpenRA.Graphics
 			currentSheet = s.sheet;
 			currentBlend = s.blendMode;
 			Util.FastCreateQuad(vertices, a, b, c, d, s, 0, nv);
+			nv += 4;
+		}
+
+		public void DrawSprite(Sprite s, Vertex[] sourceVertices, int offset)
+		{
+			Renderer.CurrentBatchRenderer = this;
+
+			if (s.sheet != currentSheet ||
+				s.blendMode != currentBlend ||
+				nv + 4 > Renderer.TempBufferSize)
+				Flush();
+
+			currentBlend = s.blendMode;
+			currentSheet = s.sheet;
+			Array.Copy(sourceVertices, offset, vertices, nv, 4);
 			nv += 4;
 		}
 
