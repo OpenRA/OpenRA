@@ -182,6 +182,7 @@ Background@SETTINGS_PANEL:
 					Y: 205
 					Width: 70
 					Height: 25
+					IgnoreChildMouseOver: true
 					Children:
 						ColorBlock@COLORBLOCK:
 							X: 5
