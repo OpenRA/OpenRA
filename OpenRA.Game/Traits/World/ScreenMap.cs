@@ -175,15 +175,17 @@ namespace OpenRA.Traits
 			var right = (r.Right / info.BinSize).Clamp(0, cols - 1);
 			var top = (r.Top / info.BinSize).Clamp(0, rows - 1);
 			var bottom = (r.Bottom / info.BinSize).Clamp(0, rows - 1);
+			var bins = frozen[p];
 
-			var frozenInBox = new List<FrozenActor>();
+			var actorsChecked = new HashSet<FrozenActor>();
 			for (var j = top; j <= bottom; j++)
 				for (var i = left; i <= right; i++)
-					frozenInBox.AddRange(frozen[p][j * cols + i]
-					                     .Where(kv => kv.Key.IsValid && kv.Value.IntersectsWith(r))
-					                     .Select(kv => kv.Key));
-
-			return frozenInBox.Distinct();
+					foreach (var kvp in bins[j * cols + i])
+					{
+						var actor = kvp.Key;
+						if (actor.IsValid && kvp.Value.IntersectsWith(r) && actorsChecked.Add(actor))
+							yield return actor;
+					}
 		}
 	}
 }
