@@ -217,7 +217,7 @@ local function navigateTo(default)
           end
         end
         local topscore
-        for _, item in ipairs(CommandBarScoreFiles(projectFiles, text, 100)) do
+        for _, item in ipairs(CommandBarScoreItems(projectFiles, text, 100)) do
           local file, score = unpack(item)
           topscore = topscore or score
           if score > topscore / 4 and score > 1 then

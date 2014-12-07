@@ -282,7 +282,7 @@ local function score(p, v)
   return cache[key]
 end
 
-function CommandBarScoreFiles(t, pattern, limit)
+function CommandBarScoreItems(t, pattern, limit)
   local r, plen = {}, #pattern
   local maxp = 0
   local num = 0
