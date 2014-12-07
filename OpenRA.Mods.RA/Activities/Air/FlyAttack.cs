@@ -10,6 +10,7 @@
 
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
+using System.Linq;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -17,6 +18,7 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		readonly Target target;
 		Activity inner;
+		int ticksUntilTurn = 50;
 
 		public FlyAttack(Target target) { this.target = target; }
 
@@ -38,9 +40,11 @@ namespace OpenRA.Mods.RA.Activities
 				if (IsCanceled)
 					return NextActivity;
 
-				inner = Util.SequenceActivities(new Fly(self, target), new FlyTimed(50));
+				if (target.IsInRange(self.CenterPosition, attack.Armaments.Select(a => a.Weapon.MinRange).Min()))
+					inner = Util.SequenceActivities(new FlyTimed(ticksUntilTurn), new Fly(self, target), new FlyTimed(ticksUntilTurn));
+				else
+					inner = Util.SequenceActivities(new Fly(self, target), new FlyTimed(ticksUntilTurn));
 			}
-
 			inner = Util.RunActivity(self, inner);
 
 			return this;
