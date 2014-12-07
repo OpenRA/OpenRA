@@ -19,7 +19,7 @@ harv:
 		Start: 32
 		Length: 4
 		Facings: 8
-		Tick: 60
+		Tick: 1
 	dock: harvdump
 		Start: 0
 		Length: 7
@@ -330,3 +330,4 @@ apc.destroyed:
 		Start: 0
 		Facings: 32
 		ZOffset: -512
+

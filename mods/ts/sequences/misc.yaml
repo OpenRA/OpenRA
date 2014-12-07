@@ -34,13 +34,13 @@ poweroff:
 	offline: poweroff
 		Start: 0
 		Length: *
-		Tick: 160
+		Tick: 4
 
 allyrepair:
 	repair: wrench
 		Start: 0
 		Length: *
-		Tick: 160
+		Tick: 4
 
 # TODO: fix/replace them, just placeholders
 rallypoint:
@@ -113,7 +113,7 @@ clock:
 		Length: *
 
 pips:
-	medic: 
+	medic:
 		Start: 6
 	groups: pipsra #TODO: backfall to RA asset
 		Start: 8
@@ -157,7 +157,7 @@ explosion:
 	ionring: ring1
 		Start: 0
 		Length: *
-		Tick: 160
+		Tick: 4
 	pulse_explosion: pulsefx2
 		Start: 0
 		Length: *
@@ -308,7 +308,7 @@ flameall:
 		Start: 0
 		Length: 19
 		Facings: -8
-		Tick: 160
+		Tick: 4
 
 largesmoke:
 	idle: lgrysmk1
@@ -344,7 +344,7 @@ moveflsh:
 	idle: ring
 		Start: 0
 		Length: *
-		Tick: 30
+		Tick: 1
 
 resources:
 	tib01: tib01
@@ -537,3 +537,4 @@ largecraters:
 	cr12: crater12
 		Length: 1
 		Offset: 0, -24
+

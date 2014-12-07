@@ -22,35 +22,36 @@ c1:
 		Start: 200
 		Length: 3
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 329
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die2:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die3:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die4:
 		Start: 345
 		Length: 12
-		Tick: 80
+		Tick: 2
 	die5:
 		Start: 357
 		Length: 18
-		Tick: 80
+		Tick: 2
 	die6:
 		Start: 182
 		Length: 4
-		Tick: 80
+		Tick: 2
 	die-crushed: e1rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 40
+
 c2:
 	stand:
 		Start: 0
@@ -75,35 +76,36 @@ c2:
 		Start: 200
 		Length: 3
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 329
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die2:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die3:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die4:
 		Start: 345
 		Length: 12
-		Tick: 80
+		Tick: 2
 	die5:
 		Start: 357
 		Length: 18
-		Tick: 80
+		Tick: 2
 	die6:
 		Start: 182
 		Length: 4
-		Tick: 80
+		Tick: 2
 	die-crushed: e1rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 40
+
 c3:
 	stand:
 		Start: 0
@@ -128,35 +130,36 @@ c3:
 		Start: 200
 		Length: 3
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 329
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die2:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die3:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die4:
 		Start: 345
 		Length: 12
-		Tick: 80
+		Tick: 2
 	die5:
 		Start: 357
 		Length: 18
-		Tick: 80
+		Tick: 2
 	die6:
 		Start: 182
 		Length: 4
-		Tick: 80
+		Tick: 2
 	die-crushed: e1rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 40
+
 c4:
 	stand:
 		Start: 0
@@ -181,35 +184,36 @@ c4:
 		Start: 200
 		Length: 3
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 329
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die2:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die3:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die4:
 		Start: 345
 		Length: 12
-		Tick: 80
+		Tick: 2
 	die5:
 		Start: 357
 		Length: 18
-		Tick: 80
+		Tick: 2
 	die6:
 		Start: 182
 		Length: 4
-		Tick: 80
+		Tick: 2
 	die-crushed: e1rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 40
+
 c5:
 	stand:
 		Start: 0
@@ -234,35 +238,36 @@ c5:
 		Start: 200
 		Length: 3
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 329
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die2:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die3:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die4:
 		Start: 345
 		Length: 12
-		Tick: 80
+		Tick: 2
 	die5:
 		Start: 357
 		Length: 18
-		Tick: 80
+		Tick: 2
 	die6:
 		Start: 182
 		Length: 4
-		Tick: 80
+		Tick: 2
 	die-crushed: e1rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 40
+
 c6:
 	stand:
 		Start: 0
@@ -287,35 +292,36 @@ c6:
 		Start: 200
 		Length: 3
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 329
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die2:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die3:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die4:
 		Start: 345
 		Length: 12
-		Tick: 80
+		Tick: 2
 	die5:
 		Start: 357
 		Length: 18
-		Tick: 80
+		Tick: 2
 	die6:
 		Start: 182
 		Length: 4
-		Tick: 80
+		Tick: 2
 	die-crushed: e1rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 40
+
 c7:
 	stand:
 		Start: 0
@@ -340,35 +346,36 @@ c7:
 		Start: 200
 		Length: 3
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 329
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die2:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die3:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die4:
 		Start: 345
 		Length: 12
-		Tick: 80
+		Tick: 2
 	die5:
 		Start: 357
 		Length: 18
-		Tick: 80
+		Tick: 2
 	die6:
 		Start: 182
 		Length: 4
-		Tick: 80
+		Tick: 2
 	die-crushed: e1rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 40
+
 c8:
 	stand:
 		Start: 0
@@ -393,35 +400,36 @@ c8:
 		Start: 200
 		Length: 3
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 329
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die2:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die3:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die4:
 		Start: 345
 		Length: 12
-		Tick: 80
+		Tick: 2
 	die5:
 		Start: 357
 		Length: 18
-		Tick: 80
+		Tick: 2
 	die6:
 		Start: 182
 		Length: 4
-		Tick: 80
+		Tick: 2
 	die-crushed: e1rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 40
+
 c9:
 	stand:
 		Start: 0
@@ -446,35 +454,36 @@ c9:
 		Start: 200
 		Length: 3
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 329
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die2:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die3:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die4:
 		Start: 345
 		Length: 12
-		Tick: 80
+		Tick: 2
 	die5:
 		Start: 357
 		Length: 18
-		Tick: 80
+		Tick: 2
 	die6:
 		Start: 182
 		Length: 4
-		Tick: 80
+		Tick: 2
 	die-crushed: e1rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 40
+
 c10:
 	stand:
 		Start: 0
@@ -499,32 +508,33 @@ c10:
 		Start: 200
 		Length: 3
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 329
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die2:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die3:
 		Start: 337
 		Length: 8
-		Tick: 80
+		Tick: 2
 	die4:
 		Start: 345
 		Length: 12
-		Tick: 80
+		Tick: 2
 	die5:
 		Start: 357
 		Length: 18
-		Tick: 80
+		Tick: 2
 	die6:
 		Start: 182
 		Length: 4
-		Tick: 80
+		Tick: 2
 	die-crushed: e1rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 40
+

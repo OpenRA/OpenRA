@@ -164,6 +164,7 @@ smech:
 		Length: 4
 		Facings: -8
 		ShadowStart: 240
-		Tick: 100
+		Tick: 2
 	icon: smchicon
 		Start: 0
+

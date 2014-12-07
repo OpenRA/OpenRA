@@ -60,7 +60,7 @@ tc04:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 tc05:
 	idle:
@@ -70,7 +70,7 @@ tc05:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 tc03:
 	idle:
@@ -80,7 +80,7 @@ tc03:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 tc02:
 	idle:
@@ -90,7 +90,7 @@ tc02:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 tc01:
 	idle:
@@ -100,7 +100,7 @@ tc01:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t18:
 	idle:
@@ -110,7 +110,7 @@ t18:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t17:
 	idle:
@@ -120,7 +120,7 @@ t17:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t16:
 	idle:
@@ -130,7 +130,7 @@ t16:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t15:
 	idle:
@@ -140,7 +140,7 @@ t15:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t14:
 	idle:
@@ -150,7 +150,7 @@ t14:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t13:
 	idle:
@@ -160,7 +160,7 @@ t13:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t12:
 	idle:
@@ -170,7 +170,7 @@ t12:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t11:
 	idle:
@@ -180,7 +180,7 @@ t11:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t10:
 	idle:
@@ -190,7 +190,7 @@ t10:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t09:
 	idle:
@@ -200,7 +200,7 @@ t09:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t08:
 	idle:
@@ -210,7 +210,7 @@ t08:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t07:
 	idle:
@@ -220,7 +220,7 @@ t07:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t06:
 	idle:
@@ -230,7 +230,7 @@ t06:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t05:
 	idle:
@@ -240,7 +240,7 @@ t05:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t04:
 	idle:
@@ -250,7 +250,7 @@ t04:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t03:
 	idle:
@@ -260,7 +260,7 @@ t03:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t02:
 	idle:
@@ -270,7 +270,7 @@ t02:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 t01:
 	idle:
@@ -280,7 +280,7 @@ t01:
 	dead:
 		Start: 2
 		Length: 8
-		Tick: 80
+		Tick: 2
 
 v01:
 	idle:
@@ -487,11 +487,11 @@ v19:
 	idle:
 		Start: 0
 		Length: 14
-		Tick: 120
+		Tick: 3
 	damaged-idle:
 		Start: 14
 		Length: 14
-		Tick: 120
+		Tick: 3
 
 v19.husk:
 	idle: v19
@@ -509,11 +509,11 @@ v20:
 	idle:
 		Start: 0
 		Length: 3
-		Tick: 120
+		Tick: 3
 	damaged-idle:
 		Start: 3
 		Length: 3
-		Tick: 120
+		Tick: 3
 
 v20.husk:
 	idle: v20
@@ -523,11 +523,11 @@ v21:
 	idle:
 		Start: 0
 		Length: 3
-		Tick: 120
+		Tick: 3
 	damaged-idle:
 		Start: 3
 		Length: 3
-		Tick: 120
+		Tick: 3
 
 v21.husk:
 	idle: v21
@@ -537,11 +537,11 @@ v22:
 	idle:
 		Start: 0
 		Length: 3
-		Tick: 120
+		Tick: 3
 	damaged-idle:
 		Start: 3
 		Length: 3
-		Tick: 120
+		Tick: 3
 
 v22.husk:
 	idle: v22
@@ -551,11 +551,11 @@ v23:
 	idle:
 		Start: 0
 		Length: 3
-		Tick: 120
+		Tick: 3
 	damaged-idle:
 		Start: 3
 		Length: 3
-		Tick: 120
+		Tick: 3
 
 v23.husk:
 	idle: v23
@@ -710,3 +710,4 @@ arco:
 arco.husk:
 	idle: arco
 		Start: 1
+

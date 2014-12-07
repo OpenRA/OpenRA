@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			UpgradeRules.UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
 			UpgradeRules.UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
+			UpgradeSequences.UpgradeActorSequences(engineDate, ref map.SequenceDefinitions, null, 0);
 			map.Save(args[1]);
 		}
 	}

@@ -77,7 +77,7 @@ namespace OpenRA.Graphics
 				if (d.ContainsKey("Tick"))
 					Tick = Exts.ParseIntegerInvariant(d["Tick"].Value);
 				else
-					Tick = 40;
+					Tick = 1;
 
 				if (d.ContainsKey("Transpose"))
 					transpose = bool.Parse(d["Transpose"].Value);

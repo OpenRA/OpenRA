@@ -12,7 +12,7 @@ e1:
 		Start: 16
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	shoot:
 		Start: 64
 		Length: 8
@@ -25,7 +25,7 @@ e1:
 		Start: 144
 		Length: 4
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	standup-0:
 		Start: 176
 		Length: 2
@@ -37,11 +37,11 @@ e1:
 	idle1:
 		Start: 256
 		Length: 16
-		Tick: 120
+		Tick: 3
 	idle2:
 		Start: 272
 		Length: 16
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 288
 		Length: 8
@@ -63,7 +63,7 @@ e1:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	garrison-muzzle: minigun
 		Start: 0
@@ -83,7 +83,7 @@ sniper:
 		Start: 16
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	shoot:
 		Start: 64
 		Length: 16
@@ -99,7 +99,7 @@ sniper:
 		Start: 208
 		Length: 4
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	standup:
 		Start: 240
 		Length: 2
@@ -111,11 +111,11 @@ sniper:
 	idle1:
 		Start: 384
 		Length: 14
-		Tick: 120
+		Tick: 3
 	idle2:
 		Start: 399
 		Length: 16
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 416
 		Length: 8
@@ -136,7 +136,7 @@ sniper:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	garrison-muzzle: minigun
 		Start: 0
@@ -157,7 +157,7 @@ e3:
 		Start: 16
 		Length: 6
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	shoot:
 		Start: 64
 		Length: 8
@@ -165,11 +165,11 @@ e3:
 	idle1:
 		Start: 272
 		Length: 14
-		Tick: 120
+		Tick: 3
 	idle2:
 		Start: 287
 		Length: 16
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 304
 		Length: 8
@@ -191,7 +191,7 @@ e3:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	prone-stand:
 		Start: 144
@@ -201,7 +201,7 @@ e3:
 		Start: 144
 		Length: 4
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	prone-shoot:
 		Start: 192
 		Length: 10
@@ -220,15 +220,15 @@ e6:
 		Start: 16
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	idle1:
 		Start: 121
 		Length: 8
-		Tick: 120
+		Tick: 3
 	idle2:
 		Start: 130
 		Length: 14
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 146
 		Length: 8
@@ -250,7 +250,7 @@ e6:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	prone-stand:
 		Start: 82
@@ -260,7 +260,7 @@ e6:
 		Start: 82
 		Length: 4
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	icon: e6icon
 		Start: 0
 
@@ -275,11 +275,11 @@ medi:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	heal:
 		Start: 56
 		Length: 58
-		Tick: 120
+		Tick: 3
 	standup:
 		Start: 114
 		Length: 2
@@ -287,11 +287,11 @@ medi:
 	idle1:
 		Start: 163
 		Length: 14
-		Tick: 120
+		Tick: 3
 	idle2:
 		Start: 178
 		Length: 14
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 193
 		Length: 7
@@ -313,7 +313,7 @@ medi:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	prone-stand:
 		Start: 130
@@ -323,10 +323,10 @@ medi:
 		Start: 130
 		Length: 4
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	icon: mediicon
 		Start: 0
-		
+
 mech:
 	stand:
 		Start: 0
@@ -338,11 +338,11 @@ mech:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	heal:
 		Start: 56
 		Length: 58
-		Tick: 120
+		Tick: 3
 	standup:
 		Start: 114
 		Length: 2
@@ -350,11 +350,11 @@ mech:
 	idle1:
 		Start: 163
 		Length: 14
-		Tick: 120
+		Tick: 3
 	idle2:
 		Start: 178
 		Length: 14
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 193
 		Length: 7
@@ -376,7 +376,7 @@ mech:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	prone-stand:
 		Start: 130
@@ -386,7 +386,7 @@ mech:
 		Start: 130
 		Length: 4
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	icon: mechicon
 		Start: 0
 
@@ -401,7 +401,7 @@ e2:
 		Start: 16
 		Length: 6
 		Facings: 8
-		Tick: 80
+		Tick: 2
 	shoot:
 		Start: 64
 		Length: 20
@@ -409,11 +409,11 @@ e2:
 	idle1:
 		Start: 384
 		Length: 14
-		Tick: 120
+		Tick: 3
 	idle2:
 		Start: 399
 		Length: 16
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 416
 		Length: 8
@@ -435,7 +435,7 @@ e2:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	prone-stand:
 		Start: 240
@@ -445,7 +445,7 @@ e2:
 		Start: 240
 		Length: 4
 		Facings: 8
-		Tick: 80
+		Tick: 2
 	prone-shoot:
 		Start: 288
 		Length: 12
@@ -464,15 +464,15 @@ dog:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 80
+		Tick: 2
 	idle1:
 		Start: 216
 		Length: 7
-		Tick: 120
+		Tick: 3
 	idle2:
 		Start: 224
 		Length: 11
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 236
 		Length: 6
@@ -494,7 +494,7 @@ dog:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	shoot: dogbullt
 		Start: 0
@@ -514,7 +514,7 @@ spy:
 		Start: 16
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	shoot:
 		Start: 64
 		Length: 8
@@ -522,11 +522,11 @@ spy:
 	idle1:
 		Start: 256
 		Length: 14
-		Tick: 120
+		Tick: 3
 	idle2:
 		Start: 271
 		Length: 16
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 288
 		Length: 8
@@ -548,7 +548,7 @@ spy:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	prone-stand:
 		Start: 144
@@ -558,7 +558,7 @@ spy:
 		Start: 144
 		Length: 4
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	prone-shoot:
 		Start: 192
 		Length: 8
@@ -577,7 +577,7 @@ thf:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	die1:
 		Start: 139
 		Length: 8
@@ -599,7 +599,7 @@ thf:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	crawl:
 		Start: 72
@@ -619,7 +619,7 @@ hijacker:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 2
 	die1: thf
 		Start: 139
 		Length: 8
@@ -641,7 +641,7 @@ hijacker:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	crawl: thf
 		Start: 72
@@ -661,7 +661,7 @@ e7:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 80
+		Tick: 2
 	shoot:
 		Start: 56
 		Length: 7
@@ -669,11 +669,11 @@ e7:
 	idle1:
 		Start: 233
 		Length: 14
-		Tick: 120
+		Tick: 3
 	idle2:
 		Start: 248
 		Length: 15
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 262
 		Length: 8
@@ -695,7 +695,7 @@ e7:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	prone-stand:
 		Start: 128
@@ -705,7 +705,7 @@ e7:
 		Start: 128
 		Length: 4
 		Facings: 8
-		Tick: 80
+		Tick: 2
 	prone-shoot:
 		Start: 176
 		Length: 7
@@ -729,7 +729,7 @@ e4:
 		Start: 16
 		Length: 6
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	shoot:
 		Start: 64
 		Length: 16
@@ -737,11 +737,11 @@ e4:
 	idle1:
 		Start: 384
 		Length: 14
-		Tick: 120
+		Tick: 3
 	idle2:
 		Start: 399
 		Length: 16
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 416
 		Length: 8
@@ -763,7 +763,7 @@ e4:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	prone-stand:
 		Start: 208
@@ -773,7 +773,7 @@ e4:
 		Start: 208
 		Length: 4
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	prone-shoot:
 		Start: 256
 		Length: 16
@@ -792,7 +792,7 @@ gnrl:
 		Start: 8
 		Length: 5
 		Facings: 8
-		Tick: 80
+		Tick: 2
 	shoot:
 		Start: 56
 		Length: 4
@@ -816,7 +816,7 @@ gnrl:
 	idle1:
 		Start: 184
 		Length: 26
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 210
 		Length: 8
@@ -838,7 +838,7 @@ gnrl:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 
 shok:
@@ -852,7 +852,7 @@ shok:
 		Start: 16
 		Length: 6
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	shoot:
 		Start: 64
 		Length: 16
@@ -868,7 +868,7 @@ shok:
 		Start: 208
 		Length: 4
 		Facings: 8
-		Tick: 120
+		Tick: 3
 	standup:
 		Start: 240
 		Length: 2
@@ -880,11 +880,11 @@ shok:
 	idle1:
 		Start: 384
 		Length: 14
-		Tick: 120
+		Tick: 3
 	idle2:
 		Start: 399
 		Length: 16
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 416
 		Length: 8
@@ -906,7 +906,7 @@ shok:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	icon: shokicon
 		Start: 0
@@ -951,13 +951,13 @@ c1:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	run:
 		Start: 56
 		Length: 6
 		Facings: 8
-		Tick: 80
+		Tick: 2
 
 c2:
 	stand:
@@ -999,13 +999,13 @@ c2:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	run:
 		Start: 56
 		Length: 6
 		Facings: 8
-		Tick: 80
+		Tick: 2
 
 c3:
 	stand:
@@ -1047,13 +1047,13 @@ c3:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	run:
 		Start: 56
 		Length: 6
 		Facings: 8
-		Tick: 80
+		Tick: 2
 
 einstein:
 	stand:
@@ -1074,7 +1074,7 @@ einstein:
 		Start: 56
 		Length: 6
 		Facings: 8
-		Tick: 80
+		Tick: 2
 	die1:
 		Start: 115
 		Length: 8
@@ -1096,7 +1096,7 @@ einstein:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 
 delphi:
@@ -1118,7 +1118,7 @@ delphi:
 		Start: 56
 		Length: 6
 		Facings: 8
-		Tick: 80
+		Tick: 2
 	die1:
 		Start: 115
 		Length: 8
@@ -1140,7 +1140,7 @@ delphi:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 
 chan:
@@ -1162,7 +1162,7 @@ chan:
 		Start: 56
 		Length: 6
 		Facings: 8
-		Tick: 80
+		Tick: 2
 	die1:
 		Start: 115
 		Length: 8
@@ -1184,7 +1184,7 @@ chan:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 
 zombie:
@@ -1205,7 +1205,7 @@ zombie:
 	idle1:
 		Start: 96
 		Length: 10
-		Tick: 120
+		Tick: 3
 	die1:
 		Start: 106
 		Length: 7
@@ -1227,7 +1227,7 @@ zombie:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 		ZOffset: -511
 	icon: zombicon
 		Start: 0
@@ -1250,11 +1250,12 @@ ant:
 	die:
 		Start: 104
 		Length: 8
-		Tick: 300
+		Tick: 7
 	die-crushed:
 		Start: 104
 		Length: 8
-		Tick: 400
+		Tick: 10
 		ZOffset: -511
 	icon: anticon
 		Start: 0
+

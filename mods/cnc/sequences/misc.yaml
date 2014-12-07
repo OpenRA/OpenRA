@@ -37,7 +37,7 @@ smoke_m:
 		ZOffset: 512
 
 laserfire:
-	idle:veh-hit3
+	idle: veh-hit3
 		Start: 0
 		Length: *
 
@@ -116,11 +116,11 @@ rank:
 		Length: *
 
 rallypoint:
-	flag:flagfly
+	flag: flagfly
 		Start: 0
 		Length: *
 		Offset: 10,-5
-	circles:fpls
+	circles: fpls
 		Start: 0
 		Length: *
 
@@ -152,7 +152,7 @@ allyrepair:
 	repair:
 		Start: 0
 		Length: *
-		Tick: 160
+		Tick: 4
 
 crate:
 	idle:
@@ -225,7 +225,7 @@ crate-effects:
 	levelup: levelup
 		Start: 0
 		Length: *
-		Tick: 200
+		Tick: 5
 	firepowerup: firepowercrate
 		Start: 0
 		Length: *
@@ -280,6 +280,7 @@ clock:
 	idle: hclock
 		Start: 0
 		Length: *
+
 pips:
 	pip-empty:
 		Start: 0
@@ -333,7 +334,7 @@ poweroff:
 	offline:
 		Start: 0
 		Length: *
-		Tick: 160
+		Tick: 4
 
 icon:
 	airstrike: bombicnh
@@ -347,7 +348,7 @@ moveflsh:
 	idle:
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 
 resources:
 	ti1: ti1
@@ -443,3 +444,4 @@ craters:
 		Length: *
 	cr6: cr6
 		Length: *
+

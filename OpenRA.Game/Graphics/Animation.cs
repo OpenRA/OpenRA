@@ -26,7 +26,7 @@ namespace OpenRA.Graphics
 
 		string name;
 
-		readonly int defaultTick = 40; // 25 fps == 40 ms
+		const int DefaultTick = 1;
 		bool tickAlways;
 
 		public string Name { get { return name; } }
@@ -136,26 +136,23 @@ namespace OpenRA.Graphics
 
 		public void Tick()
 		{
-			if (Paused == null || !Paused())
-				Tick(40); // tick one frame
-		}
+			if (Paused != null && Paused())
+				return;
 
-		public bool HasSequence(string seq) { return sequenceProvider.HasSequence(name, seq); }
-
-		public void Tick(int t)
-		{
 			if (tickAlways)
 				tickFunc();
 			else
 			{
-				timeUntilNextFrame -= t;
+				timeUntilNextFrame -= DefaultTick;
 				while (timeUntilNextFrame <= 0)
 				{
 					tickFunc();
-					timeUntilNextFrame += CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+					timeUntilNextFrame += CurrentSequence != null ? CurrentSequence.Tick : DefaultTick;
 				}
 			}
 		}
+
+		public bool HasSequence(string seq) { return sequenceProvider.HasSequence(name, seq); }
 
 		public void ChangeImage(string newImage, string newAnimIfMissing)
 		{

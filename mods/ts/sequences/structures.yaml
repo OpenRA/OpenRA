@@ -31,12 +31,12 @@ gacnst:
 	idle-top: gtcnst_c
 		Start: 0
 		Length: 15
-		Tick: 200
+		Tick: 5
 		Offset: 0, -36
 	damaged-idle-top: gtcnst_c
 		Start: 15
 		Length: 15
-		Tick: 200
+		Tick: 5
 		Offset: 0, -36
 	critical-idle-top: gtcnst_c
 		Start: 30
@@ -84,32 +84,32 @@ gapowr:
 	idle-lights: gtpowr_a
 		Start: 0
 		Length: 12
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	damaged-idle-lights: gtpowr_a
 		Start: 12
 		Length: 12
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	critical-idle-lights: gtpowr_a
 		Start: 24
 		Length: 12
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	idle-plug: gtpowr_b
 		Start: 0
 		Length: 12
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	damaged-idle-plug: gtpowr_b
 		Start: 0
 		Length: 12
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	critical-idle-plug: gtpowr_b
 		Start: 0
 		Length: 12
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	make: gtpowrmk
 		Start: 0
@@ -135,29 +135,29 @@ gapile:
 	production-lights: gtpile_a
 		Start: 0
 		Length: 7
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	damaged-production-lights: gtpile_a
-		Start:7
+		Start: 7
 		Length: 7
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	idle-light: gtpile_b
 		Start: 0
 		Length: 7
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	damaged-idle-light: gtpile_b
-		Start:7
+		Start: 7
 		Length: 7
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	idle-flag: gtpile_c
-		Start:0
+		Start: 0
 		Length: 7
 		Offset: 0, -24
 	damaged-idle-flag: gtpile_c
-		Start:7
+		Start: 7
 		Length: 7
 		Offset: 0, -24
 	make: gtpilemk
@@ -184,37 +184,37 @@ gaweap:
 	production-lights-white: gtweap_a
 		Start: 0
 		Length: 8
-		Tick: 100
+		Tick: 2
 		ZOffset: 2048
 		Offset: -12, -42
 	damaged-production-lights-white: gtweap_a
 		Start: 8
 		Length: 8
-		Tick: 100
+		Tick: 2
 		ZOffset: 2048
 		Offset: -12, -42
 	production-lights-red: gtweap_b
 		Start: 0
 		Length: 4
-		Tick: 120
+		Tick: 3
 		ZOffset: 2048
 		Offset: -12, -42
 	damaged-production-lights-red: gtweap_b
 		Start: 4
 		Length: 4
-		Tick: 120
+		Tick: 3
 		ZOffset: 2048
 		Offset: -12, -42
 	idle-turbines: gtweap_c
 		Start: 0
 		Length: 4
-		Tick: 80
+		Tick: 2
 		ZOffset: 2048
 		Offset: -12, -42
 	damaged-idle-turbines: gtweap_c
 		Start: 0
 		Length: 4
-		Tick: 80
+		Tick: 2
 		ZOffset: 2048
 		Offset: -12, -42
 	build-top: gtweap_d
@@ -236,7 +236,7 @@ gaweap:
 	make: gtweapmk
 		Start: 0
 		Length: 20
-		Tick: 80
+		Tick: 2
 		ShadowStart: 20
 		Offset: -12, -42
 	icon: weapicon
@@ -271,17 +271,17 @@ napowr:
 	idle-lights: ntpowr_a
 		Start: 0
 		Length: 9
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	damaged-idle-lights: ntpowr_a
 		Start: 9
 		Length: 9
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	critical-idle-lights: ntpowr_a
 		Start: 9
 		Length: 9
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	make: ntpowrmk
 		Start: 0
@@ -307,17 +307,17 @@ naapwr:
 	idle-lights: ntapwr_a
 		Start: 0
 		Length: 9
-		Tick: 200
+		Tick: 5
 		Offset: 12, -30
 	damaged-idle-lights: ntapwr_a
 		Start: 9
 		Length: 9
-		Tick: 200
+		Tick: 5
 		Offset: 12, -30
 	critical-idle-lights: ntapwr_a
 		Start: 9
 		Length: 9
-		Tick: 200
+		Tick: 5
 		Offset: 12, -30
 	make: ntapwrmk
 		Start: 0
@@ -343,22 +343,22 @@ nahand:
 	production-light: nthand_a
 		Start: 0
 		Length: 5
-		Tick: 100
+		Tick: 2
 		Offset: -6, -30
 	damaged-production-light: nthand_a
 		Start: 5
 		Length: 5
-		Tick: 100
+		Tick: 2
 		Offset: -6, -30
 	idle-lights: nthand_b
 		Start: 0
 		Length: 8
-		Tick: 200
+		Tick: 5
 		Offset: -6, -30
 	damaged-idle-lights: nthand_b
 		Start: 8
 		Length: 8
-		Tick: 200
+		Tick: 5
 		Offset: -6, -30
 	make: nthandmk
 		Start: 0
@@ -384,13 +384,13 @@ naweap:
 	production-lights: ntweap_a
 		Start: 0
 		Length: 16
-		Tick: 100
+		Tick: 2
 		ZOffset: 2048
 		Offset: -12, -42
 	damaged-production-lights: ntweap_a
 		Start: 16
 		Length: 16
-		Tick: 100
+		Tick: 2
 		ZOffset: 2048
 		Offset: -12, -42
 	build-top: ntweap_b
@@ -412,7 +412,7 @@ naweap:
 	make: ntweapmk
 		Start: 0
 		Length: 22
-		Tick: 80
+		Tick: 2
 		ShadowStart: 22
 		Offset: -12, -42
 	icon: nwepicon
@@ -447,12 +447,12 @@ naradr:
 	idle-dish: ntradr_a
 		Start: 0
 		Length: 24
-		Tick: 120
+		Tick: 3
 		Offset: 0, -24
 	damaged-idle-dish: ntradr_a
 		Start: 24
 		Length: 24
-		Tick: 120
+		Tick: 3
 		Offset: 0, -24
 	make: ntradrmk
 		Start: 0
@@ -478,17 +478,17 @@ natech:
 	idle-lights: nttech_a
 		Start: 0
 		Length: 9
-		Tick: 120
+		Tick: 3
 		Offset: 0, -24
 	damaged-idle-lights: nttech_a
 		Start: 0
 		Length: 9
-		Tick: 120
+		Tick: 3
 		Offset: 0, -24
 	critical-idle-lights: nttech_a
 		Start: 0
 		Length: 9
-		Tick: 120
+		Tick: 3
 		Offset: 0, -24
 	make: nttechmk
 		Start: 0
@@ -514,12 +514,12 @@ garadr:
 	idle-dish: gtradr_a
 		Frames: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
 		Length: 28
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	damaged-idle-dish: gtradr_a
 		Frames: 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16
 		Length: 28
-		Tick: 240
+		Tick: 6
 		Offset: 0, -24
 	make: gtradrmk
 		Start: 0
@@ -545,17 +545,17 @@ gatech:
 	idle-lights: gttech_a
 		Start: 0
 		Length: 8
-		Tick: 200
+		Tick: 5
 		Offset: -12, -30
 	damaged-idle-lights: gttech_a
 		Start: 8
 		Length: 8
-		Tick: 240
+		Tick: 6
 		Offset: -12, -30
 	critical-idle-lights: gttech_a
 		Start: 8
 		Length: 8
-		Tick: 240
+		Tick: 6
 		Offset: -12, -30
 	make: gttechmk
 		Start: 0
@@ -717,7 +717,7 @@ naobel:
 	idle-lights: ntobel_a
 		Start: 0
 		Length: 12
-		Tick: 80
+		Tick: 2
 		Offset: 0, -24
 	make: ntobelmk
 		Start: 0
@@ -811,11 +811,11 @@ nastlh:
 	pulse: ntstlh_a
 		Start: 0
 		Length: 4
-		Tick: 480
+		Tick: 12
 	damaged-pulse: ntstlh_a
 		Start: 4
 		Length: 4
-		Tick: 480
+		Tick: 12
 	make: ntstlhmk
 		Start: 0
 		Length: 18
@@ -875,17 +875,17 @@ gavulc:
 	idle-lights: gtctwr_a
 		Start: 0
 		Length: 6
-		Tick: 200
+		Tick: 5
 		Offset: 0, -12
 	damaged-idle-lights: gtctwr_a
 		Start: 0
 		Length: 6
-		Tick: 200
+		Tick: 5
 		Offset: 0, -12
 	critical-idle-lights: gtctwr_a
 		Start: 6
 		Length: 6
-		Tick: 200
+		Tick: 5
 		Offset: 0, -12
 	make: gtctwrmk
 		Start: 0
@@ -915,17 +915,17 @@ garock:
 	idle-lights: gtctwr_a
 		Start: 0
 		Length: 6
-		Tick: 200
+		Tick: 5
 		Offset: 0, -12
 	damaged-idle-lights: gtctwr_a
 		Start: 0
 		Length: 6
-		Tick: 200
+		Tick: 5
 		Offset: 0, -12
 	critical-idle-lights: gtctwr_a
 		Start: 6
 		Length: 6
-		Tick: 200
+		Tick: 5
 		Offset: 0, -12
 	make: gtctwrmk
 		Start: 0
@@ -955,17 +955,17 @@ gacsam:
 	idle-lights: gtctwr_a
 		Start: 0
 		Length: 6
-		Tick: 200
+		Tick: 5
 		Offset: 0, -12
 	damaged-idle-lights: gtctwr_a
 		Start: 0
 		Length: 6
-		Tick: 200
+		Tick: 5
 		Offset: 0, -12
 	critical-idle-lights: gtctwr_a
 		Start: 6
 		Length: 6
-		Tick: 200
+		Tick: 5
 		Offset: 0, -12
 	make: gtctwrmk
 		Start: 0
@@ -991,17 +991,17 @@ gaspot:
 	idle-lights: gaspot_a
 		Start: 0
 		Length: 8
-		Tick: 200
+		Tick: 5
 		Offset: 0, -12
 	damaged-idle-lights: gaspot_a
 		Start: 8
 		Length: 8
-		Tick: 200
+		Tick: 5
 		Offset: 0, -12
 	critical-idle-lights: gaspot_a
 		Start: 16
 		Length: 8
-		Tick: 200
+		Tick: 5
 		Offset: 0, -12
 	make: gaspotmk
 		Start: 0
@@ -1045,19 +1045,19 @@ gahpad:
 	idle-lights: gthpad_a
 		Start: 0
 		Length: 8
-		Tick: 200
+		Tick: 5
 		Offset: 0, -36
 		ZOffset: -1c511
 	damaged-idle-lights: gthpad_a
 		Start: 8
 		Length: 8
-		Tick: 200
+		Tick: 5
 		Offset: 0, -36
 		ZOffset: -1c511
 	critical-idle-lights: gthpad_a
 		Start: 16
 		Length: 8
-		Tick: 200
+		Tick: 5
 		Offset: 0, -36
 		ZOffset: -1c511
 	make: gthpadmk
@@ -1105,17 +1105,17 @@ nahpad:
 		Length: 46
 		Offset: 0, -24
 		ZOffset: -1c511
-		Tick: 120
+		Tick: 3
 	damaged-idle-lights: nthpad_a
 		Start: 46
 		Length: 46
-		Tick: 120
+		Tick: 3
 		Offset: 0, -24
 		ZOffset: -1c511
 	critical-idle-lights: nthpad_a
 		Start: 46
 		Length: 46
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 		ZOffset: -1c511
 	make: nthpadmk
@@ -1147,17 +1147,17 @@ proc: # TODO: unused narefn_a, narefn_b
 	idle-redlights: ntrefn_c
 		Start: 0
 		Length: 16
-		Tick: 120
+		Tick: 3
 		Offset: -12, -42
 	damaged-idle-redlights: ntrefn_c
 		Start: 0
 		Length: 16
-		Tick: 120
+		Tick: 3
 		Offset: -12, -42
 	critical-idle-redlights: ntrefn_c
 		Start: 16
 		Length: 16
-		Tick: 200
+		Tick: 5
 		Offset: -12, -42
 	bib: ntrefnbb
 		Start: 0
@@ -1201,17 +1201,17 @@ gasilo:
 	idle-lights: gtsilo_b
 		Start: 0
 		Length: 16
-		Tick: 120
+		Tick: 3
 		Offset: 0, -24
 	damaged-idle-lights: gtsilo_b
 		Start: 16
 		Length: 16
-		Tick: 120
+		Tick: 3
 		Offset: 0, -24
 	critical-idle-lights: gtsilo_b
 		Start: 32
 		Length: 16
-		Tick: 200
+		Tick: 5
 		Offset: 0, -24
 	icon: siloicon
 		Start: 0
@@ -1268,12 +1268,12 @@ gadept:
 	idle-light: gtdept_b
 		Start: 0
 		Length: 7
-		Tick: 120
+		Tick: 3
 		Offset: 0, -36
 	damaged-idle-light: gtdept_b
 		Start: 7
 		Length: 7
-		Tick: 120
+		Tick: 3
 		Offset: 0, -36
 	circuits: gtdept_a
 		Start: 0
@@ -1302,8 +1302,9 @@ gadept:
 	make: gtdeptmk
 		Start: 0
 		Length: 10
-		Tick: 60
+		Tick: 1
 		ShadowStart: 10
 		Offset: 0, -36
 	icon: fixicon
 		Start: 0
+

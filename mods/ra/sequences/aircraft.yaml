@@ -69,7 +69,7 @@ tran:
 		Start: 35
 	icon: tranicon
 		Start: 0
-		
+
 tran1husk:
 	idle:
 		Start: 0
@@ -89,3 +89,4 @@ badr:
 	idle:
 		Start: 0
 		Facings: 16
+
