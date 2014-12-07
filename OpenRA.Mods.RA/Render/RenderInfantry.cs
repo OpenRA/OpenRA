@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Render
 
 		protected virtual bool AllowIdleAnimation(Actor self)
 		{
-			return info.IdleAnimations.Length > 0 && !isModifyingSequence;
+			return !isModifyingSequence;
 		}
 
 		public void Attacking(Actor self, Target target)
@@ -136,16 +136,24 @@ namespace OpenRA.Mods.RA.Render
 					idleDelay = self.World.SharedRandom.Next(info.MinIdleWaitTicks, info.MaxIdleWaitTicks);
 				}
 			}
-			else if (AllowIdleAnimation(self) && idleDelay > 0 && --idleDelay == 0)
+			else if (AllowIdleAnimation(self))
 			{
-				if (DefaultAnimation.HasSequence(idleSequence))
+				if (idleSequence != null && DefaultAnimation.HasSequence(idleSequence))
 				{
-					state = AnimationState.IdleAnimating;
-					DefaultAnimation.PlayThen(idleSequence, () =>
+					if (idleDelay > 0 && --idleDelay == 0)
 					{
-						DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)));
-						state = AnimationState.Waiting;
-					});
+						state = AnimationState.IdleAnimating;
+						DefaultAnimation.PlayThen(idleSequence, () =>
+						{
+							DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)));
+							state = AnimationState.Waiting;
+						});
+					}
+				}
+				else
+				{
+					DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)));
+					state = AnimationState.Waiting;
 				}
 			}
 		}
