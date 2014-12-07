@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -17,7 +18,11 @@ using System.Runtime.InteropServices;
 
 namespace OpenRA.Graphics
 {
-	public interface IPalette { uint this[int index] { get; } }
+	public interface IPalette
+	{
+		uint this[int index] { get; }
+		void CopyToArray(Array destination, int destinationOffset);
+	}
 	public interface IPaletteRemap { Color GetRemappedColor(Color original, int index); }
 
 	public static class Palette
@@ -52,8 +57,7 @@ namespace OpenRA.Graphics
 			var data = b.LockBits(new Rectangle(0, 0, b.Width, b.Height),
 								  ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 			var temp = new uint[Palette.Size];
-			for (int i = 0; i < temp.Length; i++)
-				temp[i] = palette[i];
+			palette.CopyToArray(temp, 0);
 			Marshal.Copy((int[])(object)temp, 0, data.Scan0, Size);
 			b.UnlockBits(data);
 			return b;
@@ -71,6 +75,10 @@ namespace OpenRA.Graphics
 			IPalette palette;
 			public ReadOnlyPalette(IPalette palette) { this.palette = palette; }
 			public uint this[int index] { get { return palette[index]; } }
+			public void CopyToArray(Array destination, int destinationOffset)
+			{
+				palette.CopyToArray(destination, destinationOffset);
+			}
 		}
 	}
 
@@ -81,6 +89,11 @@ namespace OpenRA.Graphics
 		public uint this[int index]
 		{
 			get { return colors[index]; }
+		}
+
+		public void CopyToArray(Array destination, int destinationOffset)
+		{
+			Buffer.BlockCopy(colors, 0, destination, destinationOffset * 4, Palette.Size * 4);
 		}
 
 		public ImmutablePalette(string filename, int[] remap)
@@ -141,15 +154,24 @@ namespace OpenRA.Graphics
 			set { colors[index] = value; }
 		}
 
+		public void CopyToArray(Array destination, int destinationOffset)
+		{
+			Buffer.BlockCopy(colors, 0, destination, destinationOffset * 4, Palette.Size * 4);
+		}
+
 		public MutablePalette(IPalette p)
 		{
-			for (int i = 0; i < Palette.Size; i++)
-				this[i] = p[i];
+			SetFromPalette(p);
 		}
 
 		public void SetColor(int index, Color color)
 		{
 			colors[index] = (uint)color.ToArgb();
+		}
+
+		public void SetFromPalette(IPalette p)
+		{
+			p.CopyToArray(colors, 0);
 		}
 
 		public void ApplyRemap(IPaletteRemap r)
