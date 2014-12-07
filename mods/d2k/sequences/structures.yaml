@@ -1702,13 +1702,3 @@ conyardc: # TODO: unused
 		Start: 4049
 		Offset: -30,-24
 
-plates: # TODO: unused
-	idle: DATA
-		Start: 3008
-		Length: 6
-	4-plates-icon: DATA
-		Start: 4050
-		Offset: -30,-24
-	6-plates-icon: DATA
-		Start: 4053
-		Offset: -30,-24
