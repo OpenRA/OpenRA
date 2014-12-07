@@ -35,11 +35,10 @@ namespace OpenRA.Mods.Common.Server
 				isInitialPing = false;
 				lastPing = Game.RunTime;
 
-				if (server.LobbyInfo.IsSinglePlayer && server.Conns.Any() && server.GetClient(server.Conns.First()).IpAddress == "127.0.0.1")
-				{
+				// Ignore client timeout in singleplayer games to make debugging easier
+				if (server.LobbyInfo.IsSinglePlayer && !server.Settings.Dedicated)
 					foreach (var c in server.Conns.ToList())
 						server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
-				}
 				else
 				{
 					foreach (var c in server.Conns.ToList())
