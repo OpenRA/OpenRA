@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Network;
@@ -224,7 +225,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			if (ip == null)
 				return "Unknown Host";
-			if (ip == "127.0.0.1")
+			if (ip == IPAddress.Loopback.ToString())
 				return "Local Host";
 			return ip;
 		}
