@@ -65,37 +65,34 @@ namespace OpenRA.Mods.Common.Traits
 			All = Top | Right | Bottom | Left
 		}
 
-		struct ShroudTile
+		struct TileInfo
 		{
 			public readonly float2 ScreenPosition;
 			public readonly byte Variant;
 
-			public Sprite Fog;
-			public Sprite Shroud;
-
-			public ShroudTile(float2 screenPosition, byte variant)
+			public TileInfo(float2 screenPosition, byte variant)
 			{
 				ScreenPosition = screenPosition;
 				Variant = variant;
-
-				Fog = null;
-				Shroud = null;
 			}
 		}
 
 		readonly ShroudRendererInfo info;
-		readonly Sprite[] shroudSprites, fogSprites;
-		readonly byte[] spriteMap;
-		readonly CellLayer<ShroudTile> tiles;
-		readonly byte variantStride;
 		readonly Map map;
 		readonly Edges notVisibleEdges;
+		readonly byte variantStride;
+		readonly byte[] edgesToSpriteIndexOffset;
 
-		bool clearedForNullShroud;
-		int lastShroudHash;
-		CellRegion updatedRegion;
+		readonly CellLayer<TileInfo> tileInfos;
+		readonly CellLayer<bool> shroudDirty;
 
+		readonly Vertex[] fogVertices, shroudVertices;
+		readonly Sprite[] fogSprites, shroudSprites;
+		readonly CellLayer<Sprite> fogSpriteLayer, shroudSpriteLayer;
 		PaletteReference fogPalette, shroudPalette;
+
+		Shroud currentShroud;
+		bool mapBorderShroudIsCached;
 
 		public ShroudRenderer(World world, ShroudRendererInfo info)
 		{
@@ -114,7 +111,13 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			map = world.Map;
 
-			tiles = new CellLayer<ShroudTile>(map);
+			tileInfos = new CellLayer<TileInfo>(map);
+			shroudDirty = new CellLayer<bool>(map);
+			var verticesLength = map.MapSize.X * map.MapSize.Y * 4;
+			fogVertices = new Vertex[verticesLength];
+			shroudVertices = new Vertex[verticesLength];
+			fogSpriteLayer = new CellLayer<Sprite>(map);
+			shroudSpriteLayer = new CellLayer<Sprite>(map);
 
 			// Load sprite variants
 			var variantCount = info.ShroudVariants.Length;
@@ -141,14 +144,29 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Mapping of shrouded directions -> sprite index
-			spriteMap = new byte[(byte)(info.UseExtendedIndex ? Edges.All : Edges.AllCorners) + 1];
+			edgesToSpriteIndexOffset = new byte[(byte)(info.UseExtendedIndex ? Edges.All : Edges.AllCorners) + 1];
 			for (var i = 0; i < info.Index.Length; i++)
-				spriteMap[info.Index[i]] = (byte)i;
+				edgesToSpriteIndexOffset[info.Index[i]] = (byte)i;
 
 			if (info.OverrideFullShroud != null)
-				spriteMap[info.OverrideShroudIndex] = (byte)(variantStride - 1);
+				edgesToSpriteIndexOffset[info.OverrideShroudIndex] = (byte)(variantStride - 1);
 
 			notVisibleEdges = info.UseExtendedIndex ? Edges.AllSides : Edges.AllCorners;
+		}
+
+		public void WorldLoaded(World w, WorldRenderer wr)
+		{
+			// Initialize tile cache
+			// Adds a 1-cell border around the border to cover any sprites peeking outside the map
+			foreach (var uv in CellRegion.Expand(w.Map.Cells, 1).MapCoords)
+			{
+				var screen = wr.ScreenPosition(w.Map.CenterOfCell(uv.ToCPos(map)));
+				var variant = (byte)Game.CosmeticRandom.Next(info.ShroudVariants.Length);
+				tileInfos[uv] = new TileInfo(screen, variant);
+			}
+
+			fogPalette = wr.Palette(info.FogPalette);
+			shroudPalette = wr.Palette(info.ShroudPalette);
 		}
 
 		Edges GetEdges(MPos uv, Func<MPos, bool> isVisible)
@@ -158,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var cell = uv.ToCPos(map);
 
-			// If a side is shrouded then we also count the corners
+			// If a side is shrouded then we also count the corners.
 			var edge = Edges.None;
 			if (!isVisible((cell + new CVec(0, -1)).ToMPos(map))) edge |= Edges.Top;
 			if (!isVisible((cell + new CVec(1, 0)).ToMPos(map))) edge |= Edges.Right;
@@ -180,125 +198,171 @@ namespace OpenRA.Mods.Common.Traits
 			return info.UseExtendedIndex ? edge ^ ucorner : edge & Edges.AllCorners;
 		}
 
-		Edges GetObserverEdges(CPos p)
+		public void RenderShroud(WorldRenderer wr, Shroud shroud)
 		{
-			var u = Edges.None;
-			if (!map.Contains(p + new CVec(0, -1))) u |= Edges.Top;
-			if (!map.Contains(p + new CVec(1, 0))) u |= Edges.Right;
-			if (!map.Contains(p + new CVec(0, 1))) u |= Edges.Bottom;
-			if (!map.Contains(p + new CVec(-1, 0))) u |= Edges.Left;
-
-			var ucorner = u & Edges.AllCorners;
-			if (!map.Contains(p + new CVec(-1, -1))) u |= Edges.TopLeft;
-			if (!map.Contains(p + new CVec(1, -1))) u |= Edges.TopRight;
-			if (!map.Contains(p + new CVec(1, 1))) u |= Edges.BottomRight;
-			if (!map.Contains(p + new CVec(-1, 1))) u |= Edges.BottomLeft;
-
-			return info.UseExtendedIndex ? u ^ ucorner : u & Edges.AllCorners;
+			Update(shroud);
+			Render(wr.Viewport.VisibleCells);
 		}
 
-		public void WorldLoaded(World w, WorldRenderer wr)
+		void Update(Shroud newShroud)
 		{
-			// Initialize tile cache
-			// Adds a 1-cell border around the border to cover any sprites peeking outside the map
-			foreach (var uv in CellRegion.Expand(w.Map.Cells, 1).MapCoords)
+			if (currentShroud != newShroud)
 			{
-				var screen = wr.ScreenPosition(w.Map.CenterOfCell(uv.ToCPos(map)));
-				var variant = (byte)Game.CosmeticRandom.Next(info.ShroudVariants.Length);
-				tiles[uv] = new ShroudTile(screen, variant);
+				if (currentShroud != null)
+					currentShroud.CellEntryChanged -= MarkCellAndNeighborsDirty;
 
-				// Set the cells outside the border so they don't need to be touched again
-				if (!map.Contains(uv))
+				if (newShroud != null)
 				{
-					var shroudTile = tiles[uv];
-					shroudTile.Shroud = GetTile(shroudSprites, notVisibleEdges, variant);
-					tiles[uv] = shroudTile;
+					shroudDirty.Clear(true);
+					newShroud.CellEntryChanged += MarkCellAndNeighborsDirty;
 				}
+
+				currentShroud = newShroud;
 			}
 
-			fogPalette = wr.Palette(info.FogPalette);
-			shroudPalette = wr.Palette(info.ShroudPalette);
+			if (currentShroud != null)
+			{
+				mapBorderShroudIsCached = false;
+			}
+			else if (!mapBorderShroudIsCached)
+			{
+				mapBorderShroudIsCached = true;
+				CacheMapBorderShroud();
+			}
 		}
 
-		Sprite GetTile(Sprite[] sprites, Edges edges, int variant)
+		void MarkCellAndNeighborsDirty(CPos cell)
+		{
+			// Mark this cell and its 8 neighbors as being out of date.
+			// We don't want to do anything more than this for several performance reasons:
+			// - If the cells remain off-screen for a long time, they may change several times before we next view
+			// them, so calculating their new vertices is wasted effort since we may recalculate them again before we
+			// even get a chance to render them.
+			// - Cells tend to be invalidated in groups (imagine as a unit moves, it advances a wave of sight and
+			// leaves a trail of fog filling in behind). If we recalculated a cell and its neighbors when the first
+			// cell in a group changed, many cells would be recalculated again when the second cell, right next to the
+			// first, is updated. In fact we might do on the order of 3x the work we needed to!
+			shroudDirty[cell + new CVec(-1, -1)] = true;
+			shroudDirty[cell + new CVec(0, -1)] = true;
+			shroudDirty[cell + new CVec(1, -1)] = true;
+			shroudDirty[cell + new CVec(-1, 0)] = true;
+			shroudDirty[cell] = true;
+			shroudDirty[cell + new CVec(1, 0)] = true;
+			shroudDirty[cell + new CVec(-1, 1)] = true;
+			shroudDirty[cell + new CVec(0, 1)] = true;
+			shroudDirty[cell + new CVec(1, 1)] = true;
+		}
+
+		void CacheMapBorderShroud()
+		{
+			// Cache the whole of the map border shroud ahead of time, since it never changes.
+			Func<MPos, bool> mapContains = map.Contains;
+			foreach (var uv in CellRegion.Expand(map.Cells, 1).MapCoords)
+			{
+				var offset = VertexArrayOffset(uv);
+				var edges = GetEdges(uv, mapContains);
+				var tileInfo = tileInfos[uv];
+				CacheTile(uv, offset, edges, tileInfo, shroudSprites, shroudVertices, shroudPalette, shroudSpriteLayer);
+				CacheTile(uv, offset, edges, tileInfo, fogSprites, fogVertices, fogPalette, fogSpriteLayer);
+			}
+		}
+
+		void Render(CellRegion visibleRegion)
+		{
+			var renderRegion = CellRegion.Expand(visibleRegion, 1).MapCoords;
+
+			if (currentShroud == null)
+			{
+				RenderMapBorderShroud(renderRegion);
+				return;
+			}
+
+			RenderPlayerShroud(visibleRegion, renderRegion);
+		}
+
+		void RenderMapBorderShroud(CellRegion.MapCoordsRegion renderRegion)
+		{
+			// Render the shroud that just encroaches at the map border. This shroud is always fully cached, so we can
+			// just render straight from the cache.
+			foreach (var uv in renderRegion)
+			{
+				var offset = VertexArrayOffset(uv);
+				RenderCachedTile(shroudSpriteLayer[uv], shroudVertices, offset);
+				RenderCachedTile(fogSpriteLayer[uv], fogVertices, offset);
+			}
+		}
+
+		void RenderPlayerShroud(CellRegion visibleRegion, CellRegion.MapCoordsRegion renderRegion)
+		{
+			// Render the shroud by drawing the appropriate tile over each cell that is visible on-screen.
+			// For performance we keep a cache tiles we have drawn previously so we don't have to recalculate the
+			// vertices for tiles every frame, since this is costly.
+			// Any shroud marked as dirty has either never been calculated, or has changed since we last drew that
+			// tile. We will calculate the vertices for that tile and cache them before drawing it.
+			// Any shroud that is not marked as dirty means our cached tile is still correct - we can just draw the
+			// cached vertices.
+			var visibleUnderShroud = currentShroud.IsExploredTest(visibleRegion);
+			var visibleUnderFog = currentShroud.IsVisibleTest(visibleRegion);
+			foreach (var uv in renderRegion)
+			{
+				var offset = VertexArrayOffset(uv);
+				if (shroudDirty[uv])
+				{
+					shroudDirty[uv] = false;
+					RenderDirtyTile(uv, offset, visibleUnderShroud, shroudSprites, shroudVertices, shroudPalette, shroudSpriteLayer);
+					RenderDirtyTile(uv, offset, visibleUnderFog, fogSprites, fogVertices, fogPalette, fogSpriteLayer);
+				}
+				else
+				{
+					RenderCachedTile(shroudSpriteLayer[uv], shroudVertices, offset);
+					RenderCachedTile(fogSpriteLayer[uv], fogVertices, offset);
+				}
+			}
+		}
+
+		int VertexArrayOffset(MPos uv)
+		{
+			return 4 * (uv.V * map.MapSize.X + uv.U);
+		}
+
+		void RenderDirtyTile(MPos uv, int offset, Func<MPos, bool> isVisible,
+			Sprite[] sprites, Vertex[] vertices, PaletteReference palette, CellLayer<Sprite> spriteLayer)
+		{
+			var tile = tileInfos[uv];
+			var edges = GetEdges(uv, isVisible);
+			var sprite = CacheTile(uv, offset, edges, tile, sprites, vertices, palette, spriteLayer);
+			RenderCachedTile(sprite, vertices, offset);
+		}
+
+		void RenderCachedTile(Sprite sprite, Vertex[] vertices, int offset)
+		{
+			if (sprite != null)
+				Game.Renderer.WorldSpriteRenderer.DrawSprite(sprite, vertices, offset);
+		}
+
+		Sprite CacheTile(MPos uv, int offset, Edges edges, TileInfo tileInfo,
+			Sprite[] sprites, Vertex[] vertices, PaletteReference palette, CellLayer<Sprite> spriteLayer)
+		{
+			var sprite = GetSprite(sprites, edges, tileInfo.Variant);
+			if (sprite != null)
+			{
+				var size = sprite.Size;
+				var location = tileInfo.ScreenPosition - 0.5f * size;
+				OpenRA.Graphics.Util.FastCreateQuad(
+					vertices, location + sprite.FractionalOffset * size,
+					sprite, palette.TextureIndex, offset, size);
+			}
+
+			spriteLayer[uv] = sprite;
+			return sprite;
+		}
+
+		Sprite GetSprite(Sprite[] sprites, Edges edges, int variant)
 		{
 			if (edges == Edges.None)
 				return null;
 
-			return sprites[variant * variantStride + spriteMap[(byte)edges]];
-		}
-
-		void Update(Shroud shroud, CellRegion region)
-		{
-			if (shroud != null)
-			{
-				// If the current shroud hasn't changed and we have already updated the specified area, we don't need to do anything.
-				if (lastShroudHash == shroud.Hash && !clearedForNullShroud && updatedRegion != null && updatedRegion.Contains(region))
-					return;
-
-				lastShroudHash = shroud.Hash;
-				clearedForNullShroud = false;
-				updatedRegion = region;
-				UpdateShroud(shroud);
-			}
-			else if (!clearedForNullShroud)
-			{
-				// We need to clear any applied shroud.
-				clearedForNullShroud = true;
-				updatedRegion = new CellRegion(map.TileShape, new CPos(0, 0), new CPos(-1, -1));
-				UpdateNullShroud();
-			}
-		}
-
-		void UpdateShroud(Shroud shroud)
-		{
-			var visibleUnderShroud = shroud.IsExploredTest(updatedRegion);
-			var visibleUnderFog = shroud.IsVisibleTest(updatedRegion);
-			foreach (var uv in updatedRegion.MapCoords)
-			{
-				var shrouded = GetEdges(uv, visibleUnderShroud);
-				var fogged = GetEdges(uv, visibleUnderFog);
-				var shroudTile = tiles[uv];
-				var variant = shroudTile.Variant;
-				shroudTile.Shroud = GetTile(shroudSprites, shrouded, variant);
-				shroudTile.Fog = GetTile(fogSprites, fogged, variant);
-				tiles[uv] = shroudTile;
-			}
-		}
-
-		void UpdateNullShroud()
-		{
-			foreach (var cell in map.Cells)
-			{
-				var edges = GetObserverEdges(cell);
-				var shroudTile = tiles[cell];
-				var variant = shroudTile.Variant;
-				shroudTile.Shroud = GetTile(shroudSprites, edges, variant);
-				shroudTile.Fog = GetTile(fogSprites, edges, variant);
-				tiles[cell] = shroudTile;
-			}
-		}
-
-		public void RenderShroud(WorldRenderer wr, Shroud shroud)
-		{
-			Update(shroud, wr.Viewport.VisibleCells);
-
-			foreach (var uv in CellRegion.Expand(wr.Viewport.VisibleCells, 1).MapCoords)
-			{
-				var t = tiles[uv];
-
-				if (t.Shroud != null)
-				{
-					var pos = t.ScreenPosition - 0.5f * t.Shroud.Size;
-					Game.Renderer.WorldSpriteRenderer.DrawSprite(t.Shroud, pos, shroudPalette);
-				}
-
-				if (t.Fog != null)
-				{
-					var pos = t.ScreenPosition - 0.5f * t.Fog.Size;
-					Game.Renderer.WorldSpriteRenderer.DrawSprite(t.Fog, pos, fogPalette);
-				}
-			}
+			return sprites[variant * variantStride + edgesToSpriteIndexOffset[(byte)edges]];
 		}
 	}
 }
