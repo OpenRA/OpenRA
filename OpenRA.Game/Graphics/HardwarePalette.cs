@@ -23,7 +23,7 @@ namespace OpenRA.Graphics
 		readonly Dictionary<string, MutablePalette> modifiablePalettes = new Dictionary<string, MutablePalette>();
 		readonly IReadOnlyDictionary<string, MutablePalette> readOnlyModifiablePalettes;
 		readonly Dictionary<string, int> indices = new Dictionary<string, int>();
-		readonly uint[,] buffer = new uint[Palette.Size, MaxPalettes];
+		readonly uint[,] buffer = new uint[MaxPalettes, Palette.Size];
 
 		public HardwarePalette()
 		{
@@ -85,8 +85,7 @@ namespace OpenRA.Graphics
 
 		void CopyPaletteToBuffer(int index, IPalette p)
 		{
-			for (var i = 0; i < Palette.Size; i++)
-				buffer[i, index] = p[i];
+			p.CopyToArray(buffer, index * Palette.Size);
 		}
 
 		void CopyModifiablePalettesToBuffer()
@@ -109,8 +108,7 @@ namespace OpenRA.Graphics
 			{
 				var originalPalette = palettes[kvp.Key];
 				var modifiedPalette = kvp.Value;
-				for (var i = 0; i < Palette.Size; i++)
-					modifiedPalette[i] = originalPalette[i];
+				modifiedPalette.SetFromPalette(originalPalette);
 			}
 		}
 	}
