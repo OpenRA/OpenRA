@@ -16,6 +16,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	public interface IPrescanForTarget { Actor PrescanForTarget(Actor self, Actor currentTarget); }
+
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
 	public class AutoTargetInfo : ITraitInfo, Requires<AttackBaseInfo>
 	{
@@ -52,12 +54,13 @@ namespace OpenRA.Mods.RA
 
 	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
 
-	public class AutoTarget : INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync
+	public class AutoTarget : INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyCreated
 	{
 		readonly AutoTargetInfo info;
 		readonly AttackBase attack;
 		readonly AttackFollow at;
 		[Sync] int nextScanTime = 0;
+		IEnumerable<IPrescanForTarget> preScanners;
 
 		public UnitStance Stance;
 		[Sync] public Actor Aggressor;
@@ -136,11 +139,20 @@ namespace OpenRA.Mods.RA
 				--nextScanTime;
 		}
 
+		public void Created(Actor self)
+		{
+			preScanners = self.TraitsImplementing<IPrescanForTarget>();
+		}
+
 		public Actor ScanForTarget(Actor self, Actor currentTarget)
 		{
 			if (nextScanTime <= 0)
 			{
 				if (!self.IsIdle && currentTarget != null)
+					return currentTarget;
+
+				currentTarget = preScanners.Select(t => t.PrescanForTarget(self, currentTarget)).FirstOrDefault();
+				if (currentTarget != null)
 					return currentTarget;
 
 				var range = info.ScanRadius > 0 ? WRange.FromCells(info.ScanRadius) : attack.GetMaximumRange();

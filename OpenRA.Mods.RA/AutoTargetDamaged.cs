@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new AutoTargetDamaged(this); }
 	}
 
-	class AutoTargetDamaged : INotifyIdle, INotifyCreated
+	class AutoTargetDamaged : INotifyIdle, INotifyCreated, IPrescanForTarget
 	{
 		readonly AutoTargetDamagedInfo info;
 		AttackBase attack;
