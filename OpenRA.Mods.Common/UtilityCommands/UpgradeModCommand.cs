@@ -40,6 +40,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					file.WriteLine(yaml.WriteToString());
 			}
 
+			Console.WriteLine("Processing Sequences:");
+			foreach (var filename in Game.modData.Manifest.Sequences)
+			{
+				Console.WriteLine("\t" + filename);
+				var yaml = MiniYaml.FromFile(filename);
+				UpgradeSequences.UpgradeActorSequences(engineDate, ref yaml, null, 0);
+
+				using (var file = new StreamWriter(filename))
+					file.WriteLine(yaml.WriteToString());
+			}
+
 			Console.WriteLine("Processing Weapons:");
 			foreach (var filename in Game.modData.Manifest.Weapons)
 			{

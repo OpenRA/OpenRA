@@ -75,7 +75,7 @@ explosion:
 	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 40
 
 pips:
 	groups:
@@ -110,11 +110,11 @@ v2:
 		Facings: 32
 
 rallypoint:
-	flag:flagfly
+	flag: flagfly
 		Start: 0
 		Length: *
 		Offset: 11,-5
-	circles:fpls
+	circles: fpls
 		Start: 0
 		Length: *
 
@@ -193,7 +193,7 @@ litning:
 		Length: 4
 
 fb1:
-	idle: 
+	idle:
 		Start: 0
 		Length: *
 
@@ -201,7 +201,7 @@ moveflsh:
 	idle:
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 
 select:
 	repair:
@@ -211,13 +211,13 @@ poweroff:
 	offline:
 		Start: 0
 		Length: *
-		Tick: 160
+		Tick: 4
 
 allyrepair:
 	repair:
 		Start: 0
 		Length: *
-		Tick: 160
+		Tick: 4
 
 tabs:
 	left-normal:
@@ -253,6 +253,7 @@ fb3:
 	idle:
 		Start: 0
 		Facings: 32
+
 fb4:
 	idle:
 		Start: 0
@@ -268,7 +269,7 @@ scrate:
 	water:
 		Start: 2
 		Length: 4
-		Tick: 500
+		Tick: 12
 		ZOffset: -511
 
 wcrate:
@@ -286,7 +287,7 @@ xcratea:
 	water:
 		Start: 2
 		Length: 4
-		Tick: 500
+		Tick: 12
 		ZOffset: -511
 
 xcrateb:
@@ -299,7 +300,7 @@ xcrateb:
 	water:
 		Start: 2
 		Length: 4
-		Tick: 500
+		Tick: 12
 		ZOffset: -511
 
 xcratec:
@@ -312,7 +313,7 @@ xcratec:
 	water:
 		Start: 2
 		Length: 4
-		Tick: 500
+		Tick: 12
 		ZOffset: -511
 
 xcrated:
@@ -325,7 +326,7 @@ xcrated:
 	water:
 		Start: 2
 		Length: 4
-		Tick: 500
+		Tick: 12
 		ZOffset: -511
 
 crate-effects:
@@ -380,7 +381,7 @@ crate-effects:
 	levelup: levelup
 		Start: 0
 		Length: *
-		Tick: 200
+		Tick: 5
 
 parach:
 	open:
@@ -430,12 +431,12 @@ smokland:
 	open: playersmoke
 		Start: 0
 		Length: 60
-		Tick: 120
+		Tick: 3
 		ZOffset: 1023
 	idle: playersmoke
 		Start: 60
 		Length: 32
-		Tick: 120
+		Tick: 3
 		ZOffset: 1023
 
 fire:
@@ -477,7 +478,7 @@ bubbles:
 	idle:
 		Start: 0
 		Length: *
-		Tick: 220
+		Tick: 5
 
 mpspawn:
 	idle:
@@ -645,8 +646,9 @@ ctflag:
 	idle:
 		Start: 0
 		Length: 9
-		Tick: 50
+		Tick: 1
 		Offset: 0,-12
 	bib: mbGAP
 		Start: 0
 		Length: *
+

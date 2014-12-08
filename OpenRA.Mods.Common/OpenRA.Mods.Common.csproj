@@ -200,6 +200,7 @@
     <Compile Include="SpriteLoaders\ShpD2Loader.cs" />
     <Compile Include="Widgets\Logic\SettingsLogic.cs" />
     <Compile Include="Widgets\TerrainTemplatePreviewWidget.cs" />
+    <Compile Include="UtilityCommands\UpgradeSequences.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

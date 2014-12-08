@@ -47,7 +47,7 @@ lst:
 	open:
 		Start: 1
 		Length: 4
-		Tick: 150
+		Tick: 3
 	unload:
 		Start: 4
 		ZOffset: -511
@@ -60,3 +60,4 @@ msub:
 		Facings: 16
 	icon: msubicon
 		Start: 0
+

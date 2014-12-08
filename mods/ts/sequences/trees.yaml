@@ -8,7 +8,7 @@ tibtre01:
 		Start: 1
 		Length: 10
 		ShadowStart: 12
-		Tick: 160
+		Tick: 4
 		Offset: 0, -12
 
 tibtre02:
@@ -21,7 +21,7 @@ tibtre02:
 		Start: 1
 		Length: 10
 		ShadowStart: 12
-		Tick: 160
+		Tick: 4
 		Offset: 0, -12
 
 tibtre03:
@@ -34,7 +34,7 @@ tibtre03:
 		Start: 1
 		Length: 10
 		ShadowStart: 12
-		Tick: 160
+		Tick: 4
 		Offset: 0, -12
 
 bigblue:
@@ -47,5 +47,6 @@ bigblue:
 		Start: 1
 		Length: 9
 		ShadowStart: 11
-		Tick: 160
+		Tick: 4
 		Offset: 0, -12
+

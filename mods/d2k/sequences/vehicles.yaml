@@ -20,7 +20,7 @@ harvester:
 		Start: 3631
 		Length: 6
 		Facings: -8
-		Tick: 80
+		Tick: 2
 		ZOffset: 1
 	dock: DATA
 		Start: 3370
@@ -259,3 +259,4 @@ deviatortank.destroyed:
 		Start: 2389
 		Facings: -32
 		ZOffset: -512
+

@@ -51,6 +51,7 @@ oilb:
 	bib: bib3
 		Start: 0
 		Length: *
+
 fact:
 	idle:
 		Start: 0
@@ -299,22 +300,22 @@ afld:
 	idle: afldidle
 		Start: 0
 		Length: 8
-		Tick: 160
+		Tick: 4
 		ZOffset: -1023
 	damaged-idle: afldidle
 		Start: 8
 		Length: 8
-		Tick: 160
+		Tick: 4
 		ZOffset: -1023
 	active:
 		Start: 0
 		Length: 8
-		Tick: 160
+		Tick: 4
 		ZOffset: -1023
 	damaged-active:
 		Start: 8
 		Length: 8
-		Tick: 160
+		Tick: 4
 		ZOffset: -1023
 	make: afldmake
 		Start: 0
@@ -492,12 +493,12 @@ tsla:
 	active:
 		Start: 1
 		Length: 9
-		Tick: 100
+		Tick: 2
 		Offset: 0,-1
 	damaged-active:
 		Start: 11
 		Length: 9
-		Tick: 100
+		Tick: 2
 		Offset: 0,-1
 	bib: mbTSLA
 		Start: 0
@@ -616,7 +617,7 @@ mslo:
 	active:
 		Start: 1
 		Length: 7
-		Tick: 80
+		Tick: 2
 	damaged-active:
 		Start: 9
 		Length: 7
@@ -671,3 +672,4 @@ cycl:
 	damaged-idle:
 		Start: 16
 		Length: 16
+

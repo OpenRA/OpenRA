@@ -5,7 +5,7 @@ explosion:
 	piffs: DATA
 		Start: 3429
 		Length: 4
-		Tick: 80
+		Tick: 2
 		BlendMode: Additive
 	small_explosion: DATA
 		Start: 3403
@@ -18,17 +18,17 @@ explosion:
 	tiny_explosion: DATA
 		Start: 3386
 		Length: 4
-		Tick: 80
+		Tick: 2
 		BlendMode: Additive
 	nuke: DATA
 		Start: 3965
 		Length: 14
-		Tick: 60
+		Tick: 1
 		BlendMode: Additive
 	mini_explosion: DATA
 		Start: 3403
 		Length: 15
-		Tick: 60
+		Tick: 1
 		BlendMode: Additive
 	self_destruct: DATA
 		Start: 3433
@@ -49,7 +49,7 @@ explosion:
 	small_artillery: DATA
 		Start: 3390
 		Length: 12
-		Tick: 60
+		Tick: 1
 		BlendMode: Additive
 	small_napalm: DATA
 		Start: 3421
@@ -59,22 +59,22 @@ explosion:
 		Start: 3687
 		Length: 6
 		BlendMode: Additive
-		Tick: 120
+		Tick: 3
 	deviator: DATA
 		Start: 3512
 		Length: 23
 		BlendMode: Additive
-		Tick: 60
+		Tick: 1
 	corpse: DATA
 		Start: 430
 		Length: 12
-		Tick: 1600
+		Tick: 40
 
 laserfire:
 	idle: DATA
 		Start: 3386
 		Length: 4
-		Tick: 80
+		Tick: 2
 		BlendMode: Additive
 
 pips:
@@ -101,7 +101,7 @@ poweroff:
 	offline:
 		Start: 0
 		Length: *
-		Tick: 160
+		Tick: 4
 
 rank:
 	rank:
@@ -126,11 +126,11 @@ overlay:
 		Offset: -16,-16
 
 rallypoint:
-	flag:flagfly
+	flag: flagfly
 		Start: 0
 		Length: *
 		Offset: 11,-5
-	circles:fpls
+	circles: fpls
 		Start: 0
 		Length: *
 
@@ -171,7 +171,7 @@ crate-effects:
 	levelup: levelup
 		Start: 0
 		Length: *
-		Tick: 200
+		Tick: 5
 	cloak: DATA
 		Start: 3911
 		Lenght: 36
@@ -180,7 +180,7 @@ allyrepair:
 	repair: DATA
 		Frames: 3, 39
 		Length: 2
-		Tick: 300
+		Tick: 7
 		Offset: -11,-10
 
 missile:
@@ -324,7 +324,7 @@ moveflsh:
 	idle: DATA
 		Start: 3621
 		Length: 5
-		Tick: 80
+		Tick: 2
 		BlendMode: Multiply
 
 resources:
@@ -376,3 +376,4 @@ sandcraters:
 		Start: 162
 		Length: 16
 		Offset: -16,-16
+

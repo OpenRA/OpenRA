@@ -1,11 +1,11 @@
 concretea:
 	icon: DATA
-		Start:4050
+		Start: 4050
 		Offset: -30,-24
 
 concreteb:
 	icon: DATA
-		Start:4053
+		Start: 4053
 		Offset: -30,-24
 
 walla:
@@ -179,7 +179,7 @@ conyarda:
 		Start: 4139
 		Length: 12
 		Offset: -48,64
-		Tick: 170
+		Tick: 4
 	damaged-idle: DATA
 		Start: 2560
 		Offset: -48,64
@@ -187,12 +187,12 @@ conyarda:
 		Start: 4436
 		Length: 14
 		Offset: -48,64
-		Tick: 80
+		Tick: 2
 	damaged-crane-overlay: DATA
 		Start: 4436
 		Length: 14
 		Offset: -48,64
-		Tick: 80
+		Tick: 2
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -214,7 +214,7 @@ repaira:
 		Start: 4380
 		Length: 10
 		Offset: -48,48
-		Tick: 100
+		Tick: 2
 	idle: DATA
 		Start: 2571
 		Offset: -48,48
@@ -232,7 +232,7 @@ repaira:
 	damaged-active: DATA
 		Start: 4746
 		Length: 14
-		Tick: 60
+		Tick: 1
 		Offset: -48,48
 		ZOffset: -1c511
 		BlendMode: Additive
@@ -249,7 +249,7 @@ repairh:
 		Start: 4380
 		Length: 10
 		Offset: -48,48
-		Tick: 100
+		Tick: 2
 	idle: DATA
 		Start: 2731
 		Offset: -48,48
@@ -267,7 +267,7 @@ repairh:
 	damaged-active: DATA
 		Start: 4746
 		Length: 14
-		Tick: 60
+		Tick: 1
 		Offset: -48,48
 		ZOffset: -1c511
 		BlendMode: Additive
@@ -284,7 +284,7 @@ repairo:
 		Start: 4380
 		Length: 10
 		Offset: -48,48
-		Tick: 100
+		Tick: 2
 	idle: DATA
 		Start: 2891
 		Offset: -48,48
@@ -302,7 +302,7 @@ repairo:
 	damaged-active: DATA
 		Start: 4746
 		Length: 14
-		Tick: 60
+		Tick: 1
 		Offset: -48,48
 		ZOffset: -1c511
 		BlendMode: Additive
@@ -325,14 +325,14 @@ starporta:
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
-		Tick: 200
+		Tick: 5
 	damaged-active: DATA
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
-		Tick: 200
+		Tick: 5
 	make: DATA
 		Start: 4347
 		Length: 11
@@ -341,7 +341,7 @@ starporta:
 		Start: 4358
 		Length: 11
 		Offset: -48,48
-		Tick: 100
+		Tick: 2
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -366,7 +366,7 @@ pwra:
 		Start: 4163
 		Length: 12
 		Offset: -32,64
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2524
 		Offset: -32,64
@@ -374,12 +374,12 @@ pwra:
 		Start: 4492
 		Length: 10
 		Offset: -32,64
-		Tick: 200
+		Tick: 5
 	damaged-idle-zaps: DATA
 		Start: 4497
 		Length: 5
 		Offset: -32,64
-		Tick: 200
+		Tick: 5
 	bib: BLOXBASE
 		Frames: 617, 618, 637, 638
 		Length: 4
@@ -404,7 +404,7 @@ barra:
 		Start: 4184
 		Length: 9
 		Offset: -32,64
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2526
 		Offset: -32,64
@@ -432,7 +432,7 @@ radara:
 		Start: 4263
 		Length: 10
 		Offset: -48,80
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2522
 		Offset: -48,80
@@ -465,7 +465,7 @@ refa:
 		Start: 4241
 		Length: 12
 		Offset: -48,64
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2561
 		Offset: -48,64
@@ -490,7 +490,7 @@ refa:
 		Start: 3885
 		Length: 14
 		Offset: 10,-16
-		Tick: 200
+		Tick: 5
 		BlendMode: Additive
 
 siloa:
@@ -510,7 +510,7 @@ siloa:
 		Start: 4320
 		Length: 7
 		Offset: -16,16
-		Tick: 200
+		Tick: 5
 	icon: DATA
 		Start: 4084
 		Offset: -30,-24
@@ -527,7 +527,7 @@ hightecha:
 		Start: 4284
 		Length: 10
 		Offset: -48,80
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2565
 		Offset: -48,80
@@ -535,7 +535,7 @@ hightecha:
 		Start: 4614
 		Length: 30
 		Offset: -48,80
-		Tick: 500
+		Tick: 12
 		BlendMode: Additive
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
@@ -561,14 +561,14 @@ researcha:
 		Start: 4401
 		Length: 11
 		Offset: -48,80
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2670
 		Offset: -48,80
 	idle-lights: DATA
 		Start: 4760
 		Length: 60
-		Tick: 80
+		Tick: 2
 		Offset: -48,80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
@@ -594,14 +594,14 @@ researchh:
 		Start: 4401
 		Length: 11
 		Offset: -48,80
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2830
 		Offset: -48,80
 	idle-lights: DATA
 		Start: 4760
 		Length: 60
-		Tick: 80
+		Tick: 2
 		Offset: -48,80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
@@ -627,14 +627,14 @@ researcho:
 		Start: 4401
 		Length: 11
 		Offset: -48,80
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2990
 		Offset: -48,80
 	idle-lights: DATA
 		Start: 4760
 		Length: 60
-		Tick: 80
+		Tick: 2
 		Offset: -48,80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
@@ -660,7 +660,7 @@ palacea:
 		Start: 4424
 		Length: 11
 		Offset: -48,48
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2677
 		Offset: -48,48
@@ -689,7 +689,7 @@ lighta:
 		Start: 4303
 		Length: 9
 		Offset: -48,64
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2673
 		Offset: -48,64
@@ -704,7 +704,7 @@ lighta:
 		Start: 4644
 		Length: 30
 		Offset: -48,64
-		Tick: 200
+		Tick: 5
 		BlendMode: Additive
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
@@ -731,7 +731,7 @@ heavya:
 		Start: 4337
 		Length: 9
 		Offset: -48,80
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2518
 		Offset: -48,80
@@ -747,7 +747,7 @@ heavya:
 		Start: 4674
 		Length: 47
 		Offset: -48,80
-		Tick: 200
+		Tick: 5
 		BlendMode: Additive
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
@@ -773,7 +773,7 @@ conyardh:
 		Start: 4139
 		Length: 12
 		Offset: -48,64
-		Tick: 170
+		Tick: 4
 	damaged-idle: DATA
 		Start: 2720
 		Offset: -48,64
@@ -781,12 +781,12 @@ conyardh:
 		Start: 4450
 		Length: 14
 		Offset: -48,64
-		Tick: 80
+		Tick: 2
 	damaged-crane-overlay: DATA
 		Start: 4450
 		Length: 14
 		Offset: -48,64
-		Tick: 80
+		Tick: 2
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -814,14 +814,14 @@ starporth:
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
-		Tick: 200
+		Tick: 5
 	damaged-active: DATA
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
-		Tick: 200
+		Tick: 5
 	make: DATA
 		Start: 4347
 		Length: 11
@@ -830,7 +830,7 @@ starporth:
 		Start: 4358
 		Length: 11
 		Offset: -48,48
-		Tick: 100
+		Tick: 2
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -855,7 +855,7 @@ pwrh:
 		Start: 4163
 		Length: 12
 		Offset: -32,64
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2684
 		Offset: -32,64
@@ -863,12 +863,12 @@ pwrh:
 		Start: 4502
 		Length: 10
 		Offset: -32,64
-		Tick: 200
+		Tick: 5
 	damaged-idle-zaps: DATA
 		Start: 4507
 		Length: 5
 		Offset: -32,64
-		Tick: 200
+		Tick: 5
 	bib: BLOXBASE
 		Frames: 617, 618, 637, 638
 		Length: 4
@@ -893,7 +893,7 @@ barrh:
 		Start: 4221
 		Length: 9
 		Offset: -32,64
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2686
 		Offset: -32,64
@@ -921,7 +921,7 @@ radarh:
 		Start: 4263
 		Length: 10
 		Offset: -48,80
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2682
 		Offset: -48,80
@@ -954,7 +954,7 @@ refh:
 		Start: 4241
 		Length: 12
 		Offset: -48,64
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2721
 		Offset: -48,64
@@ -979,7 +979,7 @@ refh:
 		Start: 3885
 		Length: 14
 		Offset: 10,-16
-		Tick: 200
+		Tick: 5
 		BlendMode: Additive
 
 siloh:
@@ -999,7 +999,7 @@ siloh:
 		Start: 4320
 		Length: 7
 		Offset: -16,16
-		Tick: 200
+		Tick: 5
 	icon: DATA
 		Start: 4085
 		Offset: -30,-24
@@ -1016,7 +1016,7 @@ hightechh:
 		Start: 4284
 		Length: 10
 		Offset: -48,80
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2725
 		Offset: -48,80
@@ -1024,7 +1024,7 @@ hightechh:
 		Start: 4614
 		Length: 30
 		Offset: -48,80
-		Tick: 500
+		Tick: 12
 		BlendMode: Additive
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
@@ -1050,7 +1050,7 @@ palaceh:
 		Start: 4424
 		Length: 11
 		Offset: -48,48
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2837
 		Offset: -48,48
@@ -1087,7 +1087,7 @@ lighth:
 		Start: 4303
 		Length: 9
 		Offset: -48,64
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2833
 		Offset: -48,64
@@ -1102,7 +1102,7 @@ lighth:
 		Start: 4644
 		Length: 30
 		Offset: -48,64
-		Tick: 200
+		Tick: 5
 		BlendMode: Additive
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
@@ -1129,7 +1129,7 @@ heavyh:
 		Start: 4337
 		Length: 9
 		Offset: -48,80
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2678
 		Offset: -48,80
@@ -1145,7 +1145,7 @@ heavyh:
 		Start: 4674
 		Length: 47
 		Offset: -48,80
-		Tick: 200
+		Tick: 5
 		BlendMode: Additive
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
@@ -1171,7 +1171,7 @@ conyardo:
 		Start: 4139
 		Length: 12
 		Offset: -48,64
-		Tick: 170
+		Tick: 4
 	damaged-idle: DATA
 		Start: 2880
 		Offset: -48,64
@@ -1179,12 +1179,12 @@ conyardo:
 		Start: 4464
 		Length: 14
 		Offset: -48,64
-		Tick: 80
+		Tick: 2
 	damaged-crane-overlay: DATA
 		Start: 4464
 		Length: 14
 		Offset: -48,64
-		Tick: 80
+		Tick: 2
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1212,14 +1212,14 @@ starporto:
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
-		Tick: 200
+		Tick: 5
 	damaged-active: DATA
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
-		Tick: 200
+		Tick: 5
 	make: DATA
 		Start: 4347
 		Length: 11
@@ -1228,7 +1228,7 @@ starporto:
 		Start: 4358
 		Length: 11
 		Offset: -48,48
-		Tick: 100
+		Tick: 2
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1254,7 +1254,7 @@ pwro:
 		Start: 4163
 		Length: 12
 		Offset: -32,64
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2844
 		Offset: -32,64
@@ -1262,12 +1262,12 @@ pwro:
 		Start: 4512
 		Length: 10
 		Offset: -32,64
-		Tick: 200
+		Tick: 5
 	damaged-idle-zaps: DATA
 		Start: 4517
 		Length: 5
 		Offset: -32,64
-		Tick: 200
+		Tick: 5
 	bib: BLOXBASE
 		Frames: 617, 618, 637, 638
 		Length: 4
@@ -1292,7 +1292,7 @@ barro:
 		Start: 4221
 		Length: 9
 		Offset: -32,64
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2846
 		Offset: -32,64
@@ -1320,7 +1320,7 @@ radaro:
 		Start: 4263
 		Length: 10
 		Offset: -48,80
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2842
 		Offset: -48,80
@@ -1353,7 +1353,7 @@ refo:
 		Start: 4241
 		Length: 12
 		Offset: -48,64
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2881
 		Offset: -48,64
@@ -1378,7 +1378,7 @@ refo:
 		Start: 3885
 		Length: 14
 		Offset: 10,-16
-		Tick: 200
+		Tick: 5
 		BlendMode: Additive
 
 siloo:
@@ -1398,7 +1398,7 @@ siloo:
 		Start: 4320
 		Length: 7
 		Offset: -16,16
-		Tick: 200
+		Tick: 5
 	icon: DATA
 		Start: 4086
 		Offset: -30,-24
@@ -1415,7 +1415,7 @@ hightecho:
 		Start: 4284
 		Length: 10
 		Offset: -48,80
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2885
 		Offset: -48,80
@@ -1423,7 +1423,7 @@ hightecho:
 		Start: 4614
 		Length: 30
 		Offset: -48,80
-		Tick: 500
+		Tick: 12
 		BlendMode: Additive
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
@@ -1449,7 +1449,7 @@ palaceo:
 		Start: 4424
 		Length: 11
 		Offset: -48,48
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2997
 		Offset: -48,48
@@ -1478,7 +1478,7 @@ lighto:
 		Start: 4303
 		Length: 9
 		Offset: -48,64
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2993
 		Offset: -48,64
@@ -1493,7 +1493,7 @@ lighto:
 		Start: 4644
 		Length: 30
 		Offset: -48,64
-		Tick: 200
+		Tick: 5
 		BlendMode: Additive
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
@@ -1520,7 +1520,7 @@ heavyo:
 		Start: 4337
 		Length: 9
 		Offset: -48,80
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 2838
 		Offset: -48,80
@@ -1536,7 +1536,7 @@ heavyo:
 		Start: 4674
 		Length: 47
 		Offset: -48,80
-		Tick: 200
+		Tick: 5
 		BlendMode: Additive
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
@@ -1575,7 +1575,7 @@ palacec: # TODO: unused
 		Start: 4424
 		Length: 11
 		Offset: -48,48
-		Tick: 100
+		Tick: 2
 
 starportc: # TODO: unused
 	idle: DATA
@@ -1592,14 +1592,14 @@ starportc: # TODO: unused
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
-		Tick: 200
+		Tick: 5
 	damaged-active: DATA
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
-		Tick: 200
+		Tick: 5
 	make: DATA
 		Start: 4347
 		Length: 11
@@ -1608,7 +1608,7 @@ starportc: # TODO: unused
 		Start: 4358
 		Length: 11
 		Offset: -48,48
-		Tick: 100
+		Tick: 2
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1634,7 +1634,7 @@ heavyc: # TODO: unused
 		Start: 4337
 		Length: 9
 		Offset: -48,80
-		Tick: 100
+		Tick: 2
 	damaged-idle: DATA
 		Start: 3001
 		Offset: -48,64
@@ -1650,7 +1650,7 @@ heavyc: # TODO: unused
 		Start: 4674
 		Length: 47
 		Offset: -48,80
-		Tick: 200
+		Tick: 5
 		BlendMode: Additive
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
@@ -1676,7 +1676,7 @@ conyardc: # TODO: unused
 		Start: 4139
 		Length: 12
 		Offset: -48,64
-		Tick: 200
+		Tick: 5
 	damaged-idle: DATA
 		Start: 3007
 		Offset: -48,64
@@ -1684,12 +1684,12 @@ conyardc: # TODO: unused
 		Start: 4478
 		Length: 14
 		Offset: -48,64
-		Tick: 80
+		Tick: 2
 	damaged-crane-overlay: DATA
 		Start: 4478
 		Length: 14
 		Offset: -48,64
-		Tick: 80
+		Tick: 2
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1702,13 +1702,3 @@ conyardc: # TODO: unused
 		Start: 4049
 		Offset: -30,-24
 
-plates: # TODO: unused
-	idle: DATA
-		Start: 3008
-		Length: 6
-	4-plates-icon: DATA
-		Start: 4050
-		Offset: -30,-24
-	6-plates-icon: DATA
-		Start: 4053
-		Offset: -30,-24

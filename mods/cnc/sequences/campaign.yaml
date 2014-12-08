@@ -25,7 +25,7 @@ boat:
 		Start: 6
 		Length: 6
 		Offset: 1,2
-		Tick: 120
+		Tick: 3
 	right:
 		Start: 96
 		Facings: 32
@@ -39,6 +39,7 @@ boat:
 		Start: 0
 		Length: 6
 		Offset: -1,2
-		Tick: 120
+		Tick: 3
 	icon: boaticnh
 		Start: 0
+

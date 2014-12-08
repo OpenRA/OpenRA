@@ -2,25 +2,25 @@ fact:
 	build:
 		Start: 4
 		Length: 20
-		Tick: 100
+		Tick: 2
 	idle:
 		Start: 0
 		Length: 4
-		Tick: 100
+		Tick: 2
 	damaged-idle:
 		Start: 24
 		Length: 4
-		Tick: 100
+		Tick: 2
 	damaged-build:
 		Start: 28
 		Length: 20
-		Tick: 100
+		Tick: 2
 	dead:
 		Start: 48
 	make: factmake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 	bib: bib2
 		Start: 0
 		Length: *
@@ -31,18 +31,18 @@ nuke:
 	idle:
 		Start: 0
 		Length: 4
-		Tick: 1000
+		Tick: 25
 	damaged-idle:
 		Start: 4
 		Length: 4
-		Tick: 1000
+		Tick: 25
 	dead:
 		Start: 8
-		Tick: 1000
+		Tick: 25
 	make: nukemake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 	bib: bib3
 		Start: 0
 		Length: *
@@ -53,17 +53,17 @@ proc:
 	idle:
 		Start: 0
 		Length: 6
-		Tick: 120
+		Tick: 3
 	damaged-idle:
 		Start: 30
 		Length: 6
-		Tick: 120
+		Tick: 3
 	dead:
 		Start: 60
 	make: procmake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 	resources: proctwr
 		Start: 0
 		Length: 6
@@ -93,7 +93,7 @@ silo:
 	make: silomake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 		Offset: 0,-1
 	bib: mbSILO
 		Start: 0
@@ -112,7 +112,7 @@ hand:
 	make: handmake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 	bib: bib3
 		Start: 0
 		Length: *
@@ -123,18 +123,18 @@ pyle:
 	idle:
 		Start: 0
 		Length: 10
-		Tick: 100		
+		Tick: 2
 	damaged-idle:
 		Start: 10
 		Length: 10
-		Tick: 100		
+		Tick: 2
 	dead:
 		Start: 20
-		Tick: 100
+		Tick: 2
 	make: pylemake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 	bib: bib3
 		Start: 0
 		Length: *
@@ -161,7 +161,7 @@ weap:
 	make: weapmake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 	bib: bib2
 		Start: 0
 		Length: *
@@ -171,21 +171,21 @@ weap:
 afld:
 	idle:
 		Start: 0
-		Tick: 120
+		Tick: 3
 		ZOffset: -1023
 	active:
 		Start: 0
 		Length: 16
-		Tick: 120
+		Tick: 3
 		ZOffset: -1023
 	damaged-idle:
 		Start: 16
-		Tick: 120
+		Tick: 3
 		ZOffset: -1023
 	damaged-active:
 		Start: 16
 		Length: 16
-		Tick: 120
+		Tick: 3
 		ZOffset: -1023
 	dead:
 		Start: 32
@@ -193,7 +193,7 @@ afld:
 	make: afldmake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 	bib: bib1
 		Start: 0
 		Length: *
@@ -204,17 +204,17 @@ hq:
 	idle:
 		Start: 0
 		Length: 16
-		Tick: 100
+		Tick: 2
 	damaged-idle:
 		Start: 16
 		Length: 16
-		Tick: 100
+		Tick: 2
 	dead:
 		Start: 32
 	make: hqmake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 	bib: bib3
 		Start: 0
 		Length: *
@@ -225,17 +225,17 @@ nuk2:
 	idle:
 		Start: 0
 		Length: 4
-		Tick: 1000
+		Tick: 25
 	damaged-idle:
 		Start: 4
 		Length: 4
-		Tick: 1000
+		Tick: 25
 	dead:
 		Start: 8
 	make: nuk2make
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 	bib: bib3
 		Start: 0
 		Length: *
@@ -252,12 +252,12 @@ hpad:
 	active:
 		Start: 1
 		Length: 6
-		Tick: 100
+		Tick: 2
 		ZOffset: -1023
 	damaged-active:
 		Start: 8
 		Length: 6
-		Tick: 100		
+		Tick: 2
 		ZOffset: -1023
 	dead:
 		Start: 14
@@ -265,7 +265,7 @@ hpad:
 	make: hpadmake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 	icon: hpadicnh
 		Start: 0
 
@@ -290,7 +290,7 @@ fix:
 	make: fixmake
 		Start: 0
 		Length: 14
-		Tick: 60
+		Tick: 1
 	bib: mbFIX
 		Start: 0
 		Length: *
@@ -302,17 +302,17 @@ eye:
 	idle:
 		Start: 0
 		Length: 16
-		Tick: 100
+		Tick: 2
 	damaged-idle:
 		Start: 16
 		Length: 16
-		Tick: 100
+		Tick: 2
 	dead:
 		Start: 32
 	make: eyemake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 	bib: bib3
 		Start: 0
 		Length: *
@@ -335,7 +335,7 @@ tmpl:
 	make: tmplmake
 		Start: 0
 		Length: *
-		Tick: 60
+		Tick: 1
 	bib: bib2
 		Start: 0
 		Length: *
@@ -350,17 +350,17 @@ obli:
 	active:
 		Start: 0
 		Length: 4
-		Tick: 680
+		Tick: 17
 	damaged-active:
 		Start: 4
 		Length: 4
-		Tick: 680
+		Tick: 17
 	dead:
 		Start: 8
 	make: oblimake
 		Start: 0
 		Length: 13
-		Tick: 80
+		Tick: 2
 	bib: mbOBLI
 		Start: 0
 		Length: *
@@ -430,7 +430,7 @@ gun:
 	make: gunmake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 	muzzle: gunfire2
 		Start: 0
 		Length: *
@@ -443,37 +443,37 @@ gun:
 
 sam:
 	closed-idle:
-		Start:0
+		Start: 0
 	opening:
 		Start: 1
 		Length: 16
-		Tick: 30
+		Tick: 1
 	idle:
 		Start: 17
 		Facings: 32
 	closing:
 		Start: 50
 		Length: 14
-		Tick: 30
+		Tick: 1
 	damaged-closed-idle:
-		Start:64
+		Start: 64
 	damaged-opening:
 		Start: 65
 		Length: 16
-		Tick: 30
+		Tick: 1
 	damaged-idle:
 		Start: 81
 		Facings: 32
 	damaged-closing:
 		Start: 114
 		Length: 14
-		Tick: 30
+		Tick: 1
 	dead:
 		Start: 128
 	make: sammake
 		Start: 0
 		Length: 20
-		Tick: 30
+		Tick: 1
 	muzzle: samfire
 		Start: 0
 		Length: 18
@@ -491,7 +491,7 @@ gtwr:
 	make: gtwrmake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 	muzzle: minigun
 		Start: 0
 		Length: 6
@@ -516,7 +516,7 @@ atwr:
 	make: atwrmake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 		Offset: 0,-1
 	muzzle: gunfire2
 		Start: 0
@@ -533,7 +533,7 @@ hosp:
 	idle:
 		Start: 0
 		Length: 4
-		Tick: 100
+		Tick: 2
 		Offset: 0,-2
 	damaged-idle:
 		Start: 4
@@ -542,7 +542,7 @@ hosp:
 	make: hospmake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 		Offset: 0,-2
 	bib: mbHOSP
 		Start: 0
@@ -565,7 +565,7 @@ bio:
 	make: biomake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 
 bio.husk:
 	idle: bio
@@ -581,7 +581,7 @@ miss:
 	make: missmake
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 2
 		Offset: 0,-1
 	bib: mbMISS
 		Start: 0
@@ -597,3 +597,4 @@ miss.husk:
 		Start: 0
 		Length: *
 		Offset: 0,1
+
