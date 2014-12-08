@@ -103,7 +103,7 @@ namespace OpenRA.Server
 
 						case ReceiveState.Data:
 							{
-								server.DispatchOrders(this, Frame, bytes);
+								server.ProcessOrders(this, Frame, bytes);
 								MostRecentFrame = Frame;
 								ExpectLength = 8;
 								State = ReceiveState.Header;
