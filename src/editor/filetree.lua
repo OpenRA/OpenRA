@@ -220,7 +220,10 @@ local function treeSetConnectorsAndIcons(tree)
     local source = tree:GetItemFullName(itemsrc)
     local fn = wx.wxFileName(target)
 
-    if wx.wxFileName(source):SameAs(fn) then return false end
+    -- check if the target is the same as the source;
+    -- SameAs check is not used here as "Test" and "test" are the same
+    -- on case insensitive systems, but need to be allowed in renaming.
+    if source == target then return end
 
     local docs = {}
     if not isnew then -- find if source is already opened in the editor
@@ -237,6 +240,7 @@ local function treeSetConnectorsAndIcons(tree)
 
     -- check if existing file/dir is going to be overwritten
     if (wx.wxFileExists(target) or wx.wxDirExists(target))
+    and not wx.wxFileName(source):SameAs(fn)
     and not ApproveFileOverwrite() then return false end
 
     if not fn:Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL) then
