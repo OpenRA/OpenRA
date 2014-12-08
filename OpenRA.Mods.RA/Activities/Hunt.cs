@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
@@ -22,7 +23,13 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			var attack = self.Trait<AttackBase>();
 			targets = self.World.Actors.Where(a => self != a && !a.IsDead && a.IsInWorld && a.AppearsHostileTo(self)
-				&& a.HasTrait<Huntable>() && attack.HasAnyValidWeapons(Target.FromActor(a)));
+				&& a.HasTrait<Huntable>() && IsTargetable(a, self) && attack.HasAnyValidWeapons(Target.FromActor(a)));
+		}
+
+		bool IsTargetable(Actor self, Actor viewer)
+		{
+			var targetable = self.TraitOrDefault<ITargetable>();
+			return targetable != null && targetable.TargetableBy(self, viewer);
 		}
 
 		public override Activity Tick(Actor self)
