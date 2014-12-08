@@ -20,6 +20,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string LongDesc = "";
 		public readonly bool AllowMultiple = false;
 		public readonly bool OneShot = false;
+
+		[Desc("If set to true, the support power will be fully charged when it becomes available. " +
+			"Normal rules apply for subsequent charges.")]
+		public readonly bool StartFullyCharged = false;
 		public readonly string[] Prerequisites = { };
 
 		public readonly string BeginChargeSound = null;
