@@ -64,10 +64,10 @@ namespace OpenRA.Mods.RA.Activities
 			self.Trait<IPositionable>().SetPosition(self, destination);
 			self.Generation++;
 
-			if (killCargo && self.HasTrait<Cargo>())
+			if (killCargo)
 			{
-				var cargo = self.Trait<Cargo>();
-				if (teleporter != null)
+				var cargo = self.TraitOrDefault<Cargo>();
+				if (cargo != null && teleporter != null)
 				{
 					while (!cargo.IsEmpty(self))
 					{
