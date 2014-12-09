@@ -25,17 +25,20 @@ namespace OpenRA.Mods.RA.Activities
 		readonly Cargo cargo;
 		readonly Cloak cloak;
 		readonly bool unloadAll;
-		readonly RallyPoint rp;
+		readonly CPos? moveTo;
 
-		public UnloadCargo(Actor self, bool unloadAll) : this(self, unloadAll, null) { }
+		public UnloadCargo(Actor self, bool unloadAll, CPos? moveTo)
+			: this(self, unloadAll)
+		{
+			this.moveTo = moveTo;
+		}
 
-		public UnloadCargo(Actor self, bool unloadAll, RallyPoint rp)
+		public UnloadCargo(Actor self, bool unloadAll)
 		{
 			this.self = self;
 			cargo = self.Trait<Cargo>();
 			cloak = self.TraitOrDefault<Cloak>();
 			this.unloadAll = unloadAll;
-			this.rp = rp;
 		}
 
 		public Pair<CPos, SubCell>? ChooseExitSubCell(Actor passenger)
@@ -95,15 +98,14 @@ namespace OpenRA.Mods.RA.Activities
 				actor.QueueActivity(move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
 				actor.SetTargetLine(Target.FromCell(w, exitSubCell.Value.First, exitSubCell.Value.Second), Color.Green, false);
 
-				if (rp != null)
+				if (moveTo.HasValue)
 				{
-					var exitLocation = this.rp.Location;
-					var target = Target.FromCell(self.World, exitLocation);
+					var target = Target.FromCell(self.World, moveTo.Value);
 
 					actor.QueueActivity(new AttackMove.AttackMoveActivity(
-						actor, move.MoveTo(exitLocation, 1)));
+						actor, move.MoveTo(moveTo.Value, 1)));
 
-					actor.SetTargetLine(target, rp != null ? Color.Red : Color.Green, false);
+					actor.SetTargetLine(target, Color.Red, false);
 				}
 
 				w.Add(actor);

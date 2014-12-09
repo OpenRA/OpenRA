@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA
 
 				a.QueueActivity(new Fly(a, Target.FromCell(w, self.Location + new CVec(9, 0))));
 				a.QueueActivity(new Land(Target.FromActor(self)));
-				a.QueueActivity(new UnloadCargo(a, true, rp.Value));
+				a.QueueActivity(new UnloadCargo(a, true, rp.Value.Location));
 				a.QueueActivity(new Fly(a, Target.FromCell(w, endPos)));
 				a.QueueActivity(new RemoveSelf());
 			});
