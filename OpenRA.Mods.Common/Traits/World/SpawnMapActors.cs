@@ -13,7 +13,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawns the initial units for each player upon game start.")]
 	public class SpawnMapActorsInfo : TraitInfo<SpawnMapActors> { }

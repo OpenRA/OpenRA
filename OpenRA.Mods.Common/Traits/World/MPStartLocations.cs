@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	public class MPStartLocationsInfo : TraitInfo<MPStartLocations>
 	{

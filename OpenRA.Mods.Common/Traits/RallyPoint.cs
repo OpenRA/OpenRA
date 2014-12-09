@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Used to waypoint units after production or repair is finished.")]
 	public class RallyPointInfo : ITraitInfo

@@ -13,11 +13,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
-using OpenRA.Mods.Common.Server;
-using OpenRA.Mods.Common;
 
 namespace OpenRA.Mods.Common.Server
 {

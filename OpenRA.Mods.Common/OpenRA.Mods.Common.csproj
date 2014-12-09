@@ -80,7 +80,6 @@
     <Compile Include="LoadWidgetAtGameStart.cs" />
     <Compile Include="ModChooserLoadScreen.cs" />
     <Compile Include="NullLoadScreen.cs" />
-    <Compile Include="Modifiers\TimedUpgradeBar.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
@@ -117,8 +116,10 @@
     <Compile Include="Traits\GlobalUpgradable.cs" />
     <Compile Include="Traits\Immobile.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
+    <Compile Include="Traits\KillsSelf.cs" />
     <Compile Include="Traits\Modifiers\DisabledOverlay.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
+    <Compile Include="Traits\Modifiers\TimedUpgradeBar.cs" />
     <Compile Include="Traits\Modifiers\UpgradeOverlay.cs" />
     <Compile Include="Traits\PaletteEffects\CloakPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\LightPaletteRotator.cs" />
@@ -155,6 +156,8 @@
     <Compile Include="Traits\Sound\AnnounceOnKill.cs" />
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
+    <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
+    <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\World\CreateMPPlayers.cs" />
     <Compile Include="Traits\World\MPStartLocations.cs" />
@@ -173,8 +176,6 @@
     <Compile Include="Traits\World\SpawnMapActors.cs" />
     <Compile Include="Traits\World\StartGameNotification.cs" />
     <Compile Include="Traits\World\TerrainGeometryOverlay.cs" />
-    <Compile Include="Upgrades\UpgradableTrait.cs" />
-    <Compile Include="Upgrades\UpgradeManager.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
     <Compile Include="UtilityCommands\ExtractFilesCommand.cs" />

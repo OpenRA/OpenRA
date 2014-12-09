@@ -12,13 +12,14 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {
 	class RallyPoint : IEffect
 	{
 		readonly Actor building;
-		readonly Common.RallyPoint rp;
+		readonly Common.Traits.RallyPoint rp;
 		readonly string palettePrefix;
 		readonly Animation flag;
 		readonly Animation circles;
@@ -28,7 +29,7 @@ namespace OpenRA.Mods.Common.Effects
 			this.building = building;
 			this.palettePrefix = palettePrefix;
 
-			rp = building.Trait<Common.RallyPoint>();
+			rp = building.Trait<Common.Traits.RallyPoint>();
 
 			flag = new Animation(building.World, "rallypoint");
 			circles = new Animation(building.World, "rallypoint");

@@ -11,7 +11,7 @@
 using System.Drawing;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Power
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Disables the actor when a power outage is triggered (see `InfiltrateForPowerOutage` for more information).")]
 	public class AffectedByPowerOutageInfo : ITraitInfo
