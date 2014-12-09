@@ -9,10 +9,9 @@
 #endregion
 
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders an overlay when the actor is taking heavy damage.")]
 	public class WithSmokeInfo : ITraitInfo, Requires<RenderSpritesInfo>

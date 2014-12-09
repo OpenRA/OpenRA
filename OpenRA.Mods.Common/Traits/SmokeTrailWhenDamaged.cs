@@ -11,7 +11,7 @@
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	class SmokeTrailWhenDamagedInfo : ITraitInfo, Requires<IBodyOrientationInfo>
 	{
