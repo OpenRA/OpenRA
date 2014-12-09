@@ -11,7 +11,7 @@
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor has a death animation.")]
 	public class WithDeathAnimationInfo : ITraitInfo, Requires<RenderSimpleInfo>

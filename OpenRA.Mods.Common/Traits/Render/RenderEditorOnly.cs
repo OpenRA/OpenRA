@@ -10,9 +10,8 @@
 
 using System.Collections.Generic;
 using OpenRA.Graphics;
-using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Invisible during games.")]
 	class RenderEditorOnlyInfo : RenderSimpleInfo

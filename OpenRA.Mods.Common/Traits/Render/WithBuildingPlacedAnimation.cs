@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Changes the animation when the actor constructed a building.")]
 	public class WithBuildingPlacedAnimationInfo : ITraitInfo, Requires<RenderSimpleInfo>

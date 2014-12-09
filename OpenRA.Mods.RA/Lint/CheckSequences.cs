@@ -10,8 +10,8 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA
 {

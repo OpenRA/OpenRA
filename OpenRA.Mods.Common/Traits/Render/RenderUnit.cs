@@ -11,7 +11,7 @@
 using System;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Common.Traits
 {
 	public class RenderUnitInfo : RenderSimpleInfo, Requires<IFacingInfo>
 	{

@@ -9,8 +9,8 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA
 {
