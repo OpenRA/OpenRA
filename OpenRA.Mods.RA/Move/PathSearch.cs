@@ -285,6 +285,8 @@ namespace OpenRA.Mods.RA.Move
 		}
 
 		static readonly Queue<CellLayer<CellInfo>> CellInfoPool = new Queue<CellLayer<CellInfo>>();
+		static readonly object defaultCellInfoLayerSync = new object();
+		static CellLayer<CellInfo> defaultCellInfoLayer;
 
 		static CellLayer<CellInfo> GetFromPool()
 		{
@@ -301,7 +303,8 @@ namespace OpenRA.Mods.RA.Move
 		CellLayer<CellInfo> InitCellInfo()
 		{
 			CellLayer<CellInfo> result = null;
-			var mapSize = new Size(self.World.Map.MapSize.X, self.World.Map.MapSize.Y);
+			var map = self.World.Map;
+			var mapSize = new Size(map.MapSize.X, map.MapSize.Y);
 
 			// HACK: Uses a static cache so that double-ended searches (which have two PathSearch instances)
 			// can implicitly share data.  The PathFinder should allocate the CellInfo array and pass it
@@ -309,7 +312,7 @@ namespace OpenRA.Mods.RA.Move
 			while (CellInfoPool.Count > 0)
 			{
 				var cellInfo = GetFromPool();
-				if (cellInfo.Size != mapSize || cellInfo.Shape != self.World.Map.TileShape)
+				if (cellInfo.Size != mapSize || cellInfo.Shape != map.TileShape)
 				{
 					Log.Write("debug", "Discarding old pooled CellInfo of wrong size.");
 					continue;
@@ -320,10 +323,22 @@ namespace OpenRA.Mods.RA.Move
 			}
 
 			if (result == null)
-				result = new CellLayer<CellInfo>(self.World.Map);
+				result = new CellLayer<CellInfo>(map);
 
-			foreach (var cell in self.World.Map.Cells)
-				result[cell] = new CellInfo(int.MaxValue, cell, false);
+			lock (defaultCellInfoLayerSync)
+			{
+				if (defaultCellInfoLayer == null ||
+					defaultCellInfoLayer.Size != mapSize ||
+					defaultCellInfoLayer.Shape != map.TileShape)
+				{
+					defaultCellInfoLayer = new CellLayer<CellInfo>(map);
+					foreach (var cell in map.Cells)
+						defaultCellInfoLayer[cell] = new CellInfo(int.MaxValue, cell, false);
+				}
+
+				result.CopyValuesFrom(defaultCellInfoLayer);
+			}
+
 
 			return result;
 		}
