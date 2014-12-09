@@ -11,7 +11,7 @@
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Power
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The player can disable the power individually on this actor.")]
 	public class CanPowerDownInfo : UpgradableTraitInfo, ITraitInfo, Requires<PowerInfo>

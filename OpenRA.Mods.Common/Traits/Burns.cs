@@ -9,10 +9,9 @@
 #endregion
 
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor will play a fire animation over its body and take damage over time.")]
 	class BurnsInfo : ITraitInfo, Requires<RenderSpritesInfo>

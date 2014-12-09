@@ -10,6 +10,7 @@
 
 using System.Linq;
 using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Server;
 

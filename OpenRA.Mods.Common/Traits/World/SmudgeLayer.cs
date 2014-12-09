@@ -14,7 +14,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
 	public class SmudgeLayerInfo : ITraitInfo

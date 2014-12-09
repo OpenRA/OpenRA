@@ -13,11 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRA.Effects;
-using OpenRA.Mods.Common;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	class KillsSelfInfo : UpgradableTraitInfo, ITraitInfo
 	{

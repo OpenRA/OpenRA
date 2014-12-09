@@ -10,7 +10,7 @@
 
 using System;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 

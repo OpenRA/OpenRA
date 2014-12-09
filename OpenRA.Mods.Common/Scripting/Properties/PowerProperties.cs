@@ -12,7 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Eluant;
-using OpenRA.Mods.Common.Power;
+using OpenRA.Mods.Common.Traits;
+using PowerTrait = OpenRA.Mods.Common.Traits.Power;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -58,12 +59,12 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Power")]
 	public class ActorPowerProperties : ScriptActorProperties, Requires<PowerInfo>
 	{
-		readonly IEnumerable<Power.Power> power;
+		readonly IEnumerable<PowerTrait> power;
 
 		public ActorPowerProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			power = self.TraitsImplementing<Power.Power>();
+			power = self.TraitsImplementing<PowerTrait>();
 		}
 
 		[Desc("Returns the power drained/provided by this actor.")]

@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Power
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Needs power to operate.")]
 	class RequiresPowerInfo : ITraitInfo

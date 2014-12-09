@@ -12,7 +12,7 @@ using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Loads the palette specified in the tileset definition")]
 	class PaletteFromCurrentTilesetInfo : ITraitInfo

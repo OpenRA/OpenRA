@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Overrides the build time calculated by actor value.")]
 	public class CustomBuildTimeValueInfo : TraitInfo<CustomBuildTimeValue>
