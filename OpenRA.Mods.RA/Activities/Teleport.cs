@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Activities
 
 	public class Teleport : Activity
 	{
-		Actor chronosphere;
+		Actor teleporter;
 		CPos destination;
 		int? maximumDistance;
 		bool killCargo;
@@ -29,12 +29,12 @@ namespace OpenRA.Mods.RA.Activities
 
 		const int maxCellSearchRange = Map.MaxTilesInCircleRange;
 
-		public Teleport(Actor chronosphere, CPos destination, int? maximumDistance, bool killCargo, bool screenFlash, string sound)
+		public Teleport(Actor teleporter, CPos destination, int? maximumDistance, bool killCargo, bool screenFlash, string sound)
 		{
 			if (maximumDistance > maxCellSearchRange)
 				throw new InvalidOperationException("Teleport cannot be used with a maximum teleport distance greater than {0}.".F(maxCellSearchRange));
 
-			this.chronosphere = chronosphere;
+			this.teleporter = teleporter;
 			this.destination = destination;
 			this.maximumDistance = maximumDistance;
 			this.killCargo = killCargo;
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Activities
 		public override Activity Tick(Actor self)
 		{
 			var pc = self.TraitOrDefault<PortableChrono>();
-			if (pc != null && !pc.CanTeleport)
+			if (teleporter == self && pc != null && !pc.CanTeleport)
 				return NextActivity;
 
 			foreach (var condition in self.TraitsImplementing<IPreventsTeleport>())
@@ -64,23 +64,23 @@ namespace OpenRA.Mods.RA.Activities
 			self.Trait<IPositionable>().SetPosition(self, destination);
 			self.Generation++;
 
-			if (killCargo && self.HasTrait<Cargo>())
+			if (killCargo)
 			{
-				var cargo = self.Trait<Cargo>();
-				if (chronosphere != null)
+				var cargo = self.TraitOrDefault<Cargo>();
+				if (cargo != null && teleporter != null)
 				{
 					while (!cargo.IsEmpty(self))
 					{
 						var a = cargo.Unload(self);
 						// Kill all the units that are unloaded into the void
 						// Kill() handles kill and death statistics
-						a.Kill(chronosphere);
+						a.Kill(teleporter);
 					}
 				}
 			}
 
 			// Consume teleport charges if this wasn't triggered via chronosphere
-			if (chronosphere == null && pc != null)
+			if (teleporter == self && pc != null)
 				pc.ResetChargeTime();
 
 			// Trigger screen desaturate effect
@@ -88,47 +88,40 @@ namespace OpenRA.Mods.RA.Activities
 				foreach (var a in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())
 					a.Trait.Enable();
 
-			if (chronosphere != null && !chronosphere.Destroyed && chronosphere.HasTrait<RenderBuilding>())
-				chronosphere.Trait<RenderBuilding>().PlayCustomAnim(chronosphere, "active");
+			if (teleporter != null && self != teleporter && !teleporter.Destroyed)
+			{
+				var building = teleporter.TraitOrDefault<RenderBuilding>();
+				if (building != null)
+					building.PlayCustomAnim(teleporter, "active");
+			}
 
 			return NextActivity;
 		}
 
 		CPos? ChooseBestDestinationCell(Actor self, CPos destination)
 		{
+			if (teleporter == null)
+				return null;
+
 			var restrictTo = maximumDistance == null ? null : self.World.Map.FindTilesInCircle(self.Location, maximumDistance.Value);
 
 			if (maximumDistance != null)
 				destination = restrictTo.MinBy(x => (x - destination).LengthSquared);
 
 			var pos = self.Trait<IPositionable>();
-			if (pos.CanEnterCell(destination) && self.Owner.Shroud.IsExplored(destination))
+			if (pos.CanEnterCell(destination) && teleporter.Owner.Shroud.IsExplored(destination))
 				return destination;
 
 			var max = maximumDistance != null ? maximumDistance.Value : maxCellSearchRange;
 			foreach (var tile in self.World.Map.FindTilesInCircle(destination, max))
 			{
-				if (self.Owner.Shroud.IsExplored(tile)
+				if (teleporter.Owner.Shroud.IsExplored(tile)
 					&& (restrictTo == null || (restrictTo != null && restrictTo.Contains(tile)))
 					&& pos.CanEnterCell(tile))
 					return tile;
 			}
 
 			return null;
-		}
-	}
-
-	public class SimpleTeleport : Activity
-	{
-		CPos destination;
-
-		public SimpleTeleport(CPos destination) { this.destination = destination; }
-
-		public override Activity Tick(Actor self)
-		{
-			self.Trait<IPositionable>().SetPosition(self, destination);
-			self.Generation++;
-			return NextActivity;
 		}
 	}
 }
