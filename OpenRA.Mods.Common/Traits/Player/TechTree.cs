@@ -13,7 +13,7 @@ using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Manages build limits and pre-requisites.", " Attach this to the player actor.")]
 	public class TechTreeInfo : ITraitInfo

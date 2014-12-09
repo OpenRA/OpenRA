@@ -37,4 +37,17 @@ namespace OpenRA.Mods.Common
 		void MovementCancelled(Actor self);
 		void Harvested(Actor self, ResourceType resource);
 	}
+
+	public interface ITechTreePrerequisite
+	{
+		IEnumerable<string> ProvidesPrerequisites { get; }
+	}
+
+	public interface ITechTreeElement
+	{
+		void PrerequisitesAvailable (string key);
+		void PrerequisitesUnavailable (string key);
+		void PrerequisitesItemHidden (string key);
+		void PrerequisitesItemVisible (string key);
+	}
 }
