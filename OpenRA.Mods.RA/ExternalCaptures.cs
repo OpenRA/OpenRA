@@ -105,7 +105,8 @@ namespace OpenRA.Mods.RA
 
 	class ExternalCaptureOrderTargeter : UnitOrderTargeter
 	{
-		public ExternalCaptureOrderTargeter() : base("ExternalCaptureActor", 6, "enter", true, true) { }
+		public ExternalCaptureOrderTargeter()
+			: base("ExternalCaptureActor", 6, "enter", Stance.All) { }
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{

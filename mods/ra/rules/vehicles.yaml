@@ -551,7 +551,7 @@ MRJ:
 		Range: 15
 	JamsMissiles:
 		Range: 4
-		AlliedMissiles: False
+		AffectsPlayers: Enemy, Neutral
 	RenderJammerCircle:
 	DetectCloaked:
 		Range: 6

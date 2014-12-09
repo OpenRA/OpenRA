@@ -15,28 +15,31 @@ namespace OpenRA.Mods.RA
 {
 	public static class ActorExts
 	{
-		public static bool AppearsFriendlyTo(this Actor self, Actor toActor)
+		public static bool HasApparentDiplomacy(this Actor self, Actor toActor, Stance diplomaciesToConsider)
 		{
 			var stance = toActor.Owner.Stances[self.Owner];
-			if (stance == Stance.Ally)
-				return true;
 
-			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised && !toActor.HasTrait<IgnoresDisguise>())
-				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Ally;
+			var friendly = diplomaciesToConsider & (Stance.Ally | Stance.Player);
+			if (friendly != Stance.None)
+			{
+				if (stance.Intersects(friendly))
+					return true;
+	
+				if (self.EffectiveOwner.Disguised && !toActor.HasTrait<IgnoresDisguise>())
+					return toActor.Owner.Stances[self.EffectiveOwner.Owner].Intersects(friendly);
+			}
 
-			return stance == Stance.Ally;
-		}
+			// Not `else if` in order to process both if both are true.; ie. attacks friendlies and hostiles alike
+			if (diplomaciesToConsider.HasFlag(Stance.Enemy))
+			{
+				if (stance.Intersects(friendly ^ (Stance.Ally | Stance.Player)))
+					return false;		/* otherwise, we'll hate friendly disguised spies */
 
-		public static bool AppearsHostileTo(this Actor self, Actor toActor)
-		{
-			var stance = toActor.Owner.Stances[self.Owner];
-			if (stance == Stance.Ally)
-				return false;		/* otherwise, we'll hate friendly disguised spies */
+				if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised && !toActor.HasTrait<IgnoresDisguise>())
+					return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Enemy;
+			}
 
-			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised && !toActor.HasTrait<IgnoresDisguise>())
-				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Enemy;
-
-			return stance == Stance.Enemy;
+			return stance.Intersects(diplomaciesToConsider);
 		}
 
 		public static Target ResolveFrozenActorOrder(this Actor self, Order order, Color targetLine)

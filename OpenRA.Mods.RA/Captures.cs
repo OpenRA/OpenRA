@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA
 			readonly bool sabotage;
 
 			public CaptureOrderTargeter(bool sabotage)
-				: base("CaptureActor", 6, "enter", true, true)
+				: base("CaptureActor", 6, "enter", Stance.All)
 			{
 				this.sabotage = sabotage;
 			}

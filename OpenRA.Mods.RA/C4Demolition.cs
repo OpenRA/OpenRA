@@ -32,6 +32,8 @@ namespace OpenRA.Mods.RA
 		public readonly int FlashDuration = 3;
 		[Desc("Voice string when planting explosive charges.")]
 		public readonly string Voice = "Attack";
+		[Desc("Acceptable stances of target's owner.")]
+		public readonly Stance TargetPlayers = Stance.Enemy | Stance.Neutral;
 
 		public object Create(ActorInitializer init) { return new C4Demolition(this); }
 	}
@@ -47,7 +49,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new C4DemolitionOrderTargeter(); }
+			get { yield return new C4DemolitionOrderTargeter(info.TargetPlayers); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -89,8 +91,8 @@ namespace OpenRA.Mods.RA
 
 		class C4DemolitionOrderTargeter : UnitOrderTargeter
 		{
-			public C4DemolitionOrderTargeter()
-				: base("C4", 6, "c4", true, false) { }
+			public C4DemolitionOrderTargeter(Stance stances)
+				: base("C4", 6, "c4", stances) { }
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{

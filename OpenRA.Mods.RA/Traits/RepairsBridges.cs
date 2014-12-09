@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA.Traits
 		class RepairBridgeOrderTargeter : UnitOrderTargeter
 		{
 			public RepairBridgeOrderTargeter()
-				: base("RepairBridge", 6, "goldwrench", true, true) { }
+				: base("RepairBridge", 6, "goldwrench", Stance.All) { }
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{

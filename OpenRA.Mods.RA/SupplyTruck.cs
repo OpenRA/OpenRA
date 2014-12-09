@@ -21,6 +21,10 @@ namespace OpenRA.Mods.RA
 	{
 		[Desc("The amount of cash the owner of the building recieves.")]
 		public readonly int Payload = 500;
+
+		[Desc("Acceptable stances of target's owner.")]
+		public readonly Stance TargetPlayers = Stance.Ally | Stance.Player;
+
 		public object Create(ActorInitializer init) { return new SupplyTruck(this); }
 	}
 
@@ -35,7 +39,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new SupplyTruckOrderTargeter(); }
+			get { yield return new SupplyTruckOrderTargeter(info.TargetPlayers); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -72,8 +76,8 @@ namespace OpenRA.Mods.RA
 
 		class SupplyTruckOrderTargeter : UnitOrderTargeter
 		{
-			public SupplyTruckOrderTargeter()
-				: base("DeliverSupplies", 5, "enter", false, true)
+			public SupplyTruckOrderTargeter(Stance stances)
+				: base("DeliverSupplies", 5, "enter", stances)
 			{
 			}
 

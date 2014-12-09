@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common
 
 				// This is to prevent in-fighting amongst friendly harvesters:
 				if (claimer.Owner == claim.Claimer.Owner) return false;
-				if (claimer.Owner.Stances[claim.Claimer.Owner] == Stance.Ally) return false;
+				if (claimer.Owner.Stances[claim.Claimer.Owner].Intersects(Stance.Ally | Stance.Player)) return false;
 
 				// If an enemy/neutral claimed this, don't respect that claim:
 			}
@@ -108,11 +108,14 @@ namespace OpenRA.Mods.Common
 			if (claimByCell.TryGetValue(cell, out claim))
 			{
 				// Same claimer:
-				if (claim.Claimer == self) return false;
+				if (claim.Claimer == self)
+					return false;
 
 				// This is to prevent in-fighting amongst friendly harvesters:
-				if (self.Owner == claim.Claimer.Owner) return true;
-				if (self.Owner.Stances[claim.Claimer.Owner] == Stance.Ally) return true;
+				if (self.Owner == claim.Claimer.Owner)
+					return true;
+				if (self.Owner.Stances[claim.Claimer.Owner].Intersects(Stance.Ally | Stance.Player))
+					return true;
 
 				// If an enemy/neutral claimed this, don't respect that claim and fall through:
 			}

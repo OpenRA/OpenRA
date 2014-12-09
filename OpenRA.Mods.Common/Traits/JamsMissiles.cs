@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class JamsMissilesInfo : ITraitInfo
 	{
 		public readonly int Range = 0;
-		public readonly bool AlliedMissiles = true;
+		public readonly Stance AffectsPlayers = Stance.All;
 		public readonly int Chance = 100;
 
 		public object Create(ActorInitializer init) { return new JamsMissiles(this); }
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Convert cells to world units
 		public int Range { get { return 1024 * info.Range; } }
-		public bool AlliedMissiles { get { return info.AlliedMissiles; } }
+		public Stance AffectsPlayers { get { return info.AffectsPlayers; } }
 		public int Chance { get { return info.Chance; } }
 
 		public JamsMissiles(JamsMissilesInfo info) { this.info = info; }

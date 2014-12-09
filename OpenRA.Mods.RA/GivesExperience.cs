@@ -19,8 +19,8 @@ namespace OpenRA.Mods.RA
 		[Desc("If -1, use the value of the unit cost.")]
 		public readonly int Experience = -1;
 
-		[Desc("Grant experience for team-kills.")]
-		public readonly bool FriendlyFire = false;
+		[Desc("Grant experience to killers with one of these stances.")]
+		public readonly Stance KillerPlayers = Stance.Enemy | Stance.Neutral;
 
 		public object Create(ActorInitializer init) { return new GivesExperience(init.self, this); }
 	}
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 		public void Killed(Actor self, AttackInfo e)
 		{
 			// Prevent TK from giving exp
-			if (e.Attacker == null || e.Attacker.Destroyed || (!info.FriendlyFire && e.Attacker.Owner.Stances[self.Owner] == Stance.Ally))
+			if (e.Attacker == null || e.Attacker.Destroyed || !e.Attacker.Owner.Stances[self.Owner].Intersects(info.KillerPlayers))
 				return;
 
 			var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();

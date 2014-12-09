@@ -24,8 +24,8 @@ namespace OpenRA.GameRules
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
 		public readonly string[] InvalidTargets = { };
 		
-		[Desc("What diplomatic stances are affected.")]
-		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+		[Desc("Diplomatic stances of affected actors.")]
+		public readonly Stance AffectsPlayers = Stance.All;
 		
 		[Desc("Can this warhead affect the actor that fired it.")]
 		public readonly bool AffectsParent = false;
@@ -76,7 +76,7 @@ namespace OpenRA.GameRules
 				return false;
 
 			var stance = firedBy.Owner.Stances[victim.Owner];
-			if (!ValidStances.HasFlag(stance))
+			if (!AffectsPlayers.HasFlag(stance))
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
@@ -96,7 +96,7 @@ namespace OpenRA.GameRules
 
 			// AffectsParent checks do not make sense for FrozenActors, so skip to stance checks
 			var stance = firedBy.Owner.Stances[victim.Owner];
-			if (!ValidStances.HasFlag(stance))
+			if (!AffectsPlayers.HasFlag(stance))
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.

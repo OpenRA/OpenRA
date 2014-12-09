@@ -19,9 +19,9 @@ namespace OpenRA.Mods.RA
 	{
 		[Desc("Type of actor (the ExternalCaptures: trait defines what Types it can capture).")]
 		public readonly string Type = "building";
-		public readonly bool AllowAllies = false;
-		public readonly bool AllowNeutral = true;
-		public readonly bool AllowEnemies = true;
+
+		[Desc("Captor's stance with respect to target.")]
+		public readonly Stance CaptorPlayers = Stance.Neutral | Stance.Enemy;
 		[Desc("Seconds it takes to change the owner.", "You might want to add a ExternalCapturableBar: trait, too.")]
 		public readonly int CaptureCompleteTime = 15;
 
@@ -32,19 +32,7 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			var playerRelationship = owner.Stances[captor.Owner];
-			if (playerRelationship == Stance.Ally && !AllowAllies)
-				return false;
-
-			if (playerRelationship == Stance.Enemy && !AllowEnemies)
-				return false;
-
-			if (playerRelationship == Stance.Neutral && !AllowNeutral)
-				return false;
-
-			if (!c.Info.CaptureTypes.Contains(Type))
-				return false;
-
-			return true;
+			return playerRelationship.Intersects(CaptorPlayers) && c.Info.CaptureTypes.Contains(Type);
 		}
 
 		public object Create(ActorInitializer init) { return new ExternalCapturable(init.self, this); }

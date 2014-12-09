@@ -297,6 +297,7 @@ MEDI:
 	AttackMedic:
 		Cursor: heal
 		OutsideRangeCursor: heal
+		TargetPlayers: Ally, Player
 	TakeCover:
 	-AutoTarget:
 	RenderInfantry:
@@ -332,6 +333,7 @@ MECH:
 	AttackMedic:
 		Cursor: repair
 		OutsideRangeCursor: repair
+		TargetPlayers: Ally, Player
 	Captures:
 		CaptureTypes: husk
 	TakeCover:

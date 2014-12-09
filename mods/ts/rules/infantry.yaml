@@ -134,6 +134,7 @@ MEDIC:
 	Armament:
 		Weapon: Heal
 	AttackFrontal:
+		TargetPlayers: Ally, Player
 	TakeCover:
 	RenderInfantry:
 		IdleAnimations: idle1,idle2

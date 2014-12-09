@@ -119,7 +119,10 @@ namespace OpenRA.Mods.Common.Effects
 			if ((tp.Actor.CenterPosition - pos).HorizontalLengthSquared > tp.Trait.Range * tp.Trait.Range)
 				return false;
 
-			if (tp.Actor.Owner.Stances[args.SourceActor.Owner] == Stance.Ally && !tp.Trait.AlliedMissiles)
+			if (!info.Jammable)
+				return false;
+
+			if (!args.SourceActor.Owner.Stances[tp.Actor.Owner].Intersects(tp.Trait.AffectsPlayers))
 				return false;
 
 			return tp.Actor.World.SharedRandom.Next(100 / tp.Trait.Chance) == 0;

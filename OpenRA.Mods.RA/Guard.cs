@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA
 		{
 			return world.ScreenMap.ActorsAt(mi)
 				.Where(a => !world.FogObscures(a) && !a.IsDead &&
-					a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) &&
+					a.HasApparentDiplomacy(world.LocalPlayer.PlayerActor, Stance.Player | Stance.Ally) &&
 					a.HasTrait<Guardable>());
 		}
 	}

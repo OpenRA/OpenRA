@@ -23,11 +23,11 @@ namespace OpenRA.Mods.RA
 			var attack = self.Trait<AttackBase>();
 			var inRange = self.World.FindActorsInCircle(self.CenterPosition, attack.GetMaximumRange());
 
-			var target = inRange
-				.Where(a => a != self && a.AppearsFriendlyTo(self))
-				.Where(a => a.IsInWorld && !a.IsDead)
-				.Where(a => a.GetDamageState() > DamageState.Undamaged)
-				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
+			var target = inRange.Where(a =>
+					a != self && a.HasApparentDiplomacy(self, Stance.Player | Stance.Ally)
+					&& a.IsInWorld && !a.IsDead
+					&& a.GetDamageState() > DamageState.Undamaged
+					&& attack.HasAnyValidWeapons(Target.FromActor(a)))
 				.ClosestTo(self);
 
 			if (target != null)
