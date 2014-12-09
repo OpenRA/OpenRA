@@ -692,7 +692,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20141206)
+				if (engineVersion < 20141209)
 				{
 					if (depth == 2)
 					{
@@ -720,6 +720,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (stance != Stance.None)
 							node.Value.Nodes.Add(new MiniYamlNode("ValidCaptors", stance.ToString()));
 					}
+					else if (depth == 1 && (node.Key.StartsWith("AutoHeal") || node.Key.StartsWith("-AutoHeal")))
+						node.Key.Replace("AutoHeal", "AutoTargetDamaged");
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
@@ -1043,7 +1045,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20141206)
+				if (engineVersion < 20141209)
 				{
 					if (depth == 1)
 					{

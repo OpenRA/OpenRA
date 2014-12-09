@@ -291,7 +291,7 @@ MEDI:
 		Range: 3c0
 	Passenger:
 		PipType: Yellow
-	AutoHeal:
+	AutoTargetDamaged:
 	Armament:
 		Weapon: Heal
 	AttackMedic:
@@ -327,7 +327,7 @@ MECH:
 		Range: 3c0
 	Passenger:
 		PipType: Yellow
-	AutoHeal:
+	AutoTargetDamaged:
 	Armament:
 		Weapon: Repair
 	AttackMedic:

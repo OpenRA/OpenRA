@@ -88,7 +88,7 @@ MEDIC:
 		HP: 60
 	Mobile:
 		Speed: 42
-	AutoHeal:
+	AutoTargetDamaged:
 	Armament:
 		Weapon: Heal
 	AttackMedic:
