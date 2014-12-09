@@ -12,11 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Clones the aircraft sprite with another palette below it.")]
 	class WithShadowInfo : ITraitInfo
