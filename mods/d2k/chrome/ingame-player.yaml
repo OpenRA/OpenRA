@@ -107,7 +107,7 @@ Container@PLAYER_WIDGETS:
 			X: 0
 			Y: 25
 			IconWidth: 60
-			IconHeight: 48
+			IconHeight: 47
 			ReadyText: READY
 			HoldText: ON HOLD
 		BuildPalette@INGAME_BUILD_PALETTE:
@@ -121,7 +121,7 @@ Container@PLAYER_WIDGETS:
 			HoldText: ON HOLD
 			RequiresText: Requires {0}
 			IconWidth: 60
-			IconHeight: 48
+			IconHeight: 47
 			Columns: 3
 			Rows: 4
 
