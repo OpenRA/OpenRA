@@ -25,13 +25,6 @@ namespace OpenRA.Mods.RA.Activities
 		readonly Cargo cargo;
 		readonly Cloak cloak;
 		readonly bool unloadAll;
-		readonly CPos? moveTo;
-
-		public UnloadCargo(Actor self, bool unloadAll, CPos? moveTo)
-			: this(self, unloadAll)
-		{
-			this.moveTo = moveTo;
-		}
 
 		public UnloadCargo(Actor self, bool unloadAll)
 		{
@@ -97,16 +90,6 @@ namespace OpenRA.Mods.RA.Activities
 				pos.SetVisualPosition(actor, spawn);
 				actor.QueueActivity(move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
 				actor.SetTargetLine(Target.FromCell(w, exitSubCell.Value.First, exitSubCell.Value.Second), Color.Green, false);
-
-				if (moveTo.HasValue)
-				{
-					var target = Target.FromCell(self.World, moveTo.Value);
-
-					actor.QueueActivity(new AttackMove.AttackMoveActivity(
-						actor, move.MoveTo(moveTo.Value, 1)));
-
-					actor.SetTargetLine(target, Color.Red, false);
-				}
 
 				w.Add(actor);
 			});

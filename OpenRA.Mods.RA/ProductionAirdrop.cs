@@ -17,6 +17,7 @@ using OpenRA.Traits;
 using System.Collections.Generic;
 using System;
 using System.Drawing;
+using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -80,13 +81,24 @@ namespace OpenRA.Mods.RA
 			var endPos = new CPos(owner.World.Map.Bounds.Left - 5, self.Location.Y);
 
 			// Assume a single exit point for simplicity
-			var exit = self.Info.Traits.WithInterface<ExitInfo>().First();
+			var exitInfo = self.Info.Traits.WithInterface<ExitInfo>().First();
+
+			var exit = self.Location + exitInfo.ExitCell;
+			var exitLocation = rp.Value != null ? rp.Value.Location : exit;
+			var target = Target.FromCell(self.World, exitLocation);
 
 			foreach (var tower in self.TraitsImplementing<INotifyDelivery>())
 				tower.IncomingDelivery(self);
 
 			var info = (ProductionAirdropInfo)Info;
 			var actorType = info.ActorType;
+
+			var actors = new List<Actor>();
+
+			foreach (var producee in producees)
+			{
+				actors.Add(DoProduction(self, producee, exitInfo, raceVariant));
+			}
 
 			owner.World.AddFrameEndTask(w =>
 			{
@@ -98,24 +110,76 @@ namespace OpenRA.Mods.RA
 					new FacingInit(64)
 				});
 
-				var cargoBay = a.TraitOrDefault<Cargo>();
-
-				if (cargoBay == null)
+				Action func = null;
+				func = new Action(() =>
 				{
-					throw new Exception("Invalid airdrop actor: missing trait <Cargo>");
-				}
+					if (actors.Count > 0)
+					{
+						var actor = actors.First();
+						var pos = actor.Trait<IPositionable>();
+						var subcell = pos.GetAvailableSubCell(actor.Location, SubCell.Any, self);
 
-				foreach (var producee in producees)
-				{
-					var newUnit = DoProduction(self, producee, exit, raceVariant);
-					cargoBay.Load(a, newUnit);
-				}
+						if (subcell == SubCell.Invalid)
+						{
+							var blockers = self.World.ActorMap.GetUnitsAt(actor.Location);
+							foreach (var blocker in blockers)
+							{
+								foreach (var nbm in blocker.TraitsImplementing<INotifyBlockingMove>())
+									nbm.OnNotifyBlockingMove(blocker, self);
+							}
+							a.QueueActivity(new Wait(10));
+							a.QueueActivity(new CallFunc(func));
+						}
+						else
+						{
+							actors.Remove(actor);
+							w.AddFrameEndTask(world =>
+							{
+								world.Add(actor);
+								var move = actor.TraitOrDefault<IMove>();
+
+								if (move != null)
+								{
+									if (exitInfo.MoveIntoWorld)
+									{
+										actor.QueueActivity(move.MoveIntoWorld(actor, exit));
+										actor.QueueActivity(new AttackMoveActivity(
+											actor, move.MoveTo(exitLocation, 1)));
+									}
+								}
+
+								actor.SetTargetLine(target, rp.Value != null ? Color.Red : Color.Green, false);
+
+								if (!self.IsDead)
+									foreach (var t in self.TraitsImplementing<INotifyProduction>())
+										t.UnitProduced(self, actor, exit);
+
+								var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
+								foreach (var notify in notifyOthers)
+									notify.Trait.UnitProducedByOther(notify.Actor, self, actor);
+
+								var bi = actor.Info.Traits.GetOrDefault<BuildableInfo>();
+								if (bi != null && bi.InitialActivity != null)
+									actor.QueueActivity(Game.CreateObject<Activity>(bi.InitialActivity));
+
+								foreach (var t in actor.TraitsImplementing<INotifyBuildComplete>())
+									t.BuildingComplete(actor);
+
+								a.QueueActivity(new CallFunc(func));
+							});
+						}
+
+					}
+					else
+					{
+						a.QueueActivity(new Fly(a, Target.FromCell(w, endPos)));
+						a.QueueActivity(new RemoveSelf());
+					}
+				});
 
 				a.QueueActivity(new Fly(a, Target.FromCell(w, self.Location + new CVec(9, 0))));
 				a.QueueActivity(new Land(Target.FromActor(self)));
-				a.QueueActivity(new UnloadCargo(a, true, rp.Value.Location));
-				a.QueueActivity(new Fly(a, Target.FromCell(w, endPos)));
-				a.QueueActivity(new RemoveSelf());
+				a.QueueActivity(new CallFunc(func));
 			});
 
 			return true;
