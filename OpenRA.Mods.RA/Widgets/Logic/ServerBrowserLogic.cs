@@ -37,6 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		bool showWaiting = true;
 		bool showEmpty = true;
 		bool showStarted = true;
+		bool showProtected = true;
 		bool showIncompatible = false;
 
 		public string ProgressLabelText()
@@ -100,6 +101,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				showAlreadyStartedCheckbox.OnClick = () => { showStarted ^= true; RefreshServerList(); };
 			}
 
+			var showProtectedCheckbox = panel.GetOrNull<CheckboxWidget>("PASSWORD_PROTECTED");
+			if (showProtectedCheckbox != null)
+			{
+				showProtectedCheckbox.IsChecked = () => showProtected;
+				showProtectedCheckbox.OnClick = () => { showProtected ^= true; RefreshServerList(); };
+			}
+
 			var showIncompatibleCheckbox = panel.GetOrNull<CheckboxWidget>("INCOMPATIBLE_VERSION");
 			if (showIncompatibleCheckbox != null)
 			{
@@ -155,6 +163,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					continue;
 
 				var canJoin = game.CanJoin();
+				var compatible = game.CompatibleVersion();
 
 				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game, () => Join(game));
 
@@ -166,15 +175,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var title = item.GetOrNull<LabelWidget>("TITLE");
 				if (title != null)
 				{
-					title.GetText = () => game.Protected ? ("(Password) " + game.Name) : game.Name;
-					title.GetColor = () => canJoin ? title.TextColor : Color.Gray;
+					title.GetText = () => game.Name;
+					title.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : title.TextColor;
 				}
 
 				var maptitle = item.GetOrNull<LabelWidget>("MAP");
 				if (title != null)
 				{
 					maptitle.GetText = () => map.Title;
-					maptitle.GetColor = () => canJoin ? maptitle.TextColor : Color.Gray;
+					maptitle.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : maptitle.TextColor;
 				}
 
 				var players = item.GetOrNull<LabelWidget>("PLAYERS");
@@ -182,29 +191,29 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					players.GetText = () => "{0} / {1}".F(game.Players, game.MaxPlayers)
 						+ (game.Spectators > 0 ? "  ({0} Spectator{1})".F(game.Spectators, game.Spectators > 1 ? "s" : "") : "");
-					players.GetColor = () => canJoin ? players.TextColor : Color.Gray;
+					players.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : players.TextColor;
 				}
 
 				var state = item.GetOrNull<LabelWidget>("STATE");
 				if (state != null)
 				{
 					state.GetText = () => GetStateLabel(game);
-					state.GetColor = () => canJoin ? state.TextColor : Color.Gray;
+					state.GetColor = () => GetStateColor(game, state, !compatible || !canJoin);
 				}
 
 				var ip = item.GetOrNull<LabelWidget>("IP");
 				if (ip != null)
 				{
 					ip.GetText = () => game.Address;
-					ip.GetColor = () => canJoin ? ip.TextColor : Color.Gray;
+					ip.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  :  ip.TextColor;
 				}
 
 				var version = item.GetOrNull<LabelWidget>("VERSION");
 				if (version != null)
 				{
 					version.GetText = () => GenerateModLabel(game);
-					version.IsVisible = () => !game.CompatibleVersion();
-					version.GetColor = () => canJoin ? version.TextColor : Color.Gray;
+					version.IsVisible = () => !compatible;
+					version.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : version.TextColor;
 				}
 
 				var location = item.GetOrNull<LabelWidget>("LOCATION");
@@ -212,8 +221,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					var cachedServerLocation = LobbyUtils.LookupCountry(game.Address.Split(':')[0]);
 					location.GetText = () => cachedServerLocation;
-					location.IsVisible = () => game.CompatibleVersion();
-					location.GetColor = () => canJoin ? location.TextColor : Color.Gray;
+					location.IsVisible = () => compatible;
+					location.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : location.TextColor;
 				}
 
 				if (!Filtered(game))
@@ -293,8 +302,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (game == null)
 				return "";
 
-			if (game.State == (int)ServerState.WaitingPlayers)
-				return "Waiting for players";
 			if (game.State == (int)ServerState.GameStarted)
 			{
 				try
@@ -307,10 +314,31 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					return "In progress";
 				}
 			}
+
+			if (game.Protected)
+				return "Password protected";
+
+			if (game.State == (int)ServerState.WaitingPlayers)
+				return "Waiting for players";
+
 			if (game.State == (int)ServerState.ShuttingDown)
 				return "Server shutting down";
 
 			return "Unknown server state";
+		}
+
+		static Color GetStateColor(GameServer game, LabelWidget label, bool darkened)
+		{
+			if (game.Protected && game.State == (int)ServerState.WaitingPlayers)
+				return darkened ? Color.DarkRed : Color.Red;
+
+			if (game.State == (int)ServerState.WaitingPlayers)
+				return darkened ? Color.LimeGreen : Color.Lime;
+
+			if (game.State == (int)ServerState.GameStarted)
+				return darkened ? Color.Chocolate : Color.Orange;
+
+			return label.TextColor;
 		}
 
 		public static string GenerateModLabel(GameServer s)
@@ -336,6 +364,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return true;
 
 			if (!game.CompatibleVersion() && !showIncompatible)
+				return true;
+
+			if (game.Protected && !showProtected)
 				return true;
 
 			return false;

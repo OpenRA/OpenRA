@@ -26,6 +26,7 @@ Background@SERVERBROWSER_PANEL:
 			Width: 100
 			Height: 20
 			Text: Waiting
+			TextColor: 50,205,50
 		Checkbox@EMPTY:
 			X: 180
 			Y: 50
@@ -38,12 +39,21 @@ Background@SERVERBROWSER_PANEL:
 			Width: 100
 			Height: 20
 			Text: Started
-		Checkbox@INCOMPATIBLE_VERSION:
+			TextColor: 255,165,0
+		Checkbox@PASSWORD_PROTECTED:
 			X: 380
 			Y: 50
 			Width: 100
 			Height: 20
+			Text: Protected
+			TextColor: 255,0,0
+		Checkbox@INCOMPATIBLE_VERSION:
+			X: 480
+			Y: 50
+			Width: 100
+			Height: 20
 			Text: Incompatible
+			TextColor: 190,190,190
 		ScrollPanel@SERVER_LIST:
 			X: 20
 			Y: 80
