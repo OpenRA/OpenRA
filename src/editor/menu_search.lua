@@ -143,7 +143,16 @@ local function navigateTo(default)
 
   local nb = ide:GetEditorNotebook()
   local selection = nb:GetSelection()
-  local projectFiles, preview, origline
+  local files, preview, origline, functions
+
+  local function markLine(ed, toline)
+    ed:MarkerDefine(ide:GetMarker(markername))
+    ed:MarkerDeleteAll(marker)
+    ed:MarkerAdd(toline-1, marker)
+    -- store the original line if not stored yet
+    origline = origline or (ed:GetCurrentLine()+1)
+    ed:EnsureVisibleEnforcePolicy(toline-1)
+  end
 
   CommandBarShow(
     function(t, enter, text) -- onDone
@@ -158,21 +167,25 @@ local function navigateTo(default)
 
       if enter then
         local _, file, tabindex = unpack(t or {})
-        if tabindex then -- switch to existing tab
-          SetEditorSelection(tabindex)
-        elseif file then -- load a new file (into preview if set)
-          LoadFile(MergeFullPath(ide:GetProject(), file), preview or nil, true)
-        end
+        local ed = ide:GetEditor()
 
+        -- jump to symbol; tabindex has the position of the symbol
+        if text and text:find('@') and tabindex then
+          ed:GotoPos(tabindex-1)
+          ed:EnsureVisibleEnforcePolicy(ed:LineFromPosition(tabindex-1))
+          ed:SetFocus() -- in case the focus is on some other panel
         -- set line position in the (current) editor if requested
-        if text and text:find(':') then
+        elseif text and text:find(':') then
           local toline = tonumber(text:match(':(%d+)'))
-          local ed = ide:GetEditor()
           if toline and ed then
             ed:GotoLine(toline-1)
             ed:EnsureVisibleEnforcePolicy(toline-1)
             ed:SetFocus() -- in case the focus is on some other panel
           end
+        elseif tabindex then -- switch to existing tab
+          SetEditorSelection(tabindex)
+        elseif file then -- load a new file (into preview if set)
+          LoadFile(MergeFullPath(ide:GetProject(), file), preview or nil, true)
         end
       else
         -- close preview
@@ -188,36 +201,57 @@ local function navigateTo(default)
       local projdir = ide:GetProject()
 
       -- delete all current line markers if any
-      -- restore the original position in case "goto line" is removed from bar
+      -- restore the original position if search text is updated
       local ed = ide:GetEditor()
-      if ed and origline then
-        ed:MarkerDeleteAll(marker)
-        ed:EnsureVisibleEnforcePolicy(origline-1)
-      end
+      if ed and origline then ed:MarkerDeleteAll(marker) end
 
-      if text and text:find(':') then
-        local toline = tonumber(text:match(':(%d+)'))
-        if toline and ed then
-          ed:MarkerDefine(ide:GetMarker(markername))
-          ed:MarkerAdd(toline-1, marker)
-          -- store the original line if not stored yet
-          origline = origline or (ed:GetCurrentLine()+1)
-          ed:EnsureVisibleEnforcePolicy(toline-1)
+      -- reset cached functions if no symbol search
+      if text and not text:find('@') then
+        functions = nil
+        if ed and origline then ed:EnsureVisibleEnforcePolicy(origline-1) end
+      end
+      if ed and text and text:find('@') then
+        if not functions then
+          local funcs = OutlineFunctions(ed)
+          functions = {[0] = {}}
+          for _, func in pairs(funcs) do
+            table.insert(functions, func.name)
+            functions[0][func.name] = func.pos
+          end
         end
+        local symbol = text:match('@(.*)')
+        if #symbol > 0 then
+          local topscore
+          for _, item in ipairs(CommandBarScoreItems(functions, symbol, 100)) do
+            local func, score = unpack(item)
+            topscore = topscore or score
+            if score > topscore / 4 and score > 1 then
+              table.insert(lines, {
+                  ("%2d %s"):format(score, func:gsub('%(.+','')), func, functions[0][func]})
+            end
+          end
+        else
+          for n, name in ipairs(functions) do
+            lines[n] = {name:gsub('%(.+',''), name, functions[0][name]}
+          end
+        end
+      elseif text and text:find(':') then
+        local toline = tonumber(text:match(':(%d+)'))
+        if toline and ed then markLine(ed, toline) end
       elseif text and #text > 0 and projdir and #projdir > 0 then
         -- populate the list of files
-        if not projectFiles then
-          projectFiles = FileSysGetRecursive(projdir, true)
-          for k = #projectFiles, 1, -1 do
-            if IsDirectory(projectFiles[k]) then
-              table.remove(projectFiles, k)
+        if not files then
+          files = FileSysGetRecursive(projdir, true)
+          for k = #files, 1, -1 do
+            if IsDirectory(files[k]) then
+              table.remove(files, k)
             else
-              projectFiles[k] = projectFiles[k]:gsub("^"..q(projdir), "")
+              files[k] = files[k]:gsub("^"..q(projdir), "")
             end
           end
         end
         local topscore
-        for _, item in ipairs(CommandBarScoreItems(projectFiles, text, 100)) do
+        for _, item in ipairs(CommandBarScoreItems(files, text, 100)) do
           local file, score = unpack(item)
           topscore = topscore or score
           if score > topscore / 4 and score > 1 then
@@ -235,8 +269,14 @@ local function navigateTo(default)
       return lines
     end,
     function(t) return unpack(t) end, -- onItem
-    function(t) -- onSelection
+    function(t, text) -- onSelection
       local _, file, tabindex = unpack(t)
+      if text and text:find('@') then
+        local ed = ide:GetEditor()
+        if ed then markLine(ed, ed:LineFromPosition(tabindex-1)+1) end
+        return
+      end
+
       if file then file = MergeFullPath(ide:GetProject(), file) end
       -- disabling event handlers for the notebook and the editor
       -- to minimize changes in the UI when editors are switched

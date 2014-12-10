@@ -250,6 +250,16 @@ end
 
 outlineCreateOutlineWindow()
 
+function OutlineFunctions(editor)
+  -- force token refresh (as these may be not updated yet)
+  if #editor:GetTokenList() == 0 then
+    while IndicateAll(editor) do end
+  end
+
+  outlineRefresh(editor, true)
+  return caches[editor].funcs
+end
+
 ide:AddPackage('core.outline', {
     -- remove the editor from the list
     onEditorClose = function(self, editor)

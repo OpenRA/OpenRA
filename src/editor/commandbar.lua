@@ -206,7 +206,7 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText)
     -- this may set focus to a different object/tab,
     -- so disable the focus event and then set the focus back
     search:SetEvtHandlerEnabled(false)
-    onSelection(lines[linenow])
+    onSelection(lines[linenow], search:GetValue())
     search:SetFocus()
     search:SetEvtHandlerEnabled(true)
     if ide.osname == 'Unix' then
