@@ -13,7 +13,7 @@ using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.LoadScreens
 {
 	public class ModChooserLoadScreen : ILoadScreen
 	{
