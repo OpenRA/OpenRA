@@ -468,6 +468,7 @@ VICE:
 	UpdatesPlayerStatistics:
 	BodyOrientation:
 		QuantizedFacings: 8
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: Heal
+		Terrain: Tiberium, BlueTiberium
 

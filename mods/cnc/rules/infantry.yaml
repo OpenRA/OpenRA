@@ -139,7 +139,7 @@ E5:
 	AttackFrontal:
 	WithMuzzleFlash:
 		SplitFacings: true
-	-PoisonedByTiberium:
+	-DamagedByTerrain:
 	RenderInfantry:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand, stand2

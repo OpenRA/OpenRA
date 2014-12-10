@@ -690,6 +690,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20141210)
+				{
+					if (node.Key.Contains("PoisonedByTiberium"))
+					{
+						node.Key = node.Key.Replace("PoisonedByTiberium", "DamagedByTerrain");
+						node.Value.Nodes.Where(n => n.Key == "Resources" ).Do(n => n.Key = "Terrain");
+					}
+
+					if (node.Key.Contains("DamagedWithoutFoundation"))
+					{
+						node.Key = node.Key.Replace("DamagedWithoutFoundation", "DamagedByTerrain");
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
