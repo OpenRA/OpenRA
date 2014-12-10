@@ -62,10 +62,17 @@ namespace OpenRA.Mods.RA
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
-	class DisguiseInfo : TraitInfo<Disguise> { }
+	class DisguiseInfo : ITraitInfo
+	{
+		[Desc("Acceptable stances of target's owner.")]
+		public readonly Stance TargetPlayers = Stance.All;
+
+		public object Create(ActorInitializer init) { return new Disguise(this); }
+	}
 
 	class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
 	{
+		readonly DisguiseInfo info;
 		public Player AsPlayer { get; private set; }
 		public string AsSprite { get; private set; }
 		public ITooltipInfo AsTooltipInfo { get; private set; }
@@ -73,11 +80,13 @@ namespace OpenRA.Mods.RA
 		public bool Disguised { get { return AsPlayer != null; } }
 		public Player Owner { get { return AsPlayer; } }
 
+		public Disguise(DisguiseInfo info) { this.info = info; }
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter(new[] { "Disguise" }, "Disguise", 7, "ability", true, true) { ForceAttack = false };
+				yield return new TargetTypeOrderTargeter(new[] { "Disguise" }, "Disguise", 7, "ability", info.TargetPlayers) { ForceAttack = false };
 			}
 		}
 

@@ -17,13 +17,26 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
 	[Desc("Can instantly repair other actors, but gets consumed afterwards.")]
-	class EngineerRepairInfo : TraitInfo<EngineerRepair> { }
+	class EngineerRepairInfo : ITraitInfo
+	{
+		[Desc("Target's owner's stance with respect to engineer.")]
+		public readonly Stance TargetPlayers = Stance.Ally | Stance.Player;
+
+		public object Create(ActorInitializer init) { return new EngineerRepair(this); }
+	}
 
 	class EngineerRepair : IIssueOrder, IResolveOrder, IOrderVoice
 	{
+		readonly EngineerRepairInfo info;
+
+		public EngineerRepair(EngineerRepairInfo info)
+		{
+			this.info = info;
+		}
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new EngineerRepairOrderTargeter(); }
+			get { yield return new EngineerRepairOrderTargeter(info); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -84,15 +97,20 @@ namespace OpenRA.Mods.RA
 
 		class EngineerRepairOrderTargeter : UnitOrderTargeter
 		{
-			public EngineerRepairOrderTargeter()
-				: base("EngineerRepair", 6, "goldwrench", false, true) { }
+			readonly EngineerRepairInfo info;
+
+			public EngineerRepairOrderTargeter(EngineerRepairInfo info)
+				: base("EngineerRepair", 6, "goldwrench", info.TargetPlayers)
+			{
+				this.info = info;
+			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
 				if (!target.HasTrait<EngineerRepairable>())
 					return false;
 
-				if (self.Owner.Stances[target.Owner] != Stance.Ally)
+				if (self.Owner.Stances[target.Owner].Intersects(info.TargetPlayers))
 					return false;
 
 				if (target.GetDamageState() == DamageState.Undamaged)
@@ -106,7 +124,7 @@ namespace OpenRA.Mods.RA
 				if (!target.Info.Traits.Contains<EngineerRepairable>())
 					return false;
 
-				if (self.Owner.Stances[target.Owner] != Stance.Ally)
+				if (!self.Owner.Stances[target.Owner].Intersects(info.TargetPlayers))
 					return false;
 
 				if (target.DamageState == DamageState.Undamaged)

@@ -18,10 +18,14 @@ namespace OpenRA.Mods.Common
 	[Desc("Visualizes the remaining time for an upgrade.")]
 	class TimedUpgradeBarInfo : ITraitInfo, Requires<UpgradeManagerInfo>
 	{
-		[Desc("Upgrade that this bar corresponds to")]
+		[Desc("Corresponding upgrade to this bar.")]
 		public readonly string Upgrade = null;
 
+		[Desc("Color of the bar.")]
 		public readonly Color Color = Color.Red;
+
+		[Desc("Player stances for which the bar should be shown.")]
+		public readonly Stance Visibility = Stance.Player;
 
 		public object Create(ActorInitializer init) { return new TimedUpgradeBar(init.self, this); }
 	}
@@ -47,10 +51,7 @@ namespace OpenRA.Mods.Common
 
 		public float GetValue()
 		{
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				return 0;
-
-			return value;
+			return self.Owner.Stances[self.World.RenderPlayer].Intersects(info.Visibility) ? value : 0;
 		}
 
 		public Color GetColor() { return info.Color; }

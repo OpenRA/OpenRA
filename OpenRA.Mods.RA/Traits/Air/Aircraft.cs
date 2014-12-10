@@ -195,7 +195,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public bool AircraftCanEnter(Actor a)
 		{
-			if (self.AppearsHostileTo(a))
+			if (self.HasApparentDiplomacy(a, Stance.Enemy))
 				return false;
 
 			return info.RearmBuildings.Contains(a.Info.Name)

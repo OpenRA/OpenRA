@@ -26,6 +26,9 @@ namespace OpenRA.Mods.RA
 		public readonly string Cursor = "attack";
 		public readonly string OutsideRangeCursor = "attackoutsiderange";
 
+		[Desc("Acceptable stances of target's owner.")]
+		public readonly Stance TargetPlayers = Stance.Enemy | Stance.Neutral;
+
 		public abstract object Create(ActorInitializer init);
 	}
 
@@ -92,8 +95,7 @@ namespace OpenRA.Mods.RA
 				if (armament == null)
 					yield break;
 
-				var negativeDamage = (armament.Weapon.Warheads.FirstOrDefault(w => (w is DamageWarhead)) as DamageWarhead).Damage < 0;
-				yield return new AttackOrderTargeter(this, "Attack", 6, negativeDamage);
+				yield return new AttackOrderTargeter(this, "Attack", 6, info.TargetPlayers);
 			}
 		}
 
@@ -159,15 +161,15 @@ namespace OpenRA.Mods.RA
 
 		class AttackOrderTargeter : IOrderTargeter
 		{
-			readonly bool negativeDamage;
+			readonly Stance targetPlayers;
 			readonly AttackBase ab;
 
-			public AttackOrderTargeter(AttackBase ab, string order, int priority, bool negativeDamage)
+			public AttackOrderTargeter(AttackBase ab, string order, int priority, Stance targetPlayers)
 			{
 				this.ab = ab;
 				this.OrderID = order;
 				this.OrderPriority = priority;
-				this.negativeDamage = negativeDamage;
+				this.targetPlayers = targetPlayers;
 			}
 
 			public string OrderID { get; private set; }
@@ -197,10 +199,8 @@ namespace OpenRA.Mods.RA
 				if (target.RequiresForceFire)
 					return false;
 
-				var targetableRelationship = negativeDamage ? Stance.Ally : Stance.Enemy;
-
 				var owner = target.Type == TargetType.FrozenActor ? target.FrozenActor.Owner : target.Actor.Owner;
-				return self.Owner.Stances[owner] == targetableRelationship;
+				return self.Owner.Stances[owner].Intersects(targetPlayers);
 			}
 
 			bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
@@ -212,7 +212,7 @@ namespace OpenRA.Mods.RA
 
 				cursor = ab.info.Cursor;
 
-				if (negativeDamage)
+				if (!targetPlayers.Intersects(Stance.Enemy | Stance.Neutral)) // Allow location targeting if targets enemies and/or neutral
 					return false;
 
 				if (!ab.HasAnyValidWeapons(Target.FromCell(self.World, location)))

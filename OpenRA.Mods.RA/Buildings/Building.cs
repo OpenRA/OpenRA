@@ -32,6 +32,13 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly string Footprint = "x";
 		public readonly CVec Dimensions = new CVec(1, 1);
 		public readonly bool RequiresBaseProvider = false;
+
+		[Desc("Acceptable player stances for base provider(s).")]
+		public readonly Stance BaseProvidingPlayers = Stance.Ally | Stance.Player;
+
+		[Desc("Acceptable player stances for adjacent buildings.")]
+		public readonly Stance AdjacentPlayers = Stance.Ally | Stance.Player;
+
 		public readonly bool AllowInvalidPlacement = false;
 
 		public readonly string[] BuildSounds = { "placbldg.aud", "build5.aud" };
@@ -44,7 +51,8 @@ namespace OpenRA.Mods.RA.Buildings
 			var center = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, this);
 			foreach (var bp in world.ActorsWithTrait<BaseProvider>())
 			{
-				var validOwner = bp.Actor.Owner == p || (world.LobbyInfo.GlobalSettings.AllyBuildRadius && bp.Actor.Owner.Stances[p] == Stance.Ally);
+				var validOwner = bp.Actor.Owner == p || (world.LobbyInfo.GlobalSettings.AllyBuildRadius
+					&& bp.Actor.Owner.Stances[p].Intersects(BaseProvidingPlayers & bp.Trait.Info.Builders));
 				if (!validOwner || !bp.Trait.Ready())
 					continue;
 
@@ -86,7 +94,8 @@ namespace OpenRA.Mods.RA.Buildings
 					if (at == null || !at.IsInWorld || !at.HasTrait<GivesBuildableArea>())
 						continue;
 
-					if (at.Owner == p || (allyBuildRadius && at.Owner.Stances[p] == Stance.Ally))
+					if (at.Owner == p || (allyBuildRadius
+							&& at.Owner.Stances[p].Intersects(BaseProvidingPlayers)))
 						nearnessCandidates.Add(pos);
 				}
 			}

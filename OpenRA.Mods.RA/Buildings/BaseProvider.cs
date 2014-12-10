@@ -23,6 +23,9 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly int Cooldown = 0;
 		public readonly int InitialDelay = 0;
 
+		[Desc("Acceptable player stances for builders using this base provider.")]
+		public readonly Stance Builders = Stance.Ally | Stance.Player;
+
 		public object Create(ActorInitializer init) { return new BaseProvider(init.self, this); }
 	}
 

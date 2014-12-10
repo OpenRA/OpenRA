@@ -30,6 +30,13 @@ namespace OpenRA.Traits
 		Enemy = 1,
 		Neutral = 2,
 		Ally = 4,
+		Player = 8,
+		All = Enemy | Neutral | Ally | Player
+	}
+
+	public static class StanceExts
+	{
+		public static bool Intersects(this Stance stance, Stance stances) { return (stance & stances) != Stance.None; }
 	}
 
 	[Flags]
