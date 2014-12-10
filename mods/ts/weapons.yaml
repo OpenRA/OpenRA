@@ -1159,7 +1159,7 @@ EMPulseCannon:
 		Damage: 0
 		PreventProne: true
 		ValidTargets: Vehicle
-	Warhead@emp: GrantUpgrade
+	Warhead@emp: GrantCondition
 		Range: 3c0
 		Duration: 250
 		Upgrades: empdisable

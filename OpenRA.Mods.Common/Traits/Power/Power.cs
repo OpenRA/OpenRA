@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Power
 {
-	public class PowerInfo : UpgradableTraitInfo, ITraitInfo
+	public class PowerInfo : ConditionalTraitInfo, ITraitInfo
 	{
 		[Desc("If negative, it will drain power. If positive, it will provide power.")]
 		public readonly int Amount = 0;
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Power
 		public object Create(ActorInitializer init) { return new Power(init.self, this); }
 	}
 
-	public class Power : UpgradableTrait<PowerInfo>, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOwnerChanged
+	public class Power : ConditionalTrait<PowerInfo>, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOwnerChanged
 	{
 		readonly Lazy<IPowerModifier[]> powerModifiers;
 
@@ -40,8 +40,8 @@ namespace OpenRA.Mods.Common.Power
 			powerModifiers = Exts.Lazy(() => self.TraitsImplementing<IPowerModifier>().ToArray());
 		}
 		
-		protected override void UpgradeEnabled(Actor self) { PlayerPower.UpdateActor(self); }
-		protected override void UpgradeDisabled(Actor self) { PlayerPower.UpdateActor(self); }
+		protected override void EnabledByCondition(Actor self) { PlayerPower.UpdateActor(self); }
+		protected override void DisabledByCondition(Actor self) { PlayerPower.UpdateActor(self); }
 		public void AddedToWorld(Actor self) { PlayerPower.UpdateActor(self); }
 		public void RemovedFromWorld(Actor self) { PlayerPower.RemoveActor(self); }
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

@@ -15,29 +15,29 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
 {
-	[Desc("Visualizes the remaining time for an upgrade.")]
-	class TimedUpgradeBarInfo : ITraitInfo, Requires<UpgradeManagerInfo>
+	[Desc("Visualizes the remaining time for a condition's timer.")]
+	class TimedConditionBarInfo : ITraitInfo, Requires<ConditionManagerInfo>
 	{
-		[Desc("Upgrade that this bar corresponds to")]
-		public readonly string Upgrade = null;
+		[Desc("Condition to which this bar corresponds.")]
+		public readonly string Condition = null;
 
 		public readonly Color Color = Color.Red;
 
-		public object Create(ActorInitializer init) { return new TimedUpgradeBar(init.self, this); }
+		public object Create(ActorInitializer init) { return new TimedConditionBar(init.self, this); }
 	}
 
-	class TimedUpgradeBar : ISelectionBar
+	class TimedConditionBar : ISelectionBar
 	{
-		readonly TimedUpgradeBarInfo info;
+		readonly TimedConditionBarInfo info;
 		readonly Actor self;
 		float value;
 
-		public TimedUpgradeBar(Actor self, TimedUpgradeBarInfo info)
+		public TimedConditionBar(Actor self, TimedConditionBarInfo info)
 		{
 			this.self = self;
 			this.info = info;
 
-			self.Trait<UpgradeManager>().RegisterWatcher(info.Upgrade, Update);
+			self.Trait<ConditionManager>().RegisterWatcher(info.Condition, Update);
 		}
 
 		public void Update(int duration, int remaining)

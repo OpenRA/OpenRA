@@ -14,37 +14,37 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("General")]
-	public class UpgradeProperties : ScriptActorProperties, Requires<ConditionManagerInfo>
+	public class ConditionProperties : ScriptActorProperties, Requires<ConditionManagerInfo>
 	{
 		ConditionManager um;
-		public UpgradeProperties(ScriptContext context, Actor self)
+		public ConditionProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
 			um = self.Trait<ConditionManager>();
 		}
 
 		[Desc("Grant a condition level to this actor.")]
-		public void GrantUpgrade(string upgrade)
+		public void GrantConditionLevel(string condition)
 		{
-			um.GrantCondition(self, upgrade, this);
+			um.GrantCondition(self, condition, this);
 		}
 
 		[Desc("Revoke a condition level that was previously granted using GrantUpgrade.")]
-		public void RevokeUpgrade(string upgrade)
+		public void RevokeCondition(string condition)
 		{
-			um.RevokeCondition(self, upgrade, this);
+			um.RevokeCondition(self, condition, this);
 		}
 
 		[Desc("Grant a limited-time condition level to this actor.")]
-		public void GrantTimedUpgrade(string upgrade, int duration)
+		public void GrantTimedCondition(string condition, int duration)
 		{
-			um.GrantTimedCondition(self, upgrade, duration);
+			um.GrantTimedCondition(self, condition, duration);
 		}
 
 		[Desc("Check whether this actor accepts a specific condition.")]
-		public bool AcceptsUpgrade(string upgrade)
+		public bool AcceptsConditionType(string condition)
 		{
-			return um.AcceptsConditionType(self, upgrade);
+			return um.AcceptsConditionType(self, condition);
 		}
 	}
 }

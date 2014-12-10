@@ -140,11 +140,11 @@ CRATE:
 		Units: e1,e1,e4,e4,e3,e3,e3
 		ValidRaces: soviet
 		TimeDelay: 4500
-	GrantUpgradeCrateAction@invuln:
+	GrantConditionCrateAction@invuln:
 		SelectionShares: 5
 		Effect: invuln
 		Notification: ironcur9.aud
-		Upgrades: invulnerability
+		Conditions: invulnerability
 		Duration: 600
 
 MONEYCRATE:
@@ -357,3 +357,4 @@ CTFLAG:
 	Invulnerable:
 	-Selectable:
 	-TargetableBuilding:
+

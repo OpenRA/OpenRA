@@ -18,12 +18,12 @@ using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA
 {
-	public class GrantUpgradeWarhead : Warhead
+	public class GrantConditionWarhead : Warhead
 	{
-		[Desc("The upgrades to apply.")]
-		public readonly string[] Upgrades = { };
+		[Desc("The conditions to apply.")]
+		public readonly string[] Conditions = { };
 
-		[Desc("Duration of the upgrade (in ticks). Set to 0 for a permanent upgrade.")]
+		[Desc("Duration of the condition level (in ticks). Set to 0 for a permanent condition level.")]
 		public readonly int Duration = 0;
 
 		public readonly WRange Range = WRange.FromCells(1);
@@ -35,19 +35,19 @@ namespace OpenRA.Mods.RA
 
 			foreach (var a in actors)
 			{
-				var um = a.TraitOrDefault<UpgradeManager>();
+				var um = a.TraitOrDefault<ConditionManager>();
 				if (um == null)
 					continue;
 
-				foreach (var u in Upgrades)
+				foreach (var u in Conditions)
 				{
-					if (!um.AcceptsUpgrade(a, u))
+					if (!um.AcceptsConditionType(a, u))
 						continue;
 
 					if (Duration > 0)
-						um.GrantTimedUpgrade(a, u, Duration);
+						um.GrantTimedCondition(a, u, Duration);
 					else
-						um.GrantUpgrade(a, u, this);
+						um.GrantCondition(a, u, this);
 				}
 			}
 		}

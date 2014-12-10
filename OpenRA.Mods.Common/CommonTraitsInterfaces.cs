@@ -23,11 +23,11 @@ namespace OpenRA.Mods.Common
 	public interface IRenderActorPreviewInfo { IEnumerable<IActorPreview> RenderPreview (ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo { WRange GetCruiseAltitude(); }
 
-	public interface IUpgradable
+	public interface IConditional
 	{
-		IEnumerable<string> UpgradeTypes { get; }
-		bool AcceptsUpgradeLevel(Actor self, string type, int level);
-		void UpgradeLevelChanged(Actor self, string type, int oldLevel, int newLevel);
+		IEnumerable<string> ConditionTypes { get; }
+		bool AcceptsConditionLevel(Actor self, string type, int level);
+		void ConditionLevelChanged(Actor self, string type, int oldLevel, int newLevel);
 	}
 
 	public interface INotifyHarvesterAction

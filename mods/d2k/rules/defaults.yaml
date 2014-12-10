@@ -38,15 +38,15 @@
 	Huntable:
 	Demolishable:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
 
 ^Tank:
 	AppearsOnRadar:
@@ -88,15 +88,15 @@
 	Huntable:
 	Demolishable:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
 
 ^Husk:
 	Health:
@@ -213,15 +213,15 @@
 	DeathSounds:
 	Parachutable:
 		FallRate: 130
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
 
 ^Plane:
 	AppearsOnRadar:
@@ -246,15 +246,15 @@
 	Huntable:
 	AttackMove:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
 
 ^Helicopter:
 	Inherits: ^Plane

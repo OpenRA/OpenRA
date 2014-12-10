@@ -203,8 +203,8 @@ namespace OpenRA.Mods.RA
 			var p = a.Trait<Passenger>();
 			p.Transport = null;
 
-			foreach (var u in p.Info.GrantUpgrades)
-				self.Trait<UpgradeManager>().RevokeUpgrade(self, u, p);
+			foreach (var u in p.Info.GrantLevelToConditions)
+				self.Trait<ConditionManager>().RevokeCondition(self, u, p);
 
 			return a;
 		}
@@ -263,8 +263,8 @@ namespace OpenRA.Mods.RA
 
 			var p = a.Trait<Passenger>();
 			p.Transport = self;
-			foreach (var u in p.Info.GrantUpgrades)
-				self.Trait<UpgradeManager>().GrantUpgrade(self, u, p);
+			foreach (var u in p.Info.GrantLevelToConditions)
+				self.Trait<ConditionManager>().GrantCondition(self, u, p);
 		}
 
 		public void Killed(Actor self, AttackInfo e)

@@ -43,10 +43,10 @@
 	Demolishable:
 	ScriptTriggers:
 	WithMakeAnimation:
-	UpgradeManager:
+	ConditionManager:
 	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: cloakgenerator
+		MinEnabledConditionLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
 
@@ -86,10 +86,10 @@
 	BodyOrientation:
 	Demolishable:
 	ScriptTriggers:
-	UpgradeManager:
+	ConditionManager:
 	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: cloakgenerator
+		MinEnabledConditionLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
 
@@ -127,10 +127,10 @@
 	HiddenUnderFog:
 	GainsExperience:
 		ChevronPalette: ra
-		Upgrades:
+		Conditions:
 			500: firepower, damage, speed, reload
 			1000: firepower, damage, speed, reload, selfheal, eliteweapon
-	GainsStatUpgrades:
+	GainsStatConditions:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
 		SpeedModifier: 120, 150
@@ -140,8 +140,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -168,10 +168,10 @@
 	DeathSounds@ZAPPED:
 		DeathSound: Zapped
 		DeathTypes: 6
-	UpgradeManager:
+	ConditionManager:
 	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: cloakgenerator
+		MinEnabledConditionLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
 
@@ -229,10 +229,10 @@
 	HiddenUnderFog:
 	GainsExperience:
 		ChevronPalette: ra
-		Upgrades:
+		Conditions:
 			500: firepower, damage, speed, reload
 			1000: firepower, damage, speed, reload, selfheal, eliteweapon
-	GainsStatUpgrades:
+	GainsStatConditions:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
 		SpeedModifier: 120, 150
@@ -242,8 +242,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -261,23 +261,23 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	UpgradeManager:
-	UpgradeOverlay@EMPDISABLE:
-		UpgradeTypes: empdisable
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
+	ConditionManager:
+	Overlay@EMPDISABLE:
+		ConditionTypes: empdisable
+		MinEnabledConditionLevel: 1
+		MaxAcceptedConditionLevel: 2
 		Palette: disabled
-	DisableUpgrade@EMPDISABLE:
-		UpgradeTypes: empdisable
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-	TimedUpgradeBar@EMPDISABLE:
-		Upgrade: empdisable
+	Disableable@EMPDISABLE:
+		ConditionTypes: empdisable
+		MinEnabledConditionLevel: 1
+		MaxAcceptedConditionLevel: 2
+	TimedConditionBar@EMPDISABLE:
+		Condition: empdisable
 		Color: 255,255,255
 	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
+		ConditionTypes: cloakgenerator
+		MinEnabledConditionLevel: 1
+		MaxAcceptedConditionLevel: 2
 		InitialDelay: 0
 		CloakDelay: 90
 
@@ -308,10 +308,10 @@
 	HiddenUnderFog:
 	GainsExperience:
 		ChevronPalette: ra
-		Upgrades:
+		Conditions:
 			500: firepower, damage, speed, reload
 			1000: firepower, damage, speed, reload, selfheal, eliteweapon
-	GainsStatUpgrades:
+	GainsStatConditions:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
 		SpeedModifier: 120, 150
@@ -321,8 +321,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -340,23 +340,23 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	UpgradeManager:
-	UpgradeOverlay@EMPDISABLE:
-		UpgradeTypes: empdisable
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
+	ConditionManager:
+	Overlay@EMPDISABLE:
+		ConditionTypes: empdisable
+		MinEnabledConditionLevel: 1
+		MaxAcceptedConditionLevel: 2
 		Palette: disabled
-	DisableUpgrade@EMPDISABLE:
-		UpgradeTypes: empdisable
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-	TimedUpgradeBar@EMPDISABLE:
-		Upgrade: empdisable
+	Disableable@EMPDISABLE:
+		ConditionTypes: empdisable
+		MinEnabledConditionLevel: 1
+		MaxAcceptedConditionLevel: 2
+	TimedConditionBar@EMPDISABLE:
+		Condition: empdisable
 		Color: 255,255,255
 	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
+		ConditionTypes: cloakgenerator
+		MinEnabledConditionLevel: 1
+		MaxAcceptedConditionLevel: 2
 		InitialDelay: 0
 		CloakDelay: 90
 
@@ -380,10 +380,10 @@
 	AttackMove:
 	GainsExperience:
 		ChevronPalette: ra
-		Upgrades:
+		Conditions:
 			500: firepower, damage, speed, reload
 			1000: firepower, damage, speed, reload, selfheal, eliteweapon
-	GainsStatUpgrades:
+	GainsStatConditions:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
 		SpeedModifier: 120, 150
@@ -393,8 +393,8 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -405,7 +405,7 @@
 	ScriptTriggers:
 	Guard:
 	Guardable:
-	UpgradeManager:
+	ConditionManager:
 
 ^BlossomTree:
 	Tooltip:

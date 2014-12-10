@@ -501,15 +501,15 @@ GATICK:
 	Armament@PRIMARY:
 		Weapon: 90mm
 		LocalOffset: 384,0,128
-		UpgradeTypes: eliteweapon
-		UpgradeMaxEnabledLevel: 0
-		UpgradeMaxAcceptedLevel: 1
+		ConditionTypes: eliteweapon
+		MaxEnabledConditionLevel: 0
+		MaxAcceptedConditionLevel: 1
 		MuzzleSequence: muzzle
 	Armament@ELITE:
 		Weapon: 120mmx
 		LocalOffset: 384,0,128
-		UpgradeTypes: eliteweapon
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: eliteweapon
+		MinEnabledConditionLevel: 1
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	BodyOrientation:
@@ -949,8 +949,8 @@ NASTLH:
 		Amount: -350
 	RequiresPower:
 	CanPowerDown:
-	UpgradeActorsNear:
-		Upgrades: cloakgenerator
+	ApplyConditionToActorsNear:
+		Conditions: cloakgenerator
 		Range: 12c0
 		EnableSound: cloak5.aud
 		DisableSound: cloak5.aud

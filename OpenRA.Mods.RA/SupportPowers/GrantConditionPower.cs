@@ -18,26 +18,26 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class GrantUpgradePowerInfo : SupportPowerInfo
+	class GrantConditionPowerInfo : SupportPowerInfo
 	{
-		[Desc("The upgrades to apply.")]
-		public readonly string[] Upgrades = { };
+		[Desc("The conditions to apply.")]
+		public readonly string[] Conditions = { };
 
-		[Desc("Duration of the upgrade (in ticks). Set to 0 for a permanent upgrade.")]
+		[Desc("Duration of the condition level (in ticks). Set to 0 for a permanent condition.")]
 		public readonly int Duration = 0;
 
 		[Desc("Cells")]
 		public readonly int Range = 1;
-		public readonly string GrantUpgradeSound = "ironcur9.aud";
+		public readonly string GrantConditionSound = "ironcur9.aud";
 
-		public override object Create(ActorInitializer init) { return new GrantUpgradePower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionPower(init.self, this); }
 	}
 
-	class GrantUpgradePower : SupportPower
+	class GrantConditionPower : SupportPower
 	{
-		GrantUpgradePowerInfo info;
+		GrantConditionPowerInfo info;
 
-		public GrantUpgradePower(Actor self, GrantUpgradePowerInfo info)
+		public GrantConditionPower(Actor self, GrantConditionPowerInfo info)
 			: base(self, info)
 		{
 			this.info = info;
@@ -55,23 +55,23 @@ namespace OpenRA.Mods.RA
 
 			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 
-			Sound.Play(info.GrantUpgradeSound, self.World.Map.CenterOfCell(order.TargetLocation));
+			Sound.Play(info.GrantConditionSound, self.World.Map.CenterOfCell(order.TargetLocation));
 
 			foreach (var a in UnitsInRange(order.TargetLocation))
 			{
-				var um = a.TraitOrDefault<UpgradeManager>();
+				var um = a.TraitOrDefault<ConditionManager>();
 				if (um == null)
 					continue;
 
-				foreach (var u in info.Upgrades)
+				foreach (var u in info.Conditions)
 				{
-					if (!um.AcceptsUpgrade(a, u))
+					if (!um.AcceptsConditionType(a, u))
 						continue;
 
 					if (info.Duration > 0)
-						um.GrantTimedUpgrade(a, u, info.Duration);
+						um.GrantTimedCondition(a, u, info.Duration);
 					else
-						um.GrantUpgrade(a, u, this);
+						um.GrantCondition(a, u, this);
 				}
 			}
 		}
@@ -89,20 +89,20 @@ namespace OpenRA.Mods.RA
 				if (!a.Owner.IsAlliedWith(self.Owner))
 					return false;
 	
-				var um = a.TraitOrDefault<UpgradeManager>();
-				return um != null && info.Upgrades.Any(u => um.AcceptsUpgrade(a, u));
+				var um = a.TraitOrDefault<ConditionManager>();
+				return um != null && info.Conditions.Any(u => um.AcceptsConditionType(a, u));
 			});
 		}
 
 		class SelectTarget : IOrderGenerator
 		{
-			readonly GrantUpgradePower power;
+			readonly GrantConditionPower power;
 			readonly int range;
 			readonly Sprite tile;
 			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectTarget(World world, string order, SupportPowerManager manager, GrantUpgradePower power)
+			public SelectTarget(World world, string order, SupportPowerManager manager, GrantConditionPower power)
 			{
 				this.manager = manager;
 				this.order = order;
