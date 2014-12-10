@@ -157,6 +157,7 @@
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
+    <Compile Include="Traits\GrantUpgradeOnDamageState.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\World\CreateMPPlayers.cs" />
     <Compile Include="Traits\World\LoadWidgetAtGameStart.cs" />
