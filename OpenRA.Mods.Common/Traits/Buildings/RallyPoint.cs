@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public RallyPoint(Actor self, RallyPointInfo info)
 		{
 			Location = self.Location + info.RallyPoint;
-			self.World.AddFrameEndTask(w => w.Add(new Effects.RallyPoint(self, info.IndicatorPalettePrefix)));
+			self.World.AddFrameEndTask(w => w.Add(new RallyPointIndicator(self, info.IndicatorPalettePrefix)));
 		}
 
 		public IEnumerable<IOrderTargeter> Orders

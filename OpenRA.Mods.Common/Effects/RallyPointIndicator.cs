@@ -16,20 +16,20 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	class RallyPoint : IEffect
+	class RallyPointIndicator : IEffect
 	{
 		readonly Actor building;
-		readonly Common.Traits.RallyPoint rp;
+		readonly RallyPoint rp;
 		readonly string palettePrefix;
 		readonly Animation flag;
 		readonly Animation circles;
 
-		public RallyPoint(Actor building, string palettePrefix)
+		public RallyPointIndicator(Actor building, string palettePrefix)
 		{
 			this.building = building;
 			this.palettePrefix = palettePrefix;
 
-			rp = building.Trait<Common.Traits.RallyPoint>();
+			rp = building.Trait<RallyPoint>();
 
 			flag = new Animation(building.World, "rallypoint");
 			circles = new Animation(building.World, "rallypoint");
