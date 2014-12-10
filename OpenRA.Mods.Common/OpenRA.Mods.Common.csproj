@@ -129,6 +129,7 @@
     <Compile Include="Traits\Player\ProvidesCustomPrerequisite.cs" />
     <Compile Include="Traits\Player\ProvidesTechPrerequisite.cs" />
     <Compile Include="Traits\Player\TechTree.cs" />
+    <Compile Include="Traits\DamagedByTerrain.cs" />
     <Compile Include="Traits\Power\AffectedByPowerOutage.cs" />
     <Compile Include="Traits\Power\CanPowerDown.cs" />
     <Compile Include="Traits\Power\Player\PowerManager.cs" />
