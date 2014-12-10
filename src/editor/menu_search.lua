@@ -24,8 +24,8 @@ local findMenu = wx.wxMenu{
   { },
 }
 findMenu:Append(ID_NAVIGATE, TR("Navigate"), wx.wxMenu {
-  { ID_NAVIGATETOFILE, TR("To File...")..KSC(ID_NAVIGATETOFILE), TR("Navigate to file") },
-  { ID_NAVIGATETOLINE, TR("To Line...")..KSC(ID_NAVIGATETOLINE), TR("Navigate to line") },
+  { ID_NAVIGATETOFILE, TR("Go To File...")..KSC(ID_NAVIGATETOFILE), TR("Go to file") },
+  { ID_NAVIGATETOLINE, TR("Go To Line...")..KSC(ID_NAVIGATETOLINE), TR("Go to line") },
 })
 
 menuBar:Append(findMenu, TR("&Search"))
