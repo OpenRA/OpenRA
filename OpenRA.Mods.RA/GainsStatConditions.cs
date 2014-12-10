@@ -17,86 +17,86 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
 	[Desc("This actor has properties that upgrade when a specific criteria is met.")]
-	public class GainsStatUpgradesInfo : ITraitInfo
+	public class GainsStatConditionsInfo : ITraitInfo
 	{
-		public readonly string FirepowerUpgrade = "firepower";
+		public readonly string FirepowerCondition = "firepower";
 		public readonly int[] FirepowerModifier = { 110, 115, 120, 130 };
 
-		public readonly string DamageUpgrade = "damage";
+		public readonly string DamageCondition = "damage";
 		public readonly int[] DamageModifier = { 91, 87, 83, 65 };
 
-		public readonly string SpeedUpgrade = "speed";
+		public readonly string SpeedCondition = "speed";
 		public readonly int[] SpeedModifier = { 110, 115, 120, 150 };
 
-		public readonly string ReloadUpgrade = "reload";
+		public readonly string ReloadCondition = "reload";
 		public readonly int[] ReloadModifier = { 95, 90, 85, 75 };
 
-		public readonly string InaccuracyUpgrade = "inaccuracy";
+		public readonly string InaccuracyCondition = "inaccuracy";
 		public readonly int[] InaccuracyModifier = { 90, 80, 70, 50 };
 
-		public object Create(ActorInitializer init) { return new GainsStatUpgrades(this); }
+		public object Create(ActorInitializer init) { return new GainsStatConditions(this); }
 	}
 
-	public class GainsStatUpgrades : IUpgradable, IFirepowerModifier, IDamageModifier, ISpeedModifier, IReloadModifier, IInaccuracyModifier, IDisabledTrait
+	public class GainsStatConditions : IConditional, IFirepowerModifier, IDamageModifier, ISpeedModifier, IReloadModifier, IInaccuracyModifier, IDisabledTrait
 	{
-		readonly GainsStatUpgradesInfo info;
+		readonly GainsStatConditionsInfo info;
 		[Sync] int firepowerLevel = 0;
 		[Sync] int speedLevel = 0;
 		[Sync] int damageLevel = 0;
 		[Sync] int reloadLevel = 0;
 		[Sync] int inaccuracyLevel = 0;
 		public bool IsTraitDisabled { get { return firepowerLevel == 0 && speedLevel == 0 && damageLevel == 0 && reloadLevel == 0 && inaccuracyLevel == 0; } }
-		public IEnumerable<string> UpgradeTypes
+		public IEnumerable<string> ConditionTypes
 		{
 			get
 			{
-				yield return info.FirepowerUpgrade;
-				yield return info.DamageUpgrade;
-				yield return info.SpeedUpgrade;
-				yield return info.ReloadUpgrade;
-				yield return info.InaccuracyUpgrade;
+				yield return info.FirepowerCondition;
+				yield return info.DamageCondition;
+				yield return info.SpeedCondition;
+				yield return info.ReloadCondition;
+				yield return info.InaccuracyCondition;
 			}
 		}
 
-		public GainsStatUpgrades(GainsStatUpgradesInfo info)
+		public GainsStatConditions(GainsStatConditionsInfo info)
 		{
 			this.info = info;
 		}
 
-		public bool AcceptsUpgradeLevel(Actor self, string type, int level)
+		public bool AcceptsConditionLevel(Actor self, string type, int level)
 		{
 			if (level < 0)
 				return false;
 
-			if (type == info.FirepowerUpgrade)
+			if (type == info.FirepowerCondition)
 				return level <= info.FirepowerModifier.Length;
 
-			if (type == info.DamageUpgrade)
+			if (type == info.DamageCondition)
 				return level <= info.DamageModifier.Length;
 
-			if (type == info.SpeedUpgrade)
+			if (type == info.SpeedCondition)
 				return level <= info.SpeedModifier.Length;
 
-			if (type == info.ReloadUpgrade)
+			if (type == info.ReloadCondition)
 				return level <= info.ReloadModifier.Length;
 
-			if (type == info.InaccuracyUpgrade)
+			if (type == info.InaccuracyCondition)
 				return level <= info.InaccuracyModifier.Length;
 
 			return false;
 		}
 
-		public void UpgradeLevelChanged(Actor self, string type, int oldLevel, int newLevel)
+		public void ConditionLevelChanged(Actor self, string type, int oldLevel, int newLevel)
 		{
-			if (type == info.FirepowerUpgrade)
+			if (type == info.FirepowerCondition)
 				firepowerLevel = newLevel.Clamp(0, info.FirepowerModifier.Length);
-			else if (type == info.DamageUpgrade)
+			else if (type == info.DamageCondition)
 				damageLevel = newLevel.Clamp(0, info.DamageModifier.Length);
-			else if (type == info.SpeedUpgrade)
+			else if (type == info.SpeedCondition)
 				speedLevel = newLevel.Clamp(0, info.SpeedModifier.Length);
-			else if (type == info.ReloadUpgrade)
+			else if (type == info.ReloadCondition)
 				reloadLevel = newLevel.Clamp(0, info.ReloadModifier.Length);
-			else if (type == info.InaccuracyUpgrade)
+			else if (type == info.InaccuracyCondition)
 				inaccuracyLevel = newLevel.Clamp(0, info.InaccuracyModifier.Length);
 		}
 

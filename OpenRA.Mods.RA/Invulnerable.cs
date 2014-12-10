@@ -9,15 +9,25 @@
 #endregion
 
 using OpenRA.GameRules;
+using OpenRA.Mods.Common;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	[Desc("This unit cannot be damaged.")]
-	class InvulnerableInfo : TraitInfo<Invulnerable> { }
-
-	class Invulnerable : IDamageModifier
+	[Desc("This unit cannot be damaged (while this trait is enabled).")]
+	public class InvulnerableInfo : ConditionalTraitInfo, ITraitInfo
 	{
-		public int GetDamageModifier(Actor attacker, DamageWarhead warhead) { return 0; }
+		public object Create(ActorInitializer init) { return new Invulnerable(this); }
+	}
+
+	public class Invulnerable : ConditionalTrait<InvulnerableInfo>, IDamageModifier
+	{
+		public Invulnerable(InvulnerableInfo info)
+			: base (info) { }
+
+		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)
+		{
+			return IsTraitDisabled ? 100 : 0;
+		}
 	}
 }

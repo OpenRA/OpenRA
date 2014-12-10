@@ -22,11 +22,11 @@ namespace OpenRA.Mods.RA
 	[Desc("This actor's experience increases when it has killed a GivesExperience actor.")]
 	public class GainsExperienceInfo : ITraitInfo, Requires<ValuedInfo>
 	{
-		[FieldLoader.LoadUsing("LoadUpgrades")]
-		[Desc("Upgrades to grant at each level",
+		[FieldLoader.LoadUsing("LoadConditions")]
+		[Desc("Condition types to grant at each level",
 			"Key is the XP requirements for each level as a percentage of our own value.",
-			"Value is a list of the upgrade types to grant")]
-		public readonly Dictionary<int, string[]> Upgrades = null;
+			"Value is a list of the condition types to grant")]
+		public readonly Dictionary<int, string[]> Conditions = null;
 
 		[Desc("Palette for the chevron glyph rendered in the selection box.")]
 		public readonly string ChevronPalette = "effect";
@@ -36,22 +36,22 @@ namespace OpenRA.Mods.RA
 
 		public object Create(ActorInitializer init) { return new GainsExperience(init, this); }
 
-		static object LoadUpgrades(MiniYaml y)
+		static object LoadConditions(MiniYaml y)
 		{
-			MiniYaml upgrades;
+			MiniYaml conditions;
 
-			if (!y.ToDictionary().TryGetValue("Upgrades", out upgrades))
+			if (!y.ToDictionary().TryGetValue("Conditions", out conditions))
 			{
 				return new Dictionary<int, string[]>()
 				{
-					{ 200, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
-					{ 400, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
-					{ 800, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
-					{ 1600, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "eliteweapon", "selfheal" } }
+					{ 200, new[] { "experience", "firepower", "damage", "speed", "reload", "inaccuracy" } },
+					{ 400, new[] { "experience", "firepower", "damage", "speed", "reload", "inaccuracy" } },
+					{ 800, new[] { "experience", "firepower", "damage", "speed", "reload", "inaccuracy" } },
+					{ 1600, new[] { "experience", "firepower", "damage", "speed", "reload", "inaccuracy", "elite", "selfheal" } }
 				};
 			}
 
-			return upgrades.Nodes.ToDictionary(
+			return conditions.Nodes.ToDictionary(
 				kv => FieldLoader.GetValue<int>("(key)", kv.Key),
 				kv => FieldLoader.GetValue<string[]>("(value)", kv.Value.Value));
 		}
@@ -75,10 +75,10 @@ namespace OpenRA.Mods.RA
 			self = init.self;
 			this.info = info;
 
-			MaxLevel = info.Upgrades.Count;
+			MaxLevel = info.Conditions.Count;
 
 			var cost = self.Info.Traits.Get<ValuedInfo>().Cost;
-			foreach (var kv in info.Upgrades)
+			foreach (var kv in info.Conditions)
 				nextLevel.Add(Pair.New(kv.Key * cost, kv.Value));
 
 			if (init.Contains<ExperienceInit>())
@@ -99,14 +99,14 @@ namespace OpenRA.Mods.RA
 
 			while (Level < MaxLevel && experience >= nextLevel[Level].First)
 			{
-				var upgrades = nextLevel[Level].Second;
+				var conditions = nextLevel[Level].Second;
 
 				Level++;
 
-				var um = self.TraitOrDefault<UpgradeManager>();
+				var um = self.TraitOrDefault<ConditionManager>();
 				if (um != null)
-					foreach (var u in upgrades)
-						um.GrantUpgrade(self, u, this);
+					foreach (var u in conditions)
+						um.GrantCondition(self, u, this);
 
 				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "LevelUp", self.Owner.Country.Race);
 				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", info.LevelUpPalette)));

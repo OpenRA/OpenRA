@@ -16,30 +16,30 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	[Desc("Applies an upgrade to actors within a specified range.")]
-	public class UpgradeActorsNearInfo : ITraitInfo
+	[Desc("Applies an condition to actors within a specified range.")]
+	public class ApplyConditionToActorsNearInfo : ITraitInfo
 	{
-		[Desc("The upgrades to grant.")]
-		public readonly string[] Upgrades = { };
+		[Desc("The condition types to grant.")]
+		public readonly string[] Conditions = { };
 
-		[Desc("The range to search for actors to upgrade.")]
+		[Desc("The range to search for actors to condition.")]
 		public readonly WRange Range = WRange.FromCells(3);
 
 		[Desc("What diplomatic stances are affected.")]
 		public readonly Stance ValidStances = Stance.Ally;
 
-		[Desc("Grant the upgrades apply to this actor.")]
+		[Desc("Grant the conditions to this actor.")]
 		public readonly bool AffectsParent = false;
 
 		public readonly string EnableSound = null;
 		public readonly string DisableSound = null;
 
-		public object Create(ActorInitializer init) { return new UpgradeActorsNear(init.self, this); }
+		public object Create(ActorInitializer init) { return new ApplyConditionToActorsNear(init.self, this); }
 	}
 
-	public class UpgradeActorsNear : ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction
+	public class ApplyConditionToActorsNear : ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction
 	{
-		readonly UpgradeActorsNearInfo info;
+		readonly ApplyConditionToActorsNearInfo info;
 		readonly Actor self;
 
 		int proximityTrigger;
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 
 		bool cachedDisabled = true;
 
-		public UpgradeActorsNear(Actor self, UpgradeActorsNearInfo info)
+		public ApplyConditionToActorsNear(Actor self, ApplyConditionToActorsNearInfo info)
 		{
 			this.info = info;
 			this.self = self;
@@ -98,10 +98,10 @@ namespace OpenRA.Mods.RA
 			if (!info.ValidStances.HasFlag(stance))
 				return;
 
-			var um = a.TraitOrDefault<UpgradeManager>();
+			var um = a.TraitOrDefault<ConditionManager>();
 			if (um != null)
-				foreach (var u in info.Upgrades)
-					um.GrantUpgrade(a, u, this);
+				foreach (var u in info.Conditions)
+					um.GrantCondition(a, u, this);
 		}
 
 		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
@@ -113,10 +113,10 @@ namespace OpenRA.Mods.RA
 				if (!info.ValidStances.HasFlag(stance))
 					return;
 
-				var um = produced.TraitOrDefault<UpgradeManager>();
+				var um = produced.TraitOrDefault<ConditionManager>();
 				if (um != null)
-					foreach (var u in info.Upgrades)
-						um.GrantTimedUpgrade(produced, u, 1);
+					foreach (var u in info.Conditions)
+						um.GrantTimedCondition(produced, u, 1);
 			}
 		}
 
@@ -129,10 +129,10 @@ namespace OpenRA.Mods.RA
 			if (!info.ValidStances.HasFlag(stance))
 				return;
 
-			var um = a.TraitOrDefault<UpgradeManager>();
+			var um = a.TraitOrDefault<ConditionManager>();
 			if (um != null)
-				foreach (var u in info.Upgrades)
-					um.RevokeUpgrade(a, u, this);
+				foreach (var u in info.Conditions)
+					um.RevokeCondition(a, u, this);
 		}
 	}
 }

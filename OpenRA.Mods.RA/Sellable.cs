@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 {
 
 	[Desc("Actor can be sold")]
-	public class SellableInfo : UpgradableTraitInfo, ITraitInfo
+	public class SellableInfo : ConditionalTraitInfo, ITraitInfo
 	{
 		public readonly int RefundPercent = 50;
 		public readonly string[] SellSounds = { };
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Sellable(this); }
 	}
 
-	public class Sellable : UpgradableTrait<SellableInfo>, IResolveOrder
+	public class Sellable : ConditionalTrait<SellableInfo>, IResolveOrder
 	{
 		public Sellable(SellableInfo info)
 			: base(info) { }

@@ -625,14 +625,14 @@ BIKE:
 		Range: 5c0
 	Armament@PRIMARY:
 		Weapon: BikeMissile
-		UpgradeTypes: eliteweapon
-		UpgradeMaxEnabledLevel: 0
-		UpgradeMaxAcceptedLevel: 1
+		ConditionTypes: elite
+		MaxEnabledConditionLevel: 0
+		MaxAcceptedConditionLevel: 1
 		LocalOffset: -128,-170,213, -128,170,213
 	Armament@ELITE:
 		Weapon: HoverMissile
-		UpgradeTypes: eliteweapon
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: elite
+		MinEnabledConditionLevel: 1
 		LocalOffset: -128,-170,213, -128,170,213
 	AttackFrontal:
 	AutoTarget:
@@ -789,15 +789,15 @@ TTNK:
 	Armament@PRIMARY:
 		Weapon: 90mm
 		LocalOffset: 256,0,256
-		UpgradeTypes: eliteweapon
-		UpgradeMaxEnabledLevel: 0
-		UpgradeMaxAcceptedLevel: 1
+		ConditionTypes: elite
+		MaxEnabledConditionLevel: 0
+		MaxAcceptedConditionLevel: 1
 		MuzzleSequence: muzzle
 	Armament@ELITE:
 		Weapon: 120mmx
 		LocalOffset: 256,0,256
-		UpgradeTypes: eliteweapon
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: elite
+		MinEnabledConditionLevel: 1
 		MuzzleSequence: muzzle
 	WithMuzzleFlash:
 	RevealsShroud:

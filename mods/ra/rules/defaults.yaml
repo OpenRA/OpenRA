@@ -53,24 +53,24 @@
 	CaptureNotification:
 		Notification: UnitStolen
 	ScriptTriggers:
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
-	UpgradeOverlay@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-	TimedUpgradeBar:
-		Upgrade: invulnerability
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
+	Overlay@IRONCURTAIN:
+		ConditionTypes: invulnerability
+		MinEnabledConditionLevel: 1
+	Invulnerable@IRONCURTAIN:
+		ConditionTypes: invulnerability
+		MinEnabledConditionLevel: 1
+		MaxAcceptedConditionLevel: 2
+	TimedConditionBar:
+		Condition: invulnerability
 
 ^Tank:
 	AppearsOnRadar:
@@ -127,24 +127,24 @@
 	CaptureNotification:
 		Notification: UnitStolen
 	ScriptTriggers:
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
-	UpgradeOverlay@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-	TimedUpgradeBar:
-		Upgrade: invulnerability
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
+	Overlay@IRONCURTAIN:
+		ConditionTypes: invulnerability
+		MinEnabledConditionLevel: 1
+	Invulnerable@IRONCURTAIN:
+		ConditionTypes: invulnerability
+		MinEnabledConditionLevel: 1
+		MaxAcceptedConditionLevel: 2
+	TimedConditionBar:
+		Condition: invulnerability
 
 ^Infantry:
 	AppearsOnRadar:
@@ -200,10 +200,10 @@
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: hospitalheal
-		UpgradeMinEnabledLevel: 1
-	GlobalUpgradable:
-		Upgrades: hospitalheal
+		ConditionTypes: hospitalheal
+		MinEnabledConditionLevel: 1
+	GlobalConditional:
+		Conditions: hospitalheal
 		Prerequisites: hosp
 	Huntable:
 	ScriptTriggers:
@@ -224,15 +224,15 @@
 		WaterImpactSound: splash9.aud
 	Cloneable:
 		Types: Infantry
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
 
 ^Ship:
 	AppearsOnRadar:
@@ -267,25 +267,25 @@
 		GenericName: Ship
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
-	UpgradeOverlay@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-	TimedUpgradeBar:
-		Upgrade: invulnerability
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
+	Overlay@IRONCURTAIN:
+		ConditionTypes: invulnerability
+		MinEnabledConditionLevel: 1
+	Invulnerable@IRONCURTAIN:
+		ConditionTypes: invulnerability
+		MinEnabledConditionLevel: 1
+		MaxAcceptedConditionLevel: 2
+	TimedConditionBar:
+		Condition: invulnerability
+		MinEnabledConditionLevel: 1
 
 ^Plane:
 	AppearsOnRadar:
@@ -323,24 +323,24 @@
 		GenericName: Plane
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	GainsStatConditions:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
-	UpgradeOverlay@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-	TimedUpgradeBar:
-		Upgrade: invulnerability
+		ConditionTypes: selfheal
+		MinEnabledConditionLevel: 1
+	ConditionManager:
+	Overlay@IRONCURTAIN:
+		ConditionTypes: invulnerability
+		MinEnabledConditionLevel: 1
+	Invulnerable@IRONCURTAIN:
+		ConditionTypes: invulnerability
+		MinEnabledConditionLevel: 1
+		MaxAcceptedConditionLevel: 2
+	TimedConditionBar:
+		Condition: invulnerability
 	WithShadow:
 
 ^Helicopter:
@@ -401,16 +401,16 @@
 	Huntable:
 	Demolishable:
 	ScriptTriggers:
-	UpgradeManager:
-	UpgradeOverlay@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-	TimedUpgradeBar:
-		Upgrade: invulnerability
+	ConditionManager:
+	Overlay@IRONCURTAIN:
+		ConditionTypes: invulnerability
+		MinEnabledConditionLevel: 1
+	Invulnerable@IRONCURTAIN:
+		ConditionTypes: invulnerability
+		MinEnabledConditionLevel: 1
+		MaxAcceptedConditionLevel: 2
+	TimedConditionBar:
+		Condition: invulnerability
 
 ^Defense:
 	Inherits: ^Building

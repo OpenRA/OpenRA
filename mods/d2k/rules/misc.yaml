@@ -113,10 +113,10 @@ CRATE:
 		NoBaseSelectionShares: 9001
 		Units: mcvo
 		ValidRaces: ordos
-	GrantUpgradeCrateAction@cloak:
+	GrantConditionCrateAction@cloak:
 		SelectionShares: 5
 		Effect: cloak
-		Upgrades: cloak
+		Conditions: cloak
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:

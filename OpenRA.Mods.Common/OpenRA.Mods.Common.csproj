@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonTraitsInterfaces.cs" />
+    <Compile Include="Conditions\ConditionalTrait.cs" />
+    <Compile Include="Conditions\ConditionManager.cs" />
     <Compile Include="DefaultLoadScreen.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Bullet.cs" />
@@ -80,7 +82,7 @@
     <Compile Include="LoadWidgetAtGameStart.cs" />
     <Compile Include="ModChooserLoadScreen.cs" />
     <Compile Include="NullLoadScreen.cs" />
-    <Compile Include="Modifiers\TimedUpgradeBar.cs" />
+    <Compile Include="Modifiers\TimedConditionBar.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
@@ -102,6 +104,7 @@
     <Compile Include="Scripting\Global\PlayerGlobal.cs" />
     <Compile Include="Scripting\Global\TriggerGlobal.cs" />
     <Compile Include="Scripting\Global\UtilsGlobal.cs" />
+    <Compile Include="Scripting\Properties\ConditionProperties.cs" />
     <Compile Include="Scripting\Properties\DiplomacyProperties.cs" />
     <Compile Include="Scripting\Properties\HealthProperties.cs" />
     <Compile Include="Scripting\Properties\PowerProperties.cs" />
@@ -117,7 +120,7 @@
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\Modifiers\DisabledOverlay.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
-    <Compile Include="Traits\Modifiers\UpgradeOverlay.cs" />
+    <Compile Include="Traits\Modifiers\Overlay.cs" />
     <Compile Include="Traits\PaletteEffects\CloakPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\LightPaletteRotator.cs" />
     <Compile Include="Traits\PaletteEffects\MenuPaletteEffect.cs" />
@@ -163,8 +166,6 @@
     <Compile Include="Traits\World\SpawnMapActors.cs" />
     <Compile Include="Traits\World\StartGameNotification.cs" />
     <Compile Include="Traits\World\TerrainGeometryOverlay.cs" />
-    <Compile Include="Upgrades\UpgradableTrait.cs" />
-    <Compile Include="Upgrades\UpgradeManager.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
     <Compile Include="UtilityCommands\ExtractFilesCommand.cs" />

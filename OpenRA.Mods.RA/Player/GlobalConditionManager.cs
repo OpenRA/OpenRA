@@ -18,18 +18,18 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
 	[Desc("Attach this to the player actor.")]
-	public class GlobalUpgradeManagerInfo : ITraitInfo, Requires<TechTreeInfo>
+	public class GlobalConditionManagerInfo : ITraitInfo, Requires<TechTreeInfo>
 	{
-		public object Create(ActorInitializer init) { return new GlobalUpgradeManager(init); }
+		public object Create(ActorInitializer init) { return new GlobalConditionManager(init); }
 	}
 
-	public class GlobalUpgradeManager : ITechTreeElement
+	public class GlobalConditionManager : ITechTreeElement
 	{
 		readonly Actor self;
-		readonly Dictionary<string, List<Pair<Actor, GlobalUpgradable>>> upgradables = new Dictionary<string, List<Pair<Actor, GlobalUpgradable>>>();
+		readonly Dictionary<string, List<Pair<Actor, GlobalConditional>>> conditionals = new Dictionary<string, List<Pair<Actor, GlobalConditional>>>();
 		readonly TechTree techTree;
 
-		public GlobalUpgradeManager(ActorInitializer init)
+		public GlobalConditionManager(ActorInitializer init)
 		{
 			self = init.self;
 			techTree = self.Trait<TechTree>();
@@ -37,41 +37,41 @@ namespace OpenRA.Mods.RA
 
 		static string MakeKey(string[] prerequisites)
 		{
-			return "upgrade_" + string.Join("_", prerequisites.OrderBy(a => a));
+			return "condition_" + string.Join("_", prerequisites.OrderBy(a => a));
 		}
 
-		public void Register(Actor actor, GlobalUpgradable u, string[] prerequisites)
+		public void Register(Actor actor, GlobalConditional u, string[] prerequisites)
 		{
 			var key = MakeKey(prerequisites);
-			if (!upgradables.ContainsKey(key))
+			if (!conditionals.ContainsKey(key))
 			{
-				upgradables.Add(key, new List<Pair<Actor, GlobalUpgradable>>());
+				conditionals.Add(key, new List<Pair<Actor, GlobalConditional>>());
 				techTree.Add(key, prerequisites, 0, this);
 			}
 
-			upgradables[key].Add(Pair.New(actor, u));
+			conditionals[key].Add(Pair.New(actor, u));
 
 			// Notify the current state
 			u.PrerequisitesUpdated(actor, techTree.HasPrerequisites(prerequisites));
 		}
 
-		public void Unregister(Actor actor, GlobalUpgradable u, string[] prerequisites)
+		public void Unregister(Actor actor, GlobalConditional u, string[] prerequisites)
 		{
 			var key = MakeKey(prerequisites);
-			var list = upgradables[key];
+			var list = conditionals[key];
 
 			list.RemoveAll(x => x.First == actor && x.Second == u);
 			if (!list.Any())
 			{
-				upgradables.Remove(key);
+				conditionals.Remove(key);
 				techTree.Remove(key);
 			}
 		}
 
 		public void PrerequisitesAvailable(string key)
 		{
-			List<Pair<Actor, GlobalUpgradable>> list;
-			if (!upgradables.TryGetValue(key, out list))
+			List<Pair<Actor, GlobalConditional>> list;
+			if (!conditionals.TryGetValue(key, out list))
 				return;
 
 			foreach (var u in list)
@@ -80,8 +80,8 @@ namespace OpenRA.Mods.RA
 
 		public void PrerequisitesUnavailable(string key)
 		{
-			List<Pair<Actor, GlobalUpgradable>> list;
-			if (!upgradables.TryGetValue(key, out list))
+			List<Pair<Actor, GlobalConditional>> list;
+			if (!conditionals.TryGetValue(key, out list))
 				return;
 
 			foreach (var u in list)

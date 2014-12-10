@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA
 				if (a == collector)
 					return false;
 
-				// Only upgrade the collecting player's units
+				// Only level up the collecting player's units
 				// TODO: Also apply to allied units?
 				if (a.Owner != collector.Owner)
 					return false;

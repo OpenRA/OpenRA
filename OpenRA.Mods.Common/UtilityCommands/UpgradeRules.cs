@@ -691,6 +691,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20141206)
+				{
+					if (node.Key == "GrantUpgrades")
+						node.Key = "GrantConditions";
+					else if (node.Key.StartsWith("Upgrade") && node.Key.Contains("edLevel"))
+						node.Key = node.Key.Remove(0, "Upgrade".Length).Replace("edLevel", "edConditionLevel");
+
+					node.Key = node.Key.Replace("UpgradeOverlay", "Overlay");
+					node.Key = node.Key.Replace("DisableUpgrade", "Disableable");
+					node.Key = node.Key.Replace("InvulnerabilityUpgrade", "Invulnerable");
+					node.Key = node.Key.Replace("GlobalUpgradable", "GlobalConditional");
+					node.Key = node.Key.Replace("UpgradeActorsNear", "ApplyConditionToActorsNear");
+					node.Key = node.Key.Replace("Upgrade", "Condition");
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
@@ -1009,6 +1024,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						if (node.Key == "InfDeath")
 							node.Key = "DeathType";
+					}
+				}
+
+				if (engineVersion < 20141206)
+				{
+					if (depth == 1)
+					{
+						if (node.Key.StartsWith("Warhead") && node.Value.Value == "GrantUpgrade")
+							node.Value.Value = "GrantCondition";
 					}
 				}
 

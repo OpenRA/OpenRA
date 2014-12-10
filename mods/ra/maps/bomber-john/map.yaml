@@ -862,7 +862,7 @@ Rules:
 			Duration: 999999
 			KillCargo: yes
 			Range: 3
-		GrantUpgradePower@IRONCURTAIN:
+		GrantConditionPower@IRONCURTAIN:
 			Icon: invuln
 			ChargeTime: 30
 			Description: Invulnerability
@@ -872,7 +872,7 @@ Rules:
 			BeginChargeSound: ironchg1.aud
 			EndChargeSound: ironrdy1.aud
 			Range: 1
-			Upgrades: invulnerability
+			Conditions: invulnerability
 		Power:
 			Amount: 0
 	MINVV:
@@ -928,7 +928,7 @@ Rules:
 			Duration: 999999
 			KillCargo: yes
 			Range: 3
-		GrantUpgradePower@IRONCURTAIN:
+		GrantConditionPower@IRONCURTAIN:
 			Icon: invuln
 			ChargeTime: 30
 			Description: Invulnerability
@@ -938,7 +938,7 @@ Rules:
 			BeginChargeSound: ironchg1.aud
 			EndChargeSound: ironrdy1.aud
 			Range: 1
-			Upgrades: invulnerability
+			Conditions: invulnerability
 
 Sequences:
 	miner:

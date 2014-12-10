@@ -17,13 +17,13 @@ E1:
 		Speed: 71
 	Armament@PRIMARY:
 		Weapon: Minigun
-		UpgradeTypes: eliteweapon
-		UpgradeMaxEnabledLevel: 0
-		UpgradeMaxAcceptedLevel: 1
+		ConditionTypes: elite
+		MaxEnabledConditionLevel: 0
+		MaxAcceptedConditionLevel: 1
 	Armament@ELITE:
 		Weapon: M1Carbine
-		UpgradeTypes: eliteweapon
-		UpgradeMinEnabledLevel: 1
+		ConditionTypes: elite
+		MinEnabledConditionLevel: 1
 	AttackFrontal:
 	TakeCover:
 	RenderInfantry:
