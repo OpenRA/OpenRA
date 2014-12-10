@@ -130,11 +130,6 @@
 		Upgrades:
 			500: firepower, damage, speed, reload
 			1000: firepower, damage, speed, reload, selfheal, eliteweapon
-	GainsStatUpgrades:
-		FirepowerModifier: 110, 130
-		DamageModifier: 83, 66
-		SpeedModifier: 120, 150
-		ReloadModifier: 90, 75
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -174,6 +169,15 @@
 		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
+	FirepowerMultiplier:
+		Modifier: 110, 130
+	DamageMultiplier:
+		Modifier: 83, 66
+	SpeedMultiplier:
+		Modifier: 120, 150
+	ReloadTimeMultiplier:
+		Modifier: 90, 75
+	InaccuracyMultiplier:
 
 ^CivilianInfantry:
 	Inherits: ^Infantry
@@ -232,11 +236,6 @@
 		Upgrades:
 			500: firepower, damage, speed, reload
 			1000: firepower, damage, speed, reload, selfheal, eliteweapon
-	GainsStatUpgrades:
-		FirepowerModifier: 110, 130
-		DamageModifier: 83, 66
-		SpeedModifier: 120, 150
-		ReloadModifier: 90, 75
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -280,6 +279,15 @@
 		UpgradeMaxAcceptedLevel: 2
 		InitialDelay: 0
 		CloakDelay: 90
+	FirepowerMultiplier:
+		Modifier: 110, 130
+	DamageMultiplier:
+		Modifier: 83, 66
+	SpeedMultiplier:
+		Modifier: 120, 150
+	ReloadTimeMultiplier:
+		Modifier: 90, 75
+	InaccuracyMultiplier:
 
 ^Tank:
 	AppearsOnRadar:
@@ -311,11 +319,6 @@
 		Upgrades:
 			500: firepower, damage, speed, reload
 			1000: firepower, damage, speed, reload, selfheal, eliteweapon
-	GainsStatUpgrades:
-		FirepowerModifier: 110, 130
-		DamageModifier: 83, 66
-		SpeedModifier: 120, 150
-		ReloadModifier: 90, 75
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -359,6 +362,15 @@
 		UpgradeMaxAcceptedLevel: 2
 		InitialDelay: 0
 		CloakDelay: 90
+	FirepowerMultiplier:
+		Modifier: 110, 130
+	DamageMultiplier:
+		Modifier: 83, 66
+	SpeedMultiplier:
+		Modifier: 120, 150
+	ReloadTimeMultiplier:
+		Modifier: 90, 75
+	InaccuracyMultiplier:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -383,11 +395,6 @@
 		Upgrades:
 			500: firepower, damage, speed, reload
 			1000: firepower, damage, speed, reload, selfheal, eliteweapon
-	GainsStatUpgrades:
-		FirepowerModifier: 110, 130
-		DamageModifier: 83, 66
-		SpeedModifier: 120, 150
-		ReloadModifier: 90, 75
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -406,6 +413,15 @@
 	Guard:
 	Guardable:
 	UpgradeManager:
+	FirepowerMultiplier:
+		Modifier: 110, 130
+	DamageMultiplier:
+		Modifier: 83, 66
+	SpeedMultiplier:
+		Modifier: 120, 150
+	ReloadTimeMultiplier:
+		Modifier: 90, 75
+	InaccuracyMultiplier:
 
 ^BlossomTree:
 	Tooltip:

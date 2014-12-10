@@ -691,6 +691,113 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20141209)
+				{
+					if (depth == 0)
+					{
+						var emptyYaml = new MiniYaml(null);
+						var trait = node.Value.Nodes.FirstOrDefault(n => n.Key == "-GainsStatUpgrades");
+						if (trait != null)
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("-FirepowerMultiplier", emptyYaml));
+							node.Value.Nodes.Add(new MiniYamlNode("-DamageMultiplier", emptyYaml));
+							node.Value.Nodes.Add(new MiniYamlNode("-SpeedMultiplier", emptyYaml));
+							node.Value.Nodes.Add(new MiniYamlNode("-ReloadTimeMultiplier", emptyYaml));
+							node.Value.Nodes.Add(new MiniYamlNode("-InaccuracyMultiplier", emptyYaml));
+							node.Value.Nodes.Remove(trait);
+						}
+
+						trait = node.Value.Nodes.FirstOrDefault(n => n.Key == "GainsStatUpgrades");
+						if (trait != null)
+						{
+							Action<string, string> addTrait = (type, newType) =>
+							{
+								var upgradeTypes = trait.Value.Nodes.FirstOrDefault(n => n.Key == type + "Upgrade");
+								var modifier = trait.Value.Nodes.FirstOrDefault(n => n.Key == type + "Modifier");
+
+								if (upgradeTypes == null || !string.IsNullOrEmpty(upgradeTypes.Value.Value) || modifier == null || !string.IsNullOrEmpty(modifier.Value.Value))
+								{
+									var yaml = new MiniYaml(null);
+									if (modifier != null)
+									{
+										modifier.Key = "Modifier";
+										yaml.Nodes.Add(modifier);
+									}
+
+									if (upgradeTypes != null)
+									{
+										upgradeTypes.Key = "UpgradeTypes";
+										yaml.Nodes.Add(upgradeTypes);
+									}
+
+									node.Value.Nodes.Add(new MiniYamlNode((newType ?? type) + "Multiplier", yaml));
+								}
+							};
+
+							addTrait("Firepower", null);
+							addTrait("Damage", null);
+							addTrait("Speed", null);
+							addTrait("Reload", "ReloadTime");
+							addTrait("Inaccuracy", null);
+
+							node.Value.Nodes.Remove(trait);
+						}
+
+						trait = node.Value.Nodes.FirstOrDefault(n => n.Key == "-InvulnerabilityUpgrade");
+						if (trait != null)
+							trait.Key = "-DamageMultiplier@INVULNERABILITY_UPGRADE";
+
+						trait = node.Value.Nodes.FirstOrDefault(n => n.Key == "InvulnerabilityUpgrade");
+						if (trait != null)
+						{
+							trait.Key = "DamageMultiplier@INVULNERABILITY_UPGRADE";
+							trait.Value.Nodes.Add(new MiniYamlNode("Modifier", "0, 0"));
+							var min = trait.Value.Nodes.FirstOrDefault(n => n.Key == "UpgradeMinEnabledLevel");
+							if (min != null)
+							{
+								if (min.Value.Value != "1")
+									min.Key = "BaseLevel";
+								else
+									trait.Value.Nodes.Remove(min);
+							}
+							trait.Value.Nodes.RemoveAll(n => n.Key == "UpgradeMaxAcceptedLevel");
+							trait.Value.Nodes.RemoveAll(n => n.Key == "UpgradeMaxEnabledLevel");
+						}
+
+						foreach (var n in node.Value.Nodes.Where(n => n.Key.StartsWith("-InvulnerabilityUpgrade@")))
+							n.Key = "-DamageMultiplier@" + n.Key.Substring("-InvulnerabilityUpgrade@".Length);
+
+						foreach (var t in node.Value.Nodes.Where(n => n.Key.StartsWith("InvulnerabilityUpgrade@")))
+						{
+							t.Key = "DamageMultiplier@" + t.Key.Substring("InvulnerabilityUpgrade@".Length);
+							t.Value.Nodes.Add(new MiniYamlNode("Modifier", "0, 0"));
+							var min = t.Value.Nodes.FirstOrDefault(n => n.Key == "UpgradeMinEnabledLevel");
+							if (min != null)
+							{
+								if (min.Value.Value != "1")
+									min.Key = "BaseLevel";
+								else
+									t.Value.Nodes.Remove(min);
+							}
+							t.Value.Nodes.RemoveAll(n => n.Key == "UpgradeMaxAcceptedLevel");
+							t.Value.Nodes.RemoveAll(n => n.Key == "UpgradeMaxEnabledLevel");
+						}
+
+						trait = node.Value.Nodes.FirstOrDefault(n => n.Key == "-Invulnerable");
+						if (trait != null)
+							trait.Key = "-DamageMultiplier@INVULNERABLE";
+
+						trait = node.Value.Nodes.FirstOrDefault(n => n.Key == "Invulnerable");
+						if (trait != null)
+						{
+							trait.Key = "DamageMultiplier@INVULNERABLE";
+							trait.Value.Nodes.Add(new MiniYamlNode("Modifier", "0"));
+							trait.Value.Nodes.Add(new MiniYamlNode("BaseLevel", "0"));
+							trait.Value.Nodes.Add(new MiniYamlNode("UpgradeTypes", ""));
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

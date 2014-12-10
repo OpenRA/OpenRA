@@ -633,7 +633,10 @@ Rules:
 			Name: Strategic Point
 		RevealsShroud:
 			Range: 20c0
-		Invulnerable:
+		DamageMultiplier@INVULNERABLE:
+			Modifier: 0
+			BaseLevel: 0
+			UpgradeTypes:
 		-Selectable:
 		-TargetableBuilding:
 	Player:

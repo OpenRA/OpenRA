@@ -159,7 +159,10 @@ C17:
 	Cargo:
 		MaxWeight: 10
 		PipCount: 10
-	Invulnerable:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+		BaseLevel: 0
+		UpgradeTypes:
 	-Selectable:
 	-TargetableUnit:
 	-GainsExperience:

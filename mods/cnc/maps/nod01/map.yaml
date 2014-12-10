@@ -290,7 +290,10 @@ Rules:
 		Tooltip:
 			Name: Nikoomba
 	^Bridge:
-		Invulnerable:
+		DamageMultiplier@INVULNERABLE:
+			Modifier: 0
+			BaseLevel: 0
+			UpgradeTypes:
 	^CivBuilding:
 		MustBeDestroyed:
 	^CivInfantry:

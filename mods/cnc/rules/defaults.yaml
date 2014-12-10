@@ -41,7 +41,6 @@
 		UncloakSound: trans1.aud
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -50,6 +49,11 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Tank:
 	AppearsOnRadar:
@@ -97,7 +101,6 @@
 		UncloakSound: trans1.aud
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -106,6 +109,11 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -138,7 +146,6 @@
 	ScriptTriggers:
 	Tooltip:
 		GenericName: Helicopter
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -149,6 +156,11 @@
 	UpgradeManager:
 	WithShadow:
 	Hovers:
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -224,7 +236,6 @@
 	DeathSounds@POISONED:
 		DeathSound: Poisoned
 		DeathTypes: 6
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -233,6 +244,11 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -331,7 +347,6 @@
 	Huntable:
 	AttackMove:
 	ScriptTriggers:
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -341,6 +356,11 @@
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	WithShadow:
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Ship:
 	AppearsOnRadar:
@@ -366,7 +386,6 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -375,6 +394,11 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	FirepowerMultiplier:
+	DamageMultiplier:
+	SpeedMultiplier:
+	ReloadTimeMultiplier:
+	InaccuracyMultiplier:
 
 ^Building:
 	AppearsOnRadar:
@@ -652,6 +676,7 @@
 		DestroyedSound: xplobig4.aud
 	BodyOrientation:
 	ScriptTriggers:
+
 ^Crate:
 	Tooltip:
 		Name: Crate
