@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Primitives;
@@ -89,7 +90,7 @@ namespace OpenRA.Mods.RA
 					if (exitinfo.MoveIntoWorld)
 					{
 						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
-						newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
+						newUnit.QueueActivity(new AttackMoveActivity(
 							newUnit, move.MoveTo(exitLocation, 1)));
 					}
 				}

@@ -99,6 +99,7 @@
     <Compile Include="AI\HackyAI.cs" />
     <Compile Include="AcceptsSupplies.cs" />
     <Compile Include="Activities\Attack.cs" />
+    <Compile Include="Activities\AttackMoveActivity.cs" />
     <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
@@ -141,7 +142,7 @@
     <Compile Include="AI\RushFuzzy.cs" />
     <Compile Include="AI\StateMachine.cs" />
     <Compile Include="AppearsOnRadar.cs" />
-    <Compile Include="AttackMove.cs" />
+    <Compile Include="Traits\AttackMove.cs" />
     <Compile Include="Attack\AttackBase.cs" />
     <Compile Include="Attack\AttackFrontal.cs" />
     <Compile Include="Attack\AttackLeap.cs" />
