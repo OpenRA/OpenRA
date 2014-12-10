@@ -63,7 +63,7 @@
     <Compile Include="Effects\Missile.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Effects\PowerdownIndicator.cs" />
-    <Compile Include="Effects\RallyPoint.cs" />
+    <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Commands\ChatCommands.cs" />
     <Compile Include="Commands\DevCommands.cs" />
@@ -109,6 +109,7 @@
     <Compile Include="Traits\BlocksBullets.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Buildings\DeadBuildingState.cs" />
+    <Compile Include="Traits\Buildings\RallyPoint.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\CustomBuildTimeValue.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
@@ -137,7 +138,6 @@
     <Compile Include="Traits\Power\RequiresPower.cs" />
     <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
-    <Compile Include="Traits\RallyPoint.cs" />
     <Compile Include="Traits\Render\RenderEditorOnly.cs" />
     <Compile Include="Traits\Render\RenderFlare.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
