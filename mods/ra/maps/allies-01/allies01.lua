@@ -130,7 +130,7 @@ HelicopterGone = function()
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			player.MarkCompletedObjective(ExtractObjective)
 			player.MarkCompletedObjective(EinsteinSurviveObjective)
-			if not Tanya.IsDead then
+			if not player.IsObjectiveFailed(TanyaSurviveObjective) then
 				player.MarkCompletedObjective(TanyaSurviveObjective)
 			end
 			if not collateralDamage then
