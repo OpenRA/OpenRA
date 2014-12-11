@@ -213,27 +213,33 @@ local function navigateTo(default)
       end
       if ed and text and text:find('@') then
         if not functions then
-          local funcs = OutlineFunctions(ed)
+          local funcs, prev, num = OutlineFunctions(ed)
           functions = {[0] = {}}
-          for _, func in pairs(funcs) do
+          for _, func in ipairs(funcs) do
             table.insert(functions, func.name)
-            functions[0][func.name] = func.pos
+            num = func.name == prev and num + 1 or 1
+            prev = func.name
+            functions[0][func.name..num] = func.pos
           end
         end
         local symbol = text:match('@(.*)')
         if #symbol > 0 then
-          local topscore
+          local topscore, prev, num
           for _, item in ipairs(CommandBarScoreItems(functions, symbol, 100)) do
             local func, score = unpack(item)
             topscore = topscore or score
+            num = func == prev and num + 1 or 1
+            prev = func
             if score > topscore / 4 and score > 1 then
               table.insert(lines, {
-                  ("%2d %s"):format(score, func:gsub('%(.+','')), func, functions[0][func]})
+                  ("%2d %s"):format(score, func:gsub('%(.+','')), func, functions[0][func..num]})
             end
           end
         else
           for n, name in ipairs(functions) do
-            lines[n] = {name:gsub('%(.+',''), name, functions[0][name]}
+            num = name == prev and num + 1 or 1
+            prev = name
+            lines[n] = {name:gsub('%(.+',''), name, functions[0][name..num]}
           end
         end
       elseif text and text:find(':') then
