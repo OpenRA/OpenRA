@@ -217,25 +217,26 @@ local function navigateTo(default)
       end
       if ed and text and text:find('@') then
         if not functions then
-          local funcs, prev, num = OutlineFunctions(ed)
+          local funcs, nums = OutlineFunctions(ed), {}
           functions = {pos = {}, src = {}}
           for _, func in ipairs(funcs) do
             table.insert(functions, func.name)
-            num = func.name == prev and num + 1 or 1
-            prev = func.name
+            nums[func.name] = (nums[func.name] or 0) + 1
+            local num = nums[func.name]
             local line = ed:LineFromPosition(func.pos-1)
             functions.src[func.name..num] = ed:GetLine(line):gsub("^%s+","")
             functions.pos[func.name..num] = func.pos
           end
         end
         local symbol = text:match('@(.*)')
+        local nums = {}
         if #symbol > 0 then
-          local topscore, prev, num
+          local topscore
           for _, item in ipairs(CommandBarScoreItems(functions, symbol, 100)) do
             local func, score = unpack(item)
             topscore = topscore or score
-            num = func == prev and num + 1 or 1
-            prev = func
+            nums[func] = (nums[func] or 0) + 1
+            local num = nums[func]
             if score > topscore / 4 and score > 1 then
               table.insert(lines, {("%2d %s"):format(score, func),
                   functions.src[func..num], functions.pos[func..num]})
@@ -243,8 +244,8 @@ local function navigateTo(default)
           end
         else
           for n, name in ipairs(functions) do
-            num = name == prev and num + 1 or 1
-            prev = name
+            nums[name] = (nums[name] or 0) + 1
+            local num = nums[name]
             lines[n] = {name, functions.src[name..num], functions.pos[name..num]}
           end
         end
