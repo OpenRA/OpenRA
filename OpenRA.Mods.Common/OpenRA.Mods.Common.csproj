@@ -108,11 +108,13 @@
     <Compile Include="Scripting\Properties\ResourceProperties.cs" />
     <Compile Include="Scripting\Properties\UpgradeProperties.cs" />
     <Compile Include="Traits\BlocksBullets.cs" />
+    <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Buildings\DeadBuildingState.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\CustomBuildTimeValue.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\Demolishable.cs" />
+    <Compile Include="Traits\GlobalUpgradable.cs" />
     <Compile Include="Traits\Immobile.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\Modifiers\DisabledOverlay.cs" />
@@ -123,6 +125,10 @@
     <Compile Include="Traits\PaletteEffects\MenuPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\NukePaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\WaterPaletteRotation.cs" />
+    <Compile Include="Traits\Player\GlobalUpgradeManager.cs" />
+    <Compile Include="Traits\Player\ProvidesCustomPrerequisite.cs" />
+    <Compile Include="Traits\Player\ProvidesTechPrerequisite.cs" />
+    <Compile Include="Traits\Player\TechTree.cs" />
     <Compile Include="Traits\Power\AffectedByPowerOutage.cs" />
     <Compile Include="Traits\Power\CanPowerDown.cs" />
     <Compile Include="Traits\Power\Player\PowerManager.cs" />

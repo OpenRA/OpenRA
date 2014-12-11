@@ -154,7 +154,6 @@
     <Compile Include="Attack\AttackWander.cs" />
     <Compile Include="AutoHeal.cs" />
     <Compile Include="AutoTarget.cs" />
-    <Compile Include="Buildable.cs" />
     <Compile Include="CaptureNotification.cs" />
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Buildings\BuildingInfluence.cs" />
@@ -223,12 +222,10 @@
     <Compile Include="Player\ClassicProductionQueue.cs" />
     <Compile Include="Player\PlaceBuilding.cs" />
     <Compile Include="Player\ProductionQueue.cs" />
-    <Compile Include="Player\ProvidesTechPrerequisite.cs" />
     <Compile Include="Player\MissionObjectives.cs" />
     <Compile Include="PortableChrono.cs" />
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
-    <Compile Include="Player\TechTree.cs" />
     <Compile Include="Production.cs" />
     <Compile Include="ProductionBar.cs" />
     <Compile Include="ProximityCaptor.cs" />
@@ -402,7 +399,6 @@
     <Compile Include="Render\WithRepairOverlay.cs" />
     <Compile Include="Activities\MoveWithinRange.cs" />
     <Compile Include="Lint\CheckPlayers.cs" />
-    <Compile Include="Player\ProvidesCustomPrerequisite.cs" />
     <Compile Include="Lint\CheckActors.cs" />
     <Compile Include="Lint\CheckMapCordon.cs" />
     <Compile Include="Parachutable.cs" />
@@ -428,8 +424,6 @@
     <Compile Include="Widgets\Logic\SupportPowerBinLogic.cs" />
     <Compile Include="Widgets\Logic\DebugMenuLogic.cs" />
     <Compile Include="ProductionQueueFromSelection.cs" />
-    <Compile Include="GlobalUpgradable.cs" />
-    <Compile Include="Player\GlobalUpgradeManager.cs" />
     <Compile Include="GainsStatUpgrades.cs" />
     <Compile Include="Player\Extensions.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />

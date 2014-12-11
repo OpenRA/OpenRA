@@ -8,14 +8,12 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the player actor.")]
 	public class GlobalUpgradeManagerInfo : ITraitInfo, Requires<TechTreeInfo>

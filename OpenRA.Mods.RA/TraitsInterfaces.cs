@@ -29,19 +29,6 @@ namespace OpenRA.Mods.RA
 		void OnDock(Actor self, Actor harv, DeliverResources dockOrder);
 	}
 
-	public interface ITechTreeElement
-	{
-		void PrerequisitesAvailable(string key);
-		void PrerequisitesUnavailable(string key);
-		void PrerequisitesItemHidden(string key);
-		void PrerequisitesItemVisible(string key);
-	}
-
-	public interface ITechTreePrerequisite
-	{
-		IEnumerable<string> ProvidesPrerequisites {get;}
-	}
-
 	public interface INotifyParachuteLanded { void OnLanded(); }
 	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
 	public interface INotifyAttack { void Attacking(Actor self, Target target, Armament a, Barrel barrel); }

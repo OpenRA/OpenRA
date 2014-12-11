@@ -8,14 +8,10 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using OpenRA.Mods.Common;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	public class GlobalUpgradableInfo : ITraitInfo, Requires<UpgradeManagerInfo>
 	{
