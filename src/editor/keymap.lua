@@ -55,7 +55,7 @@ ide.config.keymap = {
   [ID_BOOKMARKPREV]     = "Shift-F2",
   [ID_NAVIGATETOFILE]   = "Ctrl-P",
   [ID_NAVIGATETOLINE]   = "Ctrl-G",
-  [ID_NAVIGATETOSYMBOL] = "",
+  [ID_NAVIGATETOSYMBOL] = "Ctrl-B",
 -- Search menu
   [ID_FIND]             = "Ctrl-F",
   [ID_FINDNEXT]         = "F3",
