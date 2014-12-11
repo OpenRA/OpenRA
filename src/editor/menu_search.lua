@@ -26,6 +26,7 @@ local findMenu = wx.wxMenu{
 findMenu:Append(ID_NAVIGATE, TR("Navigate"), wx.wxMenu {
   { ID_NAVIGATETOFILE, TR("Go To File...")..KSC(ID_NAVIGATETOFILE), TR("Go to file") },
   { ID_NAVIGATETOLINE, TR("Go To Line...")..KSC(ID_NAVIGATETOLINE), TR("Go to line") },
+  { ID_NAVIGATETOSYMBOL, TR("Go To Symbol...")..KSC(ID_NAVIGATETOSYMBOL), TR("Go to symbol") },
 })
 
 menuBar:Append(findMenu, TR("&Search"))
@@ -316,3 +317,5 @@ frame:Connect(ID_NAVIGATETOFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function() navigateTo("") end)
 frame:Connect(ID_NAVIGATETOLINE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function() navigateTo(":") end)
+frame:Connect(ID_NAVIGATETOSYMBOL, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function() navigateTo("@") end)
