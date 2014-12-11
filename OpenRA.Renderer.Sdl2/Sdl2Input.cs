@@ -139,7 +139,7 @@ namespace OpenRA.Renderer.Sdl2
 					case SDL.SDL_EventType.SDL_KEYDOWN:
 					case SDL.SDL_EventType.SDL_KEYUP:
 					{
-						var keyCode = (Keycode)e.key.keysym.sym;
+							var keyCode = (Keycode)e.key.keysym.scancode;
 						var type = e.type == SDL.SDL_EventType.SDL_KEYDOWN ?
 							KeyInputEvent.Down : KeyInputEvent.Up;
 
@@ -152,7 +152,6 @@ namespace OpenRA.Renderer.Sdl2
 							Event = type,
 							Key = keyCode,
 							Modifiers = mods,
-							UnicodeChar = (char)e.key.keysym.sym,
 							MultiTapCount = tapCount
 						};
 
