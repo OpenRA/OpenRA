@@ -214,12 +214,14 @@ local function navigateTo(default)
       if ed and text and text:find('@') then
         if not functions then
           local funcs, prev, num = OutlineFunctions(ed)
-          functions = {[0] = {}}
+          functions = {pos = {}, src = {}}
           for _, func in ipairs(funcs) do
             table.insert(functions, func.name)
             num = func.name == prev and num + 1 or 1
             prev = func.name
-            functions[0][func.name..num] = func.pos
+            local line = ed:LineFromPosition(func.pos-1)
+            functions.src[func.name..num] = ed:GetLine(line):gsub("^%s+","")
+            functions.pos[func.name..num] = func.pos
           end
         end
         local symbol = text:match('@(.*)')
@@ -231,15 +233,15 @@ local function navigateTo(default)
             num = func == prev and num + 1 or 1
             prev = func
             if score > topscore / 4 and score > 1 then
-              table.insert(lines, {
-                  ("%2d %s"):format(score, func:gsub('%(.+','')), func, functions[0][func..num]})
+              table.insert(lines, {("%2d %s"):format(score, func),
+                  functions.src[func..num], functions.pos[func..num]})
             end
           end
         else
           for n, name in ipairs(functions) do
             num = name == prev and num + 1 or 1
             prev = name
-            lines[n] = {name:gsub('%(.+',''), name, functions[0][name..num]}
+            lines[n] = {name, functions.src[name..num], functions.pos[name..num]}
           end
         end
       elseif text and text:find(':') then
