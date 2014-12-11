@@ -268,7 +268,7 @@ local function score(p, v)
     return is / (ps + vs) - (num == 1 and missing * (ps - is) / (ps + vs) or 0)
   end
 
-  local key = p..'\1'..v
+  local key = p..'\2'..v
   if not cache[key] then
     local score = weights.onegram * overlap(p, v, 1)
     if score > 0 then -- don't bother with those that can't even score 1grams
