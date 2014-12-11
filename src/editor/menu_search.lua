@@ -185,6 +185,10 @@ local function navigateTo(default)
           end
         elseif tabindex then -- switch to existing tab
           SetEditorSelection(tabindex)
+          if preview then -- close preview if not selected
+            local pindex = nb:GetPageIndex(preview)
+            if pindex ~= tabindex then ClosePage(pindex) end
+          end
         elseif file then -- load a new file (into preview if set)
           LoadFile(MergeFullPath(ide:GetProject(), file), preview or nil, true)
         end
