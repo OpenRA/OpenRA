@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -34,5 +35,17 @@ namespace OpenRA
 
 		public bool Contains(string key) { return args.ContainsKey(key); }
 		public string GetValue(string key, string defaultValue) { return Contains(key) ? args[key] : defaultValue; }
+
+		public string[] GetListValue(string key, params string[] defaultValue)
+		{
+			if (Contains(key) == false)
+				return defaultValue;
+
+			var split = args[key].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+			for (int i = 0; i < split.Length; ++i)
+				split[i] = split[i].Trim();
+
+			return split;
+		}
 	}
 }

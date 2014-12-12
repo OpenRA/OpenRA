@@ -22,6 +22,7 @@ using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Widgets;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -251,6 +252,9 @@ namespace OpenRA
 
 		public static void InitializeMod(string mod, Arguments args)
 		{
+			if (args == null)
+				throw new ArgumentNullException("args", "Use Arguments.Empty instead of null");
+
 			// Clear static state if we have switched mods
 			LobbyInfoChanged = () => { };
 			ConnectionStateChanged = om => { };
@@ -320,7 +324,7 @@ namespace OpenRA
 			}
 			else
 			{
-				var window = args != null ? args.GetValue("Launch.Window", null) : null;
+				var window = args.GetValue("Launch.Window", null);
 				if (!string.IsNullOrEmpty(window))
 				{
 					var installData = modData.Manifest.ContentInstaller;
@@ -329,10 +333,87 @@ namespace OpenRA
 
 					Widgets.Ui.OpenWindow(window, new WidgetArgs());
 				}
+				else if (args.GetValue("Launch.Developer", "").ToLower() == "true")
+				{
+					// determine the cheats to use
+					var cheats = args.GetListValue("Launch.Developer.Cheats", DeveloperMode.DefaultCheats);
+
+					// determine the map to use
+					var mapUid = WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
+					if (args.Contains("Launch.Developer.Map"))
+					{
+						var requestedMap = args.GetValue("Launch.Developer.Map", null);
+						foreach (var map in Game.modData.MapCache)
+							if (Path.GetFileName(map.Map.Path) == requestedMap)
+							{
+								mapUid = map.Uid;
+								break;
+							}
+					}
+
+					OrderManager om = null;
+
+					// add bots to the map
+					Action addBot = null;
+					addBot = () =>
+					{
+						Game.LobbyInfoChanged -= addBot;
+
+						// determine the bots to use
+						var defaultBot = Game.modData.DefaultRules.Actors["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name).FirstOrDefault();
+						var defaultBots = Enumerable.Repeat(defaultBot, 8).ToArray();
+						string[] bots = args.GetListValue("Launch.Developer.Bots", defaultBots);
+
+						var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
+
+						var currentBot = 0;
+						foreach (var slot in orderManager.LobbyInfo.Slots.Skip(1).Take(bots.Length))
+						{
+							// we will still fill the slot with a bot even if the map says no bots allowed (slot.Value.AllowBots)
+
+							if (slot.Value.Closed)
+								continue;
+
+							orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot.Key, botController.Index, bots[currentBot++])));
+						}
+
+					};
+					Game.LobbyInfoChanged += addBot;
+
+					// start the game
+					Action startGame = null;
+					startGame = () =>
+					{
+						om.IssueOrder(Order.Command("allowcheats true"));
+						om.IssueOrder(Order.Command("state {0}".F(Session.ClientState.Ready)));
+
+						// We need to issue the cheat commands but we need the world instance to get the
+						// appropriate subject. We just run this a little bit after the game has
+						// started (the recusive call is to ensure that the world has actually been
+						// initialized if, ie, the game is starting extremely slowly).
+						Action sendCheatCommands = null;
+						sendCheatCommands = () =>
+						{
+							if (om.world == null)
+								Game.RunAfterDelay(100, sendCheatCommands);
+							else
+								foreach (var cheat in cheats)
+									om.IssueOrder(new Order(cheat, om.world.LocalPlayer.PlayerActor, false));
+						};
+						sendCheatCommands();
+
+						Game.LobbyInfoChanged -= startGame;
+					};
+					Game.LobbyInfoChanged += startGame;
+
+					om = Game.JoinServer(IPAddress.Loopback.ToString(), Game.CreateLocalServer(mapUid), "", false);
+				}
+
 				else
 				{
 					modData.LoadScreen.StartGame();
 					Settings.Save();
+
 					var replay = args != null ? args.GetValue("Launch.Replay", null) : null;
 					if (!string.IsNullOrEmpty(replay))
 						Game.JoinReplay(replay);
@@ -348,7 +429,7 @@ namespace OpenRA
 			{
 				var args = new WidgetArgs()
 				{
-					{ "continueLoading", () => InitializeMod(Game.Settings.Game.Mod, null) },
+					{ "continueLoading", () => InitializeMod(Game.Settings.Game.Mod, Arguments.Empty) },
 				};
 
 				if (installData.InstallerBackgroundWidget != null)

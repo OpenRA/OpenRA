@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
 				Game.Settings.Game.PreviousMod = Game.modData.Manifest.Mod.Id;
-				Game.InitializeMod("modchooser", null);
+				Game.InitializeMod("modchooser", Arguments.Empty);
 			};
 		}
 	}

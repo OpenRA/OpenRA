@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			mainMenu.Get<ButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
 				Game.Settings.Game.PreviousMod = Game.modData.Manifest.Mod.Id;
-				Game.InitializeMod("modchooser", null);
+				Game.InitializeMod("modchooser", Arguments.Empty);
 			};
 
 			mainMenu.Get<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
