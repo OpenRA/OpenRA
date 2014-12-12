@@ -49,7 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonTraitsInterfaces.cs" />
-    <Compile Include="DefaultLoadScreen.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Contrail.cs" />
@@ -63,7 +62,7 @@
     <Compile Include="Effects\Missile.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Effects\PowerdownIndicator.cs" />
-    <Compile Include="Effects\RallyPoint.cs" />
+    <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Commands\ChatCommands.cs" />
     <Compile Include="Commands\DevCommands.cs" />
@@ -77,10 +76,9 @@
     <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
-    <Compile Include="LoadWidgetAtGameStart.cs" />
-    <Compile Include="ModChooserLoadScreen.cs" />
-    <Compile Include="NullLoadScreen.cs" />
-    <Compile Include="Modifiers\TimedUpgradeBar.cs" />
+    <Compile Include="LoadScreens\DefaultLoadScreen.cs" />
+    <Compile Include="LoadScreens\ModChooserLoadScreen.cs" />
+    <Compile Include="LoadScreens\NullLoadScreen.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
@@ -110,6 +108,7 @@
     <Compile Include="Traits\BlocksBullets.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Buildings\DeadBuildingState.cs" />
+    <Compile Include="Traits\Buildings\RallyPoint.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\CustomBuildTimeValue.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
@@ -117,6 +116,7 @@
     <Compile Include="Traits\GlobalUpgradable.cs" />
     <Compile Include="Traits\Immobile.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
+    <Compile Include="Traits\KillsSelf.cs" />
     <Compile Include="Traits\Modifiers\DisabledOverlay.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Traits\Modifiers\UpgradeOverlay.cs" />
@@ -136,23 +136,30 @@
     <Compile Include="Traits\Power\RequiresPower.cs" />
     <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
-    <Compile Include="Traits\RallyPoint.cs" />
     <Compile Include="Traits\Render\RenderEditorOnly.cs" />
     <Compile Include="Traits\Render\RenderFlare.cs" />
+    <Compile Include="Traits\Render\RenderNameTag.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />
     <Compile Include="Traits\Render\RenderUnit.cs" />
+    <Compile Include="Traits\Render\TimedUpgradeBar.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
     <Compile Include="Traits\Render\WithResources.cs" />
+    <Compile Include="Traits\Render\WithShadow.cs" />
+    <Compile Include="Traits\Render\WithSmoke.cs" />
     <Compile Include="Traits\ShakeOnDeath.cs" />
+    <Compile Include="Traits\SmokeTrailWhenDamaged.cs" />
     <Compile Include="Traits\Sound\ActorLostNotification.cs" />
     <Compile Include="Traits\Sound\AnnounceOnBuild.cs" />
     <Compile Include="Traits\Sound\AnnounceOnKill.cs" />
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
+    <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
+    <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\World\CreateMPPlayers.cs" />
+    <Compile Include="Traits\World\LoadWidgetAtGameStart.cs" />
     <Compile Include="Traits\World\MPStartLocations.cs" />
     <Compile Include="Traits\World\MPStartUnits.cs" />
     <Compile Include="Traits\World\PaletteFromCurrentTileset.cs" />
@@ -169,8 +176,6 @@
     <Compile Include="Traits\World\SpawnMapActors.cs" />
     <Compile Include="Traits\World\StartGameNotification.cs" />
     <Compile Include="Traits\World\TerrainGeometryOverlay.cs" />
-    <Compile Include="Upgrades\UpgradableTrait.cs" />
-    <Compile Include="Upgrades\UpgradeManager.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
     <Compile Include="UtilityCommands\ExtractFilesCommand.cs" />

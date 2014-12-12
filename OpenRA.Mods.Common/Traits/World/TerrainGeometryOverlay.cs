@@ -15,7 +15,7 @@ using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Graphics;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders a debug overlay showing the terrain cells. Attach this to the world actor.")]
 	public class TerrainGeometryOverlayInfo : ITraitInfo

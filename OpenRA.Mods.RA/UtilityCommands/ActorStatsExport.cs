@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using OpenRA.GameRules;
-using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 

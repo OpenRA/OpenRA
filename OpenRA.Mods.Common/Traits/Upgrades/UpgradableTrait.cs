@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	/// <summary>Use as base class for *Info to subclass of UpgradableTrait. (See UpgradableTrait.)</summary>
 	public abstract class UpgradableTraitInfo

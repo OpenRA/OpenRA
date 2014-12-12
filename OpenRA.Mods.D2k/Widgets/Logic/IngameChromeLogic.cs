@@ -11,15 +11,14 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Mods.RA;
-using OpenRA.Mods.Common.Power;
-using OpenRA.Mods.RA.Widgets;
-using OpenRA.Mods.RA.Widgets.Logic;
-using OpenRA.Mods.D2k.Widgets;
-using OpenRA.Traits;
-using OpenRA.Widgets;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.D2k.Widgets;
+using OpenRA.Mods.RA;
+using OpenRA.Mods.RA.Widgets;
+using OpenRA.Mods.RA.Widgets.Logic;
+using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.D2k.Widgets.Logic
 {

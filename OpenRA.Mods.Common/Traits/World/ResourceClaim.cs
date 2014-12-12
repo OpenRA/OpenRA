@@ -8,7 +8,7 @@
  */
 #endregion
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	public sealed class ResourceClaim
 	{

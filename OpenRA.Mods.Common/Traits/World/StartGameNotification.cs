@@ -11,7 +11,7 @@
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	class StartGameNotificationInfo : ITraitInfo
 	{

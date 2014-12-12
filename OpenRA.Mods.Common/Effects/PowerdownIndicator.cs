@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Power;
+using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {

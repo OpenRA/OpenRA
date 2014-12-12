@@ -12,7 +12,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Creates a single color palette without any base palette file.")]
 	class PaletteFromRGBAInfo : ITraitInfo

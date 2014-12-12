@@ -13,7 +13,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Visualizes the remaining time for an upgrade.")]
 	class TimedUpgradeBarInfo : ITraitInfo, Requires<UpgradeManagerInfo>

@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	public class RadarPingsInfo : ITraitInfo
 	{

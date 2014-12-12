@@ -248,17 +248,13 @@
     <Compile Include="Render\RenderLandingCraft.cs" />
     <Compile Include="Render\WithBuildingExplosion.cs" />
     <Compile Include="Render\WithMuzzleFlash.cs" />
-    <Compile Include="Render\RenderNameTag.cs" />
     <Compile Include="Render\WithRotor.cs" />
-    <Compile Include="Render\WithShadow.cs" />
-    <Compile Include="Render\WithSmoke.cs" />
     <Compile Include="Repairable.cs" />
     <Compile Include="RepairableNear.cs" />
     <Compile Include="ScaredyCat.cs" />
     <Compile Include="SeedsResource.cs" />
     <Compile Include="SelfHealing.cs" />
     <Compile Include="Sellable.cs" />
-    <Compile Include="SmokeTrailWhenDamaged.cs" />
     <Compile Include="SpawnMPUnits.cs" />
     <Compile Include="Disguise.cs" />
     <Compile Include="StoresResources.cs" />
@@ -436,7 +432,6 @@
     <Compile Include="SupportPowers\GrantUpgradePower.cs" />
     <Compile Include="InvulnerabilityUpgrade.cs" />
     <Compile Include="DisableUpgrade.cs" />
-    <Compile Include="KillsSelf.cs" />
     <Compile Include="Warheads\GrantUpgradeWarhead.cs" />
     <Compile Include="Crates\GrantUpgradeCrateAction.cs" />
     <Compile Include="UpgradeActorsNear.cs" />
