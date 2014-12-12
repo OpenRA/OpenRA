@@ -117,7 +117,7 @@ Movies:
 Translations:
 	./mods/d2k/languages/english.yaml
 
-LoadScreen: DefaultLoadScreen
+LoadScreen: LogoStripeLoadScreen
 	Image: ./mods/d2k/uibits/loadscreen.png
 	Text: Filling Crates..., Breeding Sandworms...
 

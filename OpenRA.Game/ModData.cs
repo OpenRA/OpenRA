@@ -184,6 +184,6 @@ namespace OpenRA
 	{
 		void Init(Manifest m, Dictionary<string, string> info);
 		void Display();
-		void StartGame();
+		void StartGame(Arguments args);
 	}
 }

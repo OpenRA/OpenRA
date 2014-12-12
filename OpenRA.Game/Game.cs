@@ -331,45 +331,7 @@ namespace OpenRA
 				Environment.Exit(0);
 			}
 			else
-			{
-				var window = args != null ? args.GetValue("Launch.Window", null) : null;
-				if (!string.IsNullOrEmpty(window))
-				{
-					var installData = modData.Manifest.ContentInstaller;
-					if (installData.InstallerBackgroundWidget != null)
-						Ui.LoadWidget(installData.InstallerBackgroundWidget, Ui.Root, new WidgetArgs());
-
-					Widgets.Ui.OpenWindow(window, new WidgetArgs());
-				}
-				else
-				{
-					modData.LoadScreen.StartGame();
-					Settings.Save();
-					var replay = args != null ? args.GetValue("Launch.Replay", null) : null;
-					if (!string.IsNullOrEmpty(replay))
-						Game.JoinReplay(replay);
-				}
-			}
-		}
-
-		public static void TestAndContinue()
-		{
-			Ui.ResetAll();
-			var installData = modData.Manifest.ContentInstaller;
-			if (!installData.TestFiles.All(f => GlobalFileSystem.Exists(f)))
-			{
-				var args = new WidgetArgs()
-				{
-					{ "continueLoading", () => InitializeMod(Game.Settings.Game.Mod, null) },
-				};
-
-				if (installData.InstallerBackgroundWidget != null)
-					Ui.LoadWidget(installData.InstallerBackgroundWidget, Ui.Root, args);
-
-				Ui.OpenWindow(installData.InstallerMenuWidget, args);
-			}
-			else
-				LoadShellMap();
+				modData.LoadScreen.StartGame(args);
 		}
 
 		public static void LoadShellMap()

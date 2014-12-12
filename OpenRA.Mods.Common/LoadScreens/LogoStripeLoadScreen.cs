@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.LoadScreens
 {
-	public sealed class DefaultLoadScreen : ILoadScreen
+	public sealed class LogoStripeLoadScreen : BlankLoadScreen
 	{
 		Stopwatch lastUpdate = Stopwatch.StartNew();
 		Renderer r;
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 		Sprite stripe, logo;
 		string[] messages;
 
-		public void Init(Manifest m, Dictionary<string, string> info)
+		public override void Init(Manifest m, Dictionary<string, string> info)
 		{
 			// Avoid standard loading mechanisms so we
 			// can display the loadscreen as early as possible
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			logoPos = new float2(r.Resolution.Width / 2 - 128, r.Resolution.Height / 2 - 128);
 		}
 
-		public void Display()
+		public override void Display()
 		{
 			if (r == null)
 				return;
@@ -66,12 +66,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			r.EndFrame(new NullInputHandler());
 		}
 
-		public void StartGame()
-		{
-			Game.TestAndContinue();
-		}
-
-		public void Dispose()
+		public override void Dispose()
 		{
 			if (sheet != null)
 				sheet.Dispose();

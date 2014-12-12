@@ -162,7 +162,7 @@ Movies:
 Translations:
 	./mods/ts/languages/english.yaml
 
-LoadScreen: DefaultLoadScreen
+LoadScreen: LogoStripeLoadScreen
 	Image: ./mods/ts/uibits/loadscreen.png
 	Text: Updating EVA installation..., Changing perspective...
 

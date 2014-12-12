@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			r.EndFrame(new NullInputHandler());
 		}
 
-		public void StartGame()
+		public void StartGame(Arguments args)
 		{
 			Ui.LoadWidget("MODCHOOSER", Ui.Root, new WidgetArgs());
 		}
