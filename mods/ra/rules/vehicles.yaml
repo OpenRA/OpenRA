@@ -420,7 +420,7 @@ MNLY.AP:
 		Mine: MINP
 	MineImmune:
 	LimitedAmmo:
-		Ammo: 3
+		Ammo: 5
 	DetectCloaked:
 		Range: 5
 		CloakTypes: Mine
@@ -454,7 +454,7 @@ MNLY.AT:
 		Mine: MINV
 	MineImmune:
 	LimitedAmmo:
-		Ammo: 3
+		Ammo: 5
 	DetectCloaked:
 		Range: 5
 		CloakTypes: Mine
