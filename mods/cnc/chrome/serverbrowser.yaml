@@ -26,40 +26,40 @@ Container@SERVERBROWSER_PANEL:
 					Font: Bold
 				Checkbox@WAITING_FOR_PLAYERS:
 					X: 80
-					Y: 468
+					Y: 467
 					Width: 100
 					Height: 20
 					Text: Waiting
 					TextColor: 50,205,50
 				Checkbox@EMPTY:
 					X: 180
-					Y: 468
+					Y: 467
 					Width: 100
 					Height: 20
 					Text: Empty
-				Checkbox@ALREADY_STARTED:
-					X: 270
-					Y: 468
-					Width: 100
-					Height: 20
-					Text: Started
-					TextColor: 255,165,0
 				Checkbox@PASSWORD_PROTECTED:
-					X: 370
-					Y: 468
+					X: 270
+					Y: 467
 					Width: 100
 					Height: 20
 					Text: Protected
 					TextColor: 255,0,0
+				Checkbox@ALREADY_STARTED:
+					X: 385
+					Y: 467
+					Width: 100
+					Height: 20
+					Text: Started
+					TextColor: 255,165,0
 				Checkbox@INCOMPATIBLE_VERSION:
 					X: 480
-					Y: 468
+					Y: 467
 					Width: 100
 					Height: 20
 					Text: Incompatible
 					TextColor: 190,190,190
 				Button@REFRESH_BUTTON:
-					X: PARENT_RIGHT - WIDTH - 20
+					X: PARENT_RIGHT - WIDTH - 15
 					Y: 465
 					Width: 100
 					Height: 25
@@ -70,6 +70,18 @@ Container@SERVERBROWSER_PANEL:
 					Width: 700
 					Height: 440
 					Children:
+						ScrollItem@HEADER_TEMPLATE:
+							Width: PARENT_RIGHT-27
+							Height: 25
+							X: 2
+							Visible: false
+							Children:
+								Label@LABEL:
+									Y: 0-1
+									Font: Bold
+									Width: PARENT_RIGHT
+									Height: 25
+									Align: Center
 						ScrollItem@SERVER_TEMPLATE:
 							Width: PARENT_RIGHT-27
 							Height: 68
@@ -107,12 +119,6 @@ Container@SERVERBROWSER_PANEL:
 									Width: 140
 									X: PARENT_RIGHT-150
 									Y: 20
-									Align: Right
-									Height: 25
-								Label@VERSION:
-									Width: 140
-									X: PARENT_RIGHT-150
-									Y: 40
 									Align: Right
 									Height: 25
 								Label@LOCATION:
