@@ -12,6 +12,7 @@ using Eluant;
 using System;
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.RA.Scripting
 			"close enough to complete the activity.")]
 		public void AttackMove(CPos cell, int closeEnough = 0)
 		{
-			self.QueueActivity(new AttackMove.AttackMoveActivity(self, move.MoveTo(cell, closeEnough)));
+			self.QueueActivity(new AttackMoveActivity(self, move.MoveTo(cell, closeEnough)));
 		}
 
 		[ScriptActorPropertyActivity]
@@ -51,7 +52,7 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			foreach (var wpt in waypoints)
 			{
-				self.QueueActivity(new AttackMove.AttackMoveActivity(self, move.MoveTo(wpt, 2)));
+				self.QueueActivity(new AttackMoveActivity(self, move.MoveTo(wpt, 2)));
 				self.QueueActivity(new Wait(wait));
 			}
 

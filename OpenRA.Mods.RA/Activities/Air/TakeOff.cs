@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Activities
 			var destination = rp != null ? rp.Location :
 				(hasHost ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
 
-			return new AttackMove.AttackMoveActivity(self, self.Trait<IMove>().MoveTo(destination, 1));
+			return new AttackMoveActivity(self, self.Trait<IMove>().MoveTo(destination, 1));
 		}
 	}
 }

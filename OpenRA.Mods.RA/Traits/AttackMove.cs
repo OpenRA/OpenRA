@@ -10,9 +10,10 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Provides access to the attack-move command, which will make the actor automatically engage viable targets while moving to the destination.")]
 	class AttackMoveInfo : ITraitInfo
@@ -61,71 +62,6 @@ namespace OpenRA.Mods.RA
 				TargetLocation = move.NearestMoveableCell(order.TargetLocation);
 				self.SetTargetLine(Target.FromCell(self.World, TargetLocation.Value), Color.Red);
 				Activate(self);
-			}
-		}
-
-		public class AttackMoveActivity : Activity
-		{
-			const int ScanInterval = 7;
-
-			int scanTicks;
-			bool hasMoved;
-			Activity inner;
-			AutoTarget autoTarget;
-
-			public AttackMoveActivity(Actor self, Activity inner)
-			{
-				this.inner = inner;
-				autoTarget = self.TraitOrDefault<AutoTarget>();
-				hasMoved = false;
-			}
-
-			public override Activity Tick(Actor self)
-			{
-				if (autoTarget != null)
-				{
-					// If the actor hasn't moved since the activity was issued
-					if (!hasMoved)
-						autoTarget.ResetScanTimer();
-
-					if (--scanTicks <= 0)
-					{
-						var attackActivity = autoTarget.ScanAndAttack(self);
-						if (attackActivity != null)
-						{
-							if (!hasMoved)
-								return attackActivity;
-
-							self.QueueActivity(false, attackActivity);
-						}
-						scanTicks = ScanInterval;
-					}
-				}
-
-				hasMoved = true;
-
-				if (inner == null)
-					return NextActivity;
-
-				inner = Util.RunActivity(self, inner);
-
-				return this;
-			}
-
-			public override void Cancel(Actor self)
-			{
-				if (inner != null)
-					inner.Cancel(self);
-
-				base.Cancel(self);
-			}
-
-			public override IEnumerable<Target> GetTargets(Actor self)
-			{
-				if (inner != null)
-					return inner.GetTargets(self);
-
-				return Target.None;
 			}
 		}
 	}
