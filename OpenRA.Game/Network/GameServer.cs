@@ -50,14 +50,12 @@ namespace OpenRA.Network
 			if (modVersion.Length != 2)
 				return false;
 
-			var mod = Game.modData.Manifest.Mod;
-
-			// Different mod
-			// TODO: Allow mod switch when joining server
-			if (modVersion[0] != mod.Id)
+			// Mod is not installed
+			if (!ModMetadata.AllMods.ContainsKey(modVersion[0]))
 				return false;
 
-			// Same mod, but different version
+			// Compatible mod, but different version
+			var mod = Game.modData.Manifest.Mod;
 			if (modVersion[1] != mod.Version && !Game.Settings.Debug.IgnoreVersionMismatch)
 				return false;
 

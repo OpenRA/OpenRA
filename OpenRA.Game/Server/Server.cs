@@ -266,7 +266,7 @@ namespace OpenRA.Server
 					Log.Write("server", "Rejected connection from {0}; game is already started.",
 						newConn.socket.RemoteEndPoint);
 
-					SendOrderTo(newConn, "ServerError", "The game has already started");
+					SendOrderTo(newConn, "ServerError", "The game has already started.");
 					DropClient(newConn);
 					return;
 				}
@@ -275,7 +275,7 @@ namespace OpenRA.Server
 
 				if (!string.IsNullOrEmpty(Settings.Password) && handshake.Password != Settings.Password)
 				{
-					var message = string.IsNullOrEmpty(handshake.Password) ? "Server requires a password" : "Incorrect password";
+					var message = string.IsNullOrEmpty(handshake.Password) ? "Server requires a password." : "Incorrect password";
 					SendOrderTo(newConn, "AuthenticationError", message);
 					DropClient(newConn);
 					return;
@@ -298,7 +298,7 @@ namespace OpenRA.Server
 
 				if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectators)
 				{
-					SendOrderTo(newConn, "ServerError", "The game is full");
+					SendOrderTo(newConn, "ServerError", "The game is full.");
 					DropClient(newConn);
 					return;
 				}
@@ -313,7 +313,7 @@ namespace OpenRA.Server
 					Log.Write("server", "Rejected connection from {0}; mods do not match.",
 						newConn.socket.RemoteEndPoint);
 
-					SendOrderTo(newConn, "ServerError", "Server is running an incompatible mod");
+					SendOrderTo(newConn, "ServerError", "Server is running a different mod.\nPress Retry to switch to it and reconnect.");
 					DropClient(newConn);
 					return;
 				}
@@ -323,7 +323,7 @@ namespace OpenRA.Server
 					Log.Write("server", "Rejected connection from {0}; Not running the same version.",
 						newConn.socket.RemoteEndPoint);
 
-					SendOrderTo(newConn, "ServerError", "Server is running an incompatible version");
+					SendOrderTo(newConn, "ServerError", "Server is running an incompatible version.");
 					DropClient(newConn);
 					return;
 				}

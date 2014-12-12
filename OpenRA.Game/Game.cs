@@ -31,6 +31,7 @@ namespace OpenRA
 		public static Settings Settings;
 		static WorldRenderer worldRenderer;
 
+		public static HandshakeRequest HandshakeRequest;
 		internal static OrderManager orderManager;
 		static Server.Server server;
 

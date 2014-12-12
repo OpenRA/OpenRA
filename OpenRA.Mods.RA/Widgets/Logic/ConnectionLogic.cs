@@ -63,7 +63,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public static void Connect(string host, int port, string password, Action onConnect, Action onAbort)
 		{
+			if (Game.HandshakeRequest != null && Game.HandshakeRequest.Mod != Game.modData.Manifest.Mod.Id)
+				if (ModMetadata.AllMods.ContainsKey(Game.HandshakeRequest.Mod))
+					Game.InitializeMod(Game.HandshakeRequest.Mod, null);
+
 			Game.JoinServer(host, port, password);
+
 			Action<string> onRetry = newPassword => Connect(host, port, newPassword, onConnect, onAbort);
 
 			Ui.OpenWindow("CONNECTING_PANEL", new WidgetArgs()
