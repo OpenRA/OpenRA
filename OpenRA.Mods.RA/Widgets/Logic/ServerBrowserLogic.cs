@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = OpenCreateServerPanel;
 
 			var join = panel.Get<ButtonWidget>("JOIN_BUTTON");
-			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
+			join.IsDisabled = () => currentServer == null || !currentServer.IsJoinable;
 			join.OnClick = () => Join(currentServer);
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var data = Encoding.UTF8.GetString(i.Result);
 				var yaml = MiniYaml.FromString(data);
 
-				var games = yaml.Select(a => FieldLoader.Load<GameServer>(a.Value))
+				var games = yaml.Select(a => new GameServer(a.Value))
 					.Where(gs => gs.Address != null);
 
 				RefreshServerListInner(games);
@@ -168,14 +168,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var rows = new List<Widget>();
 
-			foreach (var loop in games.OrderByDescending(g => g.CanJoin()).ThenByDescending(g => g.Players))
+			foreach (var loop in games.OrderByDescending(g => g.IsJoinable).ThenByDescending(g => g.Players))
 			{
 				var game = loop;
 				if (game == null)
 					continue;
 
-				var canJoin = game.CanJoin();
-				var compatible = game.CompatibleVersion();
+				var canJoin = game.IsJoinable;
+				var compatible = game.IsCompatible;
 
 				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game, () => Join(game));
 
@@ -223,7 +223,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var version = item.GetOrNull<LabelWidget>("VERSION");
 				if (version != null)
 				{
-					version.GetText = () => GenerateModLabel(game);
+					version.GetText = () => game.ModLabel;
 					version.IsVisible = () => !compatible;
 					version.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : version.TextColor;
 				}
@@ -300,7 +300,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void Join(GameServer server)
 		{
-			if (server == null || !server.CanJoin())
+			if (server == null || !server.IsJoinable)
 				return;
 
 			var host = server.Address.Split(':')[0];
@@ -353,17 +353,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return label.TextColor;
 		}
 
-		public static string GenerateModLabel(GameServer s)
-		{
-			ModMetadata mod;
-			var modVersion = s.Mods.Split('@');
-
-			if (modVersion.Length == 2 && ModMetadata.AllMods.TryGetValue(modVersion[0], out mod))
-				return "{0} ({1})".F(mod.Title, modVersion[1]);
-
-			return "Unknown mod: {0}".F(s.Mods);
-		}
-
 		bool Filtered(GameServer game)
 		{
 			if ((game.State == (int)ServerState.GameStarted) && !showStarted)
@@ -375,7 +364,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if ((game.Players == 0) && !showEmpty)
 				return true;
 
-			if (!game.CompatibleVersion() && !showIncompatible)
+			if (!game.IsCompatible && !showIncompatible)
 				return true;
 
 			if (game.Protected && !showProtected)
