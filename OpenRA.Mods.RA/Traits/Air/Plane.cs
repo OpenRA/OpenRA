@@ -63,8 +63,11 @@ namespace OpenRA.Mods.RA.Traits
 				return WVec.Zero;
 
 			var currentDir = FlyStep(Facing);
+			var length = currentDir.HorizontalLength * repulsionForce.HorizontalLength;
+			if (length == 0)
+				return WVec.Zero;
 
-			var dot = WVec.Dot(currentDir, repulsionForce) / (currentDir.HorizontalLength * repulsionForce.HorizontalLength);
+			var dot = WVec.Dot(currentDir, repulsionForce) / length;
 			// avoid stalling the plane
 			return dot >= 0 ? repulsionForce : WVec.Zero;
 		}
