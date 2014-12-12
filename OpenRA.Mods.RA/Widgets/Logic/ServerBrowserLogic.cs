@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		bool showWaiting = true;
 		bool showEmpty = true;
-		bool showStarted = true;
+		bool showStarted = false;
 		bool showProtected = true;
 		bool showIncompatible = false;
 
