@@ -706,7 +706,7 @@ QTNK:
 		BuildPaletteOrder: 200
 		Prerequisites: fix, stek, ~vehicles.russia, ~techlevel.unrestricted
 	Valued:
-		Cost: 2500
+		Cost: 2000
 	Tooltip:
 		Name: MAD Tank
 		Description: Deals seismic damage to nearby vehicles\nand structures.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry
