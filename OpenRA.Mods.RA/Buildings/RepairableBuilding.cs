@@ -29,6 +29,9 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public readonly string IndicatorPalettePrefix = "player";
 
+		[Desc("Acceptable player stances for repairing building.")]
+		public readonly Stance AcceptsPlayers = Stance.Ally | Stance.Player;
+
 		public object Create(ActorInitializer init) { return new RepairableBuilding(init.self, this); }
 	}
 
@@ -49,7 +52,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public void RepairBuilding(Actor self, Player player)
 		{
-			if (!IsTraitDisabled && self.AppearsFriendlyTo(player.PlayerActor))
+			if (!IsTraitDisabled && self.HasApparentDiplomacy(player.PlayerActor, Info.AcceptsPlayers))
 			{
 				// If the player won't affect the repair, we won't add him
 				if (!Repairers.Remove(player) && Repairers.Count < Info.RepairBonuses.Length) 
@@ -84,7 +87,7 @@ namespace OpenRA.Mods.RA.Buildings
 			if (remainingTicks == 0)
 			{
 				Repairers = Repairers.Where(player => player.WinState == WinState.Undefined
-						&& player.Stances[self.Owner] == Stance.Ally).ToList();
+						&& player.Stances[self.Owner].Intersects(Info.AcceptsPlayers)).ToList();
 
 				// If after the previous operation there's no repairers left, stop
 				if (!Repairers.Any()) return;

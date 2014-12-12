@@ -17,8 +17,8 @@ namespace OpenRA.Mods.RA
 	class MineInfo : ITraitInfo, IOccupySpaceInfo
 	{
 		public readonly string[] CrushClasses = { };
-		public readonly bool AvoidFriendly = true;
 		public readonly string[] DetonateClasses = { };
+		public readonly Stance TriggerPlayers = Stance.Enemy | Stance.Neutral;
 
 		public object Create(ActorInitializer init) { return new Mine(init, this); }
 	}
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 
 		public void OnCrush(Actor crusher)
 		{
-			if (crusher.HasTrait<MineImmune>() || (self.Owner.Stances[crusher.Owner] == Stance.Ally && info.AvoidFriendly))
+			if (crusher.HasTrait<MineImmune>() || (self.Owner.Stances[crusher.Owner].Intersects(info.TriggerPlayers)))
 				return;
 
 			var mobile = crusher.TraitOrDefault<Mobile>();

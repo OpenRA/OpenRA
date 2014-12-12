@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
@@ -34,6 +36,16 @@ namespace OpenRA.Mods.RA
 
 		public readonly bool TargetWhenIdle = true;
 		public readonly bool TargetWhenDamaged = true;
+
+		[Desc("Acceptable stances of target's owner.")]
+		public readonly Stance TargetPlayers = Stance.Enemy;
+
+		// don't retaliate against own units force-firing on us. It's usually not what the player wanted.
+		[Desc("Acceptable stances of aggressor's owner for returning fire.")]
+		public readonly Stance AggressorPlayers = Stance.Enemy | Stance.Neutral | Stance.Ally;
+
+		[Desc("Type of autotargeting. Use \"heal\" with AttackMedic.")]
+		public readonly string Type = "attack";
 
 		public object Create(ActorInitializer init) { return new AutoTarget(init.self, this); }
 	}
@@ -90,8 +102,7 @@ namespace OpenRA.Mods.RA
 			if (!attack.HasAnyValidWeapons(Target.FromActor(attacker)))
 				return;
 
-			// don't retaliate against own units force-firing on us. It's usually not what the player wanted.
-			if (attacker.AppearsFriendlyTo(self))
+			if (!attacker.HasApparentDiplomacy(self, info.AggressorPlayers))
 				return;
 
 			// don't retaliate against healers
@@ -129,6 +140,9 @@ namespace OpenRA.Mods.RA
 		{
 			if (nextScanTime <= 0)
 			{
+				if (!self.IsIdle && currentTarget != null)
+					return currentTarget;
+
 				var range = info.ScanRadius > 0 ? WRange.FromCells(info.ScanRadius) : attack.GetMaximumRange();
 				if (self.IsIdle || currentTarget == null || !Target.FromActor(currentTarget).IsInRange(self.CenterPosition, range))
 					return ChooseTarget(self, range);
@@ -165,8 +179,8 @@ namespace OpenRA.Mods.RA
 
 			return inRange
 				.Where(a =>
-					a.AppearsHostileTo(self) &&
-					!a.HasTrait<AutoTargetIgnore>() &&
+					a.HasApparentDiplomacy(self, info.TargetPlayers) &&
+					!a.Info.Traits.WithInterface<AutoTargetIgnoreInfo>().Any(t => t.Type == info.Type) &&
 					attack.HasAnyValidWeapons(Target.FromActor(a)) &&
 					self.Owner.Shroud.IsTargetable(a))
 				.ClosestTo(self);
@@ -174,6 +188,10 @@ namespace OpenRA.Mods.RA
 	}
 
 	[Desc("Will not get automatically targeted by enemy (like walls)")]
-	class AutoTargetIgnoreInfo : TraitInfo<AutoTargetIgnore> { }
+	class AutoTargetIgnoreInfo : TraitInfo<AutoTargetIgnore>
+	{
+		[Desc("Type of autotargeting")]
+		public readonly string Type = "attack"; 
+	}
 	class AutoTargetIgnore { }
 }

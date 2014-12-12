@@ -291,12 +291,13 @@ MEDI:
 		Range: 3c0
 	Passenger:
 		PipType: Yellow
-	AutoHeal:
+	AutoTargetDamaged:
 	Armament:
 		Weapon: Heal
 	AttackMedic:
 		Cursor: heal
 		OutsideRangeCursor: heal
+		TargetPlayers: Ally, Player
 	TakeCover:
 	-AutoTarget:
 	RenderInfantry:
@@ -326,12 +327,13 @@ MECH:
 		Range: 3c0
 	Passenger:
 		PipType: Yellow
-	AutoHeal:
+	AutoTargetDamaged:
 	Armament:
 		Weapon: Repair
 	AttackMedic:
 		Cursor: repair
 		OutsideRangeCursor: repair
+		TargetPlayers: Ally, Player
 	Captures:
 		CaptureTypes: husk
 	TakeCover:

@@ -41,6 +41,9 @@ namespace OpenRA.Mods.RA
 		[ActorReference]
 		public readonly string DriverActor = "e1";
 
+		[Desc("Acceptable stances of target's owner.")]
+		public readonly Stance TargetPlayers = Stance.Enemy | Stance.Neutral;
+
 		public object Create(ActorInitializer init) { return new MadTank(init.self, this); }
 	}
 
@@ -83,7 +86,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter(new[] { "DetonateAttack" }, "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
+				yield return new TargetTypeOrderTargeter(new[] { "DetonateAttack" }, "DetonateAttack", 5, "attack", info.TargetPlayers) { ForceAttack = false };
 				yield return new DeployOrderTargeter("Detonate", 5);
 			}
 		}

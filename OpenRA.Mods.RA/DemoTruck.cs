@@ -17,10 +17,20 @@ using OpenRA.Mods.Common.Orders;
 
 namespace OpenRA.Mods.RA
 {
-	class DemoTruckInfo : TraitInfo<DemoTruck>, Requires<ExplodesInfo> { }
+	class DemoTruckInfo : ITraitInfo, Requires<ExplodesInfo>
+	{
+		[Desc("Acceptable stances of target's owner.")]
+		public readonly Stance TargetPlayers = Stance.Enemy | Stance.Neutral;
+
+		public object Create(ActorInitializer init) { return new DemoTruck(this); }
+	}
 
 	class DemoTruck : IIssueOrder, IResolveOrder, IOrderVoice
 	{
+		readonly DemoTruckInfo info;
+
+		public DemoTruck(DemoTruckInfo info) { this.info = info; }
+
 		static void Explode(Actor self)
 		{
 			self.World.AddFrameEndTask(w => self.InflictDamage(self, int.MaxValue, null));
@@ -30,7 +40,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter(new[] { "DetonateAttack" }, "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
+				yield return new TargetTypeOrderTargeter(new[] { "DetonateAttack" }, "DetonateAttack", 5, "attack", info.TargetPlayers) { ForceAttack = false };
 				yield return new DeployOrderTargeter("Detonate", 5);
 			}
 		}

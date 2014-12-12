@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Activities
 				var info = self.Info.Traits.Get<MinelayerInfo>();
 				// rearm & repair at fix, then back out here to refill the minefield some more
 				var buildings = info.RearmBuildings;
-				var rearmTarget = self.World.Actors.Where(a => self.Owner.Stances[a.Owner] == Stance.Ally
+				var rearmTarget = self.World.Actors.Where(a => self.Owner.Stances[a.Owner].Intersects(info.RearmPlayers)
 					&& buildings.Contains(a.Info.Name))
 					.ClosestTo(self);
 

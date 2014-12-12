@@ -17,15 +17,14 @@ namespace OpenRA.Mods.Common.Orders
 	public abstract class UnitOrderTargeter : IOrderTargeter
 	{
 		readonly string cursor;
-		readonly bool targetEnemyUnits, targetAllyUnits;
+		readonly Stance diplomacy;
 
-		public UnitOrderTargeter(string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
+		public UnitOrderTargeter(string order, int priority, string cursor, Stance diplomacy)
 		{
 			this.OrderID = order;
 			this.OrderPriority = priority;
 			this.cursor = cursor;
-			this.targetEnemyUnits = targetEnemyUnits;
-			this.targetAllyUnits = targetAllyUnits;
+			this.diplomacy = diplomacy;
 		}
 
 		public string OrderID { get; private set; }
@@ -48,12 +47,9 @@ namespace OpenRA.Mods.Common.Orders
 				return false;
 
 			var owner = type == TargetType.FrozenActor ? target.FrozenActor.Owner : target.Actor.Owner;
-			var playerRelationship = self.Owner.Stances[owner];
+			var playerStance = self.Owner.Stances[owner];
 
-			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == Stance.Ally && !targetAllyUnits)
-				return false;
-
-			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == Stance.Enemy && !targetEnemyUnits)
+			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && !playerStance.Intersects(diplomacy))
 				return false;
 
 			return type == TargetType.FrozenActor ?
@@ -68,8 +64,8 @@ namespace OpenRA.Mods.Common.Orders
 	{
 		readonly string[] targetTypes;
 
-		public TargetTypeOrderTargeter(string[] targetTypes, string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
-			: base(order, priority, cursor, targetEnemyUnits, targetAllyUnits)
+		public TargetTypeOrderTargeter(string[] targetTypes, string order, int priority, string cursor, Stance targetStances)
+			: base(order, priority, cursor, targetStances)
 		{
 			this.targetTypes = targetTypes;
 		}

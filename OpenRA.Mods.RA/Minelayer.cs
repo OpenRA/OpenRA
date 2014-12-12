@@ -23,6 +23,10 @@ namespace OpenRA.Mods.RA
 		[ActorReference] public readonly string Mine = "minv";
 		[ActorReference] public readonly string[] RearmBuildings = { "fix" };
 
+		[Desc("Determins acceptable stances for rearm buildings",
+			"Could be used to also allow using neutral buildings for example (Player, Ally, Neutral)")]
+		public readonly Stance RearmPlayers = Stance.Ally | Stance.Player;
+
 		public readonly string RearmSound = "minelay1.aud";
 
 		public readonly float MinefieldDepth = 1.5f;

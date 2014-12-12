@@ -2,7 +2,7 @@ MINP:
 	Mine:
 		CrushClasses: mine
 		DetonateClasses: mine
-		AvoidFriendly: no
+		TriggerPlayers: All
 	Explodes:
 		Weapon: APMine
 	Health:
@@ -30,7 +30,7 @@ MINV:
 	Mine:
 		CrushClasses: mine
 		DetonateClasses: mine
-		AvoidFriendly: no
+		TriggerPlayers: All
 	Explodes:
 		Weapon: ATMine
 	Health:

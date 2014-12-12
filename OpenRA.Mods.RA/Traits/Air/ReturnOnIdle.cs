@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Traits
 				if (someBuilding == null)
 					someBuilding = self.World.ActorsWithTrait<Building>()
 						.Select(a => a.Actor)
-						.FirstOrDefault(a => self.Owner.Stances[a.Owner] == Stance.Ally);
+						.FirstOrDefault(a => self.Owner.Stances[a.Owner].Intersects(Stance.Ally | Stance.Player));
 
 				if (someBuilding == null)
 				{

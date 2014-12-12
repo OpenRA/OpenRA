@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 				var building = order.TargetActor;
 
 				if (building.HasTrait<RepairableBuilding>())
-					if (building.AppearsFriendlyTo(self))
+					if (building.HasApparentDiplomacy(self, Stance.Ally | Stance.Player))
 						building.Trait<RepairableBuilding>().RepairBuilding(building, self.Owner);
 			}
 		}

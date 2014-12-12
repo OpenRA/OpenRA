@@ -21,6 +21,9 @@ namespace OpenRA.Mods.RA.Infiltration
 	{
 		public readonly string[] Types = { };
 
+		[Desc("Acceptable stances of target's owner.")]
+		public readonly Stance TargetPlayers = Stance.Enemy | Stance.Neutral;
+
 		public object Create(ActorInitializer init) { return new Infiltrates(this); }
 	}
 
@@ -35,7 +38,7 @@ namespace OpenRA.Mods.RA.Infiltration
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new TargetTypeOrderTargeter(info.Types, "Infiltrate", 7, "enter", true, false); }
+			get { yield return new TargetTypeOrderTargeter(info.Types, "Infiltrate", 7, "enter", info.TargetPlayers); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)

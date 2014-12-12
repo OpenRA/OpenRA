@@ -59,6 +59,12 @@ namespace OpenRA.Mods.RA.Move
 		public readonly string Cursor = "move";
 		public readonly string BlockedCursor = "move-blocked";
 
+		[Desc("Player stances of movement blockers.")]
+		public readonly Stance BlockerPlayers = Stance.Enemy | Stance.Neutral;
+
+		[Desc("Player stances of nudgers.")]
+		public readonly Stance NudgerPlayers = Stance.Ally | Stance.Player;	/* don't allow ourselves to be pushed around by the enemy! */
+
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 
 		static object LoadSpeeds(MiniYaml y)
@@ -181,7 +187,7 @@ namespace OpenRA.Mods.RA.Move
 						continue;
 
 					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
-					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a)) continue;
+					if (canIgnoreMovingAllies && !self.Owner.Stances[a.Owner].Intersects(BlockerPlayers) && IsMovingInMyDirection(self, a)) continue;
 					
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
 					if (needsCellExclusively)
@@ -214,7 +220,7 @@ namespace OpenRA.Mods.RA.Move
 						return false;
 
 					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
-					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a))
+					if (canIgnoreMovingAllies && !self.Owner.Stances[a.Owner].Intersects(BlockerPlayers) && IsMovingInMyDirection(self, a))
 						return false;
 					
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
@@ -559,9 +565,8 @@ namespace OpenRA.Mods.RA.Move
 		public void Nudge(Actor self, Actor nudger, bool force)
 		{
 			/* initial fairly braindead implementation. */
-			if (!force && self.Owner.Stances[nudger.Owner] != Stance.Ally)
-				return;		/* don't allow ourselves to be pushed around
-							 * by the enemy! */
+			if (!force && !self.Owner.Stances[nudger.Owner].Intersects(Info.NudgerPlayers))
+				return;
 
 			if (!force && !self.IsIdle)
 				return;		/* don't nudge if we're busy doing something! */
@@ -642,7 +647,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public void OnNotifyBlockingMove(Actor self, Actor blocking)
 		{
-			if (self.IsIdle && self.AppearsFriendlyTo(blocking))
+			if (self.IsIdle && self.HasApparentDiplomacy(blocking, Stance.Player | Stance.Ally))
 				Nudge(self, blocking, true);
 		}
 

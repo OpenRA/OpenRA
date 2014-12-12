@@ -152,7 +152,7 @@
     <Compile Include="Attack\AttackCharge.cs" />
     <Compile Include="Attack\AttackTurreted.cs" />
     <Compile Include="Attack\AttackWander.cs" />
-    <Compile Include="AutoHeal.cs" />
+    <Compile Include="AutoTargetDamaged.cs" />
     <Compile Include="AutoTarget.cs" />
     <Compile Include="CaptureNotification.cs" />
     <Compile Include="Buildings\Building.cs" />

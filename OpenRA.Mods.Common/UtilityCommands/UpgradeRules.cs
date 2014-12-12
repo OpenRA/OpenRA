@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -691,6 +692,38 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20141209)
+				{
+					if (depth == 2)
+					{
+						if (node.Key == "AlliedMissiles")
+						{
+							node.Key = "AffectsPlayers";
+							node.Value.Value = FieldLoader.GetValue<bool>("AlliedMissiles", node.Value.Value) ? "All" : "Enemy, Neutral";
+						}
+						else if (node.Key == "AvoidFriendly")
+						{
+							node.Key = "TriggerPlayers";
+							node.Value.Value = FieldLoader.GetValue<bool>("AvoidFriendly", node.Value.Value) ? "Enemy, Neutral" : "All";
+						}
+					}
+					else if (depth == 1 && (node.Key == "Capturable" || node.Key == "ExternalCapturable"))
+					{
+						var stance = Stance.None;
+						if (node.Value.Nodes.Exists(m => m.Key == "AllowAllies"))
+							stance |= Stance.Ally | OpenRA.Traits.Stance.Player;
+						if (node.Value.Nodes.Exists(m => m.Key == "AllowNeutral"))
+							stance |= Stance.Neutral;
+						if (node.Value.Nodes.Exists(m => m.Key == "AllowEnemies"))
+							stance |= Stance.Enemy;
+						node.Value.Nodes.RemoveAll(m => m.Key == "AllowAllies" || m.Key == "AllowNeutral" || m.Key == "AllowEnemies");
+						if (stance != Stance.None)
+							node.Value.Nodes.Add(new MiniYamlNode("ValidCaptors", stance.ToString()));
+					}
+					else if (depth == 1 && (node.Key.StartsWith("AutoHeal") || node.Key.StartsWith("-AutoHeal")))
+						node.Key.Replace("AutoHeal", "AutoTargetDamaged");
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
@@ -1009,6 +1042,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						if (node.Key == "InfDeath")
 							node.Key = "DeathType";
+					}
+				}
+
+				if (engineVersion < 20141209)
+				{
+					if (depth == 1)
+					{
+						if (node.Key == "ValidStances")
+							node.Key = "AffectsPlayers";
 					}
 				}
 
