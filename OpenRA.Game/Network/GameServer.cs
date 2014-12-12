@@ -30,6 +30,7 @@ namespace OpenRA.Network
 		public readonly bool IsJoinable = false;
 
 		public readonly string ModLabel = "";
+		public readonly string ModId = "";
 		public readonly string ModVersion = "";
 
 		public GameServer(MiniYaml yaml)
@@ -40,10 +41,10 @@ namespace OpenRA.Network
 			var modVersion = Mods.Split('@');
 			if (modVersion.Length == 2 && ModMetadata.AllMods.TryGetValue(modVersion[0], out mod))
 			{
-				ModLabel = "{0} ({1})".F(mod.Title, modVersion[1]);
+				ModId = modVersion[0];
 				ModVersion = modVersion[1];
-
-				IsCompatible = Game.Settings.Debug.IgnoreVersionMismatch || (mod.Id == Game.modData.Manifest.Mod.Id && ModVersion == Game.modData.Manifest.Mod.Version);
+				ModLabel = "{0} ({1})".F(mod.Title, modVersion[1]);
+				IsCompatible = Game.Settings.Debug.IgnoreVersionMismatch || ModVersion == mod.Version;
 			}
 			else
 				ModLabel = "Unknown mod: {0}".F(Mods);
