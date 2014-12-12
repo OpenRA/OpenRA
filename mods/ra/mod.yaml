@@ -132,7 +132,7 @@ Movies:
 Translations:
 	./mods/ra/languages/english.yaml
 
-LoadScreen: DefaultLoadScreen
+LoadScreen: LogoStripeLoadScreen
 	Image: ./mods/ra/uibits/loadscreen.png
 	Text: Filling Crates..., Charging Capacitors..., Reticulating Splines..., Planting Trees..., Building Bridges..., Aging Empires..., Compiling EVA..., Constructing Pylons..., Activating Skynet..., Splitting Atoms...
 
