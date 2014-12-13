@@ -35,14 +35,15 @@ namespace OpenRA.Mods.RA
 	public abstract class AttackBase : IIssueOrder, IResolveOrder, IOrderVoice, ISync
 	{
 		[Sync] public bool IsAttacking { get; internal set; }
-		public IEnumerable<Armament> Armaments { get { return GetArmaments(); } }
+		public IEnumerable<Armament> Armaments { get { return getArmaments(); } }
+		public readonly AttackBaseInfo Info;
+
 		protected Lazy<IFacing> facing;
 		protected Lazy<Building> building;
-	    protected Lazy<IPositionable> positionable;
-		protected Func<IEnumerable<Armament>> GetArmaments;
+		protected Lazy<IPositionable> positionable;
+		protected Func<IEnumerable<Armament>> getArmaments;
 
 		readonly Actor self;
-		public readonly AttackBaseInfo Info;
 
 		public AttackBase(Actor self, AttackBaseInfo info)
 		{
@@ -52,7 +53,7 @@ namespace OpenRA.Mods.RA
 			var armaments = Exts.Lazy(() => self.TraitsImplementing<Armament>()
 				.Where(a => info.Armaments.Contains(a.Info.Name)));
 
-			GetArmaments = () => armaments.Value;
+			getArmaments = () => armaments.Value;
 
 			facing = Exts.Lazy(() => self.TraitOrDefault<IFacing>());
 			building = Exts.Lazy(() => self.TraitOrDefault<Building>());
@@ -145,11 +146,8 @@ namespace OpenRA.Mods.RA
 
 		public bool HasAnyValidWeapons(Target t)
 		{
-			if (Info.AttackRequiresEnteringCell)
-			{
-				if (!positionable.Value.CanEnterCell(t.Actor.Location, null, false))
-					return false;
-			}
+			if (Info.AttackRequiresEnteringCell && !positionable.Value.CanEnterCell(t.Actor.Location, null, false))
+				return false;
 
 			return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World, self));
 		}

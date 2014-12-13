@@ -29,13 +29,13 @@ namespace OpenRA.Mods.RA
 	public class AttackGarrisonedInfo : AttackFollowInfo, Requires<CargoInfo>
 	{
 		[Desc("Fire port offsets in local coordinates.")]
-		public readonly WVec[] PortOffsets = {};
+		public readonly WVec[] PortOffsets = { };
 
 		[Desc("Fire port yaw angles.")]
-		public readonly WAngle[] PortYaws = {};
+		public readonly WAngle[] PortYaws = { };
 
 		[Desc("Fire port yaw cone angle.")]
-		public readonly WAngle[] PortCones = {};
+		public readonly WAngle[] PortCones = { };
 
 		public readonly string MuzzlePalette = "effect";
 
@@ -54,7 +54,6 @@ namespace OpenRA.Mods.RA
 		Dictionary<Actor, IPositionable> paxPos;
 		Dictionary<Actor, RenderSprites> paxRender;
 
-
 		public AttackGarrisoned(Actor self, AttackGarrisonedInfo info)
 			: base(self, info)
 		{
@@ -66,8 +65,7 @@ namespace OpenRA.Mods.RA
 			paxPos = new Dictionary<Actor, IPositionable>();
 			paxRender = new Dictionary<Actor, RenderSprites>();
 
-			GetArmaments = () => armaments;
-
+			getArmaments = () => armaments;
 
 			if (info.PortOffsets.Length == 0)
 				throw new InvalidOperationException("PortOffsets must have at least one entry.");
@@ -109,7 +107,6 @@ namespace OpenRA.Mods.RA
 			paxRender.Remove(passenger);
 			armaments.RemoveAll(a => a.Actor == passenger);
 		}
-
 
 		FirePort SelectFirePort(Actor self, WAngle targetYaw)
 		{
@@ -171,6 +168,7 @@ namespace OpenRA.Mods.RA
 					muzzles.Add(muzzleFlash);
 					muzzleAnim.PlayThen(sequence, () => muzzles.Remove(muzzleFlash));
 				}
+
 				foreach (var npa in self.TraitsImplementing<INotifyAttack>())
 					npa.Attacking(self, target, a, barrel);
 			}
@@ -179,6 +177,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			var pal = wr.Palette(info.MuzzlePalette);
+
 			// Display muzzle flashes
 			foreach (var m in muzzles)
 				foreach (var r in m.Render(self, wr, pal, 1f))

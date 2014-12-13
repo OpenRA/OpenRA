@@ -30,6 +30,7 @@ namespace OpenRA.Mods.D2k
 		readonly RenderUnit renderUnit;
 		readonly RadarPings radarPings;
 		readonly AttackSwallow swallow;
+		readonly AttackSwallowInfo swallowInfo;
 		readonly IPositionable positionable;
 
 		int countdown;
@@ -41,9 +42,10 @@ namespace OpenRA.Mods.D2k
 			this.weapon = weapon;
 			positionable = self.Trait<Mobile>();
 			swallow = self.Trait<AttackSwallow>();
+			swallowInfo = (AttackSwallowInfo)swallow.Info;
 			renderUnit = self.Trait<RenderUnit>();
 			radarPings = self.World.WorldActor.TraitOrDefault<RadarPings>();
-			countdown = swallow.Info.AttackTime;
+			countdown = swallowInfo.AttackTime;
 
 			renderUnit.DefaultAnimation.ReplaceAnim("burrowed");
 			stance = AttackState.Burrowed;
@@ -53,12 +55,14 @@ namespace OpenRA.Mods.D2k
 		bool WormAttack(Actor worm)
 		{
 			var targetLocation = target.Actor.Location;
+
 			// The target has moved too far away
 			if ((location - targetLocation).Length > NearEnough)
 				return false;
 
 			var lunch = worm.World.ActorMap.GetUnitsAt(targetLocation)
 				.Where(t => !t.Equals(worm) && weapon.IsValidAgainst(t, worm));
+
 			if (!lunch.Any())
 				return false;
 
@@ -86,7 +90,7 @@ namespace OpenRA.Mods.D2k
 
 		void NotifyPlayer(Player player, WPos location)
 		{
-			Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallow.Info.WormAttackNotification, player.Country.Race);
+			Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallowInfo.WormAttackNotification, player.Country.Race);
 			radarPings.Add(() => true, location, Color.Red, 50);
 		}
 
@@ -98,37 +102,39 @@ namespace OpenRA.Mods.D2k
 				return this;
 			}
 
-			if (stance == AttackState.ReturningUnderground)     // Wait for the worm to get back underground
+			// Wait for the worm to get back underground
+			if (stance == AttackState.ReturningUnderground)
 			{
-				if (self.World.SharedRandom.Next() % 2 == 0)	// There is a 50-50 chance that the worm would just go away
+				// There is a 50-50 chance that the worm would just go away
+				if (self.World.SharedRandom.Next() % 2 == 0)
 				{
 					self.CancelActivity();
 					self.World.AddFrameEndTask(w => w.Remove(self));
+
 					var wormManager = self.World.WorldActor.TraitOrDefault<WormManager>();
 					if (wormManager != null)
 						wormManager.DecreaseWorms();
 				}
 				else
-				{
 					renderUnit.DefaultAnimation.ReplaceAnim("idle");
-				}
+
 				return NextActivity;
 			}
 
-			if (stance == AttackState.Burrowed)   // Wait for the worm to get in position
+			// Wait for the worm to get in position
+			if (stance == AttackState.Burrowed)
 			{
 				// This is so that the worm cancels an attack against a target that has reached solid rock
 				if (!positionable.CanEnterCell(target.Actor.Location, null, false))
 					return NextActivity;
 
-				var success = WormAttack(self);
-				if (!success)
+				if (!WormAttack(self))
 				{
 					renderUnit.DefaultAnimation.ReplaceAnim("idle");
 					return NextActivity;
 				}
 
-				countdown = swallow.Info.ReturnTime;
+				countdown = swallowInfo.ReturnTime;
 				stance = AttackState.ReturningUnderground;
 			}
 
