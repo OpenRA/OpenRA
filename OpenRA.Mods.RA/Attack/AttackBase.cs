@@ -145,11 +145,8 @@ namespace OpenRA.Mods.RA
 
 		public bool HasAnyValidWeapons(Target t)
 		{
-			if (Info.AttackRequiresEnteringCell)
-			{
-				if (!positionable.Value.CanEnterCell(t.Actor.Location, null, false))
-					return false;
-			}
+			if (Info.AttackRequiresEnteringCell && !positionable.Value.CanEnterCell(t.Actor.Location, null, false))
+				return false;
 
 			return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World, self));
 		}

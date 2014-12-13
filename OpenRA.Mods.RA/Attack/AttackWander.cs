@@ -27,14 +27,15 @@ namespace OpenRA.Mods.RA
 
 	class AttackWander : INotifyIdle
 	{
+		readonly AttackMove attackMove;
+		readonly AttackWanderInfo info;
+
 		int ticksIdle;
 		int effectiveMoveRadius;
-		readonly AttackMove attackMove;
-		readonly AttackWanderInfo Info;
 
 		public AttackWander(Actor self, AttackWanderInfo info)
 		{
-			Info = info;
+			this.info = info;
 			effectiveMoveRadius = info.WanderMoveRadius;
 			attackMove = self.TraitOrDefault<AttackMove>();
 		}
@@ -47,16 +48,16 @@ namespace OpenRA.Mods.RA
 			if (!self.World.Map.Contains(targetCell))
 			{
 				// If MoveRadius is too big there might not be a valid cell to order the attack to (if actor is on a small island and can't leave)
-				if (++ticksIdle % Info.MoveReductionRadiusScale == 0)
+				if (++ticksIdle % info.MoveReductionRadiusScale == 0)
 					effectiveMoveRadius--;
 
-				return;  // We'll be back the next tick; better to sit idle for a few seconds than prolongue this tick indefinitely with a loop
+				return;  // We'll be back the next tick; better to sit idle for a few seconds than prolong this tick indefinitely with a loop
 			}
 
 			attackMove.ResolveOrder(self, new Order("AttackMove", self, false) { TargetLocation = targetCell });
 
 			ticksIdle = 0;
-			effectiveMoveRadius = Info.WanderMoveRadius;
+			effectiveMoveRadius = info.WanderMoveRadius;
 		}
 	}
 }
