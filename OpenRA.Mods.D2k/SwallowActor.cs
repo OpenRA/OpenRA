@@ -30,6 +30,7 @@ namespace OpenRA.Mods.D2k
 		readonly RenderUnit renderUnit;
 		readonly RadarPings radarPings;
 		readonly AttackSwallow swallow;
+		readonly AttackSwallowInfo swallowInfo;
 		readonly IPositionable positionable;
 
 		int countdown;
@@ -41,9 +42,10 @@ namespace OpenRA.Mods.D2k
 			this.weapon = weapon;
 			positionable = self.Trait<Mobile>();
 			swallow = self.Trait<AttackSwallow>();
+			swallowInfo = (AttackSwallowInfo)swallow.Info;
 			renderUnit = self.Trait<RenderUnit>();
 			radarPings = self.World.WorldActor.TraitOrDefault<RadarPings>();
-			countdown = swallow.Info.AttackTime;
+			countdown = swallowInfo.AttackTime;
 
 			renderUnit.DefaultAnimation.ReplaceAnim("burrowed");
 			stance = AttackState.Burrowed;
@@ -86,7 +88,7 @@ namespace OpenRA.Mods.D2k
 
 		void NotifyPlayer(Player player, WPos location)
 		{
-			Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallow.Info.WormAttackNotification, player.Country.Race);
+			Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallowInfo.WormAttackNotification, player.Country.Race);
 			radarPings.Add(() => true, location, Color.Red, 50);
 		}
 
@@ -128,7 +130,7 @@ namespace OpenRA.Mods.D2k
 					return NextActivity;
 				}
 
-				countdown = swallow.Info.ReturnTime;
+				countdown = swallowInfo.ReturnTime;
 				stance = AttackState.ReturningUnderground;
 			}
 
