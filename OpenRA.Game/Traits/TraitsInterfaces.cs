@@ -234,6 +234,7 @@ namespace OpenRA.Traits
 		bool CrushableBy(string[] crushClasses, Player owner);
 	}
 
+	public interface ICheckBogusYaml { void CheckBogusYaml(string actorName, string traitName); }
 	public interface ITraitInfo { object Create(ActorInitializer init); }
 
 	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }

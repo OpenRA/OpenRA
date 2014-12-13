@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	public class HarvesterInfo : ITraitInfo
+	public class HarvesterInfo : ITraitInfo, ICheckBogusYaml
 	{
 		public readonly string[] DeliveryBuildings = { };
 		[Desc("How much resources it can carry.")]
@@ -41,6 +41,20 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly int SearchFromOrderRadius = 12;
 
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
+
+		public void CheckBogusYaml(string actorName, string traitName)
+		{
+			if (Capacity < 0)
+				throw new YamlException("{0}.{1}.Capacity is negative".F(actorName, traitName));
+			if (Resources.Count() < 0)
+				throw new YamlException("{0}.{1}.Resources is Empty".F(actorName, traitName));
+			if (SearchFromOrderRadius < 0)
+				throw new YamlException("{0}.{1}.SearchFromOrderRadius is negative".F(actorName, traitName));
+			if (SearchFromProcRadius < 0)
+				throw new YamlException("{0}.{1}.SearchFromProcRadius is negative".F(actorName, traitName));
+			if (FullyLoadedSpeed < 0)
+				throw new YamlException("{0}.{1}.FullyLoadedSpeed is negative".F(actorName, traitName));
+		}
 	}
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips,

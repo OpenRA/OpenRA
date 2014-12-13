@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Sounds to play when killed.")]
-	public class DeathSoundsInfo : ITraitInfo
+	public class DeathSoundsInfo : ITraitInfo, ICheckBogusYaml
 	{
 		[Desc("Death notification voice.")]
 		public readonly string DeathSound = "Die";
@@ -26,6 +26,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] DeathTypes = { };
 
 		public object Create(ActorInitializer init) { return new DeathSounds(this); }
+
+		public void CheckBogusYaml(string actorName, string traitName)
+		{
+			if (VolumeMultiplier < 0)
+				throw new YamlException("{0}.{1}.VolumeMultiplier is negative.".F(actorName, traitName));
+		}
 	}
 
 	public class DeathSounds : INotifyKilled

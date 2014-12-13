@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RadarPingsInfo : ITraitInfo
+	public class RadarPingsInfo : ITraitInfo, ICheckBogusYaml
 	{
 		public readonly int FromRadius = 200;
 		public readonly int ToRadius = 15;
@@ -23,6 +23,14 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly float RotationSpeed = 0.12f;
 
 		public object Create(ActorInitializer init) { return new RadarPings(this); }
+
+		public void CheckBogusYaml(string actorName, string traitName)
+		{
+			if (FromRadius < ToRadius)
+				throw new YamlException("{0}.{1}.FromRadius is smaller than {0}.{1}.ToRadius".F(actorName, traitName));
+			if (ShrinkSpeed < 0)
+				throw new YamlException("{0}.{1} ShrinkSpeed is negative".F(actorName, traitName));
+		}
 	}
 
 	public class RadarPings : ITick

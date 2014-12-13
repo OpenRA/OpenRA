@@ -38,7 +38,7 @@ namespace OpenRA
 				Name = name;
 				foreach (var t in mergedNode)
 					if (t.Key != "Inherits" && !t.Key.StartsWith("-"))
-						Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
+						Traits.Add(LoadTraitInfo(Name, t.Key.Split('@')[0], t.Value));
 			}
 			catch (YamlException e)
 			{
@@ -76,13 +76,15 @@ namespace OpenRA
 			return node;
 		}
 
-		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)
+		static ITraitInfo LoadTraitInfo(string actorName, string traitName, MiniYaml my)
 		{
 			if (!string.IsNullOrEmpty(my.Value))
 				throw new YamlException("Junk value `{0}` on trait node {1}"
 				.F(my.Value, traitName));
 			var info = Game.CreateObject<ITraitInfo>(traitName + "Info");
 			FieldLoader.Load(info, my);
+			if (info is ICheckBogusYaml)
+				((ICheckBogusYaml)info).CheckBogusYaml(actorName, traitName);
 			return info;
 		}
 
