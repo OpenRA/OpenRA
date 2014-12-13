@@ -48,6 +48,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\Move\Drag.cs" />
     <Compile Include="CommonTraitsInterfaces.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Bullet.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Scripting\Properties\UpgradeProperties.cs" />
     <Compile Include="Traits\BlocksBullets.cs" />
     <Compile Include="Traits\Buildable.cs" />
+    <Compile Include="Traits\Buildings\BaseProvider.cs" />
     <Compile Include="Traits\Buildings\DeadBuildingState.cs" />
     <Compile Include="Traits\Buildings\RallyPoint.cs" />
     <Compile Include="Traits\Burns.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\GlobalUpgradable.cs" />
+    <Compile Include="Traits\Husk.cs" />
     <Compile Include="Traits\Immobile.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\KillsSelf.cs" />
@@ -125,7 +128,9 @@
     <Compile Include="Traits\PaletteEffects\MenuPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\NukePaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\WaterPaletteRotation.cs" />
+    <Compile Include="Traits\Player\ActorGroupProxy.cs" />
     <Compile Include="Traits\Player\GlobalUpgradeManager.cs" />
+    <Compile Include="Traits\Player\PlaceBeacon.cs" />
     <Compile Include="Traits\Player\ProvidesCustomPrerequisite.cs" />
     <Compile Include="Traits\Player\ProvidesTechPrerequisite.cs" />
     <Compile Include="Traits\Player\TechTree.cs" />

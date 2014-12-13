@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Move
+namespace OpenRA.Mods.Common.Activities
 {
 	public class Drag : Activity
 	{

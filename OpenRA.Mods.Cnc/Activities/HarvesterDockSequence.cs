@@ -10,13 +10,13 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.Cnc.Activities
 {
 	public class HarvesterDockSequence : Activity
 	{

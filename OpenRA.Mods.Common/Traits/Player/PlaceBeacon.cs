@@ -8,11 +8,10 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	public class PlaceBeaconInfo : ITraitInfo
 	{
