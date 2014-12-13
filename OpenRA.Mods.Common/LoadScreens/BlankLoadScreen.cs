@@ -29,50 +29,45 @@ namespace OpenRA.Mods.Common.LoadScreens
 			Game.Renderer.EndFrame(new NullInputHandler());
 		}
 
-		void TestAndContinue()
-		{
-			Ui.ResetAll();
-			var installData = Game.modData.Manifest.ContentInstaller;
-			if (!installData.TestFiles.All(f => GlobalFileSystem.Exists(f)))
-			{
-				var args = new WidgetArgs()
-				{
-					{ "continueLoading", () => Game.InitializeMod(Game.Settings.Game.Mod, null) },
-				};
-
-				if (installData.InstallerBackgroundWidget != null)
-					Ui.LoadWidget(installData.InstallerBackgroundWidget, Ui.Root, args);
-
-				Ui.OpenWindow(installData.InstallerMenuWidget, args);
-			}
-			else
-				Game.LoadShellMap();
-
-			Game.Settings.Save();
-		}
-
 		public void StartGame(Arguments args)
 		{
-			var window = args != null ? args.GetValue("Launch.Window", null) : null;
-			if (!string.IsNullOrEmpty(window))
-			{
-				var installData = Game.modData.Manifest.ContentInstaller;
-				if (installData.InstallerBackgroundWidget != null)
-					Ui.LoadWidget(installData.InstallerBackgroundWidget, Ui.Root, new WidgetArgs());
+			Ui.ResetAll();
+			Game.Settings.Save();
 
-				Ui.OpenWindow(window, new WidgetArgs());
-			}
-			else
-			{
-				TestAndContinue();
+			// Check whether the mod content is installed
+			// TODO: The installation code has finally been beaten into shape, so we can
+			// finally move it all into the planned "Manage Content" panel in the modchooser mod.
+			var installData = Game.modData.Manifest.ContentInstaller;
+			var installModContent = !installData.TestFiles.All(f => GlobalFileSystem.Exists(f));
+			var installModMusic = args != null && args.Contains("Install.Music");
 
-				var replay = args != null ? args.GetValue("Launch.Replay", null) : null;
-				if (!string.IsNullOrEmpty(replay))
-					Game.JoinReplay(replay);
+			if (installModContent || installModMusic)
+			{
+				var widgetArgs = new WidgetArgs()
+				{
+					{ "continueLoading", () => Game.InitializeMod(Game.Settings.Game.Mod, args) },
+				};
+
+				if (installData.BackgroundWidget != null)
+					Ui.LoadWidget(installData.BackgroundWidget, Ui.Root, widgetArgs);
+
+				var menu = installModContent ? installData.MenuWidget : installData.MusicMenuWidget;
+				Ui.OpenWindow(menu, widgetArgs);
+
+				return;
 			}
+
+			var replay = args != null ? args.GetValue("Launch.Replay", null) : null;
+			if (!string.IsNullOrEmpty(replay))
+			{
+				Game.JoinReplay(replay);
+				return;
+			}
+
+			Game.LoadShellMap();
+			Game.Settings.Save();
 		}
 
 		public virtual void Dispose() { }
 	}
 }
-
