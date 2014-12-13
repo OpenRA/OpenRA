@@ -28,6 +28,7 @@ Options:
 	FragileAlliances: False
 	StartingCash: 0
 	ConfigurableStartingUnits: False
+	Difficulties: Easy, Normal
 
 Players:
 	PlayerReference@Neutral:
@@ -981,7 +982,7 @@ Actors:
 		Owner: USSR
 		Facing: 160
 		SubCell: 1
-	PrisonedMedi2: pmedi
+	PrisonedMedi2: medi
 		Location: 57,67
 		Owner: Greece
 		Facing: 128
@@ -996,7 +997,7 @@ Actors:
 		Owner: USSR
 		Facing: 96
 		SubCell: 2
-	PrisonedEngi: pe6
+	PrisonedEngi: hacke6
 		Location: 57,67
 		Owner: Greece
 		Facing: 96
@@ -1081,7 +1082,7 @@ Actors:
 		Owner: USSR
 		Facing: 160
 		SubCell: 2
-	PrisonedMedi1: pmedi
+	PrisonedMedi1: medi
 		Location: 58,60
 		Owner: Greece
 		Facing: 0
@@ -1356,6 +1357,12 @@ Actors:
 	USSRMoneyCrateSpawn: waypoint
 		Location: 59,72
 		Owner: Neutral
+	Jail1: prison
+		Location: 58,60
+		Owner: Greece
+	Jail2: prison
+		Location: 57,67
+		Owner: Greece
 
 Smudges:
 
@@ -1418,10 +1425,33 @@ Rules:
 			CaptureTypes: building
 		RenderInfantry:
 			Image: E6
-	E7:
+		Cloak@JAIL:
+			UpgradeTypes: jail
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			Palette:
+	MEDI:
+		Cloak@JAIL:
+			UpgradeTypes: jail
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			Palette:
+	E7.noautotarget:
+		Inherits: E7
+		RenderInfantry:
+			Image: E7
 		AutoTarget:
 			EnableStances: false
 		-AttackMove:
+	PRISON:
+		Immobile:
+			OccupiesSpace: false
+		BodyOrientation:
+		UpgradeActorsNear:
+			Upgrades: jail
+			Range: 1c0
 	CAMERA:
 		RevealsShroud:
 			Range: 8c7
@@ -1434,24 +1464,6 @@ Rules:
 			Name: Crate
 		WithCrateBody:
 			Images: scrate
-	PE6:
-		Inherits: E6
-		-RepairsBridges:
-		-ExternalCaptures:
-		Captures:
-			CaptureTypes: building
-		RejectsOrders:
-		AutoTargetIgnore:
-		-Huntable:
-		RenderInfantry:
-			Image: e6
-	PMEDI:
-		Inherits: MEDI
-		RejectsOrders:
-		AutoTargetIgnore:
-		-Huntable:
-		RenderInfantry:
-			Image: medi
 	E1.Autotarget:
 		Inherits: E1
 		Buildable:
@@ -1473,8 +1485,6 @@ Rules:
 		RenderInfantry:
 			Image: E2
 	DOG:
-		Buildable:
-			Prerequisites: ~disabled
 		RevealsShroud:
 			Range: 9c0
 		AutoTarget:
