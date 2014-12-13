@@ -377,7 +377,7 @@ function EditorCallTip(editor, pos, x, y)
   -- don't activate if the window itself is not active (in the background)
   if not ide.frame:IsActive() then return end
 
-  local var, funccall = getValAtPosition(editor, pos)
+  local var, funccall = editor:ValueFromPosition(pos)
   -- if this is a value type rather than a function/method call, then use
   -- full match to avoid calltip about coroutine.status for "status" vars
   local tip = GetTipInfo(editor, funccall or var, false, not funccall)
@@ -794,6 +794,9 @@ function CreateEditor(bare)
   function editor:GetTokenList() return self.tokenlist end
   function editor:ResetTokenList() self.tokenlist = {}; return self.tokenlist end
 
+  function editor:SetupKeywords(...) return SetupKeywords(self, ...) end
+  function editor:ValueFromPosition(pos) return getValAtPosition(self, pos) end
+
   -- GotoPos should work by itself, but it doesn't (wx 2.9.5).
   -- This is likely because the editor window hasn't been refreshed yet,
   -- so its LinesOnScreen method returns 0/-1, which skews the calculations.
@@ -821,8 +824,6 @@ function CreateEditor(bare)
       end
     end
   end
-
-  function editor:SetupKeywords(...) return SetupKeywords(self, ...) end
 
   if bare then return editor end -- bare editor doesn't have any event handlers
 
@@ -1142,7 +1143,7 @@ function CreateEditor(bare)
       and not event:ShiftDown() and not event:MetaDown() then
         local point = event:GetPosition()
         local pos = editor:PositionFromPointClose(point.x, point.y)
-        local value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
+        local value = pos ~= wxstc.wxSTC_INVALID_POSITION and editor:ValueFromPosition(pos) or nil
         local instances = value and indicateFindInstances(editor, value, pos+1)
         if instances and instances[0] then
           navigateToPosition(editor, pos, instances[0]-1, #value)
@@ -1297,7 +1298,7 @@ function CreateEditor(bare)
       -- only activate selection of instances on Ctrl/Cmd-DoubleClick
       if event:GetModifiers() == wx.wxMOD_CONTROL then
         local pos = event:GetPosition()
-        local value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
+        local value = pos ~= wxstc.wxSTC_INVALID_POSITION and editor:ValueFromPosition(pos) or nil
         local instances = value and indicateFindInstances(editor, value, pos+1)
         if instances and (instances[0] or #instances > 0) then
           selectAllInstances(instances, value, pos)
@@ -1328,7 +1329,7 @@ function CreateEditor(bare)
     function (event)
       local point = editor:ScreenToClient(event:GetPosition())
       pos = editor:PositionFromPointClose(point.x, point.y)
-      value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
+      value = pos ~= wxstc.wxSTC_INVALID_POSITION and editor:ValueFromPosition(pos) or nil
       instances = value and indicateFindInstances(editor, value, pos+1)
 
       local occurrences = (not instances or #instances == 0) and ""
