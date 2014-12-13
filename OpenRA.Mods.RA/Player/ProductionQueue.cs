@@ -74,13 +74,13 @@ namespace OpenRA.Mods.RA
 		readonly Actor self;
 
 		// Will change if the owner changes
-		PowerManager playerPower;
-		PlayerResources playerResources;
+		protected PowerManager playerPower;
+		protected PlayerResources playerResources;
 		protected DeveloperMode developerMode;
 
 		// A list of things we could possibly build
 		Dictionary<ActorInfo, ProductionState> produceable;
-		List<ProductionItem> queue = new List<ProductionItem>();
+		protected List<ProductionItem> queue = new List<ProductionItem>();
 
 		// A list of things we are currently building
 		public Actor Actor { get { return self; } }
@@ -248,7 +248,7 @@ namespace OpenRA.Mods.RA
 				queue[0].Tick(playerResources);
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		public virtual void ResolveOrder(Actor self, Order order)
 		{
 			if (!Enabled)
 				return;
@@ -336,7 +336,7 @@ namespace OpenRA.Mods.RA
 			return (int)time;
 		}
 
-		protected void CancelProduction(string itemName, uint numberToCancel)
+		protected virtual void CancelProduction(string itemName, uint numberToCancel)
 		{
 			for (var i = 0; i < numberToCancel; i++)
 				CancelProductionInner(itemName);
@@ -356,13 +356,13 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public void FinishProduction()
+		public virtual void FinishProduction()
 		{
 			if (queue.Count != 0)
 				queue.RemoveAt(0);
 		}
 
-		protected void BeginProduction(ProductionItem item)
+		protected virtual void BeginProduction(ProductionItem item)
 		{
 			queue.Add(item);
 		}
@@ -379,7 +379,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
-			if (sp != null && !self.IsDisabled() && sp.Produce(self, self.World.Map.Rules.Actors[name], Race))
+			if (sp != null && !self.IsDisabled() && sp.Produce(self, new ActorInfo[] { self.World.Map.Rules.Actors[name] }, Race))
 			{
 				FinishProduction();
 				return true;
@@ -402,9 +402,9 @@ namespace OpenRA.Mods.RA
 		public readonly int TotalCost;
 		public readonly Action OnComplete;
 
-		public int TotalTime { get; private set; }
-		public int RemainingTime { get; private set; }
-		public int RemainingCost { get; private set; }
+		public int TotalTime { get; protected set; }
+		public int RemainingTime { get; protected set; }
+		public int RemainingCost { get; protected set; }
 		public int RemainingTimeActual
 		{
 			get
@@ -414,12 +414,12 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public bool Paused { get; private set; }
-		public bool Done { get; private set; }
-		public bool Started { get; private set; }
-		public int Slowdown { get; private set; }
+		public bool Paused { get; protected set; }
+		public bool Done { get; protected set; }
+		public bool Started { get; protected set; }
+		public int Slowdown { get; protected set; }
 
-		readonly PowerManager pm;
+		protected readonly PowerManager pm;
 
 		public ProductionItem(ProductionQueue queue, string item, int cost, PowerManager pm, Action onComplete)
 		{
@@ -431,7 +431,7 @@ namespace OpenRA.Mods.RA
 			this.pm = pm;
 		}
 
-		public void Tick(PlayerResources pr)
+		public virtual void Tick(PlayerResources pr)
 		{
 			if (!Started)
 			{

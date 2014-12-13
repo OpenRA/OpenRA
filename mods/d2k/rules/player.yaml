@@ -24,10 +24,10 @@ Player:
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
 		RequireOwner: false
-	ClassicProductionQueue@Starport:
+	BulkProductionQueue@Starport:
 		Type: Starport
-		BuildSpeed: .2
-		LowPowerSlowdown: 1
+		MinimumOrders: 3
+		MaximumOrders: 5
 		BlockedAudio: NoRoom
 		QueuedAudio: OrderPlaced
 		ReadyAudio:

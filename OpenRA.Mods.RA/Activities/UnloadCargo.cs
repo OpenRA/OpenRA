@@ -15,6 +15,7 @@ using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
+using OpenRA.Mods.Common;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -89,6 +90,7 @@ namespace OpenRA.Mods.RA.Activities
 				pos.SetVisualPosition(actor, spawn);
 				actor.QueueActivity(move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
 				actor.SetTargetLine(Target.FromCell(w, exitSubCell.Value.First, exitSubCell.Value.Second), Color.Green, false);
+
 				w.Add(actor);
 			});
 

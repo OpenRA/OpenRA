@@ -23,6 +23,8 @@
 		Repulsable: False
 		LandAltitude: 100
 		LandWhenIdle: False
+	Passenger:
+		CargoType: Aircraft
 	WithShadow:
 	LeavesHusk:
 		HuskActor: CARRYALL.Husk

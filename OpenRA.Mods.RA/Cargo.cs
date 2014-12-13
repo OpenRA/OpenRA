@@ -191,6 +191,11 @@ namespace OpenRA.Mods.RA
 
 		public Actor Unload(Actor self)
 		{
+			return this.Unload(self, null);
+		}
+
+		public Actor Unload(Actor self, RallyPoint rally)
+		{
 			var a = cargo[0];
 
 			cargo.RemoveAt(0);

@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 			if (ci == null || !info.CloneableTypes.Intersect(ci.Types).Any())
 				return;
 
-			production.Produce(self, produced.Info, self.Owner.Country.Race);
+			production.Produce(self, new ActorInfo[]{produced.Info}, self.Owner.Country.Race);
 		}
 	}
 }
