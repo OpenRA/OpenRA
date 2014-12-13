@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public ServerBrowserLogic(Widget widget, Action onStart, Action onExit)
+		public ServerBrowserLogic(Widget widget, Action onStart, Action onExit, string directConnectHost, int directConnectPort)
 		{
 			panel = widget;
 			this.onStart = onStart;
@@ -116,6 +116,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 
 			RefreshServerList();
+
+			if (directConnectHost != null)
+			{
+				// The connection window must be opened at the end of the tick for the widget hierarchy to
+				// work out, but we also want to prevent the server browser from flashing visible for one tick.
+				widget.Visible = false;
+				Game.RunAfterTick(() =>
+				{
+					ConnectionLogic.Connect(directConnectHost, directConnectPort, "", OpenLobby, DoNothing);
+					widget.Visible = true;
+				});
+			}
 		}
 
 		void RefreshServerList()

@@ -86,9 +86,15 @@ namespace OpenRA
 		public const int Timestep = 40;
 		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
 
+		public static event Action<string, int> OnRemoteDirectConnect = (a, b) => { };
 		public static event Action<OrderManager> ConnectionStateChanged = _ => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public static int LocalClientId { get { return orderManager.Connection.LocalClientId; } }
+
+		public static void RemoteDirectConnect(string host, int port)
+		{
+			OnRemoteDirectConnect(host, port);
+		}
 
 		// Hacky workaround for orderManager visibility
 		public static Widget OpenWindow(World world, string widget)
@@ -261,6 +267,9 @@ namespace OpenRA
 			LobbyInfoChanged = () => { };
 			ConnectionStateChanged = om => { };
 			BeforeGameStart = () => { };
+			OnRemoteDirectConnect = (a, b) => { };
+			delayedActions = new ActionQueue();
+
 			Ui.ResetAll();
 
 			if (worldRenderer != null)

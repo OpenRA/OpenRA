@@ -48,7 +48,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Ui.OpenWindow("SERVERBROWSER_PANEL", new WidgetArgs
 				{
 					{ "onStart", RemoveShellmapUI },
-					{ "onExit", () => menuType = MenuType.Main }
+					{ "onExit", () => menuType = MenuType.Main },
+					{ "directConnectHost", null },
+					{ "directConnectPort", 0 },
 				});
 			};
 
@@ -173,6 +175,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				newsButton.IsHighlighted = () => newsHighlighted && Game.LocalTick % 50 < 25;
 			}
+
+			Game.OnRemoteDirectConnect += (host, port) =>
+			{
+				menuType = MenuType.None;
+				Ui.OpenWindow("SERVERBROWSER_PANEL", new WidgetArgs
+				{
+					{ "onStart", RemoveShellmapUI },
+					{ "onExit", () => menuType = MenuType.Main },
+					{ "directConnectHost", host },
+					{ "directConnectPort", port },
+				});
+			};
 		}
 
 		void SetNewsStatus(string message)
