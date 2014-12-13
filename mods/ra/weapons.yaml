@@ -1109,9 +1109,8 @@ ParaBomb:
 		Velocity: 43
 		Acceleration: 0
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Damage: 50
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Spread: 768
+		Damage: 300
 		DeathType: 4
 		Versus:
 			None: 30
