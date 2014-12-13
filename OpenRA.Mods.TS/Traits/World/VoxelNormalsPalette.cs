@@ -12,7 +12,7 @@ using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.TS.Traits
 {
 	public class VoxelNormalsPaletteInfo : ITraitInfo
 	{

@@ -12,7 +12,7 @@ using System.Globalization;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Part of the unfinished group-movement system. Attach this to the player actor.")]
 	class ActorGroupProxyInfo : TraitInfo<ActorGroupProxy> { }

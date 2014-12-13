@@ -13,7 +13,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.TS.Traits
 {
 	public class WithVoxelWalkerBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, Requires<RenderVoxelsInfo>, Requires<IMoveInfo>
 	{

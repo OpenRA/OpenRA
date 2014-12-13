@@ -15,7 +15,7 @@ using OpenRA.Mods.Common;
 using OpenRA.Traits;
 using OpenRA.Mods.Common.Graphics;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.TS.Traits
 {
 	public interface IRenderActorPreviewVoxelsInfo { IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p); }
 
