@@ -33,9 +33,12 @@ namespace OpenRA.Network
 		public readonly int TickCount;
 		public readonly bool IsValid;
 		public readonly Session LobbyInfo;
+		public readonly string Filename;
 
 		public ReplayConnection(string replayFilename)
 		{
+			Filename = replayFilename;
+
 			// Parse replay data into a struct that can be fed to the game in chunks
 			// to avoid issues with all immediate orders being resolved on the first tick.
 			using (var rs = File.OpenRead(replayFilename))
