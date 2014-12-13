@@ -40,11 +40,12 @@ namespace OpenRA.Mods.D2k
 
 	class WormManager : ITick
 	{
-		int countdown;
-		int wormsPresent;
 		readonly WormManagerInfo info;
 		readonly Lazy<Actor[]> spawnPoints;
 		readonly Lazy<RadarPings> radarPings;
+
+		int countdown;
+		int wormsPresent;
 
 		public WormManager(WormManagerInfo info, Actor self)
 		{
@@ -72,9 +73,12 @@ namespace OpenRA.Mods.D2k
 
 			var wormLocations = new List<WPos>();
 
-			wormLocations.Add(SpawnWorm(self));
-			while (wormsPresent < info.Minimum)
+			do
+			{
+				// Always spawn at least one worm, plus however many
+				// more we need to reach the defined minimum count.
 				wormLocations.Add(SpawnWorm(self));
+			} while (wormsPresent < info.Minimum);
 
 			AnnounceWormSign(self, wormLocations);
 		}
@@ -87,6 +91,7 @@ namespace OpenRA.Mods.D2k
 				new OwnerInit(w.Players.First(x => x.PlayerName == info.WormOwnerPlayer)),
 				new LocationInit(spawnPoint.Location)
 			}));
+
 			wormsPresent++;
 			
 			return spawnPoint.CenterPosition;
@@ -112,7 +117,6 @@ namespace OpenRA.Mods.D2k
 
 			foreach (var wormLocation in wormLocations)
 				radarPings.Value.Add(() => true, wormLocation, Color.Red, 50);
-			
 		}
 	}
 

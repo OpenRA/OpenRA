@@ -17,9 +17,10 @@ namespace OpenRA.Mods.D2k
 	class AttackSwallowInfo : AttackFrontalInfo
 	{
 		[Desc("The number of ticks it takes to return underground.")]
-		public int ReturnTime = 60;
+		public readonly int ReturnTime = 60;
+
 		[Desc("The number of ticks it takes to get in place under the target to attack.")]
-		public int AttackTime = 30;
+		public readonly int AttackTime = 30;
 
 		public readonly string WormAttackNotification = "WormAttack";
 
