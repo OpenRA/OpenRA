@@ -80,7 +80,8 @@ namespace OpenRA
 		public static int RunTime { get { return (int)Game.stopwatch.ElapsedMilliseconds; } }
 
 		public static int RenderFrame = 0;
-		public static int NetFrameNumber { get { return orderManager.NetFrameNumber; } }
+		public static int NetFrameNumber { get { return orderManager.CanSend() ? orderManager.NetFrameNumber :
+			orderManager.NetFrameNumber + orderManager.LobbyInfo.GlobalSettings.SpectatorDelay; } }
 		public static int LocalTick { get { return orderManager.LocalFrameNumber; } }
 		public const int NetTickScale = 3; // 120 ms net tick for 40 ms local tick
 		public const int Timestep = 40;

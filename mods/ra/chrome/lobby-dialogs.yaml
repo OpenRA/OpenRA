@@ -192,6 +192,18 @@ Background@LOBBY_OPTIONS_BIN:
 					Height: 25
 					Text: Tech Level:
 					Align: Right
+				TextField@SPECTATORDELAY_TEXTFIELD:
+					X: PARENT_RIGHT - WIDTH
+					Y: 127
+					Width: 140
+					Height: 25
+				Label@SPECTATORDELAY_DESC:
+					X: PARENT_RIGHT - WIDTH - 145
+					Y: 127
+					Width: 80
+					Height: 25
+					Text: Spectator Delay:
+					Align: Right
 
 Background@FORCE_START_DIALOG:
 	X: 20

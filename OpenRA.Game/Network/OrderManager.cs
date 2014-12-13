@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Primitives;
+using System.IO;
 
 namespace OpenRA.Network
 {
@@ -35,8 +36,11 @@ namespace OpenRA.Network
 		public bool AuthenticationFailed = false;
 
 		public int NetFrameNumber { get; private set; }
+		public int DelayedNetFrameNumber { get { return !LocalPrevention ? NetFrameNumber :
+			NetFrameNumber - LobbyInfo.GlobalSettings.SpectatorDelay; } }
 		public int LocalFrameNumber;
 		public int FramesAhead = 0;
+		bool LocalPrevention = false;
 
 		public int LastTickTime = Game.RunTime;
 
@@ -66,7 +70,12 @@ namespace OpenRA.Network
 			if (GameStarted) return;
 
 			NetFrameNumber = 1;
-			for (var i = NetFrameNumber; i <= FramesAhead; i++)
+			LobbyInfo.Clients.Where(c => c.IsObserver && !c.IsAdmin).Do(c => frameData.ObserverIDs.Add(c.Index));
+			LocalPrevention = LocalClient != null && frameData.ObserverIDs.Contains(LocalClient.Index);
+
+			if (LocalPrevention) return;
+
+			for (var i = NetFrameNumber ; i <= FramesAhead ; i++)
 				Connection.Send(i, new List<byte[]>());
 		}
 
@@ -79,6 +88,11 @@ namespace OpenRA.Network
 			syncReport = new SyncReport(this);
 			ChatCache = new ReadOnlyList<ChatLine>(chatCache);
 			AddChatLine += CacheChatLine;
+		}
+
+		public bool CanSend()
+		{
+			return !LocalPrevention;
 		}
 
 		public void IssueOrders(Order[] orders)
@@ -179,8 +193,8 @@ namespace OpenRA.Network
 		{
 			get
 			{
-				return NetFrameNumber >= 1
-					? frameData.ClientsNotReadyForFrame(NetFrameNumber)
+				return DelayedNetFrameNumber >= 1
+					? frameData.ClientsNotReadyForFrame(DelayedNetFrameNumber)
 						.Select(a => LobbyInfo.ClientWithIndex(a))
 					: NoClients;
 			}
@@ -191,20 +205,24 @@ namespace OpenRA.Network
 			if (!IsReadyForNextFrame)
 				throw new InvalidOperationException();
 
-			Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
+			if (CanSend())
+				Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
 			localOrders.Clear();
 
 			var sync = new List<int>();
 			sync.Add(World.SyncHash());
 
-			foreach (var order in frameData.OrdersForFrame(World, NetFrameNumber))
+			if (DelayedNetFrameNumber > 0)
 			{
-				UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
-				sync.Add(World.SyncHash());
+				foreach (var order in frameData.OrdersForFrame(World, DelayedNetFrameNumber))
+				{
+					UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
+					sync.Add(World.SyncHash());
+				}
 			}
 
 			var ss = sync.SerializeSync();
-			Connection.SendSync(NetFrameNumber, ss);
+			Connection.SendSync(DelayedNetFrameNumber, ss);
 
 			syncReport.UpdateSyncReport();
 

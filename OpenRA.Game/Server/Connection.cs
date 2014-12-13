@@ -31,6 +31,7 @@ namespace OpenRA.Server
 
 		/* client data */
 		public int PlayerIndex;
+		public bool CanTimeout = true;
 
 		public byte[] PopBytes(int n)
 		{

@@ -675,8 +675,12 @@ namespace OpenRA.Server
 			State = ServerState.GameStarted;
 
 			foreach (var c in Conns)
+			{
+				if (this.GetClient(c).IsObserver)
+					c.CanTimeout = false;
 				foreach (var d in Conns)
 					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF });
+			}
 
 			DispatchOrders(null, 0,
 				new ServerOrder("StartGame", "").Serialize());

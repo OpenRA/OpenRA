@@ -157,6 +157,27 @@ namespace OpenRA.Mods.Common.Server
 						}
 					}
 				},
+				{ "spectator_delay",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							return true;
+						}
+
+						if (int.TryParse(s, out server.LobbyInfo.GlobalSettings.SpectatorDelay))
+						{
+							server.SyncLobbyGlobalSettings();
+							return true;
+						}
+						else
+						{
+							server.SendOrderTo(conn, "Message", "Malformed spectator_delay command");
+							return true;
+						}
+					}
+				},
 				{ "spectate",
 					s =>
 					{
