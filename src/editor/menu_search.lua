@@ -137,7 +137,7 @@ frame:Connect(ID_FINDSELECTPREV, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)
 local markername = "commandbar.background"
 local mac = ide.osname == 'Macintosh'
 local win = ide.osname == 'Windows'
-local function navigateTo(default)
+local function navigateTo(default, selected)
   local styles = ide.config.styles
   local marker = ide:AddMarker(markername,
     wxstc.wxSTC_MARK_BACKGROUND, styles.text.fg, styles.caretlinebg.bg)
@@ -155,8 +155,10 @@ local function navigateTo(default)
     ed:EnsureVisibleEnforcePolicy(toline-1)
   end
 
-  CommandBarShow(
-    function(t, enter, text) -- onDone
+  CommandBarShow({
+    defaultText = default or "",
+    selectedText = selected or "",
+    onDone = function(t, enter, text)
       if not mac then nb:Freeze() end
 
       -- delete all current line markers if any; restore line position
@@ -201,7 +203,7 @@ local function navigateTo(default)
       preview = nil
       if not mac then nb:Thaw() end
     end,
-    function(text) -- onUpdate
+    onUpdate = function(text)
       local lines = {}
       local projdir = ide:GetProject()
 
@@ -282,8 +284,8 @@ local function navigateTo(default)
       end
       return lines
     end,
-    function(t) return unpack(t) end, -- onItem
-    function(t, text) -- onSelection
+    onItem = function(t) return unpack(t) end,
+    onSelection = function(t, text)
       local _, file, tabindex = unpack(t)
       if text and text:find('@') then
         local ed = ide:GetEditor()
@@ -322,8 +324,7 @@ local function navigateTo(default)
       end
       nb:SetEvtHandlerEnabled(true)
     end,
-    default or ""
-  )
+  })
 end
 
 frame:Connect(ID_NAVIGATETOFILE, wx.wxEVT_COMMAND_MENU_SELECTED,

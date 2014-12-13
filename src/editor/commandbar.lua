@@ -6,7 +6,10 @@ local row_height = 46
 local row_width = 450
 local win = ide.osname == 'Windows'
 
-function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText)
+function CommandBarShow(params)
+  local onDone, onUpdate, onItem, onSelection, defaultText, selectedText =
+    params.onDone, params.onUpdate, params.onItem, params.onSelection,
+    params.defaultText, params.selectedText
   local lines = {}
   local linesnow = #lines
   local linenow = 0
@@ -233,8 +236,8 @@ function CommandBarShow(onDone, onUpdate, onItem, onSelection, defaultText)
 
   frame:Show(true)
 
-  search:SetValue(defaultText or "")
-  search:SetInsertionPointEnd()
+  search:SetValue((defaultText or "")..(selectedText or ""))
+  search:SetSelection(#(defaultText or ""), -1)
 end
 
 local sep = "[/\\%-_ ]+"
