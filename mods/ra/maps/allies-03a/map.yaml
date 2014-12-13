@@ -1578,6 +1578,18 @@ Rules:
 	SHOK:
 		Buildable:
 			Prerequisites: ~disabled
+	FACF:
+		Buildable:
+			Prerequisites: ~disabled
+	WEAF:
+		Buildable:
+			Prerequisites: ~disabled
+	SYRF:
+		Buildable:
+			Prerequisites: ~disabled
+	DOMF:
+		Buildable:
+			Prerequisites: ~disabled
 
 Sequences:
 
