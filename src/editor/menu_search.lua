@@ -332,4 +332,7 @@ frame:Connect(ID_NAVIGATETOFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_NAVIGATETOLINE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function() navigateTo(":") end)
 frame:Connect(ID_NAVIGATETOSYMBOL, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function() navigateTo("@") end)
+  function()
+    local ed = GetEditor()
+    navigateTo("@", ed and ed:ValueFromPosition(ed:GetCurrentPos()))
+  end)
