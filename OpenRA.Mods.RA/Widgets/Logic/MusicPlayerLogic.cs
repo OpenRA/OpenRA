@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (installButton != null)
 			{
 				installButton.IsDisabled = () => world == null || !world.IsShellmap;
-				var args = new string[] { "Launch.Window=INSTALL_MUSIC_PANEL" };
+				var args = new string[] { "Install.Music=true" };
 				installButton.OnClick = () =>
 				{
 					Game.modData.LoadScreen.Display(); // HACK: prevent a flicker when transitioning to the installation dialog
