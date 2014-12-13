@@ -1,0 +1,53 @@
+SPICEBLOOM:
+	RenderBuilding:
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	AppearsOnRadar:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	ProximityCaptor:
+		Types: Tree
+	Tooltip:
+		Name: Spice Bloom
+	SeedsResource:
+		ResourceType: Spice
+		Interval: 75
+	WithActiveAnimation:
+	RadarColorFromTerrain:
+		Terrain: Spice
+	BodyOrientation:
+	WithMakeAnimation:
+
+SANDWORM:
+	Tooltip:
+		Name: Sandworm
+		Description: Attracted by vibrations in the sand.\nWill eat units whole and has a large appetite.
+	Health:
+		HP: 10000
+		Radius: 3
+	Armor:
+		Type: None
+	Mobile:
+		Speed: 50
+		TerrainSpeeds:
+			Sand: 100
+			Dune: 100
+			Spice: 100
+	TargetableUnit:
+		TargetTypes: Underground
+	RevealsShroud:
+		Range: 32c0
+	RenderUnit:
+	BodyOrientation:
+	HiddenUnderFog:
+	AppearsOnRadar:
+		UseLocation: yes
+	AttackSwallow:
+		AttackRequiresEnteringCell: true
+	AttackMove:
+	AttackWander:
+	AutoTarget:
+		ScanRadius: 32
+	Armament:
+		Weapon: WormJaw

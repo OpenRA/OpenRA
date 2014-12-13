@@ -33,13 +33,17 @@ Players:
 		Name: Atreides
 		Race: atreides
 		ColorRamp: 161,134,200
-		Allies: Neutral
 		Enemies: Harkonnen
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
 		Race: harkonnen
 		ColorRamp: 3,255,127
 		Enemies: Atreides
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: atreides
+		Enemies: Atreides, Harkonnen
 
 Actors:
 	Actor4: spicebloom
@@ -102,6 +106,9 @@ Actors:
 	Actor41: guntowera
 		Location: 46,39
 		Owner: Harkonnen
+	Actor42: wormspawner
+		Location: 46,64
+		Owner: Creeps
 
 Smudges:
 
@@ -114,6 +121,8 @@ Rules:
 		-MPStartLocations:
 		ResourceType@Spice:
 			ValuePerUnit: 0
+		WormManager:
+			Minimum: 1
 
 Sequences:
 
