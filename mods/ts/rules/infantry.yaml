@@ -333,9 +333,18 @@ CYBORG:
 	Armament:
 		Weapon: Vulcan3
 	AttackFrontal:
-	TakeCover:
 	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	GainsStatUpgrades@slowDamage:
+		SpeedUpgrade: slowDamage
+		SpeedModifier: 50
+		FirepowerModifier:
+		DamageModifier:
+		ReloadModifier:
+	GrantUpgradeOnDamageState:
+		Threshold: Critical
+		Upgrades: slowDamage
+		RequiresFullHealing: true
 
 CYC2:
 	Inherits: ^Infantry
@@ -368,9 +377,18 @@ CYC2:
 		Weapon: CyCannon
 		LocalOffset: 170,85,683
 	AttackFrontal:
-	TakeCover:
 	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	GainsStatUpgrades@slowDamage:
+		SpeedUpgrade: slowDamage
+		SpeedModifier: 50
+		FirepowerModifier:
+		DamageModifier:
+		ReloadModifier:
+	GrantUpgradeOnDamageState:
+		Threshold: Critical
+		Upgrades: slowDamage
+		RequiresFullHealing: true
 
 MUTANT:
 	Inherits: ^Infantry
