@@ -47,6 +47,7 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	TemporaryOwnerManager:
 
 ^Tank:
 	AppearsOnRadar:
@@ -97,6 +98,7 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	TemporaryOwnerManager:
 
 ^Husk:
 	Health:
