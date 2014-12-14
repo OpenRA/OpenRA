@@ -16,7 +16,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	class DemoTruckInfo : TraitInfo<DemoTruck>, Requires<ExplodesInfo> { }
 

@@ -12,7 +12,7 @@ using System.Drawing;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Can be teleported via Chronoshift power.")]
 	public class ChronoshiftableInfo : ITraitInfo

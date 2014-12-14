@@ -9,6 +9,7 @@
 #endregion
 
 using Eluant;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 

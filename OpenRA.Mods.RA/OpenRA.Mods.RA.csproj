@@ -164,8 +164,8 @@
     <Compile Include="ExternalCaptures.cs" />
     <Compile Include="Cargo.cs" />
     <Compile Include="CashTrickler.cs" />
-    <Compile Include="ChronoshiftPaletteEffect.cs" />
-    <Compile Include="Chronoshiftable.cs" />
+    <Compile Include="Traits\PaletteEffects\ChronoshiftPaletteEffect.cs" />
+    <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="ConquestVictoryConditions.cs" />
     <Compile Include="Crate.cs" />
     <Compile Include="CrateAction.cs" />
@@ -179,7 +179,7 @@
     <Compile Include="Crates\LevelUpCrateAction.cs" />
     <Compile Include="Crates\RevealMapCrateAction.cs" />
     <Compile Include="Crates\SupportPowerCrateAction.cs" />
-    <Compile Include="DemoTruck.cs" />
+    <Compile Include="Traits\DemoTruck.cs" />
     <Compile Include="DetectCloaked.cs" />
     <Compile Include="Effects\GpsDot.cs" />
     <Compile Include="Effects\Parachute.cs" />
@@ -198,7 +198,7 @@
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
-    <Compile Include="MadTank.cs" />
+    <Compile Include="Traits\MadTank.cs" />
     <Compile Include="Mine.cs" />
     <Compile Include="Minelayer.cs" />
     <Compile Include="Move\Mobile.cs" />
@@ -216,7 +216,7 @@
     <Compile Include="Player\PlaceBuilding.cs" />
     <Compile Include="Player\ProductionQueue.cs" />
     <Compile Include="Player\MissionObjectives.cs" />
-    <Compile Include="PortableChrono.cs" />
+    <Compile Include="Traits\PortableChrono.cs" />
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Traits\World\DomainIndex.cs" />
     <Compile Include="Turreted.cs" />
@@ -254,8 +254,8 @@
     <Compile Include="StrategicVictoryConditions.cs" />
     <Compile Include="SupplyTruck.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />
-    <Compile Include="SupportPowers\ChronoshiftPower.cs" />
-    <Compile Include="SupportPowers\GpsPower.cs" />
+    <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
+    <Compile Include="Traits\SupportPowers\GpsPower.cs" />
     <Compile Include="SupportPowers\NukePower.cs" />
     <Compile Include="SupportPowers\ParatroopersPower.cs" />
     <Compile Include="SupportPowers\SupportPower.cs" />

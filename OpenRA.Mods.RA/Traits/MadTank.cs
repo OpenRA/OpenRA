@@ -19,7 +19,7 @@ using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	class MadTankInfo : ITraitInfo, Requires<ExplodesInfo>, Requires<RenderUnitInfo>
 	{
