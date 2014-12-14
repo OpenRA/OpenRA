@@ -10,11 +10,15 @@
 
 using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using Eluant;
+using OpenRA.Effects;
+using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Scripting;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
 {
@@ -40,33 +44,8 @@ namespace OpenRA.Mods.Common.Scripting
 			Sound.PlayNotification(world.Map.Rules, player, "Sounds", notification, player != null ? player.Country.Race : null);
 		}
 
-		Action onComplete;
-		[Desc("Play a VQA video including the file extension.")]
-		public void PlayMovieFullscreen(string movie, LuaFunction func = null)
-		{
-			if (func != null)
-			{
-				var f = func.CopyReference() as LuaFunction;
-				onComplete = () =>
-				{
-					try
-					{
-						using (f)
-							f.Call().Dispose();
-					}
-					catch (LuaException e)
-					{
-						Context.FatalError(e.Message);
-					}
-				};
-			}
-			else
-				onComplete = () => { };
-
-			Media.PlayFMVFullscreen(world, movie, onComplete);
-		}
-
 		MusicInfo previousMusic;
+		Action onComplete;
 		[Desc("Play track defined in music.yaml or keep it empty for a random song.")]
 		public void PlayMusic(string track = null, LuaFunction func = null)
 		{
@@ -78,10 +57,10 @@ namespace OpenRA.Mods.Common.Scripting
 				return;
 
 			var musicInfo = !string.IsNullOrEmpty(track) ? world.Map.Rules.Music[track]
-				: Game.Settings.Sound.Repeat && previousMusic != null ? previousMusic
-				: Game.Settings.Sound.Shuffle ? music.Random(Game.CosmeticRandom)
-				: previousMusic == null ? music.First()
-				: music.SkipWhile(s => s != previousMusic).Skip(1).First();
+			: Game.Settings.Sound.Repeat && previousMusic != null ? previousMusic
+			: Game.Settings.Sound.Shuffle ? music.Random(Game.CosmeticRandom)
+			: previousMusic == null ? music.First()
+			: music.SkipWhile(s => s != previousMusic).Skip(1).First();
 
 			if (func != null)
 			{
@@ -103,6 +82,7 @@ namespace OpenRA.Mods.Common.Scripting
 				onComplete = () => { };
 
 			Sound.PlayMusicThen(musicInfo, onComplete);
+
 			previousMusic = Sound.CurrentMusic;
 		}
 
@@ -112,13 +92,100 @@ namespace OpenRA.Mods.Common.Scripting
 			Sound.StopMusic();
 		}
 
+		Action onCompleteFullscreen;
+		[Desc("Play a VQA video fullscreen. File name has to include the file extension.")]
+		public void PlayMovieFullscreen(string movie, LuaFunction func = null)
+		{
+			if (func != null)
+			{
+				var f = func.CopyReference() as LuaFunction;
+				onCompleteFullscreen = () =>
+				{
+					try
+					{
+						using (f)
+							f.Call().Dispose();
+					}
+					catch (LuaException e)
+					{
+						Context.FatalError(e.Message);
+					}
+				};
+			}
+			else
+				onCompleteFullscreen = () => { };
+
+			Media.PlayFMVFullscreen(world, movie, onCompleteFullscreen);
+		}
+
+		Action onLoadComplete;
+		Action onCompleteRadar;
+		[Desc("Play a VQA video in the radar window.  File name has to include the file extension. Returns true on success, if the movie wasn't found the function returns false and the callback is executed.")]
+		public bool PlayMovieInRadar(string movie, LuaFunction playComplete = null)
+		{
+			if (playComplete != null)
+			{
+				var f = playComplete.CopyReference() as LuaFunction;
+				onCompleteRadar = () =>
+				{
+					try
+					{
+						using (f)
+							f.Call().Dispose();
+					}
+					catch (LuaException e)
+					{
+						Context.FatalError(e.Message);
+					}
+				};
+			}
+			else
+				onCompleteRadar = () => { };
+
+			Stream s = null;
+			try
+			{
+				s = GlobalFileSystem.Open(movie);
+			}
+			catch (FileNotFoundException e)
+			{
+				Log.Write("lua", "Couldn't play movie {0}! File doesn't exist.", e.FileName);
+				onCompleteRadar();
+				return false;
+			}
+
+			AsyncLoader l = new AsyncLoader(Media.LoadVqa);
+			IAsyncResult ar = l.BeginInvoke(s, null, null);
+			onLoadComplete = () =>
+			{
+				Media.StopFMVInRadar();
+				world.AddFrameEndTask(_ => Media.PlayFMVInRadar(world, l.EndInvoke(ar), onCompleteRadar));
+			};
+
+			world.AddFrameEndTask(w => w.Add(new AsyncAction(ar, onLoadComplete)));
+			return true;
+		}
+
 		[Desc("Display a text message to the player.")]
-		public void DisplayMessage(string text, string prefix = "Mission") // TODO: expose HSLColor to Lua and add as parameter
+		public void DisplayMessage(string text, string prefix = "Mission")
 		{
 			if (string.IsNullOrEmpty(text))
 				return;
 
-			Game.AddChatLine(Color.White, prefix, text);
-		}
+			Color c = Color.White;
+			Game.AddChatLine(c, prefix, text);
+		} // TODO: expose HSLColor to Lua and add as parameter
+
+		[Desc("Display a text message at the specified location.")]
+		public void FloatingText(string text, WPos position, int duration = 30)
+		{
+			if (string.IsNullOrEmpty(text) || !world.Map.Contains(world.Map.CellContaining(position)))
+				return;
+
+			Color c = Color.White;
+			world.AddFrameEndTask(w => w.Add(new FloatingText(position, c, text, duration)));
+		} // TODO: expose HSLColor to Lua and add as parameter
+
+		public delegate VqaReader AsyncLoader(Stream s);
 	}
 }

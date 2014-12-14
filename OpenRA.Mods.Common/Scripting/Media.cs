@@ -10,6 +10,7 @@
 
 using System;
 using System.IO;
+using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Scripting
@@ -55,6 +56,29 @@ namespace OpenRA.Mods.Common.Scripting
 				w.SetPauseState(false);
 				onComplete();
 			});
+		}
+
+		public static void PlayFMVInRadar(World w, VqaReader movie, Action onComplete)
+		{
+			var player = Ui.Root.Get<VqaPlayerWidget>("PLAYER");
+			player.Open(movie);
+
+			player.PlayThen(() =>
+			{
+				onComplete();
+				player.CloseVideo();
+			});
+		}
+
+		public static void StopFMVInRadar()
+		{
+			var player = Ui.Root.Get<VqaPlayerWidget>("PLAYER");
+			player.Stop();
+		}
+
+		public static VqaReader LoadVqa(Stream s)
+		{
+			return new VqaReader(s);
 		}
 	}
 }
