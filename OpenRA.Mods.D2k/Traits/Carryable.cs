@@ -12,9 +12,10 @@ using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.D2k.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k
+namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Can be carried by units with the trait `AutoCarryall`.")]
 	public class CarryableInfo : ITraitInfo
