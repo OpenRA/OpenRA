@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
 	public class ProductionTabsLogic
 	{
-		ProductionTabsWidget tabs;
+		readonly ProductionTabsWidget tabs;
 		readonly World world;
 
 		void SetupProductionGroupButton(ProductionTypeButtonWidget button)
