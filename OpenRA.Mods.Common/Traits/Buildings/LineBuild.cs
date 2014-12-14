@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Place the second actor in line to build more of the same at once (used for walls).")]
 	public class LineBuildInfo : TraitInfo<LineBuild>

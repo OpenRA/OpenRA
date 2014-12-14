@@ -141,7 +141,6 @@
     <Compile Include="EjectOnDeath.cs" />
     <Compile Include="AI\RushFuzzy.cs" />
     <Compile Include="AI\StateMachine.cs" />
-    <Compile Include="AppearsOnRadar.cs" />
     <Compile Include="Traits\AttackMove.cs" />
     <Compile Include="Attack\AttackBase.cs" />
     <Compile Include="Attack\AttackFrontal.cs" />
@@ -157,7 +156,6 @@
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Buildings\BuildingInfluence.cs" />
     <Compile Include="Buildings\FootprintUtils.cs" />
-    <Compile Include="Buildings\LineBuild.cs" />
     <Compile Include="Buildings\RepairableBuilding.cs" />
     <Compile Include="Buildings\Util.cs" />
     <Compile Include="Scripting\Properties\RepairableBuildingProperties.cs" />
@@ -229,7 +227,6 @@
     <Compile Include="ProductionBar.cs" />
     <Compile Include="ProximityCaptor.cs" />
     <Compile Include="ProximityCapturable.cs" />
-    <Compile Include="RadarColorFromTerrain.cs" />
     <Compile Include="Reloads.cs" />
     <Compile Include="RenderDetectionCircle.cs" />
     <Compile Include="RenderJammerCircle.cs" />
@@ -371,7 +368,6 @@
     <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
-    <Compile Include="Buildings\LineBuildNode.cs" />
     <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
     <Compile Include="Scripting\Properties\ProductionProperties.cs" />
     <Compile Include="Scripting\Properties\MissionObjectiveProperties.cs" />

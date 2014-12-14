@@ -106,10 +106,13 @@
     <Compile Include="Scripting\Properties\PowerProperties.cs" />
     <Compile Include="Scripting\Properties\ResourceProperties.cs" />
     <Compile Include="Scripting\Properties\UpgradeProperties.cs" />
+    <Compile Include="Traits\AppearsOnRadar.cs" />
     <Compile Include="Traits\BlocksBullets.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Buildings\BaseProvider.cs" />
     <Compile Include="Traits\Buildings\DeadBuildingState.cs" />
+    <Compile Include="Traits\Buildings\LineBuild.cs" />
+    <Compile Include="Traits\Buildings\LineBuildNode.cs" />
     <Compile Include="Traits\Buildings\RallyPoint.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\CustomBuildTimeValue.cs" />
@@ -141,6 +144,7 @@
     <Compile Include="Traits\Power\RequiresPower.cs" />
     <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
+    <Compile Include="Traits\RadarColorFromTerrain.cs" />
     <Compile Include="Traits\Render\RenderEditorOnly.cs" />
     <Compile Include="Traits\Render\RenderFlare.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
