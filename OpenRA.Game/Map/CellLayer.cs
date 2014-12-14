@@ -34,6 +34,17 @@ namespace OpenRA
 			entries = new T[size.Width * size.Height];
 		}
 
+		public void CopyValuesFrom(CellLayer<T> anotherLayer)
+		{
+			if (Size != anotherLayer.Size || Shape != anotherLayer.Shape)
+				throw new ArgumentException(
+					"layers must have a matching size and shape.", "anotherLayer");
+			if (CellEntryChanged != null)
+				throw new InvalidOperationException(
+					"Cannot copy values when there are listeners attached to the CellEntryChanged event.");
+			Array.Copy(anotherLayer.entries, entries, entries.Length);
+		}
+
 		// Resolve an array index from cell coordinates
 		int Index(CPos cell)
 		{
