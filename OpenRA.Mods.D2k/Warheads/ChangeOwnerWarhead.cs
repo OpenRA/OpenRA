@@ -10,9 +10,10 @@
 
 using System.Collections.Generic;
 using OpenRA.GameRules;
+using OpenRA.Mods.D2k.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k
+namespace OpenRA.Mods.D2k.Warheads
 {
 	[Desc("Interacts with the DynamicOwnerChange trait.")]
 	public class ChangeOwnerWarhead : Warhead

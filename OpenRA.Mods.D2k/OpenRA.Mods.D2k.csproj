@@ -68,32 +68,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttackSwallow.cs" />
-    <Compile Include="SwallowActor.cs" />
+    <Compile Include="Activities\CarryUnit.cs" />
+    <Compile Include="Activities\SwallowActor.cs" />
     <Compile Include="SpriteLoaders\R8Loader.cs" />
+    <Compile Include="Traits\AttackSwallow.cs" />
+    <Compile Include="Traits\AutoCarryall.cs" />
     <Compile Include="Traits\Buildings\DamagedWithoutFoundation.cs" />
+    <Compile Include="Traits\Carryable.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedOverlay.cs" />
     <Compile Include="Traits\Render\WithCrumbleOverlay.cs" />
-    <Compile Include="Traits\Render\WithProductionOverlay.cs" />
     <Compile Include="Traits\Render\WithDockingOverlay.cs" />
     <Compile Include="Traits\Render\WithDeliveryOverlay.cs" />
+    <Compile Include="Traits\Render\WithProductionOverlay.cs" />
+    <Compile Include="Traits\TemporaryOwnerManager.cs" />
     <Compile Include="Traits\ThrowsShrapnel.cs" />
     <Compile Include="Traits\World\ChooseBuildTabOnSelect.cs" />
-    <Compile Include="Traits\World\PaletteFromR8.cs" />
-    <Compile Include="Traits\World\FogPaletteFromR8.cs" />
     <Compile Include="Traits\World\D2kResourceLayer.cs" />
+    <Compile Include="Traits\World\FogPaletteFromR8.cs" />
+    <Compile Include="Traits\World\PaletteFromR8.cs" />
     <Compile Include="Traits\World\PaletteFromScaledPalette.cs" />
+    <Compile Include="Traits\World\WormManager.cs" />
+    <Compile Include="Warheads\ChangeOwnerWarhead.cs" />
+    <Compile Include="Widgets\BuildPaletteWidget.cs" />
+    <Compile Include="Widgets\Logic\IngameChromeLogic.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\SupportPowerBinWidget.cs" />
-    <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Widgets\SlidingContainerWidget.cs" />
-    <Compile Include="Widgets\Logic\IngameChromeLogic.cs" />
-    <Compile Include="AutoCarryall\AutoCarryall.cs" />
-    <Compile Include="AutoCarryall\Carryable.cs" />
-    <Compile Include="AutoCarryall\CarryUnit.cs" />
-    <Compile Include="WormManager.cs" />
-    <Compile Include="ChangeOwnerWarhead.cs" />
-    <Compile Include="TemporaryOwnerManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

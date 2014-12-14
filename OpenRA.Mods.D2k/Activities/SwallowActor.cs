@@ -14,10 +14,11 @@ using OpenRA.Activities;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.D2k.Traits;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k
+namespace OpenRA.Mods.D2k.Activities
 {
 	enum AttackState { Burrowed, EmergingAboveGround, ReturningUnderground }
 
