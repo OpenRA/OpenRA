@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;

@@ -49,6 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\Move\Drag.cs" />
+    <Compile Include="Activities\CallFunc.cs" />
+    <Compile Include="Activities\RemoveSelf.cs" />
+    <Compile Include="Activities\SimpleTeleport.cs" />
     <Compile Include="CommonTraitsInterfaces.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Bullet.cs" />

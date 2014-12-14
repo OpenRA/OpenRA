@@ -100,7 +100,6 @@
     <Compile Include="AcceptsSupplies.cs" />
     <Compile Include="Activities\Attack.cs" />
     <Compile Include="Activities\AttackMoveActivity.cs" />
-    <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\Demolish.cs" />
@@ -116,7 +115,6 @@
     <Compile Include="Activities\MoveAdjacentTo.cs" />
     <Compile Include="Activities\RAHarvesterDockSequence.cs" />
     <Compile Include="Activities\Rearm.cs" />
-    <Compile Include="Activities\RemoveSelf.cs" />
     <Compile Include="Activities\Repair.cs" />
     <Compile Include="Activities\RepairBuilding.cs" />
     <Compile Include="Activities\Sell.cs" />
@@ -428,7 +426,6 @@
     <Compile Include="Lint\CheckMapRules.cs" />
     <Compile Include="Activities\Air\HeliFlyCircle.cs" />
     <Compile Include="Render\Hovers.cs" />
-    <Compile Include="Activities\SimpleTeleport.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
