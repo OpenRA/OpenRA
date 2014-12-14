@@ -97,7 +97,7 @@
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
-    <Compile Include="AcceptsSupplies.cs" />
+    <Compile Include="Traits\AcceptsSupplies.cs" />
     <Compile Include="Activities\Attack.cs" />
     <Compile Include="Activities\AttackMoveActivity.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
@@ -133,7 +133,7 @@
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="Render\RenderUnitReload.cs" />
-    <Compile Include="TeslaZapRenderable.cs" />
+    <Compile Include="Graphics\TeslaZapRenderable.cs" />
     <Compile Include="GainsExperience.cs" />
     <Compile Include="Infiltration\InfiltrateForPowerOutage.cs" />
     <Compile Include="EjectOnDeath.cs" />
@@ -199,8 +199,8 @@
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
     <Compile Include="Traits\MadTank.cs" />
-    <Compile Include="Mine.cs" />
-    <Compile Include="Minelayer.cs" />
+    <Compile Include="Traits\Mine.cs" />
+    <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Move\Mobile.cs" />
     <Compile Include="Move\Move.cs" />
     <Compile Include="Move\PathFinder.cs" />
@@ -252,7 +252,7 @@
     <Compile Include="Disguise.cs" />
     <Compile Include="StoresResources.cs" />
     <Compile Include="StrategicVictoryConditions.cs" />
-    <Compile Include="SupplyTruck.cs" />
+    <Compile Include="Traits\SupplyTruck.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />
     <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="Traits\SupportPowers\GpsPower.cs" />
