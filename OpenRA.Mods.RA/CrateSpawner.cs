@@ -10,9 +10,10 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
