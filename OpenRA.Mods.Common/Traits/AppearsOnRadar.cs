@@ -13,7 +13,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	public class AppearsOnRadarInfo : ITraitInfo
 	{

@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("LineBuild actors attach to LineBuildNodes.")]
 	public class LineBuildNodeInfo : TraitInfo<LineBuildNode>
