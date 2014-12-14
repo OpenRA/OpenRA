@@ -67,6 +67,5 @@ namespace OpenRA
 		public Keycode Key;
 		public Modifiers Modifiers;
 		public int MultiTapCount;
-		public char UnicodeChar;
 	}
 }
