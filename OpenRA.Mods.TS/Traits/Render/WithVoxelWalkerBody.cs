@@ -41,12 +41,12 @@ namespace OpenRA.Mods.RA.Render
 			var voxel = VoxelProvider.GetVoxel(rv.Image, "idle");
 			frames = voxel.Frames;
 			rv.Add(new VoxelAnimation(voxel, () => WVec.Zero,
-			                           () => new[]{ body.QuantizeOrientation(self, self.Orientation) },
+			                           () => new[] { body.QuantizeOrientation(self, self.Orientation) },
 			                           () => false, () => frame));
 
 			// Selection size
 			var rvi = self.Info.Traits.Get<RenderVoxelsInfo>();
-			var s = (int)(rvi.Scale*voxel.Size.Aggregate(Math.Max));
+			var s = (int)(rvi.Scale * voxel.Size.Aggregate(Math.Max));
 			size = new int2(s, s);
 		}
 
