@@ -8,33 +8,22 @@
  */
 #endregion
 
-using System;
+using OpenRA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Activities
+namespace OpenRA.Mods.Common.Activities
 {
-	public class CallFunc : Activity
+	public class SimpleTeleport : Activity
 	{
-		public CallFunc(Action a) { this.a = a; }
-		public CallFunc(Action a, bool interruptable)
-		{
-			this.a = a;
-			this.interruptable = interruptable;
-		}
+		CPos destination;
 
-		Action a;
-		bool interruptable;
+		public SimpleTeleport(CPos destination) { this.destination = destination; }
 
 		public override Activity Tick(Actor self)
 		{
-			if (a != null) a();
+			self.Trait<IPositionable>().SetPosition(self, destination);
+			self.Generation++;
 			return NextActivity;
-		}
-
-		public override void Cancel(Actor self)
-		{
-			if (interruptable)
-				base.Cancel(self);
 		}
 	}
 }

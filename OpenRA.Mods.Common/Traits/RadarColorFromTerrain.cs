@@ -11,7 +11,7 @@
 using System.Drawing;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	public class RadarColorFromTerrainInfo : ITraitInfo
 	{

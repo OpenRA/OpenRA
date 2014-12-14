@@ -13,12 +13,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA;
-using OpenRA.Primitives;
-using OpenRA.Traits;
-using OpenRA.Scripting;
+using OpenRA.Activities;
 using OpenRA.Effects;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Traits;
+using OpenRA.Primitives;
+using OpenRA.Scripting;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {

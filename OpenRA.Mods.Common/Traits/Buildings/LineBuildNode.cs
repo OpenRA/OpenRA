@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -10,15 +10,14 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Activities
+namespace OpenRA.Mods.Common.Traits
 {
-	public class RemoveSelf : Activity
+	[Desc("LineBuild actors attach to LineBuildNodes.")]
+	public class LineBuildNodeInfo : TraitInfo<LineBuildNode>
 	{
-		public override Activity Tick(Actor self)
-		{
-			if (IsCanceled) return NextActivity;
-			self.Destroy();
-			return null;
-		}
+		[Desc("This actor is of LineBuild 'NodeType'...")]
+		public readonly string[] Types = { "wall" };
 	}
+
+	public class LineBuildNode {}
 }

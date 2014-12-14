@@ -14,7 +14,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	class ChronoshiftPowerInfo : SupportPowerInfo
 	{

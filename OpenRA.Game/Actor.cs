@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using Eluant;
 using Eluant.ObjectBinding;
+using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Scripting;

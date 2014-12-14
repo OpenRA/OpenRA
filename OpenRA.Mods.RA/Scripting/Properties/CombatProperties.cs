@@ -11,6 +11,8 @@
 using Eluant;
 using System;
 using System.Linq;
+using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Scripting;

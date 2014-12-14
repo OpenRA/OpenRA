@@ -10,12 +10,14 @@
 
 using System.Drawing;
 using System.Collections.Generic;
-using OpenRA.Traits;
-using OpenRA.Mods.RA.Orders;
-using OpenRA.Mods.RA.Activities;
+using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Orders;
+using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	class DemoTruckInfo : TraitInfo<DemoTruck>, Requires<ExplodesInfo> { }
 

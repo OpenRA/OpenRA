@@ -9,25 +9,16 @@
 #endregion
 
 using OpenRA.Activities;
-using OpenRA.Mods.RA.Traits;
-using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Activities
+namespace OpenRA.Mods.Common.Activities
 {
-	public class FlyCircle : Activity
+	public class RemoveSelf : Activity
 	{
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)
-				return NextActivity;
-
-			var plane = self.Trait<Plane>();
-
-			// We can't possibly turn this fast
-			var desiredFacing = plane.Facing + 64;
-			Fly.FlyToward(self, plane, desiredFacing, plane.Info.CruiseAltitude);
-
-			return this;
+			if (IsCanceled) return NextActivity;
+			self.Destroy();
+			return null;
 		}
 	}
 }
