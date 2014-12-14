@@ -127,6 +127,7 @@
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="ActorExts.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
+    <Compile Include="Attack\AttackTurreted.cs" />
     <Compile Include="Crates\DuplicateUnitCrateAction.cs" />
     <Compile Include="Crushable.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
@@ -137,7 +138,6 @@
     <Compile Include="TeslaZapRenderable.cs" />
     <Compile Include="GainsExperience.cs" />
     <Compile Include="Infiltration\InfiltrateForPowerOutage.cs" />
-    <Compile Include="Player\PlaceBeacon.cs" />
     <Compile Include="EjectOnDeath.cs" />
     <Compile Include="AI\RushFuzzy.cs" />
     <Compile Include="AI\StateMachine.cs" />
@@ -151,7 +151,6 @@
     <Compile Include="Attack\AttackOmni.cs" />
     <Compile Include="Attack\AttackPopupTurreted.cs" />
     <Compile Include="Attack\AttackCharge.cs" />
-    <Compile Include="Attack\AttackTurreted.cs" />
     <Compile Include="Attack\AttackWander.cs" />
     <Compile Include="AutoHeal.cs" />
     <Compile Include="AutoTarget.cs" />
@@ -207,7 +206,6 @@
     <Compile Include="MadTank.cs" />
     <Compile Include="Mine.cs" />
     <Compile Include="Minelayer.cs" />
-    <Compile Include="Move\Drag.cs" />
     <Compile Include="Move\Mobile.cs" />
     <Compile Include="Move\Move.cs" />
     <Compile Include="Move\PathFinder.cs" />
@@ -218,7 +216,6 @@
     <Compile Include="ParaDrop.cs" />
     <Compile Include="Passenger.cs" />
     <Compile Include="Player\PlayerStatistics.cs" />
-    <Compile Include="Player\ActorGroupProxy.cs" />
     <Compile Include="Player\AllyRepair.cs" />
     <Compile Include="Player\ClassicProductionQueue.cs" />
     <Compile Include="Player\PlaceBuilding.cs" />
@@ -226,6 +223,8 @@
     <Compile Include="Player\MissionObjectives.cs" />
     <Compile Include="PortableChrono.cs" />
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
+    <Compile Include="Traits\World\DomainIndex.cs" />
+    <Compile Include="Turreted.cs" />
     <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
     <Compile Include="Production.cs" />
     <Compile Include="ProductionBar.cs" />
@@ -294,7 +293,6 @@
     <Compile Include="Traits\Cloak.cs" />
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\HarvesterHuskModifier.cs" />
-    <Compile Include="Traits\Husk.cs" />
     <Compile Include="Traits\LeavesHusk.cs" />
     <Compile Include="Traits\Modifiers\FrozenUnderFog.cs" />
     <Compile Include="Traits\RepairsBridges.cs" />
@@ -302,13 +300,11 @@
     <Compile Include="Traits\TargetableUnit.cs" />
     <Compile Include="Traits\World\BridgeLayer.cs" />
     <Compile Include="Traits\World\BuildableTerrainLayer.cs" />
-    <Compile Include="Traits\World\DomainIndex.cs" />
     <Compile Include="Traits\World\PathfinderDebugOverlay.cs" />
     <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="TransformOnCapture.cs" />
     <Compile Include="TransformOnPassenger.cs" />
     <Compile Include="Transforms.cs" />
-    <Compile Include="Turreted.cs" />
     <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />
     <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
@@ -346,7 +342,6 @@
     <Compile Include="RenderShroudCircle.cs" />
     <Compile Include="Infiltration\Infiltrates.cs" />
     <Compile Include="Armament.cs" />
-    <Compile Include="Buildings\BaseProvider.cs" />
     <Compile Include="Widgets\Logic\ObserverShroudSelectorLogic.cs" />
     <Compile Include="Activities\RepairBridge.cs" />
     <Compile Include="Lint\CheckSequences.cs" />
@@ -354,11 +349,6 @@
     <Compile Include="Widgets\Logic\ClientTooltipLogic.cs" />
     <Compile Include="Render\WithTurret.cs" />
     <Compile Include="Render\WithBarrel.cs" />
-    <Compile Include="VoxelNormalsPalette.cs" />
-    <Compile Include="Render\RenderVoxels.cs" />
-    <Compile Include="Render\WithVoxelTurret.cs" />
-    <Compile Include="Render\WithVoxelBody.cs" />
-    <Compile Include="Render\WithVoxelBarrel.cs" />
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
     <Compile Include="Render\WithHarvestAnimation.cs" />
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />

@@ -14,7 +14,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Limits the zone where buildings can be constructed to a radius around this actor.")]
 	public class BaseProviderInfo : ITraitInfo

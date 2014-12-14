@@ -10,14 +10,14 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.RA.Move;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawns remains of a husk actor with the correct facing.")]
-	class HuskInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo
+	public class HuskInfo : IOccupySpaceInfo, IFacingInfo
 	{
 		public readonly string[] AllowedTerrain = { };
 
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Traits
 		public int GetInitialFacing() { return 128; }
 	}
 
-	class Husk : IPositionable, IFacing, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisable
+	public class Husk : IPositionable, IFacing, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisable
 	{
 		readonly HuskInfo info;
 		readonly Actor self;

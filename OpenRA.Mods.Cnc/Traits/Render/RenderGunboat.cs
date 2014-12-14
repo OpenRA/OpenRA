@@ -11,9 +11,10 @@
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.RA;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Cnc.Traits
 {
 	class RenderGunboatInfo : RenderSpritesInfo, IQuantizeBodyOrientationInfo, Requires<IBodyOrientationInfo>
 	{
