@@ -13,7 +13,7 @@ using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Apply palette full screen rotations during chronoshifts. Add this to the world actor.")]
 	class ChronoshiftPaletteEffectInfo : TraitInfo<ChronoshiftPaletteEffect> { }
