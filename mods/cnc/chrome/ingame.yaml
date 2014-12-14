@@ -314,6 +314,12 @@ Container@PLAYER_WIDGETS:
 							WorldInteractionController: INTERACTION_CONTROLLER
 							Children:
 								LogicTicker@RADAR_TICKER:
+						VqaPlayer@PLAYER:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							Skippable: false
 				Background@POWERBAR_PANEL:
 					Logic: IngamePowerBarLogic
 					X: 4

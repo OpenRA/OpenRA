@@ -51,6 +51,11 @@ Container@PLAYER_WIDGETS:
 					X: 9
 					Width: 192
 					Height: 192
+				VqaPlayer@PLAYER:
+					X: 9
+					Width: 192
+					Height: 192
+					Skippable: false
 				ResourceBar@POWERBAR:
 					Logic: IngamePowerBarLogic
 					X: 42
