@@ -8,11 +8,12 @@
  */
 #endregion
 
+using OpenRA.Activities;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
-using OpenRA.Mods.Common;
 
 namespace OpenRA.Mods.RA.Render
 {

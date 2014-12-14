@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Support;
 
 namespace OpenRA.Traits

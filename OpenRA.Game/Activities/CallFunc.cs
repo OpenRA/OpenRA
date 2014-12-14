@@ -9,9 +9,8 @@
 #endregion
 
 using System;
-using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Activities
+namespace OpenRA.Activities
 {
 	public class CallFunc : Activity
 	{
