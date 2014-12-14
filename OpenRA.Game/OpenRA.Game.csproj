@@ -81,6 +81,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\Activity.cs" />
+    <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="GameRules\Warhead.cs" />
     <Compile Include="Graphics\QuadRenderer.cs" />
@@ -146,7 +148,6 @@
     <Compile Include="Support\Program.cs" />
     <Compile Include="Sync.cs" />
     <Compile Include="TraitDictionary.cs" />
-    <Compile Include="Traits\Activity.cs" />
     <Compile Include="Traits\Armor.cs" />
     <Compile Include="Traits\CreatesShroud.cs" />
     <Compile Include="Traits\DrawLineToTarget.cs" />

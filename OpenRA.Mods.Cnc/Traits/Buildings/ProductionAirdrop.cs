@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;

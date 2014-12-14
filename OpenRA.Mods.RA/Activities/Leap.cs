@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.GameRules;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;

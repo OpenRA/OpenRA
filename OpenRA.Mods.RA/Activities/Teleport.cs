@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;

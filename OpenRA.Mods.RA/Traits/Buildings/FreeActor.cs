@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
