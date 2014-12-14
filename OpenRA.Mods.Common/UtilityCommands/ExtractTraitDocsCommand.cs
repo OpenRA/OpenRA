@@ -84,6 +84,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						doc.Append(line + " ");
 					doc.AppendLine("</td></tr>");
 				}
+
 				doc.AppendLine("</table>");
 			}
 

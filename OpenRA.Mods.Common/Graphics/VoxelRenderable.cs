@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable AsDecoration() { return this; }
 
 		// This will need generalizing once we support TS/RA2 terrain
-		static readonly float[] groundNormal = new float[] {0,0,1,1};
+		static readonly float[] groundNormal = new float[] { 0, 0, 1, 1 };
 		public void BeforeRender(WorldRenderer wr)
 		{
 			var draw = voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Graphics
 			var groundZ = ts.Height * (groundPos.Z - pos.Z) / 1024f;
 
 			var pxOrigin = wr.ScreenPosition(pos);
-			var shadowOrigin = pxOrigin - groundZ*(new float2(renderProxy.ShadowDirection, 1));
+			var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
 
 			var psb = renderProxy.ProjectedShadowBounds;
 			var sa = shadowOrigin + psb[0];
@@ -115,17 +115,17 @@ namespace OpenRA.Mods.Common.Graphics
 			var sc = shadowOrigin + psb[1];
 			var sd = shadowOrigin + psb[3];
 			Game.Renderer.WorldRgbaSpriteRenderer.DrawSprite(renderProxy.ShadowSprite, sa, sb, sc, sd);
-			Game.Renderer.WorldRgbaSpriteRenderer.DrawSprite(renderProxy.Sprite, pxOrigin - 0.5f*renderProxy.Sprite.size);
+			Game.Renderer.WorldRgbaSpriteRenderer.DrawSprite(renderProxy.Sprite, pxOrigin - 0.5f * renderProxy.Sprite.size);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
 			var pxOrigin = wr.ScreenPosition(pos);
-			var groundZ = 0.5f*(pxOrigin.Y - wr.ScreenZPosition(pos, 0));
-			var shadowOrigin = pxOrigin - groundZ*(new float2(renderProxy.ShadowDirection, 1));
+			var groundZ = 0.5f * (pxOrigin.Y - wr.ScreenZPosition(pos, 0));
+			var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
 
 			// Draw sprite rect
-			var offset = pxOrigin + renderProxy.Sprite.offset - 0.5f*renderProxy.Sprite.size;
+			var offset = pxOrigin + renderProxy.Sprite.offset - 0.5f * renderProxy.Sprite.size;
 			Game.Renderer.WorldLineRenderer.DrawRect(offset, offset + renderProxy.Sprite.size, Color.Red);
 
 			// Draw transformed shadow sprite rect
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var bounds = v.Voxel.Bounds(v.FrameFunc());
 				var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
-					(x,y) => Util.MatrixMultiply(x, Util.MakeFloatMatrix(y.AsMatrix())));
+					(x, y) => Util.MatrixMultiply(x, Util.MakeFloatMatrix(y.AsMatrix())));
 
 				var pxOffset = wr.ScreenVector(v.OffsetFunc());
 				var pxPos = pxOrigin + new float2(pxOffset[0], pxOffset[1]);
@@ -154,15 +154,15 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 		}
 
-		static readonly uint[] ix = new uint[] {0,0,0,0,3,3,3,3};
-		static readonly uint[] iy = new uint[] {1,1,4,4,1,1,4,4};
-		static readonly uint[] iz = new uint[] {2,5,2,5,2,5,2,5};
+		static readonly uint[] ix = new uint[] { 0, 0, 0, 0, 3, 3, 3, 3 };
+		static readonly uint[] iy = new uint[] { 1, 1, 4, 4, 1, 1, 4, 4 };
+		static readonly uint[] iz = new uint[] { 2, 5, 2, 5, 2, 5, 2, 5 };
 		static void DrawBoundsBox(float2 pxPos, float[] transform, float[] bounds, Color c)
 		{
 			var corners = new float2[8];
 			for (var i = 0; i < 8; i++)
 			{
-				var vec = new float[] {bounds[ix[i]], bounds[iy[i]], bounds[iz[i]], 1};
+				var vec = new float[] { bounds[ix[i]], bounds[iy[i]], bounds[iz[i]], 1 };
 				var screen = Util.MatrixVectorMultiply(transform, vec);
 				corners[i] = pxPos + new float2(screen[0], screen[1]);
 			}

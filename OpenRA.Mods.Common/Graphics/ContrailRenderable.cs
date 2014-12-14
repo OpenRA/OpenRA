@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly int zOffset;
 
 		public ContrailRenderable(World world, Color color, int length, int skip, int zOffset)
-			: this(world, new WPos[length], 0, 0, skip, color, zOffset) {}
+			: this(world, new WPos[length], 0, 0, skip, color, zOffset) { }
 
 		ContrailRenderable(World world, WPos[] trail, int next, int length, int skip, Color color, int zOffset)
 		{
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Graphics
 			this.zOffset = zOffset;
 		}
 
-		public WPos Pos { get { return trail[idx(next-1)]; } }
+		public WPos Pos { get { return trail[idx(next - 1)]; } }
 		public float Scale { get { return 1f; } }
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable OffsetBy(WVec vec) { return new ContrailRenderable(world, trail.Select(pos => pos + vec).ToArray(), next, length, skip, color, zOffset); }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) {}
+		public void BeforeRender(WorldRenderer wr) { }
 		public void Render(WorldRenderer wr)
 		{
 			// Need at least 4 points to smooth the contrail over
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Graphics
 			for (var i = 0; i < length - skip - 4; i++)
 			{
 				var j = next - skip - i - 2;
-				var nextPos = Average(trail[idx(j)], trail[idx(j-1)], trail[idx(j-2)], trail[idx(j-3)]);
+				var nextPos = Average(trail[idx(j)], trail[idx(j - 1)], trail[idx(j - 2)], trail[idx(j - 3)]);
 				var nextCell = wr.world.Map.CellContaining(nextPos);
 				var nextColor = Exts.ColorLerp(i * 1f / (length - 4), color, Color.Transparent);
 
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Graphics
 			wlr.LineWidth = oldWidth;
 		}
 
-		public void RenderDebugGeometry(WorldRenderer wr) {}
+		public void RenderDebugGeometry(WorldRenderer wr) { }
 
 		// Array index modulo length
 		int idx(int i)
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public void Update(WPos pos)
 		{
 			trail[next] = pos;
-			next = idx(next+1);
+			next = idx(next + 1);
 
 			if (length < trail.Length)
 				length++;

@@ -49,19 +49,13 @@ namespace OpenRA.Mods.Common.Widgets
 			Func<bool> doValidate = null;
 			ButtonWidget acceptButton = null, cancelButton = null;
 
-			//
 			// Title
-			//
 			panel.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
 
-			//
 			// Prompt
-			//
 			panel.Get<LabelWidget>("PROMPT_TEXT").GetText = () => prompt;
 
-			//
 			// Text input
-			//
 			var input = panel.Get<TextFieldWidget>("INPUT_TEXT");
 			var isValid = false;
 			input.Text = initialText;
@@ -86,9 +80,7 @@ namespace OpenRA.Mods.Common.Widgets
 			input.CursorPosition = input.Text.Length;
 			input.OnTextEdited = () => doValidate();
 
-			//
 			// Buttons
-			//
 			acceptButton = panel.Get<ButtonWidget>("ACCEPT_BUTTON");
 			if (!string.IsNullOrEmpty(acceptText))
 				acceptButton.GetText = () => acceptText;
@@ -113,9 +105,7 @@ namespace OpenRA.Mods.Common.Widgets
 					onCancel();
 			};
 
-			//
 			// Validation
-			//
 			doValidate = () =>
 			{
 				if (inputValidator == null)

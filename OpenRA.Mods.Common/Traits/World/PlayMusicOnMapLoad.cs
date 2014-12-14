@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void PlayMusic()
 		{
-			var onComplete = info.Loop ? (Action)PlayMusic : () => {};
+			var onComplete = info.Loop ? (Action)PlayMusic : () => { };
 
 			if (Game.Settings.Sound.MapMusic &&
 				world.Map.Rules.Music.ContainsKey(info.Music))
@@ -48,4 +48,3 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 }
-

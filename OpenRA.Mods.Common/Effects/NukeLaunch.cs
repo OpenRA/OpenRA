@@ -59,7 +59,6 @@ namespace OpenRA.Mods.Common.Effects
 				ticks = turn;
 		}
 
-
 		public void Tick(World world)
 		{
 			anim.Tick();

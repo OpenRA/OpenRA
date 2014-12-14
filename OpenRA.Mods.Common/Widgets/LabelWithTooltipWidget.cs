@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (TooltipContainer == null)
 				return;
 
-			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() {{ "getText", GetTooltipText }});
+			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "getText", GetTooltipText } });
 		}
 
 		public override void MouseExited()

@@ -36,8 +36,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 			// Mute world sounds
 			var oldModifier = Sound.SoundVolumeModifier;
+
 			// TODO: this also modifies vqa audio
-			//Sound.SoundVolumeModifier = 0f;
+			// Sound.SoundVolumeModifier = 0f;
 
 			// Stop music while fmv plays
 			var music = Sound.MusicPlaying;

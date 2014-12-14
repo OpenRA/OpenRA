@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common
 	}
 
 	public interface INotifyChat { bool OnChat(string from, string message); }
-	public interface IRenderActorPreviewInfo { IEnumerable<IActorPreview> RenderPreview (ActorPreviewInitializer init); }
+	public interface IRenderActorPreviewInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo { WRange GetCruiseAltitude(); }
 
 	public interface IUpgradable
@@ -46,9 +46,9 @@ namespace OpenRA.Mods.Common
 
 	public interface ITechTreeElement
 	{
-		void PrerequisitesAvailable (string key);
-		void PrerequisitesUnavailable (string key);
-		void PrerequisitesItemHidden (string key);
-		void PrerequisitesItemVisible (string key);
+		void PrerequisitesAvailable(string key);
+		void PrerequisitesUnavailable(string key);
+		void PrerequisitesItemHidden(string key);
+		void PrerequisitesItemVisible(string key);
 	}
 }

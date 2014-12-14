@@ -269,7 +269,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			for (var j = 0; j < mapSize; j++)
 				for (var i = 0; i < mapSize; i++)
 					map.MapTiles.Value[new CPos(i, j)] = new TerrainTile(types[i, j], ms.ReadUInt8());
-
 		}
 
 		void UnpackRAOverlayData(MemoryStream ms)

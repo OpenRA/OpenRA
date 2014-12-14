@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<bool> IsEnabled = () => true;
 		public Action AfterOpen = () => { };
 		public Action AfterClose = () => { };
-		public Action<float> Animating = _ => {};
+		public Action<float> Animating = _ => { };
 
 		float radarMinimapHeight;
 		int frame;

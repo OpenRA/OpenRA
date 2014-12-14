@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable OffsetBy(WVec vec) { return new BeamRenderable(pos + vec, zOffset, length, width, color); }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) {}
+		public void BeforeRender(WorldRenderer wr) { }
 		public void Render(WorldRenderer wr)
 		{
 			var wlr = Game.Renderer.WorldLineRenderer;
@@ -55,6 +55,6 @@ namespace OpenRA.Mods.Common.Graphics
 			wlr.LineWidth = oldWidth;
 		}
 
-		public void RenderDebugGeometry(WorldRenderer wr) {}
+		public void RenderDebugGeometry(WorldRenderer wr) { }
 	}
 }

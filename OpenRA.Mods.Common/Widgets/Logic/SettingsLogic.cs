@@ -333,6 +333,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var productionTemplate = hotkeyList.Get("PRODUCTION_TEMPLATE");
 			hotkeyList.RemoveChildren();
 
+			Func<bool> returnTrue = () => true;
+			Action doNothing = () => { };
+
 			// Game
 			{
 				var hotkeys = new Dictionary<string, string>()
@@ -358,7 +361,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
 				};
 
-				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
 				header.Get<LabelWidget>("LABEL").GetText = () => "Game Commands";
 				hotkeyList.AddChild(header);
 
@@ -374,7 +377,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "ObserverWorldView", "Disable Shroud" }
 				};
 
-				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
 				header.Get<LabelWidget>("LABEL").GetText = () => "Observer Commands";
 				hotkeyList.AddChild(header);
 
@@ -394,7 +397,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "GuardKey", "Guard" }
 				};
 
-				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
 				header.Get<LabelWidget>("LABEL").GetText = () => "Unit Commands";
 				hotkeyList.AddChild(header);
 
@@ -408,7 +411,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				for (var i = 1; i <= 24; i++)
 					hotkeys.Add("Production{0:D2}Key".F(i), "Slot {0}".F(i));
 
-				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
 				header.Get<LabelWidget>("LABEL").GetText = () => "Production Commands";
 				hotkeyList.AddChild(header);
 
@@ -423,7 +426,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "DevReloadChromeKey", "Reload Chrome" }
 				};
 
-				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
 				header.Get<LabelWidget>("LABEL").GetText = () => "Developer commands";
 				hotkeyList.AddChild(header);
 

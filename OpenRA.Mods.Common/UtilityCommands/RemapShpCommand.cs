@@ -14,11 +14,11 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using OpenRA.Traits;
-using OpenRA.Graphics;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.SpriteLoaders;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {

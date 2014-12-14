@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ProvidesTechPrerequisiteInfo : ITraitInfo
 	{
 		public readonly string Name;
-		public readonly string[] Prerequisites = {};
+		public readonly string[] Prerequisites = { };
 
 		public object Create(ActorInitializer init) { return new ProvidesTechPrerequisite(this, init); }
 	}

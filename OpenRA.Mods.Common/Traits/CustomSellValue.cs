@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public static class CustomSellValueExts
 	{
-		public static int GetSellValue( this Actor a )
+		public static int GetSellValue(this Actor a)
 		{
 			var csv = a.Info.Traits.GetOrDefault<CustomSellValueInfo>();
 			if (csv != null) return csv.Value;

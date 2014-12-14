@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			world = context.World;
 		}
+
 		[Desc("Play an announcer voice listed in notifications.yaml")]
 		public void PlaySpeechNotification(Player player, string notification)
 		{
