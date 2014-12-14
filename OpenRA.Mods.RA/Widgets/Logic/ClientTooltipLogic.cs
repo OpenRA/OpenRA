@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Net;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -76,7 +77,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			latency.GetText = () => LobbyUtils.LatencyDescription(ping);
 			latency.GetColor = () => LobbyUtils.LatencyColor(ping);
 			var address = orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress;
-			if (address == "127.0.0.1" && UPnP.NatDevice != null)
+			if (address == IPAddress.Loopback.ToString() && UPnP.NatDevice != null)
 				address = UPnP.NatDevice.GetExternalIP().ToString();
 			var cachedDescriptiveIP = LobbyUtils.DescriptiveIpAddress(address);
 			ip.GetText = () => cachedDescriptiveIP;
