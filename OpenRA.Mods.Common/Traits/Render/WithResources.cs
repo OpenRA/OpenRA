@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 				anim, null, () => !buildComplete, 1024));
 		}
 
-		public void BuildingComplete( Actor self )
+		public void BuildingComplete(Actor self)
 		{
 			buildComplete = true;
 		}

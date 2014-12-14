@@ -12,8 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
-using OpenRA.Traits;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
 {
@@ -42,16 +42,12 @@ namespace OpenRA.Mods.Common
 
 			if (isAir && !isDirectHit)
 				return ImpactType.Air;
-
 			else if (isWater && !isDirectHit)
 				return ImpactType.Water;
-
 			else if (isAir && isDirectHit)
 				return ImpactType.AirHit;
-
 			else if (isWater && isDirectHit)
 				return ImpactType.WaterHit;
-
 			else if (isDirectHit)
 				return ImpactType.GroundHit;
 

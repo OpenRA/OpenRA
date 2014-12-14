@@ -13,9 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
-using PowerTrait = OpenRA.Mods.Common.Traits.Power;
 using OpenRA.Scripting;
 using OpenRA.Traits;
+using PowerTrait = OpenRA.Mods.Common.Traits.Power;
 
 namespace OpenRA.Mods.Common.Scripting
 {

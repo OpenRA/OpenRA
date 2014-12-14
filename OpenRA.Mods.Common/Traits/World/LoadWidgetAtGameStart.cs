@@ -21,21 +21,21 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new LoadWidgetAtGameStart(this); }
 	}
 
-	public class LoadWidgetAtGameStart: IWorldLoaded
+	public class LoadWidgetAtGameStart : IWorldLoaded
 	{
-		readonly LoadWidgetAtGameStartInfo Info;
-		public LoadWidgetAtGameStart(LoadWidgetAtGameStartInfo Info)
+		readonly LoadWidgetAtGameStartInfo info;
+		public LoadWidgetAtGameStart(LoadWidgetAtGameStartInfo info)
 		{
-			this.Info = Info;
+			this.info = info;
 		}
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
 			// Clear any existing widget state
-			if (Info.ClearRoot)
+			if (info.ClearRoot)
 				Ui.ResetAll();
 
-			Game.LoadWidget(world, Info.Widget, Ui.Root, new WidgetArgs());
+			Game.LoadWidget(world, info.Widget, Ui.Root, new WidgetArgs());
 		}
 	}
 }

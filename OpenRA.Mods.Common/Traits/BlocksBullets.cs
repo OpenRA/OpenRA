@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	//TODO: Add functionality like a customizable Height that is compared to projectile altitude
+	// TODO: Add functionality like a customizable Height that is compared to projectile altitude
 	[Desc("This actor blocks bullets and missiles without 'High' property.")]
 	public class BlocksBulletsInfo : TraitInfo<BlocksBullets> { }
 	public class BlocksBullets : IBlocksBullets { }

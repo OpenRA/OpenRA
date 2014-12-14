@@ -94,7 +94,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				catch (Exception) { }
 			}
 
-
 			ModMetadata initialMod = null;
 			ModMetadata.AllMods.TryGetValue(Game.Settings.Game.PreviousMod, out initialMod);
 			SelectMod(initialMod ?? ModMetadata.AllMods["ra"]);

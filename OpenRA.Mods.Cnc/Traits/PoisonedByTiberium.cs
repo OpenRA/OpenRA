@@ -9,11 +9,11 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Traits;
-using OpenRA.Mods.RA;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.RA;
+using OpenRA.Mods.RA.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {

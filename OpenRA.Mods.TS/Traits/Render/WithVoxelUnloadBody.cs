@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
 			var voxel = VoxelProvider.GetVoxel(image, "idle");
 			yield return new VoxelAnimation(voxel, () => WVec.Zero,
-				() => new[]{ body.QuantizeOrientation(orientation, facings) },
+				() => new[] { body.QuantizeOrientation(orientation, facings) },
 				() => false, () => 0);
 		}
 
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Render
 
 			var idleVoxel = VoxelProvider.GetVoxel(rv.Image, info.IdleSequence);
 			rv.Add(new VoxelAnimation(idleVoxel, () => WVec.Zero,
-				() => new[]{ body.QuantizeOrientation(self, self.Orientation) },
+				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => Docked,
 				() => 0));
 
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Render
 
 			var unloadVoxel = VoxelProvider.GetVoxel(rv.Image, info.UnloadSequence);
 			rv.Add(new VoxelAnimation(unloadVoxel, () => WVec.Zero,
-				() => new[]{ body.QuantizeOrientation(self, self.Orientation) },
+				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => !Docked,
 				() => 0));
 		}

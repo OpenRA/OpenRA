@@ -8,10 +8,10 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 
@@ -36,11 +36,11 @@ namespace OpenRA.Mods.TS.UtilityCommands
 
 			var terrainTypes = new Dictionary<int, string>()
 			{
-				{  1, "Clear" }, // Desert sand(?)
-				{  5, "Road" }, // Paved road
-				{  6, "Rail" }, // Monorail track
-				{  7, "Impassable" }, // Building
-				{  9, "Water" }, // Deep water(?)
+				{ 1, "Clear" }, // Desert sand(?)
+				{ 5, "Road" }, // Paved road
+				{ 6, "Rail" }, // Monorail track
+				{ 7, "Impassable" }, // Building
+				{ 9, "Water" }, // Deep water(?)
 				{ 10, "Water" }, // Shallow water
 				{ 11, "Road" }, // Paved road (again?)
 				{ 12, "DirtRoad" }, // Dirt road
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			// Loop over template sets
 			try
 			{
-				for (var tilesetGroupIndex = 0; ; tilesetGroupIndex++)
+				for (var tilesetGroupIndex = 0;; tilesetGroupIndex++)
 				{
 					var section = file.GetSection("TileSet{0:D4}".F(tilesetGroupIndex));
 

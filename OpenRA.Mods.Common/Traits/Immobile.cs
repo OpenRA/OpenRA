@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 			position = init.world.Map.CenterOfCell(location);
 
 			if (info.OccupiesSpace)
-				occupied = new [] { Pair.New(TopLeft, SubCell.FullCell) };
+				occupied = new[] { Pair.New(TopLeft, SubCell.FullCell) };
 			else
 				occupied = new Pair<CPos, SubCell>[0];
 		}

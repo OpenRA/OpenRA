@@ -205,7 +205,7 @@ namespace OpenRA.Mods.Common.Server
 			var client = server.GetClient(conn);
 
 			// Validate whether color is allowed and get an alternative if it isn't
-			if (client.Slot == null ||!server.LobbyInfo.Slots[client.Slot].LockColor)
+			if (client.Slot == null || !server.LobbyInfo.Slots[client.Slot].LockColor)
 				client.Color = ColorValidator.ValidatePlayerColorAndGetAlternative(server, client.Color, client.Index);
 		}
 

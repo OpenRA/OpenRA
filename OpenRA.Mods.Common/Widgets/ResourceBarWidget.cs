@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			Func<string> getText = () => TooltipFormat.F(GetUsed(), GetProvided());
-			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() {{ "getText", getText }});
+			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "getText", getText } });
 		}
 
 		public override void MouseExited()
@@ -67,8 +67,8 @@ namespace OpenRA.Mods.Common.Widgets
 			while (max >= scaleBy)
 				scaleBy *= 2;
 
-			var providedFrac = providedLerp.Update(provided/scaleBy);
-			var usedFrac = usedLerp.Update(used/scaleBy);
+			var providedFrac = providedLerp.Update(provided / scaleBy);
+			var usedFrac = usedLerp.Update(used / scaleBy);
 
 			var b = RenderBounds;
 			var indicator = ChromeProvider.GetImage(IndicatorCollection, IndicatorImage);
@@ -83,10 +83,10 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						color = (i - 1 < b.Height / 2) ? color : colorDark;
 						var bottom = new float2(b.Left + i, b.Bottom);
-						var top = new float2(b.Left + i, b.Bottom + providedFrac*b.Height);
+						var top = new float2(b.Left + i, b.Bottom + providedFrac * b.Height);
 
 						// Indent corners
-						if ((i == 0 || i == b.Width - 1) && providedFrac*b.Height > 1)
+						if ((i == 0 || i == b.Width - 1) && providedFrac * b.Height > 1)
 						{
 							bottom.Y += 1;
 							top.Y -= 1;
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 				else
 					Game.Renderer.LineRenderer.FillRect(new Rectangle(b.X, (int)float2.Lerp(b.Bottom, b.Top, providedFrac),
-					                                                  b.Width, (int)(providedFrac*b.Height)), color);
+					                                                  b.Width, (int)(providedFrac * b.Height)), color);
 
 				var x = (b.Left + b.Right - indicator.size.X) / 2;
 				var y = float2.Lerp(b.Bottom, b.Top, usedFrac) - indicator.size.Y / 2;
@@ -112,10 +112,10 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						color = (i - 1 < b.Height / 2) ? color : colorDark;
 						var left = new float2(b.Left, b.Top + i);
-						var right = new float2(b.Left + providedFrac*b.Width, b.Top + i);
+						var right = new float2(b.Left + providedFrac * b.Width, b.Top + i);
 
 						// Indent corners
-						if ((i == 0 || i == b.Height - 1) && providedFrac*b.Width > 1)
+						if ((i == 0 || i == b.Height - 1) && providedFrac * b.Width > 1)
 						{
 							left.X += 1;
 							right.X -= 1;
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 				}
 				else
-					Game.Renderer.LineRenderer.FillRect(new Rectangle(b.X, b.Y, (int)(providedFrac*b.Width), b.Height), color);
+					Game.Renderer.LineRenderer.FillRect(new Rectangle(b.X, b.Y, (int)(providedFrac * b.Width), b.Height), color);
 
 				var x = float2.Lerp(b.Left, b.Right, usedFrac) - indicator.size.X / 2;
 				var y = (b.Bottom + b.Top - indicator.size.Y) / 2;

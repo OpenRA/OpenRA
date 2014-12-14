@@ -43,10 +43,10 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable OffsetBy(WVec vec) { return new TextRenderable(font, pos + vec, zOffset, color, text); }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) {}
+		public void BeforeRender(WorldRenderer wr) { }
 		public void Render(WorldRenderer wr)
 		{
-			var screenPos = wr.Viewport.Zoom*(wr.ScreenPosition(pos) - wr.Viewport.TopLeft.ToFloat2()) - 0.5f*font.Measure(text).ToFloat2();
+			var screenPos = wr.Viewport.Zoom * (wr.ScreenPosition(pos) - wr.Viewport.TopLeft.ToFloat2()) - 0.5f * font.Measure(text).ToFloat2();
 			var screenPxPos = new float2((float)Math.Round(screenPos.X), (float)Math.Round(screenPos.Y));
 			font.DrawTextWithContrast(text, screenPxPos, color, Color.Black, 1);
 		}
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
 			var size = font.Measure(text).ToFloat2();
-			var offset = wr.ScreenPxPosition(pos) - 0.5f*size;
+			var offset = wr.ScreenPxPosition(pos) - 0.5f * size;
 			Game.Renderer.WorldLineRenderer.DrawRect(offset, offset + size, Color.Red);
 		}
 	}

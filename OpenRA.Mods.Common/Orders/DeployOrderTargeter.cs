@@ -18,12 +18,12 @@ namespace OpenRA.Mods.Common.Orders
 	{
 		readonly Func<bool> useDeployCursor;
 
-		public DeployOrderTargeter( string order, int priority )
-			: this( order, priority, () => true )
+		public DeployOrderTargeter(string order, int priority)
+			: this(order, priority, () => true)
 		{
 		}
 
-		public DeployOrderTargeter( string order, int priority, Func<bool> useDeployCursor )
+		public DeployOrderTargeter(string order, int priority, Func<bool> useDeployCursor)
 		{
 			this.OrderID = order;
 			this.OrderPriority = priority;

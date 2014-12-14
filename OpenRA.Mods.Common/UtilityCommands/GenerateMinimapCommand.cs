@@ -13,8 +13,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using OpenRA.Graphics;
 using OpenRA.FileSystem;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {

@@ -75,4 +75,3 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 	}
 }
-
