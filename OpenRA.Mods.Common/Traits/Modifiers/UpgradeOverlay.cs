@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class UpgradeOverlay : UpgradableTrait<UpgradeOverlayInfo>, IRenderModifier
 	{
 		public UpgradeOverlay(UpgradeOverlayInfo info)
-			: base (info) { }
+			: base(info) { }
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{

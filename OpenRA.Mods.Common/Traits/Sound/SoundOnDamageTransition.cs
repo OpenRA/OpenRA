@@ -17,14 +17,14 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string DamagedSound;
 		public readonly string DestroyedSound;
 
-		public object Create(ActorInitializer init) { return new SoundOnDamageTransition(this);}
+		public object Create(ActorInitializer init) { return new SoundOnDamageTransition(this); }
 	}
 
 	public class SoundOnDamageTransition : INotifyDamageStateChanged
 	{
 		readonly SoundOnDamageTransitionInfo Info;
 
-		public SoundOnDamageTransition( SoundOnDamageTransitionInfo info )
+		public SoundOnDamageTransition(SoundOnDamageTransitionInfo info)
 		{
 			Info = info;
 		}

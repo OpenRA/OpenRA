@@ -64,6 +64,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var desc = m.HasAttribute<DescAttribute>() ? m.GetCustomAttributes<DescAttribute>(true).First().Lines.JoinWith("\n") : "";
 					Console.WriteLine("<tr><td align=\"right\" width=\"50%\"><strong>{0}</strong></td><td>{1}</td></tr>".F(m.LuaDocString(), desc));
 				}
+
 				Console.WriteLine("</table>");
 			}
 
@@ -108,6 +109,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					Console.WriteLine("</td></tr>");
 				}
+
 				Console.WriteLine("</table>");
 			}
 

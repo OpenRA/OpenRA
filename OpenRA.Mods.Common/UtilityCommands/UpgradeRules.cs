@@ -261,7 +261,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// make animation is now its own trait
 				if (engineVersion < 20140621)
 				{
-					if (depth == 1 && (node.Key.StartsWith("RenderBuilding")))
+					if (depth == 1 && node.Key.StartsWith("RenderBuilding"))
 						node.Value.Nodes.RemoveAll(n => n.Key == "HasMakeAnimation");
 
 					if (node.Value.Nodes.Any(n => n.Key.StartsWith("RenderBuilding"))
@@ -382,7 +382,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Nodes.RemoveAll(_ => true);
 						node.Value.Nodes.Add(new MiniYamlNode("PanelName", new MiniYaml("SKIRMISH_STATS")));
 					}
-
 				}
 
 				// Veterancy was changed to use the upgrades system
@@ -459,6 +458,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Value = string.Join(", ", node.Value.Value.Split(',')
 							.Select(s => ((int)(100 * 100 / float.Parse(s))).ToString()));
 					}
+
 					if (depth == 3 && parentKey == "Upgrades")
 						node.Value.Value = node.Value.Value.Replace("armor", "damage");
 				}
@@ -477,7 +477,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// InfDeath was renamed to DeathType
 				if (engineVersion < 20140830)
 				{
-
 					if (depth == 2 && parentKey.StartsWith("DeathSounds") && node.Key == "InfDeaths")
 						node.Key = "DeathTypes";
 
@@ -735,6 +734,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 									ConvertPxToRange(ref node.Value.Value, 2, 5);
 								break;
 							}
+
 							default:
 								break;
 						}
@@ -768,7 +768,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						var invalidTargets = node.Value.Nodes.FirstOrDefault(n => n.Key == "InvalidTargets"); // Weapon's InvalidTargets need to be copied to the warheads, so find it
 
 						var warheadCounter = 0;
-						foreach(var curNode in node.Value.Nodes.ToArray())
+						foreach (var curNode in node.Value.Nodes.ToArray())
 						{
 							if (curNode.Key.Contains("Warhead") && curNode.Value.Value == null)
 							{
@@ -794,7 +794,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 									var keywords = new List<string> { "Damage", "InfDeath", "PreventProne", "ProneModifier", "Delay" };
 
-									foreach(var keyword in keywords)
+									foreach (var keyword in keywords)
 									{
 										var temp2 = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
 										if (temp2 != null)
@@ -830,7 +830,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 									var keywords = new List<string> { "Damage", "InfDeath", "PreventProne", "ProneModifier", "Delay" };
 
-									foreach(var keyword in keywords)
+									foreach (var keyword in keywords)
 									{
 										var temp2 = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
 										if (temp2 != null)
@@ -857,7 +857,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 									var keywords = new List<string> { "Spread", "Damage", "InfDeath", "PreventProne", "ProneModifier", "Delay" };
 
-									foreach(var keyword in keywords)
+									foreach (var keyword in keywords)
 									{
 										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
 										if (temp != null)
@@ -885,7 +885,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 									var newYaml = new List<MiniYamlNode>();
 
 									var keywords = new List<string> { "Size", "Delay", "ValidTargets", "InvalidTargets" };
-									foreach(var keyword in keywords)
+									foreach (var keyword in keywords)
 									{
 										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
 										if (temp != null)
@@ -904,7 +904,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 									var keywords = new List<string> { "AddsResourceType", "Size", "Delay", "ValidTargets", "InvalidTargets" };
 
-									foreach(var keyword in keywords)
+									foreach (var keyword in keywords)
 									{
 										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
 										if (temp != null)
@@ -923,7 +923,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 									var keywords = new List<string> { "SmudgeType", "Size", "Delay", "ValidTargets", "InvalidTargets" };
 
-									foreach(var keyword in keywords)
+									foreach (var keyword in keywords)
 									{
 										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
 										if (temp != null)
@@ -943,14 +943,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 									var keywords = new List<string> { "Explosion", "ImpactSound", "Delay", "ValidTargets", "InvalidTargets", "ValidImpactTypes", "InvalidImpactTypes" };
 
-									foreach(var keyword in keywords)
+									foreach (var keyword in keywords)
 									{
 										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
 										if (temp != null)
 											newYaml.Add(new MiniYamlNode(keyword, temp.Value.Value));
 									}
-									newYaml.Add(new MiniYamlNode("InvalidImpactTypes", "Water"));
 
+									newYaml.Add(new MiniYamlNode("InvalidImpactTypes", "Water"));
 									newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Eff" + oldNodeAtName, "CreateEffect", newYaml));
 								}
 
@@ -964,7 +964,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 									var keywords = new List<string> { "WaterExplosion", "WaterImpactSound", "Delay", "ValidTargets", "InvalidTargets", "ValidImpactTypes", "InvalidImpactTypes" };
 
-									foreach(var keyword in keywords)
+									foreach (var keyword in keywords)
 									{
 										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
 										if (temp != null)
@@ -976,11 +976,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 											newYaml.Add(new MiniYamlNode(temp.Key, temp.Value.Value));
 										}
 									}
+
 									newYaml.Add(new MiniYamlNode("ValidImpactTypes", "Water"));
 
 									newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Eff" + oldNodeAtName, "CreateEffect", newYaml));
 								}
-								node.Value.Nodes.InsertRange(node.Value.Nodes.IndexOf(curNode),newNodes);
+
+								node.Value.Nodes.InsertRange(node.Value.Nodes.IndexOf(curNode), newNodes);
 								node.Value.Nodes.Remove(curNode);
 							}
 						}
@@ -1028,11 +1030,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (depth == 2 && parentKey == "TerrainType" && node.Key.Split('@').First() == "Type")
 						addNodes.Add(new MiniYamlNode("TargetTypes", node.Value.Value == "Water" ? "Water" : "Ground"));
 				}
+
 				UpgradeTileset(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
 			nodes.AddRange(addNodes);
 		}
-
 	}
 }

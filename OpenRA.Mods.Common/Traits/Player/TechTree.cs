@@ -140,6 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 			public void Update(Cache<string, List<Actor>> ownedPrerequisites)
 			{
 				var hasReachedLimit = limit > 0 && ownedPrerequisites.ContainsKey(Key) && ownedPrerequisites[Key].Count >= limit;
+
 				// The '!' annotation inverts prerequisites: "I'm buildable if this prerequisite *isn't* met"
 				var nowHasPrerequisites = HasPrerequisites(ownedPrerequisites) && !hasReachedLimit;
 				var nowHidden = IsHidden(ownedPrerequisites);

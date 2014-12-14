@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		public EnterAlliedActorTargeter(string order, int priority,
 			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor)
-			: base (order, priority, "enter", false, true)
+			: base(order, priority, "enter", false, true)
 		{
 			this.canTarget = canTarget;
 			this.useEnterCursor = useEnterCursor;

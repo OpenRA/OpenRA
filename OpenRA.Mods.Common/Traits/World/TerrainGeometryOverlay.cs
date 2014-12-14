@@ -9,11 +9,11 @@
  #endregion
 
 using System;
-using System.Drawing;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {

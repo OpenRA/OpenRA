@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			var player = (info.NotifyAll) ? self.World.LocalPlayer : self.Owner;
+			var player = info.NotifyAll ? self.World.LocalPlayer : self.Owner;
 			Sound.PlayNotification(self.World.Map.Rules, player, "Speech", info.Notification, self.Owner.Country.Race);
 		}
 	}

@@ -16,7 +16,6 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
-
 namespace OpenRA.Mods.Common.Effects
 {
 	[Desc("Not a sprite, but an engine effect.")]

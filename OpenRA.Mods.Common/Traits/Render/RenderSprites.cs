@@ -13,8 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
-using OpenRA.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -49,7 +49,6 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var preview in spi.RenderPreviewSprites(init, this, image, facings, palette))
 					yield return preview;
 		}
-
 	}
 
 	public class RenderSprites : IRender, ITick, INotifyOwnerChanged, INotifyEffectiveOwnerChanged
@@ -202,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return anims.Values.Where(b => b.IsVisible
 				&& b.Animation.Animation.CurrentSequence != null)
-					.Select(a => (a.Animation.Animation.Image.size*info.Scale).ToInt2())
+					.Select(a => (a.Animation.Animation.Image.size * info.Scale).ToInt2())
 					.FirstOrDefault();
 		}
 	}

@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Effects
 				return SpriteRenderable.None;
 
 			var pos = wr.world.Map.CenterOfCell(cachedLocation);
-			var palette = wr.Palette(palettePrefix+building.Owner.InternalName);
+			var palette = wr.Palette(palettePrefix + building.Owner.InternalName);
 			return circles.Render(pos, palette).Concat(flag.Render(pos, palette));
 		}
 	}

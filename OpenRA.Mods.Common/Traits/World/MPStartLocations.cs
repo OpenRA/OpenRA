@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var spawns = world.Map.GetSpawnPoints().ToList();
 			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0 && c.Slot != null)
-					.Select(c => spawns[c.SpawnPoint-1]).ToList();
+					.Select(c => spawns[c.SpawnPoint - 1]).ToList();
 			var available = spawns.Except(taken).ToList();
 
 			// Set spawn
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 				var client = world.LobbyInfo.ClientInSlot(kv.Key);
 				var spid = (client == null || client.SpawnPoint == 0)
 					? ChooseSpawnPoint(world, available, taken)
-					: spawns[client.SpawnPoint-1];
+					: spawns[client.SpawnPoint - 1];
 
 				Start.Add(player, spid);
 
@@ -86,4 +86,3 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 }
-
