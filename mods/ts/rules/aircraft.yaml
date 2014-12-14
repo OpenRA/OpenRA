@@ -26,12 +26,11 @@ DPOD:
 		PipCount: 1
 	Armament:
 		Weapon: Vulcan2
+		LimitedAmmo: 5
+		AmmoPipCount: 5
+		AmmoPipType: Ammo
+		AmmoPipTypeEmpty: AmmoEmpty
 	AttackHeli:
-	LimitedAmmo:
-		Ammo: 5
-		PipCount: 5
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
@@ -95,13 +94,12 @@ ORCA:
 		Range: 10c0
 	Armament:
 		Weapon: Hellfire
+		LimitedAmmo: 5
+		AmmoPipCount: 5
+		AmmoPipType: Ammo
+		AmmoPipTypeEmpty: AmmoEmpty
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
-		Ammo: 5
-		PipCount: 5
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
@@ -121,8 +119,10 @@ ORCAB:
 		Owner: gdi
 	Selectable:
 		Bounds: 30,24
-	Helicopter:
+	-Helicopter:
+	Plane:
 		RearmBuildings: gahpad
+		RepairBuildings:
 		ROT: 5
 		Speed: 112
 	Health:
@@ -133,13 +133,12 @@ ORCAB:
 		Range: 2c0
 	Armament:
 		Weapon: Bomb
-	AttackHeli:
+		LimitedAmmo: 10
+		AmmoPipCount: 2
+		AmmoPipType: Ammo
+		AmmoPipTypeEmpty: AmmoEmpty
+	AttackPlane:
 		FacingTolerance: 20
-	LimitedAmmo:
-		Ammo: 2
-		PipCount: 2
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
@@ -232,13 +231,12 @@ SCRIN:
 		Range: 2c0
 	Armament:
 		Weapon: Proton
+		LimitedAmmo: 3
+		AmmoPipCount: 3
+		AmmoPipType: Ammo
+		AmmoPipTypeEmpty: AmmoEmpty
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
-		Ammo: 3
-		PipCount: 3
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
@@ -269,13 +267,13 @@ APACHE:
 		Range: 2c0
 	Armament:
 		Weapon: HarpyClaw
+		LimitedAmmo: 12
+		AmmoPipCount: 4
+		AmmoPipType: Ammo
+		AmmoPipTypeEmpty: AmmoEmpty
+		AmmoReloadTicks: 20
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
-		Ammo: 12
-		PipCount: 4
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	WithRotor:
 		Offset: 85,0,384

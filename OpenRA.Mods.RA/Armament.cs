@@ -32,6 +32,7 @@ namespace OpenRA.Mods.RA
 		[WeaponReference]
 		[Desc("Has to be defined here and in weapons.yaml.")]
 		public readonly string Weapon = null;
+		[Desc("Turret this armament is assigned to.")]
 		public readonly string Turret = "primary";
 		[Desc("Time (in frames) until the weapon can fire again.")] 
 		public readonly int FireDelay = 0;
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.RA
 		public readonly WVec[] LocalOffset = {};
 		[Desc("Muzzle yaw relative to turret or body.")]
 		public readonly WAngle[] LocalYaw = {};
-		[Desc("Move the turret backwards when firing.")]
+		[Desc("Move the turret (or barrel) backwards when firing.")]
 		public readonly WRange Recoil = WRange.Zero;
 		[Desc("Recoil recovery per-frame")]
 		public readonly WRange RecoilRecovery = new WRange(9);
@@ -54,18 +55,38 @@ namespace OpenRA.Mods.RA
 		[Desc("Use multiple muzzle images if non-zero")]
 		public readonly int MuzzleSplitFacings = 0;
 
+		[Desc("Has this amount of limited ammo if non-zero")]
+		public readonly int LimitedAmmo = 0;
+		[Desc("Defaults to value in LimitedAmmo.")]
+		public readonly int AmmoPipCount = -1;
+		[Desc("Pip type to display for loaded ammo.")]
+		public readonly PipType AmmoPipType = PipType.Green;
+		[Desc("Pip type to display for empty ammo.")]
+		public readonly PipType AmmoPipTypeEmpty = PipType.Transparent;
+		[Desc("Time to reload limited ammo measured in ticks.", 
+			"Applies to rearming at structure as well as actor reloading itself.")]
+		public readonly int AmmoReloadTicks = 25 * 2;
+		[Desc("How much ammo is reloaded after a certain period (for self-reloading actors).")]
+		public readonly int AmmoReloadCount = 0;
+		[Desc("Does armament reload its limited ammo itself.")]
+		public readonly bool ReloadsAmmo = false;
+		[Desc("Whether or not reload counter should be reset when ammo has been fired (for self-reloading actors).")]
+		public readonly bool ResetAmmoReloadOnFire = false;
+
 		public object Create(ActorInitializer init) { return new Armament(init.self, this); }
 	}
 
-	public class Armament : UpgradableTrait<ArmamentInfo>, ITick, IExplodeModifier
+	public class Armament : UpgradableTrait<ArmamentInfo>, ITick, IExplodeModifier, INotifyAttack, IPips, ISync
 	{
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
+		[Sync] public int Ammo;
+		[Sync] int remainingTicks;
+		[Sync] int previousAmmo;
 
 		public readonly Actor self;
 		Lazy<Turreted> Turret;
 		Lazy<IBodyOrientation> Coords;
-		Lazy<LimitedAmmo> limitedAmmo;
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public WRange Recoil;
@@ -77,10 +98,11 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = self;
 
+			Ammo = info.LimitedAmmo;
+
 			// We can't resolve these until runtime
 			Turret = Exts.Lazy(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
 			Coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
-			limitedAmmo = Exts.Lazy(() => self.TraitOrDefault<LimitedAmmo>());
 
 			Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
 			Burst = Weapon.Burst;
@@ -99,6 +121,17 @@ namespace OpenRA.Mods.RA
 				barrels.Add(new Barrel { Offset = WVec.Zero, Yaw = WAngle.Zero });
 
 			Barrels = barrels.ToArray();
+
+			if (info.ReloadsAmmo)
+			{
+				remainingTicks = info.AmmoReloadTicks;
+				
+				// Skip armaments that don't define limited ammo
+				if (info.LimitedAmmo <= 0)
+					return;
+
+				previousAmmo = GetAmmoCount();
+			}
 		}
 
 		public void Tick(Actor self)
@@ -108,6 +141,26 @@ namespace OpenRA.Mods.RA
 
 			if (FireDelay > 0)
 				--FireDelay;
+
+			if (Info.ReloadsAmmo)
+			{
+				if (!FullAmmo() && --remainingTicks == 0)
+				{
+					remainingTicks = Info.AmmoReloadTicks;
+
+					for (var i = 0; i < Info.AmmoReloadCount; i++)
+						GiveAmmo();
+
+					previousAmmo = GetAmmoCount();
+				}
+
+				// Resets the tick counter if ammo was fired.
+				if (Info.ResetAmmoReloadOnFire && GetAmmoCount() < previousAmmo)
+				{
+					remainingTicks = Info.AmmoReloadTicks;
+					previousAmmo = GetAmmoCount();
+				}
+			}
 
 			Recoil = new WRange(Math.Max(0, Recoil.Range - Info.RecoilRecovery.Range));
 
@@ -130,6 +183,35 @@ namespace OpenRA.Mods.RA
 				a();
 		}
 
+		public bool FullAmmo() { return Ammo == Info.LimitedAmmo; }
+		public bool HasAmmo() { return Ammo > 0; }
+		public bool GiveAmmo()
+		{
+			if (Ammo >= Info.LimitedAmmo) return false;
+			++Ammo;
+			return true;
+		}
+
+		public bool TakeAmmo()
+		{
+			if (Ammo <= 0) return false;
+			--Ammo;
+			return true;
+		}
+
+		public int ReloadTimePerAmmo() { return Info.AmmoReloadTicks; }
+
+		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { TakeAmmo(); }
+
+		public int GetAmmoCount() { return Ammo; }
+
+		public IEnumerable<PipType> GetPips(Actor self)
+		{
+			var pips = Info.AmmoPipCount > -1 ? Info.AmmoPipCount : Info.LimitedAmmo;
+			return Exts.MakeArray(pips,
+				i => (Ammo * pips) / Info.LimitedAmmo > i ? Info.AmmoPipType : Info.AmmoPipTypeEmpty);
+		}
+
 		// Note: facing is only used by the legacy positioning code
 		// The world coordinate model uses Actor.Orientation
 		public Barrel CheckFire(Actor self, IFacing facing, Target target)
@@ -137,7 +219,7 @@ namespace OpenRA.Mods.RA
 			if (IsReloading)
 				return null;
 
-			if (limitedAmmo.Value != null && !limitedAmmo.Value.HasAmmo())
+			if (Info.LimitedAmmo > 0 && !HasAmmo())
 				return null;
 
 			if (!target.IsInRange(self.CenterPosition, Weapon.Range))

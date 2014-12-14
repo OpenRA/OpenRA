@@ -2276,8 +2276,8 @@ Rules:
 	MIG:
 		Buildable:
 			Prerequisites: ~afld
-		LimitedAmmo:
-			Ammo: 2
+		Armament:
+			LimitedAmmo: 2
 	HELI:
 		Buildable:
 			Prerequisites: ~hpad

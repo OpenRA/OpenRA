@@ -886,11 +886,13 @@ Hellfire:
 		SmudgeType: SmallCrater
 
 Bomb:
-	ReloadDelay: 10
-	Range: 5c0
+	ReloadDelay: 100
+	Burst: 5
+	BurstDelay: 5
+	Range: 2c0
 	Palette: player
-	Projectile: Bullet
-		Speed: 170
+	Projectile: GravityBomb
+		Speed: 64
 		Image: canister
 		Shadow: true
 	Warhead@1Dam: SpreadDamage

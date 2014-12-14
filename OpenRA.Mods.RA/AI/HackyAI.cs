@@ -312,7 +312,9 @@ namespace OpenRA.Mods.RA.AI
 		// For mods like RA (number of building must match the number of aircraft)
 		bool HasAdequateAirUnits(ActorInfo actorInfo)
 		{
-			if (!actorInfo.Traits.Contains<ReloadsInfo>() && actorInfo.Traits.Contains<LimitedAmmoInfo>() 
+//			var armament = actorInfo.TraitsImplementing<Armament>()
+			//TODO: Implement Armament LimitedAmmo and Reloads check
+			if (actorInfo.Traits.Contains<ArmamentInfo>() 
 				&& actorInfo.Traits.Contains<AircraftInfo>())
 			{
 				var countOwnAir = CountUnits(actorInfo.Name, p);

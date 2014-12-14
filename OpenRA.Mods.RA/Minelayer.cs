@@ -24,26 +24,65 @@ namespace OpenRA.Mods.RA
 		[ActorReference] public readonly string[] RearmBuildings = { "fix" };
 
 		public readonly string RearmSound = "minelay1.aud";
+		public readonly int Payload = 3;
+		public readonly int ReloadTicks = 25 * 2;
+		[Desc("Defaults to value in Payload.")]
+		public readonly int PipCount = 3;
+		public readonly PipType PipType = PipType.Green;
+		public readonly PipType PipTypeEmpty = PipType.Transparent;
 
 		public readonly float MinefieldDepth = 1.5f;
 
-		public object Create(ActorInitializer init) { return new Minelayer(init.self); }
+		public object Create(ActorInitializer init) { return new Minelayer(init.self, this); }
 	}
 
-	class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection, ISync
+	class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection, IPips, ISync
 	{
 		/* TODO: [Sync] when sync can cope with arrays! */
 		public CPos[] Minefield = null;
+		[Sync] int payload;
 		[Sync] CPos minefieldStart;
 		Actor self;
+		public MinelayerInfo Info;
 		Sprite tile;
 
-		public Minelayer(Actor self)
+		public Minelayer(Actor self, MinelayerInfo info)
 		{
 			this.self = self;
+			this.Info = info;
 
 			var tileset = self.World.TileSet.Id.ToLowerInvariant();
 			tile = self.World.Map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+			payload = info.Payload;
+		}
+
+		public bool FullPayload() { return payload == Info.Payload; }
+		public bool HasPayload() { return payload > 0; }
+		public bool GivePayload()
+		{
+			if (payload >= Info.Payload) return false;
+			++payload;
+			return true;
+		}
+
+		public bool TakePayload()
+		{
+			if (payload <= 0) return false;
+			--payload;
+			return true;
+		}
+
+		public int ReloadTimePerPayload() { return Info.ReloadTicks; }
+
+//		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { TakePayload(); }
+
+		public int GetPayloadCount() { return payload; }
+
+		public IEnumerable<PipType> GetPips(Actor self)
+		{
+			var pips = Info.PipCount != 0 ? Info.PipCount : Info.Payload;
+			return Exts.MakeArray(pips,
+				i => (payload * pips) / Info.Payload > i ? Info.PipType : Info.PipTypeEmpty);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
