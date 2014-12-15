@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		string gameMode;
 
 		[ObjectCreator.UseCtor]
-		internal MapChooserLogic(Widget widget, string initialMap, Action onExit, Action<string> onSelect)
+		internal MapChooserLogic(Widget widget, string initialMap, Action onExit, Action<string> onSelect, MapVisibility filter)
 		{
 			selectedUid = WidgetUtils.ChooseInitialMap(initialMap);
 
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var gameModeDropdown = widget.GetOrNull<DropDownButtonWidget>("GAMEMODE_FILTER");
 			if (gameModeDropdown != null)
 			{
-				var selectableMaps = Game.modData.MapCache.Where(m => m.Status == MapStatus.Available && m.Map.Visibility.HasFlag(MapVisibility.Lobby));
+				var selectableMaps = Game.modData.MapCache.Where(m => m.Status == MapStatus.Available && (m.Map.Visibility & filter) != 0);
 				var gameModes = selectableMaps
 					.GroupBy(m => m.Type)
 					.Select(g => Pair.New(g.Key, g.Count())).ToList();
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					var item = ScrollItemWidget.Setup(template,
 						() => gameMode == ii.First,
-						() => { gameMode = ii.First; EnumerateMaps(onSelect); });
+						() => { gameMode = ii.First; EnumerateMaps(onSelect, filter); });
 					item.Get<LabelWidget>("LABEL").GetText = () => showItem(ii);
 					return item;
 				};
@@ -84,13 +84,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					else
 					{
 						mapFilter = mapfilterInput.Text = null;
-						EnumerateMaps(onSelect);
+						EnumerateMaps(onSelect, filter);
 					}
 					return true; 
 				};
 				mapfilterInput.OnEnterKey = () => { approving(); return true; };
 				mapfilterInput.OnTextEdited = () =>
-					{ mapFilter = mapfilterInput.Text; EnumerateMaps(onSelect); };
+					{ mapFilter = mapfilterInput.Text; EnumerateMaps(onSelect, filter); };
 			}
 
 			var randomMapButton = widget.GetOrNull<ButtonWidget>("RANDOMMAP_BUTTON");
@@ -105,13 +105,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				randomMapButton.IsDisabled = () => visibleMaps == null || visibleMaps.Count == 0;
 			}
 
-			EnumerateMaps(onSelect);
+			EnumerateMaps(onSelect, filter);
 		}
 
-		void EnumerateMaps(Action<string> onSelect)
+		void EnumerateMaps(Action<string> onSelect, MapVisibility filter)
 		{
 			var maps = Game.modData.MapCache
-				.Where(m => m.Status == MapStatus.Available && m.Map.Visibility.HasFlag(MapVisibility.Lobby))
+				.Where(m => m.Status == MapStatus.Available && (m.Map.Visibility & filter) != 0)
 				.Where(m => gameMode == null || m.Type == gameMode)
 				.Where(m => mapFilter == null || m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0 || m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0)
 				.OrderBy(m => m.PlayerCount)
