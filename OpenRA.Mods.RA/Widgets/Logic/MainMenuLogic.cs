@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var hasCampaign = Game.modData.Manifest.Missions.Any();
 			var hasMissions = Game.modData.MapCache
-				.Any(p => p.Status == MapStatus.Available && p.Map.Type == "Mission" && !p.Map.Selectable);
+				.Any(p => p.Status == MapStatus.Available && p.Map.Visibility.HasFlag(MapVisibility.MissionSelector));
 
 			missionsButton.Disabled = !hasCampaign && !hasMissions;
 

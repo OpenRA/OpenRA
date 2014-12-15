@@ -217,7 +217,7 @@ namespace OpenRA.Widgets
 			{
 				Func<MapPreview, bool> isIdealMap = m =>
 				{
-					if (m.Status != MapStatus.Available || !m.Map.Selectable)
+					if (m.Status != MapStatus.Available || !m.Map.Visibility.HasFlag(MapVisibility.Lobby))
 						return false;
 
 					// Other map types may have confusing settings or gameplay
@@ -236,7 +236,7 @@ namespace OpenRA.Widgets
 				};
 
 				var selected = Game.modData.MapCache.Where(m => isIdealMap(m)).RandomOrDefault(Game.CosmeticRandom) ??
-					Game.modData.MapCache.First(m => m.Status == MapStatus.Available && m.Map.Selectable);
+					Game.modData.MapCache.First(m => m.Status == MapStatus.Available && m.Map.Visibility.HasFlag(MapVisibility.Lobby));
 				return selected.Uid;
 			}
 

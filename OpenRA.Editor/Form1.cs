@@ -426,8 +426,7 @@ namespace OpenRA.Editor
 				pd.TitleBox.Text = surface1.Map.Title;
 				pd.DescBox.Text = surface1.Map.Description;
 				pd.AuthorBox.Text = surface1.Map.Author;
-				pd.SelectableCheckBox.Checked = surface1.Map.Selectable;
-				pd.ShellmapCheckBox.Checked = surface1.Map.UseAsShellmap;
+				pd.mapVisibilityComboBox.SelectedIndex = pd.mapVisibilityComboBox.FindStringExact(Enum.GetName(typeof(MapVisibility), surface1.Map.Visibility));
 
 				if (DialogResult.OK != pd.ShowDialog())
 					return;
@@ -435,8 +434,7 @@ namespace OpenRA.Editor
 				surface1.Map.Title = pd.TitleBox.Text;
 				surface1.Map.Description = pd.DescBox.Text;
 				surface1.Map.Author = pd.AuthorBox.Text;
-				surface1.Map.Selectable = pd.SelectableCheckBox.Checked;
-				surface1.Map.UseAsShellmap = pd.ShellmapCheckBox.Checked;
+				surface1.Map.Visibility = (MapVisibility)Enum.Parse(typeof(MapVisibility), pd.mapVisibilityComboBox.SelectedItem.ToString());
 			}
 		}
 
