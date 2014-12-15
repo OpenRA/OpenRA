@@ -311,6 +311,12 @@ namespace OpenRA
 			LastSubCell = (SubCell)(SubCellOffsets.Length - 1);
 			DefaultSubCell = (SubCell)Game.modData.Manifest.SubCellDefaultIndex;
 
+			if (Container.Exists("map.png"))
+				using (var dataStream = Container.GetContent("map.png"))
+					CustomPreview = new Bitmap(dataStream);
+
+			PostInit();
+
 			// The Uid is calculated from the data on-disk, so
 			// format changes must be flushed to disk.
 			// TODO: this isn't very nice
@@ -318,12 +324,6 @@ namespace OpenRA
 				Save(path);
 
 			Uid = ComputeHash();
-
-			if (Container.Exists("map.png"))
-				using (var dataStream = Container.GetContent("map.png"))
-					CustomPreview = new Bitmap(dataStream);
-
-			PostInit();
 		}
 
 		void PostInit()
