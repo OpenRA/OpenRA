@@ -150,7 +150,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			map.MapSize.X = mapSize;
 			map.MapSize.Y = mapSize;
 			map.Bounds = Rectangle.FromLTRB(offsetX, offsetY, offsetX + width, offsetY + height);
-			map.Selectable = true;
 
 			map.Smudges = Exts.Lazy(() => new List<SmudgeReference>());
 			map.Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>());
