@@ -51,7 +51,7 @@ namespace OpenRA
 				{
 					using (new Support.PerfTimer(path.Key))
 					{
-						var map = new Map(path.Key, modData.Manifest.Mod.Id);
+						var map = new Map(path.Key);
 						if (modData.Manifest.MapCompatibility.Contains(map.RequiresMod))
 							previews[map.Uid].UpdateFromMap(map, path.Value);
 					}

@@ -242,11 +242,7 @@ namespace OpenRA
 		public Map() { }
 
 		// The standard constructor for most purposes
-		public Map(string path) : this(path, null) { }
-
-		// Support upgrading format 5 maps to a more
-		// recent version by defining upgradeForMod.
-		public Map(string path, string upgradeForMod)
+		public Map(string path)
 		{
 			Path = path;
 			Container = GlobalFileSystem.OpenPackage(path, null, int.MaxValue);
@@ -260,21 +256,9 @@ namespace OpenRA
 			// Support for formats 1-3 dropped 2011-02-11.
 			// Use release-20110207 to convert older maps to format 4
 			// Use release-20110511 to convert older maps to format 5
-			if (MapFormat < 5)
+			// Use release-20141029 to convert older maps to format 6
+			if (MapFormat < 6)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
-
-			// Format 5 -> 6 enforces the use of RequiresMod
-			if (MapFormat == 5)
-			{
-				if (upgradeForMod == null)
-					throw new InvalidDataException("Map format {0} is not supported, but can be upgraded.\n File: {1}".F(MapFormat, path));
-
-				Console.WriteLine("Upgrading {0} from Format 5 to Format 6", path);
-
-				// TODO: This isn't very nice, but there is no other consistent way
-				// of finding the mod early during the engine initialization.
-				RequiresMod = upgradeForMod;
-			}
 
 			var nd = yaml.ToDictionary();
 
