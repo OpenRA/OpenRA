@@ -192,7 +192,7 @@ UMAGON:
 		Speed: 71
 	Health:
 		HP: 150
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
 	Passenger:
 	RevealsShroud:
@@ -224,7 +224,7 @@ GHOST:
 		Speed: 56
 	Health:
 		HP: 200
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
 	Passenger:
 	RevealsShroud:
@@ -325,7 +325,7 @@ CYBORG:
 		Speed: 56
 	Health:
 		HP: 300
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
 	Passenger:
 	RevealsShroud:
@@ -359,7 +359,7 @@ CYC2:
 		Speed: 56
 	Health:
 		HP: 500
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
 	Passenger:
 	RevealsShroud:
@@ -387,7 +387,7 @@ MUTANT:
 		Voice: Mutant
 	Health:
 		HP: 50
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
 	Mobile:
 		Speed: 56
@@ -415,7 +415,7 @@ MWMN:
 		Voice: CivilianFemale
 	Health:
 		HP: 50
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
 	Mobile:
 		Speed: 56
@@ -443,7 +443,7 @@ MUTANT3:
 		Voice: Mutant
 	Health:
 		HP: 50
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
 	Mobile:
 		Speed: 56
@@ -473,7 +473,7 @@ MHIJACK:
 		Voice: Hijacker
 	Health:
 		HP: 300
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
 	Mobile:
 		Speed: 99
@@ -498,7 +498,7 @@ TRATOS:
 		Voice: Tratos
 	Health:
 		HP: 200
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
 	Mobile:
 		Speed: 71
@@ -565,7 +565,7 @@ DOGGIE:
 	Health:
 		Radius: 213
 		HP: 250
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
 	Valued:
 		Cost: 100
@@ -594,7 +594,7 @@ VISSML:
 		BuildPaletteOrder: 100
 	Health:
 		HP: 200
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
 	Valued:
 		Cost: 1
@@ -624,7 +624,7 @@ VISLRG:
 		BuildPaletteOrder: 100
 	Health:
 		HP: 500
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
 	Valued:
 		Cost: 1

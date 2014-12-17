@@ -150,7 +150,9 @@
 	GivesBounty:
 	Crushable:
 		CrushSound: squish6.aud
-	PoisonedByTiberium:
+	DamagedByTerrain:
+		Weapon: Tiberium
+		Terrain: Tiberium, BlueTiberium
 	SpawnViceroid:
 		ViceroidActor: vissml
 	UpdatesPlayerStatistics:

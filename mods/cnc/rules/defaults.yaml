@@ -185,7 +185,9 @@
 	Passenger:
 		CargoType: Infantry
 	HiddenUnderFog:
-	PoisonedByTiberium:
+	DamagedByTerrain:
+		Weapon: Tiberium
+		Terrain: Tiberium, BlueTiberium
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
