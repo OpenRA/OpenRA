@@ -30,6 +30,8 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly bool UncloakOnAttack = true;
 		public readonly bool UncloakOnMove = false;
 		public readonly bool UncloakOnUnload = true;
+		public readonly bool UncloakOnInfiltrate = true;
+		public readonly bool UncloakOnDemolish = true;
 
 		public readonly string CloakSound = null;
 		public readonly string UncloakSound = null;

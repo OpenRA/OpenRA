@@ -13,6 +13,7 @@ using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Effects;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -26,6 +27,8 @@ namespace OpenRA.Mods.RA.Activities
 		readonly int flashInterval;
 		readonly int flashDuration;
 
+		readonly Cloak cloak;
+
 		public Demolish(Actor self, Actor target, int delay, int flashes, int flashesDelay, int flashInterval, int flashDuration)
 			: base(self, target)
 		{
@@ -36,6 +39,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.flashesDelay = flashesDelay;
 			this.flashInterval = flashInterval;
 			this.flashDuration = flashDuration;
+			cloak = self.TraitOrDefault<Cloak>();
 		}
 
 		protected override bool CanReserve(Actor self)
@@ -49,6 +53,9 @@ namespace OpenRA.Mods.RA.Activities
 			{
 				if (target.IsDead)
 					return;
+
+				if (cloak != null && cloak.Info.UncloakOnDemolish)
+					cloak.Uncloak();
 
 				for (var f = 0; f < flashes; f++)
 					w.Add(new DelayedAction(flashesDelay + f * flashInterval, () =>

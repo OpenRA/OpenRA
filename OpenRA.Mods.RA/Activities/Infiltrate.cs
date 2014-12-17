@@ -11,22 +11,31 @@
 using OpenRA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
 	class Infiltrate : Enter
 	{
 		readonly Actor target;
+
+		readonly Cloak cloak;
+
 		public Infiltrate(Actor self, Actor target)
 			: base(self, target)
 		{
 			this.target = target;
+
+			cloak = self.TraitOrDefault<Cloak>();
 		}
 
 		protected override void OnInside(Actor self)
 		{
 			if (target.IsDead || target.Owner == self.Owner)
 				return;
+
+			if (cloak != null && cloak.Info.UncloakOnInfiltrate)
+				cloak.Uncloak();
 
 			foreach (var t in target.TraitsImplementing<INotifyInfiltrated>())
 				t.Infiltrated(target, self);
