@@ -162,6 +162,7 @@
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
     <Compile Include="Traits\Render\WithResources.cs" />
+    <Compile Include="Traits\Render\WithRotor.cs" />
     <Compile Include="Traits\Render\WithShadow.cs" />
     <Compile Include="Traits\Render\WithSmoke.cs" />
     <Compile Include="Traits\ShakeOnDeath.cs" />

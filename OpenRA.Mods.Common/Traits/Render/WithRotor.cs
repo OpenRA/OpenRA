@@ -12,10 +12,9 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Displays a helicopter rotor overlay.")]
 	public class WithRotorInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
@@ -64,7 +63,7 @@ namespace OpenRA.Mods.RA.Render
 			rotorAnim.PlayRepeating(info.Sequence);
 			rs.Add(info.Id, new AnimationWithOffset(rotorAnim,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-				null, () => false, p => WithTurret.ZOffsetFromCenter(self, p, 1)));
+				null, () => false, p => ZOffsetFromCenter(self, p, 1)));
 		}
 
 		public void Tick(Actor self)
@@ -74,6 +73,12 @@ namespace OpenRA.Mods.RA.Render
 				return;
 
 			rotorAnim.ReplaceAnim(isFlying ? info.Sequence : info.GroundSequence);
+		}
+
+		static public int ZOffsetFromCenter(Actor self, WPos pos, int offset)
+		{
+			var delta = self.CenterPosition - pos;
+			return delta.Y + delta.Z + offset;
 		}
 	}
 }
