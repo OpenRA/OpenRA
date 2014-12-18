@@ -44,6 +44,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly Widget editableSpectatorTemplate;
 		readonly Widget nonEditableSpectatorTemplate;
 		readonly Widget newSpectatorTemplate;
+		readonly int spacerSize = 5;
 
 		readonly ScrollPanelWidget chatPanel;
 		readonly Widget chatTemplate;
@@ -184,29 +185,70 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				slotsButton.IsDisabled = () => configurationDisabled() || panel != PanelType.Players ||
 					Map.RuleStatus != MapRuleStatus.Cached || !orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots || !s.LockTeam);
 
+				slotsButton.GetText = () => orderManager.LobbyInfo.GlobalSettings.TeamCount > 1 ?
+					"{0} Teams".F(orderManager.LobbyInfo.GlobalSettings.TeamCount) : "Free for all";
+
 				var botNames = modRules.Actors["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name);
 				slotsButton.OnMouseDown = _ =>
 				{
 					var options = new Dictionary<string, IEnumerable<DropDownOption>>();
 
+					if (Map.PlayerCount > 1)
+					{
+						var teamOptions = new List<DropDownOption>()
+						{
+							new DropDownOption
+							{
+								Title = "Free for all",
+								IsSelected = () => false,
+								OnClick = () => orderManager.IssueOrder(Order.Command("assignteams 0"))
+							}
+						};
+
+						teamOptions.AddRange(Enumerable.Range(2, Map.PlayerCount - 2).Select(d => new DropDownOption
+						{
+							Title = "{0} Teams".F(d),
+							IsSelected = () => false,
+							OnClick = () => orderManager.IssueOrder(Order.Command("assignteams {0}".F(d.ToString())))
+						}));
+
+						options.Add("Configure Teams", teamOptions);
+					}
+
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
 					if (orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots))
 					{
+						Action slotBots = () =>
+						{
+							foreach (var slot in orderManager.LobbyInfo.Slots)
+							{
+								var bot = botNames.Random(Game.CosmeticRandom);
+								var c = orderManager.LobbyInfo.ClientInSlot(slot.Key);
+								if (slot.Value.AllowBots == true && (c == null || c.Bot != null))
+									orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot.Key, botController.Index, bot)));
+							}
+						};
+
 						var botOptions = new List<DropDownOption>()
 						{
-							new DropDownOption()
+							new DropDownOption
 							{
-								Title = "Add",
+								Title = "Bots vs Humans",
 								IsSelected = () => false,
 								OnClick = () =>
 								{
-									foreach (var slot in orderManager.LobbyInfo.Slots)
-									{
-										var bot = botNames.Random(Game.CosmeticRandom);
-										var c = orderManager.LobbyInfo.ClientInSlot(slot.Key);
-										if (slot.Value.AllowBots == true && (c == null || c.Bot != null))
-											orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot.Key, botController.Index, bot)));
-									}
+									slotBots();
+									orderManager.IssueOrder(Order.Command("assignteams 1"));
+								}
+							},
+							new DropDownOption()
+							{
+								Title = "Bots Free for all",
+								IsSelected = () => false,
+								OnClick = () =>
+								{
+									slotBots();
+									orderManager.IssueOrder(Order.Command("assignteams 0"));
 								}
 							}
 						};
@@ -215,7 +257,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						{
 							botOptions.Add(new DropDownOption()
 							{
-								Title = "Remove",
+								Title = "Bots Off",
 								IsSelected = () => false,
 								OnClick = () =>
 								{
@@ -230,36 +272,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						}
 
 						options.Add("Configure Bots", botOptions);
-					}
-
-					var teamCount = (orderManager.LobbyInfo.Slots.Count(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null) + 1) / 2;
-					if (teamCount >= 1)
-					{
-						var teamOptions = Enumerable.Range(2, teamCount - 1).Reverse().Select(d => new DropDownOption
-						{
-							Title = "{0} Teams".F(d),
-							IsSelected = () => false,
-							OnClick = () => orderManager.IssueOrder(Order.Command("assignteams {0}".F(d.ToString())))
-						}).ToList();
-
-						if (orderManager.LobbyInfo.Slots.Any(s => s.Value.AllowBots))
-						{
-							teamOptions.Add(new DropDownOption
-							{
-								Title = "Humans vs Bots",
-								IsSelected = () => false,
-								OnClick = () => orderManager.IssueOrder(Order.Command("assignteams 1"))
-							});
-						}
-
-						teamOptions.Add(new DropDownOption
-						{
-							Title = "Free for all",
-							IsSelected = () => false,
-							OnClick = () => orderManager.IssueOrder(Order.Command("assignteams 0"))
-						});
-
-						options.Add("Configure Teams", teamOptions);
 					}
 
 					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
@@ -648,8 +660,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void UpdatePlayerList()
 		{
+			players.Layout.AdjustChildren();
+
+			var slots =  orderManager.LobbyInfo.Slots.OrderBy(kv =>
+			{
+				var c = orderManager.LobbyInfo.ClientInSlot(kv.Key);
+				return c != null ? c.Team : int.MaxValue;
+			}
+			).ThenBy(kv => kv.Key);
+
 			var idx = 0;
-			foreach (var kv in orderManager.LobbyInfo.Slots)
+			foreach (var kv in slots)
 			{
 				var key = kv.Key;
 				var slot = kv.Value;
@@ -720,6 +741,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				else if (players.Children[idx].Id != template.Id)
 					players.ReplaceChild(players.Children[idx], template);
 
+				// Team spacers
+				template = players.Children[idx];
+				var team = (client != null ? client.Team : orderManager.LobbyInfo.GlobalSettings.TeamCount);
+				template.Bounds = new Rectangle(new Point(
+					template.Bounds.Location.X,
+					template.Bounds.Location.Y + spacerSize * team),
+					template.Bounds.Size);
+
 				idx++;
 			}
 
@@ -754,6 +783,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				LobbyUtils.SetupClientWidget(template, null, c, orderManager, true);
 				template.IsVisible = () => true;
+				template.Bounds = new Rectangle(new Point(
+					template.Bounds.Location.X,
+					template.Bounds.Location.Y + spacerSize * orderManager.LobbyInfo.GlobalSettings.TeamCount),
+					template.Bounds.Size);
 
 				if (idx >= players.Children.Count)
 					players.AddChild(template);
@@ -782,6 +815,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					|| orderManager.LocalClient.IsAdmin;
 
 				spec.IsVisible = () => true;
+				spec.Bounds = new Rectangle(new Point(
+					spec.Bounds.Location.X,
+					spec.Bounds.Location.Y + spacerSize * orderManager.LobbyInfo.GlobalSettings.TeamCount),
+					spec.Bounds.Size);
 
 				if (idx >= players.Children.Count)
 					players.AddChild(spec);
