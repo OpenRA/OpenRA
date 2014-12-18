@@ -243,6 +243,7 @@
     <Compile Include="Widgets\TerrainTemplatePreviewWidget.cs" />
     <Compile Include="LoadScreens\LogoStripeLoadScreen.cs" />
     <Compile Include="LoadScreens\BlankLoadScreen.cs" />
+    <Compile Include="UtilityCommands\CheckYaml.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

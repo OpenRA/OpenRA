@@ -67,7 +67,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = rsdl2 rnull game utility ralint
+CORE = rsdl2 rnull game utility
 TOOLS = editor tsbuild crashdialog
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
@@ -112,7 +112,7 @@ mod_common: $(mod_common_TARGET)
 ##### Official Mods #####
 
 STD_MOD_LIBS	= $(game_TARGET)
-STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
+STD_MOD_DEPS	= $(STD_MOD_LIBS)
 
 # Red Alert
 mod_ra_SRCS := $(shell find OpenRA.Mods.RA/ -iname '*.cs')
@@ -168,24 +168,15 @@ OpenRA.Editor.Form1.resources:
 	resgen2 OpenRA.Editor/Form1.resx OpenRA.Editor.Form1.resources 1> /dev/null
 editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor_TARGET)
 
-# Analyses mod yaml for easy to detect errors
-ralint_SRCS := $(shell find OpenRA.Lint/ -iname '*.cs')
-ralint_TARGET = OpenRA.Lint.exe
-ralint_KIND = exe
-ralint_DEPS = $(game_TARGET)
-ralint_LIBS = $(COMMON_LIBS) $(ralint_DEPS)
-PROGRAMS += ralint
-ralint: $(ralint_TARGET)
-
 test:
-	@echo "OpenRA.Lint: checking Red Alert mod MiniYAML..."
-	@mono --debug OpenRA.Lint.exe --verbose ra
-	@echo "OpenRA.Lint: checking Tiberian Dawn mod MiniYAML..."
-	@mono --debug OpenRA.Lint.exe --verbose cnc
-	@echo "OpenRA.Lint: checking Dune 2000 mod MiniYAML..."
-	@mono --debug OpenRA.Lint.exe --verbose d2k
-	@echo "OpenRA.Lint: checking Tiberian Sun mod MiniYAML..."
-	@mono --debug OpenRA.Lint.exe --verbose ts
+	@echo "Testing Red Alert mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe ra --check-yaml
+	@echo "Testing Tiberian Dawn mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe cnc --check-yaml
+	@echo "Testing Dune 2000 mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe d2k --check-yaml
+	@echo "Testing Tiberian Sun mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe ts --check-yaml
 
 # Builds and exports tilesets from a bitmap
 tsbuild_SRCS := $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
@@ -254,7 +245,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 #
 default: cli-dependencies core
 
-core: game renderers mods utility ralint
+core: game renderers mods utility
 
 tools: editor tsbuild gamemonitor
 
