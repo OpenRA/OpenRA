@@ -239,7 +239,6 @@
     <Compile Include="Render\RenderLandingCraft.cs" />
     <Compile Include="Render\WithBuildingExplosion.cs" />
     <Compile Include="Render\WithMuzzleFlash.cs" />
-    <Compile Include="Render\WithRotor.cs" />
     <Compile Include="Repairable.cs" />
     <Compile Include="RepairableNear.cs" />
     <Compile Include="ScaredyCat.cs" />
