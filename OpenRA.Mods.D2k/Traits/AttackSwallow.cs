@@ -8,10 +8,11 @@
  */
 #endregion
 
+using OpenRA.Mods.D2k.Activities;
 using OpenRA.Mods.RA;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k
+namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Sandworms use this attack model.")]
 	class AttackSwallowInfo : AttackFrontalInfo

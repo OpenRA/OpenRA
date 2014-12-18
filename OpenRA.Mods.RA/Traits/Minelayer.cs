@@ -11,12 +11,12 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using OpenRA.Traits;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	class MinelayerInfo : ITraitInfo
 	{
