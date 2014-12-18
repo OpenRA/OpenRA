@@ -33,6 +33,7 @@ Speech:
 		BuildingCaptured: CAPT
 		WormSign: WSIGN
 		WormAttack: WATTK
+		EnemyUnitsApproaching: ENEMY
 
 Sounds:
 	DefaultVariant: .WAV
