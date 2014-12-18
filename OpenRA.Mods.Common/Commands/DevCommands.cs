@@ -91,7 +91,8 @@ namespace OpenRA.Mods.Common.Commands
 
 		static void IssueDevCommand(World world, string command)
 		{
-			world.IssueOrder(new Order(command, world.LocalPlayer.PlayerActor, false));
+			if (world.LocalPlayer != null)
+				world.IssueOrder(new Order(command, world.LocalPlayer.PlayerActor, false));
 		}
 
 		class DevException : Exception { }
