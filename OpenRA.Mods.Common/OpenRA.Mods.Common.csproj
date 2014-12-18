@@ -51,7 +51,6 @@
     <Compile Include="Activities\Move\Drag.cs" />
     <Compile Include="Activities\RemoveSelf.cs" />
     <Compile Include="Activities\SimpleTeleport.cs" />
-    <Compile Include="CommonTraitsInterfaces.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Contrail.cs" />
@@ -109,6 +108,7 @@
     <Compile Include="Scripting\Properties\PowerProperties.cs" />
     <Compile Include="Scripting\Properties\ResourceProperties.cs" />
     <Compile Include="Scripting\Properties\UpgradeProperties.cs" />
+    <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\AppearsOnRadar.cs" />
     <Compile Include="Traits\BlocksBullets.cs" />
     <Compile Include="Traits\Buildable.cs" />
