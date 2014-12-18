@@ -723,28 +723,6 @@ SIETCH:
 	Power:
 		Amount: 0
 
-STARPORTC:
-	Inherits: ^STARPORT
-	-Buildable:
-
-PALACEC:
-	Inherits: ^PALACE
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 1000
-		Prerequisites: ~disabled
-	Building:
-		Footprint: =x= xxx xxx
-		Dimensions: 3,3
-	RenderBuilding:
-
-HEAVYC:
-	Inherits: ^HEAVY
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 1100
-		Prerequisites: ~disabled
-
 CONYARD:
 	Tooltip:
 		Name: Construction Yard

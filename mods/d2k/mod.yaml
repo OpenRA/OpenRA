@@ -37,6 +37,7 @@ Rules:
 	./mods/d2k/rules/harkonnen.yaml
 	./mods/d2k/rules/ordos.yaml
 	./mods/d2k/rules/arrakis.yaml
+	./mods/d2k/rules/corrino.yaml
 
 Sequences:
 	./mods/d2k/sequences/aircraft.yaml
@@ -119,7 +120,7 @@ Translations:
 
 LoadScreen: LogoStripeLoadScreen
 	Image: ./mods/d2k/uibits/loadscreen.png
-	Text: Filling Crates..., Breeding Sandworms...
+	Text: Filling Crates..., Breeding Sandworms..., Fuelling carryalls..., Deploying harvesters..., Preparing 'thopters..., Summoning mentats...
 
 ContentInstaller:
 	MenuWidget: INSTALL_PANEL
