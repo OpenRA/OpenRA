@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,7 +14,7 @@ MapSize: 128,128
 
 Bounds: 32,47,32,38
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Campaign
 
@@ -27,7 +25,6 @@ Videos:
 	GameLost: sfrozen.vqa
 
 Options:
-	ShortGame: False
 	Crates: False
 	Fog: True
 	Shroud: True
@@ -35,6 +32,7 @@ Options:
 	FragileAlliances: False
 	StartingCash: 0
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@France:
@@ -45,11 +43,11 @@ Players:
 		Enemies: USSR
 	PlayerReference@Germany:
 		Name: Germany
+		NonCombatant: True
 		Race: allies
 		ColorRamp: 0,0,80
 		Allies: France, Turkey
 		Enemies: USSR
-		NonCombatant: True
 	PlayerReference@USSR:
 		Name: USSR
 		Playable: True
@@ -64,11 +62,11 @@ Players:
 		Enemies: France, Germany, Turkey
 	PlayerReference@Turkey:
 		Name: Turkey
+		NonCombatant: True
 		Race: allies
 		ColorRamp: 14,123,167
 		Allies: France, Germany
 		Enemies: USSR
-		NonCombatant: True
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True

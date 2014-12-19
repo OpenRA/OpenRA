@@ -1,6 +1,4 @@
-Selectable: True
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,18 +14,20 @@ MapSize: 96,96
 
 Bounds: 8,8,48,48
 
-UseAsShellmap: False
+Visibility: Lobby
 
 Type: Minigame
 
+Videos:
+
 Options:
-	ShortGame: False
 	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 50
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:

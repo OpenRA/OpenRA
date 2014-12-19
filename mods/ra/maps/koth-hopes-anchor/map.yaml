@@ -1,6 +1,4 @@
-Selectable: True
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,9 +14,11 @@ MapSize: 128,128
 
 Bounds: 2,2,110,124
 
-UseAsShellmap: False
+Visibility: Lobby
 
 Type: KotH
+
+Videos:
 
 Options:
 
@@ -31,51 +31,51 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True

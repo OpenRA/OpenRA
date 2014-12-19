@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: cnc
 
@@ -16,7 +14,7 @@ MapSize: 64,64
 
 Bounds: 21,14,37,24
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Campaign
 
@@ -25,7 +23,6 @@ Videos:
 	GameLost: nodlose.vqa
 
 Options:
-	ShortGame: False
 	Crates: False
 	Fog: True
 	Shroud: True
@@ -33,6 +30,7 @@ Options:
 	FragileAlliances: False
 	StartingCash: 0
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
