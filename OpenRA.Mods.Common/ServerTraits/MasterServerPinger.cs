@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Server
 						using (var wc = new WebClient())
 						{
 							wc.Proxy = null;
-							wc.DownloadData(
+							var masterResponse = wc.DownloadData(
 								server.Settings.MasterServer + url.F(
 								server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
 								(int)server.State,
@@ -87,9 +87,18 @@ namespace OpenRA.Mods.Common.Server
 
 							if (isInitialPing)
 							{
+								var masterResponseText = Encoding.UTF8.GetString(masterResponse);
 								isInitialPing = false;
 								lock (masterServerMessages)
+								{
 									masterServerMessages.Enqueue("Master server communication established.");
+									if (masterResponseText.Contains("[001]"))  // Server does not respond code
+									{
+										Log.Write("server", masterResponseText);
+										masterServerMessages.Enqueue("Warning: Server ports are not forwarded.");
+										masterServerMessages.Enqueue("Game has not been advertised online.");
+									}
+								}
 							}
 						}
 					}
