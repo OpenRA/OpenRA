@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,12 +14,13 @@ MapSize: 128,128
 
 Bounds: 19,16,87,88
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Mission
 
+Videos:
+
 Options:
-	ShortGame: False
 	Crates: False
 	Fog: True
 	Shroud: True
@@ -29,6 +28,7 @@ Options:
 	FragileAlliances: False
 	StartingCash: 5000
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@Greece:

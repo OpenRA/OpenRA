@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: cnc
 
@@ -10,15 +8,13 @@ Description: GDI has established a prison camp, where they are detaining some of
 
 Author: Westwood Studios
 
-PreviewVideo: nod3.vqa
-
 Tileset: DESERT
 
 MapSize: 64,64
 
 Bounds: 13,16,42,33
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Campaign
 
@@ -29,7 +25,6 @@ Videos:
 	GameLost: flag.vqa
 
 Options:
-	ShortGame: False
 	Crates: False
 	Fog: True
 	Shroud: True
@@ -37,6 +32,7 @@ Options:
 	FragileAlliances: False
 	StartingCash: 4000
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:

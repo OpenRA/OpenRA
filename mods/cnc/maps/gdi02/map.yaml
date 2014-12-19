@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: cnc
 
@@ -16,7 +14,7 @@ MapSize: 64,64
 
 Bounds: 31,31,31,31
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Campaign
 
@@ -26,7 +24,6 @@ Videos:
 	GameLost: gameover.vqa
 
 Options:
-	ShortGame: False
 	Crates: False
 	Fog: True
 	Shroud: True
@@ -34,6 +31,7 @@ Options:
 	FragileAlliances: False
 	StartingCash: 5000
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@GDI:
