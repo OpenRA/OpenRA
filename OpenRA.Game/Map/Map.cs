@@ -91,6 +91,15 @@ namespace OpenRA
 		}
 	}
 
+	public class MapVideos
+	{
+		public string BackgroundInfo;
+		public string Briefing;
+		public string GameStart;
+		public string GameWon;
+		public string GameLost;
+	}
+
 	public class Map
 	{
 		[FieldLoader.Ignore] public IFolder Container;
@@ -105,7 +114,6 @@ namespace OpenRA
 
 		public string Title;
 		public string Type = "Conquest";
-		public string PreviewVideo;
 		public string Description;
 		public string Author;
 		public string Tileset;
@@ -132,6 +140,19 @@ namespace OpenRA
 				FieldLoader.Load(options, nodesDict["Options"]);
 
 			return options;
+		}
+
+		[FieldLoader.LoadUsing("LoadVideos")]
+		public MapVideos Videos;
+
+		static object LoadVideos(MiniYaml y)
+		{
+			var videos = new MapVideos();
+			var nodesDict = y.ToDictionary();
+			if (nodesDict.ContainsKey("Videos"))
+				FieldLoader.Load(videos, nodesDict["Videos"]);
+
+			return videos;
 		}
 
 		[FieldLoader.Ignore] public Lazy<Dictionary<string, ActorReference>> Actors;
@@ -375,7 +396,6 @@ namespace OpenRA
 				"Title",
 				"Description",
 				"Author",
-				"PreviewVideo",
 				"Tileset",
 				"MapSize",
 				"Bounds",
@@ -390,6 +410,8 @@ namespace OpenRA
 					continue;
 				root.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
 			}
+
+			root.Add(new MiniYamlNode("Videos", FieldSaver.SaveDifferences(Videos, new MapVideos())));
 
 			root.Add(new MiniYamlNode("Options", FieldSaver.SaveDifferences(Options, new MapOptions())));
 

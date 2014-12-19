@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	class LeaveMapLogic
 	{
-		enum Tab { Objectives, Chat };
+		enum Tab { Objectives, Chat }
 		Tab currentTab;
 
 		OrderManager orderManager;
@@ -125,6 +125,13 @@ namespace OpenRA.Mods.RA.Widgets
 				var objectivesContainer = dialog.Get<ContainerWidget>("OBJECTIVES_PANEL");
 				Game.LoadWidget(world, panel, objectivesContainer, new WidgetArgs());
 				objectivesContainer.IsVisible = () => currentTab == Tab.Objectives;
+
+				string video = null;
+				if (world.LocalPlayer.WinState != WinState.Undefined)
+					video = world.LocalPlayer.WinState == WinState.Won ? world.Map.Videos.GameWon : world.Map.Videos.GameLost;
+
+				if (!string.IsNullOrEmpty(video))
+					Media.PlayFMVFullscreen(world, video, () => { });
 			}
 
 			if (isMultiplayer)

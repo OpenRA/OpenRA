@@ -20,7 +20,11 @@ UseAsShellmap: False
 
 Type: Campaign
 
-PreviewVideo: soviet1.vqa
+Videos:
+	Briefing: soviet1.vqa
+	GameStart: flare.vqa
+	GameWon: snstrafe.vqa
+	GameLost: sfrozen.vqa
 
 Options:
 	ShortGame: False
@@ -783,7 +787,6 @@ Rules:
 			Scripts: soviet01.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
-		-StartGameNotification:
 	V01:
 		LeavesHusk:
 			HuskActor: healcrate

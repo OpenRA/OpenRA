@@ -10,8 +10,6 @@ Description: Use the units provided to protect the Mobile Construction Vehicle. 
 
 Author: Westwood Studios
 
-PreviewVideo: gdi1.vqa
-
 Tileset: TEMPERAT
 
 MapSize: 64,64
@@ -21,6 +19,12 @@ Bounds: 35,39,27,23
 UseAsShellmap: False
 
 Type: Campaign
+
+Videos:
+	Briefing: gdi1.vqa
+	GameStart: landing.vqa
+	GameWon: consyard.vqa
+	GameLost: gameover.vqa
 
 Options:
 	ShortGame: False

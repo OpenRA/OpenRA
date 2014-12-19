@@ -157,6 +157,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(TileShape.Rectangle, size));
 			map.MapTiles = Exts.Lazy(() => new CellLayer<TerrainTile>(TileShape.Rectangle, size));
 
+			map.Videos = new MapVideos();
+
 			map.Options = new MapOptions();
 
 			if (legacyMapFormat == IniMapFormat.RedAlert)
@@ -174,6 +176,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				ReadCncTrees(file);
 			}
 
+			LoadVideos(file, "BASIC");
 			LoadActors(file, "STRUCTURES");
 			LoadActors(file, "UNITS");
 			LoadActors(file, "INFANTRY");
@@ -501,6 +504,34 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			map.Players.Add(section, pr);
+		}
+
+		void LoadVideos(IniFile file, string section)
+		{
+			foreach (var s in file.GetSection(section))
+			{
+				if (s.Value != "x" && s.Value != "<none>")
+				{
+					switch (s.Key)
+					{
+						case "Intro":
+							map.Videos.BackgroundInfo = s.Value.ToLower() + ".vqa";
+							break;
+						case "Brief":
+							map.Videos.Briefing = s.Value.ToLower() + ".vqa";
+							break;
+						case "Action":
+							map.Videos.GameStart = s.Value.ToLower() + ".vqa";
+							break;
+						case "Win":
+							map.Videos.GameWon = s.Value.ToLower() + ".vqa";
+							break;
+						case "Lose":
+							map.Videos.GameLost = s.Value.ToLower() + ".vqa";
+							break;
+					}
+				}
+			}
 		}
 	}
 }

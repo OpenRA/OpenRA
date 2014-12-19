@@ -21,7 +21,7 @@ Container@MISSIONBROWSER_PANEL:
 					X: 15
 					Y: 15
 					Width: 239
-					Height: 347
+					Height: 307
 					Children:
 						ScrollItem@HEADER:
 							Width: PARENT_RIGHT-27
@@ -74,6 +74,13 @@ Container@MISSIONBROWSER_PANEL:
 									Width: PARENT_RIGHT - 32
 									VAlign: Top
 									Font: Small
+				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+					X: 15
+					Y: 337
+					Width: 239
+					Height: 25
+					Text: Difficulty
+					Font: Regular
 		Button@BACK_BUTTON:
 			Y: 376
 			Width: 140
@@ -81,19 +88,33 @@ Container@MISSIONBROWSER_PANEL:
 			Text: Back
 			Font: Bold
 			Key: escape
-		Button@START_VIDEO_BUTTON:
+		Button@START_BRIEFING_VIDEO_BUTTON:
 			X: PARENT_RIGHT - 290
 			Y: 376
 			Width: 140
 			Height: 35
-			Text: View Briefing
+			Text: Watch Briefing
 			Font: Bold
-		Button@STOP_VIDEO_BUTTON:
+		Button@STOP_BRIEFING_VIDEO_BUTTON:
 			X: PARENT_RIGHT - 290
 			Y: 376
 			Width: 140
 			Height: 35
 			Text: Stop Briefing
+			Font: Bold
+		Button@START_INFO_VIDEO_BUTTON:
+			X: PARENT_RIGHT - 440
+			Y: 376
+			Width: 140
+			Height: 35
+			Text: Watch Info Video
+			Font: Bold
+		Button@STOP_INFO_VIDEO_BUTTON:
+			X: PARENT_RIGHT - 440
+			Y: 376
+			Width: 140
+			Height: 35
+			Text: Stop Info Video
 			Font: Bold
 		Button@STARTGAME_BUTTON:
 			X: PARENT_RIGHT - 140
@@ -102,13 +123,6 @@ Container@MISSIONBROWSER_PANEL:
 			Height: 35
 			Text: Play
 			Font: Bold
-		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-			X: PARENT_RIGHT - 290 - 150
-			Y: 376
-			Width: 140
-			Height: 35
-			Text: Difficulty
-			Font: Bold
 		Container@MISSION_BIN:
 			Children:
 				VqaPlayer@MISSION_VIDEO:
@@ -116,3 +130,14 @@ Container@MISSIONBROWSER_PANEL:
 					Y: 1
 					Width: 640
 					Height: 375
+Background@FULLSCREEN_PLAYER:
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Background: panel-allblack
+	Visible: False
+	Children:
+		VqaPlayer@PLAYER:
+			X: 0
+			Y: 0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM

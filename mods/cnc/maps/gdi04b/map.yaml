@@ -10,8 +10,6 @@ Description: Nod has captured classified GDI property.\n\nYou must find and retr
 
 Author: Westwood Studios
 
-PreviewVideo: gdi4b.vqa
-
 Tileset: TEMPERAT
 
 MapSize: 64,64
@@ -21,6 +19,13 @@ Bounds: 5,11,50,38
 UseAsShellmap: False
 
 Type: Campaign
+
+Videos:
+	BackgroundInfo: bkground.vqa
+	Briefing: gdi4b.vqa
+	GameStart: nitejump.vqa
+	GameWon: burdet1.vqa
+	GameLost: gameover.vqa
 
 Options:
 	ShortGame: False

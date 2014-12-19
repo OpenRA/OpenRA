@@ -52,9 +52,6 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerLost(nod, function()
 		Media.PlaySpeechNotification(nod, "Lose")
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlayMovieFullscreen("nodlose.vqa")
-		end)
 	end)
 
 	NodObjective1 = nod.AddPrimaryObjective("Kill Nikoomba")

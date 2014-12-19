@@ -81,25 +81,15 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "Win")
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlayMovieFullscreen("burdet1.vqa")
-		end)
 	end)
 
 	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlayMovieFullscreen("gameover.vqa")
-		end)
 	end)
 
-	Media.PlayMovieFullscreen("bkground.vqa", function()
-		Media.PlayMovieFullscreen("nodsweep.vqa", function()
-			nodObjective = nod.AddPrimaryObjective("Destroy all GDI troops")
-			gdiObjective1 = player.AddPrimaryObjective("Defend the town of Bialystok")
-			gdiObjective2 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
-		end)
-	end)
+	nodObjective = nod.AddPrimaryObjective("Destroy all GDI troops")
+	gdiObjective1 = player.AddPrimaryObjective("Defend the town of Bialystok")
+	gdiObjective2 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
 
 	townAttackTrigger = false
 	Trigger.OnExitedFootprint(TownAttackTrigger, function(a, id)
