@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		}
 
 		public static void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client,
-			OrderManager orderManager, int teamCount)
+			OrderManager orderManager)
 		{
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return item;
 			};
 
-			var options = Enumerable.Range(0, teamCount + 1);
+			var options = Enumerable.Range(1, orderManager.LobbyInfo.GlobalSettings.TeamCount);
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 
@@ -409,8 +409,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public static void SetupEditableTeamWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("TEAM");
-			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady;
-			dropdown.OnMouseDown = _ => ShowTeamDropDown(dropdown, c, orderManager, map.PlayerCount);
+			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady || c.Team == 0;
+			dropdown.OnMouseDown = _ => ShowTeamDropDown(dropdown, c, orderManager);
 			dropdown.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 		}
 

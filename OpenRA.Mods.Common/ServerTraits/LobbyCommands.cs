@@ -476,28 +476,31 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						var maxTeams = (server.LobbyInfo.Clients.Count(c => c.Slot != null) + 1) / 2;
-						teamCount = teamCount.Clamp(0, maxTeams);
+						var freeForAll = teamCount == 0;
+						var vsBots = teamCount == 1;
+
+						teamCount = teamCount.Clamp(2, server.Map.PlayerCount);
+
 						var players = server.LobbyInfo.Slots
 							.Select(slot => server.LobbyInfo.ClientInSlot(slot.Key))
-							.Where(c => c != null && !server.LobbyInfo.Slots[c.Slot].LockTeam);
+							.Where(c => c != null && !server.LobbyInfo.Slots[c.Slot].LockTeam)
+							.ToList();
 
-						var assigned = 0;
-						var playerCount = players.Count();
+						var i = 0;
 						foreach (var player in players)
 						{
-							// Free for all
-							if (teamCount == 0)
-								player.Team = 0;
-
-							// Humans vs Bots
-							else if (teamCount == 1)
-								player.Team = player.Bot == null ? 1 : 2;
-							else
-								player.Team = assigned++ * teamCount / playerCount + 1;
+							player.Team =  vsBots ?
+								(player.Bot == null ? 1 : 2) : (freeForAll ? 0 : ++i);
+							i %= teamCount;
 						}
 
-						server.SyncLobbyClients();
+						server.LobbyInfo.GlobalSettings.TeamCount = teamCount;
+						server.SyncLobbyInfo();
+						if (freeForAll)
+							server.SendMessage("{0} disabled teams.".F(client.Name));
+						else
+							server.SendMessage("{0} changed Team Count to {1}.".F(client.Name, teamCount));
+
 						return true;
 					}
 				},

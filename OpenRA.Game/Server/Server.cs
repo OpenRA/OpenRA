@@ -352,6 +352,12 @@ namespace OpenRA.Server
 				foreach (var t in serverTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
 
+				// assign a team
+				client.Team = LobbyInfo.GlobalSettings.TeamCount == 0 ? 0 : LobbyInfo.Clients
+					.Select(c => c.Team)
+					.Concat(Enumerable.Range(1, LobbyInfo.GlobalSettings.TeamCount))
+					.GroupBy(c => c).OrderBy(c => c.Count()).FirstOrDefault().Key;
+
 				SyncLobbyInfo();
 				SendMessage("{0} has joined the game.".F(client.Name));
 
