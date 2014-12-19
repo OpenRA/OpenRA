@@ -10,9 +10,10 @@
 
 using System;
 using Eluant;
-using OpenRA.Traits;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
-using OpenRA.Mods.RA;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
@@ -108,7 +109,8 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Returns true if this player has lost all units/actors that have the MustBeDestroyed trait.")]
+		[Desc("Returns true if this player has lost all units/actors that have" +
+			"the MustBeDestroyed trait (according to the short game option).")]
 		public bool HasNoRequiredUnits()
 		{
 			return player.HasNoRequiredUnits();

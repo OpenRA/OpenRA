@@ -11,14 +11,15 @@
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets
+namespace OpenRA.Mods.Common.Widgets
 {
 	public class StrategicProgressWidget : Widget
 	{
-		bool Initialised = false;
 		readonly World world;
+		bool initialised = false;
 
 		[ObjectCreator.UseCtor]
 		public StrategicProgressWidget(World world)
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void Draw()
 		{
-			if (!Initialised)
+			if (!initialised)
 				Init();
 
 			if (!IsVisible()) return;
@@ -99,7 +100,7 @@ namespace OpenRA.Mods.RA.Widgets
 				world.ActorsWithTrait<StrategicPoint>().Any();
 
 			IsVisible = () => visible;
-			Initialised = true;
+			initialised = true;
 		}
 	}
 }

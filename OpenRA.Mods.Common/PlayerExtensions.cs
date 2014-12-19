@@ -9,15 +9,19 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.RA;
+using OpenRA.Mods.Common.Traits;
 
-namespace OpenRA
+namespace OpenRA.Mods.Common
 {
-	public static class Extensions
+	public static class PlayerExtensions
 	{
 		public static bool HasNoRequiredUnits(this Player player)
 		{
-			return player.World.ActorsWithTrait<MustBeDestroyed>().All(p => p.Actor.Owner != player);
+			return !player.World.ActorsWithTrait<MustBeDestroyed>().Any(p =>
+			{
+				return p.Actor.Owner == player &&
+					(player.World.LobbyInfo.GlobalSettings.ShortGame ? p.Trait.Info.RequiredForShortGame : p.Actor.IsInWorld);
+			});
 		}
 	}
 }

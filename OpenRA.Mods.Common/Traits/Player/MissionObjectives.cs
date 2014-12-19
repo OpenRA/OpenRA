@@ -14,10 +14,10 @@ using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
-	public enum ObjectiveType { Primary, Secondary };
-	public enum ObjectiveState { Incomplete, Completed, Failed };
+	public enum ObjectiveType { Primary, Secondary }
+	public enum ObjectiveState { Incomplete, Completed, Failed }
 
 	public class MissionObjective
 	{
@@ -233,9 +233,9 @@ namespace OpenRA.Mods.RA
 
 		public event Action<Player> ObjectiveAdded = player => { player.HasObjectives = true; };
 
-		public void OnObjectiveAdded(Player player, int id) {}
-		public void OnObjectiveCompleted(Player player, int id) {}
-		public void OnObjectiveFailed(Player player, int id) {}
+		public void OnObjectiveAdded(Player player, int id) { }
+		public void OnObjectiveCompleted(Player player, int id) { }
+		public void OnObjectiveFailed(Player player, int id) { }
 
 		public void ResolveOrder(Actor self, Order order)
 		{

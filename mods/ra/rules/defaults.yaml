@@ -71,6 +71,7 @@
 		UpgradeMaxAcceptedLevel: 2
 	TimedUpgradeBar:
 		Upgrade: invulnerability
+	MustBeDestroyed:
 
 ^Tank:
 	AppearsOnRadar:
@@ -145,6 +146,7 @@
 		UpgradeMaxAcceptedLevel: 2
 	TimedUpgradeBar:
 		Upgrade: invulnerability
+	MustBeDestroyed:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -233,6 +235,7 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	MustBeDestroyed:
 
 ^Ship:
 	AppearsOnRadar:
@@ -286,6 +289,7 @@
 	TimedUpgradeBar:
 		Upgrade: invulnerability
 		UpgradeMinEnabledLevel: 1
+	MustBeDestroyed:
 
 ^Plane:
 	AppearsOnRadar:
@@ -342,6 +346,7 @@
 	TimedUpgradeBar:
 		Upgrade: invulnerability
 	WithShadow:
+	MustBeDestroyed:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -377,6 +382,7 @@
 	EmitInfantryOnSell:
 		ActorTypes: e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,e6,e6,e6,e6,e6
 	MustBeDestroyed:
+		RequiredForShortGame: true
 	GivesExperience:
 	CaptureNotification:
 	EditorAppearance:
@@ -416,7 +422,8 @@
 	Inherits: ^Building
 	TargetableBuilding:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
-	-MustBeDestroyed:
+	MustBeDestroyed:
+		RequiredForShortGame: false
 
 ^Wall:
 	AppearsOnRadar:

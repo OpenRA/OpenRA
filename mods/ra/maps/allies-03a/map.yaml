@@ -21,6 +21,7 @@ UseAsShellmap: False
 Type: Campaign
 
 Options:
+	ShortGame: False
 	Crates: False
 	Fog: True
 	Shroud: True
@@ -1381,18 +1382,15 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 		-StartGameNotification:
 	^Infantry:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Tank:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 		Demolishable:
 	^Vehicle:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false

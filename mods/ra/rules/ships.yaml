@@ -48,6 +48,7 @@ SS:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
+	-MustBeDestroyed:
 
 MSUB:
 	Inherits: ^Ship
@@ -99,6 +100,7 @@ MSUB:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
+	-MustBeDestroyed:
 
 DD:
 	Inherits: ^Ship

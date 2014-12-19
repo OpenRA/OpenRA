@@ -50,6 +50,7 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	MustBeDestroyed:
 
 ^Tank:
 	AppearsOnRadar:
@@ -106,6 +107,7 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	MustBeDestroyed:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -149,6 +151,7 @@
 	UpgradeManager:
 	WithShadow:
 	Hovers:
+	MustBeDestroyed:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -233,6 +236,7 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	MustBeDestroyed:
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -424,6 +428,7 @@
 ^BaseBuilding:
 	Inherits: ^Building
 	MustBeDestroyed:
+		RequiredForShortGame: true
 	RepairableBuilding:
 		RepairPercent: 40
 		RepairStep: 14

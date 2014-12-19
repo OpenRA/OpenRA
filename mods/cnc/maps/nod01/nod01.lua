@@ -77,13 +77,15 @@ WorldLoaded = function()
 end
 
 Tick = function()
-	if nod.HasNoRequiredUnits() then
-		gdi.MarkCompletedObjective(GDIObjective1)
-	end
-	if villagers.HasNoRequiredUnits() then
-		nod.MarkCompletedObjective(NodObjective2)
-	end
-	if gdi.HasNoRequiredUnits() then
-		nod.MarkCompletedObjective(NodObjective3)
+	if DateTime.GameTime > 2 then
+		if nod.HasNoRequiredUnits() then
+			gdi.MarkCompletedObjective(GDIObjective1)
+		end
+		if villagers.HasNoRequiredUnits() then
+			nod.MarkCompletedObjective(NodObjective2)
+		end
+		if gdi.HasNoRequiredUnits() then
+			nod.MarkCompletedObjective(NodObjective3)
+		end
 	end
 end

@@ -23,6 +23,7 @@ UseAsShellmap: False
 Type: Campaign
 
 Options:
+	ShortGame: False
 	Cheats: False
 	Crates: False
 	Fog: True
@@ -565,12 +566,10 @@ Rules:
 		MissionObjectives:
 			EarlyGameOver: true
 	^Vehicle:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Tank:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
@@ -581,7 +580,6 @@ Rules:
 	^Infantry:
 		SpawnViceroid:
 			Probability: 0
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
