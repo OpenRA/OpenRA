@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Commands
 
 		public void InvokeCommand(string name, string arg)
 		{
+			if (world.LocalPlayer == null)
+				return;
+
 			switch (name)
 			{
 				case "pause":
