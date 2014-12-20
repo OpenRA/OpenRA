@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Shown in the build palette widget.")]
 	public class TooltipInfo : ITraitInfo, ITooltipInfo
