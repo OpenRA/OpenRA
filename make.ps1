@@ -107,8 +107,11 @@ elseif ($command -eq "version")
 }
 elseif ($command -eq "dependencies")
 {
-	cp thirdparty/*.dll .
-	cp thirdparty/windows/*.dll .
+	cd thirdparty
+	./fetch-thirdparty-deps.ps1
+	cp *.dll ..
+	cp windows/*.dll ..
+	cd ..
 	echo "Dependencies copied."
 }
 elseif ($command -eq "test")
