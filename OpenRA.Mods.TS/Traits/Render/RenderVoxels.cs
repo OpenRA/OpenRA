@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common;
-using OpenRA.Traits;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits
 {
