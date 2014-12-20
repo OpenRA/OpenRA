@@ -38,6 +38,7 @@ Debian/Ubuntu
 
 * mono-dmcs
 * libmono-system-windows-forms4.0-cil
+* nuget
 * cli-common-dev (>= 2.10)
 * libfreetype6
 * libopenal1
@@ -50,6 +51,7 @@ openSUSE
 --------
 
 * mono-devel
+* nuget
 * openal
 * freetype2
 * SDL2
@@ -62,6 +64,7 @@ Gentoo
 
 * dev-lang/mono
 * dev-dotnet/libgdiplus
+* dev-dotnet/nuget
 * media-libs/freetype:2
 * media-libs/libsdl2
 * media-libs/openal
