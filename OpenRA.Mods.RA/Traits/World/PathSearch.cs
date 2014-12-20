@@ -15,7 +15,7 @@ using System.Linq;
 using OpenRA;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.RA.Move
+namespace OpenRA.Mods.RA.Traits
 {
 	public sealed class PathSearch : IDisposable
 	{

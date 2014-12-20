@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Activities
 				return this;
 
 			return Util.SequenceActivities(
-				new AttackMoveActivity(self, new Move.Move(self, target.Location, WRange.FromCells(2))),
+				new AttackMoveActivity(self, new Move(self, target.Location, WRange.FromCells(2))),
 				new Wait(25),
 				this);
 		}

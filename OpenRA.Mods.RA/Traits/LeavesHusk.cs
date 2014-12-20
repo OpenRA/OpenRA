@@ -10,7 +10,6 @@
 
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Move;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 

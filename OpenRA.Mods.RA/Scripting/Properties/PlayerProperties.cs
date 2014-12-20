@@ -12,7 +12,7 @@ using System;
 using System.Linq;
 using Eluant;
 using OpenRA.Scripting;
-using OpenRA.Mods.RA.Move;
+using OpenRA.Mods.RA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {

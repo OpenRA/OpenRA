@@ -18,7 +18,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Move
+namespace OpenRA.Mods.RA.Traits
 {
 	[Flags]
 	public enum CellConditions

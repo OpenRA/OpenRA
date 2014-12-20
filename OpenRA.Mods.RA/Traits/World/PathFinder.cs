@@ -12,13 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using OpenRA.Mods.RA.Traits;
 using OpenRA;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Move
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Calculates routes for mobile units based on the A* search algorithm.", " Attach this to the world actor.")]
 	public class PathFinderInfo : ITraitInfo
