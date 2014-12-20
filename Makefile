@@ -105,7 +105,7 @@ mod_common_SRCS := $(shell find OpenRA.Mods.Common/ -iname '*.cs')
 mod_common_TARGET = mods/common/OpenRA.Mods.Common.dll
 mod_common_KIND = library
 mod_common_DEPS = $(game_TARGET)
-mod_common_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS)
+mod_common_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) thirdparty/StyleCop.dll thirdparty/StyleCop.CSharp.dll thirdparty/StyleCop.CSharp.Rules.dll
 PROGRAMS += mod_common
 mod_common: $(mod_common_TARGET)
 
@@ -264,6 +264,7 @@ distclean: clean
 dependencies: cli-dependencies native-dependencies
 
 cli-dependencies:
+	cd thirdparty && ./fetch-thirdparty-deps.sh && cd ..
 	@ $(CP_R) thirdparty/*.dll .
 	@ $(CP_R) thirdparty/*.dll.config .
 
