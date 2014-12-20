@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Infiltration
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Steal and reset the owner's exploration.")]
 	class InfiltrateForExplorationInfo : TraitInfo<InfiltrateForExploration> { }

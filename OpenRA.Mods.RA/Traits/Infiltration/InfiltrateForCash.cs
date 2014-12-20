@@ -12,7 +12,7 @@ using System;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Infiltration
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("This structure can be infiltrated causing funds to be stolen.")]
 	class InfiltrateForCashInfo : ITraitInfo
@@ -47,4 +47,3 @@ namespace OpenRA.Mods.RA.Infiltration
 		}
 	}
 }
-

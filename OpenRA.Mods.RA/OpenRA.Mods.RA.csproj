@@ -135,7 +135,6 @@
     <Compile Include="Render\RenderUnitReload.cs" />
     <Compile Include="Graphics\TeslaZapRenderable.cs" />
     <Compile Include="GainsExperience.cs" />
-    <Compile Include="Infiltration\InfiltrateForPowerOutage.cs" />
     <Compile Include="EjectOnDeath.cs" />
     <Compile Include="AI\RushFuzzy.cs" />
     <Compile Include="AI\StateMachine.cs" />
@@ -189,7 +188,6 @@
     <Compile Include="GivesBounty.cs" />
     <Compile Include="GivesExperience.cs" />
     <Compile Include="Guard.cs" />
-    <Compile Include="Infiltration\InfiltrateForSupportPower.cs" />
     <Compile Include="Invulnerable.cs" />
     <Compile Include="Captures.cs" />
     <Compile Include="LimitedAmmo.cs" />
@@ -326,10 +324,12 @@
     <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="Player\BaseAttackNotifier.cs" />
     <Compile Include="Player\HarvesterAttackNotifier.cs" />
-    <Compile Include="Infiltration\InfiltrateForExploration.cs" />
-    <Compile Include="Infiltration\InfiltrateForCash.cs" />
     <Compile Include="RenderShroudCircle.cs" />
-    <Compile Include="Infiltration\Infiltrates.cs" />
+    <Compile Include="Traits\Infiltration\InfiltrateForCash.cs" />
+    <Compile Include="Traits\Infiltration\InfiltrateForExploration.cs" />
+    <Compile Include="Traits\Infiltration\InfiltrateForPowerOutage.cs" />
+    <Compile Include="Traits\Infiltration\InfiltrateForSupportPower.cs" />
+    <Compile Include="Traits\Infiltration\Infiltrates.cs" />
     <Compile Include="Armament.cs" />
     <Compile Include="Widgets\Logic\ObserverShroudSelectorLogic.cs" />
     <Compile Include="Activities\RepairBridge.cs" />
