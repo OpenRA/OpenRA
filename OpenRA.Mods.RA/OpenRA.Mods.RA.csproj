@@ -344,7 +344,6 @@
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
     <Compile Include="Buildings\Bib.cs" />
     <Compile Include="Render\WithIdleOverlay.cs" />
-    <Compile Include="Tooltip.cs" />
     <Compile Include="AI\Squad.cs" />
     <Compile Include="AI\States\StateBase.cs" />
     <Compile Include="AI\States\GroundStates.cs" />
