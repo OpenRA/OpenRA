@@ -16,7 +16,6 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Traits;
-using OpenRA.Mods.RA.Move;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;

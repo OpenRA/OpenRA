@@ -13,7 +13,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 using OpenRA.Support;
 

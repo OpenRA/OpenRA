@@ -200,10 +200,10 @@
     <Compile Include="Traits\MadTank.cs" />
     <Compile Include="Traits\Mine.cs" />
     <Compile Include="Traits\Minelayer.cs" />
-    <Compile Include="Move\Mobile.cs" />
-    <Compile Include="Move\Move.cs" />
-    <Compile Include="Move\PathFinder.cs" />
-    <Compile Include="Move\PathSearch.cs" />
+    <Compile Include="Traits\Mobile.cs" />
+    <Compile Include="Activities\Move.cs" />
+    <Compile Include="Traits\World\PathFinder.cs" />
+    <Compile Include="Traits\World\PathSearch.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Orders\GlobalButtonOrderGenerator.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />

@@ -8,10 +8,9 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Makes the unit automatically run around when taking damage.")]
 	class ScaredyCatInfo : ITraitInfo
