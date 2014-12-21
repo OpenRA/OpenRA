@@ -12,7 +12,7 @@ using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Crates
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Grants an upgrade to the collector.")]
 	public class GrantUpgradeCrateActionInfo : CrateActionInfo

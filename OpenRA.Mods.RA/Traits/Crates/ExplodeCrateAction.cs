@@ -12,7 +12,7 @@ using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Fires a weapon at the location when collected.")]
 	class ExplodeCrateActionInfo : CrateActionInfo
