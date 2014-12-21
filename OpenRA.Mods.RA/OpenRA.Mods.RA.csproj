@@ -140,10 +140,9 @@
     <Compile Include="Traits\AttackMove.cs" />
     <Compile Include="Attack\AttackBase.cs" />
     <Compile Include="Attack\AttackFrontal.cs" />
-    <Compile Include="Attack\AttackLeap.cs" />
+    <Compile Include="Traits\Attack\AttackLeap.cs" />
     <Compile Include="Attack\AttackMedic.cs" />
     <Compile Include="Attack\AttackOmni.cs" />
-    <Compile Include="Attack\AttackPopupTurreted.cs" />
     <Compile Include="Attack\AttackCharge.cs" />
     <Compile Include="Attack\AttackWander.cs" />
     <Compile Include="AutoHeal.cs" />
