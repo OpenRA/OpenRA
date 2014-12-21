@@ -47,6 +47,9 @@ namespace OpenRA.Mods.Common.Commands
 
 		public void InvokeCommand(string name, string arg)
 		{
+			if (world.LocalPlayer == null)
+				return;
+
 			if (!world.AllowDevCommands)
 			{
 				Game.Debug("Cheats are disabled.");
@@ -91,8 +94,7 @@ namespace OpenRA.Mods.Common.Commands
 
 		static void IssueDevCommand(World world, string command)
 		{
-			if (world.LocalPlayer != null)
-				world.IssueOrder(new Order(command, world.LocalPlayer.PlayerActor, false));
+			world.IssueOrder(new Order(command, world.LocalPlayer.PlayerActor, false));
 		}
 
 		class DevException : Exception { }
