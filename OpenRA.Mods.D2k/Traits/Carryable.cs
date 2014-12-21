@@ -88,7 +88,6 @@ namespace OpenRA.Mods.D2k.Traits
 				return;
 
 			WantsTransport = false;
-			Reserved = false;
 
 			// TODO: We could implement something like a carrier.Trait<AutoCarryAll>().CancelTransportNotify(self) and call it here
 		}
