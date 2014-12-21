@@ -10,7 +10,7 @@
 
 using System.Linq;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Gives experience levels to the collector.")]
 	class LevelUpCrateActionInfo : CrateActionInfo
