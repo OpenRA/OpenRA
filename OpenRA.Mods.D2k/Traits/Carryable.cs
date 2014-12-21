@@ -62,15 +62,14 @@ namespace OpenRA.Mods.D2k.Traits
 
 			Destination = destination;
 			this.afterLandActivity = afterLandActivity;
+			WantsTransport = true;
 
 			if (locked || Reserved)
-				return;
-
-			WantsTransport = true;
+					return;
 
 			// Inform all idle carriers
 			var carriers = self.World.ActorsWithTrait<AutoCarryall>()
-				.Where(c => !c.Trait.Busy && !c.Actor.IsDead && c.Actor.Owner == self.Owner)
+				.Where(c => !c.Trait.Busy && !c.Actor.IsDead && c.Actor.Owner == self.Owner && c.Actor.IsInWorld)
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
 			foreach (var carrier in carriers)
@@ -100,7 +99,7 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			// Find carriers
 			var carriers = self.World.ActorsWithTrait<AutoCarryall>()
-				.Where(p => p.Actor.Owner == self.Owner && !p.Trait.Busy)
+				.Where(p => p.Actor.Owner == self.Owner && !p.Trait.Busy && p.Actor.IsInWorld)
 				.Select(h => h.Actor);
 
 			return WorldUtils.ClosestTo(carriers, self);

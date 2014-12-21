@@ -183,11 +183,11 @@ CONCRETEB:
 		Capacity: 2000
 	CustomSellValue:
 		Value: 500
-	FreeActor:
+	DeliverFreeActor:
 		Actor: HARVESTER
 		InitialActivity: FindResources
-		SpawnOffset: 2,1
-		Facing: 160
+		DeliveryOffset: 2,1
+		CarryingActor: CARRYALL.reinforce
 	ProvidesCustomPrerequisite:
 		Prerequisite: refinery
 	WithDockingOverlay@SMOKE:
@@ -607,11 +607,8 @@ WALL:
 	Tooltip:
 		Name: High Tech Facility
 		Description: Unlocks advanced technology
-	Production:
+	ProductionFromMapEdge:
 		Produces: Aircraft
-	Exit:
-		SpawnOffset: 0,0,728
-		ExitCell: 0,0
 	Building:
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3

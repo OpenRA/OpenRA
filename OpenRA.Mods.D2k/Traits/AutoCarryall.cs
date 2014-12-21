@@ -51,6 +51,7 @@ namespace OpenRA.Mods.D2k.Traits
 			this.self = self;
 			carryHeight = self.Trait<Helicopter>().Info.LandAltitude;
 			this.info = info;
+			Busy = false;
 
 			HasCarryableAttached = false;
 		}
@@ -82,6 +83,9 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void FindCarryableForTransport()
 		{
+			if (!self.IsInWorld)
+				return;
+
 			// get all carryables who want transport
 			var carryables = self.World.ActorsWithTrait<Carryable>()
 				.Where(p =>
@@ -163,6 +167,7 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			HasCarryableAttached = true;
 			Busy = true;
+			Carrying = carryable;
 
 			// Create a new animation for our carryable unit
 			anim = new Animation(self.World, RenderSprites.GetImage(carryable.Info), RenderSprites.MakeFacingFunc(self));

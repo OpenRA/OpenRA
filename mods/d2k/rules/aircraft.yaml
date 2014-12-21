@@ -29,6 +29,14 @@
 	-Selectable:
 	AutoCarryall:
 
+CARRYALL.reinforce:
+	Inherits: ^CARRYALL
+	-Buildable:
+	AutoCarryall:
+		Automatic: false
+	RenderUnit:
+		Image: carryall
+
 FRIGATE:
 	ParaDrop:
 		DropRange: 1c0

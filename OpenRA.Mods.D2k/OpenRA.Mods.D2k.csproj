@@ -98,6 +98,8 @@
     <Compile Include="Widgets\SlidingContainerWidget.cs" />
     <Compile Include="Traits\Render\WithAttackOverlay.cs" />
     <Compile Include="Widgets\Logic\SlidingRadarBinLogic.cs" />
+    <Compile Include="Traits\ProductionFromMapEdge.cs" />
+    <Compile Include="Traits\Buildings\DeliverFreeActor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

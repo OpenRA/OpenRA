@@ -127,7 +127,7 @@ Rules:
 		LuaScript:
 			Scripts: shellmap.lua
 	REFA:
-		-FreeActor:
+		-DeliverFreeActor:
 	CARRYALLA:
 		-AutoCarryall:
 		Helicopter:
