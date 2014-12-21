@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
-using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Mods.TS.Traits;
 using OpenRA.Traits;

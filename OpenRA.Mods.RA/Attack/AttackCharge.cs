@@ -9,7 +9,7 @@
 #endregion
 
 using OpenRA.Activities;
-using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 

@@ -9,10 +9,10 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.RA.Traits;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.D2k.Traits
 {
 	public class LaysTerrainInfo : ITraitInfo, Requires<BuildingInfo>
 	{
