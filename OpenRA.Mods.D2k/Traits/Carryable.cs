@@ -54,17 +54,18 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void RequestTransport(CPos destination, Activity afterLandActivity)
 		{
-			if (locked || Reserved)
+			if (destination == CPos.Zero || (self.Location - destination).Length < info.MinDistance)
+			{
+				WantsTransport = false; // Be sure to cancel any pending transports
 				return;
-
-			if (destination == CPos.Zero)
-				return;
-
-			if ((self.Location - destination).Length < info.MinDistance)
-				return;
+			}
 
 			Destination = destination;
 			this.afterLandActivity = afterLandActivity;
+
+			if (locked || Reserved)
+				return;
+
 			WantsTransport = true;
 
 			// Inform all idle carriers
