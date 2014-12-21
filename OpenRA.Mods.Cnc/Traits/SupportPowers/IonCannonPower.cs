@@ -11,7 +11,6 @@
 using OpenRA.Mods.Cnc.Effects;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 

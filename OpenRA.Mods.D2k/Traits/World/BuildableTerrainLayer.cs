@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Attach this to the world actor. Required for LaysTerrain to work.")]
 	public class BuildableTerrainLayerInfo : TraitInfo<BuildableTerrainLayer> { }

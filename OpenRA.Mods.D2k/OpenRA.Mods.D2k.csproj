@@ -74,6 +74,7 @@
     <Compile Include="Traits\AttackSwallow.cs" />
     <Compile Include="Traits\AutoCarryall.cs" />
     <Compile Include="Traits\Buildings\DamagedWithoutFoundation.cs" />
+    <Compile Include="Traits\Buildings\LaysTerrain.cs" />
     <Compile Include="Traits\Carryable.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedOverlay.cs" />
     <Compile Include="Traits\Render\WithCrumbleOverlay.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Traits\Render\WithProductionOverlay.cs" />
     <Compile Include="Traits\TemporaryOwnerManager.cs" />
     <Compile Include="Traits\ThrowsShrapnel.cs" />
+    <Compile Include="Traits\World\BuildableTerrainLayer.cs" />
     <Compile Include="Traits\World\ChooseBuildTabOnSelect.cs" />
     <Compile Include="Traits\World\D2kResourceLayer.cs" />
     <Compile Include="Traits\World\FogPaletteFromR8.cs" />

@@ -8,9 +8,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -30,6 +28,5 @@ namespace OpenRA.Mods.RA
 	}
 
 	public interface INotifyParachuteLanded { void OnLanded(); }
-	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
 	public interface INotifyAttack { void Attacking(Actor self, Target target, Armament a, Barrel barrel); }
 }

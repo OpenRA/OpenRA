@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Tag trait for construction yard and MCVs. Used by the cycle bases hotkey to identify actors.")]
 	public class BaseBuildingInfo : TraitInfo<BaseBuilding> { }

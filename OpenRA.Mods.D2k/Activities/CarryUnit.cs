@@ -7,12 +7,10 @@
  * see COPYING.
  */
 #endregion
-using System;
-using System.Drawing;
-using System.Linq;
+
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.D2k.Traits;
-using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
