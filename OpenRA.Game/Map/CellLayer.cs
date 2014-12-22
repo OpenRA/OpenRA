@@ -48,14 +48,13 @@ namespace OpenRA
 		// Resolve an array index from cell coordinates
 		int Index(CPos cell)
 		{
-			var uv = Map.CellToMap(Shape, cell);
-			return Index(uv.X, uv.Y);
+			return Index(cell.ToMPos(Shape));
 		}
 
 		// Resolve an array index from map coordinates
-		int Index(int u, int v)
+		int Index(MPos uv)
 		{
-			return v * Size.Width + u;
+			return uv.V * Size.Width + uv.U;
 		}
 
 		/// <summary>Gets or sets the <see cref="OpenRA.CellLayer"/> using cell coordinates</summary>
@@ -76,19 +75,19 @@ namespace OpenRA
 		}
 
 		/// <summary>Gets or sets the layer contents using raw map coordinates (not CPos!)</summary>
-		public T this[int u, int v]
+		public T this[MPos uv]
 		{
 			get
 			{
-				return entries[Index(u, v)];
+				return entries[Index(uv)];
 			}
 
 			set
 			{
-				entries[Index(u, v)] = value;
+				entries[Index(uv)] = value;
 
 				if (CellEntryChanged != null)
-					CellEntryChanged(Map.MapToCell(Shape, new CPos(u, v)));
+					CellEntryChanged(uv.ToCPos(Shape));
 			}
 		}
 
@@ -123,7 +122,7 @@ namespace OpenRA
 			result.Clear(defaultValue);
 			for (var j = 0; j < height; j++)
 				for (var i = 0; i < width; i++)
-					result[i, j] = layer[i, j];
+					result[new MPos(i, j)] = layer[new MPos(i, j)];
 
 			return result;
 		}

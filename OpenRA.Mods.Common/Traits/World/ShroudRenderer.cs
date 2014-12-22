@@ -151,17 +151,13 @@ namespace OpenRA.Mods.Common.Traits
 			notVisibleEdges = info.UseExtendedIndex ? Edges.AllSides : Edges.AllCorners;
 		}
 
-		Edges GetEdges(int u, int v, Func<int, int, bool> isVisible)
+		Edges GetEdges(MPos uv, Func<MPos, bool> isVisible)
 		{
-			if (!isVisible(u, v))
+			if (!isVisible(uv))
 				return notVisibleEdges;
 
-			var cell = Map.MapToCell(map.TileShape, new CPos(u, v));
-			Func<CPos, bool> isCellVisible = c =>
-			{
-				var uv = Map.CellToMap(map.TileShape, c);
-				return isVisible(uv.X, uv.Y);
-			};
+			var cell = uv.ToCPos(map);
+			Func<CPos, bool> isCellVisible = c => isVisible(c.ToMPos(map));
 
 			// If a side is shrouded then we also count the corners
 			var edge = Edges.None;
@@ -208,18 +204,16 @@ namespace OpenRA.Mods.Common.Traits
 			// Adds a 1-cell border around the border to cover any sprites peeking outside the map
 			foreach (var uv in CellRegion.Expand(w.Map.Cells, 1).MapCoords)
 			{
-				var u = uv.X;
-				var v = uv.Y;
-				var screen = wr.ScreenPosition(w.Map.CenterOfCell(Map.MapToCell(map.TileShape, uv)));
+				var screen = wr.ScreenPosition(w.Map.CenterOfCell(uv.ToCPos(map)));
 				var variant = (byte)Game.CosmeticRandom.Next(info.ShroudVariants.Length);
-				tiles[u, v] = new ShroudTile(screen, variant);
+				tiles[uv] = new ShroudTile(screen, variant);
 
 				// Set the cells outside the border so they don't need to be touched again
-				if (!map.Contains(u, v))
+				if (!map.Contains(uv))
 				{
-					var shroudTile = tiles[u, v];
+					var shroudTile = tiles[uv];
 					shroudTile.Shroud = GetTile(shroudSprites, notVisibleEdges, variant);
-					tiles[u, v] = shroudTile;
+					tiles[uv] = shroudTile;
 				}
 			}
 
@@ -263,15 +257,13 @@ namespace OpenRA.Mods.Common.Traits
 			var visibleUnderFog = shroud.IsVisibleTest(updatedRegion);
 			foreach (var uv in updatedRegion.MapCoords)
 			{
-				var u = uv.X;
-				var v = uv.Y;
-				var shrouded = GetEdges(u, v, visibleUnderShroud);
-				var fogged = GetEdges(u, v, visibleUnderFog);
-				var shroudTile = tiles[u, v];
+				var shrouded = GetEdges(uv, visibleUnderShroud);
+				var fogged = GetEdges(uv, visibleUnderFog);
+				var shroudTile = tiles[uv];
 				var variant = shroudTile.Variant;
 				shroudTile.Shroud = GetTile(shroudSprites, shrouded, variant);
 				shroudTile.Fog = GetTile(fogSprites, fogged, variant);
-				tiles[u, v] = shroudTile;
+				tiles[uv] = shroudTile;
 			}
 		}
 
@@ -294,7 +286,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var uv in CellRegion.Expand(wr.Viewport.VisibleCells, 1).MapCoords)
 			{
-				var t = tiles[uv.X, uv.Y];
+				var t = tiles[uv];
 
 				if (t.Shroud != null)
 				{

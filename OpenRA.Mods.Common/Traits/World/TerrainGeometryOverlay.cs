@@ -84,10 +84,10 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var uv in wr.Viewport.VisibleCells.MapCoords)
 			{
 				var lr = Game.Renderer.WorldLineRenderer;
-				var pos = wr.World.Map.CenterOfCell(Map.MapToCell(wr.World.Map.TileShape, uv));
+				var pos = wr.World.Map.CenterOfCell(uv.ToCPos(wr.World.Map));
 
-				var height = (int)wr.World.Map.MapHeight.Value[uv.X, uv.Y];
-				var tile = wr.World.Map.MapTiles.Value[uv.X, uv.Y];
+				var height = (int)wr.World.Map.MapHeight.Value[uv];
+				var tile = wr.World.Map.MapTiles.Value[uv];
 
 				TerrainTileInfo tileInfo = null;
 

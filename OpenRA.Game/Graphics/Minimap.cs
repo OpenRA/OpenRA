@@ -44,7 +44,7 @@ namespace OpenRA.Graphics
 					{
 						var mapX = x + b.Left;
 						var mapY = y + b.Top;
-						var type = tileset[tileset.GetTerrainIndex(mapTiles[mapX, mapY])];
+						var type = tileset[tileset.GetTerrainIndex(mapTiles[new MPos(mapX, mapY)])];
 						colors[y * stride + x] = type.Color.ToArgb();
 					}
 				}
@@ -74,11 +74,11 @@ namespace OpenRA.Graphics
 					{
 						var mapX = x + b.Left;
 						var mapY = y + b.Top;
-						if (map.MapResources.Value[mapX, mapY].Type == 0)
+						if (map.MapResources.Value[new MPos(mapX, mapY)].Type == 0)
 							continue;
 
 						var res = resourceRules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>()
-							.Where(t => t.ResourceType == map.MapResources.Value[mapX, mapY].Type)
+							.Where(t => t.ResourceType == map.MapResources.Value[new MPos(mapX, mapY)].Type)
 								.Select(t => t.TerrainType).FirstOrDefault();
 
 						if (res == null)
@@ -114,7 +114,7 @@ namespace OpenRA.Graphics
 					{
 						var mapX = x + b.Left;
 						var mapY = y + b.Top;
-						var custom = map.CustomTerrain[mapX, mapY];
+						var custom = map.CustomTerrain[new MPos(mapX, mapY)];
 						if (custom == byte.MaxValue)
 							continue;
 						colors[y * stride + x] = world.TileSet[custom].Color.ToArgb();
@@ -148,9 +148,9 @@ namespace OpenRA.Graphics
 					var color = t.Trait.RadarSignatureColor(t.Actor);
 					foreach (var cell in t.Trait.RadarSignatureCells(t.Actor))
 					{
-						var uv = Map.CellToMap(map.TileShape, cell);
-						if (b.Contains(uv.X, uv.Y))
-							colors[(uv.Y - b.Top) * stride + uv.X - b.Left] = color.ToArgb();
+						var uv = cell.ToMPos(map);
+						if (b.Contains(uv.U, uv.V))
+							colors[(uv.V - b.Top) * stride + uv.U - b.Left] = color.ToArgb();
 					}
 				}
 			}
@@ -174,7 +174,6 @@ namespace OpenRA.Graphics
 
 			var shroud = Color.Black.ToArgb();
 			var fog = Color.FromArgb(128, Color.Black).ToArgb();
-			var offset = new CVec(b.Left, b.Top);
 
 			unsafe
 			{
@@ -184,11 +183,11 @@ namespace OpenRA.Graphics
 				var fogObscured = world.FogObscuresTest(map.Cells);
 				foreach (var uv in map.Cells.MapCoords)
 				{
-					var bitmapUv = uv - offset;
-					if (shroudObscured(uv.X, uv.Y))
-						colors[bitmapUv.Y * stride + bitmapUv.X] = shroud;
-					else if (fogObscured(uv.X, uv.Y))
-						colors[bitmapUv.Y * stride + bitmapUv.X] = fog;
+					var bitmapXy = new int2(uv.U - b.Left, uv.V - b.Top);
+					if (shroudObscured(uv))
+						colors[bitmapXy.Y * stride + bitmapXy.X] = shroud;
+					else if (fogObscured(uv))
+						colors[bitmapXy.Y * stride + bitmapXy.X] = fog;
 				}
 			}
 

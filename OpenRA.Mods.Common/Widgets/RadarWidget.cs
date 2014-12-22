@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Widgets
 		void UpdateTerrainCell(CPos cell)
 		{
 			var stride = radarSheet.Size.Width;
-			var uv = Map.CellToMap(world.Map.TileShape, cell);
+			var uv = cell.ToMPos(world.Map);
 			var terrain = world.Map.GetTerrainInfo(cell);
 
 			var dx = terrainSprite.Bounds.Left - world.Map.Bounds.Left;
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets
 				fixed (byte* colorBytes = &radarData[0])
 				{
 					var colors = (int*)colorBytes;
-					colors[(uv.Y + dy) * stride + uv.X + dx] = terrain.Color.ToArgb();
+					colors[(uv.V + dy) * stride + uv.U + dx] = terrain.Color.ToArgb();
 				}
 			}
 		}
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets
 		void UpdateShroudCell(CPos cell)
 		{
 			var stride = radarSheet.Size.Width;
-			var uv = Map.CellToMap(world.Map.TileShape, cell);
+			var uv = cell.ToMPos(world.Map);
 			var dx = shroudSprite.Bounds.Left - world.Map.Bounds.Left;
 			var dy = shroudSprite.Bounds.Top - world.Map.Bounds.Top;
 
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Widgets
 				fixed (byte* colorBytes = &radarData[0])
 				{
 					var colors = (int*)colorBytes;
-					colors[(uv.Y + dy) * stride + uv.X + dx] = color;
+					colors[(uv.V + dy) * stride + uv.U + dx] = color;
 				}
 			}
 		}
@@ -291,10 +291,10 @@ namespace OpenRA.Mods.Common.Widgets
 							var color = t.Trait.RadarSignatureColor(t.Actor);
 							foreach (var cell in t.Trait.RadarSignatureCells(t.Actor))
 							{
-								var uv = Map.CellToMap(world.Map.TileShape, cell);
+								var uv = cell.ToMPos(world.Map);
 
-								if (world.Map.Bounds.Contains(uv.X, uv.Y))
-									colors[(uv.Y + dy) * stride + uv.X + dx] = color.ToArgb();
+								if (world.Map.Bounds.Contains(uv.U, uv.V))
+									colors[(uv.V + dy) * stride + uv.U + dx] = color.ToArgb();
 							}
 						}
 					}
@@ -329,10 +329,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		int2 CellToMinimapPixel(CPos p)
 		{
-			var mapOrigin = new CVec(world.Map.Bounds.Left, world.Map.Bounds.Top);
-			var mapOffset = Map.CellToMap(world.Map.TileShape, p) - mapOrigin;
-
-			return new int2(mapRect.X, mapRect.Y) + (previewScale * new float2(mapOffset.X, mapOffset.Y)).ToInt2();
+			var uv = p.ToMPos(world.Map);
+			var mapOffset = new float2(uv.U - world.Map.Bounds.Left, uv.V - world.Map.Bounds.Top);
+			return new int2(mapRect.X, mapRect.Y) + (previewScale * mapOffset).ToInt2();
 		}
 
 		CPos MinimapPixelToCell(int2 p)
@@ -340,7 +339,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var viewOrigin = new float2(mapRect.X, mapRect.Y);
 			var mapOrigin = new float2(world.Map.Bounds.Left, world.Map.Bounds.Top);
 			var fcell = mapOrigin + (1f / previewScale) * (p - viewOrigin);
-			return Map.MapToCell(world.Map.TileShape, new CPos((int)fcell.X, (int)fcell.Y));
+			return new MPos((int)fcell.X, (int)fcell.Y).ToCPos(world.Map);
 		}
 	}
 }

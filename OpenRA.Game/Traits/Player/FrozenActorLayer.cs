@@ -23,7 +23,7 @@ namespace OpenRA.Traits
 
 	public class FrozenActor
 	{
-		public readonly CPos[] FootprintInMapCoords;
+		public readonly MPos[] Footprint;
 		public readonly CellRegion FootprintRegion;
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
@@ -40,10 +40,10 @@ namespace OpenRA.Traits
 
 		public bool Visible;
 
-		public FrozenActor(Actor self, CPos[] footprintInMapCoords, CellRegion footprintRegion)
+		public FrozenActor(Actor self, MPos[] footprint, CellRegion footprintRegion)
 		{
 			actor = self;
-			FootprintInMapCoords = footprintInMapCoords;
+			Footprint = footprint;
 			FootprintRegion = footprintRegion;
 
 			CenterPosition = self.CenterPosition;
@@ -59,11 +59,11 @@ namespace OpenRA.Traits
 		public void Tick(World world, Shroud shroud)
 		{
 			// We are doing the following LINQ manually to avoid allocating an extra delegate since this is a hot path.
-			// Visible = !FootprintInMapCoords.Any(mapCoord => shroud.IsVisibleTest(FootprintRegion)(mapCoord.X, mapCoord.Y));
+			// Visible = !Footprint.Any(shroud.IsVisibleTest(FootprintRegion));
 			var isVisibleTest = shroud.IsVisibleTest(FootprintRegion);
 			Visible = true;
-			foreach (var mapCoord in FootprintInMapCoords)
-				if (isVisibleTest(mapCoord.X, mapCoord.Y))
+			foreach (var uv in Footprint)
+				if (isVisibleTest(uv))
 				{
 					Visible = false;
 					break;

@@ -26,8 +26,8 @@ namespace OpenRA
 
 		// Corners in map coordinates
 		// These will only equal TopLeft and BottomRight for TileShape.Rectangular
-		readonly CPos mapTopLeft;
-		readonly CPos mapBottomRight;
+		readonly MPos mapTopLeft;
+		readonly MPos mapBottomRight;
 
 		public CellRegion(TileShape shape, CPos topLeft, CPos bottomRight)
 		{
@@ -35,17 +35,15 @@ namespace OpenRA
 			TopLeft = topLeft;
 			BottomRight = bottomRight;
 
-			mapTopLeft = Map.CellToMap(shape, TopLeft);
-			mapBottomRight = Map.CellToMap(shape, BottomRight);
+			mapTopLeft = TopLeft.ToMPos(shape);
+			mapBottomRight = BottomRight.ToMPos(shape);
 		}
 
 		/// <summary>Expand the specified region with an additional cordon. This may expand the region outside the map borders.</summary>
 		public static CellRegion Expand(CellRegion region, int cordon)
 		{
-			var offset = new CVec(cordon, cordon);
-			var tl = Map.MapToCell(region.shape, Map.CellToMap(region.shape, region.TopLeft) - offset);
-			var br = Map.MapToCell(region.shape, Map.CellToMap(region.shape, region.BottomRight) + offset);
-
+			var tl = new MPos(region.mapTopLeft.U - cordon, region.mapTopLeft.V - cordon).ToCPos(region.shape);
+			var br = new MPos(region.mapBottomRight.U + cordon, region.mapBottomRight.V + cordon).ToCPos(region.shape);
 			return new CellRegion(region.shape, tl, br);
 		}
 
@@ -83,8 +81,8 @@ namespace OpenRA
 
 		public bool Contains(CPos cell)
 		{
-			var uv = Map.CellToMap(shape, cell);
-			return uv.X >= mapTopLeft.X && uv.X <= mapBottomRight.X && uv.Y >= mapTopLeft.Y && uv.Y <= mapBottomRight.Y;
+			var uv = cell.ToMPos(shape);
+			return uv.U >= mapTopLeft.U && uv.U <= mapBottomRight.U && uv.V >= mapTopLeft.V && uv.V <= mapBottomRight.V;
 		}
 
 		public MapCoordsRegion MapCoords
@@ -128,25 +126,25 @@ namespace OpenRA
 				u += 1;
 
 				// Check for column overflow
-				if (u > r.mapBottomRight.X)
+				if (u > r.mapBottomRight.U)
 				{
 					v += 1;
-					u = r.mapTopLeft.X;
+					u = r.mapTopLeft.U;
 
 					// Check for row overflow
-					if (v > r.mapBottomRight.Y)
+					if (v > r.mapBottomRight.V)
 						return false;
 				}
 
-				current = Map.MapToCell(r.shape, new CPos(u, v));
+				current = new MPos(u, v).ToCPos(r.shape);
 				return true;
 			}
 
 			public void Reset()
 			{
 				// Enumerator starts *before* the first element in the sequence.
-				u = r.mapTopLeft.X - 1;
-				v = r.mapTopLeft.Y;
+				u = r.mapTopLeft.U - 1;
+				v = r.mapTopLeft.V;
 			}
 
 			public CPos Current { get { return current; } }
@@ -154,12 +152,12 @@ namespace OpenRA
 			public void Dispose() { }
 		}
 
-		public struct MapCoordsRegion : IEnumerable<CPos>
+		public struct MapCoordsRegion : IEnumerable<MPos>
 		{
-			public struct MapCoordsEnumerator : IEnumerator<CPos>
+			public struct MapCoordsEnumerator : IEnumerator<MPos>
 			{
 				readonly CellRegion r;
-				CPos current;
+				MPos current;
 
 				public MapCoordsEnumerator(CellRegion region)
 					: this()
@@ -170,30 +168,30 @@ namespace OpenRA
 
 				public bool MoveNext()
 				{
-					var u = current.X + 1;
-					var v = current.Y;
+					var u = current.U + 1;
+					var v = current.V;
 
 					// Check for column overflow
-					if (u > r.mapBottomRight.X)
+					if (u > r.mapBottomRight.U)
 					{
 						v += 1;
-						u = r.mapTopLeft.X;
+						u = r.mapTopLeft.U;
 
 						// Check for row overflow
-						if (v > r.mapBottomRight.Y)
+						if (v > r.mapBottomRight.V)
 							return false;
 					}
 
-					current = new CPos(u, v);
+					current = new MPos(u, v);
 					return true;
 				}
 
 				public void Reset()
 				{
-					current = new CPos(r.mapTopLeft.X - 1, r.mapTopLeft.Y);
+					current = new MPos(r.mapTopLeft.U - 1, r.mapTopLeft.V);
 				}
 
-				public CPos Current { get { return current; } }
+				public MPos Current { get { return current; } }
 				object IEnumerator.Current { get { return Current; } }
 				public void Dispose() { }
 			}
@@ -210,7 +208,7 @@ namespace OpenRA
 				return new MapCoordsEnumerator(r);
 			}
 
-			IEnumerator<CPos> IEnumerable<CPos>.GetEnumerator()
+			IEnumerator<MPos> IEnumerable<MPos>.GetEnumerator()
 			{
 				return GetEnumerator();
 			}
