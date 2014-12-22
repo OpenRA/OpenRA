@@ -121,8 +121,6 @@ Rules:
 		-MPStartLocations:
 		ResourceType@Spice:
 			ValuePerUnit: 0
-		WormManager:
-			Minimum: 1
 
 Sequences:
 

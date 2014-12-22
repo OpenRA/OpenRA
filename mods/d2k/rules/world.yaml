@@ -10,7 +10,6 @@ World:
 	ScreenShaker:
 	BuildingInfluence:
 	ChooseBuildTabOnSelect:
-	WormManager:
 	CrateSpawner:
 		Minimum: 0
 		Maximum: 2
