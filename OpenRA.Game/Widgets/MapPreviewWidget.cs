@@ -133,9 +133,9 @@ namespace OpenRA.Widgets
 		{
 			var preview = Preview();
 			var tileShape = Game.ModData.Manifest.TileShape;
-			var point = Map.CellToMap(tileShape, cell);
-			var dx = (int)(previewScale * (point.X - preview.Bounds.Left));
-			var dy = (int)(previewScale * (point.Y - preview.Bounds.Top));
+			var point = cell.ToMPos(tileShape);
+			var dx = (int)(previewScale * (point.U - preview.Bounds.Left));
+			var dy = (int)(previewScale * (point.V - preview.Bounds.Top));
 			return new int2(mapRect.X + dx, mapRect.Y + dy);
 		}
 

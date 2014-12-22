@@ -24,7 +24,7 @@ namespace OpenRA
 {
 	public class World
 	{
-		static readonly Func<int, int, bool> FalsePredicate = (u, v) => false;
+		static readonly Func<MPos, bool> FalsePredicate = _ => false;
 		internal readonly TraitDictionary TraitDict = new TraitDictionary();
 		readonly HashSet<Actor> actors = new HashSet<Actor>();
 		readonly List<IEffect> effects = new List<IEffect>();
@@ -65,24 +65,24 @@ namespace OpenRA
 		public bool FogObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(p); }
 		public bool ShroudObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(a); }
 		public bool ShroudObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(p); }
-		public bool ShroudObscures(int u, int v) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(u, v); }
+		public bool ShroudObscures(MPos uv) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(uv); }
 
-		public Func<int, int, bool> FogObscuresTest(CellRegion region)
+		public Func<MPos, bool> FogObscuresTest(CellRegion region)
 		{
 			var rp = RenderPlayer;
 			if (rp == null)
 				return FalsePredicate;
 			var predicate = rp.Shroud.IsVisibleTest(region);
-			return (u, v) => !predicate(u, v);
+			return uv => !predicate(uv);
 		}
 
-		public Func<int, int, bool> ShroudObscuresTest(CellRegion region)
+		public Func<MPos, bool> ShroudObscuresTest(CellRegion region)
 		{
 			var rp = RenderPlayer;
 			if (rp == null)
 				return FalsePredicate;
 			var predicate = rp.Shroud.IsExploredTest(region);
-			return (u, v) => !predicate(u, v);
+			return uv => !predicate(uv);
 		}
 
 		public bool IsReplay
