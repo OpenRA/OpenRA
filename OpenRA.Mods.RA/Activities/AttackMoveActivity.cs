@@ -20,41 +20,23 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		const int ScanInterval = 7;
 
-		int scanTicks;
-		bool hasMoved;
 		Activity inner;
+		int scanTicks;
 		AutoTarget autoTarget;
 
 		public AttackMoveActivity(Actor self, Activity inner)
 		{
 			this.inner = inner;
 			autoTarget = self.TraitOrDefault<AutoTarget>();
-			hasMoved = false;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (autoTarget != null)
+			if (autoTarget != null && --scanTicks <= 0)
 			{
-				// If the actor hasn't moved since the activity was issued
-				if (!hasMoved)
-					autoTarget.ResetScanTimer();
-
-				if (--scanTicks <= 0)
-				{
-					var attackActivity = autoTarget.ScanAndAttack(self);
-					if (attackActivity != null)
-					{
-						if (!hasMoved)
-							return attackActivity;
-
-						self.QueueActivity(false, attackActivity);
-					}
-					scanTicks = ScanInterval;
-				}
+				autoTarget.ScanAndAttack(self);
+				scanTicks = ScanInterval;
 			}
-
-			hasMoved = true;
 
 			if (inner == null)
 				return NextActivity;
