@@ -487,6 +487,16 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
+	NUKE:
+		-Sellable:
+		Buildable:
+			BuildLimit: 1
+	PYLE:
+		-Sellable:
+		Buildable:
+			BuildLimit: 1
+	FACT:
+		-Sellable:
 	PROC:
 		Buildable:
 			Prerequisites: ~disabled
