@@ -126,7 +126,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var startButton = widget.Get<ButtonWidget>("STARTGAME_BUTTON");
 			startButton.OnClick = StartMissionClicked;
-			startButton.IsDisabled = () => selectedMapPreview.RuleStatus != MapRuleStatus.Cached;
+			startButton.IsDisabled = () => selectedMapPreview == null || selectedMapPreview.RuleStatus != MapRuleStatus.Cached;
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
