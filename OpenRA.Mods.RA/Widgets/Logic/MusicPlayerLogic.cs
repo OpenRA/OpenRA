@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -94,6 +95,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var installData = Game.ModData.Manifest.ContentInstaller;
 				installButton.IsVisible = () => modRules.InstalledMusic.ToArray().Length <= installData.ShippedSoundtracks;
+			}
+
+			var songWatcher = widget.GetOrNull<LogicTickerWidget>("SONG_WATCHER");
+			if (songWatcher != null)
+			{
+				songWatcher.OnTick = () => 
+				{
+					if (Sound.CurrentMusic == null || currentSong == Sound.CurrentMusic)
+						return;
+
+					currentSong = Sound.CurrentMusic;
+				};
 			}
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Game.Settings.Save(); Ui.CloseWindow(); onExit(); };
