@@ -48,7 +48,7 @@ Background@SERVER_LOBBY:
 					Text: Team
 					Align: Center
 					Font: Bold
-				Label@LABEL_LOBBY_TEAM:
+				Label@LABEL_LOBBY_SPAWN:
 					X: 478
 					Width: 48
 					Height: 25
@@ -141,5 +141,5 @@ Background@SERVER_LOBBY:
 			Text: Disconnect
 			Font: Bold
 			Key: escape
+		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
-

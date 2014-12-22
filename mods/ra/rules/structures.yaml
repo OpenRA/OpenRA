@@ -56,7 +56,7 @@ GAP:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 110
-		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
+		Prerequisites: atek, ~!structures.france, ~structures.allies, ~techlevel.unrestricted
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
@@ -80,6 +80,19 @@ GAP:
 		Amount: -60
 	MustBeDestroyed:
 		RequiredForShortGame: false
+
+GAP.France:
+	Inherits: GAP
+	RenderBuilding:
+		Image: gap
+	Tooltip:
+		Name: Advanced Gap Generator
+	Buildable:
+		Prerequisites: atek, ~structures.france, ~techlevel.unrestricted
+	RevealsShroud:
+		Range: 10c0
+	CreatesShroud:
+		Range: 10c0
 
 SPEN:
 	Inherits: ^Building
@@ -133,6 +146,30 @@ SPEN:
 	ProductionBar:
 	Power:
 		Amount: -30
+	ProvidesCustomPrerequisite@soviet:
+		Race: soviet, russia, ukraine
+		Prerequisite: ships.soviet
+	ProvidesCustomPrerequisite@sovietvanilla:
+		Race: soviet
+		Prerequisite: ships.sovietvanilla
+	ProvidesCustomPrerequisite@russia:
+		Race: russia
+		Prerequisite: ships.russia
+	ProvidesCustomPrerequisite@ukraine:
+		Race: ukraine
+		Prerequisite: ships.ukraine
+	ProvidesCustomPrerequisite@sovietstructure:
+		RequiresPrerequisites: structures.soviet
+		Prerequisite: ships.soviet
+	ProvidesCustomPrerequisite@sovietvanillastructure:
+		RequiresPrerequisites: structures.sovietvanilla
+		Prerequisite: ships.sovietvanilla
+	ProvidesCustomPrerequisite@russianstructure:
+		RequiresPrerequisites: structures.russia
+		Prerequisite: ships.russia
+	ProvidesCustomPrerequisite@ukrainianstructure:
+		RequiresPrerequisites: structures.ukraine
+		Prerequisite: ships.ukraine
 
 SYRD:
 	Inherits: ^Building
@@ -186,6 +223,36 @@ SYRD:
 	ProductionBar:
 	Power:
 		Amount: -30
+	ProvidesCustomPrerequisite@allies:
+		Race: allies, england, france, germany
+		Prerequisite: ships.allies
+	ProvidesCustomPrerequisite@alliesvanilla:
+		Race: allies
+		Prerequisite: ships.alliesvanilla
+	ProvidesCustomPrerequisite@england:
+		Race: england
+		Prerequisite: ships.england
+	ProvidesCustomPrerequisite@france:
+		Race: france
+		Prerequisite: ships.france
+	ProvidesCustomPrerequisite@germany:
+		Race: germany
+		Prerequisite: ships.germany
+	ProvidesCustomPrerequisite@alliedstructure:
+		RequiresPrerequisites: structures.allies
+		Prerequisite: ships.allies
+	ProvidesCustomPrerequisite@alliedvanillastructure:
+		RequiresPrerequisites: structures.alliesvanilla
+		Prerequisite: ships.alliesvanilla
+	ProvidesCustomPrerequisite@englishstructure:
+		RequiresPrerequisites: structures.england
+		Prerequisite: ships.england
+	ProvidesCustomPrerequisite@frenchstructure:
+		RequiresPrerequisites: structures.france
+		Prerequisite: ships.france
+	ProvidesCustomPrerequisite@germanstructure:
+		RequiresPrerequisites: structures.germany
+		Prerequisite: ships.germany
 
 IRON:
 	Inherits: ^Building
@@ -238,7 +305,7 @@ PDOX:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
-		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
+		Prerequisites: atek, ~structures.allies, ~!structures.germany, ~techlevel.unrestricted
 		BuildLimit: 1
 	Valued:
 		Cost: 1500
@@ -277,6 +344,20 @@ PDOX:
 		Amount: -200
 	MustBeDestroyed:
 		RequiredForShortGame: false
+
+PDOX.Germany:
+	Inherits: PDOX
+	Buildable:
+		Prerequisites: atek, ~structures.germany, ~techlevel.unrestricted
+	RenderBuilding:
+		Image: pdox
+	Tooltip:
+		Name: Advanced Chronosphere
+		Description: Teleports a large group of units across the\nmap for a short time. Requires power to operate.\n  Special Ability: Chronoshift\n\nMaximum 1 can be built
+	ChronoshiftPower:
+		Description: Advanced Chronoshift
+		LongDesc: Teleports a large group of units across the\nmap for 20 seconds.
+		Range: 2
 
 TSLA:
 	Inherits: ^Defense
@@ -691,17 +772,59 @@ WEAP:
 	Production:
 		Produces: Vehicle
 	ProvidesCustomPrerequisite@allies:
-		Race: allies
+		Race: allies, england, france, germany
 		Prerequisite: vehicles.allies
+	ProvidesCustomPrerequisite@alliesvanilla:
+		Race: allies
+		Prerequisite: vehicles.alliesvanilla
+	ProvidesCustomPrerequisite@england:
+		Race: england
+		Prerequisite: vehicles.england
+	ProvidesCustomPrerequisite@france:
+		Race: france
+		Prerequisite: vehicles.france
+	ProvidesCustomPrerequisite@germany:
+		Race: germany
+		Prerequisite: vehicles.germany
 	ProvidesCustomPrerequisite@soviet:
-		Race: soviet
+		Race: soviet, russia, ukraine
 		Prerequisite: vehicles.soviet
+	ProvidesCustomPrerequisite@sovietvanilla:
+		Race: soviet
+		Prerequisite: vehicles.sovietvanilla
+	ProvidesCustomPrerequisite@russia:
+		Race: russia
+		Prerequisite: vehicles.russia
+	ProvidesCustomPrerequisite@ukraine:
+		Race: ukraine
+		Prerequisite: vehicles.ukraine
 	ProvidesCustomPrerequisite@alliedstructure:
 		RequiresPrerequisites: structures.allies
 		Prerequisite: vehicles.allies
+	ProvidesCustomPrerequisite@alliedvanillastructure:
+		RequiresPrerequisites: structures.alliesvanilla
+		Prerequisite: vehicles.alliesvanilla
+	ProvidesCustomPrerequisite@englishstructure:
+		RequiresPrerequisites: structures.england
+		Prerequisite: vehicles.england
+	ProvidesCustomPrerequisite@frenchstructure:
+		RequiresPrerequisites: structures.france
+		Prerequisite: vehicles.france
+	ProvidesCustomPrerequisite@germanstructure:
+		RequiresPrerequisites: structures.germany
+		Prerequisite: vehicles.germany
 	ProvidesCustomPrerequisite@sovietstructure:
 		RequiresPrerequisites: structures.soviet
 		Prerequisite: vehicles.soviet
+	ProvidesCustomPrerequisite@sovietvanillastructure:
+		RequiresPrerequisites: structures.sovietvanilla
+		Prerequisite: vehicles.sovietvanilla
+	ProvidesCustomPrerequisite@russianstructure:
+		RequiresPrerequisites: structures.russia
+		Prerequisite: vehicles.russia
+	ProvidesCustomPrerequisite@ukrainianstructure:
+		RequiresPrerequisites: structures.ukraine
+		Prerequisite: vehicles.ukraine
 	PrimaryBuilding:
 	ProductionBar:
 	Power:
@@ -717,11 +840,32 @@ FACT:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 	ProvidesCustomPrerequisite@allies:
-		Race: allies
+		Race: allies, england, france, germany
 		Prerequisite: structures.allies
+	ProvidesCustomPrerequisite@alliesvanilla:
+		Race: allies
+		Prerequisite: structures.alliesvanilla
+	ProvidesCustomPrerequisite@england:
+		Race: england
+		Prerequisite: structures.england
+	ProvidesCustomPrerequisite@france:
+		Race: france
+		Prerequisite: structures.france
+	ProvidesCustomPrerequisite@germany:
+		Race: germany
+		Prerequisite: structures.germany
 	ProvidesCustomPrerequisite@soviet:
-		Race: soviet
+		Race: soviet, russia, ukraine
 		Prerequisite: structures.soviet
+	ProvidesCustomPrerequisite@sovietvanilla:
+		Race: soviet
+		Prerequisite: structures.sovietvanilla
+	ProvidesCustomPrerequisite@russia:
+		Race: russia
+		Prerequisite: structures.russia
+	ProvidesCustomPrerequisite@ukraine:
+		Race: ukraine
+		Prerequisite: structures.ukraine
 	Health:
 		HP: 1500
 	Armor:
@@ -863,6 +1007,36 @@ HPAD:
 	PrimaryBuilding:
 	Power:
 		Amount: -10
+	ProvidesCustomPrerequisite@allies:
+		Race: allies, england, france, germany
+		Prerequisite: aircraft.allies
+	ProvidesCustomPrerequisite@alliesvanilla:
+		Race: allies
+		Prerequisite: aircraft.alliesvanilla
+	ProvidesCustomPrerequisite@england:
+		Race: england
+		Prerequisite: aircraft.england
+	ProvidesCustomPrerequisite@france:
+		Race: france
+		Prerequisite: aircraft.france
+	ProvidesCustomPrerequisite@germany:
+		Race: germany
+		Prerequisite: aircraft.germany
+	ProvidesCustomPrerequisite@alliedstructure:
+		RequiresPrerequisites: structures.allies
+		Prerequisite: aircraft.allies
+	ProvidesCustomPrerequisite@alliedvanillastructure:
+		RequiresPrerequisites: structures.alliesvanilla
+		Prerequisite: aircraft.alliesvanilla
+	ProvidesCustomPrerequisite@englishstructure:
+		RequiresPrerequisites: structures.england
+		Prerequisite: aircraft.england
+	ProvidesCustomPrerequisite@frenchstructure:
+		RequiresPrerequisites: structures.france
+		Prerequisite: aircraft.france
+	ProvidesCustomPrerequisite@germanstructure:
+		RequiresPrerequisites: structures.germany
+		Prerequisite: aircraft.germany
 
 AFLD:
 	Inherits: ^Building
@@ -893,7 +1067,33 @@ AFLD:
 	Production:
 		Produces: Aircraft, Plane
 	Reservable:
-	AirstrikePower:
+	ProvidesCustomPrerequisite@soviet:
+		Race: soviet, russia, ukraine
+		Prerequisite: aircraft.soviet
+	ProvidesCustomPrerequisite@sovietvanilla:
+		Race: soviet
+		Prerequisite: aircraft.sovietvanilla
+	ProvidesCustomPrerequisite@russia:
+		Race: russia
+		Prerequisite: aircraft.russia
+	ProvidesCustomPrerequisite@ukraine:
+		Race: ukraine
+		Prerequisite: aircraft.ukraine
+	ProvidesCustomPrerequisite@sovietstructure:
+		RequiresPrerequisites: structures.soviet
+		Prerequisite: aircraft.soviet
+	ProvidesCustomPrerequisite@sovietvanillastructure:
+		RequiresPrerequisites: structures.sovietvanilla
+		Prerequisite: aircraft.sovietvanilla
+	ProvidesCustomPrerequisite@russianstructure:
+		RequiresPrerequisites: structures.russia
+		Prerequisite: aircraft.russia
+	ProvidesCustomPrerequisite@ukrainianstructure:
+		RequiresPrerequisites: structures.ukraine
+		Prerequisite: aircraft.ukraine
+	AirstrikePower@spyplane:
+		OrderName: SovietSpyPlane
+		Prerequisites: aircraft.sovietvanilla
 		Icon: spyplane
 		ChargeTime: 180
 		Description: Spy Plane
@@ -906,7 +1106,9 @@ AFLD:
 		QuantizedFacings: 8
 		DisplayBeacon: true
 		BeaconPoster: camicon
-	ParatroopersPower:
+	ParatroopersPower@paratroopers:
+		OrderName: SovietParatroopers
+		Prerequisites: aircraft.sovietvanilla
 		Icon: paratroopers
 		ChargeTime: 360
 		Description: Paratroopers
@@ -918,6 +1120,35 @@ AFLD:
 		CameraActor: camera.paradrop
 		DisplayBeacon: true
 		BeaconPoster: pinficon
+	ParatroopersPower@armordrop:
+		OrderName: RussiaArmorDrop
+		Prerequisites: aircraft.russia
+		Icon: armordrop
+		ChargeTime: 450
+		Description: Armor Airdrop
+		LongDesc: Badgers drop a pair of\nHeavy Tanks anywhere on the map.
+		DropItems: 3TNK,3TNK
+		SquadSize: 2
+		SelectTargetSound: slcttgt1.aud
+		AllowImpassableCells: false
+		QuantizedFacings: 8
+		CameraActor: camera.paradrop
+		DisplayBeacon: true
+		BeaconPoster: armordropicon
+	AirstrikePower@parabombs:
+		OrderName: UkraineParabombs
+		Prerequisites: aircraft.ukraine
+		Icon: parabombs
+		ChargeTime: 270
+		Description: Parabombs
+		LongDesc: A Badger drops a load of parachuted\nbombs on your target.
+		SelectTargetSound: slcttgt1.aud
+		CameraActor: camera
+		CameraRemoveDelay: 150
+		UnitType: badr.bomber
+		QuantizedFacings: 8
+		DisplayBeacon: true
+		BeaconPoster: pbmbicon
 	ProductionBar:
 	SupportPowerChargeBar:
 	PrimaryBuilding:
@@ -1050,6 +1281,30 @@ BARR:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
 		Prerequisite: barracks
+	ProvidesCustomPrerequisite@soviet:
+		Race: soviet, russia, ukraine
+		Prerequisite: infantry.soviet
+	ProvidesCustomPrerequisite@sovietvanilla:
+		Race: soviet
+		Prerequisite: infantry.sovietvanilla
+	ProvidesCustomPrerequisite@russia:
+		Race: russia
+		Prerequisite: infantry.russia
+	ProvidesCustomPrerequisite@ukraine:
+		Race: ukraine
+		Prerequisite: infantry.ukraine
+	ProvidesCustomPrerequisite@sovietstructure:
+		RequiresPrerequisites: structures.soviet
+		Prerequisite: infantry.soviet
+	ProvidesCustomPrerequisite@sovietvanillastructure:
+		RequiresPrerequisites: structures.sovietvanilla
+		Prerequisite: infantry.sovietvanilla
+	ProvidesCustomPrerequisite@russianstructure:
+		RequiresPrerequisites: structures.russia
+		Prerequisite: infantry.russia
+	ProvidesCustomPrerequisite@ukrainianstructure:
+		RequiresPrerequisites: structures.ukraine
+		Prerequisite: infantry.ukraine
 	Power:
 		Amount: -20
 
@@ -1119,8 +1374,38 @@ TENT:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
 	ProductionBar:
-	ProvidesCustomPrerequisite:
+	ProvidesCustomPrerequisite@barracks:
 		Prerequisite: barracks
+	ProvidesCustomPrerequisite@allies:
+		Race: allies, england, france, germany
+		Prerequisite: infantry.allies
+	ProvidesCustomPrerequisite@alliesvanilla:
+		Race: allies
+		Prerequisite: infantry.alliesvanilla
+	ProvidesCustomPrerequisite@england:
+		Race: england
+		Prerequisite: infantry.england
+	ProvidesCustomPrerequisite@france:
+		Race: france
+		Prerequisite: infantry.france
+	ProvidesCustomPrerequisite@germany:
+		Race: germany
+		Prerequisite: infantry.germany
+	ProvidesCustomPrerequisite@alliedstructure:
+		RequiresPrerequisites: structures.allies
+		Prerequisite: infantry.allies
+	ProvidesCustomPrerequisite@alliedvanillastructure:
+		RequiresPrerequisites: structures.alliesvanilla
+		Prerequisite: infantry.alliesvanilla
+	ProvidesCustomPrerequisite@englishstructure:
+		RequiresPrerequisites: structures.england
+		Prerequisite: infantry.england
+	ProvidesCustomPrerequisite@frenchstructure:
+		RequiresPrerequisites: structures.france
+		Prerequisite: infantry.france
+	ProvidesCustomPrerequisite@germanstructure:
+		RequiresPrerequisites: structures.germany
+		Prerequisite: infantry.germany
 	Power:
 		Amount: -20
 
@@ -1157,21 +1442,24 @@ FIX:
 FACF:
 	Inherits: ^Building
 	Valued:
-		Cost: 50
+		Cost: 200
 	Buildable:
 		BuildPaletteOrder: 940
 		Queue: Defense
-		Prerequisites: ~disabled
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Construction Yard
 		Description: Looks like a Construction Yard.
+		GenericName: Construction Yard
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	-GivesBuildableArea:
 	Health:
-		HP: 30
+		HP: 100
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -1179,28 +1467,29 @@ FACF:
 		Image: FACT
 	Fake:
 	-EmitInfantryOnSell:
-	Power:
-		Amount: -2
 	-MustBeDestroyed:
 
 WEAF:
 	Inherits: ^Building
 	Valued:
-		Cost: 50
+		Cost: 200
 	Buildable:
 		BuildPaletteOrder: 920
-		Prerequisites: ~disabled
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
 		Queue: Defense
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake War Factory
 		Description: Looks like a War Factory.
+		GenericName: War Factory
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	-GivesBuildableArea:
 	Health:
-		HP: 30
+		HP: 100
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -1209,22 +1498,23 @@ WEAF:
 		Image: WEAP
 	Fake:
 	-EmitInfantryOnSell:
-	Power:
-		Amount: -2
 	-MustBeDestroyed:
 
 SYRF:
 	Inherits: ^Building
 	Valued:
-		Cost: 50
+		Cost: 200
 	Buildable:
 		BuildPaletteOrder: 900
 		Queue: Defense
-		Prerequisites: ~disabled
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Shipyard
 		Description: Looks like a Shipyard.
+		GenericName: Shipyard
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
@@ -1234,21 +1524,19 @@ SYRF:
 		TerrainTypes: Water
 	-GivesBuildableArea:
 	Health:
-		HP: 30
+		HP: 100
 	RevealsShroud:
 		Range: 4c0
 	RenderBuilding:
 		Image: SYRD
 	Fake:
 	-EmitInfantryOnSell:
-	Power:
-		Amount: -2
 	-MustBeDestroyed:
 
 SPEF:
 	Inherits: ^Building
 	Valued:
-		Cost: 50
+		Cost: 200
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Buildable:
@@ -1259,6 +1547,9 @@ SPEF:
 		Icon: fake-icon
 		Name: Fake Sub Pen
 		Description: Looks like a Sub Pen.
+		GenericName: Sub Pen
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -1266,35 +1557,36 @@ SPEF:
 		TerrainTypes: Water
 	-GivesBuildableArea:
 	Health:
-		HP: 30
+		HP: 100
 	RevealsShroud:
 		Range: 4c0
 	RenderBuilding:
 		Image: SPEN
 	Fake:
 	-EmitInfantryOnSell:
-	Power:
-		Amount: -2
 	-MustBeDestroyed:
 
 DOMF:
 	Inherits: ^Building
 	Valued:
-		Cost: 50
+		Cost: 200
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Radar Dome
 		Description: Looks like a Radar Dome.
+		GenericName: Radar Dome
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
 	Buildable:
 		BuildPaletteOrder: 930
 		Queue: Defense
-		Prerequisites: ~disabled
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	-GivesBuildableArea:
 	Health:
-		HP: 30
+		HP: 100
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -1302,8 +1594,6 @@ DOMF:
 		Image: DOME
 	Fake:
 	-EmitInfantryOnSell:
-	Power:
-		Amount: -2
 	-MustBeDestroyed:
 
 SBAG:

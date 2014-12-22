@@ -95,9 +95,38 @@ World:
 	Country@0:
 		Name: Allies
 		Race: allies
+		Side: Allies
+		Description: Allies: Deception\nSpecial Ability: Can build fake structures
 	Country@1:
+		Name: England
+		Race: england
+		Side: Allies
+		Description: England: Espionage\nSpecial Unit: British Spy\nSpecial Unit: Phase Transport
+	Country@2:
+		Name: France
+		Race: france
+		Side: Allies
+		Description: France: Concealment\nSpecial Structure: Advanced Gap Generator\nSpecial Unit: Mobile Gap Generator
+	Country@3:
+		Name: Germany
+		Race: germany
+		Side: Allies
+		Description: Germany: Technology\nSpecial Structure: Advanced Chronosphere\nSpecial Unit: Chrono Tank
+	Country@4:
 		Name: Soviet
 		Race: soviet
+		Side: Soviet
+		Description: Soviet: Infantry\nSpecial Ability: Paradrop\nSpecial Ability: Spy Plane
+	Country@5:
+		Name: Russia
+		Race: russia
+		Side: Soviet
+		Description: Russia: Tanks\nSpecial Ability: Armor Airdrop\nSpecial Unit: MAD Tank
+	Country@6:
+		Name: Ukraine
+		Race: ukraine
+		Side: Soviet
+		Description: Ukraine: Demolitions\nSpecial Ability: Parabombs\nSpecial Unit: Demolition Truck
 	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
@@ -139,12 +168,12 @@ World:
 	MPStartUnits@mcvonly:
 		Class: none
 		ClassName: MCV Only
-		Races: soviet, allies
+		Races: allies, england, france, germany, soviet, russia, ukraine
 		BaseActor: mcv
 	MPStartUnits@lightallies:
 		Class: light
 		ClassName: Light Support
-		Races: allies
+		Races: allies, england, france, germany
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk
 		InnerSupportRadius: 3
@@ -152,7 +181,7 @@ World:
 	MPStartUnits@lightsoviet:
 		Class: light
 		ClassName: Light Support
-		Races: soviet
+		Races: soviet, russia, ukraine
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk
 		InnerSupportRadius: 3
@@ -160,7 +189,7 @@ World:
 	MPStartUnits@heavyallies:
 		Class: heavy
 		ClassName: Heavy Support
-		Races: allies
+		Races: allies, england, france, germany
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk,2tnk,2tnk,2tnk
 		InnerSupportRadius: 3
@@ -168,7 +197,7 @@ World:
 	MPStartUnits@heavysoviet:
 		Class: heavy
 		ClassName: Heavy Support
-		Races: soviet
+		Races: soviet, russia, ukraine
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk,3tnk,3tnk
 		InnerSupportRadius: 3

@@ -18,7 +18,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public AddRaceSuffixLogic(Widget widget, World world)
 		{
-			var suffix = "-" + world.LocalPlayer.Country.Race;
+			string race;
+			if (!ChromeMetrics.TryGet("RaceSuffix-" + world.LocalPlayer.Country.Race, out race))
+				race = world.LocalPlayer.Country.Race;
+			var suffix = "-" + race;
+
 			if (widget is ButtonWidget)
 				((ButtonWidget)widget).Background += suffix;
 			else if (widget is ImageWidget)

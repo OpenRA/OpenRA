@@ -51,6 +51,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					X: 190
 					Width: 80
 					Height: 25
+					IgnoreChildMouseOver: true
 					Children:
 						ColorBlock@COLORBLOCK:
 							X: 5
@@ -61,6 +62,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					X: 280
 					Width: 130
 					Height: 25
+					IgnoreChildMouseOver: true
 					Children:
 						Image@FACTIONFLAG:
 							Width: 23

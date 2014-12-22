@@ -47,6 +47,7 @@ namespace OpenRA.Widgets
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
 		[Translate] public string TooltipText;
+		public Func<string> GetTooltipText; 
 
 		// Equivalent to OnMouseUp, but without an input arg
 		public Action OnClick = () => {};
@@ -68,6 +69,7 @@ namespace OpenRA.Widgets
 			OnKeyPress = _ => OnClick();
 			IsDisabled = () => Disabled;
 			IsHighlighted = () => Highlighted;
+			GetTooltipText = () => TooltipText;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
@@ -102,6 +104,7 @@ namespace OpenRA.Widgets
 
 			TooltipTemplate = other.TooltipTemplate;
 			TooltipText = other.TooltipText;
+			GetTooltipText = other.GetTooltipText;
 			TooltipContainer = other.TooltipContainer;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
@@ -177,19 +180,23 @@ namespace OpenRA.Widgets
 
 		public override void MouseEntered()
 		{
-			if (TooltipContainer == null) return;
+			if (TooltipContainer == null || GetTooltipText() == null)
+				return;
+
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-			                                  new WidgetArgs() {{ "button", this }});
+				new WidgetArgs { { "button", this } });
 		}
 
 		public override void MouseExited()
 		{
-			if (TooltipContainer == null) return;
+			if (TooltipContainer == null || !tooltipContainer.IsValueCreated)
+				return;
+
 			tooltipContainer.Value.RemoveTooltip();
 		}
 
 		public override int2 ChildOrigin { get { return RenderOrigin +
-				((Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0)); } }
+			(Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0)); } }
 
 		public override void Draw()
 		{
@@ -209,10 +216,10 @@ namespace OpenRA.Widgets
 			DrawBackground(rb, disabled, Depressed, Ui.MouseOverWidget == this, highlighted);
 			if (Contrast)
 				font.DrawTextWithContrast(text, position + stateOffset,
-						  disabled ? colordisabled : color, contrast, 2);
+					disabled ? colordisabled : color, contrast, 2);
 			else
 				font.DrawText(text, position + stateOffset,
-						  disabled ? colordisabled : color);
+					disabled ? colordisabled : color);
 		}
 
 		public override Widget Clone() { return new ButtonWidget(this); }

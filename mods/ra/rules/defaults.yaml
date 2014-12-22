@@ -147,6 +147,15 @@
 	TimedUpgradeBar:
 		Upgrade: invulnerability
 	MustBeDestroyed:
+	Parachutable:
+		ParachuteOffset: 0,0,200
+		KilledOnImpassableTerrain: true
+		ParachuteSequence: parach
+		ShadowSequence:
+		GroundCorpseSequence:
+		GroundCorpsePalette:
+		WaterCorpseSequence:
+		WaterCorpsePalette:
 
 ^Infantry:
 	AppearsOnRadar:

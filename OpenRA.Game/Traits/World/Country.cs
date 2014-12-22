@@ -18,6 +18,12 @@ namespace OpenRA.Traits
 		[Desc("This is the internal name for owner checks.")]
 		public readonly string Race = null;
 
+		[Desc("The side that the country belongs to. For example, England belongs to the 'Allies' side.")]
+		public readonly string Side = null;
+
+		[Translate]
+		public readonly string Description = null;
+
 		public readonly bool Selectable = true;
 	}
 

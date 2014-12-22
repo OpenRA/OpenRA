@@ -1262,8 +1262,10 @@ Rules:
 			ParachuteSequence: parach
 	AFLD.mission:
 		Inherits: AFLD
-		-AirstrikePower:
-		-ParatroopersPower:
+		-AirstrikePower@spyplane:
+		-ParatroopersPower@paratroopers
+		-ParatroopersPower@armordrop:
+		-AirstrikePower@parabombs:
 		-SupportPowerChargeBar:
 		RenderBuilding:
 			Image: AFLD
@@ -1349,6 +1351,18 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 	DTRK:
+		Buildable:
+			Prerequisites: ~disabled
+	FACF:
+		Buildable:
+			Prerequisites: ~disabled
+	WEAF:
+		Buildable:
+			Prerequisites: ~disabled
+	SYRF:
+		Buildable:
+			Prerequisites: ~disabled
+	DOMF:
 		Buildable:
 			Prerequisites: ~disabled
 
