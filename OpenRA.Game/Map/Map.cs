@@ -100,6 +100,14 @@ namespace OpenRA
 		public string GameLost;
 	}
 
+	[Flags]
+	public enum MapVisibility
+	{
+		Lobby = 1,
+		Shellmap = 2,
+		MissionSelector = 4
+	}
+
 	public class Map
 	{
 		[FieldLoader.Ignore] public IFolder Container;
@@ -108,8 +116,7 @@ namespace OpenRA
 		// Yaml map data
 		public string Uid { get; private set; }
 		public int MapFormat;
-		public bool Selectable = true;
-		public bool UseAsShellmap;
+		public MapVisibility Visibility = MapVisibility.Lobby;
 		public string RequiresMod;
 
 		public string Title;
@@ -218,6 +225,7 @@ namespace OpenRA
 				Author = "Your name here",
 				MapSize = new int2(size),
 				Tileset = tileset.Id,
+				Videos = new MapVideos(),
 				Options = new MapOptions(),
 				MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(tileShape, size)),
 				MapTiles = makeMapTiles,
@@ -225,6 +233,7 @@ namespace OpenRA
 				Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>()),
 				Smudges = Exts.Lazy(() => new List<SmudgeReference>())
 			};
+
 			map.PostInit();
 
 			return map;
@@ -242,11 +251,7 @@ namespace OpenRA
 		public Map() { }
 
 		// The standard constructor for most purposes
-		public Map(string path) : this(path, null) { }
-
-		// Support upgrading format 5 maps to a more
-		// recent version by defining upgradeForMod.
-		public Map(string path, string upgradeForMod)
+		public Map(string path)
 		{
 			Path = path;
 			Container = GlobalFileSystem.OpenPackage(path, null, int.MaxValue);
@@ -260,23 +265,21 @@ namespace OpenRA
 			// Support for formats 1-3 dropped 2011-02-11.
 			// Use release-20110207 to convert older maps to format 4
 			// Use release-20110511 to convert older maps to format 5
-			if (MapFormat < 5)
+			// Use release-20141029 to convert older maps to format 6
+			if (MapFormat < 6)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
 
-			// Format 5 -> 6 enforces the use of RequiresMod
-			if (MapFormat == 5)
-			{
-				if (upgradeForMod == null)
-					throw new InvalidDataException("Map format {0} is not supported, but can be upgraded.\n File: {1}".F(MapFormat, path));
-
-				Console.WriteLine("Upgrading {0} from Format 5 to Format 6", path);
-
-				// TODO: This isn't very nice, but there is no other consistent way
-				// of finding the mod early during the engine initialization.
-				RequiresMod = upgradeForMod;
-			}
-
 			var nd = yaml.ToDictionary();
+
+			// Format 6 -> 7 combined the Selectable and UseAsShellmap flags into the Class enum
+			if (MapFormat < 7)
+			{
+				MiniYaml useAsShellmap;
+				if (nd.TryGetValue("UseAsShellmap", out useAsShellmap) && bool.Parse(useAsShellmap.Value))
+					Visibility = MapVisibility.Shellmap;
+				else if (Type == "Mission" || Type == "Campaign")
+					Visibility = MapVisibility.MissionSelector;
+			}
 
 			// Load players
 			foreach (var my in nd["Players"].ToDictionary().Values)
@@ -327,19 +330,19 @@ namespace OpenRA
 			LastSubCell = (SubCell)(SubCellOffsets.Length - 1);
 			DefaultSubCell = (SubCell)Game.modData.Manifest.SubCellDefaultIndex;
 
-			// The Uid is calculated from the data on-disk, so
-			// format changes must be flushed to disk.
-			// TODO: this isn't very nice
-			if (MapFormat < 6)
-				Save(path);
-
-			Uid = ComputeHash();
-
 			if (Container.Exists("map.png"))
 				using (var dataStream = Container.GetContent("map.png"))
 					CustomPreview = new Bitmap(dataStream);
 
 			PostInit();
+
+			// The Uid is calculated from the data on-disk, so
+			// format changes must be flushed to disk.
+			// TODO: this isn't very nice
+			if (MapFormat < 7)
+				Save(path);
+
+			Uid = ComputeHash();
 		}
 
 		void PostInit()
@@ -385,12 +388,11 @@ namespace OpenRA
 
 		public void Save(string toPath)
 		{
-			MapFormat = 6;
+			MapFormat = 7;
 
 			var root = new List<MiniYamlNode>();
 			var fields = new[]
 			{
-				"Selectable",
 				"MapFormat",
 				"RequiresMod",
 				"Title",
@@ -399,7 +401,7 @@ namespace OpenRA
 				"Tileset",
 				"MapSize",
 				"Bounds",
-				"UseAsShellmap",
+				"Visibility",
 				"Type",
 			};
 

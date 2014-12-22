@@ -1,6 +1,4 @@
-Selectable: True
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,9 +14,11 @@ MapSize: 64,64
 
 Bounds: 16,16,32,32
 
-UseAsShellmap: False
+Visibility: Lobby
 
 Type: Drop Zone
+
+Videos:
 
 Options:
 	Crates: True

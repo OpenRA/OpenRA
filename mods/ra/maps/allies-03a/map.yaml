@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,7 +14,7 @@ MapSize: 128,128
 
 Bounds: 35,48,72,36
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Campaign
 
@@ -26,7 +24,6 @@ Videos:
 	GameLost: sovtstar.vqa
 
 Options:
-	ShortGame: False
 	Crates: False
 	Fog: True
 	Shroud: True
@@ -35,6 +32,7 @@ Options:
 	StartingCash: 0
 	ConfigurableStartingUnits: False
 	Difficulties: Easy, Normal
+	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:

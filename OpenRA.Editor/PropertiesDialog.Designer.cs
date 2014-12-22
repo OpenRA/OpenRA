@@ -43,10 +43,10 @@ namespace OpenRA.Editor
 			this.TitleBox = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.DescBox = new System.Windows.Forms.TextBox();
-			this.SelectableCheckBox = new System.Windows.Forms.CheckBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.AuthorBox = new System.Windows.Forms.TextBox();
-			this.ShellmapCheckBox = new System.Windows.Forms.CheckBox();
+			this.mapVisibilityComboBox = new System.Windows.Forms.ComboBox();
+			this.label4 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			//
 			// button2
@@ -103,16 +103,6 @@ namespace OpenRA.Editor
 			this.DescBox.Size = new System.Drawing.Size(286, 20);
 			this.DescBox.TabIndex = 17;
 			//
-			// selectable
-			//
-			this.SelectableCheckBox.AutoSize = true;
-			this.SelectableCheckBox.Location = new System.Drawing.Point(118, 138);
-			this.SelectableCheckBox.Name = "selectable";
-			this.SelectableCheckBox.Size = new System.Drawing.Size(130, 17);
-			this.SelectableCheckBox.TabIndex = 18;
-			this.SelectableCheckBox.Text = "Show in Map Chooser";
-			this.SelectableCheckBox.UseVisualStyleBackColor = true;
-			//
 			// label3
 			//
 			this.label3.AutoSize = true;
@@ -129,16 +119,27 @@ namespace OpenRA.Editor
 			this.AuthorBox.Size = new System.Drawing.Size(286, 20);
 			this.AuthorBox.TabIndex = 17;
 			//
-			// checkBox1
 			//
-			this.ShellmapCheckBox.AutoSize = true;
-			this.ShellmapCheckBox.Location = new System.Drawing.Point(118, 161);
-			this.ShellmapCheckBox.Name = "checkBox1";
-			this.ShellmapCheckBox.Size = new System.Drawing.Size(105, 17);
-			this.ShellmapCheckBox.TabIndex = 18;
-			this.ShellmapCheckBox.Text = "Use as Shellmap";
-			this.ShellmapCheckBox.UseVisualStyleBackColor = true;
-			//
+			// mapVisibilityComboBox
+			// 
+			this.mapVisibilityComboBox.FormattingEnabled = true;
+			this.mapVisibilityComboBox.Items.AddRange(new object[] {
+			"Lobby",
+			"Shellmap",
+			"MissionSelector"});
+			this.mapVisibilityComboBox.Location = new System.Drawing.Point(150, 137);
+			this.mapVisibilityComboBox.Name = "mapVisibilityComboBox";
+			this.mapVisibilityComboBox.Size = new System.Drawing.Size(121, 21);
+			this.mapVisibilityComboBox.TabIndex = 19;
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(90, 140);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(58, 13);
+			this.label4.TabIndex = 20;
+			this.label4.Text = "Map class:";
 			// PropertiesDialog
 			//
 			this.AcceptButton = this.button2;
@@ -146,8 +147,8 @@ namespace OpenRA.Editor
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.button1;
 			this.ClientSize = new System.Drawing.Size(370, 228);
-			this.Controls.Add(this.ShellmapCheckBox);
-			this.Controls.Add(this.SelectableCheckBox);
+			this.Controls.Add(this.label4);
+			this.Controls.Add(this.mapVisibilityComboBox);
 			this.Controls.Add(this.AuthorBox);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.DescBox);
@@ -173,9 +174,9 @@ namespace OpenRA.Editor
 		public System.Windows.Forms.TextBox TitleBox;
 		private System.Windows.Forms.Label label2;
 		public System.Windows.Forms.TextBox DescBox;
-		public System.Windows.Forms.CheckBox SelectableCheckBox;
 		private System.Windows.Forms.Label label3;
 		public System.Windows.Forms.TextBox AuthorBox;
-		public System.Windows.Forms.CheckBox ShellmapCheckBox;
+		public System.Windows.Forms.ComboBox mapVisibilityComboBox;
+		private System.Windows.Forms.Label label4;
 	}
 }

@@ -1,6 +1,4 @@
-Selectable: True
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -14,9 +12,11 @@ MapSize: 64,64
 
 Bounds: 4,4,56,56
 
-UseAsShellmap: False
+Visibility: Lobby
 
 Type: Conquest
+
+Videos:
 
 Options:
 

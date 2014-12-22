@@ -1,6 +1,4 @@
-Selectable: True
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,9 +14,11 @@ MapSize: 56,56
 
 Bounds: 16,16,24,24
 
-UseAsShellmap: False
+Visibility: Lobby
 
 Type: Minigame
+
+Videos:
 
 Options:
 	Crates: False

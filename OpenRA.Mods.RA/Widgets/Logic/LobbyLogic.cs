@@ -173,7 +173,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{
 						{ "initialMap", Map.Uid },
 						{ "onExit", DoNothing },
-						{ "onSelect", onSelect }
+						{ "onSelect", onSelect },
+						{ "filter", MapVisibility.Lobby },
 					});
 				};
 			}

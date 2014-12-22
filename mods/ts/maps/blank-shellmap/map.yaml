@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ts
 
@@ -16,9 +14,11 @@ MapSize: 128,128
 
 Bounds: 16,16,96,96
 
-UseAsShellmap: True
+Visibility: Shellmap
 
 Type: Shellmap
+
+Videos:
 
 Options:
 
