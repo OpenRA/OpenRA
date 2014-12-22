@@ -57,12 +57,12 @@ namespace OpenRA.Traits
 
 		public int Hash { get; private set; }
 
-		static readonly Func<CPos, bool> TruthPredicate = cell => true;
-		readonly Func<CPos, bool> shroudEdgeTest;
-		readonly Func<CPos, bool> fastExploredTest;
-		readonly Func<CPos, bool> slowExploredTest;
-		readonly Func<CPos, bool> fastVisibleTest;
-		readonly Func<CPos, bool> slowVisibleTest;
+		static readonly Func<int, int, bool> TruthPredicate = (u, v) => true;
+		readonly Func<int, int, bool> shroudEdgeTest;
+		readonly Func<int, int, bool> fastExploredTest;
+		readonly Func<int, int, bool> slowExploredTest;
+		readonly Func<int, int, bool> fastVisibleTest;
+		readonly Func<int, int, bool> slowVisibleTest;
 
 		public Shroud(Actor self)
 		{
@@ -81,7 +81,7 @@ namespace OpenRA.Traits
 
 			fogVisibilities = Exts.Lazy(() => self.TraitsImplementing<IFogVisibilityModifier>().ToArray());
 
-			shroudEdgeTest = cell => map.Contains(cell);
+			shroudEdgeTest = (u, v) => map.Contains(u, v);
 			fastExploredTest = IsExploredCore;
 			slowExploredTest = IsExplored;
 			fastVisibleTest = IsVisibleCore;
@@ -232,49 +232,54 @@ namespace OpenRA.Traits
 			if (map.Bounds != s.map.Bounds)
 				throw new ArgumentException("The map bounds of these shrouds do not match.", "s");
 
-			foreach (var cell in map.Cells)
-				if (s.explored[cell])
-					explored[cell] = true;
+			foreach (var uv in map.Cells.MapCoords)
+				if (s.explored[uv.X, uv.Y])
+					explored[uv.X, uv.Y] = true;
 
 			Invalidate();
 		}
 
 		public void ExploreAll(World world)
 		{
-			foreach (var cell in map.Cells)
-				explored[cell] = true;
+			foreach (var uv in map.Cells.MapCoords)
+				explored[uv.X, uv.Y] = true;
 
 			Invalidate();
 		}
 
 		public void ResetExploration()
 		{
-			foreach (var cell in map.Cells)
-				explored[cell] = visibleCount[cell] > 0;
+			foreach (var uv in map.Cells.MapCoords)
+				explored[uv.X, uv.Y] = visibleCount[uv.X, uv.Y] > 0;
 
 			Invalidate();
 		}
 
 		public bool IsExplored(CPos cell)
 		{
-			if (!map.Contains(cell))
+			var uv = Map.CellToMap(map.TileShape, cell);
+			return IsExplored(uv.X, uv.Y);
+		}
+
+		public bool IsExplored(int u, int v)
+		{
+			if (!map.Contains(u, v))
 				return false;
 
 			if (!ShroudEnabled)
 				return true;
 
-			return IsExploredCore(cell);
+			return IsExploredCore(u, v);
 		}
 
 		bool ShroudEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Shroud; } }
 
-		bool IsExploredCore(CPos cell)
+		bool IsExploredCore(int u, int v)
 		{
-			var uv = Map.CellToMap(map.TileShape, cell);
-			return explored[uv.X, uv.Y] && (generatedShroudCount[uv.X, uv.Y] == 0 || visibleCount[uv.X, uv.Y] > 0);
+			return explored[u, v] && (generatedShroudCount[u, v] == 0 || visibleCount[u, v] > 0);
 		}
 
-		public Func<CPos, bool> IsExploredTest(CellRegion region)
+		public Func<int, int, bool> IsExploredTest(CellRegion region)
 		{
 			// If the region to test extends outside the map we must use the slow test that checks the map boundary every time.
 			if (!map.Cells.Contains(region))
@@ -295,23 +300,29 @@ namespace OpenRA.Traits
 
 		public bool IsVisible(CPos cell)
 		{
-			if (!map.Contains(cell))
+			var uv = Map.CellToMap(map.TileShape, cell);
+			return IsVisible(uv.X, uv.Y);
+		}
+
+		bool IsVisible(int u, int v)
+		{
+			if (!map.Contains(u, v))
 				return false;
 
 			if (!FogEnabled)
 				return true;
 
-			return IsVisibleCore(cell);
+			return IsVisibleCore(u, v);
 		}
 
 		bool FogEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Fog; } }
 
-		bool IsVisibleCore(CPos cell)
+		bool IsVisibleCore(int u, int v)
 		{
-			return visibleCount[cell] > 0;
+			return visibleCount[u, v] > 0;
 		}
 
-		public Func<CPos, bool> IsVisibleTest(CellRegion region)
+		public Func<int, int, bool> IsVisibleTest(CellRegion region)
 		{
 			// If the region to test extends outside the map we must use the slow test that checks the map boundary every time.
 			if (!map.Cells.Contains(region))
