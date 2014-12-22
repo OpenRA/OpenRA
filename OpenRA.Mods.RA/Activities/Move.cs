@@ -13,12 +13,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using OpenRA.Activities;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Move
+namespace OpenRA.Mods.RA.Activities
 {
 	class Move : Activity
 	{

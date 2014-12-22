@@ -9,11 +9,10 @@
 #endregion
 
 using OpenRA.Mods.RA.Effects;
-using OpenRA.Mods.RA.Move;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Eject a ground soldier or a paratrooper while in the air.")]
 	public class EjectOnDeathInfo : TraitInfo<EjectOnDeath>

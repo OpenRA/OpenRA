@@ -12,7 +12,7 @@ using OpenRA.Activities;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Dogs use this attack model.")]
 	class AttackLeapInfo : AttackFrontalInfo
