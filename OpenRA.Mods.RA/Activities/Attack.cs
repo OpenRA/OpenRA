@@ -24,6 +24,7 @@ namespace OpenRA.Mods.RA.Activities
 		readonly IFacing facing;
 		readonly WRange minRange;
 		readonly WRange maxRange;
+		readonly IPositionable positionable;
 
 		public Attack(Actor self, Target target, WRange minRange, WRange maxRange, bool allowMovement)
 		{
@@ -33,6 +34,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			attack = self.Trait<AttackBase>();
 			facing = self.Trait<IFacing>();
+			positionable = self.Trait<IPositionable>();
 
 			move = allowMovement ? self.TraitOrDefault<IMove>() : null;
 		}
@@ -51,6 +53,9 @@ namespace OpenRA.Mods.RA.Activities
 
 			var type = Target.Type;
 			if (!Target.IsValidFor(self) || type == TargetType.FrozenActor)
+				return NextActivity;
+			
+			if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(Target.Actor.Location, null, false))
 				return NextActivity;
 
 			// Drop the target if it moves under the shroud / fog.
