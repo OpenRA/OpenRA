@@ -225,6 +225,7 @@ namespace OpenRA
 				Author = "Your name here",
 				MapSize = new int2(size),
 				Tileset = tileset.Id,
+				Videos = new MapVideos(),
 				Options = new MapOptions(),
 				MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(tileShape, size)),
 				MapTiles = makeMapTiles,
@@ -232,6 +233,7 @@ namespace OpenRA
 				Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>()),
 				Smudges = Exts.Lazy(() => new List<SmudgeReference>())
 			};
+
 			map.PostInit();
 
 			return map;
