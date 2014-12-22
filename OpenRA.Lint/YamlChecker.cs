@@ -55,6 +55,7 @@ namespace OpenRA.Lint
 				FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 
 				AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
+				Game.InitializeSettings(Arguments.Empty);
 				Game.modData = new ModData(mod);
 
 				IEnumerable<Map> maps;

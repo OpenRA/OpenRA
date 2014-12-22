@@ -14,16 +14,17 @@ namespace OpenRA.Graphics
 {
 	public class QuadRenderer : Renderer.IBatchRenderer
 	{
-		Renderer renderer;
-		IShader shader;
+		readonly Renderer renderer;
+		readonly IShader shader;
 
-		Vertex[] vertices = new Vertex[Renderer.TempBufferSize];
+		readonly Vertex[] vertices;
 		int nv = 0;
 
 		public QuadRenderer(Renderer renderer, IShader shader)
 		{
 			this.renderer = renderer;
 			this.shader = shader;
+			vertices = new Vertex[renderer.TempBufferSize];
 		}
 
 		public void Flush()
@@ -45,9 +46,9 @@ namespace OpenRA.Graphics
 
 		public void FillRect(RectangleF rect, Color color)
 		{
-			Renderer.CurrentBatchRenderer = this;
+			renderer.CurrentBatchRenderer = this;
 
-			if (nv + 4 > Renderer.TempBufferSize)
+			if (nv + 4 > renderer.TempBufferSize)
 				Flush();
 
 			var r = color.R / 255.0f;
@@ -65,7 +66,7 @@ namespace OpenRA.Graphics
 		public void SetViewportParams(Size screen, float zoom, int2 scroll)
 		{
 			shader.SetVec("Scroll", scroll.X, scroll.Y);
-			shader.SetVec("r1", zoom*2f/screen.Width, -zoom*2f/screen.Height);
+			shader.SetVec("r1", zoom * 2f / screen.Width, -zoom * 2f / screen.Height);
 			shader.SetVec("r2", -1, 1);
 		}
 	}

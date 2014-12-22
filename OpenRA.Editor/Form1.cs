@@ -46,6 +46,7 @@ namespace OpenRA.Editor
 				miniMapBox.Image = null;
 				currentMod = toolStripComboBox1.SelectedItem as string;
 
+				Game.InitializeSettings(Arguments.Empty);
 				Game.modData = new ModData(currentMod);
 				GlobalFileSystem.LoadFromManifest(Game.modData.Manifest);
 				Program.Rules = Game.modData.RulesetCache.LoadDefaultRules();
@@ -203,10 +204,10 @@ namespace OpenRA.Editor
 							Height = bitmap.Height / 2,
 							SizeMode = PictureBoxSizeMode.StretchImage
 						};
-	
+
 						var brushTemplate = new BrushTemplate { Bitmap = bitmap, N = t.Key };
 						ibox.Click += (_, e) => surface1.SetTool(new BrushTool(brushTemplate));
-	
+
 						var template = t.Value;
 						tilePalette.Controls.Add(ibox);
 						tt.SetToolTip(ibox, "{1}:{0} ({2}x{3})".F(template.Image, template.Id, template.Size.X, template.Size.Y));
@@ -463,7 +464,7 @@ namespace OpenRA.Editor
 		void ExportMinimap(object sender, EventArgs e)
 		{
 			using (var sfd = new SaveFileDialog()
-			{ 
+			{
 				InitialDirectory = Path.Combine(Environment.CurrentDirectory, "maps"),
 				DefaultExt = "*.png",
 				Filter = "PNG Image (*.png)|*.png",
@@ -471,9 +472,8 @@ namespace OpenRA.Editor
 				FileName = Path.ChangeExtension(loadedMapName, ".png"),
 				RestoreDirectory = true
 			})
-
-			if (DialogResult.OK == sfd.ShowDialog())
-				miniMapBox.Image.Save(sfd.FileName);
+				if (DialogResult.OK == sfd.ShowDialog())
+					miniMapBox.Image.Save(sfd.FileName);
 		}
 
 		void ShowActorNamesClicked(object sender, EventArgs e)
@@ -637,7 +637,7 @@ namespace OpenRA.Editor
 		{
 			ShowGridClicked(sender, e);
 		}
-		
+
 		public int CalculateTotalResource()
 		{
 			var totalResource = 0;
@@ -651,7 +651,7 @@ namespace OpenRA.Editor
 
 			return totalResource;
 		}
-		
+
 		int GetAdjecentCellsWith(int resourceType, int x, int y)
 		{
 			var sum = 0;

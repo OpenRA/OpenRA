@@ -140,7 +140,10 @@ namespace OpenRA
 				orderManager.World = new World(map, orderManager, isShellmap);
 				orderManager.World.Timestep = Timestep;
 			}
+			if (worldRenderer != null)
+				worldRenderer.Dispose();
 			worldRenderer = new WorldRenderer(orderManager.World);
+			
 			using (new PerfTimer("LoadComplete"))
 				orderManager.World.LoadComplete(worldRenderer);
 
@@ -172,13 +175,18 @@ namespace OpenRA
 		public static Modifiers GetModifierKeys() { return modifiers; }
 		internal static void HandleModifierKeys(Modifiers mods) { modifiers = mods; }
 
+		public static void InitializeSettings(Arguments args)
+		{
+			Settings = new Settings(Platform.ResolvePath("^", "settings.yaml"), args);
+		}
+
 		internal static void Initialize(Arguments args)
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
 			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
-			Settings = new Settings(Platform.ResolvePath("^", "settings.yaml"), args);
+			InitializeSettings(args);
 
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");
@@ -215,7 +223,7 @@ namespace OpenRA
 				Settings.Graphics.Renderer = r;
 				try
 				{
-					Renderer.Initialize(Settings.Graphics.Mode);
+					Renderer = new Renderer(Settings.Graphics, Settings.Server);
 					break;
 				}
 				catch (Exception e)
@@ -224,8 +232,6 @@ namespace OpenRA
 					Console.WriteLine("Renderer initialization failed. Fallback in place. Check graphics.log for details.");
 				}
 			}
-
-			Renderer = new Renderer();
 
 			try
 			{
@@ -257,11 +263,17 @@ namespace OpenRA
 			BeforeGameStart = () => { };
 			Ui.ResetAll();
 
+			if (worldRenderer != null)
+				worldRenderer.Dispose();
 			worldRenderer = null;
 			if (server != null)
 				server.Shutdown();
 			if (orderManager != null)
 				orderManager.Dispose();
+
+			if (modData != null)
+				modData.Dispose();
+			modData = null;
 
 			// Fall back to default if the mod doesn't exist
 			if (!ModMetadata.AllMods.ContainsKey(mod))
@@ -274,7 +286,7 @@ namespace OpenRA
 			Sound.StopVideo();
 			Sound.Initialize();
 
-			modData = new ModData(mod);
+			modData = new ModData(mod, true);
 			Renderer.InitializeFonts(modData.Manifest);
 			modData.InitializeLoaders();
 			using (new PerfTimer("LoadMaps"))
@@ -632,8 +644,12 @@ namespace OpenRA
 				if (orderManager != null)
 					orderManager.Dispose();
 			}
-				
-			Renderer.Device.Dispose();
+
+			if (worldRenderer != null)
+				worldRenderer.Dispose();
+			modData.Dispose();
+			ChromeProvider.Deinitialize();
+			Renderer.Dispose();
 
 			OnQuit();
 

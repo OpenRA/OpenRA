@@ -29,24 +29,22 @@ namespace OpenRA.Graphics
 		}
 	}
 
-	public class WorldRenderer
+	public sealed class WorldRenderer : IDisposable
 	{
 		public readonly World world;
 		public readonly Theater Theater;
 		public Viewport Viewport { get; private set; }
 
+		readonly HardwarePalette palette = new HardwarePalette();
+		readonly Dictionary<string, PaletteReference> palettes = new Dictionary<string, PaletteReference>();
 		readonly TerrainRenderer terrainRenderer;
-		readonly HardwarePalette palette;
-		readonly Dictionary<string, PaletteReference> palettes;
 		readonly Lazy<DeveloperMode> devTrait;
 
 		internal WorldRenderer(World world)
 		{
 			this.world = world;
 			Viewport = new Viewport(this, world.Map);
-			palette = new HardwarePalette();
 
-			palettes = new Dictionary<string, PaletteReference>();
 			foreach (var pal in world.traitDict.ActorsWithTrait<ILoadsPalettes>())
 				pal.Trait.LoadPalettes(this);
 
@@ -250,6 +248,13 @@ namespace OpenRA.Graphics
 		{
 			var ts = Game.modData.Manifest.TileSize;
 			return new WPos(1024 * screenPx.X / ts.Width, 1024 * screenPx.Y / ts.Height, 0);
+		}
+
+		public void Dispose()
+		{
+			palette.Dispose();
+			Theater.Dispose();
+			terrainRenderer.Dispose();
 		}
 	}
 }

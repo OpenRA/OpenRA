@@ -78,7 +78,7 @@ namespace OpenRA.Renderer.Null
 		public void Render(Action a) { }
 	}
 
-	public class NullTexture : ITexture
+	public sealed class NullTexture : ITexture
 	{
 		public TextureScaleFilter ScaleFilter { get { return TextureScaleFilter.Nearest; } set { } }
 		public void SetData(Bitmap bitmap) { }
@@ -86,18 +86,21 @@ namespace OpenRA.Renderer.Null
 		public void SetData(byte[] colors, int width, int height) { }
 		public byte[] GetData() { return new byte[0]; }
 		public Size Size { get { return new Size(0, 0); } }
+		public void Dispose() { }
 	}
 
-	public class NullFrameBuffer : IFrameBuffer
+	public sealed class NullFrameBuffer : IFrameBuffer
 	{
 		public void Bind() { }
 		public void Unbind() { }
 		public ITexture Texture { get { return new NullTexture(); } }
+		public void Dispose() { }
 	}
 
-	class NullVertexBuffer<T> : IVertexBuffer<T>
+	sealed class NullVertexBuffer<T> : IVertexBuffer<T>
 	{
 		public void Bind() { }
 		public void SetData(T[] vertices, int length) { }
+		public void Dispose() { }
 	}
 }

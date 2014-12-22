@@ -9,7 +9,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace OpenRA.Graphics
 {
@@ -27,28 +29,34 @@ namespace OpenRA.Graphics
 		BGRA = 4,
 	}
 
-	public class SheetBuilder
+	public sealed class SheetBuilder : IDisposable
 	{
+		readonly List<Sheet> sheets = new List<Sheet>();
+		readonly SheetType type;
+		readonly Func<Sheet> allocateSheet;
+
 		Sheet current;
 		TextureChannel channel;
-		SheetType type;
 		int rowHeight = 0;
 		Point p;
-		Func<Sheet> allocateSheet;
 
-		public static Sheet AllocateSheet()
+		public static Sheet AllocateSheet(int sheetSize)
 		{
-			return new Sheet(new Size(Renderer.SheetSize, Renderer.SheetSize));
+			return new Sheet(new Size(sheetSize, sheetSize));
 		}
 
 		public SheetBuilder(SheetType t)
-			: this(t, AllocateSheet) { }
+			: this(t, Game.Settings.Graphics.SheetSize) { }
+
+		public SheetBuilder(SheetType t, int sheetSize)
+			: this(t, () => AllocateSheet(sheetSize)) { }
 
 		public SheetBuilder(SheetType t, Func<Sheet> allocateSheet)
 		{
 			channel = TextureChannel.Red;
 			type = t;
 			current = allocateSheet();
+			sheets.Add(current);
 			this.allocateSheet = allocateSheet;
 		}
 
@@ -111,6 +119,7 @@ namespace OpenRA.Graphics
 				{
 					current.ReleaseBuffer();
 					current = allocateSheet();
+					sheets.Add(current);
 					channel = TextureChannel.Red;
 				}
 				else
@@ -127,5 +136,12 @@ namespace OpenRA.Graphics
 		}
 
 		public Sheet Current { get { return current; } }
+
+		public void Dispose()
+		{
+			foreach (var sheet in sheets)
+				sheet.Dispose();
+			sheets.Clear();
+		}
 	}
 }

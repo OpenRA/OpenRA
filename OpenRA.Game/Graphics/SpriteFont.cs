@@ -22,7 +22,7 @@ namespace OpenRA.Graphics
 		static Library library = new Library();
 		static SheetBuilder builder;
 
-		int size;
+		readonly int size;
 		string name;
 
 		public SpriteFont(string name, int size)
@@ -114,7 +114,6 @@ namespace OpenRA.Graphics
 
 			// A new bitmap is generated each time this property is accessed, so we do need to dispose it.
 			using (var bitmap = face.Glyph.Bitmap)
-			{
 				unsafe
 				{
 					var p = (byte*)bitmap.Buffer;
@@ -136,7 +135,7 @@ namespace OpenRA.Graphics
 						p += bitmap.Pitch;
 					}
 				}
-			}
+
 
 			s.sheet.CommitData();
 

@@ -38,6 +38,7 @@ namespace OpenRA.Utility
 				return;
 			}
 
+			Game.InitializeSettings(Arguments.Empty);
 			var modData = new ModData(modName);
 			args = args.Skip(1).ToArray();
 			var actions = new Dictionary<string, Action<ModData, string[]>>();

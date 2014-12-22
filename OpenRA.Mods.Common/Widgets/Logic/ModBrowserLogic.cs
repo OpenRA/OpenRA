@@ -20,15 +20,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ModBrowserLogic
 	{
-		Widget modList;
-		ButtonWidget modTemplate;
-		ModMetadata[] allMods;
+		readonly Widget modList;
+		readonly ButtonWidget modTemplate;
+		readonly ModMetadata[] allMods;
+		readonly Dictionary<string, Sprite> previews = new Dictionary<string, Sprite>();
+		readonly Dictionary<string, Sprite> logos = new Dictionary<string, Sprite>();
+		readonly SheetBuilder sheetBuilder;
 		ModMetadata selectedMod;
 		string selectedAuthor;
 		string selectedDescription;
 		int modOffset = 0;
-		Dictionary<string, Sprite> previews;
-		Dictionary<string, Sprite> logos;
 
 		[ObjectCreator.UseCtor]
 		public ModBrowserLogic(Widget widget)
@@ -63,9 +64,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return ret;
 			};
 
-			var sheetBuilder = new SheetBuilder(SheetType.BGRA);
-			previews = new Dictionary<string, Sprite>();
-			logos = new Dictionary<string, Sprite>();
+			sheetBuilder = new SheetBuilder(SheetType.BGRA);
 			allMods = ModMetadata.AllMods.Values.Where(m => m.Id != "modchooser")
 				.OrderBy(m => m.Title)
 				.ToArray();
@@ -75,21 +74,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				try
 				{
-					var preview = new Bitmap(Platform.ResolvePath(".", "mods", mod.Id, "preview.png"));
-					if (preview.Width != 296 || preview.Height != 196)
-						continue;
-
-					previews.Add(mod.Id, sheetBuilder.Add(preview));
+					using (var preview = new Bitmap(Platform.ResolvePath(".", "mods", mod.Id, "preview.png")))
+						if (preview.Width == 296 && preview.Height == 196)
+							previews.Add(mod.Id, sheetBuilder.Add(preview));
 				}
 				catch (Exception) { }
 
 				try
 				{
-					var logo = new Bitmap(Platform.ResolvePath(".", "mods", mod.Id, "logo.png"));
-					if (logo.Width != 96 || logo.Height != 96)
-						continue;
-
-					logos.Add(mod.Id, sheetBuilder.Add(logo));
+					using (var logo = new Bitmap(Platform.ResolvePath(".", "mods", mod.Id, "logo.png")))
+						if (logo.Width == 96 && logo.Height == 96)
+							logos.Add(mod.Id, sheetBuilder.Add(logo));
 				}
 				catch (Exception) { }
 			}
@@ -155,11 +150,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				modOffset = selectedIndex - 4;
 		}
 
-		static void LoadMod(ModMetadata mod)
+		void LoadMod(ModMetadata mod)
 		{
 			Game.RunAfterTick(() =>
 			{
 				Ui.CloseWindow();
+				sheetBuilder.Dispose();
 				Game.InitializeMod(mod.Id, null);
 			});
 		}
