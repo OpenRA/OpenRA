@@ -256,6 +256,7 @@
     <Compile Include="Traits\Player\AllyRepair.cs" />
     <Compile Include="Traits\Player\ClassicProductionQueue.cs" />
     <Compile Include="Traits\Player\ConquestVictoryConditions.cs" />
+    <Compile Include="Traits\Player\EnemyWatcher.cs" />
     <Compile Include="Traits\Player\GlobalUpgradeManager.cs" />
     <Compile Include="Traits\Player\MissionObjectives.cs" />
     <Compile Include="Traits\Player\PlaceBeacon.cs" />
@@ -328,6 +329,7 @@
     <Compile Include="Traits\Sound\ActorLostNotification.cs" />
     <Compile Include="Traits\Sound\AnnounceOnBuild.cs" />
     <Compile Include="Traits\Sound\AnnounceOnKill.cs" />
+    <Compile Include="Traits\Sound\AnnounceOnSeen.cs" />
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePower.cs" />
