@@ -451,6 +451,7 @@ sandworm:
 	sand: DATA
 		Start: 3565
 		Length: 20
+		Tick: 100
 	idle: DATA
 		Start: 3586
 		Length: 35

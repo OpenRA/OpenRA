@@ -96,6 +96,7 @@
     <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\SupportPowerBinWidget.cs" />
     <Compile Include="Widgets\SlidingContainerWidget.cs" />
+    <Compile Include="Traits\Render\WithAttackOverlay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

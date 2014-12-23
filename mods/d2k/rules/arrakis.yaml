@@ -39,6 +39,8 @@ SANDWORM:
 	RevealsShroud:
 		Range: 32c0
 	RenderUnit:
+	WithAttackOverlay:
+		Sequence: sand
 	BodyOrientation:
 	HiddenUnderFog:
 	AppearsOnRadar:
