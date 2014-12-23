@@ -63,21 +63,21 @@ Background@SETTINGS_PANEL:
 			Height: PARENT_BOTTOM
 			Children:
 				Label@MODE_LABEL:
-					X: 120
+					X: 110
 					Y: 39
 					Width: 45
 					Height: 25
 					Align: Right
 					Text: Mode:
 				DropDownButton@MODE_DROPDOWN:
-					X: 170
+					X: 160
 					Y: 40
 					Width: 170
 					Height: 25
 					Font: Regular
 					Text: Windowed
 				Container@WINDOW_RESOLUTION:
-					X: 340
+					X: 330
 					Y: 40
 					Children:
 						Label@At:
@@ -105,62 +105,69 @@ Background@SETTINGS_PANEL:
 							Width: 45
 							Height: 25
 							MaxLength: 5
+				Checkbox@HARDWARECURSORS_CHECKBOX:
+					X: 310
+					Y: 75
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Use Hardware Cursors
 				Label@VIDEO_DESC:
-					Y: 60
+					Y: 93
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: Mode/Resolution changes will be applied after the game is restarted
+					Text: Mode, resolution, and cursor changes will be applied after the game is restarted
 				Checkbox@FRAME_LIMIT_CHECKBOX:
 					X: 15
-					Y: 100
+					Y: 125
 					Width: 200
 					Height: 20
 					Font: Regular
 					Text: Enable Frame Limiter
 				Checkbox@PIXELDOUBLE_CHECKBOX:
 					X: 310
-					Y: 100
+					Y: 125
 					Width: 200
 					Height: 20
 					Font: Regular
 					Text: Enable Pixel Doubling
 				Checkbox@CURSORDOUBLE_CHECKBOX:
-					X: 355
-					Y: 135
+					X: 340
+					Y: 160
 					Width: 200
 					Height: 20
 					Font: Regular
 					Text: Also Double Cursor
 				Label@FRAME_LIMIT_DESC_A:
 					X: 45
-					Y: 132
+					Y: 157
 					Width: 50
 					Height: 25
 					Text: Limit to
 					Align: Right
 				TextField@FRAME_LIMIT_TEXTFIELD:
 					X: 100
-					Y: 133
+					Y: 158
 					Width: 45
 					Height: 25
 					MaxLength: 3
 				Label@FRAME_LIMIT_DESC_B:
 					X: 150
-					Y: 132
+					Y: 157
 					Height: 25
 					Text: FPS
 				Checkbox@TEAM_HEALTH_COLORS_CHECKBOX:
 					X: 310
-					Y: 170
+					Y: 195
 					Width: 200
 					Height: 20
 					Font: Regular
 					Text: Team Health Colors
 				Checkbox@SHOW_SHELLMAP:
 					X: 15
-					Y: 170
+					Y: 195
 					Width: 200
 					Height: 20
 					Font: Regular
@@ -168,18 +175,18 @@ Background@SETTINGS_PANEL:
 				Label@PLAYER:
 					Text: Player:
 					X: 15
-					Y: 215
+					Y: 240
 				TextField@PLAYERNAME:
 					Text: Name
 					X: 65
-					Y: 205
+					Y: 230
 					Width: 145
 					Height: 25
 					MaxLength: 16
 				ColorPreviewManager@COLOR_MANAGER:
 				DropDownButton@PLAYERCOLOR:
 					X: 215
-					Y: 205
+					Y: 230
 					Width: 70
 					Height: 25
 					IgnoreChildMouseOver: true
@@ -191,13 +198,13 @@ Background@SETTINGS_PANEL:
 							Height: PARENT_BOTTOM-12
 				Checkbox@ALWAYS_SHOW_STATUS_BARS_CHECKBOX:
 					X: 310
-					Y: 205
+					Y: 230
 					Width: 200
 					Height: 20
 					Font: Regular
 					Text: Always Show Status Bars
 				Label@LOCALIZATION_TITLE:
-					Y: 225
+					Y: 270
 					Width: PARENT_RIGHT
 					Font: Bold
 					Text: Localization
@@ -205,7 +212,7 @@ Background@SETTINGS_PANEL:
 					Visible: false
 				Label@LANGUAGE_LABEL:
 					X: 230 - WIDTH - 5
-					Y: 244
+					Y: 289
 					Width: 75
 					Height: 25
 					Align: Right
@@ -213,12 +220,12 @@ Background@SETTINGS_PANEL:
 					Visible: false
 				DropDownButton@LANGUAGE_DROPDOWNBUTTON:
 					X: 230
-					Y: 245
+					Y: 290
 					Width: 200
 					Height: 25
 					Visible: false
 				Label@LANGUAGE_DESC_A:
-					Y: 265
+					Y: 310
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
@@ -226,7 +233,7 @@ Background@SETTINGS_PANEL:
 					Text: Language changes will be applied after the game is restarted
 					Visible: false
 				Label@LANGUAGE_DESC_B:
-					Y: 280
+					Y: 325
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny

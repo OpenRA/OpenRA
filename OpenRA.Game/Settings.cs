@@ -80,6 +80,7 @@ namespace OpenRA
 		public WindowMode Mode = WindowMode.PseudoFullscreen;
 		public int2 FullscreenSize = new int2(0, 0);
 		public int2 WindowedSize = new int2(1024, 768);
+		public bool HardwareCursors = true;
 		public bool PixelDouble = false;
 		public bool CursorDouble = false;
 		public bool CapFramerate = true;
