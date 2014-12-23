@@ -296,7 +296,26 @@ namespace OpenRA
 			using (new PerfTimer("LoadMaps"))
 				modData.MapCache.LoadMaps();
 
-			Cursor = new SoftwareCursor(modData.CursorProvider);
+			if (Settings.Graphics.HardwareCursors)
+			{
+				try
+				{
+					Cursor = new HardwareCursor(modData.CursorProvider);
+				}
+				catch (Exception e)
+				{
+					Log.Write("debug", "Failed to initialize hardware cursors. Falling back to software cursors.");
+					Log.Write("debug", "Error was: " + e.Message);
+
+					Console.WriteLine("Failed to initialize hardware cursors. Falling back to software cursors.");
+					Console.WriteLine("Error was: " + e.Message);
+
+					Cursor = new SoftwareCursor(modData.CursorProvider);
+					Settings.Graphics.HardwareCursors = false;
+				}
+			}
+			else
+				Cursor = new SoftwareCursor(modData.CursorProvider);
 
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
