@@ -48,6 +48,7 @@ Speech:
 		ControlCenterDeactivated: cntlded1
 		OperationControlTerminated: opterm1
 		MissionTimerInitialised: mtimein1
+		EnemyUnitsApproaching: enmyapp1
 
 Sounds:
 	Notifications:
