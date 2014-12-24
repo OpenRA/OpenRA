@@ -34,7 +34,6 @@ WorldLoaded = function()
 	player = Player.GetPlayer("USSR")
 	france = Player.GetPlayer("France")
 	germany = Player.GetPlayer("Germany")
-	turkey = Player.GetPlayer("Turkey")
 
 	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
@@ -62,7 +61,7 @@ WorldLoaded = function()
 end
 
 Tick = function()
-	if france.HasNoRequiredUnits() and germany.HasNoRequiredUnits() and turkey.HasNoRequiredUnits() then
+	if france.HasNoRequiredUnits() and germany.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(VillageRaidObjective)
 	end
 
