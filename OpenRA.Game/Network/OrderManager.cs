@@ -51,6 +51,8 @@ namespace OpenRA.Network
 
 		public readonly ReadOnlyList<ChatLine> ChatCache;
 
+		bool disposed;
+
 		static void OutOfSync(int frame)
 		{
 			throw new InvalidOperationException("Out of sync in frame {0}.\n Compare syncreport.log with other players.".F(frame));
@@ -122,8 +124,16 @@ namespace OpenRA.Network
 				});
 
 			foreach (var p in immediatePackets)
+			{
 				foreach (var o in p.Second.ToOrderList(World))
+				{
 					UnitOrders.ProcessOrder(this, World, p.First, o);
+
+					// A mod switch or other event has pulled the ground from beneath us
+					if (disposed)
+						return;
+				}
+			}
 		}
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
@@ -213,6 +223,7 @@ namespace OpenRA.Network
 
 		public void Dispose()
 		{
+			disposed = true;
 			if (Connection != null)
 				Connection.Dispose();
 		}

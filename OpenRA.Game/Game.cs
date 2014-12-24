@@ -87,9 +87,15 @@ namespace OpenRA
 		public const int Timestep = 40;
 		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
 
+		public static event Action<string, int> OnRemoteDirectConnect = (a, b) => { };
 		public static event Action<OrderManager> ConnectionStateChanged = _ => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public static int LocalClientId { get { return orderManager.Connection.LocalClientId; } }
+
+		public static void RemoteDirectConnect(string host, int port)
+		{
+			OnRemoteDirectConnect(host, port);
+		}
 
 		// Hacky workaround for orderManager visibility
 		public static Widget OpenWindow(World world, string widget)
@@ -264,6 +270,9 @@ namespace OpenRA
 			LobbyInfoChanged = () => { };
 			ConnectionStateChanged = om => { };
 			BeforeGameStart = () => { };
+			OnRemoteDirectConnect = (a, b) => { };
+			delayedActions = new ActionQueue();
+
 			Ui.ResetAll();
 
 			if (worldRenderer != null)
@@ -356,45 +365,7 @@ namespace OpenRA
 				Environment.Exit(0);
 			}
 			else
-			{
-				var window = args != null ? args.GetValue("Launch.Window", null) : null;
-				if (!string.IsNullOrEmpty(window))
-				{
-					var installData = modData.Manifest.ContentInstaller;
-					if (installData.InstallerBackgroundWidget != null)
-						Ui.LoadWidget(installData.InstallerBackgroundWidget, Ui.Root, new WidgetArgs());
-
-					Widgets.Ui.OpenWindow(window, new WidgetArgs());
-				}
-				else
-				{
-					modData.LoadScreen.StartGame();
-					Settings.Save();
-					var replay = args != null ? args.GetValue("Launch.Replay", null) : null;
-					if (!string.IsNullOrEmpty(replay))
-						Game.JoinReplay(replay);
-				}
-			}
-		}
-
-		public static void TestAndContinue()
-		{
-			Ui.ResetAll();
-			var installData = modData.Manifest.ContentInstaller;
-			if (!installData.TestFiles.All(f => GlobalFileSystem.Exists(f)))
-			{
-				var args = new WidgetArgs()
-				{
-					{ "continueLoading", () => InitializeMod(Game.Settings.Game.Mod, null) },
-				};
-
-				if (installData.InstallerBackgroundWidget != null)
-					Ui.LoadWidget(installData.InstallerBackgroundWidget, Ui.Root, args);
-
-				Ui.OpenWindow(installData.InstallerMenuWidget, args);
-			}
-			else
-				LoadShellMap();
+				modData.LoadScreen.StartGame(args);
 		}
 
 		public static void LoadShellMap()

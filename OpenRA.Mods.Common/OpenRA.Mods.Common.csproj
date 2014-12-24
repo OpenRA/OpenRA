@@ -80,9 +80,7 @@
     <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
-    <Compile Include="LoadScreens\DefaultLoadScreen.cs" />
     <Compile Include="LoadScreens\ModChooserLoadScreen.cs" />
-    <Compile Include="LoadScreens\NullLoadScreen.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
@@ -243,6 +241,8 @@
     <Compile Include="SpriteLoaders\ShpD2Loader.cs" />
     <Compile Include="Widgets\Logic\SettingsLogic.cs" />
     <Compile Include="Widgets\TerrainTemplatePreviewWidget.cs" />
+    <Compile Include="LoadScreens\LogoStripeLoadScreen.cs" />
+    <Compile Include="LoadScreens\BlankLoadScreen.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

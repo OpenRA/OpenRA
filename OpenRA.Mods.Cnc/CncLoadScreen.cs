@@ -12,12 +12,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.LoadScreens;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc
 {
-	public sealed class CncLoadScreen : ILoadScreen
+	public sealed class CncLoadScreen : BlankLoadScreen
 	{
+		readonly NullInputHandler nih = new NullInputHandler();
+
 		Dictionary<string, string> loadInfo;
 		Stopwatch loadTimer = Stopwatch.StartNew();
 		Sheet sheet;
@@ -27,9 +30,8 @@ namespace OpenRA.Mods.Cnc
 		Sprite nodLogo, gdiLogo, evaLogo, brightBlock, dimBlock;
 		Rectangle bounds;
 		Renderer r;
-		readonly NullInputHandler nih = new NullInputHandler();
 
-		public void Init(Manifest m, Dictionary<string, string> info)
+		public override void Init(Manifest m, Dictionary<string, string> info)
 		{
 			loadInfo = info;
 
@@ -72,7 +74,7 @@ namespace OpenRA.Mods.Cnc
 		string loadingText, versionText;
 		float2 loadingPos, versionPos;
 
-		public void Display()
+		public override void Display()
 		{
 			if (r == null || loadTimer.Elapsed.TotalSeconds < 0.25)
 				return;
@@ -118,12 +120,7 @@ namespace OpenRA.Mods.Cnc
 			r.EndFrame(nih);
 		}
 
-		public void StartGame()
-		{
-			Game.TestAndContinue();
-		}
-
-		public void Dispose()
+		public override void Dispose()
 		{
 			if (sheet != null)
 				sheet.Dispose();

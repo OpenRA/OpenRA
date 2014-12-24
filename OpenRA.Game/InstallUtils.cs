@@ -20,8 +20,9 @@ namespace OpenRA
 {
 	public class InstallData
 	{
-		public readonly string InstallerMenuWidget = null;
-		public readonly string InstallerBackgroundWidget = null;
+		public readonly string MenuWidget = null;
+		public readonly string MusicMenuWidget = null;
+		public readonly string BackgroundWidget = null;
 		public readonly string[] TestFiles = {};
 		public readonly string[] DiskTestFiles = {};
 		public readonly string PackageToExtractFromCD = null;
