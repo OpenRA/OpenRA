@@ -51,6 +51,8 @@
     <Compile Include="Activities\Move\Drag.cs" />
     <Compile Include="Activities\RemoveSelf.cs" />
     <Compile Include="Activities\SimpleTeleport.cs" />
+    <Compile Include="Activities\Turn.cs" />
+    <Compile Include="Activities\Wait.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Contrail.cs" />
@@ -112,12 +114,14 @@
     <Compile Include="Traits\AppearsOnRadar.cs" />
     <Compile Include="Traits\BlocksBullets.cs" />
     <Compile Include="Traits\Buildable.cs" />
+    <Compile Include="Traits\Buildings\BaseBuilding.cs" />
     <Compile Include="Traits\Buildings\BaseProvider.cs" />
     <Compile Include="Traits\Buildings\DeadBuildingState.cs" />
     <Compile Include="Traits\Buildings\LineBuild.cs" />
     <Compile Include="Traits\Buildings\LineBuildNode.cs" />
     <Compile Include="Traits\Buildings\RallyPoint.cs" />
     <Compile Include="Traits\Burns.cs" />
+    <Compile Include="Traits\Huntable.cs" />
     <Compile Include="Traits\CustomBuildTimeValue.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\Demolishable.cs" />

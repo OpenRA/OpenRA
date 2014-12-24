@@ -97,6 +97,7 @@
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
+    <Compile Include="Render\WithIdleOverlay.cs" />
     <Compile Include="Traits\AcceptsSupplies.cs" />
     <Compile Include="Activities\Attack.cs" />
     <Compile Include="Activities\AttackMoveActivity.cs" />
@@ -120,9 +121,7 @@
     <Compile Include="Activities\Sell.cs" />
     <Compile Include="Activities\Teleport.cs" />
     <Compile Include="Activities\Transform.cs" />
-    <Compile Include="Activities\Turn.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
-    <Compile Include="Activities\Wait.cs" />
     <Compile Include="ActorExts.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
     <Compile Include="Attack\AttackTurreted.cs" />
@@ -200,6 +199,7 @@
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\Mobile.cs" />
     <Compile Include="Activities\Move.cs" />
+    <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Traits\World\PathFinder.cs" />
     <Compile Include="Traits\World\PathSearch.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
@@ -240,7 +240,6 @@
     <Compile Include="Repairable.cs" />
     <Compile Include="RepairableNear.cs" />
     <Compile Include="ScaredyCat.cs" />
-    <Compile Include="SeedsResource.cs" />
     <Compile Include="SelfHealing.cs" />
     <Compile Include="Sellable.cs" />
     <Compile Include="SpawnMPUnits.cs" />
@@ -268,7 +267,6 @@
     <Compile Include="Traits\Air\Plane.cs" />
     <Compile Include="Traits\Air\ReturnOnIdle.cs" />
     <Compile Include="Traits\Air\TargetableAircraft.cs" />
-    <Compile Include="Traits\Buildings\BaseBuilding.cs" />
     <Compile Include="Traits\Buildings\Bridge.cs" />
     <Compile Include="Traits\Buildings\BridgeHut.cs" />
     <Compile Include="Traits\Buildings\Fake.cs" />
@@ -287,7 +285,6 @@
     <Compile Include="Traits\TargetableSubmarine.cs" />
     <Compile Include="Traits\TargetableUnit.cs" />
     <Compile Include="Traits\World\BridgeLayer.cs" />
-    <Compile Include="Traits\World\BuildableTerrainLayer.cs" />
     <Compile Include="Traits\World\PathfinderDebugOverlay.cs" />
     <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="TransformOnCapture.cs" />
@@ -343,7 +340,6 @@
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
     <Compile Include="Buildings\Bib.cs" />
-    <Compile Include="Render\WithIdleOverlay.cs" />
     <Compile Include="AI\Squad.cs" />
     <Compile Include="AI\States\StateBase.cs" />
     <Compile Include="AI\States\GroundStates.cs" />
@@ -354,7 +350,6 @@
     <Compile Include="Render\WithCrateBody.cs" />
     <Compile Include="Widgets\Logic\GameTimerLogic.cs" />
     <Compile Include="Widgets\Logic\ReplayControlBarLogic.cs" />
-    <Compile Include="Buildings\LaysTerrain.cs" />
     <Compile Include="Attack\AttackFollow.cs" />
     <Compile Include="Attack\AttackGarrisoned.cs" />
     <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />

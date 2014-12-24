@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Graphics;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -52,4 +51,6 @@ namespace OpenRA.Mods.Common.Traits
 		void PrerequisitesItemHidden(string key);
 		void PrerequisitesItemVisible(string key);
 	}
+
+	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
 }

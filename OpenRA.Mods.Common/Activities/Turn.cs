@@ -13,7 +13,7 @@ using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Activities
+namespace OpenRA.Mods.Common.Activities
 {
 	public class Turn : Activity
 	{
