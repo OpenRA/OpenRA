@@ -32,6 +32,8 @@ namespace OpenRA
 		IGraphicsDevice Create(Size size, WindowMode windowMode);
 	}
 
+	public interface IHardwareCursor : IDisposable { }
+
 	public enum BlendMode : byte { None, Alpha, Additive, Subtractive, Multiply }
 
 	public interface IGraphicsDevice : IDisposable
@@ -61,6 +63,9 @@ namespace OpenRA
 
 		void GrabWindowMouseFocus();
 		void ReleaseWindowMouseFocus();
+
+		IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot);
+		void SetHardwareCursor(IHardwareCursor cursor);
 	}
 
 	public interface IVertexBuffer<T> : IDisposable

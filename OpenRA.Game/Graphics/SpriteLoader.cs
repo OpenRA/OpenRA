@@ -52,6 +52,8 @@ namespace OpenRA.Graphics
 
 		public FrameCache(ISpriteLoader[] loaders, string[] exts)
 		{
+			// Include extension-less version
+			exts = exts.Append("").ToArray();
 			frames = new Cache<string, ISpriteFrame[]>(filename => SpriteLoader.GetFrames(filename, exts, loaders));
 		}
 

@@ -62,6 +62,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					file.WriteLine(yaml.WriteToString());
 			}
 
+			Console.WriteLine("Processing Cursors:");
+			foreach (var filename in Game.modData.Manifest.Cursors)
+			{
+				Console.WriteLine("\t" + filename);
+				var yaml = MiniYaml.FromFile(filename);
+				UpgradeRules.UpgradeCursors(engineDate, ref yaml, null, 0);
+
+				using (var file = new StreamWriter(filename))
+					file.WriteLine(yaml.WriteToString());
+			}
+
 			Console.WriteLine("Processing Maps:");
 			var maps = Game.modData.MapCache
 				.Where(m => m.Status == MapStatus.Available)
