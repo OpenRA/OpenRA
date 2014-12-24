@@ -107,21 +107,24 @@ elseif ($command -eq "version")
 }
 elseif ($command -eq "dependencies")
 {
-	cp thirdparty/*.dll .
-	cp thirdparty/windows/*.dll .
+	cd thirdparty
+	./fetch-thirdparty-deps.ps1
+	cp *.dll ..
+	cp windows/*.dll ..
+	cd ..
 	echo "Dependencies copied."
 }
 elseif ($command -eq "test")
 {
 	echo "Testing mods..."
-	echo "OpenRA.Lint: checking Red Alert mod MiniYAML..."
-	./OpenRA.Lint.exe --verbose ra
-	echo "OpenRA.Lint: checking Tiberian Dawn mod MiniYAML..."
-	./OpenRA.Lint.exe --verbose cnc
-	echo "OpenRA.Lint: checking Dune 2000 mod MiniYAML..."
-	./OpenRA.Lint.exe --verbose d2k
-	echo "OpenRA.Lint: checking Tiberian Sun mod MiniYAML..."
-	./OpenRA.Lint.exe --verbose ts
+	echo "Testing Red Alert mod MiniYAML..."
+	./OpenRA.Utility.exe ra --check-yaml
+	echo "Testing Tiberian Dawn mod MiniYAML..."
+	./OpenRA.Utility.exe cnc --check-yaml
+	echo "Testing Dune 2000 mod MiniYAML..."
+	./OpenRA.Utility.exe d2k --check-yaml
+	echo "Testing Tiberian Sun mod MiniYAML..."
+	./OpenRA.Utility.exe ts --check-yaml
 }
 else
 {
