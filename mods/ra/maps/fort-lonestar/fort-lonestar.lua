@@ -99,9 +99,7 @@ Waves =
 }
 
 SendUnits = function(entryCell, unitTypes, interval, targetCell)
-	local i = 0
-	Utils.Do(unitTypes, function(type)
-		local a = Actor.Create(type, false, { Owner = soviets, Location = entryCell })
+	Reinforcements.Reinforce(soviets, unitTypes, { entryCell }, interval, function(a)
 		Trigger.OnIdle(a, function(a)
 			if a.Location ~= targetCell then
 				a.AttackMove(targetCell)
@@ -109,15 +107,13 @@ SendUnits = function(entryCell, unitTypes, interval, targetCell)
 				a.Hunt()
 			end
 		end)
-		Trigger.AfterDelay(i * interval, function() a.IsInWorld = true end)
-		i = i + 1
 	end)
 
 	if (Wave < #Waves) then
 		SendWave()
 	else
-		Trigger.AfterDelay(3000, SovietsRetreating)
-		Media.DisplayMessage("You survived the onslaught!")
+		Trigger.AfterDelay(DateTime.Minutes(2), SovietsRetreating)
+		Media.DisplayMessage("You survived the onslaught! No more waves incoming.")
 	end
 end
 
@@ -130,8 +126,17 @@ SendWave = function()
 	local units = wave[3]
 	local target = Utils.Random(wave[4]).Location
 
-	print(string.format("Sending wave %i in %i.", Wave, delay))
-	Trigger.AfterDelay(delay, function() SendUnits(entry, units, 40, target) end)
+	Trigger.AfterDelay(delay, function()
+		SendUnits(entry, units, 40, target)
+
+		if not played then
+			played = true
+			Utils.Do(players, function(player)
+				Media.PlaySpeechNotification(player, "EnemyUnitsApproaching")
+			end)
+			Trigger.AfterDelay(DateTime.Seconds(1), function() played = false end)
+		end
+	end)
 end
 
 SovietsRetreating = function()
@@ -144,6 +149,11 @@ end
 
 WorldLoaded = function()
 	soviets = Player.GetPlayer("Soviets")
+	players = { }
+	for i = 0, 4, 1 do
+		local player = Player.GetPlayer("Multi" ..i)
+		players[i] = player
+	end
 
 	Utils.Do(Snipers, function(a)
 		if a.Owner == soviets then
