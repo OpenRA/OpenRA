@@ -4,7 +4,7 @@ RequiresMod: cnc
 
 Title: Storm the Beachhead
 
-Description: Use the units provided to protect the Mobile Construction Vehicle. (MCV)\n\nYou should then deploy the MCV by double clicking on it.\n\nThen you can begin to build up a base. Start with a Power Plant.\n\nFinally, search out and destroy all enemy Nod units in the surrounding area.
+Description: Use the units provided to protect the Mobile Construction Vehicle. (MCV)\n\nYou should then deploy the MCV by selecting it with a left-click and then right-clicking on it.\n\nThen you can begin to build up a base. Start with a Power Plant.\n\nFinally, search out and destroy all enemy Nod units in the surrounding area.
 
 Author: Westwood Studios
 
@@ -485,6 +485,16 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
+	NUKE:
+		-Sellable:
+		Buildable:
+			BuildLimit: 1
+	PYLE:
+		-Sellable:
+		Buildable:
+			BuildLimit: 1
+	FACT:
+		-Sellable:
 	PROC:
 		Buildable:
 			Prerequisites: ~disabled
