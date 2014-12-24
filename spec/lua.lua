@@ -53,8 +53,9 @@ return {
   end,
   isincindent = function(str)
     str = (str:gsub('%-%-%[=*%[.*%]=*%]','')
-      :gsub("'.-\\'","'"):gsub("'.-'","")
-      :gsub('".-\\"','"'):gsub('".-"','')
+      :gsub([[\\]],'') -- remove escaped slashes (to process \' and \" below)
+      :gsub("'.-\\'","'"):gsub("'.-'","") -- remove '' strings (including \')
+      :gsub('".-\\"','"'):gsub('".-"','') -- remove "" strings (including \")
       :gsub('%-%-.*','') -- strip comments after strings are processed
       :gsub("%b()","()") -- remove all function calls
     )
