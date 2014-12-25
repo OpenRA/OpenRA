@@ -11,7 +11,7 @@
 using System.Drawing;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Visualize the remaining CaptureCompleteTime from ExternalCapturable: trait.")]
 	class ExternalCapturableBarInfo : ITraitInfo, Requires<ExternalCapturableInfo>

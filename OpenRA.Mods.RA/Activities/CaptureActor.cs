@@ -9,7 +9,7 @@
 #endregion
 
 using OpenRA.Activities;
-using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities

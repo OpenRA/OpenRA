@@ -8,10 +8,9 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 
 {
 	[Desc("Attach this to the player actor to allow building repair by team mates.")]
