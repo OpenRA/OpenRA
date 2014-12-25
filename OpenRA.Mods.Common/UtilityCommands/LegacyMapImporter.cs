@@ -387,22 +387,27 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				try
 				{
 					var parts = s.Value.Split(',');
-					var loc = Exts.ParseIntegerInvariant(parts[3]);
 					if (parts[0] == "")
 						parts[0] = "Neutral";
 
 					if (!players.Contains(parts[0]))
 						players.Add(parts[0]);
 
+					var loc = Exts.ParseIntegerInvariant(parts[3]);
+					var health = float.Parse(parts[2], NumberFormatInfo.InvariantInfo) / 256;
+					var facing = (section == "INFANTRY") ? Exts.ParseIntegerInvariant(parts[6]) : Exts.ParseIntegerInvariant(parts[4]);
+
 					var actor = new ActorReference(parts[1].ToLowerInvariant())
 					{
 						new LocationInit(new CPos(loc % mapSize, loc / mapSize)),
 						new OwnerInit(parts[0]),
-						new HealthInit(float.Parse(parts[2], NumberFormatInfo.InvariantInfo) / 256),
-						new FacingInit((section == "INFANTRY")
-							? Exts.ParseIntegerInvariant(parts[6])
-							: Exts.ParseIntegerInvariant(parts[4])),
 					};
+
+					var initDict = actor.InitDict;
+					if (health != 1)
+						initDict.Add(new HealthInit(health));
+					if (facing != 0)
+						initDict.Add(new FacingInit(facing));
 
 					if (section == "INFANTRY")
 						actor.Add(new SubCellInit(Exts.ParseIntegerInvariant(parts[4])));
