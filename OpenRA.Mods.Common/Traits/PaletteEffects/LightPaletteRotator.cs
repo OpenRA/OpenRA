@@ -25,17 +25,17 @@ namespace OpenRA.Mods.Common.Traits
 
 	class LightPaletteRotator : ITick, IPaletteModifier
 	{
-		float t = 0;
-		public void Tick(Actor self)
-		{
-			t += .5f;
-		}
-
 		readonly LightPaletteRotatorInfo info;
+		float t = 0;
 
 		public LightPaletteRotator(LightPaletteRotatorInfo info)
 		{
 			this.info = info;
+		}
+
+		public void Tick(Actor self)
+		{
+			t += .5f;
 		}
 
 		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)

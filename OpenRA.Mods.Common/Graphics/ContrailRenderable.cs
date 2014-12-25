@@ -19,15 +19,14 @@ namespace OpenRA.Mods.Common.Graphics
 		public int Length { get { return trail.Length; } }
 
 		readonly World world;
+		readonly Color color;
+		readonly int zOffset;
 
 		// Store trail positions in a circular buffer
 		readonly WPos[] trail;
 		int next;
 		int length;
 		int skip;
-
-		readonly Color color;
-		readonly int zOffset;
 
 		public ContrailRenderable(World world, Color color, int length, int skip, int zOffset)
 			: this(world, new WPos[length], 0, 0, skip, color, zOffset) { }
