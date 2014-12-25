@@ -83,7 +83,7 @@ namespace OpenRA.Server
 				var sent = s.Send(data, start, length - start, SocketFlags.None, out error);
 				if (error == SocketError.WouldBlock)
 				{
-					Log.Write("server", "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
+					Log.Write(Log.LoggingChannel.Server, "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
 					s.Blocking = true;
 					sent = s.Send(data, start, length - start, SocketFlags.None);
 					s.Blocking = false;
@@ -117,7 +117,7 @@ namespace OpenRA.Server
 
 		public Server(IPEndPoint endpoint, ServerSettings settings, ModData modData)
 		{
-			Log.AddChannel("server", "server.log");
+			Log.AddChannel(Log.LoggingChannel.Server);
 
 			internalState = ServerState.WaitingPlayers;
 			listener = new TcpListener(endpoint);
@@ -147,8 +147,8 @@ namespace OpenRA.Server
 			foreach (var t in serverTraits.WithInterface<INotifyServerStart>())
 				t.ServerStarted(this);
 
-			Log.Write("server", "Initial mod: {0}", ModData.Manifest.Mod.Id);
-			Log.Write("server", "Initial map: {0}", LobbyInfo.GlobalSettings.Map);
+			Log.Write(Log.LoggingChannel.Server, "Initial mod: {0}", ModData.Manifest.Mod.Id);
+			Log.Write(Log.LoggingChannel.Server, "Initial map: {0}", LobbyInfo.GlobalSettings.Map);
 
 			new Thread(_ =>
 			{
@@ -224,7 +224,7 @@ namespace OpenRA.Server
 			{
 				/* TODO: Could have an exception here when listener 'goes away' when calling AcceptConnection! */
 				/* Alternative would be to use locking but the listener doesnt go away without a reason. */
-				Log.Write("server", "Accepting the connection failed.", e);
+				Log.Write(Log.LoggingChannel.Server, "Accepting the connection failed.", e);
 				return;
 			}
 
@@ -253,7 +253,7 @@ namespace OpenRA.Server
 			catch (Exception e)
 			{
 				DropClient(newConn);
-				Log.Write("server", "Dropping client {0} because handshake failed: {1}", newConn.PlayerIndex.ToString(), e);
+				Log.Write(Log.LoggingChannel.Server, "Dropping client {0} because handshake failed: {1}", newConn.PlayerIndex.ToString(), e);
 			}
 		}
 
@@ -263,7 +263,7 @@ namespace OpenRA.Server
 			{
 				if (State == ServerState.GameStarted)
 				{
-					Log.Write("server", "Rejected connection from {0}; game is already started.",
+					Log.Write(Log.LoggingChannel.Server, "Rejected connection from {0}; game is already started.",
 						newConn.socket.RemoteEndPoint);
 
 					SendOrderTo(newConn, "ServerError", "The game has already started");
@@ -310,7 +310,7 @@ namespace OpenRA.Server
 
 				if (ModData.Manifest.Mod.Id != handshake.Mod)
 				{
-					Log.Write("server", "Rejected connection from {0}; mods do not match.",
+					Log.Write(Log.LoggingChannel.Server, "Rejected connection from {0}; mods do not match.",
 						newConn.socket.RemoteEndPoint);
 
 					SendOrderTo(newConn, "ServerError", "Server is running an incompatible mod");
@@ -320,7 +320,7 @@ namespace OpenRA.Server
 
 				if (ModData.Manifest.Mod.Version != handshake.Version && !LobbyInfo.GlobalSettings.AllowVersionMismatch)
 				{
-					Log.Write("server", "Rejected connection from {0}; Not running the same version.",
+					Log.Write(Log.LoggingChannel.Server, "Rejected connection from {0}; Not running the same version.",
 						newConn.socket.RemoteEndPoint);
 
 					SendOrderTo(newConn, "ServerError", "Server is running an incompatible version");
@@ -332,7 +332,7 @@ namespace OpenRA.Server
 				var bans = Settings.Ban.Union(TempBans);
 				if (bans.Contains(client.IpAddress))
 				{
-					Log.Write("server", "Rejected connection from {0}; Banned.", newConn.socket.RemoteEndPoint);
+					Log.Write(Log.LoggingChannel.Server, "Rejected connection from {0}; Banned.", newConn.socket.RemoteEndPoint);
 					SendOrderTo(newConn, "ServerError", "You have been {0} from the server".F(Settings.Ban.Contains(client.IpAddress) ? "banned" : "temporarily banned"));
 					DropClient(newConn);
 					return;
@@ -346,7 +346,7 @@ namespace OpenRA.Server
 				clientPing.Index = client.Index;
 				LobbyInfo.ClientPings.Add(clientPing);
 
-				Log.Write("server", "Client {0}: Accepted connection from {1}.",
+				Log.Write(Log.LoggingChannel.Server, "Client {0}: Accepted connection from {1}.",
 				          newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
 
 				foreach (var t in serverTraits.WithInterface<IClientJoined>())
@@ -399,7 +399,7 @@ namespace OpenRA.Server
 			catch (Exception e)
 			{
 				DropClient(c);
-				Log.Write("server", "Dropping client {0} because dispatching orders failed: {1}", client.ToString(), e);
+				Log.Write(Log.LoggingChannel.Server, "Dropping client {0} because dispatching orders failed: {1}", client.ToString(), e);
 			}
 		}
 
@@ -459,7 +459,7 @@ namespace OpenRA.Server
 
 					if (!handled)
 					{
-						Log.Write("server", "Unknown server command: {0}", so.Data);
+						Log.Write(Log.LoggingChannel.Server, "Unknown server command: {0}", so.Data);
 						SendOrderTo(conn, "Message", "Unknown server command: {0}".F(so.Data));
 					}
 
@@ -479,7 +479,7 @@ namespace OpenRA.Server
 					int pingSent;
 					if (!OpenRA.Exts.TryParseIntegerInvariant(so.Data, out pingSent))
 					{
-						Log.Write("server", "Invalid order pong payload: {0}", so.Data);
+						Log.Write(Log.LoggingChannel.Server, "Invalid order pong payload: {0}", so.Data);
 						break;
 					}
 

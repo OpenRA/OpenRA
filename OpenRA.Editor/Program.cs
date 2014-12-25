@@ -21,7 +21,7 @@ namespace OpenRA.Editor
 		[STAThread]
 		static void Main(string[] args)
 		{
-			Log.AddChannel("perf", null);
+			Log.AddChannel(Log.LoggingChannel.Perf);
 
 			Application.CurrentCulture = CultureInfo.InvariantCulture;
 			Application.EnableVisualStyles();

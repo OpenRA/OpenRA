@@ -432,7 +432,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				Log.Write("debug", ex.ToString());
+				Log.Write(Log.LoggingChannel.Debug, ex.ToString());
 				return;
 			}
 		}
@@ -446,7 +446,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			catch (Exception ex)
 			{
 				Game.Debug("Failed to delete replay file '{0}'. See the logs for details.", replay.FilePath);
-				Log.Write("debug", ex.ToString());
+				Log.Write(Log.LoggingChannel.Debug, ex.ToString());
 				return;
 			}
 
@@ -617,7 +617,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 			catch (Exception e)
 			{
-				Log.Write("debug", "Exception while parsing replay: {0}", e);
+				Log.Write(Log.LoggingChannel.Debug, "Exception while parsing replay: {0}", e);
 				SelectReplay(null);
 			}
 		}

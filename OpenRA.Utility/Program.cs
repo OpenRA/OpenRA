@@ -28,8 +28,8 @@ namespace OpenRA.Utility
 
 			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
-			Log.AddChannel("perf", null);
-			Log.AddChannel("debug", null);
+			Log.AddChannel(Log.LoggingChannel.Perf);
+			Log.AddChannel(Log.LoggingChannel.Debug);
 
 			var modName = args[0];
 			if (!ModMetadata.AllMods.Keys.Contains(modName))
@@ -55,9 +55,9 @@ namespace OpenRA.Utility
 			}
 			catch (Exception e)
 			{
-				Log.AddChannel("utility", "utility.log");
-				Log.Write("utility", "Received args: {0}", args.JoinWith(" "));
-				Log.Write("utility", "{0}", e);
+				Log.AddChannel(Log.LoggingChannel.Utility);
+				Log.Write(Log.LoggingChannel.Utility, "Received args: {0}", args.JoinWith(" "));
+				Log.Write(Log.LoggingChannel.Utility, "{0}", e);
 
 				Console.WriteLine("Error: Utility application crashed. See utility.log for details");
 				throw;

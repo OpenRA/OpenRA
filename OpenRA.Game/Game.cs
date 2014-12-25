@@ -197,13 +197,13 @@ namespace OpenRA
 
 			InitializeSettings(args);
 
-			Log.AddChannel("perf", "perf.log");
-			Log.AddChannel("debug", "debug.log");
-			Log.AddChannel("sync", "syncreport.log");
-			Log.AddChannel("server", "server.log");
-			Log.AddChannel("sound", "sound.log");
-			Log.AddChannel("graphics", "graphics.log");
-			Log.AddChannel("geoip", "geoip.log");
+			Log.AddChannel(Log.LoggingChannel.Perf);
+			Log.AddChannel(Log.LoggingChannel.Debug);
+			Log.AddChannel(Log.LoggingChannel.Sync);
+			Log.AddChannel(Log.LoggingChannel.Server);
+			Log.AddChannel(Log.LoggingChannel.Sound);
+			Log.AddChannel(Log.LoggingChannel.Graphics);
+			Log.AddChannel(Log.LoggingChannel.GeoIP);
 
 			if (Settings.Server.DiscoverNatDevices)
 				UPnP.TryNatDiscovery();
@@ -219,7 +219,7 @@ namespace OpenRA
 			}
 			catch (Exception e)
 			{
-				Log.Write("geoip", "DatabaseReader failed: {0}", e);
+				Log.Write(Log.LoggingChannel.GeoIP, "DatabaseReader failed: {0}", e);
 			}
 
 			GlobalFileSystem.Mount(Platform.GameDir); // Needed to access shaders
@@ -237,7 +237,7 @@ namespace OpenRA
 				}
 				catch (Exception e)
 				{
-					Log.Write("graphics", "{0}", e);
+					Log.Write(Log.LoggingChannel.Graphics, "{0}", e);
 					Console.WriteLine("Renderer initialization failed. Fallback in place. Check graphics.log for details.");
 				}
 			}
@@ -248,7 +248,7 @@ namespace OpenRA
 			}
 			catch (Exception e)
 			{
-				Log.Write("sound", "{0}", e);
+				Log.Write(Log.LoggingChannel.Sound, "{0}", e);
 				Console.WriteLine("Creating the sound engine failed. Fallback in place. Check sound.log for details.");
 				Settings.Sound.Engine = "Null";
 				Sound.Create(Settings.Sound.Engine);
@@ -313,8 +313,8 @@ namespace OpenRA
 				}
 				catch (Exception e)
 				{
-					Log.Write("debug", "Failed to initialize hardware cursors. Falling back to software cursors.");
-					Log.Write("debug", "Error was: " + e.Message);
+					Log.Write(Log.LoggingChannel.Debug, "Failed to initialize hardware cursors. Falling back to software cursors.");
+					Log.Write(Log.LoggingChannel.Debug, "Error was: " + e.Message);
 
 					Console.WriteLine("Failed to initialize hardware cursors. Falling back to software cursors.");
 					Console.WriteLine("Error was: " + e.Message);
@@ -441,7 +441,7 @@ namespace OpenRA
 						{
 							++orderManager.LocalFrameNumber;
 
-							Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
+							Log.Write(Log.LoggingChannel.Debug, "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
 
 							if (isNetTick)
 								orderManager.Tick();

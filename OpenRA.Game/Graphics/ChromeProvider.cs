@@ -91,7 +91,7 @@ namespace OpenRA.Graphics
 			Collection collection;
 			if (!collections.TryGetValue(collectionName, out collection))
 			{
-				Log.Write("debug", "Could not find collection '{0}'", collectionName);
+				Log.Write(Log.LoggingChannel.Debug, "Could not find collection '{0}'", collectionName);
 				return null;
 			}
 

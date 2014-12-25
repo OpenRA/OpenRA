@@ -65,13 +65,13 @@ namespace OpenRA.Support
 		{
 			if (children != null)
 			{
-				Log.Write("perf", GetHeader(Indentation, name));
+				Log.Write(Log.LoggingChannel.Perf, GetHeader(Indentation, name));
 				foreach (var child in children)
 					child.Write();
-				Log.Write("perf", FormatString, ElapsedMs, GetFooter(Indentation));
+				Log.Write(Log.LoggingChannel.Perf, FormatString, ElapsedMs, GetFooter(Indentation));
 			}
 			else if (ElapsedMs >= thresholdMs)
-				Log.Write("perf", FormatString, ElapsedMs, Indentation + name);
+				Log.Write(Log.LoggingChannel.Perf, FormatString, ElapsedMs, Indentation + name);
 		}
 
 		float ElapsedMs { get { return 1000f * ticks / Stopwatch.Frequency; } }
@@ -80,7 +80,7 @@ namespace OpenRA.Support
 		{
 			var type = item.GetType();
 			var label = type == typeof(string) || type.IsGenericType ? item.ToString() : type.Name;
-			Log.Write("perf", FormatString,
+			Log.Write(Log.LoggingChannel.Perf, FormatString,
 				1000f * (endStopwatchTicks - startStopwatchTicks) / Stopwatch.Frequency,
 				"[{0}] {1}: {2}".F(Game.LocalTick, name, label));
 		}
