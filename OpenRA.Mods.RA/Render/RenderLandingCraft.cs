@@ -12,7 +12,7 @@ using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.RA.Traits
 {
 	public class RenderLandingCraftInfo : RenderUnitInfo, Requires<IMoveInfo>, Requires<CargoInfo>
 	{

@@ -10,11 +10,11 @@
 
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
-using OpenRA.Mods.Common.Graphics;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.RA.Traits
 {
 	class RenderBuildingSiloInfo : RenderBuildingInfo
 	{

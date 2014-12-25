@@ -13,7 +13,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Replaces the idle animation of a building.")]
 	public class WithActiveAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>

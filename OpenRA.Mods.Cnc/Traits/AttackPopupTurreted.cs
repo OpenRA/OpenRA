@@ -14,7 +14,6 @@ using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Traits;
-using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
