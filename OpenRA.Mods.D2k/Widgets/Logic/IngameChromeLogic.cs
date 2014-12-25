@@ -11,8 +11,8 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Mods.Common.Widgets;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Mods.D2k.Widgets;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Widgets;
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
 		}
 
-		enum RadarBinState { Closed, BinAnimating, RadarAnimating, Open };
+		enum RadarBinState { Closed, BinAnimating, RadarAnimating, Open }
 		void InitPlayerWidgets()
 		{
 			var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
@@ -80,11 +80,11 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			radarMap.AfterOpen = () => binState = RadarBinState.Open;
 			radarMap.AfterClose = () => binState = RadarBinState.BinAnimating;
 
-			radarBin.Get<ImageWidget>("RADAR_BIN_BG").GetImageCollection = () => "chrome-"+world.LocalPlayer.Country.Race;
+			radarBin.Get<ImageWidget>("RADAR_BIN_BG").GetImageCollection = () => "chrome-" + world.LocalPlayer.Country.Race;
 
 			var powerManager = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var powerBar = radarBin.Get<ResourceBarWidget>("POWERBAR");
-			powerBar.IndicatorCollection = "power-"+world.LocalPlayer.Country.Race;
+			powerBar.IndicatorCollection = "power-" + world.LocalPlayer.Country.Race;
 			powerBar.GetProvided = () => powerManager.PowerProvided;
 			powerBar.GetUsed = () => powerManager.PowerDrained;
 			powerBar.TooltipFormat = "Power Usage: {0}/{1}";
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 					.Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
 
 				if (radarActive != cachedRadarActive)
-					Sound.PlayNotification(world.Map.Rules, null, "Sounds", (radarActive ? "RadarUp" : "RadarDown"), null);
+					Sound.PlayNotification(world.Map.Rules, null, "Sounds", radarActive ? "RadarUp" : "RadarDown", null);
 				cachedRadarActive = radarActive;
 
 				// Switch to observer mode after win/loss
