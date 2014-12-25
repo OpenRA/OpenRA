@@ -52,13 +52,20 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			base.Activate(self, order, manager);
 
+			SendAirstrike(self, self.World.Map.CenterOfCell(order.TargetLocation));
+		}
+
+		public void SendAirstrike(Actor self, WPos target, bool randomize = true, int attackFacing = 0)
+		{
 			var info = Info as AirstrikePowerInfo;
-			var attackFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
-			var attackRotation = WRot.FromFacing(attackFacing);
-			var delta = new WVec(0, -1024, 0).Rotate(attackRotation);
+
+			if (randomize)
+				attackFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
 
 			var altitude = self.World.Map.Rules.Actors[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude.Range;
-			var target = self.World.Map.CenterOfCell(order.TargetLocation) + new WVec(0, 0, altitude);
+			var attackRotation = WRot.FromFacing(attackFacing);
+			var delta = new WVec(0, -1024, 0).Rotate(attackRotation);
+			target = target + new WVec(0, 0, altitude);
 			var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Range * delta / 1024;
 			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Range * delta / 1024;
 
@@ -75,7 +82,7 @@ namespace OpenRA.Mods.RA.Traits
 					{
 						camera = w.CreateActor(info.CameraActor, new TypeDictionary
 						{
-							new LocationInit(order.TargetLocation),
+							new LocationInit(self.World.Map.CellContaining(target)),
 							new OwnerInit(self.Owner),
 						});
 					});
@@ -149,6 +156,7 @@ namespace OpenRA.Mods.RA.Traits
 					attack.OnExitedAttackRange += onExitRange;
 					attack.OnRemovedFromWorld += onExitRange;
 
+					a.QueueActivity(new Fly(a, Target.FromPos(target + spawnOffset)));
 					a.QueueActivity(new Fly(a, Target.FromPos(finishEdge + spawnOffset)));
 					a.QueueActivity(new RemoveSelf());
 					aircraftInRange.Add(a, false);
@@ -160,8 +168,8 @@ namespace OpenRA.Mods.RA.Traits
 					var distance = (target - startEdge).HorizontalLength;
 
 					beacon = new Beacon(
-						order.Player,
-						self.World.Map.CenterOfCell(order.TargetLocation),
+						self.Owner,
+						target,
 						Info.BeaconPalettePrefix,
 						Info.BeaconPoster,
 						Info.BeaconPosterPalette,
