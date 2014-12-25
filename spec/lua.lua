@@ -52,13 +52,17 @@ return {
     return match and 1 or 0, match and term and 1 or 0
   end,
   isincindent = function(str)
-    str = (str:gsub('%-%-%[=*%[.*%]=*%]','')
-      :gsub([[\\]],'') -- remove escaped slashes (to process \' and \" below)
-      :gsub("'.-\\'","'"):gsub("'.-'","") -- remove '' strings (including \')
-      :gsub('".-\\"','"'):gsub('".-"','') -- remove "" strings (including \")
-      :gsub('%-%-.*','') -- strip comments after strings are processed
-      :gsub("%b()","()") -- remove all function calls
-    )
+    -- remove "long" comments and escaped slashes (to process \' and \" below)
+    str = str:gsub('%-%-%[=*%[.-%]=*%]',''):gsub([[\\]],'')
+    while true do
+      local num, sep = nil, str:match("['\"]")
+      if not sep then break end
+      str, num = str:gsub(sep..".-\\"..sep,sep):gsub(sep..".-"..sep,"")
+      if num == 0 then break end
+    end
+    -- strip comments after strings are processed and remove all function calls
+    str = str:gsub('%-%-.*',''):gsub("%b()","()")
+
     local term = str:match("^%s*(%w+)%W*")
     local terminc = term and incindent[term] and 1 or 0
     -- fix 'if' not terminated with 'then'
