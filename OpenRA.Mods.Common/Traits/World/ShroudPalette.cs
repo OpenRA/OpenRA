@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => (uint)c[i % 8].ToArgb())));
 		}
 
-		static Color[] Fog = new[]
+		static readonly Color[] Fog = new[]
 		{
 			Color.Transparent, Color.Green,
 			Color.Blue, Color.Yellow,
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 			Color.FromArgb(32, 0, 0, 0)
 		};
 
-		static Color[] Shroud = new[]
+		static readonly Color[] Shroud = new[]
 		{
 			Color.Transparent, Color.Green,
 			Color.Blue, Color.Yellow,

@@ -87,13 +87,13 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable AsDecoration() { return this; }
 
 		// This will need generalizing once we support TS/RA2 terrain
-		static readonly float[] groundNormal = new float[] { 0, 0, 1, 1 };
+		static readonly float[] GroundNormal = new float[] { 0, 0, 1, 1 };
 		public void BeforeRender(WorldRenderer wr)
 		{
 			var draw = voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
 
 			renderProxy = Game.Renderer.WorldVoxelRenderer.RenderAsync(
-				wr, draw, camera, scale, groundNormal, lightSource,
+				wr, draw, camera, scale, GroundNormal, lightSource,
 				lightAmbientColor, lightDiffuseColor,
 				palette, normalsPalette, shadowPalette);
 		}
@@ -154,15 +154,15 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 		}
 
-		static readonly uint[] ix = new uint[] { 0, 0, 0, 0, 3, 3, 3, 3 };
-		static readonly uint[] iy = new uint[] { 1, 1, 4, 4, 1, 1, 4, 4 };
-		static readonly uint[] iz = new uint[] { 2, 5, 2, 5, 2, 5, 2, 5 };
+		static readonly uint[] CornerXIndex = new uint[] { 0, 0, 0, 0, 3, 3, 3, 3 };
+		static readonly uint[] CornerYIndex = new uint[] { 1, 1, 4, 4, 1, 1, 4, 4 };
+		static readonly uint[] CornerZIndex = new uint[] { 2, 5, 2, 5, 2, 5, 2, 5 };
 		static void DrawBoundsBox(float2 pxPos, float[] transform, float[] bounds, Color c)
 		{
 			var corners = new float2[8];
 			for (var i = 0; i < 8; i++)
 			{
-				var vec = new float[] { bounds[ix[i]], bounds[iy[i]], bounds[iz[i]], 1 };
+				var vec = new float[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
 				var screen = Util.MatrixVectorMultiply(transform, vec);
 				corners[i] = pxPos + new float2(screen[0], screen[1]);
 			}
