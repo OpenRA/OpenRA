@@ -95,7 +95,6 @@ namespace OpenRA.Mods.D2k.Traits
 			})
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
-
 			foreach (var p in carryables)
 			{
 				// Check if its actually me who's the best candidate

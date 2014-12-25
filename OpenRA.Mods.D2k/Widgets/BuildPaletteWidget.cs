@@ -41,6 +41,10 @@ namespace OpenRA.Mods.D2k.Widgets
 		public int IconWidth = 64;
 		public int IconHeight = 48;
 
+		readonly WorldRenderer worldRenderer;
+		readonly World world;
+		readonly OrderManager orderManager;
+
 		ProductionQueue CurrentQueue;
 		List<ProductionQueue> VisibleQueues;
 
@@ -59,10 +63,6 @@ namespace OpenRA.Mods.D2k.Widgets
 		Animation cantBuild;
 		Animation clock;
 
-		readonly WorldRenderer worldRenderer;
-		readonly World world;
-		readonly OrderManager orderManager;
-
 		[ObjectCreator.UseCtor]
 		public BuildPaletteWidget(OrderManager orderManager, World world, WorldRenderer worldRenderer)
 		{
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.D2k.Widgets
 
 		public override void Initialize(WidgetArgs args)
 		{
-			paletteOpenOrigin = new float2(Game.Renderer.Resolution.Width - Columns*IconWidth - 23, 280);
+			paletteOpenOrigin = new float2(Game.Renderer.Resolution.Width - Columns * IconWidth - 23, 280);
 			paletteClosedOrigin = new float2(Game.Renderer.Resolution.Width - 16, 280);
 			paletteOrigin = paletteClosedOrigin;
 			base.Initialize(args);
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.D2k.Widgets
 
 		public override Rectangle EventBounds
 		{
-			get { return new Rectangle((int)(paletteOrigin.X) - 24, (int)(paletteOrigin.Y), 239, Math.Max(IconHeight * numActualRows, 40 * tabs.Count + 9)); }
+			get { return new Rectangle((int)paletteOrigin.X - 24, (int)paletteOrigin.Y, 239, Math.Max(IconHeight * numActualRows, 40 * tabs.Count + 9)); }
 		}
 
 		public override void Tick()
@@ -108,6 +108,7 @@ namespace OpenRA.Mods.D2k.Widgets
 				else if (CurrentQueue == queue)
 					CurrentQueue = null;
 			}
+
 			if (CurrentQueue == null)
 				CurrentQueue = VisibleQueues.FirstOrDefault();
 
@@ -195,9 +196,10 @@ namespace OpenRA.Mods.D2k.Widgets
 
 		public override void Draw()
 		{
-			if (!IsVisible()) return;
-			// TODO: fix
+			if (!IsVisible())
+				return;
 
+			// TODO: fix
 			DrawPalette(CurrentQueue);
 			DrawBuildTabs(world);
 		}
@@ -230,7 +232,6 @@ namespace OpenRA.Mods.D2k.Widgets
 						new float2(origin.X - 9, origin.Y + IconHeight * w));
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "bottom"),
 					new float2(origin.X - 9, origin.Y - 1 + IconHeight * numActualRows));
-
 
 				// Icons
 				string tooltipItem = null;
@@ -279,7 +280,9 @@ namespace OpenRA.Mods.D2k.Widgets
 					if (++x == Columns) { x = 0; y++; }
 					i++;
 				}
-				if (x != 0) y++;
+
+				if (x != 0)
+					y++;
 
 				foreach (var ob in overlayBits)
 					WidgetUtils.DrawSHPCentered(ob.First, ob.Second + iconOffset, worldRenderer);
@@ -334,7 +337,7 @@ namespace OpenRA.Mods.D2k.Widgets
 				Sound.PlayNotification(world.Map.Rules, null, "Sounds", "TabClick", null);
 
 				if (name != null)
-					HandleBuildPalette(world, name, (mi.Button == MouseButton.Left));
+					HandleBuildPalette(world, name, mi.Button == MouseButton.Left);
 			};
 		}
 
@@ -499,11 +502,11 @@ namespace OpenRA.Mods.D2k.Widgets
 			var power = pl.PlayerActor.Trait<PowerManager>();
 
 			DrawRightAligned("${0}".F(cost), pos + new int2(-5, 5),
-				(resources.DisplayCash + resources.DisplayResources >= cost ? Color.White : Color.Red));
+				resources.DisplayCash + resources.DisplayResources >= cost ? Color.White : Color.Red);
 
 			var lowpower = power.PowerState != PowerState.Normal;
 			var time = CurrentQueue.GetBuildTime(info.Name)
-				* ((lowpower) ? CurrentQueue.Info.LowPowerSlowdown : 1);
+				* (lowpower ? CurrentQueue.Info.LowPowerSlowdown : 1);
 			DrawRightAligned(WidgetUtils.FormatTime(time), pos + new int2(-5, 35), lowpower ? Color.Red : Color.White);
 
 			var pis = info.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1);
@@ -572,6 +575,7 @@ namespace OpenRA.Mods.D2k.Widgets
 				SetCurrentTab(nextQueue);
 				return true;
 			}
+
 			return true;
 		}
 	}
