@@ -11,7 +11,7 @@
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	public abstract class SupportPowerInfo : ITraitInfo
 	{
