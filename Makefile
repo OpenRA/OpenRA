@@ -178,6 +178,14 @@ test:
 	@echo "Testing Tiberian Sun mod MiniYAML..."
 	@mono --debug OpenRA.Utility.exe ts --check-yaml
 
+check:
+	@echo "Checking for code style violations in OpenRA.Renderer.Null..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Renderer.Null
+	@echo "Checking for code style violations in OpenRA.GameMonitor..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.GameMonitor
+	@echo "Checking for code style violations in OpenRA.Mods.Cnc..."
+	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.Cnc
+
 # Builds and exports tilesets from a bitmap
 tsbuild_SRCS := $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
 tsbuild_TARGET = OpenRA.TilesetBuilder.exe
