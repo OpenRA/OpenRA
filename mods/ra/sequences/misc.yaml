@@ -414,14 +414,6 @@ bomblet:
 		Start: 0
 		Length: *
 
-nuke:
-	up: atomicup
-		Start: 0
-		Length: *
-	down: atomicdn
-		Start: 0
-		Length: *
-
 parabomb:
 	open:
 		Start: 0
