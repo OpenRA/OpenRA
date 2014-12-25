@@ -19,6 +19,7 @@ Visibility: MissionSelector
 Type: Campaign
 
 Videos:
+	BackgroundInfo: intro2.vqa
 	Briefing: nod1.vqa
 	GameLost: nodlose.vqa
 

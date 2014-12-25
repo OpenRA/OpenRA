@@ -19,6 +19,7 @@ Visibility: MissionSelector
 Type: Campaign
 
 Videos:
+	BackgroundInfo: prolog.vqa
 	Briefing: soviet1.vqa
 	GameStart: flare.vqa
 	GameWon: snstrafe.vqa
