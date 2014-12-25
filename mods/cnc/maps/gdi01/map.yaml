@@ -19,6 +19,7 @@ Visibility: MissionSelector
 Type: Campaign
 
 Videos:
+	BackgroundInfo: intro2.vqa
 	Briefing: gdi1.vqa
 	GameStart: landing.vqa
 	GameWon: consyard.vqa
