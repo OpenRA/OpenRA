@@ -26,15 +26,15 @@ namespace OpenRA.Mods.Common.Traits
 	class Burns : ITick, ISync
 	{
 		[Sync] int ticks;
-		BurnsInfo Info;
+		BurnsInfo info;
 
 		public Burns(Actor self, BurnsInfo info)
 		{
-			Info = info;
+			this.info = info;
 
 			var anim = new Animation(self.World, "fire", () => 0);
 			anim.IsDecoration = true;
-			anim.PlayRepeating(Info.Anim);
+			anim.PlayRepeating(info.Anim);
 			self.Trait<RenderSprites>().Add("fire", anim);
 		}
 
@@ -42,8 +42,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (--ticks <= 0)
 			{
-				self.InflictDamage(self, Info.Damage, null);
-				ticks = Info.Interval;
+				self.InflictDamage(self, info.Damage, null);
+				ticks = info.Interval;
 			}
 		}
 	}
