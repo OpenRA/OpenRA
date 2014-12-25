@@ -42,8 +42,8 @@ namespace OpenRA.Lint
 
 			try
 			{
-				Log.AddChannel("debug", null);
-				Log.AddChannel("perf", null);
+				Log.AddChannel(Log.LoggingChannel.Debug);
+				Log.AddChannel(Log.LoggingChannel.Perf);
 
 				var options = args.Where(a => a.StartsWith("-"));
 				var mod = args.Where(a => !options.Contains(a)).First();

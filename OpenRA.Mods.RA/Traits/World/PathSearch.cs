@@ -314,7 +314,7 @@ namespace OpenRA.Mods.RA.Traits
 				var cellInfo = GetFromPool();
 				if (cellInfo.Size != mapSize || cellInfo.Shape != map.TileShape)
 				{
-					Log.Write("debug", "Discarding old pooled CellInfo of wrong size.");
+					Log.Write(Log.LoggingChannel.Debug, "Discarding old pooled CellInfo of wrong size.");
 					continue;
 				}
 

@@ -218,7 +218,7 @@ namespace OpenRA.Mods.RA.Traits
 				domain += 1;
 			}
 
-			Log.Write("debug", "Found {0} domains on map {1}.", domain - 1, map.Title);
+			Log.Write(Log.LoggingChannel.Debug, "Found {0} domains on map {1}.", domain - 1, map.Title);
 		}
 	}
 }

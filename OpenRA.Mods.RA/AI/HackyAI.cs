@@ -439,7 +439,7 @@ namespace OpenRA.Mods.RA.AI
 			{
 				/* Assume that "enemy" has nothing. Cool off on attacks. */
 				aggro[enemy].Aggro = aggro[enemy].Aggro / 2 - 1;
-				Log.Write("debug", "Bot {0} couldn't find target for player {1}", this.p.ClientIndex, enemy.ClientIndex);
+				Log.Write(Log.LoggingChannel.Debug, "Bot {0} couldn't find target for player {1}", this.p.ClientIndex, enemy.ClientIndex);
 
 				return null;
 			}

@@ -68,7 +68,7 @@ namespace OpenRA.Server
 					if (e.SocketErrorCode == SocketError.WouldBlock) break;
 
 					server.DropClient(this);
-					Log.Write("server", "Dropping client {0} because reading the data failed: {1}", PlayerIndex, e);
+					Log.Write(Log.LoggingChannel.Server, "Dropping client {0} because reading the data failed: {1}", PlayerIndex, e);
 					return false;
 				}
 			}
@@ -96,7 +96,7 @@ namespace OpenRA.Server
 								if (ExpectLength < 0 || ExpectLength > MaxOrderLength)
 								{
 									server.DropClient(this);
-									Log.Write("server", "Dropping client {0} for excessive order length = {1}", PlayerIndex, ExpectLength);
+									Log.Write(Log.LoggingChannel.Server, "Dropping client {0} for excessive order length = {1}", PlayerIndex, ExpectLength);
 									return;
 								}
 							} break;

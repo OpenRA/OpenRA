@@ -102,37 +102,37 @@ namespace OpenRA.Network
 				if (r.Frame == frame)
 				{
 					var mod = Game.modData.Manifest.Mod;
-					Log.Write("sync", "Player: {0} ({1} {2} {3})", Game.Settings.Player.Name, Platform.CurrentPlatform, Environment.OSVersion, Platform.RuntimeVersion);
-					Log.Write("sync", "Game ID: {0} (Mod: {1} at Version {2})", orderManager.LobbyInfo.GlobalSettings.GameUid, mod.Title, mod.Version);
-					Log.Write("sync", "Sync for net frame {0} -------------", r.Frame);
-					Log.Write("sync", "SharedRandom: {0} (#{1})", r.SyncedRandom, r.TotalCount);
-					Log.Write("sync", "Synced Traits:");
+					Log.Write(Log.LoggingChannel.Sync, "Player: {0} ({1} {2} {3})", Game.Settings.Player.Name, Platform.CurrentPlatform, Environment.OSVersion, Platform.RuntimeVersion);
+					Log.Write(Log.LoggingChannel.Sync, "Game ID: {0} (Mod: {1} at Version {2})", orderManager.LobbyInfo.GlobalSettings.GameUid, mod.Title, mod.Version);
+					Log.Write(Log.LoggingChannel.Sync, "Sync for net frame {0} -------------", r.Frame);
+					Log.Write(Log.LoggingChannel.Sync, "SharedRandom: {0} (#{1})", r.SyncedRandom, r.TotalCount);
+					Log.Write(Log.LoggingChannel.Sync, "Synced Traits:");
 					foreach (var a in r.Traits)
 					{
-						Log.Write("sync", "\t {0} {1} {2} {3} ({4})".F(a.ActorID, a.Type, a.Owner, a.Trait, a.Hash));
+						Log.Write(Log.LoggingChannel.Sync, "\t {0} {1} {2} {3} ({4})".F(a.ActorID, a.Type, a.Owner, a.Trait, a.Hash));
 
 						var nvp = a.NamesValues;
 						for (int i = 0; i < nvp.First.Length; i++)
 							if (nvp.Second[i] != null)
-								Log.Write("sync", "\t\t {0}: {1}".F(nvp.First[i], nvp.Second[i]));
+								Log.Write(Log.LoggingChannel.Sync, "\t\t {0}: {1}".F(nvp.First[i], nvp.Second[i]));
 					}
 
-					Log.Write("sync", "Synced Effects:");
+					Log.Write(Log.LoggingChannel.Sync, "Synced Effects:");
 					foreach (var e in r.Effects)
 					{
-						Log.Write("sync", "\t {0} ({1})", e.Name, e.Hash);
+						Log.Write(Log.LoggingChannel.Sync, "\t {0} ({1})", e.Name, e.Hash);
 
 						var nvp = e.NamesValues;
 						for (int i = 0; i < nvp.First.Length; i++)
 							if (nvp.Second[i] != null)
-								Log.Write("sync", "\t\t {0}: {1}".F(nvp.First[i], nvp.Second[i]));
+								Log.Write(Log.LoggingChannel.Sync, "\t\t {0}: {1}".F(nvp.First[i], nvp.Second[i]));
 					}
 
 					return;
 				}
 			}
 
-			Log.Write("sync", "No sync report available!");
+			Log.Write(Log.LoggingChannel.Sync, "No sync report available!");
 		}
 
 		class Report

@@ -119,7 +119,7 @@ namespace OpenRA.Scripting
 		{
 			runtime = new MemoryConstrainedLuaRuntime();
 
-			Log.AddChannel("lua", "lua.log");
+			Log.AddChannel(Log.LoggingChannel.Lua);
 
 			World = world;
 			WorldRenderer = worldRenderer;
@@ -179,7 +179,7 @@ namespace OpenRA.Scripting
 		void LogDebugMessage(string message)
 		{
 			Console.WriteLine("Lua debug: {0}", message);
-			Log.Write("lua", message);
+			Log.Write(Log.LoggingChannel.Lua, message);
 		}
 
 		public bool FatalErrorOccurred { get; private set; }
@@ -189,8 +189,8 @@ namespace OpenRA.Scripting
 			Console.WriteLine("Fatal Lua Error: {0}", message);
 			Console.WriteLine(stacktrace);
 
-			Log.Write("lua", "Fatal Lua Error: {0}", message);
-			Log.Write("lua", stacktrace);
+			Log.Write(Log.LoggingChannel.Lua, "Fatal Lua Error: {0}", message);
+			Log.Write(Log.LoggingChannel.Lua, stacktrace);
 
 			FatalErrorOccurred = true;
 
