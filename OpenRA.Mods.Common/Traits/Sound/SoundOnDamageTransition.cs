@@ -22,19 +22,19 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class SoundOnDamageTransition : INotifyDamageStateChanged
 	{
-		readonly SoundOnDamageTransitionInfo Info;
+		readonly SoundOnDamageTransitionInfo info;
 
 		public SoundOnDamageTransition(SoundOnDamageTransitionInfo info)
 		{
-			Info = info;
+			this.info = info;
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
 			if (e.DamageState == DamageState.Dead)
-				Sound.Play(Info.DestroyedSound, self.CenterPosition);
+				Sound.Play(info.DestroyedSound, self.CenterPosition);
 			else if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)
-				Sound.Play(Info.DamagedSound, self.CenterPosition);
+				Sound.Play(info.DamagedSound, self.CenterPosition);
 		}
 	}
 }

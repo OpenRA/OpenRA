@@ -20,16 +20,16 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ShakeOnDeath : INotifyKilled
 	{
-		readonly ShakeOnDeathInfo Info;
+		readonly ShakeOnDeathInfo info;
 
 		public ShakeOnDeath(ShakeOnDeathInfo info)
 		{
-			this.Info = info;
+			this.info = info;
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			self.World.WorldActor.Trait<ScreenShaker>().AddEffect(Info.Intensity, self.CenterPosition, 1);
+			self.World.WorldActor.Trait<ScreenShaker>().AddEffect(info.Intensity, self.CenterPosition, 1);
 		}
 	}
 }

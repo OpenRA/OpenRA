@@ -107,8 +107,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public static string GetImage(ActorInfo actor)
 		{
-			var Info = actor.Traits.Get<RenderSpritesInfo>();
-			return (Info.Image ?? actor.Name).ToLowerInvariant();
+			var info = actor.Traits.Get<RenderSpritesInfo>();
+			return (info.Image ?? actor.Name).ToLowerInvariant();
 		}
 
 		public string GetImage(Actor self)
