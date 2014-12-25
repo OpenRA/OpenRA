@@ -31,14 +31,22 @@
     </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Eluant, Version=1.0.5229.27703, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\thirdparty\Eluant.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Core" />
+    <Reference Include="Eluant">
+      <HintPath>..\thirdparty\Eluant.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="StyleCop.CSharp.Rules">
+      <HintPath>..\thirdparty\StyleCop.CSharp.Rules.dll</HintPath>
+    </Reference>
+    <Reference Include="StyleCop.CSharp">
+      <HintPath>..\thirdparty\StyleCop.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="StyleCop">
+      <HintPath>..\thirdparty\StyleCop.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
@@ -243,6 +251,8 @@
     <Compile Include="Widgets\TerrainTemplatePreviewWidget.cs" />
     <Compile Include="LoadScreens\LogoStripeLoadScreen.cs" />
     <Compile Include="LoadScreens\BlankLoadScreen.cs" />
+    <Compile Include="UtilityCommands\CheckYaml.cs" />
+    <Compile Include="UtilityCommands\CheckCodeStyle.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
