@@ -22,11 +22,11 @@ namespace OpenRA.Mods.Common
 		[Desc("Range between falloff steps.")]
 		public readonly WRange Spread = new WRange(43);
 
-		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
-		public WRange[] Range = null;
-
 		[Desc("Damage percentage at each range step")]
 		public readonly int[] Falloff = { 100, 37, 14, 5, 2, 1, 0 };
+
+		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
+		public WRange[] Range = null;
 
 		public void InitializeRange()
 		{

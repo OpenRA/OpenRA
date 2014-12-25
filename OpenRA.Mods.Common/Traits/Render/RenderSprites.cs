@@ -88,6 +88,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		readonly RenderSpritesInfo info;
+		string cachedImage = null;
 		Dictionary<string, AnimationWrapper> anims = new Dictionary<string, AnimationWrapper>();
 
 		public static Func<int> MakeFacingFunc(Actor self)
@@ -96,9 +98,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (facing == null) return () => 0;
 			return () => facing.Facing;
 		}
-
-		readonly RenderSpritesInfo info;
-		string cachedImage = null;
 
 		public RenderSprites(Actor self)
 		{

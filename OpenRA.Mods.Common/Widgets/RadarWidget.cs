@@ -29,6 +29,10 @@ namespace OpenRA.Mods.Common.Widgets
 		public Action AfterClose = () => { };
 		public Action<float> Animating = _ => { };
 
+		readonly World world;
+		readonly WorldRenderer worldRenderer;
+		readonly RadarPings radarPings;
+
 		float radarMinimapHeight;
 		int frame;
 		bool hasRadar;
@@ -45,11 +49,6 @@ namespace OpenRA.Mods.Common.Widgets
 		Sprite actorSprite;
 		Sprite shroudSprite;
 		Shroud renderShroud;
-
-		readonly World world;
-		readonly WorldRenderer worldRenderer;
-
-		readonly RadarPings radarPings;
 
 		[ObjectCreator.UseCtor]
 		public RadarWidget(World world, WorldRenderer worldRenderer)
