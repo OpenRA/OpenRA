@@ -1,6 +1,5 @@
 ProductionUnits = { "e1", "e1", "e2" }
 ProductionBuildings = { USSRBarracks1, USSRBarracks2 }
-ParatroopersReinforcements = { "e1", "e1", "e1", "e2", "e2" }
 TransportReinforcements = { "e1", "e1", "e1", "e2", "e2" }
 FirstUSSRBase = { USSRFlameTower1, USSRBarracks1, USSRPowerPlant1, USSRPowerPlant2, USSRConstructionYard1, USSRTechCenter, USSRBaseGuard1, USSRBaseGuard2, USSRBaseGuard3, USSRBaseGuard4, USSRBaseGuard5, USSRBaseGuard6, USSRBaseGuard7, USSRBaseGuard8 }
 SecondUSSRBase = { USSRBarracks2, USSRKennel, USSRRadarDome, USSRBaseGuard10, USSRBaseGuard11, USSRBaseGuard12, USSRBaseGuard13, USSRBaseGuard14 }
@@ -59,14 +58,19 @@ SendAlliedUnits = function()
 	Trigger.OnKilled(Tanya, function() player.MarkFailedObjective(TanyaSurvive) end)
 end
 
-SendUSSRParadrops = function(units, entry, dropzone)
-	local plane = Actor.Create("badr", true, { Owner = ussr, Location = entry })
-	Utils.Do(units, function(type)
-		local unit = Actor.Create(type, false, { Owner = ussr })
-		plane.LoadPassenger(unit)
+SendUSSRParadrops = function()
+	local powerproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = ussr })
+	local unitsA = powerproxy.SendParatroopers(ParadropLZ.CenterPosition, false, 128 + 32)
+	local unitsB = powerproxy.SendParatroopers(ParadropLZ.CenterPosition, false, 128 - 32)
+
+	Utils.Do(unitsA, function(unit)
 		IdleHunt(unit)
 	end)
-	plane.Paradrop(dropzone)
+	Utils.Do(unitsB, function(unit)
+		IdleHunt(unit)
+	end)
+
+	powerproxy.Destroy()
 end
 
 SendUSSRWaterTransport = function()
@@ -215,8 +219,7 @@ InitTriggers = function()
 		if a.Owner == player and not paradropsTriggered then
 			paradropsTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
-			SendUSSRParadrops(ParatroopersReinforcements, ParadropTransportEntry1.Location, ParadropLZ.Location)
-			SendUSSRParadrops(ParatroopersReinforcements, ParadropTransportEntry2.Location, ParadropLZ.Location)
+			SendUSSRParadrops()
 		end
 	end)
 	Trigger.OnEnteredFootprint(ReinforcementsTriggerArea, function(a, id)

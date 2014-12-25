@@ -1331,6 +1331,15 @@ Rules:
 			HP: 200
 	E7:
 		-Selectable:
+	powerproxy.paratroopers:
+		ParatroopersPower:
+			DisplayBeacon: false
+			DropItems: E1,E1,E2,E3,E4
+	powerproxy.parazombies:
+		ParatroopersPower:
+			DropItems: ZOMBIE,ZOMBIE,ZOMBIE,ZOMBIE,ZOMBIE
+			QuantizedFacings: 8
+			DisplayBeacon: false
 
 Sequences:
 

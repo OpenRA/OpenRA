@@ -329,6 +329,19 @@ powerproxy.sonarpulse:
 		EffectSequence: moveflsh
 		EffectPalette: moveflash
 
+powerproxy.paratroopers:
+	ParatroopersPower:
+		Icon: paratroopers
+		Description: Paratroopers
+		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
+		DropItems: E1,E1,E1,E3,E3
+		SelectTargetSound: slcttgt1.aud
+		AllowImpassableCells: false
+		QuantizedFacings: 8
+		CameraActor: camera.paradrop
+		DisplayBeacon: true
+		BeaconPoster: pinficon
+
 mpspawn:
 	Immobile:
 		OccupiesSpace: false

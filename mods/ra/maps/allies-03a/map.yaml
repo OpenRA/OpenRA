@@ -1304,12 +1304,6 @@ Actors:
 	LargeCameraWaypoint: waypoint
 		Location: 71,65
 		Owner: Neutral
-	ParadropTransportEntry1: waypoint
-		Location: 66,38
-		Owner: Neutral
-	ParadropTransportEntry2: waypoint
-		Location: 85,38
-		Owner: Neutral
 	ParadropLZ: waypoint
 		Location: 73,57
 		Owner: Neutral
@@ -1378,6 +1372,9 @@ Rules:
 	^Crate:
 		Tooltip:
 			ShowOwnerRow: false
+	powerproxy.paratroopers:
+		ParatroopersPower:
+			DropItems: E1,E1,E1,E2,E2
 	HACKE6:
 		Inherits: E6
 		-RepairsBridges:
