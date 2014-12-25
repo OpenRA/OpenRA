@@ -12,7 +12,7 @@ using System;
 using OpenRA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Unit got to face the target")]
 	public class AttackFrontalInfo : AttackBaseInfo, Requires<IFacingInfo>

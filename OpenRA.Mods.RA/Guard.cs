@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("The player can give this unit the order to follow and protect friendly units with the Guardable trait.")]
 	class GuardInfo : TraitInfo<Guard> { }

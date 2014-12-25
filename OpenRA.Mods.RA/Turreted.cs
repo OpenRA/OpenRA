@@ -11,7 +11,7 @@
 using System;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>
 	{

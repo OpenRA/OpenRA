@@ -12,7 +12,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	class ThrowsParticleInfo : ITraitInfo, Requires<RenderSimpleInfo>, Requires<IBodyOrientationInfo>
 	{

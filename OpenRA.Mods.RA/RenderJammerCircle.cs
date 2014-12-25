@@ -15,7 +15,7 @@ using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	// TODO: remove all the Render*Circle duplication
 	class RenderJammerCircleInfo : ITraitInfo, IPlaceBuildingDecoration
