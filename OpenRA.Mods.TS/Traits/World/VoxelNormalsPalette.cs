@@ -37,7 +37,7 @@ namespace OpenRA.Mods.TS.Traits
 		{
 			// Rotate vectors to expected orientation
 			// Voxel coordinates are x=forward, y=right, z=up
-			var channel = new int[] {2,1,0};
+			var channel = new int[] { 2, 1, 0 };
 			var n = info.Type == NormalType.RedAlert2 ? RA2Normals : TSNormals;
 
 			// Map normals into color range
@@ -48,8 +48,8 @@ namespace OpenRA.Mods.TS.Traits
 				data[i] = 0xFF000000;
 				for (var j = 0; j < 3; j++)
 				{
-					var t = (n[3*i + j] + 1) / 2;
-					data[i] |= (uint)((byte)(t*0xFF + 0.5) << (8*channel[j]));
+					var t = (n[3 * i + j] + 1) / 2;
+					data[i] |= (uint)((byte)(t * 0xFF + 0.5) << (8 * channel[j]));
 				}
 			}
 

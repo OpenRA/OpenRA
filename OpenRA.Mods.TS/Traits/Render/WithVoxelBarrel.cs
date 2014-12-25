@@ -40,7 +40,7 @@ namespace OpenRA.Mods.TS.Traits
 			var turretOrientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(t.InitialFacing) - orientation.Yaw), facings);
 			var turretOffset = body.LocalToWorld(t.Offset.Rotate(orientation));
 
-			yield return new VoxelAnimation(voxel, () => turretOffset, () => new [] { turretOrientation, orientation },
+			yield return new VoxelAnimation(voxel, () => turretOffset, () => new[] { turretOrientation, orientation },
 				() => false, () => 0);
 		}
 	}
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.TS.Traits
 			var turretOrientation = turreted != null ? turreted.LocalOrientation(self) : WRot.Zero;
 
 			var quantizedBody = body.QuantizeOrientation(self, self.Orientation);
-			var quantizedTurret =  body.QuantizeOrientation(self, turretOrientation);
+			var quantizedTurret = body.QuantizeOrientation(self, turretOrientation);
 			return turretOffset + body.LocalToWorld(localOffset.Rotate(quantizedTurret).Rotate(quantizedBody));
 		}
 
