@@ -20,12 +20,12 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class NukePaletteEffect : IPaletteModifier, ITick
 	{
-		const int nukeEffectLength = 20;
+		const int NukeEffectLength = 20;
 		int remainingFrames;
 
 		public void Enable()
 		{
-			remainingFrames = nukeEffectLength;
+			remainingFrames = NukeEffectLength;
 		}
 
 		public void Tick(Actor self)
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (remainingFrames == 0)
 				return;
 
-			var frac = (float)remainingFrames / nukeEffectLength;
+			var frac = (float)remainingFrames / NukeEffectLength;
 
 			foreach (var pal in palettes)
 			{

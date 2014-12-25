@@ -17,6 +17,8 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class Beacon : IEffect
 	{
+		static readonly int MaxArrowHeight = 512;
+
 		readonly Player owner;
 		readonly WPos position;
 		readonly string palettePrefix;
@@ -26,8 +28,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Animation poster;
 		readonly Animation clock;
 
-		static readonly int maxArrowHeight = 512;
-		int arrowHeight = maxArrowHeight;
+		int arrowHeight = MaxArrowHeight;
 		int arrowSpeed = 50;
 
 		// Player-placed beacons are removed after a delay
@@ -69,7 +70,7 @@ namespace OpenRA.Mods.Common.Effects
 		public void Tick(World world)
 		{
 			arrowHeight += arrowSpeed;
-			var clamped = arrowHeight.Clamp(0, maxArrowHeight);
+			var clamped = arrowHeight.Clamp(0, MaxArrowHeight);
 			if (arrowHeight != clamped)
 			{
 				arrowHeight = clamped;
