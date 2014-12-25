@@ -9,6 +9,7 @@ script:
  - make cli-dependencies
  - make all
  - make test
+ - make check
 
 # Automatically update the trait documentation and Lua API
 after_success:
