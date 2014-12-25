@@ -30,7 +30,6 @@ namespace OpenRA
 			Exception,
 			Server,
 			Sound,
-			FileSystem,
 			Traitreport,
 			Sync,
 			Lua,
@@ -48,7 +47,7 @@ namespace OpenRA
 			Directory.CreateDirectory(path);
 			
 			if (File.Exists(Path.Combine(path, filename)))
-				File.Move(filename, Path.Combine(path, channel + "_" + DateTime.Now + ".log"));
+				File.Delete(Path.Combine(path, filename));
 
 			yield return Path.Combine(path, filename);
 		}

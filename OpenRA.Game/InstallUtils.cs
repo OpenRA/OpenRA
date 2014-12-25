@@ -61,9 +61,9 @@ namespace OpenRA
 			if (!Directory.Exists(destPath))
 				Directory.CreateDirectory(destPath);
 
-			Log.Write(Log.LoggingChannel.FileSystem, "Mounting {0}".F(srcPath));
+			Log.Write(Log.LoggingChannel.Debug, "Mounting {0}".F(srcPath));
 			GlobalFileSystem.Mount(srcPath);
-			Log.Write(Log.LoggingChannel.FileSystem, "Mounting {0}".F(package));
+			Log.Write(Log.LoggingChannel.Debug, "Mounting {0}".F(package));
 			GlobalFileSystem.Mount(package, annotation);
 
 			foreach (var file in files)
@@ -74,7 +74,7 @@ namespace OpenRA
 				using (var sourceStream = GlobalFileSystem.Open(file))
 				using (var destStream = File.Create(dest))
 				{
-					Log.Write(Log.LoggingChannel.FileSystem, "Extracting {0} to {1}".F(file, dest));
+					Log.Write(Log.LoggingChannel.Debug, "Extracting {0} to {1}".F(file, dest));
 					onProgress("Extracting " + file);
 					destStream.Write(sourceStream.ReadAllBytes());
 				}
@@ -99,7 +99,7 @@ namespace OpenRA
 				if (File.Exists(dest))
 					File.Delete(dest);
 				onProgress("Copying " + destFile);
-				Log.Write(Log.LoggingChannel.FileSystem, "Copy {0} to {1}".F(fromPath, dest));
+				Log.Write(Log.LoggingChannel.Debug, "Copy {0} to {1}".F(fromPath, dest));
 				File.Copy(fromPath, dest, true);
 			}
 
