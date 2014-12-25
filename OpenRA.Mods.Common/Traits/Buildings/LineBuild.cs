@@ -22,5 +22,5 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] NodeTypes = { "wall" };
 	}
 
-	public class LineBuild {}
+	public class LineBuild { }
 }

@@ -30,9 +30,9 @@ namespace OpenRA.Mods.Common.Activities
 			return (remainingTicks-- == 0) ? NextActivity : this;
 		}
 
-		public override void Cancel( Actor self )
+		public override void Cancel(Actor self)
 		{
-			if( !interruptable )
+			if (!interruptable)
 				return;
 
 			remainingTicks = 0;
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Activities
 			return (f == null || f()) ? NextActivity : this;
 		}
 
-		public override void Cancel( Actor self )
+		public override void Cancel(Actor self)
 		{
 			if (!interruptable)
 				return;
