@@ -13,10 +13,9 @@ using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.RA.Traits
 {
 	public class WithMakeAnimationInfo : ITraitInfo, Requires<BuildingInfo>, Requires<RenderBuildingInfo>
 	{

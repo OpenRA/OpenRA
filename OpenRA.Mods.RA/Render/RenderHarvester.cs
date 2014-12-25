@@ -11,10 +11,9 @@
 using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.RA.Traits
 {
 	class RenderHarvesterInfo : RenderUnitInfo, Requires<HarvesterInfo>
 	{

@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public interface INotifyChat { bool OnChat(string from, string message); }
+	public interface INotifyParachuteLanded { void OnLanded(); }
 	public interface IRenderActorPreviewInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo { WRange GetCruiseAltitude(); }
 

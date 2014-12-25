@@ -10,10 +10,9 @@
 
 using OpenRA.Graphics;
 using OpenRA.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Displays an overlay whenever resources are harvested by the actor.")]
 	class WithHarvestAnimationInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
@@ -45,7 +44,7 @@ namespace OpenRA.Mods.RA.Render
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				() => !visible,
 				() => false,
-				p => WithTurret.ZOffsetFromCenter(self, p, 0)));
+				p => ZOffsetFromCenter(self, p, 0)));
 		}
 
 		public void Harvested(Actor self, ResourceType resource)
@@ -60,5 +59,11 @@ namespace OpenRA.Mods.RA.Render
 		public void MovingToResources(Actor self, CPos targetCell, Activity next) { }
 		public void MovingToRefinery(Actor self, CPos targetCell, Activity next) { }
 		public void MovementCancelled(Actor self) { }
+
+		static public int ZOffsetFromCenter(Actor self, WPos pos, int offset)
+		{
+			var delta = self.CenterPosition - pos;
+			return delta.Y + delta.Z + offset;
+		}
 	}
 }

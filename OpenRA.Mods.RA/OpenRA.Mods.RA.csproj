@@ -336,7 +336,6 @@
     <Compile Include="Render\WithTurret.cs" />
     <Compile Include="Render\WithBarrel.cs" />
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
-    <Compile Include="Render\WithHarvestAnimation.cs" />
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
     <Compile Include="Buildings\Bib.cs" />
@@ -347,7 +346,6 @@
     <Compile Include="AI\States\AirStates.cs" />
     <Compile Include="Widgets\Logic\InstallLogic.cs" />
     <Compile Include="CombatDebugOverlay.cs" />
-    <Compile Include="Render\WithCrateBody.cs" />
     <Compile Include="Widgets\Logic\GameTimerLogic.cs" />
     <Compile Include="Widgets\Logic\ReplayControlBarLogic.cs" />
     <Compile Include="Attack\AttackFollow.cs" />
