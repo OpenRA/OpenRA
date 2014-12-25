@@ -11,8 +11,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileSystem;
-using OpenRA.Widgets;
 using OpenRA.Mods.Common.Widgets.Logic;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.LoadScreens
 {
