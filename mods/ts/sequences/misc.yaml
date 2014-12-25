@@ -537,3 +537,17 @@ largecraters:
 	cr12: crater12
 		Length: 1
 		Offset: 0, -24
+
+icon:
+	clustermissile: mltiicon
+		Start: 0
+	ioncannon: ioncicon
+		Start: 0
+
+clustermissile:
+	up: null # TODO
+		Start: 0
+		Length: *
+	down: null # TODO
+		Start: 0
+		Length: *
