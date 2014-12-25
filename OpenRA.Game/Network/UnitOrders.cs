@@ -93,6 +93,15 @@ namespace OpenRA.Network
 
 				case "StartGame":
 					{
+						if (Game.modData.MapCache[orderManager.LobbyInfo.GlobalSettings.Map].Status != MapStatus.Available)
+						{
+							Game.Disconnect();
+							Game.LoadShellMap();
+
+							// TODO: After adding a startup error dialog, notify the replay load failure.
+							break;
+						}
+
 						Game.AddChatLine(Color.White, "Server", "The game has started.");
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, false);
 						break;
