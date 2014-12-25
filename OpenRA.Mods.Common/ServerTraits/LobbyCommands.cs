@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Server
 		{
 			if (!server.LobbyInfo.Slots.ContainsKey(arg))
 			{
-				Log.Write("server", "Invalid slot: {0}", arg);
+				Log.Write(Log.LoggingChannel.Server, "Invalid slot: {0}", arg);
 				return false;
 			}
 
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Server
 
 						client.State = state;
 
-						Log.Write("server", "Player @{0} is {1}",
+						Log.Write(Log.LoggingChannel.Server, "Player @{0} is {1}",
 							conn.socket.RemoteEndPoint, client.State);
 
 						server.SyncLobbyClients();
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!server.LobbyInfo.Slots.ContainsKey(s))
 						{
-							Log.Write("server", "Invalid slot: {0}", s);
+							Log.Write(Log.LoggingChannel.Server, "Invalid slot: {0}", s);
 							return false;
 						}
 
@@ -247,7 +247,7 @@ namespace OpenRA.Mods.Common.Server
 						int controllerClientIndex;
 						if (!Exts.TryParseIntegerInvariant(parts[1], out controllerClientIndex))
 						{
-							Log.Write("server", "Invalid bot controller client index: {0}", parts[1]);
+							Log.Write(Log.LoggingChannel.Server, "Invalid bot controller client index: {0}", parts[1]);
 							return false;
 						}
 
@@ -667,7 +667,7 @@ namespace OpenRA.Mods.Common.Server
 
 						var kickClient = server.GetClient(kickConn);
 
-						Log.Write("server", "Kicking client {0}.", kickClientID);
+						Log.Write(Log.LoggingChannel.Server, "Kicking client {0}.", kickClientID);
 						server.SendMessage("{0} kicked {1} from the server.".F(client.Name, kickClient.Name));
 						server.SendOrderTo(kickConn, "ServerError", "You have been kicked from the server.");
 						server.DropClient(kickConn);
@@ -677,7 +677,7 @@ namespace OpenRA.Mods.Common.Server
 
 						if (tempBan)
 						{
-							Log.Write("server", "Temporarily banning client {0} ({1}).", kickClientID, kickClient.IpAddress);
+							Log.Write(Log.LoggingChannel.Server, "Temporarily banning client {0} ({1}).", kickClientID, kickClient.IpAddress);
 							server.SendMessage("{0} temporarily banned {1} from the server.".F(client.Name, kickClient.Name));
 							server.TempBans.Add(kickClient.IpAddress);
 						}
@@ -691,7 +691,7 @@ namespace OpenRA.Mods.Common.Server
 				{ "name",
 					s =>
 					{
-						Log.Write("server", "Player@{0} is now known as {1}.", conn.socket.RemoteEndPoint, s);
+						Log.Write(Log.LoggingChannel.Server, "Player@{0} is now known as {1}.", conn.socket.RemoteEndPoint, s);
 						server.SendMessage("{0} is now known as {1}.".F(client.Name, s));
 						client.Name = s;
 						server.SyncLobbyClients();
@@ -734,7 +734,7 @@ namespace OpenRA.Mods.Common.Server
 						int team;
 						if (!Exts.TryParseIntegerInvariant(parts[1], out team))
 						{
-							Log.Write("server", "Invalid team: {0}", s);
+							Log.Write(Log.LoggingChannel.Server, "Invalid team: {0}", s);
 							return false;
 						}
 
@@ -765,7 +765,7 @@ namespace OpenRA.Mods.Common.Server
 						if (!Exts.TryParseIntegerInvariant(parts[1], out spawnPoint)
 							|| spawnPoint < 0 || spawnPoint > server.Map.GetSpawnPoints().Length)
 						{
-							Log.Write("server", "Invalid spawn point: {0}", parts[1]);
+							Log.Write(Log.LoggingChannel.Server, "Invalid spawn point: {0}", parts[1]);
 							return true;
 						}
 

@@ -124,7 +124,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				catch(Exception e)
 				{
 					onError("Installation failed.\n{0}".F(e.Message));
-					Log.Write("debug", e.ToString());
+					Log.Write(Log.LoggingChannel.Debug, e.ToString());
 					return;
 				}
 			}) { IsBackground = true }.Start();

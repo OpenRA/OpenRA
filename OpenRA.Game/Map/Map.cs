@@ -356,7 +356,7 @@ namespace OpenRA
 				catch (Exception e)
 				{
 					InvalidCustomRules = true;
-					Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e.Message);
+					Log.Write(Log.LoggingChannel.Debug, "Failed to load rules for {0} with error {1}", Title, e.Message);
 				}
 
 				return Game.modData.DefaultRules;

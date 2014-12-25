@@ -122,7 +122,7 @@ namespace OpenRA.Widgets
 				}
 
 				if (skippedFrames > 1)				
-					Log.Write("perf", "VqaPlayer : {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrame);				
+					Log.Write(Log.LoggingChannel.Perf, "VqaPlayer : {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrame);				
 			}
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(

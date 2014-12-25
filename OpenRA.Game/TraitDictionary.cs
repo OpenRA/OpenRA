@@ -57,9 +57,9 @@ namespace OpenRA
 
 		public void PrintReport()
 		{
-			Log.AddChannel("traitreport", "traitreport.log");
+			Log.AddChannel(Log.LoggingChannel.Traitreport);
 			foreach (var t in traits.OrderByDescending(t => t.Value.Queries).TakeWhile(t => t.Value.Queries > 0))
-				Log.Write("traitreport", "{0}: {1}", t.Key.Name, t.Value.Queries);
+				Log.Write(Log.LoggingChannel.Traitreport, "{0}: {1}", t.Key.Name, t.Value.Queries);
 		}
 
 		public void AddTrait(Actor actor, object val)

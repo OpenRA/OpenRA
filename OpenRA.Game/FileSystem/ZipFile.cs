@@ -39,7 +39,7 @@ namespace OpenRA.FileSystem
 			}
 			catch (ZipException e)
 			{
-				Log.Write("debug", "Couldn't load zip file: {0}", e.Message);
+				Log.Write(Log.LoggingChannel.Debug, "Couldn't load zip file: {0}", e.Message);
 			}
 		}
 

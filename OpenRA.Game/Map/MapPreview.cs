@@ -198,14 +198,14 @@ namespace OpenRA
 
 						if (cancelled || i.Error != null)
 						{
-							Log.Write("debug", "Remote map download failed with error: {0}", i.Error != null ? i.Error.Message : "cancelled");
-							Log.Write("debug", "URL was: {0}", mapUrl);
+							Log.Write(Log.LoggingChannel.Debug, "Remote map download failed with error: {0}", i.Error != null ? i.Error.Message : "cancelled");
+							Log.Write(Log.LoggingChannel.Debug, "URL was: {0}", mapUrl);
 
 							Status = MapStatus.DownloadError;
 							return;
 						}
 
-						Log.Write("debug", "Downloaded map to '{0}'", mapPath);
+						Log.Write(Log.LoggingChannel.Debug, "Downloaded map to '{0}'", mapPath);
 						Game.RunAfterTick(() =>
 						{
 							UpdateFromMap(new Map(mapPath), MapClassification.User);

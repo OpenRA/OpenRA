@@ -592,11 +592,11 @@ namespace OpenRA.Mods.RA.Traits
 				self.SetTargetLine(Target.FromCell(self.World, moveTo.Value), Color.Green, false);
 				self.QueueActivity(new Move(self, moveTo.Value, 0));
 
-				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
+				Log.Write(Log.LoggingChannel.Debug, "OnNudge #{0} from {1} to {2}",
 					self.ActorID, self.Location, moveTo.Value);
 			}
 			else
-				Log.Write("debug", "OnNudge #{0} refuses at {1}",
+				Log.Write(Log.LoggingChannel.Debug, "OnNudge #{0} refuses at {1}",
 					self.ActorID, self.Location);
 		}
 

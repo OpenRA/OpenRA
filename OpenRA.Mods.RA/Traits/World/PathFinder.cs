@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Traits
 				var cached = CachedPaths.FirstOrDefault(p => p.from == from && p.to == target && p.actor == self);
 				if (cached != null)
 				{
-					Log.Write("debug", "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, world.WorldTick - cached.tick);
+					Log.Write(Log.LoggingChannel.Debug, "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, world.WorldTick - cached.tick);
 					if (world.WorldTick - cached.tick > MaxPathAge)
 						CachedPaths.Remove(cached);
 					return new List<CPos>(cached.result);
