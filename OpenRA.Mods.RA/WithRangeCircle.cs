@@ -14,7 +14,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Renders an arbitrary circle when selected or placing a structure")]
 	class WithRangeCircleInfo : ITraitInfo, IPlaceBuildingDecoration

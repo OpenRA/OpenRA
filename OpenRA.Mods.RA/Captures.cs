@@ -14,7 +14,7 @@ using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("This actor can capture other actors which have the Capturable: trait.")]
 	class CapturesInfo : ITraitInfo

@@ -11,7 +11,7 @@
 using OpenRA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Give the unit a \"heal-weapon\" that attacks friendly targets if they are damaged.",
 		"It conflicts with any other weapon or Attack*: trait because it will hurt friendlies during the",

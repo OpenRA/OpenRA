@@ -9,10 +9,9 @@
 #endregion
 
 using OpenRA.Activities;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Will AttackMove to a random location within MoveRadius when idle.",
 		"This conflicts with player orders and should only be added to animal creeps.")]
