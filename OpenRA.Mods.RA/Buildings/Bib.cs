@@ -12,7 +12,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.RA.Traits
 {
 	public class BibInfo : ITraitInfo, Requires<BuildingInfo>, Requires<RenderSpritesInfo>
 	{

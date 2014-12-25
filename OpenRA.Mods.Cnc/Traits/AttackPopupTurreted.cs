@@ -13,7 +13,7 @@ using OpenRA.Activities;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
