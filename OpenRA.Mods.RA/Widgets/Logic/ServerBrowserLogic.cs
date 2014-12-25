@@ -26,6 +26,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		GameServer currentServer;
 		ScrollItemWidget serverTemplate;
+		ScrollItemWidget headerTemplate;
 
 		Action onStart;
 
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		bool showWaiting = true;
 		bool showEmpty = true;
-		bool showStarted = true;
+		bool showStarted = false;
 		bool showProtected = true;
 		bool showIncompatible = false;
 
@@ -57,6 +58,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.onStart = onStart;
 
 			serverList = panel.Get<ScrollPanelWidget>("SERVER_LIST");
+			headerTemplate = serverList.Get<ScrollItemWidget>("HEADER_TEMPLATE");
 			serverTemplate = serverList.Get<ScrollItemWidget>("SERVER_TEMPLATE");
 
 			// Menu buttons
@@ -69,7 +71,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = OpenCreateServerPanel;
 
 			var join = panel.Get<ButtonWidget>("JOIN_BUTTON");
-			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
+			join.IsDisabled = () => currentServer == null || !currentServer.IsJoinable;
 			join.OnClick = () => Join(currentServer);
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
@@ -151,14 +153,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var data = Encoding.UTF8.GetString(i.Result);
 				var yaml = MiniYaml.FromString(data);
 
-				var games = yaml.Select(a => FieldLoader.Load<GameServer>(a.Value))
+				var games = yaml.Select(a => new GameServer(a.Value))
 					.Where(gs => gs.Address != null);
 
-				RefreshServerListInner(games);
 				Game.RunAfterTick(() => RefreshServerListInner(games));
 			};
 
 			currentQuery = new Download(Game.Settings.Server.MasterServer + "games", _ => {}, onComplete);
+		}
+
+		int GroupSortOrder(GameServer testEntry)
+		{
+			// Games that we can't join are sorted last
+			if (!testEntry.IsCompatible)
+				return 0;
+
+			// Games for the current mod+version are sorted first
+			if (testEntry.ModId == Game.modData.Manifest.Mod.Id)
+				return 2;
+
+			// Followed by games for different mods that are joinable
+			return 1;
 		}
 
 		void RefreshServerListInner(IEnumerable<GameServer> games)
@@ -166,79 +181,84 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (games == null)
 				return;
 
-			var rows = new List<Widget>();
+			var mods = games.GroupBy(g => g.Mods)
+				.OrderByDescending(g => GroupSortOrder(g.First()))
+				.ThenByDescending(g => g.Count());
 
-			foreach (var loop in games.OrderByDescending(g => g.CanJoin()).ThenByDescending(g => g.Players))
+			var rows = new List<Widget>();
+			foreach (var modGames in mods)
 			{
-				var game = loop;
-				if (game == null)
+				if (modGames.All(Filtered))
 					continue;
 
-				var canJoin = game.CanJoin();
-				var compatible = game.CompatibleVersion();
+				var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => {});
 
-				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game, () => Join(game));
+				var headerTitle = modGames.First().ModLabel;
+				header.Get<LabelWidget>("LABEL").GetText = () => headerTitle;
+				rows.Add(header);
 
-				var map = Game.modData.MapCache[game.Map];
-				var preview = item.GetOrNull<MapPreviewWidget>("MAP_PREVIEW");
-				if (preview != null)
-					preview.Preview = () => map;
-
-				var title = item.GetOrNull<LabelWidget>("TITLE");
-				if (title != null)
+				foreach (var loop in modGames.OrderByDescending(g => g.IsJoinable).ThenByDescending(g => g.Players))
 				{
-					title.GetText = () => game.Name;
-					title.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : title.TextColor;
-				}
+					var game = loop;
+					if (game == null || Filtered(game))
+						continue;
 
-				var maptitle = item.GetOrNull<LabelWidget>("MAP");
-				if (title != null)
-				{
-					maptitle.GetText = () => map.Title;
-					maptitle.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : maptitle.TextColor;
-				}
+					var canJoin = game.IsJoinable;
+					var compatible = game.IsCompatible;
 
-				var players = item.GetOrNull<LabelWidget>("PLAYERS");
-				if (players != null)
-				{
-					players.GetText = () => "{0} / {1}".F(game.Players, game.MaxPlayers)
-						+ (game.Spectators > 0 ? "  ({0} Spectator{1})".F(game.Spectators, game.Spectators > 1 ? "s" : "") : "");
-					players.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : players.TextColor;
-				}
+					var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game, () => Join(game));
 
-				var state = item.GetOrNull<LabelWidget>("STATE");
-				if (state != null)
-				{
-					state.GetText = () => GetStateLabel(game);
-					state.GetColor = () => GetStateColor(game, state, !compatible || !canJoin);
-				}
+					var map = Game.modData.MapCache[game.Map];
+					var preview = item.GetOrNull<MapPreviewWidget>("MAP_PREVIEW");
+					if (preview != null)
+						preview.Preview = () => map;
 
-				var ip = item.GetOrNull<LabelWidget>("IP");
-				if (ip != null)
-				{
-					ip.GetText = () => game.Address;
-					ip.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  :  ip.TextColor;
-				}
+					var title = item.GetOrNull<LabelWidget>("TITLE");
+					if (title != null)
+					{
+						title.GetText = () => game.Name;
+						title.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : title.TextColor;
+					}
 
-				var version = item.GetOrNull<LabelWidget>("VERSION");
-				if (version != null)
-				{
-					version.GetText = () => GenerateModLabel(game);
-					version.IsVisible = () => !compatible;
-					version.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : version.TextColor;
-				}
+					var maptitle = item.GetOrNull<LabelWidget>("MAP");
+					if (title != null)
+					{
+						maptitle.GetText = () => map.Title;
+						maptitle.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : maptitle.TextColor;
+					}
 
-				var location = item.GetOrNull<LabelWidget>("LOCATION");
-				if (location != null)
-				{
-					var cachedServerLocation = LobbyUtils.LookupCountry(game.Address.Split(':')[0]);
-					location.GetText = () => cachedServerLocation;
-					location.IsVisible = () => compatible;
-					location.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : location.TextColor;
-				}
+					var players = item.GetOrNull<LabelWidget>("PLAYERS");
+					if (players != null)
+					{
+						players.GetText = () => "{0} / {1}".F(game.Players, game.MaxPlayers)
+							+ (game.Spectators > 0 ? "  ({0} Spectator{1})".F(game.Spectators, game.Spectators > 1 ? "s" : "") : "");
+						players.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : players.TextColor;
+					}
 
-				if (!Filtered(game))
+					var state = item.GetOrNull<LabelWidget>("STATE");
+					if (state != null)
+					{
+						state.GetText = () => GetStateLabel(game);
+						state.GetColor = () => GetStateColor(game, state, !compatible || !canJoin);
+					}
+
+					var ip = item.GetOrNull<LabelWidget>("IP");
+					if (ip != null)
+					{
+						ip.GetText = () => game.Address;
+						ip.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  :  ip.TextColor;
+					}
+
+					var location = item.GetOrNull<LabelWidget>("LOCATION");
+					if (location != null)
+					{
+						var cachedServerLocation = LobbyUtils.LookupCountry(game.Address.Split(':')[0]);
+						location.GetText = () => cachedServerLocation;
+						location.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : location.TextColor;
+					}
+
 					rows.Add(item);
+				}
 			}
 
 			Game.RunAfterTick(() =>
@@ -300,7 +320,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void Join(GameServer server)
 		{
-			if (server == null || !server.CanJoin())
+			if (server == null || !server.IsJoinable)
 				return;
 
 			var host = server.Address.Split(':')[0];
@@ -353,17 +373,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return label.TextColor;
 		}
 
-		public static string GenerateModLabel(GameServer s)
-		{
-			ModMetadata mod;
-			var modVersion = s.Mods.Split('@');
-
-			if (modVersion.Length == 2 && ModMetadata.AllMods.TryGetValue(modVersion[0], out mod))
-				return "{0} ({1})".F(mod.Title, modVersion[1]);
-
-			return "Unknown mod: {0}".F(s.Mods);
-		}
-
 		bool Filtered(GameServer game)
 		{
 			if ((game.State == (int)ServerState.GameStarted) && !showStarted)
@@ -375,7 +384,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if ((game.Players == 0) && !showEmpty)
 				return true;
 
-			if (!game.CompatibleVersion() && !showIncompatible)
+			if (!game.IsCompatible && !showIncompatible)
 				return true;
 
 			if (game.Protected && !showProtected)
