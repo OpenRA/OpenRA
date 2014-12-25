@@ -45,8 +45,8 @@ namespace OpenRA.Mods.D2k.Widgets
 		readonly World world;
 		readonly OrderManager orderManager;
 
-		ProductionQueue CurrentQueue;
-		List<ProductionQueue> VisibleQueues;
+		ProductionQueue currentQueue;
+		List<ProductionQueue> visibleQueues;
 
 		bool paletteOpen = false;
 
@@ -73,8 +73,8 @@ namespace OpenRA.Mods.D2k.Widgets
 			cantBuild = new Animation(world, "clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
 			clock = new Animation(world, "clock");
-			VisibleQueues = new List<ProductionQueue>();
-			CurrentQueue = null;
+			visibleQueues = new List<ProductionQueue>();
+			currentQueue = null;
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -92,25 +92,25 @@ namespace OpenRA.Mods.D2k.Widgets
 
 		public override void Tick()
 		{
-			VisibleQueues.Clear();
+			visibleQueues.Clear();
 
 			var queues = world.ActorsWithTrait<ProductionQueue>()
 				.Where(p => p.Actor.Owner == world.LocalPlayer)
 				.Select(p => p.Trait);
 
-			if (CurrentQueue != null && CurrentQueue.Actor.Destroyed)
-				CurrentQueue = null;
+			if (currentQueue != null && currentQueue.Actor.Destroyed)
+				currentQueue = null;
 
 			foreach (var queue in queues)
 			{
 				if (queue.AllItems().Any())
-					VisibleQueues.Add(queue);
-				else if (CurrentQueue == queue)
-					CurrentQueue = null;
+					visibleQueues.Add(queue);
+				else if (currentQueue == queue)
+					currentQueue = null;
 			}
 
-			if (CurrentQueue == null)
-				CurrentQueue = VisibleQueues.FirstOrDefault();
+			if (currentQueue == null)
+				currentQueue = visibleQueues.FirstOrDefault();
 
 			TickPaletteAnimation(world);
 		}
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.D2k.Widgets
 				paletteAnimating = true;
 
 			paletteOpen = true;
-			CurrentQueue = queue;
+			currentQueue = queue;
 		}
 
 		public override bool HandleKeyPress(KeyInput e)
@@ -200,7 +200,7 @@ namespace OpenRA.Mods.D2k.Widgets
 				return;
 
 			// TODO: fix
-			DrawPalette(CurrentQueue);
+			DrawPalette(currentQueue);
 			DrawBuildTabs(world);
 		}
 
@@ -350,8 +350,8 @@ namespace OpenRA.Mods.D2k.Widgets
 
 				Sound.PlayNotification(world.Map.Rules, null, "Sounds", "TabClick", null);
 				var wasOpen = paletteOpen;
-				paletteOpen = CurrentQueue != queue || !wasOpen;
-				CurrentQueue = queue;
+				paletteOpen = currentQueue != queue || !wasOpen;
+				currentQueue = queue;
 				if (wasOpen != paletteOpen)
 					paletteAnimating = true;
 			};
@@ -370,16 +370,16 @@ namespace OpenRA.Mods.D2k.Widgets
 		void HandleBuildPalette(World world, string item, bool isLmb)
 		{
 			var unit = world.Map.Rules.Actors[item];
-			var producing = CurrentQueue.AllQueued().FirstOrDefault(a => a.Item == item);
+			var producing = currentQueue.AllQueued().FirstOrDefault(a => a.Item == item);
 
 			if (isLmb)
 			{
-				if (producing != null && producing == CurrentQueue.CurrentItem())
+				if (producing != null && producing == currentQueue.CurrentItem())
 				{
 					if (producing.Done)
 					{
 						if (unit.Traits.Contains<BuildingInfo>())
-							world.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue, item);
+							world.OrderGenerator = new PlaceBuildingOrderGenerator(currentQueue, item);
 						else
 							StartProduction(world, item);
 						return;
@@ -387,21 +387,21 @@ namespace OpenRA.Mods.D2k.Widgets
 
 					if (producing.Paused)
 					{
-						world.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, item, false));
+						world.IssueOrder(Order.PauseProduction(currentQueue.Actor, item, false));
 						return;
 					}
 				}
 				else
 				{
 					// Check if the item's build-limit has already been reached
-					var queued = CurrentQueue.AllQueued().Count(a => a.Item == unit.Name);
+					var queued = currentQueue.AllQueued().Count(a => a.Item == unit.Name);
 					var inWorld = world.ActorsWithTrait<Buildable>().Count(a => a.Actor.Info.Name == unit.Name && a.Actor.Owner == world.LocalPlayer);
 					var buildLimit = unit.Traits.Get<BuildableInfo>().BuildLimit;
 
 					if (!((buildLimit != 0) && (inWorld + queued >= buildLimit)))
-						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, world.LocalPlayer.Country.Race);
+						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", currentQueue.Info.QueuedAudio, world.LocalPlayer.Country.Race);
 					else
-						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", CurrentQueue.Info.BlockedAudio, world.LocalPlayer.Country.Race);
+						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", currentQueue.Info.BlockedAudio, world.LocalPlayer.Country.Race);
 				}
 
 				StartProduction(world, item);
@@ -413,15 +413,15 @@ namespace OpenRA.Mods.D2k.Widgets
 					// instant cancel of things we havent really started yet, and things that are finished
 					if (producing.Paused || producing.Done || producing.TotalCost == producing.RemainingCost)
 					{
-						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, world.LocalPlayer.Country.Race);
+						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", currentQueue.Info.CancelledAudio, world.LocalPlayer.Country.Race);
 						var numberToCancel = Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1;
 
-						world.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, item, numberToCancel));
+						world.IssueOrder(Order.CancelProduction(currentQueue.Actor, item, numberToCancel));
 					}
 					else
 					{
-						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, world.LocalPlayer.Country.Race);
-						world.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, item, true));
+						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", currentQueue.Info.OnHoldAudio, world.LocalPlayer.Country.Race);
+						world.IssueOrder(Order.PauseProduction(currentQueue.Actor, item, true));
 					}
 				}
 			}
@@ -429,29 +429,29 @@ namespace OpenRA.Mods.D2k.Widgets
 
 		void StartProduction(World world, string item)
 		{
-			world.IssueOrder(Order.StartProduction(CurrentQueue.Actor, item,
+			world.IssueOrder(Order.StartProduction(currentQueue.Actor, item,
 				Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 		}
 
 		void DrawBuildTabs(World world)
 		{
-			const int tabWidth = 24;
-			const int tabHeight = 40;
-			var x = paletteOrigin.X - tabWidth;
+			const int TabWidth = 24;
+			const int TabHeight = 40;
+			var x = paletteOrigin.X - TabWidth;
 			var y = paletteOrigin.Y + 9;
 
 			tabs.Clear();
 
-			foreach (var queue in VisibleQueues)
+			foreach (var queue in visibleQueues)
 			{
 				string[] tabKeys = { "normal", "ready", "selected" };
 				var producing = queue.CurrentItem();
-				var index = queue == CurrentQueue ? 2 : (producing != null && producing.Done) ? 1 : 0;
+				var index = queue == currentQueue ? 2 : (producing != null && producing.Done) ? 1 : 0;
 
 				var race = world.LocalPlayer.Country.Race;
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("tabs-" + tabKeys[index], race + "-" + queue.Info.Type), new float2(x, y));
 
-				var rect = new Rectangle((int)x, (int)y, tabWidth, tabHeight);
+				var rect = new Rectangle((int)x, (int)y, TabWidth, TabHeight);
 				tabs.Add(Pair.New(rect, HandleTabClick(queue, world)));
 
 				if (rect.Contains(Viewport.LastMousePos))
@@ -466,7 +466,7 @@ namespace OpenRA.Mods.D2k.Widgets
 					font.DrawText(text, new float2(rect.Left - sz.X - 20, rect.Top + 12), Color.White);
 				}
 
-				y += tabHeight;
+				y += TabHeight;
 			}
 		}
 
@@ -487,7 +487,7 @@ namespace OpenRA.Mods.D2k.Widgets
 			var tooltip = info.Traits.Get<TooltipInfo>();
 			var buildable = info.Traits.Get<BuildableInfo>();
 			var cost = info.Traits.Get<ValuedInfo>().Cost;
-			var canBuildThis = CurrentQueue.CanBuild(info);
+			var canBuildThis = currentQueue.CanBuild(info);
 
 			var longDescSize = Game.Renderer.Fonts["Regular"].Measure(tooltip.Description.Replace("\\n", "\n")).Y;
 			if (!canBuildThis) longDescSize += 8;
@@ -505,8 +505,8 @@ namespace OpenRA.Mods.D2k.Widgets
 				resources.DisplayCash + resources.DisplayResources >= cost ? Color.White : Color.Red);
 
 			var lowpower = power.PowerState != PowerState.Normal;
-			var time = CurrentQueue.GetBuildTime(info.Name)
-				* (lowpower ? CurrentQueue.Info.LowPowerSlowdown : 1);
+			var time = currentQueue.GetBuildTime(info.Name)
+				* (lowpower ? currentQueue.Info.LowPowerSlowdown : 1);
 			DrawRightAligned(WidgetUtils.FormatTime(time), pos + new int2(-5, 35), lowpower ? Color.Red : Color.White);
 
 			var pis = info.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1);
@@ -535,7 +535,7 @@ namespace OpenRA.Mods.D2k.Widgets
 		bool DoBuildingHotkey(KeyInput e, World world)
 		{
 			if (!paletteOpen) return false;
-			if (CurrentQueue == null) return false;
+			if (currentQueue == null) return false;
 
 			var key = Hotkey.FromKeyInput(e);
 			var ks = Game.Settings.Keys;
@@ -549,7 +549,7 @@ namespace OpenRA.Mods.D2k.Widgets
 				}
 			}
 
-			var allBuildables = CurrentQueue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder).ToArray();
+			var allBuildables = currentQueue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder).ToArray();
 			var toBuild = allBuildables.ElementAtOrDefault(slot);
 			if (toBuild != null)
 			{
@@ -565,10 +565,10 @@ namespace OpenRA.Mods.D2k.Widgets
 		bool ChangeTab(bool reverse)
 		{
 			Sound.PlayNotification(world.Map.Rules, null, "Sounds", "TabClick", null);
-			var queues = VisibleQueues.Concat(VisibleQueues);
+			var queues = visibleQueues.Concat(visibleQueues);
 			if (reverse)
 				queues = queues.Reverse();
-			var nextQueue = queues.SkipWhile(q => q != CurrentQueue)
+			var nextQueue = queues.SkipWhile(q => q != currentQueue)
 				.ElementAtOrDefault(1);
 			if (nextQueue != null)
 			{
