@@ -1345,3 +1345,54 @@ namisl:
 		Offset: 0, -24
 	icon: msslicon
 		Start: 0
+
+gaplug:
+	idle: gaplug
+		Start: 0
+		ShadowStart: 3
+		Offset: 12, -30
+	damaged-idle: gaplug
+		Start: 1
+		ShadowStart: 4
+		Offset: 12, -30
+	critical-idle: gaplug
+		Start: 2
+		ShadowStart: 5
+		Offset: 12, -30
+	idle-dish: gaplug_a
+		Start: 0
+		Length: 20
+		Tick: 120
+		Offset: 12, -30
+	damaged-idle-dish: gaplug_a
+		Start: 20
+		Length: 20
+		Tick: 120
+		Offset: 12, -30
+	idle-lights: gaplug_b
+		Start: 0
+		Length: 20
+		Tick: 120
+		Offset: 12, -30
+	damaged-idle-lights: gaplug_b
+		Start: 20
+		Length: 20
+		Tick: 120
+		Offset: 12, -30
+	idle-strip: gaplug_c
+		Start: 0
+		Length: 8
+		Tick: 120
+		Offset: 12, -30
+	damaged-idle-strip: gaplug_c
+		Start: 8
+		Length: 8
+		Tick: 120
+		Offset: 12, -30
+	make: gtplugmk
+		Start: 0
+		Length: 17
+		ShadowStart: 17
+		Offset: 12, -30
+	icon: plugicon
+		Start: 0

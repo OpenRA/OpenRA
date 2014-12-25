@@ -1341,6 +1341,55 @@ NAMISL:
 		BeaconPoster:
 		CameraActor: camera
 
+GAPLUG:
+	Inherits: ^Building
+	Valued:
+		Cost: 1800
+	Tooltip:
+		Name: GDI Upgrade Center
+		Description: Provides the Orbital Ion Cannon support power.\nRequires power to operate.
+	Selectable:
+		Bounds: 115,120,0,-20
+	Buildable:
+		BuildPaletteOrder: 100
+		Prerequisites: proc, gatech
+		Queue: Defense
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 2,3
+	RequiresPower:
+	CanPowerDown:
+	DisabledOverlay:
+	RenderBuilding:
+	WithIdleOverlay@DISH:
+		Sequence: idle-dish
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@STRIP:
+		Sequence: idle-strip
+	Health:
+		HP: 1000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 6c0
+	IonCannonPower:
+		Icon: ioncannon
+		Effect: ionbeam
+		ChargeTime: 180
+		Description: Ion Cannon
+		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
+		BeginChargeSound:
+		EndChargeSound: 00-i156.aud
+		LaunchSound:
+		SelectTargetSound:
+		InsufficientPowerSound:
+		DisplayRadarPing: True
+		CameraActor: camera
+	SupportPowerChargeBar:
+	Power:
+		Amount: -150
+
 ANYPOWER:
 	Tooltip:
 		Name: Power Plant
