@@ -19,7 +19,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.61,
+  _VERSION = 0.611,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -771,6 +771,8 @@ local function debugger_loop(sev, svars, sfile, sline)
           server:send("200 OK " .. #res .. "\n")
           server:send(res)
         else
+          -- fix error if not set (for example, when loadstring is not present)
+          if not res then res = "Unknown error" end
           server:send("401 Error in Expression " .. #res .. "\n")
           server:send(res)
         end
