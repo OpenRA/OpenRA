@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.desiredFacing = desiredFacing;
 		}
 
-		public override Activity Tick( Actor self )
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled)
 				return NextActivity;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var facing = self.Trait<IFacing>();
 
-			if( desiredFacing == facing.Facing )
+			if (desiredFacing == facing.Facing)
 				return NextActivity;
 			facing.Facing = Util.TickFacing(facing.Facing, desiredFacing, facing.ROT);
 
