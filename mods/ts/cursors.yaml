@@ -149,6 +149,9 @@ Cursors:
 		nuke:
 			Start: 279
 			Length: 20
+		ioncannon:
+			Start: 319
+			Length: 9
 		sell:
 			Start: 129
 			Length: 10

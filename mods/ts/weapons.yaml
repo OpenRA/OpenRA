@@ -1024,7 +1024,8 @@ IonCannon:
 		ProneModifier: 100
 		ValidTargets: Ground, Air
 	Warhead@2Eff_impact: CreateEffect
-		Explosion: ring1
+		Explosion: ionring
+		ImpactSound: ion1.aud
 	Warhead@3Dam_area: PerCellDamage
 		Size: 2
 		Damage: 250

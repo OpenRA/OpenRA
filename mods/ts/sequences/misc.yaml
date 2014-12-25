@@ -157,7 +157,6 @@ explosion:
 	ionring: ring1
 		Start: 0
 		Length: *
-		Tick: 160
 	pulse_explosion: pulsefx2
 		Start: 0
 		Length: *
@@ -551,3 +550,9 @@ clustermissile:
 	down: null # TODO
 		Start: 0
 		Length: *
+ionbeam:
+	idle:
+		Start: 0
+		Length: *
+		Offset: 0, -78
+		ZOffset: 1
