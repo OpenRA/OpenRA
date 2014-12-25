@@ -99,9 +99,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			unsafe
 			{
-				fixed (byte* _colors = &radarData[0])
+				fixed (byte* colorBytes = &radarData[0])
 				{
-					var colors = (int*)_colors;
+					var colors = (int*)colorBytes;
 					colors[(uv.Y + dy) * stride + uv.X + dx] = terrain.Color.ToArgb();
 				}
 			}
@@ -122,9 +122,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			unsafe
 			{
-				fixed (byte* _colors = &radarData[0])
+				fixed (byte* colorBytes = &radarData[0])
 				{
-					var colors = (int*)_colors;
+					var colors = (int*)colorBytes;
 					colors[(uv.Y + dy) * stride + uv.X + dx] = color;
 				}
 			}
@@ -279,9 +279,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 				unsafe
 				{
-					fixed (byte* _colors = &radarData[0])
+					fixed (byte* colorBytes = &radarData[0])
 					{
-						var colors = (int*)_colors;
+						var colors = (int*)colorBytes;
 
 						foreach (var t in world.ActorsWithTrait<IRadarSignature>())
 						{
