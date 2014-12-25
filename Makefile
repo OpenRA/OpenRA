@@ -183,6 +183,8 @@ check:
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Renderer.Null
 	@echo "Checking for code style violations in OpenRA.GameMonitor..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.GameMonitor
+	@echo "Checking for code style violations in OpenRA.Mods.Common..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Common
 	@echo "Checking for code style violations in OpenRA.Mods.Cnc..."
 	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.Cnc
 
