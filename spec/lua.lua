@@ -195,14 +195,13 @@ return {
           end
 
           if (var and typ) then
-            class,func = typ:match(varname.."["..q(sep).."]"..varname)
+            local class,func = typ:match(varname.."["..q(sep).."]"..varname)
             if (assigns[typ]) then
               assigns[var] = assigns[typ]
             elseif (func) then
-              -- FIXME remove this, in favor of proper api definitions
               local added
               local funcnames = {"new","load","create"}
-              for i,v in ipairs(funcnames) do
+              for _,v in ipairs(funcnames) do
                 if (func == v) then
                   assigns[var] = class
                   added = true
