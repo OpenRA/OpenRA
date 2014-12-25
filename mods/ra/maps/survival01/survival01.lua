@@ -44,13 +44,12 @@ SovietAttackGroupSize = 5
 SovietInfantryGroupSize = 7
 FactoryClearRange = 10
 ParadropTicks = DateTime.Seconds(30)
-BadgerPassengers = { "e1", "e1", "e1", "e2", "e2" }
 ParadropWaypoints =
 {
-	{ BadgerEntryPoint1.Location, ParaDrop1.Location },
-	{ BadgerEntryPoint2.Location, ParaDrop2.Location },
-	{ BadgerEntryPoint1.Location, Alliesbase2.Location },
-	{ BadgerEntryPoint2.Location, Alliesbase1.Location }
+	{ 192 + 4, ParaDrop1},
+	{ 192 - 4, ParaDrop2},
+	{ 192 + 4, Alliesbase2},
+	{ 192 - 4, Alliesbase1}
 }
 NavalTransportPassengers = { "e1", "e1", "e2", "e4", "e4" }
 NavalReinforcementsWaypoints = { NavalWaypoint1, NavalWaypoint2, NavalWaypoint2, NavalWaypoint3 }
@@ -120,13 +119,11 @@ Tick = function()
 end
 
 SendSovietParadrops = function(table)
-	local plane = Actor.Create("badr", true, { Owner = soviets, Location = table[1] })
-	Utils.Do(BadgerPassengers, function(type)
-		local unit = Actor.Create(type, false, { Owner = soviets })
-		plane.LoadPassenger(unit)
+	local units = powerproxy.SendParatroopers(table[2].CenterPosition, false, table[1])
+
+	Utils.Do(units, function(unit)
 		Trigger.OnIdle(unit, unit.Hunt)
 	end)
-	plane.Paradrop(table[2])
 end
 
 SendSovietNavalReinforcements = function()
@@ -357,6 +354,7 @@ SetupSoviets = function()
 	Reinforcements.Reinforce(soviets, Squad1, { AlliesBaseGate1.Location, Alliesbase1.Location })
 	Reinforcements.Reinforce(soviets, Squad2, { AlliesBaseGate2.Location, Alliesbase2.Location })
 
+	powerproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = soviets })
 	Trigger.AfterDelay(ParadropTicks, function()
 		SendSovietParadrops(ParadropWaypoints[1])
 		SendSovietParadrops(ParadropWaypoints[2])
