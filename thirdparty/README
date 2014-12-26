@@ -24,8 +24,3 @@ SDL2-CS.dll
 	https://github.com/flibitijibibo/SDL2-CS/
 	Commit e8731efadb249a40f46d646e2b783ec588326ea6
 	zlib license
-
-SharpFont.dll
-	https://github.com/Robmaister/SharpFont
-	Version 2.5.0.1
-	MIT license

@@ -33,3 +33,13 @@ if (!(Test-Path "MaxMind.GeoIP2.dll"))
 	cp RestSharp.105.0.0/lib/net4-client/RestSharp* .
 	rmdir RestSharp.105.0.0 -Recurse
 }
+
+if (!(Test-Path "SharpFont.dll"))
+{
+	echo "Fetching SharpFont from NuGet."
+	./nuget.exe install SharpFont -Version 2.5.3
+	cp SharpFont.2.5.3.0/lib/net20/SharpFont* .
+	cp SharpFont.2.5.3.0/Content/SharpFont.dll.config .
+	cp SharpFont.2.5.3.0/Content/freetype6.dll ./windows/
+	rmdir SharpFont.2.5.3.0 -Recurse
+}
