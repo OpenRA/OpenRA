@@ -23,7 +23,6 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly int[] Size = { 0, 0 };
 
 		// TODO: Allow maximum resource removal to be defined. (Per tile, and in total).
-
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var world = firedBy.World;

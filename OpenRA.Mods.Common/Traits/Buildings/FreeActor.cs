@@ -28,14 +28,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Which direction the unit should face.")]
 		public readonly int Facing = 0;
 
-		public object Create( ActorInitializer init ) { return new FreeActor(init, this); }
+		public object Create(ActorInitializer init) { return new FreeActor(init, this); }
 	}
 
 	public class FreeActor
 	{
 		public FreeActor(ActorInitializer init, FreeActorInfo info)
 		{
-			if (init.Contains<FreeActorInit>() && !init.Get<FreeActorInit>().value)
+			if (init.Contains<FreeActorInit>() && !init.Get<FreeActorInit>().ActorValue)
 				return;
 
 			init.self.World.AddFrameEndTask(w =>
@@ -57,16 +57,16 @@ namespace OpenRA.Mods.Common.Traits
 	public class FreeActorInit : IActorInit<bool>
 	{
 		[FieldFromYamlKey]
-		public readonly bool value = true;
+		public readonly bool ActorValue = true;
 		public FreeActorInit() { }
-		public FreeActorInit(bool init) { value = init; }
-		public bool Value(World world) { return value; }
+		public FreeActorInit(bool init) { ActorValue = init; }
+		public bool Value(World world) { return ActorValue; }
 	}
 
 	public class ParentActorInit : IActorInit<Actor>
 	{
-		public readonly Actor value;
-		public ParentActorInit(Actor parent) { value = parent; }
-		public Actor Value(World world) { return value; }
+		public readonly Actor ActorValue;
+		public ParentActorInit(Actor parent) { ActorValue = parent; }
+		public Actor Value(World world) { return ActorValue; }
 	}
 }

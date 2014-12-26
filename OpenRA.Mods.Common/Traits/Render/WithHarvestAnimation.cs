@@ -8,8 +8,8 @@
  */
 #endregion
 
-using OpenRA.Graphics;
 using OpenRA.Activities;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void MovingToRefinery(Actor self, CPos targetCell, Activity next) { }
 		public void MovementCancelled(Actor self) { }
 
-		static public int ZOffsetFromCenter(Actor self, WPos pos, int offset)
+		public static int ZOffsetFromCenter(Actor self, WPos pos, int offset)
 		{
 			var delta = self.CenterPosition - pos;
 			return delta.Y + delta.Z + offset;
