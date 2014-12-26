@@ -15,11 +15,6 @@ Mono.Nat.dll
 	Version 1.1.0
 	MIT license
 
-nunit.framework.dll
-	http://www.nunit.org/index.php?p=download
-	Version 2.6.3
-	zlib license
-
 SDL2-CS.dll
 	https://github.com/flibitijibibo/SDL2-CS/
 	Commit e8731efadb249a40f46d646e2b783ec588326ea6

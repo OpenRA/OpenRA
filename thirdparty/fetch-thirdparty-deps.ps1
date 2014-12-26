@@ -43,3 +43,11 @@ if (!(Test-Path "SharpFont.dll"))
 	cp SharpFont.2.5.3.0/Content/freetype6.dll ./windows/
 	rmdir SharpFont.2.5.3.0 -Recurse
 }
+
+if (!(Test-Path "nunit.framework.dll"))
+{
+	echo "Fetching NUnit from NuGet."
+	./nuget.exe install NUnit -Version 2.6.4
+	cp NUnit.2.6.4/lib/nunit.framework* .
+	rmdir NUnit.2.6.4 -Recurse
+}

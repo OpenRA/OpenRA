@@ -34,3 +34,10 @@ if [ ! -f SharpFont.dll ]; then
 	cp ./SharpFont.2.5.3.0/Content/freetype6.dll ./windows/
 	rm -rf SharpFont.2.5.3.0
 fi
+
+if [ ! -f nunit.framework.dll ]; then
+	echo "Fetching NUnit from nuget"
+	nuget install NUnit -Version 2.6.4
+	cp ./NUnit.2.6.4/lib/nunit.framework* .
+	rm -rf NUnit.2.6.4
+fi
