@@ -51,3 +51,12 @@ if (!(Test-Path "nunit.framework.dll"))
 	cp NUnit.2.6.4/lib/nunit.framework* .
 	rmdir NUnit.2.6.4 -Recurse
 }
+
+if (!(Test-Path "windows/SDL2.dll"))
+{
+	echo "Fetching SDL2 from NuGet."
+	./nuget.exe install sdl2 -Version 2.0.3
+	cp sdl2.redist.2.0.3/build/native/bin/Win32/dynamic/SDL2.dll ./windows/
+	rmdir sdl2.2.0.3 -Recurse
+	rmdir sdl2.redist.2.0.3 -Recurse
+}
