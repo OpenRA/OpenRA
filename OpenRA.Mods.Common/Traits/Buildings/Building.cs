@@ -17,13 +17,13 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Remove this trait to limit base-walking by cheap or defensive buildings.")]
-	public class GivesBuildableAreaInfo : TraitInfo<GivesBuildableArea> {}
-	public class GivesBuildableArea {}
+	public class GivesBuildableAreaInfo : TraitInfo<GivesBuildableArea> { }
+	public class GivesBuildableArea { }
 
 	public class BuildingInfo : ITraitInfo, IOccupySpaceInfo, UsesInit<LocationInit>
 	{
 		[Desc("Where you are allowed to place the building (Water, Clear, ...)")]
-		public readonly string[] TerrainTypes = {};
+		public readonly string[] TerrainTypes = { };
 		[Desc("The range to the next building it can be constructed. Set it higher for walls.")]
 		public readonly int Adjacent = 2;
 		[Desc("x means space it blocks, _ is a part that is passable by actors.")]
@@ -51,6 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (target.IsInRange(center, WRange.FromCells(bp.Trait.Info.Range)))
 					return bp.Actor;
 			}
+
 			return null;
 		}
 
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var buildingMaxBounds = Dimensions;
 			var buildingTraits = world.Map.Rules.Actors[buildingName].Traits;
-			if (buildingTraits.Contains<BibInfo>() && !(buildingTraits.Get<BibInfo>().HasMinibib))
+			if (buildingTraits.Contains<BibInfo>() && !buildingTraits.Get<BibInfo>().HasMinibib)
 				buildingMaxBounds += new CVec(0, 1);
 
 			var scanStart = world.Map.Clamp(topLeft - new CVec(Adjacent, Adjacent));
@@ -130,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.topLeft = init.Get<LocationInit, CPos>();
 			this.Info = info;
 
-			occupiedCells = FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft )
+			occupiedCells = FootprintUtils.UnpathableTiles(self.Info.Name, Info, TopLeft)
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
 			CenterPosition = init.world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.world, Info);
@@ -184,6 +185,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var s in Info.UndeploySounds)
 				Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
 		}
+
 		public void OnTransform(Actor self) { }
 		public void AfterTransform(Actor self) { }
 	}

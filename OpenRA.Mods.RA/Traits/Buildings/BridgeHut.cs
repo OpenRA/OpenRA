@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public BridgeHut(ActorInitializer init)
 		{
-			Bridge = init.Get<ParentActorInit>().value.Trait<Bridge>();
+			Bridge = init.Get<ParentActorInit>().ActorValue.Trait<Bridge>();
 			Bridge.AddHut(this);
 			FirstBridge = Bridge.Enumerate(0, true).Last();
 		}

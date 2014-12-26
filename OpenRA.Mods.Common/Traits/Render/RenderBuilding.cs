@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly bool PauseOnLowPower = false;
 
-		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this);}
+		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this); }
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
