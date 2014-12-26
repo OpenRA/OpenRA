@@ -1,0 +1,238 @@
+
+Flamethrower:
+	ReloadDelay: 55
+	Range: 2c512
+	InvalidTargets: Wall
+	Report: FLAMER2.AUD
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 341
+		Damage: 40
+		DeathType: 5
+		InvalidTargets: Wall
+		Versus:
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 20
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
+		Explosion: small_napalm
+		ImpactSound: flamer2.aud
+
+BigFlamer:
+	ReloadDelay: 50
+	Range: 3c512
+	InvalidTargets: Wall
+	Report: FLAMER2.AUD
+	Projectile: Bullet
+		Speed: 341
+	Burst: 2
+	BurstDelay: 25
+	Warhead@1Dam: SpreadDamage
+		Spread: 341
+		Damage: 75
+		DeathType: 5
+		InvalidTargets: Wall
+		Versus:
+			None: 100
+			Wood: 100
+			Light: 67
+			Heavy: 25
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
+		Explosion: med_napalm
+		ImpactSound: flamer2.aud
+
+Chemspray:
+	ReloadDelay: 70
+	Range: 3c0
+	Report: FLAMER2.AUD
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 80
+		DeathType: 6
+		Versus:
+			None: 100
+			Wood: 35
+			Light: 75
+			Heavy: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
+		Explosion: chemball
+		ImpactSound: xplos.aud
+
+Grenade:
+	ReloadDelay: 50
+	Range: 4c0
+	Report: toss1.aud
+	Projectile: Bullet
+		Speed: 119
+		High: yes
+		Angle: 62
+		Inaccuracy: 213
+		Image: BOMB
+	Warhead@1Dam: SpreadDamage
+		Spread: 341
+		Damage: 50
+		DeathType: 3
+		Versus:
+			None: 100
+			Wood: 50
+			Light: 75
+			Heavy: 35
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_poof
+		ImpactSound: xplos.aud
+
+Napalm:
+	ValidTargets: Ground, Water
+	ReloadDelay: 4
+	Range: 2c0
+	Burst: 2
+	BurstDelay: 2
+	Projectile: GravityBomb
+		Image: BOMBLET
+	Warhead@1Dam: SpreadDamage
+		Spread: 341
+		Damage: 30
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		DeathType: 5
+		ValidTargets: Ground, Water
+		Versus:
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 80
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
+		Explosion: med_napalm
+		ImpactSound: flamer2.aud
+
+Laser:
+	ReloadDelay: 1
+	Range: 7c512
+	Charges: true
+	Report: OBELRAY1.AUD
+	Projectile: LaserZap
+		BeamWidth: 2
+		HitAnim: laserfire
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 360
+		DeathType: 5
+		Versus:
+			Wood: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+
+Tiberium:
+	ReloadDelay: 16
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 2
+		DeathType: 6
+		PreventProne: yes
+
+TiberiumExplosion:
+	Warhead@1Dam: SpreadDamage
+		Spread: 9
+		Damage: 10
+		DeathType: 3
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+	Warhead@2Res: CreateResource
+		AddsResourceType: Tiberium
+		Size: 1,1
+	Warhead@3Eff: CreateEffect
+		Explosion: chemball
+		ImpactSound: xplosml2.aud
+
+Heal:
+	ReloadDelay: 4
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: -1
+		PreventProne: yes
+
+Tail:
+	ReloadDelay: 30
+	Range: 1c0
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 180
+		DeathType: 1
+		Versus:
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
+
+Horn:
+	ReloadDelay: 20
+	Range: 1c0
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 120
+		DeathType: 1
+		Versus:
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
+
+Teeth:
+	ReloadDelay: 30
+	Range: 1c0
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 180
+		DeathType: 1
+		Versus:
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
+
+Claw:
+	ReloadDelay: 10
+	Range: 1c0
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 60
+		DeathType: 1
+		Versus:
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
+
+Demolish:
+	Warhead@1Dam: SpreadDamage
+	Warhead@2Eff: CreateEffect
+		Explosion: building
+		ImpactSound: xplobig6.aud

@@ -1,0 +1,194 @@
+Sniper:
+	Report: RAMGUN2.AUD
+	ValidTargets: Infantry
+	ReloadDelay: 40
+	Range: 6c0
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 100
+		DeathType: 2
+		ValidTargets: Infantry
+
+HighV:
+	ReloadDelay: 25
+	Range: 6c0
+	Report: GUN8.AUD
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 683
+		Damage: 30
+		DeathType: 2
+		Versus:
+			None: 100
+			Wood: 50
+			Light: 70
+			Heavy: 35
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+
+HeliAGGun:
+	ReloadDelay: 20
+	Burst: 2
+	BurstDelay: 0
+	Range: 4c0
+	ValidTargets: Ground
+	Report: gun5.aud
+	Projectile: Bullet
+		Speed: 1c682
+		High: True
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 20
+		DeathType: 2
+		ValidTargets: Ground
+		Versus:
+			None: 100
+			Wood: 50
+			Light: 75
+			Heavy: 25
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+
+HeliAAGun:
+	ReloadDelay: 20
+	Burst: 2
+	BurstDelay: 0
+	Range: 4c0
+	ValidTargets: Air
+	Report: gun5.aud
+	Projectile: Bullet
+		Speed: 1c682
+		High: True
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 20
+		DeathType: 2
+		ValidTargets: Air
+		Versus:
+			None: 100
+			Wood: 50
+			Light: 50
+			Heavy: 25
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+
+Pistol:
+	ReloadDelay: 7
+	Range: 3c0
+	InvalidTargets: Wall
+	Report: GUN18.AUD
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 1
+		DeathType: 2
+		InvalidTargets: Wall
+		Versus:
+			None: 100
+			Wood: 50
+			Light: 50
+			Heavy: 25
+	Warhead@2Eff: CreateEffect
+		Explosion: piff
+
+M16:
+	ReloadDelay: 20
+	Range: 4c0
+	InvalidTargets: Wall
+	Report: MGUN2.AUD
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 15
+		DeathType: 2
+		InvalidTargets: Wall
+		Versus:
+			None: 100
+			Wood: 25
+			Light: 30
+			Heavy: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piff
+
+MachineGun:
+	ReloadDelay: 20
+	Burst: 5
+	InvalidTargets: Wall
+	Range: 4c0
+	Report: MGUN11.AUD
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 15
+		DeathType: 2
+		InvalidTargets: Wall
+		Versus:
+			None: 100
+			Wood: 20
+			Light: 50
+			Heavy: 20
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+
+Vulcan:
+	ValidTargets: Ground, Water
+	ReloadDelay: 2
+	Range: 6c0
+	Report: gun5.aud
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 100
+		DeathType: 2
+		ValidTargets: Ground, Water
+		Versus:
+			None: 100
+			Wood: 25
+			Light: 100
+			Heavy: 35
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+
+APCGun:
+	ReloadDelay: 18
+	Range: 5c0
+	Report: gun20.aud
+	ValidTargets: Ground
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 15
+		ValidTargets: Ground
+		Versus:
+			None: 50
+			Wood: 50
+			Light: 100
+			Heavy: 50
+	Warhead@2Eff: CreateEffect
+		Explosion: small_poof
+
+APCGun.AA:
+	ReloadDelay: 18
+	Range: 7c0
+	Report: gun20.aud
+	ValidTargets: Air
+	Projectile: Bullet
+		Speed: 1c682
+		High: true
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 25
+		ValidTargets: Air
+		Versus:
+			Heavy: 50
+	Warhead@2Eff: CreateEffect
+		Explosion: small_frag
