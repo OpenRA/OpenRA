@@ -30,6 +30,7 @@ thirdparty/Newtonsoft.Json*
 thirdparty/SharpFont*
 thirdparty/windows/freetype6.dll
 thirdparty/nunit*
+thirdparty/windows/SDL2.dll
 
 # backup files by various editors
 *~

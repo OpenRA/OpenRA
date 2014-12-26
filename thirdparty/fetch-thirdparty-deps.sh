@@ -41,3 +41,10 @@ if [ ! -f nunit.framework.dll ]; then
 	cp ./NUnit.2.6.4/lib/nunit.framework* .
 	rm -rf NUnit.2.6.4
 fi
+
+if [ ! -f windows/SDL2.dll ]; then
+	echo "Fetching SDL2 from nuget"
+	nuget install sdl2 -Version 2.0.3
+	cp ./sdl2.redist.2.0.3/build/native/bin/Win32/dynamic/SDL2.dll ./windows/
+	rm -rf sdl2.2.0.3 sdl2.redist.2.0.3
+fi
