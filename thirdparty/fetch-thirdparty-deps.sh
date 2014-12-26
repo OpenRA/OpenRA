@@ -48,3 +48,10 @@ if [ ! -f windows/SDL2.dll ]; then
 	cp ./sdl2.redist.2.0.3/build/native/bin/Win32/dynamic/SDL2.dll ./windows/
 	rm -rf sdl2.2.0.3 sdl2.redist.2.0.3
 fi
+
+if [ ! -f Mono.Nat.dll ]; then
+	echo "Fetching Mono.Nat from nuget"
+	nuget install Mono.Nat -Version 1.2.21
+	cp ./Mono.Nat.1.2.21.0/lib/net40/Mono.Nat.dll .
+	rm -rf Mono.Nat.1.2.21.0
+fi

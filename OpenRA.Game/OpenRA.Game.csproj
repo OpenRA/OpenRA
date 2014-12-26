@@ -53,7 +53,7 @@
       <HintPath>..\thirdparty\SharpFont.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Mono.Nat, Version=1.1.0.0, Culture=neutral">
+    <Reference Include="Mono.Nat">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
       <Package>mono.nat</Package>
