@@ -6,6 +6,7 @@ The following lists per-platform dependencies required to build from source.
 Windows
 =======
 
+* [Windows PowerShell >= 4.0](http://microsoft.com/powershell)
 * [.NET Framework >= 4.0 (Client Profile)](http://www.microsoft.com/en-us/download/details.aspx?id=17113)
 * [SDL 2 (included)](http://www.libsdl.org/download-2.0.php)
 * [FreeType (included)](http://gnuwin32.sourceforge.net/packages/freetype.htm)
