@@ -60,3 +60,11 @@ if (!(Test-Path "windows/SDL2.dll"))
 	rmdir sdl2.2.0.3 -Recurse
 	rmdir sdl2.redist.2.0.3 -Recurse
 }
+
+if (!(Test-Path "Mono.Nat.dll"))
+{
+	echo "Fetching Mono.Nat from NuGet."
+	./nuget.exe install Mono.Nat -Version 1.2.21
+	cp Mono.Nat.1.2.21.0/lib/net40/Mono.Nat.dll .
+	rmdir  Mono.Nat.1.2.21.0 -Recurse
+}
