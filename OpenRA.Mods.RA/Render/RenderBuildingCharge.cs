@@ -8,6 +8,8 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Traits;
+
 namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Used for tesla coil and obelisk.")]
