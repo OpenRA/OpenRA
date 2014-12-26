@@ -1,0 +1,141 @@
+70mm:
+	ReloadDelay: 30
+	Range: 4c0
+	Report: TNKFIRE3.AUD
+	Projectile: Bullet
+		Image: 120MM
+		Speed: 853
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 25
+		DeathType: 4
+		Versus:
+			None: 25
+			Wood: 75
+			Light: 100
+			Heavy: 100
+			Concrete: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+
+105mm:
+	ReloadDelay: 50
+	Range: 4c768
+	Report: TNKFIRE4.AUD
+	Projectile: Bullet
+		Image: 120MM
+		Speed: 682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 30
+		DeathType: 4
+		Versus:
+			None: 30
+			Wood: 75
+			Light: 75
+			Heavy: 100
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+
+120mm:
+	ReloadDelay: 40
+	Range: 4c768
+	Report: TNKFIRE6.AUD
+	Projectile: Bullet
+		Image: 120MM
+		Speed: 682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 40
+		DeathType: 4
+		Versus:
+			None: 25
+			Wood: 100
+			Light: 100
+			Heavy: 100
+			Concrete: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+
+120mmDual:
+	ReloadDelay: 40
+	Range: 4c768
+	Report: TNKFIRE6.AUD
+	Burst: 2
+	BurstDelay: 8
+	Projectile: Bullet
+		Image: 120MM
+		Speed: 682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 40
+		DeathType: 4
+		Versus:
+			None: 25
+			Wood: 100
+			Light: 100
+			Heavy: 100
+			Concrete: 100
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+
+TurretGun:
+	ReloadDelay: 20
+	Range: 6c0
+	Report: TNKFIRE6.AUD
+	Projectile: Bullet
+		Image: 120MM
+		Speed: 853
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 40
+		DeathType: 4
+		Versus:
+			None: 20
+			Wood: 25
+			Light: 100
+			Heavy: 100
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+
+ArtilleryShell:
+	ReloadDelay: 65
+	Range: 11c0
+	MinRange: 2c896
+	Report: TNKFIRE2.AUD
+	Projectile: Bullet
+		Speed: 204
+		High: yes
+		Angle: 56
+		Inaccuracy: 1c256
+		ContrailLength: 30
+		Image: 120MM
+	Warhead@1Dam: SpreadDamage
+		Spread: 341
+		Damage: 150
+		DeathType: 3
+		Versus:
+			None: 100
+			Wood: 80
+			Light: 75
+			Heavy: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: poof
+		ImpactSound: XPLOSML2.AUD
