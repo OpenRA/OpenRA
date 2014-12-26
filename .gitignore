@@ -23,6 +23,7 @@ mods/*/*.mdb
 /*.mdb
 /*.exe
 thirdparty/StyleCop*
+thirdparty/ICSharpCode.SharpZipLib.dll*
 
 # backup files by various editors
 *~
