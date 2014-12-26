@@ -24,6 +24,9 @@ mods/*/*.mdb
 /*.exe
 thirdparty/StyleCop*
 thirdparty/ICSharpCode.SharpZipLib.dll*
+thirdparty/MaxMind*
+thirdparty/RestSharp*
+thirdparty/Newtonsoft.Json*
 
 # backup files by various editors
 *~
