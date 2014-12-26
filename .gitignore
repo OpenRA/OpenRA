@@ -27,6 +27,8 @@ thirdparty/ICSharpCode.SharpZipLib.dll*
 thirdparty/MaxMind*
 thirdparty/RestSharp*
 thirdparty/Newtonsoft.Json*
+thirdparty/SharpFont*
+thirdparty/windows/freetype6.dll
 
 # backup files by various editors
 *~

@@ -25,3 +25,12 @@ if [ ! -f MaxMind.GeoIP2.dll ]; then
 	cp ./RestSharp.105.0.0/lib/net4-client/RestSharp* .
 	rm -rf RestSharp.105.0.0
 fi
+
+if [ ! -f SharpFont.dll ]; then
+	echo "Fetching SharpFont from nuget"
+	nuget install SharpFont -Version 2.5.3
+	cp ./SharpFont.2.5.3.0/lib/net20/SharpFont* .
+	cp ./SharpFont.2.5.3.0/Content/SharpFont.dll.config .
+	cp ./SharpFont.2.5.3.0/Content/freetype6.dll ./windows/
+	rm -rf SharpFont.2.5.3.0
+fi
