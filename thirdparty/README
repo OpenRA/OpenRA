@@ -10,14 +10,6 @@ FuzzyLogicLibrary.dll
 	Version 1.2.0
 	GPL v2.0 license
 
-MaxMind.Db.dll
-MaxMind.GeoIP2.dll
-Newtonsoft.Json.dll
-RestSharp.dll
-	https://github.com/maxmind/GeoIP2-dotnet/
-	Version 2.1.0
-	Apache 2.0 license
-
 Mono.Nat.dll
 	http://projects.qnetp.net/projects/show/mono-nat
 	Version 1.1.0

@@ -19,3 +19,17 @@ if (!(Test-Path "ICSharpCode.SharpZipLib.dll"))
 	cp SharpZipLib.0.86.0/lib/20/ICSharpCode.SharpZipLib.dll .
 	rmdir SharpZipLib.0.86.0 -Recurse
 }
+
+if (!(Test-Path "MaxMind.GeoIP2.dll"))
+{
+	echo "Fetching MaxMind.GeoIP2 from NuGet."
+	./nuget.exe install MaxMind.GeoIP2 -Version 2.1.0
+	cp MaxMind.Db.1.0.0.0/lib/net40/MaxMind.Db.* .
+	rmdir MaxMind.Db.1.0.0.0 -Recurse
+	cp MaxMind.GeoIP2.2.1.0.0/lib/net40/MaxMind.GeoIP2* .
+	rmdir MaxMind.GeoIP2.2.1.0.0 -Recurse
+	cp Newtonsoft.Json.6.0.5/lib/net40/Newtonsoft.Json* .
+	rmdir Newtonsoft.Json.6.0.5 -Recurse
+	cp RestSharp.105.0.0/lib/net4-client/RestSharp* .
+	rmdir RestSharp.105.0.0 -Recurse
+}
