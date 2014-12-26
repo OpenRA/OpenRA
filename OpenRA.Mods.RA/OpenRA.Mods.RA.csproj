@@ -381,8 +381,6 @@
     <Compile Include="Widgets\Logic\DebugMenuLogic.cs" />
     <Compile Include="ProductionQueueFromSelection.cs" />
     <Compile Include="GainsStatUpgrades.cs" />
-    <Compile Include="Warheads\CreateResourceWarhead.cs" />
-    <Compile Include="Warheads\DestroyResourceWarhead.cs" />
     <Compile Include="Warheads\PerCellDamageWarhead.cs" />
     <Compile Include="Scripting\Properties\HarvesterProperties.cs" />
     <Compile Include="Scripting\Properties\HelicopterProperties.cs" />
