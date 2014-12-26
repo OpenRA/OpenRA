@@ -10,35 +10,7 @@ FuzzyLogicLibrary.dll
 	Version 1.2.0
 	GPL v2.0 license
 
-ICSharpCode.SharpZipLib.dll
-	http://icsharpcode.github.io/SharpZipLib/
-	Version 0.86
-	GPL 2.0 with GNU Classpath exception
-
-MaxMind.Db.dll
-MaxMind.GeoIP2.dll
-Newtonsoft.Json.dll
-RestSharp.dll
-	https://github.com/maxmind/GeoIP2-dotnet/
-	Version 2.1.0
-	Apache 2.0 license
-
-Mono.Nat.dll
-	http://projects.qnetp.net/projects/show/mono-nat
-	Version 1.1.0
-	MIT license
-
-nunit.framework.dll
-	http://www.nunit.org/index.php?p=download
-	Version 2.6.3
-	zlib license
-
 SDL2-CS.dll
 	https://github.com/flibitijibibo/SDL2-CS/
 	Commit e8731efadb249a40f46d646e2b783ec588326ea6
 	zlib license
-
-SharpFont.dll
-	https://github.com/Robmaister/SharpFont
-	Version 2.5.0.1
-	MIT license
