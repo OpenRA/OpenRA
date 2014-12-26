@@ -10,11 +10,6 @@ FuzzyLogicLibrary.dll
 	Version 1.2.0
 	GPL v2.0 license
 
-ICSharpCode.SharpZipLib.dll
-	http://icsharpcode.github.io/SharpZipLib/
-	Version 0.86
-	GPL 2.0 with GNU Classpath exception
-
 MaxMind.Db.dll
 MaxMind.GeoIP2.dll
 Newtonsoft.Json.dll
