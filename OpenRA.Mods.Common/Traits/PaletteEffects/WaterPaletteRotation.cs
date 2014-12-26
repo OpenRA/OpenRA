@@ -25,10 +25,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	class WaterPaletteRotation : ITick, IPaletteModifier
 	{
-		float t = 0;
-
 		readonly WaterPaletteRotationInfo info;
 		readonly World world;
+		float t = 0;
 
 		public WaterPaletteRotation(World world, WaterPaletteRotationInfo info)
 		{

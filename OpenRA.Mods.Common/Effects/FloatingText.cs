@@ -19,6 +19,8 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class FloatingText : IEffect
 	{
+		static readonly WVec Velocity = new WVec(0, 0, 86);
+
 		readonly SpriteFont font;
 		readonly string text;
 		Color color;
@@ -34,13 +36,12 @@ namespace OpenRA.Mods.Common.Effects
 			this.remaining = duration;
 		}
 
-		static readonly WVec velocity = new WVec(0, 0, 86);
 		public void Tick(World world)
 		{
 			if (--remaining <= 0)
 				world.AddFrameEndTask(w => w.Remove(this));
 
-			pos += velocity;
+			pos += Velocity;
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

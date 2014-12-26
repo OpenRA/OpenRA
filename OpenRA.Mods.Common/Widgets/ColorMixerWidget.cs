@@ -22,7 +22,10 @@ namespace OpenRA.Mods.Common.Widgets
 		public float[] VRange = { 0.2f, 1.0f };
 		public event Action OnChange = () => { };
 
-		float H, S, V;
+		public float H { get; private set; }
+		public float S { get; private set; }
+		public float V { get; private set; }
+
 		byte[] front, back;
 		Sprite mixerSprite;
 		bool isMoving;

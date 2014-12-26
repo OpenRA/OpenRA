@@ -20,8 +20,8 @@ namespace OpenRA.Mods.D2k.Widgets
 		public int2 ClosedOffset = int2.Zero;
 		public int AnimationLength = 0;
 		public Func<bool> IsOpen = () => false;
-		public Action AfterOpen = () => {};
-		public Action AfterClose = () => {};
+		public Action AfterOpen = () => { };
+		public Action AfterClose = () => { };
 
 		int2 offset;
 		int frame;

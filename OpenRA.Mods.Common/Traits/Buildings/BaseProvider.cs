@@ -75,8 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 				WRange.FromCells(Info.Range),
 				0,
 				Color.FromArgb(128, Ready() ? Color.White : Color.Red),
-				Color.FromArgb(96, Color.Black)
-			);
+				Color.FromArgb(96, Color.Black));
 		}
 
 		// Selection bar

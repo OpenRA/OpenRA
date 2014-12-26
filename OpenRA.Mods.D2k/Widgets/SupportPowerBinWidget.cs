@@ -27,12 +27,13 @@ namespace OpenRA.Mods.D2k.Widgets
 		public int IconWidth = 64;
 		public int IconHeight = 48;
 
-		Animation icon;
-		Animation clock;
-		readonly List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
+		readonly List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle, Action<MouseInput>>>();
 
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
+
+		Animation icon;
+		Animation clock;
 
 		[ObjectCreator.UseCtor]
 		public SupportPowerBinWidget(World world, WorldRenderer worldRenderer)
@@ -74,7 +75,8 @@ namespace OpenRA.Mods.D2k.Widgets
 		{
 			buttons.Clear();
 
-			if( world.LocalPlayer == null ) return;
+			if (world.LocalPlayer == null)
+				return;
 
 			var manager = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
 			var powers = manager.Powers.Where(p => !p.Value.Disabled);
@@ -82,7 +84,7 @@ namespace OpenRA.Mods.D2k.Widgets
 			if (numPowers == 0) return;
 
 			var rectBounds = RenderBounds;
-			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-top"),new float2(rectBounds.X,rectBounds.Y));
+			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-top"), new float2(rectBounds.X, rectBounds.Y));
 			for (var i = 1; i < numPowers; i++)
 				WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-middle"), new float2(rectBounds.X, rectBounds.Y + i * 51));
 			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-bottom"), new float2(rectBounds.X, rectBounds.Y + numPowers * 51));
@@ -104,17 +106,17 @@ namespace OpenRA.Mods.D2k.Widgets
 				if (rect.Contains(Viewport.LastMousePos))
 				{
 					var pos = drawPos.ToInt2();
-					var tl = new int2(pos.X-3,pos.Y-3);
-					var m = new int2(pos.X+64+3,pos.Y+48+3);
-					var br = tl + new int2(64+3+20,40);
+					var tl = new int2(pos.X - 3, pos.Y - 3);
+					var m = new int2(pos.X + 64 + 3, pos.Y + 48 + 3);
+					var br = tl + new int2(64 + 3 + 20, 40);
 
 					if (sp.TotalTime > 0)
-						br += new int2(0,20);
+						br += new int2(0, 20);
 
 					if (sp.Info.LongDesc != null)
 						br += Game.Renderer.Fonts["Regular"].Measure(sp.Info.LongDesc.Replace("\\n", "\n"));
 					else
-						br += new int2(300,0);
+						br += new int2(300, 0);
 
 					var border = WidgetUtils.GetBorderSizes("dialog4");
 
@@ -130,9 +132,9 @@ namespace OpenRA.Mods.D2k.Widgets
 
 					if (sp.TotalTime > 0)
 					{
-						pos += new int2(0,20);
+						pos += new int2(0, 20);
 						Game.Renderer.Fonts["Bold"].DrawText(WidgetUtils.FormatTime(sp.RemainingTime), pos, Color.White);
-						Game.Renderer.Fonts["Bold"].DrawText("/ {0}".F(WidgetUtils.FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);
+						Game.Renderer.Fonts["Bold"].DrawText("/ {0}".F(WidgetUtils.FormatTime(sp.TotalTime)), pos + new int2(45, 0), Color.White);
 					}
 
 					if (sp.Info.LongDesc != null)
@@ -160,7 +162,7 @@ namespace OpenRA.Mods.D2k.Widgets
 					font.DrawTextWithContrast(overlay, overlayPos - new float2(size.X / 2, 0), Color.White, Color.Black, 1);
 				}
 
-				buttons.Add(Pair.New(rect,HandleSupportPower(kv.Key, manager)));
+				buttons.Add(Pair.New(rect, HandleSupportPower(kv.Key, manager)));
 
 				y += 51;
 			}

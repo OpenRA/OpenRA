@@ -29,6 +29,10 @@ namespace OpenRA.Mods.Common.Widgets
 		public Action AfterClose = () => { };
 		public Action<float> Animating = _ => { };
 
+		readonly World world;
+		readonly WorldRenderer worldRenderer;
+		readonly RadarPings radarPings;
+
 		float radarMinimapHeight;
 		int frame;
 		bool hasRadar;
@@ -45,11 +49,6 @@ namespace OpenRA.Mods.Common.Widgets
 		Sprite actorSprite;
 		Sprite shroudSprite;
 		Shroud renderShroud;
-
-		readonly World world;
-		readonly WorldRenderer worldRenderer;
-
-		readonly RadarPings radarPings;
 
 		[ObjectCreator.UseCtor]
 		public RadarWidget(World world, WorldRenderer worldRenderer)
@@ -100,9 +99,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			unsafe
 			{
-				fixed (byte* _colors = &radarData[0])
+				fixed (byte* colorBytes = &radarData[0])
 				{
-					var colors = (int*)_colors;
+					var colors = (int*)colorBytes;
 					colors[(uv.Y + dy) * stride + uv.X + dx] = terrain.Color.ToArgb();
 				}
 			}
@@ -123,9 +122,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			unsafe
 			{
-				fixed (byte* _colors = &radarData[0])
+				fixed (byte* colorBytes = &radarData[0])
 				{
-					var colors = (int*)_colors;
+					var colors = (int*)colorBytes;
 					colors[(uv.Y + dy) * stride + uv.X + dx] = color;
 				}
 			}
@@ -280,9 +279,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 				unsafe
 				{
-					fixed (byte* _colors = &radarData[0])
+					fixed (byte* colorBytes = &radarData[0])
 					{
-						var colors = (int*)_colors;
+						var colors = (int*)colorBytes;
 
 						foreach (var t in world.ActorsWithTrait<IRadarSignature>())
 						{

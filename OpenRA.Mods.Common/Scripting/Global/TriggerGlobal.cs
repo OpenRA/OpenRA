@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var group = actors.ToList();
 			var copy = (LuaFunction)func.CopyReference();
-			Action<Actor> OnMemberKilled = m =>
+			Action<Actor> onMemberKilled = m =>
 			{
 				try
 				{
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Scripting
 			};
 
 			foreach (var a in group)
-				GetScriptTriggers(a).OnKilledInternal += OnMemberKilled;
+				GetScriptTriggers(a).OnKilledInternal += onMemberKilled;
 		}
 
 		[Desc("Call a function when one of the actors in a group is killed. The callback " +
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var called = false;
 			var copy = (LuaFunction)func.CopyReference();
-			Action<Actor> OnMemberKilled = m =>
+			Action<Actor> onMemberKilled = m =>
 			{
 				try
 				{
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Scripting
 			};
 
 			foreach (var a in actors)
-				GetScriptTriggers(a).OnKilledInternal += OnMemberKilled;
+				GetScriptTriggers(a).OnKilledInternal += onMemberKilled;
 		}
 
 		[Desc("Call a function when this actor produces another actor. " +
@@ -192,7 +192,7 @@ namespace OpenRA.Mods.Common.Scripting
 			var group = actors.ToList();
 
 			var copy = (LuaFunction)func.CopyReference();
-			Action<Actor> OnMemberRemoved = m =>
+			Action<Actor> onMemberRemoved = m =>
 			{
 				try
 				{
@@ -210,7 +210,7 @@ namespace OpenRA.Mods.Common.Scripting
 			};
 
 			foreach (var a in group)
-				GetScriptTriggers(a).OnRemovedInternal += OnMemberRemoved;
+				GetScriptTriggers(a).OnRemovedInternal += onMemberRemoved;
 		}
 
 		[Desc("Call a function when this actor is captured. The callback function " +
@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Scripting
 			var called = false;
 
 			var copy = (LuaFunction)func.CopyReference();
-			Action<Actor> OnKilledOrCaptured = m =>
+			Action<Actor> onKilledOrCaptured = m =>
 			{
 				try
 				{
@@ -244,8 +244,8 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 			};
 
-			GetScriptTriggers(a).OnCapturedInternal += OnKilledOrCaptured;
-			GetScriptTriggers(a).OnKilledInternal += OnKilledOrCaptured;
+			GetScriptTriggers(a).OnCapturedInternal += onKilledOrCaptured;
+			GetScriptTriggers(a).OnKilledInternal += onKilledOrCaptured;
 		}
 
 		[Desc("Call a function when all of the actors in a group have been killed or captured. " +
@@ -255,7 +255,7 @@ namespace OpenRA.Mods.Common.Scripting
 			var group = actors.ToList();
 
 			var copy = (LuaFunction)func.CopyReference();
-			Action<Actor> OnMemberKilledOrCaptured = m =>
+			Action<Actor> onMemberKilledOrCaptured = m =>
 			{
 				try
 				{
@@ -277,8 +277,8 @@ namespace OpenRA.Mods.Common.Scripting
 
 			foreach (var a in group)
 			{
-				GetScriptTriggers(a).OnCapturedInternal += OnMemberKilledOrCaptured;
-				GetScriptTriggers(a).OnKilledInternal += OnMemberKilledOrCaptured;
+				GetScriptTriggers(a).OnCapturedInternal += onMemberKilledOrCaptured;
+				GetScriptTriggers(a).OnKilledInternal += onMemberKilledOrCaptured;
 			}
 		}
 

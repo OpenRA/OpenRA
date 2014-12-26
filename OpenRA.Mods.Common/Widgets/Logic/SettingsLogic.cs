@@ -28,22 +28,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		WorldRenderer worldRenderer;
 		SoundDevice soundDevice;
 
-		static readonly string originalSoundDevice;
-		static readonly string originalSoundEngine;
-		static readonly WindowMode originalGraphicsMode;
-		static readonly string originalGraphicsRenderer;
-		static readonly int2 originalGraphicsWindowedSize;
-		static readonly int2 originalGraphicsFullscreenSize;
+		static readonly string OriginalSoundDevice;
+		static readonly string OriginalSoundEngine;
+		static readonly WindowMode OriginalGraphicsMode;
+		static readonly string OriginalGraphicsRenderer;
+		static readonly int2 OriginalGraphicsWindowedSize;
+		static readonly int2 OriginalGraphicsFullscreenSize;
 
 		static SettingsLogic()
 		{
 			var original = Game.Settings;
-			originalSoundDevice = original.Sound.Device;
-			originalSoundEngine = original.Sound.Engine;
-			originalGraphicsMode = original.Graphics.Mode;
-			originalGraphicsRenderer = original.Graphics.Renderer;
-			originalGraphicsWindowedSize = original.Graphics.WindowedSize;
-			originalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
+			OriginalSoundDevice = original.Sound.Device;
+			OriginalSoundEngine = original.Sound.Engine;
+			OriginalGraphicsMode = original.Graphics.Mode;
+			OriginalGraphicsRenderer = original.Graphics.Renderer;
+			OriginalGraphicsWindowedSize = original.Graphics.WindowedSize;
+			OriginalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
 		}
 
 		[ObjectCreator.UseCtor]
@@ -66,12 +66,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				current.Save();
 
 				Action closeAndExit = () => { Ui.CloseWindow(); onExit(); };
-				if (originalSoundDevice != current.Sound.Device ||
-					originalSoundEngine != current.Sound.Engine ||
-					originalGraphicsMode != current.Graphics.Mode ||
-					originalGraphicsRenderer != current.Graphics.Renderer ||
-					originalGraphicsWindowedSize != current.Graphics.WindowedSize ||
-					originalGraphicsFullscreenSize != current.Graphics.FullscreenSize)
+				if (OriginalSoundDevice != current.Sound.Device ||
+					OriginalSoundEngine != current.Sound.Engine ||
+					OriginalGraphicsMode != current.Graphics.Mode ||
+					OriginalGraphicsRenderer != current.Graphics.Renderer ||
+					OriginalGraphicsWindowedSize != current.Graphics.WindowedSize ||
+					OriginalGraphicsFullscreenSize != current.Graphics.FullscreenSize)
 					ConfirmationDialogs.PromptConfirmAction(
 						"Restart Now?",
 						"Some changes will not be applied until\nthe game is restarted. Restart now?",

@@ -36,8 +36,8 @@ namespace OpenRA.Mods.TS.Traits
 
 		public readonly WAngle LightPitch = WAngle.FromDegrees(50);
 		public readonly WAngle LightYaw = WAngle.FromDegrees(240);
-		public readonly float[] LightAmbientColor = new float[] {0.6f, 0.6f, 0.6f};
-		public readonly float[] LightDiffuseColor = new float[] {0.4f, 0.4f, 0.4f};
+		public readonly float[] LightAmbientColor = new float[] { 0.6f, 0.6f, 0.6f };
+		public readonly float[] LightDiffuseColor = new float[] { 0.4f, 0.4f, 0.4f };
 
 		public virtual object Create(ActorInitializer init) { return new RenderVoxels(init.self, this); }
 
@@ -59,7 +59,6 @@ namespace OpenRA.Mods.TS.Traits
 				this.LightYaw, this.LightAmbientColor, this.LightDiffuseColor, body.CameraPitch, 
 				palette, init.WorldRenderer.Palette(NormalsPalette), init.WorldRenderer.Palette("shadow"));
 		}
-
 	}
 
 	public class RenderVoxels : IRender, INotifyOwnerChanged
@@ -77,7 +76,7 @@ namespace OpenRA.Mods.TS.Traits
 			this.info = info;
 			body = self.Trait<IBodyOrientation>();
 			camera = new WRot(WAngle.Zero, body.CameraPitch - new WAngle(256), new WAngle(256));
-			lightSource = new WRot(WAngle.Zero,new WAngle(256) - info.LightPitch, info.LightYaw);
+			lightSource = new WRot(WAngle.Zero, new WAngle(256) - info.LightPitch, info.LightYaw);
 		}
 
 		bool initializePalettes = true;

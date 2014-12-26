@@ -19,15 +19,14 @@ namespace OpenRA.Mods.Common.Graphics
 		public int Length { get { return trail.Length; } }
 
 		readonly World world;
+		readonly Color color;
+		readonly int zOffset;
 
 		// Store trail positions in a circular buffer
 		readonly WPos[] trail;
 		int next;
 		int length;
 		int skip;
-
-		readonly Color color;
-		readonly int zOffset;
 
 		public ContrailRenderable(World world, Color color, int length, int skip, int zOffset)
 			: this(world, new WPos[length], 0, 0, skip, color, zOffset) { }
@@ -43,7 +42,7 @@ namespace OpenRA.Mods.Common.Graphics
 			this.zOffset = zOffset;
 		}
 
-		public WPos Pos { get { return trail[idx(next - 1)]; } }
+		public WPos Pos { get { return trail[Index(next - 1)]; } }
 		public float Scale { get { return 1f; } }
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
@@ -67,13 +66,13 @@ namespace OpenRA.Mods.Common.Graphics
 			wlr.LineWidth = wr.Viewport.Zoom;
 
 			// Start of the first line segment is the tail of the list - don't smooth it.
-			var curPos = trail[idx(next - skip - 1)];
+			var curPos = trail[Index(next - skip - 1)];
 			var curCell = wr.world.Map.CellContaining(curPos);
 			var curColor = color;
 			for (var i = 0; i < length - skip - 4; i++)
 			{
 				var j = next - skip - i - 2;
-				var nextPos = Average(trail[idx(j)], trail[idx(j - 1)], trail[idx(j - 2)], trail[idx(j - 3)]);
+				var nextPos = Average(trail[Index(j)], trail[Index(j - 1)], trail[Index(j - 2)], trail[Index(j - 3)]);
 				var nextCell = wr.world.Map.CellContaining(nextPos);
 				var nextColor = Exts.ColorLerp(i * 1f / (length - 4), color, Color.Transparent);
 
@@ -91,7 +90,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public void RenderDebugGeometry(WorldRenderer wr) { }
 
 		// Array index modulo length
-		int idx(int i)
+		int Index(int i)
 		{
 			var j = i % trail.Length;
 			return j < 0 ? j + trail.Length : j;
@@ -105,7 +104,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public void Update(WPos pos)
 		{
 			trail[next] = pos;
-			next = idx(next + 1);
+			next = Index(next + 1);
 
 			if (length < trail.Length)
 				length++;

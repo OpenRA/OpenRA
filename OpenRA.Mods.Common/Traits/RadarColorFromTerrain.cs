@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class RadarColorFromTerrainInfo : ITraitInfo
 	{
 		public readonly string Terrain;
-		public object Create( ActorInitializer init ) { return new RadarColorFromTerrain(init.self,Terrain); }
+		public object Create(ActorInitializer init) { return new RadarColorFromTerrain(init.self, Terrain); }
 	}
 
 	public class RadarColorFromTerrain : IRadarColorModifier

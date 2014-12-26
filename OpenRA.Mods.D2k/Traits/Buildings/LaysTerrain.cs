@@ -21,7 +21,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly ushort Template = 0;
 
 		[Desc("The terrain types that this template will be placed on")]
-		public readonly string[] TerrainTypes = {};
+		public readonly string[] TerrainTypes = { };
 
 		[Desc("Offset relative to the actor TopLeft. Not used if the template is PickAny")]
 		public readonly CVec Offset = CVec.Zero;
