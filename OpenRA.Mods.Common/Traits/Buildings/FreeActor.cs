@@ -12,7 +12,7 @@ using OpenRA.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Player recives a unit for free once the building is placed. This also works for structures.",
 		"If you want more than one unit to appear copy this section and assign IDs like FreeActor@2, ...")]

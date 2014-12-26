@@ -11,11 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Remove this trait to limit base-walking by cheap or defensive buildings.")]
 	public class GivesBuildableAreaInfo : TraitInfo<GivesBuildableArea> {}
