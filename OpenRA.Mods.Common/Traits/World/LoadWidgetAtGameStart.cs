@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -16,14 +17,22 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class LoadWidgetAtGameStartInfo : ITraitInfo
 	{
-		public readonly string Widget = null;
+		[Desc("The widget tree to open when a shellmap is loaded (i.e. the main menu).")]
+		public readonly string ShellmapRoot = "MAINMENU";
+
+		[Desc("The widget tree to open when a regular map is loaded (i.e. the ingame UI).")]
+		public readonly string IngameRoot = "INGAME_ROOT";
+
+		[Desc("Remove any existing UI when a map is loaded.")]
 		public readonly bool ClearRoot = true;
+
 		public object Create(ActorInitializer init) { return new LoadWidgetAtGameStart(this); }
 	}
 
 	public class LoadWidgetAtGameStart : IWorldLoaded
 	{
 		readonly LoadWidgetAtGameStartInfo info;
+
 		public LoadWidgetAtGameStart(LoadWidgetAtGameStartInfo info)
 		{
 			this.info = info;
@@ -35,7 +44,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.ClearRoot)
 				Ui.ResetAll();
 
-			Game.LoadWidget(world, info.Widget, Ui.Root, new WidgetArgs());
+			var widget = world.Type == WorldType.Shellmap ? info.ShellmapRoot : info.IngameRoot;
+			Game.LoadWidget(world, widget, Ui.Root, new WidgetArgs());
 		}
 	}
 }

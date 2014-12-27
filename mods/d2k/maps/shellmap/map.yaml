@@ -116,8 +116,6 @@ Smudges:
 
 Rules:
 	World:
-		LoadWidgetAtGameStart:
-			Widget: MAINMENU
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:

@@ -6,7 +6,7 @@ chrome-gdi: chrome-gdi.png
 	tooltip-bg: 0,288,272,136
 	radar: 297,31,210,222
 
-power-gdi: chrome-gdi.png
+sidebar-bits: chrome-gdi.png
 	power-indicator: 187,4,4,7
 
 palette-gdi: chrome-gdi.png
@@ -42,9 +42,6 @@ chrome-nod: chrome-nod.png
 	moneybin: 192,0,320,32
 	tooltip-bg: 0,288,272,136
 	radar: 297,31,210,222
-
-power-nod: chrome-nod.png
-	power-indicator: 187,4,4,7
 
 palette-nod: chrome-nod.png
 	top: 297,288,201,9

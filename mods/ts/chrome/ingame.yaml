@@ -1,5 +1,5 @@
 Container@INGAME_ROOT:
-	Logic: IngameChromeLogic
+	Logic: LoadIngamePlayerOrObserverUILogic
 	Children:
 		Container@WORLD_ROOT:
 			Children:

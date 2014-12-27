@@ -92,11 +92,11 @@
     <Compile Include="Traits\World\WormManager.cs" />
     <Compile Include="Warheads\ChangeOwnerWarhead.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
-    <Compile Include="Widgets\Logic\IngameChromeLogic.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\SupportPowerBinWidget.cs" />
     <Compile Include="Widgets\SlidingContainerWidget.cs" />
     <Compile Include="Traits\Render\WithAttackOverlay.cs" />
+    <Compile Include="Widgets\Logic\SlidingRadarBinLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
