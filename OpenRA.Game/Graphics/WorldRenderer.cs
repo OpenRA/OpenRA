@@ -109,7 +109,7 @@ namespace OpenRA.Graphics
 		{
 			RefreshPalette();
 
-			if (World.IsShellmap && !Game.Settings.Game.ShowShellmap)
+			if (World.Type == WorldType.Shellmap && !Game.Settings.Game.ShowShellmap)
 				return;
 
 			var renderables = GenerateRenderables();
@@ -158,7 +158,7 @@ namespace OpenRA.Graphics
 					foreach (var r in g)
 						r.RenderDebugGeometry(this);
 
-			if (!World.IsShellmap && Game.Settings.Game.AlwaysShowStatusBars)
+			if (World.Type == WorldType.Regular && Game.Settings.Game.AlwaysShowStatusBars)
 			{
 				foreach (var g in World.Actors.Where(a => !a.Destroyed
 					&& a.HasTrait<Selectable>()
