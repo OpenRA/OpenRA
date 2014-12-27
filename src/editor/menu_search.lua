@@ -61,7 +61,7 @@ frame:Connect(ID_FINDNEXT, wx.wxEVT_COMMAND_MENU_SELECTED,
       local selection = editor:GetMainSelection() + 1
       if selection >= editor:GetSelections() then selection = 0 end
       editor:SetMainSelection(selection)
-      editor:EnsureCaretVisible()
+      editor:ShowPosEnforcePolicy(editor:GetCurrentPos())
     else
       if findReplace:GetSelectedString() or findReplace:HasText() then
         findReplace:FindString()
@@ -79,7 +79,7 @@ frame:Connect(ID_FINDPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
       local selection = editor:GetMainSelection() - 1
       if selection < 0 then selection = editor:GetSelections() - 1 end
       editor:SetMainSelection(selection)
-      editor:EnsureCaretVisible()
+      editor:ShowPosEnforcePolicy(editor:GetCurrentPos())
     else
       if findReplace:GetSelectedString() or findReplace:HasText() then
         findReplace:FindString(true) -- search up

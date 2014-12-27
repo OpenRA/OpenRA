@@ -791,6 +791,21 @@ function CreateEditor(bare)
     self:EnsureVisibleEnforcePolicy(self:LineFromPosition(pos))
   end
 
+  local function getMarginWidth(editor)
+    local width = 0
+    for m = 0, 7 do width = width + editor:GetMarginWidth(m) end
+    return width
+  end
+
+  function editor:ShowPosEnforcePolicy(pos)
+    local line = self:LineFromPosition(pos)
+    self:EnsureVisibleEnforcePolicy(line)
+    if edcfg.usewrap then return end -- skip the rest if line wrapping is on
+    local xwidth = self:GetClientSize():GetWidth() - getMarginWidth(editor)
+    local xoffset = self:GetTextExtent(self:GetLine(line):sub(1, pos-self:PositionFromLine(line)+1))
+    self:SetXOffset(xoffset > xwidth and xoffset-xwidth or 0)
+  end
+
   function editor:GetTokenList() return self.tokenlist end
   function editor:ResetTokenList() self.tokenlist = {}; return self.tokenlist end
 

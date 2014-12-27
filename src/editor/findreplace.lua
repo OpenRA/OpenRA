@@ -147,7 +147,7 @@ function findReplace:FindString(reverse)
       findReplace.foundString = true
       local start = editor:GetTargetStart()
       local finish = editor:GetTargetEnd()
-      editor:EnsureVisibleEnforcePolicy(editor:LineFromPosition(start))
+      editor:ShowPosEnforcePolicy(finish)
       editor:SetSelection(start, finish)
       ide.frame:SetStatusText("")
     end
