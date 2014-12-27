@@ -114,6 +114,9 @@ HARV:
 	WithVoxelUnloadBody:
 	Explodes:
 		Weapon: TiberiumExplosion
+	WithHarvestAnimation:
+		Offset: 384,0,0
+		Palette: effect
 
 HVR:
 	Inherits: ^Vehicle
