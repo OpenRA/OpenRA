@@ -1,7 +1,10 @@
 if (!(Test-Path "nuget.exe"))
 {
 	echo "Fetching NuGet."
-	Invoke-WebRequest "http://nuget.org/nuget.exe" -OutFile "nuget.exe"
+	# Work around PowerShell's Invoke-WebRequest not being available on some versions of PowerShell by using the BCL.
+	# To do that we need to work around further and use absolute paths because DownloadFile is not aware of PowerShell's current directory.
+	$target = Join-Path $pwd.ToString() "nuget.exe"
+	(New-Object System.Net.WebClient).DownloadFile("http://nuget.org/nuget.exe", $target)
 }
 
 if (!(Test-Path "StyleCop.dll"))
