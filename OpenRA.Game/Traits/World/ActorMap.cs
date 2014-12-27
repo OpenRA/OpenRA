@@ -150,8 +150,9 @@ namespace OpenRA.Traits
 
 			public void Dispose()
 			{
-				foreach (var a in currentActors)
-					onActorExited(a);
+				if (onActorExited != null)
+					foreach (var a in currentActors)
+						onActorExited(a);
 			}
 		}
 
