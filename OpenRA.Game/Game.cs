@@ -135,7 +135,7 @@ namespace OpenRA
 		}
 
 		public static event Action BeforeGameStart = () => { };
-		internal static void StartGame(string mapUID, bool isShellmap)
+		internal static void StartGame(string mapUID, WorldType type)
 		{
 			Cursor.SetCursor(null);
 			BeforeGameStart();
@@ -146,14 +146,15 @@ namespace OpenRA
 				map = ModData.PrepareMap(mapUID);
 			using (new PerfTimer("NewWorld"))
 			{
-				OrderManager.World = new World(map, OrderManager, isShellmap);
+				OrderManager.World = new World(map, OrderManager, type);
 				OrderManager.World.Timestep = Timestep;
 			}
 
 			if (worldRenderer != null)
 				worldRenderer.Dispose();
+
 			worldRenderer = new WorldRenderer(OrderManager.World);
-			
+
 			using (new PerfTimer("LoadComplete"))
 				OrderManager.World.LoadComplete(worldRenderer);
 
@@ -375,7 +376,7 @@ namespace OpenRA
 			var shellmap = ChooseShellmap();
 
 			using (new PerfTimer("StartGame"))
-				StartGame(shellmap, true);
+				StartGame(shellmap, WorldType.Shellmap);
 		}
 
 		static string ChooseShellmap()
