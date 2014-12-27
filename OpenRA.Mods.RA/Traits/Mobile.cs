@@ -486,14 +486,10 @@ namespace OpenRA.Mods.RA.Traits
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells()
 		{
 			if (fromCell == toCell)
-				yield return Pair.New(fromCell, fromSubCell);
-			else if (CanEnterCell(toCell))
-				yield return Pair.New(toCell, toSubCell);
-			else
-			{
-				yield return Pair.New(fromCell, fromSubCell);
-				yield return Pair.New(toCell, toSubCell);
-			}
+				return new[] { Pair.New(fromCell, fromSubCell) };
+			if (CanEnterCell(toCell))
+				return new[] { Pair.New(toCell, toSubCell) };
+			return new[] { Pair.New(fromCell, fromSubCell), Pair.New(toCell, toSubCell) };
 		}
 
 		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any)
