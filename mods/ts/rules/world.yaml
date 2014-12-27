@@ -6,7 +6,6 @@ World:
 	ScreenMap:
 	ActorMap:
 	LoadWidgetAtGameStart:
-		Widget: INGAME_ROOT
 	MenuPaletteEffect:
 	BuildingInfluence:
 	ChooseBuildTabOnSelect:
