@@ -28,11 +28,11 @@ fi
 
 if [ ! -f SharpFont.dll ]; then
 	echo "Fetching SharpFont from nuget"
-	nuget install SharpFont -Version 2.5.3
-	cp ./SharpFont.2.5.3.0/lib/net20/SharpFont* .
-	cp ./SharpFont.2.5.3.0/Content/SharpFont.dll.config .
-	cp ./SharpFont.2.5.3.0/Content/freetype6.dll ./windows/
-	rm -rf SharpFont.2.5.3.0
+	nuget install SharpFont -Version 2.5.0.1
+	cp ./SharpFont.2.5.0.1/lib/net20/SharpFont* .
+	cp ./SharpFont.2.5.0.1/Content/SharpFont.dll.config .
+	cp ./SharpFont.2.5.0.1/Content/freetype6.dll ./windows/
+	rm -rf SharpFont.2.5.0.1
 fi
 
 if [ ! -f nunit.framework.dll ]; then
