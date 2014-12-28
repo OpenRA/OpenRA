@@ -26,8 +26,8 @@ Videos:
 	GameLost: gameover.vqa
 
 Options:
-	Cheats: False
 	Crates: False
+	Creeps: False
 	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
@@ -581,8 +581,6 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Infantry:
-		SpawnViceroid:
-			Probability: 0
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
