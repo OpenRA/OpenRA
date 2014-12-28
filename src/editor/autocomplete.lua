@@ -189,7 +189,7 @@ local function generateAPIInfo(only)
   end
 end
 
-function UpdateAssignCache(editor)
+local function updateAssignCache(editor)
   if (editor.spec.typeassigns and not editor.assignscache) then
     local assigns = editor.spec.typeassigns(editor)
     editor.assignscache = {
@@ -252,7 +252,7 @@ end
 function GetTipInfo(editor, content, short, fullmatch)
   if not content then return end
 
-  UpdateAssignCache(editor)
+  updateAssignCache(editor)
 
   -- try to resolve the class
   content = content:gsub("%b[]",".0")
@@ -502,7 +502,7 @@ function CreateAutoCompList(editor,key,pos)
   -- ignore keywords
   if tip.keys[key] then return end
 
-  UpdateAssignCache(editor)
+  updateAssignCache(editor)
 
   local tab,rest = resolveAssign(editor,key)
   local progress = tab and tab.childs
@@ -576,7 +576,7 @@ function CreateAutoCompList(editor,key,pos)
     local vars, context = {}
     local tokens = editor:GetTokenList()
     for _, token in ipairs(tokens) do
-      if token.fpos and token.fpos > pos then break end
+      if token.fpos and pos and token.fpos > pos then break end
       if token[1] == 'Id' or token[1] == 'Var' then
         local var = token.name
         if var ~= key and var:find(key, 1, true) == 1 then
