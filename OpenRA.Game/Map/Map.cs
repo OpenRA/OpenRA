@@ -60,6 +60,7 @@ namespace OpenRA
 	{
 		public bool? Cheats;
 		public bool? Crates;
+		public bool? Creeps;
 		public bool? Fog;
 		public bool? Shroud;
 		public bool? AllyBuildRadius;
@@ -76,6 +77,8 @@ namespace OpenRA
 				settings.AllowCheats = Cheats.Value;
 			if (Crates.HasValue)
 				settings.Crates = Crates.Value;
+			if (Creeps.HasValue)
+				settings.Creeps = Creeps.Value;
 			if (Fog.HasValue)
 				settings.Fog = Fog.Value;
 			if (Shroud.HasValue)

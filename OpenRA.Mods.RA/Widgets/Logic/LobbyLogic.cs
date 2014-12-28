@@ -335,6 +335,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					"crates {0}".F(!orderManager.LobbyInfo.GlobalSettings.Crates)));
 			}
 
+			var creeps = optionsBin.GetOrNull<CheckboxWidget>("CREEPS_CHECKBOX");
+			if (creeps != null)
+			{
+				creeps.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Creeps;
+				creeps.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Creeps.HasValue || configurationDisabled();
+				creeps.OnClick = () => orderManager.IssueOrder(Order.Command(
+					"creeps {0}".F(!orderManager.LobbyInfo.GlobalSettings.Creeps)));
+			}
+
 			var allybuildradius = optionsBin.GetOrNull<CheckboxWidget>("ALLYBUILDRADIUS_CHECKBOX");
 			if (allybuildradius != null)
 			{
