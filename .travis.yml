@@ -6,7 +6,7 @@ language: csharp
 # Run the build script
 # call RALint to check for YAML errors
 script:
- - make cli-dependencies
+ - travis_retry make cli-dependencies
  - make all
  - make test
  - make check
