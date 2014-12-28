@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				using (new Support.PerfTimer("Load replays"))
 				{
 					replays = Directory
-						.GetFiles(dir, "*.rep")
+						.GetFiles(dir, "*.orarep")
 						.Select(ReplayMetadata.Read)
 						.Where(r => r != null)
 						.OrderByDescending(r => r.GameInfo.StartTimeUtc)

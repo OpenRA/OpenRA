@@ -5,7 +5,7 @@
     <icon name="openra" />
     <generic-icon name="applications-games"/>
     <comment>OpenRA Replay</comment>
-    <glob weight="60" pattern="*.rep"/>
+    <glob weight="60" pattern="*.orarep"/>
   </mime-type>
 
 </mime-info>
