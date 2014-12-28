@@ -1,0 +1,107 @@
+MapFormat: 7
+
+RequiresMod: d2k
+
+Title: Mount Idaho
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 80,80
+
+Bounds: 8,8,64,64
+
+Visibility: Lobby
+
+Type: Conquest
+
+Videos:
+
+Options:
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: atreides
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: atreides
+		Enemies: Multi0, Multi1
+
+Actors:
+	Actor0: spicebloom
+		Location: 48,12
+		Owner: Neutral
+	Actor1: spicebloom
+		Location: 44,26
+		Owner: Neutral
+	Actor2: spicebloom
+		Location: 63,26
+		Owner: Neutral
+	Actor3: spicebloom
+		Location: 14,36
+		Owner: Neutral
+	Actor4: spicebloom
+		Location: 68,31
+		Owner: Neutral
+	Actor5: spicebloom
+		Location: 33,53
+		Owner: Neutral
+	Actor6: spicebloom
+		Location: 35,60
+		Owner: Neutral
+	Actor7: spicebloom
+		Location: 45,40
+		Owner: Neutral
+	Actor8: mpspawn
+		Location: 17,15
+		Owner: Neutral
+	Actor9: mpspawn
+		Location: 57,66
+		Owner: Neutral
+	Actor10: wormspawner
+		Location: 42,47
+		Owner: Creeps
+	Actor11: wormspawner
+		Location: 40,38
+		Owner: Creeps
+	Actor12: wormspawner
+		Location: 8,71
+		Owner: Creeps
+	Actor13: wormspawner
+		Location: 71,13
+		Owner: Creeps
+
+Smudges:
+
+Rules:
+	World:
+		WormManager:
+			Minimum: 1
+			Maximum: 2
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:
