@@ -3,7 +3,7 @@
 -- brackets: https://github.com/adobe/brackets/blob/2c1616a6346dfee29a8321b5ecc9e0f636ec42d8/test/spec/StringMatch-test.js
 
 local function check(s, p1, p2)
-  local r = CommandBarScoreFiles({p1, p2}, s)
+  local r = CommandBarScoreItems({p1, p2}, s)
   ok(r[1][1] == p1,
     ("'%s' is more similar to '%s' (%d) than to '%s' (%d).")
     :format(s, p1, r[1][1] == p1 and r[1][2] or r[2][2],
@@ -19,5 +19,5 @@ check("readme", "readme", "README")
 check("ReadMe", "READme", "readME")
 check("f", "fun", "funclist.lua")
 
-ok(1 == #CommandBarScoreFiles({"funclist.lua", "f"}, "fun"),
+ok(1 == #CommandBarScoreItems({"funclist.lua", "f"}, "fun"),
   "Patterns longer than strings don't match.")
