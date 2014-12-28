@@ -71,7 +71,7 @@ namespace OpenRA.FileFormats
 
 		public void RenameFile(string newFilenameWithoutExtension)
 		{
-			var newPath = Path.Combine(Path.GetDirectoryName(FilePath), newFilenameWithoutExtension) + ".rep";
+			var newPath = Path.Combine(Path.GetDirectoryName(FilePath), newFilenameWithoutExtension) + ".orarep";
 			File.Move(FilePath, newPath);
 			FilePath = newPath;
 		}
