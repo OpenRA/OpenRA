@@ -15,6 +15,7 @@ namespace OpenRA.Mods.RA.Widgets
 	public class ProductionTypeButtonWidget : ButtonWidget
 	{
 		public readonly string ProductionGroup;
+		public readonly string HotkeyName;
 
 		[ObjectCreator.UseCtor]
 		public ProductionTypeButtonWidget(Ruleset modRules)

@@ -412,7 +412,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Production
 			{
-				var hotkeys = new Dictionary<string, string>();
+				var hotkeys = new Dictionary<string, string>()
+				{
+					{ "ProductionTypeBuildingKey", "Building Tab" },
+					{ "ProductionTypeDefenseKey", "Defense Tab" },
+					{ "ProductionTypeInfantryKey", "Infantry Tab" },
+					{ "ProductionTypeVehicleKey", "Vehicle Tab" },
+					{ "ProductionTypeAircraftKey", "Aircraft Tab" },
+					{ "ProductionTypeNavalKey", "Naval Tab" }
+				};
+
 				for (var i = 1; i <= 24; i++)
 					hotkeys.Add("Production{0:D2}Key".F(i), "Slot {0}".F(i));
 
