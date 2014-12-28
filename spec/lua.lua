@@ -26,6 +26,24 @@ local function isfndef(str)
 end
 local q = EscapeMagic
 
+local function ldoc(tx)
+  local varname = "([%w_]+)"
+  -- <type> == ?string, ?|T1|T2
+  -- anything that follows optional "|..." is ignored
+  local typename = "%??([%w_]+)"
+  -- @tparam[...] <type> <paramname>
+  -- @param[type=<type>] <paramname>
+  -- @string[...] <paramname>; not handled
+  local t, v = tx:match("--%s*@tparam%b[]%s+"..typename.."%s+"..varname)
+  if not t then -- try without optional [...] part
+    t, v = tx:match("--%s*@tparam%s+"..typename.."%s+"..varname)
+  end
+  if not t then
+    t, v = tx:match("--%s*@param%s*%[type="..typename.."%]%s+"..varname)
+  end
+  return t, v
+end
+
 return {
   exts = {"lua", "rockspec", "wlua"},
   lexer = wxstc.wxSTC_LEX_LUA,
@@ -114,107 +132,79 @@ return {
   end,
 
   typeassigns = function(editor)
-    local line = editor:GetCurrentLine()-1
     local maxlines = 48 -- scan up to this many lines back
-
-    local scopestart = {"if", "do", "while", "function", "local%s+function", "for", "else", "elseif"}
-    local scopeend = {"end"}
     local iscomment = editor.spec.iscomment
-
     local assigns = {}
-
-    -- iterate up until a line starts with scopestart
-    -- always ignore lines whose first symbol is styled as comment
-    local endline = line
-    while (line > math.max(endline-maxlines, 0)) do
-      local ls = editor:PositionFromLine(line)
-      local s = bit.band(editor:GetStyleAt(ls),31)
-
-      if (not iscomment[s]) then
-        local tx = editor:GetLine(line)
-        local sstart, send
-
-        for _, v in ipairs(scopestart) do
-          if (tx:match("^%s*"..v.."%f[^%w]")) then sstart = true end
-        end
-        for _, v in ipairs(scopeend) do
-          if (tx:match("%f[%w]"..v.."%s*$")) then send = true end
-        end
-        -- if the scope starts, but doesn't end on one line, stop searching
-        if sstart and not send then break end
-      end
-      line = line -1
-    end
+    local endline = editor:GetCurrentLine()-1
+    local line = math.max(endline-maxlines, 0)
 
     while (line <= endline) do
       local ls = editor:PositionFromLine(line)
       local s = bit.band(editor:GetStyleAt(ls),31)
+      local tx = editor:GetLine(line) --= string
 
-      if (not iscomment[s]) then
-        local tx = editor:GetLine(line) --= string
+      -- check for assignments
+      local sep = editor.spec.sep
+      local varname = "([%w_][%w_"..q(sep:sub(1,1)).."]*)"
+      local identifier = "([%w_][%w_"..q(sep).."%s]*)"
 
-        -- check for assignments
-        local sep = editor.spec.sep
-        local varname = "([%w_][%w_"..q(sep:sub(1,1)).."]*)"
-        local identifier = "([%w_][%w_"..q(sep).."%s]*)"
+      -- special hint
+      local typ, var = tx:match("%s*%-%-=%s*"..varname.."%s+"..identifier)
+      local ldoctype, ldocvar = ldoc(tx)
+      if var and typ then
+        assigns[var] = typ:gsub("%s","")
+      elseif ldoctype and ldocvar then
+        assigns[ldocvar] = ldoctype
+      elseif not iscomment[s] then
+        -- real assignments
+        local var,typ = tx:match("%s*"..identifier.."%s*=%s*([^;]+)")
 
-        -- special hint
-        local typ,var = tx:match("%s*%-%-=%s*"..varname.."%s+"..identifier)
-        if (var and typ) then
-          typ = typ:gsub("%s","")
-          assigns[var] = typ
-        else
-          -- real assignments
-          local var,typ = tx:match("%s*"..identifier.."%s*=%s*([^;]+)")
-
-          var = var and var:gsub("local","")
-          var = var and var:gsub("%s","")
-          typ = typ and typ
-            :gsub("%b()","")
-            :gsub("%b{}","")
-            :gsub("%b[]",".0")
-            -- remove comments; they may be in strings, but that's okay here
-            :gsub("%-%-.*","")
-          if (typ and (typ:match(",") or typ:match("%sor%s") or typ:match("%sand%s"))) then
-            typ = nil
-          end
-          typ = typ and typ:gsub("%s","")
-          typ = typ and typ:gsub(".+", function(s)
+        var = var and var:gsub("local",""):gsub("%s","")
+        typ = (typ and typ
+          :gsub("%b()","")
+          :gsub("%b{}","")
+          :gsub("%b[]",".0")
+          -- remove comments; they may be in strings, but that's okay here
+          :gsub("%-%-.*",""))
+        if (typ and (typ:match(",") or typ:match("%sor%s") or typ:match("%sand%s"))) then
+          typ = nil
+        end
+        typ = typ and typ:gsub("%s","")
+        typ = typ and typ:gsub(".+", function(s)
             return (s:find("^'[^']*'$")
-                 or s:find('^"[^"]*"$')
-                 or s:find('^%[=*%[.*%]=*%]$')) and 'string' or s
+              or s:find('^"[^"]*"$')
+              or s:find('^%[=*%[.*%]=*%]$')) and 'string' or s
           end)
 
-          -- filter out everything that is not needed
-          if typ and typ ~= 'string' -- special value for all strings
-          and (not typ:match('^'..identifier..'$') -- not an identifier
-               or typ:match('^%d') -- or a number
-               or editor.api.tip.keys[typ] -- or a keyword
-              ) then
-            typ = nil
-          end
+        -- filter out everything that is not needed
+        if typ and typ ~= 'string' -- special value for all strings
+        and (not typ:match('^'..identifier..'$') -- not an identifier
+          or typ:match('^%d') -- or a number
+          or editor.api.tip.keys[typ] -- or a keyword
+          ) then
+          typ = nil
+        end
 
-          if (var and typ) then
-            local class,func = typ:match(varname.."["..q(sep).."]"..varname)
-            if (assigns[typ]) then
-              assigns[var] = assigns[typ]
-            elseif (func) then
-              local added
-              local funcnames = {"new","load","create"}
-              for _,v in ipairs(funcnames) do
-                if (func == v) then
-                  assigns[var] = class
-                  added = true
-                  break
-                end
+        if (var and typ) then
+          local class,func = typ:match(varname.."["..q(sep).."]"..varname)
+          if (assigns[typ]) then
+            assigns[var] = assigns[typ]
+          elseif (func) then
+            local added
+            local funcnames = {"new","load","create"}
+            for _,v in ipairs(funcnames) do
+              if (func == v) then
+                assigns[var] = class
+                added = true
+                break
               end
-              if (not added) then
-                -- let's hope autocomplete info can resolve this
-                assigns[var] = typ
-              end
-            else
+            end
+            if (not added) then
+              -- let's hope autocomplete info can resolve this
               assigns[var] = typ
             end
+          else
+            assigns[var] = typ
           end
         end
       end

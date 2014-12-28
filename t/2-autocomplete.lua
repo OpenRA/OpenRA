@@ -94,6 +94,20 @@ ok(value and value:find("close"), "Auto-complete is shown after comma.")
 ok(not (CreateAutoCompList(editor, "pri.") or ""):match('print'),
   "Auto-complete doesn't offer 'print' after 'pri.'.")
 
+editor:SetText('')
+editor:AddText('-- @tparam string foo\n')
+editor.assignscache = false
+
+ok((CreateAutoCompList(editor, "foo.") or ""):match('byte'),
+  "Auto-complete offers methods for variable defined as '@tparam string'.")
+
+editor:SetText('')
+editor:AddText('-- @param[type=string] foo\n')
+editor.assignscache = false
+
+ok((CreateAutoCompList(editor, "foo:") or ""):match('byte'),
+  "Auto-complete offers methods for variable defined as '@param[type=string]'.")
+
 -- cleanup
 ide:GetDocument(editor).isModified = false
 ClosePage()
