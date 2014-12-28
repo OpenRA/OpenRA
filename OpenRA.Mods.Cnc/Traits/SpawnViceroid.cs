@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public void Killed(Actor self, AttackInfo e)
 		{
+			if (!self.World.LobbyInfo.GlobalSettings.Creeps) return;
 			if (e.Warhead == null || e.Warhead.DeathType != spawnViceroidInfo.DeathType) return;
 			if (self.World.SharedRandom.Next(100) > spawnViceroidInfo.Probability) return;
 

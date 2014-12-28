@@ -40,6 +40,9 @@ namespace OpenRA.Mods.Common.Server
 			if (server.LobbyInfo.GlobalSettings.Crates != defaults.Crates)
 				server.SendOrderTo(conn, "Message", "Crates Appear: {0}".F(server.LobbyInfo.GlobalSettings.Crates));
 
+			if (server.LobbyInfo.GlobalSettings.Creeps != defaults.Creeps)
+				server.SendOrderTo(conn, "Message", "Creeps Spawn: {0}".F(server.LobbyInfo.GlobalSettings.Creeps));
+
 			if (server.LobbyInfo.GlobalSettings.AllyBuildRadius != defaults.AllyBuildRadius)
 				server.SendOrderTo(conn, "Message", "Build off Ally ConYards: {0}".F(server.LobbyInfo.GlobalSettings.AllyBuildRadius));
 
