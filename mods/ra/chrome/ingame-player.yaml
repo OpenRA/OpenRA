@@ -248,7 +248,6 @@ Container@PLAYER_WIDGETS:
 					Children:
 						ProductionTypeButton@BUILDING:
 							Logic: AddRaceSuffixLogic
-							Key: e
 							Width: 28
 							Height: 28
 							VisualHeight: 0
@@ -256,6 +255,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Buildings
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Building
+							HotkeyName: ProductionTypeBuildingKey
 							Children:
 								Image@ICON:
 									X: 6
@@ -263,7 +263,6 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: production-icons
 						ProductionTypeButton@DEFENSE:
 							Logic: AddRaceSuffixLogic
-							Key: r
 							Y: 31
 							Width: 28
 							Height: 28
@@ -272,6 +271,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Defense
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Defense
+							HotkeyName: ProductionTypeDefenseKey
 							Children:
 								Image@ICON:
 									X: 6
@@ -279,7 +279,6 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: production-icons
 						ProductionTypeButton@INFANTRY:
 							Logic: AddRaceSuffixLogic
-							Key: t
 							Y: 62
 							Width: 28
 							Height: 28
@@ -288,6 +287,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Infantry
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Infantry
+							HotkeyName: ProductionTypeInfantryKey
 							Children:
 								Image@ICON:
 									X: 6
@@ -295,7 +295,6 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: production-icons
 						ProductionTypeButton@VEHICLE:
 							Logic: AddRaceSuffixLogic
-							Key: y
 							Y: 93
 							Width: 28
 							Height: 28
@@ -304,6 +303,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Vehicle
+							HotkeyName: ProductionTypeVehicleKey
 							Children:
 								Image@ICON:
 									X: 6
@@ -311,7 +311,6 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: production-icons
 						ProductionTypeButton@AIRCRAFT:
 							Logic: AddRaceSuffixLogic
-							Key: u
 							Y: 124
 							Width: 28
 							Height: 28
@@ -320,6 +319,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Aircraft
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Aircraft
+							HotkeyName: ProductionTypeAircraftKey
 							Children:
 								Image@ICON:
 									X: 6
@@ -327,7 +327,6 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: production-icons
 						ProductionTypeButton@NAVAL:
 							Logic: AddRaceSuffixLogic
-							Key: i
 							Y: 155
 							Width: 28
 							Height: 28
@@ -336,6 +335,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Naval
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Ship
+							HotkeyName: ProductionTypeNavalKey
 							Children:
 								Image@ICON:
 									X: 6
