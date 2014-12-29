@@ -295,11 +295,15 @@ UTILPOL1:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Utility Pole
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 UTILPOL2:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Utility Pole
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 TANKTRAP1:
 	Inherits: ^Rock
@@ -308,6 +312,8 @@ TANKTRAP1:
 		Dimensions: 1,1
 	Tooltip:
 		Name: Tank Trap
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 TANKTRAP2:
 	Inherits: ^Rock
@@ -316,4 +322,6 @@ TANKTRAP2:
 		Dimensions: 1,1
 	Tooltip:
 		Name: Tank Trap
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
