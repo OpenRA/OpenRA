@@ -104,17 +104,17 @@ namespace OpenRA.FileFormats
 					}
 					catch (InvalidOperationException ex)
 					{
-						Log.Write("debug", ex.ToString());
+						Log.Write(Log.LoggingChannel.Debug, ex.ToString());
 					}
 					catch (NotSupportedException ex)
 					{
-						Log.Write("debug", ex.ToString());
+						Log.Write(Log.LoggingChannel.Debug, ex.ToString());
 					}
 				}
 			}
 			catch (IOException ex)
 			{
-				Log.Write("debug", ex.ToString());
+				Log.Write(Log.LoggingChannel.Debug, ex.ToString());
 			}
 
 			return null;

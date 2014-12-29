@@ -22,46 +22,69 @@ namespace OpenRA
 
 	public static class Log
 	{
-		public static readonly Dictionary<string, ChannelInfo> Channels = new Dictionary<string, ChannelInfo>();
-
-		static IEnumerable<string> FilenamesForChannel(string channelName, string baseFilename)
+		public enum LoggingChannel
 		{
-			var path = Platform.SupportDir + "Logs";
-			Directory.CreateDirectory(path);
-			
-			for(var i = 0;; i++ )
-				yield return Path.Combine(path,	i > 0 ? "{0}.{1}".F(baseFilename, i) : baseFilename);
+			Debug,
+			Perf,
+			Utility,
+			Exception,
+			Server,
+			Sound,
+			Traitreport,
+			Sync,
+			Lua,
+			Graphics,
+			GeoIP
 		}
 
-		public static void AddChannel(string channelName, string baseFilename)
-		{
-			if (Channels.ContainsKey(channelName)) return;
+		public static readonly Dictionary<LoggingChannel, ChannelInfo> Channels = new Dictionary<LoggingChannel, ChannelInfo>();
 
-			if (string.IsNullOrEmpty(baseFilename))
+		static IEnumerable<string> FilenamesForChannel(LoggingChannel channel)
+		{
+			var path = Platform.SupportDir + "Logs";
+			var Logfile = channel + ".log";
+
+			Directory.CreateDirectory(path);
+
+			for(var i = 0; i <= 32; i++)
+				yield return Path.Combine(path,	i > 0 ? "{0}-{1}".F(Logfile, i) : Logfile);
+		}
+
+		public static void AddChannel(LoggingChannel channel)
+		{
+			if (Channels.ContainsKey(channel))
+				return;
+
+			if (string.IsNullOrEmpty(channel + ".log"))
 			{
-				Channels.Add(channelName, new ChannelInfo());
+				Channels.Add(channel, new ChannelInfo());
 				return;
 			}
 
-			foreach (var filename in FilenamesForChannel(channelName, baseFilename))
+			foreach (var filename in FilenamesForChannel(channel))
+			{
+				if (Channels.ContainsKey(channel))
+					continue;
+
+				if (filename == null)
+					continue;
+
+				/* This is needed when we have to run more than one client on the same Mashine! */
 				try
 				{
 					var writer = File.CreateText(filename);
+					if (writer == null)
+						continue;
+
 					writer.AutoFlush = true;
+					Channels.Add(channel, new ChannelInfo() { Filename = filename, Writer = writer });
 
-					Channels.Add(channelName,
-						new ChannelInfo()
-						{
-							Filename = filename,
-							Writer = writer
-						});
-
-					return;
 				}
-				catch (IOException) { }
+				catch (IOException ex) { Console.WriteLine(ex.Message);	}
+			}
 		}
 
-		public static void Write(string channel, string format, params object[] args)
+		public static void Write(LoggingChannel channel, string format, params object[] args)
 		{
 			ChannelInfo info;
 			if (!Channels.TryGetValue(channel, out info))

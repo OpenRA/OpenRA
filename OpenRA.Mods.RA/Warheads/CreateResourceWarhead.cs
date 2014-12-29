@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 				.FirstOrDefault(t => t.Info.Name == AddsResourceType);
 
 			if (resourceType == null)
-				Log.Write("debug", "Warhead defines an invalid resource type '{0}'".F(AddsResourceType));
+				Log.Write(Log.LoggingChannel.Debug, "Warhead defines an invalid resource type '{0}'".F(AddsResourceType));
 			else
 			{
 				foreach (var cell in allCells)

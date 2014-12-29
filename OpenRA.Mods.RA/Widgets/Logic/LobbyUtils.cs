@@ -242,7 +242,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 			catch (Exception e)
 			{
-				Log.Write("geoip", "LookupCountry failed: {0}", e);
+				Log.Write(Log.LoggingChannel.GeoIP, "LookupCountry failed: {0}", e);
 				return "Unknown Location";
 			}
 		}

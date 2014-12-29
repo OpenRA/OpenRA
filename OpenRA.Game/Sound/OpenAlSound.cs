@@ -48,7 +48,7 @@ namespace OpenRA
 			var devices = Alc.GetString(IntPtr.Zero, type).ToArray();
 			if (AL.GetError() != ALError.NoError)
 			{
-				Log.Write("sound", "Failed to query OpenAL device list using {0}", label);
+				Log.Write(Log.LoggingChannel.Sound, "Failed to query OpenAL device list using {0}", label);
 				return new string[] { };
 			}
 
@@ -96,7 +96,7 @@ namespace OpenRA
 				AL.GenSources(1, out source);
 				if (0 != AL.GetError())
 				{
-					Log.Write("sound", "Failed generating OpenAL source {0}", i);
+					Log.Write(Log.LoggingChannel.Sound, "Failed generating OpenAL source {0}", i);
 					return;
 				}
 
@@ -144,7 +144,7 @@ namespace OpenRA
 		{
 			if (sound == null)
 			{
-				Log.Write("sound", "Attempt to Play2D a null `ISoundSource`");
+				Log.Write(Log.LoggingChannel.Sound, "Attempt to Play2D a null `ISoundSource`");
 				return null;
 			}
 

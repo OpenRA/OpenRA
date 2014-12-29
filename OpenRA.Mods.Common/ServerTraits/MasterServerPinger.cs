@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Server
 									masterServerMessages.Enqueue("Master server communication established.");
 									if (masterResponseText.Contains("[001]"))  // Server does not respond code
 									{
-										Log.Write("server", masterResponseText);
+										Log.Write(Log.LoggingChannel.Server, masterResponseText);
 										masterServerMessages.Enqueue("Warning: Server ports are not forwarded.");
 										masterServerMessages.Enqueue("Game has not been advertised online.");
 									}
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Server
 					}
 					catch (Exception ex)
 					{
-						Log.Write("server", ex.ToString());
+						Log.Write(Log.LoggingChannel.Server, ex.ToString());
 						lock (masterServerMessages)
 							masterServerMessages.Enqueue("Master server communication failed.");
 					}

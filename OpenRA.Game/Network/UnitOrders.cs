@@ -309,7 +309,7 @@ namespace OpenRA.Network
 			if (o.FramesAhead != o.LobbyInfo.GlobalSettings.OrderLatency && !o.GameStarted)
 			{
 				o.FramesAhead = o.LobbyInfo.GlobalSettings.OrderLatency;
-				Log.Write("server", "Order lag is now {0} frames.", o.LobbyInfo.GlobalSettings.OrderLatency);
+				Log.Write(Log.LoggingChannel.Server, "Order lag is now {0} frames.", o.LobbyInfo.GlobalSettings.OrderLatency);
 			}
 		}
 	}

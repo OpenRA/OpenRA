@@ -34,7 +34,7 @@ namespace OpenRA
 		{
 			if (!GlobalFileSystem.Exists(filename))
 			{
-				Log.Write("sound", "LoadSound, file does not exist: {0}", filename);
+				Log.Write(Log.LoggingChannel.Sound, "LoadSound, file does not exist: {0}", filename);
 				return null;
 			}
 

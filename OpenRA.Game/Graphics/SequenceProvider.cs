@@ -134,7 +134,7 @@ namespace OpenRA.Graphics
 					}
 					catch (FileNotFoundException ex)
 					{
-						Log.Write("debug", ex.Message);
+						Log.Write(Log.LoggingChannel.Debug, ex.Message);
 					}
 				}
 			}

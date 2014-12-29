@@ -180,7 +180,7 @@ namespace OpenRA.Graphics
 			catch (SheetOverflowException)
 			{
 				// Sheet overflow - allocate a new sheet and try once more
-				Log.Write("debug", "Voxel sheet overflow! Generating new sheet");
+				Log.Write(Log.LoggingChannel.Debug, "Voxel sheet overflow! Generating new sheet");
 				sheetBuilder.Current.ReleaseBuffer();
 				sheetBuilder = CreateSheetBuilder();
 				v = GenerateSlicePlanes(l).SelectMany(x => x).ToArray();

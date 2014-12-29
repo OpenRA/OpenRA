@@ -42,8 +42,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			try
 			{
-				Log.AddChannel("debug", null);
-				Log.AddChannel("perf", null);
+				Log.AddChannel(Log.LoggingChannel.Debug);
+				Log.AddChannel(Log.LoggingChannel.Perf);
 
 				// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
 				ObjectCreator.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));

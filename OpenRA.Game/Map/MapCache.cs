@@ -83,8 +83,8 @@ namespace OpenRA
 			{
 				if (cancelled || i.Error != null)
 				{
-					Log.Write("debug", "Remote map query failed with error: {0}", i.Error != null ? i.Error.Message : "cancelled");
-					Log.Write("debug", "URL was: {0}", url);
+					Log.Write(Log.LoggingChannel.Debug, "Remote map query failed with error: {0}", i.Error != null ? i.Error.Message : "cancelled");
+					Log.Write(Log.LoggingChannel.Debug, "URL was: {0}", url);
 					foreach (var p in maps.Values)
 						p.UpdateRemoteSearch(MapStatus.Unavailable, null);
 
@@ -100,7 +100,7 @@ namespace OpenRA
 				}
 				catch
 				{
-					Log.Write("debug", "Can't parse remote map search data:\n{0}", data);
+					Log.Write(Log.LoggingChannel.Debug, "Can't parse remote map search data:\n{0}", data);
 				}
 			};
 
@@ -128,7 +128,7 @@ namespace OpenRA
 
 		void LoadAsyncInternal()
 		{
-			Log.Write("debug", "MapCache.LoadAsyncInternal started");
+			Log.Write(Log.LoggingChannel.Debug, "MapCache.LoadAsyncInternal started");
 
 			// Milliseconds to wait on one loop when nothing to do
 			var emptyDelay = 50;
@@ -196,7 +196,7 @@ namespace OpenRA
 			// The buffer is not fully reclaimed until changes are written out to the texture.
 			// We will access the texture in order to force changes to be written out, allowing the buffer to be freed.
 			Game.RunAfterTick(() => sheetBuilder.Current.GetTexture());
-			Log.Write("debug", "MapCache.LoadAsyncInternal ended");
+			Log.Write(Log.LoggingChannel.Debug, "MapCache.LoadAsyncInternal ended");
 		}
 
 		public void CacheMinimap(MapPreview preview)
