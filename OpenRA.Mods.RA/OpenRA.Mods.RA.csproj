@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\CaptureActor.cs" />
+    <Compile Include="Traits\Wanders.cs" />
     <Compile Include="Activities\Hunt.cs" />
     <Compile Include="Activities\Air\FallToEarth.cs" />
     <Compile Include="Activities\Air\Fly.cs" />
