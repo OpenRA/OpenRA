@@ -38,8 +38,8 @@ namespace OpenRA.Mods.RA.Render
 		public void Killed(Actor self, AttackInfo e)
 		{
 			var buildingInfo = self.Info.Traits.Get<BuildingInfo>();
-			FootprintUtils.UnpathableTiles(self.Info.Name, buildingInfo, self.Location).Do(
-				t => self.World.AddFrameEndTask(w => w.Add(new Explosion(w, w.Map.CenterOfCell(t), info.Sequence, info.Palette))));
+			var unpathableTiles = FootprintUtils.TilesOfType(FootprintType.Unpathable, self.Info.Name, buildingInfo, self.Location);
+			unpathableTiles.Do(t => self.World.AddFrameEndTask(w => w.Add(new Explosion(w, w.Map.CenterOfCell(t), info.Sequence, info.Palette))));
 		}
 	}
 }

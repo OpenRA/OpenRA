@@ -14,8 +14,34 @@ using System.Linq;
 
 namespace OpenRA.Mods.RA.Buildings
 {
+	public enum FootprintType
+	{
+		Empty,
+		Unpathable,
+		Pathable
+	}
+
 	public static class FootprintUtils
 	{
+		public static Dictionary<char, FootprintType> CharToFootprint = new Dictionary<char, FootprintType>()
+		{
+			{ '_', FootprintType.Empty },
+			{ 'x', FootprintType.Unpathable },
+			{ '=', FootprintType.Pathable }
+		};
+
+		public static Dictionary<FootprintType, char> FootprintToChar = CharToFootprint.ReverseKeyValues();
+
+		public static IEnumerable<CPos> TilesOfType(FootprintType type, string buildingName, BuildingInfo buildingInfo, CPos topLeft)
+		{
+			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x)).ToArray();
+			var dim = (CVec)buildingInfo.Dimensions;
+
+			var validTiles = TilesWhere(buildingName, dim, footprint, t => CharToFootprint[t] == type);
+			foreach (var tile in validTiles)
+				yield return tile + topLeft;
+		}
+
 		public static IEnumerable<CPos> Tiles(Ruleset rules, string name, BuildingInfo buildingInfo, CPos topLeft)
 		{
 			var dim = (CVec)buildingInfo.Dimensions;
@@ -26,22 +52,18 @@ namespace OpenRA.Mods.RA.Buildings
 			if (buildingTraits.Contains<BibInfo>() && !buildingTraits.Get<BibInfo>().HasMinibib)
 			{
 				dim += new CVec(0, 1);
-				footprint = footprint.Concat(new char[dim.X]);
+
+				// Add pathable bib tiles to the footprint
+				var bibFootprint = new string(FootprintToChar[FootprintType.Pathable], dim.X).ToCharArray();
+				footprint = footprint.Concat(bibFootprint);
 			}
 
-			return TilesWhere(name, dim, footprint.ToArray(), a => a != '_').Select(t => t + topLeft);
+			return TilesWhere(name, dim, footprint.ToArray(), t => CharToFootprint[t] != FootprintType.Empty).Select(t => t + topLeft);
 		}
 
 		public static IEnumerable<CPos> Tiles(Actor a)
 		{
 			return Tiles(a.World.Map.Rules, a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location);
-		}
-
-		public static IEnumerable<CPos> UnpathableTiles(string name, BuildingInfo buildingInfo, CPos position)
-		{
-			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x)).ToArray();
-			foreach (var tile in TilesWhere(name, (CVec)buildingInfo.Dimensions, footprint, a => a == 'x'))
-				yield return tile + position;
 		}
 
 		static IEnumerable<CVec> TilesWhere(string name, CVec dim, char[] footprint, Func<char, bool> cond)
