@@ -132,7 +132,7 @@ return {
   ["Execution error"] = "Erro na execução", -- src\editor\debugger.lua
   ["Exit program"] = "Sair do programa", -- src\editor\menu_file.lua
   ["File '%s' has been modified on disk."] = "Arquivo '%s' foi alterado no disco.", -- src\editor\editor.lua
-  ["File '%s' has more recent timestamp than restored '%s'; please review before saving."] = "Arquivo '%s' possui uma data mais recente do que o restaurado '%s'; confira antes de salvar", -- src\editor\commands.lua
+  ["File '%s' has more recent timestamp than restored '%s'; please review before saving."] = "Arquivo '%s' possui uma data mais recente do que o restaurado '%s'; verifique antes de salvar.", -- src\editor\commands.lua
   ["File '%s' is missing and can't be recovered."] = "Arquivo '%s' está faltando e não pode ser restaurado.", -- src\editor\commands.lua
   ["File '%s' no longer exists."] = "Arquivo '%s' não existe mais.", -- src\editor\editor.lua, src\editor\menu_file.lua
   ["File Type"] = "Tipo de arquivo", -- src\editor\findreplace.lua
@@ -173,7 +173,7 @@ return {
   ["Mapped remote request for '%s' to '%s'."] = "Solicitação remota '%s' mapeada para '%s'.", -- src\editor\debugger.lua
   ["Match &case"] = "Diferenciar maiúsc/minúsc", -- src\editor\findreplace.lua
   ["Match &whole word"] = "Somente palavras inteiras", -- src\editor\findreplace.lua
-  ["Mixed end-of-line encodings detected."] = "Multíplas codificações de fim-de-linha encontradas", -- src\editor\commands.lua
+  ["Mixed end-of-line encodings detected."] = "Multíplas codificações de fim-de-linha encontradas.", -- src\editor\commands.lua
   ["Navigate"] = "Navegar", -- src\editor\menu_search.lua
   ["New &File"] = "Novo arquivo", -- src\editor\filetree.lua
   ["OVR"] = "OVR", -- src\editor\editor.lua
@@ -231,7 +231,7 @@ return {
   ["Save file?"] = "Salvar arquivo?", -- src\editor\commands.lua
   ["Save the current document to a file with a new name"] = "Salvar documento atual para um arquivo com outro nome", -- src\editor\menu_file.lua
   ["Save the current document"] = "Salvar documento atual", -- src\editor\menu_file.lua
-  ["Saved auto-recover at %s."] = "Autorrecuperação salvo as %s.", -- src\editor\commands.lua
+  ["Saved auto-recover at %s."] = "Autorrecuperação salva às %s.", -- src\editor\commands.lua
   ["Scope"] = "Direção", -- src\editor\findreplace.lua
   ["Scratchpad error"] = "Erro no rascunho", -- src\editor\debugger.lua
   ["Searching for"] = "Localizando por", -- src\editor\findreplace.lua
@@ -279,17 +279,17 @@ return {
   ["Toggle breakpoint"] = "Alternar ponto de interrupção", -- src\editor\menu_project.lua
   ["Tr&ace"] = "R&astrear", -- src\editor\menu_project.lua
   ["Trace execution showing each executed line"] = "Rastrear execução exibindo cada linha de código executada", -- src\editor\menu_project.lua
-  ["Unable to create directory '%s'."] = "Impossível de criar pasta '%s'.", -- src\editor\filetree.lua
-  ["Unable to create file '%s'."] = "Impossível de criar arquivo '%s'.", -- src\editor\filetree.lua
-  ["Unable to delete directory '%s': %s"] = "Impossível de apagar a pasta '%s': %s", -- src\editor\filetree.lua
-  ["Unable to load file '%s'."] = "Impossível de carregar o arquivo '%s'.", -- src\editor\commands.lua
-  ["Unable to rename file '%s'."] = "Impossível de renomear o arquivo '%s'.", -- src\editor\filetree.lua
-  ["Unable to save file '%s': %s"] = "Impossível de salvar o arquivo '%s': %s", -- src\editor\commands.lua
+  ["Unable to create directory '%s'."] = "Impossível criar pasta '%s'.", -- src\editor\filetree.lua
+  ["Unable to create file '%s'."] = "Impossível criar arquivo '%s'.", -- src\editor\filetree.lua
+  ["Unable to delete directory '%s': %s"] = "Impossível apagar a pasta '%s': %s", -- src\editor\filetree.lua
+  ["Unable to load file '%s'."] = "Impossível carregar o arquivo '%s'.", -- src\editor\commands.lua
+  ["Unable to rename file '%s'."] = "Impossível renomear o arquivo '%s'.", -- src\editor\filetree.lua
+  ["Unable to save file '%s': %s"] = "Impossível salvar o arquivo '%s': %s", -- src\editor\commands.lua
   ["Unable to stop program (pid: %d), code %d."] = "Impossível de interromper programa (pid: %d), código %d.", -- src\editor\debugger.lua
   ["Undo last edit"] = "Refazer última edição", -- src\editor\menu_edit.lua
-  ["Use '%s' to see full description."] = "Usar '%s' para ver a descrição completa.", -- src\editor\editor.lua
-  ["Use '%s' to show line endings and '%s' to convert them."] = "Usar '%s' para exibir os finais de linha e '%s' para convertê-los.", -- src\editor\commands.lua
-  ["Use 'clear' to clear the shell output and the history."] = "Usar 'clear' para limpar a saída e o histórico.", -- src\editor\shellbox.lua
+  ["Use '%s' to see full description."] = "Use '%s' para ver a descrição completa.", -- src\editor\editor.lua
+  ["Use '%s' to show line endings and '%s' to convert them."] = "Use '%s' para exibir os finais de linha e '%s' para convertê-los.", -- src\editor\commands.lua
+  ["Use 'clear' to clear the shell output and the history."] = "Use 'clear' para limpar a saída e o histórico.", -- src\editor\shellbox.lua
   ["Use Shift-Enter for multiline code."] = "Usar Shift-Enter para adicionar uma nova linha ao código.", -- src\editor\shellbox.lua
   ["View the outline window"] = "Exibir a janela de definições", -- src\editor\menu_view.lua
   ["View the output/console window"] = "Exibir a janela de saída/console", -- src\editor\menu_view.lua
@@ -305,6 +305,6 @@ return {
   ["Zoom to 100%"] = "Ir para 100%", -- src\editor\menu_view.lua
   ["Zoom"] = nil, -- src\editor\menu_view.lua
   ["on line %d"] = "na linha %d", -- src\editor\debugger.lua, src\editor\commands.lua, src\editor\editor.lua
-  ["traced %d instruction"] = {"%d instruções rastreadas", "%d instruções rastreadas"}, -- src\editor\debugger.lua
+  ["traced %d instruction"] = {"%d instrução rastreada", "%d instruções rastreadas"}, -- src\editor\debugger.lua
   ["unknown error"] = "erro desconhecido", -- src\editor\debugger.lua
 }
