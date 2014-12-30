@@ -65,6 +65,7 @@ PackageContents:
 Rules:
 	./mods/ts/rules/misc.yaml
 	./mods/ts/rules/ai.yaml
+	./mods/ts/rules/civilian.yaml
 	./mods/ts/rules/player.yaml
 	./mods/ts/rules/world.yaml
 	./mods/ts/rules/aircraft.yaml
@@ -78,6 +79,7 @@ Sequences:
 	./mods/ts/sequences/aircraft.yaml
 	./mods/ts/sequences/infantry.yaml
 	./mods/ts/sequences/misc.yaml
+	./mods/ts/sequences/civilian.yaml
 	./mods/ts/sequences/structures.yaml
 	./mods/ts/sequences/vehicles.yaml
 	./mods/ts/sequences/trees.yaml
