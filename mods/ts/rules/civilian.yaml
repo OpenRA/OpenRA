@@ -1,0 +1,1324 @@
+ABAN01:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: WS Logging Company
+	Building:
+		Footprint: xx xx xx xx xx xx
+		Dimensions: 2, 6
+	Armor:
+		Type: wood
+	Health:
+		HP: 600
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT
+
+ABAN02:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Panullo Hacienda
+	Building:
+		Footprint: xxxxx xxxxx xxxxx
+		Dimensions: 5, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 600
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT
+
+ABAN03:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Abandoned Factory
+	Building:
+		Footprint: xx xx xx xx xx
+		Dimensions: 2, 5
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT
+
+ABAN04:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: City Hall
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT
+
+ABAN05:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Hunting Lodge
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT
+
+ABAN06:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Local Inn & Lodging
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT	
+
+ABAN07:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Church
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 350
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT	
+
+ABAN08:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Abandoned Wharehouse
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT	
+
+ABAN09:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Tall's Residence
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 350
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT	
+
+ABAN10:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Denzil's Last Chance Motel
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT	
+
+ABAN11:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Miele Manor
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT	
+
+ABAN12:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Kettler's Place
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT	
+
+ABAN13:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Long's Home
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT	
+
+ABAN14:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Local Store
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT	
+
+ABAN15:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Adam's House
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT	
+
+ABAN16:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Station
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT	
+
+ABAN17:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Pumps
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT	
+
+ABAN18:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Station Sign
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT
+
+AMMOCRAT:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Ammo Crates
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: none
+	Health:
+		HP: 1
+
+BBOARD01:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Eat at Rade's Roadhouse
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD02:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Drink YEO-CA Cola!
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD03:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Hamburgers $.99
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD04:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Visit Scenic Las Vegas
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD05:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Rooms $29 a nite
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD06:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Kaspm's Tiberium Warhouse
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD07:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Alkaline's Battery Superstore
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD08:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Alex-gators petshop just ahead!
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD09:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: TacticX games rock!
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD10:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: WW Surf and Turf hits the spot!
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD11:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Only 11 miles to Zydeko's cafe!
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD12:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: No escape from Archer's Asylum!
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD13:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Stop in at Hewitt's hair salon
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD14:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Billy Bob's Harvester school
+	Building:
+		Footprint: xx
+		Dimensions: 2, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD15:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Pannullo's hacienda es bueno
+	Building:
+		Footprint: xx
+		Dimensions: 2, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+BBOARD16:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Join GDI: We save lives.
+	Building:
+		Footprint: xx
+		Dimensions: 2, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+CA0001:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Rade's Roadhouse
+	Building:
+		Footprint: xxx xxx xxx
+		Dimensions: 3, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+CA0002:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Sandberg and Son's
+	Building:
+		Footprint: xxx xxx xxx
+		Dimensions: 3, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+CA0003:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Temp Housing
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 300
+
+CA0004:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Waystation
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 300
+
+CA0005:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Ferbie's 4 Sale
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 300
+
+CA0006:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Deluxe Accomodations
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+
+CA0007:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Field Generator
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 400
+
+CA0008:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Subterranean Dwelling
+	Building:
+		Footprint: xx xx xx
+		Dimensions: 2, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+CA0009:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Subterranean Dwelling
+	Building:
+		Footprint: xx xx xx
+		Dimensions: 2, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+CA0010:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Leary Traveller Inn
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+
+CA0011:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Water Tank
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 200
+
+CA0012:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Greenhouse
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 100
+
+CA0013:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Water Purifier
+	Building:
+		Footprint: xx
+		Dimensions: 2, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+
+CA0014:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Observation Tower
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+
+CA0015:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Port-A-Shack
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: light
+	Health:
+		HP: 300
+
+CA0016:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Port-A-Shack Deluxe
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: light
+	Health:
+		HP: 300
+
+CA0017:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Energy Transformer
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+
+CA0018:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Solar Panel
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 200
+
+CA0019:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Solar Panel
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 200
+
+CA0020:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Solar Panel
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 200
+
+CA0021:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Solar Panel
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 200
+
+CAARAY:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Civilian Array
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+	RenderBuilding:
+		Palette: player
+
+CAARMR:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Civilian Armory
+	Building:
+		Footprint: xxxx xxxx xxxx xxxx
+		Dimensions: 4, 4
+	Armor:
+		Type: concrete
+	Health:
+		HP: 800
+	RenderBuilding:
+		Palette: player
+
+CABHUT:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Bridge repair hut
+	Building:
+		Adjacent: 0
+		Footprint: x
+		Dimensions: 1, 1
+	Health:
+		HP: 2000
+	RenderBuilding:
+		Palette: player
+
+CACRSH01:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Crash 1
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+
+CACRSH02:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Crash 2
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+
+CACRSH03:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Crash 3
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+
+CACRSH04:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Crash 4
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+
+CACRSH05:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Crash 5
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+
+CAHOSP:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Civilian Hospital
+	Building:
+		Footprint: xxx xxx xxx xxx
+		Dimensions: 3, 4
+	Armor:
+		Type: concrete
+	Health:
+		HP: 800
+	RenderBuilding:
+		Palette: player
+
+CAPYR01:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Pyramid
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+
+CAPYR02:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Pyramid
+	Building:
+		Footprint: xxxx xxxx xxxx xxxx
+		Dimensions: 4, 4
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+
+CAPYR03:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Pyramid
+	Building:
+		Footprint: xxxx xxxx xxxx xxxx
+		Dimensions: 4, 4
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+
+CITY01:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Connelly Court Apts.
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+
+CITY02:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Lightner's Luxury Suites
+	Building:
+		Footprint: xx xx xx
+		Dimensions: 2, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 700
+
+CITY03:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Office Building
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 500
+
+CITY04:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Westwood Stock Exchange
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 600
+
+CITY05:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Daily Sun Times
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 600
+
+CITY06:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: YEO-CA Cola Corp.
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: concrete
+	Health:
+		HP: 500
+
+CITY07:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Urban Housing
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+
+CITY08:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Yee's Discount Liquor
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+
+CITY09:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Abandoned Warehouse
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+
+CITY10:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Urban Storefront
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+
+CITY11:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Ambrose Lounge
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 500
+
+CITY12:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Bostic Tower
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: concrete
+	Health:
+		HP: 600
+
+CITY13:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Hewitt Hair Salon
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+
+CITY14:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Business Offices
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 600
+
+CITY15:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: 2nd National Bank
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 500
+
+CITY16:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Highrise Hotel
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+
+CITY17:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: The Projects
+	Building:
+		Footprint: xxxx xxxx xxxx
+		Dimensions: 4, 3
+	Armor:
+		Type: wood
+	Health:
+		HP: 300
+
+CITY18:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Archer Asylum
+	Building:
+		Footprint: xxx xxx xxx xxx xxx
+		Dimensions: 3, 5
+	Armor:
+		Type: concrete
+	Health:
+		HP: 600
+
+CITY19:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Fill'er Up-Pump'N'Go
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+
+CITY20:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Pump
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: wood
+	Health:
+		HP: 250
+
+CITY21:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Station Sign
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: none
+	Health:
+		HP: 100
+
+CITY22:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Church
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: none
+	Health:
+		HP: 100
+
+CTDAM:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Dam
+		Description: Provides power for other structures
+	Building:
+		Footprint: xx xx xx xx xx
+		Dimensions: 2, 5
+	Power: 
+		Amount: 200
+	Armor:
+		Type: heavy
+	Health:
+		HP: 1000
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
+
+CTVEGA:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Vega's Pyramid
+	Building:
+		Footprint: xxxx xxxx xxxx xxxx
+		Dimensions: 4, 4
+	Armor:
+		Type: none
+	Health:
+		HP: 100
+
+GAGREEN:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Green Building
+	Building:
+		Adjacent: 3
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: concrete
+	Health:
+		HP: 150
+
+GAKODK:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: GDI Kodiak
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 1500
+	RenderBuilding:
+		Palette: player
+
+GAOLDCC1:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Old Construction Yard
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	RenderBuilding:
+		Palette: player
+
+GAOLDCC2:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Old Temple
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	RenderBuilding:
+		Palette: player
+
+GAOLDCC3:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Old Weapons Factory
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	RenderBuilding:
+		Palette: player
+
+GAOLDCC4:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Old Refinery
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	RenderBuilding:
+		Palette: player
+
+GAOLDCC5:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Old Advanced Power Plant
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	RenderBuilding:
+		Palette: player
+
+GAOLDCC6:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Old Silos
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	RenderBuilding:
+		Palette: player
+
+GASPOT:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Light Tower
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Power: 
+		Amount: -10
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	RenderBuilding:
+		Palette: player
+
+NAMNTK:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: NOD Montauk
+	Building:
+		Footprint: x x x
+		Dimensions: 1, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 1500
+	RenderBuilding:
+		Palette: player
+
+NTPYRA:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Nod Pyramid
+	Building:
+		Footprint: xxxx xxxx xxxx xxxx
+		Dimensions: 4, 4
+	Power: 
+		Amount: -40
+	Armor:
+		Type: heavy
+	Health:
+		HP: 1500
+	RenderBuilding:
+		Palette: player
+
+UFO:
+	Inherits: ^CivBuilding
+	Building:
+		Dimensions: 6, 4
+		Footprint: xxxxxx xxxxxx xxxxxx xxxxxx
+	RenderBuilding:
+		Palette: terrain
+	Selectable:
+		Bounds: 144, 72, 0, 0
+	Tooltip:
+		Name: Scrin Ship
+	Health:
+		HP: 1000
+	Armor:
+		Type: Heavy
