@@ -13,22 +13,29 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	[Desc("Wanders around aimlesly when idle.")]
+	[Desc("Wanders around aimlessly while idle.")]
 	abstract class WandersInfo : ITraitInfo
 	{
 		public readonly int WanderMoveRadius = 10;
 
-		[Desc("Number of ticks to wait until decreasing the effective move radius.")]
-		public readonly int MoveReductionRadiusScale = 5;
+		[Desc("Number of ticks to wait before decreasing the effective move radius.")]
+		public readonly int TicksToWaitBeforeReducingMoveRadius = 5;
+
+		[Desc("Mimimum ammount of ticks the actor will sit idly before starting to wander.")]
+		public readonly int MinMoveDelayInTicks = 0;
+
+		[Desc("Maximum ammount of ticks the actor will sit idly before starting to wander.")]
+		public readonly int MaxMoveDelayInTicks = 0;
 
 		public abstract object Create(ActorInitializer init);
 	}
 
-	class Wanders : INotifyAddedToWorld, INotifyBecomingIdle
+	class Wanders : INotifyIdle, INotifyBecomingIdle
 	{
 		readonly Actor self;
 		readonly WandersInfo info;
 
+		int countdown;
 		int ticksIdle;
 		int effectiveMoveRadius;
 
@@ -39,13 +46,16 @@ namespace OpenRA.Mods.RA.Traits
 			effectiveMoveRadius = info.WanderMoveRadius;
 		}
 
-		public void AddedToWorld(Actor self)
-		{
-			OnBecomingIdle(self);
-		}
-
 		public void OnBecomingIdle(Actor self)
 		{
+			countdown = self.World.SharedRandom.Next(info.MinMoveDelayInTicks, info.MaxMoveDelayInTicks);
+		}
+
+		public void TickIdle(Actor self)
+		{
+			if (--countdown > 0)
+				return;
+
 			var targetPos = PickTargetLocation();
 			if (targetPos != CPos.Zero)
 				DoAction(self, targetPos);
@@ -59,7 +69,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (!self.World.Map.Contains(targetCell))
 			{
 				// If MoveRadius is too big there might not be a valid cell to order the attack to (if actor is on a small island and can't leave)
-				if (++ticksIdle % info.MoveReductionRadiusScale == 0)
+				if (++ticksIdle % info.TicksToWaitBeforeReducingMoveRadius == 0)
 					effectiveMoveRadius--;
 
 				return CPos.Zero;  // We'll be back the next tick; better to sit idle for a few seconds than prolong this tick indefinitely with a loop
