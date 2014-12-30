@@ -124,17 +124,10 @@ namespace OpenRA
 
 		public static IEnumerable<string> ReadAllLines(this Stream s)
 		{
+			string line;
 			using (var sr = new StreamReader(s))
-			{
-				for (;;)
-				{
-					var line = sr.ReadLine();
-					if (line == null)
-						yield break;
-					else
-						yield return line;
-				}
-			}
+				while ((line = sr.ReadLine()) != null)
+					yield return line;
 		}
 
 		// The string is assumed to be length-prefixed, as written by WriteString()
