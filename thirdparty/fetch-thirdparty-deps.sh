@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Die on any error for Travis CI to automatically retry:
+set -e
+
 if [ ! -f StyleCop.dll ]; then
 	echo "Fetching StyleCop files from nuget"
 	nuget install StyleCop.MSBuild -Version 4.7.49.0
