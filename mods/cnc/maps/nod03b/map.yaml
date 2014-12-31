@@ -26,6 +26,7 @@ Videos:
 
 Options:
 	Crates: False
+	Creeps: False
 	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
@@ -596,8 +597,6 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Helicopter:
-		SpawnViceroid:
-			Probability: 0
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false

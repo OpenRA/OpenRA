@@ -25,6 +25,7 @@ Videos:
 
 Options:
 	Crates: False
+	Creeps: False
 	Fog: True
 	Shroud: True
 	AllyBuildRadius: False

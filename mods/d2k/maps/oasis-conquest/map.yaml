@@ -1,0 +1,174 @@
+MapFormat: 7
+
+RequiresMod: d2k
+
+Title: Oasis Conquest
+
+Description: 2v2v2 or FFA
+
+Author: Janitor
+
+Tileset: ARRAKIS
+
+MapSize: 128,128
+
+Bounds: 16,16,96,96
+
+Visibility: Lobby
+
+Type: Conquest
+
+Videos:
+
+Options:
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: atreides
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: atreides
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5
+
+Actors:
+	Actor0: mpspawn
+		Location: 60,37
+		Owner: Neutral
+	Actor1: spicebloom
+		Location: 34,98
+		Owner: Neutral
+	Actor3: spicebloom
+		Location: 19,73
+		Owner: Neutral
+	Actor2: spicebloom
+		Location: 48,109
+		Owner: Neutral
+	Actor4: mpspawn
+		Location: 47,42
+		Owner: Neutral
+	Actor5: mpspawn
+		Location: 88,67
+		Owner: Neutral
+	Actor14: spicebloom
+		Location: 56,62
+		Owner: Neutral
+	Actor10: spicebloom
+		Location: 86,24
+		Owner: Neutral
+	Actor11: spicebloom
+		Location: 100,104
+		Owner: Neutral
+	Actor6: spicebloom
+		Location: 28,35
+		Owner: Neutral
+	Actor7: spicebloom
+		Location: 40,26
+		Owner: Neutral
+	Actor8: spicebloom
+		Location: 59,22
+		Owner: Neutral
+	Actor12: spicebloom
+		Location: 103,51
+		Owner: Neutral
+	Actor13: spicebloom
+		Location: 106,70
+		Owner: Neutral
+	Actor9: spicebloom
+		Location: 105,84
+		Owner: Neutral
+	Actor15: spicebloom
+		Location: 63,57
+		Owner: Neutral
+	Actor16: spicebloom
+		Location: 64,68
+		Owner: Neutral
+	Actor17: spicebloom
+		Location: 27,87
+		Owner: Neutral
+	Actor18: mpspawn
+		Location: 51,90
+		Owner: Neutral
+	Actor19: mpspawn
+		Location: 42,80
+		Owner: Neutral
+	Actor21: mpspawn
+		Location: 89,81
+		Owner: Neutral
+	Actor20: wormspawner
+		Location: 16,16
+		Owner: Creeps
+	Actor22: wormspawner
+		Location: 111,16
+		Owner: Creeps
+	Actor23: wormspawner
+		Location: 111,111
+		Owner: Creeps
+	Actor24: wormspawner
+		Location: 16,111
+		Owner: Creeps
+	Actor26: wormspawner
+		Location: 72,111
+		Owner: Creeps
+	Actor27: wormspawner
+		Location: 111,46
+		Owner: Creeps
+	Actor28: wormspawner
+		Location: 78,16
+		Owner: Creeps
+	Actor30: wormspawner
+		Location: 16,81
+		Owner: Creeps
+
+Smudges:
+
+Rules:
+	World:
+		WormManager:
+			Minimum: 3
+			Maximum: 6
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:

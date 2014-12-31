@@ -523,6 +523,29 @@ namespace OpenRA.Mods.Common.Server
 						return true;
 					}
 				},
+				{ "creeps",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
+							return true;
+						}
+
+						if (server.Map.Options.Creeps.HasValue)
+						{
+							server.SendOrderTo(conn, "Message", "Map has disabled Creeps spawning configuration.");
+							return true;
+						}
+
+						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Creeps);
+						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} {1} Creeps spawning."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.Creeps ? "enabled" : "disabled"));
+
+						return true;
+					}
+				},
 				{ "allybuildradius",
 					s =>
 					{

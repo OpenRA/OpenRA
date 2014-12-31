@@ -56,7 +56,8 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void Tick(Actor self)
 		{
-			// TODO: Add a lobby option to disable worms just like crates
+			if (!self.World.LobbyInfo.GlobalSettings.Creeps)
+				return;
 
 			// TODO: It would be even better to stop 
 			if (!spawnPoints.Value.Any())
