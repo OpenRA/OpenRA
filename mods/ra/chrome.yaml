@@ -103,6 +103,8 @@ sidebar-observer: chrome.png
 	observer-bottom: 512,495,238,8
 
 sidebar-button-observershroud: chrome.png
+sidebar-button-observershroud-pressed: chrome.png
+sidebar-button-observershroud-hover: chrome.png
 
 sidebar-button-observer: chrome.png
 	background: 117,33,18,18
