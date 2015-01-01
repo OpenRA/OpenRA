@@ -13,10 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Changes the visual Z position periodically.")]
 	class HoversInfo : ITraitInfo, Requires<IMoveInfo>

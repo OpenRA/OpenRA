@@ -12,17 +12,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Common.Traits
 {
 	public class RenderBuildingInfo : RenderSimpleInfo, Requires<BuildingInfo>, IPlaceBuildingDecoration
 	{
 		public readonly bool PauseOnLowPower = false;
 
-		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this);}
+		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this); }
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{

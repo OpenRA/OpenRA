@@ -15,7 +15,7 @@ using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Warheads
 {
 	public class HealthPercentageDamageWarhead : DamageWarhead
 	{

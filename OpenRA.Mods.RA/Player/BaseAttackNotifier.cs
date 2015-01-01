@@ -10,10 +10,9 @@
 
 using System.Drawing;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Plays an audio notification and shows a radar ping when a building is attacked.",
 		"Attach this to the player actor.")]

@@ -10,11 +10,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.Common.Traits
 {
 	public static class BuildingUtils
 	{
@@ -68,10 +66,9 @@ namespace OpenRA.Mods.RA.Buildings
 
 					// Cell contains an actor. Is it the type we want?
 					if (world.ActorsWithTrait<LineBuildNode>().Any(a =>
-					(
-						a.Actor.Location == cell &&
-						a.Actor.Info.Traits.Get<LineBuildNodeInfo>().Types.Intersect(lbi.NodeTypes).Any()
-					)))
+					(a.Actor.Location == cell &&
+						a.Actor.Info.Traits.Get<LineBuildNodeInfo>()
+						.Types.Intersect(lbi.NodeTypes).Any())))
 						dirs[d] = i; // Cell contains actor of correct type
 					else
 						dirs[d] = -1; // Cell is blocked by another actor type

@@ -11,11 +11,9 @@
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 
 	[Desc("Actor can be sold")]

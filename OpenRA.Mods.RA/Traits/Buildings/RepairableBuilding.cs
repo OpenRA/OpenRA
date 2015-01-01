@@ -12,11 +12,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Building can be repaired by the repair button.")]
 	public class RepairableBuildingInfo : UpgradableTraitInfo, ITraitInfo, Requires<HealthInfo>

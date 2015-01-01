@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.RA.Traits
 {
 	class RenderDisguiseInfo : RenderInfantryInfo, Requires<DisguiseInfo>
 	{

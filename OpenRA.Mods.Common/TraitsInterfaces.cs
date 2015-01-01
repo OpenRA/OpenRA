@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Activities;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
@@ -20,7 +21,13 @@ namespace OpenRA.Mods.Common.Traits
 		void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer);
 	}
 
+	public interface IPlaceBuildingDecoration
+	{
+		IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
+	}
+
 	public interface INotifyChat { bool OnChat(string from, string message); }
+	public interface INotifyParachuteLanded { void OnLanded(); }
 	public interface IRenderActorPreviewInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo { WRange GetCruiseAltitude(); }
 

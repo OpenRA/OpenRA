@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {

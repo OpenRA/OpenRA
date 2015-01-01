@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public BridgeHut(ActorInitializer init)
 		{
-			Bridge = init.Get<ParentActorInit>().value.Trait<Bridge>();
+			Bridge = init.Get<ParentActorInit>().ActorValue.Trait<Bridge>();
 			Bridge.AddHut(this);
 			FirstBridge = Bridge.Enumerate(0, true).Last();
 		}

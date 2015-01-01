@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Actor has a visual turret used to attack.")]
 	public class AttackTurretedInfo : AttackFollowInfo, Requires<TurretedInfo>

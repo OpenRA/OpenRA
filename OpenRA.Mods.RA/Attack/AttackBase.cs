@@ -14,10 +14,10 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.GameRules;
-using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	public abstract class AttackBaseInfo : ITraitInfo
 	{

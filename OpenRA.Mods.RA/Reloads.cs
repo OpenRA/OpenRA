@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Unit will reload its limited ammo itself.")]
 	public class ReloadsInfo : ITraitInfo, Requires<LimitedAmmoInfo>

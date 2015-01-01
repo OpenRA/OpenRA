@@ -9,10 +9,10 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("This actor can be captured by a unit with ExternalCaptures: trait.")]
 	public class ExternalCapturableInfo : ITraitInfo

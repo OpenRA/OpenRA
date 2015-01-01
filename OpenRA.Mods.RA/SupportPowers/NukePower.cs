@@ -17,7 +17,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	class NukePowerInfo : SupportPowerInfo, Requires<IBodyOrientationInfo>
 	{

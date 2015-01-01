@@ -122,10 +122,17 @@
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Buildings\BaseBuilding.cs" />
     <Compile Include="Traits\Buildings\BaseProvider.cs" />
+    <Compile Include="Traits\Buildings\Bib.cs" />
+    <Compile Include="Traits\Buildings\Building.cs" />
+    <Compile Include="Traits\Buildings\BuildingInfluence.cs" />
+    <Compile Include="Traits\Buildings\BuildingUtils.cs" />
     <Compile Include="Traits\Buildings\DeadBuildingState.cs" />
+    <Compile Include="Traits\Buildings\FreeActor.cs" />
     <Compile Include="Traits\Buildings\LineBuild.cs" />
     <Compile Include="Traits\Buildings\LineBuildNode.cs" />
     <Compile Include="Traits\Buildings\RallyPoint.cs" />
+    <Compile Include="Traits\Buildings\RepairsUnits.cs" />
+    <Compile Include="Traits\Buildings\FootprintUtils.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\Huntable.cs" />
     <Compile Include="Traits\CustomBuildTimeValue.cs" />
@@ -137,6 +144,7 @@
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\KillsSelf.cs" />
     <Compile Include="Traits\Modifiers\DisabledOverlay.cs" />
+    <Compile Include="Traits\Modifiers\FrozenUnderFog.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Traits\Modifiers\UpgradeOverlay.cs" />
     <Compile Include="Traits\MustBeDestroyed.cs" />
@@ -162,6 +170,7 @@
     <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\RadarColorFromTerrain.cs" />
+    <Compile Include="Traits\Render\RenderBuilding.cs" />
     <Compile Include="Traits\Render\RenderEditorOnly.cs" />
     <Compile Include="Traits\Render\RenderFlare.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
@@ -170,7 +179,10 @@
     <Compile Include="Traits\Render\RenderUnit.cs" />
     <Compile Include="Traits\Render\TimedUpgradeBar.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
+    <Compile Include="Traits\Render\WithMakeAnimation.cs" />
+    <Compile Include="Traits\Render\WithCrateBody.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
+    <Compile Include="Traits\Render\WithHarvestAnimation.cs" />
     <Compile Include="Traits\Render\WithResources.cs" />
     <Compile Include="Traits\Render\WithRotor.cs" />
     <Compile Include="Traits\Render\WithShadow.cs" />
@@ -198,6 +210,7 @@
     <Compile Include="Traits\World\RadarPings.cs" />
     <Compile Include="Traits\World\ResourceClaim.cs" />
     <Compile Include="Traits\World\ResourceClaimLayer.cs" />
+    <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="Traits\World\ShroudPalette.cs" />
     <Compile Include="Traits\World\ShroudRenderer.cs" />
     <Compile Include="Traits\World\SmudgeLayer.cs" />
@@ -220,6 +233,8 @@
     <Compile Include="UtilityCommands\UpgradeModCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeRules.cs" />
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
+    <Compile Include="Warheads\CreateResourceWarhead.cs" />
+    <Compile Include="Warheads\DestroyResourceWarhead.cs" />
     <Compile Include="Warheads\HealthPercentageDamageWarhead.cs" />
     <Compile Include="Warheads\LeaveSmudgeWarhead.cs" />
     <Compile Include="Warheads\SpreadDamageWarhead.cs" />

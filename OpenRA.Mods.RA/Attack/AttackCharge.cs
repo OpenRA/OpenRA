@@ -10,10 +10,9 @@
 
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Charges up before being able to attack.")]
 	class AttackChargeInfo : AttackOmniInfo

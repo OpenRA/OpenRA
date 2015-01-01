@@ -11,9 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Traits;
-using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.AI

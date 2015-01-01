@@ -11,7 +11,7 @@
 using OpenRA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	class AttackOmniInfo : AttackBaseInfo
 	{

@@ -12,12 +12,10 @@ using System;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Render;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Common.Traits
 {
 	public class WithMakeAnimationInfo : ITraitInfo, Requires<BuildingInfo>, Requires<RenderBuildingInfo>
 	{

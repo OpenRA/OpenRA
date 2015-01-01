@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -27,6 +28,5 @@ namespace OpenRA.Mods.RA
 		void OnDock(Actor self, Actor harv, DeliverResources dockOrder);
 	}
 
-	public interface INotifyParachuteLanded { void OnLanded(); }
 	public interface INotifyAttack { void Attacking(Actor self, Target target, Armament a, Barrel barrel); }
 }

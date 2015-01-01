@@ -8,7 +8,9 @@
  */
 #endregion
 
-namespace OpenRA.Mods.RA.Render
+using OpenRA.Mods.Common.Traits;
+
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Used for tesla coil and obelisk.")]
 	public class RenderBuildingChargeInfo : RenderBuildingInfo

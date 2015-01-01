@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.Common.Traits
 {
 	public static class FootprintUtils
 	{
