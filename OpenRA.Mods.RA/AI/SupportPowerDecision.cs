@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		[Desc("What support power does this decision apply to?")]
 		public readonly string OrderName = "AirstrikePowerInfoOrder";
 
-		[Desc("What is the coarse scan radius of this power?","For finding the general target area, before doing a detail scan","Should be 10 or more to avoid lag")]
+		[Desc("What is the coarse scan radius of this power?", "For finding the general target area, before doing a detail scan", "Should be 10 or more to avoid lag")]
 		public readonly int CoarseScanRadius = 20;
 
 		[Desc("What is the fine scan radius of this power?", "For doing a detailed scan in the general target area.", "Minimum is 1")]
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
 			return ret;
 		}
 
-		///<summary>Evaluates the attractiveness of a position according to all considerations</summary>
+		/// <summary>Evaluates the attractiveness of a position according to all considerations</summary>
 		public int GetAttractiveness(WPos pos, Player firedBy)
 		{
 			var answer = 0;
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA
 			return answer;
 		}
 
-		///<summary>Evaluates the attractiveness of a group of actors according to all considerations</summary>
+		/// <summary>Evaluates the attractiveness of a group of actors according to all considerations</summary>
 		public int GetAttractiveness(IEnumerable<Actor> actors, Player firedBy)
 		{
 			var answer = 0;
@@ -95,10 +95,10 @@ namespace OpenRA.Mods.RA
 
 		public int GetNextScanTime(HackyAI ai) { return ai.random.Next(MinimumScanTimeInterval, MaximumScanTimeInterval); }
 
-		///<summary>Makes up part of a decision, describing how to evaluate a target.</summary>
+		/// <summary>Makes up part of a decision, describing how to evaluate a target.</summary>
 		class Consideration
 		{
-			public enum DecisionMetric { Health, Value, None };
+			public enum DecisionMetric { Health, Value, None }
 
 			[Desc("Against whom should this power be used?", "Allowed keywords: Ally, Neutral, Enemy")]
 			public readonly Stance Against = Stance.Enemy;
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.RA
 				FieldLoader.Load(this, yaml);
 			}
 
-			///<summary>Evaluates a single actor according to the rules defined in this consideration</summary>
+			/// <summary>Evaluates a single actor according to the rules defined in this consideration</summary>
 			public int GetAttractiveness(Actor a, Stance stance, Player firedBy)
 			{
 				if (stance != Against)
@@ -152,6 +152,7 @@ namespace OpenRA.Mods.RA
 							return Attractiveness;
 					}
 				}
+
 				return 0;
 			}
 		}

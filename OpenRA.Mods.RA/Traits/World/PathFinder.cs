@@ -27,7 +27,8 @@ namespace OpenRA.Mods.RA.Traits
 
 	public class PathFinder
 	{
-		readonly static List<CPos> emptyPath = new List<CPos>(0);
+		const int MaxPathAge = 50;	/* x 40ms ticks */
+		static readonly List<CPos> emptyPath = new List<CPos>(0);
 
 		readonly World world;
 		public PathFinder(World world) { this.world = world; }
@@ -42,7 +43,6 @@ namespace OpenRA.Mods.RA.Traits
 		}
 
 		List<CachedPath> CachedPaths = new List<CachedPath>();
-		const int MaxPathAge = 50;	/* x 40ms ticks */
 
 		public List<CPos> FindUnitPath(CPos from, CPos target, Actor self)
 		{
@@ -75,8 +75,7 @@ namespace OpenRA.Mods.RA.Traits
 				  .Reverse();
 				var pb = FindBidiPath(
 					fromPoint,
-					fromPointReverse
-				);
+					fromPointReverse);
 
 				CheckSanePath2(pb, from, target);
 
@@ -92,7 +91,7 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				var mi = self.Info.Traits.Get<MobileInfo>();
 				var targetCell = self.World.Map.CellContaining(target);
-				var rangeSquared = range.Range*range.Range;
+				var rangeSquared = range.Range * range.Range;
 
 				// Correct for SubCell offset
 				target -= self.World.Map.OffsetOfSubCell(srcSub);
@@ -116,8 +115,7 @@ namespace OpenRA.Mods.RA.Traits
 
 				var path = FindBidiPath(
 					PathSearch.FromPoints(world, mi, self, tilesInRange, src, true),
-					PathSearch.FromPoint(world, mi, self, src, targetCell, true).Reverse()
-				);
+					PathSearch.FromPoint(world, mi, self, src, targetCell, true).Reverse());
 
 				return path;
 			}
@@ -231,6 +229,7 @@ namespace OpenRA.Mods.RA.Traits
 				ret.Add(q);
 				q = ca[q].Path;
 			}
+
 			ret.Add(q);
 
 			ret.Reverse();

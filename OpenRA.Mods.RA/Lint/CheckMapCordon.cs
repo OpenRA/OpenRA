@@ -21,9 +21,8 @@ namespace OpenRA.Mods.RA
 			if (map.Bounds.Left == 0 || map.Bounds.Top == 0
 				|| map.Bounds.Right == map.MapSize.X || map.Bounds.Bottom == map.MapSize.Y)
 					emitError("This map does not define a valid cordon.\n"
-						+"A one cell (or greater) border is required on all four sides "
-						+"between the playable bounds and the map edges");
+						+ "A one cell (or greater) border is required on all four sides "
+						+ "between the playable bounds and the map edges");
 		}
 	}
 }
-

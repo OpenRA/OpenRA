@@ -53,6 +53,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				return;
 			}
+
 			var queues = world.ActorsWithTrait<ProductionQueue>()
 				.Where(a => a.Actor.Owner == player)
 				.Select((a, i) => new { a.Trait, i });

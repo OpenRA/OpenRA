@@ -69,6 +69,7 @@ namespace OpenRA.Mods.RA.Activities
 						var resType = resLayer.GetResource(loc);
 
 						if (resType == null) return 1;
+
 						// Can the harvester collect this kind of resource?
 						if (!harvInfo.Resources.Contains(resType.Info.Name)) return 1;
 
@@ -81,8 +82,7 @@ namespace OpenRA.Mods.RA.Activities
 
 						return 0;
 					})
-					.FromPoint(self.Location)
-			);
+					.FromPoint(self.Location));
 
 			if (path.Count == 0)
 			{

@@ -37,9 +37,9 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly int FireDelay = 0;
 
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
-		public readonly WVec[] LocalOffset = {};
+		public readonly WVec[] LocalOffset = { };
 		[Desc("Muzzle yaw relative to turret or body.")]
-		public readonly WAngle[] LocalYaw = {};
+		public readonly WAngle[] LocalYaw = { };
 		[Desc("Move the turret backwards when firing.")]
 		public readonly WRange Recoil = WRange.Zero;
 		[Desc("Recoil recovery per-frame")]

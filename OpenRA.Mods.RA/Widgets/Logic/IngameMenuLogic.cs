@@ -46,6 +46,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					Game.RunAfterDelay(exitDelay, () => mpe.Fade(MenuPaletteEffect.EffectType.Black));
 					exitDelay += 40 * mpe.Info.FadeLength;
 				}
+
 				Game.RunAfterDelay(exitDelay, () =>
 				{
 					Game.Disconnect();

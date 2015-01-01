@@ -22,5 +22,5 @@ namespace OpenRA.Mods.RA
 		public readonly int Range = 5;
 	}
 
-	class DetectCloaked {}
+	class DetectCloaked { }
 }

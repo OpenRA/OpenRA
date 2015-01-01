@@ -653,7 +653,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				}).Start();
 			}
 			else if (Game.Settings.Game.AllowDownloading)
-				Game.modData.MapCache.QueryRemoteMapDetails(new [] { uid });
+				Game.modData.MapCache.QueryRemoteMapDetails(new[] { uid });
 		}
 
 		void UpdatePlayerList()

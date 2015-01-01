@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 		public EnterTransportTargeter(string order, int priority,
 			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor,
 			AlternateTransportsMode mode)
-			: base (order, priority, canTarget, useEnterCursor) { this.mode = mode; }
+			: base(order, priority, canTarget, useEnterCursor) { this.mode = mode; }
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 		public EnterTransportsTargeter(string order, int priority,
 			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor,
 			AlternateTransportsMode mode)
-			: base (order, priority, canTarget, useEnterCursor) { this.mode = mode; }
+			: base(order, priority, canTarget, useEnterCursor) { this.mode = mode; }
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
@@ -77,6 +77,7 @@ namespace OpenRA.Mods.RA
 				case AlternateTransportsMode.Always:
 					break;
 			}
+
 			return base.CanTargetActor(self, target, modifiers, ref cursor);
 		}
 	}

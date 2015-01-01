@@ -36,6 +36,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			return (float)cap.CaptureProgressTime / (cap.Info.CaptureCompleteTime * 25);
 		}
+
 		public Color GetColor() { return Color.Orange; }
 	}
 }

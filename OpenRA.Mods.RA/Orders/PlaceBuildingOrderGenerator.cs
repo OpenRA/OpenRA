@@ -104,6 +104,7 @@ namespace OpenRA.Mods.RA.Orders
 					yield return r;
 
 			var cells = new Dictionary<CPos, bool>();
+
 			// Linebuild for walls.
 			// Requires a 1x1 footprint
 			if (rules.Actors[Building].Traits.Contains<LineBuildInfo>())

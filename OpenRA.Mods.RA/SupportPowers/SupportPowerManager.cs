@@ -189,7 +189,8 @@ namespace OpenRA.Mods.RA.Traits
 				if (Manager.DevMode.FastCharge && RemainingTime > 25)
 					RemainingTime = 25;
 
-				if (RemainingTime > 0) --RemainingTime;
+				if (RemainingTime > 0)
+					--RemainingTime;
 				if (!notifiedCharging)
 				{
 					power.Charging(power.self, Key);

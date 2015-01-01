@@ -76,4 +76,3 @@ namespace OpenRA.Mods.RA.Traits
 		}
 	}
 }
-

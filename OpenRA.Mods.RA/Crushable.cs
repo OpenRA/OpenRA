@@ -59,6 +59,7 @@ namespace OpenRA.Mods.RA.Traits
 
 				wda.SpawnDeathAnimation(self, wda.Info.CrushedSequence, palette);
 			}
+
 			self.Kill(crusher);
 		}
 

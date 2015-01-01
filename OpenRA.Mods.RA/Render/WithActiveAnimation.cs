@@ -67,6 +67,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			buildComplete = false;
 		}
+
 		public void Sold(Actor self) { }
 	}
 }
