@@ -14,6 +14,7 @@ using OpenRA.Activities;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.D2k.Traits;
+using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
@@ -74,6 +75,8 @@ namespace OpenRA.Mods.D2k.Activities
 				actor.World.AddFrameEndTask(_ => actor.Destroy());
 
 			positionable.SetPosition(worm, targetLocation);
+			foreach (var notify in worm.TraitsImplementing<INotifyAttack>())
+				notify.Attacking(worm, target, null, null);
 			PlayAttackAnimation(worm);
 
 			var attackPosition = worm.CenterPosition;
@@ -86,7 +89,6 @@ namespace OpenRA.Mods.D2k.Activities
 
 		void PlayAttackAnimation(Actor self)
 		{
-			renderUnit.PlayCustomAnim(self, "sand");
 			renderUnit.PlayCustomAnim(self, "mouth");
 		}
 
