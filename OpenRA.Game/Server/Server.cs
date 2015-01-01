@@ -156,11 +156,11 @@ namespace OpenRA.Server
 				for (;;)
 				{
 					var checkRead = new List<Socket>();
-					checkRead.Add(listener.Server);
+					if (State == ServerState.WaitingPlayers) checkRead.Add(listener.Server);
 					foreach (var c in Conns) checkRead.Add(c.socket);
 					foreach (var c in PreConns) checkRead.Add(c.socket);
 
-					Socket.Select(checkRead, null, null, timeout);
+					if (checkRead.Count > 0) Socket.Select(checkRead, null, null, timeout);
 					if (State == ServerState.ShuttingDown)
 					{
 						EndGame();
