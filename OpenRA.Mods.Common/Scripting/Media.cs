@@ -39,7 +39,6 @@ namespace OpenRA.Mods.Common.Scripting
 
 			// TODO: this also modifies vqa audio
 			// Sound.SoundVolumeModifier = 0f;
-
 			// Stop music while fmv plays
 			var music = Sound.MusicPlaying;
 			if (music)
