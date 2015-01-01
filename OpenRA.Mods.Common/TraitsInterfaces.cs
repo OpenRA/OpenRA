@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
 	}
 
+	public interface INotifyAttack { void Attacking(Actor self, Target target, Armament a, Barrel barrel); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
 	public interface INotifyParachuteLanded { void OnLanded(); }
 	public interface IRenderActorPreviewInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
