@@ -1,4 +1,4 @@
-﻿namespace OpenRA.TilesetBuilder
+namespace OpenRA.TilesetBuilder
 {
 	partial class FormBuilder
 	{
