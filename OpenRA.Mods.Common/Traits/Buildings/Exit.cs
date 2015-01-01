@@ -1,0 +1,32 @@
+#region Copyright & License Information
+/*
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
+#endregion
+
+using System.Collections.Generic;
+using OpenRA.Mods.Common.Effects;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.Common.Traits
+{
+	[Desc("Where the unit should leave the building. Multiples are allowed if IDs are added: Exit@2, ...")]
+	public class ExitInfo : TraitInfo<Exit>
+	{
+		[Desc("Offset at which that the exiting actor is spawned")]
+		public readonly WVec SpawnOffset = WVec.Zero;
+
+		[Desc("Cell offset where the exiting actor enters the ActorMap")]
+		public readonly CVec ExitCell = CVec.Zero;
+		public readonly int Facing = -1;
+
+		[Desc("AttackMove to a RallyPoint or stay where you are spawned.")]
+		public readonly bool MoveIntoWorld = true;
+	}
+
+	public class Exit { }
+}
