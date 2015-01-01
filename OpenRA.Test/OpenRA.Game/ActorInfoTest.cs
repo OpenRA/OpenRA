@@ -10,11 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Linq;
+using System.Text.RegularExpressions;
+using NUnit.Framework;
 using OpenRA.GameRules;
 using OpenRA.Traits;
-using NUnit.Framework;
 
 namespace OpenRA.Test
 {
@@ -48,7 +48,7 @@ namespace OpenRA.Test
 			actorInfo.Traits.Add(new MockB());
 			actorInfo.Traits.Add(new MockA());
 
-			var i = new List<ITraitInfo> (actorInfo.TraitsInConstructOrder());
+			var i = new List<ITraitInfo>(actorInfo.TraitsInConstructOrder());
 
 			Assert.That(i[0], Is.InstanceOf<MockA>());
 			Assert.That(i[1], Is.InstanceOf<MockB>());
@@ -93,8 +93,7 @@ namespace OpenRA.Test
 				var count = (
 					new Regex("MockD").Matches(e.Message).Count +
 					new Regex("MockE").Matches(e.Message).Count +
-					new Regex("MockF").Matches(e.Message).Count
-					) / 3.0;
+					new Regex("MockF").Matches(e.Message).Count) / 3.0;
 
 				Assert.That(count, Is.EqualTo(Math.Floor(count)), "Should be symmetrical");
 			}

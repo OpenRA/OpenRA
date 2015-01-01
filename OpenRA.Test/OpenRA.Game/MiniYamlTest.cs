@@ -10,11 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Linq;
+using System.Text.RegularExpressions;
+using NUnit.Framework;
 using OpenRA.GameRules;
 using OpenRA.Traits;
-using NUnit.Framework;
 
 namespace OpenRA.Test
 {
