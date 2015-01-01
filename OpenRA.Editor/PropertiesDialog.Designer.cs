@@ -45,7 +45,7 @@ namespace OpenRA.Editor
 			this.DescBox = new System.Windows.Forms.TextBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.AuthorBox = new System.Windows.Forms.TextBox();
-			this.mapVisibilityComboBox = new System.Windows.Forms.ComboBox();
+			this.MapVisibilityComboBox = new System.Windows.Forms.ComboBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			//
@@ -122,15 +122,15 @@ namespace OpenRA.Editor
 			//
 			// mapVisibilityComboBox
 			// 
-			this.mapVisibilityComboBox.FormattingEnabled = true;
-			this.mapVisibilityComboBox.Items.AddRange(new object[] {
+			this.MapVisibilityComboBox.FormattingEnabled = true;
+			this.MapVisibilityComboBox.Items.AddRange(new object[] {
 			"Lobby",
 			"Shellmap",
 			"MissionSelector"});
-			this.mapVisibilityComboBox.Location = new System.Drawing.Point(150, 137);
-			this.mapVisibilityComboBox.Name = "mapVisibilityComboBox";
-			this.mapVisibilityComboBox.Size = new System.Drawing.Size(121, 21);
-			this.mapVisibilityComboBox.TabIndex = 19;
+			this.MapVisibilityComboBox.Location = new System.Drawing.Point(150, 137);
+			this.MapVisibilityComboBox.Name = "mapVisibilityComboBox";
+			this.MapVisibilityComboBox.Size = new System.Drawing.Size(121, 21);
+			this.MapVisibilityComboBox.TabIndex = 19;
 			// 
 			// label4
 			// 
@@ -148,7 +148,7 @@ namespace OpenRA.Editor
 			this.CancelButton = this.button1;
 			this.ClientSize = new System.Drawing.Size(370, 228);
 			this.Controls.Add(this.label4);
-			this.Controls.Add(this.mapVisibilityComboBox);
+			this.Controls.Add(this.MapVisibilityComboBox);
 			this.Controls.Add(this.AuthorBox);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.DescBox);
@@ -176,7 +176,7 @@ namespace OpenRA.Editor
 		public System.Windows.Forms.TextBox DescBox;
 		private System.Windows.Forms.Label label3;
 		public System.Windows.Forms.TextBox AuthorBox;
-		public System.Windows.Forms.ComboBox mapVisibilityComboBox;
+		public System.Windows.Forms.ComboBox MapVisibilityComboBox;
 		private System.Windows.Forms.Label label4;
 	}
 }
