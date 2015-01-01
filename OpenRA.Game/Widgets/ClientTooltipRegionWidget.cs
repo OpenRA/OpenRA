@@ -48,7 +48,7 @@ namespace OpenRA.Widgets
 		{
 			if (TooltipContainer == null)
 				return;
-			tooltipContainer.Value.SetTooltip(Template, new WidgetArgs() {{"orderManager", orderManager}, {"clientIndex", clientIndex}});
+			tooltipContainer.Value.SetTooltip(Template, new WidgetArgs() { { "orderManager", orderManager }, { "clientIndex", clientIndex } });
 		}
 
 		public override void MouseExited()

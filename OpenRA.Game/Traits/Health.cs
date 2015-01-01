@@ -27,7 +27,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 
-	public enum DamageState { Undamaged, Light, Medium, Heavy, Critical, Dead };
+	public enum DamageState { Undamaged, Light, Medium, Heavy, Critical, Dead }
 
 	public class Health : ISync, ITick
 	{
@@ -173,8 +173,8 @@ namespace OpenRA.Traits
 	{
 		[FieldFromYamlKey] public readonly float value = 1f;
 		public HealthInit() { }
-		public HealthInit( float init ) { value = init; }
-		public float Value( World world ) { return value; }
+		public HealthInit(float init) { value = init; }
+		public float Value(World world) { return value; }
 	}
 
 	public static class HealthExts

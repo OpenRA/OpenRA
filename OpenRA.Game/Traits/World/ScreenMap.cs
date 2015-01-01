@@ -72,7 +72,7 @@ namespace OpenRA.Traits
 
 			for (var j = top; j <= bottom; j++)
 				for (var i = left; i <= right; i++)
-					frozen[viewer][j*cols + i].Add(fa, bounds);
+					frozen[viewer][j * cols + i].Add(fa, bounds);
 		}
 
 		public void Remove(Player viewer, FrozenActor fa)
@@ -117,7 +117,7 @@ namespace OpenRA.Traits
 
 			var i = (worldPx.X / info.BinSize).Clamp(0, cols - 1);
 			var j = (worldPx.Y / info.BinSize).Clamp(0, rows - 1);
-			return frozen[viewer][j*cols + i]
+			return frozen[viewer][j * cols + i]
 				.Where(kv => kv.Key.IsValid && kv.Value.Contains(worldPx))
 				.Select(kv => kv.Key);
 		}

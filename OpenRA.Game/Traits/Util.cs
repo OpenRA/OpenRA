@@ -91,9 +91,11 @@ namespace OpenRA.Traits
 				{
 					start = current;
 				}
+
 				if (prev == act)
 					break;
 			}
+
 			return act;
 		}
 

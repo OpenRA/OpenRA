@@ -18,6 +18,11 @@ namespace OpenRA.Support
 {
 	public sealed class PerfTimer : IDisposable
 	{
+		// Tree settings
+		const int Digits = 6;
+		const string IndentationString = "|   ";
+		const string FormatSeperation = " ms ";
+		static readonly string FormatString = "{0," + Digits + ":0}" + FormatSeperation + "{1}";
 		readonly string name;
 		readonly float thresholdMs;
 		readonly byte depth;
@@ -26,12 +31,6 @@ namespace OpenRA.Support
 		long ticks;
 
 		static ThreadLocal<PerfTimer> Parent = new ThreadLocal<PerfTimer>();
-
-		// Tree settings
-		const int Digits = 6;
-		const string IndentationString = "|   ";
-		const string FormatSeperation = " ms ";
-		static readonly string FormatString = "{0," + Digits + ":0}" + FormatSeperation + "{1}";
 
 		public PerfTimer(string name, float thresholdMs = 0)
 		{

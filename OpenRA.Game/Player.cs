@@ -21,14 +21,12 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public enum PowerState { Normal, Low, Critical };
-	public enum WinState { Undefined, Won, Lost };
+	public enum PowerState { Normal, Low, Critical }
+	public enum WinState { Undefined, Won, Lost }
 
-	public class Player :  IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
+	public class Player : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
 	{
-		public Actor PlayerActor;
-		public WinState WinState = WinState.Undefined;
-
+		public readonly Actor PlayerActor;
 		public readonly HSLColor Color;
 
 		public readonly string PlayerName;
@@ -39,6 +37,8 @@ namespace OpenRA
 		public readonly bool Playable = true;
 		public readonly int ClientIndex;
 		public readonly PlayerReference PlayerReference;
+
+		public WinState WinState = WinState.Undefined;
 		public bool IsBot;
 		public int SpawnPoint;
 		public bool HasObjectives = false;
@@ -84,6 +84,7 @@ namespace OpenRA
 				botType = pr.Bot;
 				Country = ChooseCountry(world, pr.Race);
 			}
+
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
 			Shroud = PlayerActor.Trait<Shroud>();
 
@@ -138,7 +139,7 @@ namespace OpenRA
 			set { luaInterface.Value[runtime, keyValue] = value; }
 		}
 
-		public LuaValue Equals (LuaRuntime runtime, LuaValue left, LuaValue right)
+		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			Player a, b;
 			if (!left.TryGetClrValue<Player>(out a) || !right.TryGetClrValue<Player>(out b))

@@ -72,7 +72,7 @@ namespace OpenRA.Widgets
 				return;
 
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs() {{ "world", world }, { "viewport", this }});
+				new WidgetArgs() { { "world", world }, { "viewport", this } });
 		}
 
 		public override void MouseExited()

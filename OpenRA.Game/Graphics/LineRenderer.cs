@@ -38,6 +38,7 @@ namespace OpenRA.Graphics
 			{
 				return lineWidth;
 			}
+
 			set
 			{
 				if (LineWidth != value)

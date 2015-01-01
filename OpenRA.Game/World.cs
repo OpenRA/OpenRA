@@ -116,7 +116,11 @@ namespace OpenRA
 		IOrderGenerator orderGenerator_;
 		public IOrderGenerator OrderGenerator
 		{
-			get { return orderGenerator_; }
+			get
+			{
+				return orderGenerator_;
+			}
+
 			set
 			{
 				Sync.AssertUnsynced("The current order generator may not be changed from synced code");
@@ -296,7 +300,7 @@ namespace OpenRA
 
 		public int SyncHash()
 		{
-			//using (new PerfSample("synchash"))
+			// using (new PerfSample("synchash"))
 			{
 				var n = 0;
 				var ret = 0;

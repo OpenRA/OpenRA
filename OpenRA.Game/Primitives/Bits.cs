@@ -32,16 +32,16 @@ namespace OpenRA.Primitives
 
 		public static int GetValue(string[] val)
 		{
-			return val.Select( a => bits[a] ).Aggregate( 0, (a,b) => a | b );
+			return val.Select(a => bits[a]).Aggregate(0, (a, b) => a | b);
 		}
 
 		public static IEnumerable<string> GetStrings(int val)
 		{
-			for( var i = 0; i < 32; i++ )
+			for (var i = 0; i < 32; i++)
 			{
 				var x = 1 << i;
 				if ((val & x) != 0)
-					yield return bits.Single( a => a.Value == x ).Key;
+					yield return bits.Single(a => a.Value == x).Key;
 			}
 		}
 	}
@@ -58,7 +58,7 @@ namespace OpenRA.Primitives
 			return BitAllocator<T>.GetStrings(Value).JoinWith(",");
 		}
 
-		public static bool operator ==(Bits<T> me, Bits<T> other) { return (me.Value == other.Value); }
+		public static bool operator ==(Bits<T> me, Bits<T> other) { return me.Value == other.Value; }
 		public static bool operator !=(Bits<T> me, Bits<T> other) { return !(me == other); }
 
 		public bool Equals(Bits<T> other) { return other == this; }

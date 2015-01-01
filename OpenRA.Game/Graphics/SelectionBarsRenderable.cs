@@ -135,7 +135,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void BeforeRender(WorldRenderer wr) {}
+		public void BeforeRender(WorldRenderer wr) { }
 		public void Render(WorldRenderer wr)
 		{
 			if (!actor.IsInWorld || actor.IsDead)
@@ -154,6 +154,6 @@ namespace OpenRA.Graphics
 			DrawExtraBars(wr, xy, Xy);
 		}
 
-		public void RenderDebugGeometry(WorldRenderer wr) {}
+		public void RenderDebugGeometry(WorldRenderer wr) { }
 	}
 }

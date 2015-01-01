@@ -26,7 +26,7 @@ namespace OpenRA.FileFormats
 
 			uint l = 0, r = 0;
 
-			for (var i = 0; i < 18; )
+			for (var i = 0; i < 18;)
 			{
 				Encrypt(ref l, ref r);
 				m_p[i++] = l;
@@ -34,7 +34,7 @@ namespace OpenRA.FileFormats
 			}
 
 			for (var i = 0; i < 4; ++i)
-				for (var j = 0; j < 256; )
+				for (var j = 0; j < 256;)
 				{
 					Encrypt(ref l, ref r);
 					m_s[i, j++] = l;
@@ -45,7 +45,7 @@ namespace OpenRA.FileFormats
 		public uint[] Encrypt(uint[] data) { return RunCipher(data, Encrypt); }
 		public uint[] Decrypt(uint[] data) { return RunCipher(data, Decrypt); }
 
-		delegate void CipherFunc( ref uint a, ref uint b );
+		delegate void CipherFunc(ref uint a, ref uint b);
 
 		static uint[] RunCipher(uint[] data, CipherFunc f)
 		{
@@ -56,7 +56,7 @@ namespace OpenRA.FileFormats
 			while (size-- > 0)
 			{
 				var a = SwapBytes(data[i]);
-				var b = SwapBytes(data[i+1]);
+				var b = SwapBytes(data[i + 1]);
 
 				f(ref a, ref b);
 
@@ -73,13 +73,14 @@ namespace OpenRA.FileFormats
 			_a ^= m_p[0];
 
 			var x = false;
-			for( var i = 1; i <= 16; i++, x ^= true)
+			for (var i = 1; i <= 16; i++, x ^= true)
 			{
 				if (x)
 					Round(ref _a, _b, i);
 				else
 					Round(ref _b, _a, i);
 			}
+
 			_b ^= m_p[17];
 
 			a = _b;
@@ -99,6 +100,7 @@ namespace OpenRA.FileFormats
 				else
 					Round(ref _b, _a, i);
 			}
+
 			_b ^= m_p[0];
 
 			a = _b;
@@ -400,7 +402,6 @@ namespace OpenRA.FileFormats
 				0x90d4f869, 0xa65cdea0, 0x3f09252d, 0xc208e69f,
 				0xb74e6132, 0xce77e25b, 0x578fdfe3, 0x3ac372e6
 			}
-
 		};
 	}
 }

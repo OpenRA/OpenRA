@@ -29,6 +29,7 @@ namespace OpenRA
 				else
 					end = mid;
 			}
+
 			return start;
 		}
 	}
@@ -187,6 +188,7 @@ namespace OpenRA
 					this.actor = actor;
 					Reset();
 				}
+
 				public void Reset() { index = actors.BinarySearchMany(actor) - 1; }
 				public bool MoveNext() { return ++index < actors.Count && actors[index].ActorID == actor; }
 				public T Current { get { return traits[index]; } }
@@ -219,6 +221,7 @@ namespace OpenRA
 					traits = container.traits;
 					Reset();
 				}
+
 				public void Reset() { index = -1; }
 				public bool MoveNext() { return ++index < actors.Count; }
 				public TraitPair<T> Current { get { return new TraitPair<T> { Actor = actors[index], Trait = traits[index] }; } }

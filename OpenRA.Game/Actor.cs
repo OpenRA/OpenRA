@@ -24,11 +24,12 @@ namespace OpenRA
 {
 	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>
 	{
-		[Sync] public Player Owner;
-
 		public readonly ActorInfo Info;
 		public readonly World World;
 		public readonly uint ActorID;
+
+		[Sync]
+		public Player Owner;
 
 		public bool IsInWorld { get; internal set; }
 		public bool Destroyed { get; private set; }

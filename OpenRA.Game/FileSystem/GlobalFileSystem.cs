@@ -88,6 +88,7 @@ namespace OpenRA.FileSystem
 
 				return new MixFile(filename, type, order);
 			}
+
 			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(filename, order);
 			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))

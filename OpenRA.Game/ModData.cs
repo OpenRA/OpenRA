@@ -44,6 +44,7 @@ namespace OpenRA
 				LoadScreen.Init(Manifest, Manifest.LoadScreen.ToDictionary(my => my.Value));
 				LoadScreen.Display();
 			}
+
 			WidgetLoader = new WidgetLoader(this);
 			RulesetCache = new RulesetCache(this);
 			RulesetCache.LoadingProgress += HandleLoadingProgress;

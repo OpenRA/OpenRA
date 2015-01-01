@@ -131,7 +131,6 @@ namespace OpenRA
 					return res;
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-
 			else if (fieldType == typeof(ushort))
 			{
 				ushort res;
@@ -147,7 +146,6 @@ namespace OpenRA
 					return res;
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-
 			else if (fieldType == typeof(float))
 			{
 				float res;
@@ -155,7 +153,6 @@ namespace OpenRA
 					return res * (value.Contains('%') ? 0.01f : 1f);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-
 			else if (fieldType == typeof(decimal))
 			{
 				decimal res;
@@ -163,14 +160,12 @@ namespace OpenRA
 					return res * (value.Contains('%') ? 0.01m : 1m);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-
 			else if (fieldType == typeof(string))
 			{
 				if (field != null && field.HasAttribute<TranslateAttribute>())
 					return Regex.Replace(value, "@[^@]+@", m => Translate(m.Value.Substring(1, m.Value.Length - 2)), RegexOptions.Compiled);
 				return value;
 			}
-
 			else if (fieldType == typeof(Color))
 			{
 				var parts = value.Split(',');
@@ -187,7 +182,6 @@ namespace OpenRA
 						Exts.ParseIntegerInvariant(parts[3]).Clamp(0, 255));
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-
 			else if (fieldType == typeof(Color[]))
 			{
 				var parts = value.Split(',');
@@ -208,7 +202,6 @@ namespace OpenRA
 
 				return colors;
 			}
-
 			else if (fieldType == typeof(HSLColor))
 			{
 				var parts = value.Split(',');
@@ -222,7 +215,6 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-
 			else if (fieldType == typeof(Hotkey))
 			{
 				Hotkey res;
@@ -231,7 +223,6 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-
 			else if (fieldType == typeof(WRange))
 			{
 				WRange res;
@@ -240,7 +231,6 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-
 			else if (fieldType == typeof(WVec))
 			{
 				var parts = value.Split(',');
@@ -253,7 +243,6 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-
 			else if (fieldType == typeof(WVec[]))
 			{
 				var parts = value.Split(',');
@@ -274,7 +263,6 @@ namespace OpenRA
 
 				return vecs;
 			}
-
 			else if (fieldType == typeof(WPos))
 			{
 				var parts = value.Split(',');
@@ -287,7 +275,6 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-
 			else if (fieldType == typeof(WAngle))
 			{
 				int res;
@@ -295,7 +282,6 @@ namespace OpenRA
 					return new WAngle(res);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-
 			else if (fieldType == typeof(WRot))
 			{
 				var parts = value.Split(',');
@@ -310,7 +296,6 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-
 			else if (fieldType == typeof(CPos))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -318,7 +303,6 @@ namespace OpenRA
 					Exts.ParseIntegerInvariant(parts[0]),
 					Exts.ParseIntegerInvariant(parts[1]));
 			}
-
 			else if (fieldType == typeof(CVec))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -326,7 +310,6 @@ namespace OpenRA
 					Exts.ParseIntegerInvariant(parts[0]),
 					Exts.ParseIntegerInvariant(parts[1]));
 			}
-
 			else if (fieldType.IsEnum)
 			{
 				try
@@ -338,10 +321,8 @@ namespace OpenRA
 					return InvalidValueAction(value, fieldType, fieldName);
 				}
 			}
-
 			else if (fieldType == typeof(bool))
 				return ParseYesNo(value, fieldType, fieldName);
-
 			else if (fieldType.IsArray)
 			{
 				if (value == null)
@@ -354,7 +335,6 @@ namespace OpenRA
 					ret.SetValue(GetValue(fieldName, fieldType.GetElementType(), parts[i].Trim(), field), i);
 				return ret;
 			}
-
 			else if (fieldType == typeof(Size))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -362,7 +342,6 @@ namespace OpenRA
 					Exts.ParseIntegerInvariant(parts[0]),
 					Exts.ParseIntegerInvariant(parts[1]));
 			}
-
 			else if (fieldType == typeof(int2))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -370,7 +349,6 @@ namespace OpenRA
 					Exts.ParseIntegerInvariant(parts[0]),
 					Exts.ParseIntegerInvariant(parts[1]));
 			}
-
 			else if (fieldType == typeof(float2))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -383,7 +361,6 @@ namespace OpenRA
 					yy = res * (parts[1].Contains('%') ? 0.01f : 1f);
 				return new float2(xx, yy);
 			}
-
 			else if (fieldType == typeof(Rectangle))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -393,7 +370,6 @@ namespace OpenRA
 					Exts.ParseIntegerInvariant(parts[2]),
 					Exts.ParseIntegerInvariant(parts[3]));
 			}
-
 			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Bits<>))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -401,14 +377,12 @@ namespace OpenRA
 				var argValues = new object[] { parts };
 				return fieldType.GetConstructor(argTypes).Invoke(argValues);
 			}
-
 			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Nullable<>))
 			{
 				var innerType = fieldType.GetGenericArguments().First();
 				var innerValue = GetValue("Nullable<T>", innerType, value, field);
 				return fieldType.GetConstructor(new[] { innerType }).Invoke(new[] { innerValue });
 			}
-
 			else if (fieldType == typeof(DateTime))
 			{
 				DateTime dt;
@@ -416,7 +390,6 @@ namespace OpenRA
 					return dt;
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-
 			else
 			{
 				var conv = TypeDescriptor.GetConverter(fieldType);

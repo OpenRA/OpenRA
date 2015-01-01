@@ -29,7 +29,7 @@ namespace OpenRA.Primitives
 
 		public void PerformActions()
 		{
-			Action a = () => {};
+			Action a = () => { };
 			lock (syncRoot)
 			{
 				var t = Game.RunTime;
@@ -39,6 +39,7 @@ namespace OpenRA.Primitives
 					a = da.Action + a;
 				}
 			}
+
 			a();
 		}
 	}

@@ -33,18 +33,18 @@ namespace OpenRA
 
 		static Dictionary<Type, MethodInfo> hashFunctions = new Dictionary<Type, MethodInfo>()
 		{
-			{typeof(int2), ((Func<int2, int>)hash_int2).Method},
-			{typeof(CPos), ((Func<CPos, int>)hash_CPos).Method},
-			{typeof(CVec), ((Func<CVec, int>)hash_CVec).Method},
-			{typeof(WRange), ((Func<WRange, int>)hash<WRange>).Method},
-			{typeof(WPos), ((Func<WPos, int>)hash<WPos>).Method},
-			{typeof(WVec), ((Func<WVec, int>)hash<WVec>).Method},
-			{typeof(WAngle), ((Func<WAngle, int>)hash<WAngle>).Method},
-			{typeof(WRot), ((Func<WRot, int>)hash<WRot>).Method},
-			{typeof(TypeDictionary), ((Func<TypeDictionary, int>)hash_tdict).Method},
-			{typeof(Actor), ((Func<Actor, int>)hash_actor).Method},
-			{typeof(Player), ((Func<Player, int>)hash_player).Method},
-			{typeof(Target), ((Func<Target, int>)hash_target).Method},
+			{ typeof(int2), ((Func<int2, int>)hash_int2).Method },
+			{ typeof(CPos), ((Func<CPos, int>)hash_CPos).Method },
+			{ typeof(CVec), ((Func<CVec, int>)hash_CVec).Method },
+			{ typeof(WRange), ((Func<WRange, int>)hash<WRange>).Method },
+			{ typeof(WPos), ((Func<WPos, int>)hash<WPos>).Method },
+			{ typeof(WVec), ((Func<WVec, int>)hash<WVec>).Method },
+			{ typeof(WAngle), ((Func<WAngle, int>)hash<WAngle>).Method },
+			{ typeof(WRot), ((Func<WRot, int>)hash<WRot>).Method },
+			{ typeof(TypeDictionary), ((Func<TypeDictionary, int>)hash_tdict).Method },
+			{ typeof(Actor), ((Func<Actor, int>)hash_actor).Method },
+			{ typeof(Player), ((Func<Player, int>)hash_player).Method },
+			{ typeof(Target), ((Func<Target, int>)hash_target).Method },
 		};
 
 		static void EmitSyncOpcodes(Type type, ILGenerator il)

@@ -126,6 +126,5 @@ namespace OpenRA
 
 			return path;
 		}
-
 	}
 }

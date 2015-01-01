@@ -25,9 +25,9 @@ namespace OpenRA
 			this.modData = modData;
 
 			foreach (var file in modData.Manifest.ChromeLayout.Select(a => MiniYaml.FromFile(a)))
-				foreach( var w in file )
+				foreach (var w in file)
 				{
-					var key = w.Key.Substring( w.Key.IndexOf('@') + 1);
+					var key = w.Key.Substring(w.Key.IndexOf('@') + 1);
 					if (widgets.ContainsKey(key))
 						throw new InvalidDataException("Widget has duplicate Key `{0}` at {1}".F(w.Key, w.Location));
 					widgets.Add(key, w);
@@ -40,7 +40,7 @@ namespace OpenRA
 			if (!widgets.TryGetValue(w, out ret))
 				throw new InvalidDataException("Cannot find widget with Id `{0}`".F(w));
 
-			return LoadWidget( args, parent, ret );
+			return LoadWidget(args, parent, ret);
 		}
 
 		public Widget LoadWidget(WidgetArgs args, Widget parent, MiniYamlNode node)
@@ -51,7 +51,7 @@ namespace OpenRA
 			var widget = NewWidget(node.Key, args);
 
 			if (parent != null)
-				parent.AddChild( widget );
+				parent.AddChild(widget);
 
 			if (node.Key.Contains("@"))
 				FieldLoader.LoadField(widget, "Id", node.Key.Split('@')[1]);
@@ -65,7 +65,7 @@ namespace OpenRA
 			foreach (var child in node.Value.Nodes)
 				if (child.Key == "Children")
 					foreach (var c in child.Value.Nodes)
-						LoadWidget( args, widget, c);
+						LoadWidget(args, widget, c);
 
 			widget.PostInit(args);
 			return widget;

@@ -30,6 +30,7 @@ namespace OpenRA.Graphics
 			CreateBuffer();
 			return data;
 		}
+
 		public bool Buffered { get { return data != null || texture == null; } }
 
 		public Sheet(Size size)
@@ -83,7 +84,6 @@ namespace OpenRA.Graphics
 
 				if (data != null)
 				{
-
 					if (dirty)
 					{
 						texture.SetData(data, Size.Width, Size.Height);

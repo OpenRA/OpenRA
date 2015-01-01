@@ -46,7 +46,7 @@ namespace OpenRA.Primitives
 			}
 		}
 
-		public bool Empty { get { return (level == 0); } }
+		public bool Empty { get { return level == 0; } }
 
 		T At(int level, int index) { return items[level][index]; }
 		T Above(int level, int index) { return items[level - 1][index >> 1]; }
@@ -62,7 +62,7 @@ namespace OpenRA.Primitives
 			return At(lastLevel, lastIndex);
 		}
 
-		public T Peek() { return At(0,0); }
+		public T Peek() { return At(0, 0); }
 		public T Pop()
 		{
 			if (level == 0 && index == 0)

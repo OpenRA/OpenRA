@@ -41,7 +41,7 @@ namespace OpenRA.FileFormats
 				Color[] palette = null;
 				var data = new List<byte>();
 
-				for (; ; )
+				for (;;)
 				{
 					var length = IPAddress.NetworkToHostOrder(br.ReadInt32());
 					var type = Encoding.UTF8.GetString(br.ReadBytes(4));
@@ -54,7 +54,6 @@ namespace OpenRA.FileFormats
 						{
 							case "IHDR":
 								{
-
 									var width = IPAddress.NetworkToHostOrder(cr.ReadInt32());
 									var height = IPAddress.NetworkToHostOrder(cr.ReadInt32());
 									var bitDepth = cr.ReadByte();
@@ -67,8 +66,8 @@ namespace OpenRA.FileFormats
 									if (interlace != 0) throw new InvalidDataException("Interlacing not supported");
 
 									bitmap = new Bitmap(width, height, MakePixelFormat(bitDepth, colorType));
-
 								}
+
 								break;
 
 							case "PLTE":
@@ -80,6 +79,7 @@ namespace OpenRA.FileFormats
 										palette[i] = Color.FromArgb(r, g, b);
 									}
 								}
+
 								break;
 
 							case "tRNS":
@@ -87,12 +87,14 @@ namespace OpenRA.FileFormats
 									for (var i = 0; i < length; i++)
 										palette[i] = Color.FromArgb(cr.ReadByte(), palette[i]);
 								}
+
 								break;
 
 							case "IDAT":
 								{
 									data.AddRange(content);
 								}
+
 								break;
 
 							case "IEND":
@@ -168,8 +170,8 @@ namespace OpenRA.FileFormats
 		}
 
 		[Flags]
-		enum PngColorType { Indexed = 1, Color = 2, Alpha = 4 };
-		enum PngFilter { None, Sub, Up, Average, Paeth };
+		enum PngColorType { Indexed = 1, Color = 2, Alpha = 4 }
+		enum PngFilter { None, Sub, Up, Average, Paeth }
 
 		static PixelFormat MakePixelFormat(byte bitDepth, PngColorType colorType)
 		{

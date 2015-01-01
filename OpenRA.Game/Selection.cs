@@ -64,8 +64,10 @@ namespace OpenRA
 			actors.RemoveAll(a => !a.IsInWorld || (!a.Owner.IsAlliedWith(world.RenderPlayer) && world.FogObscures(a)));
 
 			foreach (var cg in controlGroups.Values)
+			{
 				// note: NOT `!a.IsInWorld`, since that would remove things that are in transports.
 				cg.RemoveAll(a => a.Destroyed || a.Owner != world.LocalPlayer);
+			}
 		}
 
 		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());

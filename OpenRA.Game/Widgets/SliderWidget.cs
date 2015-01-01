@@ -17,7 +17,7 @@ namespace OpenRA.Widgets
 	public class SliderWidget : Widget
 	{
 		public Func<bool> IsDisabled = () => false;
-		public event Action<float> OnChange = _ => {};
+		public event Action<float> OnChange = _ => { };
 		public int Ticks = 0;
 		public int TrackHeight = 5;
 		public string Thumb = "slider-thumb";
@@ -59,7 +59,7 @@ namespace OpenRA.Widgets
 			if (mi.Event == MouseInputEvent.Down && !TakeMouseFocus(mi)) return false;
 			if (!HasMouseFocus) return false;
 
-			switch(mi.Event)
+			switch (mi.Event)
 			{
 			case MouseInputEvent.Up:
 				isMoving = false;
@@ -95,7 +95,7 @@ namespace OpenRA.Widgets
 				var rb = RenderBounds;
 				var width = rb.Height;
 				var height = rb.Height;
-				var origin = (int)(rb.X + thumbPos - width/2f);
+				var origin = (int)(rb.X + thumbPos - width / 2f);
 				return new Rectangle(origin, rb.Y, width, height);
 			}
 		}
@@ -133,4 +133,3 @@ namespace OpenRA.Widgets
 		}
 	}
 }
-

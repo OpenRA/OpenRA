@@ -76,7 +76,7 @@ namespace OpenRA.FileSystem
 
 		public string Name { get { return filename; } }
 
-		public int Priority { get { return 1000 + priority; }}
+		public int Priority { get { return 1000 + priority; } }
 
 		public IEnumerable<uint> ClassicHashes()
 		{

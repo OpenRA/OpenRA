@@ -476,7 +476,6 @@ namespace OpenRA.Traits
 					yield return bins[j * cols + i];
 		}
 
-
 		public IEnumerable<Actor> ActorsInBox(WPos a, WPos b)
 		{
 			var left = Math.Min(a.X, b.X);

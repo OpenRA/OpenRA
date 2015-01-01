@@ -198,6 +198,7 @@ namespace OpenRA.Network
 					var boxedCopy = Expression.Convert(getMember, typeof(object));
 					return Expression.Lambda<Func<ISync, object>>(boxedCopy, name, new[] { syncParam }).Compile();
 				}
+
 				return MemberToString(getMember, memberType, name);
 			}
 

@@ -23,6 +23,7 @@ namespace OpenRA.Graphics
 		uint this[int index] { get; }
 		void CopyToArray(Array destination, int destinationOffset);
 	}
+
 	public interface IPaletteRemap { Color GetRemappedColor(Color original, int index); }
 
 	public static class Palette

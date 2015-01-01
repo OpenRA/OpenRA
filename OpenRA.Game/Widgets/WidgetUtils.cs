@@ -24,7 +24,7 @@ namespace OpenRA.Widgets
 
 		public static void DrawRGBA(Sprite s, float2 pos)
 		{
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s,pos);
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos);
 		}
 
 		public static void DrawSHPCentered(Sprite s, float2 pos, WorldRenderer wr)
@@ -53,10 +53,11 @@ namespace OpenRA.Widgets
 					{
 						var rr = new Rectangle(s.bounds.Left,
 							s.bounds.Top,
-							Math.Min(left.X,(int)s.size.X),
-							Math.Min(left.Y,(int)s.size.Y));
-						ss = new Sprite(s.sheet,rr,s.channel);
+							Math.Min(left.X, (int)s.size.X),
+							Math.Min(left.Y, (int)s.size.Y));
+						ss = new Sprite(s.sheet, rr, s.channel);
 					}
+
 					DrawRGBA(ss, new float2(x, y));
 				}
 		}
@@ -175,7 +176,7 @@ namespace OpenRA.Widgets
 			{
 				var lines = text.Split('\n').ToList();
 
-				for (var i=0; i<lines.Count; i++)
+				for (var i = 0; i < lines.Count; i++)
 				{
 					var line = lines[i];
 					var m = font.Measure(line);
@@ -206,10 +207,11 @@ namespace OpenRA.Widgets
 
 				return string.Join("\n", lines);
 			}
+
 			return text;
 		}
 
-		public static Action Once( Action a ) { return () => { if (a != null) { a(); a = null; } }; }
+		public static Action Once(Action a) { return () => { if (a != null) { a(); a = null; } }; }
 
 		public static string ChooseInitialMap(string initialUid)
 		{
