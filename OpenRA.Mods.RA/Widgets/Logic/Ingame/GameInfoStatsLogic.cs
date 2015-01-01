@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -11,9 +11,9 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Widgets;
-using OpenRA.Traits;
 using OpenRA.Mods.RA;
+using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {

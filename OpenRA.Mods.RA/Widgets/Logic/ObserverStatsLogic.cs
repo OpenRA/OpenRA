@@ -168,8 +168,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				players.Select(p => new LineGraphSeries(
 					p.PlayerName,
 					p.Color.RGB,
-					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).EarnedSamples.Select(s => (float)s)
-					));
+					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).EarnedSamples.Select(s => (float)s)));
 
 			playerStatsPanel.AddChild(template);
 		}

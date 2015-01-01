@@ -15,7 +15,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-
 	[Desc("Actor can be sold")]
 	public class SellableInfo : UpgradableTraitInfo, ITraitInfo
 	{

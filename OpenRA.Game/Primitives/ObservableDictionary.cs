@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -34,6 +34,7 @@ namespace OpenRA.Primitives
 
 		public event Action<object> OnAdd = k => { };
 		public event Action<object> OnRemove = k => { };
+
 		// TODO Workaround for https://github.com/OpenRA/OpenRA/issues/6101
 		#pragma warning disable 67
 		public event Action<int> OnRemoveAt = i => { };

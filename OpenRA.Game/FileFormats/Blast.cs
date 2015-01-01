@@ -142,9 +142,9 @@ namespace OpenRA.FileFormats
 						}
 					} while (len != 0);
 				}
-				// literal value
 				else
-				{
+					{
+					// literal value
 					var symbol = EncodedLiterals ? Decode(litcode, br) : br.ReadBits(8);
 					outBuffer[next++] = (byte)symbol;
 					if (next == MAXWIN)

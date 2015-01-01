@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -42,8 +42,7 @@ namespace OpenRA.Mods.RA.Traits
 				range,
 				0,
 				Color.FromArgb(128, Color.Yellow),
-				Color.FromArgb(96, Color.Black)
-			);
+				Color.FromArgb(96, Color.Black));
 
 			foreach (var a in w.ActorsWithTrait<RenderRangeCircle>())
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
@@ -76,8 +75,7 @@ namespace OpenRA.Mods.RA.Traits
 				attack.GetMaximumRange(),
 				0,
 				Color.FromArgb(128, Color.Yellow),
-				Color.FromArgb(96, Color.Black)
-			);
+				Color.FromArgb(96, Color.Black));
 		}
 	}
 }

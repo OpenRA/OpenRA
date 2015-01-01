@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public readonly string TooltipTemplate = "SUPPORT_POWER_TOOLTIP";
 
 		public int IconCount { get; private set; }
-		public event Action<int, int> OnIconCountChanged = (a, b) => {};
+		public event Action<int, int> OnIconCountChanged = (a, b) => { };
 
 		readonly WorldRenderer worldRenderer;
 		readonly SupportPowerManager spm;

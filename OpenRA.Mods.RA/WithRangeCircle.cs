@@ -36,8 +36,7 @@ namespace OpenRA.Mods.RA.Traits
 				Range,
 				0,
 				Color,
-				Color.FromArgb(96, Color.Black)
-			);
+				Color.FromArgb(96, Color.Black));
 
 			foreach (var a in w.ActorsWithTrait<WithRangeCircle>())
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer && a.Trait.Info.Type == Type)
@@ -69,9 +68,7 @@ namespace OpenRA.Mods.RA.Traits
 				Info.Range,
 				0,
 				Info.Color,
-				Color.FromArgb(96, Color.Black)
-			);
+				Color.FromArgb(96, Color.Black));
 		}
 	}
 }
-

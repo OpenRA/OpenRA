@@ -114,10 +114,11 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			if (!preventDock)
 			{
-				harv.QueueActivity(new CallFunc( () => dockedHarv = harv, false));
+				harv.QueueActivity(new CallFunc(() => dockedHarv = harv, false));
 				harv.QueueActivity(DockSequence(harv, self));
-				harv.QueueActivity(new CallFunc( () => dockedHarv = null, false));
+				harv.QueueActivity(new CallFunc(() => dockedHarv = null, false));
 			}
+
 			harv.QueueActivity(new CallFunc(() => harv.Trait<Harvester>().ContinueHarvesting(harv)));
 		}
 

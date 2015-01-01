@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		[Desc("Amount of money awarded for capturing the actor.")]
 		public readonly int CaptureAmount = 0;
 
-		public object Create (ActorInitializer init) { return new CashTrickler(this); }
+		public object Create(ActorInitializer init) { return new CashTrickler(this); }
 	}
 
 	class CashTrickler : ITick, ISync, INotifyCapture

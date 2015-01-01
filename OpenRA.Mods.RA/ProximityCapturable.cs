@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -70,7 +70,8 @@ namespace OpenRA.Mods.RA
 				// no.. So find a new one
 				var captor = GetInRange(self);
 
-				if (captor != null) // got one
+				// got one
+				if (captor != null)
 				{
 					ChangeOwnership(self, captor);
 					return;

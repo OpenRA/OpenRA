@@ -47,8 +47,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			var pilot = self.World.CreateActor(false, info.PilotActor.ToLowerInvariant(),
 				new TypeDictionary { new OwnerInit(self.Owner), new LocationInit(self.Location) });
-
-
+            
 			if (info.AllowUnsuitableCell || IsSuitableCell(self, pilot))
 			{
 				if (cp.Z > 0)

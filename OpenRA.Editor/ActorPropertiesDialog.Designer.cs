@@ -1,4 +1,4 @@
-﻿namespace OpenRA.Editor
+namespace OpenRA.Editor
 {
 	partial class ActorPropertiesDialog
 	{

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -419,8 +419,8 @@ namespace OpenRA
 			{ Keycode.DECIMALSEPARATOR, "DecimalSeparator" },
 			{ Keycode.CURRENCYUNIT, "CurrencyUnit" },
 			{ Keycode.CURRENCYSUBUNIT, "CurrencySubUnit" },
-			{ Keycode.KP_LEFTPAREN, "Keypad (" },
-			{ Keycode.KP_RIGHTPAREN, "Keypad )" },
+			{ Keycode.KP_LEFTPAREN, "Keypad(" },
+			{ Keycode.KP_RIGHTPAREN, "Keypad)" },
 			{ Keycode.KP_LEFTBRACE, "Keypad {" },
 			{ Keycode.KP_RIGHTBRACE, "Keypad }" },
 			{ Keycode.KP_TAB, "Keypad Tab" },

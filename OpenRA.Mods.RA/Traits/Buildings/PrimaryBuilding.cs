@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -8,10 +8,10 @@
  */
 #endregion
 
-using System.Linq;
 using System.Collections.Generic;
-using OpenRA.Traits;
+using System.Linq;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {

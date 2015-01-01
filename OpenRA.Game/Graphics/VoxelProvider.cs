@@ -39,7 +39,7 @@ namespace OpenRA.Graphics
 			var hva = unit;
 			if (info.Value != null)
 			{
-				var fields = info.Value.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
+				var fields = info.Value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				if (fields.Length >= 1)
 					vxl = hva = fields[0].Trim();
 
@@ -58,7 +58,7 @@ namespace OpenRA.Graphics
 				var seq = sequences.ToDictionary(my => LoadVoxel(unit, my));
 				units.Add(unit, seq);
 			}
-			catch (FileNotFoundException) {} // Do nothing; we can crash later if we actually wanted art
+			catch (FileNotFoundException) { } // Do nothing; we can crash later if we actually wanted art
 		}
 
 		public static Voxel GetVoxel(string unitName, string voxelName)

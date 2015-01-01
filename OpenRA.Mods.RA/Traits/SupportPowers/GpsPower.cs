@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Traits
 	[Desc("Required for GpsPower. Attach this to the player actor.")]
 	class GpsWatcherInfo : ITraitInfo
 	{
-		public object Create (ActorInitializer init) { return new GpsWatcher(init.self.Owner); }
+		public object Create(ActorInitializer init) { return new GpsWatcher(init.self.Owner); }
 	}
 
 	class GpsWatcher : ISync, IFogVisibilityModifier
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		void RefreshGranted()
 		{
-			Granted = (actors.Count > 0 && Launched);
+			Granted = actors.Count > 0 && Launched;
 			GrantedAllies = owner.World.ActorsWithTrait<GpsWatcher>().Any(p => p.Actor.Owner.IsAlliedWith(owner) && p.Trait.Granted);
 
 			if (Granted || GrantedAllies)
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void Killed(Actor self, AttackInfo e) { RemoveGps(self); }
 
-		public void Selling(Actor self) {}
+		public void Selling(Actor self) { }
 		public void Sold(Actor self) { RemoveGps(self); }
 
 		void RemoveGps(Actor self)

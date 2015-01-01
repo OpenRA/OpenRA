@@ -20,13 +20,13 @@ namespace OpenRA.GameRules
 		public int Length { get; private set; } // seconds
 		public bool Exists { get; private set; }
 
-		public MusicInfo( string key, MiniYaml value )
+		public MusicInfo(string key, MiniYaml value)
 		{
 			Title = value.Value;
 
 			var nd = value.ToDictionary();
 			var ext = nd.ContainsKey("Extension") ? nd["Extension"].Value : "aud";
-			Filename = (nd.ContainsKey("Filename") ? nd["Filename"].Value : key)+"."+ext;
+			Filename = (nd.ContainsKey("Filename") ? nd["Filename"].Value : key) + "." + ext;
 			if (!GlobalFileSystem.Exists(Filename))
 				return;
 

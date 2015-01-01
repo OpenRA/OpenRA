@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	//TODO: This is not exported into the documentation yet.
+	// TODO: This is not exported into the documentation yet.
 	[Desc("A unit/building inside the game. Every rules starts with one and adds trait to it.",
 		"Special actors like world or player are usually defined in system.yaml and affect everything.")]
 	public class ActorInfo
@@ -29,7 +29,7 @@ namespace OpenRA
 		public readonly TypeDictionary Traits = new TypeDictionary();
 		List<ITraitInfo> constructOrderCache = null;
 
-		public ActorInfo( string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits )
+		public ActorInfo(string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits)
 		{
 			try
 			{
@@ -46,15 +46,15 @@ namespace OpenRA
 			}
 		}
 
-		static MiniYaml GetParent( MiniYaml node, Dictionary<string, MiniYaml> allUnits )
+		static MiniYaml GetParent(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
 		{
 			MiniYaml inherits;
-			node.ToDictionary().TryGetValue( "Inherits", out inherits );
-			if( inherits == null || string.IsNullOrEmpty( inherits.Value ) )
+			node.ToDictionary().TryGetValue("Inherits", out inherits);
+			if (inherits == null || string.IsNullOrEmpty(inherits.Value))
 				return null;
 
 			MiniYaml parent;
-			allUnits.TryGetValue( inherits.Value, out parent );
+			allUnits.TryGetValue(inherits.Value, out parent);
 			if (parent == null)
 				throw new InvalidOperationException(
 					"Bogus inheritance -- actor type {0} does not exist".F(inherits.Value));
@@ -62,9 +62,9 @@ namespace OpenRA
 			return parent;
 		}
 
-		static MiniYaml MergeWithParent( MiniYaml node, Dictionary<string, MiniYaml> allUnits )
+		static MiniYaml MergeWithParent(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
 		{
-			var parent = GetParent( node, allUnits );
+			var parent = GetParent(node, allUnits);
 			if (parent != null)
 			{
 				var result = MiniYaml.MergeStrict(node, MergeWithParent(parent, allUnits));
@@ -73,6 +73,7 @@ namespace OpenRA
 				result.Nodes.RemoveAll(a => a.Key.StartsWith("-"));
 				return result;
 			}
+
 			return node;
 		}
 
@@ -101,7 +102,7 @@ namespace OpenRA
 			var unresolved = source.Except(resolved);
 
 			var testResolve = new Func<Type, Type, bool>((a, b) => a == b || a.IsAssignableFrom(b));
-			var more = unresolved.Where(u => u.Dependencies.All( d => resolved.Exists(r => testResolve(d, r.Type)) ));
+			var more = unresolved.Where(u => u.Dependencies.All(d => resolved.Exists(r => testResolve(d, r.Type))));
 
 			// Re-evaluate the vars above until sorted
 			while (more.Any())
@@ -146,11 +147,11 @@ namespace OpenRA
 					.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(UsesInit<>))
 					.Select(i => i.GetGenericArguments()[0])).ToList();
 
-			inits.Add( typeof(OwnerInit) );		/* not exposed by a trait; this is used by the Actor itself */
+			inits.Add(typeof(OwnerInit));		/* not exposed by a trait; this is used by the Actor itself */
 
 			return inits.Select(
 				i => Pair.New(
-					i.Name.Replace( "Init", "" ), i ));
+					i.Name.Replace("Init", ""), i));
 		}
 	}
 }

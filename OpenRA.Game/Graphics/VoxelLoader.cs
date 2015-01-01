@@ -93,7 +93,7 @@ namespace OpenRA.Graphics
 			return new Vertex[4]
 			{
 				new Vertex(coord(0, 0), s.left, s.top, channelP, channelC),
-				new Vertex(coord(su, 0),s.right, s.top, channelP, channelC),
+				new Vertex(coord(su, 0), s.right, s.top, channelP, channelC),
 				new Vertex(coord(su, sv), s.right, s.bottom, channelP, channelC),
 				new Vertex(coord(0, sv), s.left, s.bottom, channelP, channelC)
 			};

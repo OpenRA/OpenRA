@@ -33,7 +33,6 @@ namespace OpenRA.Mods.RA.Widgets
 		[ObjectCreator.UseCtor]
 		public ObserverSupportPowerIconsWidget(World world, WorldRenderer worldRenderer)
 		{
-
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 			clocks = new Dictionary<string, Animation>();
@@ -57,6 +56,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				return;
 			}
+
 			var powers = player.PlayerActor.Trait<SupportPowerManager>().Powers
 				.Select((a, i) => new { a, i });
 			foreach (var power in powers)

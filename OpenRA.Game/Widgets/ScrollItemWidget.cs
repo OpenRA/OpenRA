@@ -40,8 +40,8 @@ namespace OpenRA.Widgets
 
 		public override void Draw()
 		{
-			var state = IsSelected() ? BaseName+"-selected" :
-				Ui.MouseOverWidget == this ? BaseName+"-hover" :
+			var state = IsSelected() ? BaseName + "-selected" :
+				Ui.MouseOverWidget == this ? BaseName + "-hover" :
 				null;
 
 			if (state != null)

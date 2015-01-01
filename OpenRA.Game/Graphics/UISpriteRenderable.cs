@@ -46,7 +46,7 @@ namespace OpenRA.Graphics
 		public IRenderable OffsetBy(WVec vec) { return this; }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) {}
+		public void BeforeRender(WorldRenderer wr) { }
 		public void Render(WorldRenderer wr)
 		{
 			Game.Renderer.SpriteRenderer.DrawSprite(sprite, screenPos, palette, sprite.size * scale);

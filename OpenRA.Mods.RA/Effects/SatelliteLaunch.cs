@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -16,9 +16,9 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class SatelliteLaunch : IEffect
 	{
-		int frame = 0;
 		readonly Animation doors;
 		readonly WPos pos;
+		int frame = 0;
 
 		public SatelliteLaunch(Actor a)
 		{
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Effects
 			pos = a.CenterPosition;
 		}
 
-		public void Tick( World world )
+		public void Tick(World world)
 		{
 			doors.Tick();
 

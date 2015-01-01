@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -46,8 +46,7 @@ namespace OpenRA
 
 			return new MiniYaml(
 				null,
-				fields.Select(info => new MiniYamlNode(info.YamlName, FormatValue(o, info.Field))).ToList()
-			);
+				fields.Select(info => new MiniYamlNode(info.YamlName, FormatValue(o, info.Field))).ToList());
 		}
 
 		public static MiniYamlNode SaveField(object o, string field)

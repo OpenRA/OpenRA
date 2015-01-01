@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -9,15 +9,14 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using OpenRA.Traits;
-using OpenRA.Primitives;
+using System.Linq;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Traits;
-
+using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -89,6 +88,7 @@ namespace OpenRA.Mods.RA
 
 				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
+
 			facing = Exts.Lazy(self.TraitOrDefault<IFacing>);
 		}
 
@@ -329,6 +329,7 @@ namespace OpenRA.Mods.RA
 					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
 						npe.PassengerEntered(self, c);
 				}
+
 				initialized = true;
 			}
 

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -38,11 +38,10 @@ namespace OpenRA.Mods.RA.Traits
 
 			// NOTE: we really dont care about the GC eating DisposableActions that apply to a world *other* than
 			// the one we're playing in.
-
 			return new DisposableAction(
 				() => { reservedFor = null; reservedForAircraft = null; },
 				() => Game.RunAfterTick(
-					() => { if (Game.IsCurrentWorld( self.World )) throw new InvalidOperationException(
+					() => { if (Game.IsCurrentWorld(self.World)) throw new InvalidOperationException(
 						"Attempted to finalize an undisposed DisposableAction. {0} ({1}) reserved {2} ({3})"
 						.F(forActor.Info.Name, forActor.ActorID, self.Info.Name, self.ActorID)); }));
 		}

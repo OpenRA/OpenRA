@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -9,8 +9,8 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 		[Desc("Higher ranked units give higher bounties.")]
 		public readonly int LevelMod = 125;
 		[Desc("Destroying creeps and enemies is rewarded.")]
-		public readonly Stance[] Stances = {Stance.Neutral, Stance.Enemy};
+		public readonly Stance[] Stances = { Stance.Neutral, Stance.Enemy };
 	}
 
 	class GivesBounty : INotifyKilled
@@ -49,6 +49,7 @@ namespace OpenRA.Mods.RA
 			if (!info.Stances.Contains(e.Attacker.Owner.Stances[self.Owner])) return;
 
 			var cost = self.GetSellValue();
+
 			// 2 hundreds because of GetMultiplier and info.Percentage.
 			var bounty = cost * GetMultiplier(self) * info.Percentage / 10000;
 

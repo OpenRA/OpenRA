@@ -177,6 +177,7 @@ namespace OpenRA.Graphics
 			{
 				return currentBatchRenderer;
 			}
+
 			set
 			{
 				if (currentBatchRenderer == value)

@@ -14,8 +14,8 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Mods.RA.Orders;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Widgets
 		[Translate] public readonly string HoldText = "";
 
 		public int IconCount { get; private set; }
-		public event Action<int, int> OnIconCountChanged = (a, b) => {};
+		public event Action<int, int> OnIconCountChanged = (a, b) => { };
 
 		public ProductionIcon TooltipIcon { get; private set; }
 		public readonly World World;
@@ -294,12 +294,12 @@ namespace OpenRA.Mods.RA.Widgets
 					{
 						if (ReadyTextStyle == ReadyTextStyleOptions.Solid || orderManager.LocalFrameNumber / 9 % 2 == 0)
 							overlayFont.DrawTextWithContrast(ReadyText,
-							                                 icon.Pos + readyOffset,
-							                                 Color.White, Color.Black, 1);
+																		icon.Pos + readyOffset,
+																		Color.White, Color.Black, 1);
 						else if (ReadyTextStyle == ReadyTextStyleOptions.AlternatingColor)
 								overlayFont.DrawTextWithContrast(ReadyText,
-								                                 icon.Pos + readyOffset,
-								                                 ReadyTextAltColor, Color.Black, 1);
+																			icon.Pos + readyOffset,
+																			ReadyTextAltColor, Color.Black, 1);
 					}
 					else if (first.Paused)
 						overlayFont.DrawTextWithContrast(HoldText,

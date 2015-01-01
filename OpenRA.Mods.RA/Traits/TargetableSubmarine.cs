@@ -14,7 +14,7 @@ namespace OpenRA.Mods.RA.Traits
 {
 	public class TargetableSubmarineInfo : TargetableUnitInfo, Requires<CloakInfo>
 	{
-		public readonly string[] CloakedTargetTypes = {};
+		public readonly string[] CloakedTargetTypes = { };
 
 		public override object Create(ActorInitializer init) { return new TargetableSubmarine(init.self, this); }
 	}
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Traits
 		public override string[] TargetTypes
 		{
 			get { return cloak.Cloaked ? info.CloakedTargetTypes
-									   : info.TargetTypes;}
+									   : info.TargetTypes; }
 		}
 	}
 }

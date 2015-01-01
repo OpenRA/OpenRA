@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -91,8 +91,7 @@ namespace OpenRA
 		{
 			return (k & mod) == mod;
 		}
-
-
+        
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k)
 			where V : new()
 		{
@@ -184,6 +183,7 @@ namespace OpenRA
 						u = nextU;
 					}
 				}
+
 				return t;
 			}
 		}
@@ -242,7 +242,6 @@ namespace OpenRA
 			// Adjust for other rounding modes
 			if (round == ISqrtRoundMode.Nearest && remainder > root)
 				root += 1;
-
 			else if (round == ISqrtRoundMode.Ceiling && root * root < number)
 				root += 1;
 
@@ -284,7 +283,6 @@ namespace OpenRA
 			// Adjust for other rounding modes
 			if (round == ISqrtRoundMode.Nearest && remainder > root)
 				root += 1;
-
 			else if (round == ISqrtRoundMode.Ceiling && root * root < number)
 				root += 1;
 
@@ -375,6 +373,7 @@ namespace OpenRA
 			var result = new T[width, height];
 			for (var i = 0; i < width; i++)
 				for (var j = 0; j < height; j++)
+
 					// Workaround for broken ternary operators in certain versions of mono (3.10 and  
 					// certain versions of the 3.8 series): https://bugzilla.xamarin.com/show_bug.cgi?id=23319
 					if (i <= ts.GetUpperBound(0) && j <= ts.GetUpperBound(1))

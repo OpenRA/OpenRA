@@ -319,6 +319,7 @@ namespace OpenRA.Editor
 					ControlPaint.DrawGrid(g, rect, new Size(ts.Width, ts.Height), Color.Red);
 				}
 			}
+
 			return bitmap;
 		}
 

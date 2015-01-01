@@ -41,11 +41,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public static void ShowSlotDropDown(Ruleset rules, DropDownButtonWidget dropdown, Session.Slot slot,
 			Session.Client client, OrderManager orderManager)
 		{
-			var options = new Dictionary<string, IEnumerable<SlotDropDownOption>>() {{"Slot", new List<SlotDropDownOption>()
+			var options = new Dictionary<string, IEnumerable<SlotDropDownOption>>() { { "Slot", new List<SlotDropDownOption>()
 			{
-				new SlotDropDownOption("Open", "slot_open "+slot.PlayerReference, () => (!slot.Closed && client == null)),
-				new SlotDropDownOption("Closed", "slot_close "+slot.PlayerReference, () => slot.Closed)
-			}}};
+				new SlotDropDownOption("Open", "slot_open " + slot.PlayerReference, () => (!slot.Closed && client == null)),
+				new SlotDropDownOption("Closed", "slot_close " + slot.PlayerReference, () => slot.Closed)
+			} } };
 
 			var bots = new List<SlotDropDownOption>();
 			if (slot.AllowBots)
@@ -59,6 +59,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						() => client != null && client.Bot == bot));
 				}
 			}
+
 			options.Add(bots.Any() ? "Bots" : "Bots Disabled", bots);
 
 			Func<SlotDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
@@ -350,8 +351,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				orderManager.IssueOrders(
 					orderManager.LobbyInfo.Clients.Where(
 						c => c.IsObserver && !c.IsAdmin).Select(
-							client => Order.Command(String.Format("kick {0} {1}", client.Index, client.Name
-							))).ToArray());
+							client => Order.Command(string.Format("kick {0} {1}", client.Index, client.Name))).ToArray());
 
 				after();
 			};
@@ -431,8 +431,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("SPAWN");
 			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady;
-			dropdown.OnMouseDown = _ => ShowSpawnDropDown(dropdown, c, orderManager, Enumerable.Range(0, map.SpawnPoints.Count + 1)
-					.Except(orderManager.LobbyInfo.Clients.Where(client => client != c && client.SpawnPoint != 0).Select(client => client.SpawnPoint)));
+			dropdown.OnMouseDown = _ => ShowSpawnDropDown(dropdown, c, orderManager, Enumerable.Range(0, map.SpawnPoints.Count + 1).Except(orderManager.LobbyInfo.Clients.Where(client => client != c && client.SpawnPoint != 0).Select(client => client.SpawnPoint)));
 			dropdown.GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
 		}
 

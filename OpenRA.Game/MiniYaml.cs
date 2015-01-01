@@ -115,6 +115,7 @@ namespace OpenRA
 					throw new InvalidDataException("Duplicate key '{0}' in {1}".F(y.Key, y.Location), ex);
 				}
 			}
+
 			return ret;
 		}
 

@@ -21,6 +21,7 @@ namespace OpenRA
 		public string MapUid;
 		public string MapTitle;
 		public DateTime StartTimeUtc;
+
 		// Game end timestamp (when the recoding stopped).
 		public DateTime EndTimeUtc;
 
@@ -78,7 +79,7 @@ namespace OpenRA
 
 			nodes.Add(new MiniYamlNode("Root", FieldSaver.Save(this)));
 
-			for (var i=0; i<Players.Count; i++)
+			for (var i = 0; i < Players.Count; i++)
 				nodes.Add(new MiniYamlNode("Player@{0}".F(i), FieldSaver.Save(Players[i])));
 
 			return nodes.WriteToString();
@@ -133,34 +134,36 @@ namespace OpenRA
 
 		public class Player
 		{
-			//
 			// Start-up information 
-			//
-
 			public int ClientIndex;
+
 			// The player name, not guaranteed to be unique.
 			public string Name;
 			public bool IsHuman;
 			public bool IsBot;
+
 			// The faction name (aka Country)
 			public string FactionName;
+
 			// The faction id (aka Country, aka Race)
 			public string FactionId;
 			public HSLColor Color;
+
 			// The team id on start-up, or 0 if the player is not part of the team.
 			public int Team;
 			public int SpawnPoint;
+
 			// True if the faction was chosen at random; otherwise, false
 			public bool IsRandomFaction;
+
 			// True if the spawn point was chosen at random; otherwise, false.</summary>
 			public bool IsRandomSpawnPoint;
 
-			//
 			// Information gathered at a later stage
-			//
 
 			// The game outcome for this player
 			public WinState Outcome;
+
 			// The time when this player won or lost the game
 			public DateTime OutcomeTimestampUtc;
 		}

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -12,8 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AI.Fuzzy.Library;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.GameRules;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.AI
@@ -201,6 +201,7 @@ namespace OpenRA.Mods.RA.AI
 					if (warhead != null)
 						sumOfDamage += warhead.Damage;
 				}
+
 				return sumOfDamage;
 			});
 		}

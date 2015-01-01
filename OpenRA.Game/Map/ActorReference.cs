@@ -22,9 +22,10 @@ namespace OpenRA
 		{
 			get { return initDict.Value; }
 		}
+
 		Lazy<TypeDictionary> initDict;
 
-		public ActorReference( string type ) : this(type, new Dictionary<string, MiniYaml>()) { }
+		public ActorReference(string type) : this(type, new Dictionary<string, MiniYaml>()) { }
 
 		public ActorReference(string type, Dictionary<string, MiniYaml> inits)
 		{
@@ -53,6 +54,7 @@ namespace OpenRA
 				var initName = init.GetType().Name;
 				ret.Nodes.Add(new MiniYamlNode(initName.Substring(0, initName.Length - 4), FieldSaver.Save(init)));
 			}
+
 			return ret;
 		}
 

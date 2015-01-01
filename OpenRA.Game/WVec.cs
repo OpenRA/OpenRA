@@ -30,9 +30,9 @@ namespace OpenRA
 		public static WVec operator -(WVec a) { return new WVec(-a.X, -a.Y, -a.Z); }
 		public static WVec operator /(WVec a, int b) { return new WVec(a.X / b, a.Y / b, a.Z / b); }
 		public static WVec operator *(int a, WVec b) { return new WVec(a * b.X, a * b.Y, a * b.Z); }
-		public static WVec operator *(WVec a, int b) { return b*a; }
+		public static WVec operator *(WVec a, int b) { return b * a; }
 
-		public static bool operator ==(WVec me, WVec other) { return (me.X == other.X && me.Y == other.Y && me.Z == other.Z); }
+		public static bool operator ==(WVec me, WVec other) { return me.X == other.X && me.Y == other.Y && me.Z == other.Z; }
 		public static bool operator !=(WVec me, WVec other) { return !(me == other); }
 
 		public static int Dot(WVec a, WVec b) { return a.X * b.X + a.Y * b.Y + a.Z * b.Z; }
@@ -48,9 +48,9 @@ namespace OpenRA
 			var ly = (long)Y;
 			var lz = (long)Z;
 			return new WVec(
-				(int)((lx * mtx[0] + ly*mtx[4] + lz*mtx[8]) / mtx[15]),
-				(int)((lx * mtx[1] + ly*mtx[5] + lz*mtx[9]) / mtx[15]),
-				(int)((lx * mtx[2] + ly*mtx[6] + lz*mtx[10]) / mtx[15]));
+				(int)((lx * mtx[0] + ly * mtx[4] + lz * mtx[8]) / mtx[15]),
+				(int)((lx * mtx[1] + ly * mtx[5] + lz * mtx[9]) / mtx[15]),
+				(int)((lx * mtx[2] + ly * mtx[6] + lz * mtx[10]) / mtx[15]));
 		}
 
 		public static WVec Lerp(WVec a, WVec b, int mul, int div) { return a + (b - a) * mul / div; }
@@ -65,7 +65,7 @@ namespace OpenRA
 
 			// Add an additional quadratic variation to height
 			// Uses fp to avoid integer overflow
-			var offset = (int)((float)((float)(b - a).Length*pitch.Tan()*mul*(div - mul)) / (float)(1024*div*div));
+			var offset = (int)((float)((float)(b - a).Length * pitch.Tan() * mul * (div - mul)) / (float)(1024 * div * div));
 			return new WVec(ret.X, ret.Y, ret.Z + offset);
 		}
 

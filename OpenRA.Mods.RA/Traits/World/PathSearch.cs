@@ -339,7 +339,6 @@ namespace OpenRA.Mods.RA.Traits
 				result.CopyValuesFrom(defaultCellInfoLayer);
 			}
 
-
 			return result;
 		}
 

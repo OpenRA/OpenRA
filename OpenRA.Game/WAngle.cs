@@ -25,14 +25,15 @@ namespace OpenRA
 			if (Angle < 0)
 				Angle += 1024;
 		}
+
 		public static readonly WAngle Zero = new WAngle(0);
-		public static WAngle FromFacing(int facing) { return new WAngle(facing*4); }
-		public static WAngle FromDegrees(int degrees) { return new WAngle(degrees*1024/360); }
+		public static WAngle FromFacing(int facing) { return new WAngle(facing * 4); }
+		public static WAngle FromDegrees(int degrees) { return new WAngle(degrees * 1024 / 360); }
 		public static WAngle operator +(WAngle a, WAngle b) { return new WAngle(a.Angle + b.Angle); }
 		public static WAngle operator -(WAngle a, WAngle b) { return new WAngle(a.Angle - b.Angle); }
 		public static WAngle operator -(WAngle a) { return new WAngle(-a.Angle); }
 
-		public static bool operator ==(WAngle me, WAngle other) { return (me.Angle == other.Angle); }
+		public static bool operator ==(WAngle me, WAngle other) { return me.Angle == other.Angle; }
 		public static bool operator !=(WAngle me, WAngle other) { return !(me == other); }
 
 		public override int GetHashCode() { return Angle.GetHashCode(); }
@@ -67,7 +68,7 @@ namespace OpenRA
 				return new WAngle(x >= 0 ? 0 : 512);
 
 			if (x == 0)
-				return new WAngle(Math.Sign(y)*256);
+				return new WAngle(Math.Sign(y) * 256);
 
 			var ay = Math.Abs(y);
 			var ax = Math.Abs(x);
@@ -75,9 +76,9 @@ namespace OpenRA
 			// Find the closest angle that satisfies y = x*tan(theta)
 			var bestVal = int.MaxValue;
 			var bestAngle = 0;
-			for (var i = 0; i < 256; i+= stride)
+			for (var i = 0; i < 256; i += stride)
 			{
-				var val = Math.Abs(1024*ay - ax*TanTable[i]);
+				var val = Math.Abs(1024 * ay - ax * TanTable[i]);
 				if (val < bestVal)
 				{
 					bestVal = val;

@@ -63,8 +63,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 				if (key == ks.ToSelectionKey)
 					return ToSelection();
-
-
+                
 				// Put all functions that aren't unit-specific before this line!
 				if (!world.Selection.Actors.Any())
 					return false;

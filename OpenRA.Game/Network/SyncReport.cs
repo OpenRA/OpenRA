@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -198,6 +198,7 @@ namespace OpenRA.Network
 					var boxedCopy = Expression.Convert(getMember, typeof(object));
 					return Expression.Lambda<Func<ISync, object>>(boxedCopy, name, new[] { syncParam }).Compile();
 				}
+
 				return MemberToString(getMember, memberType, name);
 			}
 

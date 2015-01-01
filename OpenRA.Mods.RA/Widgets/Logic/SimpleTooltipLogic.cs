@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (textWidth != cachedWidth)
 				{
 					label.Bounds.Width = textWidth;
-					widget.Bounds.Width = 2*label.Bounds.X + textWidth;
+					widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
 				}
 			};
 
@@ -38,4 +38,3 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		}
 	}
 }
-

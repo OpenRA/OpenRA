@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -8,10 +8,10 @@
  */
 #endregion
 
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
-
+namespace OpenRA.Mods.RA
 {
 	[Desc("Attach this to the player actor to allow building repair by team mates.")]
 	class AllyRepairInfo : TraitInfo<AllyRepair> { }

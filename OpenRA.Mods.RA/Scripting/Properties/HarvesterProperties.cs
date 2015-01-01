@@ -8,8 +8,8 @@
  */
 #endregion
 
-using OpenRA.Scripting;
 using OpenRA.Mods.RA.Traits;
+using OpenRA.Scripting;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting

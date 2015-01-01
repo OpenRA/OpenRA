@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Traits
 		bool isProne { get { return remainingProneTime > 0; } }
 
 		public bool IsModifyingSequence { get { return isProne; } }
-		public string SequencePrefix { get { return info.ProneSequencePrefix ; } }
+		public string SequencePrefix { get { return info.ProneSequencePrefix; } }
 
 		public TakeCover(ActorInitializer init, TakeCoverInfo info)
 			: base(init, info)
@@ -46,7 +46,8 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.Damage > 0 && (e.Warhead == null || !e.Warhead.PreventProne)) /* Don't go prone when healed */
+			/* Don't go prone when healed */
+			if (e.Damage > 0 && (e.Warhead == null || !e.Warhead.PreventProne))
 			{
 				if (!isProne)
 					localOffset = info.ProneOffset;
