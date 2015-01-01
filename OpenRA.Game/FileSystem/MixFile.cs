@@ -68,9 +68,8 @@ namespace OpenRA.FileSystem
 				entries = ParseHeader(s, isCncMix ? 0 : 4, out dataStart);
 
 			index = entries.ToDictionaryWithConflictLog(x => x.Hash,
-				"{0} ({1} format, Encrypted: {2}, DataStart: {3})".F(filename, (isCncMix ? "C&C" : "RA/TS/RA2"), isEncrypted, dataStart),
-				null, x => "(offs={0}, len={1})".F(x.Offset, x.Length)
-			);
+				"{0} ({1} format, Encrypted: {2}, DataStart: {3})".F(filename, isCncMix ? "C&C" : "RA/TS/RA2", isEncrypted, dataStart),
+				null, x => "(offs={0}, len={1})".F(x.Offset, x.Length));
 		}
 
 		static List<PackageEntry> ParseHeader(Stream s, long offset, out long headerEnd)
@@ -83,7 +82,7 @@ namespace OpenRA.FileSystem
 			for (var i = 0; i < numFiles; i++)
 				items.Add(new PackageEntry(s));
 
-			headerEnd = offset + 6 + numFiles*PackageEntry.Size;
+			headerEnd = offset + 6 + numFiles * PackageEntry.Size;
 			return items;
 		}
 
@@ -101,8 +100,8 @@ namespace OpenRA.FileSystem
 			var numFiles = ms.ReadUInt16();
 
 			// Decrypt the full header - round bytes up to a full block
-			var blockCount = (13 + numFiles*PackageEntry.Size)/8;
-			headerEnd = offset + 80 + blockCount*8;
+			var blockCount = (13 + numFiles * PackageEntry.Size) / 8;
+			headerEnd = offset + 80 + blockCount * 8;
 
 			return Decrypt(ReadBlocks(s, offset + 80, blockCount), fish);
 		}
@@ -113,7 +112,7 @@ namespace OpenRA.FileSystem
 
 			var ms = new MemoryStream();
 			var writer = new BinaryWriter(ms);
-			foreach(var t in decrypted)
+			foreach (var t in decrypted)
 				writer.Write(t);
 			writer.Flush();
 
@@ -126,7 +125,7 @@ namespace OpenRA.FileSystem
 			s.Seek(offset, SeekOrigin.Begin);
 
 			// A block is a single encryption unit (represented as two 32-bit integers)
-			var ret = new uint[2*count];
+			var ret = new uint[2 * count];
 			for (var i = 0; i < ret.Length; i++)
 				ret[i] = s.ReadUInt32();
 
@@ -167,7 +166,7 @@ namespace OpenRA.FileSystem
 			return hash.HasValue ? GetContent(hash.Value) : null;
 		}
 
-		static readonly uint[] Nothing = {};
+		static readonly uint[] Nothing = { };
 		public IEnumerable<uint> ClassicHashes()
 		{
 			if (type == PackageHashType.Classic)

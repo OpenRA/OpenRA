@@ -42,11 +42,11 @@ namespace OpenRA.FileFormats
 
 		static void ReadVoxelData(Stream s, VxlLimb l)
 		{
-			var baseSize = l.Size[0]*l.Size[1];
+			var baseSize = l.Size[0] * l.Size[1];
 			var colStart = new int[baseSize];
 			for (var i = 0; i < baseSize; i++)
 				colStart[i] = s.ReadInt32();
-			s.Seek(4*baseSize, SeekOrigin.Current);
+			s.Seek(4 * baseSize, SeekOrigin.Current);
 			var dataStart = s.Position;
 
 			// Count the voxels in this limb
@@ -65,12 +65,12 @@ namespace OpenRA.FileFormats
 					var count = s.ReadUInt8();
 					z += count;
 					l.VoxelCount += count;
-					s.Seek(2*count + 1, SeekOrigin.Current);
+					s.Seek(2 * count + 1, SeekOrigin.Current);
 				} while (z < l.Size[2]);
 			}
 
 			// Read the data
-			l.VoxelMap = new Dictionary<byte, VxlElement>[l.Size[0],l.Size[1]];
+			l.VoxelMap = new Dictionary<byte, VxlElement>[l.Size[0], l.Size[1]];
 			for (var i = 0; i < baseSize; i++)
 			{
 				// Empty column
@@ -82,7 +82,7 @@ namespace OpenRA.FileFormats
 				var x = (byte)(i % l.Size[0]);
 				var y = (byte)(i / l.Size[0]);
 				byte z = 0;
-				l.VoxelMap[x,y] = new Dictionary<byte, VxlElement>();
+				l.VoxelMap[x, y] = new Dictionary<byte, VxlElement>();
 				do
 				{
 					z += s.ReadUInt8();
@@ -93,9 +93,10 @@ namespace OpenRA.FileFormats
 						v.Color = s.ReadUInt8();
 						v.Normal = s.ReadUInt8();
 
-						l.VoxelMap[x,y].Add(z, v);
+						l.VoxelMap[x, y].Add(z, v);
 						z++;
 					}
+
 					// Skip duplicate count
 					s.ReadUInt8();
 				} while (z < l.Size[2]);
@@ -104,7 +105,6 @@ namespace OpenRA.FileFormats
 
 		public VxlReader(Stream s)
 		{
-
 			if (!s.ReadASCII(16).StartsWith("Voxel Animation"))
 				throw new InvalidDataException("Invalid vxl header");
 
@@ -124,7 +124,7 @@ namespace OpenRA.FileFormats
 			}
 
 			// Skip to the Limb footers
-			s.Seek(802 + 28*LimbCount + BodySize, SeekOrigin.Begin);
+			s.Seek(802 + 28 * LimbCount + BodySize, SeekOrigin.Begin);
 
 			var LimbDataOffset = new uint[LimbCount];
 			for (var i = 0; i < LimbCount; i++)
@@ -143,7 +143,7 @@ namespace OpenRA.FileFormats
 
 			for (var i = 0; i < LimbCount; i++)
 			{
-				s.Seek(802 + 28*LimbCount + LimbDataOffset[i], SeekOrigin.Begin);
+				s.Seek(802 + 28 * LimbCount + LimbDataOffset[i], SeekOrigin.Begin);
 				ReadVoxelData(s, Limbs[i]);
 			}
 		}

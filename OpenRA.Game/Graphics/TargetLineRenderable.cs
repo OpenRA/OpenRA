@@ -39,7 +39,7 @@ namespace OpenRA.Graphics
 		public IRenderable OffsetBy(WVec vec) { return new TargetLineRenderable(waypoints.Select(w => w + vec), color); }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) {}
+		public void BeforeRender(WorldRenderer wr) { }
 		public void Render(WorldRenderer wr)
 		{
 			if (!waypoints.Any())
@@ -57,6 +57,6 @@ namespace OpenRA.Graphics
 			wr.DrawTargetMarker(color, first);
 		}
 
-		public void RenderDebugGeometry(WorldRenderer wr) {}
+		public void RenderDebugGeometry(WorldRenderer wr) { }
 	}
 }

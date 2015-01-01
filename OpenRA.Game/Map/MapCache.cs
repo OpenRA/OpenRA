@@ -132,6 +132,7 @@ namespace OpenRA
 
 			// Milliseconds to wait on one loop when nothing to do
 			var emptyDelay = 50;
+
 			// Keep the thread alive for at least 5 seconds after the last minimap generation
 			var maxKeepAlive = 5000 / emptyDelay;
 			var keepAlive = maxKeepAlive;
@@ -151,6 +152,7 @@ namespace OpenRA
 						break;
 					}
 				}
+
 				if (todo.Count == 0)
 				{
 					Thread.Sleep(emptyDelay);
@@ -170,6 +172,7 @@ namespace OpenRA
 						createdPreview = true;
 						bitmap = Minimap.RenderMapPreview(modData.DefaultRules.TileSets[p.Map.Tileset], p.Map, modData.DefaultRules, true);
 					}
+
 					// Note: this is not generally thread-safe, but it works here because:
 					//   (a) This worker is the only thread writing to this sheet
 					//   (b) The main thread is the only thread reading this sheet
@@ -192,7 +195,9 @@ namespace OpenRA
 					Thread.Sleep(Environment.ProcessorCount == 1 ? 25 : 5);
 				}
 			}
+
 			sheetBuilder.Current.ReleaseBuffer();
+
 			// The buffer is not fully reclaimed until changes are written out to the texture.
 			// We will access the texture in order to force changes to be written out, allowing the buffer to be freed.
 			Game.RunAfterTick(() => sheetBuilder.Current.GetTexture());

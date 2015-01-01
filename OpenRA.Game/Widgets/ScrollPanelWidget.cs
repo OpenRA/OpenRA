@@ -30,6 +30,7 @@ namespace OpenRA.Widgets
 
 	public class ScrollPanelWidget : Widget
 	{
+		readonly Ruleset modRules;
 		public int ScrollbarWidth = 24;
 		public int ItemSpacing = 2;
 		public int ButtonDepth = ChromeMetrics.Get<int>("ButtonDepth");
@@ -58,8 +59,6 @@ namespace OpenRA.Widgets
 
 		// The current value is the actual list offset at the moment
 		float currentListOffset;
-
-		readonly Ruleset modRules;
 
 		// Setting "smooth" to true will only update the target list offset.
 		// Setting "smooth" to false will also set the current list offset,

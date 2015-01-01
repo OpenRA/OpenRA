@@ -18,6 +18,7 @@ namespace OpenRA.Primitives
 	public class ObservableCollection<T> : Collection<T>, IObservableCollection
 	{
 		public event Action<object> OnAdd = k => { };
+
 		// TODO Workaround for https://github.com/OpenRA/OpenRA/issues/6101
 		#pragma warning disable 67
 		public event Action<object> OnRemove = k => { };

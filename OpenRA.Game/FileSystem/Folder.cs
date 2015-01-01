@@ -39,7 +39,7 @@ namespace OpenRA.FileSystem
 
 		public Stream GetContent(string filename)
 		{
-			try { return File.OpenRead( Path.Combine( path, filename ) ); }
+			try { return File.OpenRead(Path.Combine(path, filename)); }
 			catch { return null; }
 		}
 

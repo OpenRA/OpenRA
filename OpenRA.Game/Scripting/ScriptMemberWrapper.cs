@@ -67,7 +67,7 @@ namespace OpenRA.Scripting
 					throw new LuaException("Unable to convert parameter {0} to {1}".F(i, pi[i].ParameterType.Name));
 			}
 
-			var ret = (mi.Invoke(Target, clrArgs));
+			var ret = mi.Invoke(Target, clrArgs);
 			return ret.ToLuaValue(context);
 		}
 

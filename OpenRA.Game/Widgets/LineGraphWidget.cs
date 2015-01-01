@@ -87,6 +87,7 @@ namespace OpenRA.Widgets
 			{
 				return;
 			}
+
 			var rect = RenderBounds;
 			var origin = new float2(rect.Left, rect.Bottom);
 
@@ -141,20 +142,22 @@ namespace OpenRA.Widgets
 				keyOffset++;
 			}
 
-			//TODO: make this stuff not draw outside of the RenderBounds
+			// TODO: make this stuff not draw outside of the RenderBounds
 			for (int n = pointStart, x = 0; n <= pointEnd; n++, x += xStep)
 			{
 				Game.Renderer.LineRenderer.DrawLine(origin + new float2(x, 0), origin + new float2(x, -5), Color.White, Color.White);
 				tiny.DrawText(GetXAxisValueFormat().F(n), origin + new float2(x, 2), Color.White);
 			}
+
 			bold.DrawText(GetXAxisLabel(), origin + new float2(width / 2, 20), Color.White);
 
-			for (var y = (GetDisplayFirstYAxisValue() ? 0 : yStep); y <= height; y += yStep)
+			for (var y = GetDisplayFirstYAxisValue() ? 0 : yStep; y <= height; y += yStep)
 			{
 				var yValue = y / scale;
 				Game.Renderer.LineRenderer.DrawLine(origin + new float2(width - 5, -y), origin + new float2(width, -y), Color.White, Color.White);
 				tiny.DrawText(GetYAxisValueFormat().F(yValue), origin + new float2(width + 2, -y), Color.White);
 			}
+
 			bold.DrawText(GetYAxisLabel(), origin + new float2(width + 40, -(height / 2)), Color.White);
 
 			Game.Renderer.LineRenderer.DrawLine(origin, origin + new float2(width, 0), Color.White, Color.White);

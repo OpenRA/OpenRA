@@ -15,7 +15,10 @@ namespace OpenRA.Widgets
 {
 	public class ButtonWidget : Widget
 	{
+		public readonly string TooltipContainer;
+		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
 		public Func<ButtonWidget, Hotkey> GetKey = _ => Hotkey.Invalid;
+
 		public Hotkey Key
 		{
 			get { return GetKey(this); }
@@ -40,19 +43,17 @@ namespace OpenRA.Widgets
 		public Func<Color> GetContrastColor;
 		public Func<bool> IsDisabled;
 		public Func<bool> IsHighlighted;
-		public Action<MouseInput> OnMouseDown = _ => {};
-		public Action<MouseInput> OnMouseUp = _ => {};
+		public Action<MouseInput> OnMouseDown = _ => { };
+		public Action<MouseInput> OnMouseUp = _ => { };
 
 		Lazy<TooltipContainerWidget> tooltipContainer;
-		public readonly string TooltipContainer;
-		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
 		[Translate] public string TooltipText;
 		public Func<string> GetTooltipText; 
 
 		// Equivalent to OnMouseUp, but without an input arg
-		public Action OnClick = () => {};
-		public Action OnDoubleClick = () => {}; 
-		public Action<KeyInput> OnKeyPress = _ => {};
+		public Action OnClick = () => { };
+		public Action OnDoubleClick = () => { }; 
+		public Action<KeyInput> OnKeyPress = _ => { };
 
 		protected readonly Ruleset ModRules;
 
@@ -149,14 +150,15 @@ namespace OpenRA.Widgets
 					return YieldMouseFocus(mi);
 				}
 			} 
-			// Only fire the onMouseUp event if we successfully lost focus, and were pressed
 			else if (HasMouseFocus && mi.Event == MouseInputEvent.Up)
 			{
+				// Only fire the onMouseUp event if we successfully lost focus, and were pressed
 				if (Depressed && !disabled)
 					OnMouseUp(mi);
 
 				return YieldMouseFocus(mi);
 			}
+
 			if (mi.Event == MouseInputEvent.Down)
 			{
 				// OnMouseDown returns false if the button shouldn't be pressed
@@ -210,7 +212,7 @@ namespace OpenRA.Widgets
 			var colordisabled = GetColorDisabled();
 			var contrast = GetContrastColor();
 			var s = font.Measure(text);
-			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
+			var stateOffset = Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 			var position = new int2(rb.X + (UsableWidth - s.X) / 2, rb.Y - BaseLine + (Bounds.Height - s.Y) / 2);
 
 			DrawBackground(rb, disabled, Depressed, Ui.MouseOverWidget == this, highlighted);

@@ -15,6 +15,7 @@ namespace OpenRA.Graphics
 {
 	public class Animation
 	{
+		readonly int defaultTick = 40; // 25 fps == 40 ms
 		public Sequence CurrentSequence { get; private set; }
 		public bool IsDecoration = false;
 		public Func<bool> Paused;
@@ -26,7 +27,6 @@ namespace OpenRA.Graphics
 
 		string name;
 
-		readonly int defaultTick = 40; // 25 fps == 40 ms
 		bool tickAlways;
 
 		public string Name { get { return name; } }
@@ -43,7 +43,7 @@ namespace OpenRA.Graphics
 		{
 			this.sequenceProvider = sequenceProvider;
 			this.name = name.ToLowerInvariant();
-			this.tickFunc = () => {};
+			this.tickFunc = () => { };
 			this.facingFunc = facingFunc;
 		}
 

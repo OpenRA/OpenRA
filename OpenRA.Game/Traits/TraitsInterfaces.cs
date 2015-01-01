@@ -21,8 +21,8 @@ using OpenRA.Primitives;
 namespace OpenRA.Traits
 {
 	// depends on the order of pips in WorldRenderer.cs!
-	public enum PipType { Transparent, Green, Yellow, Red, Gray, Blue, Ammo, AmmoEmpty };
-	public enum TagType { None, Fake, Primary };
+	public enum PipType { Transparent, Green, Yellow, Red, Gray, Blue, Ammo, AmmoEmpty }
+	public enum TagType { None, Fake, Primary }
 	
 	[Flags]
 	public enum Stance
@@ -65,7 +65,7 @@ namespace OpenRA.Traits
 		Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued);
 	}
 
-	[Flags] public enum TargetModifiers { None = 0, ForceAttack = 1, ForceQueue = 2, ForceMove = 4 };
+	[Flags] public enum TargetModifiers { None = 0, ForceAttack = 1, ForceQueue = 2, ForceMove = 4 }
 
 	public static class TargetModifiersExts
 	{
@@ -173,6 +173,7 @@ namespace OpenRA.Traits
 					nearestDistance = dist;
 				}
 			}
+
 			return nearest;
 		}
 	}

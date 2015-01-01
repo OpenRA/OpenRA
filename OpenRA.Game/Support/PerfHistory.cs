@@ -33,7 +33,7 @@ namespace OpenRA.Support
 				return x;
 			});
 
-		public static void Increment( string item, double x )
+		public static void Increment(string item, double x)
 		{
 			items[item].val += x;
 		}
@@ -91,6 +91,7 @@ namespace OpenRA.Support
 				sum += samples[n];
 				i++;
 			}
+
 			return sum / i;
 		}
 

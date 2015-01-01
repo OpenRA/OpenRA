@@ -69,7 +69,7 @@ namespace OpenRA.Scripting
 			// TODO: Lua 5.3 will introduce an integer type, so this will be able to go away
 			if (value is LuaNumber && t.IsAssignableFrom(typeof(int)))
 			{
-				clrObject = (int)(value.ToNumber().Value);
+				clrObject = (int)value.ToNumber().Value;
 				return true;
 			}
 
