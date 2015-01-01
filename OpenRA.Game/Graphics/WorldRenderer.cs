@@ -92,7 +92,7 @@ namespace OpenRA.Graphics
 			if (world.OrderGenerator != null)
 				effectRenderables = effectRenderables.Concat(world.OrderGenerator.RenderAfterWorld(this, world));
 
-			// Iterating via foreach() copies the structs, so enumerate by index
+			// Iterating via foreach () copies the structs, so enumerate by index
 			var renderables = worldRenderables.Concat(effectRenderables).ToList();
 
 			Game.Renderer.WorldVoxelRenderer.BeginFrame();

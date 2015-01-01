@@ -44,8 +44,6 @@ namespace OpenRA.Widgets
 
 		public void AdjustChildren()
 		{
-
 		}
 	}
 }
-

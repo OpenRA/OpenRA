@@ -25,6 +25,7 @@ namespace OpenRA.FileFormats
 			public uint[] key2 = new uint[64];
 			public uint len;
 		}
+
 		PublicKey pubkey = new PublicKey();
 
 		uint[] glob1 = new uint[64];
@@ -81,6 +82,7 @@ namespace OpenRA.FileFormats
 				keylen = key[j];
 				j++;
 			}
+
 			if (keylen <= len * 4)
 				move_key_to_big(n, key.Skip(j).ToArray(), keylen, len);
 		}
@@ -105,6 +107,7 @@ namespace OpenRA.FileFormats
 				mask >>= 1;
 				bitlen--;
 			}
+
 			return bitlen;
 		}
 
@@ -124,13 +127,13 @@ namespace OpenRA.FileFormats
 
 		static int cmp_bignum(uint[] n1, uint[] n2, uint len)
 		{
-
 			while (len > 0)
 			{
 				--len;
 				if (n1[len] < n2[len]) return -1;
 				if (n1[len] > n2[len]) return 1;
 			}
+
 			return 0;
 		}
 
@@ -149,6 +152,7 @@ namespace OpenRA.FileFormats
 				for (; i < len; i++) n[i] = 0;
 				bits = bits % 32;
 			}
+
 			if (bits == 0) return;
 			for (i = 0; i < len - 1; i++) n[i] = (n[i] >> bits) | (n[i + 1] << (32 -
 		  bits));
@@ -166,6 +170,7 @@ namespace OpenRA.FileFormats
 				for (; i > 0; i--) n[i] = 0;
 				bits = bits % 32;
 			}
+
 			if (bits == 0) return;
 			for (i = len - 1; i > 0; i--) n[i] = (n[i] << bits) | (n[i - 1] >> (32 -
 		  bits));
@@ -196,6 +201,7 @@ namespace OpenRA.FileFormats
 					}
 				}
 			}
+
 			return carry;
 		}
 
@@ -215,8 +221,8 @@ namespace OpenRA.FileFormats
 				i2 = *ps2++;
 				*pd++ = (ushort)(i1 - i2 - carry);
 				if (((i1 - i2 - carry) & 0x10000) != 0) carry = 1; else carry = 0;
-
 			}
+
 			return carry;
 		}
 
@@ -245,6 +251,7 @@ namespace OpenRA.FileFormats
 					sub_bignum(n_tmp, n_tmp, n2, 0, (int)len);
 					n1[j] |= bit;
 				}
+
 				bit >>= 1;
 				if (bit == 0)
 				{
@@ -252,6 +259,7 @@ namespace OpenRA.FileFormats
 					bit = 0x80000000;
 				}
 			}
+
 			init_bignum(n_tmp, 0, len);
 		}
 
@@ -278,6 +286,7 @@ namespace OpenRA.FileFormats
 				shr_bignum(glob1_hi_inv, 1, 2);
 				glob1_hi_bitlen--;
 			}
+
 			glob1_hi_inv_lo = (ushort)glob1_hi_inv[0];
 			glob1_hi_inv_hi = (ushort)(glob1_hi_inv[0] >> 16);
 		}
@@ -311,8 +320,8 @@ namespace OpenRA.FileFormats
 
 		  unsafe
 		  {
-			  fixed( uint * _psrc2 = &src2[0] )
-			  fixed(uint* _pdest = &dest[0])
+			  fixed (uint* _psrc2 = &src2[0])
+			  fixed (uint* _pdest = &dest[0])
 			  {
 				  var psrc2 = (ushort*)_psrc2;
 				  var pdest = (ushort*)_pdest;
@@ -360,7 +369,7 @@ namespace OpenRA.FileFormats
 			uint g2_len_x2, len_diff;
 			unsafe
 			{
-				fixed( uint* g1 = &glob1[0])
+				fixed (uint* g1 = &glob1[0])
 				fixed (uint* g2 = &glob2[0])
 				{
 					mul_bignum(glob2, n2, n3, len);
@@ -383,13 +392,15 @@ namespace OpenRA.FileFormats
 								mul_bignum_word(esi, glob1, tmp, 2 * len);
 								if ((*edi & 0x8000) == 0)
 								{
-									if (0 != sub_bignum((uint*)esi, (uint*)esi, g1, 0, (int)len)) (*edi)--;
+									if (0 != sub_bignum((uint*)esi, (uint*)esi, g1, 0, (int)len))(*edi)--;
 								}
 							}
 						}
+
 						neg_bignum(glob2, len);
 						dec_bignum(glob2, len);
 					}
+
 					mov_bignum(n1, glob2, len);
 				}
 			}
@@ -437,6 +448,7 @@ namespace OpenRA.FileFormats
 							bit_mask = 0x80000000;
 							pn3--;
 						}
+
 						calc_a_bignum(n_tmp, n1, n1, n4_len);
 						if ((*pn3 & bit_mask) != 0)
 							calc_a_bignum(n1, n_tmp, n2, n4_len);
@@ -444,6 +456,7 @@ namespace OpenRA.FileFormats
 							mov_bignum(n1, n_tmp, n4_len);
 						bit_mask >>= 1;
 					}
+
 					init_bignum(n_tmp, 0, n4_len);
 					clear_tmp_vars(len);
 				}
@@ -455,7 +468,7 @@ namespace OpenRA.FileFormats
 			while (len-- != 0) *dest++ = *src++;
 		}
 
-		unsafe void process_predata(byte* pre, uint pre_len, byte *buf)
+		unsafe void process_predata(byte* pre, uint pre_len, byte* buf)
 		{
 			var n2 = new uint[64];
 			var n3 = new uint[64];
@@ -464,12 +477,12 @@ namespace OpenRA.FileFormats
 			while (a + 1 <= pre_len)
 			{
 				init_bignum(n2, 0, 64);
-				fixed( uint * pn2 = &n2[0] )
-					memcpy((byte *)pn2, pre, (int)a + 1);
+				fixed (uint* pn2 = &n2[0])
+					memcpy((byte*)pn2, pre, (int)a + 1);
 				calc_a_key(n3, n2, pubkey.key2, pubkey.key1, 64);
 
-				fixed( uint * pn3 = &n3[0] )
-					memcpy(buf, (byte *)pn3, (int)a);
+				fixed (uint* pn3 = &n3[0])
+					memcpy(buf, (byte*)pn3, (int)a);
 
 				pre_len -= a + 1;
 				pre += a + 1;
@@ -488,6 +501,7 @@ namespace OpenRA.FileFormats
 				fixed (byte* psrc = &src[0])
 					process_predata(psrc, len_predata(), pdest);
 			}
+
 			return dest.Take(56).ToArray();
 		}
 	}

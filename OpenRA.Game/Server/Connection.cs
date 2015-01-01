@@ -17,13 +17,13 @@ namespace OpenRA.Server
 {
 	public class Connection
 	{
+		public const int MaxOrderLength = 131072;
 		public Socket socket;
 		public List<byte> data = new List<byte>();
 		public ReceiveState State = ReceiveState.Header;
 		public int ExpectLength = 8;
 		public int Frame = 0;
 		public int MostRecentFrame = 0;
-		public const int MaxOrderLength = 131072;
 
 		public int TimeSinceLastResponse { get { return Game.RunTime - lastReceivedTime; } }
 		public bool TimeoutMessageShown = false;
@@ -44,7 +44,7 @@ namespace OpenRA.Server
 			var rx = new byte[1024];
 			var len = 0;
 
-			for (; ; )
+			for (;;)
 			{
 				try
 				{
@@ -107,12 +107,11 @@ namespace OpenRA.Server
 								MostRecentFrame = Frame;
 								ExpectLength = 8;
 								State = ReceiveState.Header;
-
 							} break;
 					}
 				}
 		}
 	}
 
-	public enum ReceiveState { Header, Data };
+	public enum ReceiveState { Header, Data }
 }

@@ -87,13 +87,13 @@ namespace OpenRA.Graphics
 
 		float2 ScreenPosition(WorldRenderer wr)
 		{
-			return wr.ScreenPxPosition(pos) + wr.ScreenPxOffset(offset) - (0.5f*scale*sprite.size).ToInt2();
+			return wr.ScreenPxPosition(pos) + wr.ScreenPxOffset(offset) - (0.5f * scale * sprite.size).ToInt2();
 		}
 
-		public void BeforeRender(WorldRenderer wr) {}
+		public void BeforeRender(WorldRenderer wr) { }
 		public void Render(WorldRenderer wr)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(sprite, ScreenPosition(wr), palette, sprite.size*scale);
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(sprite, ScreenPosition(wr), palette, sprite.size * scale);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)

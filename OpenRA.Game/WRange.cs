@@ -26,7 +26,7 @@ namespace OpenRA
 
 		public WRange(int r) { Range = r; }
 		public static readonly WRange Zero = new WRange(0);
-		public static WRange FromCells(int cells) { return new WRange(1024*cells); }
+		public static WRange FromCells(int cells) { return new WRange(1024 * cells); }
 
 		public static WRange operator +(WRange a, WRange b) { return new WRange(a.Range + b.Range); }
 		public static WRange operator -(WRange a, WRange b) { return new WRange(a.Range - b.Range); }
@@ -39,7 +39,7 @@ namespace OpenRA
 		public static bool operator <=(WRange a, WRange b) { return a.Range <= b.Range; }
 		public static bool operator >=(WRange a, WRange b) { return a.Range >= b.Range; }
 
-		public static bool operator ==(WRange me, WRange other) { return (me.Range == other.Range); }
+		public static bool operator ==(WRange me, WRange other) { return me.Range == other.Range; }
 		public static bool operator !=(WRange me, WRange other) { return !(me == other); }
 
 		// Sampled a N-sample probability density function in the range [-1024..1024]
@@ -79,7 +79,7 @@ namespace OpenRA
 			if (cell < 0)
 				subcell = -subcell;
 
-			result = new WRange(1024*cell + subcell);
+			result = new WRange(1024 * cell + subcell);
 			return true;
 		}
 
@@ -94,6 +94,7 @@ namespace OpenRA
 				return 1;
 			return Range.CompareTo(((WRange)obj).Range);
 		}
+
 		public int CompareTo(WRange other) { return Range.CompareTo(other.Range); }
 
 		public override string ToString() { return Range.ToString(); }
@@ -139,6 +140,7 @@ namespace OpenRA
 					default: throw new LuaException("WPos does not define a member '{0}'".F(key));
 				}
 			}
+
 			set
 			{
 				throw new LuaException("WRange is read-only. Use WRange.New to create a new value");

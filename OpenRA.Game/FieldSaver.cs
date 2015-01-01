@@ -46,8 +46,7 @@ namespace OpenRA
 
 			return new MiniYaml(
 				null,
-				fields.Select(info => new MiniYamlNode(info.YamlName, FormatValue(o, info.Field))).ToList()
-			);
+				fields.Select(info => new MiniYamlNode(info.YamlName, FormatValue(o, info.Field))).ToList());
 		}
 
 		public static MiniYamlNode SaveField(object o, string field)

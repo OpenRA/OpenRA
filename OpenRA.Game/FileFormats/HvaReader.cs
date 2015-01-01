@@ -22,20 +22,20 @@ namespace OpenRA.FileFormats
 		public HvaReader(Stream s)
 		{
 			// Index swaps for transposing a matrix
-			var ids = new byte[]{0,4,8,12,1,5,9,13,2,6,10,14};
+			var ids = new byte[] { 0, 4, 8, 12, 1, 5, 9, 13, 2, 6, 10, 14 };
 
 			s.Seek(16, SeekOrigin.Begin);
 			FrameCount = s.ReadUInt32();
 			LimbCount = s.ReadUInt32();
 
 			// Skip limb names
-			s.Seek(16*LimbCount, SeekOrigin.Current);
-			Transforms = new float[16*FrameCount*LimbCount];
+			s.Seek(16 * LimbCount, SeekOrigin.Current);
+			Transforms = new float[16 * FrameCount * LimbCount];
 			for (var j = 0; j < FrameCount; j++)
 				for (var i = 0; i < LimbCount; i++)
 			{
 				// Convert to column-major matrices and add the final matrix row
-				var c = 16*(LimbCount*j + i);
+				var c = 16 * (LimbCount * j + i);
 				Transforms[c + 3] = 0;
 				Transforms[c + 7] = 0;
 				Transforms[c + 11] = 0;

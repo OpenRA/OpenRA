@@ -38,6 +38,7 @@ namespace OpenRA.Graphics
 		public SpriteCache(ISpriteLoader[] loaders, string[] exts, SheetBuilder sheetBuilder)
 		{
 			SheetBuilder = sheetBuilder;
+
 			// Include extension-less version
 			exts = exts.Append("").ToArray();
 			sprites = new Cache<string, Sprite[]>(filename => SpriteLoader.GetSprites(filename, exts, loaders, sheetBuilder));

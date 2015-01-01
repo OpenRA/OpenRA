@@ -136,7 +136,6 @@ namespace OpenRA.Graphics
 					}
 				}
 
-
 			s.sheet.CommitData();
 
 			return g;

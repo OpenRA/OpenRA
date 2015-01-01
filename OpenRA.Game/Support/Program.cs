@@ -86,8 +86,9 @@ namespace OpenRA
 				Indent(sb, d);
 				sb.AppendFormat("TypeName=`{0}`", tle.TypeName);
 			}
-			else // TODO: more exception types
+			else
 			{
+				// TODO: more exception types
 			}
 
 			if (e.InnerException != null)

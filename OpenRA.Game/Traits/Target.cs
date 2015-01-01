@@ -17,7 +17,7 @@ namespace OpenRA.Traits
 	public enum TargetType { Invalid, Actor, Terrain, FrozenActor }
 	public struct Target
 	{
-		public static readonly Target[] None = {};
+		public static readonly Target[] None = { };
 		public static readonly Target Invalid = new Target { type = TargetType.Invalid };
 
 		TargetType type;
@@ -54,7 +54,7 @@ namespace OpenRA.Traits
 			};
 		}
 
-		public static Target FromFrozenActor(FrozenActor a)  { return new Target { frozen = a, type = TargetType.FrozenActor }; }
+		public static Target FromFrozenActor(FrozenActor a) { return new Target { frozen = a, type = TargetType.FrozenActor }; }
 
 		public Actor Actor { get { return actor; } }
 		public FrozenActor FrozenActor { get { return frozen; } }
@@ -115,7 +115,7 @@ namespace OpenRA.Traits
 		}
 
 		// Positions available to target for range checks
-		static readonly WPos[] NoPositions = {};
+		static readonly WPos[] NoPositions = { };
 		public IEnumerable<WPos> Positions
 		{
 			get
@@ -125,14 +125,14 @@ namespace OpenRA.Traits
 				case TargetType.Actor:
 					var targetable = actor.TraitOrDefault<ITargetable>();
 					if (targetable == null)
-						return new [] { actor.CenterPosition };
+						return new[] { actor.CenterPosition };
 
 					var positions = targetable.TargetablePositions(actor);
-					return positions.Any() ? positions : new [] { actor.CenterPosition };
+					return positions.Any() ? positions : new[] { actor.CenterPosition };
 				case TargetType.FrozenActor:
-					return new [] { frozen.CenterPosition };
+					return new[] { frozen.CenterPosition };
 				case TargetType.Terrain:
-					return new [] { pos };
+					return new[] { pos };
 				default:
 				case TargetType.Invalid:
 					return NoPositions;
@@ -146,7 +146,7 @@ namespace OpenRA.Traits
 				return false;
 
 			// Target ranges are calculated in 2D, so ignore height differences
-			var rangeSquared = range.Range*range.Range;
+			var rangeSquared = range.Range * range.Range;
 			return Positions.Any(t => (t - origin).HorizontalLengthSquared <= rangeSquared);
 		}
 
@@ -168,6 +168,5 @@ namespace OpenRA.Traits
 					return "Invalid";
 			}
 		}
-
 	}
 }

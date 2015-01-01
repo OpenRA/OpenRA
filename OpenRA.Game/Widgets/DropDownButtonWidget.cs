@@ -36,16 +36,14 @@ namespace OpenRA.Widgets
 		public override void Draw()
 		{
 			base.Draw();
-			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
+			var stateOffset = Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 
 			var image = ChromeProvider.GetImage("scrollbar", IsDisabled() ? "down_pressed" : "down_arrow");
 			var rb = RenderBounds;
 			var color = GetColor();
 			var colorDisabled = GetColorDisabled();
 
-			WidgetUtils.DrawRGBA( image,
-				stateOffset + new float2( rb.Right - rb.Height + 4,
-					rb.Top + (rb.Height - image.bounds.Height) / 2 ));
+			WidgetUtils.DrawRGBA(image, stateOffset + new float2(rb.Right - rb.Height + 4, rb.Top + (rb.Height - image.bounds.Height) / 2));
 
 			WidgetUtils.FillRectWithColor(new Rectangle(stateOffset.X + rb.Right - rb.Height,
 				stateOffset.Y + rb.Top + 3, 1, rb.Height - 6),
@@ -102,9 +100,9 @@ namespace OpenRA.Widgets
 
 		public void ShowDropDown<T>(string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
-			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", Bounds.Width }};
+			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs()
-				{{ "substitutions", substitutions }});
+				{ { "substitutions", substitutions } });
 
 			var itemTemplate = panel.Get<ScrollItemWidget>("TEMPLATE");
 			panel.RemoveChildren();
@@ -125,9 +123,9 @@ namespace OpenRA.Widgets
 
 		public void ShowDropDown<T>(string panelTemplate, int height, Dictionary<string, IEnumerable<T>> groups, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
-			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", Bounds.Width }};
+			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs()
-			                                             {{ "substitutions", substitutions }});
+			                                             { { "substitutions", substitutions } });
 
 			var headerTemplate = panel.GetOrNull<ScrollItemWidget>("HEADER");
 			var itemTemplate = panel.Get<ScrollItemWidget>("TEMPLATE");
@@ -138,7 +136,7 @@ namespace OpenRA.Widgets
 				var group = kv.Key;
 				if (group.Length > 0 && headerTemplate != null)
 				{
-					var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => {});
+					var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => { });
 					header.Get<LabelWidget>("LABEL").GetText = () => group;
 					panel.AddChild(header);
 				}
@@ -154,6 +152,7 @@ namespace OpenRA.Widgets
 					panel.AddChild(item);
 				}
 			}
+
 			panel.Bounds.Height = Math.Min(height, panel.ContentHeight);
 			AttachPanel(panel);
 		}
@@ -161,7 +160,7 @@ namespace OpenRA.Widgets
 
 	public class MaskWidget : Widget
 	{
-		public event Action<MouseInput> OnMouseDown = _ => {};
+		public event Action<MouseInput> OnMouseDown = _ => { };
 		public MaskWidget() { }
 		public MaskWidget(MaskWidget other)
 			: base(other)

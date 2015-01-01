@@ -34,7 +34,7 @@ namespace OpenRA.FileFormats
 					entries.Add(new string(chars.ToArray()));
 
 					// Skip comment
-					while ((c = reader.ReadChar()) != 0);
+					while ((c = reader.ReadChar()) != 0) { }
 				}
 			}
 
