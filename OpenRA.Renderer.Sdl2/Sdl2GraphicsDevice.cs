@@ -157,11 +157,13 @@ namespace OpenRA.Renderer.Sdl2
 				SDL.SDL_GL_DeleteContext(context);
 				context = IntPtr.Zero;
 			}
+
 			if (window != IntPtr.Zero)
 			{
 				SDL.SDL_DestroyWindow(window);
 				window = IntPtr.Zero;
 			}
+
 			SDL.SDL_Quit();
 		}
 
