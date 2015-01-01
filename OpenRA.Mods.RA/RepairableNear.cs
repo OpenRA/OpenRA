@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Traits
 		[ActorReference] public readonly string[] Buildings = { "spen", "syrd" };
 		public readonly int CloseEnough = 4;	/* cells */
 
-		public object Create( ActorInitializer init ) { return new RepairableNear( init.self, this ); }
+		public object Create(ActorInitializer init) { return new RepairableNear(init.self, this); }
 	}
 
 	class RepairableNear : IIssueOrder, IResolveOrder
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Traits
 		readonly Actor self;
 		readonly RepairableNearInfo info;
 
-		public RepairableNear( Actor self, RepairableNearInfo info ) { this.self = self; this.info = info; }
+		public RepairableNear(Actor self, RepairableNearInfo info) { this.self = self; this.info = info; }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -42,17 +42,17 @@ namespace OpenRA.Mods.RA.Traits
 			}
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if( order.OrderID == "RepairNear" )
+			if (order.OrderID == "RepairNear")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
 		}
 
-		bool CanRepairAt( Actor target )
+		bool CanRepairAt(Actor target)
 		{
-			return info.Buildings.Contains( target.Info.Name );
+			return info.Buildings.Contains(target.Info.Name);
 		}
 
 		bool ShouldRepair()
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Traits
 				var target = Target.FromOrder(self.World, order);
 
 				self.CancelActivity();
-				self.QueueActivity(movement.MoveWithinRange(target, new WRange(1024*info.CloseEnough)));
+				self.QueueActivity(movement.MoveWithinRange(target, new WRange(1024 * info.CloseEnough)));
 				self.QueueActivity(new Repair(order.TargetActor));
 
 				self.SetTargetLine(target, Color.Green, false);

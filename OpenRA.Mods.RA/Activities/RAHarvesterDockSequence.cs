@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 {
 	public class RAHarvesterDockSequence : Activity
 	{
-		enum State { Wait, Turn, Dock, Loop, Undock, Complete };
+		enum State { Wait, Turn, Dock, Loop, Undock, Complete }
 
 		readonly Actor proc;
 		readonly int angle;
@@ -82,10 +82,9 @@ namespace OpenRA.Mods.RA
 			base.Cancel(self);
 		}
 
-		public override IEnumerable<Target> GetTargets( Actor self )
+		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return Target.FromActor(proc);
 		}
 	}
 }
-

@@ -44,23 +44,23 @@ namespace OpenRA.Mods.RA.Traits
 				target => CanRepairAt(target), _ => CanRepair()); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if( order.OrderID == "Repair" )
+			if (order.OrderID == "Repair")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
 		}
 
-		bool CanRepairAt( Actor target )
+		bool CanRepairAt(Actor target)
 		{
-			return self.Info.Traits.Get<RepairableInfo>().RepairBuildings.Contains( target.Info.Name );
+			return self.Info.Traits.Get<RepairableInfo>().RepairBuildings.Contains(target.Info.Name);
 		}
 
 		bool CanRepair()
 		{
 			var li = self.TraitOrDefault<LimitedAmmo>();
-			return (Health.DamageState > DamageState.Undamaged || (li != null && !li.FullAmmo()) );
+			return Health.DamageState > DamageState.Undamaged || (li != null && !li.FullAmmo());
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

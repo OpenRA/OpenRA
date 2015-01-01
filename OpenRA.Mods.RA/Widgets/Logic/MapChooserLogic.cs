@@ -86,6 +86,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						mapFilter = mapfilterInput.Text = null;
 						EnumerateMaps(onSelect, filter);
 					}
+
 					return true; 
 				};
 				mapfilterInput.OnEnterKey = () => { approving(); return true; };

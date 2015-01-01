@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA
 {
 	public class TransformOnPassengerInfo : ITraitInfo
 	{
-		[ActorReference] public readonly string[] PassengerTypes = {};
+		[ActorReference] public readonly string[] PassengerTypes = { };
 		[ActorReference] public readonly string OnEnter = null;
 		[ActorReference] public readonly string OnExit = null;
 		public readonly bool SkipMakeAnims = false;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (info.PassengerTypes.Contains(passenger.Info.Name) && transformTo != null)
 			{
-				self.World.AddFrameEndTask( w =>
+				self.World.AddFrameEndTask(w =>
 				{
 					var facing = self.TraitOrDefault<IFacing>();
 					var transform = new Transform(self, transformTo) { SkipMakeAnims = info.SkipMakeAnims };

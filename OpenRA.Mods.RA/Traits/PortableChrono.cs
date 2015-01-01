@@ -8,8 +8,8 @@
  */
 #endregion
 
-using System.Drawing;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Orders;
@@ -130,6 +130,7 @@ namespace OpenRA.Mods.RA.Traits
 					cursor = "chrono-target";
 					return true;
 				}
+
 				return false;
 			}
 
@@ -186,8 +187,7 @@ namespace OpenRA.Mods.RA.Traits
 				WRange.FromCells(self.Trait<PortableChrono>().Info.MaxDistance),
 				0,
 				Color.FromArgb(128, Color.LawnGreen),
-				Color.FromArgb(96, Color.Black)
-			);
+				Color.FromArgb(96, Color.Black));
 		}
 
 		public string GetCursor(World world, CPos xy, MouseInput mi)

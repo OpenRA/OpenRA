@@ -123,6 +123,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					return false;
 				};
 			}
+
 			chatScrollPanel = chatChrome.Get<ScrollPanelWidget>("CHAT_SCROLLPANEL");
 			chatTemplate = chatScrollPanel.Get<ContainerWidget>("CHAT_TEMPLATE");
 			chatScrollPanel.RemoveChildren();

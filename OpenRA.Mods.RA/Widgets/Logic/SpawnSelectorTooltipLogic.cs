@@ -63,10 +63,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (textWidth != cachedWidth)
 				{
 					label.Bounds.Width = textWidth;
-					widget.Bounds.Width = 2*label.Bounds.X + textWidth;
+					widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
 				}
 
-				widget.Bounds.Width = Math.Max(teamWidth + 2*labelMargin, label.Bounds.Right + labelMargin);
+				widget.Bounds.Width = Math.Max(teamWidth + 2 * labelMargin, label.Bounds.Right + labelMargin);
 				team.Bounds.Width = widget.Bounds.Width;
 			};
 
@@ -79,4 +79,3 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		}
 	}
 }
-

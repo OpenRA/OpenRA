@@ -10,10 +10,10 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Mods.RA.Widgets;
 using OpenRA.Network;
 using OpenRA.Widgets;
-using OpenRA.Mods.Common.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {

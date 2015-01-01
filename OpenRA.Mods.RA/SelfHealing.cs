@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 		[Sync] int damageTicks;
 
 		public SelfHealing(Actor self, SelfHealingInfo info)
-			: base (info)
+			: base(info)
 		{
 			health = self.Trait<Health>();
 		}

@@ -164,8 +164,7 @@ namespace OpenRA.Mods.RA.Traits
 						Info.BeaconPalettePrefix,
 						Info.BeaconPoster,
 						Info.BeaconPosterPalette,
-						() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Range) * 1f / distance
-					);
+						() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Range) * 1f / distance);
 
 					w.Add(beacon);
 				}

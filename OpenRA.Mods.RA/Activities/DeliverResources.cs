@@ -19,10 +19,9 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class DeliverResources : Activity
 	{
+		const int NextChooseTime = 100;
 		bool isDocking;
 		int chosenTicks;
-
-		const int NextChooseTime = 100;
 
 		public override Activity Tick(Actor self)
 		{

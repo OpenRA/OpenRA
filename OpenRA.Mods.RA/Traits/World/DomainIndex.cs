@@ -13,14 +13,14 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Traits;
 using OpenRA.Support;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Identify untraversable regions of the map for faster pathfinding, especially with AI.",
 		"This trait is required. Every mod needs it attached to the world actor.")]
-	class DomainIndexInfo : TraitInfo<DomainIndex> {}
+	class DomainIndexInfo : TraitInfo<DomainIndex> { }
 
 	public class DomainIndex : IWorldLoaded
 	{

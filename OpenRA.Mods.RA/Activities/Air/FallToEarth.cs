@@ -37,6 +37,7 @@ namespace OpenRA.Mods.RA.Activities
 				if (info.Explosion != null)
 				{
 					var weapon = self.World.Map.Rules.Weapons[info.Explosion.ToLowerInvariant()];
+
 					// Use .FromPos since this actor is killed. Cannot use Target.FromActor
 					weapon.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
 				}

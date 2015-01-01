@@ -76,8 +76,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					dataReceived = i.BytesReceived / (float)(1L << (mag * 10));
 					dataSuffix = SizeSuffixes[mag];
 				}
-
-
+                
 				progressBar.Indeterminate = false;
 				progressBar.Percentage = i.ProgressPercentage;
 
@@ -143,6 +142,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						if (!string.IsNullOrEmpty(line))
 							mirrorList.Add(line);
 				}
+
 				mirror = mirrorList.Random(new MersenneTwister());
 
 				// Save the package to a temp file

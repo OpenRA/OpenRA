@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Traits
 		CPos? lastPos;
 
 		public Cloak(Actor self, CloakInfo info)
-			: base (info)
+			: base(info)
 		{
 			this.self = self;
 

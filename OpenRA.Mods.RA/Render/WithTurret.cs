@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (!info.Recoils)
 				return t.Position(self);
 
-			var recoil = arms.Aggregate(WRange.Zero, (a,b) => a + b.Recoil);
+			var recoil = arms.Aggregate(WRange.Zero, (a, b) => a + b.Recoil);
 			var localOffset = new WVec(-recoil, WRange.Zero, WRange.Zero);
 			var bodyOrientation = body.QuantizeOrientation(self, self.Orientation);
 			var turretOrientation = body.QuantizeOrientation(self, t.LocalOrientation(self));
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Traits
 			anim.ReplaceAnim(sequence);
 		}
 
-		static public int ZOffsetFromCenter(Actor self, WPos pos, int offset)
+		public static int ZOffsetFromCenter(Actor self, WPos pos, int offset)
 		{
 			var delta = self.CenterPosition - pos;
 			return delta.Y + delta.Z + offset;

@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Traits
 			var health = self.TraitOrDefault<Health>();
 			var dudesValue = info.ValuePercent * cost;
 			if (health != null)
-				dudesValue = dudesValue*health.HP / health.MaxHP;
+				dudesValue = dudesValue * health.HP / health.MaxHP;
 			dudesValue /= 100;
 
 			var eligibleLocations = FootprintUtils.Tiles(self).ToList();

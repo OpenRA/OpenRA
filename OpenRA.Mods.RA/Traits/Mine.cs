@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Traits
 			this.info = info;
 		}
 
-		public void WarnCrush(Actor crusher) {}
+		public void WarnCrush(Actor crusher) { }
 
 		public void OnCrush(Actor crusher)
 		{

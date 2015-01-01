@@ -25,4 +25,3 @@ namespace OpenRA.Mods.RA
 		}
 	}
 }
-

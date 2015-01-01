@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		[ActorReference]
 		[Desc("Troops to be delivered.  They will be distributed between the planes if SquadSize > 1.")]
-		public string[] DropItems = { };
+		public readonly string[] DropItems = { };
 
 		[Desc("Risks stuck units when they don't have the Paratrooper trait.")]
 		public readonly bool AllowImpassableCells = false;
@@ -184,8 +184,7 @@ namespace OpenRA.Mods.RA.Traits
 						Info.BeaconPalettePrefix,
 						Info.BeaconPoster,
 						Info.BeaconPosterPalette,
-						() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Range) * 1f / distance
-					);
+						() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Range) * 1f / distance);
 
 					w.Add(beacon);
 				}

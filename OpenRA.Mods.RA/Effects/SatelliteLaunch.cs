@@ -16,9 +16,9 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class SatelliteLaunch : IEffect
 	{
-		int frame = 0;
 		readonly Animation doors;
 		readonly WPos pos;
+		int frame = 0;
 
 		public SatelliteLaunch(Actor a)
 		{
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Effects
 			pos = a.CenterPosition;
 		}
 
-		public void Tick( World world )
+		public void Tick(World world)
 		{
 			doors.Tick();
 

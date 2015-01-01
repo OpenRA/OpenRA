@@ -8,8 +8,8 @@
  */
 #endregion
 
-using System.Drawing;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
@@ -68,7 +68,6 @@ namespace OpenRA.Mods.RA.Traits
 				self.QueueActivity(new MoveAdjacentTo(self, target));
 				self.QueueActivity(new CallFunc(() => Explode(self)));
 			}
-
 			else if (order.OrderString == "Detonate")
 				Explode(self);
 		}

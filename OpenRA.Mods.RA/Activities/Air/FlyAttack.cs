@@ -46,6 +46,7 @@ namespace OpenRA.Mods.RA.Activities
 				else
 					inner = Util.SequenceActivities(new Fly(self, target), new FlyTimed(ticksUntilTurn));
 			}
+
 			inner = Util.RunActivity(self, inner);
 
 			return this;

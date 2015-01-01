@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Traits
 				{
 					var barrel = b;
 					var turreted = self.TraitsImplementing<Turreted>()
-						.FirstOrDefault(t => t.Name ==  arm.Info.Turret);
+						.FirstOrDefault(t => t.Name == arm.Info.Turret);
 
 					// Workaround for broken ternary operators in certain versions of mono (3.10 and  
 					// certain versions of the 3.8 series): https://bugzilla.xamarin.com/show_bug.cgi?id=23319

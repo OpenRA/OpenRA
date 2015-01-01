@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly int Duration = 30;
 		public readonly bool KillCargo = true;
 
-		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.self,this); }
+		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.self, this); }
 	}
 
 	class ChronoshiftPower : SupportPower
@@ -255,19 +255,21 @@ namespace OpenRA.Mods.RA.Traits
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
 					var targetCell = unit.Location + (xy - sourceLocation);
-					if (manager.self.Owner.Shroud.IsExplored(targetCell) && unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell))
+					if (manager.self.Owner.Shroud.IsExplored(targetCell) && unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell))
 					{
 						canTeleport = true;
 						break;
 					}
 				}
+
 				if (!canTeleport)
 				{
 					// Check the terrain types. This will allow chronoshifts to occur on empty terrain to terrain of
 					// a similar type. This also keeps the cursor from changing in non-visible property, alerting the
 					// chronoshifter of enemy unit presence
-					canTeleport = power.SimilarTerrain(sourceLocation,xy);
+					canTeleport = power.SimilarTerrain(sourceLocation, xy);
 				}
+
 				return canTeleport;
 			}
 

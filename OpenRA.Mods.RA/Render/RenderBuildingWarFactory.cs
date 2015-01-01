@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Traits
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
-			if (isOpen && !self.World.ActorMap.GetUnitsAt(openExit).Any( a => a != self ))
+			if (isOpen && !self.World.ActorMap.GetUnitsAt(openExit).Any(a => a != self))
 			{
 				isOpen = false;
 				roof.PlayBackwardsThen(NormalizeSequence(self, "build-top"),

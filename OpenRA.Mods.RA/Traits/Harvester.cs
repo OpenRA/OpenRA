@@ -13,8 +13,8 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
@@ -47,6 +47,7 @@ namespace OpenRA.Mods.RA.Traits
 		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync,
 		INotifyResourceClaimLost, INotifyIdle, INotifyBlockingMove
 	{
+		readonly HarvesterInfo Info;
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 
 		[Sync] public Actor OwnerLinkedProc = null;
@@ -56,7 +57,6 @@ namespace OpenRA.Mods.RA.Traits
 		public CPos? LastHarvestedCell = null;
 		public CPos? LastOrderLocation = null;
 		[Sync] public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit * c.Value); } }
-		readonly HarvesterInfo Info;
 		bool idleSmart = true;
 
 		public Harvester(Actor self, HarvesterInfo info)
@@ -118,8 +118,7 @@ namespace OpenRA.Mods.RA.Traits
 				from r in self.World.ActorsWithTrait<IAcceptOre>()
 				where r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor)
 				let linkedHarvs = self.World.ActorsWithTrait<Harvester>().Where(a => a.Trait.LinkedProc == r.Actor).Count()
-				select new { Location = r.Actor.Location + r.Trait.DeliverOffset, Actor = r.Actor, Occupancy = linkedHarvs }
-			).ToDictionary(r => r.Location);
+				select new { Location = r.Actor.Location + r.Trait.DeliverOffset, Actor = r.Actor, Occupancy = linkedHarvs }).ToDictionary(r => r.Location);
 
 			// Start a search from each refinery's delivery location:
 			var mi = self.Info.Traits.Get<MobileInfo>();
@@ -130,13 +129,13 @@ namespace OpenRA.Mods.RA.Traits
 						if (!refs.ContainsKey(loc)) return 0;
 
 						var occupancy = refs[loc].Occupancy;
+
 						// 4 harvesters clogs up the refinery's delivery location:
 						if (occupancy >= 3) return int.MaxValue;
 
 						// Prefer refineries with less occupancy (multiplier is to offset distance cost):
 						return occupancy * 12;
-					})
-			);
+					}));
 
 			// Reverse the found-path to find the refinery location instead of our location:
 			path.Reverse();
@@ -192,6 +191,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			// I'm blocking someone else from moving to my location:
 			var act = self.GetCurrentActivity();
+
 			// If I'm just waiting around then get out of the way:
 			if (act is Wait)
 			{
@@ -319,6 +319,7 @@ namespace OpenRA.Mods.RA.Traits
 				{
 					// A bot order gives us a CPos.Zero TargetLocation, so find some good resources for him:
 					var loc = FindNextResourceForBot(self);
+
 					// No more resources? Oh well.
 					if (!loc.HasValue)
 						return;
@@ -386,6 +387,7 @@ namespace OpenRA.Mods.RA.Traits
 						var resType = resLayer.GetResource(loc);
 
 						if (resType == null) return 1;
+
 						// Can the harvester collect this kind of resource?
 						if (!harvInfo.Resources.Contains(resType.Info.Name)) return 1;
 
@@ -398,8 +400,7 @@ namespace OpenRA.Mods.RA.Traits
 
 						return 0;
 					})
-					.FromPoint(self.Location)
-			);
+					.FromPoint(self.Location));
 
 			if (path.Count == 0)
 				return (CPos?)null;
@@ -459,6 +460,7 @@ namespace OpenRA.Mods.RA.Traits
 					return false;
 
 				var location = self.World.Map.CellContaining(target.CenterPosition);
+
 				// Don't leak info about resources under the shroud
 				if (!self.Owner.Shroud.IsExplored(location))
 					return false;

@@ -19,9 +19,7 @@ namespace OpenRA.Mods.RA
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			var sequences = MiniYaml.MergeLiberal(map.SequenceDefinitions,
-				Game.modData.Manifest.Sequences.Select(s => MiniYaml.FromFile(s))
-				.Aggregate(MiniYaml.MergeLiberal));
+			var sequences = MiniYaml.MergeLiberal(map.SequenceDefinitions, Game.modData.Manifest.Sequences.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
 
 			foreach (var actorInfo in map.Rules.Actors)
 				foreach (var renderInfo in actorInfo.Value.Traits.WithInterface<RenderSimpleInfo>())

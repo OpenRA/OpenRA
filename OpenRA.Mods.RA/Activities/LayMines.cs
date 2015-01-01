@@ -18,7 +18,6 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Activities
 {
 	// assumes you have Minelayer on that unit
-
 	class LayMines : Activity
 	{
 		public override Activity Tick(Actor self)
@@ -30,6 +29,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (!limitedAmmo.HasAmmo())
 			{
 				var info = self.Info.Traits.Get<MinelayerInfo>();
+
 				// rearm & repair at fix, then back out here to refill the minefield some more
 				var buildings = info.RearmBuildings;
 				var rearmTarget = self.World.Actors.Where(a => self.Owner.Stances[a.Owner] == Stance.Ally
@@ -56,16 +56,16 @@ namespace OpenRA.Mods.RA.Activities
 
 			if (ml.Minefield.Length > 0)
 			{
-				for (var n = 0; n < 20; n++)		// dont get stuck forever here
+				// dont get stuck forever here
+				for (var n = 0; n < 20; n++)		
 				{
 					var p = ml.Minefield.Random(self.World.SharedRandom);
 					if (ShouldLayMine(self, p))
-						return Util.SequenceActivities( movement.MoveTo(p, 0), this );
+						return Util.SequenceActivities(movement.MoveTo(p, 0), this);
 				}
 			}
 
 			// TODO: return somewhere likely to be safe (near fix) so we're not sitting out in the minefield.
-
 			return new Wait(20);	// nothing to do here
 		}
 

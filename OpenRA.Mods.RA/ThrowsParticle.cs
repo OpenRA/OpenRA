@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.Traits
 			var body = self.Trait<IBodyOrientation>();
 
 			// TODO: Carry orientation over from the parent instead of just facing
-			var bodyFacing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : 0;
+			var bodyFacing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
 			facing = Turreted.GetInitialTurretFacing(init, 0);
 
 			// Calculate final position
