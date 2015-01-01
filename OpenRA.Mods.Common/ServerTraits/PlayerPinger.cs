@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Server
 	{
 		static readonly int PingInterval = 5000; // Ping every 5 seconds
 		static readonly int ConnReportInterval = 20000; // Report every 20 seconds
-		static readonly int ConnTimeout = 90000; // Drop unresponsive clients after 90 seconds
+		static readonly int ConnTimeout = 60000; // Drop unresponsive clients after 60 seconds
 
 		// TickTimeout is in microseconds
 		public int TickTimeout { get { return PingInterval * 100; } }
@@ -43,18 +43,30 @@ namespace OpenRA.Mods.Common.Server
 				{
 					foreach (var c in server.Conns.ToList())
 					{
+						if (c == null || c.socket == null)
+							continue;
+
+						var client = server.GetClient(c);
+
+						if (client == null)
+						{
+							server.DropClient(c, -1);
+							server.SendMessage("A player has been dropped after timing out.");
+							continue;
+						}
+						
 						if (c.TimeSinceLastResponse < ConnTimeout)
 						{
 							server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
 							if (!c.TimeoutMessageShown && c.TimeSinceLastResponse > PingInterval * 2)
 							{
-								server.SendMessage(server.GetClient(c).Name + " is experiencing connection problems.");
+								server.SendMessage(client.Name + " is experiencing connection problems.");
 								c.TimeoutMessageShown = true;
 							}
 						}
 						else
 						{
-							server.SendMessage(server.GetClient(c).Name + " has been dropped after timing out.");
+							server.SendMessage(client.Name + " has been dropped after timing out.");
 							server.DropClient(c, -1);
 						}
 					}
@@ -68,8 +80,15 @@ namespace OpenRA.Mods.Common.Server
 							.OrderBy(c => c.TimeSinceLastResponse);
 
 						foreach (var c in timeouts)
-							server.SendMessage("{0} will be dropped in {1} seconds.".F(
-								server.GetClient(c).Name, (ConnTimeout - c.TimeSinceLastResponse) / 1000));
+						{
+							if (c == null || c.socket == null)
+								continue;
+							
+							var client = server.GetClient(c);
+							
+							if (client != null)
+								server.SendMessage("{0} will be dropped in {1} seconds.".F(client.Name, (ConnTimeout - c.TimeSinceLastResponse) / 1000));
+						}
 					}
 				}
 			}
