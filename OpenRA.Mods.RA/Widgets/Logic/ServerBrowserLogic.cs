@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class ServerBrowserLogic
 	{
-		readonly static Action DoNothing = () => { };
+		static readonly Action DoNothing = () => { };
 
 		GameServer currentServer;
 		ScrollItemWidget serverTemplate;
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.RunAfterTick(() => RefreshServerListInner(games));
 			};
 
-			currentQuery = new Download(Game.Settings.Server.MasterServer + "games", _ => {}, onComplete);
+			currentQuery = new Download(Game.Settings.Server.MasterServer + "games", _ => { }, onComplete);
 		}
 
 		int GroupSortOrder(GameServer testEntry)
@@ -191,7 +191,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (modGames.All(Filtered))
 					continue;
 
-				var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => {});
+				var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => { });
 
 				var headerTitle = modGames.First().ModLabel;
 				header.Get<LabelWidget>("LABEL").GetText = () => headerTitle;
@@ -246,7 +246,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					if (ip != null)
 					{
 						ip.GetText = () => game.Address;
-						ip.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  :  ip.TextColor;
+						ip.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : ip.TextColor;
 					}
 
 					var location = item.GetOrNull<LabelWidget>("LOCATION");

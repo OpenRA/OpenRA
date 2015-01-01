@@ -73,10 +73,9 @@ namespace OpenRA.Mods.RA.AI
 				HackyAI.BotDebug("AI: {0} is starting production of {1}".F(player, item.Name));
 				world.IssueOrder(Order.StartProduction(queue.Actor, item.Name, 1));
 			}
-
-			// Production is complete
 			else if (currentBuilding.Done)
 			{
+				// Production is complete
 				// Choose the placement logic
 				// HACK: HACK HACK HACK
 				var type = BuildingType.Building;

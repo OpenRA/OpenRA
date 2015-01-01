@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Activities
 		public override Activity Tick(Actor self)
 		{
 			var ret = InnerTick(self, attack);
-			attack.IsAttacking = (ret == this);
+			attack.IsAttacking = ret == this;
 			return ret;
 		}
 

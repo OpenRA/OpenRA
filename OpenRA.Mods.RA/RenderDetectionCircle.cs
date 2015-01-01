@@ -37,8 +37,7 @@ namespace OpenRA.Mods.RA.Traits
 				WRange.FromCells(self.Info.Traits.Get<DetectCloakedInfo>().Range),
 				0,
 				Color.FromArgb(128, Color.LimeGreen),
-				Color.FromArgb(96, Color.Black)
-			);
+				Color.FromArgb(96, Color.Black));
 		}
 	}
 }

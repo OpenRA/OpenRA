@@ -12,8 +12,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Traits
 		public bool RepairActive = false;
 
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
-			: base (info)
+			: base(info)
 		{
 			Health = self.Trait<Health>();
 		}

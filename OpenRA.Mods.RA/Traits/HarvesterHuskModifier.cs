@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly string FullHuskActor = null;
 		public readonly int FullnessThreshold = 50;
 
-		public object Create( ActorInitializer init ) { return new HarvesterHuskModifier(this); }
+		public object Create(ActorInitializer init) { return new HarvesterHuskModifier(this); }
 	}
 
 	public class HarvesterHuskModifier : IHuskModifier

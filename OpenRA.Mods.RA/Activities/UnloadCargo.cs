@@ -74,6 +74,7 @@ namespace OpenRA.Mods.RA.Activities
 					foreach (var nbm in blocker.TraitsImplementing<INotifyBlockingMove>())
 						nbm.OnNotifyBlockingMove(blocker, self);
 				}
+
 				return Util.SequenceActivities(new Wait(10), this);
 			}
 

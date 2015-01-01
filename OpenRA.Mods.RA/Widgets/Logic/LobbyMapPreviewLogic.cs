@@ -143,7 +143,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						if (lobby.Map.Status == MapStatus.DownloadError)
 							lobby.Map.Install();
 						else if (lobby.Map.Status == MapStatus.Unavailable)
-							Game.modData.MapCache.QueryRemoteMapDetails(new [] { lobby.Map.Uid });
+							Game.modData.MapCache.QueryRemoteMapDetails(new[] { lobby.Map.Uid });
 					};
 
 					retry.GetText = () => lobby.Map.Status == MapStatus.DownloadError ? "Retry Install" : "Retry Search";

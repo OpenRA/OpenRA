@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
-using OpenRA.Traits;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
-			var actors = target.Type == TargetType.Actor ? new [] { target.Actor } :
+			var actors = target.Type == TargetType.Actor ? new[] { target.Actor } :
 				firedBy.World.FindActorsInCircle(target.CenterPosition, Range);
 
 			foreach (var a in actors)

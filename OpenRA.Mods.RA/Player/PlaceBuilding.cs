@@ -39,8 +39,7 @@ namespace OpenRA.Mods.RA
 
 					if (queue == null)
 						return;
-
-
+                    
 					var buildingInfo = unit.Traits.Get<BuildingInfo>();
 
 					if (order.OrderString == "LineBuild")

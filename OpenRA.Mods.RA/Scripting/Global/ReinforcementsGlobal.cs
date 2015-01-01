@@ -8,10 +8,10 @@
  */
 #endregion
 
-using Eluant;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Eluant;
 using OpenRA;
 using OpenRA.Activities;
 using OpenRA.Effects;

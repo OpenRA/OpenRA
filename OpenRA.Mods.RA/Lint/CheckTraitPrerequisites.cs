@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 					if (traits.Length == 0)
 						emitWarning("Actor {0} has no traits. Is this intended?".F(actorInfo.Key));
 				}
-				catch(Exception e)
+				catch (Exception e)
 				{
 					emitError("Actor {0} is not constructible; failure: {1}".F(actorInfo.Key, e.Message));
 				}

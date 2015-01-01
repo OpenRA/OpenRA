@@ -60,6 +60,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					suffix = ": ";
 					toComplete = text;
 				}
+
 				candidates = Names.Where(x => x.StartsWith(toComplete, StringComparison.InvariantCultureIgnoreCase)).ToList();
 			}
 			else

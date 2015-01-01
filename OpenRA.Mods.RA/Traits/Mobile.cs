@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Traits
 		TransientActors,
 		BlockedByMovers,
 		All = TransientActors | BlockedByMovers
-	};
+	}
 
 	[Desc("Unit is able to move.")]
 	public class MobileInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo, IMoveInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (otherMobile == null) return false;
 
 			// Sign of dot-product indicates (roughly) if vectors are facing in same or opposite directions:
-			var dp = CVec.Dot((selfMobile.toCell - self.Location), (otherMobile.toCell - other.Location));
+			var dp = CVec.Dot(selfMobile.toCell - self.Location, otherMobile.toCell - other.Location);
 			if (dp <= 0) return false;
 
 			return true;
@@ -177,7 +177,7 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
 				var needsCellExclusively = self == null || Crushes == null || !Crushes.Any();
-				foreach(var a in world.ActorMap.GetUnitsAt(cell))
+				foreach (var a in world.ActorMap.GetUnitsAt(cell))
 				{
 					if (a == ignoreActor)
 						continue;
@@ -239,7 +239,7 @@ namespace OpenRA.Mods.RA.Traits
 			}
 
 			if (!SharesCell)
-				return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell)? SubCell.Invalid : SubCell.FullCell;
+				return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell) ? SubCell.Invalid : SubCell.FullCell;
 
 			return world.ActorMap.FreeSubCell(cell, preferredSubCell);
 		}
@@ -256,8 +256,6 @@ namespace OpenRA.Mods.RA.Traits
 		int __facing;
 		CPos __fromCell, __toCell;
 		public SubCell fromSubCell, toSubCell;
-
-		//int __altitude;
 
 		[Sync] public int Facing
 		{
@@ -333,6 +331,7 @@ namespace OpenRA.Mods.RA.Traits
 				if (preferred != SubCell.FullCell)
 					return SubCell.FullCell;
 			}
+
 			return preferred;
 		}
 
@@ -388,6 +387,7 @@ namespace OpenRA.Mods.RA.Traits
 
 				return new Order("Move", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
 			}
+
 			return null;
 		}
 
@@ -504,7 +504,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			return Info.GetAvailableSubCell(self.World, self, a, preferredSubCell, ignoreActor, checkTransientActors? CellConditions.All : CellConditions.None);
+			return Info.GetAvailableSubCell(self.World, self, a, preferredSubCell, ignoreActor, checkTransientActors ? CellConditions.All : CellConditions.None);
 		}
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)

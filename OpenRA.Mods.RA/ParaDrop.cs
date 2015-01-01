@@ -11,8 +11,8 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 			if (!inDropRange || cargo.IsEmpty(self))
 				return;
 
-			if (droppedAt.Contains(self.Location) || checkForSuitableCell && !IsSuitableCell(cargo.Peek(self), self.Location))
+			if (droppedAt.Contains(self.Location) || (checkForSuitableCell && !IsSuitableCell(cargo.Peek(self), self.Location)))
 				return;
 
 			if (!self.World.Map.Contains(self.Location))

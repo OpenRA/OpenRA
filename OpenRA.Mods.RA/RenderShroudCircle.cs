@@ -26,8 +26,7 @@ namespace OpenRA.Mods.RA.Traits
 				ai.Traits.Get<CreatesShroudInfo>().Range,
 				0,
 				Color.FromArgb(128, Color.Cyan),
-				Color.FromArgb(96, Color.Black)
-			);
+				Color.FromArgb(96, Color.Black));
 
 			foreach (var a in w.ActorsWithTrait<RenderShroudCircle>())
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
@@ -54,9 +53,7 @@ namespace OpenRA.Mods.RA.Traits
 				self.Info.Traits.Get<CreatesShroudInfo>().Range,
 				0,
 				Color.FromArgb(128, Color.Cyan),
-				Color.FromArgb(96, Color.Black)
-			);
+				Color.FromArgb(96, Color.Black));
 		}
 	}
 }
-

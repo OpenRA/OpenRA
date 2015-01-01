@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		[Desc("Amount of money awarded for capturing the actor.")]
 		public readonly int CaptureAmount = 0;
 
-		public object Create (ActorInitializer init) { return new CashTrickler(this); }
+		public object Create(ActorInitializer init) { return new CashTrickler(this); }
 	}
 
 	class CashTrickler : ITick, ISync, INotifyCapture

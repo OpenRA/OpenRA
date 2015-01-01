@@ -70,7 +70,8 @@ namespace OpenRA.Mods.RA
 				// no.. So find a new one
 				var captor = GetInRange(self);
 
-				if (captor != null) // got one
+				// got one
+				if (captor != null)
 				{
 					ChangeOwnership(self, captor);
 					return;
