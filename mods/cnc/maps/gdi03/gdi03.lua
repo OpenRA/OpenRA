@@ -73,7 +73,7 @@ WorldLoaded = function()
 
 	Trigger.OnAllKilled(SamSites, function()
 		player.MarkCompletedObjective(gdiAirSupportObjective)
-		Actor.Create("SamsDestroyed", true, { Owner = player })
+		Actor.Create("airstrike.proxy", true, { Owner = player })
 	end)
 
 	Utils.Do(Map.NamedActors, function(actor)
@@ -95,7 +95,7 @@ WorldLoaded = function()
 	end)
 
 	InitialUnitsArrived = false
-	Trigger.AfterDelay(DateTime.Seconds(1), SendReinforcements)
+	SendReinforcements()
 
 	Camera.Position = MCVwaypoint.CenterPosition
 
