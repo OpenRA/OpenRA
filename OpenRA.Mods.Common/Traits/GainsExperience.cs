@@ -12,12 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor's experience increases when it has killed a GivesExperience actor.")]
 	public class GainsExperienceInfo : ITraitInfo, Requires<ValuedInfo>
@@ -125,7 +123,7 @@ namespace OpenRA.Mods.RA
 
 	class ExperienceInit : IActorInit<int>
 	{
-		[FieldFromYamlKey] public readonly int value = 0;
+		[FieldFromYamlKey] readonly int value;
 		public ExperienceInit() { }
 		public ExperienceInit(int init) { value = init; }
 		public int Value(World world) { return value; }

@@ -13,7 +13,7 @@ using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("You get money for playing this actor.")]
 	class GivesBountyInfo : TraitInfo<GivesBounty>
