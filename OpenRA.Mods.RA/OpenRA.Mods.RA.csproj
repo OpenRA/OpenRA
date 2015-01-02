@@ -97,6 +97,7 @@
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
+    <Compile Include="Player\AllyRepair.cs" />
     <Compile Include="Render\WithIdleOverlay.cs" />
     <Compile Include="Traits\AcceptsSupplies.cs" />
     <Compile Include="Activities\Attack.cs" />
@@ -197,8 +198,6 @@
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="ParaDrop.cs" />
     <Compile Include="Passenger.cs" />
-    <Compile Include="Player\PlayerStatistics.cs" />
-    <Compile Include="Player\AllyRepair.cs" />
     <Compile Include="Player\ClassicProductionQueue.cs" />
     <Compile Include="Player\PlaceBuilding.cs" />
     <Compile Include="Player\ProductionQueue.cs" />
