@@ -77,6 +77,7 @@ namespace OpenRA.Mods.RA.Activities
 					});
 				}
 			}
+
 			return this;
 		}
 	}

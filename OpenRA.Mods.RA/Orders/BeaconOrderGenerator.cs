@@ -19,7 +19,6 @@ namespace OpenRA.Mods.RA.Orders
 		{
 			if (mi.Button != MouseButton.Left)
 				world.CancelInputMode();
-
 			else if (!world.ShroudObscures(xy))
 			{
 				world.CancelInputMode();

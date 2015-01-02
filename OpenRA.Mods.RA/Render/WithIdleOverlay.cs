@@ -87,6 +87,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			buildComplete = false;
 		}
+
 		public void OnTransform(Actor self) { }
 		public void AfterTransform(Actor self) { }
 

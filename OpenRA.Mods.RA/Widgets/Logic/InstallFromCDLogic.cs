@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var onError = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
-				statusLabel.GetText = () => "Error: "+s;
+				statusLabel.GetText = () => "Error: " + s;
 				backButton.IsDisabled = () => false;
 				retryButton.IsDisabled = () => false;
 			}));
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						continueLoading();
 					});
 				}
-				catch(Exception e)
+				catch (Exception e)
 				{
 					onError("Installation failed.\n{0}".F(e.Message));
 					Log.Write("debug", e.ToString());

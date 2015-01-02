@@ -12,8 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Effects;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {

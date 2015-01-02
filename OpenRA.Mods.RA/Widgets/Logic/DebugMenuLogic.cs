@@ -9,8 +9,8 @@
 #endregion
 
 using System;
-using OpenRA.Support;
 using OpenRA.Mods.RA.Traits;
+using OpenRA.Support;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 

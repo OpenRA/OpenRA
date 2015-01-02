@@ -37,6 +37,7 @@ namespace OpenRA.Mods.RA
 				return player.PlayerActor.Trait<PlayerResources>().Earned - earnedAtBeginningOfMinute;
 			}
 		}
+
 		public Queue<int> EarnedSamples = new Queue<int>(100);
 		int earnedAtBeginningOfMinute;
 
@@ -104,6 +105,7 @@ namespace OpenRA.Mods.RA
 				case "Pong":
 					return;
 			}
+
 			if (order.OrderString.StartsWith("Dev"))
 				return;
 			OrderCount++;
@@ -132,6 +134,7 @@ namespace OpenRA.Mods.RA
 				attackerStats.UnitsKilled++;
 				defenderStats.UnitsDead++;
 			}
+
 			if (self.HasTrait<Valued>())
 			{
 				var cost = self.Info.Traits.Get<ValuedInfo>().Cost;

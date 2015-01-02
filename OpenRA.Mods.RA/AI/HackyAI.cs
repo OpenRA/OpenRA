@@ -735,6 +735,7 @@ namespace OpenRA.Mods.RA.AI
 			foreach (var kv in powers)
 			{
 				var sp = kv.Value;
+
 				// Add power to dictionary if not in delay dictionary yet
 				if (!waitingPowers.ContainsKey(sp))
 					waitingPowers.Add(sp, 0);
@@ -743,7 +744,7 @@ namespace OpenRA.Mods.RA.AI
 					waitingPowers[sp]--;
 
 				// If we have recently tried and failed to find a use location for a power, then do not try again until later
-				var isDelayed = (waitingPowers[sp] > 0);
+				var isDelayed = waitingPowers[sp] > 0;
 				if (sp.Ready && !isDelayed && powerDecisions.ContainsKey(sp.Info.OrderName))
 				{
 					var powerDecision = powerDecisions[sp.Info.OrderName];
@@ -780,7 +781,7 @@ namespace OpenRA.Mods.RA.AI
 			}
 		}
 
-		///<summary>Scans the map in chunks, evaluating all actors in each.</summary>
+		/// <summary>Scans the map in chunks, evaluating all actors in each.</summary>
 		CPos? FindCoarseAttackLocationToSupportPower(SupportPowerInstance readyPower)
 		{
 			CPos? bestLocation = null;
@@ -815,7 +816,7 @@ namespace OpenRA.Mods.RA.AI
 			return bestLocation;
 		}
 
-		///<summary>Detail scans an area, evaluating positions.</summary>
+		/// <summary>Detail scans an area, evaluating positions.</summary>
 		CPos? FindFineAttackLocationToSupportPower(SupportPowerInstance readyPower, CPos checkPos, int extendedRange = 1)
 		{
 			CPos? bestLocation = null;
@@ -829,11 +830,11 @@ namespace OpenRA.Mods.RA.AI
 
 			var checkRadius = powerDecision.CoarseScanRadius;
 			var fineCheck = powerDecision.FineScanRadius;
-			for (var i = (0 - extendedRange); i <= (checkRadius + extendedRange); i += fineCheck)
+			for (var i = 0 - extendedRange; i <= (checkRadius + extendedRange); i += fineCheck)
 			{
 				var x = checkPos.X + i;
 
-				for (var j = (0 - extendedRange); j <= (checkRadius + extendedRange); j += fineCheck)
+				for (var j = 0 - extendedRange; j <= (checkRadius + extendedRange); j += fineCheck)
 				{
 					var y = checkPos.Y + j;
 					var pos = world.Map.CenterOfCell(new CPos(x, y));

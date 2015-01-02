@@ -68,11 +68,11 @@ namespace OpenRA.Mods.RA.Orders
 
 	public class PowerDownOrderGenerator : GlobalButtonOrderGenerator<CanPowerDown>
 	{
-		public PowerDownOrderGenerator() : base( "powerdown", "PowerDown" ) { }
+		public PowerDownOrderGenerator() : base("powerdown", "PowerDown") { }
 	}
 
 	public class SellOrderGenerator : GlobalButtonOrderGenerator<Sellable>
 	{
-		public SellOrderGenerator() : base( "sell", "Sell" ) { }
+		public SellOrderGenerator() : base("sell", "Sell") { }
 	}
 }

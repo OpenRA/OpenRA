@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA.Traits
 			var turretOrientation = turreted != null ? turreted.LocalOrientation(self) : WRot.Zero;
 
 			var quantizedBody = body.QuantizeOrientation(self, self.Orientation);
-			var quantizedTurret =  body.QuantizeOrientation(self, turretOrientation);
+			var quantizedTurret = body.QuantizeOrientation(self, turretOrientation);
 			return turretOffset + body.LocalToWorld(localOffset.Rotate(quantizedTurret).Rotate(quantizedBody));
 		}
 

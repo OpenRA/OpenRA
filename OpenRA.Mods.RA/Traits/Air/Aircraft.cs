@@ -176,6 +176,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			SetPosition(self, self.World.Map.CenterOfCell(cell) + new WVec(0, 0, CenterPosition.Z));
 		}
+
 		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, pos); }
 
 		public void AddedToWorld(Actor self)
