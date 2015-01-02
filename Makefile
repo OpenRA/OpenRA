@@ -179,6 +179,9 @@ test:
 	@mono --debug OpenRA.Utility.exe ts --check-yaml
 
 check:
+	@echo "Checking source code for Byte Order Marks"
+	@grep -orHb `printf '^\xef\xbb\xbf'` . | grep ":0:" && exit 1
+
 	@echo "Checking for code style violations in OpenRA.Renderer.Null..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Renderer.Null
 	@echo "Checking for code style violations in OpenRA.GameMonitor..."
