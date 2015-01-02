@@ -104,4 +104,4 @@ again.
   
 ## License
 
-See LICENSE file.
+See [LICENSE](LICENSE).
