@@ -191,6 +191,16 @@ check:
 	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.D2k
 	@echo "Checking for code style violations in OpenRA.Mods.TS..."
 	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.TS
+	@echo "Checking for code style violations in OpenRA.Editor..."
+	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Editor
+	@echo "Checking for code style violations in OpenRA.Renderer.Sdl2..."
+	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Renderer.Sdl2
+	@echo "Checking for code style violations in OpenRA.Utility..."
+	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Utility
+	@echo "Checking for code style violations in OpenRA.Test..."
+	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Test
+	@echo "Checking for code style violations in OpenRA.TilesetBuilder..."
+	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.TilesetBuilder
 
 # Builds and exports tilesets from a bitmap
 tsbuild_SRCS := $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
