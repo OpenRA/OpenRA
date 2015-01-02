@@ -20,12 +20,12 @@ namespace OpenRA.Traits
 
 	public class RevealsShroud : ITick, ISync
 	{
-		RevealsShroudInfo Info;
+		RevealsShroudInfo info;
 		[Sync] CPos cachedLocation;
 
 		public RevealsShroud(RevealsShroudInfo info)
 		{
-			Info = info;
+			this.info = info;
 		}
 
 		public void Tick(Actor self)
@@ -39,6 +39,6 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public WRange Range { get { return Info.Range; } }
+		public WRange Range { get { return info.Range; } }
 	}
 }

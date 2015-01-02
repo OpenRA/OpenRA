@@ -15,15 +15,15 @@ namespace OpenRA.Graphics
 {
 	class MappedImage
 	{
-		public readonly Rectangle rect = Rectangle.Empty;
-		public readonly string src;
+		readonly Rectangle rect = Rectangle.Empty;
+		public readonly string Src;
 
 		public MappedImage(string defaultSrc, MiniYaml info)
 		{
 			FieldLoader.LoadField(this, "rect", info.Value);
 			FieldLoader.Load(this, info);
-			if (src == null)
-				src = defaultSrc;
+			if (Src == null)
+				Src = defaultSrc;
 		}
 
 		public Sprite GetImage(Sheet s)
@@ -34,8 +34,8 @@ namespace OpenRA.Graphics
 		public MiniYaml Save(string defaultSrc)
 		{
 			var root = new List<MiniYamlNode>();
-			if (defaultSrc != src)
-				root.Add(new MiniYamlNode("src", src));
+			if (defaultSrc != Src)
+				root.Add(new MiniYamlNode("Src", Src));
 
 			return new MiniYaml(FieldSaver.FormatValue(this, this.GetType().GetField("rect")), root);
 		}

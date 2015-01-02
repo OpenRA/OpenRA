@@ -385,7 +385,7 @@ namespace OpenRA
 		{
 			return Actors.Value.Values
 				.Where(a => a.Type == "mpspawn")
-				.Select(a => (CPos)a.InitDict.Get<LocationInit>().value)
+				.Select(a => (CPos)a.InitDict.Get<LocationInit>().Value(null))
 				.ToArray();
 		}
 
@@ -847,7 +847,7 @@ namespace OpenRA
 			return new WRange(Math.Min(x, y) * dir.Length);
 		}
 
-		static CVec[][] TilesByDistance = InitTilesByDistance(MaxTilesInCircleRange);
+		static readonly CVec[][] TilesByDistance = InitTilesByDistance(MaxTilesInCircleRange);
 
 		static CVec[][] InitTilesByDistance(int max)
 		{

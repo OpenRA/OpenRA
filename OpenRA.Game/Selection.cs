@@ -72,7 +72,7 @@ namespace OpenRA
 
 		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
 
-		public void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int MultiTapCount)
+		public void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int multiTapCount)
 		{
 			var addModifier = Platform.CurrentPlatform == PlatformType.OSX ? Modifiers.Meta : Modifiers.Ctrl;
 			if (mods.HasModifier(addModifier))
@@ -92,7 +92,7 @@ namespace OpenRA
 
 			var groupActors = controlGroups[group].Where(a => !a.IsDead);
 
-			if (mods.HasModifier(Modifiers.Alt) || MultiTapCount >= 2)
+			if (mods.HasModifier(Modifiers.Alt) || multiTapCount >= 2)
 			{
 				worldRenderer.Viewport.Center(groupActors);
 				return;

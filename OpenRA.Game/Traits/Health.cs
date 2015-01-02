@@ -171,7 +171,7 @@ namespace OpenRA.Traits
 
 	public class HealthInit : IActorInit<float>
 	{
-		[FieldFromYamlKey] public readonly float value = 1f;
+		[FieldFromYamlKey] readonly float value = 1f;
 		public HealthInit() { }
 		public HealthInit(float init) { value = init; }
 		public float Value(World world) { return value; }

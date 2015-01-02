@@ -18,8 +18,8 @@ namespace OpenRA.Server
 	public class Connection
 	{
 		public const int MaxOrderLength = 131072;
-		public Socket socket;
-		public List<byte> data = new List<byte>();
+		public Socket Socket;
+		public List<byte> Data = new List<byte>();
 		public ReceiveState State = ReceiveState.Header;
 		public int ExpectLength = 8;
 		public int Frame = 0;
@@ -34,8 +34,8 @@ namespace OpenRA.Server
 
 		public byte[] PopBytes(int n)
 		{
-			var result = data.GetRange(0, n);
-			data.RemoveRange(0, n);
+			var result = Data.GetRange(0, n);
+			Data.RemoveRange(0, n);
 			return result.ToArray();
 		}
 
@@ -51,10 +51,10 @@ namespace OpenRA.Server
 					// NOTE(jsd): Poll the socket first to see if there's anything there.
 					// This avoids the exception with SocketErrorCode == `SocketError.WouldBlock` thrown
 					// from `socket.Receive(rx)`.
-					if (!socket.Poll(0, SelectMode.SelectRead)) break;
+					if (!Socket.Poll(0, SelectMode.SelectRead)) break;
 
-					if (0 < (len = socket.Receive(rx)))
-						data.AddRange(rx.Take(len));
+					if (0 < (len = Socket.Receive(rx)))
+						Data.AddRange(rx.Take(len));
 					else
 					{
 						if (len == 0)
@@ -82,7 +82,7 @@ namespace OpenRA.Server
 		public void ReadData(Server server)
 		{
 			if (ReadDataInner(server))
-				while (data.Count >= ExpectLength)
+				while (Data.Count >= ExpectLength)
 				{
 					var bytes = PopBytes(ExpectLength);
 					switch (State)

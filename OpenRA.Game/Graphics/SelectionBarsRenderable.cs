@@ -41,21 +41,21 @@ namespace OpenRA.Graphics
 		public IRenderable OffsetBy(WVec vec) { return new SelectionBarsRenderable(pos + vec, actor); }
 		public IRenderable AsDecoration() { return this; }
 
-		void DrawExtraBars(WorldRenderer wr, float2 xy, float2 Xy)
+		void DrawExtraBars(WorldRenderer wr, float2 start, float2 end)
 		{
 			foreach (var extraBar in actor.TraitsImplementing<ISelectionBar>())
 			{
 				var value = extraBar.GetValue();
 				if (value != 0)
 				{
-					xy.Y += (int)(4 / wr.Viewport.Zoom);
-					Xy.Y += (int)(4 / wr.Viewport.Zoom);
-					DrawSelectionBar(wr, xy, Xy, extraBar.GetValue(), extraBar.GetColor());
+					start.Y += (int)(4 / wr.Viewport.Zoom);
+					end.Y += (int)(4 / wr.Viewport.Zoom);
+					DrawSelectionBar(wr, start, end, extraBar.GetValue(), extraBar.GetColor());
 				}
 			}
 		}
 
-		void DrawSelectionBar(WorldRenderer wr, float2 xy, float2 Xy, float value, Color barColor)
+		void DrawSelectionBar(WorldRenderer wr, float2 start, float2 end, float value, Color barColor)
 		{
 			var c = Color.FromArgb(128, 30, 30, 30);
 			var c2 = Color.FromArgb(128, 10, 10, 10);
@@ -65,15 +65,15 @@ namespace OpenRA.Graphics
 
 			var barColor2 = Color.FromArgb(255, barColor.R / 2, barColor.G / 2, barColor.B / 2);
 
-			var z = float2.Lerp(xy, Xy, value);
+			var z = float2.Lerp(start, end, value);
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(xy + p, Xy + p, c, c);
-			wlr.DrawLine(xy + q, Xy + q, c2, c2);
-			wlr.DrawLine(xy + r, Xy + r, c, c);
+			wlr.DrawLine(start + p, end + p, c, c);
+			wlr.DrawLine(start + q, end + q, c2, c2);
+			wlr.DrawLine(start + r, end + r, c, c);
 
-			wlr.DrawLine(xy + p, z + p, barColor2, barColor2);
-			wlr.DrawLine(xy + q, z + q, barColor, barColor);
-			wlr.DrawLine(xy + r, z + r, barColor2, barColor2);
+			wlr.DrawLine(start + p, z + p, barColor2, barColor2);
+			wlr.DrawLine(start + q, z + q, barColor, barColor);
+			wlr.DrawLine(start + r, z + r, barColor2, barColor2);
 		}
 
 		Color GetHealthColor(Health health)
@@ -90,7 +90,7 @@ namespace OpenRA.Graphics
 					health.DamageState == DamageState.Heavy ? Color.Yellow : Color.LimeGreen;
 		}
 
-		void DrawHealthBar(WorldRenderer wr, Health health, float2 xy, float2 Xy)
+		void DrawHealthBar(WorldRenderer wr, Health health, float2 start, float2 end)
 		{
 			if (health == null || health.IsDead)
 				return;
@@ -108,16 +108,16 @@ namespace OpenRA.Graphics
 				healthColor.G / 2,
 				healthColor.B / 2);
 
-			var z = float2.Lerp(xy, Xy, (float)health.HP / health.MaxHP);
+			var z = float2.Lerp(start, end, (float)health.HP / health.MaxHP);
 
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(xy + p, Xy + p, c, c);
-			wlr.DrawLine(xy + q, Xy + q, c2, c2);
-			wlr.DrawLine(xy + r, Xy + r, c, c);
+			wlr.DrawLine(start + p, end + p, c, c);
+			wlr.DrawLine(start + q, end + q, c2, c2);
+			wlr.DrawLine(start + r, end + r, c, c);
 
-			wlr.DrawLine(xy + p, z + p, healthColor2, healthColor2);
-			wlr.DrawLine(xy + q, z + q, healthColor, healthColor);
-			wlr.DrawLine(xy + r, z + r, healthColor2, healthColor2);
+			wlr.DrawLine(start + p, z + p, healthColor2, healthColor2);
+			wlr.DrawLine(start + q, z + q, healthColor, healthColor);
+			wlr.DrawLine(start + r, z + r, healthColor2, healthColor2);
 
 			if (health.DisplayHp != health.HP)
 			{
@@ -127,7 +127,7 @@ namespace OpenRA.Graphics
 					deltaColor.R / 2,
 					deltaColor.G / 2,
 					deltaColor.B / 2);
-				var zz = float2.Lerp(xy, Xy, (float)health.DisplayHp / health.MaxHP);
+				var zz = float2.Lerp(start, end, (float)health.DisplayHp / health.MaxHP);
 
 				wlr.DrawLine(z + p, zz + p, deltaColor2, deltaColor2);
 				wlr.DrawLine(z + q, zz + q, deltaColor, deltaColor);
@@ -147,11 +147,11 @@ namespace OpenRA.Graphics
 			var bounds = actor.Bounds;
 			bounds.Offset(screenPos.X, screenPos.Y);
 
-			var xy = new float2(bounds.Left, bounds.Top);
-			var Xy = new float2(bounds.Right, bounds.Top);
+			var start = new float2(bounds.Left, bounds.Top);
+			var end = new float2(bounds.Right, bounds.Top);
 
-			DrawHealthBar(wr, health, xy, Xy);
-			DrawExtraBars(wr, xy, Xy);
+			DrawHealthBar(wr, health, start, end);
+			DrawExtraBars(wr, start, end);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }

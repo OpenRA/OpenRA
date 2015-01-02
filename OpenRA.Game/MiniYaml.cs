@@ -83,8 +83,9 @@ namespace OpenRA
 
 	public class MiniYaml
 	{
-		static Func<string, string> StringIdentity = s => s;
-		static Func<MiniYaml, MiniYaml> MiniYamlIdentity = my => my;
+		static readonly Func<string, string> StringIdentity = s => s;
+		static readonly Func<MiniYaml, MiniYaml> MiniYamlIdentity = my => my;
+
 		public string Value;
 		public List<MiniYamlNode> Nodes;
 

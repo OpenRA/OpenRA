@@ -328,10 +328,10 @@ namespace OpenRA
 			else
 				Cursor = new SoftwareCursor(modData.CursorProvider);
 
-			PerfHistory.items["render"].hasNormalTick = false;
-			PerfHistory.items["batches"].hasNormalTick = false;
-			PerfHistory.items["render_widgets"].hasNormalTick = false;
-			PerfHistory.items["render_flip"].hasNormalTick = false;
+			PerfHistory.Items["render"].HasNormalTick = false;
+			PerfHistory.Items["batches"].HasNormalTick = false;
+			PerfHistory.Items["render_widgets"].HasNormalTick = false;
+			PerfHistory.Items["render_flip"].HasNormalTick = false;
 
 			JoinLocal();
 
@@ -513,10 +513,10 @@ namespace OpenRA
 					Renderer.EndFrame(new DefaultInputHandler(orderManager.World));
 			}
 
-			PerfHistory.items["render"].Tick();
-			PerfHistory.items["batches"].Tick();
-			PerfHistory.items["render_widgets"].Tick();
-			PerfHistory.items["render_flip"].Tick();
+			PerfHistory.Items["render"].Tick();
+			PerfHistory.Items["batches"].Tick();
+			PerfHistory.Items["render_widgets"].Tick();
+			PerfHistory.Items["render_flip"].Tick();
 		}
 
 		static void Loop()
@@ -551,12 +551,12 @@ namespace OpenRA
 			// (if ever).
 			// This also means that the 'logicInterval' cannot be longer than this
 			// value.
-			const int maxLogicTicksBehind = 250;
+			const int MaxLogicTicksBehind = 250;
 
 			// Try to maintain at least this many FPS during replays, even if it slows down logic.
 			// However, if the user has enabled a framerate limit that is even lower
 			// than this, then that limit will be used.
-			const int minReplayFps = 10;
+			const int MinReplayFps = 10;
 
 			// Timestamps for when the next logic and rendering should run
 			var nextLogic = RunTime;
@@ -576,7 +576,7 @@ namespace OpenRA
 				var now = RunTime;
 
 				// If the logic has fallen behind too much, skip it and catch up
-				if (now - nextLogic > maxLogicTicksBehind)
+				if (now - nextLogic > MaxLogicTicksBehind)
 					nextLogic = now;
 
 				// When's the next update (logic or render)
@@ -608,7 +608,7 @@ namespace OpenRA
 						// allowed between screen updates.
 						// We do this before rendering to include the time rendering takes
 						// in this interval.
-						var maxRenderInterval = Math.Max(1000 / minReplayFps, renderInterval);
+						var maxRenderInterval = Math.Max(1000 / MinReplayFps, renderInterval);
 						forcedNextRender = now + maxRenderInterval;
 
 						RenderTick();

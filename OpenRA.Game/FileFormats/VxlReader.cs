@@ -38,7 +38,7 @@ namespace OpenRA.FileFormats
 		public readonly uint LimbCount;
 		public VxlLimb[] Limbs;
 
-		uint BodySize;
+		uint bodySize;
 
 		static void ReadVoxelData(Stream s, VxlLimb l)
 		{
@@ -111,7 +111,7 @@ namespace OpenRA.FileFormats
 			s.ReadUInt32();
 			LimbCount = s.ReadUInt32();
 			s.ReadUInt32();
-			BodySize = s.ReadUInt32();
+			bodySize = s.ReadUInt32();
 			s.Seek(770, SeekOrigin.Current);
 
 			// Read Limb headers
@@ -124,12 +124,12 @@ namespace OpenRA.FileFormats
 			}
 
 			// Skip to the Limb footers
-			s.Seek(802 + 28 * LimbCount + BodySize, SeekOrigin.Begin);
+			s.Seek(802 + 28 * LimbCount + bodySize, SeekOrigin.Begin);
 
-			var LimbDataOffset = new uint[LimbCount];
+			var limbDataOffset = new uint[LimbCount];
 			for (var i = 0; i < LimbCount; i++)
 			{
-				LimbDataOffset[i] = s.ReadUInt32();
+				limbDataOffset[i] = s.ReadUInt32();
 				s.Seek(8, SeekOrigin.Current);
 				Limbs[i].Scale = s.ReadFloat();
 				s.Seek(48, SeekOrigin.Current);
@@ -143,7 +143,7 @@ namespace OpenRA.FileFormats
 
 			for (var i = 0; i < LimbCount; i++)
 			{
-				s.Seek(802 + 28 * LimbCount + LimbDataOffset[i], SeekOrigin.Begin);
+				s.Seek(802 + 28 * LimbCount + limbDataOffset[i], SeekOrigin.Begin);
 				ReadVoxelData(s, Limbs[i]);
 			}
 		}

@@ -101,12 +101,12 @@ namespace OpenRA.Graphics
 
 			// Cached sheet
 			Sheet sheet;
-			if (cachedSheets.ContainsKey(mi.src))
-				sheet = cachedSheets[mi.src];
+			if (cachedSheets.ContainsKey(mi.Src))
+				sheet = cachedSheets[mi.Src];
 			else
 			{
-				sheet = new Sheet(mi.src);
-				cachedSheets.Add(mi.src, sheet);
+				sheet = new Sheet(mi.Src);
+				cachedSheets.Add(mi.Src, sheet);
 			}
 
 			// Cache the sprite

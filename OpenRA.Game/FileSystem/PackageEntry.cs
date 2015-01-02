@@ -49,7 +49,7 @@ namespace OpenRA.FileSystem
 		public override string ToString()
 		{
 			string filename;
-			if (Names.TryGetValue(Hash, out filename))
+			if (names.TryGetValue(Hash, out filename))
 				return "{0} - offset 0x{1:x8} - length 0x{2:x8}".F(filename, Offset, Length);
 			else
 				return "0x{0:x8} - offset 0x{1:x8} - length 0x{2:x8}".F(Hash, Offset, Length);
@@ -97,14 +97,14 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		static Dictionary<uint, string> Names = new Dictionary<uint, string>();
+		static Dictionary<uint, string> names = new Dictionary<uint, string>();
 
 		public static void AddStandardName(string s)
 		{
 			var hash = HashFilename(s, PackageHashType.Classic); // RA1 and TD
-			Names.Add(hash, s);
+			names.Add(hash, s);
 			var crcHash = HashFilename(s, PackageHashType.CRC32); // TS
-			Names.Add(crcHash, s);
+			names.Add(crcHash, s);
 		}
 	}
 }

@@ -21,7 +21,7 @@ namespace OpenRA.Widgets
 		public readonly bool UseContrast = false;
 		public string Notification = "";
 
-		const int logLength = 9;
+		const int LogLength = 9;
 		List<ChatLine> recentLines = new List<ChatLine>();
 
 		public override Rectangle EventBounds { get { return Rectangle.Empty; } }
@@ -72,7 +72,7 @@ namespace OpenRA.Widgets
 			if (Notification != null)
 				Sound.Play(Notification);
 
-			while (recentLines.Count > logLength)
+			while (recentLines.Count > LogLength)
 				recentLines.RemoveAt(0);
 		}
 

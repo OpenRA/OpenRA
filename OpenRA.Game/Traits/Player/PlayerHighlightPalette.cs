@@ -19,21 +19,21 @@ namespace OpenRA.Traits
 	{
 		[Desc("The prefix for the resulting player palettes")]
 		public readonly string BaseName = "highlight";
-		
+
 		public object Create(ActorInitializer init) { return new PlayerHighlightPalette(init.self.Owner, this); }
 	}
-	
+
 	public class PlayerHighlightPalette : ILoadsPalettes
 	{
 		readonly Player owner;
 		readonly PlayerHighlightPaletteInfo info;
-		
+
 		public PlayerHighlightPalette(Player owner, PlayerHighlightPaletteInfo info)
 		{
 			this.owner = owner;
 			this.info = info;
 		}
-		
+
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			var argb = (uint)Color.FromArgb(128, owner.Color.RGB).ToArgb();

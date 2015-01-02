@@ -33,18 +33,18 @@ namespace OpenRA
 
 		static Dictionary<Type, MethodInfo> hashFunctions = new Dictionary<Type, MethodInfo>()
 		{
-			{ typeof(int2), ((Func<int2, int>)hash_int2).Method },
-			{ typeof(CPos), ((Func<CPos, int>)hash_CPos).Method },
-			{ typeof(CVec), ((Func<CVec, int>)hash_CVec).Method },
-			{ typeof(WRange), ((Func<WRange, int>)hash<WRange>).Method },
-			{ typeof(WPos), ((Func<WPos, int>)hash<WPos>).Method },
-			{ typeof(WVec), ((Func<WVec, int>)hash<WVec>).Method },
-			{ typeof(WAngle), ((Func<WAngle, int>)hash<WAngle>).Method },
-			{ typeof(WRot), ((Func<WRot, int>)hash<WRot>).Method },
-			{ typeof(TypeDictionary), ((Func<TypeDictionary, int>)hash_tdict).Method },
-			{ typeof(Actor), ((Func<Actor, int>)hash_actor).Method },
-			{ typeof(Player), ((Func<Player, int>)hash_player).Method },
-			{ typeof(Target), ((Func<Target, int>)hash_target).Method },
+			{ typeof(int2), ((Func<int2, int>)HashInt2).Method },
+			{ typeof(CPos), ((Func<CPos, int>)HashCPos).Method },
+			{ typeof(CVec), ((Func<CVec, int>)HashCVec).Method },
+			{ typeof(WRange), ((Func<WRange, int>)Hash<WRange>).Method },
+			{ typeof(WPos), ((Func<WPos, int>)Hash<WPos>).Method },
+			{ typeof(WVec), ((Func<WVec, int>)Hash<WVec>).Method },
+			{ typeof(WAngle), ((Func<WAngle, int>)Hash<WAngle>).Method },
+			{ typeof(WRot), ((Func<WRot, int>)Hash<WRot>).Method },
+			{ typeof(TypeDictionary), ((Func<TypeDictionary, int>)HashTDict).Method },
+			{ typeof(Actor), ((Func<Actor, int>)HashActor).Method },
+			{ typeof(Player), ((Func<Player, int>)HashPlayer).Method },
+			{ typeof(Target), ((Func<Target, int>)HashTarget).Method },
 		};
 
 		static void EmitSyncOpcodes(Type type, ILGenerator il)
@@ -78,8 +78,8 @@ namespace OpenRA
 			il.Emit(OpCodes.Stloc, this_);
 			il.Emit(OpCodes.Ldc_I4_0);
 
-			const BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-			foreach (var field in t.GetFields(bf).Where(x => x.HasAttribute<SyncAttribute>()))
+			const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+			foreach (var field in t.GetFields(Binding).Where(x => x.HasAttribute<SyncAttribute>()))
 			{
 				il.Emit(OpCodes.Ldloc, this_);
 				il.Emit(OpCodes.Ldfld, field);
@@ -87,7 +87,7 @@ namespace OpenRA
 				EmitSyncOpcodes(field.FieldType, il);
 			}
 
-			foreach (var prop in t.GetProperties(bf).Where(x => x.HasAttribute<SyncAttribute>()))
+			foreach (var prop in t.GetProperties(Binding).Where(x => x.HasAttribute<SyncAttribute>()))
 			{
 				il.Emit(OpCodes.Ldloc, this_);
 				il.EmitCall(OpCodes.Call, prop.GetGetMethod(), null);
@@ -99,22 +99,22 @@ namespace OpenRA
 			return (Func<object, int>)d.CreateDelegate(typeof(Func<object, int>));
 		}
 
-		public static int hash_int2(int2 i2)
+		public static int HashInt2(int2 i2)
 		{
 			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
 		}
 
-		public static int hash_CPos(CPos i2)
-		{
-			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
-		}
-		
-		public static int hash_CVec(CVec i2)
+		public static int HashCPos(CPos i2)
 		{
 			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
 		}
 
-		public static int hash_tdict(TypeDictionary d)
+		public static int HashCVec(CVec i2)
+		{
+			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
+		}
+
+		public static int HashTDict(TypeDictionary d)
 		{
 			var ret = 0;
 			foreach (var o in d)
@@ -122,21 +122,21 @@ namespace OpenRA
 			return ret;
 		}
 
-		public static int hash_actor(Actor a)
+		public static int HashActor(Actor a)
 		{
 			if (a != null)
 				return (int)(a.ActorID << 16);
 			return 0;
 		}
 
-		public static int hash_player(Player p)
+		public static int HashPlayer(Player p)
 		{
 			if (p != null)
 				return (int)(p.PlayerActor.ActorID << 16) * 0x567;
 			return 0;
 		}
 
-		public static int hash_target(Target t)
+		public static int HashTarget(Target t)
 		{
 			switch (t.Type)
 			{
@@ -147,7 +147,7 @@ namespace OpenRA
 					return (int)(t.FrozenActor.Actor.ActorID << 16) * 0x567;
 
 				case TargetType.Terrain:
-					return hash<WPos>(t.CenterPosition);
+					return Hash<WPos>(t.CenterPosition);
 
 				default:
 				case TargetType.Invalid:
@@ -155,7 +155,7 @@ namespace OpenRA
 			}
 		}
 
-		public static int hash<T>(T t)
+		public static int Hash<T>(T t)
 		{
 			return t.GetHashCode();
 		}

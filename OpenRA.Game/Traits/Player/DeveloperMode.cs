@@ -30,7 +30,7 @@ namespace OpenRA.Traits
 
 	public class DeveloperMode : IResolveOrder, ISync
 	{
-		DeveloperModeInfo Info;
+		DeveloperModeInfo info;
 		[Sync] public bool FastCharge;
 		[Sync] public bool AllTech;
 		[Sync] public bool FastBuild;
@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 
 		public DeveloperMode(DeveloperModeInfo info)
 		{
-			Info = info;
+			this.info = info;
 			FastBuild = info.FastBuild;
 			FastCharge = info.FastCharge;
 			DisableShroud = info.DisableShroud;
@@ -85,7 +85,7 @@ namespace OpenRA.Traits
 
 				case "DevGiveCash":
 					{
-						var amount = order.ExtraData != 0 ? (int)order.ExtraData : Info.Cash;
+						var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
 						self.Trait<PlayerResources>().GiveCash(amount);
 						break;
 					}
@@ -94,7 +94,7 @@ namespace OpenRA.Traits
 					{
 						foreach (var a in self.World.ActorsWithTrait<ISeedableResource>())
 						{
-							for (var i = 0; i < Info.ResourceGrowth; i++)
+							for (var i = 0; i < info.ResourceGrowth; i++)
 								a.Trait.Seed(a.Actor);
 						}
 
