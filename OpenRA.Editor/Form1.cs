@@ -318,6 +318,107 @@ namespace OpenRA.Editor
 			surface1.NewActorOwner = ((PlayerReference)actorOwnerChooser.SelectedItem).Name;
 		}
 
+		void SetupMap(Map map, int width, int height, int left, int right, int top, int bottom, bool resize = false)
+		{
+			var badValue = false;
+
+			if (width < 10 || width > 550 || height < 10 || height > 550)
+			{
+				DialogResult warnResult;
+
+				warnResult = MessageBox.Show("This map size is not recommended and can cause problems!\n\nWould you like to use this size anyway?",
+					"OpenRA Editor", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+				if (warnResult == DialogResult.No)
+				{
+					height = 96;
+					width = 96;
+				}
+			}
+
+			if (height < 10)
+			{
+				badValue = true;
+				height = 96;
+			}
+
+			if (width < 10)
+			{
+				badValue = true;
+				width = 96;
+			}
+
+			if (left < 1)
+				left = 1;
+
+			if (width <= left)
+			{
+				badValue = true;
+				left = 1;
+			}
+
+			if (right < 1)
+				right = width - 1;
+
+			if (width <= right)
+			{
+				badValue = true;
+				right = width - 1;
+			}
+
+			if (top < 1)
+				top = 1;
+
+			if (height <= top)
+			{
+				badValue = true;
+				top = 1;
+			}
+
+			if (bottom < 1)
+				bottom = height - 1;
+
+			if (height <= bottom)
+			{
+				badValue = true;
+				bottom = height - 1;
+			}
+
+			if (left >= right)
+			{
+				badValue = true;
+				left = 1;
+				right = width - 1;
+			}
+
+			if (top >= bottom)
+			{
+				badValue = true;
+				top = 1;
+				bottom = height - 1;
+			}
+
+			if (badValue)
+				MessageBox.Show("The Editor has corrected one or more invalid values!", "OpenRA Editor", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+				map.Resize(width, height);
+				map.ResizeCordon(left, top, right, bottom);
+
+			if (!resize)
+			{
+				map.Players.Clear();
+				map.MakeDefaultPlayers();
+				map.FixOpenAreas(Program.Rules);
+
+				NewMap(map);
+			}
+			else
+			{
+				surface1.Bind(map, surface1.TileSet, surface1.TileSetRenderer, surface1.Palette, surface1.PlayerPalette);
+				surface1.Invalidate();
+			}
+		}
+
 		void ResizeClicked(object sender, EventArgs e)
 		{
 			using (var rd = new ResizeDialog())
@@ -332,18 +433,8 @@ namespace OpenRA.Editor
 				if (DialogResult.OK != rd.ShowDialog())
 					return;
 
-				surface1.Map.ResizeCordon((int)rd.CordonLeft.Value,
-					(int)rd.CordonTop.Value,
-					(int)rd.CordonRight.Value,
-					(int)rd.CordonBottom.Value);
-
-				if ((int)rd.MapWidth.Value != surface1.Map.MapSize.X || (int)rd.MapHeight.Value != surface1.Map.MapSize.Y)
-				{
-					surface1.Map.Resize((int)rd.MapWidth.Value, (int)rd.MapHeight.Value);
-					surface1.Bind(surface1.Map, surface1.TileSet, surface1.TileSetRenderer, surface1.Palette, surface1.PlayerPalette);	// rebind it to invalidate all caches
-				}
-
-				surface1.Invalidate();
+				SetupMap(surface1.Map, (int)rd.MapWidth.Value, (int)rd.MapHeight.Value, (int)rd.CordonLeft.Value, 
+					(int)rd.CordonRight.Value, (int)rd.CordonTop.Value, (int)rd.CordonBottom.Value, true);
 			}
 		}
 
@@ -406,15 +497,8 @@ namespace OpenRA.Editor
 					var tileset = Program.Rules.TileSets[nmd.TheaterBox.SelectedItem as string];
 					var map = Map.FromTileset(tileset);
 
-					map.Resize((int)nmd.MapWidth.Value, (int)nmd.MapHeight.Value);
-					map.ResizeCordon((int)nmd.CordonLeft.Value, (int)nmd.CordonTop.Value,
-						(int)nmd.CordonRight.Value, (int)nmd.CordonBottom.Value);
-
-					map.Players.Clear();
-					map.MakeDefaultPlayers();
-					map.FixOpenAreas(Program.Rules);
-
-					NewMap(map);
+					SetupMap(map, (int)nmd.MapWidth.Value, (int)nmd.MapHeight.Value, (int)nmd.CordonLeft.Value,
+						(int)nmd.CordonRight.Value, (int)nmd.CordonTop.Value, (int)nmd.CordonBottom.Value, false);
 				}
 			}
 		}
