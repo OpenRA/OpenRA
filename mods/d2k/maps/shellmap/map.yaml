@@ -33,17 +33,12 @@ Players:
 		Name: Atreides
 		Race: atreides
 		ColorRamp: 161,134,200
-		Enemies: Harkonnen
-	PlayerReference@Harkonnen:
-		Name: Harkonnen
-		Race: harkonnen
-		ColorRamp: 3,255,127
-		Enemies: Atreides
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
 		Race: atreides
-		Enemies: Atreides, Harkonnen
+		Enemies: Atreides
+		ColorRamp: 210,255,127
 
 Actors:
 	Actor4: spicebloom
@@ -61,9 +56,6 @@ Actors:
 	Actor26: concreteb
 		Location: 57,58
 		Owner: Neutral
-	Actor27: refa
-		Location: 57,58
-		Owner: Atreides
 	Actor28: concretea
 		Location: 54,58
 		Owner: Neutral
@@ -85,6 +77,7 @@ Actors:
 	Actor34: siegetank
 		Location: 54,56
 		Owner: Atreides
+		Facing: 24
 	Actor35: concretea
 		Location: 46,39
 		Owner: Neutral
@@ -94,21 +87,30 @@ Actors:
 	Actor37: concreteb
 		Location: 50,37
 		Owner: Neutral
-	Actor38: refh
+	Actor38: palacec
 		Location: 50,37
-		Owner: Harkonnen
-	Actor39: pwrh
+		Owner: Creeps
+	Actor39: barrh
 		Location: 48,37
-		Owner: Harkonnen
-	Actor40: siloh
-		Location: 47,39
-		Owner: Harkonnen
-	Actor41: guntowera
+		Owner: Creeps
+	Actor40: rockettowerh
 		Location: 46,39
-		Owner: Harkonnen
-	Actor42: wormspawner
+		Owner: Creeps
+	Actor41: sardaukar
+		Location: 50,40
+		Owner: Creeps
+	Actor42: sardaukar
+		Location: 52,40
+		Owner: Creeps
+	WormSpawner: wormspawner
 		Location: 46,64
 		Owner: Creeps
+	Entry: waypoint
+		Location: 80, 8
+		Owner: Neutral
+	AtreidesSpiceRefinery: refa
+		Location: 57,58
+		Owner: Atreides
 
 Smudges:
 
@@ -123,6 +125,25 @@ Rules:
 			ValuePerUnit: 0
 		WormManager:
 			Minimum: 1
+			Maximum: 1
+		LuaScript:
+			Scripts: shellmap.lua
+	REFA:
+		-FreeActor:
+	CARRYALLA:
+		-AutoCarryall:
+		Helicopter:
+			CruiseAltitude: 2048
+			LandAltitude: 512
+			LandWhenIdle: True
+		Cargo:
+			Types: Vehicle
+		WithCargo:
+			DisplayTypes: Vehicle
+			LocalOffset: 0,0,-512
+	ROCKETTOWERH:
+		Power:
+			Amount: 100
 
 Sequences:
 
