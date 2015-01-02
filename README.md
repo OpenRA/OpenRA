@@ -2,7 +2,11 @@
 
 [ZeroBrane Studio](http://studio.zerobrane.com/) is a lightweight cross-platform Lua IDE with code completion,
 syntax highlighting, remote debugger, code analyzer, live coding,
-and debugging support for several Lua engines (Lua 5.1, Lua 5.2, Lua 5.3, LuaJIT,
+and debugging support for several Lua engines
+([Lua 5.1](http://studio.zerobrane.com/doc-lua-debugging),
+[Lua 5.2](http://studio.zerobrane.com/doc-lua52-debugging),
+[Lua 5.3](http://studio.zerobrane.com/doc-lua53-debugging),
+[LuaJIT](http://studio.zerobrane.com/doc-luajit-debugging),
 [Löve 2D](http://notebook.kulchenko.com/zerobrane/love2d-debugging),
 [Moai](http://notebook.kulchenko.com/zerobrane/moai-debugging-with-zerobrane-studio),
 [Gideros](http://notebook.kulchenko.com/zerobrane/gideros-debugging-with-zerobrane-studio-ide),
@@ -22,12 +26,13 @@ and others). It originated from the [Estrela Editor](http://www.luxinia.de/index
 * Small, portable, and cross-platform (Windows, Mac OSX, and Linux).
 * Auto-completion for functions, keywords, and custom APIs.
 * Interactive console to directly test code snippets with local and remote execution.
-* Integrated debugger with local and [remote debugging](http://studio.zerobrane.com/doc-remote-debugging.html) for Lua 5.1,
-[Lua 5.2](http://studio.zerobrane.com/doc-lua52-debugging.html),
-Lua 5.3,
-[LuaJIT](http://studio.zerobrane.com/doc-luajit-debugging.html),
-and [other Lua engines](http://studio.zerobrane.com/documentation.html#debugging).
-* [Live coding](http://studio.zerobrane.com/documentation.html#live_coding)
+* Integrated debugger with local and [remote debugging](http://studio.zerobrane.com/doc-remote-debugging)
+for [Lua 5.1](http://studio.zerobrane.com/doc-lua-debugging),
+[Lua 5.2](http://studio.zerobrane.com/doc-lua52-debugging),
+[Lua 5.3](http://studio.zerobrane.com/doc-lua53-debugging),
+[LuaJIT](http://studio.zerobrane.com/doc-luajit-debugging),
+and [other Lua engines](http://studio.zerobrane.com/documentation#debugging).
+* [Live coding](http://studio.zerobrane.com/documentation#live_coding)
 with [Lua](http://notebook.kulchenko.com/zerobrane/live-coding-in-lua-bret-victor-style),
 [Löve 2D](http://notebook.kulchenko.com/zerobrane/live-coding-with-love),
 [Gideros](http://notebook.kulchenko.com/zerobrane/gideros-live-coding-with-zerobrane-studio-ide),
@@ -36,19 +41,19 @@ with [Lua](http://notebook.kulchenko.com/zerobrane/live-coding-in-lua-bret-victo
 GSL-shell, and other engines.
 * Several ways to extend the current functionality:
   - specs (`spec/`): specifications for file syntax, lexer, and keywords;
-  - apis (`api/`): descriptions for [code completion and tooltips](http://studio.zerobrane.com/doc-api-auto-complete.html);
+  - apis (`api/`): descriptions for [code completion and tooltips](http://studio.zerobrane.com/doc-api-auto-complete);
   - interpreters (`interpreters/`): components for setting debugging and run-time project environment;
-  - packages (`packages/`): [plugins](http://studio.zerobrane.com/doc-plugin.html) that provide additional functionality;
+  - packages (`packages/`): [plugins](http://studio.zerobrane.com/doc-plugin) that provide additional functionality;
   - config (`cfg/`): settings for styles, color themes, and other preferences;
-  - translations (`cfg/i18n/`): [translations](http://studio.zerobrane.com/doc-translation.html) of the menus and messages to other languages;
+  - translations (`cfg/i18n/`): [translations](http://studio.zerobrane.com/doc-translation) of the menus and messages to other languages;
   - tools (`tools/`): additional tools.
 
 ## Documentation
 
-* A [short and simple overview](http://studio.zerobrane.com/doc-getting-started.html) for those who are new to this development environment.
-* A list of [frequently asked questions](http://studio.zerobrane.com/doc-faq.html) about the IDE.
-* [Tutorials and demos](http://studio.zerobrane.com/tutorials.html) that cover debugging and live coding for different environments.
-* [Tips and tricks](http://studio.zerobrane.com/doc-tips-and-tricks.html).
+* A [short and simple overview](http://studio.zerobrane.com/doc-getting-started) for those who are new to this development environment.
+* A list of [frequently asked questions](http://studio.zerobrane.com/doc-faq) about the IDE.
+* [Tutorials and demos](http://studio.zerobrane.com/tutorials) that cover debugging and live coding for different environments.
+* [Tips and tricks](http://studio.zerobrane.com/doc-tips-and-tricks).
 
 ## Installation
 
