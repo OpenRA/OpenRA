@@ -75,6 +75,7 @@
     <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
+    <Compile Include="Effects\Rank.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Commands\ChatCommands.cs" />
     <Compile Include="Commands\DevCommands.cs" />
@@ -134,6 +135,9 @@
     <Compile Include="Traits\Buildings\RepairsUnits.cs" />
     <Compile Include="Traits\Buildings\FootprintUtils.cs" />
     <Compile Include="Traits\Burns.cs" />
+    <Compile Include="Traits\GainsExperience.cs" />
+    <Compile Include="Traits\GivesBounty.cs" />
+    <Compile Include="Traits\GivesExperience.cs" />
     <Compile Include="Traits\Huntable.cs" />
     <Compile Include="Traits\CustomBuildTimeValue.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />

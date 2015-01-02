@@ -127,12 +127,10 @@
     <Compile Include="Attack\AttackTurreted.cs" />
     <Compile Include="Crushable.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
-    <Compile Include="Effects\Rank.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="Render\RenderUnitReload.cs" />
     <Compile Include="Graphics\TeslaZapRenderable.cs" />
-    <Compile Include="GainsExperience.cs" />
     <Compile Include="EjectOnDeath.cs" />
     <Compile Include="AI\RushFuzzy.cs" />
     <Compile Include="AI\StateMachine.cs" />
@@ -179,8 +177,6 @@
     <Compile Include="EmitInfantryOnSell.cs" />
     <Compile Include="EngineerRepair.cs" />
     <Compile Include="Explodes.cs" />
-    <Compile Include="GivesBounty.cs" />
-    <Compile Include="GivesExperience.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Invulnerable.cs" />
     <Compile Include="Captures.cs" />
