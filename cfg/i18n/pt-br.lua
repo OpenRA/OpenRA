@@ -231,7 +231,7 @@ return {
   ["Save file?"] = "Salvar arquivo?", -- src\editor\commands.lua
   ["Save the current document to a file with a new name"] = "Salvar documento atual para um arquivo com outro nome", -- src\editor\menu_file.lua
   ["Save the current document"] = "Salvar documento atual", -- src\editor\menu_file.lua
-  ["Saved auto-recover at %s."] = "Autorrecuperação salva às %s.", -- src\editor\commands.lua
+  ["Saved auto-recover at %s."] = "Autorrecuperação salvo às %s.", -- src\editor\commands.lua
   ["Scope"] = "Direção", -- src\editor\findreplace.lua
   ["Scratchpad error"] = "Erro no rascunho", -- src\editor\debugger.lua
   ["Searching for"] = "Localizando por", -- src\editor\findreplace.lua
