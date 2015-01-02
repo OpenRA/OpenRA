@@ -50,7 +50,7 @@ namespace OpenRA.Utility
 
 			try
 			{
-				var action = Exts.WithDefault((a,b) => PrintUsage(actions), () => actions[args[0]]);
+				var action = Exts.WithDefault((a, b) => PrintUsage(actions), () => actions[args[0]]);
 				action(modData, args);
 			}
 			catch (Exception e)

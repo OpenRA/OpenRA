@@ -56,9 +56,12 @@ namespace OpenRA.Renderer.Sdl2
 			Log.Write("graphics",  "Vendor: {0}", GL.GetString(StringName.Vendor));
 			if (GL.GetString(StringName.Vendor).Contains("Microsoft"))
 			{
-				Log.Write("graphics", "Note:  The default driver provided by Microsoft does not include full OpenGL support.\n"
-					+ "Please install the latest drivers from your graphics card manufacturer's website.\n");
+				var msg = "";
+				msg += "Note:  The default driver provided by Microsoft does not include full OpenGL support.\n";
+				msg += "Please install the latest drivers from your graphics card manufacturer's website.\n";
+				Log.Write("graphics", msg);
 			}
+
 			Log.Write("graphics",  "Renderer: {0}", GL.GetString(StringName.Renderer));
 			Log.Write("graphics",  "GL Version: {0}", GL.GetString(StringName.Version));
 			Log.Write("graphics",  "Shader Version: {0}", GL.GetString(StringName.ShadingLanguageVersion));

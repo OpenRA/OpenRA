@@ -34,6 +34,7 @@ namespace OpenRA.Renderer.Sdl2
 			{
 				return scaleFilter;
 			}
+
 			set
 			{
 				if (scaleFilter == value)

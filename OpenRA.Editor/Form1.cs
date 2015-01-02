@@ -426,7 +426,7 @@ namespace OpenRA.Editor
 				pd.TitleBox.Text = surface1.Map.Title;
 				pd.DescBox.Text = surface1.Map.Description;
 				pd.AuthorBox.Text = surface1.Map.Author;
-				pd.mapVisibilityComboBox.SelectedIndex = pd.mapVisibilityComboBox.FindStringExact(Enum.GetName(typeof(MapVisibility), surface1.Map.Visibility));
+				pd.MapVisibilityComboBox.SelectedIndex = pd.MapVisibilityComboBox.FindStringExact(Enum.GetName(typeof(MapVisibility), surface1.Map.Visibility));
 
 				if (DialogResult.OK != pd.ShowDialog())
 					return;
@@ -434,7 +434,7 @@ namespace OpenRA.Editor
 				surface1.Map.Title = pd.TitleBox.Text;
 				surface1.Map.Description = pd.DescBox.Text;
 				surface1.Map.Author = pd.AuthorBox.Text;
-				surface1.Map.Visibility = (MapVisibility)Enum.Parse(typeof(MapVisibility), pd.mapVisibilityComboBox.SelectedItem.ToString());
+				surface1.Map.Visibility = (MapVisibility)Enum.Parse(typeof(MapVisibility), pd.MapVisibilityComboBox.SelectedItem.ToString());
 			}
 		}
 
