@@ -36,7 +36,7 @@ namespace OpenRA
 			{
 				// Target ranges are calculated in 2D, so ignore height differences
 				var vec = new WVec(r, r, WRange.Zero);
-				var rSq = r.Range*r.Range;
+				var rSq = r.Range * r.Range;
 				return world.ActorMap.ActorsInBox(origin - vec, origin + vec).Where(
 					a => (a.CenterPosition - origin).HorizontalLengthSquared <= rSq);
 			}
@@ -104,7 +104,7 @@ namespace OpenRA
 			}
 		}
 
-		public static bool AreMutualAllies( Player a, Player b )
+		public static bool AreMutualAllies(Player a, Player b)
 		{
 			return a.Stances[b] == Stance.Ally &&
 				b.Stances[a] == Stance.Ally;

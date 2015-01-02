@@ -51,4 +51,3 @@ namespace OpenRA.Graphics
 		}
 	}
 }
-

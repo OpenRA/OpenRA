@@ -16,7 +16,7 @@ namespace OpenRA.Widgets
 {
 	public class TooltipContainerWidget : Widget
 	{
-		static readonly Action Nothing = () => {};
+		static readonly Action Nothing = () => { };
 		public int2 CursorOffset = new int2(0, 20);
 		public Action BeforeRender = Nothing;
 		public int TooltipDelay = 5;
@@ -30,7 +30,7 @@ namespace OpenRA.Widgets
 		public void SetTooltip(string id, WidgetArgs args)
 		{
 			RemoveTooltip();
-			tooltip = Ui.LoadWidget(id, this, new WidgetArgs(args) {{ "tooltipContainer", this }});
+			tooltip = Ui.LoadWidget(id, this, new WidgetArgs(args) { { "tooltipContainer", this } });
 		}
 
 		public void RemoveTooltip()

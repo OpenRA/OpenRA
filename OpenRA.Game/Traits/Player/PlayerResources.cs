@@ -24,6 +24,8 @@ namespace OpenRA.Traits
 
 	public class PlayerResources : ITick, ISync
 	{
+		const float displayCashFracPerFrame = .07f;
+		const int displayCashDeltaPerFrame = 37;
 		readonly Player Owner;
 		int AdviceInterval;
 
@@ -97,8 +99,6 @@ namespace OpenRA.Traits
 			return true;
 		}
 
-		const float displayCashFracPerFrame = .07f;
-		const int displayCashDeltaPerFrame = 37;
 		int nextSiloAdviceTime = 0;
 		int nextCashTickTime = 0;
 
@@ -130,8 +130,7 @@ namespace OpenRA.Traits
 			var diff = Math.Abs(Cash - DisplayCash);
 			var move = Math.Min(Math.Max((int)(diff * displayCashFracPerFrame),
 					displayCashDeltaPerFrame), diff);
-
-
+				
 			if (DisplayCash < Cash)
 			{
 				DisplayCash += move;
@@ -158,7 +157,6 @@ namespace OpenRA.Traits
 				playCashTickDown(self);
 			}
 		}
-		
 		
 		public void playCashTickUp(Actor self)
 		{

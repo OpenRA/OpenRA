@@ -45,7 +45,7 @@ namespace OpenRA.Graphics
 		public IRenderable OffsetBy(WVec vec) { return new SelectionBoxRenderable(pos + vec, bounds, scale, color); }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) {}
+		public void BeforeRender(WorldRenderer wr) { }
 		public void Render(WorldRenderer wr)
 		{
 			var screenPos = wr.ScreenPxPosition(pos);
@@ -68,6 +68,6 @@ namespace OpenRA.Graphics
 			wlr.DrawLine(br, br - v, color, color);
 		}
 
-		public void RenderDebugGeometry(WorldRenderer wr) {}
+		public void RenderDebugGeometry(WorldRenderer wr) { }
 	}
 }

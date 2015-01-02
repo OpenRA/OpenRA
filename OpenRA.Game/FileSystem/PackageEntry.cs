@@ -20,6 +20,7 @@ namespace OpenRA.FileSystem
 
 	public class PackageEntry
 	{
+		public const int Size = 12;
 		public readonly uint Hash;
 		public readonly uint Offset;
 		public readonly uint Length;
@@ -56,7 +57,7 @@ namespace OpenRA.FileSystem
 
 		public static uint HashFilename(string name, PackageHashType type)
 		{
-			switch(type)
+			switch (type)
 			{
 			case PackageHashType.Classic:
 				{
@@ -88,6 +89,7 @@ namespace OpenRA.FileSystem
 						while (i-- != 0)
 							name += name[a << 2];
 					}
+
 					return CRC32.Calculate(Encoding.ASCII.GetBytes(name));
 				}
 
@@ -95,7 +97,7 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		static Dictionary<uint, string> Names = new Dictionary<uint,string>();
+		static Dictionary<uint, string> Names = new Dictionary<uint, string>();
 
 		public static void AddStandardName(string s)
 		{
@@ -104,7 +106,5 @@ namespace OpenRA.FileSystem
 			var crcHash = HashFilename(s, PackageHashType.CRC32); // TS
 			Names.Add(crcHash, s);
 		}
-
-		public const int Size = 12;
 	}
 }

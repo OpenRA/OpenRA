@@ -91,8 +91,7 @@ namespace OpenRA
 		{
 			return (k & mod) == mod;
 		}
-
-
+        
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k)
 			where V : new()
 		{
@@ -184,6 +183,7 @@ namespace OpenRA
 						u = nextU;
 					}
 				}
+
 				return t;
 			}
 		}
@@ -242,7 +242,6 @@ namespace OpenRA
 			// Adjust for other rounding modes
 			if (round == ISqrtRoundMode.Nearest && remainder > root)
 				root += 1;
-
 			else if (round == ISqrtRoundMode.Ceiling && root * root < number)
 				root += 1;
 
@@ -284,7 +283,6 @@ namespace OpenRA
 			// Adjust for other rounding modes
 			if (round == ISqrtRoundMode.Nearest && remainder > root)
 				root += 1;
-
 			else if (round == ISqrtRoundMode.Ceiling && root * root < number)
 				root += 1;
 

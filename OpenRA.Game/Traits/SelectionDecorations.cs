@@ -82,7 +82,7 @@ namespace OpenRA.Traits
 			pipImages.PlayRepeating(pipStrings[0]);
 
 			var pipSize = pipImages.Image.size.ToInt2();
-			var pipxyBase = basePosition + new int2(1 - pipSize.X / 2, - (3 + pipSize.Y / 2));
+			var pipxyBase = basePosition + new int2(1 - pipSize.X / 2, -(3 + pipSize.Y / 2));
 			var pipxyOffset = new int2(0, 0);
 			var pal = wr.Palette(Info.Palette);
 			var width = self.Bounds.Width;
@@ -135,7 +135,5 @@ namespace OpenRA.Traits
 				}
 			}
 		}
-
 	}
 }
-

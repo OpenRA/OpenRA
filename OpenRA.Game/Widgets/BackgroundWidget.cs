@@ -33,7 +33,7 @@ namespace OpenRA.Widgets
 			if (ClickThrough || !RenderBounds.Contains(mi.Location))
 				return false;
 
-			if (!Draggable || moving && (!TakeMouseFocus(mi) || mi.Button != MouseButton.Left))
+			if (!Draggable || (moving && (!TakeMouseFocus(mi) || mi.Button != MouseButton.Left)))
 				return true;
 
 			if (prevMouseLocation == null)

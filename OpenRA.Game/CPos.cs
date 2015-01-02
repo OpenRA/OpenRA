@@ -31,7 +31,7 @@ namespace OpenRA
 
 		public static CVec operator -(CPos a, CPos b) { return new CVec(a.X - b.X, a.Y - b.Y); }
 
-		public static bool operator ==(CPos me, CPos other) { return (me.X == other.X && me.Y == other.Y); }
+		public static bool operator ==(CPos me, CPos other) { return me.X == other.X && me.Y == other.Y; }
 		public static bool operator !=(CPos me, CPos other) { return !(me == other); }
 
 		public static CPos Max(CPos a, CPos b) { return new CPos(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }

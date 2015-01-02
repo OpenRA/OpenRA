@@ -74,7 +74,7 @@ namespace OpenRA.Primitives
 
 		static Pair()
 		{
-			Pair<char,Color>.uc = new ColorEqualityComparer();
+			Pair<char, Color>.uc = new ColorEqualityComparer();
 		}
 
 		// avoid the default crappy one

@@ -29,7 +29,7 @@ namespace OpenRA.Widgets
 		public Color TextColor = ChromeMetrics.Get<Color>("HotkeyColor");
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("HotkeyColorDisabled");
 
-		public HotkeyEntryWidget() {}
+		public HotkeyEntryWidget() { }
 		protected HotkeyEntryWidget(HotkeyEntryWidget widget)
 			: base(widget)
 		{

@@ -28,8 +28,9 @@ namespace OpenRA
 		public static WRot operator -(WRot a, WRot b) { return new WRot(a.Roll - b.Roll, a.Pitch - b.Pitch, a.Yaw - b.Yaw); }
 		public static WRot operator -(WRot a) { return new WRot(-a.Roll, -a.Pitch, -a.Yaw); }
 
-		public static bool operator ==(WRot me, WRot other) { return (me.Roll == other.Roll &&
-			me.Pitch == other.Pitch && me.Yaw == other.Yaw); }
+		public static bool operator ==(WRot me, WRot other) { return me.Roll == other.Roll &&
+			me.Pitch == other.Pitch && me.Yaw == other.Yaw; }
+
 		public static bool operator !=(WRot me, WRot other) { return !(me == other); }
 
 		public WRot WithYaw(WAngle yaw)
@@ -53,10 +54,10 @@ namespace OpenRA
 			// Normalized to 1024 == 1.0
 			return new int[4]
 			{
-				(int)((sr*cp*cy - cr*sp*sy) / 1048576), // x
-				(int)((cr*sp*cy + sr*cp*sy) / 1048576), // y
-				(int)((cr*cp*sy - sr*sp*cy) / 1048576), // z
-				(int)((cr*cp*cy + sr*sp*sy) / 1048576)  // w
+				(int)((sr * cp * cy - cr * sp * sy) / 1048576), // x
+				(int)((cr * sp * cy + sr * cp * sy) / 1048576), // y
+				(int)((cr * cp * sy - sr * sp * cy) / 1048576), // z
+				(int)((cr * cp * cy + sr * sp * sy) / 1048576)  // w
 			};
 		}
 
@@ -64,24 +65,24 @@ namespace OpenRA
 		{
 			var q = AsQuarternion();
 
-			// Theoretically 1024**2, but may differ slightly due to rounding
-			var lsq = q[0]*q[0] + q[1]*q[1] + q[2]*q[2] + q[3]*q[3];
+			// Theoretically 1024 *  * 2, but may differ slightly due to rounding
+			var lsq = q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3];
 
 			// Quarternion components use 10 bits, so there's no risk of overflow
 			var mtx = new int[16];
-			mtx[0] = lsq - 2*(q[1]*q[1] + q[2]*q[2]);
-			mtx[1] = 2*(q[0]*q[1] + q[2]*q[3]);
-			mtx[2] = 2*(q[0]*q[2] - q[1]*q[3]);
+			mtx[0] = lsq - 2 * (q[1] * q[1] + q[2] * q[2]);
+			mtx[1] = 2 * (q[0] * q[1] + q[2] * q[3]);
+			mtx[2] = 2 * (q[0] * q[2] - q[1] * q[3]);
 			mtx[3] = 0;
 
-			mtx[4] = 2*(q[0]*q[1] - q[2]*q[3]);
-			mtx[5] = lsq - 2*(q[0]*q[0] + q[2]*q[2]);
-			mtx[6] = 2*(q[1]*q[2] + q[0]*q[3]);
+			mtx[4] = 2 * (q[0] * q[1] - q[2] * q[3]);
+			mtx[5] = lsq - 2 * (q[0] * q[0] + q[2] * q[2]);
+			mtx[6] = 2 * (q[1] * q[2] + q[0] * q[3]);
 			mtx[7] = 0;
 
-			mtx[8] = 2*(q[0]*q[2] + q[1]*q[3]);
-			mtx[9] = 2*(q[1]*q[2] - q[0]*q[3]);
-			mtx[10] = lsq - 2*(q[0]*q[0] + q[1]*q[1]);
+			mtx[8] = 2 * (q[0] * q[2] + q[1] * q[3]);
+			mtx[9] = 2 * (q[1] * q[2] - q[0] * q[3]);
+			mtx[10] = lsq - 2 * (q[0] * q[0] + q[1] * q[1]);
 			mtx[11] = 0;
 
 			mtx[12] = 0;

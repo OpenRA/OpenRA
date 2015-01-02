@@ -50,7 +50,7 @@ namespace OpenRA.FileFormats
 						if ((count & 0x8000) == 0)
 						{
 							// case 2
-							destIndex += (count & 0x7FFF);
+							destIndex += count & 0x7FFF;
 						}
 						else if ((count & 0x4000) == 0)
 						{

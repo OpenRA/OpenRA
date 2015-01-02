@@ -63,7 +63,7 @@ namespace OpenRA.Traits
 			if (!self.World.AllowDevCommands)
 				return;
 
-			switch(order.OrderString)
+			switch (order.OrderString)
 			{
 				case "DevEnableTech":
 					{
@@ -97,6 +97,7 @@ namespace OpenRA.Traits
 							for (var i = 0; i < Info.ResourceGrowth; i++)
 								a.Trait.Seed(a.Actor);
 						}
+
 						break;
 					}
 

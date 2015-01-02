@@ -24,10 +24,10 @@ namespace OpenRA.Graphics
 		public readonly float top, left, bottom, right;
 
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
-			: this(sheet, bounds, float2.Zero, channel, BlendMode.Alpha) {}
+			: this(sheet, bounds, float2.Zero, channel, BlendMode.Alpha) { }
 
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel, BlendMode blendMode)
-			: this(sheet, bounds, float2.Zero, channel, blendMode) {}
+			: this(sheet, bounds, float2.Zero, channel, blendMode) { }
 
 		public Sprite(Sheet sheet, Rectangle bounds, float2 offset, TextureChannel channel, BlendMode blendMode)
 		{
@@ -40,10 +40,10 @@ namespace OpenRA.Graphics
 
 			this.fractionalOffset = offset / this.size;
 
-			left = (float)(bounds.Left) / sheet.Size.Width;
-			top = (float)(bounds.Top) / sheet.Size.Height;
-			right = (float)(bounds.Right) / sheet.Size.Width;
-			bottom = (float)(bounds.Bottom) / sheet.Size.Height;
+			left = (float)bounds.Left / sheet.Size.Width;
+			top = (float)bounds.Top / sheet.Size.Height;
+			right = (float)bounds.Right / sheet.Size.Width;
+			bottom = (float)bounds.Bottom / sheet.Size.Height;
 		}
 	}
 

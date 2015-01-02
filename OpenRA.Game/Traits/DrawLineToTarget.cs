@@ -72,7 +72,7 @@ namespace OpenRA.Traits
 				if (target.Type == TargetType.Invalid)
 					continue;
 
-				yield return new TargetLineRenderable(new [] { self.CenterPosition, target.CenterPosition }, c);
+				yield return new TargetLineRenderable(new[] { self.CenterPosition, target.CenterPosition }, c);
 			}
 		}
 
@@ -132,4 +132,3 @@ namespace OpenRA.Traits
 		}
 	}
 }
-

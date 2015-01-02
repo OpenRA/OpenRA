@@ -51,6 +51,7 @@ namespace OpenRA.FileSystem
 			var TOCreader = new BinaryReader(s);
 
 			var fileCountInDirs = new List<uint>();
+
 			// Parse directories
 			for (var i = 0; i < DirCount; i++)
 				fileCountInDirs.Add(ParseDirectory(TOCreader));
@@ -59,7 +60,6 @@ namespace OpenRA.FileSystem
 			foreach (var fileCount in fileCountInDirs)
 				for (var i = 0; i < fileCount; i++)
 					ParseFile(reader);
-
 		}
 
 		static uint ParseDirectory(BinaryReader reader)
@@ -68,7 +68,7 @@ namespace OpenRA.FileSystem
 			var FileCount = reader.ReadUInt16();
 			var ChunkSize = reader.ReadUInt16();
 			var NameLength = reader.ReadUInt16();
-			reader.ReadChars(NameLength); //var DirName = new String(reader.ReadChars(NameLength));
+			reader.ReadChars(NameLength); // var DirName = new String(reader.ReadChars(NameLength));
 
 			// Skip to the end of the chunk
 			reader.ReadBytes(ChunkSize - NameLength - 6);
@@ -84,11 +84,11 @@ namespace OpenRA.FileSystem
 			var ChunkSize = reader.ReadUInt16();
 			reader.ReadBytes(4);
 			var NameLength = reader.ReadByte();
-			var FileName = new String(reader.ReadChars(NameLength));
+			var FileName = new string(reader.ReadChars(NameLength));
 
 			var hash = PackageEntry.HashFilename(FileName, PackageHashType.Classic);
 			if (!index.ContainsKey(hash))
-				index.Add(hash, new PackageEntry(hash,AccumulatedData, CompressedSize));
+				index.Add(hash, new PackageEntry(hash, AccumulatedData, CompressedSize));
 			filenames.Add(FileName);
 			AccumulatedData += CompressedSize;
 
@@ -133,7 +133,7 @@ namespace OpenRA.FileSystem
 			return index.ContainsKey(PackageEntry.HashFilename(filename, PackageHashType.Classic));
 		}
 
-		public int Priority { get { return 2000 + priority; }}
+		public int Priority { get { return 2000 + priority; } }
 		public string Name { get { return filename; } }
 
 		public void Write(Dictionary<string, byte[]> contents)

@@ -36,7 +36,7 @@ namespace OpenRA
 		public readonly string map_type;
 		public readonly int players;
 		public readonly Rectangle bounds;
-		public readonly int[] spawnpoints = {};
+		public readonly int[] spawnpoints = { };
 		public readonly string minimap;
 		public readonly bool downloading;
 	}
@@ -142,12 +142,12 @@ namespace OpenRA
 
 						var spawns = new List<CPos>();
 						for (var j = 0; j < r.spawnpoints.Length; j += 2)
-							spawns.Add(new CPos(r.spawnpoints[j], r.spawnpoints[j+1]));
+							spawns.Add(new CPos(r.spawnpoints[j], r.spawnpoints[j + 1]));
 						SpawnPoints = spawns;
 
 						CustomPreview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
 					}
-					catch (Exception) {}
+					catch (Exception) { }
 
 					if (CustomPreview != null)
 						cache.CacheMinimap(this);
@@ -177,7 +177,6 @@ namespace OpenRA
 				var mapUrl = Game.Settings.Game.MapRepository + Uid;
 				try
 				{
-
 					var request = WebRequest.Create(mapUrl);
 					request.Method = "HEAD";
 					var res = request.GetResponse();

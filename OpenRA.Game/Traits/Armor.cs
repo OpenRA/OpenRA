@@ -16,6 +16,5 @@ namespace OpenRA.Traits
 		public readonly string Type = null;
 	}
 
-	public class Armor {}
+	public class Armor { }
 }
-

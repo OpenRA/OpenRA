@@ -30,7 +30,7 @@ namespace OpenRA.FileFormats
 		public readonly int DataSize;
 		public readonly byte[] RawOutput;
 
-		public enum WaveType { Pcm = 0x1, ImaAdpcm = 0x11 };
+		public enum WaveType { Pcm = 0x1, ImaAdpcm = 0x11 }
 		public static WaveType Type { get; private set; }
 		
 		public WavLoader(Stream s)
@@ -69,6 +69,7 @@ namespace OpenRA.FileFormats
 							UncompressedSize = s.ReadInt32();
 							s.ReadBytes(chunkSize - 4);
 						}
+
 						break;
 					case "data":
 						DataSize = s.ReadInt32();
@@ -80,6 +81,7 @@ namespace OpenRA.FileFormats
 							var chunkSize = s.ReadInt32();
 							s.ReadBytes(chunkSize);
 						}
+
 						break;
 				}
 			}
