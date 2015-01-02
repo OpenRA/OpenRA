@@ -50,8 +50,6 @@ namespace OpenRA.Mods.RA.Traits
 
 		public readonly int Speed = 1;
 
-		public readonly bool OnRails = false;
-
 		[Desc("Allow multiple (infantry) units in one cell.")]
 		public readonly bool SharesCell = false;
 
@@ -382,12 +380,8 @@ namespace OpenRA.Mods.RA.Traits
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order is MoveOrderTargeter)
-			{
-				if (Info.OnRails)
-					return null;
-
 				return new Order("Move", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
-			}
+
 			return null;
 		}
 

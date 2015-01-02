@@ -65,11 +65,6 @@ namespace OpenRA.Mods.RA.Traits
 				attack = self.Trait<AttackFollow>();
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
 
-				// HACK: Mobile.OnRails is horrible
-				var mobile = move as Mobile;
-				if (mobile != null && mobile.Info.OnRails)
-					move = null;
-
 				this.target = target;
 			}
 
