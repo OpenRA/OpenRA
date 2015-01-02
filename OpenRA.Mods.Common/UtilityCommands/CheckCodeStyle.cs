@@ -34,17 +34,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var filePath in Directory.GetFiles(projectPath, "*.cs", SearchOption.AllDirectories))
 				console.Core.Environment.AddSourceCode(project, filePath, null);
 
-			console.OutputGenerated += OnOutputGenerated;
 			console.ViolationEncountered += OnViolationEncountered;
 			console.Start(new[] { project }, true);
 
 			if (violationCount > 0)
 				Environment.Exit(1);
-		}
-
-		void OnOutputGenerated(object sender, OutputEventArgs e)
-		{
-			Console.WriteLine(e.Output);
 		}
 
 		void OnViolationEncountered(object sender, ViolationEventArgs e)
