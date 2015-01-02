@@ -172,7 +172,10 @@ function CommandBarShow(params)
 
   local function onKeyDown(event)
     local keycode = event:GetKeyCode()
-    if keycode == wx.WXK_UP then
+    if event:GetModifiers() ~= wx.wxMOD_NONE then
+      event:Skip()
+      return
+    elseif keycode == wx.WXK_UP then
       linenow = linenow - 1
       if linenow <= 0 then linenow = linesnow end
     elseif keycode == wx.WXK_DOWN then
