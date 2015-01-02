@@ -176,10 +176,24 @@ function CommandBarShow(params)
       event:Skip()
       return
     elseif keycode == wx.WXK_UP then
-      linenow = linenow - 1
-      if linenow <= 0 then linenow = linesnow end
+      if linesnow > 0 then
+        linenow = linenow - 1
+        if linenow <= 0 then linenow = linesnow end
+      end
     elseif keycode == wx.WXK_DOWN then
-      if linesnow > 0 then linenow = linenow % linesnow + 1 end
+      if linesnow > 0 then
+        linenow = linenow % linesnow + 1
+      end
+    elseif keycode == wx.WXK_PAGEDOWN then
+      if linesnow > 0 then
+        linenow = linenow + maxlines
+        if linenow > linesnow then linenow = linesnow end
+      end
+    elseif keycode == wx.WXK_PAGEUP then
+      if linesnow > 0 then
+        linenow = linenow - maxlines
+        if linenow <= 0 then linenow = 1 end
+      end
     elseif keycode == wx.WXK_ESCAPE then
       onExit()
       return
