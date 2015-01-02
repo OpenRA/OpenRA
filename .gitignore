@@ -12,6 +12,12 @@ obj
 *.lastcodeanalysissucceeded
 _ReSharper.*/
 
+# movies
+*.vqa
+
+# archives
+*.mix
+
 # binaries
 mods/*/*.dll
 mods/*/*.mdb
@@ -32,6 +38,7 @@ thirdparty/windows/freetype6.dll
 thirdparty/nunit*
 thirdparty/windows/SDL2.dll
 thirdparty/Mono.Nat.dll
+thirdparty/nuget.exe
 
 # backup files by various editors
 *~
@@ -72,5 +79,3 @@ StyleCopViolations.xml
 # SublimeText
 *.sublime-project
 *.sublime-workspace
-*.mix
-*.vqa
