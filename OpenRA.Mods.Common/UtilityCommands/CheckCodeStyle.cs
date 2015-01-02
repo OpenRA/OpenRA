@@ -27,7 +27,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		[Desc("DIRECTORY", "Check the *.cs source code files in a directory for code style violations.")]
 		public void Run(ModData modData, string[] args)
 		{
-			var projectPath = Path.GetFullPath(args[1]);
+			var relativePath = args[1];
+			var projectPath = Path.GetFullPath(relativePath);
 
 			var console = new StyleCopConsole(null, false, null, null, true);
 			var project = new CodeProject(0, projectPath, new Configuration(null));
@@ -39,6 +40,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			if (violationCount > 0)
 				Environment.Exit(1);
+			else
+				Console.WriteLine("No violations encountered in {0}.".F(relativePath));
 		}
 
 		void OnViolationEncountered(object sender, ViolationEventArgs e)
