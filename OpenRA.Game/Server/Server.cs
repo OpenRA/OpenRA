@@ -157,8 +157,8 @@ namespace OpenRA.Server
 				{
 					var checkRead = new List<Socket>();
 					if (State == ServerState.WaitingPlayers) checkRead.Add(listener.Server);
-					foreach (var c in Conns) checkRead.Add(c.socket);
-					foreach (var c in PreConns) checkRead.Add(c.socket);
+					foreach (var c in Conns) checkRead.Add(c.Socket);
+					foreach (var c in PreConns) checkRead.Add(c.Socket);
 
 					if (checkRead.Count > 0) Socket.Select(checkRead, null, null, timeout);
 					if (State == ServerState.ShuttingDown)
@@ -171,12 +171,12 @@ namespace OpenRA.Server
 						if (s == listener.Server) AcceptConnection();
 						else if (PreConns.Count > 0)
 						{
-							var p = PreConns.SingleOrDefault(c => c.socket == s);
+							var p = PreConns.SingleOrDefault(c => c.Socket == s);
 							if (p != null) p.ReadData(this);
 						}
 						else if (Conns.Count > 0)
 						{
-							var conn = Conns.SingleOrDefault(c => c.socket == s);
+							var conn = Conns.SingleOrDefault(c => c.Socket == s);
 							if (conn != null) conn.ReadData(this);
 						}
 
@@ -228,16 +228,16 @@ namespace OpenRA.Server
 				return;
 			}
 
-			var newConn = new Connection { socket = newSocket };
+			var newConn = new Connection { Socket = newSocket };
 			try
 			{
-				newConn.socket.Blocking = false;
-				newConn.socket.NoDelay = true;
+				newConn.Socket.Blocking = false;
+				newConn.Socket.NoDelay = true;
 
 				// assign the player number.
 				newConn.PlayerIndex = ChooseFreePlayerIndex();
-				SendData(newConn.socket, BitConverter.GetBytes(ProtocolVersion.Version));
-				SendData(newConn.socket, BitConverter.GetBytes(newConn.PlayerIndex));
+				SendData(newConn.Socket, BitConverter.GetBytes(ProtocolVersion.Version));
+				SendData(newConn.Socket, BitConverter.GetBytes(newConn.PlayerIndex));
 				PreConns.Add(newConn);
 
 				// Dispatch a handshake order
@@ -264,7 +264,7 @@ namespace OpenRA.Server
 				if (State == ServerState.GameStarted)
 				{
 					Log.Write("server", "Rejected connection from {0}; game is already started.",
-						newConn.socket.RemoteEndPoint);
+						newConn.Socket.RemoteEndPoint);
 
 					SendOrderTo(newConn, "ServerError", "The game has already started");
 					DropClient(newConn);
@@ -284,7 +284,7 @@ namespace OpenRA.Server
 				var client = new Session.Client()
 				{
 					Name = handshake.Client.Name,
-					IpAddress = ((IPEndPoint)newConn.socket.RemoteEndPoint).Address.ToString(),
+					IpAddress = ((IPEndPoint)newConn.Socket.RemoteEndPoint).Address.ToString(),
 					Index = newConn.PlayerIndex,
 					Slot = LobbyInfo.FirstEmptySlot(),
 					PreferredColor = handshake.Client.Color,
@@ -311,7 +311,7 @@ namespace OpenRA.Server
 				if (ModData.Manifest.Mod.Id != handshake.Mod)
 				{
 					Log.Write("server", "Rejected connection from {0}; mods do not match.",
-						newConn.socket.RemoteEndPoint);
+						newConn.Socket.RemoteEndPoint);
 
 					SendOrderTo(newConn, "ServerError", "Server is running an incompatible mod");
 					DropClient(newConn);
@@ -321,7 +321,7 @@ namespace OpenRA.Server
 				if (ModData.Manifest.Mod.Version != handshake.Version && !LobbyInfo.GlobalSettings.AllowVersionMismatch)
 				{
 					Log.Write("server", "Rejected connection from {0}; Not running the same version.",
-						newConn.socket.RemoteEndPoint);
+						newConn.Socket.RemoteEndPoint);
 
 					SendOrderTo(newConn, "ServerError", "Server is running an incompatible version");
 					DropClient(newConn);
@@ -332,7 +332,7 @@ namespace OpenRA.Server
 				var bans = Settings.Ban.Union(TempBans);
 				if (bans.Contains(client.IpAddress))
 				{
-					Log.Write("server", "Rejected connection from {0}; Banned.", newConn.socket.RemoteEndPoint);
+					Log.Write("server", "Rejected connection from {0}; Banned.", newConn.Socket.RemoteEndPoint);
 					SendOrderTo(newConn, "ServerError", "You have been {0} from the server".F(Settings.Ban.Contains(client.IpAddress) ? "banned" : "temporarily banned"));
 					DropClient(newConn);
 					return;
@@ -347,7 +347,7 @@ namespace OpenRA.Server
 				LobbyInfo.ClientPings.Add(clientPing);
 
 				Log.Write("server", "Client {0}: Accepted connection from {1}.",
-				          newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
+				          newConn.PlayerIndex, newConn.Socket.RemoteEndPoint);
 
 				foreach (var t in serverTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
@@ -391,10 +391,10 @@ namespace OpenRA.Server
 		{
 			try
 			{
-				SendData(c.socket, BitConverter.GetBytes(data.Length + 4));
-				SendData(c.socket, BitConverter.GetBytes(client));
-				SendData(c.socket, BitConverter.GetBytes(frame));
-				SendData(c.socket, data);
+				SendData(c.Socket, BitConverter.GetBytes(data.Length + 4));
+				SendData(c.Socket, BitConverter.GetBytes(client));
+				SendData(c.Socket, BitConverter.GetBytes(frame));
+				SendData(c.Socket, data);
 			}
 			catch (Exception e)
 			{
@@ -571,7 +571,7 @@ namespace OpenRA.Server
 
 			try
 			{
-				toDrop.socket.Disconnect(false);
+				toDrop.Socket.Disconnect(false);
 			}
 			catch { }
 

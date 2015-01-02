@@ -91,7 +91,7 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				// Select all neighbors inside the map boundries
 				var thisCell = cell;	// benign closure hazard
-				var neighbors = CVec.directions.Select(d => d + thisCell)
+				var neighbors = CVec.Directions.Select(d => d + thisCell)
 					.Where(c => map.Contains(c));
 
 				var found = false;
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.RA.Traits
 					domains[n] = domain;
 
 					// Don't crawl off the map, or add already-visited cells
-					var neighbors = CVec.directions.Select(d => n + d)
+					var neighbors = CVec.Directions.Select(d => n + d)
 						.Where(p => map.Contains(p) && !visited[p]);
 
 					foreach (var neighbor in neighbors)

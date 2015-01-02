@@ -148,7 +148,7 @@ namespace OpenRA.Mods.RA.Traits
 			new CVec[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1) },
 			new CVec[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) },
 			new CVec[] { new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1) },
-			CVec.directions,
+			CVec.Directions,
 			new CVec[] { new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) },
 			new CVec[] { new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },
 			new CVec[] { new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },

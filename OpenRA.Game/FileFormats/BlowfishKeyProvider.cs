@@ -13,36 +13,36 @@ using System.Linq;
 
 namespace OpenRA.FileFormats
 {
-	/* possibly the fugliest C# i've ever seen. */
+	/* TODO: Convert this direct C port into readable code. */
 
 	class BlowfishKeyProvider
 	{
-		const string pubkeyStr = "AihRvNoIbTn85FZRYNZRcT+i6KpU+maCsEqr3Q5q+LDB5tH7Tz2qQ38V";
+		const string PublicKeyString = "AihRvNoIbTn85FZRYNZRcT+i6KpU+maCsEqr3Q5q+LDB5tH7Tz2qQ38V";
 
 		class PublicKey
 		{
-			public uint[] key1 = new uint[64];
-			public uint[] key2 = new uint[64];
-			public uint len;
+			public uint[] KeyOne = new uint[64];
+			public uint[] KeyTwo = new uint[64];
+			public uint Len;
 		}
 
 		PublicKey pubkey = new PublicKey();
 
-		uint[] glob1 = new uint[64];
-		uint glob1_bitlen, glob1_len_x2;
-		uint[] glob2 = new uint[130];
-		uint[] glob1_hi = new uint[4];
-		uint[] glob1_hi_inv = new uint[4];
-		uint glob1_hi_bitlen;
-		uint glob1_hi_inv_lo, glob1_hi_inv_hi;
+		uint[] globOne = new uint[64];
+		uint globOneBitLen, globOneLenXTwo;
+		uint[] globTwo = new uint[130];
+		uint[] globOneHigh = new uint[4];
+		uint[] globOneHighInv = new uint[4];
+		uint globOneHighBitLen;
+		uint globOneHighInvLow, globOneHighInvHigh;
 
-		static void init_bignum(uint[] n, uint val, uint len)
+		static void InitBigNum(uint[] n, uint val, uint len)
 		{
 			for (var i = 0; i < len; i++) n[i] = 0;
 			n[0] = val;
 		}
 
-		static void move_key_to_big(uint[] n, byte[] key, uint klen, uint blen)
+		static void MoveKeyToBig(uint[] n, byte[] key, uint klen, uint blen)
 		{
 			byte sign;
 
@@ -51,9 +51,9 @@ namespace OpenRA.FileFormats
 
 			unsafe
 			{
-				fixed (uint* _pn = &n[0])
+				fixed (uint* tempPn = &n[0])
 				{
-					var pn = (byte*)_pn;
+					var pn = (byte*)tempPn;
 					var i = blen * 4;
 					for (; i > klen; i--) pn[i - 1] = (byte)sign;
 					for (; i > 0; i--) pn[i - 1] = key[klen - i];
@@ -61,7 +61,7 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		static void key_to_bignum(uint[] n, byte[] key, uint len)
+		static void KeyToBigNum(uint[] n, byte[] key, uint len)
 		{
 			uint keylen;
 			int i;
@@ -84,10 +84,10 @@ namespace OpenRA.FileFormats
 			}
 
 			if (keylen <= len * 4)
-				move_key_to_big(n, key.Skip(j).ToArray(), keylen, len);
+				MoveKeyToBig(n, key.Skip(j).ToArray(), keylen, len);
 		}
 
-		static uint len_bignum(uint[] n, uint len)
+		static uint LenBigNum(uint[] n, uint len)
 		{
 			uint i;
 			i = len - 1;
@@ -95,10 +95,10 @@ namespace OpenRA.FileFormats
 			return i + 1;
 		}
 
-		static uint bitlen_bignum(uint[] n, uint len)
+		static uint BitLenBigNum(uint[] n, uint len)
 		{
 			uint ddlen, bitlen, mask;
-			ddlen = len_bignum(n, len);
+			ddlen = LenBigNum(n, len);
 			if (ddlen == 0) return 0;
 			bitlen = ddlen * 32;
 			mask = 0x80000000;
@@ -111,21 +111,21 @@ namespace OpenRA.FileFormats
 			return bitlen;
 		}
 
-		void init_pubkey()
+		void InitPublicKey()
 		{
-			init_bignum(pubkey.key2, 0x10001, 64);
+			InitBigNum(pubkey.KeyTwo, 0x10001, 64);
 
-			key_to_bignum(pubkey.key1, Convert.FromBase64String(pubkeyStr), 64);
-			pubkey.len = bitlen_bignum(pubkey.key1, 64) - 1;
+			KeyToBigNum(pubkey.KeyOne, Convert.FromBase64String(PublicKeyString), 64);
+			pubkey.Len = BitLenBigNum(pubkey.KeyOne, 64) - 1;
 		}
 
-		uint len_predata()
+		uint LenPreData()
 		{
-			var a = (pubkey.len - 1) / 8;
+			var a = (pubkey.Len - 1) / 8;
 			return (55 / a + 1) * (a + 1);
 		}
 
-		static int cmp_bignum(uint[] n1, uint[] n2, uint len)
+		static int CompareBigNum(uint[] n1, uint[] n2, uint len)
 		{
 			while (len > 0)
 			{
@@ -137,12 +137,12 @@ namespace OpenRA.FileFormats
 			return 0;
 		}
 
-		static void mov_bignum(uint[] dest, uint[] src, uint len)
+		static void MoveBigNum(uint[] dest, uint[] src, uint len)
 		{
 			Array.Copy(src, dest, len);
 		}
 
-		static void shr_bignum(uint[] n, int bits, int len)
+		static void ShrBigNum(uint[] n, int bits, int len)
 		{
 			int i; var i2 = bits / 32;
 
@@ -154,12 +154,11 @@ namespace OpenRA.FileFormats
 			}
 
 			if (bits == 0) return;
-			for (i = 0; i < len - 1; i++) n[i] = (n[i] >> bits) | (n[i + 1] << (32 -
-		  bits));
+			for (i = 0; i < len - 1; i++) n[i] = (n[i] >> bits) | (n[i + 1] << (32 - bits));
 			n[i] = n[i] >> bits;
 		}
 
-		static void shl_bignum(uint[] n, int bits, int len)
+		static void ShlBigNum(uint[] n, int bits, int len)
 		{
 			int i, i2;
 
@@ -172,25 +171,24 @@ namespace OpenRA.FileFormats
 			}
 
 			if (bits == 0) return;
-			for (i = len - 1; i > 0; i--) n[i] = (n[i] << bits) | (n[i - 1] >> (32 -
-		  bits));
+			for (i = len - 1; i > 0; i--) n[i] = (n[i] << bits) | (n[i - 1] >> (32 - bits));
 			n[0] <<= bits;
 		}
 
-		static uint sub_bignum(uint[] dest, uint[] src1, uint[] src2, uint carry, int len)
+		static uint SubBigNum(uint[] dest, uint[] src1, uint[] src2, uint carry, int len)
 		{
 			uint i1, i2;
 
 			len += len;
 			unsafe
 			{
-				fixed (uint* _ps1 = &src1[0])
-				fixed (uint* _ps2 = &src2[0])
-				fixed (uint* _pd = &dest[0])
+				fixed (uint* tempPs1 = &src1[0])
+				fixed (uint* tempPs2 = &src2[0])
+				fixed (uint* tempPd = &dest[0])
 				{
-					var ps1 = (ushort*)_ps1;
-					var ps2 = (ushort*)_ps2;
-					var pd = (ushort*)_pd;
+					var ps1 = (ushort*)tempPs1;
+					var ps2 = (ushort*)tempPs2;
+					var pd = (ushort*)tempPd;
 
 					while (--len != -1)
 					{
@@ -205,7 +203,7 @@ namespace OpenRA.FileFormats
 			return carry;
 		}
 
-		static unsafe uint sub_bignum(uint* dest, uint* src1, uint* src2, uint carry, int len)
+		static unsafe uint SubBigNum(uint* dest, uint* src1, uint* src2, uint carry, int len)
 		{
 			uint i1, i2;
 
@@ -226,29 +224,29 @@ namespace OpenRA.FileFormats
 			return carry;
 		}
 
-		static void inv_bignum(uint[] n1, uint[] n2, uint len)
+		static void InvertBigNum(uint[] n1, uint[] n2, uint len)
 		{
-			var n_tmp = new uint[64];
-			uint n2_bytelen, bit;
-			int n2_bitlen;
+			var nTmp = new uint[64];
+			uint nTwoByteLen, bit;
+			int nTwoBitLen;
 
 			var j = 0;
 
-			init_bignum(n_tmp, 0, len);
-			init_bignum(n1, 0, len);
-			n2_bitlen = (int)bitlen_bignum(n2, len);
-			bit = ((uint)1) << (n2_bitlen % 32);
-			j = ((n2_bitlen + 32) / 32) - 1;
-			n2_bytelen = (uint)((n2_bitlen - 1) / 32) * 4;
-			n_tmp[n2_bytelen / 4] |= ((uint)1) << ((n2_bitlen - 1) & 0x1f);
+			InitBigNum(nTmp, 0, len);
+			InitBigNum(n1, 0, len);
+			nTwoBitLen = (int)BitLenBigNum(n2, len);
+			bit = ((uint)1) << (nTwoBitLen % 32);
+			j = ((nTwoBitLen + 32) / 32) - 1;
+			nTwoByteLen = (uint)((nTwoBitLen - 1) / 32) * 4;
+			nTmp[nTwoByteLen / 4] |= ((uint)1) << ((nTwoBitLen - 1) & 0x1f);
 
-			while (n2_bitlen > 0)
+			while (nTwoBitLen > 0)
 			{
-				n2_bitlen--;
-				shl_bignum(n_tmp, 1, (int)len);
-				if (cmp_bignum(n_tmp, n2, len) != -1)
+				nTwoBitLen--;
+				ShlBigNum(nTmp, 1, (int)len);
+				if (CompareBigNum(nTmp, n2, len) != -1)
 				{
-					sub_bignum(n_tmp, n_tmp, n2, 0, (int)len);
+					SubBigNum(nTmp, nTmp, n2, 0, (int)len);
 					n1[j] |= bit;
 				}
 
@@ -260,45 +258,45 @@ namespace OpenRA.FileFormats
 				}
 			}
 
-			init_bignum(n_tmp, 0, len);
+			InitBigNum(nTmp, 0, len);
 		}
 
-		static void inc_bignum(uint[] n, uint len)
+		static void IncrementBigNum(uint[] n, uint len)
 		{
 			var i = 0;
 			while ((++n[i] == 0) && (--len > 0)) i++;
 		}
 
-		void init_two_dw(uint[] n, uint len)
+		void InitTwoDw(uint[] n, uint len)
 		{
-			mov_bignum(glob1, n, len);
-			glob1_bitlen = bitlen_bignum(glob1, len);
-			glob1_len_x2 = (glob1_bitlen + 15) / 16;
-			mov_bignum(glob1_hi, glob1.Skip((int)len_bignum(glob1, len) - 2).ToArray(), 2);
-			glob1_hi_bitlen = bitlen_bignum(glob1_hi, 2) - 32;
-			shr_bignum(glob1_hi, (int)glob1_hi_bitlen, 2);
-			inv_bignum(glob1_hi_inv, glob1_hi, 2);
-			shr_bignum(glob1_hi_inv, 1, 2);
-			glob1_hi_bitlen = (glob1_hi_bitlen + 15) % 16 + 1;
-			inc_bignum(glob1_hi_inv, 2);
-			if (bitlen_bignum(glob1_hi_inv, 2) > 32)
+			MoveBigNum(globOne, n, len);
+			globOneBitLen = BitLenBigNum(globOne, len);
+			globOneLenXTwo = (globOneBitLen + 15) / 16;
+			MoveBigNum(globOneHigh, globOne.Skip((int)LenBigNum(globOne, len) - 2).ToArray(), 2);
+			globOneHighBitLen = BitLenBigNum(globOneHigh, 2) - 32;
+			ShrBigNum(globOneHigh, (int)globOneHighBitLen, 2);
+			InvertBigNum(globOneHighInv, globOneHigh, 2);
+			ShrBigNum(globOneHighInv, 1, 2);
+			globOneHighBitLen = (globOneHighBitLen + 15) % 16 + 1;
+			IncrementBigNum(globOneHighInv, 2);
+			if (BitLenBigNum(globOneHighInv, 2) > 32)
 			{
-				shr_bignum(glob1_hi_inv, 1, 2);
-				glob1_hi_bitlen--;
+				ShrBigNum(globOneHighInv, 1, 2);
+				globOneHighBitLen--;
 			}
 
-			glob1_hi_inv_lo = (ushort)glob1_hi_inv[0];
-			glob1_hi_inv_hi = (ushort)(glob1_hi_inv[0] >> 16);
+			globOneHighInvLow = (ushort)globOneHighInv[0];
+			globOneHighInvHigh = (ushort)(globOneHighInv[0] >> 16);
 		}
 
-		static unsafe void mul_bignum_word(ushort* pn1, uint[] n2, uint mul, uint len)
+		static unsafe void MulBignumWord(ushort* pn1, uint[] n2, uint mul, uint len)
 		{
 			uint i, tmp;
 			unsafe
 			{
-				fixed (uint* _pn2 = &n2[0])
+				fixed (uint* tempPn2 = &n2[0])
 				{
-					var pn2 = (ushort*)_pn2;
+					var pn2 = (ushort*)tempPn2;
 
 					tmp = 0;
 					for (i = 0; i < len; i++)
@@ -314,112 +312,112 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		static void mul_bignum(uint[] dest, uint[] src1, uint[] src2, uint len)
+		static void MulBigNum(uint[] dest, uint[] src1, uint[] src2, uint len)
 		{
-		  uint i;
+			uint i;
 
-		  unsafe
-		  {
-			  fixed (uint* _psrc2 = &src2[0])
-			  fixed (uint* _pdest = &dest[0])
-			  {
-				  var psrc2 = (ushort*)_psrc2;
-				  var pdest = (ushort*)_pdest;
+			unsafe
+			{
+				fixed (uint* tempSrc2 = &src2[0])
+				fixed (uint* tempPdest = &dest[0])
+				{
+					var psrc2 = (ushort*)tempSrc2;
+					var pdest = (ushort*)tempPdest;
 
-				  init_bignum(dest, 0, len * 2);
-				  for (i = 0; i < len * 2; i++)
-					  mul_bignum_word(pdest++, src1, *psrc2++, len * 2);
-			  }
-		  }
+					InitBigNum(dest, 0, len * 2);
+					for (i = 0; i < len * 2; i++)
+						MulBignumWord(pdest++, src1, *psrc2++, len * 2);
+				}
+			}
 		}
 
-		static void not_bignum(uint[] n, uint len)
+		static void NotBigNum(uint[] n, uint len)
 		{
-		  uint i;
-		  for (i = 0; i < len; i++) n[i] = ~n[i];
+			uint i;
+			for (i = 0; i < len; i++) n[i] = ~n[i];
 		}
 
-		static void neg_bignum(uint[] n, uint len)
+		static void NegBigNum(uint[] n, uint len)
 		{
-		  not_bignum(n, len);
-		  inc_bignum(n, len);
+			NotBigNum(n, len);
+			IncrementBigNum(n, len);
 		}
 
-		unsafe uint get_mulword(uint* n)
+		unsafe uint GetMulWord(uint* n)
 		{
 			var wn = (ushort*)n;
-			var i = (uint)((((((((((*(wn - 1) ^ 0xffff) & 0xffff) * glob1_hi_inv_lo + 0x10000) >> 1)
-				 + (((*(wn - 2) ^ 0xffff) * glob1_hi_inv_hi + glob1_hi_inv_hi) >> 1) + 1)
-				 >> 16) + ((((*(wn - 1) ^ 0xffff) & 0xffff) * glob1_hi_inv_hi) >> 1) +
-				 (((*wn ^ 0xffff) * glob1_hi_inv_lo) >> 1) + 1) >> 14) + glob1_hi_inv_hi
-				 * (*wn ^ 0xffff) * 2) >> (int)glob1_hi_bitlen);
+			var i = (uint)((((((((((*(wn - 1) ^ 0xffff) & 0xffff) * globOneHighInvLow + 0x10000) >> 1)
+				 + (((*(wn - 2) ^ 0xffff) * globOneHighInvHigh + globOneHighInvHigh) >> 1) + 1)
+				 >> 16) + ((((*(wn - 1) ^ 0xffff) & 0xffff) * globOneHighInvHigh) >> 1) +
+				 (((*wn ^ 0xffff) * globOneHighInvLow) >> 1) + 1) >> 14) + globOneHighInvHigh
+				 * (*wn ^ 0xffff) * 2) >> (int)globOneHighBitLen);
 			if (i > 0xffff) i = 0xffff;
 			return i & 0xffff;
 		}
 
-		static void dec_bignum(uint[] n, uint len)
+		static void DecBigNum(uint[] n, uint len)
 		{
 			var i = 0;
 			while ((--n[i] == 0xffffffff) && (--len > 0))
 				i++;
 		}
 
-		void calc_a_bignum(uint[] n1, uint[] n2, uint[] n3, uint len)
+		void CalcBigNum(uint[] n1, uint[] n2, uint[] n3, uint len)
 		{
-			uint g2_len_x2, len_diff;
+			uint globTwoXtwo, lenDiff;
 			unsafe
 			{
-				fixed (uint* g1 = &glob1[0])
-				fixed (uint* g2 = &glob2[0])
+				fixed (uint* g1 = &globOne[0])
+				fixed (uint* g2 = &globTwo[0])
 				{
-					mul_bignum(glob2, n2, n3, len);
-					glob2[len * 2] = 0;
-					g2_len_x2 = len_bignum(glob2, len * 2 + 1) * 2;
-					if (g2_len_x2 >= glob1_len_x2)
+					MulBigNum(globTwo, n2, n3, len);
+					globTwo[len * 2] = 0;
+					globTwoXtwo = LenBigNum(globTwo, len * 2 + 1) * 2;
+					if (globTwoXtwo >= globOneLenXTwo)
 					{
-						inc_bignum(glob2, len * 2 + 1);
-						neg_bignum(glob2, len * 2 + 1);
-						len_diff = g2_len_x2 + 1 - glob1_len_x2;
-						var esi = ((ushort*)g2) + (1 + g2_len_x2 - glob1_len_x2);
-						var edi = ((ushort*)g2) + (g2_len_x2 + 1);
-						for (; len_diff != 0; len_diff--)
+						IncrementBigNum(globTwo, len * 2 + 1);
+						NegBigNum(globTwo, len * 2 + 1);
+						lenDiff = globTwoXtwo + 1 - globOneLenXTwo;
+						var esi = ((ushort*)g2) + (1 + globTwoXtwo - globOneLenXTwo);
+						var edi = ((ushort*)g2) + (globTwoXtwo + 1);
+						for (; lenDiff != 0; lenDiff--)
 						{
 							edi--;
-							var tmp = get_mulword((uint*)edi);
+							var tmp = GetMulWord((uint*)edi);
 							esi--;
 							if (tmp > 0)
 							{
-								mul_bignum_word(esi, glob1, tmp, 2 * len);
+								MulBignumWord(esi, globOne, tmp, 2 * len);
 								if ((*edi & 0x8000) == 0)
 								{
-									if (0 != sub_bignum((uint*)esi, (uint*)esi, g1, 0, (int)len))(*edi)--;
+									if (0 != SubBigNum((uint*)esi, (uint*)esi, g1, 0, (int)len))(*edi)--;
 								}
 							}
 						}
 
-						neg_bignum(glob2, len);
-						dec_bignum(glob2, len);
+						NegBigNum(globTwo, len);
+						DecBigNum(globTwo, len);
 					}
 
-					mov_bignum(n1, glob2, len);
+					MoveBigNum(n1, globTwo, len);
 				}
 			}
 		}
 
-		void clear_tmp_vars(uint len)
+		void ClearTempVars(uint len)
 		{
-			init_bignum(glob1, 0, len);
-			init_bignum(glob2, 0, len);
-			init_bignum(glob1_hi_inv, 0, 4);
-			init_bignum(glob1_hi, 0, 4);
-			glob1_bitlen = 0;
-			glob1_hi_bitlen = 0;
-			glob1_len_x2 = 0;
-			glob1_hi_inv_lo = 0;
-			glob1_hi_inv_hi = 0;
+			InitBigNum(globOne, 0, len);
+			InitBigNum(globTwo, 0, len);
+			InitBigNum(globOneHighInv, 0, 4);
+			InitBigNum(globOneHigh, 0, 4);
+			globOneBitLen = 0;
+			globOneHighBitLen = 0;
+			globOneLenXTwo = 0;
+			globOneHighInvLow = 0;
+			globOneHighInvHigh = 0;
 		}
 
-		void calc_a_key(uint[] n1, uint[] n2, uint[] n3, uint[] n4, uint len)
+		void CalcKey(uint[] n1, uint[] n2, uint[] n3, uint[] n4, uint len)
 		{
 			var n_tmp = new uint[64];
 			uint n3_len, n4_len;
@@ -428,19 +426,19 @@ namespace OpenRA.FileFormats
 
 			unsafe
 			{
-				fixed (uint* _pn3 = &n3[0])
+				fixed (uint* tempPn3 = &n3[0])
 				{
-					var pn3 = _pn3;
+					var pn3 = tempPn3;
 
-					init_bignum(n1, 1, len);
-					n4_len = len_bignum(n4, len);
-					init_two_dw(n4, n4_len);
-					n3_bitlen = (int)bitlen_bignum(n3, n4_len);
+					InitBigNum(n1, 1, len);
+					n4_len = LenBigNum(n4, len);
+					InitTwoDw(n4, n4_len);
+					n3_bitlen = (int)BitLenBigNum(n3, n4_len);
 					n3_len = (uint)((n3_bitlen + 31) / 32);
 					bit_mask = (((uint)1) << ((n3_bitlen - 1) % 32)) >> 1;
 					pn3 += n3_len - 1;
 					n3_bitlen--;
-					mov_bignum(n1, n2, n4_len);
+					MoveBigNum(n1, n2, n4_len);
 					while (--n3_bitlen != -1)
 					{
 						if (bit_mask == 0)
@@ -449,40 +447,40 @@ namespace OpenRA.FileFormats
 							pn3--;
 						}
 
-						calc_a_bignum(n_tmp, n1, n1, n4_len);
+						CalcBigNum(n_tmp, n1, n1, n4_len);
 						if ((*pn3 & bit_mask) != 0)
-							calc_a_bignum(n1, n_tmp, n2, n4_len);
+							CalcBigNum(n1, n_tmp, n2, n4_len);
 						else
-							mov_bignum(n1, n_tmp, n4_len);
+							MoveBigNum(n1, n_tmp, n4_len);
 						bit_mask >>= 1;
 					}
 
-					init_bignum(n_tmp, 0, n4_len);
-					clear_tmp_vars(len);
+					InitBigNum(n_tmp, 0, n4_len);
+					ClearTempVars(len);
 				}
 			}
 		}
 
-		static unsafe void memcpy(byte* dest, byte* src, int len)
+		static unsafe void Memcopy(byte* dest, byte* src, int len)
 		{
 			while (len-- != 0) *dest++ = *src++;
 		}
 
-		unsafe void process_predata(byte* pre, uint pre_len, byte* buf)
+		unsafe void ProcessPredata(byte* pre, uint pre_len, byte* buf)
 		{
 			var n2 = new uint[64];
 			var n3 = new uint[64];
 
-			var a = (pubkey.len - 1) / 8;
+			var a = (pubkey.Len - 1) / 8;
 			while (a + 1 <= pre_len)
 			{
-				init_bignum(n2, 0, 64);
+				InitBigNum(n2, 0, 64);
 				fixed (uint* pn2 = &n2[0])
-					memcpy((byte*)pn2, pre, (int)a + 1);
-				calc_a_key(n3, n2, pubkey.key2, pubkey.key1, 64);
+					Memcopy((byte*)pn2, pre, (int)a + 1);
+				CalcKey(n3, n2, pubkey.KeyTwo, pubkey.KeyOne, 64);
 
 				fixed (uint* pn3 = &n3[0])
-					memcpy(buf, (byte*)pn3, (int)a);
+					Memcopy(buf, (byte*)pn3, (int)a);
 
 				pre_len -= a + 1;
 				pre += a + 1;
@@ -492,14 +490,14 @@ namespace OpenRA.FileFormats
 
 		public byte[] DecryptKey(byte[] src)
 		{
-			init_pubkey();
+			InitPublicKey();
 			var dest = new byte[256];
 
 			unsafe
 			{
 				fixed (byte* pdest = &dest[0])
 				fixed (byte* psrc = &src[0])
-					process_predata(psrc, len_predata(), pdest);
+					ProcessPredata(psrc, LenPreData(), pdest);
 			}
 
 			return dest.Take(56).ToArray();

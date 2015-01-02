@@ -24,8 +24,8 @@ namespace OpenRA.Traits
 	public class SelectionDecorations : IPostRenderSelection
 	{
 		// depends on the order of pips in TraitsInterfaces.cs!
-		static readonly string[] pipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
-		static readonly string[] tagStrings = { "", "tag-fake", "tag-primary" };
+		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
+		static readonly string[] TagStrings = { "", "tag-fake", "tag-primary" };
 
 		public SelectionDecorationsInfo Info;
 		Actor self;
@@ -79,7 +79,7 @@ namespace OpenRA.Traits
 				yield break;
 
 			var pipImages = new Animation(self.World, "pips");
-			pipImages.PlayRepeating(pipStrings[0]);
+			pipImages.PlayRepeating(PipStrings[0]);
 
 			var pipSize = pipImages.Image.size.ToInt2();
 			var pipxyBase = basePosition + new int2(1 - pipSize.X / 2, -(3 + pipSize.Y / 2));
@@ -101,7 +101,7 @@ namespace OpenRA.Traits
 						pipxyOffset.Y -= pipSize.Y;
 					}
 
-					pipImages.PlayRepeating(pipStrings[(int)pip]);
+					pipImages.PlayRepeating(PipStrings[(int)pip]);
 					pipxyOffset += new int2(pipSize.X, 0);
 
 					yield return new UISpriteRenderable(pipImages.Image, pipxyBase + pipxyOffset, 0, pal, 1f);
@@ -126,7 +126,7 @@ namespace OpenRA.Traits
 					if (tag == TagType.None)
 						continue;
 
-					tagImages.PlayRepeating(tagStrings[(int)tag]);
+					tagImages.PlayRepeating(TagStrings[(int)tag]);
 					var pos = basePosition + tagxyOffset - (0.5f * tagImages.Image.size).ToInt2();
 					yield return new UISpriteRenderable(tagImages.Image, pos, 0, pal, 1f);
 

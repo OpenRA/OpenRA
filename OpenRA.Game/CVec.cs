@@ -58,7 +58,7 @@ namespace OpenRA
 
 		public override string ToString() { return X + "," + Y; }
 
-		public static readonly CVec[] directions =
+		public static readonly CVec[] Directions =
 		{
 			new CVec(-1, -1),
 			new CVec(-1,  0),

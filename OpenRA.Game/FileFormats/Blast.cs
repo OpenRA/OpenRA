@@ -66,7 +66,7 @@ namespace OpenRA.FileFormats
 
 			if (coded < 0 || coded > 1)
 				throw new NotImplementedException("Invalid datastream");
-			var EncodedLiterals = coded == 1;
+			var encodedLiterals = coded == 1;
 
 			// log2(dictionary size) - 6
 			var dict = br.ReadBits(8);
@@ -145,7 +145,7 @@ namespace OpenRA.FileFormats
 				else
 				{
 					// literal value
-					var symbol = EncodedLiterals ? Decode(litcode, br) : br.ReadBits(8);
+					var symbol = encodedLiterals ? Decode(litcode, br) : br.ReadBits(8);
 					outBuffer[next++] = (byte)symbol;
 					if (next == MAXWIN)
 					{

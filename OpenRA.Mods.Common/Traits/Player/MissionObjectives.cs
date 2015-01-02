@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		public ReadOnlyList<MissionObjective> Objectives;
 
 		[Sync]
-		public int ObjectivesHash { get { return Objectives.Aggregate(0, (code, objective) => code ^ Sync.hash(objective.State)); } }
+		public int ObjectivesHash { get { return Objectives.Aggregate(0, (code, objective) => code ^ Sync.Hash(objective.State)); } }
 
 		// This property is used as a flag in 'Cooperative' games to mark that the player has completed all his objectives.
 		// The player's WinState is only updated when his allies have all completed their objective as well.

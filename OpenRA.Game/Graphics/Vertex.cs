@@ -15,8 +15,8 @@ namespace OpenRA.Graphics
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Vertex
 	{
-		public float x, y, z, u, v;
-		public float p, c;
+		float x, y, z, u, v;
+		float p, c;
 
 		public Vertex(float2 xy, float u, float v, float p, float c)
 		{

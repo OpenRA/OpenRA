@@ -24,17 +24,17 @@ namespace OpenRA.Traits
 
 	public class PlayerResources : ITick, ISync
 	{
-		const float displayCashFracPerFrame = .07f;
-		const int displayCashDeltaPerFrame = 37;
-		readonly Player Owner;
-		int AdviceInterval;
+		const float DisplayCashFracPerFrame = .07f;
+		const int DisplayCashDeltaPerFrame = 37;
+		readonly Player owner;
+		int adviceInterval;
 
 		public PlayerResources(Actor self, PlayerResourcesInfo info)
 		{
-			Owner = self.Owner;
+			owner = self.Owner;
 
 			Cash = self.World.LobbyInfo.GlobalSettings.StartingCash;
-			AdviceInterval = info.AdviceInterval;
+			adviceInterval = info.AdviceInterval;
 		}
 
 		[Sync] public int Cash;
@@ -108,7 +108,7 @@ namespace OpenRA.Traits
 				nextCashTickTime--;
 
 			ResourceCapacity = self.World.ActorsWithTrait<IStoreResources>()
-				.Where(a => a.Actor.Owner == Owner)
+				.Where(a => a.Actor.Owner == owner)
 				.Sum(a => a.Trait.Capacity);
 
 			if (Resources > ResourceCapacity)
@@ -118,53 +118,52 @@ namespace OpenRA.Traits
 			{
 				if (Resources > 0.8 * ResourceCapacity)
 				{
-					Sound.PlayNotification(self.World.Map.Rules, Owner, "Speech", "SilosNeeded", Owner.Country.Race);
+					Sound.PlayNotification(self.World.Map.Rules, owner, "Speech", "SilosNeeded", owner.Country.Race);
 					AlertSilo = true;
 				}
 				else
 					AlertSilo = false;
 
-				nextSiloAdviceTime = AdviceInterval;
+				nextSiloAdviceTime = adviceInterval;
 			}
 
 			var diff = Math.Abs(Cash - DisplayCash);
-			var move = Math.Min(Math.Max((int)(diff * displayCashFracPerFrame),
-					displayCashDeltaPerFrame), diff);
-				
+			var move = Math.Min(Math.Max((int)(diff * DisplayCashFracPerFrame), DisplayCashDeltaPerFrame), diff);
+
 			if (DisplayCash < Cash)
 			{
 				DisplayCash += move;
-				playCashTickUp(self);
+				PlayCashTickUp(self);
 			}
 			else if (DisplayCash > Cash)
 			{
 				DisplayCash -= move;
-				playCashTickDown(self);
+				PlayCashTickDown(self);
 			}
 
 			diff = Math.Abs(Resources - DisplayResources);
-			move = Math.Min(Math.Max((int)(diff * displayCashFracPerFrame),
-					displayCashDeltaPerFrame), diff);
+			move = Math.Min(Math.Max((int)(diff * DisplayCashFracPerFrame),
+					DisplayCashDeltaPerFrame), diff);
 
 			if (DisplayResources < Resources)
 			{
 				DisplayResources += move;
-				playCashTickUp(self);
+				PlayCashTickUp(self);
 			}
 			else if (DisplayResources > Resources)
 			{
 				DisplayResources -= move;
-				playCashTickDown(self);
+				PlayCashTickDown(self);
 			}
 		}
-		
-		public void playCashTickUp(Actor self)
+
+		public void PlayCashTickUp(Actor self)
 		{
 			if (Game.Settings.Sound.CashTicks)
 				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "CashTickUp", self.Owner.Country.Race);
 		}
-		
-		public void playCashTickDown(Actor self)
+
+		public void PlayCashTickDown(Actor self)
 		{
 			if (Game.Settings.Sound.CashTicks && nextCashTickTime == 0)
 			{

@@ -19,14 +19,14 @@ namespace OpenRA.Widgets
 		public Func<string> GetPalette;
 		public Func<Sprite> GetSprite;
 
-		protected readonly WorldRenderer worldRenderer;
+		protected readonly WorldRenderer WorldRenderer;
 
 		[ObjectCreator.UseCtor]
 		public SpriteWidget(WorldRenderer worldRenderer)
 		{
 			GetPalette = () => Palette;
 
-			this.worldRenderer = worldRenderer;
+			this.WorldRenderer = worldRenderer;
 		}
 
 		protected SpriteWidget(SpriteWidget other)
@@ -36,7 +36,7 @@ namespace OpenRA.Widgets
 			GetPalette = other.GetPalette;
 			GetSprite = other.GetSprite;
 
-			worldRenderer = other.worldRenderer;
+			WorldRenderer = other.WorldRenderer;
 		}
 
 		public override Widget Clone() { return new SpriteWidget(this); }
@@ -62,7 +62,7 @@ namespace OpenRA.Widgets
 
 			if (palette != cachedPalette)
 			{
-				pr = worldRenderer.Palette(palette);
+				pr = WorldRenderer.Palette(palette);
 				cachedPalette = palette;
 			}
 
