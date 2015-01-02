@@ -47,7 +47,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		void OnViolationEncountered(object sender, ViolationEventArgs e)
 		{
 			violationCount++;
-			Console.WriteLine("{0}:L{1}: [{2}] {3}", e.SourceCode.Path, e.LineNumber, e.Violation.Rule.CheckId, e.Message);
+			var path = e.SourceCode.Path.Replace(Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar, "");
+			Console.WriteLine("{0}:L{1}: [{2}] {3}", path, e.LineNumber, e.Violation.Rule.CheckId, e.Message);
 		}
 	}
 }
