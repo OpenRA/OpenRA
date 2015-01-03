@@ -26,7 +26,8 @@ namespace OpenRA.Widgets
 
 		protected readonly World World;
 		readonly WorldRenderer worldRenderer;
-		int2 dragStart, dragEnd;
+		int2? dragStart, dragEnd;
+		int2 lastMousePosition;
 
 		[ObjectCreator.UseCtor]
 		public WorldInteractionControllerWidget(World world, WorldRenderer worldRenderer)
@@ -37,15 +38,15 @@ namespace OpenRA.Widgets
 
 		public override void Draw()
 		{
-			var selbox = SelectionBox;
-			if (selbox == null)
+			if (!IsDragging)
 			{
-				foreach (var u in SelectActorsInBox(World, dragStart, dragStart, _ => true))
+				foreach (var u in SelectActorsInBox(World, lastMousePosition, lastMousePosition, _ => true))
 					worldRenderer.DrawRollover(u);
 
 				return;
 			}
 
+			var selbox = SelectionBox;
 			Game.Renderer.WorldLineRenderer.DrawRect(selbox.Value.First.ToFloat2(), selbox.Value.Second.ToFloat2(), Color.White);
 			foreach (var u in SelectActorsInBox(World, selbox.Value.First, selbox.Value.Second, _ => true))
 				worldRenderer.DrawRollover(u);
@@ -62,13 +63,13 @@ namespace OpenRA.Widgets
 				if (!TakeMouseFocus(mi))
 					return false;
 
-				dragStart = dragEnd = xy;
+				dragStart = xy;
 
 				// place buildings
 				ApplyOrders(World, xy, mi);
 			}
 
-			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move)
+			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move && dragStart.HasValue)
 				dragEnd = xy;
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
@@ -85,33 +86,40 @@ namespace OpenRA.Widgets
 
 						World.Selection.Combine(World, newSelection2, true, false);
 					}
-					else
+					else if (dragStart.HasValue)
 					{
-						var newSelection = SelectActorsInBox(World, dragStart, xy, _ => true);
+						var newSelection = SelectActorsInBox(World, dragStart.Value, xy, _ => true);
 						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 					}
 				}
 
-				dragStart = dragEnd = xy;
+				dragStart = dragEnd = null;
 				YieldMouseFocus(mi);
 			}
-
-			if (mi.Button == MouseButton.None && mi.Event == MouseInputEvent.Move)
-				dragStart = dragEnd = xy;
 
 			// don't issue orders while selecting
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down && !hasBox) 
 				ApplyOrders(World, xy, mi);
 
+			lastMousePosition = xy;
+
 			return true;
+		}
+
+		bool IsDragging
+		{
+			get
+			{
+				return dragStart.HasValue && dragEnd.HasValue;
+			}
 		}
 
 		public Pair<int2, int2>? SelectionBox
 		{
 			get
 			{
-				if (dragStart == dragEnd) return null;
-				return Pair.New(dragStart, dragEnd);
+				if (!IsDragging) return null;
+				return Pair.New(dragStart.Value, dragEnd.Value);
 			}
 		}
 
