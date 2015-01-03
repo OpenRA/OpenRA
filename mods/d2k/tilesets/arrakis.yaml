@@ -107,25 +107,25 @@ Templates:
 		Image: BLOXBASE
 		Frames: 12,13,32,33
 		Size: 2,2
-		Category: Sand-Cliff
+		Category: Cliff-Type-Changer
 		PickAny: False
 		Tiles:
-			0: Rough
-			1: Rough
-			3: Rough
-			2: Rough
+			0: Cliff
+			1: Transition
+			3: Transition
+			2: Cliff
 	Template@3:
 		Id: 3
 		Image: BLOXBASE
 		Frames: 14,15,34,35
 		Size: 2,2
-		Category: Sand-Cliff
+		Category: Cliff-Type-Changer
 		PickAny: False
 		Tiles:
-			0: Rough
-			1: Rough
-			3: Rough
-			2: Rough
+			0: Cliff
+			1: Transition
+			3: Transition
+			2: Cliff
 	Template@4:
 		Id: 4
 		Image: BLOXBASE
