@@ -332,8 +332,9 @@ namespace OpenRA.Mods.RA.Traits
 					defaultCellInfoLayer.Shape != map.TileShape)
 				{
 					defaultCellInfoLayer = new CellLayer<CellInfo>(map);
-					foreach (var uv in map.Cells.MapCoords)
-						defaultCellInfoLayer[uv.X, uv.Y] = new CellInfo(int.MaxValue, Map.MapToCell(map.TileShape, uv), false);
+					for (var v = 0; v < mapSize.Height; v++)
+						for (var u = 0; u < mapSize.Width; u++)
+							defaultCellInfoLayer[u, v] = new CellInfo(int.MaxValue, Map.MapToCell(map.TileShape, new CPos(u, v)), false);
 				}
 
 				result.CopyValuesFrom(defaultCellInfoLayer);
