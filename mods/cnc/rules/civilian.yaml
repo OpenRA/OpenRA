@@ -459,6 +459,8 @@ VICE:
 	AttackFrontal:
 	AttackWander:
 		WanderMoveRadius: 2
+		MinMoveDelayInTicks: 25
+		MaxMoveDelayInTicks: 45
 	RenderUnit:
 	WithMuzzleFlash:
 		SplitFacings: true

@@ -584,6 +584,8 @@ DOGGIE:
 	AttackFrontal:
 	AttackWander:
 		WanderMoveRadius: 2
+		MinMoveDelayInTicks: 25
+		MaxMoveDelayInTicks: 45
 
 VISSML:
 	Inherits: ^Infantry
