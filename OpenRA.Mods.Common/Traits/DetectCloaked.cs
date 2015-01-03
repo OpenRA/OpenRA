@@ -10,10 +10,10 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can reveal Cloak actors in a specified range.")]
-	class DetectCloakedInfo : TraitInfo<DetectCloaked>
+	public class DetectCloakedInfo : TraitInfo<DetectCloaked>
 	{
 		[Desc("Specific cloak classifications I can reveal.")]
 		public readonly string[] CloakTypes = { "Cloak" };
@@ -22,5 +22,5 @@ namespace OpenRA.Mods.RA
 		public readonly int Range = 5;
 	}
 
-	class DetectCloaked { }
+	public class DetectCloaked { }
 }

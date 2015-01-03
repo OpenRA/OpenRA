@@ -10,10 +10,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Activities;
 using OpenRA.Effects;
-using OpenRA.Mods.RA.Traits;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {

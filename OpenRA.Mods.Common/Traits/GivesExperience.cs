@@ -8,10 +8,9 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor gives experience to a GainsExperience actor when they are killed.")]
 	class GivesExperienceInfo : ITraitInfo

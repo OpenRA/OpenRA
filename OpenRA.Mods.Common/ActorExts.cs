@@ -9,9 +9,10 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common
 {
 	public static class ActorExts
 	{

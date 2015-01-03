@@ -56,11 +56,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\Move\Drag.cs" />
     <Compile Include="Activities\RemoveSelf.cs" />
+    <Compile Include="Activities\RepairBuilding.cs" />
     <Compile Include="Activities\SimpleTeleport.cs" />
     <Compile Include="Activities\Turn.cs" />
     <Compile Include="Activities\Wait.cs" />
+    <Compile Include="ActorExts.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Contrail.cs" />
@@ -75,6 +78,7 @@
     <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
+    <Compile Include="Effects\Rank.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Commands\ChatCommands.cs" />
     <Compile Include="Commands\DevCommands.cs" />
@@ -134,6 +138,12 @@
     <Compile Include="Traits\Buildings\RepairsUnits.cs" />
     <Compile Include="Traits\Buildings\FootprintUtils.cs" />
     <Compile Include="Traits\Burns.cs" />
+    <Compile Include="Traits\IgnoresDisguise.cs" />
+    <Compile Include="Traits\DetectCloaked.cs" />
+    <Compile Include="Traits\EngineerRepair.cs" />
+    <Compile Include="Traits\GainsExperience.cs" />
+    <Compile Include="Traits\GivesBounty.cs" />
+    <Compile Include="Traits\GivesExperience.cs" />
     <Compile Include="Traits\Huntable.cs" />
     <Compile Include="Traits\CustomBuildTimeValue.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
@@ -158,6 +168,7 @@
     <Compile Include="Traits\Player\GlobalUpgradeManager.cs" />
     <Compile Include="Traits\Player\MissionObjectives.cs" />
     <Compile Include="Traits\Player\PlaceBeacon.cs" />
+    <Compile Include="Traits\Player\PlayerStatistics.cs" />
     <Compile Include="Traits\Player\ProvidesCustomPrerequisite.cs" />
     <Compile Include="Traits\Player\ProvidesTechPrerequisite.cs" />
     <Compile Include="Traits\Player\StrategicVictoryConditions.cs" />
