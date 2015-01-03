@@ -56,11 +56,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\Move\Drag.cs" />
     <Compile Include="Activities\RemoveSelf.cs" />
+    <Compile Include="Activities\RepairBuilding.cs" />
     <Compile Include="Activities\SimpleTeleport.cs" />
     <Compile Include="Activities\Turn.cs" />
     <Compile Include="Activities\Wait.cs" />
+    <Compile Include="ActorExts.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Contrail.cs" />
@@ -135,7 +138,9 @@
     <Compile Include="Traits\Buildings\RepairsUnits.cs" />
     <Compile Include="Traits\Buildings\FootprintUtils.cs" />
     <Compile Include="Traits\Burns.cs" />
+    <Compile Include="Traits\IgnoresDisguise.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
+    <Compile Include="Traits\EngineerRepair.cs" />
     <Compile Include="Traits\GainsExperience.cs" />
     <Compile Include="Traits\GivesBounty.cs" />
     <Compile Include="Traits\GivesExperience.cs" />

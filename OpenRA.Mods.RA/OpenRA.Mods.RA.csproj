@@ -106,7 +106,6 @@
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\DonateSupplies.cs" />
-    <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\FindResources.cs" />
     <Compile Include="Activities\Follow.cs" />
@@ -118,12 +117,10 @@
     <Compile Include="Activities\RAHarvesterDockSequence.cs" />
     <Compile Include="Activities\Rearm.cs" />
     <Compile Include="Activities\Repair.cs" />
-    <Compile Include="Activities\RepairBuilding.cs" />
     <Compile Include="Activities\Sell.cs" />
     <Compile Include="Activities\Teleport.cs" />
     <Compile Include="Activities\Transform.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
-    <Compile Include="ActorExts.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
     <Compile Include="Attack\AttackTurreted.cs" />
     <Compile Include="Crushable.cs" />
@@ -175,7 +172,6 @@
     <Compile Include="Effects\Parachute.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />
-    <Compile Include="EngineerRepair.cs" />
     <Compile Include="Explodes.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Invulnerable.cs" />

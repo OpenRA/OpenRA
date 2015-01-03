@@ -10,11 +10,11 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can instantly repair other actors, but gets consumed afterwards.")]
 	class EngineerRepairInfo : TraitInfo<EngineerRepair> { }

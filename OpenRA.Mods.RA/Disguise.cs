@@ -135,8 +135,4 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { DisguiseAs(self, null); }
 	}
-
-	[Desc("Allows automatic targeting of disguised actors.")]
-	class IgnoresDisguiseInfo : TraitInfo<IgnoresDisguise> { }
-	class IgnoresDisguise { }
 }
