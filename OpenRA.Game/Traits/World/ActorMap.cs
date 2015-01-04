@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace OpenRA.Traits
@@ -179,12 +180,12 @@ namespace OpenRA.Traits
 			map = world.Map;
 			influence = new CellLayer<InfluenceNode>(world.Map);
 
-			cols = world.Map.MapSize.X / info.BinSize + 1;
-			rows = world.Map.MapSize.Y / info.BinSize + 1;
+			cols = CellCoordToBinIndex(world.Map.MapSize.X) + 1;
+			rows = CellCoordToBinIndex(world.Map.MapSize.Y) + 1;
 			bins = new Bin[rows * cols];
-			for (var j = 0; j < rows; j++)
-				for (var i = 0; i < cols; i++)
-					bins[j * cols + i] = new Bin();
+			for (var row = 0; row < rows; row++)
+				for (var col = 0; col < cols; col++)
+					bins[row * cols + col] = new Bin();
 
 			// Cache this delegate so it does not have to be allocated repeatedly.
 			actorShouldBeRemoved = removeActorPosition.Contains;
@@ -351,10 +352,10 @@ namespace OpenRA.Traits
 
 			foreach (var a in addActorPosition)
 			{
-				var pos = a.OccupiesSpace.CenterPosition;
-				var i = (pos.X / info.BinSize).Clamp(0, cols - 1);
-				var j = (pos.Y / info.BinSize).Clamp(0, rows - 1);
-				var bin = bins[j * cols + i];
+				var pos = a.CenterPosition;
+				var col = WorldCoordToBinIndex(pos.X).Clamp(0, cols - 1);
+				var row = WorldCoordToBinIndex(pos.Y).Clamp(0, rows - 1);
+				var bin = BinAt(row, col);
 
 				bin.Actors.Add(a);
 				foreach (var t in bin.ProximityTriggers)
@@ -460,20 +461,44 @@ namespace OpenRA.Traits
 			addActorPosition.Add(a);
 		}
 
+		int CellCoordToBinIndex(int cell)
+		{
+			return cell / info.BinSize;
+		}
+
+		int WorldCoordToBinIndex(int world)
+		{
+			return CellCoordToBinIndex(world / 1024);
+		}
+
+		Rectangle BinRectangleCoveringWorldArea(int worldLeft, int worldTop, int worldRight, int worldBottom)
+		{
+			var minCol = WorldCoordToBinIndex(worldLeft).Clamp(0, cols - 1);
+			var minRow = WorldCoordToBinIndex(worldTop).Clamp(0, rows - 1);
+			var maxCol = WorldCoordToBinIndex(worldRight).Clamp(0, cols - 1);
+			var maxRow = WorldCoordToBinIndex(worldBottom).Clamp(0, rows - 1);
+			return Rectangle.FromLTRB(minCol, minRow, maxCol, maxRow);
+		}
+
+		Bin BinAt(int binRow, int binCol)
+		{
+			return bins[binRow * cols + binCol];
+		}
+
 		IEnumerable<Bin> BinsInBox(WPos a, WPos b)
 		{
 			var left = Math.Min(a.X, b.X);
 			var top = Math.Min(a.Y, b.Y);
 			var right = Math.Max(a.X, b.X);
 			var bottom = Math.Max(a.Y, b.Y);
-			var i1 = (left / info.BinSize).Clamp(0, cols - 1);
-			var i2 = (right / info.BinSize).Clamp(0, cols - 1);
-			var j1 = (top / info.BinSize).Clamp(0, rows - 1);
-			var j2 = (bottom / info.BinSize).Clamp(0, rows - 1);
-
-			for (var j = j1; j <= j2; j++)
-				for (var i = i1; i <= i2; i++)
-					yield return bins[j * cols + i];
+			var region = BinRectangleCoveringWorldArea(left, top, right, bottom);
+			var minCol = region.Left;
+			var minRow = region.Top;
+			var maxCol = region.Right;
+			var maxRow = region.Bottom;
+			for (var row = minRow; row <= maxRow; row++)
+				for (var col = minCol; col <= maxCol; col++)
+					yield return BinAt(row, col);
 		}
 
 		public IEnumerable<Actor> ActorsInBox(WPos a, WPos b)
@@ -482,16 +507,16 @@ namespace OpenRA.Traits
 			var top = Math.Min(a.Y, b.Y);
 			var right = Math.Max(a.X, b.X);
 			var bottom = Math.Max(a.Y, b.Y);
-			var i1 = (left / info.BinSize).Clamp(0, cols - 1);
-			var i2 = (right / info.BinSize).Clamp(0, cols - 1);
-			var j1 = (top / info.BinSize).Clamp(0, rows - 1);
-			var j2 = (bottom / info.BinSize).Clamp(0, rows - 1);
-
-			for (var j = j1; j <= j2; j++)
+			var region = BinRectangleCoveringWorldArea(left, top, right, bottom);
+			var minCol = region.Left;
+			var minRow = region.Top;
+			var maxCol = region.Right;
+			var maxRow = region.Bottom;
+			for (var row = minRow; row <= maxRow; row++)
 			{
-				for (var i = i1; i <= i2; i++)
+				for (var col = minCol; col <= maxCol; col++)
 				{
-					foreach (var actor in bins[j * cols + i].Actors)
+					foreach (var actor in BinAt(row, col).Actors)
 					{
 						if (actor.IsInWorld)
 						{
