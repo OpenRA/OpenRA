@@ -300,10 +300,11 @@ namespace OpenRA
 			Sound.StopVideo();
 			Sound.Initialize();
 
-			ModData = new ModData(mod, true);
-
-			Renderer.InitializeFonts(ModData.Manifest);
+			ModData = new ModData(mod, !Settings.Server.Dedicated);
 			ModData.InitializeLoaders();
+			if (!Settings.Server.Dedicated)
+				Renderer.InitializeFonts(ModData.Manifest);
+
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
 
