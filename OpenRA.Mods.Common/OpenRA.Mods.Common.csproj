@@ -263,12 +263,15 @@
     <Compile Include="Traits\Render\WithBuildingExplosion.cs" />
     <Compile Include="Traits\Render\RenderBuildingSilo.cs" />
     <Compile Include="Traits\Render\RenderBuildingWall.cs" />
+    <Compile Include="Traits\Render\RenderDetectionCircle.cs" />
+    <Compile Include="Traits\Render\RenderRangeCircle.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Traits\Render\WithMakeAnimation.cs" />
     <Compile Include="Traits\Render\WithCrateBody.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
     <Compile Include="Traits\Render\WithHarvestAnimation.cs" />
     <Compile Include="Traits\Render\WithMuzzleFlash.cs" />
+    <Compile Include="Traits\Render\WithRangeCircle.cs" />
     <Compile Include="Traits\Render\WithResources.cs" />
     <Compile Include="Traits\Render\WithRotor.cs" />
     <Compile Include="Traits\Render\WithShadow.cs" />
@@ -286,6 +289,7 @@
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
     <Compile Include="Traits\TargetableUnit.cs" />
+    <Compile Include="Traits\ThrowsParticle.cs" />
     <Compile Include="Traits\Tooltip.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
