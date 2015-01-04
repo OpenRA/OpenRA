@@ -157,9 +157,7 @@
     <Compile Include="ProductionBar.cs" />
     <Compile Include="ProximityCaptor.cs" />
     <Compile Include="ProximityCapturable.cs" />
-    <Compile Include="RenderDetectionCircle.cs" />
-    <Compile Include="RenderJammerCircle.cs" />
-    <Compile Include="RenderRangeCircle.cs" />
+    <Compile Include="Traits\Render\RenderJammerCircle.cs" />
     <Compile Include="Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Render\RenderHarvester.cs" />
     <Compile Include="Render\RenderDisguise.cs" />
@@ -171,12 +169,11 @@
     <Compile Include="SupportPowers\AirstrikePower.cs" />
     <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="Traits\SupportPowers\GpsPower.cs" />
+    <Compile Include="Traits\SupportPowers\ParatroopersPower.cs" />
     <Compile Include="SupportPowers\NukePower.cs" />
-    <Compile Include="SupportPowers\ParatroopersPower.cs" />
     <Compile Include="SupportPowers\SupportPower.cs" />
     <Compile Include="SupportPowers\SupportPowerChargeBar.cs" />
     <Compile Include="SupportPowers\SupportPowerManager.cs" />
-    <Compile Include="ThrowsParticle.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\Buildings\Bridge.cs" />
     <Compile Include="Traits\Buildings\BridgeHut.cs" />
@@ -224,7 +221,7 @@
     <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="Player\BaseAttackNotifier.cs" />
     <Compile Include="Player\HarvesterAttackNotifier.cs" />
-    <Compile Include="RenderShroudCircle.cs" />
+    <Compile Include="Traits\Render\RenderShroudCircle.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForCash.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForExploration.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForPowerOutage.cs" />
@@ -297,7 +294,6 @@
     <Compile Include="DisableUpgrade.cs" />
     <Compile Include="Warheads\GrantUpgradeWarhead.cs" />
     <Compile Include="UpgradeActorsNear.cs" />
-    <Compile Include="WithRangeCircle.cs" />
     <Compile Include="Scripting\Properties\TransformProperties.cs" />
     <Compile Include="UtilityCommands\ActorStatsExport.cs" />
     <Compile Include="UtilityCommands\ExportCharacterSeparatedRules.cs" />
