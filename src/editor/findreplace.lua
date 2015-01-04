@@ -109,20 +109,24 @@ function findReplace:GetSelectedString()
 end
 
 local function shake(window, shakes, duration, vigour)
-  shakes = shakes or 4
-  duration = duration or 0.5
-  vigour = vigour or 0.05
-
   if not window then return end
 
-  local delay = math.floor(duration/shakes/2)
+  shakes = shakes or 3
+  duration = duration or 0.2 -- in seconds
+  vigour = vigour or 0.03
+
+  local function oneshake(x, y, delay)
+    local s = os.clock()
+    window:Move(x, y)
+    window:Update() window:Refresh() -- force refresh
+    wx.wxMilliSleep(math.max(0, math.floor((delay-(os.clock()-s))*1000)))
+  end
+  local delay = duration/shakes/2
   local position = window:GetPosition() -- get current position
   local deltax = window:GetSize():GetWidth()*vigour
   for _ = 1, shakes do
-    window:Move(position:GetX()-deltax, position:GetY())
-    wx.wxMilliSleep(delay)
-    window:Move(position:GetX()+deltax, position:GetY())
-    wx.wxMilliSleep(delay)
+    oneshake(position:GetX()-deltax, position:GetY(), delay)
+    oneshake(position:GetX()+deltax, position:GetY(), delay)
   end
   window:Move(position) -- restore position
 end
