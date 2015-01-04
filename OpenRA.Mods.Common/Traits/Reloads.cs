@@ -28,13 +28,13 @@ namespace OpenRA.Mods.Common.Traits
 	public class Reloads : ITick
 	{
 		[Sync] int remainingTicks;
-		ReloadsInfo Info;
+		ReloadsInfo info;
 		LimitedAmmo la;
 		int previousAmmo;
 
 		public Reloads(Actor self, ReloadsInfo info)
 		{
-			Info = info;
+			this.info = info;
 			remainingTicks = info.Period;
 			la = self.Trait<LimitedAmmo>();
 			previousAmmo = la.GetAmmoCount();
@@ -44,18 +44,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!la.FullAmmo() && --remainingTicks == 0)
 			{
-				remainingTicks = Info.Period;
+				remainingTicks = info.Period;
 
-				for (var i = 0; i < Info.Count; i++)
+				for (var i = 0; i < info.Count; i++)
 					la.GiveAmmo();
 
 				previousAmmo = la.GetAmmoCount();
 			}
 
 			// Resets the tick counter if ammo was fired.
-			if (Info.ResetOnFire && la.GetAmmoCount() < previousAmmo)
+			if (info.ResetOnFire && la.GetAmmoCount() < previousAmmo)
 			{
-				remainingTicks = Info.Period;
+				remainingTicks = info.Period;
 				previousAmmo = la.GetAmmoCount();
 			}
 		}

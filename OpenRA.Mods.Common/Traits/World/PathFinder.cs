@@ -28,33 +28,33 @@ namespace OpenRA.Mods.Common.Traits
 	public class PathFinder
 	{
 		const int MaxPathAge = 50;	/* x 40ms ticks */
-		static readonly List<CPos> emptyPath = new List<CPos>(0);
+		static readonly List<CPos> EmptyPath = new List<CPos>(0);
 
 		readonly World world;
 		public PathFinder(World world) { this.world = world; }
 
 		class CachedPath
 		{
-			public CPos from;
-			public CPos to;
-			public List<CPos> result;
-			public int tick;
-			public Actor actor;
+			public CPos From;
+			public CPos To;
+			public List<CPos> Result;
+			public int Tick;
+			public Actor Actor;
 		}
 
-		List<CachedPath> CachedPaths = new List<CachedPath>();
+		List<CachedPath> cachedPaths = new List<CachedPath>();
 
 		public List<CPos> FindUnitPath(CPos from, CPos target, Actor self)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
-				var cached = CachedPaths.FirstOrDefault(p => p.from == from && p.to == target && p.actor == self);
+				var cached = cachedPaths.FirstOrDefault(p => p.From == from && p.To == target && p.Actor == self);
 				if (cached != null)
 				{
-					Log.Write("debug", "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, world.WorldTick - cached.tick);
-					if (world.WorldTick - cached.tick > MaxPathAge)
-						CachedPaths.Remove(cached);
-					return new List<CPos>(cached.result);
+					Log.Write("debug", "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, world.WorldTick - cached.Tick);
+					if (world.WorldTick - cached.Tick > MaxPathAge)
+						cachedPaths.Remove(cached);
+					return new List<CPos>(cached.Result);
 				}
 
 				var mi = self.Info.Traits.Get<MobileInfo>();
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var passable = mi.GetMovementClass(world.TileSet);
 					if (!domainIndex.IsPassable(from, target, (uint)passable))
-						return emptyPath;
+						return EmptyPath;
 				}
 
 				var fromPoint = PathSearch.FromPoint(world, mi, self, target, from, true)
@@ -79,8 +79,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				CheckSanePath2(pb, from, target);
 
-				CachedPaths.RemoveAll(p => world.WorldTick - p.tick > MaxPathAge);
-				CachedPaths.Add(new CachedPath { from = from, to = target, actor = self, result = pb, tick = world.WorldTick });
+				cachedPaths.RemoveAll(p => world.WorldTick - p.Tick > MaxPathAge);
+				cachedPaths.Add(new CachedPath { From = from, To = target, Actor = self, Result = pb, Tick = world.WorldTick });
 				return new List<CPos>(pb);
 			}
 		}
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 					var passable = mi.GetMovementClass(world.TileSet);
 					tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(src, t, (uint)passable)));
 					if (!tilesInRange.Any())
-						return emptyPath;
+						return EmptyPath;
 				}
 
 				var path = FindBidiPath(
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				// no path exists
-				return emptyPath;
+				return EmptyPath;
 			}
 		}
 
@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common.Traits
 						return path;
 				}
 
-				return emptyPath;
+				return EmptyPath;
 			}
 		}
 

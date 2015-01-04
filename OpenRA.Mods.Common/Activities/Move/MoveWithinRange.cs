@@ -33,13 +33,13 @@ namespace OpenRA.Mods.Common.Activities
 			// We are now in range. Don't move any further!
 			// HACK: This works around the pathfinder not returning the shortest path
 			var cp = self.CenterPosition;
-			return target.IsInRange(cp, maxRange) && !target.IsInRange(cp, minRange);
+			return Target.IsInRange(cp, maxRange) && !Target.IsInRange(cp, minRange);
 		}
 
 		protected override bool ShouldRepath(Actor self, CPos oldTargetPosition)
 		{
 			var cp = self.CenterPosition;
-			return targetPosition != oldTargetPosition && (!target.IsInRange(cp, maxRange) || target.IsInRange(cp, minRange));
+			return targetPosition != oldTargetPosition && (!Target.IsInRange(cp, maxRange) || Target.IsInRange(cp, minRange));
 		}
 
 		protected override IEnumerable<CPos> CandidateMovementCells(Actor self)
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var outerSq = maxRange.Range * maxRange.Range;
 			var innerSq = minRange.Range * minRange.Range;
-			var center = target.CenterPosition;
+			var center = Target.CenterPosition;
 
 			return map.FindTilesInAnnulus(targetPosition, minCells + 1, maxCells).Where(c =>
 			{

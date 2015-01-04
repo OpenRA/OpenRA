@@ -26,14 +26,14 @@ namespace OpenRA.Mods.Common.Activities
 		readonly DomainIndex domainIndex;
 		readonly uint movementClass;
 
-		protected Target target { get; private set; }
+		protected Target Target { get; private set; }
 		protected CPos targetPosition;
 		Activity inner;
 		bool repath;
 
 		public MoveAdjacentTo(Actor self, Target target)
 		{
-			this.target = target;
+			Target = target;
 
 			mobile = self.Trait<Mobile>();
 			pathFinder = self.World.WorldActor.Trait<PathFinder>();
@@ -58,12 +58,12 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected virtual IEnumerable<CPos> CandidateMovementCells(Actor self)
 		{
-			return Util.AdjacentCells(self.World, target);
+			return Util.AdjacentCells(self.World, Target);
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			var targetIsValid = target.IsValidFor(self);
+			var targetIsValid = Target.IsValidFor(self);
 
 			// Inner move order has completed.
 			if (inner == null)
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// Check if the target has moved
 				var oldTargetPosition = targetPosition;
-				targetPosition = self.World.Map.CellContaining(target.CenterPosition);
+				targetPosition = self.World.Map.CellContaining(Target.CenterPosition);
 
 				var shouldStop = ShouldStop(self, oldTargetPosition);
 				if (shouldStop || (!repath && ShouldRepath(self, oldTargetPosition)))
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Activities
 			else
 			{
 				// Target became invalid. Move to its last known position.
-				target = Target.FromCell(self.World, targetPosition);
+				Target = Target.FromCell(self.World, targetPosition);
 			}
 
 			// Ticks the inner move activity to actually move the actor.

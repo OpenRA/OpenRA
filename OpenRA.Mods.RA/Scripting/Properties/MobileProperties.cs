@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Moves from outside the world into the cell grid")]
 		public void MoveIntoWorld(CPos cell)
 		{
-			self.QueueActivity(mobile.MoveIntoWorld(self, cell, mobile.toSubCell));
+			self.QueueActivity(mobile.MoveIntoWorld(self, cell, mobile.ToSubCell));
 		}
 
 		[ScriptActorPropertyActivity]

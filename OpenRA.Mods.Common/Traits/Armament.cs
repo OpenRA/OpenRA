@@ -61,9 +61,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
 
-		public readonly Actor self;
-		Lazy<Turreted> Turret;
-		Lazy<IBodyOrientation> Coords;
+		readonly Actor self;
+		Lazy<Turreted> turret;
+		Lazy<IBodyOrientation> coords;
 		Lazy<LimitedAmmo> limitedAmmo;
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
@@ -77,8 +77,8 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 
 			// We can't resolve these until runtime
-			Turret = Exts.Lazy(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
-			Coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
+			turret = Exts.Lazy(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
+			coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
 			limitedAmmo = Exts.Lazy(() => self.TraitOrDefault<LimitedAmmo>());
 
 			Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
@@ -205,23 +205,23 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WVec MuzzleOffset(Actor self, Barrel b)
 		{
-			var bodyOrientation = Coords.Value.QuantizeOrientation(self, self.Orientation);
+			var bodyOrientation = coords.Value.QuantizeOrientation(self, self.Orientation);
 			var localOffset = b.Offset + new WVec(-Recoil, WRange.Zero, WRange.Zero);
-			if (Turret.Value != null)
+			if (turret.Value != null)
 			{
-				var turretOrientation = Coords.Value.QuantizeOrientation(self, Turret.Value.LocalOrientation(self));
+				var turretOrientation = coords.Value.QuantizeOrientation(self, turret.Value.LocalOrientation(self));
 				localOffset = localOffset.Rotate(turretOrientation);
-				localOffset += Turret.Value.Offset;
+				localOffset += turret.Value.Offset;
 			}
 
-			return Coords.Value.LocalToWorld(localOffset.Rotate(bodyOrientation));
+			return coords.Value.LocalToWorld(localOffset.Rotate(bodyOrientation));
 		}
 
 		public WRot MuzzleOrientation(Actor self, Barrel b)
 		{
 			var orientation = self.Orientation + WRot.FromYaw(b.Yaw);
-			if (Turret.Value != null)
-				orientation += Turret.Value.LocalOrientation(self);
+			if (turret.Value != null)
+				orientation += turret.Value.LocalOrientation(self);
 			return orientation;
 		}
 

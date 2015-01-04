@@ -38,11 +38,11 @@ namespace OpenRA.Mods.RA.Activities
 			this.weapon = weapon;
 			this.angle = angle;
 			mobile = self.Trait<Mobile>();
-			mobile.SetLocation(mobile.fromCell, mobile.fromSubCell, targetMobile.fromCell, targetMobile.fromSubCell);
+			mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, targetMobile.FromCell, targetMobile.FromSubCell);
 			mobile.IsMoving = true;
 
 			from = self.CenterPosition;
-			to = self.World.Map.CenterOfSubCell(targetMobile.fromCell, targetMobile.fromSubCell);
+			to = self.World.Map.CenterOfSubCell(targetMobile.FromCell, targetMobile.FromSubCell);
 			length = Math.Max((to - from).Length / speed.Range, 1);
 
 			self.Trait<RenderInfantry>().Attacking(self, Target.FromActor(target));
@@ -59,11 +59,11 @@ namespace OpenRA.Mods.RA.Activities
 			mobile.SetVisualPosition(self, WPos.LerpQuadratic(from, to, angle, ++ticks, length));
 			if (ticks >= length)
 			{
-				mobile.SetLocation(mobile.toCell, mobile.toSubCell, mobile.toCell, mobile.toSubCell);
+				mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, mobile.ToCell, mobile.ToSubCell);
 				mobile.FinishedMoving(self);
 				mobile.IsMoving = false;
 
-				self.World.ActorMap.GetUnitsAt(mobile.toCell, mobile.toSubCell)
+				self.World.ActorMap.GetUnitsAt(mobile.ToCell, mobile.ToSubCell)
 					.Except(new[] { self }).Where(t => weapon.IsValidAgainst(t, self))
 					.Do(t => t.Kill(self));
 
