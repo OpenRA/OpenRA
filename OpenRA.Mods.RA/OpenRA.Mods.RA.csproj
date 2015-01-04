@@ -143,7 +143,6 @@
     <Compile Include="Traits\MadTank.cs" />
     <Compile Include="Traits\Mine.cs" />
     <Compile Include="Traits\Minelayer.cs" />
-    <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Orders\GlobalButtonOrderGenerator.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
@@ -161,8 +160,6 @@
     <Compile Include="RenderDetectionCircle.cs" />
     <Compile Include="RenderJammerCircle.cs" />
     <Compile Include="RenderRangeCircle.cs" />
-    <Compile Include="Render\RenderBuildingSilo.cs" />
-    <Compile Include="Render\RenderBuildingWall.cs" />
     <Compile Include="Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Render\RenderHarvester.cs" />
     <Compile Include="Render\RenderDisguise.cs" />
@@ -170,7 +167,6 @@
     <Compile Include="Repairable.cs" />
     <Compile Include="RepairableNear.cs" />
     <Compile Include="Disguise.cs" />
-    <Compile Include="StoresResources.cs" />
     <Compile Include="Traits\SupplyTruck.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />
     <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
@@ -182,20 +178,17 @@
     <Compile Include="SupportPowers\SupportPowerManager.cs" />
     <Compile Include="ThrowsParticle.cs" />
     <Compile Include="TraitsInterfaces.cs" />
-    <Compile Include="Traits\Air\TargetableAircraft.cs" />
     <Compile Include="Traits\Buildings\Bridge.cs" />
     <Compile Include="Traits\Buildings\BridgeHut.cs" />
     <Compile Include="Traits\Buildings\Fake.cs" />
     <Compile Include="Traits\Buildings\OreRefinery.cs" />
     <Compile Include="Traits\Buildings\PrimaryBuilding.cs" />
     <Compile Include="Traits\Buildings\RepairableBuilding.cs" />
-    <Compile Include="Traits\Buildings\TargetableBuilding.cs" />
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\HarvesterHuskModifier.cs" />
     <Compile Include="Traits\LeavesHusk.cs" />
     <Compile Include="Traits\RepairsBridges.cs" />
     <Compile Include="Traits\TargetableSubmarine.cs" />
-    <Compile Include="Traits\TargetableUnit.cs" />
     <Compile Include="Traits\World\BridgeLayer.cs" />
     <Compile Include="TransformOnCapture.cs" />
     <Compile Include="TransformOnPassenger.cs" />

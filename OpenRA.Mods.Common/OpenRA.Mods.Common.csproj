@@ -158,6 +158,7 @@
     <Compile Include="Traits\Air\Helicopter.cs" />
     <Compile Include="Traits\Air\Plane.cs" />
     <Compile Include="Traits\Air\ReturnOnIdle.cs" />
+    <Compile Include="Traits\Air\TargetableAircraft.cs" />
     <Compile Include="Traits\AppearsOnRadar.cs" />
     <Compile Include="Traits\Armament.cs" />
     <Compile Include="Traits\AttackMove.cs" />
@@ -181,13 +182,14 @@
     <Compile Include="Traits\Buildings\BuildingUtils.cs" />
     <Compile Include="Traits\Buildings\DeadBuildingState.cs" />
     <Compile Include="Traits\Buildings\Exit.cs" />
+    <Compile Include="Traits\Buildings\FootprintUtils.cs" />
     <Compile Include="Traits\Buildings\FreeActor.cs" />
     <Compile Include="Traits\Buildings\LineBuild.cs" />
     <Compile Include="Traits\Buildings\LineBuildNode.cs" />
     <Compile Include="Traits\Buildings\RallyPoint.cs" />
     <Compile Include="Traits\Buildings\RepairsUnits.cs" />
     <Compile Include="Traits\Buildings\Reservable.cs" />
-    <Compile Include="Traits\Buildings\FootprintUtils.cs" />
+    <Compile Include="Traits\Buildings\TargetableBuilding.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\Cargo.cs" />
     <Compile Include="Traits\CashTrickler.cs" />
@@ -259,6 +261,8 @@
     <Compile Include="Traits\Render\TimedUpgradeBar.cs" />
     <Compile Include="Traits\Render\WithBarrel.cs" />
     <Compile Include="Traits\Render\WithBuildingExplosion.cs" />
+    <Compile Include="Traits\Render\RenderBuildingSilo.cs" />
+    <Compile Include="Traits\Render\RenderBuildingWall.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Traits\Render\WithMakeAnimation.cs" />
     <Compile Include="Traits\Render\WithCrateBody.cs" />
@@ -270,6 +274,8 @@
     <Compile Include="Traits\Render\WithShadow.cs" />
     <Compile Include="Traits\Render\WithSmoke.cs" />
     <Compile Include="Traits\Render\WithTurret.cs" />
+    <Compile Include="Traits\SeedsResource.cs" />
+    <Compile Include="Traits\StoresResources.cs" />
     <Compile Include="Traits\SelfHealing.cs" />
     <Compile Include="Traits\Sellable.cs" />
     <Compile Include="Traits\ShakeOnDeath.cs" />
@@ -279,6 +285,7 @@
     <Compile Include="Traits\Sound\AnnounceOnKill.cs" />
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
+    <Compile Include="Traits\TargetableUnit.cs" />
     <Compile Include="Traits\Tooltip.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
