@@ -137,7 +137,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var retry = progress.GetOrNull<ButtonWidget>("MAP_RETRY");
 				if (retry != null)
 				{
-					retry.IsVisible = () => lobby.Map.Status == MapStatus.DownloadError || lobby.Map.Status == MapStatus.Unavailable; 
+					retry.IsVisible = () => (lobby.Map.Status == MapStatus.DownloadError || lobby.Map.Status == MapStatus.Unavailable) && lobby.Map != MapCache.UnknownMap;
 					retry.OnClick = () =>
 					{
 						if (lobby.Map.Status == MapStatus.DownloadError)
