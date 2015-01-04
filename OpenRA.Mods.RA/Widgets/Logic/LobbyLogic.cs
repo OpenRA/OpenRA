@@ -507,7 +507,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };
 
 			if (skirmishMode)
-				disconnectButton.Text = "Cancel";
+				disconnectButton.Text = "Back";
 
 			chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");

@@ -572,6 +572,9 @@ namespace OpenRA.Mods.Common.Server
 				{ "difficulty",
 					s =>
 					{
+						if (!server.Map.Options.Difficulties.Any())
+							return true;
+
 						if (!client.IsAdmin)
 						{
 							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
