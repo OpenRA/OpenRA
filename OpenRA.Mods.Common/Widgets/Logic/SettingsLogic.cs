@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			colorPreview.Color = ps.Color;
 
 			var colorDropdown = panel.Get<DropDownButtonWidget>("PLAYERCOLOR");
-			colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorPreview, worldRenderer.world);
+			colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorPreview, worldRenderer.World);
 			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => ps.Color.RGB;
 
 			return () =>
@@ -600,7 +600,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Game.modData.Languages, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Game.ModData.Languages, setupItem);
 			return true;
 		}
 

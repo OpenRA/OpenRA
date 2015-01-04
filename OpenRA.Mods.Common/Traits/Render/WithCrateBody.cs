@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Easteregg sequences to use in december.")]
 		public readonly string[] XmasImages = { };
 
-		public object Create(ActorInitializer init) { return new WithCrateBody(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithCrateBody(init.Self, this); }
 	}
 
 	class WithCrateBody : INotifyParachuteLanded

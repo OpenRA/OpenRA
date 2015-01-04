@@ -28,19 +28,19 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Start repairs on this building. `repairer` can be an allied player.")]
 		public void StartBuildingRepairs(Player repairer = null)
 		{
-			repairer = repairer ?? self.Owner;
+			repairer = repairer ?? Self.Owner;
 
 			if (!rb.Repairers.Contains(repairer))
-				rb.RepairBuilding(self, repairer);
+				rb.RepairBuilding(Self, repairer);
 		}
 
 		[Desc("Stop repairs on this building. `repairer` can be an allied player.")]
 		public void StopBuildingRepairs(Player repairer = null)
 		{
-			repairer = repairer ?? self.Owner;
+			repairer = repairer ?? Self.Owner;
 
 			if (rb.RepairActive && rb.Repairers.Contains(repairer))
-				rb.RepairBuilding(self, repairer);
+				rb.RepairBuilding(Self, repairer);
 		}
 	}
 }

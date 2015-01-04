@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Which proxy actor, which grants the support power, to spawn.")]
 		[ActorReference] public readonly string Proxy = null;
 
-		public override object Create(ActorInitializer init) { return new SupportPowerCrateAction(init.self, this); }
+		public override object Create(ActorInitializer init) { return new SupportPowerCrateAction(init.Self, this); }
 	}
 
 	class SupportPowerCrateAction : CrateAction

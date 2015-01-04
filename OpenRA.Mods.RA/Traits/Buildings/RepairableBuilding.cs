@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public readonly string IndicatorPalettePrefix = "player";
 
-		public object Create(ActorInitializer init) { return new RepairableBuilding(init.self, this); }
+		public object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
 	}
 
 	public class RepairableBuilding : UpgradableTrait<RepairableBuildingInfo>, ITick

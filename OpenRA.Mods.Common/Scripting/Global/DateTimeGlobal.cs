@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Get the current game time (in ticks)")]
 		public int GameTime
 		{
-			get { return context.World.WorldTick; }
+			get { return Context.World.WorldTick; }
 		}
 
 		[Desc("Converts the number of seconds into game time (ticks).")]

@@ -39,7 +39,7 @@ namespace OpenRA.Graphics
 			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
 			templates = new Dictionary<ushort, Sprite[]>();
 
-			var frameCache = new FrameCache(Game.modData.SpriteLoaders, tileset.Extensions);
+			var frameCache = new FrameCache(Game.ModData.SpriteLoaders, tileset.Extensions);
 			foreach (var t in tileset.Templates)
 			{
 				var allFrames = frameCache[t.Value.Image];
@@ -48,7 +48,7 @@ namespace OpenRA.Graphics
 
 				// Ignore the offsets baked into R8 sprites
 				if (tileset.IgnoreTileSpriteOffsets)
-					sprites = sprites.Select(s => new Sprite(s.sheet, s.bounds, float2.Zero, s.channel, s.blendMode));
+					sprites = sprites.Select(s => new Sprite(s.Sheet, s.Bounds, float2.Zero, s.Channel, s.BlendMode));
 
 				templates.Add(t.Value.Id, sprites.ToArray());
 			}
@@ -91,8 +91,8 @@ namespace OpenRA.Graphics
 					var u = tileShape == TileShape.Rectangle ? x : (x - y) / 2f;
 					var v = tileShape == TileShape.Rectangle ? y : (x + y) / 2f;
 
-					var tl = new float2(u * tileSize.Width, (v - 0.5f * tileInfo.Height) * tileSize.Height) - 0.5f * sprite.size;
-					var rect = new Rectangle((int)(tl.X + sprite.offset.X), (int)(tl.Y + sprite.offset.Y), (int)sprite.size.X, (int)sprite.size.Y);
+					var tl = new float2(u * tileSize.Width, (v - 0.5f * tileInfo.Height) * tileSize.Height) - 0.5f * sprite.Size;
+					var rect = new Rectangle((int)(tl.X + sprite.Offset.X), (int)(tl.Y + sprite.Offset.Y), (int)sprite.Size.X, (int)sprite.Size.Y);
 					templateRect = templateRect.HasValue ? Rectangle.Union(templateRect.Value, rect) : rect;
 				}
 			}

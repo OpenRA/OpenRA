@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string[] CloakTypes = { "Cloak" };
 
-		public object Create(ActorInitializer init) { return new Cloak(init.self, this); }
+		public object Create(ActorInitializer init) { return new Cloak(init.Self, this); }
 	}
 
 	public class Cloak : UpgradableTrait<CloakInfo>, IRenderModifier, INotifyDamageStateChanged, INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier

@@ -22,16 +22,16 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns the player with the specified internal name, or nil if a match is not found.")]
 		public Player GetPlayer(string name)
 		{
-			return context.World.Players.FirstOrDefault(p => p.InternalName == name);
+			return Context.World.Players.FirstOrDefault(p => p.InternalName == name);
 		}
 
 		[Desc("Returns a table of players filtered by the specified function.")]
 		public Player[] GetPlayers(LuaFunction filter)
 		{
-			return context.World.Players
+			return Context.World.Players
 				.Where(p =>
 				{
-					using (var f = filter.Call(p.ToLuaValue(context)))
+					using (var f = filter.Call(p.ToLuaValue(Context)))
 						return f.First().ToBoolean();
 				}).ToArray();
 		}

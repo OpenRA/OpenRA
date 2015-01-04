@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Scripting
 			"ID of the newly created objective, so that it can be referred to later.")]
 		public int AddPrimaryObjective(string description)
 		{
-			return mo.Add(player, description, ObjectiveType.Primary);
+			return mo.Add(Player, description, ObjectiveType.Primary);
 		}
 
 		[ScriptActorPropertyActivity]
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Scripting
 			"ID of the newly created objective, so that it can be referred to later.")]
 		public int AddSecondaryObjective(string description)
 		{
-			return mo.Add(player, description, ObjectiveType.Secondary);
+			return mo.Add(Player, description, ObjectiveType.Secondary);
 		}
 
 		[ScriptActorPropertyActivity]
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Scripting
 			if (id < 0 || id >= mo.Objectives.Count)
 				throw new LuaException("Objective ID is out of range.");
 
-			mo.MarkCompleted(player, id);
+			mo.MarkCompleted(Player, id);
 		}
 
 		[ScriptActorPropertyActivity]
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Scripting
 			if (id < 0 || id >= mo.Objectives.Count)
 				throw new LuaException("Objective ID is out of range.");
 
-			mo.MarkFailed(player, id);
+			mo.MarkFailed(Player, id);
 		}
 
 		[ScriptActorPropertyActivity]
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA.Scripting
 			"the MustBeDestroyed trait (according to the short game option).")]
 		public bool HasNoRequiredUnits()
 		{
-			return player.HasNoRequiredUnits();
+			return Player.HasNoRequiredUnits();
 		}
 	}
 }

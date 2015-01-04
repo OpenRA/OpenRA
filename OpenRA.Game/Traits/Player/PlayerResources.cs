@@ -19,7 +19,7 @@ namespace OpenRA.Traits
 		public readonly int DefaultCash = 5000;
 		public readonly int AdviceInterval = 250;
 
-		public object Create(ActorInitializer init) { return new PlayerResources(init.self, this); }
+		public object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }
 	}
 
 	public class PlayerResources : ITick, ISync

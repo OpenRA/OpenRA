@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public readonly string MuzzlePalette = "effect";
 
-		public override object Create(ActorInitializer init) { return new AttackGarrisoned(init.self, this); }
+		public override object Create(ActorInitializer init) { return new AttackGarrisoned(init.Self, this); }
 	}
 
 	public class AttackGarrisoned : AttackFollow, INotifyPassengerEntered, INotifyPassengerExited, IRender

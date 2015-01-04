@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly int Duration = 30;
 		public readonly bool KillCargo = true;
 
-		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.Self, this); }
 	}
 
 	class ChronoshiftPower : SupportPower
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.RA.Traits
 				var tiles = world.Map.FindTilesInCircle(xy, range);
 				var pal = wr.Palette("terrain");
 				foreach (var t in tiles)
-					yield return new SpriteRenderable(tile, wr.world.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
+					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 			}
 
 			public string GetCursor(World world, CPos xy, MouseInput mi)
@@ -220,11 +220,11 @@ namespace OpenRA.Mods.RA.Traits
 
 				// Source tiles
 				foreach (var t in world.Map.FindTilesInCircle(sourceLocation, range))
-					yield return new SpriteRenderable(sourceTile, wr.world.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
+					yield return new SpriteRenderable(sourceTile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 
 				// Destination tiles
 				foreach (var t in world.Map.FindTilesInCircle(xy, range))
-					yield return new SpriteRenderable(sourceTile, wr.world.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
+					yield return new SpriteRenderable(sourceTile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 
 				// Unit previews
 				foreach (var unit in power.UnitsInRange(sourceLocation))
@@ -244,7 +244,7 @@ namespace OpenRA.Mods.RA.Traits
 						var canEnter = manager.self.Owner.Shroud.IsExplored(targetCell) &&
 						                unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell);
 						var tile = canEnter ? validTile : invalidTile;
-						yield return new SpriteRenderable(tile, wr.world.Map.CenterOfCell(targetCell), WVec.Zero, -511, pal, 1f, true);
+						yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(targetCell), WVec.Zero, -511, pal, 1f, true);
 					}
 				}
 			}

@@ -625,7 +625,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (Map.Uid == uid)
 				return;
 
-			Map = Game.modData.MapCache[uid];
+			Map = Game.ModData.MapCache[uid];
 			if (Map.Status == MapStatus.Available)
 			{
 				// Maps need to be validated and pre-loaded before they can be accessed
@@ -653,7 +653,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				}).Start();
 			}
 			else if (Game.Settings.Game.AllowDownloading)
-				Game.modData.MapCache.QueryRemoteMapDetails(new[] { uid });
+				Game.ModData.MapCache.QueryRemoteMapDetails(new[] { uid });
 		}
 
 		void UpdatePlayerList()

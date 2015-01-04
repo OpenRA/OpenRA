@@ -34,13 +34,13 @@ namespace OpenRA.Mods.RA.Traits
 
 		public SupportPowerManager(ActorInitializer init)
 		{
-			self = init.self;
+			self = init.Self;
 			DevMode = self.Trait<DeveloperMode>();
 			TechTree = self.Trait<TechTree>();
-			RadarPings = Exts.Lazy(() => init.world.WorldActor.TraitOrDefault<RadarPings>());
+			RadarPings = Exts.Lazy(() => init.World.WorldActor.TraitOrDefault<RadarPings>());
 
-			init.world.ActorAdded += ActorAdded;
-			init.world.ActorRemoved += ActorRemoved;
+			init.World.ActorAdded += ActorAdded;
+			init.World.ActorRemoved += ActorRemoved;
 		}
 
 		static string MakeKey(SupportPower sp)

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Armament name")]
 		public readonly string Armament = "primary";
 
-		public override object Create(ActorInitializer init) { return new RenderUnitReload(init.self, this); }
+		public override object Create(ActorInitializer init) { return new RenderUnitReload(init.Self, this); }
 	}
 
 	class RenderUnitReload : RenderUnit

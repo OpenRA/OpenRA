@@ -31,12 +31,12 @@ namespace OpenRA
 		public const int Timestep = 40;
 		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
 
-		public static ModData modData;
+		public static ModData ModData;
 		public static Settings Settings;
 		public static ICursor Cursor;
 		static WorldRenderer worldRenderer;
 
-		internal static OrderManager orderManager;
+		internal static OrderManager OrderManager;
 		static Server.Server server;
 
 		public static MersenneTwister CosmeticRandom = new MersenneTwister(); // not synced
@@ -64,10 +64,10 @@ namespace OpenRA
 
 		static void JoinInner(OrderManager om)
 		{
-			if (orderManager != null) orderManager.Dispose();
-			orderManager = om;
+			if (OrderManager != null) OrderManager.Dispose();
+			OrderManager = om;
 			lastConnectionState = ConnectionState.PreConnecting;
-			ConnectionStateChanged(orderManager);
+			ConnectionStateChanged(OrderManager);
 		}
 
 		public static void JoinReplay(string replayFile)
@@ -85,13 +85,13 @@ namespace OpenRA
 		public static int RunTime { get { return (int)Game.stopwatch.ElapsedMilliseconds; } }
 
 		public static int RenderFrame = 0;
-		public static int NetFrameNumber { get { return orderManager.NetFrameNumber; } }
-		public static int LocalTick { get { return orderManager.LocalFrameNumber; } }
+		public static int NetFrameNumber { get { return OrderManager.NetFrameNumber; } }
+		public static int LocalTick { get { return OrderManager.LocalFrameNumber; } }
 
 		public static event Action<string, int> OnRemoteDirectConnect = (a, b) => { };
 		public static event Action<OrderManager> ConnectionStateChanged = _ => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
-		public static int LocalClientId { get { return orderManager.Connection.LocalClientId; } }
+		public static int LocalClientId { get { return OrderManager.Connection.LocalClientId; } }
 
 		public static void RemoteDirectConnect(string host, int port)
 		{
@@ -101,7 +101,7 @@ namespace OpenRA
 		// Hacky workaround for orderManager visibility
 		public static Widget OpenWindow(World world, string widget)
 		{
-			return Ui.OpenWindow(widget, new WidgetArgs() { { "world", world }, { "orderManager", orderManager }, { "worldRenderer", worldRenderer } });
+			return Ui.OpenWindow(widget, new WidgetArgs() { { "world", world }, { "orderManager", OrderManager }, { "worldRenderer", worldRenderer } });
 		}
 
 		// Who came up with the great idea of making these things
@@ -110,8 +110,8 @@ namespace OpenRA
 		{
 			return Ui.OpenWindow(widget, new WidgetArgs(args)
 			{
-				{ "world", worldRenderer.world },
-				{ "orderManager", orderManager },
+				{ "world", worldRenderer.World },
+				{ "orderManager", OrderManager },
 				{ "worldRenderer", worldRenderer },
 			});
 		}
@@ -119,10 +119,10 @@ namespace OpenRA
 		// Load a widget with world, orderManager, worldRenderer args, without adding it to the widget tree
 		public static Widget LoadWidget(World world, string id, Widget parent, WidgetArgs args)
 		{
-			return modData.WidgetLoader.LoadWidget(new WidgetArgs(args)
+			return ModData.WidgetLoader.LoadWidget(new WidgetArgs(args)
 			{
 				{ "world", world },
-				{ "orderManager", orderManager },
+				{ "orderManager", OrderManager },
 				{ "worldRenderer", worldRenderer },
 			}, parent, id);
 		}
@@ -143,29 +143,29 @@ namespace OpenRA
 			Map map;
 
 			using (new PerfTimer("PrepareMap"))
-				map = modData.PrepareMap(mapUID);
+				map = ModData.PrepareMap(mapUID);
 			using (new PerfTimer("NewWorld"))
 			{
-				orderManager.World = new World(map, orderManager, isShellmap);
-				orderManager.World.Timestep = Timestep;
+				OrderManager.World = new World(map, OrderManager, isShellmap);
+				OrderManager.World.Timestep = Timestep;
 			}
 
 			if (worldRenderer != null)
 				worldRenderer.Dispose();
-			worldRenderer = new WorldRenderer(orderManager.World);
+			worldRenderer = new WorldRenderer(OrderManager.World);
 			
 			using (new PerfTimer("LoadComplete"))
-				orderManager.World.LoadComplete(worldRenderer);
+				OrderManager.World.LoadComplete(worldRenderer);
 
-			if (orderManager.GameStarted)
+			if (OrderManager.GameStarted)
 				return;
 
 			Ui.MouseFocusWidget = null;
 			Ui.KeyboardFocusWidget = null;
 
-			orderManager.LocalFrameNumber = 0;
-			orderManager.LastTickTime = RunTime;
-			orderManager.StartGame();
+			OrderManager.LocalFrameNumber = 0;
+			OrderManager.LastTickTime = RunTime;
+			OrderManager.StartGame();
 			worldRenderer.RefreshPalette();
 			Cursor.SetCursor("default");
 
@@ -176,8 +176,8 @@ namespace OpenRA
 		{
 			get
 			{
-				var id = orderManager.Connection.LocalClientId;
-				var client = orderManager.LobbyInfo.ClientWithIndex(id);
+				var id = OrderManager.Connection.LocalClientId;
+				var client = OrderManager.LobbyInfo.ClientWithIndex(id);
 				return client != null && client.IsAdmin;
 			}
 		}
@@ -282,12 +282,12 @@ namespace OpenRA
 			worldRenderer = null;
 			if (server != null)
 				server.Shutdown();
-			if (orderManager != null)
-				orderManager.Dispose();
+			if (OrderManager != null)
+				OrderManager.Dispose();
 
-			if (modData != null)
-				modData.Dispose();
-			modData = null;
+			if (ModData != null)
+				ModData.Dispose();
+			ModData = null;
 
 			// Fall back to default if the mod doesn't exist
 			if (!ModMetadata.AllMods.ContainsKey(mod))
@@ -300,18 +300,18 @@ namespace OpenRA
 			Sound.StopVideo();
 			Sound.Initialize();
 
-			modData = new ModData(mod, true);
+			ModData = new ModData(mod, true);
 
-			Renderer.InitializeFonts(modData.Manifest);
-			modData.InitializeLoaders();
+			Renderer.InitializeFonts(ModData.Manifest);
+			ModData.InitializeLoaders();
 			using (new PerfTimer("LoadMaps"))
-				modData.MapCache.LoadMaps();
+				ModData.MapCache.LoadMaps();
 
 			if (Settings.Graphics.HardwareCursors)
 			{
 				try
 				{
-					Cursor = new HardwareCursor(modData.CursorProvider);
+					Cursor = new HardwareCursor(ModData.CursorProvider);
 				}
 				catch (Exception e)
 				{
@@ -321,12 +321,12 @@ namespace OpenRA
 					Console.WriteLine("Failed to initialize hardware cursors. Falling back to software cursors.");
 					Console.WriteLine("Error was: " + e.Message);
 
-					Cursor = new SoftwareCursor(modData.CursorProvider);
+					Cursor = new SoftwareCursor(ModData.CursorProvider);
 					Settings.Graphics.HardwareCursors = false;
 				}
 			}
 			else
-				Cursor = new SoftwareCursor(modData.CursorProvider);
+				Cursor = new SoftwareCursor(ModData.CursorProvider);
 
 			PerfHistory.Items["render"].HasNormalTick = false;
 			PerfHistory.Items["batches"].HasNormalTick = false;
@@ -357,7 +357,7 @@ namespace OpenRA
 					if (Settings.Server.DedicatedLoop)
 					{
 						Console.WriteLine("Starting a new server instance...");
-						modData.MapCache.LoadMaps();
+						ModData.MapCache.LoadMaps();
 						continue;
 					}
 
@@ -367,7 +367,7 @@ namespace OpenRA
 				Environment.Exit(0);
 			}
 			else
-				modData.LoadScreen.StartGame(args);
+				ModData.LoadScreen.StartGame(args);
 		}
 
 		public static void LoadShellMap()
@@ -380,7 +380,7 @@ namespace OpenRA
 
 		static string ChooseShellmap()
 		{
-			var shellmaps = modData.MapCache
+			var shellmaps = ModData.MapCache
 				.Where(m => m.Status == MapStatus.Available && m.Map.Visibility.HasFlag(MapVisibility.Shellmap))
 				.Select(m => m.Uid);
 
@@ -471,15 +471,15 @@ namespace OpenRA
 		{
 			delayedActions.PerformActions();
 
-			if (orderManager.Connection.ConnectionState != lastConnectionState)
+			if (OrderManager.Connection.ConnectionState != lastConnectionState)
 			{
-				lastConnectionState = orderManager.Connection.ConnectionState;
-				ConnectionStateChanged(orderManager);
+				lastConnectionState = OrderManager.Connection.ConnectionState;
+				ConnectionStateChanged(OrderManager);
 			}
 
-			InnerLogicTick(orderManager);
-			if (worldRenderer != null && orderManager.World != worldRenderer.world)
-				InnerLogicTick(worldRenderer.world.orderManager);
+			InnerLogicTick(OrderManager);
+			if (worldRenderer != null && OrderManager.World != worldRenderer.World)
+				InnerLogicTick(worldRenderer.World.OrderManager);
 		}
 
 		static void RenderTick()
@@ -502,7 +502,7 @@ namespace OpenRA
 				{
 					Ui.Draw();
 
-					if (modData != null && modData.CursorProvider != null)
+					if (ModData != null && ModData.CursorProvider != null)
 					{
 						Cursor.SetCursor(Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default");
 						Cursor.Render(Renderer);
@@ -510,7 +510,7 @@ namespace OpenRA
 				}
 
 				using (new PerfSample("render_flip"))
-					Renderer.EndFrame(new DefaultInputHandler(orderManager.World));
+					Renderer.EndFrame(new DefaultInputHandler(OrderManager.World));
 			}
 
 			PerfHistory.Items["render"].Tick();
@@ -567,7 +567,7 @@ namespace OpenRA
 			{
 				// Ideal time between logic updates. Timestep = 0 means the game is paused
 				// but we still call LogicTick() because it handles pausing internally.
-				var logicInterval = worldRenderer != null && worldRenderer.world.Timestep != 0 ? worldRenderer.world.Timestep : Game.Timestep;
+				var logicInterval = worldRenderer != null && worldRenderer.World.Timestep != 0 ? worldRenderer.World.Timestep : Game.Timestep;
 
 				// Ideal time between screen updates
 				var maxFramerate = Settings.Graphics.CapFramerate ? Settings.Graphics.MaxFramerate.Clamp(1, 1000) : 1000;
@@ -592,7 +592,7 @@ namespace OpenRA
 						LogicTick();
 
 						// Force at least one render per tick during regular gameplay
-						if (orderManager.World != null && !orderManager.World.IsReplay)
+						if (OrderManager.World != null && !OrderManager.World.IsReplay)
 							forceRender = true;
 					}
 
@@ -636,13 +636,13 @@ namespace OpenRA
 			finally
 			{
 				// Ensure that the active replay is properly saved
-				if (orderManager != null)
-					orderManager.Dispose();
+				if (OrderManager != null)
+					OrderManager.Dispose();
 			}
 
 			if (worldRenderer != null)
 				worldRenderer.Dispose();
-			modData.Dispose();
+			ModData.Dispose();
 			ChromeProvider.Deinitialize();
 			Renderer.Dispose();
 
@@ -663,7 +663,7 @@ namespace OpenRA
 
 		public static void AddChatLine(Color color, string name, string text)
 		{
-			orderManager.AddChatLine(color, name, text);
+			OrderManager.AddChatLine(color, name, text);
 		}
 
 		public static void Debug(string s, params object[] args)
@@ -673,10 +673,10 @@ namespace OpenRA
 
 		public static void Disconnect()
 		{
-			if (orderManager.World != null)
-				orderManager.World.traitDict.PrintReport();
+			if (OrderManager.World != null)
+				OrderManager.World.TraitDict.PrintReport();
 
-			orderManager.Dispose();
+			OrderManager.Dispose();
 			CloseServer();
 			JoinLocal();
 		}
@@ -689,12 +689,12 @@ namespace OpenRA
 
 		public static T CreateObject<T>(string name)
 		{
-			return modData.ObjectCreator.CreateObject<T>(name);
+			return ModData.ObjectCreator.CreateObject<T>(name);
 		}
 
 		public static void CreateServer(ServerSettings settings)
 		{
-			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, modData);
+			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, ModData);
 		}
 
 		public static int CreateLocalServer(string map)
@@ -707,14 +707,14 @@ namespace OpenRA
 				AllowPortForward = false
 			};
 
-			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, modData);
+			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData);
 
 			return server.Port;
 		}
 
 		public static bool IsCurrentWorld(World world)
 		{
-			return orderManager != null && orderManager.World == world;
+			return OrderManager != null && OrderManager.World == world;
 		}
 	}
 }

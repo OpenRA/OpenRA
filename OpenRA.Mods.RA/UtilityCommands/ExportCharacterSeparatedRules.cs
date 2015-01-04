@@ -20,9 +20,9 @@ namespace OpenRA.Mods.RA.UtilityCommands
 		[Desc("Export the damage per second evaluation into a CSV file for inspection.")]
 		public void Run(ModData modData, string[] args)
 		{
-			Game.modData = modData;
+			Game.ModData = modData;
 			var table = ActorStatsExport.GenerateTable();
-			var filename = "{0}-mod-dps.csv".F(Game.modData.Manifest.Mod.Id);
+			var filename = "{0}-mod-dps.csv".F(Game.ModData.Manifest.Mod.Id);
 			using (var outfile = new StreamWriter(filename))
 				outfile.Write(table.ToCharacterSeparatedValues(";", true));
 			Console.WriteLine("{0} has been saved.".F(filename));

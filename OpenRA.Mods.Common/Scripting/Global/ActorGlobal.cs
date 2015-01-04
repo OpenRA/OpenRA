@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 			{
 				// Find the requested type
 				var typeName = kv.Key.ToString();
-				var initType = Game.modData.ObjectCreator.FindType(typeName + "Init");
+				var initType = Game.ModData.ObjectCreator.FindType(typeName + "Init");
 				if (initType == null)
 					throw new LuaException("Unknown initializer type '{0}'".F(typeName));
 
@@ -52,9 +52,9 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 
 			// The actor must be added to the world at the end of the tick
-			var a = context.World.CreateActor(false, type, initDict);
+			var a = Context.World.CreateActor(false, type, initDict);
 			if (addToWorld)
-				context.World.AddFrameEndTask(w => w.Add(a));
+				Context.World.AddFrameEndTask(w => w.Add(a));
 
 			return a;
 		}
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public int BuildTime(string type)
 		{
 			ActorInfo ai;
-			if (!context.World.Map.Rules.Actors.TryGetValue(type, out ai))
+			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out ai))
 				throw new LuaException("Unknown actor type '{0}'".F(type));
 
 			return ai.GetBuildTime();
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public int CruiseAltitude(string type)
 		{
 			ActorInfo ai;
-			if (!context.World.Map.Rules.Actors.TryGetValue(type, out ai))
+			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out ai))
 				throw new LuaException("Unknown actor type '{0}'".F(type));
 
 			var pi = ai.Traits.GetOrDefault<ICruiseAltitudeInfo>();

@@ -44,11 +44,11 @@ namespace OpenRA.Mods.Cnc.Traits
 		bool skippedMakeAnimation;
 
 		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info)
-			: base(init.self, info)
+			: base(init.Self, info)
 		{
 			this.info = info;
 			turret = turrets.FirstOrDefault();
-			rb = init.self.Trait<RenderBuilding>();
+			rb = init.Self.Trait<RenderBuilding>();
 			skippedMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 

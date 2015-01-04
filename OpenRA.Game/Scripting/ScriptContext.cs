@@ -47,23 +47,23 @@ namespace OpenRA.Scripting
 
 	public abstract class ScriptActorProperties
 	{
-		protected readonly Actor self;
-		protected readonly ScriptContext context;
+		protected readonly Actor Self;
+		protected readonly ScriptContext Context;
 		public ScriptActorProperties(ScriptContext context, Actor self)
 		{
-			this.self = self;
-			this.context = context;
+			Self = self;
+			Context = context;
 		}
 	}
 
 	public abstract class ScriptPlayerProperties
 	{
-		protected readonly Player player;
-		protected readonly ScriptContext context;
+		protected readonly Player Player;
+		protected readonly ScriptContext Context;
 		public ScriptPlayerProperties(ScriptContext context, Player player)
 		{
-			this.player = player;
-			this.context = context;
+			Player = player;
+			Context = context;
 		}
 	}
 
@@ -123,12 +123,12 @@ namespace OpenRA.Scripting
 
 			World = world;
 			WorldRenderer = worldRenderer;
-			knownActorCommands = Game.modData.ObjectCreator
+			knownActorCommands = Game.ModData.ObjectCreator
 				.GetTypesImplementing<ScriptActorProperties>()
 				.ToArray();
 
 			ActorCommands = new Cache<ActorInfo, Type[]>(FilterActorCommands);
-			PlayerCommands = Game.modData.ObjectCreator
+			PlayerCommands = Game.ModData.ObjectCreator
 				.GetTypesImplementing<ScriptPlayerProperties>()
 				.ToArray();
 
@@ -148,7 +148,7 @@ namespace OpenRA.Scripting
 					registerGlobal.Call("print", fn).Dispose();
 
 				// Register global tables
-				var bindings = Game.modData.ObjectCreator.GetTypesImplementing<ScriptGlobal>();
+				var bindings = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>();
 				foreach (var b in bindings)
 				{
 					var ctor = b.GetConstructors(BindingFlags.Public | BindingFlags.Instance).FirstOrDefault(c =>

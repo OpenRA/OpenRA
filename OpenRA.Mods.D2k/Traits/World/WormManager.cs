@@ -35,7 +35,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly string WormSignature = "sandworm";
 		public readonly string WormOwnerPlayer = "Creeps";
 
-		public object Create(ActorInitializer init) { return new WormManager(this, init.self); }
+		public object Create(ActorInitializer init) { return new WormManager(this, init.Self); }
 	}
 
 	class WormManager : ITick

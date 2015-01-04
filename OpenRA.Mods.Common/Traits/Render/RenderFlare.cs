@@ -12,7 +12,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class RenderFlareInfo : RenderSimpleInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderFlare(init.self); }
+		public override object Create(ActorInitializer init) { return new RenderFlare(init.Self); }
 	}
 
 	class RenderFlare : RenderSimple

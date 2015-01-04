@@ -30,7 +30,7 @@ namespace OpenRA.Graphics
 			foreach (var s in sequences)
 				LoadVoxelsForUnit(s.Key, s.Value);
 
-			Game.modData.VoxelLoader.RefreshBuffer();
+			Game.ModData.VoxelLoader.RefreshBuffer();
 		}
 
 		static Voxel LoadVoxel(string unit, MiniYaml info)
@@ -47,12 +47,12 @@ namespace OpenRA.Graphics
 					hva = fields[1].Trim();
 			}
 
-			return Game.modData.VoxelLoader.Load(vxl, hva);
+			return Game.ModData.VoxelLoader.Load(vxl, hva);
 		}
 
 		static void LoadVoxelsForUnit(string unit, MiniYaml sequences)
 		{
-			Game.modData.LoadScreen.Display();
+			Game.ModData.LoadScreen.Display();
 			try
 			{
 				var seq = sequences.ToDictionary(my => LoadVoxel(unit, my));

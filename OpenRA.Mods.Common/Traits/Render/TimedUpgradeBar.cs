@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly Color Color = Color.Red;
 
-		public object Create(ActorInitializer init) { return new TimedUpgradeBar(init.self, this); }
+		public object Create(ActorInitializer init) { return new TimedUpgradeBar(init.Self, this); }
 	}
 
 	class TimedUpgradeBar : ISelectionBar

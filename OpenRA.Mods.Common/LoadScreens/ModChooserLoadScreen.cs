@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 		public void Dispose()
 		{
 			if (sprite != null)
-				sprite.sheet.Dispose();
+				sprite.Sheet.Dispose();
 		}
 	}
 }

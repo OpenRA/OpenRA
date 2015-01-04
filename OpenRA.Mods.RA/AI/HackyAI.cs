@@ -179,7 +179,7 @@ namespace OpenRA.Mods.RA.AI
 		public HackyAI(HackyAIInfo info, ActorInitializer init)
 		{
 			Info = info;
-			world = init.world;
+			world = init.World;
 			
 			foreach (var decision in info.PowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);

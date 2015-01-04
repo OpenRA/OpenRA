@@ -26,14 +26,14 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Fly within the cell grid.")]
 		public void Move(CPos cell)
 		{
-			self.QueueActivity(new Fly(self, Target.FromCell(self.World, cell)));
+			Self.QueueActivity(new Fly(Self, Target.FromCell(Self.World, cell)));
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Return to the base, which is either the airfield given, or an auto-selected one otherwise.")]
 		public void ReturnToBase(Actor airfield = null)
 		{
-			self.QueueActivity(new ReturnToBase(self, airfield));
+			Self.QueueActivity(new ReturnToBase(Self, airfield));
 		}
 	}
 
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Fly an attack against the target actor.")]
 		public void Attack(Actor target)
 		{
-			self.QueueActivity(new FlyAttack(Target.FromActor(target)));
+			Self.QueueActivity(new FlyAttack(Target.FromActor(target)));
 		}
 	}
 }

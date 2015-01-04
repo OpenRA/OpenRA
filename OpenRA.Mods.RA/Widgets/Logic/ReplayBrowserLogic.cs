@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			replayList = panel.Get<ScrollPanelWidget>("REPLAY_LIST");
 			var template = panel.Get<ScrollItemWidget>("REPLAY_TEMPLATE");
 
-			var mod = Game.modData.Manifest.Mod;
+			var mod = Game.ModData.Manifest.Mod;
 			var dir = Platform.ResolvePath("^", "Replays", mod.Id, mod.Version);
 
 			replayList.RemoveChildren();

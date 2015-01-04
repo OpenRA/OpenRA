@@ -51,7 +51,7 @@ namespace OpenRA.Graphics
 
 		public void DrawSprite(Sprite s, float2 location, PaletteReference pal)
 		{
-			DrawSprite(s, location, pal.Index, s.size);
+			DrawSprite(s, location, pal.Index, s.Size);
 		}
 
 		public void DrawSprite(Sprite s, float2 location, PaletteReference pal, float2 size)
@@ -63,25 +63,25 @@ namespace OpenRA.Graphics
 		{
 			renderer.CurrentBatchRenderer = this;
 
-			if (s.sheet != currentSheet)
+			if (s.Sheet != currentSheet)
 				Flush();
 
-			if (s.blendMode != currentBlend)
+			if (s.BlendMode != currentBlend)
 				Flush();
 
 			if (nv + 4 > renderer.TempBufferSize)
 				Flush();
 
-			currentBlend = s.blendMode;
-			currentSheet = s.sheet;
-			Util.FastCreateQuad(vertices, location + s.fractionalOffset * size, s, paletteIndex, nv, size);
+			currentBlend = s.BlendMode;
+			currentSheet = s.Sheet;
+			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, paletteIndex, nv, size);
 			nv += 4;
 		}
 
 		// For RGBASpriteRenderer, which doesn't use palettes
 		public void DrawSprite(Sprite s, float2 location)
 		{
-			DrawSprite(s, location, 0, s.size);
+			DrawSprite(s, location, 0, s.Size);
 		}
 
 		public void DrawSprite(Sprite s, float2 location, float2 size)
@@ -93,17 +93,17 @@ namespace OpenRA.Graphics
 		{
 			renderer.CurrentBatchRenderer = this;
 
-			if (s.sheet != currentSheet)
+			if (s.Sheet != currentSheet)
 				Flush();
 
-			if (s.blendMode != currentBlend)
+			if (s.BlendMode != currentBlend)
 				Flush();
 
 			if (nv + 4 > renderer.TempBufferSize)
 				Flush();
 
-			currentSheet = s.sheet;
-			currentBlend = s.blendMode;
+			currentSheet = s.Sheet;
+			currentBlend = s.BlendMode;
 			Util.FastCreateQuad(vertices, a, b, c, d, s, 0, nv);
 			nv += 4;
 		}

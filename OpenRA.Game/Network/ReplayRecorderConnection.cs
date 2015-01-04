@@ -47,7 +47,7 @@ namespace OpenRA.Network
 		void StartSavingReplay(byte[] initialContent)
 		{
 			var filename = chooseFilename();
-			var mod = Game.modData.Manifest.Mod;
+			var mod = Game.ModData.Manifest.Mod;
 			var dir = Platform.ResolvePath("^", "Replays", mod.Id, mod.Version);
 
 			if (!Directory.Exists(dir))

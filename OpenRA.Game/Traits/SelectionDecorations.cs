@@ -18,7 +18,7 @@ namespace OpenRA.Traits
 	{
 		public readonly string Palette = "chrome";
 
-		public object Create(ActorInitializer init) { return new SelectionDecorations(init.self, this); }
+		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
 	}
 
 	public class SelectionDecorations : IPostRenderSelection
@@ -68,7 +68,7 @@ namespace OpenRA.Traits
 			pipImages.PlayFetchIndex("groups", () => (int)group);
 			pipImages.Tick();
 
-			var pos = basePosition - (0.5f * pipImages.Image.size).ToInt2() + new int2(9, 5);
+			var pos = basePosition - (0.5f * pipImages.Image.Size).ToInt2() + new int2(9, 5);
 			yield return new UISpriteRenderable(pipImages.Image, pos, 0, pal, 1f);
 		}
 
@@ -81,7 +81,7 @@ namespace OpenRA.Traits
 			var pipImages = new Animation(self.World, "pips");
 			pipImages.PlayRepeating(PipStrings[0]);
 
-			var pipSize = pipImages.Image.size.ToInt2();
+			var pipSize = pipImages.Image.Size.ToInt2();
 			var pipxyBase = basePosition + new int2(1 - pipSize.X / 2, -(3 + pipSize.Y / 2));
 			var pipxyOffset = new int2(0, 0);
 			var pal = wr.Palette(Info.Palette);
@@ -127,7 +127,7 @@ namespace OpenRA.Traits
 						continue;
 
 					tagImages.PlayRepeating(TagStrings[(int)tag]);
-					var pos = basePosition + tagxyOffset - (0.5f * tagImages.Image.size).ToInt2();
+					var pos = basePosition + tagxyOffset - (0.5f * tagImages.Image.Size).ToInt2();
 					yield return new UISpriteRenderable(tagImages.Image, pos, 0, pal, 1f);
 
 					// Increment row

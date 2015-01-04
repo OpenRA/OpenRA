@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Spawn and remove the plane this far outside the map.")]
 		public readonly WRange Cordon = new WRange(5120);
 
-		public object Create(ActorInitializer init) { return new CrateSpawner(this, init.self); }
+		public object Create(ActorInitializer init) { return new CrateSpawner(this, init.Self); }
 	}
 
 	public class CrateSpawner : ITick

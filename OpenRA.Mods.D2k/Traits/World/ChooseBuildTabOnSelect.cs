@@ -33,7 +33,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public ChooseBuildTabOnSelect(ActorInitializer init, ChooseBuildTabOnSelectInfo info)
 		{
-			world = init.world;
+			world = init.World;
 			this.info = info;
 		}
 

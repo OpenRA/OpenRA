@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Use multiple muzzle images if non-zero")]
 		public readonly int MuzzleSplitFacings = 0;
 
-		public object Create(ActorInitializer init) { return new Armament(init.self, this); }
+		public object Create(ActorInitializer init) { return new Armament(init.Self, this); }
 	}
 
 	public class Armament : UpgradableTrait<ArmamentInfo>, ITick, IExplodeModifier

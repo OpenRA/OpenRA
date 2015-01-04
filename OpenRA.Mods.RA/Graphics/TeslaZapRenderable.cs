@@ -79,8 +79,8 @@ namespace OpenRA.Mods.RA.Graphics
 
 		public IEnumerable<IRenderable> GenerateRenderables(WorldRenderer wr)
 		{
-			var bright = wr.world.Map.SequenceProvider.GetSequence(image, "bright");
-			var dim = wr.world.Map.SequenceProvider.GetSequence(image, "dim");
+			var bright = wr.World.Map.SequenceProvider.GetSequence(image, "bright");
+			var dim = wr.World.Map.SequenceProvider.GetSequence(image, "dim");
 			
 			var source = wr.ScreenPosition(pos);
 			var target = wr.ScreenPosition(pos + length);

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("The maximum number of extra collectors to grant the crate action to.", "-1 = no limit")]
 		public readonly int MaxExtraCollectors = 4;
 
-		public override object Create(ActorInitializer init) { return new GrantUpgradeCrateAction(init.self, this); }
+		public override object Create(ActorInitializer init) { return new GrantUpgradeCrateAction(init.Self, this); }
 	}
 
 	public class GrantUpgradeCrateAction : CrateAction

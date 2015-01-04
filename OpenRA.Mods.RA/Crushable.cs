@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Will friendly units just crush me instead of pathing around.")]
 		public readonly bool CrushedByFriendlies = false;
 
-		public object Create(ActorInitializer init) { return new Crushable(init.self, this); }
+		public object Create(ActorInitializer init) { return new Crushable(init.Self, this); }
 	}
 
 	class Crushable : ICrushable

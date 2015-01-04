@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public ThrowsParticle(ActorInitializer init, ThrowsParticleInfo info)
 		{
-			var self = init.self;
+			var self = init.Self;
 			var rs = self.Trait<RenderSimple>();
 			var body = self.Trait<IBodyOrientation>();
 
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.Traits
 			// Facing rotation
 			rotation = WRange.FromPDF(Game.CosmeticRandom, 2).Range * info.ROT / 1024;
 
-			var anim = new Animation(init.world, rs.GetImage(self), () => (int)facing);
+			var anim = new Animation(init.World, rs.GetImage(self), () => (int)facing);
 			anim.PlayRepeating(info.Anim);
 			rs.Add(info.Anim, new AnimationWithOffset(anim, () => pos, null));
 		}

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Chance (out of 100) the unit has to enter panic mode when attacked.")]
 		public readonly int AttackPanicChance = 20;
 
-		public object Create(ActorInitializer init) { return new ScaredyCat(init.self, this); }
+		public object Create(ActorInitializer init) { return new ScaredyCat(init.Self, this); }
 	}
 
 	class ScaredyCat : ITick, INotifyIdle, INotifyDamage, INotifyAttack, ISpeedModifier, ISync, IRenderInfantrySequenceModifier

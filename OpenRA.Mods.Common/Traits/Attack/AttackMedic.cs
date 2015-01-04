@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 		"heal process then. It also won't work with buildings (use RepairsUnits: for them)")]
 	public class AttackMedicInfo : AttackFrontalInfo
 	{
-		public override object Create(ActorInitializer init) { return new AttackMedic(init.self, this); }
+		public override object Create(ActorInitializer init) { return new AttackMedic(init.Self, this); }
 	}
 
 	public class AttackMedic : AttackFrontal

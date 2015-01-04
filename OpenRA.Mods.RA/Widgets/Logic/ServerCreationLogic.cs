@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.onExit = onExit;
 
 			var settings = Game.Settings;
-			preview = Game.modData.MapCache[WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map)];
+			preview = Game.ModData.MapCache[WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map)];
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{
 						{ "initialMap", preview.Uid },
 						{ "onExit", () => { } },
-						{ "onSelect", (Action<string>)(uid => preview = Game.modData.MapCache[uid]) }
+						{ "onSelect", (Action<string>)(uid => preview = Game.ModData.MapCache[uid]) }
 					});
 				};
 

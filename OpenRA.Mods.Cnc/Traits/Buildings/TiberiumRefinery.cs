@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	public class TiberiumRefineryInfo : OreRefineryInfo
 	{
-		public override object Create(ActorInitializer init) { return new TiberiumRefinery(init.self, this); }
+		public override object Create(ActorInitializer init) { return new TiberiumRefinery(init.Self, this); }
 	}
 
 	public class TiberiumRefinery : OreRefinery

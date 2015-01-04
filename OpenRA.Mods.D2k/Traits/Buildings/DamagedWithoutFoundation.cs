@@ -22,7 +22,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly string[] SafeTerrain = { "Concrete" };
 		public readonly int DamageThreshold = 50;
 
-		public object Create(ActorInitializer init) { return new DamagedWithoutFoundation(init.self, this); }
+		public object Create(ActorInitializer init) { return new DamagedWithoutFoundation(init.Self, this); }
 	}
 
 	class DamagedWithoutFoundation : ITick, ISync, INotifyAddedToWorld

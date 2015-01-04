@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly string OpenAnim = "open";
 		public readonly string UnloadAnim = "unload";
 
-		public override object Create(ActorInitializer init) { return new RenderLandingCraft(init.self, this); }
+		public override object Create(ActorInitializer init) { return new RenderLandingCraft(init.Self, this); }
 	}
 
 	public class RenderLandingCraft : RenderUnit

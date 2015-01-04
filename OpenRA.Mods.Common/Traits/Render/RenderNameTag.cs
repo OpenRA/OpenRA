@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string Font = "TinyBold";
 
-		public object Create(ActorInitializer init) { return new RenderNameTag(init.self, this); }
+		public object Create(ActorInitializer init) { return new RenderNameTag(init.Self, this); }
 	}
 
 	class RenderNameTag : IRender

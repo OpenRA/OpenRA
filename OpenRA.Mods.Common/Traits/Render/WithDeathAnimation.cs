@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Custom crushed animation palette is a player palette BaseName")]
 		public readonly bool CrushedPaletteIsPlayerPalette = false;
 
-		public object Create(ActorInitializer init) { return new WithDeathAnimation(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithDeathAnimation(init.Self, this); }
 	}
 
 	public class WithDeathAnimation : INotifyKilled

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Apply the weapon impact this many ticks into the effect")]
 		public readonly int WeaponDelay = 7;
 
-		public override object Create(ActorInitializer init) { return new IonCannonPower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new IonCannonPower(init.Self, this); }
 	}
 
 	class IonCannonPower : SupportPower

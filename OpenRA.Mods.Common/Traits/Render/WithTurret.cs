@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Render recoil")]
 		public readonly bool Recoils = true;
 
-		public object Create(ActorInitializer init) { return new WithTurret(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithTurret(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{

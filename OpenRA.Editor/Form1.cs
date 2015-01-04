@@ -47,11 +47,11 @@ namespace OpenRA.Editor
 				currentMod = toolStripComboBox1.SelectedItem as string;
 
 				Game.InitializeSettings(Arguments.Empty);
-				Game.modData = new ModData(currentMod);
-				GlobalFileSystem.LoadFromManifest(Game.modData.Manifest);
-				Program.Rules = Game.modData.RulesetCache.LoadDefaultRules();
+				Game.ModData = new ModData(currentMod);
+				GlobalFileSystem.LoadFromManifest(Game.ModData.Manifest);
+				Program.Rules = Game.ModData.RulesetCache.LoadDefaultRules();
 
-				var mod = Game.modData.Manifest.Mod;
+				var mod = Game.ModData.Manifest.Mod;
 				Text = "{0} Mod Version: {1} - OpenRA Editor".F(mod.Title, mod.Version);
 
 				loadedMapName = null;
@@ -129,7 +129,7 @@ namespace OpenRA.Editor
 			if (map.Players.Count == 0)
 				map.MakeDefaultPlayers();
 
-			PrepareMapResources(Game.modData, map);
+			PrepareMapResources(Game.ModData, map);
 
 			// Calculate total net worth of resources in cash
 			cashToolStripStatusLabel.Text = CalculateTotalResource().ToString();
@@ -144,7 +144,7 @@ namespace OpenRA.Editor
 			resourcePalette.Controls.Clear();
 
 			loadedMapName = null;
-			PrepareMapResources(Game.modData, map);
+			PrepareMapResources(Game.ModData, map);
 
 			MakeDirty();
 		}

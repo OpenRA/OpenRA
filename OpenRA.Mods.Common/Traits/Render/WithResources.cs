@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "resources";
 
-		public object Create(ActorInitializer init) { return new WithResources(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithResources(init.Self, this); }
 	}
 
 	class WithResources : INotifyBuildComplete, INotifySold, INotifyOwnerChanged, INotifyDamageStateChanged

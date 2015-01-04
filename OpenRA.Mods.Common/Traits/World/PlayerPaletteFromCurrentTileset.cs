@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Apply palette rotatotors or not.")]
 		public readonly bool AllowModifiers = true;
 
-		public object Create(ActorInitializer init) { return new PlayerPaletteFromCurrentTileset(init.world, this); }
+		public object Create(ActorInitializer init) { return new PlayerPaletteFromCurrentTileset(init.World, this); }
 	}
 
 	class PlayerPaletteFromCurrentTileset : ILoadsPalettes

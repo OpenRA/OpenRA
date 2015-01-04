@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public readonly int PipCount = 0;
 		public readonly PipType PipColor = PipType.Yellow;
 		public readonly int Capacity = 0;
-		public object Create(ActorInitializer init) { return new StoresResources(init.self, this); }
+		public object Create(ActorInitializer init) { return new StoresResources(init.Self, this); }
 	}
 
 	class StoresResources : IPips, INotifyOwnerChanged, INotifyCapture, INotifyKilled, IExplodeModifier, IStoreResources, ISync

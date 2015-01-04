@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA.Traits
 	[Desc("Visualize the remaining CaptureCompleteTime from ExternalCapturable: trait.")]
 	class ExternalCapturableBarInfo : ITraitInfo, Requires<ExternalCapturableInfo>
 	{
-		public object Create(ActorInitializer init) { return new ExternalCapturableBar(init.self); }
+		public object Create(ActorInitializer init) { return new ExternalCapturableBar(init.Self); }
 	}
 
 	class ExternalCapturableBar : ISelectionBar

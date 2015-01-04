@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Plane(ActorInitializer init, PlaneInfo info)
 			: base(init, info)
 		{
-			self = init.self;
+			self = init.Self;
 			Info = info;
 		}
 

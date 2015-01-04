@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Uses the \"Cloneable\" trait to determine whether or not we should clone a produced unit.")]
 		public readonly string[] CloneableTypes = { };
 
-		public object Create(ActorInitializer init) { return new ClonesProducedUnits(init.self, this); }
+		public object Create(ActorInitializer init) { return new ClonesProducedUnits(init.Self, this); }
 	}
 
 	public class ClonesProducedUnits : INotifyOtherProduction

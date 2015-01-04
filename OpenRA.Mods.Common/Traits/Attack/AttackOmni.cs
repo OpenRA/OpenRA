@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class AttackOmniInfo : AttackBaseInfo
 	{
-		public override object Create(ActorInitializer init) { return new AttackOmni(init.self, this); }
+		public override object Create(ActorInitializer init) { return new AttackOmni(init.Self, this); }
 	}
 
 	class AttackOmni : AttackBase, ISync

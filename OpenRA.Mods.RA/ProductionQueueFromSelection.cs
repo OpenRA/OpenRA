@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public string ProductionTabsWidget = null;
 		public string ProductionPaletteWidget = null;
 
-		public object Create(ActorInitializer init) { return new ProductionQueueFromSelection(init.world, this); }
+		public object Create(ActorInitializer init) { return new ProductionQueueFromSelection(init.World, this); }
 	}
 
 	class ProductionQueueFromSelection : INotifySelection

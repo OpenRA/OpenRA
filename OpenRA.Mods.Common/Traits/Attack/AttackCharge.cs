@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay between charge attacks (in ticks).")]
 		public readonly int ChargeDelay = 3;
 
-		public override object Create(ActorInitializer init) { return new AttackCharge(init.self, this); }
+		public override object Create(ActorInitializer init) { return new AttackCharge(init.Self, this); }
 	}
 
 	class AttackCharge : AttackOmni, ITick, INotifyAttack, ISync

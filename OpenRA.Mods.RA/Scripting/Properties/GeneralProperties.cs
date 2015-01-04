@@ -32,46 +32,46 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			get
 			{
-				return self.IsInWorld;
+				return Self.IsInWorld;
 			}
 
 			set
 			{
 				if (value)
-					self.World.AddFrameEndTask(w => w.Add(self));
+					Self.World.AddFrameEndTask(w => w.Add(Self));
 				else
-					self.World.AddFrameEndTask(w => w.Remove(self));
+					Self.World.AddFrameEndTask(w => w.Remove(Self));
 			}
 		}
 
 		[Desc("Specifies whether the actor is alive or dead.")]
-		public bool IsDead { get { return self.IsDead; } }
+		public bool IsDead { get { return Self.IsDead; } }
 
 		[Desc("Specifies whether the actor is idle (not performing any activities).")]
-		public bool IsIdle { get { return self.IsIdle; } }
+		public bool IsIdle { get { return Self.IsIdle; } }
 
 		[Desc("The player that owns the actor.")]
 		public Player Owner
 		{
 			get
 			{
-				return self.Owner;
+				return Self.Owner;
 			}
 
 			set
 			{
-				if (self.Owner != value)
-					self.ChangeOwner(value);
+				if (Self.Owner != value)
+					Self.ChangeOwner(value);
 			}
 		}
 
 		[Desc("The type of the actor (e.g. \"e1\").")]
-		public string Type { get { return self.Info.Name; } }
+		public string Type { get { return Self.Info.Name; } }
 
 		[Desc("Test whether an actor has a specific property.")]
 		public bool HasProperty(string name)
 		{
-			return self.HasScriptProperty(name);
+			return Self.HasScriptProperty(name);
 		}
 	}
 
@@ -89,10 +89,10 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("The actor position in cell coordinates.")]
-		public CPos Location { get { return self.Location; } }
+		public CPos Location { get { return Self.Location; } }
 
 		[Desc("The actor position in world coordinates.")]
-		public WPos CenterPosition { get { return self.CenterPosition; } }
+		public WPos CenterPosition { get { return Self.CenterPosition; } }
 
 		[Desc("The direction that the actor is facing.")]
 		public int Facing
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.RA.Scripting
 			get
 			{
 				if (facing == null)
-					throw new LuaException("Actor '{0}' doesn't define a facing".F(self));
+					throw new LuaException("Actor '{0}' doesn't define a facing".F(Self));
 
 				return facing.Facing;
 			}
@@ -110,34 +110,34 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Instantly moves the actor to the specified cell.")]
 		public void Teleport(CPos cell)
 		{
-			self.QueueActivity(new SimpleTeleport(cell));
+			Self.QueueActivity(new SimpleTeleport(cell));
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Run an arbitrary Lua function.")]
 		public void CallFunc(LuaFunction func)
 		{
-			self.QueueActivity(new CallLuaFunc(func, context));
+			Self.QueueActivity(new CallLuaFunc(func, Context));
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Wait for a specified number of game ticks (25 ticks = 1 second).")]
 		public void Wait(int ticks)
 		{
-			self.QueueActivity(new Wait(ticks));
+			Self.QueueActivity(new Wait(ticks));
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Remove the actor from the game, without triggering any death notification.")]
 		public void Destroy()
 		{
-			self.QueueActivity(new RemoveSelf());
+			Self.QueueActivity(new RemoveSelf());
 		}
 
 		[Desc("Attempt to cancel any active activities.")]
 		public void Stop()
 		{
-			self.CancelActivity();
+			Self.CancelActivity();
 		}
 
 		[Desc("Current actor stance. Returns nil if this actor doesn't support stances.")]

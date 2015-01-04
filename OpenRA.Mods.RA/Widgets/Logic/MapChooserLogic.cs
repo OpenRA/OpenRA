@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var gameModeDropdown = widget.GetOrNull<DropDownButtonWidget>("GAMEMODE_FILTER");
 			if (gameModeDropdown != null)
 			{
-				var selectableMaps = Game.modData.MapCache.Where(m => m.Status == MapStatus.Available && (m.Map.Visibility & filter) != 0);
+				var selectableMaps = Game.ModData.MapCache.Where(m => m.Status == MapStatus.Available && (m.Map.Visibility & filter) != 0);
 				var gameModes = selectableMaps
 					.GroupBy(m => m.Type)
 					.Select(g => Pair.New(g.Key, g.Count())).ToList();
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void EnumerateMaps(Action<string> onSelect, MapVisibility filter)
 		{
-			var maps = Game.modData.MapCache
+			var maps = Game.ModData.MapCache
 				.Where(m => m.Status == MapStatus.Available && (m.Map.Visibility & filter) != 0)
 				.Where(m => gameMode == null || m.Type == gameMode)
 				.Where(m => mapFilter == null || m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0 || m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0)

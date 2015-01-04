@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("The weapon to fire upon collection.")]
 		[WeaponReference] public string Weapon = null;
 
-		public override object Create(ActorInitializer init) { return new ExplodeCrateAction(init.self, this); }
+		public override object Create(ActorInitializer init) { return new ExplodeCrateAction(init.Self, this); }
 	}
 
 	class ExplodeCrateAction : CrateAction

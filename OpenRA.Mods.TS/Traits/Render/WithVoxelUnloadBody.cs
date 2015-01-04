@@ -25,7 +25,7 @@ namespace OpenRA.Mods.TS.Traits
 		[Desc("Voxel sequence name to use when undocked from a refinery.")]
 		public readonly string IdleSequence = "idle";
 
-		public object Create(ActorInitializer init) { return new WithVoxelUnloadBody(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithVoxelUnloadBody(init.Self, this); }
 
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
 		{

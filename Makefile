@@ -179,6 +179,8 @@ test:
 	@mono --debug OpenRA.Utility.exe ts --check-yaml
 
 check:
+	@echo "Checking for code style violations in OpenRA.Game..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Game
 	@echo "Checking for code style violations in OpenRA.Renderer.Null..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Renderer.Null
 	@echo "Checking for code style violations in OpenRA.GameMonitor..."

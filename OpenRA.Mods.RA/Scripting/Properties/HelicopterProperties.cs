@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Fly within the cell grid.")]
 		public void Move(CPos cell)
 		{
-			self.QueueActivity(new HeliFly(self, Target.FromCell(self.World, cell)));
+			Self.QueueActivity(new HeliFly(Self, Target.FromCell(Self.World, cell)));
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Calculates routes for mobile units based on the A* search algorithm.", " Attach this to the world actor.")]
 	public class PathFinderInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new PathFinder(init.world); }
+		public object Create(ActorInitializer init) { return new PathFinder(init.World); }
 	}
 
 	public class PathFinder

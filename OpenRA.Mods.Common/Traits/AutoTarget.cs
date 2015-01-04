@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool TargetWhenIdle = true;
 		public readonly bool TargetWhenDamaged = true;
 
-		public object Create(ActorInitializer init) { return new AutoTarget(init.self, this); }
+		public object Create(ActorInitializer init) { return new AutoTarget(init.Self, this); }
 	}
 
 	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }

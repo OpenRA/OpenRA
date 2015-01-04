@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Traits
 	class RenderHarvesterInfo : RenderUnitInfo, Requires<HarvesterInfo>
 	{
 		public readonly string[] ImagesByFullness = { "harv" };
-		public override object Create(ActorInitializer init) { return new RenderHarvester(init.self, this); }
+		public override object Create(ActorInitializer init) { return new RenderHarvester(init.Self, this); }
 	}
 
 	class RenderHarvester : RenderUnit, INotifyHarvesterAction

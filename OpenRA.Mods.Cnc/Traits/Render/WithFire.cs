@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string StartSequence = "fire-start";
 		public readonly string LoopSequence = "fire-loop";
 
-		public object Create(ActorInitializer init) { return new WithFire(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithFire(init.Self, this); }
 	}
 
 	class WithFire

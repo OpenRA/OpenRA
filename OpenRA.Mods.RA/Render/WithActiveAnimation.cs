@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public readonly bool PauseOnLowPower = false;
 
-		public object Create(ActorInitializer init) { return new WithActiveAnimation(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithActiveAnimation(init.Self, this); }
 	}
 
 	public class WithActiveAnimation : ITick, INotifyBuildComplete, INotifySold

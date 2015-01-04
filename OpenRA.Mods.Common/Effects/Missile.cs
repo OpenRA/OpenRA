@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 				yield return trail;
 
-			if (!args.SourceActor.World.FogObscures(wr.world.Map.CellContaining(pos)))
+			if (!args.SourceActor.World.FogObscures(wr.World.Map.CellContaining(pos)))
 			{
 				if (info.Shadow)
 				{

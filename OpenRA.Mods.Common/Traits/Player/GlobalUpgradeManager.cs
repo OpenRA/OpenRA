@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public GlobalUpgradeManager(ActorInitializer init)
 		{
-			self = init.self;
+			self = init.Self;
 			techTree = self.Trait<TechTree>();
 		}
 

@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Traits
 		[ActorReference] public readonly string[] Buildings = { "spen", "syrd" };
 		public readonly int CloseEnough = 4;	/* cells */
 
-		public object Create(ActorInitializer init) { return new RepairableNear(init.self, this); }
+		public object Create(ActorInitializer init) { return new RepairableNear(init.Self, this); }
 	}
 
 	class RepairableNear : IIssueOrder, IResolveOrder

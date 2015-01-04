@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				try
 				{
-					mixerSprite.sheet.GetTexture().SetData(front, 256, 256);
+					mixerSprite.Sheet.GetTexture().SetData(front, 256, 256);
 				}
 				finally
 				{
@@ -138,8 +138,8 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(mixerSprite, RenderOrigin, new float2(RenderBounds.Size));
 
 			var sprite = ChromeProvider.GetImage("lobby-bits", "colorpicker");
-			var pos = RenderOrigin + PxFromValue() - new int2(sprite.bounds.Width, sprite.bounds.Height) / 2;
-			WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X + 1, pos.Y + 1, sprite.bounds.Width - 2, sprite.bounds.Height - 2), Color.RGB);
+			var pos = RenderOrigin + PxFromValue() - new int2(sprite.Bounds.Width, sprite.Bounds.Height) / 2;
+			WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X + 1, pos.Y + 1, sprite.Bounds.Width - 2, sprite.Bounds.Height - 2), Color.RGB);
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos);
 		}
 

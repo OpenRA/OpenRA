@@ -22,7 +22,7 @@ namespace OpenRA.Traits
 		public readonly int[] Bounds = null;
 		[VoiceReference] public readonly string Voice = null;
 
-		public object Create(ActorInitializer init) { return new Selectable(init.self, this); }
+		public object Create(ActorInitializer init) { return new Selectable(init.Self, this); }
 	}
 
 	public class Selectable : IPostRenderSelection

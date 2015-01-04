@@ -17,7 +17,7 @@ namespace OpenRA.Traits
 	[Desc("Required for shroud and fog visibility checks. Add this to the player actor.")]
 	public class ShroudInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new Shroud(init.self); }
+		public object Create(ActorInitializer init) { return new Shroud(init.Self); }
 	}
 
 	public class Shroud

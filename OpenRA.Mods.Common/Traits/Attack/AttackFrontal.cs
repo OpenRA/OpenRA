@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly int FacingTolerance = 1;
 
-		public override object Create(ActorInitializer init) { return new AttackFrontal(init.self, this); }
+		public override object Create(ActorInitializer init) { return new AttackFrontal(init.Self, this); }
 	}
 
 	public class AttackFrontal : AttackBase

@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var panel = widget;
 			var loadButton = panel.Get<ButtonWidget>("LOAD_BUTTON");
 			loadButton.OnClick = () => LoadMod(selectedMod);
-			loadButton.IsDisabled = () => selectedMod.Id == Game.modData.Manifest.Mod.Id;
+			loadButton.IsDisabled = () => selectedMod.Id == Game.ModData.Manifest.Mod.Id;
 
 			panel.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 

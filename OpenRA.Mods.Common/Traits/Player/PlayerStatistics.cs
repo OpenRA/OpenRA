@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Attach this to the player actor to collect observer stats.")]
 	public class PlayerStatisticsInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new PlayerStatistics(init.self); }
+		public object Create(ActorInitializer init) { return new PlayerStatistics(init.Self); }
 	}
 
 	public class PlayerStatistics : ITick, IResolveOrder

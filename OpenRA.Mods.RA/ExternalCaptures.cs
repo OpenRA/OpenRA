@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Destroy the unit after capturing.")]
 		public readonly bool ConsumeActor = false;
 
-		public object Create(ActorInitializer init) { return new ExternalCaptures(init.self, this); }
+		public object Create(ActorInitializer init) { return new ExternalCaptures(init.Self, this); }
 	}
 
 	class ExternalCaptures : IIssueOrder, IResolveOrder, IOrderVoice

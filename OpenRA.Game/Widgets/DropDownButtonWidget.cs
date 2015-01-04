@@ -43,7 +43,7 @@ namespace OpenRA.Widgets
 			var color = GetColor();
 			var colorDisabled = GetColorDisabled();
 
-			WidgetUtils.DrawRGBA(image, stateOffset + new float2(rb.Right - rb.Height + 4, rb.Top + (rb.Height - image.bounds.Height) / 2));
+			WidgetUtils.DrawRGBA(image, stateOffset + new float2(rb.Right - rb.Height + 4, rb.Top + (rb.Height - image.Bounds.Height) / 2));
 
 			WidgetUtils.FillRectWithColor(new Rectangle(stateOffset.X + rb.Right - rb.Height,
 				stateOffset.Y + rb.Top + 3, 1, rb.Height - 6),

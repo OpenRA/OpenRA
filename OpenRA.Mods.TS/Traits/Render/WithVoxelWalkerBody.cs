@@ -18,7 +18,7 @@ namespace OpenRA.Mods.TS.Traits
 	public class WithVoxelWalkerBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, Requires<RenderVoxelsInfo>, Requires<IMoveInfo>
 	{
 		public readonly int TickRate = 5;
-		public object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }
 
 		public int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai) { return 0; }
 	}

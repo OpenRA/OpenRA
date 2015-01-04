@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 		{
 			try
 			{
-				Game.modData.RulesetCache.LoadMapRules(map);
+				Game.ModData.RulesetCache.LoadMapRules(map);
 			}
 			catch (Exception e)
 			{

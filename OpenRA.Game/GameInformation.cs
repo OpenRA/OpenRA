@@ -29,7 +29,7 @@ namespace OpenRA
 		// replay recording stopped.
 		public TimeSpan Duration { get { return EndTimeUtc > StartTimeUtc ? EndTimeUtc - StartTimeUtc : TimeSpan.Zero; } }
 		public IList<Player> Players { get; private set; }
-		public MapPreview MapPreview { get { return Game.modData.MapCache[MapUid]; } }
+		public MapPreview MapPreview { get { return Game.ModData.MapCache[MapUid]; } }
 		public IEnumerable<Player> HumanPlayers { get { return Players.Where(p => p.IsHuman); } }
 		public bool IsSinglePlayer { get { return HumanPlayers.Count() == 1; } }
 

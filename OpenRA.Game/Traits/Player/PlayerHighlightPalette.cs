@@ -20,7 +20,7 @@ namespace OpenRA.Traits
 		[Desc("The prefix for the resulting player palettes")]
 		public readonly string BaseName = "highlight";
 
-		public object Create(ActorInitializer init) { return new PlayerHighlightPalette(init.self.Owner, this); }
+		public object Create(ActorInitializer init) { return new PlayerHighlightPalette(init.Self.Owner, this); }
 	}
 
 	public class PlayerHighlightPalette : ILoadsPalettes

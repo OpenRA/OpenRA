@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Minimum duration (in seconds) between sound events.")]
 		public readonly int Interval = 5;
 
-		public object Create(ActorInitializer init) { return new AnnounceOnKill(init.self, this); }
+		public object Create(ActorInitializer init) { return new AnnounceOnKill(init.Self, this); }
 	}
 
 	public class AnnounceOnKill : INotifyAppliedDamage

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public readonly ActorInfo Actor;
 		public readonly Player Owner;
 		public readonly WorldRenderer WorldRenderer;
-		public World World { get { return WorldRenderer.world; } }
+		public World World { get { return WorldRenderer.World; } }
 
 		readonly TypeDictionary dict;
 

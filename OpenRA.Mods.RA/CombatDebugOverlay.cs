@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 	[Desc("Displays fireports, muzzle offsets, and hit areas in developer mode.")]
 	public class CombatDebugOverlayInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new CombatDebugOverlay(init.self); }
+		public object Create(ActorInitializer init) { return new CombatDebugOverlay(init.Self); }
 	}
 
 	public class CombatDebugOverlay : IPostRender, INotifyDamage

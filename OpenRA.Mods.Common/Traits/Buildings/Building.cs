@@ -127,14 +127,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Building(ActorInitializer init, BuildingInfo info)
 		{
-			this.self = init.self;
+			this.self = init.Self;
 			this.topLeft = init.Get<LocationInit, CPos>();
 			this.Info = info;
 
 			occupiedCells = FootprintUtils.UnpathableTiles(self.Info.Name, Info, TopLeft)
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
-			CenterPosition = init.world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.world, Info);
+			CenterPosition = init.World.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.World, Info);
 			SkipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 

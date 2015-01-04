@@ -49,7 +49,7 @@ namespace OpenRA.Network
 			else
 				ModLabel = "Unknown mod: {0}".F(Mods);
 
-			var mapAvailable = Game.Settings.Game.AllowDownloading || Game.modData.MapCache[Map].Status == MapStatus.Available;
+			var mapAvailable = Game.Settings.Game.AllowDownloading || Game.ModData.MapCache[Map].Status == MapStatus.Available;
 			IsJoinable = IsCompatible && State == 1 && mapAvailable;
 		}
 	}

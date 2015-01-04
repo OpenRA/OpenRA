@@ -22,7 +22,7 @@ namespace OpenRA.Traits
 		[Desc("Size of partition bins (world pixels)")]
 		public readonly int BinSize = 250;
 
-		public object Create(ActorInitializer init) { return new ScreenMap(init.world, this); }
+		public object Create(ActorInitializer init) { return new ScreenMap(init.World, this); }
 	}
 
 	public class ScreenMap : IWorldLoaded
@@ -36,7 +36,7 @@ namespace OpenRA.Traits
 		public ScreenMap(World world, ScreenMapInfo info)
 		{
 			this.info = info;
-			var ts = Game.modData.Manifest.TileSize;
+			var ts = Game.ModData.Manifest.TileSize;
 			cols = world.Map.MapSize.X * ts.Width / info.BinSize + 1;
 			rows = world.Map.MapSize.Y * ts.Height / info.BinSize + 1;
 

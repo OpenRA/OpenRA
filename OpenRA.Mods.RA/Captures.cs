@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Only used if Sabotage=true. Sabotage damage expressed as a percentage of enemy health removed.")]
 		public readonly float SabotageHPRemoval = 0.5f;
 
-		public object Create(ActorInitializer init) { return new Captures(init.self, this); }
+		public object Create(ActorInitializer init) { return new Captures(init.Self, this); }
 	}
 
 	class Captures : IIssueOrder, IResolveOrder, IOrderVoice

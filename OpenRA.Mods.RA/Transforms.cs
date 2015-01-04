@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public Transforms(ActorInitializer init, TransformsInfo info)
 		{
-			self = init.self;
+			self = init.Self;
 			this.info = info;
 			bi = self.World.Map.Rules.Actors[info.IntoActor].Traits.GetOrDefault<BuildingInfo>();
 			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.Race;

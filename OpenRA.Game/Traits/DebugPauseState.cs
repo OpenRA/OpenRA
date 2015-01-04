@@ -13,7 +13,7 @@ namespace OpenRA.Traits
 	[Desc("Checks for pause related desyncs. Attach this to the world actor.")]
 	public class DebugPauseStateInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new DebugPauseState(init.world); }
+		public object Create(ActorInitializer init) { return new DebugPauseState(init.World); }
 	}
 
 	public class DebugPauseState : ISync
