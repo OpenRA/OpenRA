@@ -11,13 +11,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
-using OpenRA.Mods.Common;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Activities
+namespace OpenRA.Mods.Common.Activities
 {
 	public class Hunt : Activity
 	{

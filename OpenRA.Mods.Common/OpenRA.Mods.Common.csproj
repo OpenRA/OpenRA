@@ -75,6 +75,7 @@
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\Heal.cs" />
+    <Compile Include="Activities\Hunt.cs" />
     <Compile Include="Activities\Move\AttackMoveActivity.cs" />
     <Compile Include="Activities\Move\Drag.cs" />
     <Compile Include="Activities\Move\Follow.cs" />
@@ -208,6 +209,8 @@
     <Compile Include="Traits\GlobalUpgradable.cs" />
     <Compile Include="Traits\Husk.cs" />
     <Compile Include="Traits\Immobile.cs" />
+    <Compile Include="Traits\Infantry\ScaredyCat.cs" />
+    <Compile Include="Traits\Infantry\TakeCover.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\KillsSelf.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
@@ -248,12 +251,14 @@
     <Compile Include="Traits\Render\RenderBuildingTurreted.cs" />
     <Compile Include="Traits\Render\RenderEditorOnly.cs" />
     <Compile Include="Traits\Render\RenderFlare.cs" />
+    <Compile Include="Traits\Render\RenderInfantry.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />
     <Compile Include="Traits\Render\RenderUnit.cs" />
     <Compile Include="Traits\Render\TimedUpgradeBar.cs" />
     <Compile Include="Traits\Render\WithBarrel.cs" />
+    <Compile Include="Traits\Render\WithBuildingExplosion.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Traits\Render\WithMakeAnimation.cs" />
     <Compile Include="Traits\Render\WithCrateBody.cs" />
@@ -301,6 +306,7 @@
     <Compile Include="Traits\World\ShroudRenderer.cs" />
     <Compile Include="Traits\World\SmudgeLayer.cs" />
     <Compile Include="Traits\World\SpawnMapActors.cs" />
+    <Compile Include="Traits\World\SpawnMPUnits.cs" />
     <Compile Include="Traits\World\StartGameNotification.cs" />
     <Compile Include="Traits\World\TerrainGeometryOverlay.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
