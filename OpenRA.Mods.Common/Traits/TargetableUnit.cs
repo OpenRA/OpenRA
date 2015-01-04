@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual bool TargetableBy(Actor self, Actor viewer)
 		{
-			if (cloak == null || !cloak.Cloaked)
+			if (cloak == null)
 				return true;
 
 			return cloak.IsVisible(self, viewer.Owner);
