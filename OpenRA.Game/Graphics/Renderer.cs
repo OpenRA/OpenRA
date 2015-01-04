@@ -52,9 +52,12 @@ namespace OpenRA.Graphics
 
 			Device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, graphicSettings.Mode);
 
-			TempBufferSize = graphicSettings.BatchSize;
-			TempBufferCount = graphicSettings.NumTempBuffers;
-			SheetSize = graphicSettings.SheetSize;
+			if (!serverSettings.Dedicated)
+			{
+				TempBufferSize = graphicSettings.BatchSize;
+				TempBufferCount = graphicSettings.NumTempBuffers;
+				SheetSize = graphicSettings.SheetSize;
+			}
 
 			WorldSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
 			WorldRgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));

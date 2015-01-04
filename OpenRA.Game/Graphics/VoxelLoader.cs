@@ -52,7 +52,7 @@ namespace OpenRA.Graphics
 				if (allocated)
 					throw new SheetOverflowException("");
 				allocated = true;
-				return SheetBuilder.AllocateSheet(Game.Renderer.SheetSize);
+				return SheetBuilder.AllocateSheet(Game.Settings.Graphics.SheetSize);
 			};
 
 			return new SheetBuilder(SheetType.DualIndexed, allocate);
