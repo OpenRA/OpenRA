@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Activities
 
 	public class Teleport : Activity
 	{
-		const int maxCellSearchRange = Map.MaxTilesInCircleRange;
+		const int MaxCellSearchRange = Map.MaxTilesInCircleRange;
 		Actor teleporter;
 		CPos destination;
 		int? maximumDistance;
@@ -32,8 +32,8 @@ namespace OpenRA.Mods.RA.Activities
 
 		public Teleport(Actor teleporter, CPos destination, int? maximumDistance, bool killCargo, bool screenFlash, string sound)
 		{
-			if (maximumDistance > maxCellSearchRange)
-				throw new InvalidOperationException("Teleport cannot be used with a maximum teleport distance greater than {0}.".F(maxCellSearchRange));
+			if (maximumDistance > MaxCellSearchRange)
+				throw new InvalidOperationException("Teleport cannot be used with a maximum teleport distance greater than {0}.".F(MaxCellSearchRange));
 
 			this.teleporter = teleporter;
 			this.destination = destination;
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (pos.CanEnterCell(destination) && teleporter.Owner.Shroud.IsExplored(destination))
 				return destination;
 
-			var max = maximumDistance != null ? maximumDistance.Value : maxCellSearchRange;
+			var max = maximumDistance != null ? maximumDistance.Value : MaxCellSearchRange;
 			foreach (var tile in self.World.Map.FindTilesInCircle(destination, max))
 			{
 				if (teleporter.Owner.Shroud.IsExplored(tile)

@@ -33,8 +33,8 @@ namespace OpenRA.Mods.RA.Traits
 
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
-			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
-			return new SelectTarget(self.World, order, manager, this);
+			Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
+			return new SelectTarget(Self.World, order, manager, this);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -55,10 +55,10 @@ namespace OpenRA.Mods.RA.Traits
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
 			var range = ((ChronoshiftPowerInfo)Info).Range;
-			var tiles = self.World.Map.FindTilesInCircle(xy, range);
+			var tiles = Self.World.Map.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
-				units.AddRange(self.World.ActorMap.GetUnitsAt(t));
+				units.AddRange(Self.World.ActorMap.GetUnitsAt(t));
 
 			return units.Distinct().Where(a => a.HasTrait<Chronoshiftable>() &&
 				!a.TraitsImplementing<IPreventsTeleport>().Any(condition => condition.PreventsTeleport(a)));
@@ -66,12 +66,12 @@ namespace OpenRA.Mods.RA.Traits
 
 		public bool SimilarTerrain(CPos xy, CPos sourceLocation)
 		{
-			if (!self.Owner.Shroud.IsExplored(xy))
+			if (!Self.Owner.Shroud.IsExplored(xy))
 				return false;
 
 			var range = ((ChronoshiftPowerInfo)Info).Range;
-			var sourceTiles = self.World.Map.FindTilesInCircle(xy, range);
-			var destTiles = self.World.Map.FindTilesInCircle(sourceLocation, range);
+			var sourceTiles = Self.World.Map.FindTilesInCircle(xy, range);
+			var destTiles = Self.World.Map.FindTilesInCircle(sourceLocation, range);
 
 			using (var se = sourceTiles.GetEnumerator())
 			using (var de = destTiles.GetEnumerator())
@@ -80,10 +80,10 @@ namespace OpenRA.Mods.RA.Traits
 				var a = se.Current;
 				var b = de.Current;
 
-				if (!self.Owner.Shroud.IsExplored(a) || !self.Owner.Shroud.IsExplored(b))
+				if (!Self.Owner.Shroud.IsExplored(a) || !Self.Owner.Shroud.IsExplored(b))
 					return false;
 
-				if (self.World.Map.GetTerrainIndex(a) != self.World.Map.GetTerrainIndex(b))
+				if (Self.World.Map.GetTerrainIndex(a) != Self.World.Map.GetTerrainIndex(b))
 					return false;
 			}
 
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.RA.Traits
 				var targetUnits = power.UnitsInRange(xy).Where(a => !world.FogObscures(a));
 
 				foreach (var unit in targetUnits)
-					if (manager.self.Owner.Shroud.IsTargetable(unit))
+					if (manager.Self.Owner.Shroud.IsTargetable(unit))
 						yield return new SelectionBoxRenderable(unit, Color.Red);
 			}
 
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA.Traits
 				this.sourceLocation = sourceLocation;
 				this.range = ((ChronoshiftPowerInfo)power.Info).Range;
 
-				var tileset = manager.self.World.TileSet.Id.ToLowerInvariant();
+				var tileset = manager.Self.World.TileSet.Id.ToLowerInvariant();
 				validTile = world.Map.SequenceProvider.GetSequence("overlay", "target-valid-{0}".F(tileset)).GetSprite(0);
 				invalidTile = world.Map.SequenceProvider.GetSequence("overlay", "target-invalid").GetSprite(0);
 				sourceTile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
@@ -191,7 +191,7 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				// Cannot chronoshift into unexplored location
 				if (IsValidTarget(xy))
-					yield return new Order(order, manager.self, false)
+					yield return new Order(order, manager.Self, false)
 					{
 						TargetLocation = xy,
 						ExtraLocation = sourceLocation,
@@ -209,7 +209,7 @@ namespace OpenRA.Mods.RA.Traits
 			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				foreach (var unit in power.UnitsInRange(sourceLocation))
-					if (manager.self.Owner.Shroud.IsTargetable(unit))
+					if (manager.Self.Owner.Shroud.IsTargetable(unit))
 						yield return new SelectionBoxRenderable(unit, Color.Red);
 			}
 
@@ -230,7 +230,7 @@ namespace OpenRA.Mods.RA.Traits
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
 					var offset = world.Map.CenterOfCell(xy) - world.Map.CenterOfCell(sourceLocation);
-					if (manager.self.Owner.Shroud.IsTargetable(unit))
+					if (manager.Self.Owner.Shroud.IsTargetable(unit))
 						foreach (var r in unit.Render(wr))
 							yield return r.OffsetBy(offset);
 				}
@@ -238,10 +238,10 @@ namespace OpenRA.Mods.RA.Traits
 				// Unit tiles
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
-					if (manager.self.Owner.Shroud.IsTargetable(unit))
+					if (manager.Self.Owner.Shroud.IsTargetable(unit))
 					{
 						var targetCell = unit.Location + (xy - sourceLocation);
-						var canEnter = manager.self.Owner.Shroud.IsExplored(targetCell) &&
+						var canEnter = manager.Self.Owner.Shroud.IsExplored(targetCell) &&
 						                unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell);
 						var tile = canEnter ? validTile : invalidTile;
 						yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(targetCell), WVec.Zero, -511, pal, 1f, true);
@@ -255,7 +255,7 @@ namespace OpenRA.Mods.RA.Traits
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
 					var targetCell = unit.Location + (xy - sourceLocation);
-					if (manager.self.Owner.Shroud.IsExplored(targetCell) && unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell))
+					if (manager.Self.Owner.Shroud.IsExplored(targetCell) && unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell))
 					{
 						canTeleport = true;
 						break;

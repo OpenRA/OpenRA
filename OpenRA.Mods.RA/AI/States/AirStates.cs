@@ -57,17 +57,17 @@ namespace OpenRA.Mods.RA.AI
 
 		protected static CPos? FindSafePlace(Squad owner, out Actor detectedEnemyTarget, bool needTarget)
 		{
-			var world = owner.world;
+			var map = owner.World.Map;
 			detectedEnemyTarget = null;
-			var x = (world.Map.MapSize.X % DangerRadius) == 0 ? world.Map.MapSize.X : world.Map.MapSize.X + DangerRadius;
-			var y = (world.Map.MapSize.Y % DangerRadius) == 0 ? world.Map.MapSize.Y : world.Map.MapSize.Y + DangerRadius;
+			var x = (map.MapSize.X % DangerRadius) == 0 ? map.MapSize.X : map.MapSize.X + DangerRadius;
+			var y = (map.MapSize.Y % DangerRadius) == 0 ? map.MapSize.Y : map.MapSize.Y + DangerRadius;
 
 			for (var i = 0; i < x; i += DangerRadius * 2)
 			{
 				for (var j = 0; j < y; j += DangerRadius * 2)
 				{
 					var pos = new CPos(i, j);
-					if (NearToPosSafely(owner, owner.world.Map.CenterOfCell(pos), out detectedEnemyTarget))
+					if (NearToPosSafely(owner, map.CenterOfCell(pos), out detectedEnemyTarget))
 					{
 						if (needTarget && detectedEnemyTarget == null)
 							continue;
@@ -89,15 +89,15 @@ namespace OpenRA.Mods.RA.AI
 		protected static bool NearToPosSafely(Squad owner, WPos loc, out Actor detectedEnemyTarget)
 		{
 			detectedEnemyTarget = null;
-			var unitsAroundPos = owner.world.FindActorsInCircle(loc, WRange.FromCells(DangerRadius))
-				.Where(unit => owner.bot.p.Stances[unit.Owner] == Stance.Enemy).ToList();
+			var unitsAroundPos = owner.World.FindActorsInCircle(loc, WRange.FromCells(DangerRadius))
+				.Where(unit => owner.Bot.Player.Stances[unit.Owner] == Stance.Enemy).ToList();
 
 			if (!unitsAroundPos.Any())
 				return true;
 
-			if (CountAntiAirUnits(unitsAroundPos) * MissileUnitMultiplier < owner.units.Count)
+			if (CountAntiAirUnits(unitsAroundPos) * MissileUnitMultiplier < owner.Units.Count)
 			{
-				detectedEnemyTarget = unitsAroundPos.Random(owner.random);
+				detectedEnemyTarget = unitsAroundPos.Random(owner.Random);
 				return true;
 			}
 
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.RA.AI
 		// Checks the number of anti air enemies around units
 		protected virtual bool ShouldFlee(Squad owner)
 		{
-			return base.ShouldFlee(owner, enemies => CountAntiAirUnits(enemies) * MissileUnitMultiplier > owner.units.Count);
+			return base.ShouldFlee(owner, enemies => CountAntiAirUnits(enemies) * MissileUnitMultiplier > owner.Units.Count);
 		}
 	}
 
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.RA.AI
 
 			if (ShouldFlee(owner))
 			{
-				owner.fsm.ChangeState(owner, new AirFleeState(), true);
+				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), true);
 				return;
 			}
 
@@ -168,8 +168,8 @@ namespace OpenRA.Mods.RA.AI
 			if (e == null)
 				return;
 
-			owner.Target = e;
-			owner.fsm.ChangeState(owner, new AirAttackState(), true);
+			owner.TargetActor = e;
+			owner.FuzzyStateMachine.ChangeState(owner, new AirAttackState(), true);
 		}
 
 		public void Deactivate(Squad owner) { }
@@ -186,24 +186,24 @@ namespace OpenRA.Mods.RA.AI
 
 			if (!owner.TargetIsValid)
 			{
-				var a = owner.units.Random(owner.random);
-				var closestEnemy = owner.bot.FindClosestEnemy(a.CenterPosition);
+				var a = owner.Units.Random(owner.Random);
+				var closestEnemy = owner.Bot.FindClosestEnemy(a.CenterPosition);
 				if (closestEnemy != null)
-					owner.Target = closestEnemy;
+					owner.TargetActor = closestEnemy;
 				else
 				{
-					owner.fsm.ChangeState(owner, new AirFleeState(), true);
+					owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), true);
 					return;
 				}
 			}
 
-			if (!NearToPosSafely(owner, owner.Target.CenterPosition))
+			if (!NearToPosSafely(owner, owner.TargetActor.CenterPosition))
 			{
-				owner.fsm.ChangeState(owner, new AirFleeState(), true);
+				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), true);
 				return;
 			}
 
-			foreach (var a in owner.units)
+			foreach (var a in owner.Units)
 			{
 				if (BusyAttack(a))
 					continue;
@@ -214,7 +214,7 @@ namespace OpenRA.Mods.RA.AI
 					{
 						if (IsRearm(a))
 							continue;
-						owner.world.IssueOrder(new Order("ReturnToBase", a, false));
+						owner.World.IssueOrder(new Order("ReturnToBase", a, false));
 						continue;
 					}
 
@@ -222,8 +222,8 @@ namespace OpenRA.Mods.RA.AI
 						continue;
 				}
 
-				if (owner.Target.HasTrait<ITargetable>() && CanAttackTarget(a, owner.Target))
-					owner.world.IssueOrder(new Order("Attack", a, false) { TargetActor = owner.Target });
+				if (owner.TargetActor.HasTrait<ITargetable>() && CanAttackTarget(a, owner.TargetActor))
+					owner.World.IssueOrder(new Order("Attack", a, false) { TargetActor = owner.TargetActor });
 			}
 		}
 
@@ -239,21 +239,21 @@ namespace OpenRA.Mods.RA.AI
 			if (!owner.IsValid)
 				return;
 
-			foreach (var a in owner.units)
+			foreach (var a in owner.Units)
 			{
 				if (!ReloadsAutomatically(a) && !FullAmmo(a))
 				{
 					if (IsRearm(a))
 						continue;
 
-					owner.world.IssueOrder(new Order("ReturnToBase", a, false));
+					owner.World.IssueOrder(new Order("ReturnToBase", a, false));
 					continue;
 				}
 
-				owner.world.IssueOrder(new Order("Move", a, false) { TargetLocation = RandomBuildingLocation(owner) });
+				owner.World.IssueOrder(new Order("Move", a, false) { TargetLocation = RandomBuildingLocation(owner) });
 			}
 
-			owner.fsm.ChangeState(owner, new AirIdleState(), true);
+			owner.FuzzyStateMachine.ChangeState(owner, new AirIdleState(), true);
 		}
 
 		public void Deactivate(Squad owner) { }

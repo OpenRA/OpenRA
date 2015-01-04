@@ -30,35 +30,35 @@ namespace OpenRA.Mods.RA
 
 	class CashTrickler : ITick, ISync, INotifyCapture
 	{
+		readonly CashTricklerInfo info;
 		[Sync] int ticks;
-		CashTricklerInfo Info;
 		public CashTrickler(CashTricklerInfo info)
 		{
-			Info = info;
+			this.info = info;
 		}
 
 		public void Tick(Actor self)
 		{
 			if (--ticks < 0)
 			{
-				ticks = Info.Period;
-				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(Info.Amount);
-				MaybeAddCashTick(self, Info.Amount);
+				ticks = info.Period;
+				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(info.Amount);
+				MaybeAddCashTick(self, info.Amount);
 			}
 		}
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
-			if (Info.CaptureAmount > 0)
+			if (info.CaptureAmount > 0)
 			{
-				newOwner.PlayerActor.Trait<PlayerResources>().GiveCash(Info.CaptureAmount);
-				MaybeAddCashTick(self, Info.CaptureAmount);
+				newOwner.PlayerActor.Trait<PlayerResources>().GiveCash(info.CaptureAmount);
+				MaybeAddCashTick(self, info.CaptureAmount);
 			}
 		}
 
 		void MaybeAddCashTick(Actor self, int amount)
 		{
-			if (Info.ShowTicks)
+			if (info.ShowTicks)
 				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, self.Owner.Color.RGB, FloatingText.FormatCashTick(amount), 30)));
 		}
 	}

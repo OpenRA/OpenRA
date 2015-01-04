@@ -22,12 +22,18 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		[Desc("Cooldown in seconds until the unit can teleport.")]
 		public readonly int ChargeTime = 20;
+
 		[Desc("Can the unit teleport only a certain distance?")]
 		public readonly bool HasDistanceLimit = true;
+
 		[Desc("The maximum distance in cells this unit can teleport (only used if HasDistanceLimit = true).")]
 		public readonly int MaxDistance = 12;
+
 		[Desc("Sound to play when teleporting.")]
 		public readonly string ChronoshiftSound = "chrotnk1.aud";
+
+		[Desc("Display rectangles indicating the current charge status")]
+		public readonly int Pips = 2;
 
 		public object Create(ActorInitializer init) { return new PortableChrono(this); }
 	}
@@ -39,7 +45,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public PortableChrono(PortableChronoInfo info)
 		{
-			this.Info = info;
+			Info = info;
 		}
 
 		public void Tick(Actor self)
@@ -93,13 +99,11 @@ namespace OpenRA.Mods.RA.Traits
 			get { return chargeTick <= 0; }
 		}
 
-		// Display 2 pips indicating the current charge status
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			const int numPips = 2;
-			for (var i = 0; i < numPips; i++)
+			for (var i = 0; i < Info.Pips; i++)
 			{
-				if ((1 - chargeTick * 1.0f / (25 * Info.ChargeTime)) * numPips < i + 1)
+				if ((1 - chargeTick * 1.0f / (25 * Info.ChargeTime)) * Info.Pips < i + 1)
 				{
 					yield return PipType.Transparent;
 					continue;

@@ -143,10 +143,10 @@ namespace OpenRA.Mods.RA.AI
 
 	public sealed class HackyAI : ITick, IBot, INotifyDamage
 	{
-		public MersenneTwister random { get; private set; }
+		public MersenneTwister Random { get; private set; }
 		public readonly HackyAIInfo Info;
-		public CPos baseCenter { get; private set; }
-		public Player p { get; private set; }
+		public CPos BaseCenter { get; private set; }
+		public Player Player { get; private set; }
 
 		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
 		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
@@ -170,16 +170,16 @@ namespace OpenRA.Mods.RA.AI
 		// Units that the ai already knows about. Any unit not on this list needs to be given a role.
 		List<Actor> activeUnits = new List<Actor>();
 
-		public const int feedbackTime = 30;		// ticks; = a bit over 1s. must be >= netlag.
+		public const int FeedbackTime = 30;		// ticks; = a bit over 1s. must be >= netlag.
 
-		public readonly World world;
-		public Map Map { get { return world.Map; } }
+		public readonly World World;
+		public Map Map { get { return World.Map; } }
 		IBotInfo IBot.Info { get { return this.Info; } }
 
 		public HackyAI(HackyAIInfo info, ActorInitializer init)
 		{
 			Info = info;
-			world = init.World;
+			World = init.World;
 			
 			foreach (var decision in info.PowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.RA.AI
 		// Called by the host's player creation code
 		public void Activate(Player p)
 		{
-			this.p = p;
+			Player = p;
 			enabled = true;
 			playerPower = p.PlayerActor.Trait<PowerManager>();
 			supportPowerMngr = p.PlayerActor.Trait<SupportPowerManager>();
@@ -205,11 +205,11 @@ namespace OpenRA.Mods.RA.AI
 			foreach (var defense in Info.DefenseQueues) 
 				builders.Add(new BaseBuilder(this, defense, p, playerPower, playerResource));
 
-			random = new MersenneTwister((int)p.PlayerActor.ActorID);
+			Random = new MersenneTwister((int)p.PlayerActor.ActorID);
 
-			resourceTypeIndices = new BitArray(world.TileSet.TerrainInfo.Length); // Big enough
+			resourceTypeIndices = new BitArray(World.TileSet.TerrainInfo.Length); // Big enough
 			foreach (var t in Map.Rules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>())
-				resourceTypeIndices.Set(world.TileSet.GetTerrainIndex(t.TerrainType), true);
+				resourceTypeIndices.Set(World.TileSet.GetTerrainIndex(t.TerrainType), true);
 		}
 
 		ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)
@@ -218,7 +218,7 @@ namespace OpenRA.Mods.RA.AI
 			if (!buildableThings.Any())
 				return null;
 
-			var unit = buildableThings.ElementAtOrDefault(random.Next(buildableThings.Count()));
+			var unit = buildableThings.ElementAtOrDefault(Random.Next(buildableThings.Count()));
 			return HasAdequateAirUnits(unit) ? unit : null;
 		}
 
@@ -228,12 +228,12 @@ namespace OpenRA.Mods.RA.AI
 			if (!buildableThings.Any())
 				return null;
 
-			var myUnits = p.World
+			var myUnits = Player.World
 				.ActorsWithTrait<IPositionable>()
-				.Where(a => a.Actor.Owner == p)
+				.Where(a => a.Actor.Owner == Player)
 				.Select(a => a.Actor.Info.Name).ToArray();
 
-			foreach (var unit in Info.UnitsToBuild.Shuffle(random))
+			foreach (var unit in Info.UnitsToBuild.Shuffle(Random))
 				if (buildableThings.Any(b => b.Name == unit.Key))
 					if (myUnits.Count(a => a == unit.Key) < unit.Value * myUnits.Length)
 						if (HasAdequateAirUnits(Map.Rules.Actors[unit.Key]))
@@ -244,13 +244,13 @@ namespace OpenRA.Mods.RA.AI
 
 		int CountBuilding(string frac, Player owner)
 		{
-			return world.ActorsWithTrait<Building>()
+			return World.ActorsWithTrait<Building>()
 				.Count(a => a.Actor.Owner == owner && a.Actor.Info.Name == frac);
 		}
 
 		int CountUnits(string unit, Player owner)
 		{
-			return world.ActorsWithTrait<IPositionable>()
+			return World.ActorsWithTrait<IPositionable>()
 				.Count(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit);
 		}
 
@@ -259,14 +259,14 @@ namespace OpenRA.Mods.RA.AI
 			if (!Info.BuildingCommonNames.ContainsKey(commonName))
 				return null;
 
-			return world.ActorsWithTrait<Building>()
+			return World.ActorsWithTrait<Building>()
 				.Count(a => a.Actor.Owner == owner && Info.BuildingCommonNames[commonName].Contains(a.Actor.Info.Name));
 		}
 
 		public ActorInfo GetBuildingInfoByCommonName(string commonName, Player owner)
 		{
 			if (commonName == "ConstructionYard")
-				return Map.Rules.Actors.Where(k => Info.BuildingCommonNames[commonName].Contains(k.Key)).Random(random).Value;
+				return Map.Rules.Actors.Where(k => Info.BuildingCommonNames[commonName].Contains(k.Key)).Random(Random).Value;
 
 			return GetInfoByCommonName(Info.BuildingCommonNames, commonName, owner);
 		}
@@ -281,30 +281,30 @@ namespace OpenRA.Mods.RA.AI
 			if (!names.Any() || !names.ContainsKey(commonName))
 				throw new InvalidOperationException("Can't find {0} in the HackyAI UnitsCommonNames definition.".F(commonName));
 
-			return Map.Rules.Actors.Where(k => names[commonName].Contains(k.Key)).Random(random).Value;
+			return Map.Rules.Actors.Where(k => names[commonName].Contains(k.Key)).Random(Random).Value;
 		}
 
 		public bool HasAdequateFact()
 		{
 			// Require at least one construction yard, unless we have no vehicles factory (can't build it).
-			return CountBuildingByCommonName("ConstructionYard", p) > 0 ||
-				CountBuildingByCommonName("VehiclesFactory", p) == 0;
+			return CountBuildingByCommonName("ConstructionYard", Player) > 0 ||
+				CountBuildingByCommonName("VehiclesFactory", Player) == 0;
 		}
 
 		public bool HasAdequateProc()
 		{
 			// Require at least one refinery, unless we have no power (can't build it).
-			return CountBuildingByCommonName("Refinery", p) > 0 ||
-				CountBuildingByCommonName("Power", p) == 0;
+			return CountBuildingByCommonName("Refinery", Player) > 0 ||
+				CountBuildingByCommonName("Power", Player) == 0;
 		}
 
 		public bool HasMinimumProc()
 		{
 			// Require at least two refineries, unless we have no power (can't build it)
 			// or barracks (higher priority?)
-			return CountBuildingByCommonName("Refinery", p) >= 2 ||
-				CountBuildingByCommonName("Power", p) == 0 ||
-				CountBuildingByCommonName("Barracks", p) == 0;
+			return CountBuildingByCommonName("Refinery", Player) >= 2 ||
+				CountBuildingByCommonName("Power", Player) == 0 ||
+				CountBuildingByCommonName("Barracks", Player) == 0;
 		}
 
 		// For mods like RA (number of building must match the number of aircraft)
@@ -313,8 +313,8 @@ namespace OpenRA.Mods.RA.AI
 			if (!actorInfo.Traits.Contains<ReloadsInfo>() && actorInfo.Traits.Contains<LimitedAmmoInfo>() 
 				&& actorInfo.Traits.Contains<AircraftInfo>())
 			{
-				var countOwnAir = CountUnits(actorInfo.Name, p);
-				var countBuildings = CountBuilding(actorInfo.Traits.Get<AircraftInfo>().RearmBuildings.FirstOrDefault(), p);
+				var countOwnAir = CountUnits(actorInfo.Name, Player);
+				var countBuildings = CountBuilding(actorInfo.Traits.Get<AircraftInfo>().RearmBuildings.FirstOrDefault(), Player);
 				if (countOwnAir >= countBuildings)
 					return false;
 			}
@@ -338,14 +338,14 @@ namespace OpenRA.Mods.RA.AI
 				if (center != target)
 					cells = cells.OrderBy(c => (c - target).LengthSquared);
 				else
-					cells = cells.Shuffle(random);
+					cells = cells.Shuffle(Random);
 
 				foreach (var cell in cells)
 				{
-					if (!world.CanPlaceBuilding(actorType, bi, cell, null))
+					if (!World.CanPlaceBuilding(actorType, bi, cell, null))
 						continue;
 
-					if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(world, p, actorType, cell))
+					if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(World, Player, actorType, cell))
 						continue;
 
 					return cell;
@@ -359,31 +359,31 @@ namespace OpenRA.Mods.RA.AI
 				case BuildingType.Defense:
 
 					// Build near the closest enemy structure
-					var closestEnemy = world.Actors.Where(a => !a.Destroyed && a.HasTrait<Building>() && p.Stances[a.Owner] == Stance.Enemy)
-						.ClosestTo(world.Map.CenterOfCell(defenseCenter));
+					var closestEnemy = World.Actors.Where(a => !a.Destroyed && a.HasTrait<Building>() && Player.Stances[a.Owner] == Stance.Enemy)
+						.ClosestTo(World.Map.CenterOfCell(defenseCenter));
 
-					var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
+					var targetCell = closestEnemy != null ? closestEnemy.Location : BaseCenter;
 					return findPos(defenseCenter, targetCell, Info.MinimumDefenseRadius, Info.MaximumDefenseRadius);
 
 				case BuildingType.Refinery:
 
 					// Try and place the refinery near a resource field
-					var nearbyResources = Map.FindTilesInCircle(baseCenter, Info.MaxBaseRadius)
+					var nearbyResources = Map.FindTilesInCircle(BaseCenter, Info.MaxBaseRadius)
 						.Where(a => resourceTypeIndices.Get(Map.GetTerrainIndex(a)))
-						.Shuffle(random);
+						.Shuffle(Random);
 
 					foreach (var c in nearbyResources)
 					{
-						var found = findPos(c, baseCenter, 0, Info.MaxBaseRadius);
+						var found = findPos(c, BaseCenter, 0, Info.MaxBaseRadius);
 						if (found != null)
 							return found;
 					}
 
 					// Try and find a free spot somewhere else in the base
-					return findPos(baseCenter, baseCenter, 0, Info.MaxBaseRadius);
+					return findPos(BaseCenter, BaseCenter, 0, Info.MaxBaseRadius);
 
 				case BuildingType.Building:
-					return findPos(baseCenter, baseCenter, 0, distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.MaxTilesInCircleRange);
+					return findPos(BaseCenter, BaseCenter, 0, distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.MaxTilesInCircleRange);
 			}
 
 			// Can't find a build location
@@ -400,7 +400,7 @@ namespace OpenRA.Mods.RA.AI
 			if (ticks == 1)
 				InitializeBase(self);
 
-			if (ticks % feedbackTime == 0)
+			if (ticks % FeedbackTime == 0)
 				ProductionUnits(self);
 			
 			AssignRolesToIdleUnits(self);
@@ -413,11 +413,11 @@ namespace OpenRA.Mods.RA.AI
 
 		internal Actor ChooseEnemyTarget()
 		{
-			if (p.WinState != WinState.Undefined)
+			if (Player.WinState != WinState.Undefined)
 				return null;
 
-			var liveEnemies = world.Players
-				.Where(q => p != q && p.Stances[q] == Stance.Enemy && q.WinState == WinState.Undefined);
+			var liveEnemies = World.Players
+				.Where(p => Player != p && Player.Stances[p] == Stance.Enemy && p.WinState == WinState.Undefined);
 
 			if (!liveEnemies.Any())
 				return null;
@@ -427,18 +427,18 @@ namespace OpenRA.Mods.RA.AI
 				.MaxByOrDefault(g => g.Key);
 
 			var enemy = (leastLikedEnemies != null) ?
-				leastLikedEnemies.Random(random) : liveEnemies.FirstOrDefault();
+				leastLikedEnemies.Random(Random) : liveEnemies.FirstOrDefault();
 
 			// Pick something worth attacking owned by that player
-			var target = world.Actors
+			var target = World.Actors
 				.Where(a => a.Owner == enemy && a.HasTrait<IOccupySpace>())
-				.ClosestTo(world.Map.CenterOfCell(baseCenter));
+				.ClosestTo(World.Map.CenterOfCell(BaseCenter));
 
 			if (target == null)
 			{
 				/* Assume that "enemy" has nothing. Cool off on attacks. */
 				aggro[enemy].Aggro = aggro[enemy].Aggro / 2 - 1;
-				Log.Write("debug", "Bot {0} couldn't find target for player {1}", this.p.ClientIndex, enemy.ClientIndex);
+				Log.Write("debug", "Bot {0} couldn't find target for player {1}", Player.ClientIndex, enemy.ClientIndex);
 
 				return null;
 			}
@@ -452,8 +452,8 @@ namespace OpenRA.Mods.RA.AI
 
 		internal Actor FindClosestEnemy(WPos pos)
 		{
-			var allEnemyUnits = world.Actors
-				.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && !unit.HasTrait<Husk>() &&
+			var allEnemyUnits = World.Actors
+				.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy && !unit.HasTrait<Husk>() &&
 					unit.HasTrait<ITargetable>());
 
 			return allEnemyUnits.ClosestTo(pos);
@@ -461,8 +461,8 @@ namespace OpenRA.Mods.RA.AI
 
 		internal Actor FindClosestEnemy(WPos pos, WRange radius)
 		{
-			var enemyUnits = world.FindActorsInCircle(pos, radius)
-				.Where(unit => p.Stances[unit.Owner] == Stance.Enemy &&
+			var enemyUnits = World.FindActorsInCircle(pos, radius)
+				.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy &&
 					!unit.HasTrait<Husk>() && unit.HasTrait<ITargetable>()).ToList();
 
 			if (enemyUnits.Count > 0)
@@ -473,7 +473,7 @@ namespace OpenRA.Mods.RA.AI
 
 		List<Actor> FindEnemyConstructionYards()
 		{
-			return world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy && !a.IsDead
+			return World.Actors.Where(a => Player.Stances[a.Owner] == Stance.Enemy && !a.IsDead
 				&& a.HasTrait<BaseBuilding>() && !a.HasTrait<Mobile>()).ToList();
 		}
 
@@ -481,13 +481,13 @@ namespace OpenRA.Mods.RA.AI
 		{
 			squads.RemoveAll(s => !s.IsValid);
 			foreach (var s in squads)
-				s.units.RemoveAll(a => a.IsDead || a.Owner != p);
+				s.Units.RemoveAll(a => a.IsDead || a.Owner != Player);
 		}
 
 		// Use of this function requires that one squad of this type. Hence it is a piece of shit
 		Squad GetSquadOfType(SquadType type)
 		{
-			return squads.FirstOrDefault(s => s.type == type);
+			return squads.FirstOrDefault(s => s.Type == type);
 		}
 
 		Squad RegisterNewSquad(SquadType type, Actor target = null)
@@ -504,8 +504,8 @@ namespace OpenRA.Mods.RA.AI
 		void AssignRolesToIdleUnits(Actor self)
 		{
 			CleanSquads();
-			activeUnits.RemoveAll(a => a.IsDead || a.Owner != p); 
-			unitsHangingAroundTheBase.RemoveAll(a => a.IsDead || a.Owner != p);
+			activeUnits.RemoveAll(a => a.IsDead || a.Owner != Player); 
+			unitsHangingAroundTheBase.RemoveAll(a => a.IsDead || a.Owner != Player);
 
 			if (--rushTicks <= 0)
 			{
@@ -554,21 +554,21 @@ namespace OpenRA.Mods.RA.AI
 					continue;
 
 				// Tell the idle harvester to quit slacking:
-				world.IssueOrder(new Order("Harvest", a, false));
+				World.IssueOrder(new Order("Harvest", a, false));
 			}   
 		}
 
 		void FindNewUnits(Actor self)
 		{
 			var newUnits = self.World.ActorsWithTrait<IPositionable>()
-				.Where(a => a.Actor.Owner == p && !a.Actor.HasTrait<BaseBuilding>()
+				.Where(a => a.Actor.Owner == Player && !a.Actor.HasTrait<BaseBuilding>()
 					&& !activeUnits.Contains(a.Actor))
 				.Select(a => a.Actor);
 
 			foreach (var a in newUnits)
 			{
 				if (a.HasTrait<Harvester>())
-					world.IssueOrder(new Order("Harvest", a, false));
+					World.IssueOrder(new Order("Harvest", a, false));
 				else
 					unitsHangingAroundTheBase.Add(a);
 
@@ -578,7 +578,7 @@ namespace OpenRA.Mods.RA.AI
 					if (air == null)
 						air = RegisterNewSquad(SquadType.Air);
 
-					air.units.Add(a);
+					air.Units.Add(a);
 				}
 
 				activeUnits.Add(a);
@@ -589,7 +589,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			// Create an attack force when we have enough units around our base.
 			// (don't bother leaving any behind for defense)
-			var randomizedSquadSize = Info.SquadSize + random.Next(30);
+			var randomizedSquadSize = Info.SquadSize + Random.Next(30);
 
 			if (unitsHangingAroundTheBase.Count >= randomizedSquadSize)
 			{
@@ -597,7 +597,7 @@ namespace OpenRA.Mods.RA.AI
 
 				foreach (var a in unitsHangingAroundTheBase)
 					if (!a.HasTrait<Aircraft>())
-						attackForce.units.Add(a);
+						attackForce.Units.Add(a);
 
 				unitsHangingAroundTheBase.Clear();
 			}
@@ -614,18 +614,18 @@ namespace OpenRA.Mods.RA.AI
 
 			foreach (var b in allEnemyBaseBuilder)
 			{
-				var enemies = world.FindActorsInCircle(b.CenterPosition, WRange.FromCells(Info.RushAttackScanRadius))
-					.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
+				var enemies = World.FindActorsInCircle(b.CenterPosition, WRange.FromCells(Info.RushAttackScanRadius))
+					.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
 				
 				if (rushFuzzy.CanAttack(ownUnits, enemies))
 				{
-					var target = enemies.Any() ? enemies.Random(random) : b;
+					var target = enemies.Any() ? enemies.Random(Random) : b;
 					var rush = GetSquadOfType(SquadType.Rush);
 					if (rush == null)
 						rush = RegisterNewSquad(SquadType.Rush, target);
 
 					foreach (var a3 in ownUnits)
-						rush.units.Add(a3);
+						rush.Units.Add(a3);
 		  
 					return;
 				}
@@ -639,32 +639,32 @@ namespace OpenRA.Mods.RA.AI
 				protectSq = RegisterNewSquad(SquadType.Protection, attacker);
 
 			if (!protectSq.TargetIsValid)
-				protectSq.Target = attacker;
+				protectSq.TargetActor = attacker;
 
 			if (!protectSq.IsValid)
 			{
-				var ownUnits = world.FindActorsInCircle(world.Map.CenterOfCell(baseCenter), WRange.FromCells(Info.ProtectUnitScanRadius))
-					.Where(unit => unit.Owner == p && !unit.HasTrait<Building>()
+				var ownUnits = World.FindActorsInCircle(World.Map.CenterOfCell(BaseCenter), WRange.FromCells(Info.ProtectUnitScanRadius))
+					.Where(unit => unit.Owner == Player && !unit.HasTrait<Building>()
 						&& unit.HasTrait<AttackBase>()).ToList();
 
 				foreach (var a in ownUnits)
-					protectSq.units.Add(a);
+					protectSq.Units.Add(a);
 			}
 		}
 
 		bool IsRallyPointValid(CPos x, BuildingInfo info)
 		{
-			return info != null && world.IsCellBuildable(x, info);
+			return info != null && World.IsCellBuildable(x, info);
 		}
 
 		void SetRallyPointsForNewProductionBuildings(Actor self)
 		{
 			var buildings = self.World.ActorsWithTrait<RallyPoint>()
-				.Where(rp => rp.Actor.Owner == p &&
+				.Where(rp => rp.Actor.Owner == Player &&
 					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.Traits.GetOrDefault<BuildingInfo>())).ToArray();
 
 			foreach (var a in buildings)
-				world.IssueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor), SuppressVisualFeedback = true });
+				World.IssueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor), SuppressVisualFeedback = true });
 		}
 
 		// Won't work for shipyards...
@@ -679,24 +679,24 @@ namespace OpenRA.Mods.RA.AI
 				return producer.Location;
 			}
 
-			return possibleRallyPoints.Random(random);
+			return possibleRallyPoints.Random(Random);
 		}
 
 		void InitializeBase(Actor self)
 		{
 			// Find and deploy our mcv
 			var mcv = self.World.Actors
-				.FirstOrDefault(a => a.Owner == p && a.HasTrait<BaseBuilding>());
+				.FirstOrDefault(a => a.Owner == Player && a.HasTrait<BaseBuilding>());
 
 			if (mcv != null)
 			{
-				baseCenter = mcv.Location;
-				defenseCenter = baseCenter;
+				BaseCenter = mcv.Location;
+				defenseCenter = BaseCenter;
 
 				// Don't transform the mcv if it is a fact
 				// HACK: This needs to query against MCVs directly
 				if (mcv.HasTrait<Mobile>())
-					world.IssueOrder(new Order("DeployTransform", mcv, false));
+					World.IssueOrder(new Order("DeployTransform", mcv, false));
 			}
 			else
 				BotDebug("AI: Can't find BaseBuildUnit.");
@@ -707,7 +707,7 @@ namespace OpenRA.Mods.RA.AI
 		void FindAndDeployBackupMcv(Actor self)
 		{
 			// HACK: This needs to query against MCVs directly
-			var mcvs = self.World.Actors.Where(a => a.Owner == p && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>());
+			var mcvs = self.World.Actors.Where(a => a.Owner == Player && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>());
 			if (!mcvs.Any())
 				return;
 
@@ -721,8 +721,8 @@ namespace OpenRA.Mods.RA.AI
 				if (desiredLocation == null)
 					continue;
 
-				world.IssueOrder(new Order("Move", mcv, true) { TargetLocation = desiredLocation.Value });
-				world.IssueOrder(new Order("DeployTransform", mcv, true));
+				World.IssueOrder(new Order("Move", mcv, true) { TargetLocation = desiredLocation.Value });
+				World.IssueOrder(new Order("DeployTransform", mcv, true));
 			}
 		}
 
@@ -757,7 +757,7 @@ namespace OpenRA.Mods.RA.AI
 					var attackLocation = FindCoarseAttackLocationToSupportPower(sp);
 					if (attackLocation == null)
 					{
-						BotDebug("AI: {1} can't find suitable coarse attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, p.PlayerName);
+						BotDebug("AI: {1} can't find suitable coarse attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, Player.PlayerName);
 						waitingPowers[sp] += powerDecision.GetNextScanTime(this);
 
 						continue;
@@ -767,16 +767,16 @@ namespace OpenRA.Mods.RA.AI
 					attackLocation = FindFineAttackLocationToSupportPower(sp, (CPos)attackLocation);
 					if (attackLocation == null)
 					{
-						BotDebug("AI: {1} can't find suitable final attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, p.PlayerName);
+						BotDebug("AI: {1} can't find suitable final attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, Player.PlayerName);
 						waitingPowers[sp] += powerDecision.GetNextScanTime(this);
 
 						continue;
 					}
 
 					// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
-					BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, p.PlayerName);
+					BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, Player.PlayerName);
 					waitingPowers[sp] += 10;
-					world.IssueOrder(new Order(sp.Info.OrderName, supportPowerMngr.self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
+					World.IssueOrder(new Order(sp.Info.OrderName, supportPowerMngr.Self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
 				}
 			}
 		}
@@ -794,17 +794,17 @@ namespace OpenRA.Mods.RA.AI
 			}
 
 			var checkRadius = powerDecision.CoarseScanRadius;
-			for (var i = 0; i < world.Map.MapSize.X; i += checkRadius)
+			for (var i = 0; i < World.Map.MapSize.X; i += checkRadius)
 			{
-				for (var j = 0; j < world.Map.MapSize.Y; j += checkRadius)
+				for (var j = 0; j < World.Map.MapSize.Y; j += checkRadius)
 				{
 					var consideredAttractiveness = 0;
 
-					var tl = world.Map.CenterOfCell(new CPos(i, j));
-					var br = world.Map.CenterOfCell(new CPos(i + checkRadius, j + checkRadius));
-					var targets = world.ActorMap.ActorsInBox(tl, br);
+					var tl = World.Map.CenterOfCell(new CPos(i, j));
+					var br = World.Map.CenterOfCell(new CPos(i + checkRadius, j + checkRadius));
+					var targets = World.ActorMap.ActorsInBox(tl, br);
 					
-					consideredAttractiveness = powerDecision.GetAttractiveness(targets, p);
+					consideredAttractiveness = powerDecision.GetAttractiveness(targets, Player);
 					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
 						continue;
 
@@ -837,9 +837,9 @@ namespace OpenRA.Mods.RA.AI
 				for (var j = 0 - extendedRange; j <= (checkRadius + extendedRange); j += fineCheck)
 				{
 					var y = checkPos.Y + j;
-					var pos = world.Map.CenterOfCell(new CPos(x, y));
+					var pos = World.Map.CenterOfCell(new CPos(x, y));
 					var consideredAttractiveness = 0;
-					consideredAttractiveness += powerDecision.GetAttractiveness(pos, p);
+					consideredAttractiveness += powerDecision.GetAttractiveness(pos, Player);
 
 					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
 						continue;
@@ -854,8 +854,8 @@ namespace OpenRA.Mods.RA.AI
 
 		internal IEnumerable<ProductionQueue> FindQueues(string category)
 		{
-			return world.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == p && a.Trait.Info.Type == category && a.Trait.Enabled)
+			return World.ActorsWithTrait<ProductionQueue>()
+				.Where(a => a.Actor.Owner == Player && a.Trait.Info.Type == category && a.Trait.Enabled)
 				.Select(a => a.Trait);
 		}
 
@@ -866,8 +866,8 @@ namespace OpenRA.Mods.RA.AI
 				return;
 
 			// No construction yards - Build a new MCV
-			if (!HasAdequateFact() && !self.World.Actors.Any(a => a.Owner == p && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>()))
-				BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv", p).Name);
+			if (!HasAdequateFact() && !self.World.Actors.Any(a => a.Owner == Player && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>()))
+				BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv", Player).Name);
 
 			foreach (var q in Info.UnitQueues)
 				BuildUnit(q, unitsHangingAroundTheBase.Count < Info.IdleBaseUnitsMaximum);
@@ -885,7 +885,7 @@ namespace OpenRA.Mods.RA.AI
 				ChooseUnitToBuild(queue);
 
 			if (unit != null && Info.UnitsToBuild.Any(u => u.Key == unit.Name))
-				world.IssueOrder(Order.StartProduction(queue.Actor, unit.Name, 1));
+				World.IssueOrder(Order.StartProduction(queue.Actor, unit.Name, 1));
 		}
 
 		void BuildUnit(string category, string name)
@@ -895,7 +895,7 @@ namespace OpenRA.Mods.RA.AI
 				return;
 
 			if (Map.Rules.Actors[name] != null)
-				world.IssueOrder(Order.StartProduction(queue.Actor, name, 1));
+				World.IssueOrder(Order.StartProduction(queue.Actor, name, 1));
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
@@ -914,7 +914,7 @@ namespace OpenRA.Mods.RA.AI
 				{
 					BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
 						self, e.PreviousDamageState, e.DamageState);
-					world.IssueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false)
+					World.IssueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false)
 						{ TargetActor = self });
 				}
 			}
@@ -930,7 +930,7 @@ namespace OpenRA.Mods.RA.AI
 
 			// Protected harvesters or building
 			if ((self.HasTrait<Harvester>() || self.HasTrait<Building>()) &&
-				p.Stances[e.Attacker.Owner] == Stance.Enemy)
+				Player.Stances[e.Attacker.Owner] == Stance.Enemy)
 			{
 				defenseCenter = e.Attacker.Location;
 				ProtectOwn(e.Attacker);

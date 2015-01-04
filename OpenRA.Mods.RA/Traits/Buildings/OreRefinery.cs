@@ -37,8 +37,8 @@ namespace OpenRA.Mods.RA.Traits
 	public class OreRefinery : ITick, IAcceptOre, INotifyKilled, INotifySold, INotifyCapture, INotifyOwnerChanged, IExplodeModifier, ISync
 	{
 		readonly Actor self;
-		readonly OreRefineryInfo Info;
-		PlayerResources PlayerResources;
+		readonly OreRefineryInfo info;
+		PlayerResources playerResources;
 
 		int currentDisplayTick = 0;
 		int currentDisplayValue = 0;
@@ -48,16 +48,16 @@ namespace OpenRA.Mods.RA.Traits
 		[Sync] bool preventDock = false;
 
 		public bool AllowDocking { get { return !preventDock; } }
-		public CVec DeliverOffset { get { return Info.DockOffset; } }
+		public CVec DeliverOffset { get { return info.DockOffset; } }
 
-		public virtual Activity DockSequence(Actor harv, Actor self) { return new RAHarvesterDockSequence(harv, self, Info.DockAngle); }
+		public virtual Activity DockSequence(Actor harv, Actor self) { return new RAHarvesterDockSequence(harv, self, info.DockAngle); }
 
 		public OreRefinery(Actor self, OreRefineryInfo info)
 		{
 			this.self = self;
-			Info = info;
-			PlayerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
-			currentDisplayTick = Info.TickRate;
+			this.info = info;
+			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
+			currentDisplayTick = info.TickRate;
 		}
 
 		public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
@@ -66,12 +66,12 @@ namespace OpenRA.Mods.RA.Traits
 				.Where(a => a.Trait.LinkedProc == self);
 		}
 
-		public bool CanGiveOre(int amount) { return PlayerResources.CanGiveResources(amount); }
+		public bool CanGiveOre(int amount) { return playerResources.CanGiveResources(amount); }
 
 		public void GiveOre(int amount)
 		{
-			PlayerResources.GiveResources(amount);
-			if (Info.ShowTicks)
+			playerResources.GiveResources(amount);
+			if (info.ShowTicks)
 				currentDisplayValue += amount;
 		}
 
@@ -93,12 +93,12 @@ namespace OpenRA.Mods.RA.Traits
 				dockedHarv = null;
 			}
 
-			if (Info.ShowTicks && currentDisplayValue > 0 && --currentDisplayTick <= 0)
+			if (info.ShowTicks && currentDisplayValue > 0 && --currentDisplayTick <= 0)
 			{
 				var temp = currentDisplayValue;
 				if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 					self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, self.Owner.Color.RGB, FloatingText.FormatCashTick(temp), 30)));
-				currentDisplayTick = Info.TickRate;
+				currentDisplayTick = info.TickRate;
 				currentDisplayValue = 0;
 			}
 		}
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.RA.Traits
 			foreach (var harv in GetLinkedHarvesters())
 				harv.Trait.UnlinkProc(harv.Actor, self);
 
-			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
+			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)

@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 
 		[FieldLoader.LoadUsing("LoadConsiderations")]
 		[Desc("The decisions associated with this power")]
-		readonly List<Consideration> Considerations = new List<Consideration>();
+		public readonly List<Consideration> Considerations = new List<Consideration>();
 
 		[Desc("Minimum ticks to wait until next Decision scan attempt.")]
 		public readonly int MinimumScanTimeInterval = 250;
@@ -93,10 +93,10 @@ namespace OpenRA.Mods.RA
 			return answer;
 		}
 
-		public int GetNextScanTime(HackyAI ai) { return ai.random.Next(MinimumScanTimeInterval, MaximumScanTimeInterval); }
+		public int GetNextScanTime(HackyAI ai) { return ai.Random.Next(MinimumScanTimeInterval, MaximumScanTimeInterval); }
 
 		/// <summary>Makes up part of a decision, describing how to evaluate a target.</summary>
-		class Consideration
+		public class Consideration
 		{
 			public enum DecisionMetric { Health, Value, None }
 

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Traits
 
 	public class SupportPowerManager : ITick, IResolveOrder, ITechTreeElement
 	{
-		public readonly Actor self;
+		public readonly Actor Self;
 		public readonly Dictionary<string, SupportPowerInstance> Powers = new Dictionary<string, SupportPowerInstance>();
 
 		public readonly DeveloperMode DevMode;
@@ -34,9 +34,9 @@ namespace OpenRA.Mods.RA.Traits
 
 		public SupportPowerManager(ActorInitializer init)
 		{
-			self = init.Self;
-			DevMode = self.Trait<DeveloperMode>();
-			TechTree = self.Trait<TechTree>();
+			Self = init.Self;
+			DevMode = Self.Trait<DeveloperMode>();
+			TechTree = Self.Trait<TechTree>();
 			RadarPings = Exts.Lazy(() => init.World.WorldActor.TraitOrDefault<RadarPings>());
 
 			init.World.ActorAdded += ActorAdded;
@@ -45,12 +45,12 @@ namespace OpenRA.Mods.RA.Traits
 
 		static string MakeKey(SupportPower sp)
 		{
-			return sp.Info.AllowMultiple ? sp.Info.OrderName + "_" + sp.self.ActorID : sp.Info.OrderName;
+			return sp.Info.AllowMultiple ? sp.Info.OrderName + "_" + sp.Self.ActorID : sp.Info.OrderName;
 		}
 
 		void ActorAdded(Actor a)
 		{
-			if (a.Owner != self.Owner)
+			if (a.Owner != Self.Owner)
 				return;
 
 			foreach (var t in a.TraitsImplementing<SupportPower>())
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		void ActorRemoved(Actor a)
 		{
-			if (a.Owner != self.Owner || !a.HasTrait<SupportPower>())
+			if (a.Owner != Self.Owner || !a.HasTrait<SupportPower>())
 				return;
 
 			foreach (var t in a.TraitsImplementing<SupportPower>())
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public IEnumerable<SupportPowerInstance> GetPowersForActor(Actor a)
 		{
-			if (a.Owner != self.Owner || !a.HasTrait<SupportPower>())
+			if (a.Owner != Self.Owner || !a.HasTrait<SupportPower>())
 				return NoInstances;
 
 			return a.TraitsImplementing<SupportPower>()
@@ -152,8 +152,8 @@ namespace OpenRA.Mods.RA.Traits
 
 	public class SupportPowerInstance
 	{
-		readonly SupportPowerManager Manager;
-		readonly string Key;
+		readonly SupportPowerManager manager;
+		readonly string key;
 
 		public List<SupportPower> Instances;
 		public int RemainingTime;
@@ -166,41 +166,41 @@ namespace OpenRA.Mods.RA.Traits
 
 		public SupportPowerInstance(string key, SupportPowerManager manager)
 		{
-			Manager = manager;
-			Key = key;
+			this.manager = manager;
+			this.key = key;
 		}
 
 		static bool InstanceDisabled(SupportPower sp)
 		{
-			return sp.self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
+			return sp.Self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
 		}
 
 		bool notifiedCharging;
 		bool notifiedReady;
 		public void Tick()
 		{
-			Active = !Disabled && Instances.Any(i => !i.self.IsDisabled());
+			Active = !Disabled && Instances.Any(i => !i.Self.IsDisabled());
 			if (!Active)
 				return;
 
 			if (Active)
 			{
 				var power = Instances.First();
-				if (Manager.DevMode.FastCharge && RemainingTime > 25)
+				if (manager.DevMode.FastCharge && RemainingTime > 25)
 					RemainingTime = 25;
 
 				if (RemainingTime > 0)
 					--RemainingTime;
 				if (!notifiedCharging)
 				{
-					power.Charging(power.self, Key);
+					power.Charging(power.Self, key);
 					notifiedCharging = true;
 				}
 
 				if (RemainingTime == 0
 					&& !notifiedReady)
 				{
-					power.Charged(power.self, Key);
+					power.Charged(power.Self, key);
 					notifiedReady = true;
 				}
 			}
@@ -211,7 +211,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (!Ready)
 				return;
 
-			Manager.self.World.OrderGenerator = Instances.First().OrderGenerator(Key, Manager);
+			manager.Self.World.OrderGenerator = Instances.First().OrderGenerator(key, manager);
 		}
 
 		public void Activate(Order order)
@@ -222,7 +222,7 @@ namespace OpenRA.Mods.RA.Traits
 			var power = Instances.First(i => !InstanceDisabled(i));
 
 			// Note: order.Subject is the *player* actor
-			power.Activate(power.self, order, Manager);
+			power.Activate(power.Self, order, manager);
 			RemainingTime = TotalTime;
 			notifiedCharging = notifiedReady = false;
 
@@ -250,7 +250,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			world.CancelInputMode();
 			if (mi.Button == expectedButton && world.Map.Contains(xy))
-				yield return new Order(order, manager.self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
+				yield return new Order(order, manager.Self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
 		}
 
 		public virtual void Tick(World world)

@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				var time = WidgetUtils.FormatTime(p.RemainingTime, false);
 				var text = Format.F(p.Info.Description, time);
-				var color = !p.Ready || Game.LocalTick % 50 < 25 ? p.Instances[0].self.Owner.Color.RGB : Color.White;
+				var color = !p.Ready || Game.LocalTick % 50 < 25 ? p.Instances[0].Self.Owner.Color.RGB : Color.White;
 				return Pair.New(text, color);
 			}).ToArray();
 		}

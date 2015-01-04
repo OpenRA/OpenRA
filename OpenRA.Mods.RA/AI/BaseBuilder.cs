@@ -128,7 +128,7 @@ namespace OpenRA.Mods.RA.AI
 			if (orderBy != null)
 				return available.MaxByOrDefault(orderBy);
 
-			return available.RandomOrDefault(ai.random);
+			return available.RandomOrDefault(ai.Random);
 		}
 
 		ActorInfo ChooseBuildingToBuild(ProductionQueue queue)
@@ -184,7 +184,7 @@ namespace OpenRA.Mods.RA.AI
 			}
 
 			// Build everything else
-			foreach (var frac in ai.Info.BuildingFractions.Shuffle(ai.random))
+			foreach (var frac in ai.Info.BuildingFractions.Shuffle(ai.Random))
 			{
 				var name = frac.Key;
 

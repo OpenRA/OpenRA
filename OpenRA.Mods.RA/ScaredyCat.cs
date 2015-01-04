@@ -33,9 +33,9 @@ namespace OpenRA.Mods.RA.Traits
 		readonly ScaredyCatInfo info;
 		[Sync] readonly Actor self;
 		[Sync] int panicStartedTick;
-		bool panicking { get { return panicStartedTick > 0; } }
+		bool Panicking { get { return panicStartedTick > 0; } }
 
-		public bool IsModifyingSequence { get { return panicking; } }
+		public bool IsModifyingSequence { get { return Panicking; } }
 		public string SequencePrefix { get { return "panic-"; } }
 
 		public ScaredyCat(Actor self, ScaredyCatInfo info)
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void Panic()
 		{
-			if (!panicking)
+			if (!Panicking)
 				self.CancelActivity();
 
 			panicStartedTick = self.World.WorldTick;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void Tick(Actor self)
 		{
-			if (!panicking)
+			if (!Panicking)
 				return;
 
 			if (self.World.WorldTick >= panicStartedTick + info.PanicLength)
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void TickIdle(Actor self)
 		{
-			if (!panicking)
+			if (!Panicking)
 				return;
 
 			self.Trait<Mobile>().Nudge(self, self, true);
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public int GetSpeedModifier()
 		{
-			return panicking ? info.PanicSpeedModifier : 100;
+			return Panicking ? info.PanicSpeedModifier : 100;
 		}
 	}
 }

@@ -16,16 +16,26 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Apply palette full screen rotations during chronoshifts. Add this to the world actor.")]
-	class ChronoshiftPaletteEffectInfo : TraitInfo<ChronoshiftPaletteEffect> { }
+	public class ChronoshiftPaletteEffectInfo : ITraitInfo
+	{
+		public readonly int ChronoEffectLength = 60;
+
+		public object Create(ActorInitializer init) { return new ChronoshiftPaletteEffect(this); }
+	}
 
 	public class ChronoshiftPaletteEffect : IPaletteModifier, ITick
 	{
-		const int chronoEffectLength = 60;
 		int remainingFrames;
+		ChronoshiftPaletteEffectInfo info;
+
+		public ChronoshiftPaletteEffect(ChronoshiftPaletteEffectInfo info)
+		{
+			this.info = info;
+		}
 
 		public void Enable()
 		{
-			remainingFrames = chronoEffectLength;
+			remainingFrames = info.ChronoEffectLength;
 		}
 
 		public void Tick(Actor self)
@@ -39,7 +49,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (remainingFrames == 0)
 				return;
 
-			var frac = (float)remainingFrames / chronoEffectLength;
+			var frac = (float)remainingFrames / info.ChronoEffectLength;
 
 			foreach (var pal in palettes)
 			{
