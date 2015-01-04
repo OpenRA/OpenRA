@@ -294,7 +294,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			menuType = MenuType.None;
 			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
 			{
-				{ "onExit", () => { Game.Disconnect(); menuType = MenuType.Main; } },
+				{ "onExit", () => { Game.Disconnect(); menuType = MenuType.Singleplayer; } },
 				{ "onStart", RemoveShellmapUI },
 				{ "skirmishMode", true }
 			});
