@@ -229,7 +229,7 @@ namespace OpenRA.Mods.Common.AI
 				return null;
 
 			var unit = buildableThings.Random(Random);
-			return HasAdequateAirUnits(unit) ? unit : null;
+			return HasAdequateAirUnitReloadBuildings(unit) ? unit : null;
 		}
 
 		ActorInfo ChooseUnitToBuild(ProductionQueue queue)
@@ -246,7 +246,7 @@ namespace OpenRA.Mods.Common.AI
 			foreach (var unit in Info.UnitsToBuild.Shuffle(Random))
 				if (buildableThings.Any(b => b.Name == unit.Key))
 					if (myUnits.Count(a => a == unit.Key) < unit.Value * myUnits.Count)
-						if (HasAdequateAirUnits(Map.Rules.Actors[unit.Key]))
+						if (HasAdequateAirUnitReloadBuildings(Map.Rules.Actors[unit.Key]))
 							return Map.Rules.Actors[unit.Key];
 
 			return null;
@@ -318,13 +318,18 @@ namespace OpenRA.Mods.Common.AI
 		}
 
 		// For mods like RA (number of building must match the number of aircraft)
-		bool HasAdequateAirUnits(ActorInfo actorInfo)
+		bool HasAdequateAirUnitReloadBuildings(ActorInfo actorInfo)
 		{
-			if (!actorInfo.Traits.Contains<ReloadsInfo>() && actorInfo.Traits.Contains<LimitedAmmoInfo>()
-				&& actorInfo.Traits.Contains<AircraftInfo>())
+			var aircraftInfo = actorInfo.Traits.GetOrDefault<AircraftInfo>();
+			if (aircraftInfo == null)
+				return true;
+
+			var ammoPoolsInfo = actorInfo.Traits.WithInterface<AmmoPoolInfo>();
+
+			if (ammoPoolsInfo.Any(x => !x.SelfReloads))
 			{
 				var countOwnAir = CountUnits(actorInfo.Name, Player);
-				var countBuildings = CountBuilding(actorInfo.Traits.Get<AircraftInfo>().RearmBuildings.FirstOrDefault(), Player);
+				var countBuildings = CountBuilding(aircraftInfo.RearmBuildings.FirstOrDefault(), Player);
 				if (countOwnAir >= countBuildings)
 					return false;
 			}

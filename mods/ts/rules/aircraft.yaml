@@ -27,7 +27,7 @@ DPOD:
 	Armament:
 		Weapon: Vulcan2
 	AttackHeli:
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 5
 		PipCount: 5
 		PipType: Ammo
@@ -95,7 +95,7 @@ ORCA:
 		Weapon: Hellfire
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 5
 		PipCount: 5
 		PipType: Ammo
@@ -132,7 +132,7 @@ ORCAB:
 		Weapon: Bomb
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 2
 		PipCount: 2
 		PipType: Ammo
@@ -228,7 +228,7 @@ SCRIN:
 		Weapon: Proton
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 3
 		PipCount: 3
 		PipType: Ammo
@@ -264,7 +264,7 @@ APACHE:
 		Weapon: HarpyClaw
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 12
 		PipCount: 4
 		PipType: Ammo

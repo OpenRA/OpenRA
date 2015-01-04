@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -18,30 +20,38 @@ namespace OpenRA.Mods.Common.Activities
 	public class FlyAttack : Activity
 	{
 		readonly Target target;
+		readonly AttackPlane attackPlane;
+		readonly IEnumerable<AmmoPool> ammoPools;
 		Activity inner;
 		int ticksUntilTurn = 50;
 
-		public FlyAttack(Target target) { this.target = target; }
+		public FlyAttack(Actor self, Target target)
+		{
+			this.target = target;
+			attackPlane = self.TraitOrDefault<AttackPlane>();
+			ammoPools = self.TraitsImplementing<AmmoPool>();
+		}
 
 		public override Activity Tick(Actor self)
 		{
 			if (!target.IsValidFor(self))
 				return NextActivity;
 
-			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
-			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
+			// Move to the next activity only if all ammo pools are depleted and none reload automatically
+			// TODO: This should check whether there is ammo left that is actually suitable for the target
+			if (ammoPools != null && ammoPools.All(x => !x.Info.SelfReloads && !x.HasAmmo()))
 				return NextActivity;
 
-			var attack = self.TraitOrDefault<AttackPlane>();
-			if (attack != null)
-				attack.DoAttack(self, target);
+			if (attackPlane != null)
+				attackPlane.DoAttack(self, target);
 
 			if (inner == null)
 			{
 				if (IsCanceled)
 					return NextActivity;
 
-				if (target.IsInRange(self.CenterPosition, attack.Armaments.Select(a => a.Weapon.MinRange).Min()))
+				// TODO: This should fire each weapon at its maximum range
+				if (target.IsInRange(self.CenterPosition, attackPlane.Armaments.Select(a => a.Weapon.MinRange).Min()))
 					inner = Util.SequenceActivities(new FlyTimed(ticksUntilTurn), new Fly(self, target), new FlyTimed(ticksUntilTurn));
 				else
 					inner = Util.SequenceActivities(new Fly(self, target), new FlyTimed(ticksUntilTurn));
