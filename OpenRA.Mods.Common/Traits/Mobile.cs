@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (otherMobile == null) return false;
 
 			// Sign of dot-product indicates (roughly) if vectors are facing in same or opposite directions:
-			var dp = CVec.Dot(selfMobile.toCell - self.Location, otherMobile.toCell - other.Location);
+			var dp = CVec.Dot(selfMobile.ToCell - self.Location, otherMobile.ToCell - other.Location);
 			if (dp <= 0) return false;
 
 			return true;
@@ -249,60 +249,60 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
 	{
-		public readonly Actor self;
+		const int AverageTicksBeforePathing = 5;
+		const int SpreadTicksBeforePathing = 5;
+		internal int TicksBeforePathing = 0;
+		
+		readonly Actor self;
 		public readonly MobileInfo Info;
 		public bool IsMoving { get; set; }
 
-		int __facing;
-		CPos __fromCell, __toCell;
-		public SubCell fromSubCell, toSubCell;
+		int facing;
+		CPos fromCell, toCell;
+		public SubCell FromSubCell, ToSubCell;
 
 		[Sync] public int Facing
 		{
-			get { return __facing; }
-			set { __facing = value; }
+			get { return facing; }
+			set { facing = value; }
 		}
 
 		public int ROT { get { return Info.ROT; } }
 
 		[Sync] public WPos CenterPosition { get; private set; }
-		[Sync] public CPos fromCell { get { return __fromCell; } }
-		[Sync] public CPos toCell { get { return __toCell; } }
+		[Sync] public CPos FromCell { get { return fromCell; } }
+		[Sync] public CPos ToCell { get { return toCell; } }
 
 		[Sync] public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
 
 		public void SetLocation(CPos from, SubCell fromSub, CPos to, SubCell toSub)
 		{
-			if (fromCell == from && toCell == to && fromSubCell == fromSub && toSubCell == toSub)
+			if (FromCell == from && ToCell == to && FromSubCell == fromSub && ToSubCell == toSub)
 				return;
 
 			RemoveInfluence();
-			__fromCell = from;
-			__toCell = to;
-			fromSubCell = fromSub;
-			toSubCell = toSub;
+			fromCell = from;
+			toCell = to;
+			FromSubCell = fromSub;
+			ToSubCell = toSub;
 			AddInfluence();
 		}
 
-		const int avgTicksBeforePathing = 5;
-		const int spreadTicksBeforePathing = 5;
-		internal int ticksBeforePathing = 0;
-
 		public Mobile(ActorInitializer init, MobileInfo info)
 		{
-			this.self = init.self;
-			this.Info = info;
+			self = init.self;
+			Info = info;
 
-			toSubCell = fromSubCell = info.SharesCell ? init.world.Map.DefaultSubCell : SubCell.FullCell;
+			ToSubCell = FromSubCell = info.SharesCell ? init.world.Map.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
 			{
-				this.fromSubCell = this.toSubCell = init.Get<SubCellInit, SubCell>();
+				this.FromSubCell = this.ToSubCell = init.Get<SubCellInit, SubCell>();
 			}
 
 			if (init.Contains<LocationInit>())
 			{
-				this.__fromCell = this.__toCell = init.Get<LocationInit, CPos>();
-				SetVisualPosition(self, init.world.Map.CenterOfSubCell(fromCell, fromSubCell));
+				this.fromCell = this.toCell = init.Get<LocationInit, CPos>();
+				SetVisualPosition(self, init.world.Map.CenterOfSubCell(FromCell, FromSubCell));
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
@@ -318,7 +318,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Try same sub-cell
 			if (preferred == SubCell.Any)
-				preferred = fromSubCell;
+				preferred = FromSubCell;
 
 			// Fix sub-cell assignment
 			if (Info.SharesCell)
@@ -346,7 +346,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void SetPosition(Actor self, WPos pos)
 		{
 			var cell = self.World.Map.CellContaining(pos);
-			SetLocation(cell, fromSubCell, cell, fromSubCell);
+			SetLocation(cell, FromSubCell, cell, FromSubCell);
 			SetVisualPosition(self, pos);
 			FinishedMoving(self);
 		}
@@ -435,7 +435,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!queued) self.CancelActivity();
 
-			ticksBeforePathing = avgTicksBeforePathing + self.World.SharedRandom.Next(-spreadTicksBeforePathing, spreadTicksBeforePathing);
+			TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
 
 			self.QueueActivity(new Move(self, currentLocation, 8));
 
@@ -481,21 +481,21 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public CPos TopLeft { get { return toCell; } }
+		public CPos TopLeft { get { return ToCell; } }
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells()
 		{
-			if (fromCell == toCell)
-				return new[] { Pair.New(fromCell, fromSubCell) };
-			if (CanEnterCell(toCell))
-				return new[] { Pair.New(toCell, toSubCell) };
-			return new[] { Pair.New(fromCell, fromSubCell), Pair.New(toCell, toSubCell) };
+			if (FromCell == ToCell)
+				return new[] { Pair.New(FromCell, FromSubCell) };
+			if (CanEnterCell(ToCell))
+				return new[] { Pair.New(ToCell, ToSubCell) };
+			return new[] { Pair.New(FromCell, FromSubCell), Pair.New(ToCell, ToSubCell) };
 		}
 
 		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any)
 		{
-			return toCell != location && __fromCell == location
-				&& (subCell == SubCell.Any || fromSubCell == subCell || subCell == SubCell.FullCell || fromSubCell == SubCell.FullCell);
+			return ToCell != location && fromCell == location
+				&& (subCell == SubCell.Any || FromSubCell == subCell || subCell == SubCell.FullCell || FromSubCell == SubCell.FullCell);
 		}
 
 		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true)
@@ -510,7 +510,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void EnteringCell(Actor self)
 		{
-			var crushables = self.World.ActorMap.GetUnitsAt(toCell).Where(a => a != self)
+			var crushables = self.World.ActorMap.GetUnitsAt(ToCell).Where(a => a != self)
 				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(b => b.CrushableBy(Info.Crushes, self.Owner)));
 			foreach (var crushable in crushables)
 				crushable.WarnCrush(self);
@@ -518,7 +518,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void FinishedMoving(Actor self)
 		{
-			var crushables = self.World.ActorMap.GetUnitsAt(toCell).Where(a => a != self)
+			var crushables = self.World.ActorMap.GetUnitsAt(ToCell).Where(a => a != self)
 				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(c => c.CrushableBy(Info.Crushes, self.Owner)));
 			foreach (var crushable in crushables)
 				crushable.OnCrush(self);
@@ -571,11 +571,11 @@ namespace OpenRA.Mods.Common.Traits
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)
 				{
-					var p = toCell + new CVec(i, j);
+					var p = ToCell + new CVec(i, j);
 					if (CanEnterCell(p))
 						availCells.Add(p);
 					else
-						if (p != nudger.Location && p != toCell)
+						if (p != nudger.Location && p != ToCell)
 							notStupidCells.Add(p);
 				}
 

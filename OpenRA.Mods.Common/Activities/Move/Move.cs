@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			getPath = () =>
 				self.World.WorldActor.Trait<PathFinder>().FindPath(
-					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, destination, false)
+					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.ToCell, destination, false)
 					.WithoutLaneBias());
 			this.destination = destination;
 			this.nearEnough = WRange.Zero;
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Activities
 			moveDisablers = self.TraitsImplementing<IDisableMove>();
 
 			getPath = () => self.World.WorldActor.Trait<PathFinder>()
-				.FindUnitPath(mobile.toCell, destination, self);
+				.FindUnitPath(mobile.ToCell, destination, self);
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Activities
 			moveDisablers = self.TraitsImplementing<IDisableMove>();
 
 			getPath = () => self.World.WorldActor.Trait<PathFinder>()
-				.FindUnitPathToRange(mobile.fromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
+				.FindUnitPathToRange(mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			getPath = () =>
 				self.World.WorldActor.Trait<PathFinder>().FindPath(
-					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, destination, false)
+					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.ToCell, destination, false)
 					.WithIgnoredActor(ignoredActor));
 
 			this.destination = destination;
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Activities
 					return NoPath;
 
 				return self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(
-					mobile.toCell, mobile.toSubCell, target.CenterPosition, range, self);
+					mobile.ToCell, mobile.ToSubCell, target.CenterPosition, range, self);
 			};
 
 			destination = null;
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		List<CPos> EvalPath(Actor self, Mobile mobile)
 		{
-			var path = getPath().TakeWhile(a => a != mobile.toCell).ToList();
+			var path = getPath().TakeWhile(a => a != mobile.ToCell).ToList();
 			mobile.PathHash = HashList(path);
 			return path;
 		}
@@ -144,14 +144,14 @@ namespace OpenRA.Mods.Common.Activities
 			if (moveDisablers.Any(d => d.MoveDisabled(self)))
 				return this;
 
-			if (destination == mobile.toCell)
+			if (destination == mobile.ToCell)
 				return NextActivity;
 
 			if (path == null)
 			{
-				if (mobile.ticksBeforePathing > 0)
+				if (mobile.TicksBeforePathing > 0)
 				{
-					--mobile.ticksBeforePathing;
+					--mobile.TicksBeforePathing;
 					return this;
 				}
 
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (path.Count == 0)
 			{
-				destination = mobile.toCell;
+				destination = mobile.ToCell;
 				return this;
 			}
 
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (nextCell == null)
 				return this;
 
-			var firstFacing = self.World.Map.FacingBetween(mobile.fromCell, nextCell.Value.First, mobile.Facing);
+			var firstFacing = self.World.Map.FacingBetween(mobile.FromCell, nextCell.Value.First, mobile.Facing);
 			if (firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.First);
@@ -179,11 +179,11 @@ namespace OpenRA.Mods.Common.Activities
 			}
 			else
 			{
-				mobile.SetLocation(mobile.fromCell, mobile.fromSubCell, nextCell.Value.First, nextCell.Value.Second);
+				mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, nextCell.Value.First, nextCell.Value.Second);
 				var move = new MoveFirstHalf(
 					this,
-					self.World.Map.CenterOfSubCell(mobile.fromCell, mobile.fromSubCell),
-					Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (self.World.Map.OffsetOfSubCell(mobile.fromSubCell) + self.World.Map.OffsetOfSubCell(mobile.toSubCell)) / 2,
+					self.World.Map.CenterOfSubCell(mobile.FromCell, mobile.FromSubCell),
+					Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (self.World.Map.OffsetOfSubCell(mobile.FromSubCell) + self.World.Map.OffsetOfSubCell(mobile.ToSubCell)) / 2,
 					mobile.Facing,
 					mobile.Facing,
 					0);
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (path.Count == 0)
 				return;
-			var d = path[path.Count - 1] - mobile.toCell;
+			var d = path[path.Count - 1] - mobile.ToCell;
 			if (d.LengthSquared > 2)
 				throw new InvalidOperationException("(Move) Sanity check failed");
 		}
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// Are we close enough?
 				var cellRange = nearEnough.Range / 1024;
-				if ((mobile.toCell - destination.Value).LengthSquared <= cellRange * cellRange)
+				if ((mobile.ToCell - destination.Value).LengthSquared <= cellRange * cellRange)
 				{
 					path.Clear();
 					return null;
@@ -248,9 +248,9 @@ namespace OpenRA.Mods.Common.Activities
 				if (--waitTicksRemaining >= 0)
 					return null;
 
-				if (mobile.ticksBeforePathing > 0)
+				if (mobile.TicksBeforePathing > 0)
 				{
-					--mobile.ticksBeforePathing;
+					--mobile.TicksBeforePathing;
 					return null;
 				}
 
@@ -290,42 +290,42 @@ namespace OpenRA.Mods.Common.Activities
 
 		abstract class MovePart : Activity
 		{
-			protected readonly Move move;
-			protected readonly WPos from, to;
-			protected readonly int fromFacing, toFacing;
-			protected readonly int moveFractionTotal;
+			protected readonly Move Move;
+			protected readonly WPos From, To;
+			protected readonly int FromFacing, ToFacing;
+			protected readonly int MoveFractionTotal;
 			protected int moveFraction;
 
 			public MovePart(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
 			{
-				this.move = move;
-				this.from = from;
-				this.to = to;
-				this.fromFacing = fromFacing;
-				this.toFacing = toFacing;
-				this.moveFraction = startingFraction;
-				this.moveFractionTotal = (to - from).Length;
+				Move = move;
+				From = from;
+				To = to;
+				FromFacing = fromFacing;
+				ToFacing = toFacing;
+				moveFraction = startingFraction;
+				MoveFractionTotal = (to - from).Length;
 			}
 
 			public override void Cancel(Actor self)
 			{
-				move.Cancel(self);
+				Move.Cancel(self);
 				base.Cancel(self);
 			}
 
 			public override void Queue(Activity activity)
 			{
-				move.Queue(activity);
+				Move.Queue(activity);
 			}
 
 			public override Activity Tick(Actor self)
 			{
 				var mobile = self.Trait<Mobile>();
-				var ret = InnerTick(self, move.mobile);
+				var ret = InnerTick(self, Move.mobile);
 				mobile.IsMoving = ret is MovePart;
 
-				if (moveFraction > moveFractionTotal)
-					moveFraction = moveFractionTotal;
+				if (moveFraction > MoveFractionTotal)
+					moveFraction = MoveFractionTotal;
 				UpdateCenterLocation(self, mobile);
 
 				return ret;
@@ -333,36 +333,36 @@ namespace OpenRA.Mods.Common.Activities
 
 			Activity InnerTick(Actor self, Mobile mobile)
 			{
-				moveFraction += mobile.MovementSpeedForCell(self, mobile.toCell);
-				if (moveFraction <= moveFractionTotal)
+				moveFraction += mobile.MovementSpeedForCell(self, mobile.ToCell);
+				if (moveFraction <= MoveFractionTotal)
 					return this;
 
-				var next = OnComplete(self, mobile, move);
+				var next = OnComplete(self, mobile, Move);
 				if (next != null)
 					return next;
 
-				return move;
+				return Move;
 			}
 
 			void UpdateCenterLocation(Actor self, Mobile mobile)
 			{
 				// avoid division through zero
-				if (moveFractionTotal != 0)
-					mobile.SetVisualPosition(self, WPos.Lerp(from, to, moveFraction, moveFractionTotal));
+				if (MoveFractionTotal != 0)
+					mobile.SetVisualPosition(self, WPos.Lerp(From, To, moveFraction, MoveFractionTotal));
 				else
-					mobile.SetVisualPosition(self, to);
+					mobile.SetVisualPosition(self, To);
 
-				if (moveFraction >= moveFractionTotal)
-					mobile.Facing = toFacing & 0xFF;
+				if (moveFraction >= MoveFractionTotal)
+					mobile.Facing = ToFacing & 0xFF;
 				else
-					mobile.Facing = int2.Lerp(fromFacing, toFacing, moveFraction, moveFractionTotal) & 0xFF;
+					mobile.Facing = int2.Lerp(FromFacing, ToFacing, moveFraction, MoveFractionTotal) & 0xFF;
 			}
 
 			protected abstract MovePart OnComplete(Actor self, Mobile mobile, Move parent);
 
 			public override IEnumerable<Target> GetTargets(Actor self)
 			{
-				return move.GetTargets(self);
+				return Move.GetTargets(self);
 			}
 		}
 
@@ -373,14 +373,14 @@ namespace OpenRA.Mods.Common.Activities
 
 			static bool IsTurn(Mobile mobile, CPos nextCell)
 			{
-				return nextCell - mobile.toCell !=
-					mobile.toCell - mobile.fromCell;
+				return nextCell - mobile.ToCell !=
+					mobile.ToCell - mobile.FromCell;
 			}
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
 			{
-				var fromSubcellOffset = self.World.Map.OffsetOfSubCell(mobile.fromSubCell);
-				var toSubcellOffset = self.World.Map.OffsetOfSubCell(mobile.toSubCell);
+				var fromSubcellOffset = self.World.Map.OffsetOfSubCell(mobile.FromSubCell);
+				var toSubcellOffset = self.World.Map.OffsetOfSubCell(mobile.ToSubCell);
 
 				var nextCell = parent.PopPath(self, mobile);
 				if (nextCell != null)
@@ -389,15 +389,15 @@ namespace OpenRA.Mods.Common.Activities
 					{
 						var nextSubcellOffset = self.World.Map.OffsetOfSubCell(nextCell.Value.Second);
 						var ret = new MoveFirstHalf(
-							move,
-							Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,
-							Util.BetweenCells(self.World, mobile.toCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
+							Move,
+							Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
+							Util.BetweenCells(self.World, mobile.ToCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
 							mobile.Facing,
-							Util.GetNearestFacing(mobile.Facing, self.World.Map.FacingBetween(mobile.toCell, nextCell.Value.First, mobile.Facing)),
-							moveFraction - moveFractionTotal);
+							Util.GetNearestFacing(mobile.Facing, self.World.Map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing)),
+							moveFraction - MoveFractionTotal);
 
 						mobile.FinishedMoving(self);
-						mobile.SetLocation(mobile.toCell, mobile.toSubCell, nextCell.Value.First, nextCell.Value.Second);
+						mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, nextCell.Value.First, nextCell.Value.Second);
 						return ret;
 					}
 
@@ -405,15 +405,15 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				var ret2 = new MoveSecondHalf(
-					move,
-					Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,
-					self.World.Map.CenterOfCell(mobile.toCell) + toSubcellOffset,
+					Move,
+					Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
+					self.World.Map.CenterOfCell(mobile.ToCell) + toSubcellOffset,
 					mobile.Facing,
 					mobile.Facing,
-					moveFraction - moveFractionTotal);
+					moveFraction - MoveFractionTotal);
 
 				mobile.EnteringCell(self);
-				mobile.SetLocation(mobile.toCell, mobile.toSubCell, mobile.toCell, mobile.toSubCell);
+				mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, mobile.ToCell, mobile.ToSubCell);
 				return ret2;
 			}
 		}
@@ -425,7 +425,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
 			{
-				mobile.SetPosition(self, mobile.toCell);
+				mobile.SetPosition(self, mobile.ToCell);
 				return null;
 			}
 		}

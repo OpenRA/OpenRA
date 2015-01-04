@@ -39,9 +39,9 @@ namespace OpenRA.Mods.RA.Activities
 			}
 
 			var mobile = self.Trait<Mobile>();
-			var nearest = target.Actor.OccupiesSpace.NearestCellTo(mobile.toCell);
+			var nearest = target.Actor.OccupiesSpace.NearestCellTo(mobile.ToCell);
 
-			if ((nearest - mobile.toCell).LengthSquared > 2)
+			if ((nearest - mobile.ToCell).LengthSquared > 2)
 				return Util.SequenceActivities(new MoveAdjacentTo(self, target), this);
 
 			if (!capturable.CaptureInProgress)

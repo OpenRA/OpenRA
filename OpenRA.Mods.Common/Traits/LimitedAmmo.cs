@@ -34,19 +34,19 @@ namespace OpenRA.Mods.Common.Traits
 	public class LimitedAmmo : INotifyAttack, IPips, ISync
 	{
 		[Sync] int ammo;
-		LimitedAmmoInfo Info;
+		LimitedAmmoInfo info;
 
 		public LimitedAmmo(LimitedAmmoInfo info)
 		{
 			ammo = info.Ammo;
-			Info = info;
+			this.info = info;
 		}
 
-		public bool FullAmmo() { return ammo == Info.Ammo; }
+		public bool FullAmmo() { return ammo == info.Ammo; }
 		public bool HasAmmo() { return ammo > 0; }
 		public bool GiveAmmo()
 		{
-			if (ammo >= Info.Ammo) return false;
+			if (ammo >= info.Ammo) return false;
 			++ammo;
 			return true;
 		}
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public int ReloadTimePerAmmo() { return Info.ReloadTicks; }
+		public int ReloadTimePerAmmo() { return info.ReloadTicks; }
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { TakeAmmo(); }
 
@@ -66,10 +66,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			var pips = Info.PipCount != 0 ? Info.PipCount : Info.Ammo;
+			var pips = info.PipCount != 0 ? info.PipCount : info.Ammo;
 			return Enumerable.Range(0, pips).Select(i =>
-				(ammo * pips) / Info.Ammo > i ?
-				Info.PipType : Info.PipTypeEmpty);
+				(ammo * pips) / info.Ammo > i ?
+				info.PipType : info.PipTypeEmpty);
 		}
 	}
 }

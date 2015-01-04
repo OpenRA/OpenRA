@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 		// For horizontal/vertical directions, the set is the three cells 'ahead'. For diagonal directions, the set
 		// is the three cells ahead, plus the two cells to the side, which we cannot exclude without knowing if
 		// the cell directly between them and our parent is passable.
-		static CVec[][] DirectedNeighbors = {
+		static CVec[][] directedNeighbors = {
 			new CVec[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(-1, 0), new CVec(-1, 1) },
 			new CVec[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1) },
 			new CVec[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) },
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 			var dy = p.Y - prev.Y;
 			var index = dy * 3 + dx + 4;
 
-			return DirectedNeighbors[index];
+			return directedNeighbors[index];
 		}
 
 		public CPos Expand(World world)
@@ -285,7 +285,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		static readonly Queue<CellLayer<CellInfo>> CellInfoPool = new Queue<CellLayer<CellInfo>>();
-		static readonly object defaultCellInfoLayerSync = new object();
+		static readonly object DefaultCellInfoLayerSync = new object();
 		static CellLayer<CellInfo> defaultCellInfoLayer;
 
 		static CellLayer<CellInfo> GetFromPool()
@@ -325,7 +325,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (result == null)
 				result = new CellLayer<CellInfo>(map);
 
-			lock (defaultCellInfoLayerSync)
+			lock (DefaultCellInfoLayerSync)
 			{
 				if (defaultCellInfoLayer == null ||
 					defaultCellInfoLayer.Size != mapSize ||
