@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Search for nearby resources and begin harvesting.")]
 		public void FindResources()
 		{
-			harvester.ContinueHarvesting(self);
+			harvester.ContinueHarvesting(Self);
 		}
 	}
 }

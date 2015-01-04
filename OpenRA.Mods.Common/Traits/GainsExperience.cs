@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public GainsExperience(ActorInitializer init, GainsExperienceInfo info)
 		{
-			self = init.self;
+			self = init.Self;
 			this.info = info;
 
 			MaxLevel = info.Upgrades.Count;

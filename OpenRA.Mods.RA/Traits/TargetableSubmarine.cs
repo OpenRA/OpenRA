@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		public readonly string[] CloakedTargetTypes = { };
 
-		public override object Create(ActorInitializer init) { return new TargetableSubmarine(init.self, this); }
+		public override object Create(ActorInitializer init) { return new TargetableSubmarine(init.Self, this); }
 	}
 
 	public class TargetableSubmarine : TargetableUnit

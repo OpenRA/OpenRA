@@ -169,7 +169,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return 0;
 
 			// Games for the current mod+version are sorted first
-			if (testEntry.ModId == Game.modData.Manifest.Mod.Id)
+			if (testEntry.ModId == Game.ModData.Manifest.Mod.Id)
 				return 2;
 
 			// Followed by games for different mods that are joinable
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game, () => Join(game));
 
-					var map = Game.modData.MapCache[game.Map];
+					var map = Game.ModData.MapCache[game.Map];
 					var preview = item.GetOrNull<MapPreviewWidget>("MAP_PREVIEW");
 					if (preview != null)
 						preview.Preview = () => map;
@@ -283,7 +283,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				// Search for any unknown maps
 				if (Game.Settings.Game.AllowDownloading)
-					Game.modData.MapCache.QueryRemoteMapDetails(games.Where(g => !Filtered(g)).Select(g => g.Map));
+					Game.ModData.MapCache.QueryRemoteMapDetails(games.Where(g => !Filtered(g)).Select(g => g.Map));
 
 				foreach (var row in rows)
 					serverList.AddChild(row);

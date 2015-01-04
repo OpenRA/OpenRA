@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence of the actor that contains the cameo.")]
 		public readonly string Icon = "icon";
 
-		public virtual object Create(ActorInitializer init) { return new Tooltip(init.self, this); }
+		public virtual object Create(ActorInitializer init) { return new Tooltip(init.Self, this); }
 
 		public string TooltipForPlayerStance(Stance stance)
 		{

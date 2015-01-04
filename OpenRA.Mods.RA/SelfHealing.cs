@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 		public readonly float HealIfBelow = .5f;
 		public readonly int DamageCooldown = 0;
 
-		public virtual object Create(ActorInitializer init) { return new SelfHealing(init.self, this); }
+		public virtual object Create(ActorInitializer init) { return new SelfHealing(init.Self, this); }
 	}
 
 	class SelfHealing : UpgradableTrait<SelfHealingInfo>, ITick, INotifyDamage

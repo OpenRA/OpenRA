@@ -44,7 +44,7 @@ namespace OpenRA.Widgets
 
 		public static Widget OpenWindow(string id, WidgetArgs args)
 		{
-			var window = Game.modData.WidgetLoader.LoadWidget(args, Root, id);
+			var window = Game.ModData.WidgetLoader.LoadWidget(args, Root, id);
 			if (WindowList.Count > 0)
 				Root.RemoveChild(WindowList.Peek());
 			WindowList.Push(window);
@@ -67,7 +67,7 @@ namespace OpenRA.Widgets
 
 		public static Widget LoadWidget(string id, Widget parent, WidgetArgs args)
 		{
-			return Game.modData.WidgetLoader.LoadWidget(args, parent, id);
+			return Game.ModData.WidgetLoader.LoadWidget(args, parent, id);
 		}
 
 		public static void Tick() { Root.TickOuter(); }
@@ -235,7 +235,7 @@ namespace OpenRA.Widgets
 
 			args["widget"] = this;
 
-			LogicObject = Game.modData.ObjectCreator.CreateObject<object>(Logic, args);
+			LogicObject = Game.ModData.ObjectCreator.CreateObject<object>(Logic, args);
 
 			args.Remove("widget");
 		}

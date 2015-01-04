@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly int Range = 1;
 		public readonly string GrantUpgradeSound = "ironcur9.aud";
 
-		public override object Create(ActorInitializer init) { return new GrantUpgradePower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new GrantUpgradePower(init.Self, this); }
 	}
 
 	class GrantUpgradePower : SupportPower
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.RA.Traits
 				var pal = wr.Palette("terrain");
 
 				foreach (var t in world.Map.FindTilesInCircle(xy, range))
-					yield return new SpriteRenderable(tile, wr.world.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
+					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 			}
 
 			public string GetCursor(World world, CPos xy, MouseInput mi)

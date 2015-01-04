@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Change the sprite image size.")]
 		public readonly float Scale = 1f;
 
-		public virtual object Create(ActorInitializer init) { return new RenderSprites(init.self); }
+		public virtual object Create(ActorInitializer init) { return new RenderSprites(init.Self); }
 
 		public IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
@@ -200,7 +200,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return anims.Values.Where(b => b.IsVisible
 				&& b.Animation.Animation.CurrentSequence != null)
-					.Select(a => (a.Animation.Animation.Image.size * info.Scale).ToInt2())
+					.Select(a => (a.Animation.Animation.Image.Size * info.Scale).ToInt2())
 					.FirstOrDefault();
 		}
 	}

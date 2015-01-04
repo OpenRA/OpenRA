@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly int LingerTime = 20;
 
-		public object Create(ActorInitializer init) { return new DeadBuildingState(init.self, this); }
+		public object Create(ActorInitializer init) { return new DeadBuildingState(init.Self, this); }
 	}
 
 	class DeadBuildingState : INotifyKilled

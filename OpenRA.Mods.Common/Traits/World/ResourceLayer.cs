@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var c = render[uv.X, uv.Y];
 				if (c.Sprite != null)
-					new SpriteRenderable(c.Sprite, wr.world.Map.CenterOfCell(Map.MapToCell(world.Map.TileShape, uv)),
+					new SpriteRenderable(c.Sprite, wr.World.Map.CenterOfCell(Map.MapToCell(world.Map.TileShape, uv)),
 						WVec.Zero, -511, c.Type.Palette, 1f, true).Render(wr); // TODO ZOffset is ignored
 			}
 		}

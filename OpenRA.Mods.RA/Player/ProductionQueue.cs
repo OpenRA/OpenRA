@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string CancelledAudio = "Cancelled";
 
-		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init, init.self.Owner.PlayerActor, this); }
+		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init, init.Self.Owner.PlayerActor, this); }
 	}
 
 	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyOwnerChanged, INotifyKilled, INotifySold, ISync, INotifyTransform
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA
 
 		public ProductionQueue(ActorInitializer init, Actor playerActor, ProductionQueueInfo info)
 		{
-			self = init.self;
+			self = init.Self;
 			Info = info;
 			playerResources = playerActor.Trait<PlayerResources>();
 			playerPower = playerActor.Trait<PowerManager>();

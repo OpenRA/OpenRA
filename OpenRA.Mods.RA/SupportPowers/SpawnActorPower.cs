@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly string EffectSequence = null;
 		public readonly string EffectPalette = null;
 
-		public override object Create(ActorInitializer init) { return new SpawnActorPower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new SpawnActorPower(init.Self, this); }
 	}
 
 	public class SpawnActorPower : SupportPower

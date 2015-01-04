@@ -46,9 +46,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public RenderBuildingTurreted(ActorInitializer init, RenderBuildingInfo info)
-			: base(init, info, MakeTurretFacingFunc(init.self))
+			: base(init, info, MakeTurretFacingFunc(init.Self))
 		{
-			t = init.self.TraitsImplementing<Turreted>().FirstOrDefault();
+			t = init.Self.TraitsImplementing<Turreted>().FirstOrDefault();
 			t.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 

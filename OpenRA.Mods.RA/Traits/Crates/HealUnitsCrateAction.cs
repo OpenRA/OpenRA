@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA.Traits
 	[Desc("Heals all actors that belong to the owner of the collector.")]
 	class HealUnitsCrateActionInfo : CrateActionInfo
 	{
-		public override object Create(ActorInitializer init) { return new HealUnitsCrateAction(init.self, this); }
+		public override object Create(ActorInitializer init) { return new HealUnitsCrateAction(init.Self, this); }
 	}
 
 	class HealUnitsCrateAction : CrateAction

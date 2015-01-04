@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!building.IsInWorld || !building.World.Selection.Actors.Contains(building))
 				return SpriteRenderable.None;
 
-			var pos = wr.world.Map.CenterOfCell(cachedLocation);
+			var pos = wr.World.Map.CenterOfCell(cachedLocation);
 			var palette = wr.Palette(palettePrefix + building.Owner.InternalName);
 			return circles.Render(pos, palette).Concat(flag.Render(pos, palette));
 		}

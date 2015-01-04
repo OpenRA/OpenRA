@@ -22,7 +22,7 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("Required distance away from destination before requesting a pickup.")]
 		public int MinDistance = 6;
 
-		public object Create(ActorInitializer init) { return new Carryable(init.self, this); }
+		public object Create(ActorInitializer init) { return new Carryable(init.Self, this); }
 	}
 
 	public class Carryable : IDisableMove, INotifyHarvesterAction

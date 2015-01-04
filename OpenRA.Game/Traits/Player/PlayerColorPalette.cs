@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
 
-		public object Create(ActorInitializer init) { return new PlayerColorPalette(init.self.Owner, this); }
+		public object Create(ActorInitializer init) { return new PlayerColorPalette(init.Self.Owner, this); }
 	}
 
 	public class PlayerColorPalette : ILoadsPalettes

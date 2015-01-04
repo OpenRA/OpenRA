@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 		public readonly string EnableSound = null;
 		public readonly string DisableSound = null;
 
-		public object Create(ActorInitializer init) { return new UpgradeActorsNear(init.self, this); }
+		public object Create(ActorInitializer init) { return new UpgradeActorsNear(init.Self, this); }
 	}
 
 	public class UpgradeActorsNear : ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction

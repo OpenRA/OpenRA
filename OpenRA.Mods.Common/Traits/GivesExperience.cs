@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Grant experience for team-kills.")]
 		public readonly bool FriendlyFire = false;
 
-		public object Create(ActorInitializer init) { return new GivesExperience(init.self, this); }
+		public object Create(ActorInitializer init) { return new GivesExperience(init.Self, this); }
 	}
 
 	class GivesExperience : INotifyKilled

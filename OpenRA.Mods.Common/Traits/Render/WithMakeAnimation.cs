@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WithMakeAnimation(ActorInitializer init, WithMakeAnimationInfo info)
 		{
 			this.info = info;
-			var self = init.self;
+			var self = init.Self;
 			renderBuilding = self.Trait<RenderBuilding>();
 
 			var building = self.Trait<Building>();

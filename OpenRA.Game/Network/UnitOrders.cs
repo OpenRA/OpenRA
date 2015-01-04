@@ -93,7 +93,7 @@ namespace OpenRA.Network
 
 				case "StartGame":
 					{
-						if (Game.modData.MapCache[orderManager.LobbyInfo.GlobalSettings.Map].Status != MapStatus.Available)
+						if (Game.ModData.MapCache[orderManager.LobbyInfo.GlobalSettings.Map].Status != MapStatus.Available)
 						{
 							Game.Disconnect();
 							Game.LoadShellMap();
@@ -129,7 +129,7 @@ namespace OpenRA.Network
 				case "HandshakeRequest":
 					{
 						// Switch to the server's mod if we need and are able to
-						var mod = Game.modData.Manifest.Mod;
+						var mod = Game.ModData.Manifest.Mod;
 						var request = HandshakeRequest.Deserialize(order.TargetString);
 
 						ModMetadata serverMod;
@@ -142,7 +142,7 @@ namespace OpenRA.Network
 								"Launch.Replay=" + replay.Filename :
 								"Launch.Connect=" + orderManager.Host + ":" + orderManager.Port;
 
-							Game.modData.LoadScreen.Display();
+							Game.ModData.LoadScreen.Display();
 							Game.InitializeMod(request.Mod, new Arguments(launchCommand));
 
 							break;
@@ -261,7 +261,7 @@ namespace OpenRA.Network
 
 				case "SetStance":
 					{
-						if (!Game.orderManager.LobbyInfo.GlobalSettings.FragileAlliances)
+						if (!Game.OrderManager.LobbyInfo.GlobalSettings.FragileAlliances)
 							return;
 
 						var targetPlayer = order.Player.World.Players.FirstOrDefault(p => p.InternalName == order.TargetString);

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Traits
 	[Desc("Required for GpsPower. Attach this to the player actor.")]
 	class GpsWatcherInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new GpsWatcher(init.self.Owner); }
+		public object Create(ActorInitializer init) { return new GpsWatcher(init.Self.Owner); }
 	}
 
 	class GpsWatcher : ISync, IFogVisibilityModifier
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		public readonly int RevealDelay = 0;
 
-		public override object Create(ActorInitializer init) { return new GpsPower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new GpsPower(init.Self, this); }
 	}
 
 	class GpsPower : SupportPower, INotifyKilled, INotifyStanceChanged, INotifySold, INotifyOwnerChanged

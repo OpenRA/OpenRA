@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Damage = 1;
 		public readonly int Interval = 8;
 
-		public object Create(ActorInitializer init) { return new Burns(init.self, this); }
+		public object Create(ActorInitializer init) { return new Burns(init.Self, this); }
 	}
 
 	class Burns : ITick, ISync

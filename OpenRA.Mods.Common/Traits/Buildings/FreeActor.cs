@@ -38,13 +38,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (init.Contains<FreeActorInit>() && !init.Get<FreeActorInit>().ActorValue)
 				return;
 
-			init.self.World.AddFrameEndTask(w =>
+			init.Self.World.AddFrameEndTask(w =>
 			{
 				var a = w.CreateActor(info.Actor, new TypeDictionary
 				{
-					new ParentActorInit(init.self),
-					new LocationInit(init.self.Location + info.SpawnOffset),
-					new OwnerInit(init.self.Owner),
+					new ParentActorInit(init.Self),
+					new LocationInit(init.Self.Location + info.SpawnOffset),
+					new OwnerInit(init.Self.Owner),
 					new FacingInit(info.Facing),
 				});
 

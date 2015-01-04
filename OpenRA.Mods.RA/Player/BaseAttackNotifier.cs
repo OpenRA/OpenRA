@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("The audio notification type to play.")]
 		public string Notification = "BaseAttack";
 
-		public object Create(ActorInitializer init) { return new BaseAttackNotifier(init.self, this); }
+		public object Create(ActorInitializer init) { return new BaseAttackNotifier(init.Self, this); }
 	}
 
 	public class BaseAttackNotifier : INotifyDamage

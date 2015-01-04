@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Palette = "terrain";
 		public readonly bool HasMinibib = false;
 
-		public object Create(ActorInitializer init) { return new Bib(init.self, this); }
+		public object Create(ActorInitializer init) { return new Bib(init.Self, this); }
 	}
 
 	public class Bib : INotifyAddedToWorld, INotifyRemovedFromWorld

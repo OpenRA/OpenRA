@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Traits
 	class RepairableInfo : ITraitInfo, Requires<HealthInfo>
 	{
 		public readonly string[] RepairBuildings = { "fix" };
-		public virtual object Create(ActorInitializer init) { return new Repairable(init.self); }
+		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self); }
 	}
 
 	class Repairable : IIssueOrder, IResolveOrder, IOrderVoice

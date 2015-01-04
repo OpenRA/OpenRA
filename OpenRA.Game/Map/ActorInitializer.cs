@@ -16,19 +16,19 @@ namespace OpenRA
 {
 	public class ActorInitializer
 	{
-		public readonly Actor self;
-		public World world { get { return self.World; } }
+		public readonly Actor Self;
+		public World World { get { return Self.World; } }
 
 		internal TypeDictionary Dict;
 
 		public ActorInitializer(Actor actor, TypeDictionary dict)
 		{
-			self = actor;
+			Self = actor;
 			Dict = dict;
 		}
 
 		public T Get<T>() where T : IActorInit { return Dict.Get<T>(); }
-		public U Get<T, U>() where T : IActorInit<U> { return Dict.Get<T>().Value(world); }
+		public U Get<T, U>() where T : IActorInit<U> { return Dict.Get<T>().Value(World); }
 		public bool Contains<T>() where T : IActorInit { return Dict.Contains<T>(); }
 	}
 

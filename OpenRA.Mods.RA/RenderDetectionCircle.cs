@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Traits
 {
 	class RenderDetectionCircleInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new RenderDetectionCircle(init.self); }
+		public object Create(ActorInitializer init) { return new RenderDetectionCircle(init.Self); }
 	}
 
 	class RenderDetectionCircle : IPostRenderSelection

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Traits
 		[ActorReference]
 		public readonly string[] Bridges = { "bridge1", "bridge2" };
 
-		public object Create(ActorInitializer init) { return new BridgeLayer(init.self, this); }
+		public object Create(ActorInitializer init) { return new BridgeLayer(init.Self, this); }
 	}
 
 	class BridgeLayer : IWorldLoaded

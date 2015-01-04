@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int[] ShadowIndex = { };
 		public readonly bool AllowModifiers = true;
 
-		public object Create(ActorInitializer init) { return new PaletteFromCurrentTileset(init.world, this); }
+		public object Create(ActorInitializer init) { return new PaletteFromCurrentTileset(init.World, this); }
 	}
 
 	class PaletteFromCurrentTileset : ILoadsPalettes

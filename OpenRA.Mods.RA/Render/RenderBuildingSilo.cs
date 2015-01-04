@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Traits
 		public RenderBuildingSilo(ActorInitializer init, RenderBuildingSiloInfo info)
 			: base(init, info)
 		{
-			playerResources = init.self.Owner.PlayerActor.Trait<PlayerResources>();
+			playerResources = init.Self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
 		public override void BuildingComplete(Actor self)

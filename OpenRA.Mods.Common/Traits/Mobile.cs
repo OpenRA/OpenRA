@@ -290,19 +290,19 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Mobile(ActorInitializer init, MobileInfo info)
 		{
-			self = init.self;
+			self = init.Self;
 			Info = info;
 
-			ToSubCell = FromSubCell = info.SharesCell ? init.world.Map.DefaultSubCell : SubCell.FullCell;
+			ToSubCell = FromSubCell = info.SharesCell ? init.World.Map.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
 			{
-				this.FromSubCell = this.ToSubCell = init.Get<SubCellInit, SubCell>();
+				FromSubCell = ToSubCell = init.Get<SubCellInit, SubCell>();
 			}
 
 			if (init.Contains<LocationInit>())
 			{
-				this.fromCell = this.toCell = init.Get<LocationInit, CPos>();
-				SetVisualPosition(self, init.world.Map.CenterOfSubCell(FromCell, FromSubCell));
+				fromCell = toCell = init.Get<LocationInit, CPos>();
+				SetVisualPosition(self, init.World.Map.CenterOfSubCell(FromCell, FromSubCell));
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;

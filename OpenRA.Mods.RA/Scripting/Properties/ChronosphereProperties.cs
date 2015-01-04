@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 				var cs = actor.TraitOrDefault<Chronoshiftable>();
 				if (cs != null && cs.CanChronoshiftTo(actor, cell))
-					cs.Teleport(actor, cell, duration, killCargo, self);
+					cs.Teleport(actor, cell, duration, killCargo, Self);
 			}
 		}
 	}

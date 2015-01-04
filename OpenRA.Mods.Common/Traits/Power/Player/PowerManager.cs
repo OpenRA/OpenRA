@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int AdviceInterval = 250;
 		public readonly string SpeechNotification = "LowPower";
 
-		public object Create(ActorInitializer init) { return new PowerManager(init.self, this); }
+		public object Create(ActorInitializer init) { return new PowerManager(init.Self, this); }
 	}
 
 	public class PowerManager : ITick, ISync

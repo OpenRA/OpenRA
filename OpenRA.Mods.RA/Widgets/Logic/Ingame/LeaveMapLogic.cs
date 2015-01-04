@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (mpe != null)
 				mpe.Fade(mpe.Info.MenuEffect);
 
-			widget.Get<LabelWidget>("VERSION_LABEL").Text = Game.modData.Manifest.Mod.Version;
+			widget.Get<LabelWidget>("VERSION_LABEL").Text = Game.ModData.Manifest.Mod.Version;
 
 			var showStats = false;
 

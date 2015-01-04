@@ -161,8 +161,8 @@ namespace OpenRA.Graphics
 
 			var sprite = sheetBuilder.Allocate(spriteSize, spriteOffset);
 			var shadowSprite = sheetBuilder.Allocate(shadowSpriteSize, shadowSpriteOffset);
-			var sb = sprite.bounds;
-			var ssb = shadowSprite.bounds;
+			var sb = sprite.Bounds;
+			var ssb = shadowSprite.Bounds;
 			var spriteCenter = new float2(sb.Left + sb.Width / 2, sb.Top + sb.Height / 2);
 			var shadowCenter = new float2(ssb.Left + ssb.Width / 2, ssb.Top + ssb.Height / 2);
 
@@ -171,7 +171,7 @@ namespace OpenRA.Graphics
 			var correctionTransform = Util.MatrixMultiply(translateMtx, FlipMtx);
 			var shadowCorrectionTransform = Util.MatrixMultiply(shadowTranslateMtx, ShadowScaleFlipMtx);
 
-			doRender.Add(Pair.New<Sheet, Action>(sprite.sheet, () =>
+			doRender.Add(Pair.New<Sheet, Action>(sprite.Sheet, () =>
 			{
 				foreach (var v in voxels)
 				{
@@ -262,7 +262,7 @@ namespace OpenRA.Graphics
 			shader.SetVec("AmbientLight", ambientLight, 3);
 			shader.SetVec("DiffuseLight", diffuseLight, 3);
 
-			shader.Render(() => renderer.DrawBatch(Game.modData.VoxelLoader.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.QuadList));
+			shader.Render(() => renderer.DrawBatch(Game.ModData.VoxelLoader.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.QuadList));
 		}
 
 		public void BeginFrame()

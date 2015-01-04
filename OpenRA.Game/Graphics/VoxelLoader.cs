@@ -86,16 +86,16 @@ namespace OpenRA.Graphics
 			var s = sheetBuilder.Allocate(new Size(su, sv));
 			Util.FastCopyIntoChannel(s, 0, colors);
 			Util.FastCopyIntoChannel(s, 1, normals);
-			s.sheet.CommitData();
+			s.Sheet.CommitData();
 
-			var channelP = ChannelSelect[(int)s.channel];
-			var channelC = ChannelSelect[(int)s.channel + 1];
+			var channelP = ChannelSelect[(int)s.Channel];
+			var channelC = ChannelSelect[(int)s.Channel + 1];
 			return new Vertex[4]
 			{
-				new Vertex(coord(0, 0), s.left, s.top, channelP, channelC),
-				new Vertex(coord(su, 0), s.right, s.top, channelP, channelC),
-				new Vertex(coord(su, sv), s.right, s.bottom, channelP, channelC),
-				new Vertex(coord(0, sv), s.left, s.bottom, channelP, channelC)
+				new Vertex(coord(0, 0), s.Left, s.Top, channelP, channelC),
+				new Vertex(coord(su, 0), s.Right, s.Top, channelP, channelC),
+				new Vertex(coord(su, sv), s.Right, s.Bottom, channelP, channelC),
+				new Vertex(coord(0, sv), s.Left, s.Bottom, channelP, channelC)
 			};
 		}
 

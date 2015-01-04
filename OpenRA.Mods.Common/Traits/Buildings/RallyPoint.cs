@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CVec RallyPoint = new CVec(1, 3);
 		public readonly string IndicatorPalettePrefix = "player";
 
-		public object Create(ActorInitializer init) { return new RallyPoint(init.self, this); }
+		public object Create(ActorInitializer init) { return new RallyPoint(init.Self, this); }
 	}
 
 	public class RallyPoint : IIssueOrder, IResolveOrder, ISync

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Ignore the weapon position, and always draw relative to the center of the actor")]
 		public readonly bool IgnoreOffset = false;
 
-		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.Self, this); }
 	}
 
 	class WithMuzzleFlash : INotifyAttack, IRender, ITick

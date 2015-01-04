@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Traits
 						yield return r;
 		}
 
-		public object Create(ActorInitializer init) { return new RenderShroudCircle(init.self); }
+		public object Create(ActorInitializer init) { return new RenderShroudCircle(init.Self); }
 	}
 
 	class RenderShroudCircle : IPostRenderSelection

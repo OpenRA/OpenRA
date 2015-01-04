@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Sprite = "smokey";
 		public readonly DamageState MinDamage = DamageState.Heavy;
 
-		public object Create(ActorInitializer init) { return new SmokeTrailWhenDamaged(init.self, this); }
+		public object Create(ActorInitializer init) { return new SmokeTrailWhenDamaged(init.Self, this); }
 	}
 
 	class SmokeTrailWhenDamaged : ITick

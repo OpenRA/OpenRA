@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		bool IsValidDisk(string diskRoot)
 		{
-			return Game.modData.Manifest.ContentInstaller.DiskTestFiles.All(f => File.Exists(Path.Combine(diskRoot, f)));
+			return Game.ModData.Manifest.ContentInstaller.DiskTestFiles.All(f => File.Exists(Path.Combine(diskRoot, f)));
 		}
 
 		void CheckForDisk()
@@ -69,14 +69,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			insertDiskContainer.IsVisible = () => false;
 			installingContainer.IsVisible = () => true;
 
-			var dest = Platform.ResolvePath("^", "Content", Game.modData.Manifest.Mod.Id);
-			var copyFiles = Game.modData.Manifest.ContentInstaller.CopyFilesFromCD;
+			var dest = Platform.ResolvePath("^", "Content", Game.ModData.Manifest.Mod.Id);
+			var copyFiles = Game.ModData.Manifest.ContentInstaller.CopyFilesFromCD;
 
-			var packageToExtract = Game.modData.Manifest.ContentInstaller.PackageToExtractFromCD.Split(':');
+			var packageToExtract = Game.ModData.Manifest.ContentInstaller.PackageToExtractFromCD.Split(':');
 			var extractPackage = packageToExtract.First();
 			var annotation = packageToExtract.Length > 1 ? packageToExtract.Last() : null;
 
-			var extractFiles = Game.modData.Manifest.ContentInstaller.ExtractFilesFromCD;
+			var extractFiles = Game.ModData.Manifest.ContentInstaller.ExtractFilesFromCD;
 
 			var installCounter = 0;
 			var installTotal = copyFiles.Count() + extractFiles.Count();

@@ -56,7 +56,7 @@ namespace OpenRA.Widgets
 
 			if (sprite != cachedSprite)
 			{
-				offset = 0.5f * (new float2(RenderBounds.Size) - sprite.size);
+				offset = 0.5f * (new float2(RenderBounds.Size) - sprite.Size);
 				cachedSprite = sprite;
 			}
 

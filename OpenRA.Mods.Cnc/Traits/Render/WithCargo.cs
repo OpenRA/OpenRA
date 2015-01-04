@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Passenger CargoType to display.")]
 		public readonly string[] DisplayTypes = { };
 
-		public object Create(ActorInitializer init) { return new WithCargo(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithCargo(init.Self, this); }
 	}
 
 	public class WithCargo : IRenderModifier

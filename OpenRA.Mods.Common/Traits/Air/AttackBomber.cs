@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Guns = "secondary";
 		public readonly int FacingTolerance = 2;
 
-		public override object Create(ActorInitializer init) { return new AttackBomber(init.self, this); }
+		public override object Create(ActorInitializer init) { return new AttackBomber(init.Self, this); }
 	}
 
 	public class AttackBomber : AttackBase, ITick, ISync, INotifyRemovedFromWorld

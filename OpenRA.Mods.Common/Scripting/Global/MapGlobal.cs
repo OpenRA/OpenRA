@@ -32,13 +32,13 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns a table of all actors within the requested region, filtered using the specified function.")]
 		public Actor[] ActorsInCircle(WPos location, WRange radius, LuaFunction filter = null)
 		{
-			var actors = context.World.FindActorsInCircle(location, radius);
+			var actors = Context.World.FindActorsInCircle(location, radius);
 
 			if (filter != null)
 			{
 				actors = actors.Where(a =>
 				{
-					using (var f = filter.Call(a.ToLuaValue(context)))
+					using (var f = filter.Call(a.ToLuaValue(Context)))
 						return f.First().ToBoolean();
 				});
 			}
@@ -49,13 +49,13 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns a table of all actors within the requested rectangle, filtered using the specified function.")]
 		public Actor[] ActorsInBox(WPos topLeft, WPos bottomRight, LuaFunction filter = null)
 		{
-			var actors = context.World.ActorMap.ActorsInBox(topLeft, bottomRight);
+			var actors = Context.World.ActorMap.ActorsInBox(topLeft, bottomRight);
 
 			if (filter != null)
 			{
 				actors = actors.Where(a =>
 				{
-					using (var f = filter.Call(a.ToLuaValue(context)))
+					using (var f = filter.Call(a.ToLuaValue(Context)))
 						return f.First().ToBoolean();
 				});
 			}
@@ -66,38 +66,38 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns the location of the top-left corner of the map.")]
 		public WPos TopLeft
 		{
-			get { return new WPos(context.World.Map.Bounds.Left * 1024, context.World.Map.Bounds.Top * 1024, 0); }
+			get { return new WPos(Context.World.Map.Bounds.Left * 1024, Context.World.Map.Bounds.Top * 1024, 0); }
 		}
 
 		[Desc("Returns the location of the bottom-right corner of the map.")]
 		public WPos BottomRight
 		{
-			get { return new WPos(context.World.Map.Bounds.Right * 1024, context.World.Map.Bounds.Bottom * 1024, 0); }
+			get { return new WPos(Context.World.Map.Bounds.Right * 1024, Context.World.Map.Bounds.Bottom * 1024, 0); }
 		}
 
 		[Desc("Returns a random cell inside the visible region of the map.")]
 		public CPos RandomCell()
 		{
-			return context.World.Map.ChooseRandomCell(context.World.SharedRandom);
+			return Context.World.Map.ChooseRandomCell(Context.World.SharedRandom);
 		}
 
 		[Desc("Returns a random cell on the visible border of the map.")]
 		public CPos RandomEdgeCell()
 		{
-			return context.World.Map.ChooseRandomEdgeCell(context.World.SharedRandom);
+			return Context.World.Map.ChooseRandomEdgeCell(Context.World.SharedRandom);
 		}
 
 		[Desc("Returns the center of a cell in world coordinates.")]
 		public WPos CenterOfCell(CPos cell)
 		{
-			return context.World.Map.CenterOfCell(cell);
+			return Context.World.Map.CenterOfCell(cell);
 		}
 
 		[Desc("Returns true if there is only one human player.")]
-		public bool IsSinglePlayer { get { return context.World.LobbyInfo.IsSinglePlayer; } }
+		public bool IsSinglePlayer { get { return Context.World.LobbyInfo.IsSinglePlayer; } }
 
 		[Desc("Returns the difficulty selected by the player before starting the mission.")]
-		public string Difficulty { get { return context.World.LobbyInfo.GlobalSettings.Difficulty; } }
+		public string Difficulty { get { return Context.World.LobbyInfo.GlobalSettings.Difficulty; } }
 
 		[Desc("Returns a table of all the actors that were specified in the map file.")]
 		public Actor[] NamedActors { get { return sma.Actors.Values.ToArray(); } }

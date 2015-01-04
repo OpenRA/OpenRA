@@ -177,7 +177,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (!orderManager.LocalClient.IsObserver && orderManager.LocalClient.State == Session.ClientState.Ready)
 				return;
 
-			var spawnSize = new float2(ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").bounds.Size);
+			var spawnSize = new float2(ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").Bounds.Size);
 			var selectedSpawn = preview.SpawnPoints
 				.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp), i))
 				.Where(a => ((a.First - mi.Location).ToFloat2() / spawnSize * 2).LengthSquared <= 1)

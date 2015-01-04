@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount of Z axis changes in world units.")]
 		public readonly int OffsetModifier = -43;
 
-		public object Create(ActorInitializer init) { return new Hovers(this, init.self); }
+		public object Create(ActorInitializer init) { return new Hovers(this, init.Self); }
 	}
 
 	class Hovers : IRenderModifier

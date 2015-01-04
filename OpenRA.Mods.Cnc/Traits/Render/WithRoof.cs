@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		public readonly string Sequence = "roof";
 
-		public object Create(ActorInitializer init) { return new WithRoof(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithRoof(init.Self, this); }
 	}
 
 	public class WithRoof

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			// Terrain tiles define their origin at the topleft
 			var s = theater.TileSprite(tile);
-			dirty[cell] = new Sprite(s.sheet, s.bounds, float2.Zero, s.channel, s.blendMode);
+			dirty[cell] = new Sprite(s.Sheet, s.Bounds, float2.Zero, s.Channel, s.BlendMode);
 		}
 
 		public void TickRender(WorldRenderer wr, Actor self)
@@ -67,10 +67,10 @@ namespace OpenRA.Mods.D2k.Traits
 				if (!wr.Viewport.VisibleCells.Contains(kv.Key))
 					continue;
 
-				if (wr.world.ShroudObscures(kv.Key))
+				if (wr.World.ShroudObscures(kv.Key))
 					continue;
 
-				new SpriteRenderable(kv.Value, wr.world.Map.CenterOfCell(kv.Key),
+				new SpriteRenderable(kv.Value, wr.World.Map.CenterOfCell(kv.Key),
 					WVec.Zero, -511, pal, 1f, true).Render(wr);
 			}
 		}

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Should the collected amount be displayed as a cash tick?")]
 		public bool UseCashTick = false;
 
-		public override object Create(ActorInitializer init) { return new GiveCashCrateAction(init.self, this); }
+		public override object Create(ActorInitializer init) { return new GiveCashCrateAction(init.Self, this); }
 	}
 
 	class GiveCashCrateAction : CrateAction

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("e.g. Infantry, Vehicles, Aircraft, Buildings")]
 		public readonly string[] Produces = { };
 
-		public virtual object Create(ActorInitializer init) { return new Production(this, init.self); }
+		public virtual object Create(ActorInitializer init) { return new Production(this, init.Self); }
 	}
 
 	public class Production

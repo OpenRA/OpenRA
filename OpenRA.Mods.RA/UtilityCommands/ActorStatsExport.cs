@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.UtilityCommands
 	{
 		public static DataTable GenerateTable()
 		{
-			var rules = Game.modData.RulesetCache.LoadDefaultRules();
+			var rules = Game.ModData.RulesetCache.LoadDefaultRules();
 
 			var table = new DataTable();
 			table.Columns.Add("Name", typeof(string));

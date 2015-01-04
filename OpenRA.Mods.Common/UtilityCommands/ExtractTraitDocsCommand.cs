@@ -24,18 +24,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.modData = modData;
+			Game.ModData = modData;
 
 			Console.WriteLine(
 				"This documentation is aimed at modders. It displays all traits with default values and developer commentary. " +
 				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been " +
-				"automatically generated for version {0} of OpenRA.", Game.modData.Manifest.Mod.Version);
+				"automatically generated for version {0} of OpenRA.", Game.ModData.Manifest.Mod.Version);
 			Console.WriteLine();
 
 			var toc = new StringBuilder();
 			var doc = new StringBuilder();
 
-			foreach (var t in Game.modData.ObjectCreator.GetTypesImplementing<ITraitInfo>().OrderBy(t => t.Namespace))
+			foreach (var t in Game.ModData.ObjectCreator.GetTypesImplementing<ITraitInfo>().OrderBy(t => t.Namespace))
 			{
 				if (t.ContainsGenericParameters || t.IsAbstract)
 					continue; // skip helpers like TraitInfo<T>
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					continue;
 				doc.AppendLine("<table>");
 				doc.AppendLine("<tr><th>Property</th><th>Default Value</th><th>Type</th><th>Description</th></tr>");
-				var liveTraitInfo = Game.modData.ObjectCreator.CreateBasic(t);
+				var liveTraitInfo = Game.ModData.ObjectCreator.CreateBasic(t);
 				foreach (var info in infos)
 				{
 					var fieldDescLines = info.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines);

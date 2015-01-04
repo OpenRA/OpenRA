@@ -25,11 +25,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		[Desc("MAPFILE", "Render PNG minimap of specified oramap file.")]
 		public void Run(ModData modData, string[] args)
 		{
-			Game.modData = modData;
+			Game.ModData = modData;
 			var map = new Map(args[1]);
 
 			GlobalFileSystem.UnmountAll();
-			foreach (var dir in Game.modData.Manifest.Folders)
+			foreach (var dir in Game.ModData.Manifest.Folders)
 				GlobalFileSystem.Mount(dir);
 
 			var minimap = Minimap.RenderMapPreview(map.Rules.TileSets[map.Tileset], map, true);

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 
-			if (wr.world.FogObscures(self))
+			if (wr.World.FogObscures(self))
 				yield break;
 
 			var pos = wr.ScreenPxPosition(self.CenterPosition);

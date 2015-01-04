@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Music = null;
 		public readonly bool Loop = false;
 
-		public object Create(ActorInitializer init) { return new PlayMusicOnMapLoad(init.world, this); }
+		public object Create(ActorInitializer init) { return new PlayMusicOnMapLoad(init.World, this); }
 	}
 
 	class PlayMusicOnMapLoad : IWorldLoaded

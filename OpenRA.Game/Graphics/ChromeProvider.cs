@@ -70,7 +70,7 @@ namespace OpenRA.Graphics
 
 		static void LoadCollection(string name, MiniYaml yaml)
 		{
-			Game.modData.LoadScreen.Display();
+			Game.ModData.LoadScreen.Display();
 			var collection = new Collection()
 			{
 				Src = yaml.Value,

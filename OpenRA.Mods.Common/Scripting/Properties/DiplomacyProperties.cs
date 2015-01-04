@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns true if the player is allied with the other player.")]
 		public bool IsAlliedWith(Player targetPlayer)
 		{
-			return player.IsAlliedWith(targetPlayer);
+			return Player.IsAlliedWith(targetPlayer);
 		}
 
 		[Desc("Changes the current stance of the player against the target player. " +
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public void SetStance(Player targetPlayer, string newStance)
 		{
 			var emergingStance = Enum<Stance>.Parse(newStance);
-			player.SetStance(targetPlayer, emergingStance);
+			Player.SetStance(targetPlayer, emergingStance);
 		}
 	}
 }

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Helicopter(ActorInitializer init, HelicopterInfo info)
 			: base(init, info)
 		{
-			self = init.self;
+			self = init.Self;
 			Info = info;
 		}
 

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Seek out and attack nearby targets.")]
 		public void Hunt()
 		{
-			self.QueueActivity(new Hunt(self));
+			Self.QueueActivity(new Hunt(Self));
 		}
 
 		[ScriptActorPropertyActivity]
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Scripting
 			"close enough to complete the activity.")]
 		public void AttackMove(CPos cell, int closeEnough = 0)
 		{
-			self.QueueActivity(new AttackMoveActivity(self, move.MoveTo(cell, closeEnough)));
+			Self.QueueActivity(new AttackMoveActivity(Self, move.MoveTo(cell, closeEnough)));
 		}
 
 		[ScriptActorPropertyActivity]
@@ -54,12 +54,12 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			foreach (var wpt in waypoints)
 			{
-				self.QueueActivity(new AttackMoveActivity(self, move.MoveTo(wpt, 2)));
-				self.QueueActivity(new Wait(wait));
+				Self.QueueActivity(new AttackMoveActivity(Self, move.MoveTo(wpt, 2)));
+				Self.QueueActivity(new Wait(wait));
 			}
 
 			if (loop)
-				self.QueueActivity(new CallFunc(() => Patrol(waypoints, loop, wait)));
+				Self.QueueActivity(new CallFunc(() => Patrol(waypoints, loop, wait)));
 		}
 
 		[ScriptActorPropertyActivity]
@@ -69,10 +69,10 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			Patrol(waypoints, false, wait);
 
-			var repeat = func.Call(self.ToLuaValue(context)).First().ToBoolean();
+			var repeat = func.Call(Self.ToLuaValue(Context)).First().ToBoolean();
 			if (repeat)
 				using (var f = func.CopyReference() as LuaFunction)
-					self.QueueActivity(new CallFunc(() => PatrolUntil(waypoints, f, wait)));
+					Self.QueueActivity(new CallFunc(() => PatrolUntil(waypoints, f, wait)));
 		}
 	}
 }

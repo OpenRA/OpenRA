@@ -92,15 +92,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			missionList.RemoveChildren();
 
 			// Add a group for each campaign
-			if (Game.modData.Manifest.Missions.Any())
+			if (Game.ModData.Manifest.Missions.Any())
 			{
-				var yaml = Game.modData.Manifest.Missions.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
+				var yaml = Game.ModData.Manifest.Missions.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
 
 				foreach (var kv in yaml)
 				{
 					var missionMapPaths = kv.Value.Nodes.Select(n => Path.GetFullPath(n.Key));
 
-					var maps = Game.modData.MapCache
+					var maps = Game.ModData.MapCache
 						.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(Path.GetFullPath(p.Map.Path)))
 						.Select(p => p.Map);
 
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 
 			// Add an additional group for loose missions
-			var looseMissions = Game.modData.MapCache
+			var looseMissions = Game.ModData.MapCache
 				.Where(p => p.Status == MapStatus.Available && p.Map.Visibility.HasFlag(MapVisibility.MissionSelector) && !allMaps.Contains(p.Map))
 				.Select(p => p.Map);
 
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void SelectMap(Map map)
 		{
-			selectedMapPreview = Game.modData.MapCache[map.Uid];
+			selectedMapPreview = Game.ModData.MapCache[map.Uid];
 
 			// Cache the rules on a background thread to avoid jank
 			new Thread(selectedMapPreview.CacheRules).Start();

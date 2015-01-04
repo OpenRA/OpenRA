@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Search radius (in cells) from the last harvest order location to find more resources.")]
 		public readonly int SearchFromOrderRadius = 12;
 
-		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
+		public object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips,

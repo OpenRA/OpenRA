@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public readonly bool PauseOnLowPower = false;
 
-		public object Create(ActorInitializer init) { return new WithIdleOverlay(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithIdleOverlay(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{

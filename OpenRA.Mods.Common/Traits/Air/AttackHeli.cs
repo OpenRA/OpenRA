@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class AttackHeliInfo : AttackFrontalInfo
 	{
-		public override object Create(ActorInitializer init) { return new AttackHeli(init.self, this); }
+		public override object Create(ActorInitializer init) { return new AttackHeli(init.Self, this); }
 	}
 
 	public class AttackHeli : AttackFrontal

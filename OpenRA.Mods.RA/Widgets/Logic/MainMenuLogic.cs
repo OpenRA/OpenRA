@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public MainMenuLogic(Widget widget, World world)
 		{
 			rootMenu = widget;
-			rootMenu.Get<LabelWidget>("VERSION_LABEL").Text = Game.modData.Manifest.Mod.Version;
+			rootMenu.Get<LabelWidget>("VERSION_LABEL").Text = Game.ModData.Manifest.Mod.Version;
 
 			// Menu buttons
 			var mainMenu = widget.Get("MAIN_MENU");
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			mainMenu.Get<ButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
-				Game.Settings.Game.PreviousMod = Game.modData.Manifest.Mod.Id;
+				Game.Settings.Game.PreviousMod = Game.ModData.Manifest.Mod.Id;
 				Game.InitializeMod("modchooser", null);
 			};
 
@@ -88,8 +88,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				});
 			};
 
-			var hasCampaign = Game.modData.Manifest.Missions.Any();
-			var hasMissions = Game.modData.MapCache
+			var hasCampaign = Game.ModData.Manifest.Missions.Any();
+			var hasMissions = Game.ModData.MapCache
 				.Any(p => p.Status == MapStatus.Available && p.Map.Visibility.HasFlag(MapVisibility.MissionSelector));
 
 			missionsButton.Disabled = !hasCampaign && !hasMissions;

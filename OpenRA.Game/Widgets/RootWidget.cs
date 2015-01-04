@@ -27,7 +27,7 @@ namespace OpenRA.Widgets
 
 				if (hk == Game.Settings.Keys.DevReloadChromeKey)
 				{
-					ChromeProvider.Initialize(Game.modData.Manifest.Chrome);
+					ChromeProvider.Initialize(Game.ModData.Manifest.Chrome);
 					return true;
 				}
 			}

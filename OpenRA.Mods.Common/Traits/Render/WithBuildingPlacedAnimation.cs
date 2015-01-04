@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "build";
 
-		public object Create(ActorInitializer init) { return new WithBuildingPlacedAnimation(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithBuildingPlacedAnimation(init.Self, this); }
 	}
 
 	public class WithBuildingPlacedAnimation : INotifyBuildingPlaced

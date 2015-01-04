@@ -33,28 +33,28 @@ namespace OpenRA.Mods.RA.Scripting
 			"(in cells) that will be considered close enough to complete the activity.")]
 		public void Move(CPos cell, int closeEnough = 0)
 		{
-			self.QueueActivity(new Move(self, cell, WRange.FromCells(closeEnough)));
+			Self.QueueActivity(new Move(Self, cell, WRange.FromCells(closeEnough)));
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Moves within the cell grid, ignoring lane biases.")]
 		public void ScriptedMove(CPos cell)
 		{
-			self.QueueActivity(new Move(self, cell));
+			Self.QueueActivity(new Move(Self, cell));
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Moves from outside the world into the cell grid")]
 		public void MoveIntoWorld(CPos cell)
 		{
-			self.QueueActivity(mobile.MoveIntoWorld(self, cell, mobile.ToSubCell));
+			Self.QueueActivity(mobile.MoveIntoWorld(Self, cell, mobile.ToSubCell));
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Leave the current position in a random direction.")]
 		public void Scatter()
 		{
-			self.Trait<Mobile>().Nudge(self, self, true);
+			Self.Trait<Mobile>().Nudge(Self, Self, true);
 		}
 	}
 }

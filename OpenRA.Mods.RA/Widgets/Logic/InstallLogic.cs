@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public InstallLogic(Widget widget, Action continueLoading)
 		{
-			var mirrorListUrl = Game.modData.Manifest.ContentInstaller.PackageMirrorList;
+			var mirrorListUrl = Game.ModData.Manifest.ContentInstaller.PackageMirrorList;
 			var panel = widget.Get("INSTALL_PANEL");
 			var widgetArgs = new WidgetArgs()
 			{
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
-				Game.Settings.Game.PreviousMod = Game.modData.Manifest.Mod.Id;
+				Game.Settings.Game.PreviousMod = Game.ModData.Manifest.Mod.Id;
 				Game.InitializeMod("modchooser", null);
 			};
 		}

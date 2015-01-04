@@ -43,14 +43,14 @@ namespace OpenRA.Mods.Common.Traits
 		public Husk(ActorInitializer init, HuskInfo info)
 		{
 			this.info = info;
-			this.self = init.self;
+			this.self = init.Self;
 
 			TopLeft = init.Get<LocationInit, CPos>();
-			CenterPosition = init.Contains<CenterPositionInit>() ? init.Get<CenterPositionInit, WPos>() : init.world.Map.CenterOfCell(TopLeft);
+			CenterPosition = init.Contains<CenterPositionInit>() ? init.Get<CenterPositionInit, WPos>() : init.World.Map.CenterOfCell(TopLeft);
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 128;
 
 			dragSpeed = init.Contains<HuskSpeedInit>() ? init.Get<HuskSpeedInit, int>() : 0;
-			finalPosition = init.world.Map.CenterOfCell(TopLeft);
+			finalPosition = init.World.Map.CenterOfCell(TopLeft);
 		}
 
 		public void Created(Actor self)

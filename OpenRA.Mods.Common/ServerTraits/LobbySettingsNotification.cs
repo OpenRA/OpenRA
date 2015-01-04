@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Server
 				return;
 
 			var defaults = new Session.Global();
-			FieldLoader.Load(defaults, Game.modData.Manifest.LobbyDefaults);
+			FieldLoader.Load(defaults, Game.ModData.Manifest.LobbyDefaults);
 
 			if (server.LobbyInfo.GlobalSettings.FragileAlliances != defaults.FragileAlliances)
 				server.SendOrderTo(conn, "Message", "Diplomacy Changes: {0}".F(server.LobbyInfo.GlobalSettings.FragileAlliances));

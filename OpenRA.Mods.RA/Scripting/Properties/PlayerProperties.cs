@@ -24,13 +24,13 @@ namespace OpenRA.Mods.RA.Scripting
 		: base(context, player) { }
 
 		[Desc("The player's name.")]
-		public string Name { get { return player.PlayerName; } }
+		public string Name { get { return Player.PlayerName; } }
 
 		[Desc("Returns an array of actors representing all ground attack units of this player.")]
 		public Actor[] GetGroundAttackers()
 		{
-			return player.World.ActorsWithTrait<AttackBase>().Select(a => a.Actor)
-				.Where(a => a.Owner == player && !a.IsDead && a.IsInWorld && a.HasTrait<Mobile>())
+			return Player.World.ActorsWithTrait<AttackBase>().Select(a => a.Actor)
+				.Where(a => a.Owner == Player && !a.IsDead && a.IsInWorld && a.HasTrait<Mobile>())
 				.ToArray();
 		}
 	}

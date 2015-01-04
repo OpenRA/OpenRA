@@ -27,7 +27,7 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("Offset relative to the actor TopLeft. Not used if the template is PickAny")]
 		public readonly CVec Offset = CVec.Zero;
 
-		public object Create(ActorInitializer init) { return new LaysTerrain(init.self, this); }
+		public object Create(ActorInitializer init) { return new LaysTerrain(init.Self, this); }
 	}
 
 	public class LaysTerrain : INotifyAddedToWorld

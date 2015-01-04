@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Needs to define \"idle\", \"loop\" and \"end\" sub-sequences.")]
 		public readonly string Sequence = "smoke_m";
 
-		public object Create(ActorInitializer init) { return new WithSmoke(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithSmoke(init.Self, this); }
 	}
 
 	public class WithSmoke : INotifyDamage

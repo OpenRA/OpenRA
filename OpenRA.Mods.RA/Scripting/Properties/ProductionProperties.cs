@@ -37,10 +37,10 @@ namespace OpenRA.Mods.RA.Scripting
 		public void Produce(string actorType, string raceVariant = null)
 		{
 			ActorInfo actorInfo;
-			if (!self.World.Map.Rules.Actors.TryGetValue(actorType, out actorInfo))
+			if (!Self.World.Map.Rules.Actors.TryGetValue(actorType, out actorInfo))
 				throw new LuaException("Unknown actor type '{0}'".F(actorType));
 
-			self.QueueActivity(new WaitFor(() => p.Produce(self, actorInfo, raceVariant)));
+			Self.QueueActivity(new WaitFor(() => p.Produce(Self, actorInfo, raceVariant)));
 		}
 	}
 
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public bool IsPrimaryBuilding
 		{
 			get { return pb.IsPrimary; }
-			set { pb.SetPrimaryProducer(self, value); }
+			set { pb.SetPrimaryProducer(Self, value); }
 		}
 	}
 
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 			if (actionFunc != null)
 			{
-				var playerIndex = self.Owner.ClientIndex;
+				var playerIndex = Self.Owner.ClientIndex;
 				var squadSize = actorTypes.Length;
 				var squad = new List<Actor>();
 				var func = actionFunc.CopyReference() as LuaFunction;
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.RA.Scripting
 					if (squad.Count >= squadSize)
 					{
 						using (func)
-						using (var luaSquad = squad.Where(u => !u.IsDead).ToArray().ToLuaValue(context))
+						using (var luaSquad = squad.Where(u => !u.IsDead).ToArray().ToLuaValue(Context))
 							func.Call(luaSquad).Dispose();
 
 						triggers.OnProducedInternal -= productionHandler;
@@ -142,7 +142,7 @@ namespace OpenRA.Mods.RA.Scripting
 			}
 
 			foreach (var actorType in actorTypes)
-				queue.ResolveOrder(self, Order.StartProduction(self, actorType, 1));
+				queue.ResolveOrder(Self, Order.StartProduction(Self, actorType, 1));
 
 			return true;
 		}
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		BuildableInfo GetBuildableInfo(string actorType)
 		{
-			var ri = self.World.Map.Rules.Actors[actorType];
+			var ri = Self.World.Map.Rules.Actors[actorType];
 			var bi = ri.Traits.GetOrDefault<BuildableInfo>();
 
 			if (bi == null)
@@ -232,7 +232,7 @@ namespace OpenRA.Mods.RA.Scripting
 					if (squad.Count >= squadSize)
 					{
 						using (func)
-						using (var luaSquad = squad.Where(u => !u.IsDead).ToArray().ToLuaValue(context))
+						using (var luaSquad = squad.Where(u => !u.IsDead).ToArray().ToLuaValue(Context))
 							func.Call(luaSquad).Dispose();
 
 						foreach (var q in queueTypes)
@@ -267,7 +267,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		BuildableInfo GetBuildableInfo(string actorType)
 		{
-			var ri = player.World.Map.Rules.Actors[actorType];
+			var ri = Player.World.Map.Rules.Actors[actorType];
 			var bi = ri.Traits.GetOrDefault<BuildableInfo>();
 
 			if (bi == null)

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public object Create(ActorInitializer init)
 		{
-			return new GpsDot(init.self, this);
+			return new GpsDot(init.Self, this);
 		}
 	}
 

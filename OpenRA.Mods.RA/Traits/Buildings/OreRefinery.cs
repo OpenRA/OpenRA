@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Actually harvester facing when docking, 0-255 counter-clock-wise.")]
 		public readonly int DockAngle = 64;
 
-		public virtual object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
+		public virtual object Create(ActorInitializer init) { return new OreRefinery(init.Self, this); }
 	}
 
 	public class OreRefinery : ITick, IAcceptOre, INotifyKilled, INotifySold, INotifyCapture, INotifyOwnerChanged, IExplodeModifier, ISync

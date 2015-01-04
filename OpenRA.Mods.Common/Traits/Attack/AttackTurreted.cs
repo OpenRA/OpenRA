@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Actor has a visual turret used to attack.")]
 	public class AttackTurretedInfo : AttackFollowInfo, Requires<TurretedInfo>
 	{
-		public override object Create(ActorInitializer init) { return new AttackTurreted(init.self, this); }
+		public override object Create(ActorInitializer init) { return new AttackTurreted(init.Self, this); }
 	}
 
 	public class AttackTurreted : AttackFollow, ITick, ISync

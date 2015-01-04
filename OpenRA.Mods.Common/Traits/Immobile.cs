@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Immobile(ActorInitializer init, ImmobileInfo info)
 		{
 			location = init.Get<LocationInit, CPos>();
-			position = init.world.Map.CenterOfCell(location);
+			position = init.World.Map.CenterOfCell(location);
 
 			if (info.OccupiesSpace)
 				occupied = new[] { Pair.New(TopLeft, SubCell.FullCell) };

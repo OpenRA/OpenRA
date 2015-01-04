@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Cargo(ActorInitializer init, CargoInfo info)
 		{
-			self = init.self;
+			self = init.Self;
 			Info = info;
 			Unloading = false;
 

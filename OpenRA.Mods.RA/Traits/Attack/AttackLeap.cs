@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly WRange Speed = new WRange(426);
 		public readonly WAngle Angle = WAngle.FromDegrees(20);
 
-		public override object Create(ActorInitializer init) { return new AttackLeap(init.self, this); }
+		public override object Create(ActorInitializer init) { return new AttackLeap(init.Self, this); }
 	}
 
 	class AttackLeap : AttackFrontal, ISync

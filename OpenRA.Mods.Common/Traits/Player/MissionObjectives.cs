@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay between the game over condition being met, and the game actually ending, in milliseconds.")]
 		public readonly int GameOverDelay = 1500;
 
-		public object Create(ActorInitializer init) { return new MissionObjectives(init.world, this); }
+		public object Create(ActorInitializer init) { return new MissionObjectives(init.World, this); }
 	}
 
 	public class MissionObjectives : INotifyObjectivesUpdated, ISync, IResolveOrder

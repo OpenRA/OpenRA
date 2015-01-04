@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		public readonly Color Color = Color.Magenta;
 
-		public object Create(ActorInitializer init) { return new SupportPowerChargeBar(init.self, this); }
+		public object Create(ActorInitializer init) { return new SupportPowerChargeBar(init.Self, this); }
 	}
 
 	class SupportPowerChargeBar : ISelectionBar

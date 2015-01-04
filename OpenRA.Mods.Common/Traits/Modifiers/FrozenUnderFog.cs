@@ -44,15 +44,15 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Spawned actors (e.g. building husks) shouldn't be revealed
 			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
-			var footprint = FootprintUtils.Tiles(init.self).ToList();
-			footprintInMapsCoords = footprint.Select(cell => Map.CellToMap(init.world.Map.TileShape, cell)).ToArray();
-			footprintRegion = CellRegion.BoundingRegion(init.world.Map.TileShape, footprint);
-			tooltip = Exts.Lazy(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
-			tooltip = Exts.Lazy(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
-			health = Exts.Lazy(() => init.self.TraitOrDefault<Health>());
+			var footprint = FootprintUtils.Tiles(init.Self).ToList();
+			footprintInMapsCoords = footprint.Select(cell => Map.CellToMap(init.World.Map.TileShape, cell)).ToArray();
+			footprintRegion = CellRegion.BoundingRegion(init.World.Map.TileShape, footprint);
+			tooltip = Exts.Lazy(() => init.Self.TraitsImplementing<IToolTip>().FirstOrDefault());
+			tooltip = Exts.Lazy(() => init.Self.TraitsImplementing<IToolTip>().FirstOrDefault());
+			health = Exts.Lazy(() => init.Self.TraitOrDefault<Health>());
 
 			frozen = new Dictionary<Player, FrozenActor>();
-			visible = init.world.Players.ToDictionary(p => p, p => false);
+			visible = init.World.Players.ToDictionary(p => p, p => false);
 		}
 
 		public bool IsVisible(Actor self, Player byPlayer)

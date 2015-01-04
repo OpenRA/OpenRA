@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("The selection shares to use if the collector has no base.")]
 		public int NoBaseSelectionShares = 1000;
 
-		public override object Create(ActorInitializer init) { return new GiveMcvCrateAction(init.self, this); }
+		public override object Create(ActorInitializer init) { return new GiveMcvCrateAction(init.Self, this); }
 	}
 
 	class GiveMcvCrateAction : GiveUnitCrateAction

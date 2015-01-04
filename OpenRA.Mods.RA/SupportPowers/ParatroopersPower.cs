@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Weapon range offset to apply during the beacon clock calculation.")]
 		public readonly WRange BeaconDistanceOffset = WRange.FromCells(4);
 
-		public override object Create(ActorInitializer init) { return new ParatroopersPower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new ParatroopersPower(init.Self, this); }
 	}
 
 	public class ParatroopersPower : SupportPower

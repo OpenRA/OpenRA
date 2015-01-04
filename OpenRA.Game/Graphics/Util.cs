@@ -18,8 +18,8 @@ namespace OpenRA.Graphics
 	public static class Util
 	{
 		// yes, our channel order is nuts.
-		static readonly int[] channelMasks = { 2, 1, 0, 3 };
-		static float[] channelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
+		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
+		static readonly float[] ChannelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
 		public static void FastCreateQuad(Vertex[] vertices, float2 o, Sprite r, int palette, int nv, float2 size)
 		{
@@ -32,23 +32,23 @@ namespace OpenRA.Graphics
 		public static void FastCreateQuad(Vertex[] vertices, float2 a, float2 b, float2 c, float2 d, Sprite r, int palette, int nv)
 		{
 			var attribP = palette / (float)HardwarePalette.MaxPalettes;
-			var attribC = channelSelect[(int)r.channel];
+			var attribC = ChannelSelect[(int)r.Channel];
 
-			vertices[nv] = new Vertex(a, r.left, r.top, attribP, attribC);
-			vertices[nv + 1] = new Vertex(b, r.right, r.top, attribP, attribC);
-			vertices[nv + 2] = new Vertex(c, r.right, r.bottom, attribP, attribC);
-			vertices[nv + 3] = new Vertex(d, r.left, r.bottom, attribP, attribC);
+			vertices[nv] = new Vertex(a, r.Left, r.Top, attribP, attribC);
+			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, attribP, attribC);
+			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, attribP, attribC);
+			vertices[nv + 3] = new Vertex(d, r.Left, r.Bottom, attribP, attribC);
 		}
 
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src) { FastCopyIntoChannel(dest, 0, src); }
 		public static void FastCopyIntoChannel(Sprite dest, int channelOffset, byte[] src)
 		{
-			var data = dest.sheet.GetData();
-			var srcStride = dest.bounds.Width;
-			var destStride = dest.sheet.Size.Width * 4;
-			var destOffset = destStride * dest.bounds.Top + dest.bounds.Left * 4 + channelMasks[(int)dest.channel + channelOffset];
+			var data = dest.Sheet.GetData();
+			var srcStride = dest.Bounds.Width;
+			var destStride = dest.Sheet.Size.Width * 4;
+			var destOffset = destStride * dest.Bounds.Top + dest.Bounds.Left * 4 + ChannelMasks[(int)dest.Channel + channelOffset];
 			var destSkip = destStride - 4 * srcStride;
-			var height = dest.bounds.Height;
+			var height = dest.Bounds.Height;
 
 			var srcOffset = 0;
 			for (var j = 0; j < height; j++)
@@ -65,12 +65,12 @@ namespace OpenRA.Graphics
 
 		public static void FastCopyIntoSprite(Sprite dest, Bitmap src)
 		{
-			var data = dest.sheet.GetData();
-			var dataStride = dest.sheet.Size.Width * 4;
-			var x = dest.bounds.Left * 4;
-			var width = dest.bounds.Width * 4;
-			var y = dest.bounds.Top;
-			var height = dest.bounds.Height;
+			var data = dest.Sheet.GetData();
+			var dataStride = dest.Sheet.Size.Width * 4;
+			var x = dest.Bounds.Left * 4;
+			var width = dest.Bounds.Width * 4;
+			var y = dest.Bounds.Top;
+			var height = dest.Bounds.Height;
 
 			var bd = src.LockBits(src.Bounds(),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);

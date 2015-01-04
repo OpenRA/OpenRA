@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly string IdleSequence = "idle";
 
-		public object Create(ActorInitializer init) { return new WithDeliveryAnimation(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithDeliveryAnimation(init.Self, this); }
 	}
 
 	public class WithDeliveryAnimation : INotifyDelivery

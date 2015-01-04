@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Restore power when this trait is disabled.")]
 		public readonly bool CancelWhenDisabled = false;
 
-		public object Create(ActorInitializer init) { return new CanPowerDown(init.self, this); }
+		public object Create(ActorInitializer init) { return new CanPowerDown(init.Self, this); }
 	}
 
 	public class CanPowerDown : UpgradableTrait<CanPowerDownInfo>, IPowerModifier, IResolveOrder, IDisable, INotifyOwnerChanged

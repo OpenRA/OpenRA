@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
-		public object Create(ActorInitializer init) { return new WithHarvestAnimation(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithHarvestAnimation(init.Self, this); }
 	}
 
 	class WithHarvestAnimation : INotifyHarvesterAction

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string[] ExcludePalettes = { };
 
-		public object Create(ActorInitializer init) { return new WaterPaletteRotation(init.world, this); }
+		public object Create(ActorInitializer init) { return new WaterPaletteRotation(init.World, this); }
 	}
 
 	class WaterPaletteRotation : ITick, IPaletteModifier

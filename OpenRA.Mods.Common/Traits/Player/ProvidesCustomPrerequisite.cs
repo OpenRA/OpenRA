@@ -41,9 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 
-			var race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.self.Owner.Country.Race; 
+			var race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Country.Race; 
 
-			Update(init.self.Owner, race);
+			Update(init.Self.Owner, race);
 		}
 
 		public IEnumerable<string> ProvidesPrerequisites

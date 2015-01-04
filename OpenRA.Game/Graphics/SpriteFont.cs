@@ -117,15 +117,15 @@ namespace OpenRA.Graphics
 				unsafe
 				{
 					var p = (byte*)bitmap.Buffer;
-					var dest = s.sheet.GetData();
-					var destStride = s.sheet.Size.Width * 4;
+					var dest = s.Sheet.GetData();
+					var destStride = s.Sheet.Size.Width * 4;
 
-					for (var j = 0; j < s.size.Y; j++)
+					for (var j = 0; j < s.Size.Y; j++)
 					{
-						for (var i = 0; i < s.size.X; i++)
+						for (var i = 0; i < s.Size.X; i++)
 							if (p[i] != 0)
 							{
-								var q = destStride * (j + s.bounds.Top) + 4 * (i + s.bounds.Left);
+								var q = destStride * (j + s.Bounds.Top) + 4 * (i + s.Bounds.Left);
 								dest[q] = c.Second.B;
 								dest[q + 1] = c.Second.G;
 								dest[q + 2] = c.Second.R;
@@ -136,7 +136,7 @@ namespace OpenRA.Graphics
 					}
 				}
 
-			s.sheet.CommitData();
+			s.Sheet.CommitData();
 
 			return g;
 		}

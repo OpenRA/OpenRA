@@ -23,9 +23,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.modData = modData;
+			Game.ModData = modData;
 
-			var rules = Game.modData.RulesetCache.LoadDefaultRules();
+			var rules = Game.ModData.RulesetCache.LoadDefaultRules();
 			var map = LegacyMapImporter.Import(args[1], modData.Manifest.Mod.Id, rules, e => Console.WriteLine(e));
 			var dest = map.Title + ".oramap";
 			map.Save(dest);

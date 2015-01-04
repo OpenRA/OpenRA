@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public void Guard(Actor targetActor)
 		{
 			if (targetActor.HasTrait<Guardable>())
-				guard.GuardTarget(self, Target.FromActor(targetActor));
+				guard.GuardTarget(Self, Target.FromActor(targetActor));
 		}
 	}
 }
