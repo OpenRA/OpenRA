@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (health.HP >= Info.HealIfBelow * health.MaxHP)
 				return;
-			
+
 			if (damageTicks > 0)
 			{
 				--damageTicks;

@@ -175,8 +175,8 @@ namespace OpenRA.FileFormats
 						var jmp = int2.Swap(stream.ReadUInt32());
 						stream.Seek(jmp, SeekOrigin.Current);
 						type = stream.ReadASCII(4);
-					}	
-				
+					}
+
 					var length = int2.Swap(stream.ReadUInt32());
 
 					switch (type)
@@ -197,10 +197,10 @@ namespace OpenRA.FileFormats
 							}
 
 							compressed = type == "SND2";
-						break;
+							break;
 						default:
 							stream.ReadBytes((int)length);
-						break;
+							break;
 					}
 
 					// Chunks are aligned on even bytes; advance by a byte if the next one is null
@@ -230,7 +230,7 @@ namespace OpenRA.FileFormats
 
 				audioData = new byte[rightData.Length + leftData.Length];
 				var rightIndex = 0;
-				var leftIndex = 0;				
+				var leftIndex = 0;
 				for (var i = 0; i < audioData.Length;)
 				{
 					audioData[i++] = leftData[leftIndex++];
@@ -273,28 +273,28 @@ namespace OpenRA.FileFormats
 						stream.Seek(length, SeekOrigin.Current);
 						type = stream.ReadASCII(4);
 					}
-					else					
+					else
 						throw new NotSupportedException();
-				}		
-	
+				}
+
 				length = int2.Swap(stream.ReadUInt32());
-	
+
 				switch (type)
 				{
 					case "VQFR":
 						DecodeVQFR(stream);
-					break;
+						break;
 					case "\0VQF":
 						stream.ReadByte();
 						DecodeVQFR(stream);
-					break;
-				    case "VQFL":
+						break;
+					case "VQFL":
 						DecodeVQFR(stream, "VQFL");
-					break;
+						break;
 					default:
 						// Don't parse sound here.
 						stream.ReadBytes((int)length);
-					break;
+						break;
 				}
 
 				// Chunks are aligned on even bytes; advance by a byte if the next one is null
@@ -343,10 +343,10 @@ namespace OpenRA.FileFormats
 
 						if (parentType == "VQFL")
 							return;
-					break;
+						break;
 					case "CBF0":
 						cbf = s.ReadBytes(subchunkLength);
-					break;
+						break;
 
 					// frame-modifier chunk
 					case "CBP0":
@@ -366,7 +366,7 @@ namespace OpenRA.FileFormats
 						bytes.CopyTo(cbp, chunkBufferOffset);
 						chunkBufferOffset += subchunkLength;
 						currentChunkBuffer++;
-					break;
+						break;
 
 					// Palette
 					case "CPL0":
@@ -378,7 +378,7 @@ namespace OpenRA.FileFormats
 							palette[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
 						}
 
-					break;
+						break;
 
 					// Frame data
 					case "VPTZ":
@@ -390,9 +390,9 @@ namespace OpenRA.FileFormats
 						Array.Clear(origData, 0, origData.Length);
 						s.Read(fileBuffer, 0, subchunkLength);
 						if (fileBuffer[0] != 0)
-							vtprSize = Format80.DecodeInto(fileBuffer, origData);						
+							vtprSize = Format80.DecodeInto(fileBuffer, origData);
 						else
-							Format80.DecodeInto(fileBuffer, origData, 1, true);						
+							Format80.DecodeInto(fileBuffer, origData, 1, true);
 						return;
 					case "VPTR":
 						Array.Clear(origData, 0, origData.Length);
@@ -434,21 +434,21 @@ namespace OpenRA.FileFormats
 						{
 							case 0:
 								x += para_A;
-							break;
+								break;
 							case 1:
 								WriteBlock(para_B1, para_B2, ref x, ref y);
-							break;
+								break;
 							case 2:
 								WriteBlock(para_B1, 1, ref x, ref y);
-								for (var i = 0; i < para_B2; i++)								
-									WriteBlock(origData[p++], 1, ref x, ref y);							
-							break;
+								for (var i = 0; i < para_B2; i++)
+									WriteBlock(origData[p++], 1, ref x, ref y);
+								break;
 							case 3:
 								WriteBlock(para_A, 1, ref x, ref y);
-							break;
+								break;
 							case 5:
 								WriteBlock(para_A, origData[p++], ref x, ref y);
-							break;
+								break;
 							default:
 								throw new NotSupportedException();
 						}

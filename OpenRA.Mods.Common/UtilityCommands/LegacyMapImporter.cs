@@ -284,7 +284,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					if (o != 255 && overlayResourceMapping.ContainsKey(redAlertOverlayNames[o]))
 						res = overlayResourceMapping[redAlertOverlayNames[o]];
-					
+
 					var cell = new CPos(i, j);
 					map.MapResources.Value[cell] = new ResourceTile(res.First, res.Second);
 

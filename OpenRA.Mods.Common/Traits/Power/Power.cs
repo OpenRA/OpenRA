@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 			PlayerPower = self.Owner.PlayerActor.Trait<PowerManager>();
 			powerModifiers = Exts.Lazy(() => self.TraitsImplementing<IPowerModifier>().ToArray());
 		}
-		
+
 		protected override void UpgradeEnabled(Actor self) { PlayerPower.UpdateActor(self); }
 		protected override void UpgradeDisabled(Actor self) { PlayerPower.UpdateActor(self); }
 		public void AddedToWorld(Actor self) { PlayerPower.UpdateActor(self); }

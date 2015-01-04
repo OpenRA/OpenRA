@@ -25,7 +25,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly long Offset = 0;
 		public readonly bool AllowModifiers = true;
 		public readonly bool InvertColor = false;
-		
+
 		public object Create(ActorInitializer init) { return new PaletteFromR8(this); }
 	}
 

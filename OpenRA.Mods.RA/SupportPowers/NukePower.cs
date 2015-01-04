@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA.Traits
 					Info.BeaconPoster,
 					Info.BeaconPosterPalette,
 					() => missile.FractionComplete);
-                
+
 				Action removeBeacon = () => self.World.AddFrameEndTask(w =>
 				{
 					w.Remove(beacon);

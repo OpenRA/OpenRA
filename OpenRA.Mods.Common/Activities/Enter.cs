@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		ReserveStatus TryReserveElseTryAlternateReserve(Actor self)
 		{
-			for (var tries = 0;;) 
+			for (var tries = 0;;)
 				switch (Reserve(self))
 				{
 					case ReserveStatus.None:
@@ -255,7 +255,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Check target validity if not exiting or done
 			if (nextState != State.Done && (target.Type != TargetType.Actor || !target.IsValidFor(self)))
-					AbortOrExit(self);
+				AbortOrExit(self);
 
 			// If no current activity, tick next activity
 			if (inner == null && FindAndTransitionToNextState(self) == State.Done)

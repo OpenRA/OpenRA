@@ -113,12 +113,12 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				switch (target.Type)
 				{
-				case TargetType.Actor:
-					return new Order("Attack", self, queued) { TargetActor = target.Actor };
-				case TargetType.FrozenActor:
-					return new Order("Attack", self, queued) { ExtraData = target.FrozenActor.ID };
-				case TargetType.Terrain:
-					return new Order("Attack", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+					case TargetType.Actor:
+						return new Order("Attack", self, queued) { TargetActor = target.Actor };
+					case TargetType.FrozenActor:
+						return new Order("Attack", self, queued) { ExtraData = target.FrozenActor.ID };
+					case TargetType.Terrain:
+						return new Order("Attack", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
 				}
 			}
 
@@ -255,13 +255,13 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				switch (target.Type)
 				{
-				case TargetType.Actor:
-				case TargetType.FrozenActor:
-					return CanTargetActor(self, target, modifiers, ref cursor);
-				case TargetType.Terrain:
-					return CanTargetLocation(self, self.World.Map.CellContaining(target.CenterPosition), othersAtTarget, modifiers, ref cursor);
-				default:
-					return false;
+					case TargetType.Actor:
+					case TargetType.FrozenActor:
+						return CanTargetActor(self, target, modifiers, ref cursor);
+					case TargetType.Terrain:
+						return CanTargetLocation(self, self.World.Map.CellContaining(target.CenterPosition), othersAtTarget, modifiers, ref cursor);
+					default:
+						return false;
 				}
 			}
 

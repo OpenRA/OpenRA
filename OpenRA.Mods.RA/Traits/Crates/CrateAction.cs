@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		[Desc("The earliest time (in ticks) that this crate action can occur on.")]
 		public readonly int TimeDelay = 0;
-		
+
 		[Desc("Only allow this crate action when the collector has these prerequisites")]
 		public readonly string[] Prerequisites = { };
 

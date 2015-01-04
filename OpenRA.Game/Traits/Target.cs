@@ -101,15 +101,15 @@ namespace OpenRA.Traits
 			{
 				switch (Type)
 				{
-				case TargetType.Actor:
-					return actor.CenterPosition;
-				case TargetType.FrozenActor:
-					return frozen.CenterPosition;
-				case TargetType.Terrain:
-					return pos;
-				default:
-				case TargetType.Invalid:
-					throw new InvalidOperationException("Attempting to query the position of an invalid Target");
+					case TargetType.Actor:
+						return actor.CenterPosition;
+					case TargetType.FrozenActor:
+						return frozen.CenterPosition;
+					case TargetType.Terrain:
+						return pos;
+					default:
+					case TargetType.Invalid:
+						throw new InvalidOperationException("Attempting to query the position of an invalid Target");
 				}
 			}
 		}
@@ -122,20 +122,20 @@ namespace OpenRA.Traits
 			{
 				switch (Type)
 				{
-				case TargetType.Actor:
-					var targetable = actor.TraitOrDefault<ITargetable>();
-					if (targetable == null)
-						return new[] { actor.CenterPosition };
+					case TargetType.Actor:
+						var targetable = actor.TraitOrDefault<ITargetable>();
+						if (targetable == null)
+							return new[] { actor.CenterPosition };
 
-					var positions = targetable.TargetablePositions(actor);
-					return positions.Any() ? positions : new[] { actor.CenterPosition };
-				case TargetType.FrozenActor:
-					return new[] { frozen.CenterPosition };
-				case TargetType.Terrain:
-					return new[] { pos };
-				default:
-				case TargetType.Invalid:
-					return NoPositions;
+						var positions = targetable.TargetablePositions(actor);
+						return positions.Any() ? positions : new[] { actor.CenterPosition };
+					case TargetType.FrozenActor:
+						return new[] { frozen.CenterPosition };
+					case TargetType.Terrain:
+						return new[] { pos };
+					default:
+					case TargetType.Invalid:
+						return NoPositions;
 				}
 			}
 		}

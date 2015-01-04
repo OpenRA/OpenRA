@@ -33,8 +33,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override string[] TargetTypes
 		{
-			get { return (self.CenterPosition.Z > 0) ? info.TargetTypes
-				: info.GroundedTargetTypes; }
+			get
+			{
+				return (self.CenterPosition.Z > 0) ? info.TargetTypes
+					: info.GroundedTargetTypes;
+			}
 		}
 	}
 }

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly string[] ShorePieces = { "br1", "br2" };
 		public readonly int[] NorthOffset = null;
 		public readonly int[] SouthOffset = null;
-		
+
 		[Desc("The name of the weapon to use when demolishing the bridge")]
 		public readonly string DemolishWeapon = "Demolish";
 

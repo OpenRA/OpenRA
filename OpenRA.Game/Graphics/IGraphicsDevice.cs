@@ -85,7 +85,7 @@ namespace OpenRA
 	}
 
 	public enum TextureScaleFilter { Nearest, Linear }
-	
+
 	public interface ITexture : IDisposable
 	{
 		void SetData(Bitmap bitmap);

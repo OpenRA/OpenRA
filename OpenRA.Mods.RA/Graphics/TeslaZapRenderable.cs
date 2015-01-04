@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA.Graphics
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
-		
+
 		public IRenderable WithScale(float newScale) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps, palette); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps, palette); }
 		public IRenderable WithZOffset(int newOffset) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps, palette); }
@@ -81,10 +81,10 @@ namespace OpenRA.Mods.RA.Graphics
 		{
 			var bright = wr.World.Map.SequenceProvider.GetSequence(image, "bright");
 			var dim = wr.World.Map.SequenceProvider.GetSequence(image, "dim");
-			
+
 			var source = wr.ScreenPosition(pos);
 			var target = wr.ScreenPosition(pos + length);
-			
+
 			for (var n = 0; n < dimZaps; n++)
 				foreach (var z in DrawZapWandering(wr, source, target, dim, palette))
 					yield return z;

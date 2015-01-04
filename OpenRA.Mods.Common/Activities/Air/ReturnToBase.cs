@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (dest == null)
 			{
 				var nearestAfld = ChooseAirfield(self, false);
-				
+
 				self.CancelActivity();
 				if (nearestAfld != null)
 					return Util.SequenceActivities(new Fly(self, Target.FromActor(nearestAfld)), new FlyCircle());

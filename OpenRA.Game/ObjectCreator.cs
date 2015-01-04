@@ -107,7 +107,7 @@ namespace OpenRA
 			var it = typeof(T);
 			return GetTypes().Where(t => t != it && it.IsAssignableFrom(t));
 		}
-		
+
 		public IEnumerable<Type> GetTypes()
 		{
 			return assemblies.Select(ma => ma.First).Distinct()

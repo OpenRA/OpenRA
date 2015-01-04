@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-    [Desc("This actor can be targeted by the Hunt activity.")]
-    public class HuntableInfo : TraitInfo<Huntable> { }
-    public class Huntable { }
+	[Desc("This actor can be targeted by the Hunt activity.")]
+	public class HuntableInfo : TraitInfo<Huntable> { }
+	public class Huntable { }
 }

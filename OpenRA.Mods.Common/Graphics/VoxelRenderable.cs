@@ -32,9 +32,10 @@ namespace OpenRA.Mods.Common.Graphics
 		// Generated at render-time
 		VoxelRenderProxy renderProxy;
 
-		public VoxelRenderable(IEnumerable<VoxelAnimation> voxels, WPos pos, int zOffset, WRot camera, float scale,
-		                       WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
-		                       PaletteReference color, PaletteReference normals, PaletteReference shadow)
+		public VoxelRenderable(
+			IEnumerable<VoxelAnimation> voxels, WPos pos, int zOffset, WRot camera, float scale,
+			WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
+			PaletteReference color, PaletteReference normals, PaletteReference shadow)
 		{
 			this.voxels = voxels;
 			this.pos = pos;
@@ -58,30 +59,34 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public IRenderable WithScale(float newScale)
 		{
-			return new VoxelRenderable(voxels, pos, zOffset, camera, newScale,
-			                           lightSource, lightAmbientColor, lightDiffuseColor,
-			                           palette, normalsPalette, shadowPalette);
+			return new VoxelRenderable(
+				voxels, pos, zOffset, camera, newScale,
+				lightSource, lightAmbientColor, lightDiffuseColor,
+				palette, normalsPalette, shadowPalette);
 		}
 
 		public IRenderable WithPalette(PaletteReference newPalette)
 		{
-			return new VoxelRenderable(voxels, pos, zOffset, camera, scale,
-			                           lightSource, lightAmbientColor, lightDiffuseColor,
-			                           newPalette, normalsPalette, shadowPalette);
+			return new VoxelRenderable(
+				voxels, pos, zOffset, camera, scale,
+				lightSource, lightAmbientColor, lightDiffuseColor,
+				newPalette, normalsPalette, shadowPalette);
 		}
 
 		public IRenderable WithZOffset(int newOffset)
 		{
-			return new VoxelRenderable(voxels, pos, newOffset, camera, scale,
-			                           lightSource, lightAmbientColor, lightDiffuseColor,
-			                           palette, normalsPalette, shadowPalette);
+			return new VoxelRenderable(
+				voxels, pos, newOffset, camera, scale,
+				lightSource, lightAmbientColor, lightDiffuseColor,
+				palette, normalsPalette, shadowPalette);
 		}
 
 		public IRenderable OffsetBy(WVec vec)
 		{
-			return new VoxelRenderable(voxels, pos + vec, zOffset, camera, scale,
-			                           lightSource, lightAmbientColor, lightDiffuseColor,
-			                           palette, normalsPalette, shadowPalette);
+			return new VoxelRenderable(
+				voxels, pos + vec, zOffset, camera, scale,
+				lightSource, lightAmbientColor, lightDiffuseColor,
+				palette, normalsPalette, shadowPalette);
 		}
 
 		public IRenderable AsDecoration() { return this; }

@@ -106,12 +106,12 @@ namespace OpenRA.Graphics
 		{
 			var mtx = new float[16];
 			for (var i = 0; i < 4; i++)
-			for (var j = 0; j < 4; j++)
-			{
-				mtx[4 * i + j] = 0;
-				for (var k = 0; k < 4; k++)
-					mtx[4 * i + j] += lhs[4 * k + j] * rhs[4 * i + k];
-			}
+				for (var j = 0; j < 4; j++)
+				{
+					mtx[4 * i + j] = 0;
+					for (var k = 0; k < 4; k++)
+						mtx[4 * i + j] += lhs[4 * k + j] * rhs[4 * i + k];
+				}
 
 			return mtx;
 		}
@@ -250,7 +250,7 @@ namespace OpenRA.Graphics
 				return null;
 
 			for (var i = 0; i < 16; i++)
-				mtx[i]  *= 1 / det;
+				mtx[i] *= 1 / det;
 
 			return mtx;
 		}

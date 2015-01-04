@@ -351,7 +351,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 								var powerFields = new List<MiniYamlNode> { new MiniYamlNode("Amount", power.Value) };
 								actorTraits.Add(new MiniYamlNode("Power", new MiniYaml("", powerFields)));
-								
+
 								if (FieldLoader.GetValue<int>("Power", power.Value.Value) > 0)
 									actorTraits.Add(new MiniYamlNode("ScaleWithHealth", ""));
 							}
@@ -528,7 +528,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20140913)
 				{
 					var spawnsCorpseRemoval = node.Value.Nodes.FirstOrDefault(n => n.Key == "SpawnsCorpse");
-					
+
 					if (depth == 0 && node.Value.Nodes.Any(n => n.Key.StartsWith("RenderInfantry")) && spawnsCorpseRemoval == null)
 						node.Value.Nodes.Add(new MiniYamlNode("WithDeathAnimation", new MiniYaml("")));
 
@@ -732,13 +732,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								ConvertAngle(ref node.Value.Value);
 								break;
 							case "Speed":
-							{
-								if (parent.Value.Value == "Missile")
-									ConvertPxToRange(ref node.Value.Value, 1, 5);
-								if (parent.Value.Value == "Bullet")
-									ConvertPxToRange(ref node.Value.Value, 2, 5);
-								break;
-							}
+								{
+									if (parent.Value.Value == "Missile")
+										ConvertPxToRange(ref node.Value.Value, 1, 5);
+									if (parent.Value.Value == "Bullet")
+										ConvertPxToRange(ref node.Value.Value, 2, 5);
+									break;
+								}
 
 							default:
 								break;

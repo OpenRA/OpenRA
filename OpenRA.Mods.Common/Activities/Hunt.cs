@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (IsCanceled)
 				return NextActivity;
-			
+
 			var target = targets.ClosestTo(self);
 			if (target == null)
 				return this;

@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class CreditsLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CreditsLogic(Widget widget,  Action onExit)
+		public CreditsLogic(Widget widget, Action onExit)
 		{
 			var panel = widget.Get("CREDITS_PANEL");
 

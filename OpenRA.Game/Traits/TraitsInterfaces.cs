@@ -24,7 +24,7 @@ namespace OpenRA.Traits
 	// depends on the order of pips in WorldRenderer.cs!
 	public enum PipType { Transparent, Green, Yellow, Red, Gray, Blue, Ammo, AmmoEmpty }
 	public enum TagType { None, Fake, Primary }
-	
+
 	[Flags]
 	public enum Stance
 	{
@@ -259,7 +259,7 @@ namespace OpenRA.Traits
 	}
 
 	public interface IRenderOverlay { void Render(WorldRenderer wr); }
-	public interface INotifyBecomingIdle { void OnBecomingIdle(Actor self); } 
+	public interface INotifyBecomingIdle { void OnBecomingIdle(Actor self); }
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
 	public interface IBlocksBullets { }

@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				mapfilterInput.TakeKeyboardFocus();
 				mapfilterInput.OnEscKey = () =>
-				{ 
+				{
 					if (mapfilterInput.Text.Length == 0)
 						canceling();
 					else
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						EnumerateMaps(onSelect, filter);
 					}
 
-					return true; 
+					return true;
 				};
 				mapfilterInput.OnEnterKey = () => { approving(); return true; };
 				mapfilterInput.OnTextEdited = () =>

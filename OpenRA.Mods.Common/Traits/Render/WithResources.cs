@@ -38,9 +38,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			anim = new Animation(self.World, rs.GetImage(self));
 			anim.PlayFetchIndex(info.Sequence,
-			                    () => playerResources.ResourceCapacity != 0
-			                    ? ((10 * anim.CurrentSequence.Length - 1) * playerResources.Resources) / (10 * playerResources.ResourceCapacity)
-			                    : 0);
+				() =>
+					playerResources.ResourceCapacity != 0 ?
+					((10 * anim.CurrentSequence.Length - 1) * playerResources.Resources) / (10 * playerResources.ResourceCapacity) :
+					0);
 
 			rs.Add("resources_{0}".F(info.Sequence), new AnimationWithOffset(
 				anim, null, () => !buildComplete, 1024));

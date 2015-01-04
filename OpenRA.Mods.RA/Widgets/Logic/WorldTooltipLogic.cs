@@ -51,24 +51,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						labelText = "Unexplored Terrain";
 						break;
 					case WorldTooltipType.Actor:
-					{
-						o = viewport.ActorTooltip.Owner;
-						showOwner = !o.NonCombatant && viewport.ActorTooltip.TooltipInfo.IsOwnerRowVisible;
+						{
+							o = viewport.ActorTooltip.Owner;
+							showOwner = !o.NonCombatant && viewport.ActorTooltip.TooltipInfo.IsOwnerRowVisible;
 
-						var stance = o == null || world.RenderPlayer == null ? Stance.None : o.Stances[world.RenderPlayer];
-						labelText = viewport.ActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
-						break;
-					}
+							var stance = o == null || world.RenderPlayer == null ? Stance.None : o.Stances[world.RenderPlayer];
+							labelText = viewport.ActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
+							break;
+						}
 
 					case WorldTooltipType.FrozenActor:
-					{
-						o = viewport.FrozenActorTooltip.TooltipOwner;
-						showOwner = !o.NonCombatant && viewport.FrozenActorTooltip.TooltipInfo.IsOwnerRowVisible;
+						{
+							o = viewport.FrozenActorTooltip.TooltipOwner;
+							showOwner = !o.NonCombatant && viewport.FrozenActorTooltip.TooltipInfo.IsOwnerRowVisible;
 
-						var stance = o == null || world.RenderPlayer == null ? Stance.None : o.Stances[world.RenderPlayer];
-						labelText = viewport.FrozenActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
-						break;
-					}
+							var stance = o == null || world.RenderPlayer == null ? Stance.None : o.Stances[world.RenderPlayer];
+							labelText = viewport.FrozenActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
+							break;
+						}
 				}
 
 				var textWidth = font.Measure(labelText).X;

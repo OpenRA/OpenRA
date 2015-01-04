@@ -288,12 +288,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			switch (order.OrderString)
 			{
-			case "Move":
-			case "Enter":
-			case "ReturnToBase":
-			case "Stop":
-				return "Move";
-			default: return null;
+				case "Move":
+				case "Enter":
+				case "ReturnToBase":
+				case "Stop":
+					return "Move";
+				default: return null;
 			}
 		}
 	}

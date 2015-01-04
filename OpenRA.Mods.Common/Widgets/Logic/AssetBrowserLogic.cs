@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var playerWidget = panel.GetOrNull<VqaPlayerWidget>("PLAYER");
-			if (playerWidget != null)			
+			if (playerWidget != null)
 				playerWidget.IsVisible = () => isVideoLoaded;
 
 			var paletteDropDown = panel.GetOrNull<DropDownButtonWidget>("PALETTE_SELECTOR");
@@ -118,22 +118,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
 			if (frameSlider != null)
 			{
-				frameSlider.OnChange += x => 
+				frameSlider.OnChange += x =>
 				{
-					if (!isVideoLoaded)					
-						currentFrame = (int)Math.Round(x);					
+					if (!isVideoLoaded)
+						currentFrame = (int)Math.Round(x);
 				};
 
 				frameSlider.GetValue = () => isVideoLoaded ? player.Video.CurrentFrame : currentFrame;
-				frameSlider.IsDisabled = () => isVideoLoaded;				
+				frameSlider.IsDisabled = () => isVideoLoaded;
 			}
 
 			var frameText = panel.GetOrNull<LabelWidget>("FRAME_COUNT");
 			if (frameText != null)
 			{
-				frameText.GetText = () => 
-					isVideoLoaded ? 
-					"{0} / {1}".F(player.Video.CurrentFrame + 1, player.Video.Frames) : 
+				frameText.GetText = () =>
+					isVideoLoaded ?
+					"{0} / {1}".F(player.Video.CurrentFrame + 1, player.Video.Frames) :
 					"{0} / {1}".F(currentFrame + 1, currentSprites.Length);
 			}
 
@@ -186,7 +186,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				nextButton.OnClick = () =>
 				{
-					if (!isVideoLoaded)						
+					if (!isVideoLoaded)
 						nextButton.OnClick = SelectNextFrame;
 				};
 
@@ -211,12 +211,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var closeButton = panel.GetOrNull<ButtonWidget>("CLOSE_BUTTON");
 			if (closeButton != null)
-				closeButton.OnClick = () => 
+				closeButton.OnClick = () =>
 				{
 					if (isVideoLoaded)
 						player.Stop();
 					Ui.CloseWindow();
-					onExit(); 
+					onExit();
 				};
 		}
 
@@ -290,7 +290,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				player = null;
 				isVideoLoaded = false;
 			}
-			
+
 			if (string.IsNullOrEmpty(filename))
 				return false;
 
@@ -325,8 +325,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Func<IFolder, ScrollItemWidget, ScrollItemWidget> setupItem = (source, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => assetSource == source,
-				                                  () => { assetSource = source;	PopulateAssetList(); });
+					() => assetSource == source,
+					() => { assetSource = source; PopulateAssetList(); });
 				item.Get<LabelWidget>("LABEL").GetText = () => source != null ? Platform.UnresolvePath(source.Name) : "All Packages";
 				return item;
 			};
@@ -359,7 +359,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 		}
-		
+
 		bool ShowPaletteDropdown(DropDownButtonWidget dropdown, World world)
 		{
 			Func<PaletteFromFile, ScrollItemWidget, ScrollItemWidget> setupItem = (palette, itemTemplate) =>

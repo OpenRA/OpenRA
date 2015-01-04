@@ -57,8 +57,8 @@ namespace OpenRA.Mods.TS.Traits
 
 			var rv = self.Trait<RenderVoxels>();
 			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, info.Sequence),
-			                          () => turreted.Position(self), () => TurretRotation(),
-			                          () => false, () => 0));
+				() => turreted.Position(self), () => TurretRotation(),
+				() => false, () => 0));
 		}
 
 		IEnumerable<WRot> TurretRotation()

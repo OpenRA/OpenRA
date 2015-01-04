@@ -286,7 +286,7 @@ namespace OpenRA.Mods.RA.Traits
 				idleSmart = true;
 
 				self.CancelActivity();
-				
+
 				var mobile = self.Trait<Mobile>();
 				if (order.TargetLocation != CPos.Zero)
 				{

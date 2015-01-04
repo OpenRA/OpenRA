@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (ml.Minefield.Length > 0)
 			{
 				// dont get stuck forever here
-				for (var n = 0; n < 20; n++)		
+				for (var n = 0; n < 20; n++)
 				{
 					var p = ml.Minefield.Random(self.World.SharedRandom);
 					if (ShouldLayMine(self, p))

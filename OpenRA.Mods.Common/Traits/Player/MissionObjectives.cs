@@ -36,13 +36,13 @@ namespace OpenRA.Mods.Common.Traits
 	public class MissionObjectivesInfo : ITraitInfo
 	{
 		[Desc("Set this to true if multiple cooperative players have a distinct set of " +
-		      "objectives that each of them has to complete to win the game. This is mainly " +
-		      "useful for multiplayer coop missions. Do not use this for skirmish team games.")]
+			"objectives that each of them has to complete to win the game. This is mainly " +
+			"useful for multiplayer coop missions. Do not use this for skirmish team games.")]
 		public readonly bool Cooperative = false;
 
 		[Desc("If set to true, this setting causes the game to end immediately once the first " +
-		      "player (or team of cooperative players) fails or completes his objectives.  If " +
-		      "set to false, players that fail their objectives will stick around and become observers.")]
+			"player (or team of cooperative players) fails or completes his objectives.  If " +
+			"set to false, players that fail their objectives will stick around and become observers.")]
 		public readonly bool EarlyGameOver = false;
 
 		[Desc("Delay between the game over condition being met, and the game actually ending, in milliseconds.")]
@@ -245,8 +245,8 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Provides game mode progress information for players.",
-	      "Goes on WorldActor - observers don't have a player it can live on.",
-	      "Current options for PanelName are 'SKIRMISH_STATS' and 'MISSION_OBJECTIVES'.")]
+		"Goes on WorldActor - observers don't have a player it can live on.",
+		"Current options for PanelName are 'SKIRMISH_STATS' and 'MISSION_OBJECTIVES'.")]
 	public class ObjectivesPanelInfo : ITraitInfo
 	{
 		public string PanelName = null;

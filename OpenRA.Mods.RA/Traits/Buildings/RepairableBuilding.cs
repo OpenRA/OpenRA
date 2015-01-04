@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (!IsTraitDisabled && self.AppearsFriendlyTo(player.PlayerActor))
 			{
 				// If the player won't affect the repair, we won't add him
-				if (!Repairers.Remove(player) && Repairers.Count < Info.RepairBonuses.Length) 
+				if (!Repairers.Remove(player) && Repairers.Count < Info.RepairBonuses.Length)
 				{
 					Repairers.Add(player);
 					Sound.PlayNotification(self.World.Map.Rules, player, "Speech", "Repairing", player.Country.Race);
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA.Traits
 				}
 
 				// Bonus is applied after finding players who can pay
-				
+
 				// activePlayers won't cause IndexOutOfRange because we capped the max amount of players
 				// to the length of the array
 				self.InflictDamage(self, -(hpToRepair * Info.RepairBonuses[activePlayers - 1] / 100), null);

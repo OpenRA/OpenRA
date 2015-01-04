@@ -334,8 +334,9 @@ namespace OpenRA.Editor
 		{
 			var vX = (int)Math.Floor((mousePos.X - Offset.X) / Zoom);
 			var vY = (int)Math.Floor((mousePos.Y - Offset.Y) / Zoom);
-			return new CPos((vX + TileSetRenderer.TileSize - 1) / TileSetRenderer.TileSize,
-			                (vY + TileSetRenderer.TileSize - 1) / TileSetRenderer.TileSize);
+			return new CPos(
+				(vX + TileSetRenderer.TileSize - 1) / TileSetRenderer.TileSize,
+				(vY + TileSetRenderer.TileSize - 1) / TileSetRenderer.TileSize);
 		}
 
 		public void DrawActor(SGraphics g, CPos p, ActorTemplate t, ColorPalette cp)

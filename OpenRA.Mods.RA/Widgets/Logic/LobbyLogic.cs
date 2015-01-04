@@ -155,7 +155,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
 			if (mapButton != null)
 			{
-				mapButton.IsDisabled = configurationDisabled; 
+				mapButton.IsDisabled = configurationDisabled;
 				mapButton.OnClick = () =>
 				{
 					var onSelect = new Action<string>(uid =>
@@ -322,7 +322,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
 				allowCheats.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Cheats.HasValue || configurationDisabled();
-				allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
+				allowCheats.OnClick = () => orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 			}
 
@@ -629,7 +629,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (Map.Status == MapStatus.Available)
 			{
 				// Maps need to be validated and pre-loaded before they can be accessed
-				new Thread(_ => 
+				new Thread(_ =>
 				{
 					var map = Map;
 					map.CacheRules();
@@ -820,7 +820,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			public Action OnClick;
 		}
 	}
-	
+
 	public class LobbyCountry
 	{
 		public string Name;

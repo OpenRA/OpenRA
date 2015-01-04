@@ -71,7 +71,7 @@ namespace OpenRA.Widgets
 					0,
 					0,
 					video.Width,
-					video.Height), 
+					video.Height),
 				TextureChannel.Alpha);
 
 			var scale = Math.Min((float)RenderBounds.Width / video.Width, (float)RenderBounds.Height / video.Height * AspectRatio);
@@ -121,15 +121,15 @@ namespace OpenRA.Widgets
 					skippedFrames++;
 				}
 
-				if (skippedFrames > 1)				
-					Log.Write("perf", "VqaPlayer : {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrame);				
+				if (skippedFrames > 1)
+					Log.Write("perf", "VqaPlayer : {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrame);
 			}
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(
 				videoSprite,
 				videoOrigin,
 				videoSize);
-			
+
 			if (DrawOverlay)
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(overlaySprite, videoOrigin, videoSize);
 		}

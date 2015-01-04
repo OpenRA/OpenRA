@@ -92,7 +92,8 @@ namespace OpenRA
 			if (constructOrderCache != null)
 				return constructOrderCache;
 
-			var source = Traits.WithInterface<ITraitInfo>().Select(i => new {
+			var source = Traits.WithInterface<ITraitInfo>().Select(i => new
+			{
 				Trait = i,
 				Type = i.GetType(),
 				Dependencies = PrerequisitesOf(i).ToList()

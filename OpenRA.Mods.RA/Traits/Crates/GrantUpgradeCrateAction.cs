@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Traits
 		readonly GrantUpgradeCrateActionInfo info;
 
 		public GrantUpgradeCrateAction(Actor self, GrantUpgradeCrateActionInfo info)
-			: base(self, info) 
+			: base(self, info)
 		{
 			this.self = self;
 			this.info = info;

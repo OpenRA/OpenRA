@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string FogPalette = "fog";
 
 		[Desc("Bitfield of shroud directions for each frame. Lower four bits are",
-		      "corners clockwise from TL; upper four are edges clockwise from top")]
+			"corners clockwise from TL; upper four are edges clockwise from top")]
 		public readonly int[] Index = new[] { 12, 9, 8, 3, 1, 6, 4, 2, 13, 11, 7, 14 };
 
 		[Desc("Use the upper four bits when calculating frame")]

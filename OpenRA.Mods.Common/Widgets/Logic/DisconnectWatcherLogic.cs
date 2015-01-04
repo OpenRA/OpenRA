@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public DisconnectWatcherLogic(Widget widget, OrderManager orderManager)
 		{
 			var disconnected = false;
-			widget.Get<LogicTickerWidget>("DISCONNECT_WATCHER").OnTick = () => 
+			widget.Get<LogicTickerWidget>("DISCONNECT_WATCHER").OnTick = () =>
 			{
 				if (disconnected || orderManager.Connection.ConnectionState != ConnectionState.NotConnected)
 					return;
