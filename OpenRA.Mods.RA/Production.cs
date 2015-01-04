@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Primitives;
@@ -27,22 +28,6 @@ namespace OpenRA.Mods.RA.Traits
 
 		public virtual object Create(ActorInitializer init) { return new Production(this, init.self); }
 	}
-
-	[Desc("Where the unit should leave the building. Multiples are allowed if IDs are added: Exit@2, ...")]
-	public class ExitInfo : TraitInfo<Exit>
-	{
-		[Desc("Offset at which that the exiting actor is spawned")]
-		public readonly WVec SpawnOffset = WVec.Zero;
-
-		[Desc("Cell offset where the exiting actor enters the ActorMap")]
-		public readonly CVec ExitCell = CVec.Zero;
-		public readonly int Facing = -1;
-
-		[Desc("AttackMove to a RallyPoint or stay where you are spawned.")]
-		public readonly bool MoveIntoWorld = true;
-	}
-
-	public class Exit { }
 
 	public class Production
 	{

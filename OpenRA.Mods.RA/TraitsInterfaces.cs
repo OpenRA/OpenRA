@@ -27,6 +27,4 @@ namespace OpenRA.Mods.RA
 	{
 		void OnDock(Actor self, Actor harv, DeliverResources dockOrder);
 	}
-
-	public interface INotifyAttack { void Attacking(Actor self, Target target, Armament a, Barrel barrel); }
 }

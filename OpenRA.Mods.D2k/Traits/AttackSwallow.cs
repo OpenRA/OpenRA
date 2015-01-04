@@ -8,8 +8,8 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.D2k.Activities;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
