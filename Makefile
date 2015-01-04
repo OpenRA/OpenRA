@@ -9,6 +9,9 @@
 # to check the official mods for erroneous yaml files, run:
 #   make test
 #
+# to check the official mod dlls for StyleCop violations, run:
+#   make check
+#
 # to generate documentation aimed at modders, run:
 #   make docs
 #
