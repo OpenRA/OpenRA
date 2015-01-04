@@ -27,30 +27,28 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		[Desc("DIRECTORY", "Check the *.cs source code files in a directory for code style violations.")]
 		public void Run(ModData modData, string[] args)
 		{
-			var projectPath = Path.GetFullPath(args[1]);
+			var relativePath = args[1];
+			var projectPath = Path.GetFullPath(relativePath);
 
 			var console = new StyleCopConsole(null, false, null, null, true);
 			var project = new CodeProject(0, projectPath, new Configuration(null));
 			foreach (var filePath in Directory.GetFiles(projectPath, "*.cs", SearchOption.AllDirectories))
 				console.Core.Environment.AddSourceCode(project, filePath, null);
 
-			console.OutputGenerated += OnOutputGenerated;
 			console.ViolationEncountered += OnViolationEncountered;
 			console.Start(new[] { project }, true);
 
 			if (violationCount > 0)
 				Environment.Exit(1);
-		}
-
-		void OnOutputGenerated(object sender, OutputEventArgs e)
-		{
-			Console.WriteLine(e.Output);
+			else
+				Console.WriteLine("No violations encountered in {0}.".F(relativePath));
 		}
 
 		void OnViolationEncountered(object sender, ViolationEventArgs e)
 		{
 			violationCount++;
-			Console.WriteLine("{0}:L{1}: [{2}] {3}", e.SourceCode.Path, e.LineNumber, e.Violation.Rule.CheckId, e.Message);
+			var path = e.SourceCode.Path.Replace(Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar, "");
+			Console.WriteLine("{0}:L{1}: [{2}] {3}", path, e.LineNumber, e.Violation.Rule.CheckId, e.Message);
 		}
 	}
 }
