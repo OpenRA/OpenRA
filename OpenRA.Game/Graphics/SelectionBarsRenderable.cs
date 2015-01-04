@@ -147,8 +147,8 @@ namespace OpenRA.Graphics
 			var bounds = actor.Bounds;
 			bounds.Offset(screenPos.X, screenPos.Y);
 
-			var start = new float2(bounds.Left, bounds.Top);
-			var end = new float2(bounds.Right, bounds.Top);
+			var start = new float2(bounds.Left + 1, bounds.Top);
+			var end = new float2(bounds.Right - 1, bounds.Top);
 
 			DrawHealthBar(wr, health, start, end);
 			DrawExtraBars(wr, start, end);
