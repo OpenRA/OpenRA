@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Traits
 				return;
 
 			// Update connection to neighbours
-			var adjacentActors = CVec.directions.SelectMany(dir =>
+			var adjacentActors = CVec.Directions.SelectMany(dir =>
 				self.World.ActorMap.GetUnitsAt(self.Location + dir));
 
 			adjacent = 0;
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		static void UpdateNeighbours(Actor self)
 		{
-			var adjacentActors = CVec.directions.SelectMany(dir =>
+			var adjacentActors = CVec.Directions.SelectMany(dir =>
 					self.World.ActorMap.GetUnitsAt(self.Location + dir))
 				.Select(a => a.TraitOrDefault<RenderBuildingWall>())
 				.Where(a => a != null);

@@ -103,7 +103,7 @@ namespace OpenRA
 
 		public override string ToString() { return Angle.ToString(); }
 
-		static int[] CosineTable =
+		static readonly int[] CosineTable =
 		{
 			1024, 1023, 1023, 1023, 1023, 1023, 1023, 1023, 1022, 1022, 1022, 1021,
 			1021, 1020, 1020, 1019, 1019, 1018, 1017, 1017, 1016, 1015, 1014, 1013,
@@ -126,7 +126,7 @@ namespace OpenRA
 			56, 50, 43, 37, 31, 25, 18, 12, 6, 0
 		};
 
-		static int[] TanTable =
+		static readonly int[] TanTable =
 		{
 			0, 6, 12, 18, 25, 31, 37, 44, 50, 56, 62, 69, 75, 81, 88, 94, 100, 107,
 			113, 119, 126, 132, 139, 145, 151, 158, 164, 171, 177, 184, 190, 197,

@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Server
 						client.State = state;
 
 						Log.Write("server", "Player @{0} is {1}",
-							conn.socket.RemoteEndPoint, client.State);
+							conn.Socket.RemoteEndPoint, client.State);
 
 						server.SyncLobbyClients();
 
@@ -714,7 +714,7 @@ namespace OpenRA.Mods.Common.Server
 				{ "name",
 					s =>
 					{
-						Log.Write("server", "Player@{0} is now known as {1}.", conn.socket.RemoteEndPoint, s);
+						Log.Write("server", "Player@{0} is now known as {1}.", conn.Socket.RemoteEndPoint, s);
 						server.SendMessage("{0} is now known as {1}.".F(client.Name, s));
 						client.Name = s;
 						server.SyncLobbyClients();

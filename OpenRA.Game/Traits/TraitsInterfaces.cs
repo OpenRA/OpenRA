@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
@@ -240,7 +241,9 @@ namespace OpenRA.Traits
 
 	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
 
+	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface Requires<T> where T : class, ITraitInfo { }
+	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface UsesInit<T> where T : IActorInit { }
 
 	public interface INotifySelected { void Selected(Actor self); }

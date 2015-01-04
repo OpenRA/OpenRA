@@ -43,18 +43,17 @@ namespace OpenRA.Mods.Common.Server
 				{
 					foreach (var c in server.Conns.ToList())
 					{
-						if (c == null || c.socket == null)
+						if (c == null || c.Socket == null)
 							continue;
 
 						var client = server.GetClient(c);
-
 						if (client == null)
 						{
 							server.DropClient(c, -1);
 							server.SendMessage("A player has been dropped after timing out.");
 							continue;
 						}
-						
+
 						if (c.TimeSinceLastResponse < ConnTimeout)
 						{
 							server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
@@ -81,11 +80,10 @@ namespace OpenRA.Mods.Common.Server
 
 						foreach (var c in timeouts)
 						{
-							if (c == null || c.socket == null)
+							if (c == null || c.Socket == null)
 								continue;
-							
+
 							var client = server.GetClient(c);
-							
 							if (client != null)
 								server.SendMessage("{0} will be dropped in {1} seconds.".F(client.Name, (ConnTimeout - c.TimeSinceLastResponse) / 1000));
 						}

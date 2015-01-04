@@ -26,7 +26,7 @@ namespace OpenRA.Editor
 	{
 		public static CPos Location(this ActorReference ar)
 		{
-			return (CPos)ar.InitDict.Get<LocationInit>().value;
+			return (CPos)ar.InitDict.Get<LocationInit>().Value(null);
 		}
 
 		public static void DrawStringContrast(this SGraphics g, Font f, string s, int x, int y, Brush fg, Brush bg)

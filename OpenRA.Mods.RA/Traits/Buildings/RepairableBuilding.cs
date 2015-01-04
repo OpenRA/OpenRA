@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Traits
 	public class RepairableBuilding : UpgradableTrait<RepairableBuildingInfo>, ITick
 	{
 		[Sync]
-		public int RepairersHash { get { return Repairers.Aggregate(0, (code, player) => code ^ Sync.hash_player(player)); } }
+		public int RepairersHash { get { return Repairers.Aggregate(0, (code, player) => code ^ Sync.HashPlayer(player)); } }
 		public List<Player> Repairers = new List<Player>();
 
 		Health Health;

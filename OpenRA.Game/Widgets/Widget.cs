@@ -23,7 +23,7 @@ namespace OpenRA.Widgets
 
 		public static int LastTickTime = Game.RunTime;
 
-		static Stack<Widget> WindowList = new Stack<Widget>();
+		static readonly Stack<Widget> WindowList = new Stack<Widget>();
 
 		public static Widget MouseFocusWidget;
 		public static Widget KeyboardFocusWidget;

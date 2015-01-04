@@ -24,12 +24,12 @@ namespace OpenRA.Traits
 	public class DrawLineToTarget : IPostRenderSelection, INotifySelected, INotifyBecomingIdle
 	{
 		Actor self;
-		DrawLineToTargetInfo Info;
+		DrawLineToTargetInfo info;
 		List<Target> targets;
 		Color c;
 		int lifetime;
 
-		public DrawLineToTarget(Actor self, DrawLineToTargetInfo info) { this.self = self; this.Info = info; }
+		public DrawLineToTarget(Actor self, DrawLineToTargetInfo info) { this.self = self; this.info = info; }
 
 		public void SetTarget(Actor self, Target target, Color c, bool display)
 		{
@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 			this.c = c;
 
 			if (display)
-				lifetime = Info.Ticks;
+				lifetime = info.Ticks;
 		}
 
 		public void SetTargets(Actor self, List<Target> targets, Color c, bool display)
@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 			this.c = c;
 
 			if (display)
-				lifetime = Info.Ticks;
+				lifetime = info.Ticks;
 		}
 
 		public void Selected(Actor a)
@@ -55,7 +55,7 @@ namespace OpenRA.Traits
 				return;
 
 			// Reset the order line timeout.
-			lifetime = Info.Ticks;
+			lifetime = info.Ticks;
 		}
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)

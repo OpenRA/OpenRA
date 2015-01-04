@@ -24,12 +24,12 @@ namespace OpenRA.Primitives
 			Second = second;
 		}
 
-		internal static IEqualityComparer<T> tc = EqualityComparer<T>.Default;
-		internal static IEqualityComparer<U> uc = EqualityComparer<U>.Default;
+		internal static IEqualityComparer<T> Tcomparer = EqualityComparer<T>.Default;
+		internal static IEqualityComparer<U> Ucomparer = EqualityComparer<U>.Default;
 
 		public static bool operator ==(Pair<T, U> a, Pair<T, U> b)
 		{
-			return tc.Equals(a.First, b.First) && uc.Equals(a.Second, b.Second);
+			return Tcomparer.Equals(a.First, b.First) && Ucomparer.Equals(a.Second, b.Second);
 		}
 
 		public static bool operator !=(Pair<T, U> a, Pair<T, U> b)
@@ -74,7 +74,7 @@ namespace OpenRA.Primitives
 
 		static Pair()
 		{
-			Pair<char, Color>.uc = new ColorEqualityComparer();
+			Pair<char, Color>.Ucomparer = new ColorEqualityComparer();
 		}
 
 		// avoid the default crappy one

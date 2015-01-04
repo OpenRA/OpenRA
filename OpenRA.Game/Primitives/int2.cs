@@ -9,14 +9,15 @@
 #endregion
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 
 namespace OpenRA
 {
+	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Mimic a built-in type alias.")]
 	public struct int2
 	{
 		public int X, Y;
-
 		public int2(int x, int y) { this.X = x; this.Y = y; }
 		public int2(Point p) { X = p.X; Y = p.Y; }
 		public int2(Size p) { X = p.Width; Y = p.Height; }

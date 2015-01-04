@@ -85,11 +85,11 @@ namespace OpenRA
 		static readonly object[] NoIndexes = { };
 		public static void LoadField(object target, string key, string value)
 		{
-			const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+			const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
 			key = key.Trim();
 
-			var field = target.GetType().GetField(key, flags);
+			var field = target.GetType().GetField(key, Flags);
 			if (field != null)
 			{
 				var sa = field.GetCustomAttributes<SerializeAttribute>(false).DefaultIfEmpty(SerializeAttribute.Default).First();
@@ -98,7 +98,7 @@ namespace OpenRA
 				return;
 			}
 
-			var prop = target.GetType().GetProperty(key, flags);
+			var prop = target.GetType().GetProperty(key, Flags);
 			if (prop != null)
 			{
 				var sa = prop.GetCustomAttributes<SerializeAttribute>(false).DefaultIfEmpty(SerializeAttribute.Default).First();
@@ -503,11 +503,11 @@ namespace OpenRA
 
 			internal Func<MiniYaml, object> GetLoader(Type type)
 			{
-				const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.FlattenHierarchy;
+				const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.FlattenHierarchy;
 
 				if (!string.IsNullOrEmpty(Loader))
 				{
-					var method = type.GetMethod(Loader, flags);
+					var method = type.GetMethod(Loader, Flags);
 					if (method == null)
 						throw new InvalidOperationException("{0} does not specify a loader function '{1}'".F(type.Name, Loader));
 

@@ -20,13 +20,13 @@ namespace OpenRA.Traits
 
 	public class CreatesShroud : ITick, ISync
 	{
-		CreatesShroudInfo Info;
+		CreatesShroudInfo info;
 		[Sync] CPos cachedLocation;
 		[Sync] bool cachedDisabled;
 
 		public CreatesShroud(CreatesShroudInfo info)
 		{
-			Info = info;
+			this.info = info;
 		}
 
 		public void Tick(Actor self)
@@ -43,6 +43,6 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public WRange Range { get { return cachedDisabled ? WRange.Zero : Info.Range; } }
+		public WRange Range { get { return cachedDisabled ? WRange.Zero : info.Range; } }
 	}
 }

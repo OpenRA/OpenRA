@@ -9,11 +9,13 @@
 #endregion
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace OpenRA
 {
+	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Mimic a built-in type alias.")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct float2
 	{

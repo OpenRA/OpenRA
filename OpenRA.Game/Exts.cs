@@ -372,13 +372,17 @@ namespace OpenRA
 		{
 			var result = new T[width, height];
 			for (var i = 0; i < width; i++)
+			{
 				for (var j = 0; j < height; j++)
-					// Workaround for broken ternary operators in certain versions of mono (3.10 and  
-					// certain versions of the 3.8 series): https://bugzilla.xamarin.com/show_bug.cgi?id=23319
+				{
+					// Workaround for broken ternary operators in certain versions of mono (3.10 and certain versions of the 3.8 series): https://bugzilla.xamarin.com/show_bug.cgi?id=23319
 					if (i <= ts.GetUpperBound(0) && j <= ts.GetUpperBound(1))
 						result[i, j] = ts[i, j];
 					else
 						result[i, j] = t;
+				}
+			}
+
 			return result;
 		}
 

@@ -30,16 +30,16 @@ namespace OpenRA.Support
 		List<PerfTimer> children;
 		long ticks;
 
-		static ThreadLocal<PerfTimer> Parent = new ThreadLocal<PerfTimer>();
+		static ThreadLocal<PerfTimer> parentThreadLocal = new ThreadLocal<PerfTimer>();
 
 		public PerfTimer(string name, float thresholdMs = 0)
 		{
 			this.name = name;
 			this.thresholdMs = thresholdMs;
 
-			parent = Parent.Value;
+			parent = parentThreadLocal.Value;
 			depth = parent == null ? (byte)0 : (byte)(parent.depth + 1);
-			Parent.Value = this;
+			parentThreadLocal.Value = this;
 
 			ticks = Stopwatch.GetTimestamp();
 		}
@@ -48,7 +48,7 @@ namespace OpenRA.Support
 		{
 			ticks = Stopwatch.GetTimestamp() - ticks;
 
-			Parent.Value = parent;
+			parentThreadLocal.Value = parent;
 
 			if (parent == null)
 				Write();
