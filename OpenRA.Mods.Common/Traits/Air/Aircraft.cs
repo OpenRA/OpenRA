@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
 			this.info = info;
-			this.self = init.self;
+			this.self = init.Self;
 
 			if (init.Contains<LocationInit>())
 				SetPosition(self, init.Get<LocationInit, CPos>());

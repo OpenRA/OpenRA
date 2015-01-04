@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 		[Desc("Sound to play when dropping.")]
 		public readonly string ChuteSound = "chute1.aud";
 
-		public object Create(ActorInitializer init) { return new ParaDrop(init.self, this); }
+		public object Create(ActorInitializer init) { return new ParaDrop(init.Self, this); }
 	}
 
 	public class ParaDrop : ITick, INotifyRemovedFromWorld

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Actor types that this crate action will not occur for.")]
 		[ActorReference] public string[] ExcludedActorTypes = { };
 
-		public virtual object Create(ActorInitializer init) { return new CrateAction(init.self, this); }
+		public virtual object Create(ActorInitializer init) { return new CrateAction(init.Self, this); }
 	}
 
 	public class CrateAction

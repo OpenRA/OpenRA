@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.modData = modData;
+			Game.ModData = modData;
 
 			try
 			{
@@ -52,8 +52,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				IEnumerable<Map> maps;
 				if (args.Length < 2)
 				{
-					Game.modData.MapCache.LoadMaps();
-					maps = Game.modData.MapCache
+					Game.ModData.MapCache.LoadMaps();
+					maps = Game.ModData.MapCache
 						.Where(m => m.Status == MapStatus.Available)
 						.Select(m => m.Map);
 				}
@@ -65,12 +65,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Console.WriteLine("Testing map: {0}".F(testMap.Title));
 					testMap.PreloadRules();
 
-					foreach (var customPassType in Game.modData.ObjectCreator
+					foreach (var customPassType in Game.ModData.ObjectCreator
 						.GetTypesImplementing<ILintPass>())
 					{
 						try
 						{
-							var customPass = (ILintPass)Game.modData.ObjectCreator
+							var customPass = (ILintPass)Game.ModData.ObjectCreator
 								.CreateBasic(customPassType);
 
 							customPass.Run(EmitError, EmitWarning, testMap);

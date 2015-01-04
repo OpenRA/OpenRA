@@ -31,7 +31,7 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
-		public object Create(ActorInitializer init) { return new WithDockingOverlay(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithDockingOverlay(init.Self, this); }
 	}
 
 	public class WithDockingOverlay : INotifyDocking, INotifyBuildComplete, INotifySold

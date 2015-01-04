@@ -51,7 +51,7 @@ namespace OpenRA.Graphics
 				// Apply offset to each sprite in the sequence
 				// Different sequences may apply different offsets to the same frame
 				sprites = cache[srcOverride ?? unit].Select(
-					s => new Sprite(s.sheet, s.bounds, s.offset + offset, s.channel, blendMode)).ToArray();
+					s => new Sprite(s.Sheet, s.Bounds, s.Offset + offset, s.Channel, blendMode)).ToArray();
 
 				if (!d.ContainsKey("Length"))
 					Length = 1;

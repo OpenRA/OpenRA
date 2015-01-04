@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
 			/* first, check all the types implementing ISync */
-			foreach (var t in Game.modData.ObjectCreator.GetTypesImplementing<ISync>())
+			foreach (var t in Game.ModData.ObjectCreator.GetTypesImplementing<ISync>())
 				if (!HasAnySyncFields(t))
 					emitWarning("{0} has ISync but nothing marked with [Sync]".F(t.Name));
 		}

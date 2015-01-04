@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public bool RequiresForceFire = false;
 
-		public virtual object Create(ActorInitializer init) { return new TargetableUnit(init.self, this); }
+		public virtual object Create(ActorInitializer init) { return new TargetableUnit(init.Self, this); }
 	}
 
 	public class TargetableUnit : ITargetable

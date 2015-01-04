@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("The name of the weapon to use when demolishing the bridge")]
 		public readonly string DemolishWeapon = "Demolish";
 
-		public object Create(ActorInitializer init) { return new Bridge(init.self, this); }
+		public object Create(ActorInitializer init) { return new Bridge(init.Self, this); }
 
 		public IEnumerable<Pair<ushort, float>> Templates
 		{
@@ -179,7 +179,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			return footprint.Select(c => (IRenderable)(new SpriteRenderable(
 				wr.Theater.TileSprite(new TerrainTile(template, c.Value)),
-				wr.world.Map.CenterOfCell(c.Key), WVec.Zero, -offset, palette, 1f, true))).ToArray();
+				wr.World.Map.CenterOfCell(c.Key), WVec.Zero, -offset, palette, 1f, true))).ToArray();
 		}
 
 		bool initialized;

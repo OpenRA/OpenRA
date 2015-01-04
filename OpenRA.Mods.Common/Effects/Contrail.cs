@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Use player remap color instead of a custom color?")]
 		public readonly bool UsePlayerColor = true;
 
-		public object Create(ActorInitializer init) { return new Contrail(init.self, this); }
+		public object Create(ActorInitializer init) { return new Contrail(init.Self, this); }
 	}
 
 	class Contrail : ITick, IRender

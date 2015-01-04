@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Traits
 	public class TargetableAircraftInfo : TargetableUnitInfo
 	{
 		public readonly string[] GroundedTargetTypes = { };
-		public override object Create(ActorInitializer init) { return new TargetableAircraft(init.self, this); }
+		public override object Create(ActorInitializer init) { return new TargetableAircraft(init.Self, this); }
 	}
 
 	public class TargetableAircraft : TargetableUnit

@@ -83,8 +83,8 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (wr.world.FogObscures(wr.world.Map.CellContaining(target)) &&
-				wr.world.FogObscures(wr.world.Map.CellContaining(args.Source)))
+			if (wr.World.FogObscures(wr.World.Map.CellContaining(target)) &&
+				wr.World.FogObscures(wr.World.Map.CellContaining(args.Source)))
 				yield break;
 
 			if (ticks < info.BeamDuration)

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 
 		public readonly Color Color = Color.SkyBlue;
 
-		public object Create(ActorInitializer init) { return new ProductionBar(init.self, this); }
+		public object Create(ActorInitializer init) { return new ProductionBar(init.Self, this); }
 	}
 
 	class ProductionBar : ISelectionBar, ITick

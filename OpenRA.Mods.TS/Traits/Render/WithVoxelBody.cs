@@ -22,7 +22,7 @@ namespace OpenRA.Mods.TS.Traits
 	{
 		public readonly string Sequence = "idle";
 
-		public object Create(ActorInitializer init) { return new WithVoxelBody(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithVoxelBody(init.Self, this); }
 
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
 		{

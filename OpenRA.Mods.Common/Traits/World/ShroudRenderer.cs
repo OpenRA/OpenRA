@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int OverrideFogIndex = 15;
 
 		public readonly BlendMode ShroudBlend = BlendMode.Alpha;
-		public object Create(ActorInitializer init) { return new ShroudRenderer(init.world, this); }
+		public object Create(ActorInitializer init) { return new ShroudRenderer(init.World, this); }
 	}
 
 	public class ShroudRenderer : IRenderShroud, IWorldLoaded
@@ -298,13 +298,13 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (t.Shroud != null)
 				{
-					var pos = t.ScreenPosition - 0.5f * t.Shroud.size;
+					var pos = t.ScreenPosition - 0.5f * t.Shroud.Size;
 					Game.Renderer.WorldSpriteRenderer.DrawSprite(t.Shroud, pos, shroudPalette);
 				}
 
 				if (t.Fog != null)
 				{
-					var pos = t.ScreenPosition - 0.5f * t.Fog.size;
+					var pos = t.ScreenPosition - 0.5f * t.Fog.Size;
 					Game.Renderer.WorldSpriteRenderer.DrawSprite(t.Fog, pos, fogPalette);
 				}
 			}

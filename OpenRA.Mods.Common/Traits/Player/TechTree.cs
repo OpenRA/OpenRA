@@ -28,9 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public TechTree(ActorInitializer init)
 		{
-			player = init.self.Owner;
-			init.world.ActorAdded += ActorChanged;
-			init.world.ActorRemoved += ActorChanged;
+			player = init.Self.Owner;
+			init.World.ActorAdded += ActorChanged;
+			init.World.ActorRemoved += ActorChanged;
 		}
 
 		public void ActorChanged(Actor a)

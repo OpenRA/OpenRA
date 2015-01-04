@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Change this when using this trait multiple times on the same actor.")]
 		public readonly string Id = "rotor";
 
-		public object Create(ActorInitializer init) { return new WithRotor(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithRotor(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{

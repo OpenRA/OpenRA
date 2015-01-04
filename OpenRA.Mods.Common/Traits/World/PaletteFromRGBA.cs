@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int A = 255;
 		public readonly bool AllowModifiers = true;
 
-		public object Create(ActorInitializer init) { return new PaletteFromRGBA(init.world, this); }
+		public object Create(ActorInitializer init) { return new PaletteFromRGBA(init.World, this); }
 	}
 
 	class PaletteFromRGBA : ILoadsPalettes

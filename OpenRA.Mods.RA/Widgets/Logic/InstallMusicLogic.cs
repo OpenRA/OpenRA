@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var downloadButton = installMusicContainer.GetOrNull<ButtonWidget>("DOWNLOAD_BUTTON");
 			if (downloadButton != null)
 			{
-				var mirrorListUrl = Game.modData.Manifest.ContentInstaller.MusicPackageMirrorList;
+				var mirrorListUrl = Game.ModData.Manifest.ContentInstaller.MusicPackageMirrorList;
 				downloadButton.IsVisible = () => !string.IsNullOrEmpty(mirrorListUrl);
 				downloadButton.OnClick = () =>
 				{

@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Needs power to operate.")]
 	class RequiresPowerInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new RequiresPower(init.self); }
+		public object Create(ActorInitializer init) { return new RequiresPower(init.Self); }
 	}
 
 	class RequiresPower : IDisable, INotifyOwnerChanged

@@ -41,8 +41,8 @@ namespace OpenRA.Mods.Common.Widgets
 				if (template == null)
 					return;
 
-				var ts = Game.modData.Manifest.TileSize;
-				var shape = Game.modData.Manifest.TileShape;
+				var ts = Game.ModData.Manifest.TileSize;
+				var shape = Game.ModData.Manifest.TileShape;
 				bounds = worldRenderer.Theater.TemplateBounds(template, ts, shape);
 			}
 		}
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Widgets
 			: base(other)
 		{
 			worldRenderer = other.worldRenderer;
-			tileset = other.worldRenderer.world.Map.Rules.TileSets[other.worldRenderer.world.Map.Tileset];
+			tileset = other.worldRenderer.World.Map.Rules.TileSets[other.worldRenderer.World.Map.Tileset];
 			Template = other.Template;
 			GetScale = other.GetScale;
 		}
@@ -70,8 +70,8 @@ namespace OpenRA.Mods.Common.Widgets
 			if (template == null)
 				return;
 
-			var ts = Game.modData.Manifest.TileSize;
-			var shape = Game.modData.Manifest.TileShape;
+			var ts = Game.ModData.Manifest.TileSize;
+			var shape = Game.ModData.Manifest.TileShape;
 			var scale = GetScale();
 
 			var sb = new Rectangle((int)(scale * bounds.X), (int)(scale * bounds.Y), (int)(scale * bounds.Width), (int)(scale * bounds.Height));
@@ -90,11 +90,11 @@ namespace OpenRA.Mods.Common.Widgets
 						continue;
 
 					var sprite = worldRenderer.Theater.TileSprite(tile);
-					var size = new float2(sprite.size.X * scale, sprite.size.Y * scale);
+					var size = new float2(sprite.Size.X * scale, sprite.Size.Y * scale);
 
 					var u = shape == TileShape.Rectangle ? x : (x - y) / 2f;
 					var v = shape == TileShape.Rectangle ? y : (x + y) / 2f;
-					var pos = origin + scale * (new float2(u * ts.Width, (v - 0.5f * tileInfo.Height) * ts.Height) - 0.5f * sprite.size);
+					var pos = origin + scale * (new float2(u * ts.Width, (v - 0.5f * tileInfo.Height) * ts.Height) - 0.5f * sprite.Size);
 					Game.Renderer.SpriteRenderer.DrawSprite(sprite, pos, worldRenderer.Palette(Palette), size);
 				}
 			}

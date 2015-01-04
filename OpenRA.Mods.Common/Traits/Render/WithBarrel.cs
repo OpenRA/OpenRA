@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Visual offset")]
 		public readonly WVec LocalOffset = WVec.Zero;
 
-		public object Create(ActorInitializer init) { return new WithBarrel(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithBarrel(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly string ResourceType = "Ore";
 		public readonly int MaxRange = 100;
 
-		public object Create(ActorInitializer init) { return new SeedsResource(init.self, this); }
+		public object Create(ActorInitializer init) { return new SeedsResource(init.Self, this); }
 	}
 
 	class SeedsResource : ITick, ISeedableResource

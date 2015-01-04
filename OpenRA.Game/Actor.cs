@@ -180,27 +180,27 @@ namespace OpenRA
 
 		public T Trait<T>()
 		{
-			return World.traitDict.Get<T>(this);
+			return World.TraitDict.Get<T>(this);
 		}
 
 		public T TraitOrDefault<T>()
 		{
-			return World.traitDict.GetOrDefault<T>(this);
+			return World.TraitDict.GetOrDefault<T>(this);
 		}
 
 		public IEnumerable<T> TraitsImplementing<T>()
 		{
-			return World.traitDict.WithInterface<T>(this);
+			return World.TraitDict.WithInterface<T>(this);
 		}
 
 		public bool HasTrait<T>()
 		{
-			return World.traitDict.Contains<T>(this);
+			return World.TraitDict.Contains<T>(this);
 		}
 
 		public void AddTrait(object trait)
 		{
-			World.traitDict.AddTrait(this, trait);
+			World.TraitDict.AddTrait(this, trait);
 		}
 
 		public void Destroy()
@@ -213,7 +213,7 @@ namespace OpenRA
 				if (IsInWorld)
 					World.Remove(this);
 
-				World.traitDict.RemoveActor(this);
+				World.TraitDict.RemoveActor(this);
 				Destroyed = true;
 
 				if (luaInterface != null)

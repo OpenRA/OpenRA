@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public Mine(ActorInitializer init, MineInfo info)
 		{
-			this.self = init.self;
+			this.self = init.Self;
 			this.info = info;
 		}
 

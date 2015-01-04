@@ -25,7 +25,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public readonly string WormAttackNotification = "WormAttack";
 
-		public override object Create(ActorInitializer init) { return new AttackSwallow(init.self, this); }
+		public override object Create(ActorInitializer init) { return new AttackSwallow(init.Self, this); }
 	}
 
 	class AttackSwallow : AttackFrontal

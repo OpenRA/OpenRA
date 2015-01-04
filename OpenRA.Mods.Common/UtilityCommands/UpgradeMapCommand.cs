@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.modData = modData;
+			Game.ModData = modData;
 
 			var map = new Map(args[1]);
 			var engineDate = Exts.ParseIntegerInvariant(args[2]);

@@ -41,9 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 			: this(init, info, () => 0) { }
 
 		public RenderBuilding(ActorInitializer init, RenderBuildingInfo info, Func<int> baseFacing)
-			: base(init.self, baseFacing)
+			: base(init.Self, baseFacing)
 		{
-			var self = init.self;
+			var self = init.Self;
 			this.info = info;
 
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Scripting
 		Actor CreateActor(Player owner, string actorType, bool addToWorld, CPos? entryLocation = null, CPos? nextLocation = null)
 		{
 			ActorInfo ai;
-			if (!context.World.Map.Rules.Actors.TryGetValue(actorType, out ai))
+			if (!Context.World.Map.Rules.Actors.TryGetValue(actorType, out ai))
 				throw new LuaException("Unknown actor type '{0}'".F(actorType));
 
 			var initDict = new TypeDictionary();
@@ -48,9 +48,9 @@ namespace OpenRA.Mods.RA.Scripting
 			}
 
 			if (entryLocation.HasValue && nextLocation.HasValue)
-				initDict.Add(new FacingInit(context.World.Map.FacingBetween(CPos.Zero, CPos.Zero + (nextLocation.Value - entryLocation.Value), 0)));
+				initDict.Add(new FacingInit(Context.World.Map.FacingBetween(CPos.Zero, CPos.Zero + (nextLocation.Value - entryLocation.Value), 0)));
 
-			var actor = context.World.CreateActor(addToWorld, actorType, initDict);
+			var actor = Context.World.CreateActor(addToWorld, actorType, initDict);
 
 			return actor;
 		}
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA.Scripting
 				var actionDelay = i * interval;
 				Action actorAction = () =>
 				{
-					context.World.Add(actor);
+					Context.World.Add(actor);
 					for (var j = 1; j < entryPath.Length; j++)
 						Move(actor, entryPath[j]);
 
@@ -89,13 +89,13 @@ namespace OpenRA.Mods.RA.Scripting
 					{
 					    actor.QueueActivity(new CallFunc(() =>
 						{
-							af.Call(actor.ToLuaValue(context));
+							af.Call(actor.ToLuaValue(Context));
 							af.Dispose();
 						}));
 					}
 				};
 
-				context.World.AddFrameEndTask(w => w.Add(new DelayedAction(actionDelay, actorAction)));
+				Context.World.AddFrameEndTask(w => w.Add(new DelayedAction(actionDelay, actorAction)));
 			}
 
 			return actors.ToArray();
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.RA.Scripting
 				var af = actionFunc.CopyReference() as LuaFunction;
 				transport.QueueActivity(new CallFunc(() =>
 				{
-					af.Call(transport.ToLuaValue(context), passengers.ToArray().ToLuaValue(context));
+					af.Call(transport.ToLuaValue(Context), passengers.ToArray().ToLuaValue(Context));
 					af.Dispose();
 				}));
 			}
@@ -162,7 +162,7 @@ namespace OpenRA.Mods.RA.Scripting
 				var ef = exitFunc.CopyReference() as LuaFunction;
 				transport.QueueActivity(new CallFunc(() =>
 				{
-					ef.Call(transport.ToLuaValue(context));
+					ef.Call(transport.ToLuaValue(Context));
 					ef.Dispose();
 				}));
 			}
@@ -174,9 +174,9 @@ namespace OpenRA.Mods.RA.Scripting
 				transport.QueueActivity(new RemoveSelf());
 			}
 
-			var ret = context.CreateTable();
-			ret.Add(1, transport.ToLuaValue(context));
-			ret.Add(2, passengers.ToArray().ToLuaValue(context));
+			var ret = Context.CreateTable();
+			ret.Add(1, transport.ToLuaValue(Context));
+			ret.Add(2, passengers.ToArray().ToLuaValue(Context));
 			return ret;
 		}
 	}

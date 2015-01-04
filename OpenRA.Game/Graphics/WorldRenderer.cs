@@ -31,7 +31,7 @@ namespace OpenRA.Graphics
 
 	public sealed class WorldRenderer : IDisposable
 	{
-		public readonly World world;
+		public readonly World World;
 		public readonly Theater Theater;
 		public Viewport Viewport { get; private set; }
 
@@ -42,10 +42,10 @@ namespace OpenRA.Graphics
 
 		internal WorldRenderer(World world)
 		{
-			this.world = world;
+			World = world;
 			Viewport = new Viewport(this, world.Map);
 
-			foreach (var pal in world.traitDict.ActorsWithTrait<ILoadsPalettes>())
+			foreach (var pal in world.TraitDict.ActorsWithTrait<ILoadsPalettes>())
 				pal.Trait.LoadPalettes(this);
 
 			palette.Initialize();
@@ -70,27 +70,27 @@ namespace OpenRA.Graphics
 		List<IRenderable> GenerateRenderables()
 		{
 			var comparer = new RenderableComparer(this);
-			var actors = world.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight)
-				.Append(world.WorldActor)
+			var actors = World.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight)
+				.Append(World.WorldActor)
 				.ToList();
 
 			// Include player actor for the rendered player
-			if (world.RenderPlayer != null)
-				actors.Add(world.RenderPlayer.PlayerActor);
+			if (World.RenderPlayer != null)
+				actors.Add(World.RenderPlayer.PlayerActor);
 
 			var worldRenderables = actors.SelectMany(a => a.Render(this));
-			if (world.OrderGenerator != null)
-				worldRenderables = worldRenderables.Concat(world.OrderGenerator.Render(this, world));
+			if (World.OrderGenerator != null)
+				worldRenderables = worldRenderables.Concat(World.OrderGenerator.Render(this, World));
 
 			worldRenderables = worldRenderables.OrderBy(r => r, comparer);
 
 			// Effects are drawn on top of all actors
 			// HACK: Effects aren't interleaved with actors.
-			var effectRenderables = world.Effects
+			var effectRenderables = World.Effects
 				.SelectMany(e => e.Render(this));
 
-			if (world.OrderGenerator != null)
-				effectRenderables = effectRenderables.Concat(world.OrderGenerator.RenderAfterWorld(this, world));
+			if (World.OrderGenerator != null)
+				effectRenderables = effectRenderables.Concat(World.OrderGenerator.RenderAfterWorld(this, World));
 
 			// Iterating via foreach copies the structs, so enumerate by index
 			var renderables = worldRenderables.Concat(effectRenderables).ToList();
@@ -107,7 +107,7 @@ namespace OpenRA.Graphics
 		{
 			RefreshPalette();
 
-			if (world.IsShellmap && !Game.Settings.Game.ShowShellmap)
+			if (World.IsShellmap && !Game.Settings.Game.ShowShellmap)
 				return;
 
 			var renderables = GenerateRenderables();
@@ -121,13 +121,13 @@ namespace OpenRA.Graphics
 				renderables[i].Render(this);
 
 			// added for contrails
-			foreach (var a in world.ActorsWithTrait<IPostRender>())
+			foreach (var a in World.ActorsWithTrait<IPostRender>())
 				if (a.Actor.IsInWorld && !a.Actor.Destroyed)
 					a.Trait.RenderAfterWorld(this, a.Actor);
 
-			var renderShroud = world.RenderPlayer != null ? world.RenderPlayer.Shroud : null;
+			var renderShroud = World.RenderPlayer != null ? World.RenderPlayer.Shroud : null;
 
-			foreach (var a in world.ActorsWithTrait<IRenderShroud>())
+			foreach (var a in World.ActorsWithTrait<IRenderShroud>())
 				a.Trait.RenderShroud(this, renderShroud);
 
 			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
@@ -136,7 +136,7 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.DisableScissor();
 
-			var overlayRenderables = world.Selection.Actors.Where(a => !a.Destroyed)
+			var overlayRenderables = World.Selection.Actors.Where(a => !a.Destroyed)
 				.SelectMany(a => a.TraitsImplementing<IPostRenderSelection>())
 				.SelectMany(t => t.RenderAfterWorld(this))
 				.ToList();
@@ -156,12 +156,12 @@ namespace OpenRA.Graphics
 					foreach (var r in g)
 						r.RenderDebugGeometry(this);
 
-			if (!world.IsShellmap && Game.Settings.Game.AlwaysShowStatusBars)
+			if (!World.IsShellmap && Game.Settings.Game.AlwaysShowStatusBars)
 			{
-				foreach (var g in world.Actors.Where(a => !a.Destroyed
+				foreach (var g in World.Actors.Where(a => !a.Destroyed
 					&& a.HasTrait<Selectable>()
-					&& !world.FogObscures(a)
-					&& !world.Selection.Actors.Contains(a)))
+					&& !World.FogObscures(a)
+					&& !World.Selection.Actors.Contains(a)))
 
 					DrawRollover(g);
 			}
@@ -206,14 +206,14 @@ namespace OpenRA.Graphics
 
 		public void RefreshPalette()
 		{
-			palette.ApplyModifiers(world.WorldActor.TraitsImplementing<IPaletteModifier>());
+			palette.ApplyModifiers(World.WorldActor.TraitsImplementing<IPaletteModifier>());
 			Game.Renderer.SetPalette(palette);
 		}
 
 		// Conversion between world and screen coordinates
 		public float2 ScreenPosition(WPos pos)
 		{
-			var ts = Game.modData.Manifest.TileSize;
+			var ts = Game.ModData.Manifest.TileSize;
 			return new float2(ts.Width * pos.X / 1024f, ts.Height * (pos.Y - pos.Z) / 1024f);
 		}
 
@@ -227,7 +227,7 @@ namespace OpenRA.Graphics
 		// For scaling vectors to pixel sizes in the voxel renderer
 		public float[] ScreenVector(WVec vec)
 		{
-			var ts = Game.modData.Manifest.TileSize;
+			var ts = Game.ModData.Manifest.TileSize;
 			return new float[] { ts.Width * vec.X / 1024f, ts.Height * vec.Y / 1024f, ts.Height * vec.Z / 1024f, 1 };
 		}
 
@@ -240,13 +240,13 @@ namespace OpenRA.Graphics
 
 		public float ScreenZPosition(WPos pos, int offset)
 		{
-			var ts = Game.modData.Manifest.TileSize;
+			var ts = Game.ModData.Manifest.TileSize;
 			return (pos.Y + pos.Z + offset) * ts.Height / 1024f;
 		}
 
 		public WPos Position(int2 screenPx)
 		{
-			var ts = Game.modData.Manifest.TileSize;
+			var ts = Game.ModData.Manifest.TileSize;
 			return new WPos(1024 * screenPx.X / ts.Width, 1024 * screenPx.Y / ts.Height, 0);
 		}
 

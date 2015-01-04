@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (building.Destroyed || wr.world.FogObscures(building) || rb.Repairers.Count == 0)
+			if (building.Destroyed || wr.World.FogObscures(building) || rb.Repairers.Count == 0)
 				return SpriteRenderable.None;
 
 			var palette = wr.Palette(palettePrefix + rb.Repairers[shownPlayer % rb.Repairers.Count].InternalName);

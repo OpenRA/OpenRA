@@ -40,12 +40,12 @@ namespace OpenRA.Mods.D2k.Traits
 				return;
 
 			var key = "make_overlay_{0}".F(info.Sequence);
-			var rs = init.self.Trait<RenderSprites>();
+			var rs = init.Self.Trait<RenderSprites>();
 
-			var overlay = new Animation(init.world, rs.GetImage(init.self));
+			var overlay = new Animation(init.World, rs.GetImage(init.Self));
 
 			// Remove the animation once it is complete
-			overlay.PlayThen(info.Sequence, () => init.world.AddFrameEndTask(w => rs.Remove(key)));
+			overlay.PlayThen(info.Sequence, () => init.World.AddFrameEndTask(w => rs.Remove(key)));
 
 			rs.Add(key, new AnimationWithOffset(overlay, null, () => !buildComplete),
 				info.Palette, info.IsPlayerPalette);

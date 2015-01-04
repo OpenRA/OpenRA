@@ -27,25 +27,25 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Grant an upgrade to this actor.")]
 		public void GrantUpgrade(string upgrade)
 		{
-			um.GrantUpgrade(self, upgrade, this);
+			um.GrantUpgrade(Self, upgrade, this);
 		}
 
 		[Desc("Revoke an upgrade that was previously granted using GrantUpgrade.")]
 		public void RevokeUpgrade(string upgrade)
 		{
-			um.RevokeUpgrade(self, upgrade, this);
+			um.RevokeUpgrade(Self, upgrade, this);
 		}
 
 		[Desc("Grant a limited-time upgrade to this actor.")]
 		public void GrantTimedUpgrade(string upgrade, int duration)
 		{
-			um.GrantTimedUpgrade(self, upgrade, duration);
+			um.GrantTimedUpgrade(Self, upgrade, duration);
 		}
 
 		[Desc("Check whether this actor accepts a specific upgrade.")]
 		public bool AcceptsUpgrade(string upgrade)
 		{
-			return um.AcceptsUpgrade(self, upgrade);
+			return um.AcceptsUpgrade(Self, upgrade);
 		}
 	}
 }

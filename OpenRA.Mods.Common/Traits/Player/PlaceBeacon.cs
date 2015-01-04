@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Notification = "Beacon";
 		public readonly string PalettePrefix = "player";
 
-		public object Create(ActorInitializer init) { return new PlaceBeacon(init.self, this); }
+		public object Create(ActorInitializer init) { return new PlaceBeacon(init.Self, this); }
 	}
 
 	public class PlaceBeacon : IResolveOrder

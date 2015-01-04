@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Traits
 						yield return r;
 		}
 
-		public object Create(ActorInitializer init) { return new WithRangeCircle(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithRangeCircle(init.Self, this); }
 	}
 
 	class WithRangeCircle : IPostRenderSelection

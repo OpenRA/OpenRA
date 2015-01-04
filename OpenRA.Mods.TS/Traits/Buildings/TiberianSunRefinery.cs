@@ -17,7 +17,7 @@ namespace OpenRA.Mods.TS.Traits
 {
 	public class TiberianSunRefineryInfo : OreRefineryInfo
 	{
-		public override object Create(ActorInitializer init) { return new TiberianSunRefinery(init.self, this); }
+		public override object Create(ActorInitializer init) { return new TiberianSunRefinery(init.Self, this); }
 	}
 
 	public class TiberianSunRefinery : OreRefinery

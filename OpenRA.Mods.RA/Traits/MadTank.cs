@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Traits
 		[ActorReference]
 		public readonly string DriverActor = "e1";
 
-		public object Create(ActorInitializer init) { return new MadTank(init.self, this); }
+		public object Create(ActorInitializer init) { return new MadTank(init.Self, this); }
 	}
 
 	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, ITick, IPreventsTeleport

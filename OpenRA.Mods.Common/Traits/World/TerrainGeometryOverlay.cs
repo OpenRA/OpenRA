@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Renders a debug overlay showing the terrain cells. Attach this to the world actor.")]
 	public class TerrainGeometryOverlayInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new TerrainGeometryOverlay(init.self); }
+		public object Create(ActorInitializer init) { return new TerrainGeometryOverlay(init.Self); }
 	}
 
 	public class TerrainGeometryOverlay : IRenderOverlay
@@ -73,8 +73,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (devMode.Value == null || !devMode.Value.ShowTerrainGeometry)
 				return;
 
-			var ts = wr.world.Map.TileShape;
-			var colors = wr.world.TileSet.HeightDebugColors;
+			var ts = wr.World.Map.TileShape;
+			var colors = wr.World.TileSet.HeightDebugColors;
 
 			var leftDelta = ts == TileShape.Diamond ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
 			var topDelta = ts == TileShape.Diamond ? new WVec(0, -512, 0) : new WVec(512, -512, 0);
@@ -84,10 +84,10 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var uv in wr.Viewport.VisibleCells.MapCoords)
 			{
 				var lr = Game.Renderer.WorldLineRenderer;
-				var pos = wr.world.Map.CenterOfCell(Map.MapToCell(wr.world.Map.TileShape, uv));
+				var pos = wr.World.Map.CenterOfCell(Map.MapToCell(wr.World.Map.TileShape, uv));
 
-				var height = (int)wr.world.Map.MapHeight.Value[uv.X, uv.Y];
-				var tile = wr.world.Map.MapTiles.Value[uv.X, uv.Y];
+				var height = (int)wr.World.Map.MapHeight.Value[uv.X, uv.Y];
+				var tile = wr.World.Map.MapTiles.Value[uv.X, uv.Y];
 
 				TerrainTileInfo tileInfo = null;
 
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 				// (ra/td templates omit Clear tiles from templates)
 				try
 				{
-					tileInfo = wr.world.TileSet.Templates[tile.Type][tile.Index];
+					tileInfo = wr.World.TileSet.Templates[tile.Type][tile.Index];
 				}
 				catch (Exception) { }
 

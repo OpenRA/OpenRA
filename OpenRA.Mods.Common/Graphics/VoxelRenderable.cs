@@ -101,9 +101,9 @@ namespace OpenRA.Mods.Common.Graphics
 		public void Render(WorldRenderer wr)
 		{
 			// TODO: This is a temporary workaround until we have a proper ramp-aware height calculation
-			var groundPos = wr.world.Map.CenterOfCell(wr.world.Map.CellContaining(pos));
+			var groundPos = wr.World.Map.CenterOfCell(wr.World.Map.CellContaining(pos));
 
-			var ts = Game.modData.Manifest.TileSize;
+			var ts = Game.ModData.Manifest.TileSize;
 			var groundZ = ts.Height * (groundPos.Z - pos.Z) / 1024f;
 
 			var pxOrigin = wr.ScreenPosition(pos);
@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Graphics
 			var sc = shadowOrigin + psb[1];
 			var sd = shadowOrigin + psb[3];
 			Game.Renderer.WorldRgbaSpriteRenderer.DrawSprite(renderProxy.ShadowSprite, sa, sb, sc, sd);
-			Game.Renderer.WorldRgbaSpriteRenderer.DrawSprite(renderProxy.Sprite, pxOrigin - 0.5f * renderProxy.Sprite.size);
+			Game.Renderer.WorldRgbaSpriteRenderer.DrawSprite(renderProxy.Sprite, pxOrigin - 0.5f * renderProxy.Sprite.Size);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
@@ -125,8 +125,8 @@ namespace OpenRA.Mods.Common.Graphics
 			var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
 
 			// Draw sprite rect
-			var offset = pxOrigin + renderProxy.Sprite.offset - 0.5f * renderProxy.Sprite.size;
-			Game.Renderer.WorldLineRenderer.DrawRect(offset, offset + renderProxy.Sprite.size, Color.Red);
+			var offset = pxOrigin + renderProxy.Sprite.Offset - 0.5f * renderProxy.Sprite.Size;
+			Game.Renderer.WorldLineRenderer.DrawRect(offset, offset + renderProxy.Sprite.Size, Color.Red);
 
 			// Draw transformed shadow sprite rect
 			var c = Color.Purple;

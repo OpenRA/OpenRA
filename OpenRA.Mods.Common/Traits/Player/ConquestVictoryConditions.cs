@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay for the end game notification in milliseconds.")]
 		public int NotificationDelay = 1500;
 
-		public object Create(ActorInitializer init) { return new ConquestVictoryConditions(init.self, this); }
+		public object Create(ActorInitializer init) { return new ConquestVictoryConditions(init.Self, this); }
 	}
 
 	public class ConquestVictoryConditions : ITick, INotifyObjectivesUpdated

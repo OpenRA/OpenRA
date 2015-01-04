@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public readonly float MinefieldDepth = 1.5f;
 
-		public object Create(ActorInitializer init) { return new Minelayer(init.self); }
+		public object Create(ActorInitializer init) { return new Minelayer(init.Self); }
 	}
 
 	class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection, ISync

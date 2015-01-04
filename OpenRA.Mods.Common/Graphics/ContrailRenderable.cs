@@ -67,13 +67,13 @@ namespace OpenRA.Mods.Common.Graphics
 
 			// Start of the first line segment is the tail of the list - don't smooth it.
 			var curPos = trail[Index(next - skip - 1)];
-			var curCell = wr.world.Map.CellContaining(curPos);
+			var curCell = wr.World.Map.CellContaining(curPos);
 			var curColor = color;
 			for (var i = 0; i < length - skip - 4; i++)
 			{
 				var j = next - skip - i - 2;
 				var nextPos = Average(trail[Index(j)], trail[Index(j - 1)], trail[Index(j - 2)], trail[Index(j - 3)]);
-				var nextCell = wr.world.Map.CellContaining(nextPos);
+				var nextCell = wr.World.Map.CellContaining(nextPos);
 				var nextColor = Exts.ColorLerp(i * 1f / (length - 4), color, Color.Transparent);
 
 				if (!world.FogObscures(curCell) && !world.FogObscures(nextCell))

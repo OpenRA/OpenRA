@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Is the new duplicates given to a specific owner, regardless of whom collected it?")]
 		public readonly string Owner = null;
 
-		public override object Create(ActorInitializer init) { return new DuplicateUnitCrateAction(init.self, this); }
+		public override object Create(ActorInitializer init) { return new DuplicateUnitCrateAction(init.Self, this); }
 	}
 
 	class DuplicateUnitCrateAction : CrateAction

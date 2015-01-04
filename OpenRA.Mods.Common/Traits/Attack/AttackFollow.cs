@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Actor will follow units until in range to attack them.")]
 	public class AttackFollowInfo : AttackBaseInfo
 	{
-		public override object Create(ActorInitializer init) { return new AttackFollow(init.self, this); }
+		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
 
 	public class AttackFollow : AttackBase, ITick, ISync

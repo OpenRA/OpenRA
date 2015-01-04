@@ -39,7 +39,7 @@ namespace OpenRA.Mods.TS.Traits
 		public readonly float[] LightAmbientColor = new float[] { 0.6f, 0.6f, 0.6f };
 		public readonly float[] LightDiffuseColor = new float[] { 0.4f, 0.4f, 0.4f };
 
-		public virtual object Create(ActorInitializer init) { return new RenderVoxels(init.self, this); }
+		public virtual object Create(ActorInitializer init) { return new RenderVoxels(init.Self, this); }
 
 		public virtual IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{

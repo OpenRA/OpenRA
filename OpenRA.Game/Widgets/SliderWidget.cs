@@ -118,7 +118,7 @@ namespace OpenRA.Widgets
 			for (var i = 0; i < Ticks; i++)
 			{
 				var tickPos = new float2(
-					trackOrigin + (i * (trackRect.Width - (int)tick.size.X) / (Ticks - 1)) - tick.size.X / 2,
+					trackOrigin + (i * (trackRect.Width - (int)tick.Size.X) / (Ticks - 1)) - tick.Size.X / 2,
 					trackRect.Bottom);
 
 				WidgetUtils.DrawRGBA(tick, tickPos);

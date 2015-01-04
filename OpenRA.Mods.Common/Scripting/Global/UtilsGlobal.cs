@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Skips over the first numElements members of a table and return the rest.")]
 		public LuaTable Skip(LuaTable table, int numElements)
 		{
-			var t = context.CreateTable();
+			var t = Context.CreateTable();
 
 			for (var i = numElements; i <= table.Count; i++)
 				t.Add(t.Count + 1, table[i]);
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns a random value from a collection.")]
 		public LuaValue Random(LuaValue[] collection)
 		{
-			return collection.Random(context.World.SharedRandom);
+			return collection.Random(Context.World.SharedRandom);
 		}
 
 		[Desc("Expands the given footprint one step along the coordinate axes, and (if requested) diagonals.")]
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (high <= low)
 				return low;
 
-			return context.World.SharedRandom.Next(low, high);
+			return Context.World.SharedRandom.Next(low, high);
 		}
 	}
 }

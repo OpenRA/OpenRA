@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class RenderSimpleInfo : RenderSpritesInfo, IRenderActorPreviewSpritesInfo, IQuantizeBodyOrientationInfo, ILegacyEditorRenderInfo, Requires<IBodyOrientationInfo>
 	{
-		public override object Create(ActorInitializer init) { return new RenderSimple(init.self); }
+		public override object Create(ActorInitializer init) { return new RenderSimple(init.Self); }
 
 		public virtual IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{

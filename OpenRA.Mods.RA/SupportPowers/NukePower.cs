@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Amount of time after detonation to remove the camera")]
 		public readonly int CameraRemoveDelay = 25;
 
-		public override object Create(ActorInitializer init) { return new NukePower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
 	}
 
 	class NukePower : SupportPower

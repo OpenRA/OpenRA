@@ -312,7 +312,7 @@ namespace OpenRA.Editor
 			{
 				using (var g = SGraphics.FromImage(bitmap))
 				{
-					var ts = Game.modData.Manifest.TileSize;
+					var ts = Game.ModData.Manifest.TileSize;
 					var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
 					ControlPaint.DrawGrid(g, rect, new Size(2, ts.Height), Color.DarkRed);
 					ControlPaint.DrawGrid(g, rect, new Size(ts.Width, 2), Color.DarkRed);

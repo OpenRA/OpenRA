@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Override the owner of the newly spawned unit: e.g. Creeps or Neutral")]
 		public readonly string Owner = null;
 
-		public override object Create(ActorInitializer init) { return new GiveUnitCrateAction(init.self, this); }
+		public override object Create(ActorInitializer init) { return new GiveUnitCrateAction(init.Self, this); }
 	}
 
 	class GiveUnitCrateAction : CrateAction

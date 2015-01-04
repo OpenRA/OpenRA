@@ -14,7 +14,7 @@ namespace OpenRA.Mods.RA.Traits
 {
 	class RenderDisguiseInfo : RenderInfantryInfo, Requires<DisguiseInfo>
 	{
-		public override object Create(ActorInitializer init) { return new RenderDisguise(init.self, this); }
+		public override object Create(ActorInitializer init) { return new RenderDisguise(init.Self, this); }
 	}
 
 	class RenderDisguise : RenderInfantry

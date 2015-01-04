@@ -29,33 +29,33 @@ namespace OpenRA.Widgets
 
 		public static void DrawSHPCentered(Sprite s, float2 pos, WorldRenderer wr)
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite(s, pos - 0.5f * s.size, wr.Palette("chrome"));
+			Game.Renderer.SpriteRenderer.DrawSprite(s, pos - 0.5f * s.Size, wr.Palette("chrome"));
 		}
 
 		public static void DrawSHPCentered(Sprite s, float2 pos, WorldRenderer wr, float scale)
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite(s, pos - 0.5f * scale * s.size, wr.Palette("chrome"), scale * s.size);
+			Game.Renderer.SpriteRenderer.DrawSprite(s, pos - 0.5f * scale * s.Size, wr.Palette("chrome"), scale * s.Size);
 		}
 
-		public static void DrawPanel(string collection, Rectangle Bounds)
+		public static void DrawPanel(string collection, Rectangle bounds)
 		{
-			DrawPanelPartial(collection, Bounds, PanelSides.All);
+			DrawPanelPartial(collection, bounds, PanelSides.All);
 		}
 
 		public static void FillRectWithSprite(Rectangle r, Sprite s)
 		{
-			for (var x = r.Left; x < r.Right; x += (int)s.size.X)
-				for (var y = r.Top; y < r.Bottom; y += (int)s.size.Y)
+			for (var x = r.Left; x < r.Right; x += (int)s.Size.X)
+				for (var y = r.Top; y < r.Bottom; y += (int)s.Size.Y)
 				{
 					var ss = s;
 					var left = new int2(r.Right - x, r.Bottom - y);
-					if (left.X < (int)s.size.X || left.Y < (int)s.size.Y)
+					if (left.X < (int)s.Size.X || left.Y < (int)s.Size.Y)
 					{
-						var rr = new Rectangle(s.bounds.Left,
-							s.bounds.Top,
-							Math.Min(left.X, (int)s.size.X),
-							Math.Min(left.Y, (int)s.size.Y));
-						ss = new Sprite(s.sheet, rr, s.channel);
+						var rr = new Rectangle(s.Bounds.Left,
+							s.Bounds.Top,
+							Math.Min(left.X, (int)s.Size.X),
+							Math.Min(left.Y, (int)s.Size.Y));
+						ss = new Sprite(s.Sheet, rr, s.Channel);
 					}
 
 					DrawRGBA(ss, new float2(x, y));
@@ -76,7 +76,7 @@ namespace OpenRA.Widgets
 		{
 			var images = new[] { "border-t", "border-b", "border-l", "border-r" };
 			var ss = images.Select(i => ChromeProvider.GetImage(collection, i)).ToArray();
-			return new[] { (int)ss[0].size.Y, (int)ss[1].size.Y, (int)ss[2].size.X, (int)ss[3].size.X };
+			return new[] { (int)ss[0].Size.Y, (int)ss[1].Size.Y, (int)ss[2].Size.X, (int)ss[3].Size.X };
 		}
 
 		static bool HasFlags(this PanelSides a, PanelSides b) { return (a & b) == b; }
@@ -95,10 +95,10 @@ namespace OpenRA.Widgets
 
 		public static void DrawPanelPartial(Sprite[] ss, Rectangle bounds, PanelSides ps)
 		{
-			var marginLeft = ss[2] == null ? 0 : (int)ss[2].size.X;
-			var marginTop = ss[0] == null ? 0 : (int)ss[0].size.Y;
-			var marginRight = ss[3] == null ? 0 : (int)ss[3].size.X;
-			var marginBottom = ss[1] == null ? 0 : (int)ss[1].size.Y;
+			var marginLeft = ss[2] == null ? 0 : (int)ss[2].Size.X;
+			var marginTop = ss[0] == null ? 0 : (int)ss[0].Size.Y;
+			var marginRight = ss[3] == null ? 0 : (int)ss[3].Size.X;
+			var marginBottom = ss[1] == null ? 0 : (int)ss[1].Size.Y;
 			var marginWidth = marginRight + marginLeft;
 			var marginHeight = marginBottom + marginTop;
 
@@ -135,11 +135,11 @@ namespace OpenRA.Widgets
 			if (ps.HasFlags(PanelSides.Left | PanelSides.Top) && ss[4] != null)
 				DrawRGBA(ss[4], new float2(bounds.Left, bounds.Top));
 			if (ps.HasFlags(PanelSides.Right | PanelSides.Top) && ss[5] != null)
-				DrawRGBA(ss[5], new float2(bounds.Right - ss[5].size.X, bounds.Top));
+				DrawRGBA(ss[5], new float2(bounds.Right - ss[5].Size.X, bounds.Top));
 			if (ps.HasFlags(PanelSides.Left | PanelSides.Bottom) && ss[6] != null)
-				DrawRGBA(ss[6], new float2(bounds.Left, bounds.Bottom - ss[6].size.Y));
+				DrawRGBA(ss[6], new float2(bounds.Left, bounds.Bottom - ss[6].Size.Y));
 			if (ps.HasFlags(PanelSides.Right | PanelSides.Bottom) && ss[7] != null)
-				DrawRGBA(ss[7], new float2(bounds.Right - ss[7].size.X, bounds.Bottom - ss[7].size.Y));
+				DrawRGBA(ss[7], new float2(bounds.Right - ss[7].Size.X, bounds.Bottom - ss[7].Size.Y));
 		}
 
 		public static string FormatTime(int ticks)
@@ -215,7 +215,7 @@ namespace OpenRA.Widgets
 
 		public static string ChooseInitialMap(string initialUid)
 		{
-			if (string.IsNullOrEmpty(initialUid) || Game.modData.MapCache[initialUid].Status != MapStatus.Available)
+			if (string.IsNullOrEmpty(initialUid) || Game.ModData.MapCache[initialUid].Status != MapStatus.Available)
 			{
 				Func<MapPreview, bool> isIdealMap = m =>
 				{
@@ -237,8 +237,8 @@ namespace OpenRA.Widgets
 					return true;
 				};
 
-				var selected = Game.modData.MapCache.Where(m => isIdealMap(m)).RandomOrDefault(Game.CosmeticRandom) ??
-					Game.modData.MapCache.First(m => m.Status == MapStatus.Available && m.Map.Visibility.HasFlag(MapVisibility.Lobby));
+				var selected = Game.ModData.MapCache.Where(m => isIdealMap(m)).RandomOrDefault(Game.CosmeticRandom) ??
+					Game.ModData.MapCache.First(m => m.Status == MapStatus.Available && m.Map.Visibility.HasFlag(MapVisibility.Lobby));
 				return selected.Uid;
 			}
 

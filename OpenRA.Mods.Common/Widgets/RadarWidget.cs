@@ -94,8 +94,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var uv = Map.CellToMap(world.Map.TileShape, cell);
 			var terrain = world.Map.GetTerrainInfo(cell);
 
-			var dx = terrainSprite.bounds.Left - world.Map.Bounds.Left;
-			var dy = terrainSprite.bounds.Top - world.Map.Bounds.Top;
+			var dx = terrainSprite.Bounds.Left - world.Map.Bounds.Left;
+			var dy = terrainSprite.Bounds.Top - world.Map.Bounds.Top;
 
 			unsafe
 			{
@@ -111,8 +111,8 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var stride = radarSheet.Size.Width;
 			var uv = Map.CellToMap(world.Map.TileShape, cell);
-			var dx = shroudSprite.bounds.Left - world.Map.Bounds.Left;
-			var dy = shroudSprite.bounds.Top - world.Map.Bounds.Top;
+			var dx = shroudSprite.Bounds.Left - world.Map.Bounds.Left;
+			var dy = shroudSprite.Bounds.Top - world.Map.Bounds.Top;
 
 			var color = 0;
 			if (world.ShroudObscures(cell))
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (cursor == null)
 				return "default";
 
-			return Game.modData.CursorProvider.HasCursorSequence(cursor + "-minimap") ? cursor + "-minimap" : cursor;
+			return Game.ModData.CursorProvider.HasCursorSequence(cursor + "-minimap") ? cursor + "-minimap" : cursor;
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
@@ -272,10 +272,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 				// The actor layer is updated every tick
 				var stride = radarSheet.Size.Width;
-				var dx = actorSprite.bounds.Left - world.Map.Bounds.Left;
-				var dy = actorSprite.bounds.Top - world.Map.Bounds.Top;
+				var dx = actorSprite.Bounds.Left - world.Map.Bounds.Left;
+				var dy = actorSprite.Bounds.Top - world.Map.Bounds.Top;
 	
-				Array.Clear(radarData, 4 * (actorSprite.bounds.Top * stride + actorSprite.bounds.Left), 4 * actorSprite.bounds.Height * stride);
+				Array.Clear(radarData, 4 * (actorSprite.Bounds.Top * stride + actorSprite.Bounds.Left), 4 * actorSprite.Bounds.Height * stride);
 
 				unsafe
 				{

@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class RenderUnitInfo : RenderSimpleInfo, Requires<IFacingInfo>
 	{
-		public override object Create(ActorInitializer init) { return new RenderUnit(init.self); }
+		public override object Create(ActorInitializer init) { return new RenderUnit(init.Self); }
 	}
 
 	public class RenderUnit : RenderSimple

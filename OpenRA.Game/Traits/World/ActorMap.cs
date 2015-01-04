@@ -21,7 +21,7 @@ namespace OpenRA.Traits
 		[Desc("Size of partition bins (cells)")]
 		public readonly int BinSize = 10;
 
-		public object Create(ActorInitializer init) { return new ActorMap(init.world, this); }
+		public object Create(ActorInitializer init) { return new ActorMap(init.World, this); }
 	}
 
 	public class ActorMap : ITick

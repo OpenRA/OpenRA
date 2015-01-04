@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public bool RequiresForceFire = false;
 
-		public object Create(ActorInitializer init) { return new TargetableBuilding(init.self, this); }
+		public object Create(ActorInitializer init) { return new TargetableBuilding(init.Self, this); }
 	}
 
 	public class TargetableBuilding : ITargetable

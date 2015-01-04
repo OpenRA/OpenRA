@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			upgrades = Exts.Lazy(() =>
 			{
 				var ret = new Dictionary<string, UpgradeState>();
-				foreach (var up in init.self.TraitsImplementing<IUpgradable>())
+				foreach (var up in init.Self.TraitsImplementing<IUpgradable>())
 					foreach (var t in up.UpgradeTypes)
 						ret.GetOrAdd(t).Traits.Add(up);
 

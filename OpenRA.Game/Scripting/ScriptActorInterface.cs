@@ -38,13 +38,13 @@ namespace OpenRA.Scripting
 
 		void InitializeBindings()
 		{
-			var commandClasses = context.ActorCommands[actor.Info].AsEnumerable();
+			var commandClasses = Context.ActorCommands[actor.Info].AsEnumerable();
 
 			// Destroyed actors cannot have their traits queried
 			if (actor.Destroyed)
 				commandClasses = commandClasses.Where(c => c.HasAttribute<ExposedForDestroyedActors>());
 
-			var args = new object[] { context, actor };
+			var args = new object[] { Context, actor };
 			var objects = commandClasses.Select(cg =>
 			{
 				var groupCtor = cg.GetConstructor(new Type[] { typeof(ScriptContext), typeof(Actor) });

@@ -34,7 +34,7 @@ namespace OpenRA.Traits
 
 		public PipType PipColor = PipType.Yellow;
 
-		public object Create(ActorInitializer init) { return new ResourceType(this, init.world); }
+		public object Create(ActorInitializer init) { return new ResourceType(this, init.World); }
 	}
 
 	public class ResourceType : IWorldLoaded

@@ -132,7 +132,7 @@ namespace OpenRA.Widgets
 		public int2 ConvertToPreview(CPos cell)
 		{
 			var preview = Preview();
-			var tileShape = Game.modData.Manifest.TileShape;
+			var tileShape = Game.ModData.Manifest.TileShape;
 			var point = Map.CellToMap(tileShape, cell);
 			var dx = (int)(previewScale * (point.X - preview.Bounds.Left));
 			var dy = (int)(previewScale * (point.Y - preview.Bounds.Top));
@@ -152,9 +152,9 @@ namespace OpenRA.Widgets
 				return;
 
 			// Update map rect
-			previewScale = Math.Min(RenderBounds.Width / minimap.size.X, RenderBounds.Height / minimap.size.Y);
-			var w = (int)(previewScale * minimap.size.X);
-			var h = (int)(previewScale * minimap.size.Y);
+			previewScale = Math.Min(RenderBounds.Width / minimap.Size.X, RenderBounds.Height / minimap.Size.Y);
+			var w = (int)(previewScale * minimap.Size.X);
+			var h = (int)(previewScale * minimap.Size.Y);
 			var x = RenderBounds.X + (RenderBounds.Width - w) / 2;
 			var y = RenderBounds.Y + (RenderBounds.Height - h) / 2;
 			mapRect = new Rectangle(x, y, w, h);
@@ -172,10 +172,10 @@ namespace OpenRA.Widgets
 					var owned = colors.ContainsKey(p);
 					var pos = ConvertToPreview(p);
 					var sprite = owned ? spawnClaimed : spawnUnclaimed;
-					var offset = new int2(sprite.bounds.Width, sprite.bounds.Height) / 2;
+					var offset = new int2(sprite.Bounds.Width, sprite.Bounds.Height) / 2;
 
 					if (owned)
-						WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X - offset.X + 1, pos.Y - offset.Y + 1, sprite.bounds.Width - 2, sprite.bounds.Height - 2), colors[p]);
+						WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X - offset.X + 1, pos.Y - offset.Y + 1, sprite.Bounds.Width - 2, sprite.Bounds.Height - 2), colors[p]);
 
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos - offset);
 					var number = Convert.ToChar('A' + spawnPoints.IndexOf(p)).ToString();

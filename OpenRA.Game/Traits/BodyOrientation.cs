@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 			return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
 		}
 
-		public object Create(ActorInitializer init) { return new BodyOrientation(init.self, this); }
+		public object Create(ActorInitializer init) { return new BodyOrientation(init.Self, this); }
 	}
 
 	public class BodyOrientation : IBodyOrientation

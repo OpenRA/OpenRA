@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class AttackPlaneInfo : AttackFrontalInfo
 	{
-		public override object Create(ActorInitializer init) { return new AttackPlane(init.self, this); }
+		public override object Create(ActorInitializer init) { return new AttackPlane(init.Self, this); }
 	}
 
 	public class AttackPlane : AttackFrontal

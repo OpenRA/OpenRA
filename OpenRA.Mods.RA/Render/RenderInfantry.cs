@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly string[] IdleAnimations = { };
 		public readonly string[] StandAnimations = { "stand" };
 
-		public override object Create(ActorInitializer init) { return new RenderInfantry(init.self, this); }
+		public override object Create(ActorInitializer init) { return new RenderInfantry(init.Self, this); }
 
 		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{

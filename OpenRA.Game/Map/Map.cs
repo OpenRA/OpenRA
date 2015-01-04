@@ -204,7 +204,7 @@ namespace OpenRA
 		public static Map FromTileset(TileSet tileset)
 		{
 			var size = new Size(1, 1);
-			var tileShape = Game.modData.Manifest.TileShape;
+			var tileShape = Game.ModData.Manifest.TileShape;
 			var tileRef = new TerrainTile(tileset.Templates.First().Key, (byte)0);
 
 			var makeMapTiles = Exts.Lazy(() =>
@@ -328,10 +328,10 @@ namespace OpenRA
 			MapResources = Exts.Lazy(() => LoadResourceTiles());
 			MapHeight = Exts.Lazy(() => LoadMapHeight());
 
-			TileShape = Game.modData.Manifest.TileShape;
-			SubCellOffsets = Game.modData.Manifest.SubCellOffsets;
+			TileShape = Game.ModData.Manifest.TileShape;
+			SubCellOffsets = Game.ModData.Manifest.SubCellOffsets;
 			LastSubCell = (SubCell)(SubCellOffsets.Length - 1);
-			DefaultSubCell = (SubCell)Game.modData.Manifest.SubCellDefaultIndex;
+			DefaultSubCell = (SubCell)Game.ModData.Manifest.SubCellDefaultIndex;
 
 			if (Container.Exists("map.png"))
 				using (var dataStream = Container.GetContent("map.png"))
@@ -354,7 +354,7 @@ namespace OpenRA
 			{
 				try
 				{
-					return Game.modData.RulesetCache.LoadMapRules(this);
+					return Game.ModData.RulesetCache.LoadMapRules(this);
 				}
 				catch (Exception e)
 				{
@@ -362,7 +362,7 @@ namespace OpenRA
 					Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e.Message);
 				}
 
-				return Game.modData.DefaultRules;
+				return Game.ModData.DefaultRules;
 			});
 
 			cachedTileSet = Exts.Lazy(() => Rules.TileSets[Tileset]);

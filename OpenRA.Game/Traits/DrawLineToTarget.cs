@@ -18,7 +18,7 @@ namespace OpenRA.Traits
 	{
 		public readonly int Ticks = 60;
 
-		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.self, this); }
+		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
 	}
 
 	public class DrawLineToTarget : IPostRenderSelection, INotifySelected, INotifyBecomingIdle

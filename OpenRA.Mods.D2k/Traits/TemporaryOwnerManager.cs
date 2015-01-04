@@ -19,7 +19,7 @@ namespace OpenRA.Mods.D2k.Traits
 	{
 		public readonly Color BarColor = Color.Orange;
 
-		public object Create(ActorInitializer init) { return new TemporaryOwnerManager(init.self, this); }
+		public object Create(ActorInitializer init) { return new TemporaryOwnerManager(init.Self, this); }
 	}
 
 	public class TemporaryOwnerManager : ISelectionBar, ITick, ISync, INotifyOwnerChanged

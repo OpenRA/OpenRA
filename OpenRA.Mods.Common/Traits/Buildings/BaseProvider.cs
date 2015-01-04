@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Cooldown = 0;
 		public readonly int InitialDelay = 0;
 
-		public object Create(ActorInitializer init) { return new BaseProvider(init.self, this); }
+		public object Create(ActorInitializer init) { return new BaseProvider(init.Self, this); }
 	}
 
 	public class BaseProvider : ITick, IPostRenderSelection, ISelectionBar

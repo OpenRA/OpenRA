@@ -31,8 +31,8 @@ namespace OpenRA.Graphics
 			foreach (var cell in map.Cells)
 			{
 				var tile = wr.Theater.TileSprite(map.MapTiles.Value[cell]);
-				var pos = wr.ScreenPosition(map.CenterOfCell(cell)) + tile.offset - 0.5f * tile.size;
-				Util.FastCreateQuad(vertices, pos, tile, terrainPalette, nv, tile.size);
+				var pos = wr.ScreenPosition(map.CenterOfCell(cell)) + tile.Offset - 0.5f * tile.Size;
+				Util.FastCreateQuad(vertices, pos, tile, terrainPalette, nv, tile.Size);
 				nv += 4;
 			}
 
@@ -44,7 +44,7 @@ namespace OpenRA.Graphics
 		{
 			var verticesPerRow = 4 * map.Bounds.Width;
 			var cells = viewport.VisibleCells;
-			var shape = wr.world.Map.TileShape;
+			var shape = wr.World.Map.TileShape;
 
 			// Only draw the rows that are visible.
 			// VisibleCells is clamped to the map, so additional checks are unnecessary

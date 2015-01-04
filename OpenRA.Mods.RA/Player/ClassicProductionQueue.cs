@@ -40,9 +40,9 @@ namespace OpenRA.Mods.RA
 		readonly ClassicProductionQueueInfo info;
 
 		public ClassicProductionQueue(ActorInitializer init, ClassicProductionQueueInfo info)
-			: base(init, init.self, info)
+			: base(init, init.Self, info)
 		{
-			this.self = init.self;
+			this.self = init.Self;
 			this.info = info;
 		}
 

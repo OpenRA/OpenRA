@@ -117,7 +117,7 @@ namespace OpenRA.Widgets
 				while (nextFrame > video.CurrentFrame)
 				{
 					video.AdvanceFrame();
-					videoSprite.sheet.GetTexture().SetData(video.FrameData);
+					videoSprite.Sheet.GetTexture().SetData(video.FrameData);
 					skippedFrames++;
 				}
 
@@ -185,7 +185,7 @@ namespace OpenRA.Widgets
 			paused = true;
 			Sound.StopVideo();
 			video.Reset();
-			videoSprite.sheet.GetTexture().SetData(video.FrameData);
+			videoSprite.Sheet.GetTexture().SetData(video.FrameData);
 			world.AddFrameEndTask(_ => onComplete());
 		}
 	}

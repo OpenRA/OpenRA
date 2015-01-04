@@ -25,15 +25,15 @@ namespace OpenRA
 	public class World
 	{
 		static readonly Func<int, int, bool> FalsePredicate = (u, v) => false;
-		internal readonly TraitDictionary traitDict = new TraitDictionary();
+		internal readonly TraitDictionary TraitDict = new TraitDictionary();
 		readonly HashSet<Actor> actors = new HashSet<Actor>();
 		readonly List<IEffect> effects = new List<IEffect>();
 		readonly Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
 		public int Timestep;
 
-		internal readonly OrderManager orderManager;
-		public Session LobbyInfo { get { return orderManager.LobbyInfo; } }
+		internal readonly OrderManager OrderManager;
+		public Session LobbyInfo { get { return OrderManager.LobbyInfo; } }
 
 		public readonly MersenneTwister SharedRandom;
 
@@ -87,7 +87,7 @@ namespace OpenRA
 
 		public bool IsReplay
 		{
-			get { return orderManager.Connection is ReplayConnection; }
+			get { return OrderManager.Connection is ReplayConnection; }
 		}
 
 		public bool AllowDevCommands
@@ -111,20 +111,20 @@ namespace OpenRA
 		public readonly ScreenMap ScreenMap;
 		readonly GameInformation gameInfo;
 
-		public void IssueOrder(Order o) { orderManager.IssueOrder(o); } /* avoid exposing the OM to mod code */
+		public void IssueOrder(Order o) { OrderManager.IssueOrder(o); } /* avoid exposing the OM to mod code */
 
-		IOrderGenerator orderGenerator_;
+		IOrderGenerator orderGenerator;
 		public IOrderGenerator OrderGenerator
 		{
 			get
 			{
-				return orderGenerator_;
+				return orderGenerator;
 			}
 
 			set
 			{
 				Sync.AssertUnsynced("The current order generator may not be changed from synced code");
-				orderGenerator_ = value;
+				orderGenerator = value;
 			}
 		}
 
@@ -149,8 +149,8 @@ namespace OpenRA
 		internal World(Map map, OrderManager orderManager, bool isShellmap)
 		{
 			IsShellmap = isShellmap;
-			this.orderManager = orderManager;
-			orderGenerator_ = new UnitOrderGenerator();
+			OrderManager = orderManager;
+			orderGenerator = new UnitOrderGenerator();
 			Map = map;
 
 			TileSet = map.Rules.TileSets[Map.Tileset];
@@ -189,9 +189,9 @@ namespace OpenRA
 
 			gameInfo.StartTimeUtc = DateTime.UtcNow;
 			foreach (var player in Players)
-				gameInfo.AddPlayer(player, orderManager.LobbyInfo);
+				gameInfo.AddPlayer(player, OrderManager.LobbyInfo);
 
-			var rc = orderManager.Connection as ReplayRecorderConnection;
+			var rc = OrderManager.Connection as ReplayRecorderConnection;
 			if (rc != null)
 				rc.Metadata = new ReplayMetadata(gameInfo);
 		}
@@ -330,7 +330,7 @@ namespace OpenRA
 
 		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>()
 		{
-			return traitDict.ActorsWithTrait<T>();
+			return TraitDict.ActorsWithTrait<T>();
 		}
 
 		public void OnPlayerWinStateChanged(Player player)

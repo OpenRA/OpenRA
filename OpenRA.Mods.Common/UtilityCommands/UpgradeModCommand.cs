@@ -24,13 +24,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.modData = modData;
-			Game.modData.MapCache.LoadMaps();
+			Game.ModData = modData;
+			Game.ModData.MapCache.LoadMaps();
 
 			var engineDate = Exts.ParseIntegerInvariant(args[1]);
 
 			Console.WriteLine("Processing Rules:");
-			foreach (var filename in Game.modData.Manifest.Rules)
+			foreach (var filename in Game.ModData.Manifest.Rules)
 			{
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			Console.WriteLine("Processing Weapons:");
-			foreach (var filename in Game.modData.Manifest.Weapons)
+			foreach (var filename in Game.ModData.Manifest.Weapons)
 			{
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			Console.WriteLine("Processing Tilesets:");
-			foreach (var filename in Game.modData.Manifest.TileSets)
+			foreach (var filename in Game.ModData.Manifest.TileSets)
 			{
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			Console.WriteLine("Processing Cursors:");
-			foreach (var filename in Game.modData.Manifest.Cursors)
+			foreach (var filename in Game.ModData.Manifest.Cursors)
 			{
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			Console.WriteLine("Processing Maps:");
-			var maps = Game.modData.MapCache
+			var maps = Game.ModData.MapCache
 				.Where(m => m.Status == MapStatus.Available)
 				.Select(m => m.Map);
 

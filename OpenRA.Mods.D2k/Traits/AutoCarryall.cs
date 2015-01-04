@@ -23,7 +23,7 @@ namespace OpenRA.Mods.D2k.Traits
 	[Desc("Automatically transports harvesters with the Carryable trait between resource fields and refineries")]
 	public class AutoCarryallInfo : ITraitInfo, Requires<IBodyOrientationInfo>
 	{
-		public object Create(ActorInitializer init) { return new AutoCarryall(init.self, this); }
+		public object Create(ActorInitializer init) { return new AutoCarryall(init.Self, this); }
 	}
 
 	public class AutoCarryall : INotifyBecomingIdle, INotifyKilled, ISync, IRender

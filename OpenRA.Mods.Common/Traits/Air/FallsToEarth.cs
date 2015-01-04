@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool Moves = false;
 		public readonly WRange Velocity = new WRange(43);
 
-		public object Create(ActorInitializer init) { return new FallsToEarth(init.self, this); }
+		public object Create(ActorInitializer init) { return new FallsToEarth(init.Self, this); }
 	}
 
 	public class FallsToEarth

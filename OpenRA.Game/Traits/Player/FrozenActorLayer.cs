@@ -18,7 +18,7 @@ namespace OpenRA.Traits
 	[Desc("Required for FrozenUnderFog to work. Attach this to the player actor.")]
 	public class FrozenActorLayerInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new FrozenActorLayer(init.self); }
+		public object Create(ActorInitializer init) { return new FrozenActorLayer(init.Self); }
 	}
 
 	public class FrozenActor

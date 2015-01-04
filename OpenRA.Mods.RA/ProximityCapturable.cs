@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 		public readonly bool MustBeClear = false;
 		public readonly string[] CaptorTypes = { "Vehicle", "Tank", "Infantry" };
 
-		public object Create(ActorInitializer init) { return new ProximityCapturable(init.self, this); }
+		public object Create(ActorInitializer init) { return new ProximityCapturable(init.Self, this); }
 	}
 
 	public class ProximityCapturable : ITick

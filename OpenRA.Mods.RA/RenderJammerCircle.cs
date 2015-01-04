@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Traits
 						yield return r;
 		}
 
-		public object Create(ActorInitializer init) { return new RenderJammerCircle(init.self); }
+		public object Create(ActorInitializer init) { return new RenderJammerCircle(init.Self); }
 	}
 
 	class RenderJammerCircle : IPostRenderSelection

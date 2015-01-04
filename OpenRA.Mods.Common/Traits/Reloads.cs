@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Whether or not reload counter should be reset when ammo has been fired.")]
 		public readonly bool ResetOnFire = false;
 
-		public object Create(ActorInitializer init) { return new Reloads(init.self, this); }
+		public object Create(ActorInitializer init) { return new Reloads(init.Self, this); }
 	}
 
 	public class Reloads : ITick
