@@ -181,7 +181,7 @@ namespace OpenRA.Mods.RA.Traits
 					foreach (var n in notify)
 						n.MovingToResources(self, moveTo, next);
 
-					self.QueueActivity(next);
+					self.QueueActivity(new FindResources());
 					return;
 				}
 			}
@@ -355,9 +355,9 @@ namespace OpenRA.Mods.RA.Traits
 				self.QueueActivity(new DeliverResources());
 
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-				var next = new FindResources();
+				var next = new DeliverResources();
 				foreach (var n in notify)
-					n.MovingToResources(self, order.TargetLocation, next);
+					n.MovingToRefinery(self, order.TargetLocation, next);
 			}
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{
