@@ -137,6 +137,7 @@ frame:Connect(ID_FINDSELECTPREV, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)
 local markername = "commandbar.background"
 local mac = ide.osname == 'Macintosh'
 local win = ide.osname == 'Windows'
+local special = {SYMBOL = '@', LINE = ':'}
 local function navigateTo(default, selected)
   local styles = ide.config.styles
   local marker = ide:AddMarker(markername,
@@ -173,13 +174,13 @@ local function navigateTo(default, selected)
         local ed = ide:GetEditor()
 
         -- jump to symbol; tabindex has the position of the symbol
-        if text and text:find('@') and tabindex then
+        if text and text:find(special.SYMBOL) and tabindex then
           ed:GotoPos(tabindex-1)
           ed:EnsureVisibleEnforcePolicy(ed:LineFromPosition(tabindex-1))
           ed:SetFocus() -- in case the focus is on some other panel
         -- set line position in the (current) editor if requested
-        elseif text and text:find(':') then
-          local toline = tonumber(text:match(':(%d+)'))
+        elseif text and text:find(special.LINE) then
+          local toline = tonumber(text:match(special.LINE..'(%d+)'))
           if toline and ed then
             ed:GotoLine(toline-1)
             ed:EnsureVisibleEnforcePolicy(toline-1)
@@ -213,11 +214,11 @@ local function navigateTo(default, selected)
       if ed and origline then ed:MarkerDeleteAll(marker) end
 
       -- reset cached functions if no symbol search
-      if text and not text:find('@') then
+      if text and not text:find(special.SYMBOL) then
         functions = nil
         if ed and origline then ed:EnsureVisibleEnforcePolicy(origline-1) end
       end
-      if ed and text and text:find('@') then
+      if ed and text and text:find(special.SYMBOL) then
         if not functions then
           local funcs, nums = OutlineFunctions(ed), {}
           functions = {pos = {}, src = {}}
@@ -230,7 +231,7 @@ local function navigateTo(default, selected)
             functions.pos[func.name..num] = func.pos
           end
         end
-        local symbol = text:match('@(.*)')
+        local symbol = text:match(special.SYMBOL..'(.*)')
         local nums = {}
         if #symbol > 0 then
           local topscore
@@ -251,8 +252,8 @@ local function navigateTo(default, selected)
             lines[n] = {name, functions.src[name..num], functions.pos[name..num]}
           end
         end
-      elseif text and text:find(':') then
-        local toline = tonumber(text:match(':(%d+)'))
+      elseif text and text:find(special.LINE) then
+        local toline = tonumber(text:match(special.LINE..'(%d+)'))
         if toline and ed then markLine(ed, toline) end
       elseif text and #text > 0 and projdir and #projdir > 0 then
         -- populate the list of files
@@ -287,7 +288,7 @@ local function navigateTo(default, selected)
     onItem = function(t) return unpack(t) end,
     onSelection = function(t, text)
       local _, file, tabindex = unpack(t)
-      if text and text:find('@') then
+      if text and text:find(special.SYMBOL) then
         local ed = ide:GetEditor()
         if ed then markLine(ed, ed:LineFromPosition(tabindex-1)+1) end
         return
@@ -330,9 +331,9 @@ end
 frame:Connect(ID_NAVIGATETOFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function() navigateTo("") end)
 frame:Connect(ID_NAVIGATETOLINE, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function() navigateTo(":") end)
+  function() navigateTo(special.LINE) end)
 frame:Connect(ID_NAVIGATETOSYMBOL, wx.wxEVT_COMMAND_MENU_SELECTED,
   function()
     local ed = GetEditor()
-    navigateTo("@", ed and ed:ValueFromPosition(ed:GetCurrentPos()))
+    navigateTo(special.SYMBOL, ed and ed:ValueFromPosition(ed:GetCurrentPos()))
   end)
