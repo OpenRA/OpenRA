@@ -66,10 +66,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			advertiseCheckbox.OnClick = () => advertiseOnline ^= true;
 
 			allowPortForward = Game.Settings.Server.AllowPortForward;
-			var UPnPCheckbox = panel.Get<CheckboxWidget>("UPNP_CHECKBOX");
-			UPnPCheckbox.IsChecked = () => allowPortForward;
-			UPnPCheckbox.OnClick = () => allowPortForward ^= true;
-			UPnPCheckbox.IsDisabled = () => !Game.Settings.Server.NatDeviceAvailable;
+			var checkboxUPnP = panel.Get<CheckboxWidget>("UPNP_CHECKBOX");
+			checkboxUPnP.IsChecked = () => allowPortForward;
+			checkboxUPnP.OnClick = () => allowPortForward ^= true;
+			checkboxUPnP.IsDisabled = () => !Game.Settings.Server.NatDeviceAvailable;
 
 			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
 			if (passwordField != null)

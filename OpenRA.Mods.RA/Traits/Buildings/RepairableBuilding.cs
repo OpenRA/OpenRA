@@ -12,8 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common;
-using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
@@ -38,13 +38,13 @@ namespace OpenRA.Mods.RA.Traits
 		public int RepairersHash { get { return Repairers.Aggregate(0, (code, player) => code ^ Sync.HashPlayer(player)); } }
 		public List<Player> Repairers = new List<Player>();
 
-		Health Health;
+		readonly Health health;
 		public bool RepairActive = false;
 
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
 			: base(info)
 		{
-			Health = self.Trait<Health>();
+			health = self.Trait<Health>();
 		}
 
 		public void RepairBuilding(Actor self, Player player)
@@ -91,8 +91,8 @@ namespace OpenRA.Mods.RA.Traits
 				var buildingValue = self.GetSellValue();
 
 				// The cost is the same regardless of the amount of people repairing
-				var hpToRepair = Math.Min(Info.RepairStep, Health.MaxHP - Health.HP);
-				var cost = Math.Max(1, (hpToRepair * Info.RepairPercent * buildingValue) / (Health.MaxHP * 100));
+				var hpToRepair = Math.Min(Info.RepairStep, health.MaxHP - health.HP);
+				var cost = Math.Max(1, (hpToRepair * Info.RepairPercent * buildingValue) / (health.MaxHP * 100));
 
 				// TakeCash will return false if the player can't pay, and will stop him from contributing this Tick
 				var activePlayers = Repairers.Count(player => player.PlayerActor.Trait<PlayerResources>().TakeCash(cost));
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA.Traits
 				// to the length of the array
 				self.InflictDamage(self, -(hpToRepair * Info.RepairBonuses[activePlayers - 1] / 100), null);
 
-				if (Health.DamageState == DamageState.Undamaged)
+				if (health.DamageState == DamageState.Undamaged)
 				{
 					Repairers.Clear();
 					RepairActive = false;

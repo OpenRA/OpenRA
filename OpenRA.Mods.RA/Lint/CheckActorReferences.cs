@@ -16,11 +16,11 @@ namespace OpenRA.Mods.RA
 {
 	public class CheckActorReferences : ILintPass
 	{
-		Action<string> EmitError;
+		Action<string> emitError;
 
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			EmitError = emitError;
+			this.emitError = emitError;
 
 			foreach (var actorInfo in map.Rules.Actors)
 				foreach (var traitInfo in actorInfo.Value.Traits.WithInterface<ITraitInfo>())
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 			if (type == typeof(string[]))
 				return (string[])fieldInfo.GetValue(traitInfo);
 
-			EmitError("Bad type for reference on {0}.{1}. Supported types: string, string[]"
+			emitError("Bad type for reference on {0}.{1}. Supported types: string, string[]"
 				.F(traitInfo.GetType().Name, fieldInfo.Name));
 
 			return new string[] { };
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA
 			var values = GetFieldValues(traitInfo, fieldInfo);
 			foreach (var v in values)
 				if (v != null && !dict.ContainsKey(v.ToLowerInvariant()))
-					EmitError("{0}.{1}.{2}: Missing {3} `{4}`."
+					emitError("{0}.{1}.{2}: Missing {3} `{4}`."
 						.F(actorInfo.Name, traitInfo.GetType().Name, fieldInfo.Name, type, v));
 		}
 	}

@@ -26,17 +26,17 @@ namespace OpenRA.Mods.RA.AI
 		protected static void GoToRandomOwnBuilding(Squad squad)
 		{
 			var loc = RandomBuildingLocation(squad);
-			foreach (var a in squad.units)
-				squad.world.IssueOrder(new Order("Move", a, false) { TargetLocation = loc });
+			foreach (var a in squad.Units)
+				squad.World.IssueOrder(new Order("Move", a, false) { TargetLocation = loc });
 		}
 
 		protected static CPos RandomBuildingLocation(Squad squad)
 		{
-			var location = squad.bot.baseCenter;
-			var buildings = squad.world.ActorsWithTrait<Building>()
-				.Where(a => a.Actor.Owner == squad.bot.p).Select(a => a.Actor).ToArray();
+			var location = squad.Bot.BaseCenter;
+			var buildings = squad.World.ActorsWithTrait<Building>()
+				.Where(a => a.Actor.Owner == squad.Bot.Player).Select(a => a.Actor).ToArray();
 			if (buildings.Length > 0)
-				location = buildings.Random(squad.random).Location;
+				location = buildings.Random(squad.Random).Location;
 			return location;
 		}
 
@@ -82,13 +82,13 @@ namespace OpenRA.Mods.RA.AI
 			if (!squad.IsValid)
 				return false;
 
-			var u = squad.units.Random(squad.random);
-			var units = squad.world.FindActorsInCircle(u.CenterPosition, WRange.FromCells(DangerRadius)).ToList();
-			var ownBaseBuildingAround = units.Where(unit => unit.Owner == squad.bot.p && unit.HasTrait<Building>());
+			var u = squad.Units.Random(squad.Random);
+			var units = squad.World.FindActorsInCircle(u.CenterPosition, WRange.FromCells(DangerRadius)).ToList();
+			var ownBaseBuildingAround = units.Where(unit => unit.Owner == squad.Bot.Player && unit.HasTrait<Building>());
 			if (ownBaseBuildingAround.Any())
 				return false;
 
-			var enemyAroundUnit = units.Where(unit => squad.bot.p.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>());
+			var enemyAroundUnit = units.Where(unit => squad.Bot.Player.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>());
 			if (!enemyAroundUnit.Any())
 				return false;
 

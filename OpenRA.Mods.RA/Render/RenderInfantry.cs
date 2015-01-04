@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Traits
 		AnimationState state;
 
 		IRenderInfantrySequenceModifier rsm;
-		bool isModifyingSequence { get { return rsm != null && rsm.IsModifyingSequence; } }
+		bool IsModifyingSequence { get { return rsm != null && rsm.IsModifyingSequence; } }
 		bool wasModifying;
 
 		public RenderInfantry(Actor self, RenderInfantryInfo info)
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		protected virtual string NormalizeInfantrySequence(Actor self, string baseSequence)
 		{
-			var prefix = isModifyingSequence ? rsm.SequencePrefix : "";
+			var prefix = IsModifyingSequence ? rsm.SequencePrefix : "";
 
 			if (DefaultAnimation.HasSequence(prefix + baseSequence))
 				return prefix + baseSequence;
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		protected virtual bool AllowIdleAnimation(Actor self)
 		{
-			return !isModifyingSequence;
+			return !IsModifyingSequence;
 		}
 
 		public void Attacking(Actor self, Target target)

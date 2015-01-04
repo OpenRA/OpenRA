@@ -30,12 +30,12 @@ namespace OpenRA.Mods.RA.Traits
 	class Repairable : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		readonly Actor self;
-		readonly Health Health;
+		readonly Health health;
 
 		public Repairable(Actor self)
 		{
 			this.self = self;
-			Health = self.Trait<Health>();
+			health = self.Trait<Health>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA.Traits
 		bool CanRepair()
 		{
 			var li = self.TraitOrDefault<LimitedAmmo>();
-			return Health.DamageState > DamageState.Undamaged || (li != null && !li.FullAmmo());
+			return health.DamageState > DamageState.Undamaged || (li != null && !li.FullAmmo());
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

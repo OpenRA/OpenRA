@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				if (lp != null)
 				{
-					Action<Player> StartBlinking = player =>
+					Action<Player> startBlinking = player =>
 					{
 						if (player == world.LocalPlayer)
 							blinking = true;
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					var mo = lp.PlayerActor.TraitOrDefault<MissionObjectives>();
 
 					if (mo != null)
-						mo.ObjectiveAdded += StartBlinking;
+						mo.ObjectiveAdded += startBlinking;
 				}
 			}
 

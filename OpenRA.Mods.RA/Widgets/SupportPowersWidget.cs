@@ -183,7 +183,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (clicked != null)
 			{
 				if (!clicked.Power.Active)
-					Sound.PlayToPlayer(spm.self.Owner, clicked.Power.Info.InsufficientPowerSound);
+					Sound.PlayToPlayer(spm.Self.Owner, clicked.Power.Info.InsufficientPowerSound);
 
 				clicked.Power.Target();
 			}

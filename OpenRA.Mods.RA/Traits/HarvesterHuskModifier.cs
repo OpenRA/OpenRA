@@ -24,15 +24,15 @@ namespace OpenRA.Mods.RA.Traits
 
 	public class HarvesterHuskModifier : IHuskModifier
 	{
-		HarvesterHuskModifierInfo Info;
+		readonly HarvesterHuskModifierInfo info;
 		public HarvesterHuskModifier(HarvesterHuskModifierInfo info)
 		{
-			Info = info;
+			this.info = info;
 		}
 
 		public string HuskActor(Actor self)
 		{
-			return self.Trait<Harvester>().Fullness > Info.FullnessThreshold ? Info.FullHuskActor : null;
+			return self.Trait<Harvester>().Fullness > info.FullnessThreshold ? info.FullHuskActor : null;
 		}
 	}
 }

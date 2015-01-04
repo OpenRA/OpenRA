@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Traits
 		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync,
 		INotifyResourceClaimLost, INotifyIdle, INotifyBlockingMove
 	{
-		readonly HarvesterInfo Info;
+		readonly HarvesterInfo info;
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 
 		[Sync] public Actor OwnerLinkedProc = null;
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public Harvester(Actor self, HarvesterInfo info)
 		{
-			Info = info;
+			this.info = info;
 			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
 		}
 
@@ -107,8 +107,8 @@ namespace OpenRA.Mods.RA.Traits
 
 		bool IsAcceptableProcType(Actor proc)
 		{
-			return Info.DeliveryBuildings.Length == 0 ||
-				Info.DeliveryBuildings.Contains(proc.Info.Name);
+			return info.DeliveryBuildings.Length == 0 ||
+				info.DeliveryBuildings.Contains(proc.Info.Name);
 		}
 
 		Actor ClosestProc(Actor self, Actor ignore)
@@ -146,9 +146,9 @@ namespace OpenRA.Mods.RA.Traits
 			return null;
 		}
 
-		public bool IsFull { get { return contents.Values.Sum() == Info.Capacity; } }
+		public bool IsFull { get { return contents.Values.Sum() == info.Capacity; } }
 		public bool IsEmpty { get { return contents.Values.Sum() == 0; } }
-		public int Fullness { get { return contents.Values.Sum() * 100 / Info.Capacity; } }
+		public int Fullness { get { return contents.Values.Sum() * 100 / info.Capacity; } }
 
 		public void AcceptResource(ResourceType type)
 		{
@@ -244,7 +244,7 @@ namespace OpenRA.Mods.RA.Traits
 				if (--contents[type] == 0)
 					contents.Remove(type);
 
-				currentUnloadTicks = Info.UnloadTicksPerBale;
+				currentUnloadTicks = info.UnloadTicksPerBale;
 			}
 
 			return contents.Count == 0;
@@ -419,7 +419,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		PipType GetPipAt(int i)
 		{
-			var n = i * Info.Capacity / Info.PipCount;
+			var n = i * info.Capacity / info.PipCount;
 
 			foreach (var rt in contents)
 				if (n < rt.Value)
@@ -432,7 +432,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			var numPips = Info.PipCount;
+			var numPips = info.PipCount;
 
 			for (var i = 0; i < numPips; i++)
 				yield return GetPipAt(i);
@@ -442,7 +442,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public int GetSpeedModifier()
 		{
-			return 100 - (100 - Info.FullyLoadedSpeed) * contents.Values.Sum() / Info.Capacity;
+			return 100 - (100 - info.FullyLoadedSpeed) * contents.Values.Sum() / info.Capacity;
 		}
 
 		class HarvestOrderTargeter : IOrderTargeter

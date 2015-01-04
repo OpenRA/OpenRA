@@ -175,7 +175,7 @@ namespace OpenRA.Mods.D2k.Widgets
 				if (mi.Button == MouseButton.Left)
 				{
 					if (!manager.Powers[key].Active)
-						Sound.PlayToPlayer(manager.self.Owner, manager.Powers[key].Info.InsufficientPowerSound);
+						Sound.PlayToPlayer(manager.Self.Owner, manager.Powers[key].Info.InsufficientPowerSound);
 					manager.Target(key);
 				}
 			};

@@ -187,6 +187,8 @@ check:
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.GameMonitor
 	@echo "Checking for code style violations in OpenRA.Mods.Common..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Common
+	@echo "Checking for code style violations in OpenRA.Mods.RA..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.RA
 	@echo "Checking for code style violations in OpenRA.Mods.Cnc..."
 	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.Cnc
 	@echo "Checking for code style violations in OpenRA.Mods.D2k..."

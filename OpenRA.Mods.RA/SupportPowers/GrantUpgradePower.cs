@@ -44,8 +44,8 @@ namespace OpenRA.Mods.RA.Traits
 
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
-			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
-			return new SelectTarget(self.World, order, manager, this);
+			Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
+			return new SelectTarget(Self.World, order, manager, this);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -78,14 +78,14 @@ namespace OpenRA.Mods.RA.Traits
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
 			var range = info.Range;
-			var tiles = self.World.Map.FindTilesInCircle(xy, range);
+			var tiles = Self.World.Map.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
-				units.AddRange(self.World.ActorMap.GetUnitsAt(t));
+				units.AddRange(Self.World.ActorMap.GetUnitsAt(t));
 
 			return units.Distinct().Where(a =>
 			{
-				if (!a.Owner.IsAlliedWith(self.Owner))
+				if (!a.Owner.IsAlliedWith(Self.Owner))
 					return false;
 	
 				var um = a.TraitOrDefault<UpgradeManager>();
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				world.CancelInputMode();
 				if (mi.Button == MouseButton.Left && power.UnitsInRange(xy).Any())
-					yield return new Order(order, manager.self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
+					yield return new Order(order, manager.Self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
 			}
 
 			public void Tick(World world)

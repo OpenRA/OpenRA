@@ -28,8 +28,8 @@ namespace OpenRA.Mods.RA.Effects
 
 	class TeslaZap : IEffect
 	{
-		readonly ProjectileArgs Args;
-		readonly TeslaZapInfo Info;
+		readonly ProjectileArgs args;
+		readonly TeslaZapInfo info;
 		TeslaZapRenderable zap;
 		int timeUntilRemove = 2; // # of frames
 		bool doneDamage = false;
@@ -37,8 +37,8 @@ namespace OpenRA.Mods.RA.Effects
 
 		public TeslaZap(TeslaZapInfo info, ProjectileArgs args)
 		{
-			Args = args;
-			Info = info;
+			this.args = args;
+			this.info = info;
 		}
 
 		public void Tick(World world)
@@ -48,8 +48,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (!doneDamage)
 			{
-				var pos = Args.GuidedTarget.IsValidFor(Args.SourceActor) ? Args.GuidedTarget.CenterPosition : Args.PassiveTarget;
-				Args.Weapon.Impact(Target.FromPos(pos), Args.SourceActor, Args.DamageModifiers);
+				var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
+				args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
 				doneDamage = true;
 			}
 		}
@@ -58,8 +58,8 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			if (!initialized)
 			{
-				var pos = Args.GuidedTarget.IsValidFor(Args.SourceActor) ? Args.GuidedTarget.CenterPosition : Args.PassiveTarget;
-				zap = new TeslaZapRenderable(Args.Source, 0, pos - Args.Source, Info.Image, Info.BrightZaps, Info.DimZaps, Info.Palette);
+				var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
+				zap = new TeslaZapRenderable(args.Source, 0, pos - args.Source, info.Image, info.BrightZaps, info.DimZaps, info.Palette);
 			}
 
 			yield return zap;

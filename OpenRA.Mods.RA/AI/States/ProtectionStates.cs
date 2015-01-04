@@ -13,7 +13,7 @@ namespace OpenRA.Mods.RA.AI
 	class UnitsForProtectionIdleState : GroundStateBase, IState
 	{
 		public void Activate(Squad owner) { }
-		public void Tick(Squad owner) { owner.fsm.ChangeState(owner, new UnitsForProtectionAttackState(), true); }
+		public void Tick(Squad owner) { owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionAttackState(), true); }
 		public void Deactivate(Squad owner) { }
 	}
 
@@ -28,17 +28,17 @@ namespace OpenRA.Mods.RA.AI
 
 			if (!owner.TargetIsValid)
 			{
-				owner.Target = owner.bot.FindClosestEnemy(owner.CenterPosition, WRange.FromCells(8));
+				owner.TargetActor = owner.Bot.FindClosestEnemy(owner.CenterPosition, WRange.FromCells(8));
 
-				if (owner.Target == null)
+				if (owner.TargetActor == null)
 				{
-					owner.fsm.ChangeState(owner, new UnitsForProtectionFleeState(), true);
+					owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionFleeState(), true);
 					return;
 				}
 			}
 
-			foreach (var a in owner.units)
-				owner.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.Target.Location });
+			foreach (var a in owner.Units)
+				owner.World.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.TargetActor.Location });
 		}
 
 		public void Deactivate(Squad owner) { }
@@ -54,9 +54,9 @@ namespace OpenRA.Mods.RA.AI
 				return;
 
 			GoToRandomOwnBuilding(owner);
-			owner.fsm.ChangeState(owner, new UnitsForProtectionIdleState(), true);
+			owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionIdleState(), true);
 		}
 
-		public void Deactivate(Squad owner) { owner.units.Clear(); }
+		public void Deactivate(Squad owner) { owner.Units.Clear(); }
 	}
 }
