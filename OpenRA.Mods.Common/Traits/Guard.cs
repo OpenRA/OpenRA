@@ -14,15 +14,14 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The player can give this unit the order to follow and protect friendly units with the Guardable trait.")]
-	class GuardInfo : TraitInfo<Guard> { }
+	public class GuardInfo : TraitInfo<Guard> { }
 
-	class Guard : IResolveOrder, IOrderVoice
+	public class Guard : IResolveOrder, IOrderVoice
 	{
 		public void ResolveOrder(Actor self, Order order)
 		{
@@ -48,7 +47,7 @@ namespace OpenRA.Mods.RA.Traits
 		}
 	}
 
-	class GuardOrderGenerator : IOrderGenerator
+	public class GuardOrderGenerator : IOrderGenerator
 	{
 		readonly IEnumerable<Actor> subjects;
 
@@ -104,12 +103,4 @@ namespace OpenRA.Mods.RA.Traits
 					a.HasTrait<Guardable>());
 		}
 	}
-
-	[Desc("This unit can be guarded (followed and protected) by a Guard unit.")]
-	class GuardableInfo : TraitInfo<Guardable>
-	{
-		public readonly int Range = 2;
-	}
-
-	class Guardable { }
 }
