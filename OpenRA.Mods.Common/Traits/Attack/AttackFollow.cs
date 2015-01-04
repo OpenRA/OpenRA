@@ -27,14 +27,6 @@ namespace OpenRA.Mods.Common.Traits
 		public AttackFollow(Actor self, AttackFollowInfo info)
 			: base(self, info) { }
 
-		protected override bool CanAttack(Actor self, Target target)
-		{
-			if (!target.IsValidFor(self))
-				return false;
-
-			return base.CanAttack(self, target);
-		}
-
 		public virtual void Tick(Actor self)
 		{
 			DoAttack(self, Target);
