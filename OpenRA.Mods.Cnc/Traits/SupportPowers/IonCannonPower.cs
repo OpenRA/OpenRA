@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
-			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
+			Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
 			return new SelectGenericPowerTarget(order, manager, "ioncannon", MouseButton.Left);
 		}
 

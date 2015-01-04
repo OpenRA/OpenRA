@@ -41,12 +41,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			PopulateObjectivesList(mo, objectivesPanel, template);
 
-			Action<Player> RedrawObjectives = player =>
+			Action<Player> redrawObjectives = player =>
 			{
 				if (player == lp)
 					PopulateObjectivesList(mo, objectivesPanel, template);
 			};
-			mo.ObjectiveAdded += RedrawObjectives;
+			mo.ObjectiveAdded += redrawObjectives;
 		}
 
 		void PopulateObjectivesList(MissionObjectives mo, ScrollPanelWidget parent, ContainerWidget template)

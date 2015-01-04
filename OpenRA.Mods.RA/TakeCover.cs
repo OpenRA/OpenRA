@@ -34,9 +34,9 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		readonly TakeCoverInfo info;
 		[Sync] int remainingProneTime = 0;
-		bool isProne { get { return remainingProneTime > 0; } }
+		bool IsProne { get { return remainingProneTime > 0; } }
 
-		public bool IsModifyingSequence { get { return isProne; } }
+		public bool IsModifyingSequence { get { return IsProne; } }
 		public string SequencePrefix { get { return info.ProneSequencePrefix; } }
 
 		public TakeCover(ActorInitializer init, TakeCoverInfo info)
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Traits
 			/* Don't go prone when healed */
 			if (e.Damage > 0 && (e.Warhead == null || !e.Warhead.PreventProne))
 			{
-				if (!isProne)
+				if (!IsProne)
 					localOffset = info.ProneOffset;
 
 				remainingProneTime = info.ProneTime;
@@ -61,18 +61,18 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			base.Tick(self);
 
-			if (isProne && --remainingProneTime == 0)
+			if (IsProne && --remainingProneTime == 0)
 				localOffset = WVec.Zero;
 		}
 
 		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)
 		{
-			return isProne && warhead != null ? warhead.ProneModifier : 100;
+			return IsProne && warhead != null ? warhead.ProneModifier : 100;
 		}
 
 		public int GetSpeedModifier()
 		{
-			return isProne ? info.SpeedModifier : 100;
+			return IsProne ? info.SpeedModifier : 100;
 		}
 	}
 }

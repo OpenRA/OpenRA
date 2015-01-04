@@ -20,40 +20,40 @@ namespace OpenRA.Mods.RA.AI
 
 	public class Squad
 	{
-		public List<Actor> units = new List<Actor>();
-		public SquadType type;
+		public List<Actor> Units = new List<Actor>();
+		public SquadType Type;
 
-		internal World world;
-		internal HackyAI bot;
-		internal MersenneTwister random;
+		internal World World;
+		internal HackyAI Bot;
+		internal MersenneTwister Random;
 
-		internal Target target;
-		internal StateMachine fsm;
+		internal Target Target;
+		internal StateMachine FuzzyStateMachine;
 
-		internal AttackOrFleeFuzzy attackOrFleeFuzzy = new AttackOrFleeFuzzy();
+		internal AttackOrFleeFuzzy AttackOrFleeFuzzy = new AttackOrFleeFuzzy();
 
 		public Squad(HackyAI bot, SquadType type) : this(bot, type, null) { }
 
 		public Squad(HackyAI bot, SquadType type, Actor target)
 		{
-			this.bot = bot;
-			this.world = bot.world;
-			this.random = bot.random;
-			this.type = type;
-			this.target = OpenRA.Traits.Target.FromActor(target);
-			fsm = new StateMachine();
+			Bot = bot;
+			World = bot.World;
+			Random = bot.Random;
+			Type = type;
+			Target = Target.FromActor(target);
+			FuzzyStateMachine = new StateMachine();
 
 			switch (type)
 			{
 				case SquadType.Assault:
 				case SquadType.Rush:
-					fsm.ChangeState(this, new GroundUnitsIdleState(), true);
+					FuzzyStateMachine.ChangeState(this, new GroundUnitsIdleState(), true);
 					break;
 				case SquadType.Air:
-					fsm.ChangeState(this, new AirIdleState(), true);
+					FuzzyStateMachine.ChangeState(this, new AirIdleState(), true);
 					break;
 				case SquadType.Protection:
-					fsm.ChangeState(this, new UnitsForProtectionIdleState(), true);
+					FuzzyStateMachine.ChangeState(this, new UnitsForProtectionIdleState(), true);
 					break;
 			}
 		}
@@ -61,22 +61,22 @@ namespace OpenRA.Mods.RA.AI
 		public void Update()
 		{
 			if (IsValid)
-				fsm.Update(this);
+				FuzzyStateMachine.Update(this);
 		}
 
-		public bool IsValid { get { return units.Any(); } }
+		public bool IsValid { get { return Units.Any(); } }
 
-		public Actor Target
+		public Actor TargetActor
 		{
-			get { return target.Actor; }
-			set { target = OpenRA.Traits.Target.FromActor(value); }
+			get { return Target.Actor; }
+			set { Target = Target.FromActor(value); }
 		}
 
 		public bool TargetIsValid
 		{
-			get { return target.IsValidFor(units.FirstOrDefault()) && !target.Actor.HasTrait<Husk>(); }
+			get { return Target.IsValidFor(Units.FirstOrDefault()) && !Target.Actor.HasTrait<Husk>(); }
 		}
 
-		public WPos CenterPosition { get { return units.Select(u => u.CenterPosition).Average(); } }
+		public WPos CenterPosition { get { return Units.Select(u => u.CenterPosition).Average(); } }
 	}
 }

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Traits
 
 	class GpsWatcher : ISync, IFogVisibilityModifier
 	{
-		[Sync] bool Launched = false;
+		[Sync] bool launched = false;
 		[Sync] public bool GrantedAllies = false;
 		[Sync] public bool Granted = false;
 		Player owner;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Traits
 			atek.World.Add(new DelayedAction(((GpsPowerInfo)info).RevealDelay * 25,
 					() =>
 					{
-						Launched = true;
+						launched = true;
 						RefreshGps(atek);
 					}));
 		}
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		void RefreshGranted()
 		{
-			Granted = actors.Count > 0 && Launched;
+			Granted = actors.Count > 0 && launched;
 			GrantedAllies = owner.World.ActorsWithTrait<GpsWatcher>().Any(p => p.Actor.Owner.IsAlliedWith(owner) && p.Trait.Granted);
 
 			if (Granted || GrantedAllies)

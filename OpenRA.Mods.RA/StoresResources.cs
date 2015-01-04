@@ -26,22 +26,22 @@ namespace OpenRA.Mods.RA
 
 	class StoresResources : IPips, INotifyOwnerChanged, INotifyCapture, INotifyKilled, IExplodeModifier, IStoreResources, ISync
 	{
-		readonly StoresResourcesInfo Info;
+		readonly StoresResourcesInfo info;
 
-		[Sync] public int Stored { get { return Player.ResourceCapacity == 0 ? 0 : Info.Capacity * Player.Resources / Player.ResourceCapacity; } }
+		[Sync] public int Stored { get { return player.ResourceCapacity == 0 ? 0 : info.Capacity * player.Resources / player.ResourceCapacity; } }
 
-		PlayerResources Player;
+		PlayerResources player;
 		public StoresResources(Actor self, StoresResourcesInfo info)
 		{
-			Player = self.Owner.PlayerActor.Trait<PlayerResources>();
-			Info = info;
+			player = self.Owner.PlayerActor.Trait<PlayerResources>();
+			this.info = info;
 		}
 
-		public int Capacity { get { return Info.Capacity; } }
+		public int Capacity { get { return info.Capacity; } }
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			Player = newOwner.PlayerActor.Trait<PlayerResources>();
+			player = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
@@ -53,14 +53,14 @@ namespace OpenRA.Mods.RA
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			Player.TakeResources(Stored); // lose the stored resources
+			player.TakeResources(Stored); // lose the stored resources
 		}
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			return Enumerable.Range(0, Info.PipCount).Select(i =>
-				Player.Resources * Info.PipCount > i * Player.ResourceCapacity
-				? Info.PipColor : PipType.Transparent);
+			return Enumerable.Range(0, info.PipCount).Select(i =>
+				player.Resources * info.PipCount > i * player.ResourceCapacity
+				? info.PipColor : PipType.Transparent);
 		}
 
 		public bool ShouldExplode(Actor self) { return Stored > 0; }

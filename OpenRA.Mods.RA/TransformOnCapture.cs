@@ -24,16 +24,16 @@ namespace OpenRA.Mods.RA
 
 	class TransformOnCapture : INotifyCapture
 	{
-		TransformOnCaptureInfo Info;
+		readonly TransformOnCaptureInfo info;
 
-		public TransformOnCapture(TransformOnCaptureInfo info) { Info = info; }
+		public TransformOnCapture(TransformOnCaptureInfo info) { this.info = info; }
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			var facing = self.TraitOrDefault<IFacing>();
-			var transform = new Transform(self, Info.IntoActor) { ForceHealthPercentage = Info.ForceHealthPercentage };
+			var transform = new Transform(self, info.IntoActor) { ForceHealthPercentage = info.ForceHealthPercentage };
 			if (facing != null) transform.Facing = facing.Facing;
-			transform.SkipMakeAnims = Info.SkipMakeAnims;
+			transform.SkipMakeAnims = info.SkipMakeAnims;
 			self.CancelActivity();
 			self.QueueActivity(transform);
 		}

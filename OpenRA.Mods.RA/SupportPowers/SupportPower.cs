@@ -49,14 +49,14 @@ namespace OpenRA.Mods.RA.Traits
 
 	public class SupportPower
 	{
-		public readonly Actor self;
+		public readonly Actor Self;
 		public readonly SupportPowerInfo Info;
 		protected RadarPing ping;
 
 		public SupportPower(Actor self, SupportPowerInfo info)
 		{
 			Info = info;
-			this.self = self;
+			Self = self;
 		}
 
 		public virtual void Charging(Actor self, string key)
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public virtual IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
-			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
+			Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
 			return new SelectGenericPowerTarget(order, manager, "ability", MouseButton.Left);
 		}
 	}
