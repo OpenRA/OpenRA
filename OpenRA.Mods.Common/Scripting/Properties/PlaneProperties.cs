@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Fly an attack against the target actor.")]
 		public void Attack(Actor target)
 		{
-			Self.QueueActivity(new FlyAttack(Target.FromActor(target)));
+			Self.QueueActivity(new FlyAttack(Self, Target.FromActor(target)));
 		}
 	}
 }

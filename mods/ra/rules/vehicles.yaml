@@ -419,8 +419,9 @@ MNLY.AP:
 	Minelayer:
 		Mine: MINP
 	MineImmune:
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 5
+		RearmSound: minelay1.aud
 	DetectCloaked:
 		Range: 5
 		CloakTypes: Mine
@@ -453,8 +454,9 @@ MNLY.AT:
 	Minelayer:
 		Mine: MINV
 	MineImmune:
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 5
+		RearmSound: minelay1.aud
 	DetectCloaked:
 		Range: 5
 		CloakTypes: Mine

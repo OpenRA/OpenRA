@@ -2273,7 +2273,7 @@ Rules:
 	MIG:
 		Buildable:
 			Prerequisites: ~afld
-		LimitedAmmo:
+		AmmoPool:
 			Ammo: 2
 	HELI:
 		Buildable:

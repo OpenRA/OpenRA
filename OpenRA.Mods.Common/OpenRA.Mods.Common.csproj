@@ -320,7 +320,7 @@
     <Compile Include="Traits\Invulnerable.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\KillsSelf.cs" />
-    <Compile Include="Traits\LimitedAmmo.cs" />
+    <Compile Include="Traits\AmmoPool.cs" />
     <Compile Include="Traits\Mobile.cs" />
     <Compile Include="Traits\Modifiers\DisabledOverlay.cs" />
     <Compile Include="Traits\Modifiers\FrozenUnderFog.cs" />
@@ -364,7 +364,6 @@
     <Compile Include="Traits\ProximityCaptor.cs" />
     <Compile Include="Traits\ProximityCapturable.cs" />
     <Compile Include="Traits\RadarColorFromTerrain.cs" />
-    <Compile Include="Traits\Reloads.cs" />
     <Compile Include="Traits\Render\Hovers.cs" />
     <Compile Include="Traits\Render\RenderBuilding.cs" />
     <Compile Include="Traits\Render\RenderBuildingCharge.cs" />
