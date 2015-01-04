@@ -79,7 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\CaptureActor.cs" />
-    <Compile Include="Activities\Hunt.cs" />
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
@@ -166,14 +165,10 @@
     <Compile Include="Render\RenderBuildingWall.cs" />
     <Compile Include="Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Render\RenderHarvester.cs" />
-    <Compile Include="Render\RenderInfantry.cs" />
     <Compile Include="Render\RenderDisguise.cs" />
     <Compile Include="Render\RenderLandingCraft.cs" />
-    <Compile Include="Render\WithBuildingExplosion.cs" />
     <Compile Include="Repairable.cs" />
     <Compile Include="RepairableNear.cs" />
-    <Compile Include="ScaredyCat.cs" />
-    <Compile Include="SpawnMPUnits.cs" />
     <Compile Include="Disguise.cs" />
     <Compile Include="StoresResources.cs" />
     <Compile Include="Traits\SupplyTruck.cs" />
@@ -185,7 +180,6 @@
     <Compile Include="SupportPowers\SupportPower.cs" />
     <Compile Include="SupportPowers\SupportPowerChargeBar.cs" />
     <Compile Include="SupportPowers\SupportPowerManager.cs" />
-    <Compile Include="TakeCover.cs" />
     <Compile Include="ThrowsParticle.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\Air\TargetableAircraft.cs" />

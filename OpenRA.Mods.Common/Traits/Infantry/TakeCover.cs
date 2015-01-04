@@ -9,10 +9,9 @@
 #endregion
 
 using OpenRA.GameRules;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Make the unit go prone when under attack, in an attempt to reduce damage.")]
 	public class TakeCoverInfo : TurretedInfo

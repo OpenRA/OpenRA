@@ -9,10 +9,9 @@
 #endregion
 
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Display explosions over the building footprint when it is destroyed.")]
 	class WithBuildingExplosionInfo : ITraitInfo, Requires<BuildingInfo>
