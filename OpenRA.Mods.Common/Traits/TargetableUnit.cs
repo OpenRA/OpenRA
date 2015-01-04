@@ -9,10 +9,9 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can be targeted.")]
 	public class TargetableUnitInfo : ITraitInfo, ITargetableInfo

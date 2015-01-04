@@ -11,11 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Lets the actor spread resources around it in a circle.")]
 	class SeedsResourceInfo : ITraitInfo
