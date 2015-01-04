@@ -1550,7 +1550,7 @@ heavyo:
 		Start: 4089
 		Offset: -30,-24
 
-palacec: # TODO: unused
+palacec:
 	idle: DATA
 		Start: 3004
 		Offset: -48,48
@@ -1577,7 +1577,7 @@ palacec: # TODO: unused
 		Offset: -48,48
 		Tick: 100
 
-starportc: # TODO: unused
+starportc:
 	idle: DATA
 		Start: 2999
 		Offset: -48,48
@@ -1621,7 +1621,7 @@ starportc: # TODO: unused
 		Start: 4020
 		Offset: -30,-24
 
-heavyc: # TODO: unused
+heavyc:
 	idle: DATA
 		Start: 3001
 		Length: 1
@@ -1664,7 +1664,7 @@ heavyc: # TODO: unused
 		Start: 4020
 		Offset: -30,-24
 
-conyardc: # TODO: unused
+conyardc:
 	idle: DATA
 		Start: 3006
 		Offset: -48,64
