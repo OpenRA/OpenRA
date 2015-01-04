@@ -30,10 +30,10 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	public class WithCargo : IRenderModifier
 	{
-		Cargo cargo;
-		IFacing facing;
-		WithCargoInfo cargoInfo;
-		IBodyOrientation body;
+		readonly Cargo cargo;
+		readonly IFacing facing;
+		readonly WithCargoInfo cargoInfo;
+		readonly IBodyOrientation body;
 
 		public WithCargo(Actor self, WithCargoInfo info)
 		{
