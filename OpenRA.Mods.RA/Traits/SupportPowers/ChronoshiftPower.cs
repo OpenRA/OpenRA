@@ -75,17 +75,17 @@ namespace OpenRA.Mods.RA.Traits
 
 			using (var se = sourceTiles.GetEnumerator())
 			using (var de = destTiles.GetEnumerator())
-			while (se.MoveNext() && de.MoveNext())
-			{
-				var a = se.Current;
-				var b = de.Current;
+				while (se.MoveNext() && de.MoveNext())
+				{
+					var a = se.Current;
+					var b = de.Current;
 
-				if (!Self.Owner.Shroud.IsExplored(a) || !Self.Owner.Shroud.IsExplored(b))
-					return false;
+					if (!Self.Owner.Shroud.IsExplored(a) || !Self.Owner.Shroud.IsExplored(b))
+						return false;
 
-				if (Self.World.Map.GetTerrainIndex(a) != Self.World.Map.GetTerrainIndex(b))
-					return false;
-			}
+					if (Self.World.Map.GetTerrainIndex(a) != Self.World.Map.GetTerrainIndex(b))
+						return false;
+				}
 
 			return true;
 		}
@@ -242,7 +242,7 @@ namespace OpenRA.Mods.RA.Traits
 					{
 						var targetCell = unit.Location + (xy - sourceLocation);
 						var canEnter = manager.Self.Owner.Shroud.IsExplored(targetCell) &&
-						                unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell);
+							unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell);
 						var tile = canEnter ? validTile : invalidTile;
 						yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(targetCell), WVec.Zero, -511, pal, 1f, true);
 					}

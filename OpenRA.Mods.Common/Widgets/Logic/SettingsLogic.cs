@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var textBox = key.Get<HotkeyEntryWidget>("HOTKEY");
 			textBox.Key = (Hotkey)field.GetValue(ks);
-			textBox.OnLoseFocus = () =>	field.SetValue(ks, textBox.Key);
+			textBox.OnLoseFocus = () => field.SetValue(ks, textBox.Key);
 			parent.AddChild(key);
 		}
 
@@ -536,8 +536,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => s.MouseScroll == options[o],
-				                                  () => s.MouseScroll = options[o]);
+					() => s.MouseScroll == options[o],
+					() => s.MouseScroll = options[o]);
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};

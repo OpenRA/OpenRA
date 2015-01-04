@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			renderSimple = self.Trait<RenderSimple>();
 		}
-		
+
 		public void BuildingPlaced(Actor self)
 		{
 			renderSimple.PlayCustomAnim(self, info.Sequence);

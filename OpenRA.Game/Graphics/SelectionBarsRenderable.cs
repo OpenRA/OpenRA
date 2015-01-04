@@ -83,7 +83,7 @@ namespace OpenRA.Graphics
 				var isAlly = actor.Owner.IsAlliedWith(actor.World.LocalPlayer)
 					|| (actor.EffectiveOwner != null && actor.EffectiveOwner.Disguised
 					&& actor.World.LocalPlayer.IsAlliedWith(actor.EffectiveOwner.Owner));
-				return isAlly ?	Color.LimeGreen : actor.Owner.NonCombatant ? Color.Tan : Color.Red;
+				return isAlly ? Color.LimeGreen : actor.Owner.NonCombatant ? Color.Tan : Color.Red;
 			}
 			else
 				return health.DamageState == DamageState.Critical ? Color.Red :

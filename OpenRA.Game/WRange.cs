@@ -63,16 +63,16 @@ namespace OpenRA
 
 			switch (components.Length)
 			{
-			case 2:
-				if (!Exts.TryParseIntegerInvariant(components[0], out cell) ||
-					!Exts.TryParseIntegerInvariant(components[1], out subcell))
+				case 2:
+					if (!Exts.TryParseIntegerInvariant(components[0], out cell) ||
+						!Exts.TryParseIntegerInvariant(components[1], out subcell))
 						return false;
-				break;
-			case 1:
-				if (!Exts.TryParseIntegerInvariant(components[0], out subcell))
-					return false;
-				break;
-			default: return false;
+					break;
+				case 1:
+					if (!Exts.TryParseIntegerInvariant(components[0], out subcell))
+						return false;
+					break;
+				default: return false;
 			}
 
 			// Propagate sign to fractional part

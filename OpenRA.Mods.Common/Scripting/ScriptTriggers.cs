@@ -18,8 +18,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
 {
-	public enum Trigger { OnIdle, OnDamaged, OnKilled, OnProduction, OnOtherProduction, OnPlayerWon, OnPlayerLost,
-		OnObjectiveAdded, OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnInfiltrated, OnAddedToWorld, OnRemovedFromWorld }
+	public enum Trigger
+	{
+		OnIdle, OnDamaged, OnKilled, OnProduction, OnOtherProduction, OnPlayerWon, OnPlayerLost,
+		OnObjectiveAdded, OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnInfiltrated, OnAddedToWorld, OnRemovedFromWorld
+	}
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
 	public class ScriptTriggersInfo : ITraitInfo

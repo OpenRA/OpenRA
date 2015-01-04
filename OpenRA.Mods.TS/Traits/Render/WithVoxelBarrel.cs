@@ -65,8 +65,8 @@ namespace OpenRA.Mods.TS.Traits
 
 			var rv = self.Trait<RenderVoxels>();
 			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, info.Sequence),
-			                          () => BarrelOffset(), () => BarrelRotation(),
-			                          () => false, () => 0));
+				() => BarrelOffset(), () => BarrelRotation(),
+				() => false, () => 0));
 		}
 
 		WVec BarrelOffset()

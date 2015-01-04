@@ -268,9 +268,10 @@ namespace OpenRA.Widgets
 					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom));
 			}
 
-			var color = disabled ? TextColorDisabled
-			            : IsValid() ? TextColor
-			            : TextColorInvalid;
+			var color =
+				disabled ? TextColorDisabled
+				: IsValid() ? TextColor
+				: TextColorInvalid;
 			font.DrawText(apparentText, textPos, color);
 
 			if (showCursor && HasKeyboardFocus)

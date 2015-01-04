@@ -19,7 +19,8 @@ namespace OpenRA.Mods.Common.Scripting
 	public class MediaGlobal : ScriptGlobal
 	{
 		World world;
-		public MediaGlobal(ScriptContext context) : base(context)
+		public MediaGlobal(ScriptContext context)
+			: base(context)
 		{
 			world = context.World;
 		}

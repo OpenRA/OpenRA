@@ -217,14 +217,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					if (title != null)
 					{
 						title.GetText = () => game.Name;
-						title.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : title.TextColor;
+						title.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : title.TextColor;
 					}
 
 					var maptitle = item.GetOrNull<LabelWidget>("MAP");
 					if (title != null)
 					{
 						maptitle.GetText = () => map.Title;
-						maptitle.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : maptitle.TextColor;
+						maptitle.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : maptitle.TextColor;
 					}
 
 					var players = item.GetOrNull<LabelWidget>("PLAYERS");
@@ -232,7 +232,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{
 						players.GetText = () => "{0} / {1}".F(game.Players, game.MaxPlayers)
 							+ (game.Spectators > 0 ? "  ({0} Spectator{1})".F(game.Spectators, game.Spectators > 1 ? "s" : "") : "");
-						players.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : players.TextColor;
+						players.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : players.TextColor;
 					}
 
 					var state = item.GetOrNull<LabelWidget>("STATE");
@@ -254,7 +254,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{
 						var cachedServerLocation = LobbyUtils.LookupCountry(game.Address.Split(':')[0]);
 						location.GetText = () => cachedServerLocation;
-						location.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray  : location.TextColor;
+						location.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : location.TextColor;
 					}
 
 					rows.Add(item);

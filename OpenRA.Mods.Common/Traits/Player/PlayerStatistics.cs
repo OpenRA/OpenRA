@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public double MapControl;
 		public int OrderCount;
 
-		public int EarnedThisMinute 
+		public int EarnedThisMinute
 		{
 			get
 			{

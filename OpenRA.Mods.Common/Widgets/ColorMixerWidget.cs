@@ -171,25 +171,25 @@ namespace OpenRA.Mods.Common.Widgets
 
 			switch (mi.Event)
 			{
-			case MouseInputEvent.Up:
-				isMoving = false;
-				YieldMouseFocus(mi);
-				break;
+				case MouseInputEvent.Up:
+					isMoving = false;
+					YieldMouseFocus(mi);
+					break;
 
-			case MouseInputEvent.Down:
-				isMoving = true;
-				SetValueFromPx(mi.Location - RenderOrigin);
-				OnChange();
-				break;
-
-			case MouseInputEvent.Move:
-				if (isMoving)
-				{
+				case MouseInputEvent.Down:
+					isMoving = true;
 					SetValueFromPx(mi.Location - RenderOrigin);
 					OnChange();
-				}
+					break;
 
-				break;
+				case MouseInputEvent.Move:
+					if (isMoving)
+					{
+						SetValueFromPx(mi.Location - RenderOrigin);
+						OnChange();
+					}
+
+					break;
 			}
 
 			return true;

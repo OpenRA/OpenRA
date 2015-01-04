@@ -53,7 +53,7 @@ namespace OpenRA.Renderer.Sdl2
 			Log.Write("graphics", message);
 			Log.Write("graphics", "");
 			Log.Write("graphics", "OpenGL Information:");
-			Log.Write("graphics",  "Vendor: {0}", GL.GetString(StringName.Vendor));
+			Log.Write("graphics", "Vendor: {0}", GL.GetString(StringName.Vendor));
 			if (GL.GetString(StringName.Vendor).Contains("Microsoft"))
 			{
 				var msg = "";
@@ -62,9 +62,9 @@ namespace OpenRA.Renderer.Sdl2
 				Log.Write("graphics", msg);
 			}
 
-			Log.Write("graphics",  "Renderer: {0}", GL.GetString(StringName.Renderer));
-			Log.Write("graphics",  "GL Version: {0}", GL.GetString(StringName.Version));
-			Log.Write("graphics",  "Shader Version: {0}", GL.GetString(StringName.ShadingLanguageVersion));
+			Log.Write("graphics", "Renderer: {0}", GL.GetString(StringName.Renderer));
+			Log.Write("graphics", "GL Version: {0}", GL.GetString(StringName.Version));
+			Log.Write("graphics", "Shader Version: {0}", GL.GetString(StringName.ShadingLanguageVersion));
 			Log.Write("graphics", "Available extensions:");
 			Log.Write("graphics", GL.GetString(StringName.Extensions));
 		}

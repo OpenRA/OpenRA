@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnInside(Actor self)
 		{
-			self.World.AddFrameEndTask(w => 
+			self.World.AddFrameEndTask(w =>
 			{
 				if (self.IsDead || transport.IsDead || !cargo.CanLoad(transport, self))
 					return;

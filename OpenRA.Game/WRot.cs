@@ -28,8 +28,10 @@ namespace OpenRA
 		public static WRot operator -(WRot a, WRot b) { return new WRot(a.Roll - b.Roll, a.Pitch - b.Pitch, a.Yaw - b.Yaw); }
 		public static WRot operator -(WRot a) { return new WRot(-a.Roll, -a.Pitch, -a.Yaw); }
 
-		public static bool operator ==(WRot me, WRot other) { return me.Roll == other.Roll &&
-			me.Pitch == other.Pitch && me.Yaw == other.Yaw; }
+		public static bool operator ==(WRot me, WRot other)
+		{
+			return me.Roll == other.Roll && me.Pitch == other.Pitch && me.Yaw == other.Yaw;
+		}
 
 		public static bool operator !=(WRot me, WRot other) { return !(me == other); }
 

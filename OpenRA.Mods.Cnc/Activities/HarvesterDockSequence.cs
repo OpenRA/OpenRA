@@ -53,7 +53,8 @@ namespace OpenRA.Mods.Cnc.Activities
 					state = State.Dock;
 					return Util.SequenceActivities(new Drag(self, startDock, endDock, 12), this);
 				case State.Dock:
-					ru.PlayCustomAnimation(self, "dock", () => {
+					ru.PlayCustomAnimation(self, "dock", () =>
+					{
 						ru.PlayCustomAnimRepeating(self, "dock-loop");
 						if (proc.IsInWorld && !proc.IsDead)
 							foreach (var nd in proc.TraitsImplementing<INotifyDocking>())

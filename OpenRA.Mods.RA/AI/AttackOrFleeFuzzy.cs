@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.AI
 				"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
 				"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
 				"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
-				"then AttackOrFlee is Attack");   
+				"then AttackOrFlee is Attack");
 		}
 
 		protected virtual void AddingRulesForInjuredOwnHealth()
@@ -212,7 +212,7 @@ namespace OpenRA.Mods.RA.AI
 			return RelativeValue(own, enemy, 100, Average<Mobile>, (Actor a) => a.Trait<Mobile>().Info.Speed);
 		}
 
-		protected static float RelativeValue(IEnumerable<Actor> own, IEnumerable<Actor> enemy, float normalizeByValue, 
+		protected static float RelativeValue(IEnumerable<Actor> own, IEnumerable<Actor> enemy, float normalizeByValue,
 					Func<IEnumerable<Actor>, Func<Actor, int>, float> relativeFunc, Func<Actor, int> getValue)
 		{
 			if (!enemy.Any())

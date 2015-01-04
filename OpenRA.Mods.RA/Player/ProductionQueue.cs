@@ -17,8 +17,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	[Desc("Attach this to an actor (usually a building) to let it produce units or construct buildings.", 
-		"If one builds another actor of this type, he will get a separate queue to create two actors", 
+	[Desc("Attach this to an actor (usually a building) to let it produce units or construct buildings.",
+		"If one builds another actor of this type, he will get a separate queue to create two actors",
 		"at the same time. Will only work together with the Production: trait.")]
 	public class ProductionQueueInfo : ITraitInfo
 	{
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 		[Desc("The build time is multiplied with this value on low power.")]
 		public readonly int LowPowerSlowdown = 3;
 
-		[Desc("Notification played when production is complete.", 
+		[Desc("Notification played when production is complete.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string ReadyAudio = "UnitReady";
 
@@ -254,70 +254,70 @@ namespace OpenRA.Mods.RA
 
 			switch (order.OrderString)
 			{
-			case "StartProduction":
-				{
-					var unit = self.World.Map.Rules.Actors[order.TargetString];
-					var bi = unit.Traits.Get<BuildableInfo>();
-					if (!bi.Queue.Contains(Info.Type))
-						return; /* Not built by this queue */
-
-					var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
-					var time = GetBuildTime(order.TargetString);
-
-					if (BuildableItems().All(b => b.Name != order.TargetString))
-						return;	/* you can't build that!! */
-
-					// Check if the player is trying to build more units that they are allowed
-					var fromLimit = int.MaxValue;
-					if (bi.BuildLimit > 0)
+				case "StartProduction":
 					{
-						var inQueue = queue.Count(pi => pi.Item == order.TargetString);
-						var owned = self.Owner.World.ActorsWithTrait<Buildable>().Count(a => a.Actor.Info.Name == order.TargetString && a.Actor.Owner == self.Owner);
-						fromLimit = bi.BuildLimit - (inQueue + owned);
+						var unit = self.World.Map.Rules.Actors[order.TargetString];
+						var bi = unit.Traits.Get<BuildableInfo>();
+						if (!bi.Queue.Contains(Info.Type))
+							return; /* Not built by this queue */
 
-						if (fromLimit <= 0)
-							return;
-					}
+						var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
+						var time = GetBuildTime(order.TargetString);
 
-					var amountToBuild = Math.Min(fromLimit, order.ExtraData);
-					for (var n = 0; n < amountToBuild; n++)
-					{
-						var hasPlayedSound = false;
-						BeginProduction(new ProductionItem(this, order.TargetString, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
+						if (BuildableItems().All(b => b.Name != order.TargetString))
+							return;	/* you can't build that!! */
+
+						// Check if the player is trying to build more units that they are allowed
+						var fromLimit = int.MaxValue;
+						if (bi.BuildLimit > 0)
 						{
-							var isBuilding = unit.Traits.Contains<BuildingInfo>();
-							if (isBuilding && !hasPlayedSound)
+							var inQueue = queue.Count(pi => pi.Item == order.TargetString);
+							var owned = self.Owner.World.ActorsWithTrait<Buildable>().Count(a => a.Actor.Info.Name == order.TargetString && a.Actor.Owner == self.Owner);
+							fromLimit = bi.BuildLimit - (inQueue + owned);
+
+							if (fromLimit <= 0)
+								return;
+						}
+
+						var amountToBuild = Math.Min(fromLimit, order.ExtraData);
+						for (var n = 0; n < amountToBuild; n++)
+						{
+							var hasPlayedSound = false;
+							BeginProduction(new ProductionItem(this, order.TargetString, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
 							{
-								hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
-							}
-							else if (!isBuilding)
-							{
-								if (BuildUnit(order.TargetString))
-									Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
-								else if (!hasPlayedSound && time > 0)
+								var isBuilding = unit.Traits.Contains<BuildingInfo>();
+								if (isBuilding && !hasPlayedSound)
 								{
-									hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Country.Race);
+									hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
 								}
-							}
-						})));
+								else if (!isBuilding)
+								{
+									if (BuildUnit(order.TargetString))
+										Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
+									else if (!hasPlayedSound && time > 0)
+									{
+										hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Country.Race);
+									}
+								}
+							})));
+						}
+
+						break;
 					}
 
-					break;
-				}
+				case "PauseProduction":
+					{
+						if (queue.Count > 0 && queue[0].Item == order.TargetString)
+							queue[0].Pause(order.ExtraData != 0);
 
-			case "PauseProduction":
-				{
-					if (queue.Count > 0 && queue[0].Item == order.TargetString)
-						queue[0].Pause(order.ExtraData != 0);
+						break;
+					}
 
-					break;
-				}
-
-			case "CancelProduction":
-				{
-					CancelProduction(order.TargetString, order.ExtraData);
-					break;
-				}
+				case "CancelProduction":
+					{
+						CancelProduction(order.TargetString, order.ExtraData);
+						break;
+					}
 			}
 		}
 

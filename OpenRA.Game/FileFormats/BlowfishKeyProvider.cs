@@ -390,7 +390,8 @@ namespace OpenRA.FileFormats
 								MulBignumWord(esi, globOne, tmp, 2 * len);
 								if ((*edi & 0x8000) == 0)
 								{
-									if (0 != SubBigNum((uint*)esi, (uint*)esi, g1, 0, (int)len))(*edi)--;
+									if (0 != SubBigNum((uint*)esi, (uint*)esi, g1, 0, (int)len))
+										(*edi)--;
 								}
 							}
 						}

@@ -77,9 +77,10 @@ namespace OpenRA.Graphics
 			shader.SetMatrix("View", view);
 		}
 
-		public VoxelRenderProxy RenderAsync(WorldRenderer wr, IEnumerable<VoxelAnimation> voxels, WRot camera, float scale,
-		                                    float[] groundNormal, WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
-		                                    PaletteReference color, PaletteReference normals, PaletteReference shadowPalette)
+		public VoxelRenderProxy RenderAsync(
+			WorldRenderer wr, IEnumerable<VoxelAnimation> voxels, WRot camera, float scale,
+			float[] groundNormal, WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
+			PaletteReference color, PaletteReference normals, PaletteReference shadowPalette)
 		{
 			// Correct for inverted y-axis
 			var scaleTransform = Util.ScaleMatrix(scale, scale, scale);
@@ -202,7 +203,7 @@ namespace OpenRA.Graphics
 						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(Util.MatrixInverse(t), lightTransform));
 
 						Render(rd, Util.MatrixMultiply(transform, t), lightDirection,
-						       lightAmbientColor, lightDiffuseColor, color.Index, normals.Index);
+							lightAmbientColor, lightDiffuseColor, color.Index, normals.Index);
 
 						// Disable shadow normals by forcing zero diffuse and identity ambient light
 						Render(rd, Util.MatrixMultiply(shadow, t), lightDirection,
@@ -249,14 +250,16 @@ namespace OpenRA.Graphics
 			return tVec;
 		}
 
-		void Render(VoxelRenderData renderData,
-		            float[] t, float[] lightDirection,
-		            float[] ambientLight, float[] diffuseLight,
-		            int colorPalette, int normalsPalette)
+		void Render(
+			VoxelRenderData renderData,
+			float[] t, float[] lightDirection,
+			float[] ambientLight, float[] diffuseLight,
+			int colorPalette, int normalsPalette)
 		{
 			shader.SetTexture("DiffuseTexture", renderData.Sheet.GetTexture());
-			shader.SetVec("PaletteRows", (colorPalette + 0.5f) / HardwarePalette.MaxPalettes,
-			              				 (normalsPalette + 0.5f) / HardwarePalette.MaxPalettes);
+			shader.SetVec("PaletteRows",
+				(colorPalette + 0.5f) / HardwarePalette.MaxPalettes,
+				(normalsPalette + 0.5f) / HardwarePalette.MaxPalettes);
 			shader.SetMatrix("TransformMatrix", t);
 			shader.SetVec("LightDirection", lightDirection, 4);
 			shader.SetVec("AmbientLight", ambientLight, 3);

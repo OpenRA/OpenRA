@@ -218,7 +218,7 @@ namespace OpenRA.FileSystem
 
 		public int Priority { get { return 1000 + priority; } }
 		public string Name { get { return filename; } }
-		
+
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			// Cannot modify existing mixfile - rename existing file and

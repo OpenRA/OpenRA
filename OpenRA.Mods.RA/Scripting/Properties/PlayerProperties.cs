@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Scripting
 	public class PlayerProperties : ScriptPlayerProperties
 	{
 		public PlayerProperties(ScriptContext context, Player player)
-		: base(context, player) { }
+			: base(context, player) { }
 
 		[Desc("The player's name.")]
 		public string Name { get { return Player.PlayerName; } }

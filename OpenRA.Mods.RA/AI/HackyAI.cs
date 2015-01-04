@@ -180,7 +180,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			Info = info;
 			World = init.World;
-			
+
 			foreach (var decision in info.PowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
 		}
@@ -200,9 +200,9 @@ namespace OpenRA.Mods.RA.AI
 			supportPowerMngr = p.PlayerActor.Trait<SupportPowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
 
-			foreach (var building in Info.BuildingQueues) 
+			foreach (var building in Info.BuildingQueues)
 				builders.Add(new BaseBuilder(this, building, p, playerPower, playerResource));
-			foreach (var defense in Info.DefenseQueues) 
+			foreach (var defense in Info.DefenseQueues)
 				builders.Add(new BaseBuilder(this, defense, p, playerPower, playerResource));
 
 			Random = new MersenneTwister((int)p.PlayerActor.ActorID);
@@ -310,7 +310,7 @@ namespace OpenRA.Mods.RA.AI
 		// For mods like RA (number of building must match the number of aircraft)
 		bool HasAdequateAirUnits(ActorInfo actorInfo)
 		{
-			if (!actorInfo.Traits.Contains<ReloadsInfo>() && actorInfo.Traits.Contains<LimitedAmmoInfo>() 
+			if (!actorInfo.Traits.Contains<ReloadsInfo>() && actorInfo.Traits.Contains<LimitedAmmoInfo>()
 				&& actorInfo.Traits.Contains<AircraftInfo>())
 			{
 				var countOwnAir = CountUnits(actorInfo.Name, Player);
@@ -387,7 +387,7 @@ namespace OpenRA.Mods.RA.AI
 			}
 
 			// Can't find a build location
-			return null;		
+			return null;
 		}
 
 		public void Tick(Actor self)
@@ -402,7 +402,7 @@ namespace OpenRA.Mods.RA.AI
 
 			if (ticks % FeedbackTime == 0)
 				ProductionUnits(self);
-			
+
 			AssignRolesToIdleUnits(self);
 			SetRallyPointsForNewProductionBuildings(self);
 			TryToUseSupportPower(self);
@@ -504,7 +504,7 @@ namespace OpenRA.Mods.RA.AI
 		void AssignRolesToIdleUnits(Actor self)
 		{
 			CleanSquads();
-			activeUnits.RemoveAll(a => a.IsDead || a.Owner != Player); 
+			activeUnits.RemoveAll(a => a.IsDead || a.Owner != Player);
 			unitsHangingAroundTheBase.RemoveAll(a => a.IsDead || a.Owner != Player);
 
 			if (--rushTicks <= 0)
@@ -555,7 +555,7 @@ namespace OpenRA.Mods.RA.AI
 
 				// Tell the idle harvester to quit slacking:
 				World.IssueOrder(new Order("Harvest", a, false));
-			}   
+			}
 		}
 
 		void FindNewUnits(Actor self)
@@ -582,7 +582,7 @@ namespace OpenRA.Mods.RA.AI
 				}
 
 				activeUnits.Add(a);
-			}  
+			}
 		}
 
 		void CreateAttackForce()
@@ -616,7 +616,7 @@ namespace OpenRA.Mods.RA.AI
 			{
 				var enemies = World.FindActorsInCircle(b.CenterPosition, WRange.FromCells(Info.RushAttackScanRadius))
 					.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
-				
+
 				if (rushFuzzy.CanAttack(ownUnits, enemies))
 				{
 					var target = enemies.Any() ? enemies.Random(Random) : b;
@@ -626,7 +626,7 @@ namespace OpenRA.Mods.RA.AI
 
 					foreach (var a3 in ownUnits)
 						rush.Units.Add(a3);
-		  
+
 					return;
 				}
 			}
@@ -803,7 +803,7 @@ namespace OpenRA.Mods.RA.AI
 					var tl = World.Map.CenterOfCell(new CPos(i, j));
 					var br = World.Map.CenterOfCell(new CPos(i + checkRadius, j + checkRadius));
 					var targets = World.ActorMap.ActorsInBox(tl, br);
-					
+
 					consideredAttractiveness = powerDecision.GetAttractiveness(targets, Player);
 					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
 						continue;
@@ -881,7 +881,7 @@ namespace OpenRA.Mods.RA.AI
 				return;
 
 			var unit = buildRandom ?
-				ChooseRandomUnitToBuild(queue) : 
+				ChooseRandomUnitToBuild(queue) :
 				ChooseUnitToBuild(queue);
 
 			if (unit != null && Info.UnitsToBuild.Any(u => u.Key == unit.Name))
@@ -914,8 +914,7 @@ namespace OpenRA.Mods.RA.AI
 				{
 					BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
 						self, e.PreviousDamageState, e.DamageState);
-					World.IssueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false)
-						{ TargetActor = self });
+					World.IssueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false) { TargetActor = self });
 				}
 			}
 

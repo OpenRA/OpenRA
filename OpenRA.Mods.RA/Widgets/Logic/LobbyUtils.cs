@@ -345,7 +345,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			checkBox.IsVisible = () => orderManager.LocalClient.IsAdmin && !skirmishMode;
 			checkBox.IsDisabled = () => false;
 
-			Action okPressed = () => 
+			Action okPressed = () =>
 			{
 				orderManager.IssueOrder(Order.Command("allow_spectators {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowSpectators)));
 				orderManager.IssueOrders(

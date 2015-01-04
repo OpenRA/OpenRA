@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			var oldIconCount = IconCount;
 			IconCount = 0;
-	
+
 			var rb = RenderBounds;
 			foreach (var p in powers)
 			{

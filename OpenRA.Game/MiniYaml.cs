@@ -270,8 +270,7 @@ namespace OpenRA
 				}
 			}
 
-			if (throwErrors)
-			if (noInherit.ContainsValue(false))
+			if (throwErrors && noInherit.ContainsValue(false))
 				throw new YamlException("Bogus yaml removals: {0}".F(
 					noInherit.Where(x => !x.Value).JoinWith(", ")));
 

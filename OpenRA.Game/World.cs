@@ -66,7 +66,7 @@ namespace OpenRA
 		public bool ShroudObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(a); }
 		public bool ShroudObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(p); }
 		public bool ShroudObscures(int u, int v) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(u, v); }
-		
+
 		public Func<int, int, bool> FogObscuresTest(CellRegion region)
 		{
 			var rp = RenderPlayer;

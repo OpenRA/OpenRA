@@ -52,7 +52,7 @@ namespace OpenRA.Network
 					}
 
 				case "Message": // Server message
-						Game.AddChatLine(Color.White, "Server", order.TargetString);
+					Game.AddChatLine(Color.White, "Server", order.TargetString);
 					break;
 
 				case "Disconnected": /* reports that the target player disconnected */

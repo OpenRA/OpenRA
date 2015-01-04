@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 				lastPos = self.Location;
 			}
 		}
-		
+
 		public bool IsVisible(Actor self, Player viewer)
 		{
 			if (!Cloaked || self.Owner.IsAlliedWith(viewer))

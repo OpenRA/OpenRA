@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
 				.FirstOrDefault();
-	
+
 			// Show the correct turret facing
 			var anim = new Animation(init.World, image, () => t.InitialFacing);
 			anim.PlayRepeating("idle");

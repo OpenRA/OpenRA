@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Explodes when leaving the following terrain type, e.g., Water for torpedoes.")]
 		public readonly string BoundToTerrainType = "";
 		[Desc("Explodes when inside this proximity radius to target.",
-			"Note: If this value is lower than the missile speed, this check might", 
+			"Note: If this value is lower than the missile speed, this check might",
 			"not trigger fast enough, causing the missile to fly past the target.")]
 		public readonly WRange CloseEnough = new WRange(298);
 

@@ -52,7 +52,7 @@ namespace OpenRA.Widgets
 
 		// Equivalent to OnMouseUp, but without an input arg
 		public Action OnClick = () => { };
-		public Action OnDoubleClick = () => { }; 
+		public Action OnDoubleClick = () => { };
 		public Action<KeyInput> OnKeyPress = _ => { };
 
 		protected readonly Ruleset ModRules;
@@ -149,7 +149,7 @@ namespace OpenRA.Widgets
 					OnDoubleClick();
 					return YieldMouseFocus(mi);
 				}
-			} 
+			}
 			else if (HasMouseFocus && mi.Event == MouseInputEvent.Up)
 			{
 				// Only fire the onMouseUp event if we successfully lost focus, and were pressed
@@ -197,8 +197,14 @@ namespace OpenRA.Widgets
 			tooltipContainer.Value.RemoveTooltip();
 		}
 
-		public override int2 ChildOrigin { get { return RenderOrigin +
-			(Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0)); } }
+		public override int2 ChildOrigin
+		{
+			get
+			{
+				return RenderOrigin +
+					(Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0));
+			}
+		}
 
 		public override void Draw()
 		{

@@ -96,8 +96,9 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 				}
 				else
-					Game.Renderer.LineRenderer.FillRect(new Rectangle(b.X, (int)float2.Lerp(b.Bottom, b.Top, providedFrac),
-					                                                  b.Width, (int)(providedFrac * b.Height)), color);
+					Game.Renderer.LineRenderer.FillRect(new Rectangle(
+						b.X, (int)float2.Lerp(b.Bottom, b.Top, providedFrac),
+						b.Width, (int)(providedFrac * b.Height)), color);
 
 				var x = (b.Left + b.Right - indicator.Size.X) / 2;
 				var y = float2.Lerp(b.Bottom, b.Top, usedFrac) - indicator.Size.Y / 2;

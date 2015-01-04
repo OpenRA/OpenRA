@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Effects
 			var palette = r.Palette(palettePrefix + owner.InternalName);
 			foreach (var a in circles.Render(position, palette))
 				yield return a;
-				
+
 			foreach (var a in arrow.Render(position + new WVec(0, 0, arrowHeight), palette))
 				yield return a;
 

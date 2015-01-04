@@ -33,17 +33,17 @@ namespace OpenRA.FileFormats
 			Transforms = new float[16 * FrameCount * LimbCount];
 			for (var j = 0; j < FrameCount; j++)
 				for (var i = 0; i < LimbCount; i++)
-			{
-				// Convert to column-major matrices and add the final matrix row
-				var c = 16 * (LimbCount * j + i);
-				Transforms[c + 3] = 0;
-				Transforms[c + 7] = 0;
-				Transforms[c + 11] = 0;
-				Transforms[c + 15] = 1;
+				{
+					// Convert to column-major matrices and add the final matrix row
+					var c = 16 * (LimbCount * j + i);
+					Transforms[c + 3] = 0;
+					Transforms[c + 7] = 0;
+					Transforms[c + 11] = 0;
+					Transforms[c + 15] = 1;
 
-				for (var k = 0; k < 12; k++)
-					Transforms[c + ids[k]] = s.ReadFloat();
-			}
+					for (var k = 0; k < 12; k++)
+						Transforms[c + ids[k]] = s.ReadFloat();
+				}
 		}
 
 		public static HvaReader Load(string filename)

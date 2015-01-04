@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Death notification voice.")]
 		public readonly string DeathSound = "Die";
-		
+
 		[Desc("Multiply volume with this factor.")]
 		public readonly float VolumeMultiplier = 1f;
 

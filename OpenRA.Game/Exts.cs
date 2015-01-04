@@ -91,7 +91,7 @@ namespace OpenRA
 		{
 			return (k & mod) == mod;
 		}
-        
+
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k)
 			where V : new()
 		{

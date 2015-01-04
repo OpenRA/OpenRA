@@ -23,10 +23,10 @@ namespace OpenRA.GameRules
 
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
 		public readonly string[] InvalidTargets = { };
-		
+
 		[Desc("What diplomatic stances are affected.")]
 		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
-		
+
 		[Desc("Can this warhead affect the actor that fired it.")]
 		public readonly bool AffectsParent = false;
 

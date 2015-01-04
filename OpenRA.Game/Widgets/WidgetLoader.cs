@@ -47,7 +47,7 @@ namespace OpenRA
 		{
 			if (!args.ContainsKey("modRules"))
 				args = new WidgetArgs(args) { { "modRules", modData.DefaultRules } };
-			
+
 			var widget = NewWidget(node.Key, args);
 
 			if (parent != null)

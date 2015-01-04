@@ -74,7 +74,8 @@ namespace OpenRA.Mods.RA.Traits
 					{
 						s.First.Activate(crusher);
 						return;
-					} else
+					}
+					else
 						n -= s.Second;
 				}
 			}

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			if (timer != null)
 			{
-				timer.GetText = () => 
+				timer.GetText = () =>
 				{
 					if (status == null && shouldShowStatus())
 						return statusText();

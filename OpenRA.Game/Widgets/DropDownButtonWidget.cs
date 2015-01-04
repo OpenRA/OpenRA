@@ -101,8 +101,7 @@ namespace OpenRA.Widgets
 		public void ShowDropDown<T>(string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
 			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
-			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs()
-				{ { "substitutions", substitutions } });
+			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });
 
 			var itemTemplate = panel.Get<ScrollItemWidget>("TEMPLATE");
 			panel.RemoveChildren();
@@ -124,8 +123,7 @@ namespace OpenRA.Widgets
 		public void ShowDropDown<T>(string panelTemplate, int height, Dictionary<string, IEnumerable<T>> groups, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
 			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
-			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs()
-			                                             { { "substitutions", substitutions } });
+			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });
 
 			var headerTemplate = panel.GetOrNull<ScrollItemWidget>("HEADER");
 			var itemTemplate = panel.Get<ScrollItemWidget>("TEMPLATE");

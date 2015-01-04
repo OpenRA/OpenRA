@@ -12,8 +12,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-    [Desc("Allows automatic targeting of disguised actors.")]
-    class IgnoresDisguiseInfo : TraitInfo<IgnoresDisguise> { }
+	[Desc("Allows automatic targeting of disguised actors.")]
+	class IgnoresDisguiseInfo : TraitInfo<IgnoresDisguise> { }
 
-    class IgnoresDisguise { }
+	class IgnoresDisguise { }
 }

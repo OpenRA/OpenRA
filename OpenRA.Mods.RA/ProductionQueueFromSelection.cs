@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 
 			// Queue-per-actor
 			var queue = world.Selection.Actors
-				.Where(a => a.IsInWorld	&& a.World.LocalPlayer == a.Owner)
+				.Where(a => a.IsInWorld && a.World.LocalPlayer == a.Owner)
 				.SelectMany(a => a.TraitsImplementing<ProductionQueue>())
 				.FirstOrDefault(q => q.Enabled);
 

@@ -32,7 +32,7 @@ namespace OpenRA.FileFormats
 
 		public enum WaveType { Pcm = 0x1, ImaAdpcm = 0x11 }
 		public static WaveType Type { get; private set; }
-		
+
 		public WavLoader(Stream s)
 		{
 			while (s.Position < s.Length)
@@ -92,7 +92,7 @@ namespace OpenRA.FileFormats
 				BitsPerSample = 16;
 			}
 		}
-		
+
 		public static float WaveLength(Stream s)
 		{
 			s.Position = 12;

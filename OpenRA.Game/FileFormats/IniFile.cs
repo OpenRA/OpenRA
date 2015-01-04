@@ -44,9 +44,9 @@ namespace OpenRA.FileFormats
 
 				switch (line[0])
 				{
-				case ';': break;
-				case '[': currentSection = ProcessSection(line); break;
-				default: ProcessEntry(line, currentSection); break;
+					case ';': break;
+					case '[': currentSection = ProcessSection(line); break;
+					default: ProcessEntry(line, currentSection); break;
 				}
 			}
 		}

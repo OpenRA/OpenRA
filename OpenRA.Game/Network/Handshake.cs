@@ -53,10 +53,10 @@ namespace OpenRA.Network
 				{
 					case "Handshake":
 						FieldLoader.Load(handshake, y.Value);
-					break;
+						break;
 					case "Client":
 						FieldLoader.Load(handshake.Client, y.Value);
-					break;
+						break;
 				}
 			}
 
