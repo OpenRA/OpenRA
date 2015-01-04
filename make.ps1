@@ -29,6 +29,7 @@ if ($args.Length -eq 0)
 	echo "  clean           Removes all built and copied files. Use the 'all' and"
 	echo "                  'dependencies' commands to restore removed files."
 	echo "  test            Tests the default mods for errors."
+	echo "  check           Checks .cs files for StyleCop violations."
 	echo ""
 	$command = (Read-Host "Enter command").Split(' ', 2)
 }
@@ -125,6 +126,35 @@ elseif ($command -eq "test")
 	./OpenRA.Utility.exe d2k --check-yaml
 	echo "Testing Tiberian Sun mod MiniYAML..."
 	./OpenRA.Utility.exe ts --check-yaml
+}
+elseif ($command -eq "check")
+{
+	echo "Checking for code style violations in OpenRA.Renderer.Null..."
+	./OpenRA.Utility.exe ra --check-code-style OpenRA.Renderer.Null
+	echo "Checking for code style violations in OpenRA.GameMonitor..."
+	./OpenRA.Utility.exe ra --check-code-style OpenRA.GameMonitor
+	echo "Checking for code style violations in OpenRA.Game..."
+	./OpenRA.Utility.exe ra --check-code-style OpenRA.Game
+	echo "Checking for code style violations in OpenRA.Mods.Common..."
+	./OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Common
+	echo "Checking for code style violations in OpenRA.Mods.RA..."
+	./OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.RA
+	echo "Checking for code style violations in OpenRA.Mods.Cnc..."
+	./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.Cnc
+	echo "Checking for code style violations in OpenRA.Mods.D2k..."
+	./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.D2k
+	echo "Checking for code style violations in OpenRA.Mods.TS..."
+	./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.TS
+	echo "Checking for code style violations in OpenRA.Editor..."
+	./OpenRA.Utility.exe cnc --check-code-style OpenRA.Editor
+	echo "Checking for code style violations in OpenRA.Renderer.Sdl2..."
+	./OpenRA.Utility.exe cnc --check-code-style OpenRA.Renderer.Sdl2
+	echo "Checking for code style violations in OpenRA.Utility..."
+	./OpenRA.Utility.exe cnc --check-code-style OpenRA.Utility
+	echo "Checking for code style violations in OpenRA.Test..."
+	./OpenRA.Utility.exe cnc --check-code-style OpenRA.Test
+	echo "Checking for code style violations in OpenRA.TilesetBuilder..."
+	./OpenRA.Utility.exe cnc --check-code-style OpenRA.TilesetBuilder
 }
 else
 {
