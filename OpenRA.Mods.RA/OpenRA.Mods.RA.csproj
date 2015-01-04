@@ -95,11 +95,9 @@
     <Compile Include="Activities\LayMines.cs" />
     <Compile Include="Activities\Leap.cs" />
     <Compile Include="Activities\RAHarvesterDockSequence.cs" />
-    <Compile Include="Activities\Sell.cs" />
     <Compile Include="Activities\Teleport.cs" />
     <Compile Include="Activities\Transform.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
-    <Compile Include="Crushable.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
@@ -116,7 +114,6 @@
     <Compile Include="ExternalCapturableBar.cs" />
     <Compile Include="Capturable.cs" />
     <Compile Include="ExternalCaptures.cs" />
-    <Compile Include="CashTrickler.cs" />
     <Compile Include="Traits\PaletteEffects\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="CrateSpawner.cs" />
@@ -138,8 +135,6 @@
     <Compile Include="Effects\Parachute.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />
-    <Compile Include="Explodes.cs" />
-    <Compile Include="Guard.cs" />
     <Compile Include="Invulnerable.cs" />
     <Compile Include="Captures.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
@@ -178,8 +173,6 @@
     <Compile Include="Repairable.cs" />
     <Compile Include="RepairableNear.cs" />
     <Compile Include="ScaredyCat.cs" />
-    <Compile Include="SelfHealing.cs" />
-    <Compile Include="Sellable.cs" />
     <Compile Include="SpawnMPUnits.cs" />
     <Compile Include="Disguise.cs" />
     <Compile Include="StoresResources.cs" />

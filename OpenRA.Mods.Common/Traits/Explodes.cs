@@ -12,9 +12,9 @@ using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
-	class ExplodesInfo : ITraitInfo
+	public class ExplodesInfo : ITraitInfo
 	{
 		[WeaponReference]
 		public readonly string Weapon = "UnitExplode";
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Explodes(this); }
 	}
 
-	class Explodes : INotifyKilled
+	public class Explodes : INotifyKilled
 	{
 		readonly ExplodesInfo explodesInfo;
 

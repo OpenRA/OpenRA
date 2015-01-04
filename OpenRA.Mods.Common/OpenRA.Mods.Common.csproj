@@ -85,6 +85,7 @@
     <Compile Include="Activities\RemoveSelf.cs" />
     <Compile Include="Activities\Repair.cs" />
     <Compile Include="Activities\RepairBuilding.cs" />
+    <Compile Include="Activities\Sell.cs" />
     <Compile Include="Activities\SimpleTeleport.cs" />
     <Compile Include="Activities\Turn.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
@@ -188,10 +189,15 @@
     <Compile Include="Traits\Buildings\FootprintUtils.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\Cargo.cs" />
+    <Compile Include="Traits\CashTrickler.cs" />
     <Compile Include="Traits\Cloak.cs" />
+    <Compile Include="Traits\Crushable.cs" />
     <Compile Include="Traits\IgnoresDisguise.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
     <Compile Include="Traits\EngineerRepair.cs" />
+    <Compile Include="Traits\Explodes.cs" />
+    <Compile Include="Traits\Guard.cs" />
+    <Compile Include="Traits\Guardable.cs" />
     <Compile Include="Traits\GainsExperience.cs" />
     <Compile Include="Traits\GivesBounty.cs" />
     <Compile Include="Traits\GivesExperience.cs" />
@@ -259,6 +265,8 @@
     <Compile Include="Traits\Render\WithShadow.cs" />
     <Compile Include="Traits\Render\WithSmoke.cs" />
     <Compile Include="Traits\Render\WithTurret.cs" />
+    <Compile Include="Traits\SelfHealing.cs" />
+    <Compile Include="Traits\Sellable.cs" />
     <Compile Include="Traits\ShakeOnDeath.cs" />
     <Compile Include="Traits\SmokeTrailWhenDamaged.cs" />
     <Compile Include="Traits\Sound\ActorLostNotification.cs" />
