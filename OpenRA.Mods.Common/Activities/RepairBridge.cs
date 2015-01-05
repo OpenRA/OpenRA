@@ -8,11 +8,10 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.RA.Traits;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Activities
+namespace OpenRA.Mods.Common.Activities
 {
 	class RepairBridge : Enter
 	{

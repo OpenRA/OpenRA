@@ -85,6 +85,7 @@
     <Compile Include="Activities\Rearm.cs" />
     <Compile Include="Activities\RemoveSelf.cs" />
     <Compile Include="Activities\Repair.cs" />
+    <Compile Include="Activities\RepairBridge.cs" />
     <Compile Include="Activities\RepairBuilding.cs" />
     <Compile Include="Activities\Sell.cs" />
     <Compile Include="Activities\SimpleTeleport.cs" />
@@ -177,6 +178,8 @@
     <Compile Include="Traits\Buildings\BaseBuilding.cs" />
     <Compile Include="Traits\Buildings\BaseProvider.cs" />
     <Compile Include="Traits\Buildings\Bib.cs" />
+    <Compile Include="Traits\Buildings\Bridge.cs" />
+    <Compile Include="Traits\Buildings\BridgeHut.cs" />
     <Compile Include="Traits\Buildings\Building.cs" />
     <Compile Include="Traits\Buildings\BuildingInfluence.cs" />
     <Compile Include="Traits\Buildings\BuildingUtils.cs" />
@@ -277,6 +280,7 @@
     <Compile Include="Traits\Render\WithShadow.cs" />
     <Compile Include="Traits\Render\WithSmoke.cs" />
     <Compile Include="Traits\Render\WithTurret.cs" />
+    <Compile Include="Traits\RepairsBridges.cs" />
     <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Traits\StoresResources.cs" />
     <Compile Include="Traits\SelfHealing.cs" />
@@ -296,6 +300,7 @@
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Wanders.cs" />
+    <Compile Include="Traits\World\BridgeLayer.cs" />
     <Compile Include="Traits\World\CreateMPPlayers.cs" />
     <Compile Include="Traits\World\DomainIndex.cs" />
     <Compile Include="Traits\World\LoadWidgetAtGameStart.cs" />
