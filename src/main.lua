@@ -114,6 +114,7 @@ ide = {
       maxlength = 450,
     },
     arg = {}, -- command line arguments
+    api = {}, -- additional APIs to load
 
     format = { -- various formatting strings
       menurecentprojects = "%f | %i",

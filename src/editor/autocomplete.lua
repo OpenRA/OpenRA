@@ -287,16 +287,18 @@ local function reloadAPI(only,subapis)
 end
 
 function ReloadLuaAPI()
-  local interpreterapi = ide.interpreter
-  interpreterapi = interpreterapi and interpreterapi.api
-  if (interpreterapi) then
-    local apinames = {}
-    for _, v in ipairs(interpreterapi) do
-      apinames[v] = true
-    end
-    interpreterapi = apinames
-  end
-  reloadAPI("lua",interpreterapi)
+  local interp = ide.interpreter
+  local cfgapi = ide.config.api
+  local fname = interp and interp.fname
+  local intapi = cfgapi and fname and cfgapi[fname]
+  local apinames = {}
+  -- general APIs as configured
+  for _, v in ipairs(type(cfgapi) == 'table' and cfgapi or {}) do apinames[v] = true end
+  -- interpreter-specific APIs as configured
+  for _, v in ipairs(type(intapi) == 'table' and intapi or {}) do apinames[v] = true end
+  -- interpreter APIs
+  for _, v in ipairs(interp and interp.api or {}) do apinames[v] = true end
+  reloadAPI("lua",apinames)
 end
 
 do
