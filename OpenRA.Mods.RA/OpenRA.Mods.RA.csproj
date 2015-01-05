@@ -84,7 +84,6 @@
     <Compile Include="AI\HackyAI.cs" />
     <Compile Include="Render\WithIdleOverlay.cs" />
     <Compile Include="Traits\AcceptsSupplies.cs" />
-    <Compile Include="Activities\ExternalCaptureActor.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\DonateSupplies.cs" />
@@ -108,10 +107,7 @@
     <Compile Include="CaptureNotification.cs" />
     <Compile Include="Scripting\Properties\RepairableBuildingProperties.cs" />
     <Compile Include="C4Demolition.cs" />
-    <Compile Include="ExternalCapturable.cs" />
-    <Compile Include="ExternalCapturableBar.cs" />
     <Compile Include="Capturable.cs" />
-    <Compile Include="ExternalCaptures.cs" />
     <Compile Include="Traits\PaletteEffects\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="CrateSpawner.cs" />
