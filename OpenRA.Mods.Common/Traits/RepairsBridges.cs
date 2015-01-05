@@ -10,11 +10,11 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can enter a BridgeHut to trigger a repair.")]
 	class RepairsBridgesInfo : TraitInfo<RepairsBridges> { }
