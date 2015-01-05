@@ -14,22 +14,6 @@ using System.Linq;
 
 namespace OpenRA.Graphics
 {
-	public class RenderableComparer : IComparer<IRenderable>
-	{
-		WorldRenderer wr;
-		public RenderableComparer(WorldRenderer wr)
-		{
-			this.wr = wr;
-		}
-
-		public int Compare(IRenderable x, IRenderable y)
-		{
-			var xOrder = wr.ScreenZPosition(x.Pos, x.ZOffset);
-			var yOrder = wr.ScreenZPosition(y.Pos, y.ZOffset);
-			return xOrder.CompareTo(yOrder);
-		}
-	}
-
 	public interface IRenderable
 	{
 		WPos Pos { get; }

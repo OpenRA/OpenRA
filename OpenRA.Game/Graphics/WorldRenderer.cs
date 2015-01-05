@@ -31,6 +31,9 @@ namespace OpenRA.Graphics
 
 	public sealed class WorldRenderer : IDisposable
 	{
+		public static readonly Func<IRenderable, int> RenderableScreenZPositionComparisonKey =
+			r => ZPosition(r.Pos, r.ZOffset);
+
 		public readonly World World;
 		public readonly Theater Theater;
 		public Viewport Viewport { get; private set; }
@@ -69,7 +72,6 @@ namespace OpenRA.Graphics
 
 		List<IRenderable> GenerateRenderables()
 		{
-			var comparer = new RenderableComparer(this);
 			var actors = World.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight)
 				.Append(World.WorldActor)
 				.ToList();
@@ -82,7 +84,7 @@ namespace OpenRA.Graphics
 			if (World.OrderGenerator != null)
 				worldRenderables = worldRenderables.Concat(World.OrderGenerator.Render(this, World));
 
-			worldRenderables = worldRenderables.OrderBy(r => r, comparer);
+			worldRenderables = worldRenderables.OrderBy(RenderableScreenZPositionComparisonKey);
 
 			// Effects are drawn on top of all actors
 			// HACK: Effects aren't interleaved with actors.
@@ -241,7 +243,12 @@ namespace OpenRA.Graphics
 		public float ScreenZPosition(WPos pos, int offset)
 		{
 			var ts = Game.ModData.Manifest.TileSize;
-			return (pos.Y + pos.Z + offset) * ts.Height / 1024f;
+			return ZPosition(pos, offset) * ts.Height / 1024f;
+		}
+
+		static int ZPosition(WPos pos, int offset)
+		{
+			return pos.Y + pos.Z + offset;
 		}
 
 		public WPos Position(int2 screenPx)
