@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
@@ -70,10 +71,12 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			base.Activate(self, order, manager);
 
-			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				Sound.Play(Info.LaunchSound);
-			else
-				Sound.Play(Info.IncomingSound);
+			var rp = self.World.RenderPlayer;
+			var sound = self.Owner.IsAlliedWith(rp) ? Info.LaunchSound : Info.IncomingSound;
+			var radars = self.World.ActorsWithTrait<ProvidesRadar>().Where(at => at.Actor.Owner == rp && at.Trait.IsActive);
+
+			if (radars.Any())
+				Sound.Play(sound);
 
 			var npi = Info as NukePowerInfo;
 			var rb = self.Trait<RenderSimple>();
