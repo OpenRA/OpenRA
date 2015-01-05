@@ -194,6 +194,7 @@
     <Compile Include="Traits\Buildings\FreeActor.cs" />
     <Compile Include="Traits\Buildings\LineBuild.cs" />
     <Compile Include="Traits\Buildings\LineBuildNode.cs" />
+    <Compile Include="Traits\Buildings\PrimaryBuilding.cs" />
     <Compile Include="Traits\Buildings\RallyPoint.cs" />
     <Compile Include="Traits\Buildings\RepairableBuilding.cs" />
     <Compile Include="Traits\Buildings\RepairsUnits.cs" />
@@ -245,11 +246,14 @@
     <Compile Include="Traits\PaletteEffects\WaterPaletteRotation.cs" />
     <Compile Include="Traits\Player\ActorGroupProxy.cs" />
     <Compile Include="Traits\Player\AllyRepair.cs" />
+    <Compile Include="Traits\Player\ClassicProductionQueue.cs" />
     <Compile Include="Traits\Player\ConquestVictoryConditions.cs" />
     <Compile Include="Traits\Player\GlobalUpgradeManager.cs" />
     <Compile Include="Traits\Player\MissionObjectives.cs" />
     <Compile Include="Traits\Player\PlaceBeacon.cs" />
+    <Compile Include="Traits\Player\PlaceBuilding.cs" />
     <Compile Include="Traits\Player\PlayerStatistics.cs" />
+    <Compile Include="Traits\Player\ProductionQueue.cs" />
     <Compile Include="Traits\Player\ProvidesCustomPrerequisite.cs" />
     <Compile Include="Traits\Player\ProvidesTechPrerequisite.cs" />
     <Compile Include="Traits\Player\StrategicVictoryConditions.cs" />
@@ -260,6 +264,8 @@
     <Compile Include="Traits\Power\Power.cs" />
     <Compile Include="Traits\Power\RequiresPower.cs" />
     <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
+    <Compile Include="Traits\Production.cs" />
+    <Compile Include="Traits\ProductionQueueFromSelection.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\ProximityCaptor.cs" />
     <Compile Include="Traits\ProximityCapturable.cs" />
@@ -269,10 +275,12 @@
     <Compile Include="Traits\Render\RenderBuilding.cs" />
     <Compile Include="Traits\Render\RenderBuildingCharge.cs" />
     <Compile Include="Traits\Render\RenderBuildingTurreted.cs" />
+    <Compile Include="Traits\Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Traits\Render\RenderEditorOnly.cs" />
     <Compile Include="Traits\Render\RenderFlare.cs" />
     <Compile Include="Traits\Render\RenderInfantry.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
+    <Compile Include="Traits\Render\ProductionBar.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />
     <Compile Include="Traits\Render\RenderUnit.cs" />
@@ -381,7 +389,11 @@
     <Compile Include="Widgets\Logic\Ingame\IngameRadarDisplayLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LoadIngamePlayerOrObserverUILogic.cs" />
     <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
+    <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
     <Compile Include="Widgets\MenuButtonWidget.cs" />
+    <Compile Include="Widgets\ProductionPaletteWidget.cs" />
+    <Compile Include="Widgets\ProductionTabsWidget.cs" />
+    <Compile Include="Widgets\ProductionTypeButtonWidget.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="Widgets\ResourceBarWidget.cs" />
     <Compile Include="Widgets\StrategicProgressWidget.cs" />
