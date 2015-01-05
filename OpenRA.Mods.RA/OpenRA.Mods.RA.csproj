@@ -81,7 +81,6 @@
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
-    <Compile Include="Render\WithIdleOverlay.cs" />
     <Compile Include="Traits\AcceptsSupplies.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\Demolish.cs" />
@@ -96,7 +95,7 @@
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
-    <Compile Include="Render\RenderUnitReload.cs" />
+    <Compile Include="Traits\Render\RenderUnitReload.cs" />
     <Compile Include="Graphics\TeslaZapRenderable.cs" />
     <Compile Include="EjectOnDeath.cs" />
     <Compile Include="AI\RushFuzzy.cs" />
@@ -137,9 +136,9 @@
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
     <Compile Include="Traits\Render\RenderJammerCircle.cs" />
-    <Compile Include="Render\RenderHarvester.cs" />
-    <Compile Include="Render\RenderDisguise.cs" />
-    <Compile Include="Render\RenderLandingCraft.cs" />
+    <Compile Include="Traits\Render\RenderHarvester.cs" />
+    <Compile Include="Traits\Render\RenderDisguise.cs" />
+    <Compile Include="Traits\Render\RenderLandingCraft.cs" />
     <Compile Include="Disguise.cs" />
     <Compile Include="Traits\SupplyTruck.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />
@@ -230,7 +229,6 @@
     <Compile Include="Parachutable.cs" />
     <Compile Include="Widgets\Logic\InstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\InstallMusicLogic.cs" />
-    <Compile Include="Render\WithActiveAnimation.cs" />
     <Compile Include="SupportPowers\SpawnActorPower.cs" />
     <Compile Include="Traits\Buildings\ClonesProducedUnits.cs" />
     <Compile Include="Cloneable.cs" />
