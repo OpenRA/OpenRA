@@ -10,10 +10,9 @@
 
 using System;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to actors which should be able to regenerate their health points.")]
 	class SelfHealingInfo : UpgradableTraitInfo, ITraitInfo, Requires<HealthInfo>

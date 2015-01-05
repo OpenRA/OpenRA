@@ -11,7 +11,7 @@
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Lets the actor generate cash in a set periodic time.")]
 	class CashTricklerInfo : ITraitInfo

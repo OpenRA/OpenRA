@@ -9,11 +9,10 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can be sold")]
 	public class SellableInfo : UpgradableTraitInfo, ITraitInfo
