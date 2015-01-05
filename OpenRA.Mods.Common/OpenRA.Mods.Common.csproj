@@ -74,6 +74,7 @@
     <Compile Include="Activities\Attack.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
+    <Compile Include="Activities\ExternalCaptureActor.cs" />
     <Compile Include="Activities\Heal.cs" />
     <Compile Include="Activities\Hunt.cs" />
     <Compile Include="Activities\Move\AttackMoveActivity.cs" />
@@ -201,6 +202,9 @@
     <Compile Include="Traits\CashTrickler.cs" />
     <Compile Include="Traits\Cloak.cs" />
     <Compile Include="Traits\Crushable.cs" />
+    <Compile Include="Traits\ExternalCapturable.cs" />
+    <Compile Include="Traits\ExternalCapturableBar.cs" />
+    <Compile Include="Traits\ExternalCaptures.cs" />
     <Compile Include="Traits\IgnoresDisguise.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
     <Compile Include="Traits\EngineerRepair.cs" />
