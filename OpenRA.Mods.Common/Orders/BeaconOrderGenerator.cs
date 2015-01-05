@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Graphics;
 
-namespace OpenRA.Mods.RA.Orders
+namespace OpenRA.Mods.Common.Orders
 {
 	public class BeaconOrderGenerator : IOrderGenerator
 	{

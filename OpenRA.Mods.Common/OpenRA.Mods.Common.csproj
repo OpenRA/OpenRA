@@ -126,9 +126,12 @@
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
     <Compile Include="LoadScreens\ModChooserLoadScreen.cs" />
+    <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
+    <Compile Include="Orders\GlobalButtonOrderGenerator.cs" />
+    <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
     <Compile Include="PlayerExtensions.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />

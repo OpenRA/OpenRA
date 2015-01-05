@@ -132,8 +132,6 @@
     <Compile Include="Traits\MadTank.cs" />
     <Compile Include="Traits\Mine.cs" />
     <Compile Include="Traits\Minelayer.cs" />
-    <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
-    <Compile Include="Orders\GlobalButtonOrderGenerator.cs" />
     <Compile Include="ParaDrop.cs" />
     <Compile Include="Traits\PortableChrono.cs" />
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
@@ -216,7 +214,6 @@
     <Compile Include="Widgets\Logic\ReplayControlBarLogic.cs" />
     <Compile Include="Traits\Attack\AttackGarrisoned.cs" />
     <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />
-    <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
     <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
     <Compile Include="Scripting\Properties\ProductionProperties.cs" />
