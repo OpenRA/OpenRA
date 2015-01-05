@@ -8,10 +8,9 @@
  */
 #endregion
 
-using OpenRA.Mods.Common;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the player actor to allow building repair by team mates.")]
 	class AllyRepairInfo : TraitInfo<AllyRepair> { }

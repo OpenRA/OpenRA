@@ -108,6 +108,7 @@
     <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\Rank.cs" />
+    <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Commands\ChatCommands.cs" />
     <Compile Include="Commands\DevCommands.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="LoadScreens\ModChooserLoadScreen.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
+    <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
     <Compile Include="PlayerExtensions.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />
@@ -190,6 +192,7 @@
     <Compile Include="Traits\Buildings\LineBuild.cs" />
     <Compile Include="Traits\Buildings\LineBuildNode.cs" />
     <Compile Include="Traits\Buildings\RallyPoint.cs" />
+    <Compile Include="Traits\Buildings\RepairableBuilding.cs" />
     <Compile Include="Traits\Buildings\RepairsUnits.cs" />
     <Compile Include="Traits\Buildings\Reservable.cs" />
     <Compile Include="Traits\Buildings\TargetableBuilding.cs" />
@@ -232,6 +235,7 @@
     <Compile Include="Traits\PaletteEffects\NukePaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\WaterPaletteRotation.cs" />
     <Compile Include="Traits\Player\ActorGroupProxy.cs" />
+    <Compile Include="Traits\Player\AllyRepair.cs" />
     <Compile Include="Traits\Player\ConquestVictoryConditions.cs" />
     <Compile Include="Traits\Player\GlobalUpgradeManager.cs" />
     <Compile Include="Traits\Player\MissionObjectives.cs" />
@@ -275,11 +279,15 @@
     <Compile Include="Traits\Render\WithHarvestAnimation.cs" />
     <Compile Include="Traits\Render\WithMuzzleFlash.cs" />
     <Compile Include="Traits\Render\WithRangeCircle.cs" />
+    <Compile Include="Traits\Render\WithRepairAnimation.cs" />
+    <Compile Include="Traits\Render\WithRepairOverlay.cs" />
     <Compile Include="Traits\Render\WithResources.cs" />
     <Compile Include="Traits\Render\WithRotor.cs" />
     <Compile Include="Traits\Render\WithShadow.cs" />
     <Compile Include="Traits\Render\WithSmoke.cs" />
     <Compile Include="Traits\Render\WithTurret.cs" />
+    <Compile Include="Traits\Repairable.cs" />
+    <Compile Include="Traits\RepairableNear.cs" />
     <Compile Include="Traits\RepairsBridges.cs" />
     <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Traits\StoresResources.cs" />

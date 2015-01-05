@@ -11,11 +11,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common;
-using OpenRA.Mods.RA.Traits;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Orders
+namespace OpenRA.Mods.Common.Orders
 {
 	public class RepairOrderGenerator : IOrderGenerator
 	{

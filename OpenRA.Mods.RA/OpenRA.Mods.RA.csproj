@@ -82,7 +82,6 @@
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
-    <Compile Include="Player\AllyRepair.cs" />
     <Compile Include="Render\WithIdleOverlay.cs" />
     <Compile Include="Traits\AcceptsSupplies.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
@@ -132,7 +131,6 @@
     <Compile Include="Traits\DemoTruck.cs" />
     <Compile Include="Effects\GpsDot.cs" />
     <Compile Include="Effects\Parachute.cs" />
-    <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />
     <Compile Include="Invulnerable.cs" />
     <Compile Include="Captures.cs" />
@@ -145,7 +143,6 @@
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Orders\GlobalButtonOrderGenerator.cs" />
-    <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="ParaDrop.cs" />
     <Compile Include="Player\ClassicProductionQueue.cs" />
     <Compile Include="Player\PlaceBuilding.cs" />
@@ -162,8 +159,6 @@
     <Compile Include="Render\RenderHarvester.cs" />
     <Compile Include="Render\RenderDisguise.cs" />
     <Compile Include="Render\RenderLandingCraft.cs" />
-    <Compile Include="Repairable.cs" />
-    <Compile Include="RepairableNear.cs" />
     <Compile Include="Disguise.cs" />
     <Compile Include="Traits\SupplyTruck.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />
@@ -178,7 +173,6 @@
     <Compile Include="Traits\Buildings\Fake.cs" />
     <Compile Include="Traits\Buildings\OreRefinery.cs" />
     <Compile Include="Traits\Buildings\PrimaryBuilding.cs" />
-    <Compile Include="Traits\Buildings\RepairableBuilding.cs" />
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\HarvesterHuskModifier.cs" />
     <Compile Include="Traits\LeavesHusk.cs" />
@@ -252,8 +246,6 @@
     <Compile Include="Scripting\Properties\PlayerProperties.cs" />
     <Compile Include="Scripting\Properties\TransportProperties.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
-    <Compile Include="Render\WithRepairAnimation.cs" />
-    <Compile Include="Render\WithRepairOverlay.cs" />
     <Compile Include="Lint\CheckPlayers.cs" />
     <Compile Include="Lint\CheckActors.cs" />
     <Compile Include="Lint\CheckMapCordon.cs" />
