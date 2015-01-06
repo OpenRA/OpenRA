@@ -281,10 +281,10 @@ InitObjectives = function()
 	end)
 
 	Trigger.OnPlayerLost(allies, function()
-		Media.PlaySpeechNotification(allies, "Lose")
+		Media.PlaySpeechNotification(allies, "MissionFailed")
 	end)
 	Trigger.OnPlayerWon(allies, function()
-		Media.PlaySpeechNotification(allies, "Win")
+		Media.PlaySpeechNotification(allies, "MissionAccomplished")
 		Media.DisplayMessage("The French forces have survived and dismantled the soviet presence in the area!")
 	end)
 end

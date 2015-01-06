@@ -50,6 +50,8 @@ Speech:
 		LowPower: lopower1
 		MercenaryFreed: mercf1
 		MercenaryRescued: mercr1
+		MissionAccomplished: misnwon1
+		MissionFailed: misnlst1
 		MissionLoaded: load1
 		MissionSaved: save1
 		MissionTimerInitialised: mtimein1

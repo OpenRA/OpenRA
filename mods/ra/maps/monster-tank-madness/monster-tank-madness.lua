@@ -260,7 +260,7 @@ InitObjectives = function()
 	end)
 
 	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
+		Media.PlaySpeechNotification(player, "MissionFailed")
 
 		ussr.MarkCompletedObjective(USSRObj)
 		badguy.MarkCompletedObjective(BadGuyObj)
@@ -268,7 +268,7 @@ InitObjectives = function()
 		turkey.MarkCompletedObjective(TurkeyObj)
 	end)
 	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
+		Media.PlaySpeechNotification(player, "MissionAccomplished")
 		Media.DisplayMessage("Dr. Demitri has been extracted and the super tanks have been dealt with.")
 
 		ussr.MarkFailedObjective(USSRObj)
