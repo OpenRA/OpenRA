@@ -13,7 +13,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can be captured by units in a specified proximity.")]
 	public class ProximityCapturableInfo : ITraitInfo

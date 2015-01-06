@@ -72,6 +72,7 @@
     <Compile Include="Activities\Air\ReturnToBase.cs" />
     <Compile Include="Activities\Air\TakeOff.cs" />
     <Compile Include="Activities\Attack.cs" />
+    <Compile Include="Activities\CaptureActor.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Activities\RepairBuilding.cs" />
     <Compile Include="Activities\Sell.cs" />
     <Compile Include="Activities\SimpleTeleport.cs" />
+    <Compile Include="Activities\Transform.cs" />
     <Compile Include="Activities\Turn.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
@@ -198,6 +200,9 @@
     <Compile Include="Traits\Buildings\Reservable.cs" />
     <Compile Include="Traits\Buildings\TargetableBuilding.cs" />
     <Compile Include="Traits\Burns.cs" />
+    <Compile Include="Traits\Capturable.cs" />
+    <Compile Include="Traits\CaptureNotification.cs" />
+    <Compile Include="Traits\Captures.cs" />
     <Compile Include="Traits\Cargo.cs" />
     <Compile Include="Traits\CashTrickler.cs" />
     <Compile Include="Traits\Cloak.cs" />
@@ -256,6 +261,8 @@
     <Compile Include="Traits\Power\RequiresPower.cs" />
     <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
+    <Compile Include="Traits\ProximityCaptor.cs" />
+    <Compile Include="Traits\ProximityCapturable.cs" />
     <Compile Include="Traits\RadarColorFromTerrain.cs" />
     <Compile Include="Traits\Reloads.cs" />
     <Compile Include="Traits\Render\Hovers.cs" />
@@ -307,6 +314,7 @@
     <Compile Include="Traits\TargetableUnit.cs" />
     <Compile Include="Traits\ThrowsParticle.cs" />
     <Compile Include="Traits\Tooltip.cs" />
+    <Compile Include="Traits\TransformOnCapture.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />

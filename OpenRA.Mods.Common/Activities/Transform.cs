@@ -14,9 +14,9 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Activities
+namespace OpenRA.Mods.Common.Activities
 {
-	class Transform : Activity
+	public class Transform : Activity
 	{
 		public readonly string ToActor;
 		public CVec Offset = CVec.Zero;
