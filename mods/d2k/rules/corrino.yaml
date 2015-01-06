@@ -3,15 +3,11 @@ CONYARDC:
 
 STARPORTC:
 	Inherits: ^STARPORT
-	Buildable:
-		Prerequisites: ~conyarda, radar
+	-Buildable:
 
 PALACEC:
 	Inherits: ^PALACE
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 1000
-		Prerequisites: ~conyarda, research
+	-Buildable:
 	Building:
 		Footprint: =x= xxx xxx
 		Dimensions: 3,3
@@ -19,7 +15,4 @@ PALACEC:
 
 HEAVYC:
 	Inherits: ^HEAVY
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 1100
-		Prerequisites: ~conyarda, refinery
+	-Buildable:
