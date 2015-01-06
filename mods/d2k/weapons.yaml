@@ -76,7 +76,7 @@ Vulcan:
 	ReloadDelay: 30
 	Range: 5c768
 	Report: VULCAN.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 1c256
 		ContrailLength: 3
@@ -87,7 +87,7 @@ Vulcan:
 		Spread: 96
 		Damage: 30
 		DeathType: 4
-		ValidTargets: Ground, Air
+		ValidTargets: Ground
 		Versus:
 			Wood: 0
 			Light: 60
