@@ -78,7 +78,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\CaptureActor.cs" />
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
@@ -93,7 +92,6 @@
     <Compile Include="Activities\Leap.cs" />
     <Compile Include="Activities\RAHarvesterDockSequence.cs" />
     <Compile Include="Activities\Teleport.cs" />
-    <Compile Include="Activities\Transform.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
@@ -104,10 +102,8 @@
     <Compile Include="AI\RushFuzzy.cs" />
     <Compile Include="AI\StateMachine.cs" />
     <Compile Include="Traits\Attack\AttackLeap.cs" />
-    <Compile Include="CaptureNotification.cs" />
     <Compile Include="Scripting\Properties\RepairableBuildingProperties.cs" />
     <Compile Include="C4Demolition.cs" />
-    <Compile Include="Capturable.cs" />
     <Compile Include="Traits\PaletteEffects\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="CrateSpawner.cs" />
@@ -129,7 +125,6 @@
     <Compile Include="Effects\Parachute.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />
     <Compile Include="Invulnerable.cs" />
-    <Compile Include="Captures.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
@@ -148,8 +143,6 @@
     <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
     <Compile Include="Production.cs" />
     <Compile Include="ProductionBar.cs" />
-    <Compile Include="ProximityCaptor.cs" />
-    <Compile Include="ProximityCapturable.cs" />
     <Compile Include="Traits\Render\RenderJammerCircle.cs" />
     <Compile Include="Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Render\RenderHarvester.cs" />
@@ -173,7 +166,6 @@
     <Compile Include="Traits\HarvesterHuskModifier.cs" />
     <Compile Include="Traits\LeavesHusk.cs" />
     <Compile Include="Traits\TargetableSubmarine.cs" />
-    <Compile Include="TransformOnCapture.cs" />
     <Compile Include="TransformOnPassenger.cs" />
     <Compile Include="Transforms.cs" />
     <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />

@@ -10,9 +10,9 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	class CaptureNotificationInfo : ITraitInfo
+	public class CaptureNotificationInfo : ITraitInfo
 	{
 		public readonly string Notification = "BuildingCaptured";
 		public readonly bool NewOwnerVoice = true;
@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Traits
 		public object Create(ActorInitializer init) { return new CaptureNotification(this); }
 	}
 
-	class CaptureNotification : INotifyCapture
+	public class CaptureNotification : INotifyCapture
 	{
 		CaptureNotificationInfo info;
 		public CaptureNotification(CaptureNotificationInfo info)

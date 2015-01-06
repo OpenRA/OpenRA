@@ -8,12 +8,12 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
-	class TransformOnCaptureInfo : ITraitInfo
+	public class TransformOnCaptureInfo : ITraitInfo
 	{
 		[ActorReference] public readonly string IntoActor = null;
 		public readonly int ForceHealthPercentage = 0;
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new TransformOnCapture(this); }
 	}
 
-	class TransformOnCapture : INotifyCapture
+	public class TransformOnCapture : INotifyCapture
 	{
 		readonly TransformOnCaptureInfo info;
 
