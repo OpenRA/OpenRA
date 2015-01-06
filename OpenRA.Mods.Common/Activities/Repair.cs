@@ -17,11 +17,17 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Repair : Activity
 	{
+		readonly RepairsUnitsInfo repairsUnits;
+		readonly Actor host;
 		int remainingTicks;
-		Actor host;
 		Health health;
+		bool played = false;
 
-		public Repair(Actor host) { this.host = host; }
+		public Repair(Actor host)
+		{
+			this.host = host;
+			repairsUnits = host.Info.Traits.Get<RepairsUnitsInfo>();
+		}
 
 		public override Activity Tick(Actor self)
 		{
@@ -32,14 +38,22 @@ namespace OpenRA.Mods.Common.Activities
 			if (health == null) return NextActivity;
 
 			if (health.DamageState == DamageState.Undamaged)
+			{
+				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.FinishRepairingNotification, self.Owner.Country.Race);
 				return NextActivity;
+			}
 
 			if (remainingTicks == 0)
 			{
-				var repairsUnits = host.Info.Traits.Get<RepairsUnitsInfo>();
 				var unitCost = self.Info.Traits.Get<ValuedInfo>().Cost;
 				var hpToRepair = repairsUnits.HpPerStep;
 				var cost = Math.Max(1, (hpToRepair * unitCost * repairsUnits.ValuePercentage) / (health.MaxHP * 100));
+
+				if (!played)
+				{
+					played = true;
+					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.StartRepairingNotification, self.Owner.Country.Race);
+				}
 
 				if (!self.Owner.PlayerActor.Trait<PlayerResources>().TakeCash(cost))
 				{
