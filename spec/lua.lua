@@ -26,11 +26,11 @@ local function isfndef(str)
 end
 local q = EscapeMagic
 
-local function ldoc(tx)
+local function ldoc(tx, typepatt)
   local varname = "([%w_]+)"
   -- <type> == ?string, ?|T1|T2
   -- anything that follows optional "|..." is ignored
-  local typename = "%??([%w_]+)"
+  local typename = "%??"..typepatt
   -- @tparam[...] <type> <paramname>
   -- @param[type=<type>] <paramname>
   -- @string[...] <paramname>; not handled
@@ -150,7 +150,7 @@ return {
 
       -- special hint
       local typ, var = tx:match("%s*%-%-=%s*"..varname.."%s+"..identifier)
-      local ldoctype, ldocvar = ldoc(tx)
+      local ldoctype, ldocvar = ldoc(tx, varname)
       if var and typ then
         assigns[var] = typ:gsub("%s","")
       elseif ldoctype and ldocvar then
