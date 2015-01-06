@@ -50,11 +50,11 @@ WorldLoaded = function()
 	JeepDemolishingBridge()
 
 	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
+		Media.PlaySpeechNotification(player, "MissionAccomplished")
 	end)
 
 	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
+		Media.PlaySpeechNotification(player, "MissionFailed")
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(2), InsertYaks)
