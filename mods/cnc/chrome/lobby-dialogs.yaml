@@ -98,7 +98,7 @@ Background@LOBBY_OPTIONS_BIN:
 	Children:
 		Label@TITLE:
 			X: 0
-			Y: 30
+			Y: 0 - 25
 			Width: PARENT_RIGHT
 			Height: 25
 			Font: Bold
@@ -106,7 +106,7 @@ Background@LOBBY_OPTIONS_BIN:
 			Text: Map Options
 		Container:
 			X: 30
-			Y: 65
+			Y: 30
 			Width: PARENT_RIGHT-60
 			Height: PARENT_BOTTOM-75
 			Children:
