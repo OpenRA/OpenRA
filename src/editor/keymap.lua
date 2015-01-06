@@ -56,6 +56,7 @@ ide.config.keymap = {
   [ID_NAVIGATETOFILE]   = "Ctrl-P",
   [ID_NAVIGATETOLINE]   = "Ctrl-G",
   [ID_NAVIGATETOSYMBOL] = "Ctrl-B",
+  [ID_NAVIGATETOMETHOD] = "Ctrl-;",
 -- Search menu
   [ID_FIND]             = "Ctrl-F",
   [ID_FINDNEXT]         = "F3",
