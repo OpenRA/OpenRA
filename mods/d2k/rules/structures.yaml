@@ -585,6 +585,7 @@ WALL:
 	RepairsUnits:
 		Interval: 15
 		ValuePercentage: 50
+		FinishRepairingNotification: UnitRepaired
 	RallyPoint:
 		RallyPoint: 1,3
 	ProvidesCustomPrerequisite:

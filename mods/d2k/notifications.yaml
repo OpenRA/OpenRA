@@ -34,6 +34,7 @@ Speech:
 		WormSign: WSIGN
 		WormAttack: WATTK
 		EnemyUnitsApproaching: ENEMY
+		UnitRepaired: GANEW
 
 Sounds:
 	DefaultVariant: .WAV

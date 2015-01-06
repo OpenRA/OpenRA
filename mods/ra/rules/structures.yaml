@@ -142,6 +142,7 @@ SPEN:
 	PrimaryBuilding:
 	-EmitInfantryOnSell:
 	RepairsUnits:
+		FinishRepairingNotification: UnitRepaired
 	RallyPoint:
 	ProductionBar:
 	Power:
@@ -219,6 +220,7 @@ SYRD:
 	PrimaryBuilding:
 	-EmitInfantryOnSell:
 	RepairsUnits:
+		FinishRepairingNotification: UnitRepaired
 	RallyPoint:
 	ProductionBar:
 	Power:
@@ -1435,6 +1437,7 @@ FIX:
 	RallyPoint:
 	RepairsUnits:
 		Interval: 10
+		FinishRepairingNotification: UnitRepaired
 	WithRepairAnimation:
 	Power:
 		Amount: -30
