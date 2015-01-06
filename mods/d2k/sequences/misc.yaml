@@ -205,7 +205,7 @@ fire:
 	1: DATA
 		Start: 3712
 		Length: 10
-		Offset: 0,-3
+		Offset: 4,-17
 		ZOffset: 1023
 		BlendMode: Additive
 	2: DATA
