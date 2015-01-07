@@ -886,6 +886,14 @@ function CreateEditor(bare)
         local firstLine = editor:LineFromPosition(event:GetPosition())
         if not editor:GetFoldExpanded(firstLine) then editor:ToggleFold(firstLine) end
       end
+
+      -- hide calltip/auto-complete after undo/redo/delete
+      local undodelete = (wxstc.wxSTC_MOD_DELETETEXT
+        + wxstc.wxSTC_PERFORMED_UNDO + wxstc.wxSTC_PERFORMED_REDO)
+      if bit.band(evtype, undodelete) ~= 0 then
+        if editor:CallTipActive() then editor:CallTipCancel() end
+        if editor:AutoCompActive() then editor:AutoCompCancel() end
+      end
       
       if ide.config.acandtip.nodynwords then return end
       -- only required to track changes
