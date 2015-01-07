@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Has to be defined here and in weapons.yaml.")]
 		public readonly string Weapon = null;
 		public readonly string Turret = "primary";
-		[Desc("Time (in frames) until the weapon can fire again.")] 
+		[Desc("Time (in frames) until the weapon can fire again.")]
 		public readonly int FireDelay = 0;
 
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]

@@ -59,41 +59,41 @@ namespace OpenRA.FileSystem
 		{
 			switch (type)
 			{
-			case PackageHashType.Classic:
-				{
-					name = name.ToUpperInvariant();
-					if (name.Length % 4 != 0)
-						name = name.PadRight(name.Length + (4 - name.Length % 4), '\0');
-
-					var ms = new MemoryStream(Encoding.ASCII.GetBytes(name));
-					var reader = new BinaryReader(ms);
-
-					var len = name.Length >> 2;
-					uint result = 0;
-
-					while (len-- != 0)
-						result = ((result << 1) | (result >> 31)) + reader.ReadUInt32();
-
-					return result;
-				}
-
-			case PackageHashType.CRC32:
-				{
-					name = name.ToUpperInvariant();
-					var l = name.Length;
-					var a = l >> 2;
-					if ((l & 3) != 0)
+				case PackageHashType.Classic:
 					{
-						name += (char)(l - (a << 2));
-						var i = 3 - (l & 3);
-						while (i-- != 0)
-							name += name[a << 2];
+						name = name.ToUpperInvariant();
+						if (name.Length % 4 != 0)
+							name = name.PadRight(name.Length + (4 - name.Length % 4), '\0');
+
+						var ms = new MemoryStream(Encoding.ASCII.GetBytes(name));
+						var reader = new BinaryReader(ms);
+
+						var len = name.Length >> 2;
+						uint result = 0;
+
+						while (len-- != 0)
+							result = ((result << 1) | (result >> 31)) + reader.ReadUInt32();
+
+						return result;
 					}
 
-					return CRC32.Calculate(Encoding.ASCII.GetBytes(name));
-				}
+				case PackageHashType.CRC32:
+					{
+						name = name.ToUpperInvariant();
+						var l = name.Length;
+						var a = l >> 2;
+						if ((l & 3) != 0)
+						{
+							name += (char)(l - (a << 2));
+							var i = 3 - (l & 3);
+							while (i-- != 0)
+								name += name[a << 2];
+						}
 
-			default: throw new NotImplementedException("Unknown hash type `{0}`".F(type));
+						return CRC32.Calculate(Encoding.ASCII.GetBytes(name));
+					}
+
+				default: throw new NotImplementedException("Unknown hash type `{0}`".F(type));
 			}
 		}
 

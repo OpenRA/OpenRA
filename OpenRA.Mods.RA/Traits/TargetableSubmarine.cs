@@ -32,8 +32,10 @@ namespace OpenRA.Mods.RA.Traits
 
 		public override string[] TargetTypes
 		{
-			get { return cloak.Cloaked ? info.CloakedTargetTypes
-									   : info.TargetTypes; }
+			get
+			{
+				return cloak.Cloaked ? info.CloakedTargetTypes : info.TargetTypes;
+			}
 		}
 	}
 }

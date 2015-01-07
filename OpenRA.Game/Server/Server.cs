@@ -347,7 +347,7 @@ namespace OpenRA.Server
 				LobbyInfo.ClientPings.Add(clientPing);
 
 				Log.Write("server", "Client {0}: Accepted connection from {1}.",
-				          newConn.PlayerIndex, newConn.Socket.RemoteEndPoint);
+					newConn.PlayerIndex, newConn.Socket.RemoteEndPoint);
 
 				foreach (var t in serverTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
@@ -451,20 +451,20 @@ namespace OpenRA.Server
 			switch (so.Name)
 			{
 				case "Command":
-				{
-					var handled = false;
-					foreach (var t in serverTraits.WithInterface<IInterpretCommand>())
-						if (handled = t.InterpretCommand(this, conn, GetClient(conn), so.Data))
-							break;
-
-					if (!handled)
 					{
-						Log.Write("server", "Unknown server command: {0}", so.Data);
-						SendOrderTo(conn, "Message", "Unknown server command: {0}".F(so.Data));
-					}
+						var handled = false;
+						foreach (var t in serverTraits.WithInterface<IInterpretCommand>())
+							if (handled = t.InterpretCommand(this, conn, GetClient(conn), so.Data))
+								break;
 
-					break;
-				}
+						if (!handled)
+						{
+							Log.Write("server", "Unknown server command: {0}", so.Data);
+							SendOrderTo(conn, "Message", "Unknown server command: {0}".F(so.Data));
+						}
+
+						break;
+					}
 
 				case "HandshakeResponse":
 					ValidateClient(conn, so.Data);
@@ -475,33 +475,33 @@ namespace OpenRA.Server
 					DispatchOrdersToClients(conn, 0, so.Serialize());
 					break;
 				case "Pong":
-				{
-					int pingSent;
-					if (!OpenRA.Exts.TryParseIntegerInvariant(so.Data, out pingSent))
 					{
-						Log.Write("server", "Invalid order pong payload: {0}", so.Data);
+						int pingSent;
+						if (!OpenRA.Exts.TryParseIntegerInvariant(so.Data, out pingSent))
+						{
+							Log.Write("server", "Invalid order pong payload: {0}", so.Data);
+							break;
+						}
+
+						var pingFromClient = LobbyInfo.PingFromClient(GetClient(conn));
+						if (pingFromClient == null)
+							return;
+
+						var history = pingFromClient.LatencyHistory.ToList();
+						history.Add(Game.RunTime - pingSent);
+
+						// Cap ping history at 5 values (25 seconds)
+						if (history.Count > 5)
+							history.RemoveRange(0, history.Count - 5);
+
+						pingFromClient.Latency = history.Sum() / history.Count;
+						pingFromClient.LatencyJitter = (history.Max() - history.Min()) / 2;
+						pingFromClient.LatencyHistory = history.ToArray();
+
+						SyncClientPing();
+
 						break;
 					}
-
-					var pingFromClient = LobbyInfo.PingFromClient(GetClient(conn));
-					if (pingFromClient == null)
-						return;
-
-					var history = pingFromClient.LatencyHistory.ToList();
-					history.Add(Game.RunTime - pingSent);
-
-					// Cap ping history at 5 values (25 seconds)
-					if (history.Count > 5)
-						history.RemoveRange(0, history.Count - 5);
-
-					pingFromClient.Latency = history.Sum() / history.Count;
-					pingFromClient.LatencyJitter = (history.Max() - history.Min()) / 2;
-					pingFromClient.LatencyHistory = history.ToArray();
-
-					SyncClientPing();
-
-					break;
-				}
 			}
 		}
 

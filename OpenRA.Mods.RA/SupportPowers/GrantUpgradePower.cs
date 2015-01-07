@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				if (!a.Owner.IsAlliedWith(Self.Owner))
 					return false;
-	
+
 				var um = a.TraitOrDefault<UpgradeManager>();
 				return um != null && info.Upgrades.Any(u => um.AcceptsUpgrade(a, u));
 			});

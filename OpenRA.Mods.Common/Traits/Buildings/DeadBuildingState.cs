@@ -35,12 +35,12 @@ namespace OpenRA.Mods.Common.Traits
 		public void Killed(Actor self, AttackInfo e)
 		{
 			if (!rs.DefaultAnimation.HasSequence("dead")) return;
-			
+
 			if (rs.DefaultAnimation.GetSequence("dead").Length > 1)
 				rs.DefaultAnimation.Play("dead");
 			else
 				rs.DefaultAnimation.PlayRepeating("dead");
-			
+
 			self.World.AddFrameEndTask(
 				w => w.Add(
 					new DelayedAction(info.LingerTime,

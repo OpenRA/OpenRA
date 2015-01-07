@@ -38,8 +38,8 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick(World world)
 		{
-			if (!building.IsInWorld || building.IsDead || 
-				rb == null || !rb.Repairers.Any()) 
+			if (!building.IsInWorld || building.IsDead ||
+				rb == null || !rb.Repairers.Any())
 				world.AddFrameEndTask(w => w.Remove(this));
 
 			anim.Tick();
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Effects
 			return anim.Render(building.CenterPosition, palette);
 		}
 
-		void CycleRepairer() 
+		void CycleRepairer()
 		{
 			anim.PlayThen("repair", CycleRepairer);
 

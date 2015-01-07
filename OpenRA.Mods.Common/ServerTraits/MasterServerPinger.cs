@@ -20,8 +20,8 @@ namespace OpenRA.Mods.Common.Server
 {
 	public class MasterServerPinger : ServerTrait, ITick, INotifySyncLobbyInfo, IStartGame, IEndGame
 	{
-		const int MasterPingInterval = 60 * 3;	// 3 minutes. server has a 5 minute TTL for games, so give ourselves a bit
-												// of leeway.
+		// 3 minutes. Server has a 5 minute TTL for games, so give ourselves a bit of leeway.
+		const int MasterPingInterval = 60 * 3;
 		public int TickTimeout { get { return MasterPingInterval * 10000; } }
 
 		public void Tick(S server)

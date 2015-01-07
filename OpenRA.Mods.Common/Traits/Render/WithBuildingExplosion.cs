@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Custom palette name")]
 		public readonly string Palette = "effect";
-		
+
 		public object Create(ActorInitializer init) { return new WithBuildingExplosion(this); }
 	}
 

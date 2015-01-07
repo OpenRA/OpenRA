@@ -81,7 +81,7 @@ namespace OpenRA.Widgets
 						var unit = World.ScreenMap.ActorsAt(xy)
 							.WithHighestSelectionPriority();
 
-						var newSelection2 = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight, 
+						var newSelection2 = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,
 							a => unit != null && a.Info.Name == unit.Info.Name && a.Owner == unit.Owner);
 
 						World.Selection.Combine(World, newSelection2, true, false);
@@ -98,7 +98,7 @@ namespace OpenRA.Widgets
 			}
 
 			// don't issue orders while selecting
-			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down && !hasBox) 
+			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down && !hasBox)
 				ApplyOrders(World, xy, mi);
 
 			lastMousePosition = xy;

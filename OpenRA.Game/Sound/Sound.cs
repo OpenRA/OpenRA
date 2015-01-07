@@ -61,11 +61,11 @@ namespace OpenRA
 			engine = Game.Settings.Server.Dedicated ? "Null" : engine;
 			switch (engine)
 			{
-			case "AL": return new OpenAlSoundEngine();
-			case "Null": return new NullSoundEngine();
+				case "AL": return new OpenAlSoundEngine();
+				case "Null": return new NullSoundEngine();
 
-			default:
-				throw new InvalidOperationException("Unsupported sound engine: {0}".F(engine));
+				default:
+					throw new InvalidOperationException("Unsupported sound engine: {0}".F(engine));
 			}
 		}
 
@@ -373,7 +373,7 @@ namespace OpenRA
 			var type = mi.Voice.ToLowerInvariant();
 			return PlayPredefined(voicedUnit.World.Map.Rules, null, voicedUnit, type, phrase, variant, true, WPos.Zero, 1f, true);
 		}
-		
+
 		public static bool PlayVoiceLocal(string phrase, Actor voicedUnit, string variant, WPos pos, float volume)
 		{
 			if (voicedUnit == null || phrase == null)

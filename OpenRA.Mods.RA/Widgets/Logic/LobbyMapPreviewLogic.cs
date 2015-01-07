@@ -107,20 +107,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var statusSearching = progress.GetOrNull("MAP_STATUS_SEARCHING");
 				if (statusSearching != null)
-					statusSearching.IsVisible = () => lobby.Map.Status == MapStatus.Searching; 
+					statusSearching.IsVisible = () => lobby.Map.Status == MapStatus.Searching;
 
 				var statusUnavailable = progress.GetOrNull("MAP_STATUS_UNAVAILABLE");
 				if (statusUnavailable != null)
-					statusUnavailable.IsVisible = () => lobby.Map.Status == MapStatus.Unavailable; 
+					statusUnavailable.IsVisible = () => lobby.Map.Status == MapStatus.Unavailable;
 
 				var statusError = progress.GetOrNull("MAP_STATUS_ERROR");
 				if (statusError != null)
-					statusError.IsVisible = () => lobby.Map.Status == MapStatus.DownloadError; 
+					statusError.IsVisible = () => lobby.Map.Status == MapStatus.DownloadError;
 
 				var statusDownloading = progress.GetOrNull<LabelWidget>("MAP_STATUS_DOWNLOADING");
 				if (statusDownloading != null)
 				{
-					statusDownloading.IsVisible = () => lobby.Map.Status == MapStatus.Downloading; 
+					statusDownloading.IsVisible = () => lobby.Map.Status == MapStatus.Downloading;
 					statusDownloading.GetText = () =>
 					{
 						if (lobby.Map.DownloadBytes == 0)

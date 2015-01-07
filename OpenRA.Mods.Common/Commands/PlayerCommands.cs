@@ -41,7 +41,9 @@ namespace OpenRA.Mods.Common.Commands
 			{
 				case "pause":
 					world.IssueOrder(new Order("PauseGame", null, false)
-						{ TargetString = world.Paused ? "UnPause" : "Pause" });
+					{
+						TargetString = world.Paused ? "UnPause" : "Pause"
+					});
 					break;
 				case "surrender":
 					world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));

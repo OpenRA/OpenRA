@@ -40,10 +40,13 @@ namespace OpenRA.Mods.Common.Traits
 			// the one we're playing in.
 			return new DisposableAction(
 				() => { reservedFor = null; reservedForAircraft = null; },
-				() => Game.RunAfterTick(
-					() => { if (Game.IsCurrentWorld(self.World)) throw new InvalidOperationException(
-						"Attempted to finalize an undisposed DisposableAction. {0} ({1}) reserved {2} ({3})"
-						.F(forActor.Info.Name, forActor.ActorID, self.Info.Name, self.ActorID)); }));
+				() => Game.RunAfterTick(() =>
+				{
+					if (Game.IsCurrentWorld(self.World))
+						throw new InvalidOperationException(
+							"Attempted to finalize an undisposed DisposableAction. {0} ({1}) reserved {2} ({3})".F(
+							forActor.Info.Name, forActor.ActorID, self.Info.Name, self.ActorID));
+				}));
 		}
 
 		public static bool IsReserved(Actor a)

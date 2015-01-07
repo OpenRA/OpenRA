@@ -22,7 +22,7 @@ namespace OpenRA
 	{
 		static string processName = "OpenRA.Game.exe";
 		static Process gameProcess;
-		
+
 		[STAThread]
 		static void Main(string[] args)
 		{
@@ -67,14 +67,14 @@ namespace OpenRA
 				Text = "OpenRA has encountered a fatal error and must close.{0}Refer to the crash logs and FAQ for more information.".F(Environment.NewLine),
 				TextAlign = ContentAlignment.TopCenter
 			};
-			
+
 			var viewLogs = new Button
 			{
 				Location = new Point(10, 80),
 				Size = new Size(75, 23),
 				Text = "View Logs"
 			};
-			
+
 			var viewFaq = new Button
 			{
 				Location = new Point(90, 80),
@@ -89,7 +89,7 @@ namespace OpenRA
 				Text = "Quit",
 				DialogResult = DialogResult.Cancel
 			};
-			
+
 			form.Controls.Add(notice);
 			form.Controls.Add(viewLogs);
 			form.Controls.Add(viewFaq);

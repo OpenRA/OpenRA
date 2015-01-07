@@ -84,10 +84,10 @@ namespace OpenRA.Mods.Common.Traits
 			readonly AttackCharge attack;
 			readonly Target target;
 
-			public ChargeAttack(AttackCharge attack, Target target) 
-			{ 
+			public ChargeAttack(AttackCharge attack, Target target)
+			{
 				this.attack = attack;
-				this.target = target; 
+				this.target = target;
 			}
 
 			public override Activity Tick(Actor self)
@@ -109,10 +109,10 @@ namespace OpenRA.Mods.Common.Traits
 			readonly AttackCharge attack;
 			readonly Target target;
 
-			public ChargeFire(AttackCharge attack, Target target) 
-			{ 
+			public ChargeFire(AttackCharge attack, Target target)
+			{
 				this.attack = attack;
-				this.target = target; 
+				this.target = target;
 			}
 
 			public override Activity Tick(Actor self)

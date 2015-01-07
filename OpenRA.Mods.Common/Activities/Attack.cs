@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 			var type = Target.Type;
 			if (!Target.IsValidFor(self) || type == TargetType.FrozenActor)
 				return NextActivity;
-			
+
 			if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(Target.Actor.Location, null, false))
 				return NextActivity;
 

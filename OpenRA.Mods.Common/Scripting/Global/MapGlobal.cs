@@ -20,7 +20,8 @@ namespace OpenRA.Mods.Common.Scripting
 	public class MapGlobal : ScriptGlobal
 	{
 		SpawnMapActors sma;
-		public MapGlobal(ScriptContext context) : base(context)
+		public MapGlobal(ScriptContext context)
+			: base(context)
 		{
 			sma = context.World.WorldActor.Trait<SpawnMapActors>();
 

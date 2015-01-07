@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
 					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a)) continue;
-					
+
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
 					if (needsCellExclusively)
 						return false;
@@ -218,7 +218,7 @@ namespace OpenRA.Mods.Common.Traits
 					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
 					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a))
 						return false;
-					
+
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
 					if (needsCellExclusively)
 						return true;
@@ -252,7 +252,7 @@ namespace OpenRA.Mods.Common.Traits
 		const int AverageTicksBeforePathing = 5;
 		const int SpreadTicksBeforePathing = 5;
 		internal int TicksBeforePathing = 0;
-		
+
 		readonly Actor self;
 		public readonly MobileInfo Info;
 		public bool IsMoving { get; set; }

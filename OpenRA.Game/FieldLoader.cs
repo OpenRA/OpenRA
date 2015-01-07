@@ -156,7 +156,7 @@ namespace OpenRA
 			else if (fieldType == typeof(decimal))
 			{
 				decimal res;
-				if (decimal.TryParse(value.Replace("%", ""),  NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
+				if (decimal.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
 					return res * (value.Contains('%') ? 0.01m : 1m);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -291,7 +291,7 @@ namespace OpenRA
 					if (Exts.TryParseIntegerInvariant(value, out rr)
 						&& Exts.TryParseIntegerInvariant(value, out rp)
 						&& Exts.TryParseIntegerInvariant(value, out ry))
-							return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
+						return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
 				}
 
 				return InvalidValueAction(value, fieldType, fieldName);

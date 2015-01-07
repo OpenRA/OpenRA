@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Commands
 		World world;
 		ChatCommands console;
 
-		public HelpCommand() 
+		public HelpCommand()
 		{
 			helpDescriptions = new Dictionary<string, string>();
 		}

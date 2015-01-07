@@ -153,7 +153,7 @@ namespace OpenRA
 			if (worldRenderer != null)
 				worldRenderer.Dispose();
 			worldRenderer = new WorldRenderer(OrderManager.World);
-			
+
 			using (new PerfTimer("LoadComplete"))
 				OrderManager.World.LoadComplete(worldRenderer);
 

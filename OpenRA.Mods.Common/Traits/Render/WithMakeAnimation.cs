@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 			var building = self.Trait<Building>();
 			if (!building.SkipMakeAnimation)
 			{
-				renderBuilding.PlayCustomAnimThen(self, info.Sequence, () => 
+				renderBuilding.PlayCustomAnimThen(self, info.Sequence, () =>
 				{
 					building.NotifyBuildingComplete(self);
 				});

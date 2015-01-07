@@ -413,7 +413,7 @@ namespace OpenRA.Mods.Common.Scripting
 			GetScriptTriggers(a).ClearAll();
 		}
 
-		[Desc("Removes the specified trigger from this actor."  +
+		[Desc("Removes the specified trigger from this actor." +
 			"Note that the removal will only take effect at the end of a tick, " +
 			"so you must not add new triggers at the same time that you are calling this function.")]
 		public void Clear(Actor a, string triggerName)

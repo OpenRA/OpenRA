@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly int Percentage = 50;
 		public readonly int Minimum = 500;
 		public readonly string SoundToVictim = "credit1.aud";
-		
+
 		public object Create(ActorInitializer init) { return new InfiltrateForCash(this); }
 	}
 
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			var toTake = (targetResources.Cash + targetResources.Resources) * info.Percentage / 100;
 			var toGive = Math.Max(toTake, info.Minimum);
-			
+
 			targetResources.TakeCash(toTake);
 			spyResources.GiveCash(toGive);
 

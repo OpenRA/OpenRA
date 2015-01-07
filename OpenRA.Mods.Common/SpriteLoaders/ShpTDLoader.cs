@@ -168,26 +168,26 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			{
 				case Format.Format20:
 				case Format.Format40:
-				{
-					if (h.RefImage.Data == null)
 					{
-						++recurseDepth;
-						Decompress(h.RefImage);
-						--recurseDepth;
+						if (h.RefImage.Data == null)
+						{
+							++recurseDepth;
+							Decompress(h.RefImage);
+							--recurseDepth;
+						}
+
+						h.Data = CopyImageData(h.RefImage.Data);
+						Format40.DecodeInto(shpBytes, h.Data, (int)(h.FileOffset - shpBytesFileOffset));
+						break;
 					}
 
-					h.Data = CopyImageData(h.RefImage.Data);
-					Format40.DecodeInto(shpBytes, h.Data, (int)(h.FileOffset - shpBytesFileOffset));
-					break;
-				}
-
 				case Format.Format80:
-				{
-					var imageBytes = new byte[Size.Width * Size.Height];
-					Format80.DecodeInto(shpBytes, imageBytes, (int)(h.FileOffset - shpBytesFileOffset));
-					h.Data = imageBytes;
-					break;
-				}
+					{
+						var imageBytes = new byte[Size.Width * Size.Height];
+						Format80.DecodeInto(shpBytes, imageBytes, (int)(h.FileOffset - shpBytesFileOffset));
+						h.Data = imageBytes;
+						break;
+					}
 
 				default:
 					throw new InvalidDataException();

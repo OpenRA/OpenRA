@@ -274,7 +274,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var stride = radarSheet.Size.Width;
 				var dx = actorSprite.Bounds.Left - world.Map.Bounds.Left;
 				var dy = actorSprite.Bounds.Top - world.Map.Bounds.Top;
-	
+
 				Array.Clear(radarData, 4 * (actorSprite.Bounds.Top * stride + actorSprite.Bounds.Left), 4 * actorSprite.Bounds.Height * stride);
 
 				unsafe

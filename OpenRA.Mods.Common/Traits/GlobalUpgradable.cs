@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (available == wasAvailable)
 				return;
-			
+
 			if (available)
 				foreach (var u in info.Upgrades)
 					manager.GrantUpgrade(self, u, this);

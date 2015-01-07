@@ -96,7 +96,7 @@ namespace OpenRA.Mods.D2k.Activities
 					{
 						state = State.MoveToCarryable;
 						return this;
-					} 
+					}
 					else
 					{
 						// We got cancelled
@@ -177,7 +177,7 @@ namespace OpenRA.Mods.D2k.Activities
 					c.Dropped();
 
 					state = State.Done;
-					return Util.SequenceActivities(new Wait(10),  this);
+					return Util.SequenceActivities(new Wait(10), this);
 
 				case State.Done:
 

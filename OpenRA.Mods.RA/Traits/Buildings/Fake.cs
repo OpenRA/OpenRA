@@ -18,6 +18,6 @@ namespace OpenRA.Mods.RA.Traits
 
 	class Fake : ITags
 	{
-		public IEnumerable<TagType> GetTags() {	yield return TagType.Fake; }
+		public IEnumerable<TagType> GetTags() { yield return TagType.Fake; }
 	}
 }

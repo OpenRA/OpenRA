@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Traits
 		public void RefreshGps(Actor atek)
 		{
 			RefreshGranted();
-			
+
 			foreach (var i in atek.World.ActorsWithTrait<GpsWatcher>())
 				i.Trait.RefreshGranted();
 
@@ -92,7 +92,8 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		GpsWatcher owner;
 
-		public GpsPower(Actor self, GpsPowerInfo info) : base(self, info)
+		public GpsPower(Actor self, GpsPowerInfo info)
+			: base(self, info)
 		{
 			owner = self.Owner.PlayerActor.Trait<GpsWatcher>();
 			owner.GpsAdd(self);

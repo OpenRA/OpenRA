@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				ConfirmationDialogs.PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, showMenu);
 			};
 
-			Action onSurrender = () => 
+			Action onSurrender = () =>
 			{
 				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 				closeMenu();

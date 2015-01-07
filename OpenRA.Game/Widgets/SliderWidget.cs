@@ -61,22 +61,22 @@ namespace OpenRA.Widgets
 
 			switch (mi.Event)
 			{
-			case MouseInputEvent.Up:
-				isMoving = false;
-				YieldMouseFocus(mi);
-				break;
+				case MouseInputEvent.Up:
+					isMoving = false;
+					YieldMouseFocus(mi);
+					break;
 
-			case MouseInputEvent.Down:
-				isMoving = true;
-				/* TODO: handle snapping to ticks properly again */
-				/* TODO: handle nudge via clicking outside the thumb */
-				UpdateValue(ValueFromPx(mi.Location.X - RenderBounds.Left));
-				break;
-
-			case MouseInputEvent.Move:
-				if (isMoving)
+				case MouseInputEvent.Down:
+					isMoving = true;
+					/* TODO: handle snapping to ticks properly again */
+					/* TODO: handle nudge via clicking outside the thumb */
 					UpdateValue(ValueFromPx(mi.Location.X - RenderBounds.Left));
-				break;
+					break;
+
+				case MouseInputEvent.Move:
+					if (isMoving)
+						UpdateValue(ValueFromPx(mi.Location.X - RenderBounds.Left));
+					break;
 			}
 
 			return ThumbRect.Contains(mi.Location);

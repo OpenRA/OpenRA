@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 					if (af != null)
 					{
-					    actor.QueueActivity(new CallFunc(() =>
+						actor.QueueActivity(new CallFunc(() =>
 						{
 							af.Call(actor.ToLuaValue(Context));
 							af.Dispose();

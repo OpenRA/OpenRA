@@ -94,7 +94,7 @@ namespace OpenRA.Mods.D2k.Traits
 			}));
 
 			wormsPresent++;
-			
+
 			return spawnPoint.CenterPosition;
 		}
 
