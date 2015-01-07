@@ -203,11 +203,11 @@ namespace OpenRA.Graphics
 						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(Util.MatrixInverse(t), lightTransform));
 
 						Render(rd, Util.MatrixMultiply(transform, t), lightDirection,
-							lightAmbientColor, lightDiffuseColor, color.Index, normals.Index);
+							lightAmbientColor, lightDiffuseColor, color.TextureMidIndex, normals.TextureMidIndex);
 
 						// Disable shadow normals by forcing zero diffuse and identity ambient light
 						Render(rd, Util.MatrixMultiply(shadow, t), lightDirection,
-							ShadowAmbient, ShadowDiffuse, shadowPalette.Index, normals.Index);
+							ShadowAmbient, ShadowDiffuse, shadowPalette.TextureMidIndex, normals.TextureMidIndex);
 					}
 				}
 			}));
@@ -254,12 +254,10 @@ namespace OpenRA.Graphics
 			VoxelRenderData renderData,
 			float[] t, float[] lightDirection,
 			float[] ambientLight, float[] diffuseLight,
-			int colorPalette, int normalsPalette)
+			float colorPaletteTextureMidIndex, float normalsPaletteTextureMidIndex)
 		{
 			shader.SetTexture("DiffuseTexture", renderData.Sheet.GetTexture());
-			shader.SetVec("PaletteRows",
-				(colorPalette + 0.5f) / HardwarePalette.MaxPalettes,
-				(normalsPalette + 0.5f) / HardwarePalette.MaxPalettes);
+			shader.SetVec("PaletteRows", colorPaletteTextureMidIndex, normalsPaletteTextureMidIndex);
 			shader.SetMatrix("TransformMatrix", t);
 			shader.SetVec("LightDirection", lightDirection, 4);
 			shader.SetVec("AmbientLight", ambientLight, 3);

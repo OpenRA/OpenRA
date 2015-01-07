@@ -21,23 +21,22 @@ namespace OpenRA.Graphics
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
 		static readonly float[] ChannelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
-		public static void FastCreateQuad(Vertex[] vertices, float2 o, Sprite r, int palette, int nv, float2 size)
+		public static void FastCreateQuad(Vertex[] vertices, float2 o, Sprite r, float paletteTextureIndex, int nv, float2 size)
 		{
 			var b = new float2(o.X + size.X, o.Y);
 			var c = new float2(o.X + size.X, o.Y + size.Y);
 			var d = new float2(o.X, o.Y + size.Y);
-			FastCreateQuad(vertices, o, b, c, d, r, palette, nv);
+			FastCreateQuad(vertices, o, b, c, d, r, paletteTextureIndex, nv);
 		}
 
-		public static void FastCreateQuad(Vertex[] vertices, float2 a, float2 b, float2 c, float2 d, Sprite r, int palette, int nv)
+		public static void FastCreateQuad(Vertex[] vertices, float2 a, float2 b, float2 c, float2 d, Sprite r, float paletteTextureIndex, int nv)
 		{
-			var attribP = palette / (float)HardwarePalette.MaxPalettes;
 			var attribC = ChannelSelect[(int)r.Channel];
 
-			vertices[nv] = new Vertex(a, r.Left, r.Top, attribP, attribC);
-			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, attribP, attribC);
-			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, attribP, attribC);
-			vertices[nv + 3] = new Vertex(d, r.Left, r.Bottom, attribP, attribC);
+			vertices[nv] = new Vertex(a, r.Left, r.Top, paletteTextureIndex, attribC);
+			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, paletteTextureIndex, attribC);
+			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, paletteTextureIndex, attribC);
+			vertices[nv + 3] = new Vertex(d, r.Left, r.Bottom, paletteTextureIndex, attribC);
 		}
 
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src) { FastCopyIntoChannel(dest, 0, src); }
