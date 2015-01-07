@@ -129,11 +129,12 @@ local function fillTips(api,apibasename)
   local shortfinfo = tclass.shortfinfo
   local shortfinfoclass = tclass.shortfinfoclass
 
-  local function traverse (tab,libname)
+  local function traverse (tab, libname, format)
     if not tab.childs then return end
+    format = tab.format or format
     for key,info in pairs(tab.childs) do
       local fullkey = (libname ~= "" and libname.."." or "")..key
-      traverse(info, fullkey)
+      traverse(info, fullkey, format)
 
       if info.type == "function" or info.type == "method" or info.type == "value" then
         local frontname = (info.returns or "(?)").." "..fullkey.." "..(info.args or "(?)")
@@ -146,6 +147,10 @@ local function fillTips(api,apibasename)
         local sentence = description:match("^(.-)%. ?\n")
         local infshort = ((info.type == "value" and "" or frontname.."\n")
           ..(sentence and sentence.."..." or description))
+        if type(format) == 'function' then -- apply custom formatting if requested
+          inf = format(fullkey, info, inf)
+          infshort = format(fullkey, info, infshort)
+        end
         local infshortbatch = (info.returns and info.args) and frontname or infshort
 
         -- add to infoclass
