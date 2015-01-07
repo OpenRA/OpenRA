@@ -57,7 +57,7 @@ namespace OpenRA.Graphics
 		PaletteReference CreatePaletteReference(string name)
 		{
 			var pal = palette.GetPalette(name);
-			return new PaletteReference(name, palette.GetPaletteIndex(name), pal);
+			return new PaletteReference(name, palette.GetPaletteIndex(name), pal, palette);
 		}
 
 		string cursorName;

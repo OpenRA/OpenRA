@@ -24,7 +24,7 @@ namespace OpenRA.Graphics
 			this.world = world;
 			this.map = world.Map;
 
-			var terrainPalette = wr.Palette("terrain").Index;
+			var terrainPalette = wr.Palette("terrain").TextureIndex;
 			var vertices = new Vertex[4 * map.Bounds.Height * map.Bounds.Width];
 			var nv = 0;
 

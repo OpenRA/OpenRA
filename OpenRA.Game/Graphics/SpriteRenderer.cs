@@ -51,15 +51,15 @@ namespace OpenRA.Graphics
 
 		public void DrawSprite(Sprite s, float2 location, PaletteReference pal)
 		{
-			DrawSprite(s, location, pal.Index, s.Size);
+			DrawSprite(s, location, pal.TextureIndex, s.Size);
 		}
 
 		public void DrawSprite(Sprite s, float2 location, PaletteReference pal, float2 size)
 		{
-			DrawSprite(s, location, pal.Index, size);
+			DrawSprite(s, location, pal.TextureIndex, size);
 		}
 
-		void DrawSprite(Sprite s, float2 location, int paletteIndex, float2 size)
+		void DrawSprite(Sprite s, float2 location, float paletteTextureIndex, float2 size)
 		{
 			renderer.CurrentBatchRenderer = this;
 
@@ -74,7 +74,7 @@ namespace OpenRA.Graphics
 
 			currentBlend = s.BlendMode;
 			currentSheet = s.Sheet;
-			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, paletteIndex, nv, size);
+			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, paletteTextureIndex, nv, size);
 			nv += 4;
 		}
 

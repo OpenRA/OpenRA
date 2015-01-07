@@ -16,14 +16,13 @@ namespace OpenRA.Graphics
 {
 	public sealed class HardwarePalette : IDisposable
 	{
-		public const int MaxPalettes = 256;
-
 		public ITexture Texture { get; private set; }
+		public int Height { get; private set; }
 		readonly Dictionary<string, ImmutablePalette> palettes = new Dictionary<string, ImmutablePalette>();
 		readonly Dictionary<string, MutablePalette> modifiablePalettes = new Dictionary<string, MutablePalette>();
 		readonly IReadOnlyDictionary<string, MutablePalette> readOnlyModifiablePalettes;
 		readonly Dictionary<string, int> indices = new Dictionary<string, int>();
-		readonly uint[,] buffer = new uint[MaxPalettes, Palette.Size];
+		byte[] buffer = new byte[0];
 
 		public HardwarePalette()
 		{
@@ -52,14 +51,19 @@ namespace OpenRA.Graphics
 
 		public void AddPalette(string name, ImmutablePalette p, bool allowModifiers)
 		{
-			if (palettes.Count >= MaxPalettes)
-				throw new InvalidOperationException("Limit of {0} palettes reached. Cannot add {1}.".F(MaxPalettes, name));
 			if (palettes.ContainsKey(name))
 				throw new InvalidOperationException("Palette {0} has already been defined".F(name));
 
 			int index = palettes.Count;
 			indices.Add(name, index);
 			palettes.Add(name, p);
+
+			if (palettes.Count > Height)
+			{
+				Height = Exts.NextPowerOf2(palettes.Count);
+				Array.Resize(ref buffer, Height * Palette.Size * 4);
+			}
+
 			if (allowModifiers)
 				modifiablePalettes.Add(name, new MutablePalette(p));
 			else
@@ -74,13 +78,13 @@ namespace OpenRA.Graphics
 				CopyPaletteToBuffer(indices[name], palettes[name] = new ImmutablePalette(p));
 			else
 				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
-			Texture.SetData(buffer);
+			CopyBufferToTexture();
 		}
 
 		public void Initialize()
 		{
 			CopyModifiablePalettesToBuffer();
-			Texture.SetData(buffer);
+			CopyBufferToTexture();
 		}
 
 		void CopyPaletteToBuffer(int index, IPalette p)
@@ -94,6 +98,11 @@ namespace OpenRA.Graphics
 				CopyPaletteToBuffer(indices[kvp.Key], kvp.Value);
 		}
 
+		void CopyBufferToTexture()
+		{
+			Texture.SetData(buffer, Palette.Size, Height);
+		}
+
 		public void ApplyModifiers(IEnumerable<IPaletteModifier> paletteMods)
 		{
 			foreach (var mod in paletteMods)
@@ -101,7 +110,7 @@ namespace OpenRA.Graphics
 
 			// Update our texture with the changes.
 			CopyModifiablePalettesToBuffer();
-			Texture.SetData(buffer);
+			CopyBufferToTexture();
 
 			// Reset modified palettes back to their original colors, ready for next time.
 			foreach (var kvp in modifiablePalettes)

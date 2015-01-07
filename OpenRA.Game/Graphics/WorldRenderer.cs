@@ -19,13 +19,17 @@ namespace OpenRA.Graphics
 	public class PaletteReference
 	{
 		public readonly string Name;
-		public readonly int Index;
 		public IPalette Palette { get; internal set; }
-		public PaletteReference(string name, int index, IPalette palette)
+		readonly float index;
+		readonly HardwarePalette hardwarePalette;
+		public float TextureIndex { get { return index / hardwarePalette.Height; } }
+		public float TextureMidIndex { get { return (index + 0.5f) / hardwarePalette.Height; } }
+		public PaletteReference(string name, int index, IPalette palette, HardwarePalette hardwarePalette)
 		{
 			Name = name;
-			Index = index;
 			Palette = palette;
+			this.index = index;
+			this.hardwarePalette = hardwarePalette;
 		}
 	}
 
@@ -59,7 +63,7 @@ namespace OpenRA.Graphics
 		PaletteReference CreatePaletteReference(string name)
 		{
 			var pal = palette.GetPalette(name);
-			return new PaletteReference(name, palette.GetPaletteIndex(name), pal);
+			return new PaletteReference(name, palette.GetPaletteIndex(name), pal, palette);
 		}
 
 		public PaletteReference Palette(string name) { return palettes.GetOrAdd(name, CreatePaletteReference); }
