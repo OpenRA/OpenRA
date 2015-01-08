@@ -65,6 +65,9 @@ namespace OpenRA
 			}
 		}
 
+		readonly IEnumerable<IRenderModifier> traitsImplementingRenderModifier;
+		readonly IEnumerable<IRender> traitsImplementingRender;
+
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
 			var init = new ActorInitializer(this, initDict);
@@ -104,6 +107,9 @@ namespace OpenRA
 
 				return new Rectangle(offset.X, offset.Y, size.X, size.Y);
 			});
+
+			traitsImplementingRenderModifier = TraitsImplementing<IRenderModifier>();
+			traitsImplementingRender = TraitsImplementing<IRender>();
 		}
 
 		public void Tick()
@@ -119,14 +125,14 @@ namespace OpenRA
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			var renderables = Renderables(wr);
-			foreach (var modifier in TraitsImplementing<IRenderModifier>())
+			foreach (var modifier in traitsImplementingRenderModifier)
 				renderables = modifier.ModifyRender(this, wr, renderables);
 			return renderables;
 		}
 
 		IEnumerable<IRenderable> Renderables(WorldRenderer wr)
 		{
-			foreach (var render in TraitsImplementing<IRender>())
+			foreach (var render in traitsImplementingRender)
 				foreach (var renderable in render.Render(this, wr))
 					yield return renderable;
 		}
