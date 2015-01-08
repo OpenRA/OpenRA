@@ -1274,8 +1274,6 @@ Rules:
 			ValuePerUnit: 0
 		LuaScript:
 			Scripts: desert-shellmap.lua
-		LoadWidgetAtGameStart:
-			Widget: MAINMENU
 		-StartGameNotification:
 	OILB:
 		CashTrickler:

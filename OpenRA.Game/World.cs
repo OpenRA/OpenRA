@@ -22,6 +22,8 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
+	public enum WorldType { Regular, Shellmap }
+
 	public class World
 	{
 		static readonly Func<MPos, bool> FalsePredicate = _ => false;
@@ -109,6 +111,8 @@ namespace OpenRA
 		public readonly TileSet TileSet;
 		public readonly ActorMap ActorMap;
 		public readonly ScreenMap ScreenMap;
+		public readonly WorldType Type;
+
 		readonly GameInformation gameInfo;
 
 		public void IssueOrder(Order o) { OrderManager.IssueOrder(o); } /* avoid exposing the OM to mod code */
@@ -146,9 +150,9 @@ namespace OpenRA
 			}
 		}
 
-		internal World(Map map, OrderManager orderManager, bool isShellmap)
+		internal World(Map map, OrderManager orderManager, WorldType type)
 		{
-			IsShellmap = isShellmap;
+			Type = type;
 			OrderManager = orderManager;
 			orderGenerator = new UnitOrderGenerator();
 			Map = map;
@@ -242,7 +246,7 @@ namespace OpenRA
 		public bool Paused { get; internal set; }
 		public bool PredictedPaused { get; internal set; }
 		public bool PauseStateLocked { get; set; }
-		public bool IsShellmap = false;
+
 		public int WorldTick { get; private set; }
 
 		public void SetPauseState(bool paused)
@@ -261,7 +265,7 @@ namespace OpenRA
 
 		public void Tick()
 		{
-			if (!Paused && (!IsShellmap || Game.Settings.Game.ShowShellmap))
+			if (!Paused && (Type != WorldType.Shellmap || Game.Settings.Game.ShowShellmap))
 			{
 				WorldTick++;
 

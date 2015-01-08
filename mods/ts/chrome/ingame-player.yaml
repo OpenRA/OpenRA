@@ -36,12 +36,14 @@ Container@PLAYER_WIDGETS:
 			Font: Bold
 			Key: escape Shift
 		SlidingContainer@INGAME_RADAR_BIN:
+			Logic: SlidingRadarBinLogic
 			X: WINDOW_RIGHT-215
 			Y: 0
 			OpenOffset: 0,29
 			ClosedOffset: 0,-166
 			AnimationLength: 15
 			Children:
+				LogicTicker@RADAR_TICKER:
 				Image@RADAR_BIN_BG:
 					ImageName: radar
 				Radar@RADAR_MINIMAP:
@@ -50,6 +52,7 @@ Container@PLAYER_WIDGETS:
 					Width: 192
 					Height: 192
 				ResourceBar@POWERBAR:
+					Logic: IngamePowerBarLogic
 					X: 42
 					Y: 205
 					Width: 138

@@ -103,7 +103,7 @@ namespace OpenRA.Network
 						}
 
 						Game.AddChatLine(Color.White, "Server", "The game has started.");
-						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, false);
+						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, WorldType.Regular);
 						break;
 					}
 

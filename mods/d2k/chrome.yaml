@@ -6,7 +6,7 @@ chrome-atreides: chrome-atreides.png
 	radar: 297,31,210,222
 	tooltip-bg: 0,288,272,136
 
-power-atreides: chrome-atreides.png
+sidebar-bits: chrome-atreides.png
 	power-indicator: 187,4,4,7
 
 palette-atreides: chrome-atreides.png
@@ -43,9 +43,6 @@ chrome-harkonnen: chrome-harkonnen.png
 	radar: 297,31,210,222
 	tooltip-bg: 0,288,272,136
 
-power-harkonnen: chrome-harkonnen.png
-	power-indicator: 187,4,4,7
-
 palette-harkonnen: chrome-harkonnen.png
 	top: 297,288,201,9
 	dock-top: 498,274,14,23
@@ -79,9 +76,6 @@ chrome-ordos: chrome-ordos.png
 	moneybin: 192,0,320,31
 	radar: 297,31,210,222
 	tooltip-bg: 0,288,272,136
-
-power-ordos: chrome-ordos.png
-	power-indicator: 187,4,4,7
 
 palette-ordos: chrome-ordos.png
 	top: 297,288,201,9

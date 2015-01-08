@@ -997,8 +997,6 @@ Rules:
 			Loop: true
 		LuaScript:
 			Scripts: shellmap.lua
-		LoadWidgetAtGameStart:
-			Widget: MENU_BACKGROUND
 	LST:
 		Mobile:
 			Speed: 42
