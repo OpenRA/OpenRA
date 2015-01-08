@@ -94,8 +94,8 @@ namespace OpenRA.Graphics
 			var b = map.Bounds;
 
 			// Expand to corners of cells
-			var tl = wr.ScreenPxPosition(map.CenterOfCell(Map.MapToCell(map.TileShape, new CPos(b.Left, b.Top))) - new WVec(512, 512, 0));
-			var br = wr.ScreenPxPosition(map.CenterOfCell(Map.MapToCell(map.TileShape, new CPos(b.Right, b.Bottom))) + new WVec(511, 511, 0));
+			var tl = wr.ScreenPxPosition(map.CenterOfCell(new MPos(b.Left, b.Top).ToCPos(map)) - new WVec(512, 512, 0));
+			var br = wr.ScreenPxPosition(map.CenterOfCell(new MPos(b.Right, b.Bottom).ToCPos(map)) + new WVec(511, 511, 0));
 			mapBounds = Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
 
 			maxGroundHeight = wr.World.TileSet.MaxGroundHeight;
@@ -164,15 +164,15 @@ namespace OpenRA.Graphics
 					var wbr = worldRenderer.Position(BottomRight);
 
 					// Visible rectangle in map coordinates
-					var ctl = new CPos(wtl.X / 1024, wtl.Y / 1024);
+					var ctl = new MPos(wtl.X / 1024, wtl.Y / 1024);
 					var dy = map.TileShape == TileShape.Diamond ? 512 : 1024;
-					var cbr = new CPos((wbr.X + 1023) / 1024, (wbr.Y + dy - 1) / dy);
+					var cbr = new MPos((wbr.X + 1023) / 1024, (wbr.Y + dy - 1) / dy);
 
 					// Add a 1 cell cordon to prevent holes, then convert back to cell coordinates
-					var tl = map.Clamp(Map.MapToCell(map.TileShape, ctl - new CVec(1, 1)));
+					var tl = map.Clamp(new MPos(ctl.U - 1, ctl.V - 1).ToCPos(map));
 
 					// Also need to account for height of cells in rows below the bottom
-					var br = map.Clamp(Map.MapToCell(map.TileShape, cbr + new CVec(1, 2 + maxGroundHeight / 2)));
+					var br = map.Clamp(new MPos(cbr.U + 1, cbr.V + 2 + maxGroundHeight / 2).ToCPos(map));
 
 					cells = new CellRegion(map.TileShape, tl, br);
 					cellsDirty = false;

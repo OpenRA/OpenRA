@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] public int VisibilityHash;
 
 		readonly bool startsRevealed;
-		readonly CPos[] footprintInMapsCoords;
+		readonly MPos[] footprint;
 		readonly CellRegion footprintRegion;
 
 		readonly Lazy<IToolTip> tooltip;
@@ -44,9 +44,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Spawned actors (e.g. building husks) shouldn't be revealed
 			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
-			var footprint = FootprintUtils.Tiles(init.Self).ToList();
-			footprintInMapsCoords = footprint.Select(cell => Map.CellToMap(init.World.Map.TileShape, cell)).ToArray();
-			footprintRegion = CellRegion.BoundingRegion(init.World.Map.TileShape, footprint);
+			var footprintCells = FootprintUtils.Tiles(init.Self).ToList();
+			footprint = footprintCells.Select(cell => cell.ToMPos(init.World.Map)).ToArray();
+			footprintRegion = CellRegion.BoundingRegion(init.World.Map.TileShape, footprintCells);
 			tooltip = Exts.Lazy(() => init.Self.TraitsImplementing<IToolTip>().FirstOrDefault());
 			tooltip = Exts.Lazy(() => init.Self.TraitsImplementing<IToolTip>().FirstOrDefault());
 			health = Exts.Lazy(() => init.Self.TraitOrDefault<Health>());
@@ -69,11 +69,11 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var p in self.World.Players)
 			{
 				// We are doing the following LINQ manually to avoid allocating an extra delegate since this is a hot path.
-				// var isVisible = footprintInMapsCoords.Any(mapCoord => p.Shroud.IsVisibleTest(footprintRegion)(mapCoord.X, mapCoord.Y));
+				// var isVisible = footprint.Any(p.Shroud.IsVisibleTest(footprintRegion));
 				var isVisibleTest = p.Shroud.IsVisibleTest(footprintRegion);
 				var isVisible = false;
-				foreach (var mapCoord in footprintInMapsCoords)
-					if (isVisibleTest(mapCoord.X, mapCoord.Y))
+				foreach (var uv in footprint)
+					if (isVisibleTest(uv))
 					{
 						isVisible = true;
 						break;
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var p in self.World.Players)
 				{
 					visible[p] |= startsRevealed;
-					p.PlayerActor.Trait<FrozenActorLayer>().Add(frozen[p] = new FrozenActor(self, footprintInMapsCoords, footprintRegion));
+					p.PlayerActor.Trait<FrozenActorLayer>().Add(frozen[p] = new FrozenActor(self, footprint, footprintRegion));
 				}
 
 				initialized = true;

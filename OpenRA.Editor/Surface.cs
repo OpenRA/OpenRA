@@ -273,7 +273,8 @@ namespace OpenRA.Editor
 					{
 						var ui = u * ChunkSize + i;
 						var vj = v * ChunkSize + j;
-						var tr = Map.MapTiles.Value[ui, vj];
+						var uv = new MPos(ui, vj);
+						var tr = Map.MapTiles.Value[uv];
 						var tile = TileSetRenderer.Data(tr.Type);
 						if (tile == null)
 							continue;
@@ -284,9 +285,9 @@ namespace OpenRA.Editor
 							for (var y = 0; y < TileSetRenderer.TileSize; y++)
 								p[(j * TileSetRenderer.TileSize + y) * stride + i * TileSetRenderer.TileSize + x] = Palette.GetColor(rawImage[x + TileSetRenderer.TileSize * y]).ToArgb();
 
-						if (Map.MapResources.Value[ui, vj].Type != 0)
+						if (Map.MapResources.Value[uv].Type != 0)
 						{
-							var resourceImage = ResourceTemplates[Map.MapResources.Value[ui, vj].Type].Bitmap;
+							var resourceImage = ResourceTemplates[Map.MapResources.Value[uv].Type].Bitmap;
 							var srcdata = resourceImage.LockBits(resourceImage.Bounds(),
 								ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 

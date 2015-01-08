@@ -367,13 +367,13 @@ namespace OpenRA
 
 			cachedTileSet = Exts.Lazy(() => Rules.TileSets[Tileset]);
 
-			var tl = Map.MapToCell(TileShape, new CPos(Bounds.Left, Bounds.Top));
-			var br = Map.MapToCell(TileShape, new CPos(Bounds.Right - 1, Bounds.Bottom - 1));
+			var tl = new MPos(Bounds.Left, Bounds.Top).ToCPos(this);
+			var br = new MPos(Bounds.Right - 1, Bounds.Bottom - 1).ToCPos(this);
 			Cells = new CellRegion(TileShape, tl, br);
 
 			CustomTerrain = new CellLayer<byte>(this);
 			foreach (var uv in Cells.MapCoords)
-				CustomTerrain[uv.X, uv.Y] = byte.MaxValue;
+				CustomTerrain[uv] = byte.MaxValue;
 		}
 
 		public Ruleset PreloadRules()
@@ -485,7 +485,7 @@ namespace OpenRA
 							if (index == byte.MaxValue)
 								index = (byte)(i % 4 + (j % 4) * 4);
 
-							tiles[i, j] = new TerrainTile(tile, index);
+							tiles[new MPos(i, j)] = new TerrainTile(tile, index);
 						}
 					}
 				}
@@ -506,7 +506,7 @@ namespace OpenRA
 					s.Position = header.HeightsOffset;
 					for (var i = 0; i < MapSize.X; i++)
 						for (var j = 0; j < MapSize.Y; j++)
-							tiles[i, j] = s.ReadUInt8().Clamp((byte)0, maxHeight);
+							tiles[new MPos(i, j)] = s.ReadUInt8().Clamp((byte)0, maxHeight);
 				}
 			}
 
@@ -529,7 +529,7 @@ namespace OpenRA
 						{
 							var type = s.ReadUInt8();
 							var density = s.ReadUInt8();
-							resources[i, j] = new ResourceTile(type, density);
+							resources[new MPos(i, j)] = new ResourceTile(type, density);
 						}
 					}
 				}
@@ -566,7 +566,7 @@ namespace OpenRA
 					{
 						for (var j = 0; j < MapSize.Y; j++)
 						{
-							var tile = MapTiles.Value[i, j];
+							var tile = MapTiles.Value[new MPos(i, j)];
 							writer.Write(tile.Type);
 							writer.Write(tile.Index);
 						}
@@ -577,7 +577,7 @@ namespace OpenRA
 				if (heightsOffset != 0)
 					for (var i = 0; i < MapSize.X; i++)
 						for (var j = 0; j < MapSize.Y; j++)
-							writer.Write(MapHeight.Value[i, j]);
+							writer.Write(MapHeight.Value[new MPos(i, j)]);
 
 				// Resource data
 				if (resourcesOffset != 0)
@@ -586,7 +586,7 @@ namespace OpenRA
 					{
 						for (var j = 0; j < MapSize.Y; j++)
 						{
-							var tile = MapResources.Value[i, j];
+							var tile = MapResources.Value[new MPos(i, j)];
 							writer.Write(tile.Type);
 							writer.Write(tile.Index);
 						}
@@ -599,13 +599,12 @@ namespace OpenRA
 
 		public bool Contains(CPos cell)
 		{
-			var uv = CellToMap(TileShape, cell);
-			return Contains(uv.X, uv.Y);
+			return Contains(cell.ToMPos(this));
 		}
 
-		public bool Contains(int u, int v)
+		public bool Contains(MPos uv)
 		{
-			return Bounds.Contains(u, v);
+			return Bounds.Contains(uv.U, uv.V);
 		}
 
 		public WPos CenterOfCell(CPos cell)
@@ -648,46 +647,6 @@ namespace OpenRA
 			return new CPos(u, v);
 		}
 
-		public static CPos MapToCell(TileShape shape, CPos map)
-		{
-			if (shape == TileShape.Rectangle)
-				return map;
-
-			// Convert from rectangular map position to diamond cell position
-			//  - The staggered rows make this fiddly (hint: draw a diagram!)
-			// (a) Consider the relationships:
-			//  - +1u (even -> odd) adds (1, -1) to (x, y)
-			//  - +1v (even -> odd) adds (1, 0) to (x, y)
-			//  - +1v (odd -> even) adds (0, 1) to (x, y)
-			// (b) Therefore:
-			//  - au + 2bv adds (a + b) to (x, y)
-			//  - a correction factor is added if v is odd
-			var offset = (map.Y & 1) == 1 ? 1 : 0;
-			var y = (map.Y - offset) / 2 - map.X;
-			var x = map.Y - y;
-			return new CPos(x, y);
-		}
-
-		public static CPos CellToMap(TileShape shape, CPos cell)
-		{
-			if (shape == TileShape.Rectangle)
-				return cell;
-
-			// Convert from diamond cell (x, y) position to rectangular map position (u, v)
-			//  - The staggered rows make this fiddly (hint: draw a diagram!)
-			// (a) Consider the relationships:
-			//  - +1x (even -> odd) adds (0, 1) to (u, v)
-			//  - +1x (odd -> even) adds (1, 1) to (u, v)
-			//  - +1y (even -> odd) adds (-1, 1) to (u, v)
-			//  - +1y (odd -> even) adds (0, 1) to (u, v)
-			// (b) Therefore:
-			//  - ax + by adds (a - b)/2 to u (only even increments count)
-			//  - ax + by adds a + b to v
-			var u = (cell.X - cell.Y) / 2;
-			var v = cell.X + cell.Y;
-			return new CPos(u, v);
-		}
-
 		public int FacingBetween(CPos cell, CPos towards, int fallbackfacing)
 		{
 			return Traits.Util.GetFacing(CenterOfCell(towards) - CenterOfCell(cell), fallbackfacing);
@@ -700,9 +659,9 @@ namespace OpenRA
 			var oldMapHeight = MapHeight.Value;
 			var newSize = new Size(width, height);
 
-			MapTiles = Exts.Lazy(() => CellLayer.Resize(oldMapTiles, newSize, oldMapTiles[0, 0]));
-			MapResources = Exts.Lazy(() => CellLayer.Resize(oldMapResources, newSize, oldMapResources[0, 0]));
-			MapHeight = Exts.Lazy(() => CellLayer.Resize(oldMapHeight, newSize, oldMapHeight[0, 0]));
+			MapTiles = Exts.Lazy(() => CellLayer.Resize(oldMapTiles, newSize, oldMapTiles[MPos.Zero]));
+			MapResources = Exts.Lazy(() => CellLayer.Resize(oldMapResources, newSize, oldMapResources[MPos.Zero]));
+			MapHeight = Exts.Lazy(() => CellLayer.Resize(oldMapHeight, newSize, oldMapHeight[MPos.Zero]));
 			MapSize = new int2(newSize);
 		}
 
@@ -710,8 +669,8 @@ namespace OpenRA
 		{
 			Bounds = Rectangle.FromLTRB(left, top, right, bottom);
 
-			var tl = Map.MapToCell(TileShape, new CPos(Bounds.Left, Bounds.Top));
-			var br = Map.MapToCell(TileShape, new CPos(Bounds.Right - 1, Bounds.Bottom - 1));
+			var tl = new MPos(Bounds.Left, Bounds.Top).ToCPos(this);
+			var br = new MPos(Bounds.Right - 1, Bounds.Bottom - 1).ToCPos(this);
 			Cells = new CellRegion(TileShape, tl, br);
 		}
 
@@ -781,8 +740,8 @@ namespace OpenRA
 			{
 				for (var i = Bounds.Left; i < Bounds.Right; i++)
 				{
-					var type = MapTiles.Value[i, j].Type;
-					var index = MapTiles.Value[i, j].Index;
+					var type = MapTiles.Value[new MPos(i, j)].Type;
+					var index = MapTiles.Value[new MPos(i, j)].Index;
 					if (!tileset.Templates.ContainsKey(type))
 					{
 						Console.WriteLine("Unknown Tile ID {0}".F(type));
@@ -794,18 +753,16 @@ namespace OpenRA
 						continue;
 
 					index = (byte)r.Next(0, template.TilesCount);
-					MapTiles.Value[i, j] = new TerrainTile(type, index);
+					MapTiles.Value[new MPos(i, j)] = new TerrainTile(type, index);
 				}
 			}
 		}
 
 		public byte GetTerrainIndex(CPos cell)
 		{
-			var uv = Map.CellToMap(TileShape, cell);
-			var u = uv.X;
-			var v = uv.Y;
-			var custom = CustomTerrain[u, v];
-			return custom != byte.MaxValue ? custom : cachedTileSet.Value.GetTerrainIndex(MapTiles.Value[u, v]);
+			var uv = cell.ToMPos(this);
+			var custom = CustomTerrain[uv];
+			return custom != byte.MaxValue ? custom : cachedTileSet.Value.GetTerrainIndex(MapTiles.Value[uv]);
 		}
 
 		public TerrainTypeInfo GetTerrainInfo(CPos cell)
@@ -816,7 +773,7 @@ namespace OpenRA
 		public CPos Clamp(CPos cell)
 		{
 			var bounds = new Rectangle(Bounds.X, Bounds.Y, Bounds.Width - 1, Bounds.Height - 1);
-			return MapToCell(TileShape, CellToMap(TileShape, cell).Clamp(bounds));
+			return cell.ToMPos(this).Clamp(bounds).ToCPos(this);
 		}
 
 		public CPos ChooseRandomCell(MersenneTwister rand)
@@ -824,7 +781,7 @@ namespace OpenRA
 			var x = rand.Next(Bounds.Left, Bounds.Right);
 			var y = rand.Next(Bounds.Top, Bounds.Bottom);
 
-			return MapToCell(TileShape, new CPos(x, y));
+			return new MPos(x, y).ToCPos(this);
 		}
 
 		public CPos ChooseRandomEdgeCell(MersenneTwister rand)
@@ -835,7 +792,7 @@ namespace OpenRA
 			var x = isX ? rand.Next(Bounds.Left, Bounds.Right) : (edge ? Bounds.Left : Bounds.Right);
 			var y = !isX ? rand.Next(Bounds.Top, Bounds.Bottom) : (edge ? Bounds.Top : Bounds.Bottom);
 
-			return MapToCell(TileShape, new CPos(x, y));
+			return new MPos(x, y).ToCPos(this);
 		}
 
 		public WRange DistanceToEdge(WPos pos, WVec dir)
