@@ -30,11 +30,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
+			if (IsTraitDisabled)
+				return r;
+			return ModifiedRender(self, wr, r);
+		}
+
+		IEnumerable<IRenderable> ModifiedRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
+		{
 			foreach (var a in r)
 			{
 				yield return a;
 
-				if (!IsTraitDisabled && !a.IsDecoration)
+				if (!a.IsDecoration)
 					yield return a.WithPalette(wr.Palette(Info.Palette))
 						.WithZOffset(a.ZOffset + 1)
 						.AsDecoration();
