@@ -10,10 +10,10 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Mods.RA.Orders;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic

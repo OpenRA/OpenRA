@@ -11,7 +11,7 @@
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can capture ProximityCapturable actors.")]
 	public class ProximityCaptorInfo : ITraitInfo

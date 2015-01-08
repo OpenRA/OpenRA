@@ -10,15 +10,14 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can capture other actors which have the Capturable: trait.")]
-	class CapturesInfo : ITraitInfo
+	public class CapturesInfo : ITraitInfo
 	{
 		[Desc("Types of actors that it can capture, as long as the type also exists in the Capturable Type: trait.")]
 		public readonly string[] CaptureTypes = { "building" };
@@ -30,7 +29,7 @@ namespace OpenRA.Mods.RA.Traits
 		public object Create(ActorInitializer init) { return new Captures(init.Self, this); }
 	}
 
-	class Captures : IIssueOrder, IResolveOrder, IOrderVoice
+	public class Captures : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public readonly CapturesInfo Info;
 

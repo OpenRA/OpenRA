@@ -78,14 +78,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\CaptureActor.cs" />
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
-    <Compile Include="Player\AllyRepair.cs" />
     <Compile Include="Render\WithIdleOverlay.cs" />
     <Compile Include="Traits\AcceptsSupplies.cs" />
-    <Compile Include="Activities\ExternalCaptureActor.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\DonateSupplies.cs" />
@@ -95,7 +92,6 @@
     <Compile Include="Activities\Leap.cs" />
     <Compile Include="Activities\RAHarvesterDockSequence.cs" />
     <Compile Include="Activities\Teleport.cs" />
-    <Compile Include="Activities\Transform.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
@@ -106,13 +102,8 @@
     <Compile Include="AI\RushFuzzy.cs" />
     <Compile Include="AI\StateMachine.cs" />
     <Compile Include="Traits\Attack\AttackLeap.cs" />
-    <Compile Include="CaptureNotification.cs" />
     <Compile Include="Scripting\Properties\RepairableBuildingProperties.cs" />
     <Compile Include="C4Demolition.cs" />
-    <Compile Include="ExternalCapturable.cs" />
-    <Compile Include="ExternalCapturableBar.cs" />
-    <Compile Include="Capturable.cs" />
-    <Compile Include="ExternalCaptures.cs" />
     <Compile Include="Traits\PaletteEffects\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="CrateSpawner.cs" />
@@ -132,10 +123,8 @@
     <Compile Include="Traits\DemoTruck.cs" />
     <Compile Include="Effects\GpsDot.cs" />
     <Compile Include="Effects\Parachute.cs" />
-    <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />
     <Compile Include="Invulnerable.cs" />
-    <Compile Include="Captures.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
@@ -145,7 +134,6 @@
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Orders\GlobalButtonOrderGenerator.cs" />
-    <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="ParaDrop.cs" />
     <Compile Include="Player\ClassicProductionQueue.cs" />
     <Compile Include="Player\PlaceBuilding.cs" />
@@ -155,15 +143,11 @@
     <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
     <Compile Include="Production.cs" />
     <Compile Include="ProductionBar.cs" />
-    <Compile Include="ProximityCaptor.cs" />
-    <Compile Include="ProximityCapturable.cs" />
     <Compile Include="Traits\Render\RenderJammerCircle.cs" />
     <Compile Include="Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Render\RenderHarvester.cs" />
     <Compile Include="Render\RenderDisguise.cs" />
     <Compile Include="Render\RenderLandingCraft.cs" />
-    <Compile Include="Repairable.cs" />
-    <Compile Include="RepairableNear.cs" />
     <Compile Include="Disguise.cs" />
     <Compile Include="Traits\SupplyTruck.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />
@@ -175,19 +159,13 @@
     <Compile Include="SupportPowers\SupportPowerChargeBar.cs" />
     <Compile Include="SupportPowers\SupportPowerManager.cs" />
     <Compile Include="TraitsInterfaces.cs" />
-    <Compile Include="Traits\Buildings\Bridge.cs" />
-    <Compile Include="Traits\Buildings\BridgeHut.cs" />
     <Compile Include="Traits\Buildings\Fake.cs" />
     <Compile Include="Traits\Buildings\OreRefinery.cs" />
     <Compile Include="Traits\Buildings\PrimaryBuilding.cs" />
-    <Compile Include="Traits\Buildings\RepairableBuilding.cs" />
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\HarvesterHuskModifier.cs" />
     <Compile Include="Traits\LeavesHusk.cs" />
-    <Compile Include="Traits\RepairsBridges.cs" />
     <Compile Include="Traits\TargetableSubmarine.cs" />
-    <Compile Include="Traits\World\BridgeLayer.cs" />
-    <Compile Include="TransformOnCapture.cs" />
     <Compile Include="TransformOnPassenger.cs" />
     <Compile Include="Transforms.cs" />
     <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />
@@ -228,7 +206,6 @@
     <Compile Include="Traits\Infiltration\InfiltrateForSupportPower.cs" />
     <Compile Include="Traits\Infiltration\Infiltrates.cs" />
     <Compile Include="Widgets\Logic\ObserverShroudSelectorLogic.cs" />
-    <Compile Include="Activities\RepairBridge.cs" />
     <Compile Include="Lint\CheckSequences.cs" />
     <Compile Include="Widgets\Logic\SpawnSelectorTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\ClientTooltipLogic.cs" />
@@ -257,8 +234,6 @@
     <Compile Include="Scripting\Properties\PlayerProperties.cs" />
     <Compile Include="Scripting\Properties\TransportProperties.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
-    <Compile Include="Render\WithRepairAnimation.cs" />
-    <Compile Include="Render\WithRepairOverlay.cs" />
     <Compile Include="Lint\CheckPlayers.cs" />
     <Compile Include="Lint\CheckActors.cs" />
     <Compile Include="Lint\CheckMapCordon.cs" />
@@ -344,5 +319,4 @@ cd "$(SolutionDir)thirdparty/"
 copy "FuzzyLogicLibrary.dll" "$(SolutionDir)"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
-  <ItemGroup />
 </Project>

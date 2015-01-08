@@ -11,10 +11,10 @@
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be captured by a unit with Captures: trait.")]
-	class CapturableInfo : ITraitInfo
+	public class CapturableInfo : ITraitInfo
 	{
 		[Desc("Type listed under Types in Captures: trait of actors that can capture this).")]
 		public readonly string Type = "building";
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Traits
 		}
 	}
 
-	class Capturable : INotifyCapture
+	public class Capturable : INotifyCapture
 	{
 		public readonly CapturableInfo Info;
 		public bool BeingCaptured { get; private set; }
