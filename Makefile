@@ -171,16 +171,6 @@ OpenRA.Editor.Form1.resources:
 	resgen2 OpenRA.Editor/Form1.resx OpenRA.Editor.Form1.resources 1> /dev/null
 editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor_TARGET)
 
-test:
-	@echo "Testing Red Alert mod MiniYAML..."
-	@mono --debug OpenRA.Utility.exe ra --check-yaml
-	@echo "Testing Tiberian Dawn mod MiniYAML..."
-	@mono --debug OpenRA.Utility.exe cnc --check-yaml
-	@echo "Testing Dune 2000 mod MiniYAML..."
-	@mono --debug OpenRA.Utility.exe d2k --check-yaml
-	@echo "Testing Tiberian Sun mod MiniYAML..."
-	@mono --debug OpenRA.Utility.exe ts --check-yaml
-
 check:
 	@echo "Checking for code style violations in OpenRA.Game..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Game
@@ -208,6 +198,16 @@ check:
 	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Test
 	@echo "Checking for code style violations in OpenRA.TilesetBuilder..."
 	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.TilesetBuilder
+
+test:
+	@echo "Testing Tiberian Sun mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe ts --check-yaml
+	@echo "Testing Dune 2000 mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe d2k --check-yaml
+	@echo "Testing Tiberian Dawn mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe cnc --check-yaml
+	@echo "Testing Red Alert mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe ra --check-yaml
 
 # Builds and exports tilesets from a bitmap
 tsbuild_SRCS := $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
