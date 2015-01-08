@@ -263,6 +263,10 @@ return function(M)
         { "local", _M.local_stat_parser, builder = unpack },
         { "return", return_expr_list_parser, builder =
           function(x) x[1].tag='Return'; return x[1] end },
+        { "goto", _M.id, builder =
+          function(x) x[1].tag='Goto'; return x[1] end },
+        { "::", _M.id, "::", builder =
+          function(x) x[1].tag='Label'; return x[1] end },
         { "break", builder = function() return { tag="Break" } end },
         { "-{", gg.future(M, 'meta').splice_content, "}", builder = unpack },
         { "if", gg.nonempty(elseifs_parser), gg.onkeyword{ "else", M.block }, "end",
