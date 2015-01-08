@@ -127,11 +127,10 @@ namespace OpenRA.Mods.RA.Orders
 					initialized = true;
 				}
 
-				var comparer = new RenderableComparer(wr);
 				var offset = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, buildingInfo);
 				var previewRenderables = preview
 					.SelectMany(p => p.Render(wr, offset))
-					.OrderBy(r => r, comparer);
+					.OrderBy(WorldRenderer.RenderableScreenZPositionComparisonKey);
 
 				foreach (var r in previewRenderables)
 					yield return r;
