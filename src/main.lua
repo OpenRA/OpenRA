@@ -86,6 +86,9 @@ ide = {
       showonefile = false,
       sort = false,
     },
+    commandbar = {
+      prefilter = 250, -- number of records after which to apply filtering
+    },
 
     toolbar = {
       icons = {},

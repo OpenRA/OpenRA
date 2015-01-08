@@ -306,8 +306,11 @@ function CommandBarScoreItems(t, pattern, limit)
   local r, plen = {}, #pattern
   local maxp = 0
   local num = 0
+  local prefilter = ide.config.commandbar and ide.config.commandbar.prefilter <= #t
+    and pattern:gsub("[^%w_]+",""):lower():gsub(".", "%1.*"):gsub("%.%*$","")
+    or nil
   for _, v in ipairs(t) do
-    if #v >= plen then
+    if #v >= plen and (not prefilter or v:lower():find(prefilter)) then
       local p = score(pattern, v)
       maxp = math.max(p, maxp)
       if p > 1 and p > maxp / 4 then
