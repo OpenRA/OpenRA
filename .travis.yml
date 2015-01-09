@@ -8,8 +8,8 @@ language: csharp
 script:
  - travis_retry make cli-dependencies
  - make all
- - make test
  - make check
+ - make test
 
 # Automatically update the trait documentation and Lua API
 after_success:
