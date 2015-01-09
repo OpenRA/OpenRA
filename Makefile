@@ -171,7 +171,7 @@ OpenRA.Editor.Form1.resources:
 	resgen2 OpenRA.Editor/Form1.resx OpenRA.Editor.Form1.resources 1> /dev/null
 editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor_TARGET)
 
-check: utility
+check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Game..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Game
@@ -189,30 +189,30 @@ check: utility
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.RA
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.Cnc..."
-	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.Cnc
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Cnc
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.D2k..."
-	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.D2k
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.D2k
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.TS..."
-	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.TS
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.TS
 	@echo
 	@echo "Checking for code style violations in OpenRA.Editor..."
-	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Editor
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Editor
 	@echo
 	@echo "Checking for code style violations in OpenRA.Renderer.Sdl2..."
-	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Renderer.Sdl2
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Renderer.Sdl2
 	@echo
 	@echo "Checking for code style violations in OpenRA.Utility..."
-	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Utility
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Utility
 	@echo
 	@echo "Checking for code style violations in OpenRA.Test..."
-	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.Test
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Test
 	@echo
 	@echo "Checking for code style violations in OpenRA.TilesetBuilder..."
-	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.TilesetBuilder
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.TilesetBuilder
 
-test: utility
+test: utility mods
 	@echo
 	@echo "Testing Tiberian Sun mod MiniYAML..."
 	@mono --debug OpenRA.Utility.exe ts --check-yaml
@@ -261,8 +261,7 @@ utility_KIND = exe
 utility_DEPS = $(game_TARGET)
 utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll
 PROGRAMS += utility
-utility: $(utility_TARGET) mod_common mod_cnc mod_ra mod_d2k mod_ts
-
+utility: $(utility_TARGET)
 
 # Patches binary headers to work around a mono bug
 fixheader.exe: packaging/fixheader.cs
@@ -326,7 +325,7 @@ version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mo
 	done
 
 # Documentation (d2k depends on all mod libraries)
-docs: utility
+docs: utility mods
 	@mono --debug OpenRA.Utility.exe d2k --docs > DOCUMENTATION.md
 	@mono --debug OpenRA.Utility.exe ra --lua-docs > Lua-API.md
 
