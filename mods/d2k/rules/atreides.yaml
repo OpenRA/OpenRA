@@ -114,6 +114,7 @@ MCVA:
 MCVA.starport:
 	Inherits: MCVA
 	Buildable:
+		Prerequisites: ~starporta, repair
 		Queue: Starport
 	Valued:
 		Cost: 2500
@@ -130,6 +131,7 @@ CARRYALLA.starport:
 	Valued:
 		Cost: 1500
 	Buildable:
+		Prerequisites: ~starporta
 		Queue: Starport
 
 COMBATA:
@@ -162,6 +164,7 @@ COMBATA.Husk:
 COMBATA.starport:
 	Inherits: COMBATA
 	Buildable:
+		Prerequisites: ~starporta
 		Queue: Starport
 	Valued:
 		Cost: 875
