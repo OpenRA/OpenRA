@@ -83,6 +83,7 @@ end
 
 local sym = newset("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_")
 local dig = newset('0123456789')
+local name = "([_A-Za-z][_A-Za-z0-9]*)"
 local op = newset('=~<>.+-*/%^#=<>;:,.{}[]()')
 
 op['=='] = true
@@ -109,7 +110,7 @@ function M.lex(code, f, pos)
     pos = p2
     
     if sym[n1] then
-      local tok = code:match('^([_A-Za-z][_A-Za-z0-9]*)', pos)  
+      local tok = code:match('^'..name, pos)
       assert(tok)
       if is_keyword[tok] then
         f('Keyword', tok, pos)
@@ -122,6 +123,15 @@ function M.lex(code, f, pos)
       assert(tok)
       f('Comment', tok, pos)
       pos = pos2
+    elseif n2 == '::' then
+      local tok = code:match('^(::%s*'..name..'%s*::)', pos)
+      if tok then
+        f('Label', tok, pos)
+        pos = pos + #tok
+      else
+        f('Unknown', code:sub(pos, pos+1), pos) -- unterminated label
+        pos = pos + 2
+      end
     elseif n1 == '\'' or n1 == '\"' or n2 == '[[' or n2 == '[=' then
       local tok = match_string(code, pos)
       if tok then
