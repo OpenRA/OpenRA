@@ -152,13 +152,15 @@ function PARSE.parse_scope(lx, f, level)
           f('VarNext', c[1], c.lineinfo, true)
         end
       elseif c[1] == 'for' and lx:peek().tag == 'Id' then
-         c = lx:next()
-         f('VarInside', c[1], c.lineinfo, true)
-         while lx:peek().tag == 'Keyword' and lx:peek()[1] == ',' do
+        c = lx:next()
+        f('VarInside', c[1], c.lineinfo, true)
+        while lx:peek().tag == 'Keyword' and lx:peek()[1] == ',' do
           c = lx:next(); if lx:peek().tag ~= 'Id' then break end
           c = lx:next()
           f('VarInside', c[1], c.lineinfo, true)
         end
+      elseif c[1] == 'goto' and lx:peek().tag == 'Id' then
+        lx:next()
       elseif c[1] == 'do' then
         scope_begin('do', c.lineinfo)
         -- note: do/while/for statement scopes all begin at 'do'.
