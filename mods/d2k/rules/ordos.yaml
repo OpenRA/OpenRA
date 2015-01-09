@@ -110,6 +110,7 @@ MCVO:
 MCVO.starport:
 	Inherits: MCVO
 	Buildable:
+		Prerequisites: ~starporto, repair
 		Queue: Starport
 	Valued:
 		Cost: 2500
@@ -142,6 +143,7 @@ COMBATO.Husk:
 COMBATO.starport:
 	Inherits: COMBATO
 	Buildable:
+		Prerequisites: ~starporto
 		Queue: Starport
 	Valued:
 		Cost: 875
@@ -211,6 +213,7 @@ CARRYALLO.starport:
 	Valued:
 		Cost: 1500
 	Buildable:
+		Prerequisites: ~starporto
 		Queue: Starport
 
 DEVIATORTANK:
