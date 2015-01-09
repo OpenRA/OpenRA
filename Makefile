@@ -171,7 +171,7 @@ OpenRA.Editor.Form1.resources:
 	resgen2 OpenRA.Editor/Form1.resx OpenRA.Editor.Form1.resources 1> /dev/null
 editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor_TARGET)
 
-check:
+check: utility
 	@echo
 	@echo "Checking for code style violations in OpenRA.Game..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Game
@@ -212,7 +212,7 @@ check:
 	@echo "Checking for code style violations in OpenRA.TilesetBuilder..."
 	@mono --debug OpenRA.Utility.exe cnc --check-code-style OpenRA.TilesetBuilder
 
-test:
+test: utility
 	@echo
 	@echo "Testing Tiberian Sun mod MiniYAML..."
 	@mono --debug OpenRA.Utility.exe ts --check-yaml
@@ -261,7 +261,7 @@ utility_KIND = exe
 utility_DEPS = $(game_TARGET)
 utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll
 PROGRAMS += utility
-utility: $(utility_TARGET)
+utility: $(utility_TARGET) mod_common mod_cnc mod_ra mod_d2k mod_ts
 
 
 # Patches binary headers to work around a mono bug
