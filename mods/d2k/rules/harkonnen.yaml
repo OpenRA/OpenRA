@@ -118,6 +118,7 @@ MCVH:
 MCVH.starport:
 	Inherits: MCVH
 	Buildable:
+		Prerequisites: ~starporth, repair
 		Queue: Starport
 	Valued:
 		Cost: 2500
@@ -134,6 +135,7 @@ CARRYALLH.starport:
 	Valued:
 		Cost: 1500
 	Buildable:
+		Prerequisites: ~starporth
 		Queue: Starport
 
 COMBATH:
@@ -163,6 +165,7 @@ COMBATH.Husk:
 COMBATH.starport:
 	Inherits: COMBATH
 	Buildable:
+		Prerequisites: ~starporth
 		Queue: Starport
 	Valued:
 		Cost: 875
