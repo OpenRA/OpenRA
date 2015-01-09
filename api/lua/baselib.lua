@@ -206,7 +206,7 @@ return {
     type = "lib",
     description = "The operations related to coroutines comprise a sub-library of the basic library and come inside the table coroutine.\nLua supports coroutines, also called collaborative multithreading. A coroutine in Lua represents an independent thread of execution. Unlike threads in multithread systems, however, a coroutine only suspends its execution by explicitly calling a yield function.",
     childs = {
-      getfenv = {
+      create = {
         type = "function",
         description = "Creates a new coroutine, with body f.\nf must be a Lua function. Returns this new coroutine, an object with type \"thread\".",
         args = "(f: function)",
