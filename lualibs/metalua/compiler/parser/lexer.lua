@@ -34,7 +34,8 @@ return function()
         "in", "local", "nil", "not", "or", "repeat",
         "return", "then", "true", "until", "while",
         "...", "..", "==", ">=", "<=", "~=",
-        "::", -- Lua5,2
+        "<<", ">>", "//", -- Lua5.3
+        "::", -- Lua5.2
         "+{", "-{" } -- Metalua
 
     for _, w in ipairs(keywords) do lexer :add (w) end

@@ -169,6 +169,12 @@ return function(M)
             { "/",  prec = 70, builder = opf2 "div"  },
             { "%",  prec = 70, builder = opf2 "mod"  },
             { "^",  prec = 90, builder = opf2 "pow",    assoc = "right" },
+            { "//", prec = 70, builder = opf2 "idiv" },
+            { "&",  prec = 36, builder = opf2 "band" },
+            { "|",  prec = 32, builder = opf2 "bor"  },
+            { "~",  prec = 34, builder = opf2 "bxor" },
+            { "<<", prec = 38, builder = opf2 "shl"  },
+            { ">>", prec = 38, builder = opf2 "shr"  },
             { "..", prec = 40, builder = opf2 "concat", assoc = "right" },
             { "==", prec = 30, builder = opf2 "eq"  },
             { "~=", prec = 30, builder = op_ne  },
@@ -183,6 +189,7 @@ return function(M)
             name = "expr prefix op",
             { "not", prec = 80, builder = opf1 "not" },
             { "#",   prec = 80, builder = opf1 "len" },
+            { "~",   prec = 80, builder = opf2 "bnot"  },
             { "-",   prec = 80, builder = opf1 "unm" } },
 
         suffix = {
