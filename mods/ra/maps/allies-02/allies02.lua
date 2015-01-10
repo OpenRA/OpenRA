@@ -21,11 +21,11 @@ RunInitialActivities = function()
 end
 
 MissionAccomplished = function()
-	Media.PlaySpeechNotification(player, "Win")
+	Media.PlaySpeechNotification(player, "MissionAccomplished")
 end
 
 MissionFailed = function()
-	Media.PlaySpeechNotification(player, "Lose")
+	Media.PlaySpeechNotification(player, "MissionFailed")
 end
 
 Tick = function()
