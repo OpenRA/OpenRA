@@ -5,6 +5,7 @@ language: csharp
 
 # Use the Docker-based infrastructure
 sudo: false
+cache: apt
 
 # Run the build script
 # call RALint to check for YAML errors
