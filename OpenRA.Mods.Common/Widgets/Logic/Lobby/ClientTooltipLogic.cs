@@ -13,7 +13,7 @@ using System.Net;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets.Logic
+namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ClientTooltipLogic
 	{

@@ -12,9 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenRA.Mods.RA.Widgets.Logic
+namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class TabCompletionLogic
+	public class TabCompletionLogic
 	{
 		IList<string> candidates = new List<string>();
 		int currentCandidateIndex = 0;

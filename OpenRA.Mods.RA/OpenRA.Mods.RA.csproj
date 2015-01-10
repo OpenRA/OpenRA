@@ -60,16 +60,8 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Mono.Nat">
-      <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="MaxMind.GeoIP2">
-      <HintPath>..\thirdparty\MaxMind.GeoIP2.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Eluant">
@@ -124,7 +116,6 @@
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\ParaDrop.cs" />
     <Compile Include="Traits\PortableChrono.cs" />
-    <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
     <Compile Include="Traits\Render\RenderJammerCircle.cs" />
     <Compile Include="Traits\Render\RenderHarvester.cs" />
     <Compile Include="Traits\Render\RenderDisguise.cs" />
@@ -142,31 +133,19 @@
     <Compile Include="Traits\LeavesHusk.cs" />
     <Compile Include="Traits\TargetableSubmarine.cs" />
     <Compile Include="Traits\TransformOnPassenger.cs" />
-    <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />
     <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
-    <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\DiplomacyLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoBriefingLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoObjectivesLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoStatsLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LeaveMapLogic.cs" />
-    <Compile Include="Widgets\Logic\KickClientLogic.cs" />
-    <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
-    <Compile Include="Widgets\Logic\DiplomacyLogic.cs" />
-    <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
     <Compile Include="Widgets\Logic\DownloadPackagesLogic.cs" />
-    <Compile Include="Widgets\Logic\IngameChatLogic.cs" />
-    <Compile Include="Widgets\Logic\LobbyLogic.cs" />
-    <Compile Include="Widgets\Logic\LobbyUtils.cs" />
     <Compile Include="Widgets\Logic\MainMenuLogic.cs" />
-    <Compile Include="Widgets\Logic\MapChooserLogic.cs" />
     <Compile Include="Widgets\Logic\MusicPlayerLogic.cs" />
     <Compile Include="Widgets\Logic\ObserverStatsLogic.cs" />
     <Compile Include="Widgets\Logic\OrderButtonsChromeLogic.cs" />
     <Compile Include="Widgets\Logic\PerfDebugLogic.cs" />
-    <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />
-    <Compile Include="Widgets\Logic\ServerBrowserLogic.cs" />
-    <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
     <Compile Include="Widgets\ObserverProductionIconsWidget.cs" />
     <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="Player\HarvesterAttackNotifier.cs" />
@@ -178,7 +157,6 @@
     <Compile Include="Traits\Infiltration\Infiltrates.cs" />
     <Compile Include="Widgets\Logic\ObserverShroudSelectorLogic.cs" />
     <Compile Include="Widgets\Logic\SpawnSelectorTooltipLogic.cs" />
-    <Compile Include="Widgets\Logic\ClientTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
@@ -192,7 +170,6 @@
     <Compile Include="Widgets\Logic\GameTimerLogic.cs" />
     <Compile Include="Widgets\Logic\ReplayControlBarLogic.cs" />
     <Compile Include="Traits\Attack\AttackGarrisoned.cs" />
-    <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
     <Compile Include="Traits\Parachutable.cs" />

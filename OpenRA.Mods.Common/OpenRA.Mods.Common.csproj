@@ -51,6 +51,14 @@
     <Reference Include="StyleCop">
       <HintPath>..\thirdparty\StyleCop.dll</HintPath>
     </Reference>
+    <Reference Include="MaxMind.GeoIP2">
+      <HintPath>..\thirdparty\MaxMind.GeoIP2.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Nat">
+      <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
@@ -436,14 +444,29 @@
     <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
+    <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
     <Compile Include="Widgets\Logic\CountryTooltipLogic.cs" />
+    <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
     <Compile Include="Widgets\Logic\DisconnectWatcherLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\IngameChatLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngameRadarDisplayLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LoadIngamePlayerOrObserverUILogic.cs" />
+    <Compile Include="Widgets\Logic\Lobby\ClientTooltipLogic.cs" />
+    <Compile Include="Widgets\Logic\Lobby\KickClientLogic.cs" />
+    <Compile Include="Widgets\Logic\Lobby\KickSpectatorsLogic.cs" />
+    <Compile Include="Widgets\Logic\Lobby\LobbyLogic.cs" />
+    <Compile Include="Widgets\Logic\Lobby\LobbyMapPreviewLogic.cs" />
+    <Compile Include="Widgets\Logic\Lobby\LobbyUtils.cs" />
+    <Compile Include="Widgets\Logic\MapChooserLogic.cs" />
     <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\SupportPowerTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\SupportPowerBinLogic.cs" />
+    <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />
+    <Compile Include="Widgets\Logic\ServerBrowserLogic.cs" />
+    <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
+    <Compile Include="Widgets\Logic\SettingsLogic.cs" />
+    <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
     <Compile Include="Widgets\MenuButtonWidget.cs" />
     <Compile Include="Widgets\ObserverSupportPowerIconsWidget.cs" />
     <Compile Include="Widgets\ProductionPaletteWidget.cs" />
@@ -459,7 +482,6 @@
     <Compile Include="SpriteLoaders\TmpRALoader.cs" />
     <Compile Include="SpriteLoaders\TmpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpD2Loader.cs" />
-    <Compile Include="Widgets\Logic\SettingsLogic.cs" />
     <Compile Include="Widgets\TerrainTemplatePreviewWidget.cs" />
     <Compile Include="LoadScreens\LogoStripeLoadScreen.cs" />
     <Compile Include="LoadScreens\BlankLoadScreen.cs" />
