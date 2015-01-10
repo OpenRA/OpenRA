@@ -12,9 +12,9 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -119,12 +119,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			var mobileInfo = producee.Traits.GetOrDefault<MobileInfo>();
 
-			foreach (var blocker in self.World.ActorMap.GetUnitsAt(self.Location + s.ExitCell))
-			{
-				// Notify the blocker that he's blocking our move:
-				foreach (var moveBlocked in blocker.TraitsImplementing<INotifyBlockingMove>())
-					moveBlocked.OnNotifyBlockingMove(blocker, self);
-			}
+			self.NotifyBlocker(self.Location + s.ExitCell);
 
 			return mobileInfo == null ||
 				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCell, self);
