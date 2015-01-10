@@ -138,7 +138,7 @@ Rules:
 			Types: Vehicle
 		WithCargo:
 			DisplayTypes: Vehicle
-			LocalOffset: 0,0,-512
+			LocalOffset: 0,0,-256
 	ROCKETTOWERH:
 		Power:
 			Amount: 100
