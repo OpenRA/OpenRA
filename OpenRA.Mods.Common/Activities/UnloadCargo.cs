@@ -68,11 +68,7 @@ namespace OpenRA.Mods.Common.Activities
 			var exitSubCell = ChooseExitSubCell(actor);
 			if (exitSubCell == null)
 			{
-				foreach (var blocker in BlockedExitCells(actor).SelectMany(p => self.World.ActorMap.GetUnitsAt(p)))
-				{
-					foreach (var nbm in blocker.TraitsImplementing<INotifyBlockingMove>())
-						nbm.OnNotifyBlockingMove(blocker, self);
-				}
+				self.NotifyBlocker(BlockedExitCells(actor));
 
 				return Util.SequenceActivities(new Wait(10), this);
 			}

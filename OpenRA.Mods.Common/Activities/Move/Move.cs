@@ -202,16 +202,6 @@ namespace OpenRA.Mods.Common.Activities
 				throw new InvalidOperationException("(Move) Sanity check failed");
 		}
 
-		static void NotifyBlocker(Actor self, CPos nextCell)
-		{
-			foreach (var blocker in self.World.ActorMap.GetUnitsAt(nextCell))
-			{
-				// Notify the blocker that he's blocking our move:
-				foreach (var moveBlocked in blocker.TraitsImplementing<INotifyBlockingMove>())
-					moveBlocked.OnNotifyBlockingMove(blocker, self);
-			}
-		}
-
 		Pair<CPos, SubCell>? PopPath(Actor self, Mobile mobile)
 		{
 			if (path.Count == 0)
@@ -233,7 +223,7 @@ namespace OpenRA.Mods.Common.Activities
 				// See if they will move
 				if (!hasNotifiedBlocker)
 				{
-					NotifyBlocker(self, nextCell);
+					self.NotifyBlocker(nextCell);
 					hasNotifiedBlocker = true;
 				}
 

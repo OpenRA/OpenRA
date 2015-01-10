@@ -8,7 +8,9 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -76,6 +78,25 @@ namespace OpenRA.Mods.Common
 			}
 
 			return Target.Invalid;
+		}
+
+		public static void NotifyBlocker(this Actor self, IEnumerable<Actor> blockers)
+		{
+			foreach (var blocker in blockers)
+			{
+				foreach (var moveBlocked in blocker.TraitsImplementing<INotifyBlockingMove>())
+					moveBlocked.OnNotifyBlockingMove(blocker, self);
+			}
+		}
+
+		public static void NotifyBlocker(this Actor self, CPos position)
+		{
+			NotifyBlocker(self, self.World.ActorMap.GetUnitsAt(position));
+		}
+
+		public static void NotifyBlocker(this Actor self, IEnumerable<CPos> positions)
+		{
+			NotifyBlocker(self, positions.SelectMany(p => self.World.ActorMap.GetUnitsAt(p)));
 		}
 	}
 }
