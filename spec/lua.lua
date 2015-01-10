@@ -266,6 +266,7 @@ return {
       string.byte string.char string.dump string.find string.format string.gmatch string.gsub string.len
       string.lower string.match string.rep string.reverse string.sub string.upper
       byte find format gmatch gsub len lower match rep reverse sub upper
+      table.move, string.pack, string.unpack, string.packsize
       table.concat table.insert table.maxn table.pack table.remove table.sort table.unpack]]
   },
 }
