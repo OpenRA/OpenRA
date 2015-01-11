@@ -332,10 +332,6 @@ Actors:
 		Owner: Nod
 		Health: 0.1875
 		Facing: 160
-	Gunboat: boat
-		Location: 51,59
-		Owner: GDI
-		Facing: 64
 	Actor92: e1
 		Location: 57,45
 		Owner: Nod
@@ -386,9 +382,10 @@ Actors:
 		Owner: Nod
 		Facing: 96
 		SubCell: 4
-	spawn27: waypoint
-		Location: 51,47
-		Owner: Neutral
+	Gunboat: boat
+		Location: 51,59
+		Owner: GDI
+		Facing: 64
 	nod0: waypoint
 		Location: 36,39
 		Owner: Neutral

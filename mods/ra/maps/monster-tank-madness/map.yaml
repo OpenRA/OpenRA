@@ -1421,9 +1421,6 @@ Actors:
 	Actor442: miss
 		Location: 86,33
 		Owner: BadGuy
-	SuperTankDome: dome.NoInfiltrate
-		Location: 90,32
-		Owner: BadGuy
 	Actor444: ftur
 		Location: 91,47
 		Owner: BadGuy
@@ -1527,13 +1524,6 @@ Actors:
 	Actor477: apwr
 		Location: 89,78
 		Owner: USSR
-	USSRSpen: spen
-		Location: 32,56
-		Owner: BadGuy
-		Health: 0.6875
-	USSROutpostSilo: silo
-		Location: 37,61
-		Owner: BadGuy
 	Actor480: powr
 		Location: 34,61
 		Owner: BadGuy
@@ -1564,14 +1554,8 @@ Actors:
 	Actor489: brl3
 		Location: 37,65
 		Owner: USSR
-	ExplosiveBarrel1: brl3
-		Location: 38,62
-		Owner: USSR
 	Actor491: brl3
 		Location: 28,62
-		Owner: USSR
-	ExplosiveBarrel2: brl3
-		Location: 28,60
 		Owner: USSR
 	Actor493: brl3
 		Location: 30,61
@@ -1600,12 +1584,6 @@ Actors:
 	Actor501: barl
 		Location: 39,63
 		Owner: USSR
-	FlameTurret1: ftur
-		Location: 30,64
-		Owner: BadGuy
-	FlameTurret2: ftur
-		Location: 33,66
-		Owner: BadGuy
 	Actor504: brl3
 		Location: 37,66
 		Owner: BadGuy
@@ -1615,14 +1593,6 @@ Actors:
 	Actor506: barl
 		Location: 38,66
 		Owner: BadGuy
-	AlliedBaseProc: proc
-		Location: 27,25
-		Owner: Outpost
-		Health: 0.3476563
-		FreeActor: False
-	AlliedBaseHarv: harv
-		Location: 30,26
-		Owner: Neutral
 	Actor508: silo
 		Location: 36,18
 		Owner: Outpost
@@ -1643,12 +1613,6 @@ Actors:
 		Location: 23,23
 		Owner: Outpost
 		Health: 0.1367188
-	Hospital: hosp
-		Location: 43,43
-		Owner: Neutral
-	DemitriChurch: v01
-		Location: 28,99
-		Owner: Neutral
 	Actor515: v02
 		Location: 23,99
 		Owner: Neutral
@@ -1859,15 +1823,6 @@ Actors:
 	Actor584: brl3
 		Location: 89,53
 		Owner: Ukraine
-	stnk1: 5tnk
-		Location: 89,59
-		Owner: Turkey
-	stnk2: 5tnk
-		Location: 77,57
-		Owner: Turkey
-	stnk3: 5tnk
-		Location: 94,53
-		Owner: Turkey
 	Actor588: v2rl
 		Location: 91,75
 		Owner: USSR
@@ -2024,6 +1979,60 @@ Actors:
 		Owner: BadGuy
 		Facing: 224
 		SubCell: 2
+	Actor507: v11
+		Location: 97,56
+		Owner: Ukraine
+	Actor513: brl3
+		Location: 85,56
+		Owner: Ukraine
+	Actor514: brl3
+		Location: 97,59
+		Owner: Ukraine
+	SuperTankDome: dome.NoInfiltrate
+		Location: 90,32
+		Owner: BadGuy
+	USSRSpen: spen
+		Location: 32,56
+		Owner: BadGuy
+		Health: 0.6875
+	USSROutpostSilo: silo
+		Location: 37,61
+		Owner: BadGuy
+	ExplosiveBarrel1: brl3
+		Location: 38,62
+		Owner: USSR
+	ExplosiveBarrel2: brl3
+		Location: 28,60
+		Owner: USSR
+	FlameTurret1: ftur
+		Location: 30,64
+		Owner: BadGuy
+	FlameTurret2: ftur
+		Location: 33,66
+		Owner: BadGuy
+	AlliedBaseProc: proc
+		Location: 27,25
+		Owner: Outpost
+		Health: 0.3476563
+		FreeActor: False
+	AlliedBaseHarv: harv
+		Location: 30,26
+		Owner: Neutral
+	Hospital: hosp
+		Location: 43,43
+		Owner: Neutral
+	DemitriChurch: v01
+		Location: 28,99
+		Owner: Neutral
+	stnk1: 5tnk
+		Location: 89,59
+		Owner: Turkey
+	stnk2: 5tnk
+		Location: 77,57
+		Owner: Turkey
+	stnk3: 5tnk
+		Location: 94,53
+		Owner: Turkey
 	DemitriLZ: waypoint
 		Location: 30,21
 		Owner: Neutral
@@ -2063,15 +2072,6 @@ Actors:
 	AlliedBaseEntryPoint: waypoint
 		Location: 42,16
 		Owner: Neutral
-	Actor507: v11
-		Location: 97,56
-		Owner: Ukraine
-	Actor513: brl3
-		Location: 85,56
-		Owner: Ukraine
-	Actor514: brl3
-		Location: 97,59
-		Owner: Ukraine
 	AlliedBaseEntryRight: waypoint
 		Location: 29,32
 		Owner: Neutral

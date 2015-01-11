@@ -533,18 +533,6 @@ Actors:
 	Actor157: barl
 		Location: 56,59
 		Owner: USSR
-	USSRBarracks1: barr
-		Location: 51,67
-		Owner: USSR
-	USSRConstructionYard1: fact
-		Location: 55,71
-		Owner: USSR
-	USSRPowerPlant1: powr
-		Location: 53,72
-		Owner: USSR
-	USSRPowerPlant2: powr
-		Location: 51,72
-		Owner: USSR
 	Actor162: brl3
 		Location: 55,67
 		Owner: USSR
@@ -572,30 +560,6 @@ Actors:
 	Actor170: v19
 		Location: 54,68
 		Owner: Neutral
-	USSRWarFactory: weap
-		Location: 83,73
-		Owner: USSR
-	USSRBarracks2: barr
-		Location: 78,75
-		Owner: USSR
-	USSRKennel: kenn
-		Location: 81,77
-		Owner: USSR
-	USSRAdvancedPowerPlant: apwr
-		Location: 81,80
-		Owner: USSR
-	USSRRadarDome: dome
-		Location: 78,80
-		Owner: USSR
-	USSRConstructionYard2: fact
-		Location: 88,80
-		Owner: USSR
-	USSRPowerPlant3: powr
-		Location: 90,77
-		Owner: USSR
-	USSRPowerPlant4: powr
-		Location: 92,76
-		Owner: USSR
 	Actor179: brl3
 		Location: 77,66
 		Owner: USSR
@@ -610,9 +574,6 @@ Actors:
 		Owner: USSR
 	Actor183: barl
 		Location: 78,69
-		Owner: USSR
-	USSRFlameTower1: ftur
-		Location: 50,69
 		Owner: USSR
 	Actor185: brl3
 		Location: 57,70
@@ -629,9 +590,6 @@ Actors:
 	Actor189: barl
 		Location: 59,69
 		Owner: USSR
-	USSRTechCenter: miss
-		Location: 58,71
-		Owner: USSR
 	Actor191: brl3
 		Location: 56,67
 		Owner: USSR
@@ -640,12 +598,6 @@ Actors:
 		Owner: USSR
 	Actor192: barl
 		Location: 56,68
-		Owner: USSR
-	USSRForwardCommand: fcom
-		Location: 79,69
-		Owner: USSR
-	ExplosiveBarrel: brl3
-		Location: 102,49
 		Owner: USSR
 	Actor194: brl3
 		Location: 102,49
@@ -745,9 +697,6 @@ Actors:
 		Owner: USSR
 	Actor224: brl3
 		Location: 100,70
-		Owner: USSR
-	USSRFlameTower2: ftur
-		Location: 100,69
 		Owner: USSR
 	Actor226: brl3
 		Location: 88,64
@@ -861,11 +810,6 @@ Actors:
 		Owner: USSR
 		Facing: 224
 		SubCell: 1
-	PGuard1: e1
-		Location: 58,59
-		Owner: USSR
-		Facing: 224
-		SubCell: 3
 	Actor259: e1.autotarget
 		Location: 54,55
 		Owner: USSR
@@ -896,30 +840,6 @@ Actors:
 		Owner: USSR
 		Facing: 192
 		SubCell: 1
-	USSRBaseGuard5: e1
-		Location: 51,69
-		Owner: USSR
-		Facing: 160
-		SubCell: 3
-	USSRBaseGuard6: e2
-		Location: 49,72
-		Owner: USSR
-		Facing: 128
-		SubCell: 2
-	USSRBaseGuard3: e2
-		Location: 48,70
-		Owner: USSR
-		SubCell: 4
-	USSRBaseGuard4: e2
-		Location: 49,69
-		Owner: USSR
-		Facing: 160
-		SubCell: 0
-	USSRBaseGuard7: e1
-		Location: 53,70
-		Owner: USSR
-		Facing: 160
-		SubCell: 1
 	Actor270: e1.autotarget
 		Location: 65,71
 		Owner: USSR
@@ -935,42 +855,8 @@ Actors:
 		Owner: USSR
 		Facing: 128
 		SubCell: 4
-	USSRBaseGuard1: e1
-		Location: 49,66
-		Owner: USSR
-		Facing: 96
-		SubCell: 0
-	USSRBaseGuard2: e1
-		Location: 48,67
-		Owner: USSR
-		Facing: 224
-		SubCell: 0
-	USSRBaseGuard11: e1
-		Location: 78,77
-		Owner: USSR
-		Facing: 128
-		SubCell: 4
-	USSRBaseGuard12: e1
-		Location: 79,77
-		Owner: USSR
-		Facing: 96
-		SubCell: 4
 	Actor277: e1
 		Location: 78,77
-		Owner: USSR
-		Facing: 160
-		SubCell: 3
-	USSRBaseGuard10: e2
-		Location: 77,80
-		Owner: USSR
-		Facing: 64
-		SubCell: 0
-	USSRBaseGuard13: e2
-		Location: 80,76
-		Owner: USSR
-		SubCell: 0
-	USSRBaseGuard14: dog
-		Location: 81,76
 		Owner: USSR
 		Facing: 160
 		SubCell: 3
@@ -984,26 +870,6 @@ Actors:
 		Owner: USSR
 		Facing: 160
 		SubCell: 1
-	PrisonedMedi2: medi
-		Location: 57,67
-		Owner: Greece
-		Facing: 128
-		SubCell: 0
-	PGuard2: e1
-		Location: 57,68
-		Owner: USSR
-		Facing: 128
-		SubCell: 4
-	USSRBaseGuard8: e1
-		Location: 56,69
-		Owner: USSR
-		Facing: 96
-		SubCell: 2
-	PrisonedEngi: hacke6
-		Location: 57,67
-		Owner: Greece
-		Facing: 96
-		SubCell: 2
 	Actor287: e1.autotarget
 		Location: 84,53
 		Owner: USSR
@@ -1081,10 +947,6 @@ Actors:
 		Owner: USSR
 		Facing: 160
 		SubCell: 2
-	PrisonedMedi1: medi
-		Location: 58,60
-		Owner: Greece
-		SubCell: 0
 	Actor309: fenc
 		Location: 72,63
 		Owner: USSR
@@ -1100,39 +962,6 @@ Actors:
 	Actor306: fenc
 		Location: 71,63
 		Owner: USSR
-	waypoint10: waypoint
-		Location: 50,70
-		Owner: Neutral
-	waypoint20: waypoint
-		Location: 83,54
-		Owner: Neutral
-	waypoint23: waypoint
-		Location: 88,75
-		Owner: Neutral
-	waypoint25: waypoint
-		Location: 59,81
-		Owner: Neutral
-	waypoint26: waypoint
-		Location: 84,74
-		Owner: Neutral
-	waypoint27: waypoint
-		Location: 97,64
-		Owner: Neutral
-	waypoint28: waypoint
-		Location: 60,69
-		Owner: Neutral
-	waypoint29: waypoint
-		Location: 76,66
-		Owner: Neutral
-	waypoint30: waypoint
-		Location: 69,66
-		Owner: Neutral
-	waypoint98: waypoint
-		Location: 61,52
-		Owner: Neutral
-	waypoint99: waypoint
-		Location: 67,64
-		Owner: Neutral
 	Actor312: fenc
 		Location: 71,62
 		Owner: USSR
@@ -1307,6 +1136,150 @@ Actors:
 	Actor369: fenc
 		Location: 100,57
 		Owner: USSR
+	USSRBarracks1: barr
+		Location: 51,67
+		Owner: USSR
+	USSRBarracks2: barr
+		Location: 78,75
+		Owner: USSR
+	USSRWarFactory: weap
+		Location: 83,73
+		Owner: USSR
+	USSRKennel: kenn
+		Location: 81,77
+		Owner: USSR
+	USSRAdvancedPowerPlant: apwr
+		Location: 81,80
+		Owner: USSR
+	USSRRadarDome: dome
+		Location: 78,80
+		Owner: USSR
+	USSRConstructionYard1: fact
+		Location: 55,71
+		Owner: USSR
+	USSRConstructionYard2: fact
+		Location: 88,80
+		Owner: USSR
+	USSRPowerPlant1: powr
+		Location: 53,72
+		Owner: USSR
+	USSRPowerPlant2: powr
+		Location: 51,72
+		Owner: USSR
+	USSRPowerPlant3: powr
+		Location: 90,77
+		Owner: USSR
+	USSRPowerPlant4: powr
+		Location: 92,76
+		Owner: USSR
+	USSRFlameTower1: ftur
+		Location: 50,69
+		Owner: USSR
+	USSRFlameTower2: ftur
+		Location: 100,69
+		Owner: USSR
+	USSRTechCenter: miss
+		Location: 58,71
+		Owner: USSR
+	USSRForwardCommand: fcom
+		Location: 79,69
+		Owner: USSR
+	USSRBaseGuard1: e1
+		Location: 49,66
+		Owner: USSR
+		Facing: 96
+		SubCell: 0
+	USSRBaseGuard2: e1
+		Location: 48,67
+		Owner: USSR
+		Facing: 224
+		SubCell: 0
+	USSRBaseGuard3: e2
+		Location: 48,70
+		Owner: USSR
+		SubCell: 4
+	USSRBaseGuard4: e2
+		Location: 49,69
+		Owner: USSR
+		Facing: 160
+		SubCell: 0
+	USSRBaseGuard5: e1
+		Location: 51,69
+		Owner: USSR
+		Facing: 160
+		SubCell: 3
+	USSRBaseGuard6: e2
+		Location: 49,72
+		Owner: USSR
+		Facing: 128
+		SubCell: 2
+	USSRBaseGuard7: e1
+		Location: 53,70
+		Owner: USSR
+		Facing: 160
+		SubCell: 1
+	USSRBaseGuard8: e1
+		Location: 56,69
+		Owner: USSR
+		Facing: 96
+		SubCell: 2
+	USSRBaseGuard10: e2
+		Location: 77,80
+		Owner: USSR
+		Facing: 64
+		SubCell: 0
+	USSRBaseGuard11: e1
+		Location: 78,77
+		Owner: USSR
+		Facing: 128
+		SubCell: 4
+	USSRBaseGuard12: e1
+		Location: 79,77
+		Owner: USSR
+		Facing: 96
+		SubCell: 4
+	USSRBaseGuard13: e2
+		Location: 80,76
+		Owner: USSR
+		SubCell: 0
+	USSRBaseGuard14: dog
+		Location: 81,76
+		Owner: USSR
+		Facing: 160
+		SubCell: 3
+	PGuard1: e1
+		Location: 58,59
+		Owner: USSR
+		Facing: 224
+		SubCell: 3
+	PGuard2: e1
+		Location: 57,68
+		Owner: USSR
+		Facing: 128
+		SubCell: 4
+	PrisonedMedi1: medi
+		Location: 58,60
+		Owner: Greece
+		SubCell: 0
+	PrisonedMedi2: medi
+		Location: 57,67
+		Owner: Greece
+		Facing: 128
+		SubCell: 0
+	PrisonedEngi: hacke6
+		Location: 57,67
+		Owner: Greece
+		Facing: 96
+		SubCell: 2
+	Jail1: prison
+		Location: 58,60
+		Owner: Greece
+	Jail2: prison
+		Location: 57,67
+		Owner: Greece
+	ExplosiveBarrel: brl3
+		Location: 102,49
+		Owner: USSR
 	AlliedUnitsEntry: waypoint
 		Location: 60,48
 		Owner: Neutral
@@ -1355,12 +1328,6 @@ Actors:
 	USSRMoneyCrateSpawn: waypoint
 		Location: 59,72
 		Owner: Neutral
-	Jail1: prison
-		Location: 58,60
-		Owner: Greece
-	Jail2: prison
-		Location: 57,67
-		Owner: Greece
 
 Smudges:
 

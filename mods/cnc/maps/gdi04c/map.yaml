@@ -455,33 +455,6 @@ Actors:
 	Actor131: v06
 		Location: 17,52
 		Owner: Civillians
-	TrigLos2Farm1: v04
-		Location: 25,53
-		Owner: Civillians
-	TrigLos2Farm2: v06
-		Location: 24,50
-		Owner: Civillians
-	TrigLos2Farm3: v07
-		Location: 19,46
-		Owner: Civillians
-	TrigLos2Farm4: v01
-		Location: 18,44
-		Owner: Civillians
-	TrigHuntFarm1: v06
-		Location: 45,43
-		Owner: Civillians
-	TrigRNF1Farm1: v07
-		Location: 31,53
-		Owner: Civillians
-	TrigRNF1Farm2: v09
-		Location: 31,50
-		Owner: Civillians
-	TrigRNF2Farm1: v08
-		Location: 30,53
-		Owner: Civillians
-	TrigRNF2Farm2: v11
-		Location: 29,50
-		Owner: Civillians
 	Actor136: bggy
 		Location: 58,35
 		Owner: Nod
@@ -553,14 +526,6 @@ Actors:
 		Owner: Nod
 		Facing: 64
 		SubCell: 0
-	civvie1: c8
-		Location: 26,22
-		Owner: Civillians
-		SubCell: 4
-	civvie2: c3
-		Location: 26,22
-		Owner: Civillians
-		SubCell: 3
 	Actor154: c2
 		Location: 23,56
 		Owner: Civillians
@@ -703,68 +668,100 @@ Actors:
 		Location: 34,21
 		Owner: Nod
 		SubCell: 0
-	waypoint27: waypoint
-		Location: 27,46
-		Owner: Neutral
-	waypoint26: waypoint
-		Location: 22,14
-		Owner: Neutral
-	waypoint17: waypoint
-		Location: 43,19
-		Owner: Neutral
-	waypoint13: waypoint
-		Location: 16,47
-		Owner: Neutral
-	waypoint12: waypoint
-		Location: 16,51
-		Owner: Neutral
-	GDIUnloadWpt: waypoint
-		Location: 28,47
-		Owner: Neutral
-	waypoint10: waypoint
-		Location: 27,49
-		Owner: Neutral
-	waypoint9: waypoint
-		Location: 31,29
-		Owner: Neutral
-	waypoint8: waypoint
-		Location: 53,38
-		Owner: Neutral
-	waypoint7: waypoint
-		Location: 45,44
-		Owner: Neutral
-	waypoint6: waypoint
-		Location: 55,32
-		Owner: Neutral
-	waypoint5: waypoint
-		Location: 43,33
-		Owner: Neutral
-	waypoint4: waypoint
-		Location: 37,36
-		Owner: Neutral
-	waypoint3: waypoint
+	TrigHuntFarm1: v06
+		Location: 45,43
+		Owner: Civillians
+	TrigRNF1Farm1: v07
+		Location: 31,53
+		Owner: Civillians
+	TrigRNF1Farm2: v09
+		Location: 31,50
+		Owner: Civillians
+	TrigRNF2Farm1: v08
+		Location: 30,53
+		Owner: Civillians
+	TrigRNF2Farm2: v11
+		Location: 29,50
+		Owner: Civillians
+	TrigLos2Farm1: v04
+		Location: 25,53
+		Owner: Civillians
+	TrigLos2Farm2: v06
+		Location: 24,50
+		Owner: Civillians
+	TrigLos2Farm3: v07
+		Location: 19,46
+		Owner: Civillians
+	TrigLos2Farm4: v01
+		Location: 18,44
+		Owner: Civillians
+	civvie1: c8
+		Location: 26,22
+		Owner: Civillians
+		SubCell: 4
+	civvie2: c3
+		Location: 26,22
+		Owner: Civillians
+		SubCell: 3
+	CivvieWpts1: waypoint
 		Location: 32,14
 		Owner: Neutral
-	waypoint2: waypoint
-		Location: 27,52
+	CivvieWpts2: waypoint
+		Location: 43,19
 		Owner: Neutral
-	waypoint1: waypoint
+	CivvieWpts3: waypoint
+		Location: 22,14
+		Owner: Neutral
+	CivvieWpts4: waypoint
+		Location: 31,29
+		Owner: Neutral
+	CivvieWpts5: waypoint
+		Location: 37,36
+		Owner: Neutral
+	CivvieWpts6: waypoint
+		Location: 43,33
+		Owner: Neutral
+	CivvieWpts7: waypoint
+		Location: 55,32
+		Owner: Neutral
+	CivvieWpts8: waypoint
+		Location: 53,38
+		Owner: Neutral
+	CivvieWpts9: waypoint
+		Location: 45,44
+		Owner: Neutral
+	CivvieWpts10: waypoint
 		Location: 36,52
 		Owner: Neutral
-	waypoint0: waypoint
+	CivvieWpts11: waypoint
+		Location: 27,52
+		Owner: Neutral
+	NodReinfEntry: waypoint
+		Location: 61,55
+		Owner: Neutral
+	NodReinfRally: waypoint
 		Location: 55,54
 		Owner: Neutral
 	TownAttackWpt: waypoint
 		Location: 24,48
-		Owner: Neutral
-	NodReinfEntry: waypoint
-		Location: 61,55
 		Owner: Neutral
 	GDIReinfEntry1: waypoint
 		Location: 14,51
 		Owner: Neutral
 	GDIReinfEntry2: waypoint
 		Location: 14,47
+		Owner: Neutral
+	GDIReinfRally1: waypoint
+		Location: 16,51
+		Owner: Neutral
+	GDIReinfRally2: waypoint
+		Location: 16,47
+		Owner: Neutral
+	GDIReinfRally3: waypoint
+		Location: 27,49
+		Owner: Neutral
+	GDIUnloadWpt: waypoint
+		Location: 28,47
 		Owner: Neutral
 
 Smudges:

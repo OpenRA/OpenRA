@@ -145,9 +145,6 @@ Actors:
 	Actor25: powr
 		Location: 61,57
 		Owner: USSR
-	Lab: stek
-		Location: 61,60
-		Owner: USSR
 	Actor27: fact
 		Location: 69,62
 		Owner: USSR
@@ -189,9 +186,6 @@ Actors:
 	Actor39: powr
 		Location: 77,67
 		Owner: USSR
-	OilPump: v19
-		Location: 59,57
-		Owner: USSR
 	Actor41: brl3
 		Location: 60,57
 		Owner: USSR
@@ -214,10 +208,6 @@ Actors:
 		Location: 63,50
 		Owner: Greece
 		Facing: 128
-	Harvester: harv
-		Location: 72,60
-		Owner: USSR
-		Facing: 224
 	Actor49: jeep
 		Location: 62,50
 		Owner: Greece
@@ -226,24 +216,6 @@ Actors:
 		Location: 64,50
 		Owner: Greece
 		Facing: 128
-	Patrol1: dog
-		Location: 63,59
-		Owner: USSR
-		SubCell: 2
-	Patrol2: e1
-		Location: 64,58
-		Owner: USSR
-		SubCell: 3
-	LabGuard3: e1
-		Location: 61,63
-		Owner: USSR
-		Facing: 128
-		SubCell: 0
-	LabGuard2: e1
-		Location: 63,63
-		Owner: USSR
-		Facing: 96
-		SubCell: 0
 	Actor55: e2
 		Location: 73,66
 		Owner: USSR
@@ -268,18 +240,6 @@ Actors:
 		Owner: USSR
 		Facing: 96
 		SubCell: 1
-	Patrol4: e1
-		Location: 62,55
-		Owner: USSR
-		SubCell: 4
-	Patrol3: e1
-		Location: 64,59
-		Owner: USSR
-		SubCell: 2
-	LabGuard1: e1
-		Location: 64,61
-		Owner: USSR
-		SubCell: 4
 	Actor63: e1
 		Location: 58,60
 		Owner: USSR
@@ -300,14 +260,6 @@ Actors:
 		Owner: Greece
 		Facing: 160
 		SubCell: 2
-	Civilian1: c8
-		Location: 74,50
-		Owner: England
-		SubCell: 0
-	Civilian2: c7
-		Location: 76,48
-		Owner: England
-		SubCell: 3
 	Actor69: e2
 		Location: 62,56
 		Owner: USSR
@@ -327,69 +279,6 @@ Actors:
 		Owner: Greece
 		Facing: 128
 		SubCell: 1
-	ExtractionLZ: waypoint
-		Location: 53,49
-		Owner: Neutral
-	waypoint1: waypoint
-		Location: 57,74
-		Owner: Neutral
-	waypoint2: waypoint
-		Location: 53,79
-		Owner: Neutral
-	waypoint3: waypoint
-		Location: 57,65
-		Owner: Neutral
-	CruiserCameraPoint: waypoint
-		Location: 69,67
-		Owner: Neutral
-	waypoint7: waypoint
-		Location: 69,56
-		Owner: Neutral
-	waypoint6: waypoint
-		Location: 55,60
-		Owner: Neutral
-	EinsteinSpawnPoint: waypoint
-		Location: 62,61
-		Owner: Neutral
-	waypoint8: waypoint
-		Location: 49,55
-		Owner: Neutral
-	waypoint9: waypoint
-		Location: 55,56
-		Owner: Neutral
-	InsertionLZ: waypoint
-		Location: 63,47
-		Owner: Neutral
-	InsertionEntry: waypoint
-		Location: 63,45
-		Owner: Neutral
-	BaseCameraPoint: waypoint
-		Location: 64,63
-		Owner: Neutral
-	CruiserPoint4: waypoint
-		Location: 72,75
-		Owner: Neutral
-	SouthReinforcementsPoint: waypoint
-		Location: 66,80
-		Owner: Neutral
-	ExtractionFlarePoint: waypoint
-		Location: 54,48
-		Owner: Neutral
-	CruiserPoint2: waypoint
-		Location: 64,75
-		Owner: Neutral
-	CruiserPoint3: waypoint
-		Location: 68,76
-		Owner: Neutral
-	CruiserPoint1: waypoint
-		Location: 60,74
-		Owner: Neutral
-	waypoint78: waypoint
-		Location: 70,60
-		Owner: Neutral
-	waypoint98: waypoint
-		Location: 63,47
-		Owner: Neutral
 	Actor48: fenc
 		Location: 53,60
 		Owner: USSR
@@ -486,8 +375,92 @@ Actors:
 	Actor97: fenc
 		Location: 68,54
 		Owner: USSR
+	Lab: stek
+		Location: 61,60
+		Owner: USSR
+	OilPump: v19
+		Location: 59,57
+		Owner: USSR
+	Harvester: harv
+		Location: 72,60
+		Owner: USSR
+		Facing: 224
+	LabGuard1: e1
+		Location: 64,61
+		Owner: USSR
+		SubCell: 4
+	LabGuard2: e1
+		Location: 63,63
+		Owner: USSR
+		Facing: 96
+		SubCell: 0
+	LabGuard3: e1
+		Location: 61,63
+		Owner: USSR
+		Facing: 128
+		SubCell: 0
+	Patrol1: dog
+		Location: 63,59
+		Owner: USSR
+		SubCell: 2
+	Patrol2: e1
+		Location: 64,58
+		Owner: USSR
+		SubCell: 3
+	Patrol3: e1
+		Location: 64,59
+		Owner: USSR
+		SubCell: 2
+	Patrol4: e1
+		Location: 62,55
+		Owner: USSR
+		SubCell: 4
+	Civilian1: c8
+		Location: 74,50
+		Owner: England
+		SubCell: 0
+	Civilian2: c7
+		Location: 76,48
+		Owner: England
+		SubCell: 3
+	EinsteinSpawnPoint: waypoint
+		Location: 62,61
+		Owner: Neutral
+	InsertionEntry: waypoint
+		Location: 63,45
+		Owner: Neutral
+	InsertionLZ: waypoint
+		Location: 63,47
+		Owner: Neutral
+	BaseCameraPoint: waypoint
+		Location: 64,63
+		Owner: Neutral
+	SouthReinforcementsPoint: waypoint
+		Location: 66,80
+		Owner: Neutral
+	ExtractionLZ: waypoint
+		Location: 53,49
+		Owner: Neutral
+	ExtractionFlarePoint: waypoint
+		Location: 54,48
+		Owner: Neutral
 	ExtractionExitPoint: waypoint
 		Location: 78,49
+		Owner: Neutral
+	CruiserCameraPoint: waypoint
+		Location: 69,67
+		Owner: Neutral
+	CruiserPoint1: waypoint
+		Location: 60,74
+		Owner: Neutral
+	CruiserPoint2: waypoint
+		Location: 64,75
+		Owner: Neutral
+	CruiserPoint4: waypoint
+		Location: 72,75
+		Owner: Neutral
+	CruiserPoint3: waypoint
+		Location: 68,76
 		Owner: Neutral
 
 Smudges:

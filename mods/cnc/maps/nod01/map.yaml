@@ -189,6 +189,12 @@ Actors:
 	Actor24: rock2
 		Location: 31,61
 		Owner: Neutral
+	Actor27: jeep
+		Location: 31,28
+		Owner: GDI
+	Actor28: jeep
+		Location: 28,29
+		Owner: GDI
 	Vil01: v21
 		Location: 29,23
 		Owner: Villagers
@@ -267,12 +273,6 @@ Actors:
 	VillageRallyPoint: waypoint
 		Location: 24,17
 		Owner: Neutral
-	Actor27: jeep
-		Location: 31,28
-		Owner: GDI
-	Actor28: jeep
-		Location: 28,29
-		Owner: GDI
 
 Smudges:
 

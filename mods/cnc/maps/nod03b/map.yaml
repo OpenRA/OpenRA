@@ -386,9 +386,6 @@ Actors:
 	Actor63: proc
 		Location: 20,17
 		Owner: GDI
-	TechCenter: miss
-		Location: 14,17
-		Owner: GDI
 	Actor65: v19
 		Location: 29,41
 		Owner: Neutral
@@ -397,12 +394,6 @@ Actors:
 		Owner: Neutral
 	Actor68: v19
 		Location: 29,42
-		Owner: Neutral
-	McvEntry: waypoint
-		Location: 54,38
-		Owner: Neutral
-	McvDeploy: waypoint
-		Location: 52,36
 		Owner: Neutral
 	Actor72: jeep
 		Location: 28,21
@@ -420,12 +411,6 @@ Actors:
 		Location: 29,21
 		Owner: GDI
 		Facing: 128
-	NodEntry: waypoint
-		Location: 54,40
-		Owner: Neutral
-	NodRallypoint: waypoint
-		Location: 50,42
-		Owner: Neutral
 	Actor77: jeep
 		Location: 47,21
 		Owner: GDI
@@ -455,6 +440,21 @@ Actors:
 		Owner: Neutral
 		Facing: 224
 		SubCell: 4
+	TechCenter: miss
+		Location: 14,17
+		Owner: GDI
+	McvEntry: waypoint
+		Location: 54,38
+		Owner: Neutral
+	McvDeploy: waypoint
+		Location: 52,36
+		Owner: Neutral
+	NodEntry: waypoint
+		Location: 54,40
+		Owner: Neutral
+	NodRallypoint: waypoint
+		Location: 50,42
+		Owner: Neutral
 	PlayerBase: waypoint
 		Location: 50,39
 		Owner: Neutral

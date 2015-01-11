@@ -245,9 +245,6 @@ Actors:
 	Actor56: tc03
 		Location: 43,70
 		Owner: Neutral
-	SovietWarfactory: weap
-		Location: 60,66
-		Owner: USSR
 	Actor58: fact
 		Location: 62,61
 		Owner: USSR
@@ -362,11 +359,6 @@ Actors:
 	Actor94: barl
 		Location: 58,58
 		Owner: USSR
-	Harvester: harv
-		Location: 55,65
-		Owner: USSR
-		Health: 0.5
-		Facing: 160
 	Actor96: dog
 		Location: 53,58
 		Owner: USSR
@@ -580,72 +572,6 @@ Actors:
 		Owner: Greece
 		Facing: 160
 		SubCell: 1
-	TruckEntryPoint: waypoint
-		Location: 49,44
-		Owner: Neutral
-	waypoint1: waypoint
-		Location: 49,50
-		Owner: Neutral
-	TruckRallyPoint: waypoint
-		Location: 49,76
-		Owner: Neutral
-	waypoint3: waypoint
-		Location: 65,82
-		Owner: Neutral
-	waypoint4: waypoint
-		Location: 74,82
-		Owner: Neutral
-	waypoint6: waypoint
-		Location: 65,82
-		Owner: Neutral
-	waypoint7: waypoint
-		Location: 74,82
-		Owner: Neutral
-	waypoint8: waypoint
-		Location: 78,74
-		Owner: Neutral
-	waypoint9: waypoint
-		Location: 82,65
-		Owner: Neutral
-	ReinforcementsRallyPoint: waypoint
-		Location: 88,49
-		Owner: Neutral
-	waypoint11: waypoint
-		Location: 51,65
-		Owner: Neutral
-	waypoint12: waypoint
-		Location: 63,64
-		Owner: Neutral
-	waypoint13: waypoint
-		Location: 72,61
-		Owner: Neutral
-	waypoint14: waypoint
-		Location: 69,47
-		Owner: Neutral
-	waypoint15: waypoint
-		Location: 78,51
-		Owner: Neutral
-	waypoint16: waypoint
-		Location: 80,45
-		Owner: Neutral
-	waypoint25: waypoint
-		Location: 80,89
-		Owner: Neutral
-	waypoint26: waypoint
-		Location: 43,63
-		Owner: Neutral
-	waypoint94: waypoint
-		Location: 90,46
-		Owner: Neutral
-	DeployPoint: waypoint
-		Location: 89,51
-		Owner: Neutral
-	waypoint96: waypoint
-		Location: 90,68
-		Owner: Neutral
-	waypoint98: waypoint
-		Location: 88,49
-		Owner: Neutral
 	Actor139: fenc
 		Location: 57,75
 		Owner: USSR
@@ -742,11 +668,31 @@ Actors:
 	Actor170: fenc
 		Location: 50,51
 		Owner: USSR
-	ReinforcementsEntryPoint: waypoint
-		Location: 90,44
+	SovietWarfactory: weap
+		Location: 60,66
+		Owner: USSR
+	Harvester: harv
+		Location: 55,65
+		Owner: USSR
+		Health: 0.5
+		Facing: 160
+	TruckEntryPoint: waypoint
+		Location: 49,44
+		Owner: Neutral
+	TruckRallyPoint: waypoint
+		Location: 49,76
 		Owner: Neutral
 	TruckExitPoint: waypoint
 		Location: 80,85
+		Owner: Neutral
+	ReinforcementsEntryPoint: waypoint
+		Location: 90,44
+		Owner: Neutral
+	ReinforcementsRallyPoint: waypoint
+		Location: 88,49
+		Owner: Neutral
+	DeployPoint: waypoint
+		Location: 89,51
 		Owner: Neutral
 
 Smudges:

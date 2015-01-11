@@ -304,12 +304,6 @@ Actors:
 		Location: 55,51
 		Owner: GDI
 		Health: 0.34375
-	SiloA: silo
-		Location: 57,32
-		Owner: Nod
-	SiloB: silo
-		Location: 59,32
-		Owner: Nod
 	Actor81: nuke
 		Location: 55,32
 		Owner: Nod
@@ -320,9 +314,6 @@ Actors:
 		Location: 53,52
 		Owner: GDI
 		Health: 0.025
-	NodRefinery: proc
-		Location: 57,34
-		Owner: Nod
 	Actor85: bggy
 		Location: 52,39
 		Owner: Nod
@@ -341,11 +332,6 @@ Actors:
 		Location: 33,37
 		Owner: Nod
 		Health: 0.578125
-		Facing: 96
-	RushBuggy: bggy
-		Location: 51,50
-		Owner: Nod
-		Health: 0.1835938
 		Facing: 96
 	Actor91: bggy
 		Location: 59,39
@@ -511,11 +497,6 @@ Actors:
 		Owner: Nod
 		Facing: 160
 		SubCell: 4
-	RushRifle3: e1
-		Location: 52,53
-		Owner: Nod
-		Facing: 32
-		SubCell: 0
 	Actor126: e1
 		Location: 38,49
 		Owner: Nod
@@ -592,18 +573,6 @@ Actors:
 		Owner: Nod
 		Facing: 96
 		SubCell: 4
-	RushRifle1: e1
-		Location: 54,48
-		Owner: Nod
-		Health: 0.4765625
-		Facing: 128
-		SubCell: 3
-	RushRifle2: e1
-		Location: 52,52
-		Owner: Nod
-		Health: 0.3164063
-		Facing: 96
-		SubCell: 0
 	Actor143: e1
 		Location: 48,37
 		Owner: Nod
@@ -634,36 +603,46 @@ Actors:
 		Owner: Nod
 		Facing: 224
 		SubCell: 4
-	waypoint26: waypoint
-		Location: 49,47
-		Owner: Neutral
-	waypoint6: waypoint
-		Location: 54,39
-		Owner: Neutral
-	waypoint5: waypoint
-		Location: 46,37
-		Owner: Neutral
-	waypoint4: waypoint
-		Location: 46,41
-		Owner: Neutral
-	waypoint3: waypoint
-		Location: 59,41
-		Owner: Neutral
-	waypoint2: waypoint
-		Location: 54,55
-		Owner: Neutral
-	waypoint1: waypoint
-		Location: 38,54
-		Owner: Neutral
-	waypoint0: waypoint
-		Location: 35,33
-		Owner: Neutral
+	SiloA: silo
+		Location: 57,32
+		Owner: Nod
+	SiloB: silo
+		Location: 59,32
+		Owner: Nod
+	NodRefinery: proc
+		Location: 57,34
+		Owner: Nod
+	RushBuggy: bggy
+		Location: 51,50
+		Owner: Nod
+		Health: 0.1835938
+		Facing: 96
+	RushRifle1: e1
+		Location: 54,48
+		Owner: Nod
+		Health: 0.4765625
+		Facing: 128
+		SubCell: 3
+	RushRifle2: e1
+		Location: 52,52
+		Owner: Nod
+		Health: 0.3164063
+		Facing: 96
+		SubCell: 0
+	RushRifle3: e1
+		Location: 52,53
+		Owner: Nod
+		Facing: 32
+		SubCell: 0
 	lstEnd: waypoint
 		Location: 58,57
 		Owner: GDI
 	lstStart: waypoint
 		Location: 58,61
 		Owner: GDI
+	NodAttackWaypoint: waypoint
+		Location: 54,55
+		Owner: Neutral
 
 Smudges:
 
