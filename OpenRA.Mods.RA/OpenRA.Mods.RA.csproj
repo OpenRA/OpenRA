@@ -83,7 +83,6 @@
     <Compile Include="AI\HackyAI.cs" />
     <Compile Include="Traits\AcceptsSupplies.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
-    <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\DonateSupplies.cs" />
     <Compile Include="Activities\FindResources.cs" />
     <Compile Include="Activities\Infiltrate.cs" />
@@ -97,12 +96,11 @@
     <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="Traits\Render\RenderUnitReload.cs" />
     <Compile Include="Graphics\TeslaZapRenderable.cs" />
-    <Compile Include="EjectOnDeath.cs" />
+    <Compile Include="Traits\EjectOnDeath.cs" />
     <Compile Include="AI\RushFuzzy.cs" />
     <Compile Include="AI\StateMachine.cs" />
     <Compile Include="Traits\Attack\AttackLeap.cs" />
     <Compile Include="Scripting\Properties\RepairableBuildingProperties.cs" />
-    <Compile Include="C4Demolition.cs" />
     <Compile Include="Traits\PaletteEffects\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="CrateSpawner.cs" />
@@ -122,7 +120,6 @@
     <Compile Include="Traits\DemoTruck.cs" />
     <Compile Include="Effects\GpsDot.cs" />
     <Compile Include="Effects\Parachute.cs" />
-    <Compile Include="EmitInfantryOnSell.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
@@ -130,7 +127,7 @@
     <Compile Include="Traits\MadTank.cs" />
     <Compile Include="Traits\Mine.cs" />
     <Compile Include="Traits\Minelayer.cs" />
-    <Compile Include="ParaDrop.cs" />
+    <Compile Include="Traits\ParaDrop.cs" />
     <Compile Include="Traits\PortableChrono.cs" />
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
@@ -138,7 +135,7 @@
     <Compile Include="Traits\Render\RenderHarvester.cs" />
     <Compile Include="Traits\Render\RenderDisguise.cs" />
     <Compile Include="Traits\Render\RenderLandingCraft.cs" />
-    <Compile Include="Disguise.cs" />
+    <Compile Include="Traits\Disguise.cs" />
     <Compile Include="Traits\SupplyTruck.cs" />
     <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="Traits\SupportPowers\GpsPower.cs" />
@@ -150,8 +147,7 @@
     <Compile Include="Traits\HarvesterHuskModifier.cs" />
     <Compile Include="Traits\LeavesHusk.cs" />
     <Compile Include="Traits\TargetableSubmarine.cs" />
-    <Compile Include="TransformOnPassenger.cs" />
-    <Compile Include="Transforms.cs" />
+    <Compile Include="Traits\TransformOnPassenger.cs" />
     <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />
     <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
@@ -219,11 +215,11 @@
     <Compile Include="Lint\CheckPlayers.cs" />
     <Compile Include="Lint\CheckActors.cs" />
     <Compile Include="Lint\CheckMapCordon.cs" />
-    <Compile Include="Parachutable.cs" />
+    <Compile Include="Traits\Parachutable.cs" />
     <Compile Include="Widgets\Logic\InstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\InstallMusicLogic.cs" />
     <Compile Include="Traits\Buildings\ClonesProducedUnits.cs" />
-    <Compile Include="Cloneable.cs" />
+    <Compile Include="Traits\Cloneable.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngameCashCounterLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngamePowerCounterLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngamePowerBarLogic.cs" />

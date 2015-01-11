@@ -11,7 +11,7 @@
 using System;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Actors with the \"ClonesProducedUnits\" trait will produce a free duplicate of me.")]
 	public class CloneableInfo : TraitInfo<Cloneable>

@@ -9,11 +9,10 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawn new actors when sold.")]
 	class EmitInfantryOnSellInfo : TraitInfo<EmitInfantryOnSell>
