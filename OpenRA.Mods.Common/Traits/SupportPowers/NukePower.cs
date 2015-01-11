@@ -12,12 +12,10 @@ using System;
 using OpenRA.Effects;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	class NukePowerInfo : SupportPowerInfo, Requires<IBodyOrientationInfo>
 	{

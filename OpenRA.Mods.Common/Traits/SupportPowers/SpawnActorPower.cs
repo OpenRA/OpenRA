@@ -10,11 +10,10 @@
 
 using OpenRA.Effects;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Effects;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawns an actor that stays for a limited amount of time.")]
 	public class SpawnActorPowerInfo : SupportPowerInfo
