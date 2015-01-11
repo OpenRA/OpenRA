@@ -17,6 +17,7 @@ JeepDemolishingBridge = function()
 	StartJeep.Move(StartJeepMovePoint.Location)
 
 	Trigger.OnIdle(StartJeep, function()
+		Trigger.ClearAll(StartJeep)
 		if not BridgeBarrel.IsDead then
 			BridgeBarrel.Kill()
 		end
@@ -45,8 +46,12 @@ WorldLoaded = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	CivilProtectionObjective = france.AddPrimaryObjective("Protect the civilians.")
 	VillageRaidObjective = player.AddPrimaryObjective("Raze the village.")
+
+	Trigger.OnAllRemovedFromWorld(Airfields, function()
+		player.MarkFailedObjective(VillageRaidObjective)
+	end)
+
 	JeepDemolishingBridge()
 
 	Trigger.OnPlayerWon(player, function()
@@ -63,9 +68,5 @@ end
 Tick = function()
 	if france.HasNoRequiredUnits() and germany.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(VillageRaidObjective)
-	end
-
-	if player.HasNoRequiredUnits() then
-		france.MarkCompletedObjective(CivilProtectionObjective)
 	end
 end
