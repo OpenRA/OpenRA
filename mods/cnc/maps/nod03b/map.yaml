@@ -72,157 +72,126 @@ Actors:
 	Actor117: e1
 		Location: 41,21
 		Owner: GDI
-		Health: 1
 		Facing: 192
 		SubCell: 0
 	Actor118: e1
 		Location: 48,21
 		Owner: GDI
-		Health: 1
 		Facing: 192
 		SubCell: 4
 	Actor119: e2
 		Location: 27,25
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 0
 	Actor120: e2
 		Location: 36,30
 		Owner: GDI
-		Health: 1
 		Facing: 64
 		SubCell: 4
 	Actor121: e2
 		Location: 41,39
 		Owner: GDI
-		Health: 1
 		Facing: 64
 		SubCell: 1
 	Actor122: e2
 		Location: 42,49
 		Owner: GDI
-		Health: 1
 		Facing: 32
 		SubCell: 0
 	Actor123: e2
 		Location: 43,26
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor111: e1
 		Location: 34,31
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor106: e1
 		Location: 40,22
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 2
 	Actor107: e1
 		Location: 40,21
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor108: e1
 		Location: 36,33
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor109: e1
 		Location: 34,24
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor86: e1
 		Location: 51,21
 		Owner: GDI
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor87: e1
 		Location: 16,39
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor88: e1
 		Location: 20,28
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 2
 	Actor89: e1
 		Location: 19,21
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor90: e1
 		Location: 30,43
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 1
 	Actor91: e1
 		Location: 30,43
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor92: e1
 		Location: 34,32
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor93: e1
 		Location: 23,35
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor94: e1
 		Location: 17,32
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor95: e1
 		Location: 24,43
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 0
 	Actor96: e1
 		Location: 15,37
 		Owner: GDI
-		Health: 1
 		Facing: 64
 		SubCell: 1
 	Actor97: e1
 		Location: 24,30
 		Owner: GDI
-		Health: 1
 		Facing: 64
 		SubCell: 3
 	Actor98: e1
 		Location: 35,27
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 2
 	Actor82: e1
 		Location: 25,43
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 0
 	Actor0: sbag
@@ -381,88 +350,54 @@ Actors:
 	Actor51: silo
 		Location: 23,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor52: silo
 		Location: 18,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor53: pyle
 		Location: 23,19
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor54: nuke
 		Location: 25,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor55: fact
 		Location: 27,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor56: gtwr
 		Location: 18,23
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor57: v20
 		Location: 13,38
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor58: v21
 		Location: 13,40
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor59: v22
 		Location: 18,40
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor60: v24
 		Location: 15,37
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor61: v25
 		Location: 17,41
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor62: v19
 		Location: 28,41
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor63: proc
 		Location: 20,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	TechCenter: miss
 		Location: 14,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor65: v19
 		Location: 29,41
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor67: v19
 		Location: 30,42
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor68: v19
 		Location: 29,42
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	McvEntry: waypoint
 		Location: 54,38
 		Owner: Neutral
@@ -472,22 +407,18 @@ Actors:
 	Actor72: jeep
 		Location: 28,21
 		Owner: GDI
-		Health: 1
 		Facing: 128
 	Actor73: jeep
 		Location: 35,30
 		Owner: GDI
-		Health: 1
 		Facing: 96
 	Actor74: jeep
 		Location: 32,36
 		Owner: GDI
-		Health: 1
 		Facing: 96
 	Actor75: jeep
 		Location: 29,21
 		Owner: GDI
-		Health: 1
 		Facing: 128
 	NodEntry: waypoint
 		Location: 54,40
@@ -498,36 +429,30 @@ Actors:
 	Actor77: jeep
 		Location: 47,21
 		Owner: GDI
-		Health: 1
 		Facing: 160
 	Actor101: c1
 		Location: 16,36
 		Owner: Neutral
-		Health: 1
 		Facing: 192
 		SubCell: 4
 	Actor102: c3
 		Location: 17,40
 		Owner: Neutral
-		Health: 1
 		Facing: 224
 		SubCell: 2
 	Actor103: c5
 		Location: 16,40
 		Owner: Neutral
-		Health: 1
 		Facing: 224
 		SubCell: 1
 	Actor104: c6
 		Location: 14,36
 		Owner: Neutral
 		Health: 0.5976563
-		Facing: 0
 		SubCell: 4
 	Actor105: c7
 		Location: 18,38
 		Owner: Neutral
-		Health: 1
 		Facing: 224
 		SubCell: 4
 	PlayerBase: waypoint

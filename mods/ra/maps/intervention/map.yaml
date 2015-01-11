@@ -1769,11 +1769,9 @@ Actors:
 	Actor533: gun
 		Location: 83,24
 		Owner: Soviets
-		Facing: 0
 	Actor534: gun
 		Location: 73,24
 		Owner: Soviets
-		Facing: 0
 	Actor535: ftur
 		Location: 58,81
 		Owner: Soviets
@@ -1912,7 +1910,6 @@ Actors:
 	Actor83: sam
 		Location: 75,24
 		Owner: Soviets
-		Facing: 0
 	Actor84: sam
 		Location: 63,28
 		Owner: Soviets
@@ -1967,7 +1964,6 @@ Actors:
 	Actor641: 3tnk
 		Location: 23,48
 		Owner: Soviets
-		Facing: 0
 	Actor642: v2rl
 		Location: 20,45
 		Owner: Soviets

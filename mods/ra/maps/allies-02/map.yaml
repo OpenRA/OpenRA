@@ -248,194 +248,120 @@ Actors:
 	SovietWarfactory: weap
 		Location: 60,66
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor58: fact
 		Location: 62,61
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor59: proc
 		Location: 53,62
 		Owner: USSR
-		Health: 1
-		Facing: 0
 		FreeActor: False
 	Actor60: powr
 		Location: 57,62
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor61: barr
 		Location: 56,66
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor62: powr
 		Location: 59,62
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor63: kenn
 		Location: 58,68
 		Owner: USSR
 		Health: 0.9921875
-		Facing: 0
 	Actor64: brl3
 		Location: 65,59
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor65: barl
 		Location: 66,60
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor66: barl
 		Location: 65,60
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor67: brl3
 		Location: 64,60
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor68: barl
 		Location: 65,61
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor69: v19
 		Location: 67,60
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor70: v19
 		Location: 67,59
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor71: barl
 		Location: 65,62
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor72: silo
 		Location: 54,68
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor73: brl3
 		Location: 55,70
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor74: brl3
 		Location: 54,70
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor75: barl
 		Location: 53,69
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor76: barl
 		Location: 54,69
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor77: barl
 		Location: 55,71
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor78: brl3
 		Location: 56,71
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor79: brl3
 		Location: 53,68
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor80: v19
 		Location: 56,70
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor81: barl
 		Location: 55,69
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor82: brl3
 		Location: 72,51
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor83: barl
 		Location: 72,50
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor84: barl
 		Location: 74,48
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor85: barl
 		Location: 72,49
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor86: barl
 		Location: 73,48
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor87: v19
 		Location: 75,48
 		Owner: USSR
 		Health: 0.5195313
-		Facing: 0
 	Actor88: v19
 		Location: 62,57
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor89: v19
 		Location: 60,58
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor90: brl3
 		Location: 62,56
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor91: brl3
 		Location: 61,58
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor92: barl
 		Location: 61,57
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor93: brl3
 		Location: 59,58
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Actor94: barl
 		Location: 58,58
 		Owner: USSR
-		Health: 1
-		Facing: 0
 	Harvester: harv
 		Location: 55,65
 		Owner: USSR
@@ -444,248 +370,204 @@ Actors:
 	Actor96: dog
 		Location: 53,58
 		Owner: USSR
-		Health: 1
-		Facing: 0
 		SubCell: 1
 	Actor97: dog
 		Location: 65,68
 		Owner: USSR
-		Health: 1
 		Facing: 64
 		SubCell: 3
 	Actor98: dog
 		Location: 65,66
 		Owner: USSR
-		Health: 1
 		Facing: 32
 		SubCell: 2
 	Actor99: dog
 		Location: 59,70
 		Owner: USSR
-		Health: 1
 		Facing: 160
 		SubCell: 2
 	Actor100: e2
 		Location: 61,56
 		Owner: USSR
-		Health: 1
 		Facing: 32
 		SubCell: 3
 	Actor101: e2
 		Location: 59,57
 		Owner: USSR
-		Health: 1
 		Facing: 224
 		SubCell: 4
 	Actor102: e2
 		Location: 64,67
 		Owner: USSR
-		Health: 1
 		Facing: 96
 		SubCell: 0
 	Actor103: e1
 		Location: 77,74
 		Owner: Ukraine
-		Health: 1
 		Facing: 128
 		SubCell: 2
 	Actor104: e1
 		Location: 80,74
 		Owner: USSR
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor105: e1
 		Location: 56,68
 		Owner: USSR
-		Health: 1
 		Facing: 160
 		SubCell: 3
 	Actor106: e1
 		Location: 50,72
 		Owner: USSR
-		Health: 1
 		Facing: 160
 		SubCell: 4
 	Actor107: e1
 		Location: 73,60
 		Owner: USSR
-		Health: 1
 		Facing: 32
 		SubCell: 2
 	Actor108: e1
 		Location: 74,61
 		Owner: USSR
-		Health: 1
 		Facing: 224
 		SubCell: 1
 	Actor109: e1
 		Location: 72,60
 		Owner: USSR
-		Health: 1
 		Facing: 64
 		SubCell: 0
 	Actor110: e1
 		Location: 49,58
 		Owner: USSR
-		Health: 1
 		Facing: 192
 		SubCell: 0
 	Actor111: e1
 		Location: 51,58
 		Owner: USSR
-		Health: 1
 		Facing: 32
 		SubCell: 1
 	Actor112: e1
 		Location: 60,78
 		Owner: USSR
-		Health: 1
 		Facing: 192
 		SubCell: 4
 	Actor113: e2
 		Location: 62,79
 		Owner: USSR
-		Health: 1
 		Facing: 160
 		SubCell: 4
 	Actor114: e1
 		Location: 57,82
 		Owner: USSR
-		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor115: e1
 		Location: 60,64
 		Owner: USSR
-		Health: 1
 		Facing: 224
 		SubCell: 3
 	Actor116: e2
 		Location: 68,45
 		Owner: USSR
-		Health: 1
 		Facing: 96
 		SubCell: 0
 	Actor117: e1
 		Location: 48,72
 		Owner: USSR
-		Health: 1
 		Facing: 96
 		SubCell: 0
 	Actor118: e1
 		Location: 57,69
 		Owner: USSR
-		Health: 1
 		Facing: 96
 		SubCell: 1
 	Actor119: e2
 		Location: 60,70
 		Owner: USSR
-		Health: 1
 		Facing: 32
 		SubCell: 0
 	Actor120: e1
 		Location: 89,48
 		Owner: Greece
-		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor121: e1
 		Location: 87,48
 		Owner: Greece
-		Health: 1
 		Facing: 192
 		SubCell: 4
 	Actor122: e1
 		Location: 87,48
 		Owner: Greece
-		Health: 1
 		Facing: 192
 		SubCell: 1
 	Actor123: e1
 		Location: 88,48
 		Owner: Greece
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor124: e1
 		Location: 88,49
 		Owner: Greece
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor125: dog
 		Location: 78,75
 		Owner: Ukraine
-		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor126: e1
 		Location: 71,61
 		Owner: Ukraine
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor127: dog
 		Location: 70,61
 		Owner: Ukraine
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor128: e1
 		Location: 50,46
 		Owner: Ukraine
-		Health: 1
 		Facing: 32
 		SubCell: 1
 	Actor129: e1
 		Location: 49,47
 		Owner: Ukraine
-		Health: 1
 		Facing: 64
 		SubCell: 0
 	Actor130: e2
 		Location: 49,49
 		Owner: Ukraine
-		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor131: e2
 		Location: 47,46
 		Owner: Ukraine
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor132: e2
 		Location: 48,63
 		Owner: Ukraine
-		Health: 1
-		Facing: 0
 		SubCell: 1
 	Actor133: e1
 		Location: 49,63
 		Owner: Ukraine
-		Health: 1
 		Facing: 96
 		SubCell: 2
 	Actor134: e1
 		Location: 74,81
 		Owner: Ukraine
-		Health: 1
 		Facing: 64
 		SubCell: 3
 	Actor135: e2
 		Location: 75,83
 		Owner: Ukraine
-		Health: 1
 		Facing: 96
 		SubCell: 0
 	Actor136: e2
 		Location: 69,66
 		Owner: USSR
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor137: e2
 		Location: 73,51
@@ -696,7 +578,6 @@ Actors:
 	Actor138: medi
 		Location: 88,48
 		Owner: Greece
-		Health: 1
 		Facing: 160
 		SubCell: 1
 	TruckEntryPoint: waypoint

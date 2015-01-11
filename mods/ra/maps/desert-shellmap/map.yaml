@@ -76,7 +76,6 @@ Actors:
 	Actor78: 2tnk
 		Location: 77,68
 		Owner: Allies
-		Facing: 0
 	Actor23: v23
 		Location: 22,51
 		Owner: Neutral
@@ -140,7 +139,6 @@ Actors:
 	Actor10: gun
 		Location: 64,63
 		Owner: Allies
-		Facing: 0
 	Actor153: apwr
 		Location: 93,87
 		Owner: Allies
@@ -150,7 +148,6 @@ Actors:
 	Actor33: gun
 		Location: 85,69
 		Owner: Allies
-		Facing: 0
 	Actor40: dome
 		Location: 55,19
 		Owner: Soviets
@@ -166,7 +163,6 @@ Actors:
 	Actor28: gun
 		Location: 74,67
 		Owner: Allies
-		Facing: 0
 	Actor50: apwr
 		Location: 51,14
 		Owner: Soviets
@@ -233,7 +229,6 @@ Actors:
 	Actor303: mrj
 		Location: 61,60
 		Owner: Allies
-		Facing: 0
 	Actor87: tc01
 		Location: 92,50
 		Owner: Neutral
@@ -258,7 +253,6 @@ Actors:
 	Actor253: arty
 		Location: 44,68
 		Owner: Allies
-		Facing: 0
 	Actor64: brik
 		Location: 69,63
 		Owner: Allies
@@ -617,7 +611,6 @@ Actors:
 	Actor228: mgg
 		Location: 49,63
 		Owner: Allies
-		Facing: 0
 	Actor255: e1
 		Location: 67,76
 		Owner: Allies
@@ -627,7 +620,6 @@ Actors:
 	Actor82: 2tnk
 		Location: 82,69
 		Owner: Allies
-		Facing: 0
 	Actor30: pbox
 		Location: 47,77
 		Owner: Allies
@@ -678,7 +670,6 @@ Actors:
 	Actor233: 2tnk
 		Location: 66,62
 		Owner: Allies
-		Facing: 0
 	Actor240: sbag
 		Location: 54,62
 		Owner: Allies
@@ -826,7 +817,6 @@ Actors:
 	Actor225: 2tnk
 		Location: 47,61
 		Owner: Allies
-		Facing: 0
 	Actor239: 1tnk
 		Location: 44,65
 		Owner: Allies
@@ -842,11 +832,9 @@ Actors:
 	Actor224: 2tnk
 		Location: 41,62
 		Owner: Allies
-		Facing: 0
 	Actor237: jeep
 		Location: 63,63
 		Owner: Allies
-		Facing: 0
 	Actor304: e1
 		Location: 57,72
 		Owner: Allies
@@ -907,7 +895,6 @@ Actors:
 	Actor257: arty
 		Location: 72,68
 		Owner: Allies
-		Facing: 0
 	Actor344: e1
 		Location: 78,69
 		Owner: Allies

@@ -443,360 +443,265 @@ Actors:
 	Actor124: v05
 		Location: 25,55
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	Actor125: v03
 		Location: 21,50
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	Actor128: v05
 		Location: 21,52
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	Actor130: v07
 		Location: 19,52
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	Actor131: v06
 		Location: 17,52
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	TrigLos2Farm1: v04
 		Location: 25,53
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	TrigLos2Farm2: v06
 		Location: 24,50
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	TrigLos2Farm3: v07
 		Location: 19,46
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	TrigLos2Farm4: v01
 		Location: 18,44
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	TrigHuntFarm1: v06
 		Location: 45,43
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	TrigRNF1Farm1: v07
 		Location: 31,53
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	TrigRNF1Farm2: v09
 		Location: 31,50
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	TrigRNF2Farm1: v08
 		Location: 30,53
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	TrigRNF2Farm2: v11
 		Location: 29,50
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	Actor136: bggy
 		Location: 58,35
 		Owner: Nod
-		Health: 1
 		Facing: 224
 	Actor137: bggy
 		Location: 52,33
 		Owner: Nod
-		Health: 1
 		Facing: 224
 	Actor138: bggy
 		Location: 42,17
 		Owner: Nod
-		Health: 1
 		Facing: 224
 	Actor139: apc
 		Location: 27,15
 		Owner: GDI
-		Health: 1
 		Facing: 128
 	Actor140: apc
 		Location: 29,15
 		Owner: GDI
-		Health: 1
 		Facing: 128
 	Actor141: jeep
 		Location: 28,15
 		Owner: GDI
-		Health: 1
 		Facing: 128
 	Actor142: e3
 		Location: 55,22
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 0
 	Actor143: e1
 		Location: 50,21
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 4
 	Actor144: e1
 		Location: 51,23
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 1
 	Actor145: e1
 		Location: 51,22
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 4
 	Actor146: e1
 		Location: 50,22
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 1
 	Actor147: e3
 		Location: 49,30
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor148: e3
 		Location: 23,28
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor149: e1
 		Location: 24,28
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor150: e1
 		Location: 23,28
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 4
 	Actor151: e3
 		Location: 22,23
 		Owner: Nod
-		Health: 1
 		Facing: 64
 		SubCell: 0
 	civvie1: c8
 		Location: 26,22
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 		SubCell: 4
 	civvie2: c3
 		Location: 26,22
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor154: c2
 		Location: 23,56
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor155: e1
 		Location: 55,29
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor156: e1
 		Location: 50,32
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 3
 	Actor157: c4
 		Location: 24,48
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor158: c6
 		Location: 27,55
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor159: c9
 		Location: 22,54
 		Owner: Civillians
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor160: e3
 		Location: 49,29
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor161: e1
 		Location: 43,55
 		Owner: Nod
-		Health: 1
 		Facing: 192
 		SubCell: 1
 	Actor162: e1
 		Location: 42,55
 		Owner: Nod
-		Health: 1
 		Facing: 192
 		SubCell: 3
 	Actor163: e1
 		Location: 50,32
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 4
 	Actor164: e1
 		Location: 51,33
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor165: e3
 		Location: 43,18
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 3
 	Actor166: e3
 		Location: 43,18
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 2
 	Actor167: e1
 		Location: 27,18
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 2
 	Actor168: e1
 		Location: 27,17
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 3
 	Actor169: e1
 		Location: 27,17
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor170: e1
 		Location: 27,18
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor171: e2
 		Location: 29,17
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 3
 	Actor172: e2
 		Location: 29,17
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor173: e2
 		Location: 29,18
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 2
 	Actor174: e2
 		Location: 29,18
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor175: e1
 		Location: 26,24
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 2
 	Actor176: e1
 		Location: 27,24
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 1
 	Actor177: e1
 		Location: 27,24
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 2
 	Actor178: e3
 		Location: 26,24
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 4
 	Actor179: e3
 		Location: 27,24
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 4
 	Actor182: e3
 		Location: 26,25
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 2
 	Actor184: e3
 		Location: 56,29
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 3
 	Actor185: e1
 		Location: 32,21
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor186: e1
 		Location: 33,21
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor187: e1
 		Location: 34,21
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	waypoint27: waypoint
 		Location: 27,46

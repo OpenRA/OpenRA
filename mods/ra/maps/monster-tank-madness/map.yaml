@@ -1862,15 +1862,12 @@ Actors:
 	stnk1: 5tnk
 		Location: 89,59
 		Owner: Turkey
-		Facing: 0
 	stnk2: 5tnk
 		Location: 77,57
 		Owner: Turkey
-		Facing: 0
 	stnk3: 5tnk
 		Location: 94,53
 		Owner: Turkey
-		Facing: 0
 	Actor588: v2rl
 		Location: 91,75
 		Owner: USSR
@@ -1890,7 +1887,6 @@ Actors:
 	Actor592: badtruk
 		Location: 89,36
 		Owner: BadGuy
-		Facing: 0
 	Actor593: v2rl
 		Location: 32,48
 		Owner: BadGuy
@@ -1898,23 +1894,18 @@ Actors:
 	Actor594: 3tnk
 		Location: 85,86
 		Owner: USSR
-		Facing: 0
 	Actor595: v2rl
 		Location: 86,86
 		Owner: USSR
-		Facing: 0
 	Actor596: dtrk
 		Location: 74,81
 		Owner: USSR
-		Facing: 0
 	Actor597: dtrk
 		Location: 77,83
 		Owner: USSR
-		Facing: 0
 	Actor598: ttnk
 		Location: 55,61
 		Owner: USSR
-		Facing: 0
 	Actor599: bad3tnk
 		Location: 76,27
 		Owner: BadGuy
@@ -1922,7 +1913,6 @@ Actors:
 	Actor600: dtrk
 		Location: 86,83
 		Owner: USSR
-		Facing: 0
 	Actor601: e1
 		Location: 24,71
 		Owner: BadGuy
@@ -1941,7 +1931,6 @@ Actors:
 	Actor604: e1
 		Location: 29,72
 		Owner: BadGuy
-		Facing: 0
 		SubCell: 1
 	Actor605: e2
 		Location: 29,70
@@ -1956,57 +1945,46 @@ Actors:
 	Actor607: e1
 		Location: 81,88
 		Owner: USSR
-		Facing: 0
 		SubCell: 1
 	Actor608: e1
 		Location: 81,88
 		Owner: USSR
-		Facing: 0
 		SubCell: 2
 	Actor609: e1
 		Location: 82,88
 		Owner: USSR
-		Facing: 0
 		SubCell: 1
 	Actor610: e1
 		Location: 81,88
 		Owner: USSR
-		Facing: 0
 		SubCell: 0
 	Actor611: e1
 		Location: 81,88
 		Owner: USSR
-		Facing: 0
 		SubCell: 4
 	Actor612: e3
 		Location: 83,89
 		Owner: USSR
-		Facing: 0
 		SubCell: 0
 	Actor613: e3
 		Location: 83,89
 		Owner: USSR
-		Facing: 0
 		SubCell: 2
 	Actor614: e3
 		Location: 84,89
 		Owner: USSR
-		Facing: 0
 		SubCell: 1
 	Actor615: e4
 		Location: 85,89
 		Owner: USSR
-		Facing: 0
 		SubCell: 2
 	Actor616: e4
 		Location: 85,89
 		Owner: USSR
-		Facing: 0
 		SubCell: 3
 	Actor617: e4
 		Location: 85,90
 		Owner: USSR
-		Facing: 0
 		SubCell: 2
 	Actor618: e1
 		Location: 61,23
@@ -2016,12 +1994,10 @@ Actors:
 	Actor619: e1
 		Location: 74,26
 		Owner: BadGuy
-		Facing: 0
 		SubCell: 1
 	Actor620: e1
 		Location: 75,25
 		Owner: BadGuy
-		Facing: 0
 		SubCell: 4
 	Actor621: e2
 		Location: 78,19
