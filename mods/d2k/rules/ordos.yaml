@@ -179,6 +179,8 @@ RAIDER:
 	Explodes:
 		Weapon: UnitExplodeTiny
 		EmptyWeapon: UnitExplodeTiny
+	AttractsWorms:
+		Intensity: 420
 
 STEALTHRAIDER:
 	Inherits: RAIDER
@@ -247,6 +249,8 @@ DEVIATORTANK:
 		Bounds: 30,30
 	LeavesHusk:
 		HuskActor: Deviatortank.Husk
+	AttractsWorms:
+		Intensity: 600
 
 DEVIATORTANK.Husk:
 	Inherits: ^Husk
@@ -278,4 +282,6 @@ SABOTEUR:
 	C4Demolition:
 		C4Delay: 45
 	-AutoTarget:
+	AttractsWorms:
+		Intensity: 120
 

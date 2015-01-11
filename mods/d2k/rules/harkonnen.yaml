@@ -203,6 +203,8 @@ DEVAST:
 		Bounds: 44,38,0,0
 	LeavesHusk:
 		HuskActor: Devast.Husk
+	AttractsWorms:
+		Intensity: 700
 
 DEVAST.Husk:
 	Inherits: ^Husk
@@ -239,4 +241,6 @@ SARDAUKAR:
 	Armament@SECONDARY:
 		Weapon: Slung
 	AttackFrontal:
+	AttractsWorms:
+		Intensity: 180
 

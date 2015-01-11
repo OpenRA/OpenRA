@@ -19,6 +19,8 @@ RIFLE:
 		Weapon: LMG
 	AttackFrontal:
 	TakeCover:
+	AttractsWorms:
+		Intensity: 120
 
 ENGINEER:
 	Inherits: ^Infantry
@@ -46,6 +48,8 @@ ENGINEER:
 	Captures:
 		CaptureTypes: husk
 	-AutoTarget:
+	AttractsWorms:
+		Intensity: 180
 
 BAZOOKA:
 	Inherits: ^Infantry
@@ -69,6 +73,8 @@ BAZOOKA:
 		LocalOffset: 0,0,555
 	AttackFrontal:
 	TakeCover:
+	AttractsWorms:
+		Intensity: 180
 
 MEDIC:
 	Inherits: ^Infantry
@@ -99,4 +105,6 @@ MEDIC:
 	Passenger:
 		PipType: Blue
 	-AutoTarget:
+	AttractsWorms:
+		Intensity: 180
 

@@ -81,6 +81,7 @@
     <Compile Include="Traits\Render\WithDockingOverlay.cs" />
     <Compile Include="Traits\Render\WithDeliveryOverlay.cs" />
     <Compile Include="Traits\Render\WithProductionOverlay.cs" />
+    <Compile Include="Traits\Sandworm.cs" />
     <Compile Include="Traits\TemporaryOwnerManager.cs" />
     <Compile Include="Traits\ThrowsShrapnel.cs" />
     <Compile Include="Traits\World\BuildableTerrainLayer.cs" />
@@ -90,6 +91,8 @@
     <Compile Include="Traits\World\PaletteFromR8.cs" />
     <Compile Include="Traits\World\PaletteFromScaledPalette.cs" />
     <Compile Include="Traits\World\WormManager.cs" />
+    <Compile Include="Traits\AttractsWorms.cs" />
+    <Compile Include="Traits\WormSpawner.cs" />
     <Compile Include="Warheads\ChangeOwnerWarhead.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />

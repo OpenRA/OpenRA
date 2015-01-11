@@ -14,9 +14,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Wanders around aimlessly while idle.")]
-	abstract class WandersInfo : ITraitInfo
+	public abstract class WandersInfo : ITraitInfo
 	{
-		public readonly int WanderMoveRadius = 10;
+		public readonly int WanderMoveRadius = 1;
 
 		[Desc("Number of ticks to wait before decreasing the effective move radius.")]
 		public readonly int TicksToWaitBeforeReducingMoveRadius = 5;
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public abstract object Create(ActorInitializer init);
 	}
 
-	class Wanders : INotifyIdle, INotifyBecomingIdle
+	public class Wanders : INotifyIdle, INotifyBecomingIdle
 	{
 		readonly Actor self;
 		readonly WandersInfo info;
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			effectiveMoveRadius = info.WanderMoveRadius;
 		}
 
-		public void OnBecomingIdle(Actor self)
+		public virtual void OnBecomingIdle(Actor self)
 		{
 			countdown = self.World.SharedRandom.Next(info.MinMoveDelayInTicks, info.MaxMoveDelayInTicks);
 		}
@@ -56,9 +56,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (--countdown > 0)
 				return;
 
-			var targetPos = PickTargetLocation();
-			if (targetPos != CPos.Zero)
-				DoAction(self, targetPos);
+			var targetCell = PickTargetLocation();
+			if (targetCell != CPos.Zero)
+				DoAction(self, targetCell);
 		}
 
 		CPos PickTargetLocation()
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			return targetCell;
 		}
 
-		public virtual void DoAction(Actor self, CPos targetPos)
+		public virtual void DoAction(Actor self, CPos targetCell)
 		{
 			throw new NotImplementedException("Base class Wanders does not implement method DoAction!");
 		}
