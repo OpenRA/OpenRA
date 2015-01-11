@@ -11,14 +11,12 @@
 using System.Collections.Generic;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor becomes a specified actor type when this trait is triggered.")]
-	class TransformsInfo : ITraitInfo
+	public class TransformsInfo : ITraitInfo
 	{
 		[ActorReference] public readonly string IntoActor = null;
 		public readonly CVec Offset = CVec.Zero;
@@ -29,7 +27,7 @@ namespace OpenRA.Mods.RA.Traits
 		public virtual object Create(ActorInitializer init) { return new Transforms(init, this); }
 	}
 
-	class Transforms : IIssueOrder, IResolveOrder, IOrderVoice
+	public class Transforms : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		readonly Actor self;
 		readonly TransformsInfo info;

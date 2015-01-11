@@ -10,10 +10,9 @@
 
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Can be paradropped by a ParaDrop actor.")]
 	class ParachutableInfo : ITraitInfo

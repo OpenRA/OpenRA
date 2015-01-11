@@ -73,6 +73,7 @@
     <Compile Include="Activities\Air\TakeOff.cs" />
     <Compile Include="Activities\Attack.cs" />
     <Compile Include="Activities\CaptureActor.cs" />
+    <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
@@ -204,6 +205,7 @@
     <Compile Include="Traits\Buildings\Reservable.cs" />
     <Compile Include="Traits\Buildings\TargetableBuilding.cs" />
     <Compile Include="Traits\Burns.cs" />
+    <Compile Include="Traits\C4Demolition.cs" />
     <Compile Include="Traits\Capturable.cs" />
     <Compile Include="Traits\CaptureNotification.cs" />
     <Compile Include="Traits\Captures.cs" />
@@ -211,6 +213,7 @@
     <Compile Include="Traits\CashTrickler.cs" />
     <Compile Include="Traits\Cloak.cs" />
     <Compile Include="Traits\Crushable.cs" />
+    <Compile Include="Traits\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\ExternalCapturable.cs" />
     <Compile Include="Traits\ExternalCapturableBar.cs" />
     <Compile Include="Traits\ExternalCaptures.cs" />
@@ -337,6 +340,7 @@
     <Compile Include="Traits\ThrowsParticle.cs" />
     <Compile Include="Traits\Tooltip.cs" />
     <Compile Include="Traits\TransformOnCapture.cs" />
+    <Compile Include="Traits\Transforms.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Upgrades\DisableUpgrade.cs" />
     <Compile Include="Traits\Upgrades\GainsStatUpgrades.cs" />
