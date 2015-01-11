@@ -240,142 +240,90 @@ Actors:
 	Actor56: pyle
 		Location: 25,20
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor57: fact
 		Location: 27,20
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor58: silo
 		Location: 23,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor59: silo
 		Location: 23,19
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor60: proc
 		Location: 20,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor61: nuke
 		Location: 25,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor62: nuke
 		Location: 27,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor63: gtwr
 		Location: 28,24
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor64: v24
 		Location: 20,41
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor65: v26
 		Location: 43,18
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor66: v24
 		Location: 37,16
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor67: v20
 		Location: 13,37
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor68: v21
 		Location: 13,39
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor69: v22
 		Location: 13,41
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor70: v24
 		Location: 15,36
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor71: v25
 		Location: 17,41
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor72: v26
 		Location: 16,38
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor73: v19
 		Location: 27,42
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor74: v19
 		Location: 29,42
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor75: v20
 		Location: 39,17
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor76: v21
 		Location: 43,16
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	TechCenter: miss
 		Location: 14,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor78: v22
 		Location: 39,16
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor79: v26
 		Location: 37,19
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor82: jeep
 		Location: 21,22
 		Owner: GDI
-		Health: 1
 		Facing: 128
 	Actor83: jeep
 		Location: 20,22
 		Owner: GDI
-		Health: 1
 		Facing: 128
 	Actor84: jeep
 		Location: 18,17
 		Owner: GDI
-		Health: 1
 		Facing: 128
 	Actor89: jeep
 		Location: 29,34
 		Owner: GDI
-		Health: 1
 		Facing: 96
 	TibFieldHumvee01: jeep
 		Location: 52,19
@@ -383,61 +331,50 @@ Actors:
 	Actor95: e1
 		Location: 33,20
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 2
 	Actor96: e1
 		Location: 34,19
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 3
 	VillageGuard01: e1
 		Location: 38,22
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 2
 	VillageGuard02: e1
 		Location: 38,22
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor99: e1
 		Location: 14,44
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 1
 	Actor100: e1
 		Location: 33,31
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor101: e1
 		Location: 34,23
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 2
 	Actor102: c1
 		Location: 19,40
 		Owner: Neutral
-		Health: 1
 		Facing: 96
 		SubCell: 1
 	Actor103: c3
 		Location: 19,39
 		Owner: Neutral
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor104: c5
 		Location: 15,42
 		Owner: Neutral
-		Health: 1
 		Facing: 32
 		SubCell: 2
 	Actor105: c6
@@ -449,61 +386,50 @@ Actors:
 	Actor106: c7
 		Location: 15,41
 		Owner: Neutral
-		Health: 1
 		Facing: 224
 		SubCell: 0
 	VillageGuard03: e1
 		Location: 39,22
 		Owner: GDI
-		Health: 1
 		Facing: 160
 		SubCell: 3
 	Actor108: e1
 		Location: 34,31
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor109: e1
 		Location: 34,25
 		Owner: GDI
-		Health: 1
 		Facing: 160
 		SubCell: 2
 	Actor111: e1
 		Location: 39,31
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor112: e1
 		Location: 40,37
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 0
 	Actor116: e2
 		Location: 34,22
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor117: e2
 		Location: 34,23
 		Owner: GDI
-		Health: 1
 		Facing: 160
 		SubCell: 4
 	Actor118: e2
 		Location: 42,18
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor119: e2
 		Location: 33,19
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 0
 	AttackWaveSpawnA: waypoint

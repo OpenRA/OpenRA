@@ -451,7 +451,6 @@ Actors:
 	Actor128: c8
 		Location: 47,61
 		Owner: France
-		Facing: 0
 		SubCell: 3
 	Actor129: c8
 		Location: 41,50
@@ -466,7 +465,6 @@ Actors:
 	Actor131: c5
 		Location: 46,61
 		Owner: France
-		Facing: 0
 		SubCell: 1
 	Actor132: c4
 		Location: 44,67
@@ -526,7 +524,6 @@ Actors:
 	Actor143: c7
 		Location: 56,54
 		Owner: France
-		Facing: 0
 		SubCell: 3
 	Actor144: e1
 		Location: 40,51
@@ -541,7 +538,6 @@ Actors:
 	Actor146: e1
 		Location: 35,54
 		Owner: France
-		Facing: 0
 		SubCell: 4
 	Actor147: e1
 		Location: 43,64
@@ -571,7 +567,6 @@ Actors:
 		Location: 42,81
 		Owner: USSR
 		Health: 0.1367188
-		Facing: 0
 		SubCell: 2
 	Airfield1: afld
 		Location: 39,77

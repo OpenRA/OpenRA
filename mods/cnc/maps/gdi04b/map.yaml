@@ -332,248 +332,191 @@ Actors:
 	HandOfNod: hand
 		Location: 15,14
 		Owner: Nod
-		Health: 1
-		Facing: 0
 	Actor88: nuke
 		Location: 11,12
 		Owner: Nod
-		Health: 1
-		Facing: 0
 	Actor89: hq
 		Location: 10,14
 		Owner: Nod
-		Health: 1
-		Facing: 0
 	Hunter1: bggy
 		Location: 27,37
 		Owner: Nod
-		Health: 1
-		Facing: 0
 	Hunter2: bggy
 		Location: 41,29
 		Owner: Nod
-		Health: 1
 		Facing: 128
 	Actor92: jeep
 		Location: 49,45
 		Owner: GDI
-		Health: 1
 		Facing: 224
 	Actor93: bggy
 		Location: 10,23
 		Owner: Nod
-		Health: 1
 		Facing: 96
 	Actor94: apc
 		Location: 48,46
 		Owner: GDI
-		Health: 1
 		Facing: 224
 	Actor95: apc
 		Location: 51,45
 		Owner: GDI
-		Health: 1
 		Facing: 224
 	Actor96: bggy
 		Location: 34,18
 		Owner: Nod
-		Health: 1
 		Facing: 64
 	Actor97: bggy
 		Location: 53,26
 		Owner: Nod
-		Health: 1
 		Facing: 128
 	tank: ltnk
 		Location: 8,17
 		Owner: Nod
-		Health: 1
 		Facing: 96
 	Actor99: e3
 		Location: 8,45
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor100: e3
 		Location: 9,45
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor101: e2
 		Location: 51,46
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 1
 	Actor102: e3
 		Location: 36,15
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 2
 	Actor103: e1
 		Location: 50,47
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 1
 	Actor104: e3
 		Location: 25,33
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor105: e1
 		Location: 11,46
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 3
 	Actor106: e1
 		Location: 30,37
 		Owner: Nod
-		Health: 1
 		Facing: 32
 		SubCell: 3
 	Actor107: e3
 		Location: 17,44
 		Owner: Nod
-		Health: 1
 		Facing: 64
 		SubCell: 0
 	Actor108: e1
 		Location: 23,33
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 0
 	Actor109: e1
 		Location: 28,31
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 1
 	Actor110: e1
 		Location: 10,31
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor111: e3
 		Location: 33,20
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 2
 	Actor112: e3
 		Location: 25,18
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 0
 	Actor113: e1
 		Location: 49,46
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 4
 	Actor114: e1
 		Location: 49,46
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 3
 	Actor115: e1
 		Location: 49,47
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 2
 	Actor116: e2
 		Location: 51,46
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 2
 	Actor117: e2
 		Location: 51,46
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 4
 	Actor118: e2
 		Location: 52,46
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 3
 	Actor119: e3
 		Location: 39,32
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor120: e3
 		Location: 12,16
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 2
 	Actor121: e1
 		Location: 10,35
 		Owner: Nod
-		Health: 1
 		Facing: 64
 		SubCell: 4
 	Actor122: e1
 		Location: 12,20
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor123: e1
 		Location: 14,20
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor124: e3
 		Location: 52,29
 		Owner: Nod
-		Health: 1
 		Facing: 64
 		SubCell: 3
 	Actor125: e3
 		Location: 8,31
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor126: e3
 		Location: 19,25
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 4
 	Hunter3: e3
 		Location: 37,36
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 1
 	Hunter4: e3
 		Location: 38,35
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 1
 	Hunter5: e3
 		Location: 38,35
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 4
 	waypoint26: waypoint
 		Location: 42,41
