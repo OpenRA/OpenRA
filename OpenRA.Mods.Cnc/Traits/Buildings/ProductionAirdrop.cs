@@ -55,6 +55,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			owner.World.AddFrameEndTask(w =>
 			{
+				if (!self.IsInWorld || self.IsDead)
+					return;
+
 				var altitude = self.World.Map.Rules.Actors[actorType].Traits.Get<PlaneInfo>().CruiseAltitude;
 				var a = w.CreateActor(actorType, new TypeDictionary
 				{
