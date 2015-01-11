@@ -420,9 +420,8 @@ namespace OpenRA.Server
 
 		void InterpretServerOrders(Connection conn, byte[] data)
 		{
-			var ms = new MemoryStream(data);
-			var br = new BinaryReader(ms);
-
+			using (var ms = new MemoryStream(data))
+			using (var br = new BinaryReader(ms))
 			try
 			{
 				for (;;)
