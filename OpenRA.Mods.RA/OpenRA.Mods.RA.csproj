@@ -123,7 +123,6 @@
     <Compile Include="Effects\GpsDot.cs" />
     <Compile Include="Effects\Parachute.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />
-    <Compile Include="Invulnerable.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
@@ -243,16 +242,12 @@
     <Compile Include="Widgets\Logic\SupportPowerTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\SupportPowerBinLogic.cs" />
     <Compile Include="Widgets\Logic\DebugMenuLogic.cs" />
-    <Compile Include="GainsStatUpgrades.cs" />
     <Compile Include="Warheads\PerCellDamageWarhead.cs" />
     <Compile Include="Scripting\Properties\HarvesterProperties.cs" />
     <Compile Include="Scripting\Properties\HelicopterProperties.cs" />
     <Compile Include="Scripting\Properties\PlaneProperties.cs" />
+    <Compile Include="Traits\InvulnerabilityUpgrade.cs" />
     <Compile Include="SupportPowers\GrantUpgradePower.cs" />
-    <Compile Include="InvulnerabilityUpgrade.cs" />
-    <Compile Include="DisableUpgrade.cs" />
-    <Compile Include="Warheads\GrantUpgradeWarhead.cs" />
-    <Compile Include="UpgradeActorsNear.cs" />
     <Compile Include="Scripting\Properties\TransformProperties.cs" />
     <Compile Include="UtilityCommands\ActorStatsExport.cs" />
     <Compile Include="UtilityCommands\ExportCharacterSeparatedRules.cs" />

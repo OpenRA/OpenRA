@@ -233,6 +233,7 @@
     <Compile Include="Traits\Immobile.cs" />
     <Compile Include="Traits\Infantry\ScaredyCat.cs" />
     <Compile Include="Traits\Infantry\TakeCover.cs" />
+    <Compile Include="Traits\Invulnerable.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\KillsSelf.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
@@ -330,7 +331,10 @@
     <Compile Include="Traits\Tooltip.cs" />
     <Compile Include="Traits\TransformOnCapture.cs" />
     <Compile Include="Traits\Turreted.cs" />
+    <Compile Include="Traits\Upgrades\DisableUpgrade.cs" />
+    <Compile Include="Traits\Upgrades\GainsStatUpgrades.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
+    <Compile Include="Traits\Upgrades\UpgradeActorsNear.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Wanders.cs" />
@@ -377,6 +381,7 @@
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
     <Compile Include="Warheads\DestroyResourceWarhead.cs" />
+    <Compile Include="Warheads\GrantUpgradeWarhead.cs" />
     <Compile Include="Warheads\HealthPercentageDamageWarhead.cs" />
     <Compile Include="Warheads\LeaveSmudgeWarhead.cs" />
     <Compile Include="Warheads\SpreadDamageWarhead.cs" />
