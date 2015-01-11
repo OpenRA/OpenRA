@@ -431,7 +431,6 @@ namespace OpenRA.Server
 					InterpretServerOrder(conn, so);
 				}
 			}
-			catch (EndOfStreamException) { }
 			catch (NotImplementedException) { }
 		}
 
