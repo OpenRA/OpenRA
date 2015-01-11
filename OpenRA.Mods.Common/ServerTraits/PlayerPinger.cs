@@ -37,11 +37,11 @@ namespace OpenRA.Mods.Common.Server
 
 				// Ignore client timeout in singleplayer games to make debugging easier
 				if (server.LobbyInfo.IsSinglePlayer && !server.Settings.Dedicated)
-					foreach (var c in server.Conns.ToList())
+					foreach (var c in server.Connections)
 						server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
 				else
 				{
-					foreach (var c in server.Conns.ToList())
+					foreach (var c in server.Connections)
 					{
 						if (c == null || c.Socket == null)
 							continue;
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Server
 					{
 						lastConnReport = Game.RunTime;
 
-						var timeouts = server.Conns
+						var timeouts = server.Connections
 							.Where(c => c.TimeSinceLastResponse > ConnReportInterval && c.TimeSinceLastResponse < ConnTimeout)
 							.OrderBy(c => c.TimeSinceLastResponse);
 

@@ -24,11 +24,9 @@ using XTimer = System.Timers.Timer;
 
 namespace OpenRA.Server
 {
-	public enum ServerState : int
+	public enum ServerState
 	{
-		WaitingPlayers = 1,
-		GameStarted = 2,
-		ShuttingDown = 3
+		WaitingPlayers, GameStarted, ShuttingDown
 	}
 
 	public class Server
@@ -39,11 +37,15 @@ namespace OpenRA.Server
 		int randomSeed;
 		public readonly MersenneTwister Random = new MersenneTwister();
 
-		// Valid player connections
-		public List<Connection> Conns = new List<Connection>();
+		// Valid and pre-verified player connections
+		readonly List<Connection> conns = new List<Connection>();
+		readonly List<Connection> preConns = new List<Connection>();
 
-		// Pre-verified player connections
-		public List<Connection> PreConns = new List<Connection>();
+		public IEnumerable<Connection> Connections { get { return conns.ToList(); } }
+		public bool IsEmpty { get { return conns.Count == 0; } }
+
+		int nextPlayerIndex = 0;
+		public int ChooseFreePlayerIndex() { return nextPlayerIndex++; }
 
 		TcpListener listener = null;
 
@@ -157,8 +159,8 @@ namespace OpenRA.Server
 				{
 					var checkRead = new List<Socket>();
 					if (State == ServerState.WaitingPlayers) checkRead.Add(listener.Server);
-					foreach (var c in Conns) checkRead.Add(c.Socket);
-					foreach (var c in PreConns) checkRead.Add(c.Socket);
+					foreach (var c in conns) checkRead.Add(c.Socket);
+					foreach (var c in preConns) checkRead.Add(c.Socket);
 
 					if (checkRead.Count > 0) Socket.Select(checkRead, null, null, timeout);
 					if (State == ServerState.ShuttingDown)
@@ -169,14 +171,14 @@ namespace OpenRA.Server
 
 					foreach (var s in checkRead)
 						if (s == listener.Server) AcceptConnection();
-						else if (PreConns.Count > 0)
+						else if (preConns.Count != 0)
 						{
-							var p = PreConns.SingleOrDefault(c => c.Socket == s);
+							var p = preConns.SingleOrDefault(c => c.Socket == s);
 							if (p != null) p.ReadData(this);
 						}
-						else if (Conns.Count > 0)
+						else if (!IsEmpty)
 						{
-							var conn = Conns.SingleOrDefault(c => c.Socket == s);
+							var conn = conns.SingleOrDefault(c => c.Socket == s);
 							if (conn != null) conn.ReadData(this);
 						}
 
@@ -194,21 +196,11 @@ namespace OpenRA.Server
 				foreach (var t in serverTraits.WithInterface<INotifyServerShutdown>())
 					t.ServerShutdown(this);
 
-				PreConns.Clear();
-				Conns.Clear();
+				preConns.Clear();
+				conns.Clear();
 				try { listener.Stop(); }
 				catch { }
 			}) { IsBackground = true }.Start();
-		}
-
-		/* lobby rework TODO:
-		 *	- "teams together" option for team games -- will eliminate most need
-		 *		for manual spawnpoint choosing.
-		 */
-		int nextPlayerIndex = 0;
-		public int ChooseFreePlayerIndex()
-		{
-			return nextPlayerIndex++;
 		}
 
 		void AcceptConnection()
@@ -238,7 +230,7 @@ namespace OpenRA.Server
 				newConn.PlayerIndex = ChooseFreePlayerIndex();
 				SendData(newConn.Socket, BitConverter.GetBytes(ProtocolVersion.Version));
 				SendData(newConn.Socket, BitConverter.GetBytes(newConn.PlayerIndex));
-				PreConns.Add(newConn);
+				preConns.Add(newConn);
 
 				// Dispatch a handshake order
 				var request = new HandshakeRequest()
@@ -339,8 +331,8 @@ namespace OpenRA.Server
 				}
 
 				// Promote connection to a valid client
-				PreConns.Remove(newConn);
-				Conns.Add(newConn);
+				preConns.Remove(newConn);
+				conns.Add(newConn);
 				LobbyInfo.Clients.Add(client);
 				var clientPing = new Session.ClientPing();
 				clientPing.Index = client.Index;
@@ -406,7 +398,7 @@ namespace OpenRA.Server
 		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
 		{
 			var from = conn != null ? conn.PlayerIndex : 0;
-			foreach (var c in Conns.Except(conn).ToArray())
+			foreach (var c in Connections.Except(conn))
 				DispatchOrdersToClient(c, from, frame, data);
 		}
 
@@ -517,11 +509,11 @@ namespace OpenRA.Server
 
 		public void DropClient(Connection toDrop, int frame)
 		{
-			if (PreConns.Contains(toDrop))
-				PreConns.Remove(toDrop);
+			if (preConns.Contains(toDrop))
+				preConns.Remove(toDrop);
 			else
 			{
-				Conns.Remove(toDrop);
+				conns.Remove(toDrop);
 
 				var dropClient = LobbyInfo.Clients.FirstOrDefault(c1 => c1.Index == toDrop.PlayerIndex);
 				if (dropClient == null)
@@ -556,13 +548,12 @@ namespace OpenRA.Server
 
 				DispatchOrders(toDrop, frame, new byte[] { 0xbf });
 
-				if (!Conns.Any())
+				if (IsEmpty)
 				{
 					FieldLoader.Load(LobbyInfo.GlobalSettings, ModData.Manifest.LobbyDefaults);
 					TempBans.Clear();
 				}
-
-				if (Conns.Any() || LobbyInfo.GlobalSettings.Dedicated)
+				else if (LobbyInfo.GlobalSettings.Dedicated)
 					SyncLobbyClients();
 
 				if (!LobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin)
@@ -658,11 +649,11 @@ namespace OpenRA.Server
 			Console.WriteLine("Game started");
 
 			// Drop any unvalidated clients
-			foreach (var c in PreConns.ToArray())
+			foreach (var c in preConns.ToList())
 				DropClient(c);
 
 			// Drop any players who are not ready
-			foreach (var c in Conns.ToArray())
+			foreach (var c in Connections)
 			{
 				if (GetClient(c).IsInvalid)
 				{
@@ -674,8 +665,8 @@ namespace OpenRA.Server
 			SyncLobbyInfo();
 			State = ServerState.GameStarted;
 
-			foreach (var c in Conns)
-				foreach (var d in Conns)
+			foreach (var c in conns)
+				foreach (var d in conns)
 					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF });
 
 			DispatchOrders(null, 0,

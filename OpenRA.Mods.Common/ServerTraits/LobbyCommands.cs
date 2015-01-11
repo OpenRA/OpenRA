@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Common.Server
 							}
 							else
 							{
-								var occupantConn = server.Conns.FirstOrDefault(c => c.PlayerIndex == occupant.Index);
+								var occupantConn = server.Connections.FirstOrDefault(c => c.PlayerIndex == occupant.Index);
 								if (occupantConn != null)
 								{
 									server.SendOrderTo(occupantConn, "ServerError", "Your slot was closed by the host.");
@@ -684,7 +684,7 @@ namespace OpenRA.Mods.Common.Server
 						int kickClientID;
 						Exts.TryParseIntegerInvariant(split[0], out kickClientID);
 
-						var kickConn = server.Conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == kickClientID);
+						var kickConn = server.Connections.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == kickClientID);
 						if (kickConn == null)
 						{
 							server.SendOrderTo(conn, "Message", "Noone in that slot.");
