@@ -1,6 +1,7 @@
 return {
-  -- covers both Lua 5.1 and Lua 5.2; All Lua 5.2 specific items are marked
-  -- with FUNCTION/ARGUMENT/ARGS/VALUE ADDED/DEPRECATED IN Lua 5.2.
+  -- covers Lua 5.1, Lua 5.2, and Lua 5.3;
+  -- Lua 5.2 and Lua 5.3 specific items are marked with
+  -- FUNCTION/ARGUMENT/ARGS/VALUE ADDED/DEPRECATED IN Lua 5.2 or Lua 5.3.
 
   -- Keywords
   ["and"] = {type = "keyword"},
@@ -355,6 +356,25 @@ return {
         args = "(s: string, pattern: string)",
         returns = "(function)",
       },
+      pack = {
+        type = "function",
+        description = "Returns a binary string containing the values v1, v2, etc. packed (that is, serialized in binary form) according to the format string fmt.\nFUNCTION ADDED IN Lua 5.3.",
+        args = "(fmt: string, v1, v2, ...)",
+        returns = "(string)",
+        valuetype = "string",
+      },
+      unpack = {
+        type = "function",
+        description = "Returns the values packed in string s (see string.pack) according to the format string fmt. An optional pos marks where to start reading in s (default is 1). After the read values, this function also returns the index of the first unread byte in s.\nFUNCTION ADDED IN Lua 5.3.",
+        args = "(fmt: string, s: string [, pos: number])",
+        returns = "(values)",
+      },
+      packsize = {
+        type = "function",
+        description = "Returns the size of a string resulting from string.pack with the given format. The format string cannot have the variable-length options 's' or 'z'.\nFUNCTION ADDED IN Lua 5.3.",
+        args = "(fmt: string)",
+        returns = "(number)",
+      },
       gsub = {
         type = "function",
         description = "Returns a copy of s in which all (or the first n, if given) occurrences of the pattern have been replaced by a replacement string specified by repl, which can be a string, a table, or a function.\ngsub also returns, as its second value, the total number of matches that occurred. The name gsub comes from Global SUBstitution.\nIf repl is a string, then its value is used for replacement. The character % works as an escape character: any sequence in repl of the form %d, with d between 1 and 9, stands for the value of the d-th captured substring. The sequence %0 stands for the whole match. The sequence %% stands for a single %.\nIf repl is a table, then the table is queried for every match, using the first capture as the key.\nIf repl is a function, then this function is called every time a match occurs, with all captured substrings passed as arguments, in order.\nIn any case, if the pattern specifies no captures, then it behaves as if the whole pattern was inside a capture.\nIf the value returned by the table query or by the function call is a string or a number, then it is used as the replacement string; otherwise, if it is false or nil, then there is no replacement (that is, the original match is kept in the string).",
@@ -442,6 +462,12 @@ return {
         description = "Returns a new table with all parameters stored into keys 1, 2, etc. and with a field \"n\" with the total number of parameters.\nNote that the resulting table may not be a sequence.\nFUNCTION ADDED IN Lua 5.2.",
         args = "(...)",
         returns = "(table)",
+      },
+      move = {
+        type = "function",
+        description = "Moves elements from table a1 to table a2. This function performs the equivalent to the following multiple assignment: a2[t],··· = a1[f],···,a1[e]. The default for a2 is a1. The destination range can overlap with the source range. Index f must be positive.\nFUNCTION ADDED IN Lua 5.3.",
+        args = "(a1: table, f, e, t [,a2: table])",
+        returns = "()",
       },
       remove = {
         type = "function",
