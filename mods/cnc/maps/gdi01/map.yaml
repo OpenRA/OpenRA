@@ -335,66 +335,55 @@ Actors:
 	Gunboat: boat
 		Location: 51,59
 		Owner: GDI
-		Health: 1
 		Facing: 64
 	Actor92: e1
 		Location: 57,45
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 2
 	Actor93: e1
 		Location: 56,41
 		Owner: Nod
-		Health: 1
 		Facing: 192
 		SubCell: 2
 	Actor94: e1
 		Location: 48,41
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor95: e1
 		Location: 59,45
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor96: e1
 		Location: 46,50
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor97: e1
 		Location: 48,47
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 1
 	Actor98: e1
 		Location: 38,43
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor99: e1
 		Location: 38,43
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor100: e1
 		Location: 48,41
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 2
 	Actor101: e1
 		Location: 41,39
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	spawn27: waypoint

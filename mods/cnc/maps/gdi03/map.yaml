@@ -470,7 +470,6 @@ Actors:
 	HiddenBuggy: bggy
 		Location: 6,25
 		Owner: Nod
-		Facing: 0
 	Actor137: bggy
 		Location: 21,30
 		Owner: Nod
@@ -602,22 +601,18 @@ Actors:
 	Actor163: c6
 		Location: 42,56
 		Owner: Neutral
-		Facing: 0
 		SubCell: 1
 	Actor164: c3
 		Location: 43,56
 		Owner: Neutral
-		Facing: 0
 		SubCell: 1
 	Actor165: c2
 		Location: 40,58
 		Owner: Neutral
-		Facing: 0
 		SubCell: 1
 	Actor166: e3
 		Location: 40,43
 		Owner: Nod
-		Facing: 0
 		SubCell: 3
 	Actor167: e3
 		Location: 19,45
@@ -677,27 +672,22 @@ Actors:
 	Actor186: e3
 		Location: 37,28
 		Owner: Nod
-		Facing: 0
 		SubCell: 3
 	Actor187: e3
 		Location: 38,28
 		Owner: Nod
-		Facing: 0
 		SubCell: 0
 	Actor188: e3
 		Location: 14,32
 		Owner: Nod
-		Facing: 0
 		SubCell: 4
 	Sam4Guard3: e1
 		Location: 10,31
 		Owner: Nod
-		Facing: 0
 		SubCell: 3
 	Sam4Guard4: e1
 		Location: 10,31
 		Owner: Nod
-		Facing: 0
 		SubCell: 4
 	Actor191: e3
 		Location: 24,46
