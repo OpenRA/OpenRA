@@ -72,11 +72,15 @@ namespace OpenRA.Mods.Common.Traits
 			int amount;
 			if (!powerDrain.TryGetValue(a, out amount))
 				return;
+			powerDrain.Remove(a);
+
+			if (devMode.UnlimitedPower)
+				return;
+
 			if (amount > 0)
 				totalProvided -= amount;
 			else if (amount < 0)
 				totalDrained += amount;
-			powerDrain.Remove(a);
 		}
 
 		int nextPowerAdviceTime = 0;
