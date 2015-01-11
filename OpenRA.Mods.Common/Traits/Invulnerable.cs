@@ -11,7 +11,7 @@
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This unit cannot be damaged.")]
 	class InvulnerableInfo : TraitInfo<Invulnerable> { }

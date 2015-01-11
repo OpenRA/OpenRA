@@ -11,10 +11,9 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.GameRules;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor has properties that upgrade when a specific criteria is met.")]
 	public class GainsStatUpgradesInfo : ITraitInfo
