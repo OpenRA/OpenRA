@@ -20,8 +20,6 @@ using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Support;
 
-using XTimer = System.Timers.Timer;
-
 namespace OpenRA.Server
 {
 	public enum ServerState
@@ -31,15 +29,23 @@ namespace OpenRA.Server
 
 	public class Server
 	{
+		public readonly ModData ModData;
+		public readonly ServerSettings Settings;
+		public readonly Session LobbyInfo;
 		public readonly IPAddress Ip;
 		public readonly int Port;
-
-		int randomSeed;
 		public readonly MersenneTwister Random = new MersenneTwister();
+		public readonly List<string> TempBans = new List<string>();
 
 		// Valid and pre-verified player connections
 		readonly List<Connection> conns = new List<Connection>();
 		readonly List<Connection> preConns = new List<Connection>();
+		readonly TypeDictionary serverTraits = new TypeDictionary();
+		readonly TcpListener listener;
+
+		public volatile ServerState State = new ServerState();
+
+		public Map Map { get; set; }
 
 		public IEnumerable<Connection> Connections { get { return conns.ToList(); } }
 		public bool IsEmpty { get { return conns.Count == 0; } }
@@ -47,30 +53,21 @@ namespace OpenRA.Server
 		int nextPlayerIndex = 0;
 		public int ChooseFreePlayerIndex() { return nextPlayerIndex++; }
 
-		TcpListener listener = null;
-
-		TypeDictionary serverTraits = new TypeDictionary();
-		public Session LobbyInfo;
-
-		public ServerSettings Settings;
-		public ModData ModData;
-		public Map Map;
-		XTimer gameTimeout;
-
 		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
 		{
 			if (pr == null)
 				return;
-			if (pr.LockColor)
-				c.Color = pr.Color;
-			else
-				c.Color = c.PreferredColor;
+
 			if (pr.LockRace)
 				c.Country = pr.Race;
+
 			if (pr.LockSpawn)
 				c.SpawnPoint = pr.Spawn;
+
 			if (pr.LockTeam)
 				c.Team = pr.Team;
+
+			c.Color = pr.LockColor ? pr.Color : c.Color = c.PreferredColor;
 		}
 
 		static void SendData(Socket s, byte[] data)
@@ -97,15 +94,6 @@ namespace OpenRA.Server
 			}
 		}
 
-		protected volatile ServerState internalState = new ServerState();
-		public ServerState State
-		{
-			get { return internalState; }
-			protected set { internalState = value; }
-		}
-
-		public List<string> TempBans = new List<string>();
-
 		public void Shutdown()
 		{
 			State = ServerState.ShuttingDown;
@@ -121,7 +109,7 @@ namespace OpenRA.Server
 		{
 			Log.AddChannel("server", "server.log");
 
-			internalState = ServerState.WaitingPlayers;
+			State = ServerState.WaitingPlayers;
 			listener = new TcpListener(endpoint);
 			listener.Start();
 			var localEndpoint = (IPEndPoint)listener.LocalEndpoint;
@@ -131,8 +119,6 @@ namespace OpenRA.Server
 			Settings = settings;
 			ModData = modData;
 
-			randomSeed = (int)DateTime.Now.ToBinary();
-
 			if (Settings.AllowPortForward)
 				UPnP.ForwardPort(3600);
 
@@ -140,7 +126,7 @@ namespace OpenRA.Server
 				serverTraits.Add(modData.ObjectCreator.CreateObject<ServerTrait>(trait));
 
 			LobbyInfo = new Session();
-			LobbyInfo.GlobalSettings.RandomSeed = randomSeed;
+			LobbyInfo.GlobalSettings.RandomSeed = (int)DateTime.Now.ToBinary();
 			LobbyInfo.GlobalSettings.Map = settings.Map;
 			LobbyInfo.GlobalSettings.ServerName = settings.Name;
 			LobbyInfo.GlobalSettings.Dedicated = settings.Dedicated;
@@ -155,7 +141,7 @@ namespace OpenRA.Server
 			new Thread(_ =>
 			{
 				var timeout = serverTraits.WithInterface<ITick>().Min(t => t.TickTimeout);
-				for (;;)
+				while (true)
 				{
 					var checkRead = new List<Socket>();
 					if (State == ServerState.WaitingPlayers) checkRead.Add(listener.Server);
@@ -417,7 +403,7 @@ namespace OpenRA.Server
 
 			try
 			{
-				for (;;)
+				while (true)
 				{
 					var so = ServerOrder.Deserialize(br);
 					if (so == null) return;
@@ -678,13 +664,13 @@ namespace OpenRA.Server
 			// Check TimeOut
 			if (Settings.TimeOut > 10000)
 			{
-				gameTimeout = new XTimer(Settings.TimeOut);
-				gameTimeout.Elapsed += (_, e) =>
+				new Timer(state =>
 				{
-					Console.WriteLine("Timeout at {0}!!!", e.SignalTime);
+					((Timer)state).Dispose();
+					Console.WriteLine("Timeout at {0}.", Settings.TimeOut);
 					Environment.Exit(0);
-				};
-				gameTimeout.Enabled = true;
+				})
+				.Change(Settings.TimeOut, 0);
 			}
 		}
 	}
