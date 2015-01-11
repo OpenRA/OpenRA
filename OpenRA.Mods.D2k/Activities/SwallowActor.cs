@@ -14,9 +14,6 @@ using OpenRA.Activities;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.D2k.Traits;
-using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Activities
@@ -29,11 +26,11 @@ namespace OpenRA.Mods.D2k.Activities
 
 		readonly CPos location;
 		readonly Target target;
+		readonly Sandworm sandworm;
 		readonly WeaponInfo weapon;
 		readonly RenderUnit renderUnit;
 		readonly RadarPings radarPings;
 		readonly AttackSwallow swallow;
-		readonly AttackSwallowInfo swallowInfo;
 		readonly IPositionable positionable;
 
 		int countdown;
@@ -43,12 +40,12 @@ namespace OpenRA.Mods.D2k.Activities
 		{
 			this.target = target;
 			this.weapon = weapon;
+			sandworm = self.Trait<Sandworm>();
 			positionable = self.Trait<Mobile>();
 			swallow = self.Trait<AttackSwallow>();
-			swallowInfo = (AttackSwallowInfo)swallow.Info;
 			renderUnit = self.Trait<RenderUnit>();
 			radarPings = self.World.WorldActor.TraitOrDefault<RadarPings>();
-			countdown = swallowInfo.AttackTime;
+			countdown = swallow.Info.AttackTime;
 
 			renderUnit.DefaultAnimation.ReplaceAnim("burrowed");
 			stance = AttackState.Burrowed;
@@ -70,6 +67,7 @@ namespace OpenRA.Mods.D2k.Activities
 				return false;
 
 			stance = AttackState.EmergingAboveGround;
+			sandworm.IsAttacking = true;
 
 			foreach (var actor in lunch)
 				actor.World.AddFrameEndTask(_ => actor.Destroy());
@@ -94,7 +92,7 @@ namespace OpenRA.Mods.D2k.Activities
 
 		void NotifyPlayer(Player player, WPos location)
 		{
-			Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallowInfo.WormAttackNotification, player.Country.Race);
+			Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallow.Info.WormAttackNotification, player.Country.Race);
 			radarPings.Add(() => true, location, Color.Red, 50);
 		}
 
@@ -109,15 +107,17 @@ namespace OpenRA.Mods.D2k.Activities
 			// Wait for the worm to get back underground
 			if (stance == AttackState.ReturningUnderground)
 			{
-				// There is a 50-50 chance that the worm would just go away
-				if (self.World.SharedRandom.Next() % 2 == 0)
+				sandworm.IsAttacking = false;
+
+				// There is a chance that the worm would just go away after attacking
+				if (self.World.SharedRandom.Next() % 100 <= sandworm.Info.ChanceToDisappear)
 				{
 					self.CancelActivity();
 					self.World.AddFrameEndTask(w => w.Remove(self));
 
 					var wormManager = self.World.WorldActor.TraitOrDefault<WormManager>();
 					if (wormManager != null)
-						wormManager.DecreaseWorms();
+						wormManager.DecreaseWormCount();
 				}
 				else
 					renderUnit.DefaultAnimation.ReplaceAnim("idle");
@@ -138,7 +138,7 @@ namespace OpenRA.Mods.D2k.Activities
 					return NextActivity;
 				}
 
-				countdown = swallowInfo.ReturnTime;
+				countdown = swallow.Info.ReturnTime;
 				stance = AttackState.ReturningUnderground;
 			}
 

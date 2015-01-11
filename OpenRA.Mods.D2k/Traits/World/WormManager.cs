@@ -27,31 +27,32 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("Maximum number of worms")]
 		public readonly int Maximum = 4;
 
-		[Desc("Average time (seconds) between worm spawn")]
-		public readonly int SpawnInterval = 120;
+		[Desc("Time (in ticks) between worm spawn.")]
+		public readonly int SpawnInterval = 3000;
+
+		[Desc("Name of the actor that will be spawned.")]
+		public readonly string WormSignature = "sandworm";
 
 		public readonly string WormSignNotification = "WormSign";
-
-		public readonly string WormSignature = "sandworm";
 		public readonly string WormOwnerPlayer = "Creeps";
 
-		public object Create(ActorInitializer init) { return new WormManager(this, init.Self); }
+		public object Create(ActorInitializer init) { return new WormManager(init.Self, this); }
 	}
 
 	class WormManager : ITick
 	{
 		readonly WormManagerInfo info;
-		readonly Lazy<Actor[]> spawnPoints;
+		readonly Lazy<Actor[]> spawnPointActors;
 		readonly Lazy<RadarPings> radarPings;
 
-		int countdown;
+		int spawnCountdown;
 		int wormsPresent;
 
-		public WormManager(WormManagerInfo info, Actor self)
+		public WormManager(Actor self, WormManagerInfo info)
 		{
 			this.info = info;
 			radarPings = Exts.Lazy(() => self.World.WorldActor.Trait<RadarPings>());
-			spawnPoints = Exts.Lazy(() => self.World.ActorsWithTrait<WormSpawner>().Select(x => x.Actor).ToArray());
+			spawnPointActors = Exts.Lazy(() => self.World.ActorsWithTrait<WormSpawner>().Select(x => x.Actor).ToArray());
 		}
 
 		public void Tick(Actor self)
@@ -59,18 +60,17 @@ namespace OpenRA.Mods.D2k.Traits
 			if (!self.World.LobbyInfo.GlobalSettings.Creeps)
 				return;
 
-			// TODO: It would be even better to stop 
-			if (!spawnPoints.Value.Any())
+			if (!spawnPointActors.Value.Any())
 				return;
 
 			// Apparantly someone doesn't want worms or the maximum number of worms has been reached
 			if (info.Maximum < 1 || wormsPresent >= info.Maximum)
 				return;
 
-			if (--countdown > 0 && wormsPresent >= info.Minimum)
+			if (--spawnCountdown > 0 && wormsPresent >= info.Minimum)
 				return;
 
-			countdown = info.SpawnInterval * 25;
+			spawnCountdown = info.SpawnInterval;
 
 			var wormLocations = new List<WPos>();
 
@@ -100,10 +100,10 @@ namespace OpenRA.Mods.D2k.Traits
 
 		Actor GetRandomSpawnPoint(Actor self)
 		{
-			return spawnPoints.Value.Random(self.World.SharedRandom);
+			return spawnPointActors.Value.Random(self.World.SharedRandom);
 		}
 
-		public void DecreaseWorms()
+		public void DecreaseWormCount()
 		{
 			wormsPresent--;
 		}
@@ -120,8 +120,4 @@ namespace OpenRA.Mods.D2k.Traits
 				radarPings.Value.Add(() => true, wormLocation, Color.Red, 50);
 		}
 	}
-
-	[Desc("An actor with this trait indicates a valid spawn point for sandworms.")]
-	class WormSpawnerInfo : TraitInfo<WormSpawner> { }
-	class WormSpawner { }
 }

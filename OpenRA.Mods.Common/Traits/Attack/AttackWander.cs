@@ -29,9 +29,9 @@ namespace OpenRA.Mods.Common.Traits
 			attackMove = self.TraitOrDefault<AttackMove>();
 		}
 
-		public override void DoAction(Actor self, CPos targetPos)
+		public override void DoAction(Actor self, CPos targetCell)
 		{
-			attackMove.ResolveOrder(self, new Order("AttackMove", self, false) { TargetLocation = targetPos });
+			attackMove.ResolveOrder(self, new Order("AttackMove", self, false) { TargetLocation = targetCell });
 		}
 	}
 }

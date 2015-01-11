@@ -31,6 +31,8 @@
 		TransformSounds: BUILD1.WAV
 	LeavesHusk:
 		HuskActor: MCV.Husk
+	AttractsWorms:
+		Intensity: 700
 
 MCV.Husk:
 	Inherits: ^Husk
@@ -82,6 +84,8 @@ HARVESTER:
 	LeavesHusk:
 		HuskActor: Harvester.Husk
 	WithHarvestAnimation:
+	AttractsWorms:
+		Intensity: 700
 
 HARVESTER.Husk:
 	Inherits: ^Husk
@@ -135,6 +139,8 @@ TRIKE:
 	Explodes:
 		Weapon: UnitExplodeTiny
 		EmptyWeapon: UnitExplodeTiny
+	AttractsWorms:
+		Intensity: 420
 
 TRIKE.starport:
 	Inherits: TRIKE
@@ -176,6 +182,8 @@ QUAD:
 		EmptyWeapon: UnitExplodeTiny
 	Selectable:
 		Bounds: 24,24
+	AttractsWorms:
+		Intensity: 470
 
 QUAD.starport:
 	Inherits: QUAD
@@ -226,6 +234,8 @@ QUAD.starport:
 		EmptyWeapon: UnitExplodeSmall
 	Selectable:
 		Bounds: 30,30
+	AttractsWorms:
+		Intensity: 520
 
 ^COMBAT.Husk:
 	Inherits: ^Husk
@@ -278,6 +288,8 @@ SIEGETANK:
 		Bounds: 30,30
 	LeavesHusk:
 		HuskActor: Siegetank.Husk
+	AttractsWorms:
+		Intensity: 600
 
 SIEGETANK.Husk:
 	Inherits: ^Husk
@@ -333,6 +345,8 @@ MISSILETANK:
 		Bounds: 30,30
 	LeavesHusk:
 		HuskActor: Missiletank.Husk
+	AttractsWorms:
+		Intensity: 600
 
 MISSILETANK.Husk:
 	Inherits: ^Husk
