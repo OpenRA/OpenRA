@@ -14,7 +14,6 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.GameRules;
-using OpenRA.Mods.Common;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -29,6 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Does the attack type require the attacker to enter the target's cell?")]
 		public readonly bool AttackRequiresEnteringCell = false;
+
+		[Desc("Does not care about shroud or fog. Enables the actor to launch an attack against a target even if he has no visibility of it.")]
+		public readonly bool IgnoresVisibility = false;
 
 		public abstract object Create(ActorInitializer init);
 	}
