@@ -224,13 +224,6 @@ Actors:
 	Actor51: nuke
 		Location: 28,54
 		Owner: Nod
-	HandOfNod: hand
-		Location: 30,52
-		Owner: Nod
-	Hunter1: bggy
-		Location: 35,43
-		Owner: Nod
-		Facing: 192
 	Actor54: bggy
 		Location: 55,53
 		Owner: Nod
@@ -242,10 +235,6 @@ Actors:
 	Actor56: jeep
 		Location: 13,53
 		Owner: GDI
-	Hunter2: bggy
-		Location: 32,43
-		Owner: Nod
-		Facing: 192
 	Actor58: bggy
 		Location: 31,57
 		Owner: Nod
@@ -447,35 +436,46 @@ Actors:
 		Owner: Nod
 		Facing: 192
 		SubCell: 3
-	NodHeliLZ3: waypoint
-		Location: 53,32
+	HandOfNod: hand
+		Location: 30,52
+		Owner: Nod
+	Hunter1: bggy
+		Location: 35,43
+		Owner: Nod
+		Facing: 192
+	Hunter2: bggy
+		Location: 32,43
+		Owner: Nod
+		Facing: 192
+	crate: CRATE.plain
+		Location: 25,58
 		Owner: Neutral
-	NodHeliLZ2: waypoint
-		Location: 17,28
+	NodHeliEntry: waypoint
+		Location: 41,23
 		Owner: Neutral
 	NodHeliLZ1: waypoint
 		Location: 31,39
 		Owner: Neutral
-	GDIReinforcementsWP2: waypoint
-		Location: 11,51
+	NodHeliLZ2: waypoint
+		Location: 17,28
 		Owner: Neutral
-	GDIReinforcementsWP1: waypoint
-		Location: 11,52
+	NodHeliLZ3: waypoint
+		Location: 53,32
 		Owner: Neutral
 	GDIReinforcementsEntry: waypoint
 		Location: 7,50
 		Owner: Neutral
-	NodHeliEntry: waypoint
-		Location: 41,23
+	GDIReinforcementsWP1: waypoint
+		Location: 11,52
+		Owner: Neutral
+	GDIReinforcementsWP2: waypoint
+		Location: 11,51
 		Owner: Neutral
 	GDIHeliEntry: waypoint
 		Location: 34,60
 		Owner: Neutral
 	GDIHeliLZ: waypoint
 		Location: 27,58
-		Owner: Neutral
-	crate: CRATE.plain
-		Location: 25,58
 		Owner: Neutral
 
 Smudges:

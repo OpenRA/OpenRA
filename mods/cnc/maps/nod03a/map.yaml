@@ -300,9 +300,6 @@ Actors:
 	Actor76: v21
 		Location: 43,16
 		Owner: Neutral
-	TechCenter: miss
-		Location: 14,17
-		Owner: GDI
 	Actor78: v22
 		Location: 39,16
 		Owner: Neutral
@@ -325,9 +322,6 @@ Actors:
 		Location: 29,34
 		Owner: GDI
 		Facing: 96
-	TibFieldHumvee01: jeep
-		Location: 52,19
-		Owner: GDI
 	Actor95: e1
 		Location: 33,20
 		Owner: GDI
@@ -337,16 +331,6 @@ Actors:
 		Location: 34,19
 		Owner: GDI
 		Facing: 128
-		SubCell: 3
-	VillageGuard01: e1
-		Location: 38,22
-		Owner: GDI
-		Facing: 96
-		SubCell: 2
-	VillageGuard02: e1
-		Location: 38,22
-		Owner: GDI
-		Facing: 96
 		SubCell: 3
 	Actor99: e1
 		Location: 14,44
@@ -388,11 +372,6 @@ Actors:
 		Owner: Neutral
 		Facing: 224
 		SubCell: 0
-	VillageGuard03: e1
-		Location: 39,22
-		Owner: GDI
-		Facing: 160
-		SubCell: 3
 	Actor108: e1
 		Location: 34,31
 		Owner: GDI
@@ -432,23 +411,44 @@ Actors:
 		Owner: GDI
 		Facing: 128
 		SubCell: 0
-	AttackWaveSpawnA: waypoint
-		Location: 45,16
+	TechCenter: miss
+		Location: 14,17
+		Owner: GDI
+	TibFieldHumvee01: jeep
+		Location: 52,19
+		Owner: GDI
+	VillageGuard01: e1
+		Location: 38,22
+		Owner: GDI
+		Facing: 96
+		SubCell: 2
+	VillageGuard02: e1
+		Location: 38,22
+		Owner: GDI
+		Facing: 96
+		SubCell: 3
+	VillageGuard03: e1
+		Location: 39,22
+		Owner: GDI
+		Facing: 160
+		SubCell: 3
+	PlayerBase: waypoint
+		Location: 50,38
 		Owner: Neutral
 	NodEntry: waypoint
 		Location: 54,40
 		Owner: Neutral
-	PlayerBase: waypoint
-		Location: 50,38
-		Owner: Neutral
 	NodRallyPoint: waypoint
 		Location: 45,42
 		Owner: Neutral
-	AttackWaveSpawnC: waypoint
-		Location: 33,16
+	AttackWaveSpawnA: waypoint
+		Location: 45,16
 		Owner: Neutral
 	AttackWaveSpawnB: waypoint
 		Location: 44,48
+		Owner: Neutral
+	AttackWaveSpawnC: waypoint
+		Location: 33,16
 		Owner: Neutral
 	CellTrig: waypoint
 		Location: 32,47

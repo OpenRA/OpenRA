@@ -57,7 +57,7 @@ end
 BuildNod1 = function()
 	Build(NodxUnits, false, function(actor)
 		Trigger.OnKilled(actor, KillCounter)
-		actor.Patrol({ waypoint1.Location, waypoint2.Location, waypoint3.Location, waypoint4.Location }, false)
+		actor.Patrol({ NodPatrol1.Location, NodPatrol2.Location, NodPatrol3.Location, NodPatrol4.Location }, false)
 		Trigger.OnIdle(actor, actor.Hunt)
 	end)
 end
@@ -65,7 +65,7 @@ end
 BuildNod2 = function()
 	Build(NodxUnits, false, function(actor)
 		Trigger.OnKilled(actor, KillCounter)
-		actor.Patrol({ waypoint1.Location, waypoint2.Location }, false)
+		actor.Patrol({ NodPatrol1.Location, NodPatrol2.Location }, false)
 		Trigger.OnIdle(actor, actor.Hunt)
 	end)
 end
