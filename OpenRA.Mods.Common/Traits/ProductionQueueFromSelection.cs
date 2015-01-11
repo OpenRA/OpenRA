@@ -10,12 +10,11 @@
 
 using System;
 using System.Linq;
-using OpenRA.Mods.RA.Traits;
-using OpenRA.Mods.RA.Widgets;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	class ProductionQueueFromSelectionInfo : ITraitInfo
 	{

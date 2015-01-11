@@ -12,13 +12,11 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
-using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This unit has access to build queues.")]
 	public class ProductionInfo : ITraitInfo

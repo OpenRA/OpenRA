@@ -10,12 +10,10 @@
 
 using System.Linq;
 using OpenRA.Effects;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allows to execute build orders.", " Attach this to the player actor.")]
 	class PlaceBuildingInfo : TraitInfo<PlaceBuilding> { }

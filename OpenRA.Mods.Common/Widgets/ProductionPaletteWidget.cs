@@ -13,13 +13,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Orders;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets
+namespace OpenRA.Mods.Common.Widgets
 {
 	public class ProductionIcon
 	{

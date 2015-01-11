@@ -13,10 +13,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets
+namespace OpenRA.Mods.Common.Widgets
 {
 	public class ProductionTab
 	{

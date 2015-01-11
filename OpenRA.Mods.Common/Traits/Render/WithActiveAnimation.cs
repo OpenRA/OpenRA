@@ -11,10 +11,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Replaces the idle animation of a building.")]
 	public class WithActiveAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>

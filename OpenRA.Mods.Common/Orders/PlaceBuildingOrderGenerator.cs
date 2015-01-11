@@ -14,11 +14,10 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Orders
+namespace OpenRA.Mods.Common.Orders
 {
 	public class PlaceBuildingOrderGenerator : IOrderGenerator
 	{

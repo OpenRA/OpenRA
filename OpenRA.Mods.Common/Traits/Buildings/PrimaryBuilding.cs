@@ -13,7 +13,7 @@ using System.Linq;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	static class PrimaryExts
 	{
@@ -25,9 +25,9 @@ namespace OpenRA.Mods.RA.Traits
 	}
 
 	[Desc("Used together with ClassicProductionQueue.")]
-	class PrimaryBuildingInfo : TraitInfo<PrimaryBuilding> { }
+	public class PrimaryBuildingInfo : TraitInfo<PrimaryBuilding> { }
 
-	class PrimaryBuilding : IIssueOrder, IResolveOrder, ITags
+	public class PrimaryBuilding : IIssueOrder, IResolveOrder, ITags
 	{
 		bool isPrimary = false;
 		public bool IsPrimary { get { return isPrimary; } }
