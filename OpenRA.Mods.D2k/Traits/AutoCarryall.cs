@@ -16,6 +16,7 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.D2k.Activities;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
@@ -23,6 +24,9 @@ namespace OpenRA.Mods.D2k.Traits
 	[Desc("Automatically transports harvesters with the Carryable trait between resource fields and refineries")]
 	public class AutoCarryallInfo : ITraitInfo, Requires<IBodyOrientationInfo>
 	{
+		[Desc("Set to false when the carryall should not automatically get new jobs")]
+		public readonly bool Automatic = true;
+
 		public object Create(ActorInitializer init) { return new AutoCarryall(init.Self, this); }
 	}
 
@@ -30,9 +34,12 @@ namespace OpenRA.Mods.D2k.Traits
 	{
 		readonly Actor self;
 		readonly WRange carryHeight;
+		readonly AutoCarryallInfo info;
 
 		// The actor we are currently carrying.
-		[Sync] Actor carrying;
+		[Sync] public Actor Carrying { get; internal set; }
+
+		public bool HasCarryableAttached { get; internal set; }
 
 		// TODO: Use ActorPreviews so that this can support actors with multiple sprites
 		Animation anim;
@@ -43,11 +50,15 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			this.self = self;
 			carryHeight = self.Trait<Helicopter>().Info.LandAltitude;
+			this.info = info;
+
+			HasCarryableAttached = false;
 		}
 
 		public void OnBecomingIdle(Actor self)
 		{
-			FindCarryableForTransport();
+			if (info.Automatic)
+				FindCarryableForTransport();
 
 			if (!Busy)
 				self.QueueActivity(new HeliFlyCircle(self));
@@ -56,12 +67,13 @@ namespace OpenRA.Mods.D2k.Traits
 		// A carryable notifying us that he'd like to be carried
 		public bool RequestTransportNotify(Actor carryable)
 		{
-			if (Busy)
+			if (Busy || !info.Automatic)
 				return false;
 
 			if (ReserveCarryable(carryable))
 			{
-				self.QueueActivity(false, new CarryUnit(self, carryable));
+				self.QueueActivity(false, new PickupUnit(self, carryable));
+				self.QueueActivity(true, new DeliverUnit(self));
 				return true;
 			}
 
@@ -100,7 +112,8 @@ namespace OpenRA.Mods.D2k.Traits
 				// Check if its actually me who's the best candidate
 				if (p.Trait.GetClosestIdleCarrier() == self && ReserveCarryable(p.Actor))
 				{
-					self.QueueActivity(false, new CarryUnit(self, p.Actor));
+					self.QueueActivity(false, new PickupUnit(self, p.Actor));
+					self.QueueActivity(true, new DeliverUnit(self));
 					break;
 				}
 			}
@@ -111,7 +124,7 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			if (carryable.Trait<Carryable>().Reserve(self))
 			{
-				carrying = carryable;
+				Carrying = carryable;
 				Busy = true;
 				return true;
 			}
@@ -122,12 +135,12 @@ namespace OpenRA.Mods.D2k.Traits
 		// Unreserve the carryable
 		public void UnreserveCarryable()
 		{
-			if (carrying != null)
+			if (Carrying != null)
 			{
-				if (carrying.IsInWorld && !carrying.IsDead)
-					carrying.Trait<Carryable>().UnReserve(self);
+				if (Carrying.IsInWorld && !Carrying.IsDead)
+					Carrying.Trait<Carryable>().UnReserve(self);
 
-				carrying = null;
+				Carrying = null;
 			}
 
 			Busy = false;
@@ -136,10 +149,10 @@ namespace OpenRA.Mods.D2k.Traits
 		// INotifyKilled
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (carrying != null)
+			if (Carrying != null)
 			{
-				carrying.Kill(e.Attacker);
-				carrying = null;
+				Carrying.Kill(e.Attacker);
+				Carrying = null;
 			}
 
 			UnreserveCarryable();
@@ -148,6 +161,9 @@ namespace OpenRA.Mods.D2k.Traits
 		// Called when carryable is inside.
 		public void AttachCarryable(Actor carryable)
 		{
+			HasCarryableAttached = true;
+			Busy = true;
+
 			// Create a new animation for our carryable unit
 			anim = new Animation(self.World, RenderSprites.GetImage(carryable.Info), RenderSprites.MakeFacingFunc(self));
 			anim.PlayRepeating("idle");
@@ -157,6 +173,7 @@ namespace OpenRA.Mods.D2k.Traits
 		// Called when released
 		public void CarryableReleased()
 		{
+			HasCarryableAttached = false;
 			anim = null;
 		}
 
@@ -166,7 +183,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (anim != null && !self.World.FogObscures(self))
 			{
 				anim.Tick();
-				var renderables = anim.Render(self.CenterPosition + new WVec(0, 0, -carryHeight.Range), wr.Palette("player" + carrying.Owner.InternalName));
+				var renderables = anim.Render(self.CenterPosition + new WVec(0, 0, -carryHeight.Range), wr.Palette("player" + Carrying.Owner.InternalName));
 
 				foreach (var rr in renderables)
 					yield return rr;
