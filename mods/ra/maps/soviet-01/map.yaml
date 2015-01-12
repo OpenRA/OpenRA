@@ -667,6 +667,11 @@ Rules:
 			ChargeTime: 60
 			DropItems: E1,E1,E1,E2,E2
 		#-RallyPoint: # TODO https://github.com/OpenRA/OpenRA/issues/6818
+		-Sellable:
+	DOME:
+		-Sellable:
+	POWR:
+		-Sellable:
 
 Sequences:
 
