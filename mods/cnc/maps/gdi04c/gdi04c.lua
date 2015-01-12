@@ -9,8 +9,8 @@ TownAttackWave2 = { "ltnk", "ltnk" }
 TownAttackWave3 = { "e1", "e1", "e1", "e3", "e3", "e3" }
 TownAttackWpts = { waypoint1, waypoint2 }
 
-Civvie1Wpts = { waypoint3, waypoint17 }
-Civvie2Wpts = { waypoint26, waypoint3, waypoint9, waypoint4, waypoint5, waypoint6, waypoint8, waypoint7, waypoint1, waypoint2 }
+Civvie1Wpts = { CivvieWpts1, CivvieWpts2 }
+Civvie2Wpts = { CivvieWpts3, CivvieWpts1, CivvieWpts4, CivvieWpts5, CivvieWpts6, CivvieWpts7, CivvieWpts8, CivvieWpts9, CivvieWpts10, CivvieWpts11 }
 
 FollowCivvieWpts = function(actor, wpts)
 	Utils.Do(wpts, function(wpt)
@@ -36,23 +36,23 @@ TownAttackAction = function(actor)
 end
 
 AttackTown = function()
-	Reinforcements.Reinforce(nod, TownAttackWave1, { NodReinfEntry.Location, waypoint0.Location }, DateTime.Seconds(0.25), TownAttackAction)
+	Reinforcements.Reinforce(nod, TownAttackWave1, { NodReinfEntry.Location, NodReinfRally.Location }, DateTime.Seconds(0.25), TownAttackAction)
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
-		Reinforcements.Reinforce(nod, TownAttackWave2, { NodReinfEntry.Location, waypoint0.Location }, DateTime.Seconds(1), TownAttackAction)
+		Reinforcements.Reinforce(nod, TownAttackWave2, { NodReinfEntry.Location, NodReinfRally.Location }, DateTime.Seconds(1), TownAttackAction)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(4), function()
-		Reinforcements.Reinforce(nod, TownAttackWave3, { NodReinfEntry.Location, waypoint0.Location }, DateTime.Seconds(1), TownAttackAction)
+		Reinforcements.Reinforce(nod, TownAttackWave3, { NodReinfEntry.Location, NodReinfRally.Location }, DateTime.Seconds(1), TownAttackAction)
 	end)
 end
 
 SendGDIReinforcements = function()
-	Reinforcements.Reinforce(player, GDIReinforcementsPart1, { GDIReinfEntry1.Location, waypoint12.Location }, DateTime.Seconds(1), function(actor)
+	Reinforcements.Reinforce(player, GDIReinforcementsPart1, { GDIReinfEntry1.Location, GDIReinfRally1.Location }, DateTime.Seconds(1), function(actor)
 		Media.PlaySpeechNotification(player, "Reinforce")
-		actor.Move(waypoint10.Location)
+		actor.Move(GDIReinfRally3.Location)
 		actor.Stance = "Defend"
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
-		Reinforcements.ReinforceWithTransport(player, "apc", GDIReinforcementsPart2, { GDIReinfEntry2.Location, waypoint13.Location }, nil, function(apc, team)
+		Reinforcements.ReinforceWithTransport(player, "apc", GDIReinforcementsPart2, { GDIReinfEntry2.Location, GDIReinfRally2.Location }, nil, function(apc, team)
 			Media.PlaySpeechNotification(player, "Reinforce")
 			apc.Move(GDIUnloadWpt.Location)
 			apc.UnloadPassengers()

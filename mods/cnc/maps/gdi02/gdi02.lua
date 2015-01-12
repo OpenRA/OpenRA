@@ -49,7 +49,7 @@ NodAttack = function()
 	if #nodUnits > AttackerSquadSize * 2 then
 		local attackers = Utils.Skip(nodUnits, #nodUnits - AttackerSquadSize)
 		Utils.Do(attackers, function(unit)
-			unit.AttackMove(waypoint2.Location)
+			unit.AttackMove(NodAttackWaypoint.Location)
 			Trigger.OnIdle(unit, unit.Hunt)
 		end)
 		Trigger.OnAllKilled(attackers, function() Trigger.AfterDelay(DateTime.Seconds(15), NodAttack) end)

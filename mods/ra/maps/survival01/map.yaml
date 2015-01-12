@@ -305,7 +305,7 @@ Actors:
 	Actor60: brik
 		Location: 56,56
 		Owner: Allies
-	Actor 408: weap
+	Actor408: weap
 		Location: 53,46
 		Owner: Allies
 	Actor32: tent
@@ -455,18 +455,6 @@ Actors:
 	Actor141: fenc
 		Location: 78,11
 		Owner: Neutral
-	Sam3: sam
-		Location: 76,11
-		Owner: Soviets
-	SovietAirfield1: afld.mission
-		Location: 86,5
-		Owner: Soviets
-	SovietAirfield2: afld.mission
-		Location: 80,6
-		Owner: Soviets
-	SovietAirfield3: afld.mission
-		Location: 75,5
-		Owner: Soviets
 	Actor160: fenc
 		Location: 77,4
 		Owner: Neutral
@@ -602,9 +590,6 @@ Actors:
 	Actor181: fenc
 		Location: 90,7
 		Owner: Neutral
-	Refinery: proc
-		Location: 81,11
-		Owner: Soviets
 	Actor187: t11
 		Location: 69,10
 		Owner: Neutral
@@ -635,21 +620,9 @@ Actors:
 	Actor192: fenc
 		Location: 74,16
 		Owner: Neutral
-	FlameTower3: ftur
-		Location: 78,17
-		Owner: Soviets
 	Actor190: fenc
 		Location: 74,14
 		Owner: Neutral
-	AdvancedPowerPlant3: apwr
-		Location: 88,12
-		Owner: Soviets
-	Silo1: silo
-		Location: 84,13
-		Owner: Soviets
-	Silo2: silo
-		Location: 84,12
-		Owner: Soviets
 	Actor199: e1
 		Location: 79,15
 		Owner: Soviets
@@ -680,9 +653,6 @@ Actors:
 	Actor208: tc03
 		Location: 40,21
 		Owner: Neutral
-	Sam1: sam
-		Location: 62,27
-		Owner: Soviets
 	Actor210: tc04
 		Location: 34,22
 		Owner: Neutral
@@ -764,23 +734,11 @@ Actors:
 	Actor232: brik
 		Location: 11,17
 		Owner: Neutral
-	FlameTower1: ftur
-		Location: 23,16
-		Owner: Soviets
-	FlameTower2: ftur
-		Location: 29,13
-		Owner: Soviets
 	Actor307: v2rl
 		Location: 31,9
 		Owner: Soviets
 	Actor306: v2rl
 		Location: 31,18
-		Owner: Soviets
-	RadarDome: dome
-		Location: 14,16
-		Owner: Soviets
-	AdvancedPowerPlant1: apwr
-		Location: 24,5
 		Owner: Soviets
 	Actor234: brik
 		Location: 12,16
@@ -842,9 +800,6 @@ Actors:
 	Actor259: brik
 		Location: 27,19
 		Owner: Neutral
-	Sam2: sam
-		Location: 17,31
-		Owner: Soviets
 	Actor264: brik
 		Location: 32,19
 		Owner: Neutral
@@ -926,12 +881,6 @@ Actors:
 	Actor268: brik
 		Location: 33,19
 		Owner: Neutral
-	WarFactory: weap
-		Location: 22,12
-		Owner: Soviets
-	AdvancedPowerPlant2: apwr
-		Location: 16,13
-		Owner: Soviets
 	Actor258: brik
 		Location: 26,18
 		Owner: Neutral
@@ -947,9 +896,6 @@ Actors:
 	Actor309: e1
 		Location: 52,44
 		Owner: Allies
-	Barrack1: barr
-		Location: 28,7
-		Owner: Soviets
 	Actor305: v2rl
 		Location: 17,18
 		Owner: Soviets
@@ -967,9 +913,6 @@ Actors:
 		Owner: Soviets
 	Actor302: e3
 		Location: 28,10
-		Owner: Soviets
-	Sam4: sam
-		Location: 29,17
 		Owner: Soviets
 	Actor310: e1
 		Location: 50,47
@@ -1088,9 +1031,6 @@ Actors:
 	Actor340: barl
 		Location: 73,52
 		Owner: Allies
-	SubPen: spen
-		Location: 13,9
-		Owner: Soviets
 	Actor297: brik
 		Location: 22,4
 		Owner: Neutral
@@ -1108,6 +1048,66 @@ Actors:
 		Owner: Neutral
 	Actor1000: camera.large
 		Location: 1,1
+		Owner: Soviets
+	FlameTower3: ftur
+		Location: 78,17
+		Owner: Soviets
+	AdvancedPowerPlant3: apwr
+		Location: 88,12
+		Owner: Soviets
+	Silo1: silo
+		Location: 84,13
+		Owner: Soviets
+	Silo2: silo
+		Location: 84,12
+		Owner: Soviets
+	Refinery: proc
+		Location: 81,11
+		Owner: Soviets
+	SovietAirfield1: afld.mission
+		Location: 86,5
+		Owner: Soviets
+	SovietAirfield2: afld.mission
+		Location: 80,6
+		Owner: Soviets
+	SovietAirfield3: afld.mission
+		Location: 75,5
+		Owner: Soviets
+	FlameTower1: ftur
+		Location: 23,16
+		Owner: Soviets
+	FlameTower2: ftur
+		Location: 29,13
+		Owner: Soviets
+	Sam1: sam
+		Location: 62,27
+		Owner: Soviets
+	Sam2: sam
+		Location: 17,31
+		Owner: Soviets
+	Sam3: sam
+		Location: 76,11
+		Owner: Soviets
+	Sam4: sam
+		Location: 29,17
+		Owner: Soviets
+	RadarDome: dome
+		Location: 14,16
+		Owner: Soviets
+	SubPen: spen
+		Location: 13,9
+		Owner: Soviets
+	Barrack1: barr
+		Location: 28,7
+		Owner: Soviets
+	WarFactory: weap
+		Location: 22,12
+		Owner: Soviets
+	AdvancedPowerPlant1: apwr
+		Location: 24,5
+		Owner: Soviets
+	AdvancedPowerPlant2: apwr
+		Location: 16,13
 		Owner: Soviets
 	BadgerEntryPoint1: waypoint
 		Location: 1,54

@@ -77,18 +77,6 @@ Players:
 		Enemies: Nod, GDI, Multi0, Multi1, Multi2, Multi3, Multi4, Multi5
 
 Actors:
-	boat1: boat
-		Location: 45,33
-		Owner: GDI
-	boat2: boat
-		Location: 39,37
-		Owner: GDI
-	boat3: boat
-		Location: 70,33
-		Owner: GDI
-	boat4: boat
-		Location: 79,37
-		Owner: GDI
 	Actor4: fix
 		Location: 59,44
 		Owner: GDI
@@ -961,6 +949,18 @@ Actors:
 		Owner: GDI
 	Actor221: jeep
 		Location: 57,45
+		Owner: GDI
+	boat1: boat
+		Location: 45,33
+		Owner: GDI
+	boat2: boat
+		Location: 39,37
+		Owner: GDI
+	boat3: boat
+		Location: 70,33
+		Owner: GDI
+	boat4: boat
+		Location: 79,37
 		Owner: GDI
 	lst1: lst
 		Location: 53,35

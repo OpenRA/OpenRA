@@ -166,9 +166,6 @@ Actors:
 	Actor50: apwr
 		Location: 51,14
 		Owner: Soviets
-	Entry1: waypoint
-		Location: 1,50
-		Owner: Neutral
 	Actor63: tsla
 		Location: 48,31
 		Owner: Soviets
@@ -198,9 +195,6 @@ Actors:
 		Owner: Soviets
 	Actor70: afld
 		Location: 47,24
-		Owner: Soviets
-	SovietBarracks3: barr
-		Location: 41,27
 		Owner: Soviets
 	Actor81: rock7
 		Location: 53,19
@@ -333,17 +327,8 @@ Actors:
 	Actor115: tsla
 		Location: 40,24
 		Owner: Soviets
-	IronCurtain: iron
-		Location: 110,40
-		Owner: Soviets
 	Actor117: fix
 		Location: 106,34
-		Owner: Soviets
-	SovietWarFactory1: weap
-		Location: 106,29
-		Owner: Soviets
-	SovietBarracks2: barr
-		Location: 102,30
 		Owner: Soviets
 	Actor136: v2rl
 		Location: 91,40
@@ -436,9 +421,6 @@ Actors:
 	Actor39: pbox
 		Location: 70,89
 		Owner: Allies
-	AlliedTechnologyCenter: miss
-		Location: 56,68
-		Owner: Neutral
 	Actor152: 1tnk
 		Location: 69,85
 		Owner: Allies
@@ -468,9 +450,6 @@ Actors:
 	Actor105: brik
 		Location: 94,70
 		Owner: Allies
-	SovietBarracks1: barr
-		Location: 109,48
-		Owner: Soviets
 	Actor170: kenn
 		Location: 104,41
 		Owner: Soviets
@@ -480,14 +459,8 @@ Actors:
 	Actor182: rock6
 		Location: 96,45
 		Owner: Neutral
-	Chronosphere: pdox
-		Location: 78,91
-		Owner: Allies
 	Actor298: brik
 		Location: 48,78
-		Owner: Allies
-	AlliedWarFactory1: weap
-		Location: 75,81
 		Owner: Allies
 	Actor156: pbox
 		Location: 52,71
@@ -699,9 +672,6 @@ Actors:
 	Actor250: sbag
 		Location: 44,67
 		Owner: Allies
-	AlliedBarracks2: tent
-		Location: 50,66
-		Owner: Allies
 	Actor66: gap
 		Location: 62,70
 		Owner: Allies
@@ -728,9 +698,6 @@ Actors:
 		Owner: Neutral
 	Actor269: v26
 		Location: 21,54
-		Owner: Neutral
-	Entry2: waypoint
-		Location: 1,27
 		Owner: Neutral
 	Actor270: v28
 		Location: 18,49
@@ -765,9 +732,6 @@ Actors:
 	Actor280: c10
 		Location: 23,55
 		Owner: Neutral
-	AlliedBarracks1: tent
-		Location: 83,75
-		Owner: Allies
 	Actor282: e1
 		Location: 42,62
 		Owner: Allies
@@ -934,9 +898,6 @@ Actors:
 	Actor329: mine
 		Location: 90,21
 		Owner: Neutral
-	HeliPad1: hpad
-		Location: 70,76
-		Owner: Allies
 	Actor341: dome
 		Location: 63,73
 		Owner: Allies
@@ -991,9 +952,6 @@ Actors:
 	Actor361: pbox
 		Location: 71,96
 		Owner: Allies
-	HeliPad2: hpad
-		Location: 64,78
-		Owner: Allies
 	Actor221: fenc
 		Location: 92,97
 		Owner: Allies
@@ -1015,12 +973,6 @@ Actors:
 	Actor310: fenc
 		Location: 98,96
 		Owner: Allies
-	Entry7: waypoint
-		Location: 1,79
-		Owner: Neutral
-	AttackDest: waypoint
-		Location: 55,69
-		Owner: Neutral
 	Actor6: brik
 		Location: 73,67
 		Owner: Allies
@@ -1174,6 +1126,70 @@ Actors:
 	Actor194: powr
 		Location: 52,74
 		Owner: Allies
+	Actor171: wood
+		Location: 17,53
+		Owner: Neutral
+	Actor172: wood
+		Location: 17,54
+		Owner: Neutral
+	Actor173: wood
+		Location: 17,55
+		Owner: Neutral
+	Actor177: wood
+		Location: 17,56
+		Owner: Neutral
+	Actor184: pbox
+		Location: 96,79
+		Owner: Allies
+	Actor79: agun
+		Location: 70,65
+		Owner: Allies
+	Actor118: agun
+		Location: 47,69
+		Owner: Allies
+		Facing: 64
+	SovietWarFactory1: weap
+		Location: 106,29
+		Owner: Soviets
+	SovietBarracks1: barr
+		Location: 109,48
+		Owner: Soviets
+	SovietBarracks2: barr
+		Location: 102,30
+		Owner: Soviets
+	SovietBarracks3: barr
+		Location: 41,27
+		Owner: Soviets
+	IronCurtain: iron
+		Location: 110,40
+		Owner: Soviets
+	AlliedTechnologyCenter: miss
+		Location: 56,68
+		Owner: Neutral
+	Chronosphere: pdox
+		Location: 78,91
+		Owner: Allies
+	AlliedWarFactory1: weap
+		Location: 75,81
+		Owner: Allies
+	AlliedBarracks1: tent
+		Location: 83,75
+		Owner: Allies
+	AlliedBarracks2: tent
+		Location: 50,66
+		Owner: Allies
+	HeliPad1: hpad
+		Location: 70,76
+		Owner: Allies
+	HeliPad2: hpad
+		Location: 64,78
+		Owner: Allies
+	Entry1: waypoint
+		Location: 1,50
+		Owner: Neutral
+	Entry2: waypoint
+		Location: 1,27
+		Owner: Neutral
 	Entry3: waypoint
 		Location: 10,1
 		Owner: Neutral
@@ -1186,17 +1202,11 @@ Actors:
 	Entry6: waypoint
 		Location: 46,1
 		Owner: Neutral
-	Actor171: wood
-		Location: 17,53
+	Entry7: waypoint
+		Location: 1,79
 		Owner: Neutral
-	Actor172: wood
-		Location: 17,54
-		Owner: Neutral
-	Actor173: wood
-		Location: 17,55
-		Owner: Neutral
-	Actor177: wood
-		Location: 17,56
+	AttackDest: waypoint
+		Location: 55,69
 		Owner: Neutral
 	LstEntry: waypoint
 		Location: 33,126
@@ -1210,9 +1220,6 @@ Actors:
 	Chinook2Entry: waypoint
 		Location: 47,126
 		Owner: Neutral
-	Actor184: pbox
-		Location: 96,79
-		Owner: Allies
 	Paradrop1: waypoint
 		Location: 70,50
 		Owner: Neutral
@@ -1240,13 +1247,6 @@ Actors:
 	ChronoshiftLocation: waypoint
 		Location: 80,65
 		Owner: Neutral
-	Actor79: agun
-		Location: 70,65
-		Owner: Allies
-	Actor118: agun
-		Location: 47,69
-		Owner: Allies
-		Facing: 64
 
 Smudges:
 
@@ -1262,23 +1262,6 @@ Rules:
 		LuaScript:
 			Scripts: desert-shellmap.lua
 		-StartGameNotification:
-	OILB:
-		CashTrickler:
-			ShowTicks: false
-	TRAN.Husk2:
-		Burns:
-			Damage: 0
-	MISS:
-		Invulnerable:
-	APC:
-		Cargo:
-			InitialUnits: e1, e1, e2, e3, e4
-	Ant:
-		Buildable:
-			Owner: soviet
-			Prerequisites: barr
-		Health:
-			HP: 200
 	^Vehicle:
 		GivesBounty:
 			Percentage: 0
@@ -1329,6 +1312,23 @@ Rules:
 		InvulnerabilityUpgrade@UNKILLABLE:
 			UpgradeTypes: unkillable
 			UpgradeMinEnabledLevel: 1
+	OILB:
+		CashTrickler:
+			ShowTicks: false
+	TRAN.Husk2:
+		Burns:
+			Damage: 0
+	MISS:
+		Invulnerable:
+	APC:
+		Cargo:
+			InitialUnits: e1, e1, e2, e3, e4
+	Ant:
+		Buildable:
+			Owner: soviet
+			Prerequisites: barr
+		Health:
+			HP: 200
 	E7:
 		-Selectable:
 

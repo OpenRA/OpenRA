@@ -435,22 +435,10 @@ Actors:
 	Actor121: v01
 		Location: 44,54
 		Owner: Neutral
-	Sam1: sam
-		Location: 28,52
-		Owner: Nod
-	Sam2: sam
-		Location: 22,46
-		Owner: Nod
-	Sam3: sam
-		Location: 35,47
-		Owner: Nod
 	Actor125: gun
 		Location: 36,30
 		Owner: Nod
 		Facing: 96
-	Sam4: sam
-		Location: 12,34
-		Owner: Nod
 	Actor127: gun
 		Location: 29,34
 		Owner: Nod
@@ -467,9 +455,6 @@ Actors:
 		Location: 28,50
 		Owner: Nod
 		Facing: 160
-	HiddenBuggy: bggy
-		Location: 6,25
-		Owner: Nod
 	Actor137: bggy
 		Location: 21,30
 		Owner: Nod
@@ -588,16 +573,6 @@ Actors:
 		Owner: Nod
 		Facing: 96
 		SubCell: 3
-	Sam4Guard1: e1
-		Location: 11,31
-		Owner: Nod
-		Facing: 96
-		SubCell: 4
-	Sam4Guard2: e1
-		Location: 10,31
-		Owner: Nod
-		Facing: 96
-		SubCell: 2
 	Actor163: c6
 		Location: 42,56
 		Owner: Neutral
@@ -626,11 +601,6 @@ Actors:
 		SubCell: 4
 	Actor177: e3
 		Location: 14,32
-		Owner: Nod
-		Facing: 96
-		SubCell: 1
-	Sam4Guard0: e1
-		Location: 9,31
 		Owner: Nod
 		Facing: 96
 		SubCell: 1
@@ -681,6 +651,42 @@ Actors:
 		Location: 14,32
 		Owner: Nod
 		SubCell: 4
+	Actor191: e3
+		Location: 24,46
+		Owner: Nod
+		Facing: 128
+		SubCell: 1
+	Sam1: sam
+		Location: 28,52
+		Owner: Nod
+	Sam2: sam
+		Location: 22,46
+		Owner: Nod
+	Sam3: sam
+		Location: 35,47
+		Owner: Nod
+	Sam4: sam
+		Location: 12,34
+		Owner: Nod
+	HiddenBuggy: bggy
+		Location: 6,25
+		Owner: Nod
+		Facing: 0
+	Sam4Guard0: e1
+		Location: 9,31
+		Owner: Nod
+		Facing: 96
+		SubCell: 1
+	Sam4Guard1: e1
+		Location: 11,31
+		Owner: Nod
+		Facing: 96
+		SubCell: 4
+	Sam4Guard2: e1
+		Location: 10,31
+		Owner: Nod
+		Facing: 96
+		SubCell: 2
 	Sam4Guard3: e1
 		Location: 10,31
 		Owner: Nod
@@ -689,11 +695,6 @@ Actors:
 		Location: 10,31
 		Owner: Nod
 		SubCell: 4
-	Actor191: e3
-		Location: 24,46
-		Owner: Nod
-		Facing: 128
-		SubCell: 1
 	InfantryStart: waypoint
 		Location: 14,61
 		Owner: Neutral
