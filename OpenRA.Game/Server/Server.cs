@@ -24,7 +24,9 @@ namespace OpenRA.Server
 {
 	public enum ServerState
 	{
-		WaitingPlayers, GameStarted, ShuttingDown
+		WaitingPlayers,
+		GameStarted,
+		ShuttingDown
 	}
 
 	public class Server
@@ -39,9 +41,19 @@ namespace OpenRA.Server
 		public readonly MersenneTwister Random = new MersenneTwister();
 		public readonly List<string> TempBans = new List<string>();
 
-		// Valid and pre-verified player connections
+		// Valid player connections
 		readonly List<Connection> conns = new List<Connection>();
+		/*
+		 * Pre-validated player connections,
+		 * These are players that have connected to the server
+		 * but haven't sent a handshake request, so they're not registered
+		 * to play. This refers to "preConns" by the way, the variable declared below.
+		 * But not "conns", that's declared above, which refer to connections which
+		 * ARE valid. This is very confusing to some, it may take weeks if you
+		 * don't have a college degree.
+		*/
 		readonly List<Connection> preConns = new List<Connection>();
+
 		readonly TypeDictionary serverTraits = new TypeDictionary();
 		readonly TcpListener listener;
 
@@ -51,6 +63,12 @@ namespace OpenRA.Server
 
 		public IEnumerable<Connection> Connections { get { return conns.ToList(); } }
 		public bool IsEmpty { get { return conns.Count == 0; } }
+
+		int nextPlayerIndex = 0;
+		public int ChooseFreePlayerIndex()
+		{
+			return nextPlayerIndex++;
+		}
 
 		#endregion
 
@@ -108,7 +126,7 @@ namespace OpenRA.Server
 
 					foreach (var s in checkRead)
 						if (s == listener.Server) AcceptConnection();
-						else if (preConns.Count != 0)
+						else if (preConns.Count > 0)
 						{
 							var p = preConns.SingleOrDefault(c => c.Socket == s);
 							if (p != null) p.ReadData(this);
@@ -258,9 +276,6 @@ namespace OpenRA.Server
 		#endregion
 
 		#region Connections
-
-		int nextPlayerIndex = 0;
-		public int ChooseFreePlayerIndex() { return nextPlayerIndex++; }
 
 		void AcceptConnection()
 		{
