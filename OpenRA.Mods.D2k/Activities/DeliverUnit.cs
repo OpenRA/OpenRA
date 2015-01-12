@@ -22,14 +22,14 @@ namespace OpenRA.Mods.D2k.Activities
 	public class DeliverUnit : Activity
 	{
 		readonly Actor self;
-		readonly Actor carryable;
+		readonly Actor toDeliver;
 		readonly IMove movement;
-		readonly Carryable c;
-		readonly AutoCarryall aca;
+		readonly Carryable carryable;
+		readonly Carryall aca;
 		readonly Helicopter helicopter;
 		readonly IPositionable positionable;
-		readonly IFacing cFacing; // Carryable facing
-		readonly IFacing sFacing; // Self facing
+		readonly IFacing carryableFacing;
+		readonly IFacing selfFacing;
 		readonly CPos destination;
 
 		enum State { Transport, Land, Release, Takeoff, Done }
@@ -38,16 +38,16 @@ namespace OpenRA.Mods.D2k.Activities
 
 		public DeliverUnit(Actor self)
 		{
-			aca = self.Trait<AutoCarryall>();
+			aca = self.Trait<Carryall>();
 			this.self = self;
-			this.carryable = aca.Carrying;
+			this.toDeliver = aca.Client;
 			movement = self.Trait<IMove>();
-			c = carryable.Trait<Carryable>();
+			carryable = toDeliver.Trait<Carryable>();
 			helicopter = self.Trait<Helicopter>();
-			positionable = carryable.Trait<IPositionable>();
-			cFacing = carryable.Trait<IFacing>();
-			sFacing = self.Trait<IFacing>();
-			this.destination = c.Destination;
+			positionable = toDeliver.Trait<IPositionable>();
+			carryableFacing = toDeliver.Trait<IFacing>();
+			selfFacing = self.Trait<IFacing>();
+			this.destination = carryable.Destination;
 			state = State.Transport;
 		}
 
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.D2k.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (carryable.IsDead || aca.HasCarryableAttached == false)
+			if (toDeliver.IsDead || aca.HasCarryableAttached == false)
 			{
 				aca.UnreserveCarryable();
 				return NextActivity;
@@ -106,11 +106,9 @@ namespace OpenRA.Mods.D2k.Activities
 
 					if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.LandAltitude))
 						return this;
-					else
-					{
-						state = State.Release;
-						return Util.SequenceActivities(new Wait(15), this);
-					}
+
+					state = State.Release;
+					return Util.SequenceActivities(new Wait(15), this);
 
 				case State.Release:
 
@@ -120,23 +118,23 @@ namespace OpenRA.Mods.D2k.Activities
 						return this;
 					}
 
-					positionable.SetPosition(carryable, self.Location, SubCell.FullCell);
+					positionable.SetPosition(toDeliver, self.Location, SubCell.FullCell);
 
-					cFacing.Facing = sFacing.Facing;
+					carryableFacing.Facing = selfFacing.Facing;
 
 					// Put back into world
-					self.World.AddFrameEndTask(w => carryable.World.Add(carryable));
+					self.World.AddFrameEndTask(w => toDeliver.World.Add(toDeliver));
 
 					// Unlock carryable
 					aca.CarryableReleased();
-					c.Dropped();
+					carryable.Dropped();
 
 					state = State.Done;
 					return Util.SequenceActivities(new Wait(10), this);
 
 				case State.Done:
 
-					self.Trait<AutoCarryall>().UnreserveCarryable();
+					self.Trait<Carryall>().UnreserveCarryable();
 					return NextActivity;
 			}
 

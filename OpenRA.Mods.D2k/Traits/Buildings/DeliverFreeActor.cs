@@ -35,7 +35,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly CVec DeliveryOffset = CVec.Zero;
 
 		[ActorReference]
-		[Desc("Name of the carrying actor. This actor must have the AutoCarryall trait")]
+		[Desc("Name of the carrying actor. This actor must have the Carryall trait")]
 		public readonly string CarryingActor = null;
 
 		public object Create(ActorInitializer init) { return new DeliverFreeActor(init.Self, this); }
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (ai != null)
 				spawn += new WVec(0, 0, ai.CruiseAltitude.Range);
 
-			// Create AutoCarryall actor
+			// Create Carryall actor
 			var carrier = self.World.CreateActor(false, info.CarryingActor, new TypeDictionary
 			{
 				new LocationInit(location),
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			client.Trait<Carryable>().Destination = location;
 
-			carrier.Trait<AutoCarryall>().AttachCarryable(client);
+			carrier.Trait<Carryall>().AttachCarryable(client);
 
 			carrier.QueueActivity(new DeliverUnit(carrier));
 			carrier.QueueActivity(new HeliFly(carrier, Target.FromCell(self.World, self.World.Map.ChooseRandomEdgeCell(self.World.SharedRandom))));

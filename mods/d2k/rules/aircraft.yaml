@@ -27,12 +27,12 @@
 	LeavesHusk:
 		HuskActor: CARRYALL.Husk
 	-Selectable:
-	AutoCarryall:
+	Carryall:
 
 CARRYALL.reinforce:
 	Inherits: ^CARRYALL
 	-Buildable:
-	AutoCarryall:
+	Carryall:
 		Automatic: false
 	RenderUnit:
 		Image: carryall

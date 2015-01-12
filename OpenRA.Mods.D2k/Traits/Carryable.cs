@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	[Desc("Can be carried by units with the trait `AutoCarryall`.")]
+	[Desc("Can be carried by units with the trait `Carryall`.")]
 	public class CarryableInfo : ITraitInfo
 	{
 		[Desc("Required distance away from destination before requesting a pickup.")]
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.D2k.Traits
 					return;
 
 			// Inform all idle carriers
-			var carriers = self.World.ActorsWithTrait<AutoCarryall>()
+			var carriers = self.World.ActorsWithTrait<Carryall>()
 				.Where(c => !c.Trait.Busy && !c.Actor.IsDead && c.Actor.Owner == self.Owner && c.Actor.IsInWorld)
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.D2k.Traits
 			WantsTransport = false;
 			afterLandActivity = null;
 
-			// TODO: We could implement something like a carrier.Trait<AutoCarryAll>().CancelTransportNotify(self) and call it here
+			// TODO: We could implement something like a carrier.Trait<CarryAll>().CancelTransportNotify(self) and call it here
 		}
 
 		// We do not handle Harvested notification
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public Actor GetClosestIdleCarrier()
 		{
 			// Find carriers
-			var carriers = self.World.ActorsWithTrait<AutoCarryall>()
+			var carriers = self.World.ActorsWithTrait<Carryall>()
 				.Where(p => p.Actor.Owner == self.Owner && !p.Trait.Busy && p.Actor.IsInWorld)
 				.Select(h => h.Actor);
 

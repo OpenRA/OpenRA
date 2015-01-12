@@ -23,33 +23,33 @@ namespace OpenRA.Mods.D2k.Activities
 {
 	public class PickupUnit : Activity
 	{
-		readonly Actor carryable;
+		readonly Actor toPickup;
 		readonly IMove movement;
-		readonly Carryable c;
-		readonly AutoCarryall aca;
+		readonly Carryable carryable;
+		readonly Carryall aca;
 		readonly Helicopter helicopter;
-		readonly IFacing cFacing; // Carryable facing
-		readonly IFacing sFacing; // Self facing
+		readonly IFacing carryableFacing;
+		readonly IFacing selfFacing;
 
 		enum State { Intercept, LockCarryable, MoveToCarryable, Turn, Pickup, TakeOff }
 
 		State state;
 
-		public PickupUnit(Actor self, Actor carryable)
+		public PickupUnit(Actor self, Actor client)
 		{
-			this.carryable = carryable;
+			this.toPickup = client;
 			movement = self.Trait<IMove>();
-			c = carryable.Trait<Carryable>();
-			aca = self.Trait<AutoCarryall>();
+			carryable = client.Trait<Carryable>();
+			aca = self.Trait<Carryall>();
 			helicopter = self.Trait<Helicopter>();
-			cFacing = carryable.Trait<IFacing>();
-			sFacing = self.Trait<IFacing>();
+			carryableFacing = client.Trait<IFacing>();
+			selfFacing = self.Trait<IFacing>();
 			state = State.Intercept;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (carryable.IsDead)
+			if (toPickup.IsDead)
 			{
 				aca.UnreserveCarryable();
 				return NextActivity;
@@ -60,48 +60,44 @@ namespace OpenRA.Mods.D2k.Activities
 				case State.Intercept: // Move towards our carryable
 
 					state = State.LockCarryable;
-					return Util.SequenceActivities(movement.MoveWithinRange(Target.FromActor(carryable), WRange.FromCells(4)), this);
+					return Util.SequenceActivities(movement.MoveWithinRange(Target.FromActor(toPickup), WRange.FromCells(4)), this);
 
 				case State.LockCarryable:
 					// Last check
-					if (c.StandbyForPickup(self))
+					if (carryable.StandbyForPickup(self))
 					{
 						state = State.MoveToCarryable;
 						return this;
 					} 
-					else
-					{
-						// We got cancelled
-						aca.UnreserveCarryable();
-						return NextActivity;
-					}
+
+					// We got cancelled
+					aca.UnreserveCarryable();
+					return NextActivity;
 
 				case State.MoveToCarryable: // We arrived, move on top
 
-					if (self.Location == carryable.Location)
+					if (self.Location == toPickup.Location)
 					{
 						state = State.Turn;
 						return this;
 					}
-					else
-						return Util.SequenceActivities(movement.MoveTo(carryable.Location, 0), this);
+
+					return Util.SequenceActivities(movement.MoveTo(toPickup.Location, 0), this);
 
 				case State.Turn: // Align facing and Land
 
-					if (sFacing.Facing != cFacing.Facing)
-						return Util.SequenceActivities(new Turn(self, cFacing.Facing), this);
-					else
-					{
-						state = State.Pickup;
-						return Util.SequenceActivities(new HeliLand(false), new Wait(10), this);
-					}
+					if (selfFacing.Facing != carryableFacing.Facing)
+						return Util.SequenceActivities(new Turn(self, carryableFacing.Facing), this);
+			
+					state = State.Pickup;
+					return Util.SequenceActivities(new HeliLand(false), new Wait(10), this);
 
 				case State.Pickup:
 
 					// Remove our carryable from world
-					self.World.AddFrameEndTask(w => carryable.World.Remove(carryable));
+					self.World.AddFrameEndTask(w => toPickup.World.Remove(toPickup));
 
-					aca.AttachCarryable(carryable);
+					aca.AttachCarryable(toPickup);
 					state = State.TakeOff;
 					return this;
 
@@ -109,8 +105,8 @@ namespace OpenRA.Mods.D2k.Activities
 
 					if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
 						return this;
-					else
-						return NextActivity;
+
+					return NextActivity;
 			}
 
 			return NextActivity;
