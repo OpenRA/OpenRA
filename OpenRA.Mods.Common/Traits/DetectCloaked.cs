@@ -13,14 +13,24 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can reveal Cloak actors in a specified range.")]
-	public class DetectCloakedInfo : TraitInfo<DetectCloaked>
+	public class DetectCloakedInfo : ITraitInfo
 	{
 		[Desc("Specific cloak classifications I can reveal.")]
 		public readonly string[] CloakTypes = { "Cloak" };
 
 		[Desc("Measured in cells.")]
 		public readonly int Range = 5;
+
+		public object Create(ActorInitializer init) { return new DetectCloaked(this); }
 	}
 
-	public class DetectCloaked { }
+	public class DetectCloaked
+	{
+		public readonly DetectCloakedInfo Info;
+
+		public DetectCloaked(DetectCloakedInfo info)
+		{
+			Info = info;
+		}
+	}
 }
