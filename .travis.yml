@@ -3,6 +3,10 @@
 
 language: csharp
 
+# Use the Docker-based infrastructure
+sudo: false
+cache: apt
+
 # Run the build script
 # call RALint to check for YAML errors
 script:
@@ -34,7 +38,10 @@ notifications:
     skip_join: true
 
 before_deploy:
- - sudo apt-get install nsis markdown dpkg
+ - apt-get download nsis markdown
+ - dpkg -x nsis*deb $HOME
+ - dpkg -x markdown*deb $HOME
+ - export PATH=$PATH:$HOME/usr/bin
  - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
  - cd packaging
  - mkdir build
