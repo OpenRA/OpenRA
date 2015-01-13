@@ -505,7 +505,7 @@ function findReplace:createDialog(replace,infiles)
   mainSizer:SetSizeHints(findDialog)
   findDialog:SetSizer(mainSizer)
 
-  local function TransferDataFromWindow()
+  local function transferDataFromWindow()
     findReplace.fWholeWord = wholeWordCheckBox:GetValue()
     findReplace.fMatchCase = matchCaseCheckBox:GetValue()
     findReplace.fWrap = wrapAroundCheckBox:GetValue()
@@ -550,7 +550,7 @@ function findReplace:createDialog(replace,infiles)
 
   findDialog:Connect(ID_FIND_NEXT, wx.wxEVT_COMMAND_BUTTON_CLICKED,
     function()
-      TransferDataFromWindow()
+      transferDataFromWindow()
       if (findReplace.infiles) then
         for _, b in pairs(findReplace.buttons) do b:Disable() end
         findReplace:RunInFiles()
@@ -563,7 +563,7 @@ function findReplace:createDialog(replace,infiles)
 
   findDialog:Connect(ID_REPLACE, wx.wxEVT_COMMAND_BUTTON_CLICKED,
     function(event)
-      TransferDataFromWindow()
+      transferDataFromWindow()
       event:Skip()
       if findReplace.replace then
         if (findReplace.infiles) then
@@ -582,7 +582,7 @@ function findReplace:createDialog(replace,infiles)
   if replaceAllButton then
     findDialog:Connect(ID_REPLACE_ALL, wx.wxEVT_COMMAND_BUTTON_CLICKED,
       function(event)
-        TransferDataFromWindow()
+        transferDataFromWindow()
         event:Skip()
         findReplace:ReplaceString(true)
       end)
