@@ -112,8 +112,8 @@ styles.indicator.fncall.st = wxstc.wxSTC_INDIC_PLAIN
   wxSTC_INDIC_HIDDEN No visual effect;
   --]]
 
--- to enable additional spec files (like spec/cpp.lua)
-load.specs(function(file) return file:find('spec[/\\]cpp%.lua$') end)
+-- to enable additional spec files (like spec/glsl.lua)
+load.specs(function(file) return file:find('spec[/\\]glsl%.lua$') end)
 
 -- to specify a default EOL encoding to be used for new files:
 -- `wxstc.wxSTC_EOL_CRLF` or `wxstc.wxSTC_EOL_LF`;

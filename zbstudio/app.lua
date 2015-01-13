@@ -1,7 +1,11 @@
+local skipspecs = {
+  cg = true, glsl = true, luxres = true, opencl = true, sql = true,
+  cbase = true, hlsl = true, oglgpuprog = true, ptx = true, text = true,
+}
 return {
   loadfilters = {
     tools = function(file) return false end,
-    specs = function(file) return file:find('spec[/\\]lua%.lua$') end,
+    specs = function(file) return not skipspecs[file:match('spec[/\\]([^/\\]+)%.lua$') or ''] end,
     interpreters = function(file) return not file:find('estrela') end,
   },
 
