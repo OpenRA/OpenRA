@@ -215,6 +215,7 @@
     <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
     <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
+    <Compile Include="Scripting\Properties\AirstrikeProperties.cs" />
     <Compile Include="Scripting\Properties\ProductionProperties.cs" />
     <Compile Include="Scripting\Properties\MissionObjectiveProperties.cs" />
     <Compile Include="Scripting\Properties\MobileProperties.cs" />

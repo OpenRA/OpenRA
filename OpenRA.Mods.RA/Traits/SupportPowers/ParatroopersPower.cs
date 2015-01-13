@@ -61,13 +61,22 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			base.Activate(self, order, manager);
 
+			SendParatroopers(self, self.World.Map.CenterOfCell(order.TargetLocation));
+		}
+
+		public Actor[] SendParatroopers(Actor self, WPos target, bool randomize = true, int dropFacing = 0)
+		{
+			var units = new List<Actor>();
+
 			var info = Info as ParatroopersPowerInfo;
-			var dropFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
-			var dropRotation = WRot.FromFacing(dropFacing);
-			var delta = new WVec(0, -1024, 0).Rotate(dropRotation);
+
+			if (randomize)
+				dropFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
 
 			var altitude = self.World.Map.Rules.Actors[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude.Range;
-			var target = self.World.Map.CenterOfCell(order.TargetLocation) + new WVec(0, 0, altitude);
+			var dropRotation = WRot.FromFacing(dropFacing);
+			var delta = new WVec(0, -1024, 0).Rotate(dropRotation);
+			target = target + new WVec(0, 0, altitude);
 			var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Range * delta / 1024;
 			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Range * delta / 1024;
 
@@ -84,7 +93,7 @@ namespace OpenRA.Mods.RA.Traits
 					{
 						camera = w.CreateActor(info.CameraActor, new TypeDictionary
 						{
-							new LocationInit(order.TargetLocation),
+							new LocationInit(self.World.Map.CellContaining(target)),
 							new OwnerInit(self.Owner),
 						});
 					});
@@ -128,6 +137,14 @@ namespace OpenRA.Mods.RA.Traits
 				}
 			};
 
+			foreach (var p in info.DropItems)
+			{
+				var unit = self.World.CreateActor(false, p.ToLowerInvariant(),
+					new TypeDictionary { new OwnerInit(self.Owner) });
+
+				units.Add(unit);
+			}
+
 			self.World.AddFrameEndTask(w =>
 			{
 				var notification = self.Owner.IsAlliedWith(self.World.RenderPlayer) ? Info.LaunchSound : Info.IncomingSound;
@@ -162,13 +179,13 @@ namespace OpenRA.Mods.RA.Traits
 					drop.OnRemovedFromWorld += onExitRange;
 
 					var cargo = a.Trait<Cargo>();
-					var passengers = info.DropItems.Skip(added).Take(passengersPerPlane);
+					var passengers = units.Skip(added).Take(passengersPerPlane);
 					added += passengersPerPlane;
 
 					foreach (var p in passengers)
-						cargo.Load(a, self.World.CreateActor(false, p.ToLowerInvariant(),
-							new TypeDictionary { new OwnerInit(a.Owner) }));
+						cargo.Load(a, p);
 
+					a.QueueActivity(new Fly(a, Target.FromPos(target + spawnOffset)));
 					a.QueueActivity(new Fly(a, Target.FromPos(finishEdge + spawnOffset)));
 					a.QueueActivity(new RemoveSelf());
 					aircraftInRange.Add(a, false);
@@ -180,8 +197,8 @@ namespace OpenRA.Mods.RA.Traits
 					var distance = (target - startEdge).HorizontalLength;
 
 					beacon = new Beacon(
-						order.Player,
-						self.World.Map.CenterOfCell(order.TargetLocation),
+						self.Owner,
+						target,
 						Info.BeaconPalettePrefix,
 						Info.BeaconPoster,
 						Info.BeaconPosterPalette,
@@ -190,6 +207,8 @@ namespace OpenRA.Mods.RA.Traits
 					w.Add(beacon);
 				}
 			});
+
+			return units.ToArray();
 		}
 	}
 }

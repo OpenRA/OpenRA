@@ -54,19 +54,16 @@ GroundPatrolUnits =
 	{ "apc", "apc", "ftrk" },
 	{ "3tnk", "3tnk" }
 }
-Paratroopers = { "e1", "e1", "e1", "e3", "e3" }
 
 ParadropSovietUnits = function()
-	local start = BaseRaidEntrypoint.CenterPosition + WVec.New(0, 0, Actor.CruiseAltitude("badr"))
-	local transport = Actor.Create("badr", true, { CenterPosition = start, Owner = soviets, Facing = (Map.CenterOfCell(MCVDeployLocation.Location) - start).Facing })
+	local powerproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = soviets })
+	local units = powerproxy.SendParatroopers(MCVDeployLocation.CenterPosition, false, 256 - 53)
 
-	Utils.Do(Paratroopers, function(type)
-		local a = Actor.Create(type, false, { Owner = soviets })
-		transport.LoadPassenger(a)
-		Trigger.OnIdle(a, function(b) b.Hunt() end)
+	Utils.Do(units, function(a)
+		Trigger.OnIdle(a, a.Hunt)
 	end)
 
-	transport.Paradrop(MCVDeployLocation.Location)
+	powerproxy.Destroy()
 end
 
 AirRaid = function(planeTypes, ingress, egress, target)
