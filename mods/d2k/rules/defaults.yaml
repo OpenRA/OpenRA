@@ -233,6 +233,9 @@
 	MustBeDestroyed:
 	AnnounceOnSeen:
 		Notification: EnemyUnitsApproaching
+	TerrainModifiesDamage:
+		TerrainModifier:
+			Rough: 80
 
 ^Plane:
 	AppearsOnRadar:
@@ -326,4 +329,3 @@
 		Range: 2c0, 5c0
 	ScriptTriggers:
 	WithMakeAnimation:
-
