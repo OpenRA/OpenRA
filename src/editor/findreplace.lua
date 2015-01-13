@@ -233,8 +233,7 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
       editor:TargetFromSelection()
       -- check if there is anything selected as well as the user can
       -- move the cursor after successful search
-      if findReplace.foundString
-      and editor:GetSelectionStart() ~= editor:GetSelectionEnd()
+      if editor:GetSelectionStart() ~= editor:GetSelectionEnd()
       -- check that the current selection matches what's being searched for
       and editor:SearchInTarget(findReplace.findText) ~= NOTFOUND then
         local start = editor:GetSelectionStart()
