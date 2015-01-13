@@ -1678,6 +1678,8 @@ BRIK:
 
 CYCL:
 	Inherits: ^Wall
+	Tooltip:
+		Name: Chain-Link Barrier
 	Health:
 		HP: 100
 	Armor:
@@ -1691,6 +1693,8 @@ CYCL:
 
 BARB:
 	Inherits: ^Wall
+	Tooltip:
+		Name: Barbed-Wire Fence
 	Health:
 		HP: 100
 	Armor:
@@ -1704,6 +1708,8 @@ BARB:
 
 WOOD:
 	Inherits: ^Wall
+	Tooltip:
+		Name: Wooden Fence
 	Health:
 		HP: 100
 	Armor:
