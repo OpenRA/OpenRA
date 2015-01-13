@@ -285,6 +285,7 @@
     <Compile Include="Traits\Infantry\ScaredyCat.cs" />
     <Compile Include="Traits\Infantry\TakeCover.cs" />
     <Compile Include="Traits\Invulnerable.cs" />
+    <Compile Include="Traits\Infantry\TerrainModifiesDamage.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\KillsSelf.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
