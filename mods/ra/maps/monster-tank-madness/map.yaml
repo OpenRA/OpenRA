@@ -48,7 +48,7 @@ Players:
 		Race: soviet
 		ColorRamp: 3,255,127
 		Allies: USSR
-		Enemies: Greece, Turkey, Ukraine
+		Enemies: Greece, Turkey
 	PlayerReference@USSR:
 		Name: USSR
 		Race: soviet
@@ -81,46 +81,46 @@ Players:
 Actors:
 	Actor0: sbag
 		Location: 21,26
-		Owner: Neutral
+		Owner: Outpost
 	Actor1: sbag
 		Location: 22,26
-		Owner: Neutral
+		Owner: Outpost
 	Actor2: sbag
 		Location: 43,26
-		Owner: Neutral
+		Owner: Outpost
 	Actor3: sbag
 		Location: 44,26
-		Owner: Neutral
+		Owner: Outpost
 	Actor4: sbag
 		Location: 45,26
-		Owner: Neutral
+		Owner: Outpost
 	Actor5: sbag
 		Location: 45,27
-		Owner: Neutral
+		Owner: Outpost
 	Actor6: sbag
 		Location: 39,28
-		Owner: Neutral
+		Owner: Outpost
 	Actor7: sbag
 		Location: 40,28
-		Owner: Neutral
+		Owner: Outpost
 	Actor8: sbag
 		Location: 45,28
-		Owner: Neutral
+		Owner: Outpost
 	Actor9: sbag
 		Location: 39,29
-		Owner: Neutral
+		Owner: Outpost
 	Actor10: sbag
 		Location: 39,30
-		Owner: Neutral
+		Owner: Outpost
 	Actor11: sbag
 		Location: 26,31
-		Owner: Neutral
+		Owner: Outpost
 	Actor12: sbag
 		Location: 27,31
-		Owner: Neutral
+		Owner: Outpost
 	Actor13: sbag
 		Location: 28,31
-		Owner: Neutral
+		Owner: Outpost
 	Actor14: brik
 		Location: 87,31
 		Owner: Neutral
@@ -171,7 +171,7 @@ Actors:
 		Owner: Neutral
 	Actor30: sbag
 		Location: 28,32
-		Owner: Neutral
+		Owner: Outpost
 	Actor31: brik
 		Location: 87,32
 		Owner: Neutral
@@ -1673,9 +1673,6 @@ Actors:
 	Actor534: v04
 		Location: 91,59
 		Owner: Ukraine
-	Actor535: v05
-		Location: 82,51
-		Owner: Ukraine
 	Actor536: v06
 		Location: 82,54
 		Owner: Ukraine
@@ -1771,9 +1768,6 @@ Actors:
 		Owner: Ukraine
 	Actor567: brl3
 		Location: 80,53
-		Owner: Ukraine
-	Actor568: brl3
-		Location: 81,52
 		Owner: Ukraine
 	Actor569: brl3
 		Location: 82,53
@@ -1988,6 +1982,15 @@ Actors:
 	Actor514: brl3
 		Location: 97,59
 		Owner: Ukraine
+	Actor626: camera
+		Location: 32,56
+		Owner: USSR
+	UkraineBarrel: brl3
+		Location: 81,52
+		Owner: Ukraine
+	UkraineBuilding: v05
+		Location: 82,51
+		Owner: Ukraine
 	SuperTankDome: dome.NoInfiltrate
 		Location: 90,32
 		Owner: BadGuy
@@ -2106,6 +2109,7 @@ Rules:
 			Scripts: monster-tank-madness.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		-StartGameNotification:
 	^Building:
 		Tooltip:
 			GenericVisibility: Enemy
@@ -2121,6 +2125,17 @@ Rules:
 	^Tank:
 		Tooltip:
 			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Wall:
+		Tooltip:
+			ShowOwnerRow: false
+	^Husk:
+		Tooltip:
+			GenericVisibility: Enemy, Ally, Neutral
+			GenericStancePrefix: false
+			ShowOwnerRow: false
+	^Crate:
+		Tooltip:
 			ShowOwnerRow: false
 	^CivBuilding:
 		Explodes:
@@ -2195,10 +2210,11 @@ Rules:
 		SelfHealing:
 			Step: 1
 			Ticks: 1
-			HealIfBelow: 50%
+			HealIfBelow: 100%
 			DamageCooldown: 150
 		Selectable:
 			Bounds: 44,38,0,-4
+		-EjectOnDeath:
 	5TNK.Husk:
 		Inherits: ^Husk
 		Tooltip:
@@ -2325,10 +2341,6 @@ Rules:
 	QTNK:
 		Buildable:
 			Prerequisites: ~disabled
-	CAMERA.Large:
-		Inherits: CAMERA
-		RevealsShroud:
-			Range: 1000
 
 Sequences:
 
