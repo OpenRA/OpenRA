@@ -646,6 +646,9 @@ VISLRG:
 		Weapon: SlimeAttack
 	AttackFrontal:
 	AttackWander:
+		WanderMoveRadius: 2
+		MinMoveDelayInTicks: 25
+		MaxMoveDelayInTicks: 45
 	-RenderInfantry:
 	RenderUnit:
 	-WithDeathAnimation:

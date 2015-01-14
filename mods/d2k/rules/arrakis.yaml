@@ -24,7 +24,7 @@ SANDWORM:
 		Name: Sandworm
 		Description: Attracted by vibrations in the sand.\nWill eat units whole and has a large appetite.
 	Health:
-		HP: 10000
+		HP: 1200
 		Radius: 3
 	Armor:
 		Type: None
@@ -35,9 +35,7 @@ SANDWORM:
 			Dune: 100
 			Spice: 100
 	TargetableUnit:
-		TargetTypes: Underground
-	RevealsShroud:
-		Range: 32c0
+		TargetTypes: Ground
 	RenderUnit:
 	WithAttackOverlay:
 		Sequence: sand
@@ -47,9 +45,9 @@ SANDWORM:
 		UseLocation: yes
 	AttackSwallow:
 		AttackRequiresEnteringCell: true
-	AttackMove:
-	AttackWander:
-	AutoTarget:
-		ScanRadius: 32
+		IgnoresVisibility: true
 	Armament:
 		Weapon: WormJaw
+	Sandworm:
+		WanderMoveRadius: 5
+	IgnoresCloak:

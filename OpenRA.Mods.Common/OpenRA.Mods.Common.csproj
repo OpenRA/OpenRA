@@ -214,6 +214,7 @@
     <Compile Include="Traits\ExternalCapturable.cs" />
     <Compile Include="Traits\ExternalCapturableBar.cs" />
     <Compile Include="Traits\ExternalCaptures.cs" />
+    <Compile Include="Traits\IgnoresCloak.cs" />
     <Compile Include="Traits\IgnoresDisguise.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
     <Compile Include="Traits\EngineerRepair.cs" />

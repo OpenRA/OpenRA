@@ -200,6 +200,8 @@ SONICTANK:
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: Sonictank.Husk
+	AttractsWorms:
+		Intensity: 600
 
 SONICTANK.Husk:
 	Inherits: ^Husk
@@ -272,4 +274,6 @@ GRENADIER:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		Chance: 100
+	AttractsWorms:
+		Intensity: 180
 
