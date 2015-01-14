@@ -2037,7 +2037,7 @@ Templates:
 		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
-			0: Sand
+			0: Cliff
 			2: Cliff
 			3: Cliff
 			1: Cliff
