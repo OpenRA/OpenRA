@@ -23,12 +23,12 @@ namespace OpenRA.Graphics
 		static SheetBuilder builder;
 
 		readonly int size;
-		string name;
+
+		readonly Func<string, float> lineWidth;
 
 		public SpriteFont(string name, int size)
 		{
 			this.size = size;
-			this.name = name;
 
 			face = new Face(library, name);
 			face.SetPixelSizes((uint)size, (uint)size);
@@ -39,12 +39,14 @@ namespace OpenRA.Graphics
 			// TODO: SheetBuilder state is leaked between mod switches
 			if (builder == null)
 				builder = new SheetBuilder(SheetType.BGRA);
+			Func<char, float> characterWidth = character => glyphs[Pair.New(character, Color.White)].Advance;
+			lineWidth = line => line.Sum(characterWidth);
 
-			PrecacheColor(Color.White);
-			PrecacheColor(Color.Red);
+			PrecacheColor(Color.White, name);
+			PrecacheColor(Color.Red, name);
 		}
 
-		void PrecacheColor(Color c)
+		void PrecacheColor(Color c, string name)
 		{
 			using (new PerfTimer("PrecacheColor {0} {1}px {2}".F(name, size, c.Name)))
 				for (var n = (char)0x20; n < (char)0x7f; n++)
@@ -91,7 +93,7 @@ namespace OpenRA.Graphics
 		public int2 Measure(string text)
 		{
 			var lines = text.Split('\n');
-			return new int2((int)Math.Ceiling(lines.Max(s => s.Sum(a => glyphs[Pair.New(a, Color.White)].Advance))), lines.Length * size);
+			return new int2((int)Math.Ceiling(lines.Max(lineWidth)), lines.Length * size);
 		}
 
 		Cache<Pair<char, Color>, GlyphInfo> glyphs;
