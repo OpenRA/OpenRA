@@ -46,11 +46,14 @@ namespace OpenRA.Graphics
 		readonly Dictionary<string, PaletteReference> palettes = new Dictionary<string, PaletteReference>();
 		readonly TerrainRenderer terrainRenderer;
 		readonly Lazy<DeveloperMode> devTrait;
+		readonly Func<string, PaletteReference> createPaletteReference;
 
 		internal WorldRenderer(World world)
 		{
 			World = world;
 			Viewport = new Viewport(this, world.Map);
+
+			createPaletteReference = CreatePaletteReference;
 
 			foreach (var pal in world.TraitDict.ActorsWithTrait<ILoadsPalettes>())
 				pal.Trait.LoadPalettes(this);
@@ -69,7 +72,7 @@ namespace OpenRA.Graphics
 			return new PaletteReference(name, palette.GetPaletteIndex(name), pal, palette);
 		}
 
-		public PaletteReference Palette(string name) { return palettes.GetOrAdd(name, CreatePaletteReference); }
+		public PaletteReference Palette(string name) { return palettes.GetOrAdd(name, createPaletteReference); }
 		public void AddPalette(string name, ImmutablePalette pal) { palette.AddPalette(name, pal, false); }
 		public void AddPalette(string name, ImmutablePalette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
 		public void ReplacePalette(string name, IPalette pal) { palette.ReplacePalette(name, pal); palettes[name].Palette = pal; }
