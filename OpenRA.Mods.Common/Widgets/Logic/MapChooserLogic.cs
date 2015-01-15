@@ -36,7 +36,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var approving = new Action(() => { Ui.CloseWindow(); onSelect(selectedUid); });
 			var canceling = new Action(() => { Ui.CloseWindow(); onExit(); });
 
-			widget.Get<ButtonWidget>("BUTTON_OK").OnClick = approving;
+			var okButton = widget.Get<ButtonWidget>("BUTTON_OK");
+			okButton.Disabled = this.onSelect == null;
+			okButton.OnClick = approving;
 			widget.Get<ButtonWidget>("BUTTON_CANCEL").OnClick = canceling;
 
 			scrollpanel = widget.Get<ScrollPanelWidget>("MAP_LIST");
@@ -128,8 +130,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Access the minimap to trigger async generation of the minimap.
 				preview.GetMinimap();
 
+				Action dblClick = () =>
+				{
+					if (onSelect != null)
+					{
+						Ui.CloseWindow();
+						onSelect(preview.Uid);
+					}
+				};
+
 				var item = ScrollItemWidget.Setup(preview.Uid, itemTemplate, () => selectedUid == preview.Uid,
-					() => selectedUid = preview.Uid, () => { Ui.CloseWindow(); onSelect(preview.Uid); });
+					() => selectedUid = preview.Uid, dblClick);
 				item.IsVisible = () => item.RenderBounds.IntersectsWith(scrollpanel.RenderBounds);
 
 				var titleLabel = item.Get<LabelWidget>("TITLE");
