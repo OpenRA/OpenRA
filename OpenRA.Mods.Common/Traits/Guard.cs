@@ -19,10 +19,22 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The player can give this unit the order to follow and protect friendly units with the Guardable trait.")]
-	public class GuardInfo : TraitInfo<Guard> { }
+	public class GuardInfo : ITraitInfo
+	{
+		public readonly string Voice = "Move";
+
+		public object Create(ActorInitializer init) { return new Guard(this); }
+	}
 
 	public class Guard : IResolveOrder, IOrderVoice
 	{
+		readonly GuardInfo info;
+
+		public Guard(GuardInfo info)
+		{
+			this.info = info;
+		}
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Guard")
@@ -43,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "Guard" ? "Move" : null;
+			return order.OrderString == "Guard" ? info.Voice : null;
 		}
 	}
 
