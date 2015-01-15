@@ -9,22 +9,19 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Lint
 {
-	public class CheckMapRules : ILintPass
+	public class CheckActors : ILintPass
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			try
-			{
-				Game.ModData.RulesetCache.LoadMapRules(map);
-			}
-			catch (Exception e)
-			{
-				emitError(e.Message);
-			}
+			var actorTypes = map.Actors.Value.Values.Select(a => a.Type);
+			foreach (var actor in actorTypes)
+				if (!map.Rules.Actors.Keys.Contains(actor.ToLowerInvariant()))
+					emitError("Actor {0} is not defined by any rule.".F(actor));
 		}
 	}
 }

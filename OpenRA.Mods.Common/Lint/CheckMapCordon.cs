@@ -12,23 +12,17 @@ using System;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Lint
 {
-	public class CheckTraitPrerequisites : ILintPass
+	public class CheckMapCordon : ILintPass
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			foreach (var actorInfo in map.Rules.Actors.Where(a => !a.Key.StartsWith("^")))
-				try
-				{
-					var traits = actorInfo.Value.TraitsInConstructOrder().ToArray();
-					if (traits.Length == 0)
-						emitWarning("Actor {0} has no traits. Is this intended?".F(actorInfo.Key));
-				}
-				catch (Exception e)
-				{
-					emitError("Actor {0} is not constructible; failure: {1}".F(actorInfo.Key, e.Message));
-				}
+			if (map.Bounds.Left == 0 || map.Bounds.Top == 0
+				|| map.Bounds.Right == map.MapSize.X || map.Bounds.Bottom == map.MapSize.Y)
+				emitError("This map does not define a valid cordon.\n"
+					+ "A one cell (or greater) border is required on all four sides "
+					+ "between the playable bounds and the map edges");
 		}
 	}
 }

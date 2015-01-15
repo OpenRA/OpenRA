@@ -119,10 +119,6 @@
     <Compile Include="Traits\DemoTruck.cs" />
     <Compile Include="Effects\GpsDot.cs" />
     <Compile Include="Effects\Parachute.cs" />
-    <Compile Include="Lint\CheckActorReferences.cs" />
-    <Compile Include="Lint\CheckSyncAnnotations.cs" />
-    <Compile Include="Lint\CheckTraitPrerequisites.cs" />
-    <Compile Include="Lint\LintBuildablePrerequisites.cs" />
     <Compile Include="Traits\MadTank.cs" />
     <Compile Include="Traits\Mine.cs" />
     <Compile Include="Traits\Minelayer.cs" />
@@ -181,7 +177,6 @@
     <Compile Include="Traits\Infiltration\InfiltrateForSupportPower.cs" />
     <Compile Include="Traits\Infiltration\Infiltrates.cs" />
     <Compile Include="Widgets\Logic\ObserverShroudSelectorLogic.cs" />
-    <Compile Include="Lint\CheckSequences.cs" />
     <Compile Include="Widgets\Logic\SpawnSelectorTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\ClientTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
@@ -200,9 +195,6 @@
     <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
-    <Compile Include="Lint\CheckPlayers.cs" />
-    <Compile Include="Lint\CheckActors.cs" />
-    <Compile Include="Lint\CheckMapCordon.cs" />
     <Compile Include="Traits\Parachutable.cs" />
     <Compile Include="Widgets\Logic\InstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\InstallMusicLogic.cs" />
@@ -219,7 +211,6 @@
     <Compile Include="Scripting\Properties\HarvesterProperties.cs" />
     <Compile Include="Scripting\Properties\TransportProperties.cs" />
     <Compile Include="Traits\InvulnerabilityUpgrade.cs" />
-    <Compile Include="Lint\CheckMapRules.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

@@ -130,6 +130,15 @@
     <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
+    <Compile Include="Lint\CheckSequences.cs" />
+    <Compile Include="Lint\CheckPlayers.cs" />
+    <Compile Include="Lint\CheckActors.cs" />
+    <Compile Include="Lint\CheckMapCordon.cs" />
+    <Compile Include="Lint\CheckMapRules.cs" />
+    <Compile Include="Lint\CheckActorReferences.cs" />
+    <Compile Include="Lint\CheckSyncAnnotations.cs" />
+    <Compile Include="Lint\CheckTraitPrerequisites.cs" />
+    <Compile Include="Lint\LintBuildablePrerequisites.cs" />
     <Compile Include="LoadScreens\ModChooserLoadScreen.cs" />
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
