@@ -100,7 +100,6 @@
     <Compile Include="AI\RushFuzzy.cs" />
     <Compile Include="AI\StateMachine.cs" />
     <Compile Include="Traits\Attack\AttackLeap.cs" />
-    <Compile Include="Scripting\Properties\RepairableBuildingProperties.cs" />
     <Compile Include="Traits\PaletteEffects\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="CrateSpawner.cs" />
@@ -129,7 +128,6 @@
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\ParaDrop.cs" />
     <Compile Include="Traits\PortableChrono.cs" />
-    <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
     <Compile Include="Traits\Render\RenderJammerCircle.cs" />
     <Compile Include="Traits\Render\RenderHarvester.cs" />
@@ -202,15 +200,6 @@
     <Compile Include="Traits\Attack\AttackGarrisoned.cs" />
     <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
-    <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
-    <Compile Include="Scripting\Properties\AirstrikeProperties.cs" />
-    <Compile Include="Scripting\Properties\ProductionProperties.cs" />
-    <Compile Include="Scripting\Properties\MissionObjectiveProperties.cs" />
-    <Compile Include="Scripting\Properties\MobileProperties.cs" />
-    <Compile Include="Scripting\Properties\GeneralProperties.cs" />
-    <Compile Include="Scripting\Properties\CombatProperties.cs" />
-    <Compile Include="Scripting\Properties\PlayerProperties.cs" />
-    <Compile Include="Scripting\Properties\TransportProperties.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
     <Compile Include="Lint\CheckPlayers.cs" />
     <Compile Include="Lint\CheckActors.cs" />
@@ -229,10 +218,8 @@
     <Compile Include="Widgets\Logic\DebugMenuLogic.cs" />
     <Compile Include="Warheads\PerCellDamageWarhead.cs" />
     <Compile Include="Scripting\Properties\HarvesterProperties.cs" />
-    <Compile Include="Scripting\Properties\HelicopterProperties.cs" />
-    <Compile Include="Scripting\Properties\PlaneProperties.cs" />
+    <Compile Include="Scripting\Properties\TransportProperties.cs" />
     <Compile Include="Traits\InvulnerabilityUpgrade.cs" />
-    <Compile Include="Scripting\Properties\TransformProperties.cs" />
     <Compile Include="Lint\CheckMapRules.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -155,6 +155,7 @@
     <Compile Include="Scripting\Global\MapGlobal.cs" />
     <Compile Include="Scripting\Global\MediaGlobal.cs" />
     <Compile Include="Scripting\Global\PlayerGlobal.cs" />
+    <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
     <Compile Include="Scripting\Global\TriggerGlobal.cs" />
     <Compile Include="Scripting\Global\UtilsGlobal.cs" />
     <Compile Include="Scripting\Properties\DiplomacyProperties.cs" />
@@ -162,6 +163,18 @@
     <Compile Include="Scripting\Properties\PowerProperties.cs" />
     <Compile Include="Scripting\Properties\ResourceProperties.cs" />
     <Compile Include="Scripting\Properties\UpgradeProperties.cs" />
+    <Compile Include="Scripting\Properties\AirstrikeProperties.cs" />
+    <Compile Include="Scripting\Properties\ProductionProperties.cs" />
+    <Compile Include="Scripting\Properties\MissionObjectiveProperties.cs" />
+    <Compile Include="Scripting\Properties\MobileProperties.cs" />
+    <Compile Include="Scripting\Properties\GeneralProperties.cs" />
+    <Compile Include="Scripting\Properties\CombatProperties.cs" />
+    <Compile Include="Scripting\Properties\PlayerProperties.cs" />
+    <Compile Include="Scripting\Properties\HelicopterProperties.cs" />
+    <Compile Include="Scripting\Properties\PlaneProperties.cs" />
+    <Compile Include="Scripting\Properties\TransformProperties.cs" />
+    <Compile Include="Scripting\Properties\RepairableBuildingProperties.cs" />
+    <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\Air\Aircraft.cs" />
     <Compile Include="Traits\Air\AttackBomber.cs" />

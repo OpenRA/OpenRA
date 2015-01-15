@@ -10,12 +10,11 @@
 
 using System;
 using Eluant;
-using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("MissionObjectives")]
 	public class MissionObjectiveProperties : ScriptPlayerProperties
