@@ -307,7 +307,7 @@ PDOX:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
-		Prerequisites: atek, ~structures.allies, ~!structures.germany, ~techlevel.unrestricted
+		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
 		BuildLimit: 1
 	Valued:
 		Cost: 1500
@@ -328,7 +328,15 @@ PDOX:
 		Range: 10c0
 	Bib:
 		HasMinibib: Yes
-	ChronoshiftPower:
+	ProvidesCustomPrerequisite@germany:
+		Race: germany
+		Prerequisite: pdox.germany
+	ProvidesCustomPrerequisite@germanstructure:
+		RequiresPrerequisites: structures.germany
+		Prerequisite: pdox.germany
+	ChronoshiftPower@chronoshift:
+		OrderName: Chronoshift
+		Prerequisites: !pdox.germany
 		Icon: chrono
 		ChargeTime: 120
 		Description: Chronoshift
@@ -340,26 +348,27 @@ PDOX:
 		Duration: 20
 		KillCargo: yes
 		DisplayRadarPing: True
+	ChronoshiftPower@advancedchronoshift:
+		OrderName: AdvancedChronoshift
+		Prerequisites: pdox.germany
+		Icon: chrono
+		ChargeTime: 120
+		Description: Advanced Chronoshift
+		LongDesc: Teleports a large group of units across\nthe map for 20 seconds.
+		SelectTargetSound: slcttgt1.aud
+		InsufficientPowerSound: nopowr1.aud
+		BeginChargeSound: chrochr1.aud
+		EndChargeSound: chrordy1.aud
+		Duration: 20
+		KillCargo: yes
+		DisplayRadarPing: True
+		Range: 2
 	SupportPowerChargeBar:
 	-AcceptsSupplies:
 	Power:
 		Amount: -200
 	MustBeDestroyed:
 		RequiredForShortGame: false
-
-PDOX.Germany:
-	Inherits: PDOX
-	Buildable:
-		Prerequisites: atek, ~structures.germany, ~techlevel.unrestricted
-	RenderBuilding:
-		Image: pdox
-	Tooltip:
-		Name: Advanced Chronosphere
-		Description: Teleports a large group of units across the\nmap for a short time. Requires power to operate.\n  Special Ability: Chronoshift\n\nMaximum 1 can be built
-	ChronoshiftPower:
-		Description: Advanced Chronoshift
-		LongDesc: Teleports a large group of units across the\nmap for 20 seconds.
-		Range: 2
 
 TSLA:
 	Inherits: ^Defense
