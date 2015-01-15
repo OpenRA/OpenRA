@@ -204,9 +204,6 @@
 	GivesBounty:
 	Crushable:
 		CrushSound: CRUSH1.WAV
-	RepairableNear:
-		Buildings: barra, barro
-		CloseEnough: 1
 	CombatDebugOverlay:
 	Guard:
 	Guardable:

@@ -143,8 +143,6 @@ CONCRETEB:
 		Produces: Infantry
 	PrimaryBuilding:
 	ProductionBar:
-	RepairsUnits:
-		ValuePercentage: 0
 	ProvidesCustomPrerequisite:
 		Prerequisite: barracks
 	Power:
