@@ -12,7 +12,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Display the time remaining until the super weapon attached to the actor is ready to the player and his allies.")]
 	class SupportPowerChargeBarInfo : ITraitInfo

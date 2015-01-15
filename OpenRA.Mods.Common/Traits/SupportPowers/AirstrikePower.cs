@@ -14,13 +14,12 @@ using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	class AirstrikePowerInfo : SupportPowerInfo
+	public class AirstrikePowerInfo : SupportPowerInfo
 	{
 		[ActorReference]
 		public readonly string UnitType = "badr.bomber";
@@ -43,7 +42,7 @@ namespace OpenRA.Mods.RA.Traits
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.Self, this); }
 	}
 
-	class AirstrikePower : SupportPower
+	public class AirstrikePower : SupportPower
 	{
 		public AirstrikePower(Actor self, AirstrikePowerInfo info)
 			: base(self, info) { }

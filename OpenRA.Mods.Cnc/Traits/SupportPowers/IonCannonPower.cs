@@ -10,7 +10,7 @@
 
 using OpenRA.Mods.Cnc.Effects;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.RA.Traits;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
