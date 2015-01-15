@@ -13,7 +13,7 @@ using System.Linq;
 using System.Reflection;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Lint
 {
 	class CheckSyncAnnotations : ILintPass
 	{

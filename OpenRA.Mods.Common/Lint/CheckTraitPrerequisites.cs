@@ -12,16 +12,23 @@ using System;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Lint
 {
-	public class CheckActors : ILintPass
+	public class CheckTraitPrerequisites : ILintPass
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			var actorTypes = map.Actors.Value.Values.Select(a => a.Type);
-			foreach (var actor in actorTypes)
-				if (!map.Rules.Actors.Keys.Contains(actor.ToLowerInvariant()))
-					emitError("Actor {0} is not defined by any rule.".F(actor));
+			foreach (var actorInfo in map.Rules.Actors.Where(a => !a.Key.StartsWith("^")))
+				try
+				{
+					var traits = actorInfo.Value.TraitsInConstructOrder().ToArray();
+					if (traits.Length == 0)
+						emitWarning("Actor {0} has no traits. Is this intended?".F(actorInfo.Key));
+				}
+				catch (Exception e)
+				{
+					emitError("Actor {0} is not constructible; failure: {1}".F(actorInfo.Key, e.Message));
+				}
 		}
 	}
 }

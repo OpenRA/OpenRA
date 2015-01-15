@@ -9,20 +9,22 @@
 #endregion
 
 using System;
-using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Lint
 {
-	public class CheckMapCordon : ILintPass
+	public class CheckMapRules : ILintPass
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			if (map.Bounds.Left == 0 || map.Bounds.Top == 0
-				|| map.Bounds.Right == map.MapSize.X || map.Bounds.Bottom == map.MapSize.Y)
-				emitError("This map does not define a valid cordon.\n"
-					+ "A one cell (or greater) border is required on all four sides "
-					+ "between the playable bounds and the map edges");
+			try
+			{
+				Game.ModData.RulesetCache.LoadMapRules(map);
+			}
+			catch (Exception e)
+			{
+				emitError(e.Message);
+			}
 		}
 	}
 }
