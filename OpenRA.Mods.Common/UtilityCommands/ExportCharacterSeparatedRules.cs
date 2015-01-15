@@ -11,7 +11,7 @@
 using System;
 using System.IO;
 
-namespace OpenRA.Mods.RA.UtilityCommands
+namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ExportCharacterSeparatedRules : IUtilityCommand
 	{

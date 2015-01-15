@@ -32,8 +32,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\Eluant.dll</HintPath>
       <Private>False</Private>
@@ -374,8 +378,11 @@
     <Compile Include="Traits\World\SpawnMPUnits.cs" />
     <Compile Include="Traits\World\StartGameNotification.cs" />
     <Compile Include="Traits\World\TerrainGeometryOverlay.cs" />
+    <Compile Include="UtilityCommands\ActorStatsExport.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
+    <Compile Include="UtilityCommands\ExportCharacterSeparatedRules.cs" />
+    <Compile Include="UtilityCommands\Extensions.cs" />
     <Compile Include="UtilityCommands\ExtractFilesCommand.cs" />
     <Compile Include="UtilityCommands\ExtractLanguageStringsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractLuaDocsCommand.cs" />
