@@ -173,7 +173,6 @@
     <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
     <Compile Include="Widgets\ObserverProductionIconsWidget.cs" />
     <Compile Include="Widgets\WorldCommandWidget.cs" />
-    <Compile Include="Player\BaseAttackNotifier.cs" />
     <Compile Include="Player\HarvesterAttackNotifier.cs" />
     <Compile Include="Traits\Render\RenderShroudCircle.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForCash.cs" />
