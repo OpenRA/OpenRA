@@ -14,9 +14,18 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class RepairsUnitsInfo : TraitInfo<RepairsUnits>
 	{
-		public readonly int ValuePercentage = 20; // charge 20% of the unit value to fully repair
+		[Desc("Cost in % of the unit value to fully repair the unit.")]
+		public readonly int ValuePercentage = 20;
 		public readonly int HpPerStep = 10;
-		public readonly int Interval = 24; // Ticks
+
+		[Desc("Time (in ticks) between two repair steps.")]
+		public readonly int Interval = 24;
+
+		[Desc("The sound played when starting to repair a unit.")]
+		public readonly string StartRepairingNotification = "Repairing";
+
+		[Desc("The sound played when repairing a unit is done.")]
+		public readonly string FinishRepairingNotification = null;
 	}
 
 	public class RepairsUnits { }
