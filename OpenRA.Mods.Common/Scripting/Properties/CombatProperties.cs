@@ -14,11 +14,10 @@ using Eluant;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("Combat")]
 	public class CombatProperties : ScriptActorProperties, Requires<AttackBaseInfo>, Requires<IMoveInfo>

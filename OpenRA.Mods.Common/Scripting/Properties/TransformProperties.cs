@@ -12,24 +12,24 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
-	[ScriptPropertyGroup("Guard")]
-	public class GuardProperties : ScriptActorProperties, Requires<GuardInfo>, Requires<IMoveInfo>
+	[ScriptPropertyGroup("Transform")]
+	public class TransformProperties : ScriptActorProperties, Requires<TransformsInfo>
 	{
-		Guard guard;
-		public GuardProperties(ScriptContext context, Actor self)
+		readonly Transforms transforms;
+
+		public TransformProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			guard = self.Trait<Guard>();
+			transforms = self.Trait<Transforms>();
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Guard the target actor.")]
-		public void Guard(Actor targetActor)
+		[Desc("Queue a new transformation.")]
+		public void Deploy()
 		{
-			if (targetActor.HasTrait<Guardable>())
-				guard.GuardTarget(Self, Target.FromActor(targetActor));
+			transforms.DeployTransform(true);
 		}
 	}
 }
