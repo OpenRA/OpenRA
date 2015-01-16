@@ -24,7 +24,6 @@ return {
   ["&Fold/Unfold All"] = "全 折叠/展开", -- src\editor\menu_edit.lua
   ["&Frequently Asked Questions"] = nil, -- src\editor\menu_help.lua
   ["&Getting Started Guide"] = nil, -- src\editor\menu_help.lua
-  ["Go To Line..."] = "到...行", -- src\editor\menu_search.lua
   ["&Help"] = "帮助", -- src\editor\menu_help.lua
   ["&New Directory"] = nil, -- src\editor\filetree.lua
   ["&New"] = "新建", -- src\editor\menu_file.lua
@@ -57,8 +56,8 @@ return {
   ["Add Watch Expression"] = "添加监视表达式", -- src\editor\editor.lua
   ["All files"] = "全部文件", -- src\editor\commands.lua
   ["Allow external process to start debugging"] = "允许外部进程开启除错", -- src\editor\menu_project.lua
-  ["Analyze the source code"] = "分析源代码", -- src\editor\inspect.lua, src\editor\inspect.lua-profile
-  ["Analyze"] = "分析", -- src\editor\inspect.lua, src\editor\inspect.lua-profile
+  ["Analyze the source code"] = "分析源代码", -- src\editor\inspect.lua
+  ["Analyze"] = "分析", -- src\editor\inspect.lua
   ["Auto Complete Identifiers"] = "自动补全标识符", -- src\editor\menu_edit.lua
   ["Auto complete while typing"] = "当输入时自动补全", -- src\editor\menu_edit.lua
   ["Bookmark"] = nil, -- src\editor\menu_edit.lua
@@ -117,7 +116,6 @@ return {
   ["E&xit"] = "离开", -- src\editor\menu_file.lua
   ["Enter Lua code and press Enter to run it."] = "输入Lua代码然后按 <Enter> 以执行", -- src\editor\shellbox.lua
   ["Enter command line parameters (use Cancel to clear)"] = nil, -- src\editor\menu_project.lua
-  ["Enter line number"] = "输入行号码", -- src\editor\menu_search.lua
   ["Enter replacement text"] = nil, -- src\editor\editor.lua
   ["Error while loading API file: %s"] = "导入API档时出错误: %s", -- src\editor\autocomplete.lua
   ["Error while loading configuration file: %s"] = "导入configuration档时出错误: %s", -- src\editor\style.lua
@@ -140,6 +138,7 @@ return {
   ["Find &Next"] = "查找下一个", -- src\editor\menu_search.lua
   ["Find &Previous"] = "查找上一个", -- src\editor\menu_search.lua
   ["Find In Files"] = "在文档中查找", -- src\editor\findreplace.lua
+  ["Find and insert library function"] = nil, -- src\editor\menu_search.lua
   ["Find and replace text in files"] = "在文档中查找text然后更换", -- src\editor\menu_search.lua
   ["Find and replace text"] = "查找text然后更换", -- src\editor\menu_search.lua
   ["Find text in files"] = "在文档中查找text", -- src\editor\menu_search.lua
@@ -152,13 +151,19 @@ return {
   ["Found"] = "找到", -- src\editor\findreplace.lua
   ["Full &Screen"] = "全屏", -- src\editor\menu_view.lua
   ["Go To Definition"] = nil, -- src\editor\editor.lua
-  ["Go to line"] = "到...行", -- src\editor\menu_search.lua
+  ["Go To File..."] = nil, -- src\editor\menu_search.lua
+  ["Go To Line..."] = "到...行", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = nil, -- src\editor\menu_edit.lua
   ["Go To Previous Bookmark"] = nil, -- src\editor\menu_edit.lua
-  ["Go to a selected line"] = "到所选的行", -- src\editor\menu_search.lua
+  ["Go To Symbol..."] = nil, -- src\editor\menu_search.lua
+  ["Go to file"] = nil, -- src\editor\menu_search.lua
+  ["Go to line"] = "到...行", -- src\editor\menu_search.lua
+  ["Go to symbol"] = nil, -- src\editor\menu_search.lua
+  ["Hide '.%s' Files"] = nil, -- src\editor\filetree.lua
   ["INS"] = "INS", -- src\editor\editor.lua
   ["Ignored error in debugger initialization code: %s."] = nil, -- src\editor\debugger.lua
   ["In Files"] = "在档案里", -- src\editor\findreplace.lua
+  ["Insert Library Function..."] = nil, -- src\editor\menu_search.lua
   ["Known Files"] = "所知的文档", -- src\editor\commands.lua
   ["Ln: %d"] = "行: %d", -- src\editor\editor.lua
   ["Local console"] = "本地主控台", -- src\editor\gui.lua, src\editor\shellbox.lua
@@ -167,6 +172,7 @@ return {
   ["Match &case"] = "case匹配", -- src\editor\findreplace.lua
   ["Match &whole word"] = "全句匹配", -- src\editor\findreplace.lua
   ["Mixed end-of-line encodings detected."] = "发现混杂的EOL编码", -- src\editor\commands.lua
+  ["Navigate"] = nil, -- src\editor\menu_search.lua
   ["New &File"] = nil, -- src\editor\filetree.lua
   ["OVR"] = "OVR", -- src\editor\editor.lua
   ["Open With Default Program"] = nil, -- src\editor\filetree.lua
@@ -241,7 +247,11 @@ return {
   ["Settings: System"] = "设置: 系统", -- src\editor\menu_edit.lua
   ["Settings: User"] = "设置: 用户", -- src\editor\menu_edit.lua
   ["Show &Tooltip"] = "展现tooltip", -- src\editor\menu_edit.lua
+  ["Show All Files"] = nil, -- src\editor\filetree.lua
+  ["Show Hidden Files"] = nil, -- src\editor\filetree.lua
   ["Show Location"] = nil, -- src\editor\gui.lua, src\editor\filetree.lua
+  ["Show all files"] = nil, -- src\editor\filetree.lua
+  ["Show files previously hidden"] = nil, -- src\editor\filetree.lua
   ["Show tooltip for current position; place cursor after opening bracket of function"] = "在当前的位置展现tooltip; 把游标放置于函数的开括号之后", -- src\editor\menu_edit.lua
   ["Show/Hide the status bar"] = nil, -- src\editor\menu_view.lua
   ["Show/Hide the toolbar"] = nil, -- src\editor\menu_view.lua

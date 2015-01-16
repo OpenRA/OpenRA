@@ -25,7 +25,6 @@ return {
   ["&Fold/Unfold All"] = "Re&plier/Déplier tout", -- src\editor\menu_edit.lua
   ["&Frequently Asked Questions"] = "&Questions Fréquemment Posées" , -- src\editor\menu_help.lua
   ["&Getting Started Guide"] = "&Guide de Prise en Main", -- src\editor\menu_help.lua
-  ["Go To Line..."] = "&Aller à la ligne...", -- src\editor\menu_search.lua
   ["&Help"] = "Aid&e", -- src\editor\menu_help.lua
   ["&New Directory"] = "&Nouveau Répertoire", -- src\editor\filetree.lua
   ["&New"] = "&Nouveau", -- src\editor\menu_file.lua
@@ -58,8 +57,8 @@ return {
   ["Add Watch Expression"] = "Ajouter une expression", -- src\editor\editor.lua
   ["All files"] = "Tous les fichiers", -- src\editor\commands.lua
   ["Allow external process to start debugging"] = "Autoriser les processus externes à lancer le débogage", -- src\editor\menu_project.lua
-  ["Analyze the source code"] = "Analyser le code source", -- src\editor\inspect.lua, src\editor\inspect.lua-profile
-  ["Analyze"] = "Analyser", -- src\editor\inspect.lua, src\editor\inspect.lua-profile
+  ["Analyze the source code"] = "Analyser le code source", -- src\editor\inspect.lua
+  ["Analyze"] = "Analyser", -- src\editor\inspect.lua
   ["Auto Complete Identifiers"] = "Auto-compléter les identifiants", -- src\editor\menu_edit.lua
   ["Auto complete while typing"] = "Auto-compléter lors de la saisie", -- src\editor\menu_edit.lua
   ["Bookmark"] = "&Marque-pages", -- src\editor\menu_edit.lua
@@ -118,7 +117,6 @@ return {
   ["E&xit"] = "&Quitter", -- src\editor\menu_file.lua
   ["Enter Lua code and press Enter to run it."] = "Saisissez du code Lua et appuyez sur <Entrée> pour l´exécuter.", -- src\editor\shellbox.lua
   ["Enter command line parameters (use Cancel to clear)"] = "Entrez des paramètres de ligne de commande (pressez Annuler pour effacer)", -- src\editor\menu_project.lua
-  ["Enter line number"] = "Entrez le numéro de ligne", -- src\editor\menu_search.lua
   ["Enter replacement text"] = nil, -- src\editor\editor.lua
   ["Error while loading API file: %s"] = "Erreur lors du chargement du fichier d'API : %s", -- src\editor\autocomplete.lua
   ["Error while loading configuration file: %s"] = "Erreur lors du chargement du fichier de configuration : %s", -- src\editor\style.lua
@@ -141,6 +139,7 @@ return {
   ["Find &Next"] = "Rechercher l'occurrence &suivante", -- src\editor\menu_search.lua
   ["Find &Previous"] = "Rechercher l'occurrence &précédente", -- src\editor\menu_search.lua
   ["Find In Files"] = "Rechercher dans les fichiers", -- src\editor\findreplace.lua
+  ["Find and insert library function"] = nil, -- src\editor\menu_search.lua
   ["Find and replace text in files"] = "Rechercher et remplacer le texte dans les fichiers", -- src\editor\menu_search.lua
   ["Find and replace text"] = "Rechercher et remplacer le texte", -- src\editor\menu_search.lua
   ["Find text in files"] = "Rechercher le texte dans les fichiers", -- src\editor\menu_search.lua
@@ -153,13 +152,19 @@ return {
   ["Found"] = "Occurrences trouvées :", -- src\editor\findreplace.lua
   ["Full &Screen"] = "&Plein écran", -- src\editor\menu_view.lua
   ["Go To Definition"] = "Aller à la définition", -- src\editor\editor.lua
-  ["Go to line"] = "Aller à la ligne", -- src\editor\menu_search.lua
+  ["Go To File..."] = nil, -- src\editor\menu_search.lua
+  ["Go To Line..."] = "&Aller à la ligne...", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = "Aller au marque-page suivant", -- src\editor\menu_edit.lua
   ["Go To Previous Bookmark"] = "Aller au marque-page précédent", -- src\editor\menu_edit.lua
-  ["Go to a selected line"] = "Aller à la ligne sélectionnée", -- src\editor\menu_search.lua
+  ["Go To Symbol..."] = nil, -- src\editor\menu_search.lua
+  ["Go to file"] = nil, -- src\editor\menu_search.lua
+  ["Go to line"] = "Aller à la ligne", -- src\editor\menu_search.lua
+  ["Go to symbol"] = nil, -- src\editor\menu_search.lua
+  ["Hide '.%s' Files"] = nil, -- src\editor\filetree.lua
   ["INS"] = "INS", -- src\editor\editor.lua
   ["Ignored error in debugger initialization code: %s."] = nil, -- src\editor\debugger.lua
   ["In Files"] = "Dans les fichiers", -- src\editor\findreplace.lua
+  ["Insert Library Function..."] = nil, -- src\editor\menu_search.lua
   ["Known Files"] = "Fichiers connus", -- src\editor\commands.lua
   ["Ln: %d"] = "Lig : %d", -- src\editor\editor.lua
   ["Local console"] = "Console locale", -- src\editor\gui.lua, src\editor\shellbox.lua
@@ -168,6 +173,7 @@ return {
   ["Match &case"] = "Respecter la &casse", -- src\editor\findreplace.lua
   ["Match &whole word"] = "&Mot entier uniquement", -- src\editor\findreplace.lua
   ["Mixed end-of-line encodings detected."] = "Plusieurs codages de fin de ligne détectés.", -- src\editor\commands.lua
+  ["Navigate"] = nil, -- src\editor\menu_search.lua
   ["New &File"] = "Nouveau &Fichier", -- src\editor\filetree.lua
   ["OVR"] = "OVR", -- src\editor\editor.lua
   ["Open With Default Program"] = "Ouvrir avec le programme par défaut", -- src\editor\filetree.lua
@@ -242,7 +248,11 @@ return {
   ["Settings: System"] = "Paramètres : Système", -- src\editor\menu_edit.lua
   ["Settings: User"] = "Paramètres : Utilisateur", -- src\editor\menu_edit.lua
   ["Show &Tooltip"] = "Afficher l'info-&bulle", -- src\editor\menu_edit.lua
+  ["Show All Files"] = nil, -- src\editor\filetree.lua
+  ["Show Hidden Files"] = nil, -- src\editor\filetree.lua
   ["Show Location"] = "Afficher l'emplacement", -- src\editor\gui.lua, src\editor\filetree.lua
+  ["Show all files"] = nil, -- src\editor\filetree.lua
+  ["Show files previously hidden"] = nil, -- src\editor\filetree.lua
   ["Show tooltip for current position; place cursor after opening bracket of function"] = "Afficher l'info-bulle pour la position actuelle ; placez le curseur après la parenthèse ouvrante de la fonction", -- src\editor\menu_edit.lua
   ["Show/Hide the status bar"] = "Afficher/Masquer la barre de statut", -- src\editor\menu_view.lua
   ["Show/Hide the toolbar"] = "Afficher/Masquer la barre d'outils", -- src\editor\menu_view.lua

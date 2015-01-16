@@ -26,7 +26,6 @@ return {
   ["&Fold/Unfold All"] = "&Kaŝi/Malkaŝi ĉion", -- src\editor\menu_edit.lua
   ["&Frequently Asked Questions"] = "&Oftaj demandoj", -- src\editor\menu_help.lua
   ["&Getting Started Guide"] = "&Ekgvidilo", -- src\editor\menu_help.lua
-  ["Go To Line..."] = "&Iri al linio...", -- src\editor\menu_search.lua
   ["&Help"] = "&Helpo", -- src\editor\menu_help.lua
   ["&New Directory"] = "&Nova dosierujo", -- src\editor\filetree.lua
   ["&New"] = "&Nova paĝo", -- src\editor\menu_file.lua
@@ -59,8 +58,8 @@ return {
   ["Add Watch Expression"] = "Aldoni observadaĵan esprimon", -- src\editor\editor.lua
   ["All files"] = "Ĉiuj dosieroj", -- src\editor\commands.lua
   ["Allow external process to start debugging"] = "Lasi eksteran procezon ek-sencimigi", -- src\editor\menu_project.lua
-  ["Analyze the source code"] = "Analizi fontkodon", -- src\editor\inspect.lua, src\editor\inspect.lua-profile
-  ["Analyze"] = "Analizi", -- src\editor\inspect.lua, src\editor\inspect.lua-profile
+  ["Analyze the source code"] = "Analizi fontkodon", -- src\editor\inspect.lua
+  ["Analyze"] = "Analizi", -- src\editor\inspect.lua
   ["Auto Complete Identifiers"] = "Aŭtomate kompletigi fontkodnomojn", -- src\editor\menu_edit.lua
   ["Auto complete while typing"] = "Aŭtomate kompletigi dumtajpe", -- src\editor\menu_edit.lua
   ["Bookmark"] = "Legosigno", -- src\editor\menu_edit.lua
@@ -119,7 +118,6 @@ return {
   ["E&xit"] = "&Eliri", -- src\editor\menu_file.lua
   ["Enter Lua code and press Enter to run it."] = "Enigu fontkodon de Lua kaj premu enenklavon por plenumi ĝin.", -- src\editor\shellbox.lua
   ["Enter command line parameters (use Cancel to clear)"] = "Enigu komandliniajn parametrojn (uzu nulig-butonon por viŝi)", -- src\editor\menu_project.lua
-  ["Enter line number"] = "Enigu linian numeron", -- src\editor\menu_search.lua
   ["Enter replacement text"] = "Enigu anstataŭigan tekston", -- src\editor\editor.lua
   ["Error while loading API file: %s"] = "Eraro okazis dum ŝargado de API-a dosiero: %s", -- src\editor\autocomplete.lua
   ["Error while loading configuration file: %s"] = "Eraro okazis dum ŝargado de agorda dosiero: %s", -- src\editor\style.lua
@@ -142,6 +140,7 @@ return {
   ["Find &Next"] = "&Pluserĉi", -- src\editor\menu_search.lua
   ["Find &Previous"] = "Traserĉi &antaŭanta", -- src\editor\menu_search.lua
   ["Find In Files"] = "Traserĉi en dosieroj", -- src\editor\findreplace.lua
+  ["Find and insert library function"] = nil, -- src\editor\menu_search.lua
   ["Find and replace text in files"] = "Traserĉi kaj anstataŭi tekston en dosieroj", -- src\editor\menu_search.lua
   ["Find and replace text"] = "Traserĉi kaj anstataŭi tekston", -- src\editor\menu_search.lua
   ["Find text in files"] = "Traserĉi tekston en dosieroj", -- src\editor\menu_search.lua
@@ -154,13 +153,19 @@ return {
   ["Found"] = "Trovis", -- src\editor\findreplace.lua
   ["Full &Screen"] = "Plenekrana &reĝimo", -- src\editor\menu_view.lua
   ["Go To Definition"] = "Iri al deklaro", -- src\editor\editor.lua
-  ["Go to line"] = "Iri al linio", -- src\editor\menu_search.lua
+  ["Go To File..."] = nil, -- src\editor\menu_search.lua
+  ["Go To Line..."] = "&Iri al linio...", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = "Iri al sekvanta legosigno", -- src\editor\menu_edit.lua
   ["Go To Previous Bookmark"] = "Iri al antaŭanta legosigno", -- src\editor\menu_edit.lua
-  ["Go to a selected line"] = "Iri al elektita linio", -- src\editor\menu_search.lua
+  ["Go To Symbol..."] = nil, -- src\editor\menu_search.lua
+  ["Go to file"] = nil, -- src\editor\menu_search.lua
+  ["Go to line"] = "Iri al linio", -- src\editor\menu_search.lua
+  ["Go to symbol"] = nil, -- src\editor\menu_search.lua
+  ["Hide '.%s' Files"] = nil, -- src\editor\filetree.lua
   ["INS"] = "INS", -- src\editor\editor.lua
   ["Ignored error in debugger initialization code: %s."] = "Ignoris eraron en pravaloriza kodo de la sencimigilo: %s.", -- src\editor\debugger.lua
   ["In Files"] = "Ene de dosieroj", -- src\editor\findreplace.lua
+  ["Insert Library Function..."] = nil, -- src\editor\menu_search.lua
   ["Known Files"] = "Konataj dosieroj", -- src\editor\commands.lua
   ["Ln: %d"] = "Ln: %d", -- src\editor\editor.lua
   ["Local console"] = "Loka konzolo", -- src\editor\gui.lua, src\editor\shellbox.lua
@@ -169,6 +174,7 @@ return {
   ["Match &case"] = "Atenti &usklecon", -- src\editor\findreplace.lua
   ["Match &whole word"] = "Atenti &plenan vorton", -- src\editor\findreplace.lua
   ["Mixed end-of-line encodings detected."] = "Detektis kodoprezentojn miksitajn linifinajn", -- src\editor\commands.lua
+  ["Navigate"] = nil, -- src\editor\menu_search.lua
   ["New &File"] = "Nova &dosiero", -- src\editor\filetree.lua
   ["OVR"] = "SUS", -- src\editor\editor.lua
   ["Open With Default Program"] = "Malfermi per la defaŭlta programo", -- src\editor\filetree.lua
@@ -243,7 +249,11 @@ return {
   ["Settings: System"] = "Agordoj de la sistemo", -- src\editor\menu_edit.lua
   ["Settings: User"] = "Agordoj de la uzanto", -- src\editor\menu_edit.lua
   ["Show &Tooltip"] = "Montri &ŝpruchelpilon", -- src\editor\menu_edit.lua
+  ["Show All Files"] = nil, -- src\editor\filetree.lua
+  ["Show Hidden Files"] = nil, -- src\editor\filetree.lua
   ["Show Location"] = "Montri lokon", -- src\editor\gui.lua, src\editor\filetree.lua
+  ["Show all files"] = nil, -- src\editor\filetree.lua
+  ["Show files previously hidden"] = nil, -- src\editor\filetree.lua
   ["Show tooltip for current position; place cursor after opening bracket of function"] = "Montri ŝpruchelpilon pri la kuranta pozicio; meti la tajpmontrilon preter la ronda ekkrampo de la funkcio", -- src\editor\menu_edit.lua
   ["Show/Hide the status bar"] = "Montri/Kaŝi la statan breton", -- src\editor\menu_view.lua
   ["Show/Hide the toolbar"] = "Montri/Kaŝi la ilobreton", -- src\editor\menu_view.lua

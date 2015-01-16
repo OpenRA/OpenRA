@@ -25,7 +25,6 @@ return {
   ["&Fold/Unfold All"] = "Св&ернуть/развернуть все", -- src\editor\menu_edit.lua
   ["&Frequently Asked Questions"] = "&Часто задаваемые вопросы", -- src\editor\menu_help.lua
   ["&Getting Started Guide"] = nil, -- src\editor\menu_help.lua
-  ["Go To Line..."] = "&Перейти к строке...", -- src\editor\menu_search.lua
   ["&Help"] = "&Справка", -- src\editor\menu_help.lua
   ["&New Directory"] = "&Новая папка", -- src\editor\filetree.lua
   ["&New"] = "Соз&дать", -- src\editor\menu_file.lua
@@ -58,8 +57,8 @@ return {
   ["Add Watch Expression"] = "Добавить выражение", -- src\editor\editor.lua
   ["All files"] = "Все файлы", -- src\editor\commands.lua
   ["Allow external process to start debugging"] = "Разрешить внешнему процессу начать отладку", -- src\editor\menu_project.lua
-  ["Analyze the source code"] = "Проанализировать исходный код", -- src\editor\inspect.lua, src\editor\inspect.lua-profile
-  ["Analyze"] = "Анализировать", -- src\editor\inspect.lua, src\editor\inspect.lua-profile
+  ["Analyze the source code"] = "Проанализировать исходный код", -- src\editor\inspect.lua
+  ["Analyze"] = "Анализировать", -- src\editor\inspect.lua
   ["Auto Complete Identifiers"] = "Автодополнение идентификаторов", -- src\editor\menu_edit.lua
   ["Auto complete while typing"] = "Автоматически дополнять идентификаторы при наборе", -- src\editor\menu_edit.lua
   ["Bookmark"] = "Закладка", -- src\editor\menu_edit.lua
@@ -118,7 +117,6 @@ return {
   ["E&xit"] = "Вы&ход", -- src\editor\menu_file.lua
   ["Enter Lua code and press Enter to run it."] = "Введите код на Lua и нажмите Enter для выполнения.", -- src\editor\shellbox.lua
   ["Enter command line parameters (use Cancel to clear)"] = "Введите параметры командной строки (Cancel чтобы очистить)", -- src\editor\menu_project.lua
-  ["Enter line number"] = "Введите номер строки", -- src\editor\menu_search.lua
   ["Enter replacement text"] = "Введите текст замены", -- src\editor\editor.lua
   ["Error while loading API file: %s"] = "Ошибка загрузки файла определений API: %s", -- src\editor\autocomplete.lua
   ["Error while loading configuration file: %s"] = "Ошибка загрузки файла конфигурации: %s", -- src\editor\style.lua
@@ -141,6 +139,7 @@ return {
   ["Find &Next"] = "Найти &далее", -- src\editor\menu_search.lua
   ["Find &Previous"] = "Найти &ранее", -- src\editor\menu_search.lua
   ["Find In Files"] = "Найти в файлах", -- src\editor\findreplace.lua
+  ["Find and insert library function"] = nil, -- src\editor\menu_search.lua
   ["Find and replace text in files"] = "Найти и заменить текст в файлах", -- src\editor\menu_search.lua
   ["Find and replace text"] = "Найти и заменить текст", -- src\editor\menu_search.lua
   ["Find text in files"] = "Найти текст в файлах", -- src\editor\menu_search.lua
@@ -153,13 +152,19 @@ return {
   ["Found"] = "Найдено", -- src\editor\findreplace.lua
   ["Full &Screen"] = "Во весь экр&ан", -- src\editor\menu_view.lua
   ["Go To Definition"] = "Перейти к определению", -- src\editor\editor.lua
-  ["Go to line"] = "Перейти к строке", -- src\editor\menu_search.lua
+  ["Go To File..."] = nil, -- src\editor\menu_search.lua
+  ["Go To Line..."] = "&Перейти к строке...", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = "Перейти к следующей закладке", -- src\editor\menu_edit.lua
   ["Go To Previous Bookmark"] = "Перейти к предыдущей закладке", -- src\editor\menu_edit.lua
-  ["Go to a selected line"] = "Перейти к заданной строке", -- src\editor\menu_search.lua
+  ["Go To Symbol..."] = nil, -- src\editor\menu_search.lua
+  ["Go to file"] = nil, -- src\editor\menu_search.lua
+  ["Go to line"] = "Перейти к строке", -- src\editor\menu_search.lua
+  ["Go to symbol"] = nil, -- src\editor\menu_search.lua
+  ["Hide '.%s' Files"] = nil, -- src\editor\filetree.lua
   ["INS"] = "ВСТ", -- src\editor\editor.lua
   ["Ignored error in debugger initialization code: %s."] = nil, -- src\editor\debugger.lua
   ["In Files"] = "Установки файлов", -- src\editor\findreplace.lua
+  ["Insert Library Function..."] = nil, -- src\editor\menu_search.lua
   ["Known Files"] = "Файлы Lua", -- src\editor\commands.lua
   ["Ln: %d"] = "Стр: %d", -- src\editor\editor.lua
   ["Local console"] = "Локальная консоль", -- src\editor\gui.lua, src\editor\shellbox.lua
@@ -168,6 +173,7 @@ return {
   ["Match &case"] = "Совпадение регистра", -- src\editor\findreplace.lua
   ["Match &whole word"] = "Совпадение целого слова", -- src\editor\findreplace.lua
   ["Mixed end-of-line encodings detected."] = "Обнаружены смешанные символы конца строки.", -- src\editor\commands.lua
+  ["Navigate"] = nil, -- src\editor\menu_search.lua
   ["New &File"] = "Новый файл", -- src\editor\filetree.lua
   ["OVR"] = "ЗАМ", -- src\editor\editor.lua
   ["Open With Default Program"] = "Открыть используя программу по умолчанию", -- src\editor\filetree.lua
@@ -242,7 +248,11 @@ return {
   ["Settings: System"] = "Установки: Системы", -- src\editor\menu_edit.lua
   ["Settings: User"] = "Установки: Пользователя", -- src\editor\menu_edit.lua
   ["Show &Tooltip"] = "Показать &подсказку", -- src\editor\menu_edit.lua
+  ["Show All Files"] = nil, -- src\editor\filetree.lua
+  ["Show Hidden Files"] = nil, -- src\editor\filetree.lua
   ["Show Location"] = "Показать файл в папке", -- src\editor\gui.lua, src\editor\filetree.lua
+  ["Show all files"] = nil, -- src\editor\filetree.lua
+  ["Show files previously hidden"] = nil, -- src\editor\filetree.lua
   ["Show tooltip for current position; place cursor after opening bracket of function"] = "Показать подсказку в текущей позиции; переместите курсор в позицию после открывающей скобки функции", -- src\editor\menu_edit.lua
   ["Show/Hide the status bar"] = "Показать/спрятать панель состояния", -- src\editor\menu_view.lua
   ["Show/Hide the toolbar"] = "Показать/спрятать панель инструментов", -- src\editor\menu_view.lua
