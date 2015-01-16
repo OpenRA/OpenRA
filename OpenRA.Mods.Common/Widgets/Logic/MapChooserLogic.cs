@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA;
 using OpenRA.Primitives;
@@ -89,6 +90,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 				randomMapButton.IsDisabled = () => visibleMaps == null || visibleMaps.Length == 0;
 			}
+
+			var deleteMapButton = widget.Get<ButtonWidget>("DELETE_MAP_BUTTON");
+			deleteMapButton.IsDisabled = () => Game.ModData.MapCache[selectedUid].Class != MapClassification.User;
+			deleteMapButton.IsVisible = () => currentTab == MapClassification.User;
+			deleteMapButton.OnClick = () =>
+			{
+				DeleteOneMap(selectedUid, (string newUid) =>
+				{
+					RefreshMaps(currentTab, filter);
+					EnumerateMaps(currentTab, itemTemplate);
+					if (!tabMaps[currentTab].Any())
+						SwitchTab(Game.ModData.MapCache[newUid].Class, itemTemplate);
+				});
+			};
+
+			var deleteAllMapsButton = widget.Get<ButtonWidget>("DELETE_ALL_MAPS_BUTTON");
+			deleteAllMapsButton.IsVisible = () => currentTab == MapClassification.User;
+			deleteAllMapsButton.OnClick = () =>
+			{
+				DeleteAllMaps(visibleMaps, (string newUid) =>
+				{
+					RefreshMaps(currentTab, filter);
+					EnumerateMaps(currentTab, itemTemplate);
+					SwitchTab(Game.ModData.MapCache[newUid].Class, itemTemplate);
+				});
+			};
 
 			SetupMapTab(MapClassification.User, filter, "USER_MAPS_TAB_BUTTON", "USER_MAPS_TAB", itemTemplate);
 			SetupMapTab(MapClassification.System, filter, "SYSTEM_MAPS_TAB_BUTTON", "SYSTEM_MAPS_TAB", itemTemplate);
@@ -239,6 +266,56 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (visibleMaps.Contains(selectedUid))
 				scrollpanels[tab].ScrollToItem(selectedUid);
+		}
+
+		string DeleteMap(string map)
+		{
+			var path = Game.ModData.MapCache[map].Map.Path;
+			try
+			{
+				File.Delete(path);
+				Game.ModData.MapCache[map].Invalidate();
+
+				if (selectedUid == map)
+					selectedUid = WidgetUtils.ChooseInitialMap(tabMaps[currentTab].Select(mp => mp.Uid).FirstOrDefault());
+			}
+			catch (Exception ex)
+			{
+				Game.Debug("Failed to delete map file '{0}'. See the logs for details.", path);
+				Log.Write("debug", ex.ToString());
+			}
+
+			return selectedUid;
+		}
+
+		void DeleteOneMap(string map, Action<string> after)
+		{
+			ConfirmationDialogs.PromptConfirmAction(
+				"Delete map",
+				"Delete the map '{0}'?".F(Game.ModData.MapCache[map].Title),
+				() =>
+				{
+					var newUid = DeleteMap(map);
+					if (after != null)
+						after(newUid);
+				},
+				null,
+				"Delete");
+		}
+
+		void DeleteAllMaps(string[] maps, Action<string> after)
+		{
+			ConfirmationDialogs.PromptConfirmAction(
+				"Delete maps",
+				"Delete all maps on this page?",
+				() =>
+				{
+					maps.Do(m => DeleteMap(m));
+					if (after != null)
+						after(WidgetUtils.ChooseInitialMap(null));
+				},
+				null,
+				"Delete");
 		}
 	}
 }

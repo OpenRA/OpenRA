@@ -126,6 +126,18 @@ Container@MAPCHOOSER_PANEL:
 					Width: 140
 					Height: 35
 					Text: Random
+				Button@DELETE_MAP_BUTTON:
+					X: PARENT_RIGHT - 300 - WIDTH
+					Y: 499
+					Width: 140
+					Height: 35
+					Text: Delete Map
+				Button@DELETE_ALL_MAPS_BUTTON:
+					X: PARENT_RIGHT - 450 - WIDTH
+					Y: 499
+					Width: 140
+					Height: 35
+					Text: Delete All Maps
 				Button@BUTTON_OK:
 					Key: return
 					X: PARENT_RIGHT - WIDTH
