@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -18,20 +19,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MapChooserLogic
 	{
-		string selectedUid;
+		readonly Widget widget;
+		readonly DropDownButtonWidget gameModeDropdown;
 
-		// May be a subset of available maps if a mode filter is active
+		MapClassification currentTab;
+
+		Dictionary<MapClassification, ScrollPanelWidget> scrollpanels = new Dictionary<MapClassification, ScrollPanelWidget>();
+
+		Dictionary<MapClassification, MapPreview[]> tabMaps = new Dictionary<MapClassification, MapPreview[]>();
 		string[] visibleMaps;
 
-		ScrollPanelWidget scrollpanel;
-		ScrollItemWidget itemTemplate;
-		string mapFilter;
+		string selectedUid;
+		Action<string> onSelect;
+
 		string gameMode;
+		string mapFilter;
 
 		[ObjectCreator.UseCtor]
-		internal MapChooserLogic(Widget widget, string initialMap, Action onExit, Action<string> onSelect, MapVisibility filter)
+		internal MapChooserLogic(Widget widget, string initialMap, MapClassification initialTab, Action onExit, Action<string> onSelect, MapVisibility filter)
 		{
-			selectedUid = WidgetUtils.ChooseInitialMap(initialMap);
+			this.widget = widget;
+			this.onSelect = onSelect;
 
 			var approving = new Action(() => { Ui.CloseWindow(); onSelect(selectedUid); });
 			var canceling = new Action(() => { Ui.CloseWindow(); onExit(); });
@@ -41,59 +49,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			okButton.OnClick = approving;
 			widget.Get<ButtonWidget>("BUTTON_CANCEL").OnClick = canceling;
 
-			scrollpanel = widget.Get<ScrollPanelWidget>("MAP_LIST");
-			scrollpanel.Layout = new GridLayout(scrollpanel);
+			gameModeDropdown = widget.GetOrNull<DropDownButtonWidget>("GAMEMODE_FILTER");
 
-			itemTemplate = scrollpanel.Get<ScrollItemWidget>("MAP_TEMPLATE");
+			var itemTemplate = widget.Get<ScrollItemWidget>("MAP_TEMPLATE");
+			widget.RemoveChild(itemTemplate);
 
-			var gameModeDropdown = widget.GetOrNull<DropDownButtonWidget>("GAMEMODE_FILTER");
-			if (gameModeDropdown != null)
+			var mapFilterInput = widget.GetOrNull<TextFieldWidget>("MAPFILTER_INPUT");
+			if (mapFilterInput != null)
 			{
-				var selectableMaps = Game.ModData.MapCache.Where(m => m.Status == MapStatus.Available && (m.Map.Visibility & filter) != 0);
-				var gameModes = selectableMaps
-					.GroupBy(m => m.Type)
-					.Select(g => Pair.New(g.Key, g.Count())).ToList();
-
-				// 'all game types' extra item
-				gameModes.Insert(0, Pair.New(null as string, selectableMaps.Count()));
-
-				Func<Pair<string, int>, string> showItem =
-					x => "{0} ({1})".F(x.First ?? "All Game Types", x.Second);
-
-				Func<Pair<string, int>, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
+				mapFilterInput.TakeKeyboardFocus();
+				mapFilterInput.OnEscKey = () =>
 				{
-					var item = ScrollItemWidget.Setup(template,
-						() => gameMode == ii.First,
-						() => { gameMode = ii.First; EnumerateMaps(onSelect, filter); });
-					item.Get<LabelWidget>("LABEL").GetText = () => showItem(ii);
-					return item;
-				};
-
-				gameModeDropdown.OnClick = () =>
-					gameModeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, gameModes, setupItem);
-
-				gameModeDropdown.GetText = () => showItem(gameModes.First(m => m.First == gameMode));
-			}
-
-			var mapfilterInput = widget.GetOrNull<TextFieldWidget>("MAPFILTER_INPUT");
-			if (mapfilterInput != null)
-			{
-				mapfilterInput.TakeKeyboardFocus();
-				mapfilterInput.OnEscKey = () =>
-				{
-					if (mapfilterInput.Text.Length == 0)
+					if (mapFilterInput.Text.Length == 0)
 						canceling();
 					else
 					{
-						mapFilter = mapfilterInput.Text = null;
-						EnumerateMaps(onSelect, filter);
+						mapFilter = mapFilterInput.Text = null;
+						EnumerateMaps(currentTab, itemTemplate);
 					}
 
 					return true;
 				};
-				mapfilterInput.OnEnterKey = () => { approving(); return true; };
-				mapfilterInput.OnTextEdited = () =>
-					{ mapFilter = mapfilterInput.Text; EnumerateMaps(onSelect, filter); };
+				mapFilterInput.OnEnterKey = () => { approving(); return true; };
+				mapFilterInput.OnTextEdited = () =>
+				{
+					mapFilter = mapFilterInput.Text;
+					EnumerateMaps(currentTab, itemTemplate);
+				};
 			}
 
 			var randomMapButton = widget.GetOrNull<ButtonWidget>("RANDOMMAP_BUTTON");
@@ -103,18 +85,95 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var uid = visibleMaps.Random(Game.CosmeticRandom);
 					selectedUid = uid;
-					scrollpanel.ScrollToItem(uid, smooth: true);
+					scrollpanels[currentTab].ScrollToItem(uid, smooth: true);
 				};
 				randomMapButton.IsDisabled = () => visibleMaps == null || visibleMaps.Length == 0;
 			}
 
-			EnumerateMaps(onSelect, filter);
+			SetupMapTab(MapClassification.User, filter, "USER_MAPS_TAB_BUTTON", "USER_MAPS_TAB", itemTemplate);
+			SetupMapTab(MapClassification.System, filter, "SYSTEM_MAPS_TAB_BUTTON", "SYSTEM_MAPS_TAB", itemTemplate);
+
+			if (initialMap == null && tabMaps.Keys.Contains(initialTab) && tabMaps[initialTab].Any())
+			{
+				selectedUid = WidgetUtils.ChooseInitialMap(tabMaps[initialTab].Select(mp => mp.Uid).First());
+				currentTab = initialTab;
+			}
+			else
+			{
+				selectedUid = WidgetUtils.ChooseInitialMap(initialMap);
+				currentTab = tabMaps.Keys.FirstOrDefault(k => tabMaps[k].Select(mp => mp.Uid).Contains(selectedUid));
+			}
+
+			SwitchTab(currentTab, itemTemplate);
 		}
 
-		void EnumerateMaps(Action<string> onSelect, MapVisibility filter)
+		void SwitchTab(MapClassification tab, ScrollItemWidget itemTemplate)
 		{
-			var maps = Game.ModData.MapCache
-				.Where(m => m.Status == MapStatus.Available && (m.Map.Visibility & filter) != 0)
+			currentTab = tab;
+			EnumerateMaps(tab, itemTemplate);
+		}
+
+		void RefreshMaps(MapClassification tab, MapVisibility filter)
+		{
+			tabMaps[tab] = Game.ModData.MapCache.Where(m => m.Status == MapStatus.Available &&
+				m.Class == tab && (m.Map.Visibility & filter) != 0).ToArray();
+		}
+
+		void SetupMapTab(MapClassification tab, MapVisibility filter, string tabButtonName, string tabContainerName, ScrollItemWidget itemTemplate)
+		{
+			var tabContainer = widget.Get<ContainerWidget>(tabContainerName);
+			tabContainer.IsVisible = () => currentTab == tab;
+			var tabScrollpanel = tabContainer.Get<ScrollPanelWidget>("MAP_LIST");
+			tabScrollpanel.Layout = new GridLayout(tabScrollpanel);
+			scrollpanels.Add(tab, tabScrollpanel);
+
+			var tabButton = widget.Get<ButtonWidget>(tabButtonName);
+			tabButton.IsHighlighted = () => currentTab == tab;
+			tabButton.IsVisible = () => tabMaps[tab].Any();
+			tabButton.OnClick = () => SwitchTab(tab, itemTemplate);
+
+			RefreshMaps(tab, filter);
+		}
+
+		void SetupGameModeDropdown(MapClassification tab, DropDownButtonWidget gameModeDropdown, ScrollItemWidget itemTemplate)
+		{
+			if (gameModeDropdown != null)
+			{
+				var gameModes = tabMaps[tab]
+					.GroupBy(m => m.Type)
+					.Select(g => Pair.New(g.Key, g.Count())).ToList();
+
+				// 'all game types' extra item
+				gameModes.Insert(0, Pair.New(null as string, tabMaps[tab].Count()));
+
+				Func<Pair<string, int>, string> showItem = x => "{0} ({1})".F(x.First ?? "All Game Types", x.Second);
+
+				Func<Pair<string, int>, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
+				{
+					var item = ScrollItemWidget.Setup(template,
+						() => gameMode == ii.First,
+						() => { gameMode = ii.First; EnumerateMaps(tab, itemTemplate); });
+					item.Get<LabelWidget>("LABEL").GetText = () => showItem(ii);
+					return item;
+				};
+
+				gameModeDropdown.OnClick = () =>
+					gameModeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, gameModes, setupItem);
+
+				gameModeDropdown.GetText = () =>
+				{
+					var item = gameModes.FirstOrDefault(m => m.First == gameMode);
+					if (item == default(Pair<string, int>))
+						item.First = "No matches";
+
+					return showItem(item);
+				};
+			}
+		}
+
+		void EnumerateMaps(MapClassification tab, ScrollItemWidget template)
+		{
+			var maps = tabMaps[tab]
 				.Where(m => gameMode == null || m.Type == gameMode)
 				.Where(m => mapFilter == null ||
 					m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0 ||
@@ -122,7 +181,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.OrderBy(m => m.PlayerCount)
 				.ThenBy(m => m.Title);
 
-			scrollpanel.RemoveChildren();
+			scrollpanels[tab].RemoveChildren();
 			foreach (var loop in maps)
 			{
 				var preview = loop;
@@ -139,9 +198,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				};
 
-				var item = ScrollItemWidget.Setup(preview.Uid, itemTemplate, () => selectedUid == preview.Uid,
+				var item = ScrollItemWidget.Setup(preview.Uid, template, () => selectedUid == preview.Uid,
 					() => selectedUid = preview.Uid, dblClick);
-				item.IsVisible = () => item.RenderBounds.IntersectsWith(scrollpanel.RenderBounds);
+				item.IsVisible = () => item.RenderBounds.IntersectsWith(scrollpanels[tab].RenderBounds);
 
 				var titleLabel = item.Get<LabelWidget>("TITLE");
 				titleLabel.GetText = () => preview.Title;
@@ -169,12 +228,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					sizeWidget.GetText = () => size;
 				}
 
-				scrollpanel.AddChild(item);
+				scrollpanels[tab].AddChild(item);
 			}
 
-			visibleMaps = maps.Select(m => m.Uid).ToArray();
+			if (tab == currentTab)
+			{
+				visibleMaps = maps.Select(m => m.Uid).ToArray();
+				SetupGameModeDropdown(currentTab, gameModeDropdown, template);
+			}
+
 			if (visibleMaps.Contains(selectedUid))
-				scrollpanel.ScrollToItem(selectedUid);
+				scrollpanels[tab].ScrollToItem(selectedUid);
 		}
 	}
 }

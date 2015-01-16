@@ -170,11 +170,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var loadMapButton = widget.Get<ButtonWidget>("LOAD_MAP_BUTTON");
 			loadMapButton.OnClick = () =>
 			{
-				var initialMap = Game.ModData.MapCache.FirstOrDefault();
 				menuType = MenuType.None;
 				Game.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 				{
-					{ "initialMap", initialMap != null ? initialMap.Uid : null },
+					{ "initialMap", null },
+					{ "initialTab", MapClassification.User },
 					{ "onExit", () => menuType = MenuType.MapEditor },
 					{ "onSelect", onSelect },
 					{ "filter", MapVisibility.Lobby | MapVisibility.Shellmap | MapVisibility.MissionSelector },

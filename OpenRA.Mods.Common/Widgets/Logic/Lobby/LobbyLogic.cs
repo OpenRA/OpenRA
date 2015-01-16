@@ -173,6 +173,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
 						{ "initialMap", Map.Uid },
+						{ "initialTab", MapClassification.System },
 						{ "onExit", DoNothing },
 						{ "onSelect", Game.IsHost ? onSelect : null },
 						{ "filter", MapVisibility.Lobby },
