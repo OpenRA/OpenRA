@@ -26,7 +26,7 @@ return {
   ["&Fold/Unfold All"] = "&Kaŝi/Malkaŝi ĉion", -- src\editor\menu_edit.lua
   ["&Frequently Asked Questions"] = "&Oftaj demandoj", -- src\editor\menu_help.lua
   ["&Getting Started Guide"] = "&Ekgvidilo", -- src\editor\menu_help.lua
-  ["&Go To Line..."] = "&Iri al linio...", -- src\editor\menu_search.lua
+  ["Go To Line..."] = "&Iri al linio...", -- src\editor\menu_search.lua
   ["&Help"] = "&Helpo", -- src\editor\menu_help.lua
   ["&New Directory"] = "&Nova dosierujo", -- src\editor\filetree.lua
   ["&New"] = "&Nova paĝo", -- src\editor\menu_file.lua
@@ -154,7 +154,7 @@ return {
   ["Found"] = "Trovis", -- src\editor\findreplace.lua
   ["Full &Screen"] = "Plenekrana &reĝimo", -- src\editor\menu_view.lua
   ["Go To Definition"] = "Iri al deklaro", -- src\editor\editor.lua
-  ["Go To Line"] = "Iri al linio", -- src\editor\menu_search.lua
+  ["Go to line"] = "Iri al linio", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = "Iri al sekvanta legosigno", -- src\editor\menu_edit.lua
   ["Go To Previous Bookmark"] = "Iri al antaŭanta legosigno", -- src\editor\menu_edit.lua
   ["Go to a selected line"] = "Iri al elektita linio", -- src\editor\menu_search.lua

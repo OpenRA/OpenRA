@@ -25,7 +25,7 @@ return {
   ["&Fold/Unfold All"] = "Re&plier/Déplier tout", -- src\editor\menu_edit.lua
   ["&Frequently Asked Questions"] = "&Questions Fréquemment Posées" , -- src\editor\menu_help.lua
   ["&Getting Started Guide"] = "&Guide de Prise en Main", -- src\editor\menu_help.lua
-  ["&Go To Line..."] = "&Aller à la ligne...", -- src\editor\menu_search.lua
+  ["Go To Line..."] = "&Aller à la ligne...", -- src\editor\menu_search.lua
   ["&Help"] = "Aid&e", -- src\editor\menu_help.lua
   ["&New Directory"] = "&Nouveau Répertoire", -- src\editor\filetree.lua
   ["&New"] = "&Nouveau", -- src\editor\menu_file.lua
@@ -153,7 +153,7 @@ return {
   ["Found"] = "Occurrences trouvées :", -- src\editor\findreplace.lua
   ["Full &Screen"] = "&Plein écran", -- src\editor\menu_view.lua
   ["Go To Definition"] = "Aller à la définition", -- src\editor\editor.lua
-  ["Go To Line"] = "Aller à la ligne", -- src\editor\menu_search.lua
+  ["Go to line"] = "Aller à la ligne", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = "Aller au marque-page suivant", -- src\editor\menu_edit.lua
   ["Go To Previous Bookmark"] = "Aller au marque-page précédent", -- src\editor\menu_edit.lua
   ["Go to a selected line"] = "Aller à la ligne sélectionnée", -- src\editor\menu_search.lua

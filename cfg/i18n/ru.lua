@@ -25,7 +25,7 @@ return {
   ["&Fold/Unfold All"] = "Св&ернуть/развернуть все", -- src\editor\menu_edit.lua
   ["&Frequently Asked Questions"] = "&Часто задаваемые вопросы", -- src\editor\menu_help.lua
   ["&Getting Started Guide"] = nil, -- src\editor\menu_help.lua
-  ["&Go To Line..."] = "&Перейти к строке...", -- src\editor\menu_search.lua
+  ["Go To Line..."] = "&Перейти к строке...", -- src\editor\menu_search.lua
   ["&Help"] = "&Справка", -- src\editor\menu_help.lua
   ["&New Directory"] = "&Новая папка", -- src\editor\filetree.lua
   ["&New"] = "Соз&дать", -- src\editor\menu_file.lua
@@ -153,7 +153,7 @@ return {
   ["Found"] = "Найдено", -- src\editor\findreplace.lua
   ["Full &Screen"] = "Во весь экр&ан", -- src\editor\menu_view.lua
   ["Go To Definition"] = "Перейти к определению", -- src\editor\editor.lua
-  ["Go To Line"] = "Перейти к строке", -- src\editor\menu_search.lua
+  ["Go to line"] = "Перейти к строке", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = "Перейти к следующей закладке", -- src\editor\menu_edit.lua
   ["Go To Previous Bookmark"] = "Перейти к предыдущей закладке", -- src\editor\menu_edit.lua
   ["Go to a selected line"] = "Перейти к заданной строке", -- src\editor\menu_search.lua

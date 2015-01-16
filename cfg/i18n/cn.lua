@@ -24,7 +24,7 @@ return {
   ["&Fold/Unfold All"] = "全 折叠/展开", -- src\editor\menu_edit.lua
   ["&Frequently Asked Questions"] = nil, -- src\editor\menu_help.lua
   ["&Getting Started Guide"] = nil, -- src\editor\menu_help.lua
-  ["&Go To Line..."] = "到...行", -- src\editor\menu_search.lua
+  ["Go To Line..."] = "到...行", -- src\editor\menu_search.lua
   ["&Help"] = "帮助", -- src\editor\menu_help.lua
   ["&New Directory"] = nil, -- src\editor\filetree.lua
   ["&New"] = "新建", -- src\editor\menu_file.lua
@@ -152,7 +152,7 @@ return {
   ["Found"] = "找到", -- src\editor\findreplace.lua
   ["Full &Screen"] = "全屏", -- src\editor\menu_view.lua
   ["Go To Definition"] = nil, -- src\editor\editor.lua
-  ["Go To Line"] = "到...行", -- src\editor\menu_search.lua
+  ["Go to line"] = "到...行", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = nil, -- src\editor\menu_edit.lua
   ["Go To Previous Bookmark"] = nil, -- src\editor\menu_edit.lua
   ["Go to a selected line"] = "到所选的行", -- src\editor\menu_search.lua
