@@ -94,7 +94,7 @@ return {
   ["Command line parameters"] = "Parâmetros da linha de comandos", -- src\editor\menu_project.lua
   ["Comment or uncomment current or selected lines"] = {"Comentar ou descomentar a linha atual", "Comentar ou descomentar as linhas selecionadas"}, -- src\editor\menu_edit.lua
   ["Compilation error"] = "Erro na compilação", -- src\editor\debugger.lua, src\editor\commands.lua
-  ["Compilation successful;  success rate (%d/%d)."] = "Compilação com êxito; taxa de sucesso: %.0f%% (%d/%d).", -- src\editor\commands.lua
+  ["Compilation successful; %.0f%% success rate (%d/%d)."] = "Compilação com êxito; taxa de sucesso: %.0f%% (%d/%d).", -- src\editor\commands.lua
   ["Compile the current file"] = "Compilar arquivo atual", -- src\editor\menu_project.lua
   ["Complete &Identifier"] = "Completar &identificador", -- src\editor\menu_edit.lua
   ["Complete the current identifier"] = "Completar o identificador atual", -- src\editor\menu_edit.lua
