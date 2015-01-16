@@ -76,7 +76,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			latency.GetText = () => LobbyUtils.LatencyDescription(ping);
 			latency.GetColor = () => LobbyUtils.LatencyColor(ping);
 			var address = orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress;
-			if (address == IPAddress.Loopback.ToString() && UPnP.NatDevice != null)
+			if (clientIndex == orderManager.LocalClient.Index && UPnP.NatDevice != null
+				&& address == IPAddress.Loopback.ToString())
 				address = UPnP.NatDevice.GetExternalIP().ToString();
 			var cachedDescriptiveIP = LobbyUtils.DescriptiveIpAddress(address);
 			ip.GetText = () => cachedDescriptiveIP;
