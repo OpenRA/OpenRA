@@ -154,7 +154,7 @@ return {
   ["Full &Screen"] = "Plenekrana &reĝimo", -- src\editor\menu_view.lua
   ["Go To Definition"] = "Iri al deklaro", -- src\editor\editor.lua
   ["Go To File..."] = nil, -- src\editor\menu_search.lua
-  ["Go To Line..."] = "&Iri al linio...", -- src\editor\menu_search.lua
+  ["Go To Line..."] = "Iri al linio...", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = "Iri al sekvanta legosigno", -- src\editor\menu_edit.lua
   ["Go To Previous Bookmark"] = "Iri al antaŭanta legosigno", -- src\editor\menu_edit.lua
   ["Go To Symbol..."] = nil, -- src\editor\menu_search.lua

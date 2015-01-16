@@ -153,7 +153,7 @@ return {
   ["Full &Screen"] = "&Plein écran", -- src\editor\menu_view.lua
   ["Go To Definition"] = "Aller à la définition", -- src\editor\editor.lua
   ["Go To File..."] = nil, -- src\editor\menu_search.lua
-  ["Go To Line..."] = "&Aller à la ligne...", -- src\editor\menu_search.lua
+  ["Go To Line..."] = "Aller à la ligne...", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = "Aller au marque-page suivant", -- src\editor\menu_edit.lua
   ["Go To Previous Bookmark"] = "Aller au marque-page précédent", -- src\editor\menu_edit.lua
   ["Go To Symbol..."] = nil, -- src\editor\menu_search.lua
