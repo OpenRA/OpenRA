@@ -110,7 +110,7 @@ World:
 		Name: Germany
 		Race: germany
 		Side: Allies
-		Description: Germany: Technology\nSpecial Structure: Advanced Chronosphere\nSpecial Unit: Chrono Tank
+		Description: Germany: Technology\nSpecial Ability: Advanced Chronoshift\nSpecial Unit: Chrono Tank
 	Country@4:
 		Name: Soviet
 		Race: soviet
