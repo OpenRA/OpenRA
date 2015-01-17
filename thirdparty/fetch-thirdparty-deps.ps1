@@ -1,3 +1,5 @@
+mkdir windows -Force >$null
+
 if (!(Test-Path "nuget.exe"))
 {
 	echo "Fetching NuGet."
