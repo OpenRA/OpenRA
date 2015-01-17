@@ -35,7 +35,6 @@ if [ ! -f SharpFont.dll ]; then
 	nuget install SharpFont -Version 2.5.0.1
 	cp ./SharpFont.2.5.0.1/lib/net20/SharpFont* .
 	cp ./SharpFont.2.5.0.1/Content/SharpFont.dll.config .
-	cp ./SharpFont.2.5.0.1/Content/freetype6.dll ./windows/
 	rm -rf SharpFont.2.5.0.1
 fi
 
@@ -44,13 +43,6 @@ if [ ! -f nunit.framework.dll ]; then
 	nuget install NUnit -Version 2.6.4
 	cp ./NUnit.2.6.4/lib/nunit.framework* .
 	rm -rf NUnit.2.6.4
-fi
-
-if [ ! -f windows/SDL2.dll ]; then
-	echo "Fetching SDL2 from nuget"
-	nuget install sdl2 -Version 2.0.3
-	cp ./sdl2.redist.2.0.3/build/native/bin/Win32/dynamic/SDL2.dll ./windows/
-	rm -rf sdl2.2.0.3 sdl2.redist.2.0.3
 fi
 
 if [ ! -f Mono.Nat.dll ]; then
