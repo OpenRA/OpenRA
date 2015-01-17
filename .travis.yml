@@ -38,7 +38,7 @@ notifications:
     skip_join: true
 
 before_deploy:
- - apt-get download nsis markdown
+ - apt-get download nsis nsis-common markdown
  - dpkg -x nsis*deb $HOME
  - dpkg -x markdown*deb $HOME
  - export PATH=$PATH:$HOME/usr/bin
