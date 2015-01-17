@@ -310,6 +310,9 @@ distclean: clean
 
 dependencies: cli-dependencies native-dependencies
 
+windows-dependencies:
+	cd thirdparty && ./fetch-thirdparty-deps-windows.sh && cd ..
+
 cli-dependencies:
 	cd thirdparty && ./fetch-thirdparty-deps.sh && cd ..
 	@ $(CP_R) thirdparty/*.dll .
