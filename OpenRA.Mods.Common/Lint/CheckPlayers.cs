@@ -12,7 +12,7 @@ using System;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Lint
 {
 	public class CheckPlayers : ILintPass
 	{

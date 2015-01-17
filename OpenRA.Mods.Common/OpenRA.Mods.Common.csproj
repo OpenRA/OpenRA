@@ -32,8 +32,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\Eluant.dll</HintPath>
       <Private>False</Private>
@@ -126,6 +130,15 @@
     <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
+    <Compile Include="Lint\CheckSequences.cs" />
+    <Compile Include="Lint\CheckPlayers.cs" />
+    <Compile Include="Lint\CheckActors.cs" />
+    <Compile Include="Lint\CheckMapCordon.cs" />
+    <Compile Include="Lint\CheckMapRules.cs" />
+    <Compile Include="Lint\CheckActorReferences.cs" />
+    <Compile Include="Lint\CheckSyncAnnotations.cs" />
+    <Compile Include="Lint\CheckTraitPrerequisites.cs" />
+    <Compile Include="Lint\LintBuildablePrerequisites.cs" />
     <Compile Include="LoadScreens\ModChooserLoadScreen.cs" />
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
@@ -151,6 +164,7 @@
     <Compile Include="Scripting\Global\MapGlobal.cs" />
     <Compile Include="Scripting\Global\MediaGlobal.cs" />
     <Compile Include="Scripting\Global\PlayerGlobal.cs" />
+    <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
     <Compile Include="Scripting\Global\TriggerGlobal.cs" />
     <Compile Include="Scripting\Global\UtilsGlobal.cs" />
     <Compile Include="Scripting\Properties\DiplomacyProperties.cs" />
@@ -158,6 +172,18 @@
     <Compile Include="Scripting\Properties\PowerProperties.cs" />
     <Compile Include="Scripting\Properties\ResourceProperties.cs" />
     <Compile Include="Scripting\Properties\UpgradeProperties.cs" />
+    <Compile Include="Scripting\Properties\AirstrikeProperties.cs" />
+    <Compile Include="Scripting\Properties\ProductionProperties.cs" />
+    <Compile Include="Scripting\Properties\MissionObjectiveProperties.cs" />
+    <Compile Include="Scripting\Properties\MobileProperties.cs" />
+    <Compile Include="Scripting\Properties\GeneralProperties.cs" />
+    <Compile Include="Scripting\Properties\CombatProperties.cs" />
+    <Compile Include="Scripting\Properties\PlayerProperties.cs" />
+    <Compile Include="Scripting\Properties\HelicopterProperties.cs" />
+    <Compile Include="Scripting\Properties\PlaneProperties.cs" />
+    <Compile Include="Scripting\Properties\TransformProperties.cs" />
+    <Compile Include="Scripting\Properties\RepairableBuildingProperties.cs" />
+    <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\Air\Aircraft.cs" />
     <Compile Include="Traits\Air\AttackBomber.cs" />
@@ -254,6 +280,7 @@
     <Compile Include="Traits\PaletteEffects\WaterPaletteRotation.cs" />
     <Compile Include="Traits\Player\ActorGroupProxy.cs" />
     <Compile Include="Traits\Player\AllyRepair.cs" />
+    <Compile Include="Traits\Player\BaseAttackNotifier.cs" />
     <Compile Include="Traits\Player\ClassicProductionQueue.cs" />
     <Compile Include="Traits\Player\ConquestVictoryConditions.cs" />
     <Compile Include="Traits\Player\GlobalUpgradeManager.cs" />
@@ -374,8 +401,11 @@
     <Compile Include="Traits\World\SpawnMPUnits.cs" />
     <Compile Include="Traits\World\StartGameNotification.cs" />
     <Compile Include="Traits\World\TerrainGeometryOverlay.cs" />
+    <Compile Include="UtilityCommands\ActorStatsExport.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
+    <Compile Include="UtilityCommands\ExportCharacterSeparatedRules.cs" />
+    <Compile Include="UtilityCommands\Extensions.cs" />
     <Compile Include="UtilityCommands\ExtractFilesCommand.cs" />
     <Compile Include="UtilityCommands\ExtractLanguageStringsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractLuaDocsCommand.cs" />

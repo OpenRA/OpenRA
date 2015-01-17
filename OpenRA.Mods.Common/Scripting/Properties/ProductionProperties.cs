@@ -15,11 +15,10 @@ using Eluant;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("Production")]
 	public class ProductionProperties : ScriptActorProperties, Requires<ProductionInfo>

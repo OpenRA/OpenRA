@@ -9,28 +9,27 @@
 #endregion
 
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
-	[ScriptPropertyGroup("Transform")]
-	public class TransformProperties : ScriptActorProperties, Requires<TransformsInfo>
+	[ScriptPropertyGroup("Guard")]
+	public class GuardProperties : ScriptActorProperties, Requires<GuardInfo>, Requires<IMoveInfo>
 	{
-		readonly Transforms transforms;
-
-		public TransformProperties(ScriptContext context, Actor self)
+		Guard guard;
+		public GuardProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			transforms = self.Trait<Transforms>();
+			guard = self.Trait<Guard>();
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Queue a new transformation.")]
-		public void Deploy()
+		[Desc("Guard the target actor.")]
+		public void Guard(Actor targetActor)
 		{
-			transforms.DeployTransform(true);
+			if (targetActor.HasTrait<Guardable>())
+				guard.GuardTarget(Self, Target.FromActor(targetActor));
 		}
 	}
 }

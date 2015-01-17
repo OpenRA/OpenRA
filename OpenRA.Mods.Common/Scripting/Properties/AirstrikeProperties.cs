@@ -14,7 +14,7 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptGlobal("Air Support Powers")]
 	public class AirstrikeProperties : ScriptActorProperties, Requires<AirstrikePowerInfo>

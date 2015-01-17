@@ -12,10 +12,9 @@ using System;
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Scripting;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("Player")]
 	public class PlayerProperties : ScriptPlayerProperties

@@ -12,7 +12,7 @@ using System;
 using System.Data;
 using System.Text;
 
-namespace OpenRA.Mods.RA.UtilityCommands
+namespace OpenRA.Mods.Common.UtilityCommands
 {
 	public static class Extensions
 	{
