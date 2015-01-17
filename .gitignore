@@ -39,6 +39,7 @@ thirdparty/nunit*
 thirdparty/windows/SDL2.dll
 thirdparty/Mono.Nat.dll
 thirdparty/nuget.exe
+thirdparty/windows/lua51.dll
 
 # backup files by various editors
 *~
