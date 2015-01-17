@@ -16,3 +16,11 @@ if [ ! -f windows/freetype6.dll ]; then
 	cp ./SharpFont.2.5.0.1/Content/freetype6.dll ./windows/
 	rm -rf SharpFont.2.5.0.1
 fi
+
+if [ ! -f windows/lua51.dll ]; then
+	echo "Fetching Lua 5.1 from nuget"
+	nuget install lua51.redist -Version 5.1.5
+	cp ./lua51.redist.5.1.5/build/native/bin/Win32/v120/Release/lua5.1.dll ./windows/lua51.dll
+	rm -rf lua51.redist.5.1.5
+fi
+

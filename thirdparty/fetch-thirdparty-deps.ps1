@@ -69,5 +69,13 @@ if (!(Test-Path "Mono.Nat.dll"))
 	echo "Fetching Mono.Nat from NuGet."
 	./nuget.exe install Mono.Nat -Version 1.2.21
 	cp Mono.Nat.1.2.21.0/lib/net40/Mono.Nat.dll .
-	rmdir  Mono.Nat.1.2.21.0 -Recurse
+	rmdir Mono.Nat.1.2.21.0 -Recurse
+}
+
+if (!(Test-Path "windows/lua51.dll"))
+{
+	echo "Fetching Lua 5.1 from NuGet."
+	./nuget.exe install lua51.redist -Version 5.1.5
+	cp lua51.redist.5.1.5/build/native/bin/Win32/v120/Release/lua5.1.dll ./windows/lua51.dll
+	rmdir lua51.redist.5.1.5 -Recurse
 }
