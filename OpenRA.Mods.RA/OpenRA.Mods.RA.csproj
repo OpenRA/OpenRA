@@ -139,6 +139,7 @@
     <Compile Include="Widgets\Logic\Ingame\GameInfoBriefingLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoObjectivesLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoStatsLogic.cs" />
+    <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LeaveMapLogic.cs" />
     <Compile Include="Widgets\Logic\DownloadPackagesLogic.cs" />
     <Compile Include="Widgets\Logic\MainMenuLogic.cs" />
