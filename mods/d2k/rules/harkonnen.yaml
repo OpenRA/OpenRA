@@ -30,7 +30,6 @@ BARRH:
 	Inherits: ^BARRACKS
 	Buildable:
 		Prerequisites: ~conyardh, power
-	-RepairsUnits:
 
 REPAIRH:
 	Inherits: ^REPAIR
