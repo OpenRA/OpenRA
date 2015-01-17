@@ -2,7 +2,7 @@
 # OpenRA master packaging script
 
 if [ $# -ne "2" ]; then
-	echo "Usage: `basename $0` version outputdir"
+    echo "Usage: `basename $0` version outputdir"
     exit 1
 fi
 
@@ -38,7 +38,7 @@ FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' \
 
 echo "Copying files..."
 for i in "${FILES[@]}"; do
-	cp -R "${i}" "packaging/built/${i}" || exit 3
+    cp -R "${i}" "packaging/built/${i}" || exit 3
 done
 
 # SharpZipLib for zip file support
@@ -74,15 +74,19 @@ cp OpenRA.exe packaging/built
 cd packaging
 echo "Creating packages..."
 
-pushd windows
-echo "Building Windows setup.exe"
-makensis -V2 -DSRCDIR="$BUILTDIR" -DDEPSDIR="${SRCDIR}/thirdparty/windows" OpenRA.nsi
-if [ $? -eq 0 ]; then
-    mv OpenRA.exe "$OUTPUTDIR"/OpenRA-$TAG.exe
+if [ -x /usr/bin/makensis ]; then
+    pushd windows
+    echo "Building Windows setup.exe"
+    makensis -V2 -DSRCDIR="$BUILTDIR" -DDEPSDIR="${SRCDIR}/thirdparty/windows" OpenRA.nsi
+    if [ $? -eq 0 ]; then
+        mv OpenRA.Setup.exe "$OUTPUTDIR"/OpenRA-$TAG.exe
+    else
+        echo "Windows package build failed."
+    fi
+    popd
 else
-    echo "Windows package build failed."
+    echo "Skipping Windows setup.exe build due to missing NSIS"
 fi
-popd
 
 pushd osx
 echo "Zipping OS X package"
