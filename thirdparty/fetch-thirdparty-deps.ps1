@@ -79,3 +79,11 @@ if (!(Test-Path "windows/lua51.dll"))
 	cp lua51.redist.5.1.5/build/native/bin/Win32/v120/Release/lua5.1.dll ./windows/lua51.dll
 	rmdir lua51.redist.5.1.5 -Recurse
 }
+
+if (!(Test-Path "windows/zlib1.dll"))
+{
+	echo "Fetching ZLib from NuGet."
+	./nuget.exe install zlib.redist -Version 1.2.8.7
+	cp zlib.redist.1.2.8.7/build/native/bin/v120/Win32/Release/dynamic/stdcall/zlib.dll windows/zlib1.dll
+	rmdir zlib.redist.1.2.8.7 -Recurse
+}
