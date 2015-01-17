@@ -24,3 +24,10 @@ if [ ! -f windows/lua51.dll ]; then
 	rm -rf lua51.redist.5.1.5
 fi
 
+if [ ! -f windows/zlib1.dll ]; then
+	echo "Fetching ZLib from nuget"
+	nuget install zlib.redist -Version 1.2.8.7
+	cp ./zlib.redist.1.2.8.7/build/native/bin/v120/Win32/Release/dynamic/stdcall/zlib.dll windows/zlib1.dll
+	rm -rf zlib.redist.1.2.8.7
+fi
+
