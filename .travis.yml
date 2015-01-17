@@ -38,8 +38,7 @@ notifications:
     skip_join: true
 
 before_deploy:
- - apt-get download nsis nsis-common markdown
- - dpkg -x nsis*deb $HOME
+ - apt-get download markdown
  - dpkg -x markdown*deb $HOME
  - export PATH=$PATH:$HOME/usr/bin
  - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
@@ -51,7 +50,6 @@ deploy:
   api_key:
     secure: "g/LU11f+mjqv+lj0sR1UliHwogXL4ofJUwoG5Dbqlvdf5UTLWytw/OWSCv8RGyuh10miyWeaoqHh1cn2C1IFhUEqN1sSeKKKOWOTvJ2FR5mzi9uH3d/MOBzG5icQ7Qh0fZ1YPz5RaJJhYu6bmfvA/1gD49GoaX2kxQL4J5cEBgg="
   file:
-    - build/OpenRA-${TRAVIS_TAG}.exe
     - build/OpenRA-${TRAVIS_TAG}.zip
     - build/openra_${DOTVERSION}_all.deb
   skip_cleanup: true

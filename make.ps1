@@ -30,6 +30,7 @@ if ($args.Length -eq 0)
 	echo "                  'dependencies' commands to restore removed files."
 	echo "  test            Tests the default mods for errors."
 	echo "  check           Checks .cs files for StyleCop violations."
+	echo "  docs            Generates the trait and Lua API documentation."
 	echo ""
 	$command = (Read-Host "Enter command").Split(' ', 2)
 }
@@ -155,6 +156,11 @@ elseif ($command -eq "check")
 	./OpenRA.Utility.exe cnc --check-code-style OpenRA.Test
 	echo "Checking for code style violations in OpenRA.TilesetBuilder..."
 	./OpenRA.Utility.exe cnc --check-code-style OpenRA.TilesetBuilder
+}
+elseif ($command -eq "docs")
+{
+	./OpenRA.Utility.exe d2k --docs | Out-File DOCUMENTATION.md
+	./OpenRA.Utility.exe ra --lua-docs | Out-File Lua-API.md
 }
 else
 {
