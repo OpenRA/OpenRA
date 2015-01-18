@@ -8,7 +8,7 @@
  */
 #endregion
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Hides the entire map in shroud.")]
 	class HideMapCrateActionInfo : CrateActionInfo

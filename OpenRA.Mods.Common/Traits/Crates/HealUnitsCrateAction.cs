@@ -11,7 +11,7 @@
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Heals all actors that belong to the owner of the collector.")]
 	class HealUnitsCrateActionInfo : CrateActionInfo

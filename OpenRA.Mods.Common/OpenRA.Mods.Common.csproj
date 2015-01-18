@@ -121,6 +121,7 @@
     <Compile Include="Effects\LaserZap.cs" />
     <Compile Include="Effects\Missile.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
+    <Compile Include="Effects\Parachute.cs" />
     <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\Rank.cs" />
@@ -246,6 +247,19 @@
     <Compile Include="Traits\Cargo.cs" />
     <Compile Include="Traits\CashTrickler.cs" />
     <Compile Include="Traits\Cloak.cs" />
+    <Compile Include="Traits\Crates\Crate.cs" />
+    <Compile Include="Traits\Crates\CrateAction.cs" />
+    <Compile Include="Traits\Crates\DuplicateUnitCrateAction.cs" />
+    <Compile Include="Traits\Crates\ExplodeCrateAction.cs" />
+    <Compile Include="Traits\Crates\GiveCashCrateAction.cs" />
+    <Compile Include="Traits\Crates\GiveMcvCrateAction.cs" />
+    <Compile Include="Traits\Crates\GiveUnitCrateAction.cs" />
+    <Compile Include="Traits\Crates\GrantUpgradeCrateAction.cs" />
+    <Compile Include="Traits\Crates\HealUnitsCrateAction.cs" />
+    <Compile Include="Traits\Crates\HideMapCrateAction.cs" />
+    <Compile Include="Traits\Crates\LevelUpCrateAction.cs" />
+    <Compile Include="Traits\Crates\RevealMapCrateAction.cs" />
+    <Compile Include="Traits\Crates\SupportPowerCrateAction.cs" />
     <Compile Include="Traits\Crushable.cs" />
     <Compile Include="Traits\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\ExternalCapturable.cs" />
@@ -280,6 +294,8 @@
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Traits\Modifiers\UpgradeOverlay.cs" />
     <Compile Include="Traits\MustBeDestroyed.cs" />
+    <Compile Include="Traits\Parachutable.cs" />
+    <Compile Include="Traits\ParaDrop.cs" />
     <Compile Include="Traits\Passenger.cs" />
     <Compile Include="Traits\PaletteEffects\CloakPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\LightPaletteRotator.cs" />
@@ -385,6 +401,7 @@
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Wanders.cs" />
     <Compile Include="Traits\World\BridgeLayer.cs" />
+    <Compile Include="Traits\World\CrateSpawner.cs" />
     <Compile Include="Traits\World\CreateMPPlayers.cs" />
     <Compile Include="Traits\World\DomainIndex.cs" />
     <Compile Include="Traits\World\LoadWidgetAtGameStart.cs" />
