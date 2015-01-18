@@ -38,9 +38,10 @@ namespace OpenRA.Mods.D2k.Widgets
 			var digitCollection = "digits-" + world.LocalPlayer.Country.Race;
 			var chromeCollection = "chrome-" + world.LocalPlayer.Country.Race;
 
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(
-				ChromeProvider.GetImage(chromeCollection, "moneybin"),
-				new float2(Bounds.Left, 0));
+			var spriteMoneyBin = ChromeProvider.GetImage(chromeCollection, "moneybin");
+
+			if (spriteMoneyBin != null)
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(spriteMoneyBin, new float2(Bounds.Left, 0));
 
 			// Cash
 			var cashDigits = (playerResources.DisplayCash + playerResources.DisplayResources).ToString();
@@ -48,9 +49,11 @@ namespace OpenRA.Mods.D2k.Widgets
 
 			foreach (var d in cashDigits.Reverse())
 			{
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(
-					ChromeProvider.GetImage(digitCollection, (d - '0').ToString()),
-					new float2(x, 6));
+				var spriteDigit = ChromeProvider.GetImage(digitCollection, (d - '0').ToString());
+				
+				if (spriteDigit != null)
+					Game.Renderer.RgbaSpriteRenderer.DrawSprite(spriteDigit, new float2(x, 6));
+				
 				x -= 14;
 			}
 		}
