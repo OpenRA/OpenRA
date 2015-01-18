@@ -1,3 +1,5 @@
+mkdir windows -Force >$null
+
 if (!(Test-Path "nuget.exe"))
 {
 	echo "Fetching NuGet."
@@ -69,5 +71,21 @@ if (!(Test-Path "Mono.Nat.dll"))
 	echo "Fetching Mono.Nat from NuGet."
 	./nuget.exe install Mono.Nat -Version 1.2.21
 	cp Mono.Nat.1.2.21.0/lib/net40/Mono.Nat.dll .
-	rmdir  Mono.Nat.1.2.21.0 -Recurse
+	rmdir Mono.Nat.1.2.21.0 -Recurse
+}
+
+if (!(Test-Path "windows/lua51.dll"))
+{
+	echo "Fetching Lua 5.1 from NuGet."
+	./nuget.exe install lua51.redist -Version 5.1.5
+	cp lua51.redist.5.1.5/build/native/bin/Win32/v120/Release/lua5.1.dll ./windows/lua51.dll
+	rmdir lua51.redist.5.1.5 -Recurse
+}
+
+if (!(Test-Path "windows/zlib1.dll"))
+{
+	echo "Fetching ZLib from NuGet."
+	./nuget.exe install zlib.redist -Version 1.2.8.7
+	cp zlib.redist.1.2.8.7/build/native/bin/v120/Win32/Release/dynamic/stdcall/zlib.dll windows/zlib1.dll
+	rmdir zlib.redist.1.2.8.7 -Recurse
 }
