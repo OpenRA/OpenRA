@@ -267,7 +267,7 @@ namespace OpenRA.Mods.Common.Traits
 
 						// Check if the player is trying to build more units that they are allowed
 						var fromLimit = int.MaxValue;
-						if (bi.BuildLimit > 0)
+						if (!developerMode.AllTech && bi.BuildLimit > 0)
 						{
 							var inQueue = queue.Count(pi => pi.Item == order.TargetString);
 							var owned = self.Owner.World.ActorsWithTrait<Buildable>().Count(a => a.Actor.Info.Name == order.TargetString && a.Actor.Owner == self.Owner);
