@@ -9,6 +9,9 @@ apc:
 harv:
 	icon: harvicon
 		Start: 0
+	harvest: harvestr
+		Start: 0
+		Length: *
 
 hvr:
 	icon: hovricon

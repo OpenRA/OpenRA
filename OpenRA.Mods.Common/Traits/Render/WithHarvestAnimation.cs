@@ -23,6 +23,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
+		public readonly string Palette = "effect";
+
 		public object Create(ActorInitializer init) { return new WithHarvestAnimation(init.Self, this); }
 	}
 
@@ -39,12 +41,13 @@ namespace OpenRA.Mods.Common.Traits
 			var body = self.Trait<IBodyOrientation>();
 
 			anim = new Animation(self.World, rs.GetImage(self), RenderSimple.MakeFacingFunc(self));
+			anim.IsDecoration = true;
 			anim.Play(info.Sequence);
 			rs.Add("harvest_{0}".F(info.Sequence), new AnimationWithOffset(anim,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				() => !visible,
 				() => false,
-				p => ZOffsetFromCenter(self, p, 0)));
+				p => ZOffsetFromCenter(self, p, 0)), info.Palette);
 		}
 
 		public void Harvested(Actor self, ResourceType resource)
