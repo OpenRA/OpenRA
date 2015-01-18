@@ -18,8 +18,12 @@ namespace OpenRA
 {
 	public class GameInformation
 	{
+		public string Mod;
+		public string Version;
+
 		public string MapUid;
 		public string MapTitle;
+
 		public DateTime StartTimeUtc;
 
 		// Game end timestamp (when the recoding stopped).

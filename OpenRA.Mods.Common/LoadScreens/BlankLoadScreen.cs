@@ -8,8 +8,10 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Widgets;
@@ -78,7 +80,10 @@ namespace OpenRA.Mods.Common.LoadScreens
 			var replay = args != null ? args.GetValue("Launch.Replay", null) : null;
 			if (!string.IsNullOrEmpty(replay))
 			{
-				Game.JoinReplay(replay);
+				var replayMeta = ReplayMetadata.Read(replay);
+				if (ReplayUtils.CheckReplayCompatibility(replayMeta, Game.LoadShellMap))
+					Game.JoinReplay(replay);
+
 				return;
 			}
 
