@@ -550,6 +550,7 @@ HMEC:
 		BuildPaletteOrder: 80
 		Prerequisites: gaweap, gatech
 		Owner: gdi
+		BuildLimit: 1
 	Mobile:
 		ROT: 3
 		Speed: 42

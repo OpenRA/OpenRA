@@ -185,6 +185,7 @@ UMAGON:
 		BuildPaletteOrder: 50
 		Prerequisites: gapile, gatech
 		Owner: gdi
+		BuildLimit: 1
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Umagon
@@ -217,6 +218,7 @@ GHOST:
 		BuildPaletteOrder: 50
 		Prerequisites: gapile, gatech
 		Owner: gdi
+		BuildLimit: 1
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Ghost
@@ -279,6 +281,7 @@ CHAMSPY:
 		BuildPaletteOrder: 60
 		Prerequisites: nahand, natech
 		Owner: nod
+		BuildLimit: 1
 	Valued:
 		Cost: 700
 	DisguiseToolTip:
@@ -351,6 +354,7 @@ CYC2:
 		BuildPaletteOrder: 50
 		Prerequisites: nahand, natech
 		Owner: nod
+		BuildLimit: 1
 	-Crushable:
 	Selectable:
 		Bounds: 14,30,0,-7
@@ -463,6 +467,7 @@ MHIJACK:
 		BuildPaletteOrder: 10
 		Prerequisites: nahand, natech # natech must be natmpl
 		Owner: nod
+		BuildLimit: 1
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -489,6 +494,7 @@ TRATOS:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
+		BuildLimit: 1
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -514,6 +520,7 @@ OXANNA:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
+		BuildLimit: 1
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -537,6 +544,7 @@ SLAV:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
+		BuildLimit: 1
 	Valued:
 		Cost: 100
 	Tooltip:
