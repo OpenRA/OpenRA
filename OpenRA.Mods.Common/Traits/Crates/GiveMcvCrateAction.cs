@@ -9,9 +9,8 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawns units when collected.", "Adjust selection shares when player has no base.")]
 	class GiveMcvCrateActionInfo : GiveUnitCrateActionInfo

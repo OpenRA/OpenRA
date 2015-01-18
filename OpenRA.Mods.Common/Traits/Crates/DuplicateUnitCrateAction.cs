@@ -9,13 +9,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Creates duplicates of the actor that collects the crate.")]
 	class DuplicateUnitCrateActionInfo : CrateActionInfo
