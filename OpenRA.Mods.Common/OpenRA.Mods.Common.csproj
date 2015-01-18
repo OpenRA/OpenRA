@@ -121,6 +121,7 @@
     <Compile Include="Effects\LaserZap.cs" />
     <Compile Include="Effects\Missile.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
+    <Compile Include="Effects\Parachute.cs" />
     <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\Rank.cs" />
@@ -280,6 +281,8 @@
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Traits\Modifiers\UpgradeOverlay.cs" />
     <Compile Include="Traits\MustBeDestroyed.cs" />
+    <Compile Include="Traits\Parachutable.cs" />
+    <Compile Include="Traits\ParaDrop.cs" />
     <Compile Include="Traits\Passenger.cs" />
     <Compile Include="Traits\PaletteEffects\CloakPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\LightPaletteRotator.cs" />
