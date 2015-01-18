@@ -22,11 +22,12 @@ before_deploy:
   - cp OpenRA.Game/OpenRA.ico .
   - appveyor DownloadFile "https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md" -FileName Changelog.md
   - '%NSIS_ROOT%\makensis /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\windows" /V3 packaging/windows/OpenRA.nsi'
+  - appveyor PushArtifact packaging/windows/OpenRA.Setup.exe -FileName OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe
 
 deploy:
   - provider: GitHub
     auth_token:
       secure: Z7RC+ckfvf7Kxf2EdWZCP7bgGjRnhgbMeieQP6VVhiZprwvbEzGXI2Wma+FGAq65
-    artifact: packaging\windows\OpenRA.Setup.exe
+    artifact: OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe
     on:
         appveyor_repo_tag: true
