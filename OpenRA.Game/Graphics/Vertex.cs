@@ -15,8 +15,11 @@ namespace OpenRA.Graphics
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Vertex
 	{
+		// TODO Workaround for unused field warnings in mono 2.10
+		#pragma warning disable 414
 		float x, y, z, u, v;
 		float p, c;
+		#pragma warning restore
 
 		public Vertex(float2 xy, float u, float v, float p, float c)
 		{
