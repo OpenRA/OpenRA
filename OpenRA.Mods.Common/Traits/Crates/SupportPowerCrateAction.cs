@@ -11,7 +11,7 @@
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Gives a supportpower to the collector.")]
 	class SupportPowerCrateActionInfo : CrateActionInfo

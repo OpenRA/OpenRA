@@ -11,7 +11,7 @@
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Gives cash to the collector.")]
 	class GiveCashCrateActionInfo : CrateActionInfo
