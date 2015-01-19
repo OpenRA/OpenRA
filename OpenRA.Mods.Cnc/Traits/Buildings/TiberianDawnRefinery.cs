@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override Activity DockSequence(Actor harv, Actor self)
 		{
-			return new HarvesterDockSequence(harv, self);
+			return new TDHarvesterDockSequence(harv, self);
 		}
 	}
 }
