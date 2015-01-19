@@ -775,23 +775,6 @@ naobel:
 	icon: obliicon
 		Start: 0
 
-nalasr:
-	idle: ntlasr
-		Start: 0
-		ShadowStart: 3
-	damaged-idle: ntlasr
-		Start: 1
-		ShadowStart: 4
-	critical-idle: ntlasr
-		Start: 2
-		ShadowStart: 5
-	make: ntlasrmk
-		Start: 0
-		Length: 21
-		ShadowStart: 21
-	icon: plticon
-		Start: 0
-
 nasam:
 	idle: ntsam
 		Start: 0

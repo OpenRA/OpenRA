@@ -67,7 +67,6 @@ Sequences:
 	./mods/ra2/sequences/misc.yaml
 	./mods/ra2/sequences/structures.yaml
 	./mods/ra2/sequences/vehicles.yaml
-	./mods/ra2/sequences/trees.yaml
 
 VoxelSequences:
 	./mods/ra2/sequences/voxels.yaml
