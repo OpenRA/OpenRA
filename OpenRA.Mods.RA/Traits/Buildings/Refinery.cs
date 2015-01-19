@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Activities;
@@ -19,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	public class OreRefineryInfo : ITraitInfo
+	public class RefineryInfo : ITraitInfo
 	{
 		[Desc("Docking cell relative to top-left cell.")]
 		public readonly CVec DockOffset = new CVec(1, 2);
@@ -28,16 +27,16 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly int TickLifetime = 30;
 		public readonly int TickVelocity = 2;
 		public readonly int TickRate = 10;
-		[Desc("Actually harvester facing when docking, 0-255 counter-clock-wise.")]
+		[Desc("Actual harvester facing when docking, 0-255 counter-clock-wise.")]
 		public readonly int DockAngle = 64;
 
-		public virtual object Create(ActorInitializer init) { return new OreRefinery(init.Self, this); }
+		public virtual object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
 	}
 
-	public class OreRefinery : ITick, IAcceptResources, INotifyKilled, INotifySold, INotifyCapture, INotifyOwnerChanged, IExplodeModifier, ISync
+	public class Refinery : ITick, IAcceptResources, INotifyKilled, INotifySold, INotifyCapture, INotifyOwnerChanged, IExplodeModifier, ISync
 	{
 		readonly Actor self;
-		readonly OreRefineryInfo info;
+		readonly RefineryInfo info;
 		PlayerResources playerResources;
 
 		int currentDisplayTick = 0;
@@ -50,14 +49,17 @@ namespace OpenRA.Mods.RA.Traits
 		public bool AllowDocking { get { return !preventDock; } }
 		public CVec DeliveryOffset { get { return info.DockOffset; } }
 
-		public virtual Activity DockSequence(Actor harv, Actor self) { return new RAHarvesterDockSequence(harv, self, info.DockAngle); }
-
-		public OreRefinery(Actor self, OreRefineryInfo info)
+		public Refinery(Actor self, RefineryInfo info)
 		{
 			this.self = self;
 			this.info = info;
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			currentDisplayTick = info.TickRate;
+		}
+
+		public virtual Activity DockSequence(Actor harv, Actor self)
+		{
+			return new RAHarvesterDockSequence(harv, self, info.DockAngle);
 		}
 
 		public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()

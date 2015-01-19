@@ -111,7 +111,7 @@
     <Compile Include="Traits\SupportPowers\ParatroopersPower.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\Buildings\Fake.cs" />
-    <Compile Include="Traits\Buildings\OreRefinery.cs" />
+    <Compile Include="Traits\Buildings\Refinery.cs" />
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\HarvesterHuskModifier.cs" />
     <Compile Include="Traits\LeavesHusk.cs" />

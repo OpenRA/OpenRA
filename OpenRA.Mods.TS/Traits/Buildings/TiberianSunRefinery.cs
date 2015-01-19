@@ -11,18 +11,17 @@
 using OpenRA.Activities;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Mods.TS.Activities;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits
 {
-	public class TiberianSunRefineryInfo : OreRefineryInfo
+	public class TiberianSunRefineryInfo : RefineryInfo
 	{
 		public override object Create(ActorInitializer init) { return new TiberianSunRefinery(init.Self, this); }
 	}
 
-	public class TiberianSunRefinery : OreRefinery
+	public class TiberianSunRefinery : Refinery
 	{
-		public TiberianSunRefinery(Actor self, TiberianSunRefineryInfo info) : base(self, info) { }
+		public TiberianSunRefinery(Actor self, RefineryInfo info) : base(self, info) { }
 
 		public override Activity DockSequence(Actor harv, Actor self)
 		{
