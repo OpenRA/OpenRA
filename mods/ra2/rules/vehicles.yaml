@@ -52,7 +52,6 @@ CMIN:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Owner: allies
 		Hotkey: h
 	Selectable:
 		Priority: 7
@@ -90,7 +89,6 @@ SMCV:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
-		Owner: soviets
 		Hotkey: b
 	Valued:
 		Cost: 3000
@@ -128,7 +126,6 @@ TRUCKB:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 120
-		Owner: allies, soviets
 		Hotkey: t
 	Valued:
 		Cost: 500
@@ -158,7 +155,6 @@ BUS:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 300
-		Owner: allies
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -185,7 +181,6 @@ PICK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 300
-		Owner: allies
 	Mobile:
 		ROT: 5
 		Speed: 113

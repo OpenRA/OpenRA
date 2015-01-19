@@ -56,7 +56,6 @@ E3:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
-		Owner: soviets
 		Hotkey: r
 	Valued:
 		Cost: 250
@@ -89,7 +88,6 @@ ENGINEER:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30
-		Owner: allies, soviet
 		Hotkey: e
 	Selectable:
 		Bounds: 12,17,0,-6

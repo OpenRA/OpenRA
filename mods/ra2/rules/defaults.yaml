@@ -99,7 +99,6 @@
 			Clear: 100
 			Rough: 100
 			Road: 100
-			Tiberium: 100
 			Beach: 100
 	SelectionDecorations:
 		Palette: pips
@@ -185,7 +184,6 @@
 			Rough: 100
 			Road: 100
 			Beach: 100
-			Tiberium: 100
 		ROT: 5
 	SelectionDecorations:
 		Palette: pips
