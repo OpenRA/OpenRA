@@ -7,7 +7,7 @@ gacnst:
 		Start: 0
 		ShadowStart: 3
 		Offset: 0,-55,0
-	make: gtcnstmk
+	make: gacnstmk
 		Start: 0
 		Length: 28
 		ShadowStart: 0
@@ -416,7 +416,7 @@ gaspst:
 #
 
 nacnst:
-	idle: ngcnst
+	idle: nacnst
 		Start: 0
 		ShadowStart: 3
 		Offset: 0,-55,0

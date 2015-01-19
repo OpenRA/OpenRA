@@ -41,12 +41,13 @@
 	Demolishable:
 	ScriptTriggers:
 	WithMakeAnimation:
-	UpgradeOverlay@IRONCURTAIN:
-		RequiresUpgrade: invulnerability
-	InvulnerabilityUpgrade@IRONCURTAIN:
-		RequiresUpgrade: invulnerability
-	TimedUpgradeBar:
-		Upgrade: invulnerability
+	# Exception of type `System.InvalidOperationException`: Palette `invuln` does not exist
+	# UpgradeOverlay@IRONCURTAIN:
+	# 	RequiresUpgrade: invulnerability
+	# InvulnerabilityUpgrade@IRONCURTAIN:
+	# 	RequiresUpgrade: invulnerability
+	# TimedUpgradeBar:
+	# 	Upgrade: invulnerability
 	UpgradeManager:
 
 ^Wall:
