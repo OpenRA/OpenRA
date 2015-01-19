@@ -20,15 +20,25 @@ namespace OpenRA.Mods.RA.Traits
 {
 	public class RefineryInfo : ITraitInfo
 	{
+		[Desc("Actual harvester facing when docking, 0-255 counter-clock-wise.")]
+		public readonly int DockAngle = 0;
+
 		[Desc("Docking cell relative to top-left cell.")]
-		public readonly CVec DockOffset = new CVec(1, 2);
+		public readonly CVec DockOffset = CVec.Zero;
+
+		[Desc("Does the refinery require the harvester to be dragged in?")]
+		public readonly bool IsDragRequired = false;
+
+		[Desc("Vector by which the harvester will be dragged when docking.")]
+		public readonly WVec DragOffset = WVec.Zero;
+
+		[Desc("In how many steps to perform the dragging?")]
+		public readonly int DragLength = 0;
 
 		public readonly bool ShowTicks = true;
 		public readonly int TickLifetime = 30;
 		public readonly int TickVelocity = 2;
 		public readonly int TickRate = 10;
-		[Desc("Actual harvester facing when docking, 0-255 counter-clock-wise.")]
-		public readonly int DockAngle = 64;
 
 		public virtual object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
 	}
@@ -48,6 +58,10 @@ namespace OpenRA.Mods.RA.Traits
 
 		public bool AllowDocking { get { return !preventDock; } }
 		public CVec DeliveryOffset { get { return info.DockOffset; } }
+		public int DeliveryAngle { get { return info.DockAngle; } }
+		public bool IsDragRequired { get { return info.IsDragRequired; } }
+		public WVec DragOffset { get { return info.DragOffset; } }
+		public int DragLength { get { return info.DragLength; } }
 
 		public Refinery(Actor self, RefineryInfo info)
 		{
@@ -59,7 +73,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public virtual Activity DockSequence(Actor harv, Actor self)
 		{
-			return new HarvesterDockSequence(harv, self, info.DockAngle);
+			return new SpriteHarvesterDockSequence(harv, self, DeliveryAngle, IsDragRequired, DragOffset, DragLength);
 		}
 
 		public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()

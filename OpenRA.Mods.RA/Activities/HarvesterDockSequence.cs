@@ -12,65 +12,69 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Activities
 {
 	public class HarvesterDockSequence : Activity
 	{
-		enum State { Wait, Turn, Dock, Loop, Undock, Complete }
+		protected enum State { Wait, Turn, Dock, Loop, Undock, Complete }
 
-		readonly Actor proc;
-		readonly int angle;
-		readonly Harvester harv;
-		readonly RenderUnit ru;
-		State state;
+		protected readonly Actor Refinery;
+		protected readonly Harvester Harv;
+		protected readonly int DockAngle;
+		protected readonly bool IsDragRequired;
+		protected readonly WVec DragOffset;
+		protected readonly int DragLength;
+		protected readonly WPos StartDrag;
+		protected readonly WPos EndDrag;
+		
+		protected State dockingState;
 
-		public HarvesterDockSequence(Actor self, Actor proc, int angle)
+		public HarvesterDockSequence(Actor self, Actor refinery, int dockAngle, bool isDragRequired, WVec dragOffset, int dragLength)
 		{
-			this.proc = proc;
-			this.angle = angle;
-			state = State.Turn;
-			harv = self.Trait<Harvester>();
-			ru = self.Trait<RenderUnit>();
+			dockingState = State.Turn;
+			Refinery = refinery;
+			DockAngle = dockAngle;
+			IsDragRequired = isDragRequired;
+			DragOffset = dragOffset;
+			DragLength = dragLength;
+			Harv = self.Trait<Harvester>();
+			StartDrag = self.CenterPosition;
+			EndDrag = refinery.CenterPosition + DragOffset;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			switch (state)
+			switch (dockingState)
 			{
 				case State.Wait:
 					return this;
 				case State.Turn:
-					state = State.Dock;
-					return Util.SequenceActivities(new Turn(self, angle), this);
+					dockingState = State.Dock;
+					if (IsDragRequired)
+						return Util.SequenceActivities(new Turn(self, DockAngle), new Drag(self, StartDrag, EndDrag, DragLength), this);
+					return Util.SequenceActivities(new Turn(self, DockAngle), this);
 				case State.Dock:
-					ru.PlayCustomAnimation(self, "dock", () =>
-					{
-						ru.PlayCustomAnimRepeating(self, "dock-loop");
-						if (proc.IsInWorld && !proc.IsDead)
-							foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
-								nd.Docked(proc, self);
-						state = State.Loop;
-					});
-					state = State.Wait;
-					return this;
+					if (Refinery.IsInWorld && !Refinery.IsDead)
+						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
+							nd.Docked(Refinery, self);
+					return OnStateDock(self);
 				case State.Loop:
-					if (!proc.IsInWorld || proc.IsDead || harv.TickUnload(self, proc))
-						state = State.Undock;
+					if (!Refinery.IsInWorld || Refinery.IsDead || Harv.TickUnload(self, Refinery))
+						dockingState = State.Undock;
 					return this;
 				case State.Undock:
-					ru.PlayCustomAnimBackwards(self, "dock", () => state = State.Complete);
-					state = State.Wait;
-					return this;
+					return OnStateUndock(self);
 				case State.Complete:
-					harv.LastLinkedProc = harv.LinkedProc;
-					harv.LinkProc(self, null);
-					if (proc.IsInWorld && !proc.IsDead)
-						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
-							nd.Undocked(proc, self);
+					if (Refinery.IsInWorld && !Refinery.IsDead)
+						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
+							nd.Undocked(Refinery, self);
+					Harv.LastLinkedProc = Harv.LinkedProc;
+					Harv.LinkProc(self, null);
+					if (IsDragRequired)
+						return Util.SequenceActivities(new Drag(self, EndDrag, StartDrag, DragLength), NextActivity);
 					return NextActivity;
 			}
 
@@ -79,13 +83,23 @@ namespace OpenRA.Mods.RA
 
 		public override void Cancel(Actor self)
 		{
-			state = State.Undock;
+			dockingState = State.Undock;
 			base.Cancel(self);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return Target.FromActor(proc);
+			yield return Target.FromActor(Refinery);
+		}
+
+		public virtual Activity OnStateDock(Actor self)
+		{
+			throw new NotImplementedException("Base class HarvesterDockSequence does not implement method OnStateDock!");
+		}
+
+		public virtual Activity OnStateUndock(Actor self)
+		{
+			throw new NotImplementedException("Base class HarvesterDockSequence does not implement method OnStateUndock!");
 		}
 	}
 }
