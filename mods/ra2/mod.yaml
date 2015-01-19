@@ -1,8 +1,8 @@
 Metadata:
 	Title: Red Alert 2
-	Description: The Soviet Union is back! This time to\nconquer the United States...
+	Description: The Soviet Union is back!\nThis time to conquer the United States...
 	Version: {DEV_VERSION}
-	Author: OmegaBolt
+	Author: Phrohdoh
 
 Folders:
 	.
@@ -152,7 +152,7 @@ Movies:
 Translations:
 	./mods/ra2/languages/english.yaml
 
-LoadScreen: DefaultLoadScreen
+LoadScreen: LogoStripeLoadScreen
 	Image: ./mods/ra2/uibits/loadscreen.png
 	Text: Loading...
 
@@ -170,6 +170,7 @@ LobbyDefaults:
 	FragileAlliances: false
 	Shroud: false
 	Fog: false
+	ShortGame: false
 
 ChromeMetrics:
 	./mods/ra2/metrics.yaml

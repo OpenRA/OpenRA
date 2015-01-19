@@ -6,7 +6,8 @@ chrome-allies: chrome-allies.png
 	tooltip-bg: 0,288,272,136
 	radar: 297,31,210,222
 
-power-allies: chrome-allies.png
+# power-allies
+sidebar-bits: chrome-allies.png
 	power-indicator: 187,4,4,7
 
 palette-allies: chrome-allies.png
@@ -43,8 +44,9 @@ chrome-soviets: chrome-soviets.png
 	tooltip-bg: 0,288,272,136
 	radar: 297,31,210,222
 
-power-soviets: chrome-soviets.png
-	power-indicator: 187,4,4,7
+# power-soviets
+# sidebar-bits: chrome-soviets.png
+# 	power-indicator: 187,4,4,7
 
 palette-soviets: chrome-soviets.png
 	top: 297,288,201,9
