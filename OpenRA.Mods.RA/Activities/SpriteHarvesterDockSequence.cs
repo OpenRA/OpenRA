@@ -9,32 +9,31 @@
 #endregion
 
 using OpenRA.Activities;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.TS.Traits;
+using OpenRA.Mods.Common.Traits;
 
-namespace OpenRA.Mods.TS.Activities
+namespace OpenRA.Mods.RA.Activities
 {
-	public class VoxelHarvesterDockSequence : HarvesterDockSequence
+	public class SpriteHarvesterDockSequence : HarvesterDockSequence
 	{
-		readonly WithVoxelUnloadBody body;
+		readonly RenderUnit ru;
 
-		public VoxelHarvesterDockSequence(Actor self, Actor refinery, int dockAngle, bool isDragRequired, WVec dragOffset, int dragLength)
+		public SpriteHarvesterDockSequence(Actor self, Actor refinery, int dockAngle, bool isDragRequired, WVec dragOffset, int dragLength)
 			: base(self, refinery, dockAngle, isDragRequired, dragOffset, dragLength)
 		{
-			body = self.Trait<WithVoxelUnloadBody>();
+			ru = self.Trait<RenderUnit>();
 		}
 
 		public override Activity OnStateDock(Actor self)
 		{
-			body.Docked = true;
+			ru.PlayCustomAnimation(self, "dock", () => ru.PlayCustomAnimRepeating(self, "dock-loop"));
 			dockingState = State.Loop;
 			return this;
 		}
 
 		public override Activity OnStateUndock(Actor self)
 		{
-			body.Docked = false;
-			dockingState = State.Complete;
+			ru.PlayCustomAnimBackwards(self, "dock", () => dockingState = State.Complete);
+			dockingState = State.Wait;
 			return this;
 		}
 	}
