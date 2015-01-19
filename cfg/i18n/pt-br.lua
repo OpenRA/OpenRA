@@ -142,7 +142,7 @@ return {
   ["Find &Next"] = "Localizar próximo", -- src\editor\menu_search.lua
   ["Find &Previous"] = "Localizar anterior", -- src\editor\menu_search.lua
   ["Find In Files"] = "Localizar em arquivos", -- src\editor\findreplace.lua
-  ["Find and insert library function"] = nil, -- src\editor\menu_search.lua
+  ["Find and insert library function"] = "Localizar e inserir função de biblioteca", -- src\editor\menu_search.lua
   ["Find and replace text in files"] = "Localizar e substituir texto em arquivos", -- src\editor\menu_search.lua
   ["Find and replace text"] = "Localizar e substituir texto", -- src\editor\menu_search.lua
   ["Find text in files"] = "Localizar texto em arquivos", -- src\editor\menu_search.lua
@@ -167,7 +167,7 @@ return {
   ["INS"] = "INS", -- src\editor\editor.lua
   ["Ignored error in debugger initialization code: %s."] = "Erro ignorado no código de inicialização do depurador: %s.", -- src\editor\debugger.lua
   ["In Files"] = "Em arquivos", -- src\editor\findreplace.lua
-  ["Insert Library Function..."] = nil, -- src\editor\menu_search.lua
+  ["Insert Library Function..."] = "Inserir função de biblioteca...n", -- src\editor\menu_search.lua
   ["Known Files"] = "Arquivos conhecidos", -- src\editor\commands.lua
   ["Ln: %d"] = "Ln: %d", -- src\editor\editor.lua
   ["Local console"] = "Console local", -- src\editor\gui.lua, src\editor\shellbox.lua
@@ -305,7 +305,7 @@ return {
   ["Zoom In"] = "Ampliar", -- src\editor\menu_view.lua
   ["Zoom Out"] = "Afastar", -- src\editor\menu_view.lua
   ["Zoom to 100%"] = "Ir para 100%", -- src\editor\menu_view.lua
-  ["Zoom"] = nil, -- src\editor\menu_view.lua
+  ["Zoom"] = "Zoom", -- src\editor\menu_view.lua
   ["on line %d"] = "na linha %d", -- src\editor\debugger.lua, src\editor\editor.lua, src\editor\commands.lua
   ["traced %d instruction"] = {"%d instrução rastreada", "%d instruções rastreadas"}, -- src\editor\debugger.lua
   ["unknown error"] = "erro desconhecido", -- src\editor\debugger.lua
