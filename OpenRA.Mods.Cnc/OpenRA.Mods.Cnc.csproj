@@ -72,7 +72,7 @@
     <Compile Include="Effects\IonCannon.cs" />
     <Compile Include="Traits\AttackPopupTurreted.cs" />
     <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
-    <Compile Include="Traits\Buildings\TiberiumRefinery.cs" />
+    <Compile Include="Traits\Buildings\TiberianDawnRefinery.cs" />
     <Compile Include="Traits\PoisonedByTiberium.cs" />
     <Compile Include="Traits\Render\RenderGunboat.cs" />
     <Compile Include="Traits\Render\WithCargo.cs" />

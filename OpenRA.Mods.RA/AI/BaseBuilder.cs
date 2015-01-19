@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA.AI
 				var type = BuildingType.Building;
 				if (world.Map.Rules.Actors[currentBuilding.Item].Traits.Contains<AttackBaseInfo>())
 					type = BuildingType.Defense;
-				else if (world.Map.Rules.Actors[currentBuilding.Item].Traits.Contains<OreRefineryInfo>())
+				else if (world.Map.Rules.Actors[currentBuilding.Item].Traits.Contains<RefineryInfo>())
 					type = BuildingType.Refinery;
 
 				var location = ai.ChooseBuildLocation(currentBuilding.Item, true, type);
