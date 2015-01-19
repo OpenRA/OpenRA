@@ -933,7 +933,9 @@ PROC:
 	RevealsShroud:
 		Range: 6c0
 	Bib:
-	OreRefinery:
+	Refinery:
+		DockAngle: 64
+		DockOffset: 1,2
 	StoresResources:
 		PipCount: 17
 		Capacity: 2000

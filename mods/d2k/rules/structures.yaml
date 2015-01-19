@@ -171,9 +171,9 @@ CONCRETEB:
 		Type: Wood
 	RevealsShroud:
 		Range: 6c0
-	OreRefinery:
-		DockOffset: 2,1
+	Refinery:
 		DockAngle: 160
+		DockOffset: 2,1
 		TickRate: 20
 	StoresResources:
 		PipColor: green
