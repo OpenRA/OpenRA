@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public virtual Activity DockSequence(Actor harv, Actor self)
 		{
-			return new RAHarvesterDockSequence(harv, self, info.DockAngle);
+			return new HarvesterDockSequence(harv, self, info.DockAngle);
 		}
 
 		public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()

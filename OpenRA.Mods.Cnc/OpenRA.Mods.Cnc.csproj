@@ -67,7 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\HarvesterDockSequence.cs" />
+    <Compile Include="Activities\TDHarvesterDockSequence.cs" />
     <Compile Include="CncLoadScreen.cs" />
     <Compile Include="Effects\IonCannon.cs" />
     <Compile Include="Traits\AttackPopupTurreted.cs" />

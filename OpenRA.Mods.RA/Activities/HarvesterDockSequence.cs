@@ -13,31 +13,28 @@ using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Activities
+namespace OpenRA.Mods.RA
 {
 	public class HarvesterDockSequence : Activity
 	{
-		enum State { Wait, Turn, DragIn, Dock, Loop, Undock, DragOut }
-		static readonly WVec DockOffset = new WVec(-640, 341, 0);
+		enum State { Wait, Turn, Dock, Loop, Undock, Complete }
 
 		readonly Actor proc;
+		readonly int angle;
 		readonly Harvester harv;
 		readonly RenderUnit ru;
 		State state;
 
-		WPos startDock, endDock;
-		public HarvesterDockSequence(Actor self, Actor proc)
+		public HarvesterDockSequence(Actor self, Actor proc, int angle)
 		{
 			this.proc = proc;
+			this.angle = angle;
 			state = State.Turn;
 			harv = self.Trait<Harvester>();
 			ru = self.Trait<RenderUnit>();
-			startDock = self.CenterPosition;
-			endDock = proc.CenterPosition + DockOffset;
 		}
 
 		public override Activity Tick(Actor self)
@@ -47,11 +44,8 @@ namespace OpenRA.Mods.Cnc.Activities
 				case State.Wait:
 					return this;
 				case State.Turn:
-					state = State.DragIn;
-					return Util.SequenceActivities(new Turn(self, 112), this);
-				case State.DragIn:
 					state = State.Dock;
-					return Util.SequenceActivities(new Drag(self, startDock, endDock, 12), this);
+					return Util.SequenceActivities(new Turn(self, angle), this);
 				case State.Dock:
 					ru.PlayCustomAnimation(self, "dock", () =>
 					{
@@ -68,14 +62,16 @@ namespace OpenRA.Mods.Cnc.Activities
 						state = State.Undock;
 					return this;
 				case State.Undock:
-					ru.PlayCustomAnimBackwards(self, "dock", () => state = State.DragOut);
+					ru.PlayCustomAnimBackwards(self, "dock", () => state = State.Complete);
+					state = State.Wait;
+					return this;
+				case State.Complete:
+					harv.LastLinkedProc = harv.LinkedProc;
+					harv.LinkProc(self, null);
 					if (proc.IsInWorld && !proc.IsDead)
 						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
 							nd.Undocked(proc, self);
-					state = State.Wait;
-					return this;
-				case State.DragOut:
-					return Util.SequenceActivities(new Drag(self, endDock, startDock, 12), NextActivity);
+					return NextActivity;
 			}
 
 			throw new InvalidOperationException("Invalid harvester dock state");
@@ -84,6 +80,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		public override void Cancel(Actor self)
 		{
 			state = State.Undock;
+			base.Cancel(self);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
