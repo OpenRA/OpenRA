@@ -58,7 +58,7 @@ CMIN:
 		Priority: 7
 	Harvester:
 		Capacity: 20
-		Resources: Tiberium, BlueTiberium
+		Resources: Tiberium
 		UnloadTicksPerBale: 1
 		SearchFromProcRadius: 24
 		SearchFromOrderRadius: 12
@@ -171,7 +171,7 @@ HARV:
 		Bounds: 36,36
 	Harvester:
 		Capacity: 20
-		Resources: Tiberium, BlueTiberium
+		Resources: Tiberium
 		UnloadTicksPerBale: 1
 		SearchFromProcRadius: 24
 		SearchFromOrderRadius: 12
@@ -184,7 +184,6 @@ HARV:
 			Road: 100
 			Beach: 70
 			Tiberium: 80
-			BlueTiberium: 80
 	Health:
 		HP: 1000
 	SelfHealing:
@@ -222,7 +221,6 @@ HVR:
 			Road: 100
 			Beach: 100
 			Tiberium: 100
-			BlueTiberium: 100
 	Health:
 		HP: 230
 	Armor:

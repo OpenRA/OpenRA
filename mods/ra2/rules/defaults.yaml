@@ -99,7 +99,6 @@
 			Rough: 100
 			Road: 100
 			Tiberium: 100
-			BlueTiberium: 100
 			Beach: 100
 	SelectionDecorations:
 		Palette: pips
@@ -186,7 +185,6 @@
 			Road: 100
 			Beach: 100
 			Tiberium: 100
-			BlueTiberium: 100
 		ROT: 5
 	SelectionDecorations:
 		Palette: pips
@@ -267,22 +265,3 @@
 	ScriptTriggers:
 	GainsStatUpgrades:
 	UpgradeManager:
-
-^BlossomTree:
-	Tooltip:
-		Name: Ore Mine
-	RenderBuilding:
-		Palette: player
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	AppearsOnRadar:
-	RadarColorFromTerrain:
-		Terrain: Tiberium
-	BodyOrientation:
-	FrozenUnderFog:
-		StartsRevealed: true
-	SeedsResource:
-		ResourceType: Tiberium
-		Interval: 55
-	WithActiveAnimation:

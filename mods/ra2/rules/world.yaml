@@ -42,10 +42,6 @@ World:
 		Name: ore
 		Filename: temperat.pal
 		ShadowIndex: 1
-	PaletteFromFile@bluetiberium:
-		Name: bluetiberium
-		Filename: temperat.pal
-		ShadowIndex: 1
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0
@@ -107,18 +103,6 @@ World:
 		AllowedTerrainTypes: Clear
 		AllowUnderActors: false
 		TerrainType: Tiberium
-	ResourceType@BlueTiberium:
-		ResourceType: 2
-		Palette: ore
-		EditorSprite: waypoint # TODO: editor can't handle the real ones
-		Variants: gem01#, gem02, gem03, gem04, gem05, gem06, gem07, gem08, gem09, gem10, gem11, gem12
-		MaxDensity: 12
-		ValuePerUnit: 100
-		Name: BlueTiberium
-		PipColor: Blue
-		AllowedTerrainTypes: Clear
-		AllowUnderActors: false
-		TerrainType: BlueTiberium
 	SmudgeLayer@SCORCH:
 		Type: Scorch
 		Sequence: scorches

@@ -60,7 +60,6 @@ Rules:
 	./mods/ra2/rules/infantry.yaml
 	./mods/ra2/rules/structures.yaml
 	./mods/ra2/rules/vehicles.yaml
-	./mods/ra2/rules/trees.yaml
 
 Sequences:
 	./mods/ra2/sequences/aircraft.yaml
