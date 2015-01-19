@@ -48,34 +48,34 @@ beacon:
 		Length: 12
 		BlendMode: Additive
 
-crate-effects:
-	dollar: money
-		Start: 0
-		Length: *
-	reveal-map: reveal
-		Start: 0
-		Length: *
-	hide-map: shroudx
-		Start: 0
-		Length: *
-	fpower: firepowr
-		Start: 0
-		Length: *
-	armor: armor
-		Start: 0
-		Length: *
-	stealth: cloak
-		Start: 0
-		Length: *
-	heal: healall
-		Start: 0
-		Length: *
-	nuke: mltimisl
-		Start: 0
-		Length: *
-	levelup: veteran
-		Start: 0
-		Length: *
+#crate-effects:
+#	dollar: money
+#		Start: 0
+#		Length: *
+#	reveal-map: reveal
+#		Start: 0
+#		Length: *
+#	hide-map: shroudx
+#		Start: 0
+#		Length: *
+#	fpower: firepowr
+#		Start: 0
+#		Length: *
+#	armor: armor
+#		Start: 0
+#		Length: *
+#	stealth: cloak
+#		Start: 0
+#		Length: *
+#	heal: healall
+#		Start: 0
+#		Length: *
+#	nuke: mltimisl
+#		Start: 0
+#		Length: *
+#	levelup: veteran
+#		Start: 0
+#		Length: *
 
 rank:
 	rank: pips
@@ -93,9 +93,9 @@ waypoint: # TODO: backfall to RA asset
 		Length: *
 
 clock:
-	idle: gclock2
-		Start: 0
-		Length: *
+	idle: pips #gclock2
+		Start: 7#0
+		Length: 2#*
 
 pips:
 	medic:
