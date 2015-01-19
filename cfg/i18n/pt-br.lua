@@ -167,7 +167,7 @@ return {
   ["INS"] = "INS", -- src\editor\editor.lua
   ["Ignored error in debugger initialization code: %s."] = "Erro ignorado no código de inicialização do depurador: %s.", -- src\editor\debugger.lua
   ["In Files"] = "Em arquivos", -- src\editor\findreplace.lua
-  ["Insert Library Function..."] = "Inserir função de biblioteca...n", -- src\editor\menu_search.lua
+  ["Insert Library Function..."] = "Inserir função de biblioteca...", -- src\editor\menu_search.lua
   ["Known Files"] = "Arquivos conhecidos", -- src\editor\commands.lua
   ["Ln: %d"] = "Ln: %d", -- src\editor\editor.lua
   ["Local console"] = "Console local", -- src\editor\gui.lua, src\editor\shellbox.lua
