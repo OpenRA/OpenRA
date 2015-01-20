@@ -84,19 +84,19 @@ namespace OpenRA
 	public class MiniYaml
 	{
 		const int SpacesPerLevel = 4;
-		static Func<string, string> stringIdentity = s => s;
-		static Func<MiniYaml, MiniYaml> miniYamlIdentity = my => my;
+		static readonly Func<string, string> StringIdentity = s => s;
+		static readonly Func<MiniYaml, MiniYaml> MiniYamlIdentity = my => my;
 		public string Value;
 		public List<MiniYamlNode> Nodes;
 
 		public Dictionary<string, MiniYaml> ToDictionary()
 		{
-			return ToDictionary(miniYamlIdentity);
+			return ToDictionary(MiniYamlIdentity);
 		}
 
 		public Dictionary<string, TElement> ToDictionary<TElement>(Func<MiniYaml, TElement> elementSelector)
 		{
-			return ToDictionary(stringIdentity, elementSelector);
+			return ToDictionary(StringIdentity, elementSelector);
 		}
 
 		public Dictionary<TKey, TElement> ToDictionary<TKey, TElement>(
@@ -155,8 +155,9 @@ namespace OpenRA
 				var line = ll;
 				++lineNo;
 
-				if (line.Contains('#'))
-					line = line.Substring(0, line.IndexOf('#')).TrimEnd(' ', '\t');
+				var commentIndex = line.IndexOf('#');
+				if (commentIndex != -1)
+					line = line.Substring(0, commentIndex).TrimEnd(' ', '\t');
 				if (line.Length == 0)
 					continue;
 				var cp = 0;
