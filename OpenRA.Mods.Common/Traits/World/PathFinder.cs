@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using OpenRA;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -25,13 +24,21 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new PathFinder(init.World); }
 	}
 
-	public class PathFinder
+	public interface IPathFinder
+	{
+		List<CPos> FindUnitPath(CPos from, CPos target, IActor self);
+		List<CPos> FindUnitPathToRange(CPos src, SubCell srcSub, WPos target, WRange range, IActor self);
+		List<CPos> FindPath(PathSearch search);
+		List<CPos> FindBidiPath(PathSearch fromSrc, PathSearch fromDest);
+	}
+
+	public class PathFinder : IPathFinder
 	{
 		const int MaxPathAge = 50;	/* x 40ms ticks */
 		static readonly List<CPos> EmptyPath = new List<CPos>(0);
 
-		readonly World world;
-		public PathFinder(World world) { this.world = world; }
+		readonly IWorld world;
+		public PathFinder(IWorld world) { this.world = world; }
 
 		class CachedPath
 		{
@@ -39,12 +46,12 @@ namespace OpenRA.Mods.Common.Traits
 			public CPos To;
 			public List<CPos> Result;
 			public int Tick;
-			public Actor Actor;
+			public IActor Actor;
 		}
 
 		List<CachedPath> cachedPaths = new List<CachedPath>();
 
-		public List<CPos> FindUnitPath(CPos from, CPos target, Actor self)
+		public List<CPos> FindUnitPath(CPos from, CPos target, IActor self)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
@@ -60,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 				var mi = self.Info.Traits.Get<MobileInfo>();
 
 				// If a water-land transition is required, bail early
-				var domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
+				var domainIndex = self.IWorld.IWorldActor.TraitOrDefault<DomainIndex>();
 				if (domainIndex != null)
 				{
 					var passable = mi.GetMovementClass(world.TileSet);
@@ -85,26 +92,26 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public List<CPos> FindUnitPathToRange(CPos src, SubCell srcSub, WPos target, WRange range, Actor self)
+		public List<CPos> FindUnitPathToRange(CPos src, SubCell srcSub, WPos target, WRange range, IActor self)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
 				var mi = self.Info.Traits.Get<MobileInfo>();
-				var targetCell = self.World.Map.CellContaining(target);
+				var targetCell = self.IWorld.IMap.CellContaining(target);
 				var rangeSquared = range.Range * range.Range;
 
 				// Correct for SubCell offset
-				target -= self.World.Map.OffsetOfSubCell(srcSub);
+				target -= self.IWorld.IMap.OffsetOfSubCell(srcSub);
 
 				// Select only the tiles that are within range from the requested SubCell
 				// This assumes that the SubCell does not change during the path traversal
-				var tilesInRange = world.Map.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
-					.Where(t => (world.Map.CenterOfCell(t) - target).LengthSquared <= rangeSquared &&
-						mi.CanEnterCell(self.World, self, t));
+				var tilesInRange = world.IMap.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
+					.Where(t => (world.IMap.CenterOfCell(t) - target).LengthSquared <= rangeSquared &&
+						mi.CanEnterCell(self.IWorld as World, self as Actor, t));
 
 				// See if there is any cell within range that does not involve a cross-domain request
 				// Really, we only need to check the circle perimeter, but it's not clear that would be a performance win
-				var domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
+				var domainIndex = self.IWorld.IWorldActor.TraitOrDefault<DomainIndex>();
 				if (domainIndex != null)
 				{
 					var passable = mi.GetMovementClass(world.TileSet);
@@ -129,7 +136,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					List<CPos> path = null;
 
-					while (!search.Queue.Empty)
+					while (!search.OpenQueue.Empty)
 					{
 						var p = search.Expand(world);
 						if (search.Heuristic(p) == 0)
@@ -139,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 						}
 					}
 
-					var dbg = world.WorldActor.TraitOrDefault<PathfinderDebugOverlay>();
+					var dbg = world.IWorldActor.TraitOrDefault<PathfinderDebugOverlay>();
 					if (dbg != null)
 						dbg.AddLayer(search.Considered.Select(p => new Pair<CPos, int>(p, search.CellInfo[p].MinCost)), search.MaxCost, search.Owner);
 
@@ -178,7 +185,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					List<CPos> path = null;
 
-					while (!fromSrc.Queue.Empty && !fromDest.Queue.Empty)
+					while (!fromSrc.OpenQueue.Empty && !fromDest.OpenQueue.Empty)
 					{
 						/* make some progress on the first search */
 						var p = fromSrc.Expand(world);
@@ -201,7 +208,7 @@ namespace OpenRA.Mods.Common.Traits
 						}
 					}
 
-					var dbg = world.WorldActor.TraitOrDefault<PathfinderDebugOverlay>();
+					var dbg = world.IWorldActor.TraitOrDefault<PathfinderDebugOverlay>();
 					if (dbg != null)
 					{
 						dbg.AddLayer(fromSrc.Considered.Select(p => new Pair<CPos, int>(p, fromSrc.CellInfo[p].MinCost)), fromSrc.MaxCost, fromSrc.Owner);
