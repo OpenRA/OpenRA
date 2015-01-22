@@ -61,6 +61,14 @@ Sequences:
 	./mods/cnc/sequences/civilian.yaml
 	./mods/cnc/sequences/campaign.yaml
 
+Weapons:
+	./mods/cnc/weapons/explosions.yaml
+	./mods/cnc/weapons/largecaliber.yaml
+	./mods/cnc/weapons/missiles.yaml
+	./mods/cnc/weapons/other.yaml
+	./mods/cnc/weapons/smallcaliber.yaml
+	./mods/cnc/weapons/superweapons.yaml
+
 Cursors:
 	./mods/cnc/cursors.yaml
 
@@ -105,9 +113,6 @@ ChromeLayout:
 	./mods/cnc/chrome/tooltips.yaml
 	./mods/cnc/chrome/assetbrowser.yaml
 	./mods/cnc/chrome/missionbrowser.yaml
-
-Weapons:
-	./mods/cnc/weapons.yaml
 
 Movies:
 	./mods/cnc/movies-gdi.yaml
