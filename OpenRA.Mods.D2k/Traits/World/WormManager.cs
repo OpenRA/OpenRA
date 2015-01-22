@@ -43,7 +43,6 @@ namespace OpenRA.Mods.D2k.Traits
 	{
 		readonly WormManagerInfo info;
 		readonly Lazy<Actor[]> spawnPointActors;
-		readonly Lazy<RadarPings> radarPings;
 
 		int spawnCountdown;
 		int wormsPresent;
@@ -51,7 +50,6 @@ namespace OpenRA.Mods.D2k.Traits
 		public WormManager(Actor self, WormManagerInfo info)
 		{
 			this.info = info;
-			radarPings = Exts.Lazy(() => self.World.WorldActor.Trait<RadarPings>());
 			spawnPointActors = Exts.Lazy(() => self.World.ActorsWithTrait<WormSpawner>().Select(x => x.Actor).ToArray());
 		}
 
@@ -80,8 +78,6 @@ namespace OpenRA.Mods.D2k.Traits
 				// more we need to reach the defined minimum count.
 				wormLocations.Add(SpawnWorm(self));
 			} while (wormsPresent < info.Minimum);
-
-			AnnounceWormSign(self, wormLocations);
 		}
 
 		WPos SpawnWorm(Actor self)
@@ -106,18 +102,6 @@ namespace OpenRA.Mods.D2k.Traits
 		public void DecreaseWormCount()
 		{
 			wormsPresent--;
-		}
-
-		void AnnounceWormSign(Actor self, IEnumerable<WPos> wormLocations)
-		{
-			if (self.World.LocalPlayer != null)
-				Sound.PlayNotification(self.World.Map.Rules, self.World.LocalPlayer, "Speech", info.WormSignNotification, self.World.LocalPlayer.Country.Race);
-
-			if (radarPings.Value == null)
-				return;
-
-			foreach (var wormLocation in wormLocations)
-				radarPings.Value.Add(() => true, wormLocation, Color.Red, 50);
 		}
 	}
 }

@@ -50,6 +50,8 @@
 	UpgradeManager:
 	TemporaryOwnerManager:
 	MustBeDestroyed:
+	AnnounceOnSeen:
+		Notification: EnemyUnitsApproaching
 
 ^Tank:
 	AppearsOnRadar:
@@ -103,6 +105,8 @@
 	UpgradeManager:
 	TemporaryOwnerManager:
 	MustBeDestroyed:
+	AnnounceOnSeen:
+		Notification: EnemyUnitsApproaching
 
 ^Husk:
 	Health:
@@ -227,6 +231,8 @@
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	MustBeDestroyed:
+	AnnounceOnSeen:
+		Notification: EnemyUnitsApproaching
 
 ^Plane:
 	AppearsOnRadar:
@@ -260,6 +266,8 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	AnnounceOnSeen:
+		Notification: EnemyUnitsApproaching
 
 ^Helicopter:
 	Inherits: ^Plane
