@@ -111,10 +111,22 @@ namespace OpenRA
 		MissionSelector = 4
 	}
 
-	public class Map
+	public interface IMap
+	{
+		TileShape TileShape { get; }
+
+		int2 MapDimensions { get; }
+		bool Contains(CPos cell);
+		CPos CellContaining(WPos pos);
+		WVec OffsetOfSubCell(SubCell subCell);
+		IEnumerable<CPos> FindTilesInCircle(CPos center, int maxRange);
+		WPos CenterOfCell(CPos cell);
+	}
+
+	public class Map : IMap
 	{
 		public const int MaxTilesInCircleRange = 50;
-		public readonly TileShape TileShape;
+		public TileShape TileShape { get; private set; }
 		[FieldLoader.Ignore]
 		public readonly WVec[] SubCellOffsets;
 		public readonly SubCell DefaultSubCell;
@@ -187,6 +199,14 @@ namespace OpenRA
 		[FieldLoader.Ignore] public byte TileFormat = 2;
 
 		public int2 MapSize;
+
+		public int2 MapDimensions
+		{
+			get 
+			{
+				return MapSize;
+			}
+		}
 
 		[FieldLoader.Ignore] public Lazy<CellLayer<TerrainTile>> MapTiles;
 		[FieldLoader.Ignore] public Lazy<CellLayer<ResourceTile>> MapResources;

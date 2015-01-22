@@ -22,14 +22,38 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>
+	public interface IActor
 	{
-		public readonly ActorInfo Info;
-		public readonly World World;
-		public readonly uint ActorID;
+		ActorInfo Info { get; }
+		IWorld IWorld { get; }
+		uint ActorID { get; }
+		Player Owner { get; set; }
+
+		T TraitOrDefault<T>();
+		T Trait<T>();
+		IEnumerable<T> TraitsImplementing<T>();
+
+		T TraitInfo<T>();
+
+		IEnumerable<IRenderable> Render(WorldRenderer wr);
+	}
+
+	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>, IActor
+	{
+		public ActorInfo Info { get; private set; }
+		public World World { get; private set; }
+		public IWorld IWorld
+		{
+			get
+			{
+				return World;
+			}
+		}
+
+		public uint ActorID { get; private set; }
 
 		[Sync]
-		public Player Owner;
+		public Player Owner { get; set; }
 
 		public bool IsInWorld { get; internal set; }
 		public bool Destroyed { get; private set; }
@@ -199,6 +223,11 @@ namespace OpenRA
 			return World.TraitDict.WithInterface<T>(this);
 		}
 
+		public T TraitInfo<T>()
+		{
+			return Info.Traits.Get<T>();
+		}
+
 		public bool HasTrait<T>()
 		{
 			return World.TraitDict.Contains<T>(this);
@@ -232,7 +261,7 @@ namespace OpenRA
 		{
 			World.AddFrameEndTask(w =>
 			{
-				if (this.Destroyed)
+				if (Destroyed)
 					return;
 
 				var oldOwner = Owner;

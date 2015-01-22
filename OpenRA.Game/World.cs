@@ -24,7 +24,15 @@ namespace OpenRA
 {
 	public enum WorldType { Regular, Shellmap }
 
-	public class World
+	public interface IWorld
+	{
+		IActor IWorldActor { get; }
+		int WorldTick { get; }
+		IMap IMap { get; }
+		TileSet TileSet { get; }
+	}
+
+	public class World : IWorld
 	{
 		static readonly Func<MPos, bool> FalsePredicate = _ => false;
 		internal readonly TraitDictionary TraitDict = new TraitDictionary();
@@ -106,9 +114,13 @@ namespace OpenRA
 			RenderPlayer = LocalPlayer;
 		}
 
-		public readonly Actor WorldActor;
-		public readonly Map Map;
-		public readonly TileSet TileSet;
+		public Actor WorldActor { get; private set; }
+		public IActor IWorldActor { get { return WorldActor; } }
+
+		public Map Map { get; private set; }
+		public IMap IMap { get { return Map; } }
+
+		public TileSet TileSet { get; private set; }
 		public readonly ActorMap ActorMap;
 		public readonly ScreenMap ScreenMap;
 		public readonly WorldType Type;

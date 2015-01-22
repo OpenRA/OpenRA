@@ -413,6 +413,7 @@
     <Compile Include="Traits\World\PaletteFromCurrentTileset.cs" />
     <Compile Include="Traits\World\PaletteFromFile.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
+    <Compile Include="Traits\World\PathCacheStorage.cs" />
     <Compile Include="Traits\World\PathFinder.cs" />
     <Compile Include="Traits\World\PathfinderDebugOverlay.cs" />
     <Compile Include="Traits\World\PathSearch.cs" />
