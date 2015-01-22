@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
 using OpenRA;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 
 namespace PathfinderTests
 {
@@ -17,7 +15,7 @@ namespace PathfinderTests
 		{
 			var map = new Mock<IMap>();
 			map.SetupGet(m => m.TileShape).Returns(TileShape.Rectangle);
-			map.Setup(m => m.MapDimensions).Returns(new int2(mapWidth, mapHeight));
+			map.Setup(m => m.MapSize).Returns(new int2(mapWidth, mapHeight));
 			map.Setup(m => m.Contains(It.Is<CPos>(pos => pos.X >= 0 && pos.X < mapWidth && pos.Y >= 0 && pos.Y < mapHeight))).Returns(true);
 
 			return map.Object;
@@ -26,8 +24,8 @@ namespace PathfinderTests
 		private IWorld BuildFakeWorld(IMap map)
 		{
 			var world = new Mock<IWorld>();
-			world.SetupGet(m => m.IMap).Returns(map);
-			world.SetupGet(m => m.IWorldActor).Returns(new Mock<IActor>().Object);
+			world.SetupGet(m => m.Map).Returns(map);
+			world.SetupGet(m => m.WorldActor).Returns(new Mock<IActor>().Object);
 			return world.Object;
 		}
 
@@ -46,7 +44,7 @@ namespace PathfinderTests
 			var map = BuildFakeMap(mapWidth, mapHeight);
 			var world = BuildFakeWorld(map);
 			var self = new Mock<IActor>();
-			self.SetupGet(m => m.IWorld).Returns(world);
+			self.SetupGet(m => m.World).Returns(world);
 
 			// Create the MobileInfo Mock. Playing with this can help to
 			// check the different paths and points a unit can walk into
@@ -57,16 +55,15 @@ namespace PathfinderTests
 			mi.Setup(m => m.CanEnterCell(It.IsAny<World>(), It.IsAny<Actor>(),
 				It.Is<CPos>(pos => !IsValidPos(pos, mapWidth, mapHeight) ||
 					(pos.X == 50 && pos.Y < 100) ||
-					(pos.X == 100 && pos.Y > 50)
-					), It.IsAny<Actor>(), It.IsAny<CellConditions>())).Returns(false);
+					(pos.X == 100 && pos.Y > 50)),
+					It.IsAny<Actor>(), It.IsAny<CellConditions>())).Returns(false);
 
 			mi.Setup(m => m.MovementCostForCell(It.IsAny<World>(), It.Is<CPos>(pos => IsValidPos(pos, mapWidth, mapHeight))))
 				.Returns(1);
 			mi.Setup(m => m.MovementCostForCell(It.IsAny<World>(),
 				It.Is<CPos>(pos => !IsValidPos(pos, mapWidth, mapHeight) ||
 					(pos.X == 50 && pos.Y < 100) ||
-					(pos.X == 100 && pos.Y > 50)
-					)))
+					(pos.X == 100 && pos.Y > 50))))
 				.Returns(int.MaxValue);
 
 			var log = new Mock<ILog>();
@@ -82,7 +79,7 @@ namespace PathfinderTests
 
 			search.AddInitialCell(from);
 
-			var pathfinder = new PathFinder(world);
+			var pathfinder = new NonCachedPathFinder(world);
 
 			// Act
 			Stopwatch stopwatch = new Stopwatch();
@@ -106,7 +103,7 @@ namespace PathfinderTests
 			var map = BuildFakeMap(mapWidth, mapHeight);
 			var world = BuildFakeWorld(map);
 			var self = new Mock<IActor>();
-			self.SetupGet(m => m.IWorld).Returns(world);
+			self.SetupGet(m => m.World).Returns(world);
 
 			// Create the MobileInfo Mock. Playing with this can help to
 			// check the different paths and points a unit can walk into
@@ -117,16 +114,14 @@ namespace PathfinderTests
 			mi.Setup(m => m.CanEnterCell(It.IsAny<World>(), It.IsAny<Actor>(),
 				It.Is<CPos>(pos => !IsValidPos(pos, mapWidth, mapHeight) ||
 					(pos.X == 50 && pos.Y < 100) ||
-					(pos.X == 100 && pos.Y > 50)
-					), It.IsAny<Actor>(), It.IsAny<CellConditions>())).Returns(false);
+					(pos.X == 100 && pos.Y > 50)), It.IsAny<Actor>(), It.IsAny<CellConditions>())).Returns(false);
 
 			mi.Setup(m => m.MovementCostForCell(It.IsAny<World>(), It.Is<CPos>(pos => IsValidPos(pos, mapWidth, mapHeight))))
 				.Returns(1);
 			mi.Setup(m => m.MovementCostForCell(It.IsAny<World>(),
 				It.Is<CPos>(pos => !IsValidPos(pos, mapWidth, mapHeight) ||
 					(pos.X == 50 && pos.Y < 100) ||
-					(pos.X == 100 && pos.Y > 50)
-					)))
+					(pos.X == 100 && pos.Y > 50))))
 				.Returns(int.MaxValue);
 
 			var log = new Mock<ILog>();
@@ -150,7 +145,7 @@ namespace PathfinderTests
 
 			search2.AddInitialCell(target);
 
-			var pathfinder = new PathFinder(world);
+			var pathfinder = new NonCachedPathFinder(world);
 
 			// Act
 			Stopwatch stopwatch = new Stopwatch();

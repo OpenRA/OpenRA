@@ -97,3 +97,11 @@ if (!(Test-Path "windows/zlib1.dll"))
 	cp zlib.redist.1.2.8.7/build/native/bin/v120/Win32/Release/dynamic/stdcall/zlib.dll windows/zlib1.dll
 	rmdir zlib.redist.1.2.8.7 -Recurse
 }
+
+if (!(Test-Path "Moq.dll"))
+{
+	echo "Fetching Moq from NuGet."
+	./nuget.exe install Moq -Version 4.2.1409.1722
+	cp Moq.4.2.1409.1722/lib/net40/Moq.dll .
+	rmdir Moq.4.2.1409.1722 -Recurse
+}

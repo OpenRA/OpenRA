@@ -26,9 +26,9 @@ namespace OpenRA
 
 	public interface IWorld
 	{
-		IActor IWorldActor { get; }
+		IActor WorldActor { get; }
 		int WorldTick { get; }
-		IMap IMap { get; }
+		IMap Map { get; }
 		TileSet TileSet { get; }
 	}
 
@@ -115,10 +115,10 @@ namespace OpenRA
 		}
 
 		public Actor WorldActor { get; private set; }
-		public IActor IWorldActor { get { return WorldActor; } }
+		IActor IWorld.WorldActor { get { return WorldActor; } }
 
 		public Map Map { get; private set; }
-		public IMap IMap { get { return Map; } }
+		IMap IWorld.Map { get { return Map; } }
 
 		public TileSet TileSet { get; private set; }
 		public readonly ActorMap ActorMap;

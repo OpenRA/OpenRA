@@ -25,7 +25,7 @@ namespace OpenRA
 	public interface IActor
 	{
 		ActorInfo Info { get; }
-		IWorld IWorld { get; }
+		IWorld World { get; }
 		uint ActorID { get; }
 		Player Owner { get; set; }
 
@@ -41,13 +41,11 @@ namespace OpenRA
 	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>, IActor
 	{
 		public ActorInfo Info { get; private set; }
-		public World World { get; private set; }
-		public IWorld IWorld
+		public readonly World World;
+
+		IWorld IActor.World
 		{
-			get
-			{
-				return World;
-			}
+			get { return World; }
 		}
 
 		public uint ActorID { get; private set; }
