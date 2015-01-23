@@ -478,9 +478,12 @@ do
     Bottom():Layer(1):Position(1):PaneBorder(false):
     CloseButton(true):MaximizeButton(false):PinButton(true))
 
-  for _, uimgr in pairs {mgr, frame.notebook:GetAuiManager(),
-    frame.bottomnotebook:GetAuiManager(), frame.projnotebook:GetAuiManager()} do
-    uimgr:GetArtProvider():SetMetric(wxaui.wxAUI_DOCKART_SASH_SIZE, 2)
+  if type(ide.config.bordersize) == 'number' then
+    for _, uimgr in pairs {mgr, frame.notebook:GetAuiManager(),
+      frame.bottomnotebook:GetAuiManager(), frame.projnotebook:GetAuiManager()} do
+      uimgr:GetArtProvider():SetMetric(wxaui.wxAUI_DOCKART_SASH_SIZE,
+        ide.config.bordersize)
+    end
   end
 
   for _, nb in pairs {frame.bottomnotebook, frame.projnotebook} do

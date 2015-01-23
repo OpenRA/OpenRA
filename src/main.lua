@@ -132,6 +132,7 @@ ide = {
     outlineinactivity = 0.250, -- seconds
     filehistorylength = 20,
     projecthistorylength = 20,
+    bordersize = 2,
     savebak = false,
     singleinstance = false,
     singleinstanceport = 0xe493,
