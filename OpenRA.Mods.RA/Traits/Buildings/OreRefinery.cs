@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Traits
 		public virtual object Create(ActorInitializer init) { return new OreRefinery(init.Self, this); }
 	}
 
-	public class OreRefinery : ITick, IAcceptOre, INotifyKilled, INotifySold, INotifyCapture, INotifyOwnerChanged, IExplodeModifier, ISync
+	public class OreRefinery : ITick, IAcceptResources, INotifyKilled, INotifySold, INotifyCapture, INotifyOwnerChanged, IExplodeModifier, ISync
 	{
 		readonly Actor self;
 		readonly OreRefineryInfo info;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Sync] bool preventDock = false;
 
 		public bool AllowDocking { get { return !preventDock; } }
-		public CVec DeliverOffset { get { return info.DockOffset; } }
+		public CVec DeliveryOffset { get { return info.DockOffset; } }
 
 		public virtual Activity DockSequence(Actor harv, Actor self) { return new RAHarvesterDockSequence(harv, self, info.DockAngle); }
 
@@ -66,9 +66,9 @@ namespace OpenRA.Mods.RA.Traits
 				.Where(a => a.Trait.LinkedProc == self);
 		}
 
-		public bool CanGiveOre(int amount) { return playerResources.CanGiveResources(amount); }
+		public bool CanGiveResource(int amount) { return playerResources.CanGiveResources(amount); }
 
-		public void GiveOre(int amount)
+		public void GiveResource(int amount)
 		{
 			playerResources.GiveResources(amount);
 			if (info.ShowTicks)

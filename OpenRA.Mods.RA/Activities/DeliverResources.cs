@@ -54,17 +54,17 @@ namespace OpenRA.Mods.RA.Activities
 				return Util.SequenceActivities(new Wait(25), this);
 
 			var proc = harv.LinkedProc;
-			var iao = proc.Trait<IAcceptOre>();
+			var iao = proc.Trait<IAcceptResources>();
 
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
-			if (self.Location != proc.Location + iao.DeliverOffset)
+			if (self.Location != proc.Location + iao.DeliveryOffset)
 			{
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				var next = new DeliverResources();
 				foreach (var n in notify)
-					n.MovingToRefinery(self, proc.Location + iao.DeliverOffset, next);
+					n.MovingToRefinery(self, proc.Location + iao.DeliveryOffset, next);
 
-				return Util.SequenceActivities(movement.MoveTo(proc.Location + iao.DeliverOffset, 0), this);
+				return Util.SequenceActivities(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0), this);
 			}
 
 			if (!isDocking)
