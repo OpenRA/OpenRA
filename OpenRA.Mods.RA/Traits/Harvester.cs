@@ -115,10 +115,10 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			// Find all refineries and their occupancy count:
 			var refs = (
-				from r in self.World.ActorsWithTrait<IAcceptOre>()
+				from r in self.World.ActorsWithTrait<IAcceptResources>()
 				where r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor)
 				let linkedHarvs = self.World.ActorsWithTrait<Harvester>().Where(a => a.Trait.LinkedProc == r.Actor).Count()
-				select new { Location = r.Actor.Location + r.Trait.DeliverOffset, Actor = r.Actor, Occupancy = linkedHarvs }).ToDictionary(r => r.Location);
+				select new { Location = r.Actor.Location + r.Trait.DeliveryOffset, Actor = r.Actor, Occupancy = linkedHarvs }).ToDictionary(r => r.Location);
 
 			// Start a search from each refinery's delivery location:
 			var mi = self.Info.Traits.Get<MobileInfo>();
@@ -162,7 +162,7 @@ namespace OpenRA.Mods.RA.Traits
 			var lastproc = LastLinkedProc ?? LinkedProc;
 			if (lastproc != null && !lastproc.Destroyed)
 			{
-				var deliveryLoc = lastproc.Location + lastproc.Trait<IAcceptOre>().DeliverOffset;
+				var deliveryLoc = lastproc.Location + lastproc.Trait<IAcceptResources>().DeliveryOffset;
 				if (self.Location == deliveryLoc)
 				{
 					// Get out of the way:
@@ -236,11 +236,11 @@ namespace OpenRA.Mods.RA.Traits
 			if (contents.Keys.Count > 0)
 			{
 				var type = contents.First().Key;
-				var iao = proc.Trait<IAcceptOre>();
-				if (!iao.CanGiveOre(type.ValuePerUnit))
+				var iao = proc.Trait<IAcceptResources>();
+				if (!iao.CanGiveResource(type.ValuePerUnit))
 					return false;
 
-				iao.GiveOre(type.ValuePerUnit);
+				iao.GiveResource(type.ValuePerUnit);
 				if (--contents[type] == 0)
 					contents.Remove(type);
 
@@ -254,9 +254,9 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IAcceptOre>("Deliver", 5,
+				yield return new EnterAlliedActorTargeter<IAcceptResources>("Deliver", 5,
 					proc => IsAcceptableProcType(proc),
-					proc => !IsEmpty && proc.Trait<IAcceptOre>().AllowDocking);
+					proc => !IsEmpty && proc.Trait<IAcceptResources>().AllowDocking);
 				yield return new HarvestOrderTargeter();
 			}
 		}
@@ -337,7 +337,7 @@ namespace OpenRA.Mods.RA.Traits
 			else if (order.OrderString == "Deliver")
 			{
 				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
-				var iao = order.TargetActor.TraitOrDefault<IAcceptOre>();
+				var iao = order.TargetActor.TraitOrDefault<IAcceptResources>();
 				if (iao == null || !iao.AllowDocking || !IsAcceptableProcType(order.TargetActor))
 					return;
 

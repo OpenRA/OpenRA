@@ -9,17 +9,15 @@
 #endregion
 
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Traits;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public interface IAcceptOre
+	public interface IAcceptResources
 	{
 		void OnDock(Actor harv, DeliverResources dockOrder);
-		void GiveOre(int amount);
-		bool CanGiveOre(int amount);
-		CVec DeliverOffset { get; }
+		void GiveResource(int amount);
+		bool CanGiveResource(int amount);
+		CVec DeliveryOffset { get; }
 		bool AllowDocking { get; }
 	}
 
