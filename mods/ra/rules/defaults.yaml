@@ -500,8 +500,6 @@
 	-GivesBuildableArea:
 	Health:
 		HP: 100
-	Valued:
-		Cost: 200
 	RevealsShroud:
 		Range: 4c0
 	Fake:

@@ -17,6 +17,8 @@ FACF:
 	Bib:
 	RenderBuilding:
 		Image: FACT
+	Valued:
+		Cost: 250
 
 WEAF:
 	Inherits: ^FakeBuilding
@@ -38,6 +40,8 @@ WEAF:
 	-RenderBuilding:
 	RenderBuildingWarFactory:
 		Image: WEAP
+	Valued:
+		Cost: 200
 
 SYRF:
 	Inherits: ^FakeBuilding
@@ -61,6 +65,8 @@ SYRF:
 		TerrainTypes: Water
 	RenderBuilding:
 		Image: SYRD
+	Valued:
+		Cost: 100
 
 SPEF:
 	Inherits: ^FakeBuilding
@@ -84,6 +90,8 @@ SPEF:
 		TerrainTypes: Water
 	RenderBuilding:
 		Image: SPEN
+	Valued:
+		Cost: 100
 
 DOMF:
 	Inherits: ^FakeBuilding
@@ -104,6 +112,8 @@ DOMF:
 	Bib:
 	RenderBuilding:
 		Image: DOME
+	Valued:
+		Cost: 180
 
 ATEF:
 	Inherits: ^FakeBuilding
@@ -124,6 +134,8 @@ ATEF:
 	Bib:
 	RenderBuilding:
 		Image: ATEK
+	Valued:
+		Cost: 150
 
 PDOF:
 	Inherits: ^FakeBuilding
@@ -143,6 +155,8 @@ PDOF:
 		Dimensions: 2,2
 	RenderBuilding:
 		Image: PDOX
+	Valued:
+		Cost: 150
 
 MSLF:
 	Inherits: ^FakeBuilding
@@ -162,3 +176,5 @@ MSLF:
 		Dimensions: 2,1
 	RenderBuilding:
 		Image: MSLO
+	Valued:
+		Cost: 250
