@@ -230,6 +230,8 @@ atek:
 		Length: *
 	icon: atekicon
 		Start: 0
+	fake-icon: ateficon
+		Start: 0
 
 stek:
 	idle:
@@ -604,6 +606,8 @@ pdox:
 		Offset: 0,-4
 	icon: pdoxicon
 		Start: 0
+	fake-icon: pdoficon
+		Start: 0
 
 mslo:
 	idle:
@@ -621,6 +625,8 @@ mslo:
 		Start: 9
 		Length: 7
 	icon: msloicon2
+		Start: 0
+	fake-icon: mslficon
 		Start: 0
 
 miss:
