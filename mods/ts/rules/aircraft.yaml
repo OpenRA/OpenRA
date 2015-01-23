@@ -7,7 +7,7 @@ DPOD:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
-		Owner: gdi
+		Prerequisites: ~gahpad
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -46,8 +46,7 @@ DSHP:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
-		Owner: gdi
-		Prerequisites: gaweap
+		Prerequisites: ~gahpad, gaweap
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -79,8 +78,7 @@ ORCA:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: gahpad
-		Owner: gdi
+		Prerequisites: ~gahpad
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
@@ -117,8 +115,7 @@ ORCAB:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: gahpad, gatech
-		Owner: gdi
+		Prerequisites: ~gahpad, gatech
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
@@ -155,8 +152,7 @@ ORCATRAN:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
-		Owner: gdi
-		Prerequisites: gahpad
+		Prerequisites: ~gahpad
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -187,8 +183,7 @@ TRNSPORT:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
-		Owner: gdi
-		Prerequisites: gahpad, gadept
+		Prerequisites: ~gahpad, ~gadept
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -215,8 +210,7 @@ SCRIN:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: nahpad, natech
-		Owner: nod
+		Prerequisites: ~nahpad, natech
 	Selectable:
 		Bounds: 30,24
 		Voice: Scrin
@@ -253,8 +247,7 @@ APACHE:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: nahpad
-		Owner: nod
+		Prerequisites: ~nahpad
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
