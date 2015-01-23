@@ -1368,6 +1368,15 @@ Rules:
 	DOMF:
 		Buildable:
 			Prerequisites: ~disabled
+	ATEF:
+		Buildable:
+			Prerequisites: ~disabled
+	MSLF:
+		Buildable:
+			Prerequisites: ~disabled
+	PDOF:
+		Buildable:
+			Prerequisites: ~disabled
 
 Sequences:
 
