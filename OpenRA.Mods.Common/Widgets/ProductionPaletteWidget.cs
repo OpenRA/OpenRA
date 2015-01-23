@@ -48,12 +48,16 @@ namespace OpenRA.Mods.Common.Widgets
 		[Translate] public readonly string ReadyText = "";
 		[Translate] public readonly string HoldText = "";
 
-		public int IconCount { get; private set; }
+		public int DisplayedIconCount { get; private set; }
+		public int TotalIconCount { get; private set; }
 		public event Action<int, int> OnIconCountChanged = (a, b) => { };
 
 		public ProductionIcon TooltipIcon { get; private set; }
 		public readonly World World;
 		readonly OrderManager orderManager;
+
+		public int IconRowOffset = 0;
+		public int MaxIconRowOffset = int.MaxValue;
 
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		ProductionQueue currentQueue;
@@ -86,8 +90,53 @@ namespace OpenRA.Mods.Common.Widgets
 			clock = new Animation(world, "clock");
 		}
 
+		public void ScrollDown()
+		{
+			if (CanScrollDown)
+				IconRowOffset++;
+		}
+
+		public bool CanScrollDown
+		{
+			get
+			{
+				var totalRows = (TotalIconCount + Columns - 1) / Columns;
+
+				return IconRowOffset < totalRows - MaxIconRowOffset;
+			}
+		}
+
+		public void ScrollUp()
+		{
+			if (CanScrollUp)
+				IconRowOffset--;
+		}
+
+		public bool CanScrollUp
+		{
+			get { return IconRowOffset > 0; }
+		}
+
+		public void ScrollToTop()
+		{
+			IconRowOffset = 0;
+		}
+
+		public IEnumerable<ActorInfo> AllBuildables
+		{
+			get
+			{
+				if (CurrentQueue == null)
+					return Enumerable.Empty<ActorInfo>();
+
+				return CurrentQueue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
+			}
+		}
+
 		public override void Tick()
 		{
+			TotalIconCount = AllBuildables.Count();
+
 			if (CurrentQueue != null && !CurrentQueue.Actor.IsInWorld)
 				CurrentQueue = null;
 
@@ -202,26 +251,25 @@ namespace OpenRA.Mods.Common.Widgets
 			icons = new Dictionary<Rectangle, ProductionIcon>();
 			if (CurrentQueue == null)
 			{
-				if (IconCount != 0)
+				if (DisplayedIconCount != 0)
 				{
-					OnIconCountChanged(IconCount, 0);
-					IconCount = 0;
+					OnIconCountChanged(DisplayedIconCount, 0);
+					DisplayedIconCount = 0;
 				}
 
 				return;
 			}
 
-			var allBuildables = CurrentQueue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
-
-			var oldIconCount = IconCount;
-			IconCount = 0;
+			var oldIconCount = DisplayedIconCount;
+			DisplayedIconCount = 0;
 
 			var ks = Game.Settings.Keys;
 			var rb = RenderBounds;
-			foreach (var item in allBuildables)
+
+			foreach (var item in AllBuildables.Skip(IconRowOffset * Columns).Take(MaxIconRowOffset * Columns))
 			{
-				var x = IconCount % Columns;
-				var y = IconCount / Columns;
+				var x = DisplayedIconCount % Columns;
+				var y = DisplayedIconCount / Columns;
 				var rect = new Rectangle(rb.X + x * (IconSize.X + IconMargin.X), rb.Y + y * (IconSize.Y + IconMargin.Y), IconSize.X, IconSize.Y);
 				var icon = new Animation(World, RenderSimple.GetImage(item));
 				icon.Play(item.Traits.Get<TooltipInfo>().Icon);
@@ -230,20 +278,20 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					Actor = item,
 					Name = item.Name,
-					Hotkey = ks.GetProductionHotkey(IconCount),
+					Hotkey = ks.GetProductionHotkey(DisplayedIconCount),
 					Sprite = icon.Image,
 					Pos = new float2(rect.Location),
 					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
 				};
 
 				icons.Add(rect, pi);
-				IconCount++;
+				DisplayedIconCount++;
 			}
 
 			eventBounds = icons.Any() ? icons.Keys.Aggregate(Rectangle.Union) : Rectangle.Empty;
 
-			if (oldIconCount != IconCount)
-				OnIconCountChanged(oldIconCount, IconCount);
+			if (oldIconCount != DisplayedIconCount)
+				OnIconCountChanged(oldIconCount, DisplayedIconCount);
 		}
 
 		public override void Draw()

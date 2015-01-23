@@ -341,3 +341,33 @@ Container@PLAYER_WIDGETS:
 									X: 6
 									Y: 6
 									ImageCollection: production-icons
+						Button@SCROLL_UP_BUTTON:
+							Logic: AddRaceSuffixLogic
+							Y: 186
+							Width: 28
+							Height: 22
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Scroll up
+							TooltipContainer: TOOLTIP_CONTAINER
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 3
+									ImageCollection: scrollbar
+									ImageName: up_arrow
+						Button@SCROLL_DOWN_BUTTON:
+							Logic: AddRaceSuffixLogic
+							Y: 211
+							Width: 28
+							Height: 22
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Scroll down
+							TooltipContainer: TOOLTIP_CONTAINER
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 3
+									ImageCollection: scrollbar
+									ImageName: down_arrow

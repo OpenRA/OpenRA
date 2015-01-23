@@ -36,6 +36,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Action<bool> selectTab = reverse =>
 			{
 				palette.CurrentQueue = queues.FirstOrDefault(q => q.Enabled);
+
+				// When a tab is selected, scroll to the top because the current row position may be invalid for the new tab
+				palette.ScrollToTop();
 			};
 
 			Func<ButtonWidget, Hotkey> getKey = _ => Hotkey.Invalid;
@@ -134,7 +137,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var ticker = widget.Get<LogicTickerWidget>("PRODUCTION_TICKER");
 			ticker.OnTick = () =>
 			{
-				if (palette.CurrentQueue == null || palette.IconCount == 0)
+				if (palette.CurrentQueue == null || palette.DisplayedIconCount == 0)
 				{
 					// Select the first active tab
 					foreach (var b in typesContainer.Children)
@@ -148,6 +151,45 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					}
 				}
 			};
+
+			// Hook up scroll up and down buttons on the palette
+			var scrollDown = widget.GetOrNull<ButtonWidget>("SCROLL_DOWN_BUTTON");
+
+			if (scrollDown != null)
+			{
+				scrollDown.OnClick = palette.ScrollDown;
+				scrollDown.IsVisible = () => palette.TotalIconCount > (palette.MaxIconRowOffset * palette.Columns);
+				scrollDown.IsDisabled = () => !palette.CanScrollDown;
+			}
+
+			var scrollUp = widget.GetOrNull<ButtonWidget>("SCROLL_UP_BUTTON");
+
+			if (scrollUp != null)
+			{
+				scrollUp.OnClick = palette.ScrollUp;
+				scrollUp.IsVisible = () => palette.TotalIconCount > (palette.MaxIconRowOffset * palette.Columns);
+				scrollUp.IsDisabled = () => !palette.CanScrollUp;
+			}
+
+			SetMaximumVisibleRows(palette);
+		}
+
+		static void SetMaximumVisibleRows(ProductionPaletteWidget productionPalette)
+		{
+			var screenHeight = Game.Renderer.Resolution.Height;
+
+			// Get height of currently displayed icons
+			var containerWidget = Ui.Root.GetOrNull<ContainerWidget>("SIDEBAR_PRODUCTION");
+
+			if (containerWidget == null)
+				return;
+
+			var sidebarProductionHeight = containerWidget.Bounds.Y;
+
+			// Check if icon heights exceed y resolution
+			var maxItemsHeight = screenHeight - sidebarProductionHeight;
+
+			productionPalette.MaxIconRowOffset = (maxItemsHeight / productionPalette.IconSize.Y) - 1;
 		}
 	}
 }

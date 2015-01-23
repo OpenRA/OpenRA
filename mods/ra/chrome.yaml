@@ -5,21 +5,85 @@ sidebar-allies: chrome.png
 	background-supportoverlay: 184,118,64,48
 
 sidebar-button-allies: chrome.png
-	background: 56,28,28,28
+	background: 59,31,22,22
+	border-r: 81,31,3,22
+	border-l: 56,31,3,22
+	border-b: 59,53,22,3
+	border-t: 59,28,22,3
+	corner-tl: 56,28,3,3
+	corner-tr: 81,28,3,3
+	corner-bl: 56,53,3,3
+	corner-br: 81,53,3,3
 sidebar-button-allies-hover: chrome.png
-	background: 56,0,28,28
+	background: 59,3,22,22
+	border-r: 81,3,3,22
+	border-l: 56,3,3,22
+	border-b: 59,25,22,3
+	border-t: 59,0,22,3
+	corner-tl: 56,0,3,3
+	corner-tr: 81,0,3,3
+	corner-bl: 56,25,3,3
+	corner-br: 81,25,3,3
 sidebar-button-allies-pressed: chrome.png
-	background: 56,28,28,28
+	background: 59,31,22,22
+	border-r: 81,31,3,22
+	border-l: 56,31,3,22
+	border-b: 59,53,22,3
+	border-t: 59,28,22,3
+	corner-tl: 56,28,3,3
+	corner-tr: 81,28,3,3
+	corner-bl: 56,53,3,3
+	corner-br: 81,53,3,3
 sidebar-button-allies-highlighted: chrome.png
-	background: 84,28,28,28
+	background: 87,31,22,22
+	border-r: 109,31,3,22
+	border-l: 84,31,3,22
+	border-b: 87,53,22,3
+	border-t: 87,28,22,3
+	corner-tl: 84,28,3,3
+	corner-tr: 109,28,3,3
+	corner-bl: 84,53,3,3
+	corner-br: 109,53,3,3
 sidebar-button-allies-highlighted-hover: chrome.png
-	background: 84,0,28,28
+	background: 87,3,22,22
+	border-r: 109,3,3,22
+	border-l: 84,3,3,22
+	border-b: 87,25,22,3
+	border-t: 87,0,22,3
+	corner-tl: 84,0,3,3
+	corner-tr: 109,0,3,3
+	corner-bl: 84,25,3,3
+	corner-br: 109,25,3,3
 sidebar-button-allies-highlighted-pressed: chrome.png
-	background: 84,28,28,28
+	background: 87,31,22,22
+	border-r: 109,31,3,22
+	border-l: 84,31,3,22
+	border-b: 87,53,22,3
+	border-t: 87,28,22,3
+	corner-tl: 84,28,3,3
+	corner-tr: 109,28,3,3
+	corner-bl: 84,53,3,3
+	corner-br: 109,53,3,3
 sidebar-button-allies-disabled: chrome.png
-	background: 168,0,28,28
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
 sidebar-button-allies-highlighted-disabled: chrome.png
-	background: 168,0,28,28
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
 
 sidebar-soviet: chrome.png
 	background-top: 274,167,238,290
@@ -28,21 +92,85 @@ sidebar-soviet: chrome.png
 	background-supportoverlay: 249,118,64,48
 
 sidebar-button-soviet: chrome.png
-	background: 0,28,28,28
+	background: 3,31,22,22
+	border-r: 25,31,3,22
+	border-l: 0,31,3,22
+	border-b: 3,53,22,3
+	border-t: 3,28,22,3
+	corner-tl: 0,28,3,3
+	corner-tr: 25,28,3,3
+	corner-bl: 0,53,3,3
+	corner-br: 25,53,3,3
 sidebar-button-soviet-hover: chrome.png
-	background: 0,0,28,28
+	background: 3,3,22,22
+	border-r: 25,3,3,22
+	border-l: 0,3,3,22
+	border-b: 3,25,22,3
+	border-t: 3,0,22,3
+	corner-tl: 0,0,3,3
+	corner-tr: 25,0,3,3
+	corner-bl: 0,25,3,3
+	corner-br: 25,25,3,3
 sidebar-button-soviet-pressed: chrome.png
-	background: 0,28,28,28
+	background: 3,31,22,22
+	border-r: 25,31,3,22
+	border-l: 0,31,3,22
+	border-b: 3,53,22,3
+	border-t: 3,28,22,3
+	corner-tl: 0,28,3,3
+	corner-tr: 25,28,3,3
+	corner-bl: 0,53,3,3
+	corner-br: 25,53,3,3
 sidebar-button-soviet-highlighted: chrome.png
-	background: 28,28,28,28
+	background: 31,31,22,22
+	border-r: 53,31,3,22
+	border-l: 28,31,3,22
+	border-b: 31,53,22,3
+	border-t: 31,28,22,3
+	corner-tl: 28,28,3,3
+	corner-tr: 53,28,3,3
+	corner-bl: 28,53,3,3
+	corner-br: 53,53,3,3
 sidebar-button-soviet-highlighted-hover: chrome.png
-	background: 28,0,28,28
+	background: 31,3,22,22
+	border-r: 53,3,3,22
+	border-l: 28,3,3,22
+	border-b: 31,25,22,3
+	border-t: 31,0,22,3
+	corner-tl: 25,0,3,3
+	corner-tr: 53,0,3,3
+	corner-bl: 25,25,3,3
+	corner-br: 53,25,3,3
 sidebar-button-soviet-highlighted-pressed: chrome.png
-	background: 28,28,28,28
+	background: 31,31,22,22
+	border-r: 53,31,3,22
+	border-l: 28,31,3,22
+	border-b: 31,53,22,3
+	border-t: 31,28,22,3
+	corner-tl: 25,28,3,3
+	corner-tr: 53,28,3,3
+	corner-bl: 25,53,3,3
+	corner-br: 53,53,3,3
 sidebar-button-soviet-disabled: chrome.png
-	background: 168,0,28,28
+	background: 115,3,22,22
+	border-r: 137,3,3,22
+	border-l: 112,3,3,22
+	border-b: 115,25,22,3
+	border-t: 115,0,22,3
+	corner-tl: 112,0,3,3
+	corner-tr: 137,0,3,3
+	corner-bl: 112,25,3,3
+	corner-br: 137,25,3,3
 sidebar-button-soviet-highlighted-disabled: chrome.png
-	background: 168,0,28,28
+	background: 115,3,22,22
+	border-r: 137,3,3,22
+	border-l: 112,3,3,22
+	border-b: 115,25,22,3
+	border-t: 115,0,22,3
+	corner-tl: 112,0,3,3
+	corner-tr: 137,0,3,3
+	corner-bl: 112,25,3,3
+	corner-br: 137,25,3,3
 
 sidebar-bits: chrome.png
 	production-tooltip-time: 416, 80, 16, 16
