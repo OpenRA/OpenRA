@@ -3,7 +3,7 @@ E1:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: gdi,nod
+		Prerequisites: ~barracks
 	Valued:
 		Cost: 120
 	Tooltip:
@@ -34,7 +34,7 @@ E2:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: gdi
+		Prerequisites: ~gapile
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -60,7 +60,7 @@ E3:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
-		Owner: nod
+		Prerequisites: ~nahand
 	Valued:
 		Cost: 250
 	Tooltip:
@@ -91,8 +91,7 @@ WEEDGUY:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Prerequisites: nahand
-		Owner: gdi
+		Prerequisites: ~nahand
 		Hothey: c
 	Selectable:
 		Bounds: 12,17,0,-6
@@ -120,8 +119,7 @@ MEDIC:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Prerequisites: gapile
-		Owner: gdi
+		Prerequisites: ~gapile
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Medic
@@ -152,8 +150,7 @@ ENGINEER:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30
-		Prerequisites: barracks
-		Owner: gdi, nod
+		Prerequisites: ~barracks
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Engineer
@@ -183,8 +180,7 @@ UMAGON:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Prerequisites: gapile, gatech
-		Owner: gdi
+		Prerequisites: ~gapile, gatech
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Umagon
@@ -215,8 +211,7 @@ GHOST:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Prerequisites: gapile, gatech
-		Owner: gdi
+		Prerequisites: ~gapile, gatech
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Ghost
@@ -250,8 +245,7 @@ JUMPJET:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Prerequisites: gapile, garadr
-		Owner: gdi
+		Prerequisites: ~gapile, garadr
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: JumpJet
@@ -277,8 +271,7 @@ CHAMSPY:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Prerequisites: nahand, natech
-		Owner: nod
+		Prerequisites: ~nahand, natech
 	Valued:
 		Cost: 700
 	DisguiseToolTip:
@@ -315,8 +308,7 @@ CYBORG:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Prerequisites: nahand
-		Owner: nod
+		Prerequisites: ~nahand
 	-Crushable:
 	Selectable:
 		Bounds: 14,30,0,-7
@@ -349,8 +341,7 @@ CYC2:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Prerequisites: nahand, natech
-		Owner: nod
+		Prerequisites: ~nahand, natech
 	-Crushable:
 	Selectable:
 		Bounds: 14,30,0,-7
@@ -461,8 +452,7 @@ MHIJACK:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Prerequisites: nahand, natech # natech must be natmpl
-		Owner: nod
+		Prerequisites: ~nahand, natech # natech must be natmpl
 	Valued:
 		Cost: 100
 	Tooltip:
