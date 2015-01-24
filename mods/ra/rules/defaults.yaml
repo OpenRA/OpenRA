@@ -495,6 +495,17 @@
 	-GpsDot:
 	-MustBeDestroyed:
 
+^FakeBuilding:
+	Inherits: ^Building
+	-GivesBuildableArea:
+	Health:
+		HP: 100
+	RevealsShroud:
+		Range: 4c0
+	Fake:
+	-EmitInfantryOnSell:
+	-MustBeDestroyed:
+
 ^AmmoBox:
 	Inherits: ^TechBuilding
 	Selectable:

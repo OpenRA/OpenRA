@@ -1,0 +1,180 @@
+FACF:
+	Inherits: ^FakeBuilding
+	Buildable:
+		BuildPaletteOrder: 940
+		Queue: Defense
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake Construction Yard
+		Description: Looks like a Construction Yard.
+		GenericName: Construction Yard
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Building:
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Bib:
+	RenderBuilding:
+		Image: FACT
+	Valued:
+		Cost: 250
+
+WEAF:
+	Inherits: ^FakeBuilding
+	Buildable:
+		BuildPaletteOrder: 920
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
+		Queue: Defense
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake War Factory
+		Description: Looks like a War Factory.
+		GenericName: War Factory
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Bib:
+	-RenderBuilding:
+	RenderBuildingWarFactory:
+		Image: WEAP
+	Valued:
+		Cost: 200
+
+SYRF:
+	Inherits: ^FakeBuilding
+	Buildable:
+		BuildPaletteOrder: 900
+		Queue: Defense
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake Shipyard
+		Description: Looks like a Shipyard.
+		GenericName: Shipyard
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	TargetableBuilding:
+		TargetTypes: Ground, Water
+	Building:
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+		Adjacent: 8
+		TerrainTypes: Water
+	RenderBuilding:
+		Image: SYRD
+	Valued:
+		Cost: 100
+
+SPEF:
+	Inherits: ^FakeBuilding
+	TargetableBuilding:
+		TargetTypes: Ground, Water
+	Buildable:
+		BuildPaletteOrder: 910
+		Queue: Defense
+		Prerequisites: ~disabled
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake Sub Pen
+		Description: Looks like a Sub Pen.
+		GenericName: Sub Pen
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Building:
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+		Adjacent: 8
+		TerrainTypes: Water
+	RenderBuilding:
+		Image: SPEN
+	Valued:
+		Cost: 100
+
+DOMF:
+	Inherits: ^FakeBuilding
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake Radar Dome
+		Description: Looks like a Radar Dome.
+		GenericName: Radar Dome
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Buildable:
+		BuildPaletteOrder: 930
+		Queue: Defense
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Bib:
+	RenderBuilding:
+		Image: DOME
+	Valued:
+		Cost: 180
+
+ATEF:
+	Inherits: ^FakeBuilding
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake Allied Tech Center
+		Description: Looks like an Allied Tech Center.
+		GenericName: Allied Tech Center
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Buildable:
+		BuildPaletteOrder: 940
+		Queue: Defense
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.unrestricted
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Bib:
+	RenderBuilding:
+		Image: ATEK
+	Valued:
+		Cost: 150
+
+PDOF:
+	Inherits: ^FakeBuilding
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake Chronosphere
+		Description: Looks like a Chronosphere.
+		GenericName: Chronosphere
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Buildable:
+		BuildPaletteOrder: 950
+		Queue: Defense
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.unrestricted
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	RenderBuilding:
+		Image: PDOX
+	Valued:
+		Cost: 150
+
+MSLF:
+	Inherits: ^FakeBuilding
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake Missile Silo
+		Description: Looks like a Missile Silo.
+		GenericName: Missile Silo
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Buildable:
+		BuildPaletteOrder: 960
+		Queue: Defense
+		Prerequisites: ~structures.alliesvanilla, ~techlevel.unrestricted
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	RenderBuilding:
+		Image: MSLO
+	Valued:
+		Cost: 250

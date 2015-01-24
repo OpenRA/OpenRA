@@ -47,6 +47,7 @@ Rules:
 	./mods/ra/rules/decoration.yaml
 	./mods/ra/rules/aircraft.yaml
 	./mods/ra/rules/ships.yaml
+	./mods/ra/rules/fakes.yaml
 
 Sequences:
 	./mods/ra/sequences/ships.yaml
