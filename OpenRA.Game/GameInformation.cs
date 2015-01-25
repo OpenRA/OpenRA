@@ -134,7 +134,7 @@ namespace OpenRA
 
 		public class Player
 		{
-			// Start-up information 
+			// Start-up information
 			public int ClientIndex;
 
 			// The player name, not guaranteed to be unique.

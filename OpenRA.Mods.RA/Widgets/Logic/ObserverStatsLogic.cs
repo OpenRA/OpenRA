@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var options = new List<StatsDropDownOption>
 				{
-					new StatsDropDownOption 
+					new StatsDropDownOption
 					{
 						Title = "Basic",
 						IsSelected = () => basicStatsHeaders.Visible,
@@ -83,33 +83,33 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							DisplayStats(BasicStats);
 						}
 					},
-					new StatsDropDownOption 
+					new StatsDropDownOption
 					{
 						Title = "Economy",
 						IsSelected = () => economyStatsHeaders.Visible,
-						OnClick = () => 
+						OnClick = () =>
 						{
 							ClearStats();
 							statsDropDown.GetText = () => "Economy";
 							DisplayStats(EconomyStats);
 						}
 					},
-					new StatsDropDownOption 
+					new StatsDropDownOption
 					{
 						Title = "Production",
 						IsSelected = () => productionStatsHeaders.Visible,
-						OnClick = () => 
+						OnClick = () =>
 						{
 							ClearStats();
 							statsDropDown.GetText = () => "Production";
 							DisplayStats(ProductionStats);
 						}
 					},
-					new StatsDropDownOption 
+					new StatsDropDownOption
 					{
 						Title = "Combat",
 						IsSelected = () => combatStatsHeaders.Visible,
-						OnClick = () => 
+						OnClick = () =>
 						{
 							ClearStats();
 							statsDropDown.GetText = () => "Combat";
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{
 						Title = "Earnings (graph)",
 						IsSelected = () => earnedThisMinuteGraphHeaders.Visible,
-						OnClick = () => 
+						OnClick = () =>
 						{
 							ClearStats();
 							statsDropDown.GetText = () => "Earnings (graph)";

@@ -129,7 +129,7 @@ namespace OpenRA.FileFormats
 			// Decode each block of IMA ADPCM data in RawOutput
 			for (var block = 0; block < numBlocks; block++)
 			{
-				// Each block starts with a initial state per-channel 
+				// Each block starts with a initial state per-channel
 				for (var c = 0; c < Channels; c++)
 				{
 					predictor[c] = s.ReadInt16();
