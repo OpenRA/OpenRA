@@ -635,7 +635,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onStart();
 			};
 
-			if (selectedReplay != null && ReplayUtils.CheckReplayCompatibility(selectedReplay))
+			if (selectedReplay != null && ReplayUtils.PromptConfirmReplayCompatibility(selectedReplay))
 				startReplay();
 		}
 

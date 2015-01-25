@@ -17,34 +17,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		static readonly Action DoNothing = () => { };
 
-		public static bool CheckReplayCompatibility(ReplayMetadata replayMeta, Action onCancel = null)
+		public static bool PromptConfirmReplayCompatibility(ReplayMetadata replayMeta, Action onCancel = null)
 		{
 			if (onCancel == null)
 				onCancel = DoNothing;
 
-			var mod = replayMeta.GameInfo.Mod;
-			if (mod == null)
-				return IncompatibleReplayDialog("an unknown mod", mod, onCancel);
+			if (replayMeta == null)
+				return IncompatibleReplayDialog("outdated engine", null, onCancel);
 
 			var version = replayMeta.GameInfo.Version;
 			if (version == null)
-				return IncompatibleReplayDialog("an unknown version", version, onCancel);
+				return IncompatibleReplayDialog("unknown version", version, onCancel);
+
+			var mod = replayMeta.GameInfo.Mod;
+			if (mod == null)
+				return IncompatibleReplayDialog("unknown mod", mod, onCancel);
 
 			var allMods = ModMetadata.AllMods;
 			if (!allMods.ContainsKey(mod))
-				return IncompatibleReplayDialog("an unavailable mod", mod, onCancel);
+				return IncompatibleReplayDialog("unavailable mod", mod, onCancel);
 			else if (allMods[mod].Version != version)
-				return IncompatibleReplayDialog("an incompatible version", version, onCancel);
+				return IncompatibleReplayDialog("incompatible version", version, onCancel);
 
 			if (replayMeta.GameInfo.MapPreview.Status != MapStatus.Available)
-				return IncompatibleReplayDialog("an unavailable map", replayMeta.GameInfo.MapUid,  onCancel);
-			else
-				return true;
+				return IncompatibleReplayDialog("unavailable map", replayMeta.GameInfo.MapUid,  onCancel);
+
+			return true;
 		}
 
 		static bool IncompatibleReplayDialog(string type, string name, Action onCancel)
 		{
-			var error = "It was recorded with " + type;
+			var error = "It was recorded with an " + type;
 			error += string.IsNullOrEmpty(name) ? "." : ":\n{0}".F(name);
 
 			ConfirmationDialogs.CancelPrompt("Incompatible Replay", error, onCancel);

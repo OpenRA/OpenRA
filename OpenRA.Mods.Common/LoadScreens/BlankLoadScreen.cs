@@ -77,12 +77,19 @@ namespace OpenRA.Mods.Common.LoadScreens
 			}
 
 			// Load a replay directly
-			var replay = args != null ? args.GetValue("Launch.Replay", null) : null;
-			if (!string.IsNullOrEmpty(replay))
+			var replayFilename = args != null ? args.GetValue("Launch.Replay", null) : null;
+			if (!string.IsNullOrEmpty(replayFilename))
 			{
-				var replayMeta = ReplayMetadata.Read(replay);
-				if (ReplayUtils.CheckReplayCompatibility(replayMeta, Game.LoadShellMap))
-					Game.JoinReplay(replay);
+				var replayMeta = ReplayMetadata.Read(replayFilename);
+				if (ReplayUtils.PromptConfirmReplayCompatibility(replayMeta, Game.LoadShellMap))
+					Game.JoinReplay(replayFilename);
+
+				if (replayMeta != null)
+				{
+					var mod = replayMeta.GameInfo.Mod;
+					if (mod != null && mod != Game.ModData.Manifest.Mod.Id && ModMetadata.AllMods.ContainsKey(mod))
+						Game.InitializeMod(mod, args);
+				}
 
 				return;
 			}
