@@ -3,6 +3,13 @@
 # Die on any error for Travis CI to automatically retry:
 set -e
 
+if [ ! -f StyleCopPlus.dll ]; then
+	echo "Fetching StyleCopPlus from nuget"
+	nuget install StyleCopPlus.MSBuild -Version 4.7.49.5
+	cp ./StyleCopPlus.MSBuild.4.7.49.5/tools/StyleCopPlus.dll .
+	rm -rf StyleCopPlus.MSBuild.4.7.49.5
+fi
+
 if [ ! -f StyleCop.dll ]; then
 	echo "Fetching StyleCop files from nuget"
 	nuget install StyleCop.MSBuild -Version 4.7.49.0

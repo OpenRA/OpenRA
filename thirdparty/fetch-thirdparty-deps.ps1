@@ -9,6 +9,14 @@ if (!(Test-Path "nuget.exe"))
 	(New-Object System.Net.WebClient).DownloadFile("http://nuget.org/nuget.exe", $target)
 }
 
+if (!(Test-Path "StyleCopPlus.dll"))
+{
+	echo "Fetching StyleCopPlus from NuGet."
+	./nuget.exe install StyleCopPlus.MSBuild -Version 4.7.49.5
+	cp StyleCopPlus.MSBuild.4.7.49.5/tools/StyleCopPlus.dll .
+	rmdir StyleCopPlus.MSBuild.4.7.49.5 -Recurse
+}
+
 if (!(Test-Path "StyleCop.dll"))
 {
 	echo "Fetching StyleCop files from NuGet."
