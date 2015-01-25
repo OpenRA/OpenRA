@@ -37,13 +37,13 @@ ParaWaves =
 
 IdleHunt = function(unit) Trigger.OnIdle(unit, unit.Hunt) end
 
-GuardHarvester = function(unit, attacker)
+GuardHarvester = function(unit, harvester)
 	if not unit.IsDead then
 		unit.Stop()
 
 		local start = unit.Location
-		if attacker.Location then
-			unit.AttackMove(attacker.Location)
+		if not harvester.IsDead then
+			unit.AttackMove(harvester.Location)
 		else
 			unit.Hunt()
 		end
@@ -305,15 +305,15 @@ SetupSoviets = function()
 	end)
 
 	Harvester1.FindResources()
-	Trigger.OnDamaged(Harvester1, function(self, attacker)
+	Trigger.OnDamaged(Harvester1, function()
 		Utils.Do(HarvGuards, function(unit)
-			GuardHarvester(unit, attacker)
+			GuardHarvester(unit, Harvester1)
 		end)
 	end)
 
 	Harvester2.FindResources()
-	Trigger.OnDamaged(Harvester2, function(self, attacker)
-		Utils.Do(InfantryGuards, function(unit) GuardHarvester(unit, attacker) end)
+	Trigger.OnDamaged(Harvester2, function()
+		Utils.Do(InfantryGuards, function(unit) GuardHarvester(unit, Harvester2) end)
 
 		local toBuild = { }
 		for i = 1, 6, 1 do
@@ -323,7 +323,7 @@ SetupSoviets = function()
 		soviets.Build(toBuild, function(units)
 			Utils.Do(units, function(unit)
 				InfantryGuards[#InfantryGuards + 1] = unit
-				GuardHarvester(unit, attacker)
+				GuardHarvester(unit, Harvester2)
 			end)
 		end)
 	end)
