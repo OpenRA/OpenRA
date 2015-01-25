@@ -695,6 +695,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (depth == 1 && node.Key == "MustBeDestroyed")
 						node.Value.Nodes.Add(new MiniYamlNode("RequiredForShortGame", "true"));
 
+				// Remove PlayMusicOnMapLoad
+				if (engineVersion < 20150125)
+				{
+					if (depth == 0 && node.Value.Nodes.Exists(n => n.Key == "PlayMusicOnMapLoad"))
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key == "PlayMusicOnMapLoad");
+						Console.WriteLine("The 'PlayMusicOnMapLoad' trait has been removed.");
+						Console.WriteLine("Please use the Lua API function 'PlayMusic' instead.");
+						Console.WriteLine("See http://wiki.openra.net/Lua-API for details.");
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
