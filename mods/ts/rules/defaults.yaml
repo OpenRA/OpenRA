@@ -51,6 +51,30 @@
 		InitialDelay: 0
 		CloakDelay: 90
 
+^CivBuilding:
+	Inherits: ^Building
+	-GivesBuildableArea:
+	-Capturable:
+	-EngineerRepairable:
+	-MustBeDestroyed:
+	-GivesExperience:
+	-CaptureNotification:
+	-Sellable:
+	-GivesBounty:
+	-UpdatesPlayerStatistics:
+	-CombatDebugOverlay:
+	-WithMakeAnimation:
+	Health:
+		HP: 900
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	Tooltip:
+		Description: Civilian Building
+	RenderBuilding:
+		Palette: terrain
+
 ^Wall:
 	AppearsOnRadar:
 	Building:
@@ -433,3 +457,26 @@
 		Interval: 55
 	WithActiveAnimation:
 
+^Tree:
+	RenderBuilding:
+		Palette: terrain
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	AppearsOnRadar:
+	BodyOrientation:
+	Tooltip:
+		Name: Tree
+
+^Veinhole:
+	RadarColorFromTerrain:
+		Terrain: Tiberium
+	RenderBuilding:
+		Palette: player
+	AppearsOnRadar:
+	Tooltip:
+		Name: Veinhole
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	BodyOrientation:

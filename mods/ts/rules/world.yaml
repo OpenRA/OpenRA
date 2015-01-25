@@ -15,6 +15,7 @@ World:
 		ShadowIndex: 1
 	PaletteFromCurrentTileset:
 		Name: terrain
+		ShadowIndex: 1
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: cameo.pal
