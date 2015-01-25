@@ -60,8 +60,8 @@ namespace OpenRA
 				{
 					Console.WriteLine("Failed to load map: {0}", path);
 					Console.WriteLine("Details: {0}", e);
-					Log.Write("Debug", "Failed to load map: {0}", path);
-					Log.Write("Debug", "Details: {0}", e);
+					Log.Write("debug", "Failed to load map: {0}", path);
+					Log.Write("debug", "Details: {0}", e);
 				}
 			}
 		}
