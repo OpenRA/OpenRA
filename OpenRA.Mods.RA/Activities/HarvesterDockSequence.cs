@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Activities
 		protected readonly int DragLength;
 		protected readonly WPos StartDrag;
 		protected readonly WPos EndDrag;
-		
+
 		protected State dockingState;
 
 		public HarvesterDockSequence(Actor self, Actor refinery, int dockAngle, bool isDragRequired, WVec dragOffset, int dragLength)

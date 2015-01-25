@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -271,7 +271,7 @@ namespace OpenRA.TilesetBuilder
 				bw.Write((uint)0);			// filesize placeholder
 				bw.Flush();
 				bw.Write((uint)ms.Position + 24);	// image start
-				bw.Write((uint)0);			// 0 (32bits)		
+				bw.Write((uint)0);			// 0 (32bits)
 				bw.Write((uint)0x2c730f8c);		// magic?
 				bw.Write((uint)0);			// flags start
 				bw.Write((uint)0);			// walk start

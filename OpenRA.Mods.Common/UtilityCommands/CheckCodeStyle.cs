@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var console = new StyleCopConsole(null, false, null, null, true);
 			var project = new CodeProject(0, projectPath, new Configuration(null));
-			foreach (var filePath in Directory.GetFiles(projectPath, "*.cs", SearchOption.AllDirectories))
+			foreach (var filePath in Directory.GetFiles(projectPath, "*.cs", SearchOption.AllDirectories).Where(p => !p.Contains(".Designer")))
 				console.Core.Environment.AddSourceCode(project, filePath, null);
 
 			console.ViolationEncountered += OnViolationEncountered;

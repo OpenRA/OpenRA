@@ -73,7 +73,7 @@ namespace OpenRA.FileFormats
 			/*var length2 = */stream.ReadUInt32();
 
 			/*var version = */stream.ReadUInt16();
-			videoFlags = stream.ReadUInt16(); 
+			videoFlags = stream.ReadUInt16();
 			Frames = stream.ReadUInt16();
 			Width = stream.ReadUInt16();
 			Height = stream.ReadUInt16();
@@ -129,7 +129,7 @@ namespace OpenRA.FileFormats
 					type = stream.ReadASCII(4);
 				}
 				else
-					throw new NotSupportedException("Vqa uses unknown Subtype : {0}".F(type));
+					throw new NotSupportedException("Vqa uses unknown Subtype: {0}".F(type));
 			}
 
 			/*var length = */stream.ReadUInt16();
@@ -413,7 +413,7 @@ namespace OpenRA.FileFormats
 			if (IsHqVqa)
 			{
 				/* The VP?? chunks of the video file contains an array of instructions for
-				 * how the blocks of the finished frame will be filled with color data blocks 
+				 * how the blocks of the finished frame will be filled with color data blocks
 				 * contained in the CBF? chunks.
 				 */
 				var p = 0;
@@ -424,7 +424,7 @@ namespace OpenRA.FileFormats
 						if (y >= blocks.Y)
 							break;
 
-						// The first 3 bits of the short determine the type of instruction with the rest being one or two parameters.						
+						// The first 3 bits of the short determine the type of instruction with the rest being one or two parameters.
 						var val = (int)origData[p++];
 						val |= origData[p++] << 8;
 						var para_A = val & 0x1fff;

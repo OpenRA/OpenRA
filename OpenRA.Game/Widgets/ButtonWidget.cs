@@ -48,7 +48,7 @@ namespace OpenRA.Widgets
 
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		[Translate] public string TooltipText;
-		public Func<string> GetTooltipText; 
+		public Func<string> GetTooltipText;
 
 		// Equivalent to OnMouseUp, but without an input arg
 		public Action OnClick = () => { };
