@@ -100,7 +100,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var songWatcher = widget.GetOrNull<LogicTickerWidget>("SONG_WATCHER");
 			if (songWatcher != null)
 			{
-				songWatcher.OnTick = () => 
+				songWatcher.OnTick = () =>
 				{
 					if (Sound.CurrentMusic == null || currentSong == Sound.CurrentMusic)
 						return;

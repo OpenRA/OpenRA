@@ -21,17 +21,17 @@ namespace OpenRA.Mods.Cnc.Traits
 		[ActorReference]
 		[Desc("Actor to spawn when the attack starts")]
 		public readonly string CameraActor = null;
-		
+
 		[Desc("Amount of time to keep the camera alive")]
 		public readonly int CameraRemoveDelay = 25;
-		
+
 		[Desc("Effect sequence to display")]
 		public readonly string Effect = "ionsfx";
 		public readonly string EffectPalette = "effect";
-		
+
 		[Desc("Which weapon to fire")]
 		public readonly string Weapon = "IonCannon";
-		
+
 		[Desc("Apply the weapon impact this many ticks into the effect")]
 		public readonly int WeaponDelay = 7;
 

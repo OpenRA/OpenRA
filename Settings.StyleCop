@@ -362,11 +362,6 @@
     </Analyzer>
     <Analyzer AnalyzerId="StyleCopPlus.StyleCopPlusRules">
       <Rules>
-        <Rule Name="CodeLineMustNotEndWithWhitespace">
-          <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
-          </RuleSettings>
-        </Rule>
         <Rule Name="CheckAllowedIndentationCharacters">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>

@@ -187,7 +187,7 @@ namespace OpenRA
 						default:
 							textStart = true;
 							break;
-					}					
+					}
 				}
 
 				var t = line.Substring(cp);
