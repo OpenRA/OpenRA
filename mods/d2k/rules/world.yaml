@@ -8,7 +8,8 @@ World:
 	LoadWidgetAtGameStart:
 	ScreenShaker:
 	BuildingInfluence:
-	ChooseBuildTabOnSelect:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
 	WormManager:
 	CrateSpawner:
 		Minimum: 0
