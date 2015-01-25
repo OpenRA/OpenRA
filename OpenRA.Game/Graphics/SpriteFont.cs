@@ -19,26 +19,27 @@ namespace OpenRA.Graphics
 {
 	public class SpriteFont
 	{
-		static Library library = new Library();
-		static SheetBuilder builder;
+		static readonly Library Library = new Library();
 
 		readonly int size;
-
+		readonly SheetBuilder builder;
 		readonly Func<string, float> lineWidth;
+		readonly Face face;
+		readonly Cache<Pair<char, Color>, GlyphInfo> glyphs;
 
-		public SpriteFont(string name, int size)
+		public SpriteFont(string name, int size, SheetBuilder builder)
 		{
-			this.size = size;
+			if (builder.Type != SheetType.BGRA)
+				throw new ArgumentException("The sheet builder must create BGRA sheets.", "builder");
 
-			face = new Face(library, name);
+			this.size = size;
+			this.builder = builder;
+
+			face = new Face(Library, name);
 			face.SetPixelSizes((uint)size, (uint)size);
 
 			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, Pair<char, Color>.EqualityComparer);
 
-			// setup a SheetBuilder for our private use
-			// TODO: SheetBuilder state is leaked between mod switches
-			if (builder == null)
-				builder = new SheetBuilder(SheetType.BGRA);
 			Func<char, float> characterWidth = character => glyphs[Pair.New(character, Color.White)].Advance;
 			lineWidth = line => line.Sum(characterWidth);
 
@@ -95,9 +96,6 @@ namespace OpenRA.Graphics
 			var lines = text.Split('\n');
 			return new int2((int)Math.Ceiling(lines.Max(lineWidth)), lines.Length * size);
 		}
-
-		Cache<Pair<char, Color>, GlyphInfo> glyphs;
-		Face face;
 
 		GlyphInfo CreateGlyph(Pair<char, Color> c)
 		{

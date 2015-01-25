@@ -31,8 +31,8 @@ namespace OpenRA.Graphics
 
 	public sealed class SheetBuilder : IDisposable
 	{
+		public readonly SheetType Type;
 		readonly List<Sheet> sheets = new List<Sheet>();
-		readonly SheetType type;
 		readonly Func<Sheet> allocateSheet;
 
 		Sheet current;
@@ -54,7 +54,7 @@ namespace OpenRA.Graphics
 		public SheetBuilder(SheetType t, Func<Sheet> allocateSheet)
 		{
 			channel = TextureChannel.Red;
-			type = t;
+			Type = t;
 			current = allocateSheet();
 			sheets.Add(current);
 			this.allocateSheet = allocateSheet;
@@ -93,7 +93,7 @@ namespace OpenRA.Graphics
 
 		TextureChannel? NextChannel(TextureChannel t)
 		{
-			var nextChannel = (int)t + (int)type;
+			var nextChannel = (int)t + (int)Type;
 			if (nextChannel > (int)TextureChannel.Alpha)
 				return null;
 

@@ -37,6 +37,8 @@ namespace OpenRA.Graphics
 		readonly Queue<IVertexBuffer<Vertex>> tempBuffers = new Queue<IVertexBuffer<Vertex>>();
 		readonly Stack<Rectangle> scissorState = new Stack<Rectangle>();
 
+		SheetBuilder fontSheetBuilder;
+
 		Size? lastResolution;
 		int2? lastScroll;
 		float? lastZoom;
@@ -94,8 +96,13 @@ namespace OpenRA.Graphics
 		public void InitializeFonts(Manifest m)
 		{
 			using (new Support.PerfTimer("SpriteFonts"))
+			{
+				if (fontSheetBuilder != null)
+					fontSheetBuilder.Dispose();
+				fontSheetBuilder = new SheetBuilder(SheetType.BGRA);
 				Fonts = m.Fonts.ToDictionary(x => x.Key,
-					x => new SpriteFont(Platform.ResolvePath(x.Value.First), x.Value.Second)).AsReadOnly();
+					x => new SpriteFont(Platform.ResolvePath(x.Value.First), x.Value.Second, fontSheetBuilder)).AsReadOnly();
+			}
 		}
 
 		public void BeginFrame(int2 scroll, float zoom)
@@ -246,6 +253,8 @@ namespace OpenRA.Graphics
 			foreach (var buffer in tempBuffers)
 				buffer.Dispose();
 			tempBuffers.Clear();
+			if (fontSheetBuilder != null)
+				fontSheetBuilder.Dispose();
 		}
 	}
 }
