@@ -5,6 +5,7 @@ Container@MUSIC_PANEL:
 	Width: 360
 	Height: 435
 	Children:
+		LogicTicker@SONG_WATCHER:
 		Label@TITLE:
 			Width: 360
 			Y: 0-25

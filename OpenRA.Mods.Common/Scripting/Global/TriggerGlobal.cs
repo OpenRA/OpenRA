@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Scripting
 				try
 				{
 					using (f)
-						f.Call();
+						f.Call().Dispose();
 				}
 				catch (Exception e)
 				{

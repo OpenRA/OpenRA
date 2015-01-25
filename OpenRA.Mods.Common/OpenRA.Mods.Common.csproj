@@ -416,7 +416,6 @@
     <Compile Include="Traits\World\PathfinderDebugOverlay.cs" />
     <Compile Include="Traits\World\PathSearch.cs" />
     <Compile Include="Traits\World\PlayerPaletteFromCurrentTileset.cs" />
-    <Compile Include="Traits\World\PlayMusicOnMapLoad.cs" />
     <Compile Include="Traits\World\RadarPings.cs" />
     <Compile Include="Traits\World\ResourceClaim.cs" />
     <Compile Include="Traits\World\ResourceClaimLayer.cs" />
