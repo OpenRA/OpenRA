@@ -1259,6 +1259,7 @@ NAPULS:
 		BuildPaletteOrder: 90
 		Prerequisites: radar
 		Owner: nod, gdi
+		BuildLimit: 1
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
