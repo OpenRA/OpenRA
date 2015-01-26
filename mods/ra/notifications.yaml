@@ -122,7 +122,7 @@ Sounds:
 		LevelUp: hydrod1
 		DisablePower: bleep11
 		EnablePower: bleep12
-		ChatLine: scold1
+		ChatLine: rabeep1
 		ClickSound: ramenu1
 		ClickDisabledSound:
 		Beacon: beepslct
