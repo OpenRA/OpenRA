@@ -18,16 +18,57 @@ function FindMSBuild
 	return $null
 }
 
+function CopyDependencies
+{
+	cd thirdparty
+	./fetch-thirdparty-deps.ps1
+	cp *.dll ..
+	cp windows/*.dll ..
+	cd ..
+	echo "Dependencies copied."
+
+	return $LASTEXITCODE
+}
+
+function TestModsAndMaps
+{
+	if (Test-Path ./OpenRA.Utility.exe)
+	{
+		echo "Testing mods..."
+		
+		echo ""
+		echo "Testing Red Alert mod MiniYAML..."
+		./OpenRA.Utility.exe ra --check-yaml
+	
+		echo ""
+		echo "Testing Tiberian Dawn mod MiniYAML..."
+		./OpenRA.Utility.exe cnc --check-yaml
+		
+		echo ""
+		echo "Testing Dune 2000 mod MiniYAML..."
+		./OpenRA.Utility.exe d2k --check-yaml
+		
+		echo ""
+		echo "Testing Tiberian Sun mod MiniYAML..."
+		./OpenRA.Utility.exe ts --check-yaml
+	}
+	else
+	{
+		echo "Error: OpenRA.Utility.exe is missing."
+		return 1
+	}
+}
+
 if ($args.Length -eq 0)
 {
 	echo "Command list:"
 	echo ""
-	echo "  all             Builds the game and its development tools."
+	echo "  all             Copies dependencies, builds the game and its dev tools."
 	echo "  dependencies    Copies the game's dependencies into the main game folder."
 	echo "  version         Sets the version strings for the default mods to the latest"
 	echo "                  version for the current Git branch."
-	echo "  clean           Removes all built and copied files. Use the 'all' and"
-	echo "                  'dependencies' commands to restore removed files."
+	echo "  clean           Removes all built and copied files."
+	echo "                  Use the 'all' command to restore removed files."
 	echo "  test            Tests the default mods for errors."
 	echo "  check           Checks .cs files for StyleCop violations."
 	echo "  docs            Generates the trait and Lua API documentation."
@@ -49,6 +90,8 @@ if ($command -eq "all")
 	}
 	else
 	{
+		CopyDependencies
+		
 		$proc = Start-Process $msBuild $msBuildArguments -NoNewWindow -PassThru -Wait
 		if ($proc.ExitCode -ne 0)
 		{
@@ -109,24 +152,11 @@ elseif ($command -eq "version")
 }
 elseif ($command -eq "dependencies")
 {
-	cd thirdparty
-	./fetch-thirdparty-deps.ps1
-	cp *.dll ..
-	cp windows/*.dll ..
-	cd ..
-	echo "Dependencies copied."
+	CopyDependencies
 }
 elseif ($command -eq "test")
 {
-	echo "Testing mods..."
-	echo "Testing Red Alert mod MiniYAML..."
-	./OpenRA.Utility.exe ra --check-yaml
-	echo "Testing Tiberian Dawn mod MiniYAML..."
-	./OpenRA.Utility.exe cnc --check-yaml
-	echo "Testing Dune 2000 mod MiniYAML..."
-	./OpenRA.Utility.exe d2k --check-yaml
-	echo "Testing Tiberian Sun mod MiniYAML..."
-	./OpenRA.Utility.exe ts --check-yaml
+	TestModsAndMaps
 }
 elseif ($command -eq "check")
 {
