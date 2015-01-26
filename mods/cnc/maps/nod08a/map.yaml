@@ -1,0 +1,1091 @@
+﻿Selectable: True
+
+MapFormat: 6
+
+RequiresMod: cnc
+
+Title: Battle for Zaire (8a)
+
+Description: Since we are low on troops, you will have to make use of all available resources. Locate the abandoned GDI base in the area and restore it to operational status. Once that is done, use GDI's own weapons against them. Be sure that no GDI forces remain alive.
+
+CountryDescription: Zaire:\n\n|\n\n|Population:\n|39,084,000\n|Expendability:\n|72%\n|Capital:\n|Kinshasa\n|Government:\n|Republic\n|Government Corruptability:\n|74%\n|Net Worth:\n|$6,600,000,000\n|Point of Conflict:\n|Lodja\n|Military Strength:\n|Reasonable\n|Military Resistance:\n|54%
+
+Author: Westwood Studios
+
+PreviewVideo: nod8.vqa
+
+Tileset: DESERT
+
+MapSize: 64,64
+
+Bounds: 3,2,59,60
+
+UseAsShellmap: False
+
+Type: Mission
+
+Options:
+	Crates: False
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
+	StartingCash: 4000
+	ConfigurableStartingUnits: False
+
+Players:
+	PlayerReference@GoodGuy:
+		Name: GoodGuy
+		Race: gdi
+		ColorRamp: 31,222,183
+		Allies: GoodGuy
+		Enemies: BadGuy
+	PlayerReference@BadGuy:
+		Name: BadGuy
+		Playable: True
+		AllowBots: False
+		Required: True
+		LockRace: True
+		Race: nod
+		LockColor: True
+		ColorRamp: 3,255,127
+		LockSpawn: True
+		LockTeam: True
+		Allies: BadGuy
+		Enemies: GoodGuy
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: gdi
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi6:
+		Name: Multi6
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi7:
+		Name: Multi7
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: gdi
+		Enemies: BadGuy, Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
+
+Actors:
+	Actor0: brik
+		Location: 27,56
+		Owner: Neutral
+	Actor1: brik
+		Location: 26,56
+		Owner: Neutral
+	Actor2: brik
+		Location: 25,56
+		Owner: Neutral
+	Actor3: brik
+		Location: 24,56
+		Owner: Neutral
+	Actor4: brik
+		Location: 23,56
+		Owner: Neutral
+	Actor5: brik
+		Location: 22,56
+		Owner: Neutral
+	Actor6: brik
+		Location: 21,56
+		Owner: Neutral
+	Actor7: brik
+		Location: 20,56
+		Owner: Neutral
+	Actor8: brik
+		Location: 19,56
+		Owner: Neutral
+	Actor9: brik
+		Location: 18,56
+		Owner: Neutral
+	Actor10: brik
+		Location: 17,56
+		Owner: Neutral
+	Actor11: brik
+		Location: 16,56
+		Owner: Neutral
+	Actor12: brik
+		Location: 15,56
+		Owner: Neutral
+	Actor13: brik
+		Location: 14,56
+		Owner: Neutral
+	Actor14: brik
+		Location: 13,56
+		Owner: Neutral
+	Actor15: brik
+		Location: 12,56
+		Owner: Neutral
+	Actor16: brik
+		Location: 11,56
+		Owner: Neutral
+	Actor17: brik
+		Location: 10,56
+		Owner: Neutral
+	Actor18: brik
+		Location: 9,56
+		Owner: Neutral
+	Actor19: brik
+		Location: 8,56
+		Owner: Neutral
+	Actor20: brik
+		Location: 7,56
+		Owner: Neutral
+	Actor21: brik
+		Location: 6,56
+		Owner: Neutral
+	Actor22: brik
+		Location: 5,56
+		Owner: Neutral
+	Actor23: brik
+		Location: 4,56
+		Owner: Neutral
+	Actor24: brik
+		Location: 3,56
+		Owner: Neutral
+	Actor25: brik
+		Location: 27,55
+		Owner: Neutral
+	Actor26: cycl
+		Location: 25,55
+		Owner: Neutral
+	Actor27: cycl
+		Location: 24,55
+		Owner: Neutral
+	Actor28: cycl
+		Location: 23,55
+		Owner: Neutral
+	Actor29: brik
+		Location: 4,55
+		Owner: Neutral
+	Actor30: brik
+		Location: 3,55
+		Owner: Neutral
+	Actor31: brik
+		Location: 27,54
+		Owner: Neutral
+	Actor32: cycl
+		Location: 25,54
+		Owner: Neutral
+	Actor33: cycl
+		Location: 23,54
+		Owner: Neutral
+	Actor34: brik
+		Location: 3,54
+		Owner: Neutral
+	Actor35: brik
+		Location: 27,53
+		Owner: Neutral
+	Actor36: brik
+		Location: 26,53
+		Owner: Neutral
+	Actor37: cycl
+		Location: 25,53
+		Owner: Neutral
+	Actor38: cycl
+		Location: 24,53
+		Owner: Neutral
+	Actor39: cycl
+		Location: 23,53
+		Owner: Neutral
+	Actor40: brik
+		Location: 3,53
+		Owner: Neutral
+	Actor41: brik
+		Location: 27,52
+		Owner: Neutral
+	Actor42: brik
+		Location: 26,52
+		Owner: Neutral
+	Actor43: brik
+		Location: 3,52
+		Owner: Neutral
+	Actor44: brik
+		Location: 3,51
+		Owner: Neutral
+	Actor45: brik
+		Location: 27,50
+		Owner: Neutral
+	Actor46: brik
+		Location: 26,50
+		Owner: Neutral
+	Actor47: brik
+		Location: 3,50
+		Owner: Neutral
+	Actor48: brik
+		Location: 27,49
+		Owner: Neutral
+	Actor49: brik
+		Location: 26,49
+		Owner: Neutral
+	Actor50: brik
+		Location: 3,49
+		Owner: Neutral
+	Actor51: brik
+		Location: 27,48
+		Owner: Neutral
+	Actor52: brik
+		Location: 18,48
+		Owner: Neutral
+	Actor53: brik
+		Location: 17,48
+		Owner: Neutral
+	Actor54: brik
+		Location: 13,48
+		Owner: Neutral
+	Actor55: brik
+		Location: 12,48
+		Owner: Neutral
+	Actor56: brik
+		Location: 4,48
+		Owner: Neutral
+	Actor57: brik
+		Location: 3,48
+		Owner: Neutral
+	Actor58: brik
+		Location: 27,47
+		Owner: Neutral
+	Actor59: brik
+		Location: 26,47
+		Owner: Neutral
+	Actor60: brik
+		Location: 25,47
+		Owner: Neutral
+	Actor61: brik
+		Location: 24,47
+		Owner: Neutral
+	Actor62: brik
+		Location: 23,47
+		Owner: Neutral
+	Actor63: brik
+		Location: 22,47
+		Owner: Neutral
+	Actor64: brik
+		Location: 21,47
+		Owner: Neutral
+	Actor65: brik
+		Location: 20,47
+		Owner: Neutral
+	Actor66: brik
+		Location: 19,47
+		Owner: Neutral
+	Actor67: brik
+		Location: 18,47
+		Owner: Neutral
+	Actor68: brik
+		Location: 17,47
+		Owner: Neutral
+	Actor69: brik
+		Location: 13,47
+		Owner: Neutral
+	Actor70: brik
+		Location: 12,47
+		Owner: Neutral
+	Actor71: brik
+		Location: 11,47
+		Owner: Neutral
+	Actor72: brik
+		Location: 10,47
+		Owner: Neutral
+	Actor73: brik
+		Location: 9,47
+		Owner: Neutral
+	Actor74: brik
+		Location: 8,47
+		Owner: Neutral
+	Actor75: brik
+		Location: 7,47
+		Owner: Neutral
+	Actor76: brik
+		Location: 6,47
+		Owner: Neutral
+	Actor77: brik
+		Location: 5,47
+		Owner: Neutral
+	Actor78: brik
+		Location: 4,47
+		Owner: Neutral
+	Actor79: brik
+		Location: 3,47
+		Owner: Neutral
+	Actor80: sbag
+		Location: 61,29
+		Owner: Neutral
+	Actor81: sbag
+		Location: 61,28
+		Owner: Neutral
+	Actor82: sbag
+		Location: 61,27
+		Owner: Neutral
+	Actor83: sbag
+		Location: 61,26
+		Owner: Neutral
+	Actor84: sbag
+		Location: 61,25
+		Owner: Neutral
+	Actor85: sbag
+		Location: 61,24
+		Owner: Neutral
+	Actor86: sbag
+		Location: 59,23
+		Owner: Neutral
+	Actor87: sbag
+		Location: 58,23
+		Owner: Neutral
+	Actor88: t18
+		Location: 15,16
+		Owner: Neutral
+	Actor89: t18
+		Location: 7,9
+		Owner: Neutral
+	Actor90: t08
+		Location: 22,31
+		Owner: Neutral
+	Actor91: t08
+		Location: 29,56
+		Owner: Neutral
+	Actor92: t08
+		Location: 45,52
+		Owner: Neutral
+	Actor93: t08
+		Location: 46,52
+		Owner: Neutral
+	Actor94: t08
+		Location: 57,39
+		Owner: Neutral
+	Actor95: t08
+		Location: 9,29
+		Owner: Neutral
+	Actor96: t08
+		Location: 40,16
+		Owner: Neutral
+	Actor97: t08
+		Location: 40,29
+		Owner: Neutral
+	Actor98: t08
+		Location: 10,29
+		Owner: Neutral
+	Actor99: rock5
+		Location: 22,18
+		Owner: Neutral
+	Actor100: t08
+		Location: 39,6
+		Owner: Neutral
+	Actor101: t08
+		Location: 40,6
+		Owner: Neutral
+	Actor102: t08
+		Location: 54,9
+		Owner: Neutral
+	Actor103: t08
+		Location: 59,15
+		Owner: Neutral
+	Actor104: t08
+		Location: 49,3
+		Owner: Neutral
+	Actor105: t18
+		Location: 13,23
+		Owner: Neutral
+	Actor106: t18
+		Location: 15,35
+		Owner: Neutral
+	Actor107: t18
+		Location: 26,45
+		Owner: Neutral
+	Actor108: t18
+		Location: 31,49
+		Owner: Neutral
+	Actor109: t18
+		Location: 54,35
+		Owner: Neutral
+	Actor110: t18
+		Location: 25,56
+		Owner: Neutral
+	Actor111: t18
+		Location: 11,43
+		Owner: Neutral
+	Actor112: split3
+		Location: 5,31
+		Owner: Neutral
+	Actor113: split3
+		Location: 58,47
+		Owner: Neutral
+	Actor114: proc
+		Location: 19,48
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor115: atwr
+		Location: 11,47
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor116: gtwr
+		Location: 31,49
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor117: gtwr
+		Location: 13,46
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor118: silo
+		Location: 7,43
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor119: silo
+		Location: 5,45
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor120: silo
+		Location: 5,43
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor121: silo
+		Location: 3,43
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor122: silo
+		Location: 3,45
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor123: weap
+		Location: 8,47
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor124: pyle
+		Location: 15,52
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor125: nuke
+		Location: 9,53
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor126: nuke
+		Location: 7,52
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor127: nuke
+		Location: 11,53
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor128: nuke
+		Location: 13,52
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor129: fact
+		Location: 4,52
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor130: gtwr
+		Location: 17,46
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor131: gtwr
+		Location: 31,52
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor132: fact
+		Location: 58,6
+		Owner: BadGuy
+		Health: 0.3945313
+		Facing: 0
+	Actor133: nuke
+		Location: 56,4
+		Owner: BadGuy
+		Health: 0.4140625
+		Facing: 0
+	Actor134: hand
+		Location: 58,2
+		Owner: BadGuy
+		Health: 0.3125
+		Facing: 0
+	Actor135: fact
+		Location: 58,24
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor136: proc
+		Location: 55,23
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor137: nuke
+		Location: 59,27
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor138: hq
+		Location: 4,49
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor139: silo
+		Location: 7,45
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor140: hpad
+		Location: 22,48
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor141: hpad
+		Location: 24,48
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor142: mtnk
+		Location: 8,9
+		Owner: GoodGuy
+		Health: 1
+		Facing: 64
+	Actor143: mtnk
+		Location: 27,34
+		Owner: GoodGuy
+		Health: 1
+		Facing: 64
+	Actor144: mtnk
+		Location: 14,25
+		Owner: GoodGuy
+		Health: 1
+		Facing: 96
+	Actor145: mtnk
+		Location: 47,3
+		Owner: GoodGuy
+		Health: 1
+		Facing: 192
+	Actor146: boat
+		Location: 25,60
+		Owner: GoodGuy
+		Health: 1
+		Facing: 192
+	Actor147: boat
+		Location: 31,59
+		Owner: GoodGuy
+		Health: 1
+		Facing: 192
+	Actor148: jeep
+		Location: 56,33
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor149: harv
+		Location: 15,46
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor150: harv
+		Location: 55,27
+		Owner: GoodGuy
+		Health: 1
+		Facing: 192
+	Actor151: mtnk
+		Location: 16,32
+		Owner: GoodGuy
+		Health: 1
+		Facing: 224
+	Actor152: mtnk
+		Location: 35,31
+		Owner: GoodGuy
+		Health: 1
+		Facing: 224
+	Actor153: jeep
+		Location: 18,55
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor154: jeep
+		Location: 19,55
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor155: mtnk
+		Location: 21,55
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor156: mtnk
+		Location: 22,55
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor157: e2
+		Location: 16,16
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+		SubCell: 3
+	Actor158: e2
+		Location: 15,16
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+		SubCell: 4
+	Actor159: e2
+		Location: 50,3
+		Owner: GoodGuy
+		Health: 1
+		Facing: 224
+		SubCell: 1
+	Actor160: e2
+		Location: 49,5
+		Owner: GoodGuy
+		Health: 1
+		Facing: 192
+		SubCell: 2
+	Actor161: e1
+		Location: 48,6
+		Owner: GoodGuy
+		Health: 1
+		Facing: 224
+		SubCell: 4
+	Actor162: e2
+		Location: 41,16
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+		SubCell: 1
+	Actor163: e2
+		Location: 35,17
+		Owner: GoodGuy
+		Health: 1
+		Facing: 224
+		SubCell: 2
+	Actor164: e1
+		Location: 36,4
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 4
+	Actor165: e1
+		Location: 36,5
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 2
+	Actor166: e1
+		Location: 37,4
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 3
+	Actor167: e1
+		Location: 37,5
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 1
+	Actor168: e3
+		Location: 38,4
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 3
+	Actor169: e3
+		Location: 38,5
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 1
+	Actor170: e3
+		Location: 38,4
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 4
+	Actor171: e1
+		Location: 45,5
+		Owner: GoodGuy
+		Health: 1
+		Facing: 160
+		SubCell: 1
+	Actor172: e1
+		Location: 44,4
+		Owner: GoodGuy
+		Health: 1
+		Facing: 160
+		SubCell: 1
+	Actor173: e1
+		Location: 45,4
+		Owner: GoodGuy
+		Health: 1
+		Facing: 224
+		SubCell: 1
+	Actor174: e1
+		Location: 36,5
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 1
+	Actor175: e1
+		Location: 36,4
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 3
+	Actor176: e1
+		Location: 58,27
+		Owner: GoodGuy
+		Health: 1
+		Facing: 224
+		SubCell: 4
+	Actor177: e1
+		Location: 52,22
+		Owner: GoodGuy
+		Health: 1
+		Facing: 160
+		SubCell: 4
+	Actor178: e1
+		Location: 50,23
+		Owner: GoodGuy
+		Health: 1
+		Facing: 224
+		SubCell: 3
+	Actor179: e2
+		Location: 59,30
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+		SubCell: 4
+	Actor180: e2
+		Location: 49,24
+		Owner: GoodGuy
+		Health: 1
+		Facing: 64
+		SubCell: 3
+	Actor181: e1
+		Location: 31,33
+		Owner: GoodGuy
+		Health: 1
+		Facing: 32
+		SubCell: 2
+	Actor182: e3
+		Location: 54,35
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+		SubCell: 4
+	Actor183: e3
+		Location: 55,35
+		Owner: GoodGuy
+		Health: 1
+		Facing: 32
+		SubCell: 4
+	Actor184: e3
+		Location: 55,35
+		Owner: GoodGuy
+		Health: 1
+		Facing: 224
+		SubCell: 0
+	Actor185: e3
+		Location: 47,32
+		Owner: GoodGuy
+		Health: 1
+		Facing: 64
+		SubCell: 0
+	Actor186: e3
+		Location: 48,35
+		Owner: GoodGuy
+		Health: 1
+		Facing: 32
+		SubCell: 1
+	Actor187: e3
+		Location: 43,26
+		Owner: GoodGuy
+		Health: 1
+		Facing: 96
+		SubCell: 0
+	Actor188: e3
+		Location: 46,22
+		Owner: GoodGuy
+		Health: 1
+		Facing: 64
+		SubCell: 3
+	Actor189: e3
+		Location: 38,5
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 2
+	Actor190: e2
+		Location: 31,33
+		Owner: GoodGuy
+		Health: 1
+		Facing: 160
+		SubCell: 3
+	Actor191: e2
+		Location: 32,33
+		Owner: GoodGuy
+		Health: 1
+		Facing: 32
+		SubCell: 0
+	waypoint27: waypoint
+		Location: 20,54
+		Owner: Neutral
+	waypoint26: waypoint
+		Location: 34,2
+		Owner: Neutral
+	waypoint25: waypoint
+		Location: 57,27
+		Owner: Neutral
+	waypoint18: waypoint
+		Location: 35,32
+		Owner: Neutral
+	waypoint17: waypoint
+		Location: 35,38
+		Owner: Neutral
+	waypoint16: waypoint
+		Location: 13,26
+		Owner: Neutral
+	waypoint15: waypoint
+		Location: 8,14
+		Owner: Neutral
+	waypoint14: waypoint
+		Location: 15,32
+		Owner: Neutral
+	waypoint13: waypoint
+		Location: 27,35
+		Owner: Neutral
+	waypoint12: waypoint
+		Location: 28,14
+		Owner: Neutral
+	waypoint11: waypoint
+		Location: 37,27
+		Owner: Neutral
+	waypoint10: waypoint
+		Location: 37,14
+		Owner: Neutral
+	waypoint9: waypoint
+		Location: 20,14
+		Owner: Neutral
+	waypoint8: waypoint
+		Location: 51,42
+		Owner: Neutral
+	Actor206: mpspawn
+		Location: 50,55
+		Owner: Neutral
+	waypoint7: waypoint
+		Location: 50,55
+		Owner: Neutral
+	Actor208: mpspawn
+		Location: 36,56
+		Owner: Neutral
+	waypoint6: waypoint
+		Location: 36,56
+		Owner: Neutral
+	Actor210: mpspawn
+		Location: 36,51
+		Owner: Neutral
+	waypoint5: waypoint
+		Location: 36,51
+		Owner: Neutral
+	Actor212: mpspawn
+		Location: 31,35
+		Owner: Neutral
+	waypoint4: waypoint
+		Location: 31,35
+		Owner: Neutral
+	Actor214: mpspawn
+		Location: 13,29
+		Owner: Neutral
+	waypoint3: waypoint
+		Location: 13,29
+		Owner: Neutral
+	Actor216: mpspawn
+		Location: 14,40
+		Owner: Neutral
+	waypoint2: waypoint
+		Location: 14,40
+		Owner: Neutral
+	Actor218: mpspawn
+		Location: 15,46
+		Owner: Neutral
+	waypoint1: waypoint
+		Location: 15,46
+		Owner: Neutral
+	Actor220: mpspawn
+		Location: 54,6
+		Owner: Neutral
+	waypoint0: waypoint
+		Location: 54,6
+		Owner: Neutral
+
+Smudges:
+	sc2 44,57 0:
+	cr1 42,56 0:
+	sc1 40,56 0:
+	sc5 50,55 0:
+	cr1 49,55 0:
+	sc3 45,55 0:
+	cr1 51,52 0:
+	cr1 41,52 0:
+	sc2 61,43 0:
+	cr1 60,43 0:
+	sc6 58,42 0:
+	sc4 61,41 0:
+	cr1 59,41 0:
+	sc1 55,41 0:
+	cr1 55,40 0:
+	cr1 49,40 0:
+	sc5 59,39 0:
+	sc5 53,39 0:
+	cr1 53,36 0:
+	sc4 60,9 0:
+	sc6 58,9 0:
+	sc2 57,8 0:
+	cr1 55,6 0:
+	sc3 54,6 0:
+	sc2 60,5 0:
+	sc4 55,5 0:
+	cr1 54,5 0:
+	sc6 61,4 0:
+	sc6 55,4 0:
+	sc1 57,3 0:
+
+Rules:
+	Player:
+		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
+	World:
+		-CrateSpawner:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
+		LuaScript:
+			Scripts: map.lua
+	^Vehicle:
+		Tooltip:
+			ShowOwnerRow: false
+	^Tank:
+		Tooltip:
+			ShowOwnerRow: false
+	^Infantry:
+		Tooltip:
+			ShowOwnerRow: false
+	^Plane:
+		Tooltip:
+			ShowOwnerRow: false
+	^Ship:
+		Tooltip:
+			ShowOwnerRow: false
+	^Building:
+		Tooltip:
+			ShowOwnerRow: false
+			NUK2:
+		Buildable:
+			Prerequisites: ~disabled
+	GUN:
+		Buildable:
+			Prerequisites: ~disabled
+	CYCL:
+		Buildable:
+			Prerequisites: ~disabled
+	FIX:
+		Buildable:
+			Prerequisites: ~disabled
+	HPAD:
+		Buildable:
+			Prerequisites: ~disabled
+	OBLI:
+		Buildable:
+			Prerequisites: ~disabled
+	BRIK:
+		Buildable:
+			Prerequisites: ~disabled
+	TMPL:
+		Buildable:
+			Prerequisites: ~disabled
+	FTNK:
+		Buildable:
+			Prerequisites: ~disabled
+	STNK:
+		Buildable:
+			Prerequisites: ~disabled
+	ARTY:
+		Buildable:
+			Prerequisites: ~disabled
+	E5:
+		Buildable:
+			Prerequisites: ~disabled
+	RMBO:
+		Buildable:
+			Prerequisites: ~disabled
+	MLRS:
+		Buildable:
+			Prerequisites: ~disabled
+	MCV:
+		Buildable:
+			Prerequisites: ~disabled
+	LST:
+		Buildable:
+			Prerequisites: ~disabled
+	C17:
+		Buildable:
+			Prerequisites: ~disabled
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:
