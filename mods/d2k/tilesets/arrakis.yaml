@@ -6364,4 +6364,25 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Rock
+	Template@1019:
+		Id: 1019
+		Image: BLOXBGBS
+		Frames: 29
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Sand
+	Template@1020:
+		Id: 1020
+		Image: BLOXBGBS
+		Frames: 617,618,637,638
+		Size: 2,2
+		Category: Rock-Detail
+		PickAny: False
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
 
