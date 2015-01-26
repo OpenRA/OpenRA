@@ -1,0 +1,473 @@
+Selectable: True
+
+MapFormat: 6
+
+RequiresMod: cnc
+
+Title: Invasion of Egypt (2a)
+
+Description: GDI has kept a stranglehold on Egypt for many years.  Set up a forward attack base in your area.  To do this you must double click on your Mobile Construction Vehicle.  (MCV)  From here you can begin to build a base. This area contains plenty of Tiberium, so establishing the base should be easy.
+
+CountryDescription: Egypt:\n\n|\n\n|Population:\n|56,386,000\n|Expendability:\n|75%\n|Capital:\n|Cairo\n|Government:\n|Republic\n|Government Corruptability:\n|18%\n|Net Worth:\n|$39,200,000,000\n|Point of Conflict:\n|Al-Alamyn\n|Military Strength:\n|Formidable\n|Military Resistance:\n|82%
+
+Author: Westwood Studios
+
+PreviewVideo: nod2.vqa
+
+Tileset: DESERT
+
+MapSize: 64,64
+
+Bounds: 27,34,36,26
+
+UseAsShellmap: False
+
+Type: Mission
+
+Options:
+	Crates: False
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
+	StartingCash: 4000
+	ConfigurableStartingUnits: False
+
+Players:
+	PlayerReference@GoodGuy:
+		Name: GoodGuy
+		Race: gdi
+		ColorRamp: 31,222,183
+		Allies: GoodGuy
+		Enemies: BadGuy
+	PlayerReference@BadGuy:
+		Name: BadGuy
+		Playable: True
+		AllowBots: False
+		Required: True
+		LockRace: True
+		Race: nod
+		LockColor: True
+		ColorRamp: 3,255,127
+		LockSpawn: True
+		LockTeam: True
+		Allies: BadGuy
+		Enemies: GoodGuy
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: gdi
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi6:
+		Name: Multi6
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi7:
+		Name: Multi7
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: gdi
+		Enemies: BadGuy, Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
+
+Actors:
+	Actor0: t08
+		Location: 30,52
+		Owner: Neutral
+	Actor1: t18
+		Location: 34,52
+		Owner: Neutral
+	Actor2: t08
+		Location: 57,47
+		Owner: Neutral
+	Actor3: t08
+		Location: 38,59
+		Owner: Neutral
+	Actor4: silo
+		Location: 33,40
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor5: proc
+		Location: 30,38
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor6: pyle
+		Location: 34,43
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor7: nuke
+		Location: 35,40
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor8: fact
+		Location: 33,37
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor9: silo
+		Location: 32,42
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor10: jeep
+		Location: 30,46
+		Owner: GoodGuy
+		Health: 1
+		Facing: 128
+	Actor11: jeep
+		Location: 31,35
+		Owner: GoodGuy
+		Health: 1
+		Facing: 64
+	Actor12: mcv
+		Location: 57,41
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+	Actor13: bggy
+		Location: 57,39
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+	Actor14: bggy
+		Location: 58,39
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+	Actor15: bggy
+		Location: 56,39
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+	Actor16: harv
+		Location: 28,41
+		Owner: GoodGuy
+		Health: 0.453125
+		Facing: 128
+	Actor17: e1
+		Location: 34,56
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+		SubCell: 3
+	Actor18: e1
+		Location: 43,35
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+		SubCell: 3
+	Actor19: e1
+		Location: 43,36
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+		SubCell: 3
+	Actor20: e1
+		Location: 42,39
+		Owner: GoodGuy
+		Health: 1
+		Facing: 64
+		SubCell: 0
+	Actor21: e1
+		Location: 38,38
+		Owner: GoodGuy
+		Health: 1
+		Facing: 64
+		SubCell: 2
+	Actor22: e1
+		Location: 35,49
+		Owner: GoodGuy
+		Health: 1
+		Facing: 96
+		SubCell: 0
+	Actor23: e1
+		Location: 34,48
+		Owner: GoodGuy
+		Health: 1
+		Facing: 96
+		SubCell: 3
+	Actor24: e1
+		Location: 39,40
+		Owner: GoodGuy
+		Health: 1
+		Facing: 64
+		SubCell: 1
+	Actor25: e1
+		Location: 58,38
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 4
+	Actor26: e1
+		Location: 58,38
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 1
+	Actor27: e1
+		Location: 56,38
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 3
+	Actor28: e1
+		Location: 56,38
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 2
+	Actor29: e1
+		Location: 58,38
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 2
+	Actor30: e1
+		Location: 58,38
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 3
+	Actor31: e1
+		Location: 47,53
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+		SubCell: 4
+	Actor32: e1
+		Location: 49,54
+		Owner: GoodGuy
+		Health: 1
+		Facing: 224
+		SubCell: 1
+	Actor33: e1
+		Location: 40,56
+		Owner: GoodGuy
+		Health: 1
+		Facing: 96
+		SubCell: 4
+	Actor34: e1
+		Location: 38,54
+		Owner: GoodGuy
+		Health: 1
+		Facing: 32
+		SubCell: 3
+	Actor35: e1
+		Location: 34,57
+		Owner: GoodGuy
+		Health: 1
+		Facing: 64
+		SubCell: 1
+	Actor36: e1
+		Location: 56,38
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 4
+	Actor37: e1
+		Location: 56,38
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 1
+	waypoint27: waypoint
+		Location: 27,51
+		Owner: Neutral
+	waypoint26: waypoint
+		Location: 49,35
+		Owner: Neutral
+	waypoint10: waypoint
+		Location: 30,44
+		Owner: Neutral
+	waypoint9: waypoint
+		Location: 55,40
+		Owner: Neutral
+	waypoint8: waypoint
+		Location: 48,41
+		Owner: Neutral
+	Actor43: mpspawn
+		Location: 60,58
+		Owner: Neutral
+	waypoint7: waypoint
+		Location: 60,58
+		Owner: Neutral
+	Actor45: mpspawn
+		Location: 61,47
+		Owner: Neutral
+	waypoint6: waypoint
+		Location: 61,47
+		Owner: Neutral
+	Actor47: mpspawn
+		Location: 48,55
+		Owner: Neutral
+	waypoint5: waypoint
+		Location: 48,55
+		Owner: Neutral
+	Actor49: mpspawn
+		Location: 41,51
+		Owner: Neutral
+	waypoint4: waypoint
+		Location: 41,51
+		Owner: Neutral
+	Actor51: mpspawn
+		Location: 28,36
+		Owner: Neutral
+	waypoint3: waypoint
+		Location: 28,36
+		Owner: Neutral
+	Actor53: mpspawn
+		Location: 28,51
+		Owner: Neutral
+	waypoint2: waypoint
+		Location: 28,51
+		Owner: Neutral
+	Actor55: mpspawn
+		Location: 40,43
+		Owner: Neutral
+	waypoint1: waypoint
+		Location: 40,43
+		Owner: Neutral
+	Actor57: mpspawn
+		Location: 40,35
+		Owner: Neutral
+	waypoint0: waypoint
+		Location: 40,35
+		Owner: Neutral
+
+Smudges:
+
+Rules:
+	Player:
+		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
+	World:
+		-CrateSpawner:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
+		LuaScript:
+			Scripts: map.lua
+	^Vehicle:
+		MustBeDestroyed:
+		Tooltip:
+			ShowOwnerRow: false
+	^Tank:
+		Tooltip:
+			ShowOwnerRow: false
+	^Infantry:
+		MustBeDestroyed:
+		Tooltip:
+			ShowOwnerRow: false
+	^Plane:
+		Tooltip:
+			ShowOwnerRow: false
+	^Ship:
+		Tooltip:
+			ShowOwnerRow: false
+	^Building:
+		MustBeDestroyed:
+		Tooltip:
+			ShowOwnerRow: false	
+	NUK2:
+		Buildable:
+			Prerequisites: ~disabled
+	GUN:
+		Buildable:
+			Prerequisites: ~disabled
+	CYCL:
+		Buildable:
+			Prerequisites: ~disabled
+	FIX:
+		Buildable:
+			Prerequisites: ~disabled
+	HPAD:
+		Buildable:
+			Prerequisites: ~disabled
+	OBLI:
+		Buildable:
+			Prerequisites: ~disabled
+	BRIK:
+		Buildable:
+			Prerequisites: ~disabled
+	TMPL:
+		Buildable:
+			Prerequisites: ~disabled
+	FTNK:
+		Buildable:
+			Prerequisites: ~disabled
+	STNK:
+		Buildable:
+			Prerequisites: ~disabled
+	ARTY:
+		Buildable:
+			Prerequisites: ~disabled
+	E5:
+		Buildable:
+			Prerequisites: ~disabled
+	RMBO:
+		Buildable:
+			Prerequisites: ~disabled
+	MLRS:
+		Buildable:
+			Prerequisites: ~disabled
+	MCV:
+		Buildable:
+			Prerequisites: ~disabled
+	LST:
+		Buildable:
+			Prerequisites: ~disabled
+	C17:
+		Buildable:
+			Prerequisites: ~disabled
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:

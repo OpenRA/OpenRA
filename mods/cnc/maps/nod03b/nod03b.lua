@@ -1,33 +1,17 @@
-NodUnits = { "e1", "e1", "bggy", "bike", "e1", "e1", "bike", "bggy", "e1", "e1" }
-Engineers = { "e6", "e6", "e6" }
-FirstAttackWaveUnits  = { "e1", "e1", "e2" }
-SecondAttackWaveUnits = { "e1", "e1", "e1" }
-ThirdAttackWaveUnits = { "e1", "e1", "e1", "e2" }
+NodUnits = { "bike", "e3", "e1", "bggy", "e1", "e3", "bike", "bggy" }
+FirstAttackWave = { "e1", "e1", "e1", "e2", }
+SecondThirdAttackWave = { "e1", "e1", "e2", }
 
-SendAttackWave = function(units, action)
-	Reinforcements.Reinforce(enemy, units, { GDIBarracksSpawn.Location, WP0.Location, WP1.Location }, 15, action)
-end
-
-FirstAttackWave = function(soldier)
-	soldier.Move(WP2.Location)
-	soldier.Move(WP3.Location)
-	soldier.Move(WP4.Location)
-	soldier.AttackMove(PlayerBase.Location)
-end
-
-SecondAttackWave = function(soldier)
-	soldier.Move(WP5.Location)
-	soldier.Move(WP6.Location)
-	soldier.Move(WP7.Location)
-	soldier.Move(WP9.Location)
-	soldier.AttackMove(PlayerBase.Location)
+SendAttackWave = function(units, spawnPoint)
+	Reinforcements.Reinforce(enemy, units, { spawnPoint }, DateTime.Seconds(1), function(actor)
+		actor.AttackMove(PlayerBase.Location)
+	end)
 end
 
 InsertNodUnits = function()
-	Reinforcements.Reinforce(player, { "mcv" }, { McvEntry.Location, McvDeploy.Location })
-	Reinforcements.Reinforce(player, NodUnits, { NodEntry.Location, NodRallypoint.Location })
-	Trigger.AfterDelay(DateTime.Seconds(15), function()
-		Reinforcements.Reinforce(player, Engineers, { McvEntry.Location, PlayerBase.Location })
+	Reinforcements.Reinforce(player, NodUnits, { NodEntry.Location, NodRallyPoint.Location })
+	Trigger.AfterDelay(DateTime.Seconds(9), function()
+		Reinforcements.Reinforce(player, { "mcv" }, { NodEntry.Location, PlayerBase.Location })
 	end)
 end
 
@@ -47,37 +31,45 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "Win")
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
+			Media.PlayMovieFullscreen("desflees.vqa")
+		end)
 	end)
 
 	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
+			Media.PlayMovieFullscreen("flag.vqa")
+		end)
 	end)
 
-	gdiObjective = enemy.AddPrimaryObjective("Eliminate all Nod forces in the area")
-	nodObjective1 = player.AddPrimaryObjective("Capture the prison")
-	nodObjective2 = player.AddSecondaryObjective("Destroy all GDI forces")
+	Media.PlayMovieFullscreen("dessweep.vqa", function()
+		gdiObjective = enemy.AddPrimaryObjective("Eliminate all Nod forces in the area")
+		nodObjective1 = player.AddPrimaryObjective("Capture the prison")
+		nodObjective2 = player.AddSecondaryObjective("Destroy all GDI forces")
+	end)
 
-	Trigger.OnKilled(TechCenter, function() player.MarkFailedObjective(nodObjective1) end)
 	Trigger.OnCapture(TechCenter, function()
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
 			player.MarkCompletedObjective(nodObjective1)
 		end)
 	end)
 
+	Trigger.OnKilled(TechCenter, function()
+		player.MarkFailedObjective(nodObjective1)
+	end)
+
 	InsertNodUnits()
-	Trigger.AfterDelay(DateTime.Seconds(40), function() SendAttackWave(FirstAttackWaveUnits, FirstAttackWave) end)
-	Trigger.AfterDelay(DateTime.Seconds(80), function() SendAttackWave(SecondAttackWaveUnits, SecondAttackWave) end)
-	Trigger.AfterDelay(DateTime.Seconds(140), function() SendAttackWave(ThirdAttackWaveUnits, FirstAttackWave) end)
+	Trigger.AfterDelay(DateTime.Seconds(20), function() SendAttackWave(FirstAttackWave, AttackWaveSpawnA.Location) end)
+	Trigger.AfterDelay(DateTime.Seconds(50), function() SendAttackWave(SecondThirdAttackWave, AttackWaveSpawnB.Location) end)
+	Trigger.AfterDelay(DateTime.Seconds(100), function() SendAttackWave(SecondThirdAttackWave, AttackWaveSpawnC.Location) end)
 end
 
 Tick = function()
-	if DateTime.GameTime > 2 then
-		if player.HasNoRequiredUnits() then
-			enemy.MarkCompletedObjective(gdiObjective)
-		end
-
-		if enemy.HasNoRequiredUnits() then
-			player.MarkCompletedObjective(nodObjective2)
-		end
+	if player.HasNoRequiredUnits() then
+		enemy.MarkCompletedObjective(gdiObjective)
+	end
+	if enemy.HasNoRequiredUnits() then
+		player.MarkCompletedObjective(nodObjective2)
 	end
 end

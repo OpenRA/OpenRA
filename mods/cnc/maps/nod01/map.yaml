@@ -1,12 +1,16 @@
-MapFormat: 7
+Selectable: False
+
+MapFormat: 6
 
 RequiresMod: cnc
 
-Title: Nikoomba's Demise
+Title: Nikoomba's Demise (1)
 
 Description: In order for the Brotherhood to gain a foothold, we must begin by eliminating certain elements.\n\nNikoomba, the nearby village's leader, is one such element.\n\nHis views and ours do not coincide.\n\nHe and his whole group must be eliminated.
 
 Author: Westwood Studios
+
+PreviewVideo: nod1.vqa
 
 Tileset: DESERT
 
@@ -14,25 +18,18 @@ MapSize: 64,64
 
 Bounds: 21,14,37,24
 
-Visibility: MissionSelector
+UseAsShellmap: False
 
 Type: Campaign
 
-Videos:
-	BackgroundInfo: intro2.vqa
-	Briefing: nod1.vqa
-	GameLost: nodlose.vqa
-
 Options:
 	Crates: False
-	Creeps: False
 	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 0
 	ConfigurableStartingUnits: False
-	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -101,9 +98,6 @@ Actors:
 		Owner: GDI
 	Actor56: e1
 		Location: 46,22
-		Owner: GDI
-	Actor57: e1
-		Location: 51,25
 		Owner: GDI
 	Actor58: e1
 		Location: 51,30
@@ -189,12 +183,6 @@ Actors:
 	Actor24: rock2
 		Location: 31,61
 		Owner: Neutral
-	Actor27: jeep
-		Location: 31,28
-		Owner: GDI
-	Actor28: jeep
-		Location: 28,29
-		Owner: GDI
 	Vil01: v21
 		Location: 29,23
 		Owner: Villagers
@@ -264,8 +252,23 @@ Actors:
 	StartSpawnPointRight: waypoint
 		Location: 52,14
 		Owner: Neutral
+	GDISpawnPoint: waypoint
+		Location: 45, 36
+		Owner: Neutral
 	StartRallyPoint: waypoint
 		Location: 53,17
+		Owner: Neutral
+	GDIRallyPoint: waypoint
+		Location: 42, 38
+		Owner: Neutral		
+	GDIPatrolASpanPoint: waypoint
+		Location: 51, 26 
+		Owner: Neutral
+	GDIPatrolARallyPoint: waypoint
+		Location: 50, 27		
+		Owner: Neutral
+	GDIPatrolARallyPointA: waypoint
+		Location: 50, 17
 		Owner: Neutral
 	VillageSpawnPoint: waypoint
 		Location: 24,14
@@ -273,7 +276,19 @@ Actors:
 	VillageRallyPoint: waypoint
 		Location: 24,17
 		Owner: Neutral
-
+	Actor27: jeep
+		Location: 24,19
+		Owner: GDI
+	Actor28: e1
+		Location: 50,36
+		Owner: GDI
+	Actor29: e1
+		Location: 51,37
+		Owner: GDI
+	Actor30: e1
+		Location: 49,37
+		Owner: GDI
+		
 Smudges:
 
 Rules:
@@ -299,18 +314,22 @@ Rules:
 	^CivInfantry:
 		MustBeDestroyed:
 	^Vehicle:
+		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Tank:
+		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Helicopter:
+		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Infantry:
+		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
@@ -334,6 +353,8 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
+	HARV:
+		-MustBeDestroyed:
 
 Sequences:
 
