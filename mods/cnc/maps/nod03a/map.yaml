@@ -1,39 +1,37 @@
-MapFormat: 7
+Selectable: False
+
+MapFormat: 6
 
 RequiresMod: cnc
 
-Title: Sudanese Prison Break (a)
+Title: Al Ubayyid (3a)
 
 Description: GDI has established a prison camp, where they are detaining some of the local political leaders.\n\nKane wishes to liberate these victims.\n\nDestroy the GDI forces and capture the prison, do not destroy it.
 
+CountryDescription: Sudan:\n\n|\n\n|Population:\n|28,305,000\n|Expendability:\n|50%\n|Capital:\n|Khartoum\n|Government:\n|Military\n|Government Corruptability:\n|52%\n|Net Worth:\n|$12,100,000,000\n|Point of Conflict:\n|Kafia-Kingi\n|Military Strength:\n|Respectable\n|Military Resistance:\n|72%
+
 Author: Westwood Studios
+
+PreviewVideo: nod3.vqa
 
 Tileset: DESERT
 
 MapSize: 64,64
 
-Bounds: 13,16,42,33
+Bounds: 13,16,42,34
 
-Visibility: MissionSelector
+UseAsShellmap: False
 
 Type: Campaign
 
-Videos:
-	Briefing: nod3.vqa
-	GameStart: dessweep.vqa
-	GameWon: desflees.vqa
-	GameLost: flag.vqa
-
 Options:
 	Crates: False
-	Creeps: False
 	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 4000
 	ConfigurableStartingUnits: False
-	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -69,391 +67,518 @@ Players:
 		Enemies: Nod, GDI
 
 Actors:
-	Actor0: sbag
-		Location: 30,23
-		Owner: Neutral
-	Actor1: sbag
-		Location: 29,23
-		Owner: Neutral
-	Actor2: sbag
-		Location: 28,23
-		Owner: Neutral
-	Actor3: sbag
-		Location: 22,23
-		Owner: Neutral
-	Actor4: sbag
-		Location: 21,23
-		Owner: Neutral
-	Actor5: sbag
-		Location: 20,23
-		Owner: Neutral
-	Actor6: sbag
-		Location: 19,23
-		Owner: Neutral
-	Actor7: sbag
-		Location: 30,22
-		Owner: Neutral
-	Actor8: sbag
-		Location: 19,22
-		Owner: Neutral
-	Actor9: sbag
-		Location: 30,21
-		Owner: Neutral
-	Actor10: sbag
-		Location: 19,21
-		Owner: Neutral
-	Actor11: sbag
-		Location: 18,21
-		Owner: Neutral
-	Actor12: sbag
-		Location: 17,21
-		Owner: Neutral
-	Actor13: sbag
-		Location: 30,20
-		Owner: Neutral
-	Actor14: sbag
-		Location: 17,20
-		Owner: Neutral
-	Actor15: sbag
-		Location: 16,20
-		Owner: Neutral
-	Actor16: sbag
-		Location: 15,20
-		Owner: Neutral
-	Actor17: sbag
-		Location: 14,20
-		Owner: Neutral
-	Actor18: sbag
-		Location: 13,20
-		Owner: Neutral
-	Actor19: sbag
-		Location: 30,19
-		Owner: Neutral
-	Actor20: sbag
-		Location: 17,19
-		Owner: Neutral
-	Actor21: sbag
-		Location: 13,19
-		Owner: Neutral
-	Actor22: sbag
-		Location: 30,18
-		Owner: Neutral
-	Actor23: sbag
-		Location: 13,18
-		Owner: Neutral
-	Actor24: sbag
-		Location: 30,17
-		Owner: Neutral
-	Actor25: sbag
-		Location: 17,17
-		Owner: Neutral
-	Actor26: sbag
-		Location: 13,17
-		Owner: Neutral
-	Actor27: sbag
-		Location: 30,16
-		Owner: Neutral
-	Actor28: sbag
-		Location: 29,16
-		Owner: Neutral
-	Actor29: sbag
-		Location: 28,16
-		Owner: Neutral
-	Actor30: sbag
-		Location: 27,16
-		Owner: Neutral
-	Actor31: sbag
-		Location: 26,16
-		Owner: Neutral
-	Actor32: sbag
-		Location: 25,16
-		Owner: Neutral
-	Actor33: sbag
-		Location: 24,16
-		Owner: Neutral
-	Actor34: sbag
-		Location: 23,16
-		Owner: Neutral
-	Actor35: sbag
-		Location: 22,16
-		Owner: Neutral
-	Actor36: sbag
-		Location: 21,16
-		Owner: Neutral
-	Actor37: sbag
-		Location: 20,16
-		Owner: Neutral
-	Actor38: sbag
-		Location: 19,16
-		Owner: Neutral
-	Actor39: sbag
-		Location: 18,16
-		Owner: Neutral
-	Actor40: sbag
-		Location: 17,16
-		Owner: Neutral
-	Actor41: sbag
-		Location: 16,16
-		Owner: Neutral
-	Actor42: sbag
-		Location: 15,16
-		Owner: Neutral
-	Actor43: sbag
-		Location: 14,16
-		Owner: Neutral
-	Actor44: sbag
-		Location: 13,16
-		Owner: Neutral
-	Actor45: t18
-		Location: 29,23
-		Owner: Neutral
-	Actor46: t08
-		Location: 43,17
-		Owner: Neutral
-	Actor47: t08
-		Location: 40,17
-		Owner: Neutral
-	Actor48: t18
-		Location: 42,18
-		Owner: Neutral
-	Actor49: t18
-		Location: 37,17
-		Owner: Neutral
-	Actor50: t18
-		Location: 25,42
-		Owner: Neutral
-	Actor51: t18
-		Location: 16,40
-		Owner: Neutral
-	Actor52: t08
-		Location: 39,37
-		Owner: Neutral
-	Actor53: t08
-		Location: 22,35
-		Owner: Neutral
-	Actor54: t08
-		Location: 15,38
-		Owner: Neutral
-	Actor55: t18
-		Location: 38,31
-		Owner: Neutral
-	Actor56: pyle
-		Location: 25,20
+	Actor117: e1
+		Location: 41,21
 		Owner: GDI
-	Actor57: fact
-		Location: 27,20
-		Owner: GDI
-	Actor58: silo
-		Location: 23,17
-		Owner: GDI
-	Actor59: silo
-		Location: 23,19
-		Owner: GDI
-	Actor60: proc
-		Location: 20,17
-		Owner: GDI
-	Actor61: nuke
-		Location: 25,17
-		Owner: GDI
-	Actor62: nuke
-		Location: 27,17
-		Owner: GDI
-	Actor63: gtwr
-		Location: 28,24
-		Owner: GDI
-	Actor64: v24
-		Location: 20,41
-		Owner: Neutral
-	Actor65: v26
-		Location: 43,18
-		Owner: Neutral
-	Actor66: v24
-		Location: 37,16
-		Owner: Neutral
-	Actor67: v20
-		Location: 13,37
-		Owner: Neutral
-	Actor68: v21
-		Location: 13,39
-		Owner: Neutral
-	Actor69: v22
-		Location: 13,41
-		Owner: Neutral
-	Actor70: v24
-		Location: 15,36
-		Owner: Neutral
-	Actor71: v25
-		Location: 17,41
-		Owner: Neutral
-	Actor72: v26
-		Location: 16,38
-		Owner: Neutral
-	Actor73: v19
-		Location: 27,42
-		Owner: GDI
-	Actor74: v19
-		Location: 29,42
-		Owner: Neutral
-	Actor75: v20
-		Location: 39,17
-		Owner: Neutral
-	Actor76: v21
-		Location: 43,16
-		Owner: Neutral
-	Actor78: v22
-		Location: 39,16
-		Owner: Neutral
-	Actor79: v26
-		Location: 37,19
-		Owner: Neutral
-	Actor82: jeep
-		Location: 21,22
-		Owner: GDI
-		Facing: 128
-	Actor83: jeep
-		Location: 20,22
-		Owner: GDI
-		Facing: 128
-	Actor84: jeep
-		Location: 18,17
-		Owner: GDI
-		Facing: 128
-	Actor89: jeep
-		Location: 29,34
-		Owner: GDI
-		Facing: 96
-	Actor95: e1
-		Location: 33,20
-		Owner: GDI
-		Facing: 128
-		SubCell: 2
-	Actor96: e1
-		Location: 34,19
-		Owner: GDI
-		Facing: 128
-		SubCell: 3
-	Actor99: e1
-		Location: 14,44
-		Owner: GDI
-		SubCell: 1
-	Actor100: e1
-		Location: 33,31
-		Owner: GDI
-		Facing: 96
-		SubCell: 4
-	Actor101: e1
-		Location: 34,23
-		Owner: GDI
-		Facing: 96
-		SubCell: 2
-	Actor102: c1
-		Location: 19,40
-		Owner: Neutral
-		Facing: 96
-		SubCell: 1
-	Actor103: c3
-		Location: 19,39
-		Owner: Neutral
-		Facing: 96
-		SubCell: 3
-	Actor104: c5
-		Location: 15,42
-		Owner: Neutral
-		Facing: 32
-		SubCell: 2
-	Actor105: c6
-		Location: 14,37
-		Owner: Neutral
-		Health: 0.5976563
-		Facing: 96
-		SubCell: 1
-	Actor106: c7
-		Location: 15,41
-		Owner: Neutral
-		Facing: 224
+		Health: 1
+		Facing: 192
 		SubCell: 0
-	Actor108: e1
-		Location: 34,31
+	Actor118: e1
+		Location: 48,21
 		Owner: GDI
-		Facing: 96
-		SubCell: 3
-	Actor109: e1
-		Location: 34,25
-		Owner: GDI
-		Facing: 160
-		SubCell: 2
-	Actor111: e1
-		Location: 39,31
-		Owner: GDI
-		SubCell: 3
-	Actor112: e1
-		Location: 40,37
-		Owner: GDI
-		Facing: 96
-		SubCell: 0
-	Actor116: e2
-		Location: 34,22
-		Owner: GDI
-		Facing: 96
-		SubCell: 3
-	Actor117: e2
-		Location: 34,23
-		Owner: GDI
-		Facing: 160
-		SubCell: 4
-	Actor118: e2
-		Location: 42,18
-		Owner: GDI
-		Facing: 128
+		Health: 1
+		Facing: 192
 		SubCell: 4
 	Actor119: e2
-		Location: 33,19
+		Location: 27,25
 		Owner: GDI
+		Health: 1
 		Facing: 128
 		SubCell: 0
+	Actor120: e2
+		Location: 36,30
+		Owner: GDI
+		Health: 1
+		Facing: 64
+		SubCell: 4
+	Actor121: e2
+		Location: 41,39
+		Owner: GDI
+		Health: 1
+		Facing: 64
+		SubCell: 1
+	Actor122: e2
+		Location: 42,49
+		Owner: GDI
+		Health: 1
+		Facing: 32
+		SubCell: 0
+	Actor123: e2
+		Location: 43,26
+		Owner: GDI
+		Health: 1
+		Facing: 128
+		SubCell: 1
+	Actor111: e1
+		Location: 34,31
+		Owner: GDI
+		Health: 1
+		Facing: 96
+		SubCell: 4
+	Actor106: e1
+		Location: 40,22
+		Owner: GDI
+		Health: 1
+		Facing: 128
+		SubCell: 2
+	Actor107: e1
+		Location: 40,21
+		Owner: GDI
+		Health: 1
+		Facing: 0
+		SubCell: 0
+	Actor108: e1
+		Location: 36,33
+		Owner: GDI
+		Health: 1
+		Facing: 0
+		SubCell: 0
+	Actor109: e1
+		Location: 34,24
+		Owner: GDI
+		Health: 1
+		Facing: 96
+		SubCell: 3
+	Actor86: e1
+		Location: 51,21
+		Owner: GDI
+		Health: 1
+		Facing: 160
+		SubCell: 0
+	Actor87: e1
+		Location: 16,39
+		Owner: GDI
+		Health: 1
+		Facing: 0
+		SubCell: 0
+	Actor88: e1
+		Location: 20,28
+		Owner: GDI
+		Health: 1
+		Facing: 128
+		SubCell: 2
+	Actor89: e1
+		Location: 19,21
+		Owner: GDI
+		Health: 1
+		Facing: 128
+		SubCell: 1
+	Actor90: e1
+		Location: 30,43
+		Owner: GDI
+		Health: 1
+		Facing: 96
+		SubCell: 1
+	Actor91: e1
+		Location: 30,43
+		Owner: GDI
+		Health: 1
+		Facing: 96
+		SubCell: 4
+	Actor92: e1
+		Location: 34,32
+		Owner: GDI
+		Health: 1
+		Facing: 128
+		SubCell: 4
+	Actor93: e1
+		Location: 23,35
+		Owner: GDI
+		Health: 1
+		Facing: 0
+		SubCell: 0
+	Actor94: e1
+		Location: 17,32
+		Owner: GDI
+		Health: 1
+		Facing: 128
+		SubCell: 1
+	Actor95: e1
+		Location: 24,43
+		Owner: GDI
+		Health: 1
+		Facing: 96
+		SubCell: 0
+	Actor96: e1
+		Location: 15,37
+		Owner: GDI
+		Health: 1
+		Facing: 64
+		SubCell: 1
+	Actor97: e1
+		Location: 24,30
+		Owner: GDI
+		Health: 1
+		Facing: 64
+		SubCell: 3
+	Actor98: e1
+		Location: 35,27
+		Owner: GDI
+		Health: 1
+		Facing: 0
+		SubCell: 2
+	Actor82: e1
+		Location: 25,43
+		Owner: GDI
+		Health: 1
+		Facing: 96
+		SubCell: 0
+	Actor0: sbag
+		Location: 30,22
+		Owner: Neutral
+	Actor1: sbag
+		Location: 29,22
+		Owner: Neutral
+	Actor2: sbag
+		Location: 28,22
+		Owner: Neutral
+	Actor3: sbag
+		Location: 30,21
+		Owner: Neutral
+	Actor4: sbag
+		Location: 17,21
+		Owner: Neutral
+	Actor5: sbag
+		Location: 16,21
+		Owner: Neutral
+	Actor6: sbag
+		Location: 14,21
+		Owner: Neutral
+	Actor7: sbag
+		Location: 13,21
+		Owner: Neutral
+	Actor8: sbag
+		Location: 30,20
+		Owner: Neutral
+	Actor9: sbag
+		Location: 17,20
+		Owner: Neutral
+	Actor10: sbag
+		Location: 13,20
+		Owner: Neutral
+	Actor11: sbag
+		Location: 30,19
+		Owner: Neutral
+	Actor12: sbag
+		Location: 17,19
+		Owner: Neutral
+	Actor13: sbag
+		Location: 13,19
+		Owner: Neutral
+	Actor14: sbag
+		Location: 30,18
+		Owner: Neutral
+	Actor15: sbag
+		Location: 17,18
+		Owner: Neutral
+	Actor16: sbag
+		Location: 13,18
+		Owner: Neutral
+	Actor17: sbag
+		Location: 30,17
+		Owner: Neutral
+	Actor18: sbag
+		Location: 17,17
+		Owner: Neutral
+	Actor19: sbag
+		Location: 13,17
+		Owner: Neutral
+	Actor20: sbag
+		Location: 30,16
+		Owner: Neutral
+	Actor21: sbag
+		Location: 29,16
+		Owner: Neutral
+	Actor22: sbag
+		Location: 28,16
+		Owner: Neutral
+	Actor23: sbag
+		Location: 27,16
+		Owner: Neutral
+	Actor24: sbag
+		Location: 26,16
+		Owner: Neutral
+	Actor25: sbag
+		Location: 25,16
+		Owner: Neutral
+	Actor26: sbag
+		Location: 24,16
+		Owner: Neutral
+	Actor27: sbag
+		Location: 23,16
+		Owner: Neutral
+	Actor28: sbag
+		Location: 22,16
+		Owner: Neutral
+	Actor29: sbag
+		Location: 21,16
+		Owner: Neutral
+	Actor30: sbag
+		Location: 20,16
+		Owner: Neutral
+	Actor31: sbag
+		Location: 19,16
+		Owner: Neutral
+	Actor32: sbag
+		Location: 18,16
+		Owner: Neutral
+	Actor33: sbag
+		Location: 17,16
+		Owner: Neutral
+	Actor34: sbag
+		Location: 16,16
+		Owner: Neutral
+	Actor35: sbag
+		Location: 15,16
+		Owner: Neutral
+	Actor36: sbag
+		Location: 14,16
+		Owner: Neutral
+	Actor37: sbag
+		Location: 13,16
+		Owner: Neutral
+	Actor38: t08
+		Location: 35,39
+		Owner: Neutral
+	Actor39: t18
+		Location: 33,38
+		Owner: Neutral
+	Actor40: t08
+		Location: 39,27
+		Owner: Neutral
+	Actor41: t08
+		Location: 47,24
+		Owner: Neutral
+	Actor42: t18
+		Location: 45,24
+		Owner: Neutral
+	Actor43: t08
+		Location: 35,33
+		Owner: Neutral
+	Actor44: t08
+		Location: 39,36
+		Owner: Neutral
+	Actor45: t08
+		Location: 39,21
+		Owner: Neutral
+	Actor46: t08
+		Location: 42,21
+		Owner: Neutral
+	Actor47: t08
+		Location: 27,31
+		Owner: Neutral
+	Actor48: t08
+		Location: 15,39
+		Owner: Neutral
+	Actor49: t18
+		Location: 15,42
+		Owner: Neutral
+	Actor50: t18
+		Location: 13,37
+		Owner: Neutral
+	Actor51: silo
+		Location: 23,17
+		Owner: GDI
+		Health: 1
+		Facing: 0
+	Actor52: silo
+		Location: 18,17
+		Owner: GDI
+		Health: 1
+		Facing: 0
+	Actor53: pyle
+		Location: 23,19
+		Owner: GDI
+		Health: 1
+		Facing: 0
+	Actor54: nuke
+		Location: 25,17
+		Owner: GDI
+		Health: 1
+		Facing: 0
+	Actor55: fact
+		Location: 27,17
+		Owner: GDI
+		Health: 1
+		Facing: 0
+	Actor56: gtwr
+		Location: 18,23
+		Owner: GDI
+		Health: 1
+		Facing: 0
+	Actor57: v20
+		Location: 13,38
+		Owner: Neutral
+		Health: 1
+		Facing: 0
+	Actor58: v21
+		Location: 13,40
+		Owner: Neutral
+		Health: 1
+		Facing: 0
+	Actor59: v22
+		Location: 18,40
+		Owner: Neutral
+		Health: 1
+		Facing: 0
+	Actor60: v24
+		Location: 15,37
+		Owner: Neutral
+		Health: 1
+		Facing: 0
+	Actor61: v25
+		Location: 17,41
+		Owner: Neutral
+		Health: 1
+		Facing: 0
+	Actor62: v19
+		Location: 28,41
+		Owner: Neutral
+		Health: 1
+		Facing: 0
+	Actor63: proc
+		Location: 20,17
+		Owner: GDI
+		Health: 1
+		Facing: 0
 	TechCenter: miss
 		Location: 14,17
 		Owner: GDI
-	TibFieldHumvee01: jeep
-		Location: 52,19
-		Owner: GDI
-	VillageGuard01: e1
-		Location: 38,22
-		Owner: GDI
-		Facing: 96
-		SubCell: 2
-	VillageGuard02: e1
-		Location: 38,22
-		Owner: GDI
-		Facing: 96
-		SubCell: 3
-	VillageGuard03: e1
-		Location: 39,22
-		Owner: GDI
-		Facing: 160
-		SubCell: 3
-	PlayerBase: waypoint
-		Location: 50,38
+		Health: 1
+		Facing: 0
+	Actor65: v19
+		Location: 29,41
 		Owner: Neutral
+		Health: 1
+		Facing: 0
+	Actor67: v19
+		Location: 30,42
+		Owner: Neutral
+		Health: 1
+		Facing: 0
+	Actor68: v19
+		Location: 29,42
+		Owner: Neutral
+		Health: 1
+		Facing: 0
+	McvEntry: waypoint
+		Location: 54,38
+		Owner: Neutral
+	McvDeploy: waypoint
+		Location: 52,36
+		Owner: Neutral
+	Actor72: jeep
+		Location: 28,21
+		Owner: GDI
+		Health: 1
+		Facing: 128
+	Actor73: jeep
+		Location: 35,30
+		Owner: GDI
+		Health: 1
+		Facing: 96
+	Actor74: jeep
+		Location: 32,36
+		Owner: GDI
+		Health: 1
+		Facing: 96
+	Actor75: jeep
+		Location: 29,21
+		Owner: GDI
+		Health: 1
+		Facing: 128
 	NodEntry: waypoint
 		Location: 54,40
 		Owner: Neutral
-	NodRallyPoint: waypoint
-		Location: 45,42
+	NodRallypoint: waypoint
+		Location: 50,42
 		Owner: Neutral
-	AttackWaveSpawnA: waypoint
-		Location: 45,16
+	Actor77: jeep
+		Location: 47,21
+		Owner: GDI
+		Health: 1
+		Facing: 160
+	Actor101: c1
+		Location: 16,36
 		Owner: Neutral
-	AttackWaveSpawnB: waypoint
-		Location: 44,48
+		Health: 1
+		Facing: 192
+		SubCell: 4
+	Actor102: c3
+		Location: 17,40
 		Owner: Neutral
-	AttackWaveSpawnC: waypoint
-		Location: 33,16
+		Health: 1
+		Facing: 224
+		SubCell: 2
+	Actor103: c5
+		Location: 16,40
 		Owner: Neutral
-	CellTrig: waypoint
-		Location: 32,47
+		Health: 1
+		Facing: 224
+		SubCell: 1
+	Actor104: c6
+		Location: 14,36
 		Owner: Neutral
-
+		Health: 0.5976563
+		Facing: 0
+		SubCell: 4
+	Actor105: c7
+		Location: 18,38
+		Owner: Neutral
+		Health: 1
+		Facing: 224
+		SubCell: 4
+	PlayerBase: waypoint
+		Location: 50,39
+		Owner: Neutral
+	WP9: waypoint
+		Location: 48,32
+		Owner: Neutral
+	WP8: waypoint
+		Location: 41,23
+		Owner: Neutral
+	WP7: waypoint
+		Location: 44,30
+		Owner: Neutral
+	WP6: waypoint
+		Location: 41,38
+		Owner: Neutral
+	WP5: waypoint
+		Location: 30,36
+		Owner: Neutral
+	WP4: waypoint
+		Location: 48,47
+		Owner: Neutral
+	WP3: waypoint
+		Location: 31,47
+		Owner: Neutral
+	WP2: waypoint
+		Location: 24,44
+		Owner: Neutral
+	WP1: waypoint
+		Location: 25,32
+		Owner: Neutral
+	WP0: waypoint
+		Location: 24,22
+		Owner: Neutral
+	CellTrigA: waypoint
+		Location: 43,28
+		Owner: Neutral
+	CellTrigB: waypoint
+		Location: 37,49
+		Owner: Neutral
+	GDIBarracksSpawn: waypoint
+		Location: 23,20
+		Owner: Neutral
+	Actor64: v19
+		Location: 30,41
+		Owner: Neutral
+		Health: 1
+	Actor66: harv
+		Location: 21,47
+		Owner: GDI
+		Health: 0.5976563
+		Facing: 128
 Smudges:
 
 Rules:
@@ -470,18 +595,24 @@ Rules:
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	^Vehicle:
+		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Tank:
+		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Helicopter:
+		SpawnViceroid:
+			Probability: 0
+		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Infantry:
+		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
@@ -505,6 +636,8 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
+	HARV:
+		-MustBeDestroyed:
 	HQ:
 		AirstrikePower:
 			Prerequisites: ~disabled
