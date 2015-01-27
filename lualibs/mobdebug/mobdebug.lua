@@ -1,6 +1,6 @@
 --
 -- MobDebug -- Lua remote debugger
--- Copyright 2011-14 Paul Kulchenko
+-- Copyright 2011-15 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
@@ -19,7 +19,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.611,
+  _VERSION = 0.613,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -62,7 +62,7 @@ local cororesume = ngx and coroutine._resume or coroutine.resume
 local coroyield = ngx and coroutine._yield or coroutine.yield
 local corostatus = ngx and coroutine._status or coroutine.status
 
-if not setfenv then -- Lua 5.2
+if not setfenv then -- Lua 5.2+
   -- based on http://lua-users.org/lists/lua-l/2010-06/msg00314.html
   -- this assumes f is a function
   local function findenv(f)
@@ -127,7 +127,7 @@ end
 local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
 local serpent = (function() ---- include Serpent module for serialization
-local n, v = "serpent", 0.272 -- (C) 2012-13 Paul Kulchenko; MIT License
+local n, v = "serpent", 0.28 -- (C) 2012-15 Paul Kulchenko; MIT License
 local c, d = "Paul Kulchenko", "Lua serializer and pretty printer"
 local snum = {[tostring(1/0)]='1/0 --[[math.huge]]',[tostring(-1/0)]='-1/0 --[[-math.huge]]',[tostring(0/0)]='0/0'}
 local badtype = {thread = true, userdata = true, cdata = true}
@@ -147,8 +147,8 @@ local function s(t, opts)
   local seen, sref, syms, symn = {}, {'local '..iname..'={}'}, {}, 0
   local function gensym(val) return '_'..(tostring(tostring(val)):gsub("[^%w]",""):gsub("(%d%w+)",
     -- tostring(val) is needed because __tostring may return a non-string value
-    function(s) if not syms[s] then symn = symn+1; syms[s] = symn end return syms[s] end)) end
-  local function safestr(s) return type(s) == "number" and (huge and snum[tostring(s)] or s)
+    function(s) if not syms[s] then symn = symn+1; syms[s] = symn end return tostring(syms[s]) end)) end
+  local function safestr(s) return type(s) == "number" and tostring(huge and snum[tostring(s)] or s)
     or type(s) ~= "string" and tostring(s) -- escape NEWLINE/010 and EOF/026
     or ("%q"):format(s):gsub("\010","n"):gsub("\026","\\026") end
   local function comment(s,l) return comm and (l or 0) < comm and ' --[['..tostring(s)..']]' or '' end
@@ -161,7 +161,7 @@ local function s(t, opts)
     return (path or '')..(plain and path and '.' or '')..safe, safe end
   local alphanumsort = type(opts.sortkeys) == 'function' and opts.sortkeys or function(k, o, n) -- k=keys, o=originaltable, n=padding
     local maxn, to = tonumber(n) or 12, {number = 'a', string = 'b'}
-    local function padnum(d) return ("%0"..maxn.."d"):format(d) end
+    local function padnum(d) return ("%0"..tostring(maxn).."d"):format(tonumber(d)) end
     table.sort(k, function(a,b)
       -- sort numeric keys first: k[key] is not nil for numerical keys
       return (k[a] ~= nil and 0 or to[type(a)] or 'z')..(tostring(a):gsub("%d+",padnum))
@@ -203,8 +203,8 @@ local function s(t, opts)
             local sname = safename(iname, gensym(key)) -- iname is table for local variables
             sref[#sref] = val2str(key,sname,indent,sname,iname,true) end
           sref[#sref+1] = 'placeholder'
-          local path = seen[t]..'['..(seen[key] or globals[key] or gensym(key))..']'
-          sref[#sref] = path..space..'='..space..(seen[value] or val2str(value,nil,indent,path))
+          local path = seen[t]..'['..tostring(seen[key] or globals[key] or gensym(key))..']'
+          sref[#sref] = path..space..'='..space..tostring(seen[value] or val2str(value,nil,indent,path))
         else
           out[#out+1] = val2str(value,key,indent,insref,seen[t],plainindex,level+1)
         end
@@ -233,20 +233,16 @@ local function s(t, opts)
 end
 
 local function deserialize(data, opts)
-  local f, res = (loadstring or load)('return '..data)
-  if not f then f, res = (loadstring or load)(data) end
+  local env = (opts and opts.safe == false) and G
+    or setmetatable({}, {
+        __index = function(t,k) return t end,
+        __call = function(t,...) error("cannot call functions") end
+      })
+  local f, res = (loadstring or load)('return '..data, nil, nil, env)
+  if not f then f, res = (loadstring or load)(data, nil, nil, env) end
   if not f then return f, res end
-  if opts and opts.safe == false then return pcall(f) end
-
-  local count, thread = 0, coroutine.running()
-  local h, m, c = debug.gethook(thread)
-  debug.sethook(function (e, l) count = count + 1
-    if count >= 3 then error("cannot call functions") end
-  end, "c")
-  local res = {pcall(f)}
-  count = 0 -- set again, otherwise it's tripped on the next sethook
-  debug.sethook(thread, h, m, c)
-  return (table.unpack or unpack)(res)
+  if setfenv then setfenv(f, env) end
+  return pcall(f)
 end
 
 local function merge(a, b) if b then for k,v in pairs(b) do a[k] = v end end; return a; end
@@ -327,6 +323,7 @@ end
 
 local function remove_breakpoint(file, line)
   if file == '-' and lastfile then file = lastfile
+  elseif file == '*' and line == 0 then breakpoints = {}
   elseif iscasepreserving then file = string.lower(file) end
   if breakpoints[line] then breakpoints[line][file] = nil end
 end
@@ -768,12 +765,12 @@ local function debugger_loop(sev, svars, sfile, sline)
           status, res = stringify_results(pcall(func))
         end
         if status then
-          server:send("200 OK " .. #res .. "\n")
+          server:send("200 OK " .. tostring(#res) .. "\n")
           server:send(res)
         else
           -- fix error if not set (for example, when loadstring is not present)
           if not res then res = "Unknown error" end
-          server:send("401 Error in Expression " .. #res .. "\n")
+          server:send("401 Error in Expression " .. tostring(#res) .. "\n")
           server:send(res)
         end
       else
@@ -786,7 +783,7 @@ local function debugger_loop(sev, svars, sfile, sline)
       if abort == nil then -- no LOAD/RELOAD allowed inside start()
         if size > 0 then server:receive(size) end
         if sfile and sline then
-          server:send("201 Started " .. sfile .. " " .. sline .. "\n")
+          server:send("201 Started " .. sfile .. " " .. tostring(sline) .. "\n")
         else
           server:send("200 OK 0\n")
         end
@@ -810,7 +807,7 @@ local function debugger_loop(sev, svars, sfile, sline)
               debugee = func
               coroyield("load")
             else
-              server:send("401 Error in Expression " .. #res .. "\n")
+              server:send("401 Error in Expression " .. tostring(#res) .. "\n")
               server:send(res)
             end
           else
@@ -826,9 +823,9 @@ local function debugger_loop(sev, svars, sfile, sline)
           watchescnt = watchescnt + 1
           local newidx = #watches + 1
           watches[newidx] = func
-          server:send("200 OK " .. newidx .. "\n")
+          server:send("200 OK " .. tostring(newidx) .. "\n")
         else
-          server:send("401 Error in Expression " .. #res .. "\n")
+          server:send("401 Error in Expression " .. tostring(#res) .. "\n")
           server:send(res)
         end
       else
@@ -850,13 +847,13 @@ local function debugger_loop(sev, svars, sfile, sline)
       local ev, vars, file, line, idx_watch = coroyield()
       eval_env = vars
       if ev == events.BREAK then
-        server:send("202 Paused " .. file .. " " .. line .. "\n")
+        server:send("202 Paused " .. file .. " " .. tostring(line) .. "\n")
       elseif ev == events.WATCH then
-        server:send("203 Paused " .. file .. " " .. line .. " " .. idx_watch .. "\n")
+        server:send("203 Paused " .. file .. " " .. tostring(line) .. " " .. tostring(idx_watch) .. "\n")
       elseif ev == events.RESTART then
         -- nothing to do
       else
-        server:send("401 Error in Execution " .. #file .. "\n")
+        server:send("401 Error in Execution " .. tostring(#file) .. "\n")
         server:send(file)
       end
     elseif command == "STEP" then
@@ -866,13 +863,13 @@ local function debugger_loop(sev, svars, sfile, sline)
       local ev, vars, file, line, idx_watch = coroyield()
       eval_env = vars
       if ev == events.BREAK then
-        server:send("202 Paused " .. file .. " " .. line .. "\n")
+        server:send("202 Paused " .. file .. " " .. tostring(line) .. "\n")
       elseif ev == events.WATCH then
-        server:send("203 Paused " .. file .. " " .. line .. " " .. idx_watch .. "\n")
+        server:send("203 Paused " .. file .. " " .. tostring(line) .. " " .. tostring(idx_watch) .. "\n")
       elseif ev == events.RESTART then
         -- nothing to do
       else
-        server:send("401 Error in Execution " .. #file .. "\n")
+        server:send("401 Error in Execution " .. tostring(#file) .. "\n")
         server:send(file)
       end
     elseif command == "OVER" or command == "OUT" then
@@ -887,13 +884,13 @@ local function debugger_loop(sev, svars, sfile, sline)
       local ev, vars, file, line, idx_watch = coroyield()
       eval_env = vars
       if ev == events.BREAK then
-        server:send("202 Paused " .. file .. " " .. line .. "\n")
+        server:send("202 Paused " .. file .. " " .. tostring(line) .. "\n")
       elseif ev == events.WATCH then
-        server:send("203 Paused " .. file .. " " .. line .. " " .. idx_watch .. "\n")
+        server:send("203 Paused " .. file .. " " .. tostring(line) .. " " .. tostring(idx_watch) .. "\n")
       elseif ev == events.RESTART then
         -- nothing to do
       else
-        server:send("401 Error in Execution " .. #file .. "\n")
+        server:send("401 Error in Execution " .. tostring(#file) .. "\n")
         server:send(file)
       end
     elseif command == "BASEDIR" then
@@ -922,14 +919,14 @@ local function debugger_loop(sev, svars, sfile, sline)
         ev, vars = coroyield("stack")
       end
       if ev and ev ~= events.STACK then
-        server:send("401 Error in Execution " .. #vars .. "\n")
+        server:send("401 Error in Execution " .. tostring(#vars) .. "\n")
         server:send(vars)
       else
         local ok, res = pcall(mobdebug.dump, vars, {nocode = true, sparse = false})
         if ok then
-          server:send("200 OK " .. res .. "\n")
+          server:send("200 OK " .. tostring(res) .. "\n")
         else
-          server:send("401 Error in Execution " .. #res .. "\n")
+          server:send("401 Error in Execution " .. tostring(#res) .. "\n")
           server:send(res)
         end
       end
@@ -949,7 +946,7 @@ local function debugger_loop(sev, svars, sfile, sline)
             for n = 1, #tbl do
               tbl[n] = select(2, pcall(mobdebug.line, tbl[n], {nocode = true, comment = false})) end
             local file = table.concat(tbl, "\t").."\n"
-            server:send("204 Output " .. stream .. " " .. #file .. "\n" .. file)
+            server:send("204 Output " .. stream .. " " .. tostring(#file) .. "\n" .. file)
           end
         end)
         if not default then genv.print() end -- "fake" print to start printing loop
@@ -971,7 +968,7 @@ local function connect(controller_host, controller_port)
   if not sock then return nil, err end
 
   if sock.settimeout then sock:settimeout(mobdebug.connecttimeout) end
-  local res, err = sock:connect(controller_host, controller_port)
+  local res, err = sock:connect(controller_host, tostring(controller_port))
   if sock.settimeout then sock:settimeout() end
 
   if not res then return nil, err end
@@ -1050,7 +1047,7 @@ local function controller(controller_host, controller_port, scratchpad)
   if server then
     local function report(trace, err)
       local msg = err .. "\n" .. trace
-      server:send("401 Error in Execution " .. #msg .. "\n")
+      server:send("401 Error in Execution " .. tostring(#msg) .. "\n")
       server:send(msg)
       return err
     end
@@ -1271,15 +1268,12 @@ local function handle(params, client, options)
       print("Invalid command")
     end
   elseif command == "delallb" then
-    for line, breaks in pairs(breakpoints) do
-      for file, _ in pairs(breaks) do
-        client:send("DELB " .. file .. " " .. line .. "\n")
-        if client:receive() == "200 OK" then
-          remove_breakpoint(file, line)
-        else
-          print("Error: breakpoint at file " .. file .. " line " .. line .. " not removed")
-        end
-      end
+    local file, line = "*", 0
+    client:send("DELB " .. file .. " " .. tostring(line) .. "\n")
+    if client:receive() == "200 OK" then
+      remove_breakpoint(file, line)
+    else
+      print("Error: all breakpoints not removed")
     end
   elseif command == "delw" then
     local _, _, index = string.find(params, "^[a-z]+%s+(%d+)%s*$")
@@ -1320,7 +1314,7 @@ local function handle(params, client, options)
         if not file then
            _, _, file, lines = string.find(exp, "^(%S+)%s+(.+)")
         end
-        client:send("LOAD " .. #lines .. " " .. file .. "\n")
+        client:send("LOAD " .. tostring(#lines) .. " " .. file .. "\n")
         client:send(lines)
       else
         local file = io.open(exp, "r")
@@ -1338,7 +1332,7 @@ local function handle(params, client, options)
 
         local file = string.gsub(exp, "\\", "/") -- convert slash
         file = removebasedir(file, basedir)
-        client:send("LOAD " .. #lines .. " " .. file .. "\n")
+        client:send("LOAD " .. tostring(#lines) .. " " .. file .. "\n")
         if #lines > 0 then client:send(lines) end
       end
       while true do
