@@ -7,7 +7,7 @@
 		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters.
 	Buildable:
 		Queue: Aircraft
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 120
 	Health:
 		HP: 250
 	Armor:
