@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class GainsExperience : ISync
+	public class GainsExperience : ISync, IResolveOrder
 	{
 		readonly Actor self;
 		readonly GainsExperienceInfo info;
@@ -117,6 +117,20 @@ namespace OpenRA.Mods.Common.Traits
 							w.Add(new Rank(self, info.ChevronPalette));
 					});
 				}
+			}
+		}
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (!self.World.AllowDevCommands)
+				return;
+
+			if (order.OrderString == "DevLevelUp")
+			{
+				if ((int)order.ExtraData > 0)
+					GiveLevels((int)order.ExtraData);
+				else
+					GiveLevels(1);
 			}
 		}
 	}
