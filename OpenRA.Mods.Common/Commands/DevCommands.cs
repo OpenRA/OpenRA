@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Commands
 
 				case "crash":
 					throw new DevException();
-				
+
 				case "levelup":
 					var level = 0;
 					int.TryParse(arg, out level);
