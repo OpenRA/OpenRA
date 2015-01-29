@@ -1,0 +1,393 @@
+Rockets:
+	ReloadDelay: 50
+	Range: 6c0
+	MinRange: 0c512
+	Report: BAZOOK1.AUD
+	ValidTargets: Ground, Air
+	Projectile: Missile
+		Arm: 0
+		High: yes
+		Inaccuracy: 128
+		Image: DRAGON
+		ROT: 15
+		Trail: smokey
+		ContrailLength: 8
+		Speed: 298
+		RangeLimit: 20
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 30
+		DeathType: 4
+		ValidTargets: Ground, Air
+		Versus:
+			None: 50
+			Wood: 85
+			Light: 100
+			Heavy: 100
+			Concrete: 25
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+
+BikeRockets:
+	ReloadDelay: 50
+	Range: 6c0
+	Report: BAZOOK1.AUD
+	ValidTargets: Ground, Air
+	Burst: 2
+	BurstDelay: 10
+	Projectile: Missile
+		Arm: 0
+		High: yes
+		Inaccuracy: 128
+		Image: DRAGON
+		ROT: 10
+		Trail: smokey
+		ContrailLength: 8
+		Speed: 213
+		RangeLimit: 30
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 30
+		DeathType: 4
+		ValidTargets: Ground, Air
+		Versus:
+			None: 25
+			Wood: 75
+			Light: 100
+			Heavy: 100
+			Concrete: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+
+OrcaAGMissiles:
+	ReloadDelay: 12
+	Burst: 2
+	BurstDelay: 12
+	Range: 5c0
+	Report: BAZOOK1.AUD
+	ValidTargets: Ground
+	Projectile: Missile
+		Arm: 0
+		High: yes
+		Inaccuracy: 128
+		Image: DRAGON
+		ROT: 20
+		Trail: smokey
+		ContrailLength: 8
+		Speed: 298
+		RangeLimit: 30
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 25
+		DeathType: 4
+		ValidTargets: Ground
+		Versus:
+			None: 50
+			Wood: 100
+			Light: 100
+			Heavy: 75
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+
+OrcaAAMissiles:
+	ReloadDelay: 12
+	Burst: 2
+	BurstDelay: 12
+	Range: 5c0
+	Report: BAZOOK1.AUD
+	ValidTargets: Air
+	Projectile: Missile
+		Arm: 0
+		High: yes
+		Inaccuracy: 128
+		Image: DRAGON
+		ROT: 20
+		Trail: smokey
+		ContrailLength: 8
+		Speed: 298
+		RangeLimit: 30
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 25
+		DeathType: 4
+		ValidTargets: Air
+		Versus:
+			Light: 75
+			Heavy: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+
+MammothMissiles:
+	ReloadDelay: 45
+	Range: 5c0
+	Report: ROCKET1.AUD
+	ValidTargets: Ground, Air
+	Burst: 2
+	BurstDelay: 15
+	Projectile: Missile
+		Arm: 0
+		High: yes
+		Inaccuracy: 128
+		Image: DRAGON
+		ROT: 20
+		Trail: smokey
+		ContrailLength: 8
+		Speed: 341
+		RangeLimit: 35
+	Warhead@1Dam: SpreadDamage
+		Spread: 298
+		Damage: 45
+		DeathType: 4
+		ValidTargets: Ground, Air
+		Versus:
+			None: 50
+			Wood: 75
+			Light: 100
+			Heavy: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_poof
+		ImpactSound: xplos.aud
+		InvalidImpactTypes: Air, AirHit
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_building
+		ImpactSound: xplos.aud
+		ValidImpactTypes: Air, AirHit
+
+227mm:
+	ReloadDelay: 140
+	Range: 12c0
+	MinRange: 3c0
+	Burst: 4
+	BurstDelay: 4
+	Report: ROCKET1.AUD
+	ValidTargets: Ground
+	Projectile: Bullet
+		Arm: 5
+		High: yes
+		Shadow: true
+		Inaccuracy: 853
+		Angle: 62
+		Image: DRAGON
+		ROT: 2
+		ContrailLength: 10
+		Trail: smokey
+		Speed: 341
+	Warhead@1Dam: SpreadDamage
+		Spread: 683
+		Damage: 25
+		DeathType: 4
+		ValidTargets: Ground
+		Versus:
+			None: 35
+			Wood: 60
+			Light: 100
+			Heavy: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: med_frag
+		ImpactSound: xplos.aud
+
+227mm.stnk:
+	ReloadDelay: 70
+	Range: 7c0
+	Report: ROCKET1.AUD
+	Burst: 2
+	BurstDelay: 10
+	ValidTargets: Ground, Air
+	Projectile: Missile
+		Arm: 0
+		High: yes
+		Inaccuracy: 213
+		Image: DRAGON
+		ROT: 10
+		Trail: smokey
+		ContrailLength: 8
+		Speed: 213
+		RangeLimit: 40
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 60
+		DeathType: 4
+		ValidTargets: Ground, Air
+		Versus:
+			None: 25
+			Wood: 75
+			Light: 100
+			Heavy: 90
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+
+BoatMissile:
+	ReloadDelay: 35
+	Range: 8c0
+	Burst: 2
+	BurstDelay: 7
+	Report: ROCKET2.AUD
+	Projectile: Missile
+		Arm: 0
+		High: yes
+		Inaccuracy: 213
+		Image: DRAGON
+		ROT: 10
+		Trail: smokey
+		ContrailLength: 8
+		Speed: 170
+		RangeLimit: 60
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 60
+		DeathType: 3
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_poof
+		ImpactSound: xplos.aud
+		InvalidImpactTypes: Air, AirHit
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_building
+		ImpactSound: xplos.aud
+		ValidImpactTypes: Air, AirHit
+
+TowerMissle:
+	ReloadDelay: 15
+	Range: 7c0
+	Report: ROCKET2.AUD
+	ValidTargets: Ground
+	Projectile: Missile
+		Arm: 0
+		High: yes
+		Inaccuracy: 128
+		Image: DRAGON
+		ROT: 20
+		Trail: smokey
+		ContrailLength: 8
+		Speed: 298
+		RangeLimit: 40
+	Warhead@1Dam: SpreadDamage
+		Spread: 683
+		Damage: 25
+		DeathType: 3
+		ValidTargets: Ground
+		Versus:
+			None: 50
+			Wood: 25
+			Light: 100
+			Heavy: 100
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: med_frag
+		ImpactSound: xplos.aud
+
+SAMMissile:
+	ReloadDelay: 15
+	Range: 8c0
+	Report: ROCKET2.AUD
+	ValidTargets: Air
+	Projectile: Missile
+		Arm: 0
+		High: yes
+		Image: MISSILE
+		ROT: 20
+		Speed: 426
+		RangeLimit: 35
+		Trail: smokey
+		ContrailLength: 8
+	Warhead@1Dam: SpreadDamage
+		Spread: 682
+		ValidTargets: Air
+		Versus:
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 75
+		DeathType: 4
+		Damage: 30
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_building
+		ImpactSound: xplos.aud
+
+HonestJohn:
+	ReloadDelay: 200
+	Range: 10c0
+	Report: ROCKET1.AUD
+	Projectile: Bullet
+		Arm: 10
+		High: yes
+		Shadow: true
+		Inaccuracy: 213
+		Image: patriot
+		Trail: smokey
+		Speed: 187
+		RangeLimit: 35
+		Angle: 88
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 100
+		DeathType: 3
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_poof
+		ImpactSound: xplos.aud
+
+Patriot:
+	ReloadDelay: 25
+	Range: 9c0
+	MinRange: 1c0
+	Report: ROCKET2.AUD
+	ValidTargets: Air
+	Projectile: Missile
+		High: yes
+		Image: patriot
+		Trail: smokey
+		ContrailLength: 8
+		ROT: 20
+		Speed: 341
+		RangeLimit: 30
+		Angle: 88
+	Warhead@1Dam: SpreadDamage
+		Spread: 682
+		ValidTargets: Air
+		Versus:
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 75
+		DeathType: 4
+		Damage: 32
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: poof
+		ImpactSound: xplos.aud

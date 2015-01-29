@@ -1,0 +1,332 @@
+mcv:
+	idle:
+		Start: 0
+		Facings: 32
+	icon: mcvicnh
+		Start: 0
+
+mcv.destroyed:
+	idle: mcv
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+
+harv:
+	idle:
+		Start: 0
+		Facings: 32
+	harvest:
+		Start: 32
+		Length: 4
+		Facings: 8
+		Tick: 60
+	dock: harvdump
+		Start: 0
+		Length: 7
+	dock-loop: harvdump
+		Start: 7
+		Length: 1
+	icon: harvicnh
+		Start: 0
+
+harv.destroyed:
+	idle: harv
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+
+bggy:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+	icon: bggyicnh
+		Start: 0
+
+bggy.destroyed:
+	idle: bggy
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: bggy
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
+mtnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: *
+	icon: mtnkicnh
+		Start: 0
+
+mtnk.destroyed:
+	idle: mtnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: mtnk
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
+ltnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: *
+	icon: ltnkicnh
+		Start: 0
+
+ltnk.destroyed:
+	idle: ltnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: ltnk
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
+htnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: *
+	icon: htnkicnh
+		Start: 0
+
+htnk.destroyed:
+	idle: htnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: htnk
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
+jeep:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+	icon: jeepicnh
+		Start: 0
+
+jeep.destroyed:
+	idle: jeep
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: jeep
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
+bike:
+	idle:
+		Start: 0
+		Facings: 32
+	icon: bikeicnh
+		Start: 0
+
+bike.destroyed:
+	idle: bike
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+
+ftnk:
+	idle:
+		Start: 0
+		Facings: 32
+	muzzle0: flame-n
+		Start: 0
+		Length: *
+		Offset: 3,8
+	muzzle1: flame-nw
+		Start: 0
+		Length: *
+		Offset: 4,6
+	muzzle2: flame-w
+		Start: 0
+		Length: *
+		Offset: 7,2
+	muzzle3: flame-sw
+		Start: 0
+		Length: *
+		Offset: 3,-2
+	muzzle4: flame-s
+		Start: 0
+		Length: *
+		Offset: 1,-2
+	muzzle5: flame-se
+		Start: 0
+		Length: *
+		Offset: -3,-1
+	muzzle6: flame-e
+		Start: 0
+		Length: *
+		Offset: -6,2
+	muzzle7: flame-ne
+		Start: 0
+		Length: *
+		Offset: -5,6
+	icon: ftnkicnh
+		Start: 0
+
+ftnk.destroyed:
+	idle: ftnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+
+mhq:
+	idle:
+		Start: 0
+		Facings: 32
+	spinner:
+		Start: 32
+		Length: 32
+	icon: mhqicnh
+		Start: 0
+
+msam:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+	aim:
+		Start: 64
+		Facings: 32
+	turret-3:
+		Start: 64
+		Facings: 32
+	icon: msamicnh
+		Start: 0
+
+msam.destroyed:
+	idle: msam
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: msam
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
+mlrs:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+	turret-2:
+		Start: 64
+		Facings: 32
+	turret-3:
+		Start: 96
+		Facings: 32
+	icon: mlrsicnh
+		Start: 0
+
+mlrs.destroyed:
+	idle: mlrs
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: mlrs
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
+stnk:
+	idle:
+		Start: 0
+		Facings: 32
+	icon: stnkicnh
+		Start: 0
+
+stnk.destroyed:
+	idle: stnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+
+arty:
+	idle:
+		Start: 0
+		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: *
+	icon: artyicnh
+		Start: 0
+
+arty.destroyed:
+	idle: arty
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+
+apc:
+	idle:
+		Start: 0
+		Facings: 32
+	turret: apctur
+		Start: 0
+		Facings: 32
+	muzzle: apcmuz
+		Start: 0
+		Length: 3
+		Stride: 6
+		Facings: 8
+	close:
+		Start: 32
+		Length: 3
+	unload:
+		Start: 32
+	icon: apcicnh
+		Start: 0
+
+apc.destroyed:
+	idle: apc
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: apctur
+		Start: 0
+		Facings: 32
+		ZOffset: -512

@@ -1,0 +1,286 @@
+V20:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	LeavesHusk:
+		HuskActor: V20.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V20.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V21:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	LeavesHusk:
+		HuskActor: V21.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V21.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V22:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	LeavesHusk:
+		HuskActor: V22.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V22.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V23:
+	Inherits: ^CivBuilding
+	LeavesHusk:
+		HuskActor: V23.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V23.Husk:
+	Inherits: ^CivBuildingHusk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V24:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	LeavesHusk:
+		HuskActor: V24.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V24.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V25:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Church
+	LeavesHusk:
+		HuskActor: V25.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V25.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Church (Destroyed)
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V26:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	LeavesHusk:
+		HuskActor: V26.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V26.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V27:
+	Inherits: ^CivBuilding
+	LeavesHusk:
+		HuskActor: V27.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V27.Husk:
+	Inherits: ^CivBuildingHusk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V28:
+	Inherits: ^CivBuilding
+	LeavesHusk:
+		HuskActor: V28.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V28.Husk:
+	Inherits: ^CivBuildingHusk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V29:
+	Inherits: ^CivBuilding
+	LeavesHusk:
+		HuskActor: V29.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V29.Husk:
+	Inherits: ^CivBuildingHusk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V30:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	LeavesHusk:
+		HuskActor: V30.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V30.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V31:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	LeavesHusk:
+		HuskActor: V31.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V31.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V32:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	LeavesHusk:
+		HuskActor: V32.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V32.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V33:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	LeavesHusk:
+		HuskActor: V33.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V33.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V34:
+	Inherits: ^CivBuilding
+	LeavesHusk:
+		HuskActor: V34.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V34.Husk:
+	Inherits: ^CivBuildingHusk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V35:
+	Inherits: ^CivBuilding
+	LeavesHusk:
+		HuskActor: V35.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V35.Husk:
+	Inherits: ^CivBuildingHusk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V36:
+	Inherits: ^CivBuilding
+	LeavesHusk:
+		HuskActor: V36.Husk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V36.Husk:
+	Inherits: ^CivBuildingHusk
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V37:
+	Inherits: ^CivBuilding
+	LeavesHusk:
+		HuskActor: V37.Husk
+	Building:
+		Footprint: __xx_ ___xx
+		Dimensions: 5,2
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+
+V37.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: __xx_ ___xx
+		Dimensions: 5,2
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
+

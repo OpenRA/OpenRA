@@ -1,0 +1,83 @@
+steg:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 8
+		Facings: 8
+	shoot:
+		Start: 80
+		Length: 12
+		Facings: 8
+	die:
+		Start: 176
+		Length: 22
+	icon: stegicnh
+		Start: 0
+
+trex:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 8
+		Facings: 8
+	shoot:
+		Start: 80
+		Length: 8
+		Facings: 8
+	die:
+		Start: 144
+		Length: 40
+	icon: trexicnh
+		Start: 0
+
+tric:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 8
+		Facings: 8
+	shoot:
+		Start: 80
+		Length: 12
+		Facings: 8
+	die:
+		Start: 176
+		Length: 20
+	icon: tricicnh
+		Start: 0
+
+rapt:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 8
+		Facings: 8
+	shoot:
+		Start: 80
+		Length: 8
+		Facings: 8
+	die:
+		Start: 144
+		Length: 40
+	icon: rapticnh
+		Start: 0

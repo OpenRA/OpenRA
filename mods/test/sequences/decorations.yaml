@@ -1,0 +1,712 @@
+split2:
+	make:
+		Start: 0
+		Length: 30
+		Offset: 11, -15
+	active:
+		Start: 30
+		Length: 24
+		Offset: 11, -15
+	idle:
+		Start: 54
+		Offset: 11, -15
+
+split3:
+	make:
+		Start: 0
+		Length: 30
+		Offset: 7, -13
+	active:
+		Start: 30
+		Length: 24
+		Offset: 7, -13
+	idle:
+		Start: 54
+		Offset: 7, -13
+
+rock1:
+	idle:
+		Start: 0
+
+rock2:
+	idle:
+		Start: 0
+
+rock3:
+	idle:
+		Start: 0
+
+rock4:
+	idle:
+		Start: 0
+
+rock5:
+	idle:
+		Start: 0
+
+rock6:
+	idle:
+		Start: 0
+
+rock7:
+	idle:
+		Start: 0
+
+tc04:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+tc05:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+tc03:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+tc02:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+tc01:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t18:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t17:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t16:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t15:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t14:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t13:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t12:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t11:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t10:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t09:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t08:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t07:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t06:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t05:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t04:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t03:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t02:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t01:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+v01:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v01.husk:
+	idle: v01
+		Start: 2
+
+v02:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v02.husk:
+	idle: v02
+		Start: 2
+
+v03:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v03.husk:
+	idle: v03
+		Start: 2
+
+v04:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v04.husk:
+	idle: v04
+		Start: 2
+
+v05:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v05.husk:
+	idle: v05
+		Start: 2
+
+v06:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v06.husk:
+	idle: v06
+		Start: 2
+
+v07:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 2
+
+v07.husk:
+	idle: v07
+		Start: 2
+
+v08:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v08.husk:
+	idle: v08
+		Start: 2
+
+v09:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v09.husk:
+	idle: v09
+		Start: 2
+
+v10:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v10.husk:
+	idle: v10
+		Start: 2
+
+v11:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v11.husk:
+	idle: v11
+		Start: 2
+
+v12:
+	idle:
+		Start: 0
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v12.husk:
+	idle: v12
+		Start: 2
+		ZOffset: -512
+
+v13:
+	idle:
+		Start: 0
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v13.husk:
+	idle: v13
+		Start: 2
+		ZOffset: -512
+
+v14:
+	idle:
+		Start: 0
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v14.husk:
+	idle: v14
+		Start: 2
+		ZOffset: -512
+
+v15:
+	idle:
+		Start: 0
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v15.husk:
+	idle: v15
+		Start: 2
+		ZOffset: -512
+
+v16:
+	idle:
+		Start: 0
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v16.husk:
+	idle: v16
+		Start: 2
+		ZOffset: -512
+
+v17:
+	idle:
+		Start: 0
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v17.husk:
+	idle: v17
+		Start: 2
+		ZOffset: -512
+
+v18:
+	idle:
+		Start: 0
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v18.husk:
+	idle: v18
+		Start: 2
+		ZOffset: -512
+
+v19:
+	idle:
+		Start: 0
+		Length: 14
+		Tick: 120
+	damaged-idle:
+		Start: 14
+		Length: 14
+		Tick: 120
+
+v19.husk:
+	idle: v19
+		Start: 28
+	fire-start: flmspt
+		Start: 0
+		Length: *
+		Offset: 7,-15
+	fire-loop: flmspt
+		Start: 50
+		Length: *
+		Offset: 7,-15
+
+v20:
+	idle:
+		Start: 0
+		Length: 3
+		Tick: 120
+	damaged-idle:
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v20.husk:
+	idle: v20
+		Start: 6
+
+v21:
+	idle:
+		Start: 0
+		Length: 3
+		Tick: 120
+	damaged-idle:
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v21.husk:
+	idle: v21
+		Start: 6
+
+v22:
+	idle:
+		Start: 0
+		Length: 3
+		Tick: 120
+	damaged-idle:
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v22.husk:
+	idle: v22
+		Start: 6
+
+v23:
+	idle:
+		Start: 0
+		Length: 3
+		Tick: 120
+	damaged-idle:
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v23.husk:
+	idle: v23
+		Start: 6
+
+v24:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v24.husk:
+	idle: v24
+		Start: 2
+
+v25:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v25.husk:
+	idle: v25
+		Start: 2
+
+v26:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v26.husk:
+	idle: v26
+		Start: 2
+
+v27:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v27.husk:
+	idle: v27
+		Start: 2
+
+v28:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v28.husk:
+	idle: v28
+		Start: 2
+
+v29:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v29.husk:
+	idle: v29
+		Start: 2
+
+v30:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 2
+
+v30.husk:
+	idle: v30
+		Start: 2
+
+v31:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v31.husk:
+	idle: v31
+		Start: 2
+
+v32:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v32.husk:
+	idle: v32
+		Start: 2
+
+v33:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v33.husk:
+	idle: v33
+		Start: 2
+
+v34:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v34.husk:
+	idle: v34
+		Start: 2
+
+v35:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v35.husk:
+	idle: v35
+		Start: 2
+
+v36:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v36.husk:
+	idle: v36
+		Start: 2
+
+v37:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v37.husk:
+	idle: v37
+		Start: 2
+
+arco:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+arco.husk:
+	idle: arco
+		Start: 1

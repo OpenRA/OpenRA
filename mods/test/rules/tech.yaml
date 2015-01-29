@@ -1,0 +1,96 @@
+V19:
+	Inherits: ^TechBuilding
+	CashTrickler:
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Tooltip:
+		Name: Oil Derrick
+	LeavesHusk:
+		HuskActor: V19.Husk
+
+V19.Husk:
+	Inherits: ^CivBuildingHusk
+	WithFire:
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Tooltip:
+		Name: Oil Derrick (Destroyed)
+
+HOSP:
+	Inherits: ^TechBuilding
+	Selectable:
+		Priority: 0
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 1000
+	Tooltip:
+		Name: Hospital
+	LeavesHusk:
+		HuskActor: HOSP.Husk
+	Bib:
+		HasMinibib: Yes
+
+HOSP.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Hospital (Destroyed)
+	Bib:
+		HasMinibib: Yes
+
+BIO:
+	Inherits: ^TechBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Biological Lab
+	Exit@1:
+		SpawnOffset: 0,-426,0
+		ExitCell: 0,-1
+	Production:
+		Produces: Biolab
+	ProductionQueue:
+		Type: Biolab
+		Group: Infantry
+		RequireOwner: false
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ProductionBar:
+	RallyPoint:
+		RallyPoint: -1,-1
+	LeavesHusk:
+		HuskActor: BIO.Husk
+
+BIO.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Biological Lab (Destroyed)
+
+MISS:
+	Inherits: ^CivBuilding
+	RenderBuilding:
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Tooltip:
+		Name: Tech Center
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1000
+		Prerequisites: ~disabled
+	Valued:
+		Cost: 2000
+	Bib:
+		HasMinibib: Yes
+	WithMakeAnimation:
+
