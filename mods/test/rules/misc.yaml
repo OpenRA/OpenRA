@@ -1,0 +1,62 @@
+CRATE.plain:
+	Inherits: ^Crate
+	ScriptTriggers:
+
+CRATE:
+	Inherits: ^Crate
+	Crate:
+		Lifetime: 240
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 20
+		UseCashTick: yes
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Effect: reveal-map
+	ExplodeCrateAction@fire:
+		Weapon: Napalm.Crate
+		SelectionShares: 5
+	GrantUpgradeCrateAction@cloak:
+		SelectionShares: 5
+		Effect: cloak
+		Upgrades: cloak
+	DuplicateUnitCrateAction:
+		SelectionShares: 10
+		MaxAmount: 5
+		MinAmount: 1
+		MaxDuplicateValue: 1250
+	GiveMcvCrateAction:
+		SelectionShares: 0
+		NoBaseSelectionShares: 120
+		Units: mcv
+
+mpspawn:
+	Immobile:
+		OccupiesSpace: false
+	RenderEditorOnly:
+	BodyOrientation:
+
+waypoint:
+	Immobile:
+		OccupiesSpace: false
+	RenderEditorOnly:
+	BodyOrientation:
+
+CAMERA:
+	Immobile:
+		OccupiesSpace: false
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 10c0
+	BodyOrientation:
+
+CAMERA.small:
+	Immobile:
+		OccupiesSpace: false
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 6c0
+	BodyOrientation:
+

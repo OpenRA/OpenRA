@@ -1,0 +1,599 @@
+fact:
+	build:
+		Start: 4
+		Length: 20
+		Tick: 100
+	idle:
+		Start: 0
+		Length: 4
+		Tick: 100
+	damaged-idle:
+		Start: 24
+		Length: 4
+		Tick: 100
+	damaged-build:
+		Start: 28
+		Length: 20
+		Tick: 100
+	dead:
+		Start: 48
+	make: factmake
+		Start: 0
+		Length: *
+		Tick: 80
+	bib: bib2
+		Start: 0
+		Length: *
+	icon: facticnh
+		Start: 0
+
+nuke:
+	idle:
+		Start: 0
+		Length: 4
+		Tick: 1000
+	damaged-idle:
+		Start: 4
+		Length: 4
+		Tick: 1000
+	dead:
+		Start: 8
+		Tick: 1000
+	make: nukemake
+		Start: 0
+		Length: *
+		Tick: 80
+	bib: bib3
+		Start: 0
+		Length: *
+	icon: nukeicnh
+		Start: 0
+
+proc:
+	idle:
+		Start: 0
+		Length: 6
+		Tick: 120
+	damaged-idle:
+		Start: 30
+		Length: 6
+		Tick: 120
+	dead:
+		Start: 60
+	make: procmake
+		Start: 0
+		Length: *
+		Tick: 80
+	resources: proctwr
+		Start: 0
+		Length: 6
+		Offset: -32,-21
+	damaged-resources: proctwr
+		Start: 6
+		Length: 6
+		Offset: -32,-21
+	bib: bib2
+		Start: 0
+		Length: *
+	icon: procicnh
+		Start: 0
+
+silo:
+	idle:
+		Start: 0
+		Length: 5
+		Offset: 0,-1
+	damaged-idle:
+		Start: 5
+		Length: 5
+		Offset: 0,-1
+	dead:
+		Start: 10
+		Offset: 0,-1
+	make: silomake
+		Start: 0
+		Length: *
+		Tick: 80
+		Offset: 0,-1
+	bib: mbSILO
+		Start: 0
+		Length: *
+		Offset: 0,1
+	icon: siloicnh
+		Start: 0
+
+hand:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+	make: handmake
+		Start: 0
+		Length: *
+		Tick: 80
+	bib: bib3
+		Start: 0
+		Length: *
+	icon: handicnh
+		Start: 0
+
+pyle:
+	idle:
+		Start: 0
+		Length: 10
+		Tick: 100		
+	damaged-idle:
+		Start: 10
+		Length: 10
+		Tick: 100		
+	dead:
+		Start: 20
+		Tick: 100
+	make: pylemake
+		Start: 0
+		Length: *
+		Tick: 80
+	bib: bib3
+		Start: 0
+		Length: *
+	icon: pyleicnh
+		Start: 0
+
+weap:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+	build-top: weap2
+		Start: 0
+		Length: 10
+	damaged-build-top: weap2
+		Start: 10
+		Length: 10
+	idle-top: weap2
+		Start: 0
+	damaged-idle-top: weap2
+		Start: 4
+	make: weapmake
+		Start: 0
+		Length: *
+		Tick: 80
+	bib: bib2
+		Start: 0
+		Length: *
+	icon: weapicnh
+		Start: 0
+
+afld:
+	idle:
+		Start: 0
+		Tick: 120
+		ZOffset: -1023
+	active:
+		Start: 0
+		Length: 16
+		Tick: 120
+		ZOffset: -1023
+	damaged-idle:
+		Start: 16
+		Tick: 120
+		ZOffset: -1023
+	damaged-active:
+		Start: 16
+		Length: 16
+		Tick: 120
+		ZOffset: -1023
+	dead:
+		Start: 32
+		ZOffset: -1023
+	make: afldmake
+		Start: 0
+		Length: *
+		Tick: 80
+	bib: bib1
+		Start: 0
+		Length: *
+	icon: afldicnh
+		Start: 0
+
+hq:
+	idle:
+		Start: 0
+		Length: 16
+		Tick: 100
+	damaged-idle:
+		Start: 16
+		Length: 16
+		Tick: 100
+	dead:
+		Start: 32
+	make: hqmake
+		Start: 0
+		Length: *
+		Tick: 80
+	bib: bib3
+		Start: 0
+		Length: *
+	icon: hqicnh
+		Start: 0
+
+nuk2:
+	idle:
+		Start: 0
+		Length: 4
+		Tick: 1000
+	damaged-idle:
+		Start: 4
+		Length: 4
+		Tick: 1000
+	dead:
+		Start: 8
+	make: nuk2make
+		Start: 0
+		Length: *
+		Tick: 80
+	bib: bib3
+		Start: 0
+		Length: *
+	icon: nuk2icnh
+		Start: 0
+
+hpad:
+	idle:
+		Start: 0
+		ZOffset: -1023
+	damaged-idle:
+		Start: 7
+		ZOffset: -1023
+	active:
+		Start: 1
+		Length: 6
+		Tick: 100
+		ZOffset: -1023
+	damaged-active:
+		Start: 8
+		Length: 6
+		Tick: 100		
+		ZOffset: -1023
+	dead:
+		Start: 14
+		ZOffset: -1023
+	make: hpadmake
+		Start: 0
+		Length: *
+		Tick: 80
+	icon: hpadicnh
+		Start: 0
+
+fix:
+	idle:
+		Start: 0
+		ZOffset: -1c511
+	damaged-idle:
+		Start: 7
+		ZOffset: -1c511
+	active:
+		Start: 0
+		Length: 7
+		ZOffset: -1c511
+	damaged-active:
+		Start: 7
+		Length: 7
+		ZOffset: -1c511
+	dead:
+		Start: 14
+		ZOffset: -1c511
+	make: fixmake
+		Start: 0
+		Length: 14
+		Tick: 60
+	bib: mbFIX
+		Start: 0
+		Length: *
+		Offset: 0,-9
+	icon: fixicnh
+		Start: 0
+
+eye:
+	idle:
+		Start: 0
+		Length: 16
+		Tick: 100
+	damaged-idle:
+		Start: 16
+		Length: 16
+		Tick: 100
+	dead:
+		Start: 32
+	make: eyemake
+		Start: 0
+		Length: *
+		Tick: 80
+	bib: bib3
+		Start: 0
+		Length: *
+	icon: eyeicnh
+		Start: 0
+
+tmpl:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 5
+	active:
+		Start: 0
+		Length: 5
+	damaged-active:
+		Start: 5
+		Length: 5
+	dead:
+		Start: 10
+	make: tmplmake
+		Start: 0
+		Length: *
+		Tick: 60
+	bib: bib2
+		Start: 0
+		Length: *
+	icon: tmplicnh
+		Start: 0
+
+obli:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 4
+	active:
+		Start: 0
+		Length: 4
+		Tick: 680
+	damaged-active:
+		Start: 4
+		Length: 4
+		Tick: 680
+	dead:
+		Start: 8
+	make: oblimake
+		Start: 0
+		Length: 13
+		Tick: 80
+	bib: mbOBLI
+		Start: 0
+		Length: *
+		Offset: -1,-3
+	icon: obliicnh
+		Start: 0
+
+brik:
+	idle:
+		Start: 0
+		Length: 16
+	scratched-idle:
+		Start: 16
+		Length: 16
+	damaged-idle:
+		Start: 32
+		Length: 16
+	icon: brikicnh
+		Start: 0
+
+sbag:
+	idle:
+		Start: 0
+		Length: 16
+	icon: sbagicnh
+		Start: 0
+
+cycl:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+	icon: cyclicnh
+		Start: 0
+
+barb:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+
+wood:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+
+gun:
+	idle:
+		Start: 0
+		Facings: 32
+	recoil:
+		Start: 32
+		Facings: 32
+	damaged-idle:
+		Start: 64
+		Facings: 32
+	damaged-recoil:
+		Start: 96
+		Facings: 32
+	make: gunmake
+		Start: 0
+		Length: *
+		Tick: 80
+	muzzle: gunfire2
+		Start: 0
+		Length: *
+	bib: mbGUN
+		Start: 0
+		Length: *
+		Offset: -1,-1
+	icon: gunicnh
+		Start: 0
+
+sam:
+	closed-idle:
+		Start:0
+	opening:
+		Start: 1
+		Length: 16
+		Tick: 30
+	idle:
+		Start: 17
+		Facings: 32
+	closing:
+		Start: 50
+		Length: 14
+		Tick: 30
+	damaged-closed-idle:
+		Start:64
+	damaged-opening:
+		Start: 65
+		Length: 16
+		Tick: 30
+	damaged-idle:
+		Start: 81
+		Facings: 32
+	damaged-closing:
+		Start: 114
+		Length: 14
+		Tick: 30
+	dead:
+		Start: 128
+	make: sammake
+		Start: 0
+		Length: 20
+		Tick: 30
+	muzzle: samfire
+		Start: 0
+		Length: 18
+		Facings: 8
+	icon: samicnh
+		Start: 0
+
+gtwr:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+	make: gtwrmake
+		Start: 0
+		Length: *
+		Tick: 80
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+	bib: mbGTWR
+		Start: 0
+		Length: *
+		Offset: 0,-2
+	icon: gtwricnh
+		Start: 0
+
+atwr:
+	idle:
+		Start: 0
+		Offset: 0,-1
+	damaged-idle:
+		Start: 1
+		Offset: 0,-1
+	dead:
+		Start: 2
+		Offset: 0,-1
+	make: atwrmake
+		Start: 0
+		Length: *
+		Tick: 80
+		Offset: 0,-1
+	muzzle: gunfire2
+		Start: 0
+		Length: *
+		Offset: 0,-1
+	bib: mbGTWR
+		Start: 0
+		Length: *
+		Offset: -3,0
+	icon: atwricnh
+		Start: 0
+
+hosp:
+	idle:
+		Start: 0
+		Length: 4
+		Tick: 100
+		Offset: 0,-2
+	damaged-idle:
+		Start: 4
+		Length: 4
+		Offset: 0,-2
+	make: hospmake
+		Start: 0
+		Length: *
+		Tick: 80
+		Offset: 0,-2
+	bib: mbHOSP
+		Start: 0
+		Length: *
+		Offset: 0,1
+
+hosp.husk:
+	idle: hosp
+		Start: 8
+	bib: mbHOSP
+		Start: 0
+		Length: *
+		Offset: 0,1
+
+bio:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: biomake
+		Start: 0
+		Length: *
+		Tick: 80
+
+bio.husk:
+	idle: bio
+		Start: 2
+
+miss:
+	idle:
+		Start: 0
+		Offset: 0,-1
+	damaged-idle:
+		Start: 1
+		Offset: 0,-1
+	make: missmake
+		Start: 0
+		Length: *
+		Tick: 80
+		Offset: 0,-1
+	bib: mbMISS
+		Start: 0
+		Length: *
+		Offset: 0,1
+	icon: missicnh
+		Start: 0
+
+miss.husk:
+	idle: miss
+		Start: 2
+	bib: mbMISS
+		Start: 0
+		Length: *
+		Offset: 0,1

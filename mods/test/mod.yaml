@@ -1,0 +1,216 @@
+Metadata:
+	Title: Test
+	Description: Test Mod - Please Ignore.
+	Version: {DEV_VERSION}
+	Author: whoever
+
+Folders:
+	.
+	./mods/test
+	./mods/test/bits
+	./mods/test/bits/jungle
+	./mods/test/bits/ss
+	./mods/test/uibits
+	~^Content/cnc
+	~^Content/test
+
+MapFolders:
+	./mods/test/maps: System
+	~^maps/test: User
+
+Packages:
+	speech.mix
+	conquer.mix
+	sounds.mix
+	tempicnh.mix
+	temperat.mix
+	winter.mix
+	desert.mix
+	snow.mix
+	~movies-gdi.mix
+	~movies-nod.mix
+	~movies.mix
+	~scores.mix
+	~scores2.mix
+	~transit.mix
+	redalert.mix
+	raconquer.mix
+	rageneral.mix
+	rasounds.mix
+	~main.mix
+
+Rules:
+	./mods/test/rules/misc.yaml
+	./mods/test/rules/ai.yaml
+	./mods/test/rules/player.yaml
+	./mods/test/rules/world.yaml
+	./mods/test/rules/defaults.yaml
+	./mods/test/rules/structures.yaml
+	./mods/test/rules/infantry.yaml
+	./mods/test/rules/vehicles.yaml
+	./mods/test/rules/trees.yaml
+	./mods/test/rules/civilian.yaml
+	./mods/test/rules/civilian-desert.yaml
+	./mods/test/rules/tech.yaml
+	./mods/test/rules/ships.yaml
+	./mods/test/rules/aircraft.yaml
+	./mods/test/rules/husks.yaml
+
+Sequences:
+	./mods/test/sequences/structures.yaml
+	./mods/test/sequences/vehicles.yaml
+	./mods/test/sequences/infantry.yaml
+	./mods/test/sequences/aircraft.yaml
+	./mods/test/sequences/decorations.yaml
+	./mods/test/sequences/misc.yaml
+	./mods/test/sequences/funpark.yaml
+	./mods/test/sequences/civilian.yaml
+	./mods/test/sequences/campaign.yaml
+
+Weapons:
+	./mods/test/weapons/explosions.yaml
+	./mods/test/weapons/largecaliber.yaml
+	./mods/test/weapons/missiles.yaml
+	./mods/test/weapons/other.yaml
+	./mods/test/weapons/smallcaliber.yaml
+	./mods/test/weapons/superweapons.yaml
+
+Cursors:
+	./mods/test/cursors.yaml
+
+Chrome:
+	./mods/test/chrome.yaml
+
+Assemblies:
+	./mods/common/OpenRA.Mods.Common.dll
+	./mods/ra/OpenRA.Mods.RA.dll
+	./mods/cnc/OpenRA.Mods.Cnc.dll
+	./mods/d2k/OpenRA.Mods.D2k.dll
+	./mods/test/OpenRA.Extension.DS.dll
+
+ChromeLayout:
+	./mods/test/chrome/install.yaml
+	./mods/test/chrome/mainmenu.yaml
+	./mods/test/chrome/serverbrowser.yaml
+	./mods/test/chrome/createserver.yaml
+	./mods/test/chrome/directconnect.yaml
+	./mods/test/chrome/lobby.yaml
+	./mods/test/chrome/lobby-mappreview.yaml
+	./mods/test/chrome/lobby-playerbin.yaml
+	./mods/test/chrome/lobby-dialogs.yaml
+	./mods/test/chrome/connection.yaml
+	./mods/test/chrome/color-picker.yaml
+	./mods/test/chrome/mapchooser.yaml
+	./mods/test/chrome/replaybrowser.yaml
+	./mods/test/chrome/ingame.yaml
+	./mods/test/chrome/ingame-chat.yaml
+	./mods/test/chrome/ingame-menu.yaml
+	./mods/test/chrome/ingame-debug.yaml
+	./mods/test/chrome/ingame-info.yaml
+	./mods/test/chrome/ingame-infobriefing.yaml
+	./mods/test/chrome/ingame-infoscripterror.yaml
+	./mods/test/chrome/ingame-infoobjectives.yaml
+	./mods/test/chrome/ingame-infostats.yaml
+	./mods/test/chrome/ingame-leavemap.yaml
+	./mods/test/chrome/ingame-observerstats.yaml
+	./mods/test/chrome/music.yaml
+	./mods/test/chrome/settings.yaml
+	./mods/test/chrome/credits.yaml
+	./mods/test/chrome/dialogs.yaml
+	./mods/test/chrome/tooltips.yaml
+	./mods/test/chrome/assetbrowser.yaml
+	./mods/test/chrome/missionbrowser.yaml
+
+Movies:
+	./mods/test/movies-gdi.yaml
+	./mods/test/movies-nod.yaml
+	
+Translations:
+	./mods/test/languages/english.yaml
+
+Voices:
+	./mods/test/voices.yaml
+
+Notifications:
+	./mods/test/notifications.yaml
+
+Music:
+	./mods/test/music.yaml
+
+TileSets:
+	./mods/test/tilesets/desert.yaml
+	./mods/test/tilesets/winter.yaml
+	./mods/test/tilesets/snow.yaml
+	./mods/test/tilesets/temperat.yaml
+	./mods/test/tilesets/jungle.yaml
+
+LoadScreen: CncLoadScreen
+	Image: ./mods/test/uibits/chrome.png
+	Text: Loading
+
+ContentInstaller:
+	TestFiles: conquer.mix, desert.mix, sounds.mix, speech.mix, temperat.mix, tempicnh.mix, winter.mix
+	BackgroundWidget: INSTALL_BACKGROUND
+	MenuWidget: INSTALL_PANEL
+	MusicMenuWidget: INSTALL_MUSIC_PANEL
+	FilesToCopy: CONQUER.MIX, DESERT.MIX, SCORES.MIX, SOUNDS.MIX, TEMPERAT.MIX, WINTER.MIX
+	FilesToExtract: speech.mix, tempicnh.mix, transit.mix
+	PackageMirrorList: http://www.openra.net/packages/cnc-mirrors.txt
+	DiskTestFiles: conquer.mix, desert.mix, install/setup.z
+	PackageToExtractFromCD: install/setup.z
+	ExtractFilesFromCD: speech.mix, tempicnh.mix, transit.mix
+	CopyFilesFromCD: conquer.mix, desert.mix, general.mix, scores.mix, sounds.mix, temperat.mix, winter.mix
+	ShippedSoundtracks: 2
+	MusicPackageMirrorList: http://www.openra.net/packages/cnc-music-mirrors.txt
+
+ServerTraits:
+	LobbyCommands
+	PlayerPinger
+	MasterServerPinger
+	LobbySettingsNotification
+	ColorValidator
+
+LobbyDefaults:
+	AllowCheats: false
+	Crates: true
+	StartingUnitsClass: light
+	FragileAlliances: false
+	Shroud: true
+	Fog: true
+	TechLevel: Unrestricted
+
+ChromeMetrics:
+	./mods/test/metrics.yaml
+
+Fonts:
+	Small:
+		Font:./mods/common/FreeSans.ttf
+		Size:12
+	Regular:
+		Font:./mods/common/FreeSans.ttf
+		Size:14
+	Bold:
+		Font:./mods/common/FreeSansBold.ttf
+		Size:14
+	Title:
+		Font:./mods/common/FreeSansBold.ttf
+		Size:32
+	MediumBold:
+		Font:./mods/common/FreeSansBold.ttf
+		Size:18
+	BigBold:
+		Font:./mods/common/FreeSansBold.ttf
+		Size:24
+	Tiny:
+		Font:./mods/common/FreeSans.ttf
+		Size:10
+	TinyBold:
+		Font:./mods/common/FreeSansBold.ttf
+		Size:10
+
+Missions:
+	./mods/test/missions.yaml
+
+SupportsMapsFrom: cnc
+
+SpriteFormats: ShpTD, TmpTD, ShpTS, TmpRA

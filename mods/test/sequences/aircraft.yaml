@@ -1,0 +1,68 @@
+c17:
+	idle:
+		Start: 0
+		Facings: 32
+	icon: c17icnh
+		Start: 0
+
+tran:
+	idle:
+		Start: 0
+		Facings: 32
+	rotor: lrotor
+		Start: 0
+		Length: 4
+	rotor2: rrotor
+		Start: 0
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+	slow-rotor2: rrotor
+		Start: 4
+		Length: 8
+	open:
+		Start: 32
+		Length: 4
+	unload:
+		Start: 35
+	icon: tranicnh
+		Start: 0
+
+heli:
+	idle:
+		Start: 0
+		Facings: 32
+	rotor: lrotor
+		Start: 0
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+	icon: heliicnh
+		Start: 0
+
+orca:
+	idle:
+		Start: 0
+		Facings: 32
+	damaged-idle:
+		Start: 32
+		Facings: 32
+	icon: orcaicnh
+		Start: 0
+
+a10:
+	idle:
+		Start: 0
+		Facings: 32
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+	icon: a10icnh
+		Start: 0
