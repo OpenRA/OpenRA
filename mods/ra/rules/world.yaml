@@ -126,6 +126,18 @@ World:
 		Race: ukraine
 		Side: Soviet
 		Description: Ukraine: Demolitions\nSpecial Ability: Parabombs\nSpecial Unit: Demolition Truck
+	CountryGroup@random:
+		DisplayName: Any
+		Race: random
+		RaceMembers: allies, england, france, germany, soviet, russia, ukraine
+	CountryGroup@allies:
+		DisplayName: Allies
+		Race: random_allies
+		RaceMembers: allies, england, france, germany
+	CountryGroup@soviet:
+		DisplayName: Soviet
+		Race: random_soviet
+		RaceMembers: soviet, russia, ukraine
 	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch

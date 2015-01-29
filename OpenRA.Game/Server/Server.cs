@@ -64,7 +64,7 @@ namespace OpenRA.Server
 			else
 				c.Color = c.PreferredColor;
 			if (pr.LockRace)
-				c.Country = pr.Race;
+				c.CountryRace = pr.Race;
 			if (pr.LockSpawn)
 				c.SpawnPoint = pr.Spawn;
 			if (pr.LockTeam)
@@ -289,7 +289,7 @@ namespace OpenRA.Server
 					Slot = LobbyInfo.FirstEmptySlot(),
 					PreferredColor = handshake.Client.Color,
 					Color = handshake.Client.Color,
-					Country = "random",
+					CountryRace = "random",
 					SpawnPoint = 0,
 					Team = 0,
 					State = Session.ClientState.Invalid,

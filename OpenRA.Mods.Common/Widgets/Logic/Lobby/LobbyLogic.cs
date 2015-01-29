@@ -142,9 +142,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			colorPreview = lobby.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
 			colorPreview.Color = Game.Settings.Player.Color;
 
-			countries.Add("random", new LobbyCountry { Name = "Any" });
-			foreach (var c in modRules.Actors["world"].Traits.WithInterface<CountryInfo>().Where(c => c.Selectable))
-				countries.Add(c.Race, new LobbyCountry { Name = c.Name, Side = c.Side, Description = c.Description });
+			var worldTraits = modRules.Actors["world"].Traits;
+
+			var countryGroupes = worldTraits.WithInterface<CountryGroupInfo>();
+			foreach (var cg in countryGroupes)
+				countries.Add(cg.Race, new LobbyCountry { DisplayName = cg.DisplayName });
+
+			var selectableCountries = worldTraits.WithInterface<CountryInfo>().Where(c => c.Selectable);
+			foreach (var c in selectableCountries)
+				countries.Add(c.Race, new LobbyCountry { DisplayName = c.Name, Side = c.Side, Description = c.Description });
 
 			var gameStarting = false;
 			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting ||
@@ -822,7 +828,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	public class LobbyCountry
 	{
-		public string Name;
+		public string DisplayName;
+		public string Race;
 		public string Description;
 		public string Side;
 	}

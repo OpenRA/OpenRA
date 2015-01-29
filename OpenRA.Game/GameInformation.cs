@@ -114,7 +114,7 @@ namespace OpenRA
 				Color = runtimePlayer.Color,
 				Team = client.Team,
 				SpawnPoint = runtimePlayer.SpawnPoint,
-				IsRandomFaction = runtimePlayer.Country.Race != client.Country,
+				IsRandomFaction = runtimePlayer.Country.Race != client.CountryRace,
 				IsRandomSpawnPoint = runtimePlayer.SpawnPoint != client.SpawnPoint
 			};
 
