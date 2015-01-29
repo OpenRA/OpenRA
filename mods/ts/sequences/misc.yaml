@@ -157,7 +157,6 @@ explosion:
 	ionring: ring1
 		Start: 0
 		Length: *
-		Tick: 160
 	pulse_explosion: pulsefx2
 		Start: 0
 		Length: *
@@ -537,3 +536,23 @@ largecraters:
 	cr12: crater12
 		Length: 1
 		Offset: 0, -24
+
+icon:
+	clustermissile: mltiicon
+		Start: 0
+	ioncannon: ioncicon
+		Start: 0
+
+clustermissile:
+	up: null # TODO
+		Start: 0
+		Length: *
+	down: null # TODO
+		Start: 0
+		Length: *
+ionbeam:
+	idle:
+		Start: 0
+		Length: *
+		Offset: 0, -78
+		ZOffset: 1

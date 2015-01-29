@@ -45,6 +45,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount of time after detonation to remove the camera")]
 		public readonly int CameraRemoveDelay = 25;
 
+		public readonly string Cursor = "nuke";
+
 		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
 	}
 
@@ -61,7 +63,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
-			return new SelectGenericPowerTarget(order, manager, "nuke", MouseButton.Left);
+			var info = Info as NukePowerInfo;
+			return new SelectGenericPowerTarget(order, manager, info.Cursor, MouseButton.Left);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)

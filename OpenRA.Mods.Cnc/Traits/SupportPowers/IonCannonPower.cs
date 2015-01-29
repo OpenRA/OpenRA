@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Apply the weapon impact this many ticks into the effect")]
 		public readonly int WeaponDelay = 7;
 
+		public readonly string Cursor = "ioncannon";
 		public override object Create(ActorInitializer init) { return new IonCannonPower(init.Self, this); }
 	}
 
@@ -45,7 +46,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
-			return new SelectGenericPowerTarget(order, manager, "ioncannon", MouseButton.Left);
+			var info = Info as IonCannonPowerInfo;
+			return new SelectGenericPowerTarget(order, manager, info.Cursor, MouseButton.Left);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
