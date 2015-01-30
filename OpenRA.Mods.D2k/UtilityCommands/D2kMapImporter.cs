@@ -310,8 +310,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			map = Map.FromTileset(tileSet);
 			map.Title = Path.GetFileNameWithoutExtension(mapFile);
 			map.Author = "Westwood Studios";
-			map.MapSize.X = mapSize.Width + 2 * MapCordonWidth;
-			map.MapSize.Y = mapSize.Height + 2 * MapCordonWidth;
+			map.MapSize = new int2(mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth);
 			map.Bounds = new Rectangle(MapCordonWidth, MapCordonWidth, mapSize.Width, mapSize.Height);
 
 			map.Smudges = Exts.Lazy(() => new List<SmudgeReference>());

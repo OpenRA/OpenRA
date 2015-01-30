@@ -47,7 +47,7 @@ namespace OpenRA.Widgets
 				}
 
 				var text = WidgetUtils.WrapText(line.Text, chatLogArea.Width - inset - 6, font);
-				chatpos.Y -= Math.Max(15, font.Measure(text).Y) + 5;
+				chatpos = chatpos.WithY(chatpos.Y - (Math.Max(15, font.Measure(text).Y) + 5));
 
 				if (chatpos.Y < pos.Y)
 					break;

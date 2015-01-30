@@ -109,7 +109,7 @@ namespace OpenRA.Graphics
 			{
 				Sprite = s,
 				Advance = (int)face.Glyph.Metrics.HorizontalAdvance / 64f,
-				Offset = { X = face.Glyph.BitmapLeft, Y = -face.Glyph.BitmapTop }
+				Offset = new int2(face.Glyph.BitmapLeft, -face.Glyph.BitmapTop)
 			};
 
 			// A new bitmap is generated each time this property is accessed, so we do need to dispose it.

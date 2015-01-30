@@ -17,7 +17,7 @@ namespace OpenRA
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Mimic a built-in type alias.")]
 	public struct int2
 	{
-		public int X, Y;
+		public readonly int X, Y;
 		public int2(int x, int y) { this.X = x; this.Y = y; }
 		public int2(Point p) { X = p.X; Y = p.Y; }
 		public int2(Size p) { X = p.Width; Y = p.Height; }
@@ -38,6 +38,16 @@ namespace OpenRA
 		public int LengthSquared { get { return X * X + Y * Y; } }
 		public int Length { get { return Exts.ISqrt(LengthSquared); } }
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
+
+		public int2 WithX(int newX)
+		{
+			return new int2(newX, Y);
+		}
+
+		public int2 WithY(int newY)
+		{
+			return new int2(X, newY);
+		}
 
 		public static int2 Max(int2 a, int2 b) { return new int2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }
 		public static int2 Min(int2 a, int2 b) { return new int2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)); }
