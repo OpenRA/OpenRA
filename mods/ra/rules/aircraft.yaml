@@ -328,6 +328,7 @@ U2:
 	RenderUnit:
 	AttackBomber:
 	-Selectable:
+	-TargetableAircraft:
 	-GainsExperience:
 	Contrail@1:
 		Offset: -725,683,0
