@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Jan 28 2015)
+## v0.95 (Jan 30 2015)
 
 ### Highlights
   - Added fuzzy search with `Go To File`, `Go To Symbol`, `Go To Line`, and `Insert Library Function`.
@@ -20,6 +20,7 @@
   - To [riidom](https://github.com/riidom) for German translation update.
 
 ### Improvements
+  - Added showing/hiding Output/Console panel during debugging.
   - Added `bordersize` to configure sash size.
   - Added package `LoadFile` method (#166).
   - Added Russian translation for new messages (#70).
@@ -100,7 +101,7 @@
 
 ### Incompatibilities
   - Renamed `debugger.stackmax*` settings to `debugger.maxdata*`.
-  - Removed `wxwidgets` from the list of default APIs for Lua interpreters.
+  - Removed `wxwidgets` from the list of default APIs for Lua interpreters; use `api` config setting to include it.
 
 ### Fixes
   - Fixed search navigation to shift horizontally when `usewrap` is off.

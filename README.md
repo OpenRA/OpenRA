@@ -41,6 +41,8 @@ with [Lua](http://notebook.kulchenko.com/zerobrane/live-coding-in-lua-bret-victo
 [Moai](http://notebook.kulchenko.com/zerobrane/live-coding-with-moai-and-zerobrane-studio),
 [Corona SDK](http://notebook.kulchenko.com/zerobrane/debugging-and-live-coding-with-corona-sdk-applications-and-zerobrane-studio),
 GSL-shell, and other engines.
+* Function outline.
+* Fuzzy search with `Go To File`, `Go To Symbol`, and `Insert Library Function`.
 * Several ways to extend the current functionality:
   - specs (`spec/`): specifications for file syntax, lexer, and keywords;
   - apis (`api/`): descriptions for [code completion and tooltips](http://studio.zerobrane.com/doc-api-auto-complete);
