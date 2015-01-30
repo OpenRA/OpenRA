@@ -52,7 +52,7 @@ namespace OpenRA.Graphics
 			{
 				dataX = -hotspot.X;
 				dataWidth += dataX;
-				hotspot.X = 0;
+				hotspot = hotspot.WithX(0);
 			}
 			else if (hotspot.X >= frameWidth)
 				dataWidth = hotspot.X + 1;
@@ -64,7 +64,7 @@ namespace OpenRA.Graphics
 			{
 				dataY = -hotspot.Y;
 				dataHeight += dataY;
-				hotspot.Y = 0;
+				hotspot = hotspot.WithY(0);
 			}
 			else if (hotspot.Y >= frameHeight)
 				dataHeight = hotspot.Y + 1;

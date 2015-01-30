@@ -45,9 +45,18 @@ namespace OpenRA.Graphics
 				.ToArray();
 
 			if (d.ContainsKey("X"))
-				Exts.TryParseIntegerInvariant(d["X"].Value, out Hotspot.X);
+			{
+				int x;
+				Exts.TryParseIntegerInvariant(d["X"].Value, out x);
+				Hotspot = Hotspot.WithX(x);
+			}
+
 			if (d.ContainsKey("Y"))
-				Exts.TryParseIntegerInvariant(d["Y"].Value, out Hotspot.Y);
+			{
+				int y;
+				Exts.TryParseIntegerInvariant(d["Y"].Value, out y);
+				Hotspot = Hotspot.WithY(y);
+			}
 		}
 	}
 }

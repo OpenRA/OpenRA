@@ -96,10 +96,7 @@ namespace OpenRA.Traits
 				foreach (var pip in thisRow)
 				{
 					if (pipxyOffset.X + pipSize.X >= width)
-					{
-						pipxyOffset.X = 0;
-						pipxyOffset.Y -= pipSize.Y;
-					}
+						pipxyOffset = new int2(0, pipxyOffset.Y - pipSize.Y);
 
 					pipImages.PlayRepeating(PipStrings[(int)pip]);
 					pipxyOffset += new int2(pipSize.X, 0);
@@ -108,8 +105,7 @@ namespace OpenRA.Traits
 				}
 
 				// Increment row
-				pipxyOffset.X = 0;
-				pipxyOffset.Y -= pipSize.Y + 1;
+				pipxyOffset = new int2(0, pipxyOffset.Y - (pipSize.Y + 1));
 			}
 		}
 
@@ -131,7 +127,7 @@ namespace OpenRA.Traits
 					yield return new UISpriteRenderable(tagImages.Image, pos, 0, pal, 1f);
 
 					// Increment row
-					tagxyOffset.Y += 8;
+					tagxyOffset = tagxyOffset.WithY(tagxyOffset.Y + 8);
 				}
 			}
 		}
