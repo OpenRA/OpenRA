@@ -4,8 +4,6 @@ environment:
   NSIS_ROOT: C:\nsis
 
 install:
-  - appveyor DownloadFile "http://downloads.sourceforge.net/project/nsis/NSIS 2/2.46/nsis-2.46-setup.exe" -FileName nsissetup.exe
-  - nsissetup /S /D=%NSIS_ROOT%
 
 before_build:
 - make dependencies
@@ -20,6 +18,8 @@ test_script:
 before_deploy:
   - make docs
   - cp OpenRA.Game/OpenRA.ico .
+  - appveyor DownloadFile "http://downloads.sourceforge.net/project/nsis/NSIS 2/2.46/nsis-2.46-setup.exe" -FileName nsissetup.exe
+  - nsissetup /S /D=%NSIS_ROOT%
   - appveyor DownloadFile "https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md" -FileName Changelog.md
   - '%NSIS_ROOT%\makensis /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\windows" /V3 packaging/windows/OpenRA.nsi'
   - appveyor PushArtifact packaging/windows/OpenRA.Setup.exe -FileName OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe
