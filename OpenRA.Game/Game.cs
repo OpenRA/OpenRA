@@ -175,6 +175,12 @@ namespace OpenRA
 			GC.Collect();
 		}
 
+		public static void RestartGame()
+		{
+			OrderManager.World.EndGame();
+			StartGame(OrderManager.World.Map.Uid, WorldType.Regular);
+		}
+
 		public static bool IsHost
 		{
 			get

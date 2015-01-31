@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				hideMenu = true;
-				ConfirmationDialogs.PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, showMenu);
+				ConfirmationDialogs.PromptAbortMission(world, "Abort Mission", "Leave this game and return to the menu?", onQuit, showMenu, closeMenu);
 			};
 
 			var exitEditorButton = menu.Get<ButtonWidget>("EXIT_EDITOR");
