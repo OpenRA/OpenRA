@@ -39,6 +39,44 @@ namespace OpenRA.Mods.Common.Widgets
 			};
 		}
 
+		/**
+		 * open confirmation dialog for mission / game restart
+		 */
+		public static void PromptAbortMission(World world, string title, string text, Action onAbort, Action onCancel = null, Action closeMenu = null)
+		{
+			var isMultiplayer = !world.LobbyInfo.IsSinglePlayer && !world.IsReplay;
+			var prompt = Ui.OpenWindow("ABORT_MISSION_PROMPT");
+			prompt.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
+			prompt.Get<LabelWidget>("PROMPT_TEXT").GetText = () => text;
+			prompt.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () =>
+			{
+				Ui.CloseWindow();
+				onAbort();
+			};
+
+			var restartButton = prompt.Get<ButtonWidget>("RESTART_BUTTON");
+			restartButton.IsVisible = () => !isMultiplayer;
+			restartButton.OnClick = () =>
+			{
+				// close menu as overlay is still active on window close...
+				if (closeMenu != null)
+					closeMenu();
+
+				// close menu
+				Ui.CloseWindow();
+
+				// restart game
+				Game.RestartGame();
+			};
+
+			prompt.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
+			{
+				Ui.CloseWindow();
+				if (onCancel != null)
+					onCancel();
+			};
+		}
+
 		public static void TextInputPrompt(
 			string title, string prompt, string initialText,
 			Action<string> onAccept, Action onCancel = null,
