@@ -50,10 +50,10 @@ namespace OpenRA.Mods.D2k.Widgets
 			foreach (var d in cashDigits.Reverse())
 			{
 				var spriteDigit = ChromeProvider.GetImage(digitCollection, (d - '0').ToString());
-				
+
 				if (spriteDigit != null)
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(spriteDigit, new float2(x, 6));
-				
+
 				x -= 14;
 			}
 		}
