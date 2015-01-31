@@ -24,7 +24,8 @@ namespace OpenRA.Mods.Cnc
 		Dictionary<string, string> loadInfo;
 		Stopwatch loadTimer = Stopwatch.StartNew();
 		Sheet sheet;
-		Sprite[] ss;
+		Sprite borderTop, borderBottom, borderLeft, borderRight,
+			cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight;
 		int loadTick;
 		float2 nodPos, gdiPos, evaPos;
 		Sprite nodLogo, gdiLogo, evaLogo, brightBlock, dimBlock;
@@ -44,17 +45,14 @@ namespace OpenRA.Mods.Cnc
 			var res = r.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);
 
-			ss = new[]
-			{
-				new Sprite(sheet, new Rectangle(161, 128, 62, 33), TextureChannel.Alpha),
-				new Sprite(sheet, new Rectangle(161, 223, 62, 33), TextureChannel.Alpha),
-				new Sprite(sheet, new Rectangle(128, 161, 33, 62), TextureChannel.Alpha),
-				new Sprite(sheet, new Rectangle(223, 161, 33, 62), TextureChannel.Alpha),
-				new Sprite(sheet, new Rectangle(128, 128, 33, 33), TextureChannel.Alpha),
-				new Sprite(sheet, new Rectangle(223, 128, 33, 33), TextureChannel.Alpha),
-				new Sprite(sheet, new Rectangle(128, 223, 33, 33), TextureChannel.Alpha),
-				new Sprite(sheet, new Rectangle(223, 223, 33, 33), TextureChannel.Alpha)
-			};
+			borderTop = new Sprite(sheet, new Rectangle(161, 128, 62, 33), TextureChannel.Alpha);
+			borderBottom = new Sprite(sheet, new Rectangle(161, 223, 62, 33), TextureChannel.Alpha);
+			borderLeft = new Sprite(sheet, new Rectangle(128, 161, 33, 62), TextureChannel.Alpha);
+			borderRight = new Sprite(sheet, new Rectangle(223, 161, 33, 62), TextureChannel.Alpha);
+			cornerTopLeft = new Sprite(sheet, new Rectangle(128, 128, 33, 33), TextureChannel.Alpha);
+			cornerTopRight = new Sprite(sheet, new Rectangle(223, 128, 33, 33), TextureChannel.Alpha);
+			cornerBottomLeft = new Sprite(sheet, new Rectangle(128, 223, 33, 33), TextureChannel.Alpha);
+			cornerBottomRight = new Sprite(sheet, new Rectangle(223, 223, 33, 33), TextureChannel.Alpha);
 
 			nodLogo = new Sprite(sheet, new Rectangle(0, 256, 256, 256), TextureChannel.Alpha);
 			gdiLogo = new Sprite(sheet, new Rectangle(256, 256, 256, 256), TextureChannel.Alpha);
@@ -87,7 +85,10 @@ namespace OpenRA.Mods.Cnc
 			r.RgbaSpriteRenderer.DrawSprite(nodLogo, nodPos);
 			r.RgbaSpriteRenderer.DrawSprite(evaLogo, evaPos);
 
-			WidgetUtils.DrawPanelPartial(ss, bounds, PanelSides.Edges);
+			WidgetUtils.DrawPanelPartial(bounds, PanelSides.Edges,
+				borderTop, borderBottom, borderLeft, borderRight,
+				cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight,
+				null);
 			var barY = bounds.Height - 78;
 
 			if (!setup && r.Fonts != null)
