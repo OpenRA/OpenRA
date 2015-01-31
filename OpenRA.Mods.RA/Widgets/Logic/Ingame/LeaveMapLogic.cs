@@ -96,6 +96,20 @@ namespace OpenRA.Mods.RA.Widgets
 				});
 			};
 
+			// if player is alone on map (bots excluded), player got the possibility to restart
+			var restartButton = dialog.Get<ButtonWidget>("RESTART_BUTTON");
+			restartButton.IsVisible = () => !isMultiplayer;
+			restartButton.OnClick = () =>
+			{
+				restartButton.IsDisabled = () => true;
+
+				// call restart
+				Game.RestartGame();
+
+				// close menue
+				Ui.CloseWindow();
+			};
+
 			var leaveButton = dialog.Get<ButtonWidget>("LEAVE_BUTTON");
 			leaveButton.OnClick = () =>
 			{
