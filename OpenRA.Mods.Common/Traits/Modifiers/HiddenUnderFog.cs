@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public bool IsVisible(Actor self, Player byPlayer)
 		{
-			return byPlayer == null || Shroud.GetVisOrigins(self).Any(o => byPlayer.Shroud.IsVisible(o));
+			return byPlayer == null || Shroud.GetVisOrigins(self).Any(byPlayer.Shroud.IsVisible);
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
