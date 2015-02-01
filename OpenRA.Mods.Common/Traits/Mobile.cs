@@ -579,8 +579,7 @@ namespace OpenRA.Mods.Common.Traits
 							notStupidCells.Add(p);
 				}
 
-			var moveTo = availCells.Any() ? availCells.Random(self.World.SharedRandom) :
-				notStupidCells.Any() ? notStupidCells.Random(self.World.SharedRandom) : (CPos?)null;
+			var moveTo = availCells.Any() ? availCells.Random(self.World.SharedRandom) : (CPos?)null;
 
 			if (moveTo.HasValue)
 			{
@@ -592,8 +591,30 @@ namespace OpenRA.Mods.Common.Traits
 					self.ActorID, self.Location, moveTo.Value);
 			}
 			else
-				Log.Write("debug", "OnNudge #{0} refuses at {1}",
-					self.ActorID, self.Location);
+			{
+				var cellInfo = notStupidCells
+					.SelectMany(c => self.World.ActorMap.GetUnitsAt(c)
+						.Where(a => a.IsIdle && a.HasTrait<Mobile>()),
+						(c, a) => new { Cell = c, Actor = a })
+					.RandomOrDefault(self.World.SharedRandom);
+
+				if (cellInfo != null)
+				{
+					self.CancelActivity();
+					var notifyBlocking = new CallFunc(() => self.NotifyBlocker(cellInfo.Cell));
+					var waitFor = new WaitFor(() => CanEnterCell(cellInfo.Cell));
+					var move = new Move(self, cellInfo.Cell);
+					self.QueueActivity(Util.SequenceActivities(notifyBlocking, waitFor, move));
+
+					Log.Write("debug", "OnNudge (notify next blocking actor, wait and move) #{0} from {1} to {2}",
+						self.ActorID, self.Location, cellInfo.Cell);
+				}
+				else
+				{
+					Log.Write("debug", "OnNudge #{0} refuses at {1}",
+						self.ActorID, self.Location);
+				}
+			}
 		}
 
 		class MoveOrderTargeter : IOrderTargeter
