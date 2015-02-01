@@ -26,9 +26,16 @@ namespace OpenRA
 
 	public class World
 	{
+		class ActorIDComparer : IComparer<Actor>
+		{
+			public static readonly ActorIDComparer Instance = new ActorIDComparer();
+			private ActorIDComparer() { }
+			public int Compare(Actor x, Actor y) { return x.ActorID.CompareTo(y.ActorID); }
+		}
+
 		static readonly Func<MPos, bool> FalsePredicate = _ => false;
 		internal readonly TraitDictionary TraitDict = new TraitDictionary();
-		readonly HashSet<Actor> actors = new HashSet<Actor>();
+		readonly SortedSet<Actor> actors = new SortedSet<Actor>(ActorIDComparer.Instance);
 		readonly List<IEffect> effects = new List<IEffect>();
 		readonly Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
@@ -237,6 +244,7 @@ namespace OpenRA
 
 		public void Add(IEffect b) { effects.Add(b); }
 		public void Remove(IEffect b) { effects.Remove(b); }
+		public void RemoveAll(Predicate<IEffect> predicate) { effects.RemoveAll(predicate); }
 
 		public void AddFrameEndTask(Action<World> a) { frameEndActions.Enqueue(a); }
 

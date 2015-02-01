@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var spawns = preview.SpawnPoints;
 			return lobbyInfo.Clients
-				.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Count))
+				.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Length))
 				.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c));
 		}
 
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var spawns = preview.SpawnPoints;
 			return players
-					.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Count))
+					.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Length))
 					.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c));
 		}
 
@@ -430,7 +430,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("SPAWN");
 			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady;
-			dropdown.OnMouseDown = _ => ShowSpawnDropDown(dropdown, c, orderManager, Enumerable.Range(0, map.SpawnPoints.Count + 1).Except(orderManager.LobbyInfo.Clients.Where(client => client != c && client.SpawnPoint != 0).Select(client => client.SpawnPoint)));
+			dropdown.OnMouseDown = _ =>
+			{
+				var spawnPoints = Enumerable.Range(0, map.SpawnPoints.Length + 1).Except(
+					orderManager.LobbyInfo.Clients.Where(
+					client => client != c && client.SpawnPoint != 0).Select(client => client.SpawnPoint));
+				ShowSpawnDropDown(dropdown, c, orderManager, spawnPoints);
+			};
 			dropdown.GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
 		}
 

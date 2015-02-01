@@ -188,19 +188,19 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			var bases = world.ActorsWithTrait<BaseBuilding>()
 				.Where(a => a.Actor.Owner == world.LocalPlayer)
-				.ToArray();
+				.Select(b => b.Actor)
+				.ToList();
 
 			if (!bases.Any())
 				return true;
 
 			var next = bases
-				.Select(b => b.Actor)
 				.SkipWhile(b => !world.Selection.Actors.Contains(b))
 				.Skip(1)
 				.FirstOrDefault();
 
 			if (next == null)
-				next = bases.Select(b => b.Actor).First();
+				next = bases.First();
 
 			world.Selection.Combine(world, new Actor[] { next }, false, true);
 
@@ -212,19 +212,19 @@ namespace OpenRA.Mods.RA.Widgets
 			var facilities = world.ActorsWithTrait<Production>()
 				.Where(a => a.Actor.Owner == world.LocalPlayer && !a.Actor.HasTrait<BaseBuilding>())
 				.OrderBy(f => f.Actor.Info.Traits.Get<ProductionInfo>().Produces.First())
-				.ToArray();
+				.Select(b => b.Actor)
+				.ToList();
 
 			if (!facilities.Any())
 				return true;
 
 			var next = facilities
-				.Select(b => b.Actor)
 				.SkipWhile(b => !world.Selection.Actors.Contains(b))
 				.Skip(1)
 				.FirstOrDefault();
 
 			if (next == null)
-				next = facilities.Select(b => b.Actor).First();
+				next = facilities.First();
 
 			world.Selection.Combine(world, new Actor[] { next }, false, true);
 

@@ -281,7 +281,7 @@ namespace OpenRA.Mods.Common.Widgets
 					Hotkey = ks.GetProductionHotkey(DisplayedIconCount),
 					Sprite = icon.Image,
 					Pos = new float2(rect.Location),
-					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
+					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList()
 				};
 
 				icons.Add(rect, pi);

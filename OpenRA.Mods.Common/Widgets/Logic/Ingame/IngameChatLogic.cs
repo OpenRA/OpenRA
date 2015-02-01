@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ContainerWidget chatTemplate;
 		readonly TextFieldWidget chatText;
 
-		readonly List<INotifyChat> chatTraits;
+		readonly INotifyChat[] chatTraits;
 
 		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
 
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.orderManager = orderManager;
 			this.modRules = modRules;
 
-			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToList();
+			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToArray();
 
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
 			disableTeamChat = world.LocalPlayer == null || world.LobbyInfo.IsSinglePlayer || !players.Any(p => p.IsAlliedWith(world.LocalPlayer));

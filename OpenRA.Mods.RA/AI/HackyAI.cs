@@ -218,7 +218,7 @@ namespace OpenRA.Mods.RA.AI
 			if (!buildableThings.Any())
 				return null;
 
-			var unit = buildableThings.ElementAtOrDefault(Random.Next(buildableThings.Count()));
+			var unit = buildableThings.Random(Random);
 			return HasAdequateAirUnits(unit) ? unit : null;
 		}
 
@@ -231,11 +231,11 @@ namespace OpenRA.Mods.RA.AI
 			var myUnits = Player.World
 				.ActorsWithTrait<IPositionable>()
 				.Where(a => a.Actor.Owner == Player)
-				.Select(a => a.Actor.Info.Name).ToArray();
+				.Select(a => a.Actor.Info.Name).ToList();
 
 			foreach (var unit in Info.UnitsToBuild.Shuffle(Random))
 				if (buildableThings.Any(b => b.Name == unit.Key))
-					if (myUnits.Count(a => a == unit.Key) < unit.Value * myUnits.Length)
+					if (myUnits.Count(a => a == unit.Key) < unit.Value * myUnits.Count)
 						if (HasAdequateAirUnits(Map.Rules.Actors[unit.Key]))
 							return Map.Rules.Actors[unit.Key];
 
@@ -463,12 +463,9 @@ namespace OpenRA.Mods.RA.AI
 		{
 			var enemyUnits = World.FindActorsInCircle(pos, radius)
 				.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy &&
-					!unit.HasTrait<Husk>() && unit.HasTrait<ITargetable>()).ToList();
+					!unit.HasTrait<Husk>() && unit.HasTrait<ITargetable>());
 
-			if (enemyUnits.Count > 0)
-				return enemyUnits.ClosestTo(pos);
-
-			return null;
+			return enemyUnits.ClosestTo(pos);
 		}
 
 		List<Actor> FindEnemyConstructionYards()
@@ -645,7 +642,7 @@ namespace OpenRA.Mods.RA.AI
 			{
 				var ownUnits = World.FindActorsInCircle(World.Map.CenterOfCell(BaseCenter), WRange.FromCells(Info.ProtectUnitScanRadius))
 					.Where(unit => unit.Owner == Player && !unit.HasTrait<Building>()
-						&& unit.HasTrait<AttackBase>()).ToList();
+						&& unit.HasTrait<AttackBase>());
 
 				foreach (var a in ownUnits)
 					protectSq.Units.Add(a);

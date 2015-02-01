@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA.AI
 			if (leader == null)
 				return;
 			var ownUnits = owner.World.FindActorsInCircle(leader.CenterPosition, WRange.FromCells(owner.Units.Count) / 3)
-				.Where(a => a.Owner == owner.Units.FirstOrDefault().Owner && owner.Units.Contains(a)).ToList();
+				.Where(a => a.Owner == owner.Units.FirstOrDefault().Owner && owner.Units.Contains(a)).ToHashSet();
 			if (ownUnits.Count < owner.Units.Count)
 			{
 				owner.World.IssueOrder(new Order("Stop", leader, false));
@@ -94,11 +94,12 @@ namespace OpenRA.Mods.RA.AI
 			else
 			{
 				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WRange.FromCells(12))
-					.Where(a1 => !a1.Destroyed && !a1.IsDead).ToList();
-				var enemynearby = enemies.Where(a1 => a1.HasTrait<ITargetable>() && leader.Owner.Stances[a1.Owner] == Stance.Enemy).ToList();
-				if (enemynearby.Any())
+					.Where(a1 => !a1.Destroyed && !a1.IsDead);
+				var enemynearby = enemies.Where(a1 => a1.HasTrait<ITargetable>() && leader.Owner.Stances[a1.Owner] == Stance.Enemy);
+				var target = enemynearby.ClosestTo(leader.CenterPosition);
+				if (target != null)
 				{
-					owner.TargetActor = enemynearby.ClosestTo(leader.CenterPosition);
+					owner.TargetActor = target;
 					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackState(), true);
 					return;
 				}

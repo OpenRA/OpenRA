@@ -29,9 +29,9 @@ namespace OpenRA.Mods.Common.Traits
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
 			domainIndexes = new Dictionary<uint, MovementClassDomainIndex>();
-			var movementClasses = new HashSet<uint>(
+			var movementClasses =
 				world.Map.Rules.Actors.Where(ai => ai.Value.Traits.Contains<MobileInfo>())
-				.Select(ai => (uint)ai.Value.Traits.Get<MobileInfo>().GetMovementClass(world.TileSet)));
+				.Select(ai => (uint)ai.Value.Traits.Get<MobileInfo>().GetMovementClass(world.TileSet)).Distinct();
 
 			foreach (var mc in movementClasses)
 				domainIndexes[mc] = new MovementClassDomainIndex(world, mc);
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// Regenerate the domain index for a group of cells
 		public void UpdateCells(World world, IEnumerable<CPos> cells)
 		{
-			var dirty = new HashSet<CPos>(cells);
+			var dirty = cells.ToHashSet();
 			foreach (var index in domainIndexes)
 				index.Value.UpdateCells(world, dirty);
 		}

@@ -203,14 +203,14 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 		public static void Write(Stream s, Size size, IEnumerable<byte[]> frames)
 		{
-			var compressedFrames = frames.Select(f => Format80.Encode(f)).ToArray();
+			var compressedFrames = frames.Select(f => Format80.Encode(f)).ToList();
 
 			// note: end-of-file and all-zeroes headers
-			var dataOffset = 14 + (compressedFrames.Length + 2) * 8;
+			var dataOffset = 14 + (compressedFrames.Count + 2) * 8;
 
 			using (var bw = new BinaryWriter(s))
 			{
-				bw.Write((ushort)compressedFrames.Length);
+				bw.Write((ushort)compressedFrames.Count);
 				bw.Write((ushort)0);
 				bw.Write((ushort)0);
 				bw.Write((ushort)size.Width);

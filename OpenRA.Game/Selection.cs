@@ -18,7 +18,7 @@ namespace OpenRA
 {
 	public class Selection
 	{
-		List<Actor> actors = new List<Actor>();
+		readonly HashSet<Actor> actors = new HashSet<Actor>();
 		public void Add(World w, Actor a)
 		{
 			actors.Add(a);
@@ -30,20 +30,32 @@ namespace OpenRA
 
 		public bool Contains(Actor a)
 		{
-			return actors.AsEnumerable().Contains(a);
+			return actors.Contains(a);
 		}
 
 		public void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
 		{
-			var oldSelection = actors.AsEnumerable();
-
 			if (isClick)
 			{
 				var adjNewSelection = newSelection.Take(1);	/* TODO: select BEST, not FIRST */
-				actors = (isCombine ? oldSelection.SymmetricDifference(adjNewSelection) : adjNewSelection).ToList();
+				if (isCombine)
+					actors.SymmetricExceptWith(adjNewSelection);
+				else
+				{
+					actors.Clear();
+					actors.UnionWith(adjNewSelection);
+				}
 			}
 			else
-				actors = (isCombine ? oldSelection.Union(newSelection) : newSelection).ToList();
+			{
+				if (isCombine)
+					actors.UnionWith(newSelection);
+				else
+				{
+					actors.Clear();
+					actors.UnionWith(newSelection);
+				}
+			}
 
 			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoices());
 			if (voicedUnit != null)
@@ -57,11 +69,11 @@ namespace OpenRA
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
-		public void Clear() { actors = new List<Actor>(); }
+		public void Clear() { actors.Clear(); }
 
 		public void Tick(World world)
 		{
-			actors.RemoveAll(a => !a.IsInWorld || (!a.Owner.IsAlliedWith(world.RenderPlayer) && world.FogObscures(a)));
+			actors.RemoveWhere(a => !a.IsInWorld || (!a.Owner.IsAlliedWith(world.RenderPlayer) && world.FogObscures(a)));
 
 			foreach (var cg in controlGroups.Values)
 			{

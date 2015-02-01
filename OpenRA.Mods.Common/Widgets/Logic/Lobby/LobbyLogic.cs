@@ -459,10 +459,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var techLevel = optionsBin.GetOrNull<DropDownButtonWidget>("TECHLEVEL_DROPDOWNBUTTON");
 			if (techLevel != null)
 			{
-				var techTraits = modRules.Actors["player"].Traits.WithInterface<ProvidesTechPrerequisiteInfo>().ToArray();
-				techLevel.IsVisible = () => techTraits.Length > 0;
-				optionsBin.GetOrNull<LabelWidget>("TECHLEVEL_DESC").IsVisible = () => techTraits.Length > 0;
-				techLevel.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.TechLevel != null || configurationDisabled() || techTraits.Length <= 1;
+				var techTraits = modRules.Actors["player"].Traits.WithInterface<ProvidesTechPrerequisiteInfo>().ToList();
+				techLevel.IsVisible = () => techTraits.Count > 0;
+				optionsBin.GetOrNull<LabelWidget>("TECHLEVEL_DESC").IsVisible = () => techTraits.Count > 0;
+				techLevel.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.TechLevel != null || configurationDisabled() || techTraits.Count <= 1;
 				techLevel.GetText = () => Map.Status != MapStatus.Available || Map.Map.Options.TechLevel != null ? "Not Available" : "{0}".F(orderManager.LobbyInfo.GlobalSettings.TechLevel);
 				techLevel.OnMouseDown = _ =>
 				{
