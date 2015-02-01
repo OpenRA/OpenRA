@@ -126,10 +126,6 @@ TileSets:
 Music:
 	./mods/ra/music.yaml
 
-Movies:
-	./mods/ra/movies1.yaml
-	./mods/ra/movies2.yaml
-
 Translations:
 	./mods/ra/languages/english.yaml
 

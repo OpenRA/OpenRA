@@ -159,8 +159,6 @@ SubCells:
 Music:
 	./mods/ts/music.yaml
 
-Movies:
-
 Translations:
 	./mods/ts/languages/english.yaml
 

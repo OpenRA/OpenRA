@@ -26,7 +26,7 @@ namespace OpenRA
 		public readonly string[]
 			Folders, Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
-			Weapons, Voices, Notifications, Music, Movies, Translations, TileSets,
+			Weapons, Voices, Notifications, Music, Translations, TileSets,
 			ChromeMetrics, MapCompatibility, Missions;
 
 		public readonly IReadOnlyDictionary<string, string> Packages;
@@ -77,7 +77,6 @@ namespace OpenRA
 			Voices = YamlList(yaml, "Voices", true);
 			Notifications = YamlList(yaml, "Notifications", true);
 			Music = YamlList(yaml, "Music", true);
-			Movies = YamlList(yaml, "Movies", true);
 			Translations = YamlList(yaml, "Translations", true);
 			TileSets = YamlList(yaml, "TileSets", true);
 			ChromeMetrics = YamlList(yaml, "ChromeMetrics", true);
