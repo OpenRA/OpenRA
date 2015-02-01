@@ -1031,6 +1031,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Remove PerCellDamageWarhead
+				if (engineVersion < 20150213)
+				{
+					if (depth == 1 && node.Value.Nodes.Exists(n => n.Key == "PerCellDamage"))
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key == "PerCellDamage");
+						Console.WriteLine("The 'PerCellDamage' warhead has been removed.");
+						Console.WriteLine("Please use the 'SpreadDamage' warhead instead.");
+					}
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
