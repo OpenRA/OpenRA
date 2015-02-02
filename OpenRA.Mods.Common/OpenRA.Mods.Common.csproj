@@ -511,8 +511,6 @@
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)mods/common/"
 copy "$(TargetPath)" "$(SolutionDir)mods/common/"
-cd "$(SolutionDir)thirdparty/"
-copy "FuzzyLogicLibrary.dll" "$(SolutionDir)"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
