@@ -71,7 +71,7 @@ namespace OpenRA.Server
 				c.Team = pr.Team;
 		}
 
-		static void SendData(Socket s, byte[] data)
+		void SendData(Socket s, byte[] data)
 		{
 			var start = 0;
 			var length = data.Length;
@@ -248,7 +248,7 @@ namespace OpenRA.Server
 					Map = LobbyInfo.GlobalSettings.Map
 				};
 
-				DispatchOrdersToClient(newConn, 0, 0, new ServerOrder("HandshakeRequest", request.Serialize()).Serialize());
+				Dispatch(newConn, null, new ServerOrder("HandshakeRequest", request.Serialize()));
 			}
 			catch (Exception e)
 			{
@@ -387,35 +387,53 @@ namespace OpenRA.Server
 			SyncLobbyGlobalSettings();
 		}
 
-		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
+		void Dispatch(Connection connTo, Connection connFrom, ServerOrder order, int frame = 0, byte[] data = null)
 		{
+			data = data ?? order.Serialize();
+
+			var from = connFrom != null ? connFrom.PlayerIndex : 0;
+			var targetConnections = connTo != null ? new List<Connection> { connTo } :
+				(connFrom != null ? Conns.Except(connFrom) : Conns).ToList();
+
+			foreach (var c in targetConnections)
+			{
+				try
+				{
+					SendData(c.Socket, BitConverter.GetBytes(data.Length + 4));
+					SendData(c.Socket, BitConverter.GetBytes(from));
+					SendData(c.Socket, BitConverter.GetBytes(frame));
+					SendData(c.Socket, data);
+				}
+				catch (Exception e)
+				{
+					DropClient(c);
+					Log.Write("server", "Dropping client {0} because dispatching orders failed: {1}", c, e);
+				}
+			}
+		}
+
+		public void ProcessOrders(Connection conn, int frame, byte[] data)
+		{
+			if (frame != 0)
+			{
+				Dispatch(null, conn, null, frame, data);
+				return;
+			}
+
+			var ms = new MemoryStream(data);
+			var br = new BinaryReader(ms);
+
 			try
 			{
-				SendData(c.Socket, BitConverter.GetBytes(data.Length + 4));
-				SendData(c.Socket, BitConverter.GetBytes(client));
-				SendData(c.Socket, BitConverter.GetBytes(frame));
-				SendData(c.Socket, data);
+				while (true)
+				{
+					var so = ServerOrder.Deserialize(br);
+					if (so == null) return;
+					InterpretServerOrder(conn, so);
+				}
 			}
-			catch (Exception e)
-			{
-				DropClient(c);
-				Log.Write("server", "Dropping client {0} because dispatching orders failed: {1}", client.ToString(), e);
-			}
-		}
-
-		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
-		{
-			var from = conn != null ? conn.PlayerIndex : 0;
-			foreach (var c in Conns.Except(conn).ToList())
-				DispatchOrdersToClient(c, from, frame, data);
-		}
-
-		public void DispatchOrders(Connection conn, int frame, byte[] data)
-		{
-			if (frame == 0 && conn != null)
-				InterpretServerOrders(conn, data);
-			else
-				DispatchOrdersToClients(conn, frame, data);
+			catch (EndOfStreamException) { }
+			catch (NotImplementedException) { }
 		}
 
 		void InterpretServerOrders(Connection conn, byte[] data)
@@ -438,12 +456,12 @@ namespace OpenRA.Server
 
 		public void SendOrderTo(Connection conn, string order, string data)
 		{
-			DispatchOrdersToClient(conn, 0, 0, new ServerOrder(order, data).Serialize());
+			Dispatch(conn, null, new ServerOrder(order, data));
 		}
 
 		public void SendMessage(string text)
 		{
-			DispatchOrdersToClients(null, 0, new ServerOrder("Message", text).Serialize());
+			Dispatch(null, null, new ServerOrder("Message", text));
 		}
 
 		void InterpretServerOrder(Connection conn, ServerOrder so)
@@ -472,7 +490,7 @@ namespace OpenRA.Server
 				case "Chat":
 				case "TeamChat":
 				case "PauseGame":
-					DispatchOrdersToClients(conn, 0, so.Serialize());
+					Dispatch(null, conn, so);
 					break;
 				case "Pong":
 					{
@@ -531,7 +549,7 @@ namespace OpenRA.Server
 				SendMessage("{0}{1} has disconnected.".F(dropClient.Name, suffix));
 
 				// Send disconnected order, even if still in the lobby
-				DispatchOrdersToClients(toDrop, 0, new ServerOrder("Disconnected", "").Serialize());
+				Dispatch(null, toDrop, new ServerOrder("Disconnected", ""));
 
 				LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
@@ -552,7 +570,7 @@ namespace OpenRA.Server
 					}
 				}
 
-				DispatchOrders(toDrop, frame, new byte[] { 0xbf });
+				Dispatch(null, toDrop, null, frame, new byte[] { 0xBF });
 
 				if (!Conns.Any())
 				{
@@ -579,8 +597,7 @@ namespace OpenRA.Server
 		public void SyncLobbyInfo()
 		{
 			if (State == ServerState.WaitingPlayers) // Don't do this while the game is running, it breaks things!
-				DispatchOrders(null, 0,
-					new ServerOrder("SyncInfo", LobbyInfo.Serialize()).Serialize());
+				Dispatch(null, null, new ServerOrder("SyncInfo", LobbyInfo.Serialize()));
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -596,8 +613,7 @@ namespace OpenRA.Server
 			foreach (var client in LobbyInfo.Clients)
 				clientData.Add(client.Serialize());
 
-			DispatchOrders(null, 0,
-				new ServerOrder("SyncLobbyClients", clientData.WriteToString()).Serialize());
+			Dispatch(null, null, new ServerOrder("SyncLobbyClients", clientData.WriteToString()));
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -613,8 +629,7 @@ namespace OpenRA.Server
 			foreach (var slot in LobbyInfo.Slots)
 				slotData.Add(slot.Value.Serialize());
 
-			DispatchOrders(null, 0,
-				new ServerOrder("SyncLobbySlots", slotData.WriteToString()).Serialize());
+			Dispatch(null, null, new ServerOrder("SyncLobbySlots", slotData.WriteToString()));
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -628,8 +643,7 @@ namespace OpenRA.Server
 			var sessionData = new List<MiniYamlNode>();
 			sessionData.Add(LobbyInfo.GlobalSettings.Serialize());
 
-			DispatchOrders(null, 0,
-				new ServerOrder("SyncLobbyGlobalSettings", sessionData.WriteToString()).Serialize());
+			Dispatch(null, null, new ServerOrder("SyncLobbyGlobalSettings", sessionData.WriteToString()));
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -642,8 +656,7 @@ namespace OpenRA.Server
 			foreach (var ping in LobbyInfo.ClientPings)
 				clientPings.Add(ping.Serialize());
 
-			DispatchOrders(null, 0,
-				new ServerOrder("SyncClientPings", clientPings.WriteToString()).Serialize());
+			Dispatch(null, null, new ServerOrder("SyncClientPings", clientPings.WriteToString()));
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -674,10 +687,9 @@ namespace OpenRA.Server
 
 			foreach (var c in Conns)
 				foreach (var d in Conns)
-					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF });
+					Dispatch(c, d, null, 0x7FFFFFFF, new byte[] { 0xBF });
 
-			DispatchOrders(null, 0,
-				new ServerOrder("StartGame", "").Serialize());
+			Dispatch(null, null, new ServerOrder("StartGame", ""));
 
 			foreach (var t in serverTraits.WithInterface<IStartGame>())
 				t.GameStarted(this);
