@@ -1332,6 +1332,7 @@ MiniNuke:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		AffectsParent: true
 	Warhead@2Res_impact: DestroyResource
 		Size: 1
 	Warhead@3Eff_impact: CreateEffect
