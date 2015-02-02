@@ -67,6 +67,7 @@ end
 Tick = function()
 	if FollowTruk then
 		TrukCamera.Teleport(Truk.Location)
+		Camera.Position = Truk.CenterPosition
 	end
 
 	if ussr.HasNoRequiredUnits() then
@@ -87,6 +88,8 @@ SendReinforcements = function()
 		Reinforcements.ReinforceWithTransport(greece, InsertionTransport, reinforceTable[1], reinforceTable[2], { SpyEntry.Location })
 	end)
 
+	Media.PlaySpeechNotification(greece, "AlliedReinforcementsArrived")
+
 	ActivateAI()
 end
 
@@ -98,9 +101,11 @@ ExtractTanya = function()
 	ExtractionHeli.Move(CPos.New(ExtractionPath[1].X, ExtractionHeli.Location.Y))
 	ExtractionHeli.Destroy()
 
-	greece.MarkCompletedObjective(mainObj)
-	SendReinforcements()
-	PrisonCamera.Destroy()
+	Trigger.OnRemovedFromWorld(ExtractionHeli, function()
+		greece.MarkCompletedObjective(mainObj)
+		SendReinforcements()
+		PrisonCamera.Destroy()
+	end)
 end
 
 WarfactoryInfiltrated = function()
