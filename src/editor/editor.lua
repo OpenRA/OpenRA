@@ -660,9 +660,8 @@ end
 -- ----------------------------------------------------------------------------
 -- Create an editor
 function CreateEditor(bare)
-  local editor = wxstc.wxStyledTextCtrl(notebook, editorID,
-    wx.wxDefaultPosition, wx.wxSize(0, 0),
-    wx.wxBORDER_NONE)
+  local editor = ide:CreateStyledTextCtrl(notebook, editorID,
+    wx.wxDefaultPosition, wx.wxSize(0, 0), wx.wxBORDER_NONE)
 
   editorID = editorID + 1 -- increment so they're always unique
 
@@ -784,26 +783,6 @@ function CreateEditor(bare)
   if (ide.config.acandtip.strategy > 0) then
     editor:AutoCompSetAutoHide(0)
     editor:AutoCompStops([[ \n\t=-+():.,;*/!"'$%&~'#°^@?´`<>][|}{]])
-  end
-
-  function editor:GotoPosEnforcePolicy(pos)
-    self:GotoPos(pos)
-    self:EnsureVisibleEnforcePolicy(self:LineFromPosition(pos))
-  end
-
-  local function getMarginWidth(editor)
-    local width = 0
-    for m = 0, 7 do width = width + editor:GetMarginWidth(m) end
-    return width
-  end
-
-  function editor:ShowPosEnforcePolicy(pos)
-    local line = self:LineFromPosition(pos)
-    self:EnsureVisibleEnforcePolicy(line)
-    if edcfg.usewrap then return end -- skip the rest if line wrapping is on
-    local xwidth = self:GetClientSize():GetWidth() - getMarginWidth(editor)
-    local xoffset = self:GetTextExtent(self:GetLine(line):sub(1, pos-self:PositionFromLine(line)+1))
-    self:SetXOffset(xoffset > xwidth and xoffset-xwidth or 0)
   end
 
   function editor:GetTokenList() return self.tokenlist end
