@@ -468,6 +468,17 @@
 	Tooltip:
 		Name: Tree
 
+^Rock:
+	RenderBuilding:
+		Palette: terrain
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	AppearsOnRadar:
+	BodyOrientation:
+	Tooltip:
+		Name: Rock
+
 ^Veinhole:
 	RadarColorFromTerrain:
 		Terrain: Tiberium
