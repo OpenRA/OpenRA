@@ -17,12 +17,10 @@ namespace OpenRA.Graphics
 	public interface IRenderable
 	{
 		WPos Pos { get; }
-		float Scale { get; }
 		PaletteReference Palette { get; }
 		int ZOffset { get; }
 		bool IsDecoration { get; }
 
-		IRenderable WithScale(float newScale);
 		IRenderable WithPalette(PaletteReference newPalette);
 		IRenderable WithZOffset(int newOffset);
 		IRenderable OffsetBy(WVec offset);
@@ -62,12 +60,10 @@ namespace OpenRA.Graphics
 
 		public WPos Pos { get { return pos + offset; } }
 		public WVec Offset { get { return offset; } }
-		public float Scale { get { return scale; } }
 		public PaletteReference Palette { get { return palette; } }
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return isDecoration; } }
 
-		public IRenderable WithScale(float newScale) { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, newScale, isDecoration); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new SpriteRenderable(sprite, pos, offset, zOffset, newPalette, scale, isDecoration); }
 		public IRenderable WithZOffset(int newOffset) { return new SpriteRenderable(sprite, pos, offset, newOffset, palette, scale, isDecoration); }
 		public IRenderable OffsetBy(WVec vec) { return new SpriteRenderable(sprite, pos + vec, offset, zOffset, palette, scale, isDecoration); }
