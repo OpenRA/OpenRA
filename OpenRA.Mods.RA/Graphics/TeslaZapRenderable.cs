@@ -56,12 +56,10 @@ namespace OpenRA.Mods.RA.Graphics
 		}
 
 		public WPos Pos { get { return pos; } }
-		public float Scale { get { return 1f; } }
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithScale(float newScale) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps, palette); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps, palette); }
 		public IRenderable WithZOffset(int newOffset) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps, palette); }
 		public IRenderable OffsetBy(WVec vec) { return new TeslaZapRenderable(pos + vec, zOffset, length, image, brightZaps, dimZaps, palette); }

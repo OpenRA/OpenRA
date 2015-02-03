@@ -48,18 +48,9 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public WPos Pos { get { return pos; } }
-		public float Scale { get { return scale; } }
 		public PaletteReference Palette { get { return palette; } }
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return false; } }
-
-		public IRenderable WithScale(float newScale)
-		{
-			return new VoxelRenderable(
-				voxels, pos, zOffset, camera, newScale,
-				lightSource, lightAmbientColor, lightDiffuseColor,
-				palette, normalsPalette, shadowPalette);
-		}
 
 		public IRenderable WithPalette(PaletteReference newPalette)
 		{

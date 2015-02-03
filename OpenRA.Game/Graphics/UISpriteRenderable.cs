@@ -36,11 +36,9 @@ namespace OpenRA.Graphics
 		public WVec Offset { get { return WVec.Zero; } }
 		public bool IsDecoration { get { return true; } }
 
-		public float Scale { get { return scale; } }
 		public PaletteReference Palette { get { return palette; } }
 		public int ZOffset { get { return zOffset; } }
 
-		public IRenderable WithScale(float newScale) { return new UISpriteRenderable(sprite, screenPos, zOffset, palette, newScale); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new UISpriteRenderable(sprite, screenPos, zOffset, newPalette, scale); }
 		public IRenderable WithZOffset(int newOffset) { return this; }
 		public IRenderable OffsetBy(WVec vec) { return this; }

@@ -32,12 +32,10 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public WPos Pos { get { return pos; } }
-		public float Scale { get { return 1f; } }
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithScale(float newScale) { return new TextRenderable(font, pos, zOffset, color, text); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new TextRenderable(font, pos, zOffset, color, text); }
 		public IRenderable WithZOffset(int newOffset) { return new TextRenderable(font, pos, zOffset, color, text); }
 		public IRenderable OffsetBy(WVec vec) { return new TextRenderable(font, pos + vec, zOffset, color, text); }

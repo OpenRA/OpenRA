@@ -31,12 +31,10 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public WPos Pos { get { return centerPosition; } }
-		public float Scale { get { return 1f; } }
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithScale(float newScale) { return new RangeCircleRenderable(centerPosition, radius, zOffset, color, contrastColor); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new RangeCircleRenderable(centerPosition, radius, zOffset, color, contrastColor); }
 		public IRenderable WithZOffset(int newOffset) { return new RangeCircleRenderable(centerPosition, radius, newOffset, color, contrastColor); }
 		public IRenderable OffsetBy(WVec vec) { return new RangeCircleRenderable(centerPosition + vec, radius, zOffset, color, contrastColor); }
