@@ -22,3 +22,33 @@ CAMERA:
 	BodyOrientation:
 	DetectCloaked:
 		Range: 10
+
+SROCK01:
+	Inherits: ^Rock
+
+SROCK02:
+	Inherits: ^Rock
+
+SROCK03:
+	Inherits: ^Rock
+
+SROCK04:
+	Inherits: ^Rock
+
+SROCK05:
+	Inherits: ^Rock
+
+TROCK01:
+	Inherits: ^Rock
+
+TROCK02:
+	Inherits: ^Rock
+
+TROCK03:
+	Inherits: ^Rock
+
+TROCK04:
+	Inherits: ^Rock
+
+TROCK05:
+	Inherits: ^Rock
