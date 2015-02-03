@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
-	public struct SelectionBarsRenderable : IRenderable
+	public struct SelectionBarsRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly Actor actor;
@@ -135,7 +135,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void BeforeRender(WorldRenderer wr) { }
+		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			if (!actor.IsInWorld || actor.IsDead)

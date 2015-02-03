@@ -28,12 +28,16 @@ namespace OpenRA.Graphics
 		IRenderable OffsetBy(WVec offset);
 		IRenderable AsDecoration();
 
-		void BeforeRender(WorldRenderer wr);
+		IFinalizedRenderable PrepareRender(WorldRenderer wr);
+	}
+
+	public interface IFinalizedRenderable
+	{
 		void Render(WorldRenderer wr);
 		void RenderDebugGeometry(WorldRenderer wr);
 	}
 
-	public struct SpriteRenderable : IRenderable
+	public struct SpriteRenderable : IRenderable, IFinalizedRenderable
 	{
 		public static readonly IEnumerable<IRenderable> None = new IRenderable[0].AsEnumerable();
 
@@ -74,7 +78,7 @@ namespace OpenRA.Graphics
 			return wr.ScreenPxPosition(pos) + wr.ScreenPxOffset(offset) - (0.5f * scale * sprite.Size).ToInt2();
 		}
 
-		public void BeforeRender(WorldRenderer wr) { }
+		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			Game.Renderer.WorldSpriteRenderer.DrawSprite(sprite, ScreenPosition(wr), palette, sprite.Size * scale);

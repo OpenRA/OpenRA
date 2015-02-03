@@ -13,7 +13,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct RangeCircleRenderable : IRenderable
+	public struct RangeCircleRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos centerPosition;
 		readonly WRange radius;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable OffsetBy(WVec vec) { return new RangeCircleRenderable(centerPosition + vec, radius, zOffset, color, contrastColor); }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) { }
+		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			var wlr = Game.Renderer.WorldLineRenderer;

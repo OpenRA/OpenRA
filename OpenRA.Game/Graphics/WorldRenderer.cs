@@ -77,7 +77,7 @@ namespace OpenRA.Graphics
 		public void AddPalette(string name, ImmutablePalette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
 		public void ReplacePalette(string name, IPalette pal) { palette.ReplacePalette(name, pal); palettes[name].Palette = pal; }
 
-		List<IRenderable> GenerateRenderables()
+		List<IFinalizedRenderable> GenerateRenderables()
 		{
 			var actors = World.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight)
 				.Append(World.WorldActor);
@@ -100,12 +100,9 @@ namespace OpenRA.Graphics
 			if (World.OrderGenerator != null)
 				effectRenderables = effectRenderables.Concat(World.OrderGenerator.RenderAfterWorld(this, World));
 
-			// Iterating via foreach copies the structs, so enumerate by index
-			var renderables = worldRenderables.Concat(effectRenderables).ToList();
-
 			Game.Renderer.WorldVoxelRenderer.BeginFrame();
-			for (var i = 0; i < renderables.Count; i++)
-				renderables[i].BeforeRender(this);
+			var renderables = worldRenderables.Concat(effectRenderables)
+				.Select(r => r.PrepareRender(this)).ToList();
 			Game.Renderer.WorldVoxelRenderer.EndFrame();
 
 			return renderables;
@@ -146,21 +143,19 @@ namespace OpenRA.Graphics
 
 			var overlayRenderables = World.Selection.Actors.Where(a => !a.Destroyed)
 				.SelectMany(a => a.TraitsImplementing<IPostRenderSelection>())
-				.SelectMany(t => t.RenderAfterWorld(this))
-				.ToList();
+				.SelectMany(t => t.RenderAfterWorld(this));
 
 			Game.Renderer.WorldVoxelRenderer.BeginFrame();
-			for (var i = 0; i < overlayRenderables.Count; i++)
-				overlayRenderables[i].BeforeRender(this);
+			var finalOverlayRenderables = overlayRenderables.Select(r => r.PrepareRender(this));
 			Game.Renderer.WorldVoxelRenderer.EndFrame();
 
 			// HACK: Keep old grouping behaviour
-			foreach (var g in overlayRenderables.GroupBy(prs => prs.GetType()))
+			foreach (var g in finalOverlayRenderables.GroupBy(prs => prs.GetType()))
 				foreach (var r in g)
 					r.Render(this);
 
 			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
-				foreach (var g in overlayRenderables.GroupBy(prs => prs.GetType()))
+				foreach (var g in finalOverlayRenderables.GroupBy(prs => prs.GetType()))
 					foreach (var r in g)
 						r.RenderDebugGeometry(this);
 
