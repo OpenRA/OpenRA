@@ -127,9 +127,9 @@ Rules:
 		LuaScript:
 			Scripts: shellmap.lua
 	REFA:
-		-FreeActor:
+		-DeliverFreeActor:
 	CARRYALLA:
-		-AutoCarryall:
+		-Carryall:
 		Helicopter:
 			CruiseAltitude: 2048
 			LandAltitude: 512

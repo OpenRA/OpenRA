@@ -27,7 +27,15 @@
 	LeavesHusk:
 		HuskActor: CARRYALL.Husk
 	-Selectable:
-	AutoCarryall:
+	Carryall:
+
+CARRYALL.reinforce:
+	Inherits: ^CARRYALL
+	-Buildable:
+	Carryall:
+		Automatic: false
+	RenderUnit:
+		Image: carryall
 
 FRIGATE:
 	ParaDrop:

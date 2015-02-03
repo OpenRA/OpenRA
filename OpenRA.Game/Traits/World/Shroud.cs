@@ -271,7 +271,7 @@ namespace OpenRA.Traits
 			return IsExploredCore(uv);
 		}
 
-		bool ShroudEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Shroud; } }
+		public bool ShroudEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Shroud; } }
 
 		bool IsExploredCore(MPos uv)
 		{
@@ -314,7 +314,7 @@ namespace OpenRA.Traits
 			return IsVisibleCore(uv);
 		}
 
-		bool FogEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Fog; } }
+		public bool FogEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Fog; } }
 
 		bool IsVisibleCore(MPos uv)
 		{

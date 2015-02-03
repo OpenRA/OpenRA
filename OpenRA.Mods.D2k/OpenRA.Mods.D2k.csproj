@@ -68,11 +68,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\CarryUnit.cs" />
+    <Compile Include="Activities\PickupUnit.cs" />
+    <Compile Include="Activities\DeliverUnit.cs" />
     <Compile Include="Activities\SwallowActor.cs" />
     <Compile Include="SpriteLoaders\R8Loader.cs" />
     <Compile Include="Traits\AttackSwallow.cs" />
-    <Compile Include="Traits\AutoCarryall.cs" />
+    <Compile Include="Traits\Carryall.cs" />
     <Compile Include="Traits\Buildings\DamagedWithoutFoundation.cs" />
     <Compile Include="Traits\Buildings\LaysTerrain.cs" />
     <Compile Include="Traits\Carryable.cs" />
@@ -100,6 +101,8 @@
     <Compile Include="Widgets\SlidingContainerWidget.cs" />
     <Compile Include="Traits\Render\WithAttackOverlay.cs" />
     <Compile Include="Widgets\Logic\SlidingRadarBinLogic.cs" />
+    <Compile Include="Traits\ProductionFromMapEdge.cs" />
+    <Compile Include="Traits\Buildings\DeliverFreeActor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
