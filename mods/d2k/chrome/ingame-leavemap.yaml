@@ -111,7 +111,7 @@ Container@LEAVE_MAP_WIDGET:
 							Font: Bold
 							Text: Chat
 				Button@RESTART_BUTTON:
-					X: PARENT_RIGHT - 3 * (WIDTH + 20)
+					X: 20
 					Y: PARENT_BOTTOM - 45
 					Width: 120
 					Height: 25

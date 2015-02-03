@@ -23,7 +23,7 @@ Container@LEAVE_MAP_WIDGET:
 		Container@LEAVE_MAP_SIMPLE:
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
-			Width: 440
+			Width: 500
 			Height: 175
 			Visible: False
 			Children:
@@ -60,7 +60,7 @@ Container@LEAVE_MAP_WIDGET:
 							Font: Bold
 							Text: Leave
 						Button@RESTART_BUTTON:
-							X: PARENT_RIGHT - 2 * (WIDTH - 20)
+							X: PARENT_RIGHT - 2 * (WIDTH + 20)
 							Y: PARENT_BOTTOM - 45
 							Width: 140
 							Height: 25
@@ -132,7 +132,7 @@ Container@LEAVE_MAP_WIDGET:
 					Font: Bold
 					Text: Leave
 				Button@RESTART_BUTTON:
-					X: PARENT_RIGHT - 3 * (WIDTH + 20)
+					X: 20
 					Y: PARENT_BOTTOM - 45
 					Width: 120
 					Height: 25
