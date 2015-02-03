@@ -13,7 +13,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct BeamRenderable : IRenderable
+	public struct BeamRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly int zOffset;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable OffsetBy(WVec vec) { return new BeamRenderable(pos + vec, zOffset, length, width, color); }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) { }
+		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			var wlr = Game.Renderer.WorldLineRenderer;
