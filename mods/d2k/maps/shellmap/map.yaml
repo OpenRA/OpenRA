@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: d2k
 
@@ -37,8 +37,8 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: atreides
-		Enemies: Atreides
 		ColorRamp: 210,255,127
+		Enemies: Atreides
 
 Actors:
 	Actor4: spicebloom
@@ -106,7 +106,7 @@ Actors:
 		Location: 46,64
 		Owner: Creeps
 	Entry: waypoint
-		Location: 80, 8
+		Location: 80,8
 		Owner: Neutral
 	AtreidesSpiceRefinery: refa
 		Location: 57,58

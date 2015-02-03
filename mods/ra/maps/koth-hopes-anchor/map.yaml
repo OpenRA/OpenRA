@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -32,49 +32,49 @@ Players:
 		Name: Multi0
 		Playable: True
 		AllowBots: False
-		Race: Random
+		Race: random
 		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
-		Race: Random
+		Race: random
 		Enemies: Creeps
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		AllowBots: False
-		Race: Random
+		Race: random
 		Enemies: Creeps
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		AllowBots: False
-		Race: Random
+		Race: random
 		Enemies: Creeps
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
 		AllowBots: False
-		Race: Random
+		Race: random
 		Enemies: Creeps
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
 		AllowBots: False
-		Race: Random
+		Race: random
 		Enemies: Creeps
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
 		AllowBots: False
-		Race: Random
+		Race: random
 		Enemies: Creeps
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
 		AllowBots: False
-		Race: Random
+		Race: random
 		Enemies: Creeps
 	PlayerReference@Creeps:
 		Name: Creeps
