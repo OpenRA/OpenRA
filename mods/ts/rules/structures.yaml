@@ -7,7 +7,7 @@ GACNST:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
-		Owner: None
+		Prerequisites: ~disabled
 	Health:
 		HP: 1500
 	Armor:
@@ -44,13 +44,19 @@ GACNST:
 		Amount: 0
 	Selectable:
 		Bounds: 144, 72, 0, -12
+	ProvidesCustomPrerequisite@gdi:
+		Race: gdi
+		Prerequisite: structures.gdi
+	ProvidesCustomPrerequisite@nod:
+		Race: nod
+		Prerequisite: structures.nod
 
 GAPOWR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 0
-		Owner: gdi
+		Prerequisites: ~structures.gdi
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -87,8 +93,7 @@ GAPILE:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: anypower
-		Owner: gdi
+		Prerequisites: anypower, ~structures.gdi
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -136,7 +141,6 @@ PROC:
 		Queue: Building
 		BuildPaletteOrder: 20
 		Prerequisites: anypower
-		Owner: gdi, nod
 	Building:
 		Footprint: xxx= xx== xxx=
 		Dimensions: 4,3
@@ -173,7 +177,6 @@ GASILO:
 		Queue: Building
 		BuildPaletteOrder: 70
 		Prerequisites: proc
-		Owner: gdi, nod
 	Valued:
 		Cost: 150
 	Tooltip:
@@ -215,8 +218,7 @@ GAWEAP:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-		Owner: gdi
-		Prerequisites: proc
+		Prerequisites: proc, ~structures.gdi
 	Building:
 		Footprint: xxx= xxx= xxx=
 		Dimensions: 4,3
@@ -253,7 +255,7 @@ NAPOWR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 0
-		Owner: nod
+		Prerequisites: ~structures.nod
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -288,8 +290,7 @@ NAAPWR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 5
-		Prerequisites: factory
-		Owner: nod
+		Prerequisites: factory, ~structures.nod
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -324,8 +325,7 @@ NAHAND:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: anypower
-		Owner: nod
+		Prerequisites: anypower, ~structures.nod
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -372,8 +372,7 @@ NAWEAP:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-		Owner: nod
-		Prerequisites: proc
+		Prerequisites: proc, ~structures.nod
 	Building:
 		Footprint: xxx= xxx= xxx=
 		Dimensions: 4,3
@@ -406,8 +405,7 @@ GASAND:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000
-		Prerequisites: proc
-		Owner: gdi
+		Prerequisites: ~structures.gdi
 	SoundOnDamageTransition:
 		DamagedSound: sandbag1.aud
 		DestroyedSound: sandbag1.aud
@@ -434,8 +432,7 @@ GAWALL:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1001
-		Prerequisites: gapile
-		Owner: gdi
+		Prerequisites: ~structures.gdi
 	SoundOnDamageTransition:
 		DamagedSound:
 		DestroyedSound:
@@ -460,8 +457,7 @@ NAWALL:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1001
-		Prerequisites: nahand
-		Owner: nod
+		Prerequisites: ~structures.nod
 	SoundOnDamageTransition:
 		DamagedSound:
 		DestroyedSound:
@@ -624,7 +620,7 @@ GASPOT:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 10
-		Owner: gdi, nod
+		Prerequisites: anypower
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -653,7 +649,7 @@ GALITE:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 10
-		Owner: gdi, nod
+		Prerequisites: anypower
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -677,8 +673,7 @@ GARADR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
-		Owner: gdi
-		Prerequisites: proc
+		Prerequisites: proc, ~structures.gdi
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -717,8 +712,7 @@ NARADR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
-		Owner: nod
-		Prerequisites: proc
+		Prerequisites: proc, ~structures.nod
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -757,8 +751,7 @@ GATECH:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
-		Owner: gdi
-		Prerequisites: gaweap, garadr
+		Prerequisites: gaweap, garadr, ~structures.gdi
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -787,8 +780,7 @@ NATECH:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
-		Owner: nod
-		Prerequisites: naweap, naradr
+		Prerequisites: naweap, naradr, ~structures.nod
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -821,9 +813,8 @@ GAHPAD:
 		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
 		BuildPaletteOrder: 60
-		Owner: gdi
 		Queue: Building
-		Prerequisites: garadr
+		Prerequisites: garadr, ~structures.gdi
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -852,13 +843,12 @@ NAHPAD:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Nod Helipad
+		Name: Helipad
 		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
 		BuildPaletteOrder: 60
-		Owner: nod
 		Queue: Building
-		Prerequisites: naradr
+		Prerequisites: naradr, ~structures.nod
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -891,8 +881,7 @@ GADEPT:
 		Description: Repairs vehicles
 	Buildable:
 		BuildPaletteOrder: 80
-		Prerequisites: factory
-		Owner: gdi
+		Prerequisites: factory, ~structures.gdi
 		Queue: Building
 	Building:
 		Footprint: =x= xxx =x=
@@ -928,8 +917,7 @@ NASTLH:
 		Description: Generates a cloaking field
 	Buildable:
 		BuildPaletteOrder: 80
-		Prerequisites: proc, natech
-		Owner: nod
+		Prerequisites: proc, natech, ~structures.nod
 		Queue: Building
 	Building:
 		Footprint: xxx xxx
@@ -968,8 +956,7 @@ GAVULC:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 30
-		Prerequisites: gapile
-		Owner: gdi
+		Prerequisites: gapile, ~structures.gdi
 	Building:
 	Selectable:
 		Bounds: 48, 48, 0, -12
@@ -1027,8 +1014,7 @@ GAROCK:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
-		Prerequisites: gapile
-		Owner: gdi
+		Prerequisites: gapile, ~structures.gdi
 	Building:
 	Selectable:
 		Bounds: 48, 48, 0, -12
@@ -1078,8 +1064,7 @@ GACSAM:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 60
-		Prerequisites: garadr
-		Owner: gdi
+		Prerequisites: garadr, ~structures.gdi
 	Building:
 	Selectable:
 		Bounds: 48, 48, 0, -12
@@ -1127,9 +1112,8 @@ NASAM:
 		Description: Nod Anti-Air base defense. \nRequires power to operate.\n  Strong vs all Aircraft\n  Cannot target ground units
 	Buildable:
 		Queue: Defense
-		Prerequisites: naradr
+		Prerequisites: naradr, ~structures.nod
 		BuildPaletteOrder: 60
-		Owner: nod
 	Building:
 	Selectable:
 		Bounds: 36, 36, -2, -8
@@ -1170,9 +1154,8 @@ NALASR:
 		Description: Basic base defense. \nRequires power to operate.\n  Strong vs all ground units\n  Cannot target Aircraft
 	Buildable:
 		Queue: Defense
-		Prerequisites: nahand
+		Prerequisites: nahand, ~structures.nod
 		BuildPaletteOrder: 50
-		Owner: nod
 	Building:
 	Selectable:
 		Bounds: 36, 36, -2, -8
@@ -1212,8 +1195,7 @@ NAOBEL:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
-		Prerequisites: natech
-		Owner: nod
+		Prerequisites: natech, ~structures.nod
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -1258,7 +1240,6 @@ NAPULS:
 		Queue: Defense
 		BuildPaletteOrder: 90
 		Prerequisites: radar
-		Owner: nod, gdi
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
