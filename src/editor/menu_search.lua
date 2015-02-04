@@ -208,8 +208,13 @@ local function navigateTo(default, selected)
             local pindex = nb:GetPageIndex(preview)
             if pindex ~= tabindex then ClosePage(pindex) end
           end
-        elseif sline or text then -- load a new file (into preview if set)
-          LoadFile(MergeFullPath(ide:GetProject(), sline or text), preview or nil)
+        -- load a new file (into preview if set)
+        elseif sline or text then
+          -- 1. use "text" if Ctrl/Cmd-Enter is used
+          -- 2. otherwise use currently selected file
+          -- 3. otherwise use "text"
+          local file = (wx.wxGetKeyState(wx.WXK_CONTROL) and text) or sline or text
+          LoadFile(MergeFullPath(ide:GetProject(), file), preview or nil)
         end
       else
         -- close preview
