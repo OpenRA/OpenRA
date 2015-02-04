@@ -45,6 +45,9 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   filePath:Normalize() -- make it absolute and remove all .. and . if possible
   filePath = filePath:GetFullPath()
 
+  -- if the file name is empty or is a directory, don't do anything
+  if filePath == '' or wx.wxDirExists(filePath) then return nil end
+
   -- prevent files from being reopened again
   if (not editor) then
     local doc = ide:FindDocument(filePath)
