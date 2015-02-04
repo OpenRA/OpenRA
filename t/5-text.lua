@@ -1,5 +1,5 @@
-local output = ide.frame.bottomnotebook.errorlog
-local shell = ide.frame.bottomnotebook.shellbox
+local output = ide:GetOutput()
+local shell = ide:GetConsole()
 
 local text = output:GetText()
 output:SetReadOnly(false)
