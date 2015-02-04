@@ -208,8 +208,8 @@ local function navigateTo(default, selected)
             local pindex = nb:GetPageIndex(preview)
             if pindex ~= tabindex then ClosePage(pindex) end
           end
-        elseif sline then -- load a new file (into preview if set)
-          LoadFile(MergeFullPath(ide:GetProject(), sline), preview or nil, true)
+        elseif sline or text then -- load a new file (into preview if set)
+          LoadFile(MergeFullPath(ide:GetProject(), sline or text), preview or nil)
         end
       else
         -- close preview
