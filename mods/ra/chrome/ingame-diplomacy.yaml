@@ -87,5 +87,5 @@ Background@INGAME_DIPLOMACY_BG:
 			Width: 120
 			Height: 25
 			Text: Close
-			Key: escape
+			Key: p
 			Font: Bold
