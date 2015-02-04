@@ -282,6 +282,7 @@ function SaveFile(editor, filePath)
       openDocuments[id].modTime = GetFileModTime(filePath)
       SetDocumentModified(id, false, openDocuments[id].fileName)
       SetAutoRecoveryMark()
+      FileTreeMarkSelected(filePath)
 
       PackageEventHandle("onEditorSave", editor)
 
@@ -336,7 +337,6 @@ function SaveFileAs(editor)
 
     if cansave and SaveFile(editor, filePath) then
       SetEditorSelection() -- update title of the editor
-      FileTreeMarkSelected(filePath)
       if ext ~= GetFileExt(filePath) then
         -- new extension, so setup new keywords and re-apply indicators
         editor:ClearDocumentStyle() -- remove styles from the document
