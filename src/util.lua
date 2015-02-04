@@ -137,7 +137,7 @@ function GetFileModTime(filePath)
 end
 
 function GetFileExt(filePath)
-  local match = filePath and filePath:match("%.([^./\\]*)$")
+  local match = filePath and filePath:gsub("%s+$",""):match("%.([^./\\]*)$")
   return match and match:lower() or ''
 end
 

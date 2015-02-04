@@ -40,7 +40,8 @@ local function findUnusedEditor()
 end
 
 function LoadFile(filePath, editor, file_must_exist, skipselection)
-  local filePath = wx.wxFileName(filePath)
+  filePath = filePath:gsub("%s+$","")
+  filePath = wx.wxFileName(filePath)
   filePath:Normalize() -- make it absolute and remove all .. and . if possible
   filePath = filePath:GetFullPath()
 
