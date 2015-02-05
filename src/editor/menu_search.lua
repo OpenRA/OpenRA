@@ -170,6 +170,7 @@ local function navigateTo(default, selected)
         ed:EnsureVisibleEnforcePolicy(origline-1)
       end
 
+      local pindex = preview and nb:GetPageIndex(preview)
       if enter then
         local fline, sline, tabindex = unpack(t or {})
         local ed = ide:GetEditor()
@@ -204,21 +205,21 @@ local function navigateTo(default, selected)
           end
         elseif tabindex then -- switch to existing tab
           SetEditorSelection(tabindex)
-          if preview then -- close preview if not selected
-            local pindex = nb:GetPageIndex(preview)
-            if pindex ~= tabindex then ClosePage(pindex) end
-          end
+          if pindex and pindex ~= tabindex then ClosePage(pindex) end
         -- load a new file (into preview if set)
         elseif sline or text then
           -- 1. use "text" if Ctrl/Cmd-Enter is used
           -- 2. otherwise use currently selected file
           -- 3. otherwise use "text"
           local file = (wx.wxGetKeyState(wx.WXK_CONTROL) and text) or sline or text
-          LoadFile(MergeFullPath(ide:GetProject(), file), preview or nil)
+          local fullPath = MergeFullPath(ide:GetProject(), file)
+          if not LoadFile(fullPath, preview or nil) then
+            if pindex then ClosePage(pindex) end
+          end
         end
       else
         -- close preview
-        if preview then ClosePage(nb:GetPageIndex(preview)) end
+        if pindex then ClosePage(pindex) end
         -- restore original selection if canceled
         if nb:GetSelection() ~= selection then nb:SetSelection(selection) end
       end
