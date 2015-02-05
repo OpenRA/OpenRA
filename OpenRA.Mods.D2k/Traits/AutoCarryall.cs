@@ -33,6 +33,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		// The actor we are currently carrying.
 		[Sync] Actor carrying;
+		bool isCarrying;
 
 		// TODO: Use ActorPreviews so that this can support actors with multiple sprites
 		Animation anim;
@@ -138,8 +139,8 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			if (carrying != null)
 			{
-				carrying.Kill(e.Attacker);
-				carrying = null;
+				if (isCarrying && carrying.IsInWorld && !carrying.IsDead)
+					carrying.Kill(e.Attacker);
 			}
 
 			UnreserveCarryable();
@@ -148,6 +149,8 @@ namespace OpenRA.Mods.D2k.Traits
 		// Called when carryable is inside.
 		public void AttachCarryable(Actor carryable)
 		{
+			isCarrying = true;
+
 			// Create a new animation for our carryable unit
 			anim = new Animation(self.World, RenderSprites.GetImage(carryable.Info), RenderSprites.MakeFacingFunc(self));
 			anim.PlayRepeating("idle");
@@ -157,6 +160,7 @@ namespace OpenRA.Mods.D2k.Traits
 		// Called when released
 		public void CarryableReleased()
 		{
+			isCarrying = false;
 			anim = null;
 		}
 
