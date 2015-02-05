@@ -556,3 +556,53 @@ ionbeam:
 		Length: *
 		Offset: 0, -78
 		ZOffset: 1
+
+trock01:
+	idle:
+		Start: 0
+		ShadowStart: 1
+
+trock02:
+	idle:
+		Start: 0
+		ShadowStart: 1
+
+trock03:
+	idle:
+		Start: 0
+		ShadowStart: 1
+
+trock04:
+	idle:
+		Start: 0
+		ShadowStart: 1
+
+trock05:
+	idle:
+		Start: 0
+		ShadowStart: 1
+
+srock01:
+	idle:
+		Start: 0
+		ShadowStart: 1
+
+srock02:
+	idle:
+		Start: 0
+		ShadowStart: 1
+
+srock03:
+	idle:
+		Start: 0
+		ShadowStart: 1
+
+srock04:
+	idle:
+		Start: 0
+		ShadowStart: 1
+
+srock05:
+	idle:
+		Start: 0
+		ShadowStart: 1
