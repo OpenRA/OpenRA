@@ -121,6 +121,8 @@ end
 -- Project directory handling
 
 function ProjectUpdateProjectDir(projdir,skiptree)
+  -- strip trailing spaces as this may create issues with "path/ " on Windows
+  projdir = projdir:gsub("%s+$","")
   local dir = wx.wxFileName.DirName(FixDir(projdir))
   dir:Normalize() -- turn into absolute path if needed
   if not wx.wxDirExists(dir:GetFullPath()) then return end
@@ -130,9 +132,8 @@ function ProjectUpdateProjectDir(projdir,skiptree)
   ide.config.path.projectdir = projdir ~= "" and projdir or nil
   frame:SetStatusText(projdir)
   frame:SetTitle(ExpandPlaceholders(ide.config.format.apptitle))
-  if (not skiptree) then
-    ide.filetree:updateProjectDir(projdir)
-  end
+  if (not skiptree) then ide.filetree:updateProjectDir(projdir) end
+  return true
 end
 
 local function projChoose(event)
@@ -145,9 +146,9 @@ local function projChoose(event)
   local filePicker = wx.wxDirDialog(frame, TR("Choose a project directory"),
     projectdir ~= "" and projectdir or wx.wxGetCwd(), wx.wxDIRP_DIR_MUST_EXIST)
   if filePicker:ShowModal(true) == wx.wxID_OK then
-    ProjectUpdateProjectDir(filePicker:GetPath())
+    return ProjectUpdateProjectDir(filePicker:GetPath())
   end
-  return true
+  return false
 end
 
 frame:Connect(ID_PROJECTDIRCHOOSE, wx.wxEVT_COMMAND_MENU_SELECTED, projChoose)
