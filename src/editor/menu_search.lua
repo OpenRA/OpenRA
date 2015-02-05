@@ -213,7 +213,8 @@ local function navigateTo(default, selected)
           -- 3. otherwise use "text"
           local file = (wx.wxGetKeyState(wx.WXK_CONTROL) and text) or sline or text
           local fullPath = MergeFullPath(ide:GetProject(), file)
-          if not LoadFile(fullPath, preview or nil) then
+          if not LoadFile(fullPath, preview or nil)
+          and not ProjectUpdateProjectDir(fullPath) then
             if pindex then ClosePage(pindex) end
           end
         end
