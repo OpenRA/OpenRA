@@ -21,6 +21,7 @@ Type: Shellmap
 Videos:
 
 Options:
+	StartingCash: 20000
 
 Players:
 	PlayerReference@Nod:
@@ -79,9 +80,6 @@ Players:
 Actors:
 	Actor4: fix
 		Location: 59,44
-		Owner: GDI
-	Actor5: tran
-		Location: 60,45
 		Owner: GDI
 	Actor6: cycl
 		Location: 64,44
@@ -710,10 +708,10 @@ Actors:
 	Actor218: c9
 		Location: 44,21
 		Owner: Neutral
-	Actor219: e1
+	beachdude1: e1
 		Location: 45,27
 		Owner: Nod
-	Actor220: e1
+	beachdude2: e1
 		Location: 46,28
 		Owner: Nod
 	Actor222: v01
@@ -806,16 +804,16 @@ Actors:
 	Actor251: cycl
 		Location: 63,26
 		Owner: Nod
-	Actor252: gun
+	Turret3: gun
 		Location: 53,27
 		Owner: Nod
-	Actor253: gun
+	Turret4: gun
 		Location: 50,27
 		Owner: Nod
-	Actor254: gun
+	Turret2: gun
 		Location: 61,27
 		Owner: Nod
-	Actor255: gun
+	Turret1: gun
 		Location: 64,27
 		Owner: Nod
 	Actor256: v03
@@ -950,38 +948,75 @@ Actors:
 	Actor221: jeep
 		Location: 57,45
 		Owner: GDI
-	boat1: boat
-		Location: 45,33
-		Owner: GDI
-	boat2: boat
-		Location: 39,37
-		Owner: GDI
-	boat3: boat
-		Location: 70,33
-		Owner: GDI
-	boat4: boat
-		Location: 79,37
-		Owner: GDI
-	lst1: lst
-		Location: 53,35
-		Owner: GDI
-		Facing: 64
-	lst2: lst
-		Location: 58,35
-		Owner: GDI
-		Facing: 64
-	lst3: lst
-		Location: 63,35
-		Owner: GDI
-		Facing: 64
-	ftnk1: ftnk
-		Location: 67,22
-		Owner: Nod
-		Facing: 228
-	ftnk2: ftnk
-		Location: 65,20
-		Owner: Nod
-		Facing: 192
+	ChinEntry: waypoint
+		Location: 60,46
+		Owner: Neutral
+	ChinUnload: waypoint
+		Location: 80,28
+		Owner: Neutral
+	ChinExit: waypoint
+		Location: 88,28
+		Owner: Neutral
+	CommFin: waypoint
+		Location: 45,28
+		Owner: Neutral
+	EvacEntry: waypoint
+		Location: 40,46
+		Owner: Neutral
+	CommMove: waypoint
+		Location: 54,26
+		Owner: Neutral
+	BeachDudeMove: waypoint
+		Location: 60,26
+		Owner: Neutral
+	EvacLand: waypoint
+		Location: 44,27
+		Owner: Neutral
+	FlareHere: waypoint
+		Location: 44,28
+		Owner: Neutral
+	LSTRLand: waypoint
+		Location: 64,29
+		Owner: Neutral
+	LSTMLand: waypoint
+		Location: 61,29
+		Owner: Neutral
+	LSTLLand: waypoint
+		Location: 58,29
+		Owner: Neutral
+	LSTRStart: waypoint
+		Location: 87,34
+		Owner: Neutral
+	LSTMStart: waypoint
+		Location: 87,36
+		Owner: Neutral
+	LSTLStart: waypoint
+		Location: 87,38
+		Owner: Neutral
+	LSTRMove1: waypoint
+		Location: 65,34
+		Owner: Neutral
+	LSTRMove2: waypoint
+		Location: 64,33
+		Owner: Neutral
+	LSTMMove1: waypoint
+		Location: 62,36
+		Owner: Neutral
+	LSTMMove2: waypoint
+		Location: 61,35
+		Owner: Neutral
+	LSTLMove1: waypoint
+		Location: 59,38
+		Owner: Neutral
+	LSTLMove2: waypoint
+		Location: 58,37
+		Owner: Neutral
+	MCVDeploy: waypoint
+		Location: 57,24
+		Owner: Neutral
+	HandBuild: waypoint
+		Location: 52,6
+		Owner: Neutral
 
 Smudges:
 
@@ -994,12 +1029,68 @@ Rules:
 			Effect: Desaturated
 		LuaScript:
 			Scripts: shellmap.lua
+	^Vehicle:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			Upgrades:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Tank:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			Upgrades:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Infantry:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			Upgrades:
+		DeathSounds@NORMAL:
+			VolumeMultiplier: 0.1
+		DeathSounds@BURNED:
+			VolumeMultiplier: 0.1
+		DeathSounds@ZAPPED:
+			VolumeMultiplier: 0.1
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Ship:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			Upgrades:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Plane:
+		GivesBounty:
+			Percentage: 0
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Building:
+		GivesBounty:
+			Percentage: 0
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
 	LST:
 		Mobile:
-			Speed: 42
+			Speed: 82
 	BOAT:
 		Mobile:
 			Speed: 42
+	RMBO:
+		-TakeCover:
+	PROC:
+		StoresResources:
+			Capacity: 12000
+	
 
 Sequences:
 

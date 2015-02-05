@@ -73,5 +73,17 @@ namespace OpenRA.Mods.Common.Scripting
 				using (var f = func.CopyReference() as LuaFunction)
 					Self.QueueActivity(new CallFunc(() => PatrolUntil(waypoints, f, wait)));
 		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Move to a cell and demolish whatever is there.")]
+		public void GoDemolish(Actor target)
+		{
+			if (Self.HasTrait<C4Demolition>() && !target.IsDead)
+			{
+				var info = Self.Info.Traits.GetOrDefault<C4DemolitionInfo>();
+				Self.QueueActivity(new Demolish(Self, target, info.C4Delay, info.Flashes, 
+					info.FlashesDelay, info.FlashInterval, info.FlashDuration));
+			}
+		}
 	}
 }
