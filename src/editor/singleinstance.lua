@@ -50,9 +50,7 @@ if success then -- ok, server was started, we are solo
           if filename then
             RequestAttention()
             if wx.wxDirExists(filename) then
-              local dir = wx.wxFileName.DirName(filename)
-              dir:Normalize() -- turn into absolute path if needed
-              ProjectUpdateProjectDir(dir:GetFullPath())
+              ProjectUpdateProjectDir(filename)
             elseif not ActivateFile(filename) then
               DisplayOutputLn(TR("Can't open file '%s': %s"):format(filename, wx.wxSysErrorMsg()))
             end

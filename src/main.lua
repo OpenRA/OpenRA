@@ -553,9 +553,7 @@ do
   for _, filename in ipairs(filenames) do
     if filename ~= "--" then
       if wx.wxDirExists(filename) then
-        local dir = wx.wxFileName.DirName(filename)
-        dir:Normalize() -- turn into absolute path if needed
-        ProjectUpdateProjectDir(dir:GetFullPath())
+        ProjectUpdateProjectDir(filename)
       elseif not ActivateFile(filename) then
         DisplayOutputLn(("Can't open file '%s': %s"):format(filename, wx.wxSysErrorMsg()))
       end

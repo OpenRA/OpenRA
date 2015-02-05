@@ -122,6 +122,7 @@ end
 
 function ProjectUpdateProjectDir(projdir,skiptree)
   local dir = wx.wxFileName.DirName(FixDir(projdir))
+  dir:Normalize() -- turn into absolute path if needed
   if not wx.wxDirExists(dir:GetFullPath()) then return end
 
   projdir = dir:GetPath(wx.wxPATH_GET_VOLUME) -- no trailing slash
