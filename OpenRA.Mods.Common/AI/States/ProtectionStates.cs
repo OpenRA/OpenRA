@@ -8,7 +8,7 @@
  */
 #endregion
 
-namespace OpenRA.Mods.RA.AI
+namespace OpenRA.Mods.Common.AI
 {
 	class UnitsForProtectionIdleState : GroundStateBase, IState
 	{

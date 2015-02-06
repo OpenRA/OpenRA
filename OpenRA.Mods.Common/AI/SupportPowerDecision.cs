@@ -8,16 +8,12 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using OpenRA;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.AI;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.AI
 {
 	[Desc("Adds metadata for the AI bots.")]
 	public class SupportPowerDecision
