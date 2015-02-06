@@ -205,9 +205,7 @@ end
 
 function ActivateFile(filename)
   local name, suffix, value = filename:match('(.+):([lLpP]?)(%d+)$')
-  if name and not wx.wxFileExists(filename) and not wx.wxIsAbsolutePath(filename) then
-    filename = name
-  end
+  if name and not wx.wxFileExists(filename) then filename = name end
 
   -- check if non-existing file can be loaded from the project folder;
   -- this is to handle: "project file" used on the command line
