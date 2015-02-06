@@ -119,7 +119,6 @@
     <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LeaveMapLogic.cs" />
     <Compile Include="Widgets\Logic\DownloadPackagesLogic.cs" />
-    <Compile Include="Widgets\Logic\MainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\MusicPlayerLogic.cs" />
     <Compile Include="Widgets\Logic\ObserverStatsLogic.cs" />
     <Compile Include="Widgets\Logic\OrderButtonsChromeLogic.cs" />
