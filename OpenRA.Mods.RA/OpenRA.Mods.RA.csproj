@@ -70,18 +70,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\SpriteHarvesterDockSequence.cs" />
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
     <Compile Include="Traits\AcceptsSupplies.cs" />
-    <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\DonateSupplies.cs" />
-    <Compile Include="Activities\FindResources.cs" />
     <Compile Include="Activities\Infiltrate.cs" />
     <Compile Include="Activities\LayMines.cs" />
     <Compile Include="Activities\Leap.cs" />
-    <Compile Include="Activities\HarvesterDockSequence.cs" />
     <Compile Include="Activities\Teleport.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
@@ -102,7 +98,6 @@
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\PortableChrono.cs" />
     <Compile Include="Traits\Render\RenderJammerCircle.cs" />
-    <Compile Include="Traits\Render\RenderHarvester.cs" />
     <Compile Include="Traits\Render\RenderDisguise.cs" />
     <Compile Include="Traits\Render\RenderLandingCraft.cs" />
     <Compile Include="Traits\Disguise.cs" />
@@ -110,10 +105,7 @@
     <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="Traits\SupportPowers\GpsPower.cs" />
     <Compile Include="Traits\SupportPowers\ParatroopersPower.cs" />
-    <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\Buildings\Fake.cs" />
-    <Compile Include="Traits\Buildings\Refinery.cs" />
-    <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\HarvesterHuskModifier.cs" />
     <Compile Include="Traits\LeavesHusk.cs" />
     <Compile Include="Traits\TargetableSubmarine.cs" />
@@ -134,7 +126,6 @@
     <Compile Include="Widgets\Logic\PerfDebugLogic.cs" />
     <Compile Include="Widgets\ObserverProductionIconsWidget.cs" />
     <Compile Include="Widgets\WorldCommandWidget.cs" />
-    <Compile Include="Player\HarvesterAttackNotifier.cs" />
     <Compile Include="Traits\Render\RenderShroudCircle.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForCash.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForExploration.cs" />
