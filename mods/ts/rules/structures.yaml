@@ -43,7 +43,7 @@ GACNST:
 	Power:
 		Amount: 0
 	Selectable:
-		Bounds: 144, 72, 0, -12
+		Bounds: 144, 80, 0, -12
 	ProvidesCustomPrerequisite@gdi:
 		Race: gdi
 		Prerequisite: structures.gdi
@@ -78,7 +78,7 @@ GAPOWR:
 	WithIdleOverlay@PLUG:
 		Sequence: idle-plug
 	Selectable:
-		Bounds: 96, 60, 0, -12
+		Bounds: 90, 84, 0, -12
 	Power:
 		Amount: 100
 	InfiltrateForPowerOutage:
@@ -105,7 +105,7 @@ GAPILE:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 96, 48, 0, -8
+		Bounds: 88, 56, 0, -8
 	Health:
 		HP: 800
 	Armor:
@@ -145,7 +145,7 @@ PROC:
 		Footprint: xxx= xx== xxx=
 		Dimensions: 4,3
 	Selectable:
-		Bounds: 120, 60, -12, -12
+		Bounds: 134, 122, 0, -18
 	Health:
 		HP: 900
 	RevealsShroud:
@@ -186,7 +186,7 @@ GASILO:
 		Footprint: xx xx
 		Dimensions: 2, 2
 	Selectable:
-		Bounds: 96, 48
+		Bounds: 80, 48, -5, 0
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -223,7 +223,7 @@ GAWEAP:
 		Footprint: xxx= xxx= xxx=
 		Dimensions: 4,3
 	Selectable:
-		Bounds: 120, 60, 0, -12
+		Bounds: 154, 100, -2, -12
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -267,7 +267,7 @@ NAPOWR:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 96, 60, 0, -12
+		Bounds: 88, 80, 2, -12
 	Health:
 		HP: 750
 	Armor:
@@ -302,7 +302,7 @@ NAAPWR:
 		Footprint: xxx xxx
 		Dimensions: 2,3
 	Selectable:
-		Bounds: 120, 84, 0, -12
+		Bounds: 100, 74, 0, -12
 	Health:
 		HP: 900
 	Armor:
@@ -337,7 +337,7 @@ NAHAND:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Selectable:
-		Bounds: 120, 60, 0, -8
+		Bounds: 116, 78, 3, -8
 	Health:
 		HP: 800
 	Armor:
@@ -377,7 +377,7 @@ NAWEAP:
 		Footprint: xxx= xxx= xxx=
 		Dimensions: 4,3
 	Selectable:
-		Bounds: 144,72, 0,-12
+		Bounds: 149, 116, -3, -20
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -629,7 +629,7 @@ GASPOT:
 		Footprint: x
 		Dimensions: 1,1
 	Selectable:
-		Bounds: 48, 72
+		Bounds: 48, 82, 0, -25
 	Health:
 		HP: 400
 	Armor:
@@ -667,6 +667,8 @@ GALITE:
 		Amount: 0
 #	WithIdleOverlay@LIGHTING:
 #		Sequence: lighting
+	Selectable:
+		Bounds: 25, 35, 0, -12
 
 GARADR:
 	Inherits: ^Building
@@ -685,7 +687,7 @@ GARADR:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 96, 96, 0, -12
+		Bounds: 96, 116, 0, -28
 	Health:
 		HP: 800
 	Armor:
@@ -724,7 +726,7 @@ NARADR:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 96, 72, 0, -12
+		Bounds: 96, 82, 0, -17
 	Health:
 		HP: 800
 	Armor:
@@ -763,7 +765,7 @@ GATECH:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Selectable:
-		Bounds: 120, 60, 0, -12
+		Bounds: 110, 60, 3, -8
 	Health:
 		HP: 500
 	Armor:
@@ -792,7 +794,7 @@ NATECH:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 96, 48
+		Bounds: 86, 58, 0, -4
 	Health:
 		HP: 500
 	Armor:
@@ -837,6 +839,8 @@ GAHPAD:
 		Sequence: idle-lights
 	Power:
 		Amount: -10
+	Selectable:
+		Bounds: 88, 66, 0, -5
 
 NAHPAD:
 	Inherits: ^Building
@@ -871,6 +875,8 @@ NAHPAD:
 		Sequence: idle-lights
 	Power:
 		Amount: -10
+	Selectable:
+		Bounds: 78, 54, 0, -8
 
 GADEPT:
 	Inherits: ^Building
@@ -887,7 +893,7 @@ GADEPT:
 		Footprint: =x= xxx =x=
 		Dimensions: 3,3
 	Selectable:
-		Bounds: 120, 60, 12, -6
+		Bounds: 98, 68, -6, -6
 	Health:
 		HP: 1100
 	RevealsShroud:
@@ -944,6 +950,8 @@ NASTLH:
 		EnableSound: cloak5.aud
 		DisableSound: cloak5.aud
 		AffectsParent: true
+	Selectable:
+		Bounds: 124, 64, 15, 13
 
 #TODO: Placeholder, replace with Component Tower + Vulcan Upgrade
 GAVULC:
@@ -1116,7 +1124,7 @@ NASAM:
 		BuildPaletteOrder: 60
 	Building:
 	Selectable:
-		Bounds: 36, 36, -2, -8
+		Bounds: 40, 36, -3, -8
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1158,7 +1166,7 @@ NALASR:
 		BuildPaletteOrder: 50
 	Building:
 	Selectable:
-		Bounds: 36, 36, -2, -8
+		Bounds: 40, 36, -8, -8
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1200,7 +1208,7 @@ NAOBEL:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 96, 72, 0, -12
+		Bounds: 88, 74, 0, -14
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1244,7 +1252,7 @@ NAPULS:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 96, 72, 0, -12
+		Bounds: 78, 54, 0, -12
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
