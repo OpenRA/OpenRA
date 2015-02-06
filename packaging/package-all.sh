@@ -47,6 +47,9 @@ cp thirdparty/ICSharpCode.SharpZipLib.dll packaging/built
 # FuzzyLogicLibrary for improved AI
 cp thirdparty/FuzzyLogicLibrary.dll packaging/built
 
+# Lidgren.Network for UDP
+cp thirdparty/Lidgren.Network.dll packaging/built
+
 # SharpFont for FreeType support
 cp thirdparty/SharpFont* packaging/built
 
@@ -55,6 +58,9 @@ cp thirdparty/SDL2-CS* packaging/built
 
 # Mono.NAT for UPnP support
 cp thirdparty/Mono.Nat.dll packaging/built
+
+# protobuf-net
+cp thirdparty/protobuf-net.dll packaging/built
 
 # Eluant (Lua integration)
 cp thirdparty/Eluant* packaging/built

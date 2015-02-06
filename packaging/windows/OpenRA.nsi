@@ -72,7 +72,9 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.Renderer.Sdl2.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
+	File "${SRCDIR}\Lidgren.Network.dll"
 	File "${SRCDIR}\Mono.Nat.dll"
+	File "${SRCDIR}\protobuf-net.dll"
 	File "${SRCDIR}\AUTHORS"
 	File "${SRCDIR}\COPYING"
 	File "${SRCDIR}\README.md"
@@ -189,7 +191,9 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Renderer.Sdl2.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
+	Delete $INSTDIR\Lidgren.Network.dll
 	Delete $INSTDIR\Mono.Nat.dll
+	Delete $INSTDIR\protobuf-net.dll
 	Delete $INSTDIR\SharpFont.dll
 	Delete $INSTDIR\AUTHORS
 	Delete $INSTDIR\COPYING

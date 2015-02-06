@@ -82,6 +82,14 @@ if (!(Test-Path "Mono.Nat.dll"))
 	rmdir Mono.Nat.1.2.21.0 -Recurse
 }
 
+if (!(Test-Path "protobuf-net.dll"))
+{
+	echo "Fetching protobuf-net from NuGet."
+	./nuget.exe install protobuf-net -Version 2.0.0.668
+	cp protobuf-net.2.0.0.668/lib/net40/protobuf-net.dll .
+	rmdir protobuf-net.2.0.0.668 -Recurse
+}
+
 if (!(Test-Path "windows/lua51.dll"))
 {
 	echo "Fetching Lua 5.1 from NuGet."

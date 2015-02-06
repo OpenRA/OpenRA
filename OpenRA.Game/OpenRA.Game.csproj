@@ -59,8 +59,18 @@
       <Package>mono.nat</Package>
       <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
     </Reference>
+    <Reference Include="protobuf-net">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+      <Package>protobuf-net</Package>
+      <HintPath>..\thirdparty\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\Eluant.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Lidgren.Network">
+      <HintPath>..\thirdparty\Lidgren.Network.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
