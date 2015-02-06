@@ -1,0 +1,360 @@
+MapFormat: 7
+
+RequiresMod: cnc
+
+Title: Invasion of Egypt (a)
+
+Description: GDI has kept a stranglehold on Egypt for many years.  Set up a forward attack base in your area.  To do this you must select your Mobile Construction Vehicle (MCV) and right click on it.  From here you can begin to build a base. This area contains plenty of Tiberium, so establishing the base should be easy.
+
+Author: Westwood Studios
+
+Tileset: DESERT
+
+MapSize: 64,64
+
+Bounds: 27,34,36,26
+
+Visibility: MissionSelector
+
+Type: Campaign
+
+Videos:
+	Briefing: nod2.vqa
+	GameLost: deskill.vqa
+	GameWon: airstrk.vqa
+	GameStart: seige.vqa
+
+Options:
+	Crates: False
+	Creeps: False
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
+	StartingCash: 4000
+	ConfigurableStartingUnits: False
+	ShortGame: False
+
+Players:
+	PlayerReference@GDI:
+		Name: GDI
+		Race: gdi
+		ColorRamp: 31,222,183		
+		Enemies: Nod
+	PlayerReference@Nod:
+		Name: Nod
+		Playable: True
+		AllowBots: False
+		Required: True
+		LockRace: True
+		Race: nod
+		LockColor: True
+		ColorRamp: 3,255,127
+		LockSpawn: True
+		LockTeam: True		
+		Enemies: GDI
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: gdi
+
+Actors:
+	Actor0: t08
+		Location: 30,52
+		Owner: Neutral
+	Actor1: t18
+		Location: 34,52
+		Owner: Neutral
+	Actor2: t08
+		Location: 57,47
+		Owner: Neutral
+	Actor3: t08
+		Location: 38,59
+		Owner: Neutral
+	Actor4: silo
+		Location: 33,40
+		Owner: GDI
+	Actor9: silo
+		Location: 32,42
+		Owner: GDI
+	Actor10: jeep
+		Location: 30,46
+		Owner: GDI
+		Facing: 128
+	Actor11: jeep
+		Location: 31,35
+		Owner: GDI
+		Facing: 64
+	Actor17: e1
+		Location: 34,56
+		Owner: GDI
+		SubCell: 3
+	Actor18: e1
+		Location: 43,35
+		Owner: GDI
+		SubCell: 3
+	Actor19: e1
+		Location: 43,36
+		Owner: GDI
+		SubCell: 3	
+	Actor31: e1
+		Location: 47,53
+		Owner: GDI
+		SubCell: 4
+	Actor32: e1
+		Location: 49,54
+		Owner: GDI
+		Facing: 224
+		SubCell: 1	
+	Actor35: e1
+		Location: 34,57
+		Owner: GDI
+		Facing: 64
+		SubCell: 1
+	waypoint27: waypoint
+		Location: 27,51
+		Owner: Neutral
+	waypoint26: waypoint
+		Location: 49,35
+		Owner: Neutral
+	waypoint10: waypoint
+		Location: 30,44
+		Owner: Neutral
+	waypoint9: waypoint
+		Location: 55,40
+		Owner: Neutral
+	waypoint8: waypoint
+		Location: 48,41
+		Owner: Neutral
+	waypoint7: waypoint
+		Location: 60,58
+		Owner: Neutral
+	waypoint6: waypoint
+		Location: 61,47
+		Owner: Neutral
+	waypoint5: waypoint
+		Location: 48,55
+		Owner: Neutral
+	waypoint4: waypoint
+		Location: 41,51
+		Owner: Neutral
+	waypoint3: waypoint
+		Location: 28,36
+		Owner: Neutral
+	waypoint2: waypoint
+		Location: 28,51
+		Owner: Neutral
+	waypoint1: waypoint
+		Location: 40,43
+		Owner: Neutral
+	waypoint0: waypoint
+		Location: 40,35
+		Owner: Neutral
+	Refinery: proc
+		Location: 30,38
+		Owner: GDI
+	Barracks: pyle
+		Location: 34,43
+		Owner: GDI
+	Powerplant: nuke
+		Location: 35,40
+		Owner: GDI
+	Yard: fact
+		Location: 33,37
+		Owner: GDI
+	Guard1: e1
+		Location: 42,39
+		Owner: GDI
+		Facing: 64
+		SubCell: 0
+	Guard2: e1
+		Location: 38,38
+		Owner: GDI
+		Facing: 64
+		SubCell: 2
+	Guard3: e1
+		Location: 35,49
+		Owner: GDI
+		Facing: 96
+		SubCell: 0
+	Guard4: e1
+		Location: 34,48
+		Owner: GDI
+		Facing: 96
+		SubCell: 3
+	Guard5: e1
+		Location: 39,40
+		Owner: GDI
+		Facing: 64
+		SubCell: 1
+	Guard6: e1
+		Location: 40,56
+		Owner: GDI
+		Facing: 96
+		SubCell: 4
+	Guard7: e1
+		Location: 38,54
+		Owner: GDI
+		Facing: 32
+		SubCell: 3
+	McvEntry: waypoint
+		Location: 62,43
+		Owner: Neutral
+	McvRally: waypoint
+		Location: 57,41
+		Owner: Neutral
+	UnitsEntry: waypoint
+		Location: 62,38
+		Owner: Neutral
+	UnitsRally: waypoint
+		Location: 56,38
+		Owner: Neutral
+
+Smudges:
+
+Rules:
+	Player:
+		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
+	World:
+		-CrateSpawner:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
+		LuaScript:
+			Scripts: nod02a.lua
+	^Vehicle:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Tank:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Helicopter:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Infantry:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Plane:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Ship:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Building:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Wall:
+		Tooltip:
+			ShowOwnerRow: false
+	^Husk:
+		Tooltip:
+			GenericVisibility: Enemy, Ally, Neutral
+			GenericStancePrefix: false
+			ShowOwnerRow: false
+	NUK2:
+		Buildable:
+			Prerequisites: ~disabled
+	GUN:
+		Buildable:
+			Prerequisites: ~disabled
+	CYCL:
+		Buildable:
+			Prerequisites: ~disabled
+	FIX:
+		Buildable:
+			Prerequisites: ~disabled
+	HPAD:
+		Buildable:
+			Prerequisites: ~disabled
+	OBLI:
+		Buildable:
+			Prerequisites: ~disabled
+	BRIK:
+		Buildable:
+			Prerequisites: ~disabled
+	TMPL:
+		Buildable:
+			Prerequisites: ~disabled
+	FTNK:
+		Buildable:
+			Prerequisites: ~disabled
+	STNK:
+		Buildable:
+			Prerequisites: ~disabled
+	ARTY:
+		Buildable:
+			Prerequisites: ~disabled
+	E5:
+		Buildable:
+			Prerequisites: ~disabled
+	RMBO:
+		Buildable:
+			Prerequisites: ~disabled
+	MLRS:
+		Buildable:
+			Prerequisites: ~disabled
+	MCV:
+		Buildable:
+			Prerequisites: ~disabled
+	LST:
+		Buildable:
+			Prerequisites: ~disabled
+	C17:
+		Buildable:
+			Prerequisites: ~disabled
+	SAM:
+		Buildable:
+			Prerequisites: ~disabled
+	HQ:
+		Buildable:
+			Prerequisites: ~disabled
+	AFLD:
+		Buildable:
+			Prerequisites: ~disabled
+	E4:
+		Buildable:
+			Prerequisites: ~disabled
+	E3:
+		Buildable:
+			Prerequisites: ~disabled
+	E2:
+		Buildable:
+			Prerequisites: ~disabled
+	SBAG:
+		Buildable:
+			Prerequisites: ~disabled
+	GTWR:
+		Buildable:
+			Prerequisites: ~disabled
+	WEAP:
+		Buildable:
+			Prerequisites: ~disabled
+	EYE:
+		Buildable:
+			Prerequisites: ~disabled
+	ATWR:
+		Buildable:
+			Prerequisites: ~disabled
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:
