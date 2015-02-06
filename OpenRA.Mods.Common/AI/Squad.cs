@@ -14,7 +14,7 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.AI
+namespace OpenRA.Mods.Common.AI
 {
 	public enum SquadType { Assault, Air, Rush, Protection }
 

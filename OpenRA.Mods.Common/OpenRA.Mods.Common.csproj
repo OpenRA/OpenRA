@@ -31,6 +31,10 @@
     </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FuzzyLogicLibrary">
+      <HintPath>..\thirdparty\FuzzyLogicLibrary.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -113,6 +117,17 @@
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="ActorExts.cs" />
+    <Compile Include="AI\AttackOrFleeFuzzy.cs" />
+    <Compile Include="AI\BaseBuilder.cs" />
+    <Compile Include="AI\HackyAI.cs" />
+    <Compile Include="AI\RushFuzzy.cs" />
+    <Compile Include="AI\Squad.cs" />
+    <Compile Include="AI\StateMachine.cs" />
+    <Compile Include="AI\States\AirStates.cs" />
+    <Compile Include="AI\States\GroundStates.cs" />
+    <Compile Include="AI\States\ProtectionStates.cs" />
+    <Compile Include="AI\States\StateBase.cs" />
+    <Compile Include="AI\SupportPowerDecision.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Contrail.cs" />
@@ -520,8 +535,6 @@
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)mods/common/"
 copy "$(TargetPath)" "$(SolutionDir)mods/common/"
-cd "$(SolutionDir)thirdparty/"
-copy "FuzzyLogicLibrary.dll" "$(SolutionDir)"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
