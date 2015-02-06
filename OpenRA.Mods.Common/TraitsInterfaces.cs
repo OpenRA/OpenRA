@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
@@ -61,4 +62,13 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
+
+	public interface IAcceptResources
+	{
+		void OnDock(Actor harv, DeliverResources dockOrder);
+		void GiveResource(int amount);
+		bool CanGiveResource(int amount);
+		CVec DeliveryOffset { get; }
+		bool AllowDocking { get; }
+	}
 }
