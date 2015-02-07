@@ -40,7 +40,6 @@
     <ErrorReport>prompt</ErrorReport>
     <CustomCommands>
       <CustomCommands>
-        <Command type="AfterBuild" command="cp ../thirdparty/FuzzyLogicLibrary.dll ../" workingdir="${ProjectDir}" />
         <Command type="AfterBuild" command="cp ${TargetFile} ../mods/ra" workingdir="${ProjectDir}" />
         <Command type="AfterBuild" command="cp ${TargetFile}.mdb ../mods/ra" workingdir="${ProjectDir}" />
       </CustomCommands>
@@ -204,8 +203,6 @@
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)mods/ra/"
 copy "$(TargetPath)" "$(SolutionDir)mods/ra/"
-cd "$(SolutionDir)thirdparty/"
-copy "FuzzyLogicLibrary.dll" "$(SolutionDir)"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
