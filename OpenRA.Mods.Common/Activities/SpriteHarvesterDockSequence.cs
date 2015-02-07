@@ -11,7 +11,7 @@
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 
-namespace OpenRA.Mods.RA.Activities
+namespace OpenRA.Mods.Common.Activities
 {
 	public class SpriteHarvesterDockSequence : HarvesterDockSequence
 	{

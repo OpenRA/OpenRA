@@ -85,10 +85,13 @@
     <Compile Include="Activities\Air\TakeOff.cs" />
     <Compile Include="Activities\Attack.cs" />
     <Compile Include="Activities\CaptureActor.cs" />
+    <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
+    <Compile Include="Activities\FindResources.cs" />
+    <Compile Include="Activities\HarvesterDockSequence.cs" />
     <Compile Include="Activities\Heal.cs" />
     <Compile Include="Activities\Hunt.cs" />
     <Compile Include="Activities\Move\AttackMoveActivity.cs" />
@@ -104,6 +107,7 @@
     <Compile Include="Activities\RepairBuilding.cs" />
     <Compile Include="Activities\Sell.cs" />
     <Compile Include="Activities\SimpleTeleport.cs" />
+    <Compile Include="Activities\SpriteHarvesterDockSequence.cs" />
     <Compile Include="Activities\Transform.cs" />
     <Compile Include="Activities\Turn.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
@@ -235,6 +239,7 @@
     <Compile Include="Traits\Buildings\LineBuildNode.cs" />
     <Compile Include="Traits\Buildings\PrimaryBuilding.cs" />
     <Compile Include="Traits\Buildings\RallyPoint.cs" />
+    <Compile Include="Traits\Buildings\Refinery.cs" />
     <Compile Include="Traits\Buildings\RepairableBuilding.cs" />
     <Compile Include="Traits\Buildings\RepairsUnits.cs" />
     <Compile Include="Traits\Buildings\Reservable.cs" />
@@ -265,6 +270,7 @@
     <Compile Include="Traits\ExternalCapturable.cs" />
     <Compile Include="Traits\ExternalCapturableBar.cs" />
     <Compile Include="Traits\ExternalCaptures.cs" />
+    <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\IgnoresCloak.cs" />
     <Compile Include="Traits\IgnoresDisguise.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
@@ -310,6 +316,7 @@
     <Compile Include="Traits\Player\ConquestVictoryConditions.cs" />
     <Compile Include="Traits\Player\EnemyWatcher.cs" />
     <Compile Include="Traits\Player\GlobalUpgradeManager.cs" />
+    <Compile Include="Traits\Player\HarvesterAttackNotifier.cs" />
     <Compile Include="Traits\Player\MissionObjectives.cs" />
     <Compile Include="Traits\Player\PlaceBeacon.cs" />
     <Compile Include="Traits\Player\PlaceBuilding.cs" />
@@ -339,6 +346,7 @@
     <Compile Include="Traits\Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Traits\Render\RenderEditorOnly.cs" />
     <Compile Include="Traits\Render\RenderFlare.cs" />
+    <Compile Include="Traits\Render\RenderHarvester.cs" />
     <Compile Include="Traits\Render\RenderInfantry.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
     <Compile Include="Traits\Render\ProductionBar.cs" />
@@ -476,6 +484,7 @@
     <Compile Include="Widgets\Logic\Lobby\LobbyLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\LobbyMapPreviewLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\LobbyUtils.cs" />
+    <Compile Include="Widgets\Logic\MainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\MapChooserLogic.cs" />
     <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
