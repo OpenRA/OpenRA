@@ -117,10 +117,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterTransportTargeter("EnterTransport", 6,
+				yield return new EnterTransportTargeter("EnterTransport", 5,
 					target => IsCorrectCargoType(target), target => CanEnter(target),
 					Info.AlternateTransportsMode);
-				yield return new EnterTransportsTargeter("EnterTransports", 6,
+				yield return new EnterTransportsTargeter("EnterTransports", 5,
 					target => IsCorrectCargoType(target), target => CanEnter(target),
 					Info.AlternateTransportsMode);
 			}
