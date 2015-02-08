@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -29,6 +30,7 @@ namespace OpenRA
 			Weapons, Voices, Notifications, Music, Translations, TileSets,
 			ChromeMetrics, MapCompatibility, Missions;
 
+		public readonly Assembly[] LoadedAssemblies;
 		public readonly IReadOnlyDictionary<string, string> Packages;
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
 		public readonly MiniYaml LoadScreen;
@@ -131,6 +133,15 @@ namespace OpenRA
 
 			if (yaml.ContainsKey("SpriteFormats"))
 				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", yaml["SpriteFormats"].Value);
+
+			// Core assemblies
+			var asms = new List<Assembly> { typeof(Game).Assembly };
+
+			// Load each mod assembly
+			foreach (var a in Assemblies)
+				asms.Add(Assembly.LoadFile(Platform.ResolvePath(a)));
+
+			LoadedAssemblies = asms.ToArray();
 		}
 
 		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key, bool parsePaths = false)

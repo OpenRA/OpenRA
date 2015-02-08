@@ -37,7 +37,7 @@ namespace OpenRA
 		{
 			Languages = new string[0];
 			Manifest = new Manifest(mod);
-			ObjectCreator = new ObjectCreator(Manifest);
+			ObjectCreator = new ObjectCreator(Manifest.LoadedAssemblies);
 			if (useLoadScreen)
 			{
 				LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
