@@ -104,7 +104,8 @@ namespace OpenRA.Network
 		{
 			var immediateOrders = localOrders.Where(o => o.IsImmediate).ToList();
 			if (immediateOrders.Count != 0)
-				Connection.SendImmediate(immediateOrders.Select(o => o.Serialize()).ToList());
+				Connection.SendImmediate(immediateOrders.Select(o =>
+					o.Serialize(Game.ModData.ObjectCreator)).ToList());
 			localOrders.RemoveAll(o => o.IsImmediate);
 
 			var immediatePackets = new List<Pair<int, byte[]>>();
@@ -201,7 +202,8 @@ namespace OpenRA.Network
 			if (!IsReadyForNextFrame)
 				throw new InvalidOperationException();
 
-			Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
+			Connection.Send(NetFrameNumber + FramesAhead,
+				localOrders.Select(o => o.Serialize(Game.ModData.ObjectCreator)).ToList());
 			localOrders.Clear();
 
 			var sync = new List<int>();

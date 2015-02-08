@@ -12,12 +12,15 @@ using System;
 using Eluant;
 using Eluant.ObjectBinding;
 using OpenRA.Scripting;
+using ProtoBuf;
 
 namespace OpenRA
 {
+	[ProtoContract]
 	public struct CPos : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<CPos>
 	{
-		public readonly int X, Y;
+		[ProtoMember(1)] public readonly int X;
+		[ProtoMember(2)] public readonly int Y;
 
 		public CPos(int x, int y) { X = x; Y = y; }
 		public static readonly CPos Zero = new CPos(0, 0);
