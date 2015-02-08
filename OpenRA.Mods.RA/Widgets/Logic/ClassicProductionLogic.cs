@@ -88,8 +88,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				Action<int, int> updateBackground = (_, icons) =>
 				{
-					// Minimum of four rows to make space for the production buttons.
-					var rows = Math.Max(4, (icons + palette.Columns - 1) / palette.Columns);
+					var rows = Math.Max(palette.MinimumRows, (icons + palette.Columns - 1) / palette.Columns);
+					rows = Math.Min(rows, palette.MaximumRows);
 
 					if (background != null)
 					{
@@ -189,7 +189,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			// Check if icon heights exceed y resolution
 			var maxItemsHeight = screenHeight - sidebarProductionHeight;
 
-			productionPalette.MaxIconRowOffset = (maxItemsHeight / productionPalette.IconSize.Y) - 1;
+			var maxIconRowOffest = (maxItemsHeight / productionPalette.IconSize.Y) - 1;
+			productionPalette.MaxIconRowOffset = Math.Min(maxIconRowOffest, productionPalette.MaximumRows);
 		}
 	}
 }

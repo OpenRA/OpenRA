@@ -56,6 +56,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly World World;
 		readonly OrderManager orderManager;
 
+		public int MinimumRows = 4;
+		public int MaximumRows = int.MaxValue;
+
 		public int IconRowOffset = 0;
 		public int MaxIconRowOffset = int.MaxValue;
 

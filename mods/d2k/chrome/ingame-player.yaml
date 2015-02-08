@@ -233,6 +233,8 @@ Container@PLAYER_WIDGETS:
 					IconSize: 58, 48
 					IconMargin: 2, 0
 					IconSpriteOffset: 0, 0
+					MinimumRows: 4
+					MaximumRows: 6
 				Container@PALETTE_FOREGROUND:
 					X: 64
 					Y: 0
