@@ -113,8 +113,6 @@ TileSize: 32,32
 Music:
 	./mods/d2k/music.yaml
 
-Movies:
-
 Translations:
 	./mods/d2k/languages/english.yaml
 
