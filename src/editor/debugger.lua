@@ -672,9 +672,8 @@ debugger.listen = function(start)
           end
 
           if not activated then
-            DisplayOutputLn(TR("Can't find file '%s' in the current project to activate for debugging. Update the project or open the file in the editor before debugging.")
-              :format(file))
-            return debugger.terminate()
+            DisplayOutputLn(TR("Debugging suspended at %s:%s (couldn't activate the file).")
+              :format(file, line))
           end
 
           -- debugger may still be available for scratchpad,
