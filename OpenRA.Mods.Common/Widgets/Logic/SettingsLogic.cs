@@ -298,8 +298,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ss.Engine = dss.Engine;
 
 				panel.Get<SliderWidget>("SOUND_VOLUME").Value = ss.SoundVolume;
+				Sound.SoundVolume = ss.SoundVolume;
 				panel.Get<SliderWidget>("MUSIC_VOLUME").Value = ss.MusicVolume;
+				Sound.MusicVolume = ss.MusicVolume;
 				panel.Get<SliderWidget>("VIDEO_VOLUME").Value = ss.VideoVolume;
+				Sound.VideoVolume = ss.VideoVolume;
 				soundDevice = Sound.AvailableDevices().First();
 			};
 		}
