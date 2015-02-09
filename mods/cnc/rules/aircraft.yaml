@@ -1,13 +1,15 @@
 TRAN:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 750
+		# Cost: 750
+		Cost: 1500
 	Tooltip:
 		Name: Chinook Transport
 		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 10
-		Prerequisites: hpad
+		# Prerequisites: hpad
+		Prerequisites: vehicleproduction, hpad
 		Queue: Aircraft.GDI, Aircraft.Nod
 	Selectable:
 		Bounds: 41,41
@@ -52,7 +54,8 @@ HELI:
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 20
-		Prerequisites: hpad, anyhq, ~techlevel.medium
+		# Prerequisites: hpad, anyhq, ~techlevel.medium
+		Prerequisites: hpad, afld, ~techlevel.medium
 		Queue: Aircraft.Nod
 	Selectable:
 		Bounds: 30,24
@@ -104,7 +107,8 @@ ORCA:
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 20
-		Prerequisites: hpad, anyhq, ~techlevel.medium
+		# Prerequisites: hpad, anyhq, ~techlevel.medium
+		Prerequisites: hpad, weap, ~techlevel.medium
 		Queue: Aircraft.GDI
 	Selectable:
 		Bounds: 30,24

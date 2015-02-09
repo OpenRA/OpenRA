@@ -4,7 +4,7 @@ MCV.Husk:
 		Name: Mobile Construction Vehicle (Destroyed)
 		Icon: mcvicnh
 	RenderUnit:
-		Image: mcv
+		Image: mcv.destroyed
 	TransformOnCapture:
 		IntoActor: mcv
 
@@ -14,7 +14,7 @@ HARV.Husk:
 		Name: Harvester (Destroyed)
 		Icon: harvicnh
 	RenderUnit:
-		Image: harv
+		Image: harv.destroyed
 	TransformOnCapture:
 		IntoActor: harv
 
@@ -24,7 +24,7 @@ APC.Husk:
 		Name: APC (Destroyed)
 		Icon: apcicnh
 	RenderUnit:
-		Image: apc
+		Image: apc.destroyed
 	TransformOnCapture:
 		IntoActor: apc
 
@@ -34,7 +34,7 @@ FTNK.Husk:
 		Name: Flame Tank (Destroyed)
 		Icon: ftnkicnh
 	RenderUnit:
-		Image: ftnk
+		Image: ftnk.destroyed
 	TransformOnCapture:
 		IntoActor: ftnk
 
@@ -44,7 +44,7 @@ ARTY.Husk:
 		Name: Artillery (Destroyed)
 		Icon: artyicnh
 	RenderUnit:
-		Image: arty
+		Image: arty.destroyed
 	TransformOnCapture:
 		IntoActor: arty
 
@@ -54,7 +54,7 @@ BGGY.Husk:
 		Name: Nod Buggy (Destroyed)
 		Icon: bggyicnh
 	RenderUnit:
-		Image: bggy
+		Image: bggy.destroyed
 	TransformOnCapture:
 		IntoActor: bggy
 
@@ -64,7 +64,7 @@ BIKE.Husk:
 		Name: Recon Bike (Destroyed)
 		Icon: bikeicnh
 	RenderUnit:
-		Image: bike
+		Image: bike.destroyed
 	TransformOnCapture:
 		IntoActor: bike
 
@@ -74,7 +74,7 @@ JEEP.Husk:
 		Name: Hum-Vee (Destroyed)
 		Icon: jeepicnh
 	RenderUnit:
-		Image: jeep
+		Image: jeep.destroyed
 	TransformOnCapture:
 		IntoActor: jeep
 
@@ -84,7 +84,7 @@ LTNK.Husk:
 		Name: Light Tank (Destroyed)
 		Icon: ltnkicnh
 	RenderUnit:
-		Image: ltnk
+		Image: ltnk.destroyed
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
@@ -96,7 +96,7 @@ MTNK.Husk:
 		Name: Medium Tank (Destroyed)
 		Icon: mtnkicnh
 	RenderUnit:
-		Image: mtnk
+		Image: mtnk.destroyed
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
@@ -108,7 +108,7 @@ HTNK.Husk:
 		Name: Mammoth Tank (Destroyed)
 		Icon: htnkicnh
 	RenderUnit:
-		Image: htnk
+		Image: htnk.destroyed
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
@@ -120,7 +120,7 @@ MSAM.Husk:
 		Name: Rocket Launcher (Destroyed)
 		Icon: msamicnh
 	RenderUnit:
-		Image: msam
+		Image: msam.destroyed
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
@@ -132,7 +132,7 @@ MLRS.Husk:
 		Name: Mobile S.A.M. (Destroyed)
 		Icon: mlrsicnh
 	RenderUnit:
-		Image: mlrs
+		Image: mlrs.destroyed
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
@@ -144,7 +144,7 @@ STNK.Husk:
 		Name: Stealth Tank (Destroyed)
 		Icon: stnkicnh
 	RenderUnit:
-		Image: stnk
+		Image: stnk.destroyed
 	TransformOnCapture:
 		IntoActor: stnk
 

@@ -5,7 +5,8 @@ FACT:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 	Valued:
-		Cost: 2000
+		# Cost: 2000
+		Cost: 0
 	Tooltip:
 		Name: Construction Yard
 		Description: Builds structures
@@ -30,7 +31,8 @@ FACT:
 		Race: gdi
 		RequireOwner: false
 		Group: Building
-		BuildSpeed: .4
+		# BuildSpeed: .4
+		BuildSpeed: 1.1
 		LowPowerSlowdown: 2
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -39,7 +41,8 @@ FACT:
 		Race: nod
 		RequireOwner: false
 		Group: Building
-		BuildSpeed: .4
+		# BuildSpeed: .4
+		BuildSpeed: 1.1
 		LowPowerSlowdown: 2
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -48,7 +51,8 @@ FACT:
 		Race: gdi
 		RequireOwner: false
 		Group: Defence
-		BuildSpeed: .4
+		# BuildSpeed: .4
+		BuildSpeed: 1.1
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -57,7 +61,8 @@ FACT:
 		Race: nod
 		RequireOwner: false
 		Group: Defence
-		BuildSpeed: .4
+		# BuildSpeed: .4
+		BuildSpeed: 1.1
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -80,7 +85,8 @@ FACT:
 NUKE:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 500
+		# Cost: 500
+		Cost: 300
 	Tooltip:
 		Name: Power Plant
 		Description: Generates power
@@ -105,15 +111,18 @@ NUKE:
 NUK2:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 800
+		# Cost: 800
+		Cost: 700
 	Tooltip:
 		Name: Advanced Power Plant
-		Description: Provides more power, cheaper than the \nstandard Power Plant
+		# Description: Provides more power, cheaper than the \nstandard Power Plant
+		Description: Provides more power
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Buildable:
 		BuildPaletteOrder: 30
-		Prerequisites: anyhq, ~techlevel.medium
+		# Prerequisites: anyhq, ~techlevel.medium
+		Prerequisites: nuke, ~techlevel.medium
 		Queue: Building.GDI, Building.Nod
 	Building:
 		Footprint: x_ xx
@@ -130,13 +139,15 @@ NUK2:
 PROC:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 1500
+		# Cost: 1500
+		Cost: 2000
 	Tooltip:
 		Name: Tiberium Refinery
 		Description: Processes raw Tiberium\ninto useable resources
 	Buildable:
 		BuildPaletteOrder: 20
-		Prerequisites: anypower
+		# Prerequisites: anypower
+		Prerequisites: nuke
 		Queue: Building.GDI, Building.Nod
 	Building:
 		Footprint: _x_ xxx ===
@@ -164,12 +175,14 @@ PROC:
 		Facing: 64
 	WithResources:
 	Power:
-		Amount: -50
+		# Amount: -50
+		Amount: -40
 
 SILO:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 300
+		# Cost: 300
+		Cost: 150
 	Tooltip:
 		Name: Tiberium Silo
 		Description: Stores processed Tiberium
@@ -203,7 +216,8 @@ SILO:
 PYLE:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 500
+		# Cost: 500
+		Cost: 300
 	Tooltip:
 		Name: Barracks
 		Description: Trains infantry
@@ -211,7 +225,8 @@ PYLE:
 		Prerequisite: barracks
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: anypower
+		# Prerequisites: anypower
+		Prerequisites: nuke
 		Queue: Building.GDI
 	Building:
 		Footprint: xx xx
@@ -234,16 +249,19 @@ PYLE:
 		Type: Infantry.GDI
 		Group: Infantry
 		RequireOwner: false
-		BuildSpeed: .4
+		# BuildSpeed: .4
+		BuildSpeed: 1.1
 		LowPowerSlowdown: 3
 	ProductionBar:
 	Power:
-		Amount: -20
+		# Amount: -20
+		Amount: -10
 
 HAND:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 500
+		# Cost: 500
+		Cost: 300
 	Tooltip:
 		Name: Hand of Nod
 		Description: Trains infantry
@@ -251,7 +269,8 @@ HAND:
 		Prerequisite: barracks
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: anypower
+		# Prerequisites: anypower
+		Prerequisites: nuke
 		Queue: Building.Nod
 	Building:
 		Footprint: __ xx xx
@@ -271,7 +290,8 @@ HAND:
 		Type: Infantry.Nod
 		Group: Infantry
 		RequireOwner: false
-		BuildSpeed: .4
+		# BuildSpeed: .4
+		BuildSpeed: 1.1
 		LowPowerSlowdown: 3
 	ProductionBar:
 	Power:
@@ -310,7 +330,8 @@ AFLD:
 		Type: Vehicle.Nod
 		Group: Vehicle
 		RequireOwner: false
-		BuildSpeed: .4
+		# BuildSpeed: .4
+		BuildSpeed: 1.1
 		LowPowerSlowdown: 3
 		ReadyAudio:
 	ProductionBar:
@@ -328,7 +349,8 @@ WEAP:
 		Prerequisite: vehicleproduction
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: proc
+		# Prerequisites: proc
+		Prerequisites: nuke
 		Queue: Building.GDI
 	Building:
 		Footprint: ___ xxx ===
@@ -351,7 +373,8 @@ WEAP:
 		Type: Vehicle.GDI
 		RequireOwner: false
 		Group: Vehicle
-		BuildSpeed: .4
+		# BuildSpeed: .4
+		BuildSpeed: 1.1
 		LowPowerSlowdown: 3
 	ProductionBar:
 	Power:
@@ -360,13 +383,15 @@ WEAP:
 HPAD:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 1000
+		# Cost: 1000
+		Cost: 1500
 	Tooltip:
 		Name: Helipad
 		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: proc
+		# Prerequisites: proc
+		Prerequisites: barracks
 		Queue: Building.GDI, Building.Nod
 	Building:
 		Footprint: xx xx
@@ -388,14 +413,16 @@ HPAD:
 		Race: gdi
 		Group: Aircraft
 		RequireOwner: false
-		BuildSpeed: .4
+		# BuildSpeed: .4
+		BuildSpeed: 1.1
 		LowPowerSlowdown: 3
 	ProductionQueue@Nod:
 		Type: Aircraft.Nod
 		Race: nod
 		Group: Aircraft
 		RequireOwner: false
-		BuildSpeed: .4
+		# BuildSpeed: .4
+		BuildSpeed: 1.1
 		LowPowerSlowdown: 3
 	ProductionBar@GDI:
 		ProductionType: Aircraft.GDI
@@ -458,13 +485,15 @@ HQ:
 FIX:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 500
+		# Cost: 500
+		Cost: 1200
 	Tooltip:
 		Name: Repair Facility
 		Description: Repairs vehicles
 	Buildable:
 		BuildPaletteOrder: 80
-		Prerequisites: vehicleproduction
+		# Prerequisites: vehicleproduction
+		Prerequisites: nuke
 		Queue: Building.GDI, Building.Nod
 	Building:
 		Footprint: _x_ xxx _x_
@@ -485,15 +514,18 @@ FIX:
 EYE:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 1800
+		# Cost: 1800
+		Cost: 2800
 	Tooltip:
 		Name: Advanced Communications Center
-		Description: Provides radar & Orbital Ion Cannon support power. \nUnlocks Mammoth Tank & Commando.  \nRequires power to operate.
+		# Description: Provides radar & Orbital Ion Cannon support power. \nUnlocks Mammoth Tank & Commando.  \nRequires power to operate.
+		Description: Provides radar & Orbital Ion Cannon support power. \nUnlocks higher-tech units.  \nRequires power to operate.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anyhq
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: anyhq, ~techlevel.high
+		# Prerequisites: anyhq, ~techlevel.high
+		Prerequisites: hq, ~techlevel.high
 		Queue: Building.GDI
 	Building:
 		Footprint: x_ xx
@@ -532,15 +564,18 @@ EYE:
 TMPL:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 2000
+		# Cost: 2000
+		Cost: 3000
 	Tooltip:
 		Name: Temple of Nod
-		Description: Provides Nuclear Strike support power. \nUnlocks Stealth Tank, Chem. Warrior & Obelisk of Light.  \nRequires power to operate.
+		# Description: Provides Nuclear Strike support power. \nUnlocks Stealth Tank, Chem. Warrior & Obelisk of Light.  \nRequires power to operate.
+		Description: Provides Nuclear Strike support power. \nUnlocks higher-tech units.  \nRequires power to operate.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anyhq
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: anyhq, ~techlevel.high
+		# Prerequisites: anyhq, ~techlevel.high
+		Prerequisites: hq, ~techlevel.high
 		Queue: Building.Nod
 	Building:
 		Footprint: ___ xxx xxx
@@ -579,14 +614,17 @@ GUN:
 	Valued:
 		Cost: 600
 	CustomBuildTimeValue:
-		Value: 1440
+		# Value: 1440
+		Value: 383
 	Tooltip:
 		Name: Turret
 		Description: Basic Anti-Tank base defense.\n  Strong vs Tanks, vehicles\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 45
-		Prerequisites: barracks
-		Queue: Defence.GDI, Defence.Nod
+		# Prerequisites: barracks
+		Prerequisites: hand
+		# Queue: Defence.GDI, Defence.Nod
+		Queue: Defence.Nod
 	Building:
 	-GivesBuildableArea:
 	Health:
@@ -622,8 +660,8 @@ SAM:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 750
-	CustomBuildTimeValue:
-		Value: 2160
+	# CustomBuildTimeValue:
+		# Value: 2160
 	Tooltip:
 		Name: SAM Site
 		Description: Anti-Aircraft base defense.\n  Strong vs Aircraft\n  Cannot target Ground units.
@@ -663,14 +701,15 @@ OBLI:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1500
-	CustomBuildTimeValue:
-		Value: 3120
+	# CustomBuildTimeValue:
+		# Value: 3120
 	Tooltip:
 		Name: Obelisk of Light
 		Description: Advanced base defense. \nRequires power to operate.\n  Strong vs all Ground units\n  Cannot target Aircraft
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: tmpl, ~techlevel.high
+		# Prerequisites: tmpl, ~techlevel.high
+		Prerequisites: hq, ~techlevel.high
 		Queue: Defence.Nod
 	Building:
 		Footprint: _ x
@@ -709,16 +748,19 @@ OBLI:
 GTWR:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 600
-	CustomBuildTimeValue:
-		Value: 1440
+		# Cost: 600
+		Cost: 500
+	# CustomBuildTimeValue:
+		# Value: 1440
 	Tooltip:
 		Name: Guard Tower
 		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: barracks
-		Queue: Defence.GDI, Defence.Nod
+		# Prerequisites: barracks
+		Prerequisites: pyle
+		# Queue: Defence.GDI, Defence.Nod
+		Queue: Defence.GDI
 	Building:
 	-GivesBuildableArea:
 	Health:
@@ -750,14 +792,15 @@ ATWR:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1000
-	CustomBuildTimeValue:
-		Value: 2880
+	# CustomBuildTimeValue:
+		# Value: 2880
 	Tooltip:
 		Name: Advanced Guard Tower
 		Description: All-purpose defensive structure.\n  Strong vs Aircraft, Tanks\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: anyhq, ~techlevel.medium
+		# Prerequisites: anyhq, ~techlevel.medium
+		Prerequisites: hq, ~techlevel.medium
 		Queue: Defence.GDI
 	Building:
 		Footprint: _ x
@@ -793,13 +836,18 @@ ATWR:
 		Range: 5
 	RenderRangeCircle:
 	Power:
-		Amount: -40
+		# Amount: -40
+		Amount: -20
 	-MustBeDestroyed:
 
 SBAG:
 	Inherits: ^Wall
 	Valued:
-		Cost: 25
+		# Cost: 25
+		Cost: 50
+	# NEW CustomBuildTimeValue
+	CustomBuildTimeValue:
+		Value: 68
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -808,7 +856,8 @@ SBAG:
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
-		Queue: Defence.GDI
+		# Queue: Defence.GDI
+		Queue: Defence.GDI, Defence.Nod
 	Health:
 		HP: 100
 	Armor:
@@ -824,7 +873,8 @@ SBAG:
 CYCL:
 	Inherits: ^Wall
 	Valued:
-		Cost: 25
+		# Cost: 25
+		Cost: 75
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -833,7 +883,8 @@ CYCL:
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
-		Queue: Defence.Nod
+		# Queue: Defence.Nod
+		Queue: Defence.GDI, Defence.Nod
 	Health:
 		HP: 100
 	Armor:
@@ -850,6 +901,9 @@ BRIK:
 	Inherits: ^Wall
 	Valued:
 		Cost: 100
+	# NEW CustomBuildTimeValue
+	CustomBuildTimeValue:
+		Value: 158
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -857,7 +911,8 @@ BRIK:
 		Description: Stop units.
 	Buildable:
 		BuildPaletteOrder: 30
-		Prerequisites: vehicleproduction
+		# Prerequisites: vehicleproduction
+		Prerequisites: fact
 		Queue: Defence.GDI, Defence.Nod
 	Health:
 		HP: 250
@@ -893,6 +948,8 @@ ANYPOWER:
 
 ANYHQ:
 	Tooltip:
-		Name: a communications center
-		Description: a communications center
+		# Name: a communications center
+		Name: Communications Center
+		# Description: a communications center
+		Description: Communications Center
 

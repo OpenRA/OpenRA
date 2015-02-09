@@ -1,13 +1,15 @@
 MCV:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 2000
+		# Cost: 2000
+		Cost: 5000
 	Tooltip:
 		Name: Mobile Construction Vehicle
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: anyhq, ~techlevel.medium
+		# Prerequisites: anyhq, ~techlevel.medium
+		Prerequisites: vehicleproduction, anyhq, ~techlevel.medium
 		Queue: Vehicle.GDI, Vehicle.Nod
 	Selectable:
 		Priority: 4
@@ -40,7 +42,8 @@ MCV:
 HARV:
 	Inherits: ^Tank
 	Valued:
-		Cost: 1000
+		# Cost: 1000
+		Cost: 1400
 	Tooltip:
 		Name: Harvester
 		GenericName: Harvester
@@ -79,14 +82,17 @@ HARV:
 APC:
 	Inherits: ^Tank
 	Valued:
-		Cost: 600
+		# Cost: 600
+		Cost: 700
 	Tooltip:
 		Name: APC
 		Description: Armed infantry transport. \nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 30
-		Prerequisites: pyle
-		Queue: Vehicle.GDI
+		# Prerequisites: pyle
+		Prerequisites: barracks, vehicleproduction
+		# Queue: Vehicle.GDI
+		Queue: Vehicle.GDI, Vehicle.Nod
 	Mobile:
 		ROT: 8
 		Speed: 128
@@ -126,13 +132,15 @@ APC:
 ARTY:
 	Inherits: ^Tank
 	Valued:
-		Cost: 600
+		# Cost: 600
+		Cost: 450
 	Tooltip:
 		Name: Artillery
 		Description: Long-range artillery.\n  Strong vs Infantry, Vehicles & Buildings
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: anyhq, ~techlevel.medium
+		# Prerequisites: anyhq, ~techlevel.medium
+		Prerequisites: afld, ~techlevel.medium
 		Queue: Vehicle.Nod
 	Mobile:
 		ROT: 2
@@ -162,13 +170,15 @@ ARTY:
 FTNK:
 	Inherits: ^Tank
 	Valued:
-		Cost: 600
+		# Cost: 600
+		Cost: 800
 	Tooltip:
 		Name: Flame Tank
 		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings & Vehicles\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: anyhq, ~techlevel.medium
+		# Prerequisites: anyhq, ~techlevel.medium
+		Prerequisites: afld, hq, ~techlevel.medium
 		Queue: Vehicle.Nod
 	Mobile:
 		ROT: 7
@@ -233,6 +243,7 @@ BGGY:
 BIKE:
 	Inherits: ^Vehicle
 	Valued:
+		# Cost: 600
 		Cost: 500
 	Tooltip:
 		Name: Recon Bike
@@ -272,7 +283,8 @@ JEEP:
 	Valued:
 		Cost: 400
 	Tooltip:
-		Name: Hum-Vee
+		# Name: Hum-Vee
+		Name: Humm-Vee
 		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 20
@@ -311,7 +323,8 @@ LTNK:
 		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: anyhq, ~techlevel.medium
+		# Prerequisites: anyhq, ~techlevel.medium
+		Prerequisites: afld, ~techlevel.medium
 		Queue: Vehicle.Nod
 	Mobile:
 		ROT: 7
@@ -350,7 +363,8 @@ MTNK:
 		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Vehicles\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: anyhq, ~techlevel.medium
+		# Prerequisites: anyhq, ~techlevel.medium
+		Prerequisites: weap, ~techlevel.medium
 		Queue: Vehicle.GDI
 	Mobile:
 		Speed: 85
@@ -385,12 +399,16 @@ HTNK:
 	Inherits: ^Tank
 	Valued:
 		Cost: 1500
+	# NEW CustomBuildTimeValue
+	CustomBuildTimeValue:
+		Value: 1800
 	Tooltip:
 		Name: Mammoth Tank
 		Description: Heavily armored GDI Tank. \nCan attack Aircraft.\n  Strong vs Everything
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: eye, ~techlevel.high
+		# Prerequisites: eye, ~techlevel.high
+		Prerequisites: weap, fix, ~techlevel.high
 		Queue: Vehicle.GDI
 	Mobile:
 		Crushes: wall, heavywall, crate, infantry
@@ -437,13 +455,16 @@ HTNK:
 MSAM:
 	Inherits: ^Tank
 	Valued:
-		Cost: 1200
+		# Cost: 1200
+		Cost: 800
 	Tooltip:
-		Name: Rocket Launcher
+		# Name: Rocket Launcher
+		Name: Rocket Launcher / MRLS
 		Description: Long range rocket artillery.\n  Strong vs all Ground units.
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: anyhq, ~techlevel.medium
+		# Prerequisites: anyhq, ~techlevel.medium
+		Prerequisites: weap, eye, ~techlevel.medium
 		Queue: Vehicle.GDI
 	Mobile:
 		Speed: 85
@@ -474,13 +495,16 @@ MSAM:
 MLRS:
 	Inherits: ^Tank
 	Valued:
-		Cost: 600
+		# Cost: 600
+		Cost: 800
 	Tooltip:
-		Name: Mobile S.A.M.
+		# Name: Mobile S.A.M.
+		Name: Mobile S.A.M. / MRLS
 		Description: Powerful anti-air unit. \nCannot attack Ground units.
 	Buildable:
 		BuildPaletteOrder: 70
-		Prerequisites: anyhq, ~techlevel.medium
+		# Prerequisites: anyhq, ~techlevel.medium
+		Prerequisites: afld, tmpl, ~techlevel.medium
 		Queue: Vehicle.Nod
 	Mobile:
 		Speed: 99
@@ -520,7 +544,8 @@ STNK:
 		Description: Long-range missile tank that can cloak. \nCan attack Aircraft. \nHas weak armor. Can be spotted by infantry.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry.
 	Buildable:
 		BuildPaletteOrder: 90
-		Prerequisites: tmpl, ~techlevel.high
+		# Prerequisites: tmpl, ~techlevel.high
+		Prerequisites: afld, hq, ~techlevel.high
 		Queue: Vehicle.Nod
 	Mobile:
 		ROT: 10
