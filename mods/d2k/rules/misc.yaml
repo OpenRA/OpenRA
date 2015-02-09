@@ -140,6 +140,14 @@ waypoint:
 	RenderEditorOnly:
 	BodyOrientation:
 
+^carryall.colorpicker:
+	Inherits: ^CARRYALL
+	RenderUnit:
+		Image: carryall
+		Palette: colorpicker
+	Helicopter:
+		InitialFacing: 104
+
 CAMERA:
 	Immobile:
 		OccupiesSpace: false

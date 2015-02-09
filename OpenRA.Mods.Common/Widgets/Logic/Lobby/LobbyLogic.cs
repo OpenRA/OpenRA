@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly OrderManager orderManager;
 		readonly bool skirmishMode;
 		readonly Ruleset modRules;
+		readonly World shellmapWorld;
 
 		enum PanelType { Players, Options, Kick, ForceStart }
 		PanelType panel = PanelType.Players;
@@ -108,6 +109,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.onExit = onExit;
 			this.skirmishMode = skirmishMode;
 			this.modRules = modRules;
+			shellmapWorld = worldRenderer.World;
 
 			orderManager.AddChatLine += AddChatLine;
 			Game.LobbyInfoChanged += UpdateCurrentMap;
@@ -699,7 +701,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					else
 						LobbyUtils.SetupEditableNameWidget(template, slot, client, orderManager);
 
-					LobbyUtils.SetupEditableColorWidget(template, slot, client, orderManager, colorPreview);
+					LobbyUtils.SetupEditableColorWidget(template, slot, client, orderManager, shellmapWorld, colorPreview);
 					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, countries);
 					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, Map);
 					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, Map);
