@@ -218,7 +218,6 @@
     <Compile Include="Traits\World\ActorMap.cs" />
     <Compile Include="Widgets\HotkeyEntryWidget.cs" />
     <Compile Include="Widgets\SpriteWidget.cs" />
-    <Compile Include="Widgets\SpriteSequenceWidget.cs" />
     <Compile Include="Widgets\RGBASpriteWidget.cs" />
     <Compile Include="Scripting\ScriptContext.cs" />
     <Compile Include="Scripting\ScriptActorInterface.cs" />

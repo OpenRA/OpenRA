@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		public static void ShowColorDropDown(DropDownButtonWidget color, Session.Client client,
-			OrderManager orderManager, ColorPreviewManagerWidget preview)
+			OrderManager orderManager, World world, ColorPreviewManagerWidget preview)
 		{
 			Action onExit = () =>
 			{
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Action<HSLColor> onChange = c => preview.Color = c;
 
-			var colorChooser = Game.LoadWidget(orderManager.World, "COLOR_CHOOSER", null, new WidgetArgs()
+			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
 				{ "onChange", onChange },
 				{ "initialColor", client.Color }
@@ -377,11 +377,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		public static void SetupEditableColorWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, ColorPreviewManagerWidget colorPreview)
+		public static void SetupEditableColorWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, World world, ColorPreviewManagerWidget colorPreview)
 		{
 			var color = parent.Get<DropDownButtonWidget>("COLOR");
 			color.IsDisabled = () => (s != null && s.LockColor) || orderManager.LocalClient.IsReady;
-			color.OnMouseDown = _ => ShowColorDropDown(color, c, orderManager, colorPreview);
+			color.OnMouseDown = _ => ShowColorDropDown(color, c, orderManager, world, colorPreview);
 
 			SetupColorWidget(color, s, c);
 		}

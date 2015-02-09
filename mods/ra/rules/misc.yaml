@@ -368,6 +368,12 @@ waypoint:
 	RenderEditorOnly:
 	BodyOrientation:
 
+^fact.colorpicker:
+	Inherits: FACT
+	RenderBuilding:
+		Image: fact
+		Palette: colorpicker
+
 CTFLAG:
 	Inherits: ^TechBuilding
 	Building:
