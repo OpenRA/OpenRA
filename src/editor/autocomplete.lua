@@ -453,7 +453,7 @@ local function getAutoCompApiList(childs,fragment,method)
     return ret
   end
 
-  if cache[childs] then
+  if cache[childs] and cache[childs][fragment] then
     return cache[childs][fragment]
   end
 
