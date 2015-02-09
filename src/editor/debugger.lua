@@ -558,7 +558,7 @@ debugger.listen = function(start)
       debugger.editormap = {}
 
       local wxfilepath = GetEditorFileAndCurInfo()
-      local startfile = options.startwith
+      local startfile = ide:GetProjectStartFile() or options.startwith
         or (wxfilepath and wxfilepath:GetFullPath())
 
       if not startfile then

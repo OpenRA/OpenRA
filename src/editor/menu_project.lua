@@ -194,7 +194,7 @@ local function getNameToRun(skipcheck)
   if not SaveIfModified(editor) then return end
   if ide.config.editor.saveallonrun then SaveAll(true) end
 
-  return wx.wxFileName(openDocuments[id].filePath)
+  return wx.wxFileName(ide:GetProjectStartFile() or openDocuments[id].filePath)
 end
 
 function ActivateOutput()

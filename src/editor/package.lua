@@ -157,6 +157,11 @@ function ide:GetEditorNotebook() return self.frame.notebook end
 function ide:GetOutputNotebook() return self.frame.bottomnotebook end
 function ide:GetProjectNotebook() return self.frame.projnotebook end
 function ide:GetProject() return FileTreeGetDir() end
+function ide:GetProjectStartFile()
+  local projectdir = FileTreeGetDir()
+  local startfile = ide.filetree.settings.startfile[projectdir]
+  return MergeFullPath(projectdir, startfile), startfile
+end
 function ide:GetLaunchedProcess() return self.debugger and self.debugger.pid end
 function ide:GetProjectTree() return ide.filetree.projtreeCtrl end
 function ide:GetOutlineTree() return ide.outline.outlineCtrl end

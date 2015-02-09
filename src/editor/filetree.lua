@@ -12,14 +12,15 @@ ide.filetree = {
   projdirlist = {},
   projdirpartmap = {},
   projtreeCtrl = nil,
-  imglist = ide:CreateImageList("PROJECT", "FOLDER", "FILE-KNOWN", "FILE-NORMAL"),
-  settings = {extensionignore = {}},
+  imglist = ide:CreateImageList("PROJECT",
+    "FOLDER", "FILE-KNOWN", "FILE-NORMAL", "FILE-NORMAL-START"),
+  settings = {extensionignore = {}, startfile = {}},
 }
 local filetree = ide.filetree
 local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
 local pathsep = GetPathSeparator()
 local q = EscapeMagic
-local image = { DIRECTORY = 0, FILEKNOWN = 1, FILEOTHER = 2 }
+local image = { DIRECTORY = 0, FILEKNOWN = 1, FILEOTHER = 2, FILEOTHERSTART = 3 }
 
 do
   local settings = ide:AddPackage('core.filetree', {}):GetSettings()
@@ -30,6 +31,15 @@ end
 
 -- generic tree
 -- ------------
+
+local function getIcon(name, isdir)
+  local startfile = GetFullPathIfExists(FileTreeGetDir(),
+    filetree.settings.startfile[FileTreeGetDir()])
+  local known = GetSpec(GetFileExt(name))
+  local icon = isdir and image.DIRECTORY or known and image.FILEKNOWN or image.FILEOTHER
+  if startfile and startfile == name then icon = image.FILEOTHERSTART end
+  return icon
+end
 
 local function treeAddDir(tree,parent_id,rootdir)
   local items = {}
@@ -45,10 +55,8 @@ local function treeAddDir(tree,parent_id,rootdir)
   for _, file in ipairs(FileSysGetRecursive(rootdir)) do
     local name, dir = file:match("([^"..pathsep.."]+)("..pathsep.."?)$")
     local isdir = #dir>0
-    local ext = GetFileExt(name)
-    if isdir or not filetree.settings.extensionignore[ext] then
-      local known = GetSpec(ext)
-      local icon = isdir and image.DIRECTORY or known and image.FILEKNOWN or image.FILEOTHER
+    if isdir or not filetree.settings.extensionignore[GetFileExt(name)] then
+      local icon = getIcon(file, isdir)
       local item = items[name .. icon]
       if item then -- existing item
         -- keep deleting items until we find item
@@ -324,9 +332,12 @@ local function treeSetConnectorsAndIcons(tree)
       tree:ActivateItem(event:GetItem())
     end)
 
-  -- save configuration and refresh the tree
-  local function saveSettingsAndRefresh()
+  local function saveSettings()
     ide:AddPackage('core.filetree', {}):SetSettings(filetree.settings)
+  end
+
+  -- refresh the tree
+  local function refreshChildren()
     tree:RefreshChildren()
     -- now mark the current file (if it was previously disabled)
     local editor = ide:GetEditor()
@@ -346,6 +357,25 @@ local function treeSetConnectorsAndIcons(tree)
     tree:EnsureVisible(item)
     tree:SetEvtHandlerEnabled(true)
     return item
+  end
+
+  local function unsetStartFile()
+    local project = FileTreeGetDir()
+    local startfile = filetree.settings.startfile[project]
+    filetree.settings.startfile[project] = nil
+    if startfile then
+      local item_id = tree:FindItem(startfile)
+      if item_id:IsOk() then
+        tree:SetItemImage(item_id, getIcon(tree:GetItemFullName(item_id)))
+      end
+    end
+  end
+
+  local function setStartFile(item_id)
+    local project = FileTreeGetDir()
+    local startfile = tree:GetItemFullName(item_id):gsub(project, "")
+    filetree.settings.startfile[project] = startfile
+    tree:SetItemImage(item_id, getIcon(tree:GetItemFullName(item_id)))
   end
 
   tree:Connect(ID_NEWFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -395,12 +425,25 @@ local function treeSetConnectorsAndIcons(tree)
     function()
       local ext = GetFileExt(tree:GetItemText(tree:GetSelection()))
       filetree.settings.extensionignore[ext] = true
-      saveSettingsAndRefresh()
+      saveSettings()
+      refreshChildren()
     end)
   tree:Connect(ID_SHOWEXTENSIONALL, wx.wxEVT_COMMAND_MENU_SELECTED,
     function()
       filetree.settings.extensionignore = {}
-      saveSettingsAndRefresh()
+      saveSettings()
+      refreshChildren()
+    end)
+  tree:Connect(ID_SETSTARTFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function()
+      unsetStartFile()
+      setStartFile(tree:GetSelection())
+      saveSettings()
+    end)
+  tree:Connect(ID_UNSETSTARTFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function()
+      unsetStartFile()
+      saveSettings()
     end)
 
   tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_MENU,
@@ -413,6 +456,7 @@ local function treeSetConnectorsAndIcons(tree)
         or TR("&Rename"))
       local fname = tree:GetItemText(item_id)
       local ext = GetFileExt(fname)
+      local startfile = filetree.settings.startfile[FileTreeGetDir()]
       local menu = wx.wxMenu {
         { ID_NEWFILE, TR("New &File") },
         { ID_NEWDIRECTORY, TR("&New Directory") },
@@ -421,6 +465,9 @@ local function treeSetConnectorsAndIcons(tree)
         { ID_DELETEFILE, TR("&Delete")..KSC(ID_DELETEFILE) },
         { },
         { ID_HIDEEXTENSION, TR("Hide '.%s' Files"):format(ext) },
+        { },
+        { ID_SETSTARTFILE, TR("Set As Start File") },
+        { ID_UNSETSTARTFILE, TR("Unset '%s' As Start File"):format(startfile or "<none>") },
         { },
         { ID_OPENEXTENSION, TR("Open With Default Program") },
         { ID_COPYFULLPATH, TR("Copy Full Path") },
@@ -449,11 +496,12 @@ local function treeSetConnectorsAndIcons(tree)
       local projectdirectory = wx.wxMenuItem(menu, ID_PROJECTDIR,
         TR("Project Directory"), TR("Set the project directory to be used"),
         wx.wxITEM_NORMAL, projectdirectorymenu)
-      menu:Insert(9, projectdirectory)
+      menu:Insert(12, projectdirectory)
       FileTreeProjectListUpdate(projectdirectorymenu, 0)
 
       -- disable Delete on non-empty directories
       local isdir = tree:GetItemImage(item_id) == image.DIRECTORY
+      local isstart = tree:GetItemImage(item_id) == image.FILEOTHERSTART
       if isdir then
         local source = tree:GetItemFullName(item_id)
         menu:Enable(ID_DELETEFILE, not FileDirHasContent(source..pathsep))
@@ -464,6 +512,8 @@ local function treeSetConnectorsAndIcons(tree)
         menu:Enable(ID_OPENEXTENSION, ft and #ft:GetOpenCommand("") > 0)
         menu:Enable(ID_HIDEEXTENSION, not filetree.settings.extensionignore[ext])
       end
+      menu:Enable(ID_SETSTARTFILE, not isdir and not isstart)
+      if not startfile then menu:Destroy(ID_UNSETSTARTFILE) end
       menu:Enable(ID_SHOWEXTENSION, next(filetree.settings.extensionignore) ~= nil)
 
       PackageEventHandle("onMenuFiletree", menu, tree, event)
