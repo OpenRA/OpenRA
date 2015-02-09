@@ -39,9 +39,6 @@ namespace OpenRA.Mods.Common.Widgets
 			};
 		}
 
-		/**
-		 * open confirmation dialog for mission / game restart
-		 */
 		public static void PromptAbortMission(World world, string title, string text, Action onAbort, Action onCancel = null, Action closeMenu = null)
 		{
 			var isMultiplayer = !world.LobbyInfo.IsSinglePlayer && !world.IsReplay;
@@ -58,14 +55,10 @@ namespace OpenRA.Mods.Common.Widgets
 			restartButton.IsVisible = () => !isMultiplayer;
 			restartButton.OnClick = () =>
 			{
-				// close menu as overlay is still active on window close...
 				if (closeMenu != null)
 					closeMenu();
 
-				// close menu
 				Ui.CloseWindow();
-
-				// restart game
 				Game.RestartGame();
 			};
 

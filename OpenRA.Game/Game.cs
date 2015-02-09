@@ -173,9 +173,6 @@ namespace OpenRA
 			GC.Collect();
 		}
 
-		/**
-		 * restart current mission / game
-		 */
 		public static void RestartGame()
 		{
 			OrderManager.World.EndGame();
