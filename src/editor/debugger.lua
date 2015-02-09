@@ -626,6 +626,9 @@ debugger.listen = function(start)
         and stoppedAtBreakpoint(file, line) then
           activateDocument(file, line)
           options.runstart = false
+        elseif file and line then
+          DisplayOutputLn(TR("Debugging suspended at %s:%s (couldn't activate the file).")
+            :format(file, line))
         end
       elseif not (options.run or debugger.scratchpad) then
         local file, line, err = debugger.loadfile(startfile)
@@ -681,7 +684,11 @@ debugger.listen = function(start)
           debugger.scratchable = ide.interpreter.scratchextloop ~= nil
         else
           debugger.scratchable = true
-          activateDocument(startfile, 0) -- find the appropriate line
+          local activated = activateDocument(startfile, 0) -- find the appropriate line
+          if not activated then
+            DisplayOutputLn(TR("Debugging suspended at %s:%s (couldn't activate the file).")
+              :format(startfile, '?'))
+          end
         end
       end
 
