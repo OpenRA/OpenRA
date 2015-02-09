@@ -74,26 +74,26 @@ end
 HuntTriggerFunction = function()
 	local list = GDI.GetGroundAttackers()
 	Utils.Do(list, function(unit)
-		unit.Hunt()
+		IdleHunt(unit)
 	end)
 end
 
 Gdi5Movement = function(unit)
-	unit.Hunt()
+	IdleHunt(unit)
 end
 
 Gdi1Movement = function(unit)
 	Utils.Do(Gdi1Waypoints, function(waypoint)
 		unit.AttackMove(waypoint.Location)
 	end)
-	unit.Hunt()
+	IdleHunt(unit)
 end
 
 Gdi3Movement = function(unit)
 	Utils.Do(Gdi3Waypoints, function(waypoint)
 		unit.AttackMove(waypoint.Location)
 	end)
-	unit.Hunt()
+	IdleHunt(unit)
 end
 
 WorldLoaded = function()
@@ -232,4 +232,10 @@ end
 InsertNodUnits = function()
 	Reinforcements.Reinforce(Nod, NodUnits, { UnitsEntry.Location, UnitsRally.Location }, 15)
 	Reinforcements.Reinforce(Nod, { "mcv" }, { McvEntry.Location, McvRally.Location })
+end
+
+IdleHunt = function(unit) 
+	if not unit.IsDead then 
+		Trigger.OnIdle(unit, unit.Hunt) 
+	end 
 end

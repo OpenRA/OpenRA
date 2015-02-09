@@ -74,7 +74,7 @@ end
 DfndTriggerFunction = function()
 	local list = GDI.GetGroundAttackers()
 	Utils.Do(list, function(unit)
-		unit.Hunt()
+		IdleHunt(unit)
 	end)
 end
 
@@ -127,30 +127,35 @@ Atk1Movement = function(unit)
 	Utils.Do(Atk1Waypoints, function(waypoint)
 		unit.AttackMove(waypoint.Location)
 	end)
+	IdleHunt(unit)
 end
 
 Atk2Movement = function(unit)
 	Utils.Do(Atk2Waypoints, function(waypoint)
 		unit.AttackMove(waypoint.Location)
 	end)
+	IdleHunt(unit)
 end
 
 Atk3Movement = function(unit)
 	Utils.Do(Atk3Waypoints, function(waypoint)
 		unit.AttackMove(waypoint.Location)
 	end)
+	IdleHunt(unit)
 end
 
 Atk4Movement = function(unit)
 	Utils.Do(Atk4Waypoints, function(waypoint)
 		unit.AttackMove(waypoint.Location)
 	end)
+	IdleHunt(unit)
 end
 
 Pat1Movement = function(unit)
 	Utils.Do(Pat1Waypoints, function(waypoint)
 		unit.Move(waypoint.Location)
 	end)
+	IdleHunt(unit)
 end
 
 WorldLoaded = function()
@@ -246,7 +251,6 @@ checkProduction = function(player)
 			for i = 1, unitsToProduce, 1 do
 				UnitsType[i] = UnitToRebuild
 			end
-
 			Barracks.Build(UnitsType)
 		end
 	end
@@ -261,4 +265,10 @@ getStartUnits = function()
 			GDIStartUnits = GDIStartUnits + 1
 		end
 	end)
+end
+
+IdleHunt = function(unit) 
+	if not unit.IsDead then 
+		Trigger.OnIdle(unit, unit.Hunt) 
+	end 
 end
