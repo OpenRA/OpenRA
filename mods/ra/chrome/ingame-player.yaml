@@ -161,7 +161,6 @@ Container@PLAYER_WIDGETS:
 							Y: 41
 							Width: 220
 							Height: 220
-							Children:
 				Label@GAME_TIMER:
 					Logic: GameTimerLogic
 					X: 3
