@@ -714,6 +714,11 @@ debugger.listen = function(start)
           activateDocument(file, line)
         end
       end
+
+      -- refresh toolbar and menus in case the main app is not active
+      RequestAttention()
+      ide:GetMainFrame():UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
+      ide:GetToolBar():UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
     end)
   debugger.listening = server
 end
