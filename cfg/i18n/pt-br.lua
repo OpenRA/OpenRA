@@ -110,7 +110,7 @@ return {
   ["Debugger server stopped at %s:%d."] = "Servidor de depuração interrompido em %s:%d.", -- src\editor\debugger.lua
   ["Debugging session completed (%s)."] = "Sessão de depuração completada (%s).", -- src\editor\debugger.lua
   ["Debugging session started in '%s'."] = "Sessão de depuração iniciada em '%s'.", -- src\editor\debugger.lua
-  ["Debugging suspended at %s:%s (couldn't activate the file)."] = "Depuração suspendida em %s:%s (impossível ativar o arquivo).", -- src\editor\debugger.lua
+  ["Debugging suspended at '%s:%s' (couldn't activate the file)."] = "Depuração suspendida em '%s:%s' (impossível ativar o arquivo).", -- src\editor\debugger.lua
   ["Detach &Process"] = "Separar &processo", -- src\editor\menu_project.lua
   ["Directory"] = "Pasta", -- src\editor\findreplace.lua
   ["Do you want to delete '%s'?"] = "Deseja mesmo apagar '%s'?", -- src\editor\filetree.lua

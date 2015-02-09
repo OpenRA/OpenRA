@@ -106,7 +106,7 @@ return {
   ["Debugger server stopped at %s:%d."] = nil, -- src\editor\debugger.lua
   ["Debugging session completed (%s)."] = "除错会话完成 (%s)", -- src\editor\debugger.lua
   ["Debugging session started in '%s'."] = "除错会话于 '%s' 起始", -- src\editor\debugger.lua
-  ["Debugging suspended at %s:%s (couldn't activate the file)."] = "除错挂起于 %s:%s (不能激活文档).", -- src\editor\debugger.lua
+  ["Debugging suspended at '%s:%s' (couldn't activate the file)."] = "除错挂起于 '%s:%s' (不能激活文档).", -- src\editor\debugger.lua
   ["Detach &Process"] = nil, -- src\editor\menu_project.lua
   ["Directory"] = "文件夹", -- src\editor\findreplace.lua
   ["Do you want to delete '%s'?"] = nil, -- src\editor\filetree.lua

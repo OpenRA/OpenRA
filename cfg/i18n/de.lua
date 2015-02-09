@@ -107,7 +107,7 @@ return {
   ["Debugger server stopped at %s:%d."] = "Debugserver gestoppt als %s:%d.", -- src\editor\debugger.lua
   ["Debugging session completed (%s)."] = "Debugging Session beendet (%s).", -- src\editor\debugger.lua
   ["Debugging session started in '%s'."] = "Debugging Session gestartet '%s'.", -- src\editor\debugger.lua
-  ["Debugging suspended at %s:%s (couldn't activate the file)."] = "Debugging angehalten bei %s:%s (konnte Datei nicht aktivieren).", -- src\editor\debugger.lua
+  ["Debugging suspended at '%s:%s' (couldn't activate the file)."] = "Debugging angehalten bei '%s:%s' (konnte Datei nicht aktivieren).", -- src\editor\debugger.lua
   ["Detach &Process"] = "Prozeß abkoppeln", -- src\editor\menu_project.lua
   ["Directory"] = "Verzeichnis", -- src\editor\findreplace.lua
   ["Do you want to delete '%s'?"] = "Soll '%s' gelöscht werden?", -- src\editor\filetree.lua

@@ -108,7 +108,7 @@ return {
   ["Debugger server stopped at %s:%d."] = "Sencimigilo-servilon malfunkciiĝis ĉe %s:%d.", -- src\editor\debugger.lua
   ["Debugging session completed (%s)."] = "Sencimiga seanco estas finita (%s).", -- src\editor\debugger.lua
   ["Debugging session started in '%s'."] = "Sencimiga seanco komencitas en '%s'.", -- src\editor\debugger.lua
-  ["Debugging suspended at %s:%s (couldn't activate the file)."] = "La sencimigo estis finetita ĉe %s:%s (ne povis aktivi la dosieron).", -- src\editor\debugger.lua
+  ["Debugging suspended at '%s:%s' (couldn't activate the file)."] = "La sencimigo estis finetita ĉe '%s:%s' (ne povis aktivi la dosieron).", -- src\editor\debugger.lua
   ["Detach &Process"] = "Deigi &procezon", -- src\editor\menu_project.lua
   ["Directory"] = "Dosierujo", -- src\editor\findreplace.lua
   ["Do you want to delete '%s'?"] = "Ĉu vi volas forigi je '%s'?", -- src\editor\filetree.lua

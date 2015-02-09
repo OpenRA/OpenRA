@@ -627,7 +627,7 @@ debugger.listen = function(start)
           activateDocument(file, line)
           options.runstart = false
         elseif file and line then
-          DisplayOutputLn(TR("Debugging suspended at %s:%s (couldn't activate the file).")
+          DisplayOutputLn(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
             :format(file, line))
         end
       elseif not (options.run or debugger.scratchpad) then
@@ -675,7 +675,7 @@ debugger.listen = function(start)
           end
 
           if not activated then
-            DisplayOutputLn(TR("Debugging suspended at %s:%s (couldn't activate the file).")
+            DisplayOutputLn(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
               :format(file, line))
           end
 
@@ -686,7 +686,7 @@ debugger.listen = function(start)
           debugger.scratchable = true
           local activated = activateDocument(startfile, 0) -- find the appropriate line
           if not activated then
-            DisplayOutputLn(TR("Debugging suspended at %s:%s (couldn't activate the file).")
+            DisplayOutputLn(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
               :format(startfile, '?'))
           end
         end
@@ -789,7 +789,7 @@ debugger.exec = function(command)
               -- If this happens, stop and report allowing users to set
               -- breakpoints and step through.
               if debugger.breaking then
-                DisplayOutputLn(TR("Debugging suspended at %s:%s (couldn't activate the file).")
+                DisplayOutputLn(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
                   :format(file, line))
                 updateStackAndWatches()
                 return

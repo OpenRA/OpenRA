@@ -107,7 +107,7 @@ return {
   ["Debugger server stopped at %s:%d."] = "Сервер отладки остановлен %s:%d.", -- src\editor\debugger.lua
   ["Debugging session completed (%s)."] = "Отладочная сессия завершена (%s).", -- src\editor\debugger.lua
   ["Debugging session started in '%s'."] = "Отладочная сессия запущена в '%s'.", -- src\editor\debugger.lua
-  ["Debugging suspended at %s:%s (couldn't activate the file)."] = "Отладка остановлена на %s:%s (невозможно открыть файл).", -- src\editor\debugger.lua
+  ["Debugging suspended at '%s:%s' (couldn't activate the file)."] = "Отладка остановлена в '%s:%s' (невозможно активировать файл).", -- src\editor\debugger.lua
   ["Detach &Process"] = "Отсоединить процесс", -- src\editor\menu_project.lua
   ["Directory"] = "Папка", -- src\editor\findreplace.lua
   ["Do you want to delete '%s'?"] = "Удалить '%s'?", -- src\editor\filetree.lua
