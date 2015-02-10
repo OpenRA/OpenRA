@@ -1,115 +1,393 @@
-chrome-gdi: chrome-gdi.png
-	specialbin-top: 0,0,30,51
-	specialbin-middle: 0,51,30,51
-	specialbin-bottom: 0,153,30,39
-	moneybin: 192,0,320,32
-	tooltip-bg: 0,288,272,136
-	radar: 297,31,210,222
+sidebar-gdi: chrome.png
+	background-top: 0,167,238,290
+	background-iconrow: 0,457,238,47
+	background-bottom: 0,504,238,8
+	background-supportoverlay: 184,118,64,48
 
-sidebar-bits: chrome-gdi.png
-	power-indicator: 187,4,4,7
+sidebar-button-gdi: chrome.png
+	background: 59,31,22,22
+	border-r: 81,31,3,22
+	border-l: 56,31,3,22
+	border-b: 59,53,22,3
+	border-t: 59,28,22,3
+	corner-tl: 56,28,3,3
+	corner-tr: 81,28,3,3
+	corner-bl: 56,53,3,3
+	corner-br: 81,53,3,3
+sidebar-button-gdi-hover: chrome.png
+	background: 59,3,22,22
+	border-r: 81,3,3,22
+	border-l: 56,3,3,22
+	border-b: 59,25,22,3
+	border-t: 59,0,22,3
+	corner-tl: 56,0,3,3
+	corner-tr: 81,0,3,3
+	corner-bl: 56,25,3,3
+	corner-br: 81,25,3,3
+sidebar-button-gdi-pressed: chrome.png
+	background: 59,31,22,22
+	border-r: 81,31,3,22
+	border-l: 56,31,3,22
+	border-b: 59,53,22,3
+	border-t: 59,28,22,3
+	corner-tl: 56,28,3,3
+	corner-tr: 81,28,3,3
+	corner-bl: 56,53,3,3
+	corner-br: 81,53,3,3
+sidebar-button-gdi-highlighted: chrome.png
+	background: 87,31,22,22
+	border-r: 109,31,3,22
+	border-l: 84,31,3,22
+	border-b: 87,53,22,3
+	border-t: 87,28,22,3
+	corner-tl: 84,28,3,3
+	corner-tr: 109,28,3,3
+	corner-bl: 84,53,3,3
+	corner-br: 109,53,3,3
+sidebar-button-gdi-highlighted-hover: chrome.png
+	background: 87,3,22,22
+	border-r: 109,3,3,22
+	border-l: 84,3,3,22
+	border-b: 87,25,22,3
+	border-t: 87,0,22,3
+	corner-tl: 84,0,3,3
+	corner-tr: 109,0,3,3
+	corner-bl: 84,25,3,3
+	corner-br: 109,25,3,3
+sidebar-button-gdi-highlighted-pressed: chrome.png
+	background: 87,31,22,22
+	border-r: 109,31,3,22
+	border-l: 84,31,3,22
+	border-b: 87,53,22,3
+	border-t: 87,28,22,3
+	corner-tl: 84,28,3,3
+	corner-tr: 109,28,3,3
+	corner-bl: 84,53,3,3
+	corner-br: 109,53,3,3
+sidebar-button-gdi-disabled: chrome.png
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
+sidebar-button-gdi-highlighted-disabled: chrome.png
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
 
-palette-gdi: chrome-gdi.png
-	top: 297,288,201,9
-	dock-top: 498,274,14,23
-	bottom: 297,489,201,9
-	dock-bottom: 498,489,14,23
-	bg-0: 297,297,201,48
-	dock-0: 498,297,14,48
-	bg-1: 297,345,201,48
-	dock-1: 498,345,14,48
-	bg-2: 297,393,201,48
-	dock-2: 498,393,14,48
-	bg-3: 297,441,201,48
-	dock-3: 498,441,14,48
+sidebar-nod: chrome.png
+	background-top: 274,167,238,290
+	background-iconrow: 274,457,238,47
+	background-bottom: 274,504,238,8
+	background-supportoverlay: 249,118,64,48
 
-digits-gdi: chrome-gdi.png
-	0: 32,0,13,17
-	1: 45,0,13,17
-	2: 58,0,13,17
-	3: 71,0,13,17
-	4: 84,0,13,17
-	5: 97,0,13,17
-	6: 110,0,13,17
-	7: 123,0,13,17
-	8: 136,0,13,17
-	9: 149,0,13,17
+sidebar-button-nod: chrome.png
+	background: 3,31,22,22
+	border-r: 25,31,3,22
+	border-l: 0,31,3,22
+	border-b: 3,53,22,3
+	border-t: 3,28,22,3
+	corner-tl: 0,28,3,3
+	corner-tr: 25,28,3,3
+	corner-bl: 0,53,3,3
+	corner-br: 25,53,3,3
+sidebar-button-nod-hover: chrome.png
+	background: 3,3,22,22
+	border-r: 25,3,3,22
+	border-l: 0,3,3,22
+	border-b: 3,25,22,3
+	border-t: 3,0,22,3
+	corner-tl: 0,0,3,3
+	corner-tr: 25,0,3,3
+	corner-bl: 0,25,3,3
+	corner-br: 25,25,3,3
+sidebar-button-nod-pressed: chrome.png
+	background: 3,31,22,22
+	border-r: 25,31,3,22
+	border-l: 0,31,3,22
+	border-b: 3,53,22,3
+	border-t: 3,28,22,3
+	corner-tl: 0,28,3,3
+	corner-tr: 25,28,3,3
+	corner-bl: 0,53,3,3
+	corner-br: 25,53,3,3
+sidebar-button-nod-highlighted: chrome.png
+	background: 31,31,22,22
+	border-r: 53,31,3,22
+	border-l: 28,31,3,22
+	border-b: 31,53,22,3
+	border-t: 31,28,22,3
+	corner-tl: 28,28,3,3
+	corner-tr: 53,28,3,3
+	corner-bl: 28,53,3,3
+	corner-br: 53,53,3,3
+sidebar-button-nod-highlighted-hover: chrome.png
+	background: 31,3,22,22
+	border-r: 53,3,3,22
+	border-l: 28,3,3,22
+	border-b: 31,25,22,3
+	border-t: 31,0,22,3
+	corner-tl: 28,0,3,3
+	corner-tr: 53,0,3,3
+	corner-bl: 28,25,3,3
+	corner-br: 53,25,3,3
+sidebar-button-nod-highlighted-pressed: chrome.png
+	background: 31,31,22,22
+	border-r: 53,31,3,22
+	border-l: 28,31,3,22
+	border-b: 31,53,22,3
+	border-t: 31,28,22,3
+	corner-tl: 28,28,3,3
+	corner-tr: 53,28,3,3
+	corner-bl: 28,53,3,3
+	corner-br: 53,53,3,3
+sidebar-button-nod-disabled: chrome.png
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
+sidebar-button-nod-highlighted-disabled: chrome.png
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
 
-chrome-nod: chrome-nod.png
-	specialbin-top: 0,0,30,51
-	specialbin-middle: 0,51,30,51
-	specialbin-bottom: 0,153,30,39
-	moneybin: 192,0,320,32
-	tooltip-bg: 0,288,272,136
-	radar: 297,31,210,222
+sidebar-bits: chrome.png
+	production-tooltip-time: 416, 80, 16, 16
+	production-tooltip-power: 432, 80, 16, 16
+	production-tooltip-cost: 448, 80, 16, 16
+	production-iconoverlay: 314,118,238,48
 
-palette-nod: chrome-nod.png
-	top: 297,288,201,9
-	dock-top: 498,274,14,23
-	bottom: 297,489,201,9
-	dock-bottom: 498,489,14,23
-	bg-0: 297,297,201,48
-	dock-0: 498,297,14,48
-	bg-1: 297,345,201,48
-	dock-1: 498,345,14,48
-	bg-2: 297,393,201,48
-	dock-2: 498,393,14,48
-	bg-3: 297,441,201,48
-	dock-3: 498,441,14,48
+power-icons: chrome.png
+	power-normal: 350,0,12,18
+	power-critical: 363,0,12,18
 
-digits-nod: chrome-nod.png
-	0: 32,0,13,17
-	1: 45,0,13,17
-	2: 58,0,13,17
-	3: 71,0,13,17
-	4: 84,0,13,17
-	5: 97,0,13,17
-	6: 110,0,13,17
-	7: 123,0,13,17
-	8: 136,0,13,17
-	9: 149,0,13,17
+production-icons: chrome.png
+	building: 384,0,16,16
+	building-disabled: 384,16,16,16
+	building-alert: 384,32,16,16
+	defense: 400,0,16,16
+	defense-disabled: 400,16,16,16
+	defense-alert: 400,32,16,16
+	infantry: 416,0,16,16
+	infantry-disabled: 416,16,16,16
+	infantry-alert: 416,32,16,16
+	vehicle: 432,0,16,16
+	vehicle-disabled: 432,16,16,16
+	vehicle-alert: 432,32,16,16
+	air: 448,0,16,16
+	air-disabled: 448,16,16,16
+	air-alert: 448,32,16,16
 
-tabs-selected: tabs.png
-	gdi-Building: 0,0,27,41
-	gdi-Defense: 0,40,27,41
-	gdi-Infantry: 0,80,27,41
-	gdi-Vehicle: 0,120,27,41
-	gdi-Air: 0,160,27,41
-	gdi-Ship: 0,200,27,41
-	nod-Building: 80,0,27,41
-	nod-Defense: 80,40,27,41
-	nod-Infantry: 80,80,27,41
-	nod-Vehicle: 80,120,27,41
-	nod-Air: 80,160,27,41
-	nod-Ship: 80,200,27,41
+order-icons: chrome.png
+	options: 480,0,16,16
+	options-disabled: 480,16,16,16
+	options-active: 480,32,16,16
+	diplomacy: 464,48,16,16
+	diplomacy-disabled: 464,64,16,16
+	diplomacy-active: 464,80,16,16
+	sell: 496,0,16,16
+	sell-disabled: 496,16,16,16
+	sell-active: 496,32,16,16
+	repair: 384,48,16,16
+	repair-disabled: 384,64,16,16
+	repair-active: 384,80,16,16
+	beacon: 400,48,16,16
+	beacon-disabled: 400,64,16,16
+	beacon-active: 400,80,16,16
+	power: 480,48,16,16
+	power-disabled: 480,64,16,16
+	power-active: 480,80,16,16
+	stats: 368,48,16,16
+	stats-disabled: 368,64,16,16
+	stats-active: 368,80,16,16
 
-tabs-ready: tabs.png
-	gdi-Building: 27,0,27,41
-	gdi-Defense: 27,40,27,41
-	gdi-Infantry: 27,80,27,41
-	gdi-Vehicle: 27,120,27,41
-	gdi-Air: 27,160,27,41
-	gdi-Ship: 27,200,27,41
-	nod-Building: 107,0,27,41
-	nod-Defense: 107,40,27,41
-	nod-Infantry: 107,80,27,41
-	nod-Vehicle: 107,120,27,41
-	nod-Air: 107,160,27,41
-	nod-Ship: 107,200,27,41
+sidebar-observer: chrome.png
+	background: 512,167,238,287
+	replay-bottom: 512,454,238,40
+	observer-bottom: 512,495,238,8
 
-tabs-normal: tabs.png
-	gdi-Building: 54,0,27,41
-	gdi-Defense: 54,40,27,41
-	gdi-Infantry: 54,80,27,41
-	gdi-Vehicle: 54,120,27,41
-	gdi-Air: 54,160,27,41
-	gdi-Ship: 54,200,27,41
-	nod-Building: 134,0,27,41
-	nod-Defense: 134,40,27,41
-	nod-Infantry: 134,80,27,41
-	nod-Vehicle: 134,120,27,41
-	nod-Air: 134,160,27,41
-	nod-Ship: 134,200,27,41
+sidebar-button-observershroud: chrome.png
+sidebar-button-observershroud-pressed: chrome.png
+sidebar-button-observershroud-hover: chrome.png
+
+sidebar-button-observer: chrome.png
+	background: 117,33,18,18
+	border-r: 135,33,5,18
+	border-l: 112,33,5,18
+	border-b: 117,51,18,5
+	border-t: 117,28,18,5
+	corner-tl: 112,28,5,5
+	corner-tr: 135,28,5,5
+	corner-bl: 112,51,5,5
+	corner-br: 135,51,5,5
+sidebar-button-observer-hover: chrome.png
+	background: 117,5,18,18
+	border-r: 135,5,5,18
+	border-l: 112,5,5,18
+	border-b: 117,23,18,5
+	border-t: 117,0,18,5
+	corner-tl: 112,0,5,5
+	corner-tr: 135,0,5,5
+	corner-bl: 112,23,5,5
+	corner-br: 135,23,5,5
+sidebar-button-observer-pressed: chrome.png
+	background: 117,33,18,18
+	border-r: 135,33,5,18
+	border-l: 112,33,5,18
+	border-b: 117,51,18,5
+	border-t: 117,28,18,5
+	corner-tl: 112,28,5,5
+	corner-tr: 135,28,5,5
+	corner-bl: 112,51,5,5
+	corner-br: 135,51,5,5
+sidebar-button-observer-highlighted: chrome.png
+	background: 145,33,18,18
+	border-r: 163,33,5,18
+	border-l: 140,33,5,18
+	border-b: 145,51,18,5
+	border-t: 145,28,18,5
+	corner-tl: 140,28,5,5
+	corner-tr: 163,28,5,5
+	corner-bl: 140,51,5,5
+	corner-br: 163,51,5,5
+sidebar-button-observer-highlighted-hover: chrome.png
+	background: 145,5,18,18
+	border-r: 163,5,5,18
+	border-l: 140,5,5,18
+	border-b: 145,23,18,5
+	border-t: 145,0,18,5
+	corner-tl: 140,0,5,5
+	corner-tr: 163,0,5,5
+	corner-bl: 140,23,5,5
+	corner-br: 163,23,5,5
+sidebar-button-observer-highlighted-pressed: chrome.png
+	background: 33,33,18,18
+	border-r: 51,33,5,18
+	border-l: 28,33,5,18
+	border-b: 33,51,18,5
+	border-t: 33,28,18,5
+	corner-tl: 28,28,5,5
+	corner-tr: 51,28,5,5
+	corner-bl: 28,51,5,5
+	corner-br: 51,51,5,5
+sidebar-button-observer-disabled: chrome.png
+	background: 173,5,18,18
+	border-r: 191,5,5,18
+	border-l: 168,5,5,18
+	border-b: 173,23,18,5
+	border-t: 173,0,18,5
+	corner-tl: 168,0,5,5
+	corner-tr: 191,0,5,5
+	corner-bl: 168,23,5,5
+	corner-br: 191,23,5,5
+sidebar-button-observer-highlighted-disabled: chrome.png
+	background: 173,5,18,18
+	border-r: 191,5,5,18
+	border-l: 168,5,5,18
+	border-b: 173,23,18,5
+	border-t: 173,0,18,5
+	corner-tl: 168,0,5,5
+	corner-tr: 191,0,5,5
+	corner-bl: 168,23,5,5
+	corner-br: 191,23,5,5
+
+observer-scrollpanel-button: dialog.png
+	background: 769,257,126,126
+	border-r: 895,257,1,126
+	border-l: 768,257,1,126
+	border-b: 769,383,126,1
+	border-t: 769,256,126,1
+	corner-tl: 768,256,1,1
+	corner-tr: 895,256,1,1
+	corner-bl: 768,383,1,1
+	corner-br: 895,383,1,1
+
+observer-scrollpanel-button-hover: dialog.png
+	background: 769,257,126,126
+	border-r: 895,257,1,126
+	border-l: 768,257,1,126
+	border-b: 769,383,126,1
+	border-t: 769,256,126,1
+	corner-tl: 768,256,1,1
+	corner-tr: 895,256,1,1
+	corner-bl: 768,383,1,1
+	corner-br: 895,383,1,1
+
+observer-scrollpanel-button-pressed: dialog.png
+	background: 897,257,126,126
+	border-r: 1023,257,1,126
+	border-l: 896,257,1,126
+	border-b: 897,383,126,1
+	border-t: 897,256,126,1
+	corner-tl: 896,256,1,1
+	corner-tr: 1023,256,1,1
+	corner-bl: 896,383,1,1
+	corner-br: 1023,383,1,1
+
+observer-scrollpanel-button-disabled: dialog.png
+	background: 769,385,126,126
+	border-r: 895,385,1,126
+	border-l: 768,385,1,126
+	border-b: 769,511,126,1
+	border-t: 769,384,126,1
+	corner-tl: 768,384,1,1
+	corner-tr: 895,384,1,1
+	corner-bl: 768,511,1,1
+	corner-br: 895,511,1,1
+
+observer-scrollheader-selected: dialog.png
+	background: 769,385,126,126
+	border-r: 895,385,1,126
+	border-l: 768,385,1,126
+	border-b: 769,511,126,1
+	border-t: 769,384,126,1
+	corner-tl: 768,384,1,1
+	corner-tr: 895,384,1,1
+	corner-bl: 768,511,1,1
+	corner-br: 895,511,1,1
+
+observer-scrollitem-selected: dialog.png
+	background: 897,257,126,126
+	border-r: 1023,257,1,126
+	border-l: 896,257,1,126
+	border-b: 897,383,126,1
+	border-t: 897,256,126,1
+	corner-tl: 896,256,1,1
+	corner-tr: 1023,256,1,1
+	corner-bl: 896,383,1,1
+	corner-br: 1023,383,1,1
+
+observer-scrollitem-hover: dialog.png
+	background: 769,257,126,126
+	border-r: 895,257,1,126
+	border-l: 768,257,1,126
+	border-b: 769,383,126,1
+	border-t: 769,256,126,1
+	corner-tl: 768,256,1,1
+	corner-tr: 895,256,1,1
+	corner-bl: 768,383,1,1
+	corner-br: 895,383,1,1
 
 # Used for the menu
 dialog: dialog.png
@@ -171,20 +449,6 @@ strategic: strategic.png
 	critical_unowned: 0,32,32,32
 	enemy_owned: 32,32,32,32
 	player_owned: 96,0,32,32
-
-order-icons: buttons.png
-	sell: 0,0,34,28
-	sell-disabled: 68,0,34,28
-	sell-active: 34,0,34,28
-	repair: 0,28,34,28
-	repair-disabled: 68,28,34,28
-	repair-active: 34,28,34,28
-	power: 0,56,34,28
-	power-disabled: 68,56,34,28
-	power-active: 34,56,34,28
-	beacon: 0,84,34,28
-	beacon-disabled: 68,84,34,28
-	beacon-active: 34,84,34,28
 
 flags: buttons.png
 	gdi: 30,112,30,15
