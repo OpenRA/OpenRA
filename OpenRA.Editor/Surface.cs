@@ -510,8 +510,15 @@ namespace OpenRA.Editor
 			// Grab tiles and resources within selection (doesn't do actors)
 			var start = SelectionStart;
 			var end = SelectionEnd;
+			var xCordonL = Map.Bounds.Left;
+			var xCordonR = Map.Bounds.Right;
+			var yCordonT = Map.Bounds.Top;
+			var yCordonB = Map.Bounds.Bottom;
 
 			if (start == end) return;
+
+			if (start.X < xCordonL || start.X > xCordonR || start.Y < yCordonT || start.Y > yCordonB)
+				return;
 
 			var width = Math.Abs((start - end).X);
 			var height = Math.Abs((start - end).Y);
@@ -520,15 +527,23 @@ namespace OpenRA.Editor
 			ResourceSelection = new ResourceTile[width, height];
 
 			for (var x = 0; x < width; x++)
-			{
 				for (var y = 0; y < height; y++)
 				{
-					// TODO: crash prevention
-					var cell = new CPos(start.X + x, start.Y + y);
+					if (!Map.Cells.Contains(start)) 
+						continue;			
+					
+					var startX = start.X + x;
+					var startY = start.Y + y;
+					if (startX < xCordonL || startX > xCordonR || startY < yCordonT || startY > yCordonB)
+						continue;
+
+					var cell = new CPos(startX, startY);
+					if (!Map.Cells.Contains(cell))
+						continue;
+
 					TileSelection[x, y] = Map.MapTiles.Value[cell];
 					ResourceSelection[x, y] = Map.MapResources.Value[cell];
 				}
-			}
 		}
 
 		void PasteSelection()
@@ -537,15 +552,28 @@ namespace OpenRA.Editor
 			var width = Math.Abs((SelectionStart - SelectionEnd).X);
 			var height = Math.Abs((SelectionStart - SelectionEnd).Y);
 
+			var xCordonL = Map.Bounds.Left;
+			var xCordonR = Map.Bounds.Right;
+			var yCordonT = Map.Bounds.Top;
+			var yCordonB = Map.Bounds.Bottom;
+
 			for (var x = 0; x < width; x++)
-			{
 				for (var y = 0; y < height; y++)
 				{
+					if (!Map.Cells.Contains(loc))
+						continue;
+					
 					var mapX = loc.X + x;
 					var mapY = loc.Y + y;
+
+					if (mapX < xCordonL || mapX > xCordonR || mapY < yCordonT || mapY > yCordonB)
+						continue;
+
 					var cell = new CPos(mapX, mapY);
 
-					// TODO: crash prevention for outside of bounds
+					if (!Map.Cells.Contains(cell))
+						continue;
+
 					Map.MapTiles.Value[cell] = TileSelection[x, y];
 					Map.MapResources.Value[cell] = ResourceSelection[x, y];
 
@@ -556,7 +584,6 @@ namespace OpenRA.Editor
 						Chunks.Remove(ch);
 					}
 				}
-			}
 
 			AfterChange();
 		}
