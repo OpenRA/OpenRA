@@ -530,6 +530,7 @@
     <Compile Include="LoadScreens\BlankLoadScreen.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\CheckCodeStyle.cs" />
+    <Compile Include="UtilityCommands\ReplayMetadataCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
