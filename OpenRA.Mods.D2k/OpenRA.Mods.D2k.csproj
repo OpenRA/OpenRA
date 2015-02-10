@@ -85,7 +85,6 @@
     <Compile Include="Traits\TemporaryOwnerManager.cs" />
     <Compile Include="Traits\ThrowsShrapnel.cs" />
     <Compile Include="Traits\World\BuildableTerrainLayer.cs" />
-    <Compile Include="Traits\World\ChooseBuildTabOnSelect.cs" />
     <Compile Include="Traits\World\D2kResourceLayer.cs" />
     <Compile Include="Traits\World\FogPaletteFromR8.cs" />
     <Compile Include="Traits\World\PaletteFromR8.cs" />
@@ -94,14 +93,9 @@
     <Compile Include="Traits\AttractsWorms.cs" />
     <Compile Include="Traits\WormSpawner.cs" />
     <Compile Include="Warheads\ChangeOwnerWarhead.cs" />
-    <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="UtilityCommands\D2kMapImporter.cs" />
     <Compile Include="UtilityCommands\ImportD2kMapCommand.cs" />
-    <Compile Include="Widgets\MoneyBinWidget.cs" />
-    <Compile Include="Widgets\SupportPowerBinWidget.cs" />
-    <Compile Include="Widgets\SlidingContainerWidget.cs" />
     <Compile Include="Traits\Render\WithAttackOverlay.cs" />
-    <Compile Include="Widgets\Logic\SlidingRadarBinLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
