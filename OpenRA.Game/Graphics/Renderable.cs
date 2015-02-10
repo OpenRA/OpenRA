@@ -33,6 +33,7 @@ namespace OpenRA.Graphics
 	{
 		void Render(WorldRenderer wr);
 		void RenderDebugGeometry(WorldRenderer wr);
+		Rectangle ScreenBounds(WorldRenderer wr);
 	}
 
 	public struct SpriteRenderable : IRenderable, IFinalizedRenderable
@@ -84,6 +85,12 @@ namespace OpenRA.Graphics
 		{
 			var offset = ScreenPosition(wr) + sprite.Offset;
 			Game.Renderer.WorldLineRenderer.DrawRect(offset, offset + sprite.Size, Color.Red);
+		}
+
+		public Rectangle ScreenBounds(WorldRenderer wr)
+		{
+			var offset = ScreenPosition(wr) + sprite.Offset;
+			return new Rectangle((int)offset.X, (int)offset.Y, (int)sprite.Size.X, (int)sprite.Size.Y);
 		}
 	}
 }

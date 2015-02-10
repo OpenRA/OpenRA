@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -184,6 +185,41 @@ namespace OpenRA.Mods.Common.Graphics
 				Game.Renderer.WorldLineRenderer.DrawLine(corners[1], corners[5], c, c);
 				Game.Renderer.WorldLineRenderer.DrawLine(corners[2], corners[6], c, c);
 				Game.Renderer.WorldLineRenderer.DrawLine(corners[3], corners[7], c, c);
+			}
+
+			public Rectangle ScreenBounds(WorldRenderer wr)
+			{
+				var pxOrigin = wr.ScreenPosition(voxel.pos);
+				var draw = voxel.voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
+				var scaleTransform = Util.ScaleMatrix(voxel.scale, voxel.scale, voxel.scale);
+				var cameraTransform = Util.MakeFloatMatrix(voxel.camera.AsMatrix());
+
+				var minX = float.MaxValue;
+				var minY = float.MaxValue;
+				var maxX = float.MinValue;
+				var maxY = float.MinValue;
+				foreach (var v in draw)
+				{
+					var bounds = v.Voxel.Bounds(v.FrameFunc());
+					var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
+						(x, y) => Util.MatrixMultiply(x, Util.MakeFloatMatrix(y.AsMatrix())));
+
+					var pxOffset = wr.ScreenVector(v.OffsetFunc());
+					var pxPos = pxOrigin + new float2(pxOffset[0], pxOffset[1]);
+					var screenTransform = Util.MatrixMultiply(cameraTransform, worldTransform);
+
+					for (var i = 0; i < 8; i++)
+					{
+						var vec = new float[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
+						var screen = Util.MatrixVectorMultiply(screenTransform, vec);
+						minX = Math.Min(minX, pxPos.X + screen[0]);
+						minY = Math.Min(minY, pxPos.Y + screen[1]);
+						maxX = Math.Max(maxX, pxPos.X + screen[0]);
+						maxY = Math.Max(maxY, pxPos.Y + screen[1]);
+					}
+				}
+
+				return Rectangle.FromLTRB((int)minX, (int)minY, (int)maxX, (int)maxY);
 			}
 		}
 	}

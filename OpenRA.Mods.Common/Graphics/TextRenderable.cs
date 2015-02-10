@@ -55,5 +55,7 @@ namespace OpenRA.Mods.Common.Graphics
 			var offset = wr.ScreenPxPosition(pos) - 0.5f * size;
 			Game.Renderer.WorldLineRenderer.DrawRect(offset, offset + size, Color.Red);
 		}
+
+		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }
 	}
 }

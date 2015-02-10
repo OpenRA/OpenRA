@@ -55,5 +55,11 @@ namespace OpenRA.Graphics
 			var offset = screenPos + sprite.Offset;
 			Game.Renderer.LineRenderer.DrawRect(offset, offset + sprite.Size, Color.Red);
 		}
+
+		public Rectangle ScreenBounds(WorldRenderer wr)
+		{
+			var offset = screenPos + sprite.Offset;
+			return new Rectangle((int)offset.X, (int)offset.Y, (int)sprite.Size.X, (int)sprite.Size.Y);
+		}
 	}
 }

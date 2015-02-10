@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 
@@ -74,6 +75,8 @@ namespace OpenRA.Mods.RA.Graphics
 
 			cache.Do(c => c.Render(wr));
 		}
+
+		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }
 
 		public IEnumerable<IFinalizedRenderable> GenerateRenderables(WorldRenderer wr)
 		{
