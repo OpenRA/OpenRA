@@ -661,13 +661,11 @@ namespace OpenRA.Server
 
 			// Drop any players who are not ready
 			foreach (var c in Conns.ToArray())
-			{
 				if (GetClient(c).IsInvalid)
 				{
 					SendOrderTo(c, "ServerError", "You have been kicked from the server");
 					DropClient(c);
 				}
-			}
 
 			SyncLobbyInfo();
 			State = ServerState.GameStarted;
@@ -686,11 +684,7 @@ namespace OpenRA.Server
 			if (Settings.TimeOut > 10000)
 			{
 				gameTimeout = new XTimer(Settings.TimeOut);
-				gameTimeout.Elapsed += (_, e) =>
-				{
-					Console.WriteLine("Timeout at {0}!!!", e.SignalTime);
-					Environment.Exit(0);
-				};
+				gameTimeout.Elapsed += (_, e) => { Console.WriteLine("Timeout at {0}!!!", e.SignalTime); };
 				gameTimeout.Enabled = true;
 			}
 		}
