@@ -256,6 +256,7 @@
     <Compile Include="Graphics\HardwareCursor.cs" />
     <Compile Include="Support\PerfItem.cs" />
     <Compile Include="Support\PerfSample.cs" />
+    <Compile Include="Graphics\SpriteRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
