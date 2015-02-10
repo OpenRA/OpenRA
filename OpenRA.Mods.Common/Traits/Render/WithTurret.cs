@@ -39,10 +39,14 @@ namespace OpenRA.Mods.Common.Traits
 			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
 				.First(tt => tt.Turret == Turret);
 
-			var anim = new Animation(init.World, image, () => t.InitialFacing);
+			var ifacing = init.Actor.Traits.GetOrDefault<IFacingInfo>();
+			var bodyFacing = ifacing != null ? init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : ifacing.GetInitialFacing() : 0;
+			var turretFacing = init.Contains<TurretFacingInit>() ? init.Get<TurretFacingInit, int>() : t.InitialFacing;
+
+			var anim = new Animation(init.World, image, () => turretFacing);
 			anim.Play(Sequence);
 
-			var orientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(t.InitialFacing)), facings);
+			var orientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(bodyFacing)), facings);
 			var offset = body.LocalToWorld(t.Offset.Rotate(orientation));
 			yield return new SpriteActorPreview(anim, offset, offset.Y + offset.Z + 1, p, rs.Scale);
 		}
