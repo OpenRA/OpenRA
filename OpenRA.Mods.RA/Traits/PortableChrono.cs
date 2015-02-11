@@ -153,7 +153,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
-			if (mi.Button == MouseButton.Left)
+			if (mi.Button == Game.mouseButtonPreference.Cancel)
 			{
 				world.CancelInputMode();
 				yield break;

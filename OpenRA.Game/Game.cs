@@ -27,6 +27,8 @@ namespace OpenRA
 {
 	public static class Game
 	{
+		public static MouseButtonPreference mouseButtonPreference = new MouseButtonPreference();
+
 		public const int NetTickScale = 3; // 120 ms net tick for 40 ms local tick
 		public const int Timestep = 40;
 		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
