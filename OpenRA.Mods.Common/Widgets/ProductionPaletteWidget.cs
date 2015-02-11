@@ -252,7 +252,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public void RefreshIcons()
 		{
 			icons = new Dictionary<Rectangle, ProductionIcon>();
-			if (CurrentQueue == null)
+			var producer = CurrentQueue != null ? CurrentQueue.MostLikelyProducer() : default(TraitPair<Production>);
+			if (CurrentQueue == null || producer.Trait == null)
 			{
 				if (DisplayedIconCount != 0)
 				{
@@ -268,7 +269,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var ks = Game.Settings.Keys;
 			var rb = RenderBounds;
-			var race = CurrentQueue.Actor.Owner.Country.Race;
+			var race = producer.Trait.Race;
 
 			foreach (var item in AllBuildables.Skip(IconRowOffset * Columns).Take(MaxIconRowOffset * Columns))
 			{

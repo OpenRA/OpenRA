@@ -74,6 +74,16 @@ namespace OpenRA.Mods.Common.Traits
 			return isActive ? base.BuildableItems() : NoItems;
 		}
 
+		public override TraitPair<Production> MostLikelyProducer()
+		{
+			return self.World.ActorsWithTrait<Production>()
+				.Where(x => x.Actor.Owner == self.Owner
+					&& x.Trait.Info.Produces.Contains(Info.Type))
+				.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
+				.ThenByDescending(x => x.Actor.ActorID)
+				.FirstOrDefault();
+		}
+
 		protected override bool BuildUnit(string name)
 		{
 			// Find a production structure to build this actor
@@ -97,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var p in producers.Where(p => !p.Actor.IsDisabled()))
 			{
-				if (p.Trait.Produce(p.Actor, ai, Race))
+				if (p.Trait.Produce(p.Actor, ai, p.Trait.Race))
 				{
 					FinishProduction();
 					return true;
