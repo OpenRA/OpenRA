@@ -15,7 +15,6 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
@@ -24,15 +23,18 @@ namespace OpenRA.Mods.Common.Orders
 		readonly Actor producer;
 		readonly string building;
 		readonly BuildingInfo buildingInfo;
+		readonly string race;
+		readonly Sprite buildOk;
+		readonly Sprite buildBlocked;
 		IActorPreview[] preview;
 
-		Sprite buildOk, buildBlocked;
-		bool initialized = false;
+		bool initialized;
 
 		public PlaceBuildingOrderGenerator(ProductionQueue queue, string name)
 		{
 			producer = queue.Actor;
 			building = name;
+			race = queue.MostLikelyProducer().Trait.Race;
 
 			// Clear selection if using Left-Click Orders
 			if (Game.Settings.Game.UseClassicMouseStyle)
@@ -122,7 +124,12 @@ namespace OpenRA.Mods.Common.Orders
 			{
 				if (!initialized)
 				{
-					var init = new ActorPreviewInitializer(rules.Actors[building], producer.Owner, wr, new TypeDictionary());
+					var td = new TypeDictionary()
+					{
+						new RaceInit(race)
+					};
+
+					var init = new ActorPreviewInitializer(rules.Actors[building], producer.Owner, wr, td);
 					preview = rules.Actors[building].Traits.WithInterface<IRenderActorPreviewInfo>()
 						.SelectMany(rpi => rpi.RenderPreview(init))
 						.ToArray();

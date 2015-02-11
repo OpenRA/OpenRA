@@ -79,7 +79,6 @@ namespace OpenRA.Mods.Common.Traits
 		Dictionary<ActorInfo, ProductionState> produceable;
 		List<ProductionItem> queue = new List<ProductionItem>();
 
-		// A list of things we are currently building
 		public Actor Actor { get { return self; } }
 
 		[Sync] public int QueueLength { get { return queue.Count; } }
@@ -359,6 +358,13 @@ namespace OpenRA.Mods.Common.Traits
 		protected void BeginProduction(ProductionItem item)
 		{
 			queue.Add(item);
+		}
+
+		// Returns the actor/trait that is most likely (but not necessarily guaranteed) to produce something in this queue
+		public virtual TraitPair<Production> MostLikelyProducer()
+		{
+			var trait = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
+			return new TraitPair<Production> { Actor = self, Trait = trait };
 		}
 
 		// Builds a unit from the actor that holds this queue (1 queue per building)

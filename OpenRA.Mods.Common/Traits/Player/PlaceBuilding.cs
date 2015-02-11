@@ -38,6 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 					if (queue == null)
 						return;
 
+					var producer = queue.MostLikelyProducer();
+					var race = producer.Trait != null ? producer.Trait.Race : self.Owner.Country.Race;
 					var buildingInfo = unit.Traits.Get<BuildingInfo>();
 
 					if (order.OrderString == "LineBuild")
@@ -49,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 							{
 								new LocationInit(t),
 								new OwnerInit(order.Player),
-								new RaceInit(queue.Race)
+								new RaceInit(race)
 							});
 
 							if (playSounds)
@@ -69,14 +71,16 @@ namespace OpenRA.Mods.Common.Traits
 						{
 							new LocationInit(order.TargetLocation),
 							new OwnerInit(order.Player),
-							new RaceInit(queue.Race),
+							new RaceInit(race),
 						});
 
 						foreach (var s in buildingInfo.BuildSounds)
 							Sound.PlayToPlayer(order.Player, s, building.CenterPosition);
 					}
 
-					PlayBuildAnim(self, unit);
+					if (producer.Actor != null)
+						foreach (var nbp in producer.Actor.TraitsImplementing<INotifyBuildingPlaced>())
+							nbp.BuildingPlaced(producer.Actor);
 
 					queue.FinishProduction();
 
@@ -84,9 +88,9 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						// May be null if the build anywhere cheat is active
 						// BuildingInfo.IsCloseEnoughToBase has already verified that this is a valid build location
-						var producer = buildingInfo.FindBaseProvider(w, self.Owner, order.TargetLocation);
-						if (producer != null)
-							producer.Trait<BaseProvider>().BeginCooldown();
+						var provider = buildingInfo.FindBaseProvider(w, self.Owner, order.TargetLocation);
+						if (provider != null)
+							provider.Trait<BaseProvider>().BeginCooldown();
 					}
 
 					if (GetNumBuildables(self.Owner) > prevItems)
@@ -96,30 +100,11 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		// finds a construction yard (or equivalent) and runs its "build" animation.
-		static void PlayBuildAnim(Actor self, ActorInfo unit)
-		{
-			var bi = unit.Traits.GetOrDefault<BuildableInfo>();
-			if (bi == null)
-				return;
-
-			var producers = self.World.ActorsWithTrait<Production>()
-				.Where(x => x.Actor.Owner == self.Owner
-					&& x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Intersect(bi.Queue).Any())
-					.ToList();
-			var producer = producers.Where(x => x.Actor.IsPrimaryBuilding()).Concat(producers)
-				.FirstOrDefault();
-
-			if (producer.Actor == null)
-				return;
-
-			foreach (var nbp in producer.Actor.TraitsImplementing<INotifyBuildingPlaced>())
-				nbp.BuildingPlaced(producer.Actor);
-		}
-
 		static int GetNumBuildables(Player p)
 		{
-			if (p != p.World.LocalPlayer) return 0;		// this only matters for local players.
+			// This only matters for local players.
+			if (p != p.World.LocalPlayer)
+				return 0;
 
 			return p.World.ActorsWithTrait<ProductionQueue>()
 				.Where(a => a.Actor.Owner == p)
