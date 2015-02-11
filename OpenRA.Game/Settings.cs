@@ -130,6 +130,7 @@ namespace OpenRA
 		public float ViewportEdgeScrollStep = 10f;
 		public float UIScrollSpeed = 50f;
 
+		public bool UseClassicMouseStyle = false;
 		public bool AlwaysShowStatusBars = false;
 		public bool TeamHealthColors = false;
 
