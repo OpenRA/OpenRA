@@ -26,15 +26,11 @@ namespace OpenRA.TilesetBuilder
 			if (!PaletteFromImage)
 			{
 				if (PaletteFile.Length < 5)
-				{
 					MessageBox.Show("No palette specified", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				}
 			}
 
 			if (ImageFile.Length < 5)
-			{
 				MessageBox.Show("No image selected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
 			else
 			{
 				DialogResult = DialogResult.OK;

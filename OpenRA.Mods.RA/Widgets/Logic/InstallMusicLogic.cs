@@ -26,9 +26,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var cancelButton = installMusicContainer.GetOrNull<ButtonWidget>("CANCEL_BUTTON");
 			if (cancelButton != null)
-			{
 				cancelButton.OnClick = () => Game.InitializeMod(Game.Settings.Game.Mod, null);
-			}
 
 			var copyFromDiscButton = installMusicContainer.GetOrNull<ButtonWidget>("COPY_FROM_CD_BUTTON");
 			if (copyFromDiscButton != null)

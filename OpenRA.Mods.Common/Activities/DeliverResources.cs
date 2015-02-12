@@ -41,9 +41,7 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 			else
-			{
 				harv.LinkProc(self, harv.OwnerLinkedProc);
-			}
 
 			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
 				harv.ChooseNewProc(self, null);

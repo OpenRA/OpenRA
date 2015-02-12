@@ -88,9 +88,7 @@ namespace OpenRA.Traits
 					start = Stopwatch.GetTimestamp();
 				}
 				else
-				{
 					start = current;
-				}
 
 				if (prev == act)
 					break;
