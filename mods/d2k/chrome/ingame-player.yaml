@@ -149,24 +149,23 @@ Container@PLAYER_WIDGETS:
 							Y: 34
 							Width: 202
 							Height: 202
-						Radar@RADAR_MINIMAP:
-							WorldInteractionController: INTERACTION_CONTROLLER
-							X: 12
-							Y: 34
-							Width: 202
-							Height: 202
-							Children:
-						Image@MINIMAP:
-							X: 12
-							Y: 34
-							ImageName: overlapping-elements
-							ImageCollection: minimap
 						Image@INSIGNIA:
 							Logic: AddRaceSuffixLogic
 							X: 60
 							Y: 75
 							ImageCollection: radar
 							ImageName: insignia
+						Radar@RADAR_MINIMAP:
+							WorldInteractionController: INTERACTION_CONTROLLER
+							X: 12
+							Y: 34
+							Width: 202
+							Height: 202
+						Image@MINIMAP:
+							X: 12
+							Y: 34
+							ImageName: overlapping-elements
+							ImageCollection: minimap
 				Label@GAME_TIMER:
 					Logic: GameTimerLogic
 					X: 10
