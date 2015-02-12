@@ -46,14 +46,34 @@ namespace OpenRA
 		public Shroud Shroud;
 		public World World { get; private set; }
 
-		static CountryInfo ChooseCountry(World world, string name)
+		static CountryInfo ChooseCountry(World world, string race)
 		{
 			var selectableCountries = world.Map.Rules.Actors["world"].Traits
 				.WithInterface<CountryInfo>().Where(c => c.Selectable)
 				.ToList();
 
-			return selectableCountries.FirstOrDefault(c => c.Race == name)
-				?? selectableCountries.Random(world.SharedRandom);
+			var selected = selectableCountries.FirstOrDefault(c => c.Race == race);
+			if (selected == null)
+			{
+				var r = world.SharedRandom;
+
+				if (race == null)
+					return selectableCountries.Random(r);
+
+				var group = world.WorldActor.Info.Traits.WithInterface<CountryGroupInfo>()
+					.FirstOrDefault(g => g.Race == race);
+
+				if (group == null)
+					throw new YamlException("No CountryGroup found with Race `{0}` on map `{1}`.".F(race, world.Map.Title));
+
+				if (group.RaceMembers.Length == 0)
+					throw new YamlException("CountryGroup `{0}` has 0 members!".F(group.Race));
+
+				var randomRace = group.RaceMembers.Random(r);
+				selected = selectableCountries.First(c => c.Race == randomRace);
+			}
+
+			return selected;
 		}
 
 		public Player(World world, Session.Client client, Session.Slot slot, PlayerReference pr)
@@ -70,7 +90,7 @@ namespace OpenRA
 				Color = client.Color;
 				PlayerName = client.Name;
 				botType = client.Bot;
-				Country = ChooseCountry(world, client.Country);
+				Country = ChooseCountry(world, client.CountryRace);
 			}
 			else
 			{

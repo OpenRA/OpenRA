@@ -83,6 +83,10 @@ World:
 	Country@nod:
 		Name: Nod
 		Race: nod
+	CountryGroup:
+		DisplayName: Any
+		Race: random
+		RaceMembers: gdi, nod
 	ProductionQueueFromSelection:
 		ProductionTabsWidget: PRODUCTION_TABS
 	DomainIndex:

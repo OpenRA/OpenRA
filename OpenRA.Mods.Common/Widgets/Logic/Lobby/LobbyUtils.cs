@@ -110,10 +110,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => client.Country == race,
+					() => client.CountryRace == race,
 					() => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, race))));
 				var country = countries[race];
-				item.Get<LabelWidget>("LABEL").GetText = () => country.Name;
+				item.Get<LabelWidget>("LABEL").GetText = () => country.DisplayName;
 				var flag = item.Get<ImageWidget>("FLAG");
 				flag.GetImageCollection = () => "flags";
 				flag.GetImageName = () => race;
@@ -398,7 +398,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var dropdown = parent.Get<DropDownButtonWidget>("FACTION");
 			dropdown.IsDisabled = () => s.LockRace || orderManager.LocalClient.IsReady;
 			dropdown.OnMouseDown = _ => ShowRaceDropDown(dropdown, c, orderManager, countries);
-			var factionDescription = countries[c.Country].Description;
+			var factionDescription = countries[c.CountryRace].Description;
 			dropdown.GetTooltipText = () => factionDescription;
 			SetupFactionWidget(dropdown, s, c, countries);
 		}
@@ -407,9 +407,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Dictionary<string, LobbyCountry> countries)
 		{
 			var factionName = parent.Get<LabelWidget>("FACTIONNAME");
-			factionName.GetText = () => countries[c.Country].Name;
+			factionName.GetText = () => countries[c.CountryRace].DisplayName;
 			var factionFlag = parent.Get<ImageWidget>("FACTIONFLAG");
-			factionFlag.GetImageName = () => c.Country;
+			factionFlag.GetImageName = () => c.CountryRace;
 			factionFlag.GetImageCollection = () => "flags";
 		}
 

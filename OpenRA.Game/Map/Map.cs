@@ -284,8 +284,21 @@ namespace OpenRA
 					Visibility = MapVisibility.MissionSelector;
 			}
 
+			var players = nd["Players"].ToDictionary().Values;
+
+			// Format 7 -> 8 changed the special race from 'Random' to 'random'
+			if (MapFormat < 8)
+			{
+				foreach (var my in players)
+				{
+					var race = my.Nodes.FirstOrDefault(n => n.Key == "Race");
+					if (race != null && race.Value.Value == "Random")
+						race.Value.Value = "random";
+				}
+			}
+
 			// Load players
-			foreach (var my in nd["Players"].ToDictionary().Values)
+			foreach (var my in players)
 			{
 				var player = new PlayerReference(my);
 				Players.Add(player.Name, player);
@@ -342,7 +355,7 @@ namespace OpenRA
 			// The Uid is calculated from the data on-disk, so
 			// format changes must be flushed to disk.
 			// TODO: this isn't very nice
-			if (MapFormat < 7)
+			if (MapFormat < 8)
 				Save(path);
 
 			Uid = ComputeHash();
@@ -391,7 +404,7 @@ namespace OpenRA
 
 		public void Save(string toPath)
 		{
-			MapFormat = 7;
+			MapFormat = 8;
 
 			var root = new List<MiniYamlNode>();
 			var fields = new[]
@@ -715,7 +728,7 @@ namespace OpenRA
 				var p = new PlayerReference
 				{
 					Name = "Multi{0}".F(index),
-					Race = "Random",
+					Race = "random",
 					Playable = true,
 					Enemies = new[] { "Creeps" }
 				};

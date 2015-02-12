@@ -83,6 +83,10 @@ World:
 	Country@1:
 		Name: Nod
 		Race: nod
+	CountryGroup:
+		DisplayName: Any
+		Race: random
+		RaceMembers: gdi, nod
 	DomainIndex:
 	SmudgeLayer@SMALLSCORCH:
 		Type: SmallScorch

@@ -103,6 +103,10 @@ World:
 	Country@Ordos:
 		Name: Ordos
 		Race: ordos
+	CountryGroup:
+		DisplayName: Any
+		Race: random
+		RaceMembers: atreides, harkonnen, ordos
 	DomainIndex:
 	PathfinderDebugOverlay:
 	TerrainGeometryOverlay:
