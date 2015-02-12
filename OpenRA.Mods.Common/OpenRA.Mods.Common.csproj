@@ -253,7 +253,6 @@
     <Compile Include="Traits\Buildings\LineBuild.cs" />
     <Compile Include="Traits\Buildings\LineBuildNode.cs" />
     <Compile Include="Traits\Buildings\PrimaryBuilding.cs" />
-    <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
     <Compile Include="Traits\Buildings\RallyPoint.cs" />
     <Compile Include="Traits\Buildings\Refinery.cs" />
     <Compile Include="Traits\Buildings\RepairableBuilding.cs" />
@@ -337,7 +336,6 @@
     <Compile Include="Traits\Player\PlaceBeacon.cs" />
     <Compile Include="Traits\Player\PlaceBuilding.cs" />
     <Compile Include="Traits\Player\PlayerStatistics.cs" />
-    <Compile Include="Traits\Player\ProductionQueue.cs" />
     <Compile Include="Traits\Player\ProvidesCustomPrerequisite.cs" />
     <Compile Include="Traits\Player\ProvidesTechPrerequisite.cs" />
     <Compile Include="Traits\Player\StrategicVictoryConditions.cs" />
@@ -348,8 +346,9 @@
     <Compile Include="Traits\Power\Power.cs" />
     <Compile Include="Traits\Power\RequiresPower.cs" />
     <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
-    <Compile Include="Traits\Production.cs" />
-    <Compile Include="Traits\ProductionQueueFromSelection.cs" />
+    <Compile Include="Traits\Production\Production.cs" />
+    <Compile Include="Traits\Production\ProductionAirdrop.cs" />
+    <Compile Include="Traits\Production\ProductionQueue.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\ProximityCaptor.cs" />
     <Compile Include="Traits\ProximityCapturable.cs" />
@@ -441,6 +440,7 @@
     <Compile Include="Traits\World\PathfinderDebugOverlay.cs" />
     <Compile Include="Traits\World\PathSearch.cs" />
     <Compile Include="Traits\World\PlayerPaletteFromCurrentTileset.cs" />
+    <Compile Include="Traits\World\ProductionQueueFromSelection.cs" />
     <Compile Include="Traits\World\RadarPings.cs" />
     <Compile Include="Traits\World\ResourceClaim.cs" />
     <Compile Include="Traits\World\ResourceClaimLayer.cs" />
