@@ -22,15 +22,31 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class RenderSpritesInfo : IRenderActorPreviewInfo, ITraitInfo
 	{
-		[Desc("Defaults to the actor name.")]
+		[Desc("The sequence name that defines the actor sprites. Defaults to the actor name.")]
 		public readonly string Image = null;
+
+		[FieldLoader.LoadUsing("LoadRaceImages")]
+		[Desc("A dictionary of race-specific image overrides.")]
+		public readonly Dictionary<string, string> RaceImages = null;
 
 		[Desc("Custom palette name")]
 		public readonly string Palette = null;
+
 		[Desc("Custom PlayerColorPalette: BaseName")]
 		public readonly string PlayerPalette = "player";
+
 		[Desc("Change the sprite image size.")]
 		public readonly float Scale = 1f;
+
+		protected static object LoadRaceImages(MiniYaml y)
+		{
+			MiniYaml images;
+
+			if (!y.ToDictionary().TryGetValue("RaceImages", out images))
+				return null;
+
+			return images.Nodes.ToDictionary(kv => kv.Key, kv => kv.Value.Value);
+		}
 
 		public virtual object Create(ActorInitializer init) { return new RenderSprites(init, this); }
 
@@ -53,6 +69,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string GetImage(ActorInfo actor, SequenceProvider sequenceProvider, string race)
 		{
+			if (RaceImages != null)
+			{
+				string raceImage = null;
+				if (RaceImages.TryGetValue(race, out raceImage) && sequenceProvider.HasSequence(raceImage))
+					return raceImage;
+			}
+
 			return (Image ?? actor.Name).ToLowerInvariant();
 		}
 	}
