@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+
+  <mime-type type="application/x-openra-replay">
+    <icon name="openra" />
+    <generic-icon name="applications-games"/>
+    <comment>OpenRA Replay</comment>
+    <glob weight="60" pattern="*.orarep"/>
+  </mime-type>
+
+</mime-info>
