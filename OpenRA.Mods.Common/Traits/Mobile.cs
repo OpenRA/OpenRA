@@ -295,9 +295,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			ToSubCell = FromSubCell = info.SharesCell ? init.World.Map.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
-			{
 				FromSubCell = ToSubCell = init.Get<SubCellInit, SubCell>();
-			}
 
 			if (init.Contains<LocationInit>())
 			{

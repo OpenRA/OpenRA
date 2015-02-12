@@ -127,9 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 					plane.QueueActivity(new RemoveSelf());
 				}
 				else
-				{
 					w.CreateActor(crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner), new LocationInit(p) });
-				}
 			});
 		}
 

@@ -84,9 +84,7 @@ namespace OpenRA.Widgets
 			if (GetSeries == null || !GetSeries().Any()
 				|| GetLabelFont == null || GetLabelFont() == null
 				|| GetAxisFont == null || GetAxisFont() == null)
-			{
 				return;
-			}
 
 			var rect = RenderBounds;
 			var origin = new float2(rect.Left, rect.Bottom);
@@ -133,9 +131,7 @@ namespace OpenRA.Widgets
 
 					var value = points.Last();
 					if (value != 0)
-					{
 						tiny.DrawText(GetValueFormat().F(value), origin + new float2(x, -value * scale - 2), color);
-					}
 				}
 
 				tiny.DrawText(key, new float2(rect.Left, rect.Top) + new float2(5, 10 * keyOffset + 3), color);

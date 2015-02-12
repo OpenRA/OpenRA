@@ -136,9 +136,7 @@ namespace OpenRA.TilesetBuilder
 				Load();
 			}
 			else
-			{
 				CreateNewTileset();
-			}
 
 			if (autoExport)
 			{
@@ -179,7 +177,8 @@ namespace OpenRA.TilesetBuilder
 			{
 				var tilesetName = txtTilesetName.Text;
 
-				if (tilesetName.Length < 1) { tilesetName = "Temperat"; }
+				if (tilesetName.Length < 1)
+					tilesetName = "Temperat";
 
 				w.WriteStartDocument();
 
@@ -295,9 +294,7 @@ namespace OpenRA.TilesetBuilder
 								var q = p + data.Stride * tileSize * (v + t.Top) + tileSize * (u + t.Left);
 								for (var j = 0; j < tileSize; j++)
 									for (var i = 0; i < tileSize; i++)
-									{
 										bw.Write(q[i + j * data.Stride]);
-									}
 							}
 							else
 								for (var x = 0; x < tileSize * tileSize; x++)
@@ -348,10 +345,10 @@ namespace OpenRA.TilesetBuilder
 			var tilesetPalette = txtPal.Text;
 			var tilesetExt = txtExt.Text;
 
-			if (tilesetName.Length < 1) { tilesetName = "Temperat"; }
-			if (tilesetID.Length < 1) { tilesetID = "TEMPERAT"; }
-			if (tilesetPalette.Length < 1) { tilesetPalette = "temperat"; }
-			if (tilesetExt.Length < 1) { tilesetExt = ".tem,.shp"; }
+			if (tilesetName.Length < 1) tilesetName = "Temperat";
+			if (tilesetID.Length < 1) tilesetID = "TEMPERAT";
+			if (tilesetPalette.Length < 1) tilesetPalette = "temperat";
+			if (tilesetExt.Length < 1) tilesetExt = ".tem,.shp";
 
 			// Create a Tileset definition
 			// TODO: Pull this info from the GUI
@@ -440,20 +437,14 @@ namespace OpenRA.TilesetBuilder
 		{
 			var tilesetFile = txtTilesetName.Text;
 			if (tilesetFile.Length > 8)
-			{
 				tilesetFile = tilesetFile.ToLower().Substring(0, 8);
-			}
 
 			txtID.Text = tilesetFile.ToUpper();
 			txtPal.Text = tilesetFile.ToLower() + ".pal";
 			if (tilesetFile.Length < 3)
-			{
 				txtExt.Text = ".tem,.shp";
-			}
 			else
-			{
 				txtExt.Text = "." + tilesetFile.ToLower().Substring(0, 3) + ",.shp";
-			}
 		}
 
 		private void NewTilesetButton(object sender, EventArgs e)

@@ -617,9 +617,7 @@ namespace OpenRA
 					}
 				}
 				else
-				{
 					Thread.Sleep(nextUpdate - now);
-				}
 			}
 		}
 

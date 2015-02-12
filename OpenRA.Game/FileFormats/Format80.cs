@@ -187,9 +187,7 @@ namespace OpenRA.FileFormats
 						blockStart = offset;
 					}
 					else
-					{
 						offset++;
-					}
 				}
 
 				// Write what we haven't written up to now

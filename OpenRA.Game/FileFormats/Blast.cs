@@ -241,9 +241,8 @@ namespace OpenRA.FileFormats
 				var num = (code >> 4) + 1; // Number of codes (top four bits plus 1)
 				var len = (byte)(code & 15); // Code length (low four bits)
 				do
-				{
 					length[s++] = len;
-				} while (--num > 0);
+				while (--num > 0);
 			}
 
 			n = s;
