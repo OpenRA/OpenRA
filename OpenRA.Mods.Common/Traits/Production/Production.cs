@@ -104,17 +104,17 @@ namespace OpenRA.Mods.Common.Traits
 			if (Reservable.IsReserved(self))
 				return false;
 
-		    var allProduced = true;
+			var allProduced = true;
 
 			foreach (var actorInfo in actorsToProduce)
 			{
 				// pick a spawn/exit point pair
 				var exit = self.Info.Traits.WithInterface<ExitInfo>().Shuffle(self.World.SharedRandom)
 					.FirstOrDefault(e => CanUseExit(self, actorInfo, e));
-			    if (exit != null)
-			        DoProduction(self, actorInfo, exit, raceVariant);
-			    else
-			        allProduced = false;
+				if (exit != null)
+					DoProduction(self, actorInfo, exit, raceVariant);
+				else
+					allProduced = false;
 			}
 
 			return allProduced;

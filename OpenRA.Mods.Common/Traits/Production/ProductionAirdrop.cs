@@ -21,18 +21,31 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Deliver the unit in production via skylift.")]
 	public class ProductionAirdropInfo : ProductionInfo
 	{
-		public readonly string ReadyAudio = "Reinforce";
-
 		[Desc("Cargo aircraft used.")]
-		[ActorReference] public readonly string DeliveringActorType = "c17";
+		[ActorReference]
+		public readonly string DeliveringActorType = "c17";
+
+		public readonly string ReadyAudio = "Reinforce";
 
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(this, init.Self); }
 	}
 
 	class ProductionAirdrop : Production
 	{
+		readonly CPos startPos;
+		readonly CPos endPos;
+
+		Actor self;
+		string factionVariant;
+
 		public ProductionAirdrop(ProductionInfo info, Actor self)
-			: base(info, self) { }
+			: base(info, self)
+		{
+			// Start a fixed distance away: the width of the map.
+			// This makes the production timing independent of spawnpoint
+			startPos = self.Location + new CVec(self.Owner.World.Map.Bounds.Width, 0);
+			endPos = new CPos(self.Owner.World.Map.Bounds.Left - 5, self.Location.Y);
+		}
 
 		public override Actor DoProduction(Actor self, ActorInfo actorToProduce, ExitInfo exitInfo, string raceVariant)
 		{
@@ -54,16 +67,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override bool Produce(Actor self, IEnumerable<ActorInfo> actorsToProduce, string raceVariant)
 		{
-			var owner = self.Owner;
-			var actorInfos = actorsToProduce.ToList();
-
 			var info = (ProductionAirdropInfo)Info;
 			var deliveringActorType = info.DeliveringActorType;
+			var owner = self.Owner;
 
-			// Start a fixed distance away: the width of the map.
-			// This makes the production timing independent of spawnpoint
-			var startPos = self.Location + new CVec(owner.World.Map.Bounds.Width, 0);
-			var endPos = new CPos(owner.World.Map.Bounds.Left - 5, self.Location.Y);
+			this.self = self;
+			factionVariant = raceVariant;
 
 			foreach (var tower in self.TraitsImplementing<INotifyDelivery>())
 				tower.IncomingDelivery(self);
@@ -71,73 +80,76 @@ namespace OpenRA.Mods.Common.Traits
 			owner.World.AddFrameEndTask(w =>
 			{
 				var altitude = self.World.Map.Rules.Actors[deliveringActorType].Traits.Get<PlaneInfo>().CruiseAltitude;
-				var a = w.CreateActor(deliveringActorType, new TypeDictionary
+				var deliveringActor = w.CreateActor(deliveringActorType, new TypeDictionary
 				{
 					new CenterPositionInit(w.Map.CenterOfCell(startPos) + new WVec(WRange.Zero, WRange.Zero, altitude)),
 					new OwnerInit(owner),
 					new FacingInit(64)
 				});
 
-				Action func = null;
-				func = () =>
-				{
-					if (!actorsToProduce.Any())
-					{
-						a.QueueActivity(new Fly(a, Target.FromCell(w, endPos)));
-						a.QueueActivity(new RemoveSelf());
-					}
-					else
-					{
-						var actorInfo = actorInfos.First();
-
-						var chosenExit = self.Info.Traits.WithInterface<ExitInfo>()
-							.FirstOrDefault(x => CanUseExit(self, actorInfo, x));
-						if (chosenExit == null)
-						{
-							a.QueueActivity(new Wait(10));
-							a.QueueActivity(new CallFunc(func));
-							return;
-						}
-
-						var exitLocation = self.Location + chosenExit.ExitCell;
-						var targetLocation = rp.Value != null ? rp.Value.Location : exitLocation;
-
-						var newActor = DoProduction(self, actorInfo, chosenExit, raceVariant);
-
-						var pos = newActor.Trait<IPositionable>();
-						var subCell = pos.GetAvailableSubCell(newActor.Location, SubCell.Any, self);
-
-						if (subCell == SubCell.Invalid)
-						{
-							var blockers = self.World.ActorMap.GetUnitsAt(newActor.Location);
-							foreach (var blocker in blockers)
-								foreach (var nbm in blocker.TraitsImplementing<INotifyBlockingMove>())
-									nbm.OnNotifyBlockingMove(blocker, self);
-
-							a.QueueActivity(new Wait(10));
-							a.QueueActivity(new CallFunc(func));
-						}
-						else
-						{
-							actorInfos.Remove(actorInfo);
-
-							w.AddFrameEndTask(world =>
-							{
-								MoveIntoWorld(world, newActor, chosenExit, exitLocation, targetLocation);
-								IssueNotifications(self, newActor, exitLocation);
-
-								a.QueueActivity(new CallFunc(func));
-							});
-						}
-					}
-				};
-
-				a.QueueActivity(new Fly(a, Target.FromCell(w, self.Location + new CVec(9, 0))));
-				a.QueueActivity(new Land(Target.FromActor(self)));
-				a.QueueActivity(new CallFunc(func));
+				deliveringActor.QueueActivity(new Fly(deliveringActor, Target.FromCell(w, self.Location + new CVec(9, 0))));
+				deliveringActor.QueueActivity(new Land(Target.FromActor(self)));
+				deliveringActor.QueueActivity(new CallFunc(() => MakeDelivery(actorsToProduce.ToList(), deliveringActor, w)));
 			});
 
 			return true;
+		}
+
+		private void MakeDelivery(ICollection<ActorInfo> actorInfos, Actor deliveringActor, World world)
+		{
+			if (!actorInfos.Any())
+			{
+				deliveringActor.QueueActivity(new Fly(deliveringActor, Target.FromCell(world, endPos)));
+				deliveringActor.QueueActivity(new RemoveSelf());
+			}
+			else
+			{
+				var actorInfo = actorInfos.First();
+
+				var chosenExit = self.Info.Traits.WithInterface<ExitInfo>()
+					.FirstOrDefault(x => CanUseExit(self, actorInfo, x));
+				if (chosenExit == null)
+				{
+					WaitAndRetry(deliveringActor, world, actorInfos);
+					return;
+				}
+
+				var exitLocation = self.Location + chosenExit.ExitCell;
+				var targetLocation = rp.Value != null ? rp.Value.Location : exitLocation;
+
+				var newActor = DoProduction(self, actorInfo, chosenExit, factionVariant);
+
+				var pos = newActor.Trait<IPositionable>();
+				var subCell = pos.GetAvailableSubCell(newActor.Location, SubCell.Any, self);
+
+				if (subCell == SubCell.Invalid)
+				{
+					var blockers = self.World.ActorMap.GetUnitsAt(newActor.Location);
+					foreach (var blocker in blockers)
+						foreach (var nbm in blocker.TraitsImplementing<INotifyBlockingMove>())
+							nbm.OnNotifyBlockingMove(blocker, self);
+
+					WaitAndRetry(deliveringActor, world, actorInfos);
+				}
+				else
+				{
+					actorInfos.Remove(actorInfo);
+
+					world.AddFrameEndTask(w =>
+						{
+							MoveIntoWorld(w, newActor, chosenExit, exitLocation, targetLocation);
+							IssueNotifications(self, newActor, exitLocation);
+
+							deliveringActor.QueueActivity(new CallFunc(() => MakeDelivery(actorInfos, deliveringActor, world)));
+						});
+				}
+			}
+		}
+
+		void WaitAndRetry(Actor actor, World world, ICollection<ActorInfo> actorInfos)
+		{
+			actor.QueueActivity(new Wait(10));
+			actor.QueueActivity(new CallFunc(() => MakeDelivery(actorInfos, actor, world)));
 		}
 
 		static void IssueNotifications(Actor self, Actor newActor, CPos exitLocation)
