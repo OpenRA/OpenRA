@@ -42,6 +42,11 @@ namespace OpenRA.Graphics
 			return seq;
 		}
 
+		public bool HasSequence(string unitName)
+		{
+			return sequences.Value.ContainsKey(unitName);
+		}
+
 		public bool HasSequence(string unitName, string sequenceName)
 		{
 			UnitSequences unitSeq;
