@@ -138,10 +138,8 @@ namespace OpenRA.Mods.D2k.Widgets
 
 			// Animation is complete
 			if ((paletteAnimationFrame == 0 && !paletteOpen)
-					|| (paletteAnimationFrame == paletteAnimationLength && paletteOpen))
-			{
+				|| (paletteAnimationFrame == paletteAnimationLength && paletteOpen))
 				paletteAnimating = false;
-			}
 		}
 
 		public void SetCurrentTab(ProductionQueue queue)

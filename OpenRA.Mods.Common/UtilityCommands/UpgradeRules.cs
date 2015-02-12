@@ -224,9 +224,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					if (node.Value.Nodes.Any(n => n.Key.StartsWith("RequiresPower"))
 						&& !node.Value.Nodes.Any(n => n.Key.StartsWith("DisabledOverlay")))
-					{
 						node.Value.Nodes.Add(new MiniYamlNode("DisabledOverlay", new MiniYaml("")));
-					}
 				}
 
 				// ChronoshiftDeploy was replaced with PortableChrono
@@ -267,9 +265,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (node.Value.Nodes.Any(n => n.Key.StartsWith("RenderBuilding"))
 						&& !node.Value.Nodes.Any(n => n.Key == "RenderBuildingWall")
 						&& !node.Value.Nodes.Any(n => n.Key == "WithMakeAnimation"))
-					{
 						node.Value.Nodes.Add(new MiniYamlNode("WithMakeAnimation", new MiniYaml("")));
-					}
 				}
 
 				// ParachuteAttachment was merged into Parachutable

@@ -73,9 +73,7 @@ namespace OpenRA.Renderer.Sdl2
 			unsafe
 			{
 				fixed (int* ptr = &v[0])
-				{
 					GL.GetInteger(GetPName.Viewport, ptr);
-				}
 			}
 
 			ErrorHandler.CheckGlError();

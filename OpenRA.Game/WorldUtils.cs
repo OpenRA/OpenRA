@@ -97,9 +97,7 @@ namespace OpenRA
 						start = Stopwatch.GetTimestamp();
 					}
 					else
-					{
 						start = current;
-					}
 				}
 			}
 		}

@@ -284,18 +284,15 @@ namespace OpenRA.Mods.Common.Traits
 							BeginProduction(new ProductionItem(this, order.TargetString, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
 							{
 								var isBuilding = unit.Traits.Contains<BuildingInfo>();
+
 								if (isBuilding && !hasPlayedSound)
-								{
 									hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
-								}
 								else if (!isBuilding)
 								{
 									if (BuildUnit(order.TargetString))
 										Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
 									else if (!hasPlayedSound && time > 0)
-									{
 										hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Country.Race);
-									}
 								}
 							})));
 						}

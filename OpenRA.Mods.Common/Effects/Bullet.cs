@@ -137,9 +137,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			if (ticks++ >= length || (!info.High && world.ActorMap
 				.GetUnitsAt(world.Map.CellContaining(pos)).Any(a => a.HasTrait<IBlocksBullets>())))
-			{
 				Explode(world);
-			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

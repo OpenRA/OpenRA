@@ -209,9 +209,7 @@ namespace OpenRA.FileFormats
 			}
 
 			if (audioChannels == 1)
-			{
 				audioData = compressed ? AudLoader.LoadSound(audio1.ToArray(), ref adpcmIndex) : audio1.ToArray();
-			}
 			else
 			{
 				byte[] leftData, rightData;

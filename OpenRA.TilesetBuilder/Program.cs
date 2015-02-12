@@ -23,16 +23,11 @@ namespace OpenRA.TilesetBuilder
 			Application.SetCompatibleTextRenderingDefault(false);
 
 			if (args.Length < 1)
-			{
 				Application.Run(new FormBuilder("", "0", false, "Tilesets"));
-			}
+			else if (args.Contains("--export"))
+				Application.Run(new FormBuilder(args[0], args[1], true, args[3]));
 			else
-			{
-				if (args.Contains("--export"))
-					Application.Run(new FormBuilder(args[0], args[1], true, args[3]));
-				else
-					Application.Run(new FormBuilder(args[0], args[1], false, "Tilesets"));
-			}
+				Application.Run(new FormBuilder(args[0], args[1], false, "Tilesets"));
 		}
 	}
 }

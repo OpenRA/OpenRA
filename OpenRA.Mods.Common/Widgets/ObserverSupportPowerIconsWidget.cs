@@ -53,18 +53,14 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var player = GetPlayer();
 			if (player == null)
-			{
 				return;
-			}
 
 			var powers = player.PlayerActor.Trait<SupportPowerManager>().Powers
 				.Select((a, i) => new { a, i });
 			foreach (var power in powers)
 			{
 				if (!clocks.ContainsKey(power.a.Key))
-				{
 					clocks.Add(power.a.Key, new Animation(world, "clock"));
-				}
 			}
 
 			var iconSize = new float2(IconWidth, IconHeight);

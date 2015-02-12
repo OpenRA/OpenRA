@@ -63,9 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						if (!self.World.CanPlaceBuilding(order.TargetString, buildingInfo, order.TargetLocation, null)
 							|| !buildingInfo.IsCloseEnoughToBase(self.World, order.Player, order.TargetString, order.TargetLocation))
-						{
 							return;
-						}
 
 						var building = w.CreateActor(order.TargetString, new TypeDictionary
 						{

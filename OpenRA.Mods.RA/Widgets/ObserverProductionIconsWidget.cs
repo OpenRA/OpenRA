@@ -50,20 +50,15 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			var player = GetPlayer();
 			if (player == null)
-			{
 				return;
-			}
 
 			var queues = world.ActorsWithTrait<ProductionQueue>()
 				.Where(a => a.Actor.Owner == player)
 				.Select((a, i) => new { a.Trait, i });
+
 			foreach (var queue in queues)
-			{
 				if (!clocks.ContainsKey(queue.Trait))
-				{
 					clocks.Add(queue.Trait, new Animation(world, "clock"));
-				}
-			}
 
 			var iconSize = new float2(IconWidth, IconHeight);
 			foreach (var queue in queues)
