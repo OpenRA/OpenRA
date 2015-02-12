@@ -707,6 +707,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "Refinery";
 				}
 
+				// Rename ProductionAirdrop delivering ActorType
+				if (engineVersion < 20150212)
+					if (node.Key == "ProductionAirdrop")
+					{
+						var child = node.Value.Nodes.FirstOrDefault(n => n.Key == "ActorType");
+						if (child != null)
+							node.Value.Nodes.Add(new MiniYamlNode("DeliveringActorType", child.Value.Value));
+
+						node.Value.Nodes.RemoveAll(n => n.Key == "ActorType");
+					}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
