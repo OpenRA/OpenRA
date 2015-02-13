@@ -218,6 +218,12 @@ local function updateWatches(item)
 end
 
 local function debuggerToggleViews(show)
+  -- don't toggle if the current state is the same as the new one
+  local shown = debugger.toggleview.shown
+  if (show and shown) or (not show and not shown) then return end
+
+  debugger.toggleview.shown = nil
+
   local mgr = ide.frame.uimgr
   local refresh = false
   for view, needed in pairs(debugger.toggleview) do
@@ -239,6 +245,7 @@ local function debuggerToggleViews(show)
     end
   end
   if refresh then mgr:Update() end
+  if show then debugger.toggleview.shown = true end
 end
 
 local function killClient()
