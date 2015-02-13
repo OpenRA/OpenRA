@@ -22,9 +22,9 @@ sidebar-button-highlighted-disabled: chrome.png
 	background: 50,357,25,25
 
 sidebar-bits: chrome.png
-	production-tooltip-time: 476,0,16,16
-	production-tooltip-power: 444,0,16,16
-	production-tooltip-cost: 412,0,16,16
+	production-tooltip-time: 430,208,16,16
+	production-tooltip-power: 494,176,16,16
+	production-tooltip-cost: 494,144,16,16
 	production-iconoverlay: 236,112,226,48
 
 minimap: chrome.png
