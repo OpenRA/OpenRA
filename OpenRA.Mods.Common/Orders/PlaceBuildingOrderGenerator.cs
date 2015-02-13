@@ -34,7 +34,6 @@ namespace OpenRA.Mods.Common.Orders
 		{
 			producer = queue.Actor;
 			building = name;
-			race = queue.MostLikelyProducer().Trait.Race;
 
 			// Clear selection if using Left-Click Orders
 			if (Game.Settings.Game.UseClassicMouseStyle)
@@ -42,7 +41,12 @@ namespace OpenRA.Mods.Common.Orders
 
 			var map = producer.World.Map;
 			var tileset = producer.World.TileSet.Id.ToLowerInvariant();
-			buildingInfo = map.Rules.Actors[building].Traits.Get<BuildingInfo>();
+
+			var info = map.Rules.Actors[building];
+			buildingInfo = info.Traits.Get<BuildingInfo>();
+
+			var buildableInfo = info.Traits.Get<BuildableInfo>();
+			race = buildableInfo.ForceRace ?? queue.MostLikelyProducer().Trait.Race;
 
 			buildOk = map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 			buildBlocked = map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);

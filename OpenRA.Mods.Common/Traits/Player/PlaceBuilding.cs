@@ -42,6 +42,10 @@ namespace OpenRA.Mods.Common.Traits
 					var race = producer.Trait != null ? producer.Trait.Race : self.Owner.Country.Race;
 					var buildingInfo = unit.Traits.Get<BuildingInfo>();
 
+					var buildableInfo = unit.Traits.GetOrDefault<BuildableInfo>();
+					if (buildableInfo != null && buildableInfo.ForceRace != null)
+						race = buildableInfo.ForceRace;
+
 					if (order.OrderString == "LineBuild")
 					{
 						var playSounds = true;
