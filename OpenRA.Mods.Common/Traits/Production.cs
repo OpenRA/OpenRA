@@ -53,6 +53,10 @@ namespace OpenRA.Mods.Common.Traits
 			var exitLocation = rp.Value != null ? rp.Value.Location : exit;
 			var target = Target.FromCell(self.World, exitLocation);
 
+			var bi = producee.Traits.GetOrDefault<BuildableInfo>();
+			if (bi != null && bi.ForceRace != null)
+				raceVariant = bi.ForceRace;
+
 			self.World.AddFrameEndTask(w =>
 			{
 				var td = new TypeDictionary
@@ -89,7 +93,6 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var notify in notifyOthers)
 					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
 
-				var bi = newUnit.Info.Traits.GetOrDefault<BuildableInfo>();
 				if (bi != null && bi.InitialActivity != null)
 					newUnit.QueueActivity(Game.CreateObject<Activity>(bi.InitialActivity));
 

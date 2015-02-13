@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("What the unit should start doing. Warning: If this is not a harvester", "it will break if you use FindResources.")]
 		public readonly string InitialActivity = null;
 
+		[Desc("Force a specific race variant, overriding the race of the producing actor.")]
+		public readonly string ForceRace = null;
+
 		// TODO: UI fluff; doesn't belong here
 		public readonly int BuildPaletteOrder = 9999;
 	}
