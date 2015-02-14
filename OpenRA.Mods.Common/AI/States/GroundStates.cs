@@ -11,7 +11,7 @@
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.AI
+namespace OpenRA.Mods.Common.AI
 {
 	abstract class GroundStateBase : StateBase
 	{
