@@ -644,7 +644,7 @@ debugger.listen = function(start)
         -- with start() method, which can't load new files
         -- if file and line are set, this indicates option #2
         if err then
-          DisplayOutputLn(TR("Can't debug the script in the active editor window.")
+          DisplayOutputLn(TR("Can't start debugging for '%s'."):format(startfile)
             .." "..TR("Compilation error")
             ..":\n"..err)
           return debugger.terminate()
