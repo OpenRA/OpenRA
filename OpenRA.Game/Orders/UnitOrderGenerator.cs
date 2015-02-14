@@ -79,12 +79,13 @@ namespace OpenRA.Orders
 				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
 			}
 
-			var orders = world.Selection.Actors
+			var ordersWithCursor = world.Selection.Actors
 				.Select(a => OrderForUnit(a, target, mi))
-				.Where(o => o != null);
+				.Where(o => o != null && o.Cursor != null);
 
-			var cursorName = orders.Select(o => o.Cursor).FirstOrDefault();
-			return cursorName ?? (useSelect ? "select" : "default");
+			var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.Order.OrderPriority);
+
+			return cursorOrder != null ? cursorOrder.Cursor : (useSelect ? "select" : "default");
 		}
 
 		static UnitOrderResult OrderForUnit(Actor self, Target target, MouseInput mi)
