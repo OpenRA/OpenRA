@@ -137,9 +137,9 @@ sidebar-button-soviet-highlighted-hover: chrome.png
 	border-l: 28,3,3,22
 	border-b: 31,25,22,3
 	border-t: 31,0,22,3
-	corner-tl: 25,0,3,3
+	corner-tl: 28,0,3,3
 	corner-tr: 53,0,3,3
-	corner-bl: 25,25,3,3
+	corner-bl: 28,25,3,3
 	corner-br: 53,25,3,3
 sidebar-button-soviet-highlighted-pressed: chrome.png
 	background: 31,31,22,22
@@ -147,30 +147,30 @@ sidebar-button-soviet-highlighted-pressed: chrome.png
 	border-l: 28,31,3,22
 	border-b: 31,53,22,3
 	border-t: 31,28,22,3
-	corner-tl: 25,28,3,3
+	corner-tl: 28,28,3,3
 	corner-tr: 53,28,3,3
-	corner-bl: 25,53,3,3
+	corner-bl: 28,53,3,3
 	corner-br: 53,53,3,3
 sidebar-button-soviet-disabled: chrome.png
-	background: 115,3,22,22
-	border-r: 137,3,3,22
-	border-l: 112,3,3,22
-	border-b: 115,25,22,3
-	border-t: 115,0,22,3
-	corner-tl: 112,0,3,3
-	corner-tr: 137,0,3,3
-	corner-bl: 112,25,3,3
-	corner-br: 137,25,3,3
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
 sidebar-button-soviet-highlighted-disabled: chrome.png
-	background: 115,3,22,22
-	border-r: 137,3,3,22
-	border-l: 112,3,3,22
-	border-b: 115,25,22,3
-	border-t: 115,0,22,3
-	corner-tl: 112,0,3,3
-	corner-tr: 137,0,3,3
-	corner-bl: 112,25,3,3
-	corner-br: 137,25,3,3
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
 
 sidebar-bits: chrome.png
 	production-tooltip-time: 416, 80, 16, 16
