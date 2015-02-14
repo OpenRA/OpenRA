@@ -121,8 +121,12 @@ bazooka:
 		Start: 4012
 		Offset: -30,-24
 
-engineer:
+support:
 	stand: DATA
+		Start: 1166
+		Facings: -8
+		Transpose: true
+	heal: DATA
 		Start: 1166
 		Facings: -8
 		Transpose: true
@@ -157,7 +161,7 @@ engineer:
 		Start: 4013
 		Offset: -30,-24
 
-medic: # actually thumper
+thumper:
 	stand: DATA
 		Start: 1402
 		Facings: -8
@@ -168,10 +172,6 @@ medic: # actually thumper
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	heal: DATA
-		Start: 1458
-		Length: 5
-		Tick: 480
 	die1: DATA
 		Frames: 1543, 1550, 1557, 1564, 1571, 1578, 1585, 1592, 1599, 1600, 1601, 1602
 		Length: 12
