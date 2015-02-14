@@ -43,27 +43,27 @@ namespace OpenRA.Mods.Common.Traits
 
 		public object Create(ActorInitializer init) { return new Bridge(init.Self, this); }
 
-		public IEnumerable<Pair<ushort, float>> Templates
+		public IEnumerable<Pair<ushort, int>> Templates
 		{
 			get
 			{
 				if (Template != 0)
-					yield return Pair.New(Template, 1f);
+					yield return Pair.New(Template, 100);
 
 				if (DamagedTemplate != 0)
-					yield return Pair.New(DamagedTemplate, .5f);
+					yield return Pair.New(DamagedTemplate, 50);
 
 				if (DestroyedTemplate != 0)
-					yield return Pair.New(DestroyedTemplate, 0f);
+					yield return Pair.New(DestroyedTemplate, 0);
 
 				if (DestroyedPlusNorthTemplate != 0)
-					yield return Pair.New(DestroyedPlusNorthTemplate, 0f);
+					yield return Pair.New(DestroyedPlusNorthTemplate, 0);
 
 				if (DestroyedPlusSouthTemplate != 0)
-					yield return Pair.New(DestroyedPlusSouthTemplate, 0f);
+					yield return Pair.New(DestroyedPlusSouthTemplate, 0);
 
 				if (DestroyedPlusBothTemplate != 0)
-					yield return Pair.New(DestroyedPlusBothTemplate, 0f);
+					yield return Pair.New(DestroyedPlusBothTemplate, 0);
 			}
 		}
 	}

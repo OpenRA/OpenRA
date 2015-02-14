@@ -405,7 +405,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						players.Add(parts[0]);
 
 					var loc = Exts.ParseIntegerInvariant(parts[3]);
-					var health = float.Parse(parts[2], NumberFormatInfo.InvariantInfo) / 256;
+					var health = Exts.ParseIntegerInvariant(parts[2]) * 100 / 256;
 					var facing = (section == "INFANTRY") ? Exts.ParseIntegerInvariant(parts[6]) : Exts.ParseIntegerInvariant(parts[4]);
 
 					var actor = new ActorReference(parts[1].ToLowerInvariant())
@@ -415,7 +415,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					};
 
 					var initDict = actor.InitDict;
-					if (health != 1)
+					if (health != 100)
 						initDict.Add(new HealthInit(health));
 					if (facing != 0)
 						initDict.Add(new FacingInit(facing));
