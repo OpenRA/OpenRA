@@ -20,7 +20,7 @@ FACT:
 		Range: 10c0
 	Bib:
 	Production:
-		Produces: Building.GDI, Buildings.Nod, Defence.GDI, Defence.Nod
+		Produces: Building.GDI, Building.Nod, Defence.GDI, Defence.Nod
 	Transforms:
 		IntoActor: mcv
 		Offset: 1,1
