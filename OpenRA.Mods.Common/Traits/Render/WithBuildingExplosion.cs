@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using OpenRA.Effects;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
@@ -18,6 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Explosion sequence name to use")]
 		public readonly string Sequence = "building";
+
+		[Desc("Delay the explosions by this many ticks.")]
+		public readonly int Delay = 0;
 
 		[Desc("Custom palette name")]
 		public readonly string Palette = "effect";
@@ -37,8 +42,18 @@ namespace OpenRA.Mods.Common.Traits
 		public void Killed(Actor self, AttackInfo e)
 		{
 			var buildingInfo = self.Info.Traits.Get<BuildingInfo>();
-			FootprintUtils.UnpathableTiles(self.Info.Name, buildingInfo, self.Location).Do(
-				t => self.World.AddFrameEndTask(w => w.Add(new Explosion(w, w.Map.CenterOfCell(t), info.Sequence, info.Palette))));
+			var cells = FootprintUtils.UnpathableTiles(self.Info.Name, buildingInfo, self.Location);
+
+			if (info.Delay > 0)
+				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(info.Delay, () => SpawnExplosions(self.World, cells))));
+			else
+				SpawnExplosions(self.World, cells);
+		}
+
+		void SpawnExplosions(World world, IEnumerable<CPos> cells)
+		{
+			foreach (var c in cells)
+				world.AddFrameEndTask(w => w.Add(new Explosion(w, w.Map.CenterOfCell(c), info.Sequence, info.Palette)));
 		}
 	}
 }
