@@ -75,7 +75,7 @@ local function outlineRefresh(editor, force)
   caches[editor] = cache
 
   -- add file
-  local filename = ide:GetDocument(editor):GetFileName()
+  local filename = ide:GetDocument(editor):GetTabText()
   local fileitem = cache.fileitem
   if not fileitem then
     local root = ctrl:GetRootItem()
@@ -277,8 +277,8 @@ ide:AddPackage('core.outline', {
       local fileitem = cache and cache.fileitem
       local doc = ide:GetDocument(editor)
       local ctrl = ide.outline.outlineCtrl
-      if doc and fileitem and ctrl:GetItemText(fileitem) ~= doc:GetFileName() then
-        ctrl:SetItemText(fileitem, doc:GetFileName())
+      if doc and fileitem and ctrl:GetItemText(fileitem) ~= doc:GetTabText() then
+        ctrl:SetItemText(fileitem, doc:GetTabText())
       end
     end,
 
@@ -292,7 +292,7 @@ ide:AddPackage('core.outline', {
       local cache = caches[editor]
       local fileitem = cache and cache.fileitem
       local ctrl = ide.outline.outlineCtrl
-      local itemname = ide:GetDocument(editor):GetFileName()
+      local itemname = ide:GetDocument(editor):GetTabText()
 
       -- fix file name if it changed in the editor
       if fileitem and ctrl:GetItemText(fileitem) ~= itemname then
