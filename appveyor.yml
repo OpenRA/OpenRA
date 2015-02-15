@@ -30,4 +30,5 @@ deploy:
       secure: Z7RC+ckfvf7Kxf2EdWZCP7bgGjRnhgbMeieQP6VVhiZprwvbEzGXI2Wma+FGAq65
     artifact: OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe
     on:
-        appveyor_repo_tag: true
+      branch: master
+      appveyor_repo_tag: true
