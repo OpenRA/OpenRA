@@ -3,6 +3,10 @@
 # Die on any error for Travis CI to automatically retry:
 set -e
 
+if [ ! -d windows ]; then
+	mkdir windows
+fi
+
 if [ ! -f windows/SDL2.dll ]; then
 	echo "Fetching SDL2 from nuget"
 	nuget install sdl2 -Version 2.0.3
@@ -31,3 +35,9 @@ if [ ! -f windows/zlib1.dll ]; then
 	rm -rf zlib.redist.1.2.8.7
 fi
 
+if [ ! -f windows/soft_oal.dll ]; then
+	echo "Fetching OpenAL Soft from nuget"
+	nuget install OpenAL-Soft -Version 1.16.0
+	cp ./OpenAL-Soft.1.16.0/bin/Win32/soft_oal.dll windows/soft_oal.dll
+	rm -rf OpenAL-Soft.1.16.0
+fi
