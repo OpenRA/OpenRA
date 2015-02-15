@@ -1,6 +1,9 @@
 -- Copyright 2013-14 Paul Kulchenko, ZeroBrane LLC
 ---------------------------------------------------------
 
+local q = EscapeMagic
+local modpref = '* '
+
 ide.proto.Document = {__index = {
   GetFileName = function(self) return self.fileName end,
   GetFilePath = function(self) return self.filePath end,
@@ -11,6 +14,10 @@ ide.proto.Document = {__index = {
   IsModified = function(self) return self.isModified end,
   SetModified = function(self, modified) SetDocumentModified(self.editor:GetId(), modified) end,
   SetTabText = function(self, text) SetDocumentModified(self.editor:GetId(), self.isModified, text) end,
+  GetTabText = function(self)
+    if self.index == nil then return self.fileName end
+    return ide:GetEditorNotebook():GetPageText(self.index):gsub("^"..q(modpref), "")
+  end,
   SetActive = function(self) SetEditorSelection(self.index) end,
   Save = function(self) return SaveFile(self.editor, self.filePath) end
 }}
