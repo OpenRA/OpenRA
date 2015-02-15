@@ -17,6 +17,7 @@ fact:
 		Tick: 100
 	dead:
 		Start: 48
+		Tick: 800
 	make: factmake
 		Start: 0
 		Length: *
@@ -38,7 +39,7 @@ nuke:
 		Tick: 1000
 	dead:
 		Start: 8
-		Tick: 1000
+		Tick: 800
 	make: nukemake
 		Start: 0
 		Length: *
@@ -60,6 +61,7 @@ proc:
 		Tick: 120
 	dead:
 		Start: 60
+		Tick: 800
 	make: procmake
 		Start: 0
 		Length: *
@@ -90,6 +92,7 @@ silo:
 	dead:
 		Start: 10
 		Offset: 0,-1
+		Tick: 800
 	make: silomake
 		Start: 0
 		Length: *
@@ -109,6 +112,7 @@ hand:
 		Start: 1
 	dead:
 		Start: 2
+		Tick: 800
 	make: handmake
 		Start: 0
 		Length: *
@@ -130,7 +134,7 @@ pyle:
 		Tick: 100		
 	dead:
 		Start: 20
-		Tick: 100
+		Tick: 800
 	make: pylemake
 		Start: 0
 		Length: *
@@ -148,6 +152,7 @@ weap:
 		Start: 1
 	dead:
 		Start: 2
+		Tick: 800
 	build-top: weap2
 		Start: 0
 		Length: 10
@@ -190,6 +195,7 @@ afld:
 	dead:
 		Start: 32
 		ZOffset: -1023
+		Tick: 800
 	make: afldmake
 		Start: 0
 		Length: *
@@ -211,6 +217,7 @@ hq:
 		Tick: 100
 	dead:
 		Start: 32
+		Tick: 800
 	make: hqmake
 		Start: 0
 		Length: *
@@ -232,6 +239,7 @@ nuk2:
 		Tick: 1000
 	dead:
 		Start: 8
+		Tick: 800
 	make: nuk2make
 		Start: 0
 		Length: *
@@ -262,6 +270,7 @@ hpad:
 	dead:
 		Start: 14
 		ZOffset: -1023
+		Tick: 800
 	make: hpadmake
 		Start: 0
 		Length: *
@@ -287,6 +296,7 @@ fix:
 	dead:
 		Start: 14
 		ZOffset: -1c511
+		Tick: 800
 	make: fixmake
 		Start: 0
 		Length: 14
@@ -309,6 +319,7 @@ eye:
 		Tick: 100
 	dead:
 		Start: 32
+		Tick: 800
 	make: eyemake
 		Start: 0
 		Length: *
@@ -332,6 +343,7 @@ tmpl:
 		Length: 5
 	dead:
 		Start: 10
+		Tick: 800
 	make: tmplmake
 		Start: 0
 		Length: *
@@ -357,6 +369,7 @@ obli:
 		Tick: 680
 	dead:
 		Start: 8
+		Tick: 800
 	make: oblimake
 		Start: 0
 		Length: 13
@@ -470,6 +483,7 @@ sam:
 		Tick: 30
 	dead:
 		Start: 128
+		Tick: 800
 	make: sammake
 		Start: 0
 		Length: 20
@@ -488,6 +502,7 @@ gtwr:
 		Start: 1
 	dead:
 		Start: 2
+		Tick: 800
 	make: gtwrmake
 		Start: 0
 		Length: *
@@ -513,6 +528,7 @@ atwr:
 	dead:
 		Start: 2
 		Offset: 0,-1
+		Tick: 800
 	make: atwrmake
 		Start: 0
 		Length: *
