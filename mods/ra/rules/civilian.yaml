@@ -89,7 +89,11 @@ HOSP:
 		Range: 3c0
 	Bib:
 		HasMinibib: Yes
-	DeadBuildingState:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	WithBuildingExplosion:
+		Delay: 1
 
 V01:
 	Inherits: ^CivBuilding
@@ -291,7 +295,11 @@ MISS:
 	Tooltip:
 		Name: Technology Center
 	Bib:
-	DeadBuildingState:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	WithBuildingExplosion:
+		Delay: 1
 
 BIO:
 	Inherits: ^TechBuilding
@@ -303,7 +311,11 @@ BIO:
 	EngineerRepairable:
 	Tooltip:
 		Name: Biological Lab
-	DeadBuildingState:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	WithBuildingExplosion:
+		Delay: 1
 
 OILB:
 	Inherits: ^TechBuilding

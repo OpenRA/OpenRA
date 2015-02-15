@@ -19,6 +19,7 @@ hosp:
 		Length: 4
 	dead:
 		Start: 8
+		Tick: 800
 	make: hospmake
 		Start: 0
 		Length: *
@@ -36,6 +37,7 @@ bio:
 		Start: 1
 	dead:
 		Start: 2
+		Tick: 800
 	make: biomake
 		Start: 0
 		Length: *
@@ -67,6 +69,7 @@ fact:
 		Length: 25
 	dead: factdead
 		Start: 0
+		Tick: 800
 	bib: bib2
 		Start: 0
 		Length: *
@@ -93,7 +96,7 @@ proc:
 		Length: *
 	dead: procdead
 		Start: 0
-		ZOffset: -1c511
+		Tick: 800
 	bib: bib2
 		Start: 0
 		Length: *
@@ -129,6 +132,7 @@ powr:
 		Length: *
 	dead: powrdead
 		Start: 0
+		Tick: 800
 	bib: bib3
 		Start: 0
 		Length: *
@@ -145,6 +149,7 @@ apwr:
 		Length: *
 	dead: apwrdead
 		Start: 0
+		Tick: 800
 	bib: bib2
 		Start: 0
 		Length: *
@@ -636,6 +641,7 @@ miss:
 		Start: 1
 	dead:
 		Start: 2
+		Tick: 800
 	make: missmake
 		Start: 0
 		Length: *
