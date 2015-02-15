@@ -1,9 +1,5 @@
 FACT:
 	Inherits: ^BaseBuilding
-	Buildable:
-		Queue: Building.GDI, Building.Nod
-		BuildPaletteOrder: 1000
-		Prerequisites: ~disabled
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -76,6 +72,30 @@ FACT:
 	WithBuildingPlacedAnimation:
 	Power:
 		Amount: 0
+
+FACT.GDI:
+	Inherits: FACT
+	RenderBuilding:
+		Image: fact
+	Buildable:
+		Queue: Building.GDI, Building.Nod
+		BuildPaletteOrder: 1000
+		Prerequisites: ~disabled
+		ForceRace: gdi
+	Tooltip:
+		Name: Construction Yard (GDI)
+
+FACT.NOD:
+	Inherits: FACT
+	RenderBuilding:
+		Image: fact
+	Buildable:
+		Queue: Building.GDI, Building.Nod
+		BuildPaletteOrder: 1000
+		Prerequisites: ~disabled
+		ForceRace: nod
+	Tooltip:
+		Name: Construction Yard (Nod)
 
 NUKE:
 	Inherits: ^BaseBuilding
