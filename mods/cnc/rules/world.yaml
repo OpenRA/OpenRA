@@ -28,6 +28,10 @@ World:
 		Filename: temperat.pal
 		ShadowIndex: 3
 		AllowModifiers: false
+	PaletteFromFile@beaconposter:
+		Name: beaconposter
+		Filename: temperat.pal
+		ShadowIndex: 3
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: temperat.pal
