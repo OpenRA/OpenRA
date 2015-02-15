@@ -454,6 +454,7 @@ HQ:
 		UnitType: a10
 		DisplayBeacon: True
 		BeaconPoster: airstrike
+		BeaconPosterPalette: beaconposter
 		DisplayRadarPing: True
 		CameraActor: camera
 	SupportPowerChargeBar:
@@ -573,6 +574,7 @@ TMPL:
 		MissileWeapon: atomic
 		DisplayBeacon: True
 		BeaconPoster: atomic
+		BeaconPosterPalette: beaconposter
 		DisplayRadarPing: True
 		CameraActor: camera
 	SupportPowerChargeBar:
