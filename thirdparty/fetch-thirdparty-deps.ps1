@@ -97,3 +97,11 @@ if (!(Test-Path "windows/zlib1.dll"))
 	cp zlib.redist.1.2.8.7/build/native/bin/v120/Win32/Release/dynamic/stdcall/zlib.dll windows/zlib1.dll
 	rmdir zlib.redist.1.2.8.7 -Recurse
 }
+
+if (!(Test-Path "windows/soft_oal.dll"))
+{
+	echo "Fetching OpenAL Soft from NuGet."
+	./nuget.exe install OpenAL-Soft -Version 1.16.0
+	cp OpenAL-Soft.1.16.0/bin/Win32/soft_oal.dll windows/soft_oal.dll
+	rmdir OpenAL-Soft.1.16.0 -Recurse
+}
