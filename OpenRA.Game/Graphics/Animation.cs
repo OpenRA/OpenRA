@@ -79,6 +79,8 @@ namespace OpenRA.Graphics
 			backwards = false;
 			tickAlways = false;
 			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
+			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+
 			frame = 0;
 			tickFunc = () =>
 			{
@@ -94,6 +96,8 @@ namespace OpenRA.Graphics
 				return false;
 
 			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
+			var tick = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+			timeUntilNextFrame = Math.Min(tick, timeUntilNextFrame);
 			frame %= CurrentSequence.Length;
 			return true;
 		}
@@ -103,6 +107,8 @@ namespace OpenRA.Graphics
 			backwards = false;
 			tickAlways = false;
 			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
+			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+
 			frame = 0;
 			tickFunc = () =>
 			{
@@ -127,6 +133,8 @@ namespace OpenRA.Graphics
 			backwards = false;
 			tickAlways = true;
 			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
+			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+
 			frame = func();
 			tickFunc = () => frame = func();
 		}
