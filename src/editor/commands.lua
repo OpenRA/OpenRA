@@ -740,7 +740,7 @@ function SetOpenTabs(params)
     DisplayOutputLn(TR("Found auto-recovery record and restored saved session."))
   end
   for _,doc in ipairs(nametab) do
-    -- check for missing file is no content is stored
+    -- check for missing file if no content is stored
     if doc.filepath and not doc.content and not wx.wxFileExists(doc.filepath) then
       DisplayOutputLn(TR("File '%s' is missing and can't be recovered.")
         :format(doc.filepath))
