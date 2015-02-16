@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					beacon = new Beacon(
 						self.Owner,
-						target,
+						target - new WVec(0, 0, altitude),
 						Info.BeaconPalettePrefix,
 						Info.BeaconPoster,
 						Info.BeaconPosterPalette,
