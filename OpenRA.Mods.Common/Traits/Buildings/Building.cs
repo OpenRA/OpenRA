@@ -72,6 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 			var scanEnd = world.Map.Clamp(topLeft + buildingMaxBounds + new CVec(Adjacent, Adjacent));
 
 			var nearnessCandidates = new List<CPos>();
+			var bi = world.WorldActor.Trait<BuildingInfluence>();
 			var allyBuildRadius = world.LobbyInfo.GlobalSettings.AllyBuildRadius;
 
 			for (var y = scanStart.Y; y < scanEnd.Y; y++)
@@ -80,11 +81,19 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var pos = new CPos(x, y);
 
-					var at = world.ActorMap.GetUnitsAt(pos).Where(a => a.IsInWorld
-						&& (a.Owner == p || (allyBuildRadius && a.Owner.Stances[p] == Stance.Ally))
-						&& a.HasTrait<GivesBuildableArea>());
+					var buildingAtPos = bi.GetBuildingAt(pos);
 
-					if (at.Any())
+					if (buildingAtPos == null)
+					{
+						var unitsAtPos = world.ActorMap.GetUnitsAt(pos).Where(a => a.IsInWorld
+							&& (a.Owner == p || (allyBuildRadius && a.Owner.Stances[p] == Stance.Ally))
+							&& a.HasTrait<GivesBuildableArea>());
+
+						if (unitsAtPos.Any())
+							nearnessCandidates.Add(pos);
+					}
+					else if (buildingAtPos.IsInWorld && buildingAtPos.HasTrait<GivesBuildableArea>()
+						&& (buildingAtPos.Owner == p || (allyBuildRadius && buildingAtPos.Owner.Stances[p] == Stance.Ally)))
 						nearnessCandidates.Add(pos);
 				}
 			}
