@@ -181,7 +181,10 @@ namespace OpenRA
 
 		public override string ToString()
 		{
-			return "{0} {1}{2}".F(Info.Name, ActorID, IsInWorld ? "" : " (not in world)");
+			var name = Info.Name + " " + ActorID;
+			if (!IsInWorld)
+				name += " (not in world)";
+			return name;
 		}
 
 		public T Trait<T>()
