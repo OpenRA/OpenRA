@@ -752,7 +752,7 @@ function SetOpenTabs(params)
         editor:SetText(doc.content)
         if doc.filepath and opendoc.modTime and doc.modified < opendoc.modTime:GetTicks() then
           DisplayOutputLn(TR("File '%s' has more recent timestamp than restored '%s'; please review before saving.")
-            :format(doc.filepath, doc.tabname))
+            :format(doc.filepath, opendoc:GetTabText()))
         end
         opendoc:SetModified(true)
       end
@@ -766,13 +766,15 @@ end
 local function getOpenTabs()
   local opendocs = {}
   for _, document in pairs(ide.openDocuments) do
+    local editor = document:GetEditor()
     table.insert(opendocs, {
-      filename = document.fileName,
-      filepath = document.filePath,
-      tabname = notebook:GetPageText(document.index),
-      modified = document.modTime and document.modTime:GetTicks(), -- get number of seconds
-      content = document.isModified and document.editor:GetText() or nil,
-      id = document.index, cursorpos = document.editor:GetCurrentPos()})
+      filename = document:GetFileName(),
+      filepath = document:GetFilePath(),
+      tabname = document:GetTabText(),
+      modified = document:GetModTime() and document:GetModTime():GetTicks(), -- get number of seconds
+      content = document:IsModified() and editor:GetText() or nil,
+      id = document:GetTabIndex(),
+      cursorpos = editor:GetCurrentPos()})
   end
 
   -- to keep tab order
