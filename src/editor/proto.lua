@@ -12,8 +12,14 @@ ide.proto.Document = {__index = {
   GetEditor = function(self) return self.editor end,
   GetTabIndex = function(self) return self.index end,
   IsModified = function(self) return self.isModified end,
-  SetModified = function(self, modified) SetDocumentModified(self.editor:GetId(), modified) end,
-  SetTabText = function(self, text) SetDocumentModified(self.editor:GetId(), self.isModified, text) end,
+  SetModified = function(self, modified)
+    self.isModified = modified
+    self:SetTabText()
+  end,
+  SetTabText = function(self, text)
+    ide:GetEditorNotebook():SetPageText(self.index,
+      (self.isModified and modpref or '')..(text or self:GetTabText()))
+  end,
   GetTabText = function(self)
     if self.index == nil then return self.fileName end
     return ide:GetEditorNotebook():GetPageText(self.index):gsub("^"..q(modpref), "")

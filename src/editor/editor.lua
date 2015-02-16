@@ -208,17 +208,6 @@ function GetEditorFileAndCurInfo(nochecksave)
   return fn,info
 end
 
--- set if the document is modified and update the notebook page text
-function SetDocumentModified(id, modified, text)
-  local modpref, doc = '* ', openDocuments[id]
-  if not doc then return end
-  local pageText = text or doc:GetTabText()
-
-  if modified then pageText = modpref..pageText end
-  openDocuments[id].isModified = modified
-  notebook:SetPageText(doc.index, pageText)
-end
-
 function EditorAutoComplete(editor)
   if not (editor and editor.spec) then return end
 
@@ -1045,12 +1034,14 @@ function CreateEditor(bare)
 
   editor:Connect(wxstc.wxEVT_STC_SAVEPOINTREACHED,
     function ()
-      SetDocumentModified(editor:GetId(), false)
+      local doc = ide:GetDocument(editor)
+      if doc then doc:SetModified(false) end
     end)
 
   editor:Connect(wxstc.wxEVT_STC_SAVEPOINTLEFT,
     function ()
-      SetDocumentModified(editor:GetId(), true)
+      local doc = ide:GetDocument(editor)
+      if doc then doc:SetModified(true) end
     end)
 
   -- "updateStatusText" should be called in UPDATEUI event, but it creates

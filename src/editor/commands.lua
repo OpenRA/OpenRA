@@ -142,18 +142,19 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   end
 
   editor:EmptyUndoBuffer()
-  local id = editor:GetId()
-  if openDocuments[id] then -- existing editor; switch to the tab
-    notebook:SetSelection(openDocuments[id].index)
+  local doc = ide:GetDocument(editor)
+  if doc then -- existing editor; switch to the tab
+    notebook:SetSelection(doc:GetTabIndex())
   else -- the editor has not been added to notebook
-    AddEditor(editor, wx.wxFileName(filePath):GetFullName()
+    doc = AddEditor(editor, wx.wxFileName(filePath):GetFullName()
       or ide.config.default.fullname)
   end
-  openDocuments[id].filePath = filePath
-  openDocuments[id].fileName = wx.wxFileName(filePath):GetFullName()
-  openDocuments[id].modTime = GetFileModTime(filePath)
+  doc.filePath = filePath
+  doc.fileName = wx.wxFileName(filePath):GetFullName()
+  doc.modTime = GetFileModTime(filePath)
 
-  SetDocumentModified(id, false, openDocuments[id].fileName)
+  doc:SetModified(false)
+  doc:SetTabText(doc:GetFileName())
 
   -- activate the editor; this is needed for those cases when the editor is
   -- created from some other element, for example, from a project tree.
@@ -278,11 +279,12 @@ function SaveFile(editor, filePath)
     local ok, err = FileWrite(filePath, st)
     if ok then
       editor:SetSavePoint()
-      local id = editor:GetId()
-      openDocuments[id].filePath = filePath
-      openDocuments[id].fileName = wx.wxFileName(filePath):GetFullName()
-      openDocuments[id].modTime = GetFileModTime(filePath)
-      SetDocumentModified(id, false, openDocuments[id].fileName)
+      local doc = ide:GetDocument(editor)
+      doc.filePath = filePath
+      doc.fileName = wx.wxFileName(filePath):GetFullName()
+      doc.modTime = GetFileModTime(filePath)
+      doc:SetModified(false)
+      doc:SetTabText(doc:GetFileName())
       SetAutoRecoveryMark()
       FileTreeMarkSelected(filePath)
 
@@ -504,7 +506,7 @@ function SaveOnExit(allow_cancel)
   -- are still modified as not modified (they don't need to be saved)
   -- to keep their tab names correct
   for id, document in pairs(openDocuments) do
-    if document.isModified then SetDocumentModified(id, false) end
+    if document.isModified then document:SetModified(false) end
   end
 
   return true
@@ -745,14 +747,14 @@ function SetOpenTabs(params)
     else
       local editor = (doc.filepath and LoadFile(doc.filepath,nil,true,true)
         or findUnusedEditor() or NewFile(doc.filename))
-      local opendoc = openDocuments[editor:GetId()]
+      local opendoc = ide:GetDocument(editor)
       if doc.content then
         editor:SetText(doc.content)
         if doc.filepath and opendoc.modTime and doc.modified < opendoc.modTime:GetTicks() then
           DisplayOutputLn(TR("File '%s' has more recent timestamp than restored '%s'; please review before saving.")
             :format(doc.filepath, doc.tabname))
         end
-        SetDocumentModified(editor:GetId(), true)
+        opendoc:SetModified(true)
       end
       editor:GotoPosDelayed(doc.cursorpos or 0)
     end
@@ -776,9 +778,8 @@ local function getOpenTabs()
   -- to keep tab order
   table.sort(opendocs, function(a,b) return (a.id < b.id) end)
 
-  local id = GetEditor()
-  id = id and id:GetId()
-  return opendocs, {index = (id and openDocuments[id].index or 0)}
+  local doc = ide:GetDocument(GetEditor())
+  return opendocs, {index = (doc and doc:GetTabIndex() or 0)}
 end
 
 function SetAutoRecoveryMark()
