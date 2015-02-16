@@ -26,6 +26,7 @@ local debugTab = {
   { ID_STEP, TR("Step &Into")..KSC(ID_STEP), TR("Step into") },
   { ID_STEPOVER, TR("Step &Over")..KSC(ID_STEPOVER), TR("Step over") },
   { ID_STEPOUT, TR("Step O&ut")..KSC(ID_STEPOUT), TR("Step out of the current function") },
+  { ID_RUNTO, TR("Run To Cursor")..KSC(ID_RUNTO), TR("Run to cursor") },
   { ID_TRACE, TR("Tr&ace")..KSC(ID_TRACE), TR("Trace execution showing each executed line") },
   { ID_BREAK, TR("&Break")..KSC(ID_BREAK), TR("Break execution at the next executed line of code") },
   { },
@@ -360,6 +361,18 @@ frame:Connect(ID_DETACHDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     event:Enable((debugger.server ~= nil) and (not debugger.running)
       and (not debugger.scratchpad))
+  end)
+
+frame:Connect(ID_RUNTO, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function ()
+    local editor = GetEditor()
+    debugger.runto(editor, editor:GetCurrentLine())
+  end)
+frame:Connect(ID_RUNTO, wx.wxEVT_UPDATE_UI,
+  function (event)
+    local editor = GetEditor()
+    event:Enable((debugger.server ~= nil) and (not debugger.running)
+      and (editor ~= nil) and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,

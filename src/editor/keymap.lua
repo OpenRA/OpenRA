@@ -88,6 +88,7 @@ ide.config.keymap = {
   [ID_STEP]             = "F10",
   [ID_STEPOVER]         = "Shift-F10",
   [ID_STEPOUT]          = "Ctrl-F10",
+  [ID_RUNTO]            = "Ctrl-Shift-F10",
   [ID_TRACE]            = "",
   [ID_BREAK]            = "Shift-F9",
   [ID_TOGGLEBREAKPOINT] = "F9",
