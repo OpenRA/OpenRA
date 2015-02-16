@@ -17,7 +17,7 @@ namespace OpenRA.Mods.D2k.Traits
 {
 	public class LaysTerrainInfo : ITraitInfo, Requires<BuildingInfo>
 	{
-		[Desc("The terrain template to place. If the template is PickAny, then" +
+		[Desc("The terrain template to place. If the template is PickAny, then " +
 			"the actor footprint will be filled with this tile.")]
 		public readonly ushort Template = 0;
 
