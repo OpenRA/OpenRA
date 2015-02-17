@@ -9,9 +9,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -27,7 +25,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var rules = Game.ModData.RulesetCache.LoadDefaultRules();
 			var map = LegacyMapImporter.Import(args[1], modData.Manifest.Mod.Id, rules, e => Console.WriteLine(e));
-			var dest = map.Title + ".oramap";
+			var dest = Path.ChangeExtension(args[1], "oramap");
 			map.Save(dest);
 			Console.WriteLine(dest + " saved.");
 		}
