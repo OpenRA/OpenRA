@@ -1074,6 +1074,8 @@ function CreateEditor(bare)
   local alreadyProcessed = 0
   editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
     function (event)
+      PackageEventHandle("onEditorUpdateUI", editor, event)
+
       -- some of UPDATEUI events are triggered by blinking cursor, and since
       -- there are no changes, the rest of the processing can be skipped;
       -- the reason for `alreadyProcessed` is that it is not possible
@@ -1088,8 +1090,6 @@ function CreateEditor(bare)
          alreadyProcessed = 0
       end
       alreadyProcessed = alreadyProcessed + 1
-
-      PackageEventHandle("onEditorUpdateUI", editor, event)
 
       if ide.osname ~= 'Windows' then updateStatusText(editor) end
 
