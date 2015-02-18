@@ -161,6 +161,13 @@ Container@PLAYER_WIDGETS:
 							Y: 41
 							Width: 220
 							Height: 220
+							Children:
+						VqaPlayer@PLAYER:
+							X: 8
+							Y: 40
+							Width: 220
+							Height: 220
+							Skippable: false
 				Label@GAME_TIMER:
 					Logic: GameTimerLogic
 					X: 3

@@ -21,6 +21,7 @@ namespace OpenRA.Widgets
 		public Hotkey CancelKey = new Hotkey(Keycode.ESCAPE, Modifiers.None);
 		public float AspectRatio = 1.2f;
 		public bool DrawOverlay = true;
+		public bool Skippable = true;
 
 		public bool Paused { get { return paused; } }
 		public VqaReader Video { get { return video; } }
@@ -48,14 +49,20 @@ namespace OpenRA.Widgets
 		{
 			if (filename == cachedVideo)
 				return;
+			var video = new VqaReader(GlobalFileSystem.Open(filename));
+
+			cachedVideo = filename;
+			Open(video);
+		}
+
+		public void Open(VqaReader video)
+		{
+			this.video = video;
 
 			stopped = true;
 			paused = true;
 			Sound.StopVideo();
 			onComplete = () => { };
-
-			cachedVideo = filename;
-			video = new VqaReader(GlobalFileSystem.Open(filename));
 
 			invLength = video.Framerate * 1f / video.Frames;
 
@@ -107,7 +114,8 @@ namespace OpenRA.Widgets
 				else
 					nextFrame = video.CurrentFrame + 1;
 
-				if (nextFrame > video.Frames)
+				// Without the 2nd check the sound playback sometimes ends before the final frame is displayed which causes the player to be stuck on the first frame
+				if (nextFrame > video.Frames || nextFrame < video.CurrentFrame)
 				{
 					Stop();
 					return;
@@ -136,7 +144,7 @@ namespace OpenRA.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (Hotkey.FromKeyInput(e) != CancelKey || e.Event != KeyInputEvent.Down)
+			if (Hotkey.FromKeyInput(e) != CancelKey || e.Event != KeyInputEvent.Down || !Skippable)
 				return false;
 
 			Stop();
@@ -187,6 +195,12 @@ namespace OpenRA.Widgets
 			video.Reset();
 			videoSprite.Sheet.GetTexture().SetData(video.FrameData);
 			world.AddFrameEndTask(_ => onComplete());
+		}
+
+		public void CloseVideo()
+		{
+			Stop();
+			video = null;
 		}
 	}
 }
