@@ -136,12 +136,12 @@ namespace OpenRA.Mods.Common.Traits
 					actorInfos.Remove(actorInfo);
 
 					world.AddFrameEndTask(w =>
-						{
-							MoveIntoWorld(w, newActor, chosenExit, exitLocation, targetLocation);
-							IssueNotifications(self, newActor, exitLocation);
+					{
+						MoveIntoWorld(w, newActor, chosenExit, exitLocation, targetLocation);
+						IssueNotifications(self, newActor, exitLocation);
 
-							deliveringActor.QueueActivity(new CallFunc(() => MakeDelivery(actorInfos, deliveringActor, world)));
-						});
+						deliveringActor.QueueActivity(new CallFunc(() => MakeDelivery(actorInfos, deliveringActor, world)));
+					});
 				}
 			}
 		}
