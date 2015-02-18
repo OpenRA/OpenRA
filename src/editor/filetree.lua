@@ -13,14 +13,18 @@ ide.filetree = {
   projdirpartmap = {},
   projtreeCtrl = nil,
   imglist = ide:CreateImageList("PROJECT",
-    "FOLDER", "FILE-KNOWN", "FILE-NORMAL", "FILE-NORMAL-START"),
-  settings = {extensionignore = {}, startfile = {}},
+    "FOLDER", "FILE-KNOWN", "FILE-NORMAL", "FILE-NORMAL-START",
+    "FOLDER-MAPPED"),
+  settings = {extensionignore = {}, startfile = {}, mapped = {}},
 }
 local filetree = ide.filetree
 local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
 local pathsep = GetPathSeparator()
 local q = EscapeMagic
-local image = { DIRECTORY = 0, FILEKNOWN = 1, FILEOTHER = 2, FILEOTHERSTART = 3 }
+local image = {
+  DIRECTORY = 0, FILEKNOWN = 1, FILEOTHER = 2, FILEOTHERSTART = 3,
+  DIRECTORYMAPPED = 4,
+}
 
 do
   local settings = ide:AddPackage('core.filetree', {}):GetSettings()
@@ -51,12 +55,27 @@ local function treeAddDir(tree,parent_id,rootdir)
 
   local cache = {}
   local curr
+  local files = FileSysGetRecursive(rootdir)
+  local dirmapped = {}
+  if tree:IsRoot(parent_id) then
+    local mapped = filetree.settings.mapped[FileTreeGetDir()] or {}
+    table.sort(mapped)
+    -- insert into files at the sorted order
+    for i, v in ipairs(mapped) do
+      table.insert(files, i, v)
+      dirmapped[v] = true
+    end
+  end
 
-  for _, file in ipairs(FileSysGetRecursive(rootdir)) do
+  for _, file in ipairs(files) do
     local name, dir = file:match("([^"..pathsep.."]+)("..pathsep.."?)$")
     local isdir = #dir>0
     if isdir or not filetree.settings.extensionignore[GetFileExt(name)] then
       local icon = getIcon(file, isdir)
+
+      -- keep full name for the mapped directories
+      if dirmapped[file] then name, icon = file, image.DIRECTORYMAPPED end
+
       local item = items[name .. icon]
       if item then -- existing item
         -- keep deleting items until we find item
@@ -153,8 +172,10 @@ local function treeSetConnectorsAndIcons(tree)
   local function isIt(item, imgtype) return tree:GetItemImage(item) == imgtype end
 
   function tree:IsDirectory(item_id) return isIt(item_id, image.DIRECTORY) end
+  function tree:IsDirMapped(item_id) return isIt(item_id, image.DIRECTORYMAPPED) end
   function tree:IsFileKnown(item_id) return isIt(item_id, image.FILEKNOWN) end
   function tree:IsFileOther(item_id) return isIt(item_id, image.FILEOTHER) end
+  function tree:IsFileStart(item_id) return isIt(item_id, image.FILEOTHERSTART) end
   function tree:IsRoot(item_id) return not tree:GetItemParent(item_id):IsOk() end
 
   function tree:FindItem(match)
@@ -212,13 +233,37 @@ local function treeSetConnectorsAndIcons(tree)
     end
 
     -- refresh the folder
-    if (tree:IsDirectory(item_id)) then
+    if (tree:IsDirectory(item_id) or tree:IsDirMapped(item_id)) then
       if wx.wxDirExists(name) then treeAddDir(tree,item_id,name)
       else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
     else -- open file
       if wx.wxFileExists(name) then LoadFile(name,nil,true)
       else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
     end
+  end
+
+  local function unMapDir(dir)
+    local project = FileTreeGetDir()
+    local mapped = filetree.settings.mapped[project] or {}
+    for k, m in ipairs(mapped) do
+      if m == dir then table.remove(mapped, k) end
+    end
+    filetree.settings.mapped[project] = mapped
+    refreshAncestors(tree:GetRootItem())
+  end
+  local function mapDir()
+    local project = FileTreeGetDir()
+    local dirPicker = wx.wxDirDialog(ide.frame, TR("Choose a directory to map"),
+      project ~= "" and project or wx.wxGetCwd(), wx.wxDIRP_DIR_MUST_EXIST)
+    if dirPicker:ShowModal(true) ~= wx.wxID_OK then return end
+    local dir = wx.wxFileName.DirName(FixDir(dirPicker:GetPath())):GetFullPath()
+    local mapped = filetree.settings.mapped[project] or {}
+    for _, m in ipairs(mapped) do
+      if m == dir then return end -- already on the list
+    end
+    table.insert(mapped, dir)
+    filetree.settings.mapped[project] = mapped
+    refreshAncestors(tree:GetRootItem())
   end
 
   local empty = ""
@@ -296,6 +341,12 @@ local function treeSetConnectorsAndIcons(tree)
     return true
   end
   local function deleteItem(item_id)
+    -- if delete is for mapped directory, unmap it instead
+    if tree:IsDirMapped(item_id) then
+      unMapDir(tree:GetItemText(item_id))
+      return
+    end
+
     local isdir = tree:GetItemImage(item_id) == image.DIRECTORY
     local source = tree:GetItemFullName(item_id)
 
@@ -365,7 +416,7 @@ local function treeSetConnectorsAndIcons(tree)
     filetree.settings.startfile[project] = nil
     if startfile then
       local item_id = tree:FindItem(startfile)
-      if item_id:IsOk() then
+      if item_id and item_id:IsOk() then
         tree:SetItemImage(item_id, getIcon(tree:GetItemFullName(item_id)))
       end
     end
@@ -445,6 +496,16 @@ local function treeSetConnectorsAndIcons(tree)
       unsetStartFile()
       saveSettings()
     end)
+  tree:Connect(ID_MAPDIRECTORY, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function()
+      mapDir()
+      saveSettings()
+    end)
+  tree:Connect(ID_UNMAPDIRECTORY, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function()
+      unMapDir(tree:GetItemText(tree:GetSelection()))
+      saveSettings()
+    end)
 
   tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_MENU,
     function (event)
@@ -469,6 +530,8 @@ local function treeSetConnectorsAndIcons(tree)
         { ID_SETSTARTFILE, TR("Set As Start File") },
         { ID_UNSETSTARTFILE, TR("Unset '%s' As Start File"):format(startfile or "<none>") },
         { },
+        { ID_MAPDIRECTORY, TR("Map Directory...") },
+        { ID_UNMAPDIRECTORY, TR("Unmap Directory") },
         { ID_OPENEXTENSION, TR("Open With Default Program") },
         { ID_COPYFULLPATH, TR("Copy Full Path") },
         { ID_SHOWLOCATION, TR("Show Location") },
@@ -496,12 +559,15 @@ local function treeSetConnectorsAndIcons(tree)
       local projectdirectory = wx.wxMenuItem(menu, ID_PROJECTDIR,
         TR("Project Directory"), TR("Set the project directory to be used"),
         wx.wxITEM_NORMAL, projectdirectorymenu)
-      menu:Insert(12, projectdirectory)
+      menu:Insert(14, projectdirectory)
       FileTreeProjectListUpdate(projectdirectorymenu, 0)
 
       -- disable Delete on non-empty directories
-      local isdir = tree:GetItemImage(item_id) == image.DIRECTORY
-      local isstart = tree:GetItemImage(item_id) == image.FILEOTHERSTART
+      local isdir = tree:IsDirectory(item_id)
+      local isstart = tree:IsFileStart(item_id)
+      local ismapped = tree:IsDirMapped(item_id)
+      menu:Destroy(ismapped and ID_MAPDIRECTORY or ID_UNMAPDIRECTORY)
+      if not startfile then menu:Destroy(ID_UNSETSTARTFILE) end
       if isdir then
         local source = tree:GetItemFullName(item_id)
         menu:Enable(ID_DELETEFILE, not FileDirHasContent(source..pathsep))
@@ -512,8 +578,7 @@ local function treeSetConnectorsAndIcons(tree)
         menu:Enable(ID_OPENEXTENSION, ft and #ft:GetOpenCommand("") > 0)
         menu:Enable(ID_HIDEEXTENSION, not filetree.settings.extensionignore[ext])
       end
-      menu:Enable(ID_SETSTARTFILE, not isdir and not isstart)
-      if not startfile then menu:Destroy(ID_UNSETSTARTFILE) end
+      menu:Enable(ID_SETSTARTFILE, tree:IsFileOther(item_id) or tree:IsFileKnown(item_id))
       menu:Enable(ID_SHOWEXTENSION, next(filetree.settings.extensionignore) ~= nil)
 
       PackageEventHandle("onMenuFiletree", menu, tree, event)
@@ -561,7 +626,7 @@ local function treeSetConnectorsAndIcons(tree)
     function (event)
       local itemsrc = event:GetItem()
       parent = tree:GetItemParent(itemsrc)
-      if not itemsrc:IsOk() then event:Veto() end
+      if not itemsrc:IsOk() or tree:IsDirMapped(itemsrc) then event:Veto() end
     end)
   tree:Connect(wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT,
     function (event)
