@@ -33,7 +33,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public object Create(ActorInitializer init) { return new WithBuildingPlacedOverlay(init.Self, this); }
 	}
 
-	public class WithBuildingPlacedOverlay : INotifyBuildComplete, INotifySold, INotifyDamageStateChanged, INotifyBuildingPlaced
+	public class WithBuildingPlacedOverlay : INotifyBuildComplete, INotifySold, INotifyDamageStateChanged, INotifyBuildingPlaced, INotifyTransform
 	{
 		Animation overlay;
 		bool buildComplete;
@@ -64,6 +64,14 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			buildComplete = false;
 		}
+
+		public void BeforeTransform(Actor self)
+		{
+			buildComplete = false;
+		}
+
+		public void OnTransform(Actor self) { }
+		public void AfterTransform(Actor self) { }
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
