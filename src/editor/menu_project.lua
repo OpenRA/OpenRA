@@ -153,7 +153,6 @@ local function projChoose(event)
 end
 
 frame:Connect(ID_PROJECTDIRCHOOSE, wx.wxEVT_COMMAND_MENU_SELECTED, projChoose)
-frame:Connect(ID_PROJECTDIRCHOOSE, wx.wxEVT_COMMAND_BUTTON_CLICKED, projChoose)
 
 local function projFromFile(event)
   local editor = GetEditor()
