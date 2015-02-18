@@ -95,6 +95,8 @@
     <Compile Include="Traits\WormSpawner.cs" />
     <Compile Include="Warheads\ChangeOwnerWarhead.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
+    <Compile Include="UtilityCommands\D2kMapImporter.cs" />
+    <Compile Include="UtilityCommands\ImportD2kMapCommand.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\SupportPowerBinWidget.cs" />
     <Compile Include="Widgets\SlidingContainerWidget.cs" />
