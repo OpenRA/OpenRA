@@ -111,15 +111,33 @@ namespace OpenRA
 		MissionSelector = 4
 	}
 
-	public class Map
+	public interface IMap
+	{
+		TileShape TileShape { get; }
+
+		int2 MapSize { get; set; }
+		bool Contains(CPos cell);
+		CPos CellContaining(WPos pos);
+		WVec OffsetOfSubCell(SubCell subCell);
+		IEnumerable<CPos> FindTilesInCircle(CPos center, int maxRange);
+		WPos CenterOfCell(CPos cell);
+	}
+
+	public class Map : IMap
 	{
 		public const int MaxTilesInCircleRange = 50;
 		public readonly TileShape TileShape;
+		TileShape IMap.TileShape
+		{
+			get { return TileShape; }
+		}
+
 		[FieldLoader.Ignore]
 		public readonly WVec[] SubCellOffsets;
 		public readonly SubCell DefaultSubCell;
 		public readonly SubCell LastSubCell;
-		[FieldLoader.Ignore] public IFolder Container;
+		[FieldLoader.Ignore]
+		public IFolder Container;
 		public string Path { get; private set; }
 
 		// Yaml map data
@@ -165,41 +183,65 @@ namespace OpenRA
 			return videos;
 		}
 
-		[FieldLoader.Ignore] public Lazy<Dictionary<string, ActorReference>> Actors;
+		[FieldLoader.Ignore]
+		public Lazy<Dictionary<string, ActorReference>> Actors;
 
 		public int PlayerCount { get { return Players.Count(p => p.Value.Playable); } }
 
 		public Rectangle Bounds;
 
 		// Yaml map data
-		[FieldLoader.Ignore] public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
-		[FieldLoader.Ignore] public Lazy<List<SmudgeReference>> Smudges;
+		[FieldLoader.Ignore]
+		public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
+		[FieldLoader.Ignore]
+		public Lazy<List<SmudgeReference>> Smudges;
 
-		[FieldLoader.Ignore] public List<MiniYamlNode> RuleDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> SequenceDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> VoxelSequenceDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> WeaponDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> VoiceDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> NotificationDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> TranslationDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore]
+		public List<MiniYamlNode> RuleDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore]
+		public List<MiniYamlNode> SequenceDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore]
+		public List<MiniYamlNode> VoxelSequenceDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore]
+		public List<MiniYamlNode> WeaponDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore]
+		public List<MiniYamlNode> VoiceDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore]
+		public List<MiniYamlNode> NotificationDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore]
+		public List<MiniYamlNode> TranslationDefinitions = new List<MiniYamlNode>();
 
 		// Binary map data
-		[FieldLoader.Ignore] public byte TileFormat = 2;
+		[FieldLoader.Ignore]
+		public byte TileFormat = 2;
 
 		public int2 MapSize;
 
-		[FieldLoader.Ignore] public Lazy<CellLayer<TerrainTile>> MapTiles;
-		[FieldLoader.Ignore] public Lazy<CellLayer<ResourceTile>> MapResources;
-		[FieldLoader.Ignore] public Lazy<CellLayer<byte>> MapHeight;
+		int2 IMap.MapSize
+		{
+			get { return MapSize; }
+			set { MapSize = value; }
+		}
 
-		[FieldLoader.Ignore] public CellLayer<byte> CustomTerrain;
+		[FieldLoader.Ignore]
+		public Lazy<CellLayer<TerrainTile>> MapTiles;
+		[FieldLoader.Ignore]
+		public Lazy<CellLayer<ResourceTile>> MapResources;
+		[FieldLoader.Ignore]
+		public Lazy<CellLayer<byte>> MapHeight;
 
-		[FieldLoader.Ignore] Lazy<TileSet> cachedTileSet;
-		[FieldLoader.Ignore] Lazy<Ruleset> rules;
+		[FieldLoader.Ignore]
+		public CellLayer<byte> CustomTerrain;
+
+		[FieldLoader.Ignore]
+		Lazy<TileSet> cachedTileSet;
+		[FieldLoader.Ignore]
+		Lazy<Ruleset> rules;
 		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
 		public SequenceProvider SequenceProvider { get { return Rules.Sequences[Tileset]; } }
 
-		[FieldLoader.Ignore] public CellRegion Cells;
+		[FieldLoader.Ignore]
+		public CellRegion Cells;
 
 		public static Map FromTileset(TileSet tileset)
 		{

@@ -13,7 +13,7 @@ build:
   verbosity: minimal
 
 test_script:
-  - nunit-console-x86.exe OpenRA.Test.dll
+  - nunit-console-x86.exe OpenRA.Test\bin\Debug\OpenRA.Test.dll
 
 before_deploy:
   - make docs
