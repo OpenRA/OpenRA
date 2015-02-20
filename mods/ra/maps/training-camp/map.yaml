@@ -1057,69 +1057,6 @@ Sequences:
 VoxelSequences:
 
 Weapons:
-	CrateNuke:
-		Warhead@areanuke2: PerCellDamage
-			Damage: 250
-			Size: 4
-			Versus:
-				None: 90
-				Light: 60
-				Heavy: 25
-				Concrete: 50
-			Delay: 12
-			DeathType: 4
-		Warhead@areanuke2Smu: LeaveSmudge
-			SmudgeType: Scorch
-			Size: 4,3
-			Delay: 12
-		Warhead@areanuke2Res: DestroyResource
-			DestroyResources: true
-			Size: 4,3
-			Delay: 12
-		Warhead@areanuke2Eff: CreateEffect
-			ImpactSound: kaboom22
-			Delay: 12
-		Warhead@areanuke3: PerCellDamage
-			Damage: 250
-			Size: 3
-			Versus:
-				None: 90
-				Light: 60
-				Heavy: 25
-				Concrete: 50
-			Delay: 24
-			DeathType: 4
-		Warhead@areanuke3Smu: LeaveSmudge
-			SmudgeType: Scorch
-			Size: 3,2
-			Delay: 24
-		Warhead@areanuke3Res: DestroyResource
-			DestroyResources: true
-			Size: 3,2
-			Delay: 24
-		Warhead@areanuke3Eff: CreateEffect
-			ImpactSound: kaboom22
-			Delay: 24
-		Warhead@areanuke4: PerCellDamage
-			Damage: 250
-			Versus:
-				None: 90
-				Light: 60
-				Heavy: 25
-				Concrete: 50
-			Delay: 36
-			DeathType: 4
-		Warhead@areanuke4Smu: LeaveSmudge
-			SmudgeType: Scorch
-			Size: 2,1
-			Delay: 36
-		Warhead@areanuke4Res: DestroyResource
-			DestroyResources: true
-			Size: 2,1
-			Delay: 36
-		Warhead@areanuke4Eff: CreateEffect
-			ImpactSound: kaboom22
-			Delay: 36
 
 Voices:
 

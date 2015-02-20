@@ -776,49 +776,36 @@ CrateExplosion:
 
 CrateNuke:
 	Warhead@1Dam_impact: SpreadDamage
-		Spread: 256
+		Spread: 1c0
 		Damage: 100
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		DeathType: 5
+		ValidTargets: Ground, Water, Air
 		Versus:
-			None: 90
-			Light: 60
-			Heavy: 25
-			Concrete: 50
+			Concrete: 25
 		AffectsParent: true
 	Warhead@2Res_impact: DestroyResource
 	Warhead@3Eff_impact: CreateEffect
 		Explosion: nuke
 		ImpactSound: kaboom1.aud
-	Warhead@4Dam_areanuke: PerCellDamage
-		Size: 5
-		Damage: 250
+	Warhead@4Dam_areanuke: SpreadDamage
+		Spread: 1c0
+		Damage: 60
+		Falloff: 1000, 600, 400, 250, 150, 100, 0
 		DeathType: 5
 		Delay: 4
+		ValidTargets: Ground, Water, Air
 		Versus:
-			None: 90
-			Light: 60
-			Heavy: 25
-			Concrete: 50
+			Concrete: 25
 		AffectsParent: true
-	Warhead@5Dam_areanuke: SpreadDamage
-		Damage: 250
-		DeathType: 5
-		Delay: 4
-		Versus:
-			None: 90
-			Light: 60
-			Heavy: 25
-			Concrete: 50
-		AffectsParent: true
-	Warhead@6Res_areanuke: DestroyResource
+	Warhead@5Res_areanuke: DestroyResource
 		Size: 5,4
 		Delay: 4
-	Warhead@7Smu_areanuke: LeaveSmudge
+	Warhead@6Smu_areanuke: LeaveSmudge
 		SmudgeType: Scorch
 		Size: 5,4
 		Delay: 4
-	Warhead@8Eff_areanuke: CreateEffect
+	Warhead@7Eff_areanuke: CreateEffect
 		ImpactSound: kaboom22.aud
 		Delay: 4
 
