@@ -153,7 +153,7 @@ namespace OpenRA.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			return RenderBounds.Contains(mi.Location);
+			return RenderBounds.Contains(mi.Location) && Skippable;
 		}
 
 		public void Play()
