@@ -79,8 +79,35 @@ namespace OpenRA.Traits
 
 		public void GiveCash(int num)
 		{
-			Cash += num;
-			Earned += num;
+			if (Cash < int.MaxValue)
+			{
+				try
+				{
+					checked
+					{
+						Cash += num;
+					}
+				}
+				catch (OverflowException)
+				{
+					Cash = int.MaxValue;
+				}
+			}
+
+			if (Earned < int.MaxValue)
+			{
+				try
+				{
+					checked
+					{
+						Earned += num;
+					}
+				}
+				catch (OverflowException)
+				{
+					Earned = int.MaxValue;
+				}
+			}
 		}
 
 		public bool TakeCash(int num)
