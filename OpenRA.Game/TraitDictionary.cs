@@ -231,14 +231,15 @@ namespace OpenRA
 
 			public void RemoveActor(uint actor)
 			{
-				for (var i = actors.Count - 1; i >= 0; i--)
-				{
-					if (actors[i].ActorID == actor)
-					{
-						actors.RemoveAt(i);
-						traits.RemoveAt(i);
-					}
-				}
+				var startIndex = actors.BinarySearchMany(actor);
+				if (startIndex >= actors.Count || actors[startIndex].ActorID != actor)
+					return;
+				var endIndex = startIndex + 1;
+				while (endIndex < actors.Count && actors[endIndex].ActorID == actor)
+					endIndex++;
+				var count = endIndex - startIndex;
+				actors.RemoveRange(startIndex, count);
+				traits.RemoveRange(startIndex, count);
 			}
 		}
 	}
