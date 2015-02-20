@@ -37,6 +37,7 @@ World:
 		Name: colorpicker
 		Filename: unittem.pal
 		AllowModifiers: false
+		ShadowIndex: 1
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0

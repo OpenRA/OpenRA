@@ -13,7 +13,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct BeamRenderable : IRenderable
+	public struct BeamRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly int zOffset;
@@ -31,18 +31,16 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public WPos Pos { get { return pos; } }
-		public float Scale { get { return 1f; } }
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithScale(float newScale) { return new BeamRenderable(pos, zOffset, length, width, color); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new BeamRenderable(pos, zOffset, length, width, color); }
 		public IRenderable WithZOffset(int newOffset) { return new BeamRenderable(pos, zOffset, length, width, color); }
 		public IRenderable OffsetBy(WVec vec) { return new BeamRenderable(pos + vec, zOffset, length, width, color); }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) { }
+		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			var wlr = Game.Renderer.WorldLineRenderer;
@@ -56,5 +54,6 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }
+		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }
 	}
 }

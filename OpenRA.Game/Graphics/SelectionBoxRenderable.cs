@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
-	public struct SelectionBoxRenderable : IRenderable
+	public struct SelectionBoxRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly float scale;
@@ -34,18 +34,16 @@ namespace OpenRA.Graphics
 
 		public WPos Pos { get { return pos; } }
 
-		public float Scale { get { return scale; } }
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return 0; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithScale(float newScale) { return new SelectionBoxRenderable(pos, bounds, newScale, color); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return this; }
 		public IRenderable WithZOffset(int newOffset) { return this; }
 		public IRenderable OffsetBy(WVec vec) { return new SelectionBoxRenderable(pos + vec, bounds, scale, color); }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) { }
+		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			var screenPos = wr.ScreenPxPosition(pos);
@@ -69,5 +67,6 @@ namespace OpenRA.Graphics
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }
+		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }
 	}
 }

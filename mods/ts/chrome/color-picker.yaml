@@ -29,14 +29,11 @@ Background@COLOR_CHOOSER:
 					Y: 2
 					Width: 144
 					Height: 72
-		SpriteSequence@PREVIEW:
-			X: 153
-			Y: 1-40
+		ActorPreview@PREVIEW:
+			X: 163
 			Width: 80
-			Height: 73
-			Palette: colorpicker
-			Unit: gacnst
-			Sequence: make
+			Height: 74
+			Animate: true
 		Button@RANDOM_BUTTON:
 			Key: tab
 			X: 158

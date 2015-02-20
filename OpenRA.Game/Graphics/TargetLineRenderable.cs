@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
-	public struct TargetLineRenderable : IRenderable
+	public struct TargetLineRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly IEnumerable<WPos> waypoints;
 		readonly Color color;
@@ -28,18 +28,16 @@ namespace OpenRA.Graphics
 		}
 
 		public WPos Pos { get { return waypoints.First(); } }
-		public float Scale { get { return 1f; } }
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return 0; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithScale(float newScale) { return new TargetLineRenderable(waypoints, color); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new TargetLineRenderable(waypoints, color); }
 		public IRenderable WithZOffset(int newOffset) { return new TargetLineRenderable(waypoints, color); }
 		public IRenderable OffsetBy(WVec vec) { return new TargetLineRenderable(waypoints.Select(w => w + vec), color); }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) { }
+		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			if (!waypoints.Any())
@@ -58,5 +56,6 @@ namespace OpenRA.Graphics
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }
+		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }
 	}
 }

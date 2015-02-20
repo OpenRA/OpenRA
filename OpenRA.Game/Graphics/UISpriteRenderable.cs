@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace OpenRA.Graphics
 {
-	public struct UISpriteRenderable : IRenderable
+	public struct UISpriteRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly Sprite sprite;
 		readonly int2 screenPos;
@@ -36,17 +36,15 @@ namespace OpenRA.Graphics
 		public WVec Offset { get { return WVec.Zero; } }
 		public bool IsDecoration { get { return true; } }
 
-		public float Scale { get { return scale; } }
 		public PaletteReference Palette { get { return palette; } }
 		public int ZOffset { get { return zOffset; } }
 
-		public IRenderable WithScale(float newScale) { return new UISpriteRenderable(sprite, screenPos, zOffset, palette, newScale); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new UISpriteRenderable(sprite, screenPos, zOffset, newPalette, scale); }
 		public IRenderable WithZOffset(int newOffset) { return this; }
 		public IRenderable OffsetBy(WVec vec) { return this; }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) { }
+		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			Game.Renderer.SpriteRenderer.DrawSprite(sprite, screenPos, palette, sprite.Size * scale);
@@ -56,6 +54,12 @@ namespace OpenRA.Graphics
 		{
 			var offset = screenPos + sprite.Offset;
 			Game.Renderer.LineRenderer.DrawRect(offset, offset + sprite.Size, Color.Red);
+		}
+
+		public Rectangle ScreenBounds(WorldRenderer wr)
+		{
+			var offset = screenPos + sprite.Offset;
+			return new Rectangle((int)offset.X, (int)offset.Y, (int)sprite.Size.X, (int)sprite.Size.Y);
 		}
 	}
 }

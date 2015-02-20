@@ -219,7 +219,6 @@
     <Compile Include="Traits\World\ActorMap.cs" />
     <Compile Include="Widgets\HotkeyEntryWidget.cs" />
     <Compile Include="Widgets\SpriteWidget.cs" />
-    <Compile Include="Widgets\SpriteSequenceWidget.cs" />
     <Compile Include="Widgets\RGBASpriteWidget.cs" />
     <Compile Include="Scripting\ScriptContext.cs" />
     <Compile Include="Scripting\ScriptActorInterface.cs" />
@@ -258,6 +257,7 @@
     <Compile Include="Graphics\HardwareCursor.cs" />
     <Compile Include="Support\PerfItem.cs" />
     <Compile Include="Support\PerfSample.cs" />
+    <Compile Include="Graphics\SpriteRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />

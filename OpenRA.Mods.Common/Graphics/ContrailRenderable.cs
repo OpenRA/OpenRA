@@ -14,7 +14,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct ContrailRenderable : IRenderable
+	public struct ContrailRenderable : IRenderable, IFinalizedRenderable
 	{
 		public int Length { get { return trail.Length; } }
 
@@ -43,18 +43,16 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public WPos Pos { get { return trail[Index(next - 1)]; } }
-		public float Scale { get { return 1f; } }
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithScale(float newScale) { return new ContrailRenderable(world, (WPos[])trail.Clone(), next, length, skip, color, zOffset); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new ContrailRenderable(world, (WPos[])trail.Clone(), next, length, skip, color, zOffset); }
 		public IRenderable WithZOffset(int newOffset) { return new ContrailRenderable(world, (WPos[])trail.Clone(), next, length, skip, color, newOffset); }
 		public IRenderable OffsetBy(WVec vec) { return new ContrailRenderable(world, trail.Select(pos => pos + vec).ToArray(), next, length, skip, color, zOffset); }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) { }
+		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			// Need at least 4 points to smooth the contrail over
@@ -88,6 +86,7 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }
+		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }
 
 		// Array index modulo length
 		int Index(int i)

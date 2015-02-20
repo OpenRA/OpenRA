@@ -10,6 +10,20 @@ waypoint:
 	RenderEditorOnly:
 	BodyOrientation:
 
+^mmch.colorpicker:
+	Inherits: MMCH
+	Mobile:
+		InitialFacing: 160
+	Turreted:
+		InitialFacing: 160
+	RenderInfantry:
+		Image: mmch
+		StandAnimations: run
+		Palette: colorpicker
+	RenderVoxels:
+		Image: mmch
+		Palette: colorpicker
+
 CAMERA:
 	Immobile:
 		OccupiesSpace: false
