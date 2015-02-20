@@ -58,3 +58,10 @@ if [ ! -f Mono.Nat.dll ]; then
 	cp ./Mono.Nat.1.2.21.0/lib/net40/Mono.Nat.dll .
 	rm -rf Mono.Nat.1.2.21.0
 fi
+
+if [ ! -f Moq.dll ]; then
+	echo "Fetching Moq from NuGet."
+	nuget install Moq -Version 4.2.1502.0911
+	cp ./Moq.4.2.1502.0911/lib/net40/Moq.dll .
+	rm -rf Moq.4.2.1502.0911
+fi

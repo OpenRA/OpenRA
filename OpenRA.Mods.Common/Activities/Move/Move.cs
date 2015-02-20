@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.Common.Activities
 			moveDisablers = self.TraitsImplementing<IDisableMove>();
 
 			getPath = () =>
-				self.World.WorldActor.Trait<PathFinder>().FindPath(
+				self.World.WorldActor.Trait<IPathFinder>().FindPath(
 					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.ToCell, destination, false)
 					.WithoutLaneBias());
 			this.destination = destination;
@@ -61,7 +62,7 @@ namespace OpenRA.Mods.Common.Activities
 			mobile = self.Trait<Mobile>();
 			moveDisablers = self.TraitsImplementing<IDisableMove>();
 
-			getPath = () => self.World.WorldActor.Trait<PathFinder>()
+			getPath = () => self.World.WorldActor.Trait<IPathFinder>()
 				.FindUnitPath(mobile.ToCell, destination, self);
 			this.destination = destination;
 			this.nearEnough = nearEnough;
@@ -72,7 +73,7 @@ namespace OpenRA.Mods.Common.Activities
 			mobile = self.Trait<Mobile>();
 			moveDisablers = self.TraitsImplementing<IDisableMove>();
 
-			getPath = () => self.World.WorldActor.Trait<PathFinder>()
+			getPath = () => self.World.WorldActor.Trait<IPathFinder>()
 				.FindUnitPathToRange(mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
 			this.destination = destination;
 			this.nearEnough = nearEnough;
@@ -84,7 +85,7 @@ namespace OpenRA.Mods.Common.Activities
 			moveDisablers = self.TraitsImplementing<IDisableMove>();
 
 			getPath = () =>
-				self.World.WorldActor.Trait<PathFinder>().FindPath(
+				self.World.WorldActor.Trait<IPathFinder>().FindPath(
 					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.ToCell, destination, false)
 					.WithIgnoredActor(ignoredActor));
 
@@ -103,7 +104,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!target.IsValidFor(self))
 					return NoPath;
 
-				return self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(
+				return self.World.WorldActor.Trait<IPathFinder>().FindUnitPathToRange(
 					mobile.ToCell, mobile.ToSubCell, target.CenterPosition, range, self);
 			};
 
@@ -132,7 +133,7 @@ namespace OpenRA.Mods.Common.Activities
 			return hash;
 		}
 
-		List<CPos> EvalPath(Actor self, Mobile mobile)
+		List<CPos> EvalPath()
 		{
 			var path = getPath().TakeWhile(a => a != mobile.ToCell).ToList();
 			mobile.PathHash = HashList(path);
@@ -155,7 +156,7 @@ namespace OpenRA.Mods.Common.Activities
 					return this;
 				}
 
-				path = EvalPath(self, mobile);
+				path = EvalPath();
 				SanityCheckPath(mobile);
 			}
 
@@ -167,7 +168,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			destination = path[0];
 
-			var nextCell = PopPath(self, mobile);
+			var nextCell = PopPath(self);
 			if (nextCell == null)
 				return this;
 
@@ -202,7 +203,7 @@ namespace OpenRA.Mods.Common.Activities
 				throw new InvalidOperationException("(Move) Sanity check failed");
 		}
 
-		Pair<CPos, SubCell>? PopPath(Actor self, Mobile mobile)
+		Pair<CPos, SubCell>? PopPath(Actor self)
 		{
 			if (path.Count == 0)
 				return null;
@@ -210,7 +211,7 @@ namespace OpenRA.Mods.Common.Activities
 			var nextCell = path[path.Count - 1];
 
 			// Next cell in the move is blocked by another actor
-			if (!mobile.CanEnterCell(nextCell, ignoredActor, true))
+			if (!mobile.CanMoveFreelyInto(nextCell, ignoredActor, true))
 			{
 				// Are we close enough?
 				var cellRange = nearEnough.Range / 1024;
@@ -246,7 +247,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				// Calculate a new path
 				mobile.RemoveInfluence();
-				var newPath = EvalPath(self, mobile);
+				var newPath = EvalPath();
 				mobile.AddInfluence();
 
 				if (newPath.Count != 0)
@@ -372,7 +373,7 @@ namespace OpenRA.Mods.Common.Activities
 				var fromSubcellOffset = self.World.Map.OffsetOfSubCell(mobile.FromSubCell);
 				var toSubcellOffset = self.World.Map.OffsetOfSubCell(mobile.ToSubCell);
 
-				var nextCell = parent.PopPath(self, mobile);
+				var nextCell = parent.PopPath(self);
 				if (nextCell != null)
 				{
 					if (IsTurn(mobile, nextCell.Value.First))
