@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 
 namespace OpenRA.Graphics
@@ -49,6 +50,17 @@ namespace OpenRA.Graphics
 			}
 		}
 
+		void SetRenderStateForSprite(Sprite s)
+		{
+			renderer.CurrentBatchRenderer = this;
+
+			if (s.Sheet != currentSheet || s.BlendMode != currentBlend || nv + 4 > renderer.TempBufferSize)
+				Flush();
+
+			currentBlend = s.BlendMode;
+			currentSheet = s.Sheet;
+		}
+
 		public void DrawSprite(Sprite s, float2 location, PaletteReference pal)
 		{
 			DrawSprite(s, location, pal.TextureIndex, s.Size);
@@ -61,19 +73,7 @@ namespace OpenRA.Graphics
 
 		void DrawSprite(Sprite s, float2 location, float paletteTextureIndex, float2 size)
 		{
-			renderer.CurrentBatchRenderer = this;
-
-			if (s.Sheet != currentSheet)
-				Flush();
-
-			if (s.BlendMode != currentBlend)
-				Flush();
-
-			if (nv + 4 > renderer.TempBufferSize)
-				Flush();
-
-			currentBlend = s.BlendMode;
-			currentSheet = s.Sheet;
+			SetRenderStateForSprite(s);
 			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, paletteTextureIndex, nv, size);
 			nv += 4;
 		}
@@ -91,20 +91,15 @@ namespace OpenRA.Graphics
 
 		public void DrawSprite(Sprite s, float2 a, float2 b, float2 c, float2 d)
 		{
-			renderer.CurrentBatchRenderer = this;
-
-			if (s.Sheet != currentSheet)
-				Flush();
-
-			if (s.BlendMode != currentBlend)
-				Flush();
-
-			if (nv + 4 > renderer.TempBufferSize)
-				Flush();
-
-			currentSheet = s.Sheet;
-			currentBlend = s.BlendMode;
+			SetRenderStateForSprite(s);
 			Util.FastCreateQuad(vertices, a, b, c, d, s, 0, nv);
+			nv += 4;
+		}
+
+		public void DrawSprite(Sprite s, Vertex[] sourceVertices, int offset)
+		{
+			SetRenderStateForSprite(s);
+			Array.Copy(sourceVertices, offset, vertices, nv, 4);
 			nv += 4;
 		}
 
