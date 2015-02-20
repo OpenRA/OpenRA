@@ -175,6 +175,7 @@
     <Compile Include="Orders\GlobalButtonOrderGenerator.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
+    <Compile Include="Pathfinder\CellInfo.cs" />
     <Compile Include="PlayerExtensions.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="ServerTraits\LobbyCommands.cs" />
@@ -435,9 +436,15 @@
     <Compile Include="Traits\World\PaletteFromCurrentTileset.cs" />
     <Compile Include="Traits\World\PaletteFromFile.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
+    <Compile Include="Pathfinder\CellInfoLayerManager.cs" />
+    <Compile Include="Pathfinder\Constants.cs" />
+    <Compile Include="Pathfinder\PathGraph.cs" />
+    <Compile Include="Pathfinder\PathFinderCacheDecorator.cs" />
+    <Compile Include="Pathfinder\PathCacheStorage.cs" />
     <Compile Include="Traits\World\PathFinder.cs" />
     <Compile Include="Traits\World\PathfinderDebugOverlay.cs" />
-    <Compile Include="Traits\World\PathSearch.cs" />
+    <Compile Include="Pathfinder\PathSearch.cs" />
+    <Compile Include="Pathfinder\BasePathSearch.cs" />
     <Compile Include="Traits\World\PlayerPaletteFromCurrentTileset.cs" />
     <Compile Include="Traits\World\RadarPings.cs" />
     <Compile Include="Traits\World\ResourceClaim.cs" />

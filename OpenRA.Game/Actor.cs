@@ -33,25 +33,21 @@ namespace OpenRA
 		T Trait<T>();
 		IEnumerable<T> TraitsImplementing<T>();
 
-		T TraitInfo<T>();
-
 		IEnumerable<IRenderable> Render(WorldRenderer wr);
 	}
 
 	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>, IActor
 	{
-		public ActorInfo Info { get; private set; }
+		public readonly ActorInfo Info;
+		ActorInfo IActor.Info { get { return this.Info; } }
+
 		public readonly World World;
+		IWorld IActor.World { get { return World; } }
 
-		IWorld IActor.World
-		{
-			get { return World; }
-		}
+		public readonly uint ActorID;
+		uint IActor.ActorID { get { return this.ActorID; } }
 
-		public uint ActorID { get; private set; }
-
-		[Sync]
-		public Player Owner { get; set; }
+		[Sync] public Player Owner { get; set; }
 
 		public bool IsInWorld { get; internal set; }
 		public bool Destroyed { get; private set; }
@@ -222,11 +218,6 @@ namespace OpenRA
 		public IEnumerable<T> TraitsImplementing<T>()
 		{
 			return World.TraitDict.WithInterface<T>(this);
-		}
-
-		public T TraitInfo<T>()
-		{
-			return Info.Traits.Get<T>();
 		}
 
 		public bool HasTrait<T>()

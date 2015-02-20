@@ -24,7 +24,7 @@ namespace OpenRA
 
 		readonly T[] entries;
 
-		public CellLayer(Map map)
+		public CellLayer(IMap map)
 			: this(map.TileShape, new Size(map.MapSize.X, map.MapSize.Y)) { }
 
 		public CellLayer(TileShape shape, Size size)
@@ -43,6 +43,21 @@ namespace OpenRA
 				throw new InvalidOperationException(
 					"Cannot copy values when there are listeners attached to the CellEntryChanged event.");
 			Array.Copy(anotherLayer.entries, entries, entries.Length);
+		}
+
+		public static CellLayer<T> CreateInstance(Func<MPos, T> initialCellValueFactory, Size size, TileShape tileShape)
+		{
+			var cellLayer = new CellLayer<T>(tileShape, size);
+			for (var v = 0; v < size.Height; v++)
+			{
+				for (var u = 0; u < size.Width; u++)
+				{
+					var mpos = new MPos(u, v);
+					cellLayer[mpos] = initialCellValueFactory(mpos);
+				}
+			}
+
+			return cellLayer;
 		}
 
 		// Resolve an array index from cell coordinates

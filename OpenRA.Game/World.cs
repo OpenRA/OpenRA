@@ -121,13 +121,15 @@ namespace OpenRA
 			RenderPlayer = LocalPlayer;
 		}
 
-		public Actor WorldActor { get; private set; }
+		public readonly Actor WorldActor;
 		IActor IWorld.WorldActor { get { return WorldActor; } }
 
-		public Map Map { get; private set; }
+		public readonly Map Map;
 		IMap IWorld.Map { get { return Map; } }
 
-		public TileSet TileSet { get; private set; }
+		public readonly TileSet TileSet;
+		TileSet IWorld.TileSet { get { return TileSet; } }
+
 		public readonly ActorMap ActorMap;
 		public readonly ScreenMap ScreenMap;
 		public readonly WorldType Type;

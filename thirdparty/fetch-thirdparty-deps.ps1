@@ -105,3 +105,11 @@ if (!(Test-Path "windows/soft_oal.dll"))
 	cp OpenAL-Soft.1.16.0/bin/Win32/soft_oal.dll windows/soft_oal.dll
 	rmdir OpenAL-Soft.1.16.0 -Recurse
 }
+
+if (!(Test-Path "Moq.dll"))
+{
+	echo "Fetching Moq from NuGet."
+	./nuget.exe install Moq -Version 4.2.1502.0911
+	cp Moq.4.2.1502.0911/lib/net40/Moq.dll .
+	rmdir Moq.4.2.1502.0911 -Recurse
+}
