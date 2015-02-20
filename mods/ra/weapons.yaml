@@ -962,7 +962,7 @@ Stinger:
 		Image: DRAGON
 		ROT: 20
 		RangeLimit: 50
-		TurboBoost: true
+		TurboBoost: 50
 		Speed: 170
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
