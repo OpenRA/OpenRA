@@ -29,8 +29,17 @@ namespace OpenRA.Mods.Common.Traits
 		All = TransientActors | BlockedByMovers
 	}
 
+	public interface IMobileInfo
+	{
+		int MovementCostForCell(World world, CPos cell);
+		bool CanEnterCell(World world, Actor self, CPos cell, out int movementCost, Actor ignoreActor = null, CellConditions check = CellConditions.All);
+		bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All);
+
+		int GetMovementClass(TileSet tileset);
+	}
+
 	[Desc("Unit is able to move.")]
-	public class MobileInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo, IMoveInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
+	public class MobileInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo, IMoveInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>, IMobileInfo
 	{
 		[FieldLoader.LoadUsing("LoadSpeeds")]
 		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
@@ -165,9 +174,59 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
+		public int TileSetMovementHash(TileSet tileSet)
+		{
+			var terrainInfos = TilesetTerrainInfo[tileSet];
+
+			// Compute and return the hash using aggregate
+			return terrainInfos.Aggregate(terrainInfos.Length,
+				(current, terrainInfo) => unchecked(current * 31 + terrainInfo.Cost));
+		}
+
 		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
 		{
 			if (MovementCostForCell(world, cell) == int.MaxValue)
+				return false;
+
+			return CanMoveFreelyInto(world, self, cell, ignoreActor, check);
+		}
+
+		// Determines whether the actor is blocked by other Actors
+		public bool CanMoveFreelyInto(World world, Actor self, CPos cell, Actor ignoreActor, CellConditions check)
+		{
+			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
+				return true;
+
+			if (check.HasFlag(CellConditions.TransientActors))
+			{
+				var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
+				var needsCellExclusively = self == null || Crushes == null || !Crushes.Any();
+				foreach (var a in world.ActorMap.GetUnitsAt(cell))
+				{
+					if (a == ignoreActor)
+						continue;
+
+					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
+					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a)) continue;
+
+					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
+					if (needsCellExclusively)
+						return false;
+					var crushables = a.TraitsImplementing<ICrushable>();
+					if (!crushables.Any())
+						return false;
+					foreach (var crushable in crushables)
+						if (!crushable.CrushableBy(Crushes, self.Owner))
+							return false;
+				}
+			}
+
+			return true;
+		}
+
+		public bool CanEnterCell(World world, Actor self, CPos cell, out int movementCost, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		{
+			if ((movementCost = MovementCostForCell(world, cell)) == int.MaxValue)
 				return false;
 
 			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
@@ -504,6 +563,11 @@ namespace OpenRA.Mods.Common.Traits
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			return Info.CanEnterCell(self.World, self, cell, ignoreActor, checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers);
+		}
+
+		public bool CanMoveFreely(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			return Info.CanMoveFreelyInto(self.World, self, cell, ignoreActor, checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers);
 		}
 
 		public void EnteringCell(Actor self)
