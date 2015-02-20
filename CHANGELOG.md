@@ -1,5 +1,47 @@
 # ZeroBrane Studio Changelog
 
+## Current master (Feb 19 2015)
+
+### Highlights
+  - Added directory mapping to the project tree (closes #223).
+  - Added `Run to Cursor` (closes #413).
+  - Added support to set/unset start file for a project (closes #411).
+  - Added opening/creating file from the command bar (#31).
+  - Fixed loading file with absolute name and line number (fixes #408).
+
+### Improvements
+  - Added directory mapping to the project tree (closes #223).
+  - Added `Run to Cursor` (closes #413).
+  - Added document method `GetTabText` (#166).
+  - Added showing love2d console when requested.
+  - Added support to set/unset start file for a project (closes #411).
+  - Added requesting attention for debugger even when the file is not activated.
+  - Added reporting of location in more cases when debugging is suspended.
+  - Added starting debugging even when the file is not opened in the IDE.
+  - Added switching project directory from the command bar (#31).
+  - Added trimming of trailing spaces in the directory name when switching projects.
+  - Added closing preview if the file failed to load in commandbar (#31).
+  - Added handling of `Ctrl/Cmd-Enter` in commandbar to force open file (#31).
+  - Added skipping loading files with empty and directory names.
+  - Added trimming of trailing spaces in the file name when loading a file.
+  - Added file selection in the project tree after saving a new file.
+  - Added opening/creating file from the command bar (#31).
+  - Refactored document modification tracking to remove `SetDocumentModified`.
+  - Refactored path normalization for project directory.
+  - Updated UpdateUI handling to fix multi-view refresh, as in DocumentMap (#352).
+  - Updated Outline to use editor tab text (instead of a file name).
+  - Updated message on failure to start debugging to add the file name.
+  - Updated `debugging suspended` message to put location in quotes.
+  - Updated line check in command bar to not trigger on Windows file names.
+  - updated glewgl api (glew 1.12.0)
+
+### Fixes
+  - Fixed filename used in the recovery message.
+  - Fixed Output/Console window to stay shown after failure to start debugging.
+  - Fixed an issue with search initiated from Output/Console panels (fixes #406).
+  - Fixed auto-complete for non-default `acandtip.strategy` values (fixed #409).
+  - Fixed loading file with absolute name and line number (fixes #408).
+
 ## v0.95 (Jan 30 2015)
 
 ### Highlights
