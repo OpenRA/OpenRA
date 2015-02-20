@@ -43,6 +43,7 @@ namespace OpenRA.Traits
 		public bool ShowCombatGeometry;
 		public bool ShowDebugGeometry;
 		public bool ShowTerrainGeometry;
+		public bool EnableAll;
 
 		public DeveloperMode(DeveloperModeInfo info)
 		{
@@ -65,6 +66,39 @@ namespace OpenRA.Traits
 
 			switch (order.OrderString)
 			{
+				case "DevAll":
+					{
+						if (!EnableAll)
+						{
+							AllTech = true;
+							FastCharge = true;
+							FastBuild = true;
+							DisableShroud = true;
+							self.Owner.Shroud.ExploreAll(self.World);
+							UnlimitedPower = true;
+							BuildAnywhere = true;
+
+							var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
+							self.Trait<PlayerResources>().GiveCash(amount);
+
+							EnableAll = true;
+						}
+						else
+						{
+							AllTech = false;
+							FastCharge = false;
+							FastBuild = false;
+							DisableShroud = false;
+							self.Owner.Shroud.ResetExploration();
+							UnlimitedPower = false;
+							BuildAnywhere = false;
+
+							EnableAll = false;
+						}
+
+						break;
+					}
+
 				case "DevEnableTech":
 					{
 						AllTech ^= true;
