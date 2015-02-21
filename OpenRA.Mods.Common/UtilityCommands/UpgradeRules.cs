@@ -1042,6 +1042,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150220)
+				{
+					if (depth == 2)
+					{
+						if (node.Key == "TurboBoost")
+						{
+							if (node.Value.Value == "true")
+								node.Value.Value = "50";
+
+							if (node.Value.Value == "false")
+								node.Value.Value = "0";
+						}
+					}
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
