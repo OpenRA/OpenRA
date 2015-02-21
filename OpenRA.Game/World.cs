@@ -22,7 +22,7 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public enum WorldType { Regular, Shellmap }
+	public enum WorldType { Regular, Shellmap, Editor }
 
 	public class World
 	{

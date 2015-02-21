@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MainMenuLogic
 	{
-		protected enum MenuType { Main, Singleplayer, Extras, None }
+		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, None }
 
 		protected MenuType menuType = MenuType.Main;
 		readonly Widget rootMenu;
@@ -122,6 +122,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
+			extrasMenu.Get<ButtonWidget>("MAP_EDITOR_BUTTON").OnClick = () => menuType = MenuType.MapEditor;
+
 			var assetBrowserButton = extrasMenu.GetOrNull<ButtonWidget>("ASSETBROWSER_BUTTON");
 			if (assetBrowserButton != null)
 				assetBrowserButton.OnClick = () =>
@@ -143,6 +145,43 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			extrasMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => menuType = MenuType.Main;
+
+			// Map editor menu
+			var mapEditorMenu = widget.Get("MAP_EDITOR_MENU");
+			mapEditorMenu.IsVisible = () => menuType == MenuType.MapEditor;
+
+			var onSelect = new Action<string>(uid =>
+			{
+				RemoveShellmapUI();
+				LoadMapIntoEditor(Game.ModData.MapCache[uid].Map);
+			});
+
+			var newMapButton = widget.Get<ButtonWidget>("NEW_MAP_BUTTON");
+			newMapButton.OnClick = () =>
+			{
+				menuType = MenuType.None;
+				Game.OpenWindow("NEW_MAP_BG", new WidgetArgs()
+				{
+					{ "onSelect", onSelect },
+					{ "onExit", () => menuType = MenuType.MapEditor }
+				});
+			};
+
+			var loadMapButton = widget.Get<ButtonWidget>("LOAD_MAP_BUTTON");
+			loadMapButton.OnClick = () =>
+			{
+				var initialMap = Game.ModData.MapCache.FirstOrDefault();
+				menuType = MenuType.None;
+				Game.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
+				{
+					{ "initialMap", initialMap != null ? initialMap.Uid : null },
+					{ "onExit", () => menuType = MenuType.MapEditor },
+					{ "onSelect", onSelect },
+					{ "filter", MapVisibility.Lobby | MapVisibility.Shellmap | MapVisibility.MissionSelector },
+				});
+			};
+
+			mapEditorMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => menuType = MenuType.Extras;
 
 			var newsBG = widget.GetOrNull("NEWS_BG");
 			if (newsBG != null)
@@ -187,6 +226,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "directConnectPort", port },
 				});
 			};
+		}
+
+		void LoadMapIntoEditor(Map map)
+		{
+			ConnectionLogic.Connect(System.Net.IPAddress.Loopback.ToString(),
+				Game.CreateLocalServer(map.Uid),
+				"",
+				() => { Game.LoadEditor(map.Uid); },
+				() => { Game.CloseServer(); menuType = MenuType.MapEditor; });
 		}
 
 		void SetNewsStatus(string message)
