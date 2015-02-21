@@ -898,6 +898,12 @@ do
   end
 end
 
+local function isemptyline(editor, line)
+  local text = editor:GetLine(line-1)
+  return not text:find("%S")
+  or (text:find("^%s*%-%-") ~= nil and text:find("^%s*%-%-%[=*%[") == nil)
+end
+
 debugger.terminate = function()
   if debugger.server then
     if debugger.pid then -- if there is PID, try local kill
@@ -914,6 +920,9 @@ debugger.trace = function()
   debugger.exec("step")
 end
 debugger.runto = function(editor, line)
+  -- check if the location is valid for a breakpoint
+  if isemptyline(editor, line+1) then return end
+
   local ed, ln = unpack(debugger.runtocursor or {})
   local same = ed and ln and ed:GetId() == editor:GetId() and ln == line
 
@@ -1346,6 +1355,8 @@ function DebuggerToggleBreakpoint(editor, line)
     editor:MarkerDelete(line, BREAKPOINT_MARKER)
     if debugger.server then debugger.breakpoint(filePath, line+1, false) end
   else
+    if isemptyline(editor, line+1) then return end
+
     editor:MarkerAdd(line, BREAKPOINT_MARKER)
     if debugger.server then debugger.breakpoint(filePath, line+1, true) end
   end
