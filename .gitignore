@@ -41,6 +41,7 @@ thirdparty/Mono.Nat.dll
 thirdparty/nuget.exe
 thirdparty/windows/lua51.dll
 thirdparty/windows/zlib1.dll
+thirdparty/windows/soft_oal.dll
 
 # backup files by various editors
 *~
