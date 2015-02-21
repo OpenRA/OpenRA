@@ -38,7 +38,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer) && self.World.FogObscures(self))
+			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer) || self.World.FogObscures(self))
 				yield break;
 
 			var b = self.Bounds;
