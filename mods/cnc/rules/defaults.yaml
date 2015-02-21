@@ -401,6 +401,7 @@
 		DestroyedSound: crumble.aud
 	RenderBuilding:
 	WithBuildingExplosion:
+		Delay: 1
 	EmitInfantryOnSell:
 		ActorTypes: e6,e1
 	GivesExperience:
@@ -432,7 +433,9 @@
 	RepairableBuilding:
 		RepairPercent: 40
 		RepairStep: 14
-	DeadBuildingState:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
 	GivesBuildableArea:
 	EngineerRepairable:
 	Sellable:
@@ -560,7 +563,6 @@
 		RelativeToTopLeft: yes
 	Health:
 		HP: 500
-	DeadBuildingState:
 	Armor:
 		Type: Wood
 	AutoTargetIgnore:

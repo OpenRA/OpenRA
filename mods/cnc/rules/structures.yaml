@@ -616,7 +616,7 @@ GUN:
 	WithMuzzleFlash:
 	AutoTarget:
 	-RenderBuilding:
-	-DeadBuildingState:
+	-WithDeathAnimation:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	DetectCloaked:

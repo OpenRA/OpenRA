@@ -581,7 +581,6 @@
 		Types: Tree
 	Health:
 		HP: 500
-	DeadBuildingState:
 	Armor:
 		Type: Wood
 	AutoTargetIgnore:

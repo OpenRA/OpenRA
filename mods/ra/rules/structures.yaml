@@ -903,12 +903,16 @@ FACT:
 	ProductionBar@Defense:
 		ProductionType: Defense
 		Color: 138,138,138
-	DeadBuildingState:
 	BaseProvider:
 		Range: 16
 	WithBuildingPlacedAnimation:
 	Power:
 		Amount: 0
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	WithBuildingExplosion:
+		Delay: 1
 
 PROC:
 	Inherits: ^Building
@@ -951,11 +955,15 @@ PROC:
 		Percentage: 50
 		Minimum: 500
 		SoundToVictim: credit1.aud
-	DeadBuildingState:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	Power:
 		Amount: -30
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	WithBuildingExplosion:
+		Delay: 1
 
 SILO:
 	Inherits: ^Building
@@ -1191,7 +1199,6 @@ POWR:
 	RevealsShroud:
 		Range: 4c0
 	Bib:
-	DeadBuildingState:
 	Power:
 		Amount: 100
 	InfiltrateForPowerOutage:
@@ -1200,6 +1207,11 @@ POWR:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	WithBuildingExplosion:
+		Delay: 1
 
 APWR:
 	Inherits: ^Building
@@ -1224,7 +1236,6 @@ APWR:
 	RevealsShroud:
 		Range: 4c0
 	Bib:
-	DeadBuildingState:
 	Power:
 		Amount: 200
 	InfiltrateForPowerOutage:
@@ -1233,6 +1244,11 @@ APWR:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	WithBuildingExplosion:
+		Delay: 1
 
 STEK:
 	Inherits: ^Building
