@@ -1,9 +1,0 @@
-#
-# This list is used by git-shortlog to fix a few botched name translations
-# in the git archive, either because the author's full name was messed up
-# and/or not always written the same way, making contributions from the
-# same person appearing not to be so.
-#
-
-Christoph Kubisch <pixeljetstream@luxinia.de> <crazybutcher@d4a214e2-3791-4833-b182-d171351aa34e>
-Eike Decker <zet23t@googlemail.com> <zet23t@d4a214e2-3791-4833-b182-d171351aa34e>
