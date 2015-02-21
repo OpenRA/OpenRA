@@ -89,12 +89,6 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("The actor position in cell coordinates.")]
 		public CPos Location { get { return Self.Location; } }
 
-		[Desc("The x value of the actor position.")]
-		public int X { get { return Self.Location.X; } }
-
-		[Desc("The y value of the actor position.")]
-		public int Y { get { return Self.Location.Y; } }
-
 		[Desc("The actor position in world coordinates.")]
 		public WPos CenterPosition { get { return Self.CenterPosition; } }
 

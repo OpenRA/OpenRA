@@ -57,9 +57,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[ScriptActorPropertyActivity]
 		[Desc("Move to and enter a transport.")]
-		public void GetInTransport(Actor transport)
+		public void EnterTransport(Actor transport)
 		{
-				Self.QueueActivity(new EnterTransport(Self, transport, 1, true));
+			Self.QueueActivity(new EnterTransport(Self, transport, 1, true));
 		}
 	}
 }
