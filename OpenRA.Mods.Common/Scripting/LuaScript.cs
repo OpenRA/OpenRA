@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void WorldLoaded(World world, WorldRenderer worldRenderer)
 		{
+			if (world.Type == WorldType.Editor)
+				return;
+
 			var scripts = info.Scripts ?? new string[0];
 			context = new ScriptContext(world, worldRenderer, scripts);
 			context.WorldLoaded();
@@ -43,7 +46,8 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void Tick(Actor self)
 		{
-			context.Tick(self);
+			if (self.World.Type != WorldType.Editor)
+				context.Tick(self);
 		}
 
 		public void Dispose()

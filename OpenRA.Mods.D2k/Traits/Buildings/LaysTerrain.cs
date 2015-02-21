@@ -47,6 +47,9 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void AddedToWorld(Actor self)
 		{
+			if (self.World.Type == WorldType.Editor)
+				return;
+
 			var map = self.World.Map;
 
 			if (template.PickAny)

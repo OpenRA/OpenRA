@@ -1,5 +1,20 @@
 Container@OBSERVER_WIDGETS:
 	Children:
+		SupportPowerTimer@SUPPORT_POWER_TIMER:
+			X: 80
+			Y: 10
+			Order: Descending
+		WorldInteractionController@INTERACTION_CONTROLLER:
+			X: 0
+			Y: 0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+		ViewportController:
+			X: 0
+			Y: 0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			TooltipContainer: TOOLTIP_CONTAINER
 		Image@SIDEBAR_BACKGROUND_TOP:
 			X: WINDOW_RIGHT - 250
 			Y: 10

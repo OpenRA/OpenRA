@@ -58,6 +58,9 @@ namespace OpenRA.Mods.D2k.Traits
 			if (!self.World.LobbyInfo.GlobalSettings.Creeps)
 				return;
 
+			if (self.World.Type == WorldType.Editor)
+				return;
+
 			if (!spawnPointActors.Value.Any())
 				return;
 

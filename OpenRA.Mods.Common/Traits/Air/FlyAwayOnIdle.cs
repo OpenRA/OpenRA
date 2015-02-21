@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public void TickIdle(Actor self)
 		{
+			if (self.World.Type == WorldType.Editor)
+				return;
+
 			self.QueueActivity(new FlyOffMap(self));
 			self.QueueActivity(new RemoveSelf());
 		}

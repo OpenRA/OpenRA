@@ -33,7 +33,8 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				var initDict = actorReference.Value.InitDict;
-				initDict.Add(new SkipMakeAnimsInit());
+				if (!initDict.Contains<SkipMakeAnimsInit>())
+					initDict.Add(new SkipMakeAnimsInit());
 				var actor = world.CreateActor(actorReference.Value.Type, initDict);
 				Actors[actorReference.Key] = actor;
 				LastMapActorID = actor.ActorID;

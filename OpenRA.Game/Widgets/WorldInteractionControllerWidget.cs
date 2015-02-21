@@ -288,6 +288,9 @@ namespace OpenRA.Widgets
 
 		bool TogglePixelDouble()
 		{
+			if (World.Type == WorldType.Editor)
+				return false;
+
 			Game.Settings.Graphics.PixelDouble ^= true;
 			worldRenderer.Viewport.Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 			return true;

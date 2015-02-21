@@ -53,6 +53,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void TickIdle(Actor self)
 		{
+			if (self.World.Type == WorldType.Editor)
+				return;
+
 			if (--countdown > 0)
 				return;
 

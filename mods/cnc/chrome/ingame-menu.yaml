@@ -33,12 +33,24 @@ Container@INGAME_MENU:
 					Width: 140
 					Height: 35
 					Text: Abort Mission
+				Button@EXIT_EDITOR:
+					X: 0
+					Y: 0
+					Width: 140
+					Height: 35
+					Text: Exit Map Editor
 				Button@SURRENDER:
 					X: 150
 					Y: 0
 					Width: 140
 					Height: 35
 					Text: Surrender
+				Button@SAVE_MAP:
+					X: 150
+					Y: 0
+					Width: 140
+					Height: 35
+					Text: Save Map
 				Button@MUSIC:
 					X: 300
 					Y: 0

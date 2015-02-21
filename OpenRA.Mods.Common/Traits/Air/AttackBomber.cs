@@ -46,6 +46,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(Actor self)
 		{
+			if (self.World.Type == WorldType.Editor)
+				return;
+
 			var cp = self.CenterPosition;
 			var bombTarget = Target.FromPos(cp - new WVec(0, 0, cp.Z));
 			var wasInAttackRange = inAttackRange;

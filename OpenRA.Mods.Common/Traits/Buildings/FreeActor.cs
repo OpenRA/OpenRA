@@ -41,6 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (init.Contains<FreeActorInit>() && !init.Get<FreeActorInit>().ActorValue)
 				return;
 
+			if (init.Self.World.Type == WorldType.Editor)
+				return;
+
 			init.Self.World.AddFrameEndTask(w =>
 			{
 				var a = w.CreateActor(info.Actor, new TypeDictionary

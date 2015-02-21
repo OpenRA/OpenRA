@@ -66,14 +66,18 @@ namespace OpenRA.Mods.Common.Traits
 			content = new CellLayer<CellContents>(w.Map);
 			render = new CellLayer<CellContents>(w.Map);
 			dirty = new List<CPos>();
+			Update();
+		}
 
-			var resources = w.WorldActor.TraitsImplementing<ResourceType>()
+		public void Update()
+		{
+			var resources = world.WorldActor.TraitsImplementing<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 
-			foreach (var cell in w.Map.Cells)
+			foreach (var cell in world.Map.Cells)
 			{
 				ResourceType t;
-				if (!resources.TryGetValue(w.Map.MapResources.Value[cell].Type, out t))
+				if (!resources.TryGetValue(world.Map.MapResources.Value[cell].Type, out t))
 					continue;
 
 				if (!AllowResourceAt(t, cell))
@@ -83,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Set initial density based on the number of neighboring resources
-			foreach (var cell in w.Map.Cells)
+			foreach (var cell in world.Map.Cells)
 			{
 				var type = content[cell].Type;
 				if (type != null)
@@ -236,6 +240,44 @@ namespace OpenRA.Mods.Common.Traits
 				return 0;
 
 			return content[cell].Type.Info.MaxDensity;
+		}
+
+		IEnumerable<CPos> NonEmptyNeighbours(CPos cell)
+		{
+			var neighbours = CVec.Directions.Select(d => d + cell);
+			foreach (var neighbour in neighbours)
+			{
+				if (content[neighbour].Type != null)
+					yield return neighbour;
+			}
+		}
+
+		IEnumerable<CPos> ExpandNeighboursAround(CPos cell)
+		{
+			var patch = NonEmptyNeighbours(cell);
+			var count = 0;
+
+			do
+			{
+				count = patch.Count();
+				patch = patch.SelectMany(c => NonEmptyNeighbours(c)).Distinct();
+			} while (patch.Count() != count);
+
+			return patch;
+		}
+
+		public int GetValueFromPatchAround(CPos cell)
+		{
+			var sum = 0;
+			var neighbours = ExpandNeighboursAround(cell);
+
+			foreach (var neighbour in neighbours)
+			{
+				var resource = content[neighbour];
+				sum += resource.Density * resource.Type.Info.ValuePerUnit;
+			}
+
+			return sum;
 		}
 
 		public struct CellContents
