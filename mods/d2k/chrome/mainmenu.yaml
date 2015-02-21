@@ -127,19 +127,60 @@ Container@MAINMENU:
 							Height: 30
 							Text: Music
 							Font: Bold
-						Button@ASSETBROWSER_BUTTON:
+						Button@MAP_EDITOR_BUTTON:
 							X: PARENT_RIGHT/2-WIDTH/2
 							Y: 140
+							Width: 140
+							Height: 30
+							Text: Map Editor
+							Font: Bold
+						Button@ASSETBROWSER_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 180
 							Width: 140
 							Height: 30
 							Text: Asset Browser
 							Font: Bold
 						Button@CREDITS_BUTTON:
 							X: PARENT_RIGHT/2-WIDTH/2
-							Y: 180
+							Y: 220
 							Width: 140
 							Height: 30
 							Text: Credits
+							Font: Bold
+						Button@BACK_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Key: escape
+							Y: 260
+							Width: 140
+							Height: 30
+							Text: Back
+							Font: Bold
+				Background@MAP_EDITOR_MENU:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Children:
+						Label@MAP_EDITOR_MENU_TITLE:
+							X: 0
+							Y: 20
+							Width: 200
+							Height: 30
+							Text: Map Editor
+							Align: Center
+							Font: Bold
+						Button@NEW_MAP_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 60
+							Width: 140
+							Height: 30
+							Text: New Map
+							Font: Bold
+						Button@LOAD_MAP_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 100
+							Width: 140
+							Height: 30
+							Text: Load Map
 							Font: Bold
 						Button@BACK_BUTTON:
 							X: PARENT_RIGHT/2-WIDTH/2

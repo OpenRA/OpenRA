@@ -47,6 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{ "onExit", () => { } },
 						{ "onSelect", (Action<string>)(uid => preview = Game.ModData.MapCache[uid]) },
 						{ "filter", MapVisibility.Lobby },
+						{ "onStart", () => { } }
 					});
 				};
 
