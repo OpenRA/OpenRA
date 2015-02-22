@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Interval in ticks between scanning for enemies.")]
 		public readonly int ScanInterval = 25;
 
-		[Desc("Minimal interval in ticks between notifications.")]
+		[Desc("Minimal ticks in-between notifications.")]
 		public readonly int NotificationInterval = 750;
 
 		public object Create(ActorInitializer init) { return new EnemyWatcher(init.Self, this); }
@@ -89,7 +89,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (playedNotifications.Contains(actor.Trait.Info.Notification))
 					continue;
 
-				Announce(self, actor);
+				if (self.Owner == self.World.RenderPlayer)
+					Announce(self, actor);
 			}
 
 			if (announcedAny)
@@ -101,8 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 		void Announce(Actor self, TraitPair<AnnounceOnSeen> announce)
 		{
 			// Audio notification
-			if (self.World.LocalPlayer != null)
-				Sound.PlayNotification(self.World.Map.Rules, self.World.LocalPlayer, "Speech", announce.Trait.Info.Notification, self.Owner.Country.Race);
+			Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", announce.Trait.Info.Notification, self.Owner.Country.Race);
 
 			// Radar notificaion
 			if (announce.Trait.Info.PingRadar && radarPings.Value != null)
