@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int WaitSpread = 2;
 
-		public readonly int InitialFacing = 128;
+		public readonly int InitialFacing = 0;
 
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 255;
