@@ -80,14 +80,7 @@ namespace OpenRA.Mods.Common.Commands
 				case "instantcharge": IssueDevCommand(world, "DevFastCharge"); break;
 
 				case "all":
-					IssueDevCommand(world, "DevShroudDisable");
-					IssueDevCommand(world, "DevFastBuild");
-					IssueDevCommand(world, "DevBuildAnywhere");
-					IssueDevCommand(world, "DevUnlimitedPower");
-					IssueDevCommand(world, "DevEnableTech");
-					IssueDevCommand(world, "DevFastCharge");
-					IssueDevCommand(world, "DevGiveCash");
-					IssueDevCommand(world, "DevLevelUp");
+					IssueDevCommand(world, "DevAll");
 					break;
 
 				case "crash":
