@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int ScanInterval = 25;
 
 		[Desc("Minimal interval in ticks between notifications.")]
-		public readonly int NotificationInterval = 200;
+		public readonly int NotificationInterval = 750;
 
 		public object Create(ActorInitializer init) { return new EnemyWatcher(init.Self, this); }
 	}
