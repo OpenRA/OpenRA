@@ -93,7 +93,9 @@ namespace OpenRA.Mods.D2k.Activities
 		void NotifyPlayer(Player player, WPos location)
 		{
 			Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallow.Info.WormAttackNotification, player.Country.Race);
-			radarPings.Add(() => true, location, Color.Red, 50);
+
+			if (player == player.World.RenderPlayer)
+				radarPings.Add(() => true, location, Color.Red, 50);
 		}
 
 		public override Activity Tick(Actor self)
