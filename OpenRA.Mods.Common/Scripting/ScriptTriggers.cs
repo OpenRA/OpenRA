@@ -21,7 +21,8 @@ namespace OpenRA.Mods.Common.Scripting
 	public enum Trigger
 	{
 		OnIdle, OnDamaged, OnKilled, OnProduction, OnOtherProduction, OnPlayerWon, OnPlayerLost,
-		OnObjectiveAdded, OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnInfiltrated, OnAddedToWorld, OnRemovedFromWorld
+		OnObjectiveAdded, OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnInfiltrated,
+		OnAddedToWorld, OnRemovedFromWorld, OnDiscovered, OnPlayerDiscovered
 	}
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.Common.Scripting
 	}
 
 	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyOtherProduction,
-		INotifyObjectivesUpdated, INotifyCapture, INotifyInfiltrated, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable
+		INotifyObjectivesUpdated, INotifyCapture, INotifyInfiltrated, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable, INotifyDiscovered
 	{
 		readonly World world;
 
@@ -322,6 +323,40 @@ namespace OpenRA.Mods.Common.Scripting
 
 			// Run any internally bound callbacks
 			OnOtherProducedInternal(producee, produced);
+		}
+
+		public void OnDiscovered(Actor self, Player discoverer, bool playNotification)
+		{
+			foreach (var f in Triggers[Trigger.OnDiscovered])
+			{
+				try
+				{
+					using (var a = self.ToLuaValue(f.Second))
+					using (var b = discoverer.ToLuaValue(f.Second))
+						f.First.Call(a, b).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
+
+			foreach (var f in Triggers[Trigger.OnPlayerDiscovered])
+			{
+				try
+				{
+					using (var a = self.Owner.ToLuaValue(f.Second))
+					using (var b = discoverer.ToLuaValue(f.Second))
+					using (var c = self.ToLuaValue(f.Second))
+						f.First.Call(a, b, c).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Second.FatalError(ex.Message);
+					return;
+				}
+			}
 		}
 
 		public void Clear(Trigger trigger)
