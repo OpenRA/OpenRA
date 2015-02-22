@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] RepairBuildings = { "fix" };
 		[ActorReference]
 		public readonly string[] RearmBuildings = { "hpad", "afld" };
-		public readonly int InitialFacing = 128;
+		public readonly int InitialFacing = 0;
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;
 		public readonly string[] LandableTerrainTypes = { };
