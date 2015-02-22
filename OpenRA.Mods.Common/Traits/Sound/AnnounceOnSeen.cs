@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System;
+using System.Drawing;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -18,18 +20,35 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should there be a radar ping on enemies' radar at the actor's location when they see him")]
 		public readonly bool PingRadar = false;
 
-		public readonly string Notification = "EnemyUnitSighted";
+		public readonly string Notification = null;
 
-		public object Create(ActorInitializer init) { return new AnnounceOnSeen(this); }
+		public object Create(ActorInitializer init) { return new AnnounceOnSeen(init.Self, this); }
 	}
 
-	public class AnnounceOnSeen
+	public class AnnounceOnSeen : INotifyDiscovered
 	{
 		public readonly AnnounceOnSeenInfo Info;
 
-		public AnnounceOnSeen(AnnounceOnSeenInfo info)
+		readonly Lazy<RadarPings> radarPings;
+
+		public AnnounceOnSeen(Actor self, AnnounceOnSeenInfo info)
 		{
 			Info = info;
+			radarPings = Exts.Lazy(() => self.World.WorldActor.Trait<RadarPings>());
+		}
+
+		public void OnDiscovered(Actor self, Player discoverer, bool playNotification)
+		{
+			if (!playNotification || discoverer != self.World.RenderPlayer)
+				return;
+
+			// Audio notification
+			if (discoverer != null && !string.IsNullOrEmpty(Info.Notification))
+				Sound.PlayNotification(self.World.Map.Rules, discoverer, "Speech", Info.Notification, discoverer.Country.Race);
+
+			// Radar notificaion
+			if (Info.PingRadar && radarPings.Value != null)
+				radarPings.Value.Add(() => true, self.CenterPosition, Color.Red, 50);
 		}
 	}
 }
