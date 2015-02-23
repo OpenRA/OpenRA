@@ -94,7 +94,7 @@ Container@SERVER_LOBBY:
 					Y: 285
 					Width: PARENT_RIGHT - 30
 					Height: PARENT_BOTTOM - 324
-					ItemSpacing: 1
+					ItemSpacing: 2
 					Children:
 						Container@CHAT_TEMPLATE:
 							Width: PARENT_RIGHT-27
