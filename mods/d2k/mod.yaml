@@ -46,6 +46,11 @@ Sequences:
 	./mods/d2k/sequences/structures.yaml
 	./mods/d2k/sequences/misc.yaml
 
+TileSets:
+	./mods/d2k/tilesets/arrakis.yaml
+
+TileSize: 32,32
+
 Cursors:
 	./mods/d2k/cursors.yaml
 
@@ -100,18 +105,13 @@ Weapons:
 	./mods/d2k/weapons.yaml
 
 Voices:
-	./mods/d2k/voices.yaml
+	./mods/d2k/audio/voices.yaml
 
 Notifications:
-	./mods/d2k/notifications.yaml
-
-TileSets:
-	./mods/d2k/tilesets/arrakis.yaml
-
-TileSize: 32,32
+	./mods/d2k/audio/notifications.yaml
 
 Music:
-	./mods/d2k/music.yaml
+	./mods/d2k/audio/music.yaml
 
 Translations:
 	./mods/d2k/languages/english.yaml
