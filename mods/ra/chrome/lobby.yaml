@@ -96,7 +96,7 @@ Background@SERVER_LOBBY:
 			Y: PARENT_BOTTOM - HEIGHT - 52
 			Width: 818
 			Height: 210
-			ItemSpacing: 1
+			ItemSpacing: 2
 			Children:
 				Container@CHAT_TEMPLATE:
 					Width: PARENT_RIGHT-27
