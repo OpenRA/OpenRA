@@ -271,6 +271,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (stats == null) return template;
 			template.Get<LabelWidget>("KILLS").GetText = () => (stats.UnitsKilled + stats.BuildingsKilled).ToString();
 			template.Get<LabelWidget>("DEATHS").GetText = () => (stats.UnitsDead + stats.BuildingsDead).ToString();
+			template.Get<LabelWidget>("KD_RATIO").GetText = () => KillDeathRatio(stats.UnitsKilled + stats.BuildingsKilled, stats.UnitsDead + stats.BuildingsDead);
 			template.Get<LabelWidget>("ACTIONS_MIN").GetText = () => AverageOrdersPerMinute(stats.OrderCount);
 
 			return template;
@@ -299,6 +300,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string AverageEarnedPerMinute(double earned)
 		{
 			return "$" + (world.WorldTick == 0 ? 0 : earned / (world.WorldTick / 1500.0)).ToString("F2");
+		}
+
+		string KillDeathRatio(int killed, int dead)
+		{
+			var kdr = (float)killed / Math.Max(1.0, dead);
+			return kdr.ToString("F2");
 		}
 
 		static Color GetPowerColor(PowerState state)
