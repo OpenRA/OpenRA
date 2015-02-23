@@ -100,6 +100,7 @@ Bazooka:
 		RangeLimit: 50
 		CloseEnough: 256
 		LockOnProbability: 80
+		TurboBoost: 40
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 35
@@ -413,6 +414,7 @@ HoverMissile:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
+		TurboBoost: 20
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30

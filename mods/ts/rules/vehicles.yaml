@@ -168,7 +168,7 @@ HVR:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
- 		Prerequisites: ~gaweap
+		Prerequisites: ~gaweap
 	Mobile:
 		Speed: 56
 		ROT: 5
