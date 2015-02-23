@@ -28,6 +28,8 @@ namespace OpenRA
 
 		public static void ReadBytes(this Stream s, byte[] buffer, int offset, int count)
 		{
+			if (count < 0)
+				throw new ArgumentOutOfRangeException("count", "Non-negative number required.");
 			while (count > 0)
 			{
 				int bytesRead;
