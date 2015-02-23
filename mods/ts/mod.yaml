@@ -87,6 +87,15 @@ Sequences:
 VoxelSequences:
 	./mods/ts/sequences/voxels.yaml
 
+TileSets:
+	./mods/ts/tilesets/temperat.yaml
+
+TileSize: 48,24
+TileShape: Diamond
+SubCells:
+	Offsets: 0,0,0, -256,128,0, 0,-128,0, 256,128,0
+	DefaultIndex: 2
+
 Cursors:
 	./mods/ts/cursors.yaml
 
@@ -142,22 +151,13 @@ Weapons:
 	./mods/ts/weapons.yaml
 
 Voices:
-	./mods/ts/voices.yaml
+	./mods/ts/audio/voices.yaml
 
 Notifications:
-	./mods/ts/notifications.yaml
-
-TileSets:
-	./mods/ts/tilesets/temperat.yaml
-
-TileSize: 48,24
-TileShape: Diamond
-SubCells:
-	Offsets: 0,0,0, -256,128,0, 0,-128,0, 256,128,0
-	DefaultIndex: 2
+	./mods/ts/audio/notifications.yaml
 
 Music:
-	./mods/ts/music.yaml
+	./mods/ts/audio/music.yaml
 
 Translations:
 	./mods/ts/languages/english.yaml
