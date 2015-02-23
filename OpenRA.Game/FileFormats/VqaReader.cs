@@ -315,7 +315,7 @@ namespace OpenRA.FileFormats
 					// Full frame-modifier
 					case "CBFZ":
 						var decodeMode = s.Peek() == 0;
-						s.Read(fileBuffer, 0, subchunkLength);
+						s.ReadBytes(fileBuffer, 0, subchunkLength);
 						Array.Clear(cbf, 0, cbf.Length);
 						Array.Clear(cbfBuffer, 0, cbfBuffer.Length);
 						var decodeCount = 0;
@@ -386,7 +386,7 @@ namespace OpenRA.FileFormats
 						return;
 					case "VPRZ":
 						Array.Clear(origData, 0, origData.Length);
-						s.Read(fileBuffer, 0, subchunkLength);
+						s.ReadBytes(fileBuffer, 0, subchunkLength);
 						if (fileBuffer[0] != 0)
 							vtprSize = Format80.DecodeInto(fileBuffer, origData);
 						else
@@ -394,7 +394,7 @@ namespace OpenRA.FileFormats
 						return;
 					case "VPTR":
 						Array.Clear(origData, 0, origData.Length);
-						s.Read(origData, 0, subchunkLength);
+						s.ReadBytes(origData, 0, subchunkLength);
 						vtprSize = subchunkLength;
 						return;
 					default:
