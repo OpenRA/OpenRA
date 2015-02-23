@@ -164,6 +164,8 @@ return {
           :gsub("%b()","")
           :gsub("%b{}","")
           :gsub("%b[]",".0")
+          -- replace concatenation with addition to avoid misidentifying types
+          :gsub("%.%.+","+")
           -- remove comments; they may be in strings, but that's okay here
           :gsub("%-%-.*",""))
         if (typ and (typ:match(",") or typ:match("%sor%s") or typ:match("%sand%s"))) then

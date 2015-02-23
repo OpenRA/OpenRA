@@ -52,6 +52,15 @@ editor:AddText([[
 ok(limit(10000, function() EditorAutoComplete(editor) end),
   "Auto-complete doesn't loop for classes that reference '...'.")
 
+editor:SetText('')
+editor:AddText([[
+  buf = str
+  str = buf..str
+  buf = buf..]])
+
+ok(limit(10000, function() EditorAutoComplete(editor) end),
+  "Auto-complete doesn't loop for string concatenations with self-reference.")
+
 -- create a valuetype self-reference
 -- this is to test "s = Scan(); s:" fragment
 ide.apis.lua.baselib.io.valuetype = "io"
