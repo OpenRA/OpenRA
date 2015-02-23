@@ -60,8 +60,6 @@ Packages:
 	~e01vox02.mix:CRC32
 	~ecache01.mix:CRC32
 
-PackageContents:
-
 Rules:
 	./mods/ts/rules/misc.yaml
 	./mods/ts/rules/ai.yaml
