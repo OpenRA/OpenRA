@@ -46,13 +46,13 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Reverse(Actor self, Activity activity)
+		public void Reverse(Actor self, Activity activity, bool queued = true)
 		{
 			renderBuilding.PlayCustomAnimBackwards(self, info.Sequence, () =>
 			{
 				// avoids visual glitches as we wait for the actor to get destroyed
 				renderBuilding.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
-				self.QueueActivity(activity);
+				self.QueueActivity(queued, activity);
 			});
 		}
 	}

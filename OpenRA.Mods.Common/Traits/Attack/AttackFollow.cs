@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
 
-	public class AttackFollow : AttackBase, ITick, ISync
+	public class AttackFollow : AttackBase, ITick, INotifyOwnerChanged, ISync
 	{
 		public Target Target { get; protected set; }
 
@@ -44,6 +44,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (order.OrderString == "Stop")
 				Target = Target.Invalid;
+		}
+
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			Target = Target.Invalid;
 		}
 
 		class AttackActivity : Activity
