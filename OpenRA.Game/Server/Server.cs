@@ -428,7 +428,9 @@ namespace OpenRA.Server
 				for (;;)
 				{
 					var so = ServerOrder.Deserialize(br);
-					if (so == null) return;
+					if (so == null || conn == null || conn.Socket == null)
+						return;
+
 					InterpretServerOrder(conn, so);
 				}
 			}
