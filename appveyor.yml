@@ -24,7 +24,11 @@ before_deploy:
   - 7z e NsProcess.zip -o%NSIS_ROOT% -y
   - appveyor DownloadFile "https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md" -FileName Changelog.md
   - '%NSIS_ROOT%\makensis /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\windows" /V3 packaging/windows/OpenRA.nsi'
-  - appveyor PushArtifact packaging/windows/OpenRA.Setup.exe -FileName OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe
+  - move packaging/windows/OpenRA.Setup.exe %APPVEYOR_BUILD_FOLDER%/OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe
+
+artifacts:
+  - name: Installer
+    path: 'OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe'
 
 deploy:
   - provider: GitHub
