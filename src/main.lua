@@ -115,6 +115,7 @@ ide = {
       strategy = 2,
       width = 60,
       maxlength = 450,
+      warning = true,
     },
     arg = {}, -- command line arguments
     api = {}, -- additional APIs to load

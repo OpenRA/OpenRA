@@ -226,8 +226,19 @@ local function resolveAssign(editor,tx)
   local c
   if (assigns) then
     -- find assign
-    local change = true
+    local change, n, stopat = true, 0, os.clock() + 0.2
     while (change) do
+      -- abort the check if the auto-complete is taking too long
+      if n > 50 and os.clock() > stopat then
+        if ide.config.acandtip.warning then
+          DisplayOutputLn("Warning: Auto-complete was aborted after taking too long to complete."
+            .. " Please report this warning along with the text you were typing to support@zerobrane.com.")
+        end
+        break
+      else
+        n = n + 1
+      end
+
       local classname = nil
       c = ""
       change = false
