@@ -423,7 +423,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "ProductionTypeInfantryKey", "Infantry Tab" },
 					{ "ProductionTypeVehicleKey", "Vehicle Tab" },
 					{ "ProductionTypeAircraftKey", "Aircraft Tab" },
-					{ "ProductionTypeNavalKey", "Naval Tab" }
+					{ "ProductionTypeNavalKey", "Naval Tab" },
+					{ "ProductionTypeTankKey", "Tank Tab" },
+					{ "ProductionTypeMerchantKey", "Starport Tab" }
 				};
 
 				for (var i = 1; i <= 24; i++)

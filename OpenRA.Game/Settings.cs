@@ -209,6 +209,8 @@ namespace OpenRA
 		public Hotkey ProductionTypeVehicleKey = new Hotkey(Keycode.Y, Modifiers.None);
 		public Hotkey ProductionTypeAircraftKey = new Hotkey(Keycode.U, Modifiers.None);
 		public Hotkey ProductionTypeNavalKey = new Hotkey(Keycode.I, Modifiers.None);
+		public Hotkey ProductionTypeTankKey = new Hotkey(Keycode.I, Modifiers.None);
+		public Hotkey ProductionTypeMerchantKey = new Hotkey(Keycode.O, Modifiers.None);
 
 		public Hotkey GetProductionHotkey(int index)
 		{
