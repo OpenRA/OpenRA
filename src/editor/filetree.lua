@@ -268,7 +268,7 @@ local function treeSetConnectorsAndIcons(tree)
 
   local empty = ""
   local function renameItem(itemsrc, target)
-    local isdir = tree:GetItemImage(itemsrc) == image.DIRECTORY
+    local isdir = tree:IsDirectory(itemsrc)
     local isnew = tree:GetItemText(itemsrc) == empty
     local source = tree:GetItemFullName(itemsrc)
     local fn = wx.wxFileName(target)
@@ -347,7 +347,7 @@ local function treeSetConnectorsAndIcons(tree)
       return
     end
 
-    local isdir = tree:GetItemImage(item_id) == image.DIRECTORY
+    local isdir = tree:IsDirectory(item_id)
     local source = tree:GetItemFullName(item_id)
 
     if isdir and FileDirHasContent(source..pathsep) then return false end
@@ -397,7 +397,7 @@ local function treeSetConnectorsAndIcons(tree)
 
   -- handle context menu
   local function addItem(item_id, name, img)
-    local isdir = tree:GetItemImage(item_id) == image.DIRECTORY
+    local isdir = tree:IsDirectory(item_id)
     local parent = isdir and item_id or tree:GetItemParent(item_id)
     if isdir then tree:Expand(item_id) end -- expand to populate if needed
 
@@ -610,7 +610,7 @@ local function treeSetConnectorsAndIcons(tree)
       end
 
       if item_id and bit.band(flags, mask) > 0 then
-        if tree:GetItemImage(item_id) == image.DIRECTORY then
+        if tree:IsDirectory(item_id) then
           tree:Toggle(item_id)
           tree:SelectItem(item_id)
         else
