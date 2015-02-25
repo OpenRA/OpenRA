@@ -220,6 +220,7 @@ return {
   ["Replaced"] = "Anstataŭita", -- src\editor\findreplace.lua
   ["Replacing"] = "Anstataŭanta", -- src\editor\findreplace.lua
   ["Reset to default layout"] = "Rekomenciĝi al defaŭltan aranĝon", -- src\editor\menu_view.lua
+  ["Run As Scratchpad"] = "Plenumi kiel malnetdosieron", -- src\editor\menu_project.lua
   ["Run as Scratchpad"] = "Plenumi kiel malnetdosieron", -- src\editor\menu_project.lua
   ["S&top Debugging"] = "&Fini sencimigo", -- src\editor\menu_project.lua
   ["S&top Process"] = "&Fini procezon", -- src\editor\menu_project.lua
@@ -238,8 +239,8 @@ return {
   ["Sel: %d/%d"] = "Ele: %d/%d", -- src\editor\editor.lua
   ["Select &All"] = "Elekti &ĉion", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
   ["Select all text in the editor"] = "Elekti la tekston en la redaktilo", -- src\editor\menu_edit.lua
-  ["Select and Find Next"] = "Elekti kaj pluserĉi", -- src\editor\menu_search.lua
-  ["Select and Find Previous"] = "Elekti kaj traserĉi antaŭantan", -- src\editor\menu_search.lua
+  ["Select And Find Next"] = "Elekti kaj pluserĉi", -- src\editor\menu_search.lua
+  ["Select And Find Previous"] = "Elekti kaj traserĉi antaŭantan", -- src\editor\menu_search.lua
   ["Select the word under cursor and find its next occurrence"] = "Elekti la vorton sub la tajpmontrilo, kaj pluserĉi", -- src\editor\menu_search.lua
   ["Select the word under cursor and find its previous occurrence"] = "Elekti la vorton sub la tajpmontrilo, kaj traserĉi antaŭantan", -- src\editor\menu_search.lua
   ["Set From Current File"] = "Precizigi per la kuranta dosiero", -- src\editor\menu_project.lua

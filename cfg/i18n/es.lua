@@ -220,6 +220,7 @@ return {
   ["Replaced"] = nil, -- src\editor\findreplace.lua
   ["Replacing"] = nil, -- src\editor\findreplace.lua
   ["Reset to default layout"] = "Restablecer el diseño por defecto", -- src\editor\menu_view.lua
+  ["Run As Scratchpad"] = "Ejecutar como borrador", -- src\editor\menu_project.lua
   ["Run as Scratchpad"] = "Ejecutar como borrador", -- src\editor\menu_project.lua
   ["S&top Debugging"] = "Parar depuración", -- src\editor\menu_project.lua
   ["S&top Process"] = "Parar proceso", -- src\editor\menu_project.lua
@@ -238,8 +239,8 @@ return {
   ["Sel: %d/%d"] = nil, -- src\editor\editor.lua
   ["Select &All"] = "Seleccionar todo", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
   ["Select all text in the editor"] = "Seleccionar todo el texto en el editor", -- src\editor\menu_edit.lua
-  ["Select and Find Next"] = nil, -- src\editor\menu_search.lua
-  ["Select and Find Previous"] = nil, -- src\editor\menu_search.lua
+  ["Select And Find Next"] = nil, -- src\editor\menu_search.lua
+  ["Select And Find Previous"] = nil, -- src\editor\menu_search.lua
   ["Select the word under cursor and find its next occurrence"] = nil, -- src\editor\menu_search.lua
   ["Select the word under cursor and find its previous occurrence"] = nil, -- src\editor\menu_search.lua
   ["Set From Current File"] = nil, -- src\editor\menu_project.lua

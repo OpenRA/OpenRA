@@ -219,6 +219,7 @@ return {
   ["Replaced"] = "Ersetzt:", -- src\editor\findreplace.lua
   ["Replacing"] = "Am Ersetzen", -- src\editor\findreplace.lua
   ["Reset to default layout"] = "Standard-Layout wiederherstellen", -- src\editor\menu_view.lua
+  ["Run As Scratchpad"] = "Als &Entwurf starten", -- src\editor\menu_project.lua
   ["Run as Scratchpad"] = "Als &Entwurf starten", -- src\editor\menu_project.lua
   ["S&top Debugging"] = "Debugging a&nhalten", -- src\editor\menu_project.lua
   ["S&top Process"] = "Prozeß &anhalten", -- src\editor\menu_project.lua
@@ -237,8 +238,8 @@ return {
   ["Sel: %d/%d"] = "Ausgew.: %d/%d", -- src\editor\editor.lua
   ["Select &All"] = "&Alles Auswählen", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
   ["Select all text in the editor"] = "Kompletten Text im Editor auswählen", -- src\editor\menu_edit.lua
-  ["Select and Find Next"] = "Auswählen und nächstes finden", -- src\editor\menu_search.lua
-  ["Select and Find Previous"] = "Auswählen und vorheriges finden", -- src\editor\menu_search.lua
+  ["Select And Find Next"] = "Auswählen und nächstes finden", -- src\editor\menu_search.lua
+  ["Select And Find Previous"] = "Auswählen und vorheriges finden", -- src\editor\menu_search.lua
   ["Select the word under cursor and find its next occurrence"] = "Wort unter dem Cursor auswählen und nächstes Auftauchen finden", -- src\editor\menu_search.lua
   ["Select the word under cursor and find its previous occurrence"] = "Wort unter dem Cursor auswählen und vorheriges Auftauchen finden", -- src\editor\menu_search.lua
   ["Set From Current File"] = "Anhand der aktuellen Datei festlegen", -- src\editor\menu_project.lua

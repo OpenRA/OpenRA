@@ -222,6 +222,7 @@ return {
   ["Replaced"] = "Substituído", -- src\editor\findreplace.lua
   ["Replacing"] = "Substituindo", -- src\editor\findreplace.lua
   ["Reset to default layout"] = "Redefinir painéis para o padrão", -- src\editor\menu_view.lua
+  ["Run As Scratchpad"] = "Executar como rascunho", -- src\editor\menu_project.lua
   ["Run as Scratchpad"] = "Executar como rascunho", -- src\editor\menu_project.lua
   ["S&top Debugging"] = "In&terromper depuração", -- src\editor\menu_project.lua
   ["S&top Process"] = "In&terromper processo", -- src\editor\menu_project.lua
@@ -240,8 +241,8 @@ return {
   ["Sel: %d/%d"] = "Sel: %d/%d", -- src\editor\editor.lua
   ["Select &All"] = "Selecion&ar tudo", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
   ["Select all text in the editor"] = "Selecionar todo o texto do editor", -- src\editor\menu_edit.lua
-  ["Select and Find Next"] = "Selecionar e localizar próxima", -- src\editor\menu_search.lua
-  ["Select and Find Previous"] = "Selecionar e localizar anterior", -- src\editor\menu_search.lua
+  ["Select And Find Next"] = "Selecionar e localizar próxima", -- src\editor\menu_search.lua
+  ["Select And Find Previous"] = "Selecionar e localizar anterior", -- src\editor\menu_search.lua
   ["Select the word under cursor and find its next occurrence"] = "Selecionar palavra no cursor e localizar sua próxima ocorrência", -- src\editor\menu_search.lua
   ["Select the word under cursor and find its previous occurrence"] = "Selecionar palavra no cursor e localizar sua ocorrência anterior", -- src\editor\menu_search.lua
   ["Set From Current File"] = "Alterar para o arquivo atual", -- src\editor\menu_project.lua

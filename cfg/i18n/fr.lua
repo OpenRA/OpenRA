@@ -219,6 +219,7 @@ return {
   ["Replaced"] = "Occurrences remplacées :", -- src\editor\findreplace.lua
   ["Replacing"] = "Remplacement de", -- src\editor\findreplace.lua
   ["Reset to default layout"] = "Restaure l'affichage par défaut", -- src\editor\menu_view.lua
+  ["Run As Scratchpad"] = "Exécuter comme brouillon", -- src\editor\menu_project.lua
   ["Run as Scratchpad"] = "Exécuter comme brouillon", -- src\editor\menu_project.lua
   ["S&top Debugging"] = "&Arrêter le débogage", -- src\editor\menu_project.lua
   ["S&top Process"] = "&Arrêter le processus", -- src\editor\menu_project.lua
@@ -237,8 +238,8 @@ return {
   ["Sel: %d/%d"] = "Sel: %d/%d", -- src\editor\editor.lua
   ["Select &All"] = "Sélectionner &tout", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
   ["Select all text in the editor"] = "Sélectionne tout le texte dans l'éditeur", -- src\editor\menu_edit.lua
-  ["Select and Find Next"] = "Sélectionner et rechercher le suivant", -- src\editor\menu_search.lua
-  ["Select and Find Previous"] = "Sélectionner et rerchercher le précédent", -- src\editor\menu_search.lua
+  ["Select And Find Next"] = "Sélectionner et rechercher le suivant", -- src\editor\menu_search.lua
+  ["Select And Find Previous"] = "Sélectionner et rerchercher le précédent", -- src\editor\menu_search.lua
   ["Select the word under cursor and find its next occurrence"] = "Sélectionne le mot sous le curseur et recherche son occurence suivante", -- src\editor\menu_search.lua
   ["Select the word under cursor and find its previous occurrence"] = "Sélectionne le mot sous le curseur et recherche son occurence précédente", -- src\editor\menu_search.lua
   ["Set From Current File"] = "Définir à partir du fichier courant", -- src\editor\menu_project.lua

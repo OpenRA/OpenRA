@@ -218,6 +218,7 @@ return {
   ["Replaced"] = "更换", -- src\editor\findreplace.lua
   ["Replacing"] = "更换中", -- src\editor\findreplace.lua
   ["Reset to default layout"] = "重置缺省布局", -- src\editor\menu_view.lua
+  ["Run As Scratchpad"] = "以Scratchpad执行", -- src\editor\menu_project.lua
   ["Run as Scratchpad"] = "以Scratchpad执行", -- src\editor\menu_project.lua
   ["S&top Debugging"] = "停止除错", -- src\editor\menu_project.lua
   ["S&top Process"] = "停止进程", -- src\editor\menu_project.lua
@@ -236,8 +237,8 @@ return {
   ["Sel: %d/%d"] = nil, -- src\editor\editor.lua
   ["Select &All"] = "选全部", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
   ["Select all text in the editor"] = "选编辑器内的所有text", -- src\editor\menu_edit.lua
-  ["Select and Find Next"] = nil, -- src\editor\menu_search.lua
-  ["Select and Find Previous"] = nil, -- src\editor\menu_search.lua
+  ["Select And Find Next"] = nil, -- src\editor\menu_search.lua
+  ["Select And Find Previous"] = nil, -- src\editor\menu_search.lua
   ["Select the word under cursor and find its next occurrence"] = nil, -- src\editor\menu_search.lua
   ["Select the word under cursor and find its previous occurrence"] = nil, -- src\editor\menu_search.lua
   ["Set From Current File"] = "从当前文档设置", -- src\editor\menu_project.lua

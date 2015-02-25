@@ -219,6 +219,7 @@ return {
   ["Replaced"] = "Заменено", -- src\editor\findreplace.lua
   ["Replacing"] = "Замена", -- src\editor\findreplace.lua
   ["Reset to default layout"] = "Установить расположение окон по умолчанию", -- src\editor\menu_view.lua
+  ["Run As Scratchpad"] = "Запустить как черновик", -- src\editor\menu_project.lua
   ["Run as Scratchpad"] = "Запустить как черновик", -- src\editor\menu_project.lua
   ["S&top Debugging"] = "&Завершить отладку", -- src\editor\menu_project.lua
   ["S&top Process"] = "&Завершить процесс", -- src\editor\menu_project.lua
@@ -237,8 +238,8 @@ return {
   ["Sel: %d/%d"] = "Выд: %d/%d", -- src\editor\editor.lua
   ["Select &All"] = "Выделить &все", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
   ["Select all text in the editor"] = "Выделить весь текст в редакторе", -- src\editor\menu_edit.lua
-  ["Select and Find Next"] = "Выделить и найти далее", -- src\editor\menu_search.lua
-  ["Select and Find Previous"] = "Выделить и найти ранее", -- src\editor\menu_search.lua
+  ["Select And Find Next"] = "Выделить и найти далее", -- src\editor\menu_search.lua
+  ["Select And Find Previous"] = "Выделить и найти ранее", -- src\editor\menu_search.lua
   ["Select the word under cursor and find its next occurrence"] = "Выделить слово под курсором и найти далее", -- src\editor\menu_search.lua
   ["Select the word under cursor and find its previous occurrence"] = "Выделить слово под курсором и найти ранее", -- src\editor\menu_search.lua
   ["Set From Current File"] = "Установить по текущему файлу", -- src\editor\menu_project.lua
