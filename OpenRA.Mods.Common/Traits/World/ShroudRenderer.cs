@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void RenderShroud(WorldRenderer wr, Shroud shroud)
 		{
 			Update(shroud);
-			Render(wr.Viewport.VisibleCells);
+			Render(CellRegion.Expand(wr.Viewport.VisibleCells, 1));
 		}
 
 		void Update(Shroud newShroud)
@@ -269,22 +269,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		void Render(CellRegion visibleRegion)
 		{
-			var renderRegion = CellRegion.Expand(visibleRegion, 1).MapCoords;
-
 			if (currentShroud == null)
-			{
-				RenderMapBorderShroud(renderRegion);
-				return;
-			}
-
-			RenderPlayerShroud(visibleRegion, renderRegion);
+				RenderMapBorderShroud(visibleRegion);
+			else
+				RenderPlayerShroud(visibleRegion);
 		}
 
-		void RenderMapBorderShroud(CellRegion.MapCoordsRegion renderRegion)
+		void RenderMapBorderShroud(CellRegion visibleRegion)
 		{
+			// The map border shroud only affects the map border. If none of the visible cells are on the border, then
+			// we don't need to render anything and can bail early for performance.
+			if (map.Cells.Contains(visibleRegion))
+				return;
+
 			// Render the shroud that just encroaches at the map border. This shroud is always fully cached, so we can
 			// just render straight from the cache.
-			foreach (var uv in renderRegion)
+			foreach (var uv in visibleRegion.MapCoords)
 			{
 				var offset = VertexArrayOffset(uv);
 				RenderCachedTile(shroudSpriteLayer[uv], shroudVertices, offset);
@@ -292,7 +292,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		void RenderPlayerShroud(CellRegion visibleRegion, CellRegion.MapCoordsRegion renderRegion)
+		void RenderPlayerShroud(CellRegion visibleRegion)
 		{
 			// Render the shroud by drawing the appropriate tile over each cell that is visible on-screen.
 			// For performance we keep a cache tiles we have drawn previously so we don't have to recalculate the
@@ -303,7 +303,7 @@ namespace OpenRA.Mods.Common.Traits
 			// cached vertices.
 			var visibleUnderShroud = currentShroud.IsExploredTest(visibleRegion);
 			var visibleUnderFog = currentShroud.IsVisibleTest(visibleRegion);
-			foreach (var uv in renderRegion)
+			foreach (var uv in visibleRegion.MapCoords)
 			{
 				var offset = VertexArrayOffset(uv);
 				if (shroudDirty[uv])
