@@ -568,6 +568,7 @@ local function treeSetConnectorsAndIcons(tree)
       local ismapped = tree:IsDirMapped(item_id)
       menu:Destroy(ismapped and ID_MAPDIRECTORY or ID_UNMAPDIRECTORY)
       if not startfile then menu:Destroy(ID_UNSETSTARTFILE) end
+      if ismapped then menu:Enable(ID_RENAMEFILE, false) end
       if isdir then
         local source = tree:GetItemFullName(item_id)
         menu:Enable(ID_DELETEFILE, not FileDirHasContent(source..pathsep))
