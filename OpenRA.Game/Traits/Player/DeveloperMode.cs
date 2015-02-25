@@ -68,33 +68,24 @@ namespace OpenRA.Traits
 			{
 				case "DevAll":
 					{
-						if (!EnableAll)
+						EnableAll ^= true;
+						AllTech = FastCharge = FastBuild = DisableShroud = UnlimitedPower = BuildAnywhere = EnableAll;
+
+						if (EnableAll)
 						{
-							AllTech = true;
-							FastCharge = true;
-							FastBuild = true;
-							DisableShroud = true;
 							self.Owner.Shroud.ExploreAll(self.World);
-							UnlimitedPower = true;
-							BuildAnywhere = true;
 
 							var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
 							self.Trait<PlayerResources>().GiveCash(amount);
-
-							EnableAll = true;
 						}
 						else
 						{
-							AllTech = false;
-							FastCharge = false;
-							FastBuild = false;
-							DisableShroud = false;
 							self.Owner.Shroud.ResetExploration();
-							UnlimitedPower = false;
-							BuildAnywhere = false;
-
-							EnableAll = false;
 						}
+
+						self.Owner.Shroud.Disabled = DisableShroud;
+						if (self.World.LocalPlayer == self.Owner)
+							self.World.RenderPlayer = DisableShroud ? null : self.Owner;
 
 						break;
 					}
