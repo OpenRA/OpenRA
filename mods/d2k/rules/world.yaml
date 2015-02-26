@@ -120,7 +120,7 @@ World:
 		Name: Spice
 		PipColor: green
 		AllowedTerrainTypes: Sand
-		AllowUnderActors: false
+		AllowUnderActors: true
 	SmudgeLayer@Rock:
 		Type: RockCrater
 		Sequence: rockcraters

@@ -130,7 +130,7 @@ World:
 		Name: Tiberium
 		PipColor: Green
 		AllowedTerrainTypes: Clear, Rough, DirtRoad
-		AllowUnderActors: false
+		AllowUnderActors: true
 		TerrainType: Tiberium
 	FixedColorPalette@BlueTiberium:
 		Base: player
@@ -147,7 +147,7 @@ World:
 		Name: BlueTiberium
 		PipColor: Blue
 		AllowedTerrainTypes: Clear, Rough, DirtRoad
-		AllowUnderActors: false
+		AllowUnderActors: true
 		TerrainType: BlueTiberium
 	PathfinderDebugOverlay:
 	TerrainGeometryOverlay:
