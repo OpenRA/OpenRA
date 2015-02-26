@@ -88,6 +88,20 @@ namespace OpenRA.Orders
 			return cursorOrder != null ? cursorOrder.Cursor : (useSelect ? "select" : "default");
 		}
 
+		// Used for classic mouse orders, determines whether or not action at xy is move or select
+		public static bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
+		{
+			var target = Target.FromActor(world.ScreenMap.ActorsAt(xy).WithHighestSelectionPriority());
+			var underCursor = world.Selection.Actors.WithHighestSelectionPriority();
+
+			var o = OrderForUnit(underCursor, target, mi);
+
+			if (o == null || o.Trait is IMove)
+				return true;
+
+			return false;
+		}
+
 		static UnitOrderResult OrderForUnit(Actor self, Target target, MouseInput mi)
 		{
 			if (self.Owner != self.World.LocalPlayer)
@@ -96,7 +110,7 @@ namespace OpenRA.Orders
 			if (self.Destroyed || !target.IsValidFor(self))
 				return null;
 
-			if (mi.Button == Game.mouseButtonPreference.Action)
+			if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action)
 			{
 				foreach (var o in self.TraitsImplementing<IIssueOrder>()
 					.SelectMany(trait => trait.Orders
