@@ -110,7 +110,7 @@ Container@PLAYER_WIDGETS:
 									X: 6
 									Y: 6
 									ImageCollection: order-icons
-									ImageName: options
+									ImageName: debug
 						MenuButton@DIPLOMACY_BUTTON:
 							Logic: AddRaceSuffixLogic
 							MenuContainer: INGAME_DIPLOMACY_BG
