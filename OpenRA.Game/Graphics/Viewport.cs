@@ -163,16 +163,20 @@ namespace OpenRA.Graphics
 					var wtl = worldRenderer.Position(TopLeft);
 					var wbr = worldRenderer.Position(BottomRight);
 
-					// Visible rectangle in map coordinates
-					var ctl = new MPos(wtl.X / 1024, wtl.Y / 1024);
+					// Due to diamond tile staggering, we need to adjust the top-left bounds outwards by half a cell.
+					if (map.TileShape == TileShape.Diamond)
+						wtl -= new WVec(512, 512, 0);
+
+					// Visible rectangle in map coordinates.
 					var dy = map.TileShape == TileShape.Diamond ? 512 : 1024;
-					var cbr = new MPos((wbr.X + 1023) / 1024, (wbr.Y + dy - 1) / dy);
+					var ctl = new MPos(wtl.X / 1024, wtl.Y / dy);
+					var cbr = new MPos(wbr.X / 1024, wbr.Y / dy);
 
-					// Add a 1 cell cordon to prevent holes, then convert back to cell coordinates
-					var tl = map.Clamp(new MPos(ctl.U - 1, ctl.V - 1).ToCPos(map));
+					var tl = map.Clamp(ctl.ToCPos(map));
 
-					// Also need to account for height of cells in rows below the bottom
-					var br = map.Clamp(new MPos(cbr.U + 1, cbr.V + 2 + maxGroundHeight / 2).ToCPos(map));
+					// Also need to account for height of cells in rows below the bottom.
+					var heightPadding = map.TileShape == TileShape.Diamond ? 2 : 0;
+					var br = map.Clamp(new MPos(cbr.U, cbr.V + heightPadding + maxGroundHeight / 2).ToCPos(map));
 
 					cells = new CellRegion(map.TileShape, tl, br);
 					cellsDirty = false;
