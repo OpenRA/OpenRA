@@ -146,7 +146,7 @@ World:
 		Name: Ore
 		PipColor: Yellow
 		AllowedTerrainTypes: Clear,Road
-		AllowUnderActors: false
+		AllowUnderActors: true
 		TerrainType: Ore
 	ResourceType@gem:
 		ResourceType: 2
@@ -158,7 +158,7 @@ World:
 		Name: Gems
 		PipColor: Red
 		AllowedTerrainTypes: Clear,Road
-		AllowUnderActors: false
+		AllowUnderActors: true
 		TerrainType: Gems
 	PathfinderDebugOverlay:
 	TerrainGeometryOverlay:
