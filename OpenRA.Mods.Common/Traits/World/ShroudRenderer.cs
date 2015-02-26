@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void RenderShroud(WorldRenderer wr, Shroud shroud)
 		{
 			Update(shroud);
-			Render(CellRegion.Expand(wr.Viewport.VisibleCells, 1));
+			Render(wr.Viewport.VisibleCells);
 		}
 
 		void Update(Shroud newShroud)
@@ -269,6 +269,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		void Render(CellRegion visibleRegion)
 		{
+			// Due to diamond tile staggering, we need to expand the cordon to get full shroud coverage.
+			if (map.TileShape == TileShape.Diamond)
+				visibleRegion = CellRegion.Expand(visibleRegion, 1);
+
 			if (currentShroud == null)
 				RenderMapBorderShroud(visibleRegion);
 			else
@@ -279,7 +283,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// The map border shroud only affects the map border. If none of the visible cells are on the border, then
 			// we don't need to render anything and can bail early for performance.
-			if (map.Cells.Contains(visibleRegion))
+			if (CellRegion.Expand(map.Cells, -1).Contains(visibleRegion))
 				return;
 
 			// Render the shroud that just encroaches at the map border. This shroud is always fully cached, so we can
