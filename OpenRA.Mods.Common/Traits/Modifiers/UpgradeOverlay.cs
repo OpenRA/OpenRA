@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (IsTraitDisabled)
 				return r;
+
 			return ModifiedRender(self, wr, r);
 		}
 
