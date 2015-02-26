@@ -206,6 +206,9 @@ order-icons: chrome.png
 	options: 480,0,16,16
 	options-disabled: 480,16,16,16
 	options-active: 480,32,16,16
+	debug: 351,48,16,16
+	debug-disabled: 351,64,16,16
+	debug-active: 351,80,16,16
 	diplomacy: 464,48,16,16
 	diplomacy-disabled: 464,64,16,16
 	diplomacy-active: 464,80,16,16
