@@ -40,7 +40,7 @@ namespace OpenRA.Widgets
 		{
 			if (!IsDragging)
 			{
-				foreach (var u in SelectActorsInBox(World, lastMousePosition, lastMousePosition, _ => true))
+				foreach (var u in SelectActorsInBoxWithDeadzone(World, lastMousePosition, lastMousePosition, _ => true))
 					worldRenderer.DrawRollover(u);
 
 				return;
@@ -48,7 +48,7 @@ namespace OpenRA.Widgets
 
 			var selbox = SelectionBox;
 			Game.Renderer.WorldLineRenderer.DrawRect(selbox.Value.First.ToFloat2(), selbox.Value.Second.ToFloat2(), Color.White);
-			foreach (var u in SelectActorsInBox(World, selbox.Value.First, selbox.Value.Second, _ => true))
+			foreach (var u in SelectActorsInBoxWithDeadzone(World, selbox.Value.First, selbox.Value.Second, _ => true))
 				worldRenderer.DrawRollover(u);
 		}
 
@@ -68,8 +68,8 @@ namespace OpenRA.Widgets
 
 				dragStart = xy;
 
-				// place buildings
-				if(!useClassicMouseStyle)
+				// Place buildings
+				if (!useClassicMouseStyle || !World.Selection.Actors.Any())
 					ApplyOrders(World, xy, mi);
 			}
 
@@ -78,20 +78,26 @@ namespace OpenRA.Widgets
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-				if (useClassicMouseStyle && HasMouseFocus)
-				{
-					// order units around
-					if (!hasBox && World.Selection.Actors.Any() && !multiClick)
-					{
-						ApplyOrders(World, xy, mi);
-						YieldMouseFocus(mi);
-						return true;
-					}
-				}
-
-
 				if (World.OrderGenerator is UnitOrderGenerator)
 				{
+					if (useClassicMouseStyle && HasMouseFocus)
+					{
+						if (!hasBox && World.Selection.Actors.Any() && !multiClick)
+						{
+							if (!(World.ScreenMap.ActorsAt(xy).Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable &&
+								(x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x))).Any() && !mi.Modifiers.HasModifier(Modifiers.Ctrl) &&
+								!mi.Modifiers.HasModifier(Modifiers.Alt) && UnitOrderGenerator.InputOverridesSelection(World, xy, mi)))
+							{
+								// Order units instead of selecting
+								ApplyOrders(World, xy, mi);
+								dragStart = dragEnd = null;
+								YieldMouseFocus(mi);
+								lastMousePosition = xy;
+								return true;
+							}
+						}
+					}
+
 					if (multiClick)
 					{
 						var unit = World.ScreenMap.ActorsAt(xy)
@@ -104,10 +110,12 @@ namespace OpenRA.Widgets
 					}
 					else if (dragStart.HasValue)
 					{
-						var newSelection = SelectActorsInBox(World, dragStart.Value, xy, _ => true);
+						var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart.Value, xy, _ => true);
 						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 					}
 				}
+				else if (useClassicMouseStyle)
+						ApplyOrders(World, xy, mi);
 
 				dragStart = dragEnd = null;
 				YieldMouseFocus(mi);
@@ -115,11 +123,14 @@ namespace OpenRA.Widgets
 
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
 			{
-				if (useClassicMouseStyle)
-					World.Selection.Clear();
+				// Don't do anything while selecting
+				if (!hasBox)
+				{
+					if (useClassicMouseStyle)
+						World.Selection.Clear();
 
-				if (!hasBox) // don't issue orders while selecting
 					ApplyOrders(World, xy, mi);
+				}
 			}
 
 			lastMousePosition = xy;
@@ -131,7 +142,7 @@ namespace OpenRA.Widgets
 		{
 			get
 			{
-				return dragStart.HasValue && dragEnd.HasValue;
+				return dragStart.HasValue && dragEnd.HasValue && (dragStart.Value - dragEnd.Value).Length > Game.Settings.Game.SelectionDeadzone;
 			}
 		}
 
@@ -193,7 +204,7 @@ namespace OpenRA.Widgets
 				var mi = new MouseInput
 				{
 					Location = screenPos,
-					Button = Game.mouseButtonPreference.Action,
+					Button = Game.Settings.Game.MouseButtonPreference.Action,
 					Modifiers = Game.GetModifierKeys()
 				};
 
@@ -243,6 +254,14 @@ namespace OpenRA.Widgets
 			}
 
 			return false;
+		}
+
+		static IEnumerable<Actor> SelectActorsInBoxWithDeadzone(World world, int2 a, int2 b, Func<Actor, bool> cond)
+		{
+			if (a == b || (a - b).Length > Game.Settings.Game.SelectionDeadzone)
+				return SelectActorsInBox(world, a, b, cond);
+			else
+				return SelectActorsInBox(world, b, b, cond);
 		}
 
 		static IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b, Func<Actor, bool> cond)

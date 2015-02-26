@@ -52,7 +52,6 @@ namespace OpenRA
 
 	public class MouseButtonPreference
 	{
-
 		public MouseButton Action
 		{
 			get
@@ -60,7 +59,6 @@ namespace OpenRA
 				return Game.Settings.Game.UseClassicMouseStyle ? MouseButton.Left : MouseButton.Right;
 			}
 		}
-
 
 		public MouseButton Cancel
 		{
