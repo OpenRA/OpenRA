@@ -39,6 +39,37 @@ namespace OpenRA.Mods.Common.Widgets
 			};
 		}
 
+		public static void PromptAbortMission(World world, string title, string text, Action onAbort, Action onCancel = null, Action closeMenu = null)
+		{
+			var isMultiplayer = !world.LobbyInfo.IsSinglePlayer && !world.IsReplay;
+			var prompt = Ui.OpenWindow("ABORT_MISSION_PROMPT");
+			prompt.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
+			prompt.Get<LabelWidget>("PROMPT_TEXT").GetText = () => text;
+			prompt.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () =>
+			{
+				Ui.CloseWindow();
+				onAbort();
+			};
+
+			var restartButton = prompt.Get<ButtonWidget>("RESTART_BUTTON");
+			restartButton.IsVisible = () => !isMultiplayer;
+			restartButton.OnClick = () =>
+			{
+				if (closeMenu != null)
+					closeMenu();
+
+				Ui.CloseWindow();
+				Game.RestartGame();
+			};
+
+			prompt.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
+			{
+				Ui.CloseWindow();
+				if (onCancel != null)
+					onCancel();
+			};
+		}
+
 		public static void TextInputPrompt(
 			string title, string prompt, string initialText,
 			Action<string> onAccept, Action onCancel = null,

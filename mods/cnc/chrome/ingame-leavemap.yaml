@@ -21,7 +21,7 @@ Container@LEAVE_MAP_WIDGET:
 		Container@LEAVE_MAP_SIMPLE:
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
-			Width: 370
+			Width: 440
 			Height: 125
 			Visible: False
 			Children:
@@ -52,12 +52,19 @@ Container@LEAVE_MAP_WIDGET:
 							Font: Bold
 							Text: Leave
 						Button@STATS_BUTTON:
-							X: PARENT_RIGHT - WIDTH
+							X: 150
 							Y: PARENT_BOTTOM - 1
 							Width: 140
 							Height: 35
 							Font: Bold
 							Text: Statistics
+						Button@RESTART_BUTTON:
+							X: PARENT_RIGHT - WIDTH
+							Y: PARENT_BOTTOM - 1
+							Width: 140
+							Height: 35
+							Font: Bold
+							Text: Restart
 		Container@LEAVE_MAP_FULL:
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
@@ -109,12 +116,19 @@ Container@LEAVE_MAP_WIDGET:
 					Font: Bold
 					Text: Leave
 				Button@STATS_BUTTON:
-					X: 150
+					X: 186
 					Y: PARENT_BOTTOM - 36
 					Width: 140
 					Height: 35
 					Font: Bold
 					Text: Statistics
+				Button@RESTART_BUTTON:
+					X: PARENT_RIGHT - WIDTH
+					Y: PARENT_BOTTOM - 36
+					Width: 140
+					Height: 35
+					Font: Bold
+					Text: Restart
 				Container@OBJECTIVES_PANEL:
 					Width: PARENT_RIGHT
 					Height: 365

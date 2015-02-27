@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			menu.Get<ButtonWidget>("ABORT_MISSION").OnClick = () =>
 			{
 				hideMenu = true;
-				ConfirmationDialogs.PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, showMenu);
+				ConfirmationDialogs.PromptAbortMission(world, "Abort Mission", "Leave this game and return to the menu?", onQuit, showMenu, closeMenu);
 			};
 
 			Action onSurrender = () =>

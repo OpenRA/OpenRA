@@ -96,6 +96,17 @@ namespace OpenRA.Mods.RA.Widgets
 				});
 			};
 
+			var restartButton = dialog.Get<ButtonWidget>("RESTART_BUTTON");
+			restartButton.IsVisible = () => !isMultiplayer;
+			restartButton.OnClick = () =>
+			{
+				restartButton.IsDisabled = () => true;
+
+				Game.RestartGame();
+
+				Ui.CloseWindow();
+			};
+
 			var leaveButton = dialog.Get<ButtonWidget>("LEAVE_BUTTON");
 			leaveButton.OnClick = () =>
 			{
