@@ -196,7 +196,9 @@ namespace OpenRA.Mods.Common.Scripting
 			{
 				try
 				{
-					group.Remove(m);
+					if (!group.Remove(m))
+						return;
+
 					if (!group.Any())
 					{
 						copy.Call().Dispose();
@@ -259,10 +261,9 @@ namespace OpenRA.Mods.Common.Scripting
 			{
 				try
 				{
-					if (!group.Contains(m))
+					if (!group.Remove(m))
 						return;
 
-					group.Remove(m);
 					if (!group.Any())
 					{
 						copy.Call().Dispose();
