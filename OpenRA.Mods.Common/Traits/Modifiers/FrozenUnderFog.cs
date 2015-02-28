@@ -48,7 +48,6 @@ namespace OpenRA.Mods.Common.Traits
 			footprint = footprintCells.Select(cell => cell.ToMPos(init.World.Map)).ToArray();
 			footprintRegion = CellRegion.BoundingRegion(init.World.Map.TileShape, footprintCells);
 			tooltip = Exts.Lazy(() => init.Self.TraitsImplementing<IToolTip>().FirstOrDefault());
-			tooltip = Exts.Lazy(() => init.Self.TraitsImplementing<IToolTip>().FirstOrDefault());
 			health = Exts.Lazy(() => init.Self.TraitOrDefault<Health>());
 
 			frozen = new Dictionary<Player, FrozenActor>();
@@ -66,55 +65,43 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			VisibilityHash = 0;
-			foreach (var p in self.World.Players)
-			{
-				// We are doing the following LINQ manually to avoid allocating an extra delegate since this is a hot path.
-				// var isVisible = footprint.Any(p.Shroud.IsVisibleTest(footprintRegion));
-				var isVisibleTest = p.Shroud.IsVisibleTest(footprintRegion);
-				var isVisible = false;
-				foreach (var uv in footprint)
-					if (isVisibleTest(uv))
-					{
-						isVisible = true;
-						break;
-					}
-
-				visible[p] = isVisible;
-				if (isVisible)
-					VisibilityHash += p.ClientIndex;
-			}
-
-			if (!initialized)
-			{
-				foreach (var p in self.World.Players)
-				{
-					visible[p] |= startsRevealed;
-					p.PlayerActor.Trait<FrozenActorLayer>().Add(frozen[p] = new FrozenActor(self, footprint, footprintRegion));
-				}
-
-				initialized = true;
-			}
-
 			foreach (var player in self.World.Players)
 			{
-				if (!visible[player])
+				bool isVisible;
+				FrozenActor frozenActor;
+				if (!initialized)
+				{
+					frozen[player] = frozenActor = new FrozenActor(self, footprint, footprintRegion, player.Shroud);
+					player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
+					isVisible = visible[player] |= startsRevealed;
+				}
+				else
+				{
+					frozenActor = frozen[player];
+					isVisible = visible[player] = !frozenActor.Visible;
+				}
+
+				if (isVisible)
+					VisibilityHash += player.ClientIndex;
+				else
 					continue;
 
-				var actor = frozen[player];
-				actor.Owner = self.Owner;
+				frozenActor.Owner = self.Owner;
 
 				if (health.Value != null)
 				{
-					actor.HP = health.Value.HP;
-					actor.DamageState = health.Value.DamageState;
+					frozenActor.HP = health.Value.HP;
+					frozenActor.DamageState = health.Value.DamageState;
 				}
 
 				if (tooltip.Value != null)
 				{
-					actor.TooltipInfo = tooltip.Value.TooltipInfo;
-					actor.TooltipOwner = tooltip.Value.Owner;
+					frozenActor.TooltipInfo = tooltip.Value.TooltipInfo;
+					frozenActor.TooltipOwner = tooltip.Value.Owner;
 				}
 			}
+
+			initialized = true;
 		}
 
 		public void TickRender(WorldRenderer wr, Actor self)
