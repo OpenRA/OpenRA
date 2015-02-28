@@ -113,9 +113,9 @@ World:
 		Selectable: false
 	DomainIndex:
 	PathfinderDebugOverlay:
-	TerrainGeometryOverlay:
 	BuildableTerrainLayer:
 	D2kResourceLayer:
+	TerrainGeometryOverlay:
 	ResourceClaimLayer:
 	ResourceType@Spice:
 		ResourceType: 1
