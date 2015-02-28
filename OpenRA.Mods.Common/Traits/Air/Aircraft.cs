@@ -302,6 +302,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public string OrderID { get { return "Move"; } }
 		public int OrderPriority { get { return 4; } }
+		public bool OverrideSelection { get { return false; } }
 
 		readonly AircraftInfo info;
 

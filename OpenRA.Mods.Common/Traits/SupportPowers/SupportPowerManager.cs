@@ -239,6 +239,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public SelectGenericPowerTarget(string order, SupportPowerManager manager, string cursor, MouseButton button)
 		{
+			// Clear selection if using Left-Click Orders
+			if (Game.Settings.Game.UseClassicMouseStyle)
+				manager.Self.World.Selection.Clear();
+
 			this.manager = manager;
 			this.order = order;
 			this.cursor = cursor;

@@ -45,6 +45,10 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
+			// Clear selection if using Left-Click Orders
+			if (Game.Settings.Game.UseClassicMouseStyle)
+				manager.Self.World.Selection.Clear();
+
 			Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
 			var info = Info as IonCannonPowerInfo;
 			return new SelectGenericPowerTarget(order, manager, info.Cursor, MouseButton.Left);

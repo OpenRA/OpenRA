@@ -68,9 +68,15 @@ namespace OpenRA.Widgets
 
 				dragStart = xy;
 
-				// Place buildings
-				if (!useClassicMouseStyle || !World.Selection.Actors.Any())
+				// Place buildings, use support powers, and other non-unit things
+				if (!(World.OrderGenerator is UnitOrderGenerator))
+				{
 					ApplyOrders(World, xy, mi);
+					dragStart = dragEnd = null;
+					YieldMouseFocus(mi);
+					lastMousePosition = xy;
+					return true;
+				}
 			}
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move && dragStart.HasValue)
@@ -114,8 +120,6 @@ namespace OpenRA.Widgets
 						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 					}
 				}
-				else if (useClassicMouseStyle)
-						ApplyOrders(World, xy, mi);
 
 				dragStart = dragEnd = null;
 				YieldMouseFocus(mi);

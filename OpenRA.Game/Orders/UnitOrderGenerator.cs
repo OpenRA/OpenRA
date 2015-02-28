@@ -96,10 +96,10 @@ namespace OpenRA.Orders
 
 			var o = OrderForUnit(underCursor, target, mi);
 
-			if (o == null || o.Trait is IMove)
-				return true;
+			if (o != null && o.Order.OverrideSelection)
+				return false;
 
-			return false;
+			return true;
 		}
 
 		static UnitOrderResult OrderForUnit(Actor self, Target target, MouseInput mi)
