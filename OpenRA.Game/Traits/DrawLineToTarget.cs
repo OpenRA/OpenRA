@@ -72,7 +72,7 @@ namespace OpenRA.Traits
 				if (target.Type == TargetType.Invalid)
 					continue;
 
-				if (self.IsVisibleFor(target))
+				if (!target.IsVisibleFor(self))
 					continue;
 
 				yield return new TargetLineRenderable(new[] { self.CenterPosition, target.CenterPosition }, c);
