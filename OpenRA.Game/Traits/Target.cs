@@ -89,6 +89,14 @@ namespace OpenRA.Traits
 			return true;
 		}
 
+		public bool IsVisibleFor(Actor targeter)
+		{
+			if (targeter == null || actor == null)
+				return false;
+
+			return targeter.Owner.Shroud.IsVisible(actor);
+		}
+
 		public bool RequiresForceFire
 		{
 			get { return targetable != null && targetable.RequiresForceFire; }
