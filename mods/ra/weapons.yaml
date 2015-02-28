@@ -1093,7 +1093,7 @@ ParaBomb:
 	Report: CHUTE1.AUD
 	Projectile: GravityBomb
 		Image: PARABOMB
-		Velocity: 43
+		Velocity: 86
 		Acceleration: 0
 	Warhead@1Dam: SpreadDamage
 		Spread: 768
