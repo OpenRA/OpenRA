@@ -1035,46 +1035,6 @@ Templates:
 			1: Concrete
 			2: Concrete
 			3: Concrete
-	Template@89: # TODO: This should go away
-		Id: 89
-		Image: BLOXBASE
-		Frames: 1
-		Size: 1,1
-		Category: Brick
-		PickAny: False
-		Tiles:
-			0: Clear
-	Template@90: # TODO: This should go away
-		Id: 90
-		Image: BLOXBASE
-		Frames: 1,1,1,1,1,1
-		Size: 3,2
-		Category: Brick
-		PickAny: False
-		Tiles:
-			0: Clear
-			3: Clear
-			4: Clear
-			5: Clear
-			2: Clear
-			1: Clear
-	Template@91: # TODO: This should go away
-		Id: 91
-		Image: BLOXBASE
-		Frames: 1,1,1,1,1,1,1,1,1
-		Size: 3,3
-		Category: Brick
-		PickAny: False
-		Tiles:
-			2: Concrete
-			5: Concrete
-			8: Concrete
-			7: Concrete
-			4: Concrete
-			1: Concrete
-			0: Concrete
-			3: Concrete
-			6: Concrete
 	Template@92:
 		Id: 92
 		Image: BLOXBASE
@@ -1084,20 +1044,6 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Rough
-	Template@93: # TODO: This should go away
-		Id: 93
-		Image: BLOXBASE
-		Frames: 1,1,1,1,1,1
-		Size: 3,2
-		Category: Brick
-		PickAny: False
-		Tiles:
-			5: Clear
-			4: Clear
-			3: Clear
-			0: Clear
-			1: Clear
-			2: Clear
 	Template@94:
 		Id: 94
 		Image: BLOXBASE
@@ -1120,36 +1066,7 @@ Templates:
 		Tiles:
 			0: Rough
 			1: Rock
-	Template@96: # TODO: This should go away
-		Id: 96
-		Image: BLOXBASE
-		Frames: 1,1,1,1,1,1,1,1,1
-		Size: 3,3
-		Category: Rock-Detail
-		PickAny: False
-		Tiles:
-			0: Clear
-			1: Clear
-			2: Clear
-			5: Clear
-			4: Clear
-			3: Clear
-			6: Clear
-			7: Clear
-			8: Clear
-	Template@97: # TODO: This should go away
-		Id: 97
-		Image: BLOXBASE
-		Frames: 1,1,1,1
-		Size: 2,2
-		Category: Rock-Detail
-		PickAny: False
-		Tiles:
-			0: Clear
-			1: Clear
-			3: Clear
-			2: Clear
-	Template@98: # TODO: This should go away
+	Template@98:
 		Id: 98
 		Image: BLOXBASE
 		Frames: 619,639
@@ -1194,20 +1111,6 @@ Templates:
 			2: Rough
 			1: Rough
 			4: Rough
-	Template@102:
-		Id: 102
-		Image: BLOXBASE
-		Frames: 1,1,1,1,1,1
-		Size: 3,2
-		Category: Rock-Detail
-		PickAny: False
-		Tiles:
-			0: Clear
-			1: Clear
-			2: Clear
-			5: Clear
-			4: Clear
-			3: Clear
 	Template@103:
 		Id: 103
 		Image: BLOXBASE
@@ -2062,33 +1965,6 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Dune
-	Template@226: # TODO: this should go away
-		Id: 226
-		Image: BLOXBASE
-		Frames: 1
-		Size: 1,1
-		PickAny: False
-		Category: Unidentified
-		Tiles:
-			0: Clear
-	Template@227: # TODO: this should go away
-		Id: 227
-		Image: BLOXBASE
-		Frames: 1
-		Size: 1,1
-		PickAny: False
-		Category: Unidentified
-		Tiles:
-			0: Clear
-	Template@228: # TODO: this should go away
-		Id: 228
-		Image: BLOXBASE
-		Frames: 1
-		Size: 1,1
-		PickAny: False
-		Category: Unidentified
-		Tiles:
-			0: Clear
 	Template@229:
 		Id: 229
 		Image: BLOXBASE
@@ -2374,24 +2250,6 @@ Templates:
 			3: Cliff
 			1: Cliff
 			0: Cliff
-	Template@257: # TODO: this should go away
-		Id: 257
-		Image: BLOXBASE
-		Frames: 1,1,1,1,1,1,1,1,1,1
-		Size: 5,2
-		PickAny: False
-		Category: Unidentified
-		Tiles:
-			0: Clear
-			1: Clear
-			2: Clear
-			3: Clear
-			4: Clear
-			9: Clear
-			8: Clear
-			7: Clear
-			6: Clear
-			5: Clear
 	Template@258:
 		Id: 258
 		Image: BLOXBASE
@@ -2466,24 +2324,6 @@ Templates:
 			2: Sand
 			1: Cliff
 			0: Cliff
-	Template@265: # TODO: this should go away
-		Id: 265
-		Image: BLOXBASE
-		Frames: 1,1,1,1,1,1,1,1,1,1
-		Size: 5,2
-		PickAny: False
-		Category: Unidentified
-		Tiles:
-			0: Clear
-			5: Clear
-			6: Clear
-			7: Clear
-			8: Clear
-			9: Clear
-			4: Clear
-			3: Clear
-			2: Clear
-			1: Clear
 	Template@266:
 		Id: 266
 		Image: BLOXBASE
@@ -2509,25 +2349,6 @@ Templates:
 			14: Rock
 			15: Rock
 			16: Rock
-	Template@267: # TODO: this should go away
-		Id: 267
-		Image: BLOXBASE
-		Frames: 1
-		Size: 1,1
-		PickAny: False
-		Category: Unidentified
-		Tiles:
-			0: Clear
-	Template@268: # TODO: this should go away
-		Id: 268
-		Image: BLOXBASE
-		Frames: 1,1
-		Size: 2,1
-		PickAny: False
-		Category: Unidentified
-		Tiles:
-			0: Clear
-			1: Clear
 	Template@269:
 		Id: 269
 		Image: BLOXBASE
@@ -2538,17 +2359,6 @@ Templates:
 		Tiles:
 			1: Transition
 			0: Transition
-	Template@270: # TODO: this should go away
-		Id: 270
-		Image: BLOXBASE
-		Frames: 1,1,1
-		Size: 3,1
-		PickAny: False
-		Category: Unidentified
-		Tiles:
-			0: Clear
-			1: Clear
-			2: Clear
 	Template@271:
 		Id: 271
 		Image: BLOXBAT
@@ -3526,29 +3336,6 @@ Templates:
 		Tiles:
 			1: Rough
 			0: Rough
-	Template@361: # TODO: this should go away
-		Id: 361
-		Image: BLOXBASE
-		Frames: 1,1,1,1
-		Size: 4,1
-		Category: Sand-Detail
-		PickAny: False
-		Tiles:
-			0: Clear
-			1: Clear
-			2: Clear
-			3: Clear
-	Template@362: # TODO: this should go away
-		Id: 362
-		Image: BLOXBASE
-		Frames: 1,1,1
-		Size: 3,1
-		Category: Sand-Detail
-		PickAny: False
-		Tiles:
-			0: Clear
-			1: Clear
-			2: Clear
 	Template@363:
 		Id: 363
 		Image: BLOXICE
@@ -3732,18 +3519,6 @@ Templates:
 			1: Ice
 			5: Cliff
 			6: Cliff
-	Template@377: # TODO: this should go away
-		Id: 377
-		Image: BLOXBASE
-		Frames: 1,1,1,1
-		Size: 4,1
-		Category: Ice-Detail
-		PickAny: False
-		Tiles:
-			0: Clear
-			1: Clear
-			2: Clear
-			3: Clear
 	Template@378:
 		Id: 378
 		Image: BLOXICE
@@ -3785,18 +3560,6 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Sand
-	Template@382:
-		Id: 382
-		Image: BLOXBASE
-		Frames: 1,1,1,1
-		Size: 1,4
-		Category: Unidentified
-		PickAny: False
-		Tiles:
-			0: Clear
-			1: Clear
-			2: Clear
-			3: Clear
 	Template@383:
 		Id: 383
 		Image: BLOXICE
@@ -4669,17 +4432,6 @@ Templates:
 			2: Rough
 			3: Rough
 			1: Rough
-	Template@461: # TODO: this should go away
-		Id: 461
-		Image: BLOXBASE
-		Frames: 1,1,1
-		Size: 3,1
-		Category: Rotten-Base
-		PickAny: False
-		Tiles:
-			0: Clear
-			1: Clear
-			2: Clear
 	Template@462:
 		Id: 462
 		Image: BLOXWAST
@@ -4698,16 +4450,6 @@ Templates:
 			7: Rough
 			8: Rough
 			9: Rough
-	Template@463: # TODO this should go away
-		Id: 463
-		Image: BLOXBASE
-		Frames: 1,1
-		Size: 2,1
-		Category: Rotten-Base
-		PickAny: False
-		Tiles:
-			0: Clear
-			1: Clear
 	Template@464:
 		Id: 464
 		Image: BLOXWAST
@@ -4880,18 +4622,6 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Rough
-	Template@480: # TODO: this should go away
-		Id: 480
-		Image: BLOXBASE
-		Frames: 1,1,1,1
-		Size: 4,1
-		Category: Sand-Detail
-		PickAny: False
-		Tiles:
-			0: Clear
-			1: Clear
-			2: Clear
-			3: Clear
 	Template@481:
 		Id: 481
 		Image: BLOXWAST
