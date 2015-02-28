@@ -107,10 +107,7 @@ MCVH:
 	Buildable:
 		Prerequisites: ~heavyh, repair
 	Transforms:
-		Facing: 16
 		IntoActor: conyardh
-		Offset: -1,-1
-		NoTransformSounds: HI_DPLOY.AUD
 	RenderUnit:
 		Image: DMCV
 

@@ -308,7 +308,7 @@ MCV:
 		Offset: -1,-1
 		Facing: 96
 		TransformSounds: placbldg.aud, build5.aud
-		NoTransformSounds: nodeply1.aud
+		NoTransformNotification: BuildingCannotPlaceAudio
 	RenderUnit:
 	MustBeDestroyed:
 		RequiredForShortGame: true
