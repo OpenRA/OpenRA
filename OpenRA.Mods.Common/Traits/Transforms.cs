@@ -18,10 +18,19 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Actor becomes a specified actor type when this trait is triggered.")]
 	public class TransformsInfo : ITraitInfo
 	{
-		[ActorReference] public readonly string IntoActor = null;
+		[Desc("Actor to transform into."), ActorReference]
+		public readonly string IntoActor = null;
+
+		[Desc("Offset to spawn the transformed actor relative to the current cell.")]
 		public readonly CVec Offset = CVec.Zero;
+
+		[Desc("Facing that the actor must face before transforming.")]
 		public readonly int Facing = 96;
+
+		[Desc("Sounds to play when transforming.")]
 		public readonly string[] TransformSounds = { };
+
+		[Desc("Sounds to play when the transformation is blocked.")]
 		public readonly string[] NoTransformSounds = { };
 
 		[Desc("Notification to play when transforming.")]
