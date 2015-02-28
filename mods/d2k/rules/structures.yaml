@@ -381,7 +381,7 @@ CONCRETEB:
 		ExitCell: 0,2
 	ProductionAirdrop:
 		Produces: Starport
-		ActorType: frigate
+		DeliveringActorType: frigate
 	WithDeliveryOverlay:
 		Palette: starportlights
 	ProductionBar:

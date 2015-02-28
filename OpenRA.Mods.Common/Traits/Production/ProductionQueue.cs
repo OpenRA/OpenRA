@@ -373,7 +373,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
-			if (sp != null && !self.IsDisabled() && sp.Produce(self, self.World.Map.Rules.Actors[name], Race))
+			if (sp != null && !self.IsDisabled() && sp.Produce(self, new ActorInfo[] { self.World.Map.Rules.Actors[name] }, Race))
 			{
 				FinishProduction();
 				return true;
