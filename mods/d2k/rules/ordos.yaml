@@ -100,10 +100,7 @@ MCVO:
 	Buildable:
 		Prerequisites: ~heavyo, repair
 	Transforms:
-		Facing: 16
 		IntoActor: conyardo
-		Offset: -1,-1
-		NoTransformSounds: OI_DPLOY.AUD
 	RenderUnit:
 		Image: DMCV
 

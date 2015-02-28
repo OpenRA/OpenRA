@@ -24,6 +24,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] TransformSounds = { };
 		public readonly string[] NoTransformSounds = { };
 
+		[Desc("Notification to play when transforming.")]
+		public readonly string TransformNotification = null;
+
+		[Desc("Notification to play when the transformation is blocked.")]
+		public readonly string NoTransformNotification = null;
+
 		public virtual object Create(ActorInitializer init) { return new Transforms(init, this); }
 	}
 
@@ -78,6 +84,8 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var s in info.NoTransformSounds)
 					Sound.PlayToPlayer(self.Owner, s);
 
+				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.NoTransformNotification, self.Owner.Country.Race);
+
 				return;
 			}
 
@@ -90,7 +98,15 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
 				nt.BeforeTransform(self);
 
-			var transform = new Transform(self, info.IntoActor) { Offset = info.Offset, Facing = info.Facing, Sounds = info.TransformSounds, Race = race };
+			var transform = new Transform(self, info.IntoActor)
+			{
+				Offset = info.Offset,
+				Facing = info.Facing,
+				Sounds = info.TransformSounds,
+				Notification = info.TransformNotification,
+				Race = race
+			};
+
 			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
 			if (makeAnimation != null)
 				makeAnimation.Reverse(self, transform);

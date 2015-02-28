@@ -25,7 +25,7 @@ MCV:
 		Offset: -1,-1
 		Facing: 108
 		TransformSounds: constru2.aud, hvydoor1.aud
-		NoTransformSounds: deploy1.aud
+		NoTransformNotification: BuildingCannotPlaceAudio
 	RenderUnit:
 	MustBeDestroyed:
 		RequiredForShortGame: true

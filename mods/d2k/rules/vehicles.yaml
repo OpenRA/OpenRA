@@ -28,7 +28,10 @@
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale
 	Transforms:
+		Facing: 16
+		Offset: -1,-1
 		TransformSounds: BUILD1.WAV
+		NoTransformNotification: CannotDeploy
 	LeavesHusk:
 		HuskActor: MCV.Husk
 	AttractsWorms:

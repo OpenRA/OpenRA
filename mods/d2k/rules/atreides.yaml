@@ -104,10 +104,7 @@ MCVA:
 	Buildable:
 		Prerequisites: ~heavya, repair
 	Transforms:
-		Facing: 16
 		IntoActor: conyarda
-		Offset: -1,-1
-		NoTransformSounds: AI_DPLOY.AUD
 	RenderUnit:
 		Image: DMCV
 

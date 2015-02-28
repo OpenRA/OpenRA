@@ -35,6 +35,7 @@ Speech:
 		WormAttack: WATTK
 		EnemyUnitsApproaching: ENEMY
 		UnitRepaired: GANEW
+		CannotDeploy: DPLOY
 
 Sounds:
 	DefaultVariant: .WAV
