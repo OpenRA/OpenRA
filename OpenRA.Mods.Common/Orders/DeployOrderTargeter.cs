@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		public string OrderID { get; private set; }
 		public int OrderPriority { get; private set; }
+		public bool OverrideSelection { get { return true; } }
 
 		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 		{

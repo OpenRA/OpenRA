@@ -79,6 +79,7 @@ namespace OpenRA.Traits
 		int OrderPriority { get; }
 		bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor);
 		bool IsQueued { get; }
+		bool OverrideSelection { get; }
 	}
 
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }

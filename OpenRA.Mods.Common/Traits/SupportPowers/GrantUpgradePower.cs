@@ -102,6 +102,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			public SelectTarget(World world, string order, SupportPowerManager manager, GrantUpgradePower power)
 			{
+				// Clear selection if using Left-Click Orders
+				if (Game.Settings.Game.UseClassicMouseStyle)
+					manager.Self.World.Selection.Clear();
+
 				this.manager = manager;
 				this.order = order;
 				this.power = power;
