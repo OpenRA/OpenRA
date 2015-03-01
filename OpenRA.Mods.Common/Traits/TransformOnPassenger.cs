@@ -10,10 +10,9 @@
 
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	public class TransformOnPassengerInfo : ITraitInfo
 	{
@@ -28,7 +27,7 @@ namespace OpenRA.Mods.RA.Traits
 
 	public class TransformOnPassenger : INotifyPassengerEntered, INotifyPassengerExited
 	{
-		TransformOnPassengerInfo info;
+		readonly TransformOnPassengerInfo info;
 
 		public TransformOnPassenger(TransformOnPassengerInfo info) { this.info = info; }
 

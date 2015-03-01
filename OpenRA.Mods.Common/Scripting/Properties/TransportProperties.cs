@@ -11,11 +11,10 @@
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("Transports")]
 	public class TransportProperties : ScriptActorProperties, Requires<CargoInfo>
@@ -42,46 +41,6 @@ namespace OpenRA.Mods.RA.Scripting
 		public void UnloadPassengers()
 		{
 			Self.QueueActivity(new UnloadCargo(Self, true));
-		}
-	}
-
-	[ScriptPropertyGroup("Transports")]
-	public class ParadropPowers : ScriptActorProperties, Requires<CargoInfo>, Requires<ParaDropInfo>
-	{
-		readonly ParaDrop paradrop;
-
-		public ParadropPowers(ScriptContext context, Actor self)
-			: base(context, self)
-		{
-			paradrop = self.Trait<ParaDrop>();
-		}
-
-		[ScriptActorPropertyActivity]
-		[Desc("Command transport to paradrop passengers near the target cell.")]
-		public void Paradrop(CPos cell)
-		{
-			paradrop.SetLZ(cell, true);
-			Self.QueueActivity(new Fly(Self, Target.FromCell(Self.World, cell)));
-			Self.QueueActivity(new FlyOffMap());
-			Self.QueueActivity(new RemoveSelf());
-		}
-	}
-
-	[ScriptGlobal("Air Support Powers")]
-	public class ParatroopersProperties : ScriptActorProperties, Requires<ParatroopersPowerInfo>
-	{
-		readonly ParatroopersPower pp;
-
-		public ParatroopersProperties(ScriptContext context, Actor self)
-			: base(context, self)
-		{
-			pp = self.TraitsImplementing<ParatroopersPower>().First();
-		}
-
-		[Desc("Activate the actor's Paratroopers Power. Returns the dropped units.")]
-		public Actor[] SendParatroopers(WPos target, bool randomize = true, int facing = 0)
-		{
-			return pp.SendParatroopers(Self, target, randomize, facing);
 		}
 	}
 }
