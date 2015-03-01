@@ -10,9 +10,9 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Tag trait for SupplyTruck: actors.")]
+	[Desc("Tag trait for `SupplyTruck` actors.")]
 	class AcceptsSuppliesInfo : TraitInfo<AcceptsSupplies> { }
 
 	class AcceptsSupplies { }

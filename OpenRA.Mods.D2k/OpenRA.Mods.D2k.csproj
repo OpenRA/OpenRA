@@ -76,11 +76,9 @@
     <Compile Include="Traits\Buildings\DamagedWithoutFoundation.cs" />
     <Compile Include="Traits\Buildings\LaysTerrain.cs" />
     <Compile Include="Traits\Carryable.cs" />
-    <Compile Include="Traits\Render\WithBuildingPlacedOverlay.cs" />
     <Compile Include="Traits\Render\WithCrumbleOverlay.cs" />
     <Compile Include="Traits\Render\WithDockingOverlay.cs" />
     <Compile Include="Traits\Render\WithDeliveryOverlay.cs" />
-    <Compile Include="Traits\Render\WithProductionOverlay.cs" />
     <Compile Include="Traits\Sandworm.cs" />
     <Compile Include="Traits\TemporaryOwnerManager.cs" />
     <Compile Include="Traits\ThrowsShrapnel.cs" />
