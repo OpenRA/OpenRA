@@ -58,6 +58,12 @@ Sequences:
 	./mods/ra/sequences/misc.yaml
 	./mods/ra/sequences/decorations.yaml
 
+TileSets:
+	./mods/ra/tilesets/snow.yaml
+	./mods/ra/tilesets/interior.yaml
+	./mods/ra/tilesets/temperat.yaml
+	./mods/ra/tilesets/desert.yaml
+
 Cursors:
 	./mods/ra/cursors.yaml
 
@@ -112,19 +118,13 @@ Weapons:
 	./mods/ra/weapons.yaml
 	
 Voices:
-	./mods/ra/voices.yaml
+	./mods/ra/audio/voices.yaml
 
 Notifications:
-	./mods/ra/notifications.yaml
-	
-TileSets:
-	./mods/ra/tilesets/snow.yaml
-	./mods/ra/tilesets/interior.yaml
-	./mods/ra/tilesets/temperat.yaml
-	./mods/ra/tilesets/desert.yaml
+	./mods/ra/audio/notifications.yaml
 
 Music:
-	./mods/ra/music.yaml
+	./mods/ra/audio/music.yaml
 
 Translations:
 	./mods/ra/languages/english.yaml

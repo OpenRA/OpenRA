@@ -61,6 +61,13 @@ Sequences:
 	./mods/cnc/sequences/civilian.yaml
 	./mods/cnc/sequences/campaign.yaml
 
+TileSets:
+	./mods/cnc/tilesets/desert.yaml
+	./mods/cnc/tilesets/winter.yaml
+	./mods/cnc/tilesets/snow.yaml
+	./mods/cnc/tilesets/temperat.yaml
+	./mods/cnc/tilesets/jungle.yaml
+
 Weapons:
 	./mods/cnc/weapons/explosions.yaml
 	./mods/cnc/weapons/largecaliber.yaml
@@ -117,25 +124,18 @@ ChromeLayout:
 Movies:
 	./mods/cnc/movies-gdi.yaml
 	./mods/cnc/movies-nod.yaml
-	
-Translations:
-	./mods/cnc/languages/english.yaml
 
 Voices:
-	./mods/cnc/voices.yaml
+	./mods/cnc/audio/voices.yaml
 
 Notifications:
-	./mods/cnc/notifications.yaml
+	./mods/cnc/audio/notifications.yaml
 
 Music:
-	./mods/cnc/music.yaml
+	./mods/cnc/audio/music.yaml
 
-TileSets:
-	./mods/cnc/tilesets/desert.yaml
-	./mods/cnc/tilesets/winter.yaml
-	./mods/cnc/tilesets/snow.yaml
-	./mods/cnc/tilesets/temperat.yaml
-	./mods/cnc/tilesets/jungle.yaml
+Translations:
+	./mods/cnc/languages/english.yaml
 
 LoadScreen: CncLoadScreen
 	Image: ./mods/cnc/uibits/chrome.png
