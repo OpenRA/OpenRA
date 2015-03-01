@@ -85,7 +85,10 @@
     <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="CacheStorage.cs" />
+    <Compile Include="FileSystem\IdxEntry.cs" />
     <Compile Include="LogProxy.cs" />
+    <Compile Include="FileFormats\IdxReader.cs" />
+    <Compile Include="FileSystem\BagFile.cs" />
     <Compile Include="MPos.cs" />
     <Compile Include="GameRules\Warhead.cs" />
     <Compile Include="Graphics\QuadRenderer.cs" />
@@ -139,6 +142,7 @@
     <Compile Include="Orders\IOrderGenerator.cs" />
     <Compile Include="Orders\UnitOrderGenerator.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Primitives\MergedStream.cs" />
     <Compile Include="Selection.cs" />
     <Compile Include="Server\Connection.cs" />
     <Compile Include="Server\Exts.cs" />
