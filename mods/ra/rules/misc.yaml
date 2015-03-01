@@ -175,6 +175,7 @@ CAMERA:
 	BodyOrientation:
 	DetectCloaked:
 		Range: 10
+	RenderEditorOnly:
 
 camera.paradrop:
 	Immobile:
