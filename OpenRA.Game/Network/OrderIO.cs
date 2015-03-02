@@ -27,7 +27,7 @@ namespace OpenRA.Network
 			var ret = new List<Order>();
 			while (ms.Position < ms.Length)
 			{
-				var o = Order.Deserialize(world, reader);
+				var o = Order.Deserialize(world, reader, Game.ModData.ObjectCreator);
 				if (o != null)
 					ret.Add(o);
 			}
@@ -46,25 +46,6 @@ namespace OpenRA.Network
 			}
 
 			return ms.ToArray();
-		}
-
-		public static int2 ReadInt2(this BinaryReader r)
-		{
-			var x = r.ReadInt32();
-			var y = r.ReadInt32();
-			return new int2(x, y);
-		}
-
-		public static void Write(this BinaryWriter w, int2 p)
-		{
-			w.Write(p.X);
-			w.Write(p.Y);
-		}
-
-		public static void Write(this BinaryWriter w, CPos cell)
-		{
-			w.Write(cell.X);
-			w.Write(cell.Y);
 		}
 	}
 }

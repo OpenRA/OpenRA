@@ -58,3 +58,10 @@ if [ ! -f Mono.Nat.dll ]; then
 	cp ./Mono.Nat.1.2.21.0/lib/net40/Mono.Nat.dll .
 	rm -rf Mono.Nat.1.2.21.0
 fi
+
+if [ ! -f protobuf-net.dll ]; then
+	echo "Fetching protobuf-net from nuget"
+	nuget install protobuf-net -Version 2.0.0.668
+	cp ./protobuf-net.2.0.0.668/lib/net40/protobuf-net.dll .
+	rm -rf protobuf-net.2.0.0.668
+fi

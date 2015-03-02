@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Primitives;
+using ProtoBuf;
 
 namespace OpenRA
 {
@@ -22,25 +23,21 @@ namespace OpenRA
 		readonly Cache<string, Type> typeCache;
 		readonly Cache<Type, ConstructorInfo> ctorCache;
 		readonly Pair<Assembly, string>[] assemblies;
+		readonly Type[] protoTypes;
 
-		public ObjectCreator(Manifest manifest)
+		public ObjectCreator(IEnumerable<Assembly> asms)
 		{
 			typeCache = new Cache<string, Type>(FindType);
 			ctorCache = new Cache<Type, ConstructorInfo>(GetCtor);
 
-			// All the core namespaces
-			var asms = typeof(Game).Assembly.GetNamespaces() // Game
-				.Select(c => Pair.New(typeof(Game).Assembly, c))
-				.ToList();
+			assemblies = asms.SelectMany(a => a.GetNamespaces()
+				.Select(ns => Pair.New(a, ns))).ToArray();
 
-			// Namespaces from each mod assembly
-			foreach (var a in manifest.Assemblies)
-			{
-				var asm = Assembly.LoadFile(Platform.ResolvePath(a));
-				asms.AddRange(asm.GetNamespaces().Select(ns => Pair.New(asm, ns)));
-			}
+			var ti = GetTypes()
+				.Where(i => Attribute.IsDefined(i, typeof(ProtoContractAttribute)))
+				.OrderBy(o => o.FullName);
 
-			assemblies = asms.ToArray();
+			protoTypes = new Type[] { null }.Concat(ti).ToArray();
 		}
 
 		public static Action<string> MissingTypeAction =
@@ -112,6 +109,30 @@ namespace OpenRA
 		{
 			return assemblies.Select(ma => ma.First).Distinct()
 				.SelectMany(ma => ma.GetTypes());
+		}
+
+		Type ProtoContractFromID(int i)
+		{
+			return (i > 0 && i < protoTypes.Length) ? protoTypes[i] : null;
+		}
+
+		int IDFromProtoContract(Type t)
+		{
+			return protoTypes.Contains(t) ? protoTypes.IndexOf(t) : 0;
+		}
+
+		public void SerializeProto(Stream stream, object obj)
+		{
+			Serializer.NonGeneric.SerializeWithLengthPrefix(
+				stream, obj, PrefixStyle.Base128, IDFromProtoContract(obj.GetType()));
+		}
+
+		public object DeserializeProto(Stream stream)
+		{
+			object obj;
+			Serializer.NonGeneric.TryDeserializeWithLengthPrefix(
+				stream, PrefixStyle.Base128, i => ProtoContractFromID(i), out obj);
+			return obj;
 		}
 
 		[AttributeUsage(AttributeTargets.Constructor)]

@@ -9,6 +9,7 @@
 #endregion
 
 using System.IO;
+using System.Reflection;
 using NUnit.Framework;
 
 namespace OpenRA.Test
@@ -16,12 +17,15 @@ namespace OpenRA.Test
 	[TestFixture]
 	public class OrderTest
 	{
+		ObjectCreator oc;
 		Order order;
 		Order immediateOrder;
 
 		[SetUp]
 		public void SetUp()
 		{
+			oc = new ObjectCreator(new Assembly[] { Assembly.GetAssembly(typeof(Order)) });
+
 			order = new Order("TestOrder", null, false)
 			{
 				TargetString = "TestTarget",
@@ -40,8 +44,8 @@ namespace OpenRA.Test
 		[TestCase(TestName = "Data persists over serialization")]
 		public void SerializeA()
 		{
-			var serializedData = new MemoryStream(order.Serialize());
-			var result = Order.Deserialize(null, new BinaryReader(serializedData));
+			var serializedData = new MemoryStream(order.Serialize(oc));
+			var result = Order.Deserialize(null, new BinaryReader(serializedData), oc);
 
 			Assert.That(result.ToString(), Is.EqualTo(order.ToString()));
 		}
@@ -49,8 +53,8 @@ namespace OpenRA.Test
 		[TestCase(TestName = "Data persists over serialization immediate")]
 		public void SerializeB()
 		{
-			var serializedData = new MemoryStream(immediateOrder.Serialize());
-			var result = Order.Deserialize(null, new BinaryReader(serializedData));
+			var serializedData = new MemoryStream(immediateOrder.Serialize(oc));
+			var result = Order.Deserialize(null, new BinaryReader(serializedData), oc);
 
 			Assert.That(result.ToString(), Is.EqualTo(immediateOrder.ToString()));
 		}

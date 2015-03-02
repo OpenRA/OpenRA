@@ -10,6 +10,11 @@ FuzzyLogicLibrary.dll
 	Version 1.2.0
 	GPL v2.0 license
 
+Lidgren.Network.dll
+	https://github.com/lidgren/lidgren-network-gen3/
+	Commit 5df02daefd349acab76b9a6bdf2d6f7fa6a2f7c1
+	MIT License
+
 SDL2-CS.dll
 	https://github.com/flibitijibibo/SDL2-CS/
 	Commit e8731efadb249a40f46d646e2b783ec588326ea6
