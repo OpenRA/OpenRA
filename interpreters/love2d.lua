@@ -26,14 +26,14 @@ return {
         table.insert(paths, p)
       end
       if not love2d then
-        DisplayOutput("Can't find love2d executable in any of the following folders: "
-          ..table.concat(paths, ", ").."\n")
+        DisplayOutputLn("Can't find love2d executable in any of the following folders: "
+          ..table.concat(paths, ", "))
         return
       end
     end
 
     if not GetFullPathIfExists(self:fworkdir(wfilename), 'main.lua') then
-      DisplayOutput("Can't find 'main.lua' file in the current project folder.\n")
+      DisplayOutputLn("Can't find 'main.lua' file in the current project folder.")
       return
     end
 

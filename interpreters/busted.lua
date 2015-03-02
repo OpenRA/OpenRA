@@ -19,8 +19,8 @@ return {
         table.insert(paths, p)
       end
       if not busted then
-        DisplayOutput("Can't find busted executable in any of the folders in PATH: "
-          ..table.concat(paths, ", ").."\n")
+        DisplayOutputLn("Can't find busted executable in any of the folders in PATH: "
+          ..table.concat(paths, ", "))
         return
       end
     end
@@ -39,7 +39,7 @@ return {
       file = tmpfile:GetFullPath()
       local f = io.open(file, "w")
       if not f then
-        DisplayOutput("Can't open temporary file '"..file.."' for writing\n")
+        DisplayOutputLn("Can't open temporary file '"..file.."' for writing.")
         return 
       end
       f:write(code)

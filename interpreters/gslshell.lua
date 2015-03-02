@@ -22,8 +22,8 @@ return {
         table.insert(paths, p)
       end
       if not gslshell then
-        DisplayOutput("Can't find gsl-shell executable in any of the following folders: "
-          ..table.concat(paths, ", ").."\n")
+        DisplayOutputLn("Can't find gsl-shell executable in any of the following folders: "
+          ..table.concat(paths, ", "))
         return
       end
     end
@@ -57,7 +57,7 @@ return {
       filepath = tmpfile:GetFullPath()
       local f = io.open(filepath, "w")
       if not f then
-        DisplayOutput("Can't open temporary file '"..filepath.."' for writing\n")
+        DisplayOutputLn("Can't open temporary file '"..filepath.."' for writing.")
         return
       end
       f:write(rundebug)

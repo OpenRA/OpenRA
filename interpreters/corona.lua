@@ -26,15 +26,15 @@ return {
         table.insert(paths, p)
       end
       if not corona then
-        DisplayOutput("Can't find corona executable in any of the folders in PATH: "
-          ..table.concat(paths, ", ").."\n")
+        DisplayOutputLn("Can't find corona executable in any of the folders in PATH: "
+          ..table.concat(paths, ", "))
         return
       end
     end
 
     local file = GetFullPathIfExists(self:fworkdir(wfilename), 'main.lua')
     if not file then
-      DisplayOutput("Can't find 'main.lua' file in the current project folder.\n")
+      DisplayOutputLn("Can't find 'main.lua' file in the current project folder.")
       return
     end
 
