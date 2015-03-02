@@ -127,9 +127,12 @@ namespace OpenRA
 		public bool ViewportEdgeScroll = true;
 		public bool LockMouseWindow = false;
 		public MouseScrollType MouseScroll = MouseScrollType.Standard;
+		public MouseButtonPreference MouseButtonPreference = new MouseButtonPreference();
 		public float ViewportEdgeScrollStep = 10f;
 		public float UIScrollSpeed = 50f;
+		public int SelectionDeadzone = 24;
 
+		public bool UseClassicMouseStyle = false;
 		public bool AlwaysShowStatusBars = false;
 		public bool TeamHealthColors = false;
 

@@ -619,6 +619,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			readonly MobileInfo unitType;
 			readonly bool rejectMove;
+			public bool OverrideSelection { get { return false; } }
 
 			public MoveOrderTargeter(Actor self, MobileInfo unitType)
 			{

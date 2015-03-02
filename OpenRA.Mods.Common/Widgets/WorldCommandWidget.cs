@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (actors.Any())
 				world.OrderGenerator = new GenericSelectTarget(actors,
-					"AttackMove", "attackmove", MouseButton.Right);
+					"AttackMove", "attackmove", Game.Settings.Game.MouseButtonPreference.Action);
 
 			return true;
 		}

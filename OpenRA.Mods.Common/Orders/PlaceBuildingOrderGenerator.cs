@@ -34,6 +34,10 @@ namespace OpenRA.Mods.Common.Orders
 			producer = queue.Actor;
 			building = name;
 
+			// Clear selection if using Left-Click Orders
+			if (Game.Settings.Game.UseClassicMouseStyle)
+				producer.World.Selection.Clear();
+
 			var map = producer.World.Map;
 			var tileset = producer.World.TileSet.Id.ToLowerInvariant();
 			buildingInfo = map.Rules.Actors[building].Traits.Get<BuildingInfo>();

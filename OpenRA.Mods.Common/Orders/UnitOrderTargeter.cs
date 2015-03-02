@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Orders
 		public string OrderID { get; private set; }
 		public int OrderPriority { get; private set; }
 		public bool? ForceAttack = null;
+		public bool OverrideSelection { get { return true; } }
 
 		public abstract bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor);
 		public abstract bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor);

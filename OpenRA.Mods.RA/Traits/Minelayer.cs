@@ -146,7 +146,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 			{
-				if (mi.Button == MouseButton.Left)
+				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Cancel)
 				{
 					world.CancelInputMode();
 					yield break;
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.RA.Traits
 					.MaxByOrDefault(a => a.Info.Traits.Contains<SelectableInfo>()
 						? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue);
 
-				if (mi.Button == MouseButton.Right && underCursor == null)
+				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action && underCursor == null)
 				{
 					minelayer.World.CancelInputMode();
 					yield return new Order("PlaceMinefield", minelayer, false) { TargetLocation = xy };
@@ -197,6 +197,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			public string OrderID { get { return "BeginMinefield"; } }
 			public int OrderPriority { get { return 5; } }
+			public bool OverrideSelection { get { return true; } }
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 			{
