@@ -36,10 +36,7 @@ namespace OpenRA.Traits
 			{
 				cachedLocation = self.Location;
 				cachedDisabled = disabled;
-
-				var shroud = self.World.Players.Select(p => p.Shroud);
-				foreach (var s in shroud)
-					s.UpdateShroudGeneration(self);
+				Shroud.UpdateShroudGeneration(self.World.Players.Select(p => p.Shroud), self);
 			}
 		}
 
