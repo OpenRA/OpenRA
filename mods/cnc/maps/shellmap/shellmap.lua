@@ -4,57 +4,43 @@ GDIInfantryTeam = { "e1", "e1", "e1", "e2", "e2" }
 GDIVehicleTeam = { "jeep", "jeep" }
 NodInfantry =
 	{
-		{{"e1", "e1", "e3"},function(a)
-			a.AttackMove(WestSide.Location)
-			a.AttackMove(MCVDeploy.Location)
-		end},
-		{{"e1", "e1", "e1", "e3", "e3"},function(a)
-			a.AttackMove(WestSide.Location)
-			a.AttackMove(MCVDeploy.Location)
-		end},
-		{{"e4", "e4"},function(a)
-			a.AttackMove(WestSide.Location)
-			a.AttackMove(MCVDeploy.Location)
-		end},
-		{{"e1", "e1", "e1", "e1", "e3", "e3", "e4", "e4" },function(a)
-			a.AttackMove(WestSide.Location)
-			a.AttackMove(MCVDeploy.Location)
-		end}
+		{ {"e1", "e1", "e3"}, function(a) WestAttack(a) end },
+		{ {"e1", "e1", "e1", "e3", "e3"}, function(a) WestAttack(a) end },
+		{ {"e4", "e4"}, function(a) WestAttack(a) end },
+		{ {"e1", "e1", "e1", "e1", "e3", "e3", "e4", "e4" }, function(a) WestAttack(a) end }
 	}
 NodVehicles =
 	{
-		{{"ltnk", "ltnk", "ltnk"},function(a)
-			a.AttackMove(WestSide.Location)
-			a.AttackMove(MCVDeploy.Location)
-		end},
-		{{"bike", "bike", "bike"},function(a)
-			a.AttackMove(WestSide.Location)
-			a.AttackMove(MCVDeploy.Location)
-		end},
-		{{"bike", "bike"},function(a)
-			a.AttackMove(HandBuild.Location+CVec.New(3,5))
-			a.AttackMove(MCVDeploy.Location)
-		 end},
-		{{"bggy", "bggy", "bggy"},function(a)
-			a.AttackMove(HandBuild.Location+CVec.New(3,5))
-			a.AttackMove(MCVDeploy.Location)
-		 end}
+		{ {"ltnk", "ltnk", "ltnk"}, function(a) WestAttack(a) end },
+		{ {"bike", "bike", "bike"}, function(a) WestAttack(a) end },
+		{ {"bike", "bike"}, function(a) NorthAttack(a) end },
+		{ {"bggy", "bggy", "bggy"}, function(a) NorthAttack(a) end }
 	}
 OutpostInfantry =
 	{
-		{{"e1", "e1", "e3"}, function(a) a.AttackMove(MCVDeploy.Location) end },
-		{{"e1", "e1", "e1", "e3", "e3"}, function(a) a.AttackMove(MCVDeploy.Location) end },
-		{{"e4", "e4"}, function(a) a.AttackMove(MCVDeploy.Location) end },
-		{{"e1", "e1", "e1", "e1", "e3", "e3", "e4", "e4" }, function(a) a.AttackMove(MCVDeploy.Location) end }
+		{ {"e1", "e1", "e3"}, function(a) NorthAttack(a) end },
+		{ {"e1", "e1", "e1", "e3", "e3"}, function(a) NorthAttack(a) end },
+		{ {"e4", "e4"}, function(a) NorthAttack(a) end },
+		{ {"e1", "e1", "e1", "e1", "e3", "e3", "e4", "e4" }, function(a) NorthAttack(a) end }
 	}
 
-LSTREntryPath = {LSTRStart.Location, LSTRMove.Location, LSTRLand.Location}
-LSTMEntryPath = {LSTMStart.Location, LSTMMove.Location, LSTMLand.Location}
-LSTLEntryPath = {LSTLStart.Location, LSTLMove.Location, LSTLLand.Location}
+LSTREntryPath = { LSTRStart.Location, LSTRMove.Location, LSTRLand.Location }
+LSTMEntryPath = { LSTMStart.Location, LSTMMove.Location, LSTMLand.Location }
+LSTLEntryPath = { LSTLStart.Location, LSTLMove.Location, LSTLLand.Location }
 
-LSTRExitPath = {CPos.New(LSTRMove.Location.X,LSTLStart.Location.Y), CPos.New(8,LSTLStart.Location.Y)}
-LSTMExitPath = {LSTMMove.Location, CPos.New(8,LSTMStart.Location.Y)}
-LSTLExitPath = {CPos.New(LSTLMove.Location.X,LSTRStart.Location.Y), CPos.New(8,LSTRStart.Location.Y)}
+LSTRExitPath = { CPos.New(LSTRMove.Location.X,LSTLStart.Location.Y), CPos.New(8,LSTLStart.Location.Y) }
+LSTMExitPath = { LSTMMove.Location, CPos.New(8,LSTMStart.Location.Y) }
+LSTLExitPath = { CPos.New(LSTLMove.Location.X,LSTRStart.Location.Y), CPos.New(8,LSTRStart.Location.Y) }
+
+WestAttack = function(a)
+	a.AttackMove(WestSide.Location)
+	a.AttackMove(MCVDeploy.Location)
+end
+
+NorthAttack = function(a)
+	a.AttackMove(HandBuild.Location+CVec.New(3,5))
+	a.AttackMove(MCVDeploy.Location)
+end
 
 UnloadLST = function(lst,cargo)
 	Utils.Do(cargo, function()
@@ -66,7 +52,7 @@ UnloadLST = function(lst,cargo)
 end
 
 PlayMusic = function()
-	Media.PlayMusic("map1", PlayMusic)
+	Media.PlayMusic(_, PlayMusic)
 end
 
 StayInLocation = function(a,loc,dist)
@@ -172,7 +158,6 @@ SendCommandos = function()
 		Trigger.OnIdle(trans, function()
 			if(trans.HasPassengers) then
 				trans.Wait(25)
-				trans.CallFunc(function() PlayMusic() end)
 				trans.Move(EvacEntry.Location)
 				trans.Destroy()
 			else
@@ -310,19 +295,13 @@ BuildBase = function()
 	clock.Wait(Actor.BuildTime("hq"))
 	clock.CallFunc(function()
 		Actor.Create("hq", true, { Owner = gdi, Location = MCVDeploy.Location + CVec.New(9,0) })
-		table.remove(GDIVehicleTeam,1)
-		table.insert(GDIVehicleTeam,"mtnk")
-		table.insert(GDIVehicleTeam,"mtnk")
-		table.insert(GDIInfantryTeam,"e3")
-		table.insert(GDIInfantryTeam,"e3")
-		table.insert(NodVehicles, {{"ltnk"},function(a)
-			a.AttackMove(HandBuild.Location+CVec.New(3,5))
-			a.AttackMove(MCVDeploy.Location)
-		 end})
-		 table.insert(NodVehicles, {{"ftnk"},function(a)
-			a.AttackMove(WestSide.Location)
-			a.AttackMove(MCVDeploy.Location)
-		 end})
+		table.remove(GDIVehicleTeam, 1)
+		table.insert(GDIVehicleTeam, "mtnk")
+		table.insert(GDIVehicleTeam, "mtnk")
+		table.insert(GDIInfantryTeam, "e3")
+		table.insert(GDIInfantryTeam, "e3")
+		table.insert(NodVehicles, { {"ltnk"}, function(a) NorthAttack(a) end })
+		 table.insert(NodVehicles, { {"ftnk"}, function(a) WestAttack(a) end})
 	end)
 
 	clock.Wait(Actor.BuildTime("fix"))
@@ -366,5 +345,5 @@ WorldLoaded = function()
 	nod = Player.GetPlayer("Nod")
 	viewportOrigin = Camera.Position
 	SendCommandos()
-	Media.PlayMusic()
+	PlayMusic()
 end
