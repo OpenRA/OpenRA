@@ -24,7 +24,15 @@ namespace OpenRA
 {
 	public enum WorldType { Regular, Shellmap }
 
-	public class World
+	public interface IWorld
+	{
+		IActor WorldActor { get; }
+		int WorldTick { get; }
+		IMap Map { get; }
+		TileSet TileSet { get; }
+	}
+
+	public class World : IWorld
 	{
 		class ActorIDComparer : IComparer<Actor>
 		{
@@ -114,8 +122,14 @@ namespace OpenRA
 		}
 
 		public readonly Actor WorldActor;
+		IActor IWorld.WorldActor { get { return WorldActor; } }
+
 		public readonly Map Map;
+		IMap IWorld.Map { get { return Map; } }
+
 		public readonly TileSet TileSet;
+		TileSet IWorld.TileSet { get { return TileSet; } }
+
 		public readonly ActorMap ActorMap;
 		public readonly ScreenMap ScreenMap;
 		public readonly WorldType Type;

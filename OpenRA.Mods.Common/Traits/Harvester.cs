@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -115,12 +116,12 @@ namespace OpenRA.Mods.Common.Traits
 			var refs = (
 				from r in self.World.ActorsWithTrait<IAcceptResources>()
 				where r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor)
-				let linkedHarvs = self.World.ActorsWithTrait<Harvester>().Where(a => a.Trait.LinkedProc == r.Actor).Count()
+				let linkedHarvs = self.World.ActorsWithTrait<Harvester>().Count(a => a.Trait.LinkedProc == r.Actor)
 				select new { Location = r.Actor.Location + r.Trait.DeliveryOffset, Actor = r.Actor, Occupancy = linkedHarvs }).ToDictionary(r => r.Location);
 
 			// Start a search from each refinery's delivery location:
 			var mi = self.Info.Traits.Get<MobileInfo>();
-			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
+			var path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
 				PathSearch.FromPoints(self.World, mi, self, refs.Values.Select(r => r.Location), self.Location, false)
 					.WithCustomCost((loc) =>
 					{
@@ -374,23 +375,25 @@ namespace OpenRA.Mods.Common.Traits
 			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 
 			// Find any harvestable resources:
-			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
+			var path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
 				PathSearch.Search(self.World, mobileInfo, self, true)
 					.WithHeuristic(loc =>
 					{
 						// Get the resource at this location:
 						var resType = resLayer.GetResource(loc);
-
-						if (resType == null) return 1;
+						if (resType == null)
+							return Constants.CellCost;
 
 						// Can the harvester collect this kind of resource?
-						if (!harvInfo.Resources.Contains(resType.Info.Name)) return 1;
+						if (!harvInfo.Resources.Contains(resType.Info.Name))
+							return Constants.CellCost;
 
 						// Another harvester has claimed this resource:
 						if (territory != null)
 						{
 							ResourceClaim claim;
-							if (territory.IsClaimedByAnyoneElse(self, loc, out claim)) return 1;
+							if (territory.IsClaimedByAnyoneElse(self, loc, out claim))
+								return Constants.CellCost;
 						}
 
 						return 0;

@@ -22,14 +22,32 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>
+	public interface IActor
+	{
+		ActorInfo Info { get; }
+		IWorld World { get; }
+		uint ActorID { get; }
+		Player Owner { get; set; }
+
+		T TraitOrDefault<T>();
+		T Trait<T>();
+		IEnumerable<T> TraitsImplementing<T>();
+
+		IEnumerable<IRenderable> Render(WorldRenderer wr);
+	}
+
+	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>, IActor
 	{
 		public readonly ActorInfo Info;
-		public readonly World World;
-		public readonly uint ActorID;
+		ActorInfo IActor.Info { get { return this.Info; } }
 
-		[Sync]
-		public Player Owner;
+		public readonly World World;
+		IWorld IActor.World { get { return World; } }
+
+		public readonly uint ActorID;
+		uint IActor.ActorID { get { return this.ActorID; } }
+
+		[Sync] public Player Owner { get; set; }
 
 		public bool IsInWorld { get; internal set; }
 		public bool Destroyed { get; private set; }
@@ -235,7 +253,7 @@ namespace OpenRA
 		{
 			World.AddFrameEndTask(w =>
 			{
-				if (this.Destroyed)
+				if (Destroyed)
 					return;
 
 				var oldOwner = Owner;

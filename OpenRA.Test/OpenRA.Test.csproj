@@ -27,19 +27,30 @@
       <HintPath>..\thirdparty\Eluant.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Moq, Version=4.2.1502.911, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\thirdparty\Moq.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\nunit.framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenRA.Mods.Common">
+      <HintPath>..\OpenRA.Mods.Common\bin\Debug\OpenRA.Mods.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fakes.cs" />
     <Compile Include="OpenRA.Game\MiniYamlTest.cs" />
     <Compile Include="OpenRA.Game\ActorInfoTest.cs" />
     <Compile Include="OpenRA.Game\OrderTest.cs" />
     <Compile Include="OpenRA.Game\PlatformTest.cs" />
+    <Compile Include="PathfinderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
@@ -50,6 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -111,12 +111,28 @@ namespace OpenRA
 		MissionSelector = 4
 	}
 
-	public class Map
+	public interface IMap
+	{
+		TileShape TileShape { get; }
+
+		int2 MapSize { get; set; }
+		bool Contains(CPos cell);
+		CPos CellContaining(WPos pos);
+		WVec OffsetOfSubCell(SubCell subCell);
+		IEnumerable<CPos> FindTilesInCircle(CPos center, int maxRange);
+		WPos CenterOfCell(CPos cell);
+	}
+
+	public class Map : IMap
 	{
 		public const int MaxTilesInCircleRange = 50;
 		public readonly TileShape TileShape;
-		[FieldLoader.Ignore]
-		public readonly WVec[] SubCellOffsets;
+		TileShape IMap.TileShape
+		{
+			get { return TileShape; }
+		}
+
+		[FieldLoader.Ignore] public readonly WVec[] SubCellOffsets;
 		public readonly SubCell DefaultSubCell;
 		public readonly SubCell LastSubCell;
 		[FieldLoader.Ignore] public IFolder Container;
@@ -139,8 +155,7 @@ namespace OpenRA
 
 		public WVec OffsetOfSubCell(SubCell subCell) { return SubCellOffsets[(int)subCell]; }
 
-		[FieldLoader.LoadUsing("LoadOptions")]
-		public MapOptions Options;
+		[FieldLoader.LoadUsing("LoadOptions")] public MapOptions Options;
 
 		static object LoadOptions(MiniYaml y)
 		{
@@ -152,8 +167,7 @@ namespace OpenRA
 			return options;
 		}
 
-		[FieldLoader.LoadUsing("LoadVideos")]
-		public MapVideos Videos;
+		[FieldLoader.LoadUsing("LoadVideos")] public MapVideos Videos;
 
 		static object LoadVideos(MiniYaml y)
 		{
@@ -187,6 +201,12 @@ namespace OpenRA
 		[FieldLoader.Ignore] public byte TileFormat = 2;
 
 		public int2 MapSize;
+
+		int2 IMap.MapSize
+		{
+			get { return MapSize; }
+			set { MapSize = value; }
+		}
 
 		[FieldLoader.Ignore] public Lazy<CellLayer<TerrainTile>> MapTiles;
 		[FieldLoader.Ignore] public Lazy<CellLayer<ResourceTile>> MapResources;
