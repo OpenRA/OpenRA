@@ -85,9 +85,9 @@ if (!(Test-Path "Mono.Nat.dll"))
 if (!(Test-Path "windows/lua51.dll"))
 {
 	echo "Fetching Lua 5.1 from NuGet."
-	./nuget.exe install lua51.redist -Version 5.1.5
-	cp lua51.redist.5.1.5/build/native/bin/Win32/v120/Release/lua5.1.dll ./windows/lua51.dll
-	rmdir lua51.redist.5.1.5 -Recurse
+	./nuget.exe install lua.binaries -Version 5.1.5
+	cp lua.binaries.5.1.5/bin/win32/dll8/lua5.1.dll ./windows/lua51.dll
+	rmdir lua.binaries.5.1.5 -Recurse
 }
 
 if (!(Test-Path "windows/zlib1.dll"))
