@@ -1,4 +1,4 @@
-SPICEBLOOM:
+spicebloom:
 	RenderBuilding:
 	Building:
 		Footprint: x
@@ -19,7 +19,7 @@ SPICEBLOOM:
 	BodyOrientation:
 	WithMakeAnimation:
 
-SANDWORM:
+sandworm:
 	Tooltip:
 		Name: Sandworm
 		Description: Attracted by vibrations in the sand.\nWill eat units whole and has a large appetite.
@@ -54,3 +54,24 @@ SANDWORM:
 	AnnounceOnSeen:
 		Notification: WormSign
 		PingRadar: True
+
+sietch:
+	Inherits: ^Building
+	Tooltip:
+		Name: Fremen Sietch
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+		TerrainTypes: Cliff
+	Health:
+		HP: 400
+	Armor:
+		Type: Concrete
+	RevealsShroud:
+		Range: 10c0
+	-GivesBuildableArea:
+	-Sellable:
+	-ExternalCapturable:
+	-ExternalCapturableBar:
+	Power:
+		Amount: 0

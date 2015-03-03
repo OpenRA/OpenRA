@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class RenderSimpleInfo : RenderSpritesInfo, IRenderActorPreviewSpritesInfo, IQuantizeBodyOrientationInfo, ILegacyEditorRenderInfo, Requires<IBodyOrientationInfo>
 	{
-		public override object Create(ActorInitializer init) { return new RenderSimple(init.Self); }
+		public override object Create(ActorInitializer init) { return new RenderSimple(init, this); }
 
 		public virtual IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
@@ -30,30 +30,30 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
 
-		public virtual int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai)
+		public virtual int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race)
 		{
-			return sequenceProvider.GetSequence(RenderSprites.GetImage(ai), "idle").Facings;
+			return sequenceProvider.GetSequence(GetImage(ai, sequenceProvider, race), "idle").Facings;
 		}
 
 		public string EditorPalette { get { return Palette; } }
-		public string EditorImage(ActorInfo actor) { return RenderSimple.GetImage(actor); }
+		public string EditorImage(ActorInfo actor, SequenceProvider sequenceProvider, string race) { return GetImage(actor, sequenceProvider, race); }
 	}
 
 	public class RenderSimple : RenderSprites, IAutoSelectionSize
 	{
 		public readonly Animation DefaultAnimation;
 
-		public RenderSimple(Actor self, Func<int> baseFacing)
-			: base(self)
+		public RenderSimple(ActorInitializer init, RenderSimpleInfo info, Func<int> baseFacing)
+			: base(init, info)
 		{
-			DefaultAnimation = new Animation(self.World, GetImage(self), baseFacing);
+			DefaultAnimation = new Animation(init.World, GetImage(init.Self), baseFacing);
 			Add("", DefaultAnimation);
 		}
 
-		public RenderSimple(Actor self)
-			: this(self, MakeFacingFunc(self))
+		public RenderSimple(ActorInitializer init, RenderSimpleInfo info)
+			: this(init, info, MakeFacingFunc(init.Self))
 		{
-			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
+			DefaultAnimation.PlayRepeating(NormalizeSequence(init.Self, "idle"));
 		}
 
 		public int2 SelectionSize(Actor self) { return AutoSelectionSize(self); }

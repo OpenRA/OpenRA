@@ -74,14 +74,4 @@ namespace OpenRA.Mods.Common.Traits
 				enabled = owner.PlayerActor.Trait<TechTree>().HasPrerequisites(info.RequiresPrerequisites);
 		}
 	}
-
-	// Allows maps / transformations to specify the race variant of an actor.
-	public class RaceInit : IActorInit<string>
-	{
-		[FieldFromYamlKey] public readonly string Race;
-
-		public RaceInit() { }
-		public RaceInit(string race) { Race = race; }
-		public string Value(World world) { return Race; }
-	}
 }

@@ -27,13 +27,13 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Cargo aircraft used.")]
 		[ActorReference] public readonly string ActorType = "c17";
 
-		public override object Create(ActorInitializer init) { return new ProductionAirdrop(this, init.Self); }
+		public override object Create(ActorInitializer init) { return new ProductionAirdrop(init, this); }
 	}
 
 	class ProductionAirdrop : Production
 	{
-		public ProductionAirdrop(ProductionAirdropInfo info, Actor self)
-			: base(info, self) { }
+		public ProductionAirdrop(ActorInitializer init, ProductionAirdropInfo info)
+			: base(init, info) { }
 
 		public override bool Produce(Actor self, ActorInfo producee, string raceVariant)
 		{

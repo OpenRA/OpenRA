@@ -1,9 +1,8 @@
-RIFLE:
+rifle:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Prerequisites: ~barracks
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -22,12 +21,12 @@ RIFLE:
 	AttractsWorms:
 		Intensity: 120
 
-ENGINEER:
+engineer:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Prerequisites: ~barracks, radar, ~techlevel.medium
+		Prerequisites: radar, ~techlevel.medium
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -51,12 +50,12 @@ ENGINEER:
 	AttractsWorms:
 		Intensity: 180
 
-BAZOOKA:
+bazooka:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
-		Prerequisites: ~barracks, radar, ~techlevel.medium
+		Prerequisites: radar, ~techlevel.medium
 	Valued:
 		Cost: 250
 	Tooltip:
@@ -76,12 +75,12 @@ BAZOOKA:
 	AttractsWorms:
 		Intensity: 180
 
-MEDIC:
+medic:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Prerequisites: ~medics, ~techlevel.high
+		Prerequisites: ~barracks.medics, ~techlevel.high
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -108,3 +107,124 @@ MEDIC:
 	AttractsWorms:
 		Intensity: 180
 
+fremen:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Fremen
+		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisibility
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 85
+		Prerequisites: ~barracks.atreides, palace, ~techlevel.high
+	Selectable:
+		Bounds: 12,17,0,0
+		Voice: FremenVoice
+	Mobile:
+		Speed: 53
+	Health:
+		HP: 70
+	Passenger:
+	RevealsShroud:
+		Range: 7c0
+	AutoTarget:
+		ScanRadius: 7
+	Armament@PRIMARY:
+		Weapon: Sniper
+	Armament@SECONDARY:
+		Weapon: Slung
+	AttackFrontal:
+	TakeCover:
+	Cloak:
+		InitialDelay: 250
+		CloakDelay: 250
+		CloakSound: STEALTH1.WAV
+		UncloakSound: STEALTH2.WAV
+	-MustBeDestroyed:
+
+grenadier:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Prerequisites: ~barracks.atreides, ~techlevel.medium
+	Valued:
+		Cost: 160
+	Tooltip:
+		Name: Grenadier
+		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+	Selectable:
+		Bounds: 12,17,0,0
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 53
+	Armament:
+		Weapon: Grenade
+		LocalOffset: 0,0,555
+		FireDelay: 15
+	AttackFrontal:
+	TakeCover:
+	RenderInfantry:
+		IdleAnimations: idle
+	Explodes:
+		Weapon: UnitExplodeSmall
+		Chance: 100
+	AttractsWorms:
+		Intensity: 180
+
+sardaukar:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 80
+		Prerequisites: ~barracks.harkonnen, palace, ~techlevel.high
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Sardaukar
+		Description: Elite asssault infantry\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
+	Selectable:
+		Bounds: 12,17,0,0
+		Voice: GenericVoice
+	Health:
+		HP: 100
+	Mobile:
+		Speed: 42
+	RevealsShroud:
+		Range: 6c0
+	TakeCover:
+	Armament@PRIMARY:
+		Weapon: Vulcan
+	Armament@SECONDARY:
+		Weapon: Slung
+	AttackFrontal:
+	AttractsWorms:
+		Intensity: 180
+
+saboteur:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 100
+		Prerequisites: ~barracks.ordos, palace, ~techlevel.high
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Saboteur
+		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
+	Selectable:
+		Voice: SaboteurVoice
+		Bounds: 12,17,0,0
+	Health:
+		HP: 100
+	Mobile:
+		Speed: 64
+	RevealsShroud:
+		Range: 7c0
+	C4Demolition:
+		C4Delay: 45
+	-AutoTarget:
+	AttractsWorms:
+		Intensity: 120

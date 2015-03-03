@@ -252,7 +252,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public void RefreshIcons()
 		{
 			icons = new Dictionary<Rectangle, ProductionIcon>();
-			if (CurrentQueue == null)
+			var producer = CurrentQueue != null ? CurrentQueue.MostLikelyProducer() : default(TraitPair<Production>);
+			if (CurrentQueue == null || producer.Trait == null)
 			{
 				if (DisplayedIconCount != 0)
 				{
@@ -268,13 +269,16 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var ks = Game.Settings.Keys;
 			var rb = RenderBounds;
+			var race = producer.Trait.Race;
 
 			foreach (var item in AllBuildables.Skip(IconRowOffset * Columns).Take(MaxIconRowOffset * Columns))
 			{
 				var x = DisplayedIconCount % Columns;
 				var y = DisplayedIconCount / Columns;
 				var rect = new Rectangle(rb.X + x * (IconSize.X + IconMargin.X), rb.Y + y * (IconSize.Y + IconMargin.Y), IconSize.X, IconSize.Y);
-				var icon = new Animation(World, RenderSimple.GetImage(item));
+
+				var rsi = item.Traits.Get<RenderSpritesInfo>();
+				var icon = new Animation(World, rsi.GetImage(item, World.Map.SequenceProvider, race));
 				icon.Play(item.Traits.Get<TooltipInfo>().Icon);
 
 				var pi = new ProductionIcon()

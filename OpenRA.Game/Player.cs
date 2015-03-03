@@ -46,10 +46,10 @@ namespace OpenRA
 		public Shroud Shroud;
 		public World World { get; private set; }
 
-		static CountryInfo ChooseCountry(World world, string name)
+		static CountryInfo ChooseCountry(World world, string name, bool requireSelectable = true)
 		{
 			var selectableCountries = world.Map.Rules.Actors["world"].Traits
-				.WithInterface<CountryInfo>().Where(c => c.Selectable)
+				.WithInterface<CountryInfo>().Where(c => !requireSelectable || c.Selectable)
 				.ToList();
 
 			return selectableCountries.FirstOrDefault(c => c.Race == name)
@@ -82,7 +82,7 @@ namespace OpenRA
 				Playable = pr.Playable;
 				Spectating = pr.Spectating;
 				botType = pr.Bot;
-				Country = ChooseCountry(world, pr.Race);
+				Country = ChooseCountry(world, pr.Race, false);
 			}
 
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });

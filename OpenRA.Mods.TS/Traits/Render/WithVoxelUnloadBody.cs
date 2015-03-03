@@ -36,7 +36,7 @@ namespace OpenRA.Mods.TS.Traits
 				() => false, () => 0);
 		}
 
-		public int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai) { return 0; }
+		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race) { return 0; }
 	}
 
 	public class WithVoxelUnloadBody : IAutoSelectionSize

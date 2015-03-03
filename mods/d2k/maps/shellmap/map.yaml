@@ -62,16 +62,16 @@ Actors:
 	Actor29: concretea
 		Location: 54,59
 		Owner: Neutral
-	Actor30: pwra
+	Actor30: power
 		Location: 54,58
 		Owner: Atreides
 	Actor31: concretea
 		Location: 54,62
 		Owner: Neutral
-	Actor32: siloa
+	Actor32: silo
 		Location: 54,62
 		Owner: Atreides
-	Actor33: guntowera
+	Actor33: guntower
 		Location: 54,63
 		Owner: Atreides
 	Actor34: siegetank
@@ -87,13 +87,13 @@ Actors:
 	Actor37: concreteb
 		Location: 50,37
 		Owner: Neutral
-	Actor38: palacec
+	Actor38: palace
 		Location: 50,37
 		Owner: Creeps
-	Actor39: barrh
+	Actor39: barracks
 		Location: 48,37
 		Owner: Creeps
-	Actor40: rockettowerh
+	Actor40: rockettower
 		Location: 46,39
 		Owner: Creeps
 	Actor41: sardaukar
@@ -108,9 +108,10 @@ Actors:
 	Entry: waypoint
 		Location: 80, 8
 		Owner: Neutral
-	AtreidesSpiceRefinery: refa
+	AtreidesSpiceRefinery: refinery
 		Location: 57,58
 		Owner: Atreides
+		FreeActor: false
 
 Smudges:
 
@@ -126,20 +127,15 @@ Rules:
 			Maximum: 1
 		LuaScript:
 			Scripts: shellmap.lua
-	REFA:
-		-FreeActor:
-	CARRYALLA:
-		-AutoCarryall:
+	carryall.scripted:
 		Helicopter:
-			CruiseAltitude: 2048
-			LandAltitude: 512
 			LandWhenIdle: True
 		Cargo:
 			Types: Vehicle
 		WithCargo:
 			DisplayTypes: Vehicle
 			LocalOffset: 0,0,-256
-	ROCKETTOWERH:
+	rockettower:
 		Power:
 			Amount: 100
 

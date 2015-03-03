@@ -26,9 +26,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string WakeLeftSequence = "wake-left";
 		public readonly string WakeRightSequence = "wake-right";
 
-		public override object Create(ActorInitializer init) { return new RenderGunboat(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderGunboat(init, this); }
 
-		public int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai)
+		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race)
 		{
 			return 2;
 		}
@@ -38,27 +38,27 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		Animation left, right;
 
-		public RenderGunboat(Actor self, RenderGunboatInfo info)
-			: base(self)
+		public RenderGunboat(ActorInitializer init, RenderGunboatInfo info)
+			: base(init, info)
 		{
-			var name = GetImage(self);
-			var facing = self.Trait<IFacing>();
-			var turret = self.TraitsImplementing<Turreted>()
+			var name = GetImage(init.Self);
+			var facing = init.Self.Trait<IFacing>();
+			var turret = init.Self.TraitsImplementing<Turreted>()
 				.First(t => t.Name == info.Turret);
 
-			left = new Animation(self.World, name, () => turret.TurretFacing);
+			left = new Animation(init.World, name, () => turret.TurretFacing);
 			left.Play(info.LeftSequence);
 			Add(info.LeftSequence, new AnimationWithOffset(left, null, () => facing.Facing > 128, 0));
 
-			right = new Animation(self.World, name, () => turret.TurretFacing);
+			right = new Animation(init.World, name, () => turret.TurretFacing);
 			right.Play(info.RightSequence);
 			Add(info.RightSequence, new AnimationWithOffset(right, null, () => facing.Facing <= 128, 0));
 
-			var leftWake = new Animation(self.World, name);
+			var leftWake = new Animation(init.World, name);
 			leftWake.PlayRepeating(info.WakeLeftSequence);
 			Add(info.WakeLeftSequence, new AnimationWithOffset(leftWake, null, () => facing.Facing > 128, -87));
 
-			var rightWake = new Animation(self.World, name);
+			var rightWake = new Animation(init.World, name);
 			rightWake.PlayRepeating(info.WakeRightSequence);
 			Add(info.WakeRightSequence, new AnimationWithOffset(rightWake, null, () => facing.Facing <= 128, -87));
 		}

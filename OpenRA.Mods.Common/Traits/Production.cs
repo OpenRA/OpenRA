@@ -24,18 +24,21 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("e.g. Infantry, Vehicles, Aircraft, Buildings")]
 		public readonly string[] Produces = { };
 
-		public virtual object Create(ActorInitializer init) { return new Production(this, init.Self); }
+		public virtual object Create(ActorInitializer init) { return new Production(init, this); }
 	}
 
 	public class Production
 	{
-		Lazy<RallyPoint> rp;
+		readonly Lazy<RallyPoint> rp;
 
 		public ProductionInfo Info;
-		public Production(ProductionInfo info, Actor self)
+		public string Race { get; private set; }
+
+		public Production(ActorInitializer init, ProductionInfo info)
 		{
 			Info = info;
-			rp = Exts.Lazy(() => self.IsDead ? null : self.TraitOrDefault<RallyPoint>());
+			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
+			Race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Country.Race;
 		}
 
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string raceVariant)
@@ -49,6 +52,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			var exitLocation = rp.Value != null ? rp.Value.Location : exit;
 			var target = Target.FromCell(self.World, exitLocation);
+
+			var bi = producee.Traits.GetOrDefault<BuildableInfo>();
+			if (bi != null && bi.ForceRace != null)
+				raceVariant = bi.ForceRace;
 
 			self.World.AddFrameEndTask(w =>
 			{
@@ -86,7 +93,6 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var notify in notifyOthers)
 					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
 
-				var bi = newUnit.Info.Traits.GetOrDefault<BuildableInfo>();
 				if (bi != null && bi.InitialActivity != null)
 					newUnit.QueueActivity(Game.CreateObject<Activity>(bi.InitialActivity));
 

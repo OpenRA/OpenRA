@@ -12,13 +12,13 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class RenderFlareInfo : RenderSimpleInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderFlare(init.Self); }
+		public override object Create(ActorInitializer init) { return new RenderFlare(init, this); }
 	}
 
 	class RenderFlare : RenderSimple
 	{
-		public RenderFlare(Actor self)
-			: base(self, () => 0)
+		public RenderFlare(ActorInitializer init, RenderFlareInfo info)
+			: base(init, info, () => 0)
 		{
 			DefaultAnimation.PlayThen("open", () => DefaultAnimation.PlayRepeating("idle"));
 		}

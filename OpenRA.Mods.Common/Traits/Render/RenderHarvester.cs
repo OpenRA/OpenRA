@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	class RenderHarvesterInfo : RenderUnitInfo, Requires<HarvesterInfo>
 	{
 		public readonly string[] ImagesByFullness = { "harv" };
-		public override object Create(ActorInitializer init) { return new RenderHarvester(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderHarvester(init, this); }
 	}
 
 	class RenderHarvester : RenderUnit, INotifyHarvesterAction
@@ -25,15 +25,15 @@ namespace OpenRA.Mods.Common.Traits
 		Harvester harv;
 		RenderHarvesterInfo info;
 
-		public RenderHarvester(Actor self, RenderHarvesterInfo info)
-			: base(self)
+		public RenderHarvester(ActorInitializer init, RenderHarvesterInfo info)
+			: base(init, info)
 		{
 			this.info = info;
-			harv = self.Trait<Harvester>();
+			harv = init.Self.Trait<Harvester>();
 
 			// HACK: Force images to be loaded up-front
 			foreach (var image in info.ImagesByFullness)
-				new Animation(self.World, image);
+				new Animation(init.World, image);
 		}
 
 		public override void Tick(Actor self)
