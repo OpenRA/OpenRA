@@ -17,10 +17,10 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Where the unit should leave the building. Multiples are allowed if IDs are added: Exit@2, ...")]
 	public class ExitInfo : TraitInfo<Exit>
 	{
-		[Desc("Offset at which that the exiting actor is spawned")]
+		[Desc("Offset at which that the exiting actor is spawned relative to the center of the producing actor.")]
 		public readonly WVec SpawnOffset = WVec.Zero;
 
-		[Desc("Cell offset where the exiting actor enters the ActorMap")]
+		[Desc("Cell offset where the exiting actor enters the ActorMap relative to the topleft cell of the producting actor.")]
 		public readonly CVec ExitCell = CVec.Zero;
 		public readonly int Facing = -1;
 
