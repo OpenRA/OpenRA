@@ -4,8 +4,13 @@
 
 -- put bin/ and lualibs/ first to avoid conflicts with included modules
 -- that may have other versions present somewhere else in path/cpath.
+local function isproc()
+  local file = io.open("/proc")
+  if file then file:close() end
+  return file ~= nil
+end
 local iswindows = os.getenv('WINDIR') or (os.getenv('OS') or ''):match('[Ww]indows')
-local islinux = not iswindows and not os.getenv('DYLD_LIBRARY_PATH') and io.open("/proc")
+local islinux = not iswindows and isproc()
 local arch = "x86" -- use 32bit by default
 local unpack = table.unpack or unpack
 
