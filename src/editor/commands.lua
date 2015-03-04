@@ -780,7 +780,8 @@ local function getOpenTabs()
   -- to keep tab order
   table.sort(opendocs, function(a,b) return (a.id < b.id) end)
 
-  local doc = ide:GetDocument(GetEditor())
+  local ed = GetEditor()
+  local doc = ed and ide:GetDocument(ed)
   return opendocs, {index = (doc and doc:GetTabIndex() or 0)}
 end
 
