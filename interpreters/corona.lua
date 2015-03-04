@@ -34,7 +34,8 @@ return {
 
     local file = GetFullPathIfExists(self:fworkdir(wfilename), 'main.lua')
     if not file then
-      DisplayOutputLn("Can't find 'main.lua' file in the current project folder.")
+      DisplayOutputLn(("Can't find 'main.lua' file in the current project folder: '%s'.")
+        :format(self:fworkdir(wfilename)))
       return
     end
 
