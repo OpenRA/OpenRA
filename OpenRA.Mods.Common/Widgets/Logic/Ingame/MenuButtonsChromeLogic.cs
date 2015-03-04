@@ -55,9 +55,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (lp != null)
 				{
-					Action<Player> startBlinking = player =>
+					Action<Player, bool> startBlinking = (player, inhibitAnnouncement) =>
 					{
-						if (player == world.LocalPlayer)
+						if (!inhibitAnnouncement && player == world.LocalPlayer)
 							blinking = true;
 					};
 

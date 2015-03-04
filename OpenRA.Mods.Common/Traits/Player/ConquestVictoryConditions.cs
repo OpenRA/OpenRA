@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.Owner.WinState != WinState.Undefined || self.Owner.NonCombatant) return;
 
 			if (objectiveID < 0)
-				objectiveID = mo.Add(self.Owner, "Destroy all opposition!");
+				objectiveID = mo.Add(self.Owner, "Destroy all opposition!", ObjectiveType.Primary, true);
 
 			if (!self.Owner.NonCombatant && self.Owner.HasNoRequiredUnits())
 				mo.MarkFailed(self.Owner, objectiveID);

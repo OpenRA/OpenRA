@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (player.WinState != WinState.Undefined || player.NonCombatant) return;
 
 			if (objectiveID < 0)
-				objectiveID = mo.Add(player, "Hold all the strategic positions for a specified time!");
+				objectiveID = mo.Add(player, "Hold all the strategic positions for a specified time!", ObjectiveType.Primary, true);
 
 			if (!self.Owner.NonCombatant && self.Owner.HasNoRequiredUnits())
 				mo.MarkFailed(self.Owner, objectiveID);
