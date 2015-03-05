@@ -75,6 +75,9 @@ namespace OpenRA.Mods.Common.Traits
 				 || self.Owner.Stances[actor.Actor.Owner] != Stance.Enemy)
 					continue;
 
+				if (actor.Actor.IsDead || !actor.Actor.IsInWorld)
+					continue;
+
 				// The actor is not currently visible
 				if (!self.Owner.Shroud.IsVisible(actor.Actor))
 					continue;
