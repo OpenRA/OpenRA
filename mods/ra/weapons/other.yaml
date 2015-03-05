@@ -1,0 +1,297 @@
+FireballLauncher:
+	ReloadDelay: 65
+	Range: 5c0
+	Burst: 2
+	BurstDelay: 20
+	Projectile: Bullet
+		Speed: 204
+		Trail: fb2
+		Image: FB1
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 150
+		DeathType: 5
+		Versus:
+			None: 90
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
+		Explosion: napalm
+		ImpactSound: firebl3.aud
+
+Flamer:
+	ReloadDelay: 50
+	Range: 5c0
+	Burst: 15
+	BurstDelay: 1
+	Projectile: Bullet
+		Speed: 170
+		Trail: fb4
+		Image: fb3
+		Angle: 62
+		Inaccuracy: 853
+	Warhead@1Dam: SpreadDamage
+		Spread: 341
+		Damage: 8
+		DeathType: 5
+		Versus:
+			None: 90
+			Wood: 100
+			Light: 60
+			Heavy: 25
+			Concrete: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
+		Explosion: small_napalm
+		ImpactSound: firebl3.aud
+
+Napalm:
+	ReloadDelay: 20
+	Range: 4c512
+	Projectile: Bullet
+		Image: BOMBLET
+		Speed: 85
+		High: yes
+	Warhead@1Dam: SpreadDamage
+		Spread: 170
+		Damage: 100
+		DeathType: 5
+		Versus:
+			None: 90
+			Light: 60
+			Heavy: 25
+			Concrete: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
+		Explosion: napalm
+		ImpactSound: firebl3.aud
+		InvalidImpactTypes: Water
+	Warhead@4Eff: CreateEffect
+		Explosion: med_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
+
+Grenade:
+	ReloadDelay: 60
+	Range: 4c0
+	Report: grenade1.aud
+	Projectile: Bullet
+		Speed: 136
+		High: true
+		Angle: 62
+		Inaccuracy: 554
+		Image: BOMB
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 60
+		DeathType: 3
+		Versus:
+			None: 50
+			Wood: 100
+			Light: 25
+			Heavy: 5
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: med_explosion
+		ImpactSound: kaboom25.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: small_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
+
+DepthCharge:
+	ReloadDelay: 60
+	Range: 5c0
+	ValidTargets: Underwater
+	Projectile: Bullet
+		Speed: 85
+		Image: BOMB
+		Angle: 62
+		High: true
+		Inaccuracy: 128
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 80
+		DeathType: 4
+		ValidTargets: Underwater
+		Versus:
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: large_splash
+		ImpactSound: h2obomb2.aud
+	Warhead@4EffHit: CreateEffect
+		Explosion: small_explosion
+		ImpactSound: kaboom15.aud
+		ValidImpactTypes: WaterHit
+
+TeslaZap:
+	ReloadDelay: 3
+	Charges: true
+	Range: 8c512
+	Report: TESLA1.AUD
+	Projectile: TeslaZap
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 100
+		DeathType: 6
+		Versus:
+			None: 1000
+			Wood: 60
+
+PortaTesla:
+	ReloadDelay: 70
+	Range: 3c512
+	Report: TESLA1.AUD
+	Charges: yes
+	Projectile: TeslaZap
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 45
+		DeathType: 6
+		Versus:
+			None: 1000
+
+TTankZap:
+	ReloadDelay: 120
+	Range: 7c0
+	Report: TESLA1.AUD
+	Charges: yes
+	Projectile: TeslaZap
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 100
+		DeathType: 6
+		Versus:
+			None: 1000
+
+DogJaw:
+	ValidTargets: Infantry
+	ReloadDelay: 10
+	Range: 3c0
+	Report: DOGG5P.AUD
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 100
+		DeathType: 1
+		ValidTargets: Infantry
+		Versus:
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
+
+Heal:
+	ReloadDelay: 80
+	Range: 4c0
+	Report: HEAL2.AUD
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: -50
+		DeathType: 1
+		Versus:
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
+
+Repair:
+	ReloadDelay: 80
+	Range: 4c0
+	Report: FIXIT1.AUD
+	ValidTargets: Repair
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: -20
+		DeathType: 1
+		ValidTargets: Repair
+		Versus:
+			None: 0
+			Wood: 0
+			Light: 100
+			Heavy: 100
+			Concrete: 0
+
+Crush:
+	Warhead@1Dam: SpreadDamage
+		Damage: 100
+	Warhead@2Eff: CreateEffect
+		ImpactSound: squishy2.aud
+
+Demolish:
+	Warhead@1Dam: SpreadDamage
+	Warhead@2Eff: CreateEffect
+		Explosion: building
+		ImpactSound: kaboom25.aud
+
+Claw:
+	ReloadDelay: 30
+	Range: 1c0
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 33
+		DeathType: 1
+		Versus:
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
+
+Mandible:
+	ReloadDelay: 10
+	Range: 1c0
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 60
+		DeathType: 1
+		Versus:
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
+
+MADTankThump:
+	InvalidTargets: MADTank
+	Warhead@1Dam: HealthPercentageDamage
+		Spread: 7c0
+		Damage: 1
+		InvalidTargets: MADTank
+		Versus:
+			None: 0
+
+MADTankDetonate:
+	InvalidTargets: MADTank
+	Warhead@1Dam: HealthPercentageDamage
+		Spread: 7c0
+		Damage: 19
+		InvalidTargets: MADTank
+		Versus:
+			None: 0
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+		Size: 7,6
+	Warhead@3Eff: CreateEffect
+		Explosion: med_explosion
+		ImpactSound: mineblo1.aud

@@ -115,7 +115,12 @@ ChromeLayout:
 	./mods/ra/chrome/confirmation-dialogs.yaml
 
 Weapons:
-	./mods/ra/weapons.yaml
+	./mods/ra/weapons/explosions.yaml
+	./mods/ra/weapons/largecaliber.yaml
+	./mods/ra/weapons/missiles.yaml
+	./mods/ra/weapons/other.yaml
+	./mods/ra/weapons/smallcaliber.yaml
+	./mods/ra/weapons/superweapons.yaml
 	
 Voices:
 	./mods/ra/audio/voices.yaml

@@ -1,0 +1,339 @@
+Colt45:
+	ReloadDelay: 5
+	Range: 7c0
+	Report: GUN5.AUD
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 50
+		DeathType: 2
+		Versus:
+			None: 100
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
+	Warhead@2Eff: CreateEffect
+		Explosion: piff
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piff
+		ValidImpactTypes: Water
+
+ZSU-23:
+	Burst: 2
+	BurstDelay: 5
+	ReloadDelay: 0
+	Range: 10c0
+	Report: AACANON3.AUD
+	ValidTargets: Air
+	Projectile: Bullet
+		Speed: 3c340
+		High: true
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 12
+		ValidTargets: Air
+		Versus:
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
+	Warhead@2Eff: CreateEffect
+		Explosion: small_explosion_air
+
+Vulcan:
+	ReloadDelay: 30
+	Range: 6c0
+	Report: GUN13.AUD
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam_1: SpreadDamage
+		Spread: 128
+		Damage: 10
+		DeathType: 2
+		Versus:
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+	Warhead@2Eff_1: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@2Eff_1Water: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
+	Warhead@3Dam_2: SpreadDamage
+		Spread: 128
+		Damage: 10
+		DeathType: 2
+		Delay: 2
+		Versus:
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+	Warhead@4Eff_2: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+		Delay: 2
+	Warhead@4Eff_2Water: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
+		Delay: 2
+	Warhead@5Dam_3: SpreadDamage
+		Spread: 128
+		Damage: 10
+		DeathType: 2
+		Delay: 4
+		Versus:
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+	Warhead@6Eff_3: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+		Delay: 4
+	Warhead@6Eff_3Water: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
+		Delay: 4
+	Warhead@7Dam_4: SpreadDamage
+		Spread: 128
+		Damage: 10
+		DeathType: 2
+		Delay: 6
+		Versus:
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+	Warhead@8Eff_4: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+		Delay: 6
+	Warhead@8Eff_4Water: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
+		Delay: 6
+	Warhead@9Dam_5: SpreadDamage
+		Spread: 128
+		Damage: 10
+		DeathType: 2
+		Delay: 8
+		Versus:
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+	Warhead@10Eff_5: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+		Delay: 8
+	Warhead@10Eff_5Water: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
+		Delay: 8
+	Warhead@11Dam_6: SpreadDamage
+		Spread: 128
+		Damage: 10
+		DeathType: 2
+		Delay: 10
+		Versus:
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+	Warhead@12Eff_6: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+		Delay: 10
+	Warhead@12Eff_6Water: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
+		Delay: 10
+
+ChainGun:
+	ReloadDelay: 10
+	Range: 5c0
+	MinRange: 1c0
+	Report: GUN13.AUD
+	Projectile: Bullet
+		Speed: 1c682
+		High: true
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 30
+		DeathType: 2
+		Versus:
+			None: 120
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
+
+ChainGun.Yak:
+	ReloadDelay: 3
+	Range: 5c0
+	MinRange: 3c0
+	Report: GUN13.AUD
+	Projectile: Bullet
+		Speed: 1c682
+		High: true
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 40
+		DeathType: 2
+		Versus:
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
+
+Pistol:
+	ReloadDelay: 7
+	Range: 3c0
+	Report: GUN27.AUD
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 1
+		DeathType: 2
+		Versus:
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+	Warhead@2Eff: CreateEffect
+		Explosion: piff
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piff
+		ValidImpactTypes: Water
+
+M1Carbine:
+	ReloadDelay: 20
+	Range: 5c0
+	Report: GUN11.AUD
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 15
+		DeathType: 2
+		Versus:
+			Wood: 25
+			Light: 30
+			Heavy: 10
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
+
+M60mg:
+	ReloadDelay: 30
+	Range: 4c0
+	Report: PILLBOX1.AUD
+	Burst: 5
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 15
+		DeathType: 2
+		Versus:
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
+
+SilencedPPK:
+	ReloadDelay: 80
+	Range: 2c512
+	Report: silppk.aud
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 150
+		DeathType: 2
+		Versus:
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
+
+FLAK-23:
+	ReloadDelay: 10
+	Range: 8c0
+	Report: AACANON3.AUD
+	ValidTargets: Air, Ground, Water
+	Projectile: Bullet
+		Speed: 1c682
+		High: true
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 20
+		ValidTargets: Air, Ground, Water
+		Versus:
+			None: 40
+			Wood: 10
+			Light: 60
+			Heavy: 10
+			Concrete: 20
+	Warhead@2Eff: CreateEffect
+		Explosion: small_explosion
+		InvalidImpactTypes: Air, AirHit, Water
+	Warhead@3EffAir: CreateEffect
+		Explosion: small_explosion_air
+		ValidImpactTypes: Air, AirHit
+	Warhead@4EffWater: CreateEffect
+		Explosion: small_splash
+		ValidImpactTypes: Water
+
+Sniper:
+	Report: GUN5.AUD
+	ReloadDelay: 70
+	Range: 10c0
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 140
+		DeathType: 2
+		Versus:
+			None: 100
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
