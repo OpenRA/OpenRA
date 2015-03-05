@@ -36,6 +36,7 @@ Speech:
 		EnemyUnitsApproaching: ENEMY
 		UnitRepaired: GANEW
 		CannotDeploy: DPLOY
+		Upgrading: UPGRD
 
 Sounds:
 	DefaultVariant: .WAV
