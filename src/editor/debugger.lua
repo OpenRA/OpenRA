@@ -637,10 +637,11 @@ debugger.listen = function(start)
             .." "..TR("Compilation error")
             ..":\n"..err)
           return debugger.terminate()
-        elseif options.runstart and not debugger.scratchpad
-        and stoppedAtBreakpoint(file, line) then
-          activateDocument(file, line)
-          options.runstart = false
+        elseif options.runstart and not debugger.scratchpad then
+          if stoppedAtBreakpoint(file, line) then
+            activateDocument(file, line)
+            options.runstart = false
+          end
         elseif file and line then
           DisplayOutputLn(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
             :format(file, line))
