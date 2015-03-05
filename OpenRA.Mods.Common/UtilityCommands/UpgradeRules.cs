@@ -829,6 +829,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "AmmoPool";
 				}
 
+				if (engineVersion < 20150326)
+				{
+					// Rename BlocksBullets to BlocksProjectiles
+					if (node.Key == "BlocksBullets")
+						node.Key = "BlocksProjectiles";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
@@ -1166,6 +1173,51 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Nodes.RemoveAll(n => n.Key == "PerCellDamage");
 						Console.WriteLine("The 'PerCellDamage' warhead has been removed.");
 						Console.WriteLine("Please use the 'SpreadDamage' warhead instead.");
+					}
+				}
+
+				if (engineVersion < 20150326)
+				{
+					// Remove TurboBoost from missiles
+					if (depth == 1 && node.Key == "Projectile" && node.Value.Nodes.Exists(n => n.Key == "TurboBoost"))
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key == "TurboBoost");
+						Console.WriteLine("'TurboBoost' has been removed.");
+						Console.WriteLine("If you want to reproduce its behavior, create a duplicate");
+						Console.WriteLine("of the weapon in question, change it to be anti-air only,");
+						Console.WriteLine("increase its speed, make the original weapon anti-ground only,");
+						Console.WriteLine("and add the new weapon as additional armament to the actor.");
+					}
+
+					// Rename ROT to RateOfTurn
+					if (depth == 2 && node.Key == "ROT")
+						node.Key = "RateOfTurn";
+
+					// Rename High to Blockable
+					if (depth == 2 && parentKey == "Projectile" && node.Key == "High")
+					{
+						var highField = node.Value.Value != null ? FieldLoader.GetValue<bool>("High", node.Value.Value) : false;
+						var blockable = !highField;
+
+						node.Value.Value = blockable.ToString().ToLowerInvariant();
+						node.Key = "Blockable";
+					}
+
+					// Move Palette from weapon to projectiles
+					if (depth == 0)
+					{
+						var weapons = node.Value.Nodes;
+						var palette = weapons.FirstOrDefault(p => p.Key == "Palette");
+						var projectile = weapons.FirstOrDefault(r => r.Key == "Projectile");
+
+						if (palette != null)
+						{
+							var projectileFields = projectile.Value.Nodes;
+							var paletteName = palette.Value.Value != null ? FieldLoader.GetValue<string>("Palette", palette.Value.Value) : "effect";
+
+							projectileFields.Add(new MiniYamlNode("Palette", paletteName.ToString()));
+							weapons.Remove(palette);
+						}
 					}
 				}
 
