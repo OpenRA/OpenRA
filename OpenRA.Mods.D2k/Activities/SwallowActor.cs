@@ -115,11 +115,7 @@ namespace OpenRA.Mods.D2k.Activities
 				if (self.World.SharedRandom.Next() % 100 <= sandworm.Info.ChanceToDisappear)
 				{
 					self.CancelActivity();
-					self.World.AddFrameEndTask(w => w.Remove(self));
-
-					var wormManager = self.World.WorldActor.TraitOrDefault<WormManager>();
-					if (wormManager != null)
-						wormManager.DecreaseWormCount();
+					self.World.AddFrameEndTask(w => self.Kill(self));
 				}
 				else
 					renderUnit.DefaultAnimation.ReplaceAnim("idle");
