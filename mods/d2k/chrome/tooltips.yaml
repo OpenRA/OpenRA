@@ -49,6 +49,11 @@ Background@WORLD_TOOLTIP:
 			Y: 25
 			Height: 23
 			Font: Bold
+		Label@EXTRA:
+			X: 7
+			Y: 55
+			Height: 4
+			Font: Bold
 
 Background@SPAWN_TOOLTIP:
 	Logic: SpawnSelectorTooltipLogic

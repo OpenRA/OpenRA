@@ -136,6 +136,12 @@ namespace OpenRA.Traits
 		bool IsOwnerRowVisible { get; }
 	}
 
+	public interface IProvideTooltipInfo
+	{
+		bool IsTooltipVisible(Player forPlayer);
+		string TooltipText { get; }
+	}
+
 	public interface IDisabledTrait { bool IsTraitDisabled { get; } }
 	public interface IDisable { bool Disabled { get; } }
 	public interface IExplodeModifier { bool ShouldExplode(Actor self); }
