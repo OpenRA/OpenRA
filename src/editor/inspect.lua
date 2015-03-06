@@ -203,13 +203,13 @@ local function analyzeProgram(editor)
   local filePath = doc:GetFilePath() or doc:GetFileName()
   local warn, err = M.warnings_from_string(editorText, filePath)
   if err then -- report compilation error
-    DisplayOutput((": not completed.\n%s\n"):format(cleanError(err)))
+    DisplayOutputLn((": not completed.\n%s"):format(cleanError(err)))
     return false
   end
 
-  DisplayOutput((": %s warning%s.\n")
+  DisplayOutputLn((": %s warning%s.")
     :format(#warn > 0 and #warn or 'no', #warn == 1 and '' or 's'))
-  DisplayOutputNoMarker(table.concat(warn, "\n") .. "\n")
+  DisplayOutputNoMarker(table.concat(warn, "\n") .. (#warn > 0 and "\n" or ""))
 
   return true -- analyzed ok
 end
