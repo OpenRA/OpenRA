@@ -156,6 +156,11 @@ namespace OpenRA.Widgets
 			return RenderBounds.Contains(mi.Location) && Skippable;
 		}
 
+		public override string GetCursor(int2 pos)
+		{
+			return null;
+		}
+
 		public void Play()
 		{
 			PlayThen(() => { });
