@@ -39,6 +39,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var singleHeight = widget.Get("SINGLE_HEIGHT").Bounds.Height;
 			var doubleHeight = widget.Get("DOUBLE_HEIGHT").Bounds.Height;
+			var extraHeightOnDouble = extras.Bounds.Y;
+			var extraHeightOnSingle = extraHeightOnDouble - (doubleHeight - singleHeight);
 
 			tooltipContainer.BeforeRender = () =>
 			{
@@ -114,6 +116,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (extraText != "")
 				{
 					widget.Bounds.Height += font.Measure(extraText).Y + extras.Bounds.Height;
+					if (showOwner)
+						extras.Bounds.Y = extraHeightOnDouble;
+					else
+						extras.Bounds.Y = extraHeightOnSingle;
 				}
 			};
 
