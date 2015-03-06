@@ -3,7 +3,6 @@
 ---------------------------------------------------------
 
 local M, LA, LI, T = {}
-local FAST = true
 
 local function init()
   if LA then return end
@@ -16,11 +15,6 @@ local function init()
   LA = require "luainspect.ast"
   LI = require "luainspect.init"
   T = require "luainspect.types"
-
-  if FAST then
-    LI.eval_comments = function () end
-    LI.infer_values = function () end
-  end
 end
 
 function M.pos2line(pos)
@@ -33,13 +27,20 @@ function M.warnings_from_string(src, file)
   local ast, err, linenum, colnum = LA.ast_from_string(src, file)
   if not ast and err then return nil, err, linenum, colnum end
 
-  if FAST then
-    LI.inspect(ast, nil, src)
-    LA.ensure_parents_marked(ast)
-  else
+  if ide.config.staticanalyzer.infervalue then
     local tokenlist = LA.ast_to_tokenlist(ast, src)
     LI.inspect(ast, tokenlist, src)
     LI.mark_related_keywords(ast, tokenlist, src)
+  else
+    -- stub out LI functions that depend on tokenlist,
+    -- which is not built in the "fast" mode
+    local ec, iv = LI.eval_comments, LI.infer_values
+    LI.eval_comments, LI.infer_values = function() end, function() end
+
+    LI.inspect(ast, nil, src)
+    LA.ensure_parents_marked(ast)
+
+    LI.eval_comments, LI.infer_values = ec, iv
   end
 
   local globinit = {}
@@ -134,9 +135,10 @@ function M.show_warnings(top_ast, globinit)
         end
       end
     end
-    -- added check for FAST as ast.seevalue relies on value evaluation,
+    -- added check for "fast" mode as ast.seevalue relies on value evaluation,
     -- which is very slow even on simple and short scripts
-    if not FAST and ast.isfield and not(known(ast.seevalue.value) and ast.seevalue.value ~= nil) then
+    if ide.config.staticanalyzer.infervalue and ast.isfield
+    and not(known(ast.seevalue.value) and ast.seevalue.value ~= nil) then
       if not fieldseen[name] then
         fieldseen[name] = true
         local parent = ast.parent

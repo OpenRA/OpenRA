@@ -94,6 +94,9 @@ ide = {
     commandbar = {
       prefilter = 250, -- number of records after which to apply filtering
     },
+    staticanalyzer = {
+      infervalue = false, -- off by default as it's a slower mode
+    },
 
     toolbar = {
       icons = {},
