@@ -144,7 +144,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			colorPreview = lobby.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
 			colorPreview.Color = Game.Settings.Player.Color;
 
-			countries.Add("random", new LobbyCountry { Name = "Any" });
 			foreach (var c in modRules.Actors["world"].Traits.WithInterface<CountryInfo>().Where(c => c.Selectable))
 				countries.Add(c.Race, new LobbyCountry { Name = c.Name, Side = c.Side, Description = c.Description });
 

@@ -94,6 +94,10 @@ World:
 		OverrideFullShroud: full
 		OverrideFullFog: full
 		ShroudBlend: Multiply
+	Country@Random:
+		Name: Any
+		Race: Random
+		RandomRaceMembers: atreides, harkonnen, ordos
 	Country@Atreides:
 		Name: Atreides
 		Race: atreides

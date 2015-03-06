@@ -81,6 +81,10 @@ World:
 		FogVariants: typea, typeb, typec, typed
 		OverrideFullShroud: full
 		OverrideFullFog: full
+	Country@Random:
+		Name: Any
+		Race: Random
+		RandomRaceMembers: gdi, nod
 	Country@gdi:
 		Name: GDI
 		Race: gdi
