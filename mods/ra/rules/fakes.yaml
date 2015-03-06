@@ -155,6 +155,8 @@ PDOF:
 		Dimensions: 2,2
 	RenderBuilding:
 		Image: PDOX
+	Bib:
+		HasMinibib: Yes
 	Valued:
 		Cost: 150
 
