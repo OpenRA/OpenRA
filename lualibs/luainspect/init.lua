@@ -703,7 +703,16 @@ function M.infer_values(top_ast, tokenlist, src, report)
       if #iter_ast == 1 and iter_ast[1].tag == 'Call' and iter_ast[1][1].value == ipairs then
         for i, var_ast in ipairs(varlist_ast) do
           if i == 1 then set_value(var_ast, T.number)
-          elseif i == 2 then set_value(var_ast, T.universal)
+          -- handle the type of the value as the type of the first element
+          -- in the table that is a parameter for ipairs
+          elseif i == 2 then
+            local t_ast = iter_ast[1][2]
+            local value = T.universal
+            if (known(t_ast.value) or T.istabletype[t_ast.value]) then
+              local ok; ok, value = pzcall(tindex, {t_ast, {tag='Number', 1}}, t_ast.value, 1)
+              if not ok then value = T.error(t_ast.value) end
+            end
+            set_value(var_ast, value)
           else set_value(var_ast, nil) end
         end
       elseif #iter_ast == 1 and iter_ast[1].tag == 'Call' and iter_ast[1][1].value == pairs then
