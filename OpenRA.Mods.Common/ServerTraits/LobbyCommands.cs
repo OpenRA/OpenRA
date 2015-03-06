@@ -270,7 +270,7 @@ namespace OpenRA.Mods.Common.Server
 								Name = botType,
 								Bot = botType,
 								Slot = parts[0],
-								Country = "random",
+								Race = "Random",
 								SpawnPoint = 0,
 								Team = 0,
 								State = Session.ClientState.NotReady,
@@ -738,7 +738,7 @@ namespace OpenRA.Mods.Common.Server
 						if (server.LobbyInfo.Slots[targetClient.Slot].LockRace)
 							return true;
 
-						targetClient.Country = parts[1];
+						targetClient.Race = parts[1];
 						server.SyncLobbyClients();
 						return true;
 					}

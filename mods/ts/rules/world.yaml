@@ -79,6 +79,10 @@ World:
 	VoxelNormalsPalette@normals:
 		Name: normals
 		Type: TiberianSun
+	Country@Random:
+		Name: Any
+		Race: Random
+		RandomRaceMembers: gdi, nod
 	Country@0:
 		Name: GDI
 		Race: gdi
