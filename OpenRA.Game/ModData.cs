@@ -38,6 +38,8 @@ namespace OpenRA
 			Languages = new string[0];
 			Manifest = new Manifest(mod);
 			ObjectCreator = new ObjectCreator(Manifest);
+			Manifest.LoadCustomData(ObjectCreator);
+
 			if (useLoadScreen)
 			{
 				LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
