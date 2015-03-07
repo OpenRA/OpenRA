@@ -11,6 +11,7 @@
 using System;
 using System.IO;
 using OpenRA.FileFormats;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Scripting

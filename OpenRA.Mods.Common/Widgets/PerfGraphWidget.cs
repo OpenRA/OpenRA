@@ -11,8 +11,9 @@
 using System.Drawing;
 using System.Linq;
 using OpenRA.Support;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets
+namespace OpenRA.Mods.Common.Widgets
 {
 	public class PerfGraphWidget : Widget
 	{
