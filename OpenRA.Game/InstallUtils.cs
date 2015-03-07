@@ -18,7 +18,7 @@ using OpenRA.FileSystem;
 
 namespace OpenRA
 {
-	public class InstallData
+	public class ContentInstaller : IGlobalModData
 	{
 		public readonly string MenuWidget = null;
 		public readonly string MusicMenuWidget = null;

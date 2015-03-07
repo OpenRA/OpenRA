@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			// Check whether the mod content is installed
 			// TODO: The installation code has finally been beaten into shape, so we can
 			// finally move it all into the planned "Manage Content" panel in the modchooser mod.
-			var installData = Game.ModData.Manifest.ContentInstaller;
+			var installData = Game.ModData.Manifest.Get<ContentInstaller>();
 			var installModContent = !installData.TestFiles.All(f => GlobalFileSystem.Exists(f));
 			var installModMusic = args != null && args.Contains("Install.Music");
 
