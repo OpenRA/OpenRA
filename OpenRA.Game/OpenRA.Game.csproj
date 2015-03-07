@@ -275,7 +275,6 @@
     <Compile Include="Map\TileSet.cs" />
     <Compile Include="FieldLoader.cs" />
     <Compile Include="FieldSaver.cs" />
-    <Compile Include="InstallUtils.cs" />
     <Compile Include="Manifest.cs" />
     <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="FileFormats\ImaAdpcmLoader.cs" />

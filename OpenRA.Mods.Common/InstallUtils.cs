@@ -16,9 +16,9 @@ using ICSharpCode.SharpZipLib;
 using ICSharpCode.SharpZipLib.Zip;
 using OpenRA.FileSystem;
 
-namespace OpenRA
+namespace OpenRA.Mods.Common
 {
-	public class InstallData
+	public class ContentInstaller : IGlobalModData
 	{
 		public readonly string MenuWidget = null;
 		public readonly string MusicMenuWidget = null;

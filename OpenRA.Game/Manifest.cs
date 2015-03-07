@@ -18,6 +18,7 @@ using OpenRA.Primitives;
 namespace OpenRA
 {
 	public enum TileShape { Rectangle, Diamond }
+	public interface IGlobalModData { }
 
 	// Describes what is to be loaded in order to run a mod
 	public class Manifest
@@ -33,7 +34,6 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
 		public readonly MiniYaml LoadScreen;
 		public readonly MiniYaml LobbyDefaults;
-		public readonly InstallData ContentInstaller;
 		public readonly Dictionary<string, Pair<string, int>> Fonts;
 		public readonly Size TileSize = new Size(24, 24);
 		public readonly TileShape TileShape = TileShape.Rectangle;
@@ -54,10 +54,19 @@ namespace OpenRA
 		[Desc("Default subcell index used if SubCellInit is absent", "0 - full cell, 1 - first sub-cell")]
 		public readonly int SubCellDefaultIndex = 3;
 
+		readonly string[] reservedModuleNames = { "Metadata", "Folders", "MapFolders", "Packages", "Rules",
+			"Sequences", "VoxelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
+			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions",
+			"ServerTraits", "LoadScreen", "LobbyDefaults", "Fonts", "TileSize",
+			"TileShape", "SubCells", "SupportsMapsFrom", "SpriteFormats" };
+
+		readonly TypeDictionary modules = new TypeDictionary();
+		readonly Dictionary<string, MiniYaml> yaml;
+
 		public Manifest(string mod)
 		{
 			var path = Platform.ResolvePath(".", "mods", mod, "mod.yaml");
-			var yaml = new MiniYaml(null, MiniYaml.FromFile(path)).ToDictionary();
+			yaml = new MiniYaml(null, MiniYaml.FromFile(path)).ToDictionary();
 
 			Mod = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
 			Mod.Id = mod;
@@ -85,9 +94,6 @@ namespace OpenRA
 			ServerTraits = YamlList(yaml, "ServerTraits");
 			LoadScreen = yaml["LoadScreen"];
 			LobbyDefaults = yaml["LobbyDefaults"];
-
-			if (yaml.ContainsKey("ContentInstaller"))
-				ContentInstaller = FieldLoader.Load<InstallData>(yaml["ContentInstaller"]);
 
 			Fonts = yaml["Fonts"].ToDictionary(my =>
 				{
@@ -133,6 +139,23 @@ namespace OpenRA
 				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", yaml["SpriteFormats"].Value);
 		}
 
+		public void LoadCustomData(ObjectCreator oc)
+		{
+			foreach (var kv in yaml)
+			{
+				if (reservedModuleNames.Contains(kv.Key))
+					continue;
+
+				var t = oc.FindType(kv.Key);
+				if (t == null || !typeof(IGlobalModData).IsAssignableFrom(t))
+					throw new InvalidDataException("`{0}` is not a valid mod manifest entry.".F(kv.Key));
+
+				var module = oc.CreateObject<IGlobalModData>(kv.Key);
+				FieldLoader.Load(module, kv.Value);
+				modules.Add(module);
+			}
+		}
+
 		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key, bool parsePaths = false)
 		{
 			if (!yaml.ContainsKey(key))
@@ -151,6 +174,20 @@ namespace OpenRA
 			var inner = yaml[key].ToDictionary(keySelector, my => my.Value);
 
 			return new ReadOnlyDictionary<string, string>(inner);
+		}
+
+		public T Get<T>() where T : IGlobalModData
+		{
+			var module = modules.GetOrDefault<T>();
+
+			// Lazily create the default values if not explicitly defined.
+			if (module == null)
+			{
+				module = (T)Game.ModData.ObjectCreator.CreateBasic(typeof(T));
+				modules.Add(module);
+			}
+
+			return module;
 		}
 	}
 }
