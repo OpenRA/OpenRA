@@ -121,10 +121,6 @@ ChromeLayout:
 	./mods/cnc/chrome/assetbrowser.yaml
 	./mods/cnc/chrome/missionbrowser.yaml
 
-Movies:
-	./mods/cnc/movies-gdi.yaml
-	./mods/cnc/movies-nod.yaml
-
 Voices:
 	./mods/cnc/audio/voices.yaml
 
