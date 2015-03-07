@@ -93,6 +93,7 @@ namespace OpenRA.Widgets
 		public void UpdateMouseover()
 		{
 			TooltipType = WorldTooltipType.None;
+			ActorTooltipExtra = null;
 			var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 			if (!world.Map.Contains(cell))
 				return;
@@ -122,7 +123,8 @@ namespace OpenRA.Widgets
 			if (frozen != null)
 			{
 				FrozenActorTooltip = frozen;
-				ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>();
+				if (frozen.Actor != null)
+					ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>();
 				TooltipType = WorldTooltipType.FrozenActor;
 			}
 		}
