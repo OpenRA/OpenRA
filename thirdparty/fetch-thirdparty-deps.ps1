@@ -53,7 +53,6 @@ if (!(Test-Path "SharpFont.dll"))
 	./nuget.exe install SharpFont -Version 2.5.0.1
 	cp SharpFont.2.5.0.1/lib/net20/SharpFont* .
 	cp SharpFont.2.5.0.1/Content/SharpFont.dll.config .
-	cp SharpFont.2.5.0.1/Content/freetype6.dll ./windows/
 	rmdir SharpFont.2.5.0.1 -Recurse
 }
 
@@ -90,12 +89,21 @@ if (!(Test-Path "windows/lua51.dll"))
 	rmdir lua51.redist.5.1.5 -Recurse
 }
 
+if (!(Test-Path "windows/freetype6.dll"))
+{
+	echo "Fetching FreeType2 from NuGet."
+	./nuget.exe install freetype2.redist -Version 2.4.11.3
+	cp freetype2.redist.2.4.11.3/bin/win32/zlib1.dll ./windows/zlib1.dll
+	cp freetype2.redist.2.4.11.3/bin/win32/freetype6.dll ./windows/freetype6.dll
+	rmdir freetype2.redist.2.4.11.3 -Recurse
+}
+
 if (!(Test-Path "windows/zlib1.dll"))
 {
 	echo "Fetching ZLib from NuGet."
-	./nuget.exe install zlib.redist -Version 1.2.8.7
-	cp zlib.redist.1.2.8.7/build/native/bin/v120/Win32/Release/dynamic/stdcall/zlib.dll windows/zlib1.dll
-	rmdir zlib.redist.1.2.8.7 -Recurse
+	./nuget.exe install freetype2.redist -Version 2.4.11.3
+	cp freetype2.redist.2.4.11.3/bin/win32/zlib1.dll ./windows/zlib1.dll
+	rmdir freetype2.redist.2.4.11.3 -Recurse
 }
 
 if (!(Test-Path "windows/soft_oal.dll"))
