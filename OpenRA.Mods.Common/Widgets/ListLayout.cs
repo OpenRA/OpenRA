@@ -8,7 +8,9 @@
  */
 #endregion
 
-namespace OpenRA.Widgets
+using OpenRA.Widgets;
+
+namespace OpenRA.Mods.Common.Widgets
 {
 	public class ListLayout : ILayout
 	{

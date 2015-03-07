@@ -12,8 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets
+namespace OpenRA.Mods.Common.Widgets
 {
 	public class DropDownButtonWidget : ButtonWidget
 	{

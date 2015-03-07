@@ -11,8 +11,9 @@
 using System;
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets
+namespace OpenRA.Mods.Common.Widgets
 {
 	public enum TextAlign { Left, Center, Right }
 	public enum TextVAlign { Top, Middle, Bottom }

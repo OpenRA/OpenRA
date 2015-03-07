@@ -9,8 +9,9 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets
+namespace OpenRA.Mods.Common.Widgets
 {
 	public class BackgroundWidget : Widget
 	{

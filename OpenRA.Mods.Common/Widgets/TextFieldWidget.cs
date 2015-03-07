@@ -10,8 +10,9 @@
 
 using System;
 using System.Drawing;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets
+namespace OpenRA.Mods.Common.Widgets
 {
 	public class TextFieldWidget : Widget
 	{
@@ -177,7 +178,7 @@ namespace OpenRA.Widgets
 				((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
 				 (Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))))
 			{
-				var clipboardText = Game.Renderer.Device.GetClipboardText();
+				var clipboardText = Game.Renderer.GetClipboardText();
 
 				// Take only the first line of the clipboard contents
 				var nl = clipboardText.IndexOf('\n');

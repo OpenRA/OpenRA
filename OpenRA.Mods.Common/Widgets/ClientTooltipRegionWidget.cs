@@ -10,8 +10,9 @@
 
 using System;
 using OpenRA.Network;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets
+namespace OpenRA.Mods.Common.Widgets
 {
 	public class ClientTooltipRegionWidget : Widget
 	{
