@@ -24,10 +24,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Action continueLoading;
 		readonly ButtonWidget retryButton, backButton;
 		readonly Widget installingContainer, insertDiskContainer;
+		readonly ContentInstaller installData;
 
 		[ObjectCreator.UseCtor]
 		public InstallFromCDLogic(Widget widget, Action continueLoading)
 		{
+			installData = Game.ModData.Manifest.Get<ContentInstaller>();
 			this.continueLoading = continueLoading;
 			panel = widget.Get("INSTALL_FROMCD_PANEL");
 			progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
@@ -46,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool IsValidDisk(string diskRoot)
 		{
-			return Game.ModData.Manifest.ContentInstaller.DiskTestFiles.All(f => File.Exists(Path.Combine(diskRoot, f)));
+			return installData.DiskTestFiles.All(f => File.Exists(Path.Combine(diskRoot, f)));
 		}
 
 		void CheckForDisk()
@@ -70,13 +72,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			installingContainer.IsVisible = () => true;
 
 			var dest = Platform.ResolvePath("^", "Content", Game.ModData.Manifest.Mod.Id);
-			var copyFiles = Game.ModData.Manifest.ContentInstaller.CopyFilesFromCD;
+			var copyFiles = installData.CopyFilesFromCD;
 
-			var packageToExtract = Game.ModData.Manifest.ContentInstaller.PackageToExtractFromCD.Split(':');
+			var packageToExtract = installData.PackageToExtractFromCD.Split(':');
 			var extractPackage = packageToExtract.First();
 			var annotation = packageToExtract.Length > 1 ? packageToExtract.Last() : null;
 
-			var extractFiles = Game.ModData.Manifest.ContentInstaller.ExtractFilesFromCD;
+			var extractFiles = installData.ExtractFilesFromCD;
 
 			var installCounter = 0;
 			var installTotal = copyFiles.Length + extractFiles.Length;

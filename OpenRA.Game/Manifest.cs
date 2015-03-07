@@ -34,7 +34,6 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
 		public readonly MiniYaml LoadScreen;
 		public readonly MiniYaml LobbyDefaults;
-		public readonly InstallData ContentInstaller;
 		public readonly Dictionary<string, Pair<string, int>> Fonts;
 		public readonly Size TileSize = new Size(24, 24);
 		public readonly TileShape TileShape = TileShape.Rectangle;
@@ -58,7 +57,7 @@ namespace OpenRA
 		readonly string[] reservedModuleNames = { "Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "VoxelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions",
-			"ServerTraits", "LoadScreen", "LobbyDefaults", "ContentInstaller", "Fonts", "TileSize",
+			"ServerTraits", "LoadScreen", "LobbyDefaults", "Fonts", "TileSize",
 			"TileShape", "SubCells", "SupportsMapsFrom", "SpriteFormats" };
 
 		readonly TypeDictionary modules = new TypeDictionary();
@@ -95,9 +94,6 @@ namespace OpenRA
 			ServerTraits = YamlList(yaml, "ServerTraits");
 			LoadScreen = yaml["LoadScreen"];
 			LobbyDefaults = yaml["LobbyDefaults"];
-
-			if (yaml.ContainsKey("ContentInstaller"))
-				ContentInstaller = FieldLoader.Load<InstallData>(yaml["ContentInstaller"]);
 
 			Fonts = yaml["Fonts"].ToDictionary(my =>
 				{

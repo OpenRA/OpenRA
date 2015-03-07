@@ -19,13 +19,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public InstallLogic(Widget widget, Action continueLoading)
 		{
-			var mirrorListUrl = Game.ModData.Manifest.ContentInstaller.PackageMirrorList;
+			var installData = Game.ModData.Manifest.Get<ContentInstaller>();
 			var panel = widget.Get("INSTALL_PANEL");
 			var widgetArgs = new WidgetArgs()
 			{
 				{ "afterInstall", () => { Ui.CloseWindow(); continueLoading(); } },
 				{ "continueLoading", continueLoading },
-				{ "mirrorListUrl", mirrorListUrl },
+				{ "mirrorListUrl", installData.PackageMirrorList },
 			};
 
 			panel.Get<ButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>

@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.InitializeMod(Game.Settings.Game.Mod, new Arguments(args));
 				};
 
-				var installData = Game.ModData.Manifest.ContentInstaller;
+				var installData = Game.ModData.Manifest.Get<ContentInstaller>();
 				installButton.IsVisible = () => modRules.InstalledMusic.ToArray().Length <= installData.ShippedSoundtracks;
 			}
 
