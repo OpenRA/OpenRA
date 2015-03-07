@@ -39,6 +39,23 @@ namespace OpenRA.Mods.Common.Widgets
 			};
 		}
 
+		public static void CancelPrompt(string title, string text, Action onCancel = null, string cancelText = null)
+		{
+			var prompt = Ui.OpenWindow("CANCEL_PROMPT");
+			prompt.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
+			prompt.Get<LabelWidget>("PROMPT_TEXT").GetText = () => text;
+
+			if (!string.IsNullOrEmpty(cancelText))
+				prompt.Get<ButtonWidget>("CANCEL_BUTTON").GetText = () => cancelText;
+
+			prompt.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
+			{
+				Ui.CloseWindow();
+				if (onCancel != null)
+					onCancel();
+			};
+		}
+
 		public static void TextInputPrompt(
 			string title, string prompt, string initialText,
 			Action<string> onAccept, Action onCancel = null,

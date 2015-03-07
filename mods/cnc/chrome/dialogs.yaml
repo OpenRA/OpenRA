@@ -155,6 +155,35 @@ Container@CONFIRM_PROMPT:
 			Height: 35
 			Text: Confirm
 
+Container@CANCEL_PROMPT:
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 90)/2
+	Width: 370
+	Height: 125
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+		Background@bg:
+			Width: 370
+			Height: 90
+			Background: panel-black
+			Children:
+				Label@PROMPT_TEXT:
+					Y: (PARENT_BOTTOM-HEIGHT)/2
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Align: Center
+		Button@CANCEL_BUTTON:
+			Key: escape
+			Y: 89
+			Width: 140
+			Height: 35
+			Text: Cancel
 
 Container@TEXT_INPUT_PROMPT:
 	X: (WINDOW_RIGHT - WIDTH)/2

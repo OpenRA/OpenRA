@@ -32,10 +32,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Dictionary<CPos, SpawnOccupant> selectedSpawns;
 		ReplayMetadata selectedReplay;
 
+		Action onStart;
+
 		[ObjectCreator.UseCtor]
 		public ReplayBrowserLogic(Widget widget, Action onExit, Action onStart)
 		{
 			panel = widget;
+
+			this.onStart = onStart;
 
 			playerList = panel.Get<ScrollPanelWidget>("PLAYER_LIST");
 			playerHeader = playerList.Get<ScrollItemWidget>("HEADER");
@@ -73,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var watch = panel.Get<ButtonWidget>("WATCH_BUTTON");
 			watch.IsDisabled = () => selectedReplay == null || selectedReplay.GameInfo.MapPreview.Status != MapStatus.Available;
-			watch.OnClick = () => { WatchReplay(); onStart(); };
+			watch.OnClick = () => { WatchReplay(); };
 
 			panel.Get("REPLAY_INFO").IsVisible = () => selectedReplay != null;
 
@@ -624,11 +628,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void WatchReplay()
 		{
-			if (selectedReplay != null && selectedReplay.GameInfo.MapPreview.Status == MapStatus.Available)
+			Action startReplay = () =>
 			{
 				Game.JoinReplay(selectedReplay.FilePath);
 				Ui.CloseWindow();
-			}
+				onStart();
+			};
+
+			if (selectedReplay != null && ReplayUtils.PromptConfirmReplayCompatibility(selectedReplay))
+				startReplay();
 		}
 
 		void AddReplay(ReplayMetadata replay, ScrollItemWidget template)
