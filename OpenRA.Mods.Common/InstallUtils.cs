@@ -16,7 +16,7 @@ using ICSharpCode.SharpZipLib;
 using ICSharpCode.SharpZipLib.Zip;
 using OpenRA.FileSystem;
 
-namespace OpenRA
+namespace OpenRA.Mods.Common
 {
 	public class ContentInstaller : IGlobalModData
 	{

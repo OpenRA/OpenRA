@@ -63,6 +63,10 @@
       <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
@@ -572,6 +576,7 @@
     <Compile Include="UtilityCommands\CheckCodeStyle.cs" />
     <Compile Include="UtilityCommands\ReplayMetadataCommand.cs" />
     <Compile Include="Widgets\Logic\ReplayUtils.cs" />
+    <Compile Include="InstallUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
