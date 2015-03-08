@@ -92,8 +92,12 @@ namespace OpenRA
 			Missions = YamlList(yaml, "Missions", true);
 
 			ServerTraits = YamlList(yaml, "ServerTraits");
-			LoadScreen = yaml["LoadScreen"];
-			LobbyDefaults = yaml["LobbyDefaults"];
+
+			if (!yaml.TryGetValue("LoadScreen", out LoadScreen))
+				throw new InvalidDataException("`LoadScreen` section is not defined.");
+
+			if (!yaml.TryGetValue("LobbyDefaults", out LobbyDefaults))
+				throw new InvalidDataException("`LobbyDefaults` section is not defined.");
 
 			Fonts = yaml["Fonts"].ToDictionary(my =>
 				{
