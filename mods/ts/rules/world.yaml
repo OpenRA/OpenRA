@@ -10,8 +10,14 @@ World:
 	BuildingInfluence:
 	ProductionQueueFromSelection:
 		ProductionTabsWidget: PRODUCTION_TABS
-	PaletteFromFile@player:
+	PaletteFromFile@playersno:
 		Name: player
+		Tileset: SNOW
+		Filename: unitsno.pal
+		ShadowIndex: 1
+	PaletteFromFile@playertem:
+		Name: player
+		Tileset: TEMPERAT
 		Filename: unittem.pal
 		ShadowIndex: 1
 	PaletteFromCurrentTileset:
