@@ -154,8 +154,20 @@ namespace OpenRA
 				if (t == null || !typeof(IGlobalModData).IsAssignableFrom(t))
 					throw new InvalidDataException("`{0}` is not a valid mod manifest entry.".F(kv.Key));
 
-				var module = oc.CreateObject<IGlobalModData>(kv.Key);
-				FieldLoader.Load(module, kv.Value);
+				IGlobalModData module;
+				var ctor = t.GetConstructor(new Type[] { typeof(MiniYaml) } );
+				if (ctor != null)
+				{
+					// Class has opted-in to DIY initialization
+					module = (IGlobalModData)ctor.Invoke(new object[] { kv.Value });
+				}
+				else
+				{
+					// Automatically load the child nodes using FieldLoader
+					module = oc.CreateObject<IGlobalModData>(kv.Key);
+					FieldLoader.Load(module, kv.Value);
+				}
+
 				modules.Add(module);
 			}
 		}
