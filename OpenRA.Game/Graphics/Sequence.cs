@@ -13,21 +13,39 @@ using System.Linq;
 
 namespace OpenRA.Graphics
 {
-	public class Sequence
+	public interface ISpriteSequence
+	{
+		string Name { get; }
+		int Start { get; }
+		int Length { get; }
+		int Stride { get; }
+		int Facings { get; }
+		int Tick { get; }
+		int ZOffset { get; }
+		int ShadowStart { get; }
+		int ShadowZOffset { get; }
+		int[] Frames { get; }
+
+		Sprite GetSprite(int frame);
+		Sprite GetSprite(int frame, int facing);
+		Sprite GetShadow(int frame, int facing);
+	}
+
+	public class Sequence : ISpriteSequence
 	{
 		readonly Sprite[] sprites;
 		readonly bool reverseFacings, transpose;
 
-		public readonly string Name;
-		public readonly int Start;
-		public readonly int Length;
-		public readonly int Stride;
-		public readonly int Facings;
-		public readonly int Tick;
-		public readonly int ZOffset;
-		public readonly int ShadowStart;
-		public readonly int ShadowZOffset;
-		public readonly int[] Frames;
+		public string Name { get; private set; }
+		public int Start { get; private set; }
+		public int Length { get; private set; }
+		public int Stride { get; private set; }
+		public int Facings { get; private set; }
+		public int Tick { get; private set; }
+		public int ZOffset { get; private set; }
+		public int ShadowStart { get; private set; }
+		public int ShadowZOffset { get; private set; }
+		public int[] Frames { get; private set; }
 
 		public Sequence(SpriteCache cache, string unit, string name, MiniYaml info)
 		{
