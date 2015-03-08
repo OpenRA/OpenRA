@@ -93,7 +93,9 @@ namespace OpenRA.Mods.D2k.Activities
 		void NotifyPlayer(Player player, WPos location)
 		{
 			Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallow.Info.WormAttackNotification, player.Country.Race);
-			radarPings.Add(() => true, location, Color.Red, 50);
+
+			if (player == player.World.RenderPlayer)
+				radarPings.Add(() => true, location, Color.Red, 50);
 		}
 
 		public override Activity Tick(Actor self)
@@ -113,11 +115,7 @@ namespace OpenRA.Mods.D2k.Activities
 				if (self.World.SharedRandom.Next() % 100 <= sandworm.Info.ChanceToDisappear)
 				{
 					self.CancelActivity();
-					self.World.AddFrameEndTask(w => w.Remove(self));
-
-					var wormManager = self.World.WorldActor.TraitOrDefault<WormManager>();
-					if (wormManager != null)
-						wormManager.DecreaseWormCount();
+					self.World.AddFrameEndTask(w => self.Kill(self));
 				}
 				else
 					renderUnit.DefaultAnimation.ReplaceAnim("idle");
