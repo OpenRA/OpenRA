@@ -20,6 +20,17 @@ namespace OpenRA
 	public enum TileShape { Rectangle, Diamond }
 	public interface IGlobalModData { }
 
+	public sealed class SpriteSequenceFormat : IGlobalModData
+	{
+		public readonly string Type;
+		public readonly IReadOnlyDictionary<string, MiniYaml> Metadata;
+		public SpriteSequenceFormat(MiniYaml yaml)
+		{
+			Type = yaml.Value;
+			Metadata = new ReadOnlyDictionary<string, MiniYaml>(yaml.ToDictionary());
+		}
+	}
+
 	// Describes what is to be loaded in order to run a mod
 	public class Manifest
 	{
@@ -34,6 +45,7 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
 		public readonly MiniYaml LoadScreen;
 		public readonly MiniYaml LobbyDefaults;
+
 		public readonly Dictionary<string, Pair<string, int>> Fonts;
 		public readonly Size TileSize = new Size(24, 24);
 		public readonly TileShape TileShape = TileShape.Rectangle;
@@ -155,7 +167,7 @@ namespace OpenRA
 					throw new InvalidDataException("`{0}` is not a valid mod manifest entry.".F(kv.Key));
 
 				IGlobalModData module;
-				var ctor = t.GetConstructor(new Type[] { typeof(MiniYaml) } );
+				var ctor = t.GetConstructor(new Type[] { typeof(MiniYaml) });
 				if (ctor != null)
 				{
 					// Class has opted-in to DIY initialization

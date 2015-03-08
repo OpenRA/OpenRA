@@ -201,3 +201,5 @@ Missions:
 SupportsMapsFrom: ra
 
 SpriteFormats: ShpTD, TmpRA, TmpTD, ShpTS
+
+SpriteSequenceFormat: DefaultSpriteSequence

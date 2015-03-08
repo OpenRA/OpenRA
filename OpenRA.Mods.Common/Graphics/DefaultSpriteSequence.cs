@@ -9,32 +9,52 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using OpenRA.Graphics;
 
-namespace OpenRA.Graphics
+namespace OpenRA.Mods.Common.Graphics
 {
-	public interface ISpriteSequence
+	public class DefaultSpriteSequenceLoader : ISpriteSequenceLoader
 	{
-		string Name { get; }
-		int Start { get; }
-		int Length { get; }
-		int Stride { get; }
-		int Facings { get; }
-		int Tick { get; }
-		int ZOffset { get; }
-		int ShadowStart { get; }
-		int ShadowZOffset { get; }
-		int[] Frames { get; }
+		public DefaultSpriteSequenceLoader(ModData modData) { }
 
-		Sprite GetSprite(int frame);
-		Sprite GetSprite(int frame, int facing);
-		Sprite GetShadow(int frame, int facing);
+		public virtual ISpriteSequence CreateSequence(ModData modData, TileSet tileSet, SpriteCache cache, string unit, string name, MiniYaml info)
+		{
+			return new DefaultSpriteSequence(modData, tileSet, cache, this, unit, name, info);
+		}
+
+		public IReadOnlyDictionary<string, ISpriteSequence> ParseUnitSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node)
+		{
+			var unitSequences = new Dictionary<string, ISpriteSequence>();
+
+			foreach (var kvp in node.Value.ToDictionary())
+			{
+				using (new Support.PerfTimer("new Sequence(\"{0}\")".F(node.Key), 20))
+				{
+					try
+					{
+						unitSequences.Add(kvp.Key, CreateSequence(modData, tileSet, cache, node.Key, kvp.Key, kvp.Value));
+					}
+					catch (FileNotFoundException ex)
+					{
+						// Eat the FileNotFound exceptions from missing sprites
+						Log.Write("debug", ex.Message);
+					}
+				}
+			}
+
+			return new ReadOnlyDictionary<string, ISpriteSequence>(unitSequences);
+		}
 	}
 
-	public class Sequence : ISpriteSequence
+	public class DefaultSpriteSequence : ISpriteSequence
 	{
 		readonly Sprite[] sprites;
 		readonly bool reverseFacings, transpose;
+
+		protected readonly ISpriteSequenceLoader Loader;
 
 		public string Name { get; private set; }
 		public int Start { get; private set; }
@@ -47,10 +67,16 @@ namespace OpenRA.Graphics
 		public int ShadowZOffset { get; private set; }
 		public int[] Frames { get; private set; }
 
-		public Sequence(SpriteCache cache, string unit, string name, MiniYaml info)
+		protected virtual string GetSpriteSrc(ModData modData, TileSet tileSet, string unit, string name, MiniYaml info, Dictionary<string, MiniYaml> d)
 		{
-			var srcOverride = info.Value;
+			return info.Value ?? unit;
+		}
+
+		public DefaultSpriteSequence(ModData modData, TileSet tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string unit, string name, MiniYaml info)
+		{
 			Name = name;
+			Loader = loader;
+
 			var d = info.ToDictionary();
 			var offset = float2.Zero;
 			var blendMode = BlendMode.Alpha;
@@ -68,7 +94,8 @@ namespace OpenRA.Graphics
 
 				// Apply offset to each sprite in the sequence
 				// Different sequences may apply different offsets to the same frame
-				sprites = cache[srcOverride ?? unit].Select(
+				var src = GetSpriteSrc(modData, tileSet, unit, name, info, d);
+				sprites = cache[src].Select(
 					s => new Sprite(s.Sheet, s.Bounds, s.Offset + offset, s.Channel, blendMode)).ToArray();
 
 				if (!d.ContainsKey("Length"))
@@ -132,7 +159,7 @@ namespace OpenRA.Graphics
 				if (Start < 0 || Start + Facings * Stride > sprites.Length || ShadowStart + Facings * Stride > sprites.Length)
 					throw new InvalidOperationException(
 						"{6}: Sequence {0}.{1} uses frames [{2}..{3}] of SHP `{4}`, but only 0..{5} actually exist"
-						.F(unit, name, Start, Start + Facings * Stride - 1, srcOverride ?? unit, sprites.Length - 1,
+						.F(unit, name, Start, Start + Facings * Stride - 1, src, sprites.Length - 1,
 						info.Nodes[0].Location));
 			}
 			catch (FormatException f)
@@ -156,9 +183,9 @@ namespace OpenRA.Graphics
 			return ShadowStart >= 0 ? GetSprite(ShadowStart, frame, facing) : null;
 		}
 
-		Sprite GetSprite(int start, int frame, int facing)
+		protected virtual Sprite GetSprite(int start, int frame, int facing)
 		{
-			var f = Traits.Util.QuantizeFacing(facing, Facings);
+			var f = OpenRA.Traits.Util.QuantizeFacing(facing, Facings);
 
 			if (reverseFacings)
 				f = (Facings - f) % Facings;

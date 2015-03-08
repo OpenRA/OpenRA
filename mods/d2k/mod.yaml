@@ -178,3 +178,5 @@ Fonts:
 SupportsMapsFrom: d2k
 
 SpriteFormats: R8, ShpTD, TmpRA
+
+SpriteSequenceFormat: DefaultSpriteSequence

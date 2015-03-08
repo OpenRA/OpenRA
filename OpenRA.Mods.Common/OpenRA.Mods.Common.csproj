@@ -577,6 +577,7 @@
     <Compile Include="UtilityCommands\ReplayMetadataCommand.cs" />
     <Compile Include="Widgets\Logic\ReplayUtils.cs" />
     <Compile Include="InstallUtils.cs" />
+    <Compile Include="Graphics\DefaultSpriteSequence.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
