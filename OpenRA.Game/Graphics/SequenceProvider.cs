@@ -15,8 +15,8 @@ using System.Linq;
 
 namespace OpenRA.Graphics
 {
-	using Sequences = IReadOnlyDictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>>;
-	using UnitSequences = Lazy<IReadOnlyDictionary<string, Sequence>>;
+	using Sequences = IReadOnlyDictionary<string, Lazy<IReadOnlyDictionary<string, ISpriteSequence>>>;
+	using UnitSequences = Lazy<IReadOnlyDictionary<string, ISpriteSequence>>;
 
 	public class SequenceProvider
 	{
@@ -29,13 +29,13 @@ namespace OpenRA.Graphics
 			this.SpriteCache = cache.SpriteCache;
 		}
 
-		public Sequence GetSequence(string unitName, string sequenceName)
+		public ISpriteSequence GetSequence(string unitName, string sequenceName)
 		{
 			UnitSequences unitSeq;
 			if (!sequences.Value.TryGetValue(unitName, out unitSeq))
 				throw new InvalidOperationException("Unit `{0}` does not have any sequences defined.".F(unitName));
 
-			Sequence seq;
+			ISpriteSequence seq;
 			if (!unitSeq.Value.TryGetValue(sequenceName, out seq))
 				throw new InvalidOperationException("Unit `{0}` does not have a sequence named `{1}`".F(unitName, sequenceName));
 
@@ -125,9 +125,9 @@ namespace OpenRA.Graphics
 			return new ReadOnlyDictionary<string, UnitSequences>(items);
 		}
 
-		IReadOnlyDictionary<string, Sequence> CreateUnitSequences(MiniYamlNode node)
+		IReadOnlyDictionary<string, ISpriteSequence> CreateUnitSequences(MiniYamlNode node)
 		{
-			var unitSequences = new Dictionary<string, Sequence>();
+			var unitSequences = new Dictionary<string, ISpriteSequence>();
 
 			foreach (var kvp in node.Value.ToDictionary())
 			{
@@ -144,7 +144,7 @@ namespace OpenRA.Graphics
 				}
 			}
 
-			return new ReadOnlyDictionary<string, Sequence>(unitSequences);
+			return new ReadOnlyDictionary<string, ISpriteSequence>(unitSequences);
 		}
 
 		public void Dispose()

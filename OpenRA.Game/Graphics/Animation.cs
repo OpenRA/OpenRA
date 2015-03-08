@@ -16,7 +16,7 @@ namespace OpenRA.Graphics
 	public class Animation
 	{
 		readonly int defaultTick = 40; // 25 fps == 40 ms
-		public Sequence CurrentSequence { get; private set; }
+		public ISpriteSequence CurrentSequence { get; private set; }
 		public bool IsDecoration = false;
 		public Func<bool> Paused;
 
@@ -177,7 +177,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public Sequence GetSequence(string sequenceName)
+		public ISpriteSequence GetSequence(string sequenceName)
 		{
 			return sequenceProvider.GetSequence(name, sequenceName);
 		}
