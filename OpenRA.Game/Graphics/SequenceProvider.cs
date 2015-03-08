@@ -12,11 +12,35 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace OpenRA.Graphics
 {
 	using Sequences = IReadOnlyDictionary<string, Lazy<IReadOnlyDictionary<string, ISpriteSequence>>>;
 	using UnitSequences = Lazy<IReadOnlyDictionary<string, ISpriteSequence>>;
+
+	public interface ISpriteSequence
+	{
+		string Name { get; }
+		int Start { get; }
+		int Length { get; }
+		int Stride { get; }
+		int Facings { get; }
+		int Tick { get; }
+		int ZOffset { get; }
+		int ShadowStart { get; }
+		int ShadowZOffset { get; }
+		int[] Frames { get; }
+
+		Sprite GetSprite(int frame);
+		Sprite GetSprite(int frame, int facing);
+		Sprite GetShadow(int frame, int facing);
+	}
+
+	public interface ISpriteSequenceLoader
+	{
+		IReadOnlyDictionary<string, ISpriteSequence> ParseUnitSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node);
+	}
 
 	public class SequenceProvider
 	{
@@ -77,6 +101,7 @@ namespace OpenRA.Graphics
 	public sealed class SequenceCache : IDisposable
 	{
 		readonly ModData modData;
+		readonly TileSet tileSet;
 		readonly Lazy<SpriteCache> spriteCache;
 		public SpriteCache SpriteCache { get { return spriteCache.Value; } }
 
@@ -85,7 +110,9 @@ namespace OpenRA.Graphics
 		public SequenceCache(ModData modData, TileSet tileSet)
 		{
 			this.modData = modData;
+			this.tileSet = tileSet;
 
+			// Every time we load a tile set, we create a sequence cache for it
 			spriteCache = Exts.Lazy(() => new SpriteCache(modData.SpriteLoaders, tileSet.Extensions, new SheetBuilder(SheetType.Indexed)));
 		}
 
@@ -116,35 +143,13 @@ namespace OpenRA.Graphics
 					items.Add(node.Key, t);
 				else
 				{
-					t = Exts.Lazy(() => CreateUnitSequences(node));
+					t = Exts.Lazy(() => modData.SpriteSequenceLoader.ParseUnitSequences(modData, tileSet, SpriteCache, node));
 					sequenceCache.Add(key, t);
 					items.Add(node.Key, t);
 				}
 			}
 
 			return new ReadOnlyDictionary<string, UnitSequences>(items);
-		}
-
-		IReadOnlyDictionary<string, ISpriteSequence> CreateUnitSequences(MiniYamlNode node)
-		{
-			var unitSequences = new Dictionary<string, ISpriteSequence>();
-
-			foreach (var kvp in node.Value.ToDictionary())
-			{
-				using (new Support.PerfTimer("new Sequence(\"{0}\")".F(node.Key), 20))
-				{
-					try
-					{
-						unitSequences.Add(kvp.Key, new Sequence(spriteCache.Value, node.Key, kvp.Key, kvp.Value));
-					}
-					catch (FileNotFoundException ex)
-					{
-						Log.Write("debug", ex.Message);
-					}
-				}
-			}
-
-			return new ReadOnlyDictionary<string, ISpriteSequence>(unitSequences);
 		}
 
 		public void Dispose()

@@ -109,7 +109,6 @@
     <Compile Include="Graphics\MappedImage.cs" />
     <Compile Include="Graphics\Minimap.cs" />
     <Compile Include="Graphics\Renderer.cs" />
-    <Compile Include="Graphics\Sequence.cs" />
     <Compile Include="Graphics\SequenceProvider.cs" />
     <Compile Include="Graphics\Sheet.cs" />
     <Compile Include="Graphics\SheetBuilder.cs" />
