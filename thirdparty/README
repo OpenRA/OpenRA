@@ -5,11 +5,6 @@ Eluant.dll
 	Commit 483f326bd071024f58dc7917da81e31ef680e85e
 	MIT license
 
-FuzzyLogicLibrary.dll
-	http://sourceforge.net/projects/fuzzynet/
-	Version 1.2.0
-	GPL v2.0 license
-
 SDL2-CS.dll
 	https://github.com/flibitijibibo/SDL2-CS/
 	Commit e8731efadb249a40f46d646e2b783ec588326ea6
