@@ -43,8 +43,14 @@ namespace OpenRA.Mods.Common.Orders
 					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.TraitsImplementing<T>()
 						.Any(Exts.IsTraitEnabled));
 
-				if (underCursor != null)
-					yield return new Order(order, underCursor, false);
+				if (underCursor == null)
+					yield break;
+
+				var building = underCursor.TraitOrDefault<Building>();
+				if (building != null && building.Locked)
+					yield break;
+
+				yield return new Order(order, underCursor, false);
 			}
 		}
 
