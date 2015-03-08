@@ -24,9 +24,9 @@ fi
 
 if [ ! -f windows/lua51.dll ]; then
 	echo "Fetching Lua 5.1 from nuget"
-	nuget install lua51.redist -Version 5.1.5
-	cp ./lua51.redist.5.1.5/build/native/bin/Win32/v120/Release/lua5.1.dll ./windows/lua51.dll
-	rm -rf lua51.redist.5.1.5
+	nuget install lua.binaries -Version 5.1.5
+	cp ./lua.binaries.5.1.5/bin/win32/dll8/lua5.1.dll ./windows/lua51.dll
+	rm -rf lua.binaries.5.1.5
 fi
 
 if [ ! -f windows/zlib1.dll ]; then
