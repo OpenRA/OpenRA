@@ -164,6 +164,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AttackTarget(Target target, bool queued, bool allowMove)
 		{
+			if (self.IsDisabled())
+				return;
+
 			if (!target.IsValidFor(self))
 				return;
 

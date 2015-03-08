@@ -35,12 +35,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (!base.CanAttack(self, target))
 				return false;
 
-			var canAttack = false;
 			foreach (var t in turrets)
 				if (t.FaceTarget(self, target))
-					canAttack = true;
+					return true;
 
-			return canAttack;
+			return false;
 		}
 	}
 }

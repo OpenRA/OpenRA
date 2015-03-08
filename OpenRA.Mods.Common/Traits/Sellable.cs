@@ -53,9 +53,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
 			if (makeAnimation != null)
-				makeAnimation.Reverse(self, new Sell());
+				makeAnimation.Reverse(self, new Sell(), false);
 			else
-				self.QueueActivity(new Sell());
+				self.QueueActivity(false, new Sell());
 		}
 	}
 }
