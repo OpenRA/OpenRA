@@ -719,7 +719,7 @@ function M.infer_values(top_ast, tokenlist, src, report)
         local t_ast = iter_ast[1][2]
         local value = T.universal
         local key
-        if (known(t_ast.value) or T.istabletype[t_ast.value]) then
+        if t_ast.value and (known(t_ast.value) or T.istabletype[t_ast.value]) then
           key = next(t_ast.value)
           local ok; ok, value = pzcall(tindex, {t_ast, {tag='String', key}}, t_ast.value, key)
           if not ok then value = T.error(t_ast.value) end
@@ -839,8 +839,7 @@ function M.infer_values(top_ast, tokenlist, src, report)
         local x
         local val = function() x=nil end
         local fpos = LA.ast_pos_range(ast, tokenlist)
-        local source = tostring(ast.lineinfo.first):gsub('<C|','<'):match('<([^|]+)') -- a HACK? relies on AST lineinfo
-        local linenum = LA.pos_to_linecol(fpos, src)
+        local source, linenum = tostring(ast.lineinfo.first):gsub('<C|','<'):match('<([^|]+)|L(%d+)') -- a HACK? relies on AST lineinfo
         local retvals
         if ENABLE_RETURN_ANALYSIS then
           retvals = get_func_return_values(ast) --Q:move outside of containing conditional?

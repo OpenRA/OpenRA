@@ -74,7 +74,10 @@ function M.show_warnings(top_ast, globinit)
   end
   local function known(o) return not T.istype[o] end
   local function index(f) -- build abc.def.xyz name recursively
-    return (f[1].tag == 'Id' and f[1][1] or index(f[1])) .. '.' .. f[2][1] end
+    if not f or f.tag ~= 'Index' or not f[1] or not f[2] then return end
+    local main = f[1].tag == 'Id' and f[1][1] or index(f[1])
+    return main and type(f[2][1]) == "string" and (main .. '.' .. f[2][1]) or nil
+  end
   local globseen, isseen, fieldseen = globinit or {}, {}, {}
   LA.walk(top_ast, function(ast)
     M.ast = ast
@@ -127,7 +130,7 @@ function M.show_warnings(top_ast, globinit)
                line, path)
         end
       else
-        if parent.tag == 'Localrec' then -- local function foo...
+        if parent and parent.tag == 'Localrec' then -- local function foo...
           warn("unused local function '" .. name .. "'", line, path)
         else
           warn("unused local variable '" .. name .. "'; "..
@@ -141,8 +144,9 @@ function M.show_warnings(top_ast, globinit)
     and not(known(ast.seevalue.value) and ast.seevalue.value ~= nil) then
       if not fieldseen[name] then
         fieldseen[name] = true
-        local parent = ast.parent
-          and (" in '"..index(ast.parent):gsub("%."..name.."$","").."'")
+        local var = index(ast.parent)
+        local parent = ast.parent and var
+          and (" in '"..var:gsub("%."..name.."$","").."'")
           or ""
         warn("first use of unknown field '" .. name .."'"..parent,
           ast.lineinfo and tostring(ast.lineinfo.first):match('|L(%d+)'), path)
