@@ -261,198 +261,106 @@ AMMOCRAT:
 		Type: none
 	Health:
 		HP: 1
+	RenderBuilding:
+		Palette: player
 
 BBOARD01:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Eat at Rade's Roadhouse
-	Building:
-		Footprint: x
-		Dimensions: 1, 1
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD02:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Drink YEO-CA Cola!
-	Building:
-		Footprint: x
-		Dimensions: 1, 1
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD03:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Hamburgers $.99
-	Building:
-		Footprint: x
-		Dimensions: 1, 1
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD04:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Visit Scenic Las Vegas
-	Building:
-		Footprint: x
-		Dimensions: 1, 1
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD05:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Rooms $29 a nite
-	Building:
-		Footprint: x
-		Dimensions: 1, 1
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD06:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Kaspm's Tiberium Warhouse
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD07:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Alkaline's Battery Superstore
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD08:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Alex-gators petshop just ahead!
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD09:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: TacticX games rock!
-	Building:
-		Footprint: x
-		Dimensions: 1, 1
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD10:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: WW Surf and Turf hits the spot!
-	Building:
-		Footprint: x
-		Dimensions: 1, 1
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD11:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Only 11 miles to Zydeko's cafe!
-	Building:
-		Footprint: x
-		Dimensions: 1, 1
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD12:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: No escape from Archer's Asylum!
-	Building:
-		Footprint: x
-		Dimensions: 1, 1
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD13:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Stop in at Hewitt's hair salon
-	Building:
-		Footprint: x
-		Dimensions: 1, 1
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD14:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Billy Bob's Harvester school
 	Building:
 		Footprint: xx
 		Dimensions: 2, 1
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD15:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Pannullo's hacienda es bueno
 	Building:
 		Footprint: xx
 		Dimensions: 2, 1
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 BBOARD16:
-	Inherits: ^CivBuilding
+	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Join GDI: We save lives.
 	Building:
 		Footprint: xx
 		Dimensions: 2, 1
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
 
 CA0001:
 	Inherits: ^CivBuilding
@@ -868,6 +776,8 @@ CITY01:
 		Type: wood
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY02:
 	Inherits: ^CivBuilding
@@ -880,6 +790,8 @@ CITY02:
 		Type: heavy
 	Health:
 		HP: 700
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY03:
 	Inherits: ^CivBuilding
@@ -892,6 +804,8 @@ CITY03:
 		Type: heavy
 	Health:
 		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY04:
 	Inherits: ^CivBuilding
@@ -904,6 +818,8 @@ CITY04:
 		Type: heavy
 	Health:
 		HP: 600
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY05:
 	Inherits: ^CivBuilding
@@ -916,6 +832,8 @@ CITY05:
 		Type: heavy
 	Health:
 		HP: 600
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY06:
 	Inherits: ^CivBuilding
@@ -928,6 +846,8 @@ CITY06:
 		Type: concrete
 	Health:
 		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY07:
 	Inherits: ^CivBuilding
@@ -940,6 +860,8 @@ CITY07:
 		Type: wood
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY08:
 	Inherits: ^CivBuilding
@@ -952,6 +874,8 @@ CITY08:
 		Type: heavy
 	Health:
 		HP: 300
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY09:
 	Inherits: ^CivBuilding
@@ -964,6 +888,8 @@ CITY09:
 		Type: wood
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY10:
 	Inherits: ^CivBuilding
@@ -976,6 +902,8 @@ CITY10:
 		Type: heavy
 	Health:
 		HP: 300
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY11:
 	Inherits: ^CivBuilding
@@ -988,6 +916,8 @@ CITY11:
 		Type: heavy
 	Health:
 		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY12:
 	Inherits: ^CivBuilding
@@ -1000,6 +930,8 @@ CITY12:
 		Type: concrete
 	Health:
 		HP: 600
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY13:
 	Inherits: ^CivBuilding
@@ -1012,6 +944,8 @@ CITY13:
 		Type: wood
 	Health:
 		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY14:
 	Inherits: ^CivBuilding
@@ -1024,6 +958,8 @@ CITY14:
 		Type: heavy
 	Health:
 		HP: 600
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY15:
 	Inherits: ^CivBuilding
@@ -1036,6 +972,8 @@ CITY15:
 		Type: heavy
 	Health:
 		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY16:
 	Inherits: ^CivBuilding
@@ -1048,6 +986,8 @@ CITY16:
 		Type: wood
 	Health:
 		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY17:
 	Inherits: ^CivBuilding
@@ -1060,6 +1000,8 @@ CITY17:
 		Type: wood
 	Health:
 		HP: 300
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY18:
 	Inherits: ^CivBuilding
@@ -1072,6 +1014,8 @@ CITY18:
 		Type: concrete
 	Health:
 		HP: 600
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY19:
 	Inherits: ^CivBuilding
@@ -1084,6 +1028,8 @@ CITY19:
 		Type: wood
 	Health:
 		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY20:
 	Inherits: ^CivBuilding
@@ -1096,6 +1042,8 @@ CITY20:
 		Type: wood
 	Health:
 		HP: 250
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY21:
 	Inherits: ^CivBuilding
@@ -1108,6 +1056,8 @@ CITY21:
 		Type: none
 	Health:
 		HP: 100
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CITY22:
 	Inherits: ^CivBuilding
@@ -1120,6 +1070,8 @@ CITY22:
 		Type: none
 	Health:
 		HP: 100
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
 
 CTDAM:
 	Inherits: ^CivBuilding
@@ -1322,3 +1274,5 @@ UFO:
 		HP: 1000
 	Armor:
 		Type: Heavy
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT

@@ -75,6 +75,18 @@
 	RenderBuilding:
 		Palette: terrain
 
+^CivBillboard:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
+
 ^Wall:
 	AppearsOnRadar:
 	Building:
