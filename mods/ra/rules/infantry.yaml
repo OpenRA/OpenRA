@@ -500,7 +500,7 @@ SNIPER:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 80
-		Prerequisites: ~barr, dome, ~techlevel.medium
+		Prerequisites: ~disabled
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
