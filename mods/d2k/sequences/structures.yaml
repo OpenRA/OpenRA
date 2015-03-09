@@ -1,386 +1,386 @@
 concretea:
-	icon: DATA
+	icon: DATA.R8
 		Start:4050
 		Offset: -30,-24
 
 concreteb:
-	icon: DATA
+	icon: DATA.R8
 		Start:4053
 		Offset: -30,-24
 
 wall:
-	idle: DATA
+	idle: DATA.R8
 		Frames: 2527, 2530, 2528, 2538, 2531, 2532, 2542, 2535, 2529, 2539, 2533, 2534, 2540, 2536, 2537, 2541
 		Length: 16
 		Offset: -16,16
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Frames: 2543, 2546, 2544, 2554, 2547, 2548, 2558, 2551, 2545, 2555, 2549, 2550, 2556, 2552, 2553, 2557
 		Length: 16
 		Offset: -16,16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4063
 		Offset: -30,-24
 
 guntower:
-	idle: DATA
+	idle: DATA.R8
 		Frames: 2573, 2576, 2574, 2584, 2577, 2578, 2588, 2581, 2575, 2585, 2579, 2580, 2586, 2582, 2583, 2587
 		Length: 16
 		Offset: -24,16
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Frames: 2621, 2624, 2622, 2632, 2625, 2626, 2636, 2629, 2623, 2633, 2627, 2628, 2634, 2630, 2631, 2635
 		Length: 16
 		Offset: -24,16
-	turret: DATA
+	turret: DATA.R8
 		Start: 2589
 		Facings: -32
 		Offset: -24,16
-	muzzle: DATA
+	muzzle: DATA.R8
 		Frames: 3839, 3839, 3840, 3840, 3841, 3841, 3842, 3842, 3843, 3843, 3844, 3844, 3845, 3845, 3846, 3846, 3847, 3847, 3848, 3848, 3849, 3849, 3850, 3850, 3851, 3851, 3852, 3852, 3853, 3853, 3854, 3854, 3855, 3855, 3856, 3856, 3857, 3857, 3858, 3858, 3859, 3859, 3860, 3860, 3861, 3861, 3862, 3862, 3863, 3863, 3864, 3864, 3865, 3865, 3866, 3866, 3867, 3867, 3868, 3868, 3869, 3869, 3870, 3870
 		Facings: -32
 		Length: 2
 		Offset: 0,-12
 		BlendMode: Additive
-	icon: DATA
+	icon: DATA.R8
 		Start: 4069
 		Offset: -30,-24
 
 rockettower:
-	idle: DATA
+	idle: DATA.R8
 		Frames: 2573, 2576, 2574, 2584, 2577, 2578, 2588, 2581, 2575, 2585, 2579, 2580, 2586, 2582, 2583, 2587
 		Length: 16
 		Offset: -24,16
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Frames: 2621, 2624, 2622, 2632, 2625, 2626, 2636, 2629, 2623, 2633, 2627, 2628, 2634, 2630, 2631, 2635
 		Length: 16
 		Offset: -24,16
-	turret: DATA
+	turret: DATA.R8
 		Start: 2637
 		Facings: -32
 		Offset: -24,16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4075
 		Offset: -30,-24
 
 conyard.atreides:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2559
 		Offset: -48,64
-	make: DATA
+	make: DATA.R8
 		Start: 4109
 		Length: 30
 		Offset: -48,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4139
 		Length: 12
 		Offset: -48,64
 		Tick: 170
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2560
 		Offset: -48,64
-	crane-overlay: DATA
+	crane-overlay: DATA.R8
 		Start: 4436
 		Length: 14
 		Offset: -48,64
 		Tick: 80
-	damaged-crane-overlay: DATA
+	damaged-crane-overlay: DATA.R8
 		Start: 4436
 		Length: 14
 		Offset: -48,64
 		Tick: 80
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4046
 		Offset: -30,-24
 
 repair.atreides:
-	make: DATA
+	make: DATA.R8
 		Start: 4370
 		Length: 10
 		Offset: -48,48
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4380
 		Length: 10
 		Offset: -48,48
 		Tick: 100
-	idle: DATA
+	idle: DATA.R8
 		Start: 2571
 		Offset: -48,48
 		ZOffset: -1c511
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2572
 		Offset: -48,48
 		ZOffset: -1c511
-	active: DATA
+	active: DATA.R8
 		Start: 4746
 		Length: 14
 		Offset: -48,48
 		ZOffset: -1c511
 		BlendMode: Additive
-	damaged-active: DATA
+	damaged-active: DATA.R8
 		Start: 4746
 		Length: 14
 		Tick: 60
 		Offset: -48,48
 		ZOffset: -1c511
 		BlendMode: Additive
-	icon: DATA
+	icon: DATA.R8
 		Start: 4096
 		Offset: -30,-24
 
 repair.harkonnen:
-	make: DATA
+	make: DATA.R8
 		Start: 4370
 		Length: 10
 		Offset: -48,48
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4380
 		Length: 10
 		Offset: -48,48
 		Tick: 100
-	idle: DATA
+	idle: DATA.R8
 		Start: 2731
 		Offset: -48,48
 		ZOffset: -1c511
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2732
 		Offset: -48,48
 		ZOffset: -1c511
-	active: DATA
+	active: DATA.R8
 		Start: 4746
 		Length: 14
 		Offset: -48,48
 		ZOffset: -1c511
 		BlendMode: Additive
-	damaged-active: DATA
+	damaged-active: DATA.R8
 		Start: 4746
 		Length: 14
 		Tick: 60
 		Offset: -48,48
 		ZOffset: -1c511
 		BlendMode: Additive
-	icon: DATA
+	icon: DATA.R8
 		Start: 4097
 		Offset: -30,-24
 
 repair.ordos:
-	make: DATA
+	make: DATA.R8
 		Start: 4370
 		Length: 10
 		Offset: -48,48
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4380
 		Length: 10
 		Offset: -48,48
 		Tick: 100
-	idle: DATA
+	idle: DATA.R8
 		Start: 2891
 		Offset: -48,48
 		ZOffset: -1c511
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2892
 		Offset: -48,48
 		ZOffset: -1c511
-	active: DATA
+	active: DATA.R8
 		Start: 4746
 		Length: 14
 		Offset: -48,48
 		ZOffset: -1c511
 		BlendMode: Additive
-	damaged-active: DATA
+	damaged-active: DATA.R8
 		Start: 4746
 		Length: 14
 		Tick: 60
 		Offset: -48,48
 		ZOffset: -1c511
 		BlendMode: Additive
-	icon: DATA
+	icon: DATA.R8
 		Start: 4098
 		Offset: -30,-24
 
 starport.atreides:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2671
 		ZOffset: -1c511
 		Offset: -48,48
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2672
 		ZOffset: -1c511
 		Offset: -48,48
-	active: DATA
+	active: DATA.R8
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
-	damaged-active: DATA
+	damaged-active: DATA.R8
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
-	make: DATA
+	make: DATA.R8
 		Start: 4347
 		Length: 11
 		Offset: -48,48
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4358
 		Length: 11
 		Offset: -48,48
 		Tick: 100
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4092
 		Offset: -30,-24
 
 power.atreides:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2523
 		Offset: -32,64
-	make: DATA
+	make: DATA.R8
 		Start: 4151
 		Length: 12
 		Offset: -32,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4163
 		Length: 12
 		Offset: -32,64
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2524
 		Offset: -32,64
-	idle-zaps: DATA
+	idle-zaps: DATA.R8
 		Start: 4492
 		Length: 10
 		Offset: -32,64
 		Tick: 200
-	damaged-idle-zaps: DATA
+	damaged-idle-zaps: DATA.R8
 		Start: 4497
 		Length: 5
 		Offset: -32,64
 		Tick: 200
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 617, 618, 637, 638
 		Length: 4
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4056
 		Offset: -30,-24
 
 barracks.atreides:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2525
 		Offset: -32,64
-	make: DATA
+	make: DATA.R8
 		Start: 4176
 		Length: 8
 		Offset: -32,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4184
 		Length: 9
 		Offset: -32,64
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2526
 		Offset: -32,64
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 617, 618, 637, 638
 		Length: 4
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4059
 		Offset: -30,-24
 
 radar.atreides:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2521
 		Offset: -48,80
-	make: DATA
+	make: DATA.R8
 		Start: 4254
 		Length: 9
 		Offset: -48,80
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4263
 		Length: 10
 		Offset: -48,80
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2522
 		Offset: -48,80
-	idle-dish: DATA
+	idle-dish: DATA.R8
 		Start: 4522
 		Length: 30
 		Offset: -48,80
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4072
 		Offset: -30,-24
 
 refinery.atreides:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2561
 		Length: 1
 		Offset: -48,64
-	make: DATA
+	make: DATA.R8
 		Start: 4231
 		Length: 11
 		Offset: -48,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4241
 		Length: 12
 		Offset: -48,64
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2561
 		Offset: -48,64
-	idle-top: DATA
+	idle-top: DATA.R8
 		Start: 2562
 		Offset: -48,64
-	damaged-idle-top: DATA
+	damaged-idle-top: DATA.R8
 		Start: 2563
 		Offset: -48,64
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4066
 		Offset: -30,-24
-	smoke: DATA
+	smoke: DATA.R8
 		Start: 3885
 		Length: 14
 		Offset: 10,-16
@@ -388,488 +388,488 @@ refinery.atreides:
 		BlendMode: Additive
 
 silo.atreides:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2566
 		Length: 4
 		Offset: -16,16
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2569
 		Length: 1
 		Offset: -16,16
-	make: DATA
+	make: DATA.R8
 		Start: 4313
 		Length: 7
 		Offset: -16,16
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4320
 		Length: 7
 		Offset: -16,16
 		Tick: 200
-	icon: DATA
+	icon: DATA.R8
 		Start: 4084
 		Offset: -30,-24
 
 hightech.atreides:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2564
 		Offset: -48,80
-	make: DATA
+	make: DATA.R8
 		Start: 4274
 		Length: 10
 		Offset: -48,80
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4284
 		Length: 10
 		Offset: -48,80
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2565
 		Offset: -48,80
-	production-welding: DATA
+	production-welding: DATA.R8
 		Start: 4614
 		Length: 30
 		Offset: -48,80
 		Tick: 500
 		BlendMode: Additive
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4078
 		Offset: -30,-24
 
 research.atreides:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2669
 		Offset: -48,80
-	make: DATA
+	make: DATA.R8
 		Start: 4391
 		Length: 10
 		Offset: -48,80
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4401
 		Length: 11
 		Offset: -48,80
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2670
 		Offset: -48,80
-	idle-lights: DATA
+	idle-lights: DATA.R8
 		Start: 4760
 		Length: 60
 		Tick: 80
 		Offset: -48,80
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4099
 		Offset: -30,-24
 
 research.harkonnen:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2829
 		Offset: -48,80
-	make: DATA
+	make: DATA.R8
 		Start: 4391
 		Length: 10
 		Offset: -48,80
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4401
 		Length: 11
 		Offset: -48,80
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2830
 		Offset: -48,80
-	idle-lights: DATA
+	idle-lights: DATA.R8
 		Start: 4760
 		Length: 60
 		Tick: 80
 		Offset: -48,80
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4100
 		Offset: -30,-24
 
 research.ordos:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2989
 		Offset: -48,80
-	make: DATA
+	make: DATA.R8
 		Start: 4391
 		Length: 10
 		Offset: -48,80
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4401
 		Length: 11
 		Offset: -48,80
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2990
 		Offset: -48,80
-	idle-lights: DATA
+	idle-lights: DATA.R8
 		Start: 4760
 		Length: 60
 		Tick: 80
 		Offset: -48,80
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4101
 		Offset: -30,-24
 
 palace.atreides:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2676
 		Offset: -48,48
-	make: DATA
+	make: DATA.R8
 		Start: 4413
 		Length: 11
 		Offset: -48,48
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4424
 		Length: 11
 		Offset: -48,48
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2677
 		Offset: -48,48
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 631, 632, 633
 		Length: 3
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 663, 664, 665
 		Length: 3
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4102
 		Offset: -30,-24
 
 light.atreides:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2673
 		Length: 1
 		Offset: -48,64
-	make: DATA
+	make: DATA.R8
 		Start: 4295
 		Length: 8
 		Offset: -48,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4303
 		Length: 9
 		Offset: -48,64
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2673
 		Offset: -48,64
-	idle-top: DATA
+	idle-top: DATA.R8
 		Start: 2674
 		Offset: -48,64
 		ZOffset: 1023
-	damaged-idle-top: DATA
+	damaged-idle-top: DATA.R8
 		Start: 2675
 		Offset: -48,64
-	production-welding: DATA
+	production-welding: DATA.R8
 		Start: 4644
 		Length: 30
 		Offset: -48,64
 		Tick: 200
 		BlendMode: Additive
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4081
 		Offset: -30,-24
 
 heavy.atreides:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2518
 		Length: 1
 		Offset: -48,80
-	make: DATA
+	make: DATA.R8
 		Start: 4328
 		Length: 9
 		Offset: -48,80
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4337
 		Length: 9
 		Offset: -48,80
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2518
 		Offset: -48,80
-	idle-top: DATA
+	idle-top: DATA.R8
 		Start: 2519
 		Offset: -48,80
 		ZOffset: 1023
-	damaged-idle-top: DATA
+	damaged-idle-top: DATA.R8
 		Start: 2520
 		Offset: -48,80
 		ZOffset: 1023
-	production-welding: DATA
+	production-welding: DATA.R8
 		Start: 4674
 		Length: 47
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4087
 		Offset: -30,-24
 
 conyard.harkonnen:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2719
 		Offset: -48,64
-	make: DATA
+	make: DATA.R8
 		Start: 4109
 		Length: 30
 		Offset: -48,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4139
 		Length: 12
 		Offset: -48,64
 		Tick: 170
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2720
 		Offset: -48,64
-	crane-overlay: DATA
+	crane-overlay: DATA.R8
 		Start: 4450
 		Length: 14
 		Offset: -48,64
 		Tick: 80
-	damaged-crane-overlay: DATA
+	damaged-crane-overlay: DATA.R8
 		Start: 4450
 		Length: 14
 		Offset: -48,64
 		Tick: 80
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4047
 		Offset: -30,-24
 
 starport.harkonnen:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2831
 		ZOffset: -1c511
 		Offset: -48,48
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2832
 		Offset: -48,48
 		ZOffset: -1c511
-	active: DATA
+	active: DATA.R8
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
-	damaged-active: DATA
+	damaged-active: DATA.R8
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
-	make: DATA
+	make: DATA.R8
 		Start: 4347
 		Length: 11
 		Offset: -48,48
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4358
 		Length: 11
 		Offset: -48,48
 		Tick: 100
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4093
 		Offset: -30,-24
 
 power.harkonnen:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2683
 		Offset: -32,64
-	make: DATA
+	make: DATA.R8
 		Start: 4151
 		Length: 12
 		Offset: -32,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4163
 		Length: 12
 		Offset: -32,64
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2684
 		Offset: -32,64
-	idle-zaps: DATA
+	idle-zaps: DATA.R8
 		Start: 4502
 		Length: 10
 		Offset: -32,64
 		Tick: 200
-	damaged-idle-zaps: DATA
+	damaged-idle-zaps: DATA.R8
 		Start: 4507
 		Length: 5
 		Offset: -32,64
 		Tick: 200
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 617, 618, 637, 638
 		Length: 4
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4057
 		Offset: -30,-24
 
 barracks.harkonnen:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2685
 		Offset: -32,64
-	make: DATA
+	make: DATA.R8
 		Start: 4213
 		Length: 8
 		Offset: -32,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4221
 		Length: 9
 		Offset: -32,64
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2686
 		Offset: -32,64
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 617, 618, 637, 638
 		Length: 4
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4060
 		Offset: -30,-24
 
 radar.harkonnen:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2681
 		Offset: -48,80
-	make: DATA
+	make: DATA.R8
 		Start: 4254
 		Length: 9
 		Offset: -48,80
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4263
 		Length: 10
 		Offset: -48,80
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2682
 		Offset: -48,80
-	idle-dish: DATA
+	idle-dish: DATA.R8
 		Start: 4553
 		Length: 30
 		Offset: -48,80
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4073
 		Offset: -30,-24
 
 refinery.harkonnen:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2721
 		Length: 1
 		Offset: -48,64
-	make: DATA
+	make: DATA.R8
 		Start: 4231
 		Length: 11
 		Offset: -48,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4241
 		Length: 12
 		Offset: -48,64
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2721
 		Offset: -48,64
-	idle-top: DATA
+	idle-top: DATA.R8
 		Start: 2722
 		Offset: -48,64
-	damaged-idle-top: DATA
+	damaged-idle-top: DATA.R8
 		Start: 2723
 		Offset: -48,64
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4067
 		Offset: -30,-24
-	smoke: DATA
+	smoke: DATA.R8
 		Start: 3885
 		Length: 14
 		Offset: 10,-16
@@ -877,398 +877,398 @@ refinery.harkonnen:
 		BlendMode: Additive
 
 silo.harkonnen:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2726
 		Length: 4
 		Offset: -16,16
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2730
 		Length: 1
 		Offset: -16,16
-	make: DATA
+	make: DATA.R8
 		Start: 4313
 		Length: 7
 		Offset: -16,16
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4320
 		Length: 7
 		Offset: -16,16
 		Tick: 200
-	icon: DATA
+	icon: DATA.R8
 		Start: 4085
 		Offset: -30,-24
 
 hightech.harkonnen:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2724
 		Offset: -48,80
-	make: DATA
+	make: DATA.R8
 		Start: 4274
 		Length: 10
 		Offset: -48,80
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4284
 		Length: 10
 		Offset: -48,80
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2725
 		Offset: -48,80
-	production-welding: DATA
+	production-welding: DATA.R8
 		Start: 4614
 		Length: 30
 		Offset: -48,80
 		Tick: 500
 		BlendMode: Additive
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4079
 		Offset: -30,-24
 
 palace.harkonnen:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2836
 		Offset: -48,48
-	make: DATA
+	make: DATA.R8
 		Start: 4413
 		Length: 11
 		Offset: -48,48
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4424
 		Length: 11
 		Offset: -48,48
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2837
 		Offset: -48,48
-#	active: DATA # TODO: overlay
+#	active: DATA.R8 # TODO: overlay
 #		Start: 4820
 #		Length: 20
 #		Offset: -48,64
-	damaged-active: DATA
+	damaged-active: DATA.R8
 		Start: 4820
 		Length: 20
 		Offset: -48,48
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 631, 632, 633
 		Length: 3
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 663, 664, 665
 		Length: 3
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4103
 		Offset: -30,-24
 
 light.harkonnen:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2833
 		Length: 1
 		Offset: -48,64
-	make: DATA
+	make: DATA.R8
 		Start: 4295
 		Length: 8
 		Offset: -48,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4303
 		Length: 9
 		Offset: -48,64
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2833
 		Offset: -48,64
-	idle-top: DATA
+	idle-top: DATA.R8
 		Start: 2834
 		Offset: -48,64
 		ZOffset: 1023
-	damaged-idle-top: DATA
+	damaged-idle-top: DATA.R8
 		Start: 2835
 		Offset: -48,64
-	production-welding: DATA
+	production-welding: DATA.R8
 		Start: 4644
 		Length: 30
 		Offset: -48,64
 		Tick: 200
 		BlendMode: Additive
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4082
 		Offset: -30,-24
 
 heavy.harkonnen:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2678
 		Length: 1
 		Offset: -48,80
-	make: DATA
+	make: DATA.R8
 		Start: 4328
 		Length: 9
 		Offset: -48,80
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4337
 		Length: 9
 		Offset: -48,80
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2678
 		Offset: -48,80
-	idle-top: DATA
+	idle-top: DATA.R8
 		Start: 2679
 		Offset: -48,80
 		ZOffset: 1023
-	damaged-idle-top: DATA
+	damaged-idle-top: DATA.R8
 		Start: 2680
 		Offset: -48,80
 		ZOffset: 1023
-	production-welding: DATA
+	production-welding: DATA.R8
 		Start: 4674
 		Length: 47
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4088
 		Offset: -30,-24
 
 conyard.ordos:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2879
 		Offset: -48,64
-	make: DATA
+	make: DATA.R8
 		Start: 4109
 		Length: 30
 		Offset: -48,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4139
 		Length: 12
 		Offset: -48,64
 		Tick: 170
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2880
 		Offset: -48,64
-	crane-overlay: DATA
+	crane-overlay: DATA.R8
 		Start: 4464
 		Length: 14
 		Offset: -48,64
 		Tick: 80
-	damaged-crane-overlay: DATA
+	damaged-crane-overlay: DATA.R8
 		Start: 4464
 		Length: 14
 		Offset: -48,64
 		Tick: 80
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4048
 		Offset: -30,-24
 
 starport.ordos:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2991
 		Offset: -48,48
 		ZOffset: -1c511
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2992
 		Offset: -48,48
 		ZOffset: -1c511
-	active: DATA
+	active: DATA.R8
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
-	damaged-active: DATA
+	damaged-active: DATA.R8
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
-	make: DATA
+	make: DATA.R8
 		Start: 4347
 		Length: 11
 		Offset: -48,48
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4358
 		Length: 11
 		Offset: -48,48
 		Tick: 100
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4094
 		Offset: -30,-24
 
 power.ordos:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2843
 		Length: 1
 		Offset: -32,64
-	make: DATA
+	make: DATA.R8
 		Start: 4151
 		Length: 12
 		Offset: -32,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4163
 		Length: 12
 		Offset: -32,64
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2844
 		Offset: -32,64
-	idle-zaps: DATA
+	idle-zaps: DATA.R8
 		Start: 4512
 		Length: 10
 		Offset: -32,64
 		Tick: 200
-	damaged-idle-zaps: DATA
+	damaged-idle-zaps: DATA.R8
 		Start: 4517
 		Length: 5
 		Offset: -32,64
 		Tick: 200
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 617, 618, 637, 638
 		Length: 4
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4058
 		Offset: -30,-24
 
 barracks.ordos:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2845
 		Offset: -32,64
-	make: DATA
+	make: DATA.R8
 		Start: 4213
 		Length: 8
 		Offset: -32,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4221
 		Length: 9
 		Offset: -32,64
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2846
 		Offset: -32,64
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 617, 618, 637, 638
 		Length: 4
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4061
 		Offset: -30,-24
 
 radar.ordos:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2841
 		Offset: -48,80
-	make: DATA
+	make: DATA.R8
 		Start: 4254
 		Length: 9
 		Offset: -48,80
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4263
 		Length: 10
 		Offset: -48,80
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2842
 		Offset: -48,80
-	idle-dish: DATA
+	idle-dish: DATA.R8
 		Start: 4583
 		Length: 30
 		Offset: -48,80
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4074
 		Offset: -30,-24
 
 refinery.ordos:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2881
 		Length: 1
 		Offset: -48,64
-	make: DATA
+	make: DATA.R8
 		Start: 4231
 		Length: 11
 		Offset: -48,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4241
 		Length: 12
 		Offset: -48,64
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2881
 		Offset: -48,64
-	idle-top: DATA
+	idle-top: DATA.R8
 		Start: 2882
 		Offset: -48,64
-	damaged-idle-top: DATA
+	damaged-idle-top: DATA.R8
 		Start: 2883
 		Offset: -48,64
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4068
 		Offset: -30,-24
-	smoke: DATA
+	smoke: DATA.R8
 		Start: 3885
 		Length: 14
 		Offset: 10,-16
@@ -1276,295 +1276,295 @@ refinery.ordos:
 		BlendMode: Additive
 
 silo.ordos:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2886
 		Length: 4
 		Offset: -16,16
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2890
 		Length: 1
 		Offset: -16,16
-	make: DATA
+	make: DATA.R8
 		Start: 4313
 		Length: 7
 		Offset: -16,16
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4320
 		Length: 7
 		Offset: -16,16
 		Tick: 200
-	icon: DATA
+	icon: DATA.R8
 		Start: 4086
 		Offset: -30,-24
 
 hightech.ordos:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2884
 		Offset: -48,80
-	make: DATA
+	make: DATA.R8
 		Start: 4274
 		Length: 10
 		Offset: -48,80
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4284
 		Length: 10
 		Offset: -48,80
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2885
 		Offset: -48,80
-	production-welding: DATA
+	production-welding: DATA.R8
 		Start: 4614
 		Length: 30
 		Offset: -48,80
 		Tick: 500
 		BlendMode: Additive
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4080
 		Offset: -30,-24
 
 palace.ordos:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2996
 		Offset: -48,48
-	make: DATA
+	make: DATA.R8
 		Start: 4413
 		Length: 11
 		Offset: -48,48
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4424
 		Length: 11
 		Offset: -48,48
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2997
 		Offset: -48,48
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 631, 632, 633
 		Length: 3
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 663, 664, 665
 		Length: 3
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4104
 		Offset: -30,-24
 
 light.ordos:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2993
 		Length: 1
 		Offset: -48,64
-	make: DATA
+	make: DATA.R8
 		Start: 4295
 		Length: 8
 		Offset: -48,64
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4303
 		Length: 9
 		Offset: -48,64
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2993
 		Offset: -48,64
-	idle-top: DATA
+	idle-top: DATA.R8
 		Start: 2994
 		Offset: -48,64
 		ZOffset: 1023
-	damaged-idle-top: DATA
+	damaged-idle-top: DATA.R8
 		Start: 2995
 		Offset: -48,64
-	production-welding: DATA
+	production-welding: DATA.R8
 		Start: 4644
 		Length: 30
 		Offset: -48,64
 		Tick: 200
 		BlendMode: Additive
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4083
 		Offset: -30,-24
 
 heavy.ordos:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2838
 		Length: 1
 		Offset: -48,80
-	make: DATA
+	make: DATA.R8
 		Start: 4328
 		Length: 9
 		Offset: -48,80
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4337
 		Length: 9
 		Offset: -48,80
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 2838
 		Offset: -48,80
-	idle-top: DATA
+	idle-top: DATA.R8
 		Start: 2839
 		Offset: -48,80
 		ZOffset: 1023
-	damaged-idle-top: DATA
+	damaged-idle-top: DATA.R8
 		Start: 2840
 		Offset: -48,80
 		ZOffset: 1023
-	production-welding: DATA
+	production-welding: DATA.R8
 		Start: 4674
 		Length: 47
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
+	icon: DATA.R8
 		Start: 4089
 		Offset: -30,-24
 
 palace.corrino:
-	idle: DATA
+	idle: DATA.R8
 		Start: 3004
 		Offset: -48,48
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 3005
 		Offset: -48,48
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 631, 632, 633
 		Length: 3
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 663, 664, 665
 		Length: 3
 		Offset: -16,-16
-	icon: palacecicon
+	icon: palacecicon.shp
 		Start: 0
-	make: DATA
+	make: DATA.R8
 		Start: 4413
 		Length: 11
 		Offset: -48,48
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4424
 		Length: 11
 		Offset: -48,48
 		Tick: 100
 
 starport.corrino:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2999
 		Offset: -48,48
 		ZOffset: -1c511
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 3000
 		Offset: -48,48
 		ZOffset: -1c511
-	active: DATA
+	active: DATA.R8
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
-	damaged-active: DATA
+	damaged-active: DATA.R8
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
-	make: DATA
+	make: DATA.R8
 		Start: 4347
 		Length: 11
 		Offset: -48,48
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4358
 		Length: 11
 		Offset: -48,48
 		Tick: 100
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA # TODO: blank
+	icon: DATA.R8 # TODO: blank
 		Start: 4020
 		Offset: -30,-24
 
 heavy.corrino:
-	idle: DATA
+	idle: DATA.R8
 		Start: 3001
 		Length: 1
 		Offset: -48,64
-	make: DATA
+	make: DATA.R8
 		Start: 4328
 		Length: 9
 		Offset: -48,80
-	crumble-overlay: DATA
+	crumble-overlay: DATA.R8
 		Start: 4337
 		Length: 9
 		Offset: -48,80
 		Tick: 100
-	damaged-idle: DATA
+	damaged-idle: DATA.R8
 		Start: 3001
 		Offset: -48,64
-	idle-top: DATA
+	idle-top: DATA.R8
 		Start: 3002
 		Offset: -48,64
 		ZOffset: 1023
-	damaged-idle-top: DATA
+	damaged-idle-top: DATA.R8
 		Start: 3003
 		Offset: -48,64
 		ZOffset: 1023
-	production-welding: DATA
+	production-welding: DATA.R8
 		Start: 4674
 		Length: 47
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
-	bib: BLOXBASE
+	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
-	bib-Concrete: BLOXBASE
+	bib-Concrete: BLOXBASE.R8
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA # TODO: blank
+	icon: DATA.R8 # TODO: blank
 		Start: 4020
 		Offset: -30,-24
 
 plates: # TODO: unused
-	idle: DATA
+	idle: DATA.R8
 		Start: 3008
 		Length: 6
-	4-plates-icon: DATA
+	4-plates-icon: DATA.R8
 		Start: 4050
 		Offset: -30,-24
-	6-plates-icon: DATA
+	6-plates-icon: DATA.R8
 		Start: 4053
 		Offset: -30,-24

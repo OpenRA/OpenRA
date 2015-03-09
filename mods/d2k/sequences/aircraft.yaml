@@ -1,27 +1,27 @@
 carryall:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1923
 		Facings: -32
-	unload: DATA
+	unload: DATA.R8
 		Start: 1923
 		Facings: -32
-	icon: DATA
+	icon: DATA.R8
 		Start: 4029
 		Offset: -30,-24
 
 
 orni:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1955
 		Facings: -32
 		Length: 3
 		Tick: 120
 		Transpose: true
-	icon: DATA
+	icon: DATA.R8
 		Start: 4031
 		Offset: -30,-24
 
 frigate:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2517
 		Facings: 1

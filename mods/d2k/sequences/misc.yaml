@@ -1,226 +1,226 @@
 explosion:
-	piff: DATA
+	piff: DATA.R8
 		Start: 3626
 		Length: 5
-	piffs: DATA
+	piffs: DATA.R8
 		Start: 3429
 		Length: 4
 		Tick: 80
 		BlendMode: Additive
-	small_explosion: DATA
+	small_explosion: DATA.R8
 		Start: 3403
 		Length: 15
 		BlendMode: Additive
-	med_explosion: DATA
+	med_explosion: DATA.R8
 		Start: 3390
 		Length: 12
 		BlendMode: Additive
-	tiny_explosion: DATA
+	tiny_explosion: DATA.R8
 		Start: 3386
 		Length: 4
 		Tick: 80
 		BlendMode: Additive
-	nuke: DATA
+	nuke: DATA.R8
 		Start: 3965
 		Length: 14
 		Tick: 60
 		BlendMode: Additive
-	mini_explosion: DATA
+	mini_explosion: DATA.R8
 		Start: 3403
 		Length: 15
 		Tick: 60
 		BlendMode: Additive
-	self_destruct: DATA
+	self_destruct: DATA.R8
 		Start: 3433
 		Length: 15
 		BlendMode: Additive
-	building: DATA
+	building: DATA.R8
 		Start: 3448
 		Length: 22
 		BlendMode: Additive
-	large_explosion: DATA
+	large_explosion: DATA.R8
 		Start: 3988
 		Length: 22
 		BlendMode: Additive
-	artillery: DATA
+	artillery: DATA.R8
 		Start: 3988
 		Length: 22
 		BlendMode: Additive
-	small_artillery: DATA
+	small_artillery: DATA.R8
 		Start: 3390
 		Length: 12
 		Tick: 60
 		BlendMode: Additive
-	small_napalm: DATA
+	small_napalm: DATA.R8
 		Start: 3421
 		Length: 8
 		BlendMode: Additive
-	shockwave: DATA
+	shockwave: DATA.R8
 		Start: 3687
 		Length: 6
 		BlendMode: Additive
 		Tick: 120
-	deviator: DATA
+	deviator: DATA.R8
 		Start: 3512
 		Length: 23
 		BlendMode: Additive
 		Tick: 60
-	corpse: DATA
+	corpse: DATA.R8
 		Start: 430
 		Length: 12
 		Tick: 1600
 
 laserfire:
-	idle: DATA
+	idle: DATA.R8
 		Start: 3386
 		Length: 4
 		Tick: 80
 		BlendMode: Additive
 
 pips:
-	groups: DATA
+	groups: DATA.R8
 		Start: 17
 		Length: 10
-	tag-primary: DATA
+	tag-primary: DATA.R8
 		Start: 110
-	pip-empty: DATA
+	pip-empty: DATA.R8
 		Start: 15
-	pip-green: DATA
+	pip-green: DATA.R8
 		Start: 16
 
 clock:
-	idle:
+	idle: clock.shp
 		Start: 0
 		Length: *
 
 powerdown:
-	disabled: speed
+	disabled: speed.shp
 		Start: 3
 
 poweroff:
-	offline:
+	offline: poweroff.shp
 		Start: 0
 		Length: *
 		Tick: 160
 
 rank:
-	rank:
+	rank: rank.shp
 		Start: 0
 		Length: *
 
 overlay:
-	build-valid-arrakis: DATA
+	build-valid-arrakis: DATA.R8
 		Start: 0
 		Offset: -16,-16
-	build-invalid: DATA
+	build-invalid: DATA.R8
 		Start: 1
 		Offset: -16,-16
-	target-select: DATA
+	target-select: DATA.R8
 		Start: 2
 		Offset: -16,-16
-	target-valid-arrakis: DATA
+	target-valid-arrakis: DATA.R8
 		Start: 0
 		Offset: -16,-16
-	target-invalid: DATA
+	target-invalid: DATA.R8
 		Start: 1
 		Offset: -16,-16
 
 rallypoint:
-	flag:flagfly
+	flag: flagfly.shp
 		Start: 0
 		Length: *
 		Offset: 11,-5
-	circles:fpls
+	circles: fpls.shp
 		Start: 0
 		Length: *
 
 beacon:
-	arrow: mouse
+	arrow: mouse.r8
 		Start: 148
 		Offset: -24,-24
-	circles: fpls
+	circles: fpls.shp
 		Start: 0
 		Length: *
 
 rpg:
-	idle: DATA
+	idle: DATA.R8
 		Start: 3015
 		Facings: -32
 
 120mm:
-	idle: DATA
+	idle: DATA.R8
 		Start: 3014
 		Length: 1
 		BlendMode: Additive
 
 155mm:
-	idle: DATA
+	idle: DATA.R8
 		Start: 3081
 		Length: 1
 
 crate-effects:
-	dollar: DATA
+	dollar: DATA.R8
 		Start: 3679
 		Length: 8
-	reveal-map: DATA
+	reveal-map: DATA.R8
 		Start: 3947
 		Length: 18
-	hide-map: DATA
+	hide-map: DATA.R8
 		Frames: 3965, 3964, 3963, 3962, 3961, 3960, 3959, 3958, 3957, 3956, 3955, 3954, 3953, 3952, 3951, 3950, 3949, 3948
 		Length: 18
-	levelup: levelup
+	levelup: levelup.shp
 		Start: 0
 		Length: *
 		Tick: 200
-	cloak: DATA
+	cloak: DATA.R8
 		Start: 3911
 		Lenght: 36
 
 allyrepair:
-	repair: DATA
+	repair: DATA.R8
 		Frames: 3, 39
 		Length: 2
 		Tick: 300
 		Offset: -11,-10
 
 missile:
-	idle: DATA
+	idle: DATA.R8
 		Start: 3088
 		Facings: -32
 
 missile2:
-	idle: DATA
+	idle: DATA.R8
 		Start: 3306
 		Facings: -32
 
 atomic:
-	up: DATA
+	up: DATA.R8
 		Start: 2147
 		Length: 1
-	down: DATA
+	down: DATA.R8
 		Start: 2148
 		Length: 1
 
 fire:
-	1: DATA
+	1: DATA.R8
 		Start: 3712
 		Length: 10
 		Offset: 4,-17
 		ZOffset: 1023
 		BlendMode: Additive
-	2: DATA
+	2: DATA.R8
 		Start: 3723
 		Length: 11
 		Offset: 0,-3
 		ZOffset: 1023
 		BlendMode: Additive
-	3: DATA
+	3: DATA.R8
 		Start: 3885
 		Length: 13
 		Offset: 0,-3
 		ZOffset: 1023
 		BlendMode: Additive
-	4: DATA
+	4: DATA.R8
 		Start: 3712
 		Length: 10
 		Offset: 0,-3
@@ -228,157 +228,149 @@ fire:
 		BlendMode: Additive
 
 smoke_m:
-	idle: DATA
+	idle: DATA.R8
 		Start: 3418
 		Length: 2
 		BlendMode: Additive
-	loop: DATA
+	loop: DATA.R8
 		Start: 3418
 		Length: 2
 		BlendMode: Additive
-	end: DATA
+	end: DATA.R8
 		Start: 3418
 		Length: 3
 		BlendMode: Additive
 
 bombs:
-	open: DATA
+	open: DATA.R8
 		Start: 3280
 		Length: 4
-	idle: DATA
+	idle: DATA.R8
 		Start: 3280
 		Length: 4
-
-parach:
-	open:
-		Start: 0
-		Length: 5
-	idle:
-		Start: 5
-		Length: 11
 
 mpspawn:
-	idle:
+	idle: mpspawn.shp
 		Start: 0
 		Length: *
 
 waypoint:
-	idle:
+	idle: waypoint.shp
 		Start: 0
 		Length: *
 
 wormspawner:
-	idle:
+	idle: wormspawner.shp
 		Start: 0
 		Length: *
 
 sietch:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2998
 		Offset: -32,32
 
 doubleblast:
-	idle: DATA
+	idle: DATA.R8
 		Start: 3279
 		Facings: -16
 		BlendMode: Additive
 
 doubleblastbullet:
-	idle: DATA
+	idle: DATA.R8
 		Start: 3248
 		Facings: -16
 		BlendMode: Additive
 
 icon:
-	paratroopers: DATA
+	paratroopers: DATA.R8
 		Start: 4029
 		Offset: -30,-24
-	ornistrike: DATA
+	ornistrike: DATA.R8
 		Start: 4031
 		Offset: -30,-24
-	deathhand: DATA
+	deathhand: DATA.R8
 		Start: 4035
 		Offset: -30,-24
 
 crate:
-	idle: DATA
+	idle: DATA.R8
 		Start: 102
 		ZOffset: -511
 		Offset: -16,-16
-	land: DATA
+	land: DATA.R8
 		Start: 102
 		ZOffset: -511
 		Offset: -16,-16
 
 # TODO: keep the redundant spicebloom.shp for now for the awful WinForms maps editor
 spicebloom:
-	make: DATA
+	make: DATA.R8
 		Start: 107
 		Length: 3
 		Offset: -16,-16
-	active: DATA
+	active: DATA.R8
 		Start: 109
 		Length: 1
 		ZOffset: -511
 		Offset: -16,-16
-	idle: DATA
+	idle: DATA.R8
 		Start: 109
 		ZOffset: -511
 		Offset: -16,-16
 
 moveflsh:
-	idle: DATA
+	idle: DATA.R8
 		Start: 3621
 		Length: 5
 		Tick: 80
 		BlendMode: Multiply
 
 resources:
-	spice: BLOXBASE
+	spice: BLOXBASE.R8
 		Frames: 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 300, 301, 320, 321
 		Length: 54
 		Offset: -16,-16
 
 shroud:
-	typea: DATA
+	typea: DATA.R8
 		Start: 40
 		Length: 14
 		Offset: -16,-16
 		BlendMode: Multiply
-	typeb: DATA
+	typeb: DATA.R8
 		Start: 56
 		Length: 14
 		Offset: -16,-16
 		BlendMode: Multiply
-	typec: DATA
+	typec: DATA.R8
 		Start: 72
 		Length: 14
 		Offset: -16,-16
 		BlendMode: Multiply
-	typed: DATA
+	typed: DATA.R8
 		Start: 88
 		Length: 14
 		Offset: -16,-16
 		BlendMode: Multiply
-	full: fullshroud
+	full: fullshroud.shp
 		BlendMode: Multiply
 
 rockcraters:
-	rockcrater1: DATA
+	rockcrater1: DATA.R8
 		Start: 114
 		Length: 16
 		Offset: -16,-16
-	rockcrater2: DATA
+	rockcrater2: DATA.R8
 		Start: 130
 		Length: 16
 		Offset: -16,-16
 
 sandcraters:
-	sandcrater1: DATA
+	sandcrater1: DATA.R8
 		Start: 146
 		Length: 16
 		Offset: -16,-16
-	sandcrater2: DATA
+	sandcrater2: DATA.R8
 		Start: 162
 		Length: 16
 		Offset: -16,-16
