@@ -617,6 +617,7 @@
     <Compile Include="Traits\Render\WithInfantryBody.cs" />
     <Compile Include="UtilityCommands\CheckSequenceSprites.cs" />
     <Compile Include="UtilityCommands\FixClassicTilesets.cs" />
+    <Compile Include="Graphics\TilesetSpecificSpriteSequence.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
