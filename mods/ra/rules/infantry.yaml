@@ -137,7 +137,7 @@ E4:
 		Cost: 300
 	Tooltip:
 		Name: Flamethrower
-		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+		Description: Advanced anti-structure unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 12,17,0,-9
 	Health:
@@ -250,7 +250,7 @@ E7:
 		Cost: 1200
 	Tooltip:
 		Name: Tanya
-		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
+		Description: Elite commando infantry. Armed with\ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
 	Selectable:
 		Voice: TanyaVoice
 		Bounds: 12,17,0,-9
@@ -467,7 +467,7 @@ SHOK:
 		Cost: 400
 	Tooltip:
 		Name: Shock Trooper
-		Description: Infantry with tesla coils\n Strong vs Infantry\n Weak vs Vehicles
+		Description: Elite infantry with portable tesla coils.\n Strong vs Infantry\n Weak vs Aircraft
 	Selectable:
 		Voice: ShokVoice
 		Bounds: 12,17,0,-9
