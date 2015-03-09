@@ -476,7 +476,7 @@ SHOK:
 	Mobile:
 		Speed: 56
 	RevealsShroud:
-		Range: 4c0
+		Range: 5c0
 	Armament@PRIMARY:
 		Weapon: PortaTesla
 		LocalOffset: 427,0,341
