@@ -20,14 +20,14 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		public DefaultSpriteSequenceLoader(ModData modData) { }
 
-		public virtual ISpriteSequence CreateSequence(ModData modData, TileSet tileSet, SpriteCache cache, string unit, string name, MiniYaml info)
+		public virtual ISpriteSequence CreateSequence(ModData modData, TileSet tileSet, SpriteCache cache, string sequence, string animation, MiniYaml info)
 		{
-			return new DefaultSpriteSequence(modData, tileSet, cache, this, unit, name, info);
+			return new DefaultSpriteSequence(modData, tileSet, cache, this, sequence, animation, info);
 		}
 
-		public IReadOnlyDictionary<string, ISpriteSequence> ParseUnitSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node)
+		public IReadOnlyDictionary<string, ISpriteSequence> ParseSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node)
 		{
-			var unitSequences = new Dictionary<string, ISpriteSequence>();
+			var sequences = new Dictionary<string, ISpriteSequence>();
 
 			foreach (var kvp in node.Value.ToDictionary())
 			{
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Graphics
 				{
 					try
 					{
-						unitSequences.Add(kvp.Key, CreateSequence(modData, tileSet, cache, node.Key, kvp.Key, kvp.Value));
+						sequences.Add(kvp.Key, CreateSequence(modData, tileSet, cache, node.Key, kvp.Key, kvp.Value));
 					}
 					catch (FileNotFoundException ex)
 					{
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Graphics
 				}
 			}
 
-			return new ReadOnlyDictionary<string, ISpriteSequence>(unitSequences);
+			return new ReadOnlyDictionary<string, ISpriteSequence>(sequences);
 		}
 	}
 
@@ -67,16 +67,15 @@ namespace OpenRA.Mods.Common.Graphics
 		public int ShadowZOffset { get; private set; }
 		public int[] Frames { get; private set; }
 
-		protected virtual string GetSpriteSrc(ModData modData, TileSet tileSet, string unit, string name, MiniYaml info, Dictionary<string, MiniYaml> d)
+		protected virtual string GetSpriteSrc(ModData modData, TileSet tileSet, string sequence, string animation, MiniYaml info, Dictionary<string, MiniYaml> d)
 		{
-			return info.Value ?? unit;
+			return info.Value ?? sequence;
 		}
 
-		public DefaultSpriteSequence(ModData modData, TileSet tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string unit, string name, MiniYaml info)
+		public DefaultSpriteSequence(ModData modData, TileSet tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string sequence, string animation, MiniYaml info)
 		{
-			Name = name;
+			Name = animation;
 			Loader = loader;
-
 			var d = info.ToDictionary();
 			var offset = float2.Zero;
 			var blendMode = BlendMode.Alpha;
@@ -94,7 +93,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 				// Apply offset to each sprite in the sequence
 				// Different sequences may apply different offsets to the same frame
-				var src = GetSpriteSrc(modData, tileSet, unit, name, info, d);
+				var src = GetSpriteSrc(modData, tileSet, sequence, animation, info, d);
 				sprites = cache[src].Select(
 					s => new Sprite(s.Sheet, s.Bounds, s.Offset + offset, s.Channel, blendMode)).ToArray();
 
@@ -154,17 +153,17 @@ namespace OpenRA.Mods.Common.Graphics
 				if (Length > Stride)
 					throw new InvalidOperationException(
 						"{0}: Sequence {1}.{2}: Length must be <= stride"
-							.F(info.Nodes[0].Location, unit, name));
+						.F(info.Nodes[0].Location, sequence, animation));
 
 				if (Start < 0 || Start + Facings * Stride > sprites.Length || ShadowStart + Facings * Stride > sprites.Length)
 					throw new InvalidOperationException(
 						"{6}: Sequence {0}.{1} uses frames [{2}..{3}] of SHP `{4}`, but only 0..{5} actually exist"
-						.F(unit, name, Start, Start + Facings * Stride - 1, src, sprites.Length - 1,
+						.F(sequence, animation, Start, Start + Facings * Stride - 1, src, sprites.Length - 1,
 						info.Nodes[0].Location));
 			}
 			catch (FormatException f)
 			{
-				throw new FormatException("Failed to parse sequences for {0}.{1} at {2}:\n{3}".F(unit, name, info.Nodes[0].Location, f));
+				throw new FormatException("Failed to parse sequences for {0}.{1} at {2}:\n{3}".F(sequence, animation, info.Nodes[0].Location, f));
 			}
 		}
 

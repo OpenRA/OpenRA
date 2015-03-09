@@ -39,7 +39,7 @@ namespace OpenRA.Graphics
 
 	public interface ISpriteSequenceLoader
 	{
-		IReadOnlyDictionary<string, ISpriteSequence> ParseUnitSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node);
+		IReadOnlyDictionary<string, ISpriteSequence> ParseSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node);
 	}
 
 	public class SequenceProvider
@@ -143,7 +143,7 @@ namespace OpenRA.Graphics
 					items.Add(node.Key, t);
 				else
 				{
-					t = Exts.Lazy(() => modData.SpriteSequenceLoader.ParseUnitSequences(modData, tileSet, SpriteCache, node));
+					t = Exts.Lazy(() => modData.SpriteSequenceLoader.ParseSequences(modData, tileSet, SpriteCache, node));
 					sequenceCache.Add(key, t);
 					items.Add(node.Key, t);
 				}
