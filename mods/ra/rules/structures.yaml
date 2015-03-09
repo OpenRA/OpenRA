@@ -1114,7 +1114,7 @@ AFLD:
 		Prerequisite: aircraft.ukraine
 	AirstrikePower@spyplane:
 		OrderName: SovietSpyPlane
-		Prerequisites: aircraft.sovietvanilla
+		Prerequisites: aircraft.soviet
 		Icon: spyplane
 		ChargeTime: 180
 		Description: Spy Plane
