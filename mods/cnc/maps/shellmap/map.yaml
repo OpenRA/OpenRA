@@ -4,7 +4,7 @@ RequiresMod: cnc
 
 Title: shellmap
 
-Description: CNC Shellmap
+Description: CNC River Shellmap
 
 Author: Chris Forbes
 
@@ -182,9 +182,6 @@ Actors:
 	Actor40: t06
 		Location: 8,6
 		Owner: Neutral
-	Actor43: afld
-		Location: 9,7
-		Owner: Nod
 	Actor42: hq
 		Location: 10,4
 		Owner: Nod
@@ -199,9 +196,6 @@ Actors:
 		Owner: Nod
 	Actor48: sam
 		Location: 79,5
-		Owner: Nod
-	Actor49: hand
-		Location: 15,7
 		Owner: Nod
 	Actor50: cycl
 		Location: 13,11
@@ -442,21 +436,6 @@ Actors:
 		Owner: Nod
 	Actor125: e3
 		Location: 58,9
-		Owner: Nod
-	Actor126: ltnk
-		Location: 21,4
-		Owner: Nod
-	Actor127: ltnk
-		Location: 22,4
-		Owner: Nod
-	Actor128: ltnk
-		Location: 23,4
-		Owner: Nod
-	Actor129: bggy
-		Location: 11,10
-		Owner: Nod
-	Actor130: bggy
-		Location: 10,10
 		Owner: Nod
 	Actor131: gun
 		Location: 13,16
@@ -710,12 +689,6 @@ Actors:
 	Actor218: c9
 		Location: 44,21
 		Owner: Neutral
-	Actor219: e1
-		Location: 45,27
-		Owner: Nod
-	Actor220: e1
-		Location: 46,28
-		Owner: Nod
 	Actor222: v01
 		Location: 69,19
 		Owner: Neutral
@@ -805,18 +778,6 @@ Actors:
 		Owner: Nod
 	Actor251: cycl
 		Location: 63,26
-		Owner: Nod
-	Actor252: gun
-		Location: 53,27
-		Owner: Nod
-	Actor253: gun
-		Location: 50,27
-		Owner: Nod
-	Actor254: gun
-		Location: 61,27
-		Owner: Nod
-	Actor255: gun
-		Location: 64,27
 		Owner: Nod
 	Actor256: v03
 		Location: 68,21
@@ -950,38 +911,108 @@ Actors:
 	Actor221: jeep
 		Location: 57,45
 		Owner: GDI
-	boat1: boat
-		Location: 45,33
-		Owner: GDI
-	boat2: boat
-		Location: 39,37
-		Owner: GDI
-	boat3: boat
-		Location: 70,33
-		Owner: GDI
-	boat4: boat
-		Location: 79,37
-		Owner: GDI
-	lst1: lst
-		Location: 53,35
-		Owner: GDI
-		Facing: 64
-	lst2: lst
-		Location: 58,35
-		Owner: GDI
-		Facing: 64
-	lst3: lst
-		Location: 63,35
-		Owner: GDI
-		Facing: 64
-	ftnk1: ftnk
-		Location: 67,22
+	beachdude1: e1
+		Location: 45,27
 		Owner: Nod
-		Facing: 228
-	ftnk2: ftnk
-		Location: 65,20
+	beachdude2: e1
+		Location: 46,28
 		Owner: Nod
-		Facing: 192
+	Turret3: gun
+		Location: 53,27
+		Owner: Nod
+	Turret4: gun
+		Location: 50,27
+		Owner: Nod
+	Turret2: gun
+		Location: 61,27
+		Owner: Nod
+	Turret1: gun
+		Location: 64,27
+		Owner: Nod
+	Tnk1: ltnk
+		Location: 21,4
+		Owner: Nod
+	Tnk2: ltnk
+		Location: 22,4
+		Owner: Nod
+	Tnk3: ltnk
+		Location: 23,4
+		Owner: Nod
+	Bggy1: bggy
+		Location: 11,10
+		Owner: Nod
+	Bggy2: bggy
+		Location: 10,10
+		Owner: Nod
+	NodHand: hand
+		Location: 15,7
+		Owner: Nod
+	NodAfld: afld
+		Location: 9,7
+		Owner: Nod
+	ChinEntry: waypoint
+		Location: 60,46
+		Owner: Neutral
+	ChinUnload: waypoint
+		Location: 80,28
+		Owner: Neutral
+	ChinExit: waypoint
+		Location: 88,28
+		Owner: Neutral
+	CommFin: waypoint
+		Location: 45,28
+		Owner: Neutral
+	EvacEntry: waypoint
+		Location: 40,46
+		Owner: Neutral
+	CommMove: waypoint
+		Location: 54,26
+		Owner: Neutral
+	BeachDudeMove: waypoint
+		Location: 60,26
+		Owner: Neutral
+	EvacLand: waypoint
+		Location: 44,27
+		Owner: Neutral
+	FlareHere: waypoint
+		Location: 44,28
+		Owner: Neutral
+	LSTRLand: waypoint
+		Location: 64,27
+		Owner: Neutral
+	LSTMLand: waypoint
+		Location: 61,27
+		Owner: Neutral
+	LSTLLand: waypoint
+		Location: 58,27
+		Owner: Neutral
+	LSTRStart: waypoint
+		Location: 87,34
+		Owner: Neutral
+	LSTMStart: waypoint
+		Location: 87,36
+		Owner: Neutral
+	LSTLStart: waypoint
+		Location: 87,38
+		Owner: Neutral
+	LSTRMove: waypoint
+		Location: 64,34
+		Owner: Neutral
+	LSTMMove: waypoint
+		Location: 61,36
+		Owner: Neutral
+	LSTLMove: waypoint
+		Location: 58,38
+		Owner: Neutral
+	MCVDeploy: waypoint
+		Location: 57,24
+		Owner: Neutral
+	HandBuild: waypoint
+		Location: 52,6
+		Owner: Neutral
+	WestSide: waypoint
+		Location: 35,21
+		Owner: Neutral
 
 Smudges:
 
@@ -994,18 +1025,102 @@ Rules:
 			Effect: Desaturated
 		LuaScript:
 			Scripts: shellmap.lua
+	^Vehicle:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			Upgrades:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Tank:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			Upgrades:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Infantry:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			Upgrades:
+		DeathSounds@NORMAL:
+			VolumeMultiplier: 0.1
+		DeathSounds@BURNED:
+			VolumeMultiplier: 0.1
+		DeathSounds@ZAPPED:
+			VolumeMultiplier: 0.1
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Ship:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			Upgrades:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Plane:
+		GivesBounty:
+			Percentage: 0
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Building:
+		GivesBounty:
+			Percentage: 0
+		GainsStatUpgrades:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+		UpgradeManager:
+	^CivInfantry:
+		-ActorLostNotification:
 	LST:
 		Mobile:
-			Speed: 42
+			Speed: 82
 	BOAT:
 		Mobile:
 			Speed: 42
+	MTNK:
+		Buildable:
+			Prerequisites: anyhq
+	LTNK:
+		Buildable:
+			-Prerequisites:
+	STNK:
+		Buildable:
+			-Prerequisites:
 
+	FTNK:
+		Buildable:
+			-Prerequisites:
+	E2:
+		Buildable:
+			-Prerequisites:
+	E3:
+		Mobile:
+			Speed: 56
+	E4:
+		Buildable:
+			-Prerequisites:
+	RMBO:
+		-TakeCover:
+	PROC:
+		StoresResources:
+			Capacity: 12000
 Sequences:
 
 VoxelSequences:
 
 Weapons:
+	Rockets:
+		Range: 4c0
+	BikeRockets:
+		Range: 3c0
 
 Voices:
 
