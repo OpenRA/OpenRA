@@ -564,7 +564,6 @@ local function treeSetConnectorsAndIcons(tree)
 
       -- disable Delete on non-empty directories
       local isdir = tree:IsDirectory(item_id)
-      local isstart = tree:IsFileStart(item_id)
       local ismapped = tree:IsDirMapped(item_id)
       menu:Destroy(ismapped and ID_MAPDIRECTORY or ID_UNMAPDIRECTORY)
       if not startfile then menu:Destroy(ID_UNSETSTARTFILE) end

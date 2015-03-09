@@ -189,7 +189,7 @@ end
 local function generateAPIInfo(only)
   for i,api in pairs(apis) do
     if ((not only) or i == only) then
-      fillTips(api,"",i)
+      fillTips(api,"")
     end
   end
 end
