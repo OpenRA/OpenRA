@@ -153,7 +153,7 @@ TeslaZap:
 
 PortaTesla:
 	ReloadDelay: 70
-	Range: 3c512
+	Range: 6c0
 	Report: TESLA1.AUD
 	Charges: yes
 	Projectile: TeslaZap
