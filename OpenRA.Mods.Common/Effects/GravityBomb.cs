@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly string Palette = "effect";
 		public readonly bool Shadow = false;
 		public readonly WRange Velocity = WRange.Zero;
+		[Desc("Value added to velocity every tick.")]
 		public readonly WRange Acceleration = new WRange(15);
 
 		public IEffect Create(ProjectileArgs args) { return new GravityBomb(this, args); }
@@ -29,11 +30,12 @@ namespace OpenRA.Mods.Common.Effects
 
 	public class GravityBomb : IEffect
 	{
-		GravityBombInfo info;
-		Animation anim;
-		ProjectileArgs args;
-		WVec velocity;
-		WPos pos;
+		readonly GravityBombInfo info;
+		readonly Animation anim;
+		readonly ProjectileArgs args;
+		[Sync] WVec velocity;
+		[Sync] WPos pos;
+		[Sync] WVec acceleration;
 
 		public GravityBomb(GravityBombInfo info, ProjectileArgs args)
 		{
@@ -41,6 +43,7 @@ namespace OpenRA.Mods.Common.Effects
 			this.args = args;
 			pos = args.Source;
 			velocity = new WVec(WRange.Zero, WRange.Zero, -info.Velocity);
+			acceleration = new WVec(WRange.Zero, WRange.Zero, info.Acceleration);
 
 			anim = new Animation(args.SourceActor.World, info.Image);
 			if (anim.HasSequence("open"))
@@ -51,7 +54,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public void Tick(World world)
 		{
-			velocity -= new WVec(WRange.Zero, WRange.Zero, info.Acceleration);
+			velocity -= acceleration;
 			pos += velocity;
 
 			if (pos.Z <= args.PassiveTarget.Z)
@@ -61,7 +64,8 @@ namespace OpenRA.Mods.Common.Effects
 				args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
 			}
 
-			anim.Tick();
+			if (anim != null)
+				anim.Tick();
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

@@ -16,11 +16,11 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class Explosion : IEffect
 	{
-		World world;
+		readonly World world;
+		readonly string palette;
+		readonly Animation anim;
 		WPos pos;
 		CPos cell;
-		string palette;
-		Animation anim;
 
 		public Explosion(World world, WPos pos, string sequence, string palette)
 		{
