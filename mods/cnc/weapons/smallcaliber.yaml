@@ -192,3 +192,4 @@ APCGun.AA:
 			Heavy: 50
 	Warhead@2Eff: CreateEffect
 		Explosion: small_frag
+
