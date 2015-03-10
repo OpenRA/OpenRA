@@ -32,7 +32,7 @@ Bazooka:
 		ContrailLength: 10
 		Inaccuracy: 96
 		Image: RPG
-		ROT: 5
+		RateOfTurn: 5
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
@@ -183,7 +183,7 @@ QuadRockets:
 		Arm: 0
 		Inaccuracy: 96
 		Image: RPG
-		ROT: 10
+		RateOfTurn: 10
 		Speed: 256
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
@@ -242,7 +242,7 @@ TowerMissile:
 		Shadow: yes
 		Inaccuracy: 384
 		Image: MISSILE2
-		ROT: 10
+		RateOfTurn: 10
 		Speed: 256
 		RangeLimit: 50
 		Angle: 110
@@ -347,7 +347,7 @@ DevBullet:
 		Inaccuracy: 1c416
 		Angle: 110
 		Image: MISSILE2
-		ROT: 5
+		RateOfTurn: 5
 		ContrailLength: 5
 	Warhead@1Dam: SpreadDamage
 		Spread: 384

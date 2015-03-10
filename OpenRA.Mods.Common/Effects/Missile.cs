@@ -38,9 +38,9 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly WRange Inaccuracy = WRange.Zero;
 		[Desc("Probability of locking onto and following target.")]
 		public readonly int LockOnProbability = 100;
-		[Desc("Rate of Turning")]
-		public readonly int ROT = 5;
 		[Desc("Explode when following the target longer than this.")]
+		[Desc("In n/256 per tick.")]
+		public readonly int RateOfTurn = 5;
 		public readonly int RangeLimit = 0;
 		[Desc("If fired at aircraft, increase speed by 50%.")]
 		public readonly bool TurboBoost = false;
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Effects
 			else if (!args.GuidedTarget.IsValidFor(args.SourceActor))
 				desiredFacing = facing;
 
-			facing = OpenRA.Traits.Util.TickFacing(facing, desiredFacing, info.ROT);
+			facing = OpenRA.Traits.Util.TickFacing(facing, desiredFacing, info.RateOfTurn);
 			var move = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing)) * info.Speed.Range / 1024;
 			if (targetPosition.Z > 0 && info.TurboBoost)
 				move = (move * 3) / 2;

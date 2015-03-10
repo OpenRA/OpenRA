@@ -13,7 +13,7 @@ Maverick:
 		ContrailLength: 10
 		Inaccuracy: 512
 		Image: DRAGON
-		ROT: 5
+		RateOfTurn: 5
 		RangeLimit: 60
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -50,7 +50,7 @@ Dragon:
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 5
+		RateOfTurn: 5
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -87,7 +87,7 @@ HellfireAG:
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 10
+		RateOfTurn: 10
 		RangeLimit: 20
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -124,7 +124,7 @@ HellfireAA:
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 10
+		RateOfTurn: 10
 		RangeLimit: 20
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -160,7 +160,7 @@ MammothTusk:
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 15
+		RateOfTurn: 15
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
@@ -197,7 +197,7 @@ Nike:
 		Blockable: false
 		ContrailLength: 10
 		Image: MISSILE
-		ROT: 25
+		RateOfTurn: 25
 		RangeLimit: 50
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
@@ -227,7 +227,7 @@ RedEye:
 		Blockable: false
 		ContrailLength: 10
 		Image: MISSILE
-		ROT: 20
+		RateOfTurn: 20
 		RangeLimit: 30
 		Speed: 298
 	Warhead@1Dam: SpreadDamage
@@ -291,7 +291,7 @@ Stinger:
 		Blockable: false
 		ContrailLength: 10
 		Image: DRAGON
-		ROT: 20
+		RateOfTurn: 20
 		RangeLimit: 50
 		TurboBoost: true
 		Speed: 170
@@ -332,7 +332,7 @@ TorpTube:
 		Arm: 3
 		Speed: 85
 		Trail: bubbles
-		ROT: 1
+		RateOfTurn: 1
 		RangeLimit: 160
 		BoundToTerrainType: Water
 		Palette: shadow
@@ -409,7 +409,7 @@ APTusk:
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 10
+		RateOfTurn: 10
 		RangeLimit: 22
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
