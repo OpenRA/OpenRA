@@ -325,7 +325,6 @@ TorpTube:
 	Range: 9c0
 	Report: TORPEDO1.AUD
 	ValidTargets: Water, Underwater, Bridge
-	Palette: shadow
 	Burst: 2
 	BurstDelay: 20
 	Projectile: Missile
@@ -336,6 +335,7 @@ TorpTube:
 		ROT: 1
 		RangeLimit: 160
 		BoundToTerrainType: Water
+		Palette: shadow
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 180

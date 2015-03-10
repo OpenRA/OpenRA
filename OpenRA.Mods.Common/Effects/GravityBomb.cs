@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Effects
 	public class GravityBombInfo : IProjectileInfo
 	{
 		public readonly string Image = null;
+		public readonly string Palette = "effect";
 		public readonly bool Shadow = false;
 		public readonly WRange Velocity = WRange.Zero;
 		public readonly WRange Acceleration = new WRange(15);
@@ -75,7 +76,7 @@ namespace OpenRA.Mods.Common.Effects
 						yield return r;
 				}
 
-				var palette = wr.Palette(args.Weapon.Palette);
+				var palette = wr.Palette(info.Palette);
 				foreach (var r in anim.Render(pos, palette))
 					yield return r;
 			}

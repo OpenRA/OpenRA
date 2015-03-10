@@ -46,8 +46,6 @@ namespace OpenRA.GameRules
 
 		public readonly bool Charges = false;
 
-		public readonly string Palette = "effect";
-
 		[Desc("What types of targets are affected.")]
 		public readonly string[] ValidTargets = { "Ground", "Water" };
 

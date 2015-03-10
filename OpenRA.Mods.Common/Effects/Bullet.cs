@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly string Image = null;
 		[Desc("Check for whether an actor with BlocksBullets: trait blocks fire")]
 		public readonly bool High = false;
+		public readonly string Palette = "effect";
 		public readonly bool Shadow = false;
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
 		public readonly WAngle[] Angle = { WAngle.Zero };
@@ -158,7 +159,7 @@ namespace OpenRA.Mods.Common.Effects
 						yield return r;
 				}
 
-				var palette = wr.Palette(args.Weapon.Palette);
+				var palette = wr.Palette(info.Palette);
 				foreach (var r in anim.Render(pos, palette))
 					yield return r;
 			}
