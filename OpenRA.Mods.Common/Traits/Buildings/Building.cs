@@ -16,9 +16,40 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Remove this trait to limit base-walking by cheap or defensive buildings.")]
-	public class GivesBuildableAreaInfo : TraitInfo<GivesBuildableArea> { }
-	public class GivesBuildableArea { }
+	[Desc("This actor grants buildable area to certain Building types.")]
+	public class GivesBuildableAreaInfo : ITraitInfo
+	{
+		[FieldLoader.LoadUsing("LoadRanges")]
+		[Desc("Buildable area range for 'Building.RangeType's.")]
+		public readonly Dictionary<string, int> Ranges = null;
+
+		public object Create(ActorInitializer init) { return new GivesBuildableArea(init.Self, this); }
+
+		static object LoadRanges(MiniYaml y)
+		{
+			MiniYaml ranges;
+
+			if (!y.ToDictionary().TryGetValue("Ranges", out ranges))
+				return new Dictionary<string, int>
+				{
+					{ "default", 5 }
+				};
+
+			return ranges.Nodes.ToDictionary(
+				kv => FieldLoader.GetValue<string>("(key)", kv.Key),
+				kv => FieldLoader.GetValue<int>("(value)", kv.Value.Value));
+		}
+	}
+
+	public class GivesBuildableArea
+	{
+		public readonly GivesBuildableAreaInfo Info;
+
+		public GivesBuildableArea(Actor self, GivesBuildableAreaInfo info)
+		{
+			Info = info;
+		}
+	}
 
 	public class BuildingInfo : ITraitInfo, IOccupySpaceInfo, UsesInit<LocationInit>
 	{
@@ -31,6 +62,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CVec Dimensions = new CVec(1, 1);
 		public readonly bool RequiresBaseProvider = false;
 		public readonly bool AllowInvalidPlacement = false;
+
+		[Desc("The type used to check valid build radius.")]
+		public readonly string RangeType = "default";
 
 		public readonly string[] BuildSounds = { "placbldg.aud", "build5.aud" };
 		public readonly string[] UndeploySounds = { "cashturn.aud" };
@@ -85,9 +119,25 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (buildingAtPos == null)
 					{
-						var unitsAtPos = world.ActorMap.GetUnitsAt(pos).Where(a => a.IsInWorld
-							&& (a.Owner == p || (allyBuildRadius && a.Owner.Stances[p] == Stance.Ally))
-							&& a.HasTrait<GivesBuildableArea>());
+						var unitsAtPos = world.ActorMap.GetUnitsAt(pos).Where(a =>
+						{
+							if (!a.IsInWorld)
+								return false;
+
+							if (!(a.Owner == p || (allyBuildRadius && a.Owner.Stances[p] == Stance.Ally)))
+								return false;
+
+							var gba = a.TraitOrDefault<GivesBuildableArea>();
+							if (gba == null)
+								return false;
+
+							var i = gba.Info;
+							if (!i.Ranges.ContainsKey(RangeType))
+								return false;
+
+							var distance = (pos - topLeft).LengthSquared;
+							return i.Ranges[RangeType] >= distance;
+						});
 
 						if (unitsAtPos.Any())
 							nearnessCandidates.Add(pos);
