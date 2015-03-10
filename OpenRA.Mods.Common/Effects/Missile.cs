@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Effects
 {
 	class MissileInfo : IProjectileInfo
 	{
+		public readonly string Image = null;
+		public readonly string Palette = "effect";
+		public readonly bool Shadow = false;
 		[Desc("Projectile speed in WRange / tick")]
 		public readonly WRange Speed = new WRange(8);
 		[Desc("Maximum vertical pitch when changing altitude.")]
@@ -30,13 +33,11 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly int Arm = 0;
 		[Desc("Check for whether an actor with BlocksBullets: trait blocks fire")]
 		public readonly bool High = false;
-		public readonly bool Shadow = false;
 		public readonly string Trail = null;
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WRange Inaccuracy = WRange.Zero;
 		[Desc("Probability of locking onto and following target.")]
 		public readonly int LockOnProbability = 100;
-		public readonly string Image = null;
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 5;
 		[Desc("Explode when following the target longer than this.")]
@@ -211,7 +212,7 @@ namespace OpenRA.Mods.Common.Effects
 						yield return r;
 				}
 
-				var palette = wr.Palette(args.Weapon.Palette);
+				var palette = wr.Palette(info.Palette);
 				foreach (var r in anim.Render(pos, palette))
 					yield return r;
 			}
