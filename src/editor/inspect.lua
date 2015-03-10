@@ -148,8 +148,14 @@ function M.show_warnings(top_ast, globinit)
         local parent = ast.parent and var
           and (" in '"..var:gsub("%."..name.."$","").."'")
           or ""
-        warn("first use of unknown field '" .. name .."'"..parent,
-          ast.lineinfo and tostring(ast.lineinfo.first):match('|L(%d+)'), path)
+
+        local tblref = ast.parent and ast.parent[1]
+        local localparam = (tblref and tblref.localdefinition
+          and tblref.localdefinition.isparam)
+        if not localparam then
+          warn("first use of unknown field '" .. name .."'"..parent,
+            ast.lineinfo and tostring(ast.lineinfo.first):match('|L(%d+)'), path)
+        end
       end
     elseif ast.tag == 'Id' and not ast.localdefinition and not ast.definedglobal then
       if not globseen[name] then
