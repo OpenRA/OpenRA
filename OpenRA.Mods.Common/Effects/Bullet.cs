@@ -22,19 +22,22 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class BulletInfo : IProjectileInfo
 	{
-		[Desc("Projectile speed in WRange / tick, two values indicate variable velocity")]
+		[Desc("Projectile speed in WRange / tick, two values indicate variable velocity.")]
 		public readonly WRange[] Speed = { new WRange(17) };
-		public readonly string Trail = null;
-		[Desc("Maximum offset at the maximum range")]
+		[Desc("Maximum offset at the maximum range.")]
 		public readonly WRange Inaccuracy = WRange.Zero;
 		public readonly string Image = null;
 		public readonly string Palette = "effect";
 		public readonly bool Shadow = false;
+		[Desc("Trail animation.")]
+		public readonly string Trail = null;
 		[Desc("Is this blocked by actors with BlocksProjectiles trait.")]
 		public readonly bool Blockable = true;
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
 		public readonly WAngle[] Angle = { WAngle.Zero };
+		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
+		[Desc("Delay in ticks until trail animaion is spawned.")]
 		public readonly int TrailDelay = 1;
 		public readonly int ContrailLength = 0;
 		public readonly Color ContrailColor = Color.White;
@@ -48,11 +51,11 @@ namespace OpenRA.Mods.Common.Effects
 	{
 		readonly BulletInfo info;
 		readonly ProjectileArgs args;
+		readonly Animation anim;
 		[Sync] readonly WAngle angle;
 		[Sync] readonly WRange speed;
 
-		ContrailRenderable trail;
-		Animation anim;
+		ContrailRenderable contrail;
 
 		[Sync] WPos pos, target;
 		[Sync] int length;
@@ -100,7 +103,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 			{
 				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
-				trail = new ContrailRenderable(world, color, info.ContrailLength, info.ContrailDelay, 0);
+				contrail = new ContrailRenderable(world, color, info.ContrailLength, info.ContrailDelay, 0);
 			}
 
 			smokeTicks = info.TrailDelay;
@@ -134,7 +137,7 @@ namespace OpenRA.Mods.Common.Effects
 			}
 
 			if (info.ContrailLength > 0)
-				trail.Update(pos);
+				contrail.Update(pos);
 
 			if (ticks++ >= length || (info.Blockable && world.ActorMap
 				.GetUnitsAt(world.Map.CellContaining(pos)).Any(a => a.HasTrait<IBlocksProjectiles>())))
@@ -144,7 +147,7 @@ namespace OpenRA.Mods.Common.Effects
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (info.ContrailLength > 0)
-				yield return trail;
+				yield return contrail;
 
 			if (anim == null || ticks >= length)
 				yield break;
@@ -168,7 +171,7 @@ namespace OpenRA.Mods.Common.Effects
 		void Explode(World world)
 		{
 			if (info.ContrailLength > 0)
-				world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, trail)));
+				world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, contrail)));
 
 			world.AddFrameEndTask(w => w.Remove(this));
 

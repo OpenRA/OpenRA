@@ -31,22 +31,25 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(30);
 		[Desc("How many ticks before this missile is armed and can explode.")]
 		public readonly int Arm = 0;
-		public readonly string Trail = null;
 		[Desc("Is the missile blocked by actors with BlocksProjectiles: trait.")]
 		public readonly bool Blockable = true;
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WRange Inaccuracy = WRange.Zero;
 		[Desc("Probability of locking onto and following target.")]
 		public readonly int LockOnProbability = 100;
-		[Desc("Explode when following the target longer than this.")]
 		[Desc("In n/256 per tick.")]
 		public readonly int RateOfTurn = 5;
+		[Desc("Explode when following the target longer than this many ticks.")]
 		public readonly int RangeLimit = 0;
+		[Desc("Trail animation.")]
+		public readonly string Trail = null;
+		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
 		public readonly int ContrailLength = 0;
 		public readonly Color ContrailColor = Color.White;
 		public readonly bool ContrailUsePlayerColor = false;
 		public readonly int ContrailDelay = 1;
+		[Desc("Should missile targeting be thrown off by nearby actors with JamsMissiles.")]
 		public readonly bool Jammable = true;
 		[Desc("Explodes when leaving the following terrain type, e.g., Water for torpedoes.")]
 		public readonly string BoundToTerrainType = "";
@@ -65,7 +68,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Animation anim;
 
 		int ticksToNextSmoke;
-		ContrailRenderable trail;
+		ContrailRenderable contrail;
 
 		[Sync] WPos pos;
 		[Sync] int facing;
@@ -109,7 +112,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 			{
 				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
-				trail = new ContrailRenderable(world, color, info.ContrailLength, info.ContrailDelay, 0);
+				contrail = new ContrailRenderable(world, color, info.ContrailLength, info.ContrailDelay, 0);
 			}
 		}
 
@@ -127,7 +130,8 @@ namespace OpenRA.Mods.Common.Effects
 		public void Tick(World world)
 		{
 			ticks++;
-			anim.Tick();
+			if (anim != null)
+				anim.Tick();
 
 			// Missile tracks target
 			if (args.GuidedTarget.IsValidFor(args.SourceActor) && lockOn)
@@ -165,7 +169,7 @@ namespace OpenRA.Mods.Common.Effects
 			}
 
 			if (info.ContrailLength > 0)
-				trail.Update(pos);
+				contrail.Update(pos);
 
 			var cell = world.Map.CellContaining(pos);
 
@@ -183,7 +187,7 @@ namespace OpenRA.Mods.Common.Effects
 		void Explode(World world)
 		{
 			if (info.ContrailLength > 0)
-				world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, trail)));
+				world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, contrail)));
 
 			world.AddFrameEndTask(w => w.Remove(this));
 
@@ -197,7 +201,7 @@ namespace OpenRA.Mods.Common.Effects
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (info.ContrailLength > 0)
-				yield return trail;
+				yield return contrail;
 
 			if (!args.SourceActor.World.FogObscures(wr.World.Map.CellContaining(pos)))
 			{
