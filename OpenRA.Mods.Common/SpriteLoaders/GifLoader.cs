@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OpenRA.Mods.Common.SpriteLoaders
 {
-	class GifLoader : ISpriteLoader
+	public class GifLoader : ISpriteLoader
 	{
 		public class GifFrame : ISpriteFrame
 		{
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				var unpacked = s.ReadUInt8();
 
 				// Local palette
-				if (GetBitValue(unpacked, 0) != 0)
+				if (((unpacked & 0x01) != 0))
 				{
 					var bits = new byte[]{
 						GetBitValue(unpacked, 5),
@@ -46,13 +46,23 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				var interlaced = false;
 
 				// Interlaced
-				if (GetBitValue(unpacked, 1) != 0)
+				if ((unpacked & 0x02) != 0)
 					interlaced = true;
 
 				var lzwMinCodeSize = s.ReadUInt8();
 
-				var data = ReadSubblock(s);
-				data = Decode(lzwMinCodeSize, data);
+				var bytes = new List<byte>();
+
+				while (true)
+				{
+					var ssize = s.ReadUInt8();
+					if (ssize == 0)
+						break;
+
+					bytes.AddRange(s.ReadBytes(ssize));
+				}
+
+				var data = Decode(lzwMinCodeSize, bytes.ToArray());
 
 				if (interlaced)
 				{
@@ -105,7 +115,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			var GCT = s.ReadUInt8();
 			s.Position += 2;
 
-			if (GetBitValue(GCT, 0) != 0)
+			if ((GCT & 0x01) != 0)
 			{
 				var GCEntries = 1 << ((GCT & 0x7) + 1);
 
@@ -135,12 +145,12 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 									s.Position -= 2;
 								break;
 							case BlockTypes.CommentExtensionBlock:
-								ReadSubblock(s);
+								SkipSubblock(s);
 								break;
 							case BlockTypes.PlainTextExtension:
 								var lengthP = s.ReadUInt8();
 								s.Position += lengthP;
-								ReadSubblock(s);
+								SkipSubblock(s);
 								break;
 							case BlockTypes.ApllicationExtensionBlock:
 								var lengthA = s.ReadUInt8();
@@ -152,10 +162,10 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 								if (identifier == "NETSCAPE")
 									s.Position += 5;
 								else
-									ReadSubblock(s);
+									SkipSubblock(s);
 								break;
 							default:
-								ReadSubblock(s);
+								SkipSubblock(s);
 								break;
 						}
 						break;
@@ -200,21 +210,19 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			return value;
 		}
 
-		static byte[] ReadSubblock(Stream s)
+		static void SkipSubblock(Stream s)
 		{
-			var data = new List<byte>();
-
 			while (true)
 			{
 				var ssize = s.ReadUInt8();
 				if (ssize == 0)
 					break;
 
-				data.AddRange(s.ReadBytes(ssize));
+				s.Position += ssize;
 			}
-
-			return data.ToArray();
 		}
+
+
 
 		static byte[] Decode(int minCodeSize, byte[] data)
 		{
