@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor has a death animation.")]
-	public class WithDeathAnimationInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	public class WithDeathAnimationInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Sequence to play when this actor is killed by a warhead.")]
 		public readonly string DeathSequence = "die";
@@ -35,12 +35,12 @@ namespace OpenRA.Mods.Common.Traits
 	public class WithDeathAnimation : INotifyKilled
 	{
 		public readonly WithDeathAnimationInfo Info;
-		readonly RenderSimple renderSimple;
+		readonly RenderSprites rs;
 
 		public WithDeathAnimation(Actor self, WithDeathAnimationInfo info)
 		{
 			Info = info;
-			renderSimple = self.Trait<RenderSimple>();
+			rs = self.Trait<RenderSprites>();
 		}
 
 		public void Killed(Actor self, AttackInfo e)
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.AddFrameEndTask(w =>
 			{
 				if (!self.Destroyed)
-					w.Add(new Corpse(w, self.CenterPosition, renderSimple.GetImage(self), sequence, palette));
+					w.Add(new Corpse(w, self.CenterPosition, rs.GetImage(self), sequence, palette));
 			});
 		}
 	}
