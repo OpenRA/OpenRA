@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Traits
 			return cachedImage = info.GetImage(self.Info, self.World.Map.SequenceProvider, race);
 		}
 
-		protected void UpdatePalette()
+		public void UpdatePalette()
 		{
 			foreach (var anim in anims.Values)
 				anim.OwnerChanged();

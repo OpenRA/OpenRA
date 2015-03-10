@@ -13,21 +13,23 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	class RenderDisguiseInfo : RenderInfantryInfo, Requires<DisguiseInfo>
+	class WithDisguisingInfantryBodyInfo : WithInfantryBodyInfo, Requires<DisguiseInfo>
 	{
-		public override object Create(ActorInitializer init) { return new RenderDisguise(init, this); }
+		public override object Create(ActorInitializer init) { return new WithDisguisingInfantryBody(init, this); }
 	}
 
-	class RenderDisguise : RenderInfantry
+	class WithDisguisingInfantryBody : WithInfantryBody
 	{
-		RenderDisguiseInfo info;
+		readonly WithDisguisingInfantryBodyInfo info;
+		readonly Disguise disguise;
+		readonly RenderSprites rs;
 		string intendedSprite;
-		Disguise disguise;
 
-		public RenderDisguise(ActorInitializer init, RenderDisguiseInfo info)
+		public WithDisguisingInfantryBody(ActorInitializer init, WithDisguisingInfantryBodyInfo info)
 			: base(init, info)
 		{
 			this.info = info;
+			rs = init.Self.Trait<RenderSprites>();
 			disguise = init.Self.Trait<Disguise>();
 			intendedSprite = disguise.AsSprite;
 		}
@@ -37,8 +39,8 @@ namespace OpenRA.Mods.RA.Traits
 			if (disguise.AsSprite != intendedSprite)
 			{
 				intendedSprite = disguise.AsSprite;
-				DefaultAnimation.ChangeImage(intendedSprite ?? GetImage(self), info.StandAnimations.Random(Game.CosmeticRandom));
-				UpdatePalette();
+				DefaultAnimation.ChangeImage(intendedSprite ?? rs.GetImage(self), info.StandSequences.Random(Game.CosmeticRandom));
+				rs.UpdatePalette();
 			}
 
 			base.Tick(self);

@@ -16,11 +16,12 @@ waypoint:
 		InitialFacing: 160
 	Turreted:
 		InitialFacing: 160
-	RenderInfantry:
-		Image: mmch
-		StandAnimations: run
-		Palette: colorpicker
+	WithInfantryBody:
+		StandSequences: run
 	RenderVoxels:
+		Image: mmch
+		Palette: colorpicker
+	RenderSprites:
 		Image: mmch
 		Palette: colorpicker
 
@@ -66,3 +67,4 @@ TROCK04:
 
 TROCK05:
 	Inherits: ^Rock
+

@@ -2240,7 +2240,7 @@ Rules:
 		Captures:
 			CaptureTypes: building
 			Sabotage: False
-		RenderInfantry:
+		RenderSprites:
 			Image: e6
 	E6:
 		Buildable:

@@ -94,7 +94,6 @@
     <Compile Include="Traits\PaletteEffects\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\PortableChrono.cs" />
     <Compile Include="Traits\Render\RenderJammerCircle.cs" />
-    <Compile Include="Traits\Render\RenderDisguise.cs" />
     <Compile Include="Traits\Render\RenderLandingCraft.cs" />
     <Compile Include="Traits\Render\RenderShroudCircle.cs" />
     <Compile Include="Traits\Render\RenderUnitReload.cs" />
@@ -106,6 +105,7 @@
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
     <Compile Include="Scripting\Properties\ParadropProperties.cs" />
     <Compile Include="Scripting\Properties\ParatroopersProperties.cs" />
+    <Compile Include="Traits\Render\WithDisguisingInfantryBody.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

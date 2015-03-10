@@ -22,8 +22,8 @@ DOG:
 	Armament:
 		Weapon: DogJaw
 	AttackLeap:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 	IgnoresDisguise:
 	DetectCloaked:
 		Range: 5
@@ -54,9 +54,9 @@ E1:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand,stand2
 
 E2:
 	Inherits: ^Infantry
@@ -86,9 +86,9 @@ E2:
 		FireDelay: 15
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand,stand2
 	Explodes:
 		Weapon: UnitExplodeSmall
 		Chance: 50
@@ -122,9 +122,9 @@ E3:
 		Weapon: Dragon
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand,stand2
 
 E4:
 	Inherits: ^Infantry
@@ -153,9 +153,9 @@ E4:
 		Weapon: Flamer
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand,stand2
 
 E6:
 	Inherits: ^Infantry
@@ -184,9 +184,9 @@ E6:
 		Type: building
 	TakeCover:
 	-AutoTarget:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand,stand2
 
 SPY:
 	Inherits: ^Infantry
@@ -218,24 +218,25 @@ SPY:
 	Infiltrates:
 		Types: SpyInfiltrate
 	-AutoTarget:
-	-RenderInfantry:
-	RenderDisguise:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	-WithInfantryBody:
+	WithDisguisingInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand,stand2
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
 
 SPY.England:
 	Inherits: SPY
-	RenderDisguise:
-		Image: spy
+	WithDisguisingInfantryBody:
 	Buildable:
 		Prerequisites: ~infantry.england, dome, ~tent, ~techlevel.medium
 	Valued:
 		Cost: 250
 	DisguiseToolTip:
 		Name: British Spy
+	RenderSprites:
+		Image: spy
 
 E7:
 	Inherits: ^Infantry
@@ -274,8 +275,8 @@ E7:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 	AnnounceOnBuild:
 	AnnounceOnKill:
 
@@ -310,9 +311,9 @@ MEDI:
 		OutsideRangeCursor: heal
 	TakeCover:
 	-AutoTarget:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		AttackAnimation: heal
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		AttackSequence: heal
 
 MECH:
 	Inherits: ^Infantry
@@ -347,9 +348,9 @@ MECH:
 		CaptureTypes: husk
 	TakeCover:
 	-AutoTarget:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		AttackAnimation: heal
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		AttackSequence: heal
 
 EINSTEIN:
 	Inherits: ^Infantry
@@ -369,7 +370,7 @@ EINSTEIN:
 	-AutoTarget:
 	ProximityCaptor:
 		Types: CivilianInfantry
-	RenderInfantry:
+	WithInfantryBody:
 	ScaredyCat:
 
 DELPHI:
@@ -390,7 +391,7 @@ DELPHI:
 	-AutoTarget:
 	ProximityCaptor:
 		Types: CivilianInfantry
-	RenderInfantry:
+	WithInfantryBody:
 	ScaredyCat:
 
 CHAN:
@@ -484,9 +485,9 @@ SHOK:
 		Weapon: PortaTesla
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand,stand2
 
 SNIPER:
 	Inherits: ^Infantry
@@ -520,9 +521,9 @@ SNIPER:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand,stand2
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 120

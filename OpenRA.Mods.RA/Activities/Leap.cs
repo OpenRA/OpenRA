@@ -45,7 +45,8 @@ namespace OpenRA.Mods.RA.Activities
 			to = self.World.Map.CenterOfSubCell(targetMobile.FromCell, targetMobile.FromSubCell);
 			length = Math.Max((to - from).Length / speed.Range, 1);
 
-			self.Trait<RenderInfantry>().Attacking(self, Target.FromActor(target));
+			// HACK: why isn't this using the interface?
+			self.Trait<WithInfantryBody>().Attacking(self, Target.FromActor(target));
 
 			if (weapon.Report != null && weapon.Report.Any())
 				Sound.Play(weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
