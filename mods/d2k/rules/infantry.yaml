@@ -99,8 +99,8 @@ medic:
 	AttackMedic:
 		Cursor: ability
 		OutsideRangeCursor: ability
-	RenderInfantry:
-		AttackAnimation: heal
+	WithInfantryBody:
+		AttackSequence: heal
 	Passenger:
 		PipType: Blue
 	-AutoTarget:
@@ -166,8 +166,8 @@ grenadier:
 		FireDelay: 15
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle
+	WithInfantryBody:
+		IdleSequences: idle
 	Explodes:
 		Weapon: UnitExplodeSmall
 		Chance: 100
@@ -228,3 +228,4 @@ saboteur:
 	-AutoTarget:
 	AttractsWorms:
 		Intensity: 120
+

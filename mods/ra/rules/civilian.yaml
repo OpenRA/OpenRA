@@ -13,43 +13,50 @@ C4:
 	Inherits: ^CivInfantry
 	Selectable:
 		Voice: CivilianFemaleVoice
-	RenderInfantry:
+	WithInfantryBody:
+	RenderSprites:
 		Image: C2
 
 C5:
 	Inherits: ^CivInfantry
-	RenderInfantry:
+	WithInfantryBody:
+	RenderSprites:
 		Image: C1
 
 C6:
 	Inherits: ^CivInfantry
 	Selectable:
 		Voice: CivilianFemaleVoice
-	RenderInfantry:
+	WithInfantryBody:
+	RenderSprites:
 		Image: C2
 
 C7:
 	Inherits: ^CivInfantry
-	RenderInfantry:
+	WithInfantryBody:
+	RenderSprites:
 		Image: C1
 
 C8:
 	Inherits: ^CivInfantry
 	Selectable:
 		Voice: CivilianFemaleVoice
-	RenderInfantry:
+	WithInfantryBody:
+	RenderSprites:
 		Image: C2
 
 C9:
 	Inherits: ^CivInfantry
-	RenderInfantry:
+	WithInfantryBody:
+	RenderSprites:
 		Image: C1
 
 C10:
 	Inherits: ^CivInfantry
 	Selectable:
 		Voice: CivilianFemaleVoice
-	RenderInfantry:
+	WithInfantryBody:
+	RenderSprites:
 		Image: C2
 
 FCOM:

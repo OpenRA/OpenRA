@@ -17,9 +17,9 @@ E1:
 	Armament:
 		Weapon: M16
 	AttackFrontal:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2,idle3,idle4
-		StandAnimations: stand, stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2,idle3,idle4
+		StandSequences: stand, stand2
 
 E2:
 	Inherits: ^Infantry
@@ -43,9 +43,9 @@ E2:
 		LocalOffset: 0,0,427
 		FireDelay: 15
 	AttackFrontal:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand, stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand, stand2
 	Explodes:
 		Weapon: GrenadierExplode
 		EmptyWeapon: GrenadierExplode
@@ -74,9 +74,9 @@ E3:
 		LocalOffset: 256,43,341
 		FireDelay: 5
 	AttackFrontal:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand, stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand, stand2
 
 E4:
 	Inherits: ^Infantry
@@ -104,9 +104,9 @@ E4:
 	AttackFrontal:
 	WithMuzzleFlash:
 		SplitFacings: true
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand, stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand, stand2
 
 E5:
 	Inherits: ^Infantry
@@ -140,9 +140,9 @@ E5:
 	WithMuzzleFlash:
 		SplitFacings: true
 	-PoisonedByTiberium:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand, stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand, stand2
 
 E6:
 	Inherits: ^Infantry
@@ -167,9 +167,9 @@ E6:
 	Captures:
 		CaptureTypes: building, husk
 	-AutoTarget:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand, stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand, stand2
 	-GainsExperience:
 
 RMBO:
@@ -201,9 +201,9 @@ RMBO:
 	Armament:
 		Weapon: Sniper
 	AttackFrontal:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2,idle3
-		StandAnimations: stand, stand2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2,idle3
+		StandSequences: stand, stand2
 	AnnounceOnBuild:
 	AnnounceOnKill:
 

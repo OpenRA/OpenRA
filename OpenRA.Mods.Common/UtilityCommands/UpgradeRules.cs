@@ -719,6 +719,61 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150321)
+				{
+					// Note: These rules are set up to do approximately the right thing for maps, but
+					// mods need additional manual tweaks. This is the best we can do without having
+					// much smarter rules parsing, because we currently can't reason about inherited traits.
+					if (depth == 0)
+					{
+						var childKeys = new[] { "MinIdleWaitTicks", "MaxIdleWaitTicks", "MoveAnimation", "AttackAnimation", "IdleAnimations", "StandAnimations" };
+
+						var ri = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderInfantry"));
+						if (ri != null)
+						{
+							ri.Key = "WithInfantryBody";
+
+							var rsNodes = ri.Value.Nodes.Where(n => !childKeys.Contains(n.Key)).ToList();
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+
+							ri.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+						}
+
+						var rri = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderInfantry"));
+						if (rri != null)
+							rri.Key = "-WithInfantryBody";
+
+						var rdi = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderDisguise"));
+						if (rdi != null)
+						{
+							rdi.Key = "WithDisguisingInfantryBody";
+
+							var rsNodes = rdi.Value.Nodes.Where(n => !childKeys.Contains(n.Key)).ToList();
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+
+							rdi.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+						}
+
+						var rrdi = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderDisguise"));
+						if (rrdi != null)
+							rrdi.Key = "-WithDisguisingInfantryBody";
+					}
+
+					if (depth == 2 && node.Key == "MoveAnimation")
+						node.Key = "MoveSequence";
+
+					if (depth == 2 && node.Key == "AttackAnimation")
+						node.Key = "AttackSequence";
+
+					if (depth == 2 && node.Key == "IdleAnimations")
+						node.Key = "IdleSequences";
+
+					if (depth == 2 && node.Key == "StandAnimations")
+						node.Key = "StandSequences";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

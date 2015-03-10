@@ -182,7 +182,8 @@
 		TargetTypes: Ground, Infantry
 	TakeCover:
 		SpeedModifier: 60
-	RenderInfantry:
+	RenderSprites:
+	WithInfantryBody:
 	WithDeathAnimation:
 	AttackMove:
 	Passenger:
@@ -300,8 +301,7 @@
 		TargetTypes: Ground, Infantry
 	HiddenUnderFog:
 	GivesExperience:
-	RenderInfantry:
-		Palette: terrain
+	WithInfantryBody:
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false
 	EditorAppearance:
@@ -316,6 +316,8 @@
 	Huntable:
 	ScriptTriggers:
 	DeathSounds:
+	RenderSprites:
+		Palette: terrain
 
 ^Plane:
 	AppearsOnRadar:

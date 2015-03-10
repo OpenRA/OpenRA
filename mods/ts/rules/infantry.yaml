@@ -26,8 +26,8 @@ E1:
 		UpgradeMinEnabledLevel: 1
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 E2:
 	Inherits: ^Infantry
@@ -52,8 +52,8 @@ E2:
 		FireDelay: 5
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 E3:
 	Inherits: ^Infantry
@@ -78,8 +78,8 @@ E3:
 		LocalOffset: 128,0,640
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 WEEDGUY:
 	Inherits: ^Infantry
@@ -106,7 +106,7 @@ WEEDGUY:
 		Weapon: FireballLauncher
 		LocalOffset: 85,0,384
 	AttackFrontal:
-	RenderInfantry:
+	WithInfantryBody:
 	TakeCover:
 
 MEDIC:
@@ -133,9 +133,9 @@ MEDIC:
 		Weapon: Heal
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		AttackAnimation: heal
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		AttackSequence: heal
 	SelfHealing:
 	Passenger:
 		PipType: Red
@@ -165,8 +165,8 @@ ENGINEER:
 	Captures:
 		CaptureTypes: building
 	-AutoTarget:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 	TakeCover:
 	-GainsExperience:
 
@@ -197,8 +197,8 @@ UMAGON:
 		Weapon: Sniper
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 GHOST:
 	Inherits: ^Infantry
@@ -233,8 +233,8 @@ GHOST:
 	C4Demolition:
 		C4Delay: 45
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 JUMPJET:
 	Inherits: ^Infantry
@@ -264,7 +264,7 @@ JUMPJET:
 	-Crushable:
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
+	WithInfantryBody:
 
 CHAMSPY:
 	Inherits: ^Infantry
@@ -292,9 +292,9 @@ CHAMSPY:
 	Infiltrates:
 		Types: SpyInfiltrate
 	-AutoTarget:
-	-RenderInfantry:
-	RenderDisguise:
-		IdleAnimations: idle1,idle2
+	-WithInfantryBody:
+	WithDisguisingInfantryBody:
+		IdleSequences: idle1,idle2
 
 CYBORG:
 	Inherits: ^Infantry
@@ -326,8 +326,8 @@ CYBORG:
 		Weapon: Vulcan3
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 CYC2:
 	Inherits: ^Infantry
@@ -360,8 +360,8 @@ CYC2:
 		LocalOffset: 170,85,683
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 MUTANT:
 	Inherits: ^Infantry
@@ -388,8 +388,8 @@ MUTANT:
 		Weapon: Vulcan
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 MWMN:
 	Inherits: ^Infantry
@@ -416,8 +416,8 @@ MWMN:
 		Weapon: Vulcan
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 MUTANT3:
 	Inherits: ^Infantry
@@ -444,8 +444,8 @@ MUTANT3:
 		Weapon: Vulcan
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 MHIJACK:
 	Inherits: ^Infantry
@@ -471,8 +471,8 @@ MHIJACK:
 		Range: 6c0
 	-AutoTarget:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 TRATOS:
 	Inherits: ^Infantry
@@ -496,8 +496,8 @@ TRATOS:
 		Range: 4c0
 	TakeCover:
 	-AutoTarget:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 OXANNA:
 	Inherits: ^Infantry
@@ -519,8 +519,8 @@ OXANNA:
 		Range: 4c0
 	TakeCover:
 	-AutoTarget:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 SLAV:
 	Inherits: ^Infantry
@@ -542,8 +542,8 @@ SLAV:
 		Range: 4c0
 	TakeCover:
 	-AutoTarget:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
 
 DOGGIE:
 	Inherits: ^Infantry
@@ -603,9 +603,10 @@ VISSML:
 	TargetableUnit:
 		TargetTypes: Ground
 	-AutoTarget:
-	-RenderInfantry:
-	RenderUnit:
+	-RenderSprites:
+	-WithInfantryBody:
 	-WithDeathAnimation:
+	RenderUnit:
 
 VISLRG:
 	Inherits: ^Infantry
@@ -639,9 +640,10 @@ VISLRG:
 		WanderMoveRadius: 2
 		MinMoveDelayInTicks: 25
 		MaxMoveDelayInTicks: 45
-	-RenderInfantry:
-	RenderUnit:
+	-RenderSprites:
+	-WithInfantryBody:
 	-WithDeathAnimation:
+	RenderUnit:
 
 CIV1:
 	Inherits: ^CivilianInfantry

@@ -1276,14 +1276,15 @@ Rules:
 		-ExternalCaptures:
 		Captures:
 			CaptureTypes: building
-		RenderInfantry:
-			Image: E6
+		WithInfantryBody:
 		Cloak@JAIL:
 			UpgradeTypes: jail
 			UpgradeMinEnabledLevel: 1
 			InitialDelay: 0
 			CloakDelay: 0
 			Palette:
+		RenderSprites:
+			Image: E6
 	MEDI:
 		Cloak@JAIL:
 			UpgradeTypes: jail
@@ -1293,11 +1294,11 @@ Rules:
 			Palette:
 	E7.noautotarget:
 		Inherits: E7
-		RenderInfantry:
-			Image: E7
 		AutoTarget:
 			EnableStances: false
 		-AttackMove:
+		RenderSprites:
+			Image: E7
 	PRISON:
 		Immobile:
 			OccupiesSpace: false
@@ -1338,7 +1339,7 @@ Rules:
 			Range: 8c0
 		AutoTarget:
 			ScanRadius: 7
-		RenderInfantry:
+		RenderSprites:
 			Image: E1
 	E2.Autotarget:
 		Inherits: E2
@@ -1348,7 +1349,7 @@ Rules:
 			Range: 8c0
 		AutoTarget:
 			ScanRadius: 7
-		RenderInfantry:
+		RenderSprites:
 			Image: E2
 	DOG:
 		Buildable:

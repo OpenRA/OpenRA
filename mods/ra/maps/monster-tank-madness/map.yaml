@@ -2145,10 +2145,10 @@ Rules:
 		Inherits: DELPHI
 		Tooltip:
 			Name: Dr. Demitri
-		RenderInfantry:
-			Image: DELPHI
 		Passenger:
 			CargoType: Demitri
+		RenderSprites:
+			Image: DELPHI
 	TRAN:
 		RevealsShroud:
 			Range: 0c0

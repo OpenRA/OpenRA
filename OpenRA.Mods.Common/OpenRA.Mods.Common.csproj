@@ -373,7 +373,6 @@
     <Compile Include="Traits\Render\RenderEditorOnly.cs" />
     <Compile Include="Traits\Render\RenderFlare.cs" />
     <Compile Include="Traits\Render\RenderHarvester.cs" />
-    <Compile Include="Traits\Render\RenderInfantry.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />
@@ -616,6 +615,7 @@
     <Compile Include="Widgets\TooltipContainerWidget.cs" />
     <Compile Include="Widgets\ViewportControllerWidget.cs" />
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
+    <Compile Include="Traits\Render\WithInfantryBody.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

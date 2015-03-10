@@ -168,7 +168,7 @@ HVR:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
- 		Prerequisites: ~gaweap
+		Prerequisites: ~gaweap
 	Mobile:
 		Speed: 56
 		ROT: 5
@@ -518,7 +518,8 @@ MMCH:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	RenderInfantry:
+	RenderSprites:
+	WithInfantryBody:
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -590,7 +591,8 @@ SMECH:
 	AutoTarget:
 	Armament:
 		Weapon: AssaultCannon
-	RenderInfantry:
+	RenderSprites:
+	WithInfantryBody:
 	Selectable:
 		Voices: Mech
 		Bounds: 16, 32
