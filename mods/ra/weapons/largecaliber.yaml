@@ -143,7 +143,7 @@ TurretGun:
 	Report: TANK5.AUD
 	Projectile: Bullet
 		Speed: 204
-		High: true
+		Blockable: false
 		Angle: 62
 		Inaccuracy: 1c682
 		Image: 120MM
@@ -176,7 +176,7 @@ TurretGun:
 	Report: TURRET1.AUD
 	Projectile: Bullet
 		Speed: 204
-		High: true
+		Blockable: false
 		Angle: 62
 		Inaccuracy: 2c938
 		Image: 120MM

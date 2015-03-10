@@ -31,9 +31,9 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(30);
 		[Desc("How many ticks before this missile is armed and can explode.")]
 		public readonly int Arm = 0;
-		[Desc("Check for whether an actor with BlocksBullets: trait blocks fire")]
-		public readonly bool High = false;
 		public readonly string Trail = null;
+		[Desc("Is the missile blocked by actors with BlocksProjectiles: trait.")]
+		public readonly bool Blockable = true;
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WRange Inaccuracy = WRange.Zero;
 		[Desc("Probability of locking onto and following target.")]
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Effects
 			var shouldExplode = (pos.Z < 0) // Hit the ground
 				|| (dist.LengthSquared < info.CloseEnough.Range * info.CloseEnough.Range) // Within range
 				|| (info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
-				|| (!info.High && world.ActorMap.GetUnitsAt(cell).Any(a => a.HasTrait<IBlocksBullets>())) // Hit a wall
+				|| (info.Blockable && world.ActorMap.GetUnitsAt(cell).Any(a => a.HasTrait<IBlocksProjectiles>())) // Hit a wall or other blocking obstacle
 				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
 				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType); // Hit incompatible terrain
 

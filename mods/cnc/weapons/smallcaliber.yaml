@@ -38,7 +38,7 @@ HeliAGGun:
 	Report: gun5.aud
 	Projectile: Bullet
 		Speed: 1c682
-		High: True
+		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 20
@@ -61,7 +61,7 @@ HeliAAGun:
 	Report: gun5.aud
 	Projectile: Bullet
 		Speed: 1c682
-		High: True
+		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 20
@@ -183,7 +183,7 @@ APCGun.AA:
 	ValidTargets: Air
 	Projectile: Bullet
 		Speed: 1c682
-		High: true
+		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 25

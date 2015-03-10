@@ -104,7 +104,7 @@ Slung:
 	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 320
-		High: true
+		Blockable: false
 		Shadow: yes
 		Angle: 88
 		Inaccuracy: 384
@@ -209,7 +209,7 @@ TurretGun:
 	Report: TURRET1.WAV
 	Projectile: Bullet
 		Speed: 704
-		High: yes
+		Blockable: false
 		Shadow: no
 		Inaccuracy: 288
 		Image: 120mm
@@ -238,7 +238,7 @@ TowerMissile:
 	BurstDelay: 15
 	Projectile: Bullet
 		Arm: 0
-		High: yes
+		Blockable: false
 		Shadow: yes
 		Inaccuracy: 384
 		Image: MISSILE2
@@ -342,7 +342,7 @@ DevBullet:
 	Projectile: Bullet
 		Speed: 358
 		Arm: 5
-		High: yes
+		Blockable: false
 		Shadow: yes
 		Inaccuracy: 1c416
 		Angle: 110
@@ -373,7 +373,7 @@ NerveGasMissile:
 	Report: MISSLE1.WAV
 	Projectile: Bullet
 		Speed: 448
-		High: true
+		Blockable: false
 		Shadow: yes
 		Angle: 110
 		Inaccuracy: 1c96
@@ -403,7 +403,7 @@ NerveGasMissile:
 	Report: MORTAR1.WAV
 	Projectile: Bullet
 		Speed: 256
-		High: true
+		Blockable: false
 		Shadow: yes
 		Angle: 62
 		Inaccuracy: 1c256
@@ -451,7 +451,7 @@ ChainGun:
 	Report: 20MMGUN1.WAV
 	Projectile: Bullet
 		Speed: 1c256
-		High: true
+		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 20
@@ -659,7 +659,7 @@ Grenade:
 	Report:
 	Projectile: Bullet
 		Speed: 204
-		High: true
+		Blockable: false
 		Angle: 62
 		Inaccuracy: 416
 		Image: BOMBS
@@ -689,7 +689,7 @@ Shrapnel:
 	Report:
 	Projectile: Bullet
 		Speed: 50, 125
-		High: true
+		Blockable: false
 		Angle: 91, 264
 		Inaccuracy: 416
 		Image: bombs

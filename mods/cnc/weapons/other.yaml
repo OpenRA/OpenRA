@@ -74,7 +74,7 @@ Grenade:
 	Report: toss1.aud
 	Projectile: Bullet
 		Speed: 119
-		High: yes
+		Blockable: false
 		Angle: 62
 		Inaccuracy: 213
 		Image: BOMB
