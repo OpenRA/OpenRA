@@ -95,7 +95,7 @@ Bazooka:
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 8
+		RateOfTurn: 8
 		RangeLimit: 50
 		CloseEnough: 256
 		LockOnProbability: 80
@@ -138,7 +138,7 @@ MultiCluster:
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 8
+		RateOfTurn: 8
 		RangeLimit: 35
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
@@ -410,7 +410,7 @@ HoverMissile:
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 8
+		RateOfTurn: 8
 		RangeLimit: 35
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
@@ -484,7 +484,7 @@ MammothTusk:
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 10
+		RateOfTurn: 10
 		Speed: 170
 		RangeLimit: 35
 		Palette: ra
@@ -644,7 +644,7 @@ BikeMissile:
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 8
+		RateOfTurn: 8
 		Speed: 213
 		RangeLimit: 35
 		Palette: ra
@@ -749,7 +749,7 @@ Dragon:
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 8
+		RateOfTurn: 8
 		RangeLimit: 35
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
@@ -856,7 +856,7 @@ Hellfire:
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 8
+		RateOfTurn: 8
 		RangeLimit: 35
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
@@ -928,7 +928,7 @@ Proton:
 		Shadow: true
 		Inaccuracy: 128
 		Image: TORPEDO
-		ROT: 1
+		RateOfTurn: 1
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -1105,7 +1105,7 @@ SAMTower:
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 5
+		RateOfTurn: 5
 		RangeLimit: 60
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
