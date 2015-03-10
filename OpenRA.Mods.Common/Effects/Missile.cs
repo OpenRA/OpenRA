@@ -42,8 +42,6 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("In n/256 per tick.")]
 		public readonly int RateOfTurn = 5;
 		public readonly int RangeLimit = 0;
-		[Desc("If fired at aircraft, increase speed by 50%.")]
-		public readonly bool TurboBoost = false;
 		public readonly int TrailInterval = 2;
 		public readonly int ContrailLength = 0;
 		public readonly Color ContrailColor = Color.White;
@@ -150,8 +148,6 @@ namespace OpenRA.Mods.Common.Effects
 
 			facing = OpenRA.Traits.Util.TickFacing(facing, desiredFacing, info.RateOfTurn);
 			var move = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing)) * info.Speed.Range / 1024;
-			if (targetPosition.Z > 0 && info.TurboBoost)
-				move = (move * 3) / 2;
 
 			if (pos.Z != desiredAltitude)
 			{
