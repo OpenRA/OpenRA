@@ -188,6 +188,24 @@ tent:
 	icon: tenticon
 		Start: 0
 
+test:
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 120
+	damaged-idle:
+		Start: 0
+		Length: 8
+		Tick: 120
+	make: kennmake
+		Start: 0
+		Length: *
+	bib: mbSILO
+		Start: 0
+		Length: *
+	icon: kennicon
+		Start: 0
+		
 kenn:
 	idle:
 		Start: 0
