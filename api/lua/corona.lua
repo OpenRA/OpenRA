@@ -1,59 +1,59 @@
 -- Author Sergey Lerg
--- converted from CoronaSDK-APIDOC-2014-2189.zip;
+-- converted from CoronaSDK-APIDOC-2015.2576.zip;
 -- the conversion script is at the bottom of this file
 
 do return {
  _BitmapPaint = {
   childs = {
    rotation = {
-    description = "",
+    description = "Defines the rotation of the BitmapPaint image.",
     type = "value"
    },
    scaleX = {
-    description = "",
+    description = "Defines the __x__ scale factor of the BitmapPaint image, for example, `1` equals 100%, `0.5` equals 50%, and `2` equals 200%.",
     type = "value"
    },
    scaleY = {
-    description = "",
+    description = "Defines the __y__ scale factor of the BitmapPaint image, for example, `1` equals 100%, `0.5` equals 50%, and `2` equals 200%.",
     type = "value"
    },
    x = {
-    description = "",
+    description = "This value is used to offset a repeating bitmap fill by a ratio of its width.",
     type = "value"
    },
    y = {
-    description = "",
+    description = "This value is used to offset a repeating bitmap fill by a ratio of its height.",
     type = "value"
    }
   },
-  description = "A bitmap paint is a paint that contains a single texture.",
+  description = "A bitmap paint contains a single texture.",
   type = "class"
  },
  _Body = {
   childs = {
    angularDamping = {
-    description = "The numerical value for how much the body's rotation should be damped. The default is zero (0). There is no minimum or maximum value-adjust to get your desired results.",
+    description = "The numerical value for how much the body's rotation should be damped. The default is zero (0). There is no minimum or maximum value - just adjust to get the desired results.",
     type = "value"
    },
    angularVelocity = {
-    description = "The numerical value of the current angular (rotational) velocity, in degrees per second. There is no minimum or maximum value-adjust to get your desired results.",
+    description = "The numerical value of the current angular (rotational) velocity, in degrees per second. There is no minimum or maximum value - just adjust to get the desired results.",
     type = "value"
    },
    applyAngularImpulse = {
     args = "( appliedForce )",
-    description = "Like applyTorque, except that an angular impulse is a single, momentary jolt.",
+    description = "Similar to object:applyTorque() except that an angular impulse is a single momentary jolt.",
     returns = "()",
     type = "method"
    },
    applyForce = {
     args = "( xForce, yForce, bodyX, bodyY )",
-    description = "A function that accepts x,y components of a linear force, applied at a given point with x,y world coordinates. If the target point is the body's center of mass, it will tend to push the body in a straight line; if the target is offset from the body's center of mass, the body will spin about its center of mass.",
+    description = "A function that accepts __x__ and __y__ components of a linear force, applied at a given point with __x__ and __y__ world coordinates. If the target point is the body's center of mass, it will tend to push the body in a straight line; if the target is offset from the body's center of mass, the body will spin about its center of mass.",
     returns = "()",
     type = "method"
    },
    applyLinearImpulse = {
     args = "( xForce, yForce, bodyX, bodyY )",
-    description = "Like Body:applyForce(), except that an impulse is a single, momentary jolt.",
+    description = "Similar to object:applyForce() except that an impulse is a single momentary jolt.",
     returns = "()",
     type = "method"
    },
@@ -69,40 +69,56 @@ do return {
    },
    getLinearVelocity = {
     args = "()",
-    description = "A function that returns x,y components for the body's linear velocity, in pixels per second.",
+    description = "A function that returns the __x__ and __y__ components for the body's linear velocity, in pixels per second.",
+    returns = "(Numbers)",
+    type = "method"
+   },
+   getMassLocalCenter = {
+    args = "()",
+    description = "A function that returns the __x__ and __y__ components for the body's local center of mass.",
+    returns = "(Numbers)",
+    type = "method"
+   },
+   getMassWorldCenter = {
+    args = "()",
+    description = "A function that returns the __x__ and __y__ components for the body's center of mass in content coordinates.",
     returns = "(Numbers)",
     type = "method"
    },
    gravityScale = {
-    description = "You can use the gravity scale to adjust the gravity on a single body. For example, setting it to `0` makes the body float (no gravity). The default value is `1.0`, meaning normal gravity.",
+    description = "Use the `gravityScale` property to adjust the gravity on a single body. For example, setting it to `0` makes the body float (no gravity). The default value is `1.0` which means the body will behave under the normal simulated gravity.",
     type = "value"
    },
    isAwake = {
-    description = "A boolean for the bodies current awake state. By default, all bodies automatically “go to sleep” when nothing interacts with them for a couple of seconds, and then they stop being simulated until something (e.g., a collision) wakes them up. This property can either fetch their current state or forcibly wake them up.",
+    description = "A boolean for the body's current \"awake\" state. By default, all bodies automatically \"sleep\" when nothing interacts with them for a couple of seconds. At this point, they stop being simulated until something like a collision wakes them up. The `isAwake` property can either fetch a body's current state or forcibly wake it up.",
     type = "value"
    },
    isBodyActive = {
-    description = "Used to set or get the bodies current active state. Inactive bodies are not destroyed, but they are removed from the simulation and cease to interact with other bodies.",
+    description = "Used to set or get the body's current active state. Inactive bodies are not destroyed but they are removed from the physics simulation and cease to interact with other bodies.",
     type = "value"
    },
    isBullet = {
-    description = "A boolean for whether the body should be treated as a “bullet”. Bullets are subject to continuous collision detection, rather than periodic collision detection at world timesteps. This is more computationally expensive, but it prevents fast-moving objects from passing through solid barriers. The default is `false`.",
+    description = "A boolean for whether the body should be treated as a \"bullet\". Bullets are subject to continuous collision detection rather than periodic collision detection at world time steps. This is more computationally expensive but it can prevent <nobr>fast-moving</nobr> objects from passing through solid barriers. The default is `false`.",
     type = "value"
    },
    isFixedRotation = {
-    description = "A boolean for whether the rotation of the body should be locked, even if the body is under load or subjected to off-center forces. The default is `false`.",
+    description = "A boolean for whether the rotation of the body should be locked, even if the body is under load or subjected to <nobr>off-center</nobr> forces. The default is `false`.",
     type = "value"
    },
    isSensor = {
-    description = "A sensor is a fixture that detects collisions but does not produce a response. Sensors do not generate contact points.",
+    description = "A sensor is a fixture that detects collisions but does not produce a physical response. Sensors do not generate contact points.",
     type = "value"
    },
    isSleepingAllowed = {
-    description = "A boolean for whether the body is ever allowed to go to sleep. Keeping bodies awake has a larger overhead, and is often not required, because collisions with other bodies will automatically wake them up. However, forcing awakeness is useful in cases such as the tilt-gravity case (since sleeping bodies do not respond to changes in global gravity). The default is `true`.",
+    description = "A boolean for whether a body is allowed to \"sleep\". The default is `true`.",
     type = "value"
    },
    linearDamping = {
-    description = "The numerical value for how much the body's linear motion is damped. The default is 0 (zero).",
+    description = "The numerical value for how much the body's linear motion is damped. The default is zero (0).",
+    type = "value"
+   },
+   mass = {
+    description = "A read-only value representing the body's mass.",
     type = "value"
    },
    resetMassData = {
@@ -113,7 +129,7 @@ do return {
    },
    setLinearVelocity = {
     args = "( xVelocity, yVelocity )",
-    description = "A function that accepts x,y components for the body's linear velocity, in pixels per second.",
+    description = "This function accepts __x__ and __y__ components for the body's linear velocity, in pixels per second.",
     returns = "()",
     type = "method"
    }
@@ -148,12 +164,12 @@ do return {
  },
  _CirclePath = {
   childs = {},
-  description = "The circle path specifies the geometry of the corresponding shape object. ",
+  description = "The circle path specifies the geometry of the corresponding shape object.",
   type = "class"
  },
  _CompositePaint = {
   childs = {},
-  description = "Composite paints contain multiple textures. They enable multi-texturing.",
+  description = "Composite paints contain multiple images, thus enabling multi-texturing.",
   type = "class"
  },
  _CoronaLibrary = {
@@ -166,7 +182,7 @@ do return {
     valuetype = "_CoronaProvider"
    },
    name = {
-    description = "The name of the library",
+    description = "The name of the library.",
     type = "value"
    },
    publisherId = {
@@ -196,7 +212,7 @@ do return {
    initialize = {
     args = "()",
     description = "Subclasses can override this method to provide custom initialization of instances.",
-    returns = "(TYPE)",
+    returns = "()",
     type = "method"
    },
    instanceOf = {
@@ -237,12 +253,10 @@ do return {
     type = "method"
    }
   },
-  description = "Insert overview",
   type = "class"
  },
  _CoronaProvider = {
   childs = {},
-  description = "Insert overview",
   type = "class"
  },
  _DisplayObject = {
@@ -257,6 +271,10 @@ do return {
    },
    anchorY = {
     description = "This property allows you to control the alignment of the object along the __y__ direction.",
+    type = "value"
+   },
+   blendMode = {
+    description = "Allows you to change the blend mode on a specific object. ",
     type = "value"
    },
    contentBounds = {
@@ -277,8 +295,16 @@ do return {
     description = "The read-only width of the object in content coordinates. This is similar to object.width except that its value is affected by __x__ scaling and rotation.",
     type = "value"
    },
+   defined = {
+    description = "Read-only property that provides the file and line number where the object was created.",
+    type = "value"
+   },
    height = {
     description = "Retrieve or change the height of a display object. For text objects, this property can be used to get (but not set) the height.",
+    type = "value"
+   },
+   introspection = {
+    description = "",
     type = "value"
    },
    isHitTestMasked = {
@@ -293,6 +319,10 @@ do return {
     description = "Controls whether the object is visible on the screen. The property is also readable. The default is `true`.",
     type = "value"
    },
+   lastChange = {
+    description = "Read-only property that provides the file and line number of the last change to any of the object's properties.",
+    type = "value"
+   },
    localToContent = {
     args = "( x, y )",
     description = "Maps the given __x__ and __y__ coordinates of an object to content (stage) coordinates.",
@@ -304,11 +334,11 @@ do return {
     type = "value"
    },
    maskScaleX = {
-    description = "Retrieve or set the x-scale factor for the display object's corresponding mask object, if any.",
+    description = "Retrieve or set the __x__-scale factor for the display object's corresponding mask object, if any.",
     type = "value"
    },
    maskScaleY = {
-    description = "Retrieves or sets the y-scale factor for the display object's corresponding mask object, if any.",
+    description = "Retrieves or sets the __y__-scale factor for the display object's corresponding mask object, if any.",
     type = "value"
    },
    maskX = {
@@ -321,6 +351,10 @@ do return {
    },
    parent = {
     description = "A read-only property that returns the object's parent.",
+    type = "value"
+   },
+   properties = {
+    description = "Read-only property that provides a view into all of the object's property values.",
     type = "value"
    },
    removeSelf = {
@@ -351,12 +385,6 @@ do return {
     returns = "()",
     type = "method"
    },
-   setReferencePoint = {
-    args = "( referencePoint )",
-    description = "Sets the reference point either to the center of the object (default) or to one of several convenient points along the bounding box of the object.",
-    returns = "()",
-    type = "method"
-   },
    toBack = {
     args = "()",
     description = "Moves the target object to the visual back of its parent group (object.parent).",
@@ -371,7 +399,7 @@ do return {
    },
    translate = {
     args = "( deltaX, deltaY )",
-    description = "Effectively adds values to the object.x properties of an object (changing its on-screen position).",
+    description = "Effectively adds values to the object.x properties of an object, thus changing its screen position.",
     returns = "()",
     type = "method"
    },
@@ -397,6 +425,30 @@ do return {
    }
   },
   description = "All drawing that occurs on the screen is accomplished by creating display objects. Anything that appears on the screen is an instance of a display object.",
+  type = "class"
+ },
+ _EmitterObject = {
+  childs = {
+   pause = {
+    args = "()",
+    description = "Pauses (freezes) the EmitterObject. No particles will be added, removed, or animated while an emitter is paused.",
+    returns = "()",
+    type = "method"
+   },
+   start = {
+    args = "()",
+    description = "Starts the emission of particles from an EmitterObject.",
+    returns = "()",
+    type = "method"
+   },
+   stop = {
+    args = "()",
+    description = "Stops the emission of particles from an EmitterObject. This function allows the currently active particles to finish their cycle naturally.",
+    returns = "()",
+    type = "method"
+   }
+  },
+  description = "This object is used to display particle effects created with Particle Designer(http://71squared.com/particledesigner).",
   type = "class"
  },
  _EventListener = {
@@ -475,32 +527,36 @@ do return {
  _GameNetwork = {
   childs = {
    match = {
-    description = "A match object returned from gameNetwork.",
+    description = "A match object returned from gameNetwork.request().",
     type = "value"
    },
    outcome = {
-    description = "Valid string outcome values for a match participant",
+    description = "Valid string outcome values for the participant.",
     type = "value"
    },
    participant = {
-    description = "A participant object returned from gameNetwork.",
+    description = "A participant object returned from gameNetwork.request().",
     type = "value"
    },
    status = {
-    description = "Valid string outcome values for a match status",
+    description = "Valid string status values for the participant.",
     type = "value"
    }
   },
-  description = "The details for various items returned from gameNetwork callbacks",
+  description = "The details for various items returned from gameNetwork callbacks.",
   type = "class"
  },
  _GradientPaint = {
   childs = {},
-  description = "A linear gradient is a linear progression from one color to another.",
+  description = "A gradient paint creates a linear progression from one color to another.",
   type = "class"
  },
  _GroupObject = {
   childs = {
+   anchorChildren = {
+    description = "By default, display groups do not respect anchor points. However, you can achieve anchor behavior on a display group by setting this property to `true`.",
+    type = "value"
+   },
    insert = {
     args = "( [index,] child, [, resetTransform] )",
     description = "Inserts an object into a group.",
@@ -528,7 +584,7 @@ do return {
  },
  _ImageSheetPaint = {
   childs = {},
-  description = "Image sheets are a special kind of BitmapPaint for specifying texture atlases.",
+  description = "An image sheet paint is a special kind of BitmapPaint frame.",
   type = "class"
  },
  _InputAxis = {
@@ -554,7 +610,7 @@ do return {
     type = "value"
    },
    type = {
-    description = "* `InputAxis:type`\9\9<!--- completion -->",
+    description = "A string describing the type of axis input the device has, such as \"x\" or \"y\" for a joystick's x-axis or y-axis input. This is informational only and should not be used to identify the type of data provided by the axis input. See the \"Gotchas\" section below for the reason why.",
     type = "value"
    }
   },
@@ -614,209 +670,209 @@ do return {
  _Joint = {
   childs = {
    dampingRatio = {
-    description = "The joint's damping ratio. Valid values ranges from 0 (no damping) to 1 (critical damping).",
+    description = "The joint's damping ratio. This value can range from `0` (no damping) to `1` (critical damping). With critical damping, all oscillations should vanish.",
     type = "value"
    },
    frequency = {
-    description = "The mass-spring damping frequency (in Hz).",
+    description = "This value specifies the mass-spring damping frequency in Hz. For use with `\"distance\"`, `\"touch\"`, `\"weld\"`, and `\"wheel\"` joints.",
     type = "value"
    },
    getAnchorA = {
     args = "()",
-    description = "A function that returns the `x,y` coordinates of the Joint's anchor points within objects A and B, which are the two joined objects. The values are given in the local coordinates of each object, so an anchor point at the center of the object would be at position `0, 0`.",
+    description = "Returns the __x__ and __y__ coordinates of the joint's anchor point within object `A`, where `A` and `B` are the two joined bodies. Values are in content space.",
     returns = "(Numbers)",
     type = "method"
    },
    getAnchorB = {
     args = "()",
-    description = "A function that returns the `x,y` coordinates of the Joint's anchor points within objects A and B, which are the two joined objects. The values are given in the local coordinates of each object, so an anchor point at the center of the object would be at position `0, 0`.",
+    description = "Returns the __x__ and __y__ coordinates of the joint's anchor point within object `B`, where `A` and `B` are the two joined bodies. Values are in content space.",
     returns = "(Numbers)",
     type = "method"
    },
    getGroundAnchorA = {
     args = "()",
-    description = "A function that returns the `x,y` coordinates of the Joint's first ground anchor in world coordinates.",
-    returns = "(TYPE)",
+    description = "Returns the __x__ and __y__ coordinates of a `\"pulley\"` joint's first ground anchor in content coordinates.",
+    returns = "(Numbers)",
     type = "method"
    },
    getGroundAnchorB = {
     args = "()",
-    description = "A function that returns the `x,y` coordinates of the Joint's second ground anchor in world coordinates.",
-    returns = "(TYPE)",
+    description = "Returns the __x__ and __y__ coordinates of a `\"pulley\"` joint's second ground anchor in content coordinates.",
+    returns = "(Numbers)",
     type = "method"
    },
    getLimits = {
     args = "()",
-    description = "Returns the upper and lower limits of linear motion set on the joint with Joint:setLimits().",
+    description = "This function returns the current negative and positive motion limits for a `\"piston\"` joint.",
     returns = "(Numbers)",
     type = "method"
    },
    getLocalAnchorA = {
     args = "()",
-    description = "A function that returns the `x,y` coordinates of the Joint's anchor points within objects A and B, which are the two joined objects. The values are given in the local coordinates of each object, so an anchor point at the center of the object would be at position `0, 0`.",
+    description = "Returns the __x__ and __y__ coordinates of the joint's anchor point within object `A`, where `A` and `B` are the two joined bodies. Values are relative (local) to object `A`.",
     returns = "(Numbers)",
     type = "method"
    },
    getLocalAnchorB = {
     args = "()",
-    description = "A function that returns the `x,y` coordinates of the Joint's anchor points within objects A and B, which are the two joined objects. The values are given in the local coordinates of each object, so an anchor point at the center of the object would be at position `0, 0`.",
+    description = "Returns the __x__ and __y__ coordinates of the joint's anchor point within object `B`, where `A` and `B` are the two joined bodies. Values are relative (local) to object `B`.",
     returns = "(Numbers)",
     type = "method"
    },
    getLocalAxisA = {
     args = "()",
-    description = "A function that returns the `x,y` coordinates of the Joint's anchor points within objects A and B, which are the two joined objects. The values are given in the local coordinates of each object, so an anchor point at the center of the object would be at position `0, 0`.",
+    description = "This function returns the current coordinates of the anchor point along the defined axis, in content space.",
     returns = "(Numbers)",
     type = "method"
    },
    getReactionForce = {
     args = "()",
-    description = "A function that returns the reaction force (in Newtons) at the joint anchor in the second body.",
+    description = "This function returns the reaction force in Newtons at the joint anchor in the second body.",
     returns = "(Numbers)",
     type = "method"
    },
    getRotationLimits = {
     args = "()",
-    description = "Returns the joint's rotation limits (two return values).",
+    description = "This function returns the current negative and positive rotation limits of a `\"pivot\"` joint.",
     returns = "(Numbers)",
     type = "method"
    },
    getTarget = {
     args = "()",
-    description = "Returns the x,y position of the target in world coordinates.",
-    returns = "(Number)",
+    description = "Returns the current target coordinates of a `\"touch\"` joint as specified by object:setTarget().",
+    returns = "(Numbers)",
     type = "method"
    },
    isActive = {
-    description = "Specifies whether the joint is limited (`true`) or not (`false`).",
+    description = "Read-only boolean value which indicates whether a joint is active or inactive.",
     type = "value"
    },
    isCollideConnected = {
-    description = "Specifies if the joint objects will follow the collision rules (`true`) or not (`false`). In some cases it is useful to allow the joint bodies to collide (for example in a platform that's connected to a ground body), in other cases, not. ",
+    description = "Read-only boolean value which specifies if the joined objects follow the standard collision rules (`true`) or not (`false`).",
     type = "value"
    },
    isLimitEnabled = {
-    description = "Specifies whether the joint is limited (`true`) or not (`false`).",
+    description = "Set this to `true` to constrain the limits of rotation for a `\"pivot\"` joint or the limits of motion for a `\"piston\"` joint.",
     type = "value"
    },
    isMotorEnabled = {
-    description = "Indicates whether the piston joint is enabled by a motor or not. Unlike the pivot joint, motor-driven motion will be linear, along the specified axis, rather than rotational.",
+    description = "Boolean value which indicates whether a `\"pivot\"` or `\"piston\"` joint is <nobr>motor-enabled</nobr> or not. Motor action for a `\"pivot\"` joint is rotational, while motor action for a `\"piston\"` joint is linear along the defined axis.",
     type = "value"
    },
    joint1 = {
-    description = "Property of Gear joints. Either a piston of pivot joint.",
+    description = "Applies only to `\"gear\"` joints. Read-only reference to the first `\"pivot\"` or `\"piston\" joint associated with the gear joint.",
     type = "value"
    },
    joint2 = {
-    description = "Property of Gear joints. Either a piston of pivot joint.",
+    description = "Applies only to `\"gear\"` joints. Read-only reference to the second `\"pivot\"` or `\"piston\"` joint associated with the gear joint.",
     type = "value"
    },
    jointAngle = {
-    description = "A read-only property that provides the current angle of the joint in degrees.",
+    description = "Read-only value indicating the current angle of a `\"pivot\"` joint, in degrees.",
     type = "value"
    },
    jointSpeed = {
-    description = "A read-only property that provides the speed of the joint in degrees per second.",
+    description = "Read-only value indicating the current rotation speed of a `\"pivot\"` joint.",
     type = "value"
    },
    jointTranslation = {
-    description = "Read-only property that provides the linear translation of the joint in pixels.",
+    description = "Read-only value indicating the current translation of a `\"piston\"` or `\"wheel\"` joint, meaning, the distance of movement that has occurred along the axis.",
     type = "value"
    },
    length = {
-    description = "The distance in pixels between the anchor points. The value you assign to this property should not be zero or very short. Consider using a pivot joint if you need to directly anchor one body to another.",
+    description = "Defines the distance between the anchor points for a `\"distance\"` joint, which should not be zero or very short. If you position the bodies before applying a distance joint to them, this length will automatically be set as the distance between the anchor points, so it's usually not necessary to set this parameter.",
     type = "value"
    },
    length1 = {
-    description = "A read-only property that provides the distance in pixels between the first joint anchor point and the stationary pulley anchor point.",
+    description = "Read-only value that, upon instantiation of a `\"pulley\"` joint, indicates the distance in pixels between the first anchor point and its stationary pulley anchor point.",
     type = "value"
    },
    length2 = {
-    description = "A read-only property that provides the distance in pixels between the second joint anchor point and the stationary pulley anchor point.",
+    description = "Read-only value that, upon instantiation of a `\"pulley\"` joint, indicates the distance in pixels between the second anchor point and its stationary pulley anchor point.",
     type = "value"
    },
    limitState = {
-    description = "The maximum length of the rope in pixels.",
+    description = "Read-only value that indicates the current limit state of a `\"rope\"` joint: `\"inactive\"`, `\"lower\"`, `\"upper\"`, or `\"equal\"`.",
     type = "value"
    },
    maxForce = {
-    description = "The maximum force that can be exerted on the joint.",
+    description = "Applies only to `\"friction\"` and `\"touch\"` joints.",
     type = "value"
    },
    maxLength = {
-    description = "The maximum length of the rope in pixels.",
+    description = "For use with `\"rope\"` joints. Specifies the maximum separation length of the two bodies (rope length), in pixels.",
     type = "value"
    },
    maxMotorForce = {
-    description = "A number that specifies the maximum motor force that can be applied to the joint.",
+    description = "The maximum allowed force for the motor of a `\"piston\"` joint.",
     type = "value"
    },
    maxMotorTorque = {
-    description = "Specifies the maximum motor torque that can be applied to the joint.",
+    description = "The maximum allowed torque for the motor of a `\"pivot\"` joint.",
     type = "value"
    },
    maxTorque = {
-    description = "The maximum torque that can be applied to the joint.",
+    description = "Applies only to `\"friction\"` joints. Specifies the maximum rotational friction which may be applied to the joined body. A higher value simulates higher friction.",
     type = "value"
    },
    motorForce = {
-    description = "Read-only property that specifies the current motor force.",
+    description = "Read-only value indicating the current motor force of a `\"piston\"` joint.",
     type = "value"
    },
    motorSpeed = {
-    description = "Specifies the linear speed of the motor, in units of pixels per second.",
+    description = "Numerical value which specifies the rotational motor speed for a `\"pivot\"` joint, or the linear motor speed for a `\"piston\"` joint.",
     type = "value"
    },
    motorTorque = {
-    description = "A read-only property that provides the torque of the joint's motor.",
+    description = "Read-only value indicating the current motor torque for a `\"pivot\"` joint.",
     type = "value"
    },
    ratio = {
-    description = "Used to optionally simulate a block and tackle arrangement, in which one side of the rope moves faster than the other. By default, this ratio is 1.0, which simulates a simple pulley.",
+    description = "Applies only to `\"pulley\"` and `\"gear\"` joints.",
     type = "value"
    },
    reactionTorque = {
-    description = "A read-only property that returns the reaction torque (in N*m) at the joint anchor in the second body.",
+    description = "Read-only property which indicates the reaction torque in N*m at the joint anchor in the second body.",
     type = "value"
    },
    referenceAngle = {
-    description = "A read-only property that provides the current angle of the joint in degrees.",
+    description = "Read-only value indicating the joint angle between the bodies at time of creation. For use with `\"pivot\"`, `\"piston\"`, and `\"weld\"` joints.",
     type = "value"
    },
    removeSelf = {
     args = "()",
-    description = "Destroys an existing joint, and detaches the two bodies (which may then collide).",
-    returns = "(TYPE)",
+    description = "Destroys an existing joint and detaches the two joined bodies. This should not be called during a collision.",
+    returns = "()",
     type = "method"
    },
    setLimits = {
-    args = "( upper, lower )",
-    description = "Sets lower and upper limits on the joint's range of linear motion.",
+    args = "( negLimit, posLimit )",
+    description = "This function accepts two values which define the negative and positive range of motion for a `\"piston\"` joint. The second value should always be greater than or equal to the first value, since they define a range of motion (distance) along the axis.",
     returns = "()",
     type = "method"
    },
    setRotationLimits = {
-    args = "( lowerLimit, upperLimit )",
-    description = "Sets upper and lower rotation limits on the joint in degrees.",
+    args = "( negLimit, posLimit )",
+    description = "This function accepts two values, in degrees, defining the negative and positive limits of rotation for a `\"pivot\"` joint. For example, if you want to limit the rotation somewhat tightly in relation to the upward axis (`0`), these values may be `-10` and `10` respectively. Note that these values remain in relation to the rotation of body `A`, meaning that if body `A` rotates after the joint is declared, these rotation limits will remain in rotational synchronization with that body.",
     returns = "()",
     type = "method"
    },
    setTarget = {
-    args = "( x, y )",
-    description = "For use in Touch joints.",
+    args = "( targetX, targetY )",
+    description = "Sets the current target (follow) point of a `\"touch\"` joint in content space coordinates. This can be any specific content point, the location of the user's touch, the coordinates of some other object to follow, successive points along a path, etc.",
     returns = "()",
     type = "method"
    },
    springDampingRatio = {
-    description = "The joint's damping ratio. Valid values ranges from 0 (no damping) to 1 (critical damping).",
+    description = "Applies only to `\"wheel\"` joints. This value can range from `0` (no damping) to `1` (critical damping). With critical damping, all oscillations should vanish.",
     type = "value"
    },
    springFrequency = {
-    description = "The mass-spring damping frequency (in Hz). A value of `0` indicates no suspension.",
+    description = "Applies only to `\"wheel\"` joints. This value specifies the <nobr>mass-spring</nobr> damping frequency in Hz. A low value will decrease simulated suspension.",
     type = "value"
    }
   },
-  description = "Joint objects are used to join two physics bodies together and are created using physics.newJoint().",
+  description = "Joints can be used to assemble complex physical objects from multiple rigid bodies. For example, joints can be used to join the limbs of a ragdoll figure, attach the wheels of a vehicle to its body, create a moving elevator platform, and more. All joints are created using the physics.newJoint() constructor.",
   type = "class"
  },
  _LineObject = {
@@ -830,12 +886,6 @@ do return {
     description = "Append one or more segments to an existing object created using display.newLine().",
     returns = "()",
     type = "method"
-   },
-   setColor = {
-    args = "( red, green, blue [, alpha ] )",
-    description = "Sets the color for an object created using display.newLine().",
-    returns = "()",
-    type = "method"
    }
   },
   description = "Line objects are created using display.newLine().",
@@ -845,33 +895,32 @@ do return {
   childs = {
    addMarker = {
     args = "( latitude, longitude )",
-    description = "Adds a pin to the map at the specified location. The optional title and subtitle will appear on a small popup when the pin is touched.  Returns an number for the id of the marker added or nil if there was a failure.",
+    description = "Adds a pin to the map at the specified location. The optional title and subtitle will appear on a small popup when the pin is touched.  If a custom image is specified then the bottom center of the image will be the pinned location.",
     returns = "(Number)",
     type = "method"
    },
    getAddressLocation = {
-    args = "( location )",
-    description = "**Note: As of 2013/3, this function is deprecated and non-functional. Use object:requestLocation() instead.**",
+    args = "()",
     returns = "()",
     type = "method"
    },
    getUserLocation = {
     args = "()",
-    description = "Returns a table containing values for the user's current location. The fields of this table are the same as those currently used in GPS location events.",
+    description = "Returns a table containing values for the user's current location. The coordinates are returned as a mapLocation event.",
     returns = "(location)",
     type = "method",
     valuetype = "_location"
    },
    isLocationVisible = {
-    description = "A read-only Boolean value indicating whether the user's current location is visible within the area currently displayed on the map.",
+    description = "A read-only Boolean value indicating whether the user's current location is visible within the area currently displayed on the map. This is based on an approximation, so it may be that the value is true when the user's position is slightly offscreen.",
     type = "value"
    },
    isScrollEnabled = {
-    description = "A Boolean that determines whether users can scroll the map by hand. Default is `true`. Set to `false` to prevent users from scrolling the map.",
+    description = "A Boolean that determines whether users can scroll the map by hand. Default is `true`. Set to `false` to prevent users from scrolling the map. Note that a map can still be scrolled/panned via the object:setCenter() functions, even if this property is `false`. This is useful if you want map movement to be controlled by the program, not the user.",
     type = "value"
    },
    isZoomEnabled = {
-    description = "A Boolean that determines whether users may use pinch/zoom gestures to zoom the map. Default is `true`. Set to `false` to prevent users from zooming the map.",
+    description = "A boolean that determines whether users may use pinch/zoom gestures to zoom the map. Default is `true`. Set to `false` to prevent users from zooming the map. Note that a map can still be zoomed via the object:setRegion() function, even when this property is set to `false`.",
     type = "value"
    },
    mapType = {
@@ -880,7 +929,7 @@ do return {
    },
    nearestAddress = {
     args = "( latitude, longitude, resultHandler )",
-    description = "Returns the nearest address based on the given latitude and longitude values. The address is returned as a mapAddress event.",
+    description = "Returns the nearest address based on the given latitude and longitude values, returned as a mapAddress event.",
     returns = "()",
     type = "method"
    },
@@ -891,7 +940,7 @@ do return {
     type = "method"
    },
    removeMarker = {
-    args = "(markerId)",
+    args = "( markerID )",
     description = "Clears a specific marker (pin) from the map.",
     returns = "()",
     type = "method"
@@ -904,18 +953,18 @@ do return {
    },
    setCenter = {
     args = "( latitude, longitude [, isAnimated] )",
-    description = "Moves the displayed map region to a new location, using the new center point but keeping the zoom level the same. The final parameter is an optional Boolean (default `false`) that determines whether the transition is animated or happens instantly.",
+    description = "Moves the displayed map region to a new location, using the new center point but maintaining the zoom level. The final parameter is an optional boolean (default `false`) that determines whether the transition is animated or happens instantly.",
     returns = "()",
     type = "method"
    },
    setRegion = {
     args = "( latitude, longitude, latitudeSpan, longitudeSpan [, isAnimated] )",
-    description = "Moves the displayed map region to a new location, with the new center point and horizontal/vertical span distances given in degrees of latitude and longitude (which implicitly sets the zoom level). This function will sanity-check the span settings, and will interpolate a consistent zoom level even if the latitudeSpan and longitudeSpan are specified with radically different values. The final parameter is an optional Boolean (default `false`) that determines whether the transition is animated or happens instantly.",
+    description = "Moves the displayed map region to a new location, with the new center point and horizontal/vertical span distances given in degrees of latitude and longitude. This implicitly sets the zoom level. This function will \"sanity-check\" the span settings and will interpolate a consistent zoom level even if `latitudeSpan` and `longitudeSpan` are specified with radically different values. The final parameter is an optional boolean (default `false`) that determines whether the transition is animated or happens instantly.",
     returns = "()",
     type = "method"
    }
   },
-  description = "The map view feature lets the developer integrate one or more map views into their app, and supports various methods of two-way communication between the map contents and the surrounding application, including address or landmark lookup, marking the map with pins, and reverse geocoding (converting latitude/longitude into the closest street address).",
+  description = "The map view feature lets you integrate one or more map views into your app. It supports various methods of <nobr>two-way</nobr> communication between the map contents and the surrounding application, including address or landmark lookup, marking the map with pins, and reverse geocoding (converting latitude/longitude into the closest street address).",
   type = "class"
  },
  _Mask = {
@@ -925,17 +974,138 @@ do return {
  },
  _NativeDisplayObject = {
   childs = {},
-  description = "NativeDisplayObjects are separate from Corona's OpenGL drawing canvas, and always appear above normal display objects.",
+  description = "Native display objects are separate from Corona's OpenGL drawing canvas and always appear in front of normal display objects.",
   type = "class"
  },
  _Paint = {
-  childs = {},
-  description = "Paint objects control the way in which geometry is rasterized. ",
+  childs = {
+   a = {
+    description = "The alpha channel value ranging from `0` to `1`.",
+    type = "value"
+   },
+   b = {
+    description = "The blue channel value ranging from `0` to `1`.",
+    type = "value"
+   },
+   blendEquation = {
+    description = "The blend equation per the OpenGL-ES 2 specification(http://www.khronos.org/opengles/sdk/docs/man/xhtml/glBlendEquation.xml). ",
+    type = "value"
+   },
+   blendMode = {
+    description = "Allows you to change the blend mode on a specific object. ",
+    type = "value"
+   },
+   effect = {
+    description = "Apply shader effects to an object, including filters, generators (<nobr>procedurally-generated</nobr> textures), and composites (multitexturing).",
+    type = "value"
+   },
+   g = {
+    description = "The green channel value ranging from `0` to `1`.",
+    type = "value"
+   },
+   r = {
+    description = "The red channel value ranging from `0` to `1`.",
+    type = "value"
+   }
+  },
+  description = "For object fills.",
+  type = "class"
+ },
+ _ParticleSystem = {
+  childs = {
+   applyForce = {
+    args = "( xForce, yForce )",
+    description = "A function that accepts __x__ and __y__ components of a linear force in newtons, applied to the center of each particle in a ParticleSystem.",
+    returns = "()",
+    type = "method"
+   },
+   applyLinearImpulse = {
+    args = "( xForce, yForce )",
+    description = "Similar to object:applyForce() except that an impulse is a single momentary jolt in <nobr>newton-seconds.</nobr>",
+    returns = "()",
+    type = "method"
+   },
+   createGroup = {
+    args = "( params )",
+    description = "This function is used to create multiple particles simultaneously by filling a region.",
+    returns = "()",
+    type = "method"
+   },
+   createParticle = {
+    args = "( params )",
+    description = "This function is used to create a single particle in a ParticleSystem.",
+    returns = "()",
+    type = "method"
+   },
+   destroyParticles = {
+    args = "( params )",
+    description = "This function is used to remove all particles within a region.",
+    returns = "()",
+    type = "method"
+   },
+   imageRadius = {
+    description = "This numerical property controls the radius of the particle image, in content units.",
+    type = "value"
+   },
+   particleCount = {
+    description = "This read-only numerical property represents the number of particles alive.",
+    type = "value"
+   },
+   particleDamping = {
+    description = "This numerical property controls the damping of particles.",
+    type = "value"
+   },
+   particleDensity = {
+    description = "This numerical property controls the density of particles. This value is `1.0` by default.",
+    type = "value"
+   },
+   particleDestructionByAge = {
+    description = "This boolean property controls the destruction of particles based on their age. This value is `true` by default.",
+    type = "value"
+   },
+   particleGravityScale = {
+    description = "This numerical property controls the scaling of gravity. This value is `1.0` by default.",
+    type = "value"
+   },
+   particleMass = {
+    description = "Read-only numerical property representing the mass of a single particle, in kilograms, within a ParticleSystem.",
+    type = "value"
+   },
+   particleMaxCount = {
+    description = "This numerical property controls the maximum number of particles. This value is `0` by default, indicating no maximum limit.",
+    type = "value"
+   },
+   particlePaused = {
+    description = "This boolean property controls pausing of the simulation of particles. This value is `false` by default, meaning that the simulation should be executed as normal.",
+    type = "value"
+   },
+   particleRadius = {
+    description = "This numerical property controls the radius of particles. This value is `1.0` by default.",
+    type = "value"
+   },
+   particleStrictContactCheck = {
+    description = "This boolean property controls the strict particle/body contact check. This value is `false` by default.",
+    type = "value"
+   },
+   queryRegion = {
+    args = "( upperLeftX, upperLeftY, lowerRightX, lowerRightY, hitProperties )",
+    description = "This function is used to find the particles that intersect with an axis-aligned (non-rotated) box. This box is defined by an <nobr>upper-left</nobr> coordinate and a <nobr>lower-right</nobr> coordinate.",
+    returns = "()",
+    type = "method"
+   },
+   rayCast = {
+    args = "( from_x, from_y, to_x, to_y, behavior )",
+    description = "This function is used to find the particles that collide with a line.",
+    returns = "()",
+    type = "method"
+   }
+  },
+  description = "Particle system objects are created using physics.newParticleSystem().",
   type = "class"
  },
  _Path = {
   childs = {},
-  description = "Paths specify the geometry of shapes. Path objects give you access to manipulate this geometry.",
+  description = "Paths specify the geometry of shapes. These path objects give you access to manipulate this geometry.",
   type = "class"
  },
  _PhysicsContact = {
@@ -994,19 +1164,7 @@ do return {
   childs = {
    getSampleRate = {
     args = "()",
-    description = "Gets the current audio recording sample rate. (Used for recording audio.)",
-    returns = "(Number)",
-    type = "method"
-   },
-   getTunerFrequency = {
-    args = "()",
-    description = "Returns the last calculated frequency in Hz. Works only if the tuner was on. See: Recording:startTuner().",
-    returns = "(Number)",
-    type = "method"
-   },
-   getTunerVolume = {
-    args = "()",
-    description = "Returns the mean squared normalized sample value of the current audio buffer. Works only if the tuner was on. See: Recording:startTuner().",
+    description = "Gets the current audio recording sample rate.",
     returns = "(Number)",
     type = "method"
    },
@@ -1028,21 +1186,9 @@ do return {
     returns = "()",
     type = "method"
    },
-   startTuner = {
-    args = "()",
-    description = "Enables audio tuning feature. This function should be called before Recording:startRecording().",
-    returns = "()",
-    type = "method"
-   },
    stopRecording = {
     args = "()",
     description = "Stops recording audio.",
-    returns = "()",
-    type = "method"
-   },
-   stopTuner = {
-    args = "()",
-    description = "Stops the tuner module.",
     returns = "()",
     type = "method"
    }
@@ -1052,12 +1198,12 @@ do return {
  },
  _RectPath = {
   childs = {},
-  description = "Paths specify the geometry of shapes. Path objects give you access to manipulate this geometry.",
+  description = "The rectangle path specifies the geometry of the corresponding shape object.",
   type = "class"
  },
  _RoundedRectPath = {
   childs = {},
-  description = "The rounded rectangle path specifies the geometry of the corresponding shape object. ",
+  description = "The rounded rectangle path specifies the geometry of the corresponding shape object.",
   type = "class"
  },
  _Runtime = {
@@ -1080,7 +1226,7 @@ do return {
  },
  _Scene = {
   childs = {},
-  description = "Scene objects are the focal point of the Storyboard API.",
+  description = "Scene objects are the focal point of the Composer.",
   type = "class"
  },
  _ScrollViewWidget = {
@@ -1089,6 +1235,12 @@ do return {
     args = "()",
     description = "Returns the __x__ and __y__ coordinates of the ScrollView content.",
     returns = "(Numbers)",
+    type = "method"
+   },
+   getView = {
+    args = "()",
+    description = "Returns a reference to the ScrollView object's view.",
+    returns = "(Table)",
     type = "method"
    },
    scrollTo = {
@@ -1104,8 +1256,8 @@ do return {
     type = "method"
    },
    setIsLocked = {
-    args = "( isLocked )",
-    description = "Sets a ScrollView to either locked (does not scroll) or unlocked (default behavior).",
+    args = "( isLocked [, axis] )",
+    description = "Sets a ScrollView to either locked (does not scroll) or unlocked (default behavior). Optionally, you can lock or unlock the scroll view on a specific directional axis.",
     returns = "()",
     type = "method"
    },
@@ -1140,6 +1292,12 @@ do return {
    segmentNumber = {
     description = "The read-only segment number of the currently-selected segment on a Segmented Control object.",
     type = "value"
+   },
+   setActiveSegment = {
+    args = "( segmentNumber )",
+    description = "Sets the active segment for a Segmented Control widget.",
+    returns = "()",
+    type = "method"
    }
   },
   description = "SegmentedControl objects are created using widget.newSegmentedControl().",
@@ -1147,10 +1305,6 @@ do return {
  },
  _ShapeObject = {
   childs = {
-   blendMode = {
-    description = "Allows you to change the blend mode on a specific object. ",
-    type = "value"
-   },
    fill = {
     description = "For object fills, Corona uses the concept of paint to a fill, you control how the interior area of the shape is rendered.",
     type = "value"
@@ -1224,15 +1378,15 @@ do return {
     type = "method"
    },
    textureFilter = {
-    description = "This controls the texture filter mode for the snapshot. See the 'Texture Keys' section of display.setDefault() for valid filter values.",
+    description = "This controls the texture filter mode for the snapshot. See the __Texture Keys__ section of display.setDefault() for valid filter values.",
     type = "value"
    },
    textureWrapX = {
-    description = "This controls the texture wrap in the x-direction for the snapshot. See the 'Texture Keys' section of display.setDefault() for valid wrap values.",
+    description = "This controls the texture wrap in the __x__ direction for the snapshot. See the __Texture Keys__ section of display.setDefault() for valid wrap values.",
     type = "value"
    },
    textureWrapY = {
-    description = "This controls the texture wrap in the y-direction for the snapshot. See the 'Texture Keys' section of display.setDefault() for valid wrap values.",
+    description = "This controls the texture wrap in the __y__ direction for the snapshot. See the __Texture Keys__ section of display.setDefault() for valid wrap values.",
     type = "value"
    }
   },
@@ -1295,7 +1449,7 @@ do return {
    },
    setSequence = {
     args = "( [ sequenceName ] )",
-    description = "Loads an animation sequence by name. If you do not specify a sequence, the first frame in the currently loaded sequence will be shown instead.",
+    description = "Loads an animation sequence by name.",
     returns = "()",
     type = "method"
    },
@@ -1321,6 +1475,12 @@ do return {
  },
  _StepperWidget = {
   childs = {
+   getValue = {
+    args = "()",
+    description = "This method gets the current value of a stepper, this is not restricted to usage within the stepper's listener function.",
+    returns = "(Number)",
+    type = "method"
+   },
    maximumValue = {
     description = "A read-only property that represents the maximum value of the stepper.",
     type = "value"
@@ -1328,6 +1488,12 @@ do return {
    minimumValue = {
     description = "A read-only property that represents the minimum value of the stepper.",
     type = "value"
+   },
+   setValue = {
+    args = "( value )",
+    description = "This method sets the current value of a stepper widget. Note that the value passed to this function will not adhere to the stepper's minimum or maximum value. For example, if the stepper has a maximum value of `10` and you pass `20` as the `value` parameter, the stepper's value will be `20`. Thus, you should only pass in a `value` integer that is within range of your stepper's minimum and maximum values, if defined.",
+    returns = "()",
+    type = "method"
    },
    value = {
     description = "A read-only property that represents the current value of the stepper.",
@@ -1340,7 +1506,7 @@ do return {
  _SwitchWidget = {
   childs = {
    isOn = {
-    description = "The read-only state of a switch, either `true` for on/selected or `false` for off/deselected.",
+    description = "The read-only state of a switch, either `true` or `false`.",
     type = "value"
    },
    setState = {
@@ -1421,6 +1587,12 @@ do return {
     description = "Makes a TableView.",
     returns = "()",
     type = "method"
+   },
+   setIsLocked = {
+    args = "( isLocked )",
+    description = "Sets a TableView to either locked (does not scroll) or unlocked (default behavior).",
+    returns = "()",
+    type = "method"
    }
   },
   description = "Table views - sometimes referred to as list views - are created using widget.newTableView().",
@@ -1433,7 +1605,7 @@ do return {
     type = "value"
    },
    font = {
-    description = "Font of the text box. May be set to a font object as returned by native.newFont().",
+    description = "Gets or sets the native text box's font. May be set to a font object as returned by the native.newFont() function.",
     type = "value"
    },
    hasBackground = {
@@ -1444,9 +1616,23 @@ do return {
     description = "Controls whether the text box is editable. Default is `false`.",
     type = "value"
    },
+   isFontSizeScaled = {
+    description = "Determines which font size units the text box's object.size properties are measured in.",
+    type = "value"
+   },
+   placeholder = {
+    description = "Native text boxes can display optional placeholder text (`nil` by default). This can provide a \"hint\" as to what the user should enter in the box. If set, the placeholder string is displayed using the same style information (except the text color). The placeholder does not appear once actual text has been input into the box and it does not currently participate in determining the size of the text box.",
+    type = "value"
+   },
    setReturnKey = {
-    args = "(key)",
-    description = "Sets the return key of the keyboard.",
+    args = "( key )",
+    description = "Sets the return key value on the keyboard.",
+    returns = "()",
+    type = "method"
+   },
+   setSelection = {
+    args = "( startPosition, endPosition )",
+    description = "Sets the cursor position if the start and end positions are the same. Alternatively, sets a range of selected text if the start and end positions are different.",
     returns = "()",
     type = "method"
    },
@@ -1457,7 +1643,7 @@ do return {
     type = "method"
    },
    size = {
-    description = "The font size of the text in a native text input box.",
+    description = "Gets or sets the native text box's font size.",
     type = "value"
    },
    text = {
@@ -1465,7 +1651,7 @@ do return {
     type = "value"
    }
   },
-  description = "A native text box is a scrollable, multi-line input field for displaying text-based content. See native.newTextBox() for more details.",
+  description = "A native text box is a scrollable, multi-line input field for displaying <nobr>text-based</nobr> content. See native.newTextBox() for more details.",
   type = "class"
  },
  _TextField = {
@@ -1474,8 +1660,12 @@ do return {
     description = "Alignment of text displayed in the input text field. May be set to one of the following strings: ",
     type = "value"
    },
+   autocorrectionType = {
+    description = "This iOS-only property controls the type of auto-correction performed. Possible values are:",
+    type = "value"
+   },
    font = {
-    description = "Font of the text input field. May be set to a font object as returned by native.newFont().",
+    description = "Gets or sets the native text field's font. May be set to a font object as returned by the native.newFont() function.",
     type = "value"
    },
    hasBackground = {
@@ -1483,7 +1673,11 @@ do return {
     type = "value"
    },
    inputType = {
-    description = "The keyboard type of the native text input field.",
+    description = "Sets the keyboard type for a native text input field.",
+    type = "value"
+   },
+   isFontSizeScaled = {
+    description = "Determines which font size units the text field's object.size properties are measured in.",
     type = "value"
    },
    isSecure = {
@@ -1494,9 +1688,27 @@ do return {
     description = "Native text fields can display optional placeholder text (`nil` by default). This can provide a \"hint\" as to what the user should enter in the field. If set, the placeholder string is displayed using the same style information (except the text color). The placeholder does not appear once actual text has been input into the field and it does not currently participate in determining the size of the text field.",
     type = "value"
    },
+   resizeFontToFitHeight = {
+    args = "()",
+    description = "Changes the font size to \"best fit\" the current height of the text field. This will automatically occur when you first create a text field via the native.newTextField() function.",
+    returns = "()",
+    type = "method"
+   },
+   resizeHeightToFitFont = {
+    args = "()",
+    description = "Changes the height of the text field to \"best fit\" the font size that it's currently using.",
+    returns = "()",
+    type = "method"
+   },
    setReturnKey = {
-    args = "(key)",
-    description = "Sets the return key of the keyboard.",
+    args = "( key )",
+    description = "Sets the return key value on the keyboard.",
+    returns = "()",
+    type = "method"
+   },
+   setSelection = {
+    args = "( startPosition, endPosition )",
+    description = "Sets the cursor position if the start and end positions are the same. Alternatively, sets a range of selected text if the start and end positions are different.",
     returns = "()",
     type = "method"
    },
@@ -1507,7 +1719,11 @@ do return {
     type = "method"
    },
    size = {
-    description = "The font size of the text in a native text input field.",
+    description = "Gets or sets the native text field's font size.",
+    type = "value"
+   },
+   spellCheckingType = {
+    description = "This iOS-only property controls the type of spell checking behavior. Possible values are:",
     type = "value"
    },
    text = {
@@ -1515,19 +1731,19 @@ do return {
     type = "value"
    }
   },
-  description = "A native text field is a single-line input field for displaying text-based content. See native.newTextField() for more details.",
+  description = "A native text field is a single-line input field for displaying <nobr>text-based</nobr> content. See native.newTextField() for more details.",
   type = "class"
  },
  _TextObject = {
   childs = {
-   setTextColor = {
-    args = "()",
-    description = "Sets the color or gradient fill of a text object.",
+   setEmbossColor = {
+    args = "( colorTable )",
+    description = "Sets the color parameters for an embossed text object created via display.newEmbossedText().",
     returns = "()",
     type = "method"
    },
    size = {
-    description = "Retrieves or sets the size of the text in a text object.",
+    description = "Retrieves or sets the text size pertaining to a text object.",
     type = "value"
    },
    text = {
@@ -1573,101 +1789,75 @@ do return {
     type = "method"
    },
    totalTime = {
-    description = "The length of currently loaded video in seconds. (read-only)  This should be called after the video is ready to play or an inaccurate value might be returned.",
+    description = "The read-only length of the currently loaded video, in seconds. This should be called after the video is ready to play or an inaccurate value might be returned.",
     type = "value"
    }
   },
-  description = "A video object is a native display object. You can move it, rotate it, or even add a physics body.",
+  description = "A video object is a native display object.",
   type = "class"
  },
  _WebView = {
   childs = {
    back = {
     args = "()",
-    description = "Takes the webView back one step in the webView's history.",
+    description = "Takes the webView back one step in the WebView history.",
     returns = "()",
     type = "method"
    },
    canGoBack = {
-    description = "Read-only property that will be true if webView can go back a webpage, and false if not.",
+    description = "Read-only property that will be `true` if the WebView can go back a web page or `false` if not.",
     type = "value"
    },
    canGoForward = {
-    description = "Read-only property that will be true if webView can go forward a webpage, and false if not.",
+    description = "Read-only property that will be `true` if the WebView can go forward a web page or `false` if not.",
     type = "value"
+   },
+   deleteCookies = {
+    args = "()",
+    description = "Deletes cookies for all the WebViews.",
+    returns = "()",
+    type = "method"
    },
    forward = {
     args = "()",
-    description = "Takes the webView forward one step in the webView's history.",
+    description = "Takes the WebView forward one step in its history.",
     returns = "()",
     type = "method"
    },
    hasBackground = {
-    description = "This is a get/set property that corresponds to whether or not the background of the webView is visible or transparent. Default is `true`.",
+    description = "This is a get/set property that corresponds to whether or not the background of the WebView is visible or transparent. Default is `true`.",
     type = "value"
    },
    reload = {
     args = "()",
-    description = "Reloads currently loaded page in webView.",
+    description = "Reloads the currently loaded page in a WebView.",
     returns = "()",
     type = "method"
    },
    request = {
     args = "( url )",
-    description = "Loads specified url (string) into webView. For local content, you **must** specify a base directory as a search path (see system-defined directory constants in system.* ).",
-    returns = "(TYPE)",
+    description = "Loads the specified URL (string) into the WebView directory as a search path.",
+    returns = "()",
     type = "method"
    },
    stop = {
     args = "()",
-    description = "Stops loading current page in webView (if loading).",
+    description = "Stops loading the current page in the WebView (if loading).",
     returns = "()",
     type = "method"
    }
   },
-  description = "A web view object is a native display object. You can move and rotate it, or even add a physics body.",
+  description = "A web view object is a native display object.",
   type = "class"
  },
  ads = {
-  childs = {
-   hide = {
-    args = "()",
-    description = "Removes the currently shown ad from the screen and prevents new ads from being retrieved until ads.show() with the new provider.",
-    returns = "()",
-    type = "function"
-   },
-   init = {
-    args = "( providerName, appId [, listener] )",
-    description = "`ads.init()` initializes the Corona `ads` library by specifying the name of the ad network service provider and the application identifier. For more information, please refer to the Implementing Adsguide.monetization.adSupport guide.",
-    returns = "()",
-    type = "function"
-   },
-   show = {
-    args = "( adUnitType [, params] )",
-    description = "`ads.show()` begins showing ads at the given screen location on the provided refresh period.",
-    returns = "()",
-    type = "function"
-   }
-  },
-  description = "The Corona `ads` library lets you display ads within your application. The following ad networks are currently supported:",
+  childs = {},
+  description = "Corona supports the following ad networks for in-app advertising. Please proceed to the respective documentation regarding ad implementation.",
   type = "lib"
  },
  analytics = {
-  childs = {
-   init = {
-    args = "( apiKey )",
-    description = "Initializes the analytics library.",
-    returns = "()",
-    type = "function"
-   },
-   logEvent = {
-    args = "( eventID )",
-    description = "Reports a custom event defined by a string value.",
-    returns = "()",
-    type = "function"
-   }
-  },
-  description = "The Corona analytics library lets you easily log interesting events in your application.",
+  childs = {},
+  description = "Analytics allows you to log interesting events in your application. Please click the respective provider for details on analytics implementation.",
   type = "lib"
  },
  audio = {
@@ -1692,12 +1882,12 @@ do return {
    },
    findFreeChannel = {
     args = "( [ startChannel ] )",
-    description = "Will look for an available channel for playback. You can provide a start channel number as parameter which will start searching from that channel and increase upward to the highest channel. The search does not include reserved channels.",
+    description = "Looks for an available audio channel for playback. You can provide a start channel number as parameter and begin searching from that channel, increasing upward to the highest channel. The search does not include reserved channels.",
     returns = "(Number)",
     type = "function"
    },
    freeChannels = {
-    description = "This property is always equal to the number of channels that are currently available for playback (not playing, and not paused).",
+    description = "This property is equal to the number of channels that are currently available for playback (channels not playing or paused).",
     type = "value"
    },
    getDuration = {
@@ -1708,19 +1898,19 @@ do return {
    },
    getMaxVolume = {
     args = "( { channel=c } )",
-    description = "Gets the max volume for a specific channel. **NOTE:** There is no max volume for the master volume.",
+    description = "Gets the max volume for a specific channel. There is no max volume for the master volume.",
     returns = "(Number)",
     type = "function"
    },
    getMinVolume = {
     args = "( { channel=c } )",
-    description = "Gets the min volume for a specific channel. **NOTE:** There is no min volume for the master volume.",
+    description = "Gets the minimum volume for a specific channel. There is no minimum volume for the master volume.",
     returns = "(Number)",
     type = "function"
    },
    getVolume = {
-    args = "( [ { [channel=c]  } ] )",
-    description = "Gets the volume either for a specific channel or gets the master volume.",
+    args = "( { channel=c } )",
+    description = "Gets the volume for a specific channel, or gets the master volume.",
     returns = "(Number)",
     type = "function"
    },
@@ -1814,34 +2004,34 @@ do return {
    },
    stop = {
     args = "( [channel] )",
-    description = "Stops playback on a channel and clears the channel so it can be played on again (or all channels if no channel is specified). Callbacks will still be invoked, but the completed flag will be set to `false`.",
+    description = "Stops playback on a channel (or all channels) and clears the channel(s) so they can be played on again. Callbacks will still be invoked, but the completed flag will be set to `false`.",
     returns = "(Number)",
     type = "function"
    },
    stopWithDelay = {
     args = "( duration [, options ] )",
-    description = "Stops the playing a currently playing sound at the specified amount of time.",
+    description = "Stops a currently playing sound after the specified time delay.",
     returns = "(Number)",
     type = "function"
    },
    totalChannels = {
-    description = "Returns the total number of channels. (Should be 32 for now, but this limit may be subject to change in the future.)",
+    description = "Returns the total number of channels. This value is currently 32, but the limit may change in the future.",
     type = "value"
    },
    unreservedFreeChannels = {
-    description = "Returns the number of channels that are currently available for playback (not playing, not paused), excluding the channels that have been reserved.",
+    description = "Returns the number of channels that are currently available for playback (channels not playing or paused), excluding the channels which have been reserved.",
     type = "value"
    },
    unreservedUsedChannels = {
-    description = "Returns the number of channels that are currently in use (playing/paused), excluding the channels that have been reserved.",
+    description = "Returns the number of channels that are currently in use (playing or paused), excluding the channels which have been reserved.",
     type = "value"
    },
    usedChannels = {
-    description = "Returns the number of channels that are currently in use (playing/paused).",
+    description = "Returns the number of channels that are currently in use (playing or paused).",
     type = "value"
    }
   },
-  description = "The Corona Audio system gives you access to advanced OpenAL features. See the Audio Usage/Functionsguide.media.audioSystem guide for more information.",
+  description = "The Corona Audio system gives you access to advanced OpenAL features. See the Audio Usage/Functions guide for more information.",
   type = "lib"
  },
  composer = {
@@ -1878,7 +2068,7 @@ do return {
     type = "function"
    },
    isDebug = {
-    description = "Toggles \"Composer Debug Mode\" which, if set to `true`, prints useful debugging information to the Corona Terminal in certain situations. This should be set to `false` (default) before building the project for deployment.",
+    description = "Toggles \"Composer Debug Mode\" which, if set to `true`, prints useful debugging information to the Corona Simulator Console in certain situations. This should be set to `false` (default) before building the project for deployment.",
     type = "value"
    },
    loadScene = {
@@ -1892,19 +2082,9 @@ do return {
     type = "value"
    },
    newScene = {
-    args = "()",
-    description = "This function creates new scene objects which can be used with the Composer library.",
+    args = "( ccscene )",
+    description = "This function creates new scene objects which can be used with the Composer Library, or references scenes created within the Composer GUI.",
     returns = "(Table)",
-    type = "function"
-   },
-   purgeOnSceneChange = {
-    description = "If set to `true`, whenever a scene change is completed, all scenes (except for the newly active scene) will be automatically purged. The default value for this property is `false`.",
-    type = "value"
-   },
-   purgeScene = {
-    args = "( sceneName )",
-    description = "Unloads the specified scene's `scene.view` property, which is a group that contains all of the scene's display objects. It takes one (required) argument, `sceneName`, which is the name of the scene (usually the name of the module, without the \".lua\" extension) you are attempting to unload. If the scene has its own module, this function preserves the scene's module in the global `package.loaded` table.",
-    returns = "()",
     type = "function"
    },
    recycleAutomatically = {
@@ -1918,12 +2098,6 @@ do return {
    recycleOnSceneChange = {
     description = "By default, when changing scenes, Composer keeps the current scene's view in memory, which can improve performance if you access the same scenes frequently. If you wish to recycle the current scene when changing to a new scene (remove the current scene's `self.view`) set `composer.recycleOnSceneChange` to `true`. The default value is `false`.",
     type = "value"
-   },
-   reloadScene = {
-    args = "()",
-    description = "Reloads the currently loaded scene. This does not support scene transition effects. When a scene is reloaded, it behaves as if composer.gotoScene() was called on the currently active scene.",
-    returns = "()",
-    type = "function"
    },
    removeHidden = {
     args = "( shouldRecycle )",
@@ -1957,50 +2131,28 @@ do return {
   description = "Composer is the official scene (screen) creation and management library in Corona SDK. This library provides developers with an easy way to create and transition between individual scenes.",
   type = "lib"
  },
- credits = {
-  childs = {
-   init = {
-    args = "( ARG1 [, ARG2] )",
-    description = "This API is currently deprecated and should not be used.",
-    returns = "(TYPE)",
-    type = "function"
-   },
-   requestUpdate = {
-    args = "( ARG1 [, ARG2] )",
-    description = "This API is currently deprecated and should not be used.",
-    returns = "(TYPE)",
-    type = "function"
-   },
-   showOffers = {
-    args = "( ARG1 [, ARG2] )",
-    description = "This API is currently deprecated and should not be used.",
-    returns = "(TYPE)",
-    type = "function"
-   }
-  },
-  description = "This API is currently deprecated and should not be used.",
-  type = "lib"
- },
  crypto = {
   childs = {
    digest = {
     args = "( algorithm, data [, raw] )",
     description = "Generates the message digest (the hash) of the input string.",
-    returns = "(TYPE)",
-    type = "function"
+    returns = "(String)",
+    type = "function",
+    valuetype = "string"
    },
    hmac = {
     args = "( algorithm, data, key [, raw] )",
     description = "Computes HMAC (Key-Hashing for Message Authentication Code) of the string and returns it.",
-    returns = "(TYPE)",
-    type = "function"
+    returns = "(String)",
+    type = "function",
+    valuetype = "string"
    },
    md4 = {
-    description = "Constant used to specify the MD4 algorithm (Message-Digest algorithm 4)",
+    description = "Constant used to specify the MD4 algorithm (Message-Digest algorithm 4).",
     type = "value"
    },
    md5 = {
-    description = "Constant used to specify the MD5 algorithm (Message-Digest algorithm 5)",
+    description = "Constant used to specify the MD5 algorithm (Message-Digest algorithm 5).",
     type = "value"
    },
    sha1 = {
@@ -2030,11 +2182,11 @@ do return {
  display = {
   childs = {
    actualContentHeight = {
-    description = "The height in Corona content units of the screen. The result depends on the `scale` setting in `config.lua`. See the Project Configurationguide.basics.configSettings guide for more information.",
+    description = "The height in Corona content units of the screen. The result depends on the `scale` setting in `config.lua`. See the Project Configuration guide for more information.",
     type = "value"
    },
    actualContentWidth = {
-    description = "The width in Corona content units of the screen. The result depends on the `scale` setting in `config.lua`. See the Project Configurationguide.basics.configSettings guide for more information.",
+    description = "The width in Corona content units of the screen. The result depends on the `scale` setting in `config.lua`. See the Project Configuration guide for more information.",
     type = "value"
    },
    capture = {
@@ -2046,7 +2198,7 @@ do return {
    },
    captureBounds = {
     args = "( screenBounds [, saveToAlbum ] )",
-    description = "Captures a portion of the screen and returns it as a new DisplayObject positioned at the top-left corner of the screen. You can specify what portion of the screen to capture by passing in a rectangle to this function. You can optionally save the capture image as a file to the device's photo library.",
+    description = "Captures a portion of the screen and returns it as a new DisplayObject. You can specify what portion of the screen to capture by passing in rectangular bounds. You can optionally save the capture image as a file to the device's photo library.",
     returns = "(DisplayObject)",
     type = "function",
     valuetype = "_DisplayObject"
@@ -2061,9 +2213,8 @@ do return {
    colorSample = {
     args = "( x, y, listener )",
     description = "Get the color of a pixel on screen.",
-    returns = "(LineObject)",
-    type = "function",
-    valuetype = "_LineObject"
+    returns = "()",
+    type = "function"
    },
    contentCenterX = {
     description = "Equivalent to `display.contentWidth * 0.5`.",
@@ -2111,7 +2262,7 @@ do return {
     type = "function"
    },
    imageSuffix = {
-    description = "Returns the suffix used by the dynamic image selectionguide.basics.configSettings feature of Corona. If the content scaling is 1, then returns `nil`.",
+    description = "Returns the suffix used by the dynamic image selection feature of Corona. If the content scaling is 1, then returns `nil`.",
     type = "value"
    },
    loadRemoteImage = {
@@ -2122,7 +2273,7 @@ do return {
    },
    newCircle = {
     args = "( xCenter, yCenter, radius )",
-    description = "Creates a circle with radius radius centered at specified coordinates (`xCenter`, `yCenter`). The local origin is at the center of the circle. The anchor point is initialized to this local origin.",
+    description = "Creates a circle with radius radius centered at specified coordinates (`xCenter`, `yCenter`). The local origin is at the center of the circle and the anchor point is initialized to this local origin.",
     returns = "(ShapeObject)",
     type = "function",
     valuetype = "_ShapeObject"
@@ -2134,11 +2285,18 @@ do return {
     type = "function"
    },
    newEmbossedText = {
-    args = "( [parentGroup,] string, left, top, [width, height,] font, size )",
-    description = "Creates text with an embossed (inset) effect.",
-    returns = "(DisplayObject)",
+    args = "( { options } )",
+    description = "Creates an embossed text object. The local origin is at the center of the text and the anchor point is initialized to this local origin.",
+    returns = "(TextObject)",
     type = "function",
-    valuetype = "_DisplayObject"
+    valuetype = "_TextObject"
+   },
+   newEmitter = {
+    args = "( emitterParams )",
+    description = "This function is used to create an EmitterObject(http://71squared.com/particledesigner).",
+    returns = "(EmitterObject)",
+    type = "function",
+    valuetype = "_EmitterObject"
    },
    newGroup = {
     args = "()",
@@ -2149,20 +2307,14 @@ do return {
    },
    newImage = {
     args = "( [parent,] filename [,baseDir] [,x,y] [,isFullResolution])",
-    description = "Displays an image on the screen from a file (supports tinting via object:setFillColor)",
+    description = "Displays an image on the screen from a file (supports tinting via object:setFillColor is initialized to this local origin.",
     returns = "(DisplayObject)",
     type = "function",
     valuetype = "_DisplayObject"
    },
-   newImageGroup = {
-    args = "()",
-    returns = "(GroupObject)",
-    type = "function",
-    valuetype = "_GroupObject"
-   },
    newImageRect = {
     args = "( [parentGroup,] filename, [baseDir,] width, height )",
-    description = "Displays an image on the screen from a file (supports tinting via object:setFillColor).",
+    description = "Displays an image on the screen from a file (supports tinting via object:setFillColor is initialized to this local origin.",
     returns = "(DisplayObject)",
     type = "function",
     valuetype = "_DisplayObject"
@@ -2176,21 +2328,21 @@ do return {
    },
    newPolygon = {
     args = "( x, y, vertices )",
-    description = "Draw a polygon shape by providing the outline (contour) of the shape. This includes convex or concave shapes. Self-intersecting shapes, however, are not supported and will result in undefined behavior.",
+    description = "Draws a polygon shape by providing the outline (contour) of the shape. This includes convex or concave shapes. Self-intersecting shapes, however, are not supported and will result in undefined behavior.",
     returns = "(ShapeObject)",
     type = "function",
     valuetype = "_ShapeObject"
    },
    newRect = {
     args = "( x, y, width, height )",
-    description = "Creates a rectangle object. The local origin is at the center of the rectangle; the anchor point is initialized to this local origin.",
+    description = "Creates a rectangle object. The local origin is at the center of the rectangle and the anchor point is initialized to this local origin.",
     returns = "(ShapeObject)",
     type = "function",
     valuetype = "_ShapeObject"
    },
    newRoundedRect = {
     args = "( x, y, width, height, cornerRadius )",
-    description = "Creates a rounded rectangle object. The corners are rounded by quarter circles of a specified radius value. The local origin is at the center of the rectangle; the anchor point is initialized to this local origin.",
+    description = "Creates a rounded rectangle object. The corners are rounded by quarter circles of a specified radius value. The local origin is at the center of the rectangle and the anchor point is initialized to this local origin.",
     returns = "(ShapeObject)",
     type = "function",
     valuetype = "_ShapeObject"
@@ -2204,17 +2356,17 @@ do return {
    },
    newSprite = {
     args = "( imageSheet, sequenceData )",
-    description = "Sprites allow for animated sequences of frames that reside on __image sheets__. Please see the Image Sheets (Sprite Sheets)guide.media.imageSheets guide for more information.",
+    description = "Creates a sprite object. Sprites allow for animated sequences of frames that reside on __image sheets__. Please see the Sprite Animation and Image Sheets guides for more information.",
     returns = "(SpriteObject)",
     type = "function",
     valuetype = "_SpriteObject"
    },
    newText = {
-    args = "( { options } )",
-    description = "Creates a text object with its top-left corner at (left, top). The local origin is at the center of the text; the reference point is initialized to this local origin. By default, the text color is white `(255, 255, 255)`. See object:setTextColor() for more information.",
-    returns = "(DisplayObject)",
+    args = "( options )",
+    description = "Creates a text object is initialized to this local origin.",
+    returns = "(TextObject)",
     type = "function",
-    valuetype = "_DisplayObject"
+    valuetype = "_TextObject"
    },
    pixelHeight = {
     description = "The height of the screen, in pixels.",
@@ -2258,7 +2410,7 @@ do return {
    },
    setStatusBar = {
     args = "( mode )",
-    description = "Hides or changes the appearance of the status bar on certain devices (iPad, iPhone, iPod Touch, and Android 2.x devices).",
+    description = "Hides or changes the appearance of the status bar on most devices.",
     returns = "()",
     type = "function"
    },
@@ -2267,7 +2419,7 @@ do return {
     type = "value"
    },
    topStatusBarContentHeight = {
-    description = "A read-only property representing the height of the status bar in content coordinates.",
+    description = "An iOS read-only property representing the height of the status bar in content coordinates.",
     type = "value"
    },
    viewableContentHeight = {
@@ -2282,130 +2434,22 @@ do return {
   type = "lib"
  },
  easing = {
-  childs = {
-   inExpo = {
-    args = "( displayObject, { transition=easing.inExpo } )",
-    description = "Starts animation from zero velocity and then accelerates motion as it executes. The interpolation is done using an exponential equation.",
-    returns = "(Number)",
-    type = "function"
-   },
-   inOutExpo = {
-    args = "( displayObject, { transition=easing.inOutExpo } )",
-    description = "Starts animation from zero velocity, accelerates, then decelerates to a zero velocity. The interpolation is done using an exponential equation.",
-    returns = "(Number)",
-    type = "function"
-   },
-   inOutQuad = {
-    args = "( displayObject, { transition=easing.inOutQuad } )",
-    description = "Starts animation from zero velocity, accelerates, then decelerates to a zero velocity. The interpolation is done using a quadratic function.",
-    returns = "(Number)",
-    type = "function"
-   },
-   inQuad = {
-    args = "( displayObject, { transition=easing.inQuad } )",
-    description = "Starts animation from zero velocity and then accelerates motion as it executes. The interpolation is done using a quadratic function.",
-    returns = "(Number)",
-    type = "function"
-   },
-   linear = {
-    args = "( displayObject, { transition=easing.linear } )",
-    description = "Performs linear interpolation. This is the default easing mode.",
-    returns = "(Number)",
-    type = "function"
-   },
-   outExpo = {
-    args = "( displayObject, { transition=easing.outExpo } )",
-    description = "Starts animation at a high velocity and decelerates towards zero. The interpolation is done using an exponential function.",
-    returns = "(Number)",
-    type = "function"
-   },
-   outQuad = {
-    args = "( displayObject, { transition=easing.outQuad } )",
-    description = "Starts animation at a high velocity and decelerates towards zero. The interpolation is done using a quadratic function.",
-    returns = "(Number)",
-    type = "function"
-   }
-  },
+  childs = {},
   description = "Easing functions provide a simple way of interpolating between two values to achieve varied animations. They are used in conjunction with the transition library.",
   type = "lib"
  },
  facebook = {
-  childs = {
-   accessDenied = {
-    args = "()",
-    description = "Queries iOS to see if access to the Facebook integrated account has been denied.",
-    returns = "()",
-    type = "function"
-   },
-   login = {
-    args = "( appId, listener [, permissions ] )",
-    description = "Prompts the user to login to Facebook. This API can be called even if the user is already logged in. If the user is already logged in but new permissions are requested, the user will be prompted to grant the new permissions.  The recommended flow is to request no permissions the first time and only ask for additional permissions as they are needed.",
-    returns = "()",
-    type = "function"
-   },
-   logout = {
-    args = "()",
-    description = "Logs the application out of the user's Facebook session.",
-    returns = "(event)",
-    type = "function",
-    valuetype = "_event"
-   },
-   publishInstall = {
-    args = "( appId )",
-    description = "Sends a message to the Facebook server indicating that the app has been installed. After a single successful connection to the Facebook server, it will not try again on subsequent calls. For more information, see the Implementing Facebookguide.social.implementFacebook guide.",
-    returns = "()",
-    type = "function"
-   },
-   request = {
-    args = "( path [, httpMethod, params] )",
-    description = "Get or post data to the logged-in Facebook account. Can be used to post messages and photos to the account and friends' accounts. Can also be used to get user data and recent posts.",
-    returns = "(event)",
-    type = "function",
-    valuetype = "_event"
-   },
-   showDialog = {
-    args = "( action [, params ] )",
-    description = "Displays a Facebook UI dialog for publishing posts to a user's stream using only a few lines of code.",
-    returns = "(event)",
-    type = "function",
-    valuetype = "_event"
-   }
-  },
-  description = "The `facebook` library provides access to Facebook Connect, a set of web API's for accessing the Facebook social network. The functions allow a user to login/logout, post messages/images, and retrieve status.",
+  childs = {},
+  description = "The `facebook` library provides access to Facebook Connect, a set of web APIs for accessing the Facebook social network. The functions allow a user to login/logout, post messages/images, and retrieve status.",
   type = "lib"
  },
  gameNetwork = {
-  childs = {
-   init = {
-    args = "( providerName [, ...] )",
-    description = "Initializes an app for use with the game network provider.",
-    returns = "()",
-    type = "function"
-   },
-   request = {
-    args = "( command [, params ...] )",
-    description = "Send or request information to/from the game network provider.",
-    returns = "()",
-    type = "function"
-   },
-   show = {
-    args = "( name [, data ] )",
-    description = "Displays the requested game network information to the user.",
-    returns = "()",
-    type = "function"
-   }
-  },
+  childs = {},
   description = "Corona's `gameNetwork` library provides access to social gaming features such as public leaderboards and achievements.",
   type = "lib"
  },
  graphics = {
   childs = {
-   newGradient = {
-    args = "( color1, color2 [, direction] )",
-    description = "Creates a gradient object that adds horizontal/vertical linear gradients to rectangle and text objects.",
-    returns = "(Object)",
-    type = "function"
-   },
    newImageSheet = {
     args = "( filename, [baseDir, ] options )",
     description = "ImageSheet.",
@@ -2427,14 +2471,13 @@ do return {
     type = "function"
    }
   },
-  description = "",
   type = "lib"
  },
  io = {
   childs = {
    close = {
     args = "( [file] )",
-    description = "Closes an open file handle. Equivalent to `file:close()`.",
+    description = "Closes an open file handle. Equivalent to `file:close()`. If a file handle is not specified, this function closes the default output file.",
     returns = "()",
     type = "function"
    },
@@ -2445,26 +2488,26 @@ do return {
     type = "function"
    },
    input = {
-    args = "( [file] )",
-    description = "Sets the standard input file. When called with a file name, it opens the named file (in text mode), and sets its handle as the default input file. When called with a file handle, it simply sets this file handle as the default input file. When called without parameters, it returns the current default input file.",
+    args = "( file )",
+    description = "Sets the standard input file. When called with a file handle, it simply sets this file handle as the default input file. When called without parameters, it returns the current default input file.",
     returns = "(Object)",
     type = "function"
    },
    lines = {
-    args = "( filename )",
+    args = "( file )",
     description = "Opens the given file name in read mode and returns an iterator function that, each time it is called, returns a new line from the file.",
     returns = "(Function)",
     type = "function"
    },
    open = {
-    args = "( filename_path, [, mode] )",
+    args = "( file [, mode] )",
     description = "This function opens a file for reading or writing, in the string (default) or binary mode. It returns a new file handle or, in case of errors, `nil` plus an error message. This function can also be used to create a new file.",
     returns = "(Object)",
     type = "function"
    },
    output = {
     args = "( [file] )",
-    description = "Sets the standard output file. When called with a file name, it opens the named file (in text mode), and sets its handle as the default output file. When called with a file handle, it simply sets this file handle as the default output file. When called without parameters, it returns the current default output file.",
+    description = "Sets the standard output file. When called with a file name, it opens the named file in text mode and sets its handle as the default output file. When called with a file handle, it simply sets this file handle as the default output file. When called without parameters, it returns the current default output file.",
     returns = "(Object)",
     type = "function"
    },
@@ -2483,14 +2526,14 @@ do return {
    },
    type = {
     args = "( obj )",
-    description = "Checks whether obj is a valid file handle. Returns the string \"file\" if obj is an open file handle, \"closed file\" if obj is a closed file handle, or `nil` if obj is not a file handle.",
+    description = "Checks whether `obj` is a valid file handle. Returns the string `\"file\"` if `obj` is an open file handle, `\"closed file\"` if `obj` is a closed file handle, or `nil` if `obj` is not a file handle.",
     returns = "(String)",
     type = "function",
     valuetype = "string"
    },
    write = {
     args = "( arg1 [, arg2] [, ...] )",
-    description = "Writes the value of each of its arguments to the file. The arguments must be strings or numbers. To write other values, use tostring() before write.",
+    description = "Writes the value of each of its arguments to the file. The arguments must be strings or numbers. To write other values, use tostring() before writing.",
     returns = "()",
     type = "function"
    }
@@ -2501,49 +2544,50 @@ do return {
  json = {
   childs = {
    decode = {
-    args = "( data )",
-    description = "Decodes the JSON encoded data structure, and returns a Lua object (table) with the appropriate data.",
+    args = "( data [, position [, nullval]] )",
+    description = "Decodes the JSON-encoded data structure and returns a Lua object (table) with the appropriate data. The return values are a Lua object or `nil`, the position of the next character that doesn't belong to the object, or <nobr>(in case of errors)</nobr> an error message.",
     returns = "(Table)",
     type = "function"
    },
    encode = {
-    args = "( table )",
-    description = "Returns the Lua object (table) as a JSON-encoded string.",
+    args = "( t [, options] )",
+    description = "Returns the Lua object (table) as a JSON-encoded string. Since items with `nil` values in a Lua table effectively don't exist, you should use `json.null` as a placeholder value if you need to preserve array indices in your JSON (see discussion of `nullval` in json.decode()).",
     returns = "(String)",
     type = "function",
     valuetype = "string"
    },
-   null = {
-    args = "()",
-    description = "Returns a unique value that will be encoded as null in a JSON encoding.",
-    returns = "(Constant)",
-    type = "function"
+   prettify = {
+    args = "( obj )",
+    description = "Returns a string which is a human readable representation of the given object (or valid JSON string). The string is indented and the top-level keys are sorted into alphabetical order.",
+    returns = "(String)",
+    type = "function",
+    valuetype = "string"
    }
   },
-  description = "The `json` library allows you serialize and deserialize Lua tables into JSON (JavaScript Object Notation) and vice-versa. You typically use JSON-formatted data in conjunction with web APIs, e.g. requests sent in the facebook library.",
+  description = "The `json` library allows you to serialize and deserialize Lua tables into JSON (JavaScript Object Notation(http://json.org)). You often use <nobr>JSON-formatted</nobr> data in conjunction with web APIs, for example requests sent using the facebook library.",
   type = "lib"
  },
  lfs = {
   childs = {},
-  description = "LuaFileSystem provides functionality to perform various filystem-related tasks, to include but is not limited to:",
+  description = "__LuaFileSystem__ provides functionality to perform various <nobr>file-related</nobr> tasks, including but not limited to:",
   type = "lib"
  },
  licensing = {
   childs = {
    init = {
     args = "( providerName )",
-    description = "Initialize the `licensing` service library by specifying the name of the licensing provider.",
+    description = "Initializes the licensing service library by specifying the name of the licensing provider. Currently, only `\"google\"` is supported.",
     returns = "(Boolean)",
     type = "function"
    },
    verify = {
     args = "( listener )",
-    description = "Starts the verification process.",
+    description = "Starts the licensing verification process.",
     returns = "()",
     type = "function"
    }
   },
-  description = "The Corona licensing library lets you check to see if the app was bought from a store. Currently, only one store is supported:",
+  description = "The Corona licensing library lets you check to see if the app was bought from a store. Currently, only Google Play(http://developer.android.com/google/play/licensing/setting-up.html) is supported.",
   type = "lib"
  },
  math = {
@@ -2745,14 +2789,14 @@ do return {
     type = "value"
    },
    capturePhoto = {
-    args = "()",
-    description = "Opens a platform-specific interface to the device's camera. This function is asynchronous, i.e. it returns immediately so the calling code will continue to execute until the end of its scope; after that, the application will be suspended until the session is complete. By default, the image object is added to the top of the current stage (there is an option to save the image to a directory instead). A listener is required to handle the returned display object (image).",
+    args = "( { listener, [, destination] } )",
+    description = "Opens a platform-specific interface to the device's camera. This function is asynchronous, meaning that it returns immediately so the calling code will continue to execute until the end of its scope; after that, the application will be suspended until the session is complete. By default, the image object is added to the top of the current stage, although there is an option to save the image to a directory instead.",
     returns = "()",
     type = "function"
    },
    captureVideo = {
-    args = "()",
-    description = "Opens a platform-specific interface to the device's camera. This function is asynchronous, i.e. it returns immediately so the calling code will continue to execute until the end of its scope; after that, the application will be suspended until the session is complete. A listener is required to handle the returned display object (URL).  The returned URL can be used in native.newVideo().",
+    args = "( { listener [, preferredQuality] [, preferredMaxDuration] } )",
+    description = "Opens a platform-specific interface to the device's camera. This function is asynchronous, meaning that it returns immediately so the calling code will continue to execute until the end of its scope; after that, the application will be suspended until the session is complete. A listener is required to handle the captured object (URL) which can be used in native.newVideo().",
     returns = "()",
     type = "function"
    },
@@ -2784,7 +2828,7 @@ do return {
    pauseSound = {
     args = "()",
     description = "Pauses playback of the extended sound currently opened by the previous call to media.playSound() to resume playback of a paused sound.",
-    returns = "(TYPE)",
+    returns = "()",
     type = "function"
    },
    playEventSound = {
@@ -2795,13 +2839,13 @@ do return {
    },
    playSound = {
     args = "( soundfile [, baseDir] [, onComplete] )",
-    description = "Plays an extended sound (as opposed to an \"event sound\", 1-3 seconds duration), or resumes play of a paused extended sound. You can only have one such sound file open at a time.",
+    description = "Plays an extended sound (as opposed to an \"event sound\" which is typically 1-3 seconds in duration), or resumes play of a paused extended sound. You can only have one such sound file open at a time.",
     returns = "()",
     type = "function"
    },
    playVideo = {
     args = "( path [, baseSource ], showControls, listener )",
-    description = "Plays the video at the specified path (both local and remote) in a device-specific popup Video media player.",
+    description = "Plays the video at the specified path (both local and remote) in a device-specific popup media player.",
     returns = "()",
     type = "function"
    },
@@ -2812,26 +2856,25 @@ do return {
     type = "function"
    },
    selectPhoto = {
-    args = "()",
-    description = "Opens a platform-specific interface to the device's photo library. This function is asynchronous, i.e. it returns immediately so the calling code will continue to execute until the end of its scope; after that, the application will be suspended until the session is complete. By default, the image object is added to the top of the current stage (there is an option to save the image to a directory instead). A listener is required to handle the returned display object (image).",
+    args = "( { listener [, mediaSource] [, destination] [, origin] [, permittedArrowDirections] } )",
+    description = "Opens a platform-specific interface to the device's photo library. This function is asynchronous, meaning that it returns immediately so the calling code will continue to execute until the end of its scope; after that, the application will be suspended until the session is complete. By default, the image object is added to the top of the current stage, although there is an option to save the image to a directory instead.",
     returns = "()",
     type = "function"
    },
    selectVideo = {
-    args = "()",
-    description = "Opens a platform-specific interface to the device's photo library. This function is asynchronous, i.e. it returns immediately so the calling code will continue to execute until the end of its scope; after that, the application will be suspended until the session is complete. A listener is required to handle the returned.",
+    args = "( { listener [, mediaSource] [, origin] [, permittedArrowDirections] } )",
+    description = "Opens a platform-specific interface to the device's photo library. This function is asynchronous, meaning that it returns immediately so the calling code will continue to execute until the end of its scope; after that, the application will be suspended until the session is complete.",
     returns = "()",
     type = "function"
    },
    setSoundVolume = {
-    args = "( vol )",
+    args = "( volume )",
     description = "Adjusts the playback volume of an extended sound (media.playSound()). This setting can be adjusted at any time before or during the extended sound playback.",
-    returns = "(TYPE)",
+    returns = "()",
     type = "function"
    },
    show = {
-    args = "( mediaSource, listener )",
-    description = "**Note: As of 2013/10, this function is deprecated. Use media.selectPhoto() instead.**",
+    args = "()",
     returns = "()",
     type = "function"
    },
@@ -2842,26 +2885,26 @@ do return {
     type = "function"
    }
   },
-  description = "The media library provides access to the multimedia features of the device: audio, video, camera and photo library.",
+  description = "The media library provides access to the multimedia features of the device, including audio, video, camera, and the photo library.",
   type = "lib"
  },
  native = {
   childs = {
    canShowPopup = {
     args = "( name )",
-    description = "Returns whether or not the popup type can be shown.",
+    description = "Returns whether or not the popup type can be shown. This usually defines whether the popup will actually be displayed. However, in the case of `\"appStore\"`, a result of `true` does not guarantee that the popup will be displayed because, in those cases, the particular popup will depend on additional parameters.",
     returns = "(Boolean)",
     type = "function"
    },
    cancelAlert = {
     args = "( alert )",
-    description = "Dismisses an alert box programmatically. For example, you may wish to have a popup alert that automatically disappears after ten seconds even if the user doesn't click it. In that case, you could call this function at the end of a ten-second timer.",
+    description = "Dismisses an alert box programmatically. For example, you may wish to have a popup alert that automatically disappears after ten seconds even if the user doesn't click it. In that case, you could call this function at the end of a timer.",
     returns = "()",
     type = "function"
    },
    cancelWebPopup = {
     args = "()",
-    description = "Dismisses the currently displaying web pop-up. This function takes no arguments because only one web popup can be shown at once time (not to be confused with native web views, which can have multiple instances shown at once)",
+    description = "Dismisses the currently displaying web popup. This function takes no arguments because only one web popup can be shown at one time (not to be confused with native web views which can have multiple instances shown at once).",
     returns = "()",
     type = "function"
    },
@@ -2873,19 +2916,19 @@ do return {
    },
    getProperty = {
     args = "( key )",
-    description = "Gets the value of a platform-specific property. This is only works on the iOS platform at the moment.",
-    returns = "(Number)",
+    description = "Gets the value of a platform-specific property.",
+    returns = "()",
     type = "function"
    },
    getSync = {
-    args = "( filename, parms )",
-    description = "Get the iCloud automatic backup settings for files in the system.DocumentsDirectory on Mac and iOS systems.",
+    args = "( filename, params )",
+    description = "Gets the iCloud automatic backup settings for files in the `system.DocumentsDirectory` on OS X and iOS systems.",
     returns = "(Boolean)",
     type = "function"
    },
    newFont = {
     args = "( name [, size] )",
-    description = "Creates a font object that you can use to specify fonts in native text fields and text boxes. You can also pass it as a parameter to the display text objects in the display.newText() function.",
+    description = "Creates a font object that you can use to specify fonts in native text fields and text boxes.",
     returns = "(Userdata)",
     type = "function"
    },
@@ -2897,14 +2940,14 @@ do return {
     valuetype = "_Map"
    },
    newTextBox = {
-    args = "( centerX, centerY, width, height [, listener ] )",
+    args = "( centerX, centerY, width, height )",
     description = "Creates a scrollable, multi-line text box for displaying text-based content. Text boxes can also be used for text input (and multi-line text input) by setting the `isEditable` property to `true`.",
     returns = "(TextBox)",
     type = "function",
     valuetype = "_TextBox"
    },
    newTextField = {
-    args = "( centerX, centerY, width, height [, listener] )",
+    args = "( centerX, centerY, width, height )",
     description = "Creates a single-line text field for text input.",
     returns = "(TextField)",
     type = "function",
@@ -2912,21 +2955,21 @@ do return {
    },
    newVideo = {
     args = "( centerX, centerY, width, height )",
-    description = "Returns a video object that can be moved and rotated. You can also add a physics body to video objects. This API supports local videos (in one of the system directories) or from a remote location (server).",
+    description = "Returns a video object that can be moved and rotated. This API supports local videos (in one of the system directories) or from a remote location (server).",
     returns = "(Video)",
     type = "function",
     valuetype = "_Video"
    },
    newWebView = {
     args = "( centerX, centerY, width, height )",
-    description = "Loads a remote web page in a web view container. Native web views differ from web popups in that you can move them (via `x`/`y` properties), rotate them (via the `rotation` property), or assign physics bodies to them in the same manner you would any other display objects.",
+    description = "Loads a web page in a web view container. Native web views differ from web popups in that you can move them (via `x`/`y` properties) or rotate them (via the `rotation` property) in the same manner as other display objects.",
     returns = "(WebView)",
     type = "function",
     valuetype = "_WebView"
    },
    requestExit = {
     args = "()",
-    description = "Closes the application window on Android gracefully without terminating the process.",
+    description = "Closes the application window on Android or Windows Phone gracefully without terminating the process.",
     returns = "()",
     type = "function"
    },
@@ -2938,19 +2981,19 @@ do return {
    },
    setKeyboardFocus = {
     args = "( textField )",
-    description = "Sets keyboard focus on a native.newTextField() and shows (or hides) the keyboard. Pass `nil` to remove focus and hide the keyboard.",
+    description = "Sets keyboard focus on a native.newTextField() to the native object's listener function.",
     returns = "()",
     type = "function"
    },
    setProperty = {
     args = "( key, value )",
-    description = "Sets a platform specific property. This is only works on the iOS platform at the moment (not supported for Android development at this time).",
+    description = "Sets a platform-specific property.",
     returns = "()",
     type = "function"
    },
    setSync = {
     args = "( filename, params )",
-    description = "Sets the iCloud automatic backup flag for files in the `system.DocumentsDirectory` on Mac OS X and iOS systems.",
+    description = "Sets the iCloud automatic backup flag for files in the `system.DocumentsDirectory` on OS X and iOS systems.",
     returns = "(Boolean)",
     type = "function"
    },
@@ -2962,7 +3005,7 @@ do return {
    },
    showPopup = {
     args = "( name )",
-    description = "Displays the operating system's default popup window for a specified service.",
+    description = "Displays the operating system's default popup window for a specified service. Displaying this popup suspends the app on both iOS and Android.",
     returns = "(Boolean)",
     type = "function"
    },
@@ -2981,7 +3024,7 @@ do return {
     type = "value"
    }
   },
-  description = "The native library wraps platform-specific UI elements. These are rendered by the OS, not the Corona engine. ",
+  description = "The native library wraps platform-specific UI elements like input fields, maps, web views, and more. These are controlled/rendered by the OS, not the Corona engine.",
   type = "lib"
  },
  network = {
@@ -2998,30 +3041,29 @@ do return {
    },
    download = {
     args = "( url, method, listener [, params], filename [, baseDirectory] )",
-    description = "This API is a convenience method that is very similar to the asynchronous network.request(), putting the destination filename and baseDirectory parameters into params.response and specifying `\"download\"` progress notifications. ",
+    description = "This API is a convenience method that is very similar to the asynchronous network.request(), putting the destination `filename` and `baseDirectory` parameters into `params.response` and specifying `\"download\"` progress notifications. ",
     returns = "()",
     type = "function"
    },
    request = {
     args = "( url, method, listener [, params] )",
-    description = "Makes an asynchronous HTTP or HTTPS request to a URL.",
+    description = "Makes an asynchronous HTTP or HTTPS request to a URL. This function returns a handle that can be passed to network.cancel() in order to cancel the request.",
     returns = "(Object)",
     type = "function"
    },
    setStatusListener = {
     args = "( hostURL, listener )",
-    description = "Starts monitoring a host for its network reachability status.",
+    description = "Starts monitoring a host for its network reachability status. This API is designed around the idea that you are monitoring individual hosts and not the hardware directly. Potentially, some hosts might continue to be reachable while others are not due to internet conditions, firewall configurations, authentication rules, and whether you need full DNS routing.",
     returns = "()",
     type = "function"
    },
    upload = {
     args = "( url, method, listener [, params], filename [, baseDirectory] [, contentType] )",
-    description = "This API is a convenience method that is very similar to the asynchronous network.request(), putting the source filename and baseDirectory parameters into a params.body table, adding contentType as a params.headers request header value, and specifying `\"upload\"` progress notifications. ",
+    description = "This API is a convenience method that is very similar to the asynchronous network.request(), putting the source `filename` and `baseDirectory` parameters into a `params.body` table, adding `contentType` as a `params.headers` request header value, and specifying `\"upload\"` progress notifications. ",
     returns = "()",
     type = "function"
    }
   },
-  description = "",
   type = "lib"
  },
  os = {
@@ -3034,14 +3076,14 @@ do return {
    },
    date = {
     args = "( [format [, time] ] )",
-    description = "Returns a string or a table containing date and time, formatted according to the given string format.",
+    description = "Returns a string or a table containing date and time, formatted according to the given string format. When called without arguments, `os.date()` returns a reasonable date and time representation that depends on the host system and on the current locale (that is, `os.date()` is equivalent to `os.date(\"%c\")`).",
     returns = "(String)",
     type = "function",
     valuetype = "string"
    },
    difftime = {
     args = "( t1, t2 )",
-    description = "Returns the number of seconds from time t1 to time t2. In POSIX, Windows, and some other systems, this value is exactly t2-t1.",
+    description = "Returns the number of seconds from time `t1` to time `t2`. In POSIX, Windows, and some other systems, this value is exactly `t2 - t1`.",
     returns = "(Number)",
     type = "function"
    },
@@ -3071,7 +3113,7 @@ do return {
     type = "function"
    },
    time = {
-    args = "( [table] )",
+    args = "( table )",
     description = "Returns the current time in seconds from 1970 when called without arguments, or a time representing the date and time specified by the given table.",
     returns = "(Number)",
     type = "function"
@@ -3083,27 +3125,27 @@ do return {
  package = {
   childs = {
    loaded = {
-    description = "A table used by `require `to control which modules are already loaded. When you require a module modname and package.loadedmodname is not false, require simply returns the value stored there.",
+    description = "A table used by `require()` to control which modules are already loaded. When you require a module `modname` and `package.loadedmodname` is not `false`, `require()` simply returns the value stored there.",
     type = "value"
    },
    loaders = {
-    description = "A table used by `require` to control how to load modules.",
+    description = "A table used by `require()` to control how to load modules.",
     type = "value"
    },
    module = {
     args = "( name [, ...] )",
-    description = "*Deprecated*",
+    description = "Creates a module. If there is a table in `package.loadedname`, this table is the module. Otherwise creates a new table `t` and sets it as the value of the global name and the value of `package.loadedname`. This function also initializes `t._NAME` with the given name, `t._M` with the module (`t` itself), and `t._PACKAGE` with the package name (the full module name minus last component; see below). Finally, `module()` sets `t` as the new environment of the current function and the new value of `package.loadedname`, so that require returns `t`.",
     returns = "()",
     type = "function"
    },
    require = {
-    args = "( moduleName )",
+    args = "( \"moduleName\" )",
     description = "Loads the given module. ",
     returns = "(Library)",
     type = "function"
    },
    seeall = {
-    description = "* Deprecated *",
+    description = "Sets a metatable for the specified module with its `__index` field referring to the global environment, so that this module inherits values from the global environment. To be used as an option to function module.",
     type = "value"
    }
   },
@@ -3113,10 +3155,14 @@ do return {
  physics = {
   childs = {
    addBody = {
-    args = "()",
-    description = "Allows you to turn almost any Corona display object into a simulated physical object with one line of code, including the assignment of physical properties.",
+    args = "( object, [bodyType,] [params] )",
+    description = "This function turns almost any Corona display object into a simulated physical object with specific physical properties. It accepts the display object, an optional body type (string), and an optional `params` table containing <nobr>key-value</nobr> pairs that specify the properties for the physics body. Within this `params` table, the following apply:",
     returns = "(Boolean)",
     type = "function"
+   },
+   engineVersion = {
+    description = "A string value representing the Box2D and LiquidFun engine version.",
+    type = "value"
    },
    fromMKS = {
     args = "( unitName, value )",
@@ -3148,12 +3194,6 @@ do return {
     returns = "(Number)",
     type = "function"
    },
-   getParticleRadius = {
-    args = "()",
-    description = "Returns the radius of particles in content units.",
-    returns = "(Numbers)",
-    type = "function"
-   },
    getReportCollisionsInContentCoordinates = {
     args = "()",
     description = "This function is used to determine if the content origin is the collision point in the collision physics events.",
@@ -3162,10 +3202,17 @@ do return {
    },
    newJoint = {
     args = "( jointType, ... )",
-    description = "Joints are used to assemble more complex game objects from multiple rigid bodes. To construct a joint, first construct the bodies that will be joined, and then call this method with the desired joint constructor type.",
+    description = "Joints can be used to assemble complex physical objects from multiple rigid bodies. For example, joints can be used to join the limbs of a ragdoll figure, attach the wheels of a vehicle to its body, create a moving elevator platform, and more.",
     returns = "(Joint)",
     type = "function",
     valuetype = "_Joint"
+   },
+   newParticleSystem = {
+    args = "( params )",
+    description = "A ParticleSystem(http://google.github.io/liquidfun/) framework.",
+    returns = "(ParticleSystem)",
+    type = "function",
+    valuetype = "_ParticleSystem"
    },
    pause = {
     args = "()",
@@ -3174,26 +3221,26 @@ do return {
     type = "function"
    },
    queryRegion = {
-    args = "( box_upper_left_x, box_upper_left_y, box_lower_right_x, box_lower_right_y )",
-    description = "This function is used to find the objects that intersect with an axis-aligned (non-rotated) box.",
+    args = "( upperLeftX, upperLeftY, lowerRightX, lowerRightY )",
+    description = "This function is used to find the objects that intersect with an axis-aligned (non-rotated) box. This box is defined by an <nobr>upper-left</nobr> coordinate and a <nobr>lower-right</nobr> coordinate.",
     returns = "()",
     type = "function"
    },
    rayCast = {
-    args = "( from_x, from_y, to_x, to_y, \"closest\" )",
-    description = "This function is used to find the objects that collide with a line, and the",
+    args = "( from_x, from_y, to_x, to_y, behavior )",
+    description = "This function is used to find the objects that collide with a line, and the collision points along that line.",
     returns = "()",
     type = "function"
    },
    reflectRay = {
-    args = "( from_x, from_y, hits[1] )",
+    args = "( from_x, from_y, hit )",
     description = "This function is used to reflect a vector as returned by physics.rayCast().",
     returns = "()",
     type = "function"
    },
    removeBody = {
     args = "( object )",
-    description = "Removes a physics body from a display object without destroying the entire object. This removes the body created with physics.addBody(). This API cannot be used in a collision event listener.",
+    description = "Removes a physics body from a display object without destroying the entire object. This removes the body created with physics.addBody().",
     returns = "(Boolean)",
     type = "function"
    },
@@ -3230,12 +3277,6 @@ do return {
    setMKS = {
     args = "( key, value )",
     description = "Sets the MKS (meters, kilograms, and seconds) value of the physics simulation for specific keys. This is strictly for advanced purposes — the average developer and project will not require this function.",
-    returns = "()",
-    type = "function"
-   },
-   setParticleRadius = {
-    args = "( radius_in_content_units )",
-    description = "Sets the the radius of particles in content units.",
     returns = "()",
     type = "function"
    },
@@ -3293,32 +3334,24 @@ do return {
  },
  socket = {
   childs = {},
-  description = "Corona currently includes the version 2.02 of the LuaSocket libraries. These Lua modules implement common network protocols such as SMTP (sending e-mails), HTTP (WWW access) and FTP (uploading and downloading files). Also included are features to support MIME (common encodings), URL manipulation and LTN12 (transferring and filtering data).",
+  description = "Corona currently includes the version 2.02 of the LuaSocket libraries. These Lua modules implement common network protocols such as SMTP, HTTP, and FTP. Also included are features to support MIME (common encodings), URL manipulation, and LTN12 for transferring and filtering data.",
   type = "lib"
  },
  sprite = {
-  childs = {
-   newSpriteSheet = {
-    args = "( spriteSheetFile, [baseDir,]  frameWidth, frameHeight )",
-    description = "Creates a new sprite sheet object from an sprite sheet image file whose animation frames are all the same height and width. To use a sprite sheet with non-uniformly spaced animation frames, use sprite.newSpriteSheetFromData()sprite.newSpriteSheetFromData.",
-    returns = "(SpriteSheet)",
-    type = "function",
-    valuetype = "_SpriteSheet"
-   }
-  },
+  childs = {},
   description = "The old sprite library is only available in legacy versions of Corona. It has been removed from production builds of Corona.",
   type = "lib"
  },
  sqlite3 = {
   childs = {},
-  description = "Corona includes support for SQLite databases on all platforms. This is based on the built-in sqlite support on the iPhone, and a compiled version of SQLite on Android (this increases the size of Android binaries by 300K).",
+  description = "Corona includes support for SQLite databases on all platforms. The documentation for LuaSQLite can be viewed here(http://luasqlite.luaforge.net/lsqlite3.html).",
   type = "lib"
  },
  store = {
   childs = {
    availableStores = {
     args = "()",
-    description = "Returns an array of store names that Corona supports in-app purchases for on the current device.  Only `google` and `apple` are supported.",
+    description = "Returns an array of store names for which Corona supports <nobr>in-app</nobr> purchases on the current device. This can also be used in conjunction with <nobr>`native.showPopup( \"appStore\" )`</nobr> \\(reference\\).",
     returns = "(Array)",
     type = "function"
    },
@@ -3342,7 +3375,7 @@ do return {
    },
    init = {
     args = "( [storeName,] listener )",
-    description = "Activates in-app purchases (or in-app billing as it is known on Android platforms).",
+    description = "Activates in-app purchases <nobr>(in-app billing</nobr> as it is known on Android platforms). Allows you to receive callbacks with the listener function that you specify.",
     returns = "()",
     type = "function"
    },
@@ -3354,12 +3387,12 @@ do return {
    },
    loadProducts = {
     args = "( productIdentifiers, listener )",
-    description = "iOS supports the loading of product information that you've entered into iTunes Connect(https://itunesconnect.apple.com/). Corona provides the `store.canLoadProducts` function which returns `true` if the initialized store supports the loading of products. Following this check, the `store.loadProducts()` function will retrieve information about items available for sale. This includes the price of each item, a localized name, and a localized description.",
+    description = "iOS and the Google Play Marketplace support loading of product information that you've entered into iTunes Connect(https://itunesconnect.apple.com/) or into the developer's console. Corona provides the `store.canLoadProducts` function which returns `true` if the initialized store supports the loading of products. Following this check, the `store.loadProducts()` function will retrieve information about items available for sale. This includes the title, description, localized price, product identifier, and type.",
     returns = "()",
     type = "function"
    },
    purchase = {
-    args = "( productList )",
+    args = "()",
     description = "Initiates a purchase transaction on a provided list of products.",
     returns = "()",
     type = "function"
@@ -3372,121 +3405,13 @@ do return {
    },
    target = {
     args = "()",
-    description = "Returns the app store the app was built for.  It will return one of the following strings: `\"amazon\"`, `\"apple\"`, `\"gameStick\"`, `\"google\"`, `\"nook\"`, `\"ouya\"`, `\"samsung\"`, or `\"none\"`.",
+    description = "Returns the store that the app was built for.  It will return one of the following strings:",
     returns = "(String)",
     type = "function",
     valuetype = "string"
    }
   },
-  description = "This feature allows you to support In-App Purchases. Currently, only the Apple iTunes Store and the Google Play Marketplace are supported. In the future, other storefronts may be added.",
-  type = "lib"
- },
- storyboard = {
-  childs = {
-   disableAutoPurge = {
-    description = "By default, storyboard will automatically purge (e.g. remove the scene's display group, while leaving the actual module in memory) the least recently used scene whenever the OS receives a low memory warning.",
-    type = "value"
-   },
-   getCurrentSceneName = {
-    args = "()",
-    description = "Returns the current scene name as a string, which can be used with storyboard.gotoScene() functions.",
-    returns = "(String)",
-    type = "function",
-    valuetype = "string"
-   },
-   getPrevious = {
-    args = "()",
-    description = "Gets the name of the previously active scene and returns it as a string.",
-    returns = "(String)",
-    type = "function",
-    valuetype = "string"
-   },
-   getScene = {
-    args = "( sceneName )",
-    description = "Returns the specified scene object (as returned from storyboard.newScene()). If the scene object does not exist, the function will return `nil`. This is useful for getting a reference to a specific scene object. For instance, if you have a function attached to a specific scene that a separate scene needs access to.",
-    returns = "(Table)",
-    type = "function"
-   },
-   gotoScene = {
-    args = "( sceneName [, options] )",
-    description = "Used to transition to a specific scene. Scenes must be explicitly purged/removed by the user. However, if the storyboard.disableAutoPurge flag is not set to `true`, the least recently used scene will be automatically purged whenever the OS issues a low memory warning.",
-    returns = "()",
-    type = "function"
-   },
-   hideOverlay = {
-    args = "( [ purgeOnly, effect, effectTime ] )",
-    description = "This function will hide/remove the current overlay scene (if one is currently being displayed). Overlay (e.g. \"pop up\") scenes can be shown using storyboard.showOverlay().",
-    returns = "()",
-    type = "function"
-   },
-   isDebug = {
-    description = "Toggles \"Storyboard Debug Mode\", which will print useful debugging information to the Corona Terminal in certain situations if set to true. This should be set to `false` before production builds (default).",
-    type = "value"
-   },
-   loadScene = {
-    args = "( sceneName [, doNotLoadView, params ] )",
-    description = "Loads specified scene, behind the currently active scene and hidden, without initiating a scene transition. This function is similar to storyboard.gotoScene(), but does not change the currently active scene. The only event that will be dispatched on the scene will be a \"createScene\" event (if the scene's view does not already exist).",
-    returns = "()",
-    type = "function"
-   },
-   newScene = {
-    args = "( [ sceneName ] )",
-    description = "Used to create new scene objects to be used with the Storyboard API (see that page for a scene tempalate module).",
-    returns = "(Table)",
-    type = "function"
-   },
-   printMemUsage = {
-    args = "()",
-    description = "Will print Lua memory and texture memory usage information in the terminal, but only if storyboard.isDebug is set to `true`.",
-    returns = "()",
-    type = "function"
-   },
-   purgeAll = {
-    args = "()",
-    description = "Will purge all scenes (except for the one that is currently active). For each scene that is purged, a destroyScene event will be dispatched prior to being purged.",
-    returns = "()",
-    type = "function"
-   },
-   purgeOnSceneChange = {
-    description = "If set to `true`, whenever a scene change is completed, all scenes (except for the newly active scene) will be automatically purged. The default value for this property is `false`.",
-    type = "value"
-   },
-   purgeScene = {
-    args = "( sceneName )",
-    description = "Unloads the specified scene's `scene.view` property, which is a group that contains all of the scene's display objects. It takes one (required) argument, `sceneName`, which is the name of the scene (usually the name of the module, without the \".lua\" extension) you are attempting to unload. If the scene has its own module, this function preserves the scene's module in the global `package.loaded` table.",
-    returns = "()",
-    type = "function"
-   },
-   reloadScene = {
-    args = "()",
-    description = "Reloads the currently loaded scene. This does not support scene transition effects. When a scene is reloaded, it behaves as if storyboard.gotoScene() was called on the currently active scene.",
-    returns = "()",
-    type = "function"
-   },
-   removeAll = {
-    args = "()",
-    description = "Will purge and remove all scenes (except for the currently active scene). A destroyScene event will be dispatched to all scenes before they are purged.",
-    returns = "()",
-    type = "function"
-   },
-   removeScene = {
-    args = "( sceneName )",
-    description = "Purges the specified scene, and then completely unloads the scene's associated module (if there is one).",
-    returns = "()",
-    type = "function"
-   },
-   showOverlay = {
-    args = "( sceneName [, options ] )",
-    description = "Load a scene above the currently active scene, leaving the currently active scene in-tact. This is commonly referred to as a \"pop up\" scene. This function supports all scene transition effects that are available for use with storyboard.gotoScene().",
-    returns = "()",
-    type = "function"
-   },
-   stage = {
-    description = "This is a reference to the top-level storyboard display group that all scene views are inserted into. It can be thought of as the storyboard \"scene layer\". This is useful to have, for instance, if you need objects to be placed above or below ALL storyboard scenes (even during transition effects).",
-    type = "value"
-   }
-  },
-  description = "Storyboard is the built-in solution to scene (\"screens\") creation and management in Corona. This library provides developers an easy way to create and transition between individual scenes.",
+  description = "This feature allows you to support in-app purchases. Currently, only the Apple iTunes Store and the Google Play Marketplace are supported. In the future, other storefronts may be added.",
   type = "lib"
  },
  string = {
@@ -3532,7 +3457,7 @@ do return {
    },
    len = {
     args = "( s )",
-    description = "Returns the length of a string (e.g. amount of characters).",
+    description = "Returns the length of a string (amount of characters).",
     returns = "(Number)",
     type = "function"
    },
@@ -3566,7 +3491,7 @@ do return {
    },
    sub = {
     args = "( s, i [, j] )",
-    description = "Returns a substring (e.g. a specified portion of an existing string).",
+    description = "Returns a substring (a specified portion of an existing string).",
     returns = "(String)",
     type = "function",
     valuetype = "string"
@@ -3608,7 +3533,6 @@ do return {
    },
    cancelNotification = {
     args = "()",
-    description = "Removes the specified notification from the scheduler, status bar, or notification center.",
     returns = "()",
     type = "function"
    },
@@ -3658,8 +3582,8 @@ do return {
    },
    openURL = {
     args = "( url )",
-    description = "Open a web page in the browser, create an email, or call a phone number.",
-    returns = "()",
+    description = "Open a web page in the browser, create an email, or dial a phone number.",
+    returns = "(Boolean)",
     type = "function"
    },
    orientation = {
@@ -3677,9 +3601,8 @@ do return {
     valuetype = "string"
    },
    scheduleNotification = {
-    args = "( secondsFromNow [, options] )",
-    description = "Schedule a local notification event to be delivered in the future. Returns a reference ID that can be used to cancel the notification.",
-    returns = "()",
+    args = "()",
+    returns = "(Userdata)",
     type = "function"
    },
    setAccelerometerInterval = {
@@ -3720,7 +3643,7 @@ do return {
    },
    vibrate = {
     args = "()",
-    description = "Vibrates the phone. On the Corona simulator this will sound a system beep (Mac OS X only).",
+    description = "Vibrates the phone. On the Corona simulator this will sound a system beep (OS X only).",
     returns = "()",
     type = "function"
    }
@@ -3770,7 +3693,7 @@ do return {
    sort = {
     args = "( t )",
     description = "Sorts table elements in a given order, in-place, from `table1` to `tablen`, where `n` is the length of the table. It receives the table (array) to be sorted plus an optional `compare` function. This `compare` function receives two arguments and must return `true` if the first argument should come first in the sorted array. If `compare` is __not__ given, then the standard Lua operator `<` is used instead.",
-    returns = "(Table)",
+    returns = "()",
     type = "function"
    }
   },
@@ -3787,7 +3710,7 @@ do return {
    },
    pause = {
     args = "( timerId )",
-    description = "Pauses a timer started with timer.performWithDelay() that represents the amount of time remaining in the timer.",
+    description = "Pauses a timer started with timer.performWithDelay() that represents the amount of time remaining, in milliseconds.",
     returns = "(Number)",
     type = "function"
    },
@@ -3907,7 +3830,7 @@ do return {
    },
    newPickerWheel = {
     args = "( options )",
-    description = "Creates a PickerWheel object.",
+    description = "Creates a Picker Wheel object.",
     returns = "(PickerWidget)",
     type = "function",
     valuetype = "_PickerWidget"
@@ -4047,6 +3970,7 @@ end
 
 local function stripTags(line)
     return line:gsub('%[api.+]', '')
+      :gsub('(%[.-%])%[.-%]','%1')
       :gsub('[%]%[]', '')
       :gsub('&nbsp;', ' ')
       :gsub('&mdash;', '-')
