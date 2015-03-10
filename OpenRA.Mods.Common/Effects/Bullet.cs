@@ -28,10 +28,10 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WRange Inaccuracy = WRange.Zero;
 		public readonly string Image = null;
-		[Desc("Check for whether an actor with BlocksBullets: trait blocks fire")]
-		public readonly bool High = false;
 		public readonly string Palette = "effect";
 		public readonly bool Shadow = false;
+		[Desc("Is this blocked by actors with BlocksProjectiles trait.")]
+		public readonly bool Blockable = true;
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
 		public readonly WAngle[] Angle = { WAngle.Zero };
 		public readonly int TrailInterval = 2;
@@ -136,8 +136,8 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 				trail.Update(pos);
 
-			if (ticks++ >= length || (!info.High && world.ActorMap
-				.GetUnitsAt(world.Map.CellContaining(pos)).Any(a => a.HasTrait<IBlocksBullets>())))
+			if (ticks++ >= length || (info.Blockable && world.ActorMap
+				.GetUnitsAt(world.Map.CellContaining(pos)).Any(a => a.HasTrait<IBlocksProjectiles>())))
 				Explode(world);
 		}
 

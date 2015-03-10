@@ -55,7 +55,7 @@ Grenade:
 	Range: 4c512
 	Projectile: Bullet
 		Speed: 85
-		High: yes
+		Blockable: false
 		Shadow: true
 		Angle: 62
 		Inaccuracy: 554
@@ -91,7 +91,7 @@ Bazooka:
 	Projectile: Missile
 		Speed: 213
 		Arm: 3
-		High: true
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -134,7 +134,7 @@ MultiCluster:
 	Projectile: Missile
 		Speed: 170
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -249,7 +249,7 @@ CyCannon:
 	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 192
-		High: yes
+		Blockable: false
 		Shadow: true
 		Image: TORPEDO
 	Warhead@1Dam: SpreadDamage
@@ -406,7 +406,7 @@ HoverMissile:
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -480,7 +480,7 @@ MammothTusk:
 	Burst: 2
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -640,7 +640,7 @@ BikeMissile:
 	ValidTargets: Ground
 	Projectile: Missile
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -745,7 +745,7 @@ Dragon:
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -818,7 +818,7 @@ Dragon:
 		Image: 120mm
 		Angle: 165
 		Shadow: true
-		High: yes
+		Blockable: false
 		Palette: ra
 	MinRange: 5c0
 	Warhead@1Dam: SpreadDamage
@@ -852,7 +852,7 @@ Hellfire:
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -924,7 +924,7 @@ Proton:
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: TORPEDO
@@ -1066,7 +1066,7 @@ RPGTower:
 	Report: GLNCH4.AUD
 	Projectile: Bullet
 		Speed: 384
-		High: yes
+		Blockable: false
 		Shadow: true
 		Angle: 62
 		Image: canister
@@ -1101,7 +1101,7 @@ SAMTower:
 	Projectile: Missile
 		Speed: 298
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -1149,7 +1149,7 @@ EMPulseCannon:
 	Report: PLSECAN2.AUD
 	Projectile: Bullet
 		Speed: 425
-		High: yes
+		Blockable: false
 		Shadow: true
 		Angle: 62
 		Image: pulsball

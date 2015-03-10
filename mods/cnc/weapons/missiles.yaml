@@ -6,7 +6,7 @@ Rockets:
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 15
@@ -40,7 +40,7 @@ BikeRockets:
 	BurstDelay: 10
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 10
@@ -74,7 +74,7 @@ OrcaAGMissiles:
 	ValidTargets: Ground
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 20
@@ -107,7 +107,7 @@ OrcaAAMissiles:
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 20
@@ -138,7 +138,7 @@ MammothMissiles:
 	BurstDelay: 15
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 20
@@ -177,7 +177,7 @@ MammothMissiles:
 	ValidTargets: Ground
 	Projectile: Bullet
 		Arm: 5
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 853
 		Angle: 62
@@ -211,7 +211,7 @@ MammothMissiles:
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		Blockable: false
 		Inaccuracy: 213
 		Image: DRAGON
 		ROT: 10
@@ -243,7 +243,7 @@ BoatMissile:
 	Report: ROCKET2.AUD
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		Blockable: false
 		Inaccuracy: 213
 		Image: DRAGON
 		ROT: 10
@@ -278,7 +278,7 @@ TowerMissle:
 	ValidTargets: Ground
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 20
@@ -309,7 +309,7 @@ SAMMissile:
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		Blockable: false
 		Image: MISSILE
 		ROT: 20
 		Speed: 426
@@ -338,7 +338,7 @@ HonestJohn:
 	Report: ROCKET1.AUD
 	Projectile: Bullet
 		Arm: 10
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 213
 		Image: patriot
@@ -368,7 +368,7 @@ Patriot:
 	Report: ROCKET2.AUD
 	ValidTargets: Air
 	Projectile: Missile
-		High: yes
+		Blockable: false
 		Image: patriot
 		Trail: smokey
 		ContrailLength: 8

@@ -9,7 +9,7 @@ Maverick:
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Inaccuracy: 512
 		Image: DRAGON
@@ -45,7 +45,7 @@ Dragon:
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
-		High: true
+		Blockable: false
 		Trail: smokey
 		ContrailLength: 10
 		Inaccuracy: 128
@@ -83,7 +83,7 @@ HellfireAG:
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
@@ -120,7 +120,7 @@ HellfireAA:
 	Projectile: Missile
 		Speed: 384
 		Arm: 2
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
@@ -156,7 +156,7 @@ MammothTusk:
 	Projectile: Missile
 		Speed: 341
 		Arm: 2
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
@@ -194,7 +194,7 @@ Nike:
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 3
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Image: MISSILE
 		ROT: 25
@@ -224,7 +224,7 @@ RedEye:
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 3
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Image: MISSILE
 		ROT: 20
@@ -253,7 +253,7 @@ SubMissile:
 	Report: MISSILE6.AUD
 	Projectile: Bullet
 		Speed: 102
-		High: true
+		Blockable: false
 		Angle: 165
 		Inaccuracy: 2c938
 		Image: MISSILE
@@ -288,7 +288,7 @@ Stinger:
 	ValidTargets: Air, Ground, Water
 	Projectile: Missile
 		Arm: 3
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Image: DRAGON
 		ROT: 20
@@ -368,7 +368,7 @@ SCUD:
 	Report: MISSILE1.AUD
 	Projectile: Bullet
 		Speed: 170
-		High: true
+		Blockable: false
 		Shadow: false
 		Trail: smokey
 		TrailDelay: 5
@@ -404,7 +404,7 @@ APTusk:
 	Projectile: Missile
 		Speed: 298
 		Arm: 2
-		High: true
+		Blockable: false
 		Trail: smokey
 		ContrailLength: 10
 		Inaccuracy: 128
