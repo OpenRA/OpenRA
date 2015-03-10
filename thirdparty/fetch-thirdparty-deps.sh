@@ -65,3 +65,10 @@ if [ ! -f Moq.dll ]; then
 	cp ./Moq.4.2.1502.0911/lib/net40/Moq.dll .
 	rm -rf Moq.4.2.1502.0911
 fi
+
+if [ ! -f FuzzyLogicLibrary.dll ]; then
+	echo "Fetching FuzzyLogicLibrary from NuGet."
+	nuget install FuzzyLogicLibrary -Version 1.2.0
+	cp ./FuzzyLogicLibrary.1.2.0/bin/Release/FuzzyLogicLibrary.dll .
+	rm -rf FuzzyLogicLibrary.1.2.0
+fi

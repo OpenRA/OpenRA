@@ -121,3 +121,11 @@ if (!(Test-Path "Moq.dll"))
 	cp Moq.4.2.1502.0911/lib/net40/Moq.dll .
 	rmdir Moq.4.2.1502.0911 -Recurse
 }
+
+if (!(Test-Path "FuzzyLogicLibrary.dll"))
+{
+	echo "Fetching FuzzyLogicLibrary from NuGet."
+	./nuget.exe install FuzzyLogicLibrary -Version 1.2.0
+	cp FuzzyLogicLibrary.1.2.0/bin/Release/FuzzyLogicLibrary.dll .
+	rmdir FuzzyLogicLibrary.1.2.0 -Recurse
+}

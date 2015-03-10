@@ -43,6 +43,7 @@ thirdparty/nuget.exe
 thirdparty/windows/lua51.dll
 thirdparty/windows/zlib1.dll
 thirdparty/windows/soft_oal.dll
+thirdparty/FuzzyLogicLibrary.dll
 
 # backup files by various editors
 *~
