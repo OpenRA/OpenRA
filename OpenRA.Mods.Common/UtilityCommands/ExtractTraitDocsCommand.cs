@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (reqCount > 0)
 				{
 					if (t.HasAttribute<DescAttribute>())
-						doc.AppendLine("\n");
+						doc.AppendLine();
 
 					doc.Append("Requires trait{0}: ".F(reqCount > 1 ? "s" : ""));
 
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						var n = require.Name;
 						var name = n.EndsWith("Info") ? n.Remove(n.Length - 4, 4) : n;
-						doc.Append("`{0}`{1}".F(name, i + 1 == reqCount ? ".\n" : ", "));
+						doc.Append("[`{0}`](#{1}){2}".F(name, name.ToLowerInvariant(), i + 1 == reqCount ? ".\n" : ", "));
 						i++;
 					}
 				}
