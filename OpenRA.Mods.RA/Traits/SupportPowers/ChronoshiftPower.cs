@@ -19,10 +19,12 @@ namespace OpenRA.Mods.RA.Traits
 {
 	class ChronoshiftPowerInfo : SupportPowerInfo
 	{
-		[Desc("Cells")]
+		[Desc("Target actor selection radius in cells.")]
 		public readonly int Range = 1;
-		[Desc("Seconds")]
+
+		[Desc("Seconds until returning after teleportation.")]
 		public readonly int Duration = 30;
+
 		public readonly bool KillCargo = true;
 
 		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.Self, this); }
