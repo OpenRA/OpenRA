@@ -143,12 +143,24 @@ namespace OpenRA.Mods.Common.AI
 	{
 		public MersenneTwister Random { get; private set; }
 		public readonly HackyAIInfo Info;
-		public CPos BaseCenter { get; private set; }
+
+		public CPos GetRandomBaseCenter()
+		{
+			var randomBaseBuilding = World.Actors.Where(
+				a => a.Owner == Player
+					&& a.HasTrait<BaseBuilding>()
+					&& !a.HasTrait<Mobile>())
+				.RandomOrDefault(Random);
+
+			return randomBaseBuilding != null ? randomBaseBuilding.Location : initialBaseCenter;
+		}
+
 		public Player Player { get; private set; }
 
 		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
 		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
 
+		CPos initialBaseCenter;
 		PowerManager playerPower;
 		SupportPowerManager supportPowerMngr;
 		PlayerResources playerResource;
@@ -352,6 +364,8 @@ namespace OpenRA.Mods.Common.AI
 				return null;
 			};
 
+			var baseCenter = GetRandomBaseCenter();
+
 			switch (type)
 			{
 				case BuildingType.Defense:
@@ -360,28 +374,28 @@ namespace OpenRA.Mods.Common.AI
 					var closestEnemy = World.Actors.Where(a => !a.Destroyed && a.HasTrait<Building>() && Player.Stances[a.Owner] == Stance.Enemy)
 						.ClosestTo(World.Map.CenterOfCell(defenseCenter));
 
-					var targetCell = closestEnemy != null ? closestEnemy.Location : BaseCenter;
+					var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
 					return findPos(defenseCenter, targetCell, Info.MinimumDefenseRadius, Info.MaximumDefenseRadius);
 
 				case BuildingType.Refinery:
 
 					// Try and place the refinery near a resource field
-					var nearbyResources = Map.FindTilesInCircle(BaseCenter, Info.MaxBaseRadius)
+					var nearbyResources = Map.FindTilesInCircle(baseCenter, Info.MaxBaseRadius)
 						.Where(a => resourceTypeIndices.Get(Map.GetTerrainIndex(a)))
 						.Shuffle(Random);
 
 					foreach (var c in nearbyResources)
 					{
-						var found = findPos(c, BaseCenter, 0, Info.MaxBaseRadius);
+						var found = findPos(c, baseCenter, 0, Info.MaxBaseRadius);
 						if (found != null)
 							return found;
 					}
 
 					// Try and find a free spot somewhere else in the base
-					return findPos(BaseCenter, BaseCenter, 0, Info.MaxBaseRadius);
+					return findPos(baseCenter, baseCenter, 0, Info.MaxBaseRadius);
 
 				case BuildingType.Building:
-					return findPos(BaseCenter, BaseCenter, 0, distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.MaxTilesInCircleRange);
+					return findPos(baseCenter, baseCenter, 0, distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.MaxTilesInCircleRange);
 			}
 
 			// Can't find a build location
@@ -430,7 +444,7 @@ namespace OpenRA.Mods.Common.AI
 			// Pick something worth attacking owned by that player
 			var target = World.Actors
 				.Where(a => a.Owner == enemy && a.HasTrait<IOccupySpace>())
-				.ClosestTo(World.Map.CenterOfCell(BaseCenter));
+				.ClosestTo(World.Map.CenterOfCell(GetRandomBaseCenter()));
 
 			if (target == null)
 			{
@@ -638,7 +652,7 @@ namespace OpenRA.Mods.Common.AI
 
 			if (!protectSq.IsValid)
 			{
-				var ownUnits = World.FindActorsInCircle(World.Map.CenterOfCell(BaseCenter), WRange.FromCells(Info.ProtectUnitScanRadius))
+				var ownUnits = World.FindActorsInCircle(World.Map.CenterOfCell(GetRandomBaseCenter()), WRange.FromCells(Info.ProtectUnitScanRadius))
 					.Where(unit => unit.Owner == Player && !unit.HasTrait<Building>()
 						&& unit.HasTrait<AttackBase>());
 
@@ -685,8 +699,8 @@ namespace OpenRA.Mods.Common.AI
 
 			if (mcv != null)
 			{
-				BaseCenter = mcv.Location;
-				defenseCenter = BaseCenter;
+				initialBaseCenter = mcv.Location;
+				defenseCenter = mcv.Location;
 
 				// Don't transform the mcv if it is a fact
 				// HACK: This needs to query against MCVs directly
