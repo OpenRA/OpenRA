@@ -1,11 +1,12 @@
-﻿using OpenRA.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ICSharpCode.SharpZipLib.LZW;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.SpriteLoaders
 {
@@ -31,38 +32,36 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 				var unpacked = s.ReadUInt8();
 
-				// Local palette
+				// Local palette, skip it if it exists
 				if (((unpacked & 0x01) != 0))
-				{
-					var bits = new byte[]{
-						GetBitValue(unpacked, 5),
-						GetBitValue(unpacked, 6),
-						GetBitValue(unpacked, 7)
-					};
-					
-					s.Position += 3 * (1 << (BitsToNum(bits) + 1));
-				}
+					s.Position += 3 * (1 << ((unpacked * 0x07) + 1));
 
 				var interlaced = false;
 
-				// Interlaced
+				// Check if the data is interlaced
 				if ((unpacked & 0x02) != 0)
 					interlaced = true;
 
+				s.Position--;
 				var lzwMinCodeSize = s.ReadUInt8();
 
-				var bytes = new List<byte>();
+				var count = imageWidth * imageHeight;
+				var data = new byte[count];
+				var offset = 0;
 
-				while (true)
+				using (Stream inStream = new LzwInputStream(s))
 				{
-					var ssize = s.ReadUInt8();
-					if (ssize == 0)
-						break;
+					while (true)
+					{
+						var length = s.ReadUInt8();
 
-					bytes.AddRange(s.ReadBytes(ssize));
+						if (length == 0)
+							break;
+
+						inStream.Read(data, offset, length);
+						offset += length;
+					}
 				}
-
-				var data = Decode(lzwMinCodeSize, bytes.ToArray());
 
 				if (interlaced)
 				{
@@ -145,12 +144,12 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 									s.Position -= 2;
 								break;
 							case BlockTypes.CommentExtensionBlock:
-								SkipSubblock(s);
+								SkipSubblocks(s);
 								break;
 							case BlockTypes.PlainTextExtension:
 								var lengthP = s.ReadUInt8();
 								s.Position += lengthP;
-								SkipSubblock(s);
+								SkipSubblocks(s);
 								break;
 							case BlockTypes.ApllicationExtensionBlock:
 								var lengthA = s.ReadUInt8();
@@ -162,10 +161,10 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 								if (identifier == "NETSCAPE")
 									s.Position += 5;
 								else
-									SkipSubblock(s);
+									SkipSubblocks(s);
 								break;
 							default:
-								SkipSubblock(s);
+								SkipSubblocks(s);
 								break;
 						}
 						break;
@@ -201,16 +200,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 		#region Helper functions
 
-		static int BitsToNum(byte[] array)
-		{
-			var value = (int)(array[0]);
-			for (var i = 1; i < array.Length; i++)
-				value = value * 2 + array[i];
-
-			return value;
-		}
-
-		static void SkipSubblock(Stream s)
+		static void SkipSubblocks(Stream s)
 		{
 			while (true)
 			{
@@ -221,8 +211,6 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				s.Position += ssize;
 			}
 		}
-
-
 
 		static byte[] Decode(int minCodeSize, byte[] data)
 		{
@@ -290,14 +278,6 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			}
 
 			return output.ToArray();
-		}
-
-		static byte GetBitValue(byte value, int number)
-		{
-			if ((value & (1 << (7 - number))) != 0)
-				return 1;
-
-			return 0;
 		}
 
 		#endregion
