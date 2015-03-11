@@ -577,10 +577,11 @@ namespace OpenRA.Editor
 
 		void AboutToolStripMenuItemClick(object sender, EventArgs e)
 		{
-			MessageBox.Show("OpenRA and OpenRA Editor are Free/Libre Open Source Software released under the GNU General Public License version 3. See AUTHORS and COPYING for details.",
-							"About",
-							MessageBoxButtons.OK,
-							MessageBoxIcon.Asterisk);
+			MessageBox.Show(
+				"OpenRA and OpenRA Editor are Free/Libre Open Source Software released under the GNU General Public License version 3. See AUTHORS and COPYING for details.",
+				"About",
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Asterisk);
 		}
 
 		void HelpToolStripButton_Click(object sender, EventArgs e)

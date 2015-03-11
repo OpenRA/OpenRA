@@ -46,7 +46,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			tooltipContainer.BeforeRender = () =>
 			{
 				var latencyPrefixSize = latencyPrefix.Bounds.X + latencyPrefixFont.Measure(latencyPrefix.GetText() + " ").X;
-				var width = Math.Max(locationFont.Measure(location.GetText()).X, Math.Max(adminFont.Measure(admin.GetText()).X, Math.Max(addressFont.Measure(ip.GetText()).X, latencyPrefixSize + latencyFont.Measure(latency.GetText()).X)));
+				var locationWidth = locationFont.Measure(location.GetText()).X;
+				var adminWidth = adminFont.Measure(admin.GetText()).X;
+				var addressWidth = addressFont.Measure(ip.GetText()).X;
+				var latencyWidth = latencyPrefixSize + latencyFont.Measure(latency.GetText()).X;
+				var width = Math.Max(locationWidth, Math.Max(adminWidth, Math.Max(addressWidth, latencyWidth)));
 				widget.Bounds.Width = width + 2 * margin;
 				latency.Bounds.Width = widget.Bounds.Width;
 				ip.Bounds.Width = widget.Bounds.Width;

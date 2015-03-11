@@ -18,7 +18,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public interface IRenderActorPreviewSpritesInfo { IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p); }
+	public interface IRenderActorPreviewSpritesInfo
+	{
+		IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p);
+	}
 
 	public class RenderSpritesInfo : IRenderActorPreviewInfo, ITraitInfo
 	{
@@ -60,7 +63,9 @@ namespace OpenRA.Mods.Common.Traits
 			var facings = 0;
 			var body = init.Actor.Traits.GetOrDefault<BodyOrientationInfo>();
 			if (body != null)
-				facings = body.QuantizedFacings == -1 ? init.Actor.Traits.Get<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(init.Actor, sequenceProvider, init.Owner.Country.Race) : body.QuantizedFacings;
+				facings = body.QuantizedFacings == -1 ?
+					init.Actor.Traits.Get<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(init.Actor, sequenceProvider, init.Owner.Country.Race) :
+					body.QuantizedFacings;
 
 			foreach (var spi in init.Actor.Traits.WithInterface<IRenderActorPreviewSpritesInfo>())
 				foreach (var preview in spi.RenderPreviewSprites(init, this, image, facings, palette))

@@ -44,7 +44,8 @@ namespace OpenRA.Network
 
 			if (NatDevice == null || NatDevice.GetType() != typeof(Mono.Nat.Upnp.UpnpNatDevice))
 			{
-				Log.Write("server", "No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Game.Settings.Server.NatDiscoveryTimeout));
+				Log.Write("server",
+					"No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Game.Settings.Server.NatDiscoveryTimeout));
 				Game.Settings.Server.NatDeviceAvailable = false;
 				Game.Settings.Server.AllowPortForward = false;
 			}

@@ -309,12 +309,16 @@ namespace OpenRA
 			return new HashSet<T>(source);
 		}
 
-		public static Dictionary<TKey, TSource> ToDictionaryWithConflictLog<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, string debugName, Func<TKey, string> logKey, Func<TSource, string> logValue)
+		public static Dictionary<TKey, TSource> ToDictionaryWithConflictLog<TSource, TKey>(
+			this IEnumerable<TSource> source, Func<TSource, TKey> keySelector,
+			string debugName, Func<TKey, string> logKey, Func<TSource, string> logValue)
 		{
 			return ToDictionaryWithConflictLog(source, keySelector, x => x, debugName, logKey, logValue);
 		}
 
-		public static Dictionary<TKey, TElement> ToDictionaryWithConflictLog<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, string debugName, Func<TKey, string> logKey, Func<TElement, string> logValue)
+		public static Dictionary<TKey, TElement> ToDictionaryWithConflictLog<TSource, TKey, TElement>(
+			this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector,
+			string debugName, Func<TKey, string> logKey, Func<TElement, string> logValue)
 		{
 			// Fall back on ToString() if null functions are provided:
 			logKey = logKey ?? (s => s.ToString());
@@ -385,7 +389,8 @@ namespace OpenRA
 			{
 				for (var j = 0; j < height; j++)
 				{
-					// Workaround for broken ternary operators in certain versions of mono (3.10 and certain versions of the 3.8 series): https://bugzilla.xamarin.com/show_bug.cgi?id=23319
+					// Workaround for broken ternary operators in certain versions of mono
+					// (3.10 and certain versions of the 3.8 series): https://bugzilla.xamarin.com/show_bug.cgi?id=23319
 					if (i <= ts.GetUpperBound(0) && j <= ts.GetUpperBound(1))
 						result[i, j] = ts[i, j];
 					else

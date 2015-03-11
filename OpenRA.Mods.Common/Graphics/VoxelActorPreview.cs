@@ -28,7 +28,8 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly WVec offset;
 		readonly int zOffset;
 
-		public VoxelPreview(VoxelAnimation[] components, WVec offset, int zOffset, float scale, WAngle lightPitch, WAngle lightYaw, float[] lightAmbientColor, float[] lightDiffuseColor, WAngle cameraPitch,
+		public VoxelPreview(VoxelAnimation[] components, WVec offset, int zOffset, float scale, WAngle lightPitch, WAngle lightYaw,
+			float[] lightAmbientColor, float[] lightDiffuseColor, WAngle cameraPitch,
 			PaletteReference colorPalette, PaletteReference normalsPalette, PaletteReference shadowPalette)
 		{
 			this.components = components;
