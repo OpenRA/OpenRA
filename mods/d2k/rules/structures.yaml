@@ -465,8 +465,8 @@ wall:
 		Prerequisites: barracks
 		BuildPaletteOrder: 60
 	SoundOnDamageTransition:
-		DamagedSound:
-		DestroyedSound: EXPLSML4.WAV
+		DamagedSounds:
+		DestroyedSounds: EXPLSML4.WAV
 	Valued:
 		Cost: 100
 	CustomSellValue:
@@ -841,3 +841,4 @@ conyard.ordos:
 	RenderBuilding:
 		Image: conyard.ordos
 		-RaceImages:
+

@@ -406,8 +406,8 @@ GASAND:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~structures.gdi
 	SoundOnDamageTransition:
-		DamagedSound: sandbag1.aud
-		DestroyedSound: sandbag1.aud
+		DamagedSounds: sandbag1.aud
+		DestroyedSounds: sandbag1.aud
 	Valued:
 		Cost: 25
 	CustomSellValue:
@@ -433,8 +433,8 @@ GAWALL:
 		BuildPaletteOrder: 1001
 		Prerequisites: ~structures.gdi
 	SoundOnDamageTransition:
-		DamagedSound:
-		DestroyedSound:
+		DamagedSounds:
+		DestroyedSounds:
 	Valued:
 		Cost: 50
 	CustomSellValue:
@@ -458,8 +458,8 @@ NAWALL:
 		BuildPaletteOrder: 1001
 		Prerequisites: ~structures.nod
 	SoundOnDamageTransition:
-		DamagedSound:
-		DestroyedSound:
+		DamagedSounds:
+		DestroyedSounds:
 	Valued:
 		Cost: 50
 	CustomSellValue:

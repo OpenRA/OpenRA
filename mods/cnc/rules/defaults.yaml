@@ -397,8 +397,8 @@
 		BuildSounds: constru2.aud, hvydoor1.aud
 		TerrainTypes: Clear,Road
 	SoundOnDamageTransition:
-		DamagedSound: xplos.aud
-		DestroyedSound: crumble.aud
+		DamagedSounds: xplos.aud
+		DestroyedSounds: crumble.aud
 	RenderBuilding:
 	WithBuildingExplosion:
 		Delay: 1
@@ -655,10 +655,11 @@
 	Health:
 		HP: 500
 	SoundOnDamageTransition:
-		DamagedSound: xplos.aud
-		DestroyedSound: xplobig4.aud
+		DamagedSounds: xplos.aud
+		DestroyedSounds: xplobig4.aud
 	BodyOrientation:
 	ScriptTriggers:
+
 ^Crate:
 	Tooltip:
 		Name: Crate

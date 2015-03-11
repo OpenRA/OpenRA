@@ -899,7 +899,7 @@ BRIK:
 		CrushClasses: heavywall
 		-CrushSound:
 	SoundOnDamageTransition:
-		DestroyedSound: crumble.aud
+		DestroyedSounds: crumble.aud
 	LineBuild:
 		Range: 8
 		NodeTypes: concrete
