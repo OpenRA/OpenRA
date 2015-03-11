@@ -8,14 +8,18 @@
  */
 #endregion
 
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	public class SoundOnDamageTransitionInfo : ITraitInfo
 	{
-		public readonly string DamagedSound;
-		public readonly string DestroyedSound;
+		[Desc("Play a random sound from this list when damaged.")]
+		public readonly string[] DamagedSounds = { };
+
+		[Desc("Play a random sound from this list when destroyed.")]
+		public readonly string[] DestroyedSounds = { };
 
 		public object Create(ActorInitializer init) { return new SoundOnDamageTransition(this); }
 	}
@@ -31,10 +35,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
+			var rand = Game.CosmeticRandom;
+
 			if (e.DamageState == DamageState.Dead)
-				Sound.Play(info.DestroyedSound, self.CenterPosition);
+			{
+				var sound = info.DestroyedSounds.RandomOrDefault(rand);
+				Sound.Play(sound, self.CenterPosition);
+			}
 			else if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)
-				Sound.Play(info.DamagedSound, self.CenterPosition);
+			{
+				var sound = info.DamagedSounds.RandomOrDefault(rand);
+				Sound.Play(sound, self.CenterPosition);
+			}
 		}
 	}
 }
