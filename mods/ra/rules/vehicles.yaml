@@ -768,6 +768,8 @@ STNK:
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 250
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
 	DetectCloaked:
 		Range: 6
 	Explodes:
