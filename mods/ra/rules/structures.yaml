@@ -1533,8 +1533,8 @@ BRIK:
 		Name: Concrete Wall
 		Description: Stop units and blocks enemy fire.
 	SoundOnDamageTransition:
-		DamagedSound: crmble2.aud
-		DestroyedSound: kaboom30.aud
+		DamagedSounds: crmble2.aud
+		DestroyedSounds: kaboom30.aud
 	Health:
 		HP: 500
 	Armor:

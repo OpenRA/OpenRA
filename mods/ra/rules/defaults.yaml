@@ -383,8 +383,8 @@
 	ExternalCapturable:
 	ExternalCapturableBar:
 	SoundOnDamageTransition:
-		DamagedSound: kaboom1.aud
-		DestroyedSound: kaboom22.aud
+		DamagedSounds: kaboom1.aud
+		DestroyedSounds: kaboom22.aud
 	RenderBuilding:
 	WithMakeAnimation:
 	WithBuildingExplosion:
@@ -445,8 +445,8 @@
 		Adjacent: 7
 		TerrainTypes: Clear,Road
 	SoundOnDamageTransition:
-		DamagedSound: sandbag2.aud
-		DestroyedSound: sandbag2.aud
+		DamagedSounds: sandbag2.aud
+		DestroyedSounds: sandbag2.aud
 	Crushable:
 		CrushClasses: wall
 	BlocksBullets:

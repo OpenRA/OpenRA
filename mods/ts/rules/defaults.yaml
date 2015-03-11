@@ -16,8 +16,8 @@
 	GivesBuildableArea:
 	Capturable:
 	SoundOnDamageTransition:
-		DamagedSound: expnew01.aud
-		DestroyedSound: crmble2.aud
+		DamagedSounds: expnew01.aud
+		DestroyedSounds: crmble2.aud
 	RenderBuilding:
 	WithBuildingExplosion:
 	RepairableBuilding:
@@ -84,8 +84,8 @@
 		Adjacent: 7
 		TerrainTypes: Clear, Road
 	SoundOnDamageTransition:
-		DamagedSound: expnew01.aud
-		DestroyedSound: crmble2.aud
+		DamagedSounds: expnew01.aud
+		DestroyedSounds: crmble2.aud
 	Crushable:
 		CrushClasses: wall
 	BlocksBullets:
@@ -491,3 +491,4 @@
 		Footprint: x
 		Dimensions: 1, 1
 	BodyOrientation:
+
