@@ -64,7 +64,7 @@ E2:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 20
-		Prerequisites: ~barr, ~techlevel.infonly
+		Prerequisites: ~tent, ~techlevel.infonly
 	Valued:
 		Cost: 160
 	Tooltip:
