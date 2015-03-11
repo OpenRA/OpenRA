@@ -82,8 +82,15 @@ namespace OpenRA.Widgets
 			return ThumbRect.Contains(mi.Location);
 		}
 
-		float ValueFromPx(int x) { return MinimumValue + (MaximumValue - MinimumValue) * (x - 0.5f * RenderBounds.Height) / (RenderBounds.Width - RenderBounds.Height); }
-		protected int PxFromValue(float x) { return (int)(0.5f * RenderBounds.Height + (RenderBounds.Width - RenderBounds.Height) * (x - MinimumValue) / (MaximumValue - MinimumValue)); }
+		float ValueFromPx(int x)
+		{
+			return MinimumValue + (MaximumValue - MinimumValue) * (x - 0.5f * RenderBounds.Height) / (RenderBounds.Width - RenderBounds.Height);
+		}
+
+		protected int PxFromValue(float x)
+		{
+			return (int)(0.5f * RenderBounds.Height + (RenderBounds.Width - RenderBounds.Height) * (x - MinimumValue) / (MaximumValue - MinimumValue));
+		}
 
 		public override Widget Clone() { return new SliderWidget(this); }
 

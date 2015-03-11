@@ -51,7 +51,8 @@ namespace OpenRA.Mods.Common.Activities
 		protected virtual void Unreserve(Actor self, bool abort) { }
 		protected virtual void OnInside(Actor self) { }
 
-		protected bool TryGetAlternateTargetInCircle(Actor self, WRange radius, Action<Target> update, Func<Actor, bool> primaryFilter, Func<Actor, bool>[] preferenceFilters = null)
+		protected bool TryGetAlternateTargetInCircle(
+			Actor self, WRange radius, Action<Target> update, Func<Actor, bool> primaryFilter, Func<Actor, bool>[] preferenceFilters = null)
 		{
 			var radiusSquared = radius.Range * radius.Range;
 			var diff = new WVec(radius, radius, WRange.Zero);

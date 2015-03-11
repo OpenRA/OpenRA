@@ -793,8 +793,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					// Split out the warheads to individual warhead types.
 					if (depth == 0)
 					{
-						var validTargets = node.Value.Nodes.FirstOrDefault(n => n.Key == "ValidTargets"); // Weapon's ValidTargets need to be copied to the warheads, so find it
-						var invalidTargets = node.Value.Nodes.FirstOrDefault(n => n.Key == "InvalidTargets"); // Weapon's InvalidTargets need to be copied to the warheads, so find it
+						// Weapon's ValidTargets need to be copied to the warheads, so find it
+						var validTargets = node.Value.Nodes.FirstOrDefault(n => n.Key == "ValidTargets");
+
+						// Weapon's InvalidTargets need to be copied to the warheads, so find it
+						var invalidTargets = node.Value.Nodes.FirstOrDefault(n => n.Key == "InvalidTargets");
 
 						var warheadCounter = 0;
 						foreach (var curNode in node.Value.Nodes.ToArray())
@@ -970,7 +973,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<string> { "Explosion", "ImpactSound", "Delay", "ValidTargets", "InvalidTargets", "ValidImpactTypes", "InvalidImpactTypes" };
+									var keywords = new List<string> { "Explosion", "ImpactSound", "Delay",
+										"ValidTargets", "InvalidTargets", "ValidImpactTypes", "InvalidImpactTypes" };
 
 									foreach (var keyword in keywords)
 									{
@@ -991,7 +995,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<string> { "WaterExplosion", "WaterImpactSound", "Delay", "ValidTargets", "InvalidTargets", "ValidImpactTypes", "InvalidImpactTypes" };
+									var keywords = new List<string> { "WaterExplosion", "WaterImpactSound", "Delay",
+										"ValidTargets", "InvalidTargets", "ValidImpactTypes", "InvalidImpactTypes" };
 
 									foreach (var keyword in keywords)
 									{

@@ -299,7 +299,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					ddb.IsDisabled = () => string.IsNullOrEmpty(filter.PlayerName);
 
-					var options = replays.SelectMany(r => r.GameInfo.Players.Select(p => p.FactionName).Where(n => !string.IsNullOrEmpty(n))).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+					var options = replays
+						.SelectMany(r => r.GameInfo.Players.Select(p => p.FactionName).Where(n => !string.IsNullOrEmpty(n)))
+						.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 					options.Sort(StringComparer.OrdinalIgnoreCase);
 					options.Insert(0, null);	// no filter
 

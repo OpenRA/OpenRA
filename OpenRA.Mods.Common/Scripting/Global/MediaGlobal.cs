@@ -120,7 +120,8 @@ namespace OpenRA.Mods.Common.Scripting
 
 		Action onLoadComplete;
 		Action onCompleteRadar;
-		[Desc("Play a VQA video in the radar window.  File name has to include the file extension. Returns true on success, if the movie wasn't found the function returns false and the callback is executed.")]
+		[Desc("Play a VQA video in the radar window. File name has to include the file extension. " +
+			"Returns true on success, if the movie wasn't found the function returns false and the callback is executed.")]
 		public bool PlayMovieInRadar(string movie, LuaFunction playComplete = null)
 		{
 			if (playComplete != null)

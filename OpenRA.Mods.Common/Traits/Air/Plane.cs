@@ -129,12 +129,20 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity MoveTo(CPos cell, int nearEnough) { return Util.SequenceActivities(new Fly(self, Target.FromCell(self.World, cell)), new FlyCircle()); }
 		public Activity MoveTo(CPos cell, Actor ignoredActor) { return Util.SequenceActivities(new Fly(self, Target.FromCell(self.World, cell)), new FlyCircle()); }
 		public Activity MoveWithinRange(Target target, WRange range) { return Util.SequenceActivities(new Fly(self, target, WRange.Zero, range), new FlyCircle()); }
-		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return Util.SequenceActivities(new Fly(self, target, minRange, maxRange), new FlyCircle()); }
+		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange)
+		{
+			return Util.SequenceActivities(new Fly(self, target, minRange, maxRange), new FlyCircle());
+		}
+
 		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new FlyFollow(self, target, minRange, maxRange); }
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any) { return new Fly(self, Target.FromCell(self.World, cell)); }
-		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos) { return Util.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)), new Fly(self, Target.FromPos(toPos))); }
+		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
+		{
+			return Util.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)), new Fly(self, Target.FromPos(toPos)));
+		}
+
 		public Activity MoveToTarget(Actor self, Target target) { return new Fly(self, target, WRange.FromCells(3), WRange.FromCells(5)); }
 		public Activity MoveIntoTarget(Actor self, Target target) { return new Land(target); }
 	}

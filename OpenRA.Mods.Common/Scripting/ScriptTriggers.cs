@@ -30,7 +30,8 @@ namespace OpenRA.Mods.Common.Scripting
 		public object Create(ActorInitializer init) { return new ScriptTriggers(init.World); }
 	}
 
-	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyOtherProduction, INotifyObjectivesUpdated, INotifyCapture, INotifyInfiltrated, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable
+	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyOtherProduction,
+		INotifyObjectivesUpdated, INotifyCapture, INotifyInfiltrated, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable
 	{
 		readonly World world;
 

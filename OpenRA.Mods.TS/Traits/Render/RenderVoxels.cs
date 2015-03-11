@@ -17,7 +17,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits
 {
-	public interface IRenderActorPreviewVoxelsInfo { IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p); }
+	public interface IRenderActorPreviewVoxelsInfo
+	{
+		IEnumerable<VoxelAnimation> RenderPreviewVoxels(
+			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p);
+	}
 
 	public class RenderVoxelsInfo : ITraitInfo, IRenderActorPreviewInfo, Requires<IBodyOrientationInfo>
 	{
@@ -46,7 +50,9 @@ namespace OpenRA.Mods.TS.Traits
 			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
 			var sequenceProvider = init.World.Map.SequenceProvider;
 			var image = Image ?? init.Actor.Name;
-			var facings = body.QuantizedFacings == -1 ? init.Actor.Traits.Get<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(init.Actor, sequenceProvider, init.Owner.Country.Race) : body.QuantizedFacings;
+			var facings = body.QuantizedFacings == -1 ?
+				init.Actor.Traits.Get<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(init.Actor, sequenceProvider, init.Owner.Country.Race) :
+				body.QuantizedFacings;
 			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + init.Owner.InternalName);
 
 			var ifacing = init.Actor.Traits.GetOrDefault<IFacingInfo>();

@@ -90,7 +90,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var progress = widget.GetOrNull("MAP_PROGRESS");
 			if (progress != null)
 			{
-				progress.IsVisible = () => (lobby.Map.Status != MapStatus.Available || lobby.Map.RuleStatus == MapRuleStatus.Unknown) && lobby.Map.Status != MapStatus.DownloadAvailable;
+				progress.IsVisible = () =>
+					(lobby.Map.Status != MapStatus.Available || lobby.Map.RuleStatus == MapRuleStatus.Unknown) &&
+					lobby.Map.Status != MapStatus.DownloadAvailable;
 
 				var preview = progress.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Preview = () => lobby.Map;

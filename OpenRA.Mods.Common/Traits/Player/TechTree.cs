@@ -134,7 +134,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			bool IsHidden(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				return prerequisites.Any(prereq => prereq.StartsWith("~") && (prereq.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.ContainsKey(prereq.Replace("~", "").Replace("!", ""))));
+				return prerequisites.Any(prereq => prereq.StartsWith("~") &&
+					(prereq.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.ContainsKey(prereq.Replace("~", "").Replace("!", ""))));
 			}
 
 			public void Update(Cache<string, List<Actor>> ownedPrerequisites)

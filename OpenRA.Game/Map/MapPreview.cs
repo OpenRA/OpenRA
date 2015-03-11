@@ -29,9 +29,15 @@ namespace OpenRA
 	// Used for verifying map availability in the lobby
 	public enum MapRuleStatus { Unknown, Cached, Invalid }
 
-	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Fields names must match the with the remote API.")]
-	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1304:NonPrivateReadonlyFieldsMustBeginWithUpperCaseLetter", Justification = "Fields names must match the with the remote API.")]
-	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Fields names must match the with the remote API.")]
+	[SuppressMessage("StyleCop.CSharp.NamingRules",
+		"SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
+		Justification = "Fields names must match the with the remote API.")]
+	[SuppressMessage("StyleCop.CSharp.NamingRules",
+		"SA1304:NonPrivateReadonlyFieldsMustBeginWithUpperCaseLetter",
+		Justification = "Fields names must match the with the remote API.")]
+	[SuppressMessage("StyleCop.CSharp.NamingRules",
+		"SA1310:FieldNamesMustNotContainUnderscore",
+		Justification = "Fields names must match the with the remote API.")]
 	public class RemoteMapData
 	{
 		public readonly string title;
