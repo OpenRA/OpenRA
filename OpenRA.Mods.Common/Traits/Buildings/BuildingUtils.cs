@@ -27,6 +27,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (!bi.AllowInvalidPlacement && world.ActorMap.GetUnitsAt(cell).Any(a => a != toIgnore))
 				return false;
 
+			var tile = world.Map.MapTiles.Value[cell];
+			var rampType = world.TileSet.GetTileInfo(tile).RampType;
+
+			if (rampType > 0)
+				return false;
+
 			return bi.TerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type);
 		}
 
