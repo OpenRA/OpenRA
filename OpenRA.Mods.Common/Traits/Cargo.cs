@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter("Unload", 10, CanUnload); }
+			get { yield return new DeployOrderTargeter("Unload", 10, CanUnload() ? "deploy" : "deploy-blocked"); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)

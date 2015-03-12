@@ -590,6 +590,7 @@
     <Compile Include="Widgets\Logic\ReplayUtils.cs" />
     <Compile Include="InstallUtils.cs" />
     <Compile Include="Graphics\DefaultSpriteSequence.cs" />
+    <Compile Include="Traits\Upgrades\DeployToUpgrade.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
