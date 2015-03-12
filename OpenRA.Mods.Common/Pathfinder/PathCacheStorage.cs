@@ -60,7 +60,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 					return null;
 				}
 
-				cached.Tick = world.WorldTick;
 				return cached.Result;
 			}
 
