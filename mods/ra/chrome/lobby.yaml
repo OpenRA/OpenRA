@@ -78,16 +78,21 @@ Background@SERVER_LOBBY:
 			Font: Bold
 			Text: Game Options
 		Button@CHANGEMAP_BUTTON:
-			X: 336
-			Y: PARENT_BOTTOM - 291
+			#X: 336
+			X: PARENT_RIGHT - WIDTH - 60
+			#Y: PARENT_BOTTOM - 291
+			Y: 35
 			Width: 135
 			Height: 25
 			Text: Change Map
 			Font: Bold
 		Button@START_GAME_BUTTON:
-			X: 478
-			Y: PARENT_BOTTOM - 291
-			Width: 135
+			#X: 478
+			#Y: PARENT_BOTTOM - 291
+			X: PARENT_RIGHT - WIDTH - 20
+			Y: PARENT_BOTTOM - HEIGHT - 20
+			#Width: 135
+			Width: 120
 			Height: 25
 			Text: Start Game
 			Font: Bold
@@ -121,9 +126,11 @@ Background@SERVER_LOBBY:
 							WordWrap: true
 							VAlign: Top
 		TextField@CHAT_TEXTFIELD:
-			X: 20
+			#X: 20
+			X: 145
 			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: PARENT_RIGHT - 167
+			#Width: PARENT_RIGHT - 167
+			Width: PARENT_RIGHT - 290
 			Height: 25
 			LeftMargin: 50
 			Children:
@@ -134,7 +141,9 @@ Background@SERVER_LOBBY:
 					Align: Right
 					Text: Chat:
 		Button@DISCONNECT_BUTTON:
-			X: PARENT_RIGHT - WIDTH - 20
+			#X: PARENT_RIGHT - WIDTH - 20
+			#Y: PARENT_BOTTOM - HEIGHT - 20
+			X: 20
 			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 120
 			Height: 25
