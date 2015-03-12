@@ -28,9 +28,10 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var tile = world.Map.MapTiles.Value[cell];
-			var rampType = world.TileSet.GetTileInfo(tile).RampType;
+			var tileInfo = world.TileSet.GetTileInfo(tile);
 
-			if (rampType > 0)
+			// TODO: This is bandaiding over bogus tilesets.
+			if (tileInfo != null && tileInfo.RampType > 0)
 				return false;
 
 			return bi.TerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type);
