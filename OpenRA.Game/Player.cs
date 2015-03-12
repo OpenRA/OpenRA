@@ -52,8 +52,20 @@ namespace OpenRA
 				.WithInterface<CountryInfo>().Where(c => !requireSelectable || c.Selectable)
 				.ToList();
 
-			return selectableCountries.FirstOrDefault(c => c.Race == name)
+			var selected = selectableCountries.FirstOrDefault(c => c.Race == name)
 				?? selectableCountries.Random(world.SharedRandom);
+
+			// Don't loop infinite
+			for (var i = 0; i <= 10 && selected.RandomRaceMembers.Any(); i++)
+			{
+				var race = selected.RandomRaceMembers.Random(world.SharedRandom);
+				selected = selectableCountries.FirstOrDefault(c => c.Race == race);
+
+				if (selected == null)
+					throw new YamlException("Unknown race: {0}".F(race));
+			}
+
+			return selected;
 		}
 
 		public Player(World world, Session.Client client, Session.Slot slot, PlayerReference pr)
@@ -70,7 +82,7 @@ namespace OpenRA
 				Color = client.Color;
 				PlayerName = client.Name;
 				botType = client.Bot;
-				Country = ChooseCountry(world, client.Country);
+				Country = ChooseCountry(world, client.Race);
 			}
 			else
 			{

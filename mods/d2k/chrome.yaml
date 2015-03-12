@@ -91,7 +91,7 @@ flags: buttons.png
 	atreides: 0,114,22,21
 	harkonnen: 22,114,23,21
 	ordos: 45,114,22,21
-	random: 67,114,23,21
+	Random: 67,114,23,21
 	spectator: 67,114,23,21
 
 # Used for the menu

@@ -453,7 +453,7 @@ strategic: strategic.png
 flags: buttons.png
 	gdi: 30,112,30,15
 	nod: 0,112,30,15
-	random: 60,112,30,15
+	Random: 60,112,30,15
 	spectator: 60,112,30,15
 
 music: musicplayer.png

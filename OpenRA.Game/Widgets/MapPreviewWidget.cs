@@ -32,7 +32,7 @@ namespace OpenRA.Widgets
 			ClientIndex = client.Index;
 			PlayerName = client.Name;
 			Team = client.Team;
-			Country = client.Country;
+			Country = client.Race;
 			SpawnPoint = client.SpawnPoint;
 		}
 

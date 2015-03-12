@@ -18,6 +18,9 @@ namespace OpenRA.Traits
 		[Desc("This is the internal name for owner checks.")]
 		public readonly string Race = null;
 
+		[Desc("Pick a random race as the player's race out of this list.")]
+		public readonly string[] RandomRaceMembers = { };
+
 		[Desc("The side that the country belongs to. For example, England belongs to the 'Allies' side.")]
 		public readonly string Side = null;
 

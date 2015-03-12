@@ -461,7 +461,7 @@ scrollbar: chrome.png
 flags: chrome.png
 	nod: 352,0,32,16
 	gdi: 352,16,32,16
-	random: 352,32,32,16
+	Random: 352,32,32,16
 
 strategic: strategic.png
 	unowned: 0,0,32,32
