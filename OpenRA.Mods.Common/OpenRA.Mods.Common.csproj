@@ -217,6 +217,7 @@
     <Compile Include="Scripting\Properties\TransformProperties.cs" />
     <Compile Include="Scripting\Properties\RepairableBuildingProperties.cs" />
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
+    <Compile Include="SpriteLoaders\GifLoader.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\Air\Aircraft.cs" />
     <Compile Include="Traits\Air\AttackBomber.cs" />
