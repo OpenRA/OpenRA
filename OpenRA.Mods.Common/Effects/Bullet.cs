@@ -72,16 +72,15 @@ namespace OpenRA.Mods.Common.Effects
 
 			var world = args.SourceActor.World;
 
-			if (info.Angle.Length > 1 && info.Speed.Length > 1)
-			{
+			if (info.Angle.Length > 1)
 				angle = new WAngle(world.SharedRandom.Next(info.Angle[0].Angle, info.Angle[1].Angle));
-				speed = new WRange(world.SharedRandom.Next(info.Speed[0].Range, info.Speed[1].Range));
-			}
 			else
-			{
 				angle = info.Angle[0];
+
+			if (info.Speed.Length > 1)
+				speed = new WRange(world.SharedRandom.Next(info.Speed[0].Range, info.Speed[1].Range));
+			else
 				speed = info.Speed[0];
-			}
 
 			target = args.PassiveTarget;
 			if (info.Inaccuracy.Range > 0)
