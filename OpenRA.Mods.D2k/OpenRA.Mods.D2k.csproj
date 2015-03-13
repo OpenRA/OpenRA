@@ -74,6 +74,7 @@
     <Compile Include="SpriteLoaders\R8Loader.cs" />
     <Compile Include="Traits\AttackSwallow.cs" />
     <Compile Include="Traits\Carryall.cs" />
+    <Compile Include="Traits\Buildings\FreeActorWithDelivery.cs" />
     <Compile Include="Traits\Buildings\ProductionFromMapEdge.cs" />
     <Compile Include="Traits\Buildings\DamagedWithoutFoundation.cs" />
     <Compile Include="Traits\Buildings\LaysTerrain.cs" />
