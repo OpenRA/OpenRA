@@ -7,57 +7,63 @@
  * see COPYING.
  */
 #endregion
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.D2k.Activities;
-using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	[Desc("Automatically transports harvesters with the Carryable trait between resource fields and refineries")]
-	public class AutoCarryallInfo : ITraitInfo, Requires<IBodyOrientationInfo>
+	[Desc("Automatically transports harvesters with the Carryable trait between resource fields and refineries.")]
+	public class CarryallInfo : ITraitInfo, Requires<IBodyOrientationInfo>
 	{
-		public object Create(ActorInitializer init) { return new AutoCarryall(init.Self, this); }
+		[Desc("Set to false when the carryall should not automatically get new jobs.")]
+		public readonly bool Automatic = true;
+
+		public object Create(ActorInitializer init) { return new Carryall(init.Self, this); }
 	}
 
-	public class AutoCarryall : INotifyBecomingIdle, INotifyKilled, ISync, IRender
+	public class Carryall : INotifyBecomingIdle, INotifyKilled, ISync, IRender
 	{
 		readonly Actor self;
 		readonly WRange carryHeight;
+		readonly CarryallInfo info;
 
 		// The actor we are currently carrying.
-		[Sync] Actor carrying;
-		bool isCarrying;
+		[Sync] public Actor Carrying { get; internal set; }
+		public bool IsCarrying { get; internal set; }
 
 		// TODO: Use ActorPreviews so that this can support actors with multiple sprites
 		Animation anim;
 
-		public bool Busy { get; internal set; }
+		public bool IsBusy { get; internal set; }
 
-		public AutoCarryall(Actor self, AutoCarryallInfo info)
+		public Carryall(Actor self, CarryallInfo info)
 		{
 			this.self = self;
+			this.info = info;
+
+			IsBusy = false;
+			IsCarrying = false;
 			carryHeight = self.Trait<Helicopter>().Info.LandAltitude;
 		}
 
 		public void OnBecomingIdle(Actor self)
 		{
-			FindCarryableForTransport();
+			if (info.Automatic)
+				FindCarryableForTransport();
 
-			if (!Busy)
+			if (!IsBusy)
 				self.QueueActivity(new HeliFlyCircle(self));
 		}
 
 		// A carryable notifying us that he'd like to be carried
 		public bool RequestTransportNotify(Actor carryable)
 		{
-			if (Busy)
+			if (IsBusy || !info.Automatic)
 				return false;
 
 			if (ReserveCarryable(carryable))
@@ -71,29 +77,32 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void FindCarryableForTransport()
 		{
-			// get all carryables who want transport
+			if (!self.IsInWorld)
+				return;
+
+			// Get all carryables who want transport
 			var carryables = self.World.ActorsWithTrait<Carryable>()
 				.Where(p =>
-			{
-				var actor = p.Actor;
-				if (actor == null)
-					return false;
+				{
+					var actor = p.Actor;
+					if (actor == null)
+						return false;
 
-				if (actor.Owner != self.Owner)
-					return false;
+					if (actor.Owner != self.Owner)
+						return false;
 
-				if (actor.IsDead)
-					return false;
+					if (actor.IsDead)
+						return false;
 
-				var trait = p.Trait;
-				if (trait.Reserved)
-					return false;
+					var trait = p.Trait;
+					if (trait.Reserved)
+						return false;
 
-				if (!trait.WantsTransport)
-					return false;
+					if (!trait.WantsTransport)
+						return false;
 
-				return true;
-			})
+					return true;
+				})
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
 			foreach (var p in carryables)
@@ -112,8 +121,8 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			if (carryable.Trait<Carryable>().Reserve(self))
 			{
-				carrying = carryable;
-				Busy = true;
+				Carrying = carryable;
+				IsBusy = true;
 				return true;
 			}
 
@@ -123,24 +132,26 @@ namespace OpenRA.Mods.D2k.Traits
 		// Unreserve the carryable
 		public void UnreserveCarryable()
 		{
-			if (carrying != null)
+			if (Carrying != null)
 			{
-				if (carrying.IsInWorld && !carrying.IsDead)
-					carrying.Trait<Carryable>().UnReserve(self);
+				if (Carrying.IsInWorld && !Carrying.IsDead)
+					Carrying.Trait<Carryable>().UnReserve(self);
 
-				carrying = null;
+				Carrying = null;
 			}
 
-			Busy = false;
+			IsBusy = false;
 		}
 
 		// INotifyKilled
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (carrying != null)
+			if (Carrying != null)
 			{
-				if (isCarrying && carrying.IsInWorld && !carrying.IsDead)
-					carrying.Kill(e.Attacker);
+				if (IsCarrying && Carrying.IsInWorld && !Carrying.IsDead)
+					Carrying.Kill(e.Attacker);
+
+				Carrying = null;
 			}
 
 			UnreserveCarryable();
@@ -149,7 +160,9 @@ namespace OpenRA.Mods.D2k.Traits
 		// Called when carryable is inside.
 		public void AttachCarryable(Actor carryable)
 		{
-			isCarrying = true;
+			IsBusy = true;
+			IsCarrying = true;
+			Carrying = carryable;
 
 			// Create a new animation for our carryable unit
 			var rs = carryable.Trait<RenderSprites>();
@@ -161,7 +174,7 @@ namespace OpenRA.Mods.D2k.Traits
 		// Called when released
 		public void CarryableReleased()
 		{
-			isCarrying = false;
+			IsCarrying = false;
 			anim = null;
 		}
 
@@ -171,7 +184,8 @@ namespace OpenRA.Mods.D2k.Traits
 			if (anim != null && !self.World.FogObscures(self))
 			{
 				anim.Tick();
-				var renderables = anim.Render(self.CenterPosition + new WVec(0, 0, -carryHeight.Range), wr.Palette("player" + carrying.Owner.InternalName));
+				var renderables = anim.Render(self.CenterPosition + new WVec(0, 0, -carryHeight.Range),
+					wr.Palette("player" + Carrying.Owner.InternalName));
 
 				foreach (var rr in renderables)
 					yield return rr;

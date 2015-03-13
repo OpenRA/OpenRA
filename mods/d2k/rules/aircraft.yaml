@@ -29,7 +29,7 @@ carryall.scripted:
 
 carryall:
 	Inherits: carryall.scripted
-	AutoCarryall:
+	Carryall:
 	Buildable:
 		Queue: Aircraft
 		BuildPaletteOrder: 120
