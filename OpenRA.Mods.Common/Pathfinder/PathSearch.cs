@@ -88,6 +88,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var currentCell = Graph[currentMinNode];
 			Graph[currentMinNode] = new CellInfo(currentCell.CostSoFar, currentCell.EstimatedTotal, currentCell.PreviousPos, CellStatus.Closed);
 
+			if (Graph.CustomCost != null && Graph.CustomCost(currentMinNode) == Constants.InvalidNode)
+				return currentMinNode;
+
 			foreach (var connection in Graph.GetConnections(currentMinNode))
 			{
 				// Calculate the cost up to that point

@@ -32,9 +32,17 @@ namespace OpenRA.Mods.Common.Activities
 			this.avoidCell = avoidCell;
 		}
 
+		static int DefaultEstimator(CPos here, CPos destination)
+		{
+			var diag = Math.Min(Math.Abs(here.X - destination.X), Math.Abs(here.Y - destination.Y));
+			var straight = Math.Abs(here.X - destination.X) + Math.Abs(here.Y - destination.Y);
+			return Constants.CellCost * straight + (Constants.DiagonalCellCost - 2 * Constants.CellCost) * diag;
+		}
+
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || NextActivity != null) return NextActivity;
+			if (IsCanceled || NextActivity != null)
+				return NextActivity;
 
 			var harv = self.Trait<Harvester>();
 
@@ -50,65 +58,80 @@ namespace OpenRA.Mods.Common.Activities
 			// Determine where to search from and how far to search:
 			var searchFromLoc = harv.LastOrderLocation ?? (harv.LastLinkedProc ?? harv.LinkedProc ?? self).Location;
 			var searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
-			var searchRadiusSquared = searchRadius * searchRadius;
 
-			// Pick the available harvestable positions inside the harvestable radius from the selected point.
-			var harvestablePositions = self.World.Map.FindTilesInCircle(searchFromLoc, searchRadius)
-				.Where(loc =>
-				{
-					var resType = resLayer.GetResource(loc);
-					if (resType == null)
-						return false;
-
-					// Can the harvester collect this kind of resource?
-					if (!harvInfo.Resources.Contains(resType.Info.Name))
-						return false;
-
-					if (territory != null)
+			// Pick the closest harvestable positions inside the radius from the selected point.
+			// This point will be used as a fallback in case no closer resources are found
+			var closestHarvestablePosition = self.World.Map.FindTilesInAnnulus(searchFromLoc, 0, searchRadius)
+				.FirstOrDefault(loc =>
 					{
-						// Another harvester has claimed this resource:
-						ResourceClaim claim;
-						if (territory.IsClaimedByAnyoneElse(self, loc, out claim))
+						var resType = resLayer.GetResource(loc);
+						if (resType == null)
 							return false;
-					}
 
-					return true;
-				}).ToList();
+						// Can the harvester collect this kind of resource?
+						if (!harvInfo.Resources.Contains(resType.Info.Name))
+							return false;
+
+						if (territory != null)
+						{
+							// Another harvester has claimed this resource:
+							ResourceClaim claim;
+							if (territory.IsClaimedByAnyoneElse(self, loc, out claim)) return false;
+						}
+
+						return true;
+					});
 
 			List<CPos> path;
 
 			// If no harvestable position could be found, then return an empty path
-			if (harvestablePositions.Count == 0)
-				path = new List<CPos>();
-			else
+			if (closestHarvestablePosition != default(CPos))
 			{
-				// Pick the closest harvestable position from the actor
-				var closestHarvestablePosition = harvestablePositions.MinBy(loc => (loc - self.Location).Length);
-
 				// Find a path to that harvestable resource
-				path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
-					PathSearch.FromPoint(self.World, mobileInfo, self, self.Location, closestHarvestablePosition, true)
+				path = self.World.WorldActor.Trait<IPathFinder>()
+					.FindPath(PathSearch.Search(self.World, mobileInfo, self, true)
+						.WithHeuristic(loc =>
+						{
+							var resType = resLayer.GetResource(loc);
+							if (resType == null)
+								return DefaultEstimator(loc, closestHarvestablePosition);
+
+							// Can the harvester collect this kind of resource?
+							if (!harvInfo.Resources.Contains(resType.Info.Name))
+								return DefaultEstimator(loc, closestHarvestablePosition);
+
+							if (territory != null)
+							{
+								// Another harvester has claimed this resource:
+								ResourceClaim claim;
+								if (territory.IsClaimedByAnyoneElse(self, loc, out claim))
+									return DefaultEstimator(loc, closestHarvestablePosition);
+							}
+
+							return 0;
+						})
 						.WithCustomCost(loc =>
 						{
 							// Avoid this cell
-							if (avoidCell.HasValue && loc == avoidCell.Value) return Constants.InvalidNode;
-
-							// Don't harvest out of range:
-							var distSquared = (loc - searchFromLoc).LengthSquared;
-							if (distSquared > searchRadiusSquared) return Constants.InvalidNode;
+							if (avoidCell.HasValue && loc == avoidCell.Value)
+								return Constants.InvalidNode;
 
 							return 0;
-						}));
+						})
+						.FromPoint(self.Location));
 			}
-
-			if (path.Count == 0)
+			else
 			{
 				if (!harv.IsEmpty)
 					return new DeliverResources();
 				else
 				{
-					// Get out of the way if we are:
+					// Get out of the way if we are
 					harv.UnblockRefinery(self);
+					var moveTo = harv.LastHarvestedCell ?? (self.Location + new CVec(0, 4));
+					self.QueueActivity(mobile.MoveTo(moveTo, 1));
+					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
+
 					var randFrames = 125 + self.World.SharedRandom.Next(-35, 35);
 					if (NextActivity != null)
 						return Util.SequenceActivities(NextActivity, new Wait(randFrames), new FindResources());

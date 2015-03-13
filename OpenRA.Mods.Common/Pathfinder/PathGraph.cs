@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				if (customCost == Constants.InvalidNode)
 					return Constants.InvalidNode;
 
-				cellCost += CustomCost(neighborCPos);
+				cellCost += customCost;
 			}
 
 			// directional bonuses for smoother flow!
