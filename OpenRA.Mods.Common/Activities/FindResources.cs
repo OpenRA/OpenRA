@@ -52,40 +52,54 @@ namespace OpenRA.Mods.Common.Activities
 			var searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
 			var searchRadiusSquared = searchRadius * searchRadius;
 
-			// Find harvestable resources nearby:
-			var path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
-				PathSearch.Search(self.World, mobileInfo, self, true)
-					.WithHeuristic(loc =>
+			// Pick the available harvestable positions inside the harvestable radius from the selected point.
+			var harvestablePositions = self.World.Map.FindTilesInCircle(searchFromLoc, searchRadius)
+				.Where(loc =>
+				{
+					var resType = resLayer.GetResource(loc);
+					if (resType == null)
+						return false;
+
+					// Can the harvester collect this kind of resource?
+					if (!harvInfo.Resources.Contains(resType.Info.Name))
+						return false;
+
+					if (territory != null)
 					{
-						// Avoid this cell:
-						if (avoidCell.HasValue && loc == avoidCell.Value)
-							return EstimateDistance(loc, searchFromLoc) + Constants.CellCost;
+						// Another harvester has claimed this resource:
+						ResourceClaim claim;
+						if (territory.IsClaimedByAnyoneElse(self, loc, out claim))
+							return false;
+					}
 
-						// Don't harvest out of range:
-						var distSquared = (loc - searchFromLoc).LengthSquared;
-						if (distSquared > searchRadiusSquared)
-							return EstimateDistance(loc, searchFromLoc) + Constants.CellCost * 2;
+					return true;
+				}).ToList();
 
-						// Get the resource at this location:
-						var resType = resLayer.GetResource(loc);
-						if (resType == null)
-							return EstimateDistance(loc, searchFromLoc) + Constants.CellCost;
+			List<CPos> path;
 
-						// Can the harvester collect this kind of resource?
-						if (!harvInfo.Resources.Contains(resType.Info.Name))
-							return EstimateDistance(loc, searchFromLoc) + Constants.CellCost;
+			// If no harvestable position could be found, then return an empty path
+			if (harvestablePositions.Count == 0)
+				path = new List<CPos>();
+			else
+			{
+				// Pick the closest harvestable position from the actor
+				var closestHarvestablePosition = harvestablePositions.MinBy(loc => (loc - self.Location).Length);
 
-						if (territory != null)
+				// Find a path to that harvestable resource
+				path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
+					PathSearch.FromPoint(self.World, mobileInfo, self, self.Location, closestHarvestablePosition, true)
+						.WithCustomCost(loc =>
 						{
-							// Another harvester has claimed this resource:
-							ResourceClaim claim;
-							if (territory.IsClaimedByAnyoneElse(self, loc, out claim))
-								return EstimateDistance(loc, searchFromLoc) + Constants.CellCost;
-						}
+							// Avoid this cell
+							if (avoidCell.HasValue && loc == avoidCell.Value) return Constants.InvalidNode;
 
-						return 0;
-					})
-					.FromPoint(self.Location));
+							// Don't harvest out of range:
+							var distSquared = (loc - searchFromLoc).LengthSquared;
+							if (distSquared > searchRadiusSquared) return Constants.InvalidNode;
+
+							return 0;
+						}));
+			}
 
 			if (path.Count == 0)
 			{
@@ -122,15 +136,6 @@ namespace OpenRA.Mods.Common.Activities
 				n.MovingToResources(self, path[0], next);
 
 			return Util.SequenceActivities(mobile.MoveTo(path[0], 1), new HarvestResource(), new FindResources());
-		}
-
-		// Diagonal distance heuristic
-		static int EstimateDistance(CPos here, CPos destination)
-		{
-			var diag = Math.Min(Math.Abs(here.X - destination.X), Math.Abs(here.Y - destination.Y));
-			var straight = Math.Abs(here.X - destination.X) + Math.Abs(here.Y - destination.Y);
-
-			return Constants.CellCost * straight + (Constants.DiagonalCellCost - 2 * Constants.CellCost) * diag;
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)

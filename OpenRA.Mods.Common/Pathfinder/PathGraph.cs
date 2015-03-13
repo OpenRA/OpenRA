@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <summary>
 		/// Gets all the Connections for a given node in the graph
 		/// </summary>
-		ICollection<GraphConnection> GetConnections(CPos position);
+		IEnumerable<GraphConnection> GetConnections(CPos position);
 
 		/// <summary>
 		/// Retrieves an object given a node in the graph
@@ -73,8 +73,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly IMobileInfo mobileInfo;
 		CellLayer<CellInfo> cellInfo;
 
-		public const int InvalidNode = int.MaxValue;
-
 		public PathGraph(CellLayer<CellInfo> cellInfo, IMobileInfo mobileInfo, IActor actor, IWorld world, bool checkForBlocked)
 		{
 			this.cellInfo = cellInfo;
@@ -102,7 +100,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			new[] { new CVec(1, -1), new CVec(1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },
 		};
 
-		public ICollection<GraphConnection> GetConnections(CPos position)
+		public IEnumerable<GraphConnection> GetConnections(CPos position)
 		{
 			var previousPos = cellInfo[position].PreviousPos;
 
@@ -116,7 +114,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			{
 				var neighbor = position + directions[i];
 				var movementCost = GetCostToNode(neighbor, directions[i]);
-				if (movementCost != InvalidNode)
+				if (movementCost != Constants.InvalidNode)
 					validNeighbors.AddLast(new GraphConnection(position, neighbor, movementCost));
 			}
 
@@ -137,7 +135,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				return CalculateCellCost(destNode, direction, movementCost);
 			}
 
-			return InvalidNode;
+			return Constants.InvalidNode;
 		}
 
 		int CalculateCellCost(CPos neighborCPos, CVec direction, int movementCost)
@@ -148,7 +146,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 				cellCost = (cellCost * 34) / 24;
 
 			if (CustomCost != null)
+			{
+				var customCost = CustomCost(neighborCPos);
+				if (customCost == Constants.InvalidNode)
+					return Constants.InvalidNode;
+
 				cellCost += CustomCost(neighborCPos);
+			}
 
 			// directional bonuses for smoother flow!
 			if (LaneBias != 0)
@@ -184,15 +188,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public CellInfo this[CPos pos]
 		{
-			get
-			{
-				return cellInfo[pos];
-			}
-
-			set
-			{
-				cellInfo[pos] = value;
-			}
+			get { return cellInfo[pos]; }
+			set { cellInfo[pos] = value; }
 		}
 	}
 }

@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 			var mi = self.Info.Traits.Get<MobileInfo>();
 			var path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
 				PathSearch.FromPoints(self.World, mi, self, refs.Values.Select(r => r.Location), self.Location, false)
-					.WithCustomCost((loc) =>
+					.WithCustomCost(loc =>
 					{
 						if (!refs.ContainsKey(loc)) return 0;
 

@@ -25,5 +25,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// a unit took to move one cell diagonally)
 		/// </summary>
 		public const int DiagonalCellCost = 177;
+
+		public const int InvalidNode = int.MaxValue;
 	}
 }
