@@ -72,7 +72,7 @@
     <Compile Include="Activities\SwallowActor.cs" />
     <Compile Include="SpriteLoaders\R8Loader.cs" />
     <Compile Include="Traits\AttackSwallow.cs" />
-    <Compile Include="Traits\AutoCarryall.cs" />
+    <Compile Include="Traits\Carryall.cs" />
     <Compile Include="Traits\Buildings\ProductionFromMapEdge.cs" />
     <Compile Include="Traits\Buildings\DamagedWithoutFoundation.cs" />
     <Compile Include="Traits\Buildings\LaysTerrain.cs" />
