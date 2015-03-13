@@ -19,16 +19,19 @@ namespace OpenRA.Mods.Common.Traits
 	public class FreeActorInfo : ITraitInfo
 	{
 		[ActorReference]
-		[Desc("Name of actor (use HARV if this trait is for refineries)")]
+		[Desc("Name of the actor.")]
 		public readonly string Actor = null;
+
 		[Desc("What the unit should start doing. Warning: If this is not a harvester", "it will break if you use FindResources.")]
 		public readonly string InitialActivity = null;
-		[Desc("Offset relative to structure-center in 2D (e.g. 1, 2)")]
+
+		[Desc("Offset relative to the top-left cell of the building.")]
 		public readonly CVec SpawnOffset = CVec.Zero;
+
 		[Desc("Which direction the unit should face.")]
 		public readonly int Facing = 0;
 
-		public object Create(ActorInitializer init) { return new FreeActor(init, this); }
+		public virtual object Create(ActorInitializer init) { return new FreeActor(init, this); }
 	}
 
 	public class FreeActor
