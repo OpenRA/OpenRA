@@ -219,3 +219,5 @@ Fonts:
 SupportsMapsFrom: ts
 
 SpriteFormats: ShpTS, TmpTS, ShpTD
+
+SpriteSequenceFormat: DefaultSpriteSequence

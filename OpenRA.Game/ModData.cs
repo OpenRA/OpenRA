@@ -25,6 +25,7 @@ namespace OpenRA
 		public readonly WidgetLoader WidgetLoader;
 		public readonly MapCache MapCache;
 		public readonly ISpriteLoader[] SpriteLoaders;
+		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
 		public readonly RulesetCache RulesetCache;
 		public ILoadScreen LoadScreen { get; private set; }
 		public VoxelLoader VoxelLoader { get; private set; }
@@ -52,17 +53,25 @@ namespace OpenRA
 			RulesetCache.LoadingProgress += HandleLoadingProgress;
 			MapCache = new MapCache(this);
 
-			var loaders = new List<ISpriteLoader>();
+			var spriteLoaders = new List<ISpriteLoader>();
 			foreach (var format in Manifest.SpriteFormats)
 			{
 				var loader = ObjectCreator.FindType(format + "Loader");
 				if (loader == null || !loader.GetInterfaces().Contains(typeof(ISpriteLoader)))
 					throw new InvalidOperationException("Unable to find a sprite loader for type '{0}'.".F(format));
 
-				loaders.Add((ISpriteLoader)ObjectCreator.CreateBasic(loader));
+				spriteLoaders.Add((ISpriteLoader)ObjectCreator.CreateBasic(loader));
 			}
 
-			SpriteLoaders = loaders.ToArray();
+			SpriteLoaders = spriteLoaders.ToArray();
+
+			var sequenceFormat = Manifest.Get<SpriteSequenceFormat>();
+			var sequenceLoader = ObjectCreator.FindType(sequenceFormat.Type + "Loader");
+			var ctor = sequenceLoader != null ? sequenceLoader.GetConstructor(new[] { typeof(ModData) }) : null;
+			if (sequenceLoader == null || !sequenceLoader.GetInterfaces().Contains(typeof(ISpriteSequenceLoader)) || ctor == null)
+				throw new InvalidOperationException("Unable to find a sequence loader for type '{0}'.".F(sequenceFormat.Type));
+
+			SpriteSequenceLoader = (ISpriteSequenceLoader)ctor.Invoke(new[] { this });
 
 			// HACK: Mount only local folders so we have a half-working environment for the asset installer
 			GlobalFileSystem.UnmountAll();

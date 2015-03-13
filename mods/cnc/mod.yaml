@@ -203,3 +203,5 @@ Missions:
 SupportsMapsFrom: cnc
 
 SpriteFormats: ShpTD, TmpTD, ShpTS, TmpRA
+
+SpriteSequenceFormat: DefaultSpriteSequence

@@ -9,30 +9,73 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using OpenRA.Graphics;
 
-namespace OpenRA.Graphics
+namespace OpenRA.Mods.Common.Graphics
 {
-	public class Sequence
+	public class DefaultSpriteSequenceLoader : ISpriteSequenceLoader
+	{
+		public DefaultSpriteSequenceLoader(ModData modData) { }
+
+		public virtual ISpriteSequence CreateSequence(ModData modData, TileSet tileSet, SpriteCache cache, string sequence, string animation, MiniYaml info)
+		{
+			return new DefaultSpriteSequence(modData, tileSet, cache, this, sequence, animation, info);
+		}
+
+		public IReadOnlyDictionary<string, ISpriteSequence> ParseSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node)
+		{
+			var sequences = new Dictionary<string, ISpriteSequence>();
+
+			foreach (var kvp in node.Value.ToDictionary())
+			{
+				using (new Support.PerfTimer("new Sequence(\"{0}\")".F(node.Key), 20))
+				{
+					try
+					{
+						sequences.Add(kvp.Key, CreateSequence(modData, tileSet, cache, node.Key, kvp.Key, kvp.Value));
+					}
+					catch (FileNotFoundException ex)
+					{
+						// Eat the FileNotFound exceptions from missing sprites
+						Log.Write("debug", ex.Message);
+					}
+				}
+			}
+
+			return new ReadOnlyDictionary<string, ISpriteSequence>(sequences);
+		}
+	}
+
+	public class DefaultSpriteSequence : ISpriteSequence
 	{
 		readonly Sprite[] sprites;
 		readonly bool reverseFacings, transpose;
 
-		public readonly string Name;
-		public readonly int Start;
-		public readonly int Length;
-		public readonly int Stride;
-		public readonly int Facings;
-		public readonly int Tick;
-		public readonly int ZOffset;
-		public readonly int ShadowStart;
-		public readonly int ShadowZOffset;
-		public readonly int[] Frames;
+		protected readonly ISpriteSequenceLoader Loader;
 
-		public Sequence(SpriteCache cache, string unit, string name, MiniYaml info)
+		public string Name { get; private set; }
+		public int Start { get; private set; }
+		public int Length { get; private set; }
+		public int Stride { get; private set; }
+		public int Facings { get; private set; }
+		public int Tick { get; private set; }
+		public int ZOffset { get; private set; }
+		public int ShadowStart { get; private set; }
+		public int ShadowZOffset { get; private set; }
+		public int[] Frames { get; private set; }
+
+		protected virtual string GetSpriteSrc(ModData modData, TileSet tileSet, string sequence, string animation, MiniYaml info, Dictionary<string, MiniYaml> d)
 		{
-			var srcOverride = info.Value;
-			Name = name;
+			return info.Value ?? sequence;
+		}
+
+		public DefaultSpriteSequence(ModData modData, TileSet tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string sequence, string animation, MiniYaml info)
+		{
+			Name = animation;
+			Loader = loader;
 			var d = info.ToDictionary();
 			var offset = float2.Zero;
 			var blendMode = BlendMode.Alpha;
@@ -50,7 +93,8 @@ namespace OpenRA.Graphics
 
 				// Apply offset to each sprite in the sequence
 				// Different sequences may apply different offsets to the same frame
-				sprites = cache[srcOverride ?? unit].Select(
+				var src = GetSpriteSrc(modData, tileSet, sequence, animation, info, d);
+				sprites = cache[src].Select(
 					s => new Sprite(s.Sheet, s.Bounds, s.Offset + offset, s.Channel, blendMode)).ToArray();
 
 				if (!d.ContainsKey("Length"))
@@ -109,17 +153,17 @@ namespace OpenRA.Graphics
 				if (Length > Stride)
 					throw new InvalidOperationException(
 						"{0}: Sequence {1}.{2}: Length must be <= stride"
-							.F(info.Nodes[0].Location, unit, name));
+						.F(info.Nodes[0].Location, sequence, animation));
 
 				if (Start < 0 || Start + Facings * Stride > sprites.Length || ShadowStart + Facings * Stride > sprites.Length)
 					throw new InvalidOperationException(
 						"{6}: Sequence {0}.{1} uses frames [{2}..{3}] of SHP `{4}`, but only 0..{5} actually exist"
-						.F(unit, name, Start, Start + Facings * Stride - 1, srcOverride ?? unit, sprites.Length - 1,
+						.F(sequence, animation, Start, Start + Facings * Stride - 1, src, sprites.Length - 1,
 						info.Nodes[0].Location));
 			}
 			catch (FormatException f)
 			{
-				throw new FormatException("Failed to parse sequences for {0}.{1} at {2}:\n{3}".F(unit, name, info.Nodes[0].Location, f));
+				throw new FormatException("Failed to parse sequences for {0}.{1} at {2}:\n{3}".F(sequence, animation, info.Nodes[0].Location, f));
 			}
 		}
 
@@ -138,9 +182,9 @@ namespace OpenRA.Graphics
 			return ShadowStart >= 0 ? GetSprite(ShadowStart, frame, facing) : null;
 		}
 
-		Sprite GetSprite(int start, int frame, int facing)
+		protected virtual Sprite GetSprite(int start, int frame, int facing)
 		{
-			var f = Traits.Util.QuantizeFacing(facing, Facings);
+			var f = OpenRA.Traits.Util.QuantizeFacing(facing, Facings);
 
 			if (reverseFacings)
 				f = (Facings - f) % Facings;

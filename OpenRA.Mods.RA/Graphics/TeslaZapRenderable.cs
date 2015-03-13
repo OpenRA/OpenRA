@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA.Graphics
 					yield return z;
 		}
 
-		static IEnumerable<IFinalizedRenderable> DrawZapWandering(WorldRenderer wr, float2 from, float2 to, Sequence s, string pal)
+		static IEnumerable<IFinalizedRenderable> DrawZapWandering(WorldRenderer wr, float2 from, float2 to, ISpriteSequence s, string pal)
 		{
 			var z = float2.Zero;	/* hack */
 			var dist = to - from;
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA.Graphics
 			return renderables;
 		}
 
-		static IEnumerable<IFinalizedRenderable> DrawZap(WorldRenderer wr, float2 from, float2 to, Sequence s, out float2 p, string palette)
+		static IEnumerable<IFinalizedRenderable> DrawZap(WorldRenderer wr, float2 from, float2 to, ISpriteSequence s, out float2 p, string palette)
 		{
 			var dist = to - from;
 			var q = new float2(-dist.Y, dist.X);
