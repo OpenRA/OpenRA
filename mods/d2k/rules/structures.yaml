@@ -668,7 +668,7 @@ hightech:
 	Tooltip:
 		Name: High Tech Facility
 		Description: Unlocks advanced technology
-	Production:
+	ProductionFromMapEdge:
 		Produces: Aircraft
 	Exit:
 		SpawnOffset: 0,0,728
