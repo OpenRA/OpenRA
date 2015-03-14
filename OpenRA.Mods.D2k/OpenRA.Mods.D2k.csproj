@@ -68,7 +68,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\CarryUnit.cs" />
+    <Compile Include="Activities\PickupUnit.cs" />
+    <Compile Include="Activities\DeliverUnit.cs" />
     <Compile Include="Activities\SwallowActor.cs" />
     <Compile Include="SpriteLoaders\R8Loader.cs" />
     <Compile Include="Traits\AttackSwallow.cs" />
