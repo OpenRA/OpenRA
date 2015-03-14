@@ -46,14 +46,18 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly TransformsInfo info;
-		readonly BuildingInfo bi;
+		readonly Building building;
+		readonly BuildingInfo buildingInfo;
 		readonly string race;
+		readonly WithMakeAnimation makeAnimation;
 
 		public Transforms(ActorInitializer init, TransformsInfo info)
 		{
 			self = init.Self;
 			this.info = info;
-			bi = self.World.Map.Rules.Actors[info.IntoActor].Traits.GetOrDefault<BuildingInfo>();
+			buildingInfo = self.World.Map.Rules.Actors[info.IntoActor].Traits.GetOrDefault<BuildingInfo>();
+			building = self.TraitOrDefault<Building>();
+			makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
 			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.Race;
 		}
 
@@ -64,11 +68,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanDeploy()
 		{
-			var b = self.TraitOrDefault<Building>();
-			if (b != null && b.Locked)
+			if (building != null && building.Locked)
 				return false;
 
-			return bi == null || self.World.CanPlaceBuilding(info.IntoActor, bi, self.Location + info.Offset, self);
+			return buildingInfo == null || self.World.CanPlaceBuilding(info.IntoActor, buildingInfo, self.Location + info.Offset, self);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -86,9 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void DeployTransform(bool queued)
 		{
-			var b = self.TraitOrDefault<Building>();
-
-			if (!CanDeploy() || (b != null && !b.Lock()))
+			if (!CanDeploy() || (building != null && !building.Lock()))
 			{
 				foreach (var s in info.NoTransformSounds)
 					Sound.PlayToPlayer(self.Owner, s);
@@ -116,7 +117,6 @@ namespace OpenRA.Mods.Common.Traits
 				Race = race
 			};
 
-			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
 			if (makeAnimation != null)
 				makeAnimation.Reverse(self, transform);
 			else

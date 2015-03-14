@@ -17,16 +17,23 @@ namespace OpenRA.Mods.Common.Activities
 {
 	class ExternalCaptureActor : Activity
 	{
-		Target target;
+		readonly ExternalCapturable capturable;
+		readonly ExternalCapturesInfo capturesInfo;
+		readonly Mobile mobile;
+		readonly Target target;
 
-		public ExternalCaptureActor(Target target) { this.target = target; }
+		public ExternalCaptureActor(Actor self, Target target)
+		{
+			this.target = target;
+			capturable = target.Actor.Trait<ExternalCapturable>();
+			capturesInfo = self.Info.Traits.Get<ExternalCapturesInfo>();
+			mobile = self.Trait<Mobile>();
+		}
 
 		public override Activity Tick(Actor self)
 		{
 			if (target.Type != TargetType.Actor)
 				return NextActivity;
-
-			var capturable = target.Actor.Trait<ExternalCapturable>();
 
 			if (IsCanceled || !self.IsInWorld || self.IsDead || !target.IsValidFor(self))
 			{
@@ -36,7 +43,6 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			var mobile = self.Trait<Mobile>();
 			var nearest = target.Actor.OccupiesSpace.NearestCellTo(mobile.ToCell);
 
 			if ((nearest - mobile.ToCell).LengthSquared > 2)
@@ -56,8 +62,6 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (capturable.CaptureProgressTime == capturable.Info.CaptureCompleteTime * 25)
 				{
-					var capturesInfo = self.Info.Traits.Get<ExternalCapturesInfo>();
-
 					self.World.AddFrameEndTask(w =>
 					{
 						if (target.Actor.IsDead)

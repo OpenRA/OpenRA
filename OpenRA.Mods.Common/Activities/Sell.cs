@@ -17,16 +17,23 @@ namespace OpenRA.Mods.Common.Activities
 {
 	class Sell : Activity
 	{
+		readonly Health health;
+		readonly SellableInfo sellableInfo;
+		readonly PlayerResources playerResources;
+
+		public Sell(Actor self)
+		{
+			health = self.TraitOrDefault<Health>();
+			sellableInfo = self.Info.Traits.Get<SellableInfo>();
+			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
+		}
+
 		public override Activity Tick(Actor self)
 		{
-			var h = self.TraitOrDefault<Health>();
-			var si = self.Info.Traits.Get<SellableInfo>();
-			var pr = self.Owner.PlayerActor.Trait<PlayerResources>();
-
 			var cost = self.GetSellValue();
 
-			var refund = (cost * si.RefundPercent * (h == null ? 1 : h.HP)) / (100 * (h == null ? 1 : h.MaxHP));
-			pr.GiveCash(refund);
+			var refund = (cost * sellableInfo.RefundPercent * (health == null ? 1 : health.HP)) / (100 * (health == null ? 1 : health.MaxHP));
+			playerResources.GiveCash(refund);
 
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Sold(self);
