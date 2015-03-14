@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 				Unloading = true;
 				self.CancelActivity();
 				if (helicopter != null)
-					self.QueueActivity(new HeliLand(true));
+					self.QueueActivity(new HeliLand(self, true));
 				self.QueueActivity(new UnloadCargo(self, true));
 			}
 		}

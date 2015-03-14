@@ -17,7 +17,18 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliReturn : Activity
 	{
-		static Actor ChooseHelipad(Actor self)
+		readonly AircraftInfo aircraftInfo;
+		readonly Helicopter heli;
+		readonly HelicopterInfo heliInfo;
+
+		public HeliReturn(Actor self)
+		{
+			aircraftInfo = self.Info.Traits.Get<AircraftInfo>();
+			heli = self.Trait<Helicopter>();
+			heliInfo = self.Info.Traits.Get<HelicopterInfo>();
+		}
+
+		public static Actor ChooseHelipad(Actor self)
 		{
 			var rearmBuildings = self.Info.Traits.Get<HelicopterInfo>().RearmBuildings;
 			return self.World.Actors.Where(a => a.Owner == self.Owner).FirstOrDefault(
@@ -30,24 +41,23 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			var dest = ChooseHelipad(self);
-			var initialFacing = self.Info.Traits.Get<AircraftInfo>().InitialFacing;
+			var initialFacing = aircraftInfo.InitialFacing;
 
 			if (dest == null)
 			{
-				var rearmBuildings = self.Info.Traits.Get<HelicopterInfo>().RearmBuildings;
+				var rearmBuildings = heliInfo.RearmBuildings;
 				var nearestHpad = self.World.ActorsWithTrait<Reservable>()
 									.Where(a => a.Actor.Owner == self.Owner && rearmBuildings.Contains(a.Actor.Info.Name))
 									.Select(a => a.Actor)
 									.ClosestTo(self);
 
 				if (nearestHpad == null)
-					return Util.SequenceActivities(new Turn(self, initialFacing), new HeliLand(true), NextActivity);
+					return Util.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true), NextActivity);
 				else
 					return Util.SequenceActivities(new HeliFly(self, Target.FromActor(nearestHpad)));
 			}
 
 			var res = dest.TraitOrDefault<Reservable>();
-			var heli = self.Trait<Helicopter>();
 
 			if (res != null)
 			{
@@ -61,8 +71,8 @@ namespace OpenRA.Mods.Common.Activities
 			return Util.SequenceActivities(
 				new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
 				new Turn(self, initialFacing),
-				new HeliLand(false),
-				new ResupplyAircraft());
+				new HeliLand(self, false),
+				new ResupplyAircraft(self));
 		}
 	}
 }

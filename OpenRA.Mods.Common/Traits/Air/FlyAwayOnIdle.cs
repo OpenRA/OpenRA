@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public void TickIdle(Actor self)
 		{
-			self.QueueActivity(new FlyOffMap());
+			self.QueueActivity(new FlyOffMap(self));
 			self.QueueActivity(new RemoveSelf());
 		}
 	}

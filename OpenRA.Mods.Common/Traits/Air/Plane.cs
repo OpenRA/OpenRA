@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class Plane : Aircraft, IResolveOrder, IMove, ITick, ISync
 	{
 		public readonly PlaneInfo Info;
+		readonly bool fallsToEarth;
 		[Sync] public WPos RTBPathHash;
 		Actor self;
 		public bool IsMoving { get { return self.CenterPosition.Z > 0; } set { } }
@@ -35,6 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self = init.Self;
 			Info = info;
+			fallsToEarth = self.HasTrait<FallsToEarth>();
 		}
 
 		bool firstTick = true;
@@ -43,14 +45,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (firstTick)
 			{
 				firstTick = false;
-				if (!self.HasTrait<FallsToEarth>()) // TODO: Aircraft husks don't properly unreserve.
+				if (!fallsToEarth) // TODO: Aircraft husks don't properly unreserve.
 					ReserveSpawnBuilding();
 
 				var host = GetActorBelow();
 				if (host == null)
 					return;
 
-				self.QueueActivity(new TakeOff());
+				self.QueueActivity(new TakeOff(self));
 			}
 
 			Repulse();
@@ -89,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(target, Color.Green);
 				self.CancelActivity();
 				self.QueueActivity(new Fly(self, target));
-				self.QueueActivity(new FlyCircle());
+				self.QueueActivity(new FlyCircle(self));
 			}
 			else if (order.OrderString == "Enter")
 			{
@@ -101,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
-				self.QueueActivity(new ResupplyAircraft());
+				self.QueueActivity(new ResupplyAircraft(self));
 			}
 			else if (order.OrderString == "Stop")
 			{
@@ -117,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 				self.SetTargetLine(Target.FromActor(airfield), Color.Green);
 				self.QueueActivity(new ReturnToBase(self, airfield));
-				self.QueueActivity(new ResupplyAircraft());
+				self.QueueActivity(new ResupplyAircraft(self));
 			}
 			else
 			{
@@ -126,12 +128,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Activity MoveTo(CPos cell, int nearEnough) { return Util.SequenceActivities(new Fly(self, Target.FromCell(self.World, cell)), new FlyCircle()); }
-		public Activity MoveTo(CPos cell, Actor ignoredActor) { return Util.SequenceActivities(new Fly(self, Target.FromCell(self.World, cell)), new FlyCircle()); }
-		public Activity MoveWithinRange(Target target, WRange range) { return Util.SequenceActivities(new Fly(self, target, WRange.Zero, range), new FlyCircle()); }
+		public Activity MoveTo(CPos cell, int nearEnough) { return Util.SequenceActivities(new Fly(self, Target.FromCell(self.World, cell)), new FlyCircle(self)); }
+		public Activity MoveTo(CPos cell, Actor ignoredActor) { return Util.SequenceActivities(new Fly(self, Target.FromCell(self.World, cell)), new FlyCircle(self)); }
+		public Activity MoveWithinRange(Target target, WRange range) { return Util.SequenceActivities(new Fly(self, target, WRange.Zero, range), new FlyCircle(self)); }
 		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange)
 		{
-			return Util.SequenceActivities(new Fly(self, target, minRange, maxRange), new FlyCircle());
+			return Util.SequenceActivities(new Fly(self, target, minRange, maxRange), new FlyCircle(self));
 		}
 
 		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new FlyFollow(self, target, minRange, maxRange); }
@@ -144,6 +146,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public Activity MoveToTarget(Actor self, Target target) { return new Fly(self, target, WRange.FromCells(3), WRange.FromCells(5)); }
-		public Activity MoveIntoTarget(Actor self, Target target) { return new Land(target); }
+		public Activity MoveIntoTarget(Actor self, Target target) { return new Land(self, target); }
 	}
 }

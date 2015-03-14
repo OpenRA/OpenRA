@@ -16,9 +16,14 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Land : Activity
 	{
-		Target target;
+		readonly Target target;
+		readonly Plane plane;
 
-		public Land(Target t) { target = t; }
+		public Land(Actor self, Target t)
+		{
+			target = t;
+			plane = self.Trait<Plane>();
+		}
 
 		public override Activity Tick(Actor self)
 		{
@@ -28,7 +33,6 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			var plane = self.Trait<Plane>();
 			var d = target.CenterPosition - self.CenterPosition;
 
 			// The next move would overshoot, so just set the final position
