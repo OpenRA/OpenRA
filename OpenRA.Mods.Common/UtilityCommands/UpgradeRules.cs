@@ -707,6 +707,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "Refinery";
 				}
 
+				// Append an 's' as the fields were changed from string to string[]
+				if (engineVersion < 20150311)
+				{
+					if (depth == 2 && parentKey == "SoundOnDamageTransition")
+					{
+						if (node.Key == "DamagedSound")
+							node.Key = "DamagedSounds";
+						else if (node.Key == "DestroyedSound")
+							node.Key = "DestroyedSounds";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
