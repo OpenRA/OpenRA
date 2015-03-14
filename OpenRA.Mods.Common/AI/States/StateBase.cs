@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.AI
 
 		protected static CPos RandomBuildingLocation(Squad squad)
 		{
-			var location = squad.Bot.BaseCenter;
+			var location = squad.Bot.GetRandomBaseCenter();
 			var buildings = squad.World.ActorsWithTrait<Building>()
 				.Where(a => a.Actor.Owner == squad.Bot.Player).Select(a => a.Actor).ToList();
 			if (buildings.Count > 0)
