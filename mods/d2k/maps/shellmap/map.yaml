@@ -111,7 +111,6 @@ Actors:
 	AtreidesSpiceRefinery: refinery
 		Location: 57,58
 		Owner: Atreides
-		FreeActor: false
 
 Smudges:
 
@@ -127,14 +126,6 @@ Rules:
 			Maximum: 1
 		LuaScript:
 			Scripts: shellmap.lua
-	carryall.scripted:
-		Helicopter:
-			LandWhenIdle: True
-		Cargo:
-			Types: Vehicle
-		WithCargo:
-			DisplayTypes: Vehicle
-			LocalOffset: 0,0,-256
 	rockettower:
 		Power:
 			Amount: 100
