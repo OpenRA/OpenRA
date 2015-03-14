@@ -13,6 +13,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.D2k.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
@@ -68,7 +69,8 @@ namespace OpenRA.Mods.D2k.Traits
 
 			if (ReserveCarryable(carryable))
 			{
-				self.QueueActivity(false, new CarryUnit(self, carryable));
+				self.QueueActivity(false, new PickupUnit(self, carryable));
+				self.QueueActivity(true, new DeliverUnit(self));
 				return true;
 			}
 
@@ -110,7 +112,8 @@ namespace OpenRA.Mods.D2k.Traits
 				// Check if its actually me who's the best candidate
 				if (p.Trait.GetClosestIdleCarrier() == self && ReserveCarryable(p.Actor))
 				{
-					self.QueueActivity(false, new CarryUnit(self, p.Actor));
+					self.QueueActivity(false, new PickupUnit(self, p.Actor));
+					self.QueueActivity(true, new DeliverUnit(self));
 					break;
 				}
 			}
