@@ -1,15 +1,22 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Feb 19 2015)
+## v1.00 (Mar 13 2015)
 
 ### Highlights
   - Added directory mapping to the project tree (closes #223).
   - Added `Run to Cursor` (closes #413).
   - Added support to set/unset start file for a project (closes #411).
   - Added opening/creating file from the command bar (#31).
-  - Fixed loading file with absolute name and line number (fixes #408).
+  - Added `staticanalyzer.infervalue` to enable deeper/slower analysis (#414).
+  - Updated Corona API for v2015.2576.
 
 ### Improvements
+  - Added `staticanalyzer.infervalue` to enable deeper/slower analysis (#414).
+  - Added project path in the error reporting for love2d/corona interpreters.
+  - Added an example with enabling Emacs bindings in the editor.
+  - Added Russian translations for new messages (#70).
+  - Added a warning on class resolution taking too much time in auto-complete.
+  - Added check for empty/comment lines when breakpoints are set.
   - Added directory mapping to the project tree (closes #223).
   - Added `Run to Cursor` (closes #413).
   - Added document method `GetTabText` (#166).
@@ -26,8 +33,18 @@
   - Added trimming of trailing spaces in the file name when loading a file.
   - Added file selection in the project tree after saving a new file.
   - Added opening/creating file from the command bar (#31).
+  - Disabled menu item for renaming/editing for mapped directories (#223).
+  - Disabled field checks for local parameters in staic analyzer (closes #421).
+  - Improved static analyzer to handle more cases with `infervalue` set (#414).
+  - Refactored use of image constants in the project tree.
   - Refactored document modification tracking to remove `SetDocumentModified`.
   - Refactored path normalization for project directory.
+  - Updated Corona API for v2015.2576.
+  - Updated static analyzer output formatting.
+  - Updated analyzer to also check value of `pairs` parameter (#414).
+  - Updated `debugging suspended` message to not trigger with `runonstart`.
+  - Updated messages in interpreters to fix line endings.
+  - Updated lettercase in menu items for consistency.
   - Updated UpdateUI handling to fix multi-view refresh, as in DocumentMap (#352).
   - Updated Outline to use editor tab text (instead of a file name).
   - Updated message on failure to start debugging to add the file name.
@@ -36,6 +53,10 @@
   - updated glewgl api (glew 1.12.0)
 
 ### Fixes
+  - Fixed analyzer to check value of `ipairs` parameter (fixes #414).
+  - Fixed OS detection on Linux that sets `DYLD_LIBRARY_PATH` (fixes #417).
+  - Fixed saving auto-recovery record with no editor tabs opened (fixes #418).
+  - Fixed looping in auto-complete when processing recursive assignments.
   - Fixed filename used in the recovery message.
   - Fixed Output/Console window to stay shown after failure to start debugging.
   - Fixed an issue with search initiated from Output/Console panels (fixes #406).
