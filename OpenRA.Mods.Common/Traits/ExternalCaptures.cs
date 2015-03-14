@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Red);
-			self.QueueActivity(new ExternalCaptureActor(target));
+			self.QueueActivity(new ExternalCaptureActor(self, target));
 		}
 	}
 

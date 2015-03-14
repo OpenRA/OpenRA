@@ -16,15 +16,19 @@ namespace OpenRA.Mods.Common.Activities
 	public class CaptureActor : Enter
 	{
 		readonly Actor actor;
+		readonly Building building;
 		readonly Capturable capturable;
 		readonly CapturesInfo capturesInfo;
+		readonly Health health;
 
 		public CaptureActor(Actor self, Actor target)
 			: base(self, target)
 		{
 			actor = target;
+			building = actor.TraitOrDefault<Building>();
 			capturesInfo = self.Info.Traits.Get<CapturesInfo>();
 			capturable = target.Trait<Capturable>();
+			health = actor.Trait<Health>();
 		}
 
 		protected override bool CanReserve(Actor self)
@@ -37,19 +41,16 @@ namespace OpenRA.Mods.Common.Activities
 			if (actor.IsDead || capturable.BeingCaptured)
 				return;
 
-			var b = actor.TraitOrDefault<Building>();
-			if (b != null && !b.Lock())
+			if (building != null && !building.Lock())
 				return;
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (b != null && b.Locked)
-					b.Unlock();
+				if (building != null && building.Locked)
+					building.Unlock();
 
 				if (actor.IsDead || capturable.BeingCaptured)
 					return;
-
-				var health = actor.Trait<Health>();
 
 				var lowEnoughHealth = health.HP <= capturable.Info.CaptureThreshold * health.MaxHP;
 				if (!capturesInfo.Sabotage || lowEnoughHealth || actor.Owner.NonCombatant)
@@ -61,8 +62,8 @@ namespace OpenRA.Mods.Common.Activities
 					foreach (var t in actor.TraitsImplementing<INotifyCapture>())
 						t.OnCapture(actor, self, oldOwner, self.Owner);
 
-					if (b != null && b.Locked)
-						b.Unlock();
+					if (building != null && building.Locked)
+						building.Unlock();
 				}
 				else
 				{
