@@ -22,6 +22,12 @@
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EngineerRepairable:
+	EmitInfantryOnSell@gdi:
+		ActorTypes: e1, e1, e2, medic
+		Races: gdi
+	EmitInfantryOnSell@nod:
+		ActorTypes: e1, e1, e1, e3, e3
+		Races: nod
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	GivesExperience:

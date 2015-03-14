@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawn new actors when sold.")]
-	class EmitInfantryOnSellInfo : TraitInfo<EmitInfantryOnSell>
+	public class EmitInfantryOnSellInfo : ITraitInfo
 	{
 		public readonly float ValuePercent = 40;
 		public readonly float MinHpPercent = 30;
@@ -23,15 +23,33 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference]
 		[Desc("Be sure to use lowercase. Default value is \"e1\".")]
 		public readonly string[] ActorTypes = { "e1" };
+
+		[Desc("Spawns actors only if the selling player's race is in this list." +
+			"Leave empty to allow all races by default.")]
+		public readonly string[] Races = { };
+
+		public object Create(ActorInitializer init) { return new EmitInfantryOnSell(init.Self, this); }
 	}
 
-	class EmitInfantryOnSell : INotifySold
+	public class EmitInfantryOnSell : INotifySold
 	{
+		readonly EmitInfantryOnSellInfo info;
+		readonly bool correctRace = false;
+
+		public EmitInfantryOnSell(Actor self, EmitInfantryOnSellInfo info)
+		{
+			this.info = info;
+			var raceList = info.Races;
+			correctRace = raceList.Length == 0 || raceList.Contains(self.Owner.Country.Race);
+		}
+
 		public void Selling(Actor self) { }
 
-		static void Emit(Actor self)
+		void Emit(Actor self)
 		{
-			var info = self.Info.Traits.Get<EmitInfantryOnSellInfo>();
+			if (!correctRace)
+				return;
+
 			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
 			var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();
 			var cost = csv != null ? csv.Value : (valued != null ? valued.Cost : 0);
