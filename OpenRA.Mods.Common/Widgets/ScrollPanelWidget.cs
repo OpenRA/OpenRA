@@ -177,6 +177,9 @@ namespace OpenRA.Mods.Common.Widgets
 			newTarget = Math.Min(0, Math.Max(Bounds.Height - ContentHeight, newTarget));
 
 			SetListOffset(newTarget, smooth);
+
+			foreach (var child in Children)
+				child.MouseExited();
 		}
 
 		public void ScrollToBottom(bool smooth = false)
