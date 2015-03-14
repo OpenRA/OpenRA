@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (airfield != null)
 			{
 				self.QueueActivity(new ReturnToBase(self, airfield));
-				self.QueueActivity(new ResupplyAircraft());
+				self.QueueActivity(new ResupplyAircraft(self));
 			}
 			else
 			{
@@ -49,13 +49,13 @@ namespace OpenRA.Mods.Common.Traits
 				if (someBuilding == null)
 				{
 					// ... going down the garden to eat worms ...
-					self.QueueActivity(new FlyOffMap());
+					self.QueueActivity(new FlyOffMap(self));
 					self.QueueActivity(new RemoveSelf());
 					return;
 				}
 
 				self.QueueActivity(new Fly(self, Target.FromActor(someBuilding)));
-				self.QueueActivity(new FlyCircle());
+				self.QueueActivity(new FlyCircle(self));
 			}
 		}
 	}

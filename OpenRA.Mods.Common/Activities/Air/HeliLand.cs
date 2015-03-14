@@ -15,11 +15,15 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliLand : Activity
 	{
+		readonly Helicopter helicopter;
+		readonly WRange landAltitude;
 		bool requireSpace;
 
-		public HeliLand(bool requireSpace)
+		public HeliLand(Actor self, bool requireSpace)
 		{
 			this.requireSpace = requireSpace;
+			helicopter = self.Trait<Helicopter>();
+			landAltitude = helicopter.Info.LandAltitude;
 		}
 
 		public override Activity Tick(Actor self)
@@ -27,12 +31,10 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			var helicopter = self.Trait<Helicopter>();
-
 			if (requireSpace && !helicopter.CanLand(self.Location))
 				return this;
 
-			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.LandAltitude))
+			if (HeliFly.AdjustAltitude(self, helicopter, landAltitude))
 				return this;
 
 			return NextActivity;

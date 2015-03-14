@@ -81,7 +81,7 @@ namespace OpenRA.Mods.D2k.Activities
 					if (selfFacing.Facing != cargoFacing.Facing)
 						return Util.SequenceActivities(new Turn(self, cargoFacing.Facing), this);
 					state = State.Pickup;
-					return Util.SequenceActivities(new HeliLand(false), new Wait(10), this);
+					return Util.SequenceActivities(new HeliLand(self, false), new Wait(10), this);
 
 				case State.Pickup:
 					// Remove our carryable from world

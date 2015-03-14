@@ -16,16 +16,23 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class FlyCircle : Activity
 	{
+		readonly Plane plane;
+		readonly WRange cruiseAltitude;
+
+		public FlyCircle(Actor self)
+		{
+			plane = self.Trait<Plane>();
+			cruiseAltitude = plane.Info.CruiseAltitude;
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled)
 				return NextActivity;
 
-			var plane = self.Trait<Plane>();
-
 			// We can't possibly turn this fast
 			var desiredFacing = plane.Facing + 64;
-			Fly.FlyToward(self, plane, desiredFacing, plane.Info.CruiseAltitude);
+			Fly.FlyToward(self, plane, desiredFacing, cruiseAltitude);
 
 			return this;
 		}
