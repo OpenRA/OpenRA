@@ -10,24 +10,23 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Donate money to building if it has the AcceptSupplies: trait.")]
+	[Desc("Donate money to actors with the `AcceptSupplies` trait.")]
 	class SupplyTruckInfo : ITraitInfo
 	{
-		[Desc("The amount of cash the owner of the building recieves.")]
+		[Desc("The amount of cash the owner recieves.")]
 		public readonly int Payload = 500;
 		public object Create(ActorInitializer init) { return new SupplyTruck(this); }
 	}
 
 	class SupplyTruck : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		SupplyTruckInfo info;
+		readonly SupplyTruckInfo info;
 
 		public SupplyTruck(SupplyTruckInfo info)
 		{

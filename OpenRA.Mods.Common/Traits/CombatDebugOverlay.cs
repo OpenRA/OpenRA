@@ -12,12 +12,9 @@ using System;
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Effects;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Displays fireports, muzzle offsets, and hit areas in developer mode.")]
 	public class CombatDebugOverlayInfo : ITraitInfo
@@ -27,10 +24,11 @@ namespace OpenRA.Mods.RA
 
 	public class CombatDebugOverlay : IPostRender, INotifyDamage
 	{
+		readonly DeveloperMode devMode;
+
 		Lazy<AttackBase> attack;
 		Lazy<IBodyOrientation> coords;
 		Lazy<Health> health;
-		DeveloperMode devMode;
 
 		public CombatDebugOverlay(Actor self)
 		{

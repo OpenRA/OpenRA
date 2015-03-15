@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Traits
 				if (turreted != null)
 					td.Add(new TurretFacingInit(turreted.TurretFacing));
 
-				var chronoshiftable = self.TraitOrDefault<Chronoshiftable>();
+				var chronoshiftable = self.TraitOrDefault<Chronoshiftable>(); // TODO: untie this and move to Mods.Common
 				if (chronoshiftable != null && chronoshiftable.ReturnTicks > 0)
 				{
 					td.Add(new ChronoshiftOriginInit(chronoshiftable.Origin));
