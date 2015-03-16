@@ -1,96 +1,96 @@
 ammocrat:
-	idle: ammocrat
-		start: 0
+	idle: ammo01
+		Start: 0
 		ShadowStart: 2
 
 aban01:
 	idle: aban01
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban02:
 	idle: aban02
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban03:
 	idle: aban03
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban04:
 	idle: aban04
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban05:
 	idle: aban05
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban06:
 	idle: aban06
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban07:
 	idle: aban07
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban08:
 	idle: aban08
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban09:
 	idle: aban09
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban10:
 	idle: aban10
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban11:
 	idle: aban11
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban12:
 	idle: aban12
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban13:
 	idle: aban13
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban14:
 	idle: aban14
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban15:
 	idle: aban15
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban16:
 	idle: aban16
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban17:
 	idle: aban17
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 aban18:
 	idle: aban18
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 bboard01:
@@ -465,7 +465,7 @@ ca0021:
 
 caarmr:
 	idle: ctarmr
-		start: 0
+		Start: 0
 		ShadowStart: 3
 	damaged-idle: ctarmr
 		Start: 1
@@ -477,7 +477,7 @@ caarmr:
 
 caaray:
 	idle: ctaray
-		start: 0
+		Start: 0
 		ShadowStart: 3
 	damaged-idle: ctaray
 		Start: 1
@@ -489,46 +489,46 @@ caaray:
 
 cabhut:
 	idle: cabhut
-		start: 0
+		Start: 0
 
 cacrsh01:
 	idle: ctcrsh01
-		start: 0
+		Start: 0
 
 cacrsh02:
 	idle: ctcrsh02
-		start: 0
+		Start: 0
 
 cacrsh03:
 	idle: ctcrsh03
-		start: 0
+		Start: 0
 
 cacrsh04:
 	idle: ctcrsh04
-		start: 0
+		Start: 0
 
 cacrsh05:
 	idle: ctcrsh05
-		start: 0
+		Start: 0
 
 cahosp:
 	idle: cthosp
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 capyr01:
 	idle: ctpyr01
-		start: 0
+		Start: 0
 		ShadowStart: 1
 
 capyr02:
 	idle: ctpyr02
-		start: 0
+		Start: 0
 		ShadowStart: 1
 
 capyr03:
 	idle: ctpyr03
-		start: 0
+		Start: 0
 		ShadowStart: 1
 
 city01:
@@ -863,11 +863,11 @@ city22:
 
 ctdam:
 	idle: ctdam
-		start: 0
+		Start: 0
 
 ctvega:
 	idle: ctvega
-		start: 0
+		Start: 0
 		ShadowStart: 3
 	damaged-idle: ctvega
 		Start: 1
@@ -879,42 +879,42 @@ ctvega:
 
 gaoldcc1:
 	idle: gtoldcc1
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 gaoldcc2:
 	idle: gtoldcc2
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 gaoldcc3:
 	idle: gtoldcc3
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 gaoldcc4:
 	idle: gtoldcc4
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 gaoldcc5:
 	idle: gtoldcc5
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 gaoldcc6:
 	idle: gtoldcc6
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 gagreen:
 	idle: gagreen
-		start: 0
+		Start: 0
 		ShadowStart: 2
 
 gakodk:
 	idle: gtkodk
-		start: 0
+		Start: 0
 		ShadowStart: 3
 	damaged-idle: gtkodk
 		Start: 1
@@ -926,7 +926,7 @@ gakodk:
 
 namntk:
 	idle: ntmntk
-		start: 0
+		Start: 0
 		ShadowStart: 3
 	damaged-idle: ntmntk
 		Start: 1
@@ -938,7 +938,7 @@ namntk:
 
 ntpyra:
 	idle: ntpyra
-		start: 0
+		Start: 0
 		ShadowStart: 3
 	damaged-idle: ntpyra
 		Start: 1
