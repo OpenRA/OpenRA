@@ -10,6 +10,7 @@
 
 using System;
 using System.Globalization;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -37,6 +38,7 @@ namespace OpenRA.Mods.Common.Commands
 
 			register("disableshroud", "toggles shroud.");
 			register("givecash", "gives the default or specified amount of money.");
+			register("givecashall", "gives the default or specified amount of money to all players and ai.");
 			register("instantbuild", "toggles instant building.");
 			register("buildanywhere", "toggles you the ability to build anywhere.");
 			register("unlimitedpower", "toggles infinite power.");
@@ -63,12 +65,24 @@ namespace OpenRA.Mods.Common.Commands
 				case "givecash":
 					var givecashorder = new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false);
 					int cash;
+					int.TryParse(arg, out cash);
 
-					if (int.TryParse(arg, out cash))
-						givecashorder.ExtraData = (uint)cash;
-
+					givecashorder.ExtraData = (uint)cash;
 					Game.Debug("Giving {0} credits to player {1}.", cash == 0 ? "cheat default" : cash.ToString(CultureInfo.InvariantCulture), world.LocalPlayer.PlayerName);
 					world.IssueOrder(givecashorder);
+
+					break;
+
+				case "givecashall":
+					int.TryParse(arg, out cash);
+
+					foreach (var player in world.Players.Where(p => !p.NonCombatant))
+					{
+						var givecashall = new Order("DevGiveCash", player.PlayerActor, false);
+						givecashall.ExtraData = (uint)cash;
+						Game.Debug("Giving {0} credits to player {1}.", cash == 0 ? "cheat default" : cash.ToString(CultureInfo.InvariantCulture), player.PlayerName);
+						world.IssueOrder(givecashall);
+					}
 
 					break;
 
