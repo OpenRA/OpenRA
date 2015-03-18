@@ -593,6 +593,7 @@ function findReplace:createPanel()
       elseif pos > #order then pos = 1
       end
       order[pos]:SetFocus()
+      if order[pos] ~= scope then order[pos]:SetSelection(-1, -1) end
     else
       event:Skip()
     end
@@ -688,6 +689,7 @@ function findReplace:refreshPanel(replace, infiles)
   -- fragment after successful search and updated replacement
   self.foundString = false
   self.tofocus:SetFocus()
+  self.tofocus:SetSelection(-1, -1) -- select the content
 end
 
 function findReplace:Show(replace,infiles)
