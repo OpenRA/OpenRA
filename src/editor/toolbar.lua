@@ -36,4 +36,16 @@ ide.config.toolbar.iconmap = {
   [ID_BOOKMARKTOGGLE] = {"BOOKMARK-TOGGLE", "Toggle bookmark"},
   [ID_VIEWCALLSTACK] = {"DEBUG-CALLSTACK", "View the stack window"},
   [ID_VIEWWATCHWINDOW] = {"DEBUG-WATCH", "View the watch window"},
+  -- search toolbar
+  [ID_FINDNEXT] = {"FIND", "Find text"},
+  [ID_FINDREPLACENEXT] = {"FIND-REPLACE-NEXT", "Find and replace next instance"},
+  [ID_FINDREPLACEALL] = {"FIND-AND-REPLACE", "Find and replace text"},
+  [ID_FINDSETDIR] = {"FIND-OPT-SETDIR", "Set search directory"},
+  [ID_FINDOPTDIRECTION] = {"FIND-OPT-DOWN", "Search direction"},
+  [ID_FINDOPTWRAPWROUND] = {"FIND-OPT-WRAP-AROUND", "Wrap around"},
+  [ID_FINDOPTWORD] = {"FIND-OPT-WORD", "Match whole word"},
+  [ID_FINDOPTCASE] = {"FIND-OPT-CASE-SENSITIVE", "Match case"},
+  [ID_FINDOPTREGEX] = {"FIND-OPT-REGEX", "Regular expression"},
+  [ID_FINDOPTSUBDIR] = {"FIND-OPT-SUBDIR", "Search in subdirectories"},
+  [ID_FINDOPTBACKUP] = {"FIND-OPT-BACKUP", "Create .bak files"},
 }

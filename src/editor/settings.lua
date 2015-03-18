@@ -416,7 +416,7 @@ function SettingsRestoreView()
     end
 
     -- check if debugging panes are not mentioned and float them
-    for _, name in pairs({"stackpanel", "watchpanel"}) do
+    for _, name in pairs({"stackpanel", "watchpanel", "searchpanel"}) do
       local pane = frame.uimgr:GetPane(name)
       if pane:IsOk() and not layout:find(name) then pane:Float() end
     end
