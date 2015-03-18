@@ -258,7 +258,6 @@ Container@PLAYER_WIDGETS:
 					Height: 243
 					Children:
 						ProductionTypeButton@BUILDING:
-							Key: e
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -266,13 +265,13 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Buildings
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Building
+							HotkeyName: ProductionTypeBuildingKey
 							Children:
 								Image@ICON:
 									X: 5
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@INFANTRY:
-							Key: t
 							Y: 31
 							Width: 25
 							Height: 25
@@ -281,13 +280,13 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Infantry
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Infantry
+							HotkeyName: ProductionTypeInfantryKey
 							Children:
 								Image@ICON:
 									X: 5
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@VEHICLE:
-							Key: y
 							Y: 62
 							Width: 25
 							Height: 25
@@ -296,13 +295,13 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Vehicle
+							HotkeyName: ProductionTypeVehicleKey
 							Children:
 								Image@ICON:
 									X: 5
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@TANKS:
-							Key: y
 							Y: 93
 							Width: 25
 							Height: 25
@@ -311,13 +310,13 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Tanks
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Armor
+							HotkeyName: ProductionTypeTankKey
 							Children:
 								Image@ICON:
 									X: 5
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@AIRCRAFT:
-							Key: y
 							Y: 124
 							Width: 25
 							Height: 25
@@ -326,13 +325,13 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Aircraft
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Aircraft
+							HotkeyName: ProductionTypeAircraftKey
 							Children:
 								Image@ICON:
 									X: 5
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@STARPORT:
-							Key: y
 							Y: 155
 							Width: 25
 							Height: 25
@@ -341,6 +340,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Starport
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Starport
+							HotkeyName: ProductionTypeMerchantKey
 							Children:
 								Image@ICON:
 									X: 5
