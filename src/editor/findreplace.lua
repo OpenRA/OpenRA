@@ -116,16 +116,16 @@ function findReplace:SetScope(dir, mask)
 end
 
 function findReplace:GetSelectedString()
-  local editor = findReplace:GetEditor()
+  local editor = self:GetEditor()
   if editor then
     local startSel = editor:GetSelectionStart()
     local endSel = editor:GetSelectionEnd()
-    if (startSel ~= endSel) and (editor:LineFromPosition(startSel) == editor:LineFromPosition(endSel)) then
-      findReplace.findText = editor:GetTextRange(startSel, endSel)
-      return true
+    if (startSel ~= endSel)
+    and (editor:LineFromPosition(startSel) == editor:LineFromPosition(endSel)) then
+      return editor:GetTextRange(startSel, endSel)
     end
   end
-  return false
+  return
 end
 
 function findReplace:FindString(reverse)
@@ -677,6 +677,8 @@ function findReplace:refreshPanel(replace, infiles)
   local mgr = ide:GetUIManager()
   local pane = mgr:GetPane(searchpanel)
   if not pane:IsShown() then
+    -- if not shown, set value from the current selection
+    self.tofocus:ChangeValue(self:GetSelectedString() or self.tofocus:GetValue())
     local size = ctrl:GetSize()
     pane:Dock():Bottom():BestSize(size):MinSize(size):Layer(0):Row(1):Show()
     mgr:Update()
@@ -689,6 +691,5 @@ function findReplace:refreshPanel(replace, infiles)
 end
 
 function findReplace:Show(replace,infiles)
-  self:GetSelectedString()
   self:refreshPanel(replace,infiles)
 end
