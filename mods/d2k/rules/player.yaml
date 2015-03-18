@@ -7,6 +7,13 @@ Player:
 		ReadyAudio: BuildingReady
 		BlockedAudio: NoRoom
 		RequireOwner: false
+	ClassicProductionQueue@Upgrade:
+		Type: Upgrade
+		LowPowerSlowdown: 3
+		QueuedAudio: Upgrading
+		ReadyAudio: NewOptions
+		BlockedAudio: NoRoom
+		RequireOwner: false
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		LowPowerSlowdown: 2

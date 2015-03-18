@@ -45,6 +45,9 @@ production-icons: chrome.png
 	building: 430,0,16,16
 	building-disabled: 446,0,16,16
 	building-alert: 462,0,16,16
+	upgrade: 430,224,16,16
+	upgrade-disabled: 446,224,16,16
+	upgrade-alert: 462,224,16,16
 	infantry: 430,32,16,16
 	infantry-disabled: 446,32,16,16
 	infantry-alert: 462,32,16,16

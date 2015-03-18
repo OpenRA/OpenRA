@@ -239,7 +239,7 @@ Container@PLAYER_WIDGETS:
 					IconSize: 58, 48
 					IconMargin: 2, 0
 					IconSpriteOffset: 0, 0
-					MinimumRows: 4
+					MinimumRows: 5
 					MaximumRows: 6
 				Container@PALETTE_FOREGROUND:
 					X: 64
@@ -255,7 +255,7 @@ Container@PLAYER_WIDGETS:
 					X: 6
 					Y: 2
 					Width: 25
-					Height: 243
+					Height: 274
 					Children:
 						ProductionTypeButton@BUILDING:
 							Key: e
@@ -271,9 +271,24 @@ Container@PLAYER_WIDGETS:
 									X: 5
 									Y: 5
 									ImageCollection: production-icons
+						ProductionTypeButton@UPGRADE:
+							Key: e
+							Y: 31
+							Width: 25
+							Height: 25
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Upgrades
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Upgrade
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 5
+									ImageCollection: production-icons
 						ProductionTypeButton@INFANTRY:
 							Key: t
-							Y: 31
+							Y: 62
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -288,12 +303,12 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: production-icons
 						ProductionTypeButton@VEHICLE:
 							Key: y
-							Y: 62
+							Y: 93
 							Width: 25
 							Height: 25
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Vehicles
+							TooltipText: Light Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Vehicle
 							Children:
@@ -303,12 +318,12 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: production-icons
 						ProductionTypeButton@TANKS:
 							Key: y
-							Y: 93
+							Y: 124
 							Width: 25
 							Height: 25
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Tanks
+							TooltipText: Heavy Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Armor
 							Children:
@@ -318,7 +333,7 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: production-icons
 						ProductionTypeButton@AIRCRAFT:
 							Key: y
-							Y: 124
+							Y: 155
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -333,7 +348,7 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: production-icons
 						ProductionTypeButton@STARPORT:
 							Key: y
-							Y: 155
+							Y: 186
 							Width: 25
 							Height: 25
 							VisualHeight: 0
