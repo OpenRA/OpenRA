@@ -97,6 +97,8 @@ function findReplace:HasText()
   return (findReplace.findText ~= nil) and (string.len(findReplace.findText) > 0)
 end
 
+function findReplace:SetStatus(msg) self.status:SetLabel(msg) end
+
 function findReplace:GetScope()
   if not self.scopeText then return end
   local dir, mask = self.scopeText:match(('([^%s]*)%s%%s*(.+)'):format(sep,sep))
@@ -135,21 +137,23 @@ function findReplace:FindString(reverse)
     setSearchFlags(editor)
     setTarget(editor, fDown)
     local posFind = editor:SearchInTarget(findReplace.findText)
+    local msg = ""
     if (posFind == NOTFOUND) and findReplace.fWrap then
       editor:SetTargetStart(iff(fDown, 0, editor:GetLength()))
       editor:SetTargetEnd(iff(fDown, editor:GetLength(), 0))
       posFind = editor:SearchInTarget(findReplace.findText)
+      msg = TR("Reached end of text and wrapped around.")
     end
     if posFind == NOTFOUND then
       findReplace.foundString = false
-      findReplace.status:SetLabel(TR("Text not found."))
+      findReplace:SetStatus(TR("Text not found."))
     else
       findReplace.foundString = true
       local start = editor:GetTargetStart()
       local finish = editor:GetTargetEnd()
       editor:ShowPosEnforcePolicy(finish)
       editor:SetSelection(start, finish)
-      findReplace.status:SetLabel("")
+      findReplace:SetStatus(msg)
     end
   end
 end
@@ -223,7 +227,7 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
 
         replaced = true
       end
-      findReplace.status:SetLabel(("%s %s."):format(
+      findReplace:SetStatus(("%s %s."):format(
         TR("Replaced"), TR("%d instance", occurrences):format(occurrences)))
     else
       editor:TargetFromSelection()
@@ -328,7 +332,7 @@ function findReplace:RunInFiles(replace)
   DisplayOutputLn(text)
 
   findReplace.oveditor = nil
-  findReplace.status:SetLabel(text)
+  findReplace:SetStatus(text)
   findReplace.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
 end
 
