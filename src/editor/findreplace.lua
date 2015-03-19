@@ -672,11 +672,10 @@ function findReplace:refreshPanel(replace, infiles)
 
   local value = self.scope:GetValue()
   local ed = ide:GetEditor()
-  if ed then
+  if ed and (not value or #value == 0) then
     local doc = ide:GetDocument(ed)
     local ext = doc:GetFileExt()
-    value = self:SetScope(
-      ide:GetProject() or wx.wxGetCwd(),
+    value = self:SetScope(ide:GetProject() or wx.wxGetCwd(),
       '*.'..(#ext > 0 and ext or '*'))
   end
   self:refreshToolbar(value)
