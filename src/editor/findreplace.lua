@@ -11,7 +11,8 @@ ide.findReplace = {
   infiles = false,
   startpos = nil,
   cureditor = nil,
-  search = nil, -- the control that has the search text
+  searchCtrl = nil, -- the control that has the search text
+  replaceCtrl = nil, -- the control that has the replace text
 
   fWholeWord = false, -- match whole words
   fMatchCase = false, -- case sensitive
@@ -43,6 +44,7 @@ ide.findReplace = {
 }
 local findReplace = ide.findReplace
 local NOTFOUND = -1
+local replaceHintText = '<replace with>'
 local sep = ';'
 
 function findReplace:GetEditor(reset)
@@ -495,7 +497,7 @@ function findReplace:createPanel()
   local findCtrl = wx.wxTextCtrl(ctrl, wx.wxID_ANY, self.findText,
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wx.wxTE_PROCESS_ENTER + wx.wxTE_PROCESS_TAB + wx.wxBORDER_STATIC)
-  local replaceCtrl = wx.wxTextCtrl(ctrl, wx.wxID_ANY, self.replaceText,
+  local replaceCtrl = wx.wxTextCtrl(ctrl, wx.wxID_ANY, replaceHintText,
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wx.wxTE_PROCESS_ENTER + wx.wxTE_PROCESS_TAB + wx.wxBORDER_STATIC)
 
@@ -527,6 +529,7 @@ function findReplace:createPanel()
     if not incremental then PrependStringToArray(findReplace.findTextArray, findReplace.findText) end
     if findReplace.replace then
       findReplace.replaceText = replaceCtrl:GetValue()
+      if findReplace.replaceText == replaceHintText then findReplace.replaceText = "" end
       if not incremental then PrependStringToArray(findReplace.replaceTextArray, findReplace.replaceText) end
     end
     if findReplace.infiles then
@@ -623,6 +626,12 @@ function findReplace:createPanel()
   findCtrl:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, findNext)
   findCtrl:Connect(wx.wxEVT_COMMAND_TEXT_UPDATED, findIncremental)
   findCtrl:Connect(wx.wxEVT_CHAR, charHandle)
+  replaceCtrl:Connect(wx.wxEVT_SET_FOCUS, function(event)
+      event:Skip()
+      -- hide the replace hint; should be done with SetHint method,
+      -- but it's not yet available in wxlua 2.8.12
+      if replaceCtrl:GetValue() == replaceHintText then replaceCtrl:ChangeValue('') end
+    end)
   replaceCtrl:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, findReplaceNext)
   replaceCtrl:Connect(wx.wxEVT_CHAR, charHandle)
   scope:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, findNext)
@@ -651,7 +660,8 @@ function findReplace:createPanel()
       end
     end)
 
-  self.search = findCtrl
+  self.searchCtrl = findCtrl
+  self.replaceCtrl = replaceCtrl
   self.findSizer = findSizer
 end
 
@@ -669,6 +679,9 @@ function findReplace:refreshPanel(replace, infiles)
 
     if replace then
       self.findSizer:Show(1)
+      if self.replaceCtrl:GetValue() == '' then
+        self.replaceCtrl:ChangeValue(replaceHintText)
+      end
     else
       self.findSizer:Hide(1)
     end
@@ -691,7 +704,7 @@ function findReplace:refreshPanel(replace, infiles)
   local pane = mgr:GetPane(searchpanel)
   if not pane:IsShown() then
     -- if not shown, set value from the current selection
-    self.search:ChangeValue(self:GetSelectedString() or self.search:GetValue())
+    self.searchCtrl:ChangeValue(self:GetSelectedString() or self.searchCtrl:GetValue())
     local size = ctrl:GetSize()
     pane:Dock():Bottom():BestSize(size):MinSize(size):Layer(0):Row(1):Show()
     mgr:Update()
@@ -700,8 +713,8 @@ function findReplace:refreshPanel(replace, infiles)
   -- reset search when re-creating dialog to avoid modifying selected
   -- fragment after successful search and updated replacement
   self.foundString = false
-  self.search:SetFocus()
-  self.search:SetSelection(-1, -1) -- select the content
+  self.searchCtrl:SetFocus()
+  self.searchCtrl:SetSelection(-1, -1) -- select the content
 end
 
 function findReplace:Show(replace,infiles)
