@@ -236,6 +236,8 @@ local specialmapping = {
   auxwindow = function(editor,style)
     if not style then return end
 
+    -- don't color toolbars as they have their own color/style
+    local skipcolor = {wxAuiToolBar = true, wxToolBar = true}
     local default = wxstc.wxSTC_STYLE_DEFAULT
     local bg = style.bg and wx.wxColour(unpack(style.bg)) or editor:StyleGetBackground(default)
     local fg = style.fg and wx.wxColour(unpack(style.fg)) or editor:StyleGetForeground(default)
@@ -253,7 +255,7 @@ local specialmapping = {
       for child = 0, children:GetCount()-1 do
         local data = children:Item(child):GetData()
         local _, window = pcall(function() return data:DynamicCast("wxWindow") end)
-        if window and panes:Item(index).name ~= 'toolbar' then
+        if window and not skipcolor[window:GetClassInfo():GetClassName()] then
           window:SetBackgroundColour(bg)
           window:SetForegroundColour(fg)
           window:Refresh()
