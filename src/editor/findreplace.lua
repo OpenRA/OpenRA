@@ -311,6 +311,7 @@ function findReplace:RunInFiles(replace)
     wx.wxDefaultPosition, wx.wxSize(1,1), wx.wxBORDER_NONE)
   findReplace.occurrences = 0
   findReplace.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
+  ide:Yield() -- let the update of the UI happen
 
   ClearOutput()
   ActivateOutput()
