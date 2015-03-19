@@ -45,6 +45,11 @@ Background@WORLD_TOOLTIP:
 			Y: 19
 			Height: 23
 			Font: Bold
+		Label@EXTRA:
+			X: 5
+			Y: 45
+			Height: 4
+			Font: Bold
 
 Background@PRODUCTION_TOOLTIP:
 	Logic: ProductionTooltipLogic

@@ -27,6 +27,7 @@ namespace OpenRA.Widgets
 
 		public WorldTooltipType TooltipType { get; private set; }
 		public IToolTip ActorTooltip { get; private set; }
+		public IEnumerable<IProvideTooltipInfo> ActorTooltipExtra { get; private set; }
 		public FrozenActor FrozenActorTooltip { get; private set; }
 
 		public int EdgeScrollThreshold = 15;
@@ -92,6 +93,7 @@ namespace OpenRA.Widgets
 		public void UpdateMouseover()
 		{
 			TooltipType = WorldTooltipType.None;
+			ActorTooltipExtra = null;
 			var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 			if (!world.Map.Contains(cell))
 				return;
@@ -109,6 +111,7 @@ namespace OpenRA.Widgets
 			if (underCursor != null)
 			{
 				ActorTooltip = underCursor.TraitsImplementing<IToolTip>().First();
+				ActorTooltipExtra = underCursor.TraitsImplementing<IProvideTooltipInfo>();
 				TooltipType = WorldTooltipType.Actor;
 				return;
 			}
@@ -120,6 +123,8 @@ namespace OpenRA.Widgets
 			if (frozen != null)
 			{
 				FrozenActorTooltip = frozen;
+				if (frozen.Actor != null)
+					ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>();
 				TooltipType = WorldTooltipType.FrozenActor;
 			}
 		}

@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -24,6 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var label = widget.Get<LabelWidget>("LABEL");
 			var flag = widget.Get<ImageWidget>("FLAG");
 			var owner = widget.Get<LabelWidget>("OWNER");
+			var extras = widget.Get<LabelWidget>("EXTRA");
 
 			var font = Game.Renderer.Fonts[label.Font];
 			var ownerFont = Game.Renderer.Fonts[owner.Font];
@@ -33,15 +35,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var flagRace = "";
 			var ownerName = "";
 			var ownerColor = Color.White;
+			var extraText = "";
 
 			var singleHeight = widget.Get("SINGLE_HEIGHT").Bounds.Height;
 			var doubleHeight = widget.Get("DOUBLE_HEIGHT").Bounds.Height;
+			var extraHeightOnDouble = extras.Bounds.Y;
+			var extraHeightOnSingle = extraHeightOnDouble - (doubleHeight - singleHeight);
 
 			tooltipContainer.BeforeRender = () =>
 			{
 				if (viewport == null || viewport.TooltipType == WorldTooltipType.None)
 					return;
 
+				var index = 0;
+				extraText = "";
 				showOwner = false;
 
 				Player o = null;
@@ -71,7 +78,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						}
 				}
 
-				var textWidth = font.Measure(labelText).X;
+				if (viewport.ActorTooltipExtra != null)
+				{
+					foreach (var info in viewport.ActorTooltipExtra)
+					{
+						if (info.IsTooltipVisible(world.LocalPlayer))
+						{
+							if (index != 0)
+								extraText += "\n";
+							extraText += info.TooltipText;
+							index++;
+						}
+					}
+				}
+
+				var textWidth = Math.Max(font.Measure(labelText).X, font.Measure(extraText).X);
+
 				if (textWidth != cachedWidth)
 				{
 					label.Bounds.Width = textWidth;
@@ -86,9 +108,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					widget.Bounds.Height = doubleHeight;
 					widget.Bounds.Width = Math.Max(widget.Bounds.Width,
 						owner.Bounds.X + ownerFont.Measure(ownerName).X + label.Bounds.X);
+					index++;
 				}
 				else
 					widget.Bounds.Height = singleHeight;
+
+				if (extraText != "")
+				{
+					widget.Bounds.Height += font.Measure(extraText).Y + extras.Bounds.Height;
+					if (showOwner)
+						extras.Bounds.Y = extraHeightOnDouble;
+					else
+						extras.Bounds.Y = extraHeightOnSingle;
+				}
 			};
 
 			label.GetText = () => labelText;
@@ -98,6 +130,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			owner.IsVisible = () => showOwner;
 			owner.GetText = () => ownerName;
 			owner.GetColor = () => ownerColor;
+			extras.GetText = () => extraText;
 		}
 	}
 }
