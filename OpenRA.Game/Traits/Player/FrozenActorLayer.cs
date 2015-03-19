@@ -29,7 +29,6 @@ namespace OpenRA.Traits
 		public readonly Rectangle Bounds;
 		readonly Actor actor;
 
-		public IRenderable[] Renderables { private get; set; }
 		public Player Owner;
 
 		public ITooltipInfo TooltipInfo;
@@ -39,6 +38,8 @@ namespace OpenRA.Traits
 		public DamageState DamageState;
 
 		public bool Visible;
+
+		public bool IsRendering { get; private set; }
 
 		public FrozenActor(Actor self, MPos[] footprint, CellRegion footprintRegion, Shroud shroud)
 		{
@@ -53,11 +54,16 @@ namespace OpenRA.Traits
 		}
 
 		public uint ID { get { return actor.ActorID; } }
-		public bool IsValid { get { return Owner != null && HasRenderables; } }
+		public bool IsValid { get { return Owner != null; } }
 		public ActorInfo Info { get { return actor.Info; } }
 		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
 
+		static readonly IRenderable[] NoRenderables = new IRenderable[0];
+
 		int flashTicks;
+		IRenderable[] renderables = NoRenderables;
+		bool needRenderables;
+
 		public void Tick(Shroud shroud)
 		{
 			UpdateVisibility(shroud);
@@ -68,6 +74,8 @@ namespace OpenRA.Traits
 
 		void UpdateVisibility(Shroud shroud)
 		{
+			var wasVisible = Visible;
+
 			// We are doing the following LINQ manually to avoid allocating an extra delegate since this is a hot path.
 			// Visible = !Footprint.Any(shroud.IsVisibleTest(FootprintRegion));
 			var isVisibleTest = shroud.IsVisibleTest(FootprintRegion);
@@ -78,6 +86,9 @@ namespace OpenRA.Traits
 					Visible = false;
 					break;
 				}
+
+			if (Visible && !wasVisible)
+				needRenderables = true;
 		}
 
 		public void Flash()
@@ -87,20 +98,28 @@ namespace OpenRA.Traits
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (Renderables == null)
-				return SpriteRenderable.None;
+			if (needRenderables)
+			{
+				needRenderables = false;
+				if (!actor.Destroyed)
+				{
+					IsRendering = true;
+					renderables = actor.Render(wr).ToArray();
+					IsRendering = false;
+				}
+			}
 
 			if (flashTicks > 0 && flashTicks % 2 == 0)
 			{
 				var highlight = wr.Palette("highlight");
-				return Renderables.Concat(Renderables.Where(r => !r.IsDecoration)
+				return renderables.Concat(renderables.Where(r => !r.IsDecoration)
 					.Select(r => r.WithPalette(highlight)));
 			}
 
-			return Renderables;
+			return renderables;
 		}
 
-		public bool HasRenderables { get { return Renderables != null && Renderables.Any(); } }
+		public bool HasRenderables { get { return renderables.Any(); } }
 
 		public override string ToString()
 		{
