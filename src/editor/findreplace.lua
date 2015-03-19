@@ -11,7 +11,7 @@ ide.findReplace = {
   infiles = false,
   startpos = nil,
   cureditor = nil,
-  tofocus = nil, -- the control to set focus on when search is requested
+  search = nil, -- the control that has the search text
 
   fWholeWord = false, -- match whole words
   fMatchCase = false, -- case sensitive
@@ -46,9 +46,9 @@ local NOTFOUND = -1
 local sep = ';'
 
 function findReplace:GetEditor(reset)
-  if reset then findReplace.cureditor = nil end
-  findReplace.cureditor = ide:GetEditorWithLastFocus() or findReplace.cureditor
-  return findReplace.oveditor or findReplace.cureditor or GetEditor()
+  if reset then self.cureditor = nil end
+  self.cureditor = ide:GetEditorWithLastFocus() or self.cureditor
+  return self.oveditor or self.cureditor or GetEditor()
 end
 
 -------------------- Find replace dialog
@@ -94,7 +94,7 @@ local function setTargetAll(editor)
 end
 
 function findReplace:HasText()
-  return (findReplace.findText ~= nil) and (string.len(findReplace.findText) > 0)
+  return (self.findText ~= nil) and (string.len(self.findText) > 0)
 end
 
 function findReplace:SetStatus(msg) self.status:SetLabel(msg) end
@@ -131,29 +131,29 @@ function findReplace:GetSelectedString()
 end
 
 function findReplace:FindString(reverse)
-  local editor = findReplace:GetEditor()
-  if editor and findReplace:HasText() then
-    local fDown = iff(reverse, not findReplace.fDown, findReplace.fDown)
+  local editor = self:GetEditor()
+  if editor and self:HasText() then
+    local fDown = iff(reverse, not self.fDown, self.fDown)
     setSearchFlags(editor)
     setTarget(editor, fDown)
-    local posFind = editor:SearchInTarget(findReplace.findText)
+    local posFind = editor:SearchInTarget(self.findText)
     local msg = ""
-    if (posFind == NOTFOUND) and findReplace.fWrap then
+    if (posFind == NOTFOUND) and self.fWrap then
       editor:SetTargetStart(iff(fDown, 0, editor:GetLength()))
       editor:SetTargetEnd(iff(fDown, editor:GetLength(), 0))
-      posFind = editor:SearchInTarget(findReplace.findText)
+      posFind = editor:SearchInTarget(self.findText)
       msg = TR("Reached end of text and wrapped around.")
     end
     if posFind == NOTFOUND then
-      findReplace.foundString = false
-      findReplace:SetStatus(TR("Text not found."))
+      self.foundString = false
+      self:SetStatus(TR("Text not found."))
     else
-      findReplace.foundString = true
+      self.foundString = true
       local start = editor:GetTargetStart()
       local finish = editor:GetTargetEnd()
       editor:ShowPosEnforcePolicy(finish)
       editor:SetSelection(start, finish)
-      findReplace:SetStatus(msg)
+      self:SetStatus(msg)
     end
   end
 end
@@ -165,19 +165,19 @@ end
 
 function findReplace:FindStringAll(inFileRegister)
   local found = false
-  local editor = findReplace:GetEditor()
-  if editor and findReplace:HasText() then
-    local findLen = string.len(findReplace.findText)
+  local editor = self:GetEditor()
+  if editor and self:HasText() then
+    local findLen = string.len(self.findText)
     local e = setTargetAll(editor)
 
     setSearchFlags(editor)
-    local posFind = editor:SearchInTarget(findReplace.findText)
+    local posFind = editor:SearchInTarget(self.findText)
     if (posFind ~= NOTFOUND) then
       while posFind ~= NOTFOUND do
         inFileRegister(posFind)
         editor:SetTargetStart(posFind + findLen)
         editor:SetTargetEnd(e)
-        posFind = editor:SearchInTarget(findReplace.findText)
+        posFind = editor:SearchInTarget(self.findText)
       end
 
       found = true
@@ -193,41 +193,41 @@ end
 
 function findReplace:ReplaceString(fReplaceAll, inFileRegister)
   local replaced = false
-  local editor = findReplace:GetEditor()
-  if editor and findReplace:HasText() then
+  local editor = self:GetEditor()
+  if editor and self:HasText() then
     -- don't replace in read-only editors
     if editor:GetReadOnly() then return false end
 
     local endTarget = inFileRegister and setTargetAll(editor) or
-      setTarget(editor, findReplace.fDown, fReplaceAll, findReplace.fWrap)
+      setTarget(editor, self.fDown, fReplaceAll, self.fWrap)
 
     if fReplaceAll then
       setSearchFlags(editor)
       local occurrences = 0
-      local posFind = editor:SearchInTarget(findReplace.findText)
+      local posFind = editor:SearchInTarget(self.findText)
       if (posFind ~= NOTFOUND) then
         if (not inFileRegister) then editor:BeginUndoAction() end
         while posFind ~= NOTFOUND do
           if (inFileRegister) then inFileRegister(posFind) end
 
           local length = editor:GetLength()
-          local replaced = findReplace.fRegularExpr
-            and editor:ReplaceTargetRE(findReplace.replaceText)
-            or editor:ReplaceTarget(findReplace.replaceText)
+          local replaced = self.fRegularExpr
+            and editor:ReplaceTargetRE(self.replaceText)
+            or editor:ReplaceTarget(self.replaceText)
 
           editor:SetTargetStart(posFind + replaced)
           -- adjust the endTarget as the position could have changed;
           -- can't simply subtract findText length as it could be a regexp
           endTarget = endTarget + (editor:GetLength() - length)
           editor:SetTargetEnd(endTarget)
-          posFind = editor:SearchInTarget(findReplace.findText)
+          posFind = editor:SearchInTarget(self.findText)
           occurrences = occurrences + 1
         end
         if (not inFileRegister) then editor:EndUndoAction() end
 
         replaced = true
       end
-      findReplace:SetStatus(("%s %s."):format(
+      self:SetStatus(("%s %s."):format(
         TR("Replaced"), TR("%d instance", occurrences):format(occurrences)))
     else
       editor:TargetFromSelection()
@@ -235,18 +235,18 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
       -- move the cursor after successful search
       if editor:GetSelectionStart() ~= editor:GetSelectionEnd()
       -- check that the current selection matches what's being searched for
-      and editor:SearchInTarget(findReplace.findText) ~= NOTFOUND then
+      and editor:SearchInTarget(self.findText) ~= NOTFOUND then
         local start = editor:GetSelectionStart()
-        local replaced = findReplace.fRegularExpr
-          and editor:ReplaceTargetRE(findReplace.replaceText)
-          or editor:ReplaceTarget(findReplace.replaceText)
+        local replaced = self.fRegularExpr
+          and editor:ReplaceTargetRE(self.replaceText)
+          or editor:ReplaceTarget(self.replaceText)
 
         editor:SetSelection(start, start + replaced)
-        findReplace.foundString = false
+        self.foundString = false
 
         replaced = true
       end
-      findReplace:FindString()
+      self:FindString()
     end
   end
 
@@ -309,31 +309,31 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
 end
 
 function findReplace:RunInFiles(replace)
-  if not findReplace:HasText() or findReplace.oveditor then return end
+  if not self:HasText() or self.oveditor then return end
 
-  findReplace.oveditor = ide:CreateStyledTextCtrl(findReplace.panel, wx.wxID_ANY,
+  self.oveditor = ide:CreateStyledTextCtrl(self.panel, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(1,1), wx.wxBORDER_NONE)
-  findReplace.occurrences = 0
-  findReplace.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
+  self.occurrences = 0
+  self.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
   ide:Yield() -- let the update of the UI happen
 
   ClearOutput()
   ActivateOutput()
 
-  local startdir, mask = findReplace:GetScope()
+  local startdir, mask = self:GetScope()
   DisplayOutputLn(("%s '%s' (%s)."):format(
     (replace and TR("Replacing") or TR("Searching for")),
-    findReplace.findText, startdir))
+    self.findText, startdir))
 
-  ProcInFiles(startdir, mask or "*.*", findReplace.fSubDirs, replace)
+  ProcInFiles(startdir, mask or "*.*", self.fSubDirs, replace)
 
   local text = ("%s %s."):format(replace and TR("Replaced") or TR("Found"),
-    TR("%d instance", findReplace.occurrences):format(findReplace.occurrences))
+    TR("%d instance", self.occurrences):format(self.occurrences))
   DisplayOutputLn(text)
 
-  findReplace.oveditor = nil
-  findReplace:SetStatus(text)
-  findReplace.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
+  self.oveditor = nil
+  self:SetStatus(text)
+  self.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
 end
 
 local icons = {
@@ -489,10 +489,10 @@ function findReplace:createPanel()
   -- don't increase font size on Linux as it gets too large
   tfont:SetPointSize(tfont:GetPointSize() + (ide.osname == 'Unix' and 0 or 1))
 
-  local findCtrl = wx.wxTextCtrl(ctrl, wx.wxID_ANY, findReplace.findText,
+  local findCtrl = wx.wxTextCtrl(ctrl, wx.wxID_ANY, self.findText,
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wx.wxTE_PROCESS_ENTER + wx.wxTE_PROCESS_TAB + wx.wxBORDER_STATIC)
-  local replaceCtrl = wx.wxTextCtrl(ctrl, wx.wxID_ANY, findReplace.replaceText,
+  local replaceCtrl = wx.wxTextCtrl(ctrl, wx.wxID_ANY, self.replaceText,
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wx.wxTE_PROCESS_ENTER + wx.wxTE_PROCESS_TAB + wx.wxBORDER_STATIC)
 
@@ -648,7 +648,7 @@ function findReplace:createPanel()
       end
     end)
 
-  self.tofocus = findCtrl
+  self.search = findCtrl
   self.findSizer = findSizer
 end
 
@@ -688,7 +688,7 @@ function findReplace:refreshPanel(replace, infiles)
   local pane = mgr:GetPane(searchpanel)
   if not pane:IsShown() then
     -- if not shown, set value from the current selection
-    self.tofocus:ChangeValue(self:GetSelectedString() or self.tofocus:GetValue())
+    self.search:ChangeValue(self:GetSelectedString() or self.search:GetValue())
     local size = ctrl:GetSize()
     pane:Dock():Bottom():BestSize(size):MinSize(size):Layer(0):Row(1):Show()
     mgr:Update()
@@ -697,8 +697,8 @@ function findReplace:refreshPanel(replace, infiles)
   -- reset search when re-creating dialog to avoid modifying selected
   -- fragment after successful search and updated replacement
   self.foundString = false
-  self.tofocus:SetFocus()
-  self.tofocus:SetSelection(-1, -1) -- select the content
+  self.search:SetFocus()
+  self.search:SetSelection(-1, -1) -- select the content
 end
 
 function findReplace:Show(replace,infiles)
