@@ -105,7 +105,7 @@ function findReplace:GetScope()
   dir = dir:gsub("^%s+",""):gsub("%s+$","")
   -- if the directory doesn't exist, treat it as the extension(s)
   if not wx.wxDirExists(dir) then
-    dir, mask = ide:GetProject() or wx.wxGetCwd(), dir
+    dir, mask = ide:GetProject() or wx.wxGetCwd(), (#dir > 0 and dir or nil)
   end
   return dir, mask
 end
