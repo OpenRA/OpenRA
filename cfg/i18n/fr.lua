@@ -51,7 +51,7 @@ return {
   ["&Up"] = "Vers le &haut", -- src\editor\findreplace.lua
   ["&View"] = "&Affichage", -- src\editor\menu_view.lua
   ["&Watch Window"] = "E&xpressions espionnes", -- src\editor\menu_view.lua
-  [".&bak on Replace"] = ".&bak avant remplacement", -- src\editor\findreplace.lua
+  [".bak on replace"] = ".bak avant remplacement", -- src\editor\findreplace.lua
   ["About %s"] = "À propos de %s", -- src\editor\menu_help.lua
   ["Add To Scratchpad"] = "Ajouter au brouillon", -- src\editor\editor.lua
   ["Add Watch Expression"] = "Ajouter une expression espionne", -- src\editor\editor.lua
@@ -170,8 +170,8 @@ return {
   ["Local console"] = "Console locale", -- src\editor\gui.lua, src\editor\shellbox.lua
   ["Lua &Interpreter"] = "Interpréteur L&ua", -- src\editor\menu_project.lua
   ["Mapped remote request for '%s' to '%s'."] = "La requête distante pour '%s' a été associée à '%s'.", -- src\editor\debugger.lua
-  ["Match &case"] = "Respecter la &casse", -- src\editor\findreplace.lua
-  ["Match &whole word"] = "&Mot entier uniquement", -- src\editor\findreplace.lua
+  ["Match case"] = "Respecter la casse", -- src\editor\findreplace.lua
+  ["Match whole word"] = "Mot entier uniquement", -- src\editor\findreplace.lua
   ["Mixed end-of-line encodings detected."] = "Plusieurs codages de fin de ligne ont été détectés.", -- src\editor\commands.lua
   ["Navigate"] = "Naviguer", -- src\editor\menu_search.lua
   ["New &File"] = "Nouveau &fichier", -- src\editor\filetree.lua
@@ -209,10 +209,10 @@ return {
   ["Recent Files"] = "Fichiers récents", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Rétablit la dernière modification", -- src\editor\menu_edit.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "Une requête de lancement de débogage a été refusée car une session de débogage est déjà en cours.", -- src\editor\debugger.lua
-  ["Regular &expression"] = "&Expression régulière", -- src\editor\findreplace.lua
+  ["Regular expression"] = "Expression régulière", -- src\editor\findreplace.lua
   ["Remote console"] = "Console à distance", -- src\editor\shellbox.lua
   ["Rename All Instances"] = "Renommer toutes les occurrences", -- src\editor\editor.lua
-  ["Replace A&ll"] = "Remplacer &tout", -- src\editor\findreplace.lua
+  ["Replace all"] = "Remplacer tout", -- src\editor\findreplace.lua
   ["Replace All Selections"] = "Remplacer toutes les sélections", -- src\editor\editor.lua
   ["Replace"] = "Remplacer par ", -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "Un caractère UTF8 invalide a été remplacé par %s.", -- src\editor\commands.lua
@@ -298,7 +298,7 @@ return {
   ["View the watch window"] = "Affiche la fenêtre d'expressions espionnes", -- src\editor\menu_view.lua
   ["Watch"] = "Expressions espionnes", -- src\editor\debugger.lua
   ["Welcome to the interactive Lua interpreter."] = "Bienvenue dans l´interpréteur interactif Lua.", -- src\editor\shellbox.lua
-  ["Wrap ar&ound"] = "B&oucler", -- src\editor\findreplace.lua
+  ["Wrap around"] = "Boucler", -- src\editor\findreplace.lua
   ["You must save the program first."] = "Vous devez d'abord enregistrer le programme.", -- src\editor\commands.lua
   ["Zoom In"] = "Zoomer", -- src\editor\menu_view.lua
   ["Zoom Out"] = "Dézoomer", -- src\editor\menu_view.lua

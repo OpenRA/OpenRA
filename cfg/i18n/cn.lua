@@ -50,7 +50,7 @@ return {
   ["&Up"] = "往上", -- src\editor\findreplace.lua
   ["&View"] = "视图", -- src\editor\menu_view.lua
   ["&Watch Window"] = "监视视窗", -- src\editor\menu_view.lua
-  [".&bak on Replace"] = nil, -- src\editor\findreplace.lua
+  [".bak on replace"] = nil, -- src\editor\findreplace.lua
   ["About %s"] = "关于 %s", -- src\editor\menu_help.lua
   ["Add To Scratchpad"] = nil, -- src\editor\editor.lua
   ["Add Watch Expression"] = "添加监视表达式", -- src\editor\editor.lua
@@ -169,8 +169,8 @@ return {
   ["Local console"] = "本地主控台", -- src\editor\gui.lua, src\editor\shellbox.lua
   ["Lua &Interpreter"] = "Lua 解释器", -- src\editor\menu_project.lua
   ["Mapped remote request for '%s' to '%s'."] = "映射远程请求 '%s' 至 '%s'", -- src\editor\debugger.lua
-  ["Match &case"] = "case匹配", -- src\editor\findreplace.lua
-  ["Match &whole word"] = "全句匹配", -- src\editor\findreplace.lua
+  ["Match case"] = "case匹配", -- src\editor\findreplace.lua
+  ["Match whole word"] = "全句匹配", -- src\editor\findreplace.lua
   ["Mixed end-of-line encodings detected."] = "发现混杂的EOL编码", -- src\editor\commands.lua
   ["Navigate"] = nil, -- src\editor\menu_search.lua
   ["New &File"] = nil, -- src\editor\filetree.lua
@@ -208,10 +208,10 @@ return {
   ["Recent Files"] = "最近的文档", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "重做最后被取消的编辑", -- src\editor\menu_edit.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "因为有另一个除错在进行，拒绝开启新的除错对话", -- src\editor\debugger.lua
-  ["Regular &expression"] = "正则表达式", -- src\editor\findreplace.lua
+  ["Regular expression"] = "正则表达式", -- src\editor\findreplace.lua
   ["Remote console"] = "远程主控台", -- src\editor\shellbox.lua
   ["Rename All Instances"] = nil, -- src\editor\editor.lua
-  ["Replace A&ll"] = "更换全部", -- src\editor\findreplace.lua
+  ["Replace all"] = "更换全部", -- src\editor\findreplace.lua
   ["Replace All Selections"] = nil, -- src\editor\editor.lua
   ["Replace"] = "更换", -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "以%s更换无效的UTF8字元", -- src\editor\commands.lua
@@ -297,7 +297,7 @@ return {
   ["View the watch window"] = "查看监视视窗", -- src\editor\menu_view.lua
   ["Watch"] = "监视", -- src\editor\debugger.lua
   ["Welcome to the interactive Lua interpreter."] = "欢迎来到互动 Lua interpreter.", -- src\editor\shellbox.lua
-  ["Wrap ar&ound"] = "卷绕", -- src\editor\findreplace.lua
+  ["Wrap around"] = "卷绕", -- src\editor\findreplace.lua
   ["You must save the program first."] = "必须先保存程序", -- src\editor\commands.lua
   ["Zoom In"] = nil, -- src\editor\menu_view.lua
   ["Zoom Out"] = nil, -- src\editor\menu_view.lua

@@ -51,7 +51,7 @@ return {
   ["&Up"] = "&Hoch", -- src\editor\findreplace.lua
   ["&View"] = "&Ansicht", -- src\editor\menu_view.lua
   ["&Watch Window"] = "&Beobachtungspunkte", -- src\editor\menu_view.lua
-  [".&bak on Replace"] = ".&bak bei Ersetzen", -- src\editor\findreplace.lua
+  [".bak on replace"] = ".bak bei Ersetzen", -- src\editor\findreplace.lua
   ["About %s"] = "Über %s", -- src\editor\menu_help.lua
   ["Add To Scratchpad"] = "Zu Entwurf hinzufügen", -- src\editor\editor.lua
   ["Add Watch Expression"] = "Beobachtungspunkt hinzufügen", -- src\editor\editor.lua
@@ -170,8 +170,8 @@ return {
   ["Local console"] = "Lokale Konsole", -- src\editor\gui.lua, src\editor\shellbox.lua
   ["Lua &Interpreter"] = "&Lua Interpreter", -- src\editor\menu_project.lua
   ["Mapped remote request for '%s' to '%s'."] = "Mapped remote request for '%s' to '%s'.", -- src\editor\debugger.lua
-  ["Match &case"] = "&Groß-/Kleinschreibung", -- src\editor\findreplace.lua
-  ["Match &whole word"] = "Ganzes &Wort", -- src\editor\findreplace.lua
+  ["Match case"] = "Groß-/Kleinschreibung", -- src\editor\findreplace.lua
+  ["Match whole word"] = "Ganzes Wort", -- src\editor\findreplace.lua
   ["Mixed end-of-line encodings detected."] = "Gemischte End-of-Line Kodierung entdeckt.", -- src\editor\commands.lua
   ["Navigate"] = "Navigieren", -- src\editor\menu_search.lua
   ["New &File"] = "Neue &Datei", -- src\editor\filetree.lua
@@ -209,10 +209,10 @@ return {
   ["Recent Files"] = "Letzte Dateien", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Stelle letzte rückgängig gemachte Bearbeitung wieder her", -- src\editor\menu_edit.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "Starten einer neuen Debuggingsession abgelehnt, da bereits eine läuft.", -- src\editor\debugger.lua
-  ["Regular &expression"] = "&Regulärer Ausdruck", -- src\editor\findreplace.lua
+  ["Regular expression"] = "Regulärer Ausdruck", -- src\editor\findreplace.lua
   ["Remote console"] = "Fensteuerungs-Konsole", -- src\editor\shellbox.lua
   ["Rename All Instances"] = "Umbenennen aller Instanzen", -- src\editor\editor.lua
-  ["Replace A&ll"] = "A&lles ersetzen", -- src\editor\findreplace.lua
+  ["Replace all"] = "Alles ersetzen", -- src\editor\findreplace.lua
   ["Replace All Selections"] = "Alle Auswahlen ersetzen", -- src\editor\editor.lua
   ["Replace"] = "Ersetzen", -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "Unbekanntes UTF8-Symbol ersetzt mit %s.", -- src\editor\commands.lua
@@ -298,7 +298,7 @@ return {
   ["View the watch window"] = "Fenster für Beobachtungspunkte ansehen", -- src\editor\menu_view.lua
   ["Watch"] = "Beobachtungspunkte", -- src\editor\debugger.lua
   ["Welcome to the interactive Lua interpreter."] = "Willkommen zum interaktiven Lua-Interpretr!", -- src\editor\shellbox.lua
-  ["Wrap ar&ound"] = "Am Anfang fortsetzen", -- src\editor\findreplace.lua
+  ["Wrap around"] = "Am Anfang fortsetzen", -- src\editor\findreplace.lua
   ["You must save the program first."] = "Erst das Programm speichern.", -- src\editor\commands.lua
   ["Zoom In"] = "Hineinzoomen", -- src\editor\menu_view.lua
   ["Zoom Out"] = "Herauszoomen", -- src\editor\menu_view.lua

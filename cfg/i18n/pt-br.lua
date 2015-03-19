@@ -54,7 +54,7 @@ return {
   ["&Up"] = "Ascendente", -- src\editor\findreplace.lua
   ["&View"] = "Exibir", -- src\editor\menu_view.lua
   ["&Watch Window"] = "Observador", -- src\editor\menu_view.lua
-  [".&bak on Replace"] = ".&bak ao substituir", -- src\editor\findreplace.lua
+  [".bak on replace"] = ".bak ao substituir", -- src\editor\findreplace.lua
   ["About %s"] = "Sobre %s", -- src\editor\menu_help.lua
   ["Add To Scratchpad"] = "Adicionar ao rascunho", -- src\editor\editor.lua
   ["Add Watch Expression"] = "Adicionar observador", -- src\editor\editor.lua
@@ -173,8 +173,8 @@ return {
   ["Local console"] = "Console local", -- src\editor\gui.lua, src\editor\shellbox.lua
   ["Lua &Interpreter"] = "&Interpretador Lua", -- src\editor\menu_project.lua
   ["Mapped remote request for '%s' to '%s'."] = "Solicitação remota '%s' mapeada para '%s'.", -- src\editor\debugger.lua
-  ["Match &case"] = "Diferenciar maiúsc/minúsc", -- src\editor\findreplace.lua
-  ["Match &whole word"] = "Somente palavras inteiras", -- src\editor\findreplace.lua
+  ["Match case"] = "Diferenciar maiúsc/minúsc", -- src\editor\findreplace.lua
+  ["Match whole word"] = "Somente palavras inteiras", -- src\editor\findreplace.lua
   ["Mixed end-of-line encodings detected."] = "Multíplas codificações de fim-de-linha encontradas.", -- src\editor\commands.lua
   ["Navigate"] = "Navegar", -- src\editor\menu_search.lua
   ["New &File"] = "Novo arquivo", -- src\editor\filetree.lua
@@ -212,10 +212,10 @@ return {
   ["Recent Files"] = "Arquivos recentes", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Refazer última edição desfeita", -- src\editor\menu_edit.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "Solicitação de início de uma nova sessão de depuração recusado porque já existe um em progresso.", -- src\editor\debugger.lua
-  ["Regular &expression"] = "&Expressão regular", -- src\editor\findreplace.lua
+  ["Regular expression"] = "Expressão regular", -- src\editor\findreplace.lua
   ["Remote console"] = "Console remoto", -- src\editor\shellbox.lua
   ["Rename All Instances"] = "Renomear todas as instâncias", -- src\editor\editor.lua
-  ["Replace A&ll"] = "Substituir tudo", -- src\editor\findreplace.lua
+  ["Replace all"] = "Substituir tudo", -- src\editor\findreplace.lua
   ["Replace All Selections"] = "Substituir todas as seleções", -- src\editor\editor.lua
   ["Replace"] = "Substituir", -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "Caractere UTF8 inválido susbtituído por %s.", -- src\editor\commands.lua
@@ -301,7 +301,7 @@ return {
   ["View the watch window"] = "Exibir janela do observador", -- src\editor\menu_view.lua
   ["Watch"] = "Observador", -- src\editor\debugger.lua
   ["Welcome to the interactive Lua interpreter."] = "Bem-vindo ao interpretador do Lua.", -- src\editor\shellbox.lua
-  ["Wrap ar&ound"] = "Repetir direção", -- src\editor\findreplace.lua
+  ["Wrap around"] = "Repetir direção", -- src\editor\findreplace.lua
   ["You must save the program first."] = "Você deve salvar o programa primeiro.", -- src\editor\commands.lua
   ["Zoom In"] = "Ampliar", -- src\editor\menu_view.lua
   ["Zoom Out"] = "Afastar", -- src\editor\menu_view.lua
