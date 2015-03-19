@@ -371,32 +371,31 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Find any harvestable resources:
 			var path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
-				PathSearch.Search(self.World, mobileInfo, self, true)
-					.WithHeuristic(loc =>
+				PathSearch.Search(self.World, mobileInfo, self, true,
+					loc =>
 					{
-						// Get the resource at this location:
 						var resType = resLayer.GetResource(loc);
 						if (resType == null)
-							return Constants.CellCost;
+							return false;
 
 						// Can the harvester collect this kind of resource?
 						if (!harvInfo.Resources.Contains(resType.Info.Name))
-							return Constants.CellCost;
+							return false;
 
-						// Another harvester has claimed this resource:
 						if (territory != null)
 						{
+							// Another harvester has claimed this resource:
 							ResourceClaim claim;
 							if (territory.IsClaimedByAnyoneElse(self, loc, out claim))
-								return Constants.CellCost;
+								return false;
 						}
 
-						return 0;
+						return true;
 					})
 					.FromPoint(self.Location));
 
 			if (path.Count == 0)
-				return (CPos?)null;
+				return null;
 
 			return path[0];
 		}
