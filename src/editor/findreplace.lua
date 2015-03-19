@@ -513,11 +513,13 @@ function findReplace:createPanel()
   ctrl:SetSizer(mainSizer)
   ctrl:GetSizer():Fit(ctrl)
 
-  for _, control in ipairs({findCtrl, replaceCtrl, scope}) do
+  for _, control in ipairs({findCtrl, replaceCtrl}) do
     control:SetBackgroundColour(backcolor)
     control:SetForegroundColour(textcolor)
     control:SetFont(tfont)
   end
+  scope:SetBackgroundColour(pancolor) -- set toolbar background
+  scope:SetFont(tfont)
   status:SetFont(tfont)
 
   local mgr = ide:GetUIManager()
