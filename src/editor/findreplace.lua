@@ -384,7 +384,7 @@ function findReplace:createToolbar()
         local icon, description = unpack(iconmap)
         local isbitmap = type(icon) == "userdata" and icon:GetClassInfo():GetClassName() == "wxBitmap"
         local bitmap = isbitmap and icon or ide:GetBitmap(icon, "TOOLBAR", toolBmpSize)
-        tb:AddTool(id, "", bitmap, TR(description))
+        tb:AddTool(id, "", bitmap, (TR)(description))
       end
     end
   end

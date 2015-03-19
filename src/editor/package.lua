@@ -105,7 +105,7 @@ function ide:GetKnownExtensions(ext)
 end
 
 function ide:FindTopMenu(item)
-  local index = ide:GetMenuBar():FindMenu(TR(item))
+  local index = ide:GetMenuBar():FindMenu((TR)(item))
   return ide:GetMenuBar():GetMenu(index), index
 end
 function ide:FindMenuItem(itemid, menu)
