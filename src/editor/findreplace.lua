@@ -323,11 +323,12 @@ function findReplace:RunInFiles(replace)
 
   ProcInFiles(startdir, mask or "*.*", findReplace.fSubDirs, replace)
 
-  DisplayOutputLn(("%s %s."):format(
-    (replace and TR("Replaced") or TR("Found")),
-    TR("%d instance", findReplace.occurrences):format(findReplace.occurrences)))
+  local text = ("%s %s."):format(replace and TR("Replaced") or TR("Found"),
+    TR("%d instance", findReplace.occurrences):format(findReplace.occurrences))
+  DisplayOutputLn(text)
 
   findReplace.oveditor = nil
+  findReplace.status:SetLabel(text)
   findReplace.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
 end
 
