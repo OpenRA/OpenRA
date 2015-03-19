@@ -196,7 +196,10 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
   local editor = self:GetEditor()
   if editor and self:HasText() then
     -- don't replace in read-only editors
-    if editor:GetReadOnly() then return false end
+    if editor:GetReadOnly() then
+      self:SetStatus(TR("Can't replace in read-only text."))
+      return false
+    end
 
     local endTarget = inFileRegister and setTargetAll(editor) or
       setTarget(editor, self.fDown, fReplaceAll, self.fWrap)
