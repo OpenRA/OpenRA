@@ -426,10 +426,14 @@ function findReplace:createToolbar()
             function() self:refreshToolbar(text) end)
         end
         menu:AppendSeparator()
-        menu:Append(ID_FINDSCOPECLEAR, TR("Clear Items"))
-        menu:Connect(ID_FINDSCOPECLEAR, wx.wxEVT_COMMAND_MENU_SELECTED,
-          function() self.scopeTextArray = {} end)
-        menu:Enable(ID_FINDSCOPECLEAR, #self.scopeTextArray > 0)
+        menu:Append(ID_FINDSETTOPROJDIR, TR("Set To Project Directory"))
+        menu:Enable(ID_FINDSETTOPROJDIR, ide:GetProject() ~= nil)
+        menu:Connect(ID_FINDSETTOPROJDIR, wx.wxEVT_COMMAND_MENU_SELECTED,
+          function()
+            local _, mask = self:GetScope()
+            self:refreshToolbar(self:SetScope(ide:GetProject(), mask))
+          end)
+        menu:Append(ID_FINDSETDIR, TR("Choose..."))
         tb:PopupMenu(menu, pos)
       else
         event:Skip()
@@ -543,7 +547,7 @@ function findReplace:createPanel()
     self:FindString()
   end
 
-  local function findReplaceNext(event)
+  local function findReplaceNext()
     transferDataFromWindow()
     if findReplace.replace then
       if findReplace.infiles then
@@ -633,7 +637,7 @@ function findReplace:createPanel()
   ctrl:Connect(ID_FINDSETDIR, wx.wxEVT_COMMAND_MENU_SELECTED,
     function()
       local dir, mask = self:GetScope()
-      local filePicker = wx.wxDirDialog(ctrl, TR("Choose a project directory"),
+      local filePicker = wx.wxDirDialog(ctrl, TR("Choose a search directory"),
         dir or wx.wxGetCwd(), wx.wxFLP_USE_TEXTCTRL)
       if filePicker:ShowModal(true) == wx.wxID_OK then
         self:refreshToolbar(self:SetScope(FixDir(filePicker:GetPath()), mask))
