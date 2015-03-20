@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
-			Sound.PlayNotification(world.Map.Rules, null, "Speech", info.Notification, null);
+			Sound.PlayNotification(world.Map.Rules, null, "Speech", info.Notification, world.RenderPlayer == null ? null : world.RenderPlayer.Country.Race);
 		}
 	}
 }
