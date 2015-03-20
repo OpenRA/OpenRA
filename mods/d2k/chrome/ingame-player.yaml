@@ -144,17 +144,17 @@ Container@PLAYER_WIDGETS:
 					Logic: IngameRadarDisplayLogic
 					Children:
 						LogicTicker@RADAR_TICKER:
-						ColorBlock@RADAR_FADETOBLACK:
-							X: 12
-							Y: 34
-							Width: 202
-							Height: 202
 						Image@INSIGNIA:
 							Logic: AddRaceSuffixLogic
 							X: 60
 							Y: 75
 							ImageCollection: radar
 							ImageName: insignia
+						ColorBlock@RADAR_FADETOBLACK:
+							X: 12
+							Y: 34
+							Width: 202
+							Height: 202
 						Radar@RADAR_MINIMAP:
 							WorldInteractionController: INTERACTION_CONTROLLER
 							X: 12
