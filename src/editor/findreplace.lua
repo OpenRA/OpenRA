@@ -467,6 +467,11 @@ end
 function findReplace:createPanel()
   local ctrl = wx.wxPanel(ide:GetMainFrame(), wx.wxID_ANY, wx.wxDefaultPosition,
       wx.wxDefaultSize, wx.wxFULL_REPAINT_ON_RESIZE)
+  local mgr = ide:GetUIManager()
+  mgr:AddPane(ctrl, wxaui.wxAuiPaneInfo()
+    :Name(searchpanel):CaptionVisible(false):PaneBorder(false):Hide())
+  mgr:Update()
+
   local tb = wxaui.wxAuiToolBar(ctrl, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wxaui.wxAUI_TB_PLAIN_BACKGROUND)
   local status = wx.wxStaticText(tb, wx.wxID_ANY, "")
@@ -521,10 +526,6 @@ function findReplace:createPanel()
   scope:SetBackgroundColour(pancolor) -- set toolbar background
   scope:SetFont(tfont)
   status:SetFont(tfont)
-
-  local mgr = ide:GetUIManager()
-  mgr:AddPane(ctrl, wxaui.wxAuiPaneInfo()
-    :Name(searchpanel):CaptionVisible(false):PaneBorder(false):Hide())
 
   local function transferDataFromWindow(incremental)
     findReplace.findText = findCtrl:GetValue()
