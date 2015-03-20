@@ -80,10 +80,6 @@ namespace PathfinderTests
 
 			IPathSearch search;
 			Stopwatch stopwatch;
-			List<CPos> path1 = null;
-			List<CPos> path2 = null;
-			List<CPos> path3 = null;
-			List<CPos> path4 = null;
 			List<CPos> path5 = null;
 			List<CPos> path6 = null;
 			List<CPos> path7 = null;

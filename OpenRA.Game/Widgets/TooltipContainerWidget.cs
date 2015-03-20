@@ -51,7 +51,7 @@ namespace OpenRA.Widgets
 				if (tooltip != null)
 				{
 					if (pos.X + tooltip.Bounds.Right > Game.Renderer.Resolution.Width)
-						pos.X = Game.Renderer.Resolution.Width - tooltip.Bounds.Right;
+						pos = pos.WithX(Game.Renderer.Resolution.Width - tooltip.Bounds.Right);
 				}
 
 				return pos;

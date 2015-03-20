@@ -147,8 +147,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			map = Map.FromTileset(rules.TileSets[tileset]);
 			map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(iniFile));
 			map.Author = "Westwood Studios";
-			map.MapSize.X = mapSize;
-			map.MapSize.Y = mapSize;
+			map.MapSize = new int2(mapSize, mapSize);
 			map.Bounds = Rectangle.FromLTRB(offsetX, offsetY, offsetX + width, offsetY + height);
 
 			map.Smudges = Exts.Lazy(() => new List<SmudgeReference>());
