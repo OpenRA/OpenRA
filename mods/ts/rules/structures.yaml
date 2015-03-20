@@ -656,6 +656,7 @@ GALITE:
 	RenderBuilding:
 		Palette: terrain
 	-WithMakeAnimation:
+	-WithDeathAnimation:
 	Health:
 		HP: 600
 	Armor:
@@ -836,6 +837,9 @@ GAHPAD:
 		Sequence: idle-platform
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	WithDeathAnimation@BIB:
+		DeathSequence: dead-platform
+		UseDeathTypeSuffix: false
 	Power:
 		Amount: -10
 	Selectable:
@@ -872,6 +876,9 @@ NAHPAD:
 		Sequence: idle-platform
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	WithDeathAnimation@BIB:
+		DeathSequence: dead-platform
+		UseDeathTypeSuffix: false
 	Power:
 		Amount: -10
 	Selectable:
@@ -910,6 +917,9 @@ GADEPT:
 		Sequence: crane
 	WithRepairOverlay@PLATFORM:
 		Sequence: platform
+	WithDeathAnimation@BIB:
+		DeathSequence: dead-ground
+		UseDeathTypeSuffix: false
 	Power:
 		Amount: -30
 

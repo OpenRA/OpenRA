@@ -20,6 +20,9 @@
 		DestroyedSounds: crmble2.aud
 	RenderBuilding:
 	WithBuildingExplosion:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
 	RepairableBuilding:
 	EngineerRepairable:
 	EmitInfantryOnSell@gdi:
@@ -70,6 +73,7 @@
 	-UpdatesPlayerStatistics:
 	-CombatDebugOverlay:
 	-WithMakeAnimation:
+	-WithDeathAnimation:
 	Health:
 		HP: 900
 	Armor:
