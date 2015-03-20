@@ -59,13 +59,15 @@
       <HintPath>..\thirdparty\MaxMind.GeoIP2.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Mono.Nat">
-      <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Open.Nat">
+      <HintPath>..\Open.Nat.dll</HintPath>
+    </Reference>
+    <Reference Include="AsyncBridge">
+      <HintPath>..\AsyncBridge.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

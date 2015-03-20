@@ -10,6 +10,7 @@
 
 using System;
 using System.Net;
+using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -69,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var checkboxUPnP = panel.Get<CheckboxWidget>("UPNP_CHECKBOX");
 			checkboxUPnP.IsChecked = () => allowPortForward;
 			checkboxUPnP.OnClick = () => allowPortForward ^= true;
-			checkboxUPnP.IsDisabled = () => !Game.Settings.Server.NatDeviceAvailable;
+			checkboxUPnP.IsDisabled = () => UPnP.NatDevice == null;
 
 			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
 			if (passwordField != null)

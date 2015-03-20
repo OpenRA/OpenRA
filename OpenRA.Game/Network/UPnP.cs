@@ -9,112 +9,54 @@
 #endregion
 
 using System;
+using System.Diagnostics;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
-using Mono.Nat;
+using Open.Nat;
 
 namespace OpenRA.Network
 {
-	public static class UPnP
+	public class UPnP
 	{
-		public static INatDevice NatDevice;
+		public static NatDevice NatDevice;
 
-		public static void TryNatDiscovery()
+		static NatDiscoverer natDiscoverer;
+		static Mapping mapping;
+		public static IPAddress ExternalIP;
+
+		public static async Task NatDiscovery()
 		{
-			try
-			{
-				NatUtility.Logger = Log.Channels["server"].Writer;
-				NatUtility.Verbose = Game.Settings.Server.VerboseNatDiscovery;
-				NatUtility.DeviceFound += DeviceFound;
-				Game.Settings.Server.NatDeviceAvailable = false;
-				NatUtility.StartDiscovery();
-				Log.Write("server", "NAT discovery started.");
-			}
-			catch (Exception e)
-			{
-				Log.Write("server", "Can't discover UPnP-enabled device: {0}", e);
-				Game.Settings.Server.NatDeviceAvailable = false;
-				Game.Settings.Server.AllowPortForward = false;
-			}
-		}
+			if (Game.Settings.Server.VerboseNatDiscovery)
+				NatDiscoverer.TraceSource.Switch.Level = SourceLevels.Verbose;
 
-		public static void StoppingNatDiscovery()
-		{
-			Log.Write("server", "Stopping NAT discovery.");
-			NatUtility.StopDiscovery();
-
-			if (NatDevice == null || NatDevice.GetType() != typeof(Mono.Nat.Upnp.UpnpNatDevice))
-			{
-				Log.Write("server",
-					"No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Game.Settings.Server.NatDiscoveryTimeout));
-				Game.Settings.Server.NatDeviceAvailable = false;
-				Game.Settings.Server.AllowPortForward = false;
-			}
-		}
-
-		public static void DeviceFound(object sender, DeviceEventArgs args)
-		{
-			Log.Write("server", "NAT device discovered.");
-
-			Game.Settings.Server.NatDeviceAvailable = true;
-			Game.Settings.Server.AllowPortForward = true;
+			natDiscoverer = new NatDiscoverer();
+			var token = new CancellationTokenSource();
+			NatDevice = await natDiscoverer.DiscoverDeviceAsync(PortMapper.Upnp, token);
+			Log.Write("server", "NAT discovery started.");
 
 			try
 			{
-				NatDevice = args.Device;
-				Log.Write("server", "Type: {0}", NatDevice.GetType());
-				Log.Write("server", "Your external IP is: {0}", NatDevice.GetExternalIP());
-
-				foreach (var mp in NatDevice.GetAllMappings())
-					Log.Write("server", "Existing port mapping: protocol={0}, public={1}, private={2}",
-						mp.Protocol, mp.PublicPort, mp.PrivatePort);
+				ExternalIP = NatDevice.GetExternalIPAsync().Result;
 			}
-			catch (Exception e)
+			catch
 			{
-				Log.Write("server", "Can't fetch information from NAT device: {0}", e);
-
-				Game.Settings.Server.NatDeviceAvailable = false;
-				Game.Settings.Server.AllowPortForward = false;
+				Log.Write("server", "Failed to fetch the router's external IP.");
 			}
 		}
 
-		public static void ForwardPort(int lifetime)
+		public static async void ForwardPort()
 		{
-			try
-			{
-				var mapping = new Mapping(Protocol.Tcp, Game.Settings.Server.ExternalPort, Game.Settings.Server.ListenPort, lifetime);
-				NatDevice.CreatePortMap(mapping);
-				Log.Write("server", "Create port mapping: protocol = {0}, public = {1}, private = {2}, lifetime = {3} s",
-					mapping.Protocol, mapping.PublicPort, mapping.PrivatePort, mapping.Lifetime);
-			}
-			catch (MappingException e)
-			{
-				if (e.ErrorCode == 725 && lifetime != 0)
-				{
-					Log.Write("server", "NAT device answered with OnlyPermanentLeasesSupported. Retrying...");
-					ForwardPort(0);
-				}
-				else
-				{
-					Log.Write("server", "Can not forward ports via UPnP: {0}", e);
-					Game.Settings.Server.AllowPortForward = false;
-				}
-			}
+			mapping = new Mapping(Protocol.Tcp, Game.Settings.Server.ListenPort, Game.Settings.Server.ExternalPort, "OpenRA");
+			await NatDevice.CreatePortMapAsync(mapping);
+			Log.Write("server", "Creating port mapping: protocol = {0}, public = {1}, private = {2}, lifetime = {3} s",
+				mapping.Protocol, mapping.PublicPort, mapping.PrivatePort, mapping.Lifetime);
 		}
 
-		public static void RemovePortforward()
+		public static async void RemovePortforward()
 		{
-			try
-			{
-				var mapping = new Mapping(Protocol.Tcp, Game.Settings.Server.ExternalPort, Game.Settings.Server.ListenPort);
-				NatDevice.DeletePortMap(mapping);
-				Log.Write("server", "Remove port mapping: protocol = {0}, public = {1}, private = {2}, expiration = {3}",
-					mapping.Protocol, mapping.PublicPort, mapping.PrivatePort, mapping.Expiration);
-			}
-			catch (Exception e)
-			{
-				Log.Write("server", "Can not remove UPnP portforwarding rules: {0}", e);
-				Game.Settings.Server.AllowPortForward = false;
-			}
+			await NatDevice.DeletePortMapAsync(mapping);
 		}
 	}
 }

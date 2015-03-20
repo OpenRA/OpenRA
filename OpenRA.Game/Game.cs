@@ -209,12 +209,9 @@ namespace OpenRA
 			Log.AddChannel("geoip", "geoip.log");
 
 			if (Settings.Server.DiscoverNatDevices)
-				UPnP.TryNatDiscovery();
+				Settings.Server.AllowPortForward = UPnP.NatDiscovery().Wait(Settings.Server.NatDiscoveryTimeout);
 			else
-			{
-				Settings.Server.NatDeviceAvailable = false;
 				Settings.Server.AllowPortForward = false;
-			}
 
 			try
 			{
@@ -262,9 +259,6 @@ namespace OpenRA
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
 			InitializeMod(Settings.Game.Mod, args);
-
-			if (Settings.Server.DiscoverNatDevices)
-				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, UPnP.StoppingNatDiscovery);
 		}
 
 		public static void InitializeMod(string mod, Arguments args)

@@ -52,13 +52,6 @@ if [ ! -f nunit.framework.dll ]; then
 	rm -rf NUnit.2.6.4
 fi
 
-if [ ! -f Mono.Nat.dll ]; then
-	echo "Fetching Mono.Nat from nuget"
-	nuget install Mono.Nat -Version 1.2.21
-	cp ./Mono.Nat.1.2.21.0/lib/net40/Mono.Nat.dll .
-	rm -rf Mono.Nat.1.2.21.0
-fi
-
 if [ ! -f Moq.dll ]; then
 	echo "Fetching Moq from NuGet."
 	nuget install Moq -Version 4.2.1502.0911
@@ -71,4 +64,18 @@ if [ ! -f FuzzyLogicLibrary.dll ]; then
 	nuget install FuzzyLogicLibrary -Version 1.2.0
 	cp ./FuzzyLogicLibrary.1.2.0/bin/Release/FuzzyLogicLibrary.dll .
 	rm -rf FuzzyLogicLibrary.1.2.0
+fi
+
+if [ ! -f AsyncBridge.dll ]; then
+	echo "Fetching .NET 4.0 AsyncBridge from NuGet."
+	nuget install AsyncBridge -Version 0.1.1
+	cp ./AsyncBridge.0.1.1/lib/net40-Client/AsyncBridge.dll .
+	rm -rf AsyncBridge.0.1.1
+fi
+
+if [ ! -f Open.Nat.dll ]; then
+	echo "Fetching Open.NAT from nuget"
+	nuget install Open.Nat -Version 2.0.11
+	cp ./Open.Nat.2.0.11.0/lib/net45/Open.Nat.dll .
+	rm -rf Open.Nat.2.0.11.0
 fi
