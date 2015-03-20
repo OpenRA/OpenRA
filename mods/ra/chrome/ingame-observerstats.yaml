@@ -74,8 +74,16 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Font: Bold
 							Text: Deaths
 							Align: Right
+						Label@KD_RATIO_HEADER:
+							X: 625
+							Y: 40
+							Width: 80
+							Height: 25
+							Font: Bold
+							Text: Kills/Deaths
+							Align: Right
 						Label@ACTIONS_MIN_HEADER:
-							X: 665
+							X: 755
 							Y: 40
 							Width: 40
 							Height: 25
@@ -317,8 +325,14 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
+								Label@KD_RATIO:
+									X: 595
+									Y: 0
+									Width: 80
+									Height: PARENT_BOTTOM
+									Align: Right
 								Label@ACTIONS_MIN:
-									X: 635
+									X: 725
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
