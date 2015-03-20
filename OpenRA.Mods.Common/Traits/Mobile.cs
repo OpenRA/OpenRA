@@ -258,7 +258,8 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public SubCell GetAvailableSubCell(World world, Actor self, CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		public SubCell GetAvailableSubCell(
+			World world, Actor self, CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, CellConditions check = CellConditions.All)
 		{
 			if (MovementCostForCell(world, cell) == int.MaxValue)
 				return SubCell.Invalid;

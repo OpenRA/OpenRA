@@ -148,7 +148,8 @@ namespace OpenRA
 
 	public class TileSet
 	{
-		static readonly string[] Fields = { "Name", "Id", "SheetSize", "Palette", "PlayerPalette", "Extensions", "WaterPaletteRotationBase", "EditorTemplateOrder", "IgnoreTileSpriteOffsets", "MaximumHeight" };
+		static readonly string[] Fields = { "Name", "Id", "SheetSize", "Palette", "PlayerPalette", "Extensions", "WaterPaletteRotationBase",
+											  "EditorTemplateOrder", "IgnoreTileSpriteOffsets", "MaximumHeight" };
 
 		public readonly string Name;
 		public readonly string Id;

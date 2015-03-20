@@ -26,7 +26,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			powerIcon.GetImageName = () => powerManager.ExcessPower < 0 ? "power-critical" : "power-normal";
 			power.GetColor = () => powerManager.ExcessPower < 0 ? Color.Red : Color.White;
 			power.GetText = () => powerManager.PowerProvided == 1000000 ? "inf" : powerManager.ExcessPower.ToString();
-			power.GetTooltipText = () => "Power Usage: " + powerManager.PowerDrained.ToString() + (powerManager.PowerProvided != 1000000 ? "/" + powerManager.PowerProvided.ToString() : "");
+			power.GetTooltipText = () => "Power Usage: " + powerManager.PowerDrained.ToString() +
+				(powerManager.PowerProvided != 1000000 ? "/" + powerManager.PowerProvided.ToString() : "");
 		}
 	}
 }

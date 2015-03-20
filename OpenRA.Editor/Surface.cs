@@ -283,7 +283,8 @@ namespace OpenRA.Editor
 						var rawImage = tile[index];
 						for (var x = 0; x < TileSetRenderer.TileSize; x++)
 							for (var y = 0; y < TileSetRenderer.TileSize; y++)
-								p[(j * TileSetRenderer.TileSize + y) * stride + i * TileSetRenderer.TileSize + x] = Palette.GetColor(rawImage[x + TileSetRenderer.TileSize * y]).ToArgb();
+								p[(j * TileSetRenderer.TileSize + y) * stride + i * TileSetRenderer.TileSize + x] =
+									Palette.GetColor(rawImage[x + TileSetRenderer.TileSize * y]).ToArgb();
 
 						if (Map.MapResources.Value[uv].Type != 0)
 						{

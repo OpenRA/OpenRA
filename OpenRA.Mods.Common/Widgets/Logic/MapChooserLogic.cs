@@ -114,7 +114,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var maps = Game.ModData.MapCache
 				.Where(m => m.Status == MapStatus.Available && (m.Map.Visibility & filter) != 0)
 				.Where(m => gameMode == null || m.Type == gameMode)
-				.Where(m => mapFilter == null || m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0 || m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0)
+				.Where(m => mapFilter == null ||
+					m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0 ||
+					m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0)
 				.OrderBy(m => m.PlayerCount)
 				.ThenBy(m => m.Title);
 
@@ -126,7 +128,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Access the minimap to trigger async generation of the minimap.
 				preview.GetMinimap();
 
-				var item = ScrollItemWidget.Setup(preview.Uid, itemTemplate, () => selectedUid == preview.Uid, () => selectedUid = preview.Uid, () => { Ui.CloseWindow(); onSelect(preview.Uid); });
+				var item = ScrollItemWidget.Setup(preview.Uid, itemTemplate, () => selectedUid == preview.Uid,
+					() => selectedUid = preview.Uid, () => { Ui.CloseWindow(); onSelect(preview.Uid); });
 				item.IsVisible = () => item.RenderBounds.IntersectsWith(scrollpanel.RenderBounds);
 
 				var titleLabel = item.Get<LabelWidget>("TITLE");

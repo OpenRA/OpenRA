@@ -181,10 +181,14 @@ namespace OpenRA.Mods.Common.Activities
 			else
 			{
 				mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, nextCell.Value.First, nextCell.Value.Second);
+				var from = self.World.Map.CenterOfSubCell(mobile.FromCell, mobile.FromSubCell);
+				var to = Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) +
+					(self.World.Map.OffsetOfSubCell(mobile.FromSubCell) +
+					self.World.Map.OffsetOfSubCell(mobile.ToSubCell)) / 2;
 				var move = new MoveFirstHalf(
 					this,
-					self.World.Map.CenterOfSubCell(mobile.FromCell, mobile.FromSubCell),
-					Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (self.World.Map.OffsetOfSubCell(mobile.FromSubCell) + self.World.Map.OffsetOfSubCell(mobile.ToSubCell)) / 2,
+					from,
+					to,
 					mobile.Facing,
 					mobile.Facing,
 					0);

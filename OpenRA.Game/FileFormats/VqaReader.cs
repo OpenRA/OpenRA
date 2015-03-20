@@ -38,8 +38,12 @@ namespace OpenRA.FileFormats
 		byte[] cbf;
 		byte[] cbp;
 		byte[] cbfBuffer;
-		byte[] fileBuffer = new byte[256000]; // Buffer for loading file subchunks, the maximum chunk size of a file is not defined
-		int maxCbfzSize = 256000;             // and the header definition for the size of the biggest chunks (color data) isn't accurate. But 256k is large enough for all TS videos(< 200k).
+
+		// Buffer for loading file subchunks, the maximum chunk size of a file is not defined
+		// and the header definition for the size of the biggest chunks (color data) isn't accurate.
+		// But 256k is large enough for all TS videos(< 200k).
+		byte[] fileBuffer = new byte[256000];
+		int maxCbfzSize = 256000;
 		int vtprSize = 0;
 		int currentChunkBuffer = 0;
 		int chunkBufferOffset = 0;

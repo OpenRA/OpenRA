@@ -205,7 +205,8 @@ namespace OpenRA.Mods.Common.AI
 				if (playerPower.ExcessPower < 0 || playerPower.ExcessPower < pis.Sum(pi => pi.Amount))
 				{
 					// Try building a power plant instead
-					var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(pi => pi.Amount));
+					var power = GetProducibleBuilding("Power",
+						buildableThings, a => a.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(pi => pi.Amount));
 					if (power != null && power.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(pi => pi.Amount) > 0)
 					{
 						// TODO: Handle the case when of when we actually do need a power plant because we don't have enough but are also suffering from a power outage
@@ -220,7 +221,8 @@ namespace OpenRA.Mods.Common.AI
 				}
 
 				// Lets build this
-				HackyAI.BotDebug("{0} decided to build {1}: Desired is {2} ({3} / {4}); current is {5} / {4}", queue.Actor.Owner, name, frac.Value, frac.Value * playerBuildings.Length, playerBuildings.Length, count);
+				HackyAI.BotDebug("{0} decided to build {1}: Desired is {2} ({3} / {4}); current is {5} / {4}",
+					queue.Actor.Owner, name, frac.Value, frac.Value * playerBuildings.Length, playerBuildings.Length, count);
 				return actor;
 			}
 

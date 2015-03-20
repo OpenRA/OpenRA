@@ -114,7 +114,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var frameContainer = panel.GetOrNull("FRAME_SELECTOR");
 			if (frameContainer != null)
-				frameContainer.IsVisible = () => (currentSprites != null && currentSprites.Length > 1) || (isVideoLoaded && player != null && player.Video != null && player.Video.Frames > 1);
+				frameContainer.IsVisible = () => (currentSprites != null && currentSprites.Length > 1) ||
+					(isVideoLoaded && player != null && player.Video != null && player.Video.Frames > 1);
 
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
 			if (frameSlider != null)
