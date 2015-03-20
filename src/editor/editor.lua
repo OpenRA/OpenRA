@@ -818,13 +818,12 @@ function CreateEditor(bare)
       if marginno == margin.MARKER then
         DebuggerToggleBreakpoint(editor, line)
       elseif marginno == margin.FOLD then
+        local header = bit.band(editor:GetFoldLevel(line),
+          wxstc.wxSTC_FOLDLEVELHEADERFLAG) == wxstc.wxSTC_FOLDLEVELHEADERFLAG
         if wx.wxGetKeyState(wx.WXK_SHIFT) and wx.wxGetKeyState(wx.WXK_CONTROL) then
           FoldSome()
-        else
-          local level = editor:GetFoldLevel(line)
-          if HasBit(level, wxstc.wxSTC_FOLDLEVELHEADERFLAG) then
-            editor:ToggleFold(line)
-          end
+        elseif header then
+          editor:ToggleFold(line)
         end
       end
     end)
