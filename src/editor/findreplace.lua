@@ -169,7 +169,6 @@ function findReplace:FindStringAll(inFileRegister)
   local found = false
   local editor = self:GetEditor()
   if editor and self:HasText() then
-    local findLen = string.len(self.findText)
     local e = setTargetAll(editor)
 
     setSearchFlags(editor)
@@ -177,7 +176,7 @@ function findReplace:FindStringAll(inFileRegister)
     if (posFind ~= NOTFOUND) then
       while posFind ~= NOTFOUND do
         inFileRegister(posFind)
-        editor:SetTargetStart(posFind + findLen)
+        editor:SetTargetStart(editor:GetTargetEnd())
         editor:SetTargetEnd(e)
         posFind = editor:SearchInTarget(self.findText)
       end
