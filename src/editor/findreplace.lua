@@ -5,6 +5,7 @@
 
 local ide = ide
 local searchpanel = 'searchpanel'
+local q = EscapeMagic
 ide.findReplace = {
   panel = nil, -- the control for find/replace
   replace = false, -- is it a find or replace
@@ -274,7 +275,8 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
   -- accept "*.lua; .txt,.wlua" combinations
   local masks = {}
   for m in mask:gmatch("[^%s;,]+") do
-    table.insert(masks, m:gsub("%.", "%%."):gsub("%*", ".*").."$")
+    -- escape all special characters and replace (escaped) * with .*
+    table.insert(masks, q(m):gsub("%%%*", ".*").."$")
   end
   for _,file in ipairs(files) do
     -- ignore .bak files when replacing and asked to store .bak files
