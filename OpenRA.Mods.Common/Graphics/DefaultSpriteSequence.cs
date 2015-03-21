@@ -28,8 +28,16 @@ namespace OpenRA.Mods.Common.Graphics
 		public IReadOnlyDictionary<string, ISpriteSequence> ParseSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node)
 		{
 			var sequences = new Dictionary<string, ISpriteSequence>();
+			var nodes = node.Value.ToDictionary();
 
-			foreach (var kvp in node.Value.ToDictionary())
+			MiniYaml defaults;
+			if (nodes.TryGetValue("Defaults", out defaults))
+			{
+				nodes.Remove("Defaults");
+				nodes = nodes.ToDictionary(kv => kv.Key, kv => MiniYaml.MergeStrict(kv.Value, defaults));
+			}
+
+			foreach (var kvp in nodes)
 			{
 				using (new Support.PerfTimer("new Sequence(\"{0}\")".F(node.Key), 20))
 				{
