@@ -534,5 +534,16 @@ namespace OpenRA.Traits
 		{
 			return bins.SelectMany(bin => bin.Actors.Where(actor => actor.IsInWorld));
 		}
+
+		public IEnumerable<Actor> GetActorsOnRay(CPos start, CPos end)
+		{
+			foreach (var cell in Raycaster.Raycast(start, end))
+			{
+				var actors = GetUnitsAt(cell);
+
+				foreach (var actor in actors)	
+					yield return actor;
+			}
+		}
 	}
 }
