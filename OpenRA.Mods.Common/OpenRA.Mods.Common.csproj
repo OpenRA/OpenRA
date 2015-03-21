@@ -616,6 +616,7 @@
     <Compile Include="Widgets\ViewportControllerWidget.cs" />
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
     <Compile Include="Traits\Render\WithInfantryBody.cs" />
+    <Compile Include="UtilityCommands\CheckSequenceSprites.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

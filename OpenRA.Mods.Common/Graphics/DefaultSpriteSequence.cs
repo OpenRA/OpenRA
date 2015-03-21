@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Graphics
 {
 	public class DefaultSpriteSequenceLoader : ISpriteSequenceLoader
 	{
+		public Action<string> OnMissingSpriteError { get; set; }
 		public DefaultSpriteSequenceLoader(ModData modData) { }
 
 		public virtual ISpriteSequence CreateSequence(ModData modData, TileSet tileSet, SpriteCache cache, string sequence, string animation, MiniYaml info)
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.Common.Graphics
 					catch (FileNotFoundException ex)
 					{
 						// Eat the FileNotFound exceptions from missing sprites
-						Log.Write("debug", ex.Message);
+						OnMissingSpriteError(ex.Message);
 					}
 				}
 			}
