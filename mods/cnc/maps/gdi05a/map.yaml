@@ -2,7 +2,7 @@ MapFormat: 7
 
 RequiresMod: cnc
 
-Title: Repair the GDI base
+Title: Repair the GDI base (a)
 
 Description: A GDI field base is under attack. They have fended off one attack but will not survive another.\n\nMove to the base, repair the structures and then launch a strike force to destroy the Nod base in the area.\n\nDestroy all Nod units and structures.
 
@@ -56,6 +56,11 @@ Players:
 		LockTeam: True
 		Allies: GDI
 		Enemies: Nod
+	PlayerReference@AbandonedBase:
+		Name: AbandonedBase
+		NonCombatant: True
+		ColorRamp: 31,222,183
+		Race: gdi
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
@@ -684,36 +689,36 @@ Actors:
 		Owner: Neutral
 	GdiProc: proc
 		Location: 50,51
-		Owner: Neutral
+		Owner: AbandonedBase
 		Health: 0.3085938
 		FreeActor: False
 	GdiHarv: harv
 		Location: 48,53
-		Owner: Neutral
+		Owner: AbandonedBase
 		Facing: 64
 	GdiWeap: weap
 		Location: 50,54
-		Owner: Neutral
+		Owner: AbandonedBase
 		Health: 0.2695313
 	GdiNuke1: nuke
 		Location: 53,55
-		Owner: Neutral
+		Owner: AbandonedBase
 		Health: 0.2890625
 	GdiPyle: pyle
 		Location: 46,55
-		Owner: Neutral
+		Owner: AbandonedBase
 		Health: 0.25
 	GdiSilo1: silo
 		Location: 53,51
-		Owner: Neutral
+		Owner: AbandonedBase
 		Health: 0.3320313
 	GdiSilo2: silo
 		Location: 53,53
-		Owner: Neutral
+		Owner: AbandonedBase
 		Health: 0.25
 	GdiNuke2: nuke
 		Location: 48,56
-		Owner: Neutral
+		Owner: AbandonedBase
 		Health: 0.2070313
 	NodConYard: fact
 		Location: 9,29
@@ -796,6 +801,7 @@ Rules:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+		EnemyWatcher:
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy
@@ -826,6 +832,7 @@ Rules:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+		AnnounceOnSeen:
 	^Wall:
 		Tooltip:
 			ShowOwnerRow: false
