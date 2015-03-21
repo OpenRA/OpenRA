@@ -22,6 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string Notification = null;
 
+		public readonly bool AnnounceNeutrals = false;
+
 		public object Create(ActorInitializer init) { return new AnnounceOnSeen(init.Self, this); }
 	}
 
@@ -40,6 +42,12 @@ namespace OpenRA.Mods.Common.Traits
 		public void OnDiscovered(Actor self, Player discoverer, bool playNotification)
 		{
 			if (!playNotification || discoverer != self.World.RenderPlayer)
+				return;
+
+			// Hack to disable notifications for neutral actors so some custom maps don't need fixing
+			if (!Info.AnnounceNeutrals &&
+				((self.EffectiveOwner != null && discoverer.Stances[self.EffectiveOwner.Owner] != Stance.Enemy)
+				 || discoverer.Stances[self.Owner] != Stance.Enemy))
 				return;
 
 			// Audio notification
