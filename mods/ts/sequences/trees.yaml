@@ -1,5 +1,6 @@
 tibtre01:
 	Defaults:
+		UseTilesetExtension: true
 		Offset: 0, -12
 	idle:
 		ShadowStart: 11
@@ -11,6 +12,7 @@ tibtre01:
 
 tibtre02:
 	Defaults:
+		UseTilesetExtension: true
 		Offset: 0, -12
 	idle:
 		ShadowStart: 11
@@ -22,6 +24,7 @@ tibtre02:
 
 tibtre03:
 	Defaults:
+		UseTilesetExtension: true
 		Offset: 0, -12
 	idle:
 		ShadowStart: 11
@@ -45,103 +48,129 @@ bigblue:
 tree01:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree02:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree03:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree04:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree05:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree06:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree07:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree08:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree09:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree10:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree11:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree12:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree13:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree14:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree15:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree16:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree17:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree18:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree19:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree20:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree21:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree22:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree23:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree24:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 tree25:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 veinhole:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
