@@ -21,7 +21,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 	{
 		public string Name { get { return "--tileset-import"; } }
 
-		[Desc("FILENAME", "Convert a legacy tileset to the OpenRA format.")]
+		[Desc("FILENAME", "TEMPLATEEXTENSION", "Convert a legacy tileset to the OpenRA format.")]
 		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
@@ -30,9 +30,9 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			GlobalFileSystem.LoadFromManifest(Game.ModData.Manifest);
 
 			var file = new IniFile(File.Open(args[1], FileMode.Open));
+			var extension = args[2];
 
 			var templateIndex = 0;
-			var extension = "tem";
 
 			var terrainTypes = new string[]
 			{
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 							Console.WriteLine("\tTemplate@{0}:", templateIndex);
 							Console.WriteLine("\t\tCategory: {0}", sectionCategory);
 							Console.WriteLine("\t\tId: {0}", templateIndex);
-							Console.WriteLine("\t\tImage: {0}{1:D2}", sectionFilename, i);
+							Console.WriteLine("\t\tImage: {0}{1:D2}.{2}", sectionFilename, i, extension);
 
 							var templateWidth = s.ReadUInt32();
 							var templateHeight = s.ReadUInt32();
