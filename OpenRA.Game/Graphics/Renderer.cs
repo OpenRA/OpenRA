@@ -260,5 +260,10 @@ namespace OpenRA.Graphics
 			if (fontSheetBuilder != null)
 				fontSheetBuilder.Dispose();
 		}
+
+		public string GetClipboardText()
+		{
+			return Device.GetClipboardText();
+		}
 	}
 }

@@ -14,8 +14,9 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Orders;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets
+namespace OpenRA.Mods.Common.Widgets
 {
 	public enum WorldTooltipType { None, Unexplored, Actor, FrozenActor }
 
