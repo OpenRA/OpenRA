@@ -34,19 +34,24 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			var templateIndex = 0;
 			var extension = "tem";
 
-			var terrainTypes = new Dictionary<int, string>()
+			var terrainTypes = new string[]
 			{
-				{ 1, "Clear" }, // Desert sand(?)
-				{ 5, "Road" }, // Paved road
-				{ 6, "Rail" }, // Monorail track
-				{ 7, "Impassable" }, // Building
-				{ 9, "Water" }, // Deep water(?)
-				{ 10, "Water" }, // Shallow water
-				{ 11, "Road" }, // Paved road (again?)
-				{ 12, "DirtRoad" }, // Dirt road
-				{ 13, "Clear" }, // Regular clear terrain
-				{ 14, "Rough" }, // Rough terrain (cracks etc)
-				{ 15, "Cliff" }, // Cliffs
+				"Clear",
+				"Clear", // Note: sometimes "Ice"
+				"Ice",
+				"Ice",
+				"Ice",
+				"Road", // TS defines this as "Tunnel", but we don't need this
+				"Rail",
+				"Impassable", // TS defines this as "Rock", but also uses it for buildings
+				"Impassable",
+				"Water",
+				"Water", // TS defines this as "Beach", but uses it for water...?
+				"Road",
+				"DirtRoad", // TS defines this as "Road", but we may want different speeds
+				"Clear",
+				"Rough",
+				"Cliff" // TS defines this as "Rock"
 			};
 
 			// Loop over template sets
@@ -95,7 +100,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 								var terrainType = s.ReadUInt8();
 								var rampType = s.ReadUInt8();
 
-								if (!terrainTypes.ContainsKey(terrainType))
+								if (terrainType >= terrainTypes.Length)
 									throw new InvalidDataException("Unknown terrain type {0} in {1}".F(terrainType, templateFilename));
 
 								Console.WriteLine("\t\t\t{0}: {1}", j, terrainTypes[terrainType]);
