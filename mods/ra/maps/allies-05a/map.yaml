@@ -1687,11 +1687,11 @@ Rules:
 			TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
 	E7.noautotarget:
 		Inherits: E7
-		RenderInfantry:
-			Image: E7
 		AutoTarget:
 			EnableStances: false
 		-AttackMove:
+		RenderSprites:
+			Image: E7
 	Colt:
 		-Huntable:
 		AutoTargetIgnore:
@@ -1727,7 +1727,7 @@ Rules:
 			Range: 8c0
 		AutoTarget:
 			ScanRadius: 7
-		RenderInfantry:
+		RenderSprites:
 			Image: E1
 	E2.Autotarget:
 		Inherits: E2
@@ -1737,7 +1737,7 @@ Rules:
 			Range: 8c0
 		AutoTarget:
 			ScanRadius: 7
-		RenderInfantry:
+		RenderSprites:
 			Image: E2
 	AFLD:
 		AirstrikePower@spyplane:

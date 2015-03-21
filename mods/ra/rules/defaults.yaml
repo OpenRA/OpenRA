@@ -186,7 +186,8 @@
 		Voice: GenericVoice
 	TargetableUnit:
 		TargetTypes: Ground, Infantry, Disguise
-	RenderInfantry:
+	RenderSprites:
+	WithInfantryBody:
 	WithDeathAnimation:
 	AutoTarget:
 	AttackMove:
@@ -557,7 +558,7 @@
 	AttackFrontal:
 	ProximityCaptor:
 		Types: CivilianInfantry
-	RenderInfantry:
+	WithInfantryBody:
 	ScaredyCat:
 
 ^CivBuilding:

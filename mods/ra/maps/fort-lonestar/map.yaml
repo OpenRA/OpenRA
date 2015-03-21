@@ -617,12 +617,12 @@ Rules:
 		Inherits: SNIPER
 		Buildable:
 			Prerequisites: ~disabled
-		RenderInfantry:
-			Image: SNIPER
 		MustBeDestroyed:
 		InvulnerabilityUpgrade@UNKILLABLE:
 			UpgradeTypes: unkillable
 			UpgradeMinEnabledLevel: 1
+		RenderSprites:
+			Image: SNIPER
 	SPY:
 		Inherits: ^Infantry
 		Buildable:

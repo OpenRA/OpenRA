@@ -80,7 +80,7 @@ ABAN06:
 	Health:
 		HP: 500
 	EditorTilesetFilter:
-		ExcludeTilesets: TEMPERAT	
+		ExcludeTilesets: TEMPERAT
 
 ABAN07:
 	Inherits: ^CivBuilding
@@ -94,7 +94,7 @@ ABAN07:
 	Health:
 		HP: 350
 	EditorTilesetFilter:
-		ExcludeTilesets: TEMPERAT	
+		ExcludeTilesets: TEMPERAT
 
 ABAN08:
 	Inherits: ^CivBuilding
@@ -108,7 +108,7 @@ ABAN08:
 	Health:
 		HP: 500
 	EditorTilesetFilter:
-		ExcludeTilesets: TEMPERAT	
+		ExcludeTilesets: TEMPERAT
 
 ABAN09:
 	Inherits: ^CivBuilding
@@ -122,7 +122,7 @@ ABAN09:
 	Health:
 		HP: 350
 	EditorTilesetFilter:
-		ExcludeTilesets: TEMPERAT	
+		ExcludeTilesets: TEMPERAT
 
 ABAN10:
 	Inherits: ^CivBuilding
@@ -136,7 +136,7 @@ ABAN10:
 	Health:
 		HP: 500
 	EditorTilesetFilter:
-		ExcludeTilesets: TEMPERAT	
+		ExcludeTilesets: TEMPERAT
 
 ABAN11:
 	Inherits: ^CivBuilding
@@ -150,7 +150,7 @@ ABAN11:
 	Health:
 		HP: 400
 	EditorTilesetFilter:
-		ExcludeTilesets: TEMPERAT	
+		ExcludeTilesets: TEMPERAT
 
 ABAN12:
 	Inherits: ^CivBuilding
@@ -164,7 +164,7 @@ ABAN12:
 	Health:
 		HP: 400
 	EditorTilesetFilter:
-		ExcludeTilesets: TEMPERAT	
+		ExcludeTilesets: TEMPERAT
 
 ABAN13:
 	Inherits: ^CivBuilding
@@ -178,7 +178,7 @@ ABAN13:
 	Health:
 		HP: 400
 	EditorTilesetFilter:
-		ExcludeTilesets: TEMPERAT	
+		ExcludeTilesets: TEMPERAT
 
 ABAN14:
 	Inherits: ^CivBuilding
@@ -192,7 +192,7 @@ ABAN14:
 	Health:
 		HP: 300
 	EditorTilesetFilter:
-		ExcludeTilesets: TEMPERAT	
+		ExcludeTilesets: TEMPERAT
 
 ABAN15:
 	Inherits: ^CivBuilding
@@ -206,7 +206,7 @@ ABAN15:
 	Health:
 		HP: 400
 	EditorTilesetFilter:
-		ExcludeTilesets: TEMPERAT	
+		ExcludeTilesets: TEMPERAT
 
 ABAN16:
 	Inherits: ^CivBuilding
@@ -220,7 +220,7 @@ ABAN16:
 	Health:
 		HP: 400
 	EditorTilesetFilter:
-		ExcludeTilesets: TEMPERAT	
+		ExcludeTilesets: TEMPERAT
 
 ABAN17:
 	Inherits: ^CivBuilding
@@ -234,7 +234,7 @@ ABAN17:
 	Health:
 		HP: 400
 	EditorTilesetFilter:
-		ExcludeTilesets: TEMPERAT	
+		ExcludeTilesets: TEMPERAT
 
 ABAN18:
 	Inherits: ^CivBuilding
@@ -1081,7 +1081,7 @@ CTDAM:
 	Building:
 		Footprint: xx xx xx xx xx
 		Dimensions: 2, 5
-	Power: 
+	Power:
 		Amount: 200
 	Armor:
 		Type: heavy
@@ -1220,7 +1220,7 @@ GASPOT:
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
-	Power: 
+	Power:
 		Amount: -10
 	Armor:
 		Type: wood
@@ -1250,7 +1250,7 @@ NTPYRA:
 	Building:
 		Footprint: xxxx xxxx xxxx xxxx
 		Dimensions: 4, 4
-	Power: 
+	Power:
 		Amount: -40
 	Armor:
 		Type: heavy

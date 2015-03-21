@@ -193,7 +193,8 @@
 		Voice: InfantryVoice
 	TargetableUnit:
 		TargetTypes: Ground
-	RenderInfantry:
+	RenderSprites:
+	WithInfantryBody:
 	TakeCover:
 	WithDeathAnimation:
 	AutoTarget:
