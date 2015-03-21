@@ -65,10 +65,11 @@ namespace OpenRA.Server
 				c.Color = c.PreferredColor;
 			if (pr.LockRace)
 				c.Race = pr.Race;
-			if (pr.LockSpawn)
-				c.SpawnPoint = pr.Spawn;
 			if (pr.LockTeam)
 				c.Team = pr.Team;
+
+			// Set the players spawnpoint
+			c.SpawnPoint = pr.Spawn;
 		}
 
 		static void SendData(Socket s, byte[] data)
