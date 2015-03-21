@@ -1,180 +1,147 @@
 tibtre01:
-	idle:
-		Start: 0
-		Length: 1
-		ShadowStart: 11
+	Defaults:
 		Offset: 0, -12
+	idle:
+		ShadowStart: 11
 	active:
 		Start: 1
 		Length: 10
 		ShadowStart: 12
 		Tick: 160
-		Offset: 0, -12
 
 tibtre02:
-	idle:
-		Start: 0
-		Length: 1
-		ShadowStart: 11
+	Defaults:
 		Offset: 0, -12
+	idle:
+		ShadowStart: 11
 	active:
 		Start: 1
 		Length: 10
 		ShadowStart: 12
 		Tick: 160
-		Offset: 0, -12
 
 tibtre03:
-	idle:
-		Start: 0
-		Length: 1
-		ShadowStart: 11
+	Defaults:
 		Offset: 0, -12
+	idle:
+		ShadowStart: 11
 	active:
 		Start: 1
 		Length: 10
 		ShadowStart: 12
 		Tick: 160
-		Offset: 0, -12
 
 bigblue:
-	idle: bigblue2
-		Start: 0
-		Length: 1
-		ShadowStart: 10
+	Defaults:
 		Offset: 0, -12
+	idle: bigblue2
+		ShadowStart: 10
 	active: bigblue2
 		Start: 1
 		Length: 9
 		ShadowStart: 11
 		Tick: 160
-		Offset: 0, -12
 
 tree01:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree02:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree03:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree04:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree05:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree06:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree07:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree08:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree09:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree10:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree11:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree12:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree13:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree14:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree15:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree16:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree17:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree18:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree19:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree20:
 	idle:
-		Start: 0
 		ShadowStart: 1
+
 tree21:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree22:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree23:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree24:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 tree25:
 	idle:
-		Start: 0
 		ShadowStart: 1
 
 veinhole:
 	idle:
-		Start: 0
 		ShadowStart: 1
