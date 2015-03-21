@@ -9,7 +9,7 @@ World:
 	MenuPaletteEffect:
 	BuildingInfluence:
 	ProductionQueueFromSelection:
-		ProductionTabsWidget: PRODUCTION_TABS
+		ProductionPaletteWidget: PRODUCTION_PALETTE
 	PaletteFromFile@player:
 		Name: player
 		Filename: unittem.pal
