@@ -8,7 +8,7 @@ local replace = "4"
 editor:AppendText(search..search.."\n"..search..search)
 
 ide.frame:ProcessEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, ID_FIND))
-ok(findReplace.dialog, "Open Find/Replace dialog.")
+ok(findReplace.panel, "Open Find/Replace panel.")
 
 findReplace.findText = search
 ok(findReplace:HasText(), "Update text to search.")
@@ -69,6 +69,6 @@ local expected = replace..replace.."\n"..replace..replace.."\n"..replace..replac
 is(editor:GetText(), expected, "Replace All without Wrap Around result is as expected.")
 
 -- cleanup
-ide.findReplace.dialog:Hide()
+findReplace.panel:Hide()
 while editor:CanUndo() do editor:Undo() end
 ClosePage()
