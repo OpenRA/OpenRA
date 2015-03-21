@@ -1,475 +1,343 @@
 ammocrat:
 	idle: ammo01
-		Start: 0
 		ShadowStart: 2
 
 aban01:
 	idle: aban01
-		Start: 0
 		ShadowStart: 2
 
 aban02:
 	idle: aban02
-		Start: 0
 		ShadowStart: 2
 
 aban03:
 	idle: aban03
-		Start: 0
 		ShadowStart: 2
 
 aban04:
 	idle: aban04
-		Start: 0
 		ShadowStart: 2
 
 aban05:
 	idle: aban05
-		Start: 0
 		ShadowStart: 2
 
 aban06:
 	idle: aban06
-		Start: 0
 		ShadowStart: 2
 
 aban07:
 	idle: aban07
-		Start: 0
 		ShadowStart: 2
 
 aban08:
 	idle: aban08
-		Start: 0
 		ShadowStart: 2
 
 aban09:
 	idle: aban09
-		Start: 0
 		ShadowStart: 2
 
 aban10:
 	idle: aban10
-		Start: 0
 		ShadowStart: 2
 
 aban11:
 	idle: aban11
-		Start: 0
 		ShadowStart: 2
 
 aban12:
 	idle: aban12
-		Start: 0
 		ShadowStart: 2
 
 aban13:
 	idle: aban13
-		Start: 0
 		ShadowStart: 2
 
 aban14:
 	idle: aban14
-		Start: 0
 		ShadowStart: 2
 
 aban15:
 	idle: aban15
-		Start: 0
 		ShadowStart: 2
 
 aban16:
 	idle: aban16
-		Start: 0
 		ShadowStart: 2
 
 aban17:
 	idle: aban17
-		Start: 0
 		ShadowStart: 2
 
 aban18:
 	idle: aban18
-		Start: 0
 		ShadowStart: 2
 
 bboard01:
 	idle: bboard01
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard02:
 	idle: bboard02
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard03:
 	idle: bboard03
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard04:
 	idle: bboard04
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard05:
 	idle: bboard05
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard06:
 	idle: bboard06
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard07:
 	idle: bboard07
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard08:
 	idle: bboard08
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard09:
 	idle: bboard09
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard10:
 	idle: bboard10
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard11:
 	idle: bboard11
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard12:
 	idle: bboard12
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard13:
 	idle: bboard13
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard14:
 	idle: bboard14
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard15:
 	idle: bboard15
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 bboard16:
 	idle: bboard16
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0001:
 	idle: ct0001
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0002:
 	idle: ct0002
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0003:
 	idle: ct0003
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0004:
 	idle: ct0004
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0005:
 	idle: ct0005
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0006:
 	idle: ct0006
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0007:
 	idle: ct0007
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0008:
 	idle: ct0008
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0009:
 	idle: ct0009
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0010:
 	idle: ct0010
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0011:
 	idle: ct0011
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0012:
 	idle: ct0012
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0013:
 	idle: ct0013
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0014:
 	idle: ct0014
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0015:
 	idle: ct0015
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0016:
 	idle: ct0016
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0017:
 	idle: ct0017
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0018:
 	idle: ct0018
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0019:
 	idle: ct0019
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0020:
 	idle: ct0020
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 ca0021:
 	idle: ct0021
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 
 caarmr:
 	idle: ctarmr
-		Start: 0
 		ShadowStart: 3
 	damaged-idle: ctarmr
 		Start: 1
-		Length: 1
 		ShadowStart: 4
 	critical-idle: ctarmr
 		Start: 2
@@ -477,11 +345,9 @@ caarmr:
 
 caaray:
 	idle: ctaray
-		Start: 0
 		ShadowStart: 3
 	damaged-idle: ctaray
 		Start: 1
-		Length: 1
 		ShadowStart: 4
 	critical-idle: ctaray
 		Start: 2
@@ -489,389 +355,266 @@ caaray:
 
 cabhut:
 	idle: cabhut
-		Start: 0
 
 cacrsh01:
 	idle: ctcrsh01
-		Start: 0
 
 cacrsh02:
 	idle: ctcrsh02
-		Start: 0
 
 cacrsh03:
 	idle: ctcrsh03
-		Start: 0
 
 cacrsh04:
 	idle: ctcrsh04
-		Start: 0
 
 cacrsh05:
 	idle: ctcrsh05
-		Start: 0
 
 cahosp:
 	idle: cthosp
-		Start: 0
 		ShadowStart: 2
 
 capyr01:
 	idle: ctpyr01
-		Start: 0
 		ShadowStart: 1
 
 capyr02:
 	idle: ctpyr02
-		Start: 0
 		ShadowStart: 1
 
 capyr03:
 	idle: ctpyr03
-		Start: 0
 		ShadowStart: 1
 
 city01:
 	idle: city01
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city01
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city02:
 	idle: city02
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city02
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city03:
 	idle: city03
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city03
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city04:
 	idle: city04
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city04
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city05:
 	idle: city05
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city05
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city06:
 	idle: city06
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city06
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city07:
 	idle: city07
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city07
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city08:
 	idle: city08
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city08
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city09:
 	idle: city09
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city09
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city10:
 	idle: city10
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city10
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city11:
 	idle: city11
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city11
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city12:
 	idle: city12
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city12
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city13:
 	idle: city13
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city13
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city14:
 	idle: city14
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city14
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city15:
 	idle: city15
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city15
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city16:
 	idle: city16
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city16
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city17:
 	idle: city17
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city17
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city18:
 	idle: city18
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city18
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city19:
 	idle: city19
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city19
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city20:
 	idle: city20
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city20
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city21:
 	idle: city21
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city21
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 city22:
 	idle: city22
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 	damaged-idle:
 		Start: 1
-		Length: 1
 		ShadowStart: 3
 	make: city22
-		Start: 0
 		ShadowStart: 2
-		Length: 1
 		Tick: 80
 
 ctdam:
 	idle: ctdam
-		Start: 0
 
 ctvega:
 	idle: ctvega
-		Start: 0
 		ShadowStart: 3
 	damaged-idle: ctvega
 		Start: 1
-		Length: 1
 		ShadowStart: 4
 	critical-idle: ctvega
 		Start: 2
@@ -879,46 +622,37 @@ ctvega:
 
 gaoldcc1:
 	idle: gtoldcc1
-		Start: 0
 		ShadowStart: 2
 
 gaoldcc2:
 	idle: gtoldcc2
-		Start: 0
 		ShadowStart: 2
 
 gaoldcc3:
 	idle: gtoldcc3
-		Start: 0
 		ShadowStart: 2
 
 gaoldcc4:
 	idle: gtoldcc4
-		Start: 0
 		ShadowStart: 2
 
 gaoldcc5:
 	idle: gtoldcc5
-		Start: 0
 		ShadowStart: 2
 
 gaoldcc6:
 	idle: gtoldcc6
-		Start: 0
 		ShadowStart: 2
 
 gagreen:
 	idle: gagreen
-		Start: 0
 		ShadowStart: 2
 
 gakodk:
 	idle: gtkodk
-		Start: 0
 		ShadowStart: 3
 	damaged-idle: gtkodk
 		Start: 1
-		Length: 1
 		ShadowStart: 4
 	critical-idle: gtkodk
 		Start: 2
@@ -926,11 +660,9 @@ gakodk:
 
 namntk:
 	idle: ntmntk
-		Start: 0
 		ShadowStart: 3
 	damaged-idle: ntmntk
 		Start: 1
-		Length: 1
 		ShadowStart: 4
 	critical-idle: ntmntk
 		Start: 2
@@ -938,11 +670,9 @@ namntk:
 
 ntpyra:
 	idle: ntpyra
-		Start: 0
 		ShadowStart: 3
 	damaged-idle: ntpyra
 		Start: 1
-		Length: 1
 		ShadowStart: 4
 	critical-idle: ntpyra
 		Start: 2
@@ -950,5 +680,4 @@ ntpyra:
 
 ufo:
 	idle: ufo
-		Start: 0
 		Offset: -24, -60
