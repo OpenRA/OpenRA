@@ -102,13 +102,13 @@ namespace OpenRA.Graphics
 			face.LoadChar(c.First, LoadFlags.Default, LoadTarget.Normal);
 			face.Glyph.RenderGlyph(RenderMode.Normal);
 
-			var size = new Size((int)face.Glyph.Metrics.Width >> 6, (int)face.Glyph.Metrics.Height >> 6);
+			var size = new Size((int)face.Glyph.Metrics.Width, (int)face.Glyph.Metrics.Height);
 			var s = builder.Allocate(size);
 
 			var g = new GlyphInfo
 			{
 				Sprite = s,
-				Advance = (int)face.Glyph.Metrics.HorizontalAdvance / 64f,
+				Advance = (float)face.Glyph.Metrics.HorizontalAdvance,
 				Offset = new int2(face.Glyph.BitmapLeft, -face.Glyph.BitmapTop)
 			};
 
