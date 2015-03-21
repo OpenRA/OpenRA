@@ -155,11 +155,17 @@ namespace OpenRA.Mods.Common.Graphics
 						"{0}: Sequence {1}.{2}: Length must be <= stride"
 						.F(info.Nodes[0].Location, sequence, animation));
 
-				if (Start < 0 || Start + Facings * Stride > sprites.Length || ShadowStart + Facings * Stride > sprites.Length)
+				if (Start < 0 || Start + Facings * Stride > sprites.Length)
 					throw new InvalidOperationException(
 						"{6}: Sequence {0}.{1} uses frames [{2}..{3}] of SHP `{4}`, but only 0..{5} actually exist"
 						.F(sequence, animation, Start, Start + Facings * Stride - 1, src, sprites.Length - 1,
-						info.Nodes[0].Location));
+							info.Nodes[0].Location));
+
+				if (ShadowStart + Facings * Stride > sprites.Length)
+					throw new InvalidOperationException(
+						"{6}: Sequence {0}.{1}'s shadow frames use frames [{2}..{3}] of SHP `{4}`, but only [0..{5}] actually exist"
+						.F(sequence, animation, ShadowStart, ShadowStart + Facings * Stride - 1, src, sprites.Length - 1,
+							info.Nodes[0].Location));
 			}
 			catch (FormatException f)
 			{
