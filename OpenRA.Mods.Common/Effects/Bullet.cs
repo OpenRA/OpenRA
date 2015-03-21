@@ -39,6 +39,8 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly int TrailInterval = 2;
 		[Desc("Delay in ticks until trail animaion is spawned.")]
 		public readonly int TrailDelay = 1;
+		public readonly string TrailPalette = "effect";
+		public readonly bool TrailUsePlayerPalette = false;
 		public readonly int ContrailLength = 0;
 		public readonly Color ContrailColor = Color.White;
 		public readonly bool ContrailUsePlayerColor = false;
@@ -56,6 +58,7 @@ namespace OpenRA.Mods.Common.Effects
 		[Sync] readonly WRange speed;
 
 		ContrailRenderable contrail;
+		string trailPalette;
 
 		[Sync] WPos pos, target;
 		[Sync] int length;
@@ -105,6 +108,10 @@ namespace OpenRA.Mods.Common.Effects
 				contrail = new ContrailRenderable(world, color, info.ContrailLength, info.ContrailDelay, 0);
 			}
 
+			trailPalette = info.TrailPalette;
+			if (info.TrailUsePlayerPalette)
+				trailPalette += args.SourceActor.Owner.InternalName;
+
 			smokeTicks = info.TrailDelay;
 		}
 
@@ -131,7 +138,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.Trail != null && --smokeTicks < 0)
 			{
 				var delayedPos = WPos.LerpQuadratic(args.Source, target, angle, ticks - info.TrailDelay, length);
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, info.Trail)));
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, info.Trail, trailPalette)));
 				smokeTicks = info.TrailInterval;
 			}
 

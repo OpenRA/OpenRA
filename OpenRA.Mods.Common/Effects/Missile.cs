@@ -45,6 +45,8 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly string Trail = null;
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
+		public readonly string TrailPalette = "effect";
+		public readonly bool TrailUsePlayerPalette = false;
 		public readonly int ContrailLength = 0;
 		public readonly Color ContrailColor = Color.White;
 		public readonly bool ContrailUsePlayerColor = false;
@@ -69,6 +71,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		int ticksToNextSmoke;
 		ContrailRenderable contrail;
+		string trailPalette;
 
 		[Sync] WPos pos;
 		[Sync] int facing;
@@ -114,6 +117,10 @@ namespace OpenRA.Mods.Common.Effects
 				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
 				contrail = new ContrailRenderable(world, color, info.ContrailLength, info.ContrailDelay, 0);
 			}
+
+			trailPalette = info.TrailPalette;
+			if (info.TrailUsePlayerPalette)
+				trailPalette += args.SourceActor.Owner.InternalName;
 		}
 
 		bool JammedBy(TraitPair<JamsMissiles> tp)
@@ -164,7 +171,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			if (info.Trail != null && --ticksToNextSmoke < 0)
 			{
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, pos - 3 * move / 2, info.Trail)));
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, pos - 3 * move / 2, info.Trail, trailPalette)));
 				ticksToNextSmoke = info.TrailInterval;
 			}
 

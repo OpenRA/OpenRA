@@ -20,12 +20,14 @@ namespace OpenRA.Mods.Common.Effects
 		readonly WPos pos;
 		readonly CPos cell;
 		readonly Animation anim;
+		readonly string palette;
 
-		public Smoke(World world, WPos pos, string trail)
+		public Smoke(World world, WPos pos, string trail, string palette)
 		{
 			this.world = world;
 			this.pos = pos;
 			this.cell = world.Map.CellContaining(pos);
+			this.palette = palette;
 
 			anim = new Animation(world, trail);
 			anim.PlayThen("idle",
@@ -39,7 +41,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (world.FogObscures(cell))
 				return SpriteRenderable.None;
 
-			return anim.Render(pos, wr.Palette("effect"));
+			return anim.Render(pos, wr.Palette(palette));
 		}
 	}
 }
