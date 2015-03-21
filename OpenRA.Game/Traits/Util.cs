@@ -146,5 +146,153 @@ namespace OpenRA.Traits
 
 			return (int)a;
 		}
+
+		// Algorithm obtained from ftp://ftp.isc.org/pub/usenet/comp.sources.unix/volume26/line3d
+		public static IEnumerable<CPos> Raycast(CPos source, CPos target)
+		{
+			var xDelta = target.X - source.X;
+			var yDelta = target.Y - source.Y;
+
+			var xAbsolute = Math.Abs(xDelta) << 1;
+			var yAbsolute = Math.Abs(yDelta) << 1;
+
+			var xIncrement = (xDelta < 0) ? -1 : xDelta > 0 ? 1 : 0;
+			var yIncrement = (yDelta < 0) ? -1 : yDelta > 0 ? 1 : 0;
+
+			var x = source.X;
+			var y = source.Y;
+
+			if (xAbsolute >= yAbsolute)
+			{
+				var error = yAbsolute - (xAbsolute >> 1);
+
+				do
+				{
+					yield return new CPos(x, y);
+
+					if (error >= 0)
+					{
+						y += yIncrement;
+						error -= xAbsolute;
+					}
+
+					x += xIncrement;
+					error += yAbsolute;
+				}
+				while (y != target.Y);
+				yield return new CPos(x, y);
+			}
+			else
+			{
+				var error = xAbsolute - (yAbsolute >> 1);
+				do
+				{
+					yield return new CPos(x, y);
+
+					if (error >= 0)
+					{
+						x += xIncrement;
+						error -= yAbsolute;
+					}
+
+					y += yIncrement;
+					error += xAbsolute;
+				}
+				while (y != target.Y);
+				yield return new CPos(x, y);
+			}
+		}
+
+		public static int2? IntersectionPoint(int2 firstStart, int2 firstEnd, int2 secondStart, int2 secondEnd)
+		{
+			int denominator = (firstStart.X - firstEnd.X) * (secondStart.Y - secondEnd.Y) - (firstStart.Y - firstEnd.Y) * (secondStart.X - secondEnd.X);
+			if (denominator == 0)
+				return null;
+
+			int firstCross = firstStart.X * firstEnd.Y - firstStart.Y * firstEnd.X;
+			int secondCross = secondStart.X * secondEnd.Y - secondStart.Y * secondEnd.X;
+
+			var possible = new int2(firstCross * (secondStart.X - secondEnd.X) - (firstStart.X - firstEnd.X) * secondCross / denominator,
+				firstCross * (secondStart.Y - secondEnd.Y) - (firstStart.Y - firstEnd.Y) * secondCross / denominator);
+
+			if (firstStart.X >= firstEnd.X)
+			{
+				if (possible.X > firstStart.X && possible.X < firstEnd.X)
+					return null;
+			}
+			else
+			{
+				if (possible.X < firstStart.X && possible.X > firstEnd.X)
+					return null;
+			}
+
+			if (firstStart.Y >= firstEnd.Y)
+			{
+				if (possible.Y > firstStart.Y && possible.Y < firstEnd.Y)
+					return null;
+			}
+			else
+			{
+				if (possible.Y < firstStart.Y && possible.Y > firstEnd.Y)
+					return null;
+			}
+
+			if (secondStart.X >= secondEnd.X)
+			{
+				if (possible.X > secondStart.X && possible.X < secondEnd.X)
+					return null;
+			}
+			else
+			{
+				if (possible.X < secondStart.X && possible.X > secondEnd.X)
+					return null;
+			}
+
+			if (secondStart.Y >= secondEnd.Y)
+			{
+				if (possible.Y > secondStart.Y && possible.Y < secondEnd.Y)
+					return null;
+			}
+			else
+			{
+				if (possible.Y < secondStart.Y && possible.Y > secondEnd.Y)
+					return null;
+			}
+
+			return possible;
+		}
+
+		public static IEnumerable<int2> LineCast(int2 start, int2 end, int2 mapSize)
+		{
+			var lineStart = start;
+			var lineEnd = end;
+
+			if (start.X > end.X)
+			{
+				lineStart = end;
+				lineEnd = start;
+			}
+
+			var xDiff = lineEnd.X - (lineStart.X - 1);
+			var yDiff = lineEnd.Y - (lineStart.Y - 1);
+			var greater = xDiff >= yDiff;
+
+			if (Math.Sign(xDiff) <= 0 || Math.Sign(yDiff) <= 0)
+				throw new InvalidOperationException("Distance cannot be imaginary or zero.");
+
+			for (var i = 0; (greater ? xDiff : yDiff) > i; i++)
+			{
+				var w = (greater ? lineStart.X : lineStart.Y) + i;
+				var secondlineStart = new int2(greater ? w : 0, greater ? 0 : w);
+				var secondlineEnd = new int2(greater ? w : mapSize.X, greater ? mapSize.Y : w);
+
+				var result = IntersectionPoint(lineStart, lineEnd, secondlineStart, secondlineEnd);
+
+				if (result.HasValue)
+				{
+					yield return result.Value;
+				}
+			}
+		}
 	}
 }

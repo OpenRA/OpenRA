@@ -133,8 +133,6 @@ namespace OpenRA.Mods.Common.Effects
 			if (anim != null)
 				anim.Tick();
 
-			pos = WPos.LerpQuadratic(args.Source, target, angle, ticks, length);
-
 			if (!string.IsNullOrEmpty(info.Trail) && --smokeTicks < 0)
 			{
 				var delayedPos = WPos.LerpQuadratic(args.Source, target, angle, ticks - info.TrailDelay, length);
@@ -142,11 +140,32 @@ namespace OpenRA.Mods.Common.Effects
 				smokeTicks = info.TrailInterval;
 			}
 
+			var nextpos = WPos.LerpQuadratic(args.Source, target, angle, ticks, length);
+
+			if (info.Blockable)
+			{
+				var cell = world.Map.CellContaining(pos);
+				var nextcell = world.Map.CellContaining(nextpos);
+
+				var cells = OpenRA.Traits.Util.Raycast(cell, nextcell);
+
+				foreach (var location in cells)
+				{
+					if (world.ActorMap.GetUnitsAt(location).Any(a => a.HasTrait<IBlocksProjectiles>()))
+					{
+						pos = world.Map.CenterOfCell(location);
+						Explode(world);
+						return;
+					}
+				}
+			}
+
+			pos = nextpos;
+
 			if (info.ContrailLength > 0)
 				contrail.Update(pos);
 
-			if (ticks++ >= length || (info.Blockable && world.ActorMap
-				.GetUnitsAt(world.Map.CellContaining(pos)).Any(a => a.HasTrait<IBlocksProjectiles>())))
+			if (ticks++ >= length)
 				Explode(world);
 		}
 
