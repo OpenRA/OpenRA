@@ -679,5 +679,6 @@ ntpyra:
 		ShadowStart: 5
 
 ufo:
-	idle: ufo
+	idle: ufo.tem
 		Offset: -24, -60
+		AddExtension: false
