@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter("DeployTransform", 5, () => CanDeploy()); }
+			get { yield return new DeployOrderTargeter("DeployTransform", 5, CanDeploy() ? "deploy" : "deploy-blocked"); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)

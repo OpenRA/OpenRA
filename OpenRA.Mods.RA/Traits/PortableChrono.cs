@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Traits
 			get
 			{
 				yield return new PortableChronoOrderTargeter();
-				yield return new DeployOrderTargeter("PortableChronoDeploy", 5, () => CanTeleport);
+				yield return new DeployOrderTargeter("PortableChronoDeploy", 5, CanTeleport ? "deploy" : "deploy-blocked");
 			}
 		}
 
