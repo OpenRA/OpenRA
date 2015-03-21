@@ -99,7 +99,7 @@ ABAN07:
 ABAN08:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Abandoned Wharehouse
+		Name: Abandoned Warehouse
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
