@@ -485,6 +485,11 @@ waypoint:
 		Start: 0
 		Length: *
 
+camera:
+	idle:
+		Start: 0
+		Length: *
+
 gpsdot:
 	Infantry:
 		Start: 0
