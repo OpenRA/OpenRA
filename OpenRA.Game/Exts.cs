@@ -136,19 +136,27 @@ namespace OpenRA
 
 		public static T Random<T>(this IEnumerable<T> ts, MersenneTwister r)
 		{
-			var xs = ts as ICollection<T>;
-			if (xs != null)
-				return xs.ElementAt(r.Next(xs.Count));
-			var ys = ts.ToList();
-			return ys[r.Next(ys.Count)];
+			return Random(ts, r, true);
 		}
 
 		public static T RandomOrDefault<T>(this IEnumerable<T> ts, MersenneTwister r)
 		{
-			if (!ts.Any())
-				return default(T);
+			return Random(ts, r, false);
+		}
 
-			return ts.Random(r);
+		static T Random<T>(IEnumerable<T> ts, MersenneTwister r, bool throws)
+		{
+			var xs = ts as ICollection<T>;
+			xs = xs ?? ts.ToList();
+			if (xs.Count == 0)
+			{
+				if (throws)
+					throw new ArgumentException("Collection must not be empty.", "ts");
+				else
+					return default(T);
+			}
+			else
+				return xs.ElementAt(r.Next(xs.Count));
 		}
 
 		public static float Product(this IEnumerable<float> xs)
