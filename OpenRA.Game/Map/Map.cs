@@ -147,6 +147,8 @@ namespace OpenRA
 		public string Title;
 		public string Type = "Conquest";
 		public string Description;
+		public string CountryDescription;
+        public string NextMission;
 		public string Author;
 		public string Tileset;
 		public bool AllowStartUnitConfig = true;
@@ -245,6 +247,7 @@ namespace OpenRA
 			{
 				Title = "Name your map here",
 				Description = "Describe your map here",
+				CountryDescription = "Describe the map country information here",
 				Author = "Your name here",
 				MapSize = new int2(size),
 				Tileset = tileset.Id,
@@ -420,6 +423,7 @@ namespace OpenRA
 				"RequiresMod",
 				"Title",
 				"Description",
+				"CountryDescription",
 				"Author",
 				"Tileset",
 				"MapSize",

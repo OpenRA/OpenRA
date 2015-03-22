@@ -108,6 +108,13 @@ Container@LEAVE_MAP_WIDGET:
 					Height: 35
 					Font: Bold
 					Text: Leave
+				Button@CONTINUE_BUTTON:
+					X: PARENT_RIGHT - WIDTH
+					Y: PARENT_BOTTOM - 36
+					Width: 140
+					Height: 35
+					Font: Bold
+					Text: Continue
 				Button@STATS_BUTTON:
 					X: 150
 					Y: PARENT_BOTTOM - 36

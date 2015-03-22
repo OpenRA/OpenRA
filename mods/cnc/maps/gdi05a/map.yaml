@@ -6,6 +6,10 @@ Title: Repair the GDI base (a)
 
 Description: A GDI field base is under attack. They have fended off one attack but will not survive another.\n\nMove to the base, repair the structures and then launch a strike force to destroy the Nod base in the area.\n\nDestroy all Nod units and structures.
 
+CountryDescription: Ukraine:\n\n|\n\n|Population:\n|51,994,000\n|Geographic Area:\n|233,100 square miles\n|Capital:\n|Kiev\n|Government:\n|Constitutional Republic\n|Gross Domestic Product:\n|$47,600,000,000\n|Point of Conflict:\n|Ivano-Frankovsk\n|Military Power:\n|State Militia
+
+NextMission: 
+
 Author: Westwood Studios
 
 Tileset: TEMPERAT

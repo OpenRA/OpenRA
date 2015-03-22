@@ -1,0 +1,56 @@
+Container@CAMPAIGN_FACTION:
+	Logic: CampaignFactionLogic
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Children:
+		Container@CAMPAIGN_VIDEO:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM*4/5
+			Children:
+				Background@BG:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
+					Background: panel-allblack
+				VqaPlayer@VIDEO_BG:
+					Y: WINDOW_BOTTOM/20
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM*4/5
+				VqaPlayer@VIDEO:
+					Y: WINDOW_BOTTOM/20
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM*4/5
+				Button@GDI_FACTION:
+					X: 0
+					Y: WINDOW_BOTTOM/20
+					Width: (WINDOW_RIGHT)/2
+					Height: WINDOW_BOTTOM*4/5
+					Font: Bold
+					Background: button-transparent
+				Button@NOD_FACTION:
+					X: (WINDOW_RIGHT)/2
+					Y: WINDOW_BOTTOM/20
+					Width: (WINDOW_RIGHT)/2
+					Height: WINDOW_BOTTOM*4/5
+					Font: Bold
+					Background: button-transparent
+				Button@BACK_BUTTON:
+					X: ( WINDOW_RIGHT - WIDTH ) / 2
+					Y: WINDOW_BOTTOM - HEIGHT - 10
+					Width: 0#140
+					Height: 0#35
+					Font: Bold
+					Key: escape
+					Background: button-transparent
+		Image@CHOOSE_FACTION_IMAGE:
+			X: (WINDOW_RIGHT/2) - 512
+			Y: WINDOW_BOTTOM*4/5 + WINDOW_BOTTOM/20
+			Width: 1024
+			Height: 128
+			ImageCollection: choosefaction
+			ImageName: choosetext
+		Background@CHOOSE_TEXT_BG:
+			X: (WINDOW_RIGHT/2) - 512
+			Y: WINDOW_BOTTOM*4/5 + WINDOW_BOTTOM/20
+			Width: 1024
+			Height: 128
+			Background: panel-allblack
