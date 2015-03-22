@@ -1,781 +1,591 @@
 gacnst:
-	idle: gtcnst
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -36
+	idle: gtcnst
+		ShadowStart: 3
 	damaged-idle: gtcnst
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -36
 	dead: gtcnst
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -36
 		Tick: 400
 	make: gtcnstmk
-		Start: 0
 		Length: 24
 		ShadowStart: 24
-		Offset: 0, -36
 	crane-overlay: gtcnst_d
-		Start: 0
 		Length: 20
-		Offset: 0, -36
 	damaged-crane-overlay: gtcnst_d
-		Start: 0
 		Length: 20
-		Offset: 0, -36
 	critical-crane-overlay: gtcnst_d
 		Start: 20
 		Length: 20
-		Offset: 0, -36
 	idle-top: gtcnst_c
-		Start: 0
 		Length: 15
 		Tick: 200
-		Offset: 0, -36
 	damaged-idle-top: gtcnst_c
 		Start: 15
 		Length: 15
 		Tick: 200
-		Offset: 0, -36
 	idle-side: gtcnst_a
-		Start: 0
 		Length: 10
-		Offset: 0, -36
 	damaged-idle-side: gtcnst_a
 		Start: 10
 		Length: 10
-		Offset: 0, -36
 	idle-front: gtcnst_b
-		Start: 0
 		Length: 10
-		Offset: 0, -36
 	damaged-idle-front: gtcnst_b
-		Start: 0
 		Length: 10
-		Offset: 0, -36
 	icon: facticon
-		Start: 0
+		Offset: 0,0
 
 gapowr:
-	idle: gtpowr
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -24
+	idle: gtpowr
+		ShadowStart: 3
 	damaged-idle: gtpowr
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -24
 	dead: gtpowr
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -24
 		Tick: 400
 	idle-lights: gtpowr_a
-		Start: 0
 		Length: 12
 		Tick: 200
-		Offset: 0, -24
 	damaged-idle-lights: gtpowr_a
 		Start: 12
 		Length: 12
 		Tick: 200
-		Offset: 0, -24
 	idle-plug: gtpowr_b
-		Start: 0
 		Length: 12
 		Tick: 200
-		Offset: 0, -24
 	damaged-idle-plug: gtpowr_b
-		Start: 0
 		Length: 12
 		Tick: 200
-		Offset: 0, -24
 	make: gtpowrmk
-		Start: 0
 		Length: 20
 		ShadowStart: 20
-		Offset: 0, -24
 	icon: powricon
-		Start: 0
+		Offset: 0, 0
 
 gapile:
-	idle: gtpile
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -24
+	idle: gtpile
+		ShadowStart: 3
 	damaged-idle: gtpile
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -24
 	dead: gtpile
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -24
 		Tick: 400
 	production-lights: gtpile_a
-		Start: 0
 		Length: 7
 		Tick: 200
-		Offset: 0, -24
 	damaged-production-lights: gtpile_a
 		Start:7
 		Length: 7
 		Tick: 200
-		Offset: 0, -24
 	idle-light: gtpile_b
-		Start: 0
 		Length: 7
 		Tick: 200
-		Offset: 0, -24
 	damaged-idle-light: gtpile_b
 		Start:7
 		Length: 7
 		Tick: 200
-		Offset: 0, -24
 	idle-flag: gtpile_c
-		Start:0
 		Length: 7
-		Offset: 0, -24
 	damaged-idle-flag: gtpile_c
 		Start:7
 		Length: 7
-		Offset: 0, -24
 	make: gtpilemk
-		Start: 0
 		Length: 20
 		ShadowStart: 20
-		Offset: 0, -24
 	icon: brrkicon
-		Start: 0
+		Offset: 0, 0
 
 gaweap:
-	idle: gtweap
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: -12, -42
+	idle: gtweap
+		ShadowStart: 3
 	damaged-idle: gtweap
 		Start: 1
 		ShadowStart: 4
-		Offset: -12, -42
 	dead: gtweap
 		Start: 2
 		ShadowStart: 5
-		Offset: -12, -42
 		Tick: 400
 	production-lights-white: gtweap_a
-		Start: 0
 		Length: 8
 		Tick: 100
 		ZOffset: 2048
-		Offset: -12, -42
 	damaged-production-lights-white: gtweap_a
 		Start: 8
 		Length: 8
 		Tick: 100
 		ZOffset: 2048
-		Offset: -12, -42
 	production-lights-red: gtweap_b
-		Start: 0
 		Length: 4
 		Tick: 120
 		ZOffset: 2048
-		Offset: -12, -42
 	damaged-production-lights-red: gtweap_b
 		Start: 4
 		Length: 4
 		Tick: 120
 		ZOffset: 2048
-		Offset: -12, -42
 	idle-turbines: gtweap_c
-		Start: 0
 		Length: 4
 		Tick: 80
 		ZOffset: 2048
-		Offset: -12, -42
 	damaged-idle-turbines: gtweap_c
-		Start: 0
 		Length: 4
 		Tick: 80
 		ZOffset: 2048
-		Offset: -12, -42
 	build-top: gtweap_d
-		Start: 0
 		Length: 9
 		ShadowStart: 9
-		Offset: -12, -42
 	damaged-build-top: gtweap_d
-		Start: 0
 		Length: 9
 		ShadowStart: 9
-		Offset: -12, -42
 	idle-top: gtweap_2
-		Start: 0
-		Offset: -12, -42
 	damaged-idle-top: gtweap_2
 		Start: 1
-		Offset: -12, -42
 	make: gtweapmk
-		Start: 0
 		Length: 20
 		Tick: 80
 		ShadowStart: 20
-		Offset: -12, -42
-	icon: weapicon
-		Start: 0
 	bib: gtweapbb
-		Start: 0
 		Length: 1
-		Offset: -12, -42
 	damaged-bib: gtweapbb
 		Start: 1
 		Length: 1
-		Offset: -12, -42
 	dead-bib: gtweapbb
 		Start: 2
 		Length: 1
-		Offset: -12, -42
+	icon: weapicon
+		Offset: 0, 0
 # TODO: gtweap_1 & gtweap_a & gtweap_b & gtweap_c are unused
 
 napowr:
-	idle: ntpowr
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -24
+	idle: ntpowr
+		ShadowStart: 3
 	damaged-idle: ntpowr
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -24
 	dead: ntpowr
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -24
 		Tick: 400
 	idle-lights: ntpowr_a
-		Start: 0
 		Length: 9
 		Tick: 200
-		Offset: 0, -24
 	damaged-idle-lights: ntpowr_a
 		Start: 9
 		Length: 9
 		Tick: 200
-		Offset: 0, -24
 	make: ntpowrmk
-		Start: 0
 		Length: 19
 		ShadowStart: 19
-		Offset: 0, -24
 	icon: npwricon
-		Start: 0
+		Offset: 0, 0
 
 naapwr:
-	idle: ntapwr
-		Start: 0
+	Defaults:
 		Offset: 12, -30
+	idle: ntapwr
 		ShadowStart: 3
 	damaged-idle: ntapwr
 		Start: 1
 		ShadowStart: 4
-		Offset: 12, -30
 	dead: ntapwr
 		Start: 2
 		ShadowStart: 5
-		Offset: 12, -30
 		Tick: 400
 	idle-lights: ntapwr_a
-		Start: 0
 		Length: 9
 		Tick: 200
-		Offset: 12, -30
 	damaged-idle-lights: ntapwr_a
 		Start: 9
 		Length: 9
 		Tick: 200
-		Offset: 12, -30
 	make: ntapwrmk
-		Start: 0
 		Length: 19
 		ShadowStart: 19
-		Offset: 12, -30
 	icon: apwricon
-		Start: 0
+		Offset: 0, 0
 
 nahand:
-	idle: nthand
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: -6, -30
+	idle: nthand
+		ShadowStart: 3
 	damaged-idle: nthand
 		Start: 1
 		ShadowStart: 4
-		Offset: -6, -30
 	dead: nthand
 		Start: 2
 		ShadowStart: 5
-		Offset: -6, -30
 		Tick: 400
 	production-light: nthand_a
-		Start: 0
 		Length: 5
 		Tick: 100
-		Offset: -6, -30
 	damaged-production-light: nthand_a
 		Start: 5
 		Length: 5
 		Tick: 100
-		Offset: -6, -30
 	idle-lights: nthand_b
-		Start: 0
 		Length: 8
 		Tick: 200
-		Offset: -6, -30
 	damaged-idle-lights: nthand_b
 		Start: 8
 		Length: 8
 		Tick: 200
-		Offset: -6, -30
 	make: nthandmk
-		Start: 0
 		Length: 15
 		ShadowStart: 15
-		Offset: -6, -30
 	icon: handicon
-		Start: 0
+		Offset: 0, 0
 
 naweap:
-	idle: ntweap
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: -12, -42
+	idle: ntweap
+		ShadowStart: 3
 	damaged-idle: ntweap
 		Start: 1
 		ShadowStart: 4
-		Offset: -12, -42
 	dead: ntweap
 		Start: 2
 		ShadowStart: 5
-		Offset: -12, -42
 		Tick: 400
 	production-lights: ntweap_a
-		Start: 0
 		Length: 16
 		Tick: 100
 		ZOffset: 2048
-		Offset: -12, -42
 	damaged-production-lights: ntweap_a
 		Start: 16
 		Length: 16
 		Tick: 100
 		ZOffset: 2048
-		Offset: -12, -42
 	build-top: ntweap_b
-		Start: 0
 		Length: 10
 		ShadowStart: 10
-		Offset: -12, -42
 	damaged-build-top: ntweap_b
 		Start: 10
 		Length: 10
 		ShadowStart: 20
-		Offset: -12, -42
 	idle-top: ntweap_2
-		Start: 0
-		Offset: -12, -42
 	damaged-idle-top: ntweap_2
 		Start: 1
-		Offset: -12, -42
 	make: ntweapmk
-		Start: 0
 		Length: 22
 		Tick: 80
 		ShadowStart: 22
-		Offset: -12, -42
-	icon: nwepicon
-		Start: 0
 	bib: ntweapbb
-		Start: 0
-		Length: 1
-		Offset: -12, -42
 	damaged-bib: ntweapbb
 		Start: 1
-		Length: 1
-		Offset: -12, -42
 	dead-bib: ntweapbb
 		Start: 2
-		Length: 1
-		Offset: -12, -42
+	icon: nwepicon
+		Offset: 0, 0
 # TODO: ntweap_1 & ntweap_b & ntweap_c are unused
 
 naradr:
-	idle: ntradr
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -24
+	idle: ntradr
+		ShadowStart: 3
 	damaged-idle: ntradr
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -24
 	dead: ntradr
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -24
 		Tick: 400
 	idle-dish: ntradr_a
-		Start: 0
 		Length: 24
 		Tick: 120
-		Offset: 0, -24
 	damaged-idle-dish: ntradr_a
 		Start: 24
 		Length: 24
 		Tick: 120
-		Offset: 0, -24
 	make: ntradrmk
-		Start: 0
 		Length: 20
 		ShadowStart: 20
-		Offset: 0, -24
 	icon: nradicon
-		Start: 0
+		Offset: 0, 0
 
 natech:
-	idle: nttech
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -24
+	idle: nttech
+		ShadowStart: 3
 	damaged-idle: nttech
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -24
 	dead: nttech
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -24
 		Tick: 400
 	idle-lights: nttech_a
-		Start: 0
 		Length: 9
 		Tick: 120
-		Offset: 0, -24
 	damaged-idle-lights: nttech_a
-		Start: 0
 		Length: 9
 		Tick: 120
-		Offset: 0, -24
 	make: nttechmk
-		Start: 0
 		Length: 18
 		ShadowStart: 18
-		Offset: 0, -24
 	icon: ntchicon
-		Start: 0
+		Offset: 0, 0
 
 garadr:
-	idle: gtradr
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -24
+	idle: gtradr
+		ShadowStart: 3
 	damaged-idle: gtradr
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -24
 	dead: gtradr
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -24
 		Tick: 400
 	idle-dish: gtradr_a
 		Frames: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
 		Length: 28
 		Tick: 200
-		Offset: 0, -24
 	damaged-idle-dish: gtradr_a
 		Frames: 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16
 		Length: 28
 		Tick: 240
-		Offset: 0, -24
 	make: gtradrmk
-		Start: 0
 		Length: 20
 		ShadowStart: 20
-		Offset: 0, -24
 	icon: radricon
-		Start: 0
+		Offset: 0, 0
 
 gatech:
-	idle: gttech
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: -12, -30
+	idle: gttech
+		ShadowStart: 3
 	damaged-idle: gttech
 		Start: 1
 		ShadowStart: 4
-		Offset: -12, -30
 	dead: gttech
 		Start: 2
 		ShadowStart: 5
-		Offset: -12, -30
 		Tick: 400
 	idle-lights: gttech_a
-		Start: 0
 		Length: 8
 		Tick: 200
-		Offset: -12, -30
 	damaged-idle-lights: gttech_a
 		Start: 8
 		Length: 8
 		Tick: 240
-		Offset: -12, -30
 	make: gttechmk
-		Start: 0
 		Length: 20
 		ShadowStart: 20
-		Offset: -12, -30
 	icon: techicon
-		Start: 0
+		Offset: 0, 0
 
 gasand:
+	Defaults:
+		Offset: 0, -12
 	idle: gtsand
-		Start: 0
 		Length: 16
 		ShadowStart: 32
-		Offset: 0, -12
 	damaged-idle: gtsand
 		Start: 16
 		Length: 16
 		ShadowStart: 48
-		Offset: 0, -12
 	icon: sbagicon
-		Start: 0
+		Offset: 0, 0
 
 gawall:
+	Defaults:
+		Offset: 0, -12
 	idle: gtwall
-		Start: 0
 		Length: 16
 		ShadowStart: 48
-		Offset: 0, -12
 	damaged-idle: gtwall
 		Start: 16
 		Length: 16
 		ShadowStart: 64
-		Offset: 0, -12
 	critical-idle: gtwall
 		Start: 32
 		Length: 16
 		ShadowStart: 80
-		Offset: 0, -12
 	icon: wallicon
-		Start: 0
+		Offset: 0, 0
 
 nawall:
+	Defaults:
+		Offset: 0, -12
 	idle: ntwall
-		Start: 0
 		Length: 16
 		ShadowStart: 48
-		Offset: 0, -12
 	damaged-idle: ntwall
 		Start: 16
 		Length: 16
 		ShadowStart: 64
-		Offset: 0, -12
 	critical-idle: ntwall
 		Start: 32
 		Length: 16
 		ShadowStart: 80
-		Offset: 0, -12
 	icon: nwalicon
-		Start: 0
+		Offset: 0, 0
 
 gatick:
+	Defaults:
+		Offset: 0, -13
 	idle:
-		Start: 0
-		Facings: 1
 		ShadowStart: 3
-		Offset: 0,-13
 	damaged-idle:
 		Start: 1
-		Facings: 1
 		ShadowStart: 4
-		Offset: 0,-13
 	muzzle: gunfire
-		Start: 0
 		Length: *
+		Offset: 0, 0
 	make: gatickmk
-		Start: 0
 		Length: 24
 		ShadowStart: 24
-		Offset: 0,-13
 
 gaicbm:
+	Defaults:
+		Offset: 0, -12
 	idle:
-		Start: 0
-		Facings: 1
 		ShadowStart: 3
-		Offset: 0,-12
 	damaged-idle:
 		Start: 1
-		Facings: 1
 		ShadowStart: 4
-		Offset: 0,-12
 	make: gaicbmmk
-		Start: 0
 		Length: 30
 		ShadowStart: 30
-		Offset: 0,-12
 
 gadpsa:
+	Defaults:
+		Offset: 0, -12
 	idle:
-		Start: 0
-		Facings: 1
 		ShadowStart: 3
-		Offset: 0,-12
 	damaged-idle:
 		Start: 1
-		Facings: 1
 		ShadowStart: 4
-		Offset: 0,-12
 	make: gadpsamk
-		Start: 0
 		Length: 36
 		ShadowStart: 36
-		Offset: 0,-12
 
 gaarty:
+	Defaults:
+		Offset: 0, -12
 	idle:
-		Start: 0
-		Facings: 1
 		ShadowStart: 3
-		Offset: 0,-12
 	damaged-idle:
 		Start: 1
-		Facings: 1
 		ShadowStart: 4
-		Offset: 0,-12
 	muzzle: gunfire
-		Start: 0
 		Length: *
+		Offset: 0, 0
 	make: gaartymk
-		Start: 0
 		Length: 16
 		ShadowStart: 16
-		Offset: 0,-12
 
 naobel:
-	idle: ntobel
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -24
+	idle: ntobel
+		ShadowStart: 3
 	damaged-idle: ntobel
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -24
 	dead: ntobel
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -24
 		Tick: 400
 	active: ntobel #placeholder until Charge supports overlays
-		Start: 0
-		Length: 1
 		ShadowStart: 3
-		Offset: 0, -24
 #	active: ntobel_b
-#		Start: 0
 #		Length: 12
 #		Tick: 240
-#		Offset: 0, -24
 	idle-lights: ntobel_a
-		Start: 0
 		Length: 12
 		Tick: 80
-		Offset: 0, -24
 	make: ntobelmk
-		Start: 0
 		Length: 19
 		ShadowStart: 19
-		Offset: 0, -24
 	icon: obliicon
-		Start: 0
+		Offset: 0, 0
 
 nalasr:
-	idle: ntlasr
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -12
+	idle: ntlasr
+		ShadowStart: 3
 	damaged-idle: ntlasr
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -12
 	dead: ntlasr
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -12
 		Tick: 400
 	make: ntlasrmk
-		Start: 0
 		Length: 21
 		ShadowStart: 21
-		Offset: 0, -12
 	icon: plticon
-		Start: 0
+		Offset: 0, 0
 
 nasam:
-	idle: ntsam
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -12
+	idle: ntsam
+		ShadowStart: 3
 	damaged-idle: ntsam
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -12
 	dead: ntsam
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -12
 		Tick: 400
 	turret: gtctwr_d
-		Start: 0
 		Facings: 32
 		Offset: -4, 0
 	make: ntsammk
-		Start: 0
 		Length: 8
 		ShadowStart: 8
-		Offset: 0, -12
 	icon: samicon
-		Start: 0
+		Offset: 0, 0
 
 napuls:
-	idle: ntpuls
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -24
+	idle: ntpuls
+		ShadowStart: 3
 	damaged-idle: ntpuls
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -24
 	dead: ntpuls
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -24
 		Tick: 400
 	turret: ntpuls_a
-		Start: 0
 		Facings: 32
-		Offset: 0, -24
 	make: ntpulsmk
-		Start: 0
 		Length: 20
 		ShadowStart: 20
-		Offset: 0, -24
 	icon: pulsicon
-		Start: 0
+		Offset: 0, 0
 
 nastlh:
+	Defaults:
+		Offset: -6, -30
 	idle: ntstlh
-		Start: 0
 		ShadowStart: 3
 	damaged-idle: ntstlh
 		Start: 1
@@ -785,7 +595,6 @@ nastlh:
 		ShadowStart: 5
 		Tick: 400
 	pulse: ntstlh_a
-		Start: 0
 		Length: 4
 		Tick: 480
 	damaged-pulse: ntstlh_a
@@ -793,219 +602,158 @@ nastlh:
 		Length: 4
 		Tick: 480
 	make: ntstlhmk
-		Start: 0
 		Length: 18
 		ShadowStart: 20
 	icon: clckicon
-		Start: 0
+		Offset: 0, 0
 
 gavulc:
-	idle: gtctwr
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -12
+	idle: gtctwr
+		ShadowStart: 3
 	damaged-idle: gtctwr
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -12
 	dead: gtctwr
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -12
 		Tick: 400
 	turret: gtctwr_b
-		Start: 0
 		Facings: 32
-		Offset: 0, -12
 	muzzle0: mgun-n
-		Start: 0
 		Length: *
-		Offset: 0, -12
 	muzzle1: mgun-nw
-		Start: 0
 		Length: *
-		Offset: 0, -12
 	muzzle2: mgun-w
-		Start: 0
 		Length: *
-		Offset: 0, -12
 	muzzle3: mgun-sw
-		Start: 0
 		Length: *
-		Offset: 0, -12
 	muzzle4: mgun-s
-		Start: 0
 		Length: *
-		Offset: 0, -12
 	muzzle5: mgun-se
-		Start: 0
 		Length: *
-		Offset: 0, -12
 	muzzle6: mgun-e
-		Start: 0
 		Length: *
-		Offset: 0, -12
 	muzzle7: mgun-ne
-		Start: 0
 		Length: *
-		Offset: 0, -12
 	idle-lights: gtctwr_a
-		Start: 0
 		Length: 6
 		Tick: 200
-		Offset: 0, -12
 	damaged-idle-lights: gtctwr_a
-		Start: 0
 		Length: 6
 		Tick: 200
-		Offset: 0, -12
 	make: gtctwrmk
-		Start: 0
 		Length: 11
 		ShadowStart: 11
-		Offset: 0, -12
 	icon: twr1icon
-		Start: 0
+		Offset: 0, 0
 
 garock:
-	idle: gtctwr
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -12
+	idle: gtctwr
+		ShadowStart: 3
 	damaged-idle: gtctwr
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -12
 	dead: gtctwr
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -12
 		Tick: 400
 	turret: gtctwr_c
-		Start: 0
 		Facings: 32
-		Offset: 0, -12
 	idle-lights: gtctwr_a
-		Start: 0
 		Length: 6
 		Tick: 200
-		Offset: 0, -12
 	damaged-idle-lights: gtctwr_a
-		Start: 0
 		Length: 6
 		Tick: 200
-		Offset: 0, -12
 	make: gtctwrmk
-		Start: 0
 		Length: 11
 		ShadowStart: 11
-		Offset: 0, -12
 	icon: twr2icon
-		Start: 0
+		Offset: 0, 0
 
 gacsam:
-	idle: gtctwr
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -12
+	idle: gtctwr
+		ShadowStart: 3
 	damaged-idle: gtctwr
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -12
 	dead: gtctwr
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -12
 		Tick: 400
 	turret: gtctwr_d
-		Start: 0
 		Facings: 32
-		Offset: 0, -12
 	idle-lights: gtctwr_a
-		Start: 0
 		Length: 6
 		Tick: 200
-		Offset: 0, -12
 	damaged-idle-lights: gtctwr_a
-		Start: 0
 		Length: 6
 		Tick: 200
-		Offset: 0, -12
 	make: gtctwrmk
-		Start: 0
 		Length: 11
 		ShadowStart: 11
-		Offset: 0, -12
 	icon: twr3icon
-		Start: 0
+		Offset: 0, 0
 
 gaspot:
-	idle:
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -12
+	idle:
+		ShadowStart: 3
 	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -12
 	dead:
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -12
 		Tick: 400
 	idle-lights: gaspot_a
-		Start: 0
 		Length: 8
 		Tick: 200
-		Offset: 0, -12
 	damaged-idle-lights: gaspot_a
 		Start: 8
 		Length: 8
 		Tick: 200
-		Offset: 0, -12
 	make: gaspotmk
-		Start: 0
 		Length: 14
 		ShadowStart: 14
-		Offset: 0, -12
 	icon: spoticon
-		Start: 0
+		Offset: 0, 0
 
 gahpad:
-	idle: gthpad
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -24
+	idle: gthpad
+		ShadowStart: 3
 		ZOffset: -1c511
 	damaged-idle: gthpad
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -24
 		ZOffset: -1c511
 	dead: gthpad
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -24
 		ZOffset: -1c511
 		Tick: 400
 	idle-platform: gthpadbb
-		Start: 0
 		ShadowStart: 3
-		Offset: 0, -24
 		ZOffset: -1c511
 	damaged-idle-platform: gthpadbb
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -24
 		ZOffset: -1c511
 	dead-platform: gthpadbb
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -24
 		ZOffset: -1c511
 		Tick: 400
 	idle-lights: gthpad_a
-		Start: 0
 		Length: 8
 		Tick: 200
 		Offset: 0, -36
@@ -1017,326 +765,246 @@ gahpad:
 		Offset: 0, -36
 		ZOffset: -1c511
 	make: gthpadmk
-		Start: 0
 		Length: 18
 		ShadowStart: 18
-		Offset: 0, -24
 		ZOffset: -1c511
 	icon: heliicon
-		Start: 0
+		Offset: 0, 0
 
 nahpad:
-	idle: nthpad
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -24
+	idle: nthpad
+		ShadowStart: 3
 		ZOffset: -1c511
 	damaged-idle: nthpad
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -24
 		ZOffset: -1c511
 	dead: nthpad
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -24
 		ZOffset: -1c511
 		Tick: 400
 	idle-platform: nthpadbb
-		Start: 0
 		ShadowStart: 3
-		Offset: 0, -24
 		ZOffset: -1c511
 	damaged-idle-platform: nthpadbb
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -24
 		ZOffset: -1c511
 	dead-platform: nthpadbb
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -24
 		ZOffset: -1c511
 		Tick: 400
 	idle-lights: nthpad_a
-		Start: 0
 		Length: 46
-		Offset: 0, -24
 		ZOffset: -1c511
 		Tick: 120
 	damaged-idle-lights: nthpad_a
 		Start: 46
 		Length: 46
 		Tick: 120
-		Offset: 0, -24
 		ZOffset: -1c511
 	make: nthpadmk
-		Start: 0
 		Length: 20
 		ShadowStart: 20
-		Offset: 0, -24
 	icon: nhpdicon
-		Start: 0
+		Offset: 0, 0
 
 proc: # TODO: unused narefn_a, narefn_b
-	idle: ntrefn
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: -12, -42
+	idle: ntrefn
+		ShadowStart: 3
 	damaged-idle: ntrefn
 		Start: 1
 		ShadowStart: 4
-		Offset: -12, -42
 	dead: ntrefn
 		Start: 2
 		ShadowStart: 5
-		Offset: -12, -42
 		Tick: 400
 	make: ntrefnmk
-		Start: 0
 		Length: 20
 		ShadowStart: 20
-		Offset: -12, -42
 	idle-redlights: ntrefn_c
-		Start: 0
 		Length: 16
 		Tick: 120
-		Offset: -12, -42
 	damaged-idle-redlights: ntrefn_c
-		Start: 0
 		Length: 16
 		Tick: 120
-		Offset: -12, -42
 	bib: ntrefnbb
-		Start: 0
-		Length: 1
-		Offset: -12, -42
 	damaged-bib: ntrefnbb
 		Start: 1
-		Length: 1
-		Offset: -12, -42
 	icon: reficon
-		Start: 0
+		Offset: 0, 0
 
 gasilo:
-	idle: gtsilo_a
-		Start: 0
-		Length: 4
+	Defaults:
 		Offset: 0, -24
+	idle: gtsilo_a
+		Length: 4
 	damaged-idle: gtsilo_a
 		Start: 4
 		Length: 4
-		Offset: 0, -24
 	idle-underlay: gtsilo
-		Start: 0
 		ShadowStart: 3
 		ZOffset: -512
-		Offset: 0, -24
 	damaged-idle-underlay: gtsilo
 		Start: 1
 		ShadowStart: 4
 		ZOffset: -512
-		Offset: 0, -24
 	dead: gtsilo
 		Start: 2
 		ShadowStart: 5
 		ZOffset: -512
-		Offset: 0, -24
 		Tick: 400
 	idle-lights: gtsilo_b
-		Start: 0
 		Length: 16
 		Tick: 120
-		Offset: 0, -24
 	damaged-idle-lights: gtsilo_b
 		Start: 16
 		Length: 16
 		Tick: 120
-		Offset: 0, -24
 	icon: siloicon
-		Start: 0
+		Offset: 0, 0
 	make: gtsilomk
-		Start: 0
 		Length: 18
 		ShadowStart: 20
-		Offset: 0, -24
 
 galite:
-	idle: gtlite
-		Start: 0
-		ShadowStart: 2
+	Defaults:
 		Offset: 0, -12
+	idle: gtlite
+		ShadowStart: 2
 	damaged-idle: gtlite
 		Start: 1
 		ShadowStart: 3
-		Offset: 0, -12
 #	lighting: alphatst
-#		Start: 0
 #		ZOffset: -1c511
 #		BlendMode: Alpha
 	icon: liteicon
-		Start: 0
+		Offset: 0, 0
 
 gadept:
-	idle: gtdept
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 0, -36
+	idle: gtdept
+		ShadowStart: 3
 	damaged-idle: gtdept
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -36
 	dead: gtdept
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -36
 		Tick: 400
 	ground: gtdeptbb
-		Start: 0
 		ShadowStart: 3
 		ZOffset: -1c611
-		Offset: 0, -36
 	damaged-ground: gtdeptbb
 		Start: 1
 		ShadowStart: 4
 		ZOffset: -1c611
-		Offset: 0, -36
 	dead-ground: gtdeptbb
 		Start: 2
 		ShadowStart: 5
 		ZOffset: -1c611
-		Offset: 0, -36
 		Tick: 400
 	idle-light: gtdept_b
-		Start: 0
 		Length: 7
 		Tick: 120
-		Offset: 0, -36
 	damaged-idle-light: gtdept_b
 		Start: 7
 		Length: 7
 		Tick: 120
-		Offset: 0, -36
 	circuits: gtdept_a
-		Start: 0
 		Length: 5
 		ZOffset: -1c511
-		Offset: 0, -36
 	damaged-circuits: gtdept_a
 		Start: 5
 		Length: 5
 		ZOffset: -1c511
-		Offset: 0, -36
 	crane: gtdept_c
-		Start: 0
 		Length: 16
-		Offset: 0, -36
 	platform: gtdept_d
-		Start: 0
 		Length: 7
 		ZOffset: -1c511
-		Offset: 0, -36
 	damaged-platform: gtdept_d
 		Start: 7
 		Length: 7
 		ZOffset: -1c511
-		Offset: 0, -36
 	make: gtdeptmk
-		Start: 0
 		Length: 10
 		Tick: 60
 		ShadowStart: 10
-		Offset: 0, -36
 	icon: fixicon
-		Start: 0
+		Offset: 0, 0
 
 namisl:
-	idle: ntmisl
-		Start: 0
+	Defaults:
 		Offset: 0, -24
+	idle: ntmisl
 	damaged-idle: ntmisl
 		Start: 1
-		Offset: 0, -24
 	dead: ntmisl
 		Start: 2
-		Offset: 0, -24
 		Tick: 400
 	idle-lights: ntmisl_b
-		Start: 0
 		Length: 10
 		Tick: 120
-		Offset: 0, -24
 	damaged-idle-lights: ntmisl_b
 		Start: 10
 		Length: 10
 		Tick: 120
-		Offset: 0, -24
 	make: ntmislmk
-		Start: 0
 		Length: 18
 		ShadowStart: 18
-		Offset: 0, -24
 	active: ntmisl_a
-		Start: 0
 		Length: 10
 		Tick: 80
-		Offset: 0, -24
 	damaged-active: ntmisl_a
 		Start: 10
 		Length: 10
 		Tick: 80
-		Offset: 0, -24
 	icon: msslicon
-		Start: 0
+		Offset: 0, 0
 
 gaplug:
-	idle: gaplug
-		Start: 0
-		ShadowStart: 3
+	Defaults:
 		Offset: 12, -30
+	idle: gaplug
+		ShadowStart: 3
 	damaged-idle: gaplug
 		Start: 1
 		ShadowStart: 4
-		Offset: 12, -30
 	dead: gaplug
 		Start: 2
 		ShadowStart: 5
-		Offset: 12, -30
 		Tick: 400
 	idle-dish: gaplug_a
-		Start: 0
 		Length: 20
 		Tick: 120
-		Offset: 12, -30
 	damaged-idle-dish: gaplug_a
 		Start: 20
 		Length: 20
 		Tick: 120
-		Offset: 12, -30
 	idle-lights: gaplug_b
-		Start: 0
 		Length: 20
 		Tick: 120
-		Offset: 12, -30
 	damaged-idle-lights: gaplug_b
 		Start: 20
 		Length: 20
 		Tick: 120
-		Offset: 12, -30
 	idle-strip: gaplug_c
-		Start: 0
 		Length: 8
 		Tick: 120
-		Offset: 12, -30
 	damaged-idle-strip: gaplug_c
 		Start: 8
 		Length: 8
 		Tick: 120
-		Offset: 12, -30
 	make: gtplugmk
-		Start: 0
 		Length: 17
 		ShadowStart: 17
-		Offset: 12, -30
 	icon: plugicon
-		Start: 0
+		Offset: 0, 0

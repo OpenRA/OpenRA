@@ -1,6 +1,5 @@
 e1:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -27,7 +26,6 @@ e1:
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -42,7 +40,6 @@ e1:
 		ShadowStart: 441
 		Tick: 80
 	die3: infdie
-		Start: 0
 		Length: *
 		Tick: 80
 	die-crushed:
@@ -75,15 +72,12 @@ e1:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: e1icon
-		Start: 0
 
 e2:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -110,7 +104,6 @@ e2:
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -125,7 +118,6 @@ e2:
 		ShadowStart: 441
 		Tick: 80
 	die3: infdie
-		Start: 0
 		Length: *
 		Tick: 80
 	die-crushed:
@@ -158,15 +150,12 @@ e2:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: e2icon
-		Start: 0
 
 e3:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -193,7 +182,6 @@ e3:
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -208,7 +196,6 @@ e3:
 		ShadowStart: 441
 		Tick: 80
 	die3: infdie
-		Start: 0
 		Length: *
 		Tick: 80
 	die-crushed:
@@ -241,15 +228,12 @@ e3:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: e4icon
-		Start: 0
 
 weedguy:
 	stand: weed
-		Start: 0
 		Facings: 8
 		ShadowStart: 202
 	run: weed
@@ -260,7 +244,6 @@ weedguy:
 		ShadowStart: 210
 	shoot: weed
 		Start: 56
-		Length: 1
 		Facings: 8
 		Tick: 80
 	prone-shoot: weed
@@ -281,7 +264,6 @@ weedguy:
 		ShadowStart: 288
 	prone-stand: weed
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 288
@@ -311,7 +293,6 @@ weedguy:
 		ShadowStart: 379
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	die-crushed: weed
@@ -320,11 +301,9 @@ weedguy:
 		ShadowStart: 376
 		Tick: 1000
 	icon: weaticon
-		Start: 0
 
 medic:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 307
 	run:
@@ -351,7 +330,6 @@ medic:
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -402,15 +380,12 @@ medic:
 		Length: 104
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: mediicon
-		Start: 0
 
 engineer:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -437,7 +412,6 @@ engineer:
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -474,15 +448,12 @@ engineer:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: engnicon
-		Start: 0
 
 umagon:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -509,7 +480,6 @@ umagon:
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -558,15 +528,12 @@ umagon:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: umagicon
-		Start: 0
 
 ghost: # TODO unused GUNFIRE.SHP
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -593,7 +560,6 @@ ghost: # TODO unused GUNFIRE.SHP
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -642,15 +608,12 @@ ghost: # TODO unused GUNFIRE.SHP
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: gosticon
-		Start: 0
 
 jumpjet: # TODO: ShadowStart:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 451
 	run:
@@ -676,7 +639,6 @@ jumpjet: # TODO: ShadowStart:
 		Tick: 80
 		ShadowStart: 538
 	prone-stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 451
 	die1: 
@@ -724,15 +686,12 @@ jumpjet: # TODO: ShadowStart:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: jjeticon
-		Start: 0
 
 mhijack:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -759,7 +718,6 @@ mhijack:
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -808,15 +766,12 @@ mhijack:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: mutcicon
-		Start: 0
 
 chamspy:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -843,7 +798,6 @@ chamspy:
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -892,15 +846,12 @@ chamspy:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: chamicon
-		Start: 0
 
 cyc2:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 308
 	run:
@@ -927,7 +878,6 @@ cyc2:
 		ShadowStart: 418
 	prone-stand:
 		Start: 110
-		Length: 1
 		Facings: 8
 		Stride: 9
 		ShadowStart: 418
@@ -942,7 +892,6 @@ cyc2:
 		ShadowStart: 505
 		Tick: 80
 	die3: infexpl
-		Start: 0
 		Length: *
 		Tick: 80
 	shoot:
@@ -969,15 +918,12 @@ cyc2:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: cybcicon
-		Start: 0
 
 cyborg:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 370
 	run:
@@ -1004,7 +950,6 @@ cyborg:
 		ShadowStart: 456
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 456
@@ -1047,15 +992,12 @@ cyborg:
 		ShadowStart: 677
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: cybiicon
-		Start: 0
 
 mutant:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -1082,7 +1024,6 @@ mutant:
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -1131,15 +1072,12 @@ mutant:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: mutcicon
-		Start: 0
 
 mwmn:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -1166,7 +1104,6 @@ mwmn:
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -1215,15 +1152,12 @@ mwmn:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: mutcicon
-		Start: 0
 
 mutant3: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-NW
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -1250,7 +1184,6 @@ mutant3: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -1299,15 +1232,12 @@ mutant3: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: mutcicon
-		Start: 0
 
 tratos:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -1334,7 +1264,6 @@ tratos:
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -1383,15 +1312,12 @@ tratos:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: mutcicon
-		Start: 0
 
 oxanna:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -1418,7 +1344,6 @@ oxanna:
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -1467,15 +1392,12 @@ oxanna:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: mutcicon
-		Start: 0
 
 slav:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -1502,7 +1424,6 @@ slav:
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
-		Length: 1
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
@@ -1551,15 +1472,12 @@ slav:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: mutcicon
-		Start: 0
 
 doggie: # TODO: not sure what frame 88 and following is
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 119
 	run:
@@ -1606,32 +1524,25 @@ doggie: # TODO: not sure what frame 88 and following is
 		ShadowStart: 228
 		Tick: 80
 	icon: xxicon
-		Start: 0
 
 vissml:
 	idle:
-		Start: 0
 		Length: 90
 		ShadowStart: 90
 	icon: xxicon
-		Start: 0
 
 vislrg:
 	idle:
-		Start: 0
 		Length: 90
 		ShadowStart: 90
 	muzzle: vislgatk # TODO: unused
-		Start: 0
 		Length: 5
 		Facings: 8
 		ShadowStart: 40
 	icon: xxicon
-		Start: 0
 
 civ1:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -1685,15 +1596,12 @@ civ1:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: xxicon
-		Start: 0
 
 civ2:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -1747,15 +1655,12 @@ civ2:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: xxicon
-		Start: 0
 
 civ3:
 	stand:
-		Start: 0
 		Facings: 8
 		ShadowStart: 292
 	run:
@@ -1809,8 +1714,6 @@ civ3:
 		ShadowStart: 190
 		Tick: 80
 	die6: electro
-		Start: 0
 		Length: *
 		Tick: 80
 	icon: xxicon
-		Start: 0
