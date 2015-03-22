@@ -45,9 +45,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Hack to disable notifications for neutral actors so some custom maps don't need fixing
-			if (!Info.AnnounceNeutrals &&
-				((self.EffectiveOwner != null && discoverer.Stances[self.EffectiveOwner.Owner] != Stance.Enemy)
-				 || discoverer.Stances[self.Owner] != Stance.Enemy))
+			// At this point it's either neutral or an enemy
+			if (!Info.AnnounceNeutrals && !self.AppearsHostileTo(discoverer.PlayerActor))
 				return;
 
 			// Audio notification
