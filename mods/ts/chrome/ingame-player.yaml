@@ -9,7 +9,7 @@ Container@PLAYER_WIDGETS:
 			Y: 10
 			Children:
 				SupportPowers@SUPPORT_PALETTE:
-					IconSize: 62, 46
+					IconSize: 64, 48
 					IconSpriteOffset: -1, -1
 					TooltipContainer: TOOLTIP_CONTAINER
 					ReadyText: READY
@@ -20,170 +20,196 @@ Container@PLAYER_WIDGETS:
 							Logic: AddRaceSuffixLogic
 							X:0-2
 							Y:0-2
-							Width: 62
-							Height: 46
+							Width: 64
+							Height: 48
 							IgnoreMouseOver: true
 							ImageCollection: sidebar
 							ImageName: background-supportoverlay
 		Image@SIDEBAR_BACKGROUND_TOP:
 			Logic: AddRaceSuffixLogic
-			X: WINDOW_RIGHT - 250
-			Y: 10
-			Width: 238
-			Height: 291
+			X: WINDOW_RIGHT - 235
+			Y: 0
+			Width: 235
+			Height: 260
 			ImageCollection: sidebar
 			ImageName: background-top
 			ClickThrough: false
 			Children:
 				Container@TOP_BUTTONS:
 					Logic: OrderButtonsChromeLogic
-					X: 9
-					Y: 7
+					X: 0
+					Y: 21
 					Children:
-						Button@BEACON_BUTTON:
-							Logic: AddRaceSuffixLogic
-							Width: 28
-							Height: 28
-							Background: sidebar-button
-							TooltipText: Place Beacon
-							TooltipContainer: TOOLTIP_CONTAINER
-							VisualHeight: 0
-							Children:
-								Image@ICON:
-									X: 6
-									Y: 6
-									ImageCollection: order-icons
-						Button@SELL_BUTTON:
-							Logic: AddRaceSuffixLogic
-							X: 32
-							Width: 28
-							Height: 28
-							Background: sidebar-button
-							TooltipText: Sell
-							TooltipContainer: TOOLTIP_CONTAINER
-							VisualHeight: 0
-							Children:
-								Image@ICON:
-									X: 6
-									Y: 6
-									ImageCollection: order-icons
-						Button@POWER_BUTTON:
-							Logic: AddRaceSuffixLogic
-							X: 64
-							Width: 28
-							Height: 28
-							Background: sidebar-button
-							TooltipText: Power Down
-							TooltipContainer: TOOLTIP_CONTAINER
-							VisualHeight: 0
-							Children:
-								Image@ICON:
-									X: 6
-									Y: 6
-									ImageCollection: order-icons
-						Button@REPAIR_BUTTON:
-							Logic: AddRaceSuffixLogic
-							X: 96
-							Width: 28
-							Height: 28
-							Background: sidebar-button
-							TooltipText: Repair
-							TooltipContainer: TOOLTIP_CONTAINER
-							VisualHeight: 0
-							Children:
-								Image@ICON:
-									X: 6
-									Y: 6
-									ImageCollection: order-icons
 						MenuButton@DEBUG_BUTTON:
 							Logic: AddRaceSuffixLogic
 							Key: escape Shift
-							X: 128
-							Width: 28
-							Height: 28
+							X: 13
+							Width: 30
+							Height: 31
 							Background: sidebar-button
 							TooltipText: Debug Menu
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									Logic: AddRaceSuffixLogic
+									X: 0
+									Y: 0
 									ImageCollection: order-icons
-									ImageName: options
+									ImageName: debug
+						Button@REPAIR_BUTTON:
+							Logic: AddRaceSuffixLogic
+							X: 43
+							Width: 30
+							Height: 31
+							Background: sidebar-button
+							TooltipText: Repair
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									Logic: AddRaceSuffixLogic
+									X: 0
+									Y: 0
+									ImageCollection: order-icons
+						Button@SELL_BUTTON:
+							Logic: AddRaceSuffixLogic
+							X: 73
+							Width: 30
+							Height: 31
+							Background: sidebar-button
+							TooltipText: Sell
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									Logic: AddRaceSuffixLogic
+									X: 0
+									Y: 0
+									ImageCollection: order-icons
+						Button@BEACON_BUTTON:
+							Logic: AddRaceSuffixLogic
+							X: 103
+							Width: 30
+							Height: 31
+							Background: sidebar-button
+							TooltipText: Place Beacon
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									Logic: AddRaceSuffixLogic
+									X: 0
+									Y: 0
+									ImageCollection: order-icons
+						Button@POWER_BUTTON:
+							Logic: AddRaceSuffixLogic
+							X: 133
+							Width: 30
+							Height: 31
+							Background: sidebar-button
+							TooltipText: Power Down
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									Logic: AddRaceSuffixLogic
+									X: 0
+									Y: 0
+									ImageCollection: order-icons
 						MenuButton@DIPLOMACY_BUTTON:
 							Logic: AddRaceSuffixLogic
 							MenuContainer: INGAME_DIPLOMACY_BG
 							HideIngameUI: false
 							Pause: false
 							Key: P
-							X: 160
-							Width: 28
-							Height: 28
+							X: 163
+							Width: 30
+							Height: 31
 							Background: sidebar-button
 							TooltipText: Diplomacy
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									Logic: AddRaceSuffixLogic
+									X: 0
+									Y: 0
 									ImageCollection: order-icons
 									ImageName: diplomacy
 						MenuButton@OPTIONS_BUTTON:
 							Logic: AddRaceSuffixLogic
 							Key: escape
-							X: 192
-							Width: 28
-							Height: 28
+							X: 193
+							Width: 30
+							Height: 31
 							Background: sidebar-button
 							TooltipText: Options
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									Logic: AddRaceSuffixLogic
+									X: 0
+									Y: 0
 									ImageCollection: order-icons
 									ImageName: options
 				Container@RADAR:
 					Logic: IngameRadarDisplayLogic
 					Children:
 						LogicTicker@RADAR_TICKER:
+						Image@INSIGNIA:
+							Logic: AddRaceSuffixLogic
+							X: 37
+							Y: 85
+							ImageCollection: radar
+							ImageName: insignia
 						ColorBlock@RADAR_FADETOBLACK:
-							X: 8
-							Y: 40
-							Width: 222
-							Height: 222
+							X: 16
+							Y: 64
+							Width: 206
+							Height: 161
 						Radar@RADAR_MINIMAP:
 							WorldInteractionController: INTERACTION_CONTROLLER
-							X: 9
-							Y: 41
-							Width: 220
-							Height: 220
-							Children:
+							X: 16
+							Y: 64
+							Width: 206
+							Height: 161
+						VqaPlayer@PLAYER:
+							X: 16
+							Y: 64
+							Width: 206
+							Height: 161
+							Skippable: false
 				Label@GAME_TIMER:
 					Logic: GameTimerLogic
-					X: 3
-					Y: 263
+					X: 10
+					Y: 0-1
 					Width: PARENT_RIGHT
 					Height: 22
 					Align: Center
 					Font: TinyBold
 				LabelWithTooltip@CASH:
 					Logic: IngameCashCounterLogic
-					X: 35
-					Y: 262
+					X: 31
+					Y: 0-2
 					Width: 50
 					Height: 22
 					Font: Bold
 					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
+					Children:
+						Image@CASH_ICON:
+							Logic: AddRaceSuffixLogic
+							X: 0-17
+							Y: 5
+							ImageCollection: cash-icons
+							ImageName: cash-normal
 				LabelWithTooltip@POWER:
 					Logic: IngamePowerCounterLogic
 					X: PARENT_RIGHT - WIDTH - 30
-					Y: 262
+					Y: 0-2
 					Width: 50
 					Height: 22
 					Align: Right
@@ -193,63 +219,69 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: SIMPLE_TOOLTIP
 					Children:
 						Image@POWER_ICON:
-							X: PARENT_RIGHT + 4
+							Logic: AddRaceSuffixLogic
+							X: PARENT_RIGHT + 0
 							Y: 5
 							ImageCollection: power-icons
 							ImageName: power-normal
 		Container@SIDEBAR_PRODUCTION:
 			Logic: ClassicProductionLogic
-			X: WINDOW_RIGHT - 250
-			Y: 300
-			Width: 238
+			X: WINDOW_RIGHT - 235
+			Y: 260
+			Width: 235
 			Height: 250
 			Children:
 				Container@PALETTE_BACKGROUND:
 					Children:
 						Image@ROW_TEMPLATE:
 							Logic: AddRaceSuffixLogic
-							Width: 238
-							Height: 47
+							Width: 235
+							Height: 52
 							ClickThrough: false
 							ImageCollection: sidebar
 							ImageName: background-iconrow
 						Image@BOTTOM_CAP:
 							Logic: AddRaceSuffixLogic
-							Width: 238
-							Height: 8
+							Width: 235
+							Height: 26
 							ClickThrough: false
 							ImageCollection: sidebar
 							ImageName: background-bottom
 				LogicTicker@PRODUCTION_TICKER:
 				ProductionPalette@PRODUCTION_PALETTE:
-					X: 42
+					X: 24
 					Y: 1
 					TooltipContainer: TOOLTIP_CONTAINER
 					ReadyText: READY
 					HoldText: ON HOLD
-					IconSize: 62, 46
-					IconMargin: 1, 1
-					IconSpriteOffset: -1, -1
+					IconSize: 64, 48
+					IconMargin: 3, 4
+					IconSpriteOffset: 0, 0
+					MinimumRows: 4
+					MaximumRows: 6
 				Container@PALETTE_FOREGROUND:
-					X: 40
-					Y: 0-1
+					X: 22
+					Y: 0
 					Children:
 						Image@ROW_TEMPLATE:
-							Width: 238
-							Height: 47
+							Logic: AddRaceSuffixLogic
+							Width: 235
+							Height: 52
 							IgnoreMouseOver: true
 							ImageCollection: sidebar-bits
 							ImageName: production-iconoverlay
 				Container@PRODUCTION_TYPES:
-					X: 7
-					Y: 2
-					Width: 29
-					Height: 240
+					X: 0
+					Y: 0-32
+					Width: 235
+					Height: 311
 					Children:
 						ProductionTypeButton@BUILDING:
 							Logic: AddRaceSuffixLogic
-							Width: 28
-							Height: 28
+							X: 41
+							Y: 1
+							Width: 30
+							Height: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: Buildings
@@ -258,14 +290,16 @@ Container@PLAYER_WIDGETS:
 							HotkeyName: ProductionTypeBuildingKey
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									Logic: AddRaceSuffixLogic
+									X: 7
+									Y: 7
 									ImageCollection: production-icons
 						ProductionTypeButton@DEFENSE:
 							Logic: AddRaceSuffixLogic
-							Y: 31
-							Width: 28
-							Height: 28
+							X: 72
+							Y: 1
+							Width: 30
+							Height: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: Defense
@@ -274,14 +308,16 @@ Container@PLAYER_WIDGETS:
 							HotkeyName: ProductionTypeDefenseKey
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									Logic: AddRaceSuffixLogic
+									X: 7
+									Y: 7
 									ImageCollection: production-icons
 						ProductionTypeButton@INFANTRY:
 							Logic: AddRaceSuffixLogic
-							Y: 62
-							Width: 28
-							Height: 28
+							X: 103
+							Y: 1
+							Width: 30
+							Height: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: Infantry
@@ -290,14 +326,16 @@ Container@PLAYER_WIDGETS:
 							HotkeyName: ProductionTypeInfantryKey
 							Children:
 								Image@ICON:
+									Logic: AddRaceSuffixLogic
 									X: 6
-									Y: 6
+									Y: 7
 									ImageCollection: production-icons
 						ProductionTypeButton@VEHICLE:
 							Logic: AddRaceSuffixLogic
-							Y: 93
-							Width: 28
-							Height: 28
+							X: 134
+							Y: 1
+							Width: 30
+							Height: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: Vehicles
@@ -306,14 +344,16 @@ Container@PLAYER_WIDGETS:
 							HotkeyName: ProductionTypeVehicleKey
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									Logic: AddRaceSuffixLogic
+									X: 7
+									Y: 7
 									ImageCollection: production-icons
 						ProductionTypeButton@AIRCRAFT:
 							Logic: AddRaceSuffixLogic
-							Y: 124
-							Width: 28
-							Height: 28
+							X: 165
+							Y: 1
+							Width: 30
+							Height: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: Aircraft
@@ -322,36 +362,27 @@ Container@PLAYER_WIDGETS:
 							HotkeyName: ProductionTypeAircraftKey
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									Logic: AddRaceSuffixLogic
+									X: 7
+									Y: 7
 									ImageCollection: production-icons
 						Button@SCROLL_UP_BUTTON:
 							Logic: AddRaceSuffixLogic
-							Y: 186
-							Width: 28
-							Height: 22
+							X: 74
+							Y: PARENT_BOTTOM + 36
+							Width: 34
+							Height: 27
 							VisualHeight: 0
-							Background: sidebar-button
+							Background: scrollup-buttons
 							TooltipText: Scroll up
 							TooltipContainer: TOOLTIP_CONTAINER
-							Children:
-								Image@ICON:
-									X: 6
-									Y: 3
-									ImageCollection: scrollbar
-									ImageName: up_arrow
 						Button@SCROLL_DOWN_BUTTON:
 							Logic: AddRaceSuffixLogic
-							Y: 211
-							Width: 28
-							Height: 22
+							X: 141
+							Y: PARENT_BOTTOM + 36
+							Width: 34
+							Height: 27
 							VisualHeight: 0
-							Background: sidebar-button
+							Background: scrolldown-buttons
 							TooltipText: Scroll down
 							TooltipContainer: TOOLTIP_CONTAINER
-							Children:
-								Image@ICON:
-									X: 6
-									Y: 3
-									ImageCollection: scrollbar
-									ImageName: down_arrow
