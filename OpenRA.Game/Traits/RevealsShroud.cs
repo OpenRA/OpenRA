@@ -33,9 +33,7 @@ namespace OpenRA.Traits
 			if (cachedLocation != self.Location)
 			{
 				cachedLocation = self.Location;
-
-				foreach (var s in self.World.Players.Select(p => p.Shroud))
-					s.UpdateVisibility(self);
+				Shroud.UpdateVisibility(self.World.Players.Select(p => p.Shroud), self);
 			}
 		}
 
