@@ -53,12 +53,6 @@
       <HintPath>..\thirdparty\SharpFont.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Mono.Nat">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-      <Package>mono.nat</Package>
-      <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
-    </Reference>
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\Eluant.dll</HintPath>
       <Private>False</Private>
@@ -78,6 +72,12 @@
     <Reference Include="SDL2-CS">
       <HintPath>..\thirdparty\SDL2-CS.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Open.Nat">
+      <HintPath>..\Open.Nat.dll</HintPath>
+    </Reference>
+    <Reference Include="AsyncBridge">
+      <HintPath>..\AsyncBridge.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

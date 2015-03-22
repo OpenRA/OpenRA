@@ -73,14 +73,6 @@ if (!(Test-Path "windows/SDL2.dll"))
 	rmdir sdl2.redist.2.0.3 -Recurse
 }
 
-if (!(Test-Path "Mono.Nat.dll"))
-{
-	echo "Fetching Mono.Nat from NuGet."
-	./nuget.exe install Mono.Nat -Version 1.2.21
-	cp Mono.Nat.1.2.21.0/lib/net40/Mono.Nat.dll .
-	rmdir Mono.Nat.1.2.21.0 -Recurse
-}
-
 if (!(Test-Path "windows/lua51.dll"))
 {
 	echo "Fetching Lua 5.1 from NuGet."
@@ -128,4 +120,20 @@ if (!(Test-Path "FuzzyLogicLibrary.dll"))
 	./nuget.exe install FuzzyLogicLibrary -Version 1.2.0
 	cp FuzzyLogicLibrary.1.2.0/bin/Release/FuzzyLogicLibrary.dll .
 	rmdir FuzzyLogicLibrary.1.2.0 -Recurse
+}
+
+if (!(Test-Path "AsyncBridge.dll"))
+{
+	echo "Fetching .NET 4.0 AsyncBridge from NuGet."
+	./nuget.exe install AsyncBridge -Version 0.1.1
+	cp ./AsyncBridge.0.1.1/lib/net40-Client/AsyncBridge.dll .
+	rmdir AsyncBridge.0.1.1 -Recurse
+}
+
+if (!(Test-Path "Open.Nat.dll"))
+{
+	echo "Fetching Open.NAT from NuGet"
+	./nuget.exe install Open.Nat -Version 2.0.11
+	cp Open.Nat.2.0.11.0/lib/net45/Open.Nat.dll .
+	rmdir Open.Nat.2.0.11.0 -Recurse
 }

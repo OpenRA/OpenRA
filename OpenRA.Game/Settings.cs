@@ -27,7 +27,6 @@ namespace OpenRA
 		public string MasterServer = "http://master.openra.net/";
 		public bool DiscoverNatDevices = false; // Allow users to disable NAT discovery if problems occur
 		public bool AllowPortForward = true; // let the user disable it even if compatible devices are found
-		public bool NatDeviceAvailable = false; // internal check if discovery succeeded
 		public int NatDiscoveryTimeout = 1000; // ms to search for UPnP enabled NATs
 		public bool VerboseNatDiscovery = false; // print very detailed logs for debugging
 		public string Map = null;
@@ -50,7 +49,6 @@ namespace OpenRA
 			MasterServer = other.MasterServer;
 			DiscoverNatDevices = other.DiscoverNatDevices;
 			AllowPortForward = other.AllowPortForward;
-			NatDeviceAvailable = other.NatDeviceAvailable;
 			NatDiscoveryTimeout = other.NatDiscoveryTimeout;
 			VerboseNatDiscovery = other.VerboseNatDiscovery;
 			Map = other.Map;

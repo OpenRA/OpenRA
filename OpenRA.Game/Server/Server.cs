@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using Open.Nat;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -132,7 +133,7 @@ namespace OpenRA.Server
 			randomSeed = (int)DateTime.Now.ToBinary();
 
 			if (Settings.AllowPortForward)
-				UPnP.ForwardPort(3600);
+				UPnP.ForwardPort();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
 				serverTraits.Add(modData.ObjectCreator.CreateObject<ServerTrait>(trait));
@@ -150,7 +151,7 @@ namespace OpenRA.Server
 			Log.Write("server", "Initial mod: {0}", ModData.Manifest.Mod.Id);
 			Log.Write("server", "Initial map: {0}", LobbyInfo.GlobalSettings.Map);
 
-			new Thread(_ =>
+			new Thread(() =>
 			{
 				var timeout = serverTraits.WithInterface<ITick>().Min(t => t.TickTimeout);
 				for (;;)
@@ -186,7 +187,8 @@ namespace OpenRA.Server
 					if (State == ServerState.ShuttingDown)
 					{
 						EndGame();
-						if (Settings.AllowPortForward) UPnP.RemovePortforward();
+						if (Settings.AllowPortForward)
+							UPnP.RemovePortforward();
 						break;
 					}
 				}
