@@ -10,14 +10,13 @@
 
 using System;
 
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Widgets;
-using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 {
-
 	class CampaignCongratulationLogic
 	{
 		readonly CampaignWorldLogic campaignWorld;
@@ -66,13 +65,15 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 		private void SetCongratulationContent()
 		{
 			// TODO: It would be more elegant to read the text from a yaml-file instead of hardcoding it
-			var victoryTextGdi = "Good work Commander! Thanks to your efforts the Global Defence Initiative was victorious. Your actions have thrown the brotherhood into disarray and without their leader we should soon be able to completely rid the world of their remnants.";
-			var victoryTextNod = "Well done Brother! Your heroic actions have shown the world truth and freedom. Soon we will be free of the GDIs opression. Kane is proud of you!";
+			var victoryTextGdi = "Good work Commander! Thanks to your efforts the Global Defence Initiative was victorious." +
+				" Your actions have thrown the brotherhood into disarray and without their leader we should soon be able to completely rid the world of their remnants.";
+			var victoryTextNod = "Well done Brother! Your heroic actions have shown the world truth and freedom." +
+				" Soon we will be free of the GDIs opression. Kane is proud of you!";
 			var faction = CampaignWorldLogic.Campaign.Equals("GDI Campaign");
 			var victoryText = faction ? victoryTextGdi : victoryTextNod;
-			
+
 			victoryText = WidgetUtils.WrapText(victoryText, this.congratulationText.Bounds.Width, this.congratulationTextFont);
-			
+
 			this.congratulationText.Text = victoryText;
 			this.congratulationText.Bounds.Height = this.congratulationTextFont.Measure(victoryText).Y;
 			this.congratulationTextPanel.ScrollToTop();
@@ -81,6 +82,5 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 			this.congratulationGdiLogo.IsVisible = () => faction;
 			this.congratulationNodLogo.IsVisible = () => !faction;
 		}
-
 	}
 }

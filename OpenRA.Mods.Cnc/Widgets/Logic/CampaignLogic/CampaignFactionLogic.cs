@@ -16,24 +16,23 @@ using System.Net;
 
 using OpenRA.FileSystem;
 using OpenRA.Mods.Common;
-using OpenRA.Network;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Mods.Common.Widgets.Logic;
+using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 {
-
 	public class CampaignFactionLogic
 	{
+		const string GdiCampaign = "GDI Campaign";
+		const string NodCampaign = "Nod Campaign";
 		readonly Action onStart;
 		readonly VqaPlayerWidget videoPlayer;
 		readonly BackgroundWidget chooseTextBg;
 		readonly float cachedMusicVolume;
 		bool videoStopped = false;
 		bool campaignStarted = false;
-		const string gdiCampaign = "GDI Campaign";
-		const string nodCampaign = "Nod Campaign";
 		string startedCampaign;
 
 		enum PlayThen
@@ -107,16 +106,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 						playThen = PlayThen.NODpre;
 						filename = "choosenod.vqa";
 						if (GlobalFileSystem.Exists(filename))
-						{
 							videoPlayer.Load(filename);
-						}
 						break;
 					case PlayThen.NODpre:
 						filename = "nod1pre.vqa";
 						if (GlobalFileSystem.Exists(filename))
-						{
 							videoPlayer.Load(filename);
-						}
 						chooseTextBg.Visible = true;
 						playThen = PlayThen.Start;
 						break;
@@ -133,7 +128,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 		private void CallbackFactionGdiButtonOnClick()
 		{
 			CampaignProgress.SaveProgress("GDI", "");
-			startedCampaign = gdiCampaign;
+			startedCampaign = GdiCampaign;
 			Sound.Play("gdiselected.wav");
 			playThen = PlayThen.GDI;
 		}
@@ -141,7 +136,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 		private void CallbackFactionNodButtonOnClick()
 		{
 			CampaignProgress.SaveProgress("Nod", "");
-			startedCampaign = nodCampaign;
+			startedCampaign = NodCampaign;
 			Sound.Play("brotherhoodofnodselected.wav");
 			playThen = PlayThen.chooseNOD;
 		}
@@ -201,7 +196,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
                 videoPlayer.PlayThen(() => { StopVideo(); om = Game.JoinServer(IPAddress.Loopback.ToString(), Game.CreateLocalServer(firstMapFromFaction.Uid), "", false); });
 			}
 			else
-			{	
+			{
 				StopVideo();
                 om = Game.JoinServer(IPAddress.Loopback.ToString(), Game.CreateLocalServer(firstMapFromFaction.Uid), "", false);
 			}

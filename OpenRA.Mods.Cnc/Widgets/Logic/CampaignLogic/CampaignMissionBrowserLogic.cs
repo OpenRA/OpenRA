@@ -45,7 +45,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 
 		public CampaignMissionBrowserLogic(CampaignWorldLogic campaignWorld, Widget widget, Action onExit)
 		{
-
 			this.campaignWorld = campaignWorld;
 
 			// Preview label
@@ -92,7 +91,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 					onExit();
 				}
 			};
-
 		}
 
 		public bool GetCampaignPreviewRequired()
@@ -134,7 +132,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 
 			this.CheckCampaignProgressForPreview();
 
-			if ((CampaignWorldLogic.Campaign.Equals("GDI Campaign") && lastMissionSuccessfullyPlayedGDI) || (CampaignWorldLogic.Campaign.Equals("Nod Campaign") && lastMissionSuccessfullyPlayedNod))
+			if ((CampaignWorldLogic.Campaign.Equals("GDI Campaign") && lastMissionSuccessfullyPlayedGDI) ||
+				(CampaignWorldLogic.Campaign.Equals("Nod Campaign") && lastMissionSuccessfullyPlayedNod))
 				campaignWorld.ShowCongratulations();
 			else if (campaignPreviewRequired)
 				campaignWorld.ShowCampaignPreview();
@@ -221,6 +220,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 						nextMissions.Split(',')
 							.ToList().ForEach(s => LoadMission(s));
 					}
+
 					SelectFirstMission();
 				}
 			}
@@ -235,8 +235,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 		private void LoadMission(string name)
 		{
 			nextMaps.AddRange(factionMaps
-				.Where(m => m.Path.Contains(name.Trim()))
-				);
+				.Where(m => m.Path.Contains(name.Trim())));
 		}
 
 		void CheckCampaignCompleted()
@@ -255,15 +254,15 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 			else
 			{
 				congratsFlag = false;
-				if (lastMission.Length == 0) // The case if no map is in the progress file for this faction (but the other)
+
+				// The case if no map is in the progress file for this faction (but the other)
+				if (lastMission.Length == 0)
 				{
 					lastMission = factionMaps.First().Path.Split('\\').Last();
 					LoadMission(lastMission);
 					SelectFirstMission();
 				}
-
 			}
 		}
-
 	}
 }

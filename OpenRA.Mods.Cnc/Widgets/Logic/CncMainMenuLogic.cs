@@ -79,7 +79,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					{ "onStart", RemoveShellmapUI }
 				});
 			}
-
 		}
 
 		void RemoveShellmapUI()

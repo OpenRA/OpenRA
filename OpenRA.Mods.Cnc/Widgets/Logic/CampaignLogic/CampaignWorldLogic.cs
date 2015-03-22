@@ -14,9 +14,9 @@ using System.Net;
 
 using OpenRA.FileSystem;
 using OpenRA.Mods.Common;
-using OpenRA.Network;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Mods.Common.Widgets.Logic;
+using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
@@ -109,7 +109,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 
 		public void PlayAndStart()
 		{
-
 			Sound.MusicVolume = 0;
 
 			if (GlobalFileSystem.Exists(campaignMissionBrowser.GetNextMap().Videos.Briefing))
@@ -121,7 +120,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 					StartMission();
 		}
 
-		public void SetVideoBackgroundVisibility(Boolean visible)
+		public void SetVideoBackgroundVisibility(bool visible)
 		{
 			this.videoBackground.IsVisible = () => visible;
 		}

@@ -35,7 +35,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 
 		public CampaignMissionPreviewLogic(CampaignWorldLogic campaignWorld, CampaignMissionBrowserLogic campaignMissionBrowser, Widget widget, Action onExit)
 		{
-
 			this.campaignWorld = campaignWorld;
 			this.campaignMissionBrowser = campaignMissionBrowser;
 
@@ -66,7 +65,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 			// Play button
 			playButton = widget.Get<ButtonWidget>("PLAY_BUTTON");
 			playButton.OnClick = CallbackPlayButtonOnClick;
-
 		}
 
 		public void SetMapContent()
@@ -74,7 +72,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 			if (campaignMissionBrowser.GetNextMap() != null)
 			{
 				// Mission Map
-				var missionDescriptionText = campaignMissionBrowser.GetNextMap().Description != null ? campaignMissionBrowser.GetNextMap().Description.Replace("\\n", "\n") : "Mission description not available";
+				var missionDescriptionText = campaignMissionBrowser.GetNextMap().Description != null ?
+					campaignMissionBrowser.GetNextMap().Description.Replace("\\n", "\n") : "Mission description not available";
 				missionDescriptionText = WidgetUtils.WrapText(missionDescriptionText, missionDescription.Bounds.Width, missionDescriptionFont);
 				missionDescription.Text = missionDescriptionText;
 				missionDescription.Bounds.Height = missionDescriptionFont.Measure(missionDescriptionText).Y;
@@ -122,6 +121,5 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 			campaignWorld.SetVideoBackgroundVisibility(true);
 			campaignWorld.PlayAndStart();
 		}
-
 	}
 }
