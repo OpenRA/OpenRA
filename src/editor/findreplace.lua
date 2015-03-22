@@ -11,7 +11,9 @@ ide.findReplace = {
   replace = false, -- is it a find or replace
   infiles = false,
   startpos = nil,
-  cureditor = nil,
+  cureditor = nil, -- the editor being searched
+  reseditor = nil, -- the editor for search results
+  oveditor = nil, -- the editor is used for search during find-in-files
   searchCtrl = nil, -- the control that has the search text
   replaceCtrl = nil, -- the control that has the replace text
 
@@ -33,7 +35,6 @@ ide.findReplace = {
 
   foundString = false, -- was the string found for the last search
 
-  oveditor = nil,
   curfilename = "", -- for search in files
   occurrences = 0,
 
@@ -173,18 +174,17 @@ function findReplace:FindStringAll(inFileRegister)
     local e = setTargetAll(editor)
 
     setSearchFlags(editor)
-    local posFind = editor:SearchInTarget(self.findText)
-    if (posFind ~= NOTFOUND) then
-      while posFind ~= NOTFOUND do
-        inFileRegister(posFind)
-        editor:SetTargetStart(editor:GetTargetEnd())
-        editor:SetTargetEnd(e)
-        posFind = editor:SearchInTarget(self.findText)
-      end
-
+    while true do
+      local posFind = editor:SearchInTarget(self.findText)
+      if posFind == NOTFOUND then break end
+      inFileRegister(posFind)
+      editor:SetTargetStart(editor:GetTargetEnd())
+      editor:SetTargetEnd(e)
       found = true
     end
+    if inFileRegister and found then inFileRegister() end
   end
+
   return found
 end
 
@@ -228,8 +228,11 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
           posFind = editor:SearchInTarget(self.findText)
           occurrences = occurrences + 1
         end
-        if (not inFileRegister) then editor:EndUndoAction() end
-
+        if inFileRegister then
+          inFileRegister()
+        else
+          editor:EndUndoAction()
+        end
         replaced = true
       end
       self:SetStatus(("%s %s."):format(
@@ -258,13 +261,54 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
   return replaced
 end
 
+local oldline
+local BOOKMARK_MARKER = StylesGetMarker("bookmark")
 local function onFileRegister(pos)
   local editor = findReplace.oveditor
-  local line = editor:LineFromPosition(pos)
-  local linepos = pos - editor:PositionFromLine(line)
-  local result = "("..(line+1)..","..(linepos+1).."): "..editor:GetLine(line)
-  DisplayOutputLn(findReplace.curfilename..result:gsub("\r?\n$",""))
+  local reseditor = findReplace.reseditor
+  local posline = pos and editor:LineFromPosition(pos)+1
+  local text = ""
+  local context = 2
+
   findReplace.occurrences = findReplace.occurrences + 1
+
+  -- check if there is another match on the same line; do nothing
+  if oldline == posline then return end
+
+  if posline and not oldline then
+    -- show file name and a bookmark marker
+    reseditor:AppendText(findReplace.curfilename.."\n")
+    reseditor:MarkerAdd(reseditor:GetLineCount()-2, BOOKMARK_MARKER)
+
+    -- show context lines before posline
+    for line = math.max(1, posline-context), posline-1 do
+      text = text .. ("%5d  %s\n"):format(line, editor:GetLine(line-1):gsub("[\n\r]+$",""))
+    end
+  end
+  if posline and oldline then
+    -- show context lines between oldposline and posline
+    for line = oldline+1, math.min(posline-1, oldline+context) do
+      text = text .. ("%5d  %s\n"):format(line, editor:GetLine(line-1):gsub("[\n\r]+$",""))
+    end
+    if posline-oldline > context * 2 + 1 then
+      text = text .. ("%5s\n"):format(("."):rep(#tostring(posline)))
+    end
+    for line = math.max(oldline+context+1, posline-context), posline-1 do
+      text = text .. ("%5d  %s\n"):format(line, editor:GetLine(line-1):gsub("[\n\r]+$",""))
+    end
+  end
+  if posline then
+    text = text .. ("%5d: %s\n"):format(posline, editor:GetLine(posline-1):gsub("[\n\r]+$",""))
+  elseif oldline then
+    -- show context lines after posline
+    for line = oldline+1, math.min(editor:GetLineCount(), oldline+context) do
+      text = text .. ("%5d  %s\n"):format(line, editor:GetLine(line-1):gsub("[\n\r]+$",""))
+    end
+    text = text .. "\n"
+  end
+  oldline = posline
+
+  reseditor:AppendText(text)
 end
 
 local function ProcInFiles(startdir,mask,subdirs,replace)
@@ -323,22 +367,73 @@ function findReplace:RunInFiles(replace)
   self.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
   ide:Yield() -- let the update of the UI happen
 
-  ClearOutput()
-  ActivateOutput()
+  -- save focus to restore after adding a page with search results
+  local ctrl = ide:GetMainFrame():FindFocus()
+  local reseditor = findReplace.reseditor
+  if not reseditor or not pcall(function() reseditor:GetId() end) then
+    reseditor = ide:CreateBareEditor()
+    reseditor:SetupKeywords('')
+    reseditor:SetWrapMode(wxstc.wxSTC_WRAP_NONE)
+    reseditor:SetIndentationGuides(false)
+    reseditor:SetMarginWidth(0, 0) -- hide line numbers
+
+    reseditor:Connect(wxstc.wxEVT_STC_DOUBLECLICK, function(event)
+      if event:GetModifiers() == wx.wxMOD_NONE then
+        local pos = event:GetPosition()
+        if pos == wxstc.wxSTC_INVALID_POSITION then return end
+
+        local line = reseditor:LineFromPosition(pos)
+        local text = reseditor:GetLine(line):gsub("[\n\r]+$","")
+        -- get line with the line number
+        local jumpline = text:match("^%s*(%d+)")
+        local file
+        if jumpline then
+          -- search back to find the file name
+          for curline = line-1, 0, -1 do
+            local text = reseditor:GetLine(curline):gsub("[\n\r]+$","")
+            if not text:find("^%s") and wx.wxFileExists(text) then
+              file = text
+              break
+            end
+          end
+        else
+          file = text
+          jumpline = 1
+        end
+        -- activate the file and the line number
+        local editor = file and LoadFile(file,nil,true)
+        if editor then
+          editor:GotoPos(editor:PositionFromLine(jumpline-1))
+          editor:EnsureVisibleEnforcePolicy(jumpline-1)
+          editor:SetFocus()
+
+          -- doubleclick can set selection, so reset it
+          reseditor:SetSelection(pos, pos)
+        end
+        return
+      end
+
+      event:Skip()
+    end)
+
+    findReplace.reseditor = reseditor
+    AddEditor(reseditor, "Search Results")
+  else
+    ide:GetDocument(reseditor):SetActive()
+  end
+  if ctrl then ctrl:SetFocus() end
+
+  reseditor:SetText('')
+
+  self:SetStatus(("%s '%s'."):format(
+    (replace and TR("Replacing") or TR("Searching for")), self.findText))
 
   local startdir, mask = self:GetScope()
-  DisplayOutputLn(("%s '%s' (%s)."):format(
-    (replace and TR("Replacing") or TR("Searching for")),
-    self.findText, startdir))
-
   ProcInFiles(startdir, mask or "*.*", self.fSubDirs, replace)
 
-  local text = ("%s %s."):format(replace and TR("Replaced") or TR("Found"),
-    TR("%d instance", self.occurrences):format(self.occurrences))
-  DisplayOutputLn(text)
-
+  self:SetStatus(("%s %s."):format(replace and TR("Replaced") or TR("Found"),
+    TR("%d instance", self.occurrences):format(self.occurrences)))
   self.oveditor = nil
-  self:SetStatus(text)
   self.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
 end
 
