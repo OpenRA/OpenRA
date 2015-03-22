@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						{ "onExit", () => menuType = MenuType.Singleplayer },
 						{ "onStart", RemoveShellmapUI }
 					});
-				var campaignWorld = Game.OpenWindow("CAMPAIGN_WORLD", new WidgetArgs
+				Game.OpenWindow("CAMPAIGN_WORLD", new WidgetArgs
 				{
 					{ "onExit", () => campaignMenu.Visible = true },
 					{ "onStart", RemoveShellmapUI }
