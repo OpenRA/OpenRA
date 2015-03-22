@@ -275,6 +275,7 @@ wormspawner:
 sietch:
 	idle: DATA
 		Start: 2998
+		Offset: -32,32
 
 doubleblast:
 	idle: DATA
