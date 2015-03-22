@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var n in notify)
 						n.MovingToResources(self, moveTo, next);
 
-					self.QueueActivity(new FindResources());
+					self.QueueActivity(next);
 				}
 			}
 		}

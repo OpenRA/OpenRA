@@ -20,11 +20,19 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class FindResources : Activity
 	{
-		CPos? avoidCell;
 		ResourceLayer resLayer;
 		HarvesterInfo harvInfo;
 		ResourceClaimLayer territory;
 		Mobile mobile;
+		Harvester harv;
+		IMobileInfo mobileInfo;
+		IPathFinder pathFinder;
+
+		// TODO: This is a hack because this class is sometimes
+		// constructed by reflection and cannot add an Actor variable in
+		// the constructor. Eventually remove!
+		bool loadedVars = false;
+		CPos? avoidCell;
 
 		public FindResources()
 		{
@@ -40,25 +48,30 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled || NextActivity != null)
 				return NextActivity;
 
-			var harv = self.Trait<Harvester>();
+			if (!loadedVars)
+			{
+				harvInfo = self.Info.Traits.Get<HarvesterInfo>();
+				mobile = self.Trait<Mobile>();
+				resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+				territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
+				harv = self.Trait<Harvester>();
+				mobileInfo = self.Info.Traits.Get<MobileInfo>();
+				pathFinder = self.World.WorldActor.Trait<IPathFinder>();
+				loadedVars = true;
+			}
 
 			if (harv.IsFull)
 				return Util.SequenceActivities(new DeliverResources(), NextActivity);
 
-			harvInfo = self.Info.Traits.Get<HarvesterInfo>();
-			mobile = self.Trait<Mobile>();
-			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-			territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
+			var closestHarvestablePosition = ClosestHarvestablePos(self);
 
-			var closestHarvestablePosition = ClosestHarvestablePos(self, harv);
-
-			// If no harvestable position could be found, then return an empty path
-			if (closestHarvestablePosition == CPos.Zero)
+			// If no harvestable position could be found, either deliver the remaining resources
+			// or get out of the way and do not disturb.
+			if (!closestHarvestablePosition.HasValue)
 			{
 				if (!harv.IsEmpty)
 					return new DeliverResources();
 
-				// Get out of the way if we are
 				harv.UnblockRefinery(self);
 				var moveTo = harv.LastHarvestedCell ?? (self.Location + new CVec(0, 4));
 				self.QueueActivity(mobile.MoveTo(moveTo, 1));
@@ -66,30 +79,30 @@ namespace OpenRA.Mods.Common.Activities
 
 				var randFrames = 125 + self.World.SharedRandom.Next(-35, 35);
 				if (NextActivity != null)
-					return Util.SequenceActivities(NextActivity, new Wait(randFrames), new FindResources());
+					return Util.SequenceActivities(NextActivity, new Wait(randFrames), this);
 				else
-					return Util.SequenceActivities(new Wait(randFrames), new FindResources());
+					return Util.SequenceActivities(new Wait(randFrames), this);
 			}
 
-			// Attempt to claim a resource as ours:
+			// Attempt to claim a resource as ours
 			if (territory != null)
 			{
-				if (!territory.ClaimResource(self, closestHarvestablePosition))
-					return Util.SequenceActivities(new Wait(25), new FindResources());
+				if (!territory.ClaimResource(self, closestHarvestablePosition.Value))
+					return Util.SequenceActivities(new Wait(25), this);
 			}
 
 			// If not given a direct order, assume ordered to the first resource location we find:
 			if (!harv.LastOrderLocation.HasValue)
 				harv.LastOrderLocation = closestHarvestablePosition;
 
-			self.SetTargetLine(Target.FromCell(self.World, closestHarvestablePosition), Color.Red, false);
+			self.SetTargetLine(Target.FromCell(self.World, closestHarvestablePosition.Value), Color.Red, false);
 
 			var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-			var next = new FindResources();
+			var next = this;
 			foreach (var n in notify)
-				n.MovingToResources(self, closestHarvestablePosition, next);
+				n.MovingToResources(self, closestHarvestablePosition.Value, next);
 
-			return Util.SequenceActivities(mobile.MoveTo(closestHarvestablePosition, 1), new HarvestResource(), new FindResources());
+			return Util.SequenceActivities(mobile.MoveTo(closestHarvestablePosition.Value, 1), new HarvestResource(), next);
 		}
 
 		bool IsHarvestable(IActor self, CPos pos)
@@ -117,14 +130,12 @@ namespace OpenRA.Mods.Common.Activities
 		/// Finds the closest harvestable pos between the current position of the harvester
 		/// and the last order location
 		/// </summary>
-		CPos ClosestHarvestablePos(Actor self, Harvester harv)
+		CPos? ClosestHarvestablePos(Actor self)
 		{
 			// Determine where to search from and how far to search:
 			var searchFromLoc = harv.LastOrderLocation ?? (harv.LastLinkedProc ?? harv.LinkedProc ?? self).Location;
 			var searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
 			var searchRadiusSquared = searchRadius * searchRadius;
-
-			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
 
 			var search = PathSearch.Search(self.World, mobileInfo, self, true,
 				loc => IsHarvestable(self, loc))
@@ -140,9 +151,12 @@ namespace OpenRA.Mods.Common.Activities
 				.FromPoint(searchFromLoc);
 
 			// Find any harvestable resources:
-			var path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
+			var path = pathFinder.FindPath(search);
 
-			return path.Count > 0 ? path[0] : CPos.Zero;
+			if (path.Count > 0)
+				return path[0];
+
+			return null;
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
