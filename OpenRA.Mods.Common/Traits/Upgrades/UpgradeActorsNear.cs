@@ -115,7 +115,8 @@ namespace OpenRA.Mods.Common.Traits
 				var um = produced.TraitOrDefault<UpgradeManager>();
 				if (um != null)
 					foreach (var u in info.Upgrades)
-						um.GrantTimedUpgrade(produced, u, 1);
+						if (um.AcceptsUpgrade(produced, u))
+							um.GrantTimedUpgrade(produced, u, 1);
 			}
 		}
 
