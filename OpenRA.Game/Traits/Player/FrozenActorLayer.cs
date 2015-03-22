@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 
 		public bool Visible;
 
-		public FrozenActor(Actor self, MPos[] footprint, CellRegion footprintRegion)
+		public FrozenActor(Actor self, MPos[] footprint, CellRegion footprintRegion, Shroud shroud)
 		{
 			actor = self;
 			Footprint = footprint;
@@ -48,6 +48,8 @@ namespace OpenRA.Traits
 
 			CenterPosition = self.CenterPosition;
 			Bounds = self.Bounds;
+
+			UpdateVisibility(shroud);
 		}
 
 		public uint ID { get { return actor.ActorID; } }
@@ -56,7 +58,15 @@ namespace OpenRA.Traits
 		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
 
 		int flashTicks;
-		public void Tick(World world, Shroud shroud)
+		public void Tick(Shroud shroud)
+		{
+			UpdateVisibility(shroud);
+
+			if (flashTicks > 0)
+				flashTicks--;
+		}
+
+		void UpdateVisibility(Shroud shroud)
 		{
 			// We are doing the following LINQ manually to avoid allocating an extra delegate since this is a hot path.
 			// Visible = !Footprint.Any(shroud.IsVisibleTest(FootprintRegion));
@@ -68,9 +78,6 @@ namespace OpenRA.Traits
 					Visible = false;
 					break;
 				}
-
-			if (flashTicks > 0)
-				flashTicks--;
 		}
 
 		public void Flash()
@@ -129,22 +136,24 @@ namespace OpenRA.Traits
 			VisibilityHash = 0;
 			FrozenHash = 0;
 
-			foreach (var kv in frozen)
+			foreach (var kvp in frozen)
 			{
-				FrozenHash += (int)kv.Key;
+				var hash = (int)kvp.Key;
+				FrozenHash += hash;
 
-				kv.Value.Tick(self.World, self.Owner.Shroud);
-				if (kv.Value.Visible)
-					VisibilityHash += (int)kv.Key;
+				var frozenActor = kvp.Value;
+				frozenActor.Tick(self.Owner.Shroud);
 
-				if (!kv.Value.Visible && kv.Value.Actor == null)
-					remove.Add(kv.Key);
+				if (frozenActor.Visible)
+					VisibilityHash += hash;
+				else if (frozenActor.Actor == null)
+					remove.Add(kvp.Key);
 			}
 
-			foreach (var r in remove)
+			foreach (var actorID in remove)
 			{
-				world.ScreenMap.Remove(owner, frozen[r]);
-				frozen.Remove(r);
+				world.ScreenMap.Remove(owner, frozen[actorID]);
+				frozen.Remove(actorID);
 			}
 		}
 
