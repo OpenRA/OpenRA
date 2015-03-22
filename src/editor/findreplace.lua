@@ -348,10 +348,10 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
 
           -- give time to the UI to refresh
           if TimeGet() - start > 0.25 then ide:Yield() end
-          if not ide:GetUIManager():GetPane(searchpanel):IsShown() then
-            DisplayOutputLn(TR("Cancelled by the user."))
-            break
-          end
+          -- the IDE may be quitting after Yield, so check to make sure
+          -- the manager is still active
+          local ok, mgr = pcall(function() return ide:GetUIManager() end)
+          if not (ok and mgr:GetPane(searchpanel):IsShown()) then break end
         end
       end
     end
