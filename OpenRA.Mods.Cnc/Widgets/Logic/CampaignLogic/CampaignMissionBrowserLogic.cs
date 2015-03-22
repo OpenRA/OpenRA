@@ -15,6 +15,8 @@ using System.Linq;
 
 using OpenRA.Graphics;
 using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Widgets;
+using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
