@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -24,11 +25,29 @@ namespace OpenRA
 		public readonly Color LeftColor;
 		public readonly Color RightColor;
 
-		public MiniYaml Save() { return FieldSaver.Save(this); }
+		public MiniYaml Save(TileSet tileSet)
+		{
+			var root = new List<MiniYamlNode>();
+			if (Height != 0)
+				root.Add(FieldSaver.SaveField(this, "Height"));
+
+			if (RampType != 0)
+				root.Add(FieldSaver.SaveField(this, "RampType"));
+
+			if (LeftColor != tileSet.TerrainInfo[TerrainType].Color)
+				root.Add(FieldSaver.SaveField(this, "LeftColor"));
+
+			if (RightColor != tileSet.TerrainInfo[TerrainType].Color)
+				root.Add(FieldSaver.SaveField(this, "RightColor"));
+
+			return new MiniYaml(tileSet.TerrainInfo[TerrainType].Type, root);
+		}
 	}
 
 	public class TerrainTypeInfo
 	{
+		static readonly TerrainTypeInfo Default = new TerrainTypeInfo();
+
 		public readonly string Type;
 		public readonly string[] TargetTypes = { };
 		public readonly string[] AcceptsSmudgeType = { };
@@ -36,15 +55,17 @@ namespace OpenRA
 		public readonly Color Color;
 		public readonly string CustomCursor;
 
-		public TerrainTypeInfo() { }
+		// Private default ctor for serialization comparison
+		TerrainTypeInfo() { }
+
 		public TerrainTypeInfo(MiniYaml my) { FieldLoader.Load(this, my); }
 
-		public MiniYaml Save() { return FieldSaver.Save(this); }
+		public MiniYaml Save() { return FieldSaver.SaveDifferences(this, Default); }
 	}
 
 	public class TerrainTemplateInfo
 	{
-		static readonly string[] Fields = { "Id", "Image", "Frames", "Size", "PickAny", "Category" };
+		static readonly TerrainTemplateInfo Default = new TerrainTemplateInfo(0, null, int2.Zero, null);
 
 		public readonly ushort Id;
 		public readonly string Image;
@@ -129,28 +150,22 @@ namespace OpenRA
 
 		public MiniYaml Save(TileSet tileSet)
 		{
-			var root = new List<MiniYamlNode>();
-			foreach (var field in Fields)
-			{
-				var f = this.GetType().GetField(field);
-				if (f.GetValue(this) == null)
-					continue;
+			var root = FieldSaver.SaveDifferences(this, Default);
 
-				root.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
-			}
+			var tileYaml = tileInfo
+				.Select((ti, i) => Pair.New(i.ToString(), ti))
+				.Where(t => t.Second != null)
+				.Select(t => new MiniYamlNode(t.First, t.Second.Save(tileSet)))
+				.ToList();
 
-			root.Add(new MiniYamlNode("Tiles", null,
-				tileInfo.Select((terrainTypeIndex, templateIndex) => new MiniYamlNode(templateIndex.ToString(), terrainTypeIndex.Save())).ToList()));
+			root.Nodes.Add(new MiniYamlNode("Tiles", null, tileYaml));
 
-			return new MiniYaml(null, root);
+			return root;
 		}
 	}
 
 	public class TileSet
 	{
-		static readonly string[] Fields = { "Name", "Id", "SheetSize", "Palette", "PlayerPalette", "Extensions", "WaterPaletteRotationBase",
-											  "EditorTemplateOrder", "IgnoreTileSpriteOffsets", "MaximumHeight" };
-
 		public readonly string Name;
 		public readonly string Id;
 		public readonly int SheetSize = 512;
@@ -163,11 +178,16 @@ namespace OpenRA
 		public readonly string[] EditorTemplateOrder;
 		public readonly bool IgnoreTileSpriteOffsets;
 
+		[FieldLoader.Ignore]
 		public readonly Dictionary<ushort, TerrainTemplateInfo> Templates = new Dictionary<ushort, TerrainTemplateInfo>();
 
+		[FieldLoader.Ignore]
 		public readonly TerrainTypeInfo[] TerrainInfo;
 		readonly Dictionary<string, byte> terrainIndexByType = new Dictionary<string, byte>();
 		readonly byte defaultWalkableTerrainIndex;
+
+		// Private default ctor for serialization comparison
+		TileSet() { }
 
 		public TileSet(ModData modData, string filepath)
 		{
@@ -269,18 +289,7 @@ namespace OpenRA
 		public void Save(string filepath)
 		{
 			var root = new List<MiniYamlNode>();
-			var gen = new List<MiniYamlNode>();
-
-			foreach (var field in Fields)
-			{
-				var f = this.GetType().GetField(field);
-				if (f.GetValue(this) == null)
-					continue;
-
-				gen.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
-			}
-
-			root.Add(new MiniYamlNode("General", null, gen));
+			root.Add(new MiniYamlNode("General", FieldSaver.SaveDifferences(this, new TileSet())));
 
 			root.Add(new MiniYamlNode("Terrain", null,
 				TerrainInfo.Select(t => new MiniYamlNode("TerrainType@{0}".F(t.Type), t.Save())).ToList()));
