@@ -92,8 +92,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 			lock (defaultCellInfoLayerSync)
 			{
 				if (defaultCellInfoLayer == null ||
-				    defaultCellInfoLayer.Size != mapSize ||
-				    defaultCellInfoLayer.Shape != map.TileShape)
+					defaultCellInfoLayer.Size != mapSize ||
+					defaultCellInfoLayer.Shape != map.TileShape)
 				{
 					defaultCellInfoLayer =
 						CellLayer<CellInfo>.CreateInstance(

@@ -3,12 +3,19 @@ shellmap: reticle.png
 
 shellmapbits: chrome.png
 	record: 288,16,16,16
+	
+choosefaction: choosescreen.png
+	choosetext: 0,960,512,64
 
 logos: chrome.png
 	install:128,0,128,128
 	eva:256,64,128,64
 	nod-load:0,256,256,256
 	gdi-load:256,256,256,256
+	
+medals: medal.png
+	nod-medal:1,1,180,273
+	gdi-medal:182,1,193,252
 
 button: chrome.png
 	background: 2,194,60,60
@@ -515,3 +522,19 @@ order-icons: chrome.png
 
 dropdown: chrome.png
     separator: 64,1,1,19
+	
+noise-background: choosescreen.png
+	border-t: 60,0,680,60
+	border-b: 60,540,680,60
+	border-l: 0,60,60,480
+	border-r: 740,60,60,480
+	corner-tl: 0,0,60,60
+	corner-tr: 740,0,60,60
+	corner-bl: 0,540,60,60
+	corner-br: 740,540,60,60
+	background: 60,60,680,480
+	
+choose-logos: choosescreen.png
+	nod: 10,640,254,208
+	gdi: 300,640,219,218
+	

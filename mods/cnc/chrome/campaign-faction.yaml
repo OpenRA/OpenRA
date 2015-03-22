@@ -1,0 +1,68 @@
+Container@CAMPAIGN_FACTION:
+	Logic: CampaignFactionLogic
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Children:
+		Container@CAMPAIGN_VIDEO:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM*4/5
+			Children:
+				Background:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
+					Background: panel-allblack
+				Background@BG:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM - 64
+					Background: noise-background
+				VqaPlayer@VIDEO_BG:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM - 64
+				VqaPlayer@VIDEO:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM - 64
+				Button@GDI:
+					X: 0
+					Y: WINDOW_BOTTOM/20
+					Width: (WINDOW_RIGHT)/2
+					Height: WINDOW_BOTTOM*4/5
+					Font: Bold
+					Background: button-transparent	
+				Image@GDI_LOGO:
+					X: WINDOW_RIGHT/4 - 109
+					Y: WINDOW_BOTTOM/2 - 109
+					ImageCollection: choose-logos
+					ImageName: gdi
+				Button@Nod:
+					X: (WINDOW_RIGHT)/2
+					Y: WINDOW_BOTTOM/20
+					Width: (WINDOW_RIGHT)/2
+					Height: WINDOW_BOTTOM*4/5
+					Font: Bold
+					Background: button-transparent
+				Image@Nod_LOGO:
+					X: WINDOW_RIGHT* 3/4 - 129
+					Y: WINDOW_BOTTOM/2 -104
+					ImageCollection: choose-logos
+					ImageName: nod
+				Button@BACK_BUTTON:
+					X: ( WINDOW_RIGHT - WIDTH ) / 2
+					Y: WINDOW_BOTTOM - HEIGHT - 10
+					Width: 0#140
+					Height: 0#35
+					Font: Bold
+					Key: escape
+					Background: button-transparent
+		Background:
+			X: 0
+			Y: WINDOW_BOTTOM - 64
+			Width: WINDOW_RIGHT
+			Height: 64
+			Background: panel-allblack
+		Image@CHOOSE_FACTION_IMAGE:
+			X: (WINDOW_RIGHT/2) - 256
+			Y: WINDOW_BOTTOM - 64
+			Width: 512
+			Height: 64
+			ImageCollection: choosefaction
+			ImageName: choosetext

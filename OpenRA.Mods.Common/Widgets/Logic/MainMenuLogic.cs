@@ -80,6 +80,78 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var singleplayerMenu = widget.Get("SINGLEPLAYER_MENU");
 			singleplayerMenu.IsVisible = () => menuType == MenuType.Singleplayer;
 
+			CampaignProgress.Init(world.Players);
+
+			var factionList = new List<string>();
+			var missionPlayed = false;
+
+			foreach (var p in world.Players)
+			{
+				var faction = p.Faction.Name;
+				if (!factionList.Contains(faction))
+				{
+					factionList.Add(faction);
+					missionPlayed = CampaignProgress.GetMission(faction).Length != 0;
+				}
+
+				if (missionPlayed)
+				{
+					break;
+				}
+			}
+
+			var campaignButton = singleplayerMenu.GetOrNull<ButtonWidget>("CAMPAIGN_BUTTON");
+			if (campaignButton != null)
+			{
+				if (CampaignProgress.Factions.Count == 0)
+					campaignButton.Disabled = true;
+
+				campaignButton.OnClick = () =>
+				{
+					CampaignProgress.SetSaveProgressFlag();
+					menuType = MenuType.None;
+					if (!missionPlayed)
+					{
+						Game.OpenWindow("CAMPAIGN_FACTION", new WidgetArgs
+						{
+							{ "onExit", () => {
+								menuType = MenuType.Singleplayer;
+								CampaignProgress.ResetSaveProgressFlag();
+							}
+							},
+							{ "onStart", RemoveShellmapUI }
+						});
+					}
+					else
+					{
+						Game.OpenWindow("CAMPAIGN_MENU", new WidgetArgs
+						{
+							{ "onExit", () => {
+								menuType = MenuType.Singleplayer;
+								CampaignProgress.ResetSaveProgressFlag();
+							}
+							},
+							{ "onStart", RemoveShellmapUI }
+						});
+					}
+				};
+
+				if (CampaignProgress.GetSaveProgressFlag() && missionPlayed)
+				{
+					menuType = MenuType.None;
+					var campaignMenu = Game.OpenWindow("CAMPAIGN_MENU", new WidgetArgs
+						{
+							{ "onExit", () => menuType = MenuType.Singleplayer },
+							{ "onStart", RemoveShellmapUI }
+						});
+					Game.OpenWindow("CAMPAIGN_WORLD", new WidgetArgs
+					{
+						{ "onExit", () => campaignMenu.Visible = true },
+						{ "onStart", RemoveShellmapUI }
+					});
+				}
+			}
+
 			var missionsButton = singleplayerMenu.Get<ButtonWidget>("MISSIONS_BUTTON");
 			missionsButton.OnClick = () =>
 			{

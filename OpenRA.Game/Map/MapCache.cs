@@ -169,6 +169,7 @@ namespace OpenRA
 					// The rendering is thread safe because it only reads from the passed instances and writes to a new bitmap
 					var createdPreview = false;
 					var bitmap = p.CustomPreview;
+					var campaignBitmap = p.CustomCampaignPathPreview;
 					if (bitmap == null)
 					{
 						createdPreview = true;
@@ -180,11 +181,17 @@ namespace OpenRA
 						try
 						{
 							p.SetMinimap(sheetBuilder.Add(bitmap));
+							if (campaignBitmap != null)
+								p.SetCampaignPathPreview(sheetBuilder.Add(campaignBitmap));
 						}
 						finally
 						{
 							if (createdPreview)
+							{
 								bitmap.Dispose();
+								if (campaignBitmap != null)
+									campaignBitmap.Dispose();
+							}
 						}
 					});
 

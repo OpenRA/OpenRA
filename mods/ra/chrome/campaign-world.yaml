@@ -1,0 +1,310 @@
+Container@CAMPAIGN_WORLD:
+	Logic: CampaignWorldLogic
+	Children:
+		Background@VIDEO_BG:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			Children:
+				VqaPlayer@VIDEO:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
+		Container@CAMPAIGN_PREVIEW:
+			X: WINDOW_RIGHT/2 - WIDTH/2
+			Y: WINDOW_BOTTOM/2 - HEIGHT/2
+			Width: 500
+			Height: 250
+			Children:
+				Label@PREVIEW_MENU_TITLE:
+					Y: 0-25
+					Width: PARENT_RIGHT
+					Align: Center
+					Contrast: true
+					Font: BigBold
+				Background@CAMPAIGN_PREVIEW_BG:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Children:
+						MapPreview@CAMPAIGN_PREVIEW_GRAFIC:
+							Width: PARENT_RIGHT-20
+							Height: PARENT_BOTTOM-20
+							X: (PARENT_RIGHT-WIDTH)/2
+							Y: (PARENT_BOTTOM-HEIGHT)/2
+							IgnoreMouseOver: True
+							IgnoreMouseInput: True
+							ShowSpawnPoints: False
+						Image@CAMPAIGN_PREVIEW_ALLIES_LOGO:
+							Width: 172
+							Height: 172
+							X: (PARENT_RIGHT - WIDTH) / 2
+							Y: (PARENT_BOTTOM - HEIGHT) / 2
+							ImageCollection: choose-logos
+							ImageName: allies
+						Image@CAMPAIGN_PREVIEW_SOVIET_LOGO:
+							Width: 172
+							Height: 172
+							X: (PARENT_RIGHT - WIDTH) / 2
+							Y: (PARENT_BOTTOM - HEIGHT) / 2
+							ImageCollection: choose-logos
+							ImageName: soviet
+						Button@CAMPAIGN_PREVIEW_GRAFIC_BUTTON
+							Width: PARENT_RIGHT-20
+							Height: PARENT_BOTTOM-20
+							X: (PARENT_RIGHT-WIDTH)/2
+							Y: (PARENT_BOTTOM-HEIGHT)/2
+							Background: button-transparent
+				Background@CAMPAIGN_PREVIEW_BG:
+					X: 0
+					Y: PARENT_BOTTOM
+					Width: PARENT_RIGHT
+					Height: 2 * 15 + 35
+					Children:
+						Button@CAMPAIGN_PREVIEW_BACK_BUTTON:
+							X: PARENT_RIGHT - 15 - WIDTH
+							Y: 15
+							Width: 140
+							Height: 35
+							Text: Back
+							Font: Bold
+							Key: Escape
+						Button@CAMPAIGN_PREVIEW_CONTINUE_BUTTON:
+							X: 15
+							Y: 15
+							Width: 140
+							Height: 35
+							Text: Continue
+							Font: Bold
+							Key: Return
+		Container@CAMPAIGN_BROWSER:
+			X: WINDOW_RIGHT/2 - WIDTH/2
+			Y: WINDOW_BOTTOM/2 - HEIGHT/2
+			Width: 700
+			Height: 350
+			Children:
+				Label@CAMPAIGN_MENU_TITLE:
+					Y: 0-25
+					Width: PARENT_RIGHT
+					Align: Center
+					Contrast: true
+					Font: BigBold
+				Container@CAMPAIGN_BROWSER_GRAFIC_CONTAINER:
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT * 3/5
+					Height: PARENT_BOTTOM
+					Children:
+						Background@BG:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Children:
+								Label@MISSION_TITLE:
+									Y: 20
+									Width: PARENT_RIGHT
+									Align: Center
+									Contrast: true
+									Font: BigBold
+								MapPreview@MISSION_PREVIEW:
+									X: 10
+									Y: 10 + 30
+									Width: PARENT_RIGHT - 20
+									Height: PARENT_BOTTOM - 20 - 30
+									IgnoreMouseOver: True
+									IgnoreMouseInput: True
+									ShowSpawnPoints: False
+								Button@MISSION_PREVIEW_BUTTON:
+									X: 10
+									Y: 10 + 30
+									Width: PARENT_RIGHT - 20
+									Height: PARENT_BOTTOM - 20 - 30
+									Background: button-transparent
+						Button@PREVIOUS_BUTTON:
+							X: 10
+							Y: PARENT_BOTTOM - HEIGHT - 10
+							Width: 35
+							Height: 35
+							Font: Bold
+							Key: p
+							Children:
+								Image@IMAGE_PREV:
+									X: (PARENT_RIGHT-WIDTH)/2
+									Y: (PARENT_BOTTOM-HEIGHT)/2
+									Width: 25
+									Height: 25
+									ImageCollection: music
+									ImageName: prev
+						Button@NEXT_BUTTON:
+							X: PARENT_RIGHT - WIDTH - 10
+							Y: PARENT_BOTTOM - HEIGHT - 10
+							Width: 35
+							Height: 35
+							Font: Bold
+							Key: n
+							Children:
+								Image@IMAGE_NEXT:
+									X: (PARENT_RIGHT-WIDTH)/2
+									Y: (PARENT_BOTTOM-HEIGHT)/2
+									Width: 25
+									Height: 25
+									ImageCollection: music
+									ImageName: next
+				Container@CAMPAIGN_WORLD_MISSION_CONTAINER:
+					X: PARENT_RIGHT * 3/5
+					Y: 0
+					Width: PARENT_RIGHT * 2/5
+					Height: PARENT_BOTTOM / 2
+					Children:
+						Background@BG:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Children:
+								Label@MISSION:
+									Y: 20
+									Width: PARENT_RIGHT
+									Text: Mission briefing
+									Align: Center
+									Contrast: true
+									Font: BigBold
+								ScrollPanel@MISSION_DESCRIPTION_PANEL:
+									X: 10
+									Y: 10 + 30
+									Width: PARENT_RIGHT - 20
+									Height: PARENT_BOTTOM - 40 - 10
+									Children:
+										Label@MISSION_DESCRIPTION:
+											X: 10
+											Y: 0
+											Width: PARENT_RIGHT - 20
+											VAlign: Top
+											Font: Small
+				Container@CAMPAIGN_WORLD_COUNTRY_CONTAINER:
+					X: PARENT_RIGHT * 3/5
+					Y: PARENT_BOTTOM / 2
+					Width: PARENT_RIGHT * 2/5
+					Height: PARENT_BOTTOM / 2
+					Children:
+						Background@BG:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Children:
+								Label@COUNTRY_LABLE:
+									Y: 20
+									Width: PARENT_RIGHT
+									Text: Country information
+									Align: Center
+									Contrast: true
+									Font: BigBold
+								ScrollPanel@COUNTRY_DESCRIPTION_PANEL:
+									X: 10
+									Y: 10 + 30
+									Width: PARENT_RIGHT - 20
+									Height: PARENT_BOTTOM - 40 - 10
+									Children:
+										Label@COUNTRY_DESCRIPTION_HEADER:
+											X: 4
+											Y: 1
+											Width: PARENT_RIGHT - 32
+											VAlign: Top
+											Font: Small
+											Children:
+												Label@COUNTRY_DESCRIPTION_VALUES:
+													X: PARENT_RIGHT/2
+													Y: 1
+													Width: PARENT_RIGHT/2
+													VAlign: Top
+													Font: Small
+				Container@CAMPAIGN_BROWSER_BUTTONS:
+					X: 0
+					Y: PARENT_BOTTOM
+					Width: PARENT_RIGHT
+					Height: 2 * 15 + 35
+					Children:
+						Background@BG:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Children:
+								Button@PLAY_BUTTON:
+									X: 15
+									Y: 15
+									Width: 140
+									Height: 35
+									Text: Play
+									Font: Bold
+									Key: Return
+								Button@CAMPAIGN_BROWSER_BACK_BUTTON:
+									X: PARENT_RIGHT - 15 - WIDTH
+									Y: 15
+									Width: 140
+									Height: 35
+									Text: Back
+									Font: Bold
+									Key: Escape	
+		Container@CAMPAIGN_CONGRATULATION:
+			X: WINDOW_RIGHT/2 - WIDTH/2
+			Y: WINDOW_BOTTOM/2 - HEIGHT/2
+			Width: 500
+			Height: 300
+			Children:
+				Label@CONGRATULATION_MENU_TITLE:
+					Y: 0-25
+					Width: PARENT_RIGHT
+					Align: Center
+					Contrast: true
+					Text: Congratulations
+					Font: BigBold
+				Background@CAMPAIGN_CONGRATULATION_BG:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+				ScrollPanel@CONGRATULATION_TEXT_PANEL:
+					X: 15
+					Y: 15
+					Width: (PARENT_RIGHT / 2) - 15
+					Height: PARENT_BOTTOM - 30
+					Background: dialog3
+					Children:
+						Label@CONGRATULATION_TEXT:
+							X: 20
+							Y: PARENT_BOTTOM / 2
+							Width: PARENT_RIGHT - 60
+				Container@CONGRATULATION_LOGO_ALLIES:
+					X: (PARENT_RIGHT/2)
+					Y: 15
+					Width: (PARENT_RIGHT / 2) - 15
+					Height: PARENT_BOTTOM - 30
+					Children:
+						Image@ALLIES_LOGO:
+							X: PARENT_RIGHT / 2 - 86
+							Y: PARENT_BOTTOM / 2 - 86
+							ImageCollection: choose-logos
+							ImageName: allies
+				Container@CONGRATULATION_LOGO_SOVIET:
+					X: (PARENT_RIGHT/2)
+					Y: 15
+					Width: (PARENT_RIGHT / 2) - 15
+					Height: PARENT_BOTTOM - 30
+					Children:
+						Image@ALLIES_LOGO:
+							X: PARENT_RIGHT / 2 - 86
+							Y: PARENT_BOTTOM / 2 - 86
+							ImageCollection: choose-logos
+							ImageName: soviet
+				Background@BG:
+					X: 0
+					Y: PARENT_BOTTOM
+					Width: PARENT_RIGHT
+					Height: 2 * 15 + 35
+					Children:
+						Button@CAMPAIGN_CONGRATULATION_BACK_BUTTON:
+							X: PARENT_RIGHT - 15 - WIDTH
+							Y: 15
+							Width: 140
+							Height: 35
+							Text: Back
+							Font: Bold
+							Key: Escape
+						Button@CAMPAIGN_CONGRATULATION_CONTINUE_BUTTON:
+							X: 15
+							Y: 15
+							Width: 160
+							Height: 35
+							Text: Replay final mission
+							Font: Bold
+							Key: Return

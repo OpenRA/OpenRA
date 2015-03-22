@@ -48,6 +48,7 @@ namespace OpenRA
 		public readonly Rectangle bounds;
 		public readonly int[] spawnpoints = { };
 		public readonly string minimap;
+		public readonly string campaignPathPreview;
 		public readonly bool downloading;
 	}
 
@@ -64,6 +65,7 @@ namespace OpenRA
 		public CPos[] SpawnPoints { get; private set; }
 		public Rectangle Bounds { get; private set; }
 		public Bitmap CustomPreview { get; private set; }
+		public Bitmap CustomCampaignPathPreview { get; private set; }
 		public Map Map { get; private set; }
 		public MapStatus Status { get; private set; }
 		public MapClassification Class { get; private set; }
@@ -75,8 +77,8 @@ namespace OpenRA
 		public long DownloadBytes { get; private set; }
 		public int DownloadPercentage { get; private set; }
 
-		Sprite minimap;
-		bool generatingMinimap;
+		Sprite minimap, campaignPathPreview;
+		bool generatingMinimap, switchedPreview;
 		public Sprite GetMinimap()
 		{
 			if (minimap != null)
@@ -95,6 +97,34 @@ namespace OpenRA
 		{
 			this.minimap = minimap;
 			generatingMinimap = false;
+		}
+
+		public void SetCampaignPathPreview(Sprite campaignPathPreview)
+		{
+			this.campaignPathPreview = campaignPathPreview;
+		}
+
+		public bool HasCampaignPreview()
+		{
+			return CustomCampaignPathPreview != null;
+		}
+
+		public void SwitchPreview()
+		{
+			if (CustomCampaignPathPreview != null && !switchedPreview)
+			{
+				var temp = CustomPreview;
+				CustomPreview = CustomCampaignPathPreview;
+				CustomCampaignPathPreview = temp;
+				switchedPreview = true;
+			}
+
+			if (switchedPreview)
+			{
+				var temp = minimap;
+				minimap = campaignPathPreview;
+				campaignPathPreview = temp;
+			}
 		}
 
 		public MapPreview(string uid, MapCache cache)
@@ -121,6 +151,7 @@ namespace OpenRA
 			Bounds = m.Bounds;
 			SpawnPoints = m.SpawnPoints.Value;
 			CustomPreview = m.CustomPreview;
+			CustomCampaignPathPreview = m.CampaignPathPreview;
 			Status = MapStatus.Available;
 			Class = classification;
 
@@ -181,6 +212,7 @@ namespace OpenRA
 						SpawnPoints = spawns;
 
 						CustomPreview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
+						CustomCampaignPathPreview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.campaignPathPreview)));
 					}
 					catch (Exception) { }
 

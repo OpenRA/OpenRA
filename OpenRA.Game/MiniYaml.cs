@@ -170,7 +170,7 @@ namespace OpenRA
 					c = line[cp];
 					switch (c)
 					{
-					    case ' ':
+						case ' ':
 							spaces++;
 							if (spaces >= SpacesPerLevel)
 							{

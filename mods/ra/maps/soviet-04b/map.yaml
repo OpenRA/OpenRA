@@ -6,6 +6,8 @@ Title: Soviet 04b: Behind the lines
 
 Description: The Allied base in this region is proving to be problematic.\n\nYour mission is to take it out so that we can begin to move forces through this area.\n\nAs long as they have communications they will be able to call upon heavy reinforcements.\n\nCrush their communications, and they should be easier to remove.
 
+NextMission: soviet-05
+
 Author: Westwood Studios
 
 Tileset: SNOW

@@ -6,6 +6,8 @@ Title: Repair the GDI base (b)
 
 Description: A GDI field base is under attack. They have fended off one attack but will not survive another.\n\nMove to the base, repair the structures and then launch a strike force to destroy the Nod base in the area.\n\nDestroy all Nod units and structures.
 
+NextMission: 
+
 Author: Westwood Studios
 
 Tileset: TEMPERAT

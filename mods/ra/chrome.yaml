@@ -967,3 +967,18 @@ mainmenu-border: dialog.png
 dropdown: dialog.png
     separator: 512,1,1,19
     observer-separator: 768,256,1,19
+	
+noise-background: choosescreen.png
+	border-t: 60,0,680,60
+	border-b: 60,540,680,60
+	border-l: 0,60,60,480
+	border-r: 740,60,60,480
+	corner-tl: 0,0,60,60
+	corner-tr: 740,0,60,60
+	corner-bl: 0,540,60,60
+	corner-br: 740,540,60,60
+	background: 60,60,680,480
+	
+choose-logos: factionlogos.png
+	soviet: 0,0,172,172
+	allies:	172,0,172,172

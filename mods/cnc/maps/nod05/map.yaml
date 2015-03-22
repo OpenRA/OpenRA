@@ -6,6 +6,8 @@ Title: Warthog Hunt
 
 Description: Our brothers within GDI tell us of A-10 strike jets scheduled to be deployed here soon. Our suppliers have delivered new Surface to Air Missiles to aid you. Use the SAMs to defend your base, then seek out their base and destroy it.
 
+NextMission: nod06a, nod06b, nod06c
+
 Author: Westwood Studios
 
 Tileset: DESERT

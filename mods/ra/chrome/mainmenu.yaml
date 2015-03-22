@@ -92,16 +92,23 @@ Container@MAINMENU:
 							Text: Singleplayer
 							Align: Center
 							Font: Bold
-						Button@SKIRMISH_BUTTON:
+						Button@CAMPAIGN_BUTTON:
 							X: PARENT_RIGHT/2-WIDTH/2
 							Y: 60
+							Width: 140
+							Height: 30
+							Text: Campaign
+							Font: Bold
+						Button@SKIRMISH_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 100
 							Width: 140
 							Height: 30
 							Text: Skirmish
 							Font: Bold
 						Button@MISSIONS_BUTTON:
 							X: PARENT_RIGHT/2-WIDTH/2
-							Y: 100
+							Y: 140
 							Width: 140
 							Height: 30
 							Text: Missions
