@@ -246,7 +246,9 @@ namespace OpenRA
 
 		public byte GetTerrainIndex(TerrainTile r)
 		{
-			var tpl = Templates[r.Type];
+			TerrainTemplateInfo tpl;
+			if (!Templates.TryGetValue(r.Type, out tpl))
+				return defaultWalkableTerrainIndex;
 
 			if (tpl.Contains(r.Index))
 			{
