@@ -72,6 +72,7 @@ namespace OpenRA
 				throw new InvalidOperationException("Unable to find a sequence loader for type '{0}'.".F(sequenceFormat.Type));
 
 			SpriteSequenceLoader = (ISpriteSequenceLoader)ctor.Invoke(new[] { this });
+			SpriteSequenceLoader.OnMissingSpriteError = s => Log.Write("debug", s);
 
 			// HACK: Mount only local folders so we have a half-working environment for the asset installer
 			GlobalFileSystem.UnmountAll();

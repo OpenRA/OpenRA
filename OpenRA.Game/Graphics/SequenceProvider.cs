@@ -39,6 +39,7 @@ namespace OpenRA.Graphics
 
 	public interface ISpriteSequenceLoader
 	{
+		Action<string> OnMissingSpriteError { get; set; }
 		IReadOnlyDictionary<string, ISpriteSequence> ParseSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node);
 	}
 
