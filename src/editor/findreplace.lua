@@ -274,8 +274,6 @@ local function onFileRegister(pos, length)
   local text = ""
   local context = 2
 
-  findReplace.occurrences = findReplace.occurrences + 1
-
   -- check if there is another match on the same line; do not add anything
   if oldline ~= posline then
     if posline and not oldline then
@@ -315,6 +313,8 @@ local function onFileRegister(pos, length)
   end
 
   if posline then
+    findReplace.occurrences = findReplace.occurrences + 1
+
     -- get the added line
     local markline = reseditor:GetLineCount()-2
     -- get the match position in the file relative to the beginning of the line
