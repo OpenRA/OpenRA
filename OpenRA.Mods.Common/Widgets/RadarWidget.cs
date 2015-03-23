@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
@@ -32,6 +33,8 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
 		readonly RadarPings radarPings;
+
+		readonly HashSet<CPos> dirtyShroudCells = new HashSet<CPos>();
 
 		float radarMinimapHeight;
 		int frame;
@@ -128,6 +131,11 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
+		void MarkShroudDirty(IEnumerable<CPos> cellsChanged)
+		{
+			dirtyShroudCells.UnionWith(cellsChanged);
+		}
+
 		public override string GetCursor(int2 pos)
 		{
 			if (world == null || !hasRadar)
@@ -192,6 +200,15 @@ namespace OpenRA.Mods.Common.Widgets
 			if (world == null)
 				return;
 
+			if (renderShroud != null)
+			{
+				foreach (var cell in dirtyShroudCells)
+					UpdateShroudCell(cell);
+				dirtyShroudCells.Clear();
+			}
+
+			radarSheet.CommitData();
+
 			var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight) / 2);
 			var s = new float2(mapRect.Size.Width, mapRect.Size.Height * radarMinimapHeight);
 
@@ -253,7 +270,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (newRenderShroud != renderShroud)
 				{
 					if (renderShroud != null)
-						renderShroud.CellEntryChanged -= UpdateShroudCell;
+						renderShroud.CellsChanged -= MarkShroudDirty;
 
 					if (newRenderShroud != null)
 					{
@@ -262,8 +279,10 @@ namespace OpenRA.Mods.Common.Widgets
 							OpenRA.Graphics.Util.FastCopyIntoSprite(shroudSprite, bitmap);
 
 						// Update the notification binding
-						newRenderShroud.CellEntryChanged += UpdateShroudCell;
+						newRenderShroud.CellsChanged += MarkShroudDirty;
 					}
+
+					dirtyShroudCells.Clear();
 
 					renderShroud = newRenderShroud;
 				}
@@ -297,8 +316,6 @@ namespace OpenRA.Mods.Common.Widgets
 						}
 					}
 				}
-
-				radarSheet.CommitData();
 			}
 
 			var targetFrame = enabled ? AnimationLength : 0;

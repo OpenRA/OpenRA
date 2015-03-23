@@ -24,29 +24,14 @@ namespace OpenRA.Traits
 	{
 		[Sync] public bool Disabled;
 
+		public event Action<IEnumerable<CPos>> CellsChanged;
+
 		readonly Actor self;
 		readonly Map map;
 
 		readonly CellLayer<short> visibleCount;
 		readonly CellLayer<short> generatedShroudCount;
 		readonly CellLayer<bool> explored;
-
-		public event Action<CPos> CellEntryChanged
-		{
-			add
-			{
-				visibleCount.CellEntryChanged += value;
-				generatedShroudCount.CellEntryChanged += value;
-				explored.CellEntryChanged += value;
-			}
-
-			remove
-			{
-				visibleCount.CellEntryChanged -= value;
-				generatedShroudCount.CellEntryChanged -= value;
-				explored.CellEntryChanged -= value;
-			}
-		}
 
 		readonly Lazy<IFogVisibilityModifier[]> fogVisibilities;
 
@@ -88,8 +73,11 @@ namespace OpenRA.Traits
 			slowVisibleTest = IsVisible;
 		}
 
-		void Invalidate()
+		void Invalidate(IEnumerable<CPos> changed)
 		{
+			if (CellsChanged != null)
+				CellsChanged(changed);
+
 			var oldHash = Hash;
 			Hash = Sync.HashPlayer(self.Owner) + self.World.WorldTick * 3;
 
@@ -148,7 +136,7 @@ namespace OpenRA.Traits
 				throw new InvalidOperationException("Attempting to add duplicate actor visibility");
 
 			visibility[a] = visible;
-			Invalidate();
+			Invalidate(visible);
 		}
 
 		void RemoveVisibility(Actor a)
@@ -161,7 +149,7 @@ namespace OpenRA.Traits
 				visibleCount[c]--;
 
 			visibility.Remove(a);
-			Invalidate();
+			Invalidate(visible);
 		}
 
 		void UpdateVisibility(Actor a, ref CPos[] visible)
@@ -190,7 +178,7 @@ namespace OpenRA.Traits
 				throw new InvalidOperationException("Attempting to add duplicate shroud generation");
 
 			generation[a] = shrouded;
-			Invalidate();
+			Invalidate(shrouded);
 		}
 
 		void RemoveShroudGeneration(Actor a)
@@ -203,7 +191,7 @@ namespace OpenRA.Traits
 				generatedShroudCount[c]--;
 
 			generation.Remove(a);
-			Invalidate();
+			Invalidate(shrouded);
 		}
 
 		void UpdateShroudGeneration(Actor a, ref CPos[] shrouded)
@@ -241,10 +229,17 @@ namespace OpenRA.Traits
 
 		public void Explore(World world, CPos center, WRange range)
 		{
+			var changed = new List<CPos>();
 			foreach (var c in FindVisibleTiles(world, center, range))
-				explored[c] = true;
+			{
+				if (!explored[c])
+				{
+					explored[c] = true;
+					changed.Add(c);
+				}
+			}
 
-			Invalidate();
+			Invalidate(changed);
 		}
 
 		public void Explore(Shroud s)
@@ -252,27 +247,48 @@ namespace OpenRA.Traits
 			if (map.Bounds != s.map.Bounds)
 				throw new ArgumentException("The map bounds of these shrouds do not match.", "s");
 
+			var changed = new List<CPos>();
 			foreach (var uv in map.Cells.MapCoords)
-				if (s.explored[uv])
+			{
+				if (!explored[uv] && s.explored[uv])
+				{
 					explored[uv] = true;
+					changed.Add(uv.ToCPos(map));
+				}
+			}
 
-			Invalidate();
+			Invalidate(changed);
 		}
 
 		public void ExploreAll(World world)
 		{
+			var changed = new List<CPos>();
 			foreach (var uv in map.Cells.MapCoords)
-				explored[uv] = true;
+			{
+				if (!explored[uv])
+				{
+					explored[uv] = true;
+					changed.Add(uv.ToCPos(map));
+				}
+			}
 
-			Invalidate();
+			Invalidate(changed);
 		}
 
 		public void ResetExploration()
 		{
+			var changed = new List<CPos>();
 			foreach (var uv in map.Cells.MapCoords)
-				explored[uv] = visibleCount[uv] > 0;
+			{
+				var visible = visibleCount[uv] > 0;
+				if (explored[uv] != visible)
+				{
+					explored[uv] = visible;
+					changed.Add(uv.ToCPos(map));
+				}
+			}
 
-			Invalidate();
+			Invalidate(changed);
 		}
 
 		public bool IsExplored(CPos cell)
