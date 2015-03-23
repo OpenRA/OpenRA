@@ -381,7 +381,7 @@ function findReplace:RunInFiles(replace)
   if not self:HasText() or self.oveditor then return end
 
   self.oveditor = ide:CreateStyledTextCtrl(self.panel, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxSize(1,1), wx.wxBORDER_NONE)
+    wx.wxDefaultPosition, wx.wxSize(0,0), wx.wxBORDER_NONE)
   self.occurrences = 0
   self.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
   ide:Yield() -- let the update of the UI happen
