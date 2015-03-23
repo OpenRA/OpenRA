@@ -120,11 +120,42 @@ namespace OpenRA.Mods.Common.Graphics
 				var offset = LoadField<float2>(d, "Offset", float2.Zero);
 				var blendMode = LoadField<BlendMode>(d, "BlendMode", BlendMode.Alpha);
 
-				// Apply offset to each sprite in the sequence
-				// Different sequences may apply different offsets to the same frame
-				var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
-				sprites = cache[src].Select(
-					s => new Sprite(s.Sheet, s.Bounds, s.Offset + offset, s.Channel, blendMode)).ToArray();
+				MiniYaml combine;
+				if (d.TryGetValue("Combine", out combine))
+				{
+					var combined = Enumerable.Empty<Sprite>();
+					foreach (var sub in combine.Nodes)
+					{
+						var sd = sub.Value.ToDictionary();
+
+						// Allow per-sprite offset, start, and length
+						var subStart = LoadField<int>(sd, "Start", 0);
+						var subOffset = LoadField<float2>(sd, "Offset", float2.Zero);
+
+						var subSrc = GetSpriteSrc(modData, tileSet, sequence, animation, sub.Key, sd);
+						var subSprites = cache[subSrc].Select(
+							s => new Sprite(s.Sheet, s.Bounds, s.Offset + subOffset + offset, s.Channel, blendMode));
+
+						var subLength = 0;
+						MiniYaml subLengthYaml;
+						if (sd.TryGetValue("Length", out subLengthYaml) && subLengthYaml.Value == "*")
+							subLength = subSprites.Count() - subStart;
+						else
+							subLength = LoadField<int>(sd, "Length", 1);
+
+						combined = combined.Concat(subSprites.Skip(subStart).Take(subLength));
+					}
+
+					sprites = combined.ToArray();
+				}
+				else
+				{
+					// Apply offset to each sprite in the sequence
+					// Different sequences may apply different offsets to the same frame
+					var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
+					sprites = cache[src].Select(
+						s => new Sprite(s.Sheet, s.Bounds, s.Offset + offset, s.Channel, blendMode)).ToArray();
+				}
 
 				MiniYaml length;
 				if (d.TryGetValue("Length", out length) && length.Value == "*")
@@ -149,14 +180,14 @@ namespace OpenRA.Mods.Common.Graphics
 
 				if (Start < 0 || Start + Facings * Stride > sprites.Length)
 					throw new InvalidOperationException(
-						"{6}: Sequence {0}.{1} uses frames [{2}..{3}] of SHP `{4}`, but only 0..{5} actually exist"
-						.F(sequence, animation, Start, Start + Facings * Stride - 1, src, sprites.Length - 1,
+						"{5}: Sequence {0}.{1} uses frames [{2}..{3}], but only 0..{4} actually exist"
+						.F(sequence, animation, Start, Start + Facings * Stride - 1, sprites.Length - 1,
 							info.Nodes[0].Location));
 
 				if (ShadowStart + Facings * Stride > sprites.Length)
 					throw new InvalidOperationException(
-						"{6}: Sequence {0}.{1}'s shadow frames use frames [{2}..{3}] of SHP `{4}`, but only [0..{5}] actually exist"
-						.F(sequence, animation, ShadowStart, ShadowStart + Facings * Stride - 1, src, sprites.Length - 1,
+						"{5}: Sequence {0}.{1}'s shadow frames use frames [{2}..{3}], but only [0..{4}] actually exist"
+						.F(sequence, animation, ShadowStart, ShadowStart + Facings * Stride - 1, sprites.Length - 1,
 							info.Nodes[0].Location));
 			}
 			catch (FormatException f)
