@@ -267,11 +267,11 @@ local function reIndent(editor, buf)
   local decindent, incindent = editor.spec.isdecindent, editor.spec.isincindent
   if not (decindent and incindent) then return end
 
-  local line = editor:LineFromPosition(editor:GetSelectionStart())
+  local edline = editor:LineFromPosition(editor:GetSelectionStart())
   local indent = 0
   local text = ''
   -- find the last non-empty line in the previous block (if any)
-  for n = line-1, 1, -1 do
+  for n = edline-1, 1, -1 do
     indent = editor:GetLineIndentation(n)
     text = editor:GetLine(n)
     if text:match('[^\r\n]') then break end
@@ -283,7 +283,7 @@ local function reIndent(editor, buf)
   local indents = {}
   local isstatic = {}
   for line = 1, #buf+1 do
-    local style = bit.band(editor:GetStyleAt(editor:PositionFromLine(line-1)), 31)
+    local style = bit.band(editor:GetStyleAt(editor:PositionFromLine(edline+line-1)), 31)
     -- don't reformat multi-line comments or strings
     isstatic[line] = editor.spec.iscomment[style] or editor.spec.isstring[style]
     if not isstatic[line] or line == 1 or not isstatic[line-1] then
