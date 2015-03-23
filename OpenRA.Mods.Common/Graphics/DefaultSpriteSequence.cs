@@ -60,6 +60,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 	public class DefaultSpriteSequence : ISpriteSequence
 	{
+		static readonly WRange DefaultShadowSpriteZOffset = new WRange(-5);
 		readonly Sprite[] sprites;
 		readonly bool reverseFacings, transpose;
 
@@ -76,9 +77,18 @@ namespace OpenRA.Mods.Common.Graphics
 		public int ShadowZOffset { get; private set; }
 		public int[] Frames { get; private set; }
 
-		protected virtual string GetSpriteSrc(ModData modData, TileSet tileSet, string sequence, string animation, MiniYaml info, Dictionary<string, MiniYaml> d)
+		protected virtual string GetSpriteSrc(ModData modData, TileSet tileSet, string sequence, string animation, string sprite, Dictionary<string, MiniYaml> d)
 		{
-			return info.Value ?? sequence;
+			return sprite ?? sequence;
+		}
+
+		protected static T LoadField<T>(Dictionary<string, MiniYaml> d, string key, T fallback)
+		{
+			MiniYaml value;
+			if (d.TryGetValue(key, out value))
+				return FieldLoader.GetValue<T>(key, value.Value);
+
+			return fallback;
 		}
 
 		public DefaultSpriteSequence(ModData modData, TileSet tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string sequence, string animation, MiniYaml info)
@@ -86,78 +96,40 @@ namespace OpenRA.Mods.Common.Graphics
 			Name = animation;
 			Loader = loader;
 			var d = info.ToDictionary();
-			var offset = float2.Zero;
-			var blendMode = BlendMode.Alpha;
 
 			try
 			{
-				if (d.ContainsKey("Start"))
-					Start = Exts.ParseIntegerInvariant(d["Start"].Value);
+				Start = LoadField<int>(d, "Start", 0);
+				ShadowStart = LoadField<int>(d, "ShadowStart", -1);
+				ShadowZOffset = LoadField<WRange>(d, "ShadowZOffset", DefaultShadowSpriteZOffset).Range;
+				ZOffset = LoadField<WRange>(d, "ZOffset", WRange.Zero).Range;
+				Tick = LoadField<int>(d, "Tick", 40);
+				transpose = LoadField<bool>(d, "Transpose", false);
+				Frames = LoadField<int[]>(d, "Frames", null);
 
-				if (d.ContainsKey("Offset"))
-					offset = FieldLoader.GetValue<float2>("Offset", d["Offset"].Value);
+				Facings = LoadField<int>(d, "Facings", 1);
+				if (Facings < 0)
+				{
+					reverseFacings = true;
+					Facings = -Facings;
+				}
 
-				if (d.ContainsKey("BlendMode"))
-					blendMode = FieldLoader.GetValue<BlendMode>("BlendMode", d["BlendMode"].Value);
+				var offset = LoadField<float2>(d, "Offset", float2.Zero);
+				var blendMode = LoadField<BlendMode>(d, "BlendMode", BlendMode.Alpha);
 
 				// Apply offset to each sprite in the sequence
 				// Different sequences may apply different offsets to the same frame
-				var src = GetSpriteSrc(modData, tileSet, sequence, animation, info, d);
+				var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
 				sprites = cache[src].Select(
 					s => new Sprite(s.Sheet, s.Bounds, s.Offset + offset, s.Channel, blendMode)).ToArray();
 
-				if (!d.ContainsKey("Length"))
-					Length = 1;
-				else if (d["Length"].Value == "*")
+				MiniYaml length;
+				if (d.TryGetValue("Length", out length) && length.Value == "*")
 					Length = sprites.Length - Start;
 				else
-					Length = Exts.ParseIntegerInvariant(d["Length"].Value);
+					Length = LoadField<int>(d, "Length", 1);
 
-				if (d.ContainsKey("Stride"))
-					Stride = Exts.ParseIntegerInvariant(d["Stride"].Value);
-				else
-					Stride = Length;
-
-				if (d.ContainsKey("Facings"))
-				{
-					var f = Exts.ParseIntegerInvariant(d["Facings"].Value);
-					Facings = Math.Abs(f);
-					reverseFacings = f < 0;
-				}
-				else
-					Facings = 1;
-
-				if (d.ContainsKey("Tick"))
-					Tick = Exts.ParseIntegerInvariant(d["Tick"].Value);
-				else
-					Tick = 40;
-
-				if (d.ContainsKey("Transpose"))
-					transpose = bool.Parse(d["Transpose"].Value);
-
-				if (d.ContainsKey("Frames"))
-					Frames = Array.ConvertAll<string, int>(d["Frames"].Value.Split(','), Exts.ParseIntegerInvariant);
-
-				if (d.ContainsKey("ShadowStart"))
-					ShadowStart = Exts.ParseIntegerInvariant(d["ShadowStart"].Value);
-				else
-					ShadowStart = -1;
-
-				if (d.ContainsKey("ShadowZOffset"))
-				{
-					WRange r;
-					if (WRange.TryParse(d["ShadowZOffset"].Value, out r))
-						ShadowZOffset = r.Range;
-				}
-				else
-					ShadowZOffset = -5;
-
-				if (d.ContainsKey("ZOffset"))
-				{
-					WRange r;
-					if (WRange.TryParse(d["ZOffset"].Value, out r))
-						ZOffset = r.Range;
-				}
+				Stride = LoadField<int>(d, "Stride", Length);
 
 				if (Length > Stride)
 					throw new InvalidOperationException(
