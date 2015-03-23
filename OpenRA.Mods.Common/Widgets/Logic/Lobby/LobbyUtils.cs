@@ -464,8 +464,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void AddPlayerFlagAndName(ScrollItemWidget template, Player player)
 		{
 			var flag = template.Get<ImageWidget>("FLAG");
-			flag.GetImageName = () => player.Country.Race;
 			flag.GetImageCollection = () => "flags";
+			if (player.World.RenderPlayer != null && player.World.RenderPlayer.Stances[player] != Stance.Ally)
+				flag.GetImageName = () => player.PlayerReference.Race;
+			else
+				flag.GetImageName = () => player.Country.Race;
 
 			var playerName = template.Get<LabelWidget>("PLAYER");
 			var client = player.World.LobbyInfo.ClientWithIndex(player.ClientIndex);
