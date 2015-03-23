@@ -363,10 +363,14 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
 
           -- give time to the UI to refresh
           if TimeGet() - start > 0.25 then ide:Yield() end
-          -- the IDE may be quitting after Yield, so check to make sure
-          -- the manager is still active
+          -- the IDE may be quitting after Yield or the tab may be closed,
           local ok, mgr = pcall(function() return ide:GetUIManager() end)
-          if not (ok and mgr:GetPane(searchpanel):IsShown()) then break end
+          -- so check to make sure the manager is still active
+          if not (ok and mgr:GetPane(searchpanel):IsShown())
+          -- and check that the search results tab is still open
+          or not pcall(function() findReplace.reseditor:GetId() end) then
+            break
+          end
         end
       end
     end
