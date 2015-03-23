@@ -129,6 +129,14 @@ namespace OpenRA.Mods.Common.Graphics
 				else
 					Length = LoadField<int>(d, "Length", 1);
 
+				// Plays the animation forwards, and then in reverse
+				if (LoadField<bool>(d, "Reverses", false))
+				{
+					var frames = Frames ?? Exts.MakeArray(Length, i => Start + i);
+					Frames = frames.Concat(frames.Skip(1).Take(frames.Length - 2).Reverse()).ToArray();
+					Length = 2 * Length - 2;
+				}
+
 				Stride = LoadField<int>(d, "Stride", Length);
 
 				if (Length > Stride)
