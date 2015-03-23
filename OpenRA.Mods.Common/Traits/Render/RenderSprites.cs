@@ -122,9 +122,9 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-	    readonly string race;
+		readonly string race;
 		readonly RenderSpritesInfo info;
-	    readonly Dictionary<string, AnimationWrapper> anims = new Dictionary<string, AnimationWrapper>();
+		readonly Dictionary<string, AnimationWrapper> anims = new Dictionary<string, AnimationWrapper>();
 		string cachedImage;
 
 		public static Func<int> MakeFacingFunc(Actor self)
