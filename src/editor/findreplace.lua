@@ -177,7 +177,7 @@ function findReplace:FindStringAll(inFileRegister)
     while true do
       local posFind = editor:SearchInTarget(self.findText)
       if posFind == NOTFOUND then break end
-      inFileRegister(posFind)
+      inFileRegister(posFind, editor:GetTargetEnd()-posFind)
       editor:SetTargetStart(editor:GetTargetEnd())
       editor:SetTargetEnd(e)
       found = true
@@ -210,10 +210,12 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
       setSearchFlags(editor)
       local occurrences = 0
       local posFind = editor:SearchInTarget(self.findText)
-      if (posFind ~= NOTFOUND) then
-        if (not inFileRegister) then editor:BeginUndoAction() end
+      if posFind ~= NOTFOUND then
+        if not inFileRegister then editor:BeginUndoAction() end
         while posFind ~= NOTFOUND do
-          if (inFileRegister) then inFileRegister(posFind) end
+          if inFileRegister then
+            inFileRegister(posFind, editor:GetTargetEnd()-posFind)
+          end
 
           local length = editor:GetLength()
           local replaced = self.fRegularExpr
@@ -263,52 +265,65 @@ end
 
 local oldline
 local BOOKMARK_MARKER = StylesGetMarker("bookmark")
-local function onFileRegister(pos)
+local indicator = {SEARCHMATCH = 5}
+local function getRawLine(ed, line) return (ed:GetLine(line):gsub("[\n\r]+$","")) end
+local function onFileRegister(pos, length)
   local editor = findReplace.oveditor
   local reseditor = findReplace.reseditor
-  local posline = pos and editor:LineFromPosition(pos)+1
+  local posline = pos and editor:LineFromPosition(pos) + 1
   local text = ""
   local context = 2
 
   findReplace.occurrences = findReplace.occurrences + 1
 
-  -- check if there is another match on the same line; do nothing
-  if oldline == posline then return end
+  -- check if there is another match on the same line; do not add anything
+  if oldline ~= posline then
+    if posline and not oldline then
+      -- show file name and a bookmark marker
+      reseditor:AppendText(findReplace.curfilename.."\n")
+      reseditor:MarkerAdd(reseditor:GetLineCount()-2, BOOKMARK_MARKER)
 
-  if posline and not oldline then
-    -- show file name and a bookmark marker
-    reseditor:AppendText(findReplace.curfilename.."\n")
-    reseditor:MarkerAdd(reseditor:GetLineCount()-2, BOOKMARK_MARKER)
+      -- show context lines before posline
+      for line = math.max(1, posline-context), posline-1 do
+        text = text .. ("%5d  %s\n"):format(line, getRawLine(editor, line-1))
+      end
+    end
+    if posline and oldline then
+      -- show context lines between oldposline and posline
+      for line = oldline+1, math.min(posline-1, oldline+context) do
+        text = text .. ("%5d  %s\n"):format(line, getRawLine(editor, line-1))
+      end
+      if posline-oldline > context * 2 + 1 then
+        text = text .. ("%5s\n"):format(("."):rep(#tostring(posline)))
+      end
+      for line = math.max(oldline+context+1, posline-context), posline-1 do
+        text = text .. ("%5d  %s\n"):format(line, getRawLine(editor, line-1))
+      end
+    end
+    if posline then
+      text = text .. ("%5d: %s\n"):format(posline, getRawLine(editor, posline-1))
+    elseif oldline then
+      -- show context lines after posline
+      for line = oldline+1, math.min(editor:GetLineCount(), oldline+context) do
+        text = text .. ("%5d  %s\n"):format(line, getRawLine(editor, line-1))
+      end
+      text = text .. "\n"
+    end
+    oldline = posline
 
-    -- show context lines before posline
-    for line = math.max(1, posline-context), posline-1 do
-      text = text .. ("%5d  %s\n"):format(line, editor:GetLine(line-1):gsub("[\n\r]+$",""))
-    end
+    reseditor:AppendText(text)
   end
-  if posline and oldline then
-    -- show context lines between oldposline and posline
-    for line = oldline+1, math.min(posline-1, oldline+context) do
-      text = text .. ("%5d  %s\n"):format(line, editor:GetLine(line-1):gsub("[\n\r]+$",""))
-    end
-    if posline-oldline > context * 2 + 1 then
-      text = text .. ("%5s\n"):format(("."):rep(#tostring(posline)))
-    end
-    for line = math.max(oldline+context+1, posline-context), posline-1 do
-      text = text .. ("%5d  %s\n"):format(line, editor:GetLine(line-1):gsub("[\n\r]+$",""))
-    end
-  end
+
   if posline then
-    text = text .. ("%5d: %s\n"):format(posline, editor:GetLine(posline-1):gsub("[\n\r]+$",""))
-  elseif oldline then
-    -- show context lines after posline
-    for line = oldline+1, math.min(editor:GetLineCount(), oldline+context) do
-      text = text .. ("%5d  %s\n"):format(line, editor:GetLine(line-1):gsub("[\n\r]+$",""))
-    end
-    text = text .. "\n"
+    -- get the added line
+    local markline = reseditor:GetLineCount()-2
+    -- get the match position in the file relative to the beginning of the line
+    local localpos = pos - editor:PositionFromLine(posline-1)
+    -- recalculate position in the search results relative to the line
+    local newpos = reseditor:PositionFromLine(markline)+localpos+7 -- add indent
+    reseditor:SetIndicatorCurrent(indicator.SEARCHMATCH)
+    reseditor:IndicatorFillRange(newpos, length)
   end
-  oldline = posline
-
-  reseditor:AppendText(text)
 end
 
 local function ProcInFiles(startdir,mask,subdirs,replace)
