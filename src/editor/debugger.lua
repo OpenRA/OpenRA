@@ -1082,7 +1082,7 @@ local function debuggerCreateStackWindow()
     if file then
       local editor = LoadFile(file,nil,true)
       editor:SetFocus()
-      if line then editor:GotoPos(editor:PositionFromLine(line-1)) end
+      if line then editor:GotoLine(line-1) end
     end
   end)
 

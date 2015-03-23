@@ -425,7 +425,7 @@ function findReplace:RunInFiles(replace)
         -- activate the file and the line number
         local editor = file and LoadFile(file,nil,true)
         if editor then
-          editor:GotoPos(editor:PositionFromLine(jumpline-1))
+          editor:GotoLine(jumpline-1)
           editor:EnsureVisibleEnforcePolicy(jumpline-1)
           editor:SetFocus()
 
