@@ -525,6 +525,7 @@ GATICK:
 		TransformSounds: place2.aud
 		NoTransformSounds:
 	WithMuzzleFlash:
+	-WithDeathAnimation:
 
 GAICBM:
 	Inherits: ^Building
@@ -546,6 +547,7 @@ GAICBM:
 		Facing: 96
 		TransformSounds: place2.aud
 		NoTransformSounds:
+	-WithDeathAnimation:
 
 GADPSA:
 	Inherits: ^Building
@@ -570,6 +572,7 @@ GADPSA:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
+	-WithDeathAnimation:
 
 GAARTY:
 	Inherits: ^Building
@@ -613,6 +616,7 @@ GAARTY:
 		TransformSounds: place2.aud
 		NoTransformSounds:
 	WithMuzzleFlash:
+	-WithDeathAnimation:
 
 GASPOT:
 	Inherits: ^Building
