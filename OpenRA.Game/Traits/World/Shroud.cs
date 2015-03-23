@@ -128,8 +128,9 @@ namespace OpenRA.Traits
 
 			foreach (var c in visible)
 			{
-				visibleCount[c]++;
-				explored[c] = true;
+				var uv = c.ToMPos(map);
+				visibleCount[uv]++;
+				explored[uv] = true;
 			}
 
 			if (visibility.ContainsKey(a))
@@ -146,7 +147,7 @@ namespace OpenRA.Traits
 				return;
 
 			foreach (var c in visible)
-				visibleCount[c]--;
+				visibleCount[c.ToMPos(map)]--;
 
 			visibility.Remove(a);
 			Invalidate(visible);
