@@ -37,6 +37,7 @@ ide.findReplace = {
 
   curfilename = "", -- for search in files
   occurrences = 0,
+  files = 0,
 
   -- HasText() is there a string to search for
   -- GetSelectedString() get currently selected string if it's on one line
@@ -232,6 +233,7 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
         end
         if inFileRegister then
           inFileRegister()
+          self.files = self.files + 1
         else
           editor:EndUndoAction()
         end
@@ -357,8 +359,8 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
             and (not findReplace.fMakeBak or FileWrite(file..".bak",filetext)) then
               FileWrite(file,findReplace.oveditor:GetText())
             end
-          else
-            findReplace:FindStringAll(onFileRegister)
+          elseif findReplace:FindStringAll(onFileRegister) then
+            findReplace.files = findReplace.files + 1
           end
 
           -- give time to the UI to refresh
@@ -383,6 +385,7 @@ function findReplace:RunInFiles(replace)
   self.oveditor = ide:CreateStyledTextCtrl(self.panel, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(0,0), wx.wxBORDER_NONE)
   self.occurrences = 0
+  self.files = 0
   self.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
   ide:Yield() -- let the update of the UI happen
 
@@ -443,12 +446,22 @@ function findReplace:RunInFiles(replace)
   if ctrl then ctrl:SetFocus() end
 
   reseditor:SetText('')
+  -- set modified status to indicate the changes and prevent reuse of the tab
+  ide:GetDocument(reseditor):SetModified(true)
 
   self:SetStatus(("%s '%s'."):format(
     (replace and TR("Replacing") or TR("Searching for")), self.findText))
 
   local startdir, mask = self:GetScope()
   ProcInFiles(startdir, mask or "*.*", self.fSubDirs, replace)
+
+  -- reseditor may already be closed, so check if it's valid first
+  if pcall(function() reseditor:GetId() end) then
+    reseditor:AppendText(("Found %d instance(s) in %d file(s).")
+      :format(self.occurrences, self.files))
+    reseditor:EmptyUndoBuffer()
+    ide:GetDocument(reseditor):SetModified(false)
+  end
 
   self:SetStatus(("%s %s."):format(replace and TR("Replaced") or TR("Found"),
     TR("%d instance", self.occurrences):format(self.occurrences)))
