@@ -2,7 +2,7 @@ General:
 	Name: Desert
 	Id: DESERT
 	Palette: desert.pal
-	Extensions: .des, .shp, .tem
+	Extensions: # Obsolete
 	WaterPaletteRotationBase: 32
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Beach, River, Bridge
 

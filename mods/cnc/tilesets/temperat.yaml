@@ -2,7 +2,7 @@ General:
 	Name: Temperate
 	Id: TEMPERAT
 	Palette: temperat.pal
-	Extensions: .tem, .shp
+	Extensions: # Obsolete
 	WaterPaletteRotationBase: 32
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Beach, River, Bridge
 
