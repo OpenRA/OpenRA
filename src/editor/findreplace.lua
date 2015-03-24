@@ -266,7 +266,6 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
 end
 
 local oldline
-local FILE_MARKER = ide:GetMarker("searchmatchfile")
 local indicator = {SEARCHMATCH = 5}
 local function getRawLine(ed, line) return (ed:GetLine(line):gsub("[\n\r]+$","")) end
 local function onFileRegister(pos, length)
@@ -282,7 +281,6 @@ local function onFileRegister(pos, length)
     if posline and not oldline then
       -- show file name and a bookmark marker
       reseditor:AppendText(findReplace.curfilename.."\n")
-      reseditor:MarkerAdd(lines-1, FILE_MARKER)
       reseditor:SetFoldLevel(lines-1, reseditor:GetFoldLevel(lines-1)
         + wxstc.wxSTC_FOLDLEVELHEADERFLAG)
       lines = lines + 1
@@ -405,7 +403,6 @@ function findReplace:RunInFiles(replace)
     reseditor:SetWrapMode(wxstc.wxSTC_WRAP_NONE)
     reseditor:SetIndentationGuides(false)
     reseditor:SetMarginWidth(0, 0) -- hide line numbers
-    reseditor:MarkerDefine(ide:GetMarker("searchmatchfile"))
     reseditor:Connect(wxstc.wxEVT_STC_DOUBLECLICK, function(event)
       if event:GetModifiers() == wx.wxMOD_NONE then
         local pos = event:GetPosition()
