@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Eject a ground soldier or a paratrooper while in the air.")]
-	public class EjectOnDeathInfo : TraitInfo<EjectOnDeath>
+	public class EjectOnDeathInfo : ITraitInfo
 	{
 		[ActorReference]
 		public readonly string PilotActor = "E1";
@@ -26,17 +26,31 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Risks stuck units when they don't have the Paratrooper trait.")]
 		public readonly bool AllowUnsuitableCell = false;
+
+		public object Create(ActorInitializer init) { return new EjectOnDeath(init.Self, this); }
 	}
+
+	public interface IPreventsEjectOnDeath { bool PreventsEjectOnDeath(Actor self); }
 
 	public class EjectOnDeath : INotifyKilled
 	{
+		readonly EjectOnDeathInfo info;
+
+		public EjectOnDeath(Actor self, EjectOnDeathInfo info)
+		{
+			this.info = info;
+		}
+
 		public void Killed(Actor self, AttackInfo e)
 		{
 			if (self.Owner.WinState == WinState.Lost || !self.World.Map.Contains(self.Location))
 				return;
 
+			foreach (var condition in self.TraitsImplementing<IPreventsEjectOnDeath>())
+				if (condition.PreventsEjectOnDeath(self))
+					return;
+
 			var r = self.World.SharedRandom.Next(1, 100);
-			var info = self.Info.Traits.Get<EjectOnDeathInfo>();
 
 			if (r <= 100 - info.SuccessRate)
 				return;
