@@ -75,6 +75,7 @@ function StylesGetDefault()
       output = {},
       prompt = {},
       error = {},
+      searchmatchfile = {},
     },
 
     -- indicators
@@ -97,6 +98,7 @@ local markers = {
   output = {4, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(240, 240, 240)},
   prompt = {5, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, wx.wxColour(220, 220, 220)},
   error = {6, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(255, 220, 220)},
+  searchmatchfile = {7, wxstc.wxSTC_MARK_UNDERLINE, wx.wxBLACK, wx.wxColour(255, 192, 192)},
 }
 function StylesGetMarker(marker) return unpack(markers[marker] or {}) end
 function StylesRemoveMarker(marker) markers[marker] = nil end
@@ -369,7 +371,7 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
     editor:IndicatorSetStyle(4, indic.varmasked and indic.varmasked.st or wxstc.wxSTC_INDIC_STRIKE)
     editor:IndicatorSetForeground(4, wx.wxColour(unpack(indic.varmasked and indic.varmasked.fg or defaultfg)))
     editor:IndicatorSetStyle(5, indic.searchmatch and indic.searchmatch.st or wxstc.wxSTC_INDIC_BOX)
-    editor:IndicatorSetForeground(5, wx.wxColour(unpack(indic.searchmatch and indic.searchmatch.fg or {196, 0, 0})))
+    editor:IndicatorSetForeground(5, wx.wxColour(unpack(indic.searchmatch and indic.searchmatch.fg or {255, 128, 128})))
   end
 end
 
