@@ -21,8 +21,8 @@ ide.findReplace = {
   fMatchCase = false, -- case sensitive
   fRegularExpr = false, -- use regex
   fWrap = true, -- search wraps around
-
   fDown = true, -- search downwards in doc
+  fContext = true, -- include context in search results
   fSubDirs = true, -- search in subdirectories
   fMakeBak = true, -- make bak files for replace in files
 
@@ -274,7 +274,7 @@ local function onFileRegister(pos, length)
   local reseditor = findReplace.reseditor
   local posline = pos and editor:LineFromPosition(pos) + 1
   local text = ""
-  local context = 2
+  local context = findReplace.fContext and 2 or 0
 
   -- check if there is another match on the same line; do not add anything
   if oldline ~= posline then
@@ -479,7 +479,7 @@ local icons = {
     },
     infiles = {
       ID_FINDNEXT, ID_SEPARATOR,
-      ID_FINDOPTWORD, ID_FINDOPTCASE, ID_FINDOPTREGEX,
+      ID_FINDOPTCONTEXT, ID_FINDOPTWORD, ID_FINDOPTCASE, ID_FINDOPTREGEX,
       ID_FINDOPTSUBDIR, ID_FINDOPTBACKUP,
       ID_FINDOPTSCOPE, ID_FINDSETDIR,
       ID_SEPARATOR, ID_FINDOPTSTATUS,
@@ -494,7 +494,7 @@ local icons = {
     },
     infiles = {
       ID_FINDNEXT, ID_FINDREPLACEALL, ID_SEPARATOR,
-      ID_FINDOPTWORD, ID_FINDOPTCASE, ID_FINDOPTREGEX,
+      ID_FINDOPTCONTEXT, ID_FINDOPTWORD, ID_FINDOPTCASE, ID_FINDOPTREGEX,
       ID_FINDOPTSUBDIR, ID_FINDOPTBACKUP,
       ID_FINDOPTSCOPE, ID_FINDSETDIR,
       ID_SEPARATOR, ID_FINDOPTSTATUS,
@@ -536,6 +536,7 @@ function findReplace:createToolbar()
     [ID_FINDOPTREGEX] = 'fRegularExpr',
     [ID_FINDOPTSUBDIR] = 'fSubDirs',
     [ID_FINDOPTBACKUP] = 'fMakeBak',
+    [ID_FINDOPTCONTEXT] = 'fContext',
   }
 
   for id, var in pairs(options) do

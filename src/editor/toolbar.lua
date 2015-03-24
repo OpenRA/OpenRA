@@ -48,6 +48,7 @@ ide.config.toolbar.iconmap = {
   [ID_FINDOPTWORD] = {"FIND-OPT-WORD", TR("Match whole word")},
   [ID_FINDOPTCASE] = {"FIND-OPT-CASE-SENSITIVE", TR("Match case")},
   [ID_FINDOPTREGEX] = {"FIND-OPT-REGEX", TR("Regular expression")},
+  [ID_FINDOPTCONTEXT] = {"FIND-OPT-CONTEXT", TR("Show context")},
   [ID_FINDOPTSUBDIR] = {"FIND-OPT-SUBDIR", TR("Search in subdirectories")},
   [ID_FINDOPTBACKUP] = {"FIND-OPT-BACKUP", TR(".bak on replace")},
 }
