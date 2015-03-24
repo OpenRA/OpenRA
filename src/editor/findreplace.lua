@@ -393,12 +393,10 @@ function findReplace:RunInFiles(replace)
   local ctrl = ide:GetMainFrame():FindFocus()
   local reseditor = findReplace.reseditor
   if not reseditor or not pcall(function() reseditor:GetId() end) then
-    reseditor = ide:CreateBareEditor()
-    reseditor:SetupKeywords('')
+    reseditor = NewFile("Search Results")
     reseditor:SetWrapMode(wxstc.wxSTC_WRAP_NONE)
     reseditor:SetIndentationGuides(false)
     reseditor:SetMarginWidth(0, 0) -- hide line numbers
-
     reseditor:Connect(wxstc.wxEVT_STC_DOUBLECLICK, function(event)
       if event:GetModifiers() == wx.wxMOD_NONE then
         local pos = event:GetPosition()
@@ -439,15 +437,12 @@ function findReplace:RunInFiles(replace)
     end)
 
     findReplace.reseditor = reseditor
-    AddEditor(reseditor, "Search Results")
   else
     ide:GetDocument(reseditor):SetActive()
   end
   if ctrl then ctrl:SetFocus() end
 
   reseditor:SetText('')
-  -- set modified status to indicate the changes and prevent reuse of the tab
-  ide:GetDocument(reseditor):SetModified(true)
 
   self:SetStatus(("%s '%s'."):format(
     (replace and TR("Replacing") or TR("Searching for")), self.findText))
@@ -459,8 +454,8 @@ function findReplace:RunInFiles(replace)
   if pcall(function() reseditor:GetId() end) then
     reseditor:AppendText(("Found %d instance(s) in %d file(s).")
       :format(self.occurrences, self.files))
-    reseditor:EmptyUndoBuffer()
-    ide:GetDocument(reseditor):SetModified(false)
+    reseditor:EmptyUndoBuffer() -- don't undo the changes in the results
+    reseditor:SetSavePoint() -- set unmodified status
   end
 
   self:SetStatus(("%s %s."):format(replace and TR("Replaced") or TR("Found"),
