@@ -1,261 +1,261 @@
 mcv:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1795
 		Facings: -32
-	icon: DATA
+	icon: DATA.R8
 		Start: 4023
 		Offset: -30,-24
 
 mcv.husk:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1795
 		Facings: -32
 		ZOffset: -1023
 
 harvester:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1699
 		Facings: -32
-	harvest: DATA
+	harvest: DATA.R8
 		Start: 3631
 		Length: 6
 		Facings: -8
 		Tick: 80
 		ZOffset: 1
-	dock: DATA
+	dock: DATA.R8
 		Start: 3370
 		Length: 10
-	dock-loop: DATA
+	dock-loop: DATA.R8
 		Start: 3380
 		Length: 1
-	icon: DATA
+	icon: DATA.R8
 		Start: 4019
 		Offset: -30,-24
 
 harvester.husk:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1699
 		Facings: -32
 		ZOffset: -1023
 
 trike:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1635
 		Facings: -32
-	unload: DATA
+	unload: DATA.R8
 		Start: 1635
 		Facings: -32
-	muzzle: DATA
+	muzzle: DATA.R8
 		Frames: 3839, 3839, 3840, 3840, 3841, 3841, 3842, 3842, 3843, 3843, 3844, 3844, 3845, 3845, 3846, 3846, 3847, 3847, 3848, 3848, 3849, 3849, 3850, 3850, 3851, 3851, 3852, 3852, 3853, 3853, 3854, 3854, 3855, 3855, 3856, 3856, 3857, 3857, 3858, 3858, 3859, 3859, 3860, 3860, 3861, 3861, 3862, 3862, 3863, 3863, 3864, 3864, 3865, 3865, 3866, 3866, 3867, 3867, 3868, 3868, 3869, 3869, 3870, 3870
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: DATA
+	icon: DATA.R8
 		Start: 4041
 		Offset: -30,-24
 
 quad:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1667
 		Facings: -32
-	unload: DATA
+	unload: DATA.R8
 		Start: 1667
 		Facings: -32
-	icon: DATA
+	icon: DATA.R8
 		Start: 4018
 		Offset: -30,-24
 
 siegetank:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1763
 		Facings: -32
-	turret: DATA
+	turret: DATA.R8
 		Start: 1891
 		Facings: -32
-	muzzle: DATA
+	muzzle: DATA.R8
 		Start: 3418
 		Length: 3
 		BlendMode: Additive
-	icon: DATA
+	icon: DATA.R8
 		Start: 4026
 		Offset: -30,-24
 
 siegetank.husk:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1763
 		Facings: -32
 		ZOffset: -512
-	turret: DATA
+	turret: DATA.R8
 		Start: 1891
 		Facings: -32
 		ZOffset: -512
 
 missiletank:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1603
 		Facings: -32
-	icon: DATA
+	icon: DATA.R8
 		Start: 4024
 		Offset: -30,-24
 
 missiletank.husk:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1603
 		Facings: -32
 		ZOffset: -512
 
 sonictank:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1827
 		Facings: -32
-	icon: DATA
+	icon: DATA.R8
 		Start: 4027
 		Offset: -30,-24
 
 sonictank.husk:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1827
 		Facings: -32
 		ZOffset: -512
 
 combata:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1731
 		Facings: -32
-	turret: DATA
+	turret: DATA.R8
 		Start: 1859
 		Facings: -32
-	muzzle: DATA
+	muzzle: DATA.R8
 		Frames: 3775, 3775, 3776, 3776, 3777, 3777, 3778, 3778, 3779, 3779, 3780, 3780, 3781, 3781, 3782, 3782, 3783, 3783, 3784, 3784, 3785, 3785, 3786, 3786, 3787, 3787, 3788, 3788, 3789, 3789, 3790, 3790, 3791, 3791, 3792, 3792, 3793, 3793, 3794, 3794, 3795, 3795, 3796, 3796, 3797, 3797, 3798, 3798, 3799, 3799, 3800, 3800, 3801, 3801, 3802, 3802, 3803, 3803, 3804, 3804, 3805, 3805, 3806, 3806
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: DATA
+	icon: DATA.R8
 		Start: 4020
 		Offset: -30,-24
 
 combata.husk:
-	idle: DATA
+	idle: DATA.R8
 		Start: 1731
 		Facings: -32
 		ZOffset: -512
-	turret: DATA
+	turret: DATA.R8
 		Start: 1859
 		Facings: -32
 		ZOffset: -512
 
 combath:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2051
 		Facings: -32
-	turret: DATA
+	turret: DATA.R8
 		Start: 2115
 		Facings: -32
-	muzzle: DATA
+	muzzle: DATA.R8
 		Frames: 3775, 3775, 3776, 3776, 3777, 3777, 3778, 3778, 3779, 3779, 3780, 3780, 3781, 3781, 3782, 3782, 3783, 3783, 3784, 3784, 3785, 3785, 3786, 3786, 3787, 3787, 3788, 3788, 3789, 3789, 3790, 3790, 3791, 3791, 3792, 3792, 3793, 3793, 3794, 3794, 3795, 3795, 3796, 3796, 3797, 3797, 3798, 3798, 3799, 3799, 3800, 3800, 3801, 3801, 3802, 3802, 3803, 3803, 3804, 3804, 3805, 3805, 3806, 3806
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: DATA
+	icon: DATA.R8
 		Start: 4021
 		Offset: -30,-24
 
 combath.husk:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2051
 		Facings: -32
 		ZOffset: -512
-	turret: DATA
+	turret: DATA.R8
 		Start: 2115
 		Facings: -32
 		ZOffset: -512
 
 combato:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2453
 		Facings: -32
-	turret: DATA
+	turret: DATA.R8
 		Start: 2485
 		Facings: -32
-	muzzle: DATA
+	muzzle: DATA.R8
 		Frames: 3775, 3775, 3776, 3776, 3777, 3777, 3778, 3778, 3779, 3779, 3780, 3780, 3781, 3781, 3782, 3782, 3783, 3783, 3784, 3784, 3785, 3785, 3786, 3786, 3787, 3787, 3788, 3788, 3789, 3789, 3790, 3790, 3791, 3791, 3792, 3792, 3793, 3793, 3794, 3794, 3795, 3795, 3796, 3796, 3797, 3797, 3798, 3798, 3799, 3799, 3800, 3800, 3801, 3801, 3802, 3802, 3803, 3803, 3804, 3804, 3805, 3805, 3806, 3806
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: DATA
+	icon: DATA.R8
 		Start: 4022
 		Offset: -30,-24
 
 combato.husk:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2453
 		Facings: -32
 		ZOffset: -512
-	turret: DATA
+	turret: DATA.R8
 		Start: 2485
 		Facings: -32
 		ZOffset: -512
 
 devast:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2083
 		Facings: -32
-	muzzle: DATA
+	muzzle: DATA.R8
 		Frames: 3807, 3807, 3808, 3808, 3809, 3809, 3810, 3810, 3810, 3811, 3811, 3812, 3812, 3813, 3813, 3814, 3814, 3815, 3816, 3816, 3817, 3817, 3818, 3819, 3819, 3820, 3820, 3821, 3821, 3822, 3822, 3823, 3823, 3824, 3824, 3825, 3825, 3826, 3826, 3827, 3827, 3828, 3828, 3829, 3829, 3830, 3830, 3831, 3831, 3832, 3832, 3832, 3833, 3833, 3834, 3834, 3835, 3835, 3836, 3836, 3837, 3837, 3838, 3838
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: DATA
+	icon: DATA.R8
 		Start: 4028
 		Offset: -30,-24
 
 devast.husk:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2083
 		Facings: -32
 		ZOffset: -512
 
 raider:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2421
 		Facings: -32
-	unload: DATA
+	unload: DATA.R8
 		Start: 2421
 		Facings: -32
-	muzzle: DATA
+	muzzle: DATA.R8
 		Frames: 3743, 3743, 3744, 3744, 3745, 3745, 3746, 3746, 3747, 3747, 3748, 3748, 3749, 3749, 3750, 3750, 3751, 3751, 3752, 3752, 3753, 3753, 3754, 3754, 3755, 3755, 3756, 3756, 3757, 3757, 3758, 3758, 3759, 3759, 3760, 3760, 3761, 3761, 3762, 3762, 3763, 3763, 3764, 3764, 3765, 3765, 3766, 3766, 3767, 3767, 3768, 3768, 3769, 3769, 3770, 3770, 3771, 3771, 3772, 3772, 3773, 3773, 3774, 3774
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: DATA
+	icon: DATA.R8
 		Start: 4017
 		Offset: -30,-24
 
 stealthraider:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2421
 		Facings: -32
-	unload: DATA
+	unload: DATA.R8
 		Start: 2421
 		Facings: -32
-	muzzle: DATA
+	muzzle: DATA.R8
 		Frames: 3743, 3743, 3744, 3744, 3745, 3745, 3746, 3746, 3747, 3747, 3748, 3748, 3749, 3749, 3750, 3750, 3751, 3751, 3752, 3752, 3753, 3753, 3754, 3754, 3755, 3755, 3756, 3756, 3757, 3757, 3758, 3758, 3759, 3759, 3760, 3760, 3761, 3761, 3762, 3762, 3763, 3763, 3764, 3764, 3765, 3765, 3766, 3766, 3767, 3767, 3768, 3768, 3769, 3769, 3770, 3770, 3771, 3771, 3772, 3772, 3773, 3773, 3774, 3774
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: raidersicon
+	icon: raidersicon.shp
 		Start: 0 # 4282 in 1.06 DATA.R8
 
 deviatortank:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2389
 		Facings: -32
-	icon: DATA
+	icon: DATA.R8
 		Start: 4025
 		Offset: -30,-24
 
 deviatortank.husk:
-	idle: DATA
+	idle: DATA.R8
 		Start: 2389
 		Facings: -32
 		ZOffset: -512
