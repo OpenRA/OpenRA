@@ -1,76 +1,71 @@
 General:
 	Name: Temperate
 	Id: TEMPERAT
-	Extensions: .tem, .shp
 	Palette: temperat.pal
+	Extensions: .tem, .shp
 	WaterPaletteRotationBase: 32
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Beach, River, Bridge
 
 Terrain:
-	TerrainType@Clear:
-		Type: Clear
-		AcceptsSmudgeType: Crater, Scorch
-		Color: 40, 68, 40
-		TargetTypes: Ground
-	TerrainType@Water:
-		Type: Water
-		IsWater: true
-		AcceptsSmudgeType:
-		Color: 92, 116, 164
-		TargetTypes: Water
-	TerrainType@Road:
-		Type: Road
-		AcceptsSmudgeType: Crater, Scorch
-		Color: 88, 116, 116
-		TargetTypes: Ground
-	TerrainType@Rock:
-		Type: Rock
-		AcceptsSmudgeType:
-		Color: 68, 68, 60
-		TargetTypes: Ground
-	TerrainType@Tree:
-		Type: Tree
-		AcceptsSmudgeType:
-		Color: 28, 32, 36
-		TargetTypes: Ground
-	TerrainType@River:
-		Type: River
-		AcceptsSmudgeType:
-		Color: 92, 140, 180
-		TargetTypes: Ground
-	TerrainType@Rough:
-		Type: Rough
-		AcceptsSmudgeType: Crater, Scorch
-		Color: 68, 68, 60
-		TargetTypes: Ground
-	TerrainType@Wall:
-		Type: Wall
-		AcceptsSmudgeType: Crater, Scorch
-		Color: 208, 192, 160
-		TargetTypes: Ground
 	TerrainType@Beach:
 		Type: Beach
-		AcceptsSmudgeType:
-		Color: 176, 156, 120
 		TargetTypes: Ground
-	TerrainType@Tiberium:
-		Type: Tiberium
-		AcceptsSmudgeType: Crater, Scorch
-		Color: 161, 226, 28
-		TargetTypes: Ground
+		Color: 255,176,156,120
 	TerrainType@BlueTiberium:
 		Type: BlueTiberium
-		AcceptsSmudgeType: Crater, Scorch
-		Color: 84, 252, 252
 		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 255,84,252,252
+	TerrainType@Clear:
+		Type: Clear
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 255,40,68,40
+	TerrainType@River:
+		Type: River
+		TargetTypes: Ground
+		Color: 255,92,140,180
+	TerrainType@Road:
+		Type: Road
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 255,88,116,116
+	TerrainType@Rock:
+		Type: Rock
+		TargetTypes: Ground
+		Color: 255,68,68,60
+	TerrainType@Rough:
+		Type: Rough
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 255,68,68,60
+	TerrainType@Tiberium:
+		Type: Tiberium
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 255,161,226,28
+	TerrainType@Tree:
+		Type: Tree
+		TargetTypes: Ground
+		Color: 255,28,32,36
+	TerrainType@Wall:
+		Type: Wall
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 255,208,192,160
+	TerrainType@Water:
+		Type: Water
+		TargetTypes: Water
+		IsWater: True
+		Color: 255,92,116,164
 
 Templates:
 	Template@255:
 		Id: 255
-		Image: clear1
+		Image: clear1.tem
 		Size: 1,1
-		Category: Terrain
 		PickAny: True
+		Category: Terrain
 		Tiles:
 			0: Clear
 			1: Clear
@@ -90,10 +85,10 @@ Templates:
 			15: Clear
 	Template@65535:
 		Id: 65535
-		Image: clear1
+		Image: clear1.tem
 		Size: 1,1
-		Category: Terrain
 		PickAny: True
+		Category: Terrain
 		Tiles:
 			0: Clear
 			1: Clear
@@ -112,11 +107,10 @@ Templates:
 			14: Clear
 			15: Clear
 	Template@0:
-		Id: 0
-		Image: clear1
+		Image: clear1.tem
 		Size: 1,1
-		Category: Terrain
 		PickAny: True
+		Category: Terrain
 		Tiles:
 			0: Clear
 			1: Clear
@@ -136,14 +130,14 @@ Templates:
 			15: Clear
 	Template@1:
 		Id: 1
-		Image: w1
+		Image: w1.tem
 		Size: 1,1
 		Category: Terrain
 		Tiles:
 			0: Water
 	Template@2:
 		Id: 2
-		Image: w2
+		Image: w2.tem
 		Size: 2,2
 		Category: Terrain
 		Tiles:
@@ -153,20 +147,28 @@ Templates:
 			3: Water
 	Template@3:
 		Id: 3
-		Image: sh1
+		Image: sh1.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
 			3: River
+			4: Clear
+			5: Clear
 			6: Water
 			7: Water
 			8: Water
 	Template@4:
 		Id: 4
-		Image: sh2
+		Image: sh2.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
 			3: River
 			4: River
 			5: River
@@ -175,14 +177,14 @@ Templates:
 			8: Water
 	Template@5:
 		Id: 5
-		Image: sh3
+		Image: sh3.tem
 		Size: 1,1
 		Category: Beach
 		Tiles:
 			0: River
 	Template@6:
 		Id: 6
-		Image: sh4
+		Image: sh4.tem
 		Size: 2,1
 		Category: Beach
 		Tiles:
@@ -190,23 +192,29 @@ Templates:
 			1: River
 	Template@7:
 		Id: 7
-		Image: sh5
+		Image: sh5.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
 			3: River
 			4: River
+			5: Clear
 			6: Water
 			7: Water
 			8: Water
 	Template@8:
 		Id: 8
-		Image: sh11
+		Image: sh11.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
+			0: Clear
 			1: River
 			2: Rock
+			3: Clear
 			4: River
 			5: River
 			6: Water
@@ -214,7 +222,7 @@ Templates:
 			8: Water
 	Template@9:
 		Id: 9
-		Image: sh12
+		Image: sh12.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -222,11 +230,14 @@ Templates:
 			1: Water
 			2: Water
 			3: Rock
+			4: Clear
+			5: Clear
 			6: Tree
 			7: Tree
+			8: Clear
 	Template@10:
 		Id: 10
-		Image: sh13
+		Image: sh13.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -234,12 +245,14 @@ Templates:
 			1: Water
 			2: Water
 			3: Water
+			4: Clear
 			5: Rock
+			6: Clear
 			7: Rock
 			8: Road
 	Template@11:
 		Id: 11
-		Image: sh14
+		Image: sh14.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -249,10 +262,12 @@ Templates:
 			3: River
 			4: River
 			5: River
+			6: Clear
+			7: Clear
 			8: Tree
 	Template@12:
 		Id: 12
-		Image: sh15
+		Image: sh15.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -261,30 +276,34 @@ Templates:
 			3: River
 			4: Rock
 			5: Rock
+			6: Clear
 			7: Tree
+			8: Clear
 	Template@13:
 		Id: 13
-		Image: s01
+		Image: s01.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
 			0: Rock
 			1: Rock
+			2: Clear
 			3: Rock
 	Template@14:
 		Id: 14
-		Image: s02
+		Image: s02.tem
 		Size: 2,3
 		Category: Cliffs
 		Tiles:
 			0: Rock
+			1: Clear
 			2: Rock
 			3: Rock
 			4: Rock
 			5: Rock
 	Template@15:
 		Id: 15
-		Image: s03
+		Image: s03.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -294,7 +313,7 @@ Templates:
 			3: Rock
 	Template@16:
 		Id: 16
-		Image: s04
+		Image: s04.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -304,7 +323,7 @@ Templates:
 			3: Rock
 	Template@17:
 		Id: 17
-		Image: s05
+		Image: s05.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -314,17 +333,18 @@ Templates:
 			3: Rock
 	Template@18:
 		Id: 18
-		Image: s06
+		Image: s06.tem
 		Size: 2,3
 		Category: Cliffs
 		Tiles:
+			0: Clear
 			1: Rock
 			2: Rock
 			3: Rock
 			4: Rock
 	Template@19:
 		Id: 19
-		Image: s07
+		Image: s07.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -334,27 +354,29 @@ Templates:
 			3: Rock
 	Template@20:
 		Id: 20
-		Image: s08
+		Image: s08.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
 			0: Rock
+			1: Clear
 			2: Rock
 			3: Rock
 	Template@21:
 		Id: 21
-		Image: s09
+		Image: s09.tem
 		Size: 3,2
 		Category: Cliffs
 		Tiles:
 			0: Rock
 			1: Rock
 			2: Rock
+			3: Clear
 			4: Rock
 			5: Rock
 	Template@22:
 		Id: 22
-		Image: s10
+		Image: s10.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -364,7 +386,7 @@ Templates:
 			3: Rock
 	Template@23:
 		Id: 23
-		Image: s11
+		Image: s11.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -374,7 +396,7 @@ Templates:
 			3: Rock
 	Template@24:
 		Id: 24
-		Image: s12
+		Image: s12.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -384,74 +406,89 @@ Templates:
 			3: Rock
 	Template@25:
 		Id: 25
-		Image: s13
+		Image: s13.tem
 		Size: 3,2
 		Category: Cliffs
 		Tiles:
+			0: Clear
 			1: Rock
+			2: Clear
 			3: Rock
 			4: Rock
+			5: Clear
 	Template@26:
 		Id: 26
-		Image: s14
+		Image: s14.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
 			0: Rock
+			1: Clear
+			2: Clear
 	Template@27:
 		Id: 27
-		Image: s15
+		Image: s15.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
 			0: Rock
+			1: Clear
 			2: Rock
 			3: Rock
 	Template@28:
 		Id: 28
-		Image: s16
+		Image: s16.tem
 		Size: 2,3
 		Category: Cliffs
 		Tiles:
+			0: Clear
 			2: Rock
 			3: Rock
 			5: Rock
 	Template@29:
 		Id: 29
-		Image: s17
+		Image: s17.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
+			0: Clear
+			1: Clear
 			2: Rock
 			3: Rock
 	Template@30:
 		Id: 30
-		Image: s18
+		Image: s18.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
+			0: Clear
+			1: Clear
 			2: Rock
 			3: Rock
 	Template@31:
 		Id: 31
-		Image: s19
+		Image: s19.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
+			0: Clear
+			1: Clear
 			2: Rock
 			3: Rock
 	Template@32:
 		Id: 32
-		Image: s20
+		Image: s20.tem
 		Size: 2,3
 		Category: Cliffs
 		Tiles:
+			1: Clear
 			2: Rock
 			3: Rock
 			4: Rock
+			5: Clear
 	Template@33:
 		Id: 33
-		Image: s21
+		Image: s21.tem
 		Size: 1,2
 		Category: Cliffs
 		Tiles:
@@ -459,7 +496,7 @@ Templates:
 			1: Rock
 	Template@34:
 		Id: 34
-		Image: s22
+		Image: s22.tem
 		Size: 2,1
 		Category: Cliffs
 		Tiles:
@@ -467,17 +504,19 @@ Templates:
 			1: Rock
 	Template@35:
 		Id: 35
-		Image: s23
+		Image: s23.tem
 		Size: 3,2
 		Category: Cliffs
 		Tiles:
+			0: Clear
 			1: Rock
 			2: Rock
 			3: Rock
 			4: Rock
+			5: Clear
 	Template@36:
 		Id: 36
-		Image: s24
+		Image: s24.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -487,7 +526,7 @@ Templates:
 			3: Rock
 	Template@37:
 		Id: 37
-		Image: s25
+		Image: s25.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -497,7 +536,7 @@ Templates:
 			3: Rock
 	Template@38:
 		Id: 38
-		Image: s26
+		Image: s26.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -507,17 +546,19 @@ Templates:
 			3: Rock
 	Template@39:
 		Id: 39
-		Image: s27
+		Image: s27.tem
 		Size: 3,2
 		Category: Cliffs
 		Tiles:
 			0: Rock
 			1: Rock
+			2: Clear
+			3: Clear
 			4: Rock
 			5: Rock
 	Template@40:
 		Id: 40
-		Image: s28
+		Image: s28.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -526,7 +567,7 @@ Templates:
 			3: Rock
 	Template@41:
 		Id: 41
-		Image: s29
+		Image: s29.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -536,24 +577,27 @@ Templates:
 			3: Rock
 	Template@42:
 		Id: 42
-		Image: s30
+		Image: s30.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
 			0: Rock
+			1: Clear
 			2: Rock
 			3: Rock
 	Template@43:
 		Id: 43
-		Image: s31
+		Image: s31.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
+			0: Clear
+			1: Clear
 			2: Rock
 			3: Rock
 	Template@44:
 		Id: 44
-		Image: s32
+		Image: s32.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -562,7 +606,7 @@ Templates:
 			2: Rock
 	Template@45:
 		Id: 45
-		Image: s33
+		Image: s33.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -572,7 +616,7 @@ Templates:
 			3: Rock
 	Template@46:
 		Id: 46
-		Image: s34
+		Image: s34.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -582,7 +626,7 @@ Templates:
 			3: Rock
 	Template@47:
 		Id: 47
-		Image: s35
+		Image: s35.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -592,7 +636,7 @@ Templates:
 			3: Rock
 	Template@48:
 		Id: 48
-		Image: s36
+		Image: s36.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -602,7 +646,7 @@ Templates:
 			3: Rock
 	Template@49:
 		Id: 49
-		Image: s37
+		Image: s37.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -612,7 +656,7 @@ Templates:
 			3: Rock
 	Template@50:
 		Id: 50
-		Image: s38
+		Image: s38.tem
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -622,62 +666,91 @@ Templates:
 			3: Rock
 	Template@51:
 		Id: 51
-		Image: sh32
+		Image: sh32.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
 			0: Water
+			1: Clear
+			2: Clear
 			3: River
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
 	Template@52:
 		Id: 52
-		Image: sh33
+		Image: sh33.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
+			0: Clear
+			1: Clear
 			2: River
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
 	Template@67:
 		Id: 67
-		Image: p01
+		Image: p01.tem
 		Size: 1,1
 		Category: Debris
 		Tiles:
 			0: Wall
 	Template@68:
 		Id: 68
-		Image: p02
+		Image: p02.tem
 		Size: 1,1
 		Category: Debris
 		Tiles:
 			0: Wall
 	Template@69:
 		Id: 69
-		Image: p03
+		Image: p03.tem
 		Size: 1,1
 		Category: Debris
 		Tiles:
 			0: Wall
 	Template@70:
 		Id: 70
-		Image: p04
+		Image: p04.tem
 		Size: 1,1
 		Category: Debris
 		Tiles:
 			0: Wall
 	Template@73:
 		Id: 73
-		Image: p07
+		Image: p07.tem
 		Size: 4,2
 		Category: Debris
 		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
 	Template@74:
 		Id: 74
-		Image: p08
+		Image: p08.tem
 		Size: 3,2
 		Category: Debris
 		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
 	Template@75:
 		Id: 75
-		Image: sh16
+		Image: sh16.tem
 		Size: 3,2
 		Category: Beach
 		Tiles:
@@ -689,7 +762,7 @@ Templates:
 			5: River
 	Template@76:
 		Id: 76
-		Image: sh17
+		Image: sh17.tem
 		Size: 2,2
 		Category: Beach
 		Tiles:
@@ -699,7 +772,7 @@ Templates:
 			3: Water
 	Template@77:
 		Id: 77
-		Image: sh18
+		Image: sh18.tem
 		Size: 2,2
 		Category: Beach
 		Tiles:
@@ -709,7 +782,7 @@ Templates:
 			3: Water
 	Template@79:
 		Id: 79
-		Image: p13
+		Image: p13.tem
 		Size: 3,2
 		Category: Debris
 		Tiles:
@@ -717,10 +790,11 @@ Templates:
 			1: Wall
 			2: Wall
 			3: Wall
+			4: Clear
 			5: Wall
 	Template@80:
 		Id: 80
-		Image: p14
+		Image: p14.tem
 		Size: 2,1
 		Category: Debris
 		Tiles:
@@ -728,14 +802,14 @@ Templates:
 			1: Wall
 	Template@82:
 		Id: 82
-		Image: b1
+		Image: b1.tem
 		Size: 1,1
 		Category: Debris
 		Tiles:
 			0: Rock
 	Template@83:
 		Id: 83
-		Image: b2
+		Image: b2.tem
 		Size: 2,1
 		Category: Debris
 		Tiles:
@@ -743,98 +817,131 @@ Templates:
 			1: Rock
 	Template@84:
 		Id: 84
-		Image: b3
+		Image: b3.tem
 		Size: 3,1
 		Category: Debris
 		Tiles:
 			0: Rock
 			1: Rock
+			2: Clear
 	Template@88:
 		Id: 88
-		Image: sh6
+		Image: sh6.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
 			6: Water
 			7: Water
 			8: Water
 	Template@89:
 		Id: 89
-		Image: sh7
+		Image: sh7.tem
 		Size: 2,2
 		Category: Beach
 		Tiles:
+			0: Clear
 			1: River
 			2: River
 			3: Water
 	Template@90:
 		Id: 90
-		Image: sh8
+		Image: sh8.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
 			5: River
+			6: Clear
+			7: Clear
 			8: Water
 	Template@91:
 		Id: 91
-		Image: sh9
+		Image: sh9.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
 			3: River
+			4: Clear
+			5: Clear
 			6: Water
 			7: River
+			8: Clear
 	Template@92:
 		Id: 92
-		Image: sh10
+		Image: sh10.tem
 		Size: 2,2
 		Category: Beach
 		Tiles:
 			0: River
+			1: Clear
 			2: Water
 			3: River
 	Template@93:
 		Id: 93
-		Image: d01
+		Image: d01.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
 			1: Road
+			2: Clear
+			3: Clear
 	Template@94:
 		Id: 94
-		Image: d02
+		Image: d02.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			0: Clear
 			1: Road
+			2: Clear
+			3: Clear
 	Template@95:
 		Id: 95
-		Image: d03
+		Image: d03.tem
 		Size: 1,2
 		Category: Road
 		Tiles:
+			0: Clear
+			1: Clear
 	Template@96:
 		Id: 96
-		Image: d04
+		Image: d04.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			1: Clear
 			2: Road
+			3: Clear
 	Template@97:
 		Id: 97
-		Image: d05
+		Image: d05.tem
 		Size: 3,4
 		Category: Road
 		Tiles:
 			1: Road
+			2: Clear
 			3: Road
 			4: Road
 			6: Road
 			7: Road
+			9: Clear
 			10: Road
 	Template@98:
 		Id: 98
-		Image: d06
+		Image: d06.tem
 		Size: 2,3
 		Category: Road
 		Tiles:
@@ -842,38 +949,51 @@ Templates:
 			2: Road
 			3: Road
 			4: Road
+			5: Clear
 	Template@99:
 		Id: 99
-		Image: d07
+		Image: d07.tem
 		Size: 3,2
 		Category: Road
 		Tiles:
+			0: Clear
 			1: Road
+			2: Clear
 			4: Road
+			5: Clear
 	Template@100:
 		Id: 100
-		Image: d08
+		Image: d08.tem
 		Size: 3,2
 		Category: Road
 		Tiles:
 			1: Road
+			3: Clear
 			4: Road
+			5: Clear
 	Template@101:
 		Id: 101
-		Image: d09
+		Image: d09.tem
 		Size: 4,3
 		Category: Road
 		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
 			4: Road
 			5: Road
 			6: Road
 			7: Road
+			10: Clear
+			11: Clear
 	Template@102:
 		Id: 102
-		Image: d10
+		Image: d10.tem
 		Size: 4,2
 		Category: Road
 		Tiles:
+			0: Clear
 			1: Rock
 			4: Road
 			5: Road
@@ -881,39 +1001,47 @@ Templates:
 			7: Road
 	Template@103:
 		Id: 103
-		Image: d11
+		Image: d11.tem
 		Size: 2,3
 		Category: Road
 		Tiles:
+			1: Clear
 			2: Road
 			3: Road
+			4: Clear
 	Template@104:
 		Id: 104
-		Image: d12
+		Image: d12.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			0: Clear
 			2: Road
 			3: Road
 	Template@105:
 		Id: 105
-		Image: d13
+		Image: d13.tem
 		Size: 4,3
 		Category: Road
 		Tiles:
 			0: Road
 			1: Road
+			2: Clear
+			4: Clear
 			5: Road
 			6: Road
+			7: Clear
 			10: Wall
 			11: Road
 	Template@106:
 		Id: 106
-		Image: d14
+		Image: d14.tem
 		Size: 3,3
 		Category: Road
 		Tiles:
+			1: Clear
 			2: Road
+			3: Clear
 			4: Wall
 			5: Road
 			6: Road
@@ -921,7 +1049,7 @@ Templates:
 			8: Road
 	Template@107:
 		Id: 107
-		Image: d15
+		Image: d15.tem
 		Size: 3,3
 		Category: Road
 		Tiles:
@@ -930,246 +1058,317 @@ Templates:
 			2: Road
 			3: Road
 			4: Road
+			5: Clear
 			6: Road
+			7: Clear
 	Template@108:
 		Id: 108
-		Image: d16
+		Image: d16.tem
 		Size: 3,3
 		Category: Road
 		Tiles:
+			0: Clear
 			1: Road
+			2: Clear
+			3: Clear
 			4: Road
 			5: Road
 			6: Road
+			7: Clear
 			8: Wall
 	Template@109:
 		Id: 109
-		Image: d17
+		Image: d17.tem
 		Size: 3,2
 		Category: Road
 		Tiles:
 			0: Road
 			1: Road
 			2: Road
+			3: Clear
 			4: Road
+			5: Clear
 	Template@110:
 		Id: 110
-		Image: d18
+		Image: d18.tem
 		Size: 3,3
 		Category: Road
 		Tiles:
+			0: Clear
 			1: Road
+			2: Clear
 			3: Road
 			4: Road
+			5: Clear
+			6: Clear
 			7: Road
 			8: Wall
 	Template@111:
 		Id: 111
-		Image: d19
+		Image: d19.tem
 		Size: 3,3
 		Category: Road
 		Tiles:
+			0: Clear
 			1: Road
+			2: Clear
 			3: Road
 			4: Road
 			5: Road
+			6: Clear
 			7: Road
+			8: Clear
 	Template@112:
 		Id: 112
-		Image: d20
+		Image: d20.tem
 		Size: 3,3
 		Category: Road
 		Tiles:
 			0: Road
+			1: Clear
 			3: Road
 			4: Road
+			5: Clear
+			6: Clear
 			7: Road
 			8: Road
 	Template@113:
 		Id: 113
-		Image: d21
+		Image: d21.tem
 		Size: 3,2
 		Category: Road
 		Tiles:
 			0: Rock
 			1: Road
 			2: Road
+			3: Clear
 			4: Road
+			5: Clear
 	Template@114:
 		Id: 114
-		Image: d22
+		Image: d22.tem
 		Size: 3,3
 		Category: Road
 		Tiles:
+			1: Clear
 			3: Road
 			4: Road
+			5: Clear
+			6: Clear
 			7: Road
+			8: Clear
 	Template@115:
 		Id: 115
-		Image: d23
+		Image: d23.tem
 		Size: 3,3
 		Category: Road
 		Tiles:
 			1: Road
+			2: Clear
+			3: Clear
 			4: Road
+			5: Clear
 			6: Road
+			7: Clear
 	Template@116:
 		Id: 116
-		Image: d24
+		Image: d24.tem
 		Size: 3,3
 		Category: Road
 		Tiles:
 			0: Road
+			1: Clear
+			3: Clear
 			4: Road
+			5: Clear
+			7: Clear
 			8: Road
 	Template@117:
 		Id: 117
-		Image: d25
+		Image: d25.tem
 		Size: 3,3
 		Category: Road
 		Tiles:
 			0: Road
+			1: Clear
+			3: Clear
 			4: Road
+			5: Clear
+			7: Clear
 			8: Road
 	Template@118:
 		Id: 118
-		Image: d26
+		Image: d26.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			1: Clear
+			2: Clear
 	Template@119:
 		Id: 119
-		Image: d27
+		Image: d27.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			1: Clear
+			2: Clear
 	Template@120:
 		Id: 120
-		Image: d28
+		Image: d28.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
 			0: Road
+			1: Clear
+			2: Clear
 	Template@121:
 		Id: 121
-		Image: d29
+		Image: d29.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
 			0: Road
+			1: Clear
+			2: Clear
 	Template@122:
 		Id: 122
-		Image: d30
+		Image: d30.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
 			0: Road
+			1: Clear
 			2: Road
 	Template@123:
 		Id: 123
-		Image: d31
+		Image: d31.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			1: Clear
+			2: Clear
 			3: Road
 	Template@124:
 		Id: 124
-		Image: d32
+		Image: d32.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			1: Clear
 			2: Road
+			3: Clear
 	Template@125:
 		Id: 125
-		Image: d33
+		Image: d33.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			1: Clear
 			2: Road
 			3: Road
 	Template@126:
 		Id: 126
-		Image: d34
+		Image: d34.tem
 		Size: 3,3
 		Category: Road
 		Tiles:
+			1: Clear
 			2: Road
+			3: Clear
 			4: Road
 			5: Road
 			6: Road
 			7: Road
 	Template@127:
 		Id: 127
-		Image: d35
+		Image: d35.tem
 		Size: 3,3
 		Category: Road
 		Tiles:
+			1: Clear
 			2: Road
+			3: Clear
 			4: Road
+			5: Clear
 			6: Road
+			7: Clear
 	Template@128:
 		Id: 128
-		Image: d36
+		Image: d36.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			0: Clear
+			3: Clear
 	Template@129:
 		Id: 129
-		Image: d37
+		Image: d37.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			0: Clear
+			3: Clear
 	Template@130:
 		Id: 130
-		Image: d38
+		Image: d38.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			0: Clear
 			1: Road
+			3: Clear
 	Template@131:
 		Id: 131
-		Image: d39
+		Image: d39.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			0: Clear
 			1: Road
+			3: Clear
 	Template@132:
 		Id: 132
-		Image: d40
+		Image: d40.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
 			0: Road
 			1: Road
+			3: Clear
 	Template@133:
 		Id: 133
-		Image: d41
+		Image: d41.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
 			0: Wall
 			2: Road
+			3: Clear
 	Template@134:
 		Id: 134
-		Image: d42
+		Image: d42.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			0: Clear
 			2: Road
+			3: Clear
 	Template@135:
 		Id: 135
-		Image: d43
+		Image: d43.tem
 		Size: 2,2
 		Category: Road
 		Tiles:
+			0: Clear
 			2: Road
 			3: Road
 	Template@136:
 		Id: 136
-		Image: rv01
+		Image: rv01.tem
 		Size: 5,4
 		Category: River
 		Tiles:
+			0: Clear
 			1: Rock
 			5: Rock
 			6: River
@@ -1182,9 +1381,10 @@ Templates:
 			13: Rock
 			14: River
 			16: Wall
+			17: Clear
 	Template@137:
 		Id: 137
-		Image: rv02
+		Image: rv02.tem
 		Size: 5,3
 		Category: River
 		Tiles:
@@ -1200,26 +1400,35 @@ Templates:
 			9: River
 			10: River
 			11: Rock
+			12: Clear
 	Template@138:
 		Id: 138
-		Image: rv03
+		Image: rv03.tem
 		Size: 4,4
 		Category: River
 		Tiles:
+			0: Clear
+			1: Clear
 			4: River
 			5: River
 			6: River
+			7: Clear
+			8: Clear
 			9: River
 			10: River
 			11: River
+			13: Clear
+			14: Clear
 			15: River
 	Template@139:
 		Id: 139
-		Image: rv04
+		Image: rv04.tem
 		Size: 4,4
 		Category: River
 		Tiles:
 			2: Wall
+			3: Clear
+			5: Clear
 			6: River
 			7: River
 			8: River
@@ -1231,12 +1440,14 @@ Templates:
 			14: Rock
 	Template@140:
 		Id: 140
-		Image: rv05
+		Image: rv05.tem
 		Size: 3,3
 		Category: River
 		Tiles:
+			0: Clear
 			1: River
 			2: River
+			3: Clear
 			4: River
 			5: River
 			6: Rock
@@ -1244,7 +1455,7 @@ Templates:
 			8: River
 	Template@141:
 		Id: 141
-		Image: rv06
+		Image: rv06.tem
 		Size: 3,2
 		Category: River
 		Tiles:
@@ -1253,9 +1464,10 @@ Templates:
 			2: Rock
 			3: Rock
 			4: River
+			5: Clear
 	Template@142:
 		Id: 142
-		Image: rv07
+		Image: rv07.tem
 		Size: 3,2
 		Category: River
 		Tiles:
@@ -1267,7 +1479,7 @@ Templates:
 			5: River
 	Template@143:
 		Id: 143
-		Image: rv08
+		Image: rv08.tem
 		Size: 2,2
 		Category: River
 		Tiles:
@@ -1277,36 +1489,41 @@ Templates:
 			3: River
 	Template@144:
 		Id: 144
-		Image: rv09
+		Image: rv09.tem
 		Size: 2,2
 		Category: River
 		Tiles:
+			0: Clear
+			1: Clear
 			2: River
 			3: River
 	Template@145:
 		Id: 145
-		Image: rv10
+		Image: rv10.tem
 		Size: 2,2
 		Category: River
 		Tiles:
 			0: River
 			1: River
+			2: Clear
 			3: River
 	Template@146:
 		Id: 146
-		Image: rv11
+		Image: rv11.tem
 		Size: 2,2
 		Category: River
 		Tiles:
 			0: River
 			1: River
 			2: River
+			3: Clear
 	Template@147:
 		Id: 147
-		Image: rv12
+		Image: rv12.tem
 		Size: 3,4
 		Category: River
 		Tiles:
+			0: Clear
 			1: River
 			2: River
 			3: Rock
@@ -1315,14 +1532,17 @@ Templates:
 			6: River
 			7: River
 			8: Rock
+			9: Clear
 			10: River
 			11: River
 	Template@148:
 		Id: 148
-		Image: rv13
+		Image: rv13.tem
 		Size: 4,4
 		Category: River
 		Tiles:
+			2: Clear
+			3: Clear
 			4: River
 			5: River
 			6: River
@@ -1331,49 +1551,58 @@ Templates:
 			9: Rock
 			10: River
 			11: Rock
+			12: Clear
 			13: Rock
 			14: River
 			15: Rock
 	Template@161:
 		Id: 161
-		Image: ford1
+		Image: ford1.tem
 		Size: 3,3
 		Category: River
 		Tiles:
+			0: Clear
 			1: River
+			2: Clear
 			3: Road
 			4: Road
 			5: Road
+			6: Clear
 			7: River
 			8: River
 	Template@162:
 		Id: 162
-		Image: ford2
+		Image: ford2.tem
 		Size: 3,3
 		Category: River
 		Tiles:
+			0: Clear
 			1: Road
 			2: River
 			3: River
 			4: Road
 			5: River
+			6: Clear
 			7: Road
+			8: Clear
 	Template@163:
 		Id: 163
-		Image: falls1
+		Image: falls1.tem
 		Size: 3,3
 		Category: River
 		Tiles:
+			0: Clear
 			1: Rock
 			2: River
 			3: River
 			4: River
 			5: River
+			6: Clear
 			7: Rock
 			8: Rock
 	Template@164:
 		Id: 164
-		Image: falls2
+		Image: falls2.tem
 		Size: 3,2
 		Category: River
 		Tiles:
@@ -1385,10 +1614,11 @@ Templates:
 			5: River
 	Template@165:
 		Id: 165
-		Image: bridge1
+		Image: bridge1.tem
 		Size: 4,4
 		Category: Bridge
 		Tiles:
+			2: Clear
 			3: Road
 			4: River
 			5: Wall
@@ -1399,13 +1629,16 @@ Templates:
 			10: Wall
 			11: River
 			12: Road
+			13: Clear
+			14: Clear
 			15: River
 	Template@166:
 		Id: 166
-		Image: bridge1d
+		Image: bridge1d.tem
 		Size: 4,4
 		Category: Bridge
 		Tiles:
+			2: Clear
 			3: Road
 			4: River
 			5: Wall
@@ -1416,14 +1649,19 @@ Templates:
 			10: River
 			11: River
 			12: Road
+			13: Clear
+			14: Clear
 			15: River
 	Template@167:
 		Id: 167
-		Image: bridge2
+		Image: bridge2.tem
 		Size: 5,5
 		Category: Bridge
 		Tiles:
 			0: Road
+			1: Clear
+			2: Clear
+			4: Clear
 			5: Wall
 			6: Road
 			7: Wall
@@ -1433,16 +1671,24 @@ Templates:
 			11: Wall
 			12: Road
 			13: Wall
+			14: Clear
 			15: River
+			16: Clear
+			17: Clear
 			18: Road
+			19: Clear
+			23: Clear
 			24: Road
 	Template@168:
 		Id: 168
-		Image: bridge2d
+		Image: bridge2d.tem
 		Size: 5,5
 		Category: Bridge
 		Tiles:
 			0: Road
+			1: Clear
+			2: Clear
+			4: Clear
 			5: Wall
 			6: Wall
 			7: River
@@ -1452,40 +1698,55 @@ Templates:
 			11: River
 			12: River
 			13: River
+			14: Clear
 			15: River
+			16: Clear
+			17: Clear
 			18: Road
+			19: Clear
+			23: Clear
 			24: Road
 	Template@186:
 		Id: 186
-		Image: sh34
+		Image: sh34.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
+			0: Clear
+			1: Clear
 			2: Water
+			3: Clear
+			4: Clear
 			5: Water
+			6: Clear
+			7: Clear
 			8: Water
 	Template@187:
 		Id: 187
-		Image: sh35
+		Image: sh35.tem
 		Size: 3,3
 		Category: Beach
 		Tiles:
 			0: Water
 			1: River
+			2: Clear
 			3: Water
 			4: River
+			5: Clear
 			6: Water
+			7: Clear
+			8: Clear
 	Template@188:
 		Id: 188
-		Image: a10cr
+		Image: a10cr.tem
 		Size: 4,2
 		Category: Debris
 		Tiles:
 			1: Tree
+			2: Tree
+			3: Tree
+			4: Tree
 			5: Tree
 			6: Tree
 			7: Tree
-			3: Tree
-			2: Tree
-			4: Tree
 
