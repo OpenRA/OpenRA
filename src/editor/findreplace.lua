@@ -275,13 +275,17 @@ local function onFileRegister(pos, length)
   local posline = pos and editor:LineFromPosition(pos) + 1
   local text = ""
   local context = findReplace.fContext and 2 or 0
+  local lines = reseditor:GetLineCount() -- current number of lines
 
   -- check if there is another match on the same line; do not add anything
   if oldline ~= posline then
     if posline and not oldline then
       -- show file name and a bookmark marker
       reseditor:AppendText(findReplace.curfilename.."\n")
-      reseditor:MarkerAdd(reseditor:GetLineCount()-2, FILE_MARKER)
+      reseditor:MarkerAdd(lines-1, FILE_MARKER)
+      reseditor:SetFoldLevel(lines-1, reseditor:GetFoldLevel(lines-1)
+        + wxstc.wxSTC_FOLDLEVELHEADERFLAG)
+      lines = lines + 1
 
       -- show context lines before posline
       for line = math.max(1, posline-context), posline-1 do
@@ -312,6 +316,10 @@ local function onFileRegister(pos, length)
     oldline = posline
 
     reseditor:AppendText(text)
+
+    for line = lines-1, reseditor:GetLineCount()-2 do
+      reseditor:SetFoldLevel(line, wxstc.wxSTC_FOLDLEVELBASE + 1)
+    end
   end
 
   if posline then
