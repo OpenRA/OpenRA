@@ -287,6 +287,8 @@ local function onFileRegister(pos, length)
       reseditor:MarkerAdd(lines-1, FILE_MARKER)
       reseditor:SetFoldLevel(lines-1, reseditor:GetFoldLevel(lines-1)
         + wxstc.wxSTC_FOLDLEVELHEADERFLAG)
+      reseditor:EnsureVisibleEnforcePolicy(lines)
+
       lines = lines + 1
 
       -- show context lines before posline
@@ -367,7 +369,7 @@ local function ProcInFiles(startdir,mask,subdirs)
           end
 
           -- give time to the UI to refresh
-          if TimeGet() - start > 0.25 then ide:Yield() end
+          if TimeGet() - start > 0.25 then wx.wxSafeYield() end
           -- the IDE may be quitting after Yield or the tab may be closed,
           local ok, mgr = pcall(function() return ide:GetUIManager() end)
           -- so check to make sure the manager is still active
@@ -465,12 +467,13 @@ function findReplace:RunInFiles(replace)
     reseditor:SetSavePoint() -- set unmodified status
 
     if completed and replace and self.occurrences > 0 then
-      reseditor:InsertText(0,
-        "Review the changes and save this preview to apply them.\n"
+      reseditor:AppendText("\n\n"
+        .."Review the changes and save this preview to apply them.\n"
         .."You can also make other changes; only lines with : will be updated.\n"
-        .."Context lines (if any) are used as safety checks during the update.\n\n")
+        .."Context lines (if any) are used as safety checks during the update.")
       findReplace:ReplaceString(true, reseditor)
     end
+    reseditor:EnsureVisibleEnforcePolicy(reseditor:GetLineCount()-1)
   end
 
   self:SetStatus(
