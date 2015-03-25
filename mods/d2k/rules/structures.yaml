@@ -194,10 +194,11 @@ refinery:
 		Capacity: 2000
 	CustomSellValue:
 		Value: 500
-	FreeActor:
+	FreeActorWithDelivery:
 		Actor: harvester
 		InitialActivity: FindResources
-		SpawnOffset: 2,1
+		DeliveryOffset: 2,2
+		DeliveringActor: carryall.reinforce
 		Facing: 160
 	-RenderBuilding:
 	RenderBuildingWarFactory:
@@ -668,7 +669,7 @@ hightech:
 	Tooltip:
 		Name: High Tech Facility
 		Description: Unlocks advanced technology
-	Production:
+	ProductionFromMapEdge:
 		Produces: Aircraft
 	Exit:
 		SpawnOffset: 0,0,728

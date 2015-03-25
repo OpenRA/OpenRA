@@ -804,6 +804,19 @@ namespace OpenRA
 			return new MPos(x, y).ToCPos(this);
 		}
 
+		public CPos ChooseClosestEdgeCell(CPos pos)
+		{
+			var mpos = pos.ToMPos(this);
+
+			var horizontalBound = ((mpos.U - Bounds.Left) < Bounds.Width / 2) ? Bounds.Left : Bounds.Right;
+			var verticalBound = ((mpos.V - Bounds.Top) < Bounds.Height / 2) ? Bounds.Top : Bounds.Bottom;
+
+			var distX = Math.Abs(horizontalBound - mpos.U);
+			var distY = Math.Abs(verticalBound - mpos.V);
+
+			return distX < distY ? new MPos(horizontalBound, mpos.V).ToCPos(this) : new MPos(mpos.U, verticalBound).ToCPos(this);
+		}
+
 		public CPos ChooseRandomEdgeCell(MersenneTwister rand)
 		{
 			var isX = rand.Next(2) == 0;

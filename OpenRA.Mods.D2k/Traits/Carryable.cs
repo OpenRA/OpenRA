@@ -7,16 +7,15 @@
  * see COPYING.
  */
 #endregion
-using System;
+
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.D2k.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	[Desc("Can be carried by units with the trait `AutoCarryall`.")]
+	[Desc("Can be carried by units with the trait `Carryall`.")]
 	public class CarryableInfo : ITraitInfo
 	{
 		[Desc("Required distance away from destination before requesting a pickup.")]
@@ -32,7 +31,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public bool Reserved { get; private set; }
 
-		// If we're locked there isnt much we can do. We'll have to wait for the carrier to finish with us. We should not move or get new orders!
+		// If we're locked there isn't much we can do. We'll have to wait for the carrier to finish with us. We should not move or get new orders!
 		bool locked;
 
 		public bool WantsTransport { get; private set; }
@@ -62,15 +61,14 @@ namespace OpenRA.Mods.D2k.Traits
 
 			Destination = destination;
 			this.afterLandActivity = afterLandActivity;
+			WantsTransport = true;
 
 			if (locked || Reserved)
 				return;
 
-			WantsTransport = true;
-
 			// Inform all idle carriers
-			var carriers = self.World.ActorsWithTrait<AutoCarryall>()
-				.Where(c => !c.Trait.Busy && !c.Actor.IsDead && c.Actor.Owner == self.Owner)
+			var carriers = self.World.ActorsWithTrait<Carryall>()
+				.Where(c => !c.Trait.IsBusy && !c.Actor.IsDead && c.Actor.Owner == self.Owner && c.Actor.IsInWorld)
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
 			foreach (var carrier in carriers)
@@ -90,7 +88,7 @@ namespace OpenRA.Mods.D2k.Traits
 			WantsTransport = false;
 			afterLandActivity = null;
 
-			// TODO: We could implement something like a carrier.Trait<AutoCarryAll>().CancelTransportNotify(self) and call it here
+			// TODO: We could implement something like a carrier.Trait<Carryall>().CancelTransportNotify(self) and call it here
 		}
 
 		// We do not handle Harvested notification
@@ -99,8 +97,8 @@ namespace OpenRA.Mods.D2k.Traits
 		public Actor GetClosestIdleCarrier()
 		{
 			// Find carriers
-			var carriers = self.World.ActorsWithTrait<AutoCarryall>()
-				.Where(p => p.Actor.Owner == self.Owner && !p.Trait.Busy)
+			var carriers = self.World.ActorsWithTrait<Carryall>()
+				.Where(p => p.Actor.Owner == self.Owner && !p.Trait.IsBusy && p.Actor.IsInWorld)
 				.Select(h => h.Actor);
 
 			return WorldUtils.ClosestTo(carriers, self);

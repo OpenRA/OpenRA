@@ -1,4 +1,4 @@
-carryall.scripted:
+carryall.reinforce:
 	Inherits: ^Helicopter
 	Valued:
 		Cost: 1200
@@ -10,7 +10,7 @@ carryall.scripted:
 	Armor:
 		Type: Light
 	Helicopter:
-		CruiseAltitude: 2048
+		CruiseAltitude: 2100
 		InitialFacing: 0
 		ROT: 4
 		Speed: 160
@@ -18,7 +18,7 @@ carryall.scripted:
 		RepairBuildings: repair
 		RearmBuildings:
 		Repulsable: False
-		LandAltitude: 512
+		LandAltitude: 100
 		LandWhenIdle: False
 	RenderUnit:
 		Image: carryall
@@ -26,16 +26,17 @@ carryall.scripted:
 	LeavesHusk:
 		HuskActor: carryall.husk
 	-Selectable:
+	-TargetableAircraft:
+	Carryall:
+		Automatic: False
 
 carryall:
-	Inherits: carryall.scripted
-	AutoCarryall:
+	Inherits: carryall.reinforce
+	Carryall:
+		Automatic: True
 	Buildable:
 		Queue: Aircraft
 		BuildPaletteOrder: 120
-	Helicopter:
-		CruiseAltitude: 2100
-		LandAltitude: 100
 
 carryall.infantry:
 	Inherits: ^Plane
@@ -61,6 +62,7 @@ carryall.infantry:
 		MaxWeight: 5
 		Types: Infantry
 	-Selectable:
+	-TargetableAircraft:
 	-GainsExperience:
 	Tooltip:
 		Name: Carryall

@@ -70,7 +70,23 @@ namespace OpenRA.Mods.D2k.Activities
 			sandworm.IsAttacking = true;
 
 			foreach (var actor in lunch)
-				actor.World.AddFrameEndTask(_ => actor.Destroy());
+			{
+				var actor1 = actor;	// loop variable in closure hazard
+
+				actor.World.AddFrameEndTask(_ =>
+					{
+						actor1.Destroy();
+
+						// Harvester insurance
+						if (!actor1.HasTrait<Harvester>())
+							return;
+
+						var insurance = actor1.Owner.PlayerActor.TraitOrDefault<HarvesterInsurance>();
+
+						if (insurance != null)
+							actor1.World.AddFrameEndTask(__ => insurance.TryActivate());
+					});
+			}
 
 			positionable.SetPosition(worm, targetLocation);
 			foreach (var notify in worm.TraitsImplementing<INotifyAttack>())
