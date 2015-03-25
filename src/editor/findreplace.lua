@@ -24,7 +24,6 @@ ide.findReplace = {
   fDown = true, -- search downwards in doc
   fContext = true, -- include context in search results
   fSubDirs = true, -- search in subdirectories
-  fMakeBak = true, -- make bak files for replace in files
 
   findTextArray = {}, -- array of last entered find text
   findText = "", -- string to find
@@ -493,7 +492,7 @@ local icons = {
     infiles = {
       ID_FINDNEXT, ID_SEPARATOR,
       ID_FINDOPTCONTEXT, ID_FINDOPTWORD, ID_FINDOPTCASE, ID_FINDOPTREGEX,
-      ID_FINDOPTSUBDIR, ID_FINDOPTBACKUP,
+      ID_FINDOPTSUBDIR,
       ID_FINDOPTSCOPE, ID_FINDSETDIR,
       ID_SEPARATOR, ID_FINDOPTSTATUS,
     },
@@ -508,7 +507,7 @@ local icons = {
     infiles = {
       ID_FINDNEXT, ID_FINDREPLACEALL, ID_SEPARATOR,
       ID_FINDOPTCONTEXT, ID_FINDOPTWORD, ID_FINDOPTCASE, ID_FINDOPTREGEX,
-      ID_FINDOPTSUBDIR, ID_FINDOPTBACKUP,
+      ID_FINDOPTSUBDIR,
       ID_FINDOPTSCOPE, ID_FINDSETDIR,
       ID_SEPARATOR, ID_FINDOPTSTATUS,
     },
@@ -548,7 +547,6 @@ function findReplace:createToolbar()
     [ID_FINDOPTCASE] = 'fMatchCase',
     [ID_FINDOPTREGEX] = 'fRegularExpr',
     [ID_FINDOPTSUBDIR] = 'fSubDirs',
-    [ID_FINDOPTBACKUP] = 'fMakeBak',
     [ID_FINDOPTCONTEXT] = 'fContext',
   }
 

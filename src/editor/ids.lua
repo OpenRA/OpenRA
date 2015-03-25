@@ -156,7 +156,6 @@ ID_FINDOPTCASE      = NewID()
 ID_FINDOPTREGEX     = NewID()
 ID_FINDOPTCONTEXT   = NewID()
 ID_FINDOPTSUBDIR    = NewID()
-ID_FINDOPTBACKUP    = NewID()
 
 local ids = {}
 function IDgen (name)
