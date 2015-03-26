@@ -114,7 +114,7 @@ namespace OpenRA.Graphics
 			this.tileSet = tileSet;
 
 			// Every time we load a tile set, we create a sequence cache for it
-			spriteCache = Exts.Lazy(() => new SpriteCache(modData.SpriteLoaders, tileSet.Extensions, new SheetBuilder(SheetType.Indexed)));
+			spriteCache = Exts.Lazy(() => new SpriteCache(modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed)));
 		}
 
 		public Sequences LoadSequences(Map map)

@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				var ts = new TileSet(Game.ModData, t);
 				Console.WriteLine("Tileset: " + ts.Name);
-				var sc = new SpriteCache(modData.SpriteLoaders, ts.Extensions, new SheetBuilder(SheetType.Indexed));
+				var sc = new SpriteCache(modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed));
 				var sequenceFiles = modData.Manifest.Sequences;
 
 				var nodes = sequenceFiles
