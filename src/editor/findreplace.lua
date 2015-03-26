@@ -340,6 +340,14 @@ local function onFileRegister(pos, length)
   end
 end
 
+local firstReadSize = 2048
+local knownBinary = {}
+local function checkBinary(content, ext)
+  if knownBinary[ext] == nil then
+    knownBinary[ext] = isBinary(content) and true or false
+  end
+  return knownBinary[ext]
+end
 local function ProcInFiles(startdir,mask,subdirs)
   local files = FileSysGetRecursive(startdir, subdirs, mask)
   local start = TimeGet()
@@ -349,8 +357,10 @@ local function ProcInFiles(startdir,mask,subdirs)
     if not IsDirectory(file) then
       findReplace.curfilename = file
 
-      local filetext = FileRead(file)
-      if filetext and not isBinary(filetext:sub(1, 2048)) then
+      local filetext = FileRead(file, firstReadSize)
+      if filetext and not checkBinary(filetext, GetFileExt(file)) then
+        -- read the rest if there is more to read in the file
+        if #filetext == firstReadSize then filetext = FileRead(file) end
         findReplace.oveditor:SetText(filetext)
 
         if findReplace:FindStringAll(onFileRegister) then
