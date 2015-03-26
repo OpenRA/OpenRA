@@ -341,42 +341,31 @@ local function onFileRegister(pos, length)
 end
 
 local function ProcInFiles(startdir,mask,subdirs)
-  local files = FileSysGetRecursive(startdir,subdirs,"*")
+  local files = FileSysGetRecursive(startdir, subdirs, mask)
   local start = TimeGet()
 
-  -- mask could be a list, so generate a table with matching patterns
-  -- accept "*.lua; .txt,.wlua" combinations
-  local masks = {}
-  for m in mask:gmatch("[^%s;,]+") do
-    -- escape all special characters and replace (escaped) * with .*
-    table.insert(masks, q(m):gsub("%%%*", ".*").."$")
-  end
   for _,file in ipairs(files) do
     -- skip folders as these are included in the list as well
     if not IsDirectory(file) then
-      local match = false
-      for _, mask in ipairs(masks) do match = match or file:find(mask) end
-      if match then
-        findReplace.curfilename = file
+      findReplace.curfilename = file
 
-        local filetext = FileRead(file)
-        if filetext and not isBinary(filetext:sub(1, 2048)) then
-          findReplace.oveditor:SetText(filetext)
+      local filetext = FileRead(file)
+      if filetext and not isBinary(filetext:sub(1, 2048)) then
+        findReplace.oveditor:SetText(filetext)
 
-          if findReplace:FindStringAll(onFileRegister) then
-            findReplace.files = findReplace.files + 1
-          end
+        if findReplace:FindStringAll(onFileRegister) then
+          findReplace.files = findReplace.files + 1
+        end
 
-          -- give time to the UI to refresh
-          if TimeGet() - start > 0.25 then wx.wxSafeYield() end
-          -- the IDE may be quitting after Yield or the tab may be closed,
-          local ok, mgr = pcall(function() return ide:GetUIManager() end)
-          -- so check to make sure the manager is still active
-          if not (ok and mgr:GetPane(searchpanel):IsShown())
-          -- and check that the search results tab is still open
-          or not pcall(function() findReplace.reseditor:GetId() end) then
-            return false
-          end
+        -- give time to the UI to refresh
+        if TimeGet() - start > 0.25 then wx.wxSafeYield() end
+        -- the IDE may be quitting after Yield or the tab may be closed,
+        local ok, mgr = pcall(function() return ide:GetUIManager() end)
+        -- so check to make sure the manager is still active
+        if not (ok and mgr:GetPane(searchpanel):IsShown())
+        -- and check that the search results tab is still open
+        or not pcall(function() findReplace.reseditor:GetId() end) then
+          return false
         end
       end
     end

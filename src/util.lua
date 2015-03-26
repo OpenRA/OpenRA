@@ -163,7 +163,13 @@ function FileSysGetRecursive(path, recursive, spec, skip)
 
   -- recursion is done in all folders but only those folders that match
   -- the spec are returned. This is the pattern that matches the spec.
-  local specmask = spec:gsub("%.", "%%."):gsub("%*", ".*").."$"
+  -- Mask could be a list, so generate a table with matching patterns
+  -- accept "*.lua; .txt,.wlua" combinations
+  local masks = {}
+  for m in spec:gmatch("[^%s;,]+") do
+    -- escape all special characters and replace (escaped) * with .*
+    table.insert(masks, EscapeMagic(m):gsub("%%%*", ".*").."$")
+  end
 
   local function getDir(path, spec)
     local dir = wx.wxDir(path)
@@ -174,7 +180,13 @@ function FileSysGetRecursive(path, recursive, spec, skip)
     while found do
       if not skip or not file:find(skip) then
         local fname = wx.wxFileName(path, file):GetFullPath()
-        if fname:find(specmask) then table.insert(content, fname..sep) end
+        for _, mask in ipairs(masks) do
+          if file:find(mask) then
+            table.insert(content, fname..sep)
+            break
+          end
+        end
+
         -- check if this name already appears in the path earlier;
         -- Skip the processing if it does as it could lead to infinite
         -- recursion with circular references created by symlinks.
