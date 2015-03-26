@@ -35,13 +35,11 @@ namespace OpenRA.Graphics
 		public readonly SheetBuilder SheetBuilder;
 		readonly Cache<string, Sprite[]> sprites;
 
-		public SpriteCache(ISpriteLoader[] loaders, string[] exts, SheetBuilder sheetBuilder)
+		public SpriteCache(ISpriteLoader[] loaders, SheetBuilder sheetBuilder)
 		{
 			SheetBuilder = sheetBuilder;
 
-			// Include extension-less version
-			exts = exts.Append("").ToArray();
-			sprites = new Cache<string, Sprite[]>(filename => SpriteLoader.GetSprites(filename, exts, loaders, sheetBuilder));
+			sprites = new Cache<string, Sprite[]>(filename => SpriteLoader.GetSprites(filename, loaders, sheetBuilder));
 		}
 
 		public Sprite[] this[string filename] { get { return sprites[filename]; } }
@@ -51,11 +49,9 @@ namespace OpenRA.Graphics
 	{
 		readonly Cache<string, ISpriteFrame[]> frames;
 
-		public FrameCache(ISpriteLoader[] loaders, string[] exts)
+		public FrameCache(ISpriteLoader[] loaders)
 		{
-			// Include extension-less version
-			exts = exts.Append("").ToArray();
-			frames = new Cache<string, ISpriteFrame[]>(filename => SpriteLoader.GetFrames(filename, exts, loaders));
+			frames = new Cache<string, ISpriteFrame[]>(filename => SpriteLoader.GetFrames(filename, loaders));
 		}
 
 		public ISpriteFrame[] this[string filename] { get { return frames[filename]; } }
@@ -63,14 +59,14 @@ namespace OpenRA.Graphics
 
 	public static class SpriteLoader
 	{
-		public static Sprite[] GetSprites(string filename, string[] exts, ISpriteLoader[] loaders, SheetBuilder sheetBuilder)
+		public static Sprite[] GetSprites(string filename, ISpriteLoader[] loaders, SheetBuilder sheetBuilder)
 		{
-			return GetFrames(filename, exts, loaders).Select(a => sheetBuilder.Add(a)).ToArray();
+			return GetFrames(filename, loaders).Select(a => sheetBuilder.Add(a)).ToArray();
 		}
 
-		public static ISpriteFrame[] GetFrames(string filename, string[] exts, ISpriteLoader[] loaders)
+		public static ISpriteFrame[] GetFrames(string filename, ISpriteLoader[] loaders)
 		{
-			using (var stream = GlobalFileSystem.OpenWithExts(filename, exts))
+			using (var stream = GlobalFileSystem.Open(filename))
 			{
 				ISpriteFrame[] frames;
 				foreach (var loader in loaders)
