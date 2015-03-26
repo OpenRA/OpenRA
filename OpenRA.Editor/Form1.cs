@@ -269,7 +269,7 @@ namespace OpenRA.Editor
 			{
 				try
 				{
-					var template = RenderUtils.RenderResourceType(a, tileset.Extensions, shadowedPalette);
+					var template = RenderUtils.RenderResourceType(a, tileset, shadowedPalette);
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
