@@ -8,6 +8,9 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -16,21 +19,29 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliAttack : Activity
 	{
-		Target target;
-		public HeliAttack(Target target) { this.target = target; }
+		readonly Target target;
+		readonly Helicopter helicopter;
+		readonly AttackHeli attackHeli;
+		readonly IEnumerable<AmmoPool> ammoPools;
+
+		public HeliAttack(Actor self, Target target)
+		{
+			this.target = target;
+			helicopter = self.Trait<Helicopter>();
+			attackHeli = self.Trait<AttackHeli>();
+			ammoPools = self.TraitsImplementing<AmmoPool>();
+		}
 
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
-			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
-			var reloads = self.TraitOrDefault<Reloads>();
-			if (limitedAmmo != null && !limitedAmmo.HasAmmo() && reloads == null)
+			// If all ammo pools are depleted and none reload automatically, return to helipad to reload and then move to next activity
+			// TODO: This should check whether there is ammo left that is actually suitable for the target
+			if (ammoPools != null && ammoPools.All(x => !x.Info.SelfReloads && !x.HasAmmo()))
 				return Util.SequenceActivities(new HeliReturn(), NextActivity);
 
-			var helicopter = self.Trait<Helicopter>();
-			var attack = self.Trait<AttackHeli>();
 			var dist = target.CenterPosition - self.CenterPosition;
 
 			// Can rotate facing while ascending
@@ -41,10 +52,12 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 
 			// Fly towards the target
-			if (!target.IsInRange(self.CenterPosition, attack.GetMaximumRange()))
+			// TODO: Fix that the helicopter won't do anything if it has multiple weapons with different ranges
+			// and the weapon with the longest range is out of ammo
+			if (!target.IsInRange(self.CenterPosition, attackHeli.GetMaximumRange()))
 				helicopter.SetPosition(self, helicopter.CenterPosition + helicopter.FlyStep(desiredFacing));
 
-			attack.DoAttack(self, target);
+			attackHeli.DoAttack(self, target);
 
 			return this;
 		}

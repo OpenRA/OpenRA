@@ -76,12 +76,12 @@ HELI:
 		MuzzleSequence: muzzle
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 10
 		PipCount: 5
-	Reloads:
-		Count: 10
-		Period: 200
+		SelfReloads: true
+		ReloadCount: 10
+		SelfReloadTicks: 200
 	RenderUnit:
 	WithRotor:
 		Offset: 0,0,85
@@ -124,12 +124,12 @@ ORCA:
 		LocalOffset: 427,-171,-213, 427,171,-213
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 6
 		PipCount: 6
-	Reloads:
-		Count: 2
-		Period: 100
+		SelfReloads: true
+		ReloadCount: 2
+		SelfReloadTicks: 100
 	RenderUnit:
 	LeavesHusk:
 		HuskActor: ORCA.Husk

@@ -681,7 +681,7 @@ Rules:
 		Plane:
 			ROT: 5
 			Speed: 280
-		LimitedAmmo:
+		AmmoPool:
 			Ammo: 30
 		RenderUnit:
 			Image: mig
