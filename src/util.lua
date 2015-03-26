@@ -141,6 +141,10 @@ function GetFileExt(filePath)
   return match and match:lower() or ''
 end
 
+function GetFileName(filePath)
+  return filePath and filePath:gsub("%s+$",""):match("([^/\\]*)$") or ''
+end
+
 function IsLuaFile(filePath)
   return filePath and (string.len(filePath) > 4) and
   (string.lower(string.sub(filePath, -4)) == ".lua")

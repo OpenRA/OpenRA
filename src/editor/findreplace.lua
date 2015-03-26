@@ -286,7 +286,7 @@ local function onFileRegister(pos, length)
       reseditor:MarkerAdd(lines-1, FILE_MARKER)
       reseditor:SetFoldLevel(lines-1, reseditor:GetFoldLevel(lines-1)
         + wxstc.wxSTC_FOLDLEVELHEADERFLAG)
-      reseditor:EnsureVisibleEnforcePolicy(lines)
+      findReplace:SetStatus(GetFileName(findReplace.curfilename))
 
       lines = lines + 1
 
@@ -368,7 +368,7 @@ local function ProcInFiles(startdir,mask,subdirs)
         end
 
         -- give time to the UI to refresh
-        if TimeGet() - start > 0.25 then wx.wxSafeYield() end
+        if TimeGet() - start > 0.25 then ide:Yield() end
         -- the IDE may be quitting after Yield or the tab may be closed,
         local ok, mgr = pcall(function() return ide:GetUIManager() end)
         -- so check to make sure the manager is still active
@@ -453,6 +453,7 @@ function findReplace:RunInFiles(replace)
 
   self:SetStatus(("%s '%s'."):format(
     (replace and TR("Replacing") or TR("Searching for")), self.findText))
+  wx.wxSafeYield() -- allow the status to update
 
   local startdir, mask = self:GetScope()
   local completed = ProcInFiles(startdir, mask or "*.*", self.fSubDirs)
@@ -879,13 +880,13 @@ ide:AddPackage('core.findreplace', {
           line = editor:MarkerNext(line + 1, FILE_MARKER_VALUE)
           if line == NOTFOUND then break end
 
-          editor:EnsureVisibleEnforcePolicy(line) -- scroll to the line
-          wx.wxSafeYield()
-
           local fname = getRawLine(editor, line) -- get the file name
           local filetext, err = FileRead(fname)
           local mismatch = false
           if filetext then
+            findReplace:SetStatus(GetFileName(fname))
+            wx.wxSafeYield()
+
             oveditor:SetText(filetext)
             while true do -- for each line following the file name
               line = line + 1
