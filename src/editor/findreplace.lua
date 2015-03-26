@@ -104,9 +104,9 @@ end
 function findReplace:SetStatus(msg) self.status:SetLabel(msg) end
 
 function findReplace:GetScope()
-  if not self.scopeText then return end
-  local dir, mask = self.scopeText:match(('([^%s]*)%s%%s*(.+)'):format(sep,sep))
-  if not dir then dir = self.scopeText end
+  local scopeval = self.scope:GetValue()
+  local dir, mask = scopeval:match(('([^%s]*)%s%%s*(.+)'):format(sep,sep))
+  if not dir then dir = scopeval end
   -- trip leading/trailing spaces from the directory
   dir = dir:gsub("^%s+",""):gsub("%s+$","")
   -- if the directory doesn't exist, treat it as the extension(s)
@@ -117,8 +117,7 @@ function findReplace:GetScope()
 end
 
 function findReplace:SetScope(dir, mask)
-  self.scopeText = dir .. (mask and (sep..' '..mask) or "")
-  return self.scopeText
+  return dir .. (mask and (sep..' '..mask) or "")
 end
 
 function findReplace:GetSelectedString()
@@ -870,7 +869,12 @@ function findReplace:Show(replace,infiles)
 end
 
 ide:AddPackage('core.findreplace', {
-    -- reset ngram cache when switching projects to conserve memory
+    onProjectLoad = function()
+      if not findReplace.panel then return end -- not set yet
+      local _, mask = findReplace:GetScope()
+      findReplace:refreshToolbar(findReplace:SetScope(ide:GetProject(), mask))
+    end,
+
     onEditorPreSave = function(self, editor)
       if editor == findReplace.reseditor and findReplace.reseditor.replace then
         findReplace:SetStatus("")
