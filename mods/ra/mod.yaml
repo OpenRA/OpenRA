@@ -201,4 +201,9 @@ SupportsMapsFrom: ra
 
 SpriteFormats: ShpTD, TmpRA, TmpTD, ShpTS
 
-SpriteSequenceFormat: DefaultSpriteSequence
+SpriteSequenceFormat: TilesetSpecificSpriteSequence
+	TilesetExtensions:
+		TEMPERAT: .tem
+		SNOW: .sno
+		INTERIOR: .int
+		DESERT: .des

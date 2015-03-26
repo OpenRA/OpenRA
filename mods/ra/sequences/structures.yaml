@@ -9,6 +9,9 @@ fcom:
 	bib: bib3
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 
 hosp:
 	idle:
@@ -27,6 +30,7 @@ hosp:
 		Start: 0
 		Length: *
 		Offset: 0,1
+		UseTilesetExtension: true
 	icon: hospicon
 		Start: 0
 
@@ -53,6 +57,10 @@ oilb:
 	bib: bib3
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
+
 fact:
 	idle:
 		Start: 0
@@ -73,6 +81,9 @@ fact:
 	bib: bib2
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	icon: facticon
 		Start: 0
 	fake-icon: facficon
@@ -100,6 +111,9 @@ proc:
 	bib: bib2
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	icon: procicon
 		Start: 0
 
@@ -119,6 +133,7 @@ silo:
 	bib: mbSILO
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
 	icon: siloicon
 		Start: 0
 
@@ -136,6 +151,9 @@ powr:
 	bib: bib3
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	icon: powricon
 		Start: 0
 
@@ -153,6 +171,9 @@ apwr:
 	bib: bib2
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	icon: apwricon
 		Start: 0
 
@@ -169,6 +190,9 @@ barr:
 	bib: bib3
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	icon: barricon
 		Start: 0
 
@@ -185,6 +209,9 @@ tent:
 	bib: bib3
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	icon: tenticon
 		Start: 0
 
@@ -199,6 +226,7 @@ kenn:
 	bib: mbSILO
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
 	icon: kennicon
 		Start: 0
 
@@ -213,6 +241,9 @@ dome:
 	bib: bib3
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	icon: domeicon
 		Start: 0
 	fake-icon: domficon
@@ -233,6 +264,9 @@ atek:
 	bib: bib3
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	icon: atekicon
 		Start: 0
 	fake-icon: ateficon
@@ -249,6 +283,9 @@ stek:
 	bib: bib2
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	icon: stekicon
 		Start: 0
 
@@ -273,6 +310,9 @@ weap:
 	bib: bib2
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	icon: weapicon
 		Start: 0
 	fake-icon: weaficon
@@ -299,6 +339,9 @@ hpad:
 	bib: bib3
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	icon: hpadicon
 		Start: 0
 
@@ -383,6 +426,7 @@ fix:
 		Length: *
 		ZOffset: -1c511
 		Offset: 0,-4
+		UseTilesetExtension: true
 	icon: fixicon
 		Start: 0
 
@@ -409,6 +453,7 @@ gun:
 		Start: 0
 		Length: *
 		Offset: -1,-1
+		UseTilesetExtension: true
 	icon: gunicon
 		Start: 0
 
@@ -440,6 +485,7 @@ agun:
 	bib: mbAGUN
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
 	icon: agunicon
 		Start: 0
 
@@ -465,6 +511,7 @@ sam:
 		Start: 0
 		Length: *
 		Offset: 0,1
+		UseTilesetExtension: true
 	icon: samicon
 		Start: 0
 
@@ -482,6 +529,7 @@ ftur:
 	bib: mbFTUR
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
 	icon: fturicon
 		Start: 0
 
@@ -509,6 +557,7 @@ tsla:
 	bib: mbTSLA
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
 	icon: tslaicon
 		Start: 0
 
@@ -528,10 +577,15 @@ pbox:
 		Start: 0
 		Length: *
 		Offset: 0,-2
+		UseTilesetExtension: true
 	icon: pboxicon
 		Start: 0
 
 hbox:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	damaged-idle:
 		Start: 2
 	idle:
@@ -543,8 +597,10 @@ hbox:
 		Start: 0
 		Length: 6
 		Facings: 8
+		UseTilesetExtension: false
 	icon: hboxicon
 		Start: 0
+		UseTilesetExtension: false
 
 gap:
 	idle:
@@ -562,6 +618,7 @@ gap:
 	bib: mbGAP
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
 	icon: gapicon
 		Start: 0
 
@@ -588,6 +645,7 @@ iron:
 		Start: 0
 		Length: *
 		Offset: 0,2
+		UseTilesetExtension: true
 	icon: ironicon
 		Start: 0
 
@@ -609,12 +667,17 @@ pdox:
 		Start: 0
 		Length: *
 		Offset: 0,-4
+		UseTilesetExtension: true
 	icon: pdoxicon
 		Start: 0
 	fake-icon: pdoficon
 		Start: 0
 
 mslo:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	idle:
 		Start: 0
 	damaged-idle:
@@ -631,8 +694,10 @@ mslo:
 		Length: 7
 	icon: msloicon2
 		Start: 0
+		UseTilesetExtension: false
 	fake-icon: mslficon
 		Start: 0
+		UseTilesetExtension: false
 
 miss:
 	idle:
@@ -648,6 +713,9 @@ miss:
 	bib: bib2
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 
 brik:
 	idle:
