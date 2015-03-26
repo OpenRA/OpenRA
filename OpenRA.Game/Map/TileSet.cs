@@ -282,7 +282,10 @@ namespace OpenRA
 
 		public TerrainTileInfo GetTileInfo(TerrainTile r)
 		{
-			var tpl = Templates[r.Type];
+			TerrainTemplateInfo tpl;
+			if (!Templates.TryGetValue(r.Type, out tpl))
+				return null;
+
 			return tpl.Contains(r.Index) ? tpl[r.Index] : null;
 		}
 
