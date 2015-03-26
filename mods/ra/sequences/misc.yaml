@@ -76,6 +76,10 @@ explosion:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 
 pips:
 	groups:
@@ -206,7 +210,9 @@ moveflsh:
 		Start: 0
 		Length: *
 		Tick: 80
-
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
 select:
 	repair:
 		Start: 2
@@ -583,22 +589,20 @@ overlay:
 		Start: 1
 
 resources:
+	Defaults:
+		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
+			DESERT: TEMPERAT
 	gold01: gold01
-		Length: *
 	gold02: gold02
-		Length: *
 	gold03: gold03
-		Length: *
 	gold04: gold04
-		Length: *
 	gem01: gem01
-		Length: *
 	gem02: gem02
-		Length: *
 	gem03: gem03
-		Length: *
 	gem04: gem04
-		Length: *
 
 shroud:
 	shroud: shadow
@@ -607,32 +611,30 @@ shroud:
 # Note: The order of smudges and craters determines
 # the index that is mapped to them in maps
 scorches:
+	Defaults:
+		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	sc1: sc1
-		Length: *
 	sc2: sc2
-		Length: *
 	sc3: sc3
-		Length: *
 	sc4: sc4
-		Length: *
 	sc5: sc5
-		Length: *
 	sc6: sc6
-		Length: *
 
 craters:
+	Defaults:
+		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	cr1: cr1
-		Length: *
 	cr2: cr2
-		Length: *
 	cr3: cr3
-		Length: *
 	cr4: cr4
-		Length: *
 	cr5: cr5
-		Length: *
 	cr6: cr6
-		Length: *
 
 mine:
 	idle:
@@ -643,11 +645,17 @@ gmine:
 	idle:
 		Start: 0
 		ZOffset: -512
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 
 railmine:
 	idle:
 		Start: 0
 		ZOffset: -512
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 
 ctflag:
 	idle:
@@ -658,3 +666,4 @@ ctflag:
 	bib: mbGAP
 		Start: 0
 		Length: *
+		UseTilesetExtension: true

@@ -60,11 +60,19 @@ e1:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	garrison-muzzle: minigun
 		Start: 0
 		Length: 6
@@ -133,11 +141,19 @@ sniper:
 		Length: 18
 	die6: electro
 		Start: 0
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	garrison-muzzle: minigun
 		Start: 0
 		Length: 3
@@ -188,11 +204,19 @@ e3:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 144
 		Length: 4
@@ -247,11 +271,19 @@ e6:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 82
 		Length: 4
@@ -310,11 +342,19 @@ medi:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 130
 		Length: 4
@@ -373,11 +413,19 @@ mech:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 130
 		Length: 4
@@ -432,11 +480,19 @@ e2:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 240
 		Length: 4
@@ -496,6 +552,10 @@ dog:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	shoot: dogbullt
 		Start: 0
 		Length: 4
@@ -545,11 +605,19 @@ spy:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 144
 		Length: 4
@@ -596,11 +664,19 @@ thf:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	crawl:
 		Start: 72
 		Length: 4
@@ -638,11 +714,19 @@ hijacker:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	crawl: thf
 		Start: 72
 		Length: 4
@@ -692,11 +776,19 @@ e7:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 128
 		Length: 4
@@ -760,11 +852,19 @@ e4:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 208
 		Length: 4
@@ -835,11 +935,19 @@ gnrl:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 
 shok:
 	stand:
@@ -903,11 +1011,19 @@ shok:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	icon: shokicon
 		Start: 0
 
@@ -948,11 +1064,19 @@ c1:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	run:
 		Start: 56
 		Length: 6
@@ -996,11 +1120,19 @@ c2:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	run:
 		Start: 56
 		Length: 6
@@ -1044,11 +1176,19 @@ c3:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	run:
 		Start: 56
 		Length: 6
@@ -1093,11 +1233,19 @@ einstein:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 
 delphi:
 	stand:
@@ -1137,11 +1285,19 @@ delphi:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 
 chan:
 	stand:
@@ -1181,11 +1337,19 @@ chan:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 
 zombie:
 	stand:
@@ -1224,11 +1388,19 @@ zombie:
 	die6: electro
 		Start: 0
 		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	icon: zombicon
 		Start: 0
 

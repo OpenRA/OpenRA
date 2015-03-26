@@ -2,7 +2,7 @@ General:
 	Name: Interior
 	Id: INTERIOR
 	Palette: interior.pal
-	Extensions: .int, .shp, .tem
+	Extensions: # Obsolete
 	EditorTemplateOrder: Floor, Wall
 
 Terrain:
