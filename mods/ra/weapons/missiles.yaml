@@ -9,11 +9,11 @@ Maverick:
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Inaccuracy: 512
 		Image: DRAGON
-		ROT: 5
+		RateOfTurn: 5
 		RangeLimit: 60
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -45,12 +45,12 @@ Dragon:
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
-		High: true
+		Blockable: false
 		Trail: smokey
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 5
+		RateOfTurn: 5
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -83,11 +83,11 @@ HellfireAG:
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 10
+		RateOfTurn: 10
 		RangeLimit: 20
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -120,11 +120,11 @@ HellfireAA:
 	Projectile: Missile
 		Speed: 384
 		Arm: 2
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 10
+		RateOfTurn: 10
 		RangeLimit: 20
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -156,11 +156,11 @@ MammothTusk:
 	Projectile: Missile
 		Speed: 341
 		Arm: 2
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 15
+		RateOfTurn: 15
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
@@ -194,10 +194,10 @@ Nike:
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 3
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Image: MISSILE
-		ROT: 25
+		RateOfTurn: 25
 		RangeLimit: 50
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
@@ -224,10 +224,10 @@ RedEye:
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 3
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Image: MISSILE
-		ROT: 20
+		RateOfTurn: 20
 		RangeLimit: 30
 		Speed: 298
 	Warhead@1Dam: SpreadDamage
@@ -253,7 +253,7 @@ SubMissile:
 	Report: MISSILE6.AUD
 	Projectile: Bullet
 		Speed: 102
-		High: true
+		Blockable: false
 		Angle: 165
 		Inaccuracy: 2c938
 		Image: MISSILE
@@ -285,16 +285,55 @@ Stinger:
 	Report: MISSILE6.AUD
 	Burst: 2
 	BurstDelay: 0
-	ValidTargets: Air, Ground, Water
+	ValidTargets: Ground, Water
 	Projectile: Missile
 		Arm: 3
-		High: true
+		Blockable: false
 		ContrailLength: 10
 		Image: DRAGON
-		ROT: 20
+		RateOfTurn: 20
 		RangeLimit: 50
-		TurboBoost: true
 		Speed: 170
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 30
+		DeathType: 4
+		ValidTargets: Air, Ground, Water
+		Versus:
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosion: med_explosion
+		ImpactSound: kaboom25.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@5EffAir: CreateEffect
+		Explosion: med_explosion_air
+		ImpactSound: kaboom25.aud
+		ValidImpactTypes: Air, AirHit
+	Warhead@4EffWater: CreateEffect
+		Explosion: med_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
+
+StingerAA:
+	ReloadDelay: 60
+	Range: 9c0
+	Report: MISSILE6.AUD
+	Burst: 2
+	BurstDelay: 0
+	ValidTargets: Air
+	Projectile: Missile
+		Arm: 3
+		Blockable: false
+		ContrailLength: 10
+		Image: DRAGON
+		RateOfTurn: 20
+		RangeLimit: 50
+		Speed: 255
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -325,7 +364,6 @@ TorpTube:
 	Range: 9c0
 	Report: TORPEDO1.AUD
 	ValidTargets: Water, Underwater, Bridge
-	Palette: shadow
 	Burst: 2
 	BurstDelay: 20
 	Projectile: Missile
@@ -333,9 +371,10 @@ TorpTube:
 		Arm: 3
 		Speed: 85
 		Trail: bubbles
-		ROT: 1
+		RateOfTurn: 1
 		RangeLimit: 160
 		BoundToTerrainType: Water
+		Palette: shadow
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 180
@@ -368,7 +407,7 @@ SCUD:
 	Report: MISSILE1.AUD
 	Projectile: Bullet
 		Speed: 170
-		High: true
+		Blockable: false
 		Shadow: false
 		Trail: smokey
 		TrailDelay: 5
@@ -404,12 +443,12 @@ APTusk:
 	Projectile: Missile
 		Speed: 298
 		Arm: 2
-		High: true
+		Blockable: false
 		Trail: smokey
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 10
+		RateOfTurn: 10
 		RangeLimit: 22
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -431,3 +470,4 @@ APTusk:
 		Explosion: med_splash
 		ImpactSound: splash9.aud
 		ValidImpactTypes: Water
+

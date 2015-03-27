@@ -120,7 +120,7 @@ ArtilleryShell:
 	Report: TNKFIRE2.AUD
 	Projectile: Bullet
 		Speed: 204
-		High: yes
+		Blockable: false
 		Angle: 56
 		Inaccuracy: 1c256
 		ContrailLength: 30
@@ -139,3 +139,4 @@ ArtilleryShell:
 	Warhead@3Eff: CreateEffect
 		Explosion: poof
 		ImpactSound: XPLOSML2.AUD
+

@@ -22,32 +22,34 @@ namespace OpenRA.Mods.Common.Effects
 {
 	class MissileInfo : IProjectileInfo
 	{
+		public readonly string Image = null;
+		public readonly string Palette = "effect";
+		public readonly bool Shadow = false;
 		[Desc("Projectile speed in WRange / tick")]
 		public readonly WRange Speed = new WRange(8);
 		[Desc("Maximum vertical pitch when changing altitude.")]
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(30);
 		[Desc("How many ticks before this missile is armed and can explode.")]
 		public readonly int Arm = 0;
-		[Desc("Check for whether an actor with BlocksBullets: trait blocks fire")]
-		public readonly bool High = false;
-		public readonly bool Shadow = false;
-		public readonly string Trail = null;
+		[Desc("Is the missile blocked by actors with BlocksProjectiles: trait.")]
+		public readonly bool Blockable = true;
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WRange Inaccuracy = WRange.Zero;
 		[Desc("Probability of locking onto and following target.")]
 		public readonly int LockOnProbability = 100;
-		public readonly string Image = null;
-		[Desc("Rate of Turning")]
-		public readonly int ROT = 5;
-		[Desc("Explode when following the target longer than this.")]
+		[Desc("In n/256 per tick.")]
+		public readonly int RateOfTurn = 5;
+		[Desc("Explode when following the target longer than this many ticks.")]
 		public readonly int RangeLimit = 0;
-		[Desc("If fired at aircraft, increase speed by 50%.")]
-		public readonly bool TurboBoost = false;
+		[Desc("Trail animation.")]
+		public readonly string Trail = null;
+		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
 		public readonly int ContrailLength = 0;
 		public readonly Color ContrailColor = Color.White;
 		public readonly bool ContrailUsePlayerColor = false;
 		public readonly int ContrailDelay = 1;
+		[Desc("Should missile targeting be thrown off by nearby actors with JamsMissiles.")]
 		public readonly bool Jammable = true;
 		[Desc("Explodes when leaving the following terrain type, e.g., Water for torpedoes.")]
 		public readonly string BoundToTerrainType = "";
@@ -66,7 +68,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Animation anim;
 
 		int ticksToNextSmoke;
-		ContrailRenderable trail;
+		ContrailRenderable contrail;
 
 		[Sync] WPos pos;
 		[Sync] int facing;
@@ -110,7 +112,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 			{
 				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
-				trail = new ContrailRenderable(world, color, info.ContrailLength, info.ContrailDelay, 0);
+				contrail = new ContrailRenderable(world, color, info.ContrailLength, info.ContrailDelay, 0);
 			}
 		}
 
@@ -128,7 +130,8 @@ namespace OpenRA.Mods.Common.Effects
 		public void Tick(World world)
 		{
 			ticks++;
-			anim.Tick();
+			if (anim != null)
+				anim.Tick();
 
 			// Missile tracks target
 			if (args.GuidedTarget.IsValidFor(args.SourceActor) && lockOn)
@@ -147,10 +150,8 @@ namespace OpenRA.Mods.Common.Effects
 			else if (!args.GuidedTarget.IsValidFor(args.SourceActor))
 				desiredFacing = facing;
 
-			facing = OpenRA.Traits.Util.TickFacing(facing, desiredFacing, info.ROT);
+			facing = OpenRA.Traits.Util.TickFacing(facing, desiredFacing, info.RateOfTurn);
 			var move = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing)) * info.Speed.Range / 1024;
-			if (targetPosition.Z > 0 && info.TurboBoost)
-				move = (move * 3) / 2;
 
 			if (pos.Z != desiredAltitude)
 			{
@@ -168,14 +169,14 @@ namespace OpenRA.Mods.Common.Effects
 			}
 
 			if (info.ContrailLength > 0)
-				trail.Update(pos);
+				contrail.Update(pos);
 
 			var cell = world.Map.CellContaining(pos);
 
 			var shouldExplode = (pos.Z < 0) // Hit the ground
 				|| (dist.LengthSquared < info.CloseEnough.Range * info.CloseEnough.Range) // Within range
 				|| (info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
-				|| (!info.High && world.ActorMap.GetUnitsAt(cell).Any(a => a.HasTrait<IBlocksBullets>())) // Hit a wall
+				|| (info.Blockable && world.ActorMap.GetUnitsAt(cell).Any(a => a.HasTrait<IBlocksProjectiles>())) // Hit a wall or other blocking obstacle
 				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
 				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType); // Hit incompatible terrain
 
@@ -186,7 +187,7 @@ namespace OpenRA.Mods.Common.Effects
 		void Explode(World world)
 		{
 			if (info.ContrailLength > 0)
-				world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, trail)));
+				world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, contrail)));
 
 			world.AddFrameEndTask(w => w.Remove(this));
 
@@ -200,7 +201,7 @@ namespace OpenRA.Mods.Common.Effects
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (info.ContrailLength > 0)
-				yield return trail;
+				yield return contrail;
 
 			if (!args.SourceActor.World.FogObscures(wr.World.Map.CellContaining(pos)))
 			{
@@ -211,7 +212,7 @@ namespace OpenRA.Mods.Common.Effects
 						yield return r;
 				}
 
-				var palette = wr.Palette(args.Weapon.Palette);
+				var palette = wr.Palette(info.Palette);
 				foreach (var r in anim.Render(pos, palette))
 					yield return r;
 			}

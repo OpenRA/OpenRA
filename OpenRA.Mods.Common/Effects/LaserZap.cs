@@ -39,13 +39,13 @@ namespace OpenRA.Mods.Common.Effects
 
 	class LaserZap : IEffect
 	{
-		ProjectileArgs args;
-		LaserZapInfo info;
+		readonly ProjectileArgs args;
+		readonly LaserZapInfo info;
+		readonly Animation hitanim;
 		int ticks = 0;
 		Color color;
 		bool doneDamage;
 		bool animationComplete;
-		Animation hitanim;
 		WPos target;
 
 		public LaserZap(ProjectileArgs args, LaserZapInfo info, Color color)
