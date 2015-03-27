@@ -1,60 +1,45 @@
 mig:
 	idle:
-		Start: 0
 		Facings: 16
 	icon: migicon
-		Start: 0
 
 yak:
 	idle:
-		Start: 0
 		Facings: 16
 	muzzle: minigun
-		Start: 0
 		Length: 6
 		Facings: 8
 	icon: yakicon
-		Start: 0
 
 heli:
 	idle:
-		Start: 0
 		Facings: 32
 	rotor: lrotor
-		Start: 0
 		Length: 4
 	slow-rotor: lrotor
 		Start: 4
 		Length: 8
 	icon: heliicon
-		Start: 0
 
 hind:
 	idle:
-		Start: 0
 		Facings: 32
 	rotor: lrotorlg
-		Start: 0
 		Length: 4
 	slow-rotor: lrotorlg
 		Start: 4
 		Length: 8
 	muzzle: minigun
-		Start: 0
 		Length: 6
 		Facings: 8
 	icon: hindicon
-		Start: 0
 
 tran:
 	idle: tran2
-		Start: 0
 		Facings: 32
 	rotor: lrotor
-		Start: 0
 		Length: 4
 	rotor2: rrotor
-		Start: 0
 		Length: 4
 	slow-rotor: lrotor
 		Start: 4
@@ -68,24 +53,17 @@ tran:
 	unload: tran2
 		Start: 35
 	icon: tranicon
-		Start: 0
 		
 tran1husk:
 	idle:
-		Start: 0
-		Length: *
 
 tran2husk:
 	idle:
-		Start: 0
-		Length: *
 
 u2:
 	idle:
-		Start: 0
 		Facings: 16
 
 badr:
 	idle:
-		Start: 0
 		Facings: 16
