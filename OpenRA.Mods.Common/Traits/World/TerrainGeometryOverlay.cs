@@ -41,6 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			var tileSet = wr.World.TileSet;
 			var lr = Game.Renderer.WorldLineRenderer;
 			var colors = wr.World.TileSet.HeightDebugColors;
+			var mouseCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos).ToMPos(wr.World.Map);
 
 			foreach (var uv in wr.Viewport.VisibleCells.MapCoords)
 			{
@@ -54,11 +55,16 @@ namespace OpenRA.Mods.Common.Traits
 				var pos = map.CenterOfCell(uv.ToCPos(map));
 				var screen = corners.Select(c => wr.ScreenPxPosition(pos + c).ToFloat2()).ToArray();
 
+				if (uv == mouseCell)
+					lr.LineWidth = 3;
+
 				for (var i = 0; i < 4; i++)
 				{
 					var j = (i + 1) % 4;
 					lr.DrawLine(screen[i], screen[j], color[i], color[j]);
 				}
+
+				lr.LineWidth = 1;
 			}
 		}
 	}
