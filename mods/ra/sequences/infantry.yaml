@@ -134,6 +134,7 @@ sniper:
 		Start: 452
 		Length: 18
 	die6: electro
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
