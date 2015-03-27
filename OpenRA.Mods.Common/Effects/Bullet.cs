@@ -123,8 +123,6 @@ namespace OpenRA.Mods.Common.Effects
 			if (anim != null)
 				anim.Tick();
 
-			pos = WPos.LerpQuadratic(args.Source, target, angle, ticks, length);
-
 			if (info.Trail != null && --smokeTicks < 0)
 			{
 				var delayedPos = WPos.LerpQuadratic(args.Source, target, angle, ticks - info.TrailDelay, length);
@@ -132,11 +130,32 @@ namespace OpenRA.Mods.Common.Effects
 				smokeTicks = info.TrailInterval;
 			}
 
+			var nextpos = WPos.LerpQuadratic(args.Source, target, angle, ticks, length);
+
+			if (!info.High)
+			{
+				var cell = world.Map.CellContaining(pos);
+				var nextcell = world.Map.CellContaining(nextpos);
+
+				var regularLength = (cell - nextcell).LengthSquared;
+
+				var collision = world.ActorMap.GetActorsOnRay(cell, nextcell).Where(x => x.HasTrait<IBlocksBullets>())
+					.FirstOrDefault(actor => !actor.IsDead && regularLength >= (cell - actor.Location).LengthSquared);
+
+				if (collision != null)
+				{
+					pos = collision.CenterPosition;
+					Explode(world);
+					return;
+				}
+			}
+
+			pos = nextpos;
+
 			if (info.ContrailLength > 0)
 				trail.Update(pos);
 
-			if (ticks++ >= length || (!info.High && world.ActorMap
-				.GetUnitsAt(world.Map.CellContaining(pos)).Any(a => a.HasTrait<IBlocksBullets>())))
+			if (ticks++ >= length)
 				Explode(world);
 		}
 
