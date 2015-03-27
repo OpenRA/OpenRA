@@ -25,42 +25,6 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class TerrainGeometryOverlay : IRenderOverlay
 	{
-		readonly int[][] vertices = new int[][]
-		{
-			// Flat
-			new[] { 0, 0, 0, 0 },
-
-			// Slopes (two corners high)
-			new[] { 0, 0, 1, 1 },
-			new[] { 1, 0, 0, 1 },
-			new[] { 1, 1, 0, 0 },
-			new[] { 0, 1, 1, 0 },
-
-			// Slopes (one corner high)
-			new[] { 0, 0, 0, 1 },
-			new[] { 1, 0, 0, 0 },
-			new[] { 0, 1, 0, 0 },
-			new[] { 0, 0, 1, 0 },
-
-			// Slopes (three corners high)
-			new[] { 1, 0, 1, 1 },
-			new[] { 1, 1, 0, 1 },
-			new[] { 1, 1, 1, 0 },
-			new[] { 0, 1, 1, 1 },
-
-			// Slopes (two corners high, one corner double high)
-			new[] { 1, 0, 1, 2 },
-			new[] { 2, 1, 0, 1 },
-			new[] { 1, 2, 1, 0 },
-			new[] { 0, 1, 2, 1 },
-
-			// Slopes (two corners high, alternating)
-			new[] { 1, 0, 1, 0 },
-			new[] { 0, 1, 0, 1 },
-			new[] { 1, 0, 1, 0 },
-			new[] { 0, 1, 0, 1 }
-		};
-
 		readonly Lazy<DeveloperMode> devMode;
 
 		public TerrainGeometryOverlay(Actor self)
@@ -73,54 +37,26 @@ namespace OpenRA.Mods.Common.Traits
 			if (devMode.Value == null || !devMode.Value.ShowTerrainGeometry)
 				return;
 
-			var ts = wr.World.Map.TileShape;
+			var lr = Game.Renderer.WorldLineRenderer;
 			var colors = wr.World.TileSet.HeightDebugColors;
-
-			var leftDelta = ts == TileShape.Diamond ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
-			var topDelta = ts == TileShape.Diamond ? new WVec(0, -512, 0) : new WVec(512, -512, 0);
-			var rightDelta = ts == TileShape.Diamond ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
-			var bottomDelta = ts == TileShape.Diamond ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
 
 			foreach (var uv in wr.Viewport.VisibleCells.MapCoords)
 			{
-				var lr = Game.Renderer.WorldLineRenderer;
-				var pos = wr.World.Map.CenterOfCell(uv.ToCPos(wr.World.Map));
-
 				var height = (int)wr.World.Map.MapHeight.Value[uv];
 				var tile = wr.World.Map.MapTiles.Value[uv];
+				var ti = wr.World.TileSet.GetTileInfo(tile);
+				var ramp = ti != null ? ti.RampType : 0;
 
-				TerrainTileInfo tileInfo = null;
+				var corners = wr.World.Map.CellCorners[ramp];
+				var color = corners.Select(c => colors[height + c.Z / 512]).ToArray();
+				var pos = wr.World.Map.CenterOfCell(uv.ToCPos(wr.World.Map));
+				var screen = corners.Select(c => wr.ScreenPxPosition(pos + c).ToFloat2()).ToArray();
 
-				// TODO: This is a temporary workaround for our sloppy tileset definitions
-				// (ra/td templates omit Clear tiles from templates)
-				try
+				for (var i = 0; i < 4; i++)
 				{
-					tileInfo = wr.World.TileSet.Templates[tile.Type][tile.Index];
+					var j = (i + 1) % 4;
+					lr.DrawLine(screen[i], screen[j], color[i], color[j]);
 				}
-				catch (Exception) { }
-
-				if (tileInfo == null)
-					continue;
-
-				var leftHeight = vertices[tileInfo.RampType][0];
-				var topHeight = vertices[tileInfo.RampType][1];
-				var rightHeight = vertices[tileInfo.RampType][2];
-				var bottomHeight = vertices[tileInfo.RampType][3];
-
-				var leftColor = colors[height + leftHeight];
-				var topColor = colors[height + topHeight];
-				var rightColor = colors[height + rightHeight];
-				var bottomColor = colors[height + bottomHeight];
-
-				var left = wr.ScreenPxPosition(pos + leftDelta + new WVec(0, 0, 512 * leftHeight)).ToFloat2();
-				var top = wr.ScreenPxPosition(pos + topDelta + new WVec(0, 0, 512 * topHeight)).ToFloat2();
-				var right = wr.ScreenPxPosition(pos + rightDelta + new WVec(0, 0, 512 * rightHeight)).ToFloat2();
-				var bottom = wr.ScreenPxPosition(pos + bottomDelta + new WVec(0, 0, 512 * bottomHeight)).ToFloat2();
-
-				lr.DrawLine(left, top, leftColor, topColor);
-				lr.DrawLine(top, right, topColor, rightColor);
-				lr.DrawLine(right, bottom, rightColor, bottomColor);
-				lr.DrawLine(bottom, left, bottomColor, leftColor);
 			}
 		}
 	}
