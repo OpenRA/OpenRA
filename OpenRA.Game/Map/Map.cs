@@ -660,10 +660,10 @@ namespace OpenRA
 			// Convert from world position to diamond cell position:
 			// (a) Subtract (512, 512) to move the rotation center to the middle of the corner cell
 			// (b) Rotate axes by -pi/4
-			// (c) Add 512 to x (but not y) to realign the cell
+			// (c) Add (512, 512) to move back to the center of the cell
 			// (d) Divide by 1024 to find final cell coords
 			var u = (pos.Y + pos.X - 512) / 1024;
-			var v = (pos.Y - pos.X) / 1024;
+			var v = (pos.Y - pos.X - 512) / 1024;
 			return new CPos(u, v);
 		}
 
