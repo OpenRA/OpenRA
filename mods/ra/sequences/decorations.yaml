@@ -4,9 +4,7 @@ tc04:
 		TilesetOverrides:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
-
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -21,7 +19,6 @@ tc05:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -36,7 +33,6 @@ tc03:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -51,7 +47,6 @@ tc02:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -63,10 +58,8 @@ tc01:
 	Defaults:
 		UseTilesetExtension: true
 		TilesetOverrides:
-			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -81,7 +74,6 @@ t17:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -96,7 +88,6 @@ t16:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -111,7 +102,6 @@ t15:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -126,7 +116,6 @@ t14:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -141,7 +130,6 @@ t13:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -156,7 +144,6 @@ t12:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -171,7 +158,6 @@ t11:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -186,7 +172,6 @@ t10:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -198,10 +183,8 @@ t08:
 	Defaults:
 		UseTilesetExtension: true
 		TilesetOverrides:
-			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -216,7 +199,6 @@ t07:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -231,7 +213,6 @@ t06:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -246,7 +227,6 @@ t05:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -261,7 +241,6 @@ t03:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -271,31 +250,26 @@ t03:
 
 ice01:
 	idle: ice01.sno
-		Start: 0
 		Length: *
 		AddExtension: false
 
 ice02:
 	idle: ice02.sno
-		Start: 0
 		Length: *
 		AddExtension: false
 
 ice03:
 	idle: ice03.sno
-		Start: 0
 		Length: *
 		AddExtension: false
 
 ice04:
 	idle: ice04.sno
-		Start: 0
 		Length: *
 		AddExtension: false
 
 ice05:
 	idle: ice05.sno
-		Start: 0
 		Length: *
 		AddExtension: false
 
@@ -306,7 +280,6 @@ t02:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -321,7 +294,6 @@ t01:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -336,7 +308,6 @@ v01:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
@@ -347,7 +318,6 @@ v02:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
@@ -358,7 +328,6 @@ v03:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
@@ -369,7 +338,6 @@ v04:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 2
 	active:
@@ -384,7 +352,6 @@ v05:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 2
 
@@ -395,7 +362,6 @@ v06:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
@@ -406,7 +372,6 @@ v07:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 2
 
@@ -417,7 +382,6 @@ v08:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
@@ -428,7 +392,6 @@ v09:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
@@ -439,7 +402,6 @@ v10:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
@@ -450,7 +412,6 @@ v11:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
@@ -461,7 +422,6 @@ v12:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
@@ -472,7 +432,6 @@ v13:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
@@ -483,7 +442,6 @@ v14:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 		ZOffset: -512
 	damaged-idle:
 		Start: 1
@@ -496,7 +454,6 @@ v15:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 		ZOffset: -512
 	damaged-idle:
 		Start: 1
@@ -509,7 +466,6 @@ v16:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 		ZOffset: -512
 	damaged-idle:
 		Start: 1
@@ -522,7 +478,6 @@ v17:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 		ZOffset: -512
 	damaged-idle:
 		Start: 1
@@ -535,7 +490,6 @@ v18:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 		ZOffset: -512
 	damaged-idle:
 		Start: 1
@@ -545,7 +499,6 @@ rice:
 	Defaults:
 		AddExtension: false
 	idle: rice.tem
-		Start: 0
 		ZOffset: -512
 	damaged-idle: rice.tem
 		Start: 1
@@ -553,14 +506,12 @@ rice:
 
 v19:
 	idle:
-		Start: 0
 		Length: 14
 
 v19.husk:
 	idle: v19
 		Start: 28
 	fire-start: flmspt
-		Start: 0
 		Length: *
 		Offset: 7,-15
 	fire-loop: flmspt
@@ -570,7 +521,6 @@ v19.husk:
 
 utilpol1:
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -578,7 +528,6 @@ utilpol1:
 
 utilpol2:
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -586,42 +535,31 @@ utilpol2:
 
 ammobox1:
 	idle:
-		Start: 0
-		Length: 1
 
 ammobox2:
 	idle:
-		Start: 0
-		Length: 1
 
 ammobox3:
 	idle:
-		Start: 0
-		Length: 1
 
 tanktrap1:
 	idle:
-		Start: 0
 
 tanktrap2:
 	idle:
-		Start: 0
 
 rushouse:
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 asianhut:
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 barb:
 	idle:
-		Start: 0
 		Length: 16
 	damaged-idle:
 		Start: 16
@@ -629,7 +567,6 @@ barb:
 
 wood:
 	idle:
-		Start: 0
 		Length: 16
 	damaged-idle:
 		Start: 16
@@ -637,67 +574,45 @@ wood:
 
 barl:
 	idle:
-		Start: 0
-		Length: *
 
 brl3:
 	idle:
-		Start: 0
-		Length: *
 
 # Interior Terrain
 boxes01:
 	idle: boxes01.int
-		Start: 0
-		Length: *
 		AddExtension: false
 
 boxes02:
 	idle: boxes02.int
-		Start: 0
-		Length: *
 		AddExtension: false
 
 boxes03:
 	idle: boxes03.int
-		Start: 0
-		Length: *
 		AddExtension: false
 
 boxes04:
 	idle: boxes04.int
-		Start: 0
-		Length: *
 		AddExtension: false
 
 boxes05:
 	idle: boxes05.int
-		Start: 0
-		Length: *
 		AddExtension: false
 
 boxes06:
 	idle: boxes06.int
-		Start: 0
-		Length: *
 		AddExtension: false
 
 boxes07:
 	idle: boxes07.int
-		Start: 0
-		Length: *
 		AddExtension: false
 
 boxes08:
 	idle: boxes08.int
-		Start: 0
-		Length: *
 		AddExtension: false
 
 boxes09:
 	idle: boxes09.int
-		Start: 0
-		Length: *
 		AddExtension: false
 
 # Desert Terrain Expansion
@@ -884,10 +799,8 @@ v37:
 
 snowhut:
 	idle:
-		Start: 0
 		Length: 3
 		Tick: 360
 	damaged-idle:
 		Start: 3
-		Length: 1
 		Tick: 120

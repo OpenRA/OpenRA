@@ -471,11 +471,11 @@
 	TargetableBuilding:
 		TargetTypes: Ground, DetonateAttack
 	RenderBuildingWall:
-		Palette: terrain
+		Palette: effect
 	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: true
-		UseTerrainPalette: true
+		UseTerrainPalette: false
 	AutoTargetIgnore:
 	ProximityCaptor:
 		Types: Wall
