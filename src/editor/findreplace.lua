@@ -408,43 +408,45 @@ function findReplace:RunInFiles(replace)
     reseditor:SetMarginWidth(0, 0) -- hide line numbers
     reseditor:MarkerDefine(ide:GetMarker("searchmatchfile"))
     reseditor:Connect(wxstc.wxEVT_STC_DOUBLECLICK, function(event)
-      if event:GetModifiers() == wx.wxMOD_NONE then
-        local pos = event:GetPosition()
-        if pos == wxstc.wxSTC_INVALID_POSITION then return end
-
-        local line = reseditor:LineFromPosition(pos)
-        local text = reseditor:GetLine(line):gsub("[\n\r]+$","")
-        -- get line with the line number
-        local jumpline = text:match("^%s*(%d+)")
-        local file
-        if jumpline then
-          -- search back to find the file name
-          for curline = line-1, 0, -1 do
-            local text = reseditor:GetLine(curline):gsub("[\n\r]+$","")
-            if not text:find("^%s") and wx.wxFileExists(text) then
-              file = text
-              break
+        if event:GetModifiers() == wx.wxMOD_NONE then
+          local line = event:GetLine()
+          local text = reseditor:GetLine(line):gsub("[\n\r]+$","")
+          -- get line with the line number
+          local jumpline = text:match("^%s*(%d+)")
+          local file
+          if jumpline then
+            -- search back to find the file name
+            for curline = line-1, 0, -1 do
+              local text = reseditor:GetLine(curline):gsub("[\n\r]+$","")
+              if not text:find("^%s") and wx.wxFileExists(text) then
+                file = text
+                break
+              end
             end
+          else
+            file = text
+            jumpline = 1
           end
-        else
-          file = text
-          jumpline = 1
-        end
-        -- activate the file and the line number
-        local editor = file and LoadFile(file,nil,true)
-        if editor then
-          editor:GotoLine(jumpline-1)
-          editor:EnsureVisibleEnforcePolicy(jumpline-1)
-          editor:SetFocus()
+
+          -- activate the file and the line number
+          local editor = file and LoadFile(file,nil,true)
+          if editor then
+            editor:GotoLine(jumpline-1)
+            editor:EnsureVisibleEnforcePolicy(jumpline-1)
+            editor:SetFocus()
+          end
 
           -- doubleclick can set selection, so reset it
+          local pos = event:GetPosition()
+          if pos == wxstc.wxSTC_INVALID_POSITION then
+            pos = reseditor:GetLineEndPosition(line)
+          end
           reseditor:SetSelection(pos, pos)
+          return
         end
-        return
-      end
 
-      event:Skip()
-    end)
+        event:Skip()
+      end)
 
     findReplace.reseditor = reseditor
   else
