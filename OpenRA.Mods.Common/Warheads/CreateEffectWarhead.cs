@@ -25,6 +25,9 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Palette to use for explosion effect.")]
 		public readonly string ExplosionPalette = "effect";
 
+		[Desc("Remap explosion effect to player color, if art supports it.")]
+		public readonly bool UsePlayerPalette = false;
+
 		[Desc("Sound to play on impact.")]
 		public readonly string ImpactSound = null;
 
@@ -80,8 +83,12 @@ namespace OpenRA.Mods.Common.Warheads
 			if ((!world.Map.Contains(targetTile)) || (!isValid))
 				return;
 
+			var palette = ExplosionPalette;
+			if (UsePlayerPalette)
+				palette += firedBy.Owner.InternalName;
+
 			if (Explosion != null)
-				world.AddFrameEndTask(w => w.Add(new Explosion(w, pos, Explosion, ExplosionPalette)));
+				world.AddFrameEndTask(w => w.Add(new Explosion(w, pos, Explosion, palette)));
 
 			if (ImpactSound != null)
 				Sound.Play(ImpactSound, pos);

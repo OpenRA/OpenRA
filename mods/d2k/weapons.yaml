@@ -29,10 +29,11 @@ Bazooka:
 	Projectile: Missile
 		Speed: 160
 		Arm: 2
-		ContrailLength: 10
 		Inaccuracy: 96
 		Image: RPG
 		RateOfTurn: 5
+		Trail: bazooka_trail
+		TrailInterval: 1
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
@@ -184,6 +185,8 @@ QuadRockets:
 		Inaccuracy: 96
 		Image: RPG
 		RateOfTurn: 10
+		Trail: bazooka_trail2
+		TrailInterval: 1
 		Speed: 256
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
@@ -243,6 +246,8 @@ TowerMissile:
 		Inaccuracy: 384
 		Image: MISSILE2
 		RateOfTurn: 10
+		Trail: large_trail
+		TrailInterval: 1
 		Speed: 256
 		RangeLimit: 50
 		Angle: 110
@@ -348,7 +353,8 @@ DevBullet:
 		Angle: 110
 		Image: MISSILE2
 		RateOfTurn: 5
-		ContrailLength: 5
+		Trail: large_trail
+		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Spread: 384
 		Damage: 60
@@ -378,8 +384,10 @@ NerveGasMissile:
 		Angle: 110
 		Inaccuracy: 1c96
 		Image: MISSILE
-		ContrailLength: 15
-		ContrailUsePlayerColor: True
+		Trail: deviator_trail
+		TrailPalette: player
+		TrailUsePlayerPalette: true
+		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 10
@@ -391,6 +399,8 @@ NerveGasMissile:
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosion: deviator
+		ExplosionPalette: player
+		UsePlayerPalette: true
 		ImpactSound: EXPLSML2.WAV
 	Warhead@4OwnerChange: ChangeOwner
 		Range: 1c0
