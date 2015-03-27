@@ -81,6 +81,8 @@ namespace OpenRA.Mods.Common.Traits
 			var rightDelta = ts == TileShape.Diamond ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
 			var bottomDelta = ts == TileShape.Diamond ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
 
+			var mouseCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos).ToMPos(ts);
+
 			foreach (var uv in wr.Viewport.VisibleCells.MapCoords)
 			{
 				var lr = Game.Renderer.WorldLineRenderer;
@@ -117,10 +119,16 @@ namespace OpenRA.Mods.Common.Traits
 				var right = wr.ScreenPxPosition(pos + rightDelta + new WVec(0, 0, 512 * rightHeight)).ToFloat2();
 				var bottom = wr.ScreenPxPosition(pos + bottomDelta + new WVec(0, 0, 512 * bottomHeight)).ToFloat2();
 
+				if (uv == mouseCell)
+					lr.LineWidth = 3;
+
 				lr.DrawLine(left, top, leftColor, topColor);
 				lr.DrawLine(top, right, topColor, rightColor);
 				lr.DrawLine(right, bottom, rightColor, bottomColor);
 				lr.DrawLine(bottom, left, bottomColor, leftColor);
+
+				if (uv == mouseCell)
+					lr.LineWidth = 1;
 			}
 		}
 	}
