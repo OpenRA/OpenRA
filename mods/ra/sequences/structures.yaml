@@ -154,6 +154,10 @@ barr:
 	icon: barricon
 
 tent:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	idle:
 		Length: 10
 	damaged-idle:
@@ -163,10 +167,8 @@ tent:
 		Length: *
 	bib: bib3
 		Length: *
-		UseTilesetExtension: true
-		TilesetOverrides:
-			INTERIOR: TEMPERAT
 	icon: tenticon
+		UseTilesetExtension: false
 
 kenn:
 	idle:
