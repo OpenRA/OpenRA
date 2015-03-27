@@ -203,4 +203,10 @@ SupportsMapsFrom: cnc
 
 SpriteFormats: ShpTD, TmpTD, ShpTS, TmpRA
 
-SpriteSequenceFormat: DefaultSpriteSequence
+SpriteSequenceFormat: TilesetSpecificSpriteSequence
+	TilesetExtensions:
+		TEMPERAT: .tem
+		WINTER: .win
+		SNOW: .sno
+		DESERT: .des
+		JUNGLE: .jun

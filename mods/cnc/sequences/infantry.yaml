@@ -1,84 +1,63 @@
 vice:
 	idle:
-		Start: 0
 		Length: *
 	muzzle0: chem-n
-		Start: 0
 		Length: *
 		Offset: 3,4
 	muzzle1: chem-nw
-		Start: 0
 		Length: *
 		Offset: 4,1
 	muzzle2: chem-w
-		Start: 0
 		Length: *
 		Offset: 7,-3
 	muzzle3: chem-sw
-		Start: 0
 		Length: *
 		Offset: 3,-6
 	muzzle4: chem-s
-		Start: 0
 		Length: *
 		Offset: 1,-6
 	muzzle5: chem-se
-		Start: 0
 		Length: *
 		Offset: -3,-5
 	muzzle6: chem-e
-		Start: 0
 		Length: *
 		Offset: -6,-3
 	muzzle7: chem-ne
-		Start: 0
 		Length: *
 		Offset: -1,0
 	icon: viceicnh
-		Start: 0
 
 pvice:
 	idle:
-		Start: 0
 		Length: *
 	muzzle0: chem-n
-		Start: 0
 		Length: *
 		Offset: 3,4
 	muzzle1: chem-nw
-		Start: 0
 		Length: *
 		Offset: 4,1
 	muzzle2: chem-w
-		Start: 0
 		Length: *
 		Offset: 7,-3
 	muzzle3: chem-sw
-		Start: 0
 		Length: *
 		Offset: 3,-6
 	muzzle4: chem-s
-		Start: 0
 		Length: *
 		Offset: 1,-6
 	muzzle5: chem-se
-		Start: 0
 		Length: *
 		Offset: -3,-5
 	muzzle6: chem-e
-		Start: 0
 		Length: *
 		Offset: -6,-3
 	muzzle7: chem-ne
-		Start: 0
 		Length: *
 		Offset: -1,0
 	icon: viceicnh
-		Start: 0
 
 e1:
 	stand:
-		Start: 0
 		Facings: 8
 	stand2:
 		Start: 8
@@ -172,12 +151,11 @@ e1:
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
-	icon: e1icnh
-		Start: 0
+	icon: e1icnh.tem
+		AddExtension: False
 
 e2:
 	stand:
-		Start: 0
 		Facings: 8
 	stand2:
 		Start: 8
@@ -262,12 +240,11 @@ e2:
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
-	icon: e2icnh
-		Start: 0
+	icon: e2icnh.tem
+		AddExtension: False
 
 e3:
 	stand:
-		Start: 0
 		Facings: 8
 	stand2:
 		Start: 8
@@ -352,12 +329,11 @@ e3:
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
-	icon: e3icnh
-		Start: 0
+	icon: e3icnh.tem
+		AddExtension: False
 
 e4:
 	stand:
-		Start: 0
 		Facings: 8
 	stand2:
 		Start: 8
@@ -443,43 +419,34 @@ e4:
 		Tick: 1600
 		ZOffset: -511
 	muzzle0: flame-n
-		Start: 0
 		Length: *
 		Offset: 1,6
 	muzzle1: flame-nw
-		Start: 0
 		Length: *
 		Offset: 8,7
 	muzzle2: flame-w
-		Start: 0
 		Length: *
 		Offset: 8,2
 	muzzle3: flame-sw
-		Start: 0
 		Length: *
 		Offset: 7,-2
 	muzzle4: flame-s
-		Start: 0
 		Length: *
 		Offset: 1,-2
 	muzzle5: flame-se
-		Start: 0
 		Length: *
 		Offset: -5,-2
 	muzzle6: flame-e
-		Start: 0
 		Length: *
 		Offset: -7,2
 	muzzle7: flame-ne
-		Start: 0
 		Length: *
 		Offset: -7,8
-	icon: e4icnh
-		Start: 0
+	icon: e4icnh.tem
+		AddExtension: False
 
 e5:
 	stand:
-		Start: 0
 		Facings: 8
 	stand2:
 		Start: 8
@@ -565,43 +532,34 @@ e5:
 		Tick: 1600
 		ZOffset: -511
 	muzzle0: chem-n
-		Start: 0
 		Length: *
 		Offset: 1,2
 	muzzle1: chem-nw
-		Start: 0
 		Length: *
 		Offset: 8,2
 	muzzle2: chem-w
-		Start: 0
 		Length: *
 		Offset: 8,-3
 	muzzle3: chem-sw
-		Start: 0
 		Length: *
 		Offset: 7,-6
 	muzzle4: chem-s
-		Start: 0
 		Length: *
 		Offset: 1,-6
 	muzzle5: chem-se
-		Start: 0
 		Length: *
 		Offset: -5,-6
 	muzzle6: chem-e
-		Start: 0
 		Length: *
 		Offset: -7,-3
 	muzzle7: chem-ne
-		Start: 0
 		Length: *
 		Offset: -3,2
-	icon: e5icnh
-		Start: 0
+	icon: e5icnh.tem
+		AddExtension: False
 
 e6:
 	stand:
-		Start: 0
 		Facings: 8
 	stand2:
 		Start: 8
@@ -678,12 +636,11 @@ e6:
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
-	icon: e6icnh
-		Start: 0
+	icon: e6icnh.tem
+		AddExtension: False
 
 rmbo:
 	stand:
-		Start: 0
 		Facings: 8
 	stand2:
 		Start: 8
@@ -772,5 +729,5 @@ rmbo:
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
-	icon: rmboicnh
-		Start: 0
+	icon: rmboicnh.tem
+		AddExtension: False

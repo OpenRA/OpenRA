@@ -2,7 +2,7 @@ General:
 	Name: Snow
 	Id: SNOW
 	Palette: snow.pal
-	Extensions: .sno, .shp, .tem
+	Extensions: # Obsolete
 	WaterPaletteRotationBase: 32
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Beach, River, Bridge
 
