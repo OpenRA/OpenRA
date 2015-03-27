@@ -1,6 +1,10 @@
 tc04:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -9,8 +13,12 @@ tc04:
 		Tick: 80
 
 tc05:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -19,8 +27,12 @@ tc05:
 		Tick: 80
 
 tc03:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -29,8 +41,12 @@ tc03:
 		Tick: 80
 
 tc02:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -39,8 +55,11 @@ tc02:
 		Tick: 80
 
 tc01:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -49,8 +68,12 @@ tc01:
 		Tick: 80
 
 t17:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -59,8 +82,12 @@ t17:
 		Tick: 80
 
 t16:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -69,8 +96,12 @@ t16:
 		Tick: 80
 
 t15:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -79,8 +110,12 @@ t15:
 		Tick: 80
 
 t14:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -89,8 +124,12 @@ t14:
 		Tick: 80
 
 t13:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -99,8 +138,12 @@ t13:
 		Tick: 80
 
 t12:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -109,8 +152,12 @@ t12:
 		Tick: 80
 
 t11:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -119,8 +166,12 @@ t11:
 		Tick: 80
 
 t10:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -129,8 +180,11 @@ t10:
 		Tick: 80
 
 t08:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -139,8 +193,12 @@ t08:
 		Tick: 80
 
 t07:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -149,8 +207,12 @@ t07:
 		Tick: 80
 
 t06:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -159,8 +221,12 @@ t06:
 		Tick: 80
 
 t05:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -169,8 +235,12 @@ t05:
 		Tick: 80
 
 t03:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -179,33 +249,37 @@ t03:
 		Tick: 80
 
 ice01:
-	idle:
-		Start: 0
+	idle: ice01.sno
 		Length: *
+		AddExtension: false
 
 ice02:
-	idle:
-		Start: 0
+	idle: ice02.sno
 		Length: *
+		AddExtension: false
 
 ice03:
-	idle:
-		Start: 0
+	idle: ice03.sno
 		Length: *
+		AddExtension: false
 
 ice04:
-	idle:
-		Start: 0
+	idle: ice04.sno
 		Length: *
+		AddExtension: false
 
 ice05:
-	idle:
-		Start: 0
+	idle: ice05.sno
 		Length: *
+		AddExtension: false
 
 t02:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -214,8 +288,12 @@ t02:
 		Tick: 80
 
 t01:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -224,26 +302,42 @@ t01:
 		Tick: 80
 
 v01:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 v02:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 v03:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 v04:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 2
 	active:
@@ -252,117 +346,172 @@ v04:
 		Start: 3
 
 v05:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 2
 
 v06:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 v07:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 2
 
 v08:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 v09:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 v10:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 v11:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 v12:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 v13:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 v14:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 		ZOffset: -512
 	damaged-idle:
 		Start: 1
 		ZOffset: -512
 
 v15:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 		ZOffset: -512
 	damaged-idle:
 		Start: 1
 		ZOffset: -512
 
 v16:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 		ZOffset: -512
 	damaged-idle:
 		Start: 1
 		ZOffset: -512
 
 v17:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 		ZOffset: -512
 	damaged-idle:
 		Start: 1
 		ZOffset: -512
 
 v18:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 	idle:
-		Start: 0
 		ZOffset: -512
 	damaged-idle:
 		Start: 1
 		ZOffset: -512
 
 rice:
-	idle:
-		Start: 0
+	Defaults:
+		AddExtension: false
+	idle: rice.tem
 		ZOffset: -512
-	damaged-idle:
+	damaged-idle: rice.tem
 		Start: 1
 		ZOffset: -512
 
 v19:
 	idle:
-		Start: 0
 		Length: 14
 
 v19.husk:
 	idle: v19
 		Start: 28
 	fire-start: flmspt
-		Start: 0
 		Length: *
 		Offset: 7,-15
 	fire-loop: flmspt
@@ -372,7 +521,6 @@ v19.husk:
 
 utilpol1:
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -380,7 +528,6 @@ utilpol1:
 
 utilpol2:
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 	dead:
@@ -388,42 +535,31 @@ utilpol2:
 
 ammobox1:
 	idle:
-		Start: 0
-		Length: 1
 
 ammobox2:
 	idle:
-		Start: 0
-		Length: 1
 
 ammobox3:
 	idle:
-		Start: 0
-		Length: 1
 
 tanktrap1:
 	idle:
-		Start: 0
 
 tanktrap2:
 	idle:
-		Start: 0
 
 rushouse:
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 asianhut:
 	idle:
-		Start: 0
 	damaged-idle:
 		Start: 1
 
 barb:
 	idle:
-		Start: 0
 		Length: 16
 	damaged-idle:
 		Start: 16
@@ -431,7 +567,6 @@ barb:
 
 wood:
 	idle:
-		Start: 0
 		Length: 16
 	damaged-idle:
 		Start: 16
@@ -439,229 +574,233 @@ wood:
 
 barl:
 	idle:
-		Start: 0
-		Length: *
 
 brl3:
 	idle:
-		Start: 0
-		Length: *
 
 # Interior Terrain
 boxes01:
-	idle:
-		Start: 0
-		Length: *
+	idle: boxes01.int
+		AddExtension: false
 
 boxes02:
-	idle:
-		Start: 0
-		Length: *
+	idle: boxes02.int
+		AddExtension: false
 
 boxes03:
-	idle:
-		Start: 0
-		Length: *
+	idle: boxes03.int
+		AddExtension: false
 
 boxes04:
-	idle:
-		Start: 0
-		Length: *
+	idle: boxes04.int
+		AddExtension: false
 
 boxes05:
-	idle:
-		Start: 0
-		Length: *
+	idle: boxes05.int
+		AddExtension: false
 
 boxes06:
-	idle:
-		Start: 0
-		Length: *
+	idle: boxes06.int
+		AddExtension: false
 
 boxes07:
-	idle:
-		Start: 0
-		Length: *
+	idle: boxes07.int
+		AddExtension: false
 
 boxes08:
-	idle:
-		Start: 0
-		Length: *
+	idle: boxes08.int
+		AddExtension: false
 
 boxes09:
-	idle:
-		Start: 0
-		Length: *
+	idle: boxes09.int
+		AddExtension: false
 
-#Desert Terrain Expansion
+# Desert Terrain Expansion
 rock1:
-	idle:
-		Start: 0
+	idle: rock1.des
+		AddExtension: false
 
 rock2:
-	idle:
-		Start: 0
+	idle: rock2.des
+		AddExtension: false
 
 rock3:
-	idle:
-		Start: 0
+	idle: rock3.des
+		AddExtension: false
 
 rock4:
-	idle:
-		Start: 0
+	idle: rock4.des
+		AddExtension: false
 
 rock5:
-	idle:
-		Start: 0
+	idle: rock5.des
+		AddExtension: false
 
 rock6:
-	idle:
-		Start: 0
+	idle: rock6.des
+		AddExtension: false
 
 rock7:
-	idle:
-		Start: 0
+	idle: rock7.des
+		AddExtension: false
 
 t04:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: t04.des
+	damaged-idle: t04.des
 		Start: 1
-	dead:
+	dead: t04.des
 		Start: 2
 		Length: 8
 		Tick: 80
 
 v20:
-	idle:
-		Start: 0
+	Defaults:
+		AddExtension: false
+	idle: v20.des
 		Length: 3
 		Tick: 120
-	damaged-idle:
+	damaged-idle: v20.des
 		Start: 3
 		Length: 3
 		Tick: 120
 
 v21:
-	idle:
-		Start: 0
+	Defaults:
+		AddExtension: false
+	idle: v21.des
 		Length: 3
 		Tick: 120
-	damaged-idle:
+	damaged-idle: v21.des
 		Start: 3
 		Length: 3
 		Tick: 120
 
 v22:
-	idle:
-		Start: 0
+	Defaults:
+		AddExtension: false
+	idle: v22.des
 		Length: 3
 		Tick: 120
-	damaged-idle:
+	damaged-idle: v22.des
 		Start: 3
 		Length: 3
 		Tick: 120
 
 v23:
-	idle:
-		Start: 0
+	Defaults:
+		AddExtension: false
+	idle: v23.des
 		Length: 3
 		Tick: 120
-	damaged-idle:
+	damaged-idle: v23.des
 		Start: 3
 		Length: 3
 		Tick: 120
 
 v24:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v24.des
+	damaged-idle: v24.des
 		Start: 1
 
 v25:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v25.des
+	damaged-idle: v25.des
 		Start: 1
 
 v26:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v26.des
+	damaged-idle: v26.des
 		Start: 1
 
 v27:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v27.des
+	damaged-idle: v27.des
 		Start: 1
 
 v28:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v28.des
+	damaged-idle: v28.des
 		Start: 1
 
 v29:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v29.des
+	damaged-idle: v29.des
 		Start: 1
 
 v30:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v30.des
+	damaged-idle: v30.des
 		Start: 2
 
 v31:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v31.des
+	damaged-idle: v31.des
 		Start: 1
 
 v32:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v32.des
+	damaged-idle: v32.des
 		Start: 1
 
 v33:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v33.des
+	damaged-idle: v33.des
 		Start: 1
 
 v34:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v34.des
+	damaged-idle: v34.des
 		Start: 1
 
 v35:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v35.des
+	damaged-idle: v35.des
 		Start: 1
 
 v36:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v36.des
+	damaged-idle: v36.des
 		Start: 1
 
 v37:
-	idle:
-		Start: 0
-	damaged-idle:
+	Defaults:
+		AddExtension: false
+	idle: v37.des
+	damaged-idle: v37.des
 		Start: 1
 
 snowhut:
 	idle:
-		Start: 0
 		Length: 3
 		Tick: 360
 	damaged-idle:
 		Start: 3
-		Length: 1
 		Tick: 120

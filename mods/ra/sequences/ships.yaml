@@ -1,49 +1,35 @@
 ss:
 	idle:
-		Start: 0
 		Facings: 16
 	icon: ssicon
-		Start: 0
 
 ca:
 	idle:
-		Start: 0
 		Facings: 16
 	turret: turr
-		Start: 0
 		Facings: 32
 	muzzle: gunfire2
-		Start: 0
 		Length: 5
 	icon: caicon
-		Start: 0
 
 dd:
 	idle:
-		Start: 0
 		Facings: 16
 	turret: ssam
-		Start: 0
 		Facings: 32
 	icon: ddicon
-		Start: 0
 
 pt:
 	idle:
-		Start: 0
 		Facings: 16
 	turret: mgun
-		Start: 0
 		Facings: 32
 	muzzle: gunfire2
-		Start: 0
 		Length: 5
 	icon: pticon
-		Start: 0
 
 lst:
 	idle:
-		Start: 0
 	open:
 		Start: 1
 		Length: 4
@@ -52,11 +38,8 @@ lst:
 		Start: 4
 		ZOffset: -511
 	icon: lsticon
-		Start: 0
 
 msub:
 	idle:
-		Start: 0
 		Facings: 16
 	icon: msubicon
-		Start: 0
