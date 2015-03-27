@@ -37,19 +37,21 @@ namespace OpenRA.Mods.Common.Traits
 			if (devMode.Value == null || !devMode.Value.ShowTerrainGeometry)
 				return;
 
+			var map = wr.World.Map;
+			var tileSet = wr.World.TileSet;
 			var lr = Game.Renderer.WorldLineRenderer;
 			var colors = wr.World.TileSet.HeightDebugColors;
 
 			foreach (var uv in wr.Viewport.VisibleCells.MapCoords)
 			{
-				var height = (int)wr.World.Map.MapHeight.Value[uv];
-				var tile = wr.World.Map.MapTiles.Value[uv];
-				var ti = wr.World.TileSet.GetTileInfo(tile);
+				var height = (int)map.MapHeight.Value[uv];
+				var tile = map.MapTiles.Value[uv];
+				var ti = tileSet.GetTileInfo(tile);
 				var ramp = ti != null ? ti.RampType : 0;
 
-				var corners = wr.World.Map.CellCorners[ramp];
+				var corners = map.CellCorners[ramp];
 				var color = corners.Select(c => colors[height + c.Z / 512]).ToArray();
-				var pos = wr.World.Map.CenterOfCell(uv.ToCPos(wr.World.Map));
+				var pos = map.CenterOfCell(uv.ToCPos(map));
 				var screen = corners.Select(c => wr.ScreenPxPosition(pos + c).ToFloat2()).ToArray();
 
 				for (var i = 0; i < 4; i++)
