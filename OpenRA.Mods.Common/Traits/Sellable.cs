@@ -29,12 +29,18 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly Lazy<Health> health;
+		readonly SellableInfo info;
+		readonly Building building;
+		readonly WithMakeAnimation makeAnimation;
 
 		public Sellable(Actor self, SellableInfo info)
 			: base(info)
 		{
 			this.self = self;
+			this.info = info;
 			health = Exts.Lazy(() => self.TraitOrDefault<Health>());
+			building = self.TraitOrDefault<Building>();
+			makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -48,23 +54,21 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
-			var building = self.TraitOrDefault<Building>();
 			if (building != null && !building.Lock())
 				return;
 
 			self.CancelActivity();
 
-			foreach (var s in Info.SellSounds)
+			foreach (var s in info.SellSounds)
 				Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
 
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Selling(self);
 
-			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
 			if (makeAnimation != null)
-				makeAnimation.Reverse(self, new Sell(), false);
+				makeAnimation.Reverse(self, new Sell(self), false);
 			else
-				self.QueueActivity(false, new Sell());
+				self.QueueActivity(false, new Sell(self));
 		}
 
 		public bool IsTooltipVisible(Player forPlayer)
@@ -78,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				var sellValue = self.GetSellValue() * Info.RefundPercent / 100;
+				var sellValue = self.GetSellValue() * info.RefundPercent / 100;
 				if (health.Value != null)
 				{
 					sellValue *= health.Value.HP;

@@ -8,34 +8,28 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class ResupplyAircraft : Activity
+	public class FlyOffMap : Activity
 	{
-		readonly Aircraft aircraft;
+		readonly Plane plane;
 
-		public ResupplyAircraft(Actor self)
+		public FlyOffMap(Actor self)
 		{
-			aircraft = self.Trait<Aircraft>();
+			plane = self.Trait<Plane>();
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			var host = aircraft.GetActorBelow();
-
-			if (host == null)
+			if (IsCanceled || !self.World.Map.Contains(self.Location))
 				return NextActivity;
 
-			return Util.SequenceActivities(
-				aircraft.GetResupplyActivities(host).Append(NextActivity).ToArray());
+			Fly.FlyToward(self, plane, plane.Facing, plane.Info.CruiseAltitude);
+			return this;
 		}
 	}
 }

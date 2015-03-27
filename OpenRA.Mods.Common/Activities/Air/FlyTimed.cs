@@ -16,37 +16,25 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class FlyTimed : Activity
 	{
+		readonly Plane plane;
+		readonly WRange cruiseAltitude;
 		int remainingTicks;
 
-		public FlyTimed(int ticks) { remainingTicks = ticks; }
+		public FlyTimed(int ticks, Actor self)
+		{
+			remainingTicks = ticks;
+			plane = self.Trait<Plane>();
+			cruiseAltitude = plane.Info.CruiseAltitude;
+		}
 
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled || remainingTicks-- == 0)
 				return NextActivity;
 
-			var plane = self.Trait<Plane>();
-			Fly.FlyToward(self, plane, plane.Facing, plane.Info.CruiseAltitude);
+			Fly.FlyToward(self, plane, plane.Facing, cruiseAltitude);
 
 			return this;
-		}
-	}
-
-	public class FlyOffMap : Activity
-	{
-		public override Activity Tick(Actor self)
-		{
-			if (IsCanceled || !self.World.Map.Contains(self.Location))
-				return NextActivity;
-
-			var plane = self.Trait<Plane>();
-			Fly.FlyToward(self, plane, plane.Facing, plane.Info.CruiseAltitude);
-			return this;
-		}
-
-		public override void Cancel(Actor self)
-		{
-			base.Cancel(self);
 		}
 	}
 }

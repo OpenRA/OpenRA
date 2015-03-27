@@ -18,9 +18,18 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class ReturnToBase : Activity
 	{
+		readonly Plane plane;
+		readonly PlaneInfo planeInfo;
 		bool isCalculated;
 		Actor dest;
 		WPos w1, w2, w3;
+
+		public ReturnToBase(Actor self, Actor dest)
+		{
+			this.dest = dest;
+			plane = self.Trait<Plane>();
+			planeInfo = self.Info.Traits.Get<PlaneInfo>();
+		}
 
 		public static Actor ChooseAirfield(Actor self, bool unreservedOnly)
 		{
@@ -41,8 +50,6 @@ namespace OpenRA.Mods.Common.Activities
 			if (dest == null)
 				return;
 
-			var plane = self.Trait<Plane>();
-			var planeInfo = self.Info.Traits.Get<PlaneInfo>();
 			var res = dest.TraitOrDefault<Reservable>();
 			if (res != null)
 			{
@@ -54,7 +61,7 @@ namespace OpenRA.Mods.Common.Activities
 			var altitude = planeInfo.CruiseAltitude.Range;
 
 			// Distance required for descent.
-			var landDistance = altitude * 1024 / plane.Info.MaximumPitch.Tan();
+			var landDistance = altitude * 1024 / planeInfo.MaximumPitch.Tan();
 
 			// Land towards the east
 			var approachStart = landPos + new WVec(-landDistance, 0, altitude);
@@ -92,11 +99,6 @@ namespace OpenRA.Mods.Common.Activities
 			isCalculated = true;
 		}
 
-		public ReturnToBase(Actor self, Actor dest)
-		{
-			this.dest = dest;
-		}
-
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled || self.IsDead)
@@ -111,16 +113,16 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.CancelActivity();
 				if (nearestAfld != null)
-					return Util.SequenceActivities(new Fly(self, Target.FromActor(nearestAfld)), new FlyCircle());
+					return Util.SequenceActivities(new Fly(self, Target.FromActor(nearestAfld)), new FlyCircle(self));
 				else
-					return new FlyCircle();
+					return new FlyCircle(self);
 			}
 
 			return Util.SequenceActivities(
 				new Fly(self, Target.FromPos(w1)),
 				new Fly(self, Target.FromPos(w2)),
 				new Fly(self, Target.FromPos(w3)),
-				new Land(Target.FromActor(dest)),
+				new Land(self, Target.FromActor(dest)),
 				NextActivity);
 		}
 	}

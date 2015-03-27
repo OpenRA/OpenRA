@@ -29,8 +29,14 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly RepairableNearInfo info;
+		readonly IMove movement;
 
-		public RepairableNear(Actor self, RepairableNearInfo info) { this.self = self; this.info = info; }
+		public RepairableNear(Actor self, RepairableNearInfo info)
+		{
+			this.self = self;
+			this.info = info;
+			movement = self.Trait<IMove>();
+		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -63,7 +69,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "RepairNear" && CanRepairAt(order.TargetActor) && ShouldRepair())
 			{
-				var movement = self.Trait<IMove>();
 				var target = Target.FromOrder(self.World, order);
 
 				self.CancelActivity();

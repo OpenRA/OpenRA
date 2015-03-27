@@ -16,10 +16,17 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class TakeOff : Activity
 	{
+		readonly Aircraft aircraft;
+		readonly IMove move;
+
+		public TakeOff(Actor self)
+		{
+			aircraft = self.Trait<Aircraft>();
+			move = self.Trait<IMove>();
+		}
+
 		public override Activity Tick(Actor self)
 		{
-			var aircraft = self.Trait<Aircraft>();
-
 			self.CancelActivity();
 
 			var reservation = aircraft.Reservation;
@@ -36,7 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 			var destination = rp != null ? rp.Location :
 				(hasHost ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
 
-			return new AttackMoveActivity(self, self.Trait<IMove>().MoveTo(destination, 1));
+			return new AttackMoveActivity(self, move.MoveTo(destination, 1));
 		}
 	}
 }
