@@ -407,9 +407,13 @@ function findReplace:RunInFiles(replace)
     reseditor:SetIndentationGuides(false)
     reseditor:SetMarginWidth(0, 0) -- hide line numbers
     reseditor:MarkerDefine(ide:GetMarker("searchmatchfile"))
-    reseditor:Connect(wxstc.wxEVT_STC_DOUBLECLICK, function(event)
-        if event:GetModifiers() == wx.wxMOD_NONE then
-          local line = event:GetLine()
+    reseditor:Connect(wx.wxEVT_LEFT_DCLICK, function(event)
+        if not wx.wxGetKeyState(wx.WXK_SHIFT)
+        and not wx.wxGetKeyState(wx.WXK_CONTROL)
+        and not wx.wxGetKeyState(wx.WXK_ALT) then
+          local point = event:GetPosition()
+          local pos = reseditor:PositionFromPoint(point)
+          local line = reseditor:LineFromPosition(pos)
           local text = reseditor:GetLine(line):gsub("[\n\r]+$","")
           -- get line with the line number
           local jumpline = text:match("^%s*(%d+)")
@@ -435,13 +439,6 @@ function findReplace:RunInFiles(replace)
             editor:EnsureVisibleEnforcePolicy(jumpline-1)
             editor:SetFocus()
           end
-
-          -- doubleclick can set selection, so reset it
-          local pos = event:GetPosition()
-          if pos == wxstc.wxSTC_INVALID_POSITION then
-            pos = reseditor:GetLineEndPosition(line)
-          end
-          reseditor:SetSelection(pos, pos)
           return
         end
 
