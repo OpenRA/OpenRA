@@ -35,6 +35,9 @@ namespace OpenRA
 		public static bool operator ==(WPos me, WPos other) { return me.X == other.X && me.Y == other.Y && me.Z == other.Z; }
 		public static bool operator !=(WPos me, WPos other) { return !(me == other); }
 
+		/// <summary>
+		/// Returns the linear interpolation between points 'a' and 'b'
+		/// </summary>
 		public static WPos Lerp(WPos a, WPos b, int mul, int div) { return a + (b - a) * mul / div; }
 
 		public static WPos LerpQuadratic(WPos a, WPos b, WAngle pitch, int mul, int div)
