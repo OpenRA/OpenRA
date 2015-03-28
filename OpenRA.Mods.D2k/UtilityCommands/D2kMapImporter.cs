@@ -323,7 +323,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			// Get all templates from the tileset YAML file that have at least one frame and an Image property corresponding to the requested tileset
 			// Each frame is a tile from the Dune 2000 tileset files, with the Frame ID being the index of the tile in the original file
 			tileSetsFromYaml = tileSet.Templates.Where(t => t.Value.Frames != null
-				&& t.Value.Image.ToLower() == tilesetName.ToLower()).Select(ts => ts.Value).ToList();
+				&& t.Value.Image[0].ToLower() == tilesetName.ToLower()).Select(ts => ts.Value).ToList();
 		}
 
 		void FillMap()

@@ -390,7 +390,7 @@ namespace OpenRA.TilesetBuilder
 
 				var template = new TerrainTemplateInfo(
 					id: cur,
-					image: "{0}{1:00}".F(txtTilesetName.Text, cur),
+					image: new[] { "{0}{1:00}".F(txtTilesetName.Text, cur) },
 					size: new int2(tp.Width, tp.Height),
 					tiles: tiles);
 
