@@ -1,19 +1,17 @@
 #!/bin/bash
 
-echo "Branch is $1"
-
 case "$1" in
-	"bleed")
+	bleed)
 		exit
 		;;
-	"next")
+	next | playtest-*)
 		TAG=" (playtest)"
 		;;
-	"master")
+	master | release-*)
 		TAG=""
 		;;
 	*)
-		#Eh? Unknown branch
+		echo "Unknown branch: $1"
 		exit
 		;;
 esac
