@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		public string Name { get { return "--fix-classic-tilesets"; } }
 
-		[Desc("Fixes missing template tile definitions and adds filename extensions.")]
+		[Desc("EXTENSIONS", "Fixes missing template tile definitions and adds filename extensions.")]
 		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
@@ -40,12 +40,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var terrainRightColorField = typeof(TerrainTileInfo).GetField("RightColor");
 			var empty = new Size(0, 0);
 			var single = new int2(1, 1);
+			var exts = new[] { "" }.Concat(args[1].Split(','));
 
 			foreach (var t in Game.ModData.Manifest.TileSets)
 			{
 				var ts = new TileSet(Game.ModData, t);
-				var exts = new[] { "" }.Concat(ts.Extensions);
-				var frameCache = new FrameCache(Game.ModData.SpriteLoaders, ts.Extensions);
+				var frameCache = new FrameCache(Game.ModData.SpriteLoaders);
 
 				Console.WriteLine("Tileset: " + ts.Name);
 				foreach (var template in ts.Templates.Values)
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					foreach (var ext in exts)
 					{
 						Stream s;
-						if (!GlobalFileSystem.TryOpenWithExts(template.Image, new[] { ext }, out s))
+						if (!GlobalFileSystem.TryOpen(template.Image + ext, out s))
 							continue;
 
 						// Rewrite the template image (normally readonly) using reflection

@@ -3,7 +3,6 @@ General:
 	Id: DESERT
 	Palette: desert.pal
 	PlayerPalette: temperat.pal
-	Extensions: # Obsolete
 	WaterPaletteRotationBase: 32
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Water Cliffs, Beach, River, Bridge
 

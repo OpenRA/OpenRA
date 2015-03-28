@@ -164,45 +164,38 @@ namespace OpenRA.FileSystem
 			return null;
 		}
 
-		public static Stream Open(string filename) { return OpenWithExts(filename, ""); }
-
-		public static Stream OpenWithExts(string filename, params string[] exts)
+		public static Stream Open(string filename)
 		{
 			Stream s;
-			if (!TryOpenWithExts(filename, exts, out s))
+			if (!TryOpen(filename, out s))
 				throw new FileNotFoundException("File not found: {0}".F(filename), filename);
 
 			return s;
 		}
 
-		public static bool TryOpenWithExts(string filename, string[] exts, out Stream s)
+		public static bool TryOpen(string filename, out Stream s)
 		{
+			// Check the cache for a quick lookup
 			if (filename.IndexOfAny(new char[] { '/', '\\' }) == -1)
 			{
-				foreach (var ext in exts)
-				{
-					s = GetFromCache(PackageHashType.Classic, filename + ext);
-					if (s != null)
-						return true;
+				s = GetFromCache(PackageHashType.Classic, filename);
+				if (s != null)
+					return true;
 
-					s = GetFromCache(PackageHashType.CRC32, filename + ext);
-					if (s != null)
-						return true;
-				}
+				s = GetFromCache(PackageHashType.CRC32, filename);
+				if (s != null)
+					return true;
 			}
 
-			foreach (var ext in exts)
-			{
-				var possibleName = filename + ext;
-				var folder = MountedFolders
-					.Where(x => x.Exists(possibleName))
-					.MaxByOrDefault(x => x.Priority);
+			// Ask each package individually
+			var folder = MountedFolders
+				.Where(x => x.Exists(filename))
+				.MaxByOrDefault(x => x.Priority);
 
-				if (folder != null)
-				{
-					s = folder.GetContent(possibleName);
-					return true;
-				}
+			if (folder != null)
+			{
+				s = folder.GetContent(filename);
+				return true;
 			}
 
 			s = null;

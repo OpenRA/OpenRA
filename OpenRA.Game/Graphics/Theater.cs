@@ -39,7 +39,7 @@ namespace OpenRA.Graphics
 			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
 			templates = new Dictionary<ushort, Sprite[]>();
 
-			var frameCache = new FrameCache(Game.ModData.SpriteLoaders, tileset.Extensions);
+			var frameCache = new FrameCache(Game.ModData.SpriteLoaders);
 			foreach (var t in tileset.Templates)
 			{
 				var allFrames = frameCache[t.Value.Image];
