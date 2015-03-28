@@ -64,11 +64,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var width = world.Map.Bounds.Width;
 			var height = world.Map.Bounds.Height;
-			var size = Math.Max(width, height);
 			var rb = RenderBounds;
-
 			previewScale = Math.Min(rb.Width * 1f / width, rb.Height * 1f / height);
-			previewOrigin = new int2((int)(previewScale * (size - width) / 2), (int)(previewScale * (size - height) / 2));
+			previewOrigin = new int2((int)((rb.Width - previewScale * width) / 2), (int)((rb.Height - previewScale * height) / 2));
 			mapRect = new Rectangle(previewOrigin.X, previewOrigin.Y, (int)(previewScale * width), (int)(previewScale * height));
 
 			// The four layers are stored in a 2x2 grid within a single texture
