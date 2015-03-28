@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -85,6 +86,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly CellLayer<TileInfo> tileInfos;
 		readonly CellLayer<bool> shroudDirty;
+		readonly HashSet<CPos> cellsDirty;
+		readonly HashSet<CPos> cellsAndNeighborsDirty;
 
 		readonly Vertex[] fogVertices, shroudVertices;
 		readonly Sprite[] fogSprites, shroudSprites;
@@ -113,6 +116,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			tileInfos = new CellLayer<TileInfo>(map);
 			shroudDirty = new CellLayer<bool>(map);
+			cellsDirty = new HashSet<CPos>();
+			cellsAndNeighborsDirty = new HashSet<CPos>();
 			var verticesLength = map.MapSize.X * map.MapSize.Y * 4;
 			fogVertices = new Vertex[verticesLength];
 			shroudVertices = new Vertex[verticesLength];
@@ -209,13 +214,16 @@ namespace OpenRA.Mods.Common.Traits
 			if (currentShroud != newShroud)
 			{
 				if (currentShroud != null)
-					currentShroud.CellEntryChanged -= MarkCellAndNeighborsDirty;
+					currentShroud.CellsChanged -= MarkCellsDirty;
 
 				if (newShroud != null)
 				{
 					shroudDirty.Clear(true);
-					newShroud.CellEntryChanged += MarkCellAndNeighborsDirty;
+					newShroud.CellsChanged += MarkCellsDirty;
 				}
+
+				cellsDirty.Clear();
+				cellsAndNeighborsDirty.Clear();
 
 				currentShroud = newShroud;
 			}
@@ -223,6 +231,21 @@ namespace OpenRA.Mods.Common.Traits
 			if (currentShroud != null)
 			{
 				mapBorderShroudIsCached = false;
+
+				// We need to mark newly dirtied areas of the shroud.
+				// Expand the dirty area to cover the neighboring cells, since shroud is affected by neighboring cells.
+				foreach (var cell in cellsDirty)
+				{
+					cellsAndNeighborsDirty.Add(cell);
+					foreach (var direction in CVec.Directions)
+						cellsAndNeighborsDirty.Add(cell + direction);
+				}
+
+				foreach (var cell in cellsAndNeighborsDirty)
+					shroudDirty[cell] = true;
+
+				cellsDirty.Clear();
+				cellsAndNeighborsDirty.Clear();
 			}
 			else if (!mapBorderShroudIsCached)
 			{
@@ -231,9 +254,9 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		void MarkCellAndNeighborsDirty(CPos cell)
+		void MarkCellsDirty(IEnumerable<CPos> cellsChanged)
 		{
-			// Mark this cell and its 8 neighbors as being out of date.
+			// Mark changed cells as being out of date.
 			// We don't want to do anything more than this for several performance reasons:
 			// - If the cells remain off-screen for a long time, they may change several times before we next view
 			// them, so calculating their new vertices is wasted effort since we may recalculate them again before we
@@ -242,15 +265,7 @@ namespace OpenRA.Mods.Common.Traits
 			// leaves a trail of fog filling in behind). If we recalculated a cell and its neighbors when the first
 			// cell in a group changed, many cells would be recalculated again when the second cell, right next to the
 			// first, is updated. In fact we might do on the order of 3x the work we needed to!
-			shroudDirty[cell + new CVec(-1, -1)] = true;
-			shroudDirty[cell + new CVec(0, -1)] = true;
-			shroudDirty[cell + new CVec(1, -1)] = true;
-			shroudDirty[cell + new CVec(-1, 0)] = true;
-			shroudDirty[cell] = true;
-			shroudDirty[cell + new CVec(1, 0)] = true;
-			shroudDirty[cell + new CVec(-1, 1)] = true;
-			shroudDirty[cell + new CVec(0, 1)] = true;
-			shroudDirty[cell + new CVec(1, 1)] = true;
+			cellsDirty.UnionWith(cellsChanged);
 		}
 
 		void CacheMapBorderShroud()
