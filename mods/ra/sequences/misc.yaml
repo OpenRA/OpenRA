@@ -171,6 +171,7 @@ moveflsh:
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
+
 select:
 	repair:
 		Start: 2
