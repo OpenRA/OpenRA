@@ -76,10 +76,10 @@ Section "Game" GAME
 	File "${SRCDIR}\Mono.Nat.dll"
 	File "${SRCDIR}\AUTHORS"
 	File "${SRCDIR}\COPYING"
-	File "${SRCDIR}\README.md"
-	File "${SRCDIR}\CHANGELOG.md"
-	File "${SRCDIR}\CONTRIBUTING.md"
-	File "${SRCDIR}\DOCUMENTATION.md"
+	File "${SRCDIR}\README.html"
+	File "${SRCDIR}\CHANGELOG.html"
+	File "${SRCDIR}\CONTRIBUTING.html"
+	File "${SRCDIR}\DOCUMENTATION.html"
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\SDL2-CS.dll"
@@ -100,8 +100,8 @@ Section "Game" GAME
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA.lnk" $OUTDIR\OpenRA.exe "" \
 			"$OUTDIR\OpenRA.exe" "" "" "" ""
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\README.lnk" $OUTDIR\README.md "" \
-			"$OUTDIR\README.md" "" "" "" ""
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\README.lnk" $OUTDIR\README.html "" \
+			"$OUTDIR\README.html" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 
 	SetOutPath "$INSTDIR\lua"
@@ -194,10 +194,10 @@ Function ${UN}Clean
 	Delete $INSTDIR\SharpFont.dll
 	Delete $INSTDIR\AUTHORS
 	Delete $INSTDIR\COPYING
-	Delete $INSTDIR\README.md
-	Delete $INSTDIR\CHANGELOG.md
-	Delete $INSTDIR\CONTRIBUTING.md
-	Delete $INSTDIR\DOCUMENTATION.md
+	Delete $INSTDIR\README.html
+	Delete $INSTDIR\CHANGELOG.html
+	Delete $INSTDIR\CONTRIBUTING.html
+	Delete $INSTDIR\DOCUMENTATION.html
 	Delete $INSTDIR\OpenRA.ico
 	Delete "$INSTDIR\global mix database.dat"
 	Delete $INSTDIR\MaxMind.Db.dll

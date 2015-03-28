@@ -42,8 +42,6 @@ notifications:
     skip_join: true
 
 before_deploy:
- - apt-get download markdown
- - dpkg -x markdown*deb $HOME
  - export PATH=$PATH:$HOME/usr/bin
  - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
  - cd packaging
