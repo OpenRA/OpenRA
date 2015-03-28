@@ -171,6 +171,7 @@ crystal4:
 	idle:
 		Length: 15
 		ShadowStart: 15
+		UseTilesetExtension: true
 
 120mm:
 	idle:
@@ -216,6 +217,7 @@ moveflsh:
 
 resources:
 	Defaults:
+		UseTilesetExtension: true
 		Length: 12
 		ShadowStart: 12
 		Offset: 0, -12
@@ -248,6 +250,7 @@ shroud:
 
 smallscorches:
 	Defaults:
+		UseTilesetExtension: true
 		Offset: 0, -12
 	sc1: burnt01
 	sc2: burnt02
@@ -258,6 +261,7 @@ smallscorches:
 
 mediumscorches:
 	Defaults:
+		UseTilesetExtension: true
 		Offset: 0, -18
 	sc7: burnt07
 	sc8: burnt08
@@ -266,12 +270,14 @@ mediumscorches:
 
 largescorches:
 	Defaults:
+		UseTilesetExtension: true
 		Offset: 0, -24
 	sc11: burnt11
 	sc12: burnt12
 
 smallcraters:
 	Defaults:
+		UseTilesetExtension: true
 		Offset: 0, -12
 	cr1: crater01
 	cr2: crater02
@@ -282,6 +288,7 @@ smallcraters:
 
 mediumcraters:
 	Defaults:
+		UseTilesetExtension: true
 		Offset: 0, -12
 	cr7: crater07
 	cr8: crater08
@@ -290,6 +297,7 @@ mediumcraters:
 
 largecraters:
 	Defaults:
+		UseTilesetExtension: true
 		Offset: 0, -24
 	cr11: crater11
 	cr12: crater12
@@ -312,39 +320,49 @@ ionbeam:
 trock01:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 trock02:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 trock03:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 trock04:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 trock05:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 srock01:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 srock02:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 srock03:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 srock04:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true
 
 srock05:
 	idle:
 		ShadowStart: 1
+		UseTilesetExtension: true

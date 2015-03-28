@@ -87,6 +87,7 @@ VoxelSequences:
 
 TileSets:
 	./mods/ts/tilesets/temperat.yaml
+	./mods/ts/tilesets/snow.yaml
 
 TileSize: 48,24
 TileShape: Diamond
@@ -219,4 +220,10 @@ SupportsMapsFrom: ts
 
 SpriteFormats: ShpTS, TmpTS, ShpTD
 
-SpriteSequenceFormat: DefaultSpriteSequence
+SpriteSequenceFormat: TilesetSpecificSpriteSequence
+	TilesetExtensions:
+		TEMPERAT: .tem
+		SNOW: .sno
+	TilesetCodes:
+		TEMPERAT: t
+		SNOW: a
