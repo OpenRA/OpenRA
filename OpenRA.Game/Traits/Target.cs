@@ -65,7 +65,7 @@ namespace OpenRA.Traits
 
 		public static Target FromFrozenActor(FrozenActor a) { return new Target { frozen = a, type = TargetType.FrozenActor }; }
 
-		public Actor Actor { get { return actor; } }
+		public Actor Actor { get { return actor as Actor; } }
 		public FrozenActor FrozenActor { get { return frozen; } }
 
 		public TargetType Type

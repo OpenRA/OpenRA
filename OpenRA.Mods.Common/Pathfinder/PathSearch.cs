@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
@@ -32,10 +33,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 			considered = new LinkedList<Pair<CPos, int>>();
 		}
 
-		public static IPathSearch Search(World world, MobileInfo mi, Actor self, bool checkForBlocked)
+		public static IPathSearch Search(World world, MobileInfo mi, Actor self, bool checkForBlocked, Func<CPos, bool> goalCondition)
 		{
 			var graph = new PathGraph(CellInfoLayerManager.Instance.NewLayer(world.Map), mi, self, world, checkForBlocked);
-			return new PathSearch(graph);
+			var search = new PathSearch(graph);
+			search.isGoal = goalCondition;
+			search.heuristic = loc => 0;
+			return search;
 		}
 
 		public static IPathSearch FromPoint(World world, MobileInfo mi, Actor self, CPos from, CPos target, bool checkForBlocked)
@@ -44,6 +48,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var search = new PathSearch(graph)
 			{
 				heuristic = DefaultEstimator(target)
+			};
+
+			search.isGoal = loc =>
+			{
+				var locInfo = search.Graph[loc];
+				return locInfo.EstimatedTotal - locInfo.CostSoFar == 0;
 			};
 
 			if (world.Map.Contains(from))
@@ -58,6 +68,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var search = new PathSearch(graph)
 			{
 				heuristic = DefaultEstimator(target)
+			};
+
+			search.isGoal = loc =>
+			{
+				var locInfo = search.Graph[loc];
+				return locInfo.EstimatedTotal - locInfo.CostSoFar == 0;
 			};
 
 			foreach (var sl in froms.Where(sl => world.Map.Contains(sl)))
@@ -88,12 +104,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var currentCell = Graph[currentMinNode];
 			Graph[currentMinNode] = new CellInfo(currentCell.CostSoFar, currentCell.EstimatedTotal, currentCell.PreviousPos, CellStatus.Closed);
 
-			if (Graph.CustomCost != null)
-			{
-				var c = Graph.CustomCost(currentMinNode);
-				if (c == int.MaxValue)
-					return currentMinNode;
-			}
+			if (Graph.CustomCost != null && Graph.CustomCost(currentMinNode) == Constants.InvalidNode)
+				return currentMinNode;
 
 			foreach (var connection in Graph.GetConnections(currentMinNode))
 			{
