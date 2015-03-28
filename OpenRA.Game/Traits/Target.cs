@@ -15,7 +15,16 @@ using System.Linq;
 namespace OpenRA.Traits
 {
 	public enum TargetType { Invalid, Actor, Terrain, FrozenActor }
-	public struct Target
+
+	public interface ITarget
+	{
+		bool IsValidFor(Actor targeter);
+		WPos CenterPosition { get; }
+		IEnumerable<WPos> Positions { get; }
+		bool IsInRange(WPos origin, WRange range);
+	}
+
+	public struct Target : ITarget
 	{
 		public static readonly Target[] None = { };
 		public static readonly Target Invalid = new Target { type = TargetType.Invalid };
@@ -83,7 +92,7 @@ namespace OpenRA.Traits
 			if (targeter == null || Type == TargetType.Invalid)
 				return false;
 
-			if (targetable != null && !targetable.TargetableBy(actor, targeter))
+			if (targetable != null && !targetable.TargetableBy(actor as Actor, targeter as Actor))
 				return false;
 
 			return true;
@@ -127,7 +136,7 @@ namespace OpenRA.Traits
 						if (targetable == null)
 							return new[] { actor.CenterPosition };
 
-						var positions = targetable.TargetablePositions(actor);
+						var positions = targetable.TargetablePositions(actor as Actor);
 						return positions.Any() ? positions : new[] { actor.CenterPosition };
 					case TargetType.FrozenActor:
 						return new[] { frozen.CenterPosition };

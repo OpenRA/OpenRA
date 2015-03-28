@@ -153,7 +153,9 @@ namespace OpenRA
 		public readonly TileShape TileShape;
 
 		[FieldLoader.Ignore] public readonly WVec[] SubCellOffsets;
+
 		public readonly SubCell DefaultSubCell;
+
 		public readonly SubCell LastSubCell;
 		[FieldLoader.Ignore] public IFolder Container;
 		public string Path { get; private set; }
@@ -235,6 +237,7 @@ namespace OpenRA
 
 		[FieldLoader.Ignore] Lazy<TileSet> cachedTileSet;
 		[FieldLoader.Ignore] Lazy<Ruleset> rules;
+
 		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
 		public SequenceProvider SequenceProvider { get { return Rules.Sequences[Tileset]; } }
 

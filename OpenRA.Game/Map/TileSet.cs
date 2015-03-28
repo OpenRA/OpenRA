@@ -164,7 +164,14 @@ namespace OpenRA
 		}
 	}
 
-	public class TileSet
+	public interface ITileSet
+	{
+		TerrainTypeInfo[] TerrainInfo { get; }
+
+		bool TryGetTerrainIndex(string type, out byte index);
+	}
+
+	public class TileSet : ITileSet
 	{
 		public readonly string Name;
 		public readonly string Id;
@@ -182,6 +189,12 @@ namespace OpenRA
 
 		[FieldLoader.Ignore]
 		public readonly TerrainTypeInfo[] TerrainInfo;
+
+		TerrainTypeInfo[] ITileSet.TerrainInfo
+		{
+			get { return this.TerrainInfo; }
+		}
+
 		readonly Dictionary<string, byte> terrainIndexByType = new Dictionary<string, byte>();
 		readonly byte defaultWalkableTerrainIndex;
 

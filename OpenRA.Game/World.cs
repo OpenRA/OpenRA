@@ -120,7 +120,9 @@ namespace OpenRA
 		public readonly TileSet TileSet;
 
 		public readonly ActorMap ActorMap;
+
 		public readonly ScreenMap ScreenMap;
+
 		public readonly WorldType Type;
 
 		readonly GameInformation gameInfo;
