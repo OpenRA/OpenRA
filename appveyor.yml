@@ -17,13 +17,13 @@ test_script:
 
 before_deploy:
   - choco install pandoc -y
-  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o README.md README.html'
-  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o CONTRIBUTING.md CONTRIBUTING.html'
+  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o README.html README.md'
+  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o CONTRIBUTING.html CONTRIBUTING.md'
   - appveyor DownloadFile "https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md" -FileName Changelog.md
-  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o Changelog.md CHANGELOG.html'
+  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o Changelog.html CHANGELOG.md'
   - make docs
-  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o DOCUMENTATION.md DOCUMENTATION.html'
-  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o Lua-API.md Lua-API.html'
+  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o DOCUMENTATION.html DOCUMENTATION.md'
+  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o Lua-API.html Lua-API.md'
   - cp OpenRA.Game/OpenRA.ico .
   - appveyor DownloadFile "http://downloads.sourceforge.net/project/nsis/NSIS 2/2.46/nsis-2.46-setup.exe" -FileName nsissetup.exe
   - nsissetup /S /D=%NSIS_ROOT%
