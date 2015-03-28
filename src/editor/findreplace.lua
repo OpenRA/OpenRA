@@ -134,13 +134,13 @@ function findReplace:GetSelectedString()
 end
 
 function findReplace:FindString(reverse)
+  local msg = ""
   local editor = self:GetEditor()
   if editor and self:HasText() then
     local fDown = iff(reverse, not self.fDown, self.fDown)
     setSearchFlags(editor)
     setTarget(editor, fDown)
     local posFind = editor:SearchInTarget(self.findText)
-    local msg = ""
     if (posFind == NOTFOUND) and self.fWrap then
       editor:SetTargetStart(iff(fDown, 0, editor:GetLength()))
       editor:SetTargetEnd(iff(fDown, editor:GetLength(), 0))
@@ -149,16 +149,16 @@ function findReplace:FindString(reverse)
     end
     if posFind == NOTFOUND then
       self.foundString = false
-      self:SetStatus(TR("Text not found."))
+      msg = TR("Text not found.")
     else
       self.foundString = true
       local start = editor:GetTargetStart()
       local finish = editor:GetTargetEnd()
       editor:ShowPosEnforcePolicy(finish)
       editor:SetSelection(start, finish)
-      self:SetStatus(msg)
     end
   end
+  self:SetStatus(msg)
 end
 
 -- returns if something was found
@@ -458,8 +458,7 @@ function findReplace:RunInFiles(replace)
   reseditor.replace = replace -- keep track of the current status
   reseditor:SetText('')
 
-  self:SetStatus(("%s '%s'."):format(
-    (replace and TR("Replacing") or TR("Searching for")), self.findText))
+  self:SetStatus(TR("Searching for '%s'."):format(self.findText))
   wx.wxSafeYield() -- allow the status to update
 
   local startdir, mask = self:GetScope()
