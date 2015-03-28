@@ -34,7 +34,7 @@ before_deploy:
   - move /Y %APPVEYOR_BUILD_FOLDER%\packaging\windows\OpenRA.Setup.exe %APPVEYOR_BUILD_FOLDER%\OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe
 
 artifacts:
-  - path: OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe
+  - path: OpenRA-$(APPVEYOR_REPO_TAG_NAME).exe
     name: Installer
 
 deploy:
