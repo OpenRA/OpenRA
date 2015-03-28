@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 			var domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
 			if (domainIndex != null)
 			{
-				var passable = mi.GetMovementClass(world.TileSet as TileSet);
+				var passable = mi.GetMovementClass(world.TileSet);
 				if (!domainIndex.IsPassable(source, target, (uint)passable))
 					return EmptyPath;
 			}
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WRange range, Actor self)
 		{
-			var mi = self.Info.Traits.Get<MobileInfo>();
+			var mi = self.Info.Traits.Get<IMobileInfo>();
 			var targetCell = world.Map.CellContaining(target);
 			var rangeSquared = range.Range * range.Range;
 
@@ -94,14 +94,14 @@ namespace OpenRA.Mods.Common.Traits
 			// This assumes that the SubCell does not change during the path traversal
 			var tilesInRange = world.Map.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
 				.Where(t => (world.Map.CenterOfCell(t) - target).LengthSquared <= rangeSquared
-							&& mi.CanEnterCell(self.World as World, self as Actor, t));
+					&& mi.CanEnterCell(self.World, self, t));
 
 			// See if there is any cell within range that does not involve a cross-domain request
 			// Really, we only need to check the circle perimeter, but it's not clear that would be a performance win
 			var domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
 			if (domainIndex != null)
 			{
-				var passable = mi.GetMovementClass(world.TileSet as TileSet);
+				var passable = mi.GetMovementClass(world.TileSet);
 				tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(source, t, (uint)passable)));
 				if (!tilesInRange.Any())
 					return EmptyPath;
