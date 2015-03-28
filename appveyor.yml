@@ -16,7 +16,7 @@ test_script:
   - nunit-console-x86.exe OpenRA.Test.dll
 
 before_deploy:
-  - choco install pandoc
+  - choco install pandoc -y
   - pandoc -o README.md README.html
   - pandoc -o CONTRIBUTING.md CONTRIBUTING.html
   - appveyor DownloadFile "https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md" -FileName Changelog.md
