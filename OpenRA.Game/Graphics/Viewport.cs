@@ -118,9 +118,14 @@ namespace OpenRA.Graphics
 				var s = worldRenderer.ScreenPxPosition(p);
 				if (Math.Abs(s.X - world.X) <= ts.Width && Math.Abs(s.Y - world.Y) <= ts.Height)
 				{
-					var tile = map.MapTiles.Value[uv];
-					var ti = tileSet.GetTileInfo(tile);
-					var ramp = ti != null ? ti.RampType : 0;
+					var ramp = 0;
+					if (map.Contains(uv))
+					{
+						var tile = map.MapTiles.Value[uv];
+						var ti = tileSet.GetTileInfo(tile);
+						if (ti != null)
+							ramp = ti.RampType;
+					}
 
 					var corners = map.CellCorners[ramp];
 					var pos = map.CenterOfCell(uv.ToCPos(map));
