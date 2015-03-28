@@ -31,10 +31,10 @@ before_deploy:
   - 7z x NsProcess.zip -o%NSIS_ROOT% -y
   - move /Y %NSIS_ROOT%\Plugin\nsProcess.dll %NSIS_ROOT%\Plugins\nsProcess.dll
   - '%NSIS_ROOT%\makensis /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\windows" /V3 packaging/windows/OpenRA.nsi'
-  - move /Y %APPVEYOR_BUILD_FOLDER%\packaging\windows\OpenRA.Setup.exe %APPVEYOR_BUILD_FOLDER%\OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe
+  - move /Y %APPVEYOR_BUILD_FOLDER%\packaging\windows\OpenRA.Setup.exe %APPVEYOR_BUILD_FOLDER%\OpenRA.Setup.exe
 
 artifacts:
-  - path: OpenRA-$(APPVEYOR_REPO_TAG_NAME).exe
+  - path: OpenRA.Setup.exe
     name: Installer
 
 deploy:
