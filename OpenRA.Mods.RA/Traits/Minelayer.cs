@@ -18,19 +18,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	class MinelayerInfo : ITraitInfo
+	public class MinelayerInfo : ITraitInfo
 	{
 		[ActorReference] public readonly string Mine = "minv";
 		[ActorReference] public readonly string[] RearmBuildings = { "fix" };
 
-		public readonly string RearmSound = "minelay1.aud";
+		public readonly string AmmoPoolName = "primary";
 
 		public readonly float MinefieldDepth = 1.5f;
 
 		public object Create(ActorInitializer init) { return new Minelayer(init.Self); }
 	}
 
-	class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection, ISync
+	public class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection, ISync
 	{
 		/* TODO: [Sync] when sync can cope with arrays! */
 		public CPos[] Minefield = null;
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA.Traits
 				minefieldStart = order.TargetLocation;
 				Minefield = new CPos[] { order.TargetLocation };
 				self.CancelActivity();
-				self.QueueActivity(new LayMines());
+				self.QueueActivity(new LayMines(self));
 			}
 
 			if (order.OrderString == "PlaceMinefield")
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA.Traits
 					.Where(p => movement.CanEnterCell(p, null, false)).ToArray();
 
 				self.CancelActivity();
-				self.QueueActivity(new LayMines());
+				self.QueueActivity(new LayMines(self));
 			}
 		}
 

@@ -1,6 +1,7 @@
 gacnst:
 	Defaults:
 		Offset: 0, -36
+		UseTilesetCode: true
 	idle: gtcnst
 		ShadowStart: 3
 	damaged-idle: gtcnst
@@ -38,10 +39,12 @@ gacnst:
 		Length: 10
 	icon: facticon
 		Offset: 0,0
+		UseTilesetCode: false
 
 gapowr:
 	Defaults:
 		Offset: 0, -24
+		UseTilesetCode: true
 	idle: gtpowr
 		ShadowStart: 3
 	damaged-idle: gtpowr
@@ -69,10 +72,12 @@ gapowr:
 		ShadowStart: 20
 	icon: powricon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 gapile:
 	Defaults:
 		Offset: 0, -24
+		UseTilesetCode: true
 	idle: gtpile
 		ShadowStart: 3
 	damaged-idle: gtpile
@@ -106,10 +111,12 @@ gapile:
 		ShadowStart: 20
 	icon: brrkicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 gaweap:
 	Defaults:
 		Offset: -12, -42
+		UseTilesetCode: true
 	idle: gtweap
 		ShadowStart: 3
 	damaged-idle: gtweap
@@ -168,11 +175,13 @@ gaweap:
 		Length: 1
 	icon: weapicon
 		Offset: 0, 0
+		UseTilesetCode: false
 # TODO: gtweap_1 & gtweap_a & gtweap_b & gtweap_c are unused
 
 napowr:
 	Defaults:
 		Offset: 0, -24
+		UseTilesetCode: true
 	idle: ntpowr
 		ShadowStart: 3
 	damaged-idle: ntpowr
@@ -194,10 +203,12 @@ napowr:
 		ShadowStart: 19
 	icon: npwricon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 naapwr:
 	Defaults:
 		Offset: 12, -30
+		UseTilesetCode: true
 	idle: ntapwr
 		ShadowStart: 3
 	damaged-idle: ntapwr
@@ -219,10 +230,12 @@ naapwr:
 		ShadowStart: 19
 	icon: apwricon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 nahand:
 	Defaults:
 		Offset: -6, -30
+		UseTilesetCode: true
 	idle: nthand
 		ShadowStart: 3
 	damaged-idle: nthand
@@ -251,10 +264,12 @@ nahand:
 		ShadowStart: 15
 	icon: handicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 naweap:
 	Defaults:
 		Offset: -12, -42
+		UseTilesetCode: true
 	idle: ntweap
 		ShadowStart: 3
 	damaged-idle: ntweap
@@ -294,11 +309,13 @@ naweap:
 		Start: 2
 	icon: nwepicon
 		Offset: 0, 0
+		UseTilesetCode: false
 # TODO: ntweap_1 & ntweap_b & ntweap_c are unused
 
 naradr:
 	Defaults:
 		Offset: 0, -24
+		UseTilesetCode: true
 	idle: ntradr
 		ShadowStart: 3
 	damaged-idle: ntradr
@@ -320,10 +337,12 @@ naradr:
 		ShadowStart: 20
 	icon: nradicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 natech:
 	Defaults:
 		Offset: 0, -24
+		UseTilesetCode: true
 	idle: nttech
 		ShadowStart: 3
 	damaged-idle: nttech
@@ -344,10 +363,12 @@ natech:
 		ShadowStart: 18
 	icon: ntchicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 garadr:
 	Defaults:
 		Offset: 0, -24
+		UseTilesetCode: true
 	idle: gtradr
 		ShadowStart: 3
 	damaged-idle: gtradr
@@ -371,10 +392,12 @@ garadr:
 		ShadowStart: 20
 	icon: radricon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 gatech:
 	Defaults:
 		Offset: -12, -30
+		UseTilesetCode: true
 	idle: gttech
 		ShadowStart: 3
 	damaged-idle: gttech
@@ -396,10 +419,12 @@ gatech:
 		ShadowStart: 20
 	icon: techicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 gasand:
 	Defaults:
 		Offset: 0, -12
+		UseTilesetCode: true
 	idle: gtsand
 		Length: 16
 		ShadowStart: 32
@@ -409,10 +434,12 @@ gasand:
 		ShadowStart: 48
 	icon: sbagicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 gawall:
 	Defaults:
 		Offset: 0, -12
+		UseTilesetCode: true
 	idle: gtwall
 		Length: 16
 		ShadowStart: 48
@@ -426,10 +453,12 @@ gawall:
 		ShadowStart: 80
 	icon: wallicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 nawall:
 	Defaults:
 		Offset: 0, -12
+		UseTilesetCode: true
 	idle: ntwall
 		Length: 16
 		ShadowStart: 48
@@ -443,10 +472,12 @@ nawall:
 		ShadowStart: 80
 	icon: nwalicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 gatick:
 	Defaults:
 		Offset: 0, -13
+		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
 	damaged-idle:
@@ -455,6 +486,7 @@ gatick:
 	muzzle: gunfire
 		Length: *
 		Offset: 0, 0
+		UseTilesetCode: false
 	make: gatickmk
 		Length: 24
 		ShadowStart: 24
@@ -462,6 +494,7 @@ gatick:
 gaicbm:
 	Defaults:
 		Offset: 0, -12
+		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
 	damaged-idle:
@@ -474,6 +507,7 @@ gaicbm:
 gadpsa:
 	Defaults:
 		Offset: 0, -12
+		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
 	damaged-idle:
@@ -486,6 +520,7 @@ gadpsa:
 gaarty:
 	Defaults:
 		Offset: 0, -12
+		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
 	damaged-idle:
@@ -494,6 +529,7 @@ gaarty:
 	muzzle: gunfire
 		Length: *
 		Offset: 0, 0
+		UseTilesetCode: false
 	make: gaartymk
 		Length: 16
 		ShadowStart: 16
@@ -501,6 +537,7 @@ gaarty:
 naobel:
 	Defaults:
 		Offset: 0, -24
+		UseTilesetCode: true
 	idle: ntobel
 		ShadowStart: 3
 	damaged-idle: ntobel
@@ -523,10 +560,12 @@ naobel:
 		ShadowStart: 19
 	icon: obliicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 nalasr:
 	Defaults:
 		Offset: 0, -12
+		UseTilesetCode: true
 	idle: ntlasr
 		ShadowStart: 3
 	damaged-idle: ntlasr
@@ -541,10 +580,12 @@ nalasr:
 		ShadowStart: 21
 	icon: plticon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 nasam:
 	Defaults:
 		Offset: 0, -12
+		UseTilesetCode: true
 	idle: ntsam
 		ShadowStart: 3
 	damaged-idle: ntsam
@@ -562,10 +603,12 @@ nasam:
 		ShadowStart: 8
 	icon: samicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 napuls:
 	Defaults:
 		Offset: 0, -24
+		UseTilesetCode: true
 	idle: ntpuls
 		ShadowStart: 3
 	damaged-idle: ntpuls
@@ -582,10 +625,12 @@ napuls:
 		ShadowStart: 20
 	icon: pulsicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 nastlh:
 	Defaults:
 		Offset: -6, -30
+		UseTilesetCode: true
 	idle: ntstlh
 		ShadowStart: 3
 	damaged-idle: ntstlh
@@ -607,10 +652,12 @@ nastlh:
 		ShadowStart: 20
 	icon: clckicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 gavulc:
 	Defaults:
 		Offset: 0, -12
+		UseTilesetCode: true
 	idle: gtctwr
 		ShadowStart: 3
 	damaged-idle: gtctwr
@@ -624,20 +671,28 @@ gavulc:
 		Facings: 32
 	muzzle0: mgun-n
 		Length: *
+		UseTilesetCode: false
 	muzzle1: mgun-nw
 		Length: *
+		UseTilesetCode: false
 	muzzle2: mgun-w
 		Length: *
+		UseTilesetCode: false
 	muzzle3: mgun-sw
 		Length: *
+		UseTilesetCode: false
 	muzzle4: mgun-s
 		Length: *
+		UseTilesetCode: false
 	muzzle5: mgun-se
 		Length: *
+		UseTilesetCode: false
 	muzzle6: mgun-e
 		Length: *
+		UseTilesetCode: false
 	muzzle7: mgun-ne
 		Length: *
+		UseTilesetCode: false
 	idle-lights: gtctwr_a
 		Length: 6
 		Tick: 200
@@ -649,10 +704,12 @@ gavulc:
 		ShadowStart: 11
 	icon: twr1icon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 garock:
 	Defaults:
 		Offset: 0, -12
+		UseTilesetCode: true
 	idle: gtctwr
 		ShadowStart: 3
 	damaged-idle: gtctwr
@@ -675,10 +732,12 @@ garock:
 		ShadowStart: 11
 	icon: twr2icon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 gacsam:
 	Defaults:
 		Offset: 0, -12
+		UseTilesetCode: true
 	idle: gtctwr
 		ShadowStart: 3
 	damaged-idle: gtctwr
@@ -701,10 +760,12 @@ gacsam:
 		ShadowStart: 11
 	icon: twr3icon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 gaspot:
 	Defaults:
 		Offset: 0, -12
+		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
 	damaged-idle:
@@ -726,10 +787,12 @@ gaspot:
 		ShadowStart: 14
 	icon: spoticon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 gahpad:
 	Defaults:
 		Offset: 0, -24
+		UseTilesetCode: true
 	idle: gthpad
 		ShadowStart: 3
 		ZOffset: -1c511
@@ -771,10 +834,12 @@ gahpad:
 		ZOffset: -1c511
 	icon: heliicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 nahpad:
 	Defaults:
 		Offset: 0, -24
+		UseTilesetCode: true
 	idle: nthpad
 		ShadowStart: 3
 		ZOffset: -1c511
@@ -813,10 +878,12 @@ nahpad:
 		ShadowStart: 20
 	icon: nhpdicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 proc: # TODO: unused narefn_a, narefn_b
 	Defaults:
 		Offset: -12, -42
+		UseTilesetCode: true
 	idle: ntrefn
 		ShadowStart: 3
 	damaged-idle: ntrefn
@@ -840,10 +907,12 @@ proc: # TODO: unused narefn_a, narefn_b
 		Start: 1
 	icon: reficon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 gasilo:
 	Defaults:
 		Offset: 0, -24
+		UseTilesetCode: true
 	idle: gtsilo_a
 		Length: 4
 	damaged-idle: gtsilo_a
@@ -868,15 +937,17 @@ gasilo:
 		Start: 16
 		Length: 16
 		Tick: 120
-	icon: siloicon
-		Offset: 0, 0
 	make: gtsilomk
 		Length: 18
 		ShadowStart: 20
+	icon: siloicon
+		Offset: 0, 0
+		UseTilesetCode: false
 
 galite:
 	Defaults:
 		Offset: 0, -12
+		UseTilesetCode: true
 	idle: gtlite
 		ShadowStart: 2
 	damaged-idle: gtlite
@@ -887,10 +958,12 @@ galite:
 #		BlendMode: Alpha
 	icon: liteicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 gadept:
 	Defaults:
 		Offset: 0, -36
+		UseTilesetCode: true
 	idle: gtdept
 		ShadowStart: 3
 	damaged-idle: gtdept
@@ -941,10 +1014,12 @@ gadept:
 		ShadowStart: 10
 	icon: fixicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 namisl:
 	Defaults:
 		Offset: 0, -24
+		UseTilesetCode: true
 	idle: ntmisl
 	damaged-idle: ntmisl
 		Start: 1
@@ -970,10 +1045,12 @@ namisl:
 		Tick: 80
 	icon: msslicon
 		Offset: 0, 0
+		UseTilesetCode: false
 
 gaplug:
 	Defaults:
 		Offset: 12, -30
+		UseTilesetCode: true
 	idle: gaplug
 		ShadowStart: 3
 	damaged-idle: gaplug
@@ -1009,3 +1086,4 @@ gaplug:
 		ShadowStart: 17
 	icon: plugicon
 		Offset: 0, 0
+		UseTilesetCode: false

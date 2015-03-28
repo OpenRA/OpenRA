@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
-			return new FlyAttack(newTarget);
+			return new FlyAttack(self, newTarget);
 		}
 
 		protected override bool CanAttack(Actor self, Target target)

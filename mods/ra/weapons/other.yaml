@@ -56,7 +56,7 @@ Napalm:
 	Projectile: Bullet
 		Image: BOMBLET
 		Speed: 85
-		High: yes
+		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
 		Damage: 100
@@ -83,7 +83,7 @@ Grenade:
 	Report: grenade1.aud
 	Projectile: Bullet
 		Speed: 136
-		High: true
+		Blockable: false
 		Angle: 62
 		Inaccuracy: 554
 		Image: BOMB
@@ -115,7 +115,7 @@ DepthCharge:
 		Speed: 85
 		Image: BOMB
 		Angle: 62
-		High: true
+		Blockable: false
 		Inaccuracy: 128
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -295,3 +295,4 @@ MADTankDetonate:
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
 		ImpactSound: mineblo1.aud
+

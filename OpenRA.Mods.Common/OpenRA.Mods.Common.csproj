@@ -81,6 +81,7 @@
     <Compile Include="Activities\Air\FlyAttack.cs" />
     <Compile Include="Activities\Air\FlyCircle.cs" />
     <Compile Include="Activities\Air\FlyFollow.cs" />
+    <Compile Include="Activities\Air\FlyOffMap.cs" />
     <Compile Include="Activities\Air\FlyTimed.cs" />
     <Compile Include="Activities\Air\HeliAttack.cs" />
     <Compile Include="Activities\Air\HeliFly.cs" />
@@ -246,7 +247,7 @@
     <Compile Include="Traits\Attack\AttackWander.cs" />
     <Compile Include="Traits\AutoHeal.cs" />
     <Compile Include="Traits\AutoTarget.cs" />
-    <Compile Include="Traits\BlocksBullets.cs" />
+    <Compile Include="Traits\BlocksProjectiles.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Buildings\BaseBuilding.cs" />
     <Compile Include="Traits\Buildings\BaseProvider.cs" />
@@ -320,7 +321,7 @@
     <Compile Include="Traits\Invulnerable.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\KillsSelf.cs" />
-    <Compile Include="Traits\LimitedAmmo.cs" />
+    <Compile Include="Traits\AmmoPool.cs" />
     <Compile Include="Traits\Mobile.cs" />
     <Compile Include="Traits\Modifiers\DisabledOverlay.cs" />
     <Compile Include="Traits\Modifiers\FrozenUnderFog.cs" />
@@ -364,7 +365,6 @@
     <Compile Include="Traits\ProximityCaptor.cs" />
     <Compile Include="Traits\ProximityCapturable.cs" />
     <Compile Include="Traits\RadarColorFromTerrain.cs" />
-    <Compile Include="Traits\Reloads.cs" />
     <Compile Include="Traits\Render\Hovers.cs" />
     <Compile Include="Traits\Render\RenderBuilding.cs" />
     <Compile Include="Traits\Render\RenderBuildingCharge.cs" />
@@ -618,6 +618,7 @@
     <Compile Include="Traits\Render\WithInfantryBody.cs" />
     <Compile Include="UtilityCommands\CheckSequenceSprites.cs" />
     <Compile Include="UtilityCommands\FixClassicTilesets.cs" />
+    <Compile Include="Graphics\TilesetSpecificSpriteSequence.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

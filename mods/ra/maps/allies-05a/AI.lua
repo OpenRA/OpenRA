@@ -89,15 +89,19 @@ end
 InitAIEconomy = function()
 	ussr.Cash = 6000
 
-	Harvester.FindResources()
-	ProtectHarvester(Harvester)
+	if not Harvester.IsDead then
+		Harvester.FindResources()
+		ProtectHarvester(Harvester)
+	end
 end
 
 InitProductionBuildings = function()
 	if not Warfactory2.IsDead then
 		Warfactory2.IsPrimaryBuilding = true
+		Trigger.OnKilled(Warfactory2, function() BuildVehicles = false end)
+	else
+		BuildVehicles = false
 	end
-	Trigger.OnKilled(Warfactory2, function() BuildVehicles = false end)
 
 	if not Barracks2.IsDead then
 		Barracks2.IsPrimaryBuilding = true
@@ -113,6 +117,10 @@ InitProductionBuildings = function()
 
 	if not Barracks3.IsDead then
 		Trigger.OnKilled(Barracks3, function() if Barracks2.IsDead then TrainInfantry = false end end)
+	end
+
+	if Barracks2.IsDead and Barracks3.IsDead then
+		TrainInfantry = false
 	end
 
 	if Map.Difficulty == "Normal" then

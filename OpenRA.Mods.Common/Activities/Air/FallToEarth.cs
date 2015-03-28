@@ -18,20 +18,21 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class FallToEarth : Activity
 	{
+		readonly Aircraft aircraft;
+		readonly FallsToEarthInfo info;
 		int acceleration = 0;
 		int spin = 0;
-		FallsToEarthInfo info;
 
 		public FallToEarth(Actor self, FallsToEarthInfo info)
 		{
 			this.info = info;
+			aircraft = self.Trait<Aircraft>();
 			if (info.Spins)
 				acceleration = self.World.SharedRandom.Next(2) * 2 - 1;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			var aircraft = self.Trait<Aircraft>();
 			if (self.CenterPosition.Z <= 0)
 			{
 				if (info.Explosion != null)

@@ -774,6 +774,68 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "StandSequences";
 				}
 
+				if (engineVersion < 20150323)
+				{
+					// Moved Reloads functionality to LimitedAmmo and refactored the latter into AmmoPool
+					if (depth == 0)
+					{
+						var actorTraits = node.Value.Nodes;
+						var limitedAmmo = actorTraits.FirstOrDefault(l => l.Key == "LimitedAmmo");
+						var reloads = actorTraits.FirstOrDefault(r => r.Key == "Reloads");
+
+						if (reloads != null)
+						{
+							var reloadsFields = reloads.Value.Nodes;
+							var limitedAmmoFields = limitedAmmo.Value.Nodes;
+							var count = reloadsFields.FirstOrDefault(c => c.Key == "Count");
+							var period = reloadsFields.FirstOrDefault(p => p.Key == "Period");
+							var resets = reloadsFields.FirstOrDefault(res => res.Key == "ResetOnFire");
+
+							var reloadsCount = count != null ? FieldLoader.GetValue<int>("Count", count.Value.Value) : -1;
+							var reloadsPeriod = period != null ? FieldLoader.GetValue<int>("Period", period.Value.Value) : 50;
+							var reloadsResetOnFire = resets != null ? FieldLoader.GetValue<bool>("ResetOnFire", resets.Value.Value) : false;
+
+							limitedAmmoFields.Add(new MiniYamlNode("SelfReloads", "true"));
+							limitedAmmoFields.Add(new MiniYamlNode("ReloadCount", reloadsCount.ToString()));
+							limitedAmmoFields.Add(new MiniYamlNode("SelfReloadTicks", reloadsPeriod.ToString()));
+							limitedAmmoFields.Add(new MiniYamlNode("ResetOnFire", reloadsResetOnFire.ToString()));
+
+							node.Value.Nodes.RemoveAll(n => n.Key == "Reloads");
+							node.Value.Nodes.RemoveAll(n => n.Key == "-Reloads");
+						}
+					}
+
+					// Moved RearmSound from Minelayer to LimitedAmmo/AmmoPool
+					if (depth == 0)
+					{
+						var actorTraits = node.Value.Nodes;
+						var limitedAmmo = actorTraits.FirstOrDefault(la => la.Key == "LimitedAmmo");
+						var minelayer = actorTraits.FirstOrDefault(ml => ml.Key == "Minelayer");
+
+						if (minelayer != null)
+						{
+							var minelayerFields = minelayer.Value.Nodes;
+							var limitedAmmoFields = limitedAmmo.Value.Nodes;
+							var rearmSound = minelayerFields.FirstOrDefault(rs => rs.Key == "RearmSound");
+							var minelayerRearmSound = rearmSound != null ? FieldLoader.GetValue<string>("RearmSound", rearmSound.Value.Value) : "minelay1.aud";
+
+							limitedAmmoFields.Add(new MiniYamlNode("RearmSound", minelayerRearmSound.ToString()));
+							minelayerFields.Remove(rearmSound);
+						}
+					}
+
+					// Rename LimitedAmmo to AmmoPool
+					if (node.Key == "LimitedAmmo")
+						node.Key = "AmmoPool";
+				}
+
+				if (engineVersion < 20150326)
+				{
+					// Rename BlocksBullets to BlocksProjectiles
+					if (node.Key == "BlocksBullets")
+						node.Key = "BlocksProjectiles";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
@@ -1111,6 +1173,51 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Nodes.RemoveAll(n => n.Key == "PerCellDamage");
 						Console.WriteLine("The 'PerCellDamage' warhead has been removed.");
 						Console.WriteLine("Please use the 'SpreadDamage' warhead instead.");
+					}
+				}
+
+				if (engineVersion < 20150326)
+				{
+					// Remove TurboBoost from missiles
+					if (depth == 1 && node.Key == "Projectile" && node.Value.Nodes.Exists(n => n.Key == "TurboBoost"))
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key == "TurboBoost");
+						Console.WriteLine("'TurboBoost' has been removed.");
+						Console.WriteLine("If you want to reproduce its behavior, create a duplicate");
+						Console.WriteLine("of the weapon in question, change it to be anti-air only,");
+						Console.WriteLine("increase its speed, make the original weapon anti-ground only,");
+						Console.WriteLine("and add the new weapon as additional armament to the actor.");
+					}
+
+					// Rename ROT to RateOfTurn
+					if (depth == 2 && node.Key == "ROT")
+						node.Key = "RateOfTurn";
+
+					// Rename High to Blockable
+					if (depth == 2 && parentKey == "Projectile" && node.Key == "High")
+					{
+						var highField = node.Value.Value != null ? FieldLoader.GetValue<bool>("High", node.Value.Value) : false;
+						var blockable = !highField;
+
+						node.Value.Value = blockable.ToString().ToLowerInvariant();
+						node.Key = "Blockable";
+					}
+
+					// Move Palette from weapon to projectiles
+					if (depth == 0)
+					{
+						var weapons = node.Value.Nodes;
+						var palette = weapons.FirstOrDefault(p => p.Key == "Palette");
+						var projectile = weapons.FirstOrDefault(r => r.Key == "Projectile");
+
+						if (palette != null)
+						{
+							var projectileFields = projectile.Value.Nodes;
+							var paletteName = palette.Value.Value != null ? FieldLoader.GetValue<string>("Palette", palette.Value.Value) : "effect";
+
+							projectileFields.Add(new MiniYamlNode("Palette", paletteName.ToString()));
+							weapons.Remove(palette);
+						}
 					}
 				}
 

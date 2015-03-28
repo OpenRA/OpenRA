@@ -1,6 +1,5 @@
 clock:
 	idle:
-		Start: 0
 		Length: *
 
 powerdown:
@@ -9,73 +8,56 @@ powerdown:
 
 120mm:
 	idle:
-		Start: 0
 
 50cal:
 	idle:
-		Start: 0
 
 explosion:
 	piff: piff
-		Start: 0
 		Length: *
 	piffs: piffpiff
-		Start: 0
 		Length: *
 	water_piff: wpiff
-		Start: 0
 		Length: *
 	water_piffs: wpifpif
-		Start: 0
 		Length: *
 	small_explosion: veh-hit3
-		Start: 0
 		Length: *
 	med_explosion: veh-hit2
-		Start: 0
 		Length: *
 	small_explosion_air: flak
-		Start: 0
 		Length: *
 	med_explosion_air: veh-hit1
-		Start: 0
 		Length: *
 	large_splash: h2o_exp1
-		Start: 0
 		Length: *
 	napalm: napalm2
-		Start: 0
 		Length: *
 	nuke: atomsfx
-		Start: 0
 		Length: *
 	med_splash: h2o_exp2
-		Start: 0
 		Length: *
 	self_destruct: art-exp1
-		Start: 0
 		Length: *
 	artillery_explosion: art-exp1
-		Start: 0
 		Length: *
 	building: fball1
-		Start: 0
 		Length: *
 		Offset: 0,-9
 	small_splash: h2o_exp3
-		Start: 0
 		Length: *
 	large_explosion: frag1
-		Start: 0
 		Length: *
 		Offset: -2,0
 	small_napalm: napalm1
-		Start: 0
 		Length: *
 	corpse: corpse1
-		Start: 0
-		Length: 6
+		Length: *
 		Tick: 1600
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
 
 pips:
 	groups:
@@ -92,7 +74,6 @@ pips:
 	tag-primary:
 		Start: 2
 	pip-empty: pips2
-		Start: 0
 	pip-green: pips2
 		Start: 1
 	pip-yellow: pips2
@@ -106,16 +87,13 @@ pips:
 
 v2:
 	idle:
-		Start: 0
 		Facings: 32
 
 rallypoint:
 	flag:flagfly
-		Start: 0
 		Length: *
 		Offset: 11,-5
 	circles:fpls
-		Start: 0
 		Length: *
 
 beacon:
@@ -123,36 +101,28 @@ beacon:
 		Start: 5
 		Offset: 1,-12
 	circles: fpls
-		Start: 0
 		Length: *
 	atomicon: lores-atomicon
-		Start: 0
 		Length: *
 		Offset: 0,-42
 	pbmbicon: lores-pbmbicon
-		Start: 0
 		Length: *
 		Offset: 0,-42
 	camicon: lores-camicon
-		Start: 0
 		Length: *
 		Offset: 0,-42
 	pinficon: lores-pinficon
-		Start: 0
 		Length: *
 		Offset: 0,-42
 	armordropicon: lores-pinficon
-		Start: 0
 		Length: *
 		Offset: 0,-42
 	clock: beaconclock
-		Start: 0
 		Length: *
 		Offset: 0,-42
 
 smoke_m:
 	idle:
-		Start: 0
 		Length: *
 		Offset: 2, -5
 		ZOffset: 512
@@ -162,35 +132,29 @@ smoke_m:
 		Offset: 2, -5
 		ZOffset: 512
 	end:
-		Start: 0
 		Length: 26
 		Offset: 2, -5
 		ZOffset: 512
 
 dragon:
 	idle:
-		Start: 0
 		Facings: 32
 
 smokey:
 	idle:
-		Start: 0
 		Length: *
 		ZOffset: 1023
 
 bomb:
 	idle:
-		Start: 0
 		Length: *
 
 missile:
 	idle:
-		Start: 0
 		Facings: 32
 
 litning:
 	bright:
-		Start: 0
 		Length: 4
 	dim:
 		Start: 4
@@ -198,49 +162,43 @@ litning:
 
 fb1:
 	idle: 
-		Start: 0
 		Length: *
 
 moveflsh:
 	idle:
-		Start: 0
 		Length: *
 		Tick: 80
-
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
 select:
 	repair:
 		Start: 2
 
 poweroff:
 	offline:
-		Start: 0
 		Length: *
 		Tick: 160
 
 allyrepair:
 	repair:
-		Start: 0
 		Length: *
 		Tick: 160
 
 tabs:
 	left-normal:
-		Start: 0
 	left-pressed:
 		Start: 1
 
 sputnik:
 	idle:
-		Start: 0
 		Length: *
 		Offset: -4,0
 
 dd-crnr:
 	idle:
-		Start: 0
 		Length: *
 	top-left:
-		Start: 0
 	top-right:
 		Start: 1
 	bottom-left:
@@ -250,21 +208,17 @@ dd-crnr:
 
 fb2:
 	idle:
-		Start: 0
 		Length: *
 
 fb3:
 	idle:
-		Start: 0
 		Facings: 32
 fb4:
 	idle:
-		Start: 0
 		Length: *
 
 scrate:
 	idle:
-		Start: 0
 		ZOffset: -511
 	land:
 		Start: 1
@@ -277,12 +231,10 @@ scrate:
 
 wcrate:
 	idle:
-		Start: 0
 		ZOffset: -511
 
 xcratea:
 	idle:
-		Start: 0
 		ZOffset: -511
 	land:
 		Start: 1
@@ -295,7 +247,6 @@ xcratea:
 
 xcrateb:
 	idle:
-		Start: 0
 		ZOffset: -511
 	land:
 		Start: 1
@@ -308,7 +259,6 @@ xcrateb:
 
 xcratec:
 	idle:
-		Start: 0
 		ZOffset: -511
 	land:
 		Start: 1
@@ -321,7 +271,6 @@ xcratec:
 
 xcrated:
 	idle:
-		Start: 0
 		ZOffset: -511
 	land:
 		Start: 1
@@ -334,61 +283,43 @@ xcrated:
 
 crate-effects:
 	speed: speed
-		Start: 0
 		Length: *
 	dollar: dollar
-		Start: 0
 		Length: *
 	reveal-map: earth
-		Start: 0
 		Length: *
 	hide-map: empulse
-		Start: 0
 		Length: *
 	fpower: fpower
-		Start: 0
 		Length: *
 	gps: gpsbox
-		Start: 0
 		Length: *
 	invuln: invulbox
-		Start: 0
 		Length: *
 	heal: invun
-		Start: 0
 		Length: *
 	nuke: missile2
-		Start: 0
 		Length: *
 	parabombs: parabox
-		Start: 0
 		Length: *
 	sonar: sonarbox
-		Start: 0
 		Length: *
 	stealth: stealth2
-		Start: 0
 		Length: *
 	timequake: tquake
-		Start: 0
 		Length: *
 	armor: armor
-		Start: 0
 		Length: *
 	chrono: chronbox
-		Start: 0
 		Length: *
 	airstrike: deviator
-		Start: 0
 		Length: *
 	levelup: levelup
-		Start: 0
 		Length: *
 		Tick: 200
 
 parach:
 	open:
-		Start: 0
 		Length: 5
 	idle:
 		Start: 5
@@ -396,27 +327,22 @@ parach:
 
 parach-shadow:
 	idle:
-		Start: 0
 		Length: *
 
 atomicup:
 	idle:
-		Start: 0
 		Length: *
 
 atomicdn:
 	idle:
-		Start: 0
 		Length: *
 
 bomblet:
 	idle:
-		Start: 0
 		Length: *
 
 parabomb:
 	open:
-		Start: 0
 		Length: 8
 	idle:
 		Start: 8
@@ -424,7 +350,6 @@ parabomb:
 
 smokland:
 	open: playersmoke
-		Start: 0
 		Length: 60
 		Tick: 120
 		ZOffset: 1023
@@ -436,63 +361,51 @@ smokland:
 
 fire:
 	1: fire1
-		Start: 0
 		Length: *
 		Offset: 0,-3
 		ZOffset: 1023
 	2: fire2
-		Start: 0
 		Length: *
 		Offset: 0,-3
 		ZOffset: 1023
 	3: fire3
-		Start: 0
 		Length: *
 		Offset: 0,-3
 		ZOffset: 1023
 	4: fire4
-		Start: 0
 		Length: *
 		Offset: 0,-3
 		ZOffset: 1023
 
 rank:
 	rank:
-		Start: 0
 		Length: *
 
 atomic:
 	up: atomicup
-		Start: 0
 		Length: *
 	down: atomicdn
-		Start: 0
 		Length: *
 
 bubbles:
 	idle:
-		Start: 0
 		Length: *
 		Tick: 220
 
 mpspawn:
 	idle:
-		Start: 0
 		Length: *
 
 waypoint:
 	idle:
-		Start: 0
 		Length: *
 
 camera:
 	idle:
-		Start: 0
 		Length: *
 
 gpsdot:
 	Infantry:
-		Start: 0
 	Vehicle:
 		Start: 1
 	Ship:
@@ -508,27 +421,17 @@ gpsdot:
 
 icon:
 	abomb: atomicon
-		Start: 0
 	invuln: infxicon
-		Start: 0
 	chrono: warpicon
-		Start: 0
 	spyplane: smigicon
-		Start: 0
 	paratroopers: pinficon
-		Start: 0
 	armordrop: armordropicon
-		Start: 0
 	gps: gpssicon
-		Start: 0
 	parabombs: pbmbicon
-		Start: 0
 	sonar: sonricon
-		Start: 0
 
 quee:
 	idle:
-		Start: 0
 		Length: 10
 	damaged-idle:
 		Start: 10
@@ -536,69 +439,53 @@ quee:
 
 lar1:
 	idle:
-		Start: 0
-		Length: *
 
 lar2:
 	idle:
-		Start: 0
-		Length: *
 
 minp:
 	idle:
-		Start: 0
 		ZOffset: -512
 	icon: jmin
-		Start: 0
 
 minv:
 	idle:
-		Start: 0
 		ZOffset: -512
 	icon: jmin
-		Start: 0
 
 overlay:
 	build-valid-desert:
-		Start: 0
 	build-valid-interior:
-		Start: 0
 	build-valid-snow:
 		Start: 2
 	build-valid-temperat:
-		Start: 0
 	build-invalid:
 		Start: 1
 	target-select:
 		Start: 2
 	target-valid-desert:
-		Start: 0
 	target-valid-interior:
-		Start: 0
 	target-valid-snow:
 		Start: 2
 	target-valid-temperat:
-		Start: 0
 	target-invalid:
 		Start: 1
 
 resources:
+	Defaults:
+		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
+			DESERT: TEMPERAT
 	gold01: gold01
-		Length: *
 	gold02: gold02
-		Length: *
 	gold03: gold03
-		Length: *
 	gold04: gold04
-		Length: *
 	gem01: gem01
-		Length: *
 	gem02: gem02
-		Length: *
 	gem03: gem03
-		Length: *
 	gem04: gem04
-		Length: *
 
 shroud:
 	shroud: shadow
@@ -607,54 +494,55 @@ shroud:
 # Note: The order of smudges and craters determines
 # the index that is mapped to them in maps
 scorches:
+	Defaults:
+		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	sc1: sc1
-		Length: *
 	sc2: sc2
-		Length: *
 	sc3: sc3
-		Length: *
 	sc4: sc4
-		Length: *
 	sc5: sc5
-		Length: *
 	sc6: sc6
-		Length: *
 
 craters:
+	Defaults:
+		Length: *
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 	cr1: cr1
-		Length: *
 	cr2: cr2
-		Length: *
 	cr3: cr3
-		Length: *
 	cr4: cr4
-		Length: *
 	cr5: cr5
-		Length: *
 	cr6: cr6
-		Length: *
 
 mine:
 	idle:
-		Start: 0
+		UseTilesetExtension: true
 		ZOffset: -512
 
 gmine:
 	idle:
-		Start: 0
 		ZOffset: -512
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 
 railmine:
 	idle:
-		Start: 0
 		ZOffset: -512
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
 
 ctflag:
 	idle:
-		Start: 0
 		Length: 9
 		Tick: 50
 		Offset: 0,-12
 	bib: mbGAP
-		Start: 0
 		Length: *
+		UseTilesetExtension: true

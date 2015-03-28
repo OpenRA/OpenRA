@@ -35,7 +35,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Helicopter : Aircraft, ITick, IResolveOrder, IMove
 	{
-		public HelicopterInfo Info;
+		public readonly HelicopterInfo Info;
+		readonly bool fallsToEarth;
 		Actor self;
 		bool firstTick = true;
 		public bool IsMoving { get { return self.CenterPosition.Z > 0; } set { } }
@@ -45,6 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self = init.Self;
 			Info = info;
+			fallsToEarth = self.HasTrait<FallsToEarth>();
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -74,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (Info.TurnToLand)
 						self.QueueActivity(new Turn(self, Info.InitialFacing));
 
-					self.QueueActivity(new HeliLand(true));
+					self.QueueActivity(new HeliLand(self, true));
 				}
 			}
 
@@ -83,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (Reservable.IsReserved(order.TargetActor))
 				{
 					self.CancelActivity();
-					self.QueueActivity(new HeliReturn());
+					self.QueueActivity(new HeliReturn(self));
 				}
 				else
 				{
@@ -99,16 +101,16 @@ namespace OpenRA.Mods.Common.Traits
 					self.CancelActivity();
 					self.QueueActivity(new HeliFly(self, Target.FromPos(order.TargetActor.CenterPosition + offset)));
 					self.QueueActivity(new Turn(self, Info.InitialFacing));
-					self.QueueActivity(new HeliLand(false));
-					self.QueueActivity(new ResupplyAircraft());
-					self.QueueActivity(new TakeOff());
+					self.QueueActivity(new HeliLand(self, false));
+					self.QueueActivity(new ResupplyAircraft(self));
+					self.QueueActivity(new TakeOff(self));
 				}
 			}
 
 			if (order.OrderString == "ReturnToBase")
 			{
 				self.CancelActivity();
-				self.QueueActivity(new HeliReturn());
+				self.QueueActivity(new HeliReturn(self));
 			}
 
 			if (order.OrderString == "Stop")
@@ -120,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (Info.TurnToLand)
 						self.QueueActivity(new Turn(self, Info.InitialFacing));
 
-					self.QueueActivity(new HeliLand(true));
+					self.QueueActivity(new HeliLand(self, true));
 				}
 			}
 		}
@@ -130,14 +132,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (firstTick)
 			{
 				firstTick = false;
-				if (!self.HasTrait<FallsToEarth>()) // TODO: Aircraft husks don't properly unreserve.
+				if (!fallsToEarth) // TODO: Aircraft husks don't properly unreserve.
 					ReserveSpawnBuilding();
 
 				var host = GetActorBelow();
 				if (host == null)
 					return;
 
-				self.QueueActivity(new TakeOff());
+				self.QueueActivity(new TakeOff(self));
 			}
 
 			Repulse();
@@ -155,7 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new HeliFly(self, Target.FromCell(self.World, cell, subCell));
 		}
 
-		public Activity MoveIntoTarget(Actor self, Target target) { return new HeliLand(false); }
+		public Activity MoveIntoTarget(Actor self, Target target) { return new HeliLand(self, false); }
 		public Activity MoveToTarget(Actor self, Target target)
 		{
 			return Util.SequenceActivities(new HeliFly(self, target), new Turn(self, Info.InitialFacing));

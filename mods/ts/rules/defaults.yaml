@@ -110,7 +110,7 @@
 		DestroyedSounds: crmble2.aud
 	Crushable:
 		CrushClasses: wall
-	BlocksBullets:
+	BlocksProjectiles:
 	LineBuild:
 		Range: 8
 		NodeTypes: wall

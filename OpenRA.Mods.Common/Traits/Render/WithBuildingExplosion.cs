@@ -27,21 +27,22 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Custom palette name")]
 		public readonly string Palette = "effect";
 
-		public object Create(ActorInitializer init) { return new WithBuildingExplosion(this); }
+		public object Create(ActorInitializer init) { return new WithBuildingExplosion(init.Self, this); }
 	}
 
 	class WithBuildingExplosion : INotifyKilled
 	{
 		WithBuildingExplosionInfo info;
+		BuildingInfo buildingInfo;
 
-		public WithBuildingExplosion(WithBuildingExplosionInfo info)
+		public WithBuildingExplosion(Actor self, WithBuildingExplosionInfo info)
 		{
 			this.info = info;
+			buildingInfo = self.Info.Traits.Get<BuildingInfo>();
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			var buildingInfo = self.Info.Traits.Get<BuildingInfo>();
 			var cells = FootprintUtils.UnpathableTiles(self.Info.Name, buildingInfo, self.Location);
 
 			if (info.Delay > 0)

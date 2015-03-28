@@ -55,7 +55,7 @@ Grenade:
 	Range: 4c512
 	Projectile: Bullet
 		Speed: 85
-		High: yes
+		Blockable: false
 		Shadow: true
 		Angle: 62
 		Inaccuracy: 554
@@ -88,18 +88,18 @@ Bazooka:
 	MinRange: 0c512
 	Report: RKETINF1.AUD
 	ValidTargets: Ground, Air
-	Palette: ra
 	Projectile: Missile
 		Speed: 213
 		Arm: 3
-		High: true
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 8
+		RateOfTurn: 8
 		RangeLimit: 50
 		CloseEnough: 256
 		LockOnProbability: 80
+		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 35
@@ -131,16 +131,16 @@ MultiCluster:
 	Range: 6c0
 	Report: MISL1.AUD
 	ValidTargets: Ground
-	Palette: ra
 	Projectile: Missile
 		Speed: 170
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 8
+		RateOfTurn: 8
 		RangeLimit: 35
+		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 65
@@ -249,7 +249,7 @@ CyCannon:
 	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 192
-		High: yes
+		Blockable: false
 		Shadow: true
 		Image: TORPEDO
 	Warhead@1Dam: SpreadDamage
@@ -352,13 +352,13 @@ FiendShard:
 	Burst: 3
 	Range: 5c0
 	Report: FIEND2.AUD
-	Palette: greentiberium
 	Projectile: Bullet
 		Speed: 213
 		Image: CRYSTAL4
 		Inaccuracy: 512
 		Shadow: true
 		Angle: 88
+		Palette: greentiberium
 	Warhead@1Dam: SpreadDamage
 		Damage: 35
 		DeathType: 1
@@ -403,16 +403,16 @@ HoverMissile:
 	Range: 8c0
 	Report: HOVRMIS1.AUD
 	ValidTargets: Ground, Air
-	Palette: ra
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 8
+		RateOfTurn: 8
 		RangeLimit: 35
+		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -445,12 +445,12 @@ HoverMissile:
 	Report: 120MMF.AUD
 	Burst: 2
 	BurstDelay: 5
-	Palette: ra
 	Projectile: Bullet
 		Speed: 682
 		Image: 120mm
 		Shadow: true
 		Angle: 62
+		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
@@ -478,16 +478,16 @@ MammothTusk:
 	Report: MISL1.AUD
 	ValidTargets: Air
 	Burst: 2
-	Palette: ra
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 10
+		RateOfTurn: 10
 		Speed: 170
 		RangeLimit: 35
+		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 171
 		Damage: 40
@@ -638,16 +638,16 @@ BikeMissile:
 	Range: 5c0
 	Report: MISL1.AUD
 	ValidTargets: Ground
-	Palette: ra
 	Projectile: Missile
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 8
+		RateOfTurn: 8
 		Speed: 213
 		RangeLimit: 35
+		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 40
@@ -742,16 +742,16 @@ Dragon:
 	Burst: 2
 	Report: MISL1.AUD
 	ValidTargets: Ground, Air
-	Palette: ra
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 8
+		RateOfTurn: 8
 		RangeLimit: 35
+		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -782,12 +782,12 @@ Dragon:
 	ReloadDelay: 50
 	Range: 6c768
 	Report: 120MMF.AUD
-	Palette: ra
 	Projectile: Bullet
 		Speed: 682
 		Image: 120mm
 		Shadow: true
 		Angle: 62
+		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 36
@@ -813,13 +813,13 @@ Dragon:
 	ReloadDelay: 110
 	Range: 18c0
 	Report: 120MMF.AUD
-	Palette: ra
 	Projectile: Bullet
 		Speed: 170
 		Image: 120mm
 		Angle: 165
 		Shadow: true
-		High: yes
+		Blockable: false
+		Palette: ra
 	MinRange: 5c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
@@ -849,16 +849,16 @@ Hellfire:
 	Report: ORCAMIS1.AUD
 	Burst: 2
 	ValidTargets: Ground, Air
-	Palette: ra
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 8
+		RateOfTurn: 8
 		RangeLimit: 35
+		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 85
 		Damage: 30
@@ -888,11 +888,11 @@ Hellfire:
 Bomb:
 	ReloadDelay: 10
 	Range: 5c0
-	Palette: player
 	Projectile: Bullet
 		Speed: 170
 		Image: canister
 		Shadow: true
+		Palette: player
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
 		Damage: 160
@@ -924,11 +924,11 @@ Proton:
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: TORPEDO
-		ROT: 1
+		RateOfTurn: 1
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -1064,13 +1064,13 @@ RPGTower:
 	ReloadDelay: 80
 	Range: 8c0
 	Report: GLNCH4.AUD
-	Palette: player
 	Projectile: Bullet
 		Speed: 384
-		High: yes
+		Blockable: false
 		Shadow: true
 		Angle: 62
 		Image: canister
+		Palette: player
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 110
@@ -1098,16 +1098,16 @@ SAMTower:
 	Range: 15c0
 	Report: SAMSHOT1.AUD
 	ValidTargets: Air
-	Palette: ra
 	Projectile: Missile
 		Speed: 298
 		Arm: 2
-		High: yes
+		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 5
+		RateOfTurn: 5
 		RangeLimit: 60
+		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 33
@@ -1149,7 +1149,7 @@ EMPulseCannon:
 	Report: PLSECAN2.AUD
 	Projectile: Bullet
 		Speed: 425
-		High: yes
+		Blockable: false
 		Shadow: true
 		Angle: 62
 		Image: pulsball
@@ -1266,3 +1266,4 @@ ClusterMissile:
 		SmudgeType: SmallScorch
 		Size: 5
 		Delay: 20
+

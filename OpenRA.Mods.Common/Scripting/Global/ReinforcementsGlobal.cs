@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Scripting
 				if (heli != null)
 				{
 					transport.QueueActivity(new Turn(transport, heli.Info.InitialFacing));
-					transport.QueueActivity(new HeliLand(true));
+					transport.QueueActivity(new HeliLand(transport, true));
 					transport.QueueActivity(new Wait(15));
 				}
 

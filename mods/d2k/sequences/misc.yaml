@@ -64,11 +64,53 @@ explosion:
 		Start: 3512
 		Length: 23
 		BlendMode: Additive
-		Tick: 60
+		Tick: 80
 	corpse: DATA.R8
 		Start: 430
 		Length: 12
 		Tick: 1600
+
+large_trail: 
+	idle: DATA.R8
+		Start: 3873
+		Length: 4
+		Tick: 80
+		BlendMode: Additive
+
+small_trail:
+	idle: DATA.R8
+		Start: 3735
+		Length: 4
+		Tick: 80
+		BlendMode: Additive
+
+small_trail2:
+	idle: DATA.R8
+		Start: 3540
+		Length: 4
+		Tick: 80
+		BlendMode: Additive
+
+bazooka_trail:
+	idle: DATA.R8
+		Start: 3381
+		Length: 4
+		Tick: 80
+		BlendMode: Additive
+
+bazooka_trail2:
+	idle: DATA.R8
+		Start: 3544
+		Length: 4
+		Tick: 80
+		BlendMode: Additive
+
+deviator_trail:
+	idle: DATA.R8
+		Start: 3535
+		Length: 5
+		Tick: 80
+		BlendMode: Additive
 
 laserfire:
 	idle: DATA.R8

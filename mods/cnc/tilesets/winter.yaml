@@ -2,7 +2,7 @@ General:
 	Name: Winter
 	Id: WINTER
 	Palette: winter.pal
-	Extensions: .win, .shp, .tem
+	Extensions: # Obsolete
 	WaterPaletteRotationBase: 32
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Beach, River, Bridge
 

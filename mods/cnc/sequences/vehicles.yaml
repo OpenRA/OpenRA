@@ -1,19 +1,16 @@
 mcv:
 	idle:
-		Start: 0
 		Facings: 32
-	icon: mcvicnh
-		Start: 0
+	icon: mcvicnh.tem
+		AddExtension: False
 
 mcv.destroyed:
 	idle: mcv
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 
 harv:
 	idle:
-		Start: 0
 		Facings: 32
 	harvest:
 		Start: 32
@@ -21,37 +18,31 @@ harv:
 		Facings: 8
 		Tick: 60
 	dock: harvdump
-		Start: 0
 		Length: 7
 	dock-loop: harvdump
 		Start: 7
-		Length: 1
-	icon: harvicnh
-		Start: 0
+	icon: harvicnh.tem
+		AddExtension: False
 
 harv.destroyed:
 	idle: harv
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 
 bggy:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 32
 		Facings: 32
 	muzzle: minigun
-		Start: 0
 		Length: 6
 		Facings: 8
-	icon: bggyicnh
-		Start: 0
+	icon: bggyicnh.tem
+		AddExtension: False
 
 bggy.destroyed:
 	idle: bggy
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 	turret: bggy
@@ -61,20 +52,17 @@ bggy.destroyed:
 
 mtnk:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 32
 		Facings: 32
 	muzzle: gunfire2
-		Start: 0
 		Length: *
-	icon: mtnkicnh
-		Start: 0
+	icon: mtnkicnh.tem
+		AddExtension: False
 
 mtnk.destroyed:
 	idle: mtnk
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 	turret: mtnk
@@ -84,20 +72,17 @@ mtnk.destroyed:
 
 ltnk:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 32
 		Facings: 32
 	muzzle: gunfire2
-		Start: 0
 		Length: *
-	icon: ltnkicnh
-		Start: 0
+	icon: ltnkicnh.tem
+		AddExtension: False
 
 ltnk.destroyed:
 	idle: ltnk
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 	turret: ltnk
@@ -107,20 +92,17 @@ ltnk.destroyed:
 
 htnk:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 32
 		Facings: 32
 	muzzle: gunfire2
-		Start: 0
 		Length: *
-	icon: htnkicnh
-		Start: 0
+	icon: htnkicnh.tem
+		AddExtension: False
 
 htnk.destroyed:
 	idle: htnk
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 	turret: htnk
@@ -130,21 +112,18 @@ htnk.destroyed:
 
 jeep:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 32
 		Facings: 32
 	muzzle: minigun
-		Start: 0
 		Length: 6
 		Facings: 8
-	icon: jeepicnh
-		Start: 0
+	icon: jeepicnh.tem
+		AddExtension: False
 
 jeep.destroyed:
 	idle: jeep
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 	turret: jeep
@@ -154,75 +133,60 @@ jeep.destroyed:
 
 bike:
 	idle:
-		Start: 0
 		Facings: 32
-	icon: bikeicnh
-		Start: 0
+	icon: bikeicnh.tem
+		AddExtension: False
 
 bike.destroyed:
 	idle: bike
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 
 ftnk:
 	idle:
-		Start: 0
 		Facings: 32
 	muzzle0: flame-n
-		Start: 0
 		Length: *
 		Offset: 3,8
 	muzzle1: flame-nw
-		Start: 0
 		Length: *
 		Offset: 4,6
 	muzzle2: flame-w
-		Start: 0
 		Length: *
 		Offset: 7,2
 	muzzle3: flame-sw
-		Start: 0
 		Length: *
 		Offset: 3,-2
 	muzzle4: flame-s
-		Start: 0
 		Length: *
 		Offset: 1,-2
 	muzzle5: flame-se
-		Start: 0
 		Length: *
 		Offset: -3,-1
 	muzzle6: flame-e
-		Start: 0
 		Length: *
 		Offset: -6,2
 	muzzle7: flame-ne
-		Start: 0
 		Length: *
 		Offset: -5,6
-	icon: ftnkicnh
-		Start: 0
+	icon: ftnkicnh.tem
+		AddExtension: False
 
 ftnk.destroyed:
 	idle: ftnk
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 
 mhq:
 	idle:
-		Start: 0
 		Facings: 32
 	spinner:
 		Start: 32
 		Length: 32
 	icon: mhqicnh
-		Start: 0
 
 msam:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 32
@@ -233,12 +197,11 @@ msam:
 	turret-3:
 		Start: 64
 		Facings: 32
-	icon: msamicnh
-		Start: 0
+	icon: msamicnh.tem
+		AddExtension: False
 
 msam.destroyed:
 	idle: msam
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 	turret: msam
@@ -248,7 +211,6 @@ msam.destroyed:
 
 mlrs:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 32
@@ -259,12 +221,11 @@ mlrs:
 	turret-3:
 		Start: 96
 		Facings: 32
-	icon: mlrsicnh
-		Start: 0
+	icon: mlrsicnh.tem
+		AddExtension: False
 
 mlrs.destroyed:
 	idle: mlrs
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 	turret: mlrs
@@ -274,42 +235,34 @@ mlrs.destroyed:
 
 stnk:
 	idle:
-		Start: 0
 		Facings: 32
-	icon: stnkicnh
-		Start: 0
+	icon: stnkicnh.tem
+		AddExtension: False
 
 stnk.destroyed:
 	idle: stnk
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 
 arty:
 	idle:
-		Start: 0
 		Facings: 32
 	muzzle: gunfire2
-		Start: 0
 		Length: *
-	icon: artyicnh
-		Start: 0
+	icon: artyicnh.tem
+		AddExtension: False
 
 arty.destroyed:
 	idle: arty
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 
 apc:
 	idle:
-		Start: 0
 		Facings: 32
 	turret: apctur
-		Start: 0
 		Facings: 32
 	muzzle: apcmuz
-		Start: 0
 		Length: 3
 		Stride: 6
 		Facings: 8
@@ -318,15 +271,13 @@ apc:
 		Length: 3
 	unload:
 		Start: 32
-	icon: apcicnh
-		Start: 0
+	icon: apcicnh.tem
+		AddExtension: False
 
 apc.destroyed:
 	idle: apc
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 	turret: apctur
-		Start: 0
 		Facings: 32
 		ZOffset: -512

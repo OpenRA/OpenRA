@@ -69,9 +69,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var actor in self.World.ActorsWithTrait<AnnounceOnSeen>())
 			{
-				// We don't want notifications for allied actors
-				if ((actor.Actor.EffectiveOwner != null && self.Owner.Stances[actor.Actor.EffectiveOwner.Owner] == Stance.Ally)
-				 || self.Owner.Stances[actor.Actor.Owner] == Stance.Ally)
+				// We don't want notifications for allied actors or actors disguised as such
+				if (actor.Actor.AppearsFriendlyTo(self))
 					continue;
 
 				if (actor.Actor.IsDead || !actor.Actor.IsInWorld)

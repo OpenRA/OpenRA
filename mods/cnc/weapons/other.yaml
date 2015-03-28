@@ -1,4 +1,3 @@
-
 Flamethrower:
 	ReloadDelay: 55
 	Range: 2c512
@@ -74,7 +73,7 @@ Grenade:
 	Report: toss1.aud
 	Projectile: Bullet
 		Speed: 119
-		High: yes
+		Blockable: false
 		Angle: 62
 		Inaccuracy: 213
 		Image: BOMB
@@ -236,3 +235,4 @@ Demolish:
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: xplobig6.aud
+

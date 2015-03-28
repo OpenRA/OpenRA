@@ -486,7 +486,7 @@ wall:
 		Type: Concrete
 	Crushable:
 		CrushClasses: Concretewall
-	BlocksBullets:
+	BlocksProjectiles:
 	LineBuild:
 		Range: 8
 		NodeTypes: wall, turret

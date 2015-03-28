@@ -1,27 +1,22 @@
 fb4:
 	idle:
-		Start: 0
 		Length: 4
 
 fire:
 	1: fire1
-		Start: 0
 		Length: *
 		Offset: 0,-3
 		ZOffset: 1023
 	2: fire2
-		Start: 0
 		Length: *
 		Offset: 0,-3
 		ZOffset: 1023
 
 120mm:
 	idle:
-		Start: 0
 
 smoke_m:
 	idle:
-		Start: 0
 		Length: *
 		Offset: 2, -5
 		ZOffset: 512
@@ -31,97 +26,73 @@ smoke_m:
 		Offset: 2, -5
 		ZOffset: 512
 	end:
-		Start: 0
 		Length: 26
 		Offset: 2, -5
 		ZOffset: 512
 
 laserfire:
 	idle:veh-hit3
-		Start: 0
 		Length: *
 
 dragon:
 	idle:
-		Start: 0
 		Facings: 32
 
 smokey:
 	idle:
-		Start: 0
 		Length: *
 
 bomb:
 	idle:
-		Start: 0
 		Length: *
 
 missile:
 	idle:
-		Start: 0
 		Facings: 32
 
 patriot:
 	idle:
-		Start: 0
 		Facings: 32
 
 explosion:
 	nuke_explosion: atomsfx
-		Start: 0
 		Length: *
 	piff: piff
-		Start: 0
 		Length: *
 	piffs: piffpiff
-		Start: 0
 		Length: *
 	chemball: chemball		#same size as small_napalm, but bright green.
-		Start: 0
 		Length: *
 	small_napalm: napalm1		#not used by much. currently used for flamethrower.
-		Start: 0
 		Length: *
 	med_napalm: napalm2		#explosion for bomblets
-		Start: 0
 		Length: *
 	big_napalm: napalm3		#huge; not used. (SSM used this explosion in C&C Gold?)
-		Start: 0
 		Length: *
 	small_frag: veh-hit3		#the most common weapon-hit explosion. For rockets, tank shells, etc. 
-		Start: 0
 		Length: *
 	med_frag: frag1			#fragmentation-style; quite large. (MLRS used this explosion in C&C Gold?)
-		Start: 0
 		Length: *
 	big_frag: frag3			#Same as med_frag, except fire hangs around longer.
-		Start: 0
 		Length: *
 	small_poof: veh-hit2		#for Grenades; tower missiles; boat missiles; APC AA gun.
-		Start: 0
 		Length: *
 	poof: art-exp1			#For UnitExplode (artillery); artillery shell hit; GrenadierExplode, 
-		Start: 0
 		Length: *
 	small_building: veh-hit1	#like "building' explosion, but much smaller. (Used for heli-explosion in C&C Gold?)
-		Start: 0
 		Length: *
 	building: fball1		#Large explosion, for when a building explodes. 
-		Start: 0
 		Length: *
 
 rank:
 	rank:
-		Start: 0
 		Length: *
 
 rallypoint:
 	flag:flagfly
-		Start: 0
 		Length: *
 		Offset: 10,-5
 	circles:fpls
-		Start: 0
 		Length: *
 
 beacon:
@@ -129,18 +100,12 @@ beacon:
 		Start: 5
 		Offset: 1,-12
 	circles: fpls
-		Start: 0
 		Length: *
 	airstrike: bombicon
-		Start: 0
-		Length: 1
 		Offset: 0,-42
 	atomic: atomicon
-		Start: 0
-		Length: 1
 		Offset: 0,-42
 	clock: beaconclock
-		Start: 0
 		Length: *
 		Offset: 0,-42
 
@@ -150,24 +115,19 @@ select:
 
 allyrepair:
 	repair:
-		Start: 0
 		Length: *
 		Tick: 160
 
 crate:
 	idle:
-		Start: 0
 		ZOffset: -511
 	land:
-		Start: 0
 		ZOffset: -511
 
 xcratea:
 	idle: xcrate
-		Start: 0
 		ZOffset: -511
 	land: xcrate
-		Start: 0
 		ZOffset: -511
 
 xcrateb:
@@ -196,93 +156,70 @@ xcrated:
 
 crate-effects:
 	airstrike: deviator
-		Start: 0
 		Length: *
 	nuke: missile2
-		Start: 0
 		Length: *
 	dollar: dollar
-		Start: 0
 		Length: *
 	reveal-map: radarcrate
-		Start: 0
 		Length: *
 	hide-map: empulse
-		Start: 0
 		Length: *
 	heal: healcrate
-		Start: 0
 		Length: *
 	mine: mine
-		Start: 0
 		Length: *
 	redskull: rapid
-		Start: 0
 		Length: *
 	cloak: cloakcrate
-		Start: 0
 		Length: *
 	levelup: levelup
-		Start: 0
 		Length: *
 		Tick: 200
 	firepowerup: firepowercrate
-		Start: 0
 		Length: *
 	armorup: armorcrate
-		Start: 0
 		Length: *
 	speedup: speedcrate
-		Start: 0
 		Length: *
 
 atomicup:
 	idle:
-		Start: 0
 		Length: *
 
 atomicdn:
 	idle:
-		Start: 0
 		Length: *
 
 atomic:
 	up: atomicup
-		Start: 0
 		Length: *
 	down: atomicdn
-		Start: 0
 		Length: *
 
 ionsfx:
 	idle:
-		Start: 0
 		Length: *
 		Offset: 0, -78
 		ZOffset: 1
 
 bomblet:
 	idle:
-		Start: 0
 		Length: *
 
 mpspawn:
 	idle:
-		Start: 0
 		Length: *
 
 waypoint:
 	idle:
-		Start: 0
 		Length: *
 
 clock:
 	idle: hclock
-		Start: 0
 		Length: *
 pips:
 	pip-empty:
-		Start: 0
 	pip-green:
 		Start: 1
 	pip-yellow:
@@ -294,152 +231,156 @@ pips:
 	pip-blue:
 		Start: 5
 	groups: pdigits
-		Start: 0
 		Length: *
 
 overlay:
 	build-valid-desert:
-		Start: 0
 	build-valid-snow:
 		Start: 2
 	build-valid-temperat:
-		Start: 0
 	build-valid-winter:
-		Start: 0
 	build-valid-jungle:
-		Start: 0
 	build-invalid:
 		Start: 1
 	target-select:
 		Start: 3
 	target-valid-desert:
-		Start: 0
 	target-valid-snow:
 		Start: 2
 	target-valid-temperat:
-		Start: 0
 	target-valid-winter:
-		Start: 0
 	target-valid-jungle:
-		Start: 0
 	target-invalid:
 		Start: 1
 
-powerdown:
-	disabled: speed
-		Start: 3
-
 poweroff:
 	offline:
-		Start: 0
 		Length: *
 		Tick: 160
 
 icon:
-	airstrike: bombicnh
-		Start: 0
-	ioncannon: ionicnh
-		Start: 0
-	abomb: atomicnh
-		Start: 0
+	airstrike: bombicnh.tem
+		AddExtension: False
+	ioncannon: ionicnh.tem
+		AddExtension: False
+	abomb: atomicnh.tem
+		AddExtension: False
 
 moveflsh:
 	idle:
-		Start: 0
 		Length: *
 		Tick: 80
 
 resources:
+	Defaults:
+		UseTilesetExtension: true
+		Length: *
 	ti1: ti1
-		Length: *
 	ti2: ti2
-		Length: *
 	ti3: ti3
-		Length: *
 	ti4: ti4
-		Length: *
 	ti5: ti5
-		Length: *
 	ti6: ti6
-		Length: *
 	ti7: ti7
-		Length: *
 	ti8: ti8
-		Length: *
 	ti9: ti9
-		Length: *
 	ti10: ti10
-		Length: *
 	ti11: ti11
-		Length: *
 	ti12: ti12
-		Length: *
 	bti1: rtib1
-		Length: *
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
 	bti2: rtib2
-		Length: *
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
 	bti3: rtib3
-		Length: *
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
 	bti4: rtib4
-		Length: *
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
 	bti5: rtib5
-		Length: *
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
 	bti6: rtib6
-		Length: *
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
 	bti7: rtib7
-		Length: *
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
 	bti8: rtib8
-		Length: *
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
 	bti9: rtib9
-		Length: *
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
 	bti10: rtib10
-		Length: *
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
 	bti11: rtib11
-		Length: *
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
 	bti12: rtib12
-		Length: *
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
 
 shroud:
-	typea: shadow
-		Start: 0
+	Defaults:
 		Length: 12
+	typea: shadow
 	typeb: shadow
 		Start: 12
-		Length: 12
 	typec: shadow
 		Start: 24
-		Length: 12
 	typed: shadow
 		Start: 36
-		Length: 12
 	full: fullshroud
+		Length: 1
 
 # Note: The order of smudges and craters determines
 # the index that is mapped to them in maps
 scorches:
+	Defaults:
+		UseTilesetExtension: true
+		Length: *
 	sc1: sc1
-		Length: *
 	sc2: sc2
-		Length: *
 	sc3: sc3
-		Length: *
 	sc4: sc4
-		Length: *
 	sc5: sc5
-		Length: *
 	sc6: sc6
-		Length: *
 
 craters:
+	Defaults:
+		UseTilesetExtension: true
+		Length: *
 	cr1: cr1
-		Length: *
 	cr2: cr2
-		Length: *
 	cr3: cr3
-		Length: *
 	cr4: cr4
-		Length: *
 	cr5: cr5
-		Length: *
 	cr6: cr6
-		Length: *

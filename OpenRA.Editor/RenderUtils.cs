@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.SpriteLoaders;
 using OpenRA.Traits;
 
@@ -46,17 +47,27 @@ namespace OpenRA.Editor
 			return bitmap;
 		}
 
+		static string[] SpriteExtensions(TileSet tileSet)
+		{
+			var ssl = Game.ModData.SpriteSequenceLoader as TilesetSpecificSpriteSequenceLoader;
+			if (ssl == null)
+				return tileSet.Extensions;
+
+			return tileSet.Extensions.Append(ssl.TilesetExtensions[tileSet.Id], ssl.DefaultSpriteExtension).ToArray();
+		}
+
 		public static ActorTemplate RenderActor(ActorInfo info, SequenceProvider sequenceProvider, TileSet tileset, IPalette p, string race)
 		{
 			var image = info.Traits.Get<ILegacyEditorRenderInfo>().EditorImage(info, sequenceProvider, race);
-			using (var s = GlobalFileSystem.OpenWithExts(image, tileset.Extensions))
+			var exts = SpriteExtensions(tileset);
+			using (var s = GlobalFileSystem.OpenWithExts(image, exts))
 			{
 				var shp = new ShpTDSprite(s);
 				var bitmap = RenderShp(shp, p);
 
 				try
 				{
-					using (var s2 = GlobalFileSystem.OpenWithExts(image + "2", tileset.Extensions))
+					using (var s2 = GlobalFileSystem.OpenWithExts(image + "2", exts))
 					{
 						var shp2 = new ShpTDSprite(s2);
 						var roofBitmap = RenderShp(shp2, p);
@@ -76,9 +87,10 @@ namespace OpenRA.Editor
 			}
 		}
 
-		public static ResourceTemplate RenderResourceType(ResourceTypeInfo info, string[] exts, IPalette p)
+		public static ResourceTemplate RenderResourceType(ResourceTypeInfo info, TileSet tileset, IPalette p)
 		{
 			var image = info.EditorSprite;
+			var exts = SpriteExtensions(tileset);
 			using (var s = GlobalFileSystem.OpenWithExts(image, exts))
 			{
 				// TODO: Do this properly
