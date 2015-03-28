@@ -77,7 +77,18 @@ namespace OpenRA.Mods.TS.UtilityCommands
 							Console.WriteLine("\tTemplate@{0}:", templateIndex);
 							Console.WriteLine("\t\tCategory: {0}", sectionCategory);
 							Console.WriteLine("\t\tId: {0}", templateIndex);
-							Console.WriteLine("\t\tImage: {0}{1:D2}.{2}", sectionFilename, i, extension);
+
+							var images = new List<string>();
+
+							images.Add("{0}{1:D2}.{2}".F(sectionFilename, i, extension));
+							for (var v = 'a'; v <= 'z'; v++)
+							{
+								var variant = "{0}{1:D2}{2}.{3}".F(sectionFilename, i, v, extension);
+								if (GlobalFileSystem.Exists(variant))
+									images.Add(variant);
+							}
+
+							Console.WriteLine("\t\tImage: {0}", images.JoinWith(", "));
 
 							var templateWidth = s.ReadUInt32();
 							var templateHeight = s.ReadUInt32();
