@@ -858,6 +858,8 @@ function findReplace:refreshPanel(replace, infiles)
     local size = ctrl:GetSize()
     pane:Dock():Bottom():BestSize(size):MinSize(size):Layer(0):Row(1):Show()
     mgr:Update()
+
+    self:SetStatus(TR("Use %s to close."):format("`Escape`"))
   end
 
   -- reset search when re-creating dialog to avoid modifying selected
