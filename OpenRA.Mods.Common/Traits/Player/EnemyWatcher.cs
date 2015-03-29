@@ -34,13 +34,13 @@ namespace OpenRA.Mods.Common.Traits
 		bool announcedAny;
 		int rescanInterval;
 		int ticksBeforeNextNotification;
-		HashSet<uint> lastKnownActorIds;
-		HashSet<uint> visibleActorIds;
+		Dictionary<Player, HashSet<uint>> lastKnownActorIds;
+		Dictionary<Player, HashSet<uint>> visibleActorIds;
 		HashSet<string> playedNotifications;
 
 		public EnemyWatcher(EnemyWatcherInfo info)
 		{
-			lastKnownActorIds = new HashSet<uint>();
+			lastKnownActorIds = new Dictionary<Player, HashSet<uint>>();
 			discoveredPlayers = new HashSet<Player>();
 			this.info = info;
 			rescanInterval = info.ScanInterval;
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			rescanInterval = info.ScanInterval;
 
 			announcedAny = false;
-			visibleActorIds = new HashSet<uint>();
+			visibleActorIds = new Dictionary<Player, HashSet<uint>>();
 			playedNotifications = new HashSet<string>();
 
 			foreach (var actor in self.World.ActorsWithTrait<AnnounceOnSeen>())
@@ -80,10 +80,14 @@ namespace OpenRA.Mods.Common.Traits
 				if (!self.Owner.Shroud.IsVisible(actor.Actor))
 					continue;
 
-				visibleActorIds.Add(actor.Actor.ActorID);
+				var owner = actor.Actor.Owner;
+				if (!visibleActorIds.ContainsKey(owner))
+					visibleActorIds[owner] = new HashSet<uint>();
+
+				visibleActorIds[owner].Add(actor.Actor.ActorID);
 
 				// We already know about this actor
-				if (lastKnownActorIds.Contains(actor.Actor.ActorID))
+				if (lastKnownActorIds.ContainsKey(owner) && lastKnownActorIds[owner].Count > 0 && !actor.Trait.Info.AnnounceIndividual)
 					continue;
 
 				var notificationPlayed = playedNotifications.Contains(actor.Trait.Info.Notification);

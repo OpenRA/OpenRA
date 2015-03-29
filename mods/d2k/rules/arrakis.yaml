@@ -52,6 +52,7 @@ sandworm:
 		WanderMoveRadius: 5
 	IgnoresCloak:
 	AnnounceOnSeen:
+		AnnounceIndividual: True
 		Notification: WormSign
 		PingRadar: True
 

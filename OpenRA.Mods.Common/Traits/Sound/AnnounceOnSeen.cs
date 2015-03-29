@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool AnnounceNeutrals = false;
 
+		[Desc("Notifications will be generated even when the discovering player already sees other units belonging to the same player.")]
+		public readonly bool AnnounceIndividual = false;
+
 		public object Create(ActorInitializer init) { return new AnnounceOnSeen(init.Self, this); }
 	}
 
