@@ -84,15 +84,16 @@ carryall.husk:
 	WithShadow:
 
 frigate:
-	Inherits: ^Plane
+	Inherits: ^Helicopter
 	ParaDrop:
 		DropRange: 1c0
 	Tooltip:
 		Name: Frigate
 		Description: Supply spacecraft
-	Plane:
+	Helicopter:
 		ROT: 5
 		Speed: 350
+		AltitudeVelocity: 21
 		RepairBuildings: repair
 		RearmBuildings:
 		Repulsable: False

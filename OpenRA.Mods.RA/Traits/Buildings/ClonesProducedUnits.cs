@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (ci == null || !info.CloneableTypes.Intersect(ci.Types).Any())
 				return;
 
-			production.Produce(self, produced.Info, race);
+			production.Produce(self, new[] { produced.Info }, race);
 		}
 	}
 }
