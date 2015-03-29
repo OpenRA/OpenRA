@@ -51,20 +51,21 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ExternalCapturable : ITick
 	{
-		readonly Building building;
 		[Sync] public int CaptureProgressTime = 0;
 		[Sync] public Actor Captor;
+		private Actor self;
 		public ExternalCapturableInfo Info;
 		public bool CaptureInProgress { get { return Captor != null; } }
 
 		public ExternalCapturable(Actor self, ExternalCapturableInfo info)
 		{
+			this.self = self;
 			Info = info;
-			building = self.TraitOrDefault<Building>();
 		}
 
 		public void BeginCapture(Actor captor)
 		{
+			var building = self.TraitOrDefault<Building>();
 			if (building != null)
 				building.Lock();
 
@@ -73,6 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void EndCapture()
 		{
+			var building = self.TraitOrDefault<Building>();
 			if (building != null)
 				building.Unlock();
 
