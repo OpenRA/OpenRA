@@ -86,6 +86,46 @@ GAPOWR:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
+	Pluggable@pluga:
+		Offset: 0,1
+		Upgrades:
+			powrup: powrup.a
+	Power@pluga:
+		UpgradeTypes: powrup.a
+		UpgradeMinEnabledLevel: 1
+		Amount: 50
+	WithIdleOverlay@pluga:
+		UpgradeTypes: powrup.a
+		UpgradeMinEnabledLevel: 1
+		Sequence: idle-powrupa
+	Pluggable@plugb:
+		Offset: 1,1
+		Upgrades:
+			powrup: powrup.b
+	WithIdleOverlay@plugb:
+		UpgradeTypes: powrup.b
+		UpgradeMinEnabledLevel: 1
+		Sequence: idle-powrupb
+	Power@plugb:
+		UpgradeTypes: powrup.b
+		UpgradeMinEnabledLevel: 1
+		Amount: 50
+
+GAPOWRUP:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Power Turbine
+		Description: Provides extra power generation
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 10
+		Prerequisites: gapowr, ~structures.gdi
+	Plug:
+		Type: powrup
+	Power:
+		Amount: 50
 
 GAPILE:
 	Inherits: ^Building
