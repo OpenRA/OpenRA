@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Powers.TryGetValue(key, out sp))
 				return;
 
-			sp.Disabled = false;
+			sp.PrerequisitesAvailable(true);
 		}
 
 		public void PrerequisitesUnavailable(string key)
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Powers.TryGetValue(key, out sp))
 				return;
 
-			sp.Disabled = true;
+			sp.PrerequisitesAvailable(false);
 			sp.RemainingTime = sp.TotalTime;
 		}
 
@@ -158,15 +158,23 @@ namespace OpenRA.Mods.Common.Traits
 		public int RemainingTime;
 		public int TotalTime;
 		public bool Active { get; private set; }
-		public bool Disabled { get; set; }
+		public bool Disabled { get { return !prereqsAvailable || !upgradeAvailable; } }
 
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
 		public bool Ready { get { return Active && RemainingTime == 0; } }
+
+		bool upgradeAvailable;
+		bool prereqsAvailable = true;
 
 		public SupportPowerInstance(string key, SupportPowerManager manager)
 		{
 			this.manager = manager;
 			this.key = key;
+		}
+
+		public void PrerequisitesAvailable(bool available)
+		{
+			prereqsAvailable = available;
 		}
 
 		static bool InstanceDisabled(SupportPower sp)
@@ -178,6 +186,10 @@ namespace OpenRA.Mods.Common.Traits
 		bool notifiedReady;
 		public void Tick()
 		{
+			upgradeAvailable = Instances.Any(i => !i.IsTraitDisabled);
+			if (!upgradeAvailable)
+				RemainingTime = TotalTime;
+
 			Active = !Disabled && Instances.Any(i => !i.Self.IsDisabled());
 			if (!Active)
 				return;
@@ -226,7 +238,7 @@ namespace OpenRA.Mods.Common.Traits
 			notifiedCharging = notifiedReady = false;
 
 			if (Info.OneShot)
-				Disabled = true;
+				PrerequisitesAvailable(false);
 		}
 	}
 
