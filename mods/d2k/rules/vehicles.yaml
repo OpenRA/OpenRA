@@ -292,10 +292,11 @@ devast:
 	RenderUnit:
 	Armament:
 		Weapon: DevBullet
-		LocalOffset: 256,0,32
+		LocalOffset: 640,0,32
 		MuzzleSequence: muzzle
 	AttackFrontal:
 	WithMuzzleFlash:
+		IgnoreOffset: true
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeScale
@@ -332,7 +333,7 @@ raider:
 	WithMuzzleFlash:
 	Armament:
 		Weapon: HMGo
-		LocalOffset: 256,0,128
+		LocalOffset: 170,0,0
 		MuzzleSequence: muzzle
 	AttackFrontal:
 	AutoTarget:
