@@ -113,6 +113,14 @@ ok(not (CreateAutoCompList(editor, "pri.") or ""):match('print'),
   "Auto-complete doesn't offer 'print' after 'pri.'.")
 
 editor:SetText('')
+editor:AddText(' -- a = io\na:')
+editor:Colourise(0, -1) -- set proper styles
+editor.assignscache = false
+
+ok((CreateAutoCompList(editor, "a:") or "") == "",
+  "Auto-complete doesn't process assignments in comments.")
+
+editor:SetText('')
 editor:AddText('-- @tparam string foo\n')
 editor.assignscache = false
 
