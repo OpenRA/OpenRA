@@ -300,7 +300,6 @@ weedguy:
 		Length: 3
 		ShadowStart: 376
 		Tick: 1000
-	icon: weaticon
 
 medic:
 	stand:
@@ -768,7 +767,7 @@ mhijack:
 	die6: electro
 		Length: *
 		Tick: 80
-	icon: mutcicon
+	icon: chamicon
 
 chamspy:
 	stand:

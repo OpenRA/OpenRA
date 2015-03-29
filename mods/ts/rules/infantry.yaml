@@ -87,12 +87,6 @@ WEEDGUY:
 		Cost: 300
 	Tooltip:
 		Name: Chem Spray Infantry
-		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 50
-		Prerequisites: ~nahand
-		Hothey: c
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Weed
@@ -435,7 +429,7 @@ MHIJACK:
 		Cost: 100
 	Tooltip:
 		Name: Mutant Hijacker
-		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Description: Hijacks enemy vehicles. Unarmed\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Hijacker
@@ -445,6 +439,8 @@ MHIJACK:
 		Weapon: TiberiumHeal
 	Mobile:
 		Speed: 99
+	Captures:
+		CaptureTypes: Vehicle
 	RevealsShroud:
 		Range: 6c0
 	-AutoTarget:

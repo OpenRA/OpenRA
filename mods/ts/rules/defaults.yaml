@@ -296,6 +296,10 @@
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Vehicle
+	Capturable:
+		Type: Vehicle
+		CaptureThreshold: 1
+		CancelActivity: True
 	GivesBounty:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
@@ -376,6 +380,10 @@
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Vehicle
+	Capturable:
+		Type: Vehicle
+		CaptureThreshold: 1
+		CancelActivity: True
 	GivesBounty:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
