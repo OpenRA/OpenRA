@@ -14,11 +14,15 @@ function CommandBarShow(params)
   local linesnow = #lines
   local linenow = 0
 
-  local ed = ide:GetEditor()
-  local pos = ed and ed:GetScreenPosition() or ide:GetEditorNotebook():GetScreenPosition()
+  local nb = ide:GetEditorNotebook()
+  local pos = nb:GetScreenPosition()
   if pos then
-    pos:SetX(pos:GetX()+ide:GetEditorNotebook():GetClientSize():GetWidth()-row_width-16)
-    pos:SetY(pos:GetY()+2)
+    local miny
+    for p = 0, nb:GetPageCount()-1 do
+      miny = math.min(miny or math.huge, nb:GetPage(p):GetScreenPosition():GetY())
+    end
+    pos:SetX(pos:GetX()+nb:GetClientSize():GetWidth()-row_width-16)
+    pos:SetY((miny or pos:GetY())+2)
     if not win then pos = ide:GetMainFrame():ScreenToClient(pos) end
   else
     pos = wx.wxDefaultPosition
