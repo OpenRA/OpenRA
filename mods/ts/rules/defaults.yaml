@@ -234,10 +234,6 @@
 		Cost: 10
 	Tooltip:
 		Name: Civilian
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 1000
-		Owner: gdi, nod
 	Health:
 		HP: 50
 	Mobile:
