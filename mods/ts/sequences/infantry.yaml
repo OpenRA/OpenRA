@@ -1523,13 +1523,11 @@ doggie: # TODO: not sure what frame 88 and following is
 		Length: 10
 		ShadowStart: 228
 		Tick: 80
-	icon: xxicon
 
 vissml:
 	idle:
 		Length: 90
 		ShadowStart: 90
-	icon: xxicon
 
 vislrg:
 	idle:
@@ -1539,7 +1537,6 @@ vislrg:
 		Length: 5
 		Facings: 8
 		ShadowStart: 40
-	icon: xxicon
 
 civ1:
 	stand:
@@ -1598,7 +1595,6 @@ civ1:
 	die6: electro
 		Length: *
 		Tick: 80
-	icon: xxicon
 
 civ2:
 	stand:
@@ -1657,7 +1653,6 @@ civ2:
 	die6: electro
 		Length: *
 		Tick: 80
-	icon: xxicon
 
 civ3:
 	stand:
@@ -1716,4 +1711,3 @@ civ3:
 	die6: electro
 		Length: *
 		Tick: 80
-	icon: xxicon
