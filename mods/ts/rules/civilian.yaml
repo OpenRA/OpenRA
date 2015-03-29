@@ -1220,6 +1220,8 @@ GASPOT:
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
+	Selectable:
+		Bounds: 48, 82, 0, -25
 	Power:
 		Amount: -10
 	Armor:
@@ -1228,6 +1230,31 @@ GASPOT:
 		HP: 400
 	RenderBuilding:
 		Palette: player
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+
+GALITE:
+	Inherits: ^Building
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Light Post
+	RenderBuilding:
+		Palette: terrain
+	-WithMakeAnimation:
+	-WithDeathAnimation:
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 2c0
+	Power:
+		Amount: 0
+#	WithIdleOverlay@LIGHTING:
+#		Sequence: lighting
+	Selectable:
+		Bounds: 25, 35, 0, -12
 
 NAMNTK:
 	Inherits: ^CivBuilding
