@@ -1325,16 +1325,16 @@ NAMISL:
 GAPLUG:
 	Inherits: ^Building
 	Valued:
-		Cost: 1800
+		Cost: 1000
 	Tooltip:
 		Name: GDI Upgrade Center
-		Description: Provides the Orbital Ion Cannon support power.\nRequires power to operate.
+		Description: Can be upgraded for additional technology
 	Selectable:
 		Bounds: 115,120,0,-20
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: proc, gatech
-		Queue: Defense
+		Queue: Building
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 2,3
@@ -1355,6 +1355,8 @@ GAPLUG:
 	RevealsShroud:
 		Range: 6c0
 	IonCannonPower:
+		UpgradeTypes: plug.ioncannon
+		UpgradeMinEnabledLevel: 1
 		Icon: ioncannon
 		Effect: ionbeam
 		ChargeTime: 180
@@ -1370,6 +1372,42 @@ GAPLUG:
 	SupportPowerChargeBar:
 	Power:
 		Amount: -150
+	Power@ioncannon:
+		UpgradeTypes: plug.ioncannon
+		UpgradeMinEnabledLevel: 1
+		Amount: -100
+	Pluggable@pluga:
+		Offset: 0,2
+		Upgrades:
+			plug.ioncannon: plug.ioncannon, plug.ioncannona
+	WithIdleOverlay@ioncannona:
+		UpgradeTypes: plug.ioncannona
+		UpgradeMinEnabledLevel: 1
+		Sequence: idle-ioncannona
+	Pluggable@plugb:
+		Offset: 1,2
+		Upgrades:
+			plug.ioncannon: plug.ioncannon, plug.ioncannonb
+	WithIdleOverlay@ioncannonb:
+		UpgradeTypes: plug.ioncannonb
+		UpgradeMinEnabledLevel: 1
+		Sequence: idle-ioncannonb
+
+GAPLUG3:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Ion Cannon Uplink
+		Description: Enables use of the Ion Cannon
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1000
+		Prerequisites: gaplug, gatech, ~structures.gdi
+	Plug:
+		Type: plug.ioncannon
+	Power:
+		Amount: -100
 
 ANYPOWER:
 	Tooltip:
