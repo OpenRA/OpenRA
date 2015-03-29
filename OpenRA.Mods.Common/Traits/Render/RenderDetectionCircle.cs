@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
@@ -32,9 +33,17 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.Owner != self.World.LocalPlayer)
 				yield break;
 
+			var range = self.TraitsImplementing<DetectCloaked>()
+				.Where(a => !a.IsTraitDisabled)
+				.Select(a => WRange.FromCells(a.Info.Range))
+				.Append(WRange.Zero).Max();
+
+			if (range == WRange.Zero)
+				yield break;
+
 			yield return new RangeCircleRenderable(
 				self.CenterPosition,
-				WRange.FromCells(self.Info.Traits.Get<DetectCloakedInfo>().Range),
+				range,
 				0,
 				Color.FromArgb(128, Color.LimeGreen),
 				Color.FromArgb(96, Color.Black));
