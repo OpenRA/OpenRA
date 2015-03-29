@@ -49,7 +49,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Building building;
 		readonly BuildingInfo buildingInfo;
 		readonly string race;
-		readonly WithMakeAnimation makeAnimation;
 
 		public Transforms(ActorInitializer init, TransformsInfo info)
 		{
@@ -57,7 +56,6 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			buildingInfo = self.World.Map.Rules.Actors[info.IntoActor].Traits.GetOrDefault<BuildingInfo>();
 			building = self.TraitOrDefault<Building>();
-			makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
 			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.Race;
 		}
 
@@ -117,6 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 				Race = race
 			};
 
+			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
 			if (makeAnimation != null)
 				makeAnimation.Reverse(self, transform);
 			else
