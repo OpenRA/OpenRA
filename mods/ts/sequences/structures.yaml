@@ -1015,9 +1015,21 @@ gaplug:
 		Start: 8
 		Length: 8
 		Tick: 120
+	idle-ioncannona: gaplug_f
+		Length: 15
+		Tick: 120
+		Reverses: true
+		Offset: -12, -42
+	idle-ioncannonb: gaplug_f
+		Length: 15
+		Reverses: true
+		Tick: 120
 	make: gtplugmk
 		Length: 17
 		ShadowStart: 17
 	icon: plugicon
 		Offset: 0, 0
 		UseTilesetCode: false
+
+gaplug3:
+	icon: rad3icon
