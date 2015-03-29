@@ -533,6 +533,8 @@ MMCH:
 	WithVoxelBarrel:
 		LocalOffset: -128, 85, 256
 	AutoTarget:
+	Selectable:
+		Bounds: 30, 42, 0, -8
 
 HMEC:
 	Inherits: ^Tank
@@ -595,7 +597,7 @@ SMECH:
 	WithInfantryBody:
 	Selectable:
 		Voices: Mech
-		Bounds: 16, 32
+		Bounds: 20, 32, 0, -8
 
 BIKE:
 	Inherits: ^Vehicle
