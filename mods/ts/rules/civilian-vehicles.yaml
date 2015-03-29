@@ -4,11 +4,6 @@
 		Cost: 1700
 	Tooltip:
 		Name: Mammoth Tank
-		Description: Heavily armored GDI Tank.\n  Strong vs Everything
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 60
-		Prerequisites: ~gaweap
 	Mobile:
 		Speed: 56
 		ROT: 5
@@ -43,15 +38,10 @@
 
 TRUCKB:
 	Inherits: ^Vehicle
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 120
-		Prerequisites: factory
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Truck
-		Description: Transports cash to other players.\n  Unarmed
 	Health:
 		HP: 2000
 	Armor:
@@ -60,8 +50,6 @@ TRUCKB:
 		Speed: 56
 	RevealsShroud:
 		Range: 5c0
-	SupplyTruck:
-		Payload: 500
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -72,10 +60,6 @@ ICBM:
 		Cost: 1400
 	Tooltip:
 		Name: Ballistic Missile Launcher
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 100
-		Prerequisites: ~gaweap
 	Health:
 		HP: 500
 	Armor:
@@ -101,10 +85,6 @@ BUS:
 		Cost: 800
 	Tooltip:
 		Name: School Bus
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Prerequisites: ~gaweap
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -128,10 +108,6 @@ PICK:
 		Cost: 800
 	Tooltip:
 		Name: Pickup
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Prerequisites: ~gaweap
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -155,10 +131,6 @@ CAR:
 		Cost: 800
 	Tooltip:
 		Name: Automobile
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Prerequisites: ~gaweap
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -182,10 +154,6 @@ WINI:
 		Cost: 800
 	Tooltip:
 		Name: Recreational Vehicle
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 300
-		Prerequisites: ~gaweap
 	Mobile:
 		ROT: 5
 		Speed: 113
