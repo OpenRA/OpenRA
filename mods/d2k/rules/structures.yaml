@@ -542,13 +542,12 @@ guntower:
 		QuantizedFacings: 32
 	WithTurret:
 	WithMuzzleFlash:
-		IgnoreOffset: true
 	Turreted:
 		ROT: 6
 		InitialFacing: 128
 	Armament:
 		Weapon: TurretGun
-		LocalOffset: 960,0,432
+		LocalOffset: 512,0,432
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	AutoTarget:
