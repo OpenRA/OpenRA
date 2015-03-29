@@ -623,7 +623,7 @@ napuls:
 	make: ntpulsmk
 		Length: 20
 		ShadowStart: 20
-	icon: pulsicon
+	icon: empicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
