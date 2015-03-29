@@ -67,12 +67,31 @@ gapowr:
 	damaged-idle-plug: gtpowr_b
 		Length: 12
 		Tick: 200
+	idle-powrupa: gtpowr_b
+		Length: 12
+		Tick: 200
+		Offset: -48, -24
+	damaged-idle-powrupa: gtpowr_b
+		Length: 12
+		Tick: 200
+		Offset: -48, -24
+	idle-powrupb: gtpowr_b
+		Length: 12
+		Tick: 200
+		Offset: -24, -12
+	damaged-idle-powrupb: gtpowr_b
+		Length: 12
+		Tick: 200
+		Offset: -24, -12
 	make: gtpowrmk
 		Length: 20
 		ShadowStart: 20
 	icon: powricon
 		Offset: 0, 0
 		UseTilesetCode: false
+
+gapowrup:
+	icon: turbicon
 
 gapile:
 	Defaults:
