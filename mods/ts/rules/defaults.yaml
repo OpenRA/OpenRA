@@ -141,6 +141,13 @@
 		CloakDelay: 90
 	MustBeDestroyed:
 
+^BuildingPlug:
+	Building:
+		BuildSounds: place2.aud
+	KillsSelf:
+		RemoveInstead: true
+	RenderSprites:
+
 ^Infantry:
 	AppearsOnRadar:
 	Health:
