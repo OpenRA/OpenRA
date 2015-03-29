@@ -301,7 +301,7 @@ local function onFileRegister(pos, length)
       for line = oldline+1, math.min(posline-1, oldline+context) do
         text = text .. ("%5d  %s\n"):format(line, getRawLine(editor, line-1))
       end
-      if posline-oldline > context * 2 + 1 then
+      if context > 0 and posline-oldline > context * 2 + 1 then
         text = text .. ("%5s\n"):format(("."):rep(#tostring(posline)))
       end
       for line = math.max(oldline+context+1, posline-context), posline-1 do
