@@ -101,7 +101,9 @@ function findReplace:HasText()
   return (self.findText ~= nil) and (string.len(self.findText) > 0)
 end
 
-function findReplace:SetStatus(msg) self.status:SetLabel(msg) end
+function findReplace:SetStatus(msg)
+  if self.status then self.status:SetLabel(msg) end
+end
 
 function findReplace:GetScope()
   local scopeval = self.scope:GetValue()
