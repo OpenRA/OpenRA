@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders the MuzzleSequence from the Armament trait.")]
-	class WithMuzzleFlashInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>, Requires<ArmamentInfo>
+	class WithMuzzleFlashInfo : UpgradableTraitInfo, ITraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>, Requires<ArmamentInfo>
 	{
 		[Desc("Ignore the weapon position, and always draw relative to the center of the actor")]
 		public readonly bool IgnoreOffset = false;
@@ -25,13 +25,14 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.Self, this); }
 	}
 
-	class WithMuzzleFlash : INotifyAttack, IRender, ITick
+	class WithMuzzleFlash : UpgradableTrait<WithMuzzleFlashInfo>, INotifyAttack, IRender, ITick
 	{
 		Dictionary<Barrel, bool> visible = new Dictionary<Barrel, bool>();
 		Dictionary<Barrel, AnimationWithOffset> anims = new Dictionary<Barrel, AnimationWithOffset>();
 		Func<int> getFacing;
 
 		public WithMuzzleFlash(Actor self, WithMuzzleFlashInfo info)
+			: base(info)
 		{
 			var render = self.Trait<RenderSprites>();
 			var facing = self.TraitOrDefault<IFacing>();
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 					anims.Add(barrel,
 						new AnimationWithOffset(muzzleFlash,
 							() => info.IgnoreOffset ? WVec.Zero : armClosure.MuzzleOffset(self, barrel),
-							() => !visible[barrel],
+							() => IsTraitDisabled || !visible[barrel],
 							() => false,
 							p => WithTurret.ZOffsetFromCenter(self, p, 2)));
 				}
