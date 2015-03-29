@@ -256,6 +256,8 @@ local function resolveAssign(editor,tx)
         end
       end
       tx = c
+      -- if there is any class duplication, abort the loop
+      if classname and select(2, c:gsub(classname, classname)) > 1 then break end
     end
   else
     c = tx

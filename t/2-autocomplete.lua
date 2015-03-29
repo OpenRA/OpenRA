@@ -27,6 +27,15 @@ ok(pcall(CreateAutoCompList, editor, "%1000"),
 
 editor:SetText('')
 editor:AddText([[
+  local tweaks = require("tweaks")
+  local require = tweaks.require
+  local modules = tweaks.modules]])
+
+ok(limit(10000, function() CreateAutoCompList(editor, "tweaks.modules") end),
+  "Auto-complete doesn't loop for recursive 'modules'.")
+
+editor:SetText('')
+editor:AddText([[
   result = result.list[1]  --> "does the test" test
   result.1
 ]])
