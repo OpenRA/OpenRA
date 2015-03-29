@@ -35,10 +35,10 @@ guntower:
 		Facings: -32
 		Offset: -24,16
 	muzzle: DATA.R8
-		Start: 3839
+		Start: 3775
 		Tick: 60
 		Facings: -32
-		Offset: 0,-12
+		Offset: 0,2
 		BlendMode: Additive
 	icon: DATA.R8
 		Start: 4069
