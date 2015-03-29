@@ -274,10 +274,6 @@ GGHUNT:
 		Cost: 1000
 	Tooltip:
 		Name: Hunter-Seeker Droid
-	Buildable:
-		BuildPaletteOrder: 20
-		Prerequisites: factory
-		Queue: Vehicle
 	Mobile:
 		ROT: 16
 		Speed: 355
