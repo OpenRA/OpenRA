@@ -1,0 +1,183 @@
+MultiCluster:
+	ReloadDelay: 80
+	Range: 6c0
+	Report: MISL1.AUD
+	ValidTargets: Ground
+	Projectile: Missile
+		Speed: 170
+		Arm: 2
+		Blockable: false
+		Shadow: true
+		Inaccuracy: 128
+		Image: DRAGON
+		RateOfTurn: 8
+		RangeLimit: 35
+		Palette: ra
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 65
+		DeathType: 3
+		ValidTargets: Ground
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
+		Explosion: large_explosion
+		ImpactSound: expnew09.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash2.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+
+SuicideBomb:
+	ReloadDelay: 1
+	Range: 0c512
+	Report: HUNTER2.AUD
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 110
+		Falloff: 10000, 3680, 1350, 500, 180, 70, 0
+		DeathType: 5
+		Versus:
+			None: 90
+			Light: 60
+			Heavy: 25
+			Concrete: 50
+	Warhead@2Res: DestroyResource
+
+IonCannon:
+	ValidTargets: Ground, Air
+	Warhead@1Dam_impact: SpreadDamage
+		Spread: 1c0
+		Damage: 100
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		DeathType: 5
+		ProneModifier: 100
+		ValidTargets: Ground, Air
+	Warhead@2Eff_impact: CreateEffect
+		Explosion: ionring
+		ImpactSound: ion1.aud
+	Warhead@3Dam_area: SpreadDamage
+		Spread: 1c0
+		Damage: 250
+		Falloff: 100, 50, 25, 0
+		DeathType: 5
+		Delay: 3
+		ValidTargets: Ground, Air
+	Warhead@4Smu_area: LeaveSmudge
+		SmudgeType: SmallScorch
+		Size: 2,1
+		Delay: 3
+
+EMPulseCannon:
+	ReloadDelay: 100
+	Range: 10c0
+	Report: PLSECAN2.AUD
+	Projectile: Bullet
+		Speed: 425
+		Blockable: false
+		Shadow: true
+		Angle: 62
+		Image: pulsball
+	Warhead@2Eff: CreateEffect
+		Explosion: pulse_explosion
+# Dummy warhead to allow targeting
+	Warhead@target: SpreadDamage
+		Spread: 0
+		Damage: 0
+		PreventProne: true
+		ValidTargets: Vehicle
+	Warhead@emp: GrantUpgrade
+		Range: 3c0
+		Duration: 250
+		Upgrades: empdisable
+		ValidTargets: Vehicle
+
+ClusterMissile:
+	ValidTargets: Ground, Water, Air
+	Warhead@ImpactDamage0: SpreadDamage
+		Spread: 1c0
+		Damage: 150
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		DeathType: 5
+		ValidTargets: Ground, Water, Air
+		Versus:
+			Concrete: 25
+	Warhead@SoundEffect0: CreateEffect
+		Explosion: large_explosion
+		ImpactSound: expnew19.aud
+	Warhead@ResourceDestruction0: DestroyResource
+		Size: 1
+	Warhead@ClusterSmudges0: LeaveSmudge
+		SmudgeType: LargeCrater
+		Size: 1
+	Warhead@ClusterDamage1: SpreadDamage
+		Spread: 2c0
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		DeathType: 5
+		Delay: 5
+		ValidTargets: Ground, Water, Air
+		Versus:
+			Concrete: 25
+	Warhead@ResourceDestruction1: DestroyResource
+		Size: 2
+		Delay: 5
+	Warhead@ClusterSmudges1: LeaveSmudge
+		SmudgeType: LargeScorch
+		Size: 2
+		Delay: 5
+	Warhead@ClusterDamage2: SpreadDamage
+		Spread: 3c0
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		DeathType: 5
+		Delay: 10
+		ValidTargets: Ground, Water, Air
+		Versus:
+			Concrete: 25
+	Warhead@ResourceDestruction2: DestroyResource
+		Size: 3
+		Delay: 10
+	Warhead@ClusterSmudges2: LeaveSmudge
+		SmudgeType: LargeScorch
+		Size: 3
+		Delay: 10
+	Warhead@ClusterDamage3: SpreadDamage
+		Spread: 4c0
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		DeathType: 5
+		Delay: 15
+		ValidTargets: Ground, Water, Air
+		Versus:
+			Concrete: 25
+	Warhead@ResourceDestruction3: DestroyResource
+		Size: 4
+		Delay: 15
+	Warhead@ClusterSmudges3: LeaveSmudge
+		SmudgeType: MediumScorch
+		Size: 4
+		Delay: 15
+	Warhead@ClusterDamage4: SpreadDamage
+		Spread: 5c0
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		DeathType: 5
+		Delay: 20
+		ValidTargets: Ground, Water, Air
+		Versus:
+			Concrete: 25
+	Warhead@ResourceDestruction4: DestroyResource
+		Size: 5
+		Delay: 20
+	Warhead@ClusterSmudges4: LeaveSmudge
+		SmudgeType: SmallScorch
+		Size: 5
+		Delay: 20

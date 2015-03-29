@@ -1,0 +1,94 @@
+Grenade:
+	ReloadDelay: 60
+	Range: 4c512
+	Projectile: Bullet
+		Speed: 85
+		Blockable: false
+		Shadow: true
+		Angle: 62
+		Inaccuracy: 554
+		Image: DISCUS
+	Warhead@1Dam: SpreadDamage
+		Spread: 171
+		Damage: 40
+		DeathType: 3
+		ProneModifier: 70
+		Versus:
+			None: 100
+			Wood: 85
+			Light: 70
+			Heavy: 35
+			Concrete: 28
+	Warhead@2Eff: CreateEffect
+		Explosion: large_grey_explosion
+		ImpactSound: expnew13.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+
+Bomb:
+	ReloadDelay: 10
+	Range: 5c0
+	Projectile: Bullet
+		Speed: 170
+		Image: canister
+		Shadow: true
+		Palette: player
+	Warhead@1Dam: SpreadDamage
+		Spread: 298
+		Damage: 160
+		DeathType: 3
+		ProneModifier: 100
+		Versus:
+			None: 200
+			Wood: 90
+			Light: 75
+			Heavy: 32
+			Concrete: 100
+	Warhead@2Eff: CreateEffect
+		Explosion: large_explosion
+		ImpactSound: expnew09.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+
+RPGTower:
+	ReloadDelay: 80
+	Range: 8c0
+	Report: GLNCH4.AUD
+	Projectile: Bullet
+		Speed: 384
+		Blockable: false
+		Shadow: true
+		Angle: 62
+		Image: canister
+		Palette: player
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 110
+		DeathType: 2
+		ProneModifier: 70
+		Versus:
+			None: 30
+			Wood: 75
+			Light: 90
+			Heavy: 100
+			Concrete: 70
+	Warhead@2Eff: CreateEffect
+		Explosion: large_clsn
+		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash2.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater

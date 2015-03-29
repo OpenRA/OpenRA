@@ -74,6 +74,17 @@ Rules:
 	./mods/ts/rules/vehicles.yaml
 	./mods/ts/rules/trees.yaml
 
+Weapons:
+	./mods/ts/weapons/bombsandgrenades.yaml
+	./mods/ts/weapons/energyweapons.yaml
+	./mods/ts/weapons/explosions.yaml
+	./mods/ts/weapons/healweapons.yaml
+	./mods/ts/weapons/largeguns.yaml
+	./mods/ts/weapons/missiles.yaml
+	./mods/ts/weapons/otherweapons.yaml
+	./mods/ts/weapons/smallguns.yaml
+	./mods/ts/weapons/superweapons.yaml
+
 Sequences:
 	./mods/ts/sequences/aircraft.yaml
 	./mods/ts/sequences/infantry.yaml
@@ -145,9 +156,6 @@ ChromeLayout:
 	./mods/ra/chrome/assetbrowser.yaml
 	./mods/ra/chrome/missionbrowser.yaml
 	./mods/ra/chrome/confirmation-dialogs.yaml
-
-Weapons:
-	./mods/ts/weapons.yaml
 
 Voices:
 	./mods/ts/audio/voices.yaml

@@ -1,0 +1,45 @@
+UnitExplode:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		DeathType: 2
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+	Warhead@2Eff: CreateEffect
+		Explosion: large_twlt
+		ImpactSound: expnew09.aud
+
+UnitExplodeSmall:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 40
+		DeathType: 2
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+	Warhead@2Eff: CreateEffect
+		Explosion: medium_brnl
+		ImpactSound: expnew13.aud
+
+TiberiumExplosion:
+	Warhead@1Dam: SpreadDamage
+		Spread: 9
+		Damage: 10
+		DeathType: 3
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+	Warhead@2Res: CreateResource
+		AddsResourceType: Tiberium
+		Size: 1,1
+	Warhead@3Eff: CreateEffect
+		Explosion: large_explosion
+		ImpactSound: expnew09.aud

@@ -1,0 +1,124 @@
+90mm:
+	ReloadDelay: 50
+	Range: 6c768
+	Report: 120MMF.AUD
+	Projectile: Bullet
+		Speed: 682
+		Image: 120mm
+		Shadow: true
+		Angle: 62
+		Palette: ra
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 36
+		DeathType: 2
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
+		Explosion: medium_clsn
+		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: SmallCrater
+
+120mm:
+	ReloadDelay: 80
+	Range: 6c768
+	Report: 120MMF.AUD
+	Projectile: Bullet
+		Speed: 1c512
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 70
+		DeathType: 2
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
+		Explosion: large_clsn
+		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+
+120mmx:
+	ReloadDelay: 80
+	Range: 6c768
+	Report: 120MMF.AUD
+	Burst: 2
+	BurstDelay: 5
+	Projectile: Bullet
+		Speed: 682
+		Image: 120mm
+		Shadow: true
+		Angle: 62
+		Palette: ra
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 50
+		DeathType: 2
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
+		Explosion: medium_clsn
+		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+
+155mm:
+	ReloadDelay: 110
+	Range: 18c0
+	Report: 120MMF.AUD
+	Projectile: Bullet
+		Speed: 170
+		Image: 120mm
+		Angle: 165
+		Shadow: true
+		Blockable: false
+		Palette: ra
+	MinRange: 5c0
+	Warhead@1Dam: SpreadDamage
+		Spread: 298
+		Damage: 150
+		DeathType: 3
+		ProneModifier: 100
+		Versus:
+			None: 100
+			Wood: 85
+			Light: 68
+			Heavy: 35
+			Concrete: 35
+	Warhead@2Eff: CreateEffect
+		Explosion: large_explosion
+		ImpactSound: expnew06.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash2.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
