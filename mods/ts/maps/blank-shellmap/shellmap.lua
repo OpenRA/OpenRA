@@ -1,5 +1,5 @@
 PlayMusic = function()
-	Media.PlayMusic("maps", PlayMusic)
+	Media.PlayMusic("intro", PlayMusic)
 end
 
 WorldLoaded = function()
