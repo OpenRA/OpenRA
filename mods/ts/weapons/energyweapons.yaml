@@ -1,0 +1,152 @@
+LtRail:
+	ReloadDelay: 60
+	Range: 6c0
+	Report: BIGGGUN1.AUD
+	Projectile: LaserZap
+		Speed: 1c682
+		BeamWidth: 1
+		BeamDuration: 10
+		Color: 200,0,128,255
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 150
+		DeathType: 2
+		ProneModifier: 100
+		Versus:
+			None: 100
+			Wood: 130
+			Light: 150
+			Heavy: 110
+			Concrete: 5
+
+MechRailgun:
+	ReloadDelay: 60
+	Range: 8c0
+	Burst: 2
+	BurstDelay: 10
+	Report: RAILUSE5.AUD
+	Projectile: LaserZap
+		Color: 200,0,255,255
+		BeamWidth: 3
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 200
+		DeathType: 5
+		ProneModifier: 100
+		Versus:
+			None: 200
+			Wood: 175
+			Light: 160
+			Heavy: 100
+			Concrete: 25
+
+SonicZap:
+	ReloadDelay: 120
+	Range: 6c0
+	Charges: yes
+	Report: SONIC4.AUD
+	Projectile: LaserZap
+		Color: 200,0,255,255
+		BeamWidth: 12
+		BeamDuration: 50
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 100
+		DeathType: 5
+		Versus:
+			Heavy: 80
+			Concrete: 60
+
+CyCannon:
+	ReloadDelay: 50
+	Range: 7c0
+	Report: SCRIN5B.AUD
+	ValidTargets: Ground
+	Projectile: Bullet
+		Speed: 192
+		Blockable: false
+		Shadow: true
+		Image: TORPEDO
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 120
+		DeathType: 6
+		ProneModifier: 100
+		ValidTargets: Ground
+		Versus:
+			None: 100
+			Wood: 65
+			Light: 75
+			Heavy: 50
+			Concrete: 40
+	Warhead@2Eff: CreateEffect
+		Explosion: large_bang
+		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: SmallScorch
+
+Proton:
+	ReloadDelay: 3
+	Range: 5c0
+	Report: SCRIN5B.AUD
+	Burst: 2
+	ValidTargets: Ground, Air
+	Projectile: Missile
+		Speed: 256
+		Arm: 2
+		Blockable: false
+		Shadow: true
+		Inaccuracy: 128
+		Image: TORPEDO
+		RateOfTurn: 1
+		RangeLimit: 35
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 20
+		DeathType: 3
+		ValidTargets: Ground, Air
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
+		Explosion: small_bang
+		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+
+ObeliskLaser:
+	ReloadDelay: 120
+	Range: 10c512
+	Charges: true
+	Report: OBELRAY1.AUD
+	Projectile: LaserZap
+		BeamWidth: 4
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 250
+		DeathType: 5
+		ProneModifier: 60
+
+TurretLaser:
+	ReloadDelay: 40
+	Range: 5c512
+	Report: LASTUR1.AUD
+	Projectile: LaserZap
+		BeamWidth: 2
+		BeamDuration: 5
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 30
+		DeathType: 5
+		ProneModifier: 60
