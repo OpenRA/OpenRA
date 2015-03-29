@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class RepairableNearInfo : ITraitInfo, Requires<HealthInfo>
+	class RepairableNearInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>
 	{
 		[ActorReference] public readonly string[] Buildings = { "spen", "syrd" };
 		public readonly int CloseEnough = 4;	/* cells */
