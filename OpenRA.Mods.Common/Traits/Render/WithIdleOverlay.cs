@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders a decorative animation on units and buildings.")]
-	public class WithIdleOverlayInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	public class WithIdleOverlayInfo : UpgradableTraitInfo, ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "idle-overlay";
@@ -37,6 +37,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
+			if (UpgradeMinEnabledLevel > 0)
+				yield break;
+
 			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
 			var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
 			var anim = new Animation(init.World, image, () => facing);
@@ -48,12 +51,13 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class WithIdleOverlay : INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
+	public class WithIdleOverlay : UpgradableTrait<WithIdleOverlayInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
 		Animation overlay;
 		bool buildComplete;
 
 		public WithIdleOverlay(Actor self, WithIdleOverlayInfo info)
+			: base(info)
 		{
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<IBodyOrientation>();
@@ -65,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 			rs.Add("idle_overlay_{0}".F(info.Sequence),
 				new AnimationWithOffset(overlay,
 					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-					() => !buildComplete,
+					() => IsTraitDisabled || !buildComplete,
 					() => info.PauseOnLowPower && disabled.Any(d => d.Disabled),
 					p => WithTurret.ZOffsetFromCenter(self, p, 1)),
 				info.Palette, info.IsPlayerPalette);
