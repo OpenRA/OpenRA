@@ -244,13 +244,13 @@ Hellfire:
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
 
-SAMTower:
+RedEye2:
 	ReloadDelay: 55
 	Range: 15c0
 	Report: SAMSHOT1.AUD
 	ValidTargets: Air
 	Projectile: Missile
-		Speed: 298
+		Speed: 384
 		Arm: 2
 		Blockable: false
 		Shadow: true
