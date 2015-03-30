@@ -30,8 +30,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly Lazy<Health> health;
 		readonly SellableInfo info;
-		readonly Building building;
-		readonly WithMakeAnimation makeAnimation;
 
 		public Sellable(Actor self, SellableInfo info)
 			: base(info)
@@ -39,8 +37,6 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 			this.info = info;
 			health = Exts.Lazy(() => self.TraitOrDefault<Health>());
-			building = self.TraitOrDefault<Building>();
-			makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -54,6 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
+			var building = self.TraitOrDefault<Building>();
 			if (building != null && !building.Lock())
 				return;
 
@@ -65,6 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Selling(self);
 
+			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
 			if (makeAnimation != null)
 				makeAnimation.Reverse(self, new Sell(self), false);
 			else

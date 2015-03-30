@@ -13,7 +13,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Makes the unit automatically run around when taking damage.")]
-	class ScaredyCatInfo : ITraitInfo
+	class ScaredyCatInfo : ITraitInfo, Requires<MobileInfo>
 	{
 		[Desc("How long (in ticks) the actor should panic for.")]
 		public readonly int PanicLength = 25 * 10;
