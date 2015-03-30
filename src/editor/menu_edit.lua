@@ -283,9 +283,12 @@ local function reIndent(editor, buf)
   local indents = {}
   local isstatic = {}
   for line = 1, #buf+1 do
-    local style = bit.band(editor:GetStyleAt(editor:PositionFromLine(edline+line-1)), 31)
+    local ls = editor:PositionFromLine(edline+line-1)
+    local style = bit.band(editor:GetStyleAt(ls), 31)
     -- don't reformat multi-line comments or strings
-    isstatic[line] = editor.spec.iscomment[style] or editor.spec.isstring[style]
+    isstatic[line] = (editor.spec.iscomment[style]
+      or editor.spec.isstring[style]
+      or (MarkupIsAny and MarkupIsAny(style)))
     if not isstatic[line] or line == 1 or not isstatic[line-1] then
       local closed, blockend = decindent(text)
       local opened = incindent(text)
