@@ -135,6 +135,12 @@ function findReplace:GetSelectedString()
   return
 end
 
+function findReplace:UseSelectedString()
+  local selected = self:GetSelectedString()
+  if selected then self.findText = selected end
+  return selected ~= nil
+end
+
 function findReplace:FindString(reverse)
   local msg = ""
   local editor = self:GetEditor()
