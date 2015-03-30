@@ -13,14 +13,30 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileSystem;
+using OpenRA.Support;
 
 namespace OpenRA.Graphics
 {
+	class TheaterTemplate
+	{
+		public readonly Sprite[] Sprites;
+		public readonly int Stride;
+		public readonly int Variants;
+
+		public TheaterTemplate(Sprite[] sprites, int stride, int variants)
+		{
+			Sprites = sprites;
+			Stride = stride;
+			Variants = variants;
+		}
+	}
+
 	public sealed class Theater : IDisposable
 	{
-		readonly Dictionary<ushort, Sprite[]> templates = new Dictionary<ushort, Sprite[]>();
+		readonly Dictionary<ushort, TheaterTemplate> templates = new Dictionary<ushort, TheaterTemplate>();
 		readonly SheetBuilder sheetBuilder;
 		readonly Sprite missingTile;
+		readonly MersenneTwister random;
 		TileSet tileset;
 
 		public Theater(TileSet tileset)
@@ -37,20 +53,27 @@ namespace OpenRA.Graphics
 			};
 
 			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
-			templates = new Dictionary<ushort, Sprite[]>();
+			random = new MersenneTwister();
 
 			var frameCache = new FrameCache(Game.ModData.SpriteLoaders);
 			foreach (var t in tileset.Templates)
 			{
-				var allFrames = frameCache[t.Value.Image];
-				var frames = t.Value.Frames != null ? t.Value.Frames.Select(f => allFrames[f]).ToArray() : allFrames;
-				var sprites = frames.Select(f => sheetBuilder.Add(f));
+				var variants = new List<Sprite[]>();
+
+				foreach (var i in t.Value.Images)
+				{
+					var allFrames = frameCache[i];
+					var frames = t.Value.Frames != null ? t.Value.Frames.Select(f => allFrames[f]).ToArray() : allFrames;
+					variants.Add(frames.Select(f => sheetBuilder.Add(f)).ToArray());
+				}
+
+				var allSprites = variants.SelectMany(s => s);
 
 				// Ignore the offsets baked into R8 sprites
 				if (tileset.IgnoreTileSpriteOffsets)
-					sprites = sprites.Select(s => new Sprite(s.Sheet, s.Bounds, float2.Zero, s.Channel, s.BlendMode));
+					allSprites = allSprites.Select(s => new Sprite(s.Sheet, s.Bounds, float2.Zero, s.Channel, s.BlendMode));
 
-				templates.Add(t.Value.Id, sprites.ToArray());
+				templates.Add(t.Value.Id, new TheaterTemplate(allSprites.ToArray(), variants.First().Count(), t.Value.Images.Length));
 			}
 
 			// 1x1px transparent tile
@@ -61,14 +84,15 @@ namespace OpenRA.Graphics
 
 		public Sprite TileSprite(TerrainTile r)
 		{
-			Sprite[] template;
+			TheaterTemplate template;
 			if (!templates.TryGetValue(r.Type, out template))
 				return missingTile;
 
-			if (r.Index >= template.Length)
+			if (r.Index >= template.Stride)
 				return missingTile;
 
-			return template[r.Index];
+			var start = template.Variants > 1 ? random.Next(template.Variants) : 0;
+			return template.Sprites[start * template.Stride + r.Index];
 		}
 
 		public Rectangle TemplateBounds(TerrainTemplateInfo template, Size tileSize, TileShape tileShape)

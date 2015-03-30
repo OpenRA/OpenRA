@@ -53,7 +53,7 @@ namespace OpenRA.Editor
 			var frameCache = new FrameCache(Game.ModData.SpriteLoaders);
 			foreach (var t in tileset.Templates)
 			{
-				var allFrames = frameCache[t.Value.Image];
+				var allFrames = frameCache[t.Value.Images[0]];
 				var frames = t.Value.Frames != null ? t.Value.Frames.Select(f => allFrames[f]).ToArray() : allFrames;
 				templates.Add(t.Value.Id, frames.Select(f => ExtractSquareTile(f)).ToArray());
 			}

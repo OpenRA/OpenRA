@@ -32,7 +32,7 @@ Terrain:
 Templates:
 	Template@255:
 		Id: 255
-		Image: clear1.int
+		Images: clear1.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -55,7 +55,7 @@ Templates:
 			15: Clear
 	Template@65535:
 		Id: 65535
-		Image: clear1.int
+		Images: clear1.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -78,161 +78,161 @@ Templates:
 			15: Clear
 	Template@329:
 		Id: 329
-		Image: wall0001.int
+		Images: wall0001.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@330:
 		Id: 330
-		Image: wall0002.int
+		Images: wall0002.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@331:
 		Id: 331
-		Image: wall0003.int
+		Images: wall0003.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@332:
 		Id: 332
-		Image: wall0004.int
+		Images: wall0004.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@333:
 		Id: 333
-		Image: wall0005.int
+		Images: wall0005.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@334:
 		Id: 334
-		Image: wall0006.int
+		Images: wall0006.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@335:
 		Id: 335
-		Image: wall0007.int
+		Images: wall0007.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@336:
 		Id: 336
-		Image: wall0008.int
+		Images: wall0008.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@337:
 		Id: 337
-		Image: wall0009.int
+		Images: wall0009.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@338:
 		Id: 338
-		Image: wall0010.int
+		Images: wall0010.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@339:
 		Id: 339
-		Image: wall0011.int
+		Images: wall0011.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@340:
 		Id: 340
-		Image: wall0012.int
+		Images: wall0012.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@341:
 		Id: 341
-		Image: wall0013.int
+		Images: wall0013.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@342:
 		Id: 342
-		Image: wall0014.int
+		Images: wall0014.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@343:
 		Id: 343
-		Image: wall0015.int
+		Images: wall0015.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@344:
 		Id: 344
-		Image: wall0016.int
+		Images: wall0016.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@345:
 		Id: 345
-		Image: wall0017.int
+		Images: wall0017.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@346:
 		Id: 346
-		Image: wall0018.int
+		Images: wall0018.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@347:
 		Id: 347
-		Image: wall0019.int
+		Images: wall0019.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@348:
 		Id: 348
-		Image: wall0020.int
+		Images: wall0020.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@349:
 		Id: 349
-		Image: wall0021.int
+		Images: wall0021.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@350:
 		Id: 350
-		Image: wall0022.int
+		Images: wall0022.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@351:
 		Id: 351
-		Image: wall0023.int
+		Images: wall0023.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -241,7 +241,7 @@ Templates:
 			2: Wall
 	Template@352:
 		Id: 352
-		Image: wall0024.int
+		Images: wall0024.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -250,7 +250,7 @@ Templates:
 			2: Wall
 	Template@353:
 		Id: 353
-		Image: wall0025.int
+		Images: wall0025.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -259,7 +259,7 @@ Templates:
 			2: Wall
 	Template@354:
 		Id: 354
-		Image: wall0026.int
+		Images: wall0026.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -268,7 +268,7 @@ Templates:
 			2: Wall
 	Template@355:
 		Id: 355
-		Image: wall0027.int
+		Images: wall0027.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -277,7 +277,7 @@ Templates:
 			3: Wall
 	Template@356:
 		Id: 356
-		Image: wall0028.int
+		Images: wall0028.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -286,7 +286,7 @@ Templates:
 			3: Wall
 	Template@357:
 		Id: 357
-		Image: wall0029.int
+		Images: wall0029.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -295,7 +295,7 @@ Templates:
 			3: Wall
 	Template@358:
 		Id: 358
-		Image: wall0030.int
+		Images: wall0030.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -304,7 +304,7 @@ Templates:
 			3: Wall
 	Template@359:
 		Id: 359
-		Image: wall0031.int
+		Images: wall0031.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -313,7 +313,7 @@ Templates:
 			3: Wall
 	Template@360:
 		Id: 360
-		Image: wall0032.int
+		Images: wall0032.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -322,7 +322,7 @@ Templates:
 			3: Wall
 	Template@361:
 		Id: 361
-		Image: wall0033.int
+		Images: wall0033.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -331,7 +331,7 @@ Templates:
 			3: Wall
 	Template@362:
 		Id: 362
-		Image: wall0034.int
+		Images: wall0034.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -340,7 +340,7 @@ Templates:
 			3: Wall
 	Template@363:
 		Id: 363
-		Image: wall0035.int
+		Images: wall0035.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -349,7 +349,7 @@ Templates:
 			3: Wall
 	Template@364:
 		Id: 364
-		Image: wall0036.int
+		Images: wall0036.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -358,7 +358,7 @@ Templates:
 			3: Wall
 	Template@365:
 		Id: 365
-		Image: wall0037.int
+		Images: wall0037.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -367,7 +367,7 @@ Templates:
 			3: Wall
 	Template@366:
 		Id: 366
-		Image: wall0038.int
+		Images: wall0038.int
 		Size: 2,2
 		Category: Wall
 		Tiles:
@@ -376,7 +376,7 @@ Templates:
 			3: Wall
 	Template@367:
 		Id: 367
-		Image: wall0039.int
+		Images: wall0039.int
 		Size: 2,3
 		Category: Wall
 		Tiles:
@@ -386,7 +386,7 @@ Templates:
 			4: Wall
 	Template@368:
 		Id: 368
-		Image: wall0040.int
+		Images: wall0040.int
 		Size: 2,3
 		Category: Wall
 		Tiles:
@@ -396,7 +396,7 @@ Templates:
 			4: Wall
 	Template@369:
 		Id: 369
-		Image: wall0041.int
+		Images: wall0041.int
 		Size: 2,3
 		Category: Wall
 		Tiles:
@@ -406,7 +406,7 @@ Templates:
 			5: Wall
 	Template@370:
 		Id: 370
-		Image: wall0042.int
+		Images: wall0042.int
 		Size: 2,3
 		Category: Wall
 		Tiles:
@@ -416,7 +416,7 @@ Templates:
 			5: Wall
 	Template@371:
 		Id: 371
-		Image: wall0043.int
+		Images: wall0043.int
 		Size: 3,2
 		Category: Wall
 		Tiles:
@@ -426,7 +426,7 @@ Templates:
 			5: Wall
 	Template@372:
 		Id: 372
-		Image: wall0044.int
+		Images: wall0044.int
 		Size: 3,2
 		Category: Wall
 		Tiles:
@@ -436,7 +436,7 @@ Templates:
 			5: Wall
 	Template@373:
 		Id: 373
-		Image: wall0045.int
+		Images: wall0045.int
 		Size: 3,2
 		Category: Wall
 		Tiles:
@@ -446,7 +446,7 @@ Templates:
 			5: Wall
 	Template@374:
 		Id: 374
-		Image: wall0046.int
+		Images: wall0046.int
 		Size: 3,2
 		Category: Wall
 		Tiles:
@@ -456,7 +456,7 @@ Templates:
 			5: Wall
 	Template@375:
 		Id: 375
-		Image: wall0047.int
+		Images: wall0047.int
 		Size: 3,2
 		Category: Wall
 		Tiles:
@@ -466,7 +466,7 @@ Templates:
 			4: Wall
 	Template@376:
 		Id: 376
-		Image: wall0048.int
+		Images: wall0048.int
 		Size: 3,2
 		Category: Wall
 		Tiles:
@@ -476,7 +476,7 @@ Templates:
 			4: Wall
 	Template@377:
 		Id: 377
-		Image: wall0049.int
+		Images: wall0049.int
 		Size: 3,3
 		Category: Wall
 		Tiles:
@@ -487,7 +487,7 @@ Templates:
 			7: Wall
 	Template@268:
 		Id: 268
-		Image: flor0001.int
+		Images: flor0001.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -506,7 +506,7 @@ Templates:
 			11: Clear
 	Template@269:
 		Id: 269
-		Image: flor0002.int
+		Images: flor0002.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -525,7 +525,7 @@ Templates:
 			11: Clear
 	Template@270:
 		Id: 270
-		Image: flor0003.int
+		Images: flor0003.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -544,7 +544,7 @@ Templates:
 			11: Clear
 	Template@271:
 		Id: 271
-		Image: flor0004.int
+		Images: flor0004.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -563,7 +563,7 @@ Templates:
 			11: Clear
 	Template@272:
 		Id: 272
-		Image: flor0005.int
+		Images: flor0005.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -582,7 +582,7 @@ Templates:
 			11: Clear
 	Template@273:
 		Id: 273
-		Image: flor0006.int
+		Images: flor0006.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -601,7 +601,7 @@ Templates:
 			11: Clear
 	Template@274:
 		Id: 274
-		Image: flor0007.int
+		Images: flor0007.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -620,14 +620,14 @@ Templates:
 			11: Clear
 	Template@384:
 		Id: 384
-		Image: xtra0001.int
+		Images: xtra0001.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Wall
 	Template@385:
 		Id: 385
-		Image: xtra0002.int
+		Images: xtra0002.int
 		Size: 2,1
 		Category: Wall
 		Tiles:
@@ -635,14 +635,14 @@ Templates:
 			1: Clear
 	Template@386:
 		Id: 386
-		Image: xtra0003.int
+		Images: xtra0003.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@387:
 		Id: 387
-		Image: xtra0004.int
+		Images: xtra0004.int
 		Size: 1,2
 		Category: Wall
 		Tiles:
@@ -650,14 +650,14 @@ Templates:
 			1: Clear
 	Template@388:
 		Id: 388
-		Image: xtra0005.int
+		Images: xtra0005.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@389:
 		Id: 389
-		Image: xtra0006.int
+		Images: xtra0006.int
 		Size: 2,1
 		Category: Wall
 		Tiles:
@@ -665,14 +665,14 @@ Templates:
 			1: Clear
 	Template@390:
 		Id: 390
-		Image: xtra0007.int
+		Images: xtra0007.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@391:
 		Id: 391
-		Image: xtra0008.int
+		Images: xtra0008.int
 		Size: 1,2
 		Category: Wall
 		Tiles:
@@ -680,28 +680,28 @@ Templates:
 			1: Clear
 	Template@392:
 		Id: 392
-		Image: xtra0009.int
+		Images: xtra0009.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@393:
 		Id: 393
-		Image: xtra0010.int
+		Images: xtra0010.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@394:
 		Id: 394
-		Image: xtra0011.int
+		Images: xtra0011.int
 		Size: 1,1
 		Category: Wall
 		Tiles:
 			0: Wall
 	Template@395:
 		Id: 395
-		Image: xtra0012.int
+		Images: xtra0012.int
 		Size: 1,2
 		Category: Wall
 		Tiles:
@@ -709,7 +709,7 @@ Templates:
 			1: Clear
 	Template@396:
 		Id: 396
-		Image: xtra0013.int
+		Images: xtra0013.int
 		Size: 1,2
 		Category: Wall
 		Tiles:
@@ -717,7 +717,7 @@ Templates:
 			1: Clear
 	Template@397:
 		Id: 397
-		Image: xtra0014.int
+		Images: xtra0014.int
 		Size: 3,2
 		Category: Wall
 		Tiles:
@@ -729,7 +729,7 @@ Templates:
 			5: Clear
 	Template@398:
 		Id: 398
-		Image: xtra0015.int
+		Images: xtra0015.int
 		Size: 3,2
 		Category: Wall
 		Tiles:
@@ -741,7 +741,7 @@ Templates:
 			5: Wall
 	Template@399:
 		Id: 399
-		Image: xtra0016.int
+		Images: xtra0016.int
 		Size: 2,4
 		Category: Wall
 		Tiles:
@@ -755,7 +755,7 @@ Templates:
 			7: Wall
 	Template@318:
 		Id: 318
-		Image: strp0001.int
+		Images: strp0001.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -774,7 +774,7 @@ Templates:
 			11: Clear
 	Template@319:
 		Id: 319
-		Image: strp0002.int
+		Images: strp0002.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -793,70 +793,70 @@ Templates:
 			11: Clear
 	Template@320:
 		Id: 320
-		Image: strp0003.int
+		Images: strp0003.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@321:
 		Id: 321
-		Image: strp0004.int
+		Images: strp0004.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@322:
 		Id: 322
-		Image: strp0005.int
+		Images: strp0005.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@323:
 		Id: 323
-		Image: strp0006.int
+		Images: strp0006.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@324:
 		Id: 324
-		Image: strp0007.int
+		Images: strp0007.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@325:
 		Id: 325
-		Image: strp0008.int
+		Images: strp0008.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@326:
 		Id: 326
-		Image: strp0009.int
+		Images: strp0009.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@327:
 		Id: 327
-		Image: strp0010.int
+		Images: strp0010.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@328:
 		Id: 328
-		Image: strp0011.int
+		Images: strp0011.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@253:
 		Id: 253
-		Image: arro0001.int
+		Images: arro0001.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -869,7 +869,7 @@ Templates:
 			5: Clear
 	Template@254:
 		Id: 254
-		Image: arro0002.int
+		Images: arro0002.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -882,7 +882,7 @@ Templates:
 			5: Clear
 	Template@256:
 		Id: 256
-		Image: arro0004.int
+		Images: arro0004.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -895,7 +895,7 @@ Templates:
 			5: Clear
 	Template@257:
 		Id: 257
-		Image: arro0005.int
+		Images: arro0005.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -908,7 +908,7 @@ Templates:
 			5: Clear
 	Template@258:
 		Id: 258
-		Image: arro0006.int
+		Images: arro0006.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -921,70 +921,70 @@ Templates:
 			5: Clear
 	Template@259:
 		Id: 259
-		Image: arro0007.int
+		Images: arro0007.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@260:
 		Id: 260
-		Image: arro0008.int
+		Images: arro0008.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@261:
 		Id: 261
-		Image: arro0009.int
+		Images: arro0009.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@262:
 		Id: 262
-		Image: arro0010.int
+		Images: arro0010.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@263:
 		Id: 263
-		Image: arro0011.int
+		Images: arro0011.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@264:
 		Id: 264
-		Image: arro0012.int
+		Images: arro0012.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@265:
 		Id: 265
-		Image: arro0013.int
+		Images: arro0013.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@266:
 		Id: 266
-		Image: arro0014.int
+		Images: arro0014.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@267:
 		Id: 267
-		Image: arro0015.int
+		Images: arro0015.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@275:
 		Id: 275
-		Image: gflr0001.int
+		Images: gflr0001.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -1004,7 +1004,7 @@ Templates:
 			12: Clear
 	Template@276:
 		Id: 276
-		Image: gflr0002.int
+		Images: gflr0002.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -1024,7 +1024,7 @@ Templates:
 			12: Clear
 	Template@277:
 		Id: 277
-		Image: gflr0003.int
+		Images: gflr0003.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -1044,7 +1044,7 @@ Templates:
 			12: Clear
 	Template@278:
 		Id: 278
-		Image: gflr0004.int
+		Images: gflr0004.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -1064,7 +1064,7 @@ Templates:
 			12: Clear
 	Template@279:
 		Id: 279
-		Image: gflr0005.int
+		Images: gflr0005.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -1084,7 +1084,7 @@ Templates:
 			12: Clear
 	Template@280:
 		Id: 280
-		Image: gstr0001.int
+		Images: gstr0001.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -1097,7 +1097,7 @@ Templates:
 			5: Clear
 	Template@281:
 		Id: 281
-		Image: gstr0002.int
+		Images: gstr0002.int
 		Size: 1,1
 		PickAny: True
 		Category: Floor
@@ -1112,63 +1112,63 @@ Templates:
 			7: Clear
 	Template@282:
 		Id: 282
-		Image: gstr0003.int
+		Images: gstr0003.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@283:
 		Id: 283
-		Image: gstr0004.int
+		Images: gstr0004.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@284:
 		Id: 284
-		Image: gstr0005.int
+		Images: gstr0005.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@285:
 		Id: 285
-		Image: gstr0006.int
+		Images: gstr0006.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@286:
 		Id: 286
-		Image: gstr0007.int
+		Images: gstr0007.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@287:
 		Id: 287
-		Image: gstr0008.int
+		Images: gstr0008.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@288:
 		Id: 288
-		Image: gstr0009.int
+		Images: gstr0009.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@289:
 		Id: 289
-		Image: gstr0010.int
+		Images: gstr0010.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
 			0: Clear
 	Template@290:
 		Id: 290
-		Image: gstr0011.int
+		Images: gstr0011.int
 		Size: 1,1
 		Category: Floor
 		Tiles:
