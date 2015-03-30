@@ -33,6 +33,18 @@ namespace OpenRA.GameRules
 		[Desc("Delay in ticks before applying the warhead effect.", "0 = instant (old model).")]
 		public readonly int Delay = 0;
 
+		HashSet<string> validTargetSet;
+		HashSet<string> invalidTargetSet;
+
+		public bool IsValidTarget(IEnumerable<string> targetTypes)
+		{
+			if (validTargetSet == null)
+				validTargetSet = new HashSet<string>(ValidTargets);
+			if (invalidTargetSet == null)
+				invalidTargetSet = new HashSet<string>(InvalidTargets);
+			return validTargetSet.Overlaps(targetTypes) && !invalidTargetSet.Overlaps(targetTypes);
+		}
+
 		/// <summary>Applies the warhead's effect against the target.</summary>
 		public abstract void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
 
@@ -52,8 +64,7 @@ namespace OpenRA.GameRules
 					return false;
 
 				var cellInfo = world.Map.GetTerrainInfo(cell);
-				if (!ValidTargets.Intersect(cellInfo.TargetTypes).Any()
-					|| InvalidTargets.Intersect(cellInfo.TargetTypes).Any())
+				if (!IsValidTarget(cellInfo.TargetTypes))
 					return false;
 
 				return true;
@@ -81,8 +92,7 @@ namespace OpenRA.GameRules
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
 			var targetable = victim.TraitOrDefault<ITargetable>();
-			if (targetable == null || !ValidTargets.Intersect(targetable.TargetTypes).Any()
-				|| InvalidTargets.Intersect(targetable.TargetTypes).Any())
+			if (targetable == null || !IsValidTarget(targetable.TargetTypes))
 				return false;
 
 			return true;
@@ -101,8 +111,7 @@ namespace OpenRA.GameRules
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
 			var targetable = victim.Info.Traits.GetOrDefault<ITargetableInfo>();
-			if (targetable == null || !ValidTargets.Intersect(targetable.GetTargetTypes()).Any()
-				|| InvalidTargets.Intersect(targetable.GetTargetTypes()).Any())
+			if (targetable == null || !IsValidTarget(targetable.GetTargetTypes()))
 				return false;
 
 			return true;

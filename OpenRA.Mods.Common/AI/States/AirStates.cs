@@ -18,6 +18,8 @@ namespace OpenRA.Mods.Common.AI
 {
 	abstract class AirStateBase : StateBase
 	{
+		static readonly string[] AirTargetTypes = new[] { "Air" };
+
 		protected const int MissileUnitMultiplier = 3;
 
 		protected static int CountAntiAirUnits(IEnumerable<Actor> units)
@@ -34,7 +36,7 @@ namespace OpenRA.Mods.Common.AI
 					var arms = unit.TraitsImplementing<Armament>();
 					foreach (var a in arms)
 					{
-						if (a.Weapon.ValidTargets.Contains("Air"))
+						if (a.Weapon.IsValidTarget(AirTargetTypes))
 						{
 							missileUnitsCount++;
 							break;
