@@ -158,6 +158,7 @@ SPEN:
 	ProvidesCustomPrerequisite@ukrainianstructure:
 		RequiresPrerequisites: structures.ukraine
 		Prerequisite: ships.ukraine
+	ProvidesCustomPrerequisite@buildingname:
 
 SYRD:
 	Inherits: ^Building
@@ -242,6 +243,7 @@ SYRD:
 	ProvidesCustomPrerequisite@germanstructure:
 		RequiresPrerequisites: structures.germany
 		Prerequisite: ships.germany
+	ProvidesCustomPrerequisite@buildingname:
 
 IRON:
 	Inherits: ^Building
@@ -356,6 +358,7 @@ PDOX:
 		Amount: -200
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	ProvidesCustomPrerequisite@buildingname:
 
 TSLA:
 	Inherits: ^Defense
@@ -400,6 +403,7 @@ TSLA:
 		Amount: -100
 	DetectCloaked:
 		Range: 8
+	ProvidesCustomPrerequisite@buildingname:
 
 AGUN:
 	Inherits: ^Defense
@@ -481,6 +485,7 @@ DOME:
 	RenderDetectionCircle:
 	Power:
 		Amount: -40
+	ProvidesCustomPrerequisite@buildingname:
 
 PBOX:
 	Inherits: ^Defense
@@ -655,6 +660,7 @@ FTUR:
 		Amount: -20
 	DetectCloaked:
 		Range: 6
+	ProvidesCustomPrerequisite@buildingname:
 
 SAM:
 	Inherits: ^Defense
@@ -739,6 +745,7 @@ ATEK:
 	DisabledOverlay:
 	Power:
 		Amount: -200
+	ProvidesCustomPrerequisite@buildingname:
 
 WEAP:
 	Inherits: ^Building
@@ -827,6 +834,7 @@ WEAP:
 	ProductionBar:
 	Power:
 		Amount: -30
+	ProvidesCustomPrerequisite@buildingname:
 
 FACT:
 	Inherits: ^Building
@@ -900,6 +908,7 @@ FACT:
 		UseDeathTypeSuffix: false
 	WithBuildingExplosion:
 		Delay: 1
+	ProvidesCustomPrerequisite@buildingname:
 
 PROC:
 	Inherits: ^Building
@@ -951,6 +960,7 @@ PROC:
 		UseDeathTypeSuffix: false
 	WithBuildingExplosion:
 		Delay: 1
+	ProvidesCustomPrerequisite@buildingname:
 
 SILO:
 	Inherits: ^Building
@@ -1045,6 +1055,7 @@ HPAD:
 	ProvidesCustomPrerequisite@germanstructure:
 		RequiresPrerequisites: structures.germany
 		Prerequisite: aircraft.germany
+	ProvidesCustomPrerequisite@buildingname:
 
 AFLD:
 	Inherits: ^Building
@@ -1149,6 +1160,7 @@ AFLD:
 	PrimaryBuilding:
 	Power:
 		Amount: -20
+	ProvidesCustomPrerequisite@buildingname:
 
 POWR:
 	Inherits: ^Building
@@ -1249,6 +1261,7 @@ STEK:
 	Bib:
 	Power:
 		Amount: -100
+	ProvidesCustomPrerequisite@buildingname:
 
 BARR:
 	Inherits: ^Building
@@ -1310,6 +1323,7 @@ BARR:
 		Prerequisite: infantry.ukraine
 	Power:
 		Amount: -20
+	ProvidesCustomPrerequisite@buildingname:
 
 KENN:
 	Inherits: ^Building
@@ -1344,6 +1358,7 @@ KENN:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
+	ProvidesCustomPrerequisite@buildingname:
 
 TENT:
 	Inherits: ^Building
@@ -1411,6 +1426,7 @@ TENT:
 		Prerequisite: infantry.germany
 	Power:
 		Amount: -20
+	ProvidesCustomPrerequisite@buildingname:
 
 FIX:
 	Inherits: ^Building
@@ -1442,6 +1458,7 @@ FIX:
 	WithRepairAnimation:
 	Power:
 		Amount: -30
+	ProvidesCustomPrerequisite@buildingname:
 
 SBAG:
 	Inherits: ^Wall
