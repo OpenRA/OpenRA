@@ -8,8 +8,8 @@ editor:AddText(([[
 3]]):format(line))
 
 local findReplace = ide.findReplace
-findReplace.findText = line
-findReplace:FindString()
+findReplace:SetFind(line)
+findReplace:Find()
 
 ide.frame:ProcessEvent(wx.wxCommandEvent(
   wx.wxEVT_COMMAND_MENU_SELECTED, ID_COMMENT))
@@ -18,8 +18,8 @@ local text = editor:GetText()
 ok(text:find(comment..line) and not text:find(comment.."3"),
   "One-line selection is commented.")
 
-findReplace.findText = "--"..line
-findReplace:FindString()
+findReplace:SetFind("--"..line)
+findReplace:Find()
 editor:SetCurrentPos(editor:GetLength())
 
 ide.frame:ProcessEvent(wx.wxCommandEvent(
@@ -29,7 +29,7 @@ text = editor:GetText()
 ok(text:find(comment.."  "..comment..line) and text:find(comment.."3"),
   "Commented and uncommented lines are commented.")
 
-findReplace:FindString()
+findReplace:Find()
 editor:SetCurrentPos(editor:GetLength())
 
 ide.frame:ProcessEvent(wx.wxCommandEvent(

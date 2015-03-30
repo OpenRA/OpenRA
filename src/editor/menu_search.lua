@@ -64,8 +64,8 @@ frame:Connect(ID_FINDNEXT, wx.wxEVT_COMMAND_MENU_SELECTED,
       editor:SetMainSelection(selection)
       editor:ShowPosEnforcePolicy(editor:GetCurrentPos())
     else
-      if findReplace:HasText() or findReplace:UseSelectedString() then
-        findReplace:FindString()
+      if findReplace:SetFind(findReplace:GetFind() or findReplace:GetSelection()) then
+        findReplace:Find()
       else
         findReplace:Show(false)
       end
@@ -82,7 +82,7 @@ frame:Connect(ID_FINDPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
       editor:SetMainSelection(selection)
       editor:ShowPosEnforcePolicy(editor:GetCurrentPos())
     else
-      if findReplace:HasText() or findReplace:UseSelectedString() then
+      if findReplace:SetFind(findReplace:GetFind() or findReplace:GetSelection()) then
         findReplace:FindString(true) -- search up
       else
         findReplace:Show(false)
@@ -94,43 +94,18 @@ frame:Connect(ID_FINDPREV, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)
 -- Select and Find behaves like Find if there is a current selection;
 -- if not, it selects a word under cursor (if any) and does find.
 
-local function selectWordUnderCaret(editor)
-  local pos = editor:GetCurrentPos()
-  local text = editor:GetTextRange( -- try to select a word under caret
-    editor:WordStartPosition(pos, true), editor:WordEndPosition(pos, true))
-  return #text > 0 and text or editor:GetTextRange( -- try to select a non-word under caret
-      editor:WordStartPosition(pos, false), editor:WordEndPosition(pos, false))
-end
 frame:Connect(ID_FINDSELECTNEXT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    local editor = GetEditor()
-    if editor:GetSelectionStart() ~= editor:GetSelectionEnd() then
-      ide.frame:AddPendingEvent(
-      wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, ID_FINDNEXT))
-      return
-    end
-
-    local text = selectWordUnderCaret(editor)
-    if #text > 0 then
-      findReplace.findText = text
-      findReplace:FindString()
+    if findReplace:SetFind(findReplace:GetSelection() or findReplace:GetWordAtCaret()) then
+      findReplace:Find()
     end
   end)
 frame:Connect(ID_FINDSELECTNEXT, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)
 
 frame:Connect(ID_FINDSELECTPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    local editor = GetEditor()
-    if editor:GetSelectionStart() ~= editor:GetSelectionEnd() then
-      ide.frame:AddPendingEvent(
-      wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, ID_FINDPREV))
-      return
-    end
-
-    local text = selectWordUnderCaret(editor)
-    if #text > 0 then
-      findReplace.findText = text
-      findReplace:FindString(true)
+    if findReplace:SetFind(findReplace:GetSelection() or findReplace:GetWordAtCaret()) then
+      findReplace:Find(true)
     end
   end)
 frame:Connect(ID_FINDSELECTPREV, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)

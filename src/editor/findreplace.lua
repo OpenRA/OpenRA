@@ -26,9 +26,7 @@ ide.findReplace = {
   fSubDirs = true, -- search in subdirectories
 
   findTextArray = {}, -- array of last entered find text
-  findText = "", -- string to find
   replaceTextArray = {}, -- array of last entered replace text
-  replaceText = "", -- string to replace find string with
   scopeText = nil,
   scopeTextArray = {},
 
@@ -39,8 +37,8 @@ ide.findReplace = {
   files = 0,
 
   -- HasText() is there a string to search for
-  -- GetSelectedString() get currently selected string if it's on one line
-  -- FindString(reverse) find the findText string
+  -- GetSelection() get currently selected string if it's on one line
+  -- Find(reverse) find the text
   -- Show(replace) create the dialog
   -- GetEditor() which editor to use
 }
@@ -98,11 +96,31 @@ local function setTargetAll(editor)
 end
 
 function findReplace:HasText()
-  return (self.findText ~= nil) and (string.len(self.findText) > 0)
+  if not self.panel then self:createPanel() end
+  local findText = self.searchCtrl:GetValue()
+  return findText ~= nil and #findText > 0 and findText or nil
 end
 
 function findReplace:SetStatus(msg)
   if self.status then self.status:SetLabel(msg) end
+end
+
+function findReplace:SetFind(text)
+  if text and self.searchCtrl then
+    self.searchCtrl:ChangeValue(text)
+    return text
+  end
+  return
+end
+
+function findReplace:GetFind(...) return self:HasText() end
+
+function findReplace:SetReplace(text)
+  if text and self.replaceCtrl then
+    self.replaceCtrl:ChangeValue(text)
+    return text
+  end
+  return
 end
 
 function findReplace:GetScope()
@@ -122,7 +140,22 @@ function findReplace:SetScope(dir, mask)
   return dir .. (mask and (sep..' '..mask) or "")
 end
 
-function findReplace:GetSelectedString()
+function findReplace:GetWordAtCaret()
+  local editor = self:GetEditor()
+  if editor then
+    local pos = editor:GetCurrentPos()
+    local text = editor:GetTextRange( -- try to select a word under caret
+      editor:WordStartPosition(pos, true), editor:WordEndPosition(pos, true))
+    if #text == 0 then
+      editor:GetTextRange( -- try to select a non-word under caret
+        editor:WordStartPosition(pos, false), editor:WordEndPosition(pos, false))
+    end
+    return #text > 0 and text or nil
+  end
+  return
+end
+
+function findReplace:GetSelection()
   local editor = self:GetEditor()
   if editor then
     local startSel = editor:GetSelectionStart()
@@ -135,24 +168,21 @@ function findReplace:GetSelectedString()
   return
 end
 
-function findReplace:UseSelectedString()
-  local selected = self:GetSelectedString()
-  if selected then self.findText = selected end
-  return selected ~= nil
-end
+function findReplace:Find(reverse)
+  if not self.panel then self:createPanel() end
+  local findText = self.searchCtrl:GetValue()
 
-function findReplace:FindString(reverse)
   local msg = ""
   local editor = self:GetEditor()
   if editor and self:HasText() then
     local fDown = iff(reverse, not self.fDown, self.fDown)
     setSearchFlags(editor)
     setTarget(editor, fDown)
-    local posFind = editor:SearchInTarget(self.findText)
+    local posFind = editor:SearchInTarget(findText)
     if (posFind == NOTFOUND) and self.fWrap then
       editor:SetTargetStart(iff(fDown, 0, editor:GetLength()))
       editor:SetTargetEnd(iff(fDown, editor:GetLength(), 0))
-      posFind = editor:SearchInTarget(self.findText)
+      posFind = editor:SearchInTarget(findText)
       msg = TR("Reached end of text and wrapped around.")
     end
     if posFind == NOTFOUND then
@@ -174,7 +204,10 @@ end
 -- register every position item was found
 -- supposed for "Search/Replace in Files"
 
-function findReplace:FindStringAll(inFileRegister)
+function findReplace:FindAll(inFileRegister)
+  if not self.panel then self:createPanel() end
+  local findText = self.searchCtrl:GetValue()
+
   local found = false
   local editor = self:GetEditor()
   if editor and self:HasText() then
@@ -182,7 +215,7 @@ function findReplace:FindStringAll(inFileRegister)
 
     setSearchFlags(editor)
     while true do
-      local posFind = editor:SearchInTarget(self.findText)
+      local posFind = editor:SearchInTarget(findText)
       if posFind == NOTFOUND then break end
       inFileRegister(posFind, editor:GetTargetEnd()-posFind)
       editor:SetTargetStart(editor:GetTargetEnd())
@@ -202,7 +235,13 @@ end
 
 local indicator = {SEARCHMATCH = 5}
 
-function findReplace:ReplaceString(fReplaceAll, resultsEditor)
+function findReplace:Replace(fReplaceAll, resultsEditor)
+  if not self.panel then self:createPanel() end
+
+  local findText = self.searchCtrl:GetValue()
+  local replaceText = self.replaceCtrl:GetValue()
+  if replaceText == replaceHintText then replaceText = "" end
+
   local replaced = false
   local editor = resultsEditor or self:GetEditor()
   if editor and self:HasText() then
@@ -220,7 +259,7 @@ function findReplace:ReplaceString(fReplaceAll, resultsEditor)
 
       setSearchFlags(editor)
       local occurrences = 0
-      local posFind = editor:SearchInTarget(self.findText)
+      local posFind = editor:SearchInTarget(findText)
       if posFind ~= NOTFOUND then
         editor:BeginUndoAction()
         while posFind ~= NOTFOUND do
@@ -229,8 +268,8 @@ function findReplace:ReplaceString(fReplaceAll, resultsEditor)
           if not resultsEditor
           or editor:GetLine(editor:LineFromPosition(posFind)):find("^%s*%d:") then
             local replaced = self.fRegularExpr
-              and editor:ReplaceTargetRE(self.replaceText)
-              or editor:ReplaceTarget(self.replaceText)
+              and editor:ReplaceTargetRE(replaceText)
+              or editor:ReplaceTarget(replaceText)
 
             -- mark replaced text
             if resultsEditor then editor:IndicatorFillRange(posFind, replaced) end
@@ -238,10 +277,10 @@ function findReplace:ReplaceString(fReplaceAll, resultsEditor)
 
           editor:SetTargetStart(editor:GetTargetEnd())
           -- adjust the endTarget as the position could have changed;
-          -- can't simply subtract findText length as it could be a regexp
+          -- can't simply subtract text length as it could be a regexp
           endTarget = endTarget + (editor:GetLength() - length)
           editor:SetTargetEnd(endTarget)
-          posFind = editor:SearchInTarget(self.findText)
+          posFind = editor:SearchInTarget(findText)
           occurrences = occurrences + 1
         end
         editor:EndUndoAction()
@@ -255,18 +294,18 @@ function findReplace:ReplaceString(fReplaceAll, resultsEditor)
       -- move the cursor after successful search
       if editor:GetSelectionStart() ~= editor:GetSelectionEnd()
       -- check that the current selection matches what's being searched for
-      and editor:SearchInTarget(self.findText) ~= NOTFOUND then
+      and editor:SearchInTarget(findText) ~= NOTFOUND then
         local start = editor:GetSelectionStart()
         local replaced = self.fRegularExpr
-          and editor:ReplaceTargetRE(self.replaceText)
-          or editor:ReplaceTarget(self.replaceText)
+          and editor:ReplaceTargetRE(replaceText)
+          or editor:ReplaceTarget(replaceText)
 
         editor:SetSelection(start, start + replaced)
         self.foundString = false
 
         replaced = true
       end
-      self:FindString()
+      self:Find()
     end
   end
 
@@ -355,27 +394,30 @@ local function checkBinary(content, ext)
   end
   return knownBinary[ext]
 end
-local function ProcInFiles(startdir,mask,subdirs)
+
+function findReplace:ProcInFiles(startdir,mask,subdirs)
+  if not self.panel then self:createPanel() end
+
   local files = FileSysGetRecursive(startdir, subdirs, mask)
-  local text = not findReplace.fRegularExpr and q(findReplace.findText) or nil
-  if text and not findReplace.fMatchCase then
+  local text = not self.fRegularExpr and q(self.searchCtrl:GetValue()) or nil
+  if text and not self.fMatchCase then
     text = text:gsub("%w",function(s) return "["..s:lower()..s:upper().."]" end)
   end
 
   for _,file in ipairs(files) do
     -- skip folders as these are included in the list as well
     if not IsDirectory(file) then
-      findReplace.curfilename = file
+      self.curfilename = file
 
       local filetext = FileRead(file, firstReadSize)
       if filetext and not checkBinary(filetext, GetFileExt(file)) then
         -- read the rest if there is more to read in the file
         if #filetext == firstReadSize then filetext = FileRead(file) end
         if filetext and (not text or filetext:find(text)) then
-          findReplace.oveditor:SetText(filetext)
+          self.oveditor:SetText(filetext)
 
-          if findReplace:FindStringAll(onFileRegister) then
-            findReplace.files = findReplace.files + 1
+          if self:FindAll(onFileRegister) then
+            self.files = self.files + 1
           end
 
           -- give time to the UI to refresh
@@ -385,7 +427,7 @@ local function ProcInFiles(startdir,mask,subdirs)
           -- so check to make sure the manager is still active
           if not (ok and mgr:GetPane(searchpanel):IsShown())
           -- and check that the search results tab is still open
-          or not pcall(function() findReplace.reseditor:GetId() end) then
+          or not pcall(function() self.reseditor:GetId() end) then
             return false
           end
         end
@@ -396,6 +438,7 @@ local function ProcInFiles(startdir,mask,subdirs)
 end
 
 function findReplace:RunInFiles(replace)
+  if not self.panel then self:createPanel() end
   if not self:HasText() or self.oveditor then return end
 
   self.oveditor = ide:CreateStyledTextCtrl(self.panel, wx.wxID_ANY,
@@ -466,11 +509,12 @@ function findReplace:RunInFiles(replace)
   reseditor.replace = replace -- keep track of the current status
   reseditor:SetText('')
 
-  self:SetStatus(TR("Searching for '%s'."):format(self.findText))
+  local findText = self.searchCtrl:GetValue()
+  self:SetStatus(TR("Searching for '%s'."):format(findText))
   wx.wxSafeYield() -- allow the status to update
 
   local startdir, mask = self:GetScope()
-  local completed = ProcInFiles(startdir, mask or "*.*", self.fSubDirs)
+  local completed = self:ProcInFiles(startdir, mask or "*.*", self.fSubDirs)
 
   -- reseditor may already be closed, so check if it's valid first
   if pcall(function() reseditor:GetId() end) then
@@ -484,7 +528,7 @@ function findReplace:RunInFiles(replace)
         .."Review the changes and save this preview to apply them.\n"
         .."You can also make other changes; only lines with : will be updated.\n"
         .."Context lines (if any) are used as safety checks during the update.")
-      findReplace:ReplaceString(true, reseditor)
+      findReplace:Replace(true, reseditor)
     end
     reseditor:EnsureVisibleEnforcePolicy(reseditor:GetLineCount()-1)
   end
@@ -653,7 +697,7 @@ function findReplace:createPanel()
   -- don't increase font size on Linux as it gets too large
   tfont:SetPointSize(tfont:GetPointSize() + (ide.osname == 'Unix' and 0 or 1))
 
-  local findCtrl = wx.wxTextCtrl(ctrl, wx.wxID_ANY, self.findText,
+  local findCtrl = wx.wxTextCtrl(ctrl, wx.wxID_ANY, "",
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wx.wxTE_PROCESS_ENTER + wx.wxTE_PROCESS_TAB + wx.wxBORDER_STATIC)
   local replaceCtrl = wx.wxTextCtrl(ctrl, wx.wxID_ANY, replaceHintText,
@@ -681,27 +725,25 @@ function findReplace:createPanel()
   scope:SetFont(tfont)
   status:SetFont(tfont)
 
-  local function transferDataFromWindow(incremental)
-    findReplace.findText = findCtrl:GetValue()
-    if not incremental then PrependStringToArray(findReplace.findTextArray, findReplace.findText) end
+  local function updateLists()
+    PrependStringToArray(findReplace.findTextArray, findCtrl:GetValue())
     if findReplace.replace then
-      findReplace.replaceText = replaceCtrl:GetValue()
-      if findReplace.replaceText == replaceHintText then findReplace.replaceText = "" end
-      if not incremental then PrependStringToArray(findReplace.replaceTextArray, findReplace.replaceText) end
+      local replaceText = replaceCtrl:GetValue()
+      if replaceText == replaceHintText then replaceText = "" end
+      PrependStringToArray(findReplace.replaceTextArray, replaceText)
     end
     if findReplace.infiles then
-      findReplace.scopeText = findReplace.scope:GetValue()
-      PrependStringToArray(findReplace.scopeTextArray, findReplace.scopeText)
+      PrependStringToArray(findReplace.scopeTextArray, findReplace.scope:GetValue())
     end
     return true
   end
 
   local function findNext()
-    transferDataFromWindow()
+    updateLists()
     if findReplace.infiles then
       findReplace:RunInFiles(false)
     else
-      findReplace:FindString()
+      findReplace:Find()
     end
   end
 
@@ -710,17 +752,16 @@ function findReplace:createPanel()
     if self.startpos then
       self:GetEditor():SetSelection(findReplace.startpos, findReplace.startpos)
     end
-    transferDataFromWindow(true)
-    self:FindString()
+    self:Find()
   end
 
   local function findReplaceNext()
-    transferDataFromWindow()
+    updateLists()
     if findReplace.replace then
       if findReplace.infiles then
         findReplace:RunInFiles(true)
       else
-        findReplace:ReplaceString()
+        findReplace:Replace()
       end
     end
   end
@@ -803,8 +844,8 @@ function findReplace:createPanel()
   ctrl:Connect(ID_FINDREPLACENEXT, wx.wxEVT_COMMAND_MENU_SELECTED, findReplaceNext)
   ctrl:Connect(ID_FINDREPLACEALL, wx.wxEVT_COMMAND_MENU_SELECTED,
     function()
-      transferDataFromWindow()
-      findReplace:ReplaceString(true)
+      updateLists()
+      findReplace:Replace(true)
     end)
 
   ctrl:Connect(ID_FINDSETDIR, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -861,7 +902,7 @@ function findReplace:refreshPanel(replace, infiles)
   local pane = mgr:GetPane(searchpanel)
   if not pane:IsShown() then
     -- if not shown, set value from the current selection
-    self.searchCtrl:ChangeValue(self:GetSelectedString() or self.searchCtrl:GetValue())
+    self.searchCtrl:ChangeValue(self:GetSelection() or self.searchCtrl:GetValue())
     local size = ctrl:GetSize()
     pane:Dock():Bottom():BestSize(size):MinSize(size):Layer(0):Row(1):Show()
     mgr:Update()
