@@ -115,7 +115,7 @@ World:
 		Name: Soviet
 		Race: soviet
 		Side: Soviet
-		Description: Soviet: Infantry\nSpecial Ability: Paradrop\nSpecial Ability: Spy Plane
+		Description: Soviet: Infantry\nSpecial Ability: Paradrop
 	Country@5:
 		Name: Russia
 		Race: russia
