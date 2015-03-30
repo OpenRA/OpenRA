@@ -784,6 +784,7 @@ palace:
 		Prerequisites: ~techlevel.superweapons, ~palace.airstrike
 		Description: Air Strike
 		ChargeTime: 180
+		SquadSize: 3
 		LongDesc: Ornithopter drops a load of parachuted\nbombs on your target
 		UnitType: orni.bomber
 		SelectTargetSound:
