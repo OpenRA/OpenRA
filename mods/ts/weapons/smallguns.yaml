@@ -6,7 +6,7 @@ Minigun:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 12
+		Damage: 8
 		DeathType: 1
 		ProneModifier: 70
 		Versus:
@@ -188,7 +188,7 @@ AssaultCannon:
 RaiderCannon:
 	ReloadDelay: 55
 	Range: 4c0
-	Burst: 2
+	Burst: 2 # this + BurstDelay just makes the buggy alternate between barrels (for muzzle flash), no actual difference to original TS
 	BurstDelay: 55
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
@@ -271,7 +271,7 @@ Sniper:
 		ProneModifier: 100
 		Versus:
 			None: 100
-			Wood: 0
-			Light: 0
-			Heavy: 0
-			Concrete: 0
+			Wood: 5
+			Light: 5
+			Heavy: 5
+			Concrete: 5

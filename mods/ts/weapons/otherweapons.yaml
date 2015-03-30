@@ -32,17 +32,16 @@ FiendShard:
 		Image: CRYSTAL4
 		Inaccuracy: 512
 		Shadow: true
-		Angle: 88
+		Angle: 60
 		Palette: greentiberium
 	Warhead@1Dam: SpreadDamage
 		Damage: 35
 		DeathType: 1
 		ProneModifier: 100
 		Versus:
-			Wood: 60
-			Light: 40
-			Heavy: 25
-			Concrete: 10
+			Light: 60
+			Heavy: 40
+			Concrete: 20
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
 		ImpactSound: ssplash3.aud
@@ -50,7 +49,6 @@ FiendShard:
 
 SlimeAttack:
 	ReloadDelay: 80
-	Burst: 3
 	Range: 5c0
 	Report: VICER1.AUD
 	Projectile: Bullet
@@ -60,10 +58,9 @@ SlimeAttack:
 		DeathType: 2
 		ProneModifier: 100
 		Versus:
-			Wood: 25
-			Light: 30
-			Heavy: 10
-			Concrete: 10
+			Light: 60
+			Heavy: 40
+			Concrete: 20
 
 Tiberium:
 	ReloadDelay: 16
