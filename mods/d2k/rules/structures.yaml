@@ -105,6 +105,7 @@ power:
 	Power:
 		Amount: 100
 	ScalePowerWithHealth:
+	ProvidesCustomPrerequisite@buildingname:
 
 barracks:
 	Inherits: ^Building
@@ -160,6 +161,7 @@ barracks:
 		RaceImages:
 			atreides: barracks.atreides
 			ordos: barracks.ordos
+	ProvidesCustomPrerequisite@buildingname:
 
 refinery:
 	Inherits: ^Building
@@ -211,6 +213,7 @@ refinery:
 		Amount: -30
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
+	ProvidesCustomPrerequisite@buildingname:
 
 silo:
 	Inherits: ^Building
@@ -359,6 +362,7 @@ heavy:
 		Sequence: idle-top
 	Power:
 		Amount: -30
+	ProvidesCustomPrerequisite@buildingname:
 
 radar:
 	Inherits: ^Building
@@ -400,6 +404,7 @@ radar:
 		PauseOnLowPower: yes
 	Power:
 		Amount: -40
+	ProvidesCustomPrerequisite@buildingname:
 
 starport:
 	Inherits: ^Building
@@ -458,6 +463,7 @@ starport:
 		Race: harkonnen
 	Power:
 		Amount: -40
+	ProvidesCustomPrerequisite@buildingname:
 
 wall:
 	Buildable:
@@ -653,6 +659,7 @@ repair:
 		Palette: repairlights
 	Power:
 		Amount: -10
+	ProvidesCustomPrerequisite@buildingname:
 
 hightech:
 	Inherits: ^Building
@@ -691,6 +698,7 @@ hightech:
 		Sequence: production-welding
 	Power:
 		Amount: -40
+	ProvidesCustomPrerequisite@buildingname:
 
 research:
 	Inherits: ^Building
@@ -735,6 +743,7 @@ research:
 		Sequence: idle-lights
 	Power:
 		Amount: -40
+	ProvidesCustomPrerequisite@buildingname:
 
 palace:
 	Inherits: ^Building
@@ -808,6 +817,7 @@ palace:
 	DisabledOverlay:
 	RequiresPower:
 	SupportPowerChargeBar:
+	ProvidesCustomPrerequisite@buildingname:
 
 conyard.atreides:
 	Inherits: conyard
