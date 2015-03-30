@@ -1,12 +1,12 @@
 Grenade:
 	ReloadDelay: 60
 	Range: 4c512
-	Projectile: Bullet
+	Projectile: Bullet # TODO: Add bounce effect
 		Speed: 85
 		Blockable: false
 		Shadow: true
-		Angle: 62
-		Inaccuracy: 554
+		Angle: 45
+		Inaccuracy: 384
 		Image: DISCUS
 	Warhead@1Dam: SpreadDamage
 		Spread: 171
@@ -31,13 +31,15 @@ Grenade:
 		SmudgeType: MediumCrater
 
 Bomb:
-	ReloadDelay: 10
-	Range: 5c0
-	Projectile: Bullet
+	ReloadDelay: 60
+	Burst: 5
+	BurstDelay: 5
+	Range: 2c0
+	Projectile: GravityBomb
 		Speed: 170
-		Image: canister
+		Image: 120mm
 		Shadow: true
-		Palette: player
+		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
 		Damage: 160

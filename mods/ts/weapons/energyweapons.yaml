@@ -22,8 +22,8 @@ LtRail:
 MechRailgun:
 	ReloadDelay: 60
 	Range: 8c0
-	Burst: 2
-	BurstDelay: 10
+	Burst: 2 # for alternating muzzle offsets, dmg/s identical to original
+	BurstDelay: 60
 	Report: RAILUSE5.AUD
 	Projectile: LaserZap
 		Color: 200,0,255,255
@@ -62,23 +62,24 @@ CyCannon:
 	Range: 7c0
 	Report: SCRIN5B.AUD
 	ValidTargets: Ground
-	Projectile: Bullet
+	Projectile: Missile
 		Speed: 192
 		Blockable: false
+		RateOfTurn: 2
 		Shadow: true
 		Image: TORPEDO
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
+		Spread: 43
 		Damage: 120
 		DeathType: 6
-		ProneModifier: 100
+		ProneModifier: 350
 		ValidTargets: Ground
 		Versus:
-			None: 100
-			Wood: 65
-			Light: 75
-			Heavy: 50
-			Concrete: 40
+			None: 350
+			Wood: 260
+			Light: 205
+			Heavy: 150
+			Concrete: 80
 	Warhead@2Eff: CreateEffect
 		Explosion: large_bang
 		ImpactSound: expnew12.aud
@@ -91,25 +92,24 @@ CyCannon:
 		SmudgeType: SmallScorch
 
 Proton:
-	ReloadDelay: 3
+	ReloadDelay: 50
 	Range: 5c0
 	Report: SCRIN5B.AUD
-	Burst: 2
-	ValidTargets: Ground, Air
-	Projectile: Missile
-		Speed: 256
-		Arm: 2
+	Burst: 5
+	BurstDelay: 3
+	ValidTargets: Ground
+	Projectile: Bullet
+		Speed: 341
 		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: TORPEDO
-		RateOfTurn: 1
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 20
 		DeathType: 3
-		ValidTargets: Ground, Air
+		ValidTargets: Ground
 		Versus:
 			None: 25
 			Wood: 65
