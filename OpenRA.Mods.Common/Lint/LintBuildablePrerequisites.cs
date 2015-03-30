@@ -19,14 +19,9 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			// Buildings provide their actor names as a prerequisite
-			var buildingPrereqs = map.Rules.Actors.Where(a => a.Value.Traits.Contains<BuildingInfo>())
-				.Select(a => a.Key);
-
 			// ProvidesCustomPrerequisite allows arbitrary prereq definitions
 			var customPrereqs = map.Rules.Actors.SelectMany(a => a.Value.Traits
-				.WithInterface<ProvidesCustomPrerequisiteInfo>())
-				.Select(p => p.Prerequisite);
+				.WithInterface<ProvidesCustomPrerequisiteInfo>().Select(p => p.Prerequisite ?? a.Value.Name));
 
 			// ProvidesTechPrerequisite allows arbitrary prereq definitions
 			// (but only one group at a time during gameplay)
@@ -34,7 +29,7 @@ namespace OpenRA.Mods.Common.Lint
 				.WithInterface<ProvidesTechPrerequisiteInfo>())
 				.SelectMany(p => p.Prerequisites);
 
-			var providedPrereqs = buildingPrereqs.Concat(customPrereqs).Concat(techPrereqs);
+			var providedPrereqs = customPrereqs.Concat(techPrereqs);
 
 			// TODO: this check is case insensitive while the real check in-game is not
 			foreach (var i in map.Rules.Actors)
