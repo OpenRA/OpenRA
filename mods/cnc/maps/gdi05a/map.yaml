@@ -802,6 +802,7 @@ Rules:
 		MissionObjectives:
 			EarlyGameOver: true
 		EnemyWatcher:
+			NotificationInterval: 25
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy
