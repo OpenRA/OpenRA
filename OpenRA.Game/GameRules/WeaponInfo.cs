@@ -30,7 +30,7 @@ namespace OpenRA.GameRules
 
 	public interface IProjectileInfo { IEffect Create(ProjectileArgs args); }
 
-	public class WeaponInfo
+	public sealed class WeaponInfo
 	{
 		[Desc("The maximum range the weapon can fire.")]
 		public readonly WRange Range = WRange.Zero;
@@ -64,9 +64,14 @@ namespace OpenRA.GameRules
 		[FieldLoader.LoadUsing("LoadWarheads")]
 		public readonly List<Warhead> Warheads = new List<Warhead>();
 
+		readonly HashSet<string> validTargetSet;
+		readonly HashSet<string> invalidTargetSet;
+
 		public WeaponInfo(string name, MiniYaml content)
 		{
 			FieldLoader.Load(this, content);
+			validTargetSet = new HashSet<string>(ValidTargets);
+			invalidTargetSet = new HashSet<string>(InvalidTargets);
 		}
 
 		static object LoadProjectile(MiniYaml yaml)
@@ -92,6 +97,11 @@ namespace OpenRA.GameRules
 			return retList;
 		}
 
+		public bool IsValidTarget(IEnumerable<string> targetTypes)
+		{
+			return validTargetSet.Overlaps(targetTypes) && !invalidTargetSet.Overlaps(targetTypes);
+		}
+
 		/// <summary>Checks if the weapon is valid against (can target) the target.</summary>
 		public bool IsValidAgainst(Target target, World world, Actor firedBy)
 		{
@@ -108,8 +118,7 @@ namespace OpenRA.GameRules
 					return false;
 
 				var cellInfo = world.Map.GetTerrainInfo(cell);
-				if (!ValidTargets.Intersect(cellInfo.TargetTypes).Any()
-					|| InvalidTargets.Intersect(cellInfo.TargetTypes).Any())
+				if (!IsValidTarget(cellInfo.TargetTypes))
 					return false;
 
 				return true;
@@ -122,8 +131,7 @@ namespace OpenRA.GameRules
 		public bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
 			var targetable = victim.TraitOrDefault<ITargetable>();
-			if (targetable == null || !ValidTargets.Intersect(targetable.TargetTypes).Any()
-				|| InvalidTargets.Intersect(targetable.TargetTypes).Any())
+			if (targetable == null || !IsValidTarget(targetable.TargetTypes))
 				return false;
 
 			if (!Warheads.Any(w => w.IsValidAgainst(victim, firedBy)))
@@ -136,8 +144,7 @@ namespace OpenRA.GameRules
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
 			var targetable = victim.Info.Traits.GetOrDefault<ITargetableInfo>();
-			if (targetable == null || !ValidTargets.Intersect(targetable.GetTargetTypes()).Any()
-				|| InvalidTargets.Intersect(targetable.GetTargetTypes()).Any())
+			if (targetable == null || !IsValidTarget(targetable.GetTargetTypes()))
 				return false;
 
 			if (!Warheads.Any(w => w.IsValidAgainst(victim, firedBy)))
