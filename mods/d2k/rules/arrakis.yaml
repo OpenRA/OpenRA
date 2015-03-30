@@ -75,3 +75,5 @@ sietch:
 	-ExternalCapturableBar:
 	Power:
 		Amount: 0
+	ProvidesCustomPrerequisite@buildingname:
+
