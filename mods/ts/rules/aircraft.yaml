@@ -99,7 +99,7 @@ ORCA:
 	Hovers:
 
 ORCAB:
-	Inherits: ^Helicopter
+	Inherits: ^Plane
 	Valued:
 		Cost: 1600
 	Tooltip:
@@ -110,10 +110,12 @@ ORCAB:
 		Prerequisites: ~gahpad, gatech
 	Selectable:
 		Bounds: 30,24
-	Helicopter:
+	Plane:
+		CruiseAltitude: 3072
+		MaximumPitch: 120
 		RearmBuildings: gahpad
-		ROT: 5
-		Speed: 112
+		ROT: 3
+		Speed: 96
 	Health:
 		HP: 260
 	Armor:
@@ -122,11 +124,13 @@ ORCAB:
 		Range: 2c0
 	Armament:
 		Weapon: Bomb
-	AttackHeli:
+	AttackPlane:
 		FacingTolerance: 20
 	AmmoPool:
-		Ammo: 2
+		Ammo: 10
 		PipCount: 2
+		ReloadCount: 5
+		ReloadTicks: 200
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
@@ -190,7 +194,7 @@ TRNSPORT:
 	Hovers:
 
 SCRIN:
-	Inherits: ^Helicopter
+	Inherits: ^Plane
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -202,7 +206,8 @@ SCRIN:
 	Selectable:
 		Bounds: 30,24
 		Voice: Scrin
-	Helicopter:
+	Plane:
+		MaximumPitch: 90
 		RearmBuildings: nahpad
 		ROT: 3
 		Speed: 168
@@ -214,11 +219,12 @@ SCRIN:
 		Range: 2c0
 	Armament:
 		Weapon: Proton
-	AttackHeli:
+	AttackPlane:
 		FacingTolerance: 20
 	AmmoPool:
-		Ammo: 3
+		Ammo: 15
 		PipCount: 3
+		ReloadCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
@@ -264,4 +270,3 @@ APACHE:
 	RenderVoxels:
 	WithVoxelBody:
 	Hovers:
-
