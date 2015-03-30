@@ -54,7 +54,7 @@ Terrain:
 
 Templates:
 	Template@0:
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 0, 8, 9, 48, 49, 50, 51, 52, 68, 69, 70, 71, 72
 		Size: 1,1
 		PickAny: True
@@ -75,7 +75,7 @@ Templates:
 			12: Sand
 	Template@1:
 		Id: 1
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 10, 11, 30, 31
 		Size: 2,2
 		Category: Dune
@@ -86,7 +86,7 @@ Templates:
 			3: Dune
 	Template@2:
 		Id: 2
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 12, 13, 32, 33
 		Size: 2,2
 		Category: Cliff-Type-Changer
@@ -97,7 +97,7 @@ Templates:
 			3: Transition
 	Template@3:
 		Id: 3
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 14, 15, 34, 35
 		Size: 2,2
 		Category: Cliff-Type-Changer
@@ -108,7 +108,7 @@ Templates:
 			3: Transition
 	Template@4:
 		Id: 4
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 16, 17, 36, 37
 		Size: 2,2
 		Category: Dune
@@ -119,7 +119,7 @@ Templates:
 			3: Dune
 	Template@5:
 		Id: 5
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 18, 19, 38, 39
 		Size: 2,2
 		Category: Dune
@@ -130,7 +130,7 @@ Templates:
 			3: Dune
 	Template@6:
 		Id: 6
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 58, 59, 78, 79
 		Size: 2,2
 		Category: Dune
@@ -141,7 +141,7 @@ Templates:
 			3: Sand
 	Template@7:
 		Id: 7
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 56, 57, 76, 77
 		Size: 2,2
 		Category: Dune
@@ -152,7 +152,7 @@ Templates:
 			3: Dune
 	Template@8:
 		Id: 8
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 54, 55, 74, 75
 		Size: 2,2
 		Category: Cliff-Type-Changer
@@ -163,7 +163,7 @@ Templates:
 			3: Cliff
 	Template@9:
 		Id: 9
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 53, 73
 		Size: 1,2
 		Category: Sand-Cliff
@@ -172,7 +172,7 @@ Templates:
 			1: Transition
 	Template@10:
 		Id: 10
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 98, 99, 118, 119
 		Size: 2,2
 		Category: Sand-Cliff
@@ -183,7 +183,7 @@ Templates:
 			3: Cliff
 	Template@11:
 		Id: 11
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 138, 139, 158, 159
 		Size: 2,2
 		Category: Sand-Cliff
@@ -194,7 +194,7 @@ Templates:
 			3: Cliff
 	Template@12:
 		Id: 12
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 136, 137, 156, 157
 		Size: 2,2
 		Category: Sand-Cliff
@@ -205,7 +205,7 @@ Templates:
 			3: Cliff
 	Template@13:
 		Id: 13
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 134, 135, 154, 155
 		Size: 2,2
 		Category: Sand-Cliff
@@ -216,7 +216,7 @@ Templates:
 			3: Cliff
 	Template@14:
 		Id: 14
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 132, 133, 152, 153
 		Size: 2,2
 		Category: Sand-Cliff
@@ -227,7 +227,7 @@ Templates:
 			3: Cliff
 	Template@15:
 		Id: 15
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 130, 131, 150, 151
 		Size: 2,2
 		Category: Sand-Cliff
@@ -238,7 +238,7 @@ Templates:
 			3: Cliff
 	Template@16:
 		Id: 16
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 128, 129, 148, 149
 		Size: 2,2
 		Category: Sand-Cliff
@@ -249,7 +249,7 @@ Templates:
 			3: Cliff
 	Template@17:
 		Id: 17
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 126, 127, 146, 147
 		Size: 2,2
 		Category: Sand-Cliff
@@ -260,7 +260,7 @@ Templates:
 			3: Sand
 	Template@18:
 		Id: 18
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 124, 125, 144, 145
 		Size: 2,2
 		Category: Sand-Cliff
@@ -271,7 +271,7 @@ Templates:
 			3: Sand
 	Template@19:
 		Id: 19
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 122, 123, 142, 143
 		Size: 2,2
 		Category: Sand-Cliff
@@ -282,7 +282,7 @@ Templates:
 			3: Cliff
 	Template@20:
 		Id: 20
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 120, 121, 140, 141
 		Size: 2,2
 		Category: Sand-Cliff
@@ -293,7 +293,7 @@ Templates:
 			3: Cliff
 	Template@21:
 		Id: 21
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 178, 179, 198, 199
 		Size: 2,2
 		Category: Rock-Sand-Smooth
@@ -304,7 +304,7 @@ Templates:
 			3: Transition
 	Template@22:
 		Id: 22
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 176, 177, 196, 197
 		Size: 2,2
 		Category: Sand-Cliff
@@ -315,7 +315,7 @@ Templates:
 			3: Rough
 	Template@23:
 		Id: 23
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 174, 175, 194, 195
 		Size: 2,2
 		Category: Sand-Cliff
@@ -326,7 +326,7 @@ Templates:
 			3: Rough
 	Template@24:
 		Id: 24
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 172, 173, 192, 193
 		Size: 2,2
 		Category: Sand-Cliff
@@ -337,7 +337,7 @@ Templates:
 			3: Cliff
 	Template@25:
 		Id: 25
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 170, 171, 190, 191
 		Size: 2,2
 		Category: Sand-Cliff
@@ -348,7 +348,7 @@ Templates:
 			3: Cliff
 	Template@26:
 		Id: 26
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 168, 169, 188, 189
 		Size: 2,2
 		Category: Sand-Cliff
@@ -359,7 +359,7 @@ Templates:
 			3: Cliff
 	Template@27:
 		Id: 27
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 166, 167, 186, 187
 		Size: 2,2
 		Category: Sand-Cliff
@@ -370,7 +370,7 @@ Templates:
 			3: Rough
 	Template@28:
 		Id: 28
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 164, 165, 184, 185
 		Size: 2,2
 		Category: Rock-Detail
@@ -381,7 +381,7 @@ Templates:
 			3: Rough
 	Template@29:
 		Id: 29
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 162, 163, 182, 183
 		Size: 2,2
 		Category: Sand-Cliff
@@ -392,7 +392,7 @@ Templates:
 			3: Sand
 	Template@30:
 		Id: 30
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 160, 161, 180, 181
 		Size: 2,2
 		Category: Sand-Cliff
@@ -403,7 +403,7 @@ Templates:
 			3: Sand
 	Template@31:
 		Id: 31
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 202, 203, 222, 223, 242, 243
 		Size: 2,3
 		Category: Sand-Cliff
@@ -416,7 +416,7 @@ Templates:
 			5: Cliff
 	Template@32:
 		Id: 32
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 260, 261, 280, 281
 		Size: 2,2
 		Category: Rock-Sand-Smooth
@@ -427,7 +427,7 @@ Templates:
 			3: Transition
 	Template@33:
 		Id: 33
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 200, 201, 220, 221, 240, 241
 		Size: 2,3
 		Category: Sand-Cliff
@@ -440,7 +440,7 @@ Templates:
 			5: Cliff
 	Template@34:
 		Id: 34
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 204, 205, 224, 225, 244, 245
 		Size: 2,3
 		Category: Sand-Cliff
@@ -453,7 +453,7 @@ Templates:
 			5: Sand
 	Template@35:
 		Id: 35
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 206, 207, 226, 227, 246, 247
 		Size: 2,3
 		Category: Sand-Cliff
@@ -466,7 +466,7 @@ Templates:
 			5: Cliff
 	Template@36:
 		Id: 36
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 262, 263, 282, 283
 		Size: 2,2
 		Category: Rock-Sand-Smooth
@@ -477,7 +477,7 @@ Templates:
 			3: Transition
 	Template@37:
 		Id: 37
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 264, 265, 284, 285
 		Size: 2,2
 		Category: Rock-Sand-Smooth
@@ -488,7 +488,7 @@ Templates:
 			3: Transition
 	Template@38:
 		Id: 38
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 85, 86, 105, 106
 		Size: 2,2
 		Category: Sand-Cliff
@@ -499,7 +499,7 @@ Templates:
 			3: Sand
 	Template@39:
 		Id: 39
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 87, 88, 107, 108
 		Size: 2,2
 		Category: Sand-Cliff
@@ -510,7 +510,7 @@ Templates:
 			3: Sand
 	Template@40:
 		Id: 40
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 89, 90, 109, 110
 		Size: 2,2
 		Category: Sand-Cliff
@@ -521,7 +521,7 @@ Templates:
 			3: Cliff
 	Template@41:
 		Id: 41
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 91, 92, 111, 112
 		Size: 2,2
 		Category: Sand-Cliff
@@ -532,7 +532,7 @@ Templates:
 			3: Cliff
 	Template@42:
 		Id: 42
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 93, 94, 113, 114
 		Size: 2,2
 		Category: Sand-Cliff
@@ -543,7 +543,7 @@ Templates:
 			3: Cliff
 	Template@43:
 		Id: 43
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 95, 96, 115, 116
 		Size: 2,2
 		Category: Cliff-Type-Changer
@@ -554,7 +554,7 @@ Templates:
 			3: Cliff
 	Template@44:
 		Id: 44
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 218, 219, 238, 239
 		Size: 2,2
 		Category: Rock-Sand-Smooth
@@ -565,7 +565,7 @@ Templates:
 			3: Sand
 	Template@45:
 		Id: 45
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 258, 259, 278, 279
 		Size: 2,2
 		Category: Rock-Sand-Smooth
@@ -576,7 +576,7 @@ Templates:
 			3: Transition
 	Template@46:
 		Id: 46
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 256, 257, 276, 277
 		Size: 2,2
 		Category: Rock-Sand-Smooth
@@ -587,7 +587,7 @@ Templates:
 			3: Transition
 	Template@47:
 		Id: 47
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 216, 217, 236, 237
 		Size: 2,2
 		Category: Sand-Cliff
@@ -598,7 +598,7 @@ Templates:
 			3: Cliff
 	Template@48:
 		Id: 48
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 214, 215, 234, 235
 		Size: 2,2
 		Category: Sand-Cliff
@@ -609,7 +609,7 @@ Templates:
 			3: Cliff
 	Template@49:
 		Id: 49
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 211, 212, 213, 231, 232, 233
 		Size: 3,2
 		Category: Sand-Cliff
@@ -622,7 +622,7 @@ Templates:
 			5: Cliff
 	Template@50:
 		Id: 50
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 251, 252, 253, 271, 272, 273
 		Size: 3,2
 		Category: Sand-Cliff
@@ -635,7 +635,7 @@ Templates:
 			5: Cliff
 	Template@51:
 		Id: 51
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 248, 249, 250, 268, 269, 270
 		Size: 3,2
 		Category: Sand-Cliff
@@ -648,7 +648,7 @@ Templates:
 			5: Sand
 	Template@52:
 		Id: 52
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 208, 209, 210, 228, 229, 230
 		Size: 3,2
 		Category: Sand-Cliff
@@ -661,7 +661,7 @@ Templates:
 			5: Cliff
 	Template@53:
 		Id: 53
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 266, 267, 286, 287
 		Size: 2,2
 		Category: Rock-Sand-Smooth
@@ -672,7 +672,7 @@ Templates:
 			3: Transition
 	Template@58:
 		Id: 58
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 322
 		Size: 1,1
 		Category: Sand-Detail
@@ -680,7 +680,7 @@ Templates:
 			0: Cliff
 	Template@59:
 		Id: 59
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 302
 		Size: 1,1
 		Category: Rock-Detail
@@ -688,7 +688,7 @@ Templates:
 			0: Rock
 	Template@60:
 		Id: 60
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 288
 		Size: 1,1
 		Category: Rock-Sand-Smooth
@@ -696,7 +696,7 @@ Templates:
 			0: Sand
 	Template@61:
 		Id: 61
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 308
 		Size: 1,1
 		Category: Rock-Detail
@@ -704,7 +704,7 @@ Templates:
 			0: Rock
 	Template@62:
 		Id: 62
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 328
 		Size: 1,1
 		Category: Sand-Detail
@@ -712,7 +712,7 @@ Templates:
 			0: Sand
 	Template@63:
 		Id: 63
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 329
 		Size: 1,1
 		Category: Rock-Sand-Smooth
@@ -720,7 +720,7 @@ Templates:
 			0: Transition
 	Template@64:
 		Id: 64
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 330
 		Size: 1,1
 		Category: Sand-Detail
@@ -728,7 +728,7 @@ Templates:
 			0: Sand
 	Template@65:
 		Id: 65
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 289, 290, 309, 310
 		Size: 2,2
 		Category: Rock-Detail
@@ -739,7 +739,7 @@ Templates:
 			3: Rough
 	Template@66:
 		Id: 66
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 331
 		Size: 1,1
 		Category: Rock-Sand-Smooth
@@ -747,7 +747,7 @@ Templates:
 			0: Transition
 	Template@67:
 		Id: 67
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 332
 		Size: 1,1
 		Category: Rock-Sand-Smooth
@@ -755,7 +755,7 @@ Templates:
 			0: Transition
 	Template@68:
 		Id: 68
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 298, 299
 		Size: 2,1
 		Category: Sand-Cliff
@@ -764,7 +764,7 @@ Templates:
 			1: Cliff
 	Template@69:
 		Id: 69
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 317, 318
 		Size: 2,1
 		Category: Rock-Sand-Smooth
@@ -773,7 +773,7 @@ Templates:
 			1: Transition
 	Template@70:
 		Id: 70
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 338, 339, 358, 359
 		Size: 2,2
 		Category: Rock-Detail
@@ -784,7 +784,7 @@ Templates:
 			3: Rough
 	Template@71:
 		Id: 71
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 337
 		Size: 1,1
 		Category: Rock-Sand-Smooth
@@ -792,7 +792,7 @@ Templates:
 			0: Transition
 	Template@72:
 		Id: 72
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 336
 		Size: 1,1
 		Category: Rock-Sand-Smooth
@@ -800,7 +800,7 @@ Templates:
 			0: Transition
 	Template@73:
 		Id: 73
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 335
 		Size: 1,1
 		Category: Rock-Sand-Smooth
@@ -808,7 +808,7 @@ Templates:
 			0: Transition
 	Template@74:
 		Id: 74
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 313, 333
 		Size: 1,2
 		Category: Rock-Sand-Smooth
@@ -817,7 +817,7 @@ Templates:
 			1: Transition
 	Template@75:
 		Id: 75
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 314, 334
 		Size: 1,2
 		Category: Rock-Sand-Smooth
@@ -826,7 +826,7 @@ Templates:
 			1: Transition
 	Template@76:
 		Id: 76
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 315
 		Size: 1,1
 		Category: Rock-Sand-Smooth
@@ -834,7 +834,7 @@ Templates:
 			0: Transition
 	Template@77:
 		Id: 77
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 291, 292
 		Size: 2,1
 		Category: Rock-Sand-Smooth
@@ -843,7 +843,7 @@ Templates:
 			1: Transition
 	Template@78:
 		Id: 78
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 293, 294
 		Size: 2,1
 		Category: Rock-Sand-Smooth
@@ -852,7 +852,7 @@ Templates:
 			1: Transition
 	Template@79:
 		Id: 79
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 295, 296
 		Size: 2,1
 		Category: Rock-Sand-Smooth
@@ -861,7 +861,7 @@ Templates:
 			1: Transition
 	Template@80:
 		Id: 80
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 719
 		Size: 1,1
 		Category: Sand-Detail
@@ -869,7 +869,7 @@ Templates:
 			0: Rough
 	Template@81:
 		Id: 81
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 718
 		Size: 1,1
 		Category: Sand-Detail
@@ -877,7 +877,7 @@ Templates:
 			0: Rough
 	Template@82:
 		Id: 82
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 738
 		Size: 1,1
 		Category: Sand-Detail
@@ -885,7 +885,7 @@ Templates:
 			0: Sand
 	Template@83:
 		Id: 83
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 739
 		Size: 1,1
 		Category: Sand-Detail
@@ -893,7 +893,7 @@ Templates:
 			0: Sand
 	Template@84:
 		Id: 84
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 737
 		Size: 1,1
 		Category: Sand-Detail
@@ -901,7 +901,7 @@ Templates:
 			0: Sand
 	Template@85:
 		Id: 85
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 717
 		Size: 1,1
 		Category: Sand-Detail
@@ -909,7 +909,7 @@ Templates:
 			0: Sand
 	Template@86:
 		Id: 86
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 716
 		Size: 1,1
 		Category: Rock-Detail
@@ -917,7 +917,7 @@ Templates:
 			0: Rough
 	Template@87:
 		Id: 87
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 736
 		Size: 1,1
 		Category: Sand-Detail
@@ -925,7 +925,7 @@ Templates:
 			0: Sand
 	Template@88:
 		Id: 88
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 657, 658, 659, 691
 		Size: 1,1
 		PickAny: True
@@ -937,7 +937,7 @@ Templates:
 			3: Concrete
 	Template@92:
 		Id: 92
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 685
 		Size: 1,1
 		Category: Rock-Detail
@@ -945,7 +945,7 @@ Templates:
 			0: Rough
 	Template@94:
 		Id: 94
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 661, 662, 681, 682
 		Size: 2,2
 		Category: Rock-Detail
@@ -956,7 +956,7 @@ Templates:
 			3: Rough
 	Template@95:
 		Id: 95
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 660, 680
 		Size: 1,2
 		Category: Rock-Detail
@@ -965,7 +965,7 @@ Templates:
 			1: Rock
 	Template@98:
 		Id: 98
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 619, 639
 		Size: 1,2
 		Category: Rock-Detail
@@ -974,7 +974,7 @@ Templates:
 			1: Rock
 	Template@99:
 		Id: 99
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 538
 		Size: 1,1
 		Category: Rock-Detail
@@ -982,7 +982,7 @@ Templates:
 			0: Rock
 	Template@100:
 		Id: 100
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 539
 		Size: 1,1
 		Category: Rock-Detail
@@ -990,7 +990,7 @@ Templates:
 			0: Rock
 	Template@101:
 		Id: 101
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 557, 558, 559, 577, 578, 579, 597, 598, 599
 		Size: 3,3
 		Category: Rock-Detail
@@ -1006,7 +1006,7 @@ Templates:
 			8: Rough
 	Template@103:
 		Id: 103
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 652, 653, 672, 673
 		Size: 2,2
 		Category: Rock-Detail
@@ -1017,7 +1017,7 @@ Templates:
 			3: Cliff
 	Template@104:
 		Id: 104
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 692, 693
 		Size: 2,1
 		Category: Sand-Cliff
@@ -1026,7 +1026,7 @@ Templates:
 			1: Sand
 	Template@105:
 		Id: 105
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 689, 690
 		Size: 2,1
 		Category: Sand-Cliff
@@ -1035,7 +1035,7 @@ Templates:
 			1: Cliff
 	Template@106:
 		Id: 106
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 674, 694
 		Size: 1,2
 		Category: Sand-Cliff
@@ -1044,7 +1044,7 @@ Templates:
 			1: Cliff
 	Template@107:
 		Id: 107
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 675, 695
 		Size: 1,2
 		Category: Sand-Cliff
@@ -1053,7 +1053,7 @@ Templates:
 			1: Sand
 	Template@108:
 		Id: 108
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 677, 697
 		Size: 1,2
 		Category: Rock-Cliff
@@ -1062,7 +1062,7 @@ Templates:
 			1: Rock
 	Template@109:
 		Id: 109
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 697
 		Size: 1,1
 		Category: Rock-Detail
@@ -1070,7 +1070,7 @@ Templates:
 			0: Rock
 	Template@110:
 		Id: 110
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 678, 679
 		Size: 2,1
 		Category: Sand-Cliff
@@ -1079,7 +1079,7 @@ Templates:
 			1: Cliff
 	Template@111:
 		Id: 111
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 698, 699
 		Size: 2,1
 		Category: Sand-Cliff
@@ -1088,7 +1088,7 @@ Templates:
 			1: Cliff
 	Template@112:
 		Id: 112
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 715, 735
 		Size: 1,2
 		Category: Rock-Detail
@@ -1097,7 +1097,7 @@ Templates:
 			1: Rough
 	Template@113:
 		Id: 113
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 711, 712, 713, 714, 731, 732, 733, 734
 		Size: 4,2
 		Category: Rock-Detail
@@ -1112,7 +1112,7 @@ Templates:
 			7: Rough
 	Template@114:
 		Id: 114
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 709, 710, 729, 730
 		Size: 2,2
 		Category: Rock-Detail
@@ -1123,7 +1123,7 @@ Templates:
 			3: Rough
 	Template@115:
 		Id: 115
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 708
 		Size: 1,1
 		Category: Rock-Detail
@@ -1131,7 +1131,7 @@ Templates:
 			0: Rough
 	Template@116:
 		Id: 116
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 728
 		Size: 1,1
 		Category: Sand-Detail
@@ -1139,7 +1139,7 @@ Templates:
 			0: Rough
 	Template@117:
 		Id: 117
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 706, 707, 726, 727
 		Size: 2,2
 		Category: Sand-Detail
@@ -1150,7 +1150,7 @@ Templates:
 			3: Rough
 	Template@118:
 		Id: 118
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 700, 701, 702, 720, 721, 722
 		Size: 3,2
 		Category: Sand-Detail
@@ -1163,7 +1163,7 @@ Templates:
 			5: Rough
 	Template@119:
 		Id: 119
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 703, 704, 723, 724
 		Size: 2,2
 		Category: Sand-Detail
@@ -1174,7 +1174,7 @@ Templates:
 			3: Rough
 	Template@120:
 		Id: 120
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 705, 725
 		Size: 1,2
 		Category: Sand-Detail
@@ -1183,7 +1183,7 @@ Templates:
 			1: Rough
 	Template@121:
 		Id: 121
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 746, 747
 		Size: 2,1
 		Category: Sand-Detail
@@ -1192,7 +1192,7 @@ Templates:
 			1: Rough
 	Template@122:
 		Id: 122
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 744, 745
 		Size: 2,1
 		Category: Sand-Detail
@@ -1201,7 +1201,7 @@ Templates:
 			1: Rough
 	Template@123:
 		Id: 123
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 743
 		Size: 1,1
 		Category: Sand-Detail
@@ -1209,7 +1209,7 @@ Templates:
 			0: Rough
 	Template@124:
 		Id: 124
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 742
 		Size: 1,1
 		Category: Sand-Detail
@@ -1217,7 +1217,7 @@ Templates:
 			0: Rough
 	Template@125:
 		Id: 125
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 740, 741
 		Size: 2,1
 		Category: Sand-Detail
@@ -1226,7 +1226,7 @@ Templates:
 			1: Rough
 	Template@176:
 		Id: 176
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 600, 601, 602, 620, 621, 622, 640, 641, 642
 		Size: 3,3
 		Category: Rock-Cliff
@@ -1242,7 +1242,7 @@ Templates:
 			8: Cliff
 	Template@177:
 		Id: 177
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 603, 604, 623, 624
 		Size: 2,2
 		Category: Sand-Cliff
@@ -1253,7 +1253,7 @@ Templates:
 			3: Cliff
 	Template@178:
 		Id: 178
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 605, 606, 625, 626
 		Size: 2,2
 		Category: Sand-Cliff
@@ -1264,7 +1264,7 @@ Templates:
 			3: Cliff
 	Template@179:
 		Id: 179
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 564, 565, 584, 585
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1275,7 +1275,7 @@ Templates:
 			3: Cliff
 	Template@180:
 		Id: 180
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 566, 567, 586, 587
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1286,7 +1286,7 @@ Templates:
 			3: Cliff
 	Template@181:
 		Id: 181
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 562, 563, 582, 583
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1297,7 +1297,7 @@ Templates:
 			3: Transition
 	Template@182:
 		Id: 182
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 560, 561, 580, 581
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1308,7 +1308,7 @@ Templates:
 			3: Rock
 	Template@183:
 		Id: 183
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 607, 608, 627, 628
 		Size: 2,2
 		Category: Rock-Detail
@@ -1319,7 +1319,7 @@ Templates:
 			3: Cliff
 	Template@184:
 		Id: 184
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 609, 610, 629, 630
 		Size: 2,2
 		Category: Rock-Detail
@@ -1330,7 +1330,7 @@ Templates:
 			3: Cliff
 	Template@185:
 		Id: 185
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 568, 569, 588, 589
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1341,7 +1341,7 @@ Templates:
 			3: Cliff
 	Template@186:
 		Id: 186
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 570, 571, 590, 591
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1352,7 +1352,7 @@ Templates:
 			3: Cliff
 	Template@187:
 		Id: 187
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 529, 530, 549, 550
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1363,7 +1363,7 @@ Templates:
 			3: Rock
 	Template@188:
 		Id: 188
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 527, 528, 547, 548
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1374,7 +1374,7 @@ Templates:
 			3: Rock
 	Template@189:
 		Id: 189
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 525, 526, 545, 546
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1385,7 +1385,7 @@ Templates:
 			3: Rock
 	Template@190:
 		Id: 190
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 523, 524, 543, 544
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1396,7 +1396,7 @@ Templates:
 			3: Sand
 	Template@191:
 		Id: 191
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 520, 521, 522, 540, 541, 542
 		Size: 3,2
 		Category: Rock-Cliff
@@ -1409,7 +1409,7 @@ Templates:
 			5: Cliff
 	Template@192:
 		Id: 192
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 480, 481, 482, 500, 501, 502
 		Size: 3,2
 		Category: Rock-Cliff
@@ -1422,7 +1422,7 @@ Templates:
 			5: Cliff
 	Template@193:
 		Id: 193
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 440, 441, 460, 461
 		Size: 2,2
 		Category: Sand-Smooth
@@ -1433,7 +1433,7 @@ Templates:
 			3: Rock
 	Template@194:
 		Id: 194
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 402, 403, 422, 423, 442, 443
 		Size: 2,3
 		Category: Rock-Cliff
@@ -1446,7 +1446,7 @@ Templates:
 			5: Cliff
 	Template@195:
 		Id: 195
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 400, 401, 420, 421
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1457,7 +1457,7 @@ Templates:
 			3: Cliff
 	Template@196:
 		Id: 196
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 408, 409, 428, 429
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1468,7 +1468,7 @@ Templates:
 			3: Cliff
 	Template@197:
 		Id: 197
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 410, 411, 430, 431, 450, 451
 		Size: 2,3
 		Category: Rock-Cliff
@@ -1481,7 +1481,7 @@ Templates:
 			5: Cliff
 	Template@198:
 		Id: 198
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 412, 413, 432, 433
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1492,7 +1492,7 @@ Templates:
 			3: Cliff
 	Template@199:
 		Id: 199
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 452, 453
 		Size: 2,1
 		Category: Rock-Cliff
@@ -1501,7 +1501,7 @@ Templates:
 			1: Cliff
 	Template@200:
 		Id: 200
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 454, 455, 474, 475, 494, 495
 		Size: 2,3
 		Category: Rock-Cliff
@@ -1514,7 +1514,7 @@ Templates:
 			5: Rock
 	Template@201:
 		Id: 201
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 489, 490, 509, 510
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1525,7 +1525,7 @@ Templates:
 			3: Cliff
 	Template@202:
 		Id: 202
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 448, 449, 468, 469
 		Size: 2,2
 		Category: Sand-Smooth
@@ -1536,7 +1536,7 @@ Templates:
 			3: Cliff
 	Template@203:
 		Id: 203
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 487, 488, 507, 508
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1547,7 +1547,7 @@ Templates:
 			3: Cliff
 	Template@204:
 		Id: 204
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 446, 447, 466, 467
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1558,7 +1558,7 @@ Templates:
 			3: Cliff
 	Template@205:
 		Id: 205
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 444, 445, 464, 465
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1569,7 +1569,7 @@ Templates:
 			3: Rock
 	Template@206:
 		Id: 206
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 456, 457, 476, 477, 496, 497
 		Size: 2,3
 		Category: Rock-Cliff
@@ -1582,7 +1582,7 @@ Templates:
 			5: Rock
 	Template@207:
 		Id: 207
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 498, 499, 518, 519
 		Size: 2,2
 		Category: Cliff-Type-Changer
@@ -1593,7 +1593,7 @@ Templates:
 			3: Sand
 	Template@208:
 		Id: 208
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 458, 459, 478, 479
 		Size: 2,2
 		Category: Cliff-Type-Changer
@@ -1604,7 +1604,7 @@ Templates:
 			3: Rock
 	Template@209:
 		Id: 209
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 418, 419, 438, 439
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1615,7 +1615,7 @@ Templates:
 			3: Cliff
 	Template@210:
 		Id: 210
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 378, 379, 398, 399
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1626,7 +1626,7 @@ Templates:
 			3: Cliff
 	Template@211:
 		Id: 211
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 416, 417, 436, 437
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1637,7 +1637,7 @@ Templates:
 			3: Cliff
 	Template@212:
 		Id: 212
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 376, 377, 396, 397
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1648,7 +1648,7 @@ Templates:
 			3: Cliff
 	Template@213:
 		Id: 213
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 414, 415, 434, 435
 		Size: 2,2
 		Category: Sand-Detail
@@ -1659,7 +1659,7 @@ Templates:
 			3: Cliff
 	Template@214:
 		Id: 214
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 354, 355, 374, 375, 394, 395
 		Size: 2,3
 		Category: Sand-Detail
@@ -1672,7 +1672,7 @@ Templates:
 			5: Rough
 	Template@215:
 		Id: 215
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 356
 		Size: 1,1
 		Category: Sand-Detail
@@ -1680,7 +1680,7 @@ Templates:
 			0: Sand
 	Template@216:
 		Id: 216
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 347, 348, 367, 368, 387, 388
 		Size: 2,3
 		Category: Rotten-Base
@@ -1693,7 +1693,7 @@ Templates:
 			5: Rough
 	Template@217:
 		Id: 217
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 386
 		Size: 1,1
 		Category: Rotten-Base
@@ -1701,7 +1701,7 @@ Templates:
 			0: Rough
 	Template@218:
 		Id: 218
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 345, 346, 365, 366
 		Size: 2,2
 		Category: Rotten-Base
@@ -1712,7 +1712,7 @@ Templates:
 			3: Rough
 	Template@219:
 		Id: 219
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 343, 344, 363, 364
 		Size: 2,2
 		Category: Rotten-Base
@@ -1723,7 +1723,7 @@ Templates:
 			3: Rough
 	Template@220:
 		Id: 220
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 340, 341, 342, 360, 361, 362
 		Size: 3,2
 		Category: Rotten-Base
@@ -1736,7 +1736,7 @@ Templates:
 			5: Rough
 	Template@221:
 		Id: 221
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 380, 381, 382
 		Size: 3,1
 		Category: Rotten-Base
@@ -1746,7 +1746,7 @@ Templates:
 			2: Sand
 	Template@222:
 		Id: 222
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 483, 484, 503, 504
 		Size: 2,2
 		Category: Sand-Smooth
@@ -1757,7 +1757,7 @@ Templates:
 			3: Transition
 	Template@223:
 		Id: 223
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 485, 486, 505, 506
 		Size: 2,2
 		Category: Rock-Cliff
@@ -1768,7 +1768,7 @@ Templates:
 			3: Cliff
 	Template@224:
 		Id: 224
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 83, 84, 103, 104
 		Size: 2,2
 		Category: Dune
@@ -1779,7 +1779,7 @@ Templates:
 			3: Dune
 	Template@225:
 		Id: 225
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 28
 		Size: 1,1
 		Category: Dune
@@ -1787,7 +1787,7 @@ Templates:
 			0: Dune
 	Template@229:
 		Id: 229
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 26, 27, 46, 47
 		Size: 2,2
 		Category: Dune
@@ -1798,7 +1798,7 @@ Templates:
 			3: Dune
 	Template@230:
 		Id: 230
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 65, 66
 		Size: 2,1
 		Category: Dune
@@ -1807,7 +1807,7 @@ Templates:
 			1: Dune
 	Template@231:
 		Id: 231
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 63, 64
 		Size: 2,1
 		Category: Dune
@@ -1816,7 +1816,7 @@ Templates:
 			1: Dune
 	Template@232:
 		Id: 232
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 22, 23, 42, 43
 		Size: 2,2
 		Category: Dune
@@ -1827,7 +1827,7 @@ Templates:
 			3: Sand
 	Template@233:
 		Id: 233
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 60
 		Size: 1,1
 		Category: Dune
@@ -1835,7 +1835,7 @@ Templates:
 			0: Dune
 	Template@234:
 		Id: 234
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 61
 		Size: 1,1
 		Category: Dune
@@ -1843,7 +1843,7 @@ Templates:
 			0: Dune
 	Template@235:
 		Id: 235
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 62
 		Size: 1,1
 		Category: Dune
@@ -1851,7 +1851,7 @@ Templates:
 			0: Dune
 	Template@236:
 		Id: 236
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 82
 		Size: 1,1
 		Category: Dune
@@ -1859,7 +1859,7 @@ Templates:
 			0: Dune
 	Template@237:
 		Id: 237
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 102
 		Size: 1,1
 		Category: Dune
@@ -1867,7 +1867,7 @@ Templates:
 			0: Dune
 	Template@238:
 		Id: 238
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 101
 		Size: 1,1
 		Category: Dune
@@ -1875,7 +1875,7 @@ Templates:
 			0: Dune
 	Template@239:
 		Id: 239
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 100
 		Size: 1,1
 		Category: Dune
@@ -1883,7 +1883,7 @@ Templates:
 			0: Dune
 	Template@240:
 		Id: 240
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 80
 		Size: 1,1
 		Category: Dune
@@ -1891,7 +1891,7 @@ Templates:
 			0: Dune
 	Template@241:
 		Id: 241
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 81
 		Size: 1,1
 		Category: Dune
@@ -1899,7 +1899,7 @@ Templates:
 			0: Dune
 	Template@242:
 		Id: 242
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 21
 		Size: 1,1
 		Category: Dune
@@ -1907,7 +1907,7 @@ Templates:
 			0: Dune
 	Template@243:
 		Id: 243
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 41
 		Size: 1,1
 		Category: Dune
@@ -1915,7 +1915,7 @@ Templates:
 			0: Dune
 	Template@244:
 		Id: 244
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 40
 		Size: 1,1
 		Category: Dune
@@ -1923,7 +1923,7 @@ Templates:
 			0: Dune
 	Template@245:
 		Id: 245
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 20
 		Size: 1,1
 		Category: Dune
@@ -1931,7 +1931,7 @@ Templates:
 			0: Dune
 	Template@246:
 		Id: 246
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 24, 25, 44, 45
 		Size: 2,2
 		Category: Dune
@@ -1942,7 +1942,7 @@ Templates:
 			3: Dune
 	Template@247:
 		Id: 247
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 352, 353, 372, 373
 		Size: 2,2
 		Category: Sand-Detail
@@ -1953,7 +1953,7 @@ Templates:
 			3: Sand
 	Template@248:
 		Id: 248
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 392, 393
 		Size: 2,1
 		Category: Rotten-Base
@@ -1962,7 +1962,7 @@ Templates:
 			1: Sand
 	Template@249:
 		Id: 249
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 390
 		Size: 1,1
 		Category: Sand-Detail
@@ -1970,7 +1970,7 @@ Templates:
 			0: Rough
 	Template@250:
 		Id: 250
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 389
 		Size: 1,1
 		Category: Rotten-Base
@@ -1978,7 +1978,7 @@ Templates:
 			0: Rough
 	Template@251:
 		Id: 251
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 349, 350, 369, 370
 		Size: 2,2
 		Category: Rotten-Base
@@ -1989,7 +1989,7 @@ Templates:
 			3: Rough
 	Template@252:
 		Id: 252
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 254, 255, 274, 275
 		Size: 2,2
 		Category: Sand-Cliff
@@ -2000,7 +2000,7 @@ Templates:
 			3: Rough
 	Template@253:
 		Id: 253
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 514, 515, 534, 535
 		Size: 2,2
 		Category: Cliff-Type-Changer
@@ -2011,7 +2011,7 @@ Templates:
 			3: Cliff
 	Template@254:
 		Id: 254
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 516, 517, 536, 537
 		Size: 2,2
 		Category: Cliff-Type-Changer
@@ -2022,7 +2022,7 @@ Templates:
 			3: Cliff
 	Template@255:
 		Id: 255
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 404, 405, 424, 425
 		Size: 2,2
 		Category: Rock-Cliff
@@ -2033,7 +2033,7 @@ Templates:
 			3: Cliff
 	Template@256:
 		Id: 256
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 406, 407, 426, 427
 		Size: 2,2
 		Category: Rock-Cliff
@@ -2044,7 +2044,7 @@ Templates:
 			3: Cliff
 	Template@258:
 		Id: 258
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 676, 696
 		Size: 1,2
 		Category: Rock-Cliff
@@ -2053,7 +2053,7 @@ Templates:
 			1: Cliff
 	Template@259:
 		Id: 259
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 303
 		Size: 1,1
 		Category: Rock-Sand-Smooth
@@ -2061,7 +2061,7 @@ Templates:
 			0: Transition
 	Template@260:
 		Id: 260
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 304
 		Size: 1,1
 		Category: Rock-Sand-Smooth
@@ -2069,7 +2069,7 @@ Templates:
 			0: Transition
 	Template@261:
 		Id: 261
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 324
 		Size: 1,1
 		Category: Rock-Sand-Smooth
@@ -2077,7 +2077,7 @@ Templates:
 			0: Transition
 	Template@262:
 		Id: 262
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 323
 		Size: 1,1
 		Category: Rock-Sand-Smooth
@@ -2085,7 +2085,7 @@ Templates:
 			0: Transition
 	Template@263:
 		Id: 263
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 511, 512, 513, 531, 532, 533
 		Size: 3,2
 		Category: Rock-Cliff
@@ -2098,7 +2098,7 @@ Templates:
 			5: Sand
 	Template@264:
 		Id: 264
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 471, 472, 473, 491, 492, 493
 		Size: 3,2
 		Category: Rock-Cliff
@@ -2111,7 +2111,7 @@ Templates:
 			5: Cliff
 	Template@266:
 		Id: 266
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 306, 307, 552, 553, 554, 555, 556, 572, 573, 574, 575, 576, 592, 593, 594, 595, 596
 		Size: 1,1
 		PickAny: True
@@ -2136,7 +2136,7 @@ Templates:
 			16: Rock
 	Template@269:
 		Id: 269
-		Image: BLOXBASE.R8
+		Images: BLOXBASE.R8
 		Frames: 326, 327
 		Size: 2,1
 		Category: Rock-Sand-Smooth
@@ -2145,7 +2145,7 @@ Templates:
 			1: Transition
 	Template@271:
 		Id: 271
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 1
 		Size: 1,1
 		Category: Rock-Detail
@@ -2153,7 +2153,7 @@ Templates:
 			0: Rough
 	Template@272:
 		Id: 272
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 2
 		Size: 1,1
 		Category: Sand-Detail
@@ -2161,7 +2161,7 @@ Templates:
 			0: Rough
 	Template@273:
 		Id: 273
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 3
 		Size: 1,1
 		Category: Sand-Detail
@@ -2169,7 +2169,7 @@ Templates:
 			0: Rough
 	Template@274:
 		Id: 274
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 4
 		Size: 1,1
 		Category: Sand-Detail
@@ -2177,7 +2177,7 @@ Templates:
 			0: Rough
 	Template@275:
 		Id: 275
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 5
 		Size: 1,1
 		Category: Sand-Detail
@@ -2185,7 +2185,7 @@ Templates:
 			0: Rough
 	Template@276:
 		Id: 276
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 6
 		Size: 1,1
 		Category: Sand-Detail
@@ -2193,7 +2193,7 @@ Templates:
 			0: Rough
 	Template@277:
 		Id: 277
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 322
 		Size: 1,1
 		Category: Sand-Detail
@@ -2201,7 +2201,7 @@ Templates:
 			0: Cliff
 	Template@278:
 		Id: 278
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 165
 		Size: 1,1
 		Category: Rock-Detail
@@ -2209,7 +2209,7 @@ Templates:
 			0: Rough
 	Template@279:
 		Id: 279
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 164
 		Size: 1,1
 		Category: Rock-Detail
@@ -2217,7 +2217,7 @@ Templates:
 			0: Rough
 	Template@280:
 		Id: 280
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 184
 		Size: 1,1
 		Category: Rock-Detail
@@ -2225,7 +2225,7 @@ Templates:
 			0: Rock
 	Template@281:
 		Id: 281
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 305
 		Size: 1,1
 		Category: Rock-Detail
@@ -2233,7 +2233,7 @@ Templates:
 			0: Rough
 	Template@282:
 		Id: 282
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 325
 		Size: 1,1
 		Category: Rock-Detail
@@ -2241,7 +2241,7 @@ Templates:
 			0: Rough
 	Template@283:
 		Id: 283
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 289, 290, 309, 310
 		Size: 2,2
 		Category: Sand-Detail
@@ -2252,7 +2252,7 @@ Templates:
 			3: Rough
 	Template@284:
 		Id: 284
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 316
 		Size: 1,1
 		Category: Sand-Detail
@@ -2260,7 +2260,7 @@ Templates:
 			0: Sand
 	Template@285:
 		Id: 285
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 297
 		Size: 1,1
 		Category: Sand-Detail
@@ -2268,7 +2268,7 @@ Templates:
 			0: Sand
 	Template@286:
 		Id: 286
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 338, 339, 358, 359
 		Size: 2,2
 		Category: Sand-Detail
@@ -2279,7 +2279,7 @@ Templates:
 			3: Sand
 	Template@287:
 		Id: 287
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 340, 341, 360, 361, 380, 381
 		Size: 2,3
 		Category: Sand-Detail
@@ -2292,7 +2292,7 @@ Templates:
 			5: Rough
 	Template@288:
 		Id: 288
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 342, 343, 362, 363, 382, 383
 		Size: 2,3
 		Category: Sand-Detail
@@ -2305,7 +2305,7 @@ Templates:
 			5: Rough
 	Template@289:
 		Id: 289
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 344, 345, 364, 365, 384, 385
 		Size: 2,3
 		Category: Sand-Detail
@@ -2318,7 +2318,7 @@ Templates:
 			5: Rough
 	Template@290:
 		Id: 290
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 349, 350, 369, 370, 389, 390
 		Size: 2,3
 		Category: Sand-Detail
@@ -2331,7 +2331,7 @@ Templates:
 			5: Rough
 	Template@291:
 		Id: 291
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 351, 371
 		Size: 1,2
 		Category: Sand-Detail
@@ -2340,7 +2340,7 @@ Templates:
 			1: Sand
 	Template@292:
 		Id: 292
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 391
 		Size: 1,1
 		Category: Sand-Detail
@@ -2348,7 +2348,7 @@ Templates:
 			0: Sand
 	Template@293:
 		Id: 293
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 392
 		Size: 1,1
 		Category: Sand-Detail
@@ -2356,7 +2356,7 @@ Templates:
 			0: Sand
 	Template@294:
 		Id: 294
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 393
 		Size: 1,1
 		Category: Sand-Detail
@@ -2364,7 +2364,7 @@ Templates:
 			0: Sand
 	Template@295:
 		Id: 295
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 352, 372
 		Size: 1,2
 		Category: Sand-Detail
@@ -2373,7 +2373,7 @@ Templates:
 			1: Sand
 	Template@296:
 		Id: 296
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 353
 		Size: 1,1
 		Category: Sand-Detail
@@ -2381,7 +2381,7 @@ Templates:
 			0: Sand
 	Template@297:
 		Id: 297
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 354
 		Size: 1,1
 		Category: Sand-Detail
@@ -2389,7 +2389,7 @@ Templates:
 			0: Sand
 	Template@298:
 		Id: 298
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 374
 		Size: 1,1
 		Category: Sand-Detail
@@ -2397,7 +2397,7 @@ Templates:
 			0: Sand
 	Template@299:
 		Id: 299
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 373
 		Size: 1,1
 		Category: Sand-Detail
@@ -2405,7 +2405,7 @@ Templates:
 			0: Sand
 	Template@300:
 		Id: 300
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 394, 395, 414, 415
 		Size: 2,2
 		Category: Sand-Detail
@@ -2416,7 +2416,7 @@ Templates:
 			3: Sand
 	Template@301:
 		Id: 301
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 434, 435
 		Size: 2,1
 		Category: Rock-Detail
@@ -2425,7 +2425,7 @@ Templates:
 			1: Rough
 	Template@302:
 		Id: 302
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 355, 375
 		Size: 1,2
 		Category: Rock-Detail
@@ -2434,7 +2434,7 @@ Templates:
 			1: Rough
 	Template@303:
 		Id: 303
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 356, 357
 		Size: 2,1
 		Category: Rock-Detail
@@ -2443,7 +2443,7 @@ Templates:
 			1: Rough
 	Template@304:
 		Id: 304
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 462, 463
 		Size: 2,1
 		Category: Rotten-Base
@@ -2452,7 +2452,7 @@ Templates:
 			1: Rough
 	Template@305:
 		Id: 305
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 551
 		Size: 1,1
 		Category: Rotten-Base
@@ -2460,7 +2460,7 @@ Templates:
 			0: Rough
 	Template@306:
 		Id: 306
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 607, 608, 627, 628
 		Size: 2,2
 		Category: Rotten-Base
@@ -2471,7 +2471,7 @@ Templates:
 			3: Rough
 	Template@307:
 		Id: 307
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 609, 610, 629, 630
 		Size: 2,2
 		Category: Dead-Worm
@@ -2482,7 +2482,7 @@ Templates:
 			3: Rough
 	Template@308:
 		Id: 308
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 652, 653, 672, 673
 		Size: 2,2
 		Category: Rotten-Base
@@ -2493,7 +2493,7 @@ Templates:
 			3: Rough
 	Template@309:
 		Id: 309
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 713, 714, 715, 733, 734, 735
 		Size: 3,2
 		Category: Rotten-Base
@@ -2506,7 +2506,7 @@ Templates:
 			5: Sand
 	Template@310:
 		Id: 310
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 709, 710, 711, 712, 729, 730, 731, 732
 		Size: 4,2
 		Category: Rotten-Base
@@ -2521,7 +2521,7 @@ Templates:
 			7: Transition
 	Template@311:
 		Id: 311
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 661, 662, 681, 682
 		Size: 2,2
 		Category: Sand-Detail
@@ -2532,7 +2532,7 @@ Templates:
 			3: Sand
 	Template@312:
 		Id: 312
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 683
 		Size: 1,1
 		Category: Sand-Detail
@@ -2540,7 +2540,7 @@ Templates:
 			0: Sand
 	Template@313:
 		Id: 313
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 684
 		Size: 1,1
 		Category: Sand-Detail
@@ -2548,7 +2548,7 @@ Templates:
 			0: Sand
 	Template@314:
 		Id: 314
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 703
 		Size: 1,1
 		Category: Sand-Detail
@@ -2556,7 +2556,7 @@ Templates:
 			0: Sand
 	Template@315:
 		Id: 315
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 723
 		Size: 1,1
 		Category: Sand-Detail
@@ -2564,7 +2564,7 @@ Templates:
 			0: Sand
 	Template@316:
 		Id: 316
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 722
 		Size: 1,1
 		Category: Sand-Detail
@@ -2572,7 +2572,7 @@ Templates:
 			0: Sand
 	Template@317:
 		Id: 317
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 721
 		Size: 1,1
 		Category: Sand-Detail
@@ -2580,7 +2580,7 @@ Templates:
 			0: Sand
 	Template@318:
 		Id: 318
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 720
 		Size: 1,1
 		Category: Sand-Detail
@@ -2588,7 +2588,7 @@ Templates:
 			0: Sand
 	Template@319:
 		Id: 319
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 700
 		Size: 1,1
 		Category: Sand-Detail
@@ -2596,7 +2596,7 @@ Templates:
 			0: Sand
 	Template@320:
 		Id: 320
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 701, 702
 		Size: 2,1
 		Category: Sand-Detail
@@ -2605,7 +2605,7 @@ Templates:
 			1: Sand
 	Template@321:
 		Id: 321
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 741
 		Size: 1,1
 		Category: Sand-Detail
@@ -2613,7 +2613,7 @@ Templates:
 			0: Sand
 	Template@322:
 		Id: 322
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 742
 		Size: 1,1
 		Category: Sand-Detail
@@ -2621,7 +2621,7 @@ Templates:
 			0: Sand
 	Template@323:
 		Id: 323
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 743
 		Size: 1,1
 		Category: Sand-Detail
@@ -2629,7 +2629,7 @@ Templates:
 			0: Sand
 	Template@324:
 		Id: 324
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 744
 		Size: 1,1
 		Category: Sand-Detail
@@ -2637,7 +2637,7 @@ Templates:
 			0: Sand
 	Template@325:
 		Id: 325
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 745, 746
 		Size: 2,1
 		Category: Sand-Detail
@@ -2646,7 +2646,7 @@ Templates:
 			1: Sand
 	Template@326:
 		Id: 326
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 747
 		Size: 1,1
 		Category: Sand-Detail
@@ -2654,7 +2654,7 @@ Templates:
 			0: Sand
 	Template@327:
 		Id: 327
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 728
 		Size: 1,1
 		Category: Sand-Detail
@@ -2662,7 +2662,7 @@ Templates:
 			0: Sand
 	Template@328:
 		Id: 328
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 708
 		Size: 1,1
 		Category: Sand-Detail
@@ -2670,7 +2670,7 @@ Templates:
 			0: Sand
 	Template@329:
 		Id: 329
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 716, 717, 736, 737
 		Size: 2,2
 		Category: Rock-Detail
@@ -2681,7 +2681,7 @@ Templates:
 			3: Cliff
 	Template@330:
 		Id: 330
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 538, 539, 558, 559
 		Size: 2,2
 		Category: Rock-Detail
@@ -2692,7 +2692,7 @@ Templates:
 			3: Rough
 	Template@331:
 		Id: 331
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 578, 579, 598, 599
 		Size: 2,2
 		Category: Rock-Detail
@@ -2703,7 +2703,7 @@ Templates:
 			3: Rough
 	Template@332:
 		Id: 332
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 718, 719, 738, 739, 758, 759
 		Size: 2,3
 		Category: Sand-Detail
@@ -2716,7 +2716,7 @@ Templates:
 			5: Rough
 	Template@333:
 		Id: 333
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 704, 705, 724, 725
 		Size: 2,2
 		Category: Rock-Detail
@@ -2727,7 +2727,7 @@ Templates:
 			3: Rock
 	Template@334:
 		Id: 334
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 706, 707, 726, 727
 		Size: 2,2
 		Category: Rock-Detail
@@ -2738,7 +2738,7 @@ Templates:
 			3: Rock
 	Template@335:
 		Id: 335
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 660, 680
 		Size: 1,2
 		Category: Sand-Detail
@@ -2747,7 +2747,7 @@ Templates:
 			1: Sand
 	Template@336:
 		Id: 336
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 388
 		Size: 1,1
 		Category: Sand-Detail
@@ -2755,7 +2755,7 @@ Templates:
 			0: Sand
 	Template@337:
 		Id: 337
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 346, 347, 348, 366, 367, 368
 		Size: 3,2
 		Category: Sand-Detail
@@ -2768,7 +2768,7 @@ Templates:
 			5: Rough
 	Template@338:
 		Id: 338
-		Image: BLOXBAT.R8
+		Images: BLOXBAT.R8
 		Frames: 386, 387
 		Size: 2,1
 		Category: Sand-Detail
@@ -2777,7 +2777,7 @@ Templates:
 			1: Rough
 	Template@339:
 		Id: 339
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 164, 165, 184, 185
 		Size: 2,2
 		Category: Rock-Detail
@@ -2788,7 +2788,7 @@ Templates:
 			3: Rough
 	Template@340:
 		Id: 340
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 289, 290, 309, 310
 		Size: 2,2
 		Category: Sand-Detail
@@ -2799,7 +2799,7 @@ Templates:
 			3: Sand
 	Template@341:
 		Id: 341
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 338, 339, 358, 359
 		Size: 2,2
 		Category: Rock-Detail
@@ -2810,7 +2810,7 @@ Templates:
 			3: Rough
 	Template@342:
 		Id: 342
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 349, 350, 351, 352, 353, 354, 369, 370, 371, 372, 373, 374, 389, 390, 391, 392, 393, 394
 		Size: 6,3
 		Category: Rock-Detail
@@ -2835,7 +2835,7 @@ Templates:
 			17: Rock
 	Template@343:
 		Id: 343
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 340, 341, 342, 360, 361, 362, 380, 381, 382
 		Size: 3,3
 		Category: Rock-Detail
@@ -2851,7 +2851,7 @@ Templates:
 			8: Cliff
 	Template@344:
 		Id: 344
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 363, 364, 383, 384
 		Size: 2,2
 		Category: Rock-Detail
@@ -2862,7 +2862,7 @@ Templates:
 			3: Rock
 	Template@345:
 		Id: 345
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 343, 344
 		Size: 2,1
 		Category: Rock-Detail
@@ -2871,7 +2871,7 @@ Templates:
 			1: Rock
 	Template@346:
 		Id: 346
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 345, 346
 		Size: 2,1
 		Category: Rock-Detail
@@ -2880,7 +2880,7 @@ Templates:
 			1: Rock
 	Template@347:
 		Id: 347
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 365, 366, 367, 368, 385, 386, 387, 388
 		Size: 4,2
 		Category: Rock-Detail
@@ -2895,7 +2895,7 @@ Templates:
 			7: Rock
 	Template@348:
 		Id: 348
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 414, 415, 434, 435
 		Size: 2,2
 		Category: Rock-Detail
@@ -2906,7 +2906,7 @@ Templates:
 			3: Rough
 	Template@349:
 		Id: 349
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 607, 608, 609, 627, 628, 629
 		Size: 3,2
 		Category: Sand-Detail
@@ -2919,7 +2919,7 @@ Templates:
 			5: Sand
 	Template@350:
 		Id: 350
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 610
 		Size: 1,1
 		Category: Sand-Detail
@@ -2927,7 +2927,7 @@ Templates:
 			0: Sand
 	Template@351:
 		Id: 351
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 652, 653, 672, 673
 		Size: 2,2
 		Category: Rock-Detail
@@ -2938,7 +2938,7 @@ Templates:
 			3: Rough
 	Template@352:
 		Id: 352
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 700
 		Size: 1,1
 		Category: Sand-Detail
@@ -2946,7 +2946,7 @@ Templates:
 			0: Sand
 	Template@353:
 		Id: 353
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 720
 		Size: 1,1
 		Category: Sand-Detail
@@ -2954,7 +2954,7 @@ Templates:
 			0: Sand
 	Template@354:
 		Id: 354
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 701, 702, 703, 721, 722, 723, 741, 742, 743
 		Size: 3,3
 		Category: Sand-Detail
@@ -2970,7 +2970,7 @@ Templates:
 			8: Rough
 	Template@355:
 		Id: 355
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 724, 725, 744, 745
 		Size: 2,2
 		Category: Sand-Detail
@@ -2981,7 +2981,7 @@ Templates:
 			3: Rough
 	Template@356:
 		Id: 356
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 726, 727, 746, 747
 		Size: 2,2
 		Category: Sand-Detail
@@ -2992,7 +2992,7 @@ Templates:
 			3: Rough
 	Template@357:
 		Id: 357
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 734, 735
 		Size: 2,1
 		Category: Sand-Detail
@@ -3001,7 +3001,7 @@ Templates:
 			1: Rough
 	Template@358:
 		Id: 358
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 716, 717, 736, 737
 		Size: 2,2
 		Category: Sand-Detail
@@ -3012,7 +3012,7 @@ Templates:
 			3: Rough
 	Template@359:
 		Id: 359
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 718, 719, 738, 739
 		Size: 2,2
 		Category: Sand-Detail
@@ -3023,7 +3023,7 @@ Templates:
 			3: Rough
 	Template@360:
 		Id: 360
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 758, 759
 		Size: 2,1
 		Category: Sand-Detail
@@ -3032,7 +3032,7 @@ Templates:
 			1: Rough
 	Template@363:
 		Id: 363
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 97, 117
 		Size: 1,2
 		Category: Ice
@@ -3041,7 +3041,7 @@ Templates:
 			1: Cliff
 	Template@364:
 		Id: 364
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 164, 165, 184, 185
 		Size: 2,2
 		Category: Rock-Detail
@@ -3052,7 +3052,7 @@ Templates:
 			3: Cliff
 	Template@365:
 		Id: 365
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 289, 290
 		Size: 2,1
 		Category: Ice-Detail
@@ -3061,7 +3061,7 @@ Templates:
 			1: Sand
 	Template@366:
 		Id: 366
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 309, 310, 311, 312, 355, 356, 357, 358, 1, 2, 3, 4, 5, 6, 7, 8
 		Size: 4,4
 		Category: Ice-Detail
@@ -3084,7 +3084,7 @@ Templates:
 			15: Sand
 	Template@367:
 		Id: 367
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 322
 		Size: 1,1
 		Category: Ice-Detail
@@ -3092,7 +3092,7 @@ Templates:
 			0: Sand
 	Template@368:
 		Id: 368
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 325
 		Size: 1,1
 		Category: Ice-Detail
@@ -3100,7 +3100,7 @@ Templates:
 			0: Sand
 	Template@369:
 		Id: 369
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 305
 		Size: 1,1
 		Category: Ice-Detail
@@ -3108,7 +3108,7 @@ Templates:
 			0: Sand
 	Template@370:
 		Id: 370
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 297
 		Size: 1,1
 		Category: Ice-Detail
@@ -3116,7 +3116,7 @@ Templates:
 			0: Sand
 	Template@371:
 		Id: 371
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 375, 395, 415, 435
 		Size: 1,4
 		Category: Ice-Detail
@@ -3127,7 +3127,7 @@ Templates:
 			3: Sand
 	Template@372:
 		Id: 372
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 414, 434
 		Size: 1,2
 		Category: Ice-Detail
@@ -3136,7 +3136,7 @@ Templates:
 			1: Sand
 	Template@373:
 		Id: 373
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 340, 341, 342, 343, 344, 345, 360, 361, 362, 363, 364, 365, 380, 381, 382, 383, 384, 385
 		Size: 6,3
 		Category: Ice-Detail
@@ -3161,7 +3161,7 @@ Templates:
 			17: Sand
 	Template@374:
 		Id: 374
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 366, 367, 368, 386, 387, 388
 		Size: 3,2
 		Category: Ice-Detail
@@ -3174,7 +3174,7 @@ Templates:
 			5: Sand
 	Template@375:
 		Id: 375
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 346
 		Size: 1,1
 		Category: Ice-Detail
@@ -3182,7 +3182,7 @@ Templates:
 			0: Sand
 	Template@376:
 		Id: 376
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 349, 350, 351, 352, 369, 370, 371, 372, 389, 390, 391, 392
 		Size: 4,3
 		Category: Ice
@@ -3201,7 +3201,7 @@ Templates:
 			11: Sand
 	Template@378:
 		Id: 378
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 353, 354, 373, 374, 393, 394
 		Size: 2,3
 		Category: Ice-Detail
@@ -3214,7 +3214,7 @@ Templates:
 			5: Sand
 	Template@379:
 		Id: 379
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 462
 		Size: 1,1
 		Category: Ice-Detail
@@ -3222,7 +3222,7 @@ Templates:
 			0: Sand
 	Template@380:
 		Id: 380
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 463
 		Size: 1,1
 		Category: Ice-Detail
@@ -3230,7 +3230,7 @@ Templates:
 			0: Sand
 	Template@381:
 		Id: 381
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 551
 		Size: 1,1
 		Category: Unidentified
@@ -3238,7 +3238,7 @@ Templates:
 			0: Sand
 	Template@383:
 		Id: 383
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 539, 559
 		Size: 1,2
 		Category: Unidentified
@@ -3247,7 +3247,7 @@ Templates:
 			1: Cliff
 	Template@384:
 		Id: 384
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 557, 558, 577, 578, 597, 598
 		Size: 2,3
 		Category: Sand-Detail
@@ -3260,7 +3260,7 @@ Templates:
 			5: Sand
 	Template@385:
 		Id: 385
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 607, 608, 627, 628
 		Size: 2,2
 		Category: Sand-Detail
@@ -3271,7 +3271,7 @@ Templates:
 			3: Rough
 	Template@386:
 		Id: 386
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 609, 610, 629, 630
 		Size: 2,2
 		Category: Sand-Detail
@@ -3282,7 +3282,7 @@ Templates:
 			3: Rough
 	Template@387:
 		Id: 387
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 700, 701, 720, 721, 740, 741
 		Size: 2,3
 		Category: Ice
@@ -3295,7 +3295,7 @@ Templates:
 			5: Cliff
 	Template@388:
 		Id: 388
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 702, 703, 722, 723
 		Size: 2,2
 		Category: Ice
@@ -3306,7 +3306,7 @@ Templates:
 			3: Cliff
 	Template@389:
 		Id: 389
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 742
 		Size: 1,1
 		Category: Ice-Detail
@@ -3314,7 +3314,7 @@ Templates:
 			0: Sand
 	Template@390:
 		Id: 390
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 743
 		Size: 1,1
 		Category: Ice-Detail
@@ -3322,7 +3322,7 @@ Templates:
 			0: Sand
 	Template@391:
 		Id: 391
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 744
 		Size: 1,1
 		Category: Ice-Detail
@@ -3330,7 +3330,7 @@ Templates:
 			0: Sand
 	Template@392:
 		Id: 392
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 745
 		Size: 1,1
 		Category: Ice-Detail
@@ -3338,7 +3338,7 @@ Templates:
 			0: Sand
 	Template@393:
 		Id: 393
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 704, 705, 724, 725
 		Size: 2,2
 		Category: Ice
@@ -3349,7 +3349,7 @@ Templates:
 			3: Cliff
 	Template@394:
 		Id: 394
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 706, 707, 726, 727, 746, 747
 		Size: 2,3
 		Category: Ice
@@ -3362,7 +3362,7 @@ Templates:
 			5: Cliff
 	Template@395:
 		Id: 395
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 708, 709, 728, 729
 		Size: 2,2
 		Category: Ice
@@ -3373,7 +3373,7 @@ Templates:
 			3: Cliff
 	Template@396:
 		Id: 396
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 710, 711, 730, 731
 		Size: 2,2
 		Category: Ice
@@ -3384,7 +3384,7 @@ Templates:
 			3: Ice
 	Template@397:
 		Id: 397
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 712, 713, 732, 733
 		Size: 2,2
 		Category: Ice
@@ -3395,7 +3395,7 @@ Templates:
 			3: Cliff
 	Template@398:
 		Id: 398
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 714, 715, 734, 735
 		Size: 2,2
 		Category: Ice
@@ -3406,7 +3406,7 @@ Templates:
 			3: Ice
 	Template@399:
 		Id: 399
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 716, 717
 		Size: 2,1
 		Category: Ice-Detail
@@ -3415,7 +3415,7 @@ Templates:
 			1: Sand
 	Template@400:
 		Id: 400
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 736, 737
 		Size: 2,1
 		Category: Ice-Detail
@@ -3424,7 +3424,7 @@ Templates:
 			1: Sand
 	Template@401:
 		Id: 401
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 718, 719, 738, 739, 758, 759
 		Size: 2,3
 		Category: Rock-Detail
@@ -3437,7 +3437,7 @@ Templates:
 			5: Sand
 	Template@402:
 		Id: 402
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 660, 661, 662
 		Size: 3,1
 		Category: Unidentified
@@ -3447,7 +3447,7 @@ Templates:
 			2: Rough
 	Template@403:
 		Id: 403
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 680, 681
 		Size: 2,1
 		Category: Sand-Detail
@@ -3456,7 +3456,7 @@ Templates:
 			1: Rough
 	Template@404:
 		Id: 404
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 682, 683
 		Size: 2,1
 		Category: Sand-Detail
@@ -3465,7 +3465,7 @@ Templates:
 			1: Rough
 	Template@405:
 		Id: 405
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 684, 685
 		Size: 2,1
 		Category: Sand-Detail
@@ -3474,7 +3474,7 @@ Templates:
 			1: Rough
 	Template@406:
 		Id: 406
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 652, 653
 		Size: 2,1
 		Category: Sand-Detail
@@ -3483,7 +3483,7 @@ Templates:
 			1: Rough
 	Template@407:
 		Id: 407
-		Image: BLOXICE.R8
+		Images: BLOXICE.R8
 		Frames: 672, 673
 		Size: 2,1
 		Category: Sand-Detail
@@ -3492,7 +3492,7 @@ Templates:
 			1: Rough
 	Template@408:
 		Id: 408
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 6
 		Size: 1,1
 		Category: Sand-Detail
@@ -3500,7 +3500,7 @@ Templates:
 			0: Rough
 	Template@409:
 		Id: 409
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 7
 		Size: 1,1
 		Category: Sand-Detail
@@ -3508,7 +3508,7 @@ Templates:
 			0: Rough
 	Template@410:
 		Id: 410
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 67
 		Size: 1,1
 		Category: Rock-Detail
@@ -3516,7 +3516,7 @@ Templates:
 			0: Rock
 	Template@411:
 		Id: 411
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 97, 117
 		Size: 1,2
 		Category: Sand-Detail
@@ -3525,7 +3525,7 @@ Templates:
 			1: Cliff
 	Template@412:
 		Id: 412
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 340, 341, 360, 361
 		Size: 2,2
 		Category: Rotten-Base
@@ -3536,7 +3536,7 @@ Templates:
 			3: Sand
 	Template@413:
 		Id: 413
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 342, 343, 344, 362, 363, 364
 		Size: 3,2
 		Category: Rotten-Base
@@ -3549,7 +3549,7 @@ Templates:
 			5: Rough
 	Template@414:
 		Id: 414
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 1, 2, 3, 4, 5
 		Size: 5,1
 		Category: Rock-Detail
@@ -3561,7 +3561,7 @@ Templates:
 			4: Rock
 	Template@415:
 		Id: 415
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 305, 325
 		Size: 1,2
 		Category: Sand-Detail
@@ -3570,7 +3570,7 @@ Templates:
 			1: Sand
 	Template@416:
 		Id: 416
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 289, 290, 309, 310
 		Size: 2,2
 		Category: Sand-Detail
@@ -3581,7 +3581,7 @@ Templates:
 			3: Sand
 	Template@417:
 		Id: 417
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 311, 312
 		Size: 2,1
 		Category: Sand-Detail
@@ -3590,7 +3590,7 @@ Templates:
 			1: Transition
 	Template@418:
 		Id: 418
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 316
 		Size: 1,1
 		Category: Rock-Detail
@@ -3598,7 +3598,7 @@ Templates:
 			0: Rock
 	Template@419:
 		Id: 419
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 297
 		Size: 1,1
 		Category: Rock-Detail
@@ -3606,7 +3606,7 @@ Templates:
 			0: Rock
 	Template@420:
 		Id: 420
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 319
 		Size: 1,1
 		Category: Rock-Detail
@@ -3614,7 +3614,7 @@ Templates:
 			0: Rock
 	Template@421:
 		Id: 421
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 338, 339, 358, 359
 		Size: 2,2
 		Category: Rock-Detail
@@ -3625,7 +3625,7 @@ Templates:
 			3: Sand
 	Template@422:
 		Id: 422
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 374, 375, 394, 395
 		Size: 2,2
 		Category: Rock-Detail
@@ -3636,7 +3636,7 @@ Templates:
 			3: Rock
 	Template@423:
 		Id: 423
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 414, 415, 434, 435
 		Size: 2,2
 		Category: Rock-Detail
@@ -3647,7 +3647,7 @@ Templates:
 			3: Rock
 	Template@424:
 		Id: 424
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 349, 350, 351, 352, 353, 354
 		Size: 6,1
 		Category: Rock-Detail
@@ -3660,7 +3660,7 @@ Templates:
 			5: Rock
 	Template@425:
 		Id: 425
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 355, 356, 357
 		Size: 3,1
 		Category: Rock-Detail
@@ -3670,7 +3670,7 @@ Templates:
 			2: Rock
 	Template@426:
 		Id: 426
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 462, 463
 		Size: 2,1
 		Category: Rock-Detail
@@ -3679,7 +3679,7 @@ Templates:
 			1: Rock
 	Template@427:
 		Id: 427
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 538, 539, 558, 559
 		Size: 2,2
 		Category: Sand-Cliff
@@ -3690,7 +3690,7 @@ Templates:
 			3: Cliff
 	Template@428:
 		Id: 428
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 578, 579, 598, 599
 		Size: 2,2
 		Category: Sand-Detail
@@ -3701,7 +3701,7 @@ Templates:
 			3: Transition
 	Template@429:
 		Id: 429
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 700, 701, 702, 720, 721, 722, 740, 741, 742
 		Size: 3,3
 		Category: Sand-Detail
@@ -3717,7 +3717,7 @@ Templates:
 			8: Rough
 	Template@430:
 		Id: 430
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 747
 		Size: 1,1
 		Category: Unidentified
@@ -3725,7 +3725,7 @@ Templates:
 			0: Rough
 	Template@431:
 		Id: 431
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 707, 708, 727, 728
 		Size: 2,2
 		Category: Sand-Detail
@@ -3736,7 +3736,7 @@ Templates:
 			3: Rough
 	Template@432:
 		Id: 432
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 709
 		Size: 1,1
 		Category: Sand-Detail
@@ -3744,7 +3744,7 @@ Templates:
 			0: Sand
 	Template@433:
 		Id: 433
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 729
 		Size: 1,1
 		Category: Sand-Detail
@@ -3752,7 +3752,7 @@ Templates:
 			0: Rough
 	Template@434:
 		Id: 434
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 730, 731
 		Size: 2,1
 		Category: Sand-Detail
@@ -3761,7 +3761,7 @@ Templates:
 			1: Rough
 	Template@435:
 		Id: 435
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 710, 711, 712
 		Size: 3,1
 		Category: Sand-Detail
@@ -3771,7 +3771,7 @@ Templates:
 			2: Rough
 	Template@436:
 		Id: 436
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 718, 719, 738, 739, 758, 759
 		Size: 2,3
 		Category: Sand-Detail
@@ -3784,7 +3784,7 @@ Templates:
 			5: Rough
 	Template@437:
 		Id: 437
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 732
 		Size: 1,1
 		Category: Rock-Detail
@@ -3792,7 +3792,7 @@ Templates:
 			0: Rock
 	Template@438:
 		Id: 438
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 713, 714, 733, 734
 		Size: 2,2
 		Category: Rock-Detail
@@ -3803,7 +3803,7 @@ Templates:
 			3: Rock
 	Template@439:
 		Id: 439
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 715, 716, 717, 735, 736, 737
 		Size: 3,2
 		Category: Rock-Detail
@@ -3816,7 +3816,7 @@ Templates:
 			5: Rock
 	Template@440:
 		Id: 440
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 652, 653, 672, 673
 		Size: 2,2
 		Category: Rock-Detail
@@ -3827,7 +3827,7 @@ Templates:
 			3: Rock
 	Template@441:
 		Id: 441
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 610
 		Size: 1,1
 		Category: Rock-Detail
@@ -3835,7 +3835,7 @@ Templates:
 			0: Rock
 	Template@442:
 		Id: 442
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 630
 		Size: 1,1
 		Category: Rock-Detail
@@ -3843,7 +3843,7 @@ Templates:
 			0: Rock
 	Template@443:
 		Id: 443
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 607, 608, 609, 627, 628, 629
 		Size: 3,2
 		Category: Rock-Detail
@@ -3856,7 +3856,7 @@ Templates:
 			5: Sand
 	Template@444:
 		Id: 444
-		Image: BLOXTREE.R8
+		Images: BLOXTREE.R8
 		Frames: 551
 		Size: 1,1
 		Category: Rock-Detail
@@ -3864,7 +3864,7 @@ Templates:
 			0: Rock
 	Template@445:
 		Id: 445
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 700, 701, 702, 703, 704, 705, 720, 721, 722, 723, 724, 725, 740, 741, 742, 743, 744, 745
 		Size: 6,3
 		Category: Sand-Detail
@@ -3889,7 +3889,7 @@ Templates:
 			17: Sand
 	Template@446:
 		Id: 446
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 683, 684, 685
 		Size: 3,1
 		Category: Sand-Detail
@@ -3899,7 +3899,7 @@ Templates:
 			2: Dune
 	Template@447:
 		Id: 447
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 746, 747
 		Size: 2,1
 		Category: Sand-Detail
@@ -3908,7 +3908,7 @@ Templates:
 			1: Dune
 	Template@448:
 		Id: 448
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 708, 709, 728, 729
 		Size: 2,2
 		Category: Sand-Detail
@@ -3919,7 +3919,7 @@ Templates:
 			3: Dune
 	Template@449:
 		Id: 449
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 710, 711
 		Size: 2,1
 		Category: Sand-Detail
@@ -3928,7 +3928,7 @@ Templates:
 			1: Dune
 	Template@450:
 		Id: 450
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 730, 731
 		Size: 2,1
 		Category: Sand-Detail
@@ -3937,7 +3937,7 @@ Templates:
 			1: Sand
 	Template@451:
 		Id: 451
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 712
 		Size: 1,1
 		Category: Sand-Detail
@@ -3945,7 +3945,7 @@ Templates:
 			0: Sand
 	Template@452:
 		Id: 452
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 732
 		Size: 1,1
 		Category: Sand-Detail
@@ -3953,7 +3953,7 @@ Templates:
 			0: Sand
 	Template@453:
 		Id: 453
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 713, 733
 		Size: 1,2
 		Category: Sand-Detail
@@ -3962,7 +3962,7 @@ Templates:
 			1: Dune
 	Template@454:
 		Id: 454
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 734, 735
 		Size: 2,1
 		Category: Sand-Detail
@@ -3971,7 +3971,7 @@ Templates:
 			1: Sand
 	Template@455:
 		Id: 455
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 714, 715
 		Size: 2,1
 		Category: Sand-Detail
@@ -3980,7 +3980,7 @@ Templates:
 			1: Sand
 	Template@456:
 		Id: 456
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 716, 717, 718, 736, 737, 738
 		Size: 3,2
 		Category: Sand-Detail
@@ -3993,7 +3993,7 @@ Templates:
 			5: Sand
 	Template@457:
 		Id: 457
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 739
 		Size: 1,1
 		Category: Sand-Detail
@@ -4001,7 +4001,7 @@ Templates:
 			0: Sand
 	Template@458:
 		Id: 458
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 758, 759
 		Size: 2,1
 		Category: Sand-Detail
@@ -4010,7 +4010,7 @@ Templates:
 			1: Sand
 	Template@459:
 		Id: 459
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 652, 653, 672, 673
 		Size: 2,2
 		Category: Sand-Detail
@@ -4021,7 +4021,7 @@ Templates:
 			3: Sand
 	Template@460:
 		Id: 460
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 345, 346, 365, 366
 		Size: 2,2
 		Category: Dead-Worm
@@ -4032,7 +4032,7 @@ Templates:
 			3: Rough
 	Template@462:
 		Id: 462
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 355, 356, 357, 358, 359, 373, 374, 375, 338, 339
 		Size: 5,2
 		Category: Rotten-Base
@@ -4049,7 +4049,7 @@ Templates:
 			9: Rough
 	Template@464:
 		Id: 464
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 97, 117
 		Size: 1,2
 		Category: Dead-Worm
@@ -4058,7 +4058,7 @@ Templates:
 			1: Cliff
 	Template@465:
 		Id: 465
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 67
 		Size: 1,1
 		Category: Sand-Detail
@@ -4066,7 +4066,7 @@ Templates:
 			0: Sand
 	Template@466:
 		Id: 466
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 1
 		Size: 1,1
 		Category: Sand-Detail
@@ -4074,7 +4074,7 @@ Templates:
 			0: Sand
 	Template@467:
 		Id: 467
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 2, 3
 		Size: 2,1
 		Category: Sand-Detail
@@ -4083,7 +4083,7 @@ Templates:
 			1: Sand
 	Template@468:
 		Id: 468
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 4
 		Size: 1,1
 		Category: Sand-Detail
@@ -4091,7 +4091,7 @@ Templates:
 			0: Cliff
 	Template@469:
 		Id: 469
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 5
 		Size: 1,1
 		Category: Sand-Detail
@@ -4099,7 +4099,7 @@ Templates:
 			0: Cliff
 	Template@470:
 		Id: 470
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 6, 7
 		Size: 2,1
 		Category: Sand-Detail
@@ -4108,7 +4108,7 @@ Templates:
 			1: Cliff
 	Template@471:
 		Id: 471
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 312
 		Size: 1,1
 		Category: Dead-Worm
@@ -4116,7 +4116,7 @@ Templates:
 			0: Sand
 	Template@472:
 		Id: 472
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 310, 311
 		Size: 2,1
 		Category: Dead-Worm
@@ -4125,7 +4125,7 @@ Templates:
 			1: Sand
 	Template@473:
 		Id: 473
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 309
 		Size: 1,1
 		Category: Dead-Worm
@@ -4133,7 +4133,7 @@ Templates:
 			0: Sand
 	Template@474:
 		Id: 474
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 349, 350, 351, 352, 369, 370, 371, 372, 389, 390, 391, 392, 385, 386, 387, 388
 		Size: 4,4
 		Category: Sand-Detail
@@ -4156,7 +4156,7 @@ Templates:
 			15: Rough
 	Template@475:
 		Id: 475
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 706, 707, 726, 727
 		Size: 2,2
 		Category: Rock-Cliff
@@ -4167,7 +4167,7 @@ Templates:
 			3: Cliff
 	Template@476:
 		Id: 476
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 557, 558, 559, 577, 578, 579
 		Size: 3,2
 		Category: Rock-Cliff
@@ -4180,7 +4180,7 @@ Templates:
 			5: Cliff
 	Template@477:
 		Id: 477
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 619, 639
 		Size: 1,2
 		Category: Sand-Detail
@@ -4189,7 +4189,7 @@ Templates:
 			1: Rough
 	Template@478:
 		Id: 478
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 305
 		Size: 1,1
 		Category: Rock-Detail
@@ -4197,7 +4197,7 @@ Templates:
 			0: Rough
 	Template@479:
 		Id: 479
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 325
 		Size: 1,1
 		Category: Rock-Detail
@@ -4205,7 +4205,7 @@ Templates:
 			0: Rough
 	Template@481:
 		Id: 481
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 414, 415, 434, 435
 		Size: 2,2
 		Category: Rock-Cliff
@@ -4216,7 +4216,7 @@ Templates:
 			3: Cliff
 	Template@482:
 		Id: 482
-		Image: BLOXWAST.R8
+		Images: BLOXWAST.R8
 		Frames: 538, 539
 		Size: 2,1
 		Category: Sand-Detail
@@ -4225,56 +4225,56 @@ Templates:
 			1: Rough
 	Template@500:
 		Id: 500
-		Image: bloxxmas00.tmp
+		Images: bloxxmas00.tmp
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@501:
 		Id: 501
-		Image: bloxxmas01.tmp
+		Images: bloxxmas01.tmp
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@502:
 		Id: 502
-		Image: bloxxmas02.tmp
+		Images: bloxxmas02.tmp
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@503:
 		Id: 503
-		Image: bloxxmas03.tmp
+		Images: bloxxmas03.tmp
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@504:
 		Id: 504
-		Image: bloxxmas04.tmp
+		Images: bloxxmas04.tmp
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@505:
 		Id: 505
-		Image: bloxxmas05.tmp
+		Images: bloxxmas05.tmp
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@506:
 		Id: 506
-		Image: bloxxmas06.tmp
+		Images: bloxxmas06.tmp
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@507:
 		Id: 507
-		Image: bloxxmas07.tmp
+		Images: bloxxmas07.tmp
 		Size: 2,1
 		Category: Sand-Detail
 		Tiles:
@@ -4282,28 +4282,28 @@ Templates:
 			1: Rough
 	Template@508:
 		Id: 508
-		Image: bloxxmas08.tmp
+		Images: bloxxmas08.tmp
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@509:
 		Id: 509
-		Image: bloxxmas09.tmp
+		Images: bloxxmas09.tmp
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@510:
 		Id: 510
-		Image: bloxxmas10.tmp
+		Images: bloxxmas10.tmp
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@511:
 		Id: 511
-		Image: bloxxmas11.tmp
+		Images: bloxxmas11.tmp
 		Size: 2,2
 		Category: Sand-Detail
 		Tiles:
@@ -4313,7 +4313,7 @@ Templates:
 			3: Rough
 	Template@512:
 		Id: 512
-		Image: bloxxmas12.tmp
+		Images: bloxxmas12.tmp
 		Size: 2,3
 		Category: Sand-Detail
 		Tiles:
@@ -4325,7 +4325,7 @@ Templates:
 			5: Cliff
 	Template@513:
 		Id: 513
-		Image: bloxxmas13.tmp
+		Images: bloxxmas13.tmp
 		Size: 3,3
 		Category: Rock-Detail
 		Tiles:
@@ -4340,7 +4340,7 @@ Templates:
 			8: Cliff
 	Template@514:
 		Id: 514
-		Image: bloxxmas14.tmp
+		Images: bloxxmas14.tmp
 		Size: 3,3
 		Category: Rock-Detail
 		Tiles:
@@ -4355,7 +4355,7 @@ Templates:
 			8: Rock
 	Template@515:
 		Id: 515
-		Image: bloxxmas15.tmp
+		Images: bloxxmas15.tmp
 		Size: 4,3
 		Category: Rock-Detail
 		Tiles:
@@ -4373,28 +4373,28 @@ Templates:
 			11: Cliff
 	Template@516:
 		Id: 516
-		Image: bloxxmas16.tmp
+		Images: bloxxmas16.tmp
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@517:
 		Id: 517
-		Image: bloxxmas17.tmp
+		Images: bloxxmas17.tmp
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@518:
 		Id: 518
-		Image: bloxxmas18.tmp
+		Images: bloxxmas18.tmp
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@519:
 		Id: 519
-		Image: bloxxmas19.tmp
+		Images: bloxxmas19.tmp
 		Size: 2,2
 		Category: Sand-Detail
 		Tiles:
@@ -4404,7 +4404,7 @@ Templates:
 			3: Rough
 	Template@520:
 		Id: 520
-		Image: bloxxmas20.tmp
+		Images: bloxxmas20.tmp
 		Size: 2,2
 		Category: Sand-Detail
 		Tiles:
@@ -4414,7 +4414,7 @@ Templates:
 			3: Rough
 	Template@600:
 		Id: 600
-		Image: t600.tmp
+		Images: t600.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4424,7 +4424,7 @@ Templates:
 			3: Cliff
 	Template@601:
 		Id: 601
-		Image: t601.tmp
+		Images: t601.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4434,7 +4434,7 @@ Templates:
 			3: Cliff
 	Template@602:
 		Id: 602
-		Image: t602.tmp
+		Images: t602.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4444,7 +4444,7 @@ Templates:
 			3: Cliff
 	Template@603:
 		Id: 603
-		Image: t603.tmp
+		Images: t603.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4454,7 +4454,7 @@ Templates:
 			3: Cliff
 	Template@604:
 		Id: 604
-		Image: t604.tmp
+		Images: t604.tmp
 		Size: 2,3
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4466,7 +4466,7 @@ Templates:
 			5: Cliff
 	Template@605:
 		Id: 605
-		Image: t605.tmp
+		Images: t605.tmp
 		Size: 2,3
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4478,7 +4478,7 @@ Templates:
 			5: Cliff
 	Template@606:
 		Id: 606
-		Image: t606.tmp
+		Images: t606.tmp
 		Size: 2,1
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4486,7 +4486,7 @@ Templates:
 			1: Cliff
 	Template@607:
 		Id: 607
-		Image: t607.tmp
+		Images: t607.tmp
 		Size: 2,1
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4494,7 +4494,7 @@ Templates:
 			1: Cliff
 	Template@608:
 		Id: 608
-		Image: t608.tmp
+		Images: t608.tmp
 		Size: 1,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4502,7 +4502,7 @@ Templates:
 			1: Cliff
 	Template@609:
 		Id: 609
-		Image: t609.tmp
+		Images: t609.tmp
 		Size: 1,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4510,7 +4510,7 @@ Templates:
 			1: Cliff
 	Template@610:
 		Id: 610
-		Image: t610.tmp
+		Images: t610.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4520,7 +4520,7 @@ Templates:
 			3: Cliff
 	Template@611:
 		Id: 611
-		Image: t611.tmp
+		Images: t611.tmp
 		Size: 2,1
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4528,7 +4528,7 @@ Templates:
 			1: Cliff
 	Template@612:
 		Id: 612
-		Image: t612.tmp
+		Images: t612.tmp
 		Size: 3,3
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4543,7 +4543,7 @@ Templates:
 			8: Cliff
 	Template@613:
 		Id: 613
-		Image: t613.tmp
+		Images: t613.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4553,7 +4553,7 @@ Templates:
 			3: Cliff
 	Template@614:
 		Id: 614
-		Image: t614.tmp
+		Images: t614.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4563,7 +4563,7 @@ Templates:
 			3: Cliff
 	Template@615:
 		Id: 615
-		Image: t615.tmp
+		Images: t615.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4573,7 +4573,7 @@ Templates:
 			3: Cliff
 	Template@616:
 		Id: 616
-		Image: t616.tmp
+		Images: t616.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4583,7 +4583,7 @@ Templates:
 			3: Cliff
 	Template@617:
 		Id: 617
-		Image: t617.tmp
+		Images: t617.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4593,7 +4593,7 @@ Templates:
 			3: Cliff
 	Template@618:
 		Id: 618
-		Image: t618.tmp
+		Images: t618.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4603,7 +4603,7 @@ Templates:
 			3: Transition
 	Template@619:
 		Id: 619
-		Image: t619.tmp
+		Images: t619.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4613,7 +4613,7 @@ Templates:
 			3: Cliff
 	Template@620:
 		Id: 620
-		Image: t620.tmp
+		Images: t620.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4623,7 +4623,7 @@ Templates:
 			3: Cliff
 	Template@621:
 		Id: 621
-		Image: t621.tmp
+		Images: t621.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4633,7 +4633,7 @@ Templates:
 			3: Cliff
 	Template@622:
 		Id: 622
-		Image: t622.tmp
+		Images: t622.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4643,7 +4643,7 @@ Templates:
 			3: Cliff
 	Template@623:
 		Id: 623
-		Image: t623.tmp
+		Images: t623.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4653,7 +4653,7 @@ Templates:
 			3: Cliff
 	Template@624:
 		Id: 624
-		Image: t624.tmp
+		Images: t624.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4663,7 +4663,7 @@ Templates:
 			3: Cliff
 	Template@625:
 		Id: 625
-		Image: t625.tmp
+		Images: t625.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4673,7 +4673,7 @@ Templates:
 			3: Cliff
 	Template@626:
 		Id: 626
-		Image: t626.tmp
+		Images: t626.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4683,7 +4683,7 @@ Templates:
 			3: Cliff
 	Template@627:
 		Id: 627
-		Image: t627.tmp
+		Images: t627.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4693,7 +4693,7 @@ Templates:
 			3: Cliff
 	Template@628:
 		Id: 628
-		Image: t628.tmp
+		Images: t628.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4703,7 +4703,7 @@ Templates:
 			3: Cliff
 	Template@629:
 		Id: 629
-		Image: t629.tmp
+		Images: t629.tmp
 		Size: 2,3
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4715,7 +4715,7 @@ Templates:
 			5: Cliff
 	Template@630:
 		Id: 630
-		Image: t630.tmp
+		Images: t630.tmp
 		Size: 2,3
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4727,7 +4727,7 @@ Templates:
 			5: Cliff
 	Template@631:
 		Id: 631
-		Image: t631.tmp
+		Images: t631.tmp
 		Size: 3,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4739,7 +4739,7 @@ Templates:
 			5: Cliff
 	Template@632:
 		Id: 632
-		Image: t632.tmp
+		Images: t632.tmp
 		Size: 3,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4751,7 +4751,7 @@ Templates:
 			5: Cliff
 	Template@633:
 		Id: 633
-		Image: t633.tmp
+		Images: t633.tmp
 		Size: 3,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4763,7 +4763,7 @@ Templates:
 			5: Cliff
 	Template@634:
 		Id: 634
-		Image: t634.tmp
+		Images: t634.tmp
 		Size: 3,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4775,7 +4775,7 @@ Templates:
 			5: Cliff
 	Template@635:
 		Id: 635
-		Image: t635.tmp
+		Images: t635.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4785,7 +4785,7 @@ Templates:
 			3: Cliff
 	Template@636:
 		Id: 636
-		Image: t636.tmp
+		Images: t636.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4795,7 +4795,7 @@ Templates:
 			3: Cliff
 	Template@637:
 		Id: 637
-		Image: t637.tmp
+		Images: t637.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4805,7 +4805,7 @@ Templates:
 			3: Cliff
 	Template@638:
 		Id: 638
-		Image: t638.tmp
+		Images: t638.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4815,7 +4815,7 @@ Templates:
 			3: Cliff
 	Template@639:
 		Id: 639
-		Image: t639.tmp
+		Images: t639.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4825,7 +4825,7 @@ Templates:
 			3: Cliff
 	Template@640:
 		Id: 640
-		Image: t640.tmp
+		Images: t640.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -4835,7 +4835,7 @@ Templates:
 			3: Cliff
 	Template@800:
 		Id: 800
-		Image: t800.tmp
+		Images: t800.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4845,7 +4845,7 @@ Templates:
 			3: Cliff
 	Template@801:
 		Id: 801
-		Image: t801.tmp
+		Images: t801.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4855,7 +4855,7 @@ Templates:
 			3: Cliff
 	Template@802:
 		Id: 802
-		Image: t802.tmp
+		Images: t802.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4865,7 +4865,7 @@ Templates:
 			3: Cliff
 	Template@803:
 		Id: 803
-		Image: t803.tmp
+		Images: t803.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4875,7 +4875,7 @@ Templates:
 			3: Cliff
 	Template@804:
 		Id: 804
-		Image: t804.tmp
+		Images: t804.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4885,7 +4885,7 @@ Templates:
 			3: Cliff
 	Template@805:
 		Id: 805
-		Image: t805.tmp
+		Images: t805.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4895,7 +4895,7 @@ Templates:
 			3: Cliff
 	Template@806:
 		Id: 806
-		Image: t806.tmp
+		Images: t806.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4905,7 +4905,7 @@ Templates:
 			3: Cliff
 	Template@807:
 		Id: 807
-		Image: t807.tmp
+		Images: t807.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4915,7 +4915,7 @@ Templates:
 			3: Cliff
 	Template@808:
 		Id: 808
-		Image: t808.tmp
+		Images: t808.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4925,7 +4925,7 @@ Templates:
 			3: Cliff
 	Template@809:
 		Id: 809
-		Image: t809.tmp
+		Images: t809.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4935,7 +4935,7 @@ Templates:
 			3: Cliff
 	Template@810:
 		Id: 810
-		Image: t810.tmp
+		Images: t810.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4945,7 +4945,7 @@ Templates:
 			3: Cliff
 	Template@811:
 		Id: 811
-		Image: t811.tmp
+		Images: t811.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4955,7 +4955,7 @@ Templates:
 			3: Cliff
 	Template@812:
 		Id: 812
-		Image: t812.tmp
+		Images: t812.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4965,7 +4965,7 @@ Templates:
 			3: Cliff
 	Template@813:
 		Id: 813
-		Image: t813.tmp
+		Images: t813.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4975,7 +4975,7 @@ Templates:
 			3: Cliff
 	Template@814:
 		Id: 814
-		Image: t814.tmp
+		Images: t814.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4985,7 +4985,7 @@ Templates:
 			3: Cliff
 	Template@815:
 		Id: 815
-		Image: t815.tmp
+		Images: t815.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -4995,7 +4995,7 @@ Templates:
 			3: Cliff
 	Template@816:
 		Id: 816
-		Image: t816.tmp
+		Images: t816.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5005,7 +5005,7 @@ Templates:
 			3: Cliff
 	Template@817:
 		Id: 817
-		Image: t817.tmp
+		Images: t817.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5015,7 +5015,7 @@ Templates:
 			3: Cliff
 	Template@818:
 		Id: 818
-		Image: t818.tmp
+		Images: t818.tmp
 		Size: 2,1
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5023,7 +5023,7 @@ Templates:
 			1: Cliff
 	Template@819:
 		Id: 819
-		Image: t819.tmp
+		Images: t819.tmp
 		Size: 2,1
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5031,7 +5031,7 @@ Templates:
 			1: Cliff
 	Template@820:
 		Id: 820
-		Image: t820.tmp
+		Images: t820.tmp
 		Size: 1,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5039,7 +5039,7 @@ Templates:
 			1: Cliff
 	Template@821:
 		Id: 821
-		Image: t821.tmp
+		Images: t821.tmp
 		Size: 1,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5047,7 +5047,7 @@ Templates:
 			1: Cliff
 	Template@822:
 		Id: 822
-		Image: t822.tmp
+		Images: t822.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5057,7 +5057,7 @@ Templates:
 			3: Cliff
 	Template@823:
 		Id: 823
-		Image: t823.tmp
+		Images: t823.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5067,7 +5067,7 @@ Templates:
 			3: Cliff
 	Template@824:
 		Id: 824
-		Image: t824.tmp
+		Images: t824.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5077,7 +5077,7 @@ Templates:
 			3: Cliff
 	Template@825:
 		Id: 825
-		Image: t825.tmp
+		Images: t825.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5087,7 +5087,7 @@ Templates:
 			3: Cliff
 	Template@826:
 		Id: 826
-		Image: t826.tmp
+		Images: t826.tmp
 		Size: 2,3
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5099,7 +5099,7 @@ Templates:
 			5: Cliff
 	Template@827:
 		Id: 827
-		Image: t827.tmp
+		Images: t827.tmp
 		Size: 2,3
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5110,7 +5110,7 @@ Templates:
 			5: Cliff
 	Template@828:
 		Id: 828
-		Image: t828.tmp
+		Images: t828.tmp
 		Size: 2,3
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5122,7 +5122,7 @@ Templates:
 			5: Cliff
 	Template@829:
 		Id: 829
-		Image: t829.tmp
+		Images: t829.tmp
 		Size: 2,3
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5134,7 +5134,7 @@ Templates:
 			5: Cliff
 	Template@830:
 		Id: 830
-		Image: t830.tmp
+		Images: t830.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -5144,7 +5144,7 @@ Templates:
 			3: Cliff
 	Template@831:
 		Id: 831
-		Image: t831.tmp
+		Images: t831.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5154,7 +5154,7 @@ Templates:
 			3: Cliff
 	Template@832:
 		Id: 832
-		Image: t832.tmp
+		Images: t832.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5164,7 +5164,7 @@ Templates:
 			3: Cliff
 	Template@833:
 		Id: 833
-		Image: t833.tmp
+		Images: t833.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5174,7 +5174,7 @@ Templates:
 			3: Cliff
 	Template@834:
 		Id: 834
-		Image: t834.tmp
+		Images: t834.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5184,7 +5184,7 @@ Templates:
 			3: Cliff
 	Template@835:
 		Id: 835
-		Image: t835.tmp
+		Images: t835.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5194,7 +5194,7 @@ Templates:
 			3: Cliff
 	Template@836:
 		Id: 836
-		Image: t836.tmp
+		Images: t836.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -5204,7 +5204,7 @@ Templates:
 			3: Cliff
 	Template@837:
 		Id: 837
-		Image: t837.tmp
+		Images: t837.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Rock
 		Tiles:
@@ -5214,7 +5214,7 @@ Templates:
 			3: Cliff
 	Template@838:
 		Id: 838
-		Image: t838.tmp
+		Images: t838.tmp
 		Size: 3,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5226,7 +5226,7 @@ Templates:
 			5: Cliff
 	Template@839:
 		Id: 839
-		Image: t839.tmp
+		Images: t839.tmp
 		Size: 3,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5238,7 +5238,7 @@ Templates:
 			5: Cliff
 	Template@840:
 		Id: 840
-		Image: t840.tmp
+		Images: t840.tmp
 		Size: 3,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5250,7 +5250,7 @@ Templates:
 			5: Cliff
 	Template@841:
 		Id: 841
-		Image: t841.tmp
+		Images: t841.tmp
 		Size: 3,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5262,7 +5262,7 @@ Templates:
 			5: Cliff
 	Template@842:
 		Id: 842
-		Image: t842.tmp
+		Images: t842.tmp
 		Size: 2,2
 		Category: Sand-Smooth
 		Tiles:
@@ -5272,7 +5272,7 @@ Templates:
 			3: Cliff
 	Template@843:
 		Id: 843
-		Image: t843.tmp
+		Images: t843.tmp
 		Size: 2,2
 		Category: Sand-Smooth
 		Tiles:
@@ -5282,7 +5282,7 @@ Templates:
 			3: Cliff
 	Template@844:
 		Id: 844
-		Image: t844.tmp
+		Images: t844.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5292,7 +5292,7 @@ Templates:
 			3: Cliff
 	Template@845:
 		Id: 845
-		Image: t845.tmp
+		Images: t845.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5302,7 +5302,7 @@ Templates:
 			3: Cliff
 	Template@846:
 		Id: 846
-		Image: t846.tmp
+		Images: t846.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5312,7 +5312,7 @@ Templates:
 			3: Cliff
 	Template@847:
 		Id: 847
-		Image: t847.tmp
+		Images: t847.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5322,7 +5322,7 @@ Templates:
 			3: Cliff
 	Template@848:
 		Id: 848
-		Image: t848.tmp
+		Images: t848.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5332,7 +5332,7 @@ Templates:
 			3: Cliff
 	Template@849:
 		Id: 849
-		Image: t849.tmp
+		Images: t849.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5342,7 +5342,7 @@ Templates:
 			3: Cliff
 	Template@850:
 		Id: 850
-		Image: t850.tmp
+		Images: t850.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5352,7 +5352,7 @@ Templates:
 			3: Cliff
 	Template@851:
 		Id: 851
-		Image: t851.tmp
+		Images: t851.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5362,7 +5362,7 @@ Templates:
 			3: Cliff
 	Template@852:
 		Id: 852
-		Image: t852.tmp
+		Images: t852.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5372,7 +5372,7 @@ Templates:
 			3: Cliff
 	Template@853:
 		Id: 853
-		Image: t853.tmp
+		Images: t853.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5382,7 +5382,7 @@ Templates:
 			3: Cliff
 	Template@854:
 		Id: 854
-		Image: t854.tmp
+		Images: t854.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5392,7 +5392,7 @@ Templates:
 			3: Cliff
 	Template@855:
 		Id: 855
-		Image: t855.tmp
+		Images: t855.tmp
 		Size: 2,2
 		Category: Rock-Cliff-Sand
 		Tiles:
@@ -5402,119 +5402,119 @@ Templates:
 			3: Cliff
 	Template@1000:
 		Id: 1000
-		Image: t1000.tmp
+		Images: t1000.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1001:
 		Id: 1001
-		Image: t1001.tmp
+		Images: t1001.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1002:
 		Id: 1002
-		Image: t1002.tmp
+		Images: t1002.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1003:
 		Id: 1003
-		Image: t1003.tmp
+		Images: t1003.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1004:
 		Id: 1004
-		Image: t1004.tmp
+		Images: t1004.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1005:
 		Id: 1005
-		Image: t1005.tmp
+		Images: t1005.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1006:
 		Id: 1006
-		Image: t1006.tmp
+		Images: t1006.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1007:
 		Id: 1007
-		Image: t1007.tmp
+		Images: t1007.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1008:
 		Id: 1008
-		Image: t1008.tmp
+		Images: t1008.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1009:
 		Id: 1009
-		Image: t1009.tmp
+		Images: t1009.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1010:
 		Id: 1010
-		Image: t1010.tmp
+		Images: t1010.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1011:
 		Id: 1011
-		Image: t1011.tmp
+		Images: t1011.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1012:
 		Id: 1012
-		Image: t1012.tmp
+		Images: t1012.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1013:
 		Id: 1013
-		Image: t1013.tmp
+		Images: t1013.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1014:
 		Id: 1014
-		Image: t1014.tmp
+		Images: t1014.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1015:
 		Id: 1015
-		Image: t1015.tmp
+		Images: t1015.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1016:
 		Id: 1016
-		Image: t1016.tmp
+		Images: t1016.tmp
 		Size: 2,1
 		Category: Sand-Platform
 		Tiles:
@@ -5522,21 +5522,21 @@ Templates:
 			1: Rock
 	Template@1017:
 		Id: 1017
-		Image: t1017.tmp
+		Images: t1017.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Rock
 	Template@1018:
 		Id: 1018
-		Image: t1018.tmp
+		Images: t1018.tmp
 		Size: 1,1
 		Category: Sand-Platform
 		Tiles:
 			0: Rock
 	Template@1019:
 		Id: 1019
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 29
 		Size: 1,1
 		Category: Sand-Detail
@@ -5544,7 +5544,7 @@ Templates:
 			0: Sand
 	Template@1020:
 		Id: 1020
-		Image: BLOXBGBS.R8
+		Images: BLOXBGBS.R8
 		Frames: 617, 618, 637, 638
 		Size: 2,2
 		Category: Rock-Detail
