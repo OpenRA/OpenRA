@@ -201,6 +201,8 @@ local function createNotebook(frame)
           local editor = GetEditor(page)
           if editor then ide.openDocuments[editor:GetId()].index = page end
         end
+        -- first set the selection on the dragged tab to reset its state
+        notebook:SetSelection(event:GetSelection())
         -- select the content of the tab after drag is done
         SetEditorSelection(event:GetSelection())
         event:Skip()
