@@ -931,6 +931,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150504)
+				{
+					// Made buildings grant prerequisites explicitly.
+					if (depth == 0 && node.Value.Nodes.Exists(n => n.Key == "Inherits" &&
+						(n.Value.Value == "^Building" || n.Value.Value == "^BaseBuilding")))
+						node.Value.Nodes.Add(new MiniYamlNode("ProvidesCustomPrerequisite@buildingname", ""));
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
