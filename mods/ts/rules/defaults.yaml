@@ -438,8 +438,7 @@
 		RepairBuildings:
 		RearmBuildings:
 		LandWhenIdle: no
-	Buildable:
-		Queue: Aircraft
+		CruiseAltitude: 2048
 	HiddenUnderFog:
 	AttackMove:
 	GainsExperience:
@@ -471,6 +470,16 @@
 	Guardable:
 	UpgradeManager:
 	MustBeDestroyed:
+
+^Plane:	
+	Inherits: ^Helicopter
+	-Helicopter:
+	Plane:
+		RepairBuildings:
+		RearmBuildings: gahpad, nahpad
+		LandWhenIdle: no
+		CruiseAltitude: 2560
+	ReturnOnIdle:
 
 ^BlossomTree:
 	Tooltip:
