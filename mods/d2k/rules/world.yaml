@@ -121,7 +121,7 @@ World:
 		ResourceType: 1
 		Palette: d2k
 		TerrainType: Spice
-		EditorSprite: spice0
+		EditorSprite: spice0.shp
 		Variants: spice
 		MaxDensity: 20
 		ValuePerUnit: 25

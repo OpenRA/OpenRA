@@ -42,7 +42,7 @@ namespace OpenRA.Graphics
 
 			Palettes = palettes.AsReadOnly();
 
-			var frameCache = new FrameCache(modData.SpriteLoaders, new string[0]);
+			var frameCache = new FrameCache(modData.SpriteLoaders);
 			var cursors = new Dictionary<string, CursorSequence>();
 			foreach (var s in nodesDict["Cursors"].Nodes)
 				foreach (var sequence in s.Value.Nodes)

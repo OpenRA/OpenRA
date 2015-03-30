@@ -348,7 +348,7 @@ namespace OpenRA.TilesetBuilder
 			if (tilesetName.Length < 1) tilesetName = "Temperat";
 			if (tilesetID.Length < 1) tilesetID = "TEMPERAT";
 			if (tilesetPalette.Length < 1) tilesetPalette = "temperat";
-			if (tilesetExt.Length < 1) tilesetExt = ".tem,.shp";
+			if (tilesetExt.Length < 1) tilesetExt = ".tem";
 
 			// Create a Tileset definition
 			// TODO: Pull this info from the GUI
@@ -359,12 +359,10 @@ namespace OpenRA.TilesetBuilder
 			else
 				tilesetFile = tilesetName.ToLower().Substring(0, 8) + ".yaml";
 
-			var ext = tilesetExt.Split(',');
 			var tileset = new TileSet(
 				name: tilesetName,
 				id: tilesetID.ToUpper(),
 				palette: tilesetPalette.ToLower(),
-				extensions: new string[] { ext[0], ext[1] },
 				terrainInfo: TerrainType);
 
 			// List of files to add to the mix file
@@ -376,7 +374,7 @@ namespace OpenRA.TilesetBuilder
 
 			// Export tile artwork
 			foreach (var t in surface1.Templates)
-				fileList.Add(ExportTemplate(t, surface1.Templates.IndexOf(t), tileset.Extensions.First(), dir));
+				fileList.Add(ExportTemplate(t, surface1.Templates.IndexOf(t), tilesetExt, dir));
 
 			// Add the templates
 			ushort cur = 0;

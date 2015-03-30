@@ -171,7 +171,6 @@ namespace OpenRA
 		public readonly int SheetSize = 512;
 		public readonly string Palette;
 		public readonly string PlayerPalette;
-		public readonly string[] Extensions;
 		public readonly int WaterPaletteRotationBase = 0x60;
 		public readonly byte MaxGroundHeight = 0;
 		public readonly Color[] HeightDebugColors = new[] { Color.Red };
@@ -222,12 +221,11 @@ namespace OpenRA
 				.Select(y => new TerrainTemplateInfo(this, y)).ToDictionary(t => t.Id);
 		}
 
-		public TileSet(string name, string id, string palette, string[] extensions, TerrainTypeInfo[] terrainInfo)
+		public TileSet(string name, string id, string palette, TerrainTypeInfo[] terrainInfo)
 		{
 			Name = name;
 			Id = id;
 			Palette = palette;
-			Extensions = extensions;
 			TerrainInfo = terrainInfo;
 
 			if (TerrainInfo.Length >= byte.MaxValue)

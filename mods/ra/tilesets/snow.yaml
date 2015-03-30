@@ -2,7 +2,6 @@ General:
 	Name: Snow
 	Id: SNOW
 	Palette: snow.pal
-	Extensions: # Obsolete
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Water Cliffs, Beach, River, Bridge
 
 Terrain:

@@ -15,26 +15,33 @@ build:
 test_script:
   - nunit-console-x86.exe OpenRA.Test.dll
 
-before_deploy:
+after_test:
+  - make version
+  - choco install pandoc -y
+  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o README.html README.md'
+  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o CONTRIBUTING.html CONTRIBUTING.md'
+  - appveyor DownloadFile "https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md" -FileName Changelog.md
+  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o Changelog.html CHANGELOG.md'
   - make docs
+  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o DOCUMENTATION.html DOCUMENTATION.md'
+  - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o Lua-API.html Lua-API.md'
   - cp OpenRA.Game/OpenRA.ico .
   - appveyor DownloadFile "http://downloads.sourceforge.net/project/nsis/NSIS 2/2.46/nsis-2.46-setup.exe" -FileName nsissetup.exe
   - nsissetup /S /D=%NSIS_ROOT%
   - appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/archive/1/18/20140806212030!NsProcess.zip" -FileName NsProcess.zip
   - 7z x NsProcess.zip -o%NSIS_ROOT% -y
   - move /Y %NSIS_ROOT%\Plugin\nsProcess.dll %NSIS_ROOT%\Plugins\nsProcess.dll
-  - appveyor DownloadFile "https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md" -FileName Changelog.md
   - '%NSIS_ROOT%\makensis /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\windows" /V3 packaging/windows/OpenRA.nsi'
   - move /Y %APPVEYOR_BUILD_FOLDER%\packaging\windows\OpenRA.Setup.exe %APPVEYOR_BUILD_FOLDER%\OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe
 
 artifacts:
-  - name: Installer
-    path: 'OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe'
+  - path: OpenRA-$(APPVEYOR_REPO_TAG_NAME).exe
+    name: Installer
 
 deploy:
   - provider: GitHub
     auth_token:
       secure: Z7RC+ckfvf7Kxf2EdWZCP7bgGjRnhgbMeieQP6VVhiZprwvbEzGXI2Wma+FGAq65
-    artifact: OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe
+    artifact: Installer
     on:
       appveyor_repo_tag: true

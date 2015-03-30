@@ -47,36 +47,29 @@ namespace OpenRA.Editor
 			return bitmap;
 		}
 
-		static string[] SpriteExtensions(TileSet tileSet)
+		static readonly string[] LegacyExtensions = new[] { ".shp", ".tem", "" };
+
+		static string ResolveFilename(string name, TileSet tileSet)
 		{
 			var ssl = Game.ModData.SpriteSequenceLoader as TilesetSpecificSpriteSequenceLoader;
-			if (ssl == null)
-				return tileSet.Extensions;
+			var extensions = ssl != null ? new[] { ssl.TilesetExtensions[tileSet.Id], ssl.DefaultSpriteExtension }.Append(LegacyExtensions) :
+				LegacyExtensions.AsEnumerable();
 
-			return tileSet.Extensions.Append(ssl.TilesetExtensions[tileSet.Id], ssl.DefaultSpriteExtension).ToArray();
+			foreach (var e in extensions)
+				if (GlobalFileSystem.Exists(name + e))
+					return name + e;
+
+			return name;
 		}
 
 		public static ActorTemplate RenderActor(ActorInfo info, SequenceProvider sequenceProvider, TileSet tileset, IPalette p, string race)
 		{
 			var image = info.Traits.Get<ILegacyEditorRenderInfo>().EditorImage(info, sequenceProvider, race);
-			var exts = SpriteExtensions(tileset);
-			using (var s = GlobalFileSystem.OpenWithExts(image, exts))
+			image = ResolveFilename(image, tileset);
+			using (var s = GlobalFileSystem.Open(image))
 			{
 				var shp = new ShpTDSprite(s);
 				var bitmap = RenderShp(shp, p);
-
-				try
-				{
-					using (var s2 = GlobalFileSystem.OpenWithExts(image + "2", exts))
-					{
-						var shp2 = new ShpTDSprite(s2);
-						var roofBitmap = RenderShp(shp2, p);
-
-						using (var g = System.Drawing.Graphics.FromImage(bitmap))
-							g.DrawImage(roofBitmap, 0, 0);
-					}
-				}
-				catch { }
 
 				return new ActorTemplate
 				{
@@ -89,9 +82,8 @@ namespace OpenRA.Editor
 
 		public static ResourceTemplate RenderResourceType(ResourceTypeInfo info, TileSet tileset, IPalette p)
 		{
-			var image = info.EditorSprite;
-			var exts = SpriteExtensions(tileset);
-			using (var s = GlobalFileSystem.OpenWithExts(image, exts))
+			var image = ResolveFilename(info.EditorSprite, tileset);
+			using (var s = GlobalFileSystem.Open(image))
 			{
 				// TODO: Do this properly
 				var shp = new ShpTDSprite(s);

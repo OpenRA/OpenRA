@@ -34,6 +34,7 @@ namespace OpenRA.Mods.TS.Traits
 		[Desc("Custom PlayerColorPalette: BaseName")]
 		public readonly string PlayerPalette = "player";
 		public readonly string NormalsPalette = "normals";
+		public readonly string ShadowPalette = "shadow";
 
 		[Desc("Change the image size.")]
 		public readonly float Scale = 10;
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.TS.Traits
 
 			yield return new VoxelPreview(components, WVec.Zero, 0, this.Scale, this.LightPitch,
 				this.LightYaw, this.LightAmbientColor, this.LightDiffuseColor, body.CameraPitch,
-				palette, init.WorldRenderer.Palette(NormalsPalette), init.WorldRenderer.Palette("shadow"));
+				palette, init.WorldRenderer.Palette(NormalsPalette), init.WorldRenderer.Palette(ShadowPalette));
 		}
 	}
 
@@ -97,7 +98,7 @@ namespace OpenRA.Mods.TS.Traits
 				var paletteName = info.Palette ?? info.PlayerPalette + self.Owner.InternalName;
 				colorPalette = wr.Palette(paletteName);
 				normalsPalette = wr.Palette(info.NormalsPalette);
-				shadowPalette = wr.Palette("shadow");
+				shadowPalette = wr.Palette(info.ShadowPalette);
 				initializePalettes = false;
 			}
 

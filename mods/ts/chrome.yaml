@@ -1,394 +1,300 @@
+# ----------------------------------------------------------------------
+# GDI
+# ----------------------------------------------------------------------
+
 sidebar-gdi: chrome.png
-	background-top: 0,167,238,290
-	background-iconrow: 0,457,238,47
-	background-bottom: 0,504,238,8
-	background-supportoverlay: 184,118,64,48
+	background-top: 0,0,235,260
+	background-iconrow: 0,260,235,52
+	background-bottom: 0,312,235,26
+	background-supportoverlay: 168,392,64,48
 
 sidebar-button-gdi: chrome.png
-	background: 59,31,22,22
-	border-r: 81,31,3,22
-	border-l: 56,31,3,22
-	border-b: 59,53,22,3
-	border-t: 59,28,22,3
-	corner-tl: 56,28,3,3
-	corner-tr: 81,28,3,3
-	corner-bl: 56,53,3,3
-	corner-br: 81,53,3,3
+	background: 265,289,30,31
 sidebar-button-gdi-hover: chrome.png
-	background: 59,3,22,22
-	border-r: 81,3,3,22
-	border-l: 56,3,3,22
-	border-b: 59,25,22,3
-	border-t: 59,0,22,3
-	corner-tl: 56,0,3,3
-	corner-tr: 81,0,3,3
-	corner-bl: 56,25,3,3
-	corner-br: 81,25,3,3
+	background: 265,321,30,31
 sidebar-button-gdi-pressed: chrome.png
-	background: 59,31,22,22
-	border-r: 81,31,3,22
-	border-l: 56,31,3,22
-	border-b: 59,53,22,3
-	border-t: 59,28,22,3
-	corner-tl: 56,28,3,3
-	corner-tr: 81,28,3,3
-	corner-bl: 56,53,3,3
-	corner-br: 81,53,3,3
+	background: 265,353,30,31
 sidebar-button-gdi-highlighted: chrome.png
-	background: 87,31,22,22
-	border-r: 109,31,3,22
-	border-l: 84,31,3,22
-	border-b: 87,53,22,3
-	border-t: 87,28,22,3
-	corner-tl: 84,28,3,3
-	corner-tr: 109,28,3,3
-	corner-bl: 84,53,3,3
-	corner-br: 109,53,3,3
+	background: 265,385,30,31
 sidebar-button-gdi-highlighted-hover: chrome.png
-	background: 87,3,22,22
-	border-r: 109,3,3,22
-	border-l: 84,3,3,22
-	border-b: 87,25,22,3
-	border-t: 87,0,22,3
-	corner-tl: 84,0,3,3
-	corner-tr: 109,0,3,3
-	corner-bl: 84,25,3,3
-	corner-br: 109,25,3,3
+	background: 265,417,30,31
 sidebar-button-gdi-highlighted-pressed: chrome.png
-	background: 87,31,22,22
-	border-r: 109,31,3,22
-	border-l: 84,31,3,22
-	border-b: 87,53,22,3
-	border-t: 87,28,22,3
-	corner-tl: 84,28,3,3
-	corner-tr: 109,28,3,3
-	corner-bl: 84,53,3,3
-	corner-br: 109,53,3,3
-sidebar-button-gdi-disabled: chrome.png
-	background: 171,3,22,22
-	border-r: 193,3,3,22
-	border-l: 168,3,3,22
-	border-b: 171,25,22,3
-	border-t: 171,0,22,3
-	corner-tl: 168,0,3,3
-	corner-tr: 193,0,3,3
-	corner-bl: 168,25,3,3
-	corner-br: 193,25,3,3
+	background: 265,449,30,31
 sidebar-button-gdi-highlighted-disabled: chrome.png
-	background: 171,3,22,22
-	border-r: 193,3,3,22
-	border-l: 168,3,3,22
-	border-b: 171,25,22,3
-	border-t: 171,0,22,3
-	corner-tl: 168,0,3,3
-	corner-tr: 193,0,3,3
-	corner-bl: 168,25,3,3
-	corner-br: 193,25,3,3
+	background: 265,481,30,31
+sidebar-button-gdi-disabled: chrome.png
+	background: 265,481,30,31
+
+	
+
+scrollup-buttons-gdi: chrome.png
+	background: 0,363,34,27
+scrollup-buttons-gdi-hover: chrome.png
+	background: 35,363,34,27
+scrollup-buttons-gdi-pressed: chrome.png
+	background: 70,363,34,27
+scrollup-buttons-gdi-highlighted: chrome.png
+	background: 35,363,34,27
+scrollup-buttons-gdi-highlighted-hover: chrome.png
+	background: 35,363,34,27
+scrollup-buttons-gdi-highlighted-pressed: chrome.png
+	background: 70,363,34,27
+scrollup-button-gdi-highlighted-disabled: chrome.png
+	background: 0,363,34,27
+scrollup-buttons-gdi-disabled: chrome.png
+	background: 0,363,34,27
+	
+scrolldown-buttons-gdi: chrome.png
+	background: 105,363,34,27
+scrolldown-buttons-gdi-hover: chrome.png
+	background: 140,363,34,27
+scrolldown-buttons-gdi-pressed: chrome.png
+	background: 175,363,34,27
+scrolldown-buttons-gdi-highlighted: chrome.png
+	background: 140,363,34,27
+scrolldown-buttons-gdi-highlighted-hover: chrome.png
+	background: 140,363,34,27
+scrolldown-buttons-gdi-highlighted-pressed: chrome.png
+	background: 175,363,34,27
+scrolldown-button-gdi-highlighted-disabled: chrome.png
+	background: 105,363,34,27
+scrolldown-buttons-gdi-disabled: chrome.png
+	background: 105,363,34,27
+
+	
+	
+radar-gdi: chrome.png
+	insignia: 1,392,164,119
+
+	
+	
+production-icons-gdi: chrome.png
+	building: 416,0,16,16
+	building-disabled: 432,0,16,16
+	building-alert: 448,0,16,16
+	defense: 416,16,16,16
+	defense-disabled: 432,16,16,16
+	defense-alert: 448,16,16,16
+	infantry: 416,32,16,16
+	infantry-disabled: 432,32,16,16
+	infantry-alert: 448,32,16,16
+	vehicle: 416,48,16,16
+	vehicle-disabled: 432,48,16,16
+	vehicle-alert: 448,48,16,16
+	air: 416,64,16,16
+	air-disabled: 432,64,16,16
+	air-alert: 448,64,16,16
+
+order-icons-gdi: chrome.png
+	debug: 296,289,30,31
+	debug-disabled: 327,289,30,31
+	debug-active: 296,289,30,31	
+	repair: 296,321,30,31
+	repair-disabled: 327,321,30,31
+	repair-active: 296,321,30,31	
+	sell: 296,353,30,31
+	sell-disabled: 327,353,30,31
+	sell-active: 296,353,30,31	
+	options: 296,385,30,31
+	options-disabled: 327,385,30,31
+	options-active: 296,385,30,31	
+	beacon: 296,417,30,31
+	beacon-disabled: 327,417,30,31
+	beacon-active: 296,417,30,31	
+	power: 296,449,30,31
+	power-disabled: 327,449,30,31
+	power-active: 296,449,30,31	
+	diplomacy: 296,481,30,31
+	diplomacy-disabled: 327,481,30,31
+	diplomacy-active: 296,481,30,31
+
+# make this paragraph AddRaceSuffixLogic compatible
+sidebar-bits-gdi: chrome.png
+	production-tooltip-time: 416,208,16,16
+	production-tooltip-power: 480,160,16,16
+	production-tooltip-cost: 480,144,16,16
+	production-iconoverlay: 168,392,64,48
+	
+power-icons-gdi: chrome.png
+	power-normal: 480,160,16,16
+	power-critical: 496,160,16,16
+
+cash-icons-gdi: chrome.png
+	cash-normal: 480,144,16,16
+	cash-critical: 496,144,16,16
+	
+	
+# ----------------------------------------------------------------------
+# NOD
+# ----------------------------------------------------------------------
 
 sidebar-nod: chrome.png
-	background-top: 274,167,238,290
-	background-iconrow: 274,457,238,47
-	background-bottom: 274,504,238,8
-	background-supportoverlay: 249,118,64,48
+	background-top: 512,0,235,260
+	background-iconrow: 512,260,235,52
+	background-bottom: 512,312,235,26
+	background-supportoverlay: 168,392,64,48
 
 sidebar-button-nod: chrome.png
-	background: 3,31,22,22
-	border-r: 25,31,3,22
-	border-l: 0,31,3,22
-	border-b: 3,53,22,3
-	border-t: 3,28,22,3
-	corner-tl: 0,28,3,3
-	corner-tr: 25,28,3,3
-	corner-bl: 0,53,3,3
-	corner-br: 25,53,3,3
+	background: 777,289,30,31
 sidebar-button-nod-hover: chrome.png
-	background: 3,3,22,22
-	border-r: 25,3,3,22
-	border-l: 0,3,3,22
-	border-b: 3,25,22,3
-	border-t: 3,0,22,3
-	corner-tl: 0,0,3,3
-	corner-tr: 25,0,3,3
-	corner-bl: 0,25,3,3
-	corner-br: 25,25,3,3
+	background: 777,321,30,31
 sidebar-button-nod-pressed: chrome.png
-	background: 3,31,22,22
-	border-r: 25,31,3,22
-	border-l: 0,31,3,22
-	border-b: 3,53,22,3
-	border-t: 3,28,22,3
-	corner-tl: 0,28,3,3
-	corner-tr: 25,28,3,3
-	corner-bl: 0,53,3,3
-	corner-br: 25,53,3,3
+	background: 777,353,30,31
 sidebar-button-nod-highlighted: chrome.png
-	background: 31,31,22,22
-	border-r: 53,31,3,22
-	border-l: 28,31,3,22
-	border-b: 31,53,22,3
-	border-t: 31,28,22,3
-	corner-tl: 28,28,3,3
-	corner-tr: 53,28,3,3
-	corner-bl: 28,53,3,3
-	corner-br: 53,53,3,3
+	background: 777,385,30,31
 sidebar-button-nod-highlighted-hover: chrome.png
-	background: 31,3,22,22
-	border-r: 53,3,3,22
-	border-l: 28,3,3,22
-	border-b: 31,25,22,3
-	border-t: 31,0,22,3
-	corner-tl: 28,0,3,3
-	corner-tr: 53,0,3,3
-	corner-bl: 28,25,3,3
-	corner-br: 53,25,3,3
+	background: 777,417,30,31
 sidebar-button-nod-highlighted-pressed: chrome.png
-	background: 31,31,22,22
-	border-r: 53,31,3,22
-	border-l: 28,31,3,22
-	border-b: 31,53,22,3
-	border-t: 31,28,22,3
-	corner-tl: 28,28,3,3
-	corner-tr: 53,28,3,3
-	corner-bl: 28,53,3,3
-	corner-br: 53,53,3,3
-sidebar-button-nod-disabled: chrome.png
-	background: 171,3,22,22
-	border-r: 193,3,3,22
-	border-l: 168,3,3,22
-	border-b: 171,25,22,3
-	border-t: 171,0,22,3
-	corner-tl: 168,0,3,3
-	corner-tr: 193,0,3,3
-	corner-bl: 168,25,3,3
-	corner-br: 193,25,3,3
+	background: 777,449,30,31
 sidebar-button-nod-highlighted-disabled: chrome.png
-	background: 171,3,22,22
-	border-r: 193,3,3,22
-	border-l: 168,3,3,22
-	border-b: 171,25,22,3
-	border-t: 171,0,22,3
-	corner-tl: 168,0,3,3
-	corner-tr: 193,0,3,3
-	corner-bl: 168,25,3,3
-	corner-br: 193,25,3,3
+	background: 777,481,30,31
+sidebar-button-nod-disabled: chrome.png
+	background: 777,481,30,31
 
+
+
+scrollup-buttons-nod: chrome.png
+	background: 512,364,34,27
+scrollup-buttons-nod-hover: chrome.png
+	background: 547,364,34,27
+scrollup-buttons-nod-pressed: chrome.png
+	background: 582,364,34,27
+scrollup-buttons-nod-highlighted: chrome.png
+	background: 547,364,34,27
+scrollup-buttons-nod-highlighted-hover: chrome.png
+	background: 547,364,34,27
+scrollup-buttons-nod-highlighted-pressed: chrome.png
+	background: 582,364,34,27
+scrollup-button-nod-highlighted-disabled: chrome.png
+	background: 512,364,34,27
+scrollup-buttons-nod-disabled: chrome.png
+	background: 512,364,34,27
+	
+scrolldown-buttons-nod: chrome.png
+	background: 617,364,34,27
+scrolldown-buttons-nod-hover: chrome.png
+	background: 652,364,34,27
+scrolldown-buttons-nod-pressed: chrome.png
+	background: 687,364,34,27
+scrolldown-buttons-nod-highlighted: chrome.png
+	background: 652,364,34,27
+scrolldown-buttons-nod-highlighted-hover: chrome.png
+	background: 652,364,34,27
+scrolldown-buttons-nod-highlighted-pressed: chrome.png
+	background: 687,364,34,27
+scrolldown-button-nod-highlighted-disabled: chrome.png
+	background: 617,364,34,27
+scrolldown-buttons-nod-disabled: chrome.png
+	background: 617,364,34,27
+
+radar-nod: chrome.png
+	insignia: 513,392,164,119
+
+production-icons-nod: chrome.png
+	building: 928,0,16,16
+	building-disabled: 944,0,16,16
+	building-alert: 960,0,16,16
+	defense: 928,16,16,16
+	defense-disabled: 944,16,16,16
+	defense-alert: 960,16,16,16		
+	infantry: 928,32,16,16
+	infantry-disabled: 944,32,16,16
+	infantry-alert: 960,32,16,16
+	vehicle: 928,48,16,16
+	vehicle-disabled: 944,48,16,16
+	vehicle-alert: 960,48,16,16
+	air: 928,64,16,16
+	air-disabled: 944,64,16,16
+	air-alert: 960,64,16,16
+
+order-icons-nod: chrome.png
+	debug: 808,289,30,31
+	debug-disabled: 839,289,30,31
+	debug-active: 808,808,30,31
+	repair: 808,321,30,31
+	repair-disabled: 839,321,30,31
+	repair-active: 808,321,30,31
+	sell: 808,353,30,31
+	sell-disabled: 839,353,30,31
+	sell-active: 808,353,30,31
+	options: 808,385,30,31
+	options-disabled: 839,385,30,31
+	options-active: 808,385,30,31  
+	beacon: 808,417,30,31
+	beacon-disabled: 839,417,30,31
+	beacon-active: 808,417,30,31
+	power: 808,449,30,31
+	power-disabled: 839,449,30,31
+	power-active: 808,449,30,31
+	diplomacy: 808,481,30,31
+	diplomacy-disabled: 839,481,30,31
+	diplomacy-active: 808,481,30,31
+
+# make this paragraph AddRaceSuffixLogic compatible
+sidebar-bits-nod: chrome.png
+	production-tooltip-time: 928,208,16,16
+	production-tooltip-power: 992,160,16,16
+	production-tooltip-cost: 992,144,16,16
+	production-iconoverlay: 168,392,64,48
+
+power-icons-nod: chrome.png
+	power-normal: 992,160,16,16
+	power-critical: 1008,160,16,16
+
+cash-icons-nod: chrome.png
+	cash-normal: 992,144,16,16
+	cash-critical: 1008,144,16,16
+
+# ----------------------------------------------------------------------
+# GENERIC
+# ----------------------------------------------------------------------
+	
+# make this paragraph AddRaceSuffixLogic compatible
 sidebar-bits: chrome.png
-	production-tooltip-time: 416, 80, 16, 16
-	production-tooltip-power: 432, 80, 16, 16
-	production-tooltip-cost: 448, 80, 16, 16
-	production-iconoverlay: 314,118,238,48
+	production-tooltip-time: 416,208,16,16
+	production-tooltip-power: 480,160,16,16
+	production-tooltip-cost: 480,144,16,16
+	production-iconoverlay: 168,392,64,48
+	
+scrollbar: buttons.png
+	down_arrow: 16,140,16,16
+	down_pressed: 16,140,16,16
+	up_arrow: 32,140,16,16
+	up_pressed: 32,140,16,16	
+	
+flags: buttons.png
+	gdi: 30,112,30,15
+	nod: 0,112,30,15
+	Random: 60,112,30,15
+	spectator: 60,112,30,15	
+	
+lobby-bits: spawnpoints.png
+	spawn-unclaimed: 37,5,22,22
+	spawn-claimed: 5,5,22,22
+	admin: 64,5,7,5
+	colorpicker: 5,5,22,22
+	huepicker: 71,0,7,15
 
-power-icons: chrome.png
-	power-normal: 350,0,12,18
-	power-critical: 363,0,12,18
+strategic: strategic.png
+	unowned: 0,0,32,32
+	critical_unowned: 0,32,32,32
+	enemy_owned: 32,32,32,32
+	player_owned: 96,0,32,32
 
-production-icons: chrome.png
-	building: 384,0,16,16
-	building-disabled: 384,16,16,16
-	building-alert: 384,32,16,16
-	defense: 400,0,16,16
-	defense-disabled: 400,16,16,16
-	defense-alert: 400,32,16,16
-	infantry: 416,0,16,16
-	infantry-disabled: 416,16,16,16
-	infantry-alert: 416,32,16,16
-	vehicle: 432,0,16,16
-	vehicle-disabled: 432,16,16,16
-	vehicle-alert: 432,32,16,16
-	air: 448,0,16,16
-	air-disabled: 448,16,16,16
-	air-alert: 448,32,16,16
-
-order-icons: chrome.png
-	options: 480,0,16,16
-	options-disabled: 480,16,16,16
-	options-active: 480,32,16,16
-	diplomacy: 464,48,16,16
-	diplomacy-disabled: 464,64,16,16
-	diplomacy-active: 464,80,16,16
-	sell: 496,0,16,16
-	sell-disabled: 496,16,16,16
-	sell-active: 496,32,16,16
-	repair: 384,48,16,16
-	repair-disabled: 384,64,16,16
-	repair-active: 384,80,16,16
-	beacon: 400,48,16,16
-	beacon-disabled: 400,64,16,16
-	beacon-active: 400,80,16,16
-	power: 480,48,16,16
-	power-disabled: 480,64,16,16
-	power-active: 480,80,16,16
-	stats: 368,48,16,16
-	stats-disabled: 368,64,16,16
-	stats-active: 368,80,16,16
-
-sidebar-observer: chrome.png
-	background: 512,167,238,287
-	replay-bottom: 512,454,238,40
-	observer-bottom: 512,495,238,8
-
-sidebar-button-observershroud: chrome.png
-sidebar-button-observershroud-pressed: chrome.png
-sidebar-button-observershroud-hover: chrome.png
-
-sidebar-button-observer: chrome.png
-	background: 117,33,18,18
-	border-r: 135,33,5,18
-	border-l: 112,33,5,18
-	border-b: 117,51,18,5
-	border-t: 117,28,18,5
-	corner-tl: 112,28,5,5
-	corner-tr: 135,28,5,5
-	corner-bl: 112,51,5,5
-	corner-br: 135,51,5,5
-sidebar-button-observer-hover: chrome.png
-	background: 117,5,18,18
-	border-r: 135,5,5,18
-	border-l: 112,5,5,18
-	border-b: 117,23,18,5
-	border-t: 117,0,18,5
-	corner-tl: 112,0,5,5
-	corner-tr: 135,0,5,5
-	corner-bl: 112,23,5,5
-	corner-br: 135,23,5,5
-sidebar-button-observer-pressed: chrome.png
-	background: 117,33,18,18
-	border-r: 135,33,5,18
-	border-l: 112,33,5,18
-	border-b: 117,51,18,5
-	border-t: 117,28,18,5
-	corner-tl: 112,28,5,5
-	corner-tr: 135,28,5,5
-	corner-bl: 112,51,5,5
-	corner-br: 135,51,5,5
-sidebar-button-observer-highlighted: chrome.png
-	background: 145,33,18,18
-	border-r: 163,33,5,18
-	border-l: 140,33,5,18
-	border-b: 145,51,18,5
-	border-t: 145,28,18,5
-	corner-tl: 140,28,5,5
-	corner-tr: 163,28,5,5
-	corner-bl: 140,51,5,5
-	corner-br: 163,51,5,5
-sidebar-button-observer-highlighted-hover: chrome.png
-	background: 145,5,18,18
-	border-r: 163,5,5,18
-	border-l: 140,5,5,18
-	border-b: 145,23,18,5
-	border-t: 145,0,18,5
-	corner-tl: 140,0,5,5
-	corner-tr: 163,0,5,5
-	corner-bl: 140,23,5,5
-	corner-br: 163,23,5,5
-sidebar-button-observer-highlighted-pressed: chrome.png
-	background: 33,33,18,18
-	border-r: 51,33,5,18
-	border-l: 28,33,5,18
-	border-b: 33,51,18,5
-	border-t: 33,28,18,5
-	corner-tl: 28,28,5,5
-	corner-tr: 51,28,5,5
-	corner-bl: 28,51,5,5
-	corner-br: 51,51,5,5
-sidebar-button-observer-disabled: chrome.png
-	background: 173,5,18,18
-	border-r: 191,5,5,18
-	border-l: 168,5,5,18
-	border-b: 173,23,18,5
-	border-t: 173,0,18,5
-	corner-tl: 168,0,5,5
-	corner-tr: 191,0,5,5
-	corner-bl: 168,23,5,5
-	corner-br: 191,23,5,5
-sidebar-button-observer-highlighted-disabled: chrome.png
-	background: 173,5,18,18
-	border-r: 191,5,5,18
-	border-l: 168,5,5,18
-	border-b: 173,23,18,5
-	border-t: 173,0,18,5
-	corner-tl: 168,0,5,5
-	corner-tr: 191,0,5,5
-	corner-bl: 168,23,5,5
-	corner-br: 191,23,5,5
-
-observer-scrollpanel-button: dialog.png
-	background: 769,257,126,126
-	border-r: 895,257,1,126
-	border-l: 768,257,1,126
-	border-b: 769,383,126,1
-	border-t: 769,256,126,1
-	corner-tl: 768,256,1,1
-	corner-tr: 895,256,1,1
-	corner-bl: 768,383,1,1
-	corner-br: 895,383,1,1
-
-observer-scrollpanel-button-hover: dialog.png
-	background: 769,257,126,126
-	border-r: 895,257,1,126
-	border-l: 768,257,1,126
-	border-b: 769,383,126,1
-	border-t: 769,256,126,1
-	corner-tl: 768,256,1,1
-	corner-tr: 895,256,1,1
-	corner-bl: 768,383,1,1
-	corner-br: 895,383,1,1
-
-observer-scrollpanel-button-pressed: dialog.png
-	background: 897,257,126,126
-	border-r: 1023,257,1,126
-	border-l: 896,257,1,126
-	border-b: 897,383,126,1
-	border-t: 897,256,126,1
-	corner-tl: 896,256,1,1
-	corner-tr: 1023,256,1,1
-	corner-bl: 896,383,1,1
-	corner-br: 1023,383,1,1
-
-observer-scrollpanel-button-disabled: dialog.png
-	background: 769,385,126,126
-	border-r: 895,385,1,126
-	border-l: 768,385,1,126
-	border-b: 769,511,126,1
-	border-t: 769,384,126,1
-	corner-tl: 768,384,1,1
-	corner-tr: 895,384,1,1
-	corner-bl: 768,511,1,1
-	corner-br: 895,511,1,1
-
-observer-scrollheader-selected: dialog.png
-	background: 769,385,126,126
-	border-r: 895,385,1,126
-	border-l: 768,385,1,126
-	border-b: 769,511,126,1
-	border-t: 769,384,126,1
-	corner-tl: 768,384,1,1
-	corner-tr: 895,384,1,1
-	corner-bl: 768,511,1,1
-	corner-br: 895,511,1,1
-
-observer-scrollitem-selected: dialog.png
-	background: 897,257,126,126
-	border-r: 1023,257,1,126
-	border-l: 896,257,1,126
-	border-b: 897,383,126,1
-	border-t: 897,256,126,1
-	corner-tl: 896,256,1,1
-	corner-tr: 1023,256,1,1
-	corner-bl: 896,383,1,1
-	corner-br: 1023,383,1,1
-
-observer-scrollitem-hover: dialog.png
-	background: 769,257,126,126
-	border-r: 895,257,1,126
-	border-l: 768,257,1,126
-	border-b: 769,383,126,1
-	border-t: 769,256,126,1
-	corner-tl: 768,256,1,1
-	corner-tr: 895,256,1,1
-	corner-bl: 768,383,1,1
-	corner-br: 895,383,1,1
-
+music: musicplayer.png
+	pause: 0,0,25,25
+	stop: 28,0,25,25
+	play: 56,0,25,25
+	next: 84,0,25,25
+	prev: 112,0,25,25
+	fastforward: 140,0,25,25
+	slowmo: 168,0,25,25
+	
+	
+# ----------------------------------------------------------------------
+# Other UI stuff
+# ----------------------------------------------------------------------
+	
 # Used for the menu
 dialog: dialog.png
 	background: 0,0,480,480
@@ -436,40 +342,6 @@ dialog4: dialog.png
 	corner-tr: 571,387,6,6
 	corner-bl: 512,446,6,6
 	corner-br: 571,446,6,6
-
-lobby-bits: spawnpoints.png
-	spawn-unclaimed: 37,5,22,22
-	spawn-claimed: 5,5,22,22
-	admin: 64,5,7,5
-	colorpicker: 5,5,22,22
-	huepicker: 71,0,7,15
-
-strategic: strategic.png
-	unowned: 0,0,32,32
-	critical_unowned: 0,32,32,32
-	enemy_owned: 32,32,32,32
-	player_owned: 96,0,32,32
-
-flags: buttons.png
-	gdi: 30,112,30,15
-	nod: 0,112,30,15
-	Random: 60,112,30,15
-	spectator: 60,112,30,15
-
-music: musicplayer.png
-	pause: 0,0,25,25
-	stop: 28,0,25,25
-	play: 56,0,25,25
-	next: 84,0,25,25
-	prev: 112,0,25,25
-	fastforward: 140,0,25,25
-	slowmo: 168,0,25,25
-
-scrollbar: buttons.png
-	down_arrow: 16,140,16,16
-	down_pressed: 16,140,16,16
-	up_arrow: 32,140,16,16
-	up_pressed: 32,140,16,16
 
 # A copy of dialog3 (pressed button)
 progressbar-bg: dialog.png
@@ -542,7 +414,7 @@ button-disabled: dialog.png
 	corner-tr: 639,256,1,1
 	corner-bl: 512,383,1,1
 	corner-br: 639,383,1,1  
-    
+
 # 10% darker than a normal button - Used in Settings when you select Display Audio Input or Advanced
 button-highlighted: dialog.png
 	background: 769,129,126,126

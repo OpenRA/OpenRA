@@ -50,7 +50,7 @@ namespace OpenRA.Editor
 			this.TileSize = Math.Min(tileSize.Width, tileSize.Height);
 
 			templates = new Dictionary<ushort, byte[][]>();
-			var frameCache = new FrameCache(Game.ModData.SpriteLoaders, tileset.Extensions);
+			var frameCache = new FrameCache(Game.ModData.SpriteLoaders);
 			foreach (var t in tileset.Templates)
 			{
 				var allFrames = frameCache[t.Value.Image];
