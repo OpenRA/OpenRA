@@ -68,7 +68,7 @@ namespace OpenRA
 		static readonly TerrainTemplateInfo Default = new TerrainTemplateInfo(0, new string[] { null }, int2.Zero, null);
 
 		public readonly ushort Id;
-		public readonly string[] Image;
+		public readonly string[] Images;
 		public readonly int[] Frames;
 		public readonly int2 Size;
 		public readonly bool PickAny;
@@ -76,10 +76,10 @@ namespace OpenRA
 
 		TerrainTileInfo[] tileInfo;
 
-		public TerrainTemplateInfo(ushort id, string[] image, int2 size, byte[] tiles)
+		public TerrainTemplateInfo(ushort id, string[] images, int2 size, byte[] tiles)
 		{
 			this.Id = id;
-			this.Image = image;
+			this.Images = images;
 			this.Size = size;
 		}
 

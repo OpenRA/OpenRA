@@ -54,17 +54,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					foreach (var ext in exts)
 					{
 						Stream s;
-						if (!GlobalFileSystem.TryOpen(template.Image[0] + ext, out s))
+						if (!GlobalFileSystem.TryOpen(template.Images[0] + ext, out s))
 							continue;
 
 						// Rewrite the template image (normally readonly) using reflection
-						imageField.SetValue(template, template.Image[0] + ext);
+						imageField.SetValue(template, template.Images[0] + ext);
 
 						// Fetch the private tileInfo array so that we can write new entries
 						var tileInfo = (TerrainTileInfo[])tileInfoField.GetValue(template);
 
 						// Open the file and search for any implicit frames
-						var allFrames = frameCache[template.Image[0]];
+						var allFrames = frameCache[template.Images[0]];
 						var frames = template.Frames != null ? template.Frames.Select(f => allFrames[f]).ToArray() : allFrames;
 
 						// Resize array for new entries
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								terrainTypeField.SetValue(tileInfo[i], ti);
 								terrainLeftColorField.SetValue(tileInfo[i], ts[ti].Color);
 								terrainRightColorField.SetValue(tileInfo[i], ts[ti].Color);
-								Console.WriteLine("Fixing entry for {0}:{1}", template.Image[0], i);
+								Console.WriteLine("Fixing entry for {0}:{1}", template.Images[0], i);
 							}
 						}
 

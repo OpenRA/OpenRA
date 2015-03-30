@@ -61,7 +61,7 @@ Terrain:
 Templates:
 	Template@255:
 		Id: 255
-		Image: clear1.jun
+		Images: clear1.jun
 		Size: 1,1
 		PickAny: True
 		Category: Terrain
@@ -84,7 +84,7 @@ Templates:
 			15: Clear
 	Template@65535:
 		Id: 65535
-		Image: clear1.jun
+		Images: clear1.jun
 		Size: 1,1
 		PickAny: True
 		Category: Terrain
@@ -106,7 +106,7 @@ Templates:
 			14: Clear
 			15: Clear
 	Template@0:
-		Image: clear1.jun
+		Images: clear1.jun
 		Size: 1,1
 		PickAny: True
 		Category: Terrain
@@ -129,14 +129,14 @@ Templates:
 			15: Clear
 	Template@1:
 		Id: 1
-		Image: w1.jun
+		Images: w1.jun
 		Size: 1,1
 		Category: Terrain
 		Tiles:
 			0: Water
 	Template@2:
 		Id: 2
-		Image: w2.jun
+		Images: w2.jun
 		Size: 2,2
 		Category: Terrain
 		Tiles:
@@ -146,7 +146,7 @@ Templates:
 			3: Water
 	Template@3:
 		Id: 3
-		Image: sh1.jun
+		Images: sh1.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -161,7 +161,7 @@ Templates:
 			8: Water
 	Template@4:
 		Id: 4
-		Image: sh2.jun
+		Images: sh2.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -176,14 +176,14 @@ Templates:
 			8: Water
 	Template@5:
 		Id: 5
-		Image: sh3.jun
+		Images: sh3.jun
 		Size: 1,1
 		Category: Beach
 		Tiles:
 			0: River
 	Template@6:
 		Id: 6
-		Image: sh4.jun
+		Images: sh4.jun
 		Size: 2,1
 		Category: Beach
 		Tiles:
@@ -191,7 +191,7 @@ Templates:
 			1: River
 	Template@7:
 		Id: 7
-		Image: sh5.jun
+		Images: sh5.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -206,7 +206,7 @@ Templates:
 			8: Water
 	Template@8:
 		Id: 8
-		Image: sh11.jun
+		Images: sh11.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -221,7 +221,7 @@ Templates:
 			8: Water
 	Template@9:
 		Id: 9
-		Image: sh12.jun
+		Images: sh12.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -236,7 +236,7 @@ Templates:
 			8: Clear
 	Template@10:
 		Id: 10
-		Image: sh13.jun
+		Images: sh13.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -251,7 +251,7 @@ Templates:
 			8: Road
 	Template@11:
 		Id: 11
-		Image: sh14.jun
+		Images: sh14.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -266,7 +266,7 @@ Templates:
 			8: Tree
 	Template@12:
 		Id: 12
-		Image: sh15.jun
+		Images: sh15.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -280,7 +280,7 @@ Templates:
 			8: Clear
 	Template@13:
 		Id: 13
-		Image: s01.jun
+		Images: s01.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -290,7 +290,7 @@ Templates:
 			3: Rock
 	Template@14:
 		Id: 14
-		Image: s02.jun
+		Images: s02.jun
 		Size: 2,3
 		Category: Cliffs
 		Tiles:
@@ -302,7 +302,7 @@ Templates:
 			5: Rock
 	Template@15:
 		Id: 15
-		Image: s03.jun
+		Images: s03.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -312,7 +312,7 @@ Templates:
 			3: Rock
 	Template@16:
 		Id: 16
-		Image: s04.jun
+		Images: s04.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -322,7 +322,7 @@ Templates:
 			3: Rock
 	Template@17:
 		Id: 17
-		Image: s05.jun
+		Images: s05.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -332,7 +332,7 @@ Templates:
 			3: Rock
 	Template@18:
 		Id: 18
-		Image: s06.jun
+		Images: s06.jun
 		Size: 2,3
 		Category: Cliffs
 		Tiles:
@@ -343,7 +343,7 @@ Templates:
 			4: Rock
 	Template@19:
 		Id: 19
-		Image: s07.jun
+		Images: s07.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -353,7 +353,7 @@ Templates:
 			3: Rock
 	Template@20:
 		Id: 20
-		Image: s08.jun
+		Images: s08.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -363,7 +363,7 @@ Templates:
 			3: Rock
 	Template@21:
 		Id: 21
-		Image: s09.jun
+		Images: s09.jun
 		Size: 3,2
 		Category: Cliffs
 		Tiles:
@@ -375,7 +375,7 @@ Templates:
 			5: Rock
 	Template@22:
 		Id: 22
-		Image: s10.jun
+		Images: s10.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -385,7 +385,7 @@ Templates:
 			3: Rock
 	Template@23:
 		Id: 23
-		Image: s11.jun
+		Images: s11.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -395,7 +395,7 @@ Templates:
 			3: Rock
 	Template@24:
 		Id: 24
-		Image: s12.jun
+		Images: s12.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -405,7 +405,7 @@ Templates:
 			3: Rock
 	Template@25:
 		Id: 25
-		Image: s13.jun
+		Images: s13.jun
 		Size: 3,2
 		Category: Cliffs
 		Tiles:
@@ -417,7 +417,7 @@ Templates:
 			5: Clear
 	Template@26:
 		Id: 26
-		Image: s14.jun
+		Images: s14.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -426,7 +426,7 @@ Templates:
 			2: Clear
 	Template@27:
 		Id: 27
-		Image: s15.jun
+		Images: s15.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -436,7 +436,7 @@ Templates:
 			3: Rock
 	Template@28:
 		Id: 28
-		Image: s16.jun
+		Images: s16.jun
 		Size: 2,3
 		Category: Cliffs
 		Tiles:
@@ -446,7 +446,7 @@ Templates:
 			5: Rock
 	Template@29:
 		Id: 29
-		Image: s17.jun
+		Images: s17.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -456,7 +456,7 @@ Templates:
 			3: Rock
 	Template@30:
 		Id: 30
-		Image: s18.jun
+		Images: s18.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -466,7 +466,7 @@ Templates:
 			3: Rock
 	Template@31:
 		Id: 31
-		Image: s19.jun
+		Images: s19.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -476,7 +476,7 @@ Templates:
 			3: Rock
 	Template@32:
 		Id: 32
-		Image: s20.jun
+		Images: s20.jun
 		Size: 2,3
 		Category: Cliffs
 		Tiles:
@@ -487,7 +487,7 @@ Templates:
 			5: Clear
 	Template@33:
 		Id: 33
-		Image: s21.jun
+		Images: s21.jun
 		Size: 1,2
 		Category: Cliffs
 		Tiles:
@@ -495,7 +495,7 @@ Templates:
 			1: Rock
 	Template@34:
 		Id: 34
-		Image: s22.jun
+		Images: s22.jun
 		Size: 2,1
 		Category: Cliffs
 		Tiles:
@@ -503,7 +503,7 @@ Templates:
 			1: Rock
 	Template@35:
 		Id: 35
-		Image: s23.jun
+		Images: s23.jun
 		Size: 3,2
 		Category: Cliffs
 		Tiles:
@@ -515,7 +515,7 @@ Templates:
 			5: Clear
 	Template@36:
 		Id: 36
-		Image: s24.jun
+		Images: s24.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -525,7 +525,7 @@ Templates:
 			3: Rock
 	Template@37:
 		Id: 37
-		Image: s25.jun
+		Images: s25.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -535,7 +535,7 @@ Templates:
 			3: Rock
 	Template@38:
 		Id: 38
-		Image: s26.jun
+		Images: s26.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -545,7 +545,7 @@ Templates:
 			3: Rock
 	Template@39:
 		Id: 39
-		Image: s27.jun
+		Images: s27.jun
 		Size: 3,2
 		Category: Cliffs
 		Tiles:
@@ -557,7 +557,7 @@ Templates:
 			5: Rock
 	Template@40:
 		Id: 40
-		Image: s28.jun
+		Images: s28.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -566,7 +566,7 @@ Templates:
 			3: Rock
 	Template@41:
 		Id: 41
-		Image: s29.jun
+		Images: s29.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -576,7 +576,7 @@ Templates:
 			3: Rock
 	Template@42:
 		Id: 42
-		Image: s30.jun
+		Images: s30.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -586,7 +586,7 @@ Templates:
 			3: Rock
 	Template@43:
 		Id: 43
-		Image: s31.jun
+		Images: s31.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -596,7 +596,7 @@ Templates:
 			3: Rock
 	Template@44:
 		Id: 44
-		Image: s32.jun
+		Images: s32.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -605,7 +605,7 @@ Templates:
 			2: Rock
 	Template@45:
 		Id: 45
-		Image: s33.jun
+		Images: s33.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -615,7 +615,7 @@ Templates:
 			3: Rock
 	Template@46:
 		Id: 46
-		Image: s34.jun
+		Images: s34.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -625,7 +625,7 @@ Templates:
 			3: Rock
 	Template@47:
 		Id: 47
-		Image: s35.jun
+		Images: s35.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -635,7 +635,7 @@ Templates:
 			3: Rock
 	Template@48:
 		Id: 48
-		Image: s36.jun
+		Images: s36.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -645,7 +645,7 @@ Templates:
 			3: Rock
 	Template@49:
 		Id: 49
-		Image: s37.jun
+		Images: s37.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -655,7 +655,7 @@ Templates:
 			3: Rock
 	Template@50:
 		Id: 50
-		Image: s38.jun
+		Images: s38.jun
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
@@ -665,7 +665,7 @@ Templates:
 			3: Rock
 	Template@51:
 		Id: 51
-		Image: sh32.jun
+		Images: sh32.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -680,7 +680,7 @@ Templates:
 			8: Clear
 	Template@52:
 		Id: 52
-		Image: sh33.jun
+		Images: sh33.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -695,21 +695,21 @@ Templates:
 			8: Clear
 	Template@67:
 		Id: 67
-		Image: p01.jun
+		Images: p01.jun
 		Size: 1,1
 		Category: Debris
 		Tiles:
 			0: Wall
 	Template@68:
 		Id: 68
-		Image: p02.jun
+		Images: p02.jun
 		Size: 1,1
 		Category: Debris
 		Tiles:
 			0: Wall
 	Template@69:
 		Id: 69
-		Image: p03.jun
+		Images: p03.jun
 		Size: 1,1
 		PickAny: True
 		Category: Debris
@@ -719,14 +719,14 @@ Templates:
 			2: Clear
 	Template@70:
 		Id: 70
-		Image: p04.jun
+		Images: p04.jun
 		Size: 1,1
 		Category: Debris
 		Tiles:
 			0: Wall
 	Template@73:
 		Id: 73
-		Image: p07.jun
+		Images: p07.jun
 		Size: 4,2
 		Category: Debris
 		Tiles:
@@ -740,7 +740,7 @@ Templates:
 			7: Clear
 	Template@74:
 		Id: 74
-		Image: p08.jun
+		Images: p08.jun
 		Size: 3,2
 		Category: Debris
 		Tiles:
@@ -752,7 +752,7 @@ Templates:
 			5: Clear
 	Template@75:
 		Id: 75
-		Image: sh16.jun
+		Images: sh16.jun
 		Size: 3,2
 		Category: Beach
 		Tiles:
@@ -764,7 +764,7 @@ Templates:
 			5: River
 	Template@76:
 		Id: 76
-		Image: sh17.jun
+		Images: sh17.jun
 		Size: 2,2
 		Category: Beach
 		Tiles:
@@ -774,7 +774,7 @@ Templates:
 			3: Water
 	Template@77:
 		Id: 77
-		Image: sh18.jun
+		Images: sh18.jun
 		Size: 2,2
 		Category: Beach
 		Tiles:
@@ -784,7 +784,7 @@ Templates:
 			3: Water
 	Template@79:
 		Id: 79
-		Image: p13.jun
+		Images: p13.jun
 		Size: 3,2
 		Category: Debris
 		Tiles:
@@ -796,7 +796,7 @@ Templates:
 			5: Wall
 	Template@80:
 		Id: 80
-		Image: p14.jun
+		Images: p14.jun
 		Size: 2,1
 		Category: Debris
 		Tiles:
@@ -804,14 +804,14 @@ Templates:
 			1: Wall
 	Template@82:
 		Id: 82
-		Image: b1.jun
+		Images: b1.jun
 		Size: 1,1
 		Category: Debris
 		Tiles:
 			0: Rock
 	Template@83:
 		Id: 83
-		Image: b2.jun
+		Images: b2.jun
 		Size: 2,1
 		Category: Debris
 		Tiles:
@@ -819,7 +819,7 @@ Templates:
 			1: Rock
 	Template@84:
 		Id: 84
-		Image: b3.jun
+		Images: b3.jun
 		Size: 3,1
 		Category: Debris
 		Tiles:
@@ -828,7 +828,7 @@ Templates:
 			2: Clear
 	Template@88:
 		Id: 88
-		Image: sh6.jun
+		Images: sh6.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -843,7 +843,7 @@ Templates:
 			8: Water
 	Template@89:
 		Id: 89
-		Image: sh7.jun
+		Images: sh7.jun
 		Size: 2,2
 		Category: Beach
 		Tiles:
@@ -853,7 +853,7 @@ Templates:
 			3: Water
 	Template@90:
 		Id: 90
-		Image: sh8.jun
+		Images: sh8.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -868,7 +868,7 @@ Templates:
 			8: Water
 	Template@91:
 		Id: 91
-		Image: sh9.jun
+		Images: sh9.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -883,7 +883,7 @@ Templates:
 			8: Clear
 	Template@92:
 		Id: 92
-		Image: sh10.jun
+		Images: sh10.jun
 		Size: 2,2
 		Category: Beach
 		Tiles:
@@ -893,7 +893,7 @@ Templates:
 			3: River
 	Template@93:
 		Id: 93
-		Image: d01.jun
+		Images: d01.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -902,7 +902,7 @@ Templates:
 			3: Clear
 	Template@94:
 		Id: 94
-		Image: d02.jun
+		Images: d02.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -912,7 +912,7 @@ Templates:
 			3: Clear
 	Template@95:
 		Id: 95
-		Image: d03.jun
+		Images: d03.jun
 		Size: 1,2
 		Category: Road
 		Tiles:
@@ -920,7 +920,7 @@ Templates:
 			1: Clear
 	Template@96:
 		Id: 96
-		Image: d04.jun
+		Images: d04.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -929,7 +929,7 @@ Templates:
 			3: Clear
 	Template@97:
 		Id: 97
-		Image: d05.jun
+		Images: d05.jun
 		Size: 3,4
 		Category: Road
 		Tiles:
@@ -943,7 +943,7 @@ Templates:
 			10: Road
 	Template@98:
 		Id: 98
-		Image: d06.jun
+		Images: d06.jun
 		Size: 2,3
 		Category: Road
 		Tiles:
@@ -954,7 +954,7 @@ Templates:
 			5: Clear
 	Template@99:
 		Id: 99
-		Image: d07.jun
+		Images: d07.jun
 		Size: 3,2
 		Category: Road
 		Tiles:
@@ -965,7 +965,7 @@ Templates:
 			5: Clear
 	Template@100:
 		Id: 100
-		Image: d08.jun
+		Images: d08.jun
 		Size: 3,2
 		Category: Road
 		Tiles:
@@ -975,7 +975,7 @@ Templates:
 			5: Clear
 	Template@101:
 		Id: 101
-		Image: d09.jun
+		Images: d09.jun
 		Size: 4,3
 		Category: Road
 		Tiles:
@@ -991,7 +991,7 @@ Templates:
 			11: Clear
 	Template@102:
 		Id: 102
-		Image: d10.jun
+		Images: d10.jun
 		Size: 4,2
 		Category: Road
 		Tiles:
@@ -1003,7 +1003,7 @@ Templates:
 			7: Road
 	Template@103:
 		Id: 103
-		Image: d11.jun
+		Images: d11.jun
 		Size: 2,3
 		Category: Road
 		Tiles:
@@ -1013,7 +1013,7 @@ Templates:
 			4: Clear
 	Template@104:
 		Id: 104
-		Image: d12.jun
+		Images: d12.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1022,7 +1022,7 @@ Templates:
 			3: Road
 	Template@105:
 		Id: 105
-		Image: d13.jun
+		Images: d13.jun
 		Size: 4,3
 		Category: Road
 		Tiles:
@@ -1037,7 +1037,7 @@ Templates:
 			11: Road
 	Template@106:
 		Id: 106
-		Image: d14.jun
+		Images: d14.jun
 		Size: 3,3
 		Category: Road
 		Tiles:
@@ -1051,7 +1051,7 @@ Templates:
 			8: Road
 	Template@107:
 		Id: 107
-		Image: d15.jun
+		Images: d15.jun
 		Size: 3,3
 		Category: Road
 		Tiles:
@@ -1065,7 +1065,7 @@ Templates:
 			7: Clear
 	Template@108:
 		Id: 108
-		Image: d16.jun
+		Images: d16.jun
 		Size: 3,3
 		Category: Road
 		Tiles:
@@ -1080,7 +1080,7 @@ Templates:
 			8: Wall
 	Template@109:
 		Id: 109
-		Image: d17.jun
+		Images: d17.jun
 		Size: 3,2
 		Category: Road
 		Tiles:
@@ -1092,7 +1092,7 @@ Templates:
 			5: Clear
 	Template@110:
 		Id: 110
-		Image: d18.jun
+		Images: d18.jun
 		Size: 3,3
 		Category: Road
 		Tiles:
@@ -1107,7 +1107,7 @@ Templates:
 			8: Wall
 	Template@111:
 		Id: 111
-		Image: d19.jun
+		Images: d19.jun
 		Size: 3,3
 		Category: Road
 		Tiles:
@@ -1122,7 +1122,7 @@ Templates:
 			8: Clear
 	Template@112:
 		Id: 112
-		Image: d20.jun
+		Images: d20.jun
 		Size: 3,3
 		Category: Road
 		Tiles:
@@ -1136,7 +1136,7 @@ Templates:
 			8: Road
 	Template@113:
 		Id: 113
-		Image: d21.jun
+		Images: d21.jun
 		Size: 3,2
 		Category: Road
 		Tiles:
@@ -1148,7 +1148,7 @@ Templates:
 			5: Clear
 	Template@114:
 		Id: 114
-		Image: d22.jun
+		Images: d22.jun
 		Size: 3,3
 		Category: Road
 		Tiles:
@@ -1161,7 +1161,7 @@ Templates:
 			8: Clear
 	Template@115:
 		Id: 115
-		Image: d23.jun
+		Images: d23.jun
 		Size: 3,3
 		Category: Road
 		Tiles:
@@ -1174,7 +1174,7 @@ Templates:
 			7: Clear
 	Template@116:
 		Id: 116
-		Image: d24.jun
+		Images: d24.jun
 		Size: 3,3
 		Category: Road
 		Tiles:
@@ -1187,7 +1187,7 @@ Templates:
 			8: Road
 	Template@117:
 		Id: 117
-		Image: d25.jun
+		Images: d25.jun
 		Size: 3,3
 		Category: Road
 		Tiles:
@@ -1200,7 +1200,7 @@ Templates:
 			8: Road
 	Template@118:
 		Id: 118
-		Image: d26.jun
+		Images: d26.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1208,7 +1208,7 @@ Templates:
 			2: Clear
 	Template@119:
 		Id: 119
-		Image: d27.jun
+		Images: d27.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1216,7 +1216,7 @@ Templates:
 			2: Clear
 	Template@120:
 		Id: 120
-		Image: d28.jun
+		Images: d28.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1225,7 +1225,7 @@ Templates:
 			2: Clear
 	Template@121:
 		Id: 121
-		Image: d29.jun
+		Images: d29.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1234,7 +1234,7 @@ Templates:
 			2: Clear
 	Template@122:
 		Id: 122
-		Image: d30.jun
+		Images: d30.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1243,7 +1243,7 @@ Templates:
 			2: Road
 	Template@123:
 		Id: 123
-		Image: d31.jun
+		Images: d31.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1252,7 +1252,7 @@ Templates:
 			3: Road
 	Template@124:
 		Id: 124
-		Image: d32.jun
+		Images: d32.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1261,7 +1261,7 @@ Templates:
 			3: Clear
 	Template@125:
 		Id: 125
-		Image: d33.jun
+		Images: d33.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1270,7 +1270,7 @@ Templates:
 			3: Road
 	Template@126:
 		Id: 126
-		Image: d34.jun
+		Images: d34.jun
 		Size: 3,3
 		Category: Road
 		Tiles:
@@ -1283,7 +1283,7 @@ Templates:
 			7: Road
 	Template@127:
 		Id: 127
-		Image: d35.jun
+		Images: d35.jun
 		Size: 3,3
 		Category: Road
 		Tiles:
@@ -1296,7 +1296,7 @@ Templates:
 			7: Clear
 	Template@128:
 		Id: 128
-		Image: d36.jun
+		Images: d36.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1304,7 +1304,7 @@ Templates:
 			3: Clear
 	Template@129:
 		Id: 129
-		Image: d37.jun
+		Images: d37.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1312,7 +1312,7 @@ Templates:
 			3: Clear
 	Template@130:
 		Id: 130
-		Image: d38.jun
+		Images: d38.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1321,7 +1321,7 @@ Templates:
 			3: Clear
 	Template@131:
 		Id: 131
-		Image: d39.jun
+		Images: d39.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1330,7 +1330,7 @@ Templates:
 			3: Clear
 	Template@132:
 		Id: 132
-		Image: d40.jun
+		Images: d40.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1339,7 +1339,7 @@ Templates:
 			3: Clear
 	Template@133:
 		Id: 133
-		Image: d41.jun
+		Images: d41.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1348,7 +1348,7 @@ Templates:
 			3: Clear
 	Template@134:
 		Id: 134
-		Image: d42.jun
+		Images: d42.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1357,7 +1357,7 @@ Templates:
 			3: Clear
 	Template@135:
 		Id: 135
-		Image: d43.jun
+		Images: d43.jun
 		Size: 2,2
 		Category: Road
 		Tiles:
@@ -1366,7 +1366,7 @@ Templates:
 			3: Road
 	Template@136:
 		Id: 136
-		Image: rv01.jun
+		Images: rv01.jun
 		Size: 5,4
 		Category: River
 		Tiles:
@@ -1386,7 +1386,7 @@ Templates:
 			17: Clear
 	Template@137:
 		Id: 137
-		Image: rv02.jun
+		Images: rv02.jun
 		Size: 5,3
 		Category: River
 		Tiles:
@@ -1405,7 +1405,7 @@ Templates:
 			12: Clear
 	Template@138:
 		Id: 138
-		Image: rv03.jun
+		Images: rv03.jun
 		Size: 4,4
 		Category: River
 		Tiles:
@@ -1424,7 +1424,7 @@ Templates:
 			15: River
 	Template@139:
 		Id: 139
-		Image: rv04.jun
+		Images: rv04.jun
 		Size: 4,4
 		Category: River
 		Tiles:
@@ -1442,7 +1442,7 @@ Templates:
 			14: Rock
 	Template@140:
 		Id: 140
-		Image: rv05.jun
+		Images: rv05.jun
 		Size: 3,3
 		Category: River
 		Tiles:
@@ -1457,7 +1457,7 @@ Templates:
 			8: River
 	Template@141:
 		Id: 141
-		Image: rv06.jun
+		Images: rv06.jun
 		Size: 3,2
 		Category: River
 		Tiles:
@@ -1469,7 +1469,7 @@ Templates:
 			5: Clear
 	Template@142:
 		Id: 142
-		Image: rv07.jun
+		Images: rv07.jun
 		Size: 3,2
 		Category: River
 		Tiles:
@@ -1481,7 +1481,7 @@ Templates:
 			5: River
 	Template@143:
 		Id: 143
-		Image: rv08.jun
+		Images: rv08.jun
 		Size: 2,2
 		Category: River
 		Tiles:
@@ -1491,7 +1491,7 @@ Templates:
 			3: River
 	Template@144:
 		Id: 144
-		Image: rv09.jun
+		Images: rv09.jun
 		Size: 2,2
 		Category: River
 		Tiles:
@@ -1501,7 +1501,7 @@ Templates:
 			3: River
 	Template@145:
 		Id: 145
-		Image: rv10.jun
+		Images: rv10.jun
 		Size: 2,2
 		Category: River
 		Tiles:
@@ -1511,7 +1511,7 @@ Templates:
 			3: River
 	Template@146:
 		Id: 146
-		Image: rv11.jun
+		Images: rv11.jun
 		Size: 2,2
 		Category: River
 		Tiles:
@@ -1521,7 +1521,7 @@ Templates:
 			3: Clear
 	Template@147:
 		Id: 147
-		Image: rv12.jun
+		Images: rv12.jun
 		Size: 3,4
 		Category: River
 		Tiles:
@@ -1539,7 +1539,7 @@ Templates:
 			11: River
 	Template@148:
 		Id: 148
-		Image: rv13.jun
+		Images: rv13.jun
 		Size: 4,4
 		Category: River
 		Tiles:
@@ -1559,7 +1559,7 @@ Templates:
 			15: Rock
 	Template@161:
 		Id: 161
-		Image: ford1.jun
+		Images: ford1.jun
 		Size: 3,3
 		Category: River
 		Tiles:
@@ -1574,7 +1574,7 @@ Templates:
 			8: River
 	Template@162:
 		Id: 162
-		Image: ford2.jun
+		Images: ford2.jun
 		Size: 3,3
 		Category: River
 		Tiles:
@@ -1589,7 +1589,7 @@ Templates:
 			8: Clear
 	Template@163:
 		Id: 163
-		Image: falls1.jun
+		Images: falls1.jun
 		Size: 3,3
 		Category: River
 		Tiles:
@@ -1604,7 +1604,7 @@ Templates:
 			8: Rock
 	Template@164:
 		Id: 164
-		Image: falls2.jun
+		Images: falls2.jun
 		Size: 3,2
 		Category: River
 		Tiles:
@@ -1616,7 +1616,7 @@ Templates:
 			5: River
 	Template@165:
 		Id: 165
-		Image: bridge1.jun
+		Images: bridge1.jun
 		Size: 4,4
 		Category: Bridge
 		Tiles:
@@ -1636,7 +1636,7 @@ Templates:
 			15: River
 	Template@166:
 		Id: 166
-		Image: bridge1d.jun
+		Images: bridge1d.jun
 		Size: 4,4
 		Category: Bridge
 		Tiles:
@@ -1656,7 +1656,7 @@ Templates:
 			15: River
 	Template@167:
 		Id: 167
-		Image: bridge2.jun
+		Images: bridge2.jun
 		Size: 5,5
 		Category: Bridge
 		Tiles:
@@ -1683,7 +1683,7 @@ Templates:
 			24: Road
 	Template@168:
 		Id: 168
-		Image: bridge2d.jun
+		Images: bridge2d.jun
 		Size: 5,5
 		Category: Bridge
 		Tiles:
@@ -1710,7 +1710,7 @@ Templates:
 			24: Road
 	Template@186:
 		Id: 186
-		Image: sh34.jun
+		Images: sh34.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -1725,7 +1725,7 @@ Templates:
 			8: Water
 	Template@187:
 		Id: 187
-		Image: sh35.jun
+		Images: sh35.jun
 		Size: 3,3
 		Category: Beach
 		Tiles:
@@ -1740,7 +1740,7 @@ Templates:
 			8: Clear
 	Template@188:
 		Id: 188
-		Image: a10cr.tem
+		Images: a10cr.tem
 		Size: 4,2
 		Category: Debris
 		Tiles:

@@ -60,7 +60,7 @@ namespace OpenRA.Graphics
 			{
 				var variants = new List<Sprite[]>();
 
-				foreach (var i in t.Value.Image)
+				foreach (var i in t.Value.Images)
 				{
 					var allFrames = frameCache[i];
 					var frames = t.Value.Frames != null ? t.Value.Frames.Select(f => allFrames[f]).ToArray() : allFrames;
@@ -73,7 +73,7 @@ namespace OpenRA.Graphics
 				if (tileset.IgnoreTileSpriteOffsets)
 					allSprites = allSprites.Select(s => new Sprite(s.Sheet, s.Bounds, float2.Zero, s.Channel, s.BlendMode));
 
-				templates.Add(t.Value.Id, new TheaterTemplate(allSprites.ToArray(), variants.First().Count(), t.Value.Image.Length));
+				templates.Add(t.Value.Id, new TheaterTemplate(allSprites.ToArray(), variants.First().Count(), t.Value.Images.Length));
 			}
 
 			// 1x1px transparent tile
