@@ -1,6 +1,5 @@
 #Tiberian Sun
 intro: Intro
-maps: Map Selection
 approach: Approach
 defense: The Defense
 duskhour: Dusk Hour
@@ -20,6 +19,7 @@ storm: Storm
 timebomb: Timebomb
 valves1b: Valves
 whatlurk: What Lurks
+maps: Map Selection
 #Firestorm
 dmachine: Deploy Machines
 elusive: Elusive
