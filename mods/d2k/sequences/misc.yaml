@@ -1,4 +1,6 @@
 explosion:
+	Defaults:
+		BlendMode: Additive
 	piff: DATA.R8
 		Start: 3626
 		Length: 5
@@ -6,64 +8,51 @@ explosion:
 		Start: 3429
 		Length: 4
 		Tick: 80
-		BlendMode: Additive
 	small_explosion: DATA.R8
 		Start: 3403
 		Length: 15
-		BlendMode: Additive
 	med_explosion: DATA.R8
 		Start: 3390
 		Length: 12
-		BlendMode: Additive
 	tiny_explosion: DATA.R8
 		Start: 3386
 		Length: 4
 		Tick: 80
-		BlendMode: Additive
 	nuke: DATA.R8
 		Start: 3965
 		Length: 14
 		Tick: 60
-		BlendMode: Additive
 	mini_explosion: DATA.R8
 		Start: 3403
 		Length: 15
 		Tick: 60
-		BlendMode: Additive
 	self_destruct: DATA.R8
 		Start: 3433
 		Length: 15
-		BlendMode: Additive
 	building: DATA.R8
 		Start: 3448
 		Length: 22
-		BlendMode: Additive
 	large_explosion: DATA.R8
 		Start: 3988
 		Length: 22
-		BlendMode: Additive
 	artillery: DATA.R8
 		Start: 3988
 		Length: 22
-		BlendMode: Additive
 	small_artillery: DATA.R8
 		Start: 3390
 		Length: 12
 		Tick: 60
-		BlendMode: Additive
 	small_napalm: DATA.R8
 		Start: 3421
 		Length: 8
-		BlendMode: Additive
 	shockwave: DATA.R8
 		Start: 3687
 		Length: 6
-		BlendMode: Additive
 		Tick: 120
 	deviator: DATA.R8
 		Start: 3512
 		Length: 23
-		BlendMode: Additive
+		BlendMode: SoftAdditive
 		Tick: 80
 	corpse: DATA.R8
 		Start: 430
@@ -82,35 +71,35 @@ small_trail:
 		Start: 3735
 		Length: 4
 		Tick: 80
-		BlendMode: Additive
+		BlendMode: SoftAdditive
 
 small_trail2:
 	idle: DATA.R8
 		Start: 3540
 		Length: 4
 		Tick: 80
-		BlendMode: Additive
+		BlendMode: SoftAdditive
 
 bazooka_trail:
 	idle: DATA.R8
 		Start: 3381
 		Length: 4
 		Tick: 80
-		BlendMode: Additive
+		BlendMode: Translucency75
 
 bazooka_trail2:
 	idle: DATA.R8
 		Start: 3544
 		Length: 4
 		Tick: 80
-		BlendMode: Additive
+		BlendMode: Translucency75
 
 deviator_trail:
 	idle: DATA.R8
 		Start: 3535
 		Length: 5
 		Tick: 80
-		BlendMode: Additive
+		BlendMode: SoftAdditive
 
 laserfire:
 	idle: DATA.R8
