@@ -789,8 +789,9 @@ function findReplace:createPanel()
       mgr:Update()
       local editor = self:GetEditor()
       if editor then
-        -- restore original position for Shift-Esc
-        if event:ShiftDown() and findReplace.startpos then
+        -- restore original position for Shift-Esc or failed search
+        if findReplace.startpos
+        and (event:ShiftDown() or findReplace.foundString == false) then
           editor:GotoPos(findReplace.startpos)
         end
         editor:SetFocus()
