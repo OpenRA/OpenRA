@@ -209,6 +209,7 @@ return {
   ["Recent &Projects"] = "Недавние &проекты", -- src\editor\menu_file.lua
   ["Recent Files"] = "Недавние файлы", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Вернуть последнее отмененное изменение", -- src\editor\menu_edit.lua
+  ["Refresh"] = "Oбновление", -- src\editor\filetree.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "Отказано в запросе на запуск новой отладочной сессии, поскольку одна сессия уже выполняется.", -- src\editor\debugger.lua
   ["Regular &expression"] = "Регулярное выражение", -- src\editor\findreplace.lua
   ["Remote console"] = "Удаленная консоль", -- src\editor\shellbox.lua

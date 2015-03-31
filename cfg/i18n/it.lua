@@ -208,6 +208,7 @@ return {
   ["Recent &Projects"] = "Progetti Recenti", -- src\editor\menu_file.lua
   ["Recent Files"] = "Files recenti", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Ripeti l'ultima azione annullata", -- src\editor\menu_edit.lua
+  ["Refresh"] = "Rinfrescare", -- src\editor\filetree.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "Impossibile aprire una nuova sessione di debug in quanto ne esiste una in corso", -- src\editor\debugger.lua
   ["Regular &expression"] = "Regular &expression", -- src\editor\findreplace.lua
   ["Remote console"] = "Console remota", -- src\editor\shellbox.lua

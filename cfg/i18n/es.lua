@@ -209,6 +209,7 @@ return {
   ["Recent &Projects"] = nil, -- src\editor\menu_file.lua
   ["Recent Files"] = "Archivos recientes", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Rehacer la última edición deshecha", -- src\editor\menu_edit.lua
+  ["Refresh"] = "Refrescar", -- src\editor\filetree.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "No se pudo lanzar una nueva sesión de depuración porque ya hay una en curso.", -- src\editor\debugger.lua
   ["Regular &expression"] = nil, -- src\editor\findreplace.lua
   ["Remote console"] = "Consola remota", -- src\editor\shellbox.lua

@@ -207,6 +207,7 @@ return {
   ["Recent &Projects"] = nil, -- src\editor\menu_file.lua
   ["Recent Files"] = "最近的文档", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "重做最后被取消的编辑", -- src\editor\menu_edit.lua
+  ["Refresh"] = "刷新", -- src\editor\filetree.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "因为有另一个除错在进行，拒绝开启新的除错对话", -- src\editor\debugger.lua
   ["Regular &expression"] = "正则表达式", -- src\editor\findreplace.lua
   ["Remote console"] = "远程主控台", -- src\editor\shellbox.lua

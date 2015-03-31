@@ -470,6 +470,8 @@ local function treeSetConnectorsAndIcons(tree)
         end
       end
     end)
+  tree:Connect(ID_REFRESH, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function() refreshChildren() end)
   tree:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED,
     function() ShowLocation(tree:GetItemFullName(tree:GetSelection())) end)
   tree:Connect(ID_HIDEEXTENSION, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -535,6 +537,7 @@ local function treeSetConnectorsAndIcons(tree)
         { ID_OPENEXTENSION, TR("Open With Default Program") },
         { ID_COPYFULLPATH, TR("Copy Full Path") },
         { ID_SHOWLOCATION, TR("Show Location") },
+        { ID_REFRESH, TR("Refresh") },
       }
       local extlist = {
         {},

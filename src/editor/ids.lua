@@ -35,6 +35,7 @@ ID_UNMAPDIRECTORY   = NewID()
 ID_OPENEXTENSION    = NewID()
 ID_COPYFULLPATH     = NewID()
 ID_SHOWLOCATION     = NewID()
+ID_REFRESH          = NewID()
 ID_SAVE             = linux and NewID() or wx.wxID_SAVE
 ID_SAVEAS           = linux and NewID() or wx.wxID_SAVEAS
 ID_SAVEALL          = NewID()

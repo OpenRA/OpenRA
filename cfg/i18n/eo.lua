@@ -209,6 +209,7 @@ return {
   ["Recent &Projects"] = "Antaŭnelongaj &projektoj", -- src\editor\menu_file.lua
   ["Recent Files"] = "Antaŭnelongaj dosieroj", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Refari lastan redakton", -- src\editor\menu_edit.lua
+  ["Refresh"] = "Refreŝigu", -- src\editor\menu_file.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "Peto por komenci novan sencimigan seancon malakceptis, ĉar seanco jam faratas.", -- src\editor\debugger.lua
   ["Regular &expression"] = "Regul&esprimo", -- src\editor\findreplace.lua
   ["Remote console"] = "Fora konzolo", -- src\editor\shellbox.lua
