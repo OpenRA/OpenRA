@@ -1,17 +1,8 @@
-dpod:
-	icon: podsicon
-
-dshp:
-	icon: xxicon
-
 orca:
 	icon: orcaicon
 
 orcab:
 	icon: obmbicon
-
-orcatran:
-	icon: crryicon
 
 trnsport:
 	icon: otrnicon

@@ -64,6 +64,7 @@ Rules:
 	./mods/ts/rules/misc.yaml
 	./mods/ts/rules/ai.yaml
 	./mods/ts/rules/civilian.yaml
+	./mods/ts/rules/civilian-vehicles.yaml
 	./mods/ts/rules/player.yaml
 	./mods/ts/rules/world.yaml
 	./mods/ts/rules/aircraft.yaml

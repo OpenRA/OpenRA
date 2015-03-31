@@ -234,10 +234,6 @@
 		Cost: 10
 	Tooltip:
 		Name: Civilian
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 1000
-		Owner: gdi, nod
 	Health:
 		HP: 50
 	Mobile:
@@ -300,6 +296,10 @@
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Vehicle
+	Capturable:
+		Type: Vehicle
+		CaptureThreshold: 1
+		CancelActivity: True
 	GivesBounty:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
@@ -380,6 +380,10 @@
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Vehicle
+	Capturable:
+		Type: Vehicle
+		CaptureThreshold: 1
+		CancelActivity: True
 	GivesBounty:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:

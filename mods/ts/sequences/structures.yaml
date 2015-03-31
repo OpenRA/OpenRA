@@ -623,7 +623,7 @@ napuls:
 	make: ntpulsmk
 		Length: 20
 		ShadowStart: 20
-	icon: pulsicon
+	icon: empicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -759,33 +759,6 @@ gacsam:
 		Length: 11
 		ShadowStart: 11
 	icon: twr3icon
-		Offset: 0, 0
-		UseTilesetCode: false
-
-gaspot:
-	Defaults:
-		Offset: 0, -12
-		UseTilesetCode: true
-	idle:
-		ShadowStart: 3
-	damaged-idle:
-		Start: 1
-		ShadowStart: 4
-	dead:
-		Start: 2
-		ShadowStart: 5
-		Tick: 400
-	idle-lights: gaspot_a
-		Length: 8
-		Tick: 200
-	damaged-idle-lights: gaspot_a
-		Start: 8
-		Length: 8
-		Tick: 200
-	make: gaspotmk
-		Length: 14
-		ShadowStart: 14
-	icon: spoticon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -941,22 +914,6 @@ gasilo:
 		Length: 18
 		ShadowStart: 20
 	icon: siloicon
-		Offset: 0, 0
-		UseTilesetCode: false
-
-galite:
-	Defaults:
-		Offset: 0, -12
-		UseTilesetCode: true
-	idle: gtlite
-		ShadowStart: 2
-	damaged-idle: gtlite
-		Start: 1
-		ShadowStart: 3
-#	lighting: alphatst
-#		ZOffset: -1c511
-#		BlendMode: Alpha
-	icon: liteicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
