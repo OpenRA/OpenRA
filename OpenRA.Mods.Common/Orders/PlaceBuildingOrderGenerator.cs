@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Orders
 		readonly Actor producer;
 		readonly string building;
 		readonly BuildingInfo buildingInfo;
+		readonly PlaceBuildingInfo placeBuildingInfo;
 		readonly string race;
 		readonly Sprite buildOk;
 		readonly Sprite buildBlocked;
@@ -33,6 +34,7 @@ namespace OpenRA.Mods.Common.Orders
 		public PlaceBuildingOrderGenerator(ProductionQueue queue, string name)
 		{
 			producer = queue.Actor;
+			placeBuildingInfo = producer.Info.Traits.Get<PlaceBuildingInfo>();
 			building = name;
 
 			// Clear selection if using Left-Click Orders
@@ -155,7 +157,7 @@ namespace OpenRA.Mods.Common.Orders
 					cells.Add(t, isCloseEnough && world.IsCellBuildable(t, buildingInfo) && res.GetResource(t) == null);
 			}
 
-			var pal = wr.Palette("terrain");
+			var pal = wr.Palette(placeBuildingInfo.Palette);
 			foreach (var c in cells)
 			{
 				var tile = c.Value ? buildOk : buildBlocked;
