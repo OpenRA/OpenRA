@@ -69,7 +69,7 @@ bazooka:
 		Speed: 42
 	Armament:
 		Weapon: Bazooka
-		LocalOffset: 0,0,555
+		LocalOffset: 128,0,256
 	AttackFrontal:
 	TakeCover:
 	AttractsWorms:

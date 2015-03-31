@@ -132,7 +132,6 @@ pips:
 
 clock:
 	idle: clock.shp
-		Start: 0
 		Length: *
 
 powerdown:
@@ -141,18 +140,15 @@ powerdown:
 
 poweroff:
 	offline: poweroff.shp
-		Start: 0
 		Length: *
 		Tick: 160
 
 rank:
 	rank: rank.shp
-		Start: 0
 		Length: *
 
 overlay:
 	build-valid-arrakis: DATA.R8
-		Start: 0
 		Offset: -16,-16
 	build-invalid: DATA.R8
 		Start: 1
@@ -161,7 +157,6 @@ overlay:
 		Start: 2
 		Offset: -16,-16
 	target-valid-arrakis: DATA.R8
-		Start: 0
 		Offset: -16,-16
 	target-invalid: DATA.R8
 		Start: 1
@@ -169,11 +164,9 @@ overlay:
 
 rallypoint:
 	flag: flagfly.shp
-		Start: 0
 		Length: *
 		Offset: 11,-5
 	circles: fpls.shp
-		Start: 0
 		Length: *
 
 beacon:
@@ -181,7 +174,6 @@ beacon:
 		Start: 148
 		Offset: -24,-24
 	circles: fpls.shp
-		Start: 0
 		Length: *
 
 rpg:
@@ -192,13 +184,11 @@ rpg:
 120mm:
 	idle: DATA.R8
 		Start: 3014
-		Length: 1
 		BlendMode: Additive
 
 155mm:
 	idle: DATA.R8
 		Start: 3081
-		Length: 1
 
 crate-effects:
 	dollar: DATA.R8
@@ -211,7 +201,6 @@ crate-effects:
 		Frames: 3965, 3964, 3963, 3962, 3961, 3960, 3959, 3958, 3957, 3956, 3955, 3954, 3953, 3952, 3951, 3950, 3949, 3948
 		Length: 18
 	levelup: levelup.shp
-		Start: 0
 		Length: *
 		Tick: 200
 	cloak: DATA.R8
@@ -238,10 +227,8 @@ missile2:
 atomic:
 	up: DATA.R8
 		Start: 2147
-		Length: 1
 	down: DATA.R8
 		Start: 2148
-		Length: 1
 
 fire:
 	1: DATA.R8
@@ -293,17 +280,14 @@ bombs:
 
 mpspawn:
 	idle: mpspawn.shp
-		Start: 0
 		Length: *
 
 waypoint:
 	idle: waypoint.shp
-		Start: 0
 		Length: *
 
 wormspawner:
 	idle: wormspawner.shp
-		Start: 0
 		Length: *
 
 sietch:
@@ -352,7 +336,6 @@ spicebloom:
 		Offset: -16,-16
 	active: DATA.R8
 		Start: 109
-		Length: 1
 		ZOffset: -511
 		Offset: -16,-16
 	idle: DATA.R8
