@@ -35,6 +35,7 @@ Player:
 		SpeedUp: True
 		RequireOwner: false
 	PlaceBuilding:
+		Palette: ra
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:

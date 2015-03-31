@@ -16,7 +16,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allows to execute build orders.", " Attach this to the player actor.")]
-	class PlaceBuildingInfo : TraitInfo<PlaceBuilding> { }
+	class PlaceBuildingInfo : TraitInfo<PlaceBuilding>
+	{
+		[Desc("Palette to use for rendering the placement sprite.")]
+		public readonly string Palette = "terrain";
+	}
 
 	class PlaceBuilding : IResolveOrder
 	{
