@@ -8,7 +8,7 @@ overlay:
 	target-select: place
 
 poweroff:
-	offline: poweroff
+	offline:
 		Length: *
 		Tick: 160
 
@@ -236,7 +236,7 @@ resources:
 	tib20: tib20
 
 shroud:
-	shroud: shroud
+	shroud:
 		Length: *
 	fog: fog
 		Length: *
