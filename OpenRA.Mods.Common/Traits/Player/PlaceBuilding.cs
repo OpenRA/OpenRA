@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Primitives;
@@ -26,6 +27,17 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public void ResolveOrder(Actor self, Order order)
 		{
+			if (order.OrderString == "ClearFootprintOfActors")
+			{
+				self.World.AddFrameEndTask(w =>
+				{
+					var actorName = order.TargetString;
+					var buildingInfo = self.World.Map.Rules.Actors[actorName].Traits.Get<BuildingInfo>();
+					var topLeft = order.TargetLocation;
+					TryMoveBlockers(self, actorName, buildingInfo, topLeft);
+				});
+			}
+
 			if (order.OrderString == "PlaceBuilding" || order.OrderString == "LineBuild")
 			{
 				self.World.AddFrameEndTask(w =>
@@ -71,9 +83,16 @@ namespace OpenRA.Mods.Common.Traits
 					}
 					else
 					{
-						if (!self.World.CanPlaceBuilding(order.TargetString, buildingInfo, order.TargetLocation, null)
-							|| !buildingInfo.IsCloseEnoughToBase(self.World, order.Player, order.TargetString, order.TargetLocation))
+						var closeEnough = buildingInfo.IsCloseEnoughToBase(self.World, order.Player, order.TargetString, order.TargetLocation);
+						if (!closeEnough)
 							return;
+
+						var canPlace = self.World.CanPlaceBuilding(order.TargetString, buildingInfo, order.TargetLocation, null);
+						if (!canPlace)
+						{
+							TryMoveBlockers(self, order.TargetString, buildingInfo, order.TargetLocation);
+							return;
+						}
 
 						var building = w.CreateActor(order.TargetString, new TypeDictionary
 						{
@@ -117,6 +136,36 @@ namespace OpenRA.Mods.Common.Traits
 			return p.World.ActorsWithTrait<ProductionQueue>()
 				.Where(a => a.Actor.Owner == p)
 				.SelectMany(a => a.Trait.BuildableItems()).Distinct().Count();
+		}
+
+		public static void TryMoveBlockers(Actor self, string toPlaceActorName, BuildingInfo buildingInfo, CPos topLeft)
+		{
+			var world = self.World;
+			var rules = world.Map.Rules;
+			var tiles = FootprintUtils.Tiles(rules, toPlaceActorName, buildingInfo, topLeft);
+			var perimeter = Util.ExpandFootprint(tiles, true).Except(tiles)
+				.Where(world.Map.Contains).ToList();
+
+			foreach (var t in tiles)
+			{
+				var blockers = world.ActorMap.GetUnitsAt(t)
+					.Where(a => a.Owner.IsAlliedWith(self.Owner));
+
+				var immobiles = blockers.Where(a => !a.HasTrait<IMove>());
+				if (immobiles.Any())
+					return;
+
+				foreach (var b in blockers)
+				{
+					var pos = world.Map.CellContaining(b.CenterPosition);
+					var closest = perimeter.MinBy(c => (c - pos).LengthSquared);
+
+					world.AddFrameEndTask(w => w.IssueOrder(new Order("Move", b, false)
+					{
+						TargetLocation = closest
+					}));
+				}
+			}
 		}
 	}
 }

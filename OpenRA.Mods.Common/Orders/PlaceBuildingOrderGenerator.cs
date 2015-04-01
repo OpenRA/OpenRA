@@ -74,9 +74,21 @@ namespace OpenRA.Mods.Common.Orders
 			if (mi.Button == MouseButton.Left)
 			{
 				var topLeft = xy - FootprintUtils.AdjustForBuildingSize(buildingInfo);
-				if (!world.CanPlaceBuilding(building, buildingInfo, topLeft, null)
-					|| !buildingInfo.IsCloseEnoughToBase(world, producer.Owner, building, topLeft))
+
+				var closeEnough = buildingInfo.IsCloseEnoughToBase(world, producer.Owner, building, topLeft);
+				var canPlace = world.CanPlaceBuilding(building, buildingInfo, topLeft, null);
+
+				if (!closeEnough || !canPlace)
 				{
+					if (!canPlace)
+					{
+						world.AddFrameEndTask(w => w.IssueOrder(new Order("ClearFootprintOfActors", producer, false)
+						{
+							TargetLocation = topLeft,
+							TargetString = building
+						}));
+					}
+
 					Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Country.Race);
 					yield break;
 				}
