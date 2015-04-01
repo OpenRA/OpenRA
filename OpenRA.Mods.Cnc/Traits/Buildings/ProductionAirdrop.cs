@@ -66,7 +66,8 @@ namespace OpenRA.Mods.Cnc.Traits
 					new FacingInit(64)
 				});
 
-				actor.QueueActivity(new Fly(actor, Target.FromCell(w, self.Location + new CVec(9, 0))));
+				var plane = actor.Trait<Plane>();
+				actor.QueueActivity(new Fly(actor, Target.FromCell(w, self.Location + new CVec(9, 0)), plane));
 				actor.QueueActivity(new Land(actor, Target.FromActor(self)));
 				actor.QueueActivity(new CallFunc(() =>
 				{
@@ -80,7 +81,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Country.Race);
 				}));
 
-				actor.QueueActivity(new Fly(actor, Target.FromCell(w, endPos)));
+				actor.QueueActivity(new Fly(actor, Target.FromCell(w, endPos), plane));
 				actor.QueueActivity(new RemoveSelf());
 			});
 

@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 					plane.Trait<Cargo>().Load(plane, crate);
 
 					plane.CancelActivity();
-					plane.QueueActivity(new Fly(plane, Target.FromPos(finishEdge)));
+					plane.QueueActivity(new Fly(plane, Target.FromPos(finishEdge), plane.Trait<Plane>()));
 					plane.QueueActivity(new RemoveSelf());
 				}
 				else

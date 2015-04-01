@@ -21,13 +21,16 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Target target;
 		readonly AttackPlane attackPlane;
+		readonly Plane plane;
 		readonly IEnumerable<AmmoPool> ammoPools;
 		Activity inner;
-		int ticksUntilTurn = 50;
+		int ticksUntilTurn;
 
-		public FlyAttack(Actor self, Target target)
+		public FlyAttack(Actor self, Target target, Plane plane)
 		{
 			this.target = target;
+			this.plane = plane;
+			ticksUntilTurn = plane.Info.AttackTurnDelay;
 			attackPlane = self.TraitOrDefault<AttackPlane>();
 			ammoPools = self.TraitsImplementing<AmmoPool>();
 		}
@@ -52,9 +55,9 @@ namespace OpenRA.Mods.Common.Activities
 
 				// TODO: This should fire each weapon at its maximum range
 				if (target.IsInRange(self.CenterPosition, attackPlane.Armaments.Select(a => a.Weapon.MinRange).Min()))
-					inner = Util.SequenceActivities(new FlyTimed(ticksUntilTurn, self), new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
+					inner = Util.SequenceActivities(new FlyTimed(ticksUntilTurn, self), new Fly(self, target, plane), new FlyTimed(ticksUntilTurn, self));
 				else
-					inner = Util.SequenceActivities(new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
+					inner = Util.SequenceActivities(new Fly(self, target, plane), new FlyTimed(ticksUntilTurn, self));
 			}
 
 			inner = Util.RunActivity(self, inner);

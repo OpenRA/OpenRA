@@ -24,11 +24,11 @@ namespace OpenRA.Mods.Common.Activities
 		Actor dest;
 		WPos w1, w2, w3;
 
-		public ReturnToBase(Actor self, Actor dest)
+		public ReturnToBase(Actor self, Actor dest, Plane plane)
 		{
 			this.dest = dest;
-			plane = self.Trait<Plane>();
-			planeInfo = self.Info.Traits.Get<PlaneInfo>();
+			this.plane = plane;
+			planeInfo = plane.Info;
 		}
 
 		public static Actor ChooseAirfield(Actor self, bool unreservedOnly)
@@ -113,15 +113,15 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.CancelActivity();
 				if (nearestAfld != null)
-					return Util.SequenceActivities(new Fly(self, Target.FromActor(nearestAfld)), new FlyCircle(self));
+					return Util.SequenceActivities(new Fly(self, Target.FromActor(nearestAfld), plane), new FlyCircle(self));
 				else
 					return new FlyCircle(self);
 			}
 
 			return Util.SequenceActivities(
-				new Fly(self, Target.FromPos(w1)),
-				new Fly(self, Target.FromPos(w2)),
-				new Fly(self, Target.FromPos(w3)),
+				new Fly(self, Target.FromPos(w1), plane),
+				new Fly(self, Target.FromPos(w2), plane),
+				new Fly(self, Target.FromPos(w3), plane),
 				new Land(self, Target.FromActor(dest)),
 				NextActivity);
 		}

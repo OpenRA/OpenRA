@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 			var airfield = ReturnToBase.ChooseAirfield(self, true);
 			if (airfield != null)
 			{
-				self.QueueActivity(new ReturnToBase(self, airfield));
+				self.QueueActivity(new ReturnToBase(self, airfield, self.Trait<Plane>()));
 				self.QueueActivity(new ResupplyAircraft(self));
 			}
 			else
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 				}
 
-				self.QueueActivity(new Fly(self, Target.FromActor(someBuilding)));
+				self.QueueActivity(new Fly(self, Target.FromActor(someBuilding), self.Trait<Plane>()));
 				self.QueueActivity(new FlyCircle(self));
 			}
 		}
