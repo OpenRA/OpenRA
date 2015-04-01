@@ -117,7 +117,7 @@ GAPOWRUP:
 		Cost: 150
 	Tooltip:
 		Name: Power Turbine
-		Description: Provides extra power generation
+		Description: Provides extra power generation.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 10
@@ -1328,7 +1328,7 @@ GAPLUG:
 		Cost: 1000
 	Tooltip:
 		Name: GDI Upgrade Center
-		Description: Can be upgraded for additional technology
+		Description: Can be upgraded for additional technology.
 	Selectable:
 		Bounds: 115,120,0,-20
 	Buildable:
@@ -1399,7 +1399,7 @@ GAPLUG3:
 		Cost: 1500
 	Tooltip:
 		Name: Ion Cannon Uplink
-		Description: Enables use of the Ion Cannon
+		Description: Enables use of the Ion Cannon.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000

@@ -45,9 +45,9 @@ namespace OpenRA.Mods.TS.Traits
 
 	public class WithVoxelTurret
 	{
-		Actor self;
-		Turreted turreted;
-		IBodyOrientation body;
+		readonly Actor self;
+		readonly Turreted turreted;
+		readonly IBodyOrientation body;
 
 		public WithVoxelTurret(Actor self, WithVoxelTurretInfo info)
 		{
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.TS.Traits
 
 			var rv = self.Trait<RenderVoxels>();
 			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, info.Sequence),
-				() => turreted.Position(self), () => TurretRotation(),
+				() => turreted.Position(self), TurretRotation,
 				() => false, () => 0));
 		}
 

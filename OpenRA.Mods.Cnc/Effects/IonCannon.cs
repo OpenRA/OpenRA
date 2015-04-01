@@ -13,7 +13,6 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Effects

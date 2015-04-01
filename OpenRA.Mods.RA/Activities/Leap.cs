@@ -13,20 +13,19 @@ using System.Linq;
 using OpenRA.Activities;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
 	class Leap : Activity
 	{
-		Mobile mobile;
-		WeaponInfo weapon;
+		readonly Mobile mobile;
+		readonly WeaponInfo weapon;
+		readonly int length;
 
 		WPos from;
 		WPos to;
 		int ticks;
-		int length;
 		WAngle angle;
 
 		public Leap(Actor self, Actor target, WeaponInfo weapon, WRange speed, WAngle angle)

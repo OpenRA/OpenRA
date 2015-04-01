@@ -25,9 +25,9 @@ namespace OpenRA.Mods.RA.Traits
 
 	class DisguiseToolTip : IToolTip
 	{
-		Actor self;
+		readonly Actor self;
+		readonly Disguise disguise;
 		TooltipInfo info;
-		Disguise disguise;
 
 		public DisguiseToolTip(Actor self, TooltipInfo info)
 		{
@@ -49,12 +49,7 @@ namespace OpenRA.Mods.RA.Traits
 			get
 			{
 				if (disguise.Disguised)
-				{
-					if (self.Owner == self.World.LocalPlayer)
-						return self.Owner;
-
-					return disguise.AsPlayer;
-				}
+					return self.Owner == self.World.LocalPlayer ? self.Owner : disguise.AsPlayer;
 
 				return self.Owner;
 			}

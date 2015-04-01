@@ -9,7 +9,6 @@
 #endregion
 
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -26,8 +25,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	public class WithDeliveryAnimation : INotifyDelivery
 	{
-		WithDeliveryAnimationInfo info;
-		RenderBuilding building;
+		readonly WithDeliveryAnimationInfo info;
+		readonly RenderBuilding building;
 
 		public WithDeliveryAnimation(Actor self, WithDeliveryAnimationInfo info)
 		{
