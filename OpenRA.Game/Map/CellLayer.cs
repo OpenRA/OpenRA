@@ -115,7 +115,7 @@ namespace OpenRA
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			return (IEnumerator<T>)entries.GetEnumerator();
+			return ((IEnumerable<T>)entries).GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
