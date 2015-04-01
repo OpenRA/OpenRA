@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly FrozenUnderFogInfo info;
 		readonly bool startsRevealed;
-		readonly MPos[] footprint;
+		readonly PPos[] footprint;
 
 		readonly Lazy<IToolTip> tooltip;
 		readonly Lazy<Health> health;
@@ -47,10 +47,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 
+			var map = init.World.Map;
+
 			// Spawned actors (e.g. building husks) shouldn't be revealed
 			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
 			var footprintCells = FootprintUtils.Tiles(init.Self).ToList();
-			footprint = footprintCells.Select(cell => cell.ToMPos(init.World.Map)).ToArray();
+			footprint = footprintCells.SelectMany(c => map.ProjectedCellsCovering(c.ToMPos(map))).ToArray();
 			tooltip = Exts.Lazy(() => init.Self.TraitsImplementing<IToolTip>().FirstOrDefault());
 			health = Exts.Lazy(() => init.Self.TraitOrDefault<Health>());
 

@@ -33,7 +33,6 @@ namespace OpenRA
 			public int Compare(Actor x, Actor y) { return x.ActorID.CompareTo(y.ActorID); }
 		}
 
-		static readonly Func<MPos, bool> FalsePredicate = _ => false;
 		internal readonly TraitDictionary TraitDict = new TraitDictionary();
 		readonly SortedSet<Actor> actors = new SortedSet<Actor>(ActorIDComparer.Instance);
 		readonly List<IEffect> effects = new List<IEffect>();
@@ -78,33 +77,7 @@ namespace OpenRA
 		public bool FogObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(pos); }
 		public bool ShroudObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(p); }
 		public bool ShroudObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(pos); }
-		public bool ShroudObscures(MPos uv) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(uv); }
-
-		public Func<MPos, bool> FogObscuresTest
-		{
-			get
-			{
-				var rp = RenderPlayer;
-				if (rp == null)
-					return FalsePredicate;
-
-				var predicate = rp.Shroud.IsVisibleTest;
-				return uv => !predicate(uv);
-			}
-		}
-
-		public Func<MPos, bool> ShroudObscuresTest
-		{
-			get
-			{
-				var rp = RenderPlayer;
-				if (rp == null)
-					return FalsePredicate;
-
-				var predicate = rp.Shroud.IsExploredTest;
-				return uv => !predicate(uv);
-			}
-		}
+		public bool ShroudObscures(PPos uv) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(uv); }
 
 		public bool IsReplay
 		{

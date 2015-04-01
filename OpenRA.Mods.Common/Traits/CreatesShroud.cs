@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public CreatesShroud(Actor self, CreatesShroudInfo info)
 			: base(self, info)
 		{
-			addCellsToPlayerShroud = (p, c) => p.Shroud.AddShroudGeneration(self, c);
+			addCellsToPlayerShroud = (p, uv) => p.Shroud.AddProjectedShroudGeneration(self, uv);
 			removeCellsFromPlayerShroud = p => p.Shroud.RemoveShroudGeneration(self);
 			isDisabled = () => self.IsDisabled();
 		}

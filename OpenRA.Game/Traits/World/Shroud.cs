@@ -24,7 +24,7 @@ namespace OpenRA.Traits
 	{
 		[Sync] public bool Disabled;
 
-		public event Action<IEnumerable<CPos>> CellsChanged;
+		public event Action<IEnumerable<PPos>> CellsChanged;
 
 		readonly Actor self;
 		readonly Map map;
@@ -35,15 +35,15 @@ namespace OpenRA.Traits
 
 		// Cache of visibility that was added, so no matter what crazy trait code does, it
 		// can't make us invalid.
-		readonly Dictionary<Actor, CPos[]> visibility = new Dictionary<Actor, CPos[]>();
-		readonly Dictionary<Actor, CPos[]> generation = new Dictionary<Actor, CPos[]>();
+		readonly Dictionary<Actor, PPos[]> visibility = new Dictionary<Actor, PPos[]>();
+		readonly Dictionary<Actor, PPos[]> generation = new Dictionary<Actor, PPos[]>();
 
 		public int Hash { get; private set; }
 
-		static readonly Func<MPos, bool> TruthPredicate = _ => true;
-		readonly Func<MPos, bool> shroudEdgeTest;
-		readonly Func<MPos, bool> isExploredTest;
-		readonly Func<MPos, bool> isVisibleTest;
+		static readonly Func<PPos, bool> TruthPredicate = _ => true;
+		readonly Func<PPos, bool> shroudEdgeTest;
+		readonly Func<PPos, bool> isExploredTest;
+		readonly Func<PPos, bool> isVisibleTest;
 
 		public Shroud(Actor self)
 		{
@@ -55,11 +55,12 @@ namespace OpenRA.Traits
 			explored = new CellLayer<bool>(map);
 
 			shroudEdgeTest = map.Contains;
-			isExploredTest = IsExploredCore;
-			isVisibleTest = IsVisibleCore;
+
+			isExploredTest = IsExplored;
+			isVisibleTest = IsVisible;
 		}
 
-		void Invalidate(IEnumerable<CPos> changed)
+		void Invalidate(IEnumerable<PPos> changed)
 		{
 			if (CellsChanged != null)
 				CellsChanged(changed);
@@ -72,35 +73,38 @@ namespace OpenRA.Traits
 				Hash += 1;
 		}
 
-		public static IEnumerable<CPos> CellsInRange(Map map, WPos pos, WDist range)
+		public static IEnumerable<PPos> ProjectedCellsInRange(Map map, WPos pos, WDist range)
 		{
-			var r = (range.Length + 1023) / 1024;
+			// Account for potential extra half-cell from odd-height terrain
+			var r = (range.Length + 1023 + 512) / 1024;
 			var limit = range.LengthSquared;
-			var cell = map.CellContaining(pos);
 
-			foreach (var c in map.FindTilesInCircle(cell, r, true))
-				if ((map.CenterOfCell(c) - pos).HorizontalLengthSquared <= limit)
-					yield return c;
+			// Project actor position into the shroud plane
+			var projectedPos = pos - new WVec(0, pos.Z, pos.Z);
+			var projectedCell = map.CellContaining(projectedPos);
+
+			foreach (var c in map.FindTilesInCircle(projectedCell, r, true))
+				if ((map.CenterOfCell(c) - projectedPos).HorizontalLengthSquared <= limit)
+					yield return (PPos)c.ToMPos(map);
 		}
 
-		public static IEnumerable<CPos> CellsInRange(Map map, CPos cell, WDist range)
+		public static IEnumerable<PPos> ProjectedCellsInRange(Map map, CPos cell, WDist range)
 		{
-			return CellsInRange(map, map.CenterOfCell(cell), range);
+			return ProjectedCellsInRange(map, map.CenterOfCell(cell), range);
 		}
 
-		public void AddVisibility(Actor a, CPos[] visible)
+		public void AddProjectedVisibility(Actor a, PPos[] visible)
 		{
 			if (!a.Owner.IsAlliedWith(self.Owner))
 				return;
 
-			foreach (var c in visible)
+			foreach (var puv in visible)
 			{
-				var uv = c.ToMPos(map);
-
 				// Force cells outside the visible bounds invisible
-				if (!map.Contains(uv))
+				if (!map.Contains(puv))
 					continue;
 
+				var uv = (MPos)puv;
 				visibleCount[uv]++;
 				explored[uv] = true;
 			}
@@ -114,28 +118,28 @@ namespace OpenRA.Traits
 
 		public void RemoveVisibility(Actor a)
 		{
-			CPos[] visible;
+			PPos[] visible;
 			if (!visibility.TryGetValue(a, out visible))
 				return;
 
-			foreach (var c in visible)
+			foreach (var puv in visible)
 			{
 				// Cells outside the visible bounds don't increment visibleCount
-				if (map.Contains(c))
-					visibleCount[c.ToMPos(map)]--;
+				if (map.Contains(puv))
+					visibleCount[(MPos)puv]--;
 			}
 
 			visibility.Remove(a);
 			Invalidate(visible);
 		}
 
-		public void AddShroudGeneration(Actor a, CPos[] shrouded)
+		public void AddProjectedShroudGeneration(Actor a, PPos[] shrouded)
 		{
 			if (a.Owner.IsAlliedWith(self.Owner))
 				return;
 
-			foreach (var c in shrouded)
-				generatedShroudCount[c]++;
+			foreach (var uv in shrouded)
+				generatedShroudCount[(MPos)uv]++;
 
 			if (generation.ContainsKey(a))
 				throw new InvalidOperationException("Attempting to add duplicate shroud generation");
@@ -146,12 +150,12 @@ namespace OpenRA.Traits
 
 		public void RemoveShroudGeneration(Actor a)
 		{
-			CPos[] shrouded;
+			PPos[] shrouded;
 			if (!generation.TryGetValue(a, out shrouded))
 				return;
 
-			foreach (var c in shrouded)
-				generatedShroudCount[c]--;
+			foreach (var uv in shrouded)
+				generatedShroudCount[(MPos)uv]--;
 
 			generation.Remove(a);
 			Invalidate(shrouded);
@@ -164,34 +168,35 @@ namespace OpenRA.Traits
 
 			foreach (var a in w.Actors.Where(a => a.Owner == player))
 			{
-				CPos[] visible = null;
-				CPos[] shrouded = null;
+				PPos[] visible = null;
+				PPos[] shrouded = null;
 				foreach (var p in self.World.Players)
 				{
 					if (p.Shroud.visibility.TryGetValue(self, out visible))
 					{
 						p.Shroud.RemoveVisibility(self);
-						p.Shroud.AddVisibility(self, visible);
+						p.Shroud.AddProjectedVisibility(self, visible);
 					}
 
 					if (p.Shroud.generation.TryGetValue(self, out shrouded))
 					{
 						p.Shroud.RemoveShroudGeneration(self);
-						p.Shroud.AddShroudGeneration(self, shrouded);
+						p.Shroud.AddProjectedShroudGeneration(self, shrouded);
 					}
 				}
 			}
 		}
 
-		public void Explore(World world, IEnumerable<CPos> cells)
+		public void ExploreProjectedCells(World world, IEnumerable<PPos> cells)
 		{
-			var changed = new HashSet<CPos>();
-			foreach (var c in cells)
+			var changed = new HashSet<PPos>();
+			foreach (var puv in cells)
 			{
-				if (!explored[c])
+				var uv = (MPos)puv;
+				if (!explored[uv])
 				{
-					explored[c] = true;
-					changed.Add(c);
+					explored[uv] = true;
+					changed.Add(puv);
 				}
 			}
 
@@ -203,13 +208,14 @@ namespace OpenRA.Traits
 			if (map.Bounds != s.map.Bounds)
 				throw new ArgumentException("The map bounds of these shrouds do not match.", "s");
 
-			var changed = new List<CPos>();
-			foreach (var uv in map.ProjectedCellBounds.CandidateMapCoords)
+			var changed = new List<PPos>();
+			foreach (var puv in map.ProjectedCellBounds)
 			{
+				var uv = (MPos)puv;
 				if (!explored[uv] && s.explored[uv])
 				{
 					explored[uv] = true;
-					changed.Add(uv.ToCPos(map));
+					changed.Add(puv);
 				}
 			}
 
@@ -218,13 +224,14 @@ namespace OpenRA.Traits
 
 		public void ExploreAll(World world)
 		{
-			var changed = new List<CPos>();
-			foreach (var uv in map.ProjectedCellBounds.CandidateMapCoords)
+			var changed = new List<PPos>();
+			foreach (var puv in map.ProjectedCellBounds)
 			{
+				var uv = (MPos)puv;
 				if (!explored[uv])
 				{
 					explored[uv] = true;
-					changed.Add(uv.ToCPos(map));
+					changed.Add(puv);
 				}
 			}
 
@@ -233,14 +240,15 @@ namespace OpenRA.Traits
 
 		public void ResetExploration()
 		{
-			var changed = new List<CPos>();
-			foreach (var uv in map.ProjectedCellBounds.CandidateMapCoords)
+			var changed = new List<PPos>();
+			foreach (var puv in map.ProjectedCellBounds)
 			{
+				var uv = (MPos)puv;
 				var visible = visibleCount[uv] > 0;
 				if (explored[uv] != visible)
 				{
 					explored[uv] = visible;
-					changed.Add(uv.ToCPos(map));
+					changed.Add(puv);
 				}
 			}
 
@@ -249,7 +257,7 @@ namespace OpenRA.Traits
 
 		public bool IsExplored(WPos pos)
 		{
-			return IsExplored(map.CellContaining(pos));
+			return IsExplored(map.ProjectedCellCovering(pos));
 		}
 
 		public bool IsExplored(CPos cell)
@@ -262,25 +270,26 @@ namespace OpenRA.Traits
 			if (!map.Contains(uv))
 				return false;
 
+			return map.ProjectedCellsCovering(uv).Any(isExploredTest);
+		}
+
+		public bool IsExplored(PPos puv)
+		{
 			if (!ShroudEnabled)
 				return true;
 
-			return IsExploredCore(uv);
+			var uv = (MPos)puv;
+			return explored.Contains(uv) && explored[uv] && (generatedShroudCount[uv] == 0 || visibleCount[uv] > 0);
 		}
 
 		bool ShroudEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Shroud; } }
-
-		bool IsExploredCore(MPos uv)
-		{
-			return explored[uv] && (generatedShroudCount[uv] == 0 || visibleCount[uv] > 0);
-		}
 
 		/// <summary>
 		/// Returns a fast exploration lookup that skips the usual validation.
 		/// The return value should not be cached across ticks, and should not
 		/// be called with cells outside the map bounds.
 		/// </summary>
-		public Func<MPos, bool> IsExploredTest
+		public Func<PPos, bool> IsExploredTest
 		{
 			get
 			{
@@ -294,39 +303,40 @@ namespace OpenRA.Traits
 
 		public bool IsVisible(WPos pos)
 		{
-			return IsVisible(map.CellContaining(pos));
+			return IsVisible(map.ProjectedCellCovering(pos));
 		}
 
 		public bool IsVisible(CPos cell)
 		{
-			var uv = cell.ToMPos(map);
-			return IsVisible(uv);
+			return IsVisible(cell.ToMPos(map));
 		}
 
 		public bool IsVisible(MPos uv)
 		{
-			if (!map.Contains(uv))
+			if (!visibleCount.Contains(uv))
 				return false;
 
+			return map.ProjectedCellsCovering(uv).Any(isVisibleTest);
+		}
+
+		// In internal shroud coords
+		public bool IsVisible(PPos puv)
+		{
 			if (!FogEnabled)
 				return true;
 
-			return IsVisibleCore(uv);
+			var uv = (MPos)puv;
+			return visibleCount.Contains(uv) && visibleCount[uv] > 0;
 		}
 
 		bool FogEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Fog; } }
-
-		bool IsVisibleCore(MPos uv)
-		{
-			return visibleCount[uv] > 0;
-		}
 
 		/// <summary>
 		/// Returns a fast visibility lookup that skips the usual validation.
 		/// The return value should not be cached across ticks, and should not
 		/// be called with cells outside the map bounds.
 		/// </summary>
-		public Func<MPos, bool> IsVisibleTest
+		public Func<PPos, bool> IsVisibleTest
 		{
 			get
 			{
@@ -339,11 +349,11 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public bool Contains(MPos uv)
+		public bool Contains(PPos uv)
 		{
 			// Check that uv is inside the map area. There is nothing special
 			// about explored here: any of the CellLayers would have been suitable.
-			return explored.Contains(uv);
+			return explored.Contains((MPos)uv);
 		}
 	}
 }

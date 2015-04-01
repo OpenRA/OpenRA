@@ -59,6 +59,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var uv in wr.Viewport.AllVisibleCells.CandidateMapCoords)
 			{
+				if (!map.MapHeight.Value.Contains(uv))
+					continue;
+
 				var height = (int)map.MapHeight.Value[uv];
 				var tile = map.MapTiles.Value[uv];
 				var ti = tileSet.GetTileInfo(tile);

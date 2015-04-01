@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly WorldRenderer worldRenderer;
 		readonly RadarPings radarPings;
 
-		readonly HashSet<CPos> dirtyShroudCells = new HashSet<CPos>();
+		readonly HashSet<PPos> dirtyShroudCells = new HashSet<PPos>();
 
 		float radarMinimapHeight;
 		int frame;
@@ -120,35 +120,38 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		void UpdateShroudCell(CPos cell)
+		void UpdateShroudCell(PPos projectedCell)
 		{
-			if (!world.Map.Contains(cell))
+			if (!world.Map.Bounds.Contains(projectedCell.U, projectedCell.V))
 				return;
 
 			var stride = radarSheet.Size.Width;
-			var uv = cell.ToMPos(world.Map);
 			var dx = shroudSprite.Bounds.Left - world.Map.Bounds.Left;
 			var dy = shroudSprite.Bounds.Top - world.Map.Bounds.Top;
 
 			var color = 0;
-			if (world.ShroudObscures(cell))
-				color = Color.Black.ToArgb();
-			else if (world.FogObscures(cell))
-				color = Color.FromArgb(128, Color.Black).ToArgb();
+			var rp = world.RenderPlayer;
+			if (rp != null)
+			{
+				if (!rp.Shroud.IsExplored(projectedCell))
+					color = Color.Black.ToArgb();
+				else if (!rp.Shroud.IsVisible(projectedCell))
+					color = Color.FromArgb(128, Color.Black).ToArgb();
+			}
 
 			unsafe
 			{
 				fixed (byte* colorBytes = &radarData[0])
 				{
 					var colors = (int*)colorBytes;
-					colors[(uv.V + dy) * stride + uv.U + dx] = color;
+					colors[(projectedCell.V + dy) * stride + projectedCell.U + dx] = color;
 				}
 			}
 		}
 
-		void MarkShroudDirty(IEnumerable<CPos> cellsChanged)
+		void MarkShroudDirty(IEnumerable<PPos> projectedCellsChanged)
 		{
-			dirtyShroudCells.UnionWith(cellsChanged);
+			dirtyShroudCells.UnionWith(projectedCellsChanged);
 		}
 
 		public override string GetCursor(int2 pos)
@@ -290,7 +293,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (newRenderShroud != null)
 					{
 						// Redraw the full shroud sprite
-						MarkShroudDirty(world.Map.AllCells);
+						MarkShroudDirty(world.Map.AllCells.MapCoords.Select(uv => (PPos)uv));
 
 						// Update the notification binding
 						newRenderShroud.CellsChanged += MarkShroudDirty;
