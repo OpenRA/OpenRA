@@ -195,7 +195,13 @@ function PARSE.parse_scope(lx, f, level)
       elseif cprev.tag == 'Keyword' and (cprev[1] == ':' or cprev[1] == '.') then
         f('String', c[1], c.lineinfo, true)
       else
-        f('Id', c[1], c.lineinfo, inside_local)
+        f('Id', c[1], c.lineinfo, true)
+        -- this looks like the left side of (multi-variable) assignment
+        while lx:peek().tag == 'Keyword' and lx:peek()[1] == ',' do
+          local c = lx:next(); if lx:peek().tag ~= 'Id' then break end
+          c = lx:next()
+          f('Id', c[1], c.lineinfo, true)
+        end
       end
     end
     
