@@ -250,7 +250,20 @@ namespace OpenRA
 
 		public void Dispose()
 		{
-			sheetBuilder.Dispose();
+			if (previewLoaderThread == null)
+			{
+				sheetBuilder.Dispose();
+				return;
+			}
+
+			// We need to let the loader thread exit before we can dispose our sheet builder.
+			// Ideally we should dispose our resources before returning, but we don't to block waiting on the loader thread to exit.
+			// Instead, we'll queue disposal to be run once it has exited.
+			ThreadPool.QueueUserWorkItem(_ =>
+			{
+				previewLoaderThread.Join();
+				Game.RunAfterTick(sheetBuilder.Dispose);
+			});
 		}
 	}
 }
