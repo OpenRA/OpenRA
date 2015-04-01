@@ -8,7 +8,6 @@
  */
 #endregion
 
-using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
@@ -25,9 +24,9 @@ namespace OpenRA.Mods.RA.Traits
 		public override object Create(ActorInitializer init) { return new AttackLeap(init.Self, this); }
 	}
 
-	class AttackLeap : AttackFrontal, ISync
+	class AttackLeap : AttackFrontal
 	{
-		AttackLeapInfo info;
+		readonly AttackLeapInfo info;
 
 		public AttackLeap(Actor self, AttackLeapInfo info)
 			: base(self, info)

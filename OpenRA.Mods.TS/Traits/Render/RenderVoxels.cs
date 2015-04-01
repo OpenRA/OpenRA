@@ -41,8 +41,8 @@ namespace OpenRA.Mods.TS.Traits
 
 		public readonly WAngle LightPitch = WAngle.FromDegrees(50);
 		public readonly WAngle LightYaw = WAngle.FromDegrees(240);
-		public readonly float[] LightAmbientColor = new float[] { 0.6f, 0.6f, 0.6f };
-		public readonly float[] LightDiffuseColor = new float[] { 0.4f, 0.4f, 0.4f };
+		public readonly float[] LightAmbientColor = { 0.6f, 0.6f, 0.6f };
+		public readonly float[] LightDiffuseColor = { 0.4f, 0.4f, 0.4f };
 
 		public virtual object Create(ActorInitializer init) { return new RenderVoxels(init.Self, this); }
 
@@ -63,17 +63,17 @@ namespace OpenRA.Mods.TS.Traits
 				.SelectMany(rvpi => rvpi.RenderPreviewVoxels(init, this, image, orientation, facings, palette))
 				.ToArray();
 
-			yield return new VoxelPreview(components, WVec.Zero, 0, this.Scale, this.LightPitch,
-				this.LightYaw, this.LightAmbientColor, this.LightDiffuseColor, body.CameraPitch,
+			yield return new VoxelPreview(components, WVec.Zero, 0, Scale, LightPitch,
+				LightYaw, LightAmbientColor, LightDiffuseColor, body.CameraPitch,
 				palette, init.WorldRenderer.Palette(NormalsPalette), init.WorldRenderer.Palette(ShadowPalette));
 		}
 	}
 
 	public class RenderVoxels : IRender, INotifyOwnerChanged
 	{
+		readonly List<VoxelAnimation> components = new List<VoxelAnimation>();
 		Actor self;
 		RenderVoxelsInfo info;
-		List<VoxelAnimation> components = new List<VoxelAnimation>();
 		IBodyOrientation body;
 		WRot camera;
 		WRot lightSource;

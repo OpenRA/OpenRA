@@ -10,7 +10,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 
 namespace OpenRA.Mods.D2k.UtilityCommands
 {

@@ -34,9 +34,9 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		/* TODO: [Sync] when sync can cope with arrays! */
 		public CPos[] Minefield = null;
+		readonly Actor self;
+		readonly Sprite tile;
 		[Sync] CPos minefieldStart;
-		Actor self;
-		Sprite tile;
 
 		public Minelayer(Actor self)
 		{

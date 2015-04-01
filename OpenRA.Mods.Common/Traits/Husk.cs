@@ -74,9 +74,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!checkTransientActors)
 				return SubCell.FullCell;
 
-			return !self.World.ActorMap.GetUnitsAt(cell)
-				.Where(x => x != ignoreActor)
-				.Any() ? SubCell.FullCell : SubCell.Invalid;
+			return self.World.ActorMap.GetUnitsAt(cell)
+				.All(x => x == ignoreActor) ? SubCell.FullCell : SubCell.Invalid;
 		}
 
 		public bool CanEnterCell(CPos a, Actor ignoreActor = null, bool checkTransientActors = true)

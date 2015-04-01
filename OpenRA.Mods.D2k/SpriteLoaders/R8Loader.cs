@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using OpenRA.Graphics;
 
 namespace OpenRA.Mods.D2k.SpriteLoaders

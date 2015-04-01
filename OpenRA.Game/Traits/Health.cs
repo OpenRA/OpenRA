@@ -110,7 +110,7 @@ namespace OpenRA.Traits
 			if (IsDead)
 				return;
 
-			var oldState = this.DamageState;
+			var oldState = DamageState;
 
 			// Apply any damage modifiers
 			if (!ignoreModifiers && damage > 0)
@@ -128,7 +128,7 @@ namespace OpenRA.Traits
 			{
 				Attacker = attacker,
 				Damage = damage,
-				DamageState = this.DamageState,
+				DamageState = DamageState,
 				PreviousDamageState = oldState,
 				Warhead = warhead,
 			};

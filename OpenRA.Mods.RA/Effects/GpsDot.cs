@@ -32,9 +32,9 @@ namespace OpenRA.Mods.RA.Effects
 
 	class GpsDot : IEffect
 	{
-		Actor self;
-		GpsDotInfo info;
-		Animation anim;
+		readonly Actor self;
+		readonly GpsDotInfo info;
+		readonly Animation anim;
 
 		Lazy<HiddenUnderFog> huf;
 		Lazy<FrozenUnderFog> fuf;

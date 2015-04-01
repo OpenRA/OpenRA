@@ -15,6 +15,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This unit can be guarded (followed and protected) by a Guard unit.")]
 	public class GuardableInfo : TraitInfo<Guardable>
 	{
+		[Desc("Maximum range that guarding actors will maintain. Measured in cells.")]
 		public readonly int Range = 2;
 	}
 

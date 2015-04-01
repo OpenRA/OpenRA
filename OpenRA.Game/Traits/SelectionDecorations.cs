@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 		static readonly string[] TagStrings = { "", "tag-fake", "tag-primary" };
 
 		public SelectionDecorationsInfo Info;
-		Actor self;
+		readonly Actor self;
 
 		public SelectionDecorations(Actor self, SelectionDecorationsInfo info)
 		{

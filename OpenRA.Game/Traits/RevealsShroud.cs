@@ -20,7 +20,7 @@ namespace OpenRA.Traits
 
 	public class RevealsShroud : ITick, ISync
 	{
-		RevealsShroudInfo info;
+		readonly RevealsShroudInfo info;
 		[Sync] CPos cachedLocation;
 
 		public RevealsShroud(RevealsShroudInfo info)

@@ -20,7 +20,7 @@ namespace OpenRA.Traits
 
 	public class CreatesShroud : ITick, ISync
 	{
-		CreatesShroudInfo info;
+		readonly CreatesShroudInfo info;
 		[Sync] CPos cachedLocation;
 		[Sync] bool cachedDisabled;
 

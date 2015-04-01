@@ -23,9 +23,9 @@ namespace OpenRA.Mods.RA.Activities
 	public class Teleport : Activity
 	{
 		const int MaxCellSearchRange = Map.MaxTilesInCircleRange;
-		Actor teleporter;
+		readonly Actor teleporter;
+		readonly int? maximumDistance;
 		CPos destination;
-		int? maximumDistance;
 		bool killCargo;
 		bool screenFlash;
 		string sound;
