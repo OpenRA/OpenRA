@@ -125,6 +125,42 @@ namespace OpenRA
 
 	public class Map : IMap
 	{
+		static readonly int[][] CellCornerHalfHeights = new int[][]
+		{
+			// Flat
+			new[] { 0, 0, 0, 0 },
+
+			// Slopes (two corners high)
+			new[] { 0, 0, 1, 1 },
+			new[] { 1, 0, 0, 1 },
+			new[] { 1, 1, 0, 0 },
+			new[] { 0, 1, 1, 0 },
+
+			// Slopes (one corner high)
+			new[] { 0, 0, 0, 1 },
+			new[] { 1, 0, 0, 0 },
+			new[] { 0, 1, 0, 0 },
+			new[] { 0, 0, 1, 0 },
+
+			// Slopes (three corners high)
+			new[] { 1, 0, 1, 1 },
+			new[] { 1, 1, 0, 1 },
+			new[] { 1, 1, 1, 0 },
+			new[] { 0, 1, 1, 1 },
+
+			// Slopes (two corners high, one corner double high)
+			new[] { 1, 0, 1, 2 },
+			new[] { 2, 1, 0, 1 },
+			new[] { 1, 2, 1, 0 },
+			new[] { 0, 1, 2, 1 },
+
+			// Slopes (two corners high, alternating)
+			new[] { 1, 0, 1, 0 },
+			new[] { 0, 1, 0, 1 },
+			new[] { 1, 0, 1, 0 },
+			new[] { 0, 1, 0, 1 }
+		};
+
 		public const int MaxTilesInCircleRange = 50;
 		public readonly TileShape TileShape;
 		TileShape IMap.TileShape
@@ -219,6 +255,7 @@ namespace OpenRA
 		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
 		public SequenceProvider SequenceProvider { get { return Rules.Sequences[Tileset]; } }
 
+		public WVec[][] CellCorners { get; private set; }
 		[FieldLoader.Ignore] public CellRegion Cells;
 
 		public static Map FromTileset(TileSet tileset)
@@ -394,6 +431,18 @@ namespace OpenRA
 			CustomTerrain = new CellLayer<byte>(this);
 			foreach (var uv in Cells.MapCoords)
 				CustomTerrain[uv] = byte.MaxValue;
+
+			var leftDelta = TileShape == TileShape.Diamond ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
+			var topDelta = TileShape == TileShape.Diamond ? new WVec(0, -512, 0) : new WVec(512, -512, 0);
+			var rightDelta = TileShape == TileShape.Diamond ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
+			var bottomDelta = TileShape == TileShape.Diamond ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
+			CellCorners = CellCornerHalfHeights.Select(ramp => new WVec[]
+			{
+				leftDelta + new WVec(0, 0, 512 * ramp[0]),
+				topDelta + new WVec(0, 0, 512 * ramp[1]),
+				rightDelta + new WVec(0, 0, 512 * ramp[2]),
+				bottomDelta + new WVec(0, 0, 512 * ramp[3])
+			}).ToArray();
 		}
 
 		public Ruleset PreloadRules()
@@ -641,7 +690,7 @@ namespace OpenRA
 			//  - ax + by adds (a - b) * 512 + 512 to u
 			//  - ax + by adds (a + b) * 512 + 512 to v
 			var z = Contains(cell) ? 512 * MapHeight.Value[cell] : 0;
-			return new WPos(512 * (cell.X - cell.Y + 1), 512 * (cell.X + cell.Y + 1), z);
+			return new WPos(512 * (cell.X - cell.Y), 512 * (cell.X + cell.Y + 1), z);
 		}
 
 		public WPos CenterOfSubCell(CPos cell, SubCell subCell)
@@ -660,10 +709,10 @@ namespace OpenRA
 			// Convert from world position to diamond cell position:
 			// (a) Subtract (512, 512) to move the rotation center to the middle of the corner cell
 			// (b) Rotate axes by -pi/4
-			// (c) Add 512 to x (but not y) to realign the cell
+			// (c) Add (512, 512) to move back to the center of the cell
 			// (d) Divide by 1024 to find final cell coords
 			var u = (pos.Y + pos.X - 512) / 1024;
-			var v = (pos.Y - pos.X) / 1024;
+			var v = (pos.Y - pos.X - 512) / 1024;
 			return new CPos(u, v);
 		}
 

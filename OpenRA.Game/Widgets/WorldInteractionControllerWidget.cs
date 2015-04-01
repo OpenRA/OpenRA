@@ -71,7 +71,7 @@ namespace OpenRA.Widgets
 				// Place buildings, use support powers, and other non-unit things
 				if (!(World.OrderGenerator is UnitOrderGenerator))
 				{
-					ApplyOrders(World, xy, mi);
+					ApplyOrders(World, mi);
 					dragStart = dragEnd = null;
 					YieldMouseFocus(mi);
 					lastMousePosition = xy;
@@ -95,7 +95,7 @@ namespace OpenRA.Widgets
 								!mi.Modifiers.HasModifier(Modifiers.Alt) && UnitOrderGenerator.InputOverridesSelection(World, xy, mi)))
 							{
 								// Order units instead of selecting
-								ApplyOrders(World, xy, mi);
+								ApplyOrders(World, mi);
 								dragStart = dragEnd = null;
 								YieldMouseFocus(mi);
 								lastMousePosition = xy;
@@ -133,7 +133,7 @@ namespace OpenRA.Widgets
 					if (useClassicMouseStyle)
 						World.Selection.Clear();
 
-					ApplyOrders(World, xy, mi);
+					ApplyOrders(World, mi);
 				}
 			}
 
@@ -159,13 +159,13 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		void ApplyOrders(World world, int2 xy, MouseInput mi)
+		void ApplyOrders(World world, MouseInput mi)
 		{
 			if (world.OrderGenerator == null)
 				return;
 
-			var pos = worldRenderer.Position(xy);
-			var orders = world.OrderGenerator.Order(world, world.Map.CellContaining(pos), mi).ToArray();
+			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
+			var orders = world.OrderGenerator.Order(world, cell, mi).ToArray();
 			world.PlayVoiceForOrders(orders);
 
 			var flashed = false;
@@ -184,8 +184,8 @@ namespace OpenRA.Widgets
 					}
 					else if (o.TargetLocation != CPos.Zero)
 					{
-						world.AddFrameEndTask(w => w.Add(
-							new SpriteEffect(worldRenderer.Position(worldRenderer.Viewport.ViewToWorldPx(mi.Location)), world, "moveflsh", "moveflash")));
+						var pos = world.Map.CenterOfCell(cell);
+						world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, world, "moveflsh", "moveflash")));
 						flashed = true;
 					}
 				}
@@ -202,9 +202,7 @@ namespace OpenRA.Widgets
 				if (SelectionBox != null)
 					return null;
 
-				var xy = worldRenderer.Viewport.ViewToWorldPx(screenPos);
-				var pos = worldRenderer.Position(xy);
-				var cell = World.Map.CellContaining(pos);
+				var cell = worldRenderer.Viewport.ViewToWorld(screenPos);
 
 				var mi = new MouseInput
 				{

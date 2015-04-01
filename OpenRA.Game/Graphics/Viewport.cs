@@ -105,7 +105,69 @@ namespace OpenRA.Graphics
 
 		public CPos ViewToWorld(int2 view)
 		{
+			var world = worldRenderer.Viewport.ViewToWorldPx(view);
+			var map = worldRenderer.World.Map;
+			var ts = Game.ModData.Manifest.TileSize;
+			var candidates = CandidateMouseoverCells(world);
+			var tileSet = worldRenderer.World.TileSet;
+
+			foreach (var uv in candidates)
+			{
+				// Coarse filter to nearby cells
+				var p = map.CenterOfCell(uv.ToCPos(map.TileShape));
+				var s = worldRenderer.ScreenPxPosition(p);
+				if (Math.Abs(s.X - world.X) <= ts.Width && Math.Abs(s.Y - world.Y) <= ts.Height)
+				{
+					var ramp = 0;
+					if (map.Contains(uv))
+					{
+						var tile = map.MapTiles.Value[uv];
+						var ti = tileSet.GetTileInfo(tile);
+						if (ti != null)
+							ramp = ti.RampType;
+					}
+
+					var corners = map.CellCorners[ramp];
+					var pos = map.CenterOfCell(uv.ToCPos(map));
+					var screen = corners.Select(c => worldRenderer.ScreenPxPosition(pos + c)).ToArray();
+
+					if (screen.PolygonContains(world))
+						return uv.ToCPos(map);
+				}
+			}
+
+			// Mouse is not directly over a cell (perhaps on a cliff)
+			// Try and find the closest cell
+			if (candidates.Any())
+			{
+				return candidates.OrderBy(uv =>
+				{
+					var p = map.CenterOfCell(uv.ToCPos(map.TileShape));
+					var s = worldRenderer.ScreenPxPosition(p);
+					var dx = Math.Abs(s.X - world.X);
+					var dy = Math.Abs(s.Y - world.Y);
+
+					return dx * dx + dy * dy;
+				}).First().ToCPos(map);
+			}
+
+			// Something is very wrong, but lets return something that isn't completely bogus and hope the caller can recover
 			return worldRenderer.World.Map.CellContaining(worldRenderer.Position(ViewToWorldPx(view)));
+		}
+
+		/// <summary> Returns an unfiltered list of all cells that could potentially contain the mouse cursor</summary>
+		IEnumerable<MPos> CandidateMouseoverCells(int2 world)
+		{
+			var map = worldRenderer.World.Map;
+			var minPos = worldRenderer.Position(world);
+
+			// Find all the cells that could potentially have been clicked
+			var a = map.CellContaining(minPos - new WVec(1024, 0, 0)).ToMPos(map.TileShape);
+			var b = map.CellContaining(minPos + new WVec(512, 512 * maxGroundHeight, 0)).ToMPos(map.TileShape);
+
+			for (var v = b.V; v >= a.V; v--)
+				for (var u = b.U; u >= a.U; u--)
+					yield return new MPos(u, v);
 		}
 
 		public int2 ViewToWorldPx(int2 view) { return (1f / Zoom * view.ToFloat2()).ToInt2() + TopLeft; }
