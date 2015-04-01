@@ -33,7 +33,7 @@ namespace OpenRA.Traits
 
 		public void SetTarget(Actor self, Target target, Color c, bool display)
 		{
-			this.targets = new List<Target> { target };
+			targets = new List<Target> { target };
 			this.c = c;
 
 			if (display)

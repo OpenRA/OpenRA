@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 	public class Selectable : IPostRenderSelection
 	{
 		public SelectableInfo Info;
-		Actor self;
+		readonly Actor self;
 
 		public Selectable(Actor self, SelectableInfo info)
 		{

@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA.Activities
 		static bool ShouldLayMine(Actor self, CPos p)
 		{
 			// If there is no unit (other than me) here, we want to place a mine here
-			return !self.World.ActorMap.GetUnitsAt(p).Any(a => a != self);
+			return self.World.ActorMap.GetUnitsAt(p).All(a => a == self);
 		}
 
 		void LayMine(Actor self)

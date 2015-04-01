@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Traits
 				return true;
 			}
 
-			/// Set up return-to-sender info
+			// Set up return-to-sender info
 			Origin = self.Location;
 			ReturnTicks = duration;
 			this.duration = duration;

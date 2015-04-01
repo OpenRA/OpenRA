@@ -15,8 +15,8 @@ namespace OpenRA
 {
 	public class Group
 	{
-		Actor[] actors;
-		int id;
+		readonly Actor[] actors;
+		readonly int id;
 
 		static int nextGroup;
 

@@ -61,9 +61,9 @@ namespace OpenRA.Mods.D2k.Traits
 		public Color GetRemappedColor(Color original, int index)
 		{
 			return Color.FromArgb(original.A,
-				(int)Exts.Clamp((int)(scale * original.R + offset), 0, 255),
-				(int)Exts.Clamp((int)(scale * original.G + offset), 0, 255),
-				(int)Exts.Clamp((int)(scale * original.B + offset), 0, 255));
+				(int)(scale * original.R + offset).Clamp(0, 255),
+				(int)(scale * original.G + offset).Clamp(0, 255),
+				(int)(scale * original.B + offset).Clamp(0, 255));
 		}
 	}
 }

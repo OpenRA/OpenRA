@@ -12,7 +12,7 @@ using System;
 
 namespace OpenRA.Traits
 {
-	/* attributes used by RALint to understand the rules */
+	/* attributes used by OpenRA.Lint to understand the rules */
 
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class ActorReferenceAttribute : Attribute { }

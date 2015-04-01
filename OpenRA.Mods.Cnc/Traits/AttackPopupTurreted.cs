@@ -9,11 +9,8 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Activities;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -35,7 +32,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		enum PopupState { Open, Rotating, Transitioning, Closed }
 
-		AttackPopupTurretedInfo info;
+		readonly AttackPopupTurretedInfo info;
 		RenderBuilding rb;
 
 		int idleTicks = 0;
@@ -72,10 +69,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				return false;
 			}
 
-			if (!turret.FaceTarget(self, target))
-				return false;
-
-			return true;
+			return turret.FaceTarget(self, target);
 		}
 
 		public void TickIdle(Actor self)

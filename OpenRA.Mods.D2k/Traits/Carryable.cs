@@ -101,7 +101,7 @@ namespace OpenRA.Mods.D2k.Traits
 				.Where(p => p.Actor.Owner == self.Owner && !p.Trait.IsBusy && p.Actor.IsInWorld)
 				.Select(h => h.Actor);
 
-			return WorldUtils.ClosestTo(carriers, self);
+			return carriers.ClosestTo(self);
 		}
 
 		// This gets called by carrier after we touched down

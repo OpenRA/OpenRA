@@ -168,9 +168,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Sign of dot-product indicates (roughly) if vectors are facing in same or opposite directions:
 			var dp = CVec.Dot(selfMobile.ToCell - self.Location, otherMobile.ToCell - other.Location);
-			if (dp <= 0) return false;
 
-			return true;
+			return dp > 0;
 		}
 
 		public int TileSetMovementHash(TileSet tileSet)
@@ -688,7 +687,7 @@ namespace OpenRA.Mods.Common.Traits
 			public MoveOrderTargeter(Actor self, MobileInfo unitType)
 			{
 				this.unitType = unitType;
-				this.rejectMove = !self.AcceptsOrder("Move");
+				rejectMove = !self.AcceptsOrder("Move");
 			}
 
 			public string OrderID { get { return "Move"; } }
