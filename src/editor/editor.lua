@@ -1206,18 +1206,7 @@ function CreateEditor(bare)
         and (mod == wx.wxMOD_NONE) then
         -- Delete and Backspace behave the same way for selected text
         if #(editor:GetSelectedText()) > 0 then
-          local length = editor:GetLength()
-          local selections = ide.wxver >= "2.9.5" and editor:GetSelections() or 1
-          editor:Clear() -- remove selected fragments
-
-          -- check if the modification has failed, which may happen
-          -- if there is "invisible" text in the selected fragment.
-          -- if there is only one selection, then delete manually.
-          if length == editor:GetLength() and selections == 1 then
-            editor:SetTargetStart(editor:GetSelectionStart())
-            editor:SetTargetEnd(editor:GetSelectionEnd())
-            editor:ReplaceTarget("")
-          end
+          editor:ClearAny()
         else
           local pos = editor:GetCurrentPos()
           if keycode == wx.WXK_BACK then

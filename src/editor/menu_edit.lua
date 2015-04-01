@@ -61,7 +61,10 @@ local function onUpdateUIEditMenu(event)
   }
   local menu_id = event:GetId()
   local enable =
-    menu_id == ID_PASTE and editor:CanPaste() or
+    -- pasting is allowed when the document is not read-only and the selection
+    -- (if any) has no protected text; since pasting handles protected text,
+    -- use GetReadOnly() instead of CanPaste()
+    menu_id == ID_PASTE and (not editor:GetReadOnly()) or
     menu_id == ID_UNDO and editor:CanUndo() or
     menu_id == ID_REDO and editor:CanRedo() or
     alwaysOn[menu_id]
@@ -90,13 +93,22 @@ local function onEditMenu(event)
     end
   end
 
+  local spos, epos = editor:GetSelectionStart(), editor:GetSelectionEnd()
   if menu_id == ID_CUT then
-    if editor:GetSelectionStart() == editor:GetSelectionEnd()
-      then editor:LineCut() else editor:Cut() end
+    if spos == epos then editor:LineCopy() else editor:Copy() end
+    if spos == epos then
+      local line = editor:LineFromPosition(spos)
+      spos, epos = editor:PositionFromLine(line), editor:PositionFromLine(line+1)
+      editor:SetSelectionStart(spos)
+      editor:SetSelectionEnd(epos)
+    end
+    if spos ~= epos then editor:ClearAny() end
   elseif menu_id == ID_COPY then
-    if editor:GetSelectionStart() == editor:GetSelectionEnd()
-      then editor:LineCopy() else editor:Copy() end
-  elseif menu_id == ID_PASTE then editor:Paste()
+    if spos == epos then editor:LineCopy() else editor:Copy() end
+  elseif menu_id == ID_PASTE then
+    -- first clear the text in case there is any hidden markup
+    if spos ~= epos then editor:ClearAny() end
+    editor:Paste()
   elseif menu_id == ID_SELECTALL then editor:SelectAll()
   elseif menu_id == ID_UNDO then editor:Undo()
   elseif menu_id == ID_REDO then editor:Redo()

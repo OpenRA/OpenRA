@@ -192,6 +192,21 @@ function ide:CreateStyledTextCtrl(...)
     self:SetXOffset(xoffset > xwidth and xoffset-xwidth or 0)
   end
 
+  function editor:ClearAny()
+    local length = self:GetLength()
+    local selections = ide.wxver >= "2.9.5" and self:GetSelections() or 1
+    self:Clear() -- remove selected fragments
+
+    -- check if the modification has failed, which may happen
+    -- if there is "invisible" text in the selected fragment.
+    -- if there is only one selection, then delete manually.
+    if length == self:GetLength() and selections == 1 then
+      self:SetTargetStart(self:GetSelectionStart())
+      self:SetTargetEnd(self:GetSelectionEnd())
+      self:ReplaceTarget("")
+    end
+  end
+
   return editor
 end
 
