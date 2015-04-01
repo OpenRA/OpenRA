@@ -526,6 +526,7 @@ local function treeSetConnectorsAndIcons(tree)
         { },
         { ID_RENAMEFILE, renamelabel..KSC(ID_RENAMEFILE) },
         { ID_DELETEFILE, TR("&Delete")..KSC(ID_DELETEFILE) },
+        { ID_REFRESH, TR("Refresh") },
         { },
         { ID_HIDEEXTENSION, TR("Hide '.%s' Files"):format(ext) },
         { },
@@ -537,7 +538,6 @@ local function treeSetConnectorsAndIcons(tree)
         { ID_OPENEXTENSION, TR("Open With Default Program") },
         { ID_COPYFULLPATH, TR("Copy Full Path") },
         { ID_SHOWLOCATION, TR("Show Location") },
-        { ID_REFRESH, TR("Refresh") },
       }
       local extlist = {
         {},
@@ -551,7 +551,9 @@ local function treeSetConnectorsAndIcons(tree)
           saveSettingsAndRefresh()
         end)
       end
-      menu:Insert(7, wx.wxMenuItem(menu, ID_SHOWEXTENSION,
+      local _, _, hideextpos = ide:FindMenuItem(ID_HIDEEXTENSION, menu)
+      assert(hideextpos, "Can't find HideExtension menu item")
+      menu:Insert(hideextpos+1, wx.wxMenuItem(menu, ID_SHOWEXTENSION,
         TR("Show Hidden Files"), TR("Show files previously hidden"),
         wx.wxITEM_NORMAL, wx.wxMenu(extlist)))
 
@@ -562,7 +564,9 @@ local function treeSetConnectorsAndIcons(tree)
       local projectdirectory = wx.wxMenuItem(menu, ID_PROJECTDIR,
         TR("Project Directory"), TR("Set the project directory to be used"),
         wx.wxITEM_NORMAL, projectdirectorymenu)
-      menu:Insert(14, projectdirectory)
+      local _, _, unmapdirpos = ide:FindMenuItem(ID_UNMAPDIRECTORY, menu)
+      assert(unmapdirpos, "Can't find UnMapDirectory menu item")
+      menu:Insert(unmapdirpos+1, projectdirectory)
       FileTreeProjectListUpdate(projectdirectorymenu, 0)
 
       -- disable Delete on non-empty directories
