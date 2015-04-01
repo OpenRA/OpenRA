@@ -1238,6 +1238,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						addNodes.Add(new MiniYamlNode("TargetTypes", node.Value.Value == "Water" ? "Water" : "Ground"));
 				}
 
+				if (engineVersion < 20150330)
+					if (depth == 2 && node.Key == "Image")
+						node.Key = "Images";
+
 				UpgradeTileset(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

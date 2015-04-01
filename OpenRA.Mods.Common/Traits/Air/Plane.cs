@@ -26,7 +26,6 @@ namespace OpenRA.Mods.Common.Traits
 	public class Plane : Aircraft, IResolveOrder, IMove, ITick, ISync
 	{
 		public readonly PlaneInfo Info;
-		readonly bool fallsToEarth;
 		[Sync] public WPos RTBPathHash;
 		Actor self;
 		public bool IsMoving { get { return self.CenterPosition.Z > 0; } set { } }
@@ -36,7 +35,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self = init.Self;
 			Info = info;
-			fallsToEarth = self.HasTrait<FallsToEarth>();
 		}
 
 		bool firstTick = true;
@@ -45,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (firstTick)
 			{
 				firstTick = false;
-				if (!fallsToEarth) // TODO: Aircraft husks don't properly unreserve.
+				if (!self.HasTrait<FallsToEarth>()) // TODO: Aircraft husks don't properly unreserve.
 					ReserveSpawnBuilding();
 
 				var host = GetActorBelow();

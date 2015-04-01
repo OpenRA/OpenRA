@@ -210,7 +210,7 @@ namespace OpenRA.Editor
 
 						var template = t.Value;
 						tilePalette.Controls.Add(ibox);
-						tt.SetToolTip(ibox, "{1}:{0} ({2}x{3})".F(template.Image, template.Id, template.Size.X, template.Size.Y));
+						tt.SetToolTip(ibox, "{1}:{0} ({2}x{3})".F(template.Images[0], template.Id, template.Size.X, template.Size.Y));
 					}
 					catch { }
 				}

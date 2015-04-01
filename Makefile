@@ -71,7 +71,7 @@ INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
 CORE = rsdl2 rnull game utility
-TOOLS = editor tsbuild crashdialog
+TOOLS = editor crashdialog
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
 
@@ -208,9 +208,6 @@ check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Test..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Test
-	@echo
-	@echo "Checking for code style violations in OpenRA.TilesetBuilder..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.TilesetBuilder
 
 test: utility mods
 	@echo
@@ -225,22 +222,6 @@ test: utility mods
 	@echo
 	@echo "Testing Red Alert mod MiniYAML..."
 	@mono --debug OpenRA.Utility.exe ra --check-yaml
-
-# Builds and exports tilesets from a bitmap
-tsbuild_SRCS := $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
-tsbuild_TARGET = OpenRA.TilesetBuilder.exe
-tsbuild_KIND = winexe
-tsbuild_DEPS = $(game_TARGET)
-tsbuild_LIBS = $(COMMON_LIBS) $(tsbuild_DEPS) System.Windows.Forms.dll
-tsbuild_EXTRA = -resource:OpenRA.TilesetBuilder.FormBuilder.resources -resource:OpenRA.TilesetBuilder.FormNew.resources -resource:OpenRA.TilesetBuilder.Surface.resources
-PROGRAMS += tsbuild
-OpenRA.TilesetBuilder.FormBuilder.resources:
-	resgen2 OpenRA.TilesetBuilder/FormBuilder.resx OpenRA.TilesetBuilder.FormBuilder.resources 1> /dev/null
-OpenRA.TilesetBuilder.FormNew.resources:
-	resgen2 OpenRA.TilesetBuilder/frmNew.resx OpenRA.TilesetBuilder.FormNew.resources 1> /dev/null
-OpenRA.TilesetBuilder.Surface.resources:
-	resgen2 OpenRA.TilesetBuilder/Surface.resx OpenRA.TilesetBuilder.Surface.resources 1> /dev/null
-tsbuild: OpenRA.TilesetBuilder.FormBuilder.resources OpenRA.TilesetBuilder.FormNew.resources OpenRA.TilesetBuilder.Surface.resources $(tsbuild_TARGET)
 
 
 ##### Launchers / Utilities #####
@@ -294,7 +275,7 @@ default: cli-dependencies core
 
 core: game renderers mods utility
 
-tools: editor tsbuild gamemonitor
+tools: editor gamemonitor
 
 package: cli-dependencies core editor gamemonitor docs version
 

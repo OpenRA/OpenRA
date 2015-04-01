@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public abstract class AttackBaseInfo : ITraitInfo
+	public abstract class AttackBaseInfo : UpgradableTraitInfo, ITraitInfo
 	{
 		[Desc("Armament names")]
 		public readonly string[] Armaments = { "primary", "secondary" };
@@ -35,11 +35,10 @@ namespace OpenRA.Mods.Common.Traits
 		public abstract object Create(ActorInitializer init);
 	}
 
-	public abstract class AttackBase : IIssueOrder, IResolveOrder, IOrderVoice, ISync
+	public abstract class AttackBase : UpgradableTrait<AttackBaseInfo>, IIssueOrder, IResolveOrder, IOrderVoice, ISync
 	{
 		[Sync] public bool IsAttacking { get; internal set; }
 		public IEnumerable<Armament> Armaments { get { return getArmaments(); } }
-		public readonly AttackBaseInfo Info;
 
 		protected Lazy<IFacing> facing;
 		protected Lazy<Building> building;
@@ -49,9 +48,9 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 
 		public AttackBase(Actor self, AttackBaseInfo info)
+			: base(info)
 		{
 			this.self = self;
-			Info = info;
 
 			var armaments = Exts.Lazy(() => self.TraitsImplementing<Armament>()
 				.Where(a => info.Armaments.Contains(a.Info.Name)));
@@ -65,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual bool CanAttack(Actor self, Target target)
 		{
-			if (!self.IsInWorld)
+			if (!self.IsInWorld || IsTraitDisabled)
 				return false;
 
 			if (!HasAnyValidWeapons(target))
@@ -101,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				var armament = Armaments.FirstOrDefault(a => a.Weapon.Warheads.Any(w => (w is DamageWarhead)));
-				if (armament == null)
+				if (armament == null || IsTraitDisabled)
 					yield break;
 
 				var negativeDamage = (armament.Weapon.Warheads.FirstOrDefault(w => (w is DamageWarhead)) as DamageWarhead).Damage < 0;
@@ -149,6 +148,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool HasAnyValidWeapons(Target t)
 		{
+			if (IsTraitDisabled)
+				return false;
+
 			if (Info.AttackRequiresEnteringCell && !positionable.Value.CanEnterCell(t.Actor.Location, null, false))
 				return false;
 
@@ -157,14 +159,19 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WRange GetMaximumRange()
 		{
-			return Armaments.Select(a => a.Weapon.Range).Append(WRange.Zero).Max();
+			if (IsTraitDisabled)
+				return WRange.Zero;
+
+			return Armaments.Where(a => !a.IsTraitDisabled)
+				.Select(a => a.Weapon.Range)
+				.Append(WRange.Zero).Max();
 		}
 
 		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.Weapon.IsValidAgainst(t, self.World, self)); }
 
 		public void AttackTarget(Target target, bool queued, bool allowMove)
 		{
-			if (self.IsDisabled())
+			if (self.IsDisabled() || IsTraitDisabled)
 				return;
 
 			if (!target.IsValidFor(self))

@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public abstract class SupportPowerInfo : ITraitInfo
+	public abstract class SupportPowerInfo : UpgradableTraitInfo, ITraitInfo
 	{
 		[Desc("Measured in seconds.")]
 		public readonly int ChargeTime = 0;
@@ -53,15 +53,14 @@ namespace OpenRA.Mods.Common.Traits
 		public SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
 	}
 
-	public class SupportPower
+	public class SupportPower : UpgradableTrait<SupportPowerInfo>
 	{
 		public readonly Actor Self;
-		public readonly SupportPowerInfo Info;
 		protected RadarPing ping;
 
 		public SupportPower(Actor self, SupportPowerInfo info)
+			: base(info)
 		{
-			Info = info;
 			Self = self;
 		}
 

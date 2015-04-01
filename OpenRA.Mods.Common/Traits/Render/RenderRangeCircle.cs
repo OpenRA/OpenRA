@@ -27,7 +27,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
-			var armaments = ai.Traits.WithInterface<ArmamentInfo>();
+			var armaments = ai.Traits.WithInterface<ArmamentInfo>()
+				.Where(a => a.UpgradeMinEnabledLevel == 0);
 			var range = FallbackRange;
 
 			if (armaments.Any())
@@ -69,9 +70,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.Owner != self.World.LocalPlayer)
 				yield break;
 
+			var range = attack.GetMaximumRange();
+			if (range == WRange.Zero)
+				yield break;
+
 			yield return new RangeCircleRenderable(
 				self.CenterPosition,
-				attack.GetMaximumRange(),
+				range,
 				0,
 				Color.FromArgb(128, Color.Yellow),
 				Color.FromArgb(96, Color.Black));

@@ -35,10 +35,10 @@ guntower:
 		Facings: -32
 		Offset: -24,16
 	muzzle: DATA.R8
-		Frames: 3839, 3839, 3840, 3840, 3841, 3841, 3842, 3842, 3843, 3843, 3844, 3844, 3845, 3845, 3846, 3846, 3847, 3847, 3848, 3848, 3849, 3849, 3850, 3850, 3851, 3851, 3852, 3852, 3853, 3853, 3854, 3854, 3855, 3855, 3856, 3856, 3857, 3857, 3858, 3858, 3859, 3859, 3860, 3860, 3861, 3861, 3862, 3862, 3863, 3863, 3864, 3864, 3865, 3865, 3866, 3866, 3867, 3867, 3868, 3868, 3869, 3869, 3870, 3870
+		Start: 3775
+		Tick: 60
 		Facings: -32
-		Length: 2
-		Offset: 0,-12
+		Offset: 0,2
 		BlendMode: Additive
 	icon: DATA.R8
 		Start: 4069
@@ -349,7 +349,6 @@ radar.atreides:
 refinery.atreides:
 	idle: DATA.R8
 		Start: 2561
-		Length: 1
 		Offset: -48,64
 	make: DATA.R8
 		Start: 4231
@@ -394,7 +393,6 @@ silo.atreides:
 		Offset: -16,16
 	damaged-idle: DATA.R8
 		Start: 2569
-		Length: 1
 		Offset: -16,16
 	make: DATA.R8
 		Start: 4313
@@ -573,7 +571,6 @@ palace.atreides:
 light.atreides:
 	idle: DATA.R8
 		Start: 2673
-		Length: 1
 		Offset: -48,64
 	make: DATA.R8
 		Start: 4295
@@ -615,7 +612,6 @@ light.atreides:
 heavy.atreides:
 	idle: DATA.R8
 		Start: 2518
-		Length: 1
 		Offset: -48,80
 	make: DATA.R8
 		Start: 4328
@@ -838,7 +834,6 @@ radar.harkonnen:
 refinery.harkonnen:
 	idle: DATA.R8
 		Start: 2721
-		Length: 1
 		Offset: -48,64
 	make: DATA.R8
 		Start: 4231
@@ -883,7 +878,6 @@ silo.harkonnen:
 		Offset: -16,16
 	damaged-idle: DATA.R8
 		Start: 2730
-		Length: 1
 		Offset: -16,16
 	make: DATA.R8
 		Start: 4313
@@ -971,7 +965,6 @@ palace.harkonnen:
 light.harkonnen:
 	idle: DATA.R8
 		Start: 2833
-		Length: 1
 		Offset: -48,64
 	make: DATA.R8
 		Start: 4295
@@ -1013,7 +1006,6 @@ light.harkonnen:
 heavy.harkonnen:
 	idle: DATA.R8
 		Start: 2678
-		Length: 1
 		Offset: -48,80
 	make: DATA.R8
 		Start: 4328
@@ -1138,7 +1130,6 @@ starport.ordos:
 power.ordos:
 	idle: DATA.R8
 		Start: 2843
-		Length: 1
 		Offset: -32,64
 	make: DATA.R8
 		Start: 4151
@@ -1237,7 +1228,6 @@ radar.ordos:
 refinery.ordos:
 	idle: DATA.R8
 		Start: 2881
-		Length: 1
 		Offset: -48,64
 	make: DATA.R8
 		Start: 4231
@@ -1282,7 +1272,6 @@ silo.ordos:
 		Offset: -16,16
 	damaged-idle: DATA.R8
 		Start: 2890
-		Length: 1
 		Offset: -16,16
 	make: DATA.R8
 		Start: 4313
@@ -1362,7 +1351,6 @@ palace.ordos:
 light.ordos:
 	idle: DATA.R8
 		Start: 2993
-		Length: 1
 		Offset: -48,64
 	make: DATA.R8
 		Start: 4295
@@ -1404,7 +1392,6 @@ light.ordos:
 heavy.ordos:
 	idle: DATA.R8
 		Start: 2838
-		Length: 1
 		Offset: -48,80
 	make: DATA.R8
 		Start: 4328
@@ -1460,7 +1447,6 @@ palace.corrino:
 		Length: 3
 		Offset: -16,-16
 	icon: palacecicon.shp
-		Start: 0
 	make: DATA.R8
 		Start: 4413
 		Length: 11
@@ -1518,7 +1504,6 @@ starport.corrino:
 heavy.corrino:
 	idle: DATA.R8
 		Start: 3001
-		Length: 1
 		Offset: -48,64
 	make: DATA.R8
 		Start: 4328

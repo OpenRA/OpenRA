@@ -494,7 +494,7 @@ namespace OpenRA
 				if (worldRenderer != null)
 				{
 					Renderer.BeginFrame(worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.Zoom);
-					Sound.SetListenerPosition(worldRenderer.Position(worldRenderer.Viewport.CenterLocation));
+					Sound.SetListenerPosition(worldRenderer.Viewport.CenterPosition);
 					worldRenderer.Draw();
 				}
 				else

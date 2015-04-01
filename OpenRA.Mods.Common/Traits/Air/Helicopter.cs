@@ -36,7 +36,6 @@ namespace OpenRA.Mods.Common.Traits
 	public class Helicopter : Aircraft, ITick, IResolveOrder, IMove
 	{
 		public readonly HelicopterInfo Info;
-		readonly bool fallsToEarth;
 		Actor self;
 		bool firstTick = true;
 		public bool IsMoving { get { return self.CenterPosition.Z > 0; } set { } }
@@ -46,7 +45,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self = init.Self;
 			Info = info;
-			fallsToEarth = self.HasTrait<FallsToEarth>();
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -132,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (firstTick)
 			{
 				firstTick = false;
-				if (!fallsToEarth) // TODO: Aircraft husks don't properly unreserve.
+				if (!self.HasTrait<FallsToEarth>()) // TODO: Aircraft husks don't properly unreserve.
 					ReserveSpawnBuilding();
 
 				var host = GetActorBelow();

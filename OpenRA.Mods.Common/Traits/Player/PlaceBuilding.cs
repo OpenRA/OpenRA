@@ -16,13 +16,17 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allows to execute build orders.", " Attach this to the player actor.")]
-	class PlaceBuildingInfo : TraitInfo<PlaceBuilding> { }
+	class PlaceBuildingInfo : TraitInfo<PlaceBuilding>
+	{
+		[Desc("Palette to use for rendering the placement sprite.")]
+		public readonly string Palette = "terrain";
+	}
 
 	class PlaceBuilding : IResolveOrder
 	{
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "PlaceBuilding" || order.OrderString == "LineBuild")
+			if (order.OrderString == "PlaceBuilding" || order.OrderString == "LineBuild" || order.OrderString == "PlacePlug")
 			{
 				self.World.AddFrameEndTask(w =>
 				{
@@ -64,6 +68,27 @@ namespace OpenRA.Mods.Common.Traits
 
 							playSounds = false;
 						}
+					}
+					else if (order.OrderString == "PlacePlug")
+					{
+						var host = self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(order.TargetLocation);
+						if (host == null)
+							return;
+
+						var plugInfo = unit.Traits.GetOrDefault<PlugInfo>();
+						if (plugInfo == null)
+							return;
+
+						var location = host.Location;
+						var pluggable = host.TraitsImplementing<Pluggable>()
+							.FirstOrDefault(p => location + p.Info.Offset == order.TargetLocation && p.AcceptsPlug(host, plugInfo.Type));
+
+						if (pluggable == null)
+							return;
+
+						pluggable.EnablePlug(host, plugInfo.Type);
+						foreach (var s in buildingInfo.BuildSounds)
+							Sound.PlayToPlayer(order.Player, s, host.CenterPosition);
 					}
 					else
 					{

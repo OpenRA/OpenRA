@@ -87,12 +87,6 @@ WEEDGUY:
 		Cost: 300
 	Tooltip:
 		Name: Chem Spray Infantry
-		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 50
-		Prerequisites: ~nahand
-		Hothey: c
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Weed
@@ -176,11 +170,6 @@ UMAGON:
 		Cost: 400
 	Tooltip:
 		Name: Umagon
-		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 50
-		Prerequisites: ~gapile, gatech
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Umagon
@@ -268,15 +257,10 @@ JUMPJET:
 
 CHAMSPY:
 	Inherits: ^Infantry
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 60
-		Prerequisites: ~nahand, natech
 	Valued:
 		Cost: 700
 	DisguiseToolTip:
 		Name: Chameleon Spy
-		Description: Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
 	Selectable:
 		Voice: Spy
 		Bounds: 12,17,0,-9
@@ -365,14 +349,10 @@ CYC2:
 
 MUTANT:
 	Inherits: ^Infantry
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 10
 	Valued:
 		Cost: 100
 	Tooltip:
 		Name: Mutant
-		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Mutant
@@ -393,14 +373,10 @@ MUTANT:
 
 MWMN:
 	Inherits: ^Infantry
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 10
 	Valued:
 		Cost: 100
 	Tooltip:
 		Name: Mutant Soldier
-		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: CivilianFemale
@@ -421,14 +397,10 @@ MWMN:
 
 MUTANT3:
 	Inherits: ^Infantry
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 10
 	Valued:
 		Cost: 100
 	Tooltip:
 		Name: Mutant Sergeant
-		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Mutant
@@ -457,7 +429,7 @@ MHIJACK:
 		Cost: 100
 	Tooltip:
 		Name: Mutant Hijacker
-		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Description: Hijacks enemy vehicles. Unarmed\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Hijacker
@@ -467,6 +439,8 @@ MHIJACK:
 		Weapon: TiberiumHeal
 	Mobile:
 		Speed: 99
+	Captures:
+		CaptureTypes: Vehicle
 	RevealsShroud:
 		Range: 6c0
 	-AutoTarget:
@@ -476,9 +450,6 @@ MHIJACK:
 
 TRATOS:
 	Inherits: ^Infantry
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 10
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -501,9 +472,6 @@ TRATOS:
 
 OXANNA:
 	Inherits: ^Infantry
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 10
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -524,9 +492,6 @@ OXANNA:
 
 SLAV:
 	Inherits: ^Infantry
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 10
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -549,9 +514,6 @@ DOGGIE:
 	Inherits: ^Infantry
 	Tooltip:
 		Name: Tiberian Fiend
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 100
 	Health:
 		Radius: 213
 		HP: 250
@@ -581,9 +543,6 @@ VISSML:
 	Inherits: ^Infantry
 	Tooltip:
 		Name: Baby Visceroid
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 100
 	Health:
 		HP: 200
 	PoisonedByTiberium:
@@ -612,9 +571,6 @@ VISLRG:
 	Inherits: ^Infantry
 	Tooltip:
 		Name: Adult Visceroid
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 100
 	Health:
 		HP: 500
 	PoisonedByTiberium:

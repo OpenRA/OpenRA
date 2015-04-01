@@ -168,12 +168,52 @@ World:
 		ClassName: MCV Only
 		Races: gdi, nod
 		BaseActor: mcv
-	MPStartUnits@TEST:
-		Class: heavy
-		ClassName: Heavy Support
-		Races: gdi,nod
+	MPStartUnits@light.gdi:
+		Class: light
+		ClassName: Light
+		Races: gdi
 		BaseActor: mcv
-		SupportActors: e1,e2,e3,cyborg,cyc2,jumpjet,umagon,ghost,mmch,smech,hmec,bggy,bike,art2,ttnk,hvr,sonic,subtank,repair,4tnk
+		SupportActors: e1,e1,e1,e2,e2
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@light.nod:
+		Class: light
+		ClassName: Light
+		Races: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e3,e3
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@med.gdi:
+		Class: medium
+		ClassName: Medium
+		Races: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e2,jumpjet,smech
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@med.nod:
+		Class: medium
+		ClassName: Medium
+		Races: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e3,cyborg,bggy
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@heavy.gdi:
+		Class: heavy
+		ClassName: Heavy
+		Races: gdi
+		BaseActor: mcv
+		SupportActors: e1,e2,e2,smech,mmch
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@heavy.nod:
+		Class: heavy
+		ClassName: Heavy
+		Races: nod
+		BaseActor: mcv
+		SupportActors: e1,e3,bggy,bike,ttnk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartLocations:

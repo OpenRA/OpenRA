@@ -15,16 +15,9 @@ hvr:
 4tnk:
 	muzzle: gunfire
 		Length: *
-	icon: xxicon
-
-truckb:
-	icon: xxicon
 
 lpst:
 	icon: lpsticon
-
-icbm:
-	icon: xxicon
 
 repair:
 	icon: rboticon
@@ -34,18 +27,6 @@ art2:
 
 weed:
 	icon: weedicon
-
-bus:
-	icon: xxicon
-
-pick:
-	icon: xxicon
-
-car:
-	icon: xxicon
-
-wini:
-	icon: xxicon
 
 hmec:
 	icon: hmecicon
@@ -104,7 +85,6 @@ gghunt:
 		Facings: 1
 		Length: 8
 		ShadowStart: 8
-	icon: seekicon
 
 smech:
 	stand:

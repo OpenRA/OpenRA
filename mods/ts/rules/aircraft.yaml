@@ -4,10 +4,6 @@ DPOD:
 		Cost: 10
 	Tooltip:
 		Name: Drop Pod
-	Buildable:
-		Queue: Air
-		BuildPaletteOrder: 10
-		Prerequisites: ~gahpad
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -43,10 +39,6 @@ DSHP:
 		Cost: 1000
 	Tooltip:
 		Name: Dropship
-	Buildable:
-		Queue: Air
-		BuildPaletteOrder: 10
-		Prerequisites: ~gahpad, gaweap
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -149,10 +141,6 @@ ORCATRAN:
 		Cost: 1200
 	Tooltip:
 		Name: Orca Transport
-	Buildable:
-		Queue: Air
-		BuildPaletteOrder: 10
-		Prerequisites: ~gahpad
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5

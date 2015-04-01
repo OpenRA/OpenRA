@@ -542,13 +542,12 @@ guntower:
 		QuantizedFacings: 32
 	WithTurret:
 	WithMuzzleFlash:
-		IgnoreOffset: true
 	Turreted:
 		ROT: 6
 		InitialFacing: 128
 	Armament:
 		Weapon: TurretGun
-		LocalOffset: 672,0,480
+		LocalOffset: 512,0,432
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	AutoTarget:
@@ -784,6 +783,7 @@ palace:
 		Prerequisites: ~techlevel.superweapons, ~palace.airstrike
 		Description: Air Strike
 		ChargeTime: 180
+		SquadSize: 3
 		LongDesc: Ornithopter drops a load of parachuted\nbombs on your target
 		UnitType: orni.bomber
 		SelectTargetSound:
