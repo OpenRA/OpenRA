@@ -435,7 +435,7 @@
 	Selectable:
 		Voice: Heli
 	Helicopter:
-		RepairBuildings:
+		RepairBuildings: gadept
 		RearmBuildings:
 		LandWhenIdle: no
 		CruiseAltitude: 2048
@@ -475,7 +475,7 @@
 	Inherits: ^Helicopter
 	-Helicopter:
 	Plane:
-		RepairBuildings:
+		RepairBuildings: gadept
 		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: no
 		CruiseAltitude: 2560
