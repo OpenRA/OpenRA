@@ -14,7 +14,7 @@ ide.findReplace = {
   cureditor = nil, -- the editor being searched
   reseditor = nil, -- the editor for search results
   oveditor = nil, -- the editor is used for search during find-in-files
-  searchCtrl = nil, -- the control that has the search text
+  findCtrl = nil, -- the control that has the search text
   replaceCtrl = nil, -- the control that has the replace text
   scopeText = nil,
   foundString = false, -- was the string found for the last search
@@ -99,7 +99,7 @@ end
 
 function findReplace:HasText()
   if not self.panel then self:createPanel() end
-  local findText = self.searchCtrl:GetValue()
+  local findText = self.findCtrl:GetValue()
   return findText ~= nil and #findText > 0 and findText or nil
 end
 
@@ -108,8 +108,8 @@ function findReplace:SetStatus(msg)
 end
 
 function findReplace:SetFind(text)
-  if text and self.searchCtrl then
-    self.searchCtrl:ChangeValue(text)
+  if text and self.findCtrl then
+    self.findCtrl:ChangeValue(text)
     return text
   end
   return
@@ -172,7 +172,7 @@ end
 
 function findReplace:Find(reverse)
   if not self.panel then self:createPanel() end
-  local findText = self.searchCtrl:GetValue()
+  local findText = self.findCtrl:GetValue()
 
   local msg = ""
   local editor = self:GetEditor()
@@ -199,6 +199,7 @@ function findReplace:Find(reverse)
     end
   end
   self:SetStatus(msg)
+  return self.foundString
 end
 
 -- returns if something was found
@@ -208,7 +209,7 @@ end
 
 function findReplace:FindAll(inFileRegister)
   if not self.panel then self:createPanel() end
-  local findText = self.searchCtrl:GetValue()
+  local findText = self.findCtrl:GetValue()
 
   local found = false
   local editor = self:GetEditor()
@@ -240,7 +241,7 @@ local indicator = {SEARCHMATCH = 5}
 function findReplace:Replace(fReplaceAll, resultsEditor)
   if not self.panel then self:createPanel() end
 
-  local findText = self.searchCtrl:GetValue()
+  local findText = self.findCtrl:GetValue()
   local replaceText = self.replaceCtrl:GetValue()
   if replaceText == replaceHintText then replaceText = "" end
 
@@ -401,7 +402,7 @@ function findReplace:ProcInFiles(startdir,mask,subdirs)
   if not self.panel then self:createPanel() end
 
   local files = FileSysGetRecursive(startdir, subdirs, mask)
-  local text = not self.settings.flags.RegularExpr and q(self.searchCtrl:GetValue()) or nil
+  local text = not self.settings.flags.RegularExpr and q(self.findCtrl:GetValue()) or nil
   if text and not self.settings.flags.MatchCase then
     text = text:gsub("%w",function(s) return "["..s:lower()..s:upper().."]" end)
   end
@@ -511,7 +512,7 @@ function findReplace:RunInFiles(replace)
   reseditor.replace = replace -- keep track of the current status
   reseditor:SetText('')
 
-  local findText = self.searchCtrl:GetValue()
+  local findText = self.findCtrl:GetValue()
   self:SetStatus(TR("Searching for '%s'."):format(findText))
   wx.wxSafeYield() -- allow the status to update
 
@@ -753,12 +754,42 @@ function findReplace:createPanel()
     end
   end
 
-  local function findIncremental()
+  local function autoComplete(event)
+    local obj = event:GetEventObject():DynamicCast('wxTextCtrl')
+    local ok, keycode, needac = pcall(
+      function() return obj.lastkeycode, obj.needautocomplete end)
+    obj.needautocomplete = false
+    if not ok or not needac or not keycode then return end
+
+    -- if the last key was Delete or Backspace, don't autocomplete
+    if keycode == wx.WXK_DELETE or keycode == wx.WXK_BACK then return end
+
+    -- find match for the current text and add it to the control
+    local value = obj:GetValue()
+    if not value or #value == 0 then return end
+
+    local patt, match = "^"..q(value)
+    for _, v in ipairs(
+      obj:GetId() == self.findCtrl:GetId() and self.settings.flist or
+      obj:GetId() == self.replaceCtrl:GetId() and self.settings.rlist or
+      {}
+    ) do
+      if v:find(patt) then match = v; break end
+    end
+    if match then
+      obj:ChangeValue(match)
+      obj:SetSelection(#value, #match)
+    end
+  end
+
+  local function findIncremental(event)
     if self.infiles then return end
     if self.startpos then
       self:GetEditor():SetSelection(findReplace.startpos, findReplace.startpos)
     end
-    self:Find()
+    if self:Find() then
+      event:GetEventObject():DynamicCast('wxTextCtrl').needautocomplete = true
+    end
   end
 
   local function findReplaceNext()
@@ -788,7 +819,9 @@ function findReplace:createPanel()
 
   local taborder = {findCtrl, replaceCtrl, scope}
   local function charHandle(event)
-    if event:GetKeyCode() == wx.WXK_ESCAPE then
+    local keycode = event:GetKeyCode()
+    event:GetEventObject().lastkeycode = keycode
+    if keycode == wx.WXK_ESCAPE then
       local mgr = ide:GetUIManager()
       mgr:GetPane(searchpanel):Hide()
       mgr:Update()
@@ -801,7 +834,7 @@ function findReplace:createPanel()
         end
         editor:SetFocus()
       end
-    elseif event:GetKeyCode() == 9 then
+    elseif keycode == wx.WXK_TAB then
       local id = event:GetId()
       local order, pos = {}
       for _, v in ipairs(taborder) do
@@ -838,7 +871,18 @@ function findReplace:createPanel()
       if replaceCtrl:GetValue() == replaceHintText then replaceCtrl:ChangeValue('') end
     end)
   replaceCtrl:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, findReplaceNext)
+  replaceCtrl:Connect(wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)
+      event:GetEventObject():DynamicCast('wxTextCtrl').needautocomplete = true
+    end)
   replaceCtrl:Connect(wx.wxEVT_CHAR, charHandle)
+
+  -- autocomplete for find/replace can be done from TEXT_UPDATED event,
+  -- but SetSelection doesn't work from TEXT_UPDATED event on Linux,
+  -- which makes it impossible to select the suggested part.
+  -- IDLE event is used instead to provide autocomplete suggestions.
+  findCtrl:Connect(wx.wxEVT_IDLE, autoComplete)
+  replaceCtrl:Connect(wx.wxEVT_IDLE, autoComplete)
+
   scope:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, findNext)
   scope:Connect(wx.wxEVT_CHAR, charHandle)
 
@@ -865,7 +909,7 @@ function findReplace:createPanel()
       end
     end)
 
-  self.searchCtrl = findCtrl
+  self.findCtrl = findCtrl
   self.replaceCtrl = replaceCtrl
   self.findSizer = findSizer
 end
@@ -909,7 +953,7 @@ function findReplace:refreshPanel(replace, infiles)
   local pane = mgr:GetPane(searchpanel)
   if not pane:IsShown() then
     -- if not shown, set value from the current selection
-    self.searchCtrl:ChangeValue(self:GetSelection() or self.searchCtrl:GetValue())
+    self.findCtrl:ChangeValue(self:GetSelection() or self.findCtrl:GetValue())
     local size = ctrl:GetSize()
     pane:Dock():Bottom():BestSize(size):MinSize(size):Layer(0):Row(1):Show()
     mgr:Update()
@@ -920,8 +964,8 @@ function findReplace:refreshPanel(replace, infiles)
   -- reset search when re-creating dialog to avoid modifying selected
   -- fragment after successful search and updated replacement
   self.foundString = false
-  self.searchCtrl:SetFocus()
-  self.searchCtrl:SetSelection(-1, -1) -- select the content
+  self.findCtrl:SetFocus()
+  self.findCtrl:SetSelection(-1, -1) -- select the content
 end
 
 function findReplace:Show(replace,infiles)
