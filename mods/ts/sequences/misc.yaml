@@ -106,8 +106,11 @@ explosion:
 		Length: *
 	building: twlt070
 	ionring: ring1
+		BlendMode: SoftAdditive
+		Tick: 120
 	pulse_explosion: pulsefx2
-		BlendMode: Additive
+		BlendMode: SoftAdditive
+		Tick: 80
 	small_watersplash: h2o_exp2
 	large_watersplash: h2o_exp1
 	water_piff: w_piff
