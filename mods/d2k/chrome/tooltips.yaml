@@ -51,7 +51,7 @@ Background@WORLD_TOOLTIP:
 			Font: Bold
 		Label@EXTRA:
 			X: 7
-			Y: 55
+			Y: 57
 			Height: 4
 			Font: Bold
 

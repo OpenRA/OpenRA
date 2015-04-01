@@ -51,8 +51,8 @@ Background@WORLD_TOOLTIP:
 			Font: Bold
 		Label@EXTRA:
 			X: 7
-			Y: 48
-			Height: 4
+			Y: 50
+			Height: 5
 			Font: Bold
 
 Background@SPAWN_TOOLTIP:

@@ -47,8 +47,8 @@ Background@WORLD_TOOLTIP:
 			Font: Bold
 		Label@EXTRA:
 			X: 5
-			Y: 45
-			Height: 4
+			Y: 47
+			Height: 5
 			Font: Bold
 
 Background@PRODUCTION_TOOLTIP:
