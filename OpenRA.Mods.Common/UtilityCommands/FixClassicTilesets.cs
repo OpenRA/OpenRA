@@ -70,7 +70,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						// Resize array for new entries
 						if (frames.Length > template.TilesCount)
 						{
-							var oldLength = template.TilesCount;
 							var ti = new TerrainTileInfo[frames.Length];
 							Array.Copy(tileInfo, ti, template.TilesCount);
 							tileInfoField.SetValue(template, ti);
