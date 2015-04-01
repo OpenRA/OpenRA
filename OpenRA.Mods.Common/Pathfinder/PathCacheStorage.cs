@@ -22,10 +22,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 
 		const int MaxPathAge = 50;
-		readonly IWorld world;
+		readonly World world;
 		Dictionary<string, CachedPath> cachedPaths = new Dictionary<string, CachedPath>(100);
 
-		public PathCacheStorage(IWorld world)
+		public PathCacheStorage(World world)
 		{
 			this.world = world;
 		}

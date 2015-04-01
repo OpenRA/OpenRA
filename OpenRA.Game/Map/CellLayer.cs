@@ -24,7 +24,7 @@ namespace OpenRA
 
 		readonly T[] entries;
 
-		public CellLayer(IMap map)
+		public CellLayer(Map map)
 			: this(map.TileShape, new Size(map.MapSize.X, map.MapSize.Y)) { }
 
 		public CellLayer(TileShape shape, Size size)

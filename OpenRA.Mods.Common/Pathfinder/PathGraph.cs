@@ -38,11 +38,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		bool InReverse { get; set; }
 
-		IActor IgnoredActor { get; set; }
+		Actor IgnoredActor { get; set; }
 
-		IWorld World { get; }
+		World World { get; }
 
-		IActor Actor { get; }
+		Actor Actor { get; }
 	}
 
 	public struct GraphConnection
@@ -61,21 +61,21 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 	public class PathGraph : IGraph<CellInfo>
 	{
-		public IActor Actor { get; private set; }
-		public IWorld World { get; private set; }
+		public Actor Actor { get; private set; }
+		public World World { get; private set; }
 		public Func<CPos, bool> CustomBlock { get; set; }
 		public Func<CPos, int> CustomCost { get; set; }
 		public int LaneBias { get; set; }
 		public bool InReverse { get; set; }
-		public IActor IgnoredActor { get; set; }
+		public Actor IgnoredActor { get; set; }
 
 		readonly CellConditions checkConditions;
-		readonly IMobileInfo mobileInfo;
+		readonly MobileInfo mobileInfo;
 		CellLayer<CellInfo> cellInfo;
 
 		public const int InvalidNode = int.MaxValue;
 
-		public PathGraph(CellLayer<CellInfo> cellInfo, IMobileInfo mobileInfo, IActor actor, IWorld world, bool checkForBlocked)
+		public PathGraph(CellLayer<CellInfo> cellInfo, MobileInfo mobileInfo, Actor actor, World world, bool checkForBlocked)
 		{
 			this.cellInfo = cellInfo;
 			World = world;
