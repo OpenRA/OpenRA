@@ -618,8 +618,10 @@ function IndicateAll(editor, lines)
 
       if indic.varmasking then IndicateOne(indicator.MASKING, lineinfo, #name) end
     end
-    if lineinfo and not nobreak and (op == 'Statement' or op == 'String') and TimeGet()-s > canwork then
-      delayed[editor] = {lineinfo, vars}
+    -- in some rare cases `nobreak` may be a number indicating a desired
+    -- position from which to start in case of a break
+    if lineinfo and nobreak ~= true and (op == 'Statement' or op == 'String') and TimeGet()-s > canwork then
+      delayed[editor] = {tonumber(nobreak) or lineinfo, vars}
       break
     end
   end

@@ -188,10 +188,20 @@ function PARSE.parse_scope(lx, f, level)
       end
       local scope = #scopes
       local inside_local = scopes[scope].inside_local ~= nil
+      -- either this is inside a table or it continues from a comma,
+      -- which may be a field assignment, so assume it's in a table
       if (scopes[scope].inside_table or cprev[1] == ',')
       and cnext.tag == 'Keyword' and cnext[1] == '=' then
-        -- table field
-        f('String', c[1], c.lineinfo, inside_local)
+        -- table field; table fields are tricky to handle during incremental
+        -- processing as "a = 1" may be either an assignment (in which case
+        -- 'a' is Id) or a field initialization (in which case it's a String).
+        -- Since it's not possible to decide between two cases in isolation,
+        -- this is not a good place to insert a break; instead, the break is
+        -- inserted at the location of the previous keyword, which allows
+        -- to properly handle those cases. The desired location of
+        -- the restart point is returned as the `nobreak` value.
+        f('String', c[1], c.lineinfo,
+          inside_local or cprev and cprev.tag == 'Keyword' and cprev.lineinfo)
       elseif cprev.tag == 'Keyword' and (cprev[1] == ':' or cprev[1] == '.') then
         f('String', c[1], c.lineinfo, true)
       else
