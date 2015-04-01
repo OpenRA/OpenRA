@@ -1,11 +1,11 @@
 overlay:
-	Defaults:
+	Defaults: place
 		Offset: 0, -12
-	build-valid-snow: place
-	build-valid-temperat: place
-	build-invalid: place
+	build-valid-snow:
+	build-valid-temperat:
+	build-invalid:
 		Start: 1
-	target-select: place
+	target-select:
 
 poweroff:
 	offline:
