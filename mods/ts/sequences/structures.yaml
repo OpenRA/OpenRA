@@ -67,12 +67,31 @@ gapowr:
 	damaged-idle-plug: gtpowr_b
 		Length: 12
 		Tick: 200
+	idle-powrupa: gtpowr_b
+		Length: 12
+		Tick: 200
+		Offset: -48, -24
+	damaged-idle-powrupa: gtpowr_b
+		Length: 12
+		Tick: 200
+		Offset: -48, -24
+	idle-powrupb: gtpowr_b
+		Length: 12
+		Tick: 200
+		Offset: -24, -12
+	damaged-idle-powrupb: gtpowr_b
+		Length: 12
+		Tick: 200
+		Offset: -24, -12
 	make: gtpowrmk
 		Length: 20
 		ShadowStart: 20
 	icon: powricon
 		Offset: 0, 0
 		UseTilesetCode: false
+
+gapowrup:
+	icon: turbicon
 
 gapile:
 	Defaults:
@@ -654,7 +673,7 @@ nastlh:
 		Offset: 0, 0
 		UseTilesetCode: false
 
-gavulc:
+gactwr:
 	Defaults:
 		Offset: 0, -12
 		UseTilesetCode: true
@@ -667,7 +686,21 @@ gavulc:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
-	turret: gtctwr_b
+	idle-lights: gtctwr_a
+		Length: 6
+		Tick: 200
+	damaged-idle-lights: gtctwr_a
+		Length: 6
+		Tick: 200
+	make: gtctwrmk
+		Length: 11
+		ShadowStart: 11
+	turret-vulcan: gtctwr_b
+		Facings: 32
+	turret-rocket: gtctwr_c
+		Facings: 32
+		UseTilesetCode: false
+	turret-sam: gtctwr_d
 		Facings: 32
 	muzzle0: mgun-n
 		Length: *
@@ -693,74 +726,18 @@ gavulc:
 	muzzle7: mgun-ne
 		Length: *
 		UseTilesetCode: false
-	idle-lights: gtctwr_a
-		Length: 6
-		Tick: 200
-	damaged-idle-lights: gtctwr_a
-		Length: 6
-		Tick: 200
-	make: gtctwrmk
-		Length: 11
-		ShadowStart: 11
-	icon: twr1icon
+	icon: towricon
 		Offset: 0, 0
 		UseTilesetCode: false
+
+gavulc:
+	icon: twr1icon
 
 garock:
-	Defaults:
-		Offset: 0, -12
-		UseTilesetCode: true
-	idle: gtctwr
-		ShadowStart: 3
-	damaged-idle: gtctwr
-		Start: 1
-		ShadowStart: 4
-	dead: gtctwr
-		Start: 2
-		ShadowStart: 5
-		Tick: 400
-	turret: gtctwr_c
-		Facings: 32
-	idle-lights: gtctwr_a
-		Length: 6
-		Tick: 200
-	damaged-idle-lights: gtctwr_a
-		Length: 6
-		Tick: 200
-	make: gtctwrmk
-		Length: 11
-		ShadowStart: 11
 	icon: twr2icon
-		Offset: 0, 0
-		UseTilesetCode: false
 
 gacsam:
-	Defaults:
-		Offset: 0, -12
-		UseTilesetCode: true
-	idle: gtctwr
-		ShadowStart: 3
-	damaged-idle: gtctwr
-		Start: 1
-		ShadowStart: 4
-	dead: gtctwr
-		Start: 2
-		ShadowStart: 5
-		Tick: 400
-	turret: gtctwr_d
-		Facings: 32
-	idle-lights: gtctwr_a
-		Length: 6
-		Tick: 200
-	damaged-idle-lights: gtctwr_a
-		Length: 6
-		Tick: 200
-	make: gtctwrmk
-		Length: 11
-		ShadowStart: 11
 	icon: twr3icon
-		Offset: 0, 0
-		UseTilesetCode: false
 
 gahpad:
 	Defaults:
@@ -1038,9 +1015,21 @@ gaplug:
 		Start: 8
 		Length: 8
 		Tick: 120
+	idle-ioncannona: gaplug_f
+		Length: 15
+		Tick: 120
+		Reverses: true
+		Offset: -12, -42
+	idle-ioncannonb: gaplug_f
+		Length: 15
+		Reverses: true
+		Tick: 120
 	make: gtplugmk
 		Length: 17
 		ShadowStart: 17
 	icon: plugicon
 		Offset: 0, 0
 		UseTilesetCode: false
+
+gaplug3:
+	icon: rad3icon

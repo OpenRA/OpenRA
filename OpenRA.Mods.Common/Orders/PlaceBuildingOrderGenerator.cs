@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Orders
 		readonly string building;
 		readonly BuildingInfo buildingInfo;
 		readonly PlaceBuildingInfo placeBuildingInfo;
+		readonly BuildingInfluence buildingInfluence;
 		readonly string race;
 		readonly Sprite buildOk;
 		readonly Sprite buildBlocked;
@@ -52,6 +53,8 @@ namespace OpenRA.Mods.Common.Orders
 
 			buildOk = map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 			buildBlocked = map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
+
+			buildingInfluence = producer.World.WorldActor.Trait<BuildingInfluence>();
 		}
 
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
@@ -73,16 +76,33 @@ namespace OpenRA.Mods.Common.Orders
 
 			if (mi.Button == MouseButton.Left)
 			{
+				var orderType = "PlaceBuilding";
 				var topLeft = xy - FootprintUtils.AdjustForBuildingSize(buildingInfo);
-				if (!world.CanPlaceBuilding(building, buildingInfo, topLeft, null)
-					|| !buildingInfo.IsCloseEnoughToBase(world, producer.Owner, building, topLeft))
+
+				var plugInfo = world.Map.Rules.Actors[building].Traits.GetOrDefault<PlugInfo>();
+				if (plugInfo != null)
 				{
-					Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Country.Race);
-					yield break;
+					orderType = "PlacePlug";
+					if (!AcceptsPlug(topLeft, plugInfo))
+					{
+						Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Country.Race);
+						yield break;
+					}
+				}
+				else
+				{
+					if (!world.CanPlaceBuilding(building, buildingInfo, topLeft, null)
+						|| !buildingInfo.IsCloseEnoughToBase(world, producer.Owner, building, topLeft))
+					{
+						Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Country.Race);
+						yield break;
+					}
+
+					if (world.Map.Rules.Actors[building].Traits.Contains<LineBuildInfo>())
+						orderType = "LineBuild";
 				}
 
-				var isLineBuild = world.Map.Rules.Actors[building].Traits.Contains<LineBuildInfo>();
-				yield return new Order(isLineBuild ? "LineBuild" : "PlaceBuilding", producer.Owner.PlayerActor, false)
+				yield return new Order(orderType, producer.Owner.PlayerActor, false)
 				{
 					TargetLocation = topLeft,
 					TargetActor = producer,
@@ -101,6 +121,16 @@ namespace OpenRA.Mods.Common.Orders
 				p.Tick();
 		}
 
+		bool AcceptsPlug(CPos cell, PlugInfo plug)
+		{
+			var host = buildingInfluence.GetBuildingAt(cell);
+			if (host == null)
+				return false;
+
+			var location = host.Location;
+			return host.TraitsImplementing<Pluggable>().Any(p => location + p.Info.Offset == cell && p.AcceptsPlug(host, plug.Type));
+		}
+
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 		{
@@ -116,10 +146,17 @@ namespace OpenRA.Mods.Common.Orders
 
 			var cells = new Dictionary<CPos, bool>();
 
-			// Linebuild for walls.
-			// Requires a 1x1 footprint
-			if (rules.Actors[building].Traits.Contains<LineBuildInfo>())
+			var plugInfo = rules.Actors[building].Traits.GetOrDefault<PlugInfo>();
+			if (plugInfo != null)
 			{
+				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)
+					throw new InvalidOperationException("Plug requires a 1x1 sized Building");
+
+				cells.Add(topLeft, AcceptsPlug(topLeft, plugInfo));
+			}
+			else if (rules.Actors[building].Traits.Contains<LineBuildInfo>())
+			{
+				// Linebuild for walls.
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)
 					throw new InvalidOperationException("LineBuild requires a 1x1 sized Building");
 
