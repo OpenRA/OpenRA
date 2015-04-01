@@ -16,25 +16,26 @@ ide.findReplace = {
   oveditor = nil, -- the editor is used for search during find-in-files
   searchCtrl = nil, -- the control that has the search text
   replaceCtrl = nil, -- the control that has the replace text
-
-  fWholeWord = false, -- match whole words
-  fMatchCase = false, -- case sensitive
-  fRegularExpr = false, -- use regex
-  fWrap = true, -- search wraps around
-  fDown = true, -- search downwards in doc
-  fContext = true, -- include context in search results
-  fSubDirs = true, -- search in subdirectories
-
-  findTextArray = {}, -- array of last entered find text
-  replaceTextArray = {}, -- array of last entered replace text
   scopeText = nil,
-  scopeTextArray = {},
-
   foundString = false, -- was the string found for the last search
-
   curfilename = "", -- for search in files
   occurrences = 0,
   files = 0,
+
+  settings = {
+    flags = {
+      WholeWord = false, -- match whole words
+      MatchCase = false, -- case sensitive
+      RegularExpr = false, -- use regex
+      Wrap = true, -- search wraps around
+      Down = true, -- search downwards in doc
+      Context = true, -- include context in search results
+      SubDirs = true, -- search in subdirectories
+    },
+    flist = {},
+    rlist = {},
+    slist = {},
+  },
 
   -- HasText() is there a string to search for
   -- GetSelection() get currently selected string if it's on one line
@@ -57,9 +58,10 @@ end
 
 local function setSearchFlags(editor)
   local flags = wxstc.wxSTC_FIND_POSIX
-  if findReplace.fWholeWord then flags = flags + wxstc.wxSTC_FIND_WHOLEWORD end
-  if findReplace.fMatchCase then flags = flags + wxstc.wxSTC_FIND_MATCHCASE end
-  if findReplace.fRegularExpr then flags = flags + wxstc.wxSTC_FIND_REGEXP end
+  local f = findReplace.settings.flags
+  if f.WholeWord then flags = flags + wxstc.wxSTC_FIND_WHOLEWORD end
+  if f.MatchCase then flags = flags + wxstc.wxSTC_FIND_MATCHCASE end
+  if f.RegularExpr then flags = flags + wxstc.wxSTC_FIND_REGEXP end
   editor:SetSearchFlags(flags)
 end
 
@@ -175,11 +177,11 @@ function findReplace:Find(reverse)
   local msg = ""
   local editor = self:GetEditor()
   if editor and self:HasText() then
-    local fDown = iff(reverse, not self.fDown, self.fDown)
+    local fDown = iff(reverse, not self.settings.flags.Down, self.settings.flags.Down)
     setSearchFlags(editor)
     setTarget(editor, fDown)
     local posFind = editor:SearchInTarget(findText)
-    if (posFind == NOTFOUND) and self.fWrap then
+    if (posFind == NOTFOUND) and self.settings.flags.Wrap then
       editor:SetTargetStart(iff(fDown, 0, editor:GetLength()))
       editor:SetTargetEnd(iff(fDown, editor:GetLength(), 0))
       posFind = editor:SearchInTarget(findText)
@@ -252,7 +254,7 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
     end
 
     local endTarget = resultsEditor and setTargetAll(editor) or
-      setTarget(editor, self.fDown, fReplaceAll, self.fWrap)
+      setTarget(editor, self.settings.flags.Down, fReplaceAll, self.settings.flags.Wrap)
 
     if fReplaceAll then
       if resultsEditor then editor:SetIndicatorCurrent(indicator.SEARCHMATCH) end
@@ -267,7 +269,7 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
           -- if no replace-in-files or the match doesn't start with %d:
           if not resultsEditor
           or editor:GetLine(editor:LineFromPosition(posFind)):find("^%s*%d:") then
-            local replaced = self.fRegularExpr
+            local replaced = self.settings.flags.RegularExpr
               and editor:ReplaceTargetRE(replaceText)
               or editor:ReplaceTarget(replaceText)
 
@@ -296,7 +298,7 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
       -- check that the current selection matches what's being searched for
       and editor:SearchInTarget(findText) ~= NOTFOUND then
         local start = editor:GetSelectionStart()
-        local replaced = self.fRegularExpr
+        local replaced = self.settings.flags.RegularExpr
           and editor:ReplaceTargetRE(replaceText)
           or editor:ReplaceTarget(replaceText)
 
@@ -321,7 +323,7 @@ local function onFileRegister(pos, length)
   local reseditor = findReplace.reseditor
   local posline = pos and editor:LineFromPosition(pos) + 1
   local text = ""
-  local context = findReplace.fContext and 2 or 0
+  local context = findReplace.settings.flags.Context and 2 or 0
   local lines = reseditor:GetLineCount() -- current number of lines
 
   -- check if there is another match on the same line; do not add anything
@@ -399,8 +401,8 @@ function findReplace:ProcInFiles(startdir,mask,subdirs)
   if not self.panel then self:createPanel() end
 
   local files = FileSysGetRecursive(startdir, subdirs, mask)
-  local text = not self.fRegularExpr and q(self.searchCtrl:GetValue()) or nil
-  if text and not self.fMatchCase then
+  local text = not self.settings.flags.RegularExpr and q(self.searchCtrl:GetValue()) or nil
+  if text and not self.settings.flags.MatchCase then
     text = text:gsub("%w",function(s) return "["..s:lower()..s:upper().."]" end)
   end
 
@@ -514,7 +516,7 @@ function findReplace:RunInFiles(replace)
   wx.wxSafeYield() -- allow the status to update
 
   local startdir, mask = self:GetScope()
-  local completed = self:ProcInFiles(startdir, mask or "*.*", self.fSubDirs)
+  local completed = self:ProcInFiles(startdir, mask or "*.*", self.settings.flags.SubDirs)
 
   -- reseditor may already be closed, so check if it's valid first
   if pcall(function() reseditor:GetId() end) then
@@ -600,23 +602,25 @@ function findReplace:createToolbar()
   end
 
   local options = {
-    [ID_FINDOPTDIRECTION] = 'fDown',
-    [ID_FINDOPTWRAPWROUND] = 'fWrap',
-    [ID_FINDOPTWORD] = 'fWholeWord',
-    [ID_FINDOPTCASE] = 'fMatchCase',
-    [ID_FINDOPTREGEX] = 'fRegularExpr',
-    [ID_FINDOPTSUBDIR] = 'fSubDirs',
-    [ID_FINDOPTCONTEXT] = 'fContext',
+    [ID_FINDOPTDIRECTION] = 'Down',
+    [ID_FINDOPTWRAPWROUND] = 'Wrap',
+    [ID_FINDOPTWORD] = 'WholeWord',
+    [ID_FINDOPTCASE] = 'MatchCase',
+    [ID_FINDOPTREGEX] = 'RegularExpr',
+    [ID_FINDOPTSUBDIR] = 'SubDirs',
+    [ID_FINDOPTCONTEXT] = 'Context',
   }
 
   for id, var in pairs(options) do
     local tool = tb:FindTool(id)
     if tool then
-      tool:SetSticky(self[var])
+      tool:SetSticky(self.settings.flags[var])
       ctrl:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED,
         function ()
-          self[var] = not self[var]
-          tb:FindTool(id):SetSticky(self[var])
+          self.settings.flags[var] = not self.settings.flags[var]
+          self:SaveSettings()
+
+          tb:FindTool(id):SetSticky(self.settings.flags[var])
           tb:Refresh()
         end)
     end
@@ -627,7 +631,7 @@ function findReplace:createToolbar()
       if event:IsDropDownClicked() then
         local menu = wx.wxMenu()
         local pos = tb:GetToolRect(event:GetId()):GetBottomLeft()
-        for i, text in ipairs(self.scopeTextArray) do
+        for i, text in ipairs(self.settings.slist) do
           local id = ID("findreplace.scope."..i)
           menu:Append(id, text)
           menu:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -727,15 +731,16 @@ function findReplace:createPanel()
   status:SetFont(tfont)
 
   local function updateLists()
-    PrependStringToArray(findReplace.findTextArray, findCtrl:GetValue())
-    if findReplace.replace then
+    PrependStringToArray(self.settings.flist, findCtrl:GetValue())
+    if self.replace then
       local replaceText = replaceCtrl:GetValue()
       if replaceText == replaceHintText then replaceText = "" end
-      PrependStringToArray(findReplace.replaceTextArray, replaceText)
+      PrependStringToArray(self.settings.rlist, replaceText)
     end
-    if findReplace.infiles then
-      PrependStringToArray(findReplace.scopeTextArray, findReplace.scope:GetValue())
+    if self.infiles then
+      PrependStringToArray(self.settings.slist, self.scope:GetValue())
     end
+    self:SaveSettings()
     return true
   end
 
@@ -923,7 +928,7 @@ function findReplace:Show(replace,infiles)
   self:refreshPanel(replace,infiles)
 end
 
-ide:AddPackage('core.findreplace', {
+local package = ide:AddPackage('core.findreplace', {
     onProjectLoad = function()
       if not findReplace.panel then return end -- not set yet
       local _, mask = findReplace:GetScope()
@@ -994,3 +999,10 @@ ide:AddPackage('core.findreplace', {
       end
     end
   })
+
+local settings = package:GetSettings()
+for setting in pairs(findReplace.settings) do
+  if settings[setting] then findReplace.settings[setting] = settings[setting] end
+end
+
+function findReplace:SaveSettings() package:SetSettings(self.settings) end
