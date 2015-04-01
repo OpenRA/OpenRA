@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WRange maxRange;
 		readonly WRange minRange;
 
-		public MoveWithinRange(Actor self, ITarget target, WRange minRange, WRange maxRange)
+		public MoveWithinRange(Actor self, Target target, WRange minRange, WRange maxRange)
 			: base(self, target)
 		{
 			this.minRange = minRange;

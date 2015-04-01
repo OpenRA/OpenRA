@@ -19,8 +19,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	#region Interfaces and Enums
-
 	[Flags]
 	public enum CellConditions
 	{
@@ -29,8 +27,6 @@ namespace OpenRA.Mods.Common.Traits
 		BlockedByMovers,
 		All = TransientActors | BlockedByMovers
 	}
-
-	#endregion
 
 	public class TerrainInfo
 	{
@@ -86,8 +82,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Cursor = "move";
 		public readonly string BlockedCursor = "move-blocked";
 
-		public readonly Cache<ITileSet, int> TilesetMovementClass;
-		public readonly Cache<ITileSet, TerrainInfo[]> TilesetTerrainInfo;
+		public readonly Cache<TileSet, int> TilesetMovementClass;
+		public readonly Cache<TileSet, TerrainInfo[]> TilesetTerrainInfo;
 
 		#endregion
 
@@ -109,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 			return ret;
 		}
 
-		TerrainInfo[] LoadTilesetSpeeds(ITileSet tileSet)
+		TerrainInfo[] LoadTilesetSpeeds(TileSet tileSet)
 		{
 			var info = new TerrainInfo[tileSet.TerrainInfo.Length];
 			for (var i = 0; i < info.Length; i++)
@@ -127,18 +123,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public MobileInfo()
 		{
-			TilesetTerrainInfo = new Cache<ITileSet, TerrainInfo[]>(LoadTilesetSpeeds);
-			TilesetMovementClass = new Cache<ITileSet, int>(CalculateTilesetMovementClass);
-		}
-
-		/// <summary>
-		/// This constructor is merely used for testing since I can't
-		/// assign nor mock readonly public fields.
-		/// </summary>
-		public MobileInfo(bool sharesCell, string[] crushes)
-		{
-			SharesCell = sharesCell;
-			Crushes = crushes;
+			TilesetTerrainInfo = new Cache<TileSet, TerrainInfo[]>(LoadTilesetSpeeds);
+			TilesetMovementClass = new Cache<TileSet, int>(CalculateTilesetMovementClass);
 		}
 
 		public int MovementCostForCell(World world, CPos cell)
@@ -150,13 +136,13 @@ namespace OpenRA.Mods.Common.Traits
 			return index == byte.MaxValue ? int.MaxValue : TilesetTerrainInfo[world.TileSet][index].Cost;
 		}
 
-		public int CalculateTilesetMovementClass(ITileSet tileset)
+		public int CalculateTilesetMovementClass(TileSet tileset)
 		{
 			// collect our ability to cross *all* terraintypes, in a bitvector
 			return TilesetTerrainInfo[tileset].Select(ti => ti.Cost < int.MaxValue).ToBits();
 		}
 
-		public int GetMovementClass(ITileSet tileset)
+		public int GetMovementClass(TileSet tileset)
 		{
 			return TilesetMovementClass[tileset];
 		}
@@ -189,8 +175,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
 		{
-			return MovementCostForCell(world, cell) != int.MaxValue &&
-				CanMoveFreelyInto(world, self, cell, ignoreActor, check);
+			int movementCost;
+			return CanEnterCell(world, self, cell, out movementCost, ignoreActor, check);
 		}
 
 		public bool CanMoveFreelyInto(World world, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
@@ -205,9 +191,9 @@ namespace OpenRA.Mods.Common.Traits
 			// If the actor cannot enter outrightly, we must check if it can
 			// crush the units inside the cell if they are enemies. If they are
 			// allies, we must check if they follow our direction and can ignore them
-			var canIgnoreMovingAllies = !check.HasFlag(CellConditions.BlockedByMovers);
+			var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
 
-			foreach (var actor in world.ActorMap.GetActorsAt(cell))
+			foreach (var actor in world.ActorMap.GetUnitsAt(cell))
 			{
 				if (Collides(self, actor, ignoreActor, canIgnoreMovingAllies))
 					return false;
@@ -228,9 +214,9 @@ namespace OpenRA.Mods.Common.Traits
 			// If the actor cannot enter outrightly, we must check if it can
 			// crush the units inside the cell if they are enemies. If they are
 			// allies, we must check if they follow our direction and can ignore them
-			var canIgnoreMovingAllies = !check.HasFlag(CellConditions.BlockedByMovers);
+			var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
 
-			foreach (var actor in world.ActorMap.GetActorsAt(cell))
+			foreach (var actor in world.ActorMap.GetUnitsAt(cell))
 			{
 				if (Collides(self, actor, ignoreActor, canIgnoreMovingAllies))
 					return true;
@@ -298,7 +284,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanBeCrushedBy(Actor crusher, Actor actor)
 		{
-			if (Crushes == null || Crushes.Length == 0)
+			if (crusher == null || Crushes == null || Crushes.Length == 0)
 				return false;
 
 			var crushables = actor.TraitsImplementing<ICrushable>();
@@ -309,7 +295,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IMove, IPositionable
+	public class Mobile : IMove, IPositionable, IFacing, IIssueOrder, IResolveOrder, IOrderVoice, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
 	{
 		const int AverageTicksBeforePathing = 5;
 		const int SpreadTicksBeforePathing = 5;
@@ -317,7 +303,9 @@ namespace OpenRA.Mods.Common.Traits
 		internal int TicksBeforePathing = 0;
 
 		readonly Actor self;
+
 		readonly ISpeedModifier[] speedModifiers;
+
 		public readonly MobileInfo Info;
 
 		public bool IsMoving { get; set; }
@@ -326,8 +314,7 @@ namespace OpenRA.Mods.Common.Traits
 		CPos fromCell, toCell;
 		public SubCell FromSubCell, ToSubCell;
 
-		[Sync]
-		public int Facing
+		[Sync] public int Facing
 		{
 			get { return facing; }
 			set { facing = value; }
@@ -357,7 +344,7 @@ namespace OpenRA.Mods.Common.Traits
 			AddInfluence();
 		}
 
-		public Mobile(IActorInitializer init, MobileInfo info)
+		public Mobile(ActorInitializer init, MobileInfo info)
 		{
 			self = init.Self;
 			Info = info;
@@ -432,10 +419,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AddedToWorld(Actor self)
 		{
-			var actor = self;
-			self.World.ActorMap.AddInfluence(actor, this);
-			self.World.ActorMap.AddPosition(actor, this);
-			self.World.ScreenMap.Add(actor);
+			self.World.ActorMap.AddInfluence(self, this);
+			self.World.ActorMap.AddPosition(self, this);
+			self.World.ScreenMap.Add(self);
 		}
 
 		public void RemovedFromWorld(Actor self)
@@ -445,7 +431,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ScreenMap.Remove(self);
 		}
 
-		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(self, Info as MobileInfo); } }
+		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(self, Info); } }
 
 		// Note: Returns a valid order even if the unit can't move to the target
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -674,7 +660,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				var cellInfo = notStupidCells
-					.SelectMany(c => self.World.ActorMap.GetActorsAt(c)
+					.SelectMany(c => self.World.ActorMap.GetUnitsAt(c)
 						.Where(a => a.IsIdle && a.HasTrait<Mobile>()),
 						(c, a) => new { Cell = c, Actor = a })
 					.RandomOrDefault(self.World.SharedRandom);
@@ -738,7 +724,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new Move(self, cell, ignoredActor); }
 		public Activity MoveWithinRange(Target target, WRange range) { return new MoveWithinRange(self, target, WRange.Zero, range); }
 		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return new MoveWithinRange(self, target, minRange, maxRange); }
-		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new Follow(self as Actor, target, minRange, maxRange); }
+		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new Follow(self, target, minRange, maxRange); }
 		public Activity MoveTo(Func<List<CPos>> pathFunc) { return new Move(self, pathFunc); }
 
 		public void OnNotifyBlockingMove(Actor self, Actor blocking)
@@ -770,7 +756,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (target.Type == TargetType.Invalid)
 				return null;
 
-			return new MoveAdjacentTo(self as Actor, target);
+			return new MoveAdjacentTo(self, target);
 		}
 
 		public Activity MoveIntoTarget(Actor self, Target target)
@@ -797,103 +783,7 @@ namespace OpenRA.Mods.Common.Traits
 			var length = speed > 0 ? (toPos - fromPos).Length / speed : 0;
 
 			var facing = Util.GetFacing(toPos - fromPos, Facing);
-			var actor = self as Actor;
-			return Util.SequenceActivities(new Turn(actor, facing), new Drag(actor, fromPos, toPos, length));
+			return Util.SequenceActivities(new Turn(self, facing), new Drag(self, fromPos, toPos, length));
 		}
-
-		// Eventually these explicit implementations should be removed
-		#region Explicit implementations
-
-		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
-		{
-			return IssueOrder(self, order, target, queued);
-		}
-
-		void IResolveOrder.ResolveOrder(Actor self, Order order)
-		{
-			ResolveOrder(self, order);
-		}
-
-		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
-		{
-			return VoicePhraseForOrder(self, order);
-		}
-
-		bool IPositionable.CanEnterCell(CPos location, Actor ignoreActor, bool checkTransientActors)
-		{
-			return CanEnterCell(location, ignoreActor, checkTransientActors);
-		}
-
-		SubCell IPositionable.GetAvailableSubCell(CPos location, SubCell preferredSubCell, Actor ignoreActor, bool checkTransientActors)
-		{
-			return GetAvailableSubCell(location, preferredSubCell, ignoreActor, checkTransientActors);
-		}
-
-		void IPositionable.SetPosition(Actor self, CPos cell, SubCell subCell)
-		{
-			SetPosition(self, cell, subCell);
-		}
-
-		void IPositionable.SetPosition(Actor self, WPos pos)
-		{
-			SetPosition(self, pos);
-		}
-
-		void IPositionable.SetVisualPosition(Actor self, WPos pos)
-		{
-			SetVisualPosition(self, pos);
-		}
-
-		Activity IMove.MoveTo(CPos cell, Actor ignoredActor)
-		{
-			return MoveTo(cell, ignoredActor);
-		}
-
-		Activity IMove.MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange)
-		{
-			return MoveFollow(self, target, minRange, maxRange);
-		}
-
-		Activity IMove.MoveIntoWorld(Actor self, CPos cell, SubCell subCell)
-		{
-			return MoveIntoWorld(self, cell, subCell);
-		}
-
-		Activity IMove.MoveToTarget(Actor self, Target target)
-		{
-			return MoveToTarget(self, target);
-		}
-
-		Activity IMove.MoveIntoTarget(Actor self, Target target)
-		{
-			return MoveIntoTarget(self, target);
-		}
-
-		Activity IMove.VisualMove(Actor self, WPos fromPos, WPos toPos)
-		{
-			return VisualMove(self, fromPos, toPos);
-		}
-
-		bool IMove.CanEnterTargetNow(Actor self, Target target)
-		{
-			return CanEnterTargetNow(self, target);
-		}
-
-		void INotifyAddedToWorld.AddedToWorld(Actor self)
-		{
-			AddedToWorld(self);
-		}
-
-		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
-		{
-			RemovedFromWorld(self);
-		}
-
-		void INotifyBlockingMove.OnNotifyBlockingMove(Actor self, Actor blocking)
-		{
-			OnNotifyBlockingMove(self, blocking);
-		}
-
-		#endregion
 	}
 }

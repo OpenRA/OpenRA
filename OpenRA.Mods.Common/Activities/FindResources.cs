@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Activities
 			var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 			var next = this;
 			foreach (var n in notify)
-				n.MovingToResources(self as Actor, closestHarvestablePosition.Value, next);
+				n.MovingToResources(self, closestHarvestablePosition.Value, next);
 
 			return Util.SequenceActivities(mobile.MoveTo(closestHarvestablePosition.Value, 1), new HarvestResource(), next);
 		}
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// Another harvester has claimed this resource:
 				ResourceClaim claim;
-				if (territory.IsClaimedByAnyoneElse(self as Actor, pos, out claim))
+				if (territory.IsClaimedByAnyoneElse(self, pos, out claim))
 					return false;
 			}
 
@@ -134,16 +134,13 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			// Determine where to search from and how far to search:
 			var searchFromLoc = harv.LastOrderLocation ?? (harv.LastLinkedProc ?? harv.LinkedProc ?? self).Location;
-			var searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
-			var searchRadiusSquared = searchRadius * searchRadius;
 
 			var search = PathSearch.Search(self.World, mobileInfo, self, true,
 				loc => IsHarvestable(self, loc))
 				.WithCustomCost(loc =>
 				{
-					if ((avoidCell.HasValue && loc == avoidCell.Value) ||
-						(loc - self.Location).LengthSquared > searchRadiusSquared)
-						return int.MaxValue;
+					if (avoidCell.HasValue && loc == avoidCell.Value)
+						return Constants.InvalidNode;
 
 					return 0;
 				})

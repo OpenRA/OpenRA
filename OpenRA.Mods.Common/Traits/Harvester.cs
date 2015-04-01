@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void LinkProc(Actor self, Actor proc)
 		{
 			var oldProc = LinkedProc;
-			LinkedProc = proc as Actor;
+			LinkedProc = proc;
 			SetProcLines(oldProc);
 			SetProcLines(proc);
 		}
@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Common.Traits
 					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 					var next = new FindResources();
 					foreach (var n in notify)
-						n.MovingToResources(self as Actor, moveTo, next);
+						n.MovingToResources(self, moveTo, next);
 
 					self.QueueActivity(next);
 				}

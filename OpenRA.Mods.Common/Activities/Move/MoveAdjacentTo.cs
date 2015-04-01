@@ -27,12 +27,12 @@ namespace OpenRA.Mods.Common.Activities
 		readonly DomainIndex domainIndex;
 		readonly uint movementClass;
 
-		protected ITarget Target { get; private set; }
+		protected Target Target { get; private set; }
 		protected CPos targetPosition;
 		Activity inner;
 		bool repath;
 
-		public MoveAdjacentTo(Actor self, ITarget target)
+		public MoveAdjacentTo(Actor self, Target target)
 		{
 			Target = target;
 
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Activities
 			else
 			{
 				// Target became invalid. Move to its last known position.
-				Target = OpenRA.Traits.Target.FromCell(self.World, targetPosition);
+				Target = Target.FromCell(self.World, targetPosition);
 			}
 
 			// Ticks the inner move activity to actually move the actor.
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (inner != null)
 				return inner.GetTargets(self);
 
-			return OpenRA.Traits.Target.None;
+			return Target.None;
 		}
 
 		public override void Cancel(Actor self)

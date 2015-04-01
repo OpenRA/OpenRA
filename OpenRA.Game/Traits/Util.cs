@@ -131,7 +131,7 @@ namespace OpenRA.Traits
 			return cells.SelectMany(c => Neighbours(c, allowDiagonal)).Distinct();
 		}
 
-		public static IEnumerable<CPos> AdjacentCells(World w, ITarget target)
+		public static IEnumerable<CPos> AdjacentCells(World w, Target target)
 		{
 			var cells = target.Positions.Select(p => w.Map.CellContaining(p)).Distinct();
 			return ExpandFootprint(cells, true);

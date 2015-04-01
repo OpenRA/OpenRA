@@ -89,7 +89,7 @@ namespace OpenRA.Traits
 		{
 			var line = self.TraitOrDefault<DrawLineToTarget>();
 			if (line != null)
-				self.World.AddFrameEndTask(w => line.SetTargets(self as Actor, targets, color, false));
+				self.World.AddFrameEndTask(w => line.SetTargets(self, targets, color, false));
 		}
 
 		public static void SetTargetLine(this Actor self, Target target, Color color)

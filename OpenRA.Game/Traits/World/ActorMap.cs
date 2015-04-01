@@ -25,43 +25,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new ActorMap(init.World, this); }
 	}
 
-	public interface IActorMap
-	{
-		/// <summary>
-		/// NOTE: Obsolete. Use GetActorsAt
-		/// </summary>
-		IEnumerable<Actor> GetUnitsAt(CPos a);
-
-		IEnumerable<Actor> GetActorsAt(CPos a);
-
-		/// <summary>
-		/// NOTE: Obsolete. Use GetActorsAt
-		/// </summary>
-		IEnumerable<Actor> GetUnitsAt(CPos a, SubCell sub);
-
-		IEnumerable<Actor> GetActorsAt(CPos a, SubCell sub);
-		bool HasFreeSubCell(CPos cell, bool checkTransient = true);
-		SubCell FreeSubCell(CPos cell, SubCell preferredSubCell = SubCell.Any, bool checkTransient = true);
-		SubCell FreeSubCell(CPos cell, SubCell preferredSubCell, Func<Actor, bool> checkIfBlocker);
-		bool AnyUnitsAt(CPos a);
-		bool AnyUnitsAt(CPos a, SubCell sub, bool checkTransient = true);
-		bool AnyUnitsAt(CPos a, SubCell sub, Func<Actor, bool> withCondition);
-		void AddInfluence(Actor self, IOccupySpace ios);
-		void RemoveInfluence(Actor self, IOccupySpace ios);
-		void Tick(Actor self);
-		int AddCellTrigger(CPos[] cells, Action<Actor> onEntry, Action<Actor> onExit);
-		void RemoveCellTrigger(int id);
-		int AddProximityTrigger(WPos pos, WRange range, Action<Actor> onEntry, Action<Actor> onExit);
-		void RemoveProximityTrigger(int id);
-		void UpdateProximityTrigger(int id, WPos newPos, WRange newRange);
-		void AddPosition(Actor a, IOccupySpace ios);
-		void RemovePosition(Actor a, IOccupySpace ios);
-		void UpdatePosition(Actor a, IOccupySpace ios);
-		IEnumerable<Actor> ActorsInBox(WPos a, WPos b);
-		IEnumerable<Actor> ActorsInWorld();
-	}
-
-	public class ActorMap : ITick, IActorMap
+	public class ActorMap : ITick
 	{
 		class InfluenceNode
 		{
@@ -228,9 +192,6 @@ namespace OpenRA.Traits
 			actorShouldBeRemoved = removeActorPosition.Contains;
 		}
 
-		/// <summary>
-		/// NOTE: Obsolete. Use GetActorsAt
-		/// </summary>
 		public IEnumerable<Actor> GetUnitsAt(CPos a)
 		{
 			if (!map.Contains(a))
@@ -241,14 +202,6 @@ namespace OpenRA.Traits
 					yield return i.Actor;
 		}
 
-		public IEnumerable<Actor> GetActorsAt(CPos a)
-		{
-			return GetUnitsAt(a);
-		}
-
-		/// <summary>
-		/// NOTE: Obsolete. Use GetActorsAt
-		/// </summary>
 		public IEnumerable<Actor> GetUnitsAt(CPos a, SubCell sub)
 		{
 			if (!map.Contains(a))
@@ -257,11 +210,6 @@ namespace OpenRA.Traits
 			for (var i = influence[a]; i != null; i = i.Next)
 				if (!i.Actor.Destroyed && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
 					yield return i.Actor;
-		}
-
-		public IEnumerable<Actor> GetActorsAt(CPos a, SubCell sub)
-		{
-			return GetUnitsAt(a, sub);
 		}
 
 		public bool HasFreeSubCell(CPos cell, bool checkTransient = true)
@@ -351,7 +299,7 @@ namespace OpenRA.Traits
 				if (!map.Contains(c.First))
 					continue;
 
-				influence[c.First] = new InfluenceNode { Next = influence[c.First], SubCell = c.Second, Actor = self as Actor };
+				influence[c.First] = new InfluenceNode { Next = influence[c.First], SubCell = c.Second, Actor = self };
 
 				List<CellTrigger> triggers;
 				if (cellTriggerInfluence.TryGetValue(c.First, out triggers))
@@ -576,7 +524,7 @@ namespace OpenRA.Traits
 						{
 							var c = actor.CenterPosition;
 							if (left <= c.X && c.X <= right && top <= c.Y && c.Y <= bottom)
-								yield return actor as Actor;
+								yield return actor;
 						}
 					}
 				}
@@ -585,7 +533,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> ActorsInWorld()
 		{
-			return bins.SelectMany(bin => bin.Actors.Where(actor => actor.IsInWorld)).Cast<Actor>();
+			return bins.SelectMany(bin => bin.Actors.Where(actor => actor.IsInWorld));
 		}
 	}
 }

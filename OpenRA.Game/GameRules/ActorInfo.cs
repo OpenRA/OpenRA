@@ -30,7 +30,6 @@ namespace OpenRA
 		/// </summary>
 		public readonly string Name;
 		public readonly TypeDictionary Traits = new TypeDictionary();
-
 		List<ITraitInfo> constructOrderCache = null;
 
 		public ActorInfo(string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits)

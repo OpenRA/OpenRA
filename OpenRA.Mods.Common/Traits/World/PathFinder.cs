@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WRange range, Actor self)
 		{
-			var mi = self.Info.Traits.Get<IMobileInfo>();
+			var mi = self.Info.Traits.Get<MobileInfo>();
 			var targetCell = world.Map.CellContaining(target);
 			var rangeSquared = range.Range * range.Range;
 

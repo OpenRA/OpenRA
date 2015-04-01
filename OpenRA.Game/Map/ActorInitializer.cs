@@ -14,26 +14,10 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public interface IActorInitializer
-	{
-		World World { get; }
-
-		Actor Self { get; }
-
-		T Get<T>() where T : IActorInit;
-
-		U Get<T, U>() where T : IActorInit<U>;
-
-		bool Contains<T>() where T : IActorInit;
-	}
-
-	public class ActorInitializer : IActorInitializer
+	public class ActorInitializer
 	{
 		public readonly Actor Self;
-		Actor IActorInitializer.Self { get { return Self; } }
-
 		public World World { get { return Self.World; } }
-		World IActorInitializer.World { get { return World; } }
 
 		internal TypeDictionary Dict;
 
