@@ -54,6 +54,7 @@ Vulcan:
 		Damage: 10
 		DeathType: 2
 		Versus:
+			None: 200
 			Wood: 50
 			Light: 60
 			Heavy: 25
@@ -70,6 +71,7 @@ Vulcan:
 		DeathType: 2
 		Delay: 2
 		Versus:
+			None: 200
 			Wood: 50
 			Light: 60
 			Heavy: 25
@@ -88,6 +90,7 @@ Vulcan:
 		DeathType: 2
 		Delay: 4
 		Versus:
+			None: 200
 			Wood: 50
 			Light: 60
 			Heavy: 25
@@ -106,6 +109,7 @@ Vulcan:
 		DeathType: 2
 		Delay: 6
 		Versus:
+			None: 200
 			Wood: 50
 			Light: 60
 			Heavy: 25
@@ -124,6 +128,7 @@ Vulcan:
 		DeathType: 2
 		Delay: 8
 		Versus:
+			None: 200
 			Wood: 50
 			Light: 60
 			Heavy: 25
@@ -142,6 +147,7 @@ Vulcan:
 		DeathType: 2
 		Delay: 10
 		Versus:
+			None: 200
 			Wood: 50
 			Light: 60
 			Heavy: 25
