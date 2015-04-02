@@ -331,7 +331,7 @@ namespace OpenRA.Traits
 
 		public bool IsExplored(Actor a)
 		{
-			return GetVisOrigins(a).Any(o => IsExplored(o));
+			return GetVisOrigins(a).Any(IsExplored);
 		}
 
 		public bool IsVisible(CPos cell)

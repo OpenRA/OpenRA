@@ -37,7 +37,7 @@ namespace OpenRA
 		class ActorIDComparer : IComparer<Actor>
 		{
 			public static readonly ActorIDComparer Instance = new ActorIDComparer();
-			private ActorIDComparer() { }
+			ActorIDComparer() { }
 			public int Compare(Actor x, Actor y) { return x.ActorID.CompareTo(y.ActorID); }
 		}
 
