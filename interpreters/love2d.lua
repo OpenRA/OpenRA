@@ -5,8 +5,8 @@ local win = ide.osname == "Windows"
 local mac = ide.osname == "Macintosh"
 
 return {
-  name = "Love2d",
-  description = "Love2d game engine",
+  name = "LÖVE",
+  description = "LÖVE game engine",
   api = {"baselib", "love2d"},
   frun = function(self,wfilename,rundebug)
     love2d = love2d or ide.config.path.love2d -- check if the path is configured
