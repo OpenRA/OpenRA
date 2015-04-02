@@ -38,8 +38,8 @@
 ############################## TOOLCHAIN ###############################
 #
 CSC         = dmcs
-CSFLAGS     = -nologo -warn:4 -debug:full -optimize- -codepage:utf8 -unsafe -warnaserror
-DEFINE      = DEBUG;TRACE
+CSFLAGS     = -nologo -warn:4 -debug:pdbonly -optimize+ -codepage:utf8 -unsafe -warnaserror
+DEFINE      = TRACE
 COMMON_LIBS = System.dll System.Core.dll System.Data.dll System.Data.DataSetExtensions.dll System.Drawing.dll System.Xml.dll thirdparty/download/ICSharpCode.SharpZipLib.dll thirdparty/download/FuzzyLogicLibrary.dll thirdparty/download/Mono.Nat.dll thirdparty/download/MaxMind.Db.dll thirdparty/download/MaxMind.GeoIP2.dll thirdparty/download/Eluant.dll
 
 
