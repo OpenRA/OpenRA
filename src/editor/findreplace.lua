@@ -798,11 +798,11 @@ function findReplace:createPanel()
   end
 
   local function findIncremental(event)
-    if self.infiles then return end
-    if self.startpos then
+    if not self.infiles and self.startpos then
       self:GetEditor():SetSelection(findReplace.startpos, findReplace.startpos)
     end
-    if self:Find() then
+    -- don't search when used with "infiles", but still trigger autocomplete
+    if self.infiles or self:Find() then
       event:GetEventObject():DynamicCast('wxTextCtrl').needautocomplete = true
     end
   end
