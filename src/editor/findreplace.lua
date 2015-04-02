@@ -324,7 +324,9 @@ local function onFileRegister(pos, length)
   local reseditor = findReplace.reseditor
   local posline = pos and editor:LineFromPosition(pos) + 1
   local text = ""
-  local context = findReplace.settings.flags.Context and 2 or 0
+  local cfg = ide.config.search
+  local contextb = findReplace.settings.flags.Context and cfg.contextlinesbefore or 0
+  local contexta = findReplace.settings.flags.Context and cfg.contextlinesafter or 0
   local lines = reseditor:GetLineCount() -- current number of lines
 
   -- check if there is another match on the same line; do not add anything
@@ -340,19 +342,19 @@ local function onFileRegister(pos, length)
       lines = lines + 1
 
       -- show context lines before posline
-      for line = math.max(1, posline-context), posline-1 do
+      for line = math.max(1, posline-contextb), posline-1 do
         text = text .. ("%5d  %s\n"):format(line, getRawLine(editor, line-1))
       end
     end
     if posline and oldline then
       -- show context lines between oldposline and posline
-      for line = oldline+1, math.min(posline-1, oldline+context) do
+      for line = oldline+1, math.min(posline-1, oldline+contexta) do
         text = text .. ("%5d  %s\n"):format(line, getRawLine(editor, line-1))
       end
-      if context > 0 and posline-oldline > context * 2 + 1 then
+      if contextb + contexta > 0 and posline-oldline > contextb + contexta + 1 then
         text = text .. ("%5s\n"):format(("."):rep(#tostring(posline)))
       end
-      for line = math.max(oldline+context+1, posline-context), posline-1 do
+      for line = math.max(oldline+contexta+1, posline-contextb), posline-1 do
         text = text .. ("%5d  %s\n"):format(line, getRawLine(editor, line-1))
       end
     end
@@ -361,7 +363,7 @@ local function onFileRegister(pos, length)
       findReplace.lines = findReplace.lines + 1
     elseif oldline then
       -- show context lines after posline
-      for line = oldline+1, math.min(editor:GetLineCount(), oldline+context) do
+      for line = oldline+1, math.min(editor:GetLineCount(), oldline+contexta) do
         text = text .. ("%5d  %s\n"):format(line, getRawLine(editor, line-1))
       end
       text = text .. "\n"
