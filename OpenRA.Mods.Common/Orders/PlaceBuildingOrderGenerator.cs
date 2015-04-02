@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Orders
 		public PlaceBuildingOrderGenerator(ProductionQueue queue, string name)
 		{
 			producer = queue.Actor;
-			placeBuildingInfo = producer.Info.Traits.Get<PlaceBuildingInfo>();
+			placeBuildingInfo = producer.Owner.PlayerActor.Info.Traits.Get<PlaceBuildingInfo>();
 			building = name;
 
 			// Clear selection if using Left-Click Orders
