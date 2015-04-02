@@ -8,3 +8,8 @@ ok(ActivateFile('t/test.lua:10'), "Load file:line.")
 ok(not ActivateFile('t/foo.bar:10'), "Doesn't load non-existent file:line.")
 ok(ActivateFile(fullpath..':10'), "Load fullpath/file:line.")
 ok(not ActivateFile(fullpath..'/foo.bar:10'), "Doesn't load non-existent fullpath/file:line.")
+
+local luas = FileSysGetRecursive('.', true, '*.lua')
+local more = FileSysGetRecursive('.', true, '*.lua; *.more')
+cmp_ok(#luas, '>', 0, "List of files is returned for '.lua' extension")
+is(#luas, #more, "List of files is returned for '.lua' and '.lua; .more' is the same")

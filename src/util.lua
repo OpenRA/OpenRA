@@ -161,21 +161,21 @@ function FileDirHasContent(dir)
 end
 
 function FileSysGetRecursive(path, recursive, spec, skip)
-  spec = spec or "*"
   local content = {}
   local sep = GetPathSeparator()
 
   -- recursion is done in all folders but only those folders that match
   -- the spec are returned. This is the pattern that matches the spec.
   -- Mask could be a list, so generate a table with matching patterns
-  -- accept "*.lua; .txt,.wlua" combinations
+  -- accept "*.lua" and "*.txt,*.wlua" combinations
   local masks = {}
-  for m in spec:gmatch("[^%s;,]+") do
+  for m in (spec or "*"):gmatch("[^%s;,]+") do
     -- escape all special characters and replace (escaped) * with .*
     table.insert(masks, EscapeMagic(m):gsub("%%%*", ".*").."$")
   end
+  if #masks >= 2 then spec = nil end
 
-  local function getDir(path, spec)
+  local function getDir(path)
     local dir = wx.wxDir(path)
     if not dir:IsOpened() then return end
 
@@ -195,21 +195,30 @@ function FileSysGetRecursive(path, recursive, spec, skip)
         -- Skip the processing if it does as it could lead to infinite
         -- recursion with circular references created by symlinks.
         if recursive and select(2, fname:gsub(EscapeMagic(file..sep),'')) <= 2 then
-          getDir(fname, spec)
+          getDir(fname)
         end
       end
       found, file = dir:GetNext()
     end
-    found, file = dir:GetFirst(spec, wx.wxDIR_FILES)
+    found, file = dir:GetFirst(spec or "*", wx.wxDIR_FILES)
     while found do
       if not skip or not file:find(skip) then
         local fname = wx.wxFileName(path, file):GetFullPath()
-        table.insert(content, fname)
+        if #masks < 2 then -- files already filtered by spec
+          table.insert(content, fname)
+        else -- need to filter by mask as spec includes multiple extensions
+          for _, mask in ipairs(masks) do
+            if file:find(mask) then
+              table.insert(content, fname)
+              break
+            end
+          end
+        end
       end
       found, file = dir:GetNext()
     end
   end
-  getDir(path, spec)
+  getDir(path)
 
   local prefix = '\001' -- prefix to sort directories first
   local shadow = {}
