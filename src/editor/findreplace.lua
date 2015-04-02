@@ -755,6 +755,8 @@ function findReplace:createPanel()
   end
 
   local function autoComplete(event)
+    if not ide.config.search.autocomplete then return end
+
     local obj = event:GetEventObject():DynamicCast('wxTextCtrl')
     local ok, keycode, needac = pcall(
       function() return obj.lastkeycode, obj.needautocomplete end)

@@ -97,6 +97,9 @@ ide = {
     staticanalyzer = {
       infervalue = false, -- off by default as it's a slower mode
     },
+    search = {
+      autocomplete = true,
+    },
 
     toolbar = {
       icons = {},
