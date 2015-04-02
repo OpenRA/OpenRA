@@ -142,6 +142,14 @@ function findReplace:SetScope(dir, mask)
   return dir .. (mask and (sep..' '..mask) or "")
 end
 
+function findReplace:GetScopeMRU(head)
+  local patt, match = "^"..q(head)
+  for _, v in ipairs(findReplace.settings.slist) do
+    if v:find(patt) then match = v; break end
+  end
+  return match
+end
+
 function findReplace:GetWordAtCaret()
   local editor = self:GetEditor()
   if editor then
@@ -948,8 +956,9 @@ function findReplace:refreshPanel(replace, infiles)
   if ed and (not value or #value == 0) then
     local doc = ide:GetDocument(ed)
     local ext = doc:GetFileExt()
-    value = self:SetScope(ide:GetProject() or wx.wxGetCwd(),
-      '*.'..(#ext > 0 and ext or '*'))
+    local proj = ide:GetProject()
+    value = (proj and self:GetScopeMRU(proj..sep) or
+      self:SetScope(proj or wx.wxGetCwd(), '*.'..(#ext > 0 and ext or '*')))
   end
   self:refreshToolbar(value)
 
@@ -980,7 +989,10 @@ local package = ide:AddPackage('core.findreplace', {
     onProjectLoad = function()
       if not findReplace.panel then return end -- not set yet
       local _, mask = findReplace:GetScope()
-      findReplace:refreshToolbar(findReplace:SetScope(ide:GetProject(), mask))
+      local proj = ide:GetProject()
+      -- find the last used scope for the same project on the scope history
+      findReplace:refreshToolbar(findReplace:GetScopeMRU(proj..sep)
+        or findReplace:SetScope(proj, mask))
     end,
 
     onEditorPreSave = function(self, editor)
