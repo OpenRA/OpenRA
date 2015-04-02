@@ -167,7 +167,7 @@ namespace OpenRA
 					throw new InvalidDataException("`{0}` is not a valid mod manifest entry.".F(kv.Key));
 
 				IGlobalModData module;
-				var ctor = t.GetConstructor(new Type[] { typeof(MiniYaml) });
+				var ctor = t.GetConstructor(new[] { typeof(MiniYaml) });
 				if (ctor != null)
 				{
 					// Class has opted-in to DIY initialization
