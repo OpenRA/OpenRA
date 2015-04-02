@@ -117,6 +117,8 @@ end
 
 function findReplace:GetFind(...) return self:HasText() end
 
+function findReplace:GetFlags() return self.settings.flags end
+
 function findReplace:SetReplace(text)
   if text and self.replaceCtrl then
     self.replaceCtrl:ChangeValue(text)
@@ -185,11 +187,11 @@ function findReplace:Find(reverse)
   local msg = ""
   local editor = self:GetEditor()
   if editor and self:HasText() then
-    local fDown = iff(reverse, not self.settings.flags.Down, self.settings.flags.Down)
+    local fDown = iff(reverse, not self:GetFlags().Down, self:GetFlags().Down)
     setSearchFlags(editor)
     setTarget(editor, fDown)
     local posFind = editor:SearchInTarget(findText)
-    if (posFind == NOTFOUND) and self.settings.flags.Wrap then
+    if (posFind == NOTFOUND) and self:GetFlags().Wrap then
       editor:SetTargetStart(iff(fDown, 0, editor:GetLength()))
       editor:SetTargetEnd(iff(fDown, editor:GetLength(), 0))
       posFind = editor:SearchInTarget(findText)
@@ -263,7 +265,7 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
     end
 
     local endTarget = resultsEditor and setTargetAll(editor) or
-      setTarget(editor, self.settings.flags.Down, fReplaceAll, self.settings.flags.Wrap)
+      setTarget(editor, self:GetFlags().Down, fReplaceAll, self:GetFlags().Wrap)
 
     if fReplaceAll then
       if resultsEditor then editor:SetIndicatorCurrent(indicator.SEARCHMATCH) end
@@ -278,7 +280,7 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
           -- if no replace-in-files or the match doesn't start with %d:
           if not resultsEditor
           or editor:GetLine(editor:LineFromPosition(posFind)):find("^%s*%d:") then
-            local replaced = self.settings.flags.RegularExpr
+            local replaced = self:GetFlags().RegularExpr
               and editor:ReplaceTargetRE(replaceText)
               or editor:ReplaceTarget(replaceText)
 
@@ -307,7 +309,7 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
       -- check that the current selection matches what's being searched for
       and editor:SearchInTarget(findText) ~= NOTFOUND then
         local start = editor:GetSelectionStart()
-        local replaced = self.settings.flags.RegularExpr
+        local replaced = self:GetFlags().RegularExpr
           and editor:ReplaceTargetRE(replaceText)
           or editor:ReplaceTarget(replaceText)
 
@@ -333,8 +335,8 @@ local function onFileRegister(pos, length)
   local posline = pos and editor:LineFromPosition(pos) + 1
   local text = ""
   local cfg = ide.config.search
-  local contextb = findReplace.settings.flags.Context and cfg.contextlinesbefore or 0
-  local contexta = findReplace.settings.flags.Context and cfg.contextlinesafter or 0
+  local contextb = findReplace:GetFlags().Context and cfg.contextlinesbefore or 0
+  local contexta = findReplace:GetFlags().Context and cfg.contextlinesafter or 0
   local lines = reseditor:GetLineCount() -- current number of lines
 
   -- check if there is another match on the same line; do not add anything
@@ -412,8 +414,8 @@ function findReplace:ProcInFiles(startdir,mask,subdirs)
   if not self.panel then self:createPanel() end
 
   local files = FileSysGetRecursive(startdir, subdirs, mask)
-  local text = not self.settings.flags.RegularExpr and q(self.findCtrl:GetValue()) or nil
-  if text and not self.settings.flags.MatchCase then
+  local text = not self:GetFlags().RegularExpr and q(self.findCtrl:GetValue()) or nil
+  if text and not self:GetFlags().MatchCase then
     text = text:gsub("%w",function(s) return "["..s:lower()..s:upper().."]" end)
   end
 
@@ -527,7 +529,7 @@ function findReplace:RunInFiles(replace)
   wx.wxSafeYield() -- allow the status to update
 
   local startdir, mask = self:GetScope()
-  local completed = self:ProcInFiles(startdir, mask or "*.*", self.settings.flags.SubDirs)
+  local completed = self:ProcInFiles(startdir, mask or "*.*", self:GetFlags().SubDirs)
 
   -- reseditor may already be closed, so check if it's valid first
   if pcall(function() reseditor:GetId() end) then
@@ -625,13 +627,14 @@ function findReplace:createToolbar()
   for id, var in pairs(options) do
     local tool = tb:FindTool(id)
     if tool then
-      tool:SetSticky(self.settings.flags[var])
+      local flags = self:GetFlags()
+      tool:SetSticky(flags[var])
       ctrl:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED,
         function ()
-          self.settings.flags[var] = not self.settings.flags[var]
+          flags[var] = not flags[var]
           self:SaveSettings()
 
-          tb:FindTool(id):SetSticky(self.settings.flags[var])
+          tb:FindTool(id):SetSticky(flags[var])
           tb:Refresh()
         end)
     end

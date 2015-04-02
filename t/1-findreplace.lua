@@ -50,7 +50,7 @@ is(replacements, 1, "Replace replaces once.")
 
 -- replace the current text and to the end of file
 editor:GotoPos(3)
-findReplace.fWrap = false
+findReplace:GetFlags().Wrap = false
 findReplace:Replace(true)
 local _, replacements = editor:GetText():gsub(replace, replace)
 is(replacements, 3, "Replace All without wrapping replaces to the end of file.")
@@ -61,7 +61,7 @@ is(editor:GetText(), expected, "Replace All with Wrap Around result is as expect
 -- start after the match to test wrapping
 editor:AppendText("\n"..search..search)
 editor:GotoPos(3)
-findReplace.fWrap = true
+findReplace:GetFlags().Wrap = true
 findReplace:Replace(true)
 ok(not editor:GetText():find(search), "Replace All with Wrap Around replaces everything.")
 
