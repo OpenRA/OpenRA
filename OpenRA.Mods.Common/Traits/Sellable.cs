@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 					sellValue /= health.Value.MaxHP;
 				}
 
-				return "Refund: " + sellValue;
+				return "Refund: $" + sellValue;
 			}
 		}
 	}
