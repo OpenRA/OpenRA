@@ -208,10 +208,10 @@ return {
   ["Recent &Projects"] = "Letzte &Projekte", -- src\editor\menu_file.lua
   ["Recent Files"] = "Letzte Dateien", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Stelle letzte rückgängig gemachte Bearbeitung wieder her", -- src\editor\menu_edit.lua
-  ["Refresh"] = "Erfrischen", -- src\editor\filetree.lua
+  ["Refresh"] = "Aktualisieren", -- src\editor\filetree.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "Starten einer neuen Debuggingsession abgelehnt, da bereits eine läuft.", -- src\editor\debugger.lua
   ["Regular &expression"] = "&Regulärer Ausdruck", -- src\editor\findreplace.lua
-  ["Remote console"] = "Fensteuerungs-Konsole", -- src\editor\shellbox.lua
+  ["Remote console"] = "Fernsteuerungs-Konsole", -- src\editor\shellbox.lua
   ["Rename All Instances"] = "Umbenennen aller Instanzen", -- src\editor\editor.lua
   ["Replace A&ll"] = "A&lles ersetzen", -- src\editor\findreplace.lua
   ["Replace All Selections"] = "Alle Auswahlen ersetzen", -- src\editor\editor.lua
