@@ -143,6 +143,7 @@
     <Compile Include="Orders\UnitOrderGenerator.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Primitives\MergedStream.cs" />
+    <Compile Include="Primitives\SpatiallyPartitioned.cs" />
     <Compile Include="Selection.cs" />
     <Compile Include="Server\Connection.cs" />
     <Compile Include="Server\Exts.cs" />

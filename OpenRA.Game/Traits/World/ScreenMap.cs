@@ -27,99 +27,71 @@ namespace OpenRA.Traits
 
 	public class ScreenMap : IWorldLoaded
 	{
-		ScreenMapInfo info;
+		static readonly IEnumerable<FrozenActor> NoFrozenActors = new FrozenActor[0];
+		readonly Func<FrozenActor, bool> frozenActorIsValid = fa => fa.IsValid;
+		readonly Func<Actor, bool> actorIsInWorld = a => a.IsInWorld;
+		readonly Cache<Player, SpatiallyPartitioned<FrozenActor>> partitionedFrozenActors;
+		readonly SpatiallyPartitioned<Actor> partitionedActors;
 		WorldRenderer worldRenderer;
-		Cache<Player, Dictionary<FrozenActor, Rectangle>[]> frozen;
-		Dictionary<Actor, Rectangle>[] actors;
-		int rows, cols;
 
 		public ScreenMap(World world, ScreenMapInfo info)
 		{
-			this.info = info;
 			var ts = Game.ModData.Manifest.TileSize;
-			cols = world.Map.MapSize.X * ts.Width / info.BinSize + 1;
-			rows = world.Map.MapSize.Y * ts.Height / info.BinSize + 1;
-
-			frozen = new Cache<Player, Dictionary<FrozenActor, Rectangle>[]>(InitializeFrozenActors);
-			actors = new Dictionary<Actor, Rectangle>[rows * cols];
-			for (var j = 0; j < rows; j++)
-				for (var i = 0; i < cols; i++)
-					actors[j * cols + i] = new Dictionary<Actor, Rectangle>();
+			var width = world.Map.MapSize.X * ts.Width;
+			var height = world.Map.MapSize.Y * ts.Height;
+			partitionedFrozenActors = new Cache<Player, SpatiallyPartitioned<FrozenActor>>(
+				_ => new SpatiallyPartitioned<FrozenActor>(width, height, info.BinSize));
+			partitionedActors = new SpatiallyPartitioned<Actor>(width, height, info.BinSize);
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr) { worldRenderer = wr; }
 
-		Dictionary<FrozenActor, Rectangle>[] InitializeFrozenActors(Player p)
-		{
-			var f = new Dictionary<FrozenActor, Rectangle>[rows * cols];
-			for (var j = 0; j < rows; j++)
-				for (var i = 0; i < cols; i++)
-					f[j * cols + i] = new Dictionary<FrozenActor, Rectangle>();
-
-			return f;
-		}
-
-		public void Add(Player viewer, FrozenActor fa)
+		Rectangle FrozenActorBounds(FrozenActor fa)
 		{
 			var pos = worldRenderer.ScreenPxPosition(fa.CenterPosition);
 			var bounds = fa.Bounds;
 			bounds.Offset(pos.X, pos.Y);
-
-			var top = Math.Max(0, bounds.Top / info.BinSize);
-			var left = Math.Max(0, bounds.Left / info.BinSize);
-			var bottom = Math.Min(rows - 1, bounds.Bottom / info.BinSize);
-			var right = Math.Min(cols - 1, bounds.Right / info.BinSize);
-
-			for (var j = top; j <= bottom; j++)
-				for (var i = left; i <= right; i++)
-					frozen[viewer][j * cols + i].Add(fa, bounds);
+			return bounds;
 		}
 
-		public void Remove(Player viewer, FrozenActor fa)
-		{
-			foreach (var bin in frozen[viewer])
-				bin.Remove(fa);
-		}
-
-		public void Add(Actor a)
+		Rectangle ActorBounds(Actor a)
 		{
 			var pos = worldRenderer.ScreenPxPosition(a.CenterPosition);
 			var bounds = a.Bounds;
 			bounds.Offset(pos.X, pos.Y);
-
-			var top = Math.Max(0, bounds.Top / info.BinSize);
-			var left = Math.Max(0, bounds.Left / info.BinSize);
-			var bottom = Math.Min(rows - 1, bounds.Bottom / info.BinSize);
-			var right = Math.Min(cols - 1, bounds.Right / info.BinSize);
-
-			for (var j = top; j <= bottom; j++)
-				for (var i = left; i <= right; i++)
-					actors[j * cols + i].Add(a, bounds);
+			return bounds;
 		}
 
-		public void Remove(Actor a)
+		public void Add(Player viewer, FrozenActor fa)
 		{
-			foreach (var bin in actors)
-				bin.Remove(a);
+			partitionedFrozenActors[viewer].Add(fa, FrozenActorBounds(fa));
+		}
+
+		public void Remove(Player viewer, FrozenActor fa)
+		{
+			partitionedFrozenActors[viewer].Remove(fa);
+		}
+
+		public void Add(Actor a)
+		{
+			partitionedActors.Add(a, ActorBounds(a));
 		}
 
 		public void Update(Actor a)
 		{
-			Remove(a);
-			Add(a);
+			partitionedActors.Update(a, ActorBounds(a));
 		}
 
-		public static readonly IEnumerable<FrozenActor> NoFrozenActors = new FrozenActor[0].AsEnumerable();
+		public void Remove(Actor a)
+		{
+			partitionedActors.Remove(a);
+		}
+
 		public IEnumerable<FrozenActor> FrozenActorsAt(Player viewer, int2 worldPx)
 		{
 			if (viewer == null)
 				return NoFrozenActors;
-
-			var i = (worldPx.X / info.BinSize).Clamp(0, cols - 1);
-			var j = (worldPx.Y / info.BinSize).Clamp(0, rows - 1);
-			return frozen[viewer][j * cols + i]
-				.Where(kv => kv.Key.IsValid && kv.Value.Contains(worldPx))
-				.Select(kv => kv.Key);
+			return partitionedFrozenActors[viewer].At(worldPx).Where(frozenActorIsValid);
 		}
 
 		public IEnumerable<FrozenActor> FrozenActorsAt(Player viewer, MouseInput mi)
@@ -129,11 +101,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> ActorsAt(int2 worldPx)
 		{
-			var i = (worldPx.X / info.BinSize).Clamp(0, cols - 1);
-			var j = (worldPx.Y / info.BinSize).Clamp(0, rows - 1);
-			return actors[j * cols + i]
-				.Where(kv => kv.Key.IsInWorld && kv.Value.Contains(worldPx))
-				.Select(kv => kv.Key);
+			return partitionedActors.At(worldPx).Where(actorIsInWorld);
 		}
 
 		public IEnumerable<Actor> ActorsAt(MouseInput mi)
@@ -141,51 +109,31 @@ namespace OpenRA.Traits
 			return ActorsAt(worldRenderer.Viewport.ViewToWorldPx(mi.Location));
 		}
 
+		static Rectangle RectWithCorners(int2 a, int2 b)
+		{
+			return Rectangle.FromLTRB(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
+		}
+
 		public IEnumerable<Actor> ActorsInBox(int2 a, int2 b)
 		{
-			return ActorsInBox(Rectangle.FromLTRB(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)));
+			return ActorsInBox(RectWithCorners(a, b));
 		}
 
 		public IEnumerable<Actor> ActorsInBox(Rectangle r)
 		{
-			var left = (r.Left / info.BinSize).Clamp(0, cols - 1);
-			var right = (r.Right / info.BinSize).Clamp(0, cols - 1);
-			var top = (r.Top / info.BinSize).Clamp(0, rows - 1);
-			var bottom = (r.Bottom / info.BinSize).Clamp(0, rows - 1);
-
-			var actorsChecked = new HashSet<Actor>();
-			for (var j = top; j <= bottom; j++)
-				for (var i = left; i <= right; i++)
-					foreach (var kvp in actors[j * cols + i])
-					{
-						var actor = kvp.Key;
-						if (actor.IsInWorld && kvp.Value.IntersectsWith(r) && actorsChecked.Add(actor))
-							yield return actor;
-					}
+			return partitionedActors.InBox(r).Where(actorIsInWorld);
 		}
 
 		public IEnumerable<FrozenActor> FrozenActorsInBox(Player p, int2 a, int2 b)
 		{
-			return FrozenActorsInBox(p, Rectangle.FromLTRB(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)));
+			return FrozenActorsInBox(p, RectWithCorners(a, b));
 		}
 
 		public IEnumerable<FrozenActor> FrozenActorsInBox(Player p, Rectangle r)
 		{
-			var left = (r.Left / info.BinSize).Clamp(0, cols - 1);
-			var right = (r.Right / info.BinSize).Clamp(0, cols - 1);
-			var top = (r.Top / info.BinSize).Clamp(0, rows - 1);
-			var bottom = (r.Bottom / info.BinSize).Clamp(0, rows - 1);
-			var bins = frozen[p];
-
-			var actorsChecked = new HashSet<FrozenActor>();
-			for (var j = top; j <= bottom; j++)
-				for (var i = left; i <= right; i++)
-					foreach (var kvp in bins[j * cols + i])
-					{
-						var actor = kvp.Key;
-						if (actor.IsValid && kvp.Value.IntersectsWith(r) && actorsChecked.Add(actor))
-							yield return actor;
-					}
+			if (p == null)
+				return NoFrozenActors;
+			return partitionedFrozenActors[p].InBox(r).Where(frozenActorIsValid);
 		}
 	}
 }
