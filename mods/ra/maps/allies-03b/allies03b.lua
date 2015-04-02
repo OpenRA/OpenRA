@@ -111,7 +111,9 @@ JeepCheckpointMove = function()
 		if Jeep.Location == JeepCheckpoint.Location then
 			Trigger.ClearAll(Jeep)
 			for i = 1, 2, 1 do
-				CheckpointGuards[i].Move(CheckpointGuardWaypoints[i].Location)
+				if not CheckpointGuards[i].IsDead then
+					CheckpointGuards[i].Move(CheckpointGuardWaypoints[i].Location)
+				end
 			end
 		else
 			Jeep.Move(JeepCheckpoint.Location)
