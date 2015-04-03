@@ -2,12 +2,12 @@ gacnst:
 	Defaults:
 		Offset: 0, -36
 		UseTilesetCode: true
-	idle: gtcnst
+	idle:
 		ShadowStart: 3
-	damaged-idle: gtcnst
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: gtcnst
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -45,12 +45,12 @@ gapowr:
 	Defaults:
 		Offset: 0, -24
 		UseTilesetCode: true
-	idle: gtpowr
+	idle:
 		ShadowStart: 3
-	damaged-idle: gtpowr
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: gtpowr
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -97,12 +97,12 @@ gapile:
 	Defaults:
 		Offset: 0, -24
 		UseTilesetCode: true
-	idle: gtpile
+	idle:
 		ShadowStart: 3
-	damaged-idle: gtpile
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: gtpile
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -136,12 +136,12 @@ gaweap:
 	Defaults:
 		Offset: -12, -42
 		UseTilesetCode: true
-	idle: gtweap
+	idle:
 		ShadowStart: 3
-	damaged-idle: gtweap
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: gtweap
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -201,12 +201,12 @@ napowr:
 	Defaults:
 		Offset: 0, -24
 		UseTilesetCode: true
-	idle: ntpowr
+	idle:
 		ShadowStart: 3
-	damaged-idle: ntpowr
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: ntpowr
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -228,12 +228,12 @@ naapwr:
 	Defaults:
 		Offset: 12, -30
 		UseTilesetCode: true
-	idle: ntapwr
+	idle:
 		ShadowStart: 3
-	damaged-idle: ntapwr
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: ntapwr
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -255,12 +255,12 @@ nahand:
 	Defaults:
 		Offset: -6, -30
 		UseTilesetCode: true
-	idle: nthand
+	idle:
 		ShadowStart: 3
-	damaged-idle: nthand
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: nthand
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -289,12 +289,12 @@ naweap:
 	Defaults:
 		Offset: -12, -42
 		UseTilesetCode: true
-	idle: ntweap
+	idle:
 		ShadowStart: 3
-	damaged-idle: ntweap
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: ntweap
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -335,12 +335,12 @@ naradr:
 	Defaults:
 		Offset: 0, -24
 		UseTilesetCode: true
-	idle: ntradr
+	idle:
 		ShadowStart: 3
-	damaged-idle: ntradr
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: ntradr
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -362,12 +362,12 @@ natech:
 	Defaults:
 		Offset: 0, -24
 		UseTilesetCode: true
-	idle: nttech
+	idle:
 		ShadowStart: 3
-	damaged-idle: nttech
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: nttech
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -388,12 +388,12 @@ garadr:
 	Defaults:
 		Offset: 0, -24
 		UseTilesetCode: true
-	idle: gtradr
+	idle:
 		ShadowStart: 3
-	damaged-idle: gtradr
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: gtradr
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -417,12 +417,12 @@ gatech:
 	Defaults:
 		Offset: -12, -30
 		UseTilesetCode: true
-	idle: gttech
+	idle:
 		ShadowStart: 3
-	damaged-idle: gttech
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: gttech
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -444,10 +444,10 @@ gasand:
 	Defaults:
 		Offset: 0, -12
 		UseTilesetCode: true
-	idle: gtsand
+	idle:
 		Length: 16
 		ShadowStart: 32
-	damaged-idle: gtsand
+	damaged-idle:
 		Start: 16
 		Length: 16
 		ShadowStart: 48
@@ -459,14 +459,14 @@ gawall:
 	Defaults:
 		Offset: 0, -12
 		UseTilesetCode: true
-	idle: gtwall
+	idle:
 		Length: 16
 		ShadowStart: 48
-	damaged-idle: gtwall
+	damaged-idle:
 		Start: 16
 		Length: 16
 		ShadowStart: 64
-	critical-idle: gtwall
+	critical-idle:
 		Start: 32
 		Length: 16
 		ShadowStart: 80
@@ -478,14 +478,14 @@ nawall:
 	Defaults:
 		Offset: 0, -12
 		UseTilesetCode: true
-	idle: ntwall
+	idle:
 		Length: 16
 		ShadowStart: 48
-	damaged-idle: ntwall
+	damaged-idle:
 		Start: 16
 		Length: 16
 		ShadowStart: 64
-	critical-idle: ntwall
+	critical-idle:
 		Start: 32
 		Length: 16
 		ShadowStart: 80
@@ -557,16 +557,16 @@ naobel:
 	Defaults:
 		Offset: 0, -24
 		UseTilesetCode: true
-	idle: ntobel
+	idle:
 		ShadowStart: 3
-	damaged-idle: ntobel
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: ntobel
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
-	active: ntobel #placeholder until Charge supports overlays
+	active: naobel #placeholder until Charge supports overlays
 		ShadowStart: 3
 #	active: ntobel_b
 #		Length: 12
@@ -585,12 +585,12 @@ nalasr:
 	Defaults:
 		Offset: 0, -12
 		UseTilesetCode: true
-	idle: ntlasr
+	idle:
 		ShadowStart: 3
-	damaged-idle: ntlasr
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: ntlasr
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -605,12 +605,12 @@ nasam:
 	Defaults:
 		Offset: 0, -12
 		UseTilesetCode: true
-	idle: ntsam
+	idle:
 		ShadowStart: 3
-	damaged-idle: ntsam
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: ntsam
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -628,12 +628,12 @@ napuls:
 	Defaults:
 		Offset: 0, -24
 		UseTilesetCode: true
-	idle: ntpuls
+	idle:
 		ShadowStart: 3
-	damaged-idle: ntpuls
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: ntpuls
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -650,12 +650,12 @@ nastlh:
 	Defaults:
 		Offset: -6, -30
 		UseTilesetCode: true
-	idle: ntstlh
+	idle:
 		ShadowStart: 3
-	damaged-idle: ntstlh
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: ntstlh
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -677,12 +677,12 @@ gactwr:
 	Defaults:
 		Offset: 0, -12
 		UseTilesetCode: true
-	idle: gtctwr
+	idle:
 		ShadowStart: 3
-	damaged-idle: gtctwr
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: gtctwr
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -743,14 +743,14 @@ gahpad:
 	Defaults:
 		Offset: 0, -24
 		UseTilesetCode: true
-	idle: gthpad
+	idle:
 		ShadowStart: 3
 		ZOffset: -1c511
-	damaged-idle: gthpad
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
 		ZOffset: -1c511
-	dead: gthpad
+	dead:
 		Start: 2
 		ShadowStart: 5
 		ZOffset: -1c511
@@ -790,14 +790,14 @@ nahpad:
 	Defaults:
 		Offset: 0, -24
 		UseTilesetCode: true
-	idle: nthpad
+	idle:
 		ShadowStart: 3
 		ZOffset: -1c511
-	damaged-idle: nthpad
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
 		ZOffset: -1c511
-	dead: nthpad
+	dead:
 		Start: 2
 		ShadowStart: 5
 		ZOffset: -1c511
@@ -868,14 +868,14 @@ gasilo:
 	damaged-idle: gtsilo_a
 		Start: 4
 		Length: 4
-	idle-underlay: gtsilo
+	idle-underlay:
 		ShadowStart: 3
 		ZOffset: -512
-	damaged-idle-underlay: gtsilo
+	damaged-idle-underlay:
 		Start: 1
 		ShadowStart: 4
 		ZOffset: -512
-	dead: gtsilo
+	dead:
 		Start: 2
 		ShadowStart: 5
 		ZOffset: -512
@@ -898,12 +898,12 @@ gadept:
 	Defaults:
 		Offset: 0, -36
 		UseTilesetCode: true
-	idle: gtdept
+	idle:
 		ShadowStart: 3
-	damaged-idle: gtdept
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: gtdept
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -954,10 +954,10 @@ namisl:
 	Defaults:
 		Offset: 0, -24
 		UseTilesetCode: true
-	idle: ntmisl
-	damaged-idle: ntmisl
+	idle:
+	damaged-idle:
 		Start: 1
-	dead: ntmisl
+	dead:
 		Start: 2
 		Tick: 400
 	idle-lights: ntmisl_b
@@ -985,12 +985,12 @@ gaplug:
 	Defaults:
 		Offset: 12, -30
 		UseTilesetCode: true
-	idle: gaplug
+	idle:
 		ShadowStart: 3
-	damaged-idle: gaplug
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: gaplug
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
