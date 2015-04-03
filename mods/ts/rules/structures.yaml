@@ -439,33 +439,6 @@ NAWEAP:
 	Power:
 		Amount: -30
 
-GASAND:
-	Inherits: ^Wall
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 1000
-		Prerequisites: ~structures.gdi
-	SoundOnDamageTransition:
-		DamagedSounds: sandbag1.aud
-		DestroyedSounds: sandbag1.aud
-	Valued:
-		Cost: 25
-	CustomSellValue:
-		Value: 0
-	Tooltip:
-		Name: Sandbags
-		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
-	Health:
-		HP: 250
-	Armor:
-		Type: Light
-	LineBuild:
-		NodeTypes: sandbags
-	LineBuildNode:
-		Types: sandbags
-	RenderBuildingWall:
-		Type: sandbags
-
 GAWALL:
 	Inherits: ^Wall
 	Buildable:
