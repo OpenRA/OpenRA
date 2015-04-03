@@ -78,9 +78,9 @@ Rules:
 	./mods/ts/rules/nod-infantry.yaml
 	./mods/ts/rules/nod-structures.yaml
 	./mods/ts/rules/nod-vehicles.yaml
-	./mods/ts/rules/player-infantry.yaml
-	./mods/ts/rules/player-structures.yaml
-	./mods/ts/rules/player-vehicles.yaml
+	./mods/ts/rules/shared-infantry.yaml
+	./mods/ts/rules/shared-structures.yaml
+	./mods/ts/rules/shared-vehicles.yaml
 	./mods/ts/rules/trees.yaml
 
 Weapons:
