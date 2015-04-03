@@ -176,6 +176,7 @@ CAMERA:
 	DetectCloaked:
 		Range: 10
 	RenderEditorOnly:
+		Image: camera
 
 camera.paradrop:
 	Immobile:
