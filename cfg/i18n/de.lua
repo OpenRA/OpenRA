@@ -169,7 +169,7 @@ return {
   ["Ln: %d"] = "Zeile: %d", -- src\editor\editor.lua
   ["Local console"] = "Lokale Konsole", -- src\editor\gui.lua, src\editor\shellbox.lua
   ["Lua &Interpreter"] = "&Lua Interpreter", -- src\editor\menu_project.lua
-  ["Mapped remote request for '%s' to '%s'."] = "Mapped remote request for '%s' to '%s'.", -- src\editor\debugger.lua
+  ["Mapped remote request for '%s' to '%s'."] = "Fern-Aufforderung für '%s' auf '%s' abgebildet.", -- src\editor\debugger.lua
   ["Match &case"] = "&Groß-/Kleinschreibung", -- src\editor\findreplace.lua
   ["Match &whole word"] = "Ganzes &Wort", -- src\editor\findreplace.lua
   ["Mixed end-of-line encodings detected."] = "Gemischte End-of-Line Kodierung entdeckt.", -- src\editor\commands.lua
