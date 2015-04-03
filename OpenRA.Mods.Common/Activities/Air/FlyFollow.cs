@@ -21,10 +21,10 @@ namespace OpenRA.Mods.Common.Activities
 		WRange minRange;
 		WRange maxRange;
 
-		public FlyFollow(Actor self, Target target, WRange minRange, WRange maxRange)
+		public FlyFollow(Actor self, Target target, Plane plane, WRange minRange, WRange maxRange)
 		{
 			this.target = target;
-			plane = self.Trait<Plane>();
+			this.plane = plane;
 			this.minRange = minRange;
 			this.maxRange = maxRange;
 		}
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 			}
 
-			return Util.SequenceActivities(new Fly(self, target, minRange, maxRange), this);
+			return Util.SequenceActivities(new Fly(self, target, plane, minRange, maxRange), this);
 		}
 	}
 }

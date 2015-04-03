@@ -184,8 +184,9 @@ namespace OpenRA.Mods.RA.Traits
 					foreach (var p in passengers)
 						cargo.Load(a, p);
 
-					a.QueueActivity(new Fly(a, Target.FromPos(target + spawnOffset)));
-					a.QueueActivity(new Fly(a, Target.FromPos(finishEdge + spawnOffset)));
+					var plane = a.Trait<Plane>();
+					a.QueueActivity(new Fly(a, Target.FromPos(target + spawnOffset), plane));
+					a.QueueActivity(new Fly(a, Target.FromPos(finishEdge + spawnOffset), plane));
 					a.QueueActivity(new RemoveSelf());
 					aircraftInRange.Add(a, false);
 					distanceTestActor = a;
