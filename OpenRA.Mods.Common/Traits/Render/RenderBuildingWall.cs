@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Show a static frame instead of animating all of the wall states
 			var anim = new Animation(init.World, image, () => 0);
-			anim.PlayFetchIndex(Sequence, () => 0);
+			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence), () => 0);
 
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
