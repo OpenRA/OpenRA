@@ -34,6 +34,7 @@ Speech:
 		WormSign: WSIGN
 		WormAttack: WATTK
 		EnemyUnitsApproaching: ENEMY
+		EnemyUnitsDetected: ENEMY_DETECTED
 		UnitRepaired: GANEW
 		CannotDeploy: DPLOY
 

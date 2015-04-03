@@ -51,7 +51,7 @@
 	TemporaryOwnerManager:
 	MustBeDestroyed:
 	AnnounceOnSeen:
-		Notification: EnemyUnitsApproaching
+		Notification: EnemyUnitsDetected
 
 ^Tank:
 	AppearsOnRadar:
@@ -106,7 +106,7 @@
 	TemporaryOwnerManager:
 	MustBeDestroyed:
 	AnnounceOnSeen:
-		Notification: EnemyUnitsApproaching
+		Notification: EnemyUnitsDetected
 
 ^Husk:
 	Health:
@@ -237,7 +237,7 @@
 	UpgradeManager:
 	MustBeDestroyed:
 	AnnounceOnSeen:
-		Notification: EnemyUnitsApproaching
+		Notification: EnemyUnitsDetected
 	TerrainModifiesDamage:
 		TerrainModifier:
 			Rough: 80
@@ -275,7 +275,7 @@
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	AnnounceOnSeen:
-		Notification: EnemyUnitsApproaching
+		Notification: EnemyUnitsDetected
 	RenderUnit:
 
 ^Helicopter:
