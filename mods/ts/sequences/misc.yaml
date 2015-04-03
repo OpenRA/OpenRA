@@ -1,6 +1,7 @@
 overlay:
 	Defaults: place
 		Offset: 0, -12
+		BlendMode: Translucency75
 	build-valid-snow:
 	build-valid-temperat:
 	build-invalid:
