@@ -101,6 +101,8 @@ namespace OpenRA.FileSystem
 				return new PakFile(filename, order);
 			if (filename.EndsWith(".big", StringComparison.InvariantCultureIgnoreCase))
 				return new BigFile(filename, order);
+			if (filename.EndsWith(".bag", StringComparison.InvariantCultureIgnoreCase))
+				return new BagFile(filename, order);
 
 			return new Folder(filename, order);
 		}
