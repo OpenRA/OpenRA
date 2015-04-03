@@ -28,7 +28,8 @@ namespace OpenRA.Mods.Common.Traits
 			var facing = ifacing != null ? init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : ifacing.GetInitialFacing() : 0;
 
 			var anim = new Animation(init.World, image, () => facing);
-			anim.PlayRepeating(Sequence);
+			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
+
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
 

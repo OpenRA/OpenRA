@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
 			var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
 			var anim = new Animation(init.World, image, () => facing);
-			anim.PlayRepeating(Sequence);
+			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
 			var orientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing)), facings);
 			var offset = body.LocalToWorld(Offset.Rotate(orientation));
