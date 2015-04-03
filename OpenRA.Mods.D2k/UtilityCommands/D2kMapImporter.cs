@@ -297,7 +297,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 				return null;
 
 			map.RequiresMod = mod;
-			var players = new MapPlayers(map.Rules, map.GetSpawnPoints().Length);
+			var players = new MapPlayers(map.Rules, map.SpawnPoints.Value.Length);
 			map.PlayerDefinitions = players.ToMiniYaml();
 
 			return map;
@@ -314,8 +314,6 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			map.MapSize = new int2(mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth);
 			map.Bounds = new Rectangle(MapCordonWidth, MapCordonWidth, mapSize.Width, mapSize.Height);
 
-			map.Smudges = Exts.Lazy(() => new List<SmudgeReference>());
-			map.Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>());
 			map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(TileShape.Rectangle, new Size(map.MapSize.X, map.MapSize.Y)));
 			map.MapTiles = Exts.Lazy(() => new CellLayer<TerrainTile>(TileShape.Rectangle, new Size(map.MapSize.X, map.MapSize.Y)));
 
@@ -357,7 +355,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 						new LocationInit(locationOnMap),
 						new OwnerInit(kvp.Second)
 					};
-					map.Actors.Value.Add("Actor" + map.Actors.Value.Count, a);
+					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, a.Save()));
 				}
 			}
 		}
