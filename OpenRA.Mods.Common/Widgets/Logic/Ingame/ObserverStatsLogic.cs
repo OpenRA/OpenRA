@@ -199,7 +199,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
 			if (stats == null) return template;
-			template.Get<LabelWidget>("CONTROL").GetText = () => MapControl(stats.MapControl);
 			template.Get<LabelWidget>("KILLS_COST").GetText = () => "$" + stats.KillsCost;
 			template.Get<LabelWidget>("DEATHS_COST").GetText = () => "$" + stats.DeathsCost;
 			template.Get<LabelWidget>("UNITS_KILLED").GetText = () => stats.UnitsKilled.ToString();
