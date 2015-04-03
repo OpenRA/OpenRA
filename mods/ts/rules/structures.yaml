@@ -1026,7 +1026,7 @@ GACTWR:
 	Armament@SAM:
 		UpgradeTypes: tower.sam
 		UpgradeMinEnabledLevel: 1
-		Weapon: SAMTower
+		Weapon: RedEye2
 		LocalOffset: 512,0,512
 	WithMuzzleFlash:
 		UpgradeTypes: tower.vulcan
@@ -1139,7 +1139,7 @@ NASAM:
 	WithTurret:
 		Recoils: no
 	Armament:
-		Weapon: SAMTower
+		Weapon: RedEye2
 		LocalOffset: 512,0,512
 	Power:
 		Amount: -30
@@ -1177,7 +1177,7 @@ NALASR:
 		Offset: 298,-171,0
 	AttackTurreted:
 	Armament:
-		Weapon: TurretLaser
+		Weapon: LaserFire2
 	RenderVoxels:
 	WithVoxelTurret:
 	AutoTarget:
@@ -1212,7 +1212,7 @@ NAOBEL:
 	RenderBuildingCharge:
 		ChargeAudio: obelpowr.aud
 	Armament:
-		Weapon: ObeliskLaser
+		Weapon: LaserFire
 		LocalOffset: 0,0,725
 	AttackCharge:
 		ReloadTime: 50

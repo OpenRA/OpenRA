@@ -1,0 +1,71 @@
+FireballLauncher:
+	ReloadDelay: 50
+	Range: 4c256
+	Report: FLAMTNK1.AUD
+	Projectile: Bullet
+		Speed: 64
+		Image: FLAMEALL
+		Inaccuracy: 384
+	Burst: 5
+	BurstDelay: 5
+	Warhead@1Dam: SpreadDamage
+		Spread: 341
+		Damage: 25
+		DeathType: 5
+		ProneModifier: 100
+		Versus:
+			None: 600
+			Wood: 148
+			Light: 59
+			Heavy: 6
+			Concrete: 2
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SmallScorch
+
+FiendShard:
+	ReloadDelay: 30
+	Burst: 3
+	Range: 5c0
+	Report: FIEND2.AUD
+	Projectile: Bullet
+		Speed: 213
+		Image: CRYSTAL4
+		Inaccuracy: 512
+		Shadow: true
+		Angle: 60
+		Palette: greentiberium
+	Warhead@1Dam: SpreadDamage
+		Damage: 35
+		DeathType: 1
+		ProneModifier: 100
+		Versus:
+			Light: 60
+			Heavy: 40
+			Concrete: 20
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+
+SlimeAttack:
+	ReloadDelay: 80
+	Range: 5c0
+	Report: VICER1.AUD
+	Projectile: Bullet
+		Speed: 426
+	Warhead@1Dam: SpreadDamage
+		Damage: 100
+		DeathType: 2
+		ProneModifier: 100
+		Versus:
+			Light: 60
+			Heavy: 40
+			Concrete: 20
+
+Tiberium:
+	ReloadDelay: 16
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 2
+		DeathType: 6
+		PreventProne: yes

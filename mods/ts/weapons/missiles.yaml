@@ -1,0 +1,272 @@
+Bazooka:
+	ReloadDelay: 60
+	Range: 6c0
+	MinRange: 0c512
+	Report: RKETINF1.AUD
+	ValidTargets: Ground, Air
+	Projectile: Missile
+		Speed: 213
+		Blockable: false
+		Shadow: true
+		Inaccuracy: 128
+		Image: DRAGON
+		Trail: small_smoke_trail
+		RateOfTurn: 8
+		RangeLimit: 50
+		Palette: ra
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 25
+		DeathType: 2
+		ValidTargets: Ground, Air
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
+		Explosion: small_clsn
+		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_twlt
+		ImpactSound: expnew12.aud
+		ValidImpactTypes: Air, AirHit
+	Warhead@5Smu: LeaveSmudge
+		SmudgeType: SmallCrater
+
+HoverMissile:
+	ReloadDelay: 68
+	Burst: 2
+	Range: 8c0
+	Report: HOVRMIS1.AUD
+	ValidTargets: Ground, Air
+	Projectile: Missile
+		Speed: 213
+		Arm: 2
+		Blockable: false
+		Shadow: true
+		Inaccuracy: 128
+		Image: DRAGON
+		Trail: small_smoke_trail
+		RateOfTurn: 8
+		RangeLimit: 35
+		Palette: ra
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 30
+		DeathType: 2
+		ValidTargets: Ground, Air
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
+		Explosion: small_clsn
+		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_twlt
+		ImpactSound: expnew12.aud
+		ValidImpactTypes: Air, AirHit
+	Warhead@5: LeaveSmudge
+		SmudgeType: SmallCrater
+
+MammothTusk:
+	ReloadDelay: 80
+	Range: 6c0
+	Report: MISL1.AUD
+	ValidTargets: Air
+	Burst: 2
+	Projectile: Missile
+		Blockable: false
+		Shadow: true
+		Inaccuracy: 128
+		Image: DRAGON
+		Trail: small_smoke_trail
+		RateOfTurn: 10
+		Speed: 213
+		RangeLimit: 50
+		Palette: ra
+	Warhead@1Dam: SpreadDamage
+		Spread: 171
+		Damage: 40
+		DeathType: 3
+		ProneModifier: 70
+		ValidTargets: Air
+		Versus:
+			None: 100
+			Wood: 85
+			Light: 70
+			Heavy: 35
+			Concrete: 28
+	Warhead@2Eff: CreateEffect
+		Explosion: medium_bang
+		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+
+BikeMissile:
+	ReloadDelay: 60
+	Burst: 2 # to make bike alternate between left and right launcher, change in dmg/s compared to original TS
+	BurstDelay: 60
+	Range: 5c0
+	Report: MISL1.AUD
+	ValidTargets: Ground
+	Projectile: Missile
+		Arm: 2
+		Blockable: false
+		Shadow: true
+		Inaccuracy: 128
+		Image: DRAGON
+		Trail: small_smoke_trail
+		RateOfTurn: 8
+		Speed: 213
+		RangeLimit: 50
+		Palette: ra
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 40
+		DeathType: 2
+		ValidTargets: Ground
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
+		Explosion: small_clsn
+		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: SmallCrater
+
+Dragon:
+	ReloadDelay: 50
+	Range: 6c0
+	Burst: 2
+	Report: MISL1.AUD
+	ValidTargets: Ground, Air
+	Projectile: Missile
+		Speed: 171
+		Arm: 2
+		Blockable: false
+		Shadow: true
+		Inaccuracy: 128
+		Image: DRAGON
+		Trail: small_smoke_trail
+		RateOfTurn: 8
+		RangeLimit: 50
+		Palette: ra
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 30
+		DeathType: 2
+		ValidTargets: Ground, Air
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+	Warhead@2Eff: CreateEffect
+		Explosion: small_clsn
+		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_twlt
+		ImpactSound: expnew12.aud
+		ValidImpactTypes: Air, AirHit
+	Warhead@5Smu: LeaveSmudge
+		SmudgeType: SmallCrater
+
+Hellfire:
+	ReloadDelay: 50
+	Range: 6c0
+	Report: ORCAMIS1.AUD
+	Burst: 2
+	ValidTargets: Ground
+	Projectile: Missile
+		Speed: 256
+		Arm: 2
+		Blockable: false
+		Shadow: true
+		Inaccuracy: 128
+		Image: DRAGON
+		Trail: small_smoke_trail
+		RateOfTurn: 8
+		RangeLimit: 35
+		Palette: ra
+	Warhead@1Dam: SpreadDamage
+		Spread: 85
+		Damage: 30
+		DeathType: 2
+		ValidTargets: Ground
+		Versus:
+			None: 30
+			Wood: 65
+			Light: 150
+			Heavy: 100
+			Concrete: 30
+	Warhead@2Eff: CreateEffect
+		Explosion: small_bang
+		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_twlt
+		ImpactSound: expnew12.aud
+		ValidImpactTypes: Air, AirHit
+	Warhead@5Smu: LeaveSmudge
+		SmudgeType: SmallCrater
+
+RedEye2:
+	ReloadDelay: 55
+	Range: 15c0
+	Report: SAMSHOT1.AUD
+	ValidTargets: Air
+	Projectile: Missile
+		Speed: 384
+		Arm: 2
+		Blockable: false
+		Shadow: true
+		Inaccuracy: 128
+		Image: DRAGON
+		Trail: small_smoke_trail
+		RateOfTurn: 5
+		RangeLimit: 100
+		Palette: ra
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 33
+		DeathType: 2
+		ValidTargets: Air
+	Warhead@2Eff: CreateEffect
+		Explosion: small_clsn
+		ImpactSound: expnew12.aud
