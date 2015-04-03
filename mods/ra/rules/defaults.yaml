@@ -82,7 +82,7 @@
 		Notification: UnitStolen
 	MustBeDestroyed:
 	AnnounceOnSeen:
-		Notification: EnemyUnitsApproaching
+		Notification: EnemyDetected
 
 ^Tank:
 	Inherits@1: ^ExistsInWorld
@@ -144,7 +144,7 @@
 		WaterCorpseSequence:
 		WaterCorpsePalette:
 	AnnounceOnSeen:
-		Notification: EnemyUnitsApproaching
+		Notification: EnemyDetected
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
@@ -220,7 +220,7 @@
 		Types: Infantry
 	MustBeDestroyed:
 	AnnounceOnSeen:
-		Notification: EnemyUnitsApproaching
+		Notification: EnemyDetected
 
 ^Ship:
 	Inherits@1: ^ExistsInWorld
@@ -251,7 +251,7 @@
 		GenericName: Ship
 	MustBeDestroyed:
 	AnnounceOnSeen:
-		Notification: EnemyUnitsApproaching
+		Notification: EnemyDetected
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -287,7 +287,7 @@
 	WithShadow:
 	MustBeDestroyed:
 	AnnounceOnSeen:
-		Notification: EnemyUnitsApproaching
+		Notification: EnemyDetected
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -297,7 +297,7 @@
 		String: Helicopter
 	Hovers:
 	AnnounceOnSeen:
-		Notification: EnemyUnitsApproaching
+		Notification: EnemyDetected
 
 ^Building:
 	Inherits@1: ^ExistsInWorld
