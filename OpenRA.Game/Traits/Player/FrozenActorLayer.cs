@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -24,10 +25,10 @@ namespace OpenRA.Traits
 	public class FrozenActor
 	{
 		public readonly MPos[] Footprint;
-		public readonly CellRegion FootprintRegion;
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
 		readonly Actor actor;
+		readonly Func<MPos, bool> isVisibleTest;
 
 		public Player Owner;
 
@@ -44,13 +45,13 @@ namespace OpenRA.Traits
 		public FrozenActor(Actor self, MPos[] footprint, CellRegion footprintRegion, Shroud shroud)
 		{
 			actor = self;
-			Footprint = footprint;
-			FootprintRegion = footprintRegion;
+			isVisibleTest = shroud.IsVisibleTest(footprintRegion);
 
+			Footprint = footprint;
 			CenterPosition = self.CenterPosition;
 			Bounds = self.Bounds;
 
-			UpdateVisibility(shroud);
+			UpdateVisibility();
 		}
 
 		public uint ID { get { return actor.ActorID; } }
@@ -64,21 +65,20 @@ namespace OpenRA.Traits
 		IRenderable[] renderables = NoRenderables;
 		bool needRenderables;
 
-		public void Tick(Shroud shroud)
+		public void Tick()
 		{
-			UpdateVisibility(shroud);
+			UpdateVisibility();
 
 			if (flashTicks > 0)
 				flashTicks--;
 		}
 
-		void UpdateVisibility(Shroud shroud)
+		void UpdateVisibility()
 		{
 			var wasVisible = Visible;
 
-			// We are doing the following LINQ manually to avoid allocating an extra delegate since this is a hot path.
-			// Visible = !Footprint.Any(shroud.IsVisibleTest(FootprintRegion));
-			var isVisibleTest = shroud.IsVisibleTest(FootprintRegion);
+			// We are doing the following LINQ manually for performance since this is a hot path.
+			// Visible = !Footprint.Any(isVisibleTest);
 			Visible = true;
 			foreach (var uv in Footprint)
 				if (isVisibleTest(uv))
@@ -161,7 +161,7 @@ namespace OpenRA.Traits
 				FrozenHash += hash;
 
 				var frozenActor = kvp.Value;
-				frozenActor.Tick(self.Owner.Shroud);
+				frozenActor.Tick();
 
 				if (frozenActor.Visible)
 					VisibilityHash += hash;
