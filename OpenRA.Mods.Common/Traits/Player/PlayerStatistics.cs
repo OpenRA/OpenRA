@@ -25,7 +25,6 @@ namespace OpenRA.Mods.Common.Traits
 		World world;
 		Player player;
 
-		public double MapControl;
 		public int OrderCount;
 
 		public int EarnedThisMinute
@@ -54,18 +53,6 @@ namespace OpenRA.Mods.Common.Traits
 			player = self.Owner;
 		}
 
-		void UpdateMapControl()
-		{
-			var total = (double)world.Map.Bounds.Width * world.Map.Bounds.Height;
-			MapControl = world.Actors
-				.Where(a => !a.IsDead && a.IsInWorld && a.Owner == player && a.HasTrait<RevealsShroud>())
-				.SelectMany(a => world.Map.FindTilesInCircle(
-					a.Location,
-					a.Trait<RevealsShroud>().Range.Clamp(WRange.Zero, WRange.FromCells(Map.MaxTilesInCircleRange)).Range / 1024))
-				.Distinct()
-				.Count() / total;
-		}
-
 		void UpdateEarnedThisMinute()
 		{
 			EarnedSamples.Enqueue(EarnedThisMinute);
@@ -76,10 +63,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(Actor self)
 		{
-			if (self.World.WorldTick % 1500 == 1)
+			if (world.WorldTick % 1500 == 1)
 				UpdateEarnedThisMinute();
-			if (self.World.WorldTick % 250 == 0)
-				UpdateMapControl();
 		}
 
 		public void ResolveOrder(Actor self, Order order)
