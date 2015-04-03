@@ -69,8 +69,11 @@ Rules:
 	./mods/ts/rules/world.yaml
 	./mods/ts/rules/aircraft.yaml
 	./mods/ts/rules/defaults.yaml
-	./mods/ts/rules/infantry.yaml
 	./mods/ts/rules/structures.yaml
+	./mods/ts/rules/civilian-infantry.yaml
+	./mods/ts/rules/gdi-infantry.yaml
+	./mods/ts/rules/nod-infantry.yaml
+	./mods/ts/rules/player-infantry.yaml
 	./mods/ts/rules/vehicles.yaml
 	./mods/ts/rules/trees.yaml
 

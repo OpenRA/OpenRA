@@ -1,0 +1,306 @@
+WEEDGUY:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Chem Spray Infantry
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: Weed
+	Mobile:
+		Speed: 42
+	Health:
+		HP: 130
+	Crushable:
+		CrushSound: squishy2.aud
+	Armament:
+		Weapon: FireballLauncher
+		LocalOffset: 85,0,384
+	AttackFrontal:
+	WithInfantryBody:
+	TakeCover:
+
+UMAGON:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Umagon
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: Umagon
+	Mobile:
+		Speed: 71
+	Health:
+		HP: 150
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	Passenger:
+	RevealsShroud:
+		Range: 7c0
+	Armament:
+		Weapon: Sniper
+	AttackFrontal:
+	TakeCover:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+
+CHAMSPY:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 700
+	DisguiseToolTip:
+		Name: Chameleon Spy
+	Selectable:
+		Voice: Spy
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 120
+	Mobile:
+		Speed: 85
+	RevealsShroud:
+		Range: 9c0
+	Passenger:
+	TakeCover:
+	Disguise:
+	Infiltrates:
+		Types: SpyInfiltrate
+	-AutoTarget:
+	-WithInfantryBody:
+	WithDisguisingInfantryBody:
+		IdleSequences: idle1,idle2
+
+
+MUTANT:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Mutant
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Mutant
+	Health:
+		HP: 50
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	Armament:
+		Weapon: Vulcan
+	AttackFrontal:
+	TakeCover:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+
+MWMN:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Mutant Soldier
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: CivilianFemale
+	Health:
+		HP: 50
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	Armament:
+		Weapon: Vulcan
+	AttackFrontal:
+	TakeCover:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+
+MUTANT3:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Mutant Sergeant
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Mutant
+	Health:
+		HP: 50
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	Armament:
+		Weapon: Vulcan
+	AttackFrontal:
+	TakeCover:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+
+TRATOS:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Tratos
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Tratos
+	Health:
+		HP: 200
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	Mobile:
+		Speed: 71
+	RevealsShroud:
+		Range: 4c0
+	TakeCover:
+	-AutoTarget:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+
+OXANNA:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Oxanna
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Oxanna
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	TakeCover:
+	-AutoTarget:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+
+SLAV:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Slavick
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Slavick
+	Health:
+		HP: 300
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	TakeCover:
+	-AutoTarget:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+
+DOGGIE:
+	Inherits: ^Infantry
+	Tooltip:
+		Name: Tiberian Fiend
+	Health:
+		Radius: 213
+		HP: 250
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	Valued:
+		Cost: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4c0
+	Mobile:
+		Speed: 113
+	Selectable:
+		Voice: Fiend
+	TargetableUnit:
+		TargetTypes: Ground
+	Armament:
+		Weapon: FiendShard
+	AttackFrontal:
+	AttackWander:
+		WanderMoveRadius: 2
+		MinMoveDelayInTicks: 25
+		MaxMoveDelayInTicks: 45
+
+VISSML:
+	Inherits: ^Infantry
+	Tooltip:
+		Name: Baby Visceroid
+	Health:
+		HP: 200
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	Valued:
+		Cost: 1
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 0c0
+	Mobile:
+		Speed: 113
+		ROT: 16
+	-Crushable:
+	Selectable:
+		Voice: Fiend
+	TargetableUnit:
+		TargetTypes: Ground
+	-AutoTarget:
+	-RenderSprites:
+	-WithInfantryBody:
+	-WithDeathAnimation:
+	RenderUnit:
+
+VISLRG:
+	Inherits: ^Infantry
+	Tooltip:
+		Name: Adult Visceroid
+	Health:
+		HP: 500
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	Valued:
+		Cost: 1
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 0c0
+	Mobile:
+		Speed: 113
+		ROT: 16
+	-Crushable:
+	Selectable:
+		Voice: Fiend
+	TargetableUnit:
+		TargetTypes: Ground
+	Armament:
+		Weapon: SlimeAttack
+	AttackFrontal:
+	AttackWander:
+		WanderMoveRadius: 2
+		MinMoveDelayInTicks: 25
+		MaxMoveDelayInTicks: 45
+	-RenderSprites:
+	-WithInfantryBody:
+	-WithDeathAnimation:
+	RenderUnit:
+
+CIV1:
+	Inherits: ^CivilianInfantry
+
+CIV2:
+	Inherits: ^CivilianInfantry
+
+CIV3:
+	Inherits: ^CivilianInfantry

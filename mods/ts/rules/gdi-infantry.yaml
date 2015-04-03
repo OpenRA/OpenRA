@@ -1,0 +1,122 @@
+E2:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Prerequisites: ~gapile
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Disc Thrower
+		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+	Selectable:
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 150
+	Mobile:
+		Speed: 56
+	Armament:
+		Weapon: Grenade
+		LocalOffset: 0,0,555
+		FireDelay: 5
+	AttackFrontal:
+	TakeCover:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+
+MEDIC:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Medic
+		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 60
+		Prerequisites: ~gapile
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: Medic
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 125
+	Crushable:
+		CrushSound: squishy2.aud
+	Armament:
+		Weapon: Heal
+	AttackFrontal:
+	TakeCover:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		AttackSequence: heal
+	SelfHealing:
+	Passenger:
+		PipType: Red
+
+JUMPJET:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Jumpjet Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Prerequisites: ~gapile, garadr
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: JumpJet
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 120
+	Armor:
+		Type: Light
+	Passenger:
+		PipType: Green
+	RevealsShroud:
+		Range: 6c0
+	Armament:
+		Weapon: JumpCannon
+	-Crushable:
+	AttackFrontal:
+	TakeCover:
+	WithInfantryBody:
+
+GHOST:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 1750
+	Tooltip:
+		Name: Ghost Stalker
+		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
+		BuildLimit: 1
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Prerequisites: ~gapile, gatech
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: Ghost
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 200
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	Passenger:
+	RevealsShroud:
+		Range: 6c0
+	Armament:
+		Weapon: LtRail
+		LocalOffset: 85,0,384
+	Crushable:
+		CrushSound: squishy2.aud
+	AttackFrontal:
+	C4Demolition:
+		C4Delay: 45
+	TakeCover:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
