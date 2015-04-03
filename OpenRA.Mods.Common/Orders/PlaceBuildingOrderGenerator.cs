@@ -169,7 +169,8 @@ namespace OpenRA.Mods.Common.Orders
 				{
 					var td = new TypeDictionary()
 					{
-						new RaceInit(race)
+						new RaceInit(race),
+						new HideBibPreviewInit()
 					};
 
 					var init = new ActorPreviewInitializer(rules.Actors[building], producer.Owner, wr, td);
