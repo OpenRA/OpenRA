@@ -41,6 +41,8 @@ namespace OpenRA.Graphics
 			throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
 		}
 
+		public bool PaletteExists(string name) { return palettes.ContainsKey(name); }
+
 		public int GetPaletteIndex(string name)
 		{
 			int ret;

@@ -693,6 +693,15 @@ namespace OpenRA
 			return new WPos(512 * (cell.X - cell.Y), 512 * (cell.X + cell.Y + 1), z);
 		}
 
+		public WPos TopLeftOfCell(CPos cell)
+		{
+			if (TileShape == TileShape.Rectangle)
+				return new WPos(1024 * cell.X, 1024 * cell.Y, 0);
+
+			var z = Contains(cell) ? MapHeight.Value[cell] : 0;
+			return new WPos(cell.X - cell.Y + 1, cell.X + cell.Y + 1, z);
+		}
+
 		public WPos CenterOfSubCell(CPos cell, SubCell subCell)
 		{
 			var index = (int)subCell;
@@ -775,6 +784,19 @@ namespace OpenRA
 					NonCombatant = true
 				});
 
+			UpdateMultiPlayers();
+
+			Players.Add("Creeps", new PlayerReference
+			{
+				Name = "Creeps",
+				Race = firstRace,
+				NonCombatant = true,
+				Enemies = Players.Where(p => p.Value.Playable).Select(p => p.Key).ToArray()
+			});
+		}
+
+		public void UpdateMultiPlayers()
+		{
 			var numSpawns = GetSpawnPoints().Length;
 			for (var index = 0; index < numSpawns; index++)
 			{
@@ -790,14 +812,6 @@ namespace OpenRA
 				};
 				Players.Add(p.Name, p);
 			}
-
-			Players.Add("Creeps", new PlayerReference
-			{
-				Name = "Creeps",
-				Race = firstRace,
-				NonCombatant = true,
-				Enemies = Players.Where(p => p.Value.Playable).Select(p => p.Key).ToArray()
-			});
 		}
 
 		public void FixOpenAreas(Ruleset rules)

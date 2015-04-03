@@ -42,6 +42,9 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void GpsAdd(Actor atek)
 		{
+			if (atek.World.Type == WorldType.Editor)
+				return;
+
 			actors.Add(atek);
 			RefreshGps(atek);
 		}

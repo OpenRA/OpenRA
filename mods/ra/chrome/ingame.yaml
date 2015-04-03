@@ -1,33 +1,15 @@
 Container@INGAME_ROOT:
-	Logic: LoadIngamePlayerOrObserverUILogic
+	Logic: LoadPlayerLogic, LoadObserverLogic, LoadMapEditorLogic, LoadGameOverLogic, LoadChatLogic
 	Children:
 		Container@WORLD_ROOT:
 			Children:
 				LogicTicker@DISCONNECT_WATCHER:
 					Logic: DisconnectWatcherLogic
-				WorldInteractionController@INTERACTION_CONTROLLER:
-					X: 0
-					Y: 0
-					Width: WINDOW_RIGHT
-					Height: WINDOW_BOTTOM
-				ViewportController:
-					X: 0
-					Y: 0
-					Width: WINDOW_RIGHT
-					Height: WINDOW_BOTTOM
-					TooltipContainer: TOOLTIP_CONTAINER
 				WorldCommand:
 					X: 0
 					Y: 0
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
-				StrategicProgress@STRATEGIC_PROGRESS:
-					X: WINDOW_RIGHT/2
-					Y: 40
-				SupportPowerTimer@SUPPORT_POWER_TIMER:
-					X: 80
-					Y: 10
-					Order: Descending
 				Container@PLAYER_ROOT:
 				Container@PERFORMANCE_INFO:
 					Logic: PerfDebugLogic

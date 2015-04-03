@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
 			CenterPosition = init.World.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.World, Info);
-			SkipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
+			SkipMakeAnimation = init.Contains<SkipMakeAnimsInit>() || init.World.Type == WorldType.Editor;
 		}
 
 		Pair<CPos, SubCell>[] occupiedCells;

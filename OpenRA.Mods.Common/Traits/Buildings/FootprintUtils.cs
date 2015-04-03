@@ -62,6 +62,12 @@ namespace OpenRA.Mods.Common.Traits
 			return new CVec(dim.X / 2, dim.Y > 1 ? (dim.Y + 1) / 2 : 0);
 		}
 
+		public static CVec AccountForBuidingSize(BuildingInfo buildingInfo)
+		{
+			var dim = buildingInfo.Dimensions;
+			return new CVec(dim.X / 2, dim.Y % 2 == 0 ? (dim.Y + 1) / 2 : 0);
+		}
+
 		public static WVec CenterOffset(World w, BuildingInfo buildingInfo)
 		{
 			var dim = buildingInfo.Dimensions;

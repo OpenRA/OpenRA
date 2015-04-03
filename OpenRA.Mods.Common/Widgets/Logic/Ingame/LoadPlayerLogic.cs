@@ -12,19 +12,16 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class LoadIngamePlayerOrObserverUILogic
+	public class LoadPlayerLogic
 	{
 		[ObjectCreator.UseCtor]
-		public LoadIngamePlayerOrObserverUILogic(Widget widget, World world)
+		public LoadPlayerLogic(Widget widget, World world)
 		{
 			var ingameRoot = widget.Get("INGAME_ROOT");
 			var worldRoot = ingameRoot.Get("WORLD_ROOT");
-			var menuRoot = ingameRoot.Get("MENU_ROOT");
 			var playerRoot = worldRoot.Get("PLAYER_ROOT");
 
-			if (world.LocalPlayer == null)
-				Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
-			else
+			if (world.Type == WorldType.Regular && world.LocalPlayer != null)
 			{
 				var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
 				var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
@@ -40,15 +37,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						});
 				};
 			}
-
-			Game.LoadWidget(world, "CHAT_PANEL", worldRoot, new WidgetArgs());
-
-			world.GameOver += () =>
-			{
-				worldRoot.RemoveChildren();
-				menuRoot.RemoveChildren();
-				Game.LoadWidget(world, "LEAVE_MAP_WIDGET", menuRoot, new WidgetArgs());
-			};
 		}
 	}
 }

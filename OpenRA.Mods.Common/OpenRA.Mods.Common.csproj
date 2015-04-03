@@ -534,7 +534,11 @@
     <Compile Include="Widgets\Logic\Ingame\IngameSiloBarLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngameRadarDisplayLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LeaveMapLogic.cs" />
-    <Compile Include="Widgets\Logic\Ingame\LoadIngamePlayerOrObserverUILogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\LoadPlayerLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\LoadObserverLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\LoadMapEditorLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\LoadChatLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\LoadGameOverLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\ObserverShroudSelectorLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\ObserverStatsLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\OrderButtonsChromeLogic.cs" />
@@ -555,6 +559,14 @@
     <Compile Include="Widgets\Logic\Lobby\LobbyUtils.cs" />
     <Compile Include="Widgets\Logic\Lobby\SpawnSelectorTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\MainMenuLogic.cs" />
+    <Compile Include="Widgets\Logic\Editor\ActorSelectorLogic.cs" />
+    <Compile Include="Widgets\Logic\Editor\EditorShroudSelectorLogic.cs" />
+    <Compile Include="Widgets\Logic\Editor\LayerSelectorLogic.cs" />
+    <Compile Include="Widgets\Logic\Editor\MapEditorLogic.cs" />
+    <Compile Include="Widgets\Logic\Editor\MapEditorTabsLogic.cs" />
+    <Compile Include="Widgets\Logic\Editor\NewMapLogic.cs" />
+    <Compile Include="Widgets\Logic\Editor\SaveMapLogic.cs" />
+    <Compile Include="Widgets\Logic\Editor\TileSelectorLogic.cs" />
     <Compile Include="Widgets\Logic\MapChooserLogic.cs" />
     <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
@@ -566,6 +578,7 @@
     <Compile Include="Widgets\Logic\SettingsLogic.cs" />
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\TabCompletionLogic.cs" />
+    <Compile Include="Widgets\MapEditorWidget.cs" />
     <Compile Include="Widgets\MenuButtonWidget.cs" />
     <Compile Include="Widgets\ObserverProductionIconsWidget.cs" />
     <Compile Include="Widgets\ObserverSupportPowerIconsWidget.cs" />

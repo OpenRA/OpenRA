@@ -71,6 +71,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(Actor self)
 		{
+			if (self.World.Type == WorldType.Editor)
+				return;
+
 			if (!self.World.LobbyInfo.GlobalSettings.Crates)
 				return;
 

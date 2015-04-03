@@ -148,6 +148,13 @@ namespace OpenRA
 			{
 				OrderManager.World = new World(map, OrderManager, type);
 				OrderManager.World.Timestep = Timestep;
+
+				if (type == WorldType.Editor)
+				{
+					OrderManager.World.LobbyInfo.GlobalSettings.Shroud = false;
+					OrderManager.World.SetLocalPlayer("Everyone");
+					OrderManager.World.RenderPlayer = null;
+				}
 			}
 
 			if (worldRenderer != null)
@@ -370,6 +377,12 @@ namespace OpenRA
 			}
 			else
 				ModData.LoadScreen.StartGame(args);
+		}
+
+		public static void LoadMapForEditing(string mapUid)
+		{
+			Settings.Graphics.PixelDouble = false;
+			StartGame(mapUid, WorldType.Editor);
 		}
 
 		public static void LoadShellMap()

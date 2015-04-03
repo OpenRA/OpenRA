@@ -1,5 +1,23 @@
 Container@PLAYER_WIDGETS:
 	Children:
+		StrategicProgress@STRATEGIC_PROGRESS:
+			X: WINDOW_RIGHT/2
+			Y: 40
+		SupportPowerTimer@SUPPORT_POWER_TIMER:
+			X: 80
+			Y: 10
+			Order: Descending
+		WorldInteractionController@INTERACTION_CONTROLLER:
+			X: 0
+			Y: 0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+		ViewportController:
+			X: 0
+			Y: 0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			TooltipContainer: TOOLTIP_CONTAINER
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:

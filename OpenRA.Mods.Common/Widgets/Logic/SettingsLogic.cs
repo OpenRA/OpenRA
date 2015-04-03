@@ -168,6 +168,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Update zoom immediately
 			var pixelDoubleCheckbox = panel.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
 			var pixelDoubleOnClick = pixelDoubleCheckbox.OnClick;
+			pixelDoubleCheckbox.IsDisabled = () => worldRenderer.World.Type == WorldType.Editor;
 			pixelDoubleCheckbox.OnClick = () =>
 			{
 				pixelDoubleOnClick();

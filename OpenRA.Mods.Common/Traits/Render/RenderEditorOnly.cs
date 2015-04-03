@@ -22,8 +22,14 @@ namespace OpenRA.Mods.Common.Traits
 	class RenderEditorOnly : RenderSimple
 	{
 		public RenderEditorOnly(ActorInitializer init, RenderEditorOnlyInfo info)
-			: base(init, info, () => 0) { }
+			: base(init, info) { }
 
-		public override IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr) { return SpriteRenderable.None; }
+		public override IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
+		{
+			if (self.World.Type == WorldType.Editor)
+				return base.Render(self, wr);
+			else
+				return SpriteRenderable.None;
+		}
 	}
 }

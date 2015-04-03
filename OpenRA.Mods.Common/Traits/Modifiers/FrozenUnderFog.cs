@@ -106,6 +106,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void TickRender(WorldRenderer wr, Actor self)
 		{
+			if (wr.World.Type == WorldType.Editor)
+				return;
+
 			if (self.Destroyed || !initialized || !visible.Values.Any(v => v))
 				return;
 

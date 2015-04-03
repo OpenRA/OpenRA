@@ -1,32 +1,10 @@
 Container@INGAME_ROOT:
-	Logic: LoadIngamePlayerOrObserverUILogic
+	Logic: LoadPlayerLogic, LoadObserverLogic, LoadMapEditorLogic, LoadGameOverLogic, LoadChatLogic
 	Children:
 		Container@WORLD_ROOT:
 			Children:
 				LogicTicker@DISCONNECT_WATCHER:
 					Logic: DisconnectWatcherLogic
-				Container@GAME_TIMER_BLOCK:
-					Logic: GameTimerLogic
-					X: WINDOW_RIGHT/2 - WIDTH
-					Width: 100
-					Height: 55
-					Children:
-						Label@GAME_TIMER:
-							Width: PARENT_RIGHT
-							Height: 30
-							Align: Center
-							Font: Title
-							Contrast: true
-						Label@GAME_TIMER_STATUS:
-							Y: 35
-							Width: PARENT_RIGHT
-							Height: 15
-							Align: Center
-							Font: Bold
-							Contrast: true
-				StrategicProgress@STRATEGIC_PROGRESS:
-					X: WINDOW_RIGHT/2
-					Y: 40
 				Container@PERFORMANCE_INFO:
 					Logic: PerfDebugLogic
 					Children:
@@ -49,13 +27,6 @@ Container@INGAME_ROOT:
 									Y: 10
 									Width: 200
 									Height: 200
-				WorldInteractionController@INTERACTION_CONTROLLER:
-					Width: WINDOW_RIGHT
-					Height: WINDOW_BOTTOM
-				ViewportController:
-					Width: WINDOW_RIGHT
-					Height: WINDOW_BOTTOM
-					TooltipContainer: TOOLTIP_CONTAINER
 				Container@PLAYER_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
@@ -212,6 +183,35 @@ Container@OBSERVER_WIDGETS:
 
 Container@PLAYER_WIDGETS:
 	Children:
+		Container@GAME_TIMER_BLOCK:
+			Logic: GameTimerLogic
+			X: WINDOW_RIGHT/2 - WIDTH
+			Width: 100
+			Height: 55
+			Children:
+				Label@GAME_TIMER:
+					Width: PARENT_RIGHT
+					Height: 30
+					Align: Center
+					Font: Title
+					Contrast: true
+				Label@GAME_TIMER_STATUS:
+					Y: 35
+					Width: PARENT_RIGHT
+					Height: 15
+					Align: Center
+					Font: Bold
+					Contrast: true
+		StrategicProgress@STRATEGIC_PROGRESS:
+			X: WINDOW_RIGHT/2
+			Y: 40
+		WorldInteractionController@INTERACTION_CONTROLLER:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+		ViewportController:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			TooltipContainer: TOOLTIP_CONTAINER
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:

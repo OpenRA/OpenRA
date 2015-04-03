@@ -10,6 +10,7 @@
 
 namespace OpenRA.Traits
 {
+	[Desc("Used for the legacy WinForms editor.")]
 	public class EditorAppearanceInfo : TraitInfo<EditorAppearance>
 	{
 		public readonly bool RelativeToTopLeft = false;

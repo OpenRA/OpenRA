@@ -81,6 +81,9 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void Tick(Actor self)
 		{
+			if (self.World.Type == WorldType.Editor)
+				return;
+
 			if (--targetCountdown > 0 || IsAttacking || !self.IsInWorld)
 				return;
 

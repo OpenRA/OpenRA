@@ -50,6 +50,9 @@ namespace OpenRA.Mods.Common.Traits
 		// Here self is the player actor
 		public void Tick(Actor self)
 		{
+			if (self.World.Type == WorldType.Editor)
+				return;
+
 			// TODO: Make the AI handle such notifications and remove Owner.IsBot from this check
 			// Disable notifications for AI and neutral players (creeps) and for spectators
 			if (self.Owner.Shroud.Disabled || self.Owner.IsBot || !self.Owner.Playable || self.Owner.PlayerReference.Spectating)

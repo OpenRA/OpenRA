@@ -75,3 +75,4 @@ sietch:
 	-ExternalCapturableBar:
 	Power:
 		Amount: 0
+	-WithCrumbleOverlay:

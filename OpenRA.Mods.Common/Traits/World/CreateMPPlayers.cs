@@ -21,12 +21,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public void CreatePlayers(World w)
 		{
-			// create the unplayable map players -- neutral, shellmap, scripted, etc.
-			foreach (var kv in w.Map.Players.Where(p => !p.Value.Playable))
+			var unplayableReferences = w.Map.Players.Values.Where(p => !p.Playable); // neutral, shellmap, scripted, etc.
+			var playerReferences = w.Type == WorldType.Editor ? w.Map.Players.Values : unplayableReferences;
+			foreach (var playerReference in playerReferences)
 			{
-				var player = new Player(w, null, null, kv.Value);
+				var player = new Player(w, null, null, playerReference);
 				w.AddPlayer(player);
-				if (kv.Value.OwnsWorld)
+				if (playerReference.OwnsWorld)
 					w.WorldActor.Owner = player;
 			}
 

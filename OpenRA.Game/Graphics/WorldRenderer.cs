@@ -73,6 +73,7 @@ namespace OpenRA.Graphics
 		}
 
 		public PaletteReference Palette(string name) { return palettes.GetOrAdd(name, createPaletteReference); }
+		public bool PaletteExists(string name) { return palette.PaletteExists(name); }
 		public void AddPalette(string name, ImmutablePalette pal) { palette.AddPalette(name, pal, false); }
 		public void AddPalette(string name, ImmutablePalette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
 		public void ReplacePalette(string name, IPalette pal) { palette.ReplacePalette(name, pal); palettes[name].Palette = pal; }

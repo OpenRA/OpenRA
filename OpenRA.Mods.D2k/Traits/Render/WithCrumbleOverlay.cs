@@ -35,7 +35,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public WithCrumbleOverlay(ActorInitializer init, WithCrumbleOverlayInfo info)
 		{
-			if (init.Contains<SkipMakeAnimsInit>())
+			if (init.Contains<SkipMakeAnimsInit>() || init.World.Type == WorldType.Editor)
 				return;
 
 			var key = "make_overlay_{0}".F(info.Sequence);

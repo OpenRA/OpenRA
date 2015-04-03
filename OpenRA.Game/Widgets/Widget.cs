@@ -143,8 +143,8 @@ namespace OpenRA.Widgets
 		public string Y = "0";
 		public string Width = "0";
 		public string Height = "0";
-		public string Logic = null;
-		public object LogicObject { get; private set; }
+		public string[] Logic = { };
+		public object[] LogicObjects { get; private set; }
 		public bool Visible = true;
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
@@ -232,12 +232,13 @@ namespace OpenRA.Widgets
 
 		public void PostInit(WidgetArgs args)
 		{
-			if (Logic == null)
+			if (!Logic.Any())
 				return;
 
 			args["widget"] = this;
 
-			LogicObject = Game.ModData.ObjectCreator.CreateObject<object>(Logic, args);
+			LogicObjects = Logic.Select(l => Game.ModData.ObjectCreator.CreateObject<object>(l, args))
+				.ToArray();
 
 			args.Remove("widget");
 		}
