@@ -1,0 +1,348 @@
+NAPOWR:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 0
+		Prerequisites: ~structures.nod
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Nod Power Plant
+		Description: Provides power for other structures
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Selectable:
+		Bounds: 88, 80, 2, -12
+	Health:
+		HP: 750
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	Power:
+		Amount: 100
+	InfiltrateForPowerOutage:
+	AffectedByPowerOutage:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+	ScalePowerWithHealth:
+	DisabledOverlay:
+
+NAAPWR:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 5
+		Prerequisites: factory, ~structures.nod
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Advanced Power Plant
+		Description: Provides more power for structures
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 2,3
+	Selectable:
+		Bounds: 100, 74, 0, -12
+	Health:
+		HP: 900
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	Power:
+		Amount: 200
+	InfiltrateForPowerOutage:
+	AffectedByPowerOutage:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+	ScalePowerWithHealth:
+	DisabledOverlay:
+
+NAHAND:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 30
+		Prerequisites: anypower, ~structures.nod
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Hand of Nod
+		Description: Produces infantry
+	ProvidesCustomPrerequisite:
+		Prerequisite: barracks
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Selectable:
+		Bounds: 116, 78, 3, -8
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5c0
+	Exit@1:
+		SpawnOffset: 384,768,0
+		ExitCell: 3,2
+	RallyPoint:
+		RallyPoint: 3,3
+	Production:
+		Produces: Infantry
+	PrimaryBuilding:
+	ProductionBar:
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithProductionOverlay@LIGHT:
+		Sequence: production-light
+	Power:
+		Amount: -20
+
+NAWEAP:
+	Inherits: ^Building
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Nod War Factory
+		Description: Assembly point for\nvehicle reinforcements
+	ProvidesCustomPrerequisite:
+		Prerequisite: factory
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+		Prerequisites: proc, ~structures.nod
+	Building:
+		Footprint: xxx= xxx= xxx=
+		Dimensions: 4,3
+	Selectable:
+		Bounds: 149, 116, -3, -20
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 4c0
+	-RenderBuilding:
+	RenderBuildingWarFactory:
+	RallyPoint:
+		RallyPoint: 6,1
+	Exit@1:
+		SpawnOffset: 0,0,0
+		ExitCell: 4,1
+	Production:
+		Produces: Vehicle
+	PrimaryBuilding:
+	ProductionBar:
+	WithProductionOverlay@LIGHTS:
+		Sequence: production-lights
+	WithIdleOverlay@BIB:
+		Sequence: bib
+	Power:
+		Amount: -30
+
+NAHPAD:
+	Inherits: ^Building
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Helipad
+		Description: Produces, rearms and\nrepairs helicopters
+	Buildable:
+		BuildPaletteOrder: 60
+		Queue: Building
+		Prerequisites: naradr, ~structures.nod
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 600
+	RevealsShroud:
+		Range: 5c0
+	Exit@1:
+		SpawnOffset: 0,-256,0
+	RallyPoint:
+	Production:
+		Produces: Air
+	PrimaryBuilding:
+	Reservable:
+	RepairsUnits:
+	ProductionBar:
+	WithIdleOverlay@PLATFORM:
+		Sequence: idle-platform
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithDeathAnimation@BIB:
+		DeathSequence: dead-platform
+		UseDeathTypeSuffix: false
+	Power:
+		Amount: -10
+	Selectable:
+		Bounds: 78, 54, 0, -8
+
+NARADR:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 90
+		Prerequisites: proc, ~structures.nod
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Nod Radar
+		Description: Provides radar screen
+	ProvidesCustomPrerequisite:
+		Prerequisite: radar
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Selectable:
+		Bounds: 96, 82, 0, -17
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	RequiresPower:
+	CanPowerDown:
+	ProvidesRadar:
+	InfiltrateForExploration:
+	DetectCloaked:
+		Range: 10
+	RenderDetectionCircle:
+	RevealsShroud:
+		Range: 10c0
+	WithIdleOverlay@DISH:
+		Sequence: idle-dish
+		PauseOnLowPower: yes
+	TargetableBuilding:
+		TargetTypes: Ground, C4, SpyInfiltrate
+	Power:
+		Amount: -50
+
+NATECH:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 100
+		Prerequisites: naweap, naradr, ~structures.nod
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Nod Tech Center
+		Description: Required for high-\ntech research
+	ProvidesCustomPrerequisite:
+		Prerequisite: tech
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Selectable:
+		Bounds: 86, 58, 0, -4
+	Health:
+		HP: 500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	Power:
+		Amount: -150
+
+NASTLH:
+	Inherits: ^Building
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: Stealth Generator
+		Description: Generates a cloaking field
+	Buildable:
+		BuildPaletteOrder: 80
+		Prerequisites: proc, natech, ~structures.nod
+		Queue: Building
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 6c0
+	WithIdleOverlay@pulse:
+		Sequence: pulse
+		PauseOnLowPower: true
+	WithRangeCircle:
+		Range: 12c0
+		Type: cloakgenerator
+	Power:
+		Amount: -350
+	RequiresPower:
+	CanPowerDown:
+	UpgradeActorsNear:
+		Upgrades: cloakgenerator
+		Range: 12c0
+		EnableSound: cloak5.aud
+		DisableSound: cloak5.aud
+		AffectsParent: true
+	Selectable:
+		Bounds: 124, 64, 15, 13
+
+NAMISL:
+	Inherits: ^Building
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 100
+		Owner: nod
+		Prerequisites: natech
+		BuildLimit: 1
+	Valued:
+		Cost: 1300
+	Tooltip:
+		Name: Nod Missile Silo
+		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.
+	ProvidesCustomPrerequisite:
+		Prerequisite: tech
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Selectable:
+		Bounds: 75,48
+	Health:
+		HP: 1000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	Power:
+		Amount: -50
+	CanPowerDown:
+	RequiresPower:
+	DisabledOverlay:
+	SupportPowerChargeBar:
+	NukePower:
+		Icon: clustermissile
+		ChargeTime: 540
+		Description: Cluster Missile
+		LongDesc: Launches a conventional warhead\nat a target location.
+		BeginChargeSound:
+		EndChargeSound: 00-i154.aud
+		SelectTargetSound:
+		InsufficientPowerSound:
+		IncomingSound: 00-i150.aud
+		LaunchSound: icbm1.aud
+		MissileWeapon: ClusterMissile
+		SpawnOffset: 0,427,0
+		DisplayTimer: False
+		DisplayBeacon: False
+		DisplayRadarPing: True
+		BeaconPoster:
+		CameraActor: camera

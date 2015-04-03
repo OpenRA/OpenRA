@@ -1,0 +1,245 @@
+NAWALL:
+	Inherits: ^Wall
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1001
+		Prerequisites: ~structures.nod
+	SoundOnDamageTransition:
+		DamagedSounds:
+		DestroyedSounds:
+	Valued:
+		Cost: 50
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Concrete Wall
+		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
+	Health:
+		HP: 300
+	Armor:
+		Type: Concrete
+	Crushable:
+		CrushClasses: heavywall
+	LineBuild:
+		NodeTypes: wall, turret
+
+NALASR:
+	Inherits: ^Building
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Laser Turret
+		Description: Basic base defense. \nRequires power to operate.\n  Strong vs all ground units\n  Cannot target Aircraft
+	Buildable:
+		Queue: Defense
+		Prerequisites: nahand, ~structures.nod
+		BuildPaletteOrder: 50
+	Building:
+	Selectable:
+		Bounds: 40, 36, -8, -8
+	RequiresPower:
+	DisabledOverlay:
+	-GivesBuildableArea:
+	Health:
+		HP: 400
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 3
+	Turreted:
+		ROT: 10
+		InitialFacing: 300
+		Offset: 298,-171,0
+	AttackTurreted:
+	Armament:
+		Weapon: LaserFire2
+	RenderVoxels:
+	WithVoxelTurret:
+	AutoTarget:
+	Power:
+		Amount: -40
+
+NAOBEL:
+	Inherits: ^Building
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Obelisk of Light
+		Description: Advanced base defense. \nRequires power to operate.\n  Strong vs all ground units\n  Cannot target Aircraft
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 90
+		Prerequisites: natech, ~structures.nod
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Selectable:
+		Bounds: 88, 74, 0, -14
+	RequiresPower:
+	DisabledOverlay:
+	-GivesBuildableArea:
+	Health:
+		HP: 600
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 8c0
+	RenderBuildingCharge:
+		ChargeAudio: obelpowr.aud
+	Armament:
+		Weapon: LaserFire
+		LocalOffset: 0,0,725
+	AttackCharge:
+		ReloadTime: 50
+		InitialChargeDelay: 50
+	AutoTarget:
+	-RenderBuilding:
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 5
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	Power:
+		Amount: -150
+
+NASAM:
+	Inherits: ^Building
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: S.A.M. Site
+		Description: Nod Anti-Air base defense. \nRequires power to operate.\n  Strong vs all Aircraft\n  Cannot target ground units
+	Buildable:
+		Queue: Defense
+		Prerequisites: naradr, ~structures.nod
+		BuildPaletteOrder: 60
+	Building:
+	Selectable:
+		Bounds: 40, 36, -3, -8
+	RequiresPower:
+	DisabledOverlay:
+	-GivesBuildableArea:
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6c0
+	BodyOrientation:
+		QuantizedFacings: 32
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 5
+	AutoTarget:
+	Turreted:
+		ROT: 10
+		InitialFacing: 50
+	AttackTurreted:
+	WithTurret:
+		Recoils: no
+	Armament:
+		Weapon: RedEye2
+		LocalOffset: 512,0,512
+	Power:
+		Amount: -30
+
+GATICK:
+	Inherits: ^Building
+	Valued:
+		Cost: 800
+	-AcceptsSupplies:
+	Tooltip:
+		Name: Deployed Tick Tank
+	-GivesBuildableArea:
+	Health:
+		HP: 350
+	Armor:
+		Type: Concrete
+	RevealsShroud:
+		Range: 5c0
+	Turreted:
+		ROT: 6
+		InitialFacing: 128
+		Offset: 170,0,213
+	Armament@PRIMARY:
+		Weapon: 90mm
+		LocalOffset: 384,0,128
+		UpgradeTypes: eliteweapon
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
+		MuzzleSequence: muzzle
+	Armament@ELITE:
+		Weapon: 120mmx
+		LocalOffset: 384,0,128
+		UpgradeTypes: eliteweapon
+		UpgradeMinEnabledLevel: 1
+		MuzzleSequence: muzzle
+	AttackTurreted:
+	BodyOrientation:
+		QuantizedFacings: 32
+	AutoTarget:
+	RenderRangeCircle:
+	DrawLineToTarget:
+	RenderBuilding:
+	RenderVoxels:
+	WithVoxelBarrel:
+		LocalOffset: 170,0,0
+	WithVoxelTurret:
+	Transforms:
+		IntoActor: ttnk
+		Offset: 1,1
+		Facing: 96
+		TransformSounds: place2.aud
+		NoTransformSounds:
+	WithMuzzleFlash:
+	-WithDeathAnimation:
+
+GAARTY:
+	Inherits: ^Building
+	Valued:
+		Cost: 975
+	-AcceptsSupplies:
+	Tooltip:
+		Name: Deployed Artillery
+	-GivesBuildableArea:
+	Health:
+		HP: 300
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 9c0
+	Selectable:
+		Voice: Vehicle
+	Turreted:
+		ROT: 5
+		InitialFacing: 128
+		Offset: 0,0,171
+	Armament:
+		Weapon: 155mm
+		LocalOffset: 811,0,0
+		MuzzleSequence: muzzle
+	AttackTurreted:
+	BodyOrientation:
+		QuantizedFacings: 32
+	AutoTarget:
+	RenderRangeCircle:
+	DrawLineToTarget:
+	RenderBuilding:
+	RenderVoxels:
+	WithVoxelBarrel:
+		LocalOffset: 0,0,-512
+	WithVoxelTurret:
+	Transforms:
+		IntoActor: art2
+		Offset: 1,1
+		Facing: 96
+		TransformSounds: place2.aud
+		NoTransformSounds:
+	WithMuzzleFlash:
+	-WithDeathAnimation:

@@ -1270,6 +1270,28 @@ GALITE:
 	Selectable:
 		Bounds: 25, 35, 0, -12
 
+GAICBM:
+	Inherits: ^Building
+	Valued:
+		Cost: 800
+	-AcceptsSupplies:
+	Tooltip:
+		Name: Deployed ICBM
+	-GivesBuildableArea:
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5c0
+	Transforms:
+		IntoActor: icbm
+		Offset: 1,1
+		Facing: 96
+		TransformSounds: place2.aud
+		NoTransformSounds:
+	-WithDeathAnimation:
+
 NAMNTK:
 	Inherits: ^CivBuilding
 	Tooltip:
