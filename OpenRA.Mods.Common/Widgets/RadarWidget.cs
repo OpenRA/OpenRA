@@ -305,13 +305,12 @@ namespace OpenRA.Mods.Common.Widgets
 							if (!t.Actor.IsInWorld || world.FogObscures(t.Actor))
 								continue;
 
-							var color = t.Trait.RadarSignatureColor(t.Actor);
 							foreach (var cell in t.Trait.RadarSignatureCells(t.Actor))
 							{
-								var uv = cell.ToMPos(world.Map);
+								var uv = cell.First.ToMPos(world.Map);
 
 								if (world.Map.Bounds.Contains(uv.U, uv.V))
-									colors[(uv.V + dy) * stride + uv.U + dx] = color.ToArgb();
+									colors[(uv.V + dy) * stride + uv.U + dx] = cell.Second.ToArgb();
 							}
 						}
 					}

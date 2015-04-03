@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -28,21 +29,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public AppearsOnRadar(AppearsOnRadarInfo info) { this.info = info; }
 
-		public IEnumerable<CPos> RadarSignatureCells(Actor self)
-		{
-			if (info.UseLocation)
-				return new CPos[] { self.Location };
-			else
-				return self.OccupiesSpace.OccupiedCells().Select(c => c.First);
-		}
-
-		public Color RadarSignatureColor(Actor self)
+		public IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self)
 		{
 			var mod = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
-			if (mod != null)
-				return mod.RadarColorOverride(self);
+			var color = mod != null ? mod.RadarColorOverride(self) : self.Owner.Color.RGB;
 
-			return self.Owner.Color.RGB;
+			if (info.UseLocation)
+				return new[] { Pair.New(self.Location, color) };
+			else
+				return self.OccupiesSpace.OccupiedCells().Select(c => Pair.New(c.First, color));
 		}
 	}
 }

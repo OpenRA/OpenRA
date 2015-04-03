@@ -150,8 +150,7 @@ namespace OpenRA.Traits
 
 	public interface IRadarSignature
 	{
-		IEnumerable<CPos> RadarSignatureCells(Actor self);
-		Color RadarSignatureColor(Actor self);
+		IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self);
 	}
 
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
