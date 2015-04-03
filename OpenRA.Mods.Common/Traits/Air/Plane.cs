@@ -20,9 +20,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(10);
 
-		[Desc("Delay, in game ticks, before turning to attack.")]
-		public readonly int AttackTurnDelay = 50;
-
 		public override object Create(ActorInitializer init) { return new Plane(init, this); }
 	}
 
@@ -91,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 				var target = Target.FromCell(self.World, cell);
 				self.SetTargetLine(target, Color.Green);
 				self.CancelActivity();
-				self.QueueActivity(new Fly(self, target, this));
+				self.QueueActivity(new Fly(self, target));
 				self.QueueActivity(new FlyCircle(self));
 			}
 			else if (order.OrderString == "Enter")
@@ -103,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Green);
 
 				self.CancelActivity();
-				self.QueueActivity(new ReturnToBase(self, order.TargetActor, this));
+				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
 				self.QueueActivity(new ResupplyAircraft(self));
 			}
 			else if (order.OrderString == "Stop")
@@ -119,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 				UnReserve();
 				self.CancelActivity();
 				self.SetTargetLine(Target.FromActor(airfield), Color.Green);
-				self.QueueActivity(new ReturnToBase(self, airfield, this));
+				self.QueueActivity(new ReturnToBase(self, airfield));
 				self.QueueActivity(new ResupplyAircraft(self));
 			}
 			else
@@ -129,24 +126,24 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Activity MoveTo(CPos cell, int nearEnough) { return Util.SequenceActivities(new Fly(self, Target.FromCell(self.World, cell), this), new FlyCircle(self)); }
-		public Activity MoveTo(CPos cell, Actor ignoredActor) { return Util.SequenceActivities(new Fly(self, Target.FromCell(self.World, cell), this), new FlyCircle(self)); }
-		public Activity MoveWithinRange(Target target, WRange range) { return Util.SequenceActivities(new Fly(self, target, this, WRange.Zero, range), new FlyCircle(self)); }
+		public Activity MoveTo(CPos cell, int nearEnough) { return Util.SequenceActivities(new Fly(self, Target.FromCell(self.World, cell)), new FlyCircle(self)); }
+		public Activity MoveTo(CPos cell, Actor ignoredActor) { return Util.SequenceActivities(new Fly(self, Target.FromCell(self.World, cell)), new FlyCircle(self)); }
+		public Activity MoveWithinRange(Target target, WRange range) { return Util.SequenceActivities(new Fly(self, target, WRange.Zero, range), new FlyCircle(self)); }
 		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange)
 		{
-			return Util.SequenceActivities(new Fly(self, target, this, minRange, maxRange), new FlyCircle(self));
+			return Util.SequenceActivities(new Fly(self, target, minRange, maxRange), new FlyCircle(self));
 		}
 
-		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new FlyFollow(self, target, this, minRange, maxRange); }
+		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new FlyFollow(self, target, minRange, maxRange); }
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
-		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any) { return new Fly(self, Target.FromCell(self.World, cell), this); }
+		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any) { return new Fly(self, Target.FromCell(self.World, cell)); }
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
 		{
-			return Util.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)), new Fly(self, Target.FromPos(toPos), this));
+			return Util.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)), new Fly(self, Target.FromPos(toPos)));
 		}
 
-		public Activity MoveToTarget(Actor self, Target target) { return new Fly(self, target, this, WRange.FromCells(3), WRange.FromCells(5)); }
+		public Activity MoveToTarget(Actor self, Target target) { return new Fly(self, target, WRange.FromCells(3), WRange.FromCells(5)); }
 		public Activity MoveIntoTarget(Actor self, Target target) { return new Land(self, target); }
 	}
 }

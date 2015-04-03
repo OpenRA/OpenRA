@@ -22,14 +22,14 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WRange maxRange;
 		readonly WRange minRange;
 
-		public Fly(Actor self, Target t, Plane plane)
+		public Fly(Actor self, Target t)
 		{
+			plane = self.Trait<Plane>();
 			target = t;
-			this.plane = plane;
 		}
 
-		public Fly(Actor self, Target t, Plane plane, WRange minRange, WRange maxRange)
-			: this(self, t, plane)
+		public Fly(Actor self, Target t, WRange minRange, WRange maxRange)
+			: this(self, t)
 		{
 			this.maxRange = maxRange;
 			this.minRange = minRange;

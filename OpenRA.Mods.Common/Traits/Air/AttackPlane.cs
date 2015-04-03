@@ -14,24 +14,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class AttackPlaneInfo : AttackFrontalInfo, Requires<PlaneInfo>
+	public class AttackPlaneInfo : AttackFrontalInfo
 	{
 		public override object Create(ActorInitializer init) { return new AttackPlane(init.Self, this); }
 	}
 
 	public class AttackPlane : AttackFrontal
 	{
-		readonly Plane plane;
-
 		public AttackPlane(Actor self, AttackPlaneInfo info)
-			: base(self, info)
-		{
-			plane = self.Trait<Plane>();
-		}
+			: base(self, info) { }
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
-			return new FlyAttack(self, newTarget, plane);
+			return new FlyAttack(self, newTarget);
 		}
 
 		protected override bool CanAttack(Actor self, Target target)
