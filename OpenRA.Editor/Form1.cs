@@ -128,7 +128,7 @@ namespace OpenRA.Editor
 			// but this breaks the game pretty badly.
 			if (map.PlayerDefinitions.Count == 0)
 			{
-				var players = new MapPlayers(map.Rules, map.GetSpawnPoints().Length);
+				var players = new MapPlayers(map.Rules, map.SpawnPoints.Value.Length);
 				map.PlayerDefinitions = players.ToMiniYaml();
 			}
 
@@ -415,7 +415,7 @@ namespace OpenRA.Editor
 					map.ResizeCordon((int)nmd.CordonLeft.Value, (int)nmd.CordonTop.Value,
 						(int)nmd.CordonRight.Value, (int)nmd.CordonBottom.Value);
 
-					var players = new MapPlayers(map.Rules, map.GetSpawnPoints().Length);
+					var players = new MapPlayers(map.Rules, map.SpawnPoints.Value.Length);
 					map.PlayerDefinitions = players.ToMiniYaml();
 
 					map.FixOpenAreas(Program.Rules);
@@ -506,7 +506,7 @@ namespace OpenRA.Editor
 		void SetupDefaultPlayers(object sender, EventArgs e)
 		{
 			dirty = true;
-			var players = new MapPlayers(surface1.Map.Rules, surface1.Map.GetSpawnPoints().Length);
+			var players = new MapPlayers(surface1.Map.Rules, surface1.Map.SpawnPoints.Value.Length);
 			surface1.Map.PlayerDefinitions = players.ToMiniYaml();
 
 			surface1.Chunks.Clear();

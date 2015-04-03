@@ -43,6 +43,7 @@ namespace OpenRA.Editor
 	class Surface : Control
 	{
 		public Map Map { get; private set; }
+		public Dictionary<string, ActorReference> Actors { get; private set; }
 		public TileSet TileSet { get; private set; }
 		public TileSetRenderer TileSetRenderer { get; private set; }
 		public IPalette Palette { get; private set; }
@@ -84,6 +85,9 @@ namespace OpenRA.Editor
 		public void Bind(Map m, TileSet ts, TileSetRenderer tsr, IPalette p, IPalette pp)
 		{
 			Map = m;
+			if (m != null)
+				Actors = m.ActorDefinitions.ToDictionary(n => n.Key, n => new ActorReference(n.Value.Value, n.Value.ToDictionary()));
+
 			TileSet = ts;
 			TileSetRenderer = tsr;
 			Palette = p;
@@ -132,7 +136,7 @@ namespace OpenRA.Editor
 		{
 			base.OnDoubleClick(e);
 
-			var x = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
+			var x = Actors.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
 			if (x.Key != null)
 				ActorDoubleClicked(x);
 		}
@@ -203,8 +207,8 @@ namespace OpenRA.Editor
 
 			currentTool = null;
 
-			var key = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == brushLocation);
-			if (key.Key != null) Map.Actors.Value.Remove(key.Key);
+			var key = Actors.FirstOrDefault(a => a.Value.Location() == brushLocation);
+			if (key.Key != null) Actors.Remove(key.Key);
 
 			if (Map.MapResources.Value[brushLocation].Type != 0)
 			{
@@ -456,7 +460,7 @@ namespace OpenRA.Editor
 					height * (TileSetRenderer.TileSize * Zoom));
 			}
 
-			foreach (var ar in Map.Actors.Value)
+			foreach (var ar in Actors)
 			{
 				if (actorTemplates.ContainsKey(ar.Value.Type))
 					DrawActor(e.Graphics, ar.Value.Location(), actorTemplates[ar.Value.Type],
@@ -466,7 +470,7 @@ namespace OpenRA.Editor
 			}
 
 			if (ShowActorNames)
-				foreach (var ar in Map.Actors.Value)
+				foreach (var ar in Actors)
 					if (!ar.Key.StartsWith("Actor"))	// if it has a custom name
 						e.Graphics.DrawStringContrast(Font, ar.Key,
 							(int)(ar.Value.Location().X * TileSetRenderer.TileSize * Zoom + Offset.X),
@@ -500,7 +504,7 @@ namespace OpenRA.Editor
 
 			if (currentTool == null)
 			{
-				var x = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
+				var x = Actors.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
 				if (x.Key != null && actorTemplates.ContainsKey(x.Value.Type))
 					DrawActorBorder(e.Graphics, x.Value.Location(), actorTemplates[x.Value.Type]);
 			}

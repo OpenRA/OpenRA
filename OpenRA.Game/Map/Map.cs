@@ -221,13 +221,11 @@ namespace OpenRA
 			return videos;
 		}
 
-		[FieldLoader.Ignore] public Lazy<Dictionary<string, ActorReference>> Actors;
-
 		public Rectangle Bounds;
 
-		// Yaml map data
-		[FieldLoader.Ignore] public Lazy<List<SmudgeReference>> Smudges;
+		public Lazy<CPos[]> SpawnPoints;
 
+		// Yaml map data
 		[FieldLoader.Ignore] public List<MiniYamlNode> RuleDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> SequenceDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> VoxelSequenceDefinitions = new List<MiniYamlNode>();
@@ -236,6 +234,9 @@ namespace OpenRA
 		[FieldLoader.Ignore] public List<MiniYamlNode> NotificationDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> TranslationDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
+
+		[FieldLoader.Ignore] public List<MiniYamlNode> ActorDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> SmudgeDefinitions = new List<MiniYamlNode>();
 
 		// Binary map data
 		[FieldLoader.Ignore] public byte TileFormat = 2;
@@ -294,8 +295,8 @@ namespace OpenRA
 				MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(tileShape, size)),
 				MapTiles = makeMapTiles,
 				MapHeight = makeMapHeight,
-				Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>()),
-				Smudges = Exts.Lazy(() => new List<SmudgeReference>())
+
+				SpawnPoints = Exts.Lazy(() => new CPos[0])
 			};
 
 			map.PostInit();
@@ -345,29 +346,17 @@ namespace OpenRA
 					Visibility = MapVisibility.MissionSelector;
 			}
 
-			Actors = Exts.Lazy(() =>
+			SpawnPoints = Exts.Lazy(() =>
 			{
-				var ret = new Dictionary<string, ActorReference>();
-				foreach (var kv in nd["Actors"].ToDictionary())
-					ret.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.ToDictionary()));
-				return ret;
-			});
-
-			// Smudges
-			Smudges = Exts.Lazy(() =>
-			{
-				var ret = new List<SmudgeReference>();
-				foreach (var name in nd["Smudges"].ToDictionary().Keys)
+				var spawns = new List<CPos>();
+				foreach (var kv in ActorDefinitions.Where(d => d.Value.Value == "mpspawn"))
 				{
-					var vals = name.Split(' ');
-					var loc = vals[1].Split(',');
-					ret.Add(new SmudgeReference(vals[0], new int2(
-							Exts.ParseIntegerInvariant(loc[0]),
-							Exts.ParseIntegerInvariant(loc[1])),
-							Exts.ParseIntegerInvariant(vals[2])));
+					var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+
+					spawns.Add(s.InitDict.Get<LocationInit>().Value(null));
 				}
 
-				return ret;
+				return spawns.ToArray();
 			});
 
 			RuleDefinitions = MiniYaml.NodesOrEmpty(yaml, "Rules");
@@ -378,6 +367,9 @@ namespace OpenRA
 			NotificationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Notifications");
 			TranslationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Translations");
 			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
+
+			ActorDefinitions = MiniYaml.NodesOrEmpty(yaml, "Actors");
+			SmudgeDefinitions = MiniYaml.NodesOrEmpty(yaml, "Smudges");
 
 			MapTiles = Exts.Lazy(LoadMapTiles);
 			MapResources = Exts.Lazy(LoadResourceTiles);
@@ -448,14 +440,6 @@ namespace OpenRA
 			return rules.Value;
 		}
 
-		public CPos[] GetSpawnPoints()
-		{
-			return Actors.Value.Values
-				.Where(a => a.Type == "mpspawn")
-				.Select(a => (CPos)a.InitDict.Get<LocationInit>().Value(null))
-				.ToArray();
-		}
-
 		public void Save(string toPath)
 		{
 			MapFormat = 7;
@@ -489,10 +473,8 @@ namespace OpenRA
 
 			root.Add(new MiniYamlNode("Players", null, PlayerDefinitions));
 
-			root.Add(new MiniYamlNode("Actors", null,
-				Actors.Value.Select(x => new MiniYamlNode(x.Key, x.Value.Save())).ToList()));
-
-			root.Add(new MiniYamlNode("Smudges", MiniYaml.FromList<SmudgeReference>(Smudges.Value)));
+			root.Add(new MiniYamlNode("Actors", null, ActorDefinitions));
+			root.Add(new MiniYamlNode("Smudges", null, SmudgeDefinitions));
 			root.Add(new MiniYamlNode("Rules", null, RuleDefinitions));
 			root.Add(new MiniYamlNode("Sequences", null, SequenceDefinitions));
 			root.Add(new MiniYamlNode("VoxelSequences", null, VoxelSequenceDefinitions));

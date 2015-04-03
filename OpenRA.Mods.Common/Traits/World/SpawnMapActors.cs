@@ -25,17 +25,19 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
-			foreach (var actorReference in world.Map.Actors.Value)
+			foreach (var kv in world.Map.ActorDefinitions)
 			{
+				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+
 				// if there is no real player associated, dont spawn it.
-				var ownerName = actorReference.Value.InitDict.Get<OwnerInit>().PlayerName;
+				var ownerName = actorReference.InitDict.Get<OwnerInit>().PlayerName;
 				if (!world.Players.Any(p => p.InternalName == ownerName))
 					continue;
 
-				var initDict = actorReference.Value.InitDict;
+				var initDict = actorReference.InitDict;
 				initDict.Add(new SkipMakeAnimsInit());
-				var actor = world.CreateActor(actorReference.Value.Type, initDict);
-				Actors[actorReference.Key] = actor;
+				var actor = world.CreateActor(actorReference.Type, initDict);
+				Actors[kv.Key] = actor;
 				LastMapActorID = actor.ActorID;
 			}
 		}
