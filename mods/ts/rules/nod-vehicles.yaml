@@ -1,0 +1,288 @@
+BGGY:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Attack Buggy
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry, Vehicles\n  Weak vs Tanks, Aircraft
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 40
+		Prerequisites: ~naweap
+	Mobile:
+		ROT: 8
+		Speed: 142
+	Health:
+		HP: 220
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6c0
+	Armament:
+		Weapon: RaiderCannon
+		LocalOffset: 0,-43,384, 0,43,384
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
+	AttackFrontal:
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	WithMuzzleFlash:
+
+BIKE:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Attack Cycle
+		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 30
+		Prerequisites: ~naweap
+	Mobile:
+		ROT: 8
+		Speed: 170
+	Health:
+		HP: 150
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	Armament@PRIMARY:
+		Weapon: BikeMissile
+		UpgradeTypes: eliteweapon
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
+		LocalOffset: -128,-170,213, -128,170,213
+	Armament@ELITE:
+		Weapon: HoverMissile
+		UpgradeTypes: eliteweapon
+		UpgradeMinEnabledLevel: 1
+		LocalOffset: -128,-170,213, -128,170,213
+	AttackFrontal:
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+TTNK:
+	Inherits: ^Tank
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Tick Tank
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 60
+		Prerequisites: ~naweap
+	Mobile:
+		ROT: 5
+		Speed: 85
+		Crushes: wall, crate, infantry
+	Health:
+		HP: 350
+	Armor:
+		Type: Light
+	AttackFrontal:
+	Armament@PRIMARY:
+		Weapon: 90mm
+		LocalOffset: 256,0,256
+		UpgradeTypes: eliteweapon
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
+		MuzzleSequence: muzzle
+	Armament@ELITE:
+		Weapon: 120mmx
+		LocalOffset: 256,0,256
+		UpgradeTypes: eliteweapon
+		UpgradeMinEnabledLevel: 1
+		MuzzleSequence: muzzle
+	WithMuzzleFlash:
+	RevealsShroud:
+		Range: 5c0
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	Transforms:
+		IntoActor: gatick
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds: place2.aud
+		NoTransformSounds:
+
+ART2:
+	Inherits: ^Tank
+	Valued:
+		Cost: 975
+	Tooltip:
+		Name: Artillery
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 100
+		Prerequisites: ~naweap, naradr
+	Health:
+		HP: 300
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 71
+		ROT: 2
+	RevealsShroud:
+		Range: 9c0
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	Transforms:
+		IntoActor: gaarty
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
+
+REPAIR:
+	Inherits: ^Tank
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 70
+		Prerequisites: ~naweap
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Mobile Repair Vehicle
+		Description: Repairs nearby vehicles.\n  Strong vs Nothing\n  Weak vs Everything
+	Health:
+		HP: 200
+	Mobile:
+		Speed: 85
+		ROT: 5
+	RevealsShroud:
+		Range: 5c0
+	Armament:
+		Weapon: Repair
+	AttackMedic:
+		Cursor: repair
+		OutsideRangeCursor: repair
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+WEED:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Weed Eater
+		Description: Collects veins for processing.\n  Unarmed
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 10
+		Prerequisites: ~naweap, natech # TODO: natech must be nawast
+	Mobile:
+		Speed: 71
+		ROT: 5
+	Health:
+		HP: 600
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	-GainsExperience:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+SAPC:
+	Inherits: ^Tank
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Subterranean APC
+		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Vehicles\n  Weak vs Infantry
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 30
+		Prerequisites: ~naweap, natech
+	Mobile:
+		ROT: 5
+		Speed: 71
+	Health:
+		HP: 175
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 5c0
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		PipCount: 5
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+SUBTANK:
+	Inherits: ^Tank
+	Valued:
+		Cost: 750
+	Tooltip:
+		Name: Devil's Tongue
+		Description: Subterranean Tank
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 40
+		Prerequisites: ~naweap, natech
+	Mobile:
+		ROT: 6
+		Speed: 71
+		Crushes: wall, crate, infantry
+	Health:
+		HP: 300
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	Armament:
+		Weapon: FireballLauncher
+	AttackFrontal:
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+STNK:
+	Inherits: ^Tank
+	Valued:
+		Cost: 1100
+	Tooltip:
+		Name: Stealth Tank
+		Description: Long-range missile tank that can cloak.\nHas weak armor. Can be spotted by infantry.\n  Strong vs Vehicles, Tanks, Aircraft\n  Weak vs Infantry.
+	Buildable:
+		BuildPaletteOrder: 90
+		Prerequisites: ~naweap, natech
+		Queue: Vehicle
+	Mobile:
+		ROT: 5
+		Speed: 85
+		Crushes: wall, crate, infantry
+	Health:
+		HP: 180
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	Cloak:
+		InitialDelay: 90
+		CloakDelay: 90
+		CloakSound: cloak5.aud
+		UncloakSound: cloak5.aud
+	Armament:
+		Weapon: Dragon
+		LocalOffset: 213,43,128, 213,-43,128
+	AttackFrontal:
+	AutoTarget:
+		InitialStance: HoldFire
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	-MustBeDestroyed:
