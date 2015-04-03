@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				nodes.Remove("Defaults");
 				nodes = nodes.ToDictionary(kv => kv.Key, kv => MiniYaml.MergeStrict(kv.Value, defaults));
+
+				foreach (var n in nodes)
+					n.Value.Value = n.Value.Value ?? defaults.Value;
 			}
 
 			foreach (var kvp in nodes)
