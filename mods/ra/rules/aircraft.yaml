@@ -7,11 +7,9 @@ BADR:
 	Armor:
 		Type: Light
 	Plane:
-		CruiseAltitude: 2560
 		ROT: 5
 		Speed: 149
 		Repulsable: False
-		MaximumPitch: 56
 	RenderUnit:
 	Cargo:
 		MaxWeight: 10
@@ -46,11 +44,9 @@ BADR.Bomber:
 	Armor:
 		Type: Light
 	Plane:
-		CruiseAltitude: 2560
 		ROT: 5
 		Speed: 149
 		Repulsable: False
-		MaximumPitch: 56
 	AmmoPool:
 		Ammo: 7
 	RenderUnit:
@@ -100,13 +96,11 @@ MIG:
 	AttackPlane:
 		FacingTolerance: 20
 	Plane:
-		CruiseAltitude: 2560
 		InitialFacing: 192
 		ROT: 4
 		Speed: 223
 		RearmBuildings: afld
 		RepulsionSpeed: 40
-		MaximumPitch: 56
 	AutoTarget:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
@@ -158,13 +152,11 @@ YAK:
 	AttackPlane:
 		FacingTolerance: 20
 	Plane:
-		CruiseAltitude: 2560
 		RearmBuildings: afld
 		InitialFacing: 192
 		ROT: 4
 		Speed: 178
 		RepulsionSpeed: 40
-		MaximumPitch: 56
 	AutoTarget:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
@@ -206,6 +198,7 @@ TRAN:
 	RevealsShroud:
 		Range: 12c0
 	Helicopter:
+		CruiseAltitude: 1024
 		RearmBuildings: hpad
 		InitialFacing: 0
 		ROT: 5
@@ -254,6 +247,7 @@ HELI:
 	AttackHeli:
 		FacingTolerance: 20
 	Helicopter:
+		CruiseAltitude: 1024
 		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 20
@@ -303,6 +297,7 @@ HIND:
 	AttackHeli:
 		FacingTolerance: 20
 	Helicopter:
+		CruiseAltitude: 1024
 		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 20
@@ -331,7 +326,6 @@ U2:
 	Armor:
 		Type: Heavy
 	Plane:
-		CruiseAltitude: 2560
 		ROT: 7
 		Speed: 373
 		Repulsable: False
