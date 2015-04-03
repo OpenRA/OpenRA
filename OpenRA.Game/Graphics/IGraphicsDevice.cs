@@ -34,7 +34,18 @@ namespace OpenRA
 
 	public interface IHardwareCursor : IDisposable { }
 
-	public enum BlendMode : byte { None, Alpha, Additive, Subtractive, Multiply }
+	public enum BlendMode : byte
+	{
+		None,
+		Alpha,
+		Additive,
+		Subtractive,
+		Multiply,
+		SoftAdditive,
+		Translucency25,
+		Translucency50,
+		Translucency75
+	}
 
 	public interface IGraphicsDevice : IDisposable
 	{

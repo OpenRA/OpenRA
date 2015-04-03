@@ -240,17 +240,14 @@ TowerMissile:
 	Burst: 2
 	BurstDelay: 15
 	Projectile: Bullet
-		Arm: 0
 		Blockable: false
 		Shadow: yes
 		Inaccuracy: 384
 		Image: MISSILE2
-		RateOfTurn: 10
 		Trail: large_trail
 		TrailInterval: 1
-		Speed: 256
-		RangeLimit: 50
-		Angle: 110
+		Speed: 298
+		Angle: 90
 	Warhead@1Dam: SpreadDamage
 		Spread: 384
 		Damage: 50
@@ -345,14 +342,12 @@ DevBullet:
 	Report: MISSLE1.WAV
 	ValidTargets: Ground
 	Projectile: Bullet
-		Speed: 358
-		Arm: 5
+		Speed: 320
 		Blockable: false
 		Shadow: yes
 		Inaccuracy: 1c416
-		Angle: 110
+		Angle: 90
 		Image: MISSILE2
-		RateOfTurn: 5
 		Trail: large_trail
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
@@ -378,10 +373,10 @@ NerveGasMissile:
 	Burst: 1
 	Report: MISSLE1.WAV
 	Projectile: Bullet
-		Speed: 448
+		Speed: 384
 		Blockable: false
 		Shadow: yes
-		Angle: 110
+		Angle: 90
 		Inaccuracy: 1c96
 		Image: MISSILE
 		Trail: deviator_trail
