@@ -23,13 +23,14 @@ namespace OpenRA.Mods.Common.Activities
 		readonly AttackPlane attackPlane;
 		readonly IEnumerable<AmmoPool> ammoPools;
 		Activity inner;
-		int ticksUntilTurn = 50;
+		int ticksUntilTurn;
 
 		public FlyAttack(Actor self, Target target)
 		{
 			this.target = target;
 			attackPlane = self.TraitOrDefault<AttackPlane>();
 			ammoPools = self.TraitsImplementing<AmmoPool>();
+			ticksUntilTurn = attackPlane.AttackPlaneInfo.AttackTurnDelay;
 		}
 
 		public override Activity Tick(Actor self)
