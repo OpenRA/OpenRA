@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 		Animation clock;
 		Dictionary<Rectangle, SupportPowerIcon> icons = new Dictionary<Rectangle, SupportPowerIcon>();
 
-		public SupportPowerInstance TooltipPower { get; private set; }
+		public SupportPowerIcon TooltipIcon { get; private set; }
 		Lazy<TooltipContainerWidget> tooltipContainer;
 
 		Rectangle eventBounds;
@@ -65,6 +65,7 @@ namespace OpenRA.Mods.Common.Widgets
 			public SupportPowerInstance Power;
 			public float2 Pos;
 			public Sprite Sprite;
+			public Hotkey Hotkey;
 		}
 
 		public void RefreshIcons()
@@ -76,6 +77,8 @@ namespace OpenRA.Mods.Common.Widgets
 			IconCount = 0;
 
 			var rb = RenderBounds;
+			var ks = Game.Settings.Keys;
+
 			foreach (var p in powers)
 			{
 				var rect = new Rectangle(rb.X, rb.Y + IconCount * (IconSize.Y + IconMargin), IconSize.X, IconSize.Y);
@@ -85,7 +88,8 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					Power = p,
 					Pos = new float2(rect.Location),
-					Sprite = icon.Image
+					Sprite = icon.Image,
+					Hotkey = ks.GetSupportPowerHotkey(IconCount)
 				};
 
 				icons.Add(rect, power);
@@ -96,6 +100,31 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (oldIconCount != IconCount)
 				OnIconCountChanged(oldIconCount, IconCount);
+		}
+
+		protected void ClickIcon(SupportPowerIcon clicked)
+		{
+			if (!clicked.Power.Active)
+				Sound.PlayToPlayer(spm.Self.Owner, clicked.Power.Info.InsufficientPowerSound);
+			else
+				clicked.Power.Target();
+		}
+
+		public override bool HandleKeyPress(KeyInput e)
+		{
+			if (e.Event == KeyInputEvent.Down)
+			{
+				var hotkey = Hotkey.FromKeyInput(e);
+				var a = icons.Values.FirstOrDefault(i => i.Hotkey == hotkey);
+
+				if (a != null)
+				{
+					ClickIcon(a);
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		public override void Draw()
@@ -170,7 +199,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var icon = icons.Where(i => i.Key.Contains(mi.Location))
 					.Select(i => i.Value).FirstOrDefault();
 
-				TooltipPower = icon != null ? icon.Power : null;
+				TooltipIcon = icon;
 				return false;
 			}
 
@@ -181,12 +210,7 @@ namespace OpenRA.Mods.Common.Widgets
 				.Select(i => i.Value).FirstOrDefault();
 
 			if (clicked != null)
-			{
-				if (!clicked.Power.Active)
-					Sound.PlayToPlayer(spm.Self.Owner, clicked.Power.Info.InsufficientPowerSound);
-
-				clicked.Power.Target();
-			}
+				ClickIcon(clicked);
 
 			return true;
 		}
