@@ -34,15 +34,18 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Sync]
 		public int RepairersHash { get { return Repairers.Aggregate(0, (code, player) => code ^ Sync.HashPlayer(player)); } }
-		public List<Player> Repairers = new List<Player>();
+		public readonly List<Player> Repairers = new List<Player>();
 
 		readonly Health health;
 		public bool RepairActive = false;
+
+		readonly Predicate<Player> isNotActiveAlly;
 
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
 			: base(info)
 		{
 			health = self.Trait<Health>();
+			isNotActiveAlly = player => player.WinState != WinState.Undefined || player.Stances[self.Owner] != Stance.Ally;
 		}
 
 		public void RepairBuilding(Actor self, Player player)
@@ -81,8 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (remainingTicks == 0)
 			{
-				Repairers = Repairers.Where(player => player.WinState == WinState.Undefined
-						&& player.Stances[self.Owner] == Stance.Ally).ToList();
+				Repairers.RemoveAll(isNotActiveAlly);
 
 				// If after the previous operation there's no repairers left, stop
 				if (!Repairers.Any()) return;
