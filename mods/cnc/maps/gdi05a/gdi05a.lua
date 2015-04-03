@@ -72,6 +72,7 @@ Attack = function()
 	local path = Utils.Random(AttackPaths)
 	Build(types[1], types[2], function(units)
 		Utils.Do(units, function(unit)
+			if unit.Owner ~= nod then return end
 			unit.Patrol(path, false)
 			Trigger.OnIdle(unit, unit.Hunt)
 		end)
@@ -83,6 +84,7 @@ end
 Grd1Action = function()
 	Build(Airfield, Grd1UnitTypes, function(units)
 		Utils.Do(units, function(unit)
+			if unit.Owner ~= nod then return end
 			Trigger.OnKilled(unit, function()
 				Trigger.AfterDelay(Grd1Delay[Map.Difficulty], Grd1Action)
 			end)
@@ -94,6 +96,7 @@ end
 Grd2Action = function()
 	Build(Airfield, Grd2UnitTypes, function(units)
 		Utils.Do(units, function(unit)
+			if unit.Owner ~= nod then return end
 			unit.Patrol(Grd2Path, true, DateTime.Seconds(5))
 		end)
 	end)
