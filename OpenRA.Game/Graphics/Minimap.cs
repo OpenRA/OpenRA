@@ -147,12 +147,11 @@ namespace OpenRA.Graphics
 					if (!t.Actor.IsInWorld || world.FogObscures(t.Actor))
 						continue;
 
-					var color = t.Trait.RadarSignatureColor(t.Actor);
 					foreach (var cell in t.Trait.RadarSignatureCells(t.Actor))
 					{
-						var uv = cell.ToMPos(map);
+						var uv = cell.First.ToMPos(map);
 						if (b.Contains(uv.U, uv.V))
-							colors[(uv.V - b.Top) * stride + uv.U - b.Left] = color.ToArgb();
+							colors[(uv.V - b.Top) * stride + uv.U - b.Left] = cell.Second.ToArgb();
 					}
 				}
 			}
