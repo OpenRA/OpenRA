@@ -74,7 +74,9 @@ Rules:
 	./mods/ts/rules/gdi-infantry.yaml
 	./mods/ts/rules/nod-infantry.yaml
 	./mods/ts/rules/player-infantry.yaml
-	./mods/ts/rules/vehicles.yaml
+	./mods/ts/rules/gdi-vehicles.yaml
+	./mods/ts/rules/nod-vehicles.yaml
+	./mods/ts/rules/player-vehicles.yaml
 	./mods/ts/rules/trees.yaml
 
 Weapons:

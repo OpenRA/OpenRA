@@ -1,0 +1,136 @@
+MCV:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 110
+		Prerequisites: ~factory, tech
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Mobile Construction Vehicle
+		Description: Deploys into another Construction Yard.\n  Unarmed
+	Selectable:
+		Priority: 3
+		Bounds: 42,42
+	Health:
+		HP: 600
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 85
+		Crushes: wall, crate, infantry
+	RevealsShroud:
+		Range: 4c0
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	BaseBuilding:
+	Transforms:
+		IntoActor: gacnst
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds: facbld1.aud
+		NoTransformSounds:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+HARV:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Harvester
+		Description: Collects Tiberium for processing.\n  Unarmed
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 10
+		Prerequisites: ~factory, proc
+		InitialActivity: FindResources
+	Selectable:
+		Priority: 7
+		Bounds: 36,36
+	Harvester:
+		Capacity: 20
+		Resources: Tiberium, BlueTiberium
+		UnloadTicksPerBale: 1
+		SearchFromProcRadius: 24
+		SearchFromOrderRadius: 12
+	Mobile:
+		Speed: 71
+		Crushes: wall, crate
+		TerrainSpeeds:
+			Clear: 90
+			Rough: 70
+			Road: 100
+			Beach: 70
+			Tiberium: 80
+			BlueTiberium: 80
+	Health:
+		HP: 1000
+	SelfHealing:
+		Ticks: 10
+		HealIfBelow: 50%
+		DamageCooldown: 200
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	-GainsExperience:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelUnloadBody:
+	Explodes:
+		Weapon: TiberiumExplosion
+	WithHarvestAnimation:
+		Offset: 384,0,0
+		Palette: effect
+
+LPST:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 950
+	Tooltip:
+		Name: Mobile Sensor Array
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 100
+		Prerequisites: ~factory, radar
+	Health:
+		HP: 600
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 85
+		ROT: 5
+	RevealsShroud:
+		Range: 10c0
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	Transforms:
+		IntoActor: gadpsa
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
+
+GGHUNT:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Hunter-Seeker Droid
+	Mobile:
+		ROT: 16
+		Speed: 355
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 7c0
+	RenderUnit:
+	DemoTruck:
+	Explodes:
+		Weapon: SuicideBomb
+		EmptyWeapon: SuicideBomb
