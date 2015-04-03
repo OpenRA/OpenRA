@@ -28,7 +28,12 @@ namespace OpenRA
 
 			Keycode key;
 			if (!Enum<Keycode>.TryParse(parts[0], true, out key))
-				return false;
+			{
+				int c;
+				if (!int.TryParse(parts[0], out c))
+					return false;
+				key = (Keycode)c;
+			}
 
 			var mods = Modifiers.None;
 			if (parts.Length >= 2)
