@@ -19,8 +19,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, SupportPowersWidget palette)
 		{
-			widget.IsVisible = () => palette.TooltipPower != null;
+			widget.IsVisible = () => palette.TooltipIcon != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
+			var hotkeyLabel = widget.Get<LabelWidget>("HOTKEY");
 			var timeLabel = widget.Get<LabelWidget>("TIME");
 			var descLabel = widget.Get<LabelWidget>("DESC");
 			var nameFont = Game.Renderer.Fonts[nameLabel.Font];
@@ -35,9 +36,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SupportPowerInstance lastPower = null;
 			tooltipContainer.BeforeRender = () =>
 			{
-				var sp = palette.TooltipPower;
-				if (sp == null)
+				var icon = palette.TooltipIcon;
+
+				if (icon == null)
 					return;
+
+				var sp = icon.Power;
 
 				if (sp.Info == null)
 					return;		// no instances actually exist (race with destroy)
@@ -50,8 +54,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				name = sp.Info.Description;
 				desc = sp.Info.LongDesc.Replace("\\n", "\n");
+
+				var hotkey = icon.Hotkey;
+				var hotkeyText = "({0})".F(hotkey.DisplayString());
+				var hotkeyWidth = hotkey.IsValid() ? nameFont.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
+				hotkeyLabel.GetText = () => hotkeyText;
+				hotkeyLabel.Bounds.X = nameFont.Measure(name).X + 2 * nameLabel.Bounds.X;
+				hotkeyLabel.Visible = hotkey.IsValid();
+
 				var timeWidth = timeFont.Measure(time).X;
-				var topWidth = nameFont.Measure(name).X + timeWidth + timeOffset;
+				var topWidth = nameFont.Measure(name).X + hotkeyWidth + timeWidth + timeOffset;
 				var descSize = descFont.Measure(desc);
 				widget.Bounds.Width = 2 * nameLabel.Bounds.X + Math.Max(topWidth, descSize.X);
 				widget.Bounds.Height = baseHeight + descSize.Y;
