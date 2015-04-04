@@ -14,24 +14,27 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class AttackPlaneInfo : AttackFrontalInfo, Requires<PlaneInfo>
+	public class AttackPlaneInfo : AttackFrontalInfo
 	{
+		[Desc("Delay, in game ticks, before turning to attack.")]
+		public readonly int AttackTurnDelay = 50;
+
 		public override object Create(ActorInitializer init) { return new AttackPlane(init.Self, this); }
 	}
 
 	public class AttackPlane : AttackFrontal
 	{
-		readonly Plane plane;
+		public readonly AttackPlaneInfo AttackPlaneInfo;
 
 		public AttackPlane(Actor self, AttackPlaneInfo info)
 			: base(self, info)
 		{
-			plane = self.Trait<Plane>();
+			AttackPlaneInfo = info;
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
-			return new FlyAttack(self, newTarget, plane);
+			return new FlyAttack(self, newTarget);
 		}
 
 		protected override bool CanAttack(Actor self, Target target)
