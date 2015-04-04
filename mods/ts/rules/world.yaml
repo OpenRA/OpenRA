@@ -45,6 +45,9 @@ World:
 		Filename: unittem.pal
 		AllowModifiers: false
 		ShadowIndex: 1
+	PaletteFromFile@alpha:
+		Name: alpha
+		Filename: alpha.pal
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0

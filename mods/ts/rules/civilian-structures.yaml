@@ -1265,10 +1265,14 @@ GALITE:
 		Range: 2c0
 	Power:
 		Amount: 0
-#	WithIdleOverlay@LIGHTING:
-#		Sequence: lighting
+	WithIdleOverlay@LIGHTING:
+		Sequence: lighting
+		Palette: alpha
 	Selectable:
 		Bounds: 25, 35, 0, -12
+	Buildable:
+		Queue: Defense
+		Prerequisites: ~disabled
 
 GAICBM:
 	Inherits: ^Building

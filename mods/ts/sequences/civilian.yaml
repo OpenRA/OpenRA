@@ -687,9 +687,12 @@ galite:
 	damaged-idle: gtlite
 		Start: 1
 		ShadowStart: 3
-#	lighting: alphatst
-#		ZOffset: -1c511
-#		BlendMode: Alpha
+	lighting: alphatst
+		BlendMode: DoubleMultiplicative
+		UseTilesetCode: false
+	icon: liteicon
+		Offset: 0, 0
+		UseTilesetCode: false
 
 namntk:
 	idle: ntmntk
