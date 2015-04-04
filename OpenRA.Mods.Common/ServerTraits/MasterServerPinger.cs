@@ -63,54 +63,54 @@ namespace OpenRA.Mods.Common.Server
 			var clients = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null).Select(c => Convert.ToBase64String(Encoding.UTF8.GetBytes(c.Name))).ToArray();
 
 			Action a = () =>
+			{
+				try
 				{
-					try
+					var url = "ping?port={0}&name={1}&state={2}&players={3}&bots={4}&mods={5}&map={6}&maxplayers={7}&spectators={8}&protected={9}&clients={10}";
+					if (isInitialPing) url += "&new=1";
+
+					using (var wc = new WebClient())
 					{
-						var url = "ping?port={0}&name={1}&state={2}&players={3}&bots={4}&mods={5}&map={6}&maxplayers={7}&spectators={8}&protected={9}&clients={10}";
-						if (isInitialPing) url += "&new=1";
+						wc.Proxy = null;
+						var masterResponse = wc.DownloadData(
+							server.Settings.MasterServer + url.F(
+							server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
+							(int)server.State,
+							numPlayers,
+							numBots,
+							"{0}@{1}".F(mod.Id, mod.Version),
+							server.LobbyInfo.GlobalSettings.Map,
+							numSlots,
+							numSpectators,
+							passwordProtected,
+							string.Join(",", clients)));
 
-						using (var wc = new WebClient())
+						if (isInitialPing)
 						{
-							wc.Proxy = null;
-							var masterResponse = wc.DownloadData(
-								server.Settings.MasterServer + url.F(
-								server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
-								(int)server.State,
-								numPlayers,
-								numBots,
-								"{0}@{1}".F(mod.Id, mod.Version),
-								server.LobbyInfo.GlobalSettings.Map,
-								numSlots,
-								numSpectators,
-								passwordProtected,
-								string.Join(",", clients)));
-
-							if (isInitialPing)
+							var masterResponseText = Encoding.UTF8.GetString(masterResponse);
+							isInitialPing = false;
+							lock (masterServerMessages)
 							{
-								var masterResponseText = Encoding.UTF8.GetString(masterResponse);
-								isInitialPing = false;
-								lock (masterServerMessages)
+								masterServerMessages.Enqueue("Master server communication established.");
+								if (masterResponseText.Contains("[001]"))  // Server does not respond code
 								{
-									masterServerMessages.Enqueue("Master server communication established.");
-									if (masterResponseText.Contains("[001]"))  // Server does not respond code
-									{
-										Log.Write("server", masterResponseText);
-										masterServerMessages.Enqueue("Warning: Server ports are not forwarded.");
-										masterServerMessages.Enqueue("Game has not been advertised online.");
-									}
+									Log.Write("server", masterResponseText);
+									masterServerMessages.Enqueue("Warning: Server ports are not forwarded.");
+									masterServerMessages.Enqueue("Game has not been advertised online.");
 								}
 							}
 						}
 					}
-					catch (Exception ex)
-					{
-						Log.Write("server", ex.ToString());
-						lock (masterServerMessages)
-							masterServerMessages.Enqueue("Master server communication failed.");
-					}
+				}
+				catch (Exception ex)
+				{
+					Log.Write("server", ex.ToString());
+					lock (masterServerMessages)
+						masterServerMessages.Enqueue("Master server communication failed.");
+				}
 
-					isBusy = false;
-				};
+				isBusy = false;
+			};
 
 			a.BeginInvoke(null, null);
 		}
