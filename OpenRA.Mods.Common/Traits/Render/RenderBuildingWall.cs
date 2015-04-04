@@ -24,9 +24,44 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
-			// Show a static frame instead of animating all of the wall states
+			var adjacent = 0;
+
+			if (init.Contains<RuntimeNeighbourInit>())
+			{
+				var location = CPos.Zero;
+				if (init.Contains<LocationInit>())
+					location = init.Get<LocationInit, CPos>();
+
+				var neighbours = init.Get<RuntimeNeighbourInit, Dictionary<CPos, string[]>>();
+				foreach (var kv in neighbours)
+				{
+					var haveNeighbour = false;
+					foreach (var n in kv.Value)
+					{
+						var rb = init.World.Map.Rules.Actors[n].Traits.GetOrDefault<RenderBuildingWallInfo>();
+						if (rb != null && rb.Type == Type)
+						{
+							haveNeighbour = true;
+							break;
+						}
+					}
+
+					if (!haveNeighbour)
+						continue;
+
+					if (kv.Key == location + new CVec(0, -1))
+						adjacent |= 1;
+					else if (kv.Key == location + new CVec(+1, 0))
+						adjacent |= 2;
+					else if (kv.Key == location + new CVec(0, +1))
+						adjacent |= 4;
+					else if (kv.Key == location + new CVec(-1, 0))
+						adjacent |= 8;
+				}
+			}
+
 			var anim = new Animation(init.World, image, () => 0);
-			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence), () => 0);
+			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence), () => adjacent);
 
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
@@ -109,5 +144,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			UpdateNeighbours(self);
 		}
+	}
+
+	public class RuntimeNeighbourInit : IActorInit<Dictionary<CPos, string[]>>
+	{
+		[FieldFromYamlKey] readonly Dictionary<CPos, string[]> value = null;
+		public RuntimeNeighbourInit() { }
+		public RuntimeNeighbourInit(Dictionary<CPos, string[]> init) { value = init; }
+		public Dictionary<CPos, string[]> Value(World world) { return value; }
 	}
 }
