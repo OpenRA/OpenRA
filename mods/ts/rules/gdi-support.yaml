@@ -175,3 +175,35 @@ GACSAM:
 		Type: tower.sam
 	Power:
 		Amount: -30
+
+GAPOWRUP:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Power Turbine
+		Description: Provides extra power generation.
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 10
+		Prerequisites: gapowr, ~structures.gdi
+	Plug:
+		Type: powrup
+	Power:
+		Amount: 50
+
+GAPLUG3:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Ion Cannon Uplink
+		Description: Enables use of the Ion Cannon.
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1000
+		Prerequisites: gaplug, gatech, ~structures.gdi
+	Plug:
+		Type: plug.ioncannon
+	Power:
+		Amount: -100
