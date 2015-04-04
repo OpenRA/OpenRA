@@ -193,29 +193,22 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Height: 25
 							Font: Bold
 							Text: Player
-						Label@CONTROL_HEADER:
-							X: 235
-							Y: 40
-							Width: 60
-							Height: 25
-							Font: Bold
-							Text: Control
 						Label@KILLS_COST_HEADER:
-							X: 315
+							X: 235
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
 							Text: Kills
 						Label@DEATHS_COST_HEADER:
-							X: 395
+							X: 315
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
 							Text: Deaths
 						Label@UNITS_KILLED_HEADER:
-							X: 495
+							X: 415
 							Y: 40
 							Width: 40
 							Height: 25
@@ -223,7 +216,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Text: Units Killed
 							Align: Right
 						Label@UNITS_DEAD_HEADER:
-							X: 595
+							X: 515
 							Y: 40
 							Width: 40
 							Height: 25
@@ -231,7 +224,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Text: Units Lost
 							Align: Right
 						Label@BUILDINGS_KILLED_HEADER:
-							X: 715
+							X: 635
 							Y: 40
 							Width: 40
 							Height: 25
@@ -239,7 +232,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Text: Bldg Killed
 							Align: Right
 						Label@BUILDINGS_DEAD_HEADER:
-							X: 815
+							X: 735
 							Y: 40
 							Width: 40
 							Height: 25
@@ -440,41 +433,36 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Width: 160
 									Height: PARENT_BOTTOM
 									Font: Bold
-								Label@CONTROL:
+								Label@KILLS_COST:
 									X: 215
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
-								Label@KILLS_COST:
+								Label@DEATHS_COST:
 									X: 295
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
-								Label@DEATHS_COST:
-									X: 375
-									Y: 0
-									Width: 60
-									Height: PARENT_BOTTOM
 								Label@UNITS_KILLED:
-									X: 475
+									X: 395
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
 								Label@UNITS_DEAD:
-									X: 575
+									X: 495
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
 								Label@BUILDINGS_KILLED:
-									X: 695
+									X: 615
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
 								Label@BUILDINGS_DEAD:
-									X: 795
+									X: 715
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
