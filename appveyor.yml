@@ -5,6 +5,10 @@ environment:
 
 install:
 
+cache:
+  - nsissetup.exe -> appveyor.yaml
+  - NsProcess.zip -> appveyor.yaml
+
 before_build:
 - make dependencies
 
