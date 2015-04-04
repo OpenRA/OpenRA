@@ -677,6 +677,9 @@ gaspot:
 	make: gaspotmk
 		Length: 14
 		ShadowStart: 14
+	icon: spoticon
+		Offset: 0, 0
+		UseTilesetCode: false
 
 galite:
 	Defaults:

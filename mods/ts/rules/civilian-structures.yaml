@@ -1228,7 +1228,12 @@ GASAND:
 		Type: sandbags
 
 GASPOT:
-	Inherits: ^CivBuilding
+	Inherits: ^Building
+	Buildable:
+		Queue: Defense
+		Prerequisites: ~disabled
+	Valued:
+		Cost: 300
 	Tooltip:
 		Name: Light Tower
 	Building:
@@ -1242,8 +1247,8 @@ GASPOT:
 		Type: wood
 	Health:
 		HP: 400
-	RenderBuilding:
-		Palette: player
+	RevealsShroud:
+		Range: 6c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 
