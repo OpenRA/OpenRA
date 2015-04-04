@@ -23,40 +23,44 @@ namespace OpenRA.Renderer.Sdl2
 		readonly Dictionary<int, ITexture> textures = new Dictionary<int, ITexture>();
 		int program;
 
-		public Shader(string name)
+		protected int CompileShaderObject(ShaderType type, string name)
 		{
-			// Vertex shader
-			string vertexCode;
-			using (var file = new StreamReader(GlobalFileSystem.Open("glsl{0}{1}.vert".F(Path.DirectorySeparatorChar, name))))
-				vertexCode = file.ReadToEnd();
+			string ext = type == ShaderType.VertexShader ? "vert" : "frag";
+			string filename = "glsl{0}{1}.{2}".F(Path.DirectorySeparatorChar, name, ext);
+			string code;
+			using (var file = new StreamReader(GlobalFileSystem.Open(filename)))
+				code = file.ReadToEnd();
 
-			var vertexShader = GL.CreateShader(ShaderType.VertexShader);
+			var shader = GL.CreateShader(type);
 			ErrorHandler.CheckGlError();
-			GL.ShaderSource(vertexShader, vertexCode);
+			GL.ShaderSource(shader, code);
 			ErrorHandler.CheckGlError();
-			GL.CompileShader(vertexShader);
+			GL.CompileShader(shader);
 			ErrorHandler.CheckGlError();
 			int success;
-			GL.GetShader(vertexShader, ShaderParameter.CompileStatus, out success);
+			GL.GetShader(shader, ShaderParameter.CompileStatus, out success);
 			ErrorHandler.CheckGlError();
 			if (success == (int)All.False)
-				throw new InvalidProgramException("Compile error in glsl{0}{1}.vert".F(Path.DirectorySeparatorChar, name));
+			{
+				int len;
+				GL.GetShader(shader, ShaderParameter.InfoLogLength, out len);
+				var log = new StringBuilder(len);
+				unsafe
+				{
+					GL.GetShaderInfoLog(shader, len, null, log);
+				}
 
-			// Fragment shader
-			string fragmentCode;
-			using (var file = new StreamReader(GlobalFileSystem.Open("glsl{0}{1}.frag".F(Path.DirectorySeparatorChar, name))))
-				fragmentCode = file.ReadToEnd();
+				Log.Write("graphics", "GL Info Log:\n{0}", log.ToString());
+				throw new InvalidProgramException("Compile error in shader object '{0}'".F(filename));
+			}
 
-			var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
-			ErrorHandler.CheckGlError();
-			GL.ShaderSource(fragmentShader, fragmentCode);
-			ErrorHandler.CheckGlError();
-			GL.CompileShader(fragmentShader);
-			ErrorHandler.CheckGlError();
-			GL.GetShader(vertexShader, ShaderParameter.CompileStatus, out success);
-			ErrorHandler.CheckGlError();
-			if (success == (int)All.False)
-				throw new InvalidProgramException("Compile error in glsl{0}{1}.frag".F(Path.DirectorySeparatorChar, name));
+			return shader;
+		}
+
+		public Shader(string name)
+		{
+			var vertexShader = CompileShaderObject(ShaderType.VertexShader, name);
+			var fragmentShader = CompileShaderObject(ShaderType.FragmentShader, name);
 
 			// Assemble program
 			program = GL.CreateProgram();
@@ -68,10 +72,22 @@ namespace OpenRA.Renderer.Sdl2
 
 			GL.LinkProgram(program);
 			ErrorHandler.CheckGlError();
+			int success;
 			GL.GetProgram(program, ProgramParameter.LinkStatus, out success);
 			ErrorHandler.CheckGlError();
 			if (success == (int)All.False)
-				throw new InvalidProgramException("Linking error in {0} shader".F(name));
+			{
+				int len;
+				GL.GetProgram(program, ProgramParameter.InfoLogLength, out len);
+				var log = new StringBuilder(len);
+				unsafe
+				{
+					GL.GetProgramInfoLog(program, len, null, log);
+				}
+
+				Log.Write("graphics", "GL Info Log:\n{0}", log.ToString());
+				throw new InvalidProgramException("Link error in shader program '{0}'".F(name));
+			}
 
 			GL.UseProgram(program);
 			ErrorHandler.CheckGlError();
