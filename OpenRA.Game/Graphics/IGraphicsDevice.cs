@@ -44,7 +44,9 @@ namespace OpenRA
 		SoftAdditive,
 		Translucency25,
 		Translucency50,
-		Translucency75
+		Translucency75,
+		Multiplicative,
+		DoubleMultiplicative
 	}
 
 	public interface IGraphicsDevice : IDisposable
