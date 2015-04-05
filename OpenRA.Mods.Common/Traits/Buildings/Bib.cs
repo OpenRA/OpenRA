@@ -28,6 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (init.Contains<HideBibPreviewInit>() && init.Get<HideBibPreviewInit, bool>())
 				yield break;
 
+			if (Palette != null)
+				p = init.WorldRenderer.Palette(Palette);
+
 			var bi = init.Actor.Traits.Get<BuildingInfo>();
 
 			var width = bi.Dimensions.X;
