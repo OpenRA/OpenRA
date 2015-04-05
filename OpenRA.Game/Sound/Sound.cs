@@ -101,7 +101,7 @@ namespace OpenRA
 			soundEngine.SetListenerPosition(position);
 		}
 
-		static ISound Play(Player player, string name, bool headRelative, WPos pos, float volumeModifier)
+		static ISound Play(Player player, string name, bool headRelative, WPos pos, float volumeModifier = 1f, bool loop = false)
 		{
 			if (string.IsNullOrEmpty(name))
 				return null;
@@ -109,16 +109,18 @@ namespace OpenRA
 				return null;
 
 			return soundEngine.Play2D(sounds[name],
-				false, headRelative, pos,
+				loop, headRelative, pos,
 				InternalSoundVolume * volumeModifier, true);
 		}
 
-		public static ISound Play(string name) { return Play(null, name, true, WPos.Zero, 1); }
-		public static ISound Play(string name, WPos pos) { return Play(null, name, false, pos, 1); }
+		public static ISound Play(string name) { return Play(null, name, true, WPos.Zero, 1f); }
+		public static ISound Play(string name, WPos pos) { return Play(null, name, false, pos, 1f); }
 		public static ISound Play(string name, float volumeModifier) { return Play(null, name, true, WPos.Zero, volumeModifier); }
 		public static ISound Play(string name, WPos pos, float volumeModifier) { return Play(null, name, false, pos, volumeModifier); }
-		public static ISound PlayToPlayer(Player player, string name) { return Play(player, name, true, WPos.Zero, 1); }
-		public static ISound PlayToPlayer(Player player, string name, WPos pos) { return Play(player, name, false, pos, 1); }
+		public static ISound PlayToPlayer(Player player, string name) { return Play(player, name, true, WPos.Zero, 1f); }
+		public static ISound PlayToPlayer(Player player, string name, WPos pos) { return Play(player, name, false, pos, 1f); }
+		public static ISound PlayLooped(string name) { return PlayLooped(name, WPos.Zero); }
+		public static ISound PlayLooped(string name, WPos pos) { return Play(null, name, true, pos, 1f, true); }
 
 		public static void PlayVideo(byte[] raw, int channels, int sampleBits, int sampleRate)
 		{
