@@ -40,6 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (UpgradeMinEnabledLevel > 0)
 				yield break;
 
+			if (Palette != null)
+				p = init.WorldRenderer.Palette(Palette);
+
 			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
 			var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
 			var anim = new Animation(init.World, image, () => facing);
