@@ -30,6 +30,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Which direction the passenger will face (relative to the transport) when unloading.")]
 		public readonly int PassengerFacing = 128;
 
+		[Desc("Cursor to display when able to unload the passengers.")]
+		public readonly string UnloadCursor = "deploy";
+
+		[Desc("Cursor to display when unable to unload the passengers.")]
+		public readonly string UnloadBlockedCursor = "deploy-blocked";
+
 		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
@@ -99,7 +105,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter("Unload", 10, CanUnload); }
+			get { yield return new DeployOrderTargeter("Unload", 10,
+				() => CanUnload() ? Info.UnloadCursor : Info.UnloadBlockedCursor); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -170,7 +177,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "Unload")
 				return null;
 
-			return CanUnload() ? "deploy" : "deploy-blocked";
+			return CanUnload() ? Info.UnloadCursor : Info.UnloadBlockedCursor;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
