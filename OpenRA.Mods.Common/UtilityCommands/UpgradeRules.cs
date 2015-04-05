@@ -1353,6 +1353,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Generalized the flash palette trait
+				if (engineVersion < 20150627)
+				{
+					if (node.Key == "NukePaletteEffect")
+						node.Key = "FlashPaletteEffect";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

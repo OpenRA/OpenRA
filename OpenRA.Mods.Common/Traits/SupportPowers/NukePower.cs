@@ -45,6 +45,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount of time after detonation to remove the camera")]
 		public readonly int CameraRemoveDelay = 25;
 
+		public readonly string FlashType = null;
+
 		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
 	}
 
@@ -76,7 +78,8 @@ namespace OpenRA.Mods.Common.Traits
 			var missile = new NukeLaunch(self.Owner, info.MissileWeapon,
 				self.CenterPosition + body.LocalToWorld(info.SpawnOffset),
 				targetPosition,
-				info.FlightVelocity, info.FlightDelay, info.SkipAscent);
+				info.FlightVelocity, info.FlightDelay, info.SkipAscent,
+				info.FlashType);
 
 			self.World.AddFrameEndTask(w => w.Add(missile));
 

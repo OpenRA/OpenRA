@@ -215,6 +215,7 @@
     <Compile Include="Scripting\Global\CameraGlobal.cs" />
     <Compile Include="Scripting\Global\CoordinateGlobals.cs" />
     <Compile Include="Scripting\Global\DateTimeGlobal.cs" />
+    <Compile Include="Scripting\Global\EffectGlobal.cs" />
     <Compile Include="Scripting\Global\FacingGlobal.cs" />
     <Compile Include="Scripting\Global\HSLColorGlobal.cs" />
     <Compile Include="Scripting\Global\MapGlobal.cs" />
@@ -357,8 +358,8 @@
     <Compile Include="Traits\Passenger.cs" />
     <Compile Include="Traits\PaletteEffects\CloakPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\GlobalLightingPaletteEffect.cs" />
+    <Compile Include="Traits\PaletteEffects\FlashPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\MenuPaletteEffect.cs" />
-    <Compile Include="Traits\PaletteEffects\NukePaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\WaterPaletteRotation.cs" />
     <Compile Include="Traits\Player\ActorGroupProxy.cs" />
     <Compile Include="Traits\Player\AllyRepair.cs" />

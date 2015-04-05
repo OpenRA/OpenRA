@@ -54,7 +54,6 @@ World:
 	PlayerCommands:
 	HelpCommand:
 	ScreenShaker:
-	NukePaletteEffect:
 	BuildingInfluence:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, bridge3, bridge4
