@@ -1171,6 +1171,9 @@ Actors:
 Smudges:
 
 Rules:
+	World:
+		GlobalLightingPaletteEffect:
+			Ambient: 0.75
 
 Sequences:
 
