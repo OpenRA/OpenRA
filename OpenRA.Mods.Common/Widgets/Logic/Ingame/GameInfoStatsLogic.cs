@@ -11,6 +11,7 @@
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -53,9 +54,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				nameLabel.GetColor = () => pp.Color.RGB;
 
 				var flag = item.Get<ImageWidget>("FACTIONFLAG");
-				flag.GetImageName = () => pp.Country.Race;
 				flag.GetImageCollection = () => "flags";
-				item.Get<LabelWidget>("FACTION").GetText = () => pp.Country.Name;
+				if (lp.Stances[pp] == Stance.Ally || lp.WinState != WinState.Undefined)
+				{
+					flag.GetImageName = () => pp.Country.Race;
+					item.Get<LabelWidget>("FACTION").GetText = () => pp.Country.Name;
+				}
+				else
+				{
+					flag.GetImageName = () => pp.PlayerReference.RaceFlagName;
+					item.Get<LabelWidget>("FACTION").GetText = () => pp.PlayerReference.Race;
+				}
 
 				var team = item.Get<LabelWidget>("TEAM");
 				var teamNumber = (client == null) ? 0 : client.Team;
