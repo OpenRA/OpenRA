@@ -16,18 +16,18 @@ namespace OpenRA.Mods.Common.Orders
 {
 	public class DeployOrderTargeter : IOrderTargeter
 	{
-		readonly Func<bool> useDeployCursor;
+		readonly Func<string> cursor;
 
 		public DeployOrderTargeter(string order, int priority)
-			: this(order, priority, () => true)
+			: this(order, priority, () => "deploy")
 		{
 		}
 
-		public DeployOrderTargeter(string order, int priority, Func<bool> useDeployCursor)
+		public DeployOrderTargeter(string order, int priority, Func<string> cursor)
 		{
 			this.OrderID = order;
 			this.OrderPriority = priority;
-			this.useDeployCursor = useDeployCursor;
+			this.cursor = cursor;
 		}
 
 		public string OrderID { get; private set; }
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Orders
 				return false;
 
 			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-			cursor = useDeployCursor() ? "deploy" : "deploy-blocked";
+			cursor = this.cursor();
 
 			return self == target.Actor;
 		}

@@ -39,6 +39,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Notification to play when the transformation is blocked.")]
 		public readonly string NoTransformNotification = null;
 
+		[Desc("Cursor to display when able to (un)deploy the actor.")]
+		public readonly string DeployCursor = "deploy";
+
+		[Desc("Cursor to display when unable to (un)deploy the actor.")]
+		public readonly string DeployBlockedCursor = "deploy-blocked";
+
 		public virtual object Create(ActorInitializer init) { return new Transforms(init, this); }
 	}
 
@@ -73,7 +79,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter("DeployTransform", 5, () => CanDeploy()); }
+			get { yield return new DeployOrderTargeter("DeployTransform", 5,
+				() => CanDeploy() ? info.DeployCursor : info.DeployBlockedCursor); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
