@@ -361,7 +361,6 @@ install-tools: tools
 	@-echo "Installing OpenRA tools to $(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) $(foreach prog,$(TOOLS),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
-	@$(RM) $(DATA_INSTALL_DIR)/OpenRA.TilesetBuilder.exe # TODO: won't work outside the source tree
 
 install-linux-icons:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
