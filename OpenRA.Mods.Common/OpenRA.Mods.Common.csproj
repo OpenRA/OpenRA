@@ -415,6 +415,7 @@
     <Compile Include="Traits\ShakeOnDeath.cs" />
     <Compile Include="Traits\SmokeTrailWhenDamaged.cs" />
     <Compile Include="Traits\Sound\ActorLostNotification.cs" />
+    <Compile Include="Traits\Sound\AmbientSound.cs" />
     <Compile Include="Traits\Sound\AnnounceOnBuild.cs" />
     <Compile Include="Traits\Sound\AnnounceOnKill.cs" />
     <Compile Include="Traits\Sound\AnnounceOnSeen.cs" />
