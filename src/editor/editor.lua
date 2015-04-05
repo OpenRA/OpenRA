@@ -240,7 +240,9 @@ function EditorAutoComplete(editor)
   -- for example, if typing 'foo' in front of 'bar', 'foobar' is not offered
   local right = linetx:sub(localpos+1,#linetx):match("^([%a_]+[%w_]*)")
   if userList and right then
-    userList = userList:gsub("%f[%w_]"..lt..right.."%f[%W]",""):gsub("  +"," ")
+    -- remove all spaces that may be left if "foo" removed from "foo foo"
+    userList = (userList:gsub("%f[%w_]"..lt..right.."%f[%W]","")
+      :gsub("^ +",""):gsub(" +$",""):gsub("  +"," "))
   end
 
   -- don't show the list if it only suggests what's already typed
