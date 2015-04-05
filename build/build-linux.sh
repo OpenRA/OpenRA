@@ -44,6 +44,10 @@ if [ $# -eq 0 ]; then
   exit 0
 fi
 
+WXLUASTRIP="/strip"
+WXWIDGETSDEBUG="--disable-debug"
+WXLUABUILD="MinSizeRel"
+
 # iterate through the command line arguments
 for ARG in "$@"; do
   case $ARG in
@@ -68,6 +72,11 @@ for ARG in "$@"; do
     ;;
   luasocket)
     BUILD_LUASOCKET=true
+    ;;
+  debug)
+    WXLUASTRIP=""
+    WXWIDGETSDEBUG="--enable-debug=max --enable-debug_gdb"
+    WXLUABUILD="Debug"
     ;;
   all)
     BUILD_WXWIDGETS=true
@@ -141,7 +150,7 @@ if [ $BUILD_WXWIDGETS ]; then
   svn co "$WXWIDGETS_URL" "$WXWIDGETS_BASENAME" || { echo "Error: failed to checkout wxWidgets"; exit 1; }
 
   cd "$WXWIDGETS_BASENAME"
-  ./configure --prefix="$INSTALL_DIR" --disable-debug --disable-shared --enable-unicode \
+  ./configure --prefix="$INSTALL_DIR" $WXWIDGETSDEBUG --disable-shared --enable-unicode \
     --enable-compat28 \
     --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=no \
     --with-zlib=builtin --disable-richtext --with-gtk=2 \
@@ -187,13 +196,13 @@ if [ $BUILD_WXLUA ]; then
   # (temporary) fix for compilation issue in wxlua using wxwidgets 3.1+ (r238)
   sed -i 's/{ "wxSTC_COFFEESCRIPT_HASHQUOTEDSTRING", wxSTC_COFFEESCRIPT_HASHQUOTEDSTRING },/\/\/ removed by ZBS build process/' modules/wxbind/src/wxstc_bind.cpp
 
-  cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=FALSE \
+  cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$WXLUABUILD -DBUILD_SHARED_LIBS=FALSE \
     -DwxWidgets_CONFIG_EXECUTABLE="$INSTALL_DIR/bin/wx-config" \
     -DwxWidgets_COMPONENTS="stc;html;aui;adv;core;net;base" \
     -DwxLuaBind_COMPONENTS="stc;html;aui;adv;core;net;base" -DwxLua_LUA_LIBRARY_USE_BUILTIN=FALSE \
     -DwxLua_LUA_INCLUDE_DIR="$INSTALL_DIR/include" -DwxLua_LUA_LIBRARY="$INSTALL_DIR/lib/liblua.a" .
   (cd modules/luamodule; make $MAKEFLAGS) || { echo "Error: failed to build wxLua"; exit 1; }
-  (cd modules/luamodule; make install/strip)
+  (cd modules/luamodule; make install$WXLUASTRIP)
   [ -f "$INSTALL_DIR/lib/libwx.so" ] || { echo "Error: libwx.so isn't found"; exit 1; }
   cd ../..
   rm -rf "$WXLUA_BASENAME"
