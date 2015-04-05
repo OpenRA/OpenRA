@@ -148,7 +148,6 @@
 		Upgrade: invulnerability
 	MustBeDestroyed:
 	Parachutable:
-		FallRate: 26
 		ParachuteOffset: 0,0,200
 		KilledOnImpassableTerrain: true
 		ParachuteSequence: parach
@@ -229,7 +228,6 @@
 		DeathSound: Zapped
 		DeathTypes: 6
 	Parachutable:
-		FallRate: 26
 		ParachuteOffset: 0,0,427
 		KilledOnImpassableTerrain: true
 		ParachuteSequence: parach
@@ -708,7 +706,6 @@
 		Types: Crate
 	BodyOrientation:
 	Parachutable:
-		FallRate: 26
 		KilledOnImpassableTerrain: false
 		ParachuteSequence: parach
 	Passenger:
