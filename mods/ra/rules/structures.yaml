@@ -1141,21 +1141,6 @@ AFLD:
 		CameraActor: camera.paradrop
 		DisplayBeacon: true
 		BeaconPoster: pinficon
-	ParatroopersPower@armordrop:
-		OrderName: RussiaArmorDrop
-		Prerequisites: aircraft.russia
-		Icon: armordrop
-		ChargeTime: 450
-		Description: Armor Airdrop
-		LongDesc: Badgers drop a pair of\nHeavy Tanks anywhere on the map.
-		DropItems: 3TNK,3TNK
-		SquadSize: 2
-		SelectTargetSound: slcttgt1.aud
-		AllowImpassableCells: false
-		QuantizedFacings: 8
-		CameraActor: camera.paradrop
-		DisplayBeacon: true
-		BeaconPoster: armordropicon
 	AirstrikePower@parabombs:
 		OrderName: UkraineParabombs
 		Prerequisites: aircraft.ukraine
