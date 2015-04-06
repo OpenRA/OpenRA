@@ -38,6 +38,49 @@ CAMERA:
 	DetectCloaked:
 		Range: 10
 
+CRATE:
+	Inherits: ^Crate
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 50
+		Effect: dollar
+		UseCashTick: true
+	LevelUpCrateAction:
+		SelectionShares: 40
+		Effect: levelup
+	HideMapCrateAction:
+		SelectionShares: 5
+		Effect: hide-map
+	HealUnitsCrateAction:
+		SelectionShares: 2
+		Effect: heal
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Effect: reveal-map
+	GiveMcvCrateAction:
+		SelectionShares: 2
+		NoBaseSelectionShares: 100
+		Units: mcv
+	GrantUpgradeCrateAction@cloak:
+		SelectionShares: 5
+		Effect: stealth
+		Upgrades: cloakgenerator
+		Notification: cloak5.aud
+	GrantUpgradeCrateAction@firepower:
+		SelectionShares: 5
+		Effect: firepower
+		Upgrades: firepower
+		Notification: 00-i070.aud
+	GrantUpgradeCrateAction@armor:
+		SelectionShares: 5
+		Effect: armor
+		Upgrades: damage
+		Notification: 00-i068.aud
+	GrantUpgradeCrateAction@speed:
+		SelectionShares: 5
+		Upgrades: speed
+		Notification: 00-i080.aud
+
 SROCK01:
 	Inherits: ^Rock
 
