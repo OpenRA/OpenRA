@@ -1129,7 +1129,7 @@ AFLD:
 		BeaconPoster: camicon
 	ParatroopersPower@paratroopers:
 		OrderName: SovietParatroopers
-		Prerequisites: aircraft.sovietvanilla
+		Prerequisites: aircraft.soviet
 		Icon: paratroopers
 		ChargeTime: 360
 		Description: Paratroopers
