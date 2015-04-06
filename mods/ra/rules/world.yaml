@@ -133,7 +133,7 @@ World:
 		Side: Random
 		Description: A random country.
 	Country@randomallies:
-		Name: Allied
+		Name: Allies
 		Race: RandomAllies
 		RandomRaceMembers: england, france, germany
 		Side: Random
