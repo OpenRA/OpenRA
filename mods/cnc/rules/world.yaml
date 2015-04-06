@@ -1,17 +1,8 @@
-World:
+^BaseWorld:
 	Inherits: ^Palettes
-	ChatCommands:
-	DevCommands:
-	PlayerCommands:
-	HelpCommand:
 	ScreenMap:
 	ActorMap:
-	LoadWidgetAtGameStart:
-		ShellmapRoot: MENU_BACKGROUND
-	ScreenShaker:
-	BuildingInfluence:
-	BridgeLayer:
-		Bridges: bridge1, bridge2, bridge3, bridge4
+	TerrainGeometryOverlay:
 	ShroudRenderer:
 		ShroudVariants: typea, typeb, typec, typed
 		FogVariants: typea, typeb, typec, typed
@@ -30,18 +21,6 @@ World:
 		Name: Nod
 		Race: nod
 		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
-	ProductionQueueFromSelection:
-		ProductionTabsWidget: PRODUCTION_TABS
-	DomainIndex:
-	SmudgeLayer@SCORCH:
-		Type: Scorch
-		Sequence: scorches
-		SmokePercentage: 50
-	SmudgeLayer@CRATER:
-		Type: Crater
-		Sequence: craters
-	ResourceLayer:
-	ResourceClaimLayer:
 	ResourceType@green-tib:
 		ResourceType: 1
 		Palette: staticterrain
@@ -66,8 +45,33 @@ World:
 		PipColor: Blue
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: true
+	LoadWidgetAtGameStart:
+		ShellmapRoot: MENU_BACKGROUND
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	PlayerCommands:
+	HelpCommand:
+	ScreenShaker:
+	NukePaletteEffect:
+	BuildingInfluence:
+	BridgeLayer:
+		Bridges: bridge1, bridge2, bridge3, bridge4
+	ProductionQueueFromSelection:
+		ProductionTabsWidget: PRODUCTION_TABS
+	DomainIndex:
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokePercentage: 50
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
+	ResourceLayer:
+	ResourceClaimLayer:
 	PathfinderDebugOverlay:
-	TerrainGeometryOverlay:
 	SpawnMapActors:
 	MPStartLocations:
 	CreateMPPlayers:
@@ -143,3 +147,7 @@ World:
 		PanelName: SKIRMISH_STATS
 	RadarPings:
 
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorResourceLayer:

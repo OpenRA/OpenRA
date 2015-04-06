@@ -170,7 +170,8 @@ namespace OpenRA
 			TileSet = map.Rules.TileSets[Map.Tileset];
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 
-			WorldActor = CreateActor("World", new TypeDictionary());
+			var worldActorType = type == WorldType.Editor ? "EditorWorld" : "World";
+			WorldActor = CreateActor(worldActorType, new TypeDictionary());
 			ActorMap = WorldActor.Trait<ActorMap>();
 			ScreenMap = WorldActor.Trait<ScreenMap>();
 
