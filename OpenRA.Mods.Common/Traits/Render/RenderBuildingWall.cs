@@ -19,7 +19,6 @@ namespace OpenRA.Mods.Common.Traits
 	class RenderBuildingWallInfo : RenderBuildingInfo
 	{
 		public readonly string Type = "wall";
-		public readonly string Sequence = "idle";
 
 		public override object Create(ActorInitializer init) { return new RenderBuildingWall(init, this); }
 
@@ -27,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Show a static frame instead of animating all of the wall states
 			var anim = new Animation(init.World, image, () => 0);
-			anim.PlayFetchIndex("idle", () => 0);
+			anim.PlayFetchIndex(Sequence, () => 0);
 
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}

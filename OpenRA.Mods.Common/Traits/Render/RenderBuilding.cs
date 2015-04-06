@@ -46,25 +46,25 @@ namespace OpenRA.Mods.Common.Traits
 			var self = init.Self;
 			this.info = info;
 
-			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, info.Sequence));
 		}
 
 		public virtual void BuildingComplete(Actor self)
 		{
-			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, info.Sequence));
 
 			if (info.PauseOnLowPower)
 			{
 				var disabled = self.TraitsImplementing<IDisable>();
 				DefaultAnimation.Paused = () => disabled.Any(d => d.Disabled)
-					&& DefaultAnimation.CurrentSequence.Name == NormalizeSequence(self, "idle");
+					&& DefaultAnimation.CurrentSequence.Name == NormalizeSequence(self, info.Sequence);
 			}
 		}
 
 		public void PlayCustomAnimThen(Actor self, string name, Action a)
 		{
 			DefaultAnimation.PlayThen(NormalizeSequence(self, name),
-				() => { DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
+				() => { DefaultAnimation.PlayRepeating(NormalizeSequence(self, info.Sequence)); a(); });
 		}
 
 		public void PlayCustomAnimRepeating(Actor self, string name)
@@ -76,12 +76,12 @@ namespace OpenRA.Mods.Common.Traits
 		public void PlayCustomAnimBackwards(Actor self, string name, Action a)
 		{
 			DefaultAnimation.PlayBackwardsThen(NormalizeSequence(self, name),
-				() => { DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
+				() => { DefaultAnimation.PlayRepeating(NormalizeSequence(self, info.Sequence)); a(); });
 		}
 
 		public void CancelCustomAnim(Actor self)
 		{
-			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, info.Sequence));
 		}
 
 		public virtual void DamageStateChanged(Actor self, AttackInfo e)

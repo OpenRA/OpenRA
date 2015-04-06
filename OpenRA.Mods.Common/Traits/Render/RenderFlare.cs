@@ -12,6 +12,8 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class RenderFlareInfo : RenderSimpleInfo
 	{
+		public readonly string OpenSequence = "open";
+
 		public override object Create(ActorInitializer init) { return new RenderFlare(init, this); }
 	}
 
@@ -20,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public RenderFlare(ActorInitializer init, RenderFlareInfo info)
 			: base(init, info, () => 0)
 		{
-			DefaultAnimation.PlayThen("open", () => DefaultAnimation.PlayRepeating("idle"));
+			DefaultAnimation.PlayThen(info.OpenSequence, () => DefaultAnimation.PlayRepeating(info.Sequence));
 		}
 	}
 }
