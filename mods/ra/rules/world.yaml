@@ -120,7 +120,7 @@ World:
 		Name: Russia
 		Race: russia
 		Side: Soviet
-		Description: Russia: Tanks\nSpecial Ability: Armor Airdrop\nSpecial Unit: MAD Tank
+		Description: Russia: Tesla Weapons\nSpecial Unit: Tesla Tank\nSpecial Unit: Shock Trooper
 	Country@6:
 		Name: Ukraine
 		Race: ukraine

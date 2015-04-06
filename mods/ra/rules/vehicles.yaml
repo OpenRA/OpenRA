@@ -564,7 +564,7 @@ TTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 180
-		Prerequisites: tsla, stek, ~vehicles.soviet, ~techlevel.unrestricted
+		Prerequisites: tsla, stek, ~vehicles.russia, ~techlevel.unrestricted
 	Valued:
 		Cost: 1350
 	Tooltip:
@@ -706,7 +706,7 @@ QTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 200
-		Prerequisites: fix, stek, ~vehicles.russia, ~techlevel.unrestricted
+		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.unrestricted
 	Valued:
 		Cost: 2000
 	Tooltip:
