@@ -397,7 +397,7 @@ TSLA:
 	-AcceptsSupplies:
 	DrawLineToTarget:
 	Power:
-		Amount: -150
+		Amount: -100
 	DetectCloaked:
 		Range: 8
 
