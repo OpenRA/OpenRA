@@ -42,6 +42,8 @@ namespace OpenRA.Mods.D2k.Traits
 				return t;
 			}
 
+			t.Density = ResourceDensityAt(c);
+
 			int index;
 			var clear = FindClearSides(t.Type, c);
 			if (clear == ClearSides.None)
