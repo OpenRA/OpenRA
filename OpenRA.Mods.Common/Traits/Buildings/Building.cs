@@ -104,6 +104,16 @@ namespace OpenRA.Mods.Common.Traits
 					.Any(b => Math.Abs(a.X - b.X) <= Adjacent
 						&& Math.Abs(a.Y - b.Y) <= Adjacent));
 		}
+
+		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos topLeft, SubCell subCell = SubCell.Any)
+		{
+			var occupied = FootprintUtils.UnpathableTiles(info.Name, this, topLeft)
+				.ToDictionary(c => c, c => SubCell.FullCell);
+
+			return new ReadOnlyDictionary<CPos, SubCell>(occupied);
+		}
+
+		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
 
 	public class Building : IOccupySpace, INotifySold, INotifyTransform, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
