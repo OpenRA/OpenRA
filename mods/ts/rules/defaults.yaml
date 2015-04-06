@@ -59,6 +59,7 @@
 		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
+		Palette: alpha-cloak
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -139,6 +140,7 @@
 		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
+		Palette: alpha-cloak
 	MustBeDestroyed:
 
 ^BuildingPlug:
@@ -230,6 +232,7 @@
 		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
+		Palette: alpha-cloak
 	MustBeDestroyed:
 
 ^CivilianInfantry:
@@ -338,6 +341,7 @@
 		UpgradeMaxAcceptedLevel: 2
 		InitialDelay: 0
 		CloakDelay: 90
+		Palette: alpha-cloak
 	MustBeDestroyed:
 
 ^Tank:
@@ -422,6 +426,7 @@
 		UpgradeMaxAcceptedLevel: 2
 		InitialDelay: 0
 		CloakDelay: 90
+		Palette: alpha-cloak
 	MustBeDestroyed:
 
 ^Helicopter:
