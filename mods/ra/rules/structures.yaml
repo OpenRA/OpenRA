@@ -1143,6 +1143,7 @@ AFLD:
 		DisplayBeacon: true
 		BeaconPoster: pbmbicon
 		SquadSize: 3
+		SquadOffset: 1792,1792,0
 	ProductionBar:
 	SupportPowerChargeBar:
 	PrimaryBuilding:
