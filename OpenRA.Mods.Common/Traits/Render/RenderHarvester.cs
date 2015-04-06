@@ -17,6 +17,9 @@ namespace OpenRA.Mods.Common.Traits
 	class RenderHarvesterInfo : RenderUnitInfo, Requires<HarvesterInfo>
 	{
 		public readonly string[] ImagesByFullness = { "harv" };
+
+		public readonly string HarvestSequence = "harvest";
+
 		public override object Create(ActorInitializer init) { return new RenderHarvester(init, this); }
 	}
 
@@ -42,15 +45,15 @@ namespace OpenRA.Mods.Common.Traits
 			var desiredImage = info.ImagesByFullness[desiredState];
 
 			if (DefaultAnimation.Name != desiredImage)
-				DefaultAnimation.ChangeImage(desiredImage, "idle");
+				DefaultAnimation.ChangeImage(desiredImage, info.Sequence);
 
 			base.Tick(self);
 		}
 
 		public void Harvested(Actor self, ResourceType resource)
 		{
-			if (DefaultAnimation.CurrentSequence.Name != "harvest")
-				PlayCustomAnim(self, "harvest");
+			if (DefaultAnimation.CurrentSequence.Name != info.HarvestSequence)
+				PlayCustomAnim(self, info.HarvestSequence);
 		}
 
 		public void MovingToResources(Actor self, CPos targetCell, Activity next) { }

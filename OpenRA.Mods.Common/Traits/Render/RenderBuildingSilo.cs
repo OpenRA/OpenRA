@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Show a static frame instead of animating all of the fullness states
 			var anim = new Animation(init.World, image, () => 0);
-			anim.PlayFetchIndex("idle", () => 0);
+			anim.PlayFetchIndex(Sequence, () => 0);
 
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
@@ -31,17 +31,19 @@ namespace OpenRA.Mods.Common.Traits
 
 	class RenderBuildingSilo : RenderBuilding, INotifyBuildComplete, INotifyOwnerChanged
 	{
+		readonly RenderBuildingSiloInfo info;
 		PlayerResources playerResources;
 
 		public RenderBuildingSilo(ActorInitializer init, RenderBuildingSiloInfo info)
 			: base(init, info)
 		{
+			this.info = info;
 			playerResources = init.Self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
 		public override void BuildingComplete(Actor self)
 		{
-			var animation = (self.GetDamageState() >= DamageState.Heavy) ? "damaged-idle" : "idle";
+			var animation = RenderSprites.NormalizeSequence(DefaultAnimation, self.GetDamageState(), info.Sequence);
 
 			DefaultAnimation.PlayFetchIndex(animation,
 				() => playerResources.ResourceCapacity != 0
