@@ -7,7 +7,7 @@ and debugging support for several Lua engines
 [Lua 5.2](http://studio.zerobrane.com/doc-lua52-debugging),
 [Lua 5.3](http://studio.zerobrane.com/doc-lua53-debugging),
 [LuaJIT](http://studio.zerobrane.com/doc-luajit-debugging),
-[Löve 2D](http://notebook.kulchenko.com/zerobrane/love2d-debugging),
+[LÖVE](http://notebook.kulchenko.com/zerobrane/love2d-debugging),
 [Moai](http://notebook.kulchenko.com/zerobrane/moai-debugging-with-zerobrane-studio),
 [Gideros](http://notebook.kulchenko.com/zerobrane/gideros-debugging-with-zerobrane-studio-ide),
 [Corona](http://notebook.kulchenko.com/zerobrane/debugging-and-live-coding-with-corona-sdk-applications-and-zerobrane-studio),
@@ -36,7 +36,7 @@ for [Lua 5.1](http://studio.zerobrane.com/doc-lua-debugging),
 and [other Lua engines](http://studio.zerobrane.com/documentation#debugging).
 * [Live coding](http://studio.zerobrane.com/documentation#live_coding)
 with [Lua](http://notebook.kulchenko.com/zerobrane/live-coding-in-lua-bret-victor-style),
-[Löve 2D](http://notebook.kulchenko.com/zerobrane/live-coding-with-love),
+[LÖVE](http://notebook.kulchenko.com/zerobrane/live-coding-with-love),
 [Gideros](http://notebook.kulchenko.com/zerobrane/gideros-live-coding-with-zerobrane-studio-ide),
 [Moai](http://notebook.kulchenko.com/zerobrane/live-coding-with-moai-and-zerobrane-studio),
 [Corona SDK](http://notebook.kulchenko.com/zerobrane/debugging-and-live-coding-with-corona-sdk-applications-and-zerobrane-studio),
