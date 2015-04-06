@@ -56,7 +56,7 @@ GAP:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 110
-		Prerequisites: atek, ~!structures.france, ~structures.allies, ~techlevel.unrestricted
+		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
@@ -80,19 +80,6 @@ GAP:
 		Amount: -60
 	MustBeDestroyed:
 		RequiredForShortGame: false
-
-GAP.France:
-	Inherits: GAP
-	RenderBuilding:
-		Image: gap
-	Tooltip:
-		Name: Advanced Gap Generator
-	Buildable:
-		Prerequisites: atek, ~structures.france, ~techlevel.unrestricted
-	RevealsShroud:
-		Range: 10c0
-	CreatesShroud:
-		Range: 10c0
 
 SPEN:
 	Inherits: ^Building
