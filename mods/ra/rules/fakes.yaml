@@ -150,6 +150,7 @@ PDOF:
 		BuildPaletteOrder: 950
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
+		BuildLimit: 1
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -173,6 +174,7 @@ MSLF:
 		BuildPaletteOrder: 960
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
+		BuildLimit: 1
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
