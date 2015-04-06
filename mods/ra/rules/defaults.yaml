@@ -378,6 +378,31 @@
 	FrozenUnderFog:
 	ScriptTriggers:
 
+^Gate:
+	Inherits: ^Building
+	Valued:
+		Cost: 100
+	Health:
+		HP: 100
+	Armor:
+		Type: Concrete
+	LineBuildNode:
+		Types: concrete
+	-RenderBuilding:
+	RenderSimple:
+		Palette: terrain
+		Sequence: closed
+	-FrozenUnderFog:
+	-Selectable:
+	-Building:
+	-WithMakeAnimation:
+	-TargetableBuilding:
+	-WithBuildingExplosion:
+	-Sellable:
+	Gate:
+		OpeningSound: cashturn.aud
+		ClosingSound: cashturn.aud
+
 ^TechBuilding:
 	Inherits: ^Building
 	-RepairableBuilding:

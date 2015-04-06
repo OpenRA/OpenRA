@@ -581,6 +581,42 @@ brik:
 		Length: 16
 	icon: brikicon
 
+vgate:
+	icon: clock
+		Start: 0
+	open:
+		Start: 0
+		ZOffset: -1c511
+	closing:
+		Start: 0
+		Length: 6
+	closed:
+		Start: 6
+
+agate:
+	icon: clock
+		Start: 0
+	open:
+		Start: 0
+		ZOffset: -1c511
+	closing:
+		Start: 0
+		Length: 6
+	closed:
+		Start: 6
+
+sgate:
+	icon: clock
+		Start: 0
+	open:
+		Start: 0
+		ZOffset: -1c511
+	closing:
+		Start: 0
+		Length: 6
+	closed:
+		Start: 6
+
 sbag:
 	idle:
 		Length: 16
