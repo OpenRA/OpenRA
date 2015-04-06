@@ -42,7 +42,7 @@ MSLO:
 	DisabledOverlay:
 	SupportPowerChargeBar:
 	Power:
-		Amount: -100
+		Amount: -150
 	MustBeDestroyed:
 		RequiredForShortGame: false
 
