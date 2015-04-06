@@ -20,6 +20,16 @@ World:
 		Tileset: TEMPERAT
 		Filename: unittem.pal
 		ShadowIndex: 1
+	PaletteFromFile@player-sno-cloak:
+		Name: alpha-cloak
+		Tileset: SNOW
+		Filename: unitsno.pal
+		ShadowIndex: 1
+	PaletteFromFile@player-tem-cloak:
+		Name: alpha-cloak
+		Tileset: TEMPERAT
+		Filename: unittem.pal
+		ShadowIndex: 1
 	PaletteFromCurrentTileset:
 		Name: terrain
 		ShadowIndex: 1
@@ -224,4 +234,7 @@ World:
 	ScreenShaker:
 	RadarPings:
 	StartGameNotification:
+	AlphaPaletteEffect:
+		Palettes: alpha-cloak
+		Alpha: 140
 

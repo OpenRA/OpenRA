@@ -331,6 +331,7 @@
     <Compile Include="Traits\Parachutable.cs" />
     <Compile Include="Traits\ParaDrop.cs" />
     <Compile Include="Traits\Passenger.cs" />
+    <Compile Include="Traits\PaletteEffects\AlphaPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\CloakPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\LightPaletteRotator.cs" />
     <Compile Include="Traits\PaletteEffects\MenuPaletteEffect.cs" />
