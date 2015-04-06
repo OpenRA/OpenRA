@@ -169,6 +169,29 @@ GAPILE:
 	Power:
 		Amount: -20
 
+GAPAVE:
+	Tooltip:
+		Name: Pavement
+	Valued:
+		Cost: 75
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 30
+		Prerequisites: barracks
+	Building:
+		Adjacent: 4
+		TerrainTypes: Clear, DirtRoad, Rough
+		BuildSounds: place2.aud
+		AllowInvalidPlacement: true
+		Footprint: xx xx
+		Dimensions: 2,2
+	KillsSelf:
+		RemoveInstead: true
+	LaysTerrain:
+		Template: 588 # TODO: use LAT
+		TerrainTypes: Clear, DirtRoad, Rough
+	RenderSprites:
+
 PROC:
 	Inherits: ^Building
 	Valued:
