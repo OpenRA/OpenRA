@@ -3,7 +3,7 @@ FACF:
 	Buildable:
 		BuildPaletteOrder: 940
 		Queue: Defense
-		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
+		Prerequisites: ~structures.france, ~techlevel.medium
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Construction Yard
@@ -24,7 +24,7 @@ WEAF:
 	Inherits: ^FakeBuilding
 	Buildable:
 		BuildPaletteOrder: 920
-		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
+		Prerequisites: ~structures.france, ~techlevel.medium
 		Queue: Defense
 	Tooltip:
 		Icon: fake-icon
@@ -48,7 +48,7 @@ SYRF:
 	Buildable:
 		BuildPaletteOrder: 900
 		Queue: Defense
-		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
+		Prerequisites: ~structures.france, ~techlevel.medium
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Shipyard
@@ -105,7 +105,7 @@ DOMF:
 	Buildable:
 		BuildPaletteOrder: 930
 		Queue: Defense
-		Prerequisites: ~structures.alliesvanilla, ~techlevel.medium
+		Prerequisites: ~structures.france, ~techlevel.medium
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -127,7 +127,7 @@ ATEF:
 	Buildable:
 		BuildPaletteOrder: 940
 		Queue: Defense
-		Prerequisites: ~structures.alliesvanilla, ~techlevel.unrestricted
+		Prerequisites: ~structures.france, ~techlevel.unrestricted
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -149,7 +149,7 @@ PDOF:
 	Buildable:
 		BuildPaletteOrder: 950
 		Queue: Defense
-		Prerequisites: ~structures.alliesvanilla, ~techlevel.unrestricted
+		Prerequisites: ~structures.france, ~techlevel.unrestricted
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -172,7 +172,7 @@ MSLF:
 	Buildable:
 		BuildPaletteOrder: 960
 		Queue: Defense
-		Prerequisites: ~structures.alliesvanilla, ~techlevel.unrestricted
+		Prerequisites: ~structures.france, ~techlevel.unrestricted
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
