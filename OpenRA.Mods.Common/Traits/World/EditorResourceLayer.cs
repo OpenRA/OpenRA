@@ -98,26 +98,33 @@ namespace OpenRA.Mods.Common.Traits
 			return t.Variants.Keys.Random(Game.CosmeticRandom);
 		}
 
+		public int ResourceDensityAt(CPos c)
+		{
+			// Set density based on the number of neighboring resources
+			var adjacent = 0;
+			var type = Tiles[c].Type;
+			for (var u = -1; u < 2; u++)
+				for (var v = -1; v < 2; v++)
+					if (Map.MapResources.Value[c + new CVec(u, v)].Type == type.Info.ResourceType)
+						adjacent++;
+
+			return Math.Max(int2.Lerp(0, type.Info.MaxDensity, adjacent, 9), 1);
+		}
+
 		public virtual CellContents UpdateDirtyTile(CPos c)
 		{
 			var t = Tiles[c];
+			var type = t.Type;
 
 			// Empty tile
-			if (t.Type == null)
+			if (type == null)
 			{
 				t.Sprite = null;
 				return t;
 			}
 
 			// Set density based on the number of neighboring resources
-			var adjacent = 0;
-			var type = t.Type;
-			for (var u = -1; u < 2; u++)
-				for (var v = -1; v < 2; v++)
-					if (Map.MapResources.Value[c + new CVec(u, v)].Type == type.Info.ResourceType)
-						adjacent++;
-
-			t.Density = Math.Max(int2.Lerp(0, type.Info.MaxDensity, adjacent, 9), 1);
+			t.Density = ResourceDensityAt(c);
 
 			var sprites = type.Variants[t.Variant];
 			var frame = int2.Lerp(0, sprites.Length - 1, t.Density - 1, type.Info.MaxDensity);
