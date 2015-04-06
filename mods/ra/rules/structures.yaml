@@ -1134,7 +1134,7 @@ AFLD:
 		Icon: parabombs
 		ChargeTime: 270
 		Description: Parabombs
-		LongDesc: A Badger drops a load of parachuted\nbombs on your target.
+		LongDesc: A squad of Badgers drops parachuted\nbombs on your target.
 		SelectTargetSound: slcttgt1.aud
 		CameraActor: camera
 		CameraRemoveDelay: 150
@@ -1142,6 +1142,7 @@ AFLD:
 		QuantizedFacings: 8
 		DisplayBeacon: true
 		BeaconPoster: pbmbicon
+		SquadSize: 3
 	ProductionBar:
 	SupportPowerChargeBar:
 	PrimaryBuilding:
