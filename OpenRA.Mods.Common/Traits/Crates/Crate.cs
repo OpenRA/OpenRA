@@ -28,6 +28,14 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string CrushClass = "crate";
 
 		public object Create(ActorInitializer init) { return new Crate(init, this); }
+
+		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
+		{
+			var occupied = new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } };
+			return new ReadOnlyDictionary<CPos, SubCell>(occupied);
+		}
+
+		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
 
 	class Crate : ITick, IPositionable, ICrushable, ISync, INotifyParachuteLanded, INotifyAddedToWorld, INotifyRemovedFromWorld

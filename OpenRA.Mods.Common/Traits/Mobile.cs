@@ -295,6 +295,13 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public int GetInitialFacing() { return InitialFacing; }
+
+		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
+		{
+			return new ReadOnlyDictionary<CPos, SubCell>(new Dictionary<CPos, SubCell>() { { location, subCell } });
+		}
+
+		bool IOccupySpaceInfo.SharesCell { get { return SharesCell; } }
 	}
 
 	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
