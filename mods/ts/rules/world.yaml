@@ -1,15 +1,8 @@
-World:
+^BaseWorld:
 	Inherits: ^Palettes
-	ChatCommands:
-	DevCommands:
-	PlayerCommands:
-	HelpCommand:
 	ScreenMap:
 	ActorMap:
 	LoadWidgetAtGameStart:
-	BuildingInfluence:
-	ProductionQueueFromSelection:
-		ProductionPaletteWidget: PRODUCTION_PALETTE
 	ShroudRenderer:
 		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
 		UseExtendedIndex: true
@@ -25,6 +18,41 @@ World:
 	Country@1:
 		Name: Nod
 		Race: nod
+	ResourceType@Tiberium:
+		ResourceType: 1
+		Palette: greentiberium
+		EditorSprite: waypoint # TODO: editor can't handle the real ones
+		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
+		MaxDensity: 12
+		ValuePerUnit: 50
+		Name: Tiberium
+		PipColor: Green
+		AllowedTerrainTypes: Clear, Rough, DirtRoad
+		AllowUnderActors: true
+		TerrainType: Tiberium
+	ResourceType@BlueTiberium:
+		ResourceType: 2
+		Palette: bluetiberium
+		EditorSprite: waypoint # TODO: editor can't handle the real ones
+		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
+		MaxDensity: 12
+		ValuePerUnit: 100
+		Name: BlueTiberium
+		PipColor: Blue
+		AllowedTerrainTypes: Clear, Rough, DirtRoad
+		AllowUnderActors: true
+		TerrainType: BlueTiberium
+	TerrainGeometryOverlay:
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	PlayerCommands:
+	HelpCommand:
+	BuildingInfluence:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
 	DomainIndex:
 	SmudgeLayer@SMALLSCORCH:
 		Type: SmallScorch
@@ -55,32 +83,7 @@ World:
 		Sequence: largecraters
 	ResourceLayer:
 	ResourceClaimLayer:
-	ResourceType@Tiberium:
-		ResourceType: 1
-		Palette: greentiberium
-		EditorSprite: waypoint # TODO: editor can't handle the real ones
-		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
-		MaxDensity: 12
-		ValuePerUnit: 50
-		Name: Tiberium
-		PipColor: Green
-		AllowedTerrainTypes: Clear, Rough, DirtRoad
-		AllowUnderActors: true
-		TerrainType: Tiberium
-	ResourceType@BlueTiberium:
-		ResourceType: 2
-		Palette: bluetiberium
-		EditorSprite: waypoint # TODO: editor can't handle the real ones
-		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
-		MaxDensity: 12
-		ValuePerUnit: 100
-		Name: BlueTiberium
-		PipColor: Blue
-		AllowedTerrainTypes: Clear, Rough, DirtRoad
-		AllowUnderActors: true
-		TerrainType: BlueTiberium
 	PathfinderDebugOverlay:
-	TerrainGeometryOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartUnits@MCV:
@@ -153,3 +156,7 @@ World:
 	ObjectivesPanel:
 		PanelName: SKIRMISH_STATS
 
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorResourceLayer:

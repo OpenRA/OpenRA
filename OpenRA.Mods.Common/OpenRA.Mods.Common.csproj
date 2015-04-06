@@ -627,6 +627,9 @@
     <Compile Include="Traits\Plug.cs" />
     <Compile Include="Widgets\Logic\Ingame\MenuButtonsChromeLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LoadIngamePerfLogic.cs" />
+    <Compile Include="Traits\World\EditorActorLayer.cs" />
+    <Compile Include="Traits\World\EditorActorPreview.cs" />
+    <Compile Include="Traits\World\EditorResourceLayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

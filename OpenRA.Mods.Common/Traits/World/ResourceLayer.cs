@@ -248,6 +248,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public struct CellContents
 		{
+			public static readonly CellContents Empty = new CellContents();
 			public ResourceType Type;
 			public int Density;
 			public string Variant;
