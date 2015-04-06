@@ -1132,7 +1132,7 @@ AFLD:
 		OrderName: UkraineParabombs
 		Prerequisites: aircraft.ukraine
 		Icon: parabombs
-		ChargeTime: 270
+		ChargeTime: 360
 		Description: Parabombs
 		LongDesc: A squad of Badgers drops parachuted\nbombs on your target.
 		SelectTargetSound: slcttgt1.aud
