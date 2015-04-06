@@ -95,7 +95,7 @@ World:
 		Name: Allies
 		Race: allies
 		Side: Allies
-		Description: Allies: Deception
+		Selectable: False
 	Country@1:
 		Name: England
 		Race: england
@@ -115,7 +115,7 @@ World:
 		Name: Soviet
 		Race: soviet
 		Side: Soviet
-		Description: Soviet: Infantry\nSpecial Ability: Paradrop
+		Selectable: False
 	Country@5:
 		Name: Russia
 		Race: russia
@@ -135,13 +135,13 @@ World:
 	Country@randomallies:
 		Name: Allied
 		Race: RandomAllies
-		RandomRaceMembers: allies, england, france, germany
+		RandomRaceMembers: england, france, germany
 		Side: Random
 		Description: A random Allied country.
 	Country@randomsoviet:
 		Name: Soviet
 		Race: RandomSoviet
-		RandomRaceMembers: soviet, russia, ukraine
+		RandomRaceMembers: russia, ukraine
 		Side: Random
 		Description: A random Soviet country.
 	DomainIndex:
