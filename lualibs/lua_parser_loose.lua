@@ -9,10 +9,6 @@ local PARSE = {}
 local unpack = table.unpack or unpack
 local LEX = require 'lua_lexer_loose'
 
-local function warn(message, position)
-  io.stderr:write('WARNING: ', tostring(position), ': ', message, '\n')
-end
-
 --[[
  Loose parser.
 
@@ -47,11 +43,7 @@ function PARSE.parse_scope(lx, f, level)
   end
   local function scope_end(opt, lineinfo)
     local scope = #scopes
-    if scope <= 1 then
-      warn("'end' without opening block", lineinfo)
-    else
-      table.remove(scopes)
-    end
+    if scope > 1 then table.remove(scopes) end
     local inside_local = false
     for scope = scope-1, 1, -1 do
       if scopes[scope].inside_local then inside_local = true; break end
@@ -265,11 +257,7 @@ function PARSE.parse_scope_resolve(lx, f, vars)
       vars = newscope(vars, name, lineinfo)
     elseif op == 'EndScope' then
       local mt = getmetatable(vars)
-      if mt == nil then
-        warn("'end' without opening block.", lineinfo)
-      else
-        vars = mt.__index
-      end
+      if mt ~= nil then vars = mt.__index end
     elseif op == 'Id'
     or op == 'String' or op == 'FunctionCall' or op == 'Function' then
       -- Just make callback
