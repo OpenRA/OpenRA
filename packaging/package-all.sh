@@ -95,7 +95,7 @@ fi
 
 pushd osx
 echo "Zipping OS X package"
-bash buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/osx" "$OUTPUTDIR"
+bash buildpackage.sh "$TAG" "$BUILTDIR" "$OUTPUTDIR"
 if [ $? -ne 0 ]; then
     echo "OS X package build failed."
 fi
