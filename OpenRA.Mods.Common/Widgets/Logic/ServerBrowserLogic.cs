@@ -336,22 +336,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (game.State == (int)ServerState.GameStarted)
 			{
+				var label = "";
 				try
 				{
 					var runTime = DateTime.Now - System.DateTime.Parse(game.Started);
-					return "In progress for {0} minute{1}".F(runTime.Minutes, runTime.Minutes > 1 ? "s" : "");
+					label = "In progress for {0} minute{1}".F(runTime.Minutes, runTime.Minutes > 1 ? "s" : "");
 				}
 				catch (Exception)
 				{
-					return "In progress";
+					label = "In progress";
 				}
+
+				return game.Protected ? label + " (Password protected)" : label;
 			}
 
-			if (game.Protected)
-				return "Password protected";
-
 			if (game.State == (int)ServerState.WaitingPlayers)
-				return "Waiting for players";
+			{
+				var label = "Waiting for players";
+				return game.Protected ? label + " (Password protected)" : label;
+			}
 
 			if (game.State == (int)ServerState.ShuttingDown)
 				return "Server shutting down";
