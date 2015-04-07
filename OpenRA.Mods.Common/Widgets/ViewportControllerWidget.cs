@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos))
-				.Where(a => a.TooltipInfo != null && a.IsValid)
+				.Where(a => a.TooltipInfo != null && a.IsValid && !world.RenderPlayer.Shroud.IsUnderDisruptionField(a.OccCells))
 				.WithHighestSelectionPriority();
 
 			if (frozen != null)

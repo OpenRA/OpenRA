@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
@@ -25,6 +26,7 @@ namespace OpenRA.Traits
 	public class FrozenActor
 	{
 		public readonly MPos[] Footprint;
+		public readonly CPos[] OccCells;
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
 		readonly Actor actor;
@@ -37,9 +39,7 @@ namespace OpenRA.Traits
 
 		public int HP;
 		public DamageState DamageState;
-
 		public bool Visible;
-
 		public bool IsRendering { get; private set; }
 
 		public FrozenActor(Actor self, MPos[] footprint, CellRegion footprintRegion, Shroud shroud)
@@ -48,6 +48,7 @@ namespace OpenRA.Traits
 			isVisibleTest = shroud.IsVisibleTest(footprintRegion);
 
 			Footprint = footprint;
+			OccCells = Shroud.GetVisOrigins(actor).ToArray();
 			CenterPosition = self.CenterPosition;
 			Bounds = self.Bounds;
 
@@ -64,6 +65,8 @@ namespace OpenRA.Traits
 		int flashTicks;
 		IRenderable[] renderables = NoRenderables;
 		bool needRenderables;
+		DamageState DamageStateCached;
+		Player OwnerCached;
 
 		public void Tick()
 		{
@@ -98,23 +101,22 @@ namespace OpenRA.Traits
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (needRenderables)
+			if (needRenderables && (renderables == NoRenderables || DamageStateCached != DamageState || OwnerCached != Owner))
 			{
-				needRenderables = false;
-				if (!actor.Destroyed)
-				{
-					IsRendering = true;
-					renderables = actor.Render(wr).ToArray();
-					IsRendering = false;
-				}
+				IsRendering = true;
+				var td = new TypeDictionary() { new HealthInit((float)(HP / 1000.0)) };
+				var previewInit = new ActorPreviewInitializer(Info, Owner, wr, td);
+				var preview = Info.Traits.WithInterface<IRenderActorPreviewInfo>().SelectMany(rpi => rpi.RenderPreview(previewInit));
+				renderables = preview.SelectMany(p => p.Render(wr, CenterPosition)).ToArray();
+				IsRendering = false;
+
+				DamageStateCached = DamageState;
+				OwnerCached = Owner;
 			}
 
 			if (flashTicks > 0 && flashTicks % 2 == 0)
-			{
-				var highlight = wr.Palette("highlight");
 				return renderables.Concat(renderables.Where(r => !r.IsDecoration)
-					.Select(r => r.WithPalette(highlight)));
-			}
+					.Select(r => r.WithPalette(wr.Palette("highlight"))));
 
 			return renderables;
 		}
@@ -179,7 +181,7 @@ namespace OpenRA.Traits
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			return world.ScreenMap.FrozenActorsInBox(owner, wr.Viewport.TopLeft, wr.Viewport.BottomRight)
-				.Where(f => f.Visible)
+				.Where(f => f.Visible && !owner.Shroud.IsUnderDisruptionField(f.OccCells))
 				.SelectMany(ff => ff.Render(wr));
 		}
 

@@ -30,15 +30,17 @@ namespace OpenRA.Traits
 		readonly Map map;
 
 		readonly CellLayer<short> visibleCount;
-		readonly CellLayer<short> generatedShroudCount;
 		readonly CellLayer<bool> explored;
+		readonly CellLayer<short> generatedDisruptionCount;
+		readonly CellLayer<short> generatedShroudCount;
 
 		readonly Lazy<IFogVisibilityModifier[]> fogVisibilities;
 
 		// Cache of visibility that was added, so no matter what crazy trait code does, it
 		// can't make us invalid.
 		readonly Dictionary<Actor, CPos[]> visibility = new Dictionary<Actor, CPos[]>();
-		readonly Dictionary<Actor, CPos[]> generation = new Dictionary<Actor, CPos[]>();
+		readonly Dictionary<Actor, CPos[]> disruptionGenerators = new Dictionary<Actor, CPos[]>();
+		readonly Dictionary<Actor, CPos[]> shroudGenerators = new Dictionary<Actor, CPos[]>();
 
 		public int Hash { get; private set; }
 
@@ -55,14 +57,24 @@ namespace OpenRA.Traits
 			map = self.World.Map;
 
 			visibleCount = new CellLayer<short>(map);
-			generatedShroudCount = new CellLayer<short>(map);
 			explored = new CellLayer<bool>(map);
+			generatedDisruptionCount = new CellLayer<short>(map);
+			generatedShroudCount = new CellLayer<short>(map);
 
 			self.World.ActorAdded += a => { CPos[] visible = null; AddVisibility(a, ref visible); };
 			self.World.ActorRemoved += RemoveVisibility;
 
-			self.World.ActorAdded += a => { CPos[] shrouded = null; AddShroudGeneration(a, ref shrouded); };
-			self.World.ActorRemoved += RemoveShroudGeneration;
+			if (self.World.LobbyInfo.GlobalSettings.Fog)
+			{
+				self.World.ActorAdded += a => { CPos[] underDisruptionField = null; AddDisruptionGenerator(a, ref underDisruptionField); };
+				self.World.ActorRemoved += RemoveDisruptionGenerator;
+			}
+
+			if (self.World.LobbyInfo.GlobalSettings.Shroud)
+			{
+				self.World.ActorAdded += a => { CPos[] underShroud = null; AddShroudGenerator(a, ref underShroud); };
+				self.World.ActorRemoved += RemoveShroudGenerator;
+			}
 
 			fogVisibilities = Exts.Lazy(() => self.TraitsImplementing<IFogVisibilityModifier>().ToArray());
 
@@ -91,13 +103,6 @@ namespace OpenRA.Traits
 			CPos[] visbility = null;
 			foreach (var shroud in shrouds)
 				shroud.UpdateVisibility(actor, ref visbility);
-		}
-
-		public static void UpdateShroudGeneration(IEnumerable<Shroud> shrouds, Actor actor)
-		{
-			CPos[] shrouded = null;
-			foreach (var shroud in shrouds)
-				shroud.UpdateShroudGeneration(actor, ref shrouded);
 		}
 
 		static CPos[] FindVisibleTiles(Actor actor, WRange range)
@@ -163,42 +168,105 @@ namespace OpenRA.Traits
 			AddVisibility(a, ref visible);
 		}
 
-		void AddShroudGeneration(Actor a, ref CPos[] shrouded)
+		void AddDisruptionGenerator(Actor a, ref CPos[] underDisruption)
+		{
+			var cd = a.TraitOrDefault<CreatesDisruptionField>();
+			if (cd == null || a.Owner.IsAlliedWith(self.Owner) || cd.Range == WRange.Zero)
+				return;
+
+			// Lazily generate the disrupted tiles, allowing the caller to re-use them if desired.
+			underDisruption = underDisruption ?? FindVisibleTiles(a, cd.Range);
+
+			foreach (var c in underDisruption)
+				generatedDisruptionCount[c]++;
+
+			if (disruptionGenerators.ContainsKey(a))
+				throw new InvalidOperationException("Attempting to add duplicate disruption generator");
+
+			disruptionGenerators[a] = underDisruption;
+			Invalidate(underDisruption);
+		}
+
+		void RemoveDisruptionGenerator(Actor a)
+		{
+			CPos[] underDisruption;
+			if (!disruptionGenerators.TryGetValue(a, out underDisruption))
+				return;
+
+			foreach (var c in underDisruption)
+				generatedDisruptionCount[c]--;
+
+			disruptionGenerators.Remove(a);
+			Invalidate(underDisruption);
+		}
+
+		public static void UpdateDisruptionGenerator(IEnumerable<Shroud> shrouds, Actor actor)
+		{
+			CPos[] underDisruption = null;
+			foreach (var shroud in shrouds)
+				shroud.UpdateDisruptionGenerator(actor, ref underDisruption);
+		}
+
+		void UpdateDisruptionGenerator(Actor a, ref CPos[] underDisruption)
+		{
+			RemoveDisruptionGenerator(a);
+			AddDisruptionGenerator(a, ref underDisruption);
+		}
+
+		void AddShroudGenerator(Actor a, ref CPos[] underShroud)
 		{
 			var cs = a.TraitOrDefault<CreatesShroud>();
-			if (cs == null || a.Owner.IsAlliedWith(self.Owner) || cs.Range == WRange.Zero)
+			if (cs == null || a.Owner.IsAlliedWith(self.Owner) || cs.Range == WRange.Zero
+				|| (self.World.LobbyInfo.GlobalSettings.Fog && a.HasTrait<CreatesDisruptionField>()))
 				return;
 
 			// Lazily generate the shrouded tiles, allowing the caller to re-use them if desired.
-			shrouded = shrouded ?? FindVisibleTiles(a, cs.Range);
+			underShroud = underShroud ?? FindVisibleTiles(a, cs.Range);
 
-			foreach (var c in shrouded)
+			foreach (var c in underShroud)
 				generatedShroudCount[c]++;
 
-			if (generation.ContainsKey(a))
-				throw new InvalidOperationException("Attempting to add duplicate shroud generation");
+			if (shroudGenerators.ContainsKey(a))
+				throw new InvalidOperationException("Attempting to add duplicate shroud generator");
 
-			generation[a] = shrouded;
-			Invalidate(shrouded);
+			shroudGenerators[a] = underShroud;
+			Invalidate(underShroud);
 		}
 
-		void RemoveShroudGeneration(Actor a)
+		void RemoveShroudGenerator(Actor a)
 		{
-			CPos[] shrouded;
-			if (!generation.TryGetValue(a, out shrouded))
+			CPos[] underShroud;
+			if (!shroudGenerators.TryGetValue(a, out underShroud))
 				return;
 
-			foreach (var c in shrouded)
+			foreach (var c in underShroud)
 				generatedShroudCount[c]--;
 
-			generation.Remove(a);
-			Invalidate(shrouded);
+			shroudGenerators.Remove(a);
+			Invalidate(underShroud);
 		}
 
-		void UpdateShroudGeneration(Actor a, ref CPos[] shrouded)
+		public static void UpdateShroudGenerator(IEnumerable<Shroud> shrouds, Actor actor)
 		{
-			RemoveShroudGeneration(a);
-			AddShroudGeneration(a, ref shrouded);
+			CPos[] underShroud = null;
+			foreach (var shroud in shrouds)
+				shroud.UpdateShroudGenerator(actor, ref underShroud);
+		}
+
+		void UpdateShroudGenerator(Actor a, ref CPos[] underShroud)
+		{
+			RemoveShroudGenerator(a);
+			AddShroudGenerator(a, ref underShroud);
+		}
+
+		public bool IsUnderDisruptionField(MPos[] fp)
+		{
+			return fp.All(c => generatedDisruptionCount[c] > 0);
+		}
+
+		public bool IsUnderDisruptionField(CPos[] fp)
+		{
+			return fp.All(c => generatedDisruptionCount[c] > 0);
 		}
 
 		public void UpdatePlayerStance(World w, Player player, Stance oldStance, Stance newStance)
@@ -210,8 +278,10 @@ namespace OpenRA.Traits
 			{
 				CPos[] visible = null;
 				UpdateVisibility(a, ref visible);
-				CPos[] shrouded = null;
-				UpdateShroudGeneration(a, ref shrouded);
+				CPos[] underDisruptionField = null;
+				UpdateDisruptionGenerator(a, ref underDisruptionField);
+				CPos[] underShroud = null;
+				UpdateShroudGenerator(a, ref underShroud);
 			}
 		}
 
@@ -383,13 +453,25 @@ namespace OpenRA.Traits
 
 		public bool IsTargetable(Actor a)
 		{
+			IEnumerable<CPos> vis = GetVisOrigins(a);
+			bool concealed = vis.All(c => generatedDisruptionCount[c] > 0 || generatedShroudCount[c] > 0);
+			if (concealed)
+			{
+				if (FogEnabled)
+					return vis.Any(IsVisible);
+				else if (ShroudEnabled)
+					return vis.Any(c => visibleCount[c.ToMPos(map)] > 0);
+				else
+					return true;
+			}
+
 			if (HasFogVisibility())
 				return true;
 
 			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, self.Owner)))
 				return false;
 
-			return GetVisOrigins(a).Any(IsVisible);
+			return vis.Any(IsVisible);
 		}
 
 		public bool HasFogVisibility()

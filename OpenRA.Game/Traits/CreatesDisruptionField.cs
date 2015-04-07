@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -12,31 +12,31 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	[Desc("Generates shroud, prevents auto-target. Overridden by CreatesDisruptionField if fog is enabled.")]
-	public class CreatesShroudInfo : ITraitInfo
+	[Desc("Removes frozen actors and satellite icons from fog, prevents auto-target. Requires fog enabled.")]
+	public class CreatesDisruptionFieldInfo : ITraitInfo
 	{
 		public readonly WRange Range = WRange.Zero;
 
-		public object Create(ActorInitializer init) { return new CreatesShroud(init.Self, this); }
+		public object Create(ActorInitializer init) { return new CreatesDisruptionField(init.Self, this); }
 	}
 
-	public class CreatesShroud : ITick, ISync
+	public class CreatesDisruptionField : ITick, ISync
 	{
 		public WRange Range { get { return cachedDisabled ? WRange.Zero : info.Range; } }
-		readonly CreatesShroudInfo info;
-		readonly bool lobbyShroudDisabled;
+		readonly CreatesDisruptionFieldInfo info;
+		readonly bool lobbyFogDisabled;
 		[Sync] CPos cachedLocation;
 		[Sync] bool cachedDisabled;
 
-		public CreatesShroud(Actor self, CreatesShroudInfo info)
+		public CreatesDisruptionField(Actor self, CreatesDisruptionFieldInfo info)
 		{
 			this.info = info;
-			lobbyShroudDisabled = !self.World.LobbyInfo.GlobalSettings.Shroud;
+			lobbyFogDisabled = !self.World.LobbyInfo.GlobalSettings.Fog;
 		}
 
 		public void Tick(Actor self)
 		{
-			if (lobbyShroudDisabled)
+			if (lobbyFogDisabled)
 				return;
 
 			var disabled = self.IsDisabled();
@@ -44,7 +44,7 @@ namespace OpenRA.Traits
 			{
 				cachedLocation = self.Location;
 				cachedDisabled = disabled;
-				Shroud.UpdateShroudGenerator(self.World.Players.Select(p => p.Shroud), self);
+				Shroud.UpdateDisruptionGenerator(self.World.Players.Select(p => p.Shroud), self);
 			}
 		}
 	}

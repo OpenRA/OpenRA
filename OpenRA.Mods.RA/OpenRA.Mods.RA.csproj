@@ -93,6 +93,7 @@
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\PaletteEffects\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\PortableChrono.cs" />
+    <Compile Include="Traits\Render\RenderDisruptionCircle.cs" />
     <Compile Include="Traits\Render\RenderJammerCircle.cs" />
     <Compile Include="Traits\Render\RenderLandingCraft.cs" />
     <Compile Include="Traits\Render\RenderShroudCircle.cs" />
