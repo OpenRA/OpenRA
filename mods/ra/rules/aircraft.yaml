@@ -114,7 +114,9 @@ MIG:
 		Ammo: 8
 	ReturnOnIdle:
 	Selectable:
-		Bounds: 40,29,0,1
+		Bounds: 36,28,0,2
+	SelectionDecorations:
+		VisualBounds: 40,29,0,1
 	Contrail@1:
 		Offset: -598,-683,0
 	Contrail@2:
@@ -173,8 +175,8 @@ YAK:
 		PipCount: 6
 		ReloadTicks: 11
 	ReturnOnIdle:
-	Selectable:
-		Bounds: 30,28,0,2
+	SelectionDecorations:
+		VisualBounds: 30,28,0,2
 	WithMuzzleFlash:
 	Contrail:
 		Offset: -853,0,0
@@ -269,8 +271,8 @@ HELI:
 		Offset: 0,0,85
 	AmmoPool:
 		Ammo: 8
-	Selectable:
-		Bounds: 36,28,0,0
+	SelectionDecorations:
+		VisualBounds: 36,28,0,0
 	LeavesHusk:
 		HuskActor: HELI.Husk
 	SmokeTrailWhenDamaged:
@@ -322,8 +324,8 @@ HIND:
 		Ammo: 24
 		PipCount: 6
 		ReloadTicks: 8
-	Selectable:
-		Bounds: 38,32,0,0
+	SelectionDecorations:
+		VisualBounds: 38,32,0,0
 	WithMuzzleFlash:
 	LeavesHusk:
 		HuskActor: HIND.Husk

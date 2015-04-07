@@ -35,8 +35,8 @@ SS:
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
-	Selectable:
-		Bounds: 38,38
+	SelectionDecorations:
+		VisualBounds: 38,38
 	Chronoshiftable:
 	RepairableNear:
 	AutoTarget:
@@ -89,8 +89,8 @@ MSUB:
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
-	Selectable:
-		Bounds: 44,44
+	SelectionDecorations:
+		VisualBounds: 44,44
 	Chronoshiftable:
 	RepairableNear:
 	AutoTarget:
@@ -145,6 +145,8 @@ DD:
 	AttackTurreted:
 	Selectable:
 		Bounds: 38,38
+	SelectionDecorations:
+		VisualBounds: 38,38
 	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
@@ -208,6 +210,8 @@ CA:
 	WithMuzzleFlash:
 	Selectable:
 		Bounds: 44,44
+	SelectionDecorations:
+		VisualBounds: 44,44
 	WithFacingSpriteBody:
 	WithTurret@PRIMARY:
 		Turret: primary
@@ -242,6 +246,8 @@ LST:
 		Speed: 113
 	RevealsShroud:
 		Range: 6c0
+	SelectionDecorations:
+		VisualBounds: 36,36
 	RenderLandingCraft:
 		OpenTerrainTypes: Clear, Rough, Road, Ore, Gems, Beach
 	Cargo:
@@ -290,6 +296,8 @@ PT:
 	WithMuzzleFlash:
 	Selectable:
 		Bounds: 32,32
+	SelectionDecorations:
+		VisualBounds: 32,32
 	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:

@@ -61,6 +61,10 @@ GAP:
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
+	Selectable:
+		Bounds: 24,28,0,12
+	SelectionDecorations:
+		VisualBounds: 24,40,0,0
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
@@ -269,7 +273,9 @@ IRON:
 	CanPowerDown:
 	DisabledOverlay:
 	Selectable:
-		Bounds: 50,50,0,-12
+		Bounds: 48,28,0,2
+	SelectionDecorations:
+		VisualBounds: 50,50,0,-12
 	Health:
 		HP: 1000
 	Armor:
@@ -380,6 +386,10 @@ TSLA:
 		Footprint: _ x
 		Dimensions: 1,2
 	RequiresPower:
+	Selectable:
+		Bounds: 24,24,0,16
+	SelectionDecorations:
+		VisualBounds: 24,36,0,4
 	CanPowerDown:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -424,6 +434,10 @@ AGUN:
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
+	Selectable:
+		Bounds: 24,28,0,16
+	SelectionDecorations:
+		VisualBounds: 24,36,0,12
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
@@ -929,6 +943,10 @@ PROC:
 	Building:
 		Footprint: _x_ xxx x==
 		Dimensions: 3,3
+	Selectable:
+		Bounds: 72,50,0,12
+	SelectionDecorations:
+		VisualBounds: 72,70,0,-2
 	TargetableBuilding:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	Health:
@@ -1220,6 +1238,10 @@ APWR:
 	Building:
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
+	Selectable:
+		Bounds: 72,48,0,12
+	SelectionDecorations:
+		VisualBounds: 72,64,0,-2
 	Health:
 		HP: 700
 	Armor:
@@ -1447,6 +1469,10 @@ FIX:
 	Building:
 		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
+	Selectable:
+		Bounds: 68,34,0,3
+	SelectionDecorations:
+		VisualBounds: 72,48
 	Health:
 		HP: 800
 	Armor:

@@ -58,6 +58,7 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable:
+		Bounds: 24, 24
 	TargetableUnit:
 		TargetTypes: Ground, Repair, Vehicle
 	Repairable:
@@ -112,6 +113,7 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable:
+		Bounds: 24, 24
 	TargetableUnit:
 		TargetTypes: Ground, C4, Repair, Tank
 	Repairable:
@@ -179,8 +181,9 @@
 			Gems: 80
 			Beach: 80
 	SelectionDecorations:
+		VisualBounds: 12,18,0,-8
 	Selectable:
-		Bounds: 12,18,0,-6
+		Bounds: 12,18,0,-8
 	TargetableUnit:
 		TargetTypes: Ground, Infantry, Disguise
 	TakeCover:
@@ -257,6 +260,7 @@
 			Water: 100
 	SelectionDecorations:
 	Selectable:
+		Bounds: 24,24
 	TargetableUnit:
 		TargetTypes: Ground, Water, Repair
 	HiddenUnderFog:
@@ -289,6 +293,7 @@
 		UseLocation: true
 	SelectionDecorations:
 	Selectable:
+		Bounds: 24,24
 	TargetableAircraft:
 		TargetTypes: Air
 		GroundedTargetTypes: Ground, Repair

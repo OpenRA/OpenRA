@@ -806,6 +806,8 @@ snowhut:
 		Tick: 120
 
 lhus:
+	Defaults:
+		Offset: 0,-16
 	idle:
 		Length: 16
 		Tick: 180
@@ -815,6 +817,8 @@ lhus:
 		Length: 8
 
 windmill:
+	Defaults:
+		Offset: 0,-16
 	idle:
 		Length: 8
 		Tick: 80

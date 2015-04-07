@@ -13,6 +13,8 @@ DOG:
 		GenericName: Dog
 	Selectable:
 		Bounds: 12,17,-1,-4
+	SelectionDecorations:
+		VisualBounds: 12,17,-1,-4
 	Health:
 		HP: 12
 	Mobile:
@@ -561,7 +563,9 @@ Ant:
 		BuildPaletteOrder: 1954
 		Prerequisites: ~bio
 	Selectable:
-		Bounds: 30,30,0,-2
+		Bounds: 24,24,0,-5
+	SelectionDecorations:
+		VisualBounds: 30,30,0,-2
 	Health:
 		HP: 750
 		Radius: 469
