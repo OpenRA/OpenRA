@@ -34,6 +34,7 @@ HeliAGGun:
 	Burst: 2
 	BurstDelay: 0
 	Range: 4c0
+	MinRange: 0c768
 	ValidTargets: Ground
 	Report: gun5.aud
 	Projectile: Bullet
@@ -57,6 +58,7 @@ HeliAAGun:
 	Burst: 2
 	BurstDelay: 0
 	Range: 4c0
+	MinRange: 0c768
 	ValidTargets: Air
 	Report: gun5.aud
 	Projectile: Bullet
