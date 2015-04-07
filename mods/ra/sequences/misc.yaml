@@ -114,9 +114,6 @@ beacon:
 	pinficon: lores-pinficon
 		Length: *
 		Offset: 0,-42
-	armordropicon: lores-pinficon
-		Length: *
-		Offset: 0,-42
 	clock: beaconclock
 		Length: *
 		Offset: 0,-42
@@ -426,7 +423,6 @@ icon:
 	chrono: warpicon
 	spyplane: smigicon
 	paratroopers: pinficon
-	armordrop: armordropicon
 	gps: gpssicon
 	parabombs: pbmbicon
 	sonar: sonricon

@@ -95,7 +95,7 @@ World:
 		Name: Allies
 		Race: allies
 		Side: Allies
-		Description: Allies: Deception\nSpecial Ability: Can build fake structures
+		Selectable: False
 	Country@1:
 		Name: England
 		Race: england
@@ -105,7 +105,7 @@ World:
 		Name: France
 		Race: france
 		Side: Allies
-		Description: France: Concealment\nSpecial Structure: Advanced Gap Generator\nSpecial Unit: Mobile Gap Generator
+		Description: France: Deception\nSpecial Ability: Can build fake structures\nSpecial Unit: Mobile Gap Generator
 	Country@3:
 		Name: Germany
 		Race: germany
@@ -115,12 +115,12 @@ World:
 		Name: Soviet
 		Race: soviet
 		Side: Soviet
-		Description: Soviet: Infantry\nSpecial Ability: Paradrop
+		Selectable: False
 	Country@5:
 		Name: Russia
 		Race: russia
 		Side: Soviet
-		Description: Russia: Tanks\nSpecial Ability: Armor Airdrop\nSpecial Unit: MAD Tank
+		Description: Russia: Tesla Weapons\nSpecial Unit: Tesla Tank\nSpecial Unit: Shock Trooper
 	Country@6:
 		Name: Ukraine
 		Race: ukraine
@@ -133,15 +133,15 @@ World:
 		Side: Random
 		Description: A random country.
 	Country@randomallies:
-		Name: Allied
+		Name: Allies
 		Race: RandomAllies
-		RandomRaceMembers: allies, england, france, germany
+		RandomRaceMembers: england, france, germany
 		Side: Random
 		Description: A random Allied country.
 	Country@randomsoviet:
 		Name: Soviet
 		Race: RandomSoviet
-		RandomRaceMembers: soviet, russia, ukraine
+		RandomRaceMembers: russia, ukraine
 		Side: Random
 		Description: A random Soviet country.
 	DomainIndex:

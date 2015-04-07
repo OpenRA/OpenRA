@@ -1267,7 +1267,6 @@ Rules:
 		Inherits: AFLD
 		-AirstrikePower@spyplane:
 		-ParatroopersPower@paratroopers:
-		-ParatroopersPower@armordrop:
 		-AirstrikePower@parabombs:
 		-SupportPowerChargeBar:
 		RenderBuilding:

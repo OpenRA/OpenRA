@@ -462,7 +462,7 @@ SHOK:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 130
-		Prerequisites: ~barr, stek, tsla, ~techlevel.unrestricted
+		Prerequisites: ~barr, stek, tsla, ~infantry.russia, ~techlevel.unrestricted
 	Valued:
 		Cost: 400
 	Tooltip:
