@@ -164,7 +164,7 @@ Vulcan:
 ChainGun:
 	ReloadDelay: 10
 	Range: 5c0
-	MinRange: 1c0
+	MinRange: 0c768
 	Report: GUN13.AUD
 	Projectile: Bullet
 		Speed: 1c682

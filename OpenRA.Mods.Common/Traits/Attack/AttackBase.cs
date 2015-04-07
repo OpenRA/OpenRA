@@ -157,6 +157,15 @@ namespace OpenRA.Mods.Common.Traits
 			return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World, self));
 		}
 
+		public WRange GetMinimumRange()
+		{
+			if (IsTraitDisabled)
+				return WRange.Zero;
+
+			return Armaments.Where(a => !a.IsTraitDisabled)
+				.Select(a => a.Weapon.MinRange).Min();
+		}
+
 		public WRange GetMaximumRange()
 		{
 			if (IsTraitDisabled)

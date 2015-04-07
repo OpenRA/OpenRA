@@ -70,17 +70,18 @@ OrcaAGMissiles:
 	Burst: 2
 	BurstDelay: 12
 	Range: 5c0
+	MinRange: 1c256
 	Report: BAZOOK1.AUD
 	ValidTargets: Ground
 	Projectile: Missile
-		Arm: 0
+		Arm: 1
 		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
 		RateOfTurn: 20
 		Trail: smokey
 		ContrailLength: 8
-		Speed: 298
+		Speed: 256
 		RangeLimit: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -103,6 +104,7 @@ OrcaAAMissiles:
 	Burst: 2
 	BurstDelay: 12
 	Range: 5c0
+	MinRange: 1c256
 	Report: BAZOOK1.AUD
 	ValidTargets: Air
 	Projectile: Missile

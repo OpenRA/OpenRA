@@ -76,6 +76,7 @@ Dragon:
 HellfireAG:
 	ReloadDelay: 60
 	Range: 4c0
+	MinRange: 1c256
 	Report: MISSILE6.AUD
 	Burst: 2
 	BurstDelay: 10
@@ -113,6 +114,7 @@ HellfireAG:
 HellfireAA:
 	ReloadDelay: 60
 	Range: 4c0
+	MinRange: 1c256
 	Report: MISSILE6.AUD
 	Burst: 2
 	BurstDelay: 10

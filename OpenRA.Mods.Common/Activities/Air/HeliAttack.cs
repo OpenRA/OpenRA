@@ -57,6 +57,19 @@ namespace OpenRA.Mods.Common.Activities
 			if (!target.IsInRange(self.CenterPosition, attackHeli.GetMaximumRange()))
 				helicopter.SetPosition(self, helicopter.CenterPosition + helicopter.FlyStep(desiredFacing));
 
+			// Fly backwards from the target
+			// TODO: Same problem as with MaximumRange
+			if (target.IsInRange(self.CenterPosition, attackHeli.GetMinimumRange()))
+			{
+				// Facing 0 doesn't work with the following position change
+				var facing = 1;
+				if (desiredFacing != 0)
+					facing = desiredFacing;
+				else if (helicopter.Facing != 0)
+					facing = helicopter.Facing;
+				helicopter.SetPosition(self, helicopter.CenterPosition + helicopter.FlyStep(-facing));
+			}
+
 			attackHeli.DoAttack(self, target);
 
 			return this;
