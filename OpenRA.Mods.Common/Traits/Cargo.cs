@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] InitialUnits = { };
 		public readonly bool EjectOnSell = true;
 
+		[Desc("Terrain types that this actor is allowed to eject actors onto. Leave empty for all terrain types.")]
+		public readonly string[] UnloadTerrainTypes = { };
+
 		[Desc("Which direction the passenger will face (relative to the transport) when unloading.")]
 		public readonly int PassengerFacing = 128;
 
@@ -46,6 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Stack<Actor> cargo = new Stack<Actor>();
 		readonly HashSet<Actor> reserves = new HashSet<Actor>();
 		readonly Lazy<IFacing> facing;
+		readonly bool checkTerrainType;
 
 		int totalWeight = 0;
 		int reservedWeight = 0;
@@ -62,6 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			Info = info;
 			Unloading = false;
+			checkTerrainType = info.UnloadTerrainTypes.Length > 0;
 
 			if (init.Contains<RuntimeCargoInit>())
 			{
@@ -139,6 +144,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanUnload()
 		{
+			if (checkTerrainType)
+			{
+				var terrainType = self.World.Map.GetTerrainInfo(self.Location).Type;
+
+				if (!Info.UnloadTerrainTypes.Contains(terrainType))
+					return false;
+			}
+
 			return !IsEmpty(self) && (helicopter == null || helicopter.CanLand(self.Location))
 				&& CurrentAdjacentCells != null && CurrentAdjacentCells.Any(c => Passengers.Any(p => p.Trait<IPositionable>().CanEnterCell(c)));
 		}
