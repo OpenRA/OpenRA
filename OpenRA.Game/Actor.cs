@@ -41,12 +41,14 @@ namespace OpenRA
 		public int Generation;
 
 		Lazy<Rectangle> bounds;
+		Lazy<Rectangle> visualBounds;
 		Lazy<IFacing> facing;
 		Lazy<Health> health;
 		Lazy<IOccupySpace> occupySpace;
 		Lazy<IEffectiveOwner> effectiveOwner;
 
 		public Rectangle Bounds { get { return bounds.Value; } }
+		public Rectangle VisualBounds { get { return visualBounds.Value; } }
 		public IOccupySpace OccupiesSpace { get { return occupySpace.Value; } }
 		public IEffectiveOwner EffectiveOwner { get { return effectiveOwner.Value; } }
 
@@ -106,6 +108,19 @@ namespace OpenRA
 				var offset = -size / 2;
 				if (si != null && si.Bounds != null && si.Bounds.Length > 2)
 					offset += new int2(si.Bounds[2], si.Bounds[3]);
+
+				return new Rectangle(offset.X, offset.Y, size.X, size.Y);
+			});
+
+			visualBounds = Exts.Lazy(() =>
+			{
+				var sd = Info.Traits.GetOrDefault<SelectionDecorationsInfo>();
+				var size = (sd != null && sd.VisualBounds != null) ? new int2(sd.VisualBounds[0], sd.VisualBounds[1]) :
+					TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
+
+				var offset = -size / 2;
+				if (sd != null && sd.VisualBounds != null && sd.VisualBounds.Length > 2)
+					offset += new int2(sd.VisualBounds[2], sd.VisualBounds[3]);
 
 				return new Rectangle(offset.X, offset.Y, size.X, size.Y);
 			});

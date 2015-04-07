@@ -17,6 +17,8 @@ namespace OpenRA.Traits
 	public class SelectionDecorationsInfo : ITraitInfo
 	{
 		public readonly string Palette = "chrome";
+		[Desc("Visual bounds for the selection box. If null, it matches Bounds.")]
+		public readonly int[] VisualBounds = null;
 
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
 	}
@@ -41,7 +43,7 @@ namespace OpenRA.Traits
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer) || self.World.FogObscures(self))
 				yield break;
 
-			var b = self.Bounds;
+			var b = self.VisualBounds;
 			var pos = wr.ScreenPxPosition(self.CenterPosition);
 			var tl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Top));
 			var bl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Bottom));
@@ -85,7 +87,7 @@ namespace OpenRA.Traits
 			var pipxyBase = basePosition + new int2(1 - pipSize.X / 2, -(3 + pipSize.Y / 2));
 			var pipxyOffset = new int2(0, 0);
 			var pal = wr.Palette(Info.Palette);
-			var width = self.Bounds.Width;
+			var width = self.VisualBounds.Width;
 
 			foreach (var pips in pipSources)
 			{

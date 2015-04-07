@@ -19,6 +19,7 @@ namespace OpenRA.Traits
 	{
 		public readonly bool Selectable = true;
 		public readonly int Priority = 10;
+		[Desc("Bounds for the selectable area.")]
 		public readonly int[] Bounds = null;
 
 		[Desc("All units having the same selection class specified will be selected with select-by-type commands (e.g. double-click). "

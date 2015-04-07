@@ -1152,6 +1152,29 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150603)
+				{
+					if (depth == 0 && node.Value.Nodes.Exists(n => n.Key == "Selectable"))
+					{
+						var selectable = node.Value.Nodes.FirstOrDefault(n => n.Key == "Selectable");
+						var selDecor = node.Value.Nodes.FirstOrDefault(n => n.Key == "SelectionDecorations");
+						var selectableNodes = selectable.Value.Nodes;
+						var bounds = selectableNodes.FirstOrDefault(n => n.Key == "Bounds");
+
+						if (bounds != null)
+						{
+							var visualBounds = FieldLoader.GetValue<string>("Bounds", bounds.Value.Value);
+							if (selDecor != null)
+								selDecor.Value.Nodes.Add(new MiniYamlNode("VisualBounds", visualBounds.ToString()));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("SelectionDecorations", "", new List<MiniYamlNode>
+								{
+									new MiniYamlNode("VisualBounds", visualBounds),
+								}));
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
