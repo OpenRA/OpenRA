@@ -8,6 +8,8 @@
  */
 #endregion
 
+using OpenRA.Widgets;
+
 namespace OpenRA.Traits
 {
 	[Desc("Attach this to the player actor.")]
@@ -162,6 +164,18 @@ namespace OpenRA.Traits
 				case "DevBuildAnywhere":
 					{
 						BuildAnywhere ^= true;
+						break;
+					}
+
+				case "DevToggleUI":
+					{
+						var playerWidgets = Ui.Root.GetOrNull("PLAYER_WIDGETS");
+						if (playerWidgets == null)
+							return;
+
+						foreach (var w in playerWidgets.Children)
+							w.Visible = !w.Visible;
+
 						break;
 					}
 

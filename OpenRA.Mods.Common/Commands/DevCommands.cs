@@ -47,6 +47,7 @@ namespace OpenRA.Mods.Common.Commands
 			register("all", "toggles all cheats and gives you some cash for your trouble.");
 			register("crash", "crashes the game.");
 			register("levelup", "adds a specified number of levels to the selected actors.");
+			register("toggleui", "toggles the ui (disables pausing) for a better view.");
 		}
 
 		public void InvokeCommand(string name, string arg)
@@ -92,6 +93,7 @@ namespace OpenRA.Mods.Common.Commands
 				case "unlimitedpower": IssueDevCommand(world, "DevUnlimitedPower"); break;
 				case "enabletech": IssueDevCommand(world, "DevEnableTech"); break;
 				case "instantcharge": IssueDevCommand(world, "DevFastCharge"); break;
+				case "toggleui": IssueDevCommand(world, "DevToggleUI"); break;
 
 				case "all":
 					IssueDevCommand(world, "DevAll");
