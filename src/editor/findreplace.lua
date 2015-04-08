@@ -1005,7 +1005,10 @@ local package = ide:AddPackage('core.findreplace', {
     end,
 
     onEditorPreSave = function(self, editor, filePath)
-      if editor == findReplace.reseditor and findReplace.reseditor.replace then
+      if editor ~= findReplace.reseditor then return end
+
+      local isModified = ide:GetDocument(editor):IsModified()
+      if findReplace.reseditor.replace and isModified then
         findReplace:SetStatus("")
 
         local line = NOTFOUND
@@ -1071,7 +1074,7 @@ local package = ide:AddPackage('core.findreplace', {
 
       -- don't offer to save file if called from SaveFile;
       -- can still be used with explicit SaveFileAs
-      elseif editor == findReplace.reseditor and not filePath then
+      elseif not filePath and not isModified then
         return false
       end
     end
