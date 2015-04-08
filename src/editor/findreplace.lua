@@ -452,6 +452,8 @@ function findReplace:ProcInFiles(startdir,mask,subdirs)
   return true
 end
 
+local function makePlural(word, counter) return word..(counter == 1 and '' or 's') end
+
 function findReplace:RunInFiles(replace)
   if not self.panel then self:createPanel() end
   if not self:HasText() or self.oveditor then return end
@@ -535,8 +537,11 @@ function findReplace:RunInFiles(replace)
   if pcall(function() reseditor:GetId() end) then
     reseditor:AppendText(("Searched for '%s'. "):format(findText))
     if not completed then reseditor:AppendText("Cancelled by the user. ") end
-    reseditor:AppendText(("Found %d instance(s) on %d line(s) in %d file(s).")
-      :format(self.occurrences, self.lines, self.files))
+    reseditor:AppendText(("Found %d %s on %d %s in %d %s.")
+      :format(
+        self.occurrences, makePlural("instance", self.occurrences),
+        self.lines, makePlural("line", self.lines),
+        self.files, makePlural("file", self.files)))
     reseditor:EmptyUndoBuffer() -- don't undo the changes in the results
     reseditor:SetSavePoint() -- set unmodified status
 
@@ -1055,7 +1060,10 @@ local package = ide:AddPackage('core.findreplace', {
           end
         end
         if report then editor:AppendText("\n"..report) end
-        editor:AppendText(("\n\nUpdated %d line(s) in %d file(s)."):format(lines, files))
+        editor:AppendText(("\n\nUpdated %d %s in %d %s.")
+          :format(
+            lines, makePlural("line", lines),
+            files, makePlural("file", files)))
         editor:EnsureVisibleEnforcePolicy(editor:GetLineCount()-1)
         editor:SetSavePoint() -- set unmodified status when done
         findReplace:SetStatus(TR("Updated %d file.", files):format(files))
