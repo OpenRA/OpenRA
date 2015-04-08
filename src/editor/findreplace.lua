@@ -534,6 +534,7 @@ function findReplace:RunInFiles(replace)
   -- reseditor may already be closed, so check if it's valid first
   if pcall(function() reseditor:GetId() end) then
     reseditor:AppendText(("Searched for '%s'. "):format(findText))
+    if not completed then reseditor:AppendText("Cancelled by the user. ") end
     reseditor:AppendText(("Found %d instance(s) on %d line(s) in %d file(s).")
       :format(self.occurrences, self.lines, self.files))
     reseditor:EmptyUndoBuffer() -- don't undo the changes in the results
