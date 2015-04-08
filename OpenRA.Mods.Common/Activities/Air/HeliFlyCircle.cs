@@ -30,7 +30,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
+			var terrainHeight = self.World.Map.TerrainHeightAt(self.CenterPosition);
+			if (HeliFly.AdjustAltitude(self, helicopter, terrainHeight + helicopter.Info.CruiseAltitude))
 				return this;
 
 			var move = helicopter.FlyStep(helicopter.Facing);

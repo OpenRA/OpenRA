@@ -18,6 +18,25 @@ namespace OpenRA.Mods.Common
 {
 	public static class ActorExts
 	{
+		public static bool IsAtGroundLevel(this Actor self)
+		{
+			if (!self.HasTrait<IPositionable>())
+				return false;
+
+			if (!self.IsInWorld)
+				return false;
+
+			var m = self.World.Map;
+
+			if (!m.Contains(self.Location))
+				return false;
+
+			var cp = self.CenterPosition;
+			var terrainHeight = m.TerrainHeightAt(cp);
+
+			return cp.Z == terrainHeight.Range;
+		}
+
 		public static bool AppearsFriendlyTo(this Actor self, Actor toActor)
 		{
 			var stance = toActor.Owner.Stances[self.Owner];

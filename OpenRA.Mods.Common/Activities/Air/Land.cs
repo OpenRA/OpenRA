@@ -44,7 +44,8 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			var desiredFacing = Util.GetFacing(d, plane.Facing);
-			Fly.FlyToward(self, plane, desiredFacing, WRange.Zero);
+			var groundLevel = self.World.Map.TerrainHeightAt(target.CenterPosition);
+			Fly.FlyToward(self, plane, desiredFacing, groundLevel);
 
 			return this;
 		}

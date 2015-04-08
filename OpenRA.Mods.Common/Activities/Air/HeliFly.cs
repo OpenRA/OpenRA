@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Activities
 			var dz = (targetAltitude.Range - altitude).Clamp(-delta, delta);
 			helicopter.SetPosition(self, helicopter.CenterPosition + new WVec(0, 0, dz));
 
-			return true;
+			return targetAltitude.Range - altitude < helicopter.Info.ForceClimbDelta.Range;
 		}
 
 		public override Activity Tick(Actor self)
@@ -53,7 +53,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
-			if (AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
+			var terrainHeight = self.World.Map.TerrainHeightAt(self.CenterPosition);
+			if (AdjustAltitude(self, helicopter, terrainHeight + helicopter.Info.CruiseAltitude))
 				return this;
 
 			var pos = target.CenterPosition;
@@ -78,7 +79,8 @@ namespace OpenRA.Mods.Common.Activities
 			// The next move would overshoot, so just set the final position
 			if (dist.HorizontalLengthSquared < move.HorizontalLengthSquared)
 			{
-				helicopter.SetPosition(self, pos + new WVec(0, 0, helicopter.Info.CruiseAltitude.Range - pos.Z));
+				helicopter.SetPosition(self, pos + new WVec(0, 0, terrainHeight.Range + helicopter.Info.CruiseAltitude.Range - pos.Z));
+
 				return NextActivity;
 			}
 

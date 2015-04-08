@@ -40,6 +40,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;
 
+		[Desc("If this difference between the current cell and the target cell's height is greater than this value, " +
+			"this aircraft should ascend/descend instead of moving forward.")]
+		public readonly WRange ForceClimbDelta = new WRange(896);
+
 		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
 		public int GetInitialFacing() { return InitialFacing; }
 		public WRange GetCruiseAltitude() { return CruiseAltitude; }
@@ -91,7 +95,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Repulsion only applies when we're flying!
 			var altitude = CenterPosition.Z;
-			if (altitude != info.CruiseAltitude.Range)
+			var terrainHeight = self.World.Map.TerrainHeightAt(self.CenterPosition);
+			if (altitude != terrainHeight.Range + info.CruiseAltitude.Range)
 				return WVec.Zero;
 
 			return self.World.FindActorsInCircle(self.CenterPosition, info.IdealSeparation)
@@ -122,8 +127,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor GetActorBelow()
 		{
-			if (self.CenterPosition.Z != 0)
-				return null; // not on the ground.
+			if (!self.IsAtGroundLevel())
+				return null;
 
 			return self.World.ActorMap.GetUnitsAt(self.Location)
 				.FirstOrDefault(a => a.HasTrait<Reservable>());

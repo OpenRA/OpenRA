@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void TickIdle(Actor self)
 		{
 			// We're on the ground, let's stay there.
-			if (self.CenterPosition.Z == 0)
+			if (self.IsAtGroundLevel())
 				return;
 
 			var airfield = ReturnToBase.ChooseAirfield(self, true);
