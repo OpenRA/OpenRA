@@ -998,7 +998,7 @@ local package = ide:AddPackage('core.findreplace', {
         or findReplace:SetScope(proj, mask))
     end,
 
-    onEditorPreSave = function(self, editor)
+    onEditorPreSave = function(self, editor, filePath)
       if editor == findReplace.reseditor and findReplace.reseditor.replace then
         findReplace:SetStatus("")
 
@@ -1058,6 +1058,11 @@ local package = ide:AddPackage('core.findreplace', {
         editor:EnsureVisibleEnforcePolicy(editor:GetLineCount()-1)
         editor:SetSavePoint() -- set unmodified status when done
         findReplace:SetStatus(TR("Updated %d file.", files):format(files))
+        return false
+
+      -- don't offer to save file if called from SaveFile;
+      -- can still be used with explicit SaveFileAs
+      elseif editor == findReplace.reseditor and not filePath then
         return false
       end
     end
