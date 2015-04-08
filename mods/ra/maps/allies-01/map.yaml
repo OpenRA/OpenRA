@@ -545,6 +545,9 @@ Rules:
 		AutoTarget:
 			EnableStances: false
 		-AttackMove:
+	TSLA:
+		Power:
+			Amount: -150
 
 Sequences:
 
