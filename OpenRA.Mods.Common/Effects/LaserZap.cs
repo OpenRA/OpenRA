@@ -26,8 +26,10 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly bool UsePlayerColor = false;
 		[Desc("Laser color in (A,)R,G,B.")]
 		public readonly Color Color = Color.Red;
-		[Desc("Impact animation. Requires a regular animation with idle: sequence instead of explosion special case.")]
+		[Desc("Impact animation.")]
 		public readonly string HitAnim = null;
+		[Desc("Sequence of impact animation to use.")]
+		public readonly string HitAnimSequence = "idle";
 		public readonly string HitAnimPalette = "effect";
 
 		public IEffect Create(ProjectileArgs args)
@@ -68,7 +70,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!doneDamage)
 			{
 				if (hitanim != null)
-					hitanim.PlayThen("idle", () => animationComplete = true);
+					hitanim.PlayThen(info.HitAnimSequence, () => animationComplete = true);
 
 				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
 				doneDamage = true;
