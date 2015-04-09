@@ -42,7 +42,6 @@ namespace OpenRA.Mods.Common.AI
 			Type = type;
 			Target = Target.FromActor(target);
 			FuzzyStateMachine = new StateMachine();
-
 			switch (type)
 			{
 				case SquadType.Assault:
@@ -75,6 +74,11 @@ namespace OpenRA.Mods.Common.AI
 		public bool TargetIsValid
 		{
 			get { return Target.IsValidFor(Units.FirstOrDefault()) && !Target.Actor.HasTrait<Husk>(); }
+		}
+
+		public bool TargetIsVisible
+		{
+			get { return Bot.Player.PlayerActor.Owner.Shroud.IsTargetable(TargetActor); }
 		}
 
 		public WPos CenterPosition { get { return Units.Select(u => u.CenterPosition).Average(); } }

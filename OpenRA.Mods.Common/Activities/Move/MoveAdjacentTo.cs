@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Pathfinder;
@@ -27,7 +28,23 @@ namespace OpenRA.Mods.Common.Activities
 		readonly DomainIndex domainIndex;
 		readonly uint movementClass;
 
-		protected Target Target { get; private set; }
+		Target target;
+		bool isFrozenUnderFog;
+		protected Target Target
+		{
+			get
+			{
+				return target;
+			}
+
+			private set
+			{
+				target = value;
+				if (target.Type == TargetType.Actor)
+					isFrozenUnderFog = target.Actor.HasTrait<FrozenUnderFog>();
+			}
+		}
+
 		protected CPos targetPosition;
 		Activity inner;
 		bool repath;
@@ -65,6 +82,17 @@ namespace OpenRA.Mods.Common.Activities
 		public override Activity Tick(Actor self)
 		{
 			var targetIsValid = Target.IsValidFor(self);
+
+			// Target moved under the shroud. Move to its last known position.
+			if (Target.Type == TargetType.Actor && !isFrozenUnderFog
+				 && !self.Owner.Shroud.IsTargetable(Target.Actor))
+			{
+				if (inner != null)
+					inner.Cancel(self);
+
+				self.SetTargetLine(Target.FromCell(self.World, targetPosition), Color.Green);
+				return Util.RunActivity(self, new AttackMoveActivity(self, mobile.MoveTo(targetPosition, 0)));
+			}
 
 			// Inner move order has completed.
 			if (inner == null)
