@@ -260,9 +260,6 @@ smoke_m:
 		BlendMode: Additive
 
 bombs:
-	open: DATA.R8
-		Start: 3280
-		Length: 4
 	idle: DATA.R8
 		Start: 3280
 		Length: 4
