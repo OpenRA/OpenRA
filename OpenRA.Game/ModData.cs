@@ -116,7 +116,6 @@ namespace OpenRA
 			if (!Manifest.Translations.Any())
 			{
 				Languages = new string[0];
-				FieldLoader.Translations = new Dictionary<string, string>();
 				return;
 			}
 
@@ -144,7 +143,7 @@ namespace OpenRA
 					translations.Add(tkv.Key, tkv.Value);
 			}
 
-			FieldLoader.Translations = translations;
+			FieldLoader.SetTranslations(translations);
 		}
 
 		public Map PrepareMap(string uid)
