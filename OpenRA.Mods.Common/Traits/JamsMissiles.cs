@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new JamsMissiles(this); }
 	}
 
-	class JamsMissiles
+	public class JamsMissiles
 	{
 		readonly JamsMissilesInfo info;
 

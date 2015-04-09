@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Changes the visual Z position periodically.")]
-	class HoversInfo : ITraitInfo, Requires<IMoveInfo>
+	public class HoversInfo : ITraitInfo, Requires<IMoveInfo>
 	{
 		[Desc("Amount of Z axis changes in world units.")]
 		public readonly int OffsetModifier = -43;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Hovers(this, init.Self); }
 	}
 
-	class Hovers : IRenderModifier
+	public class Hovers : IRenderModifier
 	{
 		readonly HoversInfo info;
 		readonly bool aircraft;
