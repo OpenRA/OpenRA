@@ -4,6 +4,7 @@ ParaBomb:
 	Report: CHUTE1.AUD
 	Projectile: GravityBomb
 		Image: PARABOMB
+		OpenSequence: open
 		Velocity: 43
 		Acceleration: 0
 	Warhead@1Dam: SpreadDamage
