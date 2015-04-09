@@ -156,10 +156,13 @@ namespace OpenRA.Mods.Common.Widgets
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", downPressed || downDisabled ? "down_pressed" : "down_arrow"),
 				new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 
-			Game.Renderer.EnableScissor(backgroundRect.InflateBy(-1, -1, -1, -1));
+			var drawBounds = backgroundRect.InflateBy(-1, -1, -1, -1);
+			Game.Renderer.EnableScissor(drawBounds);
 
+			drawBounds.Offset((-ChildOrigin).ToPoint());
 			foreach (var child in Children)
-				child.DrawOuter();
+				if (child.Bounds.IntersectsWith(drawBounds))
+					child.DrawOuter();
 
 			Game.Renderer.DisableScissor();
 		}
