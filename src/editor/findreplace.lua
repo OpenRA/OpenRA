@@ -471,6 +471,8 @@ function findReplace:RunInFiles(replace)
   local reseditor = findReplace.reseditor
   if not reseditor or not pcall(function() reseditor:GetId() end) then
     reseditor = NewFile("Search Results")
+    -- set file path to avoid treating results as unsaved document
+    ide:GetDocument(reseditor).filePath = "Search Results"
     reseditor:SetWrapMode(wxstc.wxSTC_WRAP_NONE)
     reseditor:SetIndentationGuides(false)
     reseditor:SetMarginWidth(0, 0) -- hide line numbers
