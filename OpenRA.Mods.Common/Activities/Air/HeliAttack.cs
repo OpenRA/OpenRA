@@ -8,8 +8,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -19,23 +19,51 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliAttack : Activity
 	{
-		readonly Target target;
 		readonly Helicopter helicopter;
 		readonly AttackHeli attackHeli;
 		readonly AmmoPool[] ammoPools;
+		readonly bool attackOnlyVisibleTargets;
 
-		public HeliAttack(Actor self, Target target)
+		Target target;
+		bool canHideUnderFog;
+		protected Target Target
 		{
-			this.target = target;
+			get
+			{
+				return target;
+			}
+
+			private set
+			{
+				target = value;
+				if (target.Type == TargetType.Actor)
+					canHideUnderFog = target.Actor.HasTrait<HiddenUnderFog>();
+			}
+		}
+
+		public HeliAttack(Actor self, Target target, bool attackOnlyVisibleTargets = true)
+		{
+			Target = target;
 			helicopter = self.Trait<Helicopter>();
 			attackHeli = self.Trait<AttackHeli>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			this.attackOnlyVisibleTargets = attackOnlyVisibleTargets;
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
+
+			if (attackOnlyVisibleTargets && target.Type == TargetType.Actor && canHideUnderFog
+				&& !self.Owner.CanTargetActor(target.Actor))
+			{
+				var newTarget = Target.FromCell(self.World, self.World.Map.CellContaining(target.CenterPosition));
+
+				self.CancelActivity();
+				self.SetTargetLine(newTarget, Color.Green);
+				return Util.SequenceActivities(new HeliFly(self, newTarget));
+			}
 
 			// If all ammo pools are depleted and none reload automatically, return to helipad to reload and then move to next activity
 			// TODO: This should check whether there is ammo left that is actually suitable for the target

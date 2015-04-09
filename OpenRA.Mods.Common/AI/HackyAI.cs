@@ -664,7 +664,7 @@ namespace OpenRA.Mods.Common.AI
 			if (protectSq == null)
 				protectSq = RegisterNewSquad(SquadType.Protection, attacker);
 
-			if (!protectSq.TargetIsValid)
+			if (!protectSq.IsTargetValid)
 				protectSq.TargetActor = attacker;
 
 			if (!protectSq.IsValid)

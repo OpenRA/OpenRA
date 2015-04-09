@@ -19,6 +19,9 @@ namespace OpenRA.Mods.Common.AI
 
 	class UnitsForProtectionAttackState : GroundStateBase, IState
 	{
+		public const int BackoffTicks = 4;
+		internal int Backoff = BackoffTicks;
+
 		public void Activate(Squad owner) { }
 
 		public void Tick(Squad owner)
@@ -26,7 +29,7 @@ namespace OpenRA.Mods.Common.AI
 			if (!owner.IsValid)
 				return;
 
-			if (!owner.TargetIsValid)
+			if (!owner.IsTargetValid)
 			{
 				owner.TargetActor = owner.Bot.FindClosestEnemy(owner.CenterPosition, WRange.FromCells(8));
 
@@ -37,8 +40,22 @@ namespace OpenRA.Mods.Common.AI
 				}
 			}
 
-			foreach (var a in owner.Units)
-				owner.World.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.TargetActor.Location });
+			if (!owner.IsTargetVisible)
+			{
+				if (Backoff < 0)
+				{
+					owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionFleeState(), true);
+					Backoff = BackoffTicks;
+					return;
+				}
+
+				Backoff--;
+			}
+			else
+			{
+				foreach (var a in owner.Units)
+					owner.World.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.TargetActor.Location });
+			}
 		}
 
 		public void Deactivate(Squad owner) { }
