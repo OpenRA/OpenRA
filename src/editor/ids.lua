@@ -135,6 +135,7 @@ ID_HELPCOMMUNITY    = NewID()
 ID_ADDWATCH         = NewID()
 ID_EDITWATCH        = NewID()
 ID_DELETEWATCH      = NewID()
+ID_COPYWATCHVALUE   = NewID()
 -- Editor popup menu items
 ID_GOTODEFINITION   = NewID()
 ID_RENAMEALLINSTANCES = NewID()

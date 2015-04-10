@@ -1152,7 +1152,7 @@ local function debuggerCreateWatchWindow()
       and (watchCtrl:IsWatch(item) or watchCtrl:GetItemName(item) ~= nil))
   end
 
-  function watchCtrl:UpdateItemValue(item, value)
+  function watchCtrl:GetItemFullExpression(item)
     local expr = ''
     local origitem = item
     while true do
@@ -1165,6 +1165,25 @@ local function debuggerCreateWatchWindow()
       item = watchCtrl:GetItemParent(item)
       if not item:IsOk() then break end
     end
+    return expr
+  end
+
+  function watchCtrl:CopyItemValue(item)
+    local expr = self:GetItemFullExpression(item)
+
+    if debugger.running then debugger.update() end
+    if debugger.server and not debugger.running
+    and (not debugger.scratchpad or debugger.scratchpad.paused) then
+      copas.addthread(function ()
+        local _, values, error = debugger.evaluate(expr)
+        ide:CopyToClipboard(error and error:gsub("%[.-%]:%d+:%s+","")
+          or (#values == 0 and 'nil' or values[1]))
+      end)
+    end
+  end
+
+  function watchCtrl:UpdateItemValue(item, value)
+    local expr = self:GetItemFullExpression(item)
 
     if debugger.running then debugger.update() end
     if debugger.server and not debugger.running
@@ -1223,6 +1242,7 @@ local function debuggerCreateWatchWindow()
         { ID_ADDWATCH, TR("&Add Watch")..KSC(ID_ADDWATCH) },
         { ID_EDITWATCH, editlabel..KSC(ID_EDITWATCH) },
         { ID_DELETEWATCH, TR("&Delete Watch")..KSC(ID_DELETEWATCH) },
+        { ID_COPYWATCHVALUE, TR("&Copy Value")..KSC(ID_COPYWATCHVALUE) },
       })
       item = nil
     end)
@@ -1239,6 +1259,14 @@ local function debuggerCreateWatchWindow()
     function (event) watchCtrl:Delete(item or watchCtrl:GetSelection()) end)
   watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_UPDATE_UI,
     function (event) event:Enable(watchCtrl:IsWatch(item or watchCtrl:GetSelection())) end)
+
+  watchCtrl:Connect(ID_COPYWATCHVALUE, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function (event) watchCtrl:CopyItemValue(item or watchCtrl:GetSelection()) end)
+  watchCtrl:Connect(ID_COPYWATCHVALUE, wx.wxEVT_UPDATE_UI, function (event)
+    -- allow copying only when the debugger is available
+    event:Enable(item:IsOk() and debugger.server and not debugger.running
+     and (not debugger.scratchpad or debugger.scratchpad.paused))
+  end)
 
   local label
   watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT,
