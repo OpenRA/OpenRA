@@ -64,6 +64,9 @@ namespace OpenRA.Graphics
 
 		public static void FastCopyIntoSprite(Sprite dest, Bitmap src)
 		{
+			if (src.PixelFormat != PixelFormat.Format32bppArgb)
+				throw new ArgumentException("src must have a PixelFormat of Format32bppArgb", "src");
+
 			var data = dest.Sheet.GetData();
 			var dataStride = dest.Sheet.Size.Width * 4;
 			var x = dest.Bounds.Left * 4;
@@ -72,7 +75,7 @@ namespace OpenRA.Graphics
 			var height = dest.Bounds.Height;
 
 			var bd = src.LockBits(src.Bounds(),
-				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+				ImageLockMode.ReadWrite, src.PixelFormat);
 			for (var row = 0; row < height; row++)
 				Marshal.Copy(IntPtr.Add(bd.Scan0, row * bd.Stride), data, (y + row) * dataStride + x, width);
 			src.UnlockBits(bd);
