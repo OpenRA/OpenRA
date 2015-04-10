@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -155,6 +156,12 @@ namespace OpenRA
 						SpawnPoints = spawns;
 
 						CustomPreview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
+						if (CustomPreview.PixelFormat != PixelFormat.Format32bppArgb)
+						{
+							var original = CustomPreview;
+							CustomPreview = original.Clone(original.Bounds(), PixelFormat.Format32bppArgb);
+							original.Dispose();
+						}
 					}
 					catch (Exception) { }
 
