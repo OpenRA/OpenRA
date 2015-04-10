@@ -976,14 +976,15 @@ function findReplace:refreshPanel(replace, infiles)
   local mgr = ide:GetUIManager()
   local pane = mgr:GetPane(searchpanel)
   if not pane:IsShown() then
-    -- if not shown, set value from the current selection
-    self.findCtrl:ChangeValue(self:GetSelection() or self.findCtrl:GetValue())
     local size = ctrl:GetSize()
     pane:Dock():Bottom():BestSize(size):MinSize(size):Layer(0):Row(1):Show()
     mgr:Update()
 
     self:SetStatus(TR("Use %s to close."):format("`Escape`"))
   end
+
+  -- set value from the current selection (if any)
+  self.findCtrl:ChangeValue(self:GetSelection() or self.findCtrl:GetValue())
 
   -- reset search when re-creating dialog to avoid modifying selected
   -- fragment after successful search and updated replacement
