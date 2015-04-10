@@ -1083,9 +1083,5 @@ local package = ide:AddPackage('core.findreplace', {
     end
   })
 
-local settings = package:GetSettings()
-for setting in pairs(findReplace.settings) do
-  if settings[setting] then findReplace.settings[setting] = settings[setting] end
-end
-
 function findReplace:SaveSettings() package:SetSettings(self.settings) end
+MergeSettings(findReplace.settings, package:GetSettings())

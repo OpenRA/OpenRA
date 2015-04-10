@@ -541,3 +541,24 @@ function ExpandPlaceholders(msg, ph)
   }
   return(msg:gsub('%%(%w)', function(p) return ph[p] or def[p] or '?' end))
 end
+
+function MergeSettings(localSettings, savedSettings)
+  for name in pairs(localSettings) do
+    if savedSettings[name] ~= nil
+    and type(savedSettings[name]) == type(localSettings[name]) then
+      if type(localSettings[name]) == 'table'
+      and next(localSettings[name]) ~= nil then
+        -- check every value in the table to make sure that it's possible
+        -- to add new keys to the table and they get correct default values
+        -- (even though that are absent in savedSettings)
+        for setting in pairs(localSettings[name]) do
+          if savedSettings[name][setting] ~= nil then
+            localSettings[name][setting] = savedSettings[name][setting]
+           end
+        end
+      else
+        localSettings[name] = savedSettings[name]
+      end
+    end
+  end
+end

@@ -26,12 +26,7 @@ local image = {
   DIRECTORYMAPPED = 4,
 }
 
-do
-  local settings = ide:AddPackage('core.filetree', {}):GetSettings()
-  for setting in pairs(filetree.settings) do
-    if settings[setting] then filetree.settings[setting] = settings[setting] end
-  end
-end
+MergeSettings(filetree.settings, ide:AddPackage('core.filetree', {}):GetSettings())
 
 -- generic tree
 -- ------------
