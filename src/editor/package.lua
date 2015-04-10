@@ -212,6 +212,15 @@ end
 
 function ide:LoadFile(...) return LoadFile(...) end
 
+function ide:CopyToClipboard(text)
+  if wx.wxClipboard:Get():Open() then
+    wx.wxClipboard:Get():SetData(wx.wxTextDataObject(text))
+    wx.wxClipboard:Get():Close()
+    return true
+  end
+  return false
+end
+
 function ide:GetSetting(path, setting)
   local settings = self.settings
   local curpath = settings:GetPath()

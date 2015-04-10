@@ -442,13 +442,7 @@ local function treeSetConnectorsAndIcons(tree)
   tree:Connect(ID_DELETEFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
     function() deleteItem(tree:GetSelection()) end)
   tree:Connect(ID_COPYFULLPATH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function()
-      local tdo = wx.wxTextDataObject(tree:GetItemFullName(tree:GetSelection()))
-      if wx.wxClipboard:Get():Open() then
-        wx.wxClipboard:Get():SetData(tdo)
-        wx.wxClipboard:Get():Close()
-      end
-    end)
+    function() ide:CopyToClipboard(tree:GetItemFullName(tree:GetSelection())) end)
   tree:Connect(ID_OPENEXTENSION, wx.wxEVT_COMMAND_MENU_SELECTED,
     function()
       local fname = tree:GetItemFullName(tree:GetSelection())
