@@ -41,7 +41,7 @@ if [ ! -f SharpFont.dll ]; then
 	echo "Fetching SharpFont from nuget"
 	nuget install SharpFont -Version 2.5.0.1
 	cp ./SharpFont.2.5.0.1/lib/net20/SharpFont* .
-	cp ./SharpFont.2.5.0.1/Content/SharpFont.dll.config .
+	sed '/osx/s@\(dll="\)[^"]*\(" />\)@\1/Library/Frameworks/Mono.framework/Libraries/libfreetype.6.dylib\2@' ./SharpFont.2.5.0.1/Content/SharpFont.dll.config > SharpFont.dll.config
 	rm -rf SharpFont.2.5.0.1
 fi
 
