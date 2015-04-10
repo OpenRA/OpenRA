@@ -11,6 +11,7 @@
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -25,11 +26,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var blockColor = Color.Transparent;
 			var radar = widget.Get<RadarWidget>("RADAR_MINIMAP");
 			radar.IsEnabled = () => radarEnabled;
+			var devMode = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
 
 			var ticker = widget.Get<LogicTickerWidget>("RADAR_TICKER");
 			ticker.OnTick = () =>
 			{
-				radarEnabled = world.ActorsWithTrait<ProvidesRadar>()
+				radarEnabled = devMode.DisableShroud || world.ActorsWithTrait<ProvidesRadar>()
 					.Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
 
 				if (radarEnabled != cachedRadarEnabled)

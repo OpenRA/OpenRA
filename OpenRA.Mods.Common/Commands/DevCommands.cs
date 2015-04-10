@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Commands
 				help.RegisterHelp(name, helpText);
 			};
 
-			register("disableshroud", "toggles shroud.");
+			register("disableshroud", "toggles shroud and minimap.");
 			register("givecash", "gives the default or specified amount of money.");
 			register("givecashall", "gives the default or specified amount of money to all players and ai.");
 			register("instantbuild", "toggles instant building.");
