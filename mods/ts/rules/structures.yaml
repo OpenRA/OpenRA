@@ -1274,8 +1274,7 @@ NAMISL:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
-		Owner: nod
-		Prerequisites: natech
+		Prerequisites: natech, ~structures.nod
 		BuildLimit: 1
 	Valued:
 		Cost: 1300
