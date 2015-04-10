@@ -16,7 +16,6 @@ test_script:
   - nunit-console-x86.exe OpenRA.Test.dll
 
 after_test:
-  - make version
   - choco install pandoc -y
   - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o README.html README.md'
   - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o CONTRIBUTING.html CONTRIBUTING.md'

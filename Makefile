@@ -309,7 +309,7 @@ version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mo
 	done
 
 # Documentation (d2k depends on all mod libraries)
-docs: utility mods
+docs: utility mods version
 	@mono --debug OpenRA.Utility.exe d2k --docs > DOCUMENTATION.md
 	@mono --debug OpenRA.Utility.exe ra --lua-docs > Lua-API.md
 
