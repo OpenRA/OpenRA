@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -173,6 +174,11 @@ namespace OpenRA
 					{
 						createdPreview = true;
 						bitmap = Minimap.RenderMapPreview(modData.DefaultRules.TileSets[p.Map.Tileset], p.Map, modData.DefaultRules, true);
+					}
+					else if (bitmap.PixelFormat != PixelFormat.Format32bppArgb)
+					{
+						Log.Write("debug", "Discarding invalid map preview for {0}", p.Uid);
+						continue;
 					}
 
 					// Note: this is not generally thread-safe, but it works here because:
