@@ -804,3 +804,12 @@ snowhut:
 	damaged-idle:
 		Start: 3
 		Tick: 120
+
+lhus:
+	idle:
+		Length: 16
+		Tick: 180
+	damaged-idle:
+		Start: 16
+		Tick: 180
+		Length: 8

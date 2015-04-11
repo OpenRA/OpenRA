@@ -622,3 +622,15 @@ SNOWHUT:
 	RenderBuilding:
 		Scale: 0.7
 
+LHUS:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
+	Selectable:
+		Bounds: 24,48
+	Tooltip:
+		Name: Lighthouse
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+
