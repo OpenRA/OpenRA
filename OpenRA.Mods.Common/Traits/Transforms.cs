@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self = init.Self;
 			this.info = info;
-			buildingInfo = self.World.Map.Rules.Actors[info.IntoActor].Traits.GetOrDefault<BuildingInfo>();
+			buildingInfo = self.World.Map.Rules.Actors[info.IntoActor.ToLowerInvariant()].Traits.GetOrDefault<BuildingInfo>();
 			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.Race;
 		}
 
