@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -433,6 +434,25 @@ namespace OpenRA
 		}
 
 		public static Rectangle Bounds(this Bitmap b) { return new Rectangle(0, 0, b.Width, b.Height); }
+
+		public static Bitmap CloneWith32bbpArgbPixelFormat(this Bitmap original)
+		{
+			// Note: We would use original.Clone(original.Bounds(), PixelFormat.Format32bppArgb)
+			// but this doesn't work on mono.
+			var clone = new Bitmap(original.Width, original.Height, PixelFormat.Format32bppArgb);
+			try
+			{
+				using (var g = System.Drawing.Graphics.FromImage(clone))
+					g.DrawImage(original, original.Bounds());
+			}
+			catch (Exception)
+			{
+				clone.Dispose();
+				throw;
+			}
+
+			return clone;
+		}
 
 		public static int ToBits(this IEnumerable<bool> bits)
 		{
