@@ -813,3 +813,13 @@ lhus:
 		Start: 16
 		Tick: 180
 		Length: 8
+
+windmill:
+	idle:
+		Length: 8
+		Tick: 80
+	damaged-idle:
+		Start: 8
+		Length: 8
+		Tick: 80
+

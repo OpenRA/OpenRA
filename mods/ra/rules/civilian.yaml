@@ -634,3 +634,15 @@ LHUS:
 		Footprint: _ x
 		Dimensions: 1,2
 
+WINDMILL:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
+	Selectable:
+		Bounds: 36,36
+	Tooltip:
+		Name: Windmill
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+
