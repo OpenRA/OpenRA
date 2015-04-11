@@ -398,7 +398,7 @@ namespace OpenRA
 				if (CustomPreview.PixelFormat != PixelFormat.Format32bppArgb)
 				{
 					var original = CustomPreview;
-					CustomPreview = original.Clone(original.Bounds(), PixelFormat.Format32bppArgb);
+					CustomPreview = original.CloneWith32bbpArgbPixelFormat();
 					original.Dispose();
 				}
 			}
