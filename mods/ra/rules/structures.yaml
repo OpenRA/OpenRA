@@ -955,8 +955,8 @@ PROC:
 SILO:
 	Inherits: ^Building
 	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 70
+		Queue: Defense
+		BuildPaletteOrder: 35
 		Prerequisites: proc, ~techlevel.infonly
 	Valued:
 		Cost: 150
