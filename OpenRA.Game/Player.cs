@@ -101,6 +101,8 @@ namespace OpenRA
 				Spectating = pr.Spectating;
 				botType = pr.Bot;
 				Country = ChooseCountry(world, pr.Race, false);
+				pr.RaceFlagName = pr.Race;
+				pr.Race = Country.Name;
 			}
 
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
