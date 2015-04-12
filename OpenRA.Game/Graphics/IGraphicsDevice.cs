@@ -57,6 +57,7 @@ namespace OpenRA
 
 		void Clear();
 		void Present();
+		Bitmap TakeScreenshot();
 		void PumpInput(IInputHandler inputHandler);
 		string GetClipboardText();
 		void DrawPrimitives(PrimitiveType type, int firstVertex, int numVertices);

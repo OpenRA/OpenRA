@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -326,6 +327,24 @@ namespace OpenRA
 				catch (ArgumentException)
 				{
 					return InvalidValueAction(value, fieldType, fieldName);
+				}
+			}
+			else if (fieldType == typeof(ImageFormat))
+			{
+				switch (value.ToLowerInvariant())
+				{
+					case "bmp":
+						return ImageFormat.Bmp;
+					case "gif":
+						return ImageFormat.Gif;
+					case "jpg":
+					case "jpeg":
+						return ImageFormat.Jpeg;
+					case "tif":
+					case "tiff":
+						return ImageFormat.Tiff;
+					default:
+						return ImageFormat.Png;
 				}
 			}
 			else if (fieldType == typeof(bool))

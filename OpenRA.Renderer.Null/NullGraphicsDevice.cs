@@ -50,6 +50,7 @@ namespace OpenRA.Renderer.Null
 
 		public void Clear() { }
 		public void Present() { }
+		public Bitmap TakeScreenshot() { return new Bitmap(1, 1); }
 
 		public string GetClipboardText() { return ""; }
 		public void PumpInput(IInputHandler ih)
