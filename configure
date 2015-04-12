@@ -22,6 +22,9 @@ if [ "$os" == 'Linux' ]; then
 		echo "Eluant.dll.config has been created successfully."
 	fi
 elif [ "$os" == 'Darwin' ]; then
-	cp thirdparty/osx/* .
-	echo "Copied Lua 5.1 and SDL2 libraries successfully."
+	echo "Downloading pre-compiled lua and SDL2 libraries"
+	curl -O https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/Eluant.dll.config
+	curl -O https://github.com/OpenRA/OpenRALauncherOSX/raw/master/dependencies/liblua.5.1.dylib
+	curl -O https://github.com/OpenRA/OpenRALauncherOSX/raw/master/dependencies/libSDL2.dylib
+	echo "Downloaded Lua 5.1 and SDL2 libraries successfully."
 fi
