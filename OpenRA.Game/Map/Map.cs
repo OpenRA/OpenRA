@@ -12,6 +12,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -391,8 +392,16 @@ namespace OpenRA
 			DefaultSubCell = (SubCell)Game.ModData.Manifest.SubCellDefaultIndex;
 
 			if (Container.Exists("map.png"))
+			{
 				using (var dataStream = Container.GetContent("map.png"))
 					CustomPreview = new Bitmap(dataStream);
+				if (CustomPreview.PixelFormat != PixelFormat.Format32bppArgb)
+				{
+					var original = CustomPreview;
+					CustomPreview = original.CloneWith32bbpArgbPixelFormat();
+					original.Dispose();
+				}
+			}
 
 			PostInit();
 
