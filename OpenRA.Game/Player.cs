@@ -86,7 +86,7 @@ namespace OpenRA
 				Color = client.Color;
 				PlayerName = client.Name;
 				botType = client.Bot;
-				Country = ChooseCountry(world, client.Race);
+				Country = ChooseCountry(world, client.Race, !pr.LockRace);
 				pr.Race = selectedCountryName;
 				pr.RaceFlagName = client.Race;
 			}
