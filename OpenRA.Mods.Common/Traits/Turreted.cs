@@ -73,16 +73,28 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Tick(Actor self)
 		{
-			if (attack != null && !attack.IsAttacking)
+			// NOTE: FaceTarget is called in AttackTurreted.CanAttack if the turret has a target.
+			if (attack != null)
 			{
-				if (realignTick < info.RealignDelay)
-					realignTick++;
-				else if (info.RealignDelay > -1)
-					DesiredFacing = null;
+				if (!attack.IsAttacking)
+				{
+					if (realignTick < info.RealignDelay)
+						realignTick++;
+					else if (info.RealignDelay > -1)
+						DesiredFacing = null;
+
+					MoveTurret();
+				}
 			}
 			else
+			{
 				realignTick = 0;
+				MoveTurret();
+			}
+		}
 
+		void MoveTurret()
+		{
 			var df = DesiredFacing ?? (facing != null ? facing.Facing : TurretFacing);
 			TurretFacing = Util.TickFacing(TurretFacing, df, info.ROT);
 		}
@@ -90,7 +102,8 @@ namespace OpenRA.Mods.Common.Traits
 		public bool FaceTarget(Actor self, Target target)
 		{
 			DesiredFacing = Util.GetFacing(target.CenterPosition - self.CenterPosition, TurretFacing);
-			return TurretFacing == DesiredFacing;
+			MoveTurret();
+			return TurretFacing == DesiredFacing.Value;
 		}
 
 		// Turret offset in world-space
