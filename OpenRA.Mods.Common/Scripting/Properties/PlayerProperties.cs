@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
@@ -31,6 +32,21 @@ namespace OpenRA.Mods.Common.Scripting
 			return Player.World.ActorsWithTrait<AttackBase>().Select(a => a.Actor)
 				.Where(a => a.Owner == Player && !a.IsDead && a.IsInWorld && a.HasTrait<Mobile>())
 				.ToArray();
+		}
+
+		[Desc("Returns all living actors of the specified type of this player")]
+		public Actor[] GetActorsByType(string type)
+		{
+			var result = new List<Actor>();
+
+			ActorInfo ai;
+			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out ai))
+				throw new LuaException("Unknown actor type '{0}'".F(type));
+
+			result.AddRange(Player.World.ActorMap.ActorsInWorld()
+				.Where(actor => actor.Owner == Player && !actor.IsDead && actor.IsInWorld && actor.Info.Name == ai.Name));
+
+			return result.ToArray();
 		}
 	}
 }
