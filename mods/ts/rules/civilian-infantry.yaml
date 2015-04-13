@@ -298,9 +298,16 @@ VISLRG:
 
 CIV1:
 	Inherits: ^CivilianInfantry
+	Armament:
+		Weapon: Pistola
+	AttackFrontal:
 
 CIV2:
 	Inherits: ^CivilianInfantry
+	-AutoTarget:
 
 CIV3:
 	Inherits: ^CivilianInfantry
+	Armament:
+		Weapon: Pistola
+	AttackFrontal:
