@@ -425,7 +425,7 @@ namespace OpenRA.Server
 
 			try
 			{
-				for (;;)
+				for (; ms.Position < ms.Length; )
 				{
 					var so = ServerOrder.Deserialize(br);
 					if (so == null) return;
