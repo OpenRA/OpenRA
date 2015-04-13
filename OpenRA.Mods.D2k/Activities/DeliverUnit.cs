@@ -28,7 +28,7 @@ namespace OpenRA.Mods.D2k.Activities
 		readonly IFacing cargoFacing;
 		readonly IFacing selfFacing;
 
-		enum State { Transport, Land, Release, Done }
+		enum State { Transport, Land, Release }
 
 		State state;
 
@@ -108,11 +108,6 @@ namespace OpenRA.Mods.D2k.Activities
 					}
 
 					Release();
-					state = State.Done;
-					return Util.SequenceActivities(new Wait(10), this);
-
-				case State.Done:
-					self.Trait<Carryall>().UnreserveCarryable();
 					return NextActivity;
 			}
 
@@ -125,7 +120,11 @@ namespace OpenRA.Mods.D2k.Activities
 			cargoFacing.Facing = selfFacing.Facing;
 
 			// Put back into world
-			self.World.AddFrameEndTask(w => cargo.World.Add(cargo));
+			self.World.AddFrameEndTask(w =>
+			{
+				cargo.World.Add(cargo);
+				carryall.UnreserveCarryable();
+			});
 
 			// Unlock carryable
 			carryall.CarryableReleased();
