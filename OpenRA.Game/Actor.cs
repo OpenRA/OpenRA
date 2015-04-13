@@ -83,8 +83,8 @@ namespace OpenRA
 			}
 		}
 
-		readonly IEnumerable<IRenderModifier> traitsImplementingRenderModifier;
-		readonly IEnumerable<IRender> traitsImplementingRender;
+		readonly IRenderModifier[] traitsImplementingRenderModifier;
+		readonly IRender[] traitsImplementingRender;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -126,8 +126,8 @@ namespace OpenRA
 				return new Rectangle(offset.X, offset.Y, size.X, size.Y);
 			});
 
-			traitsImplementingRenderModifier = TraitsImplementing<IRenderModifier>();
-			traitsImplementingRender = TraitsImplementing<IRender>();
+			traitsImplementingRenderModifier = TraitsImplementing<IRenderModifier>().ToArray();
+			traitsImplementingRender = TraitsImplementing<IRender>().ToArray();
 		}
 
 		public void Tick()
