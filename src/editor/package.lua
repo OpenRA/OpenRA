@@ -317,9 +317,10 @@ function ide:GetBitmap(id, client, size)
   local key = width.."/"..id
   local keyclient = key.."-"..client
   local mapped = im[keyclient] or im[id.."-"..client] or im[key] or im[id]
-  if im[id.."-"..client] then keyclient = width.."/"..im[id.."-"..client]
-  elseif im[keyclient] then keyclient = im[keyclient]
-  elseif im[id] then
+  -- mapped may be a file name/path or wxImage object; take that into account
+  if type(im[id.."-"..client]) == 'string' then keyclient = width.."/"..im[id.."-"..client]
+  elseif type(im[keyclient]) == 'string' then keyclient = im[keyclient]
+  elseif type(im[id]) == 'string' then
     id = im[id]
     key = width.."/"..id
     keyclient = key.."-"..client
@@ -327,8 +328,9 @@ function ide:GetBitmap(id, client, size)
 
   local fileClient = ide:GetAppName() .. "/res/" .. keyclient .. ".png"
   local fileKey = ide:GetAppName() .. "/res/" .. key .. ".png"
+  local isImage = type(mapped) == 'userdata' and mapped:GetClassInfo():GetClassName() == 'wxImage'
   local file
-  if mapped and wx.wxFileName(mapped):FileExists() then file = mapped
+  if mapped and (isImage or wx.wxFileName(mapped):FileExists()) then file = mapped
   elseif wx.wxFileName(fileClient):FileExists() then file = fileClient
   elseif wx.wxFileName(fileKey):FileExists() then file = fileKey
   else return wx.wxArtProvider.GetBitmap(id, client, size) end
