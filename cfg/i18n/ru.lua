@@ -51,7 +51,7 @@ return {
   ["&Up"] = "Вверх", -- src\editor\findreplace.lua
   ["&View"] = "&Вид", -- src\editor\menu_view.lua
   ["&Watch Window"] = "Окно &выражений", -- src\editor\menu_view.lua
-  [".&bak on Replace"] = ".&bak после замены", -- src\editor\findreplace.lua
+  [".bak on replace"] = ".bak после замены", -- src\editor\findreplace.lua
   ["About %s"] = "О %s", -- src\editor\menu_help.lua
   ["Add To Scratchpad"] = "Добавить в черновик", -- src\editor\editor.lua
   ["Add Watch Expression"] = "Добавить выражение", -- src\editor\editor.lua
@@ -171,8 +171,8 @@ return {
   ["Lua &Interpreter"] = "&Интерпретатор Lua", -- src\editor\menu_project.lua
   ["Map Directory..."] = "Добавить папку в список", -- src\editor\filetree.lua
   ["Mapped remote request for '%s' to '%s'."] = "Удаленный запрос для '%s' отображен на '%s'.", -- src\editor\debugger.lua
-  ["Match &case"] = "Совпадение регистра", -- src\editor\findreplace.lua
-  ["Match &whole word"] = "Совпадение целого слова", -- src\editor\findreplace.lua
+  ["Match case"] = "Совпадение регистра", -- src\editor\findreplace.lua
+  ["Match whole word"] = "Совпадение целого слова", -- src\editor\findreplace.lua
   ["Mixed end-of-line encodings detected."] = "Обнаружены смешанные символы конца строки.", -- src\editor\commands.lua
   ["Navigate"] = "Перейти", -- src\editor\menu_search.lua
   ["New &File"] = "Новый файл", -- src\editor\filetree.lua
@@ -211,10 +211,10 @@ return {
   ["Redo last edit undone"] = "Вернуть последнее отмененное изменение", -- src\editor\menu_edit.lua
   ["Refresh"] = "Oбновление", -- src\editor\filetree.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "Отказано в запросе на запуск новой отладочной сессии, поскольку одна сессия уже выполняется.", -- src\editor\debugger.lua
-  ["Regular &expression"] = "Регулярное выражение", -- src\editor\findreplace.lua
+  ["Regular expression"] = "Регулярное выражение", -- src\editor\findreplace.lua
   ["Remote console"] = "Удаленная консоль", -- src\editor\shellbox.lua
   ["Rename All Instances"] = "Переименовать все совпадения", -- src\editor\editor.lua
-  ["Replace A&ll"] = "Заменить все", -- src\editor\findreplace.lua
+  ["Replace all"] = "Заменить все", -- src\editor\findreplace.lua
   ["Replace All Selections"] = "Заменить все выделенные фрагменты", -- src\editor\editor.lua
   ["Replace"] = "Заменить", -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "Некорректный символ UTF8 заменен на %s.", -- src\editor\commands.lua
@@ -305,7 +305,7 @@ return {
   ["View the watch window"] = "Показать окно выражений", -- src\editor\menu_view.lua
   ["Watch"] = "Выражение", -- src\editor\debugger.lua
   ["Welcome to the interactive Lua interpreter."] = "Добро пожаловать в интерактивный интерпретатор Lua.", -- src\editor\shellbox.lua
-  ["Wrap ar&ound"] = "Продолжить сначала", -- src\editor\findreplace.lua
+  ["Wrap around"] = "Продолжить сначала", -- src\editor\findreplace.lua
   ["You must save the program first."] = "Вы должны сначала сохранить программу.", -- src\editor\commands.lua
   ["Zoom In"] = "Приблизить", -- src\editor\menu_view.lua
   ["Zoom Out"] = "Удалить", -- src\editor\menu_view.lua

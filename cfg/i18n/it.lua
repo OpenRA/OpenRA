@@ -51,7 +51,7 @@ return {
   ["&Up"] = "Verso l'alto", -- src\editor\findreplace.lua
   ["&View"] = "Visualizza", -- src\editor\menu_view.lua
   ["&Watch Window"] = "Finestra Espressioni di Controllo", -- src\editor\menu_view.lua
-  [".&bak on Replace"] = ".bak su Sostituisci", -- src\editor\findreplace.lua
+  [".bak on replace"] = ".bak su Sostituisci", -- src\editor\findreplace.lua
   ["About %s"] = "Informazioni su %s", -- src\editor\menu_help.lua
   ["Add To Scratchpad"] = "Aggiungi a Scratchpad ", -- src\editor\editor.lua
   ["Add Watch Expression"] = "Aggiungi Espressione di Controllo", -- src\editor\editor.lua
@@ -170,8 +170,8 @@ return {
   ["Local console"] = "Console locale", -- src\editor\gui.lua, src\editor\shellbox.lua
   ["Lua &Interpreter"] = "&Interprete Lua", -- src\editor\menu_project.lua
   ["Mapped remote request for '%s' to '%s'."] = "Richiesta remota '%s' mappata su '%s'.", -- src\editor\debugger.lua
-  ["Match &case"] = "Maiuscole/Minuscole", -- src\editor\findreplace.lua
-  ["Match &whole word"] = "Intera parola", -- src\editor\findreplace.lua
+  ["Match case"] = "Maiuscole/Minuscole", -- src\editor\findreplace.lua
+  ["Match whole word"] = "Intera parola", -- src\editor\findreplace.lua
   ["Mixed end-of-line encodings detected."] = "Trovata codifica Fine-Riga mista.", -- src\editor\commands.lua
   ["Navigate"] = "Naviga", -- src\editor\menu_search.lua
   ["New &File"] = "Nuovo &File", -- src\editor\filetree.lua
@@ -210,10 +210,10 @@ return {
   ["Redo last edit undone"] = "Ripeti l'ultima azione annullata", -- src\editor\menu_edit.lua
   ["Refresh"] = "Rinfrescare", -- src\editor\filetree.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "Impossibile aprire una nuova sessione di debug in quanto ne esiste una in corso", -- src\editor\debugger.lua
-  ["Regular &expression"] = "Regular &expression", -- src\editor\findreplace.lua
+  ["Regular expression"] = "Regular expression", -- src\editor\findreplace.lua
   ["Remote console"] = "Console remota", -- src\editor\shellbox.lua
   ["Rename All Instances"] = "Rinomina tutte le occorrenze", -- src\editor\editor.lua
-  ["Replace A&ll"] = "Sostituisci Tutto", -- src\editor\findreplace.lua
+  ["Replace all"] = "Sostituisci Tutto", -- src\editor\findreplace.lua
   ["Replace All Selections"] = "Sostituisci Tutte le Selezioni", -- src\editor\editor.lua
   ["Replace"] = "Sostituisci", -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "Sostituito un carattere UTF8 invalido con %s.", -- src\editor\commands.lua
@@ -299,7 +299,7 @@ return {
   ["View the watch window"] = "Mostra la finestra delle Espressioni di Controllo", -- src\editor\menu_view.lua
   ["Watch"] = "Watch", -- src\editor\debugger.lua
   ["Welcome to the interactive Lua interpreter."] = "Benvenuti nell`interprete interattivo Lua.", -- src\editor\shellbox.lua
-  ["Wrap ar&ound"] = "Wrap ar&ound", -- src\editor\findreplace.lua
+  ["Wrap around"] = "Wrap around", -- src\editor\findreplace.lua
   ["You must save the program first."] = "Devi prima salvare il programma", -- src\editor\commands.lua
   ["Zoom In"] = "Zoom In", -- src\editor\menu_view.lua
   ["Zoom Out"] = "Zoom Out", -- src\editor\menu_view.lua

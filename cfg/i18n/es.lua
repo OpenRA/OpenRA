@@ -52,7 +52,7 @@ return {
   ["&Up"] = nil, -- src\editor\findreplace.lua
   ["&View"] = "Ver", -- src\editor\menu_view.lua
   ["&Watch Window"] = "Ventana de observaciones", -- src\editor\menu_view.lua
-  [".&bak on Replace"] = nil, -- src\editor\findreplace.lua
+  [".bak on replace"] = nil, -- src\editor\findreplace.lua
   ["About %s"] = "Acerca de %s", -- src\editor\menu_help.lua
   ["Add To Scratchpad"] = "Añadir al borrador", -- src\editor\editor.lua
   ["Add Watch Expression"] = "Añadir expresión de observación", -- src\editor\editor.lua
@@ -171,8 +171,8 @@ return {
   ["Local console"] = "Consola local", -- src\editor\gui.lua, src\editor\shellbox.lua
   ["Lua &Interpreter"] = "Intérprete Lua", -- src\editor\menu_project.lua
   ["Mapped remote request for '%s' to '%s'."] = nil, -- src\editor\debugger.lua
-  ["Match &case"] = nil, -- src\editor\findreplace.lua
-  ["Match &whole word"] = nil, -- src\editor\findreplace.lua
+  ["Match case"] = nil, -- src\editor\findreplace.lua
+  ["Match whole word"] = nil, -- src\editor\findreplace.lua
   ["Mixed end-of-line encodings detected."] = nil, -- src\editor\commands.lua
   ["Navigate"] = nil, -- src\editor\menu_search.lua
   ["New &File"] = nil, -- src\editor\filetree.lua
@@ -211,10 +211,10 @@ return {
   ["Redo last edit undone"] = "Rehacer la última edición deshecha", -- src\editor\menu_edit.lua
   ["Refresh"] = "Refrescar", -- src\editor\filetree.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "No se pudo lanzar una nueva sesión de depuración porque ya hay una en curso.", -- src\editor\debugger.lua
-  ["Regular &expression"] = nil, -- src\editor\findreplace.lua
+  ["Regular expression"] = nil, -- src\editor\findreplace.lua
   ["Remote console"] = "Consola remota", -- src\editor\shellbox.lua
   ["Rename All Instances"] = nil, -- src\editor\editor.lua
-  ["Replace A&ll"] = nil, -- src\editor\findreplace.lua
+  ["Replace all"] = nil, -- src\editor\findreplace.lua
   ["Replace All Selections"] = nil, -- src\editor\editor.lua
   ["Replace"] = nil, -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = nil, -- src\editor\commands.lua
@@ -300,7 +300,7 @@ return {
   ["View the watch window"] = "Ver la ventana de observación", -- src\editor\menu_view.lua
   ["Watch"] = nil, -- src\editor\debugger.lua
   ["Welcome to the interactive Lua interpreter."] = "Bienvenido al intérprete interactico de Lua.", -- src\editor\shellbox.lua
-  ["Wrap ar&ound"] = nil, -- src\editor\findreplace.lua
+  ["Wrap around"] = nil, -- src\editor\findreplace.lua
   ["You must save the program first."] = "Debes guardar el programa primero", -- src\editor\commands.lua
   ["Zoom In"] = nil, -- src\editor\menu_view.lua
   ["Zoom Out"] = nil, -- src\editor\menu_view.lua

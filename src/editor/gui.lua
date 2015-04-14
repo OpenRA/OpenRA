@@ -100,7 +100,7 @@ local function createToolBar(frame)
           local icon, description = unpack(iconmap)
           local isbitmap = type(icon) == "userdata" and icon:GetClassInfo():GetClassName() == "wxBitmap"
           local bitmap = isbitmap and icon or ide:GetBitmap(icon, "TOOLBAR", toolBmpSize)
-          toolBar:AddTool(id, "", bitmap, TR(description)..SCinB(id))
+          toolBar:AddTool(id, "", bitmap, (TR)(description)..SCinB(id))
         end
       end
       prev = id

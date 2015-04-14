@@ -119,6 +119,10 @@ function GetFileExt(filePath)
   return match and match:lower() or ''
 end
 
+function GetFileName(filePath)
+  return filePath and filePath:gsub("%s+$",""):match("([^/\\]*)$") or ''
+end
+
 function IsLuaFile(filePath)
   return filePath and (string.len(filePath) > 4) and
   (string.lower(string.sub(filePath, -4)) == ".lua")
@@ -135,15 +139,21 @@ function FileDirHasContent(dir)
 end
 
 function FileSysGetRecursive(path, recursive, spec, skip)
-  spec = spec or "*"
   local content = {}
   local sep = GetPathSeparator()
 
   -- recursion is done in all folders but only those folders that match
   -- the spec are returned. This is the pattern that matches the spec.
-  local specmask = spec:gsub("%.", "%%."):gsub("%*", ".*").."$"
+  -- Mask could be a list, so generate a table with matching patterns
+  -- accept "*.lua" and "*.txt,*.wlua" combinations
+  local masks = {}
+  for m in (spec or "*"):gmatch("[^%s;,]+") do
+    -- escape all special characters and replace (escaped) * with .*
+    table.insert(masks, EscapeMagic(m):gsub("%%%*", ".*").."$")
+  end
+  if #masks >= 2 then spec = nil end
 
-  local function getDir(path, spec)
+  local function getDir(path)
     local dir = wx.wxDir(path)
     if not dir:IsOpened() then return end
 
@@ -152,26 +162,41 @@ function FileSysGetRecursive(path, recursive, spec, skip)
     while found do
       if not skip or not file:find(skip) then
         local fname = wx.wxFileName(path, file):GetFullPath()
-        if fname:find(specmask) then table.insert(content, fname..sep) end
+        for _, mask in ipairs(masks) do
+          if file:find(mask) then
+            table.insert(content, fname..sep)
+            break
+          end
+        end
+
         -- check if this name already appears in the path earlier;
         -- Skip the processing if it does as it could lead to infinite
         -- recursion with circular references created by symlinks.
         if recursive and select(2, fname:gsub(EscapeMagic(file..sep),'')) <= 2 then
-          getDir(fname, spec)
+          getDir(fname)
         end
       end
       found, file = dir:GetNext()
     end
-    found, file = dir:GetFirst(spec, wx.wxDIR_FILES)
+    found, file = dir:GetFirst(spec or "*", wx.wxDIR_FILES)
     while found do
       if not skip or not file:find(skip) then
         local fname = wx.wxFileName(path, file):GetFullPath()
-        table.insert(content, fname)
+        if #masks < 2 then -- files already filtered by spec
+          table.insert(content, fname)
+        else -- need to filter by mask as spec includes multiple extensions
+          for _, mask in ipairs(masks) do
+            if file:find(mask) then
+              table.insert(content, fname)
+              break
+            end
+          end
+        end
       end
       found, file = dir:GetNext()
     end
   end
-  getDir(path, spec)
+  getDir(path)
 
   local prefix = '\001' -- prefix to sort directories first
   local shadow = {}
@@ -493,4 +518,25 @@ function ExpandPlaceholders(msg, ph)
     t = editor and nb:GetPageText(nb:GetPageIndex(editor)) or "",
   }
   return(msg:gsub('%%(%w)', function(p) return ph[p] or def[p] or '?' end))
+end
+
+function MergeSettings(localSettings, savedSettings)
+  for name in pairs(localSettings) do
+    if savedSettings[name] ~= nil
+    and type(savedSettings[name]) == type(localSettings[name]) then
+      if type(localSettings[name]) == 'table'
+      and next(localSettings[name]) ~= nil then
+        -- check every value in the table to make sure that it's possible
+        -- to add new keys to the table and they get correct default values
+        -- (even though that are absent in savedSettings)
+        for setting in pairs(localSettings[name]) do
+          if savedSettings[name][setting] ~= nil then
+            localSettings[name][setting] = savedSettings[name][setting]
+           end
+        end
+      else
+        localSettings[name] = savedSettings[name]
+      end
+    end
+  end
 end

@@ -97,6 +97,11 @@ ide = {
     staticanalyzer = {
       infervalue = false, -- off by default as it's a slower mode
     },
+    search = {
+      autocomplete = true,
+      contextlinesbefore = 2,
+      contextlinesafter = 2,
+    },
 
     toolbar = {
       icons = {},
@@ -568,9 +573,7 @@ do
       end
     end
   end
-
-  local notebook = ide.frame.notebook
-  if notebook:GetPageCount() == 0 then NewFile() end
+  if ide:GetEditorNotebook():GetPageCount() == 0 then NewFile() end
 end
 
 if app.postinit then app.postinit() end

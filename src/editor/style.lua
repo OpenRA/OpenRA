@@ -75,6 +75,7 @@ function StylesGetDefault()
       output = {},
       prompt = {},
       error = {},
+      searchmatchfile = {},
     },
 
     -- indicators
@@ -84,6 +85,7 @@ function StylesGetDefault()
       varglobal = {},
       varmasking = {},
       varmasked = {},
+      searchmatch = {},
     },
   }
 end
@@ -96,6 +98,7 @@ local markers = {
   output = {4, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(240, 240, 240)},
   prompt = {5, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, wx.wxColour(220, 220, 220)},
   error = {6, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(255, 220, 220)},
+  searchmatchfile = {7, wxstc.wxSTC_MARK_EMPTY, wx.wxBLACK, wx.wxColour(196, 0, 0)},
 }
 function StylesGetMarker(marker) return unpack(markers[marker] or {}) end
 function StylesRemoveMarker(marker) markers[marker] = nil end
@@ -236,6 +239,8 @@ local specialmapping = {
   auxwindow = function(editor,style)
     if not style then return end
 
+    -- don't color toolbars as they have their own color/style
+    local skipcolor = {wxAuiToolBar = true, wxToolBar = true}
     local default = wxstc.wxSTC_STYLE_DEFAULT
     local bg = style.bg and wx.wxColour(unpack(style.bg)) or editor:StyleGetBackground(default)
     local fg = style.fg and wx.wxColour(unpack(style.fg)) or editor:StyleGetForeground(default)
@@ -253,7 +258,7 @@ local specialmapping = {
       for child = 0, children:GetCount()-1 do
         local data = children:Item(child):GetData()
         local _, window = pcall(function() return data:DynamicCast("wxWindow") end)
-        if window and panes:Item(index).name ~= 'toolbar' then
+        if window and not skipcolor[window:GetClassInfo():GetClassName()] then
           window:SetBackgroundColour(bg)
           window:SetForegroundColour(fg)
           window:Refresh()
@@ -365,6 +370,8 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
     editor:IndicatorSetForeground(3, wx.wxColour(unpack(indic.varmasking and indic.varmasking.fg or defaultfg)))
     editor:IndicatorSetStyle(4, indic.varmasked and indic.varmasked.st or wxstc.wxSTC_INDIC_STRIKE)
     editor:IndicatorSetForeground(4, wx.wxColour(unpack(indic.varmasked and indic.varmasked.fg or defaultfg)))
+    editor:IndicatorSetStyle(5, indic.searchmatch and indic.searchmatch.st or wxstc.wxSTC_INDIC_BOX)
+    editor:IndicatorSetForeground(5, wx.wxColour(unpack(indic.searchmatch and indic.searchmatch.fg or {196, 0, 0})))
   end
 end
 

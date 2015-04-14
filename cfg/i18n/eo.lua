@@ -52,7 +52,7 @@ return {
   ["&Up"] = "&Supren", -- src\editor\findreplace.lua
   ["&View"] = "&Vidi", -- src\editor\menu_view.lua
   ["&Watch Window"] = "&Observada fenestro", -- src\editor\menu_view.lua
-  [".&bak on Replace"] = ".&bak post anstataŭigo", -- src\editor\findreplace.lua
+  [".bak on replace"] = ".bak post anstataŭigo", -- src\editor\findreplace.lua
   ["About %s"] = "Pri %s", -- src\editor\menu_help.lua
   ["Add To Scratchpad"] = "Aldoni al malnetdosiero", -- src\editor\editor.lua
   ["Add Watch Expression"] = "Aldoni observadaĵan esprimon", -- src\editor\editor.lua
@@ -171,8 +171,8 @@ return {
   ["Local console"] = "Loka konzolo", -- src\editor\gui.lua, src\editor\shellbox.lua
   ["Lua &Interpreter"] = "Interpretilo de Lua", -- src\editor\menu_project.lua
   ["Mapped remote request for '%s' to '%s'."] = "Mapi faran peton pri '%s' al '%s'.", -- src\editor\debugger.lua
-  ["Match &case"] = "Atenti &usklecon", -- src\editor\findreplace.lua
-  ["Match &whole word"] = "Atenti &plenan vorton", -- src\editor\findreplace.lua
+  ["Match case"] = "Atenti usklecon", -- src\editor\findreplace.lua
+  ["Match whole word"] = "Atenti plenan vorton", -- src\editor\findreplace.lua
   ["Mixed end-of-line encodings detected."] = "Detektis kodoprezentojn miksitajn linifinajn", -- src\editor\commands.lua
   ["Navigate"] = nil, -- src\editor\menu_search.lua
   ["New &File"] = "Nova &dosiero", -- src\editor\filetree.lua
@@ -211,10 +211,10 @@ return {
   ["Redo last edit undone"] = "Refari lastan redakton", -- src\editor\menu_edit.lua
   ["Refresh"] = "Refreŝigu", -- src\editor\menu_file.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "Peto por komenci novan sencimigan seancon malakceptis, ĉar seanco jam faratas.", -- src\editor\debugger.lua
-  ["Regular &expression"] = "Regul&esprimo", -- src\editor\findreplace.lua
+  ["Regular expression"] = "Regul&esprimo", -- src\editor\findreplace.lua
   ["Remote console"] = "Fora konzolo", -- src\editor\shellbox.lua
   ["Rename All Instances"] = "Renomigi ĉiujn aperaĵojn", -- src\editor\editor.lua
-  ["Replace A&ll"] = "Anstataŭi ĉ&ion", -- src\editor\findreplace.lua
+  ["Replace all"] = "Anstataŭi ĉion", -- src\editor\findreplace.lua
   ["Replace All Selections"] = "Anstataŭi ĉiujn elektojn", -- src\editor\editor.lua
   ["Replace"] = "Anstataŭi", -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "Anstataŭis UTF8-an signon per %s.", -- src\editor\commands.lua
@@ -300,7 +300,7 @@ return {
   ["View the watch window"] = "Vidi la observado-fenestron", -- src\editor\menu_view.lua
   ["Watch"] = "Observado", -- src\editor\debugger.lua
   ["Welcome to the interactive Lua interpreter."] = "Bonvenon al la interaga interpretilo de Lua.", -- src\editor\shellbox.lua
-  ["Wrap ar&ound"] = "&Ĉirkaŭflui", -- src\editor\findreplace.lua
+  ["Wrap around"] = "Ĉirkaŭflui", -- src\editor\findreplace.lua
   ["You must save the program first."] = "Vi unue devas konservi la programon.", -- src\editor\commands.lua
   ["Zoom In"] = "Zomi", -- src\editor\menu_view.lua
   ["Zoom Out"] = "Malzomi", -- src\editor\menu_view.lua
