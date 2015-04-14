@@ -467,7 +467,7 @@ function findReplace:RunInFiles(replace)
 
   -- save focus to restore after adding a page with search results
   local ctrl = ide:GetMainFrame():FindFocus()
-  local reseditor = findReplace.reseditor
+  local reseditor = self.reseditor
   if not reseditor or not pcall(function() reseditor:GetId() end) then
     reseditor = NewFile("Search Results")
     -- set file path to avoid treating results as unsaved document
@@ -518,11 +518,12 @@ function findReplace:RunInFiles(replace)
         event:Skip()
       end)
 
-    findReplace.reseditor = reseditor
+    self.reseditor = reseditor
   else
     ide:GetDocument(reseditor):SetActive()
   end
   reseditor.replace = replace -- keep track of the current status
+  reseditor:SetReadOnly(false)
   reseditor:SetText('')
 
   local findText = self.findCtrl:GetValue()
@@ -553,7 +554,9 @@ function findReplace:RunInFiles(replace)
         .."Review the changes and save this preview to apply them.\n"
         .."You can also make other changes; only lines with : will be updated.\n"
         .."Context lines (if any) are used as safety checks during the update.")
-      findReplace:Replace(true, reseditor)
+      self:Replace(true, reseditor)
+    else
+      reseditor:SetReadOnly(true)
     end
     reseditor:EnsureVisibleEnforcePolicy(reseditor:GetLineCount()-1)
   end
