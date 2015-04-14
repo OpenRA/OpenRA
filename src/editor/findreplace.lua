@@ -827,6 +827,17 @@ function findReplace:createPanel()
     end
   end
 
+  local function findReplaceAll()
+    updateLists()
+    if findReplace.replace then
+      if findReplace.infiles then
+        findReplace:RunInFiles(true)
+      else
+        findReplace:Replace(true)
+      end
+    end
+  end
+
   local function onPanelPaint()
     local dc = wx.wxBufferedPaintDC(ctrl)
     local psize = ctrl:GetClientSize()
@@ -917,11 +928,7 @@ function findReplace:createPanel()
 
   ctrl:Connect(ID_FINDNEXT, wx.wxEVT_COMMAND_MENU_SELECTED, findNext)
   ctrl:Connect(ID_FINDREPLACENEXT, wx.wxEVT_COMMAND_MENU_SELECTED, findReplaceNext)
-  ctrl:Connect(ID_FINDREPLACEALL, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function()
-      updateLists()
-      findReplace:Replace(true)
-    end)
+  ctrl:Connect(ID_FINDREPLACEALL, wx.wxEVT_COMMAND_MENU_SELECTED, findReplaceAll)
 
   ctrl:Connect(ID_FINDSETDIR, wx.wxEVT_COMMAND_MENU_SELECTED,
     function()
