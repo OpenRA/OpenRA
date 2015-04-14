@@ -523,14 +523,15 @@ function findReplace:RunInFiles(replace)
   else
     ide:GetDocument(reseditor):SetActive()
   end
-  if ctrl then ctrl:SetFocus() end
-
   reseditor.replace = replace -- keep track of the current status
   reseditor:SetText('')
 
   local findText = self.findCtrl:GetValue()
   self:SetStatus(TR("Searching for '%s'."):format(findText))
   wx.wxSafeYield() -- allow the status to update
+
+  -- return focus to the control that had it (changed by added results tab)
+  if ctrl then ctrl:SetFocus() end
 
   local startdir, mask = self:GetScope()
   local completed = self:ProcInFiles(startdir, mask or "*.*", self:GetFlags().SubDirs)
