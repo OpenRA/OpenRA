@@ -108,8 +108,9 @@ function findReplace:SetStatus(msg)
 end
 
 function findReplace:SetFind(text)
-  if text and self.findCtrl then
-    self.findCtrl:ChangeValue(text)
+  local ctrl = self.findCtrl
+  if text and ctrl then
+    if ctrl:GetValue() ~= text then ctrl:ChangeValue(text) end
     return text
   end
   return
