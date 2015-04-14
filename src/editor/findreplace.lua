@@ -213,10 +213,9 @@ function findReplace:Find(reverse)
   return self.foundString
 end
 
--- returns if something was found
+-- returns true if something was found
 -- [inFileRegister(pos)] passing function will
 -- register every position item was found
--- supposed for "Search/Replace in Files"
 
 function findReplace:FindAll(inFileRegister)
   if not self.panel then self:createPanel() end
@@ -242,10 +241,7 @@ function findReplace:FindAll(inFileRegister)
   return found
 end
 
--- returns if replacements were done
--- [inFileRegister(pos)] passing function will disable "undo"
--- registers every position item was found
--- supposed for "Search/Replace in Files"
+-- returns true if replacements were done
 
 local indicator = {SEARCHMATCH = 5}
 
@@ -300,8 +296,8 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
         editor:EndUndoAction()
         replaced = true
       end
-      self:SetStatus(("%s %s."):format(
-        TR("Replaced"), TR("%d instance", occurrences):format(occurrences)))
+      self:SetStatus(
+        TR("Replaced %d instance.", occurrences):format(occurrences))
     else
       editor:TargetFromSelection()
       -- check if there is anything selected as well as the user can
