@@ -425,8 +425,10 @@ function findReplace:ProcInFiles(startdir,mask,subdirs)
     if not IsDirectory(file) then
       self.curfilename = file
 
-      local filetext = FileRead(file, firstReadSize)
-      if filetext and not checkBinary(filetext, GetFileExt(file)) then
+      local filetext, err = FileRead(file, firstReadSize)
+      if not filetext then
+        DisplayOutputLn(TR("Can't open file '%s': %s"):format(file, err))
+      elseif not checkBinary(filetext, GetFileExt(file)) then
         -- read the rest if there is more to read in the file
         if #filetext == firstReadSize then filetext = FileRead(file) end
         if filetext and (not text or filetext:find(text)) then
