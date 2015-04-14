@@ -72,3 +72,8 @@ if [ ! -f FuzzyLogicLibrary.dll ]; then
 	cp ./FuzzyLogicLibrary/bin/Release/FuzzyLogicLibrary.dll .
 	rm -rf FuzzyLogicLibrary
 fi
+
+if [ ! -f SDL2-CS.dll ]; then
+	echo "Fetching SDL2-CS from GitHub."
+	wget https://github.com/OpenRA/SDL2-CS/releases/download/20140407/SDL2-CS.dll
+fi
