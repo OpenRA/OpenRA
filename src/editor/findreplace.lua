@@ -529,8 +529,9 @@ function findReplace:RunInFiles(replace)
   self:SetStatus(TR("Searching for '%s'."):format(findText))
   wx.wxSafeYield() -- allow the status to update
 
-  -- return focus to the control that had it (changed by added results tab)
-  if ctrl then ctrl:SetFocus() end
+  -- return focus to the control that had it if it's on the search panel
+  -- (as it could be changed by added results tab)
+  if ctrl and ctrl:GetParent():GetId() == self.panel:GetId() then ctrl:SetFocus() end
 
   local startdir, mask = self:GetScope()
   local completed = self:ProcInFiles(startdir, mask or "*.*", self:GetFlags().SubDirs)
