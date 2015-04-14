@@ -44,6 +44,7 @@ thirdparty/windows/lua51.dll
 thirdparty/windows/zlib1.dll
 thirdparty/windows/soft_oal.dll
 thirdparty/FuzzyLogicLibrary.dll
+thirdparty/SDL2-CS.dll
 
 # backup files by various editors
 *~
