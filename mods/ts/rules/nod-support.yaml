@@ -273,6 +273,7 @@ NAMISL:
 	Power:
 		Amount: -50
 	CanPowerDown:
+		IndicatorPalette: mouse
 	RequiresPower:
 	DisabledOverlay:
 	SupportPowerChargeBar:

@@ -19,6 +19,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Restore power when this trait is disabled.")]
 		public readonly bool CancelWhenDisabled = false;
 
+		public readonly string IndicatorImage = "poweroff";
+		public readonly string IndicatorSequence = "offline";
+
+		public readonly string IndicatorPalette = "chrome";
+
 		public object Create(ActorInitializer init) { return new CanPowerDown(init.Self, this); }
 	}
 

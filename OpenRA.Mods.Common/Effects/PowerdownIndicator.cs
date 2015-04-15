@@ -26,8 +26,8 @@ namespace OpenRA.Mods.Common.Effects
 			this.a = a;
 			canPowerDown = a.Trait<CanPowerDown>();
 
-			anim = new Animation(a.World, "poweroff");
-			anim.PlayRepeating("offline");
+			anim = new Animation(a.World, canPowerDown.Info.IndicatorImage);
+			anim.PlayRepeating(canPowerDown.Info.IndicatorSequence);
 		}
 
 		public void Tick(World world)
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (a.Destroyed || wr.World.FogObscures(a))
 				return SpriteRenderable.None;
 
-			return anim.Render(a.CenterPosition, wr.Palette("chrome"));
+			return anim.Render(a.CenterPosition, wr.Palette(canPowerDown.Info.IndicatorPalette));
 		}
 	}
 }
