@@ -292,4 +292,4 @@ NASTLH:
 		DisableSound: cloak5.aud
 		AffectsParent: true
 	Selectable:
-		Bounds: 124, 64, 15, 13
+		Bounds: 106, 60, 8, -15

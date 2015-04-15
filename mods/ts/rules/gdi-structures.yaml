@@ -240,7 +240,7 @@ GARADR:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 96, 116, 0, -28
+		Bounds: 96, 118, 0, -38
 	Health:
 		HP: 800
 	Armor:
@@ -279,7 +279,7 @@ GATECH:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Selectable:
-		Bounds: 110, 60, 3, -8
+		Bounds: 110, 60, 3, -4
 	Health:
 		HP: 500
 	Armor:
@@ -299,7 +299,7 @@ GAPLUG:
 		Name: GDI Upgrade Center
 		Description: Can be upgraded for additional technology.
 	Selectable:
-		Bounds: 115,120,0,-20
+		Bounds: 115,104,0,-24
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: proc, gatech
