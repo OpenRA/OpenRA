@@ -211,6 +211,7 @@ NARADR:
 		Type: Wood
 	RequiresPower:
 	CanPowerDown:
+		IndicatorPalette: mouse
 	ProvidesRadar:
 	InfiltrateForExploration:
 	DetectCloaked:
@@ -285,6 +286,7 @@ NASTLH:
 		Amount: -350
 	RequiresPower:
 	CanPowerDown:
+		IndicatorPalette: mouse
 	UpgradeActorsNear:
 		Upgrades: cloakgenerator
 		Range: 12c0
