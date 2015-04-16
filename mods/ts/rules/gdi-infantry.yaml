@@ -92,11 +92,11 @@ GHOST:
 	Tooltip:
 		Name: Ghost Stalker
 		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
-		BuildLimit: 1
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Prerequisites: ~gapile, gatech
+		BuildLimit: 1
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Ghost
