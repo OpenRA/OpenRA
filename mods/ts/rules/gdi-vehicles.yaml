@@ -171,6 +171,7 @@ HMEC:
 		LocalOffset: 640,-384,980, 640,384,980
 	RenderVoxels:
 	WithVoxelWalkerBody:
+		TickRate: 1
 
 SONIC:
 	Inherits: ^Tank
