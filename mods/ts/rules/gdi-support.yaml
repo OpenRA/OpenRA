@@ -1,0 +1,209 @@
+GAWALL:
+	Inherits: ^Wall
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 20
+		Prerequisites: ~structures.gdi
+	SoundOnDamageTransition:
+		DamagedSounds:
+		DestroyedSounds:
+	Valued:
+		Cost: 50
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Concrete Wall
+		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
+	Health:
+		HP: 300
+	Armor:
+		Type: Concrete
+	Crushable:
+		CrushClasses: heavywall
+	LineBuild:
+		NodeTypes: wall, turret
+
+
+GACTWR:
+	Inherits: ^Building
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Component Tower
+		Description: Modular tower for base defenses.
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 30
+		Prerequisites: gapile, ~structures.gdi
+	Building:
+	Selectable:
+		Bounds: 48, 48, 0, -12
+	DisabledOverlay:
+	-GivesBuildableArea:
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6c0
+	BodyOrientation:
+		QuantizedFacings: 32
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		UpgradeTypes: tower
+		UpgradeMinEnabledLevel: 1
+		Range: 5
+	AutoTarget:
+	Turreted:
+		ROT: 10
+		InitialFacing: 50
+	AttackTurreted:
+		UpgradeTypes: tower
+		UpgradeMinEnabledLevel: 1
+	CanPowerDown:
+	WithTurret@VULC:
+		UpgradeTypes: tower.vulcan
+		UpgradeMinEnabledLevel: 1
+		Recoils: no
+		Sequence: turret-vulcan
+	WithTurret@ROCKET:
+		UpgradeTypes: tower.rocket
+		UpgradeMinEnabledLevel: 1
+		Recoils: no
+		Sequence: turret-rocket
+	WithTurret@SAM:
+		UpgradeTypes: tower.sam
+		UpgradeMinEnabledLevel: 1
+		Recoils: no
+		Sequence: turret-sam
+	Armament@VULCPRIMARY:
+		UpgradeTypes: tower.vulcan
+		UpgradeMinEnabledLevel: 1
+		Weapon: VulcanTower
+		LocalOffset: 768,85,512
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
+	Armament@VULCSECONDARY:
+		UpgradeTypes: tower.vulcan
+		UpgradeMinEnabledLevel: 1
+		Name: secondary
+		Weapon: VulcanTower
+		LocalOffset: 768,-85,512
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
+	Armament@ROCKET:
+		UpgradeTypes: tower.rocket
+		UpgradeMinEnabledLevel: 1
+		Weapon: RPGTower
+		LocalOffset: 512,-128,512
+	Armament@SAM:
+		UpgradeTypes: tower.sam
+		UpgradeMinEnabledLevel: 1
+		Weapon: RedEye2
+		LocalOffset: 512,0,512
+	WithMuzzleFlash:
+		UpgradeTypes: tower.vulcan
+		UpgradeMinEnabledLevel: 1
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	LineBuildNode:
+		Types: turret
+	-RenderBuilding:
+	RenderBuildingWall:
+		Type: wall
+	Power@base:
+		Amount: -10
+	Power@turrets:
+		UpgradeTypes: tower
+		UpgradeMinEnabledLevel: 1
+		Amount: -20
+	Power@samextra:
+		UpgradeTypes: tower.sam
+		UpgradeMinEnabledLevel: 1
+		Amount: -10
+	Pluggable:
+		Upgrades:
+			tower.vulcan: tower, tower.vulcan
+			tower.rocket: tower, tower.rocket
+			tower.sam: tower, tower.sam
+
+GAVULC:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Vulcan Tower
+		Description: Basic base defense. \nRequires no power to operate.\n  Strong vs infantry and light armor\n  Cannot target Aircraft
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 40
+		Prerequisites: gactwr, gapile, ~structures.gdi
+	Plug:
+		Type: tower.vulcan
+	Power:
+		Amount: -20
+
+GAROCK:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: RPG Upgrade
+		Description: GDI Advanced base defense.\nRequires power to operate.\n  Strong vs armored ground units\n  Cannot target Aircraft
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 40
+		Prerequisites: gactwr, gapile, ~structures.gdi
+	Plug:
+		Type: tower.rocket
+	Power:
+		Amount: -20
+
+GACSAM:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: SAM. Upgrade
+		Description: GDI Anti-Air base defense. \nRequires power to operate.\n  Strong vs all Aircraft\n  Cannot target ground units
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 40
+		Prerequisites: gactwr, garadr, ~structures.gdi
+	Plug:
+		Type: tower.sam
+	Power:
+		Amount: -30
+
+GAPOWRUP:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Power Turbine
+		Description: Provides extra power generation.
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 10
+		Prerequisites: gapowr, ~structures.gdi
+	Plug:
+		Type: powrup
+	Power:
+		Amount: 50
+
+GAPLUG3:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Ion Cannon Uplink
+		Description: Enables use of the Ion Cannon.
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1000
+		Prerequisites: gaplug, gatech, ~structures.gdi
+	Plug:
+		Type: plug.ioncannon
+	Power:
+		Amount: -100

@@ -247,9 +247,6 @@
 		Speed: 71
 	RevealsShroud:
 		Range: 2c0
-	Armament:
-		Weapon: Pistola
-	AttackFrontal:
 	ProximityCaptor:
 		Types: CivilianInfantry
 	WithInfantryBody:

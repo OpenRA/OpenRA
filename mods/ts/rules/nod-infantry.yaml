@@ -1,0 +1,121 @@
+E3:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 20
+		Prerequisites: ~nahand
+	Valued:
+		Cost: 250
+	Tooltip:
+		Name: Rocket Infantry
+		Description: Anti-tank infantry.\n  Strong vs Tanks\n  Weak vs Infantry
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Rocket
+	Health:
+		HP: 100
+	Mobile:
+		Speed: 42
+	Armament@PRIMARY:
+		Weapon: Bazooka
+		LocalOffset: 128,0,640
+	AttackFrontal:
+	TakeCover:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+
+CYBORG:
+	Inherits: ^Infantry
+	Armor:
+		Type: Light
+	Valued:
+		Cost: 650
+	Tooltip:
+		Name: Cyborg Infantry
+		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Prerequisites: ~nahand
+	-Crushable:
+	Selectable:
+		Bounds: 14,30,0,-7
+		Voice: Cyborg
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 300
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	Passenger:
+	RevealsShroud:
+		Range: 5c0
+	Armament:
+		Weapon: Vulcan3
+	AttackFrontal:
+	TakeCover:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+
+CYC2:
+	Inherits: ^Infantry
+	Armor:
+		Type: Heavy
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Cyborg Commando
+		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Prerequisites: ~nahand, natech
+	-Crushable:
+	Selectable:
+		Bounds: 14,30,0,-7
+		Voice: CyborgCommando
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 500
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	Passenger:
+	RevealsShroud:
+		Range: 7c0
+	Armament:
+		Weapon: CyCannon
+		LocalOffset: 170,85,683
+	AttackFrontal:
+	TakeCover:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+
+MHIJACK:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Prerequisites: ~nahand, natech # natech must be natmpl
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Mutant Hijacker
+		Description: Hijacks enemy vehicles. Unarmed\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Hijacker
+	Health:
+		HP: 300
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	Mobile:
+		Speed: 99
+	Captures:
+		CaptureTypes: Vehicle
+	RevealsShroud:
+		Range: 6c0
+	-AutoTarget:
+	TakeCover:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2

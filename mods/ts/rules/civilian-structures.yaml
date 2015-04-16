@@ -1102,19 +1102,6 @@ CTVEGA:
 	Health:
 		HP: 100
 
-GAGREEN:
-	Inherits: ^CivBuilding
-	Tooltip:
-		Name: Green Building
-	Building:
-		Adjacent: 3
-		Footprint: x
-		Dimensions: 1, 1
-	Armor:
-		Type: concrete
-	Health:
-		HP: 150
-
 GAKODK:
 	Inherits: ^CivBuilding
 	Tooltip:
@@ -1213,6 +1200,33 @@ GAOLDCC6:
 	RenderBuilding:
 		Palette: player
 
+GASAND:
+	Inherits: ^Wall
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1000
+		Prerequisites: ~disabled
+	SoundOnDamageTransition:
+		DamagedSounds: sandbag1.aud
+		DestroyedSounds: sandbag1.aud
+	Valued:
+		Cost: 25
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Sandbags
+		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+	Health:
+		HP: 250
+	Armor:
+		Type: Light
+	LineBuild:
+		NodeTypes: sandbags
+	LineBuildNode:
+		Types: sandbags
+	RenderBuildingWall:
+		Type: sandbags
+
 GASPOT:
 	Inherits: ^CivBuilding
 	Tooltip:
@@ -1255,6 +1269,28 @@ GALITE:
 #		Sequence: lighting
 	Selectable:
 		Bounds: 25, 35, 0, -12
+
+GAICBM:
+	Inherits: ^Building
+	Valued:
+		Cost: 800
+	-AcceptsSupplies:
+	Tooltip:
+		Name: Deployed ICBM
+	-GivesBuildableArea:
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5c0
+	Transforms:
+		IntoActor: icbm
+		Offset: 1,1
+		Facing: 96
+		TransformSounds: place2.aud
+		NoTransformSounds:
+	-WithDeathAnimation:
 
 NAMNTK:
 	Inherits: ^CivBuilding

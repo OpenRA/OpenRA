@@ -61,17 +61,27 @@ Packages:
 	~ecache01.mix:CRC32
 
 Rules:
-	./mods/ts/rules/misc.yaml
 	./mods/ts/rules/ai.yaml
-	./mods/ts/rules/civilian.yaml
-	./mods/ts/rules/civilian-vehicles.yaml
+	./mods/ts/rules/misc.yaml
 	./mods/ts/rules/player.yaml
 	./mods/ts/rules/world.yaml
-	./mods/ts/rules/aircraft.yaml
 	./mods/ts/rules/defaults.yaml
-	./mods/ts/rules/infantry.yaml
-	./mods/ts/rules/structures.yaml
-	./mods/ts/rules/vehicles.yaml
+	./mods/ts/rules/aircraft.yaml
+	./mods/ts/rules/civilian-infantry.yaml
+	./mods/ts/rules/civilian-structures.yaml
+	./mods/ts/rules/civilian-vehicles.yaml
+	./mods/ts/rules/gdi-infantry.yaml
+	./mods/ts/rules/gdi-structures.yaml
+	./mods/ts/rules/gdi-support.yaml
+	./mods/ts/rules/gdi-vehicles.yaml
+	./mods/ts/rules/nod-infantry.yaml
+	./mods/ts/rules/nod-structures.yaml
+	./mods/ts/rules/nod-support.yaml
+	./mods/ts/rules/nod-vehicles.yaml
+	./mods/ts/rules/shared-infantry.yaml
+	./mods/ts/rules/shared-structures.yaml
+	./mods/ts/rules/shared-support.yaml
+	./mods/ts/rules/shared-vehicles.yaml
 	./mods/ts/rules/trees.yaml
 
 Weapons:

@@ -1,0 +1,206 @@
+APC:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Amphibious APC
+		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Vehicles\n  Weak vs Infantry
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 30
+		Prerequisites: ~gaweap, gapile
+	Mobile:
+		ROT: 5
+		Speed: 113
+	Health:
+		HP: 200
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 5c0
+	Turreted:
+		ROT: 10
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		PipCount: 5
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+HVR:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 900
+	Tooltip:
+		Name: Hover MLRS
+		Description: Hover Multi-Launch Rocket System
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 50
+		Prerequisites: ~gaweap, garadr
+		Hothey: v
+	Mobile:
+		Speed: 99
+		TerrainSpeeds:
+			Clear: 100
+			Road: 100
+			Rail: 100
+			DirtRoad: 100
+			Rough: 100
+			Water: 100
+			Tiberium: 100
+			BlueTiberium: 100
+	Health:
+		HP: 230
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 7c0
+	Armament:
+		Weapon: HoverMissile
+		LocalOffset: 0,171,384, 0,-171,384
+	Turreted:
+		ROT: 7
+		Offset: -128,0,85
+	AttackTurreted:
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	WithVoxelTurret:
+	Hovers:
+
+SMECH:
+	Inherits: ^Tank
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Wolverine
+		Description: Small Mech
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 10
+		Prerequisites: ~gaweap
+	Mobile:
+		ROT: 5
+		Speed: 99
+	Health:
+		HP: 800
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6c0
+	AttackFrontal:
+	AutoTarget:
+	Armament:
+		Weapon: AssaultCannon
+	RenderSprites:
+	WithInfantryBody:
+	Selectable:
+		Voices: Mech
+		Bounds: 20, 32, 0, -8
+
+MMCH:
+	Inherits: ^Tank
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Titan
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 30
+		Prerequisites: ~gaweap
+	Mobile:
+		ROT: 5
+		Speed: 56
+		Crushes: wall, crate, infantry
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 8c0
+	RenderSprites:
+	WithInfantryBody:
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+	WithTurret:
+		Recoils: no
+	Armament:
+		Weapon: 120mm
+		Recoil: 127
+		RecoilRecovery: 26
+	RenderVoxels:
+	WithVoxelBarrel:
+		LocalOffset: -128, 85, 256
+	AutoTarget:
+	Selectable:
+		Bounds: 30, 42, 0, -8
+
+HMEC:
+	Inherits: ^Tank
+	Valued:
+		Cost: 3000
+	Tooltip:
+		Name: Mammoth Mk. II
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 80
+		Prerequisites: ~gaweap, gatech
+	Mobile:
+		ROT: 3
+		Speed: 42
+		Crushes: wall, crate, infantry
+	Health:
+		HP: 800
+	SelfHealing:
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 8c0
+	RenderSprites:
+	AttackFrontal:
+	AutoTarget:
+	Armament@MISSILES:
+		Weapon: MammothTusk
+		LocalOffset: -128,-384,980, -128,384,980
+	Armament@RAILGUN:
+		Weapon: MechRailgun
+		LocalOffset: 640,-384,980, 640,384,980
+	RenderVoxels:
+	WithVoxelWalkerBody:
+
+SONIC:
+	Inherits: ^Tank
+	Valued:
+		Cost: 1300
+	Tooltip:
+		Name: Disruptor
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 70
+		Prerequisites: ~gaweap, gatech
+	Mobile:
+		ROT: 4
+		Speed: 56
+		Crushes: wall, crate, infantry
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 7c0
+	Armament:
+		Weapon: SonicZap
+		LocalOffset: -50,0,410
+	AttackTurreted:
+	Turreted:
+		ROT: 5
+		Offset: -170,0,0
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	WithVoxelTurret:
