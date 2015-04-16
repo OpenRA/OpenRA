@@ -2,6 +2,7 @@ uniform sampler2D DiffuseTexture, Palette;
 
 varying vec4 TexCoord;
 varying vec4 ChannelMask;
+varying vec4 DepthMask;
 
 void main()
 {
