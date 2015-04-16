@@ -644,10 +644,6 @@ gaoldcc6:
 	idle: gtoldcc6
 		ShadowStart: 2
 
-gagreen:
-	idle: gagreen
-		ShadowStart: 2
-
 gakodk:
 	idle: gtkodk
 		ShadowStart: 3
