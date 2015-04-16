@@ -70,7 +70,6 @@ CHAMSPY:
 	WithDisguisingInfantryBody:
 		IdleSequences: idle1,idle2
 
-
 MUTANT:
 	Inherits: ^Infantry
 	Valued:
