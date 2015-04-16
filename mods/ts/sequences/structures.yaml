@@ -132,6 +132,11 @@ gapile:
 		Offset: 0, 0
 		UseTilesetCode: false
 
+gapave:
+	icon: paveicon
+		Offset: 0, 0
+		UseTilesetCode: false
+
 gaweap:
 	Defaults:
 		Offset: -12, -42

@@ -160,6 +160,7 @@ World:
 		AllowUnderActors: true
 		TerrainType: BlueTiberium
 	PathfinderDebugOverlay:
+	BuildableTerrainLayer:
 	TerrainGeometryOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
