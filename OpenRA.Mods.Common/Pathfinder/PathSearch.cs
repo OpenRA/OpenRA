@@ -104,14 +104,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 				var neighborCell = Graph[neighborCPos];
 
 				// Cost is even higher; next direction:
-				if (gCost >= neighborCell.CostSoFar)
+				if (neighborCell.Status == CellStatus.Closed || gCost >= neighborCell.CostSoFar)
 					continue;
 
 				// Now we may seriously consider this direction using heuristics. If the cell has
 				// already been processed, we can reuse the result (just the difference between the
 				// estimated total and the cost so far
 				int hCost;
-				if (neighborCell.Status == CellStatus.Open || neighborCell.Status == CellStatus.Closed)
+				if (neighborCell.Status == CellStatus.Open)
 					hCost = neighborCell.EstimatedTotal - neighborCell.CostSoFar;
 				else
 					hCost = heuristic(neighborCPos);
