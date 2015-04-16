@@ -4,7 +4,6 @@
 local maxlines = 8
 local row_height = 46
 local row_width = 450
-local win = ide.osname == 'Windows'
 
 function CommandBarShow(params)
   local onDone, onUpdate, onItem, onSelection, defaultText, selectedText =

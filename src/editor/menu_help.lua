@@ -32,7 +32,7 @@ local helpMenu = wx.wxMenu{
 -- do not translate Help menu on Mac as it won't merge with "standard" menus
 menuBar:Append(helpMenu, ide.osname == 'Macintosh' and "&Help" or TR("&Help"))
 
-local function DisplayAbout(event)
+local function displayAbout(event)
   local logo = ide:GetAppName().."/"..GetIDEString("logo")
   local logoimg = wx.wxFileName(logo):FileExists() and
     ([[<tr><td><img src="%s"></td></tr>]]):format(logo) or ""
@@ -111,7 +111,7 @@ local function DisplayAbout(event)
   dlg:Destroy()
 end
 
-frame:Connect(ID_ABOUT, wx.wxEVT_COMMAND_MENU_SELECTED, DisplayAbout)
+frame:Connect(ID_ABOUT, wx.wxEVT_COMMAND_MENU_SELECTED, displayAbout)
 for item, page in pairs(urls) do
   frame:Connect(item, wx.wxEVT_COMMAND_MENU_SELECTED,
     function() wx.wxLaunchDefaultBrowser(url..page, 0) end)

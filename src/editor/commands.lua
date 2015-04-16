@@ -505,7 +505,7 @@ function SaveOnExit(allow_cancel)
   -- if all documents have been saved or refused to save, then mark those that
   -- are still modified as not modified (they don't need to be saved)
   -- to keep their tab names correct
-  for id, document in pairs(openDocuments) do
+  for _, document in pairs(openDocuments) do
     if document.isModified then document:SetModified(false) end
   end
 

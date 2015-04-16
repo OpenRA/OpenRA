@@ -270,7 +270,7 @@ function ide:ExecuteCommand(cmd, wdir, callback, endcallback)
 end
 
 function ide:CreateImageList(group, ...)
-  local log = wx.wxLogNull() -- disable error reporting in popup
+  local _ = wx.wxLogNull() -- disable error reporting in popup
   local size = wx.wxSize(16,16)
   local imglist = wx.wxImageList(16,16)
   for i = 1, select('#', ...) do

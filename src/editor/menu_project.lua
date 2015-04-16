@@ -97,7 +97,7 @@ function ProjectUpdateInterpreters()
   table.sort(names)
 
   interpreters = {}
-  for i, file in ipairs(names) do
+  for _, file in ipairs(names) do
     local inter = ide.interpreters[file]
     local id = ID("debug.interpreter."..file)
     inter.fname = file
@@ -322,7 +322,6 @@ frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   end)
 frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
-    local editor = GetEditor()
     event:Enable(ide.interpreter and ide.interpreter.fattachdebug and true or false)
     ide.frame.menuBar:Check(event:GetId(), debugger.listening and true or false)
   end)

@@ -57,6 +57,6 @@ ide.proto.Debugger = {__index = {
 }}
 
 ide.proto.ID = {
-  __index = function(t, id) return _G['ID_'..id] end,
-  __call = function(t, id) return IDgen(id) end,
+  __index = function(_, id) return _G['ID_'..id] end,
+  __call = function(_, id) return IDgen(id) end,
 }
