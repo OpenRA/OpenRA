@@ -1154,7 +1154,6 @@ local function debuggerCreateWatchWindow()
 
   function watchCtrl:GetItemFullExpression(item)
     local expr = ''
-    local origitem = item
     while true do
       local name = watchCtrl:GetItemName(item)
       expr = (watchCtrl:IsWatch(item)
@@ -1165,7 +1164,7 @@ local function debuggerCreateWatchWindow()
       item = watchCtrl:GetItemParent(item)
       if not item:IsOk() then break end
     end
-    return expr
+    return expr, item:IsOk() and item or nil
   end
 
   function watchCtrl:CopyItemValue(item)
@@ -1183,7 +1182,7 @@ local function debuggerCreateWatchWindow()
   end
 
   function watchCtrl:UpdateItemValue(item, value)
-    local expr = self:GetItemFullExpression(item)
+    local expr, itemupd = self:GetItemFullExpression(item)
 
     if debugger.running then debugger.update() end
     if debugger.server and not debugger.running
@@ -1191,9 +1190,9 @@ local function debuggerCreateWatchWindow()
       copas.addthread(function ()
         local _, _, err = debugger.execute(expr..'='..value)
         if err then
-          watchCtrl:SetItemText(origitem, 'error: '..err:gsub("%[.-%]:%d+:%s+",""))
-        else
-          updateWatchesSync(item)
+          watchCtrl:SetItemText(item, 'error: '..err:gsub("%[.-%]:%d+:%s+",""))
+        elseif itemupd then
+          updateWatchesSync(itemupd)
         end
         updateStackSync()
       end)
