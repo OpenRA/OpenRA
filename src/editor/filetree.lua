@@ -537,7 +537,8 @@ local function treeSetConnectorsAndIcons(tree)
         table.insert(extlist, 1, {id, '.'..ext})
         menu:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, function()
           filetree.settings.extensionignore[ext] = nil
-          saveSettingsAndRefresh()
+          saveSettings()
+          refreshChildren()
         end)
       end
       local _, _, hideextpos = ide:FindMenuItem(ID_HIDEEXTENSION, menu)
