@@ -369,9 +369,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool ShowPaletteDropdown(DropDownButtonWidget dropdown, World world)
 		{
-			Func<PaletteFromFile, ScrollItemWidget, ScrollItemWidget> setupItem = (palette, itemTemplate) =>
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (name, itemTemplate) =>
 			{
-				var name = palette.Name;
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => currentPalette == name,
 					() => currentPalette = name);
@@ -380,7 +379,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			var palettes = world.WorldActor.TraitsImplementing<PaletteFromFile>();
+			var palettes = world.WorldActor.TraitsImplementing<IProvidesAssetBrowserPalettes>()
+				.SelectMany(p => p.PaletteNames);
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, palettes, setupItem);
 			return true;
 		}

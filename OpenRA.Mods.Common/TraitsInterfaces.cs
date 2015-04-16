@@ -71,4 +71,9 @@ namespace OpenRA.Mods.Common.Traits
 		CVec DeliveryOffset { get; }
 		bool AllowDocking { get; }
 	}
+
+	public interface IProvidesAssetBrowserPalettes
+	{
+		IEnumerable<string> PaletteNames { get; }
+	}
 }

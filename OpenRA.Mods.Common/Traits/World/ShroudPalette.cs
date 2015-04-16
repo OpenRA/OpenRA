@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new ShroudPalette(this); }
 	}
 
-	class ShroudPalette : ILoadsPalettes
+	class ShroudPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly ShroudPaletteInfo info;
 
@@ -58,5 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			Color.FromArgb(128, 0, 0, 0),
 			Color.FromArgb(64, 0, 0, 0)
 		};
+
+		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
 	}
 }

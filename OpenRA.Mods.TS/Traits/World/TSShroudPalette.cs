@@ -9,8 +9,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits
@@ -24,7 +26,7 @@ namespace OpenRA.Mods.TS.Traits
 		public object Create(ActorInitializer init) { return new TSShroudPalette(this); }
 	}
 
-	class TSShroudPalette : ILoadsPalettes
+	class TSShroudPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly TSShroudPaletteInfo info;
 
@@ -41,5 +43,7 @@ namespace OpenRA.Mods.TS.Traits
 
 			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => makeColor(i))));
 		}
+
+		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
 	}
 }
