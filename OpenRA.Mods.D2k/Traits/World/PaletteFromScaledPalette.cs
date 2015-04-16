@@ -8,8 +8,10 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
@@ -35,7 +37,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public object Create(ActorInitializer init) { return new PaletteFromScaledPalette(this); }
 	}
 
-	class PaletteFromScaledPalette : ILoadsPalettes
+	class PaletteFromScaledPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly PaletteFromScaledPaletteInfo info;
 		public PaletteFromScaledPalette(PaletteFromScaledPaletteInfo info) { this.info = info; }
@@ -45,6 +47,8 @@ namespace OpenRA.Mods.D2k.Traits
 			var remap = new ScaledPaletteRemap(info.Scale, info.Offset);
 			wr.AddPalette(info.Name, new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
 		}
+
+		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
 	}
 
 	class ScaledPaletteRemap : IPaletteRemap

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new PaletteFromCurrentTileset(init.World, this); }
 	}
 
-	class PaletteFromCurrentTileset : ILoadsPalettes
+	class PaletteFromCurrentTileset : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly World world;
 		readonly PaletteFromCurrentTilesetInfo info;
@@ -41,5 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			wr.AddPalette(info.Name, new ImmutablePalette(GlobalFileSystem.Open(world.TileSet.Palette), info.ShadowIndex), info.AllowModifiers);
 		}
+
+		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
 	}
 }
