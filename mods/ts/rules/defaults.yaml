@@ -24,6 +24,7 @@
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
 	RepairableBuilding:
+		IndicatorPalette: mouse
 	EngineerRepairable:
 	EmitInfantryOnSell@gdi:
 		ActorTypes: e1, e1, e2, medic

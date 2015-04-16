@@ -25,6 +25,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int[] RepairBonuses = { 100, 150, 175, 200, 220, 240, 260, 280, 300 };
 		public readonly bool CancelWhenDisabled = false;
 
+		public readonly string IndicatorImage = "allyrepair";
+		public readonly string IndicatorSequence = "repair";
+
+		[Desc("Overrides the IndicatorPalettePrefix.")]
+		public readonly string IndicatorPalette = "";
+
+		[Desc("Suffixed by the interal repairing player name.")]
 		public readonly string IndicatorPalettePrefix = "player";
 
 		public object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
@@ -61,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 					self.World.AddFrameEndTask(w =>
 					{
 						if (!self.IsDead)
-							w.Add(new RepairIndicator(self, Info.IndicatorPalettePrefix));
+							w.Add(new RepairIndicator(self));
 					});
 				}
 			}
