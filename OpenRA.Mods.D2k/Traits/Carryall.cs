@@ -122,6 +122,9 @@ namespace OpenRA.Mods.D2k.Traits
 		// Reserve the carryable so its ours exclusively
 		public bool ReserveCarryable(Actor carryable)
 		{
+			if (Carrying != null)
+				return false;
+
 			if (carryable.Trait<Carryable>().Reserve(self))
 			{
 				Carrying = carryable;
@@ -144,6 +147,7 @@ namespace OpenRA.Mods.D2k.Traits
 			}
 
 			IsBusy = false;
+			Carrying = null;
 		}
 
 		// INotifyKilled
@@ -177,6 +181,7 @@ namespace OpenRA.Mods.D2k.Traits
 		// Called when released
 		public void CarryableReleased()
 		{
+			IsBusy = false;
 			IsCarrying = false;
 			anim = null;
 		}

@@ -64,7 +64,9 @@ namespace OpenRA.Mods.D2k.Traits
 			if (clientInitialActivity != null)
 				cargo.QueueActivity(Game.CreateObject<Activity>(clientInitialActivity));
 
-			cargo.Trait<Carryable>().Destination = location;
+			var carryable = cargo.Trait<Carryable>();
+			carryable.Destination = location;
+			carryable.Reserve(carrier);
 
 			carrier.Trait<Carryall>().AttachCarryable(cargo);
 

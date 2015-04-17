@@ -116,6 +116,9 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public bool Reserve(Actor carrier)
 		{
+			if (Reserved)
+				return false;
+
 			if ((self.Location - Destination).Length < info.MinDistance)
 			{
 				MovementCancelled(self);
