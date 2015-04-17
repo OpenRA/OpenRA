@@ -93,6 +93,7 @@ PROC:
 		Palette: effect
 	Power:
 		Amount: -30
+	ProvidesCustomPrerequisite@buildingname:
 
 GASILO:
 	Inherits: ^Building

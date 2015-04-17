@@ -23,7 +23,6 @@ GAWALL:
 	LineBuild:
 		NodeTypes: wall, turret
 
-
 GACTWR:
 	Inherits: ^Building
 	Valued:
@@ -128,6 +127,7 @@ GACTWR:
 			tower.vulcan: tower, tower.vulcan
 			tower.rocket: tower, tower.rocket
 			tower.sam: tower, tower.sam
+	ProvidesCustomPrerequisite@buildingname:
 
 GAVULC:
 	Inherits: ^BuildingPlug
