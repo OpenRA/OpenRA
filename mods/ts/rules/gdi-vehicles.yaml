@@ -39,7 +39,6 @@ HVR:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Prerequisites: ~gaweap, garadr
-		Hothey: v
 	Mobile:
 		Speed: 99
 		TerrainSpeeds:
