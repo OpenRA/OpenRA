@@ -141,6 +141,7 @@ end
 function FileSysGetRecursive(path, recursive, spec, skip)
   local content = {}
   local sep = GetPathSeparator()
+  local queue = {path}
 
   -- recursion is done in all folders but only those folders that match
   -- the spec are returned. This is the pattern that matches the spec.
@@ -153,9 +154,15 @@ function FileSysGetRecursive(path, recursive, spec, skip)
   end
   if #masks >= 2 then spec = nil end
 
+  local dir = wx.wxDir()
   local function getDir(path)
-    local dir = wx.wxDir(path)
-    if not dir:IsOpened() then return end
+    dir:Open(path)
+    if not dir:IsOpened() then
+      if DisplayOutputLn and TR then
+        DisplayOutputLn(TR("Can't open '%s': %s"):format(path, wx.wxSysErrorMsg()))
+      end
+      return
+    end
 
     local _ = wx.wxLogNull() -- disable error reporting; will report as needed
     local found, file = dir:GetFirst("*", wx.wxDIR_DIRS)
@@ -173,7 +180,7 @@ function FileSysGetRecursive(path, recursive, spec, skip)
         -- Skip the processing if it does as it could lead to infinite
         -- recursion with circular references created by symlinks.
         if recursive and select(2, fname:gsub(EscapeMagic(file..sep),'')) <= 2 then
-          getDir(fname)
+          table.insert(queue, fname)
         end
       end
       found, file = dir:GetNext()
@@ -196,7 +203,7 @@ function FileSysGetRecursive(path, recursive, spec, skip)
       found, file = dir:GetNext()
     end
   end
-  getDir(path)
+  while #queue > 0 do getDir(table.remove(queue)) end
 
   local prefix = '\001' -- prefix to sort directories first
   local shadow = {}
