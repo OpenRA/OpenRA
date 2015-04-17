@@ -107,6 +107,7 @@ NAHAND:
 		Sequence: production-light
 	Power:
 		Amount: -20
+	ProvidesCustomPrerequisite@buildingname:
 
 NAWEAP:
 	Inherits: ^Building
@@ -149,6 +150,7 @@ NAWEAP:
 		Sequence: bib
 	Power:
 		Amount: -30
+	ProvidesCustomPrerequisite@buildingname:
 
 NAHPAD:
 	Inherits: ^Building
@@ -188,6 +190,7 @@ NAHPAD:
 		Amount: -10
 	Selectable:
 		Bounds: 78, 54, 0, -8
+	ProvidesCustomPrerequisite@buildingname:
 
 NARADR:
 	Inherits: ^Building
@@ -228,6 +231,7 @@ NARADR:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
 		Amount: -50
+	ProvidesCustomPrerequisite@buildingname:
 
 NATECH:
 	Inherits: ^Building
@@ -257,6 +261,7 @@ NATECH:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+	ProvidesCustomPrerequisite@buildingname:
 
 NASTLH:
 	Inherits: ^Building

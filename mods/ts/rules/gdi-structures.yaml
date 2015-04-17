@@ -58,6 +58,7 @@ GAPOWR:
 		UpgradeTypes: powrup.b
 		UpgradeMinEnabledLevel: 1
 		Amount: 50
+	ProvidesCustomPrerequisite@buildingname:
 
 GAPILE:
 	Inherits: ^Building
@@ -100,6 +101,7 @@ GAPILE:
 		Sequence: idle-flag
 	Power:
 		Amount: -20
+	ProvidesCustomPrerequisite@buildingname:
 
 GAWEAP:
 	Inherits: ^Building
@@ -146,6 +148,7 @@ GAWEAP:
 		Sequence: bib
 	Power:
 		Amount: -30
+	ProvidesCustomPrerequisite@buildingname:
 
 GAHPAD:
 	Inherits: ^Building
@@ -185,6 +188,7 @@ GAHPAD:
 		Amount: -10
 	Selectable:
 		Bounds: 88, 66, 0, -5
+	ProvidesCustomPrerequisite@buildingname:
 
 GADEPT:
 	Inherits: ^Building
@@ -224,6 +228,7 @@ GADEPT:
 		UseDeathTypeSuffix: false
 	Power:
 		Amount: -30
+	ProvidesCustomPrerequisite@buildingname:
 
 GARADR:
 	Inherits: ^Building
@@ -264,6 +269,7 @@ GARADR:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
 		Amount: -50
+	ProvidesCustomPrerequisite@buildingname:
 
 GATECH:
 	Inherits: ^Building
@@ -293,6 +299,7 @@ GATECH:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+	ProvidesCustomPrerequisite@buildingname:
 
 GAPLUG:
 	Inherits: ^Building
@@ -365,3 +372,4 @@ GAPLUG:
 		UpgradeTypes: plug.ioncannonb
 		UpgradeMinEnabledLevel: 1
 		Sequence: idle-ioncannonb
+	ProvidesCustomPrerequisite@buildingname:
