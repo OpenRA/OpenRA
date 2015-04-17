@@ -66,7 +66,7 @@ ORCA:
 		Cost: 1000
 	Tooltip:
 		Name: Orca Fighter
-		Description: Helicopter Gunship with Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+		Description: Fast assault gunship with\ndual missile launchers.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
@@ -104,6 +104,7 @@ ORCAB:
 		Cost: 1600
 	Tooltip:
 		Name: Orca Bomber
+		Description: Heavy bomber.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
@@ -171,6 +172,7 @@ TRNSPORT:
 		Cost: 750
 	Tooltip:
 		Name: Carryall
+		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
@@ -198,6 +200,7 @@ SCRIN:
 		Cost: 1500
 	Tooltip:
 		Name: Banshee Fighter
+		Description: Advanced fighter-bomber craft\nwith twin plasma cannons.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
@@ -236,6 +239,7 @@ APACHE:
 		Cost: 1000
 	Tooltip:
 		Name: Harpy
+		Description: Anti-personnel support gunship\narmed with dual chain guns.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Vehicles
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
