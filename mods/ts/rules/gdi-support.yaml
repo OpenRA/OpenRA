@@ -134,7 +134,7 @@ GAVULC:
 		Cost: 150
 	Tooltip:
 		Name: Vulcan Tower
-		Description: Basic base defense. \nRequires no power to operate.\n  Strong vs infantry and light armor\n  Cannot target Aircraft
+		Description: Basic base defense.\nDoes not require power to operate.\n  Strong vs Infantry, Light armor\n  Weak vs Aircraft
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
@@ -150,7 +150,7 @@ GAROCK:
 		Cost: 600
 	Tooltip:
 		Name: RPG Upgrade
-		Description: GDI Advanced base defense.\nRequires power to operate.\n  Strong vs armored ground units\n  Cannot target Aircraft
+		Description: GDI Advanced base defense.\nDoes not require power to operate.\n  Strong vs Armored ground units\n  Weak vs Aircraft
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
@@ -165,8 +165,8 @@ GACSAM:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: SAM. Upgrade
-		Description: GDI Anti-Air base defense. \nRequires power to operate.\n  Strong vs all Aircraft\n  Cannot target ground units
+		Name: SAM Upgrade
+		Description: GDI Anti-Air base defense.\nDoes not require power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40

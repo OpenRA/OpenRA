@@ -8,7 +8,7 @@ NAPOWR:
 		Cost: 300
 	Tooltip:
 		Name: Nod Power Plant
-		Description: Provides power for other structures
+		Description: Provides power for other structures.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -43,7 +43,7 @@ NAAPWR:
 		Cost: 600
 	Tooltip:
 		Name: Advanced Power Plant
-		Description: Provides more power for structures
+		Description: Provides twice as much power as\nthe normal Power Plant.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -78,7 +78,7 @@ NAHAND:
 		Cost: 300
 	Tooltip:
 		Name: Hand of Nod
-		Description: Produces infantry
+		Description: Produces infantry.
 	ProvidesCustomPrerequisite:
 		Prerequisite: barracks
 	Building:
@@ -114,7 +114,7 @@ NAWEAP:
 		Cost: 2000
 	Tooltip:
 		Name: Nod War Factory
-		Description: Assembly point for\nvehicle reinforcements
+		Description: Produces vehicles.
 	ProvidesCustomPrerequisite:
 		Prerequisite: factory
 	Buildable:
@@ -154,7 +154,7 @@ NAHPAD:
 		Cost: 500
 	Tooltip:
 		Name: Helipad
-		Description: Produces, rearms and\nrepairs helicopters
+		Description: Produces, rearms and\nrepairs helicopters.
 	Buildable:
 		BuildPaletteOrder: 60
 		Queue: Building
@@ -197,7 +197,7 @@ NARADR:
 		Cost: 1000
 	Tooltip:
 		Name: Nod Radar
-		Description: Provides radar screen
+		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	ProvidesCustomPrerequisite:
 		Prerequisite: radar
 	Building:
@@ -236,7 +236,7 @@ NATECH:
 		Cost: 2000
 	Tooltip:
 		Name: Nod Tech Center
-		Description: Required for high-\ntech research
+		Description: Provides access to advanced Nod technologies.
 	ProvidesCustomPrerequisite:
 		Prerequisite: tech
 	Building:
@@ -261,7 +261,7 @@ NASTLH:
 		Cost: 2500
 	Tooltip:
 		Name: Stealth Generator
-		Description: Generates a cloaking field
+		Description: Generates a cloaking field\nto hide your forces from the enemy.
 	Buildable:
 		BuildPaletteOrder: 80
 		Prerequisites: proc, natech, ~structures.nod

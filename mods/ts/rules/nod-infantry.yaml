@@ -8,7 +8,7 @@ E3:
 		Cost: 250
 	Tooltip:
 		Name: Rocket Infantry
-		Description: Anti-tank infantry.\n  Strong vs Tanks\n  Weak vs Infantry
+		Description: Anti-tank infantry.\n  Strong vs Vehicles, Aircraft, Buildings\n  Weak vs Infantry
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Rocket
@@ -32,7 +32,7 @@ CYBORG:
 		Cost: 650
 	Tooltip:
 		Name: Cyborg Infantry
-		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
@@ -65,7 +65,7 @@ CYC2:
 		Cost: 2000
 	Tooltip:
 		Name: Cyborg Commando
-		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft\nMaximum 1 can be trained.
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
@@ -102,7 +102,7 @@ MHIJACK:
 		Cost: 100
 	Tooltip:
 		Name: Mutant Hijacker
-		Description: Hijacks enemy vehicles. Unarmed\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+		Description: Hijacks enemy vehicles.\n  Unarmed
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Hijacker

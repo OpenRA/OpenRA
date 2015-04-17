@@ -56,7 +56,7 @@ PROC:
 		Cost: 2000
 	Tooltip:
 		Name: Tiberium Refinery
-		Description: Processes raw Tiberium\ninto useable resources
+		Description: Processes raw Tiberium\ninto useable resources.
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 20
