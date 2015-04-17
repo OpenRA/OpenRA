@@ -156,12 +156,6 @@ namespace OpenRA
 						SpawnPoints = spawns;
 
 						CustomPreview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
-						if (CustomPreview.PixelFormat != PixelFormat.Format32bppArgb)
-						{
-							var original = CustomPreview;
-							CustomPreview = original.CloneWith32bbpArgbPixelFormat();
-							original.Dispose();
-						}
 					}
 					catch (Exception) { }
 
