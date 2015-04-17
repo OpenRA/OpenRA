@@ -121,7 +121,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			var options = countries.GroupBy(c => c.Value.Side).ToDictionary(g => g.Key ?? "", g => g.Select(c => c.Key));
+			var options = countries.Where(c => c.Value.Selectable).GroupBy(c => c.Value.Side)
+				.ToDictionary(g => g.Key ?? "", g => g.Select(c => c.Key));
 
 			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
