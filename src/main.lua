@@ -525,6 +525,10 @@ do
   if ide.config.language then
     LoadLuaFileExt(ide.config.messages, "cfg"..sep.."i18n"..sep..ide.config.language..".lua")
   end
+  -- always load 'en' as it's requires as a fallback for pluralization
+  if ide.config.language ~= 'en' then
+    LoadLuaFileExt(ide.config.messages, "cfg"..sep.."i18n"..sep.."en.lua")
+  end
 end
 
 loadPackages()

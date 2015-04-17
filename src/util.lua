@@ -344,12 +344,17 @@ function RequestAttention()
   end
 end
 
-local messages, lang, counter
 function TR(msg, count)
-  lang = lang or ide.config.language
-  messages = messages or ide.config.messages
-  counter = counter or (messages[lang] and messages[lang][0])
+  local messages = ide.config.messages
+  local lang = ide.config.language
+  local counter = messages[lang] and messages[lang][0]
   local message = messages[lang] and messages[lang][msg]
+  -- if there is count and no corresponding message, then
+  -- get the message from the (default) english language,
+  -- otherwise the message is not going to be pluralized properly
+  if count and not message then
+    message, counter = messages.en[msg], messages.en[0]
+  end
   return count and counter and message and type(message) == 'table'
     and message[counter(count)] or message or msg
 end
