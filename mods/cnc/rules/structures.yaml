@@ -330,7 +330,7 @@ AFLD:
 	Exit@1:
 		SpawnOffset: -1024,0,0
 		ExitCell: 3,1
-	ProductionAirdrop:
+	ProductionByDelivery:
 		Produces: Vehicle.Nod
 	WithDeliveryAnimation:
 	ProductionQueue:
