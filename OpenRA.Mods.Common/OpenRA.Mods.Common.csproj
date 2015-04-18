@@ -366,6 +366,7 @@
     <Compile Include="Traits\ProximityCapturable.cs" />
     <Compile Include="Traits\RadarColorFromTerrain.cs" />
     <Compile Include="Traits\Render\Hovers.cs" />
+    <Compile Include="Traits\Render\LeavesTrails.cs" />
     <Compile Include="Traits\Render\RenderBuilding.cs" />
     <Compile Include="Traits\Render\RenderBuildingCharge.cs" />
     <Compile Include="Traits\Render\RenderBuildingTurreted.cs" />

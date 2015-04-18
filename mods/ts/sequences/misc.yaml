@@ -220,6 +220,11 @@ moveflsh:
 		Length: *
 		Tick: 30
 
+wake:
+	idle: wake2
+		Length: *
+		Tick: 180
+
 resources:
 	Defaults:
 		UseTilesetExtension: true

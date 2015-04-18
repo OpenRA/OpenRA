@@ -70,6 +70,10 @@ HVR:
 	WithVoxelBody:
 	WithVoxelTurret:
 	Hovers:
+	LeavesTrails:
+		Image: wake
+		Palette: effect
+		TerrainTypes: Water
 
 SMECH:
 	Inherits: ^Tank
