@@ -175,11 +175,6 @@ namespace OpenRA
 						createdPreview = true;
 						bitmap = Minimap.RenderMapPreview(modData.DefaultRules.TileSets[p.Map.Tileset], p.Map, modData.DefaultRules, true);
 					}
-					else if (bitmap.PixelFormat != PixelFormat.Format32bppArgb)
-					{
-						Log.Write("debug", "Discarding invalid map preview for {0}", p.Uid);
-						continue;
-					}
 
 					// Note: this is not generally thread-safe, but it works here because:
 					//   (a) This worker is the only thread writing to this sheet
