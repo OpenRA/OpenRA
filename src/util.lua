@@ -138,10 +138,12 @@ function FileDirHasContent(dir)
   return #f>0
 end
 
-function FileSysGetRecursive(path, recursive, spec, skip)
+function FileSysGetRecursive(path, recursive, spec, opts)
   local content = {}
   local sep = GetPathSeparator()
   local queue = {path}
+  local optyield = (opts or {}).yield
+  local optfolder = (opts or {}).folder ~= false
 
   -- recursion is done in all folders but only those folders that match
   -- the spec are returned. This is the pattern that matches the spec.
@@ -153,6 +155,11 @@ function FileSysGetRecursive(path, recursive, spec, skip)
     table.insert(masks, EscapeMagic(m):gsub("%%%*", ".*").."$")
   end
   if #masks >= 2 then spec = nil end
+
+  local function report(fname)
+    if optyield then return coroutine.yield(fname) end
+    table.insert(content, fname)
+  end
 
   local dir = wx.wxDir()
   local function getDir(path)
@@ -167,36 +174,32 @@ function FileSysGetRecursive(path, recursive, spec, skip)
     local _ = wx.wxLogNull() -- disable error reporting; will report as needed
     local found, file = dir:GetFirst("*", wx.wxDIR_DIRS)
     while found do
-      if not skip or not file:find(skip) then
-        local fname = wx.wxFileName(path, file):GetFullPath()
-        for _, mask in ipairs(masks) do
-          if file:find(mask) then
-            table.insert(content, fname..sep)
-            break
-          end
+      local fname = wx.wxFileName(path, file):GetFullPath()
+      for _, mask in ipairs(masks) do
+        if file:find(mask) then
+          if optfolder then report(fname..sep) end
+          break
         end
+      end
 
-        -- check if this name already appears in the path earlier;
-        -- Skip the processing if it does as it could lead to infinite
-        -- recursion with circular references created by symlinks.
-        if recursive and select(2, fname:gsub(EscapeMagic(file..sep),'')) <= 2 then
-          table.insert(queue, fname)
-        end
+      -- check if this name already appears in the path earlier;
+      -- Skip the processing if it does as it could lead to infinite
+      -- recursion with circular references created by symlinks.
+      if recursive and select(2, fname:gsub(EscapeMagic(file..sep),'')) <= 2 then
+        table.insert(queue, fname)
       end
       found, file = dir:GetNext()
     end
     found, file = dir:GetFirst(spec or "*", wx.wxDIR_FILES)
     while found do
-      if not skip or not file:find(skip) then
-        local fname = wx.wxFileName(path, file):GetFullPath()
-        if #masks < 2 then -- files already filtered by spec
-          table.insert(content, fname)
-        else -- need to filter by mask as spec includes multiple extensions
-          for _, mask in ipairs(masks) do
-            if file:find(mask) then
-              table.insert(content, fname)
-              break
-            end
+      local fname = wx.wxFileName(path, file):GetFullPath()
+      if #masks < 2 then -- files already filtered by spec
+        report(fname)
+      else -- need to filter by mask as spec includes multiple extensions
+        for _, mask in ipairs(masks) do
+          if file:find(mask) then
+            report(fname)
+            break
           end
         end
       end
@@ -204,6 +207,8 @@ function FileSysGetRecursive(path, recursive, spec, skip)
     end
   end
   while #queue > 0 do getDir(table.remove(queue)) end
+
+  if optyield then return end
 
   local prefix = '\001' -- prefix to sort directories first
   local shadow = {}

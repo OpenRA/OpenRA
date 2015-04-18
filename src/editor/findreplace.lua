@@ -410,40 +410,37 @@ end
 function findReplace:ProcInFiles(startdir,mask,subdirs)
   if not self.panel then self:createPanel() end
 
-  local files = FileSysGetRecursive(startdir, subdirs, mask)
   local text = not self:GetFlags().RegularExpr and q(self.findCtrl:GetValue()) or nil
   if text and not self:GetFlags().MatchCase then
     text = text:gsub("%w",function(s) return "["..s:lower()..s:upper().."]" end)
   end
 
-  for _,file in ipairs(files) do
-    -- skip folders as these are included in the list as well
-    if not IsDirectory(file) then
-      self.curfilename = file
+  local files = coroutine.wrap(function() FileSysGetRecursive(startdir, subdirs, mask, {yield = true, folder = false}) end)
+  while true do
+    local file = files()
+    if not file then break end
 
-      local filetext, err = FileRead(file, firstReadSize)
-      if not filetext then
-        DisplayOutputLn(TR("Can't open file '%s': %s"):format(file, err))
-      elseif not checkBinary(filetext, GetFileExt(file)) then
-        -- read the rest if there is more to read in the file
-        if #filetext == firstReadSize then filetext = FileRead(file) end
-        if filetext and (not text or filetext:find(text)) then
-          self.oveditor:SetText(filetext)
+    self.curfilename = file
+    local filetext, err = FileRead(file, firstReadSize)
+    if not filetext then
+      DisplayOutputLn(TR("Can't open file '%s': %s"):format(file, err))
+    elseif not checkBinary(filetext, GetFileExt(file)) then
+      -- read the rest if there is more to read in the file
+      if #filetext == firstReadSize then filetext = FileRead(file) end
+      if filetext and (not text or filetext:find(text)) then
+        self.oveditor:SetText(filetext)
 
-          if self:FindAll(onFileRegister) then
-            self.files = self.files + 1
-          end
+        if self:FindAll(onFileRegister) then self.files = self.files + 1 end
 
-          -- give time to the UI to refresh
-          ide:Yield()
-          -- the IDE may be quitting after Yield or the tab may be closed,
-          local ok, mgr = pcall(function() return ide:GetUIManager() end)
-          -- so check to make sure the manager is still active
-          if not (ok and mgr:GetPane(searchpanel):IsShown())
-          -- and check that the search results tab is still open
-          or not pcall(function() self.reseditor:GetId() end) then
-            return false
-          end
+        -- give time to the UI to refresh
+        ide:Yield()
+        -- the IDE may be quitting after Yield or the tab may be closed,
+        local ok, mgr = pcall(function() return ide:GetUIManager() end)
+        -- so check to make sure the manager is still active
+        if not (ok and mgr:GetPane(searchpanel):IsShown())
+        -- and check that the search results tab is still open
+        or not pcall(function() self.reseditor:GetId() end) then
+          return false
         end
       end
     end
