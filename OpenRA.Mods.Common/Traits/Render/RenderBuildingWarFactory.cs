@@ -35,11 +35,11 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class RenderBuildingWarFactory : RenderBuilding, INotifyBuildComplete, ITick, INotifyProduction, INotifySold, ISync
+	class RenderBuildingWarFactory : RenderBuilding, INotifyBuildComplete, ITick, INotifyProduction, INotifySold
 	{
-		Animation roof;
-		[Sync] bool isOpen;
-		[Sync] CPos openExit;
+		readonly Animation roof;
+		bool isOpen;
+		CPos openExit;
 		bool buildComplete;
 
 		public RenderBuildingWarFactory(ActorInitializer init, RenderBuildingInfo info)
