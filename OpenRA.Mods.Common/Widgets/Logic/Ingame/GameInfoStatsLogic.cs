@@ -62,8 +62,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 				else
 				{
-					flag.GetImageName = () => pp.PlayerReference.RaceFlagName;
-					item.Get<LabelWidget>("FACTION").GetText = () => pp.PlayerReference.Race;
+					flag.GetImageName = () => pp.DisplayCountry.Race;
+					item.Get<LabelWidget>("FACTION").GetText = () => pp.DisplayCountry.Name;
 				}
 
 				var team = item.Get<LabelWidget>("TEAM");
