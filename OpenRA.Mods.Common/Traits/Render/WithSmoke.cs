@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 			var rs = self.Trait<RenderSprites>();
 
 			anim = new Animation(self.World, info.Sequence);
-			rs.Add("smoke", new AnimationWithOffset(anim, null, () => !isSmoking));
+			rs.Add(new AnimationWithOffset(anim, null, () => !isSmoking));
 		}
 
 		public void Damaged(Actor self, AttackInfo e)

@@ -45,8 +45,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			overlay = new Animation(init.World, renderSprites.GetImage(init.Self));
 
-			var key = "attack_overlay_{0}".F(info.Sequence);
-			renderSprites.Add(key, new AnimationWithOffset(overlay, null, () => !attacking),
+			renderSprites.Add(new AnimationWithOffset(overlay, null, () => !attacking),
 				info.Palette, info.IsPlayerPalette);
 		}
 

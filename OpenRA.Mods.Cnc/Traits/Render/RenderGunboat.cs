@@ -47,19 +47,19 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			left = new Animation(init.World, name, () => turret.TurretFacing);
 			left.Play(info.LeftSequence);
-			Add(info.LeftSequence, new AnimationWithOffset(left, null, () => facing.Facing > 128, 0));
+			Add(new AnimationWithOffset(left, null, () => facing.Facing > 128, 0));
 
 			right = new Animation(init.World, name, () => turret.TurretFacing);
 			right.Play(info.RightSequence);
-			Add(info.RightSequence, new AnimationWithOffset(right, null, () => facing.Facing <= 128, 0));
+			Add(new AnimationWithOffset(right, null, () => facing.Facing <= 128, 0));
 
 			var leftWake = new Animation(init.World, name);
 			leftWake.PlayRepeating(info.WakeLeftSequence);
-			Add(info.WakeLeftSequence, new AnimationWithOffset(leftWake, null, () => facing.Facing > 128, -87));
+			Add(new AnimationWithOffset(leftWake, null, () => facing.Facing > 128, -87));
 
 			var rightWake = new Animation(init.World, name);
 			rightWake.PlayRepeating(info.WakeRightSequence);
-			Add(info.WakeRightSequence, new AnimationWithOffset(rightWake, null, () => facing.Facing <= 128, -87));
+			Add(new AnimationWithOffset(rightWake, null, () => facing.Facing <= 128, -87));
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)

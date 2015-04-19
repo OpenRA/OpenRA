@@ -54,7 +54,7 @@ namespace OpenRA.Mods.TS.Traits
 			var buildingInfo = self.Info.Traits.Get<BuildingInfo>();
 
 			var offset = FootprintUtils.CenterOffset(self.World, buildingInfo).Y + 512;
-			renderSprites.Add("door_overlay_{0}".F(info.Sequence), new AnimationWithOffset(door, null, () => !buildComplete, offset));
+			renderSprites.Add(new AnimationWithOffset(door, null, () => !buildComplete, offset));
 		}
 
 		public void BuildingComplete(Actor self)

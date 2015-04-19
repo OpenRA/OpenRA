@@ -24,9 +24,10 @@ namespace OpenRA.Mods.Common.Traits
 
 	class WithResources : INotifyBuildComplete, INotifySold, INotifyOwnerChanged, INotifyDamageStateChanged
 	{
-		WithResourcesInfo info;
-		Animation anim;
-		RenderSimple rs;
+		readonly WithResourcesInfo info;
+		readonly AnimationWithOffset anim;
+		readonly RenderSimple rs;
+
 		PlayerResources playerResources;
 		bool buildComplete;
 
@@ -36,15 +37,14 @@ namespace OpenRA.Mods.Common.Traits
 			rs = self.Trait<RenderSimple>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 
-			anim = new Animation(self.World, rs.GetImage(self));
-			anim.PlayFetchIndex(info.Sequence,
-				() =>
-					playerResources.ResourceCapacity != 0 ?
-					((10 * anim.CurrentSequence.Length - 1) * playerResources.Resources) / (10 * playerResources.ResourceCapacity) :
-					0);
+			var a = new Animation(self.World, rs.GetImage(self));
+			a.PlayFetchIndex(info.Sequence, () =>
+				playerResources.ResourceCapacity != 0 ?
+				((10 * a.CurrentSequence.Length - 1) * playerResources.Resources) / (10 * playerResources.ResourceCapacity) :
+				0);
 
-			rs.Add("resources_{0}".F(info.Sequence), new AnimationWithOffset(
-				anim, null, () => !buildComplete, 1024));
+			anim = new AnimationWithOffset(a, null, () => !buildComplete, 1024);
+			rs.Add(anim);
 		}
 
 		public void BuildingComplete(Actor self)
@@ -54,8 +54,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (anim.CurrentSequence != null)
-				anim.ReplaceAnim(rs.NormalizeSequence(self, info.Sequence));
+			if (anim.Animation.CurrentSequence != null)
+				anim.Animation.ReplaceAnim(rs.NormalizeSequence(self, info.Sequence));
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		public void Selling(Actor self) { rs.Remove("resources_{0}".F(info.Sequence)); }
+		public void Selling(Actor self) { rs.Remove(anim); }
 		public void Sold(Actor self) { }
 	}
 }

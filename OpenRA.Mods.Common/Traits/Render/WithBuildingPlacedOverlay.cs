@@ -44,12 +44,13 @@ namespace OpenRA.Mods.Common.Traits
 			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
 
 			overlay = new Animation(self.World, rs.GetImage(self));
+
+			var anim = new AnimationWithOffset(overlay,
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => !buildComplete);
+
 			overlay.Play(info.Sequence);
-			rs.Add("crane_overlay_{0}".F(info.Sequence),
-				new AnimationWithOffset(overlay,
-					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-					() => !buildComplete),
-				info.Palette, info.IsPlayerPalette);
+			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
 		public void BuildingComplete(Actor self)
