@@ -297,7 +297,8 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 				return null;
 
 			map.RequiresMod = mod;
-			map.MakeDefaultPlayers();
+			var players = new MapPlayers(map.Rules, map.GetSpawnPoints().Length);
+			map.PlayerDefinitions = players.ToMiniYaml();
 
 			return map;
 		}

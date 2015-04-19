@@ -89,6 +89,7 @@
     <Compile Include="LogProxy.cs" />
     <Compile Include="FileFormats\IdxReader.cs" />
     <Compile Include="FileSystem\BagFile.cs" />
+    <Compile Include="Map\MapPlayers.cs" />
     <Compile Include="MPos.cs" />
     <Compile Include="GameRules\Warhead.cs" />
     <Compile Include="Graphics\QuadRenderer.cs" />
