@@ -41,5 +41,5 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class SkipMakeAnimsInit : IActorInit { }
+	public class SkipMakeAnimsInit : IActorInit, ISuppressInitExport { }
 }

@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class HideBibPreviewInit : IActorInit<bool>
+	public class HideBibPreviewInit : IActorInit<bool>, ISuppressInitExport
 	{
 		[FieldFromYamlKey] readonly bool value = true;
 		public HideBibPreviewInit() { }
