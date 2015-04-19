@@ -322,14 +322,15 @@ spicebloom:
 	make: DATA.R8
 		Start: 107
 		Length: 3
+		ZOffset: -1023
 		Offset: -16,-16
 	active: DATA.R8
 		Start: 109
-		ZOffset: -511
+		ZOffset: -1023
 		Offset: -16,-16
 	idle: DATA.R8
 		Start: 109
-		ZOffset: -511
+		ZOffset: -1023
 		Offset: -16,-16
 
 moveflsh:
