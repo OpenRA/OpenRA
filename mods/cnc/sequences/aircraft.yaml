@@ -41,7 +41,7 @@ heli:
 orca:
 	idle:
 		Facings: 32
-	damaged-idle:
+	move:
 		Start: 32
 		Facings: 32
 	icon: orcaicnh.tem
