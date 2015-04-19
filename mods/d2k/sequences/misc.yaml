@@ -85,14 +85,16 @@ bazooka_trail:
 		Start: 3381
 		Length: 4
 		Tick: 80
-		BlendMode: Translucency75
+		BlendMode: Translucency
+		Alpha: 0.75
 
 bazooka_trail2:
 	idle: DATA.R8
 		Start: 3544
 		Length: 4
 		Tick: 80
-		BlendMode: Translucency75
+		BlendMode: Translucency
+		Alpha: 0.75
 
 deviator_trail:
 	idle: DATA.R8
