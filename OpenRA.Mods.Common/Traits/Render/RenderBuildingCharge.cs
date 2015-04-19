@@ -15,8 +15,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Sound to play when building charges.")]
 		public readonly string ChargeAudio = null;
+
 		[Desc("Sequence to use for building charge animation.")]
 		public readonly string ChargeSequence = "active";
+
 		public override object Create(ActorInitializer init) { return new RenderBuildingCharge(init, this); }
 	}
 
