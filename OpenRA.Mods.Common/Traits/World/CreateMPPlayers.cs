@@ -50,6 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 				Name = "Everyone",
 				NonCombatant = true,
 				Spectating = true,
+				Race = "Random",
 				Allies = w.Players.Where(p => !p.NonCombatant && p.Playable).Select(p => p.InternalName).ToArray()
 			}));
 
