@@ -193,8 +193,7 @@ GATICK:
 	WithVoxelTurret:
 	Transforms:
 		IntoActor: ttnk
-		Offset: 1,1
-		Facing: 96
+		Facing: 159
 		TransformSounds: place2.aud
 		NoTransformSounds:
 	WithMuzzleFlash:
@@ -237,7 +236,6 @@ GAARTY:
 	WithVoxelTurret:
 	Transforms:
 		IntoActor: art2
-		Offset: 1,1
 		Facing: 96
 		TransformSounds: place2.aud
 		NoTransformSounds:

@@ -109,8 +109,7 @@ LPST:
 	WithVoxelBody:
 	Transforms:
 		IntoActor: gadpsa
-		Offset: -1,-1
-		Facing: 96
+		Facing: 159
 		TransformSounds:
 		NoTransformSounds:
 

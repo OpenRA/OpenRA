@@ -14,8 +14,7 @@ GADPSA:
 		Range: 8c0
 	Transforms:
 		IntoActor: lpst
-		Offset: 1,1
-		Facing: 96
+		Facing: 159
 		TransformSounds: place2.aud
 		NoTransformSounds:
 	RenderDetectionCircle:
