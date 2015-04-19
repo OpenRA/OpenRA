@@ -43,8 +43,8 @@ namespace OpenRA.Mods.Common.Traits
 			lastKnownActorIds = new HashSet<uint>();
 			discoveredPlayers = new HashSet<Player>();
 			this.info = info;
-			rescanInterval = info.ScanInterval;
-			ticksBeforeNextNotification = info.NotificationInterval;
+			rescanInterval = 0;
+			ticksBeforeNextNotification = 0;
 		}
 
 		// Here self is the player actor
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			rescanInterval--;
 			ticksBeforeNextNotification--;
 
-			if (rescanInterval > 0 || ticksBeforeNextNotification > 0)
+			if (rescanInterval > 0)
 				return;
 
 			rescanInterval = info.ScanInterval;
@@ -86,11 +86,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (lastKnownActorIds.Contains(actor.Actor.ActorID))
 					continue;
 
-				var notificationPlayed = playedNotifications.Contains(actor.Trait.Info.Notification);
+				// Should we play a sound notification?
+				var playNotification = !playedNotifications.Contains(actor.Trait.Info.Notification) && ticksBeforeNextNotification <= 0;
 
 				// Notify the actor that he has been discovered
 				foreach (var trait in actor.Actor.TraitsImplementing<INotifyDiscovered>())
-					trait.OnDiscovered(actor.Actor, self.Owner, !notificationPlayed);
+					trait.OnDiscovered(actor.Actor, self.Owner, playNotification);
 
 				var discoveredPlayer = actor.Actor.Owner;
 				if (!discoveredPlayers.Contains(discoveredPlayer))
@@ -102,8 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 					discoveredPlayers.Add(discoveredPlayer);
 				}
 
-				// We have already played this type of notification
-				if (notificationPlayed)
+				if (!playNotification)
 					continue;
 
 				playedNotifications.Add(actor.Trait.Info.Notification);
