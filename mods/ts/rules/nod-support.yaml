@@ -231,6 +231,7 @@ GAARTY:
 	DrawLineToTarget:
 	RenderBuilding:
 	RenderVoxels:
+		LightAmbientColor: 0.4, 0.4, 0.4
 	WithVoxelBarrel:
 		LocalOffset: 0,0,-512
 	WithVoxelTurret:
