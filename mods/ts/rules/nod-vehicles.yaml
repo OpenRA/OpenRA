@@ -107,8 +107,7 @@ TTNK:
 	WithVoxelBody:
 	Transforms:
 		IntoActor: gatick
-		Offset: -1,-1
-		Facing: 96
+		Facing: 159
 		TransformSounds: place2.aud
 		NoTransformSounds:
 
@@ -136,7 +135,6 @@ ART2:
 	WithVoxelBody:
 	Transforms:
 		IntoActor: gaarty
-		Offset: -1,-1
 		Facing: 96
 		TransformSounds:
 		NoTransformSounds:
