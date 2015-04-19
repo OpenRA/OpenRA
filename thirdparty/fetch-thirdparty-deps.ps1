@@ -54,7 +54,7 @@ if (!(Test-Path "SharpFont.dll"))
 	cp SharpFont/lib/net20/SharpFont* .
 	cp SharpFont/config/SharpFont.dll.config .
 	rmdir SharpFont -Recurse
-    rmdir SharpFont.Dependencies -Recurse
+	rmdir SharpFont.Dependencies -Recurse
 }
 
 if (!(Test-Path "nunit.framework.dll"))
