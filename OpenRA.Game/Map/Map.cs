@@ -190,7 +190,13 @@ namespace OpenRA
 		public Bitmap CustomPreview;
 		public bool InvalidCustomRules { get; private set; }
 
-		public WVec OffsetOfSubCell(SubCell subCell) { return SubCellOffsets[(int)subCell]; }
+		public WVec OffsetOfSubCell(SubCell subCell)
+		{
+			if (subCell == SubCell.Invalid || subCell == SubCell.Any)
+				return WVec.Zero;
+
+			return SubCellOffsets[(int)subCell];
+		}
 
 		[FieldLoader.LoadUsing("LoadOptions")] public MapOptions Options;
 
