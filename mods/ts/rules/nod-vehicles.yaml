@@ -132,6 +132,7 @@ ART2:
 		Range: 9c0
 	RenderSprites:
 	RenderVoxels:
+		LightAmbientColor: 0.4, 0.4, 0.4
 	WithVoxelBody:
 	Transforms:
 		IntoActor: gaarty
