@@ -75,11 +75,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				showGeometryCheckbox.OnClick = () => devTrait.ShowDebugGeometry ^= true;
 			}
 
+			var terrainGeometryTrait = world.WorldActor.Trait<TerrainGeometryOverlay>();
 			var showTerrainGeometryCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_TERRAIN_OVERLAY");
-			if (showTerrainGeometryCheckbox != null)
+			if (showTerrainGeometryCheckbox != null && terrainGeometryTrait != null)
 			{
-				showTerrainGeometryCheckbox.IsChecked = () => devTrait.ShowTerrainGeometry;
-				showTerrainGeometryCheckbox.OnClick = () => devTrait.ShowTerrainGeometry ^= true;
+				showTerrainGeometryCheckbox.IsChecked = () => terrainGeometryTrait.Enabled;
+				showTerrainGeometryCheckbox.OnClick = () => terrainGeometryTrait.Enabled ^= true;
 			}
 
 			var allTechCheckbox = widget.GetOrNull<CheckboxWidget>("ENABLE_TECH");
