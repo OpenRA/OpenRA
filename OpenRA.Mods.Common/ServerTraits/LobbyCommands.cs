@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Server
 							return false;
 
 						client.Slot = s;
-						S.SyncClientToPlayerReference(client, server.Map.Players[s]);
+						S.SyncClientToPlayerReference(client, server.MapPlayers.Players[s]);
 						server.SyncLobbyClients();
 						CheckAutoStart(server);
 
@@ -298,7 +298,7 @@ namespace OpenRA.Mods.Common.Server
 							bot.Bot = botType;
 						}
 
-						S.SyncClientToPlayerReference(bot, server.Map.Players[parts[0]]);
+						S.SyncClientToPlayerReference(bot, server.MapPlayers.Players[parts[0]]);
 						server.SyncLobbyClients();
 						server.SyncLobbySlots();
 						return true;
@@ -346,9 +346,9 @@ namespace OpenRA.Mods.Common.Server
 							if (c.Slot != null)
 							{
 								// Remove Bot from slot if slot forbids bots
-								if (c.Bot != null && !server.Map.Players[c.Slot].AllowBots)
+								if (c.Bot != null && !server.MapPlayers.Players[c.Slot].AllowBots)
 									server.LobbyInfo.Clients.Remove(c);
-								S.SyncClientToPlayerReference(c, server.Map.Players[c.Slot]);
+								S.SyncClientToPlayerReference(c, server.MapPlayers.Players[c.Slot]);
 							}
 							else if (c.Bot != null)
 								server.LobbyInfo.Clients.Remove(c);
@@ -477,13 +477,13 @@ namespace OpenRA.Mods.Common.Server
 
 						var maxTeams = (server.LobbyInfo.Clients.Count(c => c.Slot != null) + 1) / 2;
 						teamCount = teamCount.Clamp(0, maxTeams);
-						var players = server.LobbyInfo.Slots
+						var clients = server.LobbyInfo.Slots
 							.Select(slot => server.LobbyInfo.ClientInSlot(slot.Key))
 							.Where(c => c != null && !server.LobbyInfo.Slots[c.Slot].LockTeam);
 
 						var assigned = 0;
-						var playerCount = players.Count();
-						foreach (var player in players)
+						var clientCount = clients.Count();
+						foreach (var player in clients)
 						{
 							// Free for all
 							if (teamCount == 0)
@@ -493,7 +493,7 @@ namespace OpenRA.Mods.Common.Server
 							else if (teamCount == 1)
 								player.Team = player.Bot == null ? 1 : 2;
 							else
-								player.Team = assigned++ * teamCount / playerCount + 1;
+								player.Team = assigned++ * teamCount / clientCount + 1;
 						}
 
 						server.SyncLobbyClients();
@@ -897,7 +897,9 @@ namespace OpenRA.Mods.Common.Server
 		static void LoadMap(S server)
 		{
 			server.Map = server.ModData.MapCache[server.LobbyInfo.GlobalSettings.Map].Map;
-			server.LobbyInfo.Slots = server.Map.Players
+
+			server.MapPlayers = new MapPlayers(server.Map.PlayerDefinitions);
+			server.LobbyInfo.Slots = server.MapPlayers.Players
 				.Select(p => MakeSlotFromPlayerReference(p.Value))
 				.Where(s => s != null)
 				.ToDictionary(s => s.PlayerReference, s => s);

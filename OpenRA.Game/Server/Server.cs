@@ -52,7 +52,10 @@ namespace OpenRA.Server
 
 		public ServerSettings Settings;
 		public ModData ModData;
+
+		// Managed by LobbyCommands
 		public Map Map;
+		public MapPlayers MapPlayers;
 		XTimer gameTimeout;
 
 		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
@@ -304,7 +307,7 @@ namespace OpenRA.Server
 				}
 
 				if (client.Slot != null)
-					SyncClientToPlayerReference(client, Map.Players[client.Slot]);
+					SyncClientToPlayerReference(client, MapPlayers.Players[client.Slot]);
 				else
 					client.Color = HSLColor.FromRGB(255, 255, 255);
 

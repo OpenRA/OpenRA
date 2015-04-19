@@ -233,27 +233,7 @@ namespace OpenRA.Widgets
 		{
 			if (string.IsNullOrEmpty(initialUid) || Game.ModData.MapCache[initialUid].Status != MapStatus.Available)
 			{
-				Func<MapPreview, bool> isIdealMap = m =>
-				{
-					if (m.Status != MapStatus.Available || !m.Map.Visibility.HasFlag(MapVisibility.Lobby))
-						return false;
-
-					// Other map types may have confusing settings or gameplay
-					if (m.Type != "Conquest")
-						return false;
-
-					// Maps with bots disabled confuse new players
-					if (m.Map.Players.Any(s => !s.Value.AllowBots))
-						return false;
-
-					// Large maps expose unfortunate performance problems
-					if (m.Bounds.Width > 128 || m.Bounds.Height > 128)
-						return false;
-
-					return true;
-				};
-
-				var selected = Game.ModData.MapCache.Where(m => isIdealMap(m)).RandomOrDefault(Game.CosmeticRandom) ??
+				var selected = Game.ModData.MapCache.Where(x => x.SuitableForInitialMap).RandomOrDefault(Game.CosmeticRandom) ??
 					Game.ModData.MapCache.First(m => m.Status == MapStatus.Available && m.Map.Visibility.HasFlag(MapVisibility.Lobby));
 				return selected.Uid;
 			}

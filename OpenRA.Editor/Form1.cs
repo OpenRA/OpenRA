@@ -126,8 +126,11 @@ namespace OpenRA.Editor
 
 			// upgrade maps that have no player definitions. editor doesnt care,
 			// but this breaks the game pretty badly.
-			if (map.Players.Count == 0)
-				map.MakeDefaultPlayers();
+			if (map.PlayerDefinitions.Count == 0)
+			{
+				var players = new MapPlayers(map.Rules, map.GetSpawnPoints().Length);
+				map.PlayerDefinitions = players.ToMiniYaml();
+			}
 
 			PrepareMapResources(Game.ModData, map);
 
@@ -315,7 +318,7 @@ namespace OpenRA.Editor
 		void PopulateActorOwnerChooser()
 		{
 			actorOwnerChooser.Items.Clear();
-			actorOwnerChooser.Items.AddRange(surface1.Map.Players.Values.ToArray());
+			actorOwnerChooser.Items.AddRange(new MapPlayers(surface1.Map.PlayerDefinitions).Players.Values.ToArray());
 			actorOwnerChooser.SelectedIndex = 0;
 			surface1.NewActorOwner = ((PlayerReference)actorOwnerChooser.SelectedItem).Name;
 		}
@@ -412,8 +415,9 @@ namespace OpenRA.Editor
 					map.ResizeCordon((int)nmd.CordonLeft.Value, (int)nmd.CordonTop.Value,
 						(int)nmd.CordonRight.Value, (int)nmd.CordonBottom.Value);
 
-					map.Players.Clear();
-					map.MakeDefaultPlayers();
+					var players = new MapPlayers(map.Rules, map.GetSpawnPoints().Length);
+					map.PlayerDefinitions = players.ToMiniYaml();
+
 					map.FixOpenAreas(Program.Rules);
 
 					NewMap(map);
@@ -502,8 +506,8 @@ namespace OpenRA.Editor
 		void SetupDefaultPlayers(object sender, EventArgs e)
 		{
 			dirty = true;
-			surface1.Map.Players.Clear();
-			surface1.Map.MakeDefaultPlayers();
+			var players = new MapPlayers(surface1.Map.Rules, surface1.Map.GetSpawnPoints().Length);
+			surface1.Map.PlayerDefinitions = players.ToMiniYaml();
 
 			surface1.Chunks.Clear();
 			surface1.Invalidate();
