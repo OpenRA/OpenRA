@@ -44,22 +44,22 @@ Container@SKIRMISH_STATS:
 					Font: Bold
 					Align: Center
 				Label@STANCE:
-					X: 260
+					X: 280
 					Width: 50
 					Height: 25
 					Text: Team
 					Font: Bold
 					Align: Center
 				Label@KILLS:
-					X: 310
-					Width: 70
+					X: 330
+					Width: 60
 					Height: 25
 					Text: Kills
 					Font: Bold
 					Align: Center
 				Label@DEATHS:
-					X: 380
-					Width: 70
+					X: 390
+					Width: 60
 					Height: 25
 					Text: Deaths
 					Font: Bold
@@ -83,26 +83,26 @@ Container@SKIRMISH_STATS:
 							Height: 25
 						Image@FACTIONFLAG:
 							X: 159
-							Y: 6
+							Y: 3
 							Width: 32
 							Height: 16
 						Label@FACTION:
 							X: 195
-							Width: 65
+							Width: 85
 							Height: 25
 						Label@TEAM:
-							X: 260
+							X: 280
 							Width: 50
 							Height: 25
 							Align: Center
 						Label@KILLS:
-							X: 310
-							Width: 70
+							X: 330
+							Width: 60
 							Height: 25
 							Align: Center
 						Label@DEATHS:
-							X: 380
-							Width: 70
+							X: 390
+							Width: 60
 							Height: 25
 							Align: Center
 
