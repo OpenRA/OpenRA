@@ -2101,6 +2101,7 @@ Rules:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+		EnemyWatcher:
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -2114,6 +2115,7 @@ Rules:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+		AnnounceOnSeen:
 	^Infantry:
 		Tooltip:
 			GenericVisibility: Enemy
