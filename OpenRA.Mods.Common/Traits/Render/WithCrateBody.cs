@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 			var images = info.XmasImages.Any() && DateTime.Today.Month == 12 ? info.XmasImages : info.Images;
 			anim = new Animation(self.World, images.Random(Game.CosmeticRandom));
 			anim.Play("idle");
-			rs.Add("crate", anim);
+			rs.Add(anim);
 		}
 
 		public void OnLanded()

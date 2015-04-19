@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 
 			DefaultAnimation = new Animation(init.World, GetImage(init.Self), baseFacing);
-			Add("", DefaultAnimation);
+			Add(DefaultAnimation);
 		}
 
 		public RenderSimple(ActorInitializer init, RenderSimpleInfo info)

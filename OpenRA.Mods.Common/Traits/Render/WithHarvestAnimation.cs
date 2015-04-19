@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			anim = new Animation(self.World, rs.GetImage(self), RenderSimple.MakeFacingFunc(self));
 			anim.IsDecoration = true;
 			anim.Play(info.Sequence);
-			rs.Add("harvest_{0}".F(info.Sequence), new AnimationWithOffset(anim,
+			rs.Add(new AnimationWithOffset(anim,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				() => !visible,
 				() => false,

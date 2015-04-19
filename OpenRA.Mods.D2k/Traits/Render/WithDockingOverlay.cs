@@ -35,9 +35,10 @@ namespace OpenRA.Mods.D2k.Traits
 
 	public class WithDockingOverlay : INotifyDocking, INotifyBuildComplete, INotifySold
 	{
-		WithDockingOverlayInfo info;
-		Animation overlay;
-		bool buildComplete, docked;
+		readonly WithDockingOverlayInfo info;
+		readonly AnimationWithOffset anim;
+		bool buildComplete;
+		bool docked;
 
 		public WithDockingOverlay(Actor self, WithDockingOverlayInfo info)
 		{
@@ -48,19 +49,20 @@ namespace OpenRA.Mods.D2k.Traits
 
 			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
 
-			overlay = new Animation(self.World, rs.GetImage(self));
+			var overlay = new Animation(self.World, rs.GetImage(self));
 			overlay.Play(info.Sequence);
-			rs.Add("docking_overlay_{0}".F(info.Sequence),
-				new AnimationWithOffset(overlay,
-					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-					() => !buildComplete),
-				info.Palette, info.IsPlayerPalette);
+
+			anim = new AnimationWithOffset(overlay,
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => !buildComplete);
+
+			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
 		void PlayDockingOverlay()
 		{
 			if (docked)
-				overlay.PlayThen(info.Sequence, PlayDockingOverlay);
+				anim.Animation.PlayThen(info.Sequence, PlayDockingOverlay);
 		}
 
 		public void BuildingComplete(Actor self)

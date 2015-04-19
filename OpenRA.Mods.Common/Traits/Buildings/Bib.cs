@@ -69,6 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly BibInfo info;
 		readonly RenderSprites rs;
 		readonly BuildingInfo bi;
+		readonly List<AnimationWithOffset> anims = new List<AnimationWithOffset>();
 
 		public Bib(Actor self, BibInfo info)
 		{
@@ -103,17 +104,17 @@ namespace OpenRA.Mods.Common.Traits
 				// Z-order is one set to the top of the footprint
 				var offset = self.World.Map.CenterOfCell(cell) - self.World.Map.CenterOfCell(location) - centerOffset;
 				var awo = new AnimationWithOffset(anim, () => offset, null, -(offset.Y + centerOffset.Y + 512));
-				rs.Add("bib_{0}".F(i), awo, info.Palette);
+				anims.Add(awo);
+				rs.Add(awo, info.Palette);
 			}
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
-			var width = bi.Dimensions.X;
-			var rows = info.HasMinibib ? 1 : 2;
+			foreach (var a in anims)
+				rs.Remove(a);
 
-			for (var i = 0; i < rows * width; i++)
-				rs.Remove("bib_{0}".F(i));
+			anims.Clear();
 		}
 	}
 

@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			anim = new Animation(self.World, rs.GetImage(self), () => t.TurretFacing);
 			anim.Play(info.Sequence);
-			rs.Add("turret_{0}_{1}".F(info.Turret, info.Sequence), new AnimationWithOffset(
+			rs.Add(new AnimationWithOffset(
 				anim, () => TurretOffset(self), () => IsTraitDisabled, () => false, p => ZOffsetFromCenter(self, p, 1)));
 
 			// Restrict turret facings to match the sprite
