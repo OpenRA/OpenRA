@@ -71,6 +71,14 @@ namespace OpenRA
 			return selected;
 		}
 
+		CountryInfo ChooseDisplayCountry(World world, string race)
+		{
+			var countries = world.Map.Rules.Actors["world"].Traits
+				.WithInterface<CountryInfo>();
+
+			return countries.FirstOrDefault(c => c.Race == race) ?? countries.First();
+		}
+
 		public Player(World world, Session.Client client, Session.Slot slot, PlayerReference pr)
 		{
 			World = world;
@@ -86,8 +94,7 @@ namespace OpenRA
 				PlayerName = client.Name;
 				botType = client.Bot;
 				Country = ChooseCountry(world, client.Race, !pr.LockRace);
-				DisplayCountry = world.Map.Rules.Actors["world"].Traits
-					.WithInterface<CountryInfo>().First(c => c.Race == client.Race);
+				DisplayCountry = ChooseDisplayCountry(world, client.Race);
 			}
 			else
 			{
@@ -100,8 +107,7 @@ namespace OpenRA
 				Spectating = pr.Spectating;
 				botType = pr.Bot;
 				Country = ChooseCountry(world, pr.Race, false);
-				DisplayCountry = world.Map.Rules.Actors["world"].Traits
-					.WithInterface<CountryInfo>().First(c => c.Race == pr.Race);
+				DisplayCountry = ChooseDisplayCountry(world, pr.Race);
 			}
 
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
