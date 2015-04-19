@@ -38,6 +38,9 @@ namespace OpenRA
 		public readonly int ClientIndex;
 		public readonly PlayerReference PlayerReference;
 
+		// The country (including Random, etc) that was selected in the lobby
+		public readonly CountryInfo DisplayCountry;
+
 		public WinState WinState = WinState.Undefined;
 		public bool IsBot;
 		public int SpawnPoint;
@@ -45,8 +48,6 @@ namespace OpenRA
 
 		public Shroud Shroud;
 		public World World { get; private set; }
-
-		string selectedCountryName;
 
 		CountryInfo ChooseCountry(World world, string name, bool requireSelectable = true)
 		{
@@ -56,8 +57,6 @@ namespace OpenRA
 
 			var selected = selectableCountries.FirstOrDefault(c => c.Race == name)
 				?? selectableCountries.Random(world.SharedRandom);
-
-			selectedCountryName = selected.Name;
 
 			// Don't loop infinite
 			for (var i = 0; i <= 10 && selected.RandomRaceMembers.Any(); i++)
@@ -87,8 +86,8 @@ namespace OpenRA
 				PlayerName = client.Name;
 				botType = client.Bot;
 				Country = ChooseCountry(world, client.Race, !pr.LockRace);
-				pr.Race = selectedCountryName;
-				pr.RaceFlagName = client.Race;
+				DisplayCountry = world.Map.Rules.Actors["world"].Traits
+					.WithInterface<CountryInfo>().First(c => c.Race == client.Race);
 			}
 			else
 			{
@@ -101,8 +100,8 @@ namespace OpenRA
 				Spectating = pr.Spectating;
 				botType = pr.Bot;
 				Country = ChooseCountry(world, pr.Race, false);
-				pr.RaceFlagName = pr.Race;
-				pr.Race = Country.Name;
+				DisplayCountry = world.Map.Rules.Actors["world"].Traits
+					.WithInterface<CountryInfo>().First(c => c.Race == pr.Race);
 			}
 
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });

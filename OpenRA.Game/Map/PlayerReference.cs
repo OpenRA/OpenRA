@@ -27,7 +27,6 @@ namespace OpenRA
 
 		public bool LockRace = false;
 		public string Race;
-		public string RaceFlagName;
 
 		// ColorRamp naming retained for backward compatibility
 		public bool LockColor = false;
