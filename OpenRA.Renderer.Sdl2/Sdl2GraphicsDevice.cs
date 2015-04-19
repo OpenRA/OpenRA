@@ -238,7 +238,7 @@ namespace OpenRA.Renderer.Sdl2
 				case BlendMode.Multiply:
 					GL.Enable(EnableCap.Blend);
 					ErrorHandler.CheckGlError();
-					GL.BlendFuncSeparate(BlendingFactorSrc.DstColor, BlendingFactorDest.Zero, BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcAlpha);
+					GL.BlendFunc(BlendingFactorSrc.DstColor, BlendingFactorDest.OneMinusSrcAlpha);
 					ErrorHandler.CheckGlError();
 					break;
 				case BlendMode.SoftAdditive:
