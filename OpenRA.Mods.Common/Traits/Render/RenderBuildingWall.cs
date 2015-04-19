@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class RuntimeNeighbourInit : IActorInit<Dictionary<CPos, string[]>>
+	public class RuntimeNeighbourInit : IActorInit<Dictionary<CPos, string[]>>, ISuppressInitExport
 	{
 		[FieldFromYamlKey] readonly Dictionary<CPos, string[]> value = null;
 		public RuntimeNeighbourInit() { }
