@@ -151,6 +151,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (!rt.Info.AllowUnderBuildings && buildingInfluence.GetBuildingAt(cell) != null)
 				return false;
 
+			if (!rt.Info.AllowOnRamps)
+			{
+				var tile = world.Map.MapTiles.Value[cell];
+				var tileInfo = world.TileSet.GetTileInfo(tile);
+				if (tileInfo != null && tileInfo.RampType > 0)
+					return false;
+			}
+
 			return true;
 		}
 
