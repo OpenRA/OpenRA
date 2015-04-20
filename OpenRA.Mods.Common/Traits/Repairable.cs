@@ -29,13 +29,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly RepairableInfo info;
 		readonly Health health;
-		readonly IEnumerable<AmmoPool> ammoPools;
+		readonly AmmoPool[] ammoPools;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
 			this.info = info;
 			health = self.Trait<Health>();
-			ammoPools = self.TraitsImplementing<AmmoPool>();
+			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -72,10 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRearm()
 		{
-			if (ammoPools != null)
-				return ammoPools.Any(x => !x.Info.SelfReloads && !x.FullAmmo());
-			else
-				return false;
+			return ammoPools.Any(x => !x.Info.SelfReloads && !x.FullAmmo());
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

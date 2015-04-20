@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 		IBodyOrientation body;
 		AttackBase ab;
 		Turreted t;
-		IEnumerable<Armament> arms;
+		Armament[] arms;
 		Animation anim;
 
 		public WithTurret(Actor self, WithTurretInfo info)
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 			t = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == info.Turret);
 			arms = self.TraitsImplementing<Armament>()
-				.Where(w => w.Info.Turret == info.Turret);
+				.Where(w => w.Info.Turret == info.Turret).ToArray();
 
 			anim = new Animation(self.World, rs.GetImage(self), () => t.TurretFacing);
 			anim.Play(info.Sequence);

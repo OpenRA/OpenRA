@@ -50,10 +50,10 @@ namespace OpenRA.Mods.D2k.Traits
 						Facing = self.World.SharedRandom.Next(-1, 255),
 
 						DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
-							.Select(a => a.GetFirepowerModifier()),
+							.Select(a => a.GetFirepowerModifier()).ToArray(),
 
 						InaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>()
-							.Select(a => a.GetInaccuracyModifier()),
+							.Select(a => a.GetInaccuracyModifier()).ToArray(),
 
 						Source = self.CenterPosition,
 						SourceActor = self,
