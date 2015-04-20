@@ -25,6 +25,8 @@ MINP:
 	BodyOrientation:
 	Immobile:
 		OccupiesSpace: true
+	HiddenUnderFog:
+	AutoTargetIgnore:
 
 MINV:
 	Mine:
@@ -53,6 +55,8 @@ MINV:
 	BodyOrientation:
 	Immobile:
 		OccupiesSpace: true
+	HiddenUnderFog:
+	AutoTargetIgnore:
 
 CRATE:
 	Inherits: ^Crate
