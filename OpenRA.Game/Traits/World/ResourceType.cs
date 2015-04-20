@@ -31,6 +31,7 @@ namespace OpenRA.Traits
 		public readonly string[] AllowedTerrainTypes = { };
 		public readonly bool AllowUnderActors = false;
 		public readonly bool AllowUnderBuildings = false;
+		public readonly bool AllowOnRamps = false;
 
 		public PipType PipColor = PipType.Yellow;
 
