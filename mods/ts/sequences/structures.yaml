@@ -846,7 +846,7 @@ nahpad:
 		Offset: 0, 0
 		UseTilesetCode: false
 
-proc: # TODO: unused narefn_a, narefn_b
+proc: # TODO: unused narefn_a
 	Defaults:
 		Offset: -12, -42
 		UseTilesetCode: true
@@ -862,6 +862,8 @@ proc: # TODO: unused narefn_a, narefn_b
 	make: ntrefnmk
 		Length: 20
 		ShadowStart: 20
+	flame: ntrefn_b
+		Length: *
 	idle-redlights: ntrefn_c
 		Length: 16
 		Tick: 120
