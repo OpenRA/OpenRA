@@ -54,11 +54,8 @@ namespace OpenRA.Mods.Common.Traits
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, info.Sequence));
 
 			if (info.PauseOnLowPower)
-			{
-				var disabled = self.TraitsImplementing<IDisable>();
-				DefaultAnimation.Paused = () => disabled.Any(d => d.Disabled)
-					&& DefaultAnimation.CurrentSequence.Name == NormalizeSequence(self, info.Sequence);
-			}
+				DefaultAnimation.Paused = () =>
+					self.IsDisabled() && DefaultAnimation.CurrentSequence.Name == NormalizeSequence(self, info.Sequence);
 		}
 
 		public void PlayCustomAnimThen(Actor self, string name, Action a)
