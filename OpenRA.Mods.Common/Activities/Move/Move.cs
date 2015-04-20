@@ -315,13 +315,12 @@ namespace OpenRA.Mods.Common.Activities
 
 			public override Activity Tick(Actor self)
 			{
-				var mobile = self.Trait<Mobile>();
 				var ret = InnerTick(self, Move.mobile);
-				mobile.IsMoving = ret is MovePart;
+				Move.mobile.IsMoving = ret is MovePart;
 
 				if (moveFraction > MoveFractionTotal)
 					moveFraction = MoveFractionTotal;
-				UpdateCenterLocation(self, mobile);
+				UpdateCenterLocation(self, Move.mobile);
 
 				return ret;
 			}
