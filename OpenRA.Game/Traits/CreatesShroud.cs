@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 			if (lobbyShroudFogDisabled)
 				return;
 
-			var disabled = self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
+			var disabled = self.IsDisabled();
 			if (cachedLocation != self.Location || cachedDisabled != disabled)
 			{
 				cachedLocation = self.Location;

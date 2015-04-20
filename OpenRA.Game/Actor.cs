@@ -85,6 +85,7 @@ namespace OpenRA
 
 		readonly IRenderModifier[] renderModifiers;
 		readonly IRender[] renders;
+		readonly IDisable[] disables;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -128,6 +129,7 @@ namespace OpenRA
 
 			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
 			renders = TraitsImplementing<IRender>().ToArray();
+			disables = TraitsImplementing<IDisable>().ToArray();
 		}
 
 		public void Tick()
@@ -275,6 +277,14 @@ namespace OpenRA
 				return;
 
 			health.Value.InflictDamage(this, attacker, health.Value.MaxHP, null, true);
+		}
+
+		public bool IsDisabled()
+		{
+			foreach (var disable in disables)
+				if (disable.Disabled)
+					return true;
+			return false;
 		}
 
 		#region Scripting interface
