@@ -207,7 +207,8 @@ SCRIN:
 		Prerequisites: ~nahpad, natech
 	Selectable:
 		Bounds: 30,24
-		Voice: Scrin
+	Voiced:
+		VoiceSet: Scrin
 	Plane:
 		MaximumPitch: 90
 		ROT: 3

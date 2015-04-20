@@ -109,6 +109,7 @@ namespace OpenRA.Traits
 
 	public interface ISeedableResource { void Seed(Actor self); }
 
+	public interface IVoiced { string VoiceSet { get; } }
 	public interface IDemolishableInfo { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
 	public interface IDemolishable
 	{

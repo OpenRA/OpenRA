@@ -44,8 +44,8 @@ namespace OpenRA
 
 		public static bool HasVoices(this Actor a)
 		{
-			var selectable = a.Info.Traits.GetOrDefault<SelectableInfo>();
-			return selectable != null && selectable.Voice != null;
+			var voice = a.TraitOrDefault<IVoiced>();
+			return voice != null && voice.VoiceSet != null;
 		}
 
 		public static bool HasVoice(this Actor a, string voice)
@@ -56,9 +56,11 @@ namespace OpenRA
 
 		public static SoundInfo GetVoices(this Actor a)
 		{
-			var selectable = a.Info.Traits.GetOrDefault<SelectableInfo>();
-			if (selectable == null) return null;
-			var v = selectable.Voice;
+			var voiced = a.TraitOrDefault<IVoiced>();
+			if (voiced == null)
+				return null;
+
+			var v = voiced.VoiceSet;
 			return (v == null) ? null : a.World.Map.Rules.Voices[v.ToLowerInvariant()];
 		}
 
@@ -71,6 +73,9 @@ namespace OpenRA
 					continue;
 
 				if (o.Subject.Destroyed)
+					continue;
+
+				if (!o.Subject.HasVoices())
 					continue;
 
 				foreach (var v in o.Subject.TraitsImplementing<IOrderVoice>())

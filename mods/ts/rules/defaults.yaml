@@ -188,7 +188,8 @@
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
-		Voice: Infantry
+	Voiced:
+		VoiceSet: Infantry
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	RenderSprites:
@@ -253,8 +254,9 @@
 ^CivilianInfantry:
 	Inherits: ^Infantry
 	Selectable:
-		Voice: Civilian
 		Bounds: 12,17,0,-9
+	Voiced:
+		VoiceSet: Civilian
 	Valued:
 		Cost: 10
 	Tooltip:
@@ -284,10 +286,11 @@
 			Tiberium: 80
 			BlueTiberium: 80
 		ROT: 5
+	Selectable:
 	SelectionDecorations:
 		Palette: pips
-	Selectable:
-		Voice: Vehicle
+	Voiced:
+		VoiceSet: Vehicle
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
@@ -368,10 +371,11 @@
 			Tiberium: 80
 			BlueTiberium: 80
 		ROT: 5
+	Selectable:
 	SelectionDecorations:
 		Palette: pips
-	Selectable:
-		Voice: Vehicle
+	Voiced:
+		VoiceSet: Vehicle
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
@@ -445,10 +449,11 @@
 	TargetableAircraft:
 		TargetTypes: Air
 		GroundedTargetTypes: Ground
+	Selectable:
 	SelectionDecorations:
 		Palette: pips
-	Selectable:
-		Voice: Heli
+	Voiced:
+		VoiceSet: Heli
 	Helicopter:
 		RepairBuildings: gadept
 		RearmBuildings:

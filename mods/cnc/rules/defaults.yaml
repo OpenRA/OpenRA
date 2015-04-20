@@ -12,7 +12,6 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable:
-		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
@@ -51,6 +50,8 @@
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	MustBeDestroyed:
+	Voiced:
+		VoiceSet: VehicleVoice
 
 ^Tank:
 	AppearsOnRadar:
@@ -66,7 +67,6 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable:
-		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
@@ -108,6 +108,8 @@
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	MustBeDestroyed:
+	Voiced:
+		VoiceSet: VehicleVoice
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -117,7 +119,6 @@
 		GroundedTargetTypes: Ground
 	SelectionDecorations:
 	Selectable:
-		Voice: VehicleVoice
 	Helicopter:
 		RepairBuildings: hpad
 		RearmBuildings:
@@ -152,6 +153,8 @@
 	WithShadow:
 	Hovers:
 	MustBeDestroyed:
+	Voiced:
+		VoiceSet: VehicleVoice
 
 ^Infantry:
 	AppearsOnRadar:
@@ -177,7 +180,6 @@
 			Beach: 80
 	SelectionDecorations:
 	Selectable:
-		Voice: GenericVoice
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	TakeCover:
@@ -241,6 +243,8 @@
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	MustBeDestroyed:
+	Voiced:
+		VoiceSet: GenericVoice
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -249,7 +253,6 @@
 	AppearsOnRadar:
 	SelectionDecorations:
 	Selectable:
-		Voice: CivilianMaleVoice
 		Bounds: 12,17,0,-9
 	Valued:
 		Cost: 70
@@ -271,6 +274,8 @@
 	ScaredyCat:
 	Crushable:
 		CrushSound: squish2.aud
+	Voiced:
+		VoiceSet: CivilianMaleVoice
 
 ^DINO:
 	AppearsOnRadar:
@@ -299,7 +304,6 @@
 			BlueTiberium: 70
 			Beach: 80
 	Selectable:
-		Voice: DinoVoice
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	HiddenUnderFog:
@@ -321,13 +325,14 @@
 	DeathSounds:
 	RenderSprites:
 		Palette: terrain
+	Voiced:
+		VoiceSet: DinoVoice
 
 ^Plane:
 	AppearsOnRadar:
 		UseLocation: yes
 	SelectionDecorations:
 	Selectable:
-		Voice: GenericVoice
 	TargetableUnit:
 		TargetTypes: Air
 	HiddenUnderFog:
@@ -350,6 +355,8 @@
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	WithShadow:
+	Voiced:
+		VoiceSet: GenericVoice
 
 ^Ship:
 	AppearsOnRadar:
@@ -359,7 +366,6 @@
 			Water: 100
 	SelectionDecorations:
 	Selectable:
-		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground, Water
 	HiddenUnderFog:
@@ -384,6 +390,8 @@
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
+	Voiced:
+		VoiceSet: VehicleVoice
 
 ^Building:
 	AppearsOnRadar:

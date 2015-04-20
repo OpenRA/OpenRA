@@ -13,7 +13,6 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable:
-		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground, C4
 	Passenger:
@@ -52,6 +51,8 @@
 	MustBeDestroyed:
 	AnnounceOnSeen:
 		Notification: EnemyUnitsDetected
+	Voiced:
+		VoiceSet: VehicleVoice
 
 ^Tank:
 	AppearsOnRadar:
@@ -68,7 +69,6 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable:
-		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground, C4
 	Passenger:
@@ -107,6 +107,8 @@
 	MustBeDestroyed:
 	AnnounceOnSeen:
 		Notification: EnemyUnitsDetected
+	Voiced:
+		VoiceSet: VehicleVoice
 
 ^Husk:
 	Health:
@@ -190,7 +192,6 @@
 			Rough: 70
 	SelectionDecorations:
 	Selectable:
-		Voice: InfantryVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	RenderSprites:
@@ -241,13 +242,14 @@
 	TerrainModifiesDamage:
 		TerrainModifier:
 			Rough: 80
+	Voiced:
+		VoiceSet: InfantryVoice
 
 ^Plane:
 	AppearsOnRadar:
 		UseLocation: yes
 	SelectionDecorations:
 	Selectable:
-		Voice: GenericVoice
 	TargetableAircraft:
 		TargetTypes: Air
 		GroundedTargetTypes: Ground
@@ -277,6 +279,8 @@
 	AnnounceOnSeen:
 		Notification: EnemyUnitsDetected
 	RenderUnit:
+	Voiced:
+		VoiceSet: GenericVoice
 
 ^Helicopter:
 	Inherits: ^Plane
