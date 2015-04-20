@@ -405,6 +405,7 @@
     <Compile Include="Traits\Render\WithTurret.cs" />
     <Compile Include="Traits\Render\WithFire.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedOverlay.cs" />
+    <Compile Include="Traits\Render\WithProductionDoorOverlay.cs" />
     <Compile Include="Traits\Render\WithProductionOverlay.cs" />
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\RepairableNear.cs" />
