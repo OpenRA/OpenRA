@@ -97,6 +97,23 @@
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERAT
 
+^Crate:
+	Tooltip:
+		Name: Crate
+	Crate:
+		Lifetime: 180
+		TerrainTypes: Clear, Rough, Road, DirtRoad, Tiberium, BlueTiberium
+	RenderSprites:
+		Palette: terrain
+	WithCrateBody:
+		Images: crate
+	Selectable:
+		Selectable: false
+		Bounds: 25,25,-1,-1
+	ProximityCaptor:
+		Types: Crate
+	BodyOrientation:
+
 ^Wall:
 	AppearsOnRadar:
 	Building:
