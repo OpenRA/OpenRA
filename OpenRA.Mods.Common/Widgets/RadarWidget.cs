@@ -82,8 +82,8 @@ namespace OpenRA.Mods.Common.Widgets
 			actorSprite = new Sprite(radarSheet, new Rectangle(0, height, width, height), TextureChannel.Alpha);
 
 			// Set initial terrain data
-			using (var bitmap = Minimap.TerrainBitmap(world.TileSet, world.Map))
-				OpenRA.Graphics.Util.FastCopyIntoSprite(terrainSprite, bitmap);
+			foreach (var cell in world.Map.Cells)
+				UpdateTerrainCell(cell);
 
 			world.Map.MapTiles.Value.CellEntryChanged += UpdateTerrainCell;
 			world.Map.CustomTerrain.CellEntryChanged += UpdateTerrainCell;
@@ -93,7 +93,16 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var stride = radarSheet.Size.Width;
 			var uv = cell.ToMPos(world.Map);
-			var terrain = world.Map.GetTerrainInfo(cell);
+
+			var custom = world.Map.CustomTerrain[uv];
+			Color color;
+			if (custom == byte.MaxValue)
+			{
+				var type = world.TileSet.GetTileInfo(world.Map.MapTiles.Value[uv]);
+				color = type != null ? type.LeftColor : Color.Black;
+			}
+			else
+				color = world.TileSet[custom].Color;
 
 			var dx = terrainSprite.Bounds.Left - world.Map.Bounds.Left;
 			var dy = terrainSprite.Bounds.Top - world.Map.Bounds.Top;
@@ -103,7 +112,7 @@ namespace OpenRA.Mods.Common.Widgets
 				fixed (byte* colorBytes = &radarData[0])
 				{
 					var colors = (int*)colorBytes;
-					colors[(uv.V + dy) * stride + uv.U + dx] = terrain.Color.ToArgb();
+					colors[(uv.V + dy) * stride + uv.U + dx] = color.ToArgb();
 				}
 			}
 		}
