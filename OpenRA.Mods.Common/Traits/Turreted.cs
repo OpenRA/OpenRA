@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>
+	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>, Requires<IBodyOrientationInfo>
 	{
 		public readonly string Turret = "primary";
 		[Desc("Rate of Turning")]
@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly TurretedInfo info;
 		AttackTurreted attack;
 		IFacing facing;
+		IBodyOrientation body;
 
 		[Sync] public int QuantizedFacings = 0;
 		[Sync] public int TurretFacing = 0;
@@ -67,6 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			attack = self.TraitOrDefault<AttackTurreted>();
 			facing = self.TraitOrDefault<IFacing>();
+			body = self.Trait<IBodyOrientation>();
 		}
 
 		public virtual void Tick(Actor self)
@@ -94,7 +96,6 @@ namespace OpenRA.Mods.Common.Traits
 		// Turret offset in world-space
 		public WVec Position(Actor self)
 		{
-			var body = self.Trait<IBodyOrientation>();
 			var bodyOrientation = body.QuantizeOrientation(self, self.Orientation);
 			return body.LocalToWorld(Offset.Rotate(bodyOrientation));
 		}

@@ -312,6 +312,7 @@ namespace OpenRA.Mods.Common.Traits
 		internal int TicksBeforePathing = 0;
 
 		readonly Actor self;
+		readonly ISpeedModifier[] speedModifiers;
 		public readonly MobileInfo Info;
 		public bool IsMoving { get; set; }
 
@@ -350,6 +351,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self = init.Self;
 			Info = info;
+
+			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray();
 
 			ToSubCell = FromSubCell = info.SharesCell ? init.World.Map.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
@@ -597,7 +600,7 @@ namespace OpenRA.Mods.Common.Traits
 				return 0;
 
 			speed *= Info.Speed;
-			foreach (var t in self.TraitsImplementing<ISpeedModifier>())
+			foreach (var t in speedModifiers)
 				speed *= t.GetSpeedModifier() / 100m;
 
 			return (int)(speed / 100);
