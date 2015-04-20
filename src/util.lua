@@ -142,8 +142,11 @@ function FileSysGetRecursive(path, recursive, spec, opts)
   local content = {}
   local sep = GetPathSeparator()
   local queue = {path}
+  local pathpatt = "^"..EscapeMagic(path)
   local optyield = (opts or {}).yield
   local optfolder = (opts or {}).folder ~= false
+  local optsort = (opts or {}).sort ~= false
+  local optpath = (opts or {}).path ~= false
 
   -- recursion is done in all folders but only those folders that match
   -- the spec are returned. This is the pattern that matches the spec.
@@ -177,7 +180,9 @@ function FileSysGetRecursive(path, recursive, spec, opts)
       local fname = wx.wxFileName(path, file):GetFullPath()
       for _, mask in ipairs(masks) do
         if file:find(mask) then
-          if optfolder then report(fname..sep) end
+          if optfolder then
+            report((optpath and fname or fname:gsub(pathpatt, ""))..sep)
+          end
           break
         end
       end
@@ -194,11 +199,11 @@ function FileSysGetRecursive(path, recursive, spec, opts)
     while found do
       local fname = wx.wxFileName(path, file):GetFullPath()
       if #masks < 2 then -- files already filtered by spec
-        report(fname)
+        report(optpath and fname or fname:gsub(pathpatt, ""))
       else -- need to filter by mask as spec includes multiple extensions
         for _, mask in ipairs(masks) do
           if file:find(mask) then
-            report(fname)
+            report(optpath and fname or fname:gsub(pathpatt, ""))
             break
           end
         end
@@ -210,12 +215,14 @@ function FileSysGetRecursive(path, recursive, spec, opts)
 
   if optyield then return end
 
-  local prefix = '\001' -- prefix to sort directories first
-  local shadow = {}
-  for _, v in ipairs(content) do
-    shadow[v] = (v:sub(-1) == sep and prefix or '')..v:lower()
+  if optsort then
+    local prefix = '\001' -- prefix to sort directories first
+    local shadow = {}
+    for _, v in ipairs(content) do
+      shadow[v] = (v:sub(-1) == sep and prefix or '')..v:lower()
+    end
+    table.sort(content, function(a,b) return shadow[a] < shadow[b] end)
   end
-  table.sort(content, function(a,b) return shadow[a] < shadow[b] end)
 
   return content
 end

@@ -286,16 +286,8 @@ local function navigateTo(default, selected)
         if toline and ed then markLine(ed, toline) end
       elseif text and #text > 0 and projdir and #projdir > 0 then
         -- populate the list of files
-        if not files then
-          files = FileSysGetRecursive(projdir, true)
-          for k = #files, 1, -1 do
-            if IsDirectory(files[k]) then
-              table.remove(files, k)
-            else
-              files[k] = files[k]:gsub("^"..q(projdir), "")
-            end
-          end
-        end
+        files = files or FileSysGetRecursive(projdir, true, "*",
+          {sort = false, path = false, folder = false})
         local topscore
         for _, item in ipairs(CommandBarScoreItems(files, text, 100)) do
           local file, score = unpack(item)
