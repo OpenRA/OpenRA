@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public WorldTooltipType TooltipType { get; private set; }
 		public IToolTip ActorTooltip { get; private set; }
-		public IEnumerable<IProvideTooltipInfo> ActorTooltipExtra { get; private set; }
+		public IProvideTooltipInfo[] ActorTooltipExtra { get; private set; }
 		public FrozenActor FrozenActorTooltip { get; private set; }
 
 		public int EdgeScrollThreshold = 15;
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (underCursor != null)
 			{
 				ActorTooltip = underCursor.TraitsImplementing<IToolTip>().First();
-				ActorTooltipExtra = underCursor.TraitsImplementing<IProvideTooltipInfo>();
+				ActorTooltipExtra = underCursor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
 				TooltipType = WorldTooltipType.Actor;
 				return;
 			}
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				FrozenActorTooltip = frozen;
 				if (frozen.Actor != null)
-					ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>();
+					ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
 				TooltipType = WorldTooltipType.FrozenActor;
 			}
 		}

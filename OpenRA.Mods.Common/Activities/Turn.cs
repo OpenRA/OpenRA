@@ -17,12 +17,12 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Turn : Activity
 	{
-		readonly IEnumerable<IDisableMove> moveDisablers;
+		readonly IDisableMove[] moveDisablers;
 		readonly int desiredFacing;
 
 		public Turn(Actor self, int desiredFacing)
 		{
-			moveDisablers = self.TraitsImplementing<IDisableMove>();
+			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
 			this.desiredFacing = desiredFacing;
 		}
 

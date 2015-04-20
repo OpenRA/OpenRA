@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly IPositionable positionable;
 		readonly IMove movement;
-		readonly IEnumerable<IDisableMove> moveDisablers;
+		readonly IDisableMove[] moveDisablers;
 		WPos start, end;
 		int length;
 		int ticks = 0;
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			positionable = self.Trait<IPositionable>();
 			movement = self.TraitOrDefault<IMove>();
-			moveDisablers = self.TraitsImplementing<IDisableMove>();
+			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
 			this.start = start;
 			this.end = end;
 			this.length = length;

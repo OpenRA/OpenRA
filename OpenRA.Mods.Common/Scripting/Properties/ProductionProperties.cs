@@ -84,13 +84,13 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Production")]
 	public class ProductionQueueProperties : ScriptActorProperties, Requires<ProductionQueueInfo>, Requires<ScriptTriggersInfo>
 	{
-		readonly List<ProductionQueue> queues;
+		readonly ProductionQueue[] queues;
 		readonly ScriptTriggers triggers;
 
 		public ProductionQueueProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			queues = self.TraitsImplementing<ProductionQueue>().Where(q => q.Enabled).ToList();
+			queues = self.TraitsImplementing<ProductionQueue>().Where(q => q.Enabled).ToArray();
 			triggers = TriggerGlobal.GetScriptTriggers(self);
 		}
 
