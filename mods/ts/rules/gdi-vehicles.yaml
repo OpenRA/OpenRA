@@ -39,7 +39,6 @@ HVR:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Prerequisites: ~gaweap, garadr
-		Hothey: v
 	Mobile:
 		Speed: 99
 		TerrainSpeeds:
@@ -149,6 +148,7 @@ HMEC:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
 		Prerequisites: ~gaweap, gatech
+		BuildLimit: 1
 	Mobile:
 		ROT: 3
 		Speed: 42
@@ -171,6 +171,7 @@ HMEC:
 		LocalOffset: 640,-384,980, 640,384,980
 	RenderVoxels:
 	WithVoxelWalkerBody:
+		TickRate: 1
 
 SONIC:
 	Inherits: ^Tank

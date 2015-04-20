@@ -70,6 +70,7 @@ CYC2:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Prerequisites: ~nahand, natech
+		BuildLimit: 1
 	-Crushable:
 	Selectable:
 		Bounds: 14,30,0,-7
