@@ -61,9 +61,11 @@ local function selectInterpreter(id)
 
   local changed = ide.interpreter ~= interpreters[id]
   if ide.interpreter and changed then
-    PackageEventHandle("onInterpreterClose", ide.interpreter) end
+    PackageEventHandle("onInterpreterClose", ide.interpreter)
+  end
   if interpreters[id] and changed then
-    PackageEventHandle("onInterpreterLoad", interpreters[id]) end
+    PackageEventHandle("onInterpreterLoad", interpreters[id])
+  end
 
   ide.interpreter = interpreters[id]
 
@@ -75,8 +77,12 @@ end
 
 function ProjectSetInterpreter(name)
   local id = IDget("debug.interpreter."..name)
-  if (not interpreters[id]) then return end
-  selectInterpreter(id)
+  if id and interpreters[id] then
+    selectInterpreter(id)
+  else
+    DisplayOutputLn(("Can't find interpreter '%s'; using the default interpreter instead.")
+      :format(name))
+  end
 end
 
 local function evSelectInterpreter(event)
