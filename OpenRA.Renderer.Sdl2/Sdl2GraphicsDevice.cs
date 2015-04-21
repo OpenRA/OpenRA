@@ -144,7 +144,9 @@ namespace OpenRA.Renderer.Sdl2
 					var sur = (SDL2.SDL.SDL_Surface)Marshal.PtrToStructure(surface, typeof(SDL2.SDL.SDL_Surface));
 					Marshal.Copy(data, 0, sur.pixels, data.Length);
 
-					Cursor = SDL.SDL_CreateColorCursor(surface, hotspot.X, hotspot.Y);
+					// This call very occasionally fails on Windows, but often works when retried.
+					for (var retries = 0; retries < 3 && Cursor == IntPtr.Zero; retries++)
+						Cursor = SDL.SDL_CreateColorCursor(surface, hotspot.X, hotspot.Y);
 					if (Cursor == IntPtr.Zero)
 						throw new InvalidDataException("Failed to create cursor: {0}".F(SDL.SDL_GetError()));
 				}
