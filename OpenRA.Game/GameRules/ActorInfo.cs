@@ -37,8 +37,7 @@ namespace OpenRA
 
 				Name = name;
 				foreach (var t in mergedNode)
-					if (t.Key != "Inherits" && !t.Key.StartsWith("-"))
-						Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
+					Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
 			}
 			catch (YamlException e)
 			{
@@ -69,8 +68,7 @@ namespace OpenRA
 			{
 				var result = MiniYaml.MergeStrict(node, MergeWithParent(parent, allUnits));
 
-				// strip the '-'
-				result.Nodes.RemoveAll(a => a.Key.StartsWith("-"));
+				result.Nodes.RemoveAll(a => a.Key == "Inherits");
 				return result;
 			}
 
