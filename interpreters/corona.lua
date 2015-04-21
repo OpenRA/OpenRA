@@ -84,7 +84,7 @@ return {
     local debugopt = mac and "-debug 1 -project " or "-debug "
     local skin = cfg.skin and (" -skin "..ide.config.corona.skin) or ""
     local noconsole = (cfg.showconsole and ""
-      or (win and "-no-console " or "-no-console YES "))
+      or (mac and "-no-console YES " or "-no-console "))
     local cmd = ('"%s" %s%s"%s"%s')
       :format(corona, noconsole, rundebug and debugopt or "", file, skin)
 
