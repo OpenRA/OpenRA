@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
@@ -22,11 +24,27 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prone movement speed as a percentage of the normal speed.")]
 		public readonly int SpeedModifier = 50;
 
+		[Desc("Damage types that trigger prone state. Defined on the warheads.")]
+		public readonly string[] DamageTriggers = new string[0];
+
+		[FieldLoader.LoadUsing("LoadModifiers")]
+		[Desc("Damage modifiers for each damage type (defined on the warheads) while the unit is prone.")]
+		public readonly Dictionary<string, int> DamageModifiers = new Dictionary<string, int>();
+
 		public readonly WVec ProneOffset = new WVec(85, 0, -171);
 
 		public readonly string ProneSequencePrefix = "prone-";
 
 		public override object Create(ActorInitializer init) { return new TakeCover(init, this); }
+
+		public static object LoadModifiers(MiniYaml yaml)
+		{
+			var md = yaml.ToDictionary();
+
+			return md.ContainsKey("DamageModifiers")
+				? md["DamageModifiers"].ToDictionary(my => FieldLoader.GetValue<int>("(value)", my.Value))
+				: new Dictionary<string, int>();
+		}
 	}
 
 	public class TakeCover : Turreted, INotifyDamage, IDamageModifier, ISpeedModifier, ISync, IRenderInfantrySequenceModifier
@@ -46,14 +64,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			/* Don't go prone when healed */
-			if (e.Damage > 0 && (e.Warhead == null || !e.Warhead.PreventProne))
-			{
-				if (!IsProne)
-					localOffset = info.ProneOffset;
+			if (e.Damage <= 0 || e.Warhead == null || !e.Warhead.DamageTypes.Any(x => info.DamageTriggers.Contains(x)))
+				return;
 
-				remainingProneTime = info.ProneTime;
-			}
+			if (!IsProne)
+				localOffset = info.ProneOffset;
+
+			remainingProneTime = info.ProneTime;
 		}
 
 		public override void Tick(Actor self)
@@ -66,7 +83,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)
 		{
-			return IsProne && warhead != null ? warhead.ProneModifier : 100;
+			if (!IsProne)
+				return 100;
+
+			var modifierPercentages = info.DamageModifiers.Where(x => warhead.DamageTypes.Contains(x.Key)).Select(x => x.Value);
+			return Util.ApplyPercentageModifiers(100, modifierPercentages);
 		}
 
 		public int GetSpeedModifier()

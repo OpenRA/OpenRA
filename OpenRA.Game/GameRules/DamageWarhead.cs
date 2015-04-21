@@ -18,17 +18,14 @@ namespace OpenRA.GameRules
 {
 	public abstract class DamageWarhead : Warhead
 	{
-		[Desc("How much (raw) damage to deal")]
+		[Desc("How much (raw) damage to deal.")]
 		public readonly int Damage = 0;
 
-		[Desc("Infantry death animation to use")]
+		[Desc("Types of damage that this warhead causes. Leave empty for no damage.")]
+		public readonly string[] DamageTypes = new string[0];
+
+		[Desc("Infantry death animation to use.")]
 		public readonly string DeathType = "1";
-
-		[Desc("Whether we should prevent prone response for infantry.")]
-		public readonly bool PreventProne = false;
-
-		[Desc("By what percentage should damage be modified against prone infantry.")]
-		public readonly int ProneModifier = 50;
 
 		[FieldLoader.LoadUsing("LoadVersus")]
 		[Desc("Damage percentage versus each armortype. 0% = can't target.")]
