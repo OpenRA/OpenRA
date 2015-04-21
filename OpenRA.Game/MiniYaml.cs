@@ -254,17 +254,17 @@ namespace OpenRA
 			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), fileName);
 		}
 
-		public static List<MiniYamlNode> MergeLiberal(List<MiniYamlNode> a, List<MiniYamlNode> b)
+		public static List<MiniYamlNode> MergeStrict(List<MiniYamlNode> a, List<MiniYamlNode> b)
 		{
 			return Merge(a, b, false);
 		}
 
-		public static List<MiniYamlNode> MergeStrict(List<MiniYamlNode> a, List<MiniYamlNode> b)
+		public static List<MiniYamlNode> MergeLiberal(List<MiniYamlNode> a, List<MiniYamlNode> b)
 		{
 			return Merge(a, b, true);
 		}
 
-		static List<MiniYamlNode> Merge(List<MiniYamlNode> a, List<MiniYamlNode> b, bool throwErrors)
+		static List<MiniYamlNode> Merge(List<MiniYamlNode> a, List<MiniYamlNode> b, bool allowUnresolvedRemoves = false)
 		{
 			if (a.Count == 0)
 				return b;
@@ -275,10 +275,11 @@ namespace OpenRA
 
 			var dictA = a.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
 			var dictB = b.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
-			var keys = dictA.Keys.Union(dictB.Keys).ToList();
+			var allKeys = dictA.Keys.Union(dictB.Keys);
 
-			var noInherit = keys.Where(x => x.Length > 0 && x[0] == '-')
-				.ToDictionary(x => x.Substring(1), x => false);
+			var keys = allKeys.Where(x => x.Length == 0 || x[0] != '-').ToList();
+			var removeKeys = allKeys.Where(x => x.Length > 0 && x[0] == '-')
+				.Select(k => k.Substring(1)).ToHashSet();
 
 			foreach (var key in keys)
 			{
@@ -286,47 +287,55 @@ namespace OpenRA
 				dictA.TryGetValue(key, out aa);
 				dictB.TryGetValue(key, out bb);
 
-				if (noInherit.ContainsKey(key))
-				{
-					if (!throwErrors)
-						if (aa != null)
-							ret.Add(aa);
-
-					noInherit[key] = true;
-				}
+				if (removeKeys.Contains(key))
+					removeKeys.Remove(key);
 				else
 				{
 					var loc = aa == null ? default(MiniYamlNode.SourceLocation) : aa.Location;
-					var merged = (aa == null || bb == null) ? aa ?? bb : new MiniYamlNode(key, Merge(aa.Value, bb.Value, throwErrors), loc);
+					var merged = (aa == null || bb == null) ? aa ?? bb : new MiniYamlNode(key, Merge(aa.Value, bb.Value, allowUnresolvedRemoves), loc);
 					ret.Add(merged);
 				}
 			}
 
-			if (throwErrors && noInherit.ContainsValue(false))
-				throw new YamlException("Bogus yaml removals: {0}".F(
-					noInherit.Where(x => !x.Value).JoinWith(", ")));
+			if (removeKeys.Any())
+			{
+				if (allowUnresolvedRemoves)
+				{
+					// Add the removal nodes back for the next pass to deal with
+					foreach (var k in removeKeys)
+					{
+						var key = "-" + k;
+						MiniYamlNode rem;
+						if (!dictA.TryGetValue(key, out rem))
+							rem = dictB[key];
+						ret.Add(rem);
+					}
+				}
+				else
+					throw new YamlException("Bogus yaml removals: {0}".F(removeKeys.JoinWith(", ")));
+			}
 
 			return ret;
 		}
 
 		public static MiniYaml MergeLiberal(MiniYaml a, MiniYaml b)
 		{
-			return Merge(a, b, false);
+			return Merge(a, b, true);
 		}
 
 		public static MiniYaml MergeStrict(MiniYaml a, MiniYaml b)
 		{
-			return Merge(a, b, true);
+			return Merge(a, b, false);
 		}
 
-		static MiniYaml Merge(MiniYaml a, MiniYaml b, bool throwErrors)
+		static MiniYaml Merge(MiniYaml a, MiniYaml b, bool allowUnresolvedRemoves)
 		{
 			if (a == null)
 				return b;
 			if (b == null)
 				return a;
 
-			return new MiniYaml(a.Value ?? b.Value, Merge(a.Nodes, b.Nodes, throwErrors));
+			return new MiniYaml(a.Value ?? b.Value, Merge(a.Nodes, b.Nodes, allowUnresolvedRemoves));
 		}
 
 		public IEnumerable<string> ToLines(string name)
