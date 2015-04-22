@@ -16,15 +16,18 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	// TODO: This is not exported into the documentation yet.
-	[Desc("A unit/building inside the game. Every rules starts with one and adds trait to it.",
-		"Special actors like world or player are usually defined in system.yaml and affect everything.")]
+	/// <summary>
+	/// A unit/building inside the game. Every rules starts with one and adds trait to it.
+	/// Special actors like world or player are usually defined in system.yaml and affect everything.
+	/// </summary>
 	public class ActorInfo
 	{
-		[Desc("The actor name can be anything, but the sprites used in the Render*: traits default to this one.",
-			"If you add an ^ in front of the name, the engine will recognize this as a collection of traits",
-			"that can be inherited by others (using Inherits:) and not a real unit.",
-			"You can remove inherited traits by adding a - infront of them as in -TraitName: to inherit everything, but this trait.")]
+		/// <summary>
+		/// The actor name can be anything, but the sprites used in the Render*: traits default to this one.
+		/// If you add an ^ in front of the name, the engine will recognize this as a collection of traits
+		/// that can be inherited by others (using Inherits:) and not a real unit.
+		/// You can remove inherited traits by adding a - infront of them as in -TraitName: to inherit everything, but this trait.
+		/// </summary>
 		public readonly string Name;
 		public readonly TypeDictionary Traits = new TypeDictionary();
 		List<ITraitInfo> constructOrderCache = null;
