@@ -1,5 +1,40 @@
-^Vehicle:
+^ExistsInWorld:
 	AppearsOnRadar:
+	UpdatesPlayerStatistics:
+	CombatDebugOverlay:
+	DrawLineToTarget:
+	GivesExperience:
+	BodyOrientation:
+	ScriptTriggers:
+	UpgradeManager:
+	Huntable:
+
+^GainsExperience:
+	GainsExperience:
+	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+
+^IronCurtainable:
+	UpgradeOverlay@IRONCURTAIN:
+		UpgradeTypes: invulnerability
+		UpgradeMinEnabledLevel: 1
+	InvulnerabilityUpgrade@IRONCURTAIN:
+		UpgradeTypes: invulnerability
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
+	TimedUpgradeBar:
+		Upgrade: invulnerability
+
+^Vehicle:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^GainsExperience
+	Inherits@3: ^IronCurtainable
 	Mobile:
 		Crushes: mine, crate
 		TerrainSpeeds:
@@ -22,9 +57,6 @@
 		CargoType: Vehicle
 	AttackMove:
 	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Vehicle
@@ -32,11 +64,8 @@
 	GpsDot:
 		String: Vehicle
 	WithSmoke:
-	UpdatesPlayerStatistics:
-	CombatDebugOverlay:
 	Guard:
 	Guardable:
-	BodyOrientation:
 	Tooltip:
 		GenericName: Vehicle
 	EjectOnDeath:
@@ -45,36 +74,18 @@
 		EjectOnGround: true
 		EjectInAir: false
 		AllowUnsuitableCell: false
-	Huntable:
 	Capturable:
 		Type: vehicle
 		CaptureThreshold: 1
 		CancelActivity: True
 	CaptureNotification:
 		Notification: UnitStolen
-	ScriptTriggers:
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
-	UpgradeOverlay@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-	TimedUpgradeBar:
-		Upgrade: invulnerability
 	MustBeDestroyed:
 
 ^Tank:
-	AppearsOnRadar:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^GainsExperience
+	Inherits@3: ^IronCurtainable
 	Mobile:
 		Crushes: wall, mine, crate
 		TerrainSpeeds:
@@ -97,9 +108,6 @@
 		CargoType: Vehicle
 	AttackMove:
 	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Tank
@@ -107,11 +115,8 @@
 	GpsDot:
 		String: Vehicle
 	WithSmoke:
-	UpdatesPlayerStatistics:
-	CombatDebugOverlay:
 	Guard:
 	Guardable:
-	BodyOrientation:
 	Tooltip:
 		GenericName: Tank
 	EjectOnDeath:
@@ -120,32 +125,12 @@
 		EjectOnGround: true
 		EjectInAir: false
 		AllowUnsuitableCell: false
-	Huntable:
 	Capturable:
 		Type: vehicle
 		CaptureThreshold: 1
 		CancelActivity: True
 	CaptureNotification:
 		Notification: UnitStolen
-	ScriptTriggers:
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
-	UpgradeOverlay@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-	TimedUpgradeBar:
-		Upgrade: invulnerability
 	MustBeDestroyed:
 	Parachutable:
 		ParachuteOffset: 0,0,200
@@ -158,7 +143,8 @@
 		WaterCorpsePalette:
 
 ^Infantry:
-	AppearsOnRadar:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^GainsExperience
 	Health:
 		Radius: 128
 	Armor:
@@ -189,9 +175,6 @@
 	Passenger:
 		CargoType: Infantry
 	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Infantry
@@ -200,11 +183,8 @@
 		String: Infantry
 	Crushable:
 		CrushSound: squishy2.aud
-	UpdatesPlayerStatistics:
-	CombatDebugOverlay:
 	Guard:
 	Guardable:
-	BodyOrientation:
 	Tooltip:
 		GenericName: Soldier
 	SelfHealing@HOSPITAL:
@@ -217,8 +197,6 @@
 	GlobalUpgradable:
 		Upgrades: hospitalheal
 		Prerequisites: hosp
-	Huntable:
-	ScriptTriggers:
 	DeathSounds@NORMAL:
 		DeathTypes: 1, 2, 3, 4
 	DeathSounds@BURNED:
@@ -236,19 +214,12 @@
 		WaterImpactSound: splash9.aud
 	Cloneable:
 		Types: Infantry
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
 	MustBeDestroyed:
 
 ^Ship:
-	AppearsOnRadar:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^GainsExperience
+	Inherits@3: ^IronCurtainable
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
@@ -260,9 +231,6 @@
 		TargetTypes: Ground, Water, Repair
 	HiddenUnderFog:
 	AttackMove:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: NavalUnitLost
 	ProximityCaptor:
@@ -271,37 +239,16 @@
 	GpsDot:
 		String: Ship
 	WithSmoke:
-	UpdatesPlayerStatistics:
-	CombatDebugOverlay:
 	Guard:
 	Guardable:
-	BodyOrientation:
 	Tooltip:
 		GenericName: Ship
-	Huntable:
-	ScriptTriggers:
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
-	UpgradeOverlay@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-	TimedUpgradeBar:
-		Upgrade: invulnerability
-		UpgradeMinEnabledLevel: 1
 	MustBeDestroyed:
 
 ^Plane:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^GainsExperience
+	Inherits@3: ^IronCurtainable
 	AppearsOnRadar:
 		UseLocation: true
 	SelectionDecorations:
@@ -314,9 +261,6 @@
 	AttackMove:
 	Guard:
 	Guardable:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: AirUnitLost
 	ProximityCaptor:
@@ -330,31 +274,8 @@
 	GivesBounty:
 	GpsDot:
 		String: Plane
-	UpdatesPlayerStatistics:
-	CombatDebugOverlay:
-	BodyOrientation:
 	Tooltip:
 		GenericName: Plane
-	Huntable:
-	ScriptTriggers:
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	UpgradeManager:
-	UpgradeOverlay@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-	TimedUpgradeBar:
-		Upgrade: invulnerability
 	WithShadow:
 	MustBeDestroyed:
 
@@ -367,7 +288,8 @@
 	Hovers:
 
 ^Building:
-	AppearsOnRadar:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^IronCurtainable
 	SelectionDecorations:
 	Selectable:
 		Priority: 3
@@ -393,7 +315,6 @@
 		ActorTypes: e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,e6,e6,e6,e6,e6
 	MustBeDestroyed:
 		RequiredForShortGame: true
-	GivesExperience:
 	CaptureNotification:
 	EditorAppearance:
 		RelativeToTopLeft: true
@@ -404,29 +325,14 @@
 		SellSounds: cashturn.aud
 	AcceptsSupplies:
 	GivesBounty:
-	UpdatesPlayerStatistics:
-	CombatDebugOverlay:
 	Guardable:
 		Range: 3
-	BodyOrientation:
 	FrozenUnderFog:
 	Tooltip:
 		GenericName: Structure
 	GpsDot:
 		String: Structure
-	Huntable:
 	Demolishable:
-	ScriptTriggers:
-	UpgradeManager:
-	UpgradeOverlay@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-	TimedUpgradeBar:
-		Upgrade: invulnerability
 
 ^Defense:
 	Inherits: ^Building
