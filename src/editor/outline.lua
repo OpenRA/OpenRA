@@ -284,7 +284,7 @@ ide:AddPackage('core.outline', {
 
     -- go over the file items to turn bold on/off or collapse/expand
     onEditorFocusSet = function(self, editor)
-      if (ide.config.outline or {}).showonefile then
+      if (ide.config.outline or {}).showonefile and ide.config.outlineinactivity then
         outlineRefresh(editor, true)
         return
       end
