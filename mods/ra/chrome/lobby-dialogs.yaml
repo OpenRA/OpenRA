@@ -113,38 +113,41 @@ Background@LOBBY_OPTIONS_BIN:
 					Width: 140
 					Height: 20
 					Text: Shroud
-				Checkbox@FOG_CHECKBOX:
-					Y: 35
-					Width: 140
-					Height: 20
-					Text: Fog of War
 				Checkbox@SHORTGAME_CHECKBOX:
 					X: 150
 					Width: 140
 					Height: 20
 					Text: Short Game
+				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
+					X: 290
+					Width: 140
+					Height: 20
+					Text: Build off Allies' ConYards
+
+				Checkbox@FOG_CHECKBOX:
+					Y: 35
+					Width: 140
+					Height: 20
+					Text: Fog of War
 				Checkbox@CRATES_CHECKBOX:
 					X: 150
 					Y: 35
 					Width: 140
 					Height: 20
 					Text: Crates
-				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
-					X: 290
-					Width: 140
-					Height: 20
-					Text: Build off Allies' ConYards
 				Checkbox@FRAGILEALLIANCES_CHECKBOX:
 					X: 290
 					Y: 35
 					Width: 140
 					Height: 20
 					Text: Diplomacy Changes
+
 				Checkbox@ALLOWCHEATS_CHECKBOX:
 					Y: 70
 					Width: 140
 					Height: 20
 					Text: Debug Menu
+
 				Label@STARTINGCASH_DESC:
 					Y: 110
 					Width: 80
@@ -171,6 +174,20 @@ Background@LOBBY_OPTIONS_BIN:
 					Width: 140
 					Height: 25
 					Font: Regular
+
+				Label@TECHLEVEL_DESC:
+					Y: 150
+					Width: 80
+					Height: 25
+					Text: Tech Level:
+					Align: Right
+				DropDownButton@TECHLEVEL_DROPDOWNBUTTON:
+					X: 85
+					Y: 150
+					Width: 130
+					Height: 25
+					Font: Regular
+					Text: 10
 				Label@DIFFICULTY_DESC:
 					X: PARENT_RIGHT - WIDTH - 145
 					Y: 150
@@ -184,19 +201,6 @@ Background@LOBBY_OPTIONS_BIN:
 					Width: 140
 					Height: 25
 					Font: Regular
-				DropDownButton@TECHLEVEL_DROPDOWNBUTTON:
-					X: 85
-					Y: 150
-					Width: 130
-					Height: 25
-					Font: Regular
-					Text: 10
-				Label@TECHLEVEL_DESC:
-					Y: 150
-					Width: 80
-					Height: 25
-					Text: Tech Level:
-					Align: Right
 
 Background@FORCE_START_DIALOG:
 	X: 20

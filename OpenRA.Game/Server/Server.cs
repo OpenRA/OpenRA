@@ -421,6 +421,16 @@ namespace OpenRA.Server
 				DispatchOrdersToClients(conn, frame, data);
 		}
 
+		public void SendOrderTo(Connection conn, string order, string data)
+		{
+			DispatchOrdersToClient(conn, 0, 0, new ServerOrder(order, data).Serialize());
+		}
+
+		public void SendMessage(string text)
+		{
+			DispatchOrdersToClients(null, 0, new ServerOrder("Message", text).Serialize());
+		}
+
 		void InterpretServerOrders(Connection conn, byte[] data)
 		{
 			var ms = new MemoryStream(data);
@@ -437,16 +447,6 @@ namespace OpenRA.Server
 			}
 			catch (EndOfStreamException) { }
 			catch (NotImplementedException) { }
-		}
-
-		public void SendOrderTo(Connection conn, string order, string data)
-		{
-			DispatchOrdersToClient(conn, 0, 0, new ServerOrder(order, data).Serialize());
-		}
-
-		public void SendMessage(string text)
-		{
-			DispatchOrdersToClients(null, 0, new ServerOrder("Message", text).Serialize());
 		}
 
 		void InterpretServerOrder(Connection conn, ServerOrder so)
