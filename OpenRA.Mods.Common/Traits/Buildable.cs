@@ -21,9 +21,6 @@ namespace OpenRA.Mods.Common.Traits
 			"and by the ProvidesCustomPrerequisite trait.")]
 		public readonly string[] Prerequisites = { };
 
-		[Desc("Restrict production to a specific race(s). **Deprecated**: Use race-specific prerequisites instead.")]
-		public readonly string[] Owner = { };
-
 		[Desc("Production queue(s) that can produce this.")]
 		public readonly string[] Queue = { };
 

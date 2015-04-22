@@ -26,9 +26,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Group queues from separate buildings together into the same tab.")]
 		public readonly string Group = null;
 
-		[Desc("Filter buildable items based on their Owner.")]
-		public readonly bool RequireOwner = true;
-
 		[Desc("Only enable this queue for certain factions")]
 		public readonly string[] Race = { };
 
@@ -155,14 +152,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var bi = a.Traits.Get<BuildableInfo>();
 
-				// Can our race build this by satisfying normal prerequisites?
-				var buildable = !Info.RequireOwner || bi.Owner.Contains(Race);
-
-				// Checks if Prerequisites want to hide the Actor from buildQueue if they are false
-				produceable.Add(a, new ProductionState { Visible = buildable });
-
-				if (buildable)
-					ttc.Add(a.Name, bi.Prerequisites, bi.BuildLimit, this);
+				produceable.Add(a, new ProductionState());
+				ttc.Add(a.Name, bi.Prerequisites, bi.BuildLimit, this);
 			}
 		}
 
@@ -391,7 +382,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ProductionState
 	{
-		public bool Visible = false;
+		public bool Visible = true;
 		public bool Buildable = false;
 	}
 
