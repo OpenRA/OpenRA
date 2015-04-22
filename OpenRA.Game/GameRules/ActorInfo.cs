@@ -33,11 +33,22 @@ namespace OpenRA
 		{
 			try
 			{
-				var mergedNode = MergeWithParent(node, allUnits).ToDictionary();
+				var allParents = new HashSet<string>();
+
+				// Guard against circular inheritance
+				allParents.Add(name);
+				var mergedNode = MergeWithParents(node, allUnits, allParents).ToDictionary();
 
 				Name = name;
+
 				foreach (var t in mergedNode)
-					Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
+				{
+					if (t.Key[0] == '-')
+						throw new YamlException("Bogus trait removal: " + t.Key);
+
+					if (t.Key != "Inherits" && !t.Key.StartsWith("Inherits@"))
+						Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
+				}
 			}
 			catch (YamlException e)
 			{
@@ -45,31 +56,31 @@ namespace OpenRA
 			}
 		}
 
-		static MiniYaml GetParent(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
+		static Dictionary<string, MiniYaml> GetParents(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
 		{
-			MiniYaml inherits;
-			node.ToDictionary().TryGetValue("Inherits", out inherits);
-			if (inherits == null || string.IsNullOrEmpty(inherits.Value))
-				return null;
+			return node.Nodes.Where(n => n.Key == "Inherits" || n.Key.StartsWith("Inherits@"))
+				.ToDictionary(n => n.Value.Value, n =>
+			{
+				MiniYaml i;
+					if (!allUnits.TryGetValue(n.Value.Value, out i))
+						throw new YamlException(
+							"Bogus inheritance -- parent type {0} does not exist".F(n.Value.Value));
 
-			MiniYaml parent;
-			allUnits.TryGetValue(inherits.Value, out parent);
-			if (parent == null)
-				throw new InvalidOperationException(
-					"Bogus inheritance -- actor type {0} does not exist".F(inherits.Value));
-
-			return parent;
+				return i;
+			});
 		}
 
-		static MiniYaml MergeWithParent(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
+		static MiniYaml MergeWithParents(MiniYaml node, Dictionary<string, MiniYaml> allUnits, HashSet<string> allParents)
 		{
-			var parent = GetParent(node, allUnits);
-			if (parent != null)
-			{
-				var result = MiniYaml.MergeStrict(node, MergeWithParent(parent, allUnits));
+			var parents = GetParents(node, allUnits);
 
-				result.Nodes.RemoveAll(a => a.Key == "Inherits");
-				return result;
+			foreach (var kv in parents)
+			{
+				if (!allParents.Add(kv.Key))
+					throw new YamlException(
+						"Bogus inheritance -- duplicate inheritance of {0}.".F(kv.Key));
+
+				node = MiniYaml.MergeStrict(node, MergeWithParents(kv.Value, allUnits, allParents));
 			}
 
 			return node;
