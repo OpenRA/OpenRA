@@ -146,8 +146,7 @@ namespace OpenRA.Mods.D2k.Traits
 				Carrying = null;
 			}
 
-			IsBusy = false;
-			Carrying = null;
+			CarryableReleased();
 		}
 
 		// INotifyKilled
