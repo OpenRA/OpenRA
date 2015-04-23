@@ -401,10 +401,8 @@ end
 local firstReadSize = 2048
 local knownBinary = {}
 local function checkBinary(content, ext)
-  if ext == "" then return isBinary(content) and true or false end
-  if knownBinary[ext] == nil then
-    knownBinary[ext] = isBinary(content) and true or false
-  end
+  if ext == "" then return IsBinary(content) end
+  if knownBinary[ext] == nil then knownBinary[ext] = IsBinary(content) end
   return knownBinary[ext]
 end
 

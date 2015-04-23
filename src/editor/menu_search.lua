@@ -339,7 +339,7 @@ local function navigateTo(default, selected)
       elseif file then
         -- skip binary files with unknown extensions
         if #ide:GetKnownExtensions(GetFileExt(file)) > 0
-        or not isBinary(FileRead(file, 2048)) then
+        or not IsBinary(FileRead(file, 2048)) then
           preview = preview or NewFile()
           preview:SetEvtHandlerEnabled(false)
           LoadFile(file, preview, true, true)

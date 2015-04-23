@@ -291,7 +291,7 @@ end
 local ok, socket = pcall(require, "socket")
 TimeGet = ok and socket.gettime or os.clock
 
-function isBinary(text) return text:find("[^\7\8\9\10\12\13\27\32-\255]") end
+function IsBinary(text) return text:find("[^\7\8\9\10\12\13\27\32-\255]") and true or false end
 
 function pairsSorted(t, f)
   local a = {}

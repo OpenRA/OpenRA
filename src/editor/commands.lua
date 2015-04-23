@@ -93,7 +93,7 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   -- skip binary files with unknown extensions as they may have any sequences;
   -- can't show them anyway.
   if file_text and #file_text > 0 and #(editor:GetText()) == 0
-  and (editor.spec ~= ide.specs.none or not isBinary(file_text)) then
+  and (editor.spec ~= ide.specs.none or not IsBinary(file_text)) then
     local replacement, invalid = "\022"
     file_text, invalid = FixUTF8(file_text, replacement)
     if #invalid > 0 then
