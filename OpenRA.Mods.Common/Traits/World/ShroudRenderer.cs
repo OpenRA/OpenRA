@@ -365,11 +365,8 @@ namespace OpenRA.Mods.Common.Traits
 			var sprite = GetSprite(sprites, edges, tileInfo.Variant);
 			if (sprite != null)
 			{
-				var size = sprite.Size;
-				var location = tileInfo.ScreenPosition - 0.5f * size;
-				OpenRA.Graphics.Util.FastCreateQuad(
-					vertices, location + sprite.FractionalOffset * size,
-					sprite, palette.TextureIndex, offset, size);
+				var location = tileInfo.ScreenPosition - 0.5f * sprite.Size;
+				OpenRA.Graphics.Util.FastCreateQuad(vertices, location, sprite, palette, offset);
 			}
 
 			spriteLayer[uv] = sprite;

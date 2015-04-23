@@ -128,7 +128,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void UpdateRenderedTileInner(CPos p)
 		{
-			var t = render[p];
+			var t = content[p];
 			if (t.Density > 0)
 			{
 				var clear = FindClearSides(t.Type, p);

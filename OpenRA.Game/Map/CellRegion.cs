@@ -81,7 +81,11 @@ namespace OpenRA
 
 		public bool Contains(CPos cell)
 		{
-			var uv = cell.ToMPos(shape);
+			return Contains(cell.ToMPos(shape));
+		}
+
+		public bool Contains(MPos uv)
+		{
 			return uv.U >= mapTopLeft.U && uv.U <= mapBottomRight.U && uv.V >= mapTopLeft.V && uv.V <= mapBottomRight.V;
 		}
 
