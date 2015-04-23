@@ -560,8 +560,8 @@ function findReplace:RunInFiles(replace)
     reseditor:EnsureVisibleEnforcePolicy(reseditor:GetLineCount()-1)
   end
 
-  self:SetStatus(
-    TR("Found %d instance.", self.occurrences):format(self.occurrences))
+  self:SetStatus(not completed and TR("Cancelled by the user.")
+    or TR("Found %d instance.", self.occurrences):format(self.occurrences))
   self.oveditor = nil
   self.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
 end
