@@ -656,13 +656,7 @@ function findReplace:createToolbar()
       if event:IsDropDownClicked() then
         local menu = wx.wxMenu()
         local pos = tb:GetToolRect(event:GetId()):GetBottomLeft()
-        for i, text in ipairs(self.settings.slist) do
-          local id = ID("findreplace.scope."..i)
-          menu:Append(id, text)
-          menu:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED,
-            function() self:refreshToolbar(text) end)
-        end
-        menu:AppendSeparator()
+        menu:Append(ID_FINDSETDIR, TR("Choose..."))
         menu:Append(ID_FINDSETTOPROJDIR, TR("Set To Project Directory"))
         menu:Enable(ID_FINDSETTOPROJDIR, ide:GetProject() ~= nil)
         menu:Connect(ID_FINDSETTOPROJDIR, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -670,7 +664,21 @@ function findReplace:createToolbar()
             local _, mask = self:GetScope()
             self:refreshToolbar(self:SetScope(ide:GetProject(), mask))
           end)
-        menu:Append(ID_FINDSETDIR, TR("Choose..."))
+        if #self.settings.slist > 0 then menu:AppendSeparator() end
+        for i, text in ipairs(self.settings.slist) do
+          local id = ID("findreplace.scope."..i)
+          menu:Append(id, text)
+          menu:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED,
+            function() self:refreshToolbar(text) end)
+        end
+        menu:AppendSeparator()
+        menu:Append(ID_RECENTSCOPECLEAR, TR("Clear Items"))
+        menu:Enable(ID_RECENTSCOPECLEAR, #self.settings.slist > 0)
+        menu:Connect(ID_RECENTSCOPECLEAR, wx.wxEVT_COMMAND_MENU_SELECTED,
+          function()
+            self.settings.slist = {}
+            self:SaveSettings()
+          end)
         tb:PopupMenu(menu, pos)
       else
         event:Skip()
