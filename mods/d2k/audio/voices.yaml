@@ -100,9 +100,3 @@ SaboteurVoice:
 		Guard: I_GUARD
 	DisablePrefixes: Select, Move, Die
 	DisableVariants: Select, Move, Guard
-
-WormVoice:
-	DefaultVariant: .WAV
-	Voices:
-		Select: WRMSIGN1
-		Move: WORM

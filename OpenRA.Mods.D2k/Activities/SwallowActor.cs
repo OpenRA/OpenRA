@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
@@ -89,21 +90,28 @@ namespace OpenRA.Mods.D2k.Activities
 			}
 
 			positionable.SetPosition(worm, targetLocation);
-			foreach (var notify in worm.TraitsImplementing<INotifyAttack>())
-				notify.Attacking(worm, target, null, null);
-			PlayAttackAnimation(worm);
 
 			var attackPosition = worm.CenterPosition;
-			var affectedPlayers = lunch.Select(x => x.Owner).Distinct();
-			foreach (var affectedPlayer in affectedPlayers)
-				NotifyPlayer(affectedPlayer, attackPosition);
+			var affectedPlayers = lunch.Select(x => x.Owner).Distinct().ToList();
+
+			PlayAttack(worm, attackPosition, affectedPlayers);
+			foreach (var notify in worm.TraitsImplementing<INotifyAttack>())
+				notify.Attacking(worm, target, null, null);
 
 			return true;
 		}
 
-		void PlayAttackAnimation(Actor self)
+		// List because IEnumerable gets evaluated too late.
+		void PlayAttack(Actor self, WPos attackPosition, List<Player> affectedPlayers)
 		{
 			renderUnit.PlayCustomAnim(self, "mouth");
+			Sound.Play(swallow.Info.WormAttackSound, self.CenterPosition);
+
+			Game.RunAfterDelay(1000, () =>
+			{
+				foreach (var affectedPlayer in affectedPlayers)
+					NotifyPlayer(affectedPlayer, attackPosition);
+			});
 		}
 
 		void NotifyPlayer(Player player, WPos location)
