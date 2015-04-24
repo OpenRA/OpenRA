@@ -83,7 +83,7 @@ frame:Connect(ID_FINDPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
       editor:ShowPosEnforcePolicy(editor:GetCurrentPos())
     else
       if findReplace:SetFind(findReplace:GetFind() or findReplace:GetSelection()) then
-        findReplace:FindString(true) -- search up
+        findReplace:Find(true) -- search up
       else
         findReplace:Show(false)
       end
