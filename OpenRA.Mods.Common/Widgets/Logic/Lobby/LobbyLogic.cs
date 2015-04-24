@@ -509,6 +509,41 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					"fog {0}".F(!orderManager.LobbyInfo.GlobalSettings.Fog)));
 			}
 
+			var autopilot = optionsBin.GetOrNull<DropDownButtonWidget>("AUTOPILOT_DROPDOWNBUTTON");
+			if (autopilot != null)
+			{
+				autopilot.IsDisabled = () => Map.Status != MapStatus.Available || configurationDisabled();
+				autopilot.GetText = () => Map.Status != MapStatus.Available
+					? "Not Available"
+					: orderManager.LobbyInfo.GlobalSettings.Autopilot == null
+						? "Disabled"
+						: "{0}".F(orderManager.LobbyInfo.GlobalSettings.Autopilot);
+				autopilot.OnMouseDown = _ => {
+					var options = new List<DropDownOption> { new DropDownOption
+					{
+						Title = "Disabled",
+						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.Autopilot == null,
+						OnClick = () => orderManager.IssueOrder(Order.Command("disable_autopilot"))
+					}};
+
+					options.AddRange(modRules.Actors["player"].Traits.WithInterface<IBotInfo>().Select(b => new DropDownOption
+					{
+						Title = b.Name,
+						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.Autopilot == b.Name,
+						OnClick = () => orderManager.IssueOrder(Order.Command("autopilot {0}".F(b.Name)))
+					}));
+
+					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					{
+						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+						return item;
+					};
+
+					autopilot.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+				};
+			}
+
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };
 
