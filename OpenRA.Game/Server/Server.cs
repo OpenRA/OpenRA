@@ -546,7 +546,28 @@ namespace OpenRA.Server
 				// Send disconnected order, even if still in the lobby
 				DispatchOrdersToClients(toDrop, 0, new ServerOrder("Disconnected", "").Serialize());
 
-				LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
+				// Currently if game is running and disconnected client was admin - bot players will just stop receiving orders
+				// In that case no sense to issue "ActivateBot" server command - no one will activate bot for disconnected admin
+				var substituteWithBot = !dropClient.IsAdmin
+					&& State == ServerState.GameStarted
+					&& LobbyInfo.GlobalSettings.Autopilot != null;
+
+				if (substituteWithBot)
+				{
+					var autopilotType = LobbyInfo.GlobalSettings.Autopilot;
+
+					// Command for everyone on behalf of "toDrop". For admin to activate bot, a notification for others.
+					// After this command game will continue even if "dropClient" didn't issue packets for some frames:
+					//   clients will treat admin as owner of "dropClient" and will check for admins packets instead
+					DispatchOrdersToClients(toDrop, 0, new ServerOrder("ActivateBot", autopilotType).Serialize());
+
+					var admin = LobbyInfo.Admin;
+					dropClient.IpAddress = null;
+					dropClient.BotControllerClientIndex = admin == null ? 0 : admin.Index;
+					dropClient.Bot = autopilotType;
+				}
+				else
+					LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
 				// Client was the server admin
 				// TODO: Reassign admin for game in progress via an order
@@ -565,10 +586,13 @@ namespace OpenRA.Server
 					}
 				}
 
-				// OrderManager.frameData on clients must contain data for each frame from each client
-				// There will be no data from "toDrop" client for "frame" frame and clients will stuck waiting
-				// Sending packet to notify that clients don't need to wait for data from "toDrop" after "frame" frame
-				DispatchOrders(toDrop, frame, new byte[] { 0xBF });
+				if (!substituteWithBot)
+				{
+					// OrderManager.frameData on clients must contain data for each frame from each client
+					// There will be no data from "toDrop" client for "frame" frame and clients will stuck waiting
+					// Sending packet to notify that clients don't need to wait for data from "toDrop" after "frame" frame
+					DispatchOrders(toDrop, frame, new byte[] { 0xBF });
+				}
 
 				if (!Conns.Any())
 				{

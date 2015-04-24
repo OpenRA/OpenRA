@@ -196,6 +196,8 @@ namespace OpenRA.Network
 			public string TechLevel = "none";
 			public string StartingUnitsClass = "none";
 			public bool ShortGame = true;
+			// Bot of Autopilot type replaces clients disconnected during game. Activated on admin.
+			public string Autopilot; // bot type, null if disabled
 			public bool AllowVersionMismatch;
 			public string GameUid;
 

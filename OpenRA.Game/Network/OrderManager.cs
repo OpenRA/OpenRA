@@ -83,6 +83,14 @@ namespace OpenRA.Network
 			AddChatLine += CacheChatLine;
 		}
 
+		/// <summary>
+		/// Stop OrderManager from waiting for frame data from given client
+		/// </summary>
+		public void StopWaitingForClient(Session.Client client)
+		{
+			frameData.RemoveClient(client.Index);
+		}
+
 		public void IssueOrders(Order[] orders)
 		{
 			foreach (var order in orders)

@@ -69,6 +69,39 @@ namespace OpenRA.Network
 						break;
 					}
 
+				case "ActivateBot": // Ingame
+					{
+						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
+						if (client != null && world != null)
+						{
+							var player = world.FindPlayerByClient(client);
+
+							// Test if player for client present in game and if a bot was activated for it already
+							if (player == null || player.IsBot)
+								break;
+
+							// Most probably client.State is Disconnected at this moment
+							client.State = Session.ClientState.Ready;
+
+							var admin = orderManager.LobbyInfo.Admin;
+
+							// Changes for packets verification. Bot will be activated on admin, admin will issue bot orders
+							// Needed here because server doesn't perform SyncLobbyClients after game start
+							client.BotControllerClientIndex = admin == null ? 0 : admin.Index;
+							client.Bot = order.TargetString;
+							player.IsBot = true;
+
+							orderManager.StopWaitingForClient(client);
+
+							if (Game.IsHost)
+								player.ActivateBot(client.Bot);
+
+							var text = "Bot '{0}' activated for player {1}".F(client.Bot, client.Name);
+							Game.AddChatLine(Color.White, "", text);
+						}
+						break;
+					}
+
 				case "TeamChat":
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
