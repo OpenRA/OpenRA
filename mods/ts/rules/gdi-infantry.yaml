@@ -8,7 +8,7 @@ E2:
 		Cost: 200
 	Tooltip:
 		Name: Disc Thrower
-		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+		Description: Infantry armed with special explosive discs.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
 	Selectable:
 		Bounds: 12,17,0,-9
 	Health:
@@ -30,7 +30,7 @@ MEDIC:
 		Cost: 600
 	Tooltip:
 		Name: Medic
-		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
+		Description: Heals nearby infantry.\n  Unarmed
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
@@ -61,6 +61,7 @@ JUMPJET:
 		Cost: 600
 	Tooltip:
 		Name: Jumpjet Infantry
+		Description: Airborne soldier.\n  Strong vs Infantry, Aircraft\n  Weak vs Vehicles
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
@@ -91,7 +92,7 @@ GHOST:
 		Cost: 1750
 	Tooltip:
 		Name: Ghost Stalker
-		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
+		Description: Elite commando infantry, armed with\na railgun and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50

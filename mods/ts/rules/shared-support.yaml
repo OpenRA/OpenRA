@@ -28,7 +28,7 @@ NAPULS:
 		Cost: 1000
 	Tooltip:
 		Name: EMP Cannon
-		Description: Disables vehicles. \nRequires power to operate.\n  Strong vs all ground units\n  Cannot target Aircraft
+		Description: Disables vehicles.\nRequires power to operate.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90

@@ -91,6 +91,7 @@ LPST:
 		Cost: 950
 	Tooltip:
 		Name: Mobile Sensor Array
+		Description: Can detect cloaked and subterranean\nunits when deployed.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100

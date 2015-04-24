@@ -29,7 +29,7 @@ NALASR:
 		Cost: 500
 	Tooltip:
 		Name: Laser Turret
-		Description: Basic base defense. \nRequires power to operate.\n  Strong vs all ground units\n  Cannot target Aircraft
+		Description: Basic base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Buildable:
 		Queue: Defense
 		Prerequisites: nahand, ~structures.nod
@@ -69,7 +69,7 @@ NAOBEL:
 		Cost: 1500
 	Tooltip:
 		Name: Obelisk of Light
-		Description: Advanced base defense. \nRequires power to operate.\n  Strong vs all ground units\n  Cannot target Aircraft
+		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
@@ -113,7 +113,7 @@ NASAM:
 		Cost: 600
 	Tooltip:
 		Name: S.A.M. Site
-		Description: Nod Anti-Air base defense. \nRequires power to operate.\n  Strong vs all Aircraft\n  Cannot target ground units
+		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Buildable:
 		Queue: Defense
 		Prerequisites: naradr, ~structures.nod

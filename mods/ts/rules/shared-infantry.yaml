@@ -8,7 +8,7 @@ E1:
 		Cost: 120
 	Tooltip:
 		Name: Light Infantry
-		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Selectable:
 		Bounds: 12,17,0,-9
 	Health:
@@ -35,7 +35,7 @@ ENGINEER:
 		Cost: 500
 	Tooltip:
 		Name: Engineer
-		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
+		Description: Infiltrates and captures enemy structures.\n  Unarmed
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30

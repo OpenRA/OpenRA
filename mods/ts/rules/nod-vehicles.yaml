@@ -4,7 +4,7 @@ BGGY:
 		Cost: 500
 	Tooltip:
 		Name: Attack Buggy
-		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry, Vehicles\n  Weak vs Tanks, Aircraft
+		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
@@ -36,7 +36,7 @@ BIKE:
 		Cost: 600
 	Tooltip:
 		Name: Attack Cycle
-		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
+		Description: Fast scout vehicle, armed with\nrockets.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
@@ -73,6 +73,7 @@ TTNK:
 		Cost: 800
 	Tooltip:
 		Name: Tick Tank
+		Description: Nod's main battle tank.\nCan deploy to gain extra protection.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
@@ -117,6 +118,7 @@ ART2:
 		Cost: 975
 	Tooltip:
 		Name: Artillery
+		Description: Mobile Artillery.\nNeeds to deploy in order to shoot.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
@@ -150,7 +152,7 @@ REPAIR:
 		Cost: 1000
 	Tooltip:
 		Name: Mobile Repair Vehicle
-		Description: Repairs nearby vehicles.\n  Strong vs Nothing\n  Weak vs Everything
+		Description: Repairs nearby vehicles.\n  Unarmed
 	Health:
 		HP: 200
 	Mobile:
@@ -198,7 +200,7 @@ SAPC:
 		Cost: 800
 	Tooltip:
 		Name: Subterranean APC
-		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Vehicles\n  Weak vs Infantry
+		Description: Troop transport that can move\nunderground to avoid detection.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
@@ -226,7 +228,7 @@ SUBTANK:
 		Cost: 750
 	Tooltip:
 		Name: Devil's Tongue
-		Description: Subterranean Tank
+		Description: Subterranean Flame Tank.\nIs able to move underground.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
@@ -255,7 +257,7 @@ STNK:
 		Cost: 1100
 	Tooltip:
 		Name: Stealth Tank
-		Description: Long-range missile tank that can cloak.\nHas weak armor. Can be spotted by infantry.\n  Strong vs Vehicles, Tanks, Aircraft\n  Weak vs Infantry.
+		Description: Lightly armoured tank equipped with a personal\nstealth generator. Armed with missiles.\nCan be spotted by infantry at close range.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 90
 		Prerequisites: ~naweap, natech
