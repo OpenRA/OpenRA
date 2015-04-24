@@ -562,6 +562,7 @@ Weapons:
 		Burst: 1
 		Warhead: SpreadDamage
 			Damage: 20
+			DamageTypes: Prone50Percent, TriggerProne
 
 Voices:
 

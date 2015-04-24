@@ -11,13 +11,13 @@ LtRail:
 		Spread: 42
 		Damage: 150
 		DeathType: 2
-		ProneModifier: 100
 		Versus:
 			None: 100
 			Wood: 130
 			Light: 150
 			Heavy: 110
 			Concrete: 5
+		DamageTypes: Prone100Percent, TriggerProne
 
 MechRailgun:
 	ReloadDelay: 60
@@ -32,13 +32,13 @@ MechRailgun:
 		Spread: 42
 		Damage: 200
 		DeathType: 5
-		ProneModifier: 100
 		Versus:
 			None: 200
 			Wood: 175
 			Light: 160
 			Heavy: 100
 			Concrete: 25
+		DamageTypes: Prone100Percent, TriggerProne
 
 SonicZap:
 	ReloadDelay: 120
@@ -56,6 +56,7 @@ SonicZap:
 		Versus:
 			Heavy: 80
 			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne
 
 CyCannon:
 	ReloadDelay: 50
@@ -72,7 +73,6 @@ CyCannon:
 		Spread: 43
 		Damage: 120
 		DeathType: 6
-		ProneModifier: 350
 		ValidTargets: Ground
 		Versus:
 			None: 350
@@ -80,6 +80,7 @@ CyCannon:
 			Light: 205
 			Heavy: 150
 			Concrete: 80
+		DamageTypes: Prone350Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: large_bang
 		ImpactSound: expnew12.aud
@@ -116,6 +117,7 @@ Proton:
 			Light: 75
 			Heavy: 100
 			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: small_bang
 		ImpactSound: expnew12.aud
@@ -137,7 +139,7 @@ LaserFire:
 		Spread: 42
 		Damage: 250
 		DeathType: 5
-		ProneModifier: 60
+		DamageTypes: Prone60Percent, TriggerProne
 
 # Laser turret
 LaserFire2:
@@ -151,4 +153,5 @@ LaserFire2:
 		Spread: 42
 		Damage: 30
 		DeathType: 5
-		ProneModifier: 60
+		DamageTypes: Prone60Percent, TriggerProne
+

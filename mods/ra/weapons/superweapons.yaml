@@ -16,6 +16,7 @@ ParaBomb:
 			Wood: 75
 			Light: 75
 			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -37,6 +38,7 @@ Atomic:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Res_impact: DestroyResource
 		Size: 1
 	Warhead@3Smu_impact: LeaveSmudge
@@ -54,6 +56,7 @@ Atomic:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@6Res_areanuke1: DestroyResource
 		Size: 2
 		Delay: 5
@@ -73,6 +76,7 @@ Atomic:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@10Res_areanuke2: DestroyResource
 		Size: 3
 		Delay: 10
@@ -89,6 +93,7 @@ Atomic:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@13Res_areanuke3: DestroyResource
 		Size: 4
 		Delay: 15
@@ -105,6 +110,7 @@ Atomic:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@16Res_areanuke4: DestroyResource
 		Size: 5
 		Delay: 20

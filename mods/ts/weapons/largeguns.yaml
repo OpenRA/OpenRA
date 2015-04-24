@@ -18,6 +18,7 @@
 			Light: 75
 			Heavy: 100
 			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: medium_clsn
 		ImpactSound: expnew14.aud
@@ -45,6 +46,7 @@
 			Light: 75
 			Heavy: 100
 			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: large_clsn
 		ImpactSound: expnew14.aud
@@ -78,6 +80,7 @@
 			Light: 75
 			Heavy: 100
 			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: medium_clsn
 		ImpactSound: expnew14.aud
@@ -105,13 +108,13 @@
 		Spread: 298
 		Damage: 150
 		DeathType: 3
-		ProneModifier: 100
 		Versus:
 			None: 100
 			Wood: 85
 			Light: 68
 			Heavy: 35
 			Concrete: 35
+		DamageTypes: Prone100Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew06.aud
@@ -122,3 +125,4 @@
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
+

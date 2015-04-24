@@ -1812,6 +1812,7 @@ Weapons:
 				Light: 0
 				Heavy: 0
 				Concrete: 0
+			DamageTypes: Prone50Percent, TriggerProne
 		Warhead@2Eff: CreateEffect
 			Explosion: piffs
 			InvalidImpactTypes: Water

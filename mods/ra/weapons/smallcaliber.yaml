@@ -14,6 +14,7 @@ Colt45:
 			Light: 0
 			Heavy: 0
 			Concrete: 0
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piff
 		InvalidImpactTypes: Water
@@ -40,6 +41,7 @@ ZSU-23:
 			Wood: 75
 			Light: 75
 			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: small_explosion_air
 
@@ -59,6 +61,7 @@ Vulcan:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff_1: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -76,6 +79,7 @@ Vulcan:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@4Eff_2: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -95,6 +99,7 @@ Vulcan:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@6Eff_3: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -114,6 +119,7 @@ Vulcan:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@8Eff_4: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -133,6 +139,7 @@ Vulcan:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@10Eff_5: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -152,6 +159,7 @@ Vulcan:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@12Eff_6: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -179,6 +187,7 @@ ChainGun:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -203,6 +212,7 @@ ChainGun.Yak:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -225,6 +235,7 @@ Pistol:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piff
 		InvalidImpactTypes: Water
@@ -247,6 +258,7 @@ M1Carbine:
 			Light: 30
 			Heavy: 10
 			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -270,6 +282,7 @@ M60mg:
 			Light: 30
 			Heavy: 10
 			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -292,6 +305,7 @@ SilencedPPK:
 			Light: 0
 			Heavy: 0
 			Concrete: 0
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -317,6 +331,7 @@ FLAK-23:
 			Light: 60
 			Heavy: 10
 			Concrete: 20
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: small_explosion
 		InvalidImpactTypes: Air, AirHit, Water
@@ -343,4 +358,5 @@ Sniper:
 			Light: 0
 			Heavy: 0
 			Concrete: 0
+		DamageTypes: Prone50Percent, TriggerProne
 

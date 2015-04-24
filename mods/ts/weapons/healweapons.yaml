@@ -8,7 +8,6 @@ Heal:
 		Spread: 213
 		Damage: -50
 		DeathType: 1
-		ProneModifier: 100
 		Versus:
 			Wood: 0
 			Light: 0
@@ -25,7 +24,6 @@ Repair:
 		Spread: 213
 		Damage: -50
 		DeathType: 1
-		ProneModifier: 100
 		Versus:
 			None: 0
 			Wood: 0
@@ -39,4 +37,4 @@ TiberiumHeal:
 		Spread: 42
 		Damage: -2
 		DeathType: 6
-		PreventProne: yes
+

@@ -17,6 +17,7 @@ LMG:
 			Light: 40
 			Heavy: 10
 			Concrete: 20
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -46,6 +47,7 @@ Bazooka:
 			Light: 60
 			Heavy: 90
 			Concrete: 40
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -72,6 +74,7 @@ Sniper:
 			Light: 1
 			Heavy: 0
 			Concrete: 0
+		DamageTypes: Prone50Percent, TriggerProne
 
 Vulcan:
 	ReloadDelay: 30
@@ -94,6 +97,7 @@ Vulcan:
 			Light: 60
 			Heavy: 10
 			Concrete: 0
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -121,6 +125,7 @@ Slung:
 			Light: 40
 			Heavy: 90
 			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: small_explosion
 		ImpactSound: EXPLLG5.WAV
@@ -146,6 +151,7 @@ HMG:
 			Light: 45
 			Heavy: 20
 			Concrete: 20
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -170,6 +176,7 @@ HMGo:
 			Light: 45
 			Heavy: 25
 			Concrete: 20
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -200,6 +207,7 @@ QuadRockets:
 			Light: 100
 			Heavy: 100
 			Concrete: 35
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -225,6 +233,7 @@ TurretGun:
 			Wood: 75
 			Light: 100
 			Concrete: 65
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -259,6 +268,7 @@ TowerMissile:
 			Light: 100
 			Heavy: 50
 			Concrete: 35
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -282,6 +292,7 @@ TowerMissile:
 			Wood: 50
 			Light: 100
 			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -305,6 +316,7 @@ TowerMissile:
 			Wood: 50
 			Light: 100
 			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -328,6 +340,7 @@ DevBullet:
 			Light: 100
 			Heavy: 100
 			Concrete: 80
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -361,6 +374,7 @@ DevBullet:
 			Light: 100
 			Heavy: 50
 			Concrete: 80
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -390,6 +404,7 @@ NerveGasMissile:
 			None: 0
 			Wood: 0
 			Concrete: 0
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -424,6 +439,7 @@ NerveGasMissile:
 			Light: 75
 			Heavy: 50
 			Concrete: 100
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -448,6 +464,7 @@ Sound:
 			Wood: 85
 			Light: 80
 			Concrete: 75
+		DamageTypes: Prone50Percent, TriggerProne
 
 ChainGun:
 	ReloadDelay: 10
@@ -466,6 +483,7 @@ ChainGun:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -512,6 +530,7 @@ ParaBomb:
 			Wood: 75
 			Light: 75
 			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -534,6 +553,7 @@ Napalm:
 			Light: 30
 			Heavy: 20
 			Concrete: 70
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -564,6 +584,7 @@ Atomic:
 			Light: 100
 			Heavy: 50
 			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: nuke
 		ImpactSound: EXPLLG2.WAV
@@ -581,6 +602,7 @@ CrateNuke:
 			Heavy: 25
 			Concrete: 50
 		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: nuke
 		ImpactSound: EXPLLG2.WAV
@@ -597,6 +619,7 @@ CrateExplosion:
 			Light: 60
 			Heavy: 25
 		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: EXPLSML4.WAV
@@ -612,6 +635,7 @@ UnitExplode:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: EXPLMD1.WAV
@@ -626,6 +650,7 @@ UnitExplodeSmall:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: self_destruct
 		ImpactSound: EXPLHG1.WAV, EXPLLG1.WAV, EXPLMD1.WAV, EXPLSML4.WAV
@@ -640,6 +665,7 @@ UnitExplodeTiny:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: med_explosion
 		ImpactSound: EXPLMD2.WAV, EXPLSML1.WAV, EXPLSML2.WAV, EXPLSML3.WAV
@@ -654,6 +680,7 @@ UnitExplodeScale:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
@@ -677,6 +704,7 @@ Grenade:
 			Wood: 100
 			Light: 25
 			Heavy: 5
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
@@ -707,6 +735,7 @@ Shrapnel:
 			Wood: 100
 			Light: 25
 			Heavy: 5
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
@@ -723,6 +752,7 @@ SpiceExplosion:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Res: CreateResource
 		AddsResourceType: Spice
 		Size: 2,2

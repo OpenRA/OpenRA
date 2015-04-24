@@ -10,6 +10,7 @@ CrateNapalm:
 			Heavy: 25
 			Concrete: 50
 		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -28,6 +29,7 @@ CrateExplosion:
 			Light: 60
 			Heavy: 25
 		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: self_destruct
 		ImpactSound: kaboom15.aud
@@ -42,6 +44,7 @@ CrateNuke:
 		Versus:
 			Concrete: 25
 		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Res_impact: DestroyResource
 	Warhead@3Eff_impact: CreateEffect
 		Explosion: nuke
@@ -56,6 +59,7 @@ CrateNuke:
 		Versus:
 			Concrete: 25
 		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@5Res_areanuke: DestroyResource
 		Size: 5,4
 		Delay: 4
@@ -78,6 +82,7 @@ MiniNuke:
 		Versus:
 			Concrete: 25
 		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Res_impact: DestroyResource
 		Size: 1
 	Warhead@3Eff_impact: CreateEffect
@@ -92,6 +97,7 @@ MiniNuke:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@5Res_areanuke1: DestroyResource
 		Size: 2
 		Delay: 5
@@ -107,6 +113,7 @@ MiniNuke:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@8Res_areanuke2: DestroyResource
 		Size: 3
 		Delay: 10
@@ -119,6 +126,7 @@ MiniNuke:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@10Res_areanuke3: DestroyResource
 		Size: 4
 		Delay: 15
@@ -138,6 +146,7 @@ UnitExplode:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: self_destruct
 		ImpactSound: kaboom22.aud
@@ -157,6 +166,7 @@ UnitExplodeShip:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: kaboom25.aud
@@ -171,6 +181,7 @@ UnitExplodeSubmarine:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: large_splash
 		ImpactSound: splash9.aud
@@ -185,6 +196,7 @@ UnitExplodeSmall:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: kaboom15.aud
@@ -207,6 +219,7 @@ BarrelExplode:
 			Light: 50
 			Heavy: 25
 			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 		Size: 2,1
@@ -221,6 +234,7 @@ ATMine:
 		Spread: 256
 		Damage: 400
 		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: mineblo1.aud
@@ -231,6 +245,7 @@ APMine:
 		Damage: 400
 		AffectsParent: true
 		DeathType: 3
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: napalm
 		ImpactSound: mine1.aud
@@ -245,6 +260,7 @@ OreExplosion:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Res: CreateResource
 		AddsResourceType: Ore
 		Size: 1,1

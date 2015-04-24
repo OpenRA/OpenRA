@@ -296,6 +296,7 @@ Weapons:
 				Heavy: 25
 			DeathType: 2
 			Damage: 250
+			DamageTypes: Prone50Percent, TriggerProne
 		Warhead@1Eff: CreateEffect
 			Explosion: large_explosion
 			WaterExplosion: large_splash
@@ -324,6 +325,7 @@ Weapons:
 				Heavy: 30
 			DeathType: blownaway
 			Damage: 400
+			DamageTypes: Prone50Percent, TriggerProne
 		Warhead@1Eff: CreateEffect
 			Explosion: large_explosion
 			WaterExplosion: large_splash

@@ -9,6 +9,7 @@ UnitExplode:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: large_twlt
 		ImpactSound: expnew09.aud
@@ -23,6 +24,7 @@ UnitExplodeSmall:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: medium_brnl
 		ImpactSound: expnew13.aud
@@ -37,9 +39,11 @@ TiberiumExplosion:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Res: CreateResource
 		AddsResourceType: Tiberium
 		Size: 1,1
 	Warhead@3Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
+

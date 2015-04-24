@@ -759,6 +759,7 @@ Weapons:
 				Concrete: 100
 			DeathType: 4
 			Damage: 150
+			DamageTypes: Prone50Percent, TriggerProne
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
@@ -793,6 +794,7 @@ Weapons:
 				Concrete: 200
 			DeathType: 3
 			Damage: 250
+			DamageTypes: Prone50Percent, TriggerProne
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
@@ -822,6 +824,7 @@ Weapons:
 				Concrete: 100
 			DeathType: 4
 			Damage: 15
+			DamageTypes: Prone50Percent, TriggerProne
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Scorch
 		Warhead@3Eff: CreateEffect
@@ -843,6 +846,7 @@ Weapons:
 				Concrete: 25
 			DeathType: 5
 			Damage: 200
+			DamageTypes: Prone50Percent, TriggerProne
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
@@ -873,6 +877,7 @@ Weapons:
 				Concrete: 35
 			DeathType: 5
 			Damage: 10
+			DamageTypes: Prone50Percent, TriggerProne
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Scorch
 		Warhead@3Eff: CreateEffect
@@ -897,6 +902,7 @@ Weapons:
 				Heavy: 40
 				Concrete: 30
 			Damage: 25
+			DamageTypes: Prone50Percent, TriggerProne
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Scorch
 		Warhead@3Eff: CreateEffect
@@ -925,6 +931,7 @@ Weapons:
 				Heavy: 70
 			DeathType: 3
 			Damage: 500
+			DamageTypes: Prone50Percent, TriggerProne
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
@@ -947,6 +954,7 @@ Weapons:
 				Concrete: 0
 			DeathType: 2
 			Damage: 150
+			DamageTypes: Prone50Percent, TriggerProne
 		Warhead@2Eff: CreateEffect
 			Explosion: piffs
 
