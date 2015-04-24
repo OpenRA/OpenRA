@@ -66,6 +66,7 @@ SovietBuildings = { Barrack1, SubPen, RadarDome, AdvancedPowerPlant1, AdvancedPo
 
 IdleTrigger = function(units, dest)
 	Utils.Do(units, function(unit)
+
 		Trigger.OnIdle(unit, function()
 			local bool = Utils.All(units, function(unit) return unit.IsIdle end)
 			if bool then
@@ -76,21 +77,34 @@ IdleTrigger = function(units, dest)
 							if not unit.IsDead then
 								if dest then unit.AttackMove(dest, 3) end
 								Trigger.OnIdle(unit, unit.Hunt)
+								Trigger.OnCapture(unit, function()
+									Trigger.ClearAll(unit)
+								end)
 							end
 						end)
 					end
 				end)
 			end
 		end)
+
 		Trigger.OnDamaged(unit, function()
 			Utils.Do(units, function(unit)
 				if not unit.IsDead then
 					Trigger.ClearAll(unit)
 					Trigger.AfterDelay(0, function()
-						if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end
+						if not unit.IsDead then
+							Trigger.OnIdle(unit, unit.Hunt)
+							Trigger.OnCapture(unit, function()
+								Trigger.ClearAll(unit)
+							end)
+						end
 					end)
 				end
 			end)
+		end)
+
+		Trigger.OnCapture(unit, function()
+			Trigger.ClearAll(unit)
 		end)
 	end)
 end

@@ -55,6 +55,10 @@ GuardHarvester = function(unit, harvester)
 				unit.AttackMove(start)
 			end
 		end)
+
+		Trigger.OnCapture(unit, function()
+			Trigger.ClearAll(unit)
+		end)
 	end
 end
 
@@ -118,12 +122,20 @@ SpawnSovietVehicle = function(spawnpoints, rallypoints)
 	local rally = Utils.RandomInteger(1, #rallypoints + 1)
 	local unit = Reinforcements.Reinforce(soviets, { Utils.Random(SovietVehicles) }, { spawnpoints[route].Location, rallypoints[rally].Location })[1]
 	IdleHunt(unit)
+
+	Trigger.OnCapture(unit, function()
+		Trigger.ClearAll(unit)
+	end)
 end
 
 SpawnAndAttack = function(types, entry)
 	local units = Reinforcements.Reinforce(soviets, types, { entry })
 	Utils.Do(units, function(unit)
 		IdleHunt(unit)
+
+		Trigger.OnCapture(unit, function()
+			Trigger.ClearAll(unit)
+		end)
 	end)
 	return units
 end
@@ -174,7 +186,7 @@ FinalAttack = function()
 	insert(units4)
 	insert(units5)
 
-	Trigger.OnAllKilled(units, function()
+	Trigger.OnAllKilledOrCaptured(units, function()
 		if not DestroyObj then
 			Media.DisplayMessage("Excellent work Commander! We have reinforced our position enough to initiate a counter-attack.", "Incoming Report")
 			DestroyObj = allies.AddPrimaryObjective("Destroy the remaining Soviet forces in the area!")
@@ -310,6 +322,9 @@ SetupSoviets = function()
 			GuardHarvester(unit, Harvester1)
 		end)
 	end)
+	Trigger.OnCapture(Harvester1, function()
+		Trigger.ClearAll(Harvester1)
+	end)
 
 	Harvester2.FindResources()
 	Trigger.OnDamaged(Harvester2, function()
@@ -326,6 +341,9 @@ SetupSoviets = function()
 				GuardHarvester(unit, Harvester2)
 			end)
 		end)
+	end)
+	Trigger.OnCapture(Harvester2, function()
+		Trigger.ClearAll(Harvester2)
 	end)
 
 	Trigger.AfterDelay(0, function()
