@@ -1240,6 +1240,40 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150421)
+				{
+					if (node.Key.StartsWith("Warhead") && node.Value.Value == "SpreadDamage")
+					{
+						// Add DamageTypes property to DamageWarheads with a default value "Prone50Percent"
+						if (node.Value.Nodes.All(x => x.Key != "DamageTypes"))
+						{
+							var damage = node.Value.Nodes.FirstOrDefault(x => x.Key == "Damage");
+							var damageValue = damage != null ? FieldLoader.GetValue<int>("Damage", damage.Value.Value) : -1;
+
+							var prone = node.Value.Nodes.FirstOrDefault(x => x.Key == "PreventProne");
+							var preventsProne = prone != null && FieldLoader.GetValue<bool>("PreventProne", prone.Value.Value);
+
+							var proneModifier = node.Value.Nodes.FirstOrDefault(x => x.Key == "ProneModifier");
+							var modifierValue = proneModifier == null ? "50" : proneModifier.Value.Value;
+
+							var value = new List<string>();
+
+							if (damageValue > 0)
+								value.Add("Prone{0}Percent".F(modifierValue));
+
+							if (!preventsProne)
+								value.Add("TriggerProne");
+
+							if (value.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("DamageTypes", value.JoinWith(", ")));
+						}
+
+						// Remove obsolete PreventProne and ProneModifier
+						node.Value.Nodes.RemoveAll(x => x.Key == "PreventProne");
+						node.Value.Nodes.RemoveAll(x => x.Key == "ProneModifier");
+					}
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

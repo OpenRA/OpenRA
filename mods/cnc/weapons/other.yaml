@@ -15,6 +15,7 @@ Flamethrower:
 			Wood: 100
 			Light: 100
 			Heavy: 20
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -40,6 +41,7 @@ BigFlamer:
 			Wood: 100
 			Light: 67
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -61,6 +63,7 @@ Chemspray:
 			Wood: 35
 			Light: 75
 			Heavy: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -86,6 +89,7 @@ Grenade:
 			Wood: 50
 			Light: 75
 			Heavy: 35
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -111,6 +115,7 @@ Napalm:
 			Wood: 100
 			Light: 100
 			Heavy: 80
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -131,6 +136,7 @@ Laser:
 		DeathType: 5
 		Versus:
 			Wood: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 
@@ -140,7 +146,6 @@ Tiberium:
 		Spread: 42
 		Damage: 2
 		DeathType: 6
-		PreventProne: yes
 
 TiberiumExplosion:
 	Warhead@1Dam: SpreadDamage
@@ -152,6 +157,7 @@ TiberiumExplosion:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Res: CreateResource
 		AddsResourceType: Tiberium
 		Size: 1,1
@@ -164,7 +170,6 @@ Heal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: -1
-		PreventProne: yes
 
 Tail:
 	ReloadDelay: 30
@@ -181,6 +186,7 @@ Tail:
 			Light: 30
 			Heavy: 10
 			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne
 
 Horn:
 	ReloadDelay: 20
@@ -197,6 +203,7 @@ Horn:
 			Light: 30
 			Heavy: 10
 			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne
 
 Teeth:
 	ReloadDelay: 30
@@ -213,6 +220,7 @@ Teeth:
 			Light: 30
 			Heavy: 10
 			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne
 
 Claw:
 	ReloadDelay: 10
@@ -229,6 +237,7 @@ Claw:
 			Light: 30
 			Heavy: 10
 			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne
 
 Demolish:
 	Warhead@1Dam: SpreadDamage

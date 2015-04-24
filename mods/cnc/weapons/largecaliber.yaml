@@ -15,6 +15,7 @@
 			Light: 100
 			Heavy: 100
 			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -37,6 +38,7 @@
 			Wood: 75
 			Light: 75
 			Heavy: 100
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -60,6 +62,7 @@
 			Light: 100
 			Heavy: 100
 			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -85,6 +88,7 @@
 			Light: 100
 			Heavy: 100
 			Concrete: 100
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -107,6 +111,7 @@ TurretGun:
 			Wood: 25
 			Light: 100
 			Heavy: 100
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -134,6 +139,7 @@ ArtilleryShell:
 			Wood: 80
 			Light: 75
 			Heavy: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect

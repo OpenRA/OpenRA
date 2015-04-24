@@ -8,12 +8,12 @@ Minigun:
 		Spread: 128
 		Damage: 8
 		DeathType: 1
-		ProneModifier: 70
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
+		DamageTypes: Prone70Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -31,12 +31,12 @@ M1Carbine:
 		Spread: 128
 		Damage: 15
 		DeathType: 1
-		ProneModifier: 70
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
+		DamageTypes: Prone70Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -54,12 +54,12 @@ Vulcan:
 		Spread: 128
 		Damage: 20
 		DeathType: 1
-		ProneModifier: 70
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
+		DamageTypes: Prone70Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -78,13 +78,13 @@ Vulcan2:
 		Spread: 128
 		Damage: 50
 		DeathType: 1
-		ProneModifier: 70
 		Versus:
 			None: 100
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
+		DamageTypes: Prone70Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -103,12 +103,12 @@ Vulcan3:
 		Spread: 128
 		Damage: 10
 		DeathType: 1
-		ProneModifier: 70
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
+		DamageTypes: Prone70Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -131,6 +131,7 @@ VulcanTower:
 			Light: 40
 			Heavy: 25
 			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -149,12 +150,12 @@ JumpCannon:
 		Spread: 128
 		Damage: 15
 		DeathType: 1
-		ProneModifier: 70
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
+		DamageTypes: Prone70Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -172,12 +173,12 @@ AssaultCannon:
 		Spread: 128
 		Damage: 40
 		DeathType: 1
-		ProneModifier: 70
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
+		DamageTypes: Prone70Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -197,12 +198,12 @@ RaiderCannon:
 		Spread: 128
 		Damage: 40
 		DeathType: 1
-		ProneModifier: 70
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
+		DamageTypes: Prone70Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -221,13 +222,13 @@ HarpyClaw:
 		Spread: 128
 		Damage: 60
 		DeathType: 1
-		ProneModifier: 70
 		ValidTargets: Ground, Air
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
+		DamageTypes: Prone70Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -245,12 +246,12 @@ Pistola:
 		Spread: 128
 		Damage: 2
 		DeathType: 1
-		ProneModifier: 70
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
+		DamageTypes: Prone70Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: piff
 		InvalidImpactTypes: Water
@@ -268,10 +269,11 @@ Sniper:
 		Spread: 42
 		Damage: 150
 		DeathType: 1
-		ProneModifier: 100
 		Versus:
 			None: 100
 			Wood: 5
 			Light: 5
 			Heavy: 5
 			Concrete: 5
+		DamageTypes: Prone100Percent, TriggerProne
+

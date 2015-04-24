@@ -1172,6 +1172,7 @@ Weapons:
 				Light: 60
 				Heavy: 50
 				Concrete: 25
+			DamageTypes: Prone50Percent, TriggerProne
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect

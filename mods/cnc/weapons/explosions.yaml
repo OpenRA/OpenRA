@@ -3,6 +3,7 @@ FlametankExplode:
 		Spread: 1c0
 		Damage: 100
 		DeathType: 5
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: big_napalm
 		ImpactSound: xplobig6.aud
@@ -12,6 +13,7 @@ HeliCrash:
 		Spread: 426
 		Damage: 40
 		DeathType: 4
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: poof
 		ImpactSound: xplos.aud
@@ -34,6 +36,7 @@ UnitExplode:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: poof
 		ImpactSound: xplobig6.aud
@@ -48,6 +51,7 @@ UnitExplodeSmall:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: big_frag
 		ImpactSound: xplobig4.aud
@@ -62,6 +66,7 @@ GrenadierExplode:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: poof
 		ImpactSound: xplosml2.aud
@@ -78,6 +83,7 @@ Napalm.Crate:
 			Light: 60
 			Heavy: 25
 		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect

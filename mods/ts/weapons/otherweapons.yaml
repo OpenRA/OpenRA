@@ -12,13 +12,13 @@ FireballLauncher:
 		Spread: 341
 		Damage: 25
 		DeathType: 5
-		ProneModifier: 100
 		Versus:
 			None: 600
 			Wood: 148
 			Light: 59
 			Heavy: 6
 			Concrete: 2
+		DamageTypes: Prone100Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SmallScorch
 
@@ -37,11 +37,11 @@ FiendShard:
 	Warhead@1Dam: SpreadDamage
 		Damage: 35
 		DeathType: 1
-		ProneModifier: 100
 		Versus:
 			Light: 60
 			Heavy: 40
 			Concrete: 20
+		DamageTypes: Prone100Percent, TriggerProne
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
 		ImpactSound: ssplash3.aud
@@ -56,11 +56,11 @@ SlimeAttack:
 	Warhead@1Dam: SpreadDamage
 		Damage: 100
 		DeathType: 2
-		ProneModifier: 100
 		Versus:
 			Light: 60
 			Heavy: 40
 			Concrete: 20
+		DamageTypes: Prone100Percent, TriggerProne
 
 Tiberium:
 	ReloadDelay: 16
@@ -68,4 +68,4 @@ Tiberium:
 		Spread: 42
 		Damage: 2
 		DeathType: 6
-		PreventProne: yes
+
