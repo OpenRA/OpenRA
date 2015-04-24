@@ -438,8 +438,11 @@ namespace OpenRA
 
 					if (world != null)
 					{
+						// "net tick" here means "frame" in OrderManager
 						var isNetTick = LocalTick % NetTickScale == 0;
 
+						// Wait for data from all clients: if it's time for net tick - don't process
+						// accumulated orders (world will stay still) until orderManager become ready
 						if (!isNetTick || orderManager.IsReadyForNextFrame)
 						{
 							++orderManager.LocalFrameNumber;

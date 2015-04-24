@@ -520,11 +520,21 @@ namespace OpenRA.Server
 
 		public void DropClient(Connection toDrop, int frame)
 		{
-			if (!PreConns.Remove(toDrop))
+			try
 			{
-				Conns.Remove(toDrop);
+				toDrop.Socket.Disconnect(false);
+			}
+			catch { }
 
+			// Nothing to clear for not validated connections
+			if (PreConns.Remove(toDrop))
+				return;
+
+			if (Conns.Remove(toDrop))
+			{
 				var dropClient = LobbyInfo.Clients.FirstOrDefault(c1 => c1.Index == toDrop.PlayerIndex);
+
+				// This shouldn't happen, but just in case
 				if (dropClient == null)
 					return;
 
@@ -555,7 +565,10 @@ namespace OpenRA.Server
 					}
 				}
 
-				DispatchOrders(toDrop, frame, new byte[] { 0xbf });
+				// OrderManager.frameData on clients must contain data for each frame from each client
+				// There will be no data from "toDrop" client for "frame" frame and clients will stuck waiting
+				// Sending packet to notify that clients don't need to wait for data from "toDrop" after "frame" frame
+				DispatchOrders(toDrop, frame, new byte[] { 0xBF });
 
 				if (!Conns.Any())
 				{
@@ -568,15 +581,9 @@ namespace OpenRA.Server
 
 				if (!LobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin)
 					Shutdown();
-			}
 
-			try
-			{
-				toDrop.Socket.Disconnect(false);
+				SetOrderLag();
 			}
-			catch { }
-
-			SetOrderLag();
 		}
 
 		public void SyncLobbyInfo()
@@ -675,6 +682,9 @@ namespace OpenRA.Server
 			SyncLobbyInfo();
 			State = ServerState.GameStarted;
 
+			// Setting OrderManager.frameData.clientQuitTimes on each client for each client
+			//   to maximum value of int, so frameData.ClientsPlayingInFrame optimization can be used
+			// Also frameData.clientQuitTimes will only contain indices of connected clients (without bots)
 			foreach (var c in Conns)
 				foreach (var d in Conns)
 					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF });

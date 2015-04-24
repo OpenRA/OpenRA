@@ -190,7 +190,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var options = new Dictionary<string, IEnumerable<DropDownOption>>();
 
-					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
+					var botController = orderManager.LobbyInfo.Admin;
 					if (orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots))
 					{
 						var botOptions = new List<DropDownOption>()
@@ -573,7 +573,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var slot = orderManager.LobbyInfo.FirstEmptyBotSlot();
 					var bot = modRules.Actors["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name).FirstOrDefault();
-					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
+					var botController = orderManager.LobbyInfo.Admin;
 					if (slot != null && bot != null)
 						orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));
 				});

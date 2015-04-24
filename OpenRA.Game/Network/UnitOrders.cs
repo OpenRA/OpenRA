@@ -25,6 +25,8 @@ namespace OpenRA.Network
 				p => (p.ClientIndex == c.Index && p.PlayerReference.Playable));
 		}
 
+		// Check "clientId" is present in LobbyInfo before using it
+		// "world" is null if game did not started yet
 		public static void ProcessOrder(OrderManager orderManager, World world, int clientId, Order order)
 		{
 			if (world != null)

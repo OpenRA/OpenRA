@@ -13,6 +13,9 @@ using System.Linq;
 
 namespace OpenRA.Network
 {
+	/// <summary>
+	/// Holds data sent by each player for each frame
+	/// </summary>
 	class FrameData
 	{
 		public struct ClientOrder

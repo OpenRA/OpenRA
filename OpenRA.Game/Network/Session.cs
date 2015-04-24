@@ -65,6 +65,14 @@ namespace OpenRA.Network
 			}
 		}
 
+		/// <summary>
+		/// Returns client with IsAdmin set to true, null if none found
+		/// </summary>
+		public Client Admin
+		{
+			get { return Clients.FirstOrDefault(c => c.IsAdmin); }
+		}
+
 		public Client ClientWithIndex(int clientID)
 		{
 			return Clients.SingleOrDefault(c => c.Index == clientID);

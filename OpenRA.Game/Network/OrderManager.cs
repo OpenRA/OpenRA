@@ -113,12 +113,17 @@ namespace OpenRA.Network
 				(clientId, packet) =>
 				{
 					var frame = BitConverter.ToInt32(packet, 0);
+
+					// Packet [int32 frame number][0xBF], sent by server when client dropped
 					if (packet.Length == 5 && packet[4] == 0xBF)
 						frameData.ClientQuit(clientId, frame);
+
 					else if (packet.Length >= 5 && packet[4] == 0x65)
 						CheckSync(packet);
+
 					else if (frame == 0)
 						immediatePackets.Add(Pair.New(clientId, packet));
+
 					else
 						frameData.AddFrameOrders(clientId, frame, packet);
 				});
