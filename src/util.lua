@@ -159,6 +159,13 @@ function FileSysGetRecursive(path, recursive, spec, opts)
   end
   if #masks >= 2 then spec = nil end
 
+  local function ismatch(file)
+    for _, mask in ipairs(masks) do
+      if file:find(mask) then return true end
+    end
+    return false
+  end
+
   local function report(fname)
     if optyield then return coroutine.yield(fname) end
     table.insert(content, fname)
@@ -178,13 +185,8 @@ function FileSysGetRecursive(path, recursive, spec, opts)
     local found, file = dir:GetFirst("*", wx.wxDIR_DIRS)
     while found do
       local fname = wx.wxFileName(path, file):GetFullPath()
-      for _, mask in ipairs(masks) do
-        if file:find(mask) then
-          if optfolder then
-            report((optpath and fname or fname:gsub(pathpatt, ""))..sep)
-          end
-          break
-        end
+      if optfolder and ismatch(file) then
+        report((optpath and fname or fname:gsub(pathpatt, ""))..sep)
       end
 
       -- check if this name already appears in the path earlier;
@@ -198,15 +200,8 @@ function FileSysGetRecursive(path, recursive, spec, opts)
     found, file = dir:GetFirst(spec or "*", wx.wxDIR_FILES)
     while found do
       local fname = wx.wxFileName(path, file):GetFullPath()
-      if #masks < 2 then -- files already filtered by spec
+      if ismatch(file) then
         report(optpath and fname or fname:gsub(pathpatt, ""))
-      else -- need to filter by mask as spec includes multiple extensions
-        for _, mask in ipairs(masks) do
-          if file:find(mask) then
-            report(optpath and fname or fname:gsub(pathpatt, ""))
-            break
-          end
-        end
       end
       found, file = dir:GetNext()
     end
