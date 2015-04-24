@@ -84,6 +84,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				UpgradeRules.UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
 				UpgradeRules.UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
 				UpgradeRules.UpgradePlayers(engineDate, ref map.PlayerDefinitions, null, 0);
+				UpgradeRules.UpgradeActors(engineDate, ref map.ActorDefinitions, null, 0);
 				map.Save(map.Path);
 			}
 		}
