@@ -182,6 +182,9 @@
 		TargetTypes: Ground, Infantry
 	TakeCover:
 		SpeedModifier: 60
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation:

@@ -192,6 +192,9 @@
 	RenderSprites:
 	WithInfantryBody:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	WithDeathAnimation:
 	AutoTarget:
 	AttackMove:
