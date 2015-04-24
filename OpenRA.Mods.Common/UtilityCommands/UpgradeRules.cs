@@ -855,6 +855,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150426)
+				{
+					// Add DamageModifiers to TakeCover with a "Prone50Percent" default
+					// Add ProneTriggers to TakeCover with a "TriggerProne" default
+					if (node.Key == "TakeCover")
+					{
+						var percent = new MiniYamlNode("Prone50Percent", "50");
+						var dictionary = new MiniYamlNode("DamageModifiers", "");
+						dictionary.Value.Nodes.Add(percent);
+
+						if (node.Value.Nodes.All(x => x.Key != "DamageModifiers"))
+							node.Value.Nodes.Add(dictionary);
+
+						node.Value.Nodes.Add(new MiniYamlNode("DamageTriggers", "TriggerProne"));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
