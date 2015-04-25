@@ -42,8 +42,7 @@ if [ ! -f SharpFont.dll ]; then
 	nuget install SharpFont -Version 3.0.1 -ExcludeVersion
 	cp ./SharpFont/lib/net20/SharpFont* .
 	cp ./SharpFont/config/SharpFont.dll.config .
-	rm -rf SharpFont
-    rm -rf SharpFont.Dependencies
+	rm -rf SharpFont SharpFont.Dependencies
 fi
 
 if [ ! -f nunit.framework.dll ]; then

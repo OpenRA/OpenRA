@@ -11,7 +11,7 @@ if [ ! -f windows/SDL2.dll ]; then
 	echo "Fetching SDL2 from nuget"
 	nuget install sdl2 -Version 2.0.3 -ExcludeVersion
 	cp ./sdl2.redist/build/native/bin/Win32/dynamic/SDL2.dll ./windows/
-	rm -rf sdl2.2.0.3 sdl2.redist
+	rm -rf sdl2 sdl2.redist
 fi
 
 if [ ! -f windows/freetype6.dll ]; then
