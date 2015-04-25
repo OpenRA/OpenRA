@@ -486,7 +486,7 @@
 	UpgradeManager:
 	MustBeDestroyed:
 
-^Plane:	
+^Plane:
 	Inherits: ^Helicopter
 	-Helicopter:
 	Plane:

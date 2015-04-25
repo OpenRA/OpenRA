@@ -83,7 +83,7 @@ combato.starport:
 		Cost: 875
 	RenderUnit:
 		Image: combato
-		
+
 carryall.starport:
 	Inherits: carryall
 	Valued:
