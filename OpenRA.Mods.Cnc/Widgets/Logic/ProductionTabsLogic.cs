@@ -30,6 +30,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					tabs.SelectNextTab(reverse);
 				else
 					tabs.QueueGroup = button.ProductionGroup;
+
+				tabs.PickUpCompletedBuilding();
 			};
 
 			Func<ButtonWidget, Hotkey> getKey = _ => Hotkey.Invalid;
