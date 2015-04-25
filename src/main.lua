@@ -101,6 +101,7 @@ ide = {
       autocomplete = true,
       contextlinesbefore = 2,
       contextlinesafter = 2,
+      showaseditor = true,
     },
 
     toolbar = {

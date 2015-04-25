@@ -468,9 +468,15 @@ function findReplace:RunInFiles(replace)
   local ctrl = ide:GetMainFrame():FindFocus()
   local reseditor = self.reseditor
   if not reseditor or not pcall(function() reseditor:GetId() end) then
-    reseditor = NewFile("Search Results")
-    -- set file path to avoid treating results as unsaved document
-    ide:GetDocument(reseditor).filePath = "Search Results"
+    if ide.config.search.showaseditor then
+      reseditor = NewFile("Search Results")
+      -- set file path to avoid treating results as unsaved document
+      ide:GetDocument(reseditor).filePath = "Search Results"
+    else
+      reseditor = ide:CreateBareEditor()
+      reseditor:SetupKeywords("")
+      ide:GetOutputNotebook():AddPage(reseditor, "Search Results", true)
+    end
     reseditor:SetWrapMode(wxstc.wxSTC_WRAP_NONE)
     reseditor:SetIndentationGuides(false)
     reseditor:SetMarginWidth(0, 0) -- hide line numbers
@@ -519,7 +525,13 @@ function findReplace:RunInFiles(replace)
 
     self.reseditor = reseditor
   else
-    ide:GetDocument(reseditor):SetActive()
+    if ide.config.search.showaseditor then
+      ide:GetDocument(reseditor):SetActive()
+    else
+      local nb = ide:GetOutputNotebook()
+      local index = nb:GetPageIndex(reseditor)
+      if nb:GetSelection() ~= index then nb:SetSelection(index) end
+    end
   end
   reseditor.replace = replace -- keep track of the current status
   reseditor:SetReadOnly(false)
