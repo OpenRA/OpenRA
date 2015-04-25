@@ -171,7 +171,9 @@ Voices:
 	./mods/ts/audio/voices.yaml
 
 Notifications:
-	./mods/ts/audio/notifications.yaml
+	./mods/ts/audio/speech-generic.yaml
+	./mods/ts/audio/speech-singleplayer.yaml
+	./mods/ts/audio/sounds-generic.yaml
 
 Music:
 	./mods/ts/audio/music.yaml
