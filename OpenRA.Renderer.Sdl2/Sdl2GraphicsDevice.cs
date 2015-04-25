@@ -267,6 +267,16 @@ namespace OpenRA.Renderer.Sdl2
 					ErrorHandler.CheckGlError();
 					GL.BlendColor(1f, 1f, 1f, 0.75f);
 					break;
+				case BlendMode.Multiplicative:
+					GL.Enable(EnableCap.Blend);
+					ErrorHandler.CheckGlError();
+					GL.BlendFunc(BlendingFactorSrc.Zero, BlendingFactorDest.SrcColor);
+					break;
+				case BlendMode.DoubleMultiplicative:
+					GL.Enable(EnableCap.Blend);
+					ErrorHandler.CheckGlError();
+					GL.BlendFunc(BlendingFactorSrc.DstColor, BlendingFactorDest.SrcColor);
+					break;
 			}
 
 			ErrorHandler.CheckGlError();
