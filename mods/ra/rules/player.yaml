@@ -7,7 +7,6 @@ Player:
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 		SpeedUp: True
-		RequireOwner: false
 	ClassicProductionQueue@Defense:
 		Type: Defense
 		BuildSpeed: .4
@@ -15,31 +14,26 @@ Player:
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 		SpeedUp: True
-		RequireOwner: false
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		SpeedUp: True
-		RequireOwner: false
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		SpeedUp: True
-		RequireOwner: false
 	ClassicProductionQueue@Ship:
 		Type: Ship
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		SpeedUp: True
-		RequireOwner: false
 	ClassicProductionQueue@Aircraft:
 		Type: Aircraft
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		SpeedUp: True
-		RequireOwner: false
 	PlaceBuilding:
 	SupportPowerManager:
 	ScriptTriggers:

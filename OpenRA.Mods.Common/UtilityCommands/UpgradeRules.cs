@@ -872,9 +872,25 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 201504277)
+				if (engineVersion < 20150427)
 					if (node.Key.StartsWith("WithRotor"))
 						node.Value.Nodes.RemoveAll(p => p.Key == "Id");
+
+				if (engineVersion < 20150430)
+				{
+					if (node.Key.StartsWith("ProductionQueue@") || node.Key.StartsWith("ClassicProductionQueue@"))
+						node.Value.Nodes.RemoveAll(n => n.Key == "RequireOwner");
+
+					if (node.Key == "Buildable")
+					{
+						var removed = node.Value.Nodes.RemoveAll(n => n.Key == "Owner");
+						if (removed > 0)
+						{
+							Console.WriteLine("The 'Owner' field has been removed.");
+							Console.WriteLine("Please use prerequisites instead.");
+						}
+					}
+				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
