@@ -836,6 +836,26 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "BlocksProjectiles";
 				}
 
+				if (engineVersion < 20150425)
+				{
+					if (depth == 0)
+					{
+						var warFact = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderBuildingWarFactory"));
+						if (warFact != null)
+						{
+							warFact.Key = "RenderBuilding";
+
+							if (node.Value.Nodes.Any(w => w.Key == "-RenderBuilding"))
+								node.Value.Nodes.RemoveAll(p => p.Key == "-RenderBuilding");
+
+							var doorOverlay = new MiniYamlNode("WithProductionDoorOverlay", "");
+							doorOverlay.Value.Nodes.Add(new MiniYamlNode("Sequence", "idle-top"));
+							doorOverlay.Value.Nodes.Add(new MiniYamlNode("BuildSequence", "build-top"));
+							node.Value.Nodes.Add(doorOverlay);
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
