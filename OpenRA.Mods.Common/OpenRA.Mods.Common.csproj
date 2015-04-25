@@ -435,6 +435,7 @@
     <Compile Include="Traits\TransformOnPassenger.cs" />
     <Compile Include="Traits\Transforms.cs" />
     <Compile Include="Traits\Turreted.cs" />
+    <Compile Include="Traits\Upgrades\DeployToUpgrade.cs" />
     <Compile Include="Traits\Upgrades\DisableUpgrade.cs" />
     <Compile Include="Traits\Upgrades\GainsStatUpgrades.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />

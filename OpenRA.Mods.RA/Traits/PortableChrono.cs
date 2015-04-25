@@ -35,6 +35,12 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Display rectangles indicating the current charge status")]
 		public readonly int Pips = 2;
 
+		[Desc("Cursor to display when able to deploy the actor.")]
+		public readonly string DeployCursor = "deploy";
+
+		[Desc("Cursor to display when unable to deploy the actor.")]
+		public readonly string DeployBlockedCursor = "deploy-blocked";
+
 		public object Create(ActorInitializer init) { return new PortableChrono(this); }
 	}
 
@@ -59,7 +65,8 @@ namespace OpenRA.Mods.RA.Traits
 			get
 			{
 				yield return new PortableChronoOrderTargeter();
-				yield return new DeployOrderTargeter("PortableChronoDeploy", 5, () => CanTeleport);
+				yield return new DeployOrderTargeter("PortableChronoDeploy", 5,
+					() => CanTeleport ? Info.DeployCursor : Info.DeployBlockedCursor);
 			}
 		}
 
