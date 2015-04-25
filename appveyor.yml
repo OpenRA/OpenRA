@@ -5,6 +5,11 @@ environment:
 
 install:
 
+cache:
+  - nsissetup.exe -> appveyor.yaml
+  - NsProcess.zip -> appveyor.yaml
+  - thirdparty\windows -> thirdparty\fetch-thirdparty-deps.ps1
+
 before_build:
 - make dependencies
 
