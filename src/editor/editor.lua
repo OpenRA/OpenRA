@@ -660,11 +660,11 @@ function CreateEditor(bare)
 
   editor.matchon = false
   editor.assignscache = false
-  editor.autocomplete = false
   editor.bom = false
   editor.jumpstack = {}
   editor.ctrlcache = {}
   editor.tokenlist = {}
+  editor.onidle = {}
   -- populate cache with Ctrl-<letter> combinations for workaround on Linux
   -- http://wxwidgets.10942.n7.nabble.com/Menu-shortcuts-inconsistentcy-issue-td85065.html
   for id, shortcut in pairs(ide.config.keymap) do
@@ -784,6 +784,8 @@ function CreateEditor(bare)
   function editor:SetupKeywords(...) return SetupKeywords(self, ...) end
   function editor:ValueFromPosition(pos) return getValAtPosition(self, pos) end
 
+  function editor:DoWhenIdle(func) table.insert(self.onidle, func) end
+
   -- GotoPos should work by itself, but it doesn't (wx 2.9.5).
   -- This is likely because the editor window hasn't been refreshed yet,
   -- so its LinesOnScreen method returns 0/-1, which skews the calculations.
@@ -870,8 +872,10 @@ function CreateEditor(bare)
       local undodelete = (wxstc.wxSTC_MOD_DELETETEXT
         + wxstc.wxSTC_PERFORMED_UNDO + wxstc.wxSTC_PERFORMED_REDO)
       if bit.band(evtype, undodelete) ~= 0 then
-        if editor:CallTipActive() then editor:CallTipCancel() end
-        if editor:AutoCompActive() then editor:AutoCompCancel() end
+        editor:DoWhenIdle(function(editor)
+            if editor:CallTipActive() then editor:CallTipCancel() end
+            if editor:AutoCompActive() then editor:AutoCompCancel() end
+          end)
       end
       
       if ide.config.acandtip.nodynwords then return end
@@ -956,9 +960,9 @@ function CreateEditor(bare)
 
       elseif ide.config.autocomplete then -- code completion prompt
         local trigger = linetxtopos:match("["..editor.spec.sep.."%w_]+$")
-        -- make sure .autocomplete is never `nil` or editor.autocomplete fails
-        editor.autocomplete = trigger and (#trigger > 1 or trigger:match("["..editor.spec.sep.."]"))
-          and true or false
+        if trigger and (#trigger > 1 or trigger:match("["..editor.spec.sep.."]")) then
+          editor:DoWhenIdle(function(editor) EditorAutoComplete(editor) end)
+        end
       end
     end)
 
@@ -1127,11 +1131,7 @@ function CreateEditor(bare)
 
   editor:Connect(wx.wxEVT_IDLE,
     function (event)
-      -- show auto-complete if needed
-      if editor.autocomplete then
-        EditorAutoComplete(editor)
-        editor.autocomplete = false
-      end
+      while #editor.onidle > 0 do table.remove(editor.onidle)(editor) end
     end)
 
   editor:Connect(wx.wxEVT_LEFT_DOWN,
