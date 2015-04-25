@@ -17,11 +17,26 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public bool IsValidTarget(ActorInfo actorInfo, Actor saboteur) { return true; }
 
-		public object Create(ActorInitializer init) { return new Demolishable(); }
+		[Desc("If true and this actor has EjectOnDeath, no actor will be spawned.")]
+		public readonly bool PreventsEjectOnDeath = false;
+
+		public object Create(ActorInitializer init) { return new Demolishable(init.Self, this); }
 	}
 
-	public class Demolishable : IDemolishable
+	public class Demolishable : IDemolishable, IPreventsEjectOnDeath
 	{
+		readonly DemolishableInfo info;
+
+		public Demolishable(Actor self, DemolishableInfo info)
+		{
+			this.info = info;
+		}
+
+		public bool PreventsEjectOnDeath(Actor self)
+		{
+			return info.PreventsEjectOnDeath;
+		}
+
 		public void Demolish(Actor self, Actor saboteur)
 		{
 			self.Kill(saboteur);
