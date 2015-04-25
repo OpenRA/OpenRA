@@ -247,6 +247,7 @@ GARADR:
 		Type: Wood
 	RequiresPower:
 	CanPowerDown:
+		IndicatorPalette: mouse
 	ProvidesRadar:
 	InfiltrateForExploration:
 	DetectCloaked:
@@ -309,6 +310,7 @@ GAPLUG:
 		Dimensions: 2,3
 	RequiresPower:
 	CanPowerDown:
+		IndicatorPalette: mouse
 	DisabledOverlay:
 	RenderBuilding:
 	WithIdleOverlay@DISH:

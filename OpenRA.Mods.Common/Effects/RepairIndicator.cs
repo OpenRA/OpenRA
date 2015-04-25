@@ -19,18 +19,17 @@ namespace OpenRA.Mods.Common.Effects
 	class RepairIndicator : IEffect
 	{
 		readonly Actor building;
-		readonly string palettePrefix;
 		readonly Animation anim;
 		readonly RepairableBuilding rb;
+
 		int shownPlayer = 0;
 
-		public RepairIndicator(Actor building, string palettePrefix)
+		public RepairIndicator(Actor building)
 		{
 			this.building = building;
-			this.palettePrefix = palettePrefix;
 
-			rb = building.TraitOrDefault<RepairableBuilding>();
-			anim = new Animation(building.World, "allyrepair");
+			rb = building.Trait<RepairableBuilding>();
+			anim = new Animation(building.World, rb.Info.IndicatorImage);
 			anim.Paused = () => !rb.RepairActive || rb.IsTraitDisabled;
 
 			CycleRepairer();
@@ -38,8 +37,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public void Tick(World world)
 		{
-			if (!building.IsInWorld || building.IsDead ||
-				rb == null || !rb.Repairers.Any())
+			if (!building.IsInWorld || building.IsDead || !rb.Repairers.Any())
 				world.AddFrameEndTask(w => w.Remove(this));
 
 			anim.Tick();
@@ -50,13 +48,18 @@ namespace OpenRA.Mods.Common.Effects
 			if (building.Destroyed || wr.World.FogObscures(building) || rb.Repairers.Count == 0)
 				return SpriteRenderable.None;
 
-			var palette = wr.Palette(palettePrefix + rb.Repairers[shownPlayer % rb.Repairers.Count].InternalName);
+			PaletteReference palette;
+			if (!string.IsNullOrEmpty(rb.Info.IndicatorPalette))
+				palette = wr.Palette(rb.Info.IndicatorPalette);
+			else
+				palette = wr.Palette(rb.Info.IndicatorPalettePrefix + rb.Repairers[shownPlayer % rb.Repairers.Count].InternalName);
+
 			return anim.Render(building.CenterPosition, palette);
 		}
 
 		void CycleRepairer()
 		{
-			anim.PlayThen("repair", CycleRepairer);
+			anim.PlayThen(rb.Info.IndicatorSequence, CycleRepairer);
 
 			if (++shownPlayer == rb.Repairers.Count)
 				shownPlayer = 0;
