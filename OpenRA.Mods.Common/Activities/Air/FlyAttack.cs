@@ -8,8 +8,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -19,9 +19,26 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class FlyAttack : Activity
 	{
-		readonly Target target;
 		readonly AttackPlane attackPlane;
 		readonly IEnumerable<AmmoPool> ammoPools;
+
+		Target target;
+		bool isFrozenUnderFog;
+		protected Target Target
+		{
+			get
+			{
+				return target;
+			}
+
+			private set
+			{
+				target = value;
+				if (target.Type == TargetType.Actor)
+					isFrozenUnderFog = target.Actor.HasTrait<FrozenUnderFog>();
+			}
+		}
+
 		Activity inner;
 		int ticksUntilTurn;
 
@@ -37,6 +54,16 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (!target.IsValidFor(self))
 				return NextActivity;
+
+			if (target.Type == TargetType.Actor && !isFrozenUnderFog
+				 && !self.Owner.Shroud.IsTargetable(target.Actor))
+			{
+				var newTarget = Target.FromCell(self.World, self.World.Map.CellContaining(target.CenterPosition));
+
+				self.CancelActivity();
+				self.SetTargetLine(newTarget, Color.Green);
+				return Util.SequenceActivities(new Fly(self, newTarget), new FlyCircle(self));
+			}
 
 			// Move to the next activity only if all ammo pools are depleted and none reload automatically
 			// TODO: This should check whether there is ammo left that is actually suitable for the target

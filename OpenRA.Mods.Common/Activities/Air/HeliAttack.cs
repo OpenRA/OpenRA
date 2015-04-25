@@ -8,8 +8,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -19,10 +19,26 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliAttack : Activity
 	{
-		readonly Target target;
 		readonly Helicopter helicopter;
 		readonly AttackHeli attackHeli;
 		readonly IEnumerable<AmmoPool> ammoPools;
+
+		Target target;
+		bool isFrozenUnderFog;
+		protected Target Target
+		{
+			get
+			{
+				return target;
+			}
+
+			private set
+			{
+				target = value;
+				if (target.Type == TargetType.Actor)
+					isFrozenUnderFog = target.Actor.HasTrait<FrozenUnderFog>();
+			}
+		}
 
 		public HeliAttack(Actor self, Target target)
 		{
@@ -36,6 +52,15 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
+
+			if (target.Type == TargetType.Actor && !isFrozenUnderFog && !self.Owner.Shroud.IsTargetable(target.Actor))
+			{
+				var newTarget = Target.FromCell(self.World, self.World.Map.CellContaining(target.CenterPosition));
+
+				self.CancelActivity();
+				self.SetTargetLine(newTarget, Color.Green);
+				return Util.SequenceActivities(new HeliFly(self, newTarget));
+			}
 
 			// If all ammo pools are depleted and none reload automatically, return to helipad to reload and then move to next activity
 			// TODO: This should check whether there is ammo left that is actually suitable for the target
