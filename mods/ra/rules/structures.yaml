@@ -762,8 +762,7 @@ WEAP:
 		Range: 4c0
 	Bib:
 	WithProductionDoorOverlay:
-		Sequence: idle-top
-		BuildSequence: build-top
+		Sequence: build-top
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: 213,-128,0

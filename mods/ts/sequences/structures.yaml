@@ -182,9 +182,6 @@ gaweap:
 	damaged-build-door: gtweap_d
 		Length: 9
 		ShadowStart: 9
-	idle-door: gtweap_d
-	damaged-idle-door: gtweap_d
-		Start: 1
 	make: gtweapmk
 		Length: 20
 		Tick: 80
@@ -323,9 +320,6 @@ naweap:
 		Start: 10
 		Length: 10
 		ShadowStart: 20
-	idle-door: ntweap_b
-	damaged-idle-door: ntweap_b
-		Start: 1
 	make: ntweapmk
 		Length: 22
 		Tick: 80
