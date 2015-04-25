@@ -97,6 +97,11 @@ local function setTargetAll(editor)
   return e
 end
 
+function findReplace:CanSave()
+  local reseditor = self.reseditor
+  return reseditor and reseditor:GetModify() and GetEditorWithFocus(reseditor)
+end
+
 function findReplace:HasText()
   if not self.panel then self:createPanel() end
   local findText = self.findCtrl:GetValue()
@@ -466,6 +471,7 @@ function findReplace:RunInFiles(replace)
 
   -- save focus to restore after adding a page with search results
   local ctrl = ide:GetMainFrame():FindFocus()
+  local nb = ide:GetOutputNotebook()
   local reseditor = self.reseditor
   if not reseditor or not pcall(function() reseditor:GetId() end) then
     if ide.config.search.showaseditor then
@@ -475,7 +481,19 @@ function findReplace:RunInFiles(replace)
     else
       reseditor = ide:CreateBareEditor()
       reseditor:SetupKeywords("")
-      ide:GetOutputNotebook():AddPage(reseditor, "Search Results", true)
+
+      local modpref = '* '
+      local function setModified(modified)
+        local index = nb:GetPageIndex(reseditor)
+        local text = nb:GetPageText(index):gsub("^"..q(modpref), "")
+        nb:SetPageText(index, (modified and modpref or '')..text)
+      end
+      reseditor:Connect(wxstc.wxEVT_STC_SAVEPOINTREACHED,
+        function () setModified(false) end)
+      reseditor:Connect(wxstc.wxEVT_STC_SAVEPOINTLEFT,
+        function () setModified(true) end)
+
+      nb:AddPage(reseditor, "Search Results", true)
     end
     reseditor:SetWrapMode(wxstc.wxSTC_WRAP_NONE)
     reseditor:SetIndentationGuides(false)
@@ -528,7 +546,6 @@ function findReplace:RunInFiles(replace)
     if ide.config.search.showaseditor then
       ide:GetDocument(reseditor):SetActive()
     else
-      local nb = ide:GetOutputNotebook()
       local index = nb:GetPageIndex(reseditor)
       if nb:GetSelection() ~= index then nb:SetSelection(index) end
     end
@@ -1037,11 +1054,15 @@ local package = ide:AddPackage('core.findreplace', {
         or findReplace:SetScope(proj, mask))
     end,
 
+    onEditorClose = function(self, editor, filePath)
+      if editor == findReplace.reseditor then findReplace.reseditor = nil end
+    end,
+
     onEditorPreSave = function(self, editor, filePath)
       if editor ~= findReplace.reseditor then return end
 
-      local isModified = ide:GetDocument(editor):IsModified()
-      if findReplace.reseditor.replace and isModified then
+      local isModified = editor:GetModify()
+      if editor.replace and isModified then
         findReplace:SetStatus("")
 
         local line = NOTFOUND
