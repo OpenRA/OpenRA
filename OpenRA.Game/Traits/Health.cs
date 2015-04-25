@@ -18,10 +18,10 @@ namespace OpenRA.Traits
 		[Desc("HitPoints")]
 		public readonly int HP = 0;
 
-		[Desc("Physical size of the unit used for damage calculations.  Impacts within this radius apply full damage")]
+		[Desc("Physical size of the unit used for damage calculations. Impacts within this radius apply full damage.")]
 		public readonly WRange Radius = new WRange(426);
 
-		[Desc("Don't trigger interfaces such as AnnounceOnKill.")]
+		[Desc("Trigger interfaces such as AnnounceOnKill?")]
 		public readonly bool NotifyAppliedDamage = true;
 
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
@@ -122,7 +122,7 @@ namespace OpenRA.Traits
 				damage = Util.ApplyPercentageModifiers(damage, modifiers);
 			}
 
-			hp = Exts.Clamp(hp - damage, 0, MaxHP);
+			hp = (hp - damage).Clamp(0, MaxHP);
 
 			var ai = new AttackInfo
 			{
