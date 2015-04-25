@@ -113,6 +113,11 @@ namespace OpenRA
 				InternalSoundVolume * volumeModifier, true);
 		}
 
+		public static void StopAudio()
+		{
+			soundEngine.StopAllSounds();
+		}
+
 		public static ISound Play(string name) { return Play(null, name, true, WPos.Zero, 1f); }
 		public static ISound Play(string name, WPos pos) { return Play(null, name, false, pos, 1f); }
 		public static ISound Play(string name, float volumeModifier) { return Play(null, name, true, WPos.Zero, volumeModifier); }
