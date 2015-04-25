@@ -23,16 +23,30 @@ namespace OpenRA.Orders
 				.Where(a => !world.FogObscures(a) && a.HasTrait<ITargetable>())
 				.WithHighestSelectionPriority();
 
-			Target target;
-			if (underCursor != null)
-				target = Target.FromActor(underCursor);
-			else
-			{
-				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
+			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
 					.Where(a => a.Info.Traits.Contains<ITargetableInfo>() && !a.Footprint.All(world.ShroudObscures))
 					.WithHighestSelectionPriority();
-				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
+
+			Target target;
+			if (underCursor != null)
+			{
+				if (frozen != null)
+				{
+					var boundsU = world.ScreenMap.ActorBounds(underCursor);
+					var distU = new int2(boundsU.Location) + new int2(boundsU.Size) / 2 - mi.Location;
+					var boundsF = world.ScreenMap.FrozenActorBounds(frozen);
+					var distF = new int2(boundsF.Location) + new int2(boundsF.Size) / 2 - mi.Location;
+
+					if (distU.LengthSquared > distF.LengthSquared)
+						target = Target.FromFrozenActor(frozen);
+					else
+						target = Target.FromActor(underCursor);
+				}
+				else
+					target = Target.FromActor(underCursor);
 			}
+			else
+				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
 
 			var orders = world.Selection.Actors
 				.Select(a => OrderForUnit(a, target, mi))
@@ -68,16 +82,30 @@ namespace OpenRA.Orders
 					useSelect = true;
 			}
 
-			Target target;
-			if (underCursor != null)
-				target = Target.FromActor(underCursor);
-			else
-			{
-				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
+			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
 					.Where(a => a.Info.Traits.Contains<ITargetableInfo>() && !a.Footprint.All(world.ShroudObscures))
 					.WithHighestSelectionPriority();
-				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
+
+			Target target;
+			if (underCursor != null)
+			{
+				if (frozen != null)
+				{
+					var boundsU = world.ScreenMap.ActorBounds(underCursor);
+					var distU = new int2(boundsU.Location) + new int2(boundsU.Size) / 2 - mi.Location;
+					var boundsF = world.ScreenMap.FrozenActorBounds(frozen);
+					var distF = new int2(boundsF.Location) + new int2(boundsF.Size) / 2 - mi.Location;
+
+					if (distU.LengthSquared > distF.LengthSquared)
+						target = Target.FromFrozenActor(frozen);
+					else
+						target = Target.FromActor(underCursor);
+				}
+				else
+					target = Target.FromActor(underCursor);
 			}
+			else
+				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
 
 			var ordersWithCursor = world.Selection.Actors
 				.Select(a => OrderForUnit(a, target, mi))
