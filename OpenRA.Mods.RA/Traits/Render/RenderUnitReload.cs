@@ -19,6 +19,12 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Armament name")]
 		public readonly string Armament = "primary";
 
+		[Desc("Displayed while targeting.")]
+		public readonly string AimSequence = "aim";
+
+		[Desc("Shown while reloading.")]
+		public readonly string EmptyPrefix = "empty-";
+
 		public override object Create(ActorInitializer init) { return new RenderUnitReload(init, this); }
 	}
 
@@ -26,10 +32,12 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		readonly AttackBase attack;
 		readonly Armament armament;
+		readonly RenderUnitReloadInfo info;
 
 		public RenderUnitReload(ActorInitializer init, RenderUnitReloadInfo info)
 			: base(init, info)
 		{
+			this.info = info;
 			attack = init.Self.Trait<AttackBase>();
 			armament = init.Self.TraitsImplementing<Armament>()
 				.Single(a => a.Info.Name == info.Armament);
@@ -37,7 +45,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public override void Tick(Actor self)
 		{
-			var sequence = (armament.IsReloading ? "empty-" : "") + (attack.IsAttacking ? "aim" : "idle");
+			var sequence = (armament.IsReloading ? info.EmptyPrefix : "") + (attack.IsAttacking ? info.AimSequence : info.Sequence);
 			if (sequence != DefaultAnimation.CurrentSequence.Name)
 				DefaultAnimation.ReplaceAnim(sequence);
 

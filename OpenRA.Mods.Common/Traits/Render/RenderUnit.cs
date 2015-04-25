@@ -20,12 +20,17 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class RenderUnit : RenderSimple
 	{
+		readonly RenderUnitInfo info;
+
 		public RenderUnit(ActorInitializer init, RenderUnitInfo info)
-			: base(init, info) { }
+			: base(init, info)
+		{
+			this.info = info;
+		}
 
 		public void PlayCustomAnimation(Actor self, string newAnim, Action after)
 		{
-			DefaultAnimation.PlayThen(newAnim, () => { DefaultAnimation.Play("idle"); if (after != null) after(); });
+			DefaultAnimation.PlayThen(newAnim, () => { DefaultAnimation.Play(info.Sequence); if (after != null) after(); });
 		}
 
 		public void PlayCustomAnimRepeating(Actor self, string name)
@@ -37,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void PlayCustomAnimBackwards(Actor self, string name, Action after)
 		{
 			DefaultAnimation.PlayBackwardsThen(name,
-				() => { DefaultAnimation.PlayRepeating("idle"); if (after != null) after(); });
+				() => { DefaultAnimation.PlayRepeating(info.Sequence); if (after != null) after(); });
 		}
 	}
 }
