@@ -19,6 +19,10 @@ namespace OpenRA.Mods.Common.Effects
 	public class GravityBombInfo : IProjectileInfo
 	{
 		public readonly string Image = null;
+		[Desc("Sequence to loop while falling.")]
+		public readonly string Sequence = "idle";
+		[Desc("Sequence to play when launched. Skipped if null.")]
+		public readonly string OpenSequence = null;
 		public readonly string Palette = "effect";
 		public readonly bool Shadow = false;
 		public readonly WRange Velocity = WRange.Zero;
@@ -46,10 +50,14 @@ namespace OpenRA.Mods.Common.Effects
 			acceleration = new WVec(WRange.Zero, WRange.Zero, info.Acceleration);
 
 			anim = new Animation(args.SourceActor.World, info.Image);
-			if (anim.HasSequence("open"))
-				anim.PlayThen("open", () => anim.PlayRepeating("idle"));
-			else
-				anim.PlayRepeating("idle");
+
+			if (info.Image != null)
+			{
+				if (info.OpenSequence != null)
+					anim.PlayThen(info.OpenSequence, () => anim.PlayRepeating(info.Sequence));
+				else
+					anim.PlayRepeating(info.Sequence);
+			}
 		}
 
 		public void Tick(World world)
