@@ -236,9 +236,6 @@ weap:
 	damaged-build-top: weap2
 		Start: 4
 		Length: 4
-	idle-top: weap2
-	damaged-idle-top: weap2
-		Start: 4
 	bib: bib2
 		Length: *
 		UseTilesetExtension: true

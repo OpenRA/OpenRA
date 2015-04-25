@@ -20,15 +20,14 @@ namespace OpenRA.Mods.TS.Traits
 	[Desc("Play an animation when a unit exits or blocks the exit after production finished.")]
 	class WithProductionDoorOverlayInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>, Requires<BuildingInfo>
 	{
-		public readonly string Sequence = "idle-door";
-		public readonly string BuildSequence = "build-door";
+		public readonly string Sequence = "build-door";
 
 		public object Create(ActorInitializer init) { return new WithProductionDoorOverlay(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
 			var anim = new Animation(init.World, image, () => 0);
-			anim.PlayRepeating(Sequence);
+			anim.PlayFetchIndex(Sequence, () => 0);
 
 			var bi = init.Actor.Traits.Get<BuildingInfo>();
 			var offset = FootprintUtils.CenterOffset(init.World, bi).Y + 512; // Additional 512 units move from center -> top of cell
@@ -38,20 +37,19 @@ namespace OpenRA.Mods.TS.Traits
 
 	class WithProductionDoorOverlay : INotifyBuildComplete, ITick, INotifyProduction, INotifySold, INotifyDamageStateChanged
 	{
-		readonly WithProductionDoorOverlayInfo info;
-		readonly RenderSprites renderSprites;
 		readonly Animation door;
 
-		bool isOpen;
+		int desiredFrame;
+
 		CPos openExit;
 		bool buildComplete;
 
 		public WithProductionDoorOverlay(Actor self, WithProductionDoorOverlayInfo info)
 		{
-			this.info = info;
-			renderSprites = self.Trait<RenderSprites>();
+			var renderSprites = self.Trait<RenderSprites>();
 			door = new Animation(self.World, renderSprites.GetImage(self));
-			door.Play(RenderSprites.NormalizeSequence(door, self.GetDamageState(), info.Sequence));
+			door.PlayFetchDirection(RenderSprites.NormalizeSequence(door, self.GetDamageState(), info.Sequence),
+				() => desiredFrame - door.CurrentFrame);
 
 			var buildingInfo = self.Info.Traits.Get<BuildingInfo>();
 
@@ -66,12 +64,8 @@ namespace OpenRA.Mods.TS.Traits
 
 		public void Tick(Actor self)
 		{
-			if (isOpen && !self.World.ActorMap.GetUnitsAt(openExit).Any(a => a != self))
-			{
-				isOpen = false;
-				door.PlayBackwardsThen(RenderSprites.NormalizeSequence(door, self.GetDamageState(), info.BuildSequence),
-					() => door.Play(RenderSprites.NormalizeSequence(door, self.GetDamageState(), info.Sequence)));
-			}
+			if (desiredFrame > 0 && !self.World.ActorMap.GetUnitsAt(openExit).Any(a => a != self))
+				desiredFrame = 0;
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
@@ -82,7 +76,8 @@ namespace OpenRA.Mods.TS.Traits
 
 		public void UnitProduced(Actor self, Actor other, CPos exit)
 		{
-			door.PlayThen(RenderSprites.NormalizeSequence(door, self.GetDamageState(), info.BuildSequence), () => { isOpen = true; openExit = exit; });
+			openExit = exit;
+			desiredFrame = door.CurrentSequence.Length - 1;
 		}
 
 		public void Selling(Actor self) { buildComplete = false; }

@@ -147,9 +147,6 @@ weap:
 	damaged-build-top: weap2
 		Start: 10
 		Length: 10
-	idle-top: weap2
-	damaged-idle-top: weap2
-		Start: 4
 	make: weapmake
 		Length: *
 		Tick: 80

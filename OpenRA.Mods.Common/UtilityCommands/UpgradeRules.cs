@@ -849,8 +849,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								node.Value.Nodes.RemoveAll(p => p.Key == "-RenderBuilding");
 
 							var doorOverlay = new MiniYamlNode("WithProductionDoorOverlay", "");
-							doorOverlay.Value.Nodes.Add(new MiniYamlNode("Sequence", "idle-top"));
-							doorOverlay.Value.Nodes.Add(new MiniYamlNode("BuildSequence", "build-top"));
+							doorOverlay.Value.Nodes.Add(new MiniYamlNode("Sequence", "build-top"));
 							node.Value.Nodes.Add(doorOverlay);
 						}
 					}
