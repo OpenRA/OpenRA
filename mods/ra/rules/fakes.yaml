@@ -37,9 +37,10 @@ WEAF:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Bib:
-	-RenderBuilding:
-	RenderBuildingWarFactory:
+	RenderBuilding:
 		Image: WEAP
+	WithIdleOverlay@ROOF:
+		Sequence: idle-top
 	Valued:
 		Cost: 200
 

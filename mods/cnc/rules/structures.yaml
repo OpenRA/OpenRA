@@ -363,8 +363,9 @@ WEAP:
 	RevealsShroud:
 		Range: 4c0
 	Bib:
-	-RenderBuilding:
-	RenderBuildingWarFactory:
+	WithProductionDoorOverlay:
+		Sequence: idle-top
+		BuildSequence: build-top
 	RallyPoint:
 		RallyPoint: 0,3
 	Exit@1:

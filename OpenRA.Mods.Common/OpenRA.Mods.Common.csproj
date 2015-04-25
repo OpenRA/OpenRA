@@ -370,7 +370,6 @@
     <Compile Include="Traits\Render\RenderBuilding.cs" />
     <Compile Include="Traits\Render\RenderBuildingCharge.cs" />
     <Compile Include="Traits\Render\RenderBuildingTurreted.cs" />
-    <Compile Include="Traits\Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Traits\Render\RenderEditorOnly.cs" />
     <Compile Include="Traits\Render\RenderFlare.cs" />
     <Compile Include="Traits\Render\RenderHarvester.cs" />
