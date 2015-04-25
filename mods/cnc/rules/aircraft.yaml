@@ -130,7 +130,7 @@ ORCA:
 		SelfReloads: true
 		ReloadCount: 2
 		SelfReloadTicks: 100
-	RenderUnit:
+	RenderUnitFlying:
 	LeavesHusk:
 		HuskActor: ORCA.Husk
 	AutoTarget:
