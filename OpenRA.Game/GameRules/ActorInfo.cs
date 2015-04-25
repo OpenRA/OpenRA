@@ -16,15 +16,18 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	// TODO: This is not exported into the documentation yet.
-	[Desc("A unit/building inside the game. Every rules starts with one and adds trait to it.",
-		"Special actors like world or player are usually defined in system.yaml and affect everything.")]
+	/// <summary>
+	/// A unit/building inside the game. Every rules starts with one and adds trait to it.
+	/// Special actors like world or player are usually defined in system.yaml and affect everything.
+	/// </summary>
 	public class ActorInfo
 	{
-		[Desc("The actor name can be anything, but the sprites used in the Render*: traits default to this one.",
-			"If you add an ^ in front of the name, the engine will recognize this as a collection of traits",
-			"that can be inherited by others (using Inherits:) and not a real unit.",
-			"You can remove inherited traits by adding a - infront of them as in -TraitName: to inherit everything, but this trait.")]
+		/// <summary>
+		/// The actor name can be anything, but the sprites used in the Render*: traits default to this one.
+		/// If you add an ^ in front of the name, the engine will recognize this as a collection of traits
+		/// that can be inherited by others (using Inherits:) and not a real unit.
+		/// You can remove inherited traits by adding a - infront of them as in -TraitName: to inherit everything, but this trait.
+		/// </summary>
 		public readonly string Name;
 		public readonly TypeDictionary Traits = new TypeDictionary();
 		List<ITraitInfo> constructOrderCache = null;
@@ -33,12 +36,22 @@ namespace OpenRA
 		{
 			try
 			{
-				var mergedNode = MergeWithParent(node, allUnits).ToDictionary();
+				var allParents = new HashSet<string>();
+
+				// Guard against circular inheritance
+				allParents.Add(name);
+				var mergedNode = MergeWithParents(node, allUnits, allParents).ToDictionary();
 
 				Name = name;
+
 				foreach (var t in mergedNode)
-					if (t.Key != "Inherits" && !t.Key.StartsWith("-"))
+				{
+					if (t.Key[0] == '-')
+						throw new YamlException("Bogus trait removal: " + t.Key);
+
+					if (t.Key != "Inherits" && !t.Key.StartsWith("Inherits@"))
 						Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
+				}
 			}
 			catch (YamlException e)
 			{
@@ -46,32 +59,31 @@ namespace OpenRA
 			}
 		}
 
-		static MiniYaml GetParent(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
+		static Dictionary<string, MiniYaml> GetParents(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
 		{
-			MiniYaml inherits;
-			node.ToDictionary().TryGetValue("Inherits", out inherits);
-			if (inherits == null || string.IsNullOrEmpty(inherits.Value))
-				return null;
+			return node.Nodes.Where(n => n.Key == "Inherits" || n.Key.StartsWith("Inherits@"))
+				.ToDictionary(n => n.Value.Value, n =>
+			{
+				MiniYaml i;
+					if (!allUnits.TryGetValue(n.Value.Value, out i))
+						throw new YamlException(
+							"Bogus inheritance -- parent type {0} does not exist".F(n.Value.Value));
 
-			MiniYaml parent;
-			allUnits.TryGetValue(inherits.Value, out parent);
-			if (parent == null)
-				throw new InvalidOperationException(
-					"Bogus inheritance -- actor type {0} does not exist".F(inherits.Value));
-
-			return parent;
+				return i;
+			});
 		}
 
-		static MiniYaml MergeWithParent(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
+		static MiniYaml MergeWithParents(MiniYaml node, Dictionary<string, MiniYaml> allUnits, HashSet<string> allParents)
 		{
-			var parent = GetParent(node, allUnits);
-			if (parent != null)
-			{
-				var result = MiniYaml.MergeStrict(node, MergeWithParent(parent, allUnits));
+			var parents = GetParents(node, allUnits);
 
-				// strip the '-'
-				result.Nodes.RemoveAll(a => a.Key.StartsWith("-"));
-				return result;
+			foreach (var kv in parents)
+			{
+				if (!allParents.Add(kv.Key))
+					throw new YamlException(
+						"Bogus inheritance -- duplicate inheritance of {0}.".F(kv.Key));
+
+				node = MiniYaml.MergeStrict(node, MergeWithParents(kv.Value, allUnits, allParents));
 			}
 
 			return node;

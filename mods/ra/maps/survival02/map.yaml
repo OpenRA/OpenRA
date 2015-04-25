@@ -1029,7 +1029,7 @@ Rules:
 		MissionObjectives:
 			EarlyGameOver: true
 	World:
-		-CrateDrop:
+		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScript:
