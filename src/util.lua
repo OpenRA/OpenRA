@@ -486,12 +486,18 @@ function GetEditorWithFocus(...)
     return isCtrlFocused(ed) and ed or nil
   end
 
-  local bnb = ide.frame.bottomnotebook
-  for _, e in pairs({bnb.shellbox, bnb.errorlog}) do
-    if isCtrlFocused(e) then return e end
-  end
   local editor = GetEditor()
-  return isCtrlFocused(editor) and editor or nil
+  if isCtrlFocused(editor) then return editor end
+
+  local nb = ide:GetOutputNotebook()
+  for p = 0, nb:GetPageCount()-1 do
+    local ctrl = nb:GetPage(p)
+    if ctrl:GetClassInfo():GetClassName() == "wxStyledTextCtrl"
+    and isCtrlFocused(ctrl) then
+      return ctrl:DynamicCast("wxStyledTextCtrl")
+    end
+  end
+  return nil
 end
 
 function GenerateProgramFilesPath(exec, sep)
