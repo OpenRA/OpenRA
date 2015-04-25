@@ -136,12 +136,17 @@ gaweap:
 	Defaults:
 		Offset: -12, -42
 		UseTilesetCode: true
-	idle:
-		ShadowStart: 3
-	damaged-idle:
+	idle: gtweap_1
+		ShadowStart: 2
+	damaged-idle: gtweap_1
 		Start: 1
-		ShadowStart: 4
-	dead:
+		ShadowStart: 3
+	idle-roof: gtweap_2
+		ShadowStart: 2
+	damaged-idle-roof: gtweap_2
+		Start: 1
+		ShadowStart: 3
+	dead: gtweap
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -171,15 +176,12 @@ gaweap:
 		Length: 4
 		Tick: 80
 		ZOffset: 2048
-	build-top: gtweap_d
+	build-door: gtweap_d
 		Length: 9
 		ShadowStart: 9
-	damaged-build-top: gtweap_d
+	damaged-build-door: gtweap_d
 		Length: 9
 		ShadowStart: 9
-	idle-top: gtweap_2
-	damaged-idle-top: gtweap_2
-		Start: 1
 	make: gtweapmk
 		Length: 20
 		Tick: 80
@@ -195,7 +197,6 @@ gaweap:
 	icon: weapicon
 		Offset: 0, 0
 		UseTilesetCode: false
-# TODO: gtweap_1 & gtweap_a & gtweap_b & gtweap_c are unused
 
 napowr:
 	Defaults:
@@ -289,12 +290,17 @@ naweap:
 	Defaults:
 		Offset: -12, -42
 		UseTilesetCode: true
-	idle:
-		ShadowStart: 3
-	damaged-idle:
+	idle: ntweap_1
+		ShadowStart: 2
+	damaged-idle: ntweap_1
 		Start: 1
-		ShadowStart: 4
-	dead:
+		ShadowStart: 3
+	idle-roof: ntweap_2
+		ShadowStart: 2
+	damaged-idle-roof: ntweap_2
+		Start: 1
+		ShadowStart: 3
+	dead: ntweap
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -307,16 +313,13 @@ naweap:
 		Length: 16
 		Tick: 100
 		ZOffset: 2048
-	build-top: ntweap_b
+	build-door: ntweap_b
 		Length: 10
 		ShadowStart: 10
-	damaged-build-top: ntweap_b
+	damaged-build-door: ntweap_b
 		Start: 10
 		Length: 10
 		ShadowStart: 20
-	idle-top: ntweap_2
-	damaged-idle-top: ntweap_2
-		Start: 1
 	make: ntweapmk
 		Length: 22
 		Tick: 80
@@ -329,7 +332,6 @@ naweap:
 	icon: nwepicon
 		Offset: 0, 0
 		UseTilesetCode: false
-# TODO: ntweap_1 & ntweap_b & ntweap_c are unused
 
 naradr:
 	Defaults:

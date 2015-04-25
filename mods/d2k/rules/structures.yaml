@@ -200,8 +200,7 @@ refinery:
 		DeliveryOffset: 2,2
 		DeliveringActor: carryall.reinforce
 		Facing: 160
-	-RenderBuilding:
-	RenderBuildingWarFactory:
+	RenderBuilding:
 		Image: refinery.harkonnen
 		RaceImages:
 			atreides: refinery.atreides

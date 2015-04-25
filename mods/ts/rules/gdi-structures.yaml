@@ -123,8 +123,6 @@ GAWEAP:
 		HP: 1000
 	RevealsShroud:
 		Range: 4c0
-	-RenderBuilding:
-	RenderBuildingWarFactory:
 	RallyPoint:
 		RallyPoint: 6,1
 	Exit@1:
@@ -134,6 +132,9 @@ GAWEAP:
 		Produces: Vehicle
 	PrimaryBuilding:
 	ProductionBar:
+	WithIdleOverlay@ROOF:
+		Sequence: idle-roof
+	WithProductionDoorOverlay@DOOR:
 	WithProductionOverlay@WHITELIGHTS:
 		Sequence: production-lights-white
 	WithProductionOverlay@REDLIGHTS:

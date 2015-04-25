@@ -130,8 +130,6 @@ NAWEAP:
 		HP: 1000
 	RevealsShroud:
 		Range: 4c0
-	-RenderBuilding:
-	RenderBuildingWarFactory:
 	RallyPoint:
 		RallyPoint: 6,1
 	Exit@1:
@@ -141,6 +139,9 @@ NAWEAP:
 		Produces: Vehicle
 	PrimaryBuilding:
 	ProductionBar:
+	WithIdleOverlay@ROOF:
+		Sequence: idle-roof
+	WithProductionDoorOverlay@DOOR:
 	WithProductionOverlay@LIGHTS:
 		Sequence: production-lights
 	WithIdleOverlay@BIB:
