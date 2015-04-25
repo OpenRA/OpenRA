@@ -59,6 +59,12 @@ namespace OpenRA.Mods.Common.Scripting
 			return true;
 		}
 
+		[Desc("Returns the first n values from a collection.")]
+		public LuaValue[] Take(int n, LuaValue[] source)
+		{
+			return source.Take(n).ToArray();
+		}
+
 		[Desc("Skips over the first numElements members of a table and return the rest.")]
 		public LuaTable Skip(LuaTable table, int numElements)
 		{
