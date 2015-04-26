@@ -482,7 +482,7 @@ function findReplace:RunInFiles(replace)
       reseditor = ide:CreateBareEditor()
       reseditor:SetupKeywords("")
 
-      local modpref = '* '
+      local modpref = ide.MODPREF
       local function setModified(modified)
         local index = nb:GetPageIndex(reseditor)
         local text = nb:GetPageText(index):gsub("^"..q(modpref), "")
@@ -509,7 +509,7 @@ function findReplace:RunInFiles(replace)
     end
     reseditor:SetWrapMode(wxstc.wxSTC_WRAP_NONE)
     reseditor:SetIndentationGuides(false)
-    for m = 0, 4 do -- hide all margins except folding
+    for m = 0, ide.MAXMARGIN do -- hide all margins except folding
       if reseditor:GetMarginWidth(m) > 0
       and reseditor:GetMarginMask(m) ~= wxstc.wxSTC_MASK_FOLDERS then
         reseditor:SetMarginWidth(m, 0)
@@ -522,7 +522,7 @@ function findReplace:RunInFiles(replace)
         and not wx.wxGetKeyState(wx.WXK_ALT) then
           local point = event:GetPosition()
           local margin = 0
-          for m = 0, 3 do margin = margin + reseditor:GetMarginWidth(m) end
+          for m = 0, ide.MAXMARGIN do margin = margin + reseditor:GetMarginWidth(m) end
           if point:GetX() <= margin then return end
 
           local pos = reseditor:PositionFromPoint(point)

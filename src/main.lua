@@ -41,6 +41,8 @@ dofile "src/util.lua"
 -- IDE
 --
 ide = {
+  MODPREF = "* ",
+  MAXMARGIN = 4,
   config = {
     path = {
       projectdir = "",

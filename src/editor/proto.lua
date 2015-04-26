@@ -2,7 +2,7 @@
 ---------------------------------------------------------
 
 local q = EscapeMagic
-local modpref = '* '
+local modpref = ide.MODPREF
 
 ide.proto.Document = {__index = {
   GetFileName = function(self) return self.fileName end,

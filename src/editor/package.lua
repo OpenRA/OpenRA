@@ -178,7 +178,7 @@ function ide:CreateStyledTextCtrl(...)
 
   function editor:CanFold()
     local foldable = false
-    for m = 0, 4 do
+    for m = 0, ide.MAXMARGIN do
       if editor:GetMarginWidth(m) > 0
       and editor:GetMarginMask(m) == wxstc.wxSTC_MASK_FOLDERS then
         foldable = true
@@ -238,7 +238,7 @@ function ide:CreateStyledTextCtrl(...)
 
   local function getMarginWidth(editor)
     local width = 0
-    for m = 0, 7 do width = width + editor:GetMarginWidth(m) end
+    for m = 0, ide.MAXMARGIN do width = width + editor:GetMarginWidth(m) end
     return width
   end
 
