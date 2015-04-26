@@ -10,7 +10,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -43,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new ShroudRenderer(init.World, this); }
 	}
 
-	public class ShroudRenderer : IRenderShroud, IWorldLoaded
+	public sealed class ShroudRenderer : IRenderShroud, IWorldLoaded, IDisposable
 	{
 		[Flags]
 		enum Edges : byte
@@ -78,6 +82,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		static readonly Sprite EmptySprite = new Sprite(new Sheet(new Size(1, 1)), Rectangle.Empty, TextureChannel.Alpha);
+
 		readonly ShroudRendererInfo info;
 		readonly Map map;
 		readonly Edges notVisibleEdges;
@@ -89,9 +95,13 @@ namespace OpenRA.Mods.Common.Traits
 		readonly HashSet<CPos> cellsDirty;
 		readonly HashSet<CPos> cellsAndNeighborsDirty;
 
-		readonly Vertex[] fogVertices, shroudVertices;
+		readonly int verticesLength;
+		readonly SheetBuilder sheetBuilder;
+		readonly Sheet sheet;
+		readonly BlendMode blendMode;
+		readonly Vertex[] quadBuffer = new Vertex[4];
+		readonly IVertexBuffer<Vertex> fogVertexBuffer, shroudVertexBuffer;
 		readonly Sprite[] fogSprites, shroudSprites;
-		readonly CellLayer<Sprite> fogSpriteLayer, shroudSpriteLayer;
 		PaletteReference fogPalette, shroudPalette;
 
 		Shroud currentShroud;
@@ -118,11 +128,9 @@ namespace OpenRA.Mods.Common.Traits
 			shroudDirty = new CellLayer<bool>(map);
 			cellsDirty = new HashSet<CPos>();
 			cellsAndNeighborsDirty = new HashSet<CPos>();
-			var verticesLength = map.MapSize.X * map.MapSize.Y * 4;
-			fogVertices = new Vertex[verticesLength];
-			shroudVertices = new Vertex[verticesLength];
-			fogSpriteLayer = new CellLayer<Sprite>(map);
-			shroudSpriteLayer = new CellLayer<Sprite>(map);
+			verticesLength = map.MapSize.X * map.MapSize.Y * 4;
+			fogVertexBuffer = Game.Renderer.CreateVertexBuffer(verticesLength);
+			shroudVertexBuffer = Game.Renderer.CreateVertexBuffer(verticesLength);
 
 			// Load sprite variants
 			var variantCount = info.ShroudVariants.Length;
@@ -148,6 +156,15 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
+			// Enforce that all sprites reside on the same sheet to make life easy during rendering.
+			// If all the sprites are on one sheet, we can just render the vertex buffers in one pass.
+			var allSprites = shroudSprites.Concat(fogSprites);
+			sheet = shroudSprites[0].Sheet;
+			if (allSprites.All(sprite => sprite.Sheet == sheet))
+				sheet = CopySpritesOntoSingleSheet(out sheetBuilder);
+
+			blendMode = allSprites.Select(sprite => sprite.BlendMode).Distinct().Single();
+
 			// Mapping of shrouded directions -> sprite index
 			edgesToSpriteIndexOffset = new byte[(byte)(info.UseExtendedIndex ? Edges.All : Edges.AllCorners) + 1];
 			for (var i = 0; i < info.Index.Length; i++)
@@ -157,6 +174,61 @@ namespace OpenRA.Mods.Common.Traits
 				edgesToSpriteIndexOffset[info.OverrideShroudIndex] = (byte)(variantStride - 1);
 
 			notVisibleEdges = info.UseExtendedIndex ? Edges.AllSides : Edges.AllCorners;
+		}
+
+		Sheet CopySpritesOntoSingleSheet(out SheetBuilder sheetBuilder)
+		{
+			sheetBuilder = null;
+			var allSprites = shroudSprites.Concat(fogSprites);
+			var sizeEstimate = Exts.NextPowerOf2((int)Math.Sqrt(allSprites.Sum(sprite => sprite.Size.X * sprite.Size.Y) / 4.0));
+			var width = sizeEstimate;
+			var height = sizeEstimate;
+			var sheetBitmaps = new Cache<Sheet, Bitmap>(s => s.AsBitmap());
+			try
+			{
+				do
+				{
+					var builder = new SheetBuilder(SheetType.BGRA, Exts.NextPowerOf2(new Size(width, height)));
+					try
+					{
+						var initialSheet = builder.Current;
+						Action<Sprite[]> copySpritesToNewSheet = sprites =>
+						{
+							for (var i = 0; i < sprites.Length; i++)
+							{
+								var sprite = sprites[i];
+								using (var spriteBitmap = sheetBitmaps[sprite.Sheet].Clone(sprite.Bounds, PixelFormat.Format32bppArgb))
+									sprites[i] = builder.Add(spriteBitmap);
+							}
+						};
+						copySpritesToNewSheet(shroudSprites);
+						copySpritesToNewSheet(fogSprites);
+						if (initialSheet == builder.Current)
+							sheetBuilder = builder;
+						else
+						{
+							// If we overflowed onto more sheets, we need to try again with bigger sheets until everything fit onto one.
+							if (width > height)
+								height *= 2;
+							else
+								width *= 2;
+						}
+					}
+					finally
+					{
+						if (sheetBuilder == null)
+							builder.Dispose();
+					}
+				}
+				while (sheetBuilder == null);
+			}
+			finally
+			{
+				foreach (var bitmap in sheetBitmaps.Values)
+					bitmap.Dispose();
+			}
+
+			return sheetBuilder.Current;
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -277,8 +349,8 @@ namespace OpenRA.Mods.Common.Traits
 				var offset = VertexArrayOffset(uv);
 				var edges = GetEdges(uv, mapContains);
 				var tileInfo = tileInfos[uv];
-				CacheTile(uv, offset, edges, tileInfo, shroudSprites, shroudVertices, shroudPalette, shroudSpriteLayer);
-				CacheTile(uv, offset, edges, tileInfo, fogSprites, fogVertices, fogPalette, fogSpriteLayer);
+				CacheTile(offset, edges, tileInfo, shroudSprites, shroudPalette, shroudVertexBuffer);
+				CacheTile(offset, edges, tileInfo, fogSprites, fogPalette, fogVertexBuffer);
 			}
 		}
 
@@ -303,12 +375,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Render the shroud that just encroaches at the map border. This shroud is always fully cached, so we can
 			// just render straight from the cache.
-			foreach (var uv in visibleRegion.MapCoords)
-			{
-				var offset = VertexArrayOffset(uv);
-				RenderCachedTile(shroudSpriteLayer[uv], shroudVertices, offset);
-				RenderCachedTile(fogSpriteLayer[uv], fogVertices, offset);
-			}
+			RenderShroud();
 		}
 
 		void RenderPlayerShroud(CellRegion visibleRegion)
@@ -324,19 +391,27 @@ namespace OpenRA.Mods.Common.Traits
 			var visibleUnderFog = currentShroud.IsVisibleTest(visibleRegion);
 			foreach (var uv in visibleRegion.MapCoords)
 			{
+				if (!shroudDirty[uv])
+					continue;
+				shroudDirty[uv] = false;
 				var offset = VertexArrayOffset(uv);
-				if (shroudDirty[uv])
-				{
-					shroudDirty[uv] = false;
-					RenderDirtyTile(uv, offset, visibleUnderShroud, shroudSprites, shroudVertices, shroudPalette, shroudSpriteLayer);
-					RenderDirtyTile(uv, offset, visibleUnderFog, fogSprites, fogVertices, fogPalette, fogSpriteLayer);
-				}
-				else
-				{
-					RenderCachedTile(shroudSpriteLayer[uv], shroudVertices, offset);
-					RenderCachedTile(fogSpriteLayer[uv], fogVertices, offset);
-				}
+				var tileInfo = tileInfos[uv];
+				CacheTile(offset, GetEdges(uv, visibleUnderShroud), tileInfo, shroudSprites, shroudPalette, shroudVertexBuffer);
+				CacheTile(offset, GetEdges(uv, visibleUnderFog), tileInfo, fogSprites, fogPalette, fogVertexBuffer);
 			}
+
+			RenderShroud();
+		}
+
+		void RenderShroud()
+		{
+			Game.Renderer.Flush();
+			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
+				shroudVertexBuffer, 0, verticesLength,
+				PrimitiveType.QuadList, sheet, blendMode);
+			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
+				fogVertexBuffer, 0, verticesLength,
+				PrimitiveType.QuadList, sheet, blendMode);
 		}
 
 		int VertexArrayOffset(MPos uv)
@@ -344,33 +419,21 @@ namespace OpenRA.Mods.Common.Traits
 			return 4 * (uv.V * map.MapSize.X + uv.U);
 		}
 
-		void RenderDirtyTile(MPos uv, int offset, Func<MPos, bool> isVisible,
-			Sprite[] sprites, Vertex[] vertices, PaletteReference palette, CellLayer<Sprite> spriteLayer)
-		{
-			var tile = tileInfos[uv];
-			var edges = GetEdges(uv, isVisible);
-			var sprite = CacheTile(uv, offset, edges, tile, sprites, vertices, palette, spriteLayer);
-			RenderCachedTile(sprite, vertices, offset);
-		}
-
-		void RenderCachedTile(Sprite sprite, Vertex[] vertices, int offset)
-		{
-			if (sprite != null)
-				Game.Renderer.WorldSpriteRenderer.DrawSprite(sprite, vertices, offset);
-		}
-
-		Sprite CacheTile(MPos uv, int offset, Edges edges, TileInfo tileInfo,
-			Sprite[] sprites, Vertex[] vertices, PaletteReference palette, CellLayer<Sprite> spriteLayer)
+		void CacheTile(int offset, Edges edges, TileInfo tileInfo,
+			Sprite[] sprites, PaletteReference palette, IVertexBuffer<Vertex> vertexBuffer)
 		{
 			var sprite = GetSprite(sprites, edges, tileInfo.Variant);
 			if (sprite != null)
 			{
 				var location = tileInfo.ScreenPosition - 0.5f * sprite.Size;
-				OpenRA.Graphics.Util.FastCreateQuad(vertices, location, sprite, palette, offset);
+				OpenRA.Graphics.Util.FastCreateQuad(quadBuffer, location, sprite, palette, 0);
+			}
+			else
+			{
+				OpenRA.Graphics.Util.FastCreateQuad(quadBuffer, float2.Zero, EmptySprite, 0, 0, float2.Zero);
 			}
 
-			spriteLayer[uv] = sprite;
-			return sprite;
+			vertexBuffer.SetData(quadBuffer, offset, 4);
 		}
 
 		Sprite GetSprite(Sprite[] sprites, Edges edges, int variant)
@@ -379,6 +442,14 @@ namespace OpenRA.Mods.Common.Traits
 				return null;
 
 			return sprites[variant * variantStride + edgesToSpriteIndexOffset[(byte)edges]];
+		}
+
+		public void Dispose()
+		{
+			fogVertexBuffer.Dispose();
+			shroudVertexBuffer.Dispose();
+			if (sheetBuilder != null)
+				sheetBuilder.Dispose();
 		}
 	}
 }

@@ -42,13 +42,21 @@ namespace OpenRA.Graphics
 
 		public static Sheet AllocateSheet(int sheetSize)
 		{
-			return new Sheet(new Size(sheetSize, sheetSize));
+			return AllocateSheet(new Size(sheetSize, sheetSize));
+		}
+
+		public static Sheet AllocateSheet(Size sheetSize)
+		{
+			return new Sheet(sheetSize);
 		}
 
 		public SheetBuilder(SheetType t)
 			: this(t, Game.Settings.Graphics.SheetSize) { }
 
 		public SheetBuilder(SheetType t, int sheetSize)
+			: this(t, () => AllocateSheet(sheetSize)) { }
+
+		public SheetBuilder(SheetType t, Size sheetSize)
 			: this(t, () => AllocateSheet(sheetSize)) { }
 
 		public SheetBuilder(SheetType t, Func<Sheet> allocateSheet)
