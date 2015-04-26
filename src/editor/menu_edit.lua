@@ -129,12 +129,6 @@ for _, event in pairs({
   frame:Connect(event, wx.wxEVT_UPDATE_UI, onUpdateUIEditorInFocus)
 end
 
-frame:Connect(ID_FOLD, wx.wxEVT_UPDATE_UI,
-  function(event)
-    local editor = GetEditorWithFocus(GetEditor())
-    event:Enable(ide.config.editor.fold and editor ~= nil)
-  end)
-
 frame:Connect(ID_COMMENT, wx.wxEVT_UPDATE_UI,
   function(event)
     local editor = GetEditorWithFocus(GetEditor())
@@ -335,8 +329,13 @@ frame:Connect(ID_REINDENT, wx.wxEVT_COMMAND_MENU_SELECTED,
     processSelection(editor, function(buf) reIndent(editor, buf) end)
   end)
 
+frame:Connect(ID_FOLD, wx.wxEVT_UPDATE_UI,
+  function(event)
+    local editor = GetEditorWithFocus()
+    event:Enable(editor and editor:CanFold() or false)
+  end)
 frame:Connect(ID_FOLD, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event) FoldSome() end)
+  function (event) GetEditorWithFocus():FoldSome() end)
 
 local BOOKMARK_MARKER = StylesGetMarker("bookmark")
 local BOOKMARK_MARKER_VALUE = 2^BOOKMARK_MARKER

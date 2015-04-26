@@ -512,55 +512,6 @@ function SaveOnExit(allow_cancel)
   return true
 end
 
--- circle through "fold all" => "hide base lines" => "unfold all"
-function FoldSome()
-  local editor = GetEditor()
-  editor:Colourise(0, -1) -- update doc's folding info
-  local foldall = false -- at least on header unfolded => fold all
-  local hidebase = false -- at least one base is visible => hide all
-
-  for ln = 0, editor.LineCount - 1 do
-    local foldRaw = editor:GetFoldLevel(ln)
-    local foldLvl = foldRaw % 4096
-    local foldHdr = (math.floor(foldRaw / 8192) % 2) == 1
-
-    -- at least one header is expanded
-    foldall = foldall or (foldHdr and editor:GetFoldExpanded(ln))
-
-    -- at least one base can be hidden
-    hidebase = hidebase or (
-      not foldHdr
-      and ln > 1 -- first line can't be hidden, so ignore it
-      and foldLvl == wxstc.wxSTC_FOLDLEVELBASE
-      and bit.band(foldRaw, wxstc.wxSTC_FOLDLEVELWHITEFLAG) == 0
-      and editor:GetLineVisible(ln))
-  end
-
-  -- shows lines; this doesn't change fold status for folded lines
-  if not foldall and not hidebase then editor:ShowLines(0, editor.LineCount-1) end
-
-  for ln = 0, editor.LineCount-1 do
-    local foldRaw = editor:GetFoldLevel(ln)
-    local foldLvl = foldRaw % 4096
-    local foldHdr = (math.floor(foldRaw / 8192) % 2) == 1
-
-    if foldall then
-      if foldHdr and editor:GetFoldExpanded(ln) then
-        editor:ToggleFold(ln)
-      end
-    elseif hidebase then
-      if not foldHdr and (foldLvl == wxstc.wxSTC_FOLDLEVELBASE) then
-        editor:HideLines(ln, ln)
-      end
-    else -- unfold all
-      if foldHdr and not editor:GetFoldExpanded(ln) then
-        editor:ToggleFold(ln)
-      end
-    end
-  end
-  editor:EnsureCaretVisible()
-end
-
 function SetAllEditorsReadOnly(enable)
   for _, document in pairs(openDocuments) do
     document.editor:SetReadOnly(enable)
