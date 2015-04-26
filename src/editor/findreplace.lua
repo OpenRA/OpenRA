@@ -492,12 +492,29 @@ function findReplace:RunInFiles(replace)
         function () setModified(false) end)
       reseditor:Connect(wxstc.wxEVT_STC_SAVEPOINTLEFT,
         function () setModified(true) end)
+      reseditor:Connect(wxstc.wxEVT_STC_MARGINCLICK,
+        function (event)
+          local editor = event:GetEventObject():DynamicCast('wxStyledTextCtrl')
+          local line = editor:LineFromPosition(event:GetPosition())
+          local header = bit.band(editor:GetFoldLevel(line),
+            wxstc.wxSTC_FOLDLEVELHEADERFLAG) == wxstc.wxSTC_FOLDLEVELHEADERFLAG
+          if wx.wxGetKeyState(wx.WXK_SHIFT) and wx.wxGetKeyState(wx.WXK_CONTROL) then
+            editor:FoldSome()
+          elseif header then
+            editor:ToggleFold(line)
+          end
+        end)
 
       nb:AddPage(reseditor, "Search Results", true)
     end
     reseditor:SetWrapMode(wxstc.wxSTC_WRAP_NONE)
     reseditor:SetIndentationGuides(false)
-    reseditor:SetMarginWidth(0, 0) -- hide line numbers
+    for m = 0, 4 do -- hide all margins except folding
+      if reseditor:GetMarginWidth(m) > 0
+      and reseditor:GetMarginMask(m) ~= wxstc.wxSTC_MASK_FOLDERS then
+        reseditor:SetMarginWidth(m, 0)
+      end
+    end
     reseditor:MarkerDefine(ide:GetMarker("searchmatchfile"))
     reseditor:Connect(wx.wxEVT_LEFT_DCLICK, function(event)
         if not wx.wxGetKeyState(wx.WXK_SHIFT)
