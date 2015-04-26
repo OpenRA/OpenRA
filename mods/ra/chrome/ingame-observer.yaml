@@ -31,7 +31,7 @@ Container@OBSERVER_WIDGETS:
 							Align: Right
 							Font: TinyBold
 				Container@TOP_BUTTONS:
-					Logic: OrderButtonsChromeLogic
+					Logic: MenuButtonsChromeLogic
 					X: 9
 					Y: 7
 					Children:

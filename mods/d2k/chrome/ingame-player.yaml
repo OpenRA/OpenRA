@@ -34,7 +34,7 @@ Container@PLAYER_WIDGETS:
 			ClickThrough: false
 			Children:
 				Container@TOP_BUTTONS:
-					Logic: OrderButtonsChromeLogic
+					Logic: MenuButtonsChromeLogic
 					X: 16
 					Y: 236
 					Children:
@@ -54,6 +54,7 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: order-icons
 									ImageName: debug
 						Button@REPAIR_BUTTON:
+							Logic: RepairOrderButtonLogic
 							X: 29
 							Width: 34
 							Height: 35
@@ -67,6 +68,7 @@ Container@PLAYER_WIDGETS:
 									Y: 0
 									ImageCollection: order-icons
 						Button@SELL_BUTTON:
+							Logic: SellOrderButtonLogic
 							X: 54
 							Width: 34
 							Height: 35
@@ -80,6 +82,7 @@ Container@PLAYER_WIDGETS:
 									Y: 0
 									ImageCollection: order-icons
 						Button@BEACON_BUTTON:
+							Logic: BeaconOrderButtonLogic
 							X: 108
 							Width: 36
 							Height: 35
@@ -94,6 +97,7 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: order-icons
 
 						Button@POWER_BUTTON:
+							Logic: PowerdownOrderButtonLogic
 							X: 133
 							Width: 36
 							Height: 35
