@@ -19,8 +19,8 @@ namespace OpenRA.GameRules
 	public class ProjectileArgs
 	{
 		public WeaponInfo Weapon;
-		public IEnumerable<int> DamageModifiers;
-		public IEnumerable<int> InaccuracyModifiers;
+		public int[] DamageModifiers;
+		public int[] InaccuracyModifiers;
 		public int Facing;
 		public WPos Source;
 		public Actor SourceActor;

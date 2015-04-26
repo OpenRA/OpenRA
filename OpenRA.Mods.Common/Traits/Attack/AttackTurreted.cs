@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Traits;
 
@@ -22,12 +23,12 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class AttackTurreted : AttackFollow, ITick, ISync
 	{
-		protected IEnumerable<Turreted> turrets;
+		protected Turreted[] turrets;
 
 		public AttackTurreted(Actor self, AttackTurretedInfo info)
 			: base(self, info)
 		{
-			turrets = self.TraitsImplementing<Turreted>();
+			turrets = self.TraitsImplementing<Turreted>().ToArray();
 		}
 
 		protected override bool CanAttack(Actor self, Target target)

@@ -329,14 +329,6 @@ namespace OpenRA.Traits
 		void OnObjectiveFailed(Player player, int objectiveID);
 	}
 
-	public static class DisableExts
-	{
-		public static bool IsDisabled(this Actor a)
-		{
-			return a.TraitsImplementing<IDisable>().Any(d => d.Disabled);
-		}
-	}
-
 	public interface ILegacyEditorRenderInfo
 	{
 		string EditorPalette { get; }

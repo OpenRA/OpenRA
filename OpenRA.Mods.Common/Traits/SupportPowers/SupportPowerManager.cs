@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		static bool InstanceDisabled(SupportPower sp)
 		{
-			return sp.Self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
+			return sp.Self.IsDisabled();
 		}
 
 		bool notifiedCharging;

@@ -59,12 +59,12 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Power")]
 	public class ActorPowerProperties : ScriptActorProperties, Requires<PowerInfo>
 	{
-		readonly IEnumerable<PowerTrait> power;
+		readonly PowerTrait[] power;
 
 		public ActorPowerProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			power = self.TraitsImplementing<PowerTrait>();
+			power = self.TraitsImplementing<PowerTrait>().ToArray();
 		}
 
 		[Desc("Returns the power drained/provided by this actor.")]

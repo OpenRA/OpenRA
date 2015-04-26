@@ -17,12 +17,12 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Rearm : Activity
 	{
-		readonly IEnumerable<AmmoPool> ammoPools;
+		readonly AmmoPool[] ammoPools;
 		readonly Dictionary<AmmoPool, int> ammoPoolsReloadTimes;
 
 		public Rearm(Actor self)
 		{
-			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.Info.SelfReloads);
+			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.Info.SelfReloads).ToArray();
 
 			if (ammoPools == null)
 				return;

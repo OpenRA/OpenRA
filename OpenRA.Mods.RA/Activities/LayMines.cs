@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		readonly Minelayer minelayer;
 		readonly MinelayerInfo info;
-		readonly IEnumerable<AmmoPool> ammoPools;
+		readonly AmmoPool[] ammoPools;
 		readonly IMove movement;
 		readonly string[] rearmBuildings;
 
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			minelayer = self.TraitOrDefault<Minelayer>();
 			info = self.Info.Traits.Get<MinelayerInfo>();
-			ammoPools = self.TraitsImplementing<AmmoPool>();
+			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 			movement = self.Trait<IMove>();
 			rearmBuildings = info.RearmBuildings;
 		}

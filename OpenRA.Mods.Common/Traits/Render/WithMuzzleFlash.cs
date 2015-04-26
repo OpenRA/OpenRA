@@ -27,9 +27,10 @@ namespace OpenRA.Mods.Common.Traits
 
 	class WithMuzzleFlash : UpgradableTrait<WithMuzzleFlashInfo>, INotifyAttack, IRender, ITick
 	{
-		Dictionary<Barrel, bool> visible = new Dictionary<Barrel, bool>();
-		Dictionary<Barrel, AnimationWithOffset> anims = new Dictionary<Barrel, AnimationWithOffset>();
-		Func<int> getFacing;
+		readonly Dictionary<Barrel, bool> visible = new Dictionary<Barrel, bool>();
+		readonly Dictionary<Barrel, AnimationWithOffset> anims = new Dictionary<Barrel, AnimationWithOffset>();
+		readonly Func<int> getFacing;
+		readonly Armament[] armaments;
 
 		public WithMuzzleFlash(Actor self, WithMuzzleFlashInfo info)
 			: base(info)
@@ -37,7 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 			var render = self.Trait<RenderSprites>();
 			var facing = self.TraitOrDefault<IFacing>();
 
-			foreach (var arm in self.TraitsImplementing<Armament>())
+			armaments = self.TraitsImplementing<Armament>().ToArray();
+
+			foreach (var arm in armaments)
 			{
 				var armClosure = arm;	// closure hazard in AnimationWithOffset
 
@@ -87,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			foreach (var arm in self.TraitsImplementing<Armament>())
+			foreach (var arm in armaments)
 			{
 				var palette = wr.Palette(arm.Info.MuzzlePalette);
 				foreach (var kv in anims)

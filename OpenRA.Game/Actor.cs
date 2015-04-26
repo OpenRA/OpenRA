@@ -83,8 +83,9 @@ namespace OpenRA
 			}
 		}
 
-		readonly IRenderModifier[] traitsImplementingRenderModifier;
-		readonly IRender[] traitsImplementingRender;
+		readonly IRenderModifier[] renderModifiers;
+		readonly IRender[] renders;
+		readonly IDisable[] disables;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -126,8 +127,9 @@ namespace OpenRA
 				return new Rectangle(offset.X, offset.Y, size.X, size.Y);
 			});
 
-			traitsImplementingRenderModifier = TraitsImplementing<IRenderModifier>().ToArray();
-			traitsImplementingRender = TraitsImplementing<IRender>().ToArray();
+			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
+			renders = TraitsImplementing<IRender>().ToArray();
+			disables = TraitsImplementing<IDisable>().ToArray();
 		}
 
 		public void Tick()
@@ -143,14 +145,14 @@ namespace OpenRA
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			var renderables = Renderables(wr);
-			foreach (var modifier in traitsImplementingRenderModifier)
+			foreach (var modifier in renderModifiers)
 				renderables = modifier.ModifyRender(this, wr, renderables);
 			return renderables;
 		}
 
 		IEnumerable<IRenderable> Renderables(WorldRenderer wr)
 		{
-			foreach (var render in traitsImplementingRender)
+			foreach (var render in renders)
 				foreach (var renderable in render.Render(this, wr))
 					yield return renderable;
 		}
@@ -275,6 +277,14 @@ namespace OpenRA
 				return;
 
 			health.Value.InflictDamage(this, attacker, health.Value.MaxHP, null, true);
+		}
+
+		public bool IsDisabled()
+		{
+			foreach (var disable in disables)
+				if (disable.Disabled)
+					return true;
+			return false;
 		}
 
 		#region Scripting interface

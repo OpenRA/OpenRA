@@ -167,10 +167,10 @@ namespace OpenRA.Mods.Common.Traits
 				Facing = legacyFacing,
 
 				DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
-					.Select(a => a.GetFirepowerModifier()),
+					.Select(a => a.GetFirepowerModifier()).ToArray(),
 
 				InaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>()
-					.Select(a => a.GetInaccuracyModifier()),
+					.Select(a => a.GetInaccuracyModifier()).ToArray(),
 
 				Source = muzzlePosition,
 				SourceActor = self,

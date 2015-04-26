@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 	class Demolish : Enter
 	{
 		readonly Actor target;
-		readonly IEnumerable<IDemolishable> demolishables;
+		readonly IDemolishable[] demolishables;
 		readonly int delay;
 		readonly int flashes;
 		readonly int flashesDelay;
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Activities
 			: base(self, target)
 		{
 			this.target = target;
-			demolishables = target.TraitsImplementing<IDemolishable>();
+			demolishables = target.TraitsImplementing<IDemolishable>().ToArray();
 			this.delay = delay;
 			this.flashes = flashes;
 			this.flashesDelay = flashesDelay;
