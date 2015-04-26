@@ -2,6 +2,7 @@ Container@INGAME_ROOT:
 	Logic: LoadIngamePlayerOrObserverUILogic
 	Children:
 		Container@WORLD_ROOT:
+			Logic: LoadIngamePerfLogic
 			Children:
 				LogicTicker@DISCONNECT_WATCHER:
 					Logic: DisconnectWatcherLogic
@@ -27,28 +28,7 @@ Container@INGAME_ROOT:
 				StrategicProgress@STRATEGIC_PROGRESS:
 					X: WINDOW_RIGHT/2
 					Y: 40
-				Container@PERFORMANCE_INFO:
-					Logic: PerfDebugLogic
-					Children:
-						Label@PERF_TEXT:
-							X: WINDOW_RIGHT - 200
-							Y: WINDOW_BOTTOM - 70
-							Width: 170
-							Height: 40
-							Contrast: true
-							VAlign: Top
-						Background@GRAPH_BG:
-							X: 10
-							Y: WINDOW_BOTTOM-HEIGHT-10
-							Width: 220
-							Height: 220
-							Background: panel-black
-							Children:
-								PerfGraph@GRAPH:
-									X: 10
-									Y: 10
-									Width: 200
-									Height: 200
+				Container@PERF_ROOT:
 				WorldInteractionController@INTERACTION_CONTROLLER:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
@@ -59,6 +39,29 @@ Container@INGAME_ROOT:
 				Container@PLAYER_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
+
+Container@PERF_WIDGETS:
+	Logic: PerfDebugLogic
+	Children:
+		Label@PERF_TEXT:
+			X: WINDOW_RIGHT - 200
+			Y: WINDOW_BOTTOM - 70
+			Width: 170
+			Height: 40
+			Contrast: true
+			VAlign: Top
+		Background@GRAPH_BG:
+			X: 10
+			Y: WINDOW_BOTTOM-HEIGHT-10
+			Width: 220
+			Height: 220
+			Background: panel-black
+			Children:
+				PerfGraph@GRAPH:
+					X: 10
+					Y: 10
+					Width: 200
+					Height: 200
 
 Container@OBSERVER_WIDGETS:
 	Logic: MenuButtonsChromeLogic
