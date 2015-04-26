@@ -35,9 +35,14 @@ namespace OpenRA.Renderer.Sdl2
 
 		public void SetData(T[] data, int length)
 		{
+			SetData(data, 0, length);
+		}
+
+		public void SetData(T[] data, int start, int length)
+		{
 			Bind();
 			GL.BufferSubData(BufferTarget.ArrayBuffer,
-				IntPtr.Zero,
+				new IntPtr(VertexSize * start),
 				new IntPtr(VertexSize * length),
 				data);
 			ErrorHandler.CheckGlError();
