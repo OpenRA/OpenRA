@@ -212,9 +212,25 @@ namespace OpenRA
 		public Hotkey ProductionTypeTankKey = new Hotkey(Keycode.I, Modifiers.None);
 		public Hotkey ProductionTypeMerchantKey = new Hotkey(Keycode.O, Modifiers.None);
 
+		public Hotkey SupportPower01Key = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
+		public Hotkey SupportPower02Key = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
+		public Hotkey SupportPower03Key = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
+		public Hotkey SupportPower04Key = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
+		public Hotkey SupportPower05Key = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
+		public Hotkey SupportPower06Key = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
+
 		public Hotkey GetProductionHotkey(int index)
 		{
 			var field = GetType().GetField("Production{0:D2}Key".F(index + 1));
+			if (field == null)
+				return Hotkey.Invalid;
+
+			return (Hotkey)field.GetValue(this);
+		}
+
+		public Hotkey GetSupportPowerHotkey(int index)
+		{
+			var field = GetType().GetField("SupportPower{0:D2}Key".F(index + 1));
 			if (field == null)
 				return Hotkey.Invalid;
 

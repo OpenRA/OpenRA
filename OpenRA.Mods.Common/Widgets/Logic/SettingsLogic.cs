@@ -439,6 +439,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					BindHotkeyPref(kv, ks, productionTemplate, hotkeyList);
 			}
 
+			// Support powers
+			{
+				var hotkeys = new Dictionary<string, string>();
+				for (var i = 1; i <= 6; i++)
+					hotkeys.Add("SupportPower{0:D2}Key".F(i), "Slot {0}".F(i));
+
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
+				header.Get<LabelWidget>("LABEL").GetText = () => "Support Power Commands";
+				hotkeyList.AddChild(header);
+
+				foreach (var kv in hotkeys)
+					BindHotkeyPref(kv, ks, productionTemplate, hotkeyList);
+			}
+
 			// Developer
 			{
 				var hotkeys = new Dictionary<string, string>()

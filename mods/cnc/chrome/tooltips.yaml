@@ -116,8 +116,12 @@ Background@SUPPORT_POWER_TOOLTIP:
 			X: 5
 			Height: 20
 			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Height: 20
+			TextColor: 255,255,0
+			Font: Bold
 		Label@TIME:
-			X: 20
 			Y: 6
 			Font: TinyBold
 			VAlign: Top
