@@ -471,10 +471,11 @@ function findReplace:RunInFiles(replace)
 
   -- save focus to restore after adding a page with search results
   local ctrl = ide:GetMainFrame():FindFocus()
+  local showaseditor = ide.config.search.showaseditor
   local nb = ide:GetOutputNotebook()
   local reseditor = self.reseditor
   if not reseditor or not pcall(function() reseditor:GetId() end) then
-    if ide.config.search.showaseditor then
+    if showaseditor then
       reseditor = NewFile("Search Results")
       -- set file path to avoid treating results as unsaved document
       ide:GetDocument(reseditor).filePath = "Search Results"
@@ -563,7 +564,7 @@ function findReplace:RunInFiles(replace)
 
     self.reseditor = reseditor
   else
-    if ide.config.search.showaseditor then
+    if showaseditor then
       ide:GetDocument(reseditor):SetActive()
     else
       local index = nb:GetPageIndex(reseditor)
@@ -580,7 +581,8 @@ function findReplace:RunInFiles(replace)
 
   -- return focus to the control that had it if it's on the search panel
   -- (as it could be changed by added results tab)
-  if ctrl and ctrl:GetParent():GetId() == self.panel:GetId() then ctrl:SetFocus() end
+  if ctrl and ctrl:GetParent():GetId() == self.panel:GetId()
+  or not showaseditor then ctrl:SetFocus() end
 
   local startdir, mask = self:GetScope()
   local completed = self:ProcInFiles(startdir, mask or "*.*", self:GetFlags().SubDirs)
