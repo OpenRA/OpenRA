@@ -67,6 +67,7 @@ namespace OpenRA
 		public Map Map { get; private set; }
 		public MapStatus Status { get; private set; }
 		public MapClassification Class { get; private set; }
+		public bool SuitableForInitialMap { get; private set; }
 
 		public MapRuleStatus RuleStatus { get; private set; }
 
@@ -117,12 +118,36 @@ namespace OpenRA
 			Type = m.Type;
 			Type = m.Type;
 			Author = m.Author;
-			PlayerCount = m.Players.Count(x => x.Value.Playable);
 			Bounds = m.Bounds;
 			SpawnPoints = m.GetSpawnPoints();
 			CustomPreview = m.CustomPreview;
 			Status = MapStatus.Available;
 			Class = classification;
+
+			var players = new MapPlayers(m.PlayerDefinitions).Players;
+			PlayerCount = players.Count(x => x.Value.Playable);
+
+			SuitableForInitialMap = EvaluateUserFriendliness(players);
+		}
+
+		bool EvaluateUserFriendliness(Dictionary<string, PlayerReference> players)
+		{
+			if (Status != MapStatus.Available || !Map.Visibility.HasFlag(MapVisibility.Lobby))
+				return false;
+
+			// Other map types may have confusing settings or gameplay
+			if (Type != "Conquest")
+				return false;
+
+			// Maps with bots disabled confuse new players
+			if (players.Any(x => !x.Value.AllowBots))
+				return false;
+
+			// Large maps expose unfortunate performance problems
+			if (Bounds.Width > 128 || Bounds.Height > 128)
+				return false;
+
+			return true;
 		}
 
 		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml)

@@ -21,8 +21,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public void CreatePlayers(World w)
 		{
-			// create the unplayable map players -- neutral, shellmap, scripted, etc.
-			foreach (var kv in w.Map.Players.Where(p => !p.Value.Playable))
+			var players = new MapPlayers(w.Map.PlayerDefinitions).Players;
+
+			// Create the unplayable map players -- neutral, shellmap, scripted, etc.
+			foreach (var kv in players.Where(p => !p.Value.Playable))
 			{
 				var player = new Player(w, null, null, kv.Value);
 				w.AddPlayer(player);
@@ -30,14 +32,14 @@ namespace OpenRA.Mods.Common.Traits
 					w.WorldActor.Owner = player;
 			}
 
-			// create the players which are bound through slots.
+			// Create the players which are bound through slots.
 			foreach (var kv in w.LobbyInfo.Slots)
 			{
 				var client = w.LobbyInfo.ClientInSlot(kv.Key);
 				if (client == null)
 					continue;
 
-				var player = new Player(w, client, kv.Value, w.Map.Players[kv.Value.PlayerReference]);
+				var player = new Player(w, client, kv.Value, players[kv.Value.PlayerReference]);
 				w.AddPlayer(player);
 
 				if (client.Index == Game.LocalClientId)

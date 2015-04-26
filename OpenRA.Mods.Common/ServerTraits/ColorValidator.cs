@@ -175,8 +175,7 @@ namespace OpenRA.Mods.Common.Server
 				return false;
 			}
 
-			var mapPlayerColors = server.Map.Players.Values
-				.Select(p => p.ColorRamp.RGB);
+			var mapPlayerColors = server.MapPlayers.Players.Values.Select(p => p.ColorRamp.RGB);
 
 			if (!ValidateColorAgainstForbidden(askedColor, mapPlayerColors, out forbiddenColor))
 			{

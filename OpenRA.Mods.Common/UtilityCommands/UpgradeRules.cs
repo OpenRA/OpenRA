@@ -1339,5 +1339,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				UpgradeCursors(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
+
+		internal static void UpgradePlayers(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		{
+			foreach (var node in nodes)
+				UpgradePlayers(engineVersion, ref node.Value.Nodes, node, depth + 1);
+		}
 	}
 }

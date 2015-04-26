@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -224,12 +223,9 @@ namespace OpenRA
 
 		[FieldLoader.Ignore] public Lazy<Dictionary<string, ActorReference>> Actors;
 
-		public int PlayerCount { get { return Players.Count(p => p.Value.Playable); } }
-
 		public Rectangle Bounds;
 
 		// Yaml map data
-		[FieldLoader.Ignore] public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
 		[FieldLoader.Ignore] public Lazy<List<SmudgeReference>> Smudges;
 
 		[FieldLoader.Ignore] public List<MiniYamlNode> RuleDefinitions = new List<MiniYamlNode>();
@@ -239,6 +235,7 @@ namespace OpenRA
 		[FieldLoader.Ignore] public List<MiniYamlNode> VoiceDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> NotificationDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> TranslationDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
 
 		// Binary map data
 		[FieldLoader.Ignore] public byte TileFormat = 2;
@@ -348,13 +345,6 @@ namespace OpenRA
 					Visibility = MapVisibility.MissionSelector;
 			}
 
-			// Load players
-			foreach (var my in nd["Players"].ToDictionary().Values)
-			{
-				var player = new PlayerReference(my);
-				Players.Add(player.Name, player);
-			}
-
 			Actors = Exts.Lazy(() =>
 			{
 				var ret = new Dictionary<string, ActorReference>();
@@ -387,10 +377,11 @@ namespace OpenRA
 			VoiceDefinitions = MiniYaml.NodesOrEmpty(yaml, "Voices");
 			NotificationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Notifications");
 			TranslationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Translations");
+			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
 
-			MapTiles = Exts.Lazy(() => LoadMapTiles());
-			MapResources = Exts.Lazy(() => LoadResourceTiles());
-			MapHeight = Exts.Lazy(() => LoadMapHeight());
+			MapTiles = Exts.Lazy(LoadMapTiles);
+			MapResources = Exts.Lazy(LoadResourceTiles);
+			MapHeight = Exts.Lazy(LoadMapHeight);
 
 			TileShape = Game.ModData.Manifest.TileShape;
 			SubCellOffsets = Game.ModData.Manifest.SubCellOffsets;
@@ -496,8 +487,7 @@ namespace OpenRA
 
 			root.Add(new MiniYamlNode("Options", FieldSaver.SaveDifferences(Options, new MapOptions())));
 
-			root.Add(new MiniYamlNode("Players", null,
-				Players.Select(p => new MiniYamlNode("PlayerReference@{0}".F(p.Key), FieldSaver.SaveDifferences(p.Value, new PlayerReference()))).ToList()));
+			root.Add(new MiniYamlNode("Players", null, PlayerDefinitions));
 
 			root.Add(new MiniYamlNode("Actors", null,
 				Actors.Value.Select(x => new MiniYamlNode(x.Key, x.Value.Save())).ToList()));
@@ -766,45 +756,6 @@ namespace OpenRA
 				using (var csp = SHA1.Create())
 					return new string(csp.ComputeHash(ms).SelectMany(a => a.ToString("x2")).ToArray());
 			}
-		}
-
-		public void MakeDefaultPlayers()
-		{
-			var firstRace = Rules.Actors["world"].Traits
-				.WithInterface<CountryInfo>().First(c => c.Selectable).Race;
-
-			if (!Players.ContainsKey("Neutral"))
-				Players.Add("Neutral", new PlayerReference
-				{
-					Name = "Neutral",
-					Race = firstRace,
-					OwnsWorld = true,
-					NonCombatant = true
-				});
-
-			var numSpawns = GetSpawnPoints().Length;
-			for (var index = 0; index < numSpawns; index++)
-			{
-				if (Players.ContainsKey("Multi{0}".F(index)))
-					continue;
-
-				var p = new PlayerReference
-				{
-					Name = "Multi{0}".F(index),
-					Race = "Random",
-					Playable = true,
-					Enemies = new[] { "Creeps" }
-				};
-				Players.Add(p.Name, p);
-			}
-
-			Players.Add("Creeps", new PlayerReference
-			{
-				Name = "Creeps",
-				Race = firstRace,
-				NonCombatant = true,
-				Enemies = Players.Where(p => p.Value.Playable).Select(p => p.Key).ToArray()
-			});
 		}
 
 		public void FixOpenAreas(Ruleset rules)

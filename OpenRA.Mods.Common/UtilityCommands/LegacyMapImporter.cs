@@ -110,6 +110,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		Ruleset rules;
 		List<string> players = new List<string>();
 		Action<string> errorHandler;
+		MapPlayers mapPlayers;
 
 		LegacyMapImporter(string filename, Ruleset rules, Action<string> errorHandler)
 		{
@@ -123,7 +124,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			var map = new LegacyMapImporter(filename, rules, errorHandler).map;
 			map.RequiresMod = mod;
-			map.MakeDefaultPlayers();
 			map.FixOpenAreas(rules);
 			return map;
 		}
@@ -180,9 +180,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			LoadActors(file, "INFANTRY");
 			LoadSmudges(file, "SMUDGE");
 
-			foreach (var p in players)
-				LoadPlayer(file, p, legacyMapFormat == IniMapFormat.RedAlert);
-
 			var wps = file.GetSection("Waypoints")
 					.Where(kv => Exts.ParseIntegerInvariant(kv.Value) > 0)
 					.Select(kv => Pair.New(Exts.ParseIntegerInvariant(kv.Key),
@@ -193,19 +190,29 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				if (kv.First <= 7)
 				{
-					var a = new ActorReference("mpspawn");
-					a.Add(new LocationInit((CPos)kv.Second));
-					a.Add(new OwnerInit("Neutral"));
+					var a = new ActorReference("mpspawn")
+					{
+						new LocationInit((CPos)kv.Second),
+						new OwnerInit("Neutral")
+					};
 					map.Actors.Value.Add("Actor" + map.Actors.Value.Count.ToString(), a);
 				}
 				else
 				{
-					var a = new ActorReference("waypoint");
-					a.Add(new LocationInit((CPos)kv.Second));
-					a.Add(new OwnerInit("Neutral"));
+					var a = new ActorReference("waypoint")
+					{
+						new LocationInit((CPos)kv.Second),
+						new OwnerInit("Neutral")
+					};
 					map.Actors.Value.Add("waypoint" + kv.First, a);
 				}
 			}
+
+			// Create default player definitions only if there are no players to import
+			mapPlayers = new MapPlayers(map.Rules, (players.Count == 0) ? map.GetSpawnPoints().Length : 0);
+			foreach (var p in players)
+				LoadPlayer(file, p, legacyMapFormat == IniMapFormat.RedAlert);
+			map.PlayerDefinitions = mapPlayers.ToMiniYaml();
 		}
 
 		static int2 LocationFromMapOffset(int offset, int mapSize)
@@ -505,7 +512,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 			}
 
-			map.Players.Add(section, pr);
+			// Overwrite default player definitions if needed
+			if (!mapPlayers.Players.ContainsKey(section))
+				mapPlayers.Players.Add(section, pr);
+			else
+				mapPlayers.Players[section] = pr;
 		}
 
 		void LoadVideos(IniFile file, string section)

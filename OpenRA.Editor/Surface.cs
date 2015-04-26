@@ -386,7 +386,7 @@ namespace OpenRA.Editor
 
 		ColorPalette GetPaletteForPlayerInner(string name)
 		{
-			var pr = Map.Players[name];
+			var pr = new MapPlayers(Map.PlayerDefinitions).Players[name];
 			var pcpi = Program.Rules.Actors["player"].Traits.Get<PlayerColorPaletteInfo>();
 			var remap = new PlayerColorRemap(pcpi.RemapIndex, pr.Color, pcpi.Ramp);
 			return new ImmutablePalette(PlayerPalette, remap).AsSystemPalette();
