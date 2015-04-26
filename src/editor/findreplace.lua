@@ -515,6 +515,9 @@ function findReplace:RunInFiles(replace)
         reseditor:SetMarginWidth(m, 0)
       end
     end
+    if tonumber(ide.config.search.zoom) then
+      reseditor:SetZoom(tonumber(ide.config.search.zoom))
+    end
     reseditor:MarkerDefine(ide:GetMarker("searchmatchfile"))
     reseditor:Connect(wx.wxEVT_LEFT_DCLICK, function(event)
         if not wx.wxGetKeyState(wx.WXK_SHIFT)
