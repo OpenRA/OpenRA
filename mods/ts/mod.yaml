@@ -144,6 +144,7 @@ ChromeLayout:
 	./mods/d2k/chrome/ingame-observer.yaml
 	./mods/ra/chrome/ingame-observerstats.yaml
 	./mods/ts/chrome/ingame-player.yaml
+	./mods/ra/chrome/ingame-perf.yaml
 	./mods/ra/chrome/ingame-debug.yaml
 	./mods/ra/chrome/ingame-leavemap.yaml
 	./mods/ra/chrome/mainmenu.yaml

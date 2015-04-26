@@ -2,23 +2,18 @@ Container@INGAME_ROOT:
 	Logic: LoadIngamePlayerOrObserverUILogic
 	Children:
 		Container@WORLD_ROOT:
+			Logic: LoadIngamePerfLogic
 			Children:
 				LogicTicker@DISCONNECT_WATCHER:
 					Logic: DisconnectWatcherLogic
 				WorldInteractionController@INTERACTION_CONTROLLER:
-					X: 0
-					Y: 0
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
 				ViewportController:
-					X: 0
-					Y: 0
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
 					TooltipContainer: TOOLTIP_CONTAINER
 				WorldCommand:
-					X: 0
-					Y: 0
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
 				StrategicProgress@STRATEGIC_PROGRESS:
@@ -29,27 +24,6 @@ Container@INGAME_ROOT:
 					Y: 10
 					Order: Descending
 				Container@PLAYER_ROOT:
-				Container@PERFORMANCE_INFO:
-					Logic: PerfDebugLogic
-					Children:
-						Label@PERF_TEXT:
-							X: WINDOW_RIGHT - 200
-							Y: WINDOW_BOTTOM - 70
-							Width: 170
-							Height: 40
-							Contrast: true
-						Background@GRAPH_BG:
-							ClickThrough: true
-							Background: dialog4
-							X: 30
-							Y: WINDOW_BOTTOM - 240
-							Width: 210
-							Height: 210
-							Children:
-								PerfGraph@GRAPH:
-									X: 5
-									Y: 5
-									Width: 200
-									Height: 200
+				Container@PERF_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:

@@ -17,141 +17,65 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class OrderButtonsChromeLogic
+	public class SellOrderButtonLogic
 	{
-		readonly World world;
-		readonly Widget worldRoot;
-		readonly Widget menuRoot;
-		bool disableSystemButtons;
-		Widget currentWidget;
-
 		[ObjectCreator.UseCtor]
-		public OrderButtonsChromeLogic(Widget widget, World world)
+		public SellOrderButtonLogic(Widget widget, World world)
 		{
-			this.world = world;
-			var ingameRoot = Ui.Root.Get("INGAME_ROOT");
-			worldRoot = ingameRoot.Get("WORLD_ROOT");
-			menuRoot = ingameRoot.Get("MENU_ROOT");
-
-			Action removeCurrentWidget = () => menuRoot.RemoveChild(currentWidget);
-			world.GameOver += removeCurrentWidget;
-
-			// Order Buttons
-			var sell = widget.GetOrNull<ButtonWidget>("SELL_BUTTON");
+			var sell = widget as ButtonWidget;
 			if (sell != null)
 			{
 				sell.GetKey = _ => Game.Settings.Keys.SellKey;
-				BindOrderButton<SellOrderGenerator>(world, sell, "sell");
+				OrderButtonsChromeUtils.BindOrderButton<SellOrderGenerator>(world, sell, "sell");
 			}
+		}
+	}
 
-			var repair = widget.GetOrNull<ButtonWidget>("REPAIR_BUTTON");
+	public class RepairOrderButtonLogic
+	{
+		[ObjectCreator.UseCtor]
+		public RepairOrderButtonLogic(Widget widget, World world)
+		{
+			var repair = widget as ButtonWidget;
 			if (repair != null)
 			{
 				repair.GetKey = _ => Game.Settings.Keys.RepairKey;
-				BindOrderButton<RepairOrderGenerator>(world, repair, "repair");
+				OrderButtonsChromeUtils.BindOrderButton<RepairOrderGenerator>(world, repair, "repair");
 			}
+		}
+	}
 
-			var beacon = widget.GetOrNull<ButtonWidget>("BEACON_BUTTON");
-			if (beacon != null)
-			{
-				beacon.GetKey = _ => Game.Settings.Keys.PlaceBeaconKey;
-				BindOrderButton<BeaconOrderGenerator>(world, beacon, "beacon");
-			}
-
-			var power = widget.GetOrNull<ButtonWidget>("POWER_BUTTON");
+	public class PowerdownOrderButtonLogic
+	{
+		[ObjectCreator.UseCtor]
+		public PowerdownOrderButtonLogic(Widget widget, World world)
+		{
+			var power = widget as ButtonWidget;
 			if (power != null)
 			{
 				power.GetKey = _ => Game.Settings.Keys.PowerDownKey;
-				BindOrderButton<PowerDownOrderGenerator>(world, power, "power");
-			}
-
-			// System buttons
-			var options = widget.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
-			if (options != null)
-			{
-				var blinking = false;
-				var lp = world.LocalPlayer;
-				options.IsDisabled = () => disableSystemButtons;
-				options.OnClick = () =>
-				{
-					blinking = false;
-					OpenMenuPanel(options, new WidgetArgs()
-					{
-						{ "activePanel", IngameInfoPanel.AutoSelect }
-					});
-				};
-				options.IsHighlighted = () => blinking && Game.LocalTick % 50 < 25;
-
-				if (lp != null)
-				{
-					Action<Player> startBlinking = player =>
-					{
-						if (player == world.LocalPlayer)
-							blinking = true;
-					};
-
-					var mo = lp.PlayerActor.TraitOrDefault<MissionObjectives>();
-
-					if (mo != null)
-						mo.ObjectiveAdded += startBlinking;
-				}
-			}
-
-			var diplomacy = widget.GetOrNull<MenuButtonWidget>("DIPLOMACY_BUTTON");
-			if (diplomacy != null)
-			{
-				diplomacy.Visible = !world.Map.Visibility.HasFlag(MapVisibility.MissionSelector) && world.Players.Any(a => a != world.LocalPlayer && !a.NonCombatant);
-				diplomacy.IsDisabled = () => disableSystemButtons;
-				diplomacy.OnClick = () => OpenMenuPanel(diplomacy);
-			}
-
-			var debug = widget.GetOrNull<MenuButtonWidget>("DEBUG_BUTTON");
-			if (debug != null)
-			{
-				debug.IsVisible = () => world.LobbyInfo.GlobalSettings.AllowCheats;
-				debug.IsDisabled = () => disableSystemButtons;
-				debug.OnClick = () => OpenMenuPanel(debug, new WidgetArgs()
-				{
-					{ "activePanel", IngameInfoPanel.Debug }
-				});
-			}
-
-			var stats = widget.GetOrNull<MenuButtonWidget>("OBSERVER_STATS_BUTTON");
-			if (stats != null)
-			{
-				stats.IsDisabled = () => disableSystemButtons;
-				stats.OnClick = () => OpenMenuPanel(stats);
+				OrderButtonsChromeUtils.BindOrderButton<PowerDownOrderGenerator>(world, power, "power");
 			}
 		}
+	}
 
-		void OpenMenuPanel(MenuButtonWidget button, WidgetArgs widgetArgs = null)
+	public class BeaconOrderButtonLogic
+	{
+		[ObjectCreator.UseCtor]
+		public BeaconOrderButtonLogic(Widget widget, World world)
 		{
-			disableSystemButtons = true;
-			var cachedPause = world.PredictedPaused;
-
-			if (button.HideIngameUI)
-				worldRoot.IsVisible = () => false;
-
-			if (button.Pause && world.LobbyInfo.IsSinglePlayer)
-				world.SetPauseState(true);
-
-			widgetArgs = widgetArgs ?? new WidgetArgs();
-			widgetArgs.Add("onExit", () =>
+			var beacon = widget as ButtonWidget;
+			if (beacon != null)
 			{
-				if (button.HideIngameUI)
-					worldRoot.IsVisible = () => true;
-
-				if (button.Pause && world.LobbyInfo.IsSinglePlayer)
-					world.SetPauseState(cachedPause);
-
-				menuRoot.RemoveChild(currentWidget);
-				disableSystemButtons = false;
-			});
-
-			currentWidget = Game.LoadWidget(world, button.MenuContainer, menuRoot, widgetArgs);
+				beacon.GetKey = _ => Game.Settings.Keys.PlaceBeaconKey;
+				OrderButtonsChromeUtils.BindOrderButton<BeaconOrderGenerator>(world, beacon, "beacon");
+			}
 		}
+	}
 
-		static void BindOrderButton<T>(World world, ButtonWidget w, string icon)
+	public class OrderButtonsChromeUtils
+	{
+		public static void BindOrderButton<T>(World world, ButtonWidget w, string icon)
 			where T : IOrderGenerator, new()
 		{
 			w.OnClick = () => world.ToggleInputMode<T>();
