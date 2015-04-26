@@ -34,12 +34,14 @@ mpspawn:
 	Immobile:
 		OccupiesSpace: false
 	RenderEditorOnly:
+		Palette: chrome
 	BodyOrientation:
 
 waypoint:
 	Immobile:
 		OccupiesSpace: false
 	RenderEditorOnly:
+		Palette: chrome
 	BodyOrientation:
 
 ^fact.colorpicker:

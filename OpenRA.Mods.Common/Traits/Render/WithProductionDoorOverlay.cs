@@ -27,7 +27,7 @@ namespace OpenRA.Mods.TS.Traits
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
 			var anim = new Animation(init.World, image, () => 0);
-			anim.PlayFetchIndex(Sequence, () => 0);
+			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence), () => 0);
 
 			var bi = init.Actor.Traits.Get<BuildingInfo>();
 			var offset = FootprintUtils.CenterOffset(init.World, bi).Y + 512; // Additional 512 units move from center -> top of cell

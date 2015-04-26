@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 				.First(tt => tt.Turret == armament.Turret);
 
 			var anim = new Animation(init.World, image, () => t.InitialFacing);
-			anim.Play(Sequence);
+			anim.Play(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
 			var turretOrientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(t.InitialFacing)), facings);
 			var turretOffset = body.LocalToWorld(t.Offset.Rotate(turretOrientation));

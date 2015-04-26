@@ -349,7 +349,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyPassengerEntered { void PassengerEntered(Actor self, Actor passenger); }
 	public interface INotifyPassengerExited { void PassengerExited(Actor self, Actor passenger); }
 
-	public class RuntimeCargoInit : IActorInit<Actor[]>
+	public class RuntimeCargoInit : IActorInit<Actor[]>, ISuppressInitExport
 	{
 		[FieldFromYamlKey]
 		readonly Actor[] value = { };

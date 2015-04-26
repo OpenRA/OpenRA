@@ -10,6 +10,7 @@
 
 using System;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -26,7 +27,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var preview = widget.GetOrNull<ActorPreviewWidget>("PREVIEW");
 			var actor = world.Map.Rules.Actors[actorType];
-			preview.SetPreview(actor, world.WorldActor.Owner, new TypeDictionary());
+
+			var td = new TypeDictionary();
+			td.Add(new HideBibPreviewInit());
+
+			preview.SetPreview(actor, world.WorldActor.Owner, td);
 
 			var hueSlider = widget.Get<SliderWidget>("HUE");
 			var mixer = widget.Get<ColorMixerWidget>("MIXER");

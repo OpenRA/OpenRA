@@ -9,14 +9,16 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders crates with both water and land variants.")]
-	class WithCrateBodyInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	class WithCrateBodyInfo : ITraitInfo, Requires<RenderSpritesInfo>, IQuantizeBodyOrientationInfo, IRenderActorPreviewSpritesInfo
 	{
 		public readonly string[] Images = { "crate" };
 
@@ -24,6 +26,15 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] XmasImages = { };
 
 		public object Create(ActorInitializer init) { return new WithCrateBody(init.Self, this); }
+
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		{
+			var anim = new Animation(init.World, Images.First(), () => 0);
+			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), "idle"));
+			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
+		}
+
+		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race) { return 1; }
 	}
 
 	class WithCrateBody : INotifyParachuteLanded

@@ -8,18 +8,60 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class BibInfo : ITraitInfo, Requires<BuildingInfo>, Requires<RenderSpritesInfo>
+	public class BibInfo : ITraitInfo, Requires<BuildingInfo>, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
 		public readonly string Sequence = "bib";
 		public readonly string Palette = "terrain";
 		public readonly bool HasMinibib = false;
 
 		public object Create(ActorInitializer init) { return new Bib(init.Self, this); }
+
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		{
+			if (init.Contains<HideBibPreviewInit>() && init.Get<HideBibPreviewInit, bool>())
+				yield break;
+
+			if (Palette != null)
+				p = init.WorldRenderer.Palette(Palette);
+
+			var bi = init.Actor.Traits.Get<BuildingInfo>();
+
+			var width = bi.Dimensions.X;
+			var bibOffset = bi.Dimensions.Y - 1;
+			var centerOffset = FootprintUtils.CenterOffset(init.World, bi);
+			var rows = HasMinibib ? 1 : 2;
+			var map = init.World.Map;
+			var location = CPos.Zero;
+
+			if (init.Contains<LocationInit>())
+				location = init.Get<LocationInit, CPos>();
+
+			for (var i = 0; i < rows * width; i++)
+			{
+				var index = i;
+				var anim = new Animation(init.World, image);
+				var cellOffset = new CVec(i % width, i / width + bibOffset);
+				var cell = location + cellOffset;
+
+				// Some mods may define terrain-specific bibs
+				var terrain = map.GetTerrainInfo(cell).Type;
+				var testSequence = Sequence + "-" + terrain;
+				var sequence = anim.HasSequence(testSequence) ? testSequence : Sequence;
+				anim.PlayFetchIndex(sequence, () => index);
+				anim.IsDecoration = true;
+
+				// Z-order is one set to the top of the footprint
+				var offset = map.CenterOfCell(cell) - map.CenterOfCell(location) - centerOffset;
+				yield return new SpriteActorPreview(anim, offset, -(offset.Y + centerOffset.Y + 512), p, rs.Scale);
+			}
+		}
 	}
 
 	public class Bib : INotifyAddedToWorld, INotifyRemovedFromWorld
@@ -73,5 +115,13 @@ namespace OpenRA.Mods.Common.Traits
 			for (var i = 0; i < rows * width; i++)
 				rs.Remove("bib_{0}".F(i));
 		}
+	}
+
+	public class HideBibPreviewInit : IActorInit<bool>, ISuppressInitExport
+	{
+		[FieldFromYamlKey] readonly bool value = true;
+		public HideBibPreviewInit() { }
+		public HideBibPreviewInit(bool init) { value = init; }
+		public bool Value(World world) { return value; }
 	}
 }

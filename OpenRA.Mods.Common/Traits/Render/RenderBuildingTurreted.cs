@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Show the correct turret facing
 			var anim = new Animation(init.World, image, () => t.InitialFacing);
-			anim.PlayRepeating(Sequence);
+			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
