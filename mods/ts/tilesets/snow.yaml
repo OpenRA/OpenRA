@@ -29,6 +29,7 @@ Terrain:
 		Type: Water
 		Color: 61, 65, 72
 		TargetTypes: Water
+		IsWater: True
 	TerrainType@DirtRoad:
 		Type: DirtRoad
 		Color: 130,131,143
