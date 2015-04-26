@@ -259,6 +259,7 @@ Weapons:
 			Spread: 42
 			DeathType: 5
 			Damage: 80
+			DamageTypes: Prone50Percent, TriggerProne
 
 Voices:
 

@@ -54,6 +54,9 @@ E1:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
@@ -86,6 +89,9 @@ E2:
 		FireDelay: 15
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
@@ -122,6 +128,9 @@ E3:
 		Weapon: Dragon
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
@@ -153,6 +162,9 @@ E4:
 		Weapon: Flamer
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
@@ -183,6 +195,9 @@ E6:
 	ExternalCaptures:
 		Type: building
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	-AutoTarget:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -214,6 +229,9 @@ SPY:
 	Passenger:
 		PipType: Yellow
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	Disguise:
 	Infiltrates:
 		Types: SpyInfiltrate
@@ -275,6 +293,9 @@ E7:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 	AnnounceOnBuild:
@@ -310,6 +331,9 @@ MEDI:
 		Cursor: heal
 		OutsideRangeCursor: heal
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	-AutoTarget:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -347,6 +371,9 @@ MECH:
 	Captures:
 		CaptureTypes: husk
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	-AutoTarget:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -427,6 +454,9 @@ THF:
 	Infiltrates:
 		InfiltrateTypes: Cash
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	-AutoTarget:
 
 HIJACKER:
@@ -485,6 +515,9 @@ SHOK:
 		Weapon: PortaTesla
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
@@ -521,6 +554,9 @@ SNIPER:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2

@@ -21,6 +21,13 @@ E3:
 		LocalOffset: 128,0,640
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 
@@ -54,6 +61,13 @@ CYBORG:
 		Weapon: Vulcan3
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 
@@ -89,6 +103,13 @@ CYC2:
 		LocalOffset: 170,85,683
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 
@@ -118,5 +139,13 @@ MHIJACK:
 		Range: 6c0
 	-AutoTarget:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
+

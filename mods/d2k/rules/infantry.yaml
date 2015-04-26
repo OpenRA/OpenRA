@@ -18,6 +18,9 @@ rifle:
 		Weapon: LMG
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	AttractsWorms:
 		Intensity: 120
 
@@ -72,6 +75,9 @@ bazooka:
 		LocalOffset: 128,0,256
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	AttractsWorms:
 		Intensity: 180
 
@@ -136,6 +142,9 @@ fremen:
 		Weapon: Slung
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 250
@@ -166,6 +175,9 @@ grenadier:
 		FireDelay: 15
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle
 	Explodes:
@@ -195,6 +207,9 @@ sardaukar:
 	RevealsShroud:
 		Range: 6c0
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	Armament@PRIMARY:
 		Weapon: Vulcan
 	Armament@SECONDARY:

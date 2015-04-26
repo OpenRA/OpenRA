@@ -12,6 +12,7 @@ Atomic:
 			Wood: 100
 			Light: 60
 			Heavy: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff_impact: CreateEffect
 		Explosion: nuke_explosion
 		ImpactSound: nukexplo.aud
@@ -27,6 +28,7 @@ Atomic:
 			Wood: 100
 			Light: 60
 			Heavy: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@4Res_areanukea: DestroyResource
 		Size: 3
 		Delay: 3
@@ -49,6 +51,7 @@ Atomic:
 			Wood: 100
 			Light: 60
 			Heavy: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@8Res_areanukeb: DestroyResource
 		Size: 4
 		Delay: 6
@@ -68,6 +71,7 @@ Atomic:
 			Wood: 100
 			Light: 60
 			Heavy: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@11Res_areanukec: DestroyResource
 		Size: 5
 		Delay: 9
@@ -84,6 +88,7 @@ IonCannon:
 		Falloff: 1000, 1000, 250, 100
 		DeathType: 5
 		ValidTargets: Ground, Air
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu_impact: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Smu_area: LeaveSmudge

@@ -24,6 +24,7 @@ MultiCluster:
 			Light: 75
 			Heavy: 100
 			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
@@ -49,6 +50,7 @@ SuicideBomb:
 			Light: 60
 			Heavy: 25
 			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Res: DestroyResource
 
 IonCannon:
@@ -58,8 +60,8 @@ IonCannon:
 		Damage: 100
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		DeathType: 5
-		ProneModifier: 100
 		ValidTargets: Ground, Air
+		DamageTypes: Prone100Percent, TriggerProne
 	Warhead@2Eff_impact: CreateEffect
 		Explosion: ionring
 		ImpactSound: ion1.aud
@@ -70,6 +72,7 @@ IonCannon:
 		DeathType: 5
 		Delay: 3
 		ValidTargets: Ground, Air
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@4Smu_area: LeaveSmudge
 		SmudgeType: SmallScorch
 		Size: 2,1
@@ -91,7 +94,6 @@ EMPulseCannon:
 	Warhead@target: SpreadDamage
 		Spread: 0
 		Damage: 0
-		PreventProne: true
 		ValidTargets: Vehicle
 	Warhead@emp: GrantUpgrade
 		Range: 3c0
@@ -109,6 +111,7 @@ ClusterMissile:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@SoundEffect0: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew19.aud
@@ -126,6 +129,7 @@ ClusterMissile:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@ResourceDestruction1: DestroyResource
 		Size: 2
 		Delay: 5
@@ -142,6 +146,7 @@ ClusterMissile:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@ResourceDestruction2: DestroyResource
 		Size: 3
 		Delay: 10
@@ -158,6 +163,7 @@ ClusterMissile:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@ResourceDestruction3: DestroyResource
 		Size: 4
 		Delay: 15
@@ -174,6 +180,7 @@ ClusterMissile:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@ResourceDestruction4: DestroyResource
 		Size: 5
 		Delay: 20
@@ -181,3 +188,4 @@ ClusterMissile:
 		SmudgeType: SmallScorch
 		Size: 5
 		Delay: 20
+

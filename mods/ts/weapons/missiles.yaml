@@ -25,6 +25,7 @@ Bazooka:
 			Light: 75
 			Heavy: 100
 			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
@@ -68,6 +69,7 @@ HoverMissile:
 			Light: 75
 			Heavy: 100
 			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
@@ -103,7 +105,6 @@ MammothTusk:
 		Spread: 171
 		Damage: 40
 		DeathType: 3
-		ProneModifier: 70
 		ValidTargets: Air
 		Versus:
 			None: 100
@@ -149,6 +150,7 @@ BikeMissile:
 			Light: 75
 			Heavy: 100
 			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
@@ -188,6 +190,7 @@ Dragon:
 			Light: 75
 			Heavy: 100
 			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
@@ -231,6 +234,7 @@ Hellfire:
 			Light: 150
 			Heavy: 100
 			Concrete: 30
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Eff: CreateEffect
 		Explosion: small_bang
 		ImpactSound: expnew12.aud
@@ -270,3 +274,4 @@ RedEye2:
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
+

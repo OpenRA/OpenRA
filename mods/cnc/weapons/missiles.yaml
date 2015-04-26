@@ -25,6 +25,7 @@ Rockets:
 			Light: 100
 			Heavy: 100
 			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -59,6 +60,7 @@ BikeRockets:
 			Light: 100
 			Heavy: 100
 			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -93,6 +95,7 @@ OrcaAGMissiles:
 			Wood: 100
 			Light: 100
 			Heavy: 75
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -125,6 +128,7 @@ OrcaAAMissiles:
 		Versus:
 			Light: 75
 			Heavy: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -158,6 +162,7 @@ MammothMissiles:
 			Wood: 75
 			Light: 100
 			Heavy: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -198,6 +203,7 @@ MammothMissiles:
 			Wood: 60
 			Light: 100
 			Heavy: 50
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -231,6 +237,7 @@ MammothMissiles:
 			Wood: 75
 			Light: 100
 			Heavy: 90
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -262,6 +269,7 @@ BoatMissile:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -298,6 +306,7 @@ TowerMissle:
 			Wood: 25
 			Light: 100
 			Heavy: 100
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -328,6 +337,7 @@ SAMMissile:
 			Heavy: 75
 		DeathType: 4
 		Damage: 30
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -357,6 +367,7 @@ HonestJohn:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -388,6 +399,7 @@ Patriot:
 			Heavy: 75
 		DeathType: 4
 		Damage: 32
+		DamageTypes: Prone50Percent, TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect

@@ -19,6 +19,13 @@ WEEDGUY:
 	AttackFrontal:
 	WithInfantryBody:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 
 UMAGON:
 	Inherits: ^Infantry
@@ -42,6 +49,13 @@ UMAGON:
 		Weapon: Sniper
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 
@@ -62,6 +76,13 @@ CHAMSPY:
 		Range: 9c0
 	Passenger:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	Disguise:
 	Infiltrates:
 		Types: SpyInfiltrate
@@ -91,6 +112,13 @@ MUTANT:
 		Weapon: Vulcan
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 
@@ -115,6 +143,13 @@ MWMN:
 		Weapon: Vulcan
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 
@@ -139,6 +174,13 @@ MUTANT3:
 		Weapon: Vulcan
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 
@@ -160,6 +202,13 @@ TRATOS:
 	RevealsShroud:
 		Range: 4c0
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	-AutoTarget:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -180,6 +229,13 @@ OXANNA:
 	RevealsShroud:
 		Range: 4c0
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	-AutoTarget:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -200,6 +256,13 @@ SLAV:
 	RevealsShroud:
 		Range: 4c0
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	-AutoTarget:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -310,3 +373,4 @@ CIV3:
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:
+

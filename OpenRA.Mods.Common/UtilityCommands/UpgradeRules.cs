@@ -855,6 +855,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150426)
+				{
+					// Add DamageModifiers to TakeCover with a "Prone50Percent" default
+					// Add ProneTriggers to TakeCover with a "TriggerProne" default
+					if (node.Key == "TakeCover")
+					{
+						var percent = new MiniYamlNode("Prone50Percent", "50");
+						var dictionary = new MiniYamlNode("DamageModifiers", "");
+						dictionary.Value.Nodes.Add(percent);
+
+						if (node.Value.Nodes.All(x => x.Key != "DamageModifiers"))
+							node.Value.Nodes.Add(dictionary);
+
+						node.Value.Nodes.Add(new MiniYamlNode("DamageTriggers", "TriggerProne"));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
@@ -1237,6 +1254,40 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							projectileFields.Add(new MiniYamlNode("Palette", paletteName.ToString()));
 							weapons.Remove(palette);
 						}
+					}
+				}
+
+				if (engineVersion < 20150421)
+				{
+					if (node.Key.StartsWith("Warhead") && node.Value.Value == "SpreadDamage")
+					{
+						// Add DamageTypes property to DamageWarheads with a default value "Prone50Percent"
+						if (node.Value.Nodes.All(x => x.Key != "DamageTypes"))
+						{
+							var damage = node.Value.Nodes.FirstOrDefault(x => x.Key == "Damage");
+							var damageValue = damage != null ? FieldLoader.GetValue<int>("Damage", damage.Value.Value) : -1;
+
+							var prone = node.Value.Nodes.FirstOrDefault(x => x.Key == "PreventProne");
+							var preventsProne = prone != null && FieldLoader.GetValue<bool>("PreventProne", prone.Value.Value);
+
+							var proneModifier = node.Value.Nodes.FirstOrDefault(x => x.Key == "ProneModifier");
+							var modifierValue = proneModifier == null ? "50" : proneModifier.Value.Value;
+
+							var value = new List<string>();
+
+							if (damageValue > 0)
+								value.Add("Prone{0}Percent".F(modifierValue));
+
+							if (!preventsProne)
+								value.Add("TriggerProne");
+
+							if (value.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("DamageTypes", value.JoinWith(", ")));
+						}
+
+						// Remove obsolete PreventProne and ProneModifier
+						node.Value.Nodes.RemoveAll(x => x.Key == "PreventProne");
+						node.Value.Nodes.RemoveAll(x => x.Key == "ProneModifier");
 					}
 				}
 

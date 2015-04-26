@@ -2380,6 +2380,7 @@ Weapons:
 				Wood: 75
 				Light: 75
 				Concrete: 50
+			DamageTypes: Prone50Percent, TriggerProne
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3EffGround: CreateEffect

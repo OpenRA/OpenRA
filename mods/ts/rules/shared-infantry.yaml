@@ -26,6 +26,13 @@ E1:
 		UpgradeMinEnabledLevel: 1
 	AttackFrontal:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 
@@ -57,4 +64,12 @@ ENGINEER:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	-GainsExperience:
+
