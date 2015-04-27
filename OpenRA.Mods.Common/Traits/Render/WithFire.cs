@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 			var rs = self.Trait<RenderSprites>();
 			var fire = new Animation(self.World, rs.GetImage(self));
 			fire.PlayThen(info.StartSequence, () => fire.PlayRepeating(info.LoopSequence));
-			rs.Add("fire", new AnimationWithOffset(fire, null, null, 1024));
+			rs.Add(new AnimationWithOffset(fire, null, null, 1024));
 		}
 	}
 }

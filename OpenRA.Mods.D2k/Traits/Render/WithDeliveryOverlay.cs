@@ -35,9 +35,11 @@ namespace OpenRA.Mods.D2k.Traits
 
 	public class WithDeliveryOverlay : INotifyBuildComplete, INotifySold, INotifyDelivery
 	{
-		WithDeliveryOverlayInfo info;
-		Animation overlay;
-		bool buildComplete, delivering;
+		readonly WithDeliveryOverlayInfo info;
+		readonly AnimationWithOffset anim;
+
+		bool buildComplete;
+		bool delivering;
 
 		public WithDeliveryOverlay(Actor self, WithDeliveryOverlayInfo info)
 		{
@@ -46,21 +48,23 @@ namespace OpenRA.Mods.D2k.Traits
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<IBodyOrientation>();
 
-			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
+			// always render instantly for units
+			buildComplete = !self.HasTrait<Building>();
 
-			overlay = new Animation(self.World, rs.GetImage(self));
+			var overlay = new Animation(self.World, rs.GetImage(self));
 			overlay.Play(info.Sequence);
-			rs.Add("delivery_overlay_{0}".F(info.Sequence),
-				new AnimationWithOffset(overlay,
-					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-					() => !buildComplete),
-				info.Palette, info.IsPlayerPalette);
+
+			anim = new AnimationWithOffset(overlay,
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => !buildComplete);
+
+			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
 		void PlayDeliveryOverlay()
 		{
 			if (delivering)
-				overlay.PlayThen(info.Sequence, PlayDeliveryOverlay);
+				anim.Animation.PlayThen(info.Sequence, PlayDeliveryOverlay);
 		}
 
 		public void BuildingComplete(Actor self)

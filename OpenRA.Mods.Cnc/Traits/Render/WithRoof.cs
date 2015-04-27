@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var rs = self.Trait<RenderSprites>();
 			var roof = new Animation(self.World, rs.GetImage(self), () => self.Trait<IFacing>().Facing);
 			roof.Play(info.Sequence);
-			rs.Add("roof", new AnimationWithOffset(roof, null, null, 1024));
+			rs.Add(new AnimationWithOffset(roof, null, null, 1024));
 		}
 	}
 }

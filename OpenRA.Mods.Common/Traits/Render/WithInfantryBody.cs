@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			var rs = self.Trait<RenderSprites>();
 
 			DefaultAnimation = new Animation(init.World, rs.GetImage(self), RenderSprites.MakeFacingFunc(self));
-			rs.Add("", DefaultAnimation);
+			rs.Add(DefaultAnimation);
 
 			DefaultAnimation.PlayFetchIndex(NormalizeInfantrySequence(init.Self, info.StandSequences.Random(Game.CosmeticRandom)), () => 0);
 			state = AnimationState.Waiting;

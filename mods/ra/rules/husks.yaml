@@ -94,7 +94,6 @@ TRAN.Husk:
 	WithRotor@PRIMARY:
 		Offset: -597,0,341
 	WithRotor@SECONDARY:
-		Id: rotor_2
 		Offset: 597,0,213
 	RevealsShroud:
 		Range: 12c0

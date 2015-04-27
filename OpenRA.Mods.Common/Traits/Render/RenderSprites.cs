@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly string race;
 		readonly RenderSpritesInfo info;
-		readonly Dictionary<string, AnimationWrapper> anims = new Dictionary<string, AnimationWrapper>();
+		readonly List<AnimationWrapper> anims = new List<AnimationWrapper>();
 		string cachedImage;
 
 		public static Func<int> MakeFacingFunc(Actor self)
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void UpdatePalette()
 		{
-			foreach (var anim in anims.Values)
+			foreach (var anim in anims)
 				anim.OwnerChanged();
 		}
 
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			foreach (var a in anims.Values)
+			foreach (var a in anims)
 			{
 				if (!a.IsVisible)
 					continue;
@@ -177,11 +177,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Tick(Actor self)
 		{
-			foreach (var a in anims.Values)
+			foreach (var a in anims)
 				a.Animation.Animation.Tick();
 		}
 
-		public void Add(string key, AnimationWithOffset anim, string palette = null, bool isPlayerPalette = false)
+		public void Add(AnimationWithOffset anim, string palette = null, bool isPlayerPalette = false)
 		{
 			// Use defaults
 			if (palette == null)
@@ -190,12 +190,12 @@ namespace OpenRA.Mods.Common.Traits
 				isPlayerPalette = info.Palette == null;
 			}
 
-			anims.Add(key, new AnimationWrapper(anim, palette, isPlayerPalette));
+			anims.Add(new AnimationWrapper(anim, palette, isPlayerPalette));
 		}
 
-		public void Remove(string key)
+		public void Remove(AnimationWithOffset anim)
 		{
-			anims.Remove(key);
+			anims.RemoveAll(a => a.Animation == anim);
 		}
 
 		public static string NormalizeSequence(Animation anim, DamageState state, string sequence)
@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Required by RenderSimple
 		protected int2 AutoSelectionSize(Actor self)
 		{
-			return anims.Values.Where(b => b.IsVisible
+			return anims.Where(b => b.IsVisible
 				&& b.Animation.Animation.CurrentSequence != null)
 					.Select(a => (a.Animation.Animation.Image.Size * info.Scale).ToInt2())
 					.FirstOrDefault();

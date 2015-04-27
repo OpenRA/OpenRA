@@ -48,13 +48,14 @@ namespace OpenRA.Mods.Common.Traits
 			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
 			overlay = new Animation(self.World, rs.GetImage(self));
 			overlay.Play(info.Sequence);
-			rs.Add("repair_{0}".F(info.Sequence),
-				new AnimationWithOffset(overlay,
-					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-					() => !buildComplete,
-					() => info.PauseOnLowPower && self.IsDisabled(),
-					p => WithTurret.ZOffsetFromCenter(self, p, 1)),
-				info.Palette, info.IsPlayerPalette);
+
+			var anim = new AnimationWithOffset(overlay,
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => !buildComplete,
+				() => info.PauseOnLowPower && self.IsDisabled(),
+				p => WithTurret.ZOffsetFromCenter(self, p, 1));
+
+			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
 		public void BuildingComplete(Actor self)

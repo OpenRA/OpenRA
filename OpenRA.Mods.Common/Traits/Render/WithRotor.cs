@@ -28,9 +28,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
-		[Desc("Change this when using this trait multiple times on the same actor.")]
-		public readonly string Id = "rotor";
-
 		public object Create(ActorInitializer init) { return new WithRotor(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
@@ -61,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			rotorAnim = new Animation(self.World, rs.GetImage(self));
 			rotorAnim.PlayRepeating(info.Sequence);
-			rs.Add(info.Id, new AnimationWithOffset(rotorAnim,
+			rs.Add(new AnimationWithOffset(rotorAnim,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				null, () => false, p => ZOffsetFromCenter(self, p, 1)));
 		}

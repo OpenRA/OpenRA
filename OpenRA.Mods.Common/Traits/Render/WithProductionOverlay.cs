@@ -54,11 +54,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			overlay = new Animation(self.World, rs.GetImage(self));
 			overlay.PlayRepeating(info.Sequence);
-			rs.Add("production_overlay_{0}".F(info.Sequence),
-				new AnimationWithOffset(overlay,
-					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-					() => !IsProducing || !buildComplete),
-				info.Palette, info.IsPlayerPalette);
+
+			var anim = new AnimationWithOffset(overlay,
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => !IsProducing || !buildComplete);
+
+			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
 		public void Tick(Actor self)
