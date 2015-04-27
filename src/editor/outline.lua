@@ -129,7 +129,13 @@ local function outlineRefresh(editor, force)
   local win = ide:GetMainFrame():FindFocus()
 
   ctrl:Freeze()
+
+  -- disabling event handlers is not strictly necessary, but it's expected
+  -- to fix a crash on Windows that had DeleteChildren in the trace (#442).
+  ctrl:SetEvtHandlerEnabled(false)
   ctrl:DeleteChildren(fileitem)
+  ctrl:SetEvtHandlerEnabled(true)
+
   local stack = {fileitem}
   local resort = {} -- items that need to be re-sorted
   for n, func in ipairs(funcs) do
