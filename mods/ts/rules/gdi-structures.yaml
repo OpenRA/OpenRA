@@ -126,8 +126,9 @@ GAWEAP:
 	RallyPoint:
 		RallyPoint: 6,1
 	Exit@1:
-		SpawnOffset: 0,0,0
+		SpawnOffset: -384,-384,0
 		ExitCell: 4,1
+		ExitDelay: 5
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
