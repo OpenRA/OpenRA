@@ -39,8 +39,8 @@ WEAF:
 	Bib:
 	RenderBuilding:
 		Image: WEAP
-	WithIdleOverlay@ROOF:
-		Sequence: idle-top
+	WithProductionDoorOverlay:
+		Sequence: build-top
 	Valued:
 		Cost: 200
 
