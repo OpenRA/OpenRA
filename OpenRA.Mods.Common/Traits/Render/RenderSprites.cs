@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p);
 	}
 
-	public class RenderSpritesInfo : IRenderActorPreviewInfo, ITraitInfo
+	public class RenderSpritesInfo : IRenderActorPreviewInfo, ITraitInfo, ILegacyEditorRenderInfo
 	{
 		[Desc("The sequence name that defines the actor sprites. Defaults to the actor name.")]
 		public readonly string Image = null;
@@ -83,6 +83,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			return (Image ?? actor.Name).ToLowerInvariant();
 		}
+
+		public string EditorPalette { get { return Palette; } }
+		public string EditorImage(ActorInfo actor, SequenceProvider sequenceProvider, string race) { return GetImage(actor, sequenceProvider, race); }
 	}
 
 	public class RenderSprites : IRender, ITick, INotifyOwnerChanged, INotifyEffectiveOwnerChanged
