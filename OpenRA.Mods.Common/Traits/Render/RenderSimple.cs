@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RenderSimpleInfo : RenderSpritesInfo, IRenderActorPreviewSpritesInfo, IQuantizeBodyOrientationInfo, ILegacyEditorRenderInfo, Requires<IBodyOrientationInfo>
+	public class RenderSimpleInfo : RenderSpritesInfo, IRenderActorPreviewSpritesInfo, IQuantizeBodyOrientationInfo, Requires<IBodyOrientationInfo>
 	{
 		public readonly string Sequence = "idle";
 
@@ -37,9 +37,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return sequenceProvider.GetSequence(GetImage(ai, sequenceProvider, race), Sequence).Facings;
 		}
-
-		public string EditorPalette { get { return Palette; } }
-		public string EditorImage(ActorInfo actor, SequenceProvider sequenceProvider, string race) { return GetImage(actor, sequenceProvider, race); }
 	}
 
 	public class RenderSimple : RenderSprites, IAutoSelectionSize
