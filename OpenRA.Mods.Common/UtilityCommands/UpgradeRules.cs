@@ -872,6 +872,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 201504277)
+					if (node.Key.StartsWith("WithRotor"))
+						node.Value.Nodes.RemoveAll(p => p.Key == "Id");
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
