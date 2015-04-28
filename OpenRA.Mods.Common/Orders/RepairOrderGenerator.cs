@@ -26,21 +26,35 @@ namespace OpenRA.Mods.Common.Orders
 			return OrderInner(world, mi);
 		}
 
-		IEnumerable<Order> OrderInner(World world, MouseInput mi)
+		static IEnumerable<Order> OrderInner(World world, MouseInput mi)
 		{
-			if (mi.Button == MouseButton.Left)
-			{
-				var underCursor = world.ScreenMap.ActorsAt(mi)
-					.FirstOrDefault(a => !world.FogObscures(a) && a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor)
-						&& a.TraitsImplementing<RepairableBuilding>().Any(t => !t.IsTraitDisabled));
+			if (mi.Button != MouseButton.Left)
+				yield break;
 
-				if (underCursor == null)
-					yield break;
+			var underCursor = world.ScreenMap.ActorsAt(mi)
+				.FirstOrDefault(a => a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) && !world.FogObscures(a));
 
-				if (underCursor.Info.Traits.Contains<RepairableBuildingInfo>()
-					&& underCursor.GetDamageState() > DamageState.Undamaged)
-					yield return new Order("RepairBuilding", world.LocalPlayer.PlayerActor, false) { TargetActor = underCursor };
-			}
+			if (underCursor == null)
+				yield break;
+
+			if (underCursor.GetDamageState() == DamageState.Undamaged)
+				yield break;
+
+			// Repair a building.
+			if (underCursor.Info.Traits.Contains<RepairableBuildingInfo>())
+				yield return new Order("RepairBuilding", world.LocalPlayer.PlayerActor, false) { TargetActor = underCursor };
+
+			// Test for generic Repairable (used on units).
+			var repairable = underCursor.TraitOrDefault<Repairable>();
+			if (repairable == null)
+				yield break;
+
+			// Find a building to repair at.
+			var repairBuilding = repairable.FindRepairBuilding(underCursor);
+			if (repairBuilding == null)
+				yield break;
+
+			yield return new Order("Repair", underCursor, false) { TargetActor = repairBuilding };
 		}
 
 		public void Tick(World world)

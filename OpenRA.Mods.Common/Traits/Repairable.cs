@@ -108,5 +108,17 @@ namespace OpenRA.Mods.Common.Traits
 					}));
 			}
 		}
+
+		public Actor FindRepairBuilding(Actor self)
+		{
+			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
+				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
+					&& a.Actor.Owner == self.Owner &&
+					info.RepairBuildings.Contains(a.Actor.Info.Name))
+				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
+
+			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
+			return repairBuilding.FirstOrDefault().Actor;
+		}
 	}
 }
