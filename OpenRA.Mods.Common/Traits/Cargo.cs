@@ -51,6 +51,8 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
+	public interface IPreventsCargoLoading { bool CanLoadPassenger(Actor self, Actor toLoad); }
+
 	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, INotifyKilled, INotifyOwnerChanged, INotifyAddedToWorld, ITick, INotifySold, IDisableMove
 	{
 		public readonly CargoInfo Info;
@@ -164,6 +166,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanLoad(Actor self, Actor a)
 		{
+			foreach (var prevents in self.TraitsImplementing<IPreventsCargoLoading>())
+				if (!prevents.CanLoadPassenger(self, a))
+					return false;
+
 			return (reserves.Contains(a) || HasSpace(GetWeight(a))) && self.CenterPosition.Z == 0;
 		}
 
