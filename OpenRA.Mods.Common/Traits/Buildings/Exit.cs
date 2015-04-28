@@ -26,6 +26,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("AttackMove to a RallyPoint or stay where you are spawned.")]
 		public readonly bool MoveIntoWorld = true;
+
+		[Desc("Number of ticks to wait before moving into the world.")]
+		public readonly int ExitDelay = 0;
 	}
 
 	public class Exit { }

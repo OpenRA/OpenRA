@@ -138,9 +138,11 @@ gaweap:
 		UseTilesetCode: true
 	idle: gtweap_1
 		ShadowStart: 2
+		ZOffset: -1024
 	damaged-idle: gtweap_1
 		Start: 1
 		ShadowStart: 3
+		ZOffset: -1024
 	idle-roof: gtweap_2
 		ShadowStart: 2
 	damaged-idle-roof: gtweap_2
@@ -188,12 +190,15 @@ gaweap:
 		ShadowStart: 20
 	bib: gtweapbb
 		Length: 1
+		ZOffset: -1024
 	damaged-bib: gtweapbb
 		Start: 1
 		Length: 1
+		ZOffset: -1024
 	dead-bib: gtweapbb
 		Start: 2
 		Length: 1
+		ZOffset: -1024
 	icon: weapicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -292,14 +297,18 @@ naweap:
 		UseTilesetCode: true
 	idle: ntweap_1
 		ShadowStart: 2
+		ZOffset: -1024
 	damaged-idle: ntweap_1
 		Start: 1
 		ShadowStart: 3
+		ZOffset: -1024
 	idle-roof: ntweap_2
 		ShadowStart: 2
+		ZOffset: 512
 	damaged-idle-roof: ntweap_2
 		Start: 1
 		ShadowStart: 3
+		ZOffset: 512
 	dead: ntweap
 		Start: 2
 		ShadowStart: 5
@@ -316,19 +325,24 @@ naweap:
 	build-door: ntweap_b
 		Length: 10
 		ShadowStart: 10
+		ZOffset: 512
 	damaged-build-door: ntweap_b
 		Start: 10
 		Length: 10
 		ShadowStart: 20
+		ZOffset: 512
 	make: ntweapmk
 		Length: 22
 		Tick: 80
 		ShadowStart: 22
 	bib: ntweapbb
+		ZOffset: -1024
 	damaged-bib: ntweapbb
 		Start: 1
+		ZOffset: -1024
 	dead-bib: ntweapbb
 		Start: 2
+		ZOffset: -1024
 	icon: nwepicon
 		Offset: 0, 0
 		UseTilesetCode: false

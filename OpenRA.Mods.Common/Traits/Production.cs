@@ -77,6 +77,9 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					if (exitinfo.MoveIntoWorld)
 					{
+						if (exitinfo.ExitDelay > 0)
+							newUnit.QueueActivity(new Wait(exitinfo.ExitDelay));
+
 						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
 						newUnit.QueueActivity(new AttackMoveActivity(
 							newUnit, move.MoveTo(exitLocation, 1)));
