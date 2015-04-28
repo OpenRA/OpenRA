@@ -42,8 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<Building>("Repair", 5,
-					target => CanRepairAt(target), _ => CanRepair() || CanRearm());
+				yield return new EnterAlliedActorTargeter<Building>("Repair", 5, CanRepairAt, _ => CanRepair() || CanRearm());
 			}
 		}
 
@@ -92,20 +91,34 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(target, Color.Green);
 
 				self.CancelActivity();
-				self.QueueActivity(new MoveAdjacentTo(self, target));
-				self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(order.TargetActor.CenterPosition), order.TargetActor));
-				if (CanRearmAt(order.TargetActor) && CanRearm())
-					self.QueueActivity(new Rearm(self));
+				self.QueueActivity(new WaitForTransport(self, Util.SequenceActivities(new MoveAdjacentTo(self, target),
+					new CallFunc(() => AfterReachActivities(self, order, movement)))));
 
-				self.QueueActivity(new Repair(order.TargetActor));
+				TryCallTransport(self, target, new CallFunc(() => AfterReachActivities(self, order, movement)));
+			}
+		}
 
-				var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
-				if (rp != null)
-					self.QueueActivity(new CallFunc(() =>
-					{
-						self.SetTargetLine(Target.FromCell(self.World, rp.Location), Color.Green);
-						self.QueueActivity(movement.MoveTo(rp.Location, order.TargetActor));
-					}));
+		void AfterReachActivities(Actor self, Order order, IMove movement)
+		{
+			if (!order.TargetActor.IsInWorld || order.TargetActor.IsDead || order.TargetActor.IsDisabled())
+				return;
+
+			// TODO: This is hacky, but almost every single component affected
+			// will need to be rewritten anyway, so this is OK for now.
+			self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(order.TargetActor.CenterPosition), order.TargetActor));
+			if (CanRearmAt(order.TargetActor) && CanRearm())
+				self.QueueActivity(new Rearm(self));
+
+			self.QueueActivity(new Repair(order.TargetActor));
+
+			var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
+			if (rp != null)
+			{
+				self.QueueActivity(new CallFunc(() =>
+				{
+					self.SetTargetLine(Target.FromCell(self.World, rp.Location), Color.Green);
+					self.QueueActivity(movement.MoveTo(rp.Location, order.TargetActor));
+				}));
 			}
 		}
 
@@ -119,6 +132,19 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
 			return repairBuilding.FirstOrDefault().Actor;
+		}
+
+		static void TryCallTransport(Actor self, Target target, Activity nextActivity)
+		{
+			var transport = self.TraitOrDefault<ICallForTransport>();
+			if (transport == null)
+				return;
+
+			var targetCell = self.World.Map.CellContaining(target.CenterPosition);
+			if ((self.CenterPosition - target.CenterPosition).LengthSquared < transport.MinimumDistance.Range * transport.MinimumDistance.Range)
+				return;
+
+			transport.RequestTransport(targetCell, nextActivity);
 		}
 	}
 }

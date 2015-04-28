@@ -115,6 +115,7 @@
     <Compile Include="Activities\Turn.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
+    <Compile Include="Activities\WaitForTransport.cs" />
     <Compile Include="ActorExts.cs" />
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
