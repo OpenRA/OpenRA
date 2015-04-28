@@ -632,10 +632,15 @@ thf:
 		TilesetOverrides:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
-	crawl:
+	prone-stand:
 		Start: 72
 		Length: 4
 		Facings: 8
+	prone-run:
+		Start: 72
+		Length: 4
+		Facings: 8
+		Tick: 80
 	icon: thficon
 
 hijacker:
@@ -677,10 +682,15 @@ hijacker:
 		TilesetOverrides:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
-	crawl: thf
+	prone-stand: thf
 		Start: 72
 		Length: 4
 		Facings: 8
+	prone-run: thf
+		Start: 72
+		Length: 4
+		Facings: 8
+		Tick: 80
 	icon: hijackericon
 
 e7:
