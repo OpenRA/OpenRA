@@ -2,6 +2,7 @@
 # see travis-ci.org for details
 
 language: csharp
+mono: 3.12.0
 
 # Use the Docker-based infrastructure
 sudo: false
