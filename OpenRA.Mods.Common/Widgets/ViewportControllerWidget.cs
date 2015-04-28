@@ -106,55 +106,26 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			var mousePosPx = worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos);
-
 			var underCursor = world.ScreenMap.ActorsAt(mousePosPx)
-				.Where(a => !world.FogObscures(a) && a.HasTrait<IToolTip>())
-				.WithHighestSelectionPriority();
-
+				.Where(a => !world.FogObscures(a) && a.HasTrait<IToolTip>()).FirstOrDefault();
 			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mousePosPx)
-				.Where(a => a.TooltipInfo != null && a.Visible)
-				.WithHighestSelectionPriority();
+				.Where(a => a.TooltipInfo != null).FirstOrDefault();
 
-			if (underCursor != null)
+			if (underCursor == null && frozen == null)
+				return;
+
+			if (underCursor != null && frozen != null && world.ScreenMap.ActorCloserToCursorThanFrozen(underCursor, frozen, mousePosPx) || frozen == null)
 			{
-				if (frozen != null)
-				{
-					var boundsU = world.ScreenMap.ActorBounds(underCursor);
-					var distU = new int2(boundsU.Location) + new int2(boundsU.Size) / 2 - mousePosPx;
-					var boundsF = world.ScreenMap.FrozenActorBounds(frozen);
-					var distF = new int2(boundsF.Location) + new int2(boundsF.Size) / 2 - mousePosPx;
-
-					if (distU.LengthSquared > distF.LengthSquared)
-					{
-						FrozenActorTooltip = frozen;
-						if (frozen.Actor != null)
-							ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
-						TooltipType = WorldTooltipType.FrozenActor;
-					}
-					else
-					{
-						ActorTooltip = underCursor.TraitsImplementing<IToolTip>().First();
-						ActorTooltipExtra = underCursor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
-						TooltipType = WorldTooltipType.Actor;
-						return;
-					}
-				}
-				else
-				{
-					ActorTooltip = underCursor.TraitsImplementing<IToolTip>().First();
-					ActorTooltipExtra = underCursor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
-					TooltipType = WorldTooltipType.Actor;
-					return;
-				}
+				ActorTooltip = underCursor.TraitsImplementing<IToolTip>().First();
+				ActorTooltipExtra = underCursor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
+				TooltipType = WorldTooltipType.Actor;
+				return;
 			}
 
-			if (frozen != null)
-			{
-				FrozenActorTooltip = frozen;
-				if (frozen.Actor != null)
-					ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
-				TooltipType = WorldTooltipType.FrozenActor;
-			}
+			FrozenActorTooltip = frozen;
+			if (frozen.Actor != null)
+				ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
+			TooltipType = WorldTooltipType.FrozenActor;
 		}
 
 		public override string GetCursor(int2 pos)

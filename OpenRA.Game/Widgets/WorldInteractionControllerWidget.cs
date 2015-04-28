@@ -40,7 +40,7 @@ namespace OpenRA.Widgets
 		{
 			if (!IsDragging)
 			{
-				var act = SelectActorAt(World, lastMousePosition, _ => true);
+				var act = SelectActorAt(World, lastMousePosition);
 				if (act != null)
 					worldRenderer.DrawRollover(act);
 
@@ -279,10 +279,21 @@ namespace OpenRA.Widgets
 				.FirstOrDefault();
 		}
 
-		static Actor SelectActorAt(World world, int2 pos, Func<Actor, bool> cond)
+		static Actor SelectActorAt(World world, int2 pos)
 		{
-			return world.ScreenMap.ActorsAt(pos).Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable
-				&& (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)) && cond(x)).WithHighestSelectionPriority();
+			var act = world.ScreenMap.ActorsAt(pos).Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable
+				&& (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x))).FirstOrDefault();
+			var frz = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, pos).FirstOrDefault();
+			if (act == null)
+				return null;
+
+			if (frz == null)
+				return act;
+
+			if(world.ScreenMap.ActorCloserToCursorThanFrozen(act, frz, pos))
+				return act;
+
+			return null;
 		}
 
 		bool ToggleStatusBars()

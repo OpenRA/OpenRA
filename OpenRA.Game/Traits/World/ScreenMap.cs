@@ -119,6 +119,18 @@ namespace OpenRA.Traits
 			return ActorsAt(worldRenderer.Viewport.ViewToWorldPx(mi.Location));
 		}
 
+		public bool ActorCloserToCursorThanFrozen(Actor act, FrozenActor frz, int2 worldPx)
+		{
+			var boundsAct = ActorBounds(act);
+			var boundsFrz = FrozenActorBounds(frz);
+			var distAct = new int2(boundsAct.Location) + new int2(boundsAct.Size) / 2 - worldPx;
+			var distFrz = new int2(boundsFrz.Location) + new int2(boundsFrz.Size) / 2 - worldPx;
+			if (distAct.LengthSquared > distFrz.LengthSquared)
+				return false;
+			
+			return true;
+		}
+
 		static Rectangle RectWithCorners(int2 a, int2 b)
 		{
 			return Rectangle.FromLTRB(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
