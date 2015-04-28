@@ -144,9 +144,11 @@ weap:
 		Tick: 800
 	build-top: weap2
 		Length: 10
+		ZOffset: -1024
 	damaged-build-top: weap2
 		Start: 10
 		Length: 10
+		ZOffset: -1024
 	make: weapmake
 		Length: *
 		Tick: 80
