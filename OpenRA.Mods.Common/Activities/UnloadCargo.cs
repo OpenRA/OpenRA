@@ -23,14 +23,17 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Actor self;
 		readonly Cargo cargo;
 		readonly Cloak cloak;
-		readonly bool unloadAll;
+		readonly List<Actor> actorsToUnload;
 
-		public UnloadCargo(Actor self, bool unloadAll)
+		public UnloadCargo(Actor self, Actor toUnload)
+			: this(self, new List<Actor> { toUnload }) { }
+
+		public UnloadCargo(Actor self, List<Actor> actorsToUnload)
 		{
 			this.self = self;
 			cargo = self.Trait<Cargo>();
 			cloak = self.TraitOrDefault<Cloak>();
-			this.unloadAll = unloadAll;
+			this.actorsToUnload = actorsToUnload ?? new List<Actor>();
 		}
 
 		public Pair<CPos, SubCell>? ChooseExitSubCell(Actor passenger)
@@ -56,40 +59,44 @@ namespace OpenRA.Mods.Common.Activities
 		public override Activity Tick(Actor self)
 		{
 			cargo.Unloading = false;
-			if (IsCanceled || cargo.IsEmpty(self))
+			if (IsCanceled || !actorsToUnload.Any())
 				return NextActivity;
 
 			if (cloak != null && cloak.Info.UncloakOnUnload)
 				cloak.Uncloak();
 
-			var actor = cargo.Peek(self);
-			var spawn = self.CenterPosition;
-
-			var exitSubCell = ChooseExitSubCell(actor);
-			if (exitSubCell == null)
+			foreach (var actor in actorsToUnload.ToArray())
 			{
-				self.NotifyBlocker(BlockedExitCells(actor));
+				var spawn = self.CenterPosition;
 
-				return Util.SequenceActivities(new Wait(10), this);
+				var exitSubCell = ChooseExitSubCell(actor);
+				if (exitSubCell == null)
+				{
+					self.NotifyBlocker(BlockedExitCells(actor));
+
+					return Util.SequenceActivities(new Wait(10), this);
+				}
+
+				cargo.UnloadSpecific(self, actor);
+				self.World.AddFrameEndTask(w =>
+				{
+					if (actor.Destroyed)
+						return;
+
+					var move = actor.Trait<IMove>();
+					var pos = actor.Trait<IPositionable>();
+
+					actor.CancelActivity();
+					pos.SetVisualPosition(actor, spawn);
+					actor.QueueActivity(move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
+					actor.SetTargetLine(Target.FromCell(w, exitSubCell.Value.First, exitSubCell.Value.Second), Color.Green, false);
+					w.Add(actor);
+				});
+
+				actorsToUnload.Remove(actor);
 			}
 
-			cargo.Unload(self);
-			self.World.AddFrameEndTask(w =>
-			{
-				if (actor.Destroyed)
-					return;
-
-				var move = actor.Trait<IMove>();
-				var pos = actor.Trait<IPositionable>();
-
-				actor.CancelActivity();
-				pos.SetVisualPosition(actor, spawn);
-				actor.QueueActivity(move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
-				actor.SetTargetLine(Target.FromCell(w, exitSubCell.Value.First, exitSubCell.Value.Second), Color.Green, false);
-				w.Add(actor);
-			});
-
-			if (!unloadAll || cargo.IsEmpty(self))
+			if (!actorsToUnload.Any())
 				return NextActivity;
 
 			cargo.Unloading = true;

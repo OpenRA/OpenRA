@@ -45,6 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to unload the passengers.")]
 		public readonly string UnloadBlockedCursor = "deploy-blocked";
 
+		[Desc("Unload passengers in reverse-load order?")]
+		public readonly bool FirstInLastOutUnloading = true;
+
 		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
@@ -52,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly CargoInfo Info;
 		readonly Actor self;
-		readonly Stack<Actor> cargo = new Stack<Actor>();
+		readonly List<Actor> cargo = new List<Actor>();
 		readonly HashSet<Actor> reserves = new HashSet<Actor>();
 		readonly Lazy<IFacing> facing;
 
@@ -74,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (init.Contains<RuntimeCargoInit>())
 			{
-				cargo = new Stack<Actor>(init.Get<RuntimeCargoInit, Actor[]>());
+				cargo = new List<Actor>(init.Get<RuntimeCargoInit, Actor[]>());
 				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
 			else if (init.Contains<CargoInit>())
@@ -84,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 					var unit = self.World.CreateActor(false, u.ToLowerInvariant(),
 						new TypeDictionary { new OwnerInit(self.Owner) });
 
-					cargo.Push(unit);
+					cargo.Add(unit);
 				}
 
 				totalWeight = cargo.Sum(c => GetWeight(c));
@@ -96,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 					var unit = self.World.CreateActor(false, u.ToLowerInvariant(),
 						new TypeDictionary { new OwnerInit(self.Owner) });
 
-					cargo.Push(unit);
+					cargo.Add(unit);
 				}
 
 				totalWeight = cargo.Sum(c => GetWeight(c));
@@ -137,7 +140,14 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 				if (helicopter != null)
 					self.QueueActivity(new HeliLand(self, true));
-				self.QueueActivity(new UnloadCargo(self, true));
+
+				var cargoCopy = cargo.ToList();
+
+				// Unload passengers in reverse to model FILO.
+				if (Info.FirstInLastOutUnloading)
+					cargoCopy.Reverse();
+
+				self.QueueActivity(new UnloadCargo(self, cargoCopy));
 			}
 		}
 
@@ -201,11 +211,32 @@ namespace OpenRA.Mods.Common.Traits
 		public bool HasSpace(int weight) { return totalWeight + reservedWeight + weight <= Info.MaxWeight; }
 		public bool IsEmpty(Actor self) { return cargo.Count == 0; }
 
-		public Actor Peek(Actor self) { return cargo.Peek(); }
-
-		public Actor Unload(Actor self)
+		public Actor GetLastEntered(Actor self)
 		{
-			var a = cargo.Pop();
+			if (IsEmpty(self))
+				throw new InvalidOperationException("GetLastEntered called on an empty transport ({0}).".F(self));
+
+			return cargo[cargo.Count - 1];
+		}
+
+		public Actor UnloadLastEntered(Actor self)
+		{
+			if (IsEmpty(self))
+				throw new InvalidOperationException("UnloadLastEntered called on an empty transport ({0}).".F(self));
+
+			var a = cargo[cargo.Count - 1];
+			return UnloadSpecific(self, a);
+		}
+
+		public Actor UnloadSpecific(Actor self, Actor toUnload)
+		{
+			var idx = cargo.IndexOf(toUnload);
+			if (idx == -1)
+				throw new InvalidOperationException("Cargo for {0} does not contain actor {1} but tried to unload it."
+					.F(self, toUnload));
+
+			var a = cargo[idx];
+			cargo.Remove(a);
 
 			totalWeight -= GetWeight(a);
 
@@ -263,7 +294,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Load(Actor self, Actor a)
 		{
-			cargo.Push(a);
+			cargo.Add(a);
 			var w = GetWeight(a);
 			totalWeight += w;
 			if (reserves.Contains(a))
@@ -296,7 +327,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			while (!IsEmpty(self))
-				SpawnPassenger(Unload(self));
+				SpawnPassenger(UnloadLastEntered(self));
 		}
 
 		void SpawnPassenger(Actor passenger)

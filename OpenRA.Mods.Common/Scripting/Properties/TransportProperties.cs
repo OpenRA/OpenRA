@@ -34,13 +34,15 @@ namespace OpenRA.Mods.Common.Scripting
 		public void LoadPassenger(Actor a) { cargo.Load(Self, a); }
 
 		[Desc("Remove the first actor from the transport.  This actor is not added to the world.")]
-		public Actor UnloadPassenger() { return cargo.Unload(Self); }
+		public Actor UnloadPassenger() { return cargo.UnloadLastEntered(Self); }
 
 		[ScriptActorPropertyActivity]
 		[Desc("Command transport to unload passengers.")]
 		public void UnloadPassengers()
 		{
-			Self.QueueActivity(new UnloadCargo(Self, true));
+			var toUnload = cargo.Passengers.ToList();
+			toUnload.Reverse();
+			Self.QueueActivity(new UnloadCargo(Self, toUnload));
 		}
 	}
 }

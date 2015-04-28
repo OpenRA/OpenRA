@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA.Activities
 				{
 					while (!cargo.IsEmpty(self))
 					{
-						var a = cargo.Unload(self);
+						var a = cargo.UnloadLastEntered(self);
 
 						// Kill all the units that are unloaded into the void
 						// Kill() handles kill and death statistics

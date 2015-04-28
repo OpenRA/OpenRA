@@ -147,7 +147,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 				if (cargo != null)
 				{
-					transport.QueueActivity(new UnloadCargo(transport, true));
+					var toUnload = cargo.Passengers.ToList();
+					toUnload.Reverse();
+					transport.QueueActivity(new UnloadCargo(transport, toUnload));
 					transport.QueueActivity(new WaitFor(() => cargo.IsEmpty(transport)));
 				}
 
