@@ -53,6 +53,11 @@
 		Notification: EnemyUnitsDetected
 	Voiced:
 		VoiceSet: VehicleVoice
+	Carryable:
+	WithDecorationCarryable:
+		Image: pips
+		Sequence: pickup-indicator
+		Offset: -12, -12
 
 ^Tank:
 	AppearsOnRadar:
@@ -109,6 +114,11 @@
 		Notification: EnemyUnitsDetected
 	Voiced:
 		VoiceSet: VehicleVoice
+	Carryable:
+	WithDecorationCarryable:
+		Image: pips
+		Sequence: pickup-indicator
+		Offset: -12, -12
 
 ^Husk:
 	Health:
