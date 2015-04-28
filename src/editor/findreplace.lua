@@ -918,15 +918,13 @@ function findReplace:createPanel()
     local keycode = event:GetKeyCode()
     event:GetEventObject().lastkeycode = keycode
     if keycode == wx.WXK_ESCAPE then
-      local mgr = ide:GetUIManager()
-      mgr:GetPane(searchpanel):Hide()
-      mgr:Update()
+      self:Hide()
       local editor = self:GetEditor()
       if editor then
         -- restore original position for Shift-Esc or failed search
-        if findReplace.startpos
-        and (event:ShiftDown() or findReplace.foundString == false) then
-          editor:GotoPos(findReplace.startpos)
+        if self.startpos
+        and (event:ShiftDown() or self.foundString == false) then
+          editor:GotoPos(self.startpos)
         end
         editor:SetFocus()
       end
@@ -1064,6 +1062,17 @@ end
 
 function findReplace:Show(replace,infiles)
   self:refreshPanel(replace,infiles)
+end
+
+function findReplace:IsShown()
+  local pane = ide:GetUIManager():GetPane(searchpanel)
+  return pane:IsOk() and pane:IsShown()
+end
+
+function findReplace:Hide()
+  local mgr = ide:GetUIManager()
+  mgr:GetPane(searchpanel):Hide()
+  mgr:Update()
 end
 
 local package = ide:AddPackage('core.findreplace', {
