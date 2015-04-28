@@ -215,7 +215,7 @@ mlrs:
 	turret:
 		Start: 32
 		Facings: 32
-	turret-2:
+	aim:
 		Start: 64
 		Facings: 32
 	turret-3:
