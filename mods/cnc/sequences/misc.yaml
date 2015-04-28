@@ -121,20 +121,13 @@ allyrepair:
 crate:
 	idle:
 		ZOffset: -511
-	land:
-		ZOffset: -511
 
 xcratea:
 	idle: xcrate
 		ZOffset: -511
-	land: xcrate
-		ZOffset: -511
 
 xcrateb:
 	idle: xcrate
-		Start: 1
-		ZOffset: -511
-	land: xcrate
 		Start: 1
 		ZOffset: -511
 
@@ -142,15 +135,9 @@ xcratec:
 	idle: xcrate
 		Start: 2
 		ZOffset: -511
-	land: xcrate
-		Start: 2
-		ZOffset: -511
 
 xcrated:
 	idle: xcrate
-		Start: 3
-		ZOffset: -511
-	land: xcrate
 		Start: 3
 		ZOffset: -511
 
