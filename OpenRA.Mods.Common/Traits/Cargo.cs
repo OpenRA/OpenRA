@@ -21,10 +21,19 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor can transport Passenger actors.")]
 	public class CargoInfo : ITraitInfo, Requires<IOccupySpaceInfo>
 	{
+		[Desc("The maximum sum of Passenger.Weight that this actor can support.")]
 		public readonly int MaxWeight = 0;
+
+		[Desc("Number of pips to display when this actor is selected.")]
 		public readonly int PipCount = 0;
+
+		[Desc("`Passenger.CargoType`s that can be loaded into this actor.")]
 		public readonly string[] Types = { };
+
+		[Desc("A list of actor types that are initially spawned into this actor.")]
 		public readonly string[] InitialUnits = { };
+
+		[Desc("When this actor is sold should all of its passengers be unloaded?")]
 		public readonly bool EjectOnSell = true;
 
 		[Desc("Which direction the passenger will face (relative to the transport) when unloading.")]
