@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (underCursor == null && frozen == null)
 				return;
 
-			if (underCursor != null && frozen != null && world.ScreenMap.ActorCloserToCursorThanFrozen(underCursor, frozen, mousePosPx) || frozen == null)
+			if ((underCursor != null && frozen != null && world.ScreenMap.ActorCloserToCursorThanFrozen(underCursor, frozen, mousePosPx)) || frozen == null)
 			{
 				ActorTooltip = underCursor.TraitsImplementing<IToolTip>().First();
 				ActorTooltipExtra = underCursor.TraitsImplementing<IProvideTooltipInfo>().ToArray();

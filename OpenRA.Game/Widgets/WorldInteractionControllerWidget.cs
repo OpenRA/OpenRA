@@ -290,7 +290,7 @@ namespace OpenRA.Widgets
 			if (frz == null)
 				return act;
 
-			if(world.ScreenMap.ActorCloserToCursorThanFrozen(act, frz, pos))
+			if (world.ScreenMap.ActorCloserToCursorThanFrozen(act, frz, pos))
 				return act;
 
 			return null;

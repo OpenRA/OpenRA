@@ -127,7 +127,7 @@ namespace OpenRA.Traits
 			var distFrz = new int2(boundsFrz.Location) + new int2(boundsFrz.Size) / 2 - worldPx;
 			if (distAct.LengthSquared > distFrz.LengthSquared)
 				return false;
-			
+
 			return true;
 		}
 
