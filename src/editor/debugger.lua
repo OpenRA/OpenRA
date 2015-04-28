@@ -335,7 +335,7 @@ local function activateDocument(file, line, activatehow)
       end
 
       local selection = document.index
-      RequestAttention()
+      if ide.config.debugger.requestattention then RequestAttention() end
       notebook:SetSelection(selection)
       SetEditorSelection(selection)
 
@@ -732,7 +732,7 @@ debugger.listen = function(start)
       end
 
       -- refresh toolbar and menus in case the main app is not active
-      RequestAttention()
+      if ide.config.debugger.requestattention then RequestAttention() end
       ide:GetMainFrame():UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
       ide:GetToolBar():UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
     end)
