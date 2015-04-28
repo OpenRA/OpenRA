@@ -85,4 +85,12 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		IEnumerable<string> PaletteNames { get; }
 	}
+
+	public interface ICallForTransport
+	{
+		WRange MinimumDistance { get; }
+		bool WantsTransport { get; set; }
+		void MovementCancelled(Actor self);
+		void RequestTransport(CPos destination, Activity afterLandActivity);
+	}
 }
