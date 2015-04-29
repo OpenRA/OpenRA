@@ -627,6 +627,7 @@
     <Compile Include="Traits\Plug.cs" />
     <Compile Include="Widgets\Logic\Ingame\MenuButtonsChromeLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LoadIngamePerfLogic.cs" />
+    <Compile Include="Traits\Render\WithDecoration.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
