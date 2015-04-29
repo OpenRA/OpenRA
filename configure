@@ -23,8 +23,8 @@ if [ "$os" == 'Linux' ]; then
 	fi
 elif [ "$os" == 'Darwin' ]; then
 	echo "Downloading pre-compiled lua and SDL2 libraries"
-	curl -O https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/Eluant.dll.config
-	curl -O https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/liblua.5.1.dylib
-	curl -O https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/libSDL2.dylib
+	curl -Os https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/Eluant.dll.config
+	curl -Os https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/liblua.5.1.dylib
+	curl -Os https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/libSDL2.dylib
 	echo "Downloaded Lua 5.1 and SDL2 libraries successfully."
 fi
