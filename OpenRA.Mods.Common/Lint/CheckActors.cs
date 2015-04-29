@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			var actorTypes = map.Actors.Value.Values.Select(a => a.Type);
+			var actorTypes = map.ActorDefinitions.Select(a => a.Value.Value);
 			foreach (var actor in actorTypes)
 				if (!map.Rules.Actors.Keys.Contains(actor.ToLowerInvariant()))
 					emitError("Actor {0} is not defined by any rule.".F(actor));

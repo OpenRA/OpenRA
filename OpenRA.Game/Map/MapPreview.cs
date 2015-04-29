@@ -119,7 +119,7 @@ namespace OpenRA
 			Type = m.Type;
 			Author = m.Author;
 			Bounds = m.Bounds;
-			SpawnPoints = m.GetSpawnPoints();
+			SpawnPoints = m.SpawnPoints.Value;
 			CustomPreview = m.CustomPreview;
 			Status = MapStatus.Available;
 			Class = classification;

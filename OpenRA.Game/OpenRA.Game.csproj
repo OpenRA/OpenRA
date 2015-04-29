@@ -249,7 +249,6 @@
     <Compile Include="FileSystem\ZipFile.cs" />
     <Compile Include="FileSystem\BigFile.cs" />
     <Compile Include="Map\PlayerReference.cs" />
-    <Compile Include="Map\SmudgeReference.cs" />
     <Compile Include="Map\TileReference.cs" />
     <Compile Include="Map\TileSet.cs" />
     <Compile Include="FieldLoader.cs" />

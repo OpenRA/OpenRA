@@ -72,16 +72,27 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Add map smudges
-			foreach (var s in w.Map.Smudges.Value.Where(s => smudges.ContainsKey(s.Type)))
+			foreach (var s in w.Map.SmudgeDefinitions)
 			{
+				var name = s.Key;
+				var vals = name.Split(' ');
+				var type = vals[0];
+
+				if (!smudges.ContainsKey(type))
+					continue;
+
+				var loc = vals[1].Split(',');
+				var cell = new CPos(Exts.ParseIntegerInvariant(loc[0]), Exts.ParseIntegerInvariant(loc[1]));
+				var depth = Exts.ParseIntegerInvariant(vals[2]);
+
 				var smudge = new Smudge
 				{
-					Type = s.Type,
-					Depth = s.Depth,
-					Sprite = smudges[s.Type][s.Depth]
+					Type = type,
+					Depth = depth,
+					Sprite = smudges[type][depth]
 				};
 
-				tiles.Add((CPos)s.Location, smudge);
+				tiles.Add(cell, smudge);
 			}
 		}
 
