@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Traits
 			PlayCustomAnimation(self, info.OpenAnim, () =>
 			{
 				if (DefaultAnimation.HasSequence(info.UnloadAnim))
-					PlayCustomAnimRepeating(self, info.UnloadAnim);
+					PlayCustomAnimationRepeating(self, info.UnloadAnim);
 			});
 		}
 
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Traits
 				return;
 
 			open = false;
-			PlayCustomAnimBackwards(self, info.OpenAnim, null);
+			PlayCustomAnimationBackwards(self, info.OpenAnim, null);
 		}
 
 		public override void Tick(Actor self)

@@ -372,7 +372,6 @@
     <Compile Include="Traits\Render\RenderBuildingCharge.cs" />
     <Compile Include="Traits\Render\RenderBuildingTurreted.cs" />
     <Compile Include="Traits\Render\RenderEditorOnly.cs" />
-    <Compile Include="Traits\Render\RenderFlare.cs" />
     <Compile Include="Traits\Render\RenderHarvester.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
@@ -402,8 +401,8 @@
     <Compile Include="Traits\Render\WithRotor.cs" />
     <Compile Include="Traits\Render\WithShadow.cs" />
     <Compile Include="Traits\Render\WithSmoke.cs" />
+    <Compile Include="Traits\Render\WithSpriteBody.cs" />
     <Compile Include="Traits\Render\WithTurret.cs" />
-    <Compile Include="Traits\Render\WithFire.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedOverlay.cs" />
     <Compile Include="Traits\Render\WithProductionDoorOverlay.cs" />
     <Compile Include="Traits\Render\WithProductionOverlay.cs" />

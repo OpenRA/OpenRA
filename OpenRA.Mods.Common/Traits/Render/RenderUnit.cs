@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new RenderUnit(init, this); }
 	}
 
-	public class RenderUnit : RenderSimple
+	public class RenderUnit : RenderSimple, ISpriteBody
 	{
 		readonly RenderUnitInfo info;
 
@@ -28,18 +28,18 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void PlayCustomAnimation(Actor self, string newAnim, Action after)
+		public void PlayCustomAnimation(Actor self, string newAnimation, Action after)
 		{
-			DefaultAnimation.PlayThen(newAnim, () => { DefaultAnimation.Play(info.Sequence); if (after != null) after(); });
+			DefaultAnimation.PlayThen(newAnimation, () => { DefaultAnimation.Play(info.Sequence); if (after != null) after(); });
 		}
 
-		public void PlayCustomAnimRepeating(Actor self, string name)
+		public void PlayCustomAnimationRepeating(Actor self, string name)
 		{
 			DefaultAnimation.PlayThen(name,
-				() => PlayCustomAnimRepeating(self, name));
+				() => PlayCustomAnimationRepeating(self, name));
 		}
 
-		public void PlayCustomAnimBackwards(Actor self, string name, Action after)
+		public void PlayCustomAnimationBackwards(Actor self, string name, Action after)
 		{
 			DefaultAnimation.PlayBackwardsThen(name,
 				() => { DefaultAnimation.PlayRepeating(info.Sequence); if (after != null) after(); });

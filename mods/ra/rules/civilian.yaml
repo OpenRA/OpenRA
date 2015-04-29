@@ -233,7 +233,10 @@ V19.Husk:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Husk (Oil Pump)
-	WithFire:
+	RenderSprites:
+	WithSpriteBody:
+		StartSequence: fire-start
+		Sequence: fire-loop
 	-Health:
 	-Selectable:
 	-TargetableBuilding:

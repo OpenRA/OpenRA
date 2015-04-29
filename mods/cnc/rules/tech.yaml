@@ -11,7 +11,10 @@ V19:
 
 V19.Husk:
 	Inherits: ^CivBuildingHusk
-	WithFire:
+	RenderSprites:
+	WithSpriteBody:
+		StartSequence: fire-start
+		Sequence: fire-loop
 	Building:
 		Footprint: x
 		Dimensions: 1,1

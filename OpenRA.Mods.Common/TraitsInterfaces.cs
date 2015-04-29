@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Graphics;
@@ -17,6 +18,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public interface ISpriteBody
+	{
+		void PlayCustomAnimation(Actor self, string newAnimation, Action after);
+		void PlayCustomAnimationRepeating(Actor self, string name);
+		void PlayCustomAnimationBackwards(Actor self, string name, Action after);
+	}
+
 	public interface INotifyResourceClaimLost
 	{
 		void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer);
