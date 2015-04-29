@@ -13,28 +13,42 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Commands;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders a debug overlay showing the terrain cells. Attach this to the world actor.")]
-	public class TerrainGeometryOverlayInfo : ITraitInfo
-	{
-		public object Create(ActorInitializer init) { return new TerrainGeometryOverlay(init.Self); }
-	}
+	public class TerrainGeometryOverlayInfo : TraitInfo<TerrainGeometryOverlay> { }
 
-	public class TerrainGeometryOverlay : IRenderOverlay
+	public class TerrainGeometryOverlay : IRenderOverlay, IWorldLoaded, IChatCommand
 	{
-		readonly Lazy<DeveloperMode> devMode;
+		const string CommandName = "terrainoverlay";
+		const string CommandDesc = "Toggles the terrain geometry overlay";
 
-		public TerrainGeometryOverlay(Actor self)
+		public bool Enabled;
+
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			devMode = Exts.Lazy(() => self.World.LocalPlayer != null ? self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>() : null);
+			var console = w.WorldActor.TraitOrDefault<ChatCommands>();
+			var help = w.WorldActor.TraitOrDefault<HelpCommand>();
+
+			if (console == null || help == null)
+				return;
+
+			console.RegisterCommand(CommandName, this);
+			help.RegisterHelp(CommandName, CommandDesc);
+		}
+
+		public void InvokeCommand(string name, string arg)
+		{
+			if (name == CommandName)
+				Enabled ^= true;
 		}
 
 		public void Render(WorldRenderer wr)
 		{
-			if (devMode.Value == null || !devMode.Value.ShowTerrainGeometry)
+			if (!Enabled)
 				return;
 
 			var map = wr.World.Map;
