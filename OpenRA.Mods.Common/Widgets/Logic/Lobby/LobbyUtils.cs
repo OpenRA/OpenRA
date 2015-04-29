@@ -237,14 +237,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static string LookupCountry(string ip)
 		{
+			const string Unknown = "Unknown Location";
+
 			try
 			{
-				return Game.GeoIpDatabase.Country(ip).Country.Name;
+				return Game.GeoIpDatabase.Country(ip).Country.Name ?? Unknown;
 			}
 			catch (Exception e)
 			{
 				Log.Write("geoip", "LookupCountry failed: {0}", e);
-				return "Unknown Location";
+				return Unknown;
 			}
 		}
 
