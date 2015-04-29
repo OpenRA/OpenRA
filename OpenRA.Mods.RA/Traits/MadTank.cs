@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			self.World.AddFrameEndTask(w => EjectDriver());
 			if (info.ThumpSequence != null)
-				renderUnit.PlayCustomAnimRepeating(self, info.ThumpSequence);
+				renderUnit.PlayCustomAnimationRepeating(self, info.ThumpSequence);
 			deployed = true;
 			self.QueueActivity(new Wait(info.ChargeDelay, false));
 			self.QueueActivity(new CallFunc(() => Sound.Play(info.ChargeSound, self.CenterPosition)));

@@ -25,14 +25,14 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity OnStateDock(Actor self)
 		{
-			ru.PlayCustomAnimation(self, "dock", () => ru.PlayCustomAnimRepeating(self, "dock-loop"));
+			ru.PlayCustomAnimation(self, "dock", () => ru.PlayCustomAnimationRepeating(self, "dock-loop"));
 			dockingState = State.Loop;
 			return this;
 		}
 
 		public override Activity OnStateUndock(Actor self)
 		{
-			ru.PlayCustomAnimBackwards(self, "dock", () => dockingState = State.Complete);
+			ru.PlayCustomAnimationBackwards(self, "dock", () => dockingState = State.Complete);
 			dockingState = State.Wait;
 			return this;
 		}
