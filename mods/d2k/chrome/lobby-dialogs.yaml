@@ -105,7 +105,7 @@ Background@LOBBY_OPTIONS_BIN:
 			Text: Map Options
 		Container:
 			X: 30
-			Y: 30
+			Y: 20
 			Width: PARENT_RIGHT-60
 			Height: PARENT_BOTTOM-75
 			Children:
@@ -113,33 +113,35 @@ Background@LOBBY_OPTIONS_BIN:
 					Width: 140
 					Height: 20
 					Text: Shroud
-				Checkbox@FOG_CHECKBOX:
-					Y: 35
-					Width: 140
-					Height: 20
-					Text: Fog of War
 				Checkbox@SHORTGAME_CHECKBOX:
 					X: 150
 					Width: 140
 					Height: 20
 					Text: Short Game
+				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
+					X: 290
+					Width: 140
+					Height: 20
+					Text: Build off Allies' ConYards
+
+				Checkbox@FOG_CHECKBOX:
+					Y: 35
+					Width: 140
+					Height: 20
+					Text: Fog of War
 				Checkbox@CRATES_CHECKBOX:
 					X: 150
 					Y: 35
 					Width: 140
 					Height: 20
 					Text: Crates
-				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
-					X: 290
-					Width: 140
-					Height: 20
-					Text: Build off Allies' ConYards
 				Checkbox@FRAGILEALLIANCES_CHECKBOX:
 					X: 290
 					Y: 35
 					Width: 140
 					Height: 20
 					Text: Diplomacy Changes
+
 				Checkbox@CREEPS_CHECKBOX:
 					Y: 70
 					Width: 140
@@ -151,58 +153,78 @@ Background@LOBBY_OPTIONS_BIN:
 					Width: 140
 					Height: 20
 					Text: Debug Menu
+				Label@AUTOPILOT_DESC_A
+					X: 295
+					Y: 65
+					Width: 230
+					Height: 20
+					Text: Replace disconnected clients
+				Label@AUTOPILOT_DESC_B
+					X: 295
+					Y: 90
+					Width: 60
+					Height: 25
+					Text: with bot:
+				DropDownButton@AUTOPILOT_DROPDOWNBUTTON
+					X: 360
+					Y: 90
+					Width: 173
+					Height: 25
+					Font: Regular
+
 				Label@STARTINGCASH_DESC:
-					Y: 110
+					Y: 135
 					Width: 80
 					Height: 25
 					Text: Starting Cash:
 					Align: Right
 				DropDownButton@STARTINGCASH_DROPDOWNBUTTON:
 					X: 85
-					Y: 110
+					Y: 135
 					Width: 130
 					Height: 25
 					Font: Regular
 					Text: $5000
 				Label@STARTINGUNITS_DESC:
 					X: PARENT_RIGHT - WIDTH - 145
-					Y: 110
+					Y: 135
 					Width: 120
 					Height: 25
 					Text: Starting Units:
 					Align: Right
 				DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
 					X: PARENT_RIGHT - WIDTH
-					Y: 110
+					Y: 135
 					Width: 140
 					Height: 25
 					Font: Regular
+
+				Label@TECHLEVEL_DESC:
+					Y: 175
+					Width: 80
+					Height: 25
+					Text: Tech Level:
+					Align: Right
+				DropDownButton@TECHLEVEL_DROPDOWNBUTTON:
+					X: 85
+					Y: 175
+					Width: 130
+					Height: 25
+					Font: Regular
+					Text: 10
 				Label@DIFFICULTY_DESC:
 					X: PARENT_RIGHT - WIDTH - 145
-					Y: 150
+					Y: 175
 					Width: 120
 					Height: 25
 					Text: Mission Difficulty:
 					Align: Right
 				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
 					X: PARENT_RIGHT - WIDTH
-					Y: 150
+					Y: 175
 					Width: 140
 					Height: 25
 					Font: Regular
-				DropDownButton@TECHLEVEL_DROPDOWNBUTTON:
-					X: 85
-					Y: 150
-					Width: 130
-					Height: 25
-					Font: Regular
-					Text: 10
-				Label@TECHLEVEL_DESC:
-					Y: 150
-					Width: 80
-					Height: 25
-					Text: Tech Level:
-					Align: Right
 
 Background@FORCE_START_DIALOG:
 	X: 20

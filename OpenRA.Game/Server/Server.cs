@@ -421,6 +421,16 @@ namespace OpenRA.Server
 				DispatchOrdersToClients(conn, frame, data);
 		}
 
+		public void SendOrderTo(Connection conn, string order, string data)
+		{
+			DispatchOrdersToClient(conn, 0, 0, new ServerOrder(order, data).Serialize());
+		}
+
+		public void SendMessage(string text)
+		{
+			DispatchOrdersToClients(null, 0, new ServerOrder("Message", text).Serialize());
+		}
+
 		void InterpretServerOrders(Connection conn, byte[] data)
 		{
 			var ms = new MemoryStream(data);
@@ -437,16 +447,6 @@ namespace OpenRA.Server
 			}
 			catch (EndOfStreamException) { }
 			catch (NotImplementedException) { }
-		}
-
-		public void SendOrderTo(Connection conn, string order, string data)
-		{
-			DispatchOrdersToClient(conn, 0, 0, new ServerOrder(order, data).Serialize());
-		}
-
-		public void SendMessage(string text)
-		{
-			DispatchOrdersToClients(null, 0, new ServerOrder("Message", text).Serialize());
 		}
 
 		void InterpretServerOrder(Connection conn, ServerOrder so)
@@ -520,11 +520,21 @@ namespace OpenRA.Server
 
 		public void DropClient(Connection toDrop, int frame)
 		{
-			if (!PreConns.Remove(toDrop))
+			try
 			{
-				Conns.Remove(toDrop);
+				toDrop.Socket.Disconnect(false);
+			}
+			catch { }
 
+			// Nothing to clear for not validated connections
+			if (PreConns.Remove(toDrop))
+				return;
+
+			if (Conns.Remove(toDrop))
+			{
 				var dropClient = LobbyInfo.Clients.FirstOrDefault(c1 => c1.Index == toDrop.PlayerIndex);
+
+				// This shouldn't happen, but just in case
 				if (dropClient == null)
 					return;
 
@@ -536,7 +546,28 @@ namespace OpenRA.Server
 				// Send disconnected order, even if still in the lobby
 				DispatchOrdersToClients(toDrop, 0, new ServerOrder("Disconnected", "").Serialize());
 
-				LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
+				// Currently if game is running and disconnected client was admin - bot players will just stop receiving orders
+				// In that case no sense to issue "ActivateBot" server command - no one will activate bot for disconnected admin
+				var substituteWithBot = !dropClient.IsAdmin
+					&& State == ServerState.GameStarted
+					&& LobbyInfo.GlobalSettings.Autopilot != null;
+
+				if (substituteWithBot)
+				{
+					var autopilotType = LobbyInfo.GlobalSettings.Autopilot;
+
+					// Command for everyone on behalf of "toDrop". For admin to activate bot, a notification for others.
+					// After this command game will continue even if "dropClient" didn't issue packets for some frames:
+					//   clients will treat admin as owner of "dropClient" and will check for admins packets instead
+					DispatchOrdersToClients(toDrop, 0, new ServerOrder("ActivateBot", autopilotType).Serialize());
+
+					var admin = LobbyInfo.Admin;
+					dropClient.IpAddress = null;
+					dropClient.BotControllerClientIndex = admin == null ? 0 : admin.Index;
+					dropClient.Bot = autopilotType;
+				}
+				else
+					LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
 				// Client was the server admin
 				// TODO: Reassign admin for game in progress via an order
@@ -555,7 +586,13 @@ namespace OpenRA.Server
 					}
 				}
 
-				DispatchOrders(toDrop, frame, new byte[] { 0xbf });
+				if (!substituteWithBot)
+				{
+					// OrderManager.frameData on clients must contain data for each frame from each client
+					// There will be no data from "toDrop" client for "frame" frame and clients will stuck waiting
+					// Sending packet to notify that clients don't need to wait for data from "toDrop" after "frame" frame
+					DispatchOrders(toDrop, frame, new byte[] { 0xBF });
+				}
 
 				if (!Conns.Any())
 				{
@@ -568,15 +605,9 @@ namespace OpenRA.Server
 
 				if (!LobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin)
 					Shutdown();
-			}
 
-			try
-			{
-				toDrop.Socket.Disconnect(false);
+				SetOrderLag();
 			}
-			catch { }
-
-			SetOrderLag();
 		}
 
 		public void SyncLobbyInfo()
@@ -675,6 +706,9 @@ namespace OpenRA.Server
 			SyncLobbyInfo();
 			State = ServerState.GameStarted;
 
+			// Setting OrderManager.frameData.clientQuitTimes on each client for each client
+			//   to maximum value of int, so frameData.ClientsPlayingInFrame optimization can be used
+			// Also frameData.clientQuitTimes will only contain indices of connected clients (without bots)
 			foreach (var c in Conns)
 				foreach (var d in Conns)
 					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF });

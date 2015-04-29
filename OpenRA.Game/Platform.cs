@@ -71,7 +71,12 @@ namespace OpenRA
 			if (Directory.Exists("Support"))
 				return "Support" + Path.DirectorySeparatorChar;
 
-			var dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			var dir = Environment.GetEnvironmentVariable("OPENRASUPPORTDIR");
+
+			if (!string.IsNullOrEmpty(dir))
+				return dir + Path.DirectorySeparatorChar;
+
+			dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 
 			switch (CurrentPlatform)
 			{

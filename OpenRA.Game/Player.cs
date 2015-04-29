@@ -116,14 +116,22 @@ namespace OpenRA
 			// Enable the bot logic on the host
 			IsBot = botType != null;
 			if (IsBot && Game.IsHost)
+				ActivateBot(botType);
+		}
+
+		public bool ActivateBot(string botType)
+		{
+			var logic = PlayerActor.TraitsImplementing<IBot>()
+						.FirstOrDefault(b => b.Info.Name == botType);
+
+			if (logic == null)
 			{
-				var logic = PlayerActor.TraitsImplementing<IBot>()
-							.FirstOrDefault(b => b.Info.Name == botType);
-				if (logic == null)
-					Log.Write("debug", "Invalid bot type: {0}", botType);
-				else
-					logic.Activate(this);
+				Log.Write("debug", "Invalid bot type: {0}", botType);
+				return false;
 			}
+
+			logic.Activate(this);
+			return true;
 		}
 
 		public override string ToString()

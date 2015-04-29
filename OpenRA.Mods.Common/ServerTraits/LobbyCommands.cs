@@ -665,6 +665,38 @@ namespace OpenRA.Mods.Common.Server
 						return true;
 					}
 				},
+				{ "autopilot",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
+							return true;
+						}
+
+						server.LobbyInfo.GlobalSettings.Autopilot = s;
+						server.SyncLobbyGlobalSettings();
+						server.SendMessage("Disconnected players will be replaced by bot {0}.".F(s));
+
+						return true;
+					}
+				},
+				{ "disable_autopilot",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
+							return true;
+						}
+
+						server.LobbyInfo.GlobalSettings.Autopilot = null;
+						server.SyncLobbyGlobalSettings();
+						server.SendMessage("Replacing disconnected players with bot disabled.");
+
+						return true;
+					}
+				},
 				{ "kick",
 					s =>
 					{

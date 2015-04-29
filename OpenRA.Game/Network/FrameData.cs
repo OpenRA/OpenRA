@@ -13,6 +13,9 @@ using System.Linq;
 
 namespace OpenRA.Network
 {
+	/// <summary>
+	/// Holds data sent by each player for each frame
+	/// </summary>
 	class FrameData
 	{
 		public struct ClientOrder
@@ -23,6 +26,14 @@ namespace OpenRA.Network
 
 		readonly Dictionary<int, int> clientQuitTimes = new Dictionary<int, int>();
 		readonly Dictionary<int, Dictionary<int, byte[]>> framePackets = new Dictionary<int, Dictionary<int, byte[]>>();
+
+		/// <summary>
+		/// Exclude clientId from accounting in functions that use clientQuitTimes (like IsReadyForFrame) by removing clientId from clientQuitTimes
+		/// </summary>
+		public void RemoveClient(int clientId)
+		{
+			clientQuitTimes.Remove(clientId);
+		}
 
 		public IEnumerable<int> ClientsPlayingInFrame(int frame)
 		{

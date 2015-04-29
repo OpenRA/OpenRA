@@ -65,6 +65,14 @@ namespace OpenRA.Network
 			}
 		}
 
+		/// <summary>
+		/// Returns client with IsAdmin set to true, null if none found
+		/// </summary>
+		public Client Admin
+		{
+			get { return Clients.FirstOrDefault(c => c.IsAdmin); }
+		}
+
 		public Client ClientWithIndex(int clientID)
 		{
 			return Clients.SingleOrDefault(c => c.Index == clientID);
@@ -188,6 +196,8 @@ namespace OpenRA.Network
 			public string TechLevel = "none";
 			public string StartingUnitsClass = "none";
 			public bool ShortGame = true;
+			// Bot of Autopilot type replaces clients disconnected during game. Activated on admin.
+			public string Autopilot; // bot type, null if disabled
 			public bool AllowVersionMismatch;
 			public string GameUid;
 
