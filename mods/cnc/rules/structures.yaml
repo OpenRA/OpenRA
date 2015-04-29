@@ -24,7 +24,6 @@ FACT:
 	ProductionQueue@GDIBuilding:
 		Type: Building.GDI
 		Race: gdi
-		RequireOwner: false
 		Group: Building
 		BuildSpeed: .4
 		LowPowerSlowdown: 2
@@ -33,7 +32,6 @@ FACT:
 	ProductionQueue@NodBuilding:
 		Type: Building.Nod
 		Race: nod
-		RequireOwner: false
 		Group: Building
 		BuildSpeed: .4
 		LowPowerSlowdown: 2
@@ -42,7 +40,6 @@ FACT:
 	ProductionQueue@GDIDefense:
 		Type: Defence.GDI
 		Race: gdi
-		RequireOwner: false
 		Group: Defence
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
@@ -51,7 +48,6 @@ FACT:
 	ProductionQueue@NodDefense:
 		Type: Defence.Nod
 		Race: nod
-		RequireOwner: false
 		Group: Defence
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
@@ -413,14 +409,12 @@ HPAD:
 		Type: Aircraft.GDI
 		Race: gdi
 		Group: Aircraft
-		RequireOwner: false
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	ProductionQueue@Nod:
 		Type: Aircraft.Nod
 		Race: nod
 		Group: Aircraft
-		RequireOwner: false
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	ProductionBar@GDI:

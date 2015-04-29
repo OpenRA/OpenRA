@@ -1325,7 +1325,6 @@ Rules:
 			InitialUnits: e1, e1, e2, e3, e4
 	Ant:
 		Buildable:
-			Owner: soviet
 			Prerequisites: barr
 		Health:
 			HP: 200

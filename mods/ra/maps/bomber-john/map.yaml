@@ -813,7 +813,6 @@ Rules:
 			Queue: Vehicle
 			BuildPaletteOrder: 30
 			Prerequisites: fix
-			Owner: allies
 		Valued:
 			Cost: 800
 		Tooltip:
@@ -886,7 +885,6 @@ Rules:
 		Buildable:
 			Queue: Building
 			BuildPaletteOrder: 30
-			Owner: allies, soviet
 		Valued:
 			Cost: 30
 		Health:
