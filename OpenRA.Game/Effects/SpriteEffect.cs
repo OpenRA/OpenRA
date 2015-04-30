@@ -15,15 +15,15 @@ namespace OpenRA.Effects
 {
 	public class SpriteEffect : IEffect
 	{
-		string palette;
-		Animation anim;
-		WPos pos;
+		readonly string palette;
+		readonly Animation anim;
+		readonly WPos pos;
 
-		public SpriteEffect(WPos pos, World world, string sprite, string palette)
+		public SpriteEffect(WPos pos, World world, string image, string palette)
 		{
 			this.pos = pos;
 			this.palette = palette;
-			anim = new Animation(world, sprite);
+			anim = new Animation(world, image);
 			anim.PlayThen("idle", () => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
