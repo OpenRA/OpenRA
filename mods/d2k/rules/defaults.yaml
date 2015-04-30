@@ -225,6 +225,7 @@
 	Huntable:
 	ScriptTriggers:
 	DeathSounds:
+		DeathTypes: 1, 2, 3, 4
 	Parachutable:
 		FallRate: 130
 	GainsStatUpgrades:
