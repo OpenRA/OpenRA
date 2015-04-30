@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Activities
 				var health = self.TraitOrDefault<Health>();
 				if (health != null)
 				{
-					var newHP = (ForceHealthPercentage > 0) ? ForceHealthPercentage : (health.HP * 100) / health.MaxHP;
+					var newHP = ForceHealthPercentage > 0 ? ForceHealthPercentage : (health.HP * 100) / health.MaxHP;
 					init.Add(new HealthInit(newHP));
 				}
 
