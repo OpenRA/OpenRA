@@ -309,6 +309,9 @@ namespace OpenRA
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
 
+			if (Cursor != null)
+				Cursor.Dispose();
+
 			if (Settings.Graphics.HardwareCursors)
 			{
 				try
