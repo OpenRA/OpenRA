@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Actor to spawn.")]
 		public readonly string Actor = null;
 
-		[Desc("Amount of time to keep the actor alive in ticks.")]
+		[Desc("Amount of time to keep the actor alive in ticks. Value < 0 means this actor will not remove itself.")]
 		public readonly int LifeTime = 250;
 
 		public readonly string DeploySound = null;
@@ -58,8 +58,11 @@ namespace OpenRA.Mods.Common.Traits
 						new OwnerInit(self.Owner),
 					});
 
-					actor.QueueActivity(new Wait(info.LifeTime));
-					actor.QueueActivity(new RemoveSelf());
+					if (info.LifeTime > -1)
+					{
+						actor.QueueActivity(new Wait(info.LifeTime));
+						actor.QueueActivity(new RemoveSelf());
+					}
 				});
 			}
 		}
