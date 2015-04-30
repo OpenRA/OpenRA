@@ -105,11 +105,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public abstract IEnumerable<Pair<CPos, int>> Considered { get; }
 
-		public Player Owner { get { return this.Graph.Actor.Owner; } }
+		public Player Owner { get { return Graph.Actor.Owner; } }
 		public int MaxCost { get; protected set; }
 		public bool Debug { get; set; }
 		string id;
 		protected Func<CPos, int> heuristic;
+		protected Func<CPos, bool> isGoal;
 
 		// This member is used to compute the ID of PathSearch.
 		// Essentially, it represents a collection of the initial
@@ -184,7 +185,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public IPathSearch FromPoint(CPos from)
 		{
-			if (this.Graph.World.Map.Contains(from))
+			if (Graph.World.Map.Contains(from))
 				AddInitialCell(from);
 
 			return this;
@@ -194,8 +195,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public bool IsTarget(CPos location)
 		{
-			var locInfo = Graph[location];
-			return locInfo.EstimatedTotal - locInfo.CostSoFar == 0;
+			return isGoal(location);
 		}
 
 		public abstract CPos Expand();

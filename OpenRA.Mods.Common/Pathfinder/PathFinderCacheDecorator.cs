@@ -68,19 +68,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public List<CPos> FindPath(IPathSearch search)
 		{
 			using (new PerfSample("Pathfinder"))
-			{
-				var key = "FindPath" + search.Id;
-				var cachedPath = cacheStorage.Retrieve(key);
-
-				if (cachedPath != null)
-					return cachedPath;
-
-				var pb = pathFinder.FindPath(search);
-
-				cacheStorage.Store(key, pb);
-
-				return pb;
-			}
+				return pathFinder.FindPath(search);
 		}
 
 		public List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest)
