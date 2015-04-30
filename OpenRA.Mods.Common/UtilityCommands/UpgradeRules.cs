@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -30,6 +31,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			input = string.Join(", ", input.Split(',')
 				.Select(s => ((int)Math.Round(FieldLoader.GetValue<float>("(float value)", s) * 100)).ToString()));
+		}
+
+		internal static void ConvertFloatToIntPercentage(ref string input)
+		{
+			var value = float.Parse(input, CultureInfo.InvariantCulture);
+
+			if (value < 1)
+				value = (int)Math.Round(value * 100, 0);
+			else
+				value = (int)Math.Round(value, 0);
+
+			input = value.ToString();
 		}
 
 		internal static void ConvertPxToRange(ref string input)
@@ -1369,7 +1382,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		internal static void UpgradeActors(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			foreach (var node in nodes)
+			{
+				if (engineVersion < 20150430)
+				{
+					if (node.Key == "Health")
+						ConvertFloatToIntPercentage(ref node.Value.Value);
+				}
+
 				UpgradeActors(engineVersion, ref node.Value.Nodes, node, depth + 1);
+			}
 		}
 	}
 }
