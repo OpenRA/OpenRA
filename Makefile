@@ -286,6 +286,7 @@ all: cli-dependencies core tools
 clean:
 	@-$(RM_F) *.exe *.dll ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 	@-$(RM_RF) ./*/bin ./*/obj
+	@-$(RM_F) ./thirdparty/*.dll
 
 distclean: clean
 
