@@ -106,14 +106,6 @@ if (!(Test-Path "windows/soft_oal.dll"))
 	rmdir OpenAL-Soft -Recurse
 }
 
-if (!(Test-Path "Moq.dll"))
-{
-	echo "Fetching Moq from NuGet."
-	./nuget.exe install Moq -Version 4.2.1502.0911 -ExcludeVersion
-	cp Moq/lib/net40/Moq.dll .
-	rmdir Moq -Recurse
-}
-
 if (!(Test-Path "FuzzyLogicLibrary.dll"))
 {
 	echo "Fetching FuzzyLogicLibrary from NuGet."

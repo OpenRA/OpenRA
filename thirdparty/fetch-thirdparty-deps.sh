@@ -59,13 +59,6 @@ if [ ! -f Mono.Nat.dll ]; then
 	rm -rf Mono.Nat
 fi
 
-if [ ! -f Moq.dll ]; then
-	echo "Fetching Moq from NuGet."
-	nuget install Moq -Version 4.2.1502.0911 -ExcludeVersion
-	cp ./Moq/lib/net40/Moq.dll .
-	rm -rf Moq
-fi
-
 if [ ! -f FuzzyLogicLibrary.dll ]; then
 	echo "Fetching FuzzyLogicLibrary from NuGet."
 	nuget install FuzzyLogicLibrary -Version 1.2.0 -ExcludeVersion
