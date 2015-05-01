@@ -230,31 +230,31 @@ Actors:
 	Actor53: v08
 		Location: 41,54
 		Owner: France
-		Health: 0.5195313
+		Health: 52
 	Actor54: v07
 		Location: 54,65
 		Owner: France
-		Health: 0.4375
+		Health: 44
 	Actor55: v07
 		Location: 38,52
 		Owner: France
-		Health: 0.4375
+		Health: 44
 	Actor56: v06
 		Location: 46,51
 		Owner: France
-		Health: 0.9921875
+		Health: 99
 	Actor57: v05
 		Location: 36,55
 		Owner: France
-		Health: 0.5
+		Health: 50
 	Actor58: v04
 		Location: 35,51
 		Owner: France
-		Health: 0.3515625
+		Health: 35
 	Actor59: v02
 		Location: 36,57
 		Owner: France
-		Health: 0.5625
+		Health: 56
 	Actor60: brl3
 		Location: 34,52
 		Owner: Germany
@@ -360,11 +360,11 @@ Actors:
 	Actor99: v04
 		Location: 58,54
 		Owner: France
-		Health: 0.4140625
+		Health: 41
 	Actor100: v02
 		Location: 56,54
 		Owner: France
-		Health: 0.7070313
+		Health: 71
 	Actor101: dome
 		Location: 45,79
 		Owner: USSR
@@ -428,11 +428,11 @@ Actors:
 	Actor121: v05
 		Location: 48,62
 		Owner: France
-		Health: 0.4140625
+		Health: 41
 	Actor123: jeep
 		Location: 46,52
 		Owner: France
-		Health: 0.6640625
+		Health: 66
 		Facing: 96
 	Actor125: jeep
 		Location: 55,57
@@ -441,7 +441,7 @@ Actors:
 	Actor126: jeep
 		Location: 39,65
 		Owner: France
-		Health: 0.625
+		Health: 63
 		Facing: 64
 	Actor127: c9
 		Location: 50,64
@@ -557,16 +557,16 @@ Actors:
 	Church: v01
 		Location: 40,63
 		Owner: France
-		Health: 0.5390625
+		Health: 54
 	StartJeep: jeep
 		Location: 44,76
 		Owner: France
-		Health: 0.5195313
+		Health: 52
 		Facing: 32
 	LonelyGuard: e1
 		Location: 42,81
 		Owner: USSR
-		Health: 0.1367188
+		Health: 14
 		SubCell: 2
 	Airfield1: afld
 		Location: 39,77

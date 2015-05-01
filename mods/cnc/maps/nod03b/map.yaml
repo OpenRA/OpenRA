@@ -433,7 +433,7 @@ Actors:
 	Actor104: c6
 		Location: 14,36
 		Owner: Neutral
-		Health: 0.5976563
+		Health: 60
 		SubCell: 4
 	Actor105: c7
 		Location: 18,38

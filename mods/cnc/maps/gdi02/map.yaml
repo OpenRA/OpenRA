@@ -303,7 +303,7 @@ Actors:
 	Actor78: pyle
 		Location: 55,51
 		Owner: GDI
-		Health: 0.34375
+		Health: 34
 	Actor81: nuke
 		Location: 55,32
 		Owner: Nod
@@ -313,16 +313,16 @@ Actors:
 	Actor83: nuke
 		Location: 53,52
 		Owner: GDI
-		Health: 0.025
+		Health: 2
 	Actor85: bggy
 		Location: 52,39
 		Owner: Nod
-		Health: 0.5195313
+		Health: 52
 		Facing: 96
 	Actor87: jeep
 		Location: 54,49
 		Owner: GDI
-		Health: 0.3320313
+		Health: 33
 		Facing: 96
 	Actor88: jeep
 		Location: 57,49
@@ -331,12 +331,12 @@ Actors:
 	Actor89: bggy
 		Location: 33,37
 		Owner: Nod
-		Health: 0.578125
+		Health: 58
 		Facing: 96
 	Actor91: bggy
 		Location: 59,39
 		Owner: Nod
-		Health: 0.5
+		Health: 50
 		Facing: 160
 	Actor92: jeep
 		Location: 56,54
@@ -535,7 +535,7 @@ Actors:
 	Actor133: e1
 		Location: 51,49
 		Owner: GDI
-		Health: 0.9765625
+		Health: 98
 		Facing: 128
 		SubCell: 4
 	Actor134: e1
@@ -546,7 +546,7 @@ Actors:
 	Actor135: e1
 		Location: 52,50
 		Owner: GDI
-		Health: 0.5195313
+		Health: 52
 		Facing: 224
 		SubCell: 4
 	Actor136: e1
@@ -615,18 +615,18 @@ Actors:
 	RushBuggy: bggy
 		Location: 51,50
 		Owner: Nod
-		Health: 0.1835938
+		Health: 18
 		Facing: 96
 	RushRifle1: e1
 		Location: 54,48
 		Owner: Nod
-		Health: 0.4765625
+		Health: 48
 		Facing: 128
 		SubCell: 3
 	RushRifle2: e1
 		Location: 52,52
 		Owner: Nod
-		Health: 0.3164063
+		Health: 32
 		Facing: 96
 		SubCell: 0
 	RushRifle3: e1

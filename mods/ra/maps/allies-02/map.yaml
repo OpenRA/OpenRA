@@ -264,7 +264,7 @@ Actors:
 	Actor63: kenn
 		Location: 58,68
 		Owner: USSR
-		Health: 0.9921875
+		Health: 99
 	Actor64: brl3
 		Location: 65,59
 		Owner: USSR
@@ -337,7 +337,7 @@ Actors:
 	Actor87: v19
 		Location: 75,48
 		Owner: USSR
-		Health: 0.5195313
+		Health: 52
 	Actor88: v19
 		Location: 62,57
 		Owner: USSR
@@ -564,7 +564,7 @@ Actors:
 	Actor137: e2
 		Location: 73,51
 		Owner: USSR
-		Health: 0.5585938
+		Health: 56
 		Facing: 224
 		SubCell: 4
 	Actor138: medi
@@ -674,7 +674,7 @@ Actors:
 	Harvester: harv
 		Location: 55,65
 		Owner: USSR
-		Health: 0.5
+		Health: 50
 		Facing: 160
 	TruckEntryPoint: waypoint
 		Location: 49,44

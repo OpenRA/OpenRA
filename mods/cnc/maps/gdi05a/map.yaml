@@ -690,7 +690,7 @@ Actors:
 	GdiProc: proc
 		Location: 50,51
 		Owner: AbandonedBase
-		Health: 0.3085938
+		Health: 31
 		FreeActor: False
 	GdiHarv: harv
 		Location: 48,53
@@ -699,27 +699,27 @@ Actors:
 	GdiWeap: weap
 		Location: 50,54
 		Owner: AbandonedBase
-		Health: 0.2695313
+		Health: 27
 	GdiNuke1: nuke
 		Location: 53,55
 		Owner: AbandonedBase
-		Health: 0.2890625
+		Health: 29
 	GdiPyle: pyle
 		Location: 46,55
 		Owner: AbandonedBase
-		Health: 0.25
+		Health: 25
 	GdiSilo1: silo
 		Location: 53,51
 		Owner: AbandonedBase
-		Health: 0.3320313
+		Health: 33
 	GdiSilo2: silo
 		Location: 53,53
 		Owner: AbandonedBase
-		Health: 0.25
+		Health: 25
 	GdiNuke2: nuke
 		Location: 48,56
 		Owner: AbandonedBase
-		Health: 0.2070313
+		Health: 21
 	NodConYard: fact
 		Location: 9,29
 		Owner: Nod
