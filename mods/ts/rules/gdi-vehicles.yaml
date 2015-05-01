@@ -12,6 +12,8 @@ APC:
 	Mobile:
 		ROT: 5
 		Speed: 113
+		TerrainSpeeds:
+			Water: 80
 	Health:
 		HP: 200
 	Armor:
@@ -26,7 +28,11 @@ APC:
 		PipCount: 5
 	RenderSprites:
 	RenderVoxels:
-	WithVoxelBody:
+	WithVoxelWaterBody:
+	LeavesTrails:
+		Image: wake
+		Palette: effect
+		TerrainTypes: Water
 
 HVR:
 	Inherits: ^Vehicle
