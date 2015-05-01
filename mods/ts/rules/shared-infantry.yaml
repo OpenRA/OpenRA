@@ -9,8 +9,6 @@ E1:
 	Tooltip:
 		Name: Light Infantry
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 125
 	Mobile:
@@ -26,13 +24,6 @@ E1:
 		UpgradeMinEnabledLevel: 1
 	AttackFrontal:
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-			Prone60Percent: 60
-			Prone70Percent: 70
-			Prone100Percent: 100
-			Prone350Percent: 350
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 
@@ -47,8 +38,6 @@ ENGINEER:
 		Queue: Infantry
 		BuildPaletteOrder: 30
 		Prerequisites: ~barracks
-	Selectable:
-		Bounds: 12,17,0,-6
 	Voiced:
 		VoiceSet: Engineer
 	Mobile:
@@ -62,15 +51,8 @@ ENGINEER:
 	Captures:
 		CaptureTypes: building
 	-AutoTarget:
+	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
-	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-			Prone60Percent: 60
-			Prone70Percent: 70
-			Prone100Percent: 100
-			Prone350Percent: 350
-		DamageTriggers: TriggerProne
 	-GainsExperience:
 

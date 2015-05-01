@@ -9,8 +9,6 @@ E2:
 	Tooltip:
 		Name: Disc Thrower
 		Description: Infantry armed with special explosive discs.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 150
 	Mobile:
@@ -21,13 +19,6 @@ E2:
 		FireDelay: 5
 	AttackFrontal:
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-			Prone60Percent: 60
-			Prone70Percent: 70
-			Prone100Percent: 100
-			Prone350Percent: 350
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 
@@ -42,8 +33,6 @@ MEDIC:
 		Queue: Infantry
 		BuildPaletteOrder: 70
 		Prerequisites: ~gapile
-	Selectable:
-		Bounds: 12,17,0,-6
 	Voiced:
 		VoiceSet: Medic
 	Mobile:
@@ -56,13 +45,6 @@ MEDIC:
 		Weapon: Heal
 	AttackFrontal:
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-			Prone60Percent: 60
-			Prone70Percent: 70
-			Prone100Percent: 100
-			Prone350Percent: 350
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		AttackSequence: heal
@@ -81,9 +63,8 @@ JUMPJET:
 		Queue: Infantry
 		BuildPaletteOrder: 40
 		Prerequisites: ~gapile, garadr
-	Selectable:
-		Bounds: 12,17,0,-6
-		Voice: JumpJet
+	Voiced:
+		VoiceSet: JumpJet
 	Mobile:
 		Speed: 56
 	Health:
@@ -99,13 +80,6 @@ JUMPJET:
 	-Crushable:
 	AttackFrontal:
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-			Prone60Percent: 60
-			Prone70Percent: 70
-			Prone100Percent: 100
-			Prone350Percent: 350
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 
 GHOST:
@@ -120,9 +94,8 @@ GHOST:
 		BuildPaletteOrder: 50
 		Prerequisites: ~gapile, gatech
 		BuildLimit: 1
-	Selectable:
-		Bounds: 12,17,0,-6
-		Voice: Ghost
+	Voiced:
+		VoiceSet: Ghost
 	Mobile:
 		Speed: 56
 	Health:
@@ -141,13 +114,6 @@ GHOST:
 	C4Demolition:
 		C4Delay: 45
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-			Prone60Percent: 60
-			Prone70Percent: 70
-			Prone100Percent: 100
-			Prone350Percent: 350
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 
