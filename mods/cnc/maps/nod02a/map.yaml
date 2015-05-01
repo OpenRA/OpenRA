@@ -20,9 +20,9 @@ Type: Campaign
 
 Videos:
 	Briefing: nod2.vqa
-	GameLost: deskill.vqa
-	GameWon: airstrk.vqa
 	GameStart: seige.vqa
+	GameWon: airstrk.vqa
+	GameLost: deskill.vqa
 
 Options:
 	Crates: False
@@ -39,7 +39,7 @@ Players:
 	PlayerReference@GDI:
 		Name: GDI
 		Race: gdi
-		ColorRamp: 31,222,183		
+		ColorRamp: 31,222,183
 		Enemies: Nod
 	PlayerReference@Nod:
 		Name: Nod
@@ -51,7 +51,7 @@ Players:
 		LockColor: True
 		ColorRamp: 3,255,127
 		LockSpawn: True
-		LockTeam: True		
+		LockTeam: True
 		Enemies: GDI
 	PlayerReference@Neutral:
 		Name: Neutral
@@ -97,7 +97,7 @@ Actors:
 	Actor19: e1
 		Location: 43,36
 		Owner: GDI
-		SubCell: 3	
+		SubCell: 3
 	Actor31: e1
 		Location: 47,53
 		Owner: GDI
@@ -106,7 +106,7 @@ Actors:
 		Location: 49,54
 		Owner: GDI
 		Facing: 224
-		SubCell: 1	
+		SubCell: 1
 	Actor35: e1
 		Location: 34,57
 		Owner: GDI

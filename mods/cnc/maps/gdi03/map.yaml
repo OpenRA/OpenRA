@@ -823,17 +823,9 @@ Rules:
 			Amount: -10
 		-Capturable:
 	HQ:
-		Buildable:
-			Prerequisites: ~disabled
-	NOHQ:
-		Inherits: HQ
-		Buildable:
-			Prerequisites: proc
 		Tooltip:
 			Description: Provides an overview of the battlefield.\n  Requires power to operate.
 		-AirstrikePower:
-		RenderBuilding:
-			Image: hq
 	airstrike.proxy:
 		AirstrikePower:
 			Icon: airstrike
