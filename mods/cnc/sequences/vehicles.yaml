@@ -191,10 +191,10 @@ msam:
 	turret:
 		Start: 32
 		Facings: 32
-	aim:
+	empty-aim:
 		Start: 64
 		Facings: 32
-	turret-3:
+	aim:
 		Start: 64
 		Facings: 32
 	icon: msamicnh.tem
@@ -216,9 +216,9 @@ mlrs:
 		Start: 32
 		Facings: 32
 	aim:
-		Start: 64
+		Start: 32
 		Facings: 32
-	turret-3:
+	empty-aim:
 		Start: 96
 		Facings: 32
 	icon: mlrsicnh.tem
