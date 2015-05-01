@@ -71,8 +71,10 @@ elseif ($command -eq "clean")
 	else
 	{
 		$proc = Start-Process $msBuild $msBuildArguments -NoNewWindow -PassThru -Wait
-		rm *.dll # delete third party dependencies
+		rm *.dll
 		rm *.config
+		rm thirdparty/*.dll
+		rmdir thirdparty/windows/
 		rm mods/*/*.dll
 		echo "Clean complete."
 	}
