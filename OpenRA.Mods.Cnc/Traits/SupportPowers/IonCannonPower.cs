@@ -35,23 +35,17 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Apply the weapon impact this many ticks into the effect")]
 		public readonly int WeaponDelay = 7;
 
-		public readonly string Cursor = "ioncannon";
 		public override object Create(ActorInitializer init) { return new IonCannonPower(init.Self, this); }
 	}
 
 	class IonCannonPower : SupportPower
 	{
-		public IonCannonPower(Actor self, IonCannonPowerInfo info) : base(self, info) { }
+		readonly IonCannonPowerInfo info;
 
-		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
+		public IonCannonPower(Actor self, IonCannonPowerInfo info)
+			: base(self, info)
 		{
-			// Clear selection if using Left-Click Orders
-			if (Game.Settings.Game.UseClassicMouseStyle)
-				manager.Self.World.Selection.Clear();
-
-			Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
-			var info = Info as IonCannonPowerInfo;
-			return new SelectGenericPowerTarget(order, manager, info.Cursor, MouseButton.Left);
+			this.info = info;
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -60,7 +54,6 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				var info = Info as IonCannonPowerInfo;
 				Sound.Play(Info.LaunchSound, self.World.Map.CenterOfCell(order.TargetLocation));
 				w.Add(new IonCannon(self.Owner, info.Weapon, w, order.TargetLocation, info.Effect, info.EffectPalette, info.WeaponDelay));
 
