@@ -625,8 +625,6 @@ Rules:
 			GenericStancePrefix: false
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
-	^CivInfantry:
-		MustBeDestroyed:
 	^CivBuilding:
 		MustBeDestroyed:
 	^Plane:

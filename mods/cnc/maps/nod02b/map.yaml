@@ -20,9 +20,9 @@ Type: Campaign
 
 Videos:
 	Briefing: nod2.vqa
-	GameLost: deskill.vqa
-	GameWon: airstrk.vqa
 	GameStart: seige.vqa
+	GameWon: airstrk.vqa
+	GameLost: deskill.vqa
 
 Options:
 	Crates: False
@@ -102,7 +102,7 @@ Actors:
 		Owner: Neutral
 	Actor13: rock1
 		Location: 22,32
-		Owner: Neutral	
+		Owner: Neutral
 	Actor20: jeep
 		Location: 5,24
 		Owner: GDI
@@ -127,7 +127,7 @@ Actors:
 		SubCell: 1
 	Actor30: e1
 		Location: 9,24
-		Owner: GDI		
+		Owner: GDI
 		Facing: 96
 		SubCell: 4
 	Actor31: e1
@@ -148,13 +148,13 @@ Actors:
 		SubCell: 1
 	Actor35: e1
 		Location: 10,24
-		Owner: GDI		
+		Owner: GDI
 		Facing: 96
-		SubCell: 2	
+		SubCell: 2
 	Actor37: e1
 		Location: 7,40
 		Owner: GDI
-		SubCell: 2	
+		SubCell: 2
 	waypoint27: waypoint
 		Location: 60,61
 		Owner: Neutral

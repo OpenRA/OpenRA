@@ -1,4 +1,4 @@
-﻿MapFormat: 7
+MapFormat: 7
 
 RequiresMod: cnc
 
@@ -20,8 +20,8 @@ Type: Campaign
 
 Videos:
 	Briefing: nod4b.vqa
-	GameLost: deskill.vqa
 	GameStart: retro.vqa
+	GameLost: deskill.vqa
 
 Options:
 	Crates: False
@@ -49,7 +49,7 @@ Players:
 	PlayerReference@GDI:
 		Name: GDI
 		Race: gdi
-		ColorRamp: 31,222,183		
+		ColorRamp: 31,222,183
 		Enemies: Nod
 	PlayerReference@Nod:
 		Name: Nod
@@ -64,7 +64,7 @@ Players:
 		LockTeam: True
 		Enemies: GDI
 
-Actors:	
+Actors:
 	Actor0: t08
 		Location: 34,20
 		Owner: Neutral
@@ -151,7 +151,7 @@ Actors:
 		Owner: Neutral
 	Actor28: t18
 		Location: 20,7
-		Owner: Neutral	
+		Owner: Neutral
 	Actor30: t08
 		Location: 12,8
 		Owner: Neutral
@@ -276,7 +276,7 @@ Actors:
 		Owner: GDI
 		Health: 94
 		Facing: 32
-		SubCell: 4	
+		SubCell: 4
 	Actor105: e1
 		Location: 46,14
 		Owner: GDI
