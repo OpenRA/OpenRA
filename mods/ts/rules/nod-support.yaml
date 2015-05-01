@@ -282,6 +282,7 @@ NAMISL:
 	DisabledOverlay:
 	SupportPowerChargeBar:
 	NukePower:
+		Cursor: nuke
 		Icon: clustermissile
 		ChargeTime: 540
 		Description: Cluster Missile

@@ -20,6 +20,7 @@ MSLO:
 	RevealsShroud:
 		Range: 5c0
 	NukePower:
+		Cursor: nuke
 		Icon: abomb
 		ChargeTime: 540
 		Description: Atom Bomb
