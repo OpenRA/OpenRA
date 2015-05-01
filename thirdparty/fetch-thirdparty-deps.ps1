@@ -121,3 +121,17 @@ if (!(Test-Path "FuzzyLogicLibrary.dll"))
 	cp FuzzyLogicLibrary/bin/Release/FuzzyLogicLibrary.dll .
 	rmdir FuzzyLogicLibrary -Recurse
 }
+
+if (!(Test-Path "SDL2-CS.dll"))
+{
+	echo "Fetching SDL2 C# from GitHub."
+	$target = Join-Path $pwd.ToString() "SDL2-CS.dll"
+	(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/SDL2-CS/releases/download/20140407/SDL2-CS.dll", $target)
+}
+
+if (!(Test-Path "Eluant.dll"))
+{
+	echo "Fetching Eluant from GitHub."
+	$target = Join-Path $pwd.ToString() "Eluant.dll"
+	(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/Eluant/releases/download/20140425/Eluant.dll", $target)
+}
