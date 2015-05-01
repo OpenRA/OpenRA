@@ -93,7 +93,6 @@ Section "Game" GAME
 	File "${DEPSDIR}\soft_oal.dll"
 	File "${DEPSDIR}\SDL2.dll"
 	File "${DEPSDIR}\freetype6.dll"
-	File "${DEPSDIR}\zlib1.dll"
 	File "${DEPSDIR}\lua51.dll"
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
@@ -211,7 +210,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\lua51.dll
 	Delete $INSTDIR\eluant.dll
 	Delete $INSTDIR\freetype6.dll
-	Delete $INSTDIR\zlib1.dll
 	Delete $INSTDIR\SDL2-CS.dll
 	RMDir /r $INSTDIR\Support
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"

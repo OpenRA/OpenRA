@@ -50,10 +50,11 @@ if (!(Test-Path "MaxMind.GeoIP2.dll"))
 if (!(Test-Path "SharpFont.dll"))
 {
 	echo "Fetching SharpFont from NuGet."
-	./nuget.exe install SharpFont -Version 2.5.0.1 -ExcludeVersion
+	./nuget.exe install SharpFont -Version 3.0.0 -ExcludeVersion
 	cp SharpFont/lib/net20/SharpFont* .
-	cp SharpFont/Content/SharpFont.dll.config .
+	cp SharpFont/config/SharpFont.dll.config .
 	rmdir SharpFont -Recurse
+	rmdir SharpFont.Dependencies -Recurse
 }
 
 if (!(Test-Path "nunit.framework.dll"))
@@ -92,18 +93,9 @@ if (!(Test-Path "windows/lua51.dll"))
 if (!(Test-Path "windows/freetype6.dll"))
 {
 	echo "Fetching FreeType2 from NuGet."
-	./nuget.exe install freetype2.redist -Version 2.4.11.3 -ExcludeVersion
-	cp freetype2.redist/bin/win32/zlib1.dll ./windows/zlib1.dll
-	cp freetype2.redist/bin/win32/freetype6.dll ./windows/freetype6.dll
-	rmdir freetype2.redist -Recurse
-}
-
-if (!(Test-Path "windows/zlib1.dll"))
-{
-	echo "Fetching ZLib from NuGet."
-	./nuget.exe install freetype2.redist -Version 2.4.11.3 -ExcludeVersion
-	cp freetype2.redist/bin/win32/zlib1.dll ./windows/zlib1.dll
-	rmdir freetype2.redist -Recurse
+	./nuget.exe install SharpFont.Dependencies -Version 2.5.5.1 -ExcludeVersion
+	cp SharpFont.Dependencies/bin/msvc10/x86/freetype6.dll ./windows/freetype6.dll
+	rmdir SharpFont.Dependencies -Recurse
 }
 
 if (!(Test-Path "windows/soft_oal.dll"))
