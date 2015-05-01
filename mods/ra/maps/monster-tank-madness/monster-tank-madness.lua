@@ -18,7 +18,6 @@ ExtractionHeli = "tran"
 ExtractionWaypoint = CPos.New(DemitriLZ.Location.X, 0)
 ExtractionLZ = DemitriLZ.Location
 BeachTrigger = { CPos.New(19, 44), CPos.New(20, 44), CPos.New(21, 44), CPos.New(22, 44), CPos.New(22, 45), CPos.New(23, 45), CPos.New(22, 44), CPos.New(24, 45), CPos.New(24, 46), CPos.New(24, 47), CPos.New(25, 47), CPos.New(25, 48) }
-SetupAlliedBaseTrigger = { CPos.New(19, 33),  CPos.New(20, 33),  CPos.New(21, 33),  CPos.New(22, 33),  CPos.New(23, 33),  CPos.New(24, 33),  CPos.New(25, 33),  CPos.New(26, 33),  CPos.New(27, 33),  CPos.New(28, 33) }
 DemitriAreaTrigger = { CPos.New(32, 98), CPos.New(32, 99), CPos.New(33, 99), CPos.New(33, 100), CPos.New(33, 101), CPos.New(33, 102), CPos.New(32, 102), CPos.New(32, 103) }
 HospitalAreaTrigger = { CPos.New(43, 41), CPos.New(44, 41), CPos.New(45, 41), CPos.New(46, 41), CPos.New(46, 42), CPos.New(46, 43), CPos.New(46, 44), CPos.New(46, 45), CPos.New(46, 46), CPos.New(45, 46), CPos.New(44, 46), CPos.New(43, 46) }
 
@@ -345,10 +344,9 @@ InitTriggers = function()
 		end
 	end)
 
-	Trigger.OnEnteredFootprint(SetupAlliedBaseTrigger, function(a, id)
-		if not outpostReached and a.Owner == player then
+	Trigger.OnPlayerDiscovered(outpost, function(_, discoverer)
+		if not outpostReached and discoverer == player then
 			outpostReached = true
-			Trigger.RemoveFootprintTrigger(id)
 			SetupAlliedBase()
 		end
 	end)
