@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
@@ -18,19 +19,19 @@ namespace OpenRA.Mods.D2k.Traits
 	public class BuildableTerrainLayerInfo : TraitInfo<BuildableTerrainLayer> { }
 	public class BuildableTerrainLayer : IRenderOverlay, IWorldLoaded, ITickRender
 	{
-		Dictionary<CPos, Sprite> tiles;
-		Dictionary<CPos, Sprite> dirty;
+		readonly Dictionary<CPos, Sprite> tiles = new Dictionary<CPos, Sprite>();
+		readonly Dictionary<CPos, Sprite> tilesDirty = new Dictionary<CPos, Sprite>();
 		Theater theater;
 		TileSet tileset;
 		Map map;
+		VertexCache vertexCache;
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			theater = wr.Theater;
 			tileset = w.TileSet;
 			map = w.Map;
-			tiles = new Dictionary<CPos, Sprite>();
-			dirty = new Dictionary<CPos, Sprite>();
+			vertexCache = new VertexCache(map);
 		}
 
 		public void AddTile(CPos cell, TerrainTile tile)
@@ -39,39 +40,39 @@ namespace OpenRA.Mods.D2k.Traits
 
 			// Terrain tiles define their origin at the topleft
 			var s = theater.TileSprite(tile);
-			dirty[cell] = new Sprite(s.Sheet, s.Bounds, float2.Zero, s.Channel, s.BlendMode);
+			tilesDirty[cell] = new Sprite(s.Sheet, s.Bounds, float2.Zero, s.Channel, s.BlendMode);
 		}
 
 		public void TickRender(WorldRenderer wr, Actor self)
 		{
 			var remove = new List<CPos>();
-			foreach (var kv in dirty)
+			foreach (var kv in tilesDirty)
 			{
-				if (!self.World.FogObscures(kv.Key))
+				var cell = kv.Key;
+				if (!self.World.FogObscures(cell))
 				{
-					tiles[kv.Key] = kv.Value;
-					remove.Add(kv.Key);
+					tiles[cell] = kv.Value;
+					vertexCache.Invalidate(cell);
+					remove.Add(cell);
 				}
 			}
 
 			foreach (var r in remove)
-				dirty.Remove(r);
+				tilesDirty.Remove(r);
 		}
 
 		public void Render(WorldRenderer wr)
 		{
+			var world = wr.World;
 			var pal = wr.Palette("terrain");
-
+			var visibleCells = wr.Viewport.VisibleCells;
+			var shroudObscured = world.ShroudObscuresTest(visibleCells);
 			foreach (var kv in tiles)
 			{
-				if (!wr.Viewport.VisibleCells.Contains(kv.Key))
+				var uv = kv.Key.ToMPos(world.Map);
+				if (!visibleCells.Contains(uv) || shroudObscured(uv))
 					continue;
-
-				if (wr.World.ShroudObscures(kv.Key))
-					continue;
-
-				new SpriteRenderable(kv.Value, wr.World.Map.CenterOfCell(kv.Key),
-					WVec.Zero, -511, pal, 1f, true).Render(wr);
+				vertexCache.RenderCenteredOverCell(wr, kv.Value, pal, uv);
 			}
 		}
 	}

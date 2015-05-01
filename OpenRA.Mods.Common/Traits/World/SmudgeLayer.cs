@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -45,11 +46,13 @@ namespace OpenRA.Mods.Common.Traits
 			public Sprite Sprite;
 		}
 
-		public SmudgeLayerInfo Info;
-		Dictionary<CPos, Smudge> tiles;
-		Dictionary<CPos, Smudge> dirty;
-		Dictionary<string, Sprite[]> smudges;
+		public readonly SmudgeLayerInfo Info;
+		readonly Dictionary<CPos, Smudge> tiles = new Dictionary<CPos, Smudge>();
+		readonly Dictionary<CPos, Smudge> tilesDirty = new Dictionary<CPos, Smudge>();
+		readonly Dictionary<string, Sprite[]> smudges = new Dictionary<string, Sprite[]>();
+
 		World world;
+		VertexCache vertexCache;
 
 		public SmudgeLayer(SmudgeLayerInfo info)
 		{
@@ -59,9 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
-			tiles = new Dictionary<CPos, Smudge>();
-			dirty = new Dictionary<CPos, Smudge>();
-			smudges = new Dictionary<string, Sprite[]>();
+			vertexCache = new VertexCache(world.Map);
 
 			var types = world.Map.SequenceProvider.Sequences(Info.Sequence);
 			foreach (var t in types)
@@ -101,16 +102,16 @@ namespace OpenRA.Mods.Common.Traits
 			if (Game.CosmeticRandom.Next(0, 100) <= Info.SmokePercentage)
 				world.AddFrameEndTask(w => w.Add(new Smoke(w, world.Map.CenterOfCell(loc), Info.SmokeType, Info.SmokePalette)));
 
-			if (!dirty.ContainsKey(loc) && !tiles.ContainsKey(loc))
+			if (!tilesDirty.ContainsKey(loc) && !tiles.ContainsKey(loc))
 			{
 				// No smudge; create a new one
 				var st = smudges.Keys.Random(world.SharedRandom);
-				dirty[loc] = new Smudge { Type = st, Depth = 0, Sprite = smudges[st][0] };
+				tilesDirty[loc] = new Smudge { Type = st, Depth = 0, Sprite = smudges[st][0] };
 			}
 			else
 			{
 				// Existing smudge; make it deeper
-				var tile = dirty.ContainsKey(loc) ? dirty[loc] : tiles[loc];
+				var tile = tilesDirty.ContainsKey(loc) ? tilesDirty[loc] : tiles[loc];
 				var maxDepth = smudges[tile.Type].Length;
 				if (tile.Depth < maxDepth - 1)
 				{
@@ -118,40 +119,39 @@ namespace OpenRA.Mods.Common.Traits
 					tile.Sprite = smudges[tile.Type][tile.Depth];
 				}
 
-				dirty[loc] = tile;
+				tilesDirty[loc] = tile;
 			}
 		}
 
 		public void TickRender(WorldRenderer wr, Actor self)
 		{
 			var remove = new List<CPos>();
-			foreach (var kv in dirty)
+			foreach (var kv in tilesDirty)
 			{
-				if (!self.World.FogObscures(kv.Key))
+				var cell = kv.Key;
+				if (!self.World.FogObscures(cell))
 				{
-					tiles[kv.Key] = kv.Value;
-					remove.Add(kv.Key);
+					tiles[cell] = kv.Value;
+					vertexCache.Invalidate(cell);
+					remove.Add(cell);
 				}
 			}
 
 			foreach (var r in remove)
-				dirty.Remove(r);
+				tilesDirty.Remove(r);
 		}
 
 		public void Render(WorldRenderer wr)
 		{
 			var pal = wr.Palette(Info.Palette);
-
+			var visibleCells = wr.Viewport.VisibleCells;
+			var shroudObscured = world.ShroudObscuresTest(visibleCells);
 			foreach (var kv in tiles)
 			{
-				if (!wr.Viewport.VisibleCells.Contains(kv.Key))
+				var uv = kv.Key.ToMPos(world.Map);
+				if (!visibleCells.Contains(uv) || shroudObscured(uv))
 					continue;
-
-				if (world.ShroudObscures(kv.Key))
-					continue;
-
-				new SpriteRenderable(kv.Value.Sprite, world.Map.CenterOfCell(kv.Key),
-					WVec.Zero, -511, pal, 1f, true).Render(wr); // TODO ZOffset is ignored
+				vertexCache.RenderCenteredOverCell(wr, kv.Value.Sprite, pal, uv);
 			}
 		}
 	}

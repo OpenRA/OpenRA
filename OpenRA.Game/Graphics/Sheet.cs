@@ -97,14 +97,27 @@ namespace OpenRA.Graphics
 
 		public Bitmap AsBitmap()
 		{
-			var d = GetData();
+			var data = GetData();
 			var dataStride = 4 * Size.Width;
 			var bitmap = new Bitmap(Size.Width, Size.Height);
+
+			var copy = (byte[])data.Clone();
+			for (var i = 0; i < copy.Length; i += 4)
+			{
+				var b = copy[i + 0];
+				var g = copy[i + 1];
+				var r = copy[i + 2];
+				var a = copy[i + 3];
+				copy[i + 0] = a;
+				copy[i + 1] = r;
+				copy[i + 2] = g;
+				copy[i + 3] = b;
+			}
 
 			var bd = bitmap.LockBits(bitmap.Bounds(),
 				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 			for (var y = 0; y < Size.Height; y++)
-				Marshal.Copy(d, y * dataStride, IntPtr.Add(bd.Scan0, y * bd.Stride), dataStride);
+				Marshal.Copy(copy, y * dataStride, IntPtr.Add(bd.Scan0, y * bd.Stride), dataStride);
 			bitmap.UnlockBits(bd);
 
 			return bitmap;

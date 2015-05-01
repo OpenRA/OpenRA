@@ -21,6 +21,11 @@ namespace OpenRA.Graphics
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
 		static readonly float[] ChannelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
+		public static void FastCreateQuad(Vertex[] vertices, float2 loc, Sprite r, PaletteReference pr, int nv)
+		{
+			FastCreateQuad(vertices, loc + r.FractionalOffset * r.Size, r, pr.TextureIndex, nv, r.Size);
+		}
+
 		public static void FastCreateQuad(Vertex[] vertices, float2 o, Sprite r, float paletteTextureIndex, int nv, float2 size)
 		{
 			var b = new float2(o.X + size.X, o.Y);

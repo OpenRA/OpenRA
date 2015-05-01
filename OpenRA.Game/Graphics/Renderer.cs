@@ -178,6 +178,11 @@ namespace OpenRA.Graphics
 
 		public Size Resolution { get { return Device.WindowSize; } }
 
+		public IVertexBuffer<Vertex> CreateVertexBuffer(int length)
+		{
+			return Device.CreateVertexBuffer(length);
+		}
+
 		internal IVertexBuffer<Vertex> GetTempVertexBuffer()
 		{
 			return tempBuffers.Peek();

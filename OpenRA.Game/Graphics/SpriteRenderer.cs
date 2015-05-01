@@ -103,10 +103,10 @@ namespace OpenRA.Graphics
 			nv += 4;
 		}
 
-		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveType type, Sheet sheet)
+		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveType type, Sheet sheet, BlendMode blendMode)
 		{
 			shader.SetTexture("DiffuseTexture", sheet.GetTexture());
-			renderer.Device.SetBlendMode(BlendMode.Alpha);
+			renderer.Device.SetBlendMode(blendMode);
 			shader.Render(() => renderer.DrawBatch(buffer, start, length, type));
 			renderer.Device.SetBlendMode(BlendMode.None);
 		}

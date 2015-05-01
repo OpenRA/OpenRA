@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -23,26 +24,25 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		static readonly CellContents EmptyCell = new CellContents();
 
-		World world;
-
-		BuildingInfluence buildingInfluence;
-
 		protected CellLayer<CellContents> content;
 		protected CellLayer<CellContents> render;
-		List<CPos> dirty;
+		readonly HashSet<CPos> contentDirty = new HashSet<CPos>();
+
+		World world;
+		BuildingInfluence buildingInfluence;
+		VertexCache vertexCache;
 
 		public void Render(WorldRenderer wr)
 		{
-			var shroudObscured = world.ShroudObscuresTest(wr.Viewport.VisibleCells);
-			foreach (var uv in wr.Viewport.VisibleCells.MapCoords)
+			var visibleCells = wr.Viewport.VisibleCells;
+			var shroudObscured = world.ShroudObscuresTest(visibleCells);
+			foreach (var uv in visibleCells.MapCoords)
 			{
-				if (shroudObscured(uv))
-					continue;
-
 				var c = render[uv];
-				if (c.Sprite != null)
-					new SpriteRenderable(c.Sprite, wr.World.Map.CenterOfCell(uv.ToCPos(world.Map)),
-						WVec.Zero, -511, c.Type.Palette, 1f, true).Render(wr); // TODO ZOffset is ignored
+				var sprite = c.Sprite;
+				if (sprite == null || shroudObscured(uv))
+					continue;
+				vertexCache.RenderCenteredOverCell(wr, sprite, c.Type.Palette, uv);
 			}
 		}
 
@@ -62,10 +62,12 @@ namespace OpenRA.Mods.Common.Traits
 			this.world = w;
 
 			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
+			vertexCache = new VertexCache(w.Map);
 
 			content = new CellLayer<CellContents>(w.Map);
+			content.CellEntryChanged += cell => contentDirty.Add(cell);
 			render = new CellLayer<CellContents>(w.Map);
-			dirty = new List<CPos>();
+			render.CellEntryChanged += vertexCache.Invalidate;
 
 			var resources = w.WorldActor.TraitsImplementing<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
@@ -73,10 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var cell in w.Map.Cells)
 			{
 				ResourceType t;
-				if (!resources.TryGetValue(w.Map.MapResources.Value[cell].Type, out t))
-					continue;
-
-				if (!AllowResourceAt(t, cell))
+				if (!resources.TryGetValue(w.Map.MapResources.Value[cell].Type, out t) || !AllowResourceAt(t, cell))
 					continue;
 
 				content[cell] = CreateResourceCell(t, cell);
@@ -94,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 					var temp = content[cell];
 					temp.Density = Math.Max(density, 1);
 
-					render[cell] = content[cell] = temp;
+					content[cell] = temp;
 					UpdateRenderedSprite(cell);
 				}
 			}
@@ -102,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void UpdateRenderedSprite(CPos cell)
 		{
-			var t = render[cell];
+			var t = content[cell];
 			if (t.Density > 0)
 			{
 				var sprites = t.Type.Variants[t.Variant];
@@ -123,18 +122,17 @@ namespace OpenRA.Mods.Common.Traits
 		public void TickRender(WorldRenderer wr, Actor self)
 		{
 			var remove = new List<CPos>();
-			foreach (var c in dirty)
+			foreach (var c in contentDirty)
 			{
 				if (!self.World.FogObscures(c))
 				{
-					render[c] = content[c];
 					UpdateRenderedSprite(c);
 					remove.Add(c);
 				}
 			}
 
 			foreach (var r in remove)
-				dirty.Remove(r);
+				contentDirty.Remove(r);
 		}
 
 		public bool AllowResourceAt(ResourceType rt, CPos cell)
@@ -191,9 +189,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			cell.Density = Math.Min(cell.Type.Info.MaxDensity, cell.Density + n);
 			content[p] = cell;
-
-			if (!dirty.Contains(p))
-				dirty.Add(p);
 		}
 
 		public bool IsFull(CPos cell)
@@ -215,9 +210,6 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				content[cell] = c;
 
-			if (!dirty.Contains(cell))
-				dirty.Add(cell);
-
 			return c.Type;
 		}
 
@@ -230,9 +222,6 @@ namespace OpenRA.Mods.Common.Traits
 			// Clear cell
 			content[cell] = EmptyCell;
 			world.Map.CustomTerrain[cell] = byte.MaxValue;
-
-			if (!dirty.Contains(cell))
-				dirty.Add(cell);
 		}
 
 		public ResourceType GetResource(CPos cell) { return content[cell].Type; }
