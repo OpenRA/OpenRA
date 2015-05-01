@@ -129,9 +129,9 @@ LUA_URL="http://www.lua.org/ftp/$LUA_FILENAME"
 if [ $BUILD_53 ]; then
   LUAV="53"
   LUAS=$LUAV
-  LUA_BASENAME="lua-5.3.0-beta"
+  LUA_BASENAME="lua-5.3.0"
   LUA_FILENAME="$LUA_BASENAME.tar.gz"
-  LUA_URL="http://www.lua.org/work/$LUA_FILENAME"
+  LUA_URL="http://www.lua.org/ftp/$LUA_FILENAME"
 fi
 
 if [ $BUILD_JIT ]; then
