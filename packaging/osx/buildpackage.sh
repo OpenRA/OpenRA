@@ -14,7 +14,7 @@ if [ -e "OpenRA.app" ]; then
     exit 2
 fi
 
-wget https://github.com/OpenRA/OpenRALauncherOSX/releases/download/${LAUNCHER_TAG}/launcher.zip || exit 3
+curl -s -L -O https://github.com/OpenRA/OpenRALauncherOSX/releases/download/${LAUNCHER_TAG}/launcher.zip || exit 3
 unzip launcher.zip
 rm launcher.zip
 

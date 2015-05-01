@@ -22,9 +22,9 @@ make package
 find . -path "*.mdb" -delete
 
 test -e Changelog.md && rm Changelog.md
-wget https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md
+curl -s -L -O https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md
 
-wget http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip
+curl -s -L -O http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip
 unzip Markdown_1.0.1.zip
 rm -rf Markdown_1.0.1.zip
 ./Markdown_1.0.1/Markdown.pl Changelog.md > CHANGELOG.html
