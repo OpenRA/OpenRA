@@ -271,7 +271,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 
 ########################## MAKE/INSTALL RULES ##########################
 #
-default: cli-dependencies core
+default: dependencies core
 
 core: game renderers mods utility
 
