@@ -238,7 +238,7 @@ Actors:
 	Harvester: harv
 		Location: 5,29
 		Owner: GDI
-		Health: 0.3945313
+		Health: 39
 		Facing: 224
 	McvEntry: waypoint
 		Location: 33,48
