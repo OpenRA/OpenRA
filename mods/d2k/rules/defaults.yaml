@@ -202,6 +202,7 @@
 			Rough: 70
 	SelectionDecorations:
 	Selectable:
+		Bounds: 12,18,0,-6
 	TargetableUnit:
 		TargetTypes: Ground
 	RenderSprites:
