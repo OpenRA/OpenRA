@@ -304,6 +304,12 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return SharesCell; } }
 	}
 
+	public interface INotifyMovement
+	{
+		void OnMovementStart(Actor self);
+		void OnMovementStop(Actor self);
+	}
+
 	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
 	{
 		const int AverageTicksBeforePathing = 5;
@@ -495,6 +501,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
 
+			foreach (var notify in self.TraitsImplementing<INotifyMovement>())
+				notify.OnMovementStart(self);
+
 			self.QueueActivity(new Move(self, currentLocation, 8));
 
 			self.SetTargetLine(Target.FromCell(self.World, currentLocation), Color.Green);
@@ -585,6 +594,9 @@ namespace OpenRA.Mods.Common.Traits
 				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(c => c.CrushableBy(Info.Crushes, self.Owner)));
 			foreach (var crushable in crushables)
 				crushable.OnCrush(self);
+
+			foreach (var notify in self.TraitsImplementing<INotifyMovement>())
+				notify.OnMovementStop(self);
 		}
 
 		public int MovementSpeedForCell(Actor self, CPos cell)
