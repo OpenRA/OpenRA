@@ -384,11 +384,11 @@ TSLA:
 	Bib:
 		HasMinibib: Yes
 	RenderBuildingCharge:
-		ChargeAudio: tslachg2.aud
 	Armament:
 		Weapon: TeslaZap
 		LocalOffset: 0,0,427
 	AttackCharge:
+		ChargeAudio: tslachg2.aud
 		MaxCharges: 3
 		ReloadTime: 120
 	AutoTarget:

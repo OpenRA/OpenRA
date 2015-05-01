@@ -29,6 +29,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay between charge attacks (in ticks).")]
 		public readonly int ChargeDelay = 3;
 
+		[Desc("Sound to play when actor charges.")]
+		public readonly string ChargeAudio = null;
+
 		public override object Create(ActorInitializer init) { return new AttackCharge(init.Self, this); }
 	}
 
@@ -98,7 +101,11 @@ namespace OpenRA.Mods.Common.Traits
 				if (attack.charges == 0)
 					return this;
 
-				self.Trait<RenderBuildingCharge>().PlayCharge(self);
+				foreach (var notify in self.TraitsImplementing<INotifyCharging>())
+					notify.Charging(self, target);
+
+				if (!string.IsNullOrEmpty(attack.info.ChargeAudio))
+					Sound.Play(attack.info.ChargeAudio, self.CenterPosition);
 
 				return Util.SequenceActivities(new Wait(attack.info.InitialChargeDelay), new ChargeFire(attack, target), this);
 			}
