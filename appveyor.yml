@@ -31,9 +31,9 @@ after_test:
   - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o DOCUMENTATION.html DOCUMENTATION.md'
   - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o Lua-API.html Lua-API.md'
   - cp OpenRA.Game/OpenRA.ico .
-  - appveyor DownloadFile "http://downloads.sourceforge.net/project/nsis/NSIS 2/2.46/nsis-2.46-setup.exe" -FileName nsissetup.exe
+  - if not exist nsissetup.exe appveyor DownloadFile "http://downloads.sourceforge.net/project/nsis/NSIS 2/2.46/nsis-2.46-setup.exe" -FileName nsissetup.exe
   - nsissetup /S /D=%NSIS_ROOT%
-  - appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/archive/1/18/20140806212030!NsProcess.zip" -FileName NsProcess.zip
+  - if not exist NsProcess.zip appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/archive/1/18/20140806212030!NsProcess.zip" -FileName NsProcess.zip
   - 7z x NsProcess.zip -o%NSIS_ROOT% -y
   - move /Y %NSIS_ROOT%\Plugin\nsProcess.dll %NSIS_ROOT%\Plugins\nsProcess.dll
   - '%NSIS_ROOT%\makensis /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\windows" /V3 packaging/windows/OpenRA.nsi'
