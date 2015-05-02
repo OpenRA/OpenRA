@@ -34,11 +34,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var toc = new StringBuilder();
 			var doc = new StringBuilder();
+			var currentNamespace = "";
 
 			foreach (var t in Game.ModData.ObjectCreator.GetTypesImplementing<ITraitInfo>().OrderBy(t => t.Namespace))
 			{
 				if (t.ContainsGenericParameters || t.IsAbstract)
 					continue; // skip helpers like TraitInfo<T>
+
+				if (currentNamespace != t.Namespace)
+				{
+					currentNamespace = t.Namespace;
+					doc.AppendLine();
+					doc.AppendLine("## {0}".F(currentNamespace));
+				}
 
 				var traitName = t.Name.EndsWith("Info") ? t.Name.Substring(0, t.Name.Length - 4) : t.Name;
 				toc.AppendLine("* [{0}](#{1})".F(traitName, traitName.ToLowerInvariant()));
