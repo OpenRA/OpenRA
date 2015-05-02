@@ -335,7 +335,7 @@ local function activateDocument(file, line, activatehow)
       end
 
       local selection = document.index
-      if ide.config.debugger.requestattention then RequestAttention() end
+      RequestAttention()
       notebook:SetSelection(selection)
       SetEditorSelection(selection)
 
