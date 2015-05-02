@@ -40,7 +40,7 @@
 CSC         = dmcs
 CSFLAGS     = -nologo -warn:4 -debug:full -optimize- -codepage:utf8 -unsafe -warnaserror
 DEFINE      = DEBUG;TRACE
-COMMON_LIBS = System.dll System.Core.dll System.Data.dll System.Data.DataSetExtensions.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll thirdparty/MaxMind.Db.dll thirdparty/MaxMind.GeoIP2.dll thirdparty/Eluant.dll
+COMMON_LIBS = System.dll System.Core.dll System.Data.dll System.Data.DataSetExtensions.dll System.Drawing.dll System.Xml.dll thirdparty/download/ICSharpCode.SharpZipLib.dll thirdparty/download/FuzzyLogicLibrary.dll thirdparty/download/Mono.Nat.dll thirdparty/download/MaxMind.Db.dll thirdparty/download/MaxMind.GeoIP2.dll thirdparty/download/Eluant.dll
 
 
 
@@ -74,6 +74,14 @@ CORE = rsdl2 rnull game utility
 TOOLS = editor crashdialog
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
+# dependencies
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+os-dependencies = linux-dependencies
+else ifeq ($(UNAME_S),Darwin)
+os-dependencies = osx-dependencies
+endif
+
 
 
 ######################## PROGRAM TARGET RULES ##########################
@@ -83,7 +91,7 @@ VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev
 game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET = OpenRA.Game.exe
 game_KIND = winexe
-game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/SDL2-CS.dll thirdparty/SharpFont.dll
+game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/download/SDL2-CS.dll thirdparty/download/SharpFont.dll
 game_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
 PROGRAMS += game
 game: $(game_TARGET)
@@ -93,7 +101,7 @@ rsdl2_SRCS := $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
 rsdl2_TARGET = OpenRA.Renderer.Sdl2.dll
 rsdl2_KIND = library
 rsdl2_DEPS = $(game_TARGET)
-rsdl2_LIBS = $(COMMON_LIBS) thirdparty/SDL2-CS.dll $(rsdl2_DEPS)
+rsdl2_LIBS = $(COMMON_LIBS) thirdparty/download/SDL2-CS.dll $(rsdl2_DEPS)
 
 rnull_SRCS := $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
 rnull_TARGET = OpenRA.Renderer.Null.dll
@@ -108,7 +116,7 @@ mod_common_SRCS := $(shell find OpenRA.Mods.Common/ -iname '*.cs')
 mod_common_TARGET = mods/common/OpenRA.Mods.Common.dll
 mod_common_KIND = library
 mod_common_DEPS = $(game_TARGET)
-mod_common_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) thirdparty/StyleCop.dll thirdparty/StyleCop.CSharp.dll thirdparty/StyleCop.CSharp.Rules.dll
+mod_common_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) thirdparty/download/StyleCop.dll thirdparty/download/StyleCop.CSharp.dll thirdparty/download/StyleCop.CSharp.Rules.dll
 PROGRAMS += mod_common
 mod_common: $(mod_common_TARGET)
 
@@ -160,7 +168,7 @@ editor_SRCS := $(shell find OpenRA.Editor/ -iname '*.cs')
 editor_TARGET = OpenRA.Editor.exe
 editor_KIND = winexe
 editor_DEPS = $(game_TARGET) $(mod_common_TARGET)
-editor_LIBS = System.Windows.Forms.dll System.Data.dll System.Drawing.dll $(editor_DEPS) thirdparty/Eluant.dll
+editor_LIBS = System.Windows.Forms.dll System.Data.dll System.Drawing.dll $(editor_DEPS) thirdparty/download/Eluant.dll
 editor_EXTRA = -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
 editor_FLAGS = -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico
 
@@ -240,7 +248,7 @@ utility_SRCS := $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET = OpenRA.Utility.exe
 utility_KIND = exe
 utility_DEPS = $(game_TARGET)
-utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll
+utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/download/ICSharpCode.SharpZipLib.dll
 PROGRAMS += utility
 utility: $(utility_TARGET)
 
@@ -271,38 +279,47 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 
 ########################## MAKE/INSTALL RULES ##########################
 #
-default: dependencies core
+default: core
 
 core: game renderers mods utility
 
 tools: editor gamemonitor
 
-package: cli-dependencies core editor gamemonitor docs version
+package: all-dependencies core tools docs version
 
 mods: mod_common mod_ra mod_cnc mod_d2k mod_ts
 
-all: cli-dependencies core tools
+all: dependencies core tools
 
 clean:
-	@-$(RM_F) *.exe *.dll ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
+	@-$(RM_F) *.exe *.dll *.dylib *.config ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 	@-$(RM_RF) ./*/bin ./*/obj
-	@-$(RM_F) ./thirdparty/*.dll
-	@-$(RM_RF) ./thirdparty/windows
+	@-$(RM_RF) ./thirdparty/download
 
 distclean: clean
 
-dependencies: cli-dependencies native-dependencies
+cli-dependencies:
+	@./thirdparty/fetch-thirdparty-deps.sh
+	@ $(CP_R) thirdparty/download/*.dll .
+	@ $(CP_R) thirdparty/download/*.dll.config .
+	@ $(CP) thirdparty/SDL2-CS.dll.config .
+
+linux-dependencies: cli-dependencies linux-native-dependencies
+
+linux-native-dependencies:
+	@./thirdparty/configure-linux-native-deps.sh
 
 windows-dependencies:
-	cd thirdparty && ./fetch-thirdparty-deps-windows.sh && cd ..
+	@./thirdparty/fetch-thirdparty-deps-windows.sh
 
-cli-dependencies:
-	cd thirdparty && ./fetch-thirdparty-deps.sh && cd ..
-	@ $(CP_R) thirdparty/*.dll .
-	@ $(CP_R) thirdparty/*.dll.config .
+osx-dependencies: cli-dependencies
+	@./thirdparty/fetch-thirdparty-deps-osx.sh
+	@ $(CP_R) thirdparty/download/osx/*.dylib .
+	@ $(CP_R) thirdparty/download/osx/*.dll.config .
 
-native-dependencies:
-	@./thirdparty/configure-native-deps.sh
+dependencies: $(os-dependencies)
+
+all-dependencies: cli-dependencies windows-dependencies osx-dependencies
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
 	@for i in $? ; do \

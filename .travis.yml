@@ -15,7 +15,7 @@ env:
 # Run the build script
 # call RALint to check for YAML errors
 script:
- - travis_retry make cli-dependencies
+ - travis_retry make all-dependencies
  - make all
  - make check
  - make test
