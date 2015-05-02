@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <summary>
 		/// Creates (or obtains from the pool) a CellLayer given a map
 		/// </summary>
-		CellLayer<CellInfo> NewLayer(IMap map);
+		CellLayer<CellInfo> NewLayer(Map map);
 	}
 
 	public sealed class CellInfoLayerManager : ICellInfoLayerManager
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				cellInfoPool.Enqueue(ci);
 		}
 
-		public CellLayer<CellInfo> NewLayer(IMap map)
+		public CellLayer<CellInfo> NewLayer(Map map)
 		{
 			CellLayer<CellInfo> result = null;
 			var mapSize = new Size(map.MapSize.X, map.MapSize.Y);

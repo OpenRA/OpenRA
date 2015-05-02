@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			this.cacheStorage = cacheStorage;
 		}
 
-		public List<CPos> FindUnitPath(CPos source, CPos target, IActor self)
+		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			}
 		}
 
-		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WRange range, IActor self)
+		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WRange range, Actor self)
 		{
 			using (new PerfSample("Pathfinder"))
 			{

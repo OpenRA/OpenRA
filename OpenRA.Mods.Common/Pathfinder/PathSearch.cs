@@ -32,13 +32,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 			considered = new LinkedList<Pair<CPos, int>>();
 		}
 
-		public static IPathSearch Search(IWorld world, IMobileInfo mi, IActor self, bool checkForBlocked)
+		public static IPathSearch Search(World world, MobileInfo mi, Actor self, bool checkForBlocked)
 		{
 			var graph = new PathGraph(CellInfoLayerManager.Instance.NewLayer(world.Map), mi, self, world, checkForBlocked);
 			return new PathSearch(graph);
 		}
 
-		public static IPathSearch FromPoint(IWorld world, IMobileInfo mi, IActor self, CPos from, CPos target, bool checkForBlocked)
+		public static IPathSearch FromPoint(World world, MobileInfo mi, Actor self, CPos from, CPos target, bool checkForBlocked)
 		{
 			var graph = new PathGraph(CellInfoLayerManager.Instance.NewLayer(world.Map), mi, self, world, checkForBlocked);
 			var search = new PathSearch(graph)
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return search;
 		}
 
-		public static IPathSearch FromPoints(IWorld world, IMobileInfo mi, IActor self, IEnumerable<CPos> froms, CPos target, bool checkForBlocked)
+		public static IPathSearch FromPoints(World world, MobileInfo mi, Actor self, IEnumerable<CPos> froms, CPos target, bool checkForBlocked)
 		{
 			var graph = new PathGraph(CellInfoLayerManager.Instance.NewLayer(world.Map), mi, self, world, checkForBlocked);
 			var search = new PathSearch(graph)

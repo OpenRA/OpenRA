@@ -22,30 +22,13 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public interface IActor
-	{
-		ActorInfo Info { get; }
-		IWorld World { get; }
-		uint ActorID { get; }
-		Player Owner { get; set; }
-
-		T TraitOrDefault<T>();
-		T Trait<T>();
-		IEnumerable<T> TraitsImplementing<T>();
-
-		IEnumerable<IRenderable> Render(WorldRenderer wr);
-	}
-
-	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>, IActor
+	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>
 	{
 		public readonly ActorInfo Info;
-		ActorInfo IActor.Info { get { return this.Info; } }
 
 		public readonly World World;
-		IWorld IActor.World { get { return World; } }
 
 		public readonly uint ActorID;
-		uint IActor.ActorID { get { return this.ActorID; } }
 
 		[Sync] public Player Owner { get; set; }
 

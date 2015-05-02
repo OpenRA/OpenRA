@@ -32,9 +32,9 @@ namespace OpenRA.Mods.Common.Traits
 		/// Calculates a path for the actor from source to destination
 		/// </summary>
 		/// <returns>A path from start to target</returns>
-		List<CPos> FindUnitPath(CPos source, CPos target, IActor self);
+		List<CPos> FindUnitPath(CPos source, CPos target, Actor self);
 
-		List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WRange range, IActor self);
+		List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WRange range, Actor self);
 
 		/// <summary>
 		/// Calculates a path given a search specification
@@ -52,16 +52,16 @@ namespace OpenRA.Mods.Common.Traits
 	public class PathFinder : IPathFinder
 	{
 		static readonly List<CPos> EmptyPath = new List<CPos>(0);
-		readonly IWorld world;
+		readonly World world;
 
-		public PathFinder(IWorld world)
+		public PathFinder(World world)
 		{
 			this.world = world;
 		}
 
-		public List<CPos> FindUnitPath(CPos source, CPos target, IActor self)
+		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self)
 		{
-			var mi = self.Info.Traits.Get<IMobileInfo>();
+			var mi = self.Info.Traits.Get<MobileInfo>();
 
 			// If a water-land transition is required, bail early
 			var domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			return pb;
 		}
 
-		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WRange range, IActor self)
+		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WRange range, Actor self)
 		{
 			var mi = self.Info.Traits.Get<MobileInfo>();
 			var targetCell = world.Map.CellContaining(target);
