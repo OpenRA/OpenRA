@@ -869,8 +869,10 @@ proc: # TODO: unused narefn_a, narefn_b
 		Length: 16
 		Tick: 120
 	bib: ntrefnbb
+		ZOffset: -1024
 	damaged-bib: ntrefnbb
 		Start: 1
+		ZOffset: -1024
 	icon: reficon
 		Offset: 0, 0
 		UseTilesetCode: false
