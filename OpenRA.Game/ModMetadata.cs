@@ -23,6 +23,7 @@ namespace OpenRA
 		public string Description;
 		public string Version;
 		public string Author;
+		public bool Hidden;
 
 		static Dictionary<string, ModMetadata> ValidateMods()
 		{
