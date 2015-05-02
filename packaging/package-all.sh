@@ -25,7 +25,7 @@ test -e Changelog.md && rm Changelog.md
 curl -s -L -O https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md
 
 curl -s -L -O http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip
-unzip Markdown_1.0.1.zip
+unzip -qq Markdown_1.0.1.zip
 rm -rf Markdown_1.0.1.zip
 ./Markdown_1.0.1/Markdown.pl Changelog.md > CHANGELOG.html
 ./Markdown_1.0.1/Markdown.pl README.md > README.html
@@ -80,28 +80,28 @@ cp OpenRA.exe packaging/built
 cd packaging
 echo "Creating packages..."
 
-pushd windows
+pushd windows >/dev/null
 ./buildpackage.sh "$TAG" "$BUILTDIR" "$SRCDIR" "$OUTPUTDIR"
 if [ $? -ne 0 ]; then
     echo "Windows package build failed."
 fi
-popd
+popd >/dev/null
 
-pushd osx
+pushd osx >/dev/null
 echo "Zipping OS X package"
 ./buildpackage.sh "$TAG" "$BUILTDIR" "$OUTPUTDIR"
 if [ $? -ne 0 ]; then
     echo "OS X package build failed."
 fi
-popd
+popd >/dev/null
 
-pushd linux
+pushd linux >/dev/null
 echo "Building Linux packages"
 ./buildpackage.sh "$TAG" "$BUILTDIR" "$OUTPUTDIR"
 if [ $? -ne 0 ]; then
     echo "Linux package build failed."
 fi
-popd
+popd >/dev/null
 
 echo "Package build done."
 

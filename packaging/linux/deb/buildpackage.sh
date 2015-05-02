@@ -50,7 +50,7 @@ PACKAGE_SIZE=`du --apparent-size -c "${DEB_BUILD_ROOT}/usr" | grep "total" | awk
 sed "s/{VERSION}/$VERSION/" DEBIAN/control | sed "s/{SIZE}/$PACKAGE_SIZE/" > "${DEB_BUILD_ROOT}/DEBIAN/control"
 
 # Build it in the temp directory, but place the finished deb in our starting directory
-pushd "${DEB_BUILD_ROOT}"
+pushd "${DEB_BUILD_ROOT}" >/dev/null
 
 # Calculate md5sums and clean up the ./usr/ part of them
 find . -type f -not -path "./DEBIAN/*" -print0 | xargs -0 -n1 md5sum | sed 's|\./usr/|/usr/|' > DEBIAN/md5sums
@@ -63,6 +63,6 @@ PKGVERSION=`echo $1 | sed "s/-/\\./g"`
 fakeroot dpkg-deb -b . "$3/openra_${PKGVERSION}_all.deb"
 
 # Clean up
-popd
+popd >/dev/null
 rm -rf "${DEB_BUILD_ROOT}"
 
