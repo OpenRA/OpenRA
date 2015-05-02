@@ -73,9 +73,12 @@ elseif ($command -eq "clean")
 		$proc = Start-Process $msBuild $msBuildArguments -NoNewWindow -PassThru -Wait
 		rm *.dll
 		rm *.config
-		rm thirdparty/*.dll
-		rmdir thirdparty/windows/
 		rm mods/*/*.dll
+		rm thirdparty/*.dll
+		if(Test-Path -Path thirdparty/windows/)
+		{
+			rmdir thirdparty/windows/ -Recurse
+		}
 		echo "Clean complete."
 	}
 }
