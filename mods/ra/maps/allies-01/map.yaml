@@ -170,7 +170,7 @@ Actors:
 	Actor34: kenn
 		Location: 64,65
 		Owner: USSR
-		Health: 0.9921875
+		Health: 99
 	Actor35: powr
 		Location: 65,57
 		Owner: USSR

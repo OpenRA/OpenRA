@@ -773,7 +773,7 @@ Actors:
 	Actor249: v2rl
 		Location: 76,66
 		Owner: USSR
-		Health: 0.5195313
+		Health: 52
 		Facing: 224
 	Actor250: e1.autotarget
 		Location: 42,56

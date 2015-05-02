@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.GameRules;
 
@@ -42,7 +43,10 @@ namespace OpenRA.Traits
 			Info = info;
 			MaxHP = info.HP;
 
-			hp = init.Contains<HealthInit>() ? (int)(init.Get<HealthInit, float>() * MaxHP) : MaxHP;
+			hp = init.Contains<HealthInit>() ? init.Get<HealthInit, int>() * MaxHP / 100 : MaxHP;
+			if (hp <= 0)
+				hp = Math.Max(MaxHP / 100, 1);
+
 			DisplayHp = hp;
 		}
 
@@ -169,12 +173,12 @@ namespace OpenRA.Traits
 		}
 	}
 
-	public class HealthInit : IActorInit<float>
+	public class HealthInit : IActorInit<int>
 	{
-		[FieldFromYamlKey] readonly float value = 1f;
+		[FieldFromYamlKey] readonly int value = 100;
 		public HealthInit() { }
-		public HealthInit(float init) { value = init; }
-		public float Value(World world) { return value; }
+		public HealthInit(int init) { value = init; }
+		public int Value(World world) { return value; }
 	}
 
 	public static class HealthExts

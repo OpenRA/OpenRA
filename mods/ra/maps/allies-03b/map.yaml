@@ -1010,7 +1010,7 @@ Actors:
 	USSRSubPen: spen
 		Location: 109,53
 		Owner: USSR
-		Health: 0.5195313
+		Health: 52
 	USSRFlameTower1: ftur
 		Location: 82,82
 		Owner: USSR
@@ -1032,11 +1032,11 @@ Actors:
 	USSRRadarDome: dome
 		Location: 105,56
 		Owner: USSR
-		Health: 0.5625
+		Health: 56
 	USSRPowerPlant: powr
 		Location: 103,55
 		Owner: USSR
-		Health: 0.5195313
+		Health: 52
 	USSRBarracks1: barr
 		Location: 84,81
 		Owner: USSR
@@ -1053,17 +1053,17 @@ Actors:
 	Heavy1: 3tnk
 		Location: 96,66
 		Owner: USSR
-		Health: 0.125
+		Health: 13
 		Facing: 128
 	Heavy2: 3tnk
 		Location: 97,65
 		Owner: USSR
-		Health: 0.125
+		Health: 13
 		Facing: 128
 	Heavy3: 3tnk
 		Location: 98,66
 		Owner: USSR
-		Health: 0.0625
+		Health: 6
 		Facing: 128
 	USSRTruk: truk
 		Location: 56,93
@@ -1133,7 +1133,7 @@ Actors:
 	PrisonedMedi: medi
 		Location: 104,47
 		Owner: Greece
-		Health: 0.1484375
+		Health: 15
 		Facing: 192
 		SubCell: 0
 	PrisonedEngi1: hacke6

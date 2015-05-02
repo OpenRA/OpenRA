@@ -179,7 +179,7 @@ Actors:
 	Actor39: v32
 		Location: 46,37
 		Owner: NodSupporter
-		Health: 0.7265625	
+		Health: 73
 	Actor41: v34
 		Location: 49,38
 		Owner: NodSupporter
@@ -264,7 +264,7 @@ Actors:
 	Actor86: e1
 		Location: 43,15
 		Owner: GDI
-		Health: 0.8789063
+		Health: 88
 		Facing: 32
 		SubCell: 3
 	Actor99: e1
@@ -274,7 +274,7 @@ Actors:
 	Actor100: e1
 		Location: 43,15
 		Owner: GDI
-		Health: 0.9375
+		Health: 94
 		Facing: 32
 		SubCell: 4	
 	Actor105: e1
@@ -346,7 +346,7 @@ Actors:
 	Actor129: e2
 		Location: 36,10
 		Owner: GDI
-		Health: 0.3789063
+		Health: 38
 		Facing: 64
 		SubCell: 0
 	Actor131: e1
@@ -401,7 +401,7 @@ Actors:
 	Civilian1: v33
 		Location: 48,34
 		Owner: Neutral
-		Health: 0.625
+		Health: 62
 	Civilian2: v33
 		Location: 54,37
 		Owner: Neutral

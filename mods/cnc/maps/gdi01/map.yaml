@@ -320,17 +320,17 @@ Actors:
 	Actor83: gun
 		Location: 46,55
 		Owner: Nod
-		Health: 0.5
+		Health: 50
 		Facing: 160
 	Actor84: gun
 		Location: 41,55
 		Owner: Nod
-		Health: 0.5
+		Health: 50
 		Facing: 160
 	Actor85: gun
 		Location: 49,55
 		Owner: Nod
-		Health: 0.1875
+		Health: 19
 		Facing: 160
 	Actor92: e1
 		Location: 57,45

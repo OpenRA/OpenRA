@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly BridgeLayerInfo info;
 		readonly World world;
-		Dictionary<ushort, Pair<string, float>> bridgeTypes = new Dictionary<ushort, Pair<string, float>>();
+		Dictionary<ushort, Pair<string, int>> bridgeTypes = new Dictionary<ushort, Pair<string, int>>();
 		CellLayer<Bridge> bridges;
 
 		public BridgeLayer(Actor self, BridgeLayerInfo info)
