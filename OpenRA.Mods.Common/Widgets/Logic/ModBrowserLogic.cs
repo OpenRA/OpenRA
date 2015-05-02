@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			sheetBuilder = new SheetBuilder(SheetType.BGRA);
-			allMods = ModMetadata.AllMods.Values.Where(m => m.Id != "modchooser")
+			allMods = ModMetadata.AllMods.Values.Where(m => !m.Hidden)
 				.OrderBy(m => m.Title)
 				.ToArray();
 
