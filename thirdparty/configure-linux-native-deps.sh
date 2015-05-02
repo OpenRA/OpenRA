@@ -27,19 +27,4 @@ if [ "$os" == 'Linux' ]; then
 		sed "s/@LIBLUA51@/${liblua51}/" thirdparty/Eluant.dll.config.in > Eluant.dll.config
 		echo "Eluant.dll.config has been created successfully."
 	fi
-elif [ "$os" == 'Darwin' ]; then
-	if [ ! -f libSDL2.dylib ]; then
-		echo "Fetching OS X SDL2 library from GitHub."
-		curl -LOs https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/libSDL2.dylib
-	fi
-
-	if [ ! -f liblua.5.1.dylib ]; then
-		echo "Fetching OS X Lua 5.1 library from GitHub."
-		curl -LOs https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/liblua.5.1.dylib
-	fi
-
-	if [ ! -f Eluant.dll.config ]; then
-		echo "Fetching OS X Lua configuration file from GitHub."
-		curl -LOs https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/Eluant.dll.config
-	fi
 fi

@@ -24,7 +24,7 @@
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="SDL2-CS">
-      <HintPath>..\thirdparty\SDL2-CS.dll</HintPath>
+      <HintPath>..\thirdparty\download\SDL2-CS.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

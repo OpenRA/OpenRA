@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FuzzyLogicLibrary">
-      <HintPath>..\thirdparty\FuzzyLogicLibrary.dll</HintPath>
+      <HintPath>..\thirdparty\download\FuzzyLogicLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -42,22 +42,22 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Eluant">
-      <HintPath>..\thirdparty\Eluant.dll</HintPath>
+      <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="StyleCop">
-      <HintPath>..\thirdparty\StyleCop.dll</HintPath>
+      <HintPath>..\thirdparty\download\StyleCop.dll</HintPath>
     </Reference>
     <Reference Include="MaxMind.GeoIP2">
-      <HintPath>..\thirdparty\MaxMind.GeoIP2.dll</HintPath>
+      <HintPath>..\thirdparty\download\MaxMind.GeoIP2.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mono.Nat">
-      <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
+      <HintPath>..\thirdparty\download\Mono.Nat.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>..\thirdparty\download\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

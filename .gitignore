@@ -28,23 +28,7 @@ mods/*/*.mdb
 /*.pdb
 /*.mdb
 /*.exe
-thirdparty/StyleCop*
-thirdparty/ICSharpCode.SharpZipLib.dll*
-thirdparty/MaxMind*
-thirdparty/RestSharp*
-thirdparty/Newtonsoft.Json*
-thirdparty/SharpFont*
-thirdparty/windows/freetype6.dll
-thirdparty/nunit*
-thirdparty/windows/SDL2.dll
-thirdparty/Mono.Nat.dll
-thirdparty/Moq.dll
-thirdparty/nuget.exe
-thirdparty/windows/lua51.dll
-thirdparty/windows/soft_oal.dll
-thirdparty/FuzzyLogicLibrary.dll
-thirdparty/SDL2-CS.dll
-thirdparty/Eluant.dll
+thirdparty/download/*
 
 # backup files by various editors
 *~
