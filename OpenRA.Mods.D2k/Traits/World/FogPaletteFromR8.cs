@@ -8,9 +8,11 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.IO;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
@@ -29,7 +31,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public object Create(ActorInitializer init) { return new FogPaletteFromR8(this); }
 	}
 
-	class FogPaletteFromR8 : ILoadsPalettes
+	class FogPaletteFromR8 : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly FogPaletteFromR8Info info;
 		public FogPaletteFromR8(FogPaletteFromR8Info info) { this.info = info; }
@@ -55,5 +57,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			wr.AddPalette(info.Name, new ImmutablePalette(colors), info.AllowModifiers);
 		}
+
+		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
 	}
 }

@@ -66,8 +66,8 @@
     <Compile Include="Traits\Render\WithVoxelUnloadBody.cs" />
     <Compile Include="Traits\Render\WithVoxelWaterBody.cs" />
     <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
-    <Compile Include="Traits\World\ShroudPalette.cs" />
     <Compile Include="UtilityCommands\LegacyTilesetImporter.cs" />
+    <Compile Include="Traits\World\TSShroudPalette.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

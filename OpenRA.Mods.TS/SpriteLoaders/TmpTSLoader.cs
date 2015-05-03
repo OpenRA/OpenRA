@@ -17,12 +17,29 @@ namespace OpenRA.Mods.TS.SpriteLoaders
 {
 	public class TmpTSLoader : ISpriteLoader
 	{
+		class TmpTSDepthFrame : ISpriteFrame
+		{
+			readonly TmpTSFrame parent;
+
+			public Size Size { get { return parent.Size; } }
+			public Size FrameSize { get { return Size; } }
+			public float2 Offset { get { return parent.Offset; } }
+			public byte[] Data { get { return parent.DepthData; } }
+			public bool DisableExportPadding { get { return false; } }
+
+			public TmpTSDepthFrame(TmpTSFrame parent)
+			{
+				this.parent = parent;
+			}
+		}
+
 		class TmpTSFrame : ISpriteFrame
 		{
 			public Size Size { get; private set; }
 			public Size FrameSize { get { return Size; } }
 			public float2 Offset { get; private set; }
 			public byte[] Data { get; set; }
+			public byte[] DepthData { get; set; }
 			public bool DisableExportPadding { get { return false; } }
 
 			public TmpTSFrame(Stream s, Size size, int u, int v)
@@ -55,20 +72,10 @@ namespace OpenRA.Mods.TS.SpriteLoaders
 					s.Position += 12;
 
 					Data = new byte[bounds.Width * bounds.Height];
+					DepthData = new byte[bounds.Width * bounds.Height];
 
-					// Unpack tile data
-					var width = 4;
-					for (var j = 0; j < size.Height; j++)
-					{
-						var start = (j - bounds.Y) * bounds.Width + (size.Width - width) / 2 - bounds.X;
-						for (var i = 0; i < width; i++)
-							Data[start + i] = s.ReadUInt8();
-
-						width += (j < size.Height / 2 - 1 ? 1 : -1) * 4;
-					}
-
-					// TODO: Load Z-data once the renderer can handle it
-					s.Position += size.Width * size.Height / 2;
+					UnpackTileData(s, Data, size, bounds);
+					UnpackTileData(s, DepthData, size, bounds);
 
 					if ((flags & 0x01) == 0)
 						return;
@@ -84,9 +91,36 @@ namespace OpenRA.Mods.TS.SpriteLoaders
 								Data[start + i] = extra;
 						}
 					}
+
+					// Extra data depth
+					for (var j = 0; j < extraHeight; j++)
+					{
+						var start = (j + extraY - bounds.Y) * bounds.Width + extraX - bounds.X;
+						for (var i = 0; i < extraWidth; i++)
+						{
+							var extra = s.ReadUInt8();
+
+							// XCC source indicates that there are only 32 valid values
+							if (extra < 32)
+								DepthData[start + i] = extra;
+						}
+					}
 				}
 				else
 					Data = new byte[0];
+			}
+		}
+
+		static void UnpackTileData(Stream s, byte[] data, Size size, Rectangle frameBounds)
+		{
+			var width = 4;
+			for (var j = 0; j < size.Height; j++)
+			{
+				var start = (j - frameBounds.Y) * frameBounds.Width + (size.Width - width) / 2 - frameBounds.X;
+				for (var i = 0; i < width; i++)
+					data[start + i] = s.ReadUInt8();
+
+				width += (j < size.Height / 2 - 1 ? 1 : -1) * 4;
 			}
 		}
 
@@ -115,7 +149,7 @@ namespace OpenRA.Mods.TS.SpriteLoaders
 			return test == sx * sy / 2 + 52;
 		}
 
-		TmpTSFrame[] ParseFrames(Stream s)
+		ISpriteFrame[] ParseFrames(Stream s)
 		{
 			var start = s.Position;
 			var templateWidth = s.ReadUInt32();
@@ -127,7 +161,9 @@ namespace OpenRA.Mods.TS.SpriteLoaders
 			for (var i = 0; i < offsets.Length; i++)
 				offsets[i] = s.ReadUInt32();
 
-			var tiles = new TmpTSFrame[offsets.Length];
+			// Depth information are stored as a second set of frames (like split shadows)
+			var stride = offsets.Length;
+			var tiles = new ISpriteFrame[stride * 2];
 
 			for (var j = 0; j < templateHeight; j++)
 			{
@@ -135,7 +171,11 @@ namespace OpenRA.Mods.TS.SpriteLoaders
 				{
 					var k = j * templateWidth + i;
 					s.Position = offsets[k];
-					tiles[k] = new TmpTSFrame(s, size, i, j);
+
+					var tileStart = s.Position;
+					var frame = new TmpTSFrame(s, size, i, j);
+					tiles[k] = frame;
+					tiles[k + stride] = new TmpTSDepthFrame(frame);
 				}
 			}
 

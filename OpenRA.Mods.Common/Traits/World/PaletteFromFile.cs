@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new PaletteFromFile(init.World, this); }
 	}
 
-	class PaletteFromFile : ILoadsPalettes
+	class PaletteFromFile : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly World world;
 		readonly PaletteFromFileInfo info;
@@ -45,14 +46,14 @@ namespace OpenRA.Mods.Common.Traits
 				wr.AddPalette(info.Name, new ImmutablePalette(GlobalFileSystem.Open(info.Filename), info.ShadowIndex), info.AllowModifiers);
 		}
 
-		public string Filename
+		public IEnumerable<string> PaletteNames
 		{
-			get { return info.Filename; }
-		}
-
-		public string Name
-		{
-			get { return info.Name; }
+			get
+			{
+				// Only expose the palette if it is available for the shellmap's tileset (which is a requirement for its use).
+				if (info.Tileset == null || info.Tileset == world.TileSet.Id)
+					yield return info.Name;
+			}
 		}
 	}
 }

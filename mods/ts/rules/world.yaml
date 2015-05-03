@@ -23,6 +23,9 @@ World:
 		Tileset: TEMPERAT
 		Filename: unittem.pal
 		ShadowIndex: 1
+	PaletteFromFile@depth:
+		Name: depth
+		Filename: depth.pal
 	PaletteFromCurrentTileset:
 		Name: terrain
 		ShadowIndex: 1
