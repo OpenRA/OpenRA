@@ -506,7 +506,6 @@ Heal:
 WormJaw:
 	ReloadDelay: 10
 	Range: 3c0
-	Report: WORM.WAV
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Damage: 100
