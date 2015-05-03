@@ -24,10 +24,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public AmbientSound(Actor self, AmbientSoundInfo info)
 		{
-			if (self == self.World.WorldActor)
-				Sound.PlayLooped(info.SoundFile);
-			else
+			if (self.HasTrait<IOccupySpace>())
 				Sound.PlayLooped(info.SoundFile, self.CenterPosition);
+			else
+				Sound.PlayLooped(info.SoundFile);
 		}
 	}
 }
