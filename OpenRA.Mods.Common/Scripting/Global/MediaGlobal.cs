@@ -45,6 +45,12 @@ namespace OpenRA.Mods.Common.Scripting
 			Sound.PlayNotification(world.Map.Rules, player, "Sounds", notification, player != null ? player.Country.Race : null);
 		}
 
+		[Desc("Play a sound file")]
+		public void PlaySound(string file)
+		{
+			Sound.Play(file);
+		}
+
 		MusicInfo previousMusic;
 		Action onComplete;
 		[Desc("Play track defined in music.yaml or keep it empty for a random song.")]
