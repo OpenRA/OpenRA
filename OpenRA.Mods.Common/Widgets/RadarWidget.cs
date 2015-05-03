@@ -122,6 +122,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void UpdateShroudCell(CPos cell)
 		{
+			if (!world.Map.Contains(cell))
+				return;
+
 			var stride = radarSheet.Size.Width;
 			var uv = cell.ToMPos(world.Map);
 			var dx = shroudSprite.Bounds.Left - world.Map.Bounds.Left;

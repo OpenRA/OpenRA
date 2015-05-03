@@ -30,7 +30,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly bool startsRevealed;
 		readonly MPos[] footprint;
-		readonly CellRegion footprintRegion;
 
 		readonly Lazy<IToolTip> tooltip;
 		readonly Lazy<Health> health;
@@ -46,7 +45,6 @@ namespace OpenRA.Mods.Common.Traits
 			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
 			var footprintCells = FootprintUtils.Tiles(init.Self).ToList();
 			footprint = footprintCells.Select(cell => cell.ToMPos(init.World.Map)).ToArray();
-			footprintRegion = CellRegion.BoundingRegion(init.World.Map.TileShape, footprintCells);
 			tooltip = Exts.Lazy(() => init.Self.TraitsImplementing<IToolTip>().FirstOrDefault());
 			health = Exts.Lazy(() => init.Self.TraitOrDefault<Health>());
 
@@ -71,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 				FrozenActor frozenActor;
 				if (!initialized)
 				{
-					frozen[player] = frozenActor = new FrozenActor(self, footprint, footprintRegion, player.Shroud);
+					frozen[player] = frozenActor = new FrozenActor(self, footprint, player.Shroud);
 					frozen[player].NeedRenderables = frozenActor.NeedRenderables = startsRevealed;
 					player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
 					isVisible = visible[player] |= startsRevealed;

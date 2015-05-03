@@ -44,10 +44,8 @@ namespace OpenRA.Traits
 
 		static readonly Func<MPos, bool> TruthPredicate = _ => true;
 		readonly Func<MPos, bool> shroudEdgeTest;
-		readonly Func<MPos, bool> fastExploredTest;
-		readonly Func<MPos, bool> slowExploredTest;
-		readonly Func<MPos, bool> fastVisibleTest;
-		readonly Func<MPos, bool> slowVisibleTest;
+		readonly Func<MPos, bool> isExploredTest;
+		readonly Func<MPos, bool> isVisibleTest;
 
 		public Shroud(Actor self)
 		{
@@ -67,10 +65,8 @@ namespace OpenRA.Traits
 			fogVisibilities = Exts.Lazy(() => self.TraitsImplementing<IFogVisibilityModifier>().ToArray());
 
 			shroudEdgeTest = map.Contains;
-			fastExploredTest = IsExploredCore;
-			slowExploredTest = IsExplored;
-			fastVisibleTest = IsVisibleCore;
-			slowVisibleTest = IsVisible;
+			isExploredTest = IsExploredCore;
+			isVisibleTest = IsVisibleCore;
 		}
 
 		void Invalidate(IEnumerable<CPos> changed)
@@ -329,18 +325,16 @@ namespace OpenRA.Traits
 			return explored[uv] && (generatedShroudCount[uv] == 0 || visibleCount[uv] > 0);
 		}
 
-		public Func<MPos, bool> IsExploredTest(CellRegion region)
+		public Func<MPos, bool> IsExploredTest
 		{
-			// If the region to test extends outside the map we must use the slow test that checks the map boundary every time.
-			if (!map.CellsInsideBounds.Contains(region))
-				return slowExploredTest;
+			get
+			{
+				// If shroud isn't enabled, then we can see everything inside the map.
+				if (!ShroudEnabled)
+					return shroudEdgeTest;
 
-			// If shroud isn't enabled, then we can see everything inside the map.
-			if (!ShroudEnabled)
-				return shroudEdgeTest;
-
-			// If shroud is enabled, we can use the fast test that just does the core check.
-			return fastExploredTest;
+				return isExploredTest;
+			}
 		}
 
 		public bool IsExplored(Actor a)
@@ -377,18 +371,17 @@ namespace OpenRA.Traits
 			return visibleCount[uv] > 0;
 		}
 
-		public Func<MPos, bool> IsVisibleTest(CellRegion region)
+		public Func<MPos, bool> IsVisibleTest
 		{
-			// If the region to test extends outside the map we must use the slow test that checks the map boundary every time.
-			if (!map.CellsInsideBounds.Contains(region))
-				return slowVisibleTest;
+			get
+			{
+				// If fog isn't enabled, then we can see everything.
+				if (!FogEnabled)
+					return TruthPredicate;
 
-			// If fog isn't enabled, then we can see everything.
-			if (!FogEnabled)
-				return TruthPredicate;
-
-			// If fog is enabled, we can use the fast test that just does the core check.
-			return fastVisibleTest;
+				// If fog is enabled, we can use the fast test that just does the core check.
+				return isVisibleTest;
+			}
 		}
 
 		// Actors are hidden under shroud, but not under fog by default
@@ -414,6 +407,13 @@ namespace OpenRA.Traits
 		public bool HasFogVisibility()
 		{
 			return fogVisibilities.Value.Any(f => f.HasFogVisibility(self.Owner));
+		}
+
+		public bool Contains(MPos uv)
+		{
+			// Check that uv is inside the map area. There is nothing special
+			// about explored here: any of the CellLayers would have been suitable.
+			return explored.Contains(uv);
 		}
 	}
 }
