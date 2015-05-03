@@ -720,13 +720,13 @@ Rules:
 			Prerequisites: ~disabled
 	GUN:
 		Buildable:
-			Prerequisites: ~disabled	
+			Prerequisites: ~disabled
 	OBLI:
 		Buildable:
-			Prerequisites: ~disabled	
+			Prerequisites: ~disabled
 	TMPL:
 		Buildable:
-			Prerequisites: ~disabled	
+			Prerequisites: ~disabled
 	E2:
 		Buildable:
 			Prerequisites: ~pyle
@@ -771,7 +771,7 @@ Rules:
 			DisplayBeacon: True
 			BeaconPoster: airstrike
 			DisplayRadarPing: True
-			CameraActor: camera			
+			CameraActor: camera
 
 Sequences:
 
