@@ -5,6 +5,11 @@ os=`uname`
 if [ "$os" == 'Linux' ]; then
 	locations=(/lib /lib64 /usr/lib /usr/lib64 /usr/lib/i386-linux-gnu /usr/lib/x86_64-linux-gnu /usr/local/lib /opt/lib)
 	sonames=(liblua.so.5.1.5 liblua5.1.so.5.1 liblua5.1.so.0 liblua.so.5.1 liblua-5.1.so liblua5.1.so)
+
+	if [ -f Eluant.dll.config ]; then
+		exit 0
+	fi
+
 	for location in "${locations[@]}" ; do
 		for soname in ${sonames[@]} ; do
 			if [ -f $location/$soname ]; then
@@ -14,6 +19,7 @@ if [ "$os" == 'Linux' ]; then
 			fi
 		done
 	done
+
 	if [ -z "$liblua51" ]; then
 		echo "Lua 5.1 library detection failed."
 		exit 1
@@ -22,9 +28,18 @@ if [ "$os" == 'Linux' ]; then
 		echo "Eluant.dll.config has been created successfully."
 	fi
 elif [ "$os" == 'Darwin' ]; then
-	echo "Downloading pre-compiled lua and SDL2 libraries"
-	curl -Os https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/Eluant.dll.config
-	curl -Os https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/liblua.5.1.dylib
-	curl -Os https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/libSDL2.dylib
-	echo "Downloaded Lua 5.1 and SDL2 libraries successfully."
+	if [ ! -f libSDL2.dylib ]; then
+		echo "Fetching OS X SDL2 library from GitHub."
+		curl -LOs https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/libSDL2.dylib
+	fi
+
+	if [ ! -f liblua.5.1.dylib ]; then
+		echo "Fetching OS X Lua 5.1 library from GitHub."
+		curl -LOs https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/liblua.5.1.dylib
+	fi
+
+	if [ ! -f Eluant.dll.config ]; then
+		echo "Fetching OS X Lua configuration file from GitHub."
+		curl -LOs https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/master/dependencies/Eluant.dll.config
+	fi
 fi

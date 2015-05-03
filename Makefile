@@ -271,7 +271,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 
 ########################## MAKE/INSTALL RULES ##########################
 #
-default: cli-dependencies core
+default: dependencies core
 
 core: game renderers mods utility
 
@@ -302,7 +302,7 @@ cli-dependencies:
 	@ $(CP_R) thirdparty/*.dll.config .
 
 native-dependencies:
-	@./configure
+	@./thirdparty/configure-native-deps.sh
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
 	@for i in $? ; do \
