@@ -210,8 +210,10 @@ FLARE:
 		HP: 1000
 	RevealsShroud:
 		Range: 3c0
-	RenderFlare:
+	RenderSprites:
 		Image: smokland
+	WithSpriteBody:
+		StartSequence: open
 	HiddenUnderFog:
 	Tooltip:
 		Name: Flare
@@ -388,3 +390,4 @@ CTFLAG:
 	Invulnerable:
 	-Selectable:
 	-TargetableBuilding:
+

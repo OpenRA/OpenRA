@@ -905,6 +905,32 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150501)
+				{
+					// Change RenderFlare to RenderSprites + WithSpriteBody
+					var flares = node.Value.Nodes.Where(x => x.Key == "RenderFlare");
+					if (flares.Any())
+					{
+						flares.Do(x => x.Key = "RenderSprites");
+						node.Value.Nodes.Add(new MiniYamlNode("WithSpriteBody", "", new List<MiniYamlNode>
+						{
+							new MiniYamlNode("StartSequence", "open")
+						}));
+					}
+
+					// Change WithFire to RenderSprites + WithSpriteBody
+					var fire = node.Value.Nodes.Where(x => x.Key == "WithFire");
+					if (fire.Any())
+					{
+						fire.Do(x => x.Key = "RenderSprites");
+						node.Value.Nodes.Add(new MiniYamlNode("WithSpriteBody", "", new List<MiniYamlNode>
+						{
+							new MiniYamlNode("StartSequence", "fire-start"),
+							new MiniYamlNode("Sequence", "fire-loop")
+						}));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
