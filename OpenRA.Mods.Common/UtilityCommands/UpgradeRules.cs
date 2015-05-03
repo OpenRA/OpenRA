@@ -937,6 +937,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (depth == 0 && node.Value.Nodes.Exists(n => n.Key == "Inherits" &&
 						(n.Value.Value == "^Building" || n.Value.Value == "^BaseBuilding")))
 						node.Value.Nodes.Add(new MiniYamlNode("ProvidesCustomPrerequisite@buildingname", ""));
+
+					// Rename the ProvidesCustomPrerequisite trait.
+					if (node.Key.StartsWith("ProvidesCustomPrerequisite"))
+						node.Key = node.Key.Replace("ProvidesCustomPrerequisite", "ProvidesPrerequisite");
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

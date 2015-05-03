@@ -9,7 +9,7 @@ GAPOWR:
 	Tooltip:
 		Name: GDI Power Plant
 		Description: Provides power for other structures.
-	ProvidesCustomPrerequisite:
+	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
 		Footprint: xx xx
@@ -58,7 +58,7 @@ GAPOWR:
 		UpgradeTypes: powrup.b
 		UpgradeMinEnabledLevel: 1
 		Amount: 50
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 GAPILE:
 	Inherits: ^Building
@@ -71,7 +71,7 @@ GAPILE:
 	Tooltip:
 		Name: GDI Barracks
 		Description: Produces infantry.
-	ProvidesCustomPrerequisite:
+	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Building:
 		Footprint: xx xx
@@ -101,7 +101,7 @@ GAPILE:
 		Sequence: idle-flag
 	Power:
 		Amount: -20
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 GAWEAP:
 	Inherits: ^Building
@@ -110,7 +110,7 @@ GAWEAP:
 	Tooltip:
 		Name: GDI War Factory
 		Description: Produces vehicles.
-	ProvidesCustomPrerequisite:
+	ProvidesPrerequisite:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
@@ -148,7 +148,7 @@ GAWEAP:
 		Sequence: bib
 	Power:
 		Amount: -30
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 GAHPAD:
 	Inherits: ^Building
@@ -188,7 +188,7 @@ GAHPAD:
 		Amount: -10
 	Selectable:
 		Bounds: 88, 66, 0, -5
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 GADEPT:
 	Inherits: ^Building
@@ -228,7 +228,7 @@ GADEPT:
 		UseDeathTypeSuffix: false
 	Power:
 		Amount: -30
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 GARADR:
 	Inherits: ^Building
@@ -241,7 +241,7 @@ GARADR:
 	Tooltip:
 		Name: GDI Radar
 		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
-	ProvidesCustomPrerequisite:
+	ProvidesPrerequisite:
 		Prerequisite: radar
 	Building:
 		Footprint: xx xx
@@ -269,7 +269,7 @@ GARADR:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
 		Amount: -50
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 GATECH:
 	Inherits: ^Building
@@ -282,7 +282,7 @@ GATECH:
 	Tooltip:
 		Name: GDI Tech Center
 		Description: Provides access to advanced GDI technologies.
-	ProvidesCustomPrerequisite:
+	ProvidesPrerequisite:
 		Prerequisite: tech
 	Building:
 		Footprint: xxx xxx
@@ -299,7 +299,7 @@ GATECH:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 GAPLUG:
 	Inherits: ^Building
@@ -372,4 +372,4 @@ GAPLUG:
 		UpgradeTypes: plug.ioncannonb
 		UpgradeMinEnabledLevel: 1
 		Sequence: idle-ioncannonb
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:

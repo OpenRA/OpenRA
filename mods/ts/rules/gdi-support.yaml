@@ -127,7 +127,7 @@ GACTWR:
 			tower.vulcan: tower, tower.vulcan
 			tower.rocket: tower, tower.rocket
 			tower.sam: tower, tower.sam
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 GAVULC:
 	Inherits: ^BuildingPlug

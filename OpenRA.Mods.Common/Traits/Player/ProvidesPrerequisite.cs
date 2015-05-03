@@ -10,12 +10,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ProvidesCustomPrerequisiteInfo : ITraitInfo
+	public class ProvidesPrerequisiteInfo : ITraitInfo
 	{
 		[Desc("The prerequisite type that this provides. If left empty it defaults to the actor's name.")]
 		public readonly string Prerequisite = null;
@@ -28,17 +27,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Should it recheck everything when it is captured?")]
 		public readonly bool ResetOnOwnerChange = false;
-		public object Create(ActorInitializer init) { return new ProvidesCustomPrerequisite(init, this); }
+		public object Create(ActorInitializer init) { return new ProvidesPrerequisite(init, this); }
 	}
 
-	public class ProvidesCustomPrerequisite : ITechTreePrerequisite, INotifyOwnerChanged
+	public class ProvidesPrerequisite : ITechTreePrerequisite, INotifyOwnerChanged
 	{
-		readonly ProvidesCustomPrerequisiteInfo info;
+		readonly ProvidesPrerequisiteInfo info;
 		readonly string prerequisite;
 
 		bool enabled = true;
 
-		public ProvidesCustomPrerequisite(ActorInitializer init, ProvidesCustomPrerequisiteInfo info)
+		public ProvidesPrerequisite(ActorInitializer init, ProvidesPrerequisiteInfo info)
 		{
 			this.info = info;
 			prerequisite = info.Prerequisite;
