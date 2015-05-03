@@ -9,9 +9,12 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using OpenRA.FileFormats;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
@@ -23,16 +26,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		static Filter filter = new Filter();
 
-		Widget panel;
-		ScrollPanelWidget replayList, playerList;
-		ScrollItemWidget playerTemplate, playerHeader;
-		List<ReplayMetadata> replays;
-		Dictionary<ReplayMetadata, ReplayState> replayState = new Dictionary<ReplayMetadata, ReplayState>();
+		readonly Widget panel;
+		readonly ScrollPanelWidget replayList, playerList;
+		readonly ScrollItemWidget playerTemplate, playerHeader;
+		readonly List<ReplayMetadata> replays = new List<ReplayMetadata>();
+		readonly Dictionary<ReplayMetadata, ReplayState> replayState = new Dictionary<ReplayMetadata, ReplayState>();
+		readonly Action onStart;
 
 		Dictionary<CPos, SpawnOccupant> selectedSpawns;
 		ReplayMetadata selectedReplay;
 
-		Action onStart;
+		volatile bool cancelLoadingReplays;
 
 		[ObjectCreator.UseCtor]
 		public ReplayBrowserLogic(Widget widget, Action onExit, Action onStart)
@@ -46,7 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			playerTemplate = playerList.Get<ScrollItemWidget>("TEMPLATE");
 			playerList.RemoveChildren();
 
-			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
+			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { cancelLoadingReplays = true; Ui.CloseWindow(); onExit(); };
 
 			replayList = panel.Get<ScrollPanelWidget>("REPLAY_LIST");
 			var template = panel.Get<ScrollItemWidget>("REPLAY_TEMPLATE");
@@ -54,26 +58,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mod = Game.ModData.Manifest.Mod;
 			var dir = Platform.ResolvePath("^", "Replays", mod.Id, mod.Version);
 
-			replayList.RemoveChildren();
 			if (Directory.Exists(dir))
-			{
-				using (new Support.PerfTimer("Load replays"))
-				{
-					replays = Directory
-						.GetFiles(dir, "*.orarep")
-						.Select(ReplayMetadata.Read)
-						.Where(r => r != null)
-						.OrderByDescending(r => r.GameInfo.StartTimeUtc)
-						.ToList();
-				}
-
-				foreach (var replay in replays)
-					AddReplay(replay, template);
-
-				ApplyFilter();
-			}
-			else
-				replays = new List<ReplayMetadata>();
+				ThreadPool.QueueUserWorkItem(_ => LoadReplays(dir, template));
 
 			var watch = panel.Get<ButtonWidget>("WATCH_BUTTON");
 			watch.IsDisabled = () => selectedReplay == null || selectedReplay.GameInfo.MapPreview.Status != MapStatus.Available;
@@ -97,6 +83,40 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			SetupFilters();
 			SetupManagement();
+		}
+
+		void LoadReplays(string dir, ScrollItemWidget template)
+		{
+			using (new Support.PerfTimer("Load replays"))
+			{
+				var loadedReplays = new ConcurrentBag<ReplayMetadata>();
+				Parallel.ForEach(Directory.GetFiles(dir, "*.orarep"), (fileName, pls) =>
+				{
+					if (cancelLoadingReplays)
+					{
+						pls.Stop();
+						return;
+					}
+
+					var replay = ReplayMetadata.Read(fileName);
+					if (replay != null)
+						loadedReplays.Add(replay);
+				});
+
+				if (cancelLoadingReplays)
+					return;
+
+				var sortedReplays = loadedReplays.OrderByDescending(replay => replay.GameInfo.StartTimeUtc).ToList();
+				Game.RunAfterTick(() =>
+				{
+					replayList.RemoveChildren();
+					foreach (var replay in sortedReplays)
+						AddReplay(replay, template);
+
+					SetupReplayDependentFilters();
+					ApplyFilter();
+				});
+			}
 		}
 
 		void SetupFilters()
@@ -202,6 +222,50 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
+			// Outcome (depends on Player)
+			{
+				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_OUTCOME_DROPDOWNBUTTON");
+				if (ddb != null)
+				{
+					ddb.IsDisabled = () => string.IsNullOrEmpty(filter.PlayerName);
+
+					// Using list to maintain the order
+					var options = new List<Pair<WinState, string>>
+					{
+						Pair.New(WinState.Undefined, ddb.GetText()),
+						Pair.New(WinState.Lost, "Defeat"),
+						Pair.New(WinState.Won, "Victory")
+					};
+					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
+
+					ddb.GetText = () => lookup[filter.Outcome];
+					ddb.OnMouseDown = _ =>
+					{
+						Func<Pair<WinState, string>, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						{
+							var item = ScrollItemWidget.Setup(
+								tpl,
+								() => filter.Outcome == option.First,
+								() => { filter.Outcome = option.First; ApplyFilter(); });
+							item.Get<LabelWidget>("LABEL").GetText = () => option.Second;
+							return item;
+						};
+
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
+					};
+				}
+			}
+
+			// Reset button
+			{
+				var button = panel.Get<ButtonWidget>("FLT_RESET_BUTTON");
+				button.IsDisabled = () => filter.IsEmpty;
+				button.OnClick = () => { filter = new Filter(); ApplyFilter(); };
+			}
+		}
+
+		void SetupReplayDependentFilters()
+		{
 			// Map
 			{
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_MAPNAME_DROPDOWNBUTTON");
@@ -258,40 +322,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			// Outcome (depends on Player)
-			{
-				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_OUTCOME_DROPDOWNBUTTON");
-				if (ddb != null)
-				{
-					ddb.IsDisabled = () => string.IsNullOrEmpty(filter.PlayerName);
-
-					// Using list to maintain the order
-					var options = new List<Pair<WinState, string>>
-					{
-						Pair.New(WinState.Undefined, ddb.GetText()),
-						Pair.New(WinState.Lost, "Defeat"),
-						Pair.New(WinState.Won, "Victory")
-					};
-					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
-
-					ddb.GetText = () => lookup[filter.Outcome];
-					ddb.OnMouseDown = _ =>
-					{
-						Func<Pair<WinState, string>, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
-						{
-							var item = ScrollItemWidget.Setup(
-								tpl,
-								() => filter.Outcome == option.First,
-								() => { filter.Outcome = option.First; ApplyFilter(); });
-							item.Get<LabelWidget>("LABEL").GetText = () => option.Second;
-							return item;
-						};
-
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
-					};
-				}
-			}
-
 			// Faction (depends on Player)
 			{
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_FACTION_DROPDOWNBUTTON");
@@ -322,13 +352,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
-			}
-
-			// Reset button
-			{
-				var button = panel.Get<ButtonWidget>("FLT_RESET_BUTTON");
-				button.IsDisabled = () => filter.IsEmpty;
-				button.OnClick = () => { filter = new Filter(); ApplyFilter(); };
 			}
 		}
 
@@ -632,6 +655,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			Action startReplay = () =>
 			{
+				cancelLoadingReplays = true;
 				Game.JoinReplay(selectedReplay.FilePath);
 				Ui.CloseWindow();
 				onStart();
@@ -643,6 +667,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void AddReplay(ReplayMetadata replay, ScrollItemWidget template)
 		{
+			replays.Add(replay);
+
 			var item = ScrollItemWidget.Setup(template,
 				() => selectedReplay == replay,
 				() => SelectReplay(replay),
