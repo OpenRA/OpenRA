@@ -36,7 +36,7 @@ HOSP:
 		HuskActor: HOSP.Husk
 	Bib:
 		HasMinibib: Yes
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 HOSP.Husk:
 	Inherits: ^CivBuildingHusk
@@ -71,7 +71,7 @@ BIO:
 		RallyPoint: -1,-1
 	LeavesHusk:
 		HuskActor: BIO.Husk
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 BIO.Husk:
 	Inherits: ^CivBuildingHusk
@@ -98,5 +98,5 @@ MISS:
 	Bib:
 		HasMinibib: Yes
 	WithMakeAnimation:
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 

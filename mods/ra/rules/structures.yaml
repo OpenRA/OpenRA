@@ -134,31 +134,31 @@ SPEN:
 	ProductionBar:
 	Power:
 		Amount: -30
-	ProvidesCustomPrerequisite@soviet:
+	ProvidesPrerequisite@soviet:
 		Race: soviet, russia, ukraine
 		Prerequisite: ships.soviet
-	ProvidesCustomPrerequisite@sovietvanilla:
+	ProvidesPrerequisite@sovietvanilla:
 		Race: soviet
 		Prerequisite: ships.sovietvanilla
-	ProvidesCustomPrerequisite@russia:
+	ProvidesPrerequisite@russia:
 		Race: russia
 		Prerequisite: ships.russia
-	ProvidesCustomPrerequisite@ukraine:
+	ProvidesPrerequisite@ukraine:
 		Race: ukraine
 		Prerequisite: ships.ukraine
-	ProvidesCustomPrerequisite@sovietstructure:
+	ProvidesPrerequisite@sovietstructure:
 		RequiresPrerequisites: structures.soviet
 		Prerequisite: ships.soviet
-	ProvidesCustomPrerequisite@sovietvanillastructure:
+	ProvidesPrerequisite@sovietvanillastructure:
 		RequiresPrerequisites: structures.sovietvanilla
 		Prerequisite: ships.sovietvanilla
-	ProvidesCustomPrerequisite@russianstructure:
+	ProvidesPrerequisite@russianstructure:
 		RequiresPrerequisites: structures.russia
 		Prerequisite: ships.russia
-	ProvidesCustomPrerequisite@ukrainianstructure:
+	ProvidesPrerequisite@ukrainianstructure:
 		RequiresPrerequisites: structures.ukraine
 		Prerequisite: ships.ukraine
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 SYRD:
 	Inherits: ^Building
@@ -213,37 +213,37 @@ SYRD:
 	ProductionBar:
 	Power:
 		Amount: -30
-	ProvidesCustomPrerequisite@allies:
+	ProvidesPrerequisite@allies:
 		Race: allies, england, france, germany
 		Prerequisite: ships.allies
-	ProvidesCustomPrerequisite@alliesvanilla:
+	ProvidesPrerequisite@alliesvanilla:
 		Race: allies
 		Prerequisite: ships.alliesvanilla
-	ProvidesCustomPrerequisite@england:
+	ProvidesPrerequisite@england:
 		Race: england
 		Prerequisite: ships.england
-	ProvidesCustomPrerequisite@france:
+	ProvidesPrerequisite@france:
 		Race: france
 		Prerequisite: ships.france
-	ProvidesCustomPrerequisite@germany:
+	ProvidesPrerequisite@germany:
 		Race: germany
 		Prerequisite: ships.germany
-	ProvidesCustomPrerequisite@alliedstructure:
+	ProvidesPrerequisite@alliedstructure:
 		RequiresPrerequisites: structures.allies
 		Prerequisite: ships.allies
-	ProvidesCustomPrerequisite@alliedvanillastructure:
+	ProvidesPrerequisite@alliedvanillastructure:
 		RequiresPrerequisites: structures.alliesvanilla
 		Prerequisite: ships.alliesvanilla
-	ProvidesCustomPrerequisite@englishstructure:
+	ProvidesPrerequisite@englishstructure:
 		RequiresPrerequisites: structures.england
 		Prerequisite: ships.england
-	ProvidesCustomPrerequisite@frenchstructure:
+	ProvidesPrerequisite@frenchstructure:
 		RequiresPrerequisites: structures.france
 		Prerequisite: ships.france
-	ProvidesCustomPrerequisite@germanstructure:
+	ProvidesPrerequisite@germanstructure:
 		RequiresPrerequisites: structures.germany
 		Prerequisite: ships.germany
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 IRON:
 	Inherits: ^Building
@@ -317,10 +317,10 @@ PDOX:
 		Range: 10c0
 	Bib:
 		HasMinibib: Yes
-	ProvidesCustomPrerequisite@germany:
+	ProvidesPrerequisite@germany:
 		Race: germany
 		Prerequisite: pdox.germany
-	ProvidesCustomPrerequisite@germanstructure:
+	ProvidesPrerequisite@germanstructure:
 		RequiresPrerequisites: structures.germany
 		Prerequisite: pdox.germany
 	ChronoshiftPower@chronoshift:
@@ -358,7 +358,7 @@ PDOX:
 		Amount: -200
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 TSLA:
 	Inherits: ^Defense
@@ -403,7 +403,7 @@ TSLA:
 		Amount: -100
 	DetectCloaked:
 		Range: 8
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 AGUN:
 	Inherits: ^Defense
@@ -485,7 +485,7 @@ DOME:
 	RenderDetectionCircle:
 	Power:
 		Amount: -40
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 PBOX:
 	Inherits: ^Defense
@@ -660,7 +660,7 @@ FTUR:
 		Amount: -20
 	DetectCloaked:
 		Range: 6
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 SAM:
 	Inherits: ^Defense
@@ -719,7 +719,7 @@ ATEK:
 	Tooltip:
 		Name: Allied Tech Center
 		Description: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
-	ProvidesCustomPrerequisite:
+	ProvidesPrerequisite:
 		Prerequisite: techcenter
 	Building:
 		Footprint: xx xx
@@ -745,7 +745,7 @@ ATEK:
 	DisabledOverlay:
 	Power:
 		Amount: -200
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 WEAP:
 	Inherits: ^Building
@@ -776,65 +776,65 @@ WEAP:
 		ExitCell: 1,2
 	Production:
 		Produces: Vehicle
-	ProvidesCustomPrerequisite@allies:
+	ProvidesPrerequisite@allies:
 		Race: allies, england, france, germany
 		Prerequisite: vehicles.allies
-	ProvidesCustomPrerequisite@alliesvanilla:
+	ProvidesPrerequisite@alliesvanilla:
 		Race: allies
 		Prerequisite: vehicles.alliesvanilla
-	ProvidesCustomPrerequisite@england:
+	ProvidesPrerequisite@england:
 		Race: england
 		Prerequisite: vehicles.england
-	ProvidesCustomPrerequisite@france:
+	ProvidesPrerequisite@france:
 		Race: france
 		Prerequisite: vehicles.france
-	ProvidesCustomPrerequisite@germany:
+	ProvidesPrerequisite@germany:
 		Race: germany
 		Prerequisite: vehicles.germany
-	ProvidesCustomPrerequisite@soviet:
+	ProvidesPrerequisite@soviet:
 		Race: soviet, russia, ukraine
 		Prerequisite: vehicles.soviet
-	ProvidesCustomPrerequisite@sovietvanilla:
+	ProvidesPrerequisite@sovietvanilla:
 		Race: soviet
 		Prerequisite: vehicles.sovietvanilla
-	ProvidesCustomPrerequisite@russia:
+	ProvidesPrerequisite@russia:
 		Race: russia
 		Prerequisite: vehicles.russia
-	ProvidesCustomPrerequisite@ukraine:
+	ProvidesPrerequisite@ukraine:
 		Race: ukraine
 		Prerequisite: vehicles.ukraine
-	ProvidesCustomPrerequisite@alliedstructure:
+	ProvidesPrerequisite@alliedstructure:
 		RequiresPrerequisites: structures.allies
 		Prerequisite: vehicles.allies
-	ProvidesCustomPrerequisite@alliedvanillastructure:
+	ProvidesPrerequisite@alliedvanillastructure:
 		RequiresPrerequisites: structures.alliesvanilla
 		Prerequisite: vehicles.alliesvanilla
-	ProvidesCustomPrerequisite@englishstructure:
+	ProvidesPrerequisite@englishstructure:
 		RequiresPrerequisites: structures.england
 		Prerequisite: vehicles.england
-	ProvidesCustomPrerequisite@frenchstructure:
+	ProvidesPrerequisite@frenchstructure:
 		RequiresPrerequisites: structures.france
 		Prerequisite: vehicles.france
-	ProvidesCustomPrerequisite@germanstructure:
+	ProvidesPrerequisite@germanstructure:
 		RequiresPrerequisites: structures.germany
 		Prerequisite: vehicles.germany
-	ProvidesCustomPrerequisite@sovietstructure:
+	ProvidesPrerequisite@sovietstructure:
 		RequiresPrerequisites: structures.soviet
 		Prerequisite: vehicles.soviet
-	ProvidesCustomPrerequisite@sovietvanillastructure:
+	ProvidesPrerequisite@sovietvanillastructure:
 		RequiresPrerequisites: structures.sovietvanilla
 		Prerequisite: vehicles.sovietvanilla
-	ProvidesCustomPrerequisite@russianstructure:
+	ProvidesPrerequisite@russianstructure:
 		RequiresPrerequisites: structures.russia
 		Prerequisite: vehicles.russia
-	ProvidesCustomPrerequisite@ukrainianstructure:
+	ProvidesPrerequisite@ukrainianstructure:
 		RequiresPrerequisites: structures.ukraine
 		Prerequisite: vehicles.ukraine
 	PrimaryBuilding:
 	ProductionBar:
 	Power:
 		Amount: -30
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 FACT:
 	Inherits: ^Building
@@ -845,31 +845,31 @@ FACT:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
-	ProvidesCustomPrerequisite@allies:
+	ProvidesPrerequisite@allies:
 		Race: allies, england, france, germany
 		Prerequisite: structures.allies
-	ProvidesCustomPrerequisite@alliesvanilla:
+	ProvidesPrerequisite@alliesvanilla:
 		Race: allies
 		Prerequisite: structures.alliesvanilla
-	ProvidesCustomPrerequisite@england:
+	ProvidesPrerequisite@england:
 		Race: england
 		Prerequisite: structures.england
-	ProvidesCustomPrerequisite@france:
+	ProvidesPrerequisite@france:
 		Race: france
 		Prerequisite: structures.france
-	ProvidesCustomPrerequisite@germany:
+	ProvidesPrerequisite@germany:
 		Race: germany
 		Prerequisite: structures.germany
-	ProvidesCustomPrerequisite@soviet:
+	ProvidesPrerequisite@soviet:
 		Race: soviet, russia, ukraine
 		Prerequisite: structures.soviet
-	ProvidesCustomPrerequisite@sovietvanilla:
+	ProvidesPrerequisite@sovietvanilla:
 		Race: soviet
 		Prerequisite: structures.sovietvanilla
-	ProvidesCustomPrerequisite@russia:
+	ProvidesPrerequisite@russia:
 		Race: russia
 		Prerequisite: structures.russia
-	ProvidesCustomPrerequisite@ukraine:
+	ProvidesPrerequisite@ukraine:
 		Race: ukraine
 		Prerequisite: structures.ukraine
 	Health:
@@ -908,7 +908,7 @@ FACT:
 		UseDeathTypeSuffix: false
 	WithBuildingExplosion:
 		Delay: 1
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 PROC:
 	Inherits: ^Building
@@ -960,7 +960,7 @@ PROC:
 		UseDeathTypeSuffix: false
 	WithBuildingExplosion:
 		Delay: 1
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 SILO:
 	Inherits: ^Building
@@ -1025,37 +1025,37 @@ HPAD:
 	PrimaryBuilding:
 	Power:
 		Amount: -10
-	ProvidesCustomPrerequisite@allies:
+	ProvidesPrerequisite@allies:
 		Race: allies, england, france, germany
 		Prerequisite: aircraft.allies
-	ProvidesCustomPrerequisite@alliesvanilla:
+	ProvidesPrerequisite@alliesvanilla:
 		Race: allies
 		Prerequisite: aircraft.alliesvanilla
-	ProvidesCustomPrerequisite@england:
+	ProvidesPrerequisite@england:
 		Race: england
 		Prerequisite: aircraft.england
-	ProvidesCustomPrerequisite@france:
+	ProvidesPrerequisite@france:
 		Race: france
 		Prerequisite: aircraft.france
-	ProvidesCustomPrerequisite@germany:
+	ProvidesPrerequisite@germany:
 		Race: germany
 		Prerequisite: aircraft.germany
-	ProvidesCustomPrerequisite@alliedstructure:
+	ProvidesPrerequisite@alliedstructure:
 		RequiresPrerequisites: structures.allies
 		Prerequisite: aircraft.allies
-	ProvidesCustomPrerequisite@alliedvanillastructure:
+	ProvidesPrerequisite@alliedvanillastructure:
 		RequiresPrerequisites: structures.alliesvanilla
 		Prerequisite: aircraft.alliesvanilla
-	ProvidesCustomPrerequisite@englishstructure:
+	ProvidesPrerequisite@englishstructure:
 		RequiresPrerequisites: structures.england
 		Prerequisite: aircraft.england
-	ProvidesCustomPrerequisite@frenchstructure:
+	ProvidesPrerequisite@frenchstructure:
 		RequiresPrerequisites: structures.france
 		Prerequisite: aircraft.france
-	ProvidesCustomPrerequisite@germanstructure:
+	ProvidesPrerequisite@germanstructure:
 		RequiresPrerequisites: structures.germany
 		Prerequisite: aircraft.germany
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 AFLD:
 	Inherits: ^Building
@@ -1086,28 +1086,28 @@ AFLD:
 	Production:
 		Produces: Aircraft, Plane
 	Reservable:
-	ProvidesCustomPrerequisite@soviet:
+	ProvidesPrerequisite@soviet:
 		Race: soviet, russia, ukraine
 		Prerequisite: aircraft.soviet
-	ProvidesCustomPrerequisite@sovietvanilla:
+	ProvidesPrerequisite@sovietvanilla:
 		Race: soviet
 		Prerequisite: aircraft.sovietvanilla
-	ProvidesCustomPrerequisite@russia:
+	ProvidesPrerequisite@russia:
 		Race: russia
 		Prerequisite: aircraft.russia
-	ProvidesCustomPrerequisite@ukraine:
+	ProvidesPrerequisite@ukraine:
 		Race: ukraine
 		Prerequisite: aircraft.ukraine
-	ProvidesCustomPrerequisite@sovietstructure:
+	ProvidesPrerequisite@sovietstructure:
 		RequiresPrerequisites: structures.soviet
 		Prerequisite: aircraft.soviet
-	ProvidesCustomPrerequisite@sovietvanillastructure:
+	ProvidesPrerequisite@sovietvanillastructure:
 		RequiresPrerequisites: structures.sovietvanilla
 		Prerequisite: aircraft.sovietvanilla
-	ProvidesCustomPrerequisite@russianstructure:
+	ProvidesPrerequisite@russianstructure:
 		RequiresPrerequisites: structures.russia
 		Prerequisite: aircraft.russia
-	ProvidesCustomPrerequisite@ukrainianstructure:
+	ProvidesPrerequisite@ukrainianstructure:
 		RequiresPrerequisites: structures.ukraine
 		Prerequisite: aircraft.ukraine
 	AirstrikePower@spyplane:
@@ -1160,7 +1160,7 @@ AFLD:
 	PrimaryBuilding:
 	Power:
 		Amount: -20
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 POWR:
 	Inherits: ^Building
@@ -1173,7 +1173,7 @@ POWR:
 	Tooltip:
 		Name: Power Plant
 		Description: Provides power for other structures.
-	ProvidesCustomPrerequisite:
+	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
 		Footprint: xx xx
@@ -1210,7 +1210,7 @@ APWR:
 	Tooltip:
 		Name: Advanced Power Plant
 		Description: Provides double the power of a\nstandard Power Plant.
-	ProvidesCustomPrerequisite:
+	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
 		Footprint: ___ xxx xxx
@@ -1247,7 +1247,7 @@ STEK:
 	Tooltip:
 		Name: Soviet Tech Center
 		Description: Provides Soviet advanced technologies.
-	ProvidesCustomPrerequisite:
+	ProvidesPrerequisite:
 		Prerequisite: techcenter
 	Building:
 		Footprint: xxx xxx
@@ -1261,7 +1261,7 @@ STEK:
 	Bib:
 	Power:
 		Amount: -100
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 BARR:
 	Inherits: ^Building
@@ -1295,35 +1295,35 @@ BARR:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
 	ProductionBar:
-	ProvidesCustomPrerequisite:
+	ProvidesPrerequisite:
 		Prerequisite: barracks
-	ProvidesCustomPrerequisite@soviet:
+	ProvidesPrerequisite@soviet:
 		Race: soviet, russia, ukraine
 		Prerequisite: infantry.soviet
-	ProvidesCustomPrerequisite@sovietvanilla:
+	ProvidesPrerequisite@sovietvanilla:
 		Race: soviet
 		Prerequisite: infantry.sovietvanilla
-	ProvidesCustomPrerequisite@russia:
+	ProvidesPrerequisite@russia:
 		Race: russia
 		Prerequisite: infantry.russia
-	ProvidesCustomPrerequisite@ukraine:
+	ProvidesPrerequisite@ukraine:
 		Race: ukraine
 		Prerequisite: infantry.ukraine
-	ProvidesCustomPrerequisite@sovietstructure:
+	ProvidesPrerequisite@sovietstructure:
 		RequiresPrerequisites: structures.soviet
 		Prerequisite: infantry.soviet
-	ProvidesCustomPrerequisite@sovietvanillastructure:
+	ProvidesPrerequisite@sovietvanillastructure:
 		RequiresPrerequisites: structures.sovietvanilla
 		Prerequisite: infantry.sovietvanilla
-	ProvidesCustomPrerequisite@russianstructure:
+	ProvidesPrerequisite@russianstructure:
 		RequiresPrerequisites: structures.russia
 		Prerequisite: infantry.russia
-	ProvidesCustomPrerequisite@ukrainianstructure:
+	ProvidesPrerequisite@ukrainianstructure:
 		RequiresPrerequisites: structures.ukraine
 		Prerequisite: infantry.ukraine
 	Power:
 		Amount: -20
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 KENN:
 	Inherits: ^Building
@@ -1358,7 +1358,7 @@ KENN:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 TENT:
 	Inherits: ^Building
@@ -1392,41 +1392,41 @@ TENT:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
 	ProductionBar:
-	ProvidesCustomPrerequisite@barracks:
+	ProvidesPrerequisite@barracks:
 		Prerequisite: barracks
-	ProvidesCustomPrerequisite@allies:
+	ProvidesPrerequisite@allies:
 		Race: allies, england, france, germany
 		Prerequisite: infantry.allies
-	ProvidesCustomPrerequisite@alliesvanilla:
+	ProvidesPrerequisite@alliesvanilla:
 		Race: allies
 		Prerequisite: infantry.alliesvanilla
-	ProvidesCustomPrerequisite@england:
+	ProvidesPrerequisite@england:
 		Race: england
 		Prerequisite: infantry.england
-	ProvidesCustomPrerequisite@france:
+	ProvidesPrerequisite@france:
 		Race: france
 		Prerequisite: infantry.france
-	ProvidesCustomPrerequisite@germany:
+	ProvidesPrerequisite@germany:
 		Race: germany
 		Prerequisite: infantry.germany
-	ProvidesCustomPrerequisite@alliedstructure:
+	ProvidesPrerequisite@alliedstructure:
 		RequiresPrerequisites: structures.allies
 		Prerequisite: infantry.allies
-	ProvidesCustomPrerequisite@alliedvanillastructure:
+	ProvidesPrerequisite@alliedvanillastructure:
 		RequiresPrerequisites: structures.alliesvanilla
 		Prerequisite: infantry.alliesvanilla
-	ProvidesCustomPrerequisite@englishstructure:
+	ProvidesPrerequisite@englishstructure:
 		RequiresPrerequisites: structures.england
 		Prerequisite: infantry.england
-	ProvidesCustomPrerequisite@frenchstructure:
+	ProvidesPrerequisite@frenchstructure:
 		RequiresPrerequisites: structures.france
 		Prerequisite: infantry.france
-	ProvidesCustomPrerequisite@germanstructure:
+	ProvidesPrerequisite@germanstructure:
 		RequiresPrerequisites: structures.germany
 		Prerequisite: infantry.germany
 	Power:
 		Amount: -20
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 FIX:
 	Inherits: ^Building
@@ -1458,7 +1458,7 @@ FIX:
 	WithRepairAnimation:
 	Power:
 		Amount: -30
-	ProvidesCustomPrerequisite@buildingname:
+	ProvidesPrerequisite@buildingname:
 
 SBAG:
 	Inherits: ^Wall

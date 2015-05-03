@@ -19,9 +19,9 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			// ProvidesCustomPrerequisite allows arbitrary prereq definitions
+			// ProvidesPrerequisite allows arbitrary prereq definitions
 			var customPrereqs = map.Rules.Actors.SelectMany(a => a.Value.Traits
-				.WithInterface<ProvidesCustomPrerequisiteInfo>().Select(p => p.Prerequisite ?? a.Value.Name));
+				.WithInterface<ProvidesPrerequisiteInfo>().Select(p => p.Prerequisite ?? a.Value.Name));
 
 			// ProvidesTechPrerequisite allows arbitrary prereq definitions
 			// (but only one group at a time during gameplay)
