@@ -6,7 +6,10 @@ mono: 3.12.0
 
 # Use the Docker-based infrastructure
 sudo: false
-cache: apt
+
+cache:
+  directories:
+  - thirdparty/download
 
 # Environment variables
 env:
