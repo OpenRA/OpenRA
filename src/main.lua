@@ -106,6 +106,7 @@ ide = {
       contextlinesafter = 2,
       showaseditor = true,
       zoom = 0,
+      autohide = false,
     },
 
     toolbar = {

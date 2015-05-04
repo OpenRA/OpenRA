@@ -614,6 +614,7 @@ function findReplace:RunInFiles(replace)
 
   self:SetStatus(not completed and TR("Cancelled by the user.")
     or TR("Found %d instance.", self.occurrences):format(self.occurrences))
+  if completed and ide.config.search.autohide then self:Hide() end
   self.oveditor = nil
   self.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
 end
