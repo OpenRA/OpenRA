@@ -19,7 +19,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.613,
+  _VERSION = 0.62,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -274,12 +274,22 @@ local function stack(start)
     local func = debug.getinfo(f, "f").func
     local i = 1
     local locals = {}
+    -- get locals
     while true do
       local name, value = debug.getlocal(f, i)
       if not name then break end
       if string.sub(name, 1, 1) ~= '(' then locals[name] = {value, tostring(value)} end
       i = i + 1
     end
+    -- get varargs (these use negative indices)
+    i = 1
+    while true do
+      local name, value = debug.getlocal(f, -i)
+      if not name then break end
+      locals[name:gsub("%)$"," "..i..")")] = {value, tostring(value)}
+      i = i + 1
+    end
+    -- get upvalues
     i = 1
     local ups = {}
     while func and true do -- check for func as it may be nil for tail calls
