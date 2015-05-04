@@ -10,7 +10,7 @@ ide.findReplace = {
   panel = nil, -- the control for find/replace
   replace = false, -- is it a find or replace
   infiles = false,
-  startpos = nil,
+  backfocus = nil, -- editor and position to return focus to
   cureditor = nil, -- the editor being searched
   reseditor = nil, -- the editor for search results
   oveditor = nil, -- the editor is used for search during find-in-files
@@ -869,8 +869,8 @@ function findReplace:createPanel()
   end
 
   local function findIncremental(event)
-    if not self.infiles and self.startpos then
-      self:GetEditor():SetSelection(findReplace.startpos, findReplace.startpos)
+    if not self.infiles and self.backfocus then
+      self:GetEditor():SetSelection(self.backfocus.position, self.backfocus.position)
     end
     -- don't search when used with "infiles", but still trigger autocomplete
     if self.infiles or self:Find() then
@@ -919,16 +919,7 @@ function findReplace:createPanel()
     local keycode = event:GetKeyCode()
     event:GetEventObject().lastkeycode = keycode
     if keycode == wx.WXK_ESCAPE then
-      self:Hide()
-      local editor = self:GetEditor()
-      if editor then
-        -- restore original position for Shift-Esc or failed search
-        if self.startpos
-        and (event:ShiftDown() or self.foundString == false) then
-          editor:GotoPos(self.startpos)
-        end
-        editor:SetFocus()
-      end
+      self:Hide(event:ShiftDown())
     elseif keycode == wx.WXK_TAB then
       local id = event:GetId()
       local order, pos = {}
@@ -952,9 +943,14 @@ function findReplace:createPanel()
   findCtrl:Connect(wx.wxEVT_SET_FOCUS,
     function(event)
       event:Skip()
-      local ed = findReplace:GetEditor()
-      self.startpos = ed and (ed:GetSelectionStart() == ed:GetSelectionEnd()
-        and ed:GetCurrentPos() or ed:GetSelectionStart()) or nil
+      local ed = self:GetEditor()
+      if ed then
+        self.backfocus = {
+          editor = ed,
+          position = (ed:GetSelectionStart() == ed:GetSelectionEnd()
+            and ed:GetCurrentPos() or ed:GetSelectionStart())
+        }
+      end
     end)
   findCtrl:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, findNext)
   findCtrl:Connect(wx.wxEVT_COMMAND_TEXT_UPDATED, findIncremental)
@@ -1070,10 +1066,21 @@ function findReplace:IsShown()
   return pane:IsOk() and pane:IsShown()
 end
 
-function findReplace:Hide()
+function findReplace:Hide(restorepos)
   local mgr = ide:GetUIManager()
   mgr:GetPane(searchpanel):Hide()
   mgr:Update()
+
+  if self.reseditor then
+    self.reseditor:SetFocus()
+  elseif self.backfocus then
+    local editor = self.backfocus.editor
+    -- restore original position for Shift-Esc or failed search
+    if restorepos or self.foundString == false then
+      editor:GotoPos(self.backfocus.position)
+    end
+    editor:SetFocus()
+  end
 end
 
 local package = ide:AddPackage('core.findreplace', {
