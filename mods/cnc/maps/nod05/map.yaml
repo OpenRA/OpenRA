@@ -1,0 +1,525 @@
+MapFormat: 7
+
+RequiresMod: cnc
+
+Title: Warthog Hunt
+
+Description: Our brothers within GDI tell us of A-10 strike jets scheduled to be deployed here soon. Our suppliers have delivered new Surface to Air Missiles to aid you. Use the SAMs to defend your base, then seek out their base and destroy it.
+
+Author: Westwood Studios
+
+Tileset: DESERT
+
+MapSize: 64,64
+
+Bounds: 4,12,57,45
+
+Visibility: MissionSelector
+
+Type: Campaign
+
+Videos:
+	BackgroundInfo: sethpre.vqa
+	Briefing: nod5.vqa
+	GameStart: samsite.vqa
+	GameWon: insites.vqa
+	GameLost: flag.vqa
+
+Options:
+	Crates: False
+	Creeps: False
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
+	StartingCash: 5000
+	ConfigurableStartingUnits: False
+	ShortGame: False
+
+Players:
+	PlayerReference@GDI:
+		Name: GDI
+		Race: gdi
+		ColorRamp: 31,222,183
+		Allies: GDI
+		Enemies: Nod
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: gdi
+		Allies: GDI
+		Enemies: Nod
+	PlayerReference@Nod:
+		Name: Nod
+		Playable: True
+		AllowBots: False
+		Required: True
+		LockRace: True
+		Race: nod
+		LockColor: True
+		ColorRamp: 3,255,127
+		LockSpawn: True
+		LockTeam: True
+		Allies: Nod
+		Enemies: GDI
+
+Actors:
+	Actor0: sbag
+		Location: 30,22
+		Owner: Neutral
+	Actor1: sbag
+		Location: 29,22
+		Owner: Neutral
+	Actor2: sbag
+		Location: 28,22
+		Owner: Neutral
+	Actor3: sbag
+		Location: 23,22
+		Owner: Neutral
+	Actor4: sbag
+		Location: 22,22
+		Owner: Neutral
+	Actor5: sbag
+		Location: 21,22
+		Owner: Neutral
+	Actor6: sbag
+		Location: 20,22
+		Owner: Neutral
+	Actor7: sbag
+		Location: 19,22
+		Owner: Neutral
+	Actor8: sbag
+		Location: 30,21
+		Owner: Neutral
+	Actor9: sbag
+		Location: 19,21
+		Owner: Neutral
+	Actor10: sbag
+		Location: 18,21
+		Owner: Neutral
+	Actor11: sbag
+		Location: 30,20
+		Owner: Neutral
+	Actor12: sbag
+		Location: 30,19
+		Owner: Neutral
+	Actor13: sbag
+		Location: 30,18
+		Owner: Neutral
+	Actor14: sbag
+		Location: 30,17
+		Owner: Neutral
+	Actor15: sbag
+		Location: 16,15
+		Owner: Neutral
+	Actor16: sbag
+		Location: 16,14
+		Owner: Neutral
+	Actor17: sbag
+		Location: 28,13
+		Owner: Neutral
+	Actor18: sbag
+		Location: 27,13
+		Owner: Neutral
+	Actor19: sbag
+		Location: 26,13
+		Owner: Neutral
+	Actor20: sbag
+		Location: 25,13
+		Owner: Neutral
+	Actor21: sbag
+		Location: 24,13
+		Owner: Neutral
+	Actor22: sbag
+		Location: 23,13
+		Owner: Neutral
+	Actor23: sbag
+		Location: 22,13
+		Owner: Neutral
+	Actor24: sbag
+		Location: 21,13
+		Owner: Neutral
+	Actor25: sbag
+		Location: 20,13
+		Owner: Neutral
+	Actor26: sbag
+		Location: 19,13
+		Owner: Neutral
+	Actor27: sbag
+		Location: 18,13
+		Owner: Neutral
+	Actor28: sbag
+		Location: 17,13
+		Owner: Neutral
+	Actor29: sbag
+		Location: 16,13
+		Owner: Neutral
+	Actor30: t18
+		Location: 52,25
+		Owner: Neutral
+	Actor31: t18
+		Location: 54,31
+		Owner: Neutral
+	Actor32: t18
+		Location: 17,39
+		Owner: Neutral
+	Actor33: t08
+		Location: 17,43
+		Owner: Neutral
+	Actor34: t08
+		Location: 23,37
+		Owner: Neutral
+	Actor35: t08
+		Location: 22,35
+		Owner: Neutral
+	Actor36: t08
+		Location: 15,37
+		Owner: Neutral
+	Actor37: rock2
+		Location: 8,50
+		Owner: Neutral
+	Actor38: rock5
+		Location: 18,49
+		Owner: Neutral
+	Actor39: t08
+		Location: 19,48
+		Owner: Neutral
+	Actor40: t08
+		Location: 21,52
+		Owner: Neutral
+	Actor42: t08
+		Location: 54,56
+		Owner: Neutral
+	Actor43: t08
+		Location: 31,49
+		Owner: Neutral
+	Actor44: t08
+		Location: 10,38
+		Owner: Neutral
+	Actor45: t08
+		Location: 6,41
+		Owner: Neutral
+	Actor46: t08
+		Location: 5,30
+		Owner: Neutral
+	Actor47: t08
+		Location: 10,16
+		Owner: Neutral
+	Actor48: t08
+		Location: 15,14
+		Owner: Neutral
+	Actor49: t08
+		Location: 19,23
+		Owner: Neutral
+	Actor50: t08
+		Location: 38,43
+		Owner: Neutral
+	Actor51: t18
+		Location: 47,21
+		Owner: Neutral
+	Actor52: t18
+		Location: 48,20
+		Owner: Neutral
+	Actor53: t18
+		Location: 30,21
+		Owner: Neutral
+	Actor65: v24
+		Location: 18,38
+		Owner: Neutral
+	Actor66: v32
+		Location: 19,41
+		Owner: Special
+	Actor67: v30
+		Location: 15,40
+		Owner: Neutral
+	Actor68: v29
+		Location: 17,40
+		Owner: Neutral
+	Actor69: v28
+		Location: 23,38
+		Owner: Neutral
+	Actor70: v27
+		Location: 23,36
+		Owner: Neutral
+	Actor71: v27
+		Location: 22,36
+		Owner: Neutral
+	Actor72: v26
+		Location: 16,37
+		Owner: Neutral
+	Actor82: mtnk
+		Location: 21,21
+		Owner: GDI
+	Actor83: mtnk
+		Location: 17,14
+		Owner: GDI
+	Actor84: jeep
+		Location: 29,21
+		Owner: GDI
+	Actor85: jeep
+		Location: 29,20
+		Owner: GDI
+	Actor86: e2
+		Location: 58,30
+		Owner: GDI
+		SubCell: 2
+	Actor87: e2
+		Location: 57,29
+		Owner: GDI
+		SubCell: 0
+	Actor88: e1
+		Location: 32,49
+		Owner: GDI
+		SubCell: 1
+	Actor89: e1
+		Location: 7,30
+		Owner: GDI
+		Facing: 128
+		SubCell: 3
+	Actor90: e2
+		Location: 6,30
+		Owner: GDI
+		Facing: 96
+		SubCell: 1
+	Actor91: e2
+		Location: 8,28
+		Owner: GDI
+		Facing: 160
+		SubCell: 3
+	Actor92: e2
+		Location: 39,43
+		Owner: GDI
+		SubCell: 1
+	waypoint27: waypoint
+		Location: 39,36
+		Owner: Neutral
+	waypoint26: waypoint
+		Location: 44,48
+		Owner: Neutral
+	waypoint12: waypoint
+		Location: 6,20
+		Owner: Neutral
+	waypoint11: waypoint
+		Location: 5,26
+		Owner: Neutral
+	waypoint10: waypoint
+		Location: 35,13
+		Owner: Neutral
+	waypoint9: waypoint
+		Location: 52,13
+		Owner: Neutral
+	waypoint8: waypoint
+		Location: 47,55
+		Owner: Neutral
+	waypoint7: waypoint
+		Location: 26,54
+		Owner: Neutral
+	waypoint6: waypoint
+		Location: 56,37
+		Owner: Neutral
+	waypoint5: waypoint
+		Location: 30,52
+		Owner: Neutral
+	waypoint4: waypoint
+		Location: 12,47
+		Owner: Neutral
+	waypoint3: waypoint
+		Location: 11,35
+		Owner: Neutral
+	waypoint2: waypoint
+		Location: 55,42
+		Owner: Neutral
+	waypoint1: waypoint
+		Location: 26,32
+		Owner: Neutral
+	waypoint0: waypoint
+		Location: 26,25
+		Owner: Neutral
+	UnitsEntry: waypoint
+		Location: 52,56
+		Owner: Neutral
+	UnitsRallyVehicle: waypoint
+		Location: 51,49
+		Owner: Neutral
+	UnitsRallyRocket: waypoint
+		Location: 49,49
+		Owner: Neutral
+	UnitsRallyGunner: waypoint
+		Location: 53,49
+		Owner: Neutral
+	UnitsRallyMCV: waypoint
+		Location: 51,52
+		Owner: Neutral
+	Tower1: gtwr
+		Location: 28,21
+		Owner: GDI
+	Tower2: gtwr
+		Location: 23,21
+		Owner: GDI
+	Radar: hq
+		Location: 21,14
+		Owner: GDI
+	Silo1: silo
+		Location: 16,20
+		Owner: GDI
+	Silo2: silo
+		Location: 16,18
+		Owner: GDI
+	Silo3: silo
+		Location: 16,16
+		Owner: GDI
+	Refinery: proc
+		Location: 18,17
+		Owner: GDI
+	Barracks: pyle
+		Location: 25,18
+		Owner: GDI
+	Plant1: nuke
+		Location: 21,17
+		Owner: GDI
+	Plant2: nuke
+		Location: 23,17
+		Owner: GDI
+	Yard: fact
+		Location: 18,14
+		Owner: GDI
+	Factory: weap
+		Location: 26,13
+		Owner: GDI
+
+Smudges:
+	cr1 46,48 0:
+
+Rules:
+	Player:
+		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
+	World:
+		-CrateSpawner:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
+		LuaScript:
+			Scripts: nod05.lua
+	^Vehicle:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Tank:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Infantry:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Plane:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Ship:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Building:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	NUK2:
+		Buildable:
+			Prerequisites: ~disabled
+	GUN:
+		Buildable:
+			Prerequisites: ~disabled
+	CYCL:
+		Buildable:
+			Prerequisites: ~disabled
+	FIX:
+		Buildable:
+			Prerequisites: ~disabled
+	HPAD:
+		Buildable:
+			Prerequisites: ~disabled
+	OBLI:
+		Buildable:
+			Prerequisites: ~disabled
+	BRIK:
+		Buildable:
+			Prerequisites: ~disabled
+	TMPL:
+		Buildable:
+			Prerequisites: ~disabled
+	E5:
+		Buildable:
+			Prerequisites: ~disabled
+	RMBO:
+		Buildable:
+			Prerequisites: ~disabled
+	MLRS:
+		Buildable:
+			Prerequisites: ~disabled
+	MCV:
+		Buildable:
+			Prerequisites: ~disabled
+	LST:
+		Buildable:
+			Prerequisites: ~disabled
+	C17:
+		Buildable:
+			Prerequisites: ~disabled
+	GTWR:
+		Buildable:
+			Prerequisites: ~disabled
+	WEAP:
+		Buildable:
+			Prerequisites: ~disabled
+	EYE:
+		Buildable:
+			Prerequisites: ~disabled
+	ATWR:
+		Buildable:
+			Prerequisites: ~disabled
+	HARV:
+		Buildable:
+			Prerequisites: ~disabled
+	FTNK:
+		Buildable:
+			Prerequisites: ~disabled
+	STNK:
+		Buildable:
+			Prerequisites: ~disabled
+	ARTY:
+		Buildable:
+			Prerequisites: ~disabled
+	E3:
+		Buildable:
+			Prerequisites: ~disabled
+	MTNK:
+		Buildable:
+			Prerequisites: ~disabled
+	HTNK:
+		Buildable:
+			Prerequisites: ~disabled
+	ORCA:
+		Buildable:
+			Prerequisites: ~disabled
+	MSAM:
+		Buildable:
+			Prerequisites: ~disabled
+	A10:
+		TargetableUnit:
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:
