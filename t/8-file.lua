@@ -24,3 +24,53 @@ local luasmore = FileSysGetRecursive('.', true, '*.lua')
 is(#luasmore, #luas, ("Mask '.lua' doesn't match '%s'"):format(fcopy))
 os.remove(fcopy)
 ok(not FileRead(fcopy), "File deleted successfully.")
+
+local exlist = ide.config.excludelist
+local path = 'zbstudio/res/16'
+local bins0 = FileSysGetRecursive(path, true, '*.*')
+local bins1 = FileSysGetRecursive(path, true, '*.png')
+ok(#bins0 > 1, "'*.*' mask retrieves binary files.")
+
+ide.config.excludelist = ".png/"
+local bins = FileSysGetRecursive(path, true, '*.*')
+is(#bins, #bins0, "Excluding '.png/' still returns 'png' files.")
+
+ide.config.excludelist = ".png"
+bins = FileSysGetRecursive(path, true, '*.*')
+is(#bins, 1, "Excluding '.png' skips 'png' files.")
+
+ide.config.excludelist = "*.png"
+bins = FileSysGetRecursive(path, true, '*.*')
+is(#bins, 1, "Excluding '*.png' skips 'png' files.")
+
+ide.config.excludelist = "FIND*.png"
+bins = FileSysGetRecursive(path, true, '*.png')
+ok(#bins < #bins1, "Excluding `FIND*.png` filters out files with that mask.")
+
+ide.config.excludelist = "*.png"
+bins = FileSysGetRecursive(path, true, 'FIND*.png')
+ok(#bins < #bins1, "Requesting `FIND*.png` filters specific files.")
+
+ide.config.excludelist = ""
+local bina = FileSysGetRecursive('.', true, '*.lua')
+
+ide.config.excludelist = "src"
+bins = FileSysGetRecursive('.', true, '*.lua')
+is(#bins, #bina, "Excluding `src` still returns the content of `src` folder.")
+
+ide.config.excludelist = "src/"
+bins = FileSysGetRecursive('.', true, '*.lua')
+ok(#bins < #bina, "Excluding `src/` skips the content of `src` folder.")
+
+ide.config.excludelist = "src\\"
+local nosrc = #bins
+bins = FileSysGetRecursive('.', true, '*.lua')
+ok(#bins < #bina, "Excluding `src\\` skips the content of `src` folder.")
+is(#bins, nosrc, "Excluding `src\\` and `src/` produce the same result.")
+
+ide.config.excludelist = exlist
+bins = FileSysGetRecursive(path, true, '*', {skipbinary = true})
+is(#bins, 1, "Default mask excludes `png` files with `skipbinary`.")
+
+bins = FileSysGetRecursive("bin", true, '*.exe', {folder = false})
+is(bins, {}, "Default mask excludes `*.exe` files.")

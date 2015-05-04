@@ -147,20 +147,52 @@ function FileSysGetRecursive(path, recursive, spec, opts)
   local optfolder = (opts or {}).folder ~= false
   local optsort = (opts or {}).sort ~= false
   local optpath = (opts or {}).path ~= false
+  local optskipbinary = (opts or {}).skipbinary
 
-  -- recursion is done in all folders but only those folders that match
-  -- the spec are returned. This is the pattern that matches the spec.
-  -- Mask could be a list, so generate a table with matching patterns
-  -- accept "*.lua" and "*.txt,*.wlua" combinations
-  local masks = {}
-  for m in (spec or "*"):gmatch("[^%s;,]+") do
-    -- escape all special characters and replace (escaped) * with .*
-    table.insert(masks, EscapeMagic(m):gsub("%%%*", ".*").."$")
+  local function spec2list(spec, list)
+    -- return empty list if no spec is provided
+    if spec == nil or spec == "*" or spec == "*.*" then return {}, 0 end
+    -- accept "*.lua" and "*.txt,*.wlua" combinations
+    if type(spec) == 'table' then spec = table.concat(spec, ",") end
+    local masknum, list = 0, list or {}
+    for m in spec:gmatch("[^%s;,]+") do
+      m = m:gsub("[\\/]", sep)
+      if m:find("^%*%.%w+"..sep.."?$") then
+        list[m:sub(2)] = true
+      else
+        -- escape all special characters and replace (escaped) * with .*
+        table.insert(list, EscapeMagic(m):gsub("%%%*", ".*").."$")
+      end
+      masknum = masknum + 1
+    end
+    return list, masknum
   end
-  if #masks >= 2 then spec = nil end
 
-  local function ismatch(file)
-    for _, mask in ipairs(masks) do
+  local inmasks, masknum = spec2list(spec)
+  if masknum >= 2 then spec = nil end
+
+  local exmasks = spec2list(ide.config.excludelist or {})
+  if optskipbinary then -- add any binary files to the list to skip
+    exmasks = spec2list(type(optskipbinary) == 'table' and optskipbinary
+      or ide.config.binarylist or {}, exmasks)
+  end
+
+  local function ismatch(file, inmasks, exmasks)
+    -- convert extension 'foo' to '.foo', as need to distinguish file
+    -- from extension with the same name
+    local ext = '.'..GetFileExt(file)
+    -- check exclusions if needed
+    if exmasks[file] or exmasks[ext] then return false end
+    for _, mask in ipairs(exmasks) do
+      if file:find(mask) then return false end
+    end
+
+    -- return true if none of the exclusions match and no inclusion list
+    if not inmasks or not next(inmasks) then return true end
+
+    -- now check inclusions
+    if inmasks[file] or inmasks[ext] then return true end
+    for _, mask in ipairs(inmasks) do
       if file:find(mask) then return true end
     end
     return false
@@ -181,18 +213,21 @@ function FileSysGetRecursive(path, recursive, spec, opts)
       return
     end
 
+    -- recursion is done in all folders if requested,
+    -- but only those folders that match the spec are returned
     local _ = wx.wxLogNull() -- disable error reporting; will report as needed
     local found, file = dir:GetFirst("*", wx.wxDIR_DIRS)
     while found do
       local fname = wx.wxFileName(path, file):GetFullPath()
-      if optfolder and ismatch(file) then
+      if optfolder and ismatch(fname..sep, nil, exmasks) then
         report((optpath and fname or fname:gsub(pathpatt, ""))..sep)
       end
 
       -- check if this name already appears in the path earlier;
       -- Skip the processing if it does as it could lead to infinite
       -- recursion with circular references created by symlinks.
-      if recursive and select(2, fname:gsub(EscapeMagic(file..sep),'')) <= 2 then
+      if recursive and ismatch(fname..sep, nil, exmasks)
+      and select(2, fname:gsub(EscapeMagic(file..sep),'')) <= 2 then
         table.insert(queue, fname)
       end
       found, file = dir:GetNext()
@@ -200,7 +235,7 @@ function FileSysGetRecursive(path, recursive, spec, opts)
     found, file = dir:GetFirst(spec or "*", wx.wxDIR_FILES)
     while found do
       local fname = wx.wxFileName(path, file):GetFullPath()
-      if ismatch(file) then
+      if ismatch(fname, inmasks, exmasks) then
         report(optpath and fname or fname:gsub(pathpatt, ""))
       end
       found, file = dir:GetNext()
