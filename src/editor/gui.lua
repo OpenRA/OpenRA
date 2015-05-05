@@ -54,6 +54,8 @@ local function createFrame()
 
   local mgr = wxaui.wxAuiManager()
   mgr:SetManagedWindow(frame)
+  -- allow the panes to be larger than the defalt 1/3 of the main window size
+  mgr:SetDockSizeConstraint(0.8,0.8)
 
   frame.menuBar = menuBar
   frame.statusBar = statusBar
