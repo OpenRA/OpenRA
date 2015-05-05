@@ -287,7 +287,7 @@ local function navigateTo(default, selected)
       elseif text and #text > 0 and projdir and #projdir > 0 then
         -- populate the list of files
         files = files or FileSysGetRecursive(projdir, true, "*",
-          {sort = false, path = false, folder = false})
+          {sort = false, path = false, folder = false, skipbinary = true})
         local topscore
         for _, item in ipairs(CommandBarScoreItems(files, text, 100)) do
           local file, score = unpack(item)
