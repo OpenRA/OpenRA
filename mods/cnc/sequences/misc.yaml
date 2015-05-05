@@ -384,3 +384,14 @@ craters:
 	cr4: cr4
 	cr5: cr5
 	cr6: cr6
+
+smokland:
+	open:
+		Length: 60
+		Tick: 120
+		ZOffset: 1023
+	idle:
+		Start: 60
+		Length: 32
+		Tick: 120
+		ZOffset: 1023
