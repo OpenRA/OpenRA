@@ -297,8 +297,7 @@ namespace OpenRA.Network
 						if (!order.IsImmediate)
 						{
 							var self = order.Subject;
-							var health = self.TraitOrDefault<Health>();
-							if (health == null || !health.IsDead)
+							if (!self.IsDead)
 								foreach (var t in self.TraitsImplementing<IResolveOrder>())
 									t.ResolveOrder(self, order);
 						}
