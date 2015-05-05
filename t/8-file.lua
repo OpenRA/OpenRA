@@ -68,6 +68,18 @@ bins = FileSysGetRecursive('.', true, '*.lua')
 ok(#bins < #bina, "Excluding `src\\` skips the content of `src` folder.")
 is(#bins, nosrc, "Excluding `src\\` and `src/` produce the same result.")
 
+nosrc = #FileSysGetRecursive('.', true, '*.lua', {folder = false})
+ide.config.excludelist = "src/**.lua"
+bins = FileSysGetRecursive('.', true, '*.lua', {folder = false})
+is(#bins, nosrc, "Excluding `src/**.lua` skips lua files in subfolders.")
+
+ide.config.excludelist = ""
+local editor = #FileSysGetRecursive('src/editor', true, '*.lua', {folder = false})
+
+ide.config.excludelist = "src/*.lua"
+bins = FileSysGetRecursive('.', true, '*.lua', {folder = false})
+is(#bins, nosrc+editor, "Excluding `src/*.lua` skips lua files only in `src` folder.")
+
 ide.config.excludelist = exlist
 bins = FileSysGetRecursive(path, true, '*', {skipbinary = true})
 is(#bins, 1, "Default mask excludes `png` files with `skipbinary`.")

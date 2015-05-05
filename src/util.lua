@@ -160,8 +160,10 @@ function FileSysGetRecursive(path, recursive, spec, opts)
       if m:find("^%*%.%w+"..sep.."?$") then
         list[m:sub(2)] = true
       else
-        -- escape all special characters and replace (escaped) * with .*
-        table.insert(list, EscapeMagic(m):gsub("%%%*", ".*").."$")
+        -- escape all special characters
+        -- and replace (escaped) ** with .* and (escaped) * with [^\//]*
+        table.insert(list, EscapeMagic(m)
+          :gsub("%%%*%%%*", ".*"):gsub("%%%*", "[^/\\]*").."$")
       end
       masknum = masknum + 1
     end
