@@ -28,6 +28,9 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Minimum number of units AI must have before attacking.")]
 		public readonly int SquadSize = 8;
 
+		[Desc("Random number of up to this many units is added to squad size when creating an attack squad.")]
+		public readonly int SquadSizeRandomBonus = 30;
+
 		[Desc("Production queues AI uses for buildings.")]
 		public readonly string[] BuildingQueues = { "Building" };
 
@@ -42,6 +45,9 @@ namespace OpenRA.Mods.Common.AI
 
 		[Desc("Delay (in ticks) between updating squads.")]
 		public readonly int AttackForceInterval = 30;
+
+		[Desc("Minimum delay (in ticks) between creating squads.")]
+		public readonly int MinimumAttackForceDelay = 0;
 
 		[Desc("How long to wait (in ticks) between structure production checks when there is no active production.")]
 		public readonly int StructureProductionInactiveDelay = 125;
@@ -514,6 +520,7 @@ namespace OpenRA.Mods.Common.AI
 		int assignRolesTicks = 0;
 		int rushTicks = 0;
 		int attackForceTicks = 0;
+		int minAttackForceDelayTicks = 0;
 
 		void AssignRolesToIdleUnits(Actor self)
 		{
@@ -541,7 +548,12 @@ namespace OpenRA.Mods.Common.AI
 
 			GiveOrdersToIdleHarvesters();
 			FindNewUnits(self);
-			CreateAttackForce();
+			if (--minAttackForceDelayTicks <= 0)
+			{
+				minAttackForceDelayTicks = Info.MinimumAttackForceDelay;
+				CreateAttackForce();
+			}
+
 			FindAndDeployBackupMcv(self);
 		}
 
@@ -603,7 +615,7 @@ namespace OpenRA.Mods.Common.AI
 		{
 			// Create an attack force when we have enough units around our base.
 			// (don't bother leaving any behind for defense)
-			var randomizedSquadSize = Info.SquadSize + Random.Next(30);
+			var randomizedSquadSize = Info.SquadSize + Random.Next(Info.SquadSizeRandomBonus);
 
 			if (unitsHangingAroundTheBase.Count >= randomizedSquadSize)
 			{
