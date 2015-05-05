@@ -592,7 +592,7 @@ Actors:
 	UnitsRallyRight: waypoint
 		Location: 27,20
 		Owner: Neutral
-	ChnEnrty: waypoint
+	ChnEntry: waypoint
 		Location: 32,61
 		Owner: Neutral
 	Obj2UnitsEntry: waypoint
