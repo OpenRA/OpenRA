@@ -8,12 +8,13 @@
 */
 #endregion
 
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("This actor makes noise, which causes them to be targeted by actors with the Sandworm trait.")]
-	public class AttractsWormsInfo : ITraitInfo
+	public class AttractsWormsInfo : UpgradableTraitInfo, ITraitInfo
 	{
 		[Desc("How much noise this actor produces.")]
 		public readonly int Intensity = 0;
@@ -27,22 +28,23 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
 		public WRange[] Range = null;
 
-		public object Create(ActorInitializer init) { return new AttractsWorms(this); }
+		public object Create(ActorInitializer init) { return new AttractsWorms(init, this); }
 	}
 
-	public class AttractsWorms
+	public class AttractsWorms : UpgradableTrait<AttractsWormsInfo>
 	{
-		public readonly AttractsWormsInfo Info;
+		readonly Actor self;
 
-		public AttractsWorms(AttractsWormsInfo info)
+		public AttractsWorms(ActorInitializer init, AttractsWormsInfo info)
+			: base(info)
 		{
-			Info = info;
+			self = init.Self;
 
 			if (info.Range == null)
 				info.Range = Exts.MakeArray(info.Falloff.Length, i => i * info.Spread);
 		}
 
-		public int GetNoisePercentageAtDistance(int distance)
+		int GetNoisePercentageAtDistance(int distance)
 		{
 			var inner = Info.Range[0].Range;
 			for (var i = 1; i < Info.Range.Length; i++)
@@ -55,6 +57,24 @@ namespace OpenRA.Mods.D2k.Traits
 			}
 
 			return 0;
+		}
+
+		public WVec AttractionAtPosition(WPos pos)
+		{
+			if (IsTraitDisabled)
+				return WVec.Zero;
+
+			var distance = self.CenterPosition - pos;
+			var length = distance.Length;
+
+			// Actor is too far to hear anything.
+			if (length > Info.Range[Info.Range.Length - 1].Range)
+				return WVec.Zero;
+
+			var direction = 1024 * distance / length;
+			var percentage = GetNoisePercentageAtDistance(length);
+
+			return direction * Info.Intensity * percentage / 100;
 		}
 	}
 }
