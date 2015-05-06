@@ -198,8 +198,16 @@ namespace OpenRA
 
 		public void LoadComplete(WorldRenderer wr)
 		{
+			// ScreenMap must be initialized before anything else
+			using (new Support.PerfTimer("ScreenMap.WorldLoaded"))
+				ScreenMap.WorldLoaded(this, wr);
+
 			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
 			{
+				// These have already been initialized
+				if (wlh == ScreenMap)
+					continue;
+
 				using (new Support.PerfTimer(wlh.GetType().Name + ".WorldLoaded"))
 					wlh.WorldLoaded(this, wr);
 			}
