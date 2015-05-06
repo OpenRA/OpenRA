@@ -74,11 +74,15 @@ namespace OpenRA.Mods.Common.Widgets
 			targetListOffset = value;
 			if (!smooth)
 			{
+				var oldListOffset = currentListOffset;
 				currentListOffset = value;
 
 				// Update mouseover
-				var mi = new MouseInput(MouseInputEvent.Move, MouseButton.None, 0, Viewport.LastMousePos, Modifiers.None, 0);
-				Ui.HandleInput(mi);
+				if (oldListOffset != currentListOffset)
+				{
+					var mi = new MouseInput(MouseInputEvent.Move, MouseButton.None, 0, Viewport.LastMousePos, Modifiers.None, 0);
+					Ui.HandleInput(mi);
+				}
 			}
 		}
 
