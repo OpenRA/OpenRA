@@ -21,20 +21,22 @@ Container@MISSION_OBJECTIVES:
 			Y: 50
 			Width: 482
 			Height: 310
-			ItemSpacing: 35
+			ItemSpacing: 15
 			Children:
 				Container@OBJECTIVE_TEMPLATE:
+					Width: PARENT_RIGHT
+					Height: 20
 					Children:
 						Label@OBJECTIVE_TYPE:
 							X: 10
-							Y: 0 - 20
-							Height: 20
+							Y: 0
 							Width: 70
+							Height: PARENT_BOTTOM
 							Align: Center
 						Checkbox@OBJECTIVE_STATUS:
 							X: 90
-							Y: 0 - 20
+							Y: 0
 							Width: PARENT_RIGHT - 100
-							Height: 20
+							Height: PARENT_BOTTOM
 							Disabled: True
 							TextColorDisabled: 255,255,255
