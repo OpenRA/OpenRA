@@ -30,8 +30,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var td = new TypeDictionary();
 			td.Add(new HideBibPreviewInit());
-
-			preview.SetPreview(actor, world.WorldActor.Owner, td);
+			td.Add(new OwnerInit(world.WorldActor.Owner));
+			td.Add(new RaceInit(world.WorldActor.Owner.PlayerReference.Race));
+			preview.SetPreview(actor, td);
 
 			var hueSlider = widget.Get<SliderWidget>("HUE");
 			var mixer = widget.Get<ColorMixerWidget>("MIXER");

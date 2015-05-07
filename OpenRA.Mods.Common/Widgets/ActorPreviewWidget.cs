@@ -46,9 +46,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override Widget Clone() { return new ActorPreviewWidget(this); }
 
-		public void SetPreview(ActorInfo actor, Player owner, TypeDictionary td)
+		public void SetPreview(ActorInfo actor, TypeDictionary td)
 		{
-			var init = new ActorPreviewInitializer(actor, owner, worldRenderer, td);
+			var init = new ActorPreviewInitializer(actor, worldRenderer, td);
 			preview = actor.Traits.WithInterface<IRenderActorPreviewInfo>()
 				.SelectMany(rpi => rpi.RenderPreview(init))
 				.ToArray();

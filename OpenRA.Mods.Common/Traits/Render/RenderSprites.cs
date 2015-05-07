@@ -56,15 +56,16 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
 			var sequenceProvider = init.World.Map.SequenceProvider;
-			var race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Owner.Country.Race;
+			var race = init.Get<RaceInit, string>();
+			var ownerName = init.Get<OwnerInit>().PlayerName;
 			var image = GetImage(init.Actor, sequenceProvider, race);
-			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + init.Owner.InternalName);
+			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + ownerName);
 
 			var facings = 0;
 			var body = init.Actor.Traits.GetOrDefault<BodyOrientationInfo>();
 			if (body != null)
 				facings = body.QuantizedFacings == -1 ?
-					init.Actor.Traits.Get<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(init.Actor, sequenceProvider, init.Owner.Country.Race) :
+					init.Actor.Traits.Get<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(init.Actor, sequenceProvider, race) :
 					body.QuantizedFacings;
 
 			foreach (var spi in init.Actor.Traits.WithInterface<IRenderActorPreviewSpritesInfo>())
