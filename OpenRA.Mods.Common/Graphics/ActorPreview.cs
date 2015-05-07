@@ -25,16 +25,14 @@ namespace OpenRA.Mods.Common.Graphics
 	public class ActorPreviewInitializer
 	{
 		public readonly ActorInfo Actor;
-		public readonly Player Owner;
 		public readonly WorldRenderer WorldRenderer;
 		public World World { get { return WorldRenderer.World; } }
 
 		readonly TypeDictionary dict;
 
-		public ActorPreviewInitializer(ActorInfo actor, Player owner, WorldRenderer worldRenderer, TypeDictionary dict)
+		public ActorPreviewInitializer(ActorInfo actor, WorldRenderer worldRenderer, TypeDictionary dict)
 		{
 			Actor = actor;
-			Owner = owner;
 			WorldRenderer = worldRenderer;
 			this.dict = dict;
 		}
