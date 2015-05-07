@@ -98,15 +98,19 @@ World:
 		Name: Any
 		Race: Random
 		RandomRaceMembers: atreides, harkonnen, ordos
+		Description: Select a random House.
 	Country@Atreides:
 		Name: Atreides
 		Race: atreides
+		Description: House Atreides\nThe noble Atreides, from the water world of Caladan,\nrely on their ornithopters to ensure air superiority.\nThey have allied themselves with the Fremen, the fearsome\nnative warriors of Dune that can move undetected in battle.
 	Country@Harkonnen:
 		Name: Harkonnen
 		Race: harkonnen
+		Description: House Harkonnen\nThe evil Harkonnen will stop at nothing to gain control of the spice.\nThey rely on brute force and atomic weapons to achieve their goals:\nwealth, and the destruction of House Atreides.
 	Country@Ordos:
 		Name: Ordos
 		Race: ordos
+		Description: House Ordos\nThe insidious Ordos of the icy planet Sigma Draconis IV\nare known for their wealth, greed and treachery.\nRelying heavily on mercenaries they often resort\nto sabotage and forbidden Ixian technologies.
 	Country@Corrino:
 		Name: Corrino
 		Race: corrino
