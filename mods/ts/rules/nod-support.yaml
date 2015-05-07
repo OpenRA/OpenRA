@@ -53,7 +53,7 @@ NALASR:
 	Turreted:
 		ROT: 10
 		InitialFacing: 300
-		Offset: 298,-171,0
+		Offset: 298,-171,300
 	AttackTurreted:
 	Armament:
 		Weapon: LaserFire2
@@ -92,9 +92,9 @@ NAOBEL:
 		ChargeAudio: obelpowr.aud
 	Armament:
 		Weapon: LaserFire
-		LocalOffset: 0,0,725
+		LocalOffset: 200,0,725
 	AttackCharge:
-		ReloadTime: 50
+		ReloadTime: 5
 		InitialChargeDelay: 50
 	AutoTarget:
 	-RenderBuilding:
