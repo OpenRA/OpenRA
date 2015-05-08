@@ -32,6 +32,8 @@ concreteb:
 		Dimensions: 3,3
 	Valued:
 		Cost: 50
+	Buildable:
+		Prerequisites: upgrade.conyard
 
 conyard:
 	Inherits: ^Building
@@ -301,9 +303,10 @@ light:
 	ProvidesPrerequisite@harkonnen:
 		Prerequisite: light.harkonnen
 		Race: harkonnen
-	ProvidesPrerequisite@TRIKES:
+	ProvidesPrerequisite@trikes:
 		Prerequisite: light.regulartrikes
 		Race: atreides, harkonnen
+	ProvidesPrerequisite@buildingname:
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
 	WithIdleOverlay@TOP:
@@ -352,6 +355,9 @@ heavy:
 	ProvidesPrerequisite@harkonnen:
 		Prerequisite: heavy.harkonnen
 		Race: harkonnen
+	ProvidesPrerequisite@missiletank:
+		Prerequisite: heavy.missiletank
+		Race: atreides, harkonnen
 	RenderBuilding:
 		Image: heavy.harkonnen
 		RaceImages:
@@ -416,7 +422,7 @@ starport:
 		Name: Starport
 		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
 	Buildable:
-		Prerequisites: radar, ~techlevel.high
+		Prerequisites: heavy, radar, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 80
 	Building:
@@ -525,7 +531,7 @@ guntower:
 	Valued:
 		Cost: 650
 	Tooltip:
-		Name: Gun Tower
+		Name: Gun Turret
 		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
 		Adjacent: 4
@@ -574,12 +580,12 @@ rockettower:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: radar, ~techlevel.medium
+		Prerequisites: radar, upgrade.conyard, ~techlevel.medium
 		BuildPaletteOrder: 120
 	Valued:
 		Cost: 850
 	Tooltip:
-		Name: Rocket Tower
+		Name: Rocket Turret
 		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
 	Building:
 		Adjacent: 4
@@ -629,7 +635,7 @@ repair:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: heavy, ~techlevel.medium
+		Prerequisites: heavy, upgrade.heavy, ~techlevel.medium
 		BuildPaletteOrder: 130
 	Valued:
 		Cost: 500
@@ -674,7 +680,7 @@ hightech:
 	Valued:
 		Cost: 750
 	Tooltip:
-		Name: High Tech Facility
+		Name: High Tech Factory
 		Description: Unlocks advanced technology
 	ProductionFromMapEdge:
 		Produces: Aircraft
@@ -696,17 +702,31 @@ hightech:
 		RaceImages:
 			atreides: hightech.atreides
 			ordos: hightech.ordos
+	ProvidesPrerequisite@upgrade:
+		Prerequisite: hightech.atreides
+		Race: atreides
+	ProvidesPrerequisite@buildingname:
+	AirstrikePower:
+		Icon: ornistrike
+		Description: Air Strike
+		Prerequisites: ~techlevel.superweapons, upgrade.hightech
+		ChargeTime: 180
+		SquadSize: 3
+		LongDesc: Ornithopters hit the target with parabombs
+		UnitType: orni.bomber
+		SelectTargetSound:
+		DisplayBeacon: True
+		CameraActor: camera
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
 	Power:
 		Amount: -40
-	ProvidesPrerequisite@buildingname:
 
 research:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: hightech, ~techlevel.high
+		Prerequisites: radar, heavy, upgrade.heavy, ~techlevel.high
 		BuildPaletteOrder: 140
 	Selectable:
 		Bounds: 96,64
@@ -759,7 +779,7 @@ palace:
 		Cost: 2000
 	Tooltip:
 		Name: Palace
-		Description: Unlocks elite infantry and support powers
+		Description: Unlocks elite infantry
 	Building:
 		Footprint: xx= xxx =xx
 		Dimensions: 3,3
@@ -782,23 +802,9 @@ palace:
 		Range: 4
 	Power:
 		Amount: -50
-	ProvidesPrerequisite@airstrike:
-		Prerequisite: palace.airstrike
-		Race: atreides, ordos
 	ProvidesPrerequisite@nuke:
 		Prerequisite: palace.nuke
 		Race: harkonnen
-	AirstrikePower:
-		Icon: ornistrike
-		Prerequisites: ~techlevel.superweapons, ~palace.airstrike
-		Description: Air Strike
-		ChargeTime: 180
-		SquadSize: 3
-		LongDesc: Ornithopter drops a load of parachuted\nbombs on your target
-		UnitType: orni.bomber
-		SelectTargetSound:
-		DisplayBeacon: True
-		CameraActor: camera
 	NukePower:
 		Icon: deathhand
 		Prerequisites: ~techlevel.superweapons, ~palace.nuke

@@ -29,7 +29,7 @@ engineer:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Prerequisites: radar, ~techlevel.medium
+		Prerequisites: upgrade.barracks, ~techlevel.medium
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -58,7 +58,7 @@ bazooka:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
-		Prerequisites: radar, ~techlevel.medium
+		Prerequisites: upgrade.barracks, ~techlevel.medium
 	Valued:
 		Cost: 250
 	Tooltip:
@@ -72,7 +72,7 @@ bazooka:
 		Speed: 42
 	Armament:
 		Weapon: Bazooka
-		LocalOffset: 128,0,256
+		LocalOffset: 0,0,555
 	AttackFrontal:
 	TakeCover:
 		DamageModifiers:
@@ -86,7 +86,7 @@ medic:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Prerequisites: ~barracks.medics, ~techlevel.high
+		Prerequisites: ~barracks.medics, upgrade.barracks, ~techlevel.high
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -122,7 +122,7 @@ fremen:
 		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisibility
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 85
+		BuildPaletteOrder: 100
 		Prerequisites: ~barracks.atreides, palace, ~techlevel.high
 	Selectable:
 		Bounds: 12,17,0,0
@@ -156,8 +156,8 @@ grenadier:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 10
-		Prerequisites: ~barracks.atreides, ~techlevel.medium
+		BuildPaletteOrder: 80
+		Prerequisites: ~barracks.atreides, upgrade.barracks, hightech, ~techlevel.medium
 	Valued:
 		Cost: 160
 	Tooltip:
