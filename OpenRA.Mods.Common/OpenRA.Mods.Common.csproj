@@ -38,19 +38,12 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\Eluant.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="StyleCop.CSharp.Rules">
-      <HintPath>..\thirdparty\StyleCop.CSharp.Rules.dll</HintPath>
-    </Reference>
-    <Reference Include="StyleCop.CSharp">
-      <HintPath>..\thirdparty\StyleCop.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="StyleCop">
       <HintPath>..\thirdparty\StyleCop.dll</HintPath>

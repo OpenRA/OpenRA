@@ -32,12 +32,7 @@
       <HintPath>..\thirdparty\nunit.framework.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="OpenRA.Mods.Common">
-      <HintPath>..\OpenRA.Mods.Common\bin\Debug\OpenRA.Mods.Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OpenRA.Game\MiniYamlTest.cs" />
