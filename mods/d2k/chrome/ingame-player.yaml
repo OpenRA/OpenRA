@@ -243,7 +243,7 @@ Container@PLAYER_WIDGETS:
 					IconSize: 58, 48
 					IconMargin: 2, 0
 					IconSpriteOffset: 0, 0
-					MinimumRows: 4
+					MinimumRows: 5
 					MaximumRows: 6
 				Container@PALETTE_FOREGROUND:
 					X: 64
@@ -259,7 +259,7 @@ Container@PLAYER_WIDGETS:
 					X: 6
 					Y: 2
 					Width: 25
-					Height: 243
+					Height: 274
 					Children:
 						ProductionTypeButton@BUILDING:
 							Width: 25
@@ -275,8 +275,23 @@ Container@PLAYER_WIDGETS:
 									X: 5
 									Y: 5
 									ImageCollection: production-icons
-						ProductionTypeButton@INFANTRY:
+						ProductionTypeButton@UPGRADE:
 							Y: 31
+							Width: 25
+							Height: 25
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Upgrades
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Upgrade
+							HotkeyName: ProductionTypeUpgradeKey
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 5
+									ImageCollection: production-icons
+						ProductionTypeButton@INFANTRY:
+							Y: 62
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -291,12 +306,12 @@ Container@PLAYER_WIDGETS:
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@VEHICLE:
-							Y: 62
+							Y: 93
 							Width: 25
 							Height: 25
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Vehicles
+							TooltipText: Light Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Vehicle
 							HotkeyName: ProductionTypeVehicleKey
@@ -306,12 +321,12 @@ Container@PLAYER_WIDGETS:
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@TANKS:
-							Y: 93
+							Y: 124
 							Width: 25
 							Height: 25
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Tanks
+							TooltipText: Heavy Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Armor
 							HotkeyName: ProductionTypeTankKey
@@ -321,7 +336,7 @@ Container@PLAYER_WIDGETS:
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@AIRCRAFT:
-							Y: 124
+							Y: 155
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -336,7 +351,7 @@ Container@PLAYER_WIDGETS:
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@STARPORT:
-							Y: 155
+							Y: 186
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -351,7 +366,7 @@ Container@PLAYER_WIDGETS:
 									Y: 5
 									ImageCollection: production-icons
 						Button@SCROLL_UP_BUTTON:
-							Y: 186
+							Y: 217
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -365,7 +380,7 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: scrollbar
 									ImageName: up_arrow
 						Button@SCROLL_DOWN_BUTTON:
-							Y: 217
+							Y: 248
 							Width: 25
 							Height: 25
 							VisualHeight: 0

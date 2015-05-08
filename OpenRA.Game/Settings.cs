@@ -211,6 +211,7 @@ namespace OpenRA
 		public Hotkey ProductionTypeNavalKey = new Hotkey(Keycode.I, Modifiers.None);
 		public Hotkey ProductionTypeTankKey = new Hotkey(Keycode.I, Modifiers.None);
 		public Hotkey ProductionTypeMerchantKey = new Hotkey(Keycode.O, Modifiers.None);
+		public Hotkey ProductionTypeUpgradeKey = new Hotkey(Keycode.R, Modifiers.None);
 
 		public Hotkey SupportPower01Key = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
 		public Hotkey SupportPower02Key = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
