@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 			var anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				() => IsTraitDisabled || !buildComplete,
-				() => info.PauseOnLowPower && self.IsDisabled(),
+				() => (info.PauseOnLowPower && self.IsDisabled()) || !buildComplete,
 				p => WithTurret.ZOffsetFromCenter(self, p, 1));
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
