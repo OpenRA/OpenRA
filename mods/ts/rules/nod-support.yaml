@@ -255,7 +255,7 @@ NAMISL:
 	Tooltip:
 		Name: Nod Missile Silo
 		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.
-	ProvidesCustomPrerequisite:
+	ProvidesPrerequisite:
 		Prerequisite: tech
 	Building:
 		Footprint: xx xx

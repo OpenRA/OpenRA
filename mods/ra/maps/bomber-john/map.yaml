@@ -880,7 +880,7 @@ Rules:
 		Building:
 			Adjacent: 99
 			TerrainTypes: Clear,Road
-		ProvidesCustomPrerequisite:
+		ProvidesPrerequisite:
 			Prerequisite: MNLYVV
 		Buildable:
 			Queue: Building

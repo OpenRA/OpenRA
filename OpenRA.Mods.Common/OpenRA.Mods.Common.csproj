@@ -350,7 +350,7 @@
     <Compile Include="Traits\Player\PlaceBuilding.cs" />
     <Compile Include="Traits\Player\PlayerStatistics.cs" />
     <Compile Include="Traits\Player\ProductionQueue.cs" />
-    <Compile Include="Traits\Player\ProvidesCustomPrerequisite.cs" />
+    <Compile Include="Traits\Player\ProvidesPrerequisite.cs" />
     <Compile Include="Traits\Player\ProvidesTechPrerequisite.cs" />
     <Compile Include="Traits\Player\StrategicVictoryConditions.cs" />
     <Compile Include="Traits\Player\TechTree.cs" />

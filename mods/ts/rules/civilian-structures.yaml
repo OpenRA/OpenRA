@@ -1087,7 +1087,7 @@ CTDAM:
 		Type: heavy
 	Health:
 		HP: 1000
-	ProvidesCustomPrerequisite:
+	ProvidesPrerequisite:
 		Prerequisite: anypower
 
 CTVEGA:
