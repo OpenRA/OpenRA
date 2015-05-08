@@ -490,6 +490,21 @@ gawall:
 		Offset: 0, 0
 		UseTilesetCode: false
 
+gagate_a:
+	Defaults:
+		Offset: 0, -12
+		UseTilesetCode: true
+	open:
+		Start: 9
+	closing:
+		Frames: 9, 8, 7, 6, 5, 4, 3, 2, 1
+		Length: 9
+	closed:
+		Start: 0
+	icon: gateicon
+		Offset: 0, 0
+		UseTilesetCode: false
+
 nawall:
 	Defaults:
 		Offset: 0, -12

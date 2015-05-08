@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 				yield return tile + position;
 		}
 
-		static IEnumerable<CVec> TilesWhere(string name, CVec dim, char[] footprint, Func<char, bool> cond)
+		public static IEnumerable<CVec> TilesWhere(string name, CVec dim, char[] footprint, Func<char, bool> cond)
 		{
 			if (footprint.Length != dim.X * dim.Y)
 				throw new InvalidOperationException("Invalid footprint for " + name);

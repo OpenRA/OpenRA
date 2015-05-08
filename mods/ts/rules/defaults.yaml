@@ -550,3 +550,24 @@
 		Dimensions: 1, 1
 	BodyOrientation:
 
+^Gate:
+	Inherits: ^Building
+	Valued:
+		Cost: 250
+	Health:
+		HP: 350
+	Armor:
+		Type: Heavy
+	LineBuildNode:
+		Types: wall, turret
+	-RenderBuilding:
+	RenderSimple:
+		Sequence: closed
+	-FrozenUnderFog:
+	-Selectable:
+	-Building:
+	-WithMakeAnimation:
+	-TargetableBuilding:
+	-WithBuildingExplosion:
+	-Sellable:
+	Gate:
