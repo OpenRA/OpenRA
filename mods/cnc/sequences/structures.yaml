@@ -162,12 +162,12 @@ afld:
 	idle:
 		Tick: 120
 		ZOffset: -1023
-	active:
-		Length: 16
-		Tick: 120
-		ZOffset: -1023
 	damaged-idle:
 		Start: 16
+		Tick: 120
+		ZOffset: -1023
+	active:
+		Length: 16
 		Tick: 120
 		ZOffset: -1023
 	damaged-active:
@@ -175,6 +175,13 @@ afld:
 		Length: 16
 		Tick: 120
 		ZOffset: -1023
+	idle-dish: afld_d
+		Length: 16
+		Tick: 160
+	damaged-idle-dish: afld_d
+		Start: 16
+		Length: 16
+		Tick: 160
 	dead:
 		Start: 32
 		ZOffset: -1023

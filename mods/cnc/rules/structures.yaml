@@ -319,6 +319,8 @@ AFLD:
 	RevealsShroud:
 		Range: 7c0
 	Bib:
+	WithIdleOverlay@DISH:
+		Sequence: idle-dish
 	RallyPoint:
 		RallyPoint: 4,2
 	Exit@1:
