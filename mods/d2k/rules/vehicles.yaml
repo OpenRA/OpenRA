@@ -62,6 +62,10 @@ harvester:
 		SearchFromProcRadius: 24
 		SearchFromOrderRadius: 12
 	Carryable:
+	WithDecorationCarryable:
+		Image: pips
+		Sequence: pickup-indicator
+		Offset: -12, -12
 	Health:
 		HP: 1000
 	Armor:
