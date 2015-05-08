@@ -97,6 +97,7 @@
     <Compile Include="UtilityCommands\D2kMapImporter.cs" />
     <Compile Include="UtilityCommands\ImportD2kMapCommand.cs" />
     <Compile Include="Traits\Render\WithAttackOverlay.cs" />
+    <Compile Include="Traits\Render\WithDecorationCarryable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
