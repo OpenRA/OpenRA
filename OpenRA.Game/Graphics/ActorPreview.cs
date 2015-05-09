@@ -10,11 +10,10 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Graphics
+namespace OpenRA.Graphics
 {
 	public interface IActorPreview
 	{

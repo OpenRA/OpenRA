@@ -84,6 +84,7 @@
     <Compile Include="Actor.cs" />
     <Compile Include="CacheStorage.cs" />
     <Compile Include="FileSystem\IdxEntry.cs" />
+    <Compile Include="Graphics\ActorPreview.cs" />
     <Compile Include="LogProxy.cs" />
     <Compile Include="FileFormats\IdxReader.cs" />
     <Compile Include="FileSystem\BagFile.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Sync.cs" />
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\Armor.cs" />
+    <Compile Include="Traits\CreatesDisruptionField.cs" />
     <Compile Include="Traits\CreatesShroud.cs" />
     <Compile Include="Traits\DrawLineToTarget.cs" />
     <Compile Include="Traits\EditorAppearance.cs" />

@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -17,43 +17,43 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	class RenderShroudCircleInfo : ITraitInfo, IPlaceBuildingDecoration
+	class RenderDisruptionCircleInfo : ITraitInfo, IPlaceBuildingDecoration
 	{
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
-			if (w.LobbyInfo.GlobalSettings.Fog && ai.Traits.Contains<CreatesDisruptionFieldInfo>())
+			if (!w.LobbyInfo.GlobalSettings.Fog)
 				yield break;
 
 			yield return new RangeCircleRenderable(
 				centerPosition,
-				ai.Traits.Get<CreatesShroudInfo>().Range,
+				ai.Traits.Get<CreatesDisruptionFieldInfo>().Range,
 				0,
 				Color.FromArgb(128, Color.Cyan),
 				Color.FromArgb(96, Color.Black));
 
-			foreach (var a in w.ActorsWithTrait<RenderShroudCircle>())
+			foreach (var a in w.ActorsWithTrait<RenderDisruptionCircle>())
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
 					foreach (var r in a.Trait.RenderAfterWorld(wr))
 						yield return r;
 		}
 
-		public object Create(ActorInitializer init) { return new RenderShroudCircle(init.Self); }
+		public object Create(ActorInitializer init) { return new RenderDisruptionCircle(init.Self); }
 	}
 
-	class RenderShroudCircle : IPostRenderSelection
+	class RenderDisruptionCircle : IPostRenderSelection
 	{
 		Actor self;
 
-		public RenderShroudCircle(Actor self) { this.self = self; }
+		public RenderDisruptionCircle(Actor self) { this.self = self; }
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			if (self.Owner != self.World.LocalPlayer || (self.World.LobbyInfo.GlobalSettings.Fog && self.HasTrait<CreatesDisruptionField>()))
+			if (self.Owner != self.World.LocalPlayer || !wr.World.LobbyInfo.GlobalSettings.Fog)
 				yield break;
 
 			yield return new RangeCircleRenderable(
 				self.CenterPosition,
-				self.Info.Traits.Get<CreatesShroudInfo>().Range,
+				self.Info.Traits.Get<CreatesDisruptionFieldInfo>().Range,
 				0,
 				Color.FromArgb(128, Color.Cyan),
 				Color.FromArgb(96, Color.Black));

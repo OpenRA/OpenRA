@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -69,6 +70,9 @@ namespace OpenRA.Mods.RA.Effects
 				return false;
 
 			if (disguise.Value != null && disguise.Value.Disguised)
+				return false;
+
+			if (self.World.RenderPlayer.Shroud.IsUnderDisruptionField(Shroud.GetVisOrigins(self).ToArray()))
 				return false;
 
 			if (huf.Value != null && !huf.Value.IsVisible(self, self.World.RenderPlayer))

@@ -515,6 +515,9 @@ MGG:
 		Sequence: spinner
 	RevealsShroud:
 		Range: 6c0
+	CreatesDisruptionField:
+		Range: 6c0
+	RenderDisruptionCircle:
 	CreatesShroud:
 		Range: 6c0
 	RenderShroudCircle:
