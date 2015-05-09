@@ -16,23 +16,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
-	public class PaletteReference
-	{
-		public readonly string Name;
-		public IPalette Palette { get; internal set; }
-		readonly float index;
-		readonly HardwarePalette hardwarePalette;
-		public float TextureIndex { get { return index / hardwarePalette.Height; } }
-		public float TextureMidIndex { get { return (index + 0.5f) / hardwarePalette.Height; } }
-		public PaletteReference(string name, int index, IPalette palette, HardwarePalette hardwarePalette)
-		{
-			Name = name;
-			Palette = palette;
-			this.index = index;
-			this.hardwarePalette = hardwarePalette;
-		}
-	}
-
 	public sealed class WorldRenderer : IDisposable
 	{
 		public static readonly Func<IRenderable, int> RenderableScreenZPositionComparisonKey =

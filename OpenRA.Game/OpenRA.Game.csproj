@@ -238,6 +238,7 @@
     <Compile Include="Widgets\ChromeMetrics.cs" />
     <Compile Include="Widgets\WidgetUtils.cs" />
     <Compile Include="Widgets\WorldInteractionControllerWidget.cs" />
+    <Compile Include="Graphics\PaletteReference.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
