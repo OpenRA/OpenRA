@@ -25,6 +25,8 @@ namespace OpenRA.Graphics
 		public readonly Theater Theater;
 		public Viewport Viewport { get; private set; }
 
+		public event Action PaletteInvalidated = null;
+
 		readonly HardwarePalette palette = new HardwarePalette();
 		readonly Dictionary<string, PaletteReference> palettes = new Dictionary<string, PaletteReference>();
 		readonly TerrainRenderer terrainRenderer;
@@ -70,7 +72,13 @@ namespace OpenRA.Graphics
 			if (allowOverwrite && palette.Contains(name))
 				ReplacePalette(name, pal);
 			else
+			{
+				var oldHeight = palette.Height;
 				palette.AddPalette(name, pal, allowModifiers);
+
+				if (oldHeight != palette.Height && PaletteInvalidated != null)
+					PaletteInvalidated();
+			}
 		}
 
 		public void ReplacePalette(string name, IPalette pal)
