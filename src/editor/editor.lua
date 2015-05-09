@@ -508,7 +508,7 @@ function IndicateAll(editor, lines)
 
   -- this function can be called for an editor tab that is already closed
   -- when there are still some pending events for it, so handle it.
-  if not pcall(function() editor:GetId() end) then return end
+  if not ide:IsValidCtrl(editor) then return end
 
   -- if markvars is not set in the spec, nothing else to do
   if not (editor.spec and editor.spec.marksymbols) then return end

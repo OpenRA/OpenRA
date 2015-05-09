@@ -80,9 +80,9 @@ function ide:GetEditor(index) return GetEditor(index) end
 function ide:GetEditorWithFocus(ed) return GetEditorWithFocus(ed) end
 function ide:GetEditorWithLastFocus()
   -- make sure ide.infocus is still a valid component and not "some" userdata
-  return (pcall(function() ide.infocus:GetId() end)
-    and ide.infocus:GetClassInfo():GetClassName() == "wxStyledTextCtrl"
-    and ide.infocus:DynamicCast("wxStyledTextCtrl") or nil)
+  return (self:IsValidCtrl(self.infocus)
+    and self.infocus:GetClassInfo():GetClassName() == "wxStyledTextCtrl"
+    and self.infocus:DynamicCast("wxStyledTextCtrl") or nil)
 end
 function ide:GetMenuBar() return self.frame.menuBar end
 function ide:GetStatusBar() return self.frame.statusBar end
@@ -516,6 +516,10 @@ end
 function ide:IsPanelDocked(panel)
   local layout = ide:GetSetting("/view", "uimgrlayout")
   return layout and not layout:find(panel)
+end
+
+function ide:IsValidCtrl(ctrl)
+  return ctrl and pcall(function() ctrl:GetId() end)
 end
 
 function ide:RestorePanelByLabel(name)
