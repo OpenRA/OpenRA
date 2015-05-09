@@ -1,4 +1,5 @@
 World:
+	Inherits: ^Palettes
 	ChatCommands:
 	DevCommands:
 	PlayerCommands:
@@ -7,75 +8,10 @@ World:
 	ActorMap:
 	LoadWidgetAtGameStart:
 		ShellmapRoot: MENU_BACKGROUND
-	MenuPaletteEffect:
-		MenuEffect: Desaturated
-	CloakPaletteEffect:
 	ScreenShaker:
-	NukePaletteEffect:
-	WaterPaletteRotation:
-		ExcludePalettes: effect
 	BuildingInfluence:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, bridge3, bridge4
-	PaletteFromCurrentTileset@terrain:
-		Name: terrain
-		ShadowIndex: 4
-	PaletteFromCurrentTileset@static:
-		Name: staticterrain
-		ShadowIndex: 4
-	PaletteFromFile@chrome:
-		Name: chrome
-		Filename: temperat.pal
-		ShadowIndex: 3
-		AllowModifiers: false
-	PaletteFromFile@beaconposter:
-		Name: beaconposter
-		Filename: temperat.pal
-		ShadowIndex: 3
-	PaletteFromFile@effect:
-		Name: effect
-		Filename: temperat.pal
-		ShadowIndex: 4
-	PaletteFromFile@colorpicker:
-		Name: colorpicker
-		Filename: temperat.pal
-		ShadowIndex: 4
-		AllowModifiers: false
-	PaletteFromRGBA@shadow:
-		Name: shadow
-		R: 0
-		G: 0
-		B: 0
-		A: 140
-	PaletteFromRGBA@cloak:
-		Name: cloak
-		R: 0
-		G: 0
-		B: 0
-		A: 140
-	PaletteFromRGBA@highlight:
-		Name: highlight
-		R: 255
-		G: 255
-		B: 255
-		A: 128
-	PaletteFromRGBA@moveflash:
-		Name: moveflash
-		R: 255
-		G: 255
-		B: 255
-		A: 64
-	PaletteFromRGBA@disabled:
-		Name: disabled
-		R: 0
-		G: 0
-		B: 0
-		A: 180
-	ShroudPalette@shroud:
-		Type: Shroud
-	ShroudPalette@fog:
-		Name: fog
-		Fog: true
 	ShroudRenderer:
 		ShroudVariants: typea, typeb, typec, typed
 		FogVariants: typea, typeb, typec, typed
@@ -115,11 +51,6 @@ World:
 		PipColor: Green
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: true
-	FixedColorPalette@BlueTiberium:
-		Base: terrain
-		Name: bluetiberium
-		Color: 152, 255, 196
-		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
 	ResourceType@blue-tib:
 		ResourceType: 2
 		Palette: bluetiberium

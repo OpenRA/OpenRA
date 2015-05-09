@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
@@ -20,24 +21,23 @@ namespace OpenRA.Traits
 		[Desc("The prefix for the resulting player palettes")]
 		public readonly string BaseName = "highlight";
 
-		public object Create(ActorInitializer init) { return new PlayerHighlightPalette(init.Self.Owner, this); }
+		public object Create(ActorInitializer init) { return new PlayerHighlightPalette(this); }
 	}
 
-	public class PlayerHighlightPalette : ILoadsPalettes
+	public class PlayerHighlightPalette : ILoadsPlayerPalettes
 	{
-		readonly Player owner;
 		readonly PlayerHighlightPaletteInfo info;
 
-		public PlayerHighlightPalette(Player owner, PlayerHighlightPaletteInfo info)
+		public PlayerHighlightPalette(PlayerHighlightPaletteInfo info)
 		{
-			this.owner = owner;
 			this.info = info;
 		}
 
-		public void LoadPalettes(WorldRenderer wr)
+		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor color, bool replaceExisting)
 		{
-			var argb = (uint)Color.FromArgb(128, owner.Color.RGB).ToArgb();
-			wr.AddPalette(info.BaseName + owner.InternalName, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => i == 0 ? 0 : argb)));
+			var argb = (uint)Color.FromArgb(128, color.RGB).ToArgb();
+			var pal = new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => i == 0 ? 0 : argb));
+			wr.AddPalette(info.BaseName + playerName, pal, false, replaceExisting);
 		}
 	}
 }

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Graphics;
 
 namespace OpenRA.Traits
@@ -26,24 +27,23 @@ namespace OpenRA.Traits
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
 
-		public object Create(ActorInitializer init) { return new PlayerColorPalette(init.Self.Owner, this); }
+		public object Create(ActorInitializer init) { return new PlayerColorPalette(this); }
 	}
 
-	public class PlayerColorPalette : ILoadsPalettes
+	public class PlayerColorPalette : ILoadsPlayerPalettes
 	{
-		readonly Player owner;
 		readonly PlayerColorPaletteInfo info;
 
-		public PlayerColorPalette(Player owner, PlayerColorPaletteInfo info)
+		public PlayerColorPalette(PlayerColorPaletteInfo info)
 		{
-			this.owner = owner;
 			this.info = info;
 		}
 
-		public void LoadPalettes(WorldRenderer wr)
+		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor color, bool replaceExisting)
 		{
-			var remap = new PlayerColorRemap(info.RemapIndex, owner.Color, info.Ramp);
-			wr.AddPalette(info.BaseName + owner.InternalName, new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
+			var remap = new PlayerColorRemap(info.RemapIndex, color, info.Ramp);
+			var pal = new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap);
+			wr.AddPalette(info.BaseName + playerName, pal, info.AllowModifiers, replaceExisting);
 		}
 	}
 }

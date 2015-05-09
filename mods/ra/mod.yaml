@@ -37,6 +37,7 @@ Rules:
 	./mods/ra/rules/misc.yaml
 	./mods/ra/rules/ai.yaml
 	./mods/ra/rules/player.yaml
+	./mods/ra/rules/palettes.yaml
 	./mods/ra/rules/world.yaml
 	./mods/ra/rules/defaults.yaml
 	./mods/ra/rules/vehicles.yaml
