@@ -41,12 +41,21 @@ namespace OpenRA.Graphics
 			foreach (var pal in world.TraitDict.ActorsWithTrait<ILoadsPalettes>())
 				pal.Trait.LoadPalettes(this);
 
+			foreach (var p in world.Players)
+				UpdatePalettesForPlayer(p.InternalName, p.Color, false);
+
 			palette.Initialize();
 
 			Theater = new Theater(world.TileSet);
 			terrainRenderer = new TerrainRenderer(world, this);
 
 			devTrait = Exts.Lazy(() => world.LocalPlayer != null ? world.LocalPlayer.PlayerActor.Trait<DeveloperMode>() : null);
+		}
+
+		public void UpdatePalettesForPlayer(string internalName, HSLColor color, bool replaceExisting)
+		{
+			foreach (var pal in World.WorldActor.TraitsImplementing<ILoadsPlayerPalettes>())
+				pal.LoadPlayerPalettes(this, internalName, color, replaceExisting);
 		}
 
 		PaletteReference CreatePaletteReference(string name)
@@ -56,9 +65,22 @@ namespace OpenRA.Graphics
 		}
 
 		public PaletteReference Palette(string name) { return palettes.GetOrAdd(name, createPaletteReference); }
-		public void AddPalette(string name, ImmutablePalette pal) { palette.AddPalette(name, pal, false); }
-		public void AddPalette(string name, ImmutablePalette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
-		public void ReplacePalette(string name, IPalette pal) { palette.ReplacePalette(name, pal); palettes[name].Palette = pal; }
+		public void AddPalette(string name, ImmutablePalette pal, bool allowModifiers = false, bool allowOverwrite = false)
+		{
+			if (allowOverwrite && palette.Contains(name))
+				ReplacePalette(name, pal);
+			else
+				palette.AddPalette(name, pal, allowModifiers);
+		}
+
+		public void ReplacePalette(string name, IPalette pal)
+		{
+			palette.ReplacePalette(name, pal);
+
+			// Update cached PlayerReference if one exists
+			if (palettes.ContainsKey(name))
+				palettes[name].Palette = pal;
+		}
 
 		List<IFinalizedRenderable> GenerateRenderables()
 		{
