@@ -63,6 +63,9 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Width: 130
 					Height: 25
 					IgnoreChildMouseOver: true
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: FACTION_DESCRIPTION_TOOLTIP
+					PanelRoot: FACTION_DROPDOWN_PANEL_ROOT # ensure that tooltips for the options are on top of the dropdown panel
 					Children:
 						Image@FACTIONFLAG:
 							Width: 23
@@ -328,12 +331,27 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 ScrollPanel@RACE_DROPDOWN_TEMPLATE:
 	Width: DROPDOWN_WIDTH
 	Children:
+		ScrollItem@HEADER:
+			BaseName: scrollheader
+			Width: PARENT_RIGHT-27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_RIGHT
+					Height: 10
+					Align: Center
 		ScrollItem@TEMPLATE:
 			Width: PARENT_RIGHT-27
 			Height: 25
 			X: 2
 			Y: 0
 			Visible: false
+			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: FACTION_DESCRIPTION_TOOLTIP
 			Children:
 				Image@FLAG:
 					X: 2
