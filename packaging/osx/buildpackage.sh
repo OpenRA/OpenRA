@@ -15,11 +15,11 @@ if [ -e "OpenRA.app" ]; then
 fi
 
 curl -s -L -O https://github.com/OpenRA/OpenRALauncherOSX/releases/download/${LAUNCHER_TAG}/launcher.zip || exit 3
-unzip launcher.zip
+unzip -qq launcher.zip
 rm launcher.zip
 
 # Copy the template to build the game package
-cp -rv $2/* "OpenRA.app/Contents/Resources/" || exit 3
+cp -r $2/* "OpenRA.app/Contents/Resources/" || exit 3
 
 # Remove unused icon
 rm OpenRA.app/Contents/Resources/OpenRA.ico
@@ -27,9 +27,6 @@ rm OpenRA.app/Contents/Resources/OpenRA.ico
 # Remove broken WinForms applications
 rm OpenRA.app/Contents/Resources/OpenRA.exe
 rm OpenRA.app/Contents/Resources/OpenRA.Editor.exe
-
-# Remove linux cruft
-rm Eluant.dll.config.in
 
 # Set version string
 sed "s/{DEV_VERSION}/${1}/" OpenRA.app/Contents/Info.plist > OpenRA.app/Contents/Info.plist.tmp
