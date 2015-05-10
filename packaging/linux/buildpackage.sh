@@ -23,6 +23,7 @@ make install-all prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 # Install startup scripts, desktop files and icons
 make install-linux-shortcuts prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 make install-linux-mime prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
+make install-linux-appdata prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 
 # Documentation
 mkdir -p $PWD/packaging/linux/$ROOTDIR/usr/share/doc/openra/

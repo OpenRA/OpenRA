@@ -380,6 +380,10 @@ install-linux-mime:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
 	@$(INSTALL_DATA) packaging/linux/openra-replays.desktop "$(DESTDIR)$(datadir)/applications"
 
+install-linux-appdata:
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/appdata/"
+	@$(INSTALL_DATA) packaging/linux/openra.appdata.xml "$(DESTDIR)$(datadir)/appdata/"
+
 install-linux-scripts:
 	@echo "#!/bin/sh" > openra
 	@echo 'cd "$(gameinstalldir)"' >> openra
@@ -416,6 +420,7 @@ uninstall:
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/64x64/apps/openra.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/128x128/apps/openra.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/mime/packages/openra.xml"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/appdata/openra.appdata.xml"
 
 help:
 	@echo to compile, run:
