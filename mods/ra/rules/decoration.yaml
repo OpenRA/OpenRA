@@ -27,6 +27,8 @@ T04:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 T05:
 	Inherits: ^Tree
@@ -164,46 +166,64 @@ BOXES01:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES02:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES03:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES04:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES05:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES06:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES07:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES08:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES09:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 ICE01:
 	Inherits: ^Tree
