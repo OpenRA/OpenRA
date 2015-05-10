@@ -99,7 +99,7 @@ namespace OpenRA
 
 			var inputKey = string.Concat(string.Join("|", files), "|", nodes.WriteToString());
 
-			var mergedNodes = files
+			var partial = files
 				.Select(s => MiniYaml.FromFile(s))
 				.Aggregate(nodes, MiniYaml.MergePartial);
 
@@ -117,8 +117,8 @@ namespace OpenRA
 				return t;
 			};
 
-			var yy = mergedNodes.ToDictionary(x => x.Key, x => x.Value);
-			var itemSet = mergedNodes.ToDictionaryWithConflictLog(kv => kv.Key.ToLowerInvariant(), kv => wrap(kv, yy), "LoadYamlRules", null, null);
+			var yy = partial.ToDictionary(x => x.Key, x => x.Value);
+			var itemSet = partial.ToDictionaryWithConflictLog(kv => kv.Key.ToLowerInvariant(), kv => wrap(kv, yy), "LoadYamlRules", null, null);
 
 			RaiseProgress();
 			return itemSet;

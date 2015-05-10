@@ -39,10 +39,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var sc = new SpriteCache(modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed));
 				var sequenceFiles = modData.Manifest.Sequences;
 
-				var nodes = sequenceFiles
+				var partial = sequenceFiles
 					.Select(s => MiniYaml.FromFile(s))
 					.Aggregate(MiniYaml.MergePartial);
 
+				var nodes = MiniYaml.ApplyRemovals(partial);
 				foreach (var n in nodes)
 					Game.ModData.SpriteSequenceLoader.ParseSequences(Game.ModData, ts, sc, n);
 			}

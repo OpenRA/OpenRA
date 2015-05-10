@@ -35,20 +35,16 @@ namespace OpenRA
 		{
 			try
 			{
+				Name = name;
+
 				var allParents = new HashSet<string>();
 				var abstractActorType = name.StartsWith("^");
 
 				// Guard against circular inheritance
 				allParents.Add(name);
-				var mergedNode = MergeWithParents(node, allUnits, allParents).ToDictionary();
 
-				Name = name;
-
-				foreach (var t in mergedNode)
-				{
-					if (t.Key[0] == '-')
-						throw new YamlException("Bogus trait removal: " + t.Key);
-
+				var partial = MergeWithParents(node, allUnits, allParents);
+				foreach (var t in MiniYaml.ApplyRemovals(partial.Nodes))
 					if (t.Key != "Inherits" && !t.Key.StartsWith("Inherits@"))
 						try
 						{
@@ -59,7 +55,6 @@ namespace OpenRA
 							if (!abstractActorType)
 								throw new YamlException(e.Message);
 						}
-				}
 			}
 			catch (YamlException e)
 			{
@@ -98,7 +93,7 @@ namespace OpenRA
 					throw new YamlException(
 						"Bogus inheritance -- duplicate inheritance of {0}.".F(kv.Key));
 
-				node = MiniYaml.Merge(node, MergeWithParents(kv.Value, allUnits, allParents));
+				node = MiniYaml.MergePartial(node, MergeWithParents(kv.Value, allUnits, allParents));
 			}
 
 			return node;

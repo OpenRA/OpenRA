@@ -264,15 +264,10 @@ namespace OpenRA
 
 		public static List<MiniYamlNode> Merge(List<MiniYamlNode> a, List<MiniYamlNode> b)
 		{
-			return Merge(a, b, false);
+			return ApplyRemovals(MergePartial(a, b));
 		}
 
 		public static List<MiniYamlNode> MergePartial(List<MiniYamlNode> a, List<MiniYamlNode> b)
-		{
-			return Merge(a, b, true);
-		}
-
-		static List<MiniYamlNode> Merge(List<MiniYamlNode> a, List<MiniYamlNode> b, bool allowUnresolvedRemoves = false)
 		{
 			if (a.Count == 0)
 				return b;
@@ -286,58 +281,49 @@ namespace OpenRA
 			var dictB = b.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
 			var allKeys = dictA.Keys.Union(dictB.Keys);
 
-			var keys = allKeys.Where(x => x.Length == 0 || x[0] != '-').ToList();
-			var removeKeys = allKeys.Where(x => x.Length > 0 && x[0] == '-')
-				.Select(k => k.Substring(1)).ToHashSet();
-
-			foreach (var key in keys)
+			foreach (var key in allKeys)
 			{
 				MiniYamlNode aa, bb;
 				dictA.TryGetValue(key, out aa);
 				dictB.TryGetValue(key, out bb);
 
-				if (removeKeys.Contains(key))
-					removeKeys.Remove(key);
-				else
-				{
-					var loc = aa == null ? default(MiniYamlNode.SourceLocation) : aa.Location;
-					var merged = (aa == null || bb == null) ? aa ?? bb : new MiniYamlNode(key, Merge(aa.Value, bb.Value, allowUnresolvedRemoves), loc);
-					ret.Add(merged);
-				}
-			}
-
-			if (removeKeys.Any())
-			{
-				if (allowUnresolvedRemoves)
-				{
-					// Add the removal nodes back for the next pass to deal with
-					foreach (var k in removeKeys)
-					{
-						var key = "-" + k;
-						MiniYamlNode rem;
-						if (!dictA.TryGetValue(key, out rem))
-							rem = dictB[key];
-						ret.Add(rem);
-					}
-				}
-				else
-					throw new YamlException("Bogus yaml removals: {0}".F(removeKeys.JoinWith(", ")));
+				var loc = aa == null ? default(MiniYamlNode.SourceLocation) : aa.Location;
+				var merged = (aa == null || bb == null) ? aa ?? bb : new MiniYamlNode(key, MergePartial(aa.Value, bb.Value), loc);
+				ret.Add(merged);
 			}
 
 			return ret;
 		}
 
+		public static List<MiniYamlNode> ApplyRemovals(List<MiniYamlNode> a)
+		{
+			var removeKeys = a.Select(x => x.Key)
+				.Where(x => x.Length > 0 && x[0] == '-')
+				.Select(k => k.Substring(1))
+				.ToHashSet();
+
+			var ret = new List<MiniYamlNode>();
+			foreach (var x in a)
+			{
+				if (x.Key[0] == '-')
+					continue;
+
+				if (removeKeys.Contains(x.Key))
+					removeKeys.Remove(x.Key);
+				else
+				{
+					x.Value.Nodes = ApplyRemovals(x.Value.Nodes);
+					ret.Add(x);
+				}
+			}
+
+			if (removeKeys.Any())
+				throw new YamlException("Bogus yaml removals: {0}".F(removeKeys.JoinWith(", ")));
+
+			return ret;
+		}
+
 		public static MiniYaml MergePartial(MiniYaml a, MiniYaml b)
-		{
-			return Merge(a, b, true);
-		}
-
-		public static MiniYaml Merge(MiniYaml a, MiniYaml b)
-		{
-			return Merge(a, b, false);
-		}
-
-		static MiniYaml Merge(MiniYaml a, MiniYaml b, bool allowUnresolvedRemoves)
 		{
 			if (a == null)
 				return b;
@@ -345,7 +331,18 @@ namespace OpenRA
 			if (b == null)
 				return a;
 
-			return new MiniYaml(a.Value ?? b.Value, Merge(a.Nodes, b.Nodes, allowUnresolvedRemoves));
+			return new MiniYaml(a.Value ?? b.Value, MergePartial(a.Nodes, b.Nodes));
+		}
+
+		public static MiniYaml Merge(MiniYaml a, MiniYaml b)
+		{
+			if (a == null)
+				return b;
+
+			if (b == null)
+				return a;
+
+			return new MiniYaml(a.Value ?? b.Value, Merge(a.Nodes, b.Nodes));
 		}
 
 		public IEnumerable<string> ToLines(string name)
