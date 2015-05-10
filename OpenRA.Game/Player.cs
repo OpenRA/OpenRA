@@ -33,7 +33,6 @@ namespace OpenRA
 		public readonly string InternalName;
 		public readonly CountryInfo Country;
 		public readonly bool NonCombatant = false;
-		public readonly bool Spectating = false;
 		public readonly bool Playable = true;
 		public readonly int ClientIndex;
 		public readonly PlayerReference PlayerReference;
@@ -45,6 +44,7 @@ namespace OpenRA
 		public bool IsBot;
 		public int SpawnPoint;
 		public bool HasObjectives = false;
+		public bool Spectating;
 
 		public Shroud Shroud;
 		public World World { get; private set; }
