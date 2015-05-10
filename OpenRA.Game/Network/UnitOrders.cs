@@ -152,6 +152,9 @@ namespace OpenRA.Network
 							break;
 						}
 
+						Game.Settings.Player.Name = Settings.SanitizedPlayerName(Game.Settings.Player.Name);
+						Game.Settings.Save();
+
 						// Otherwise send the handshake with our current settings and let the server reject us
 						var info = new Session.Client()
 						{

@@ -717,9 +717,10 @@ namespace OpenRA.Mods.Common.Server
 				{ "name",
 					s =>
 					{
-						Log.Write("server", "Player@{0} is now known as {1}.", conn.Socket.RemoteEndPoint, s);
-						server.SendMessage("{0} is now known as {1}.".F(client.Name, s));
-						client.Name = s;
+						var sanitizedName = OpenRA.Settings.SanitizedPlayerName(s);
+						Log.Write("server", "Player@{0} is now known as {1}.", conn.Socket.RemoteEndPoint, sanitizedName);
+						server.SendMessage("{0} is now known as {1}.".F(client.Name, sanitizedName));
+						client.Name = sanitizedName;
 						server.SyncLobbyClients();
 						return true;
 					}

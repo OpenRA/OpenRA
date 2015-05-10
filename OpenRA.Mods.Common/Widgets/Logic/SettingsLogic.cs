@@ -204,9 +204,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ps = Game.Settings.Player;
 
 			var nameTextfield = panel.Get<TextFieldWidget>("PLAYERNAME");
-			nameTextfield.Text = ps.Name;
+			nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
 			nameTextfield.OnEnterKey = () => { nameTextfield.YieldKeyboardFocus(); return true; };
-			nameTextfield.OnLoseFocus = () => { ps.Name = nameTextfield.Text; };
+			nameTextfield.OnLoseFocus = () =>
+			{
+				nameTextfield.Text = Settings.SanitizedPlayerName(nameTextfield.Text);
+				ps.Name = nameTextfield.Text;
+			};
 
 			var colorPreview = panel.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
 			colorPreview.Color = ps.Color;
