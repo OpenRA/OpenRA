@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Basic render trait for immobile actors.")]
+	[Desc("Basic render trait for immobile actors. Deprecated, use RenderSprites + WithSpriteBody instead.")]
 	public class RenderSimpleInfo : RenderSpritesInfo, IRenderActorPreviewSpritesInfo, IQuantizeBodyOrientationInfo, Requires<IBodyOrientationInfo>
 	{
 		public readonly string Sequence = "idle";
