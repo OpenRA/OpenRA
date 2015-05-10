@@ -364,6 +364,7 @@
     <Compile Include="Traits\ProximityCaptor.cs" />
     <Compile Include="Traits\ProximityCapturable.cs" />
     <Compile Include="Traits\RadarColorFromTerrain.cs" />
+    <Compile Include="Traits\Render\AutoSelectionSize.cs" />
     <Compile Include="Traits\Render\Hovers.cs" />
     <Compile Include="Traits\Render\LeavesTrails.cs" />
     <Compile Include="Traits\Render\RenderBuilding.cs" />
@@ -405,6 +406,7 @@
     <Compile Include="Traits\Render\WithSmoke.cs" />
     <Compile Include="Traits\Render\WithSpriteBody.cs" />
     <Compile Include="Traits\Render\WithTurret.cs" />
+    <Compile Include="Traits\Render\WithFacingSpriteBody.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedOverlay.cs" />
     <Compile Include="Traits\Render\WithProductionDoorOverlay.cs" />
     <Compile Include="Traits\Render\WithProductionOverlay.cs" />

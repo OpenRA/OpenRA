@@ -1016,6 +1016,37 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150528)
+				{
+					// Note (stolen from WithInfantryBody upgrade rule):
+					// These rules are set up to do approximately the right thing for maps, but
+					// mods need additional manual tweaks. This is the best we can do without having
+					// much smarter rules parsing, because we currently can't reason about inherited traits.
+					if (depth == 0)
+					{
+						var childKeys = new[] { "Sequence" };
+
+						var ru = node.Value.Nodes.FirstOrDefault(n => n.Key == "RenderUnit");
+						if (ru != null)
+						{
+							ru.Key = "WithFacingSpriteBody";
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							var rsNodes = ru.Value.Nodes.Where(n => !childKeys.Contains(n.Key)).ToList();
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							ru.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+						}
+
+						var rru = node.Value.Nodes.FirstOrDefault(n => n.Key == "-RenderUnit");
+						if (rru != null)
+							rru.Key = "-WithFacingSpriteBody";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
