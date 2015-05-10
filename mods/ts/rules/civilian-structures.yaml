@@ -373,6 +373,8 @@ CA0001:
 		Type: heavy
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0002:
 	Inherits: ^CivBuilding
@@ -385,6 +387,8 @@ CA0002:
 		Type: heavy
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0003:
 	Inherits: ^CivBuilding
@@ -397,6 +401,8 @@ CA0003:
 		Type: light
 	Health:
 		HP: 300
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0004:
 	Inherits: ^CivBuilding
@@ -409,6 +415,8 @@ CA0004:
 		Type: light
 	Health:
 		HP: 300
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0005:
 	Inherits: ^CivBuilding
@@ -421,6 +429,8 @@ CA0005:
 		Type: light
 	Health:
 		HP: 300
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0006:
 	Inherits: ^CivBuilding
@@ -433,6 +443,8 @@ CA0006:
 		Type: heavy
 	Health:
 		HP: 300
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0007:
 	Inherits: ^CivBuilding
@@ -445,6 +457,8 @@ CA0007:
 		Type: light
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0008:
 	Inherits: ^CivBuilding
@@ -457,6 +471,8 @@ CA0008:
 		Type: heavy
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0009:
 	Inherits: ^CivBuilding
@@ -469,6 +485,8 @@ CA0009:
 		Type: heavy
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0010:
 	Inherits: ^CivBuilding
@@ -481,6 +499,8 @@ CA0010:
 		Type: heavy
 	Health:
 		HP: 300
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0011:
 	Inherits: ^CivBuilding
@@ -493,6 +513,8 @@ CA0011:
 		Type: heavy
 	Health:
 		HP: 200
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0012:
 	Inherits: ^CivBuilding
@@ -505,6 +527,8 @@ CA0012:
 		Type: light
 	Health:
 		HP: 100
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0013:
 	Inherits: ^CivBuilding
@@ -517,6 +541,8 @@ CA0013:
 		Type: heavy
 	Health:
 		HP: 300
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0014:
 	Inherits: ^CivBuilding
@@ -529,6 +555,8 @@ CA0014:
 		Type: heavy
 	Health:
 		HP: 300
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0015:
 	Inherits: ^CivBuilding
@@ -541,6 +569,8 @@ CA0015:
 		Type: light
 	Health:
 		HP: 300
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0016:
 	Inherits: ^CivBuilding
@@ -553,6 +583,8 @@ CA0016:
 		Type: light
 	Health:
 		HP: 300
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0017:
 	Inherits: ^CivBuilding
@@ -565,6 +597,8 @@ CA0017:
 		Type: heavy
 	Health:
 		HP: 300
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0018:
 	Inherits: ^CivBuilding
@@ -577,6 +611,8 @@ CA0018:
 		Type: light
 	Health:
 		HP: 200
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0019:
 	Inherits: ^CivBuilding
@@ -589,6 +625,8 @@ CA0019:
 		Type: light
 	Health:
 		HP: 200
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0020:
 	Inherits: ^CivBuilding
@@ -601,6 +639,8 @@ CA0020:
 		Type: light
 	Health:
 		HP: 200
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CA0021:
 	Inherits: ^CivBuilding
@@ -613,6 +653,8 @@ CA0021:
 		Type: light
 	Health:
 		HP: 200
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CAARAY:
 	Inherits: ^CivBuilding
@@ -666,6 +708,8 @@ CACRSH01:
 		Type: concrete
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CACRSH02:
 	Inherits: ^CivBuilding
@@ -678,6 +722,8 @@ CACRSH02:
 		Type: concrete
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CACRSH03:
 	Inherits: ^CivBuilding
@@ -690,6 +736,8 @@ CACRSH03:
 		Type: concrete
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CACRSH04:
 	Inherits: ^CivBuilding
@@ -702,6 +750,8 @@ CACRSH04:
 		Type: concrete
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CACRSH05:
 	Inherits: ^CivBuilding
@@ -714,6 +764,8 @@ CACRSH05:
 		Type: concrete
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CAHOSP:
 	Inherits: ^CivBuilding
@@ -740,6 +792,8 @@ CAPYR01:
 		Type: concrete
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CAPYR02:
 	Inherits: ^CivBuilding
@@ -752,6 +806,8 @@ CAPYR02:
 		Type: concrete
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CAPYR03:
 	Inherits: ^CivBuilding
@@ -764,6 +820,8 @@ CAPYR03:
 		Type: concrete
 	Health:
 		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CITY01:
 	Inherits: ^CivBuilding
@@ -1089,6 +1147,8 @@ CTDAM:
 		HP: 1000
 	ProvidesPrerequisite:
 		Prerequisite: anypower
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 CTVEGA:
 	Inherits: ^CivBuilding
@@ -1101,6 +1161,8 @@ CTVEGA:
 		Type: none
 	Health:
 		HP: 100
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
 
 GAKODK:
 	Inherits: ^CivBuilding

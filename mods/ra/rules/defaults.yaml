@@ -599,11 +599,15 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
 
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding
 	RenderBuilding:
 		Palette: terrain
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
 
 ^Crate:
 	Tooltip:
