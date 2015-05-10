@@ -81,6 +81,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			Key = Hotkey.FromKeyInput(e);
 
+			YieldKeyboardFocus();
+
 			return true;
 		}
 
