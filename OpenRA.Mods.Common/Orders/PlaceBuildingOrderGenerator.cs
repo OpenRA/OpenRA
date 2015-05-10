@@ -170,10 +170,11 @@ namespace OpenRA.Mods.Common.Orders
 					var td = new TypeDictionary()
 					{
 						new RaceInit(race),
+						new OwnerInit(producer.Owner),
 						new HideBibPreviewInit()
 					};
 
-					var init = new ActorPreviewInitializer(rules.Actors[building], producer.Owner, wr, td);
+					var init = new ActorPreviewInitializer(rules.Actors[building], wr, td);
 					preview = rules.Actors[building].Traits.WithInterface<IRenderActorPreviewInfo>()
 						.SelectMany(rpi => rpi.RenderPreview(init))
 						.ToArray();
