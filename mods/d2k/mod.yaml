@@ -28,6 +28,7 @@ Rules:
 	./mods/d2k/rules/ai.yaml
 	./mods/d2k/rules/player.yaml
 	./mods/d2k/rules/world.yaml
+	./mods/d2k/rules/palettes.yaml
 	./mods/d2k/rules/defaults.yaml
 	./mods/d2k/rules/vehicles.yaml
 	./mods/d2k/rules/starport.yaml

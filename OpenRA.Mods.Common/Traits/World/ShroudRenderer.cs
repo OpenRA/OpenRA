@@ -172,6 +172,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			fogPalette = wr.Palette(info.FogPalette);
 			shroudPalette = wr.Palette(info.ShroudPalette);
+
+			wr.PaletteInvalidated += () =>
+			{
+				mapBorderShroudIsCached = false;
+				MarkCellsDirty(CellRegion.Expand(map.Cells, 1));
+			};
 		}
 
 		Edges GetEdges(MPos uv, Func<MPos, bool> isVisible)

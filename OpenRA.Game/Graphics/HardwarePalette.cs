@@ -30,6 +30,11 @@ namespace OpenRA.Graphics
 			readOnlyModifiablePalettes = modifiablePalettes.AsReadOnly();
 		}
 
+		public bool Contains(string name)
+		{
+			return modifiablePalettes.ContainsKey(name) || palettes.ContainsKey(name);
+		}
+
 		public IPalette GetPalette(string name)
 		{
 			MutablePalette mutable;
