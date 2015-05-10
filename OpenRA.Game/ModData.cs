@@ -119,10 +119,10 @@ namespace OpenRA
 				return;
 			}
 
-			var yaml = Manifest.Translations.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
+			var yaml = Manifest.Translations.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergePartial);
 			Languages = yaml.Select(t => t.Key).ToArray();
 
-			yaml = MiniYaml.MergeLiberal(map.TranslationDefinitions, yaml);
+			yaml = MiniYaml.MergePartial(map.TranslationDefinitions, yaml);
 
 			foreach (var y in yaml)
 			{

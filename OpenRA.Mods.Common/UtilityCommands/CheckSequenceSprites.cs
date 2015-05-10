@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				var nodes = sequenceFiles
 					.Select(s => MiniYaml.FromFile(s))
-					.Aggregate(MiniYaml.MergeLiberal);
+					.Aggregate(MiniYaml.MergePartial);
 
 				foreach (var n in nodes)
 					Game.ModData.SpriteSequenceLoader.ParseSequences(Game.ModData, ts, sc, n);

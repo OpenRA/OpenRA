@@ -25,7 +25,7 @@ namespace OpenRA.Graphics
 
 			var sequences = voxelFiles
 				.Select(s => MiniYaml.FromFile(s))
-				.Aggregate(voxelNodes, MiniYaml.MergeLiberal);
+				.Aggregate(voxelNodes, MiniYaml.MergePartial);
 
 			foreach (var s in sequences)
 				LoadVoxelsForUnit(s.Key, s.Value);

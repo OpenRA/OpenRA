@@ -25,7 +25,7 @@ namespace OpenRA.Graphics
 		public CursorProvider(ModData modData)
 		{
 			var sequenceFiles = modData.Manifest.Cursors;
-			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
+			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergePartial));
 			var shadowIndex = new int[] { };
 
 			var nodesDict = sequences.ToDictionary();

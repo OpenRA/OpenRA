@@ -98,7 +98,7 @@ namespace OpenRA
 					throw new YamlException(
 						"Bogus inheritance -- duplicate inheritance of {0}.".F(kv.Key));
 
-				node = MiniYaml.MergeStrict(node, MergeWithParents(kv.Value, allUnits, allParents));
+				node = MiniYaml.Merge(node, MergeWithParents(kv.Value, allUnits, allParents));
 			}
 
 			return node;

@@ -21,7 +21,7 @@ namespace OpenRA.Widgets
 		{
 			data = new Dictionary<string, string>();
 			var metrics = yaml.Select(y => MiniYaml.FromFile(y))
-				.Aggregate(MiniYaml.MergeLiberal);
+				.Aggregate(MiniYaml.MergePartial);
 
 			foreach (var m in metrics)
 				foreach (var n in m.Value.Nodes)

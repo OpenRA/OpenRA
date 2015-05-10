@@ -129,7 +129,7 @@ namespace OpenRA.Graphics
 
 			var nodes = sequenceFiles
 				.Select(s => MiniYaml.FromFile(s))
-				.Aggregate(sequenceNodes, MiniYaml.MergeLiberal);
+				.Aggregate(sequenceNodes, MiniYaml.MergePartial);
 
 			var items = new Dictionary<string, UnitSequences>();
 			foreach (var n in nodes)

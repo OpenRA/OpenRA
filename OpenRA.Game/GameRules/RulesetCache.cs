@@ -101,7 +101,7 @@ namespace OpenRA
 
 			var mergedNodes = files
 				.Select(s => MiniYaml.FromFile(s))
-				.Aggregate(nodes, MiniYaml.MergeLiberal);
+				.Aggregate(nodes, MiniYaml.MergePartial);
 
 			Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> wrap = (wkv, wyy) =>
 			{

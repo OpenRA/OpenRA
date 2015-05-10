@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Graphics
 			if (nodes.TryGetValue("Defaults", out defaults))
 			{
 				nodes.Remove("Defaults");
-				nodes = nodes.ToDictionary(kv => kv.Key, kv => MiniYaml.MergeStrict(kv.Value, defaults));
+				nodes = nodes.ToDictionary(kv => kv.Key, kv => MiniYaml.Merge(kv.Value, defaults));
 
 				// Merge 'Defaults' animation image value. An example follows.
 				//

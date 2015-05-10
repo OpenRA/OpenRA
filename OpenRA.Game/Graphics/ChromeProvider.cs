@@ -33,7 +33,7 @@ namespace OpenRA.Graphics
 			cachedSheets = new Dictionary<string, Sheet>();
 			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
 
-			var chrome = chromeFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal);
+			var chrome = chromeFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergePartial);
 
 			foreach (var c in chrome)
 				LoadCollection(c.Key, c.Value);

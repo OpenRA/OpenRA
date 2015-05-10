@@ -262,12 +262,12 @@ namespace OpenRA
 			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), fileName);
 		}
 
-		public static List<MiniYamlNode> MergeStrict(List<MiniYamlNode> a, List<MiniYamlNode> b)
+		public static List<MiniYamlNode> Merge(List<MiniYamlNode> a, List<MiniYamlNode> b)
 		{
 			return Merge(a, b, false);
 		}
 
-		public static List<MiniYamlNode> MergeLiberal(List<MiniYamlNode> a, List<MiniYamlNode> b)
+		public static List<MiniYamlNode> MergePartial(List<MiniYamlNode> a, List<MiniYamlNode> b)
 		{
 			return Merge(a, b, true);
 		}
@@ -327,12 +327,12 @@ namespace OpenRA
 			return ret;
 		}
 
-		public static MiniYaml MergeLiberal(MiniYaml a, MiniYaml b)
+		public static MiniYaml MergePartial(MiniYaml a, MiniYaml b)
 		{
 			return Merge(a, b, true);
 		}
 
-		public static MiniYaml MergeStrict(MiniYaml a, MiniYaml b)
+		public static MiniYaml Merge(MiniYaml a, MiniYaml b)
 		{
 			return Merge(a, b, false);
 		}
