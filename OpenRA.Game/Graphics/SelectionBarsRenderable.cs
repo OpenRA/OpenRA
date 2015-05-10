@@ -76,12 +76,28 @@ namespace OpenRA.Graphics
 
 		Color GetHealthColor(Health health)
 		{
-			if (Game.Settings.Game.TeamHealthColors)
+			var player = actor.World.RenderPlayer ?? actor.World.LocalPlayer;
+
+			if (Game.Settings.Game.TeamHealthColors && player != null && !player.Spectating)
 			{
-				var isAlly = actor.Owner.IsAlliedWith(actor.World.LocalPlayer)
-					|| (actor.EffectiveOwner != null && actor.EffectiveOwner.Disguised
-					&& actor.World.LocalPlayer.IsAlliedWith(actor.EffectiveOwner.Owner));
-				return isAlly ? Color.LimeGreen : actor.Owner.NonCombatant ? Color.Tan : Color.Red;
+				var apparentOwner = actor.EffectiveOwner != null && actor.EffectiveOwner.Disguised
+					? actor.EffectiveOwner.Owner
+					: actor.Owner;
+
+				// For friendly spies, treat the unit's owner as the actual owner
+				if (actor.Owner.IsAlliedWith(actor.World.RenderPlayer))
+					apparentOwner = actor.Owner;
+
+				if (apparentOwner == player)
+					return Color.LimeGreen;
+
+				if (apparentOwner.IsAlliedWith(player))
+					return Color.Yellow;
+
+				if (apparentOwner.NonCombatant)
+					return Color.Tan;
+
+				return Color.Red;
 			}
 			else
 				return health.DamageState == DamageState.Critical ? Color.Red :
