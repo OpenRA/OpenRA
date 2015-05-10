@@ -321,6 +321,15 @@ namespace OpenRA
 			return clean;
 		}
 
+		public static string SanitizedServerName(string dirty)
+		{
+			var clean = SanitizedName(dirty);
+			if (string.IsNullOrWhiteSpace(clean))
+				return new ServerSettings().Name;
+			else
+				return clean;
+		}
+
 		public static string SanitizedPlayerName(string dirty)
 		{
 			var forbiddenNames = new string[] { "Open", "Closed" };

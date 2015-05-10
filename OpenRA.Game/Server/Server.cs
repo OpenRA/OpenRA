@@ -130,6 +130,9 @@ namespace OpenRA.Server
 			Port = localEndpoint.Port;
 
 			Settings = settings;
+
+			Settings.Name = OpenRA.Settings.SanitizedServerName(Settings.Name);
+
 			ModData = modData;
 
 			randomSeed = (int)DateTime.Now.ToBinary();
