@@ -81,6 +81,8 @@
 	CaptureNotification:
 		Notification: UnitStolen
 	MustBeDestroyed:
+	AnnounceOnSeen:
+		Notification: EnemyDetected
 
 ^Tank:
 	Inherits@1: ^ExistsInWorld
@@ -141,6 +143,8 @@
 		GroundCorpsePalette:
 		WaterCorpseSequence:
 		WaterCorpsePalette:
+	AnnounceOnSeen:
+		Notification: EnemyDetected
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
@@ -215,6 +219,8 @@
 	Cloneable:
 		Types: Infantry
 	MustBeDestroyed:
+	AnnounceOnSeen:
+		Notification: EnemyDetected
 
 ^Ship:
 	Inherits@1: ^ExistsInWorld
@@ -244,6 +250,8 @@
 	Tooltip:
 		GenericName: Ship
 	MustBeDestroyed:
+	AnnounceOnSeen:
+		Notification: EnemyDetected
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -278,6 +286,8 @@
 		GenericName: Plane
 	WithShadow:
 	MustBeDestroyed:
+	AnnounceOnSeen:
+		Notification: EnemyDetected
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -286,6 +296,8 @@
 	GpsDot:
 		String: Helicopter
 	Hovers:
+	AnnounceOnSeen:
+		Notification: EnemyDetected
 
 ^Building:
 	Inherits@1: ^ExistsInWorld

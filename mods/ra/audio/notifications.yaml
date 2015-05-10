@@ -35,6 +35,7 @@ Speech:
 		ConvoyUnitLost: convlst1
 		CreditsStolen: credit1
 		EnemyUnitsApproaching: enmyapp1
+		EnemyDetected: enmydet
 		ExplosiveChargePlaced: xploplc1
 		FirstObjectiveMet: 1objmet1
 		FourtyMinutesRemaining: 40minr
