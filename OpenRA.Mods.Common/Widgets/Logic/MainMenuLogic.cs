@@ -167,8 +167,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!cacheValid)
 					new Download(Game.Settings.Game.NewsUrl, cacheFile, e => { },
                         (e, c) => NewsDownloadComplete(e, c, cacheFile, currentNews, () => newsButton.AttachPanel(newsPanel)));
-                				
-				newsButton.OnClick = () => newsButton.AttachPanel(newsPanel);
+
+                newsButton.OnClick = () => newsButton.AttachPanel(newsPanel);
 			}
 
 			Game.OnRemoteDirectConnect += (host, port) =>
