@@ -481,15 +481,16 @@ function findReplace:RunInFiles(replace)
   local showaseditor = ide.config.search.showaseditor
   local nb = ide:GetOutputNotebook()
   local reseditor = self.reseditor
-  local previewText = TR("Search")..": "
+  local resultsText = "Search Results"
+  local previewText = resultsText..": "
   local valid = self:IsPreview(reseditor)
   -- open new tab if the current one is not valid
   -- or if multiple tabs are requested, but when searching for different text
   if not valid or (flags.MultiResults and reseditor.searchpreview ~= findText) then
     if showaseditor then
-      reseditor = NewFile(previewText)
+      reseditor = NewFile(resultsText)
       -- set file path to avoid treating results as unsaved document
-      ide:GetDocument(reseditor).filePath = "Search Results"
+      ide:GetDocument(reseditor).filePath = resultsText
     else
       reseditor = ide:CreateBareEditor()
       reseditor:SetupKeywords("")
