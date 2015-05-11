@@ -721,12 +721,12 @@ OBLI:
 	Bib:
 		HasMinibib: Yes
 	RenderBuildingCharge:
-		ChargeAudio: obelpowr.aud
 	Armament:
 		Weapon: Laser
 		LocalOffset: 0,0,725
 		FireDelay: 0
 	AttackCharge:
+		ChargeAudio: obelpowr.aud
 		ReloadTime: 40
 		InitialChargeDelay: 50
 	AutoTarget:

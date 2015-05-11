@@ -8,19 +8,20 @@
  */
 #endregion
 
+using OpenRA.Traits;
+
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Used for tesla coil and obelisk.")]
 	public class RenderBuildingChargeInfo : RenderBuildingInfo
 	{
-		[Desc("Sound to play when building charges.")]
-		public readonly string ChargeAudio = null;
 		[Desc("Sequence to use for building charge animation.")]
 		public readonly string ChargeSequence = "active";
+
 		public override object Create(ActorInitializer init) { return new RenderBuildingCharge(init, this); }
 	}
 
-	public class RenderBuildingCharge : RenderBuilding
+	public class RenderBuildingCharge : RenderBuilding, INotifyCharging
 	{
 		RenderBuildingChargeInfo info;
 
@@ -30,9 +31,8 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void PlayCharge(Actor self)
+		public void Charging(Actor self, Target target)
 		{
-			Sound.Play(info.ChargeAudio, self.CenterPosition);
 			PlayCustomAnim(self, info.ChargeSequence);
 		}
 	}

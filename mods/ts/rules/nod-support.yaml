@@ -88,16 +88,18 @@ NAOBEL:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	RenderBuildingCharge:
-		ChargeAudio: obelpowr.aud
 	Armament:
 		Weapon: LaserFire
-		LocalOffset: 0,0,725
+		LocalOffset: 1400,200,1250
 	AttackCharge:
+		ChargeAudio: obelpowr.aud
 		ReloadTime: 50
 		InitialChargeDelay: 50
+	WithChargeOverlay:
+		Sequence: active
+		Palette: player
+		IsPlayerPalette: true
 	AutoTarget:
-	-RenderBuilding:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	DetectCloaked:
