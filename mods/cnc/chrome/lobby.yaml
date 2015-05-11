@@ -149,5 +149,6 @@ Container@SERVER_LOBBY:
 			Width: 140
 			Height: 35
 			Text: Music
+		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 

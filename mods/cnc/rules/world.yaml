@@ -21,12 +21,15 @@ World:
 		Name: Any
 		Race: Random
 		RandomRaceMembers: gdi, nod
+		Description: Select a random faction.
 	Country@gdi:
 		Name: GDI
 		Race: gdi
+		Description: Global Defense Initiative\nThe GDI is an international military branch of the United Nations tasked\nwith keeping world peace. Commanding the combined forces of the world's\nmost powerful nations, they possess an unmatched arsenal of high-tech weaponry.
 	Country@nod:
 		Name: Nod
 		Race: nod
+		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
 	ProductionQueueFromSelection:
 		ProductionTabsWidget: PRODUCTION_TABS
 	DomainIndex:
