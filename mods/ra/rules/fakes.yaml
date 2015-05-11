@@ -115,6 +115,8 @@ DOMF:
 		Image: DOME
 	Valued:
 		Cost: 180
+	RequiresPower:
+	DisabledOverlay:
 
 ATEF:
 	Inherits: ^FakeBuilding
@@ -137,6 +139,8 @@ ATEF:
 		Image: ATEK
 	Valued:
 		Cost: 150
+	RequiresPower:
+	DisabledOverlay:
 
 PDOF:
 	Inherits: ^FakeBuilding
@@ -161,6 +165,8 @@ PDOF:
 		HasMinibib: Yes
 	Valued:
 		Cost: 150
+	RequiresPower:
+	DisabledOverlay:
 
 MSLF:
 	Inherits: ^FakeBuilding
@@ -183,3 +189,5 @@ MSLF:
 		Image: MSLO
 	Valued:
 		Cost: 250
+	RequiresPower:
+	DisabledOverlay:
