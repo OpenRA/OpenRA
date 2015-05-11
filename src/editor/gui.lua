@@ -390,9 +390,30 @@ local function createBottomNotebook(frame)
 
   addDND(bottomnotebook)
 
+  bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED,
+    function (event)
+      if not ide.findReplace then return end
+      local nb = event:GetEventObject():DynamicCast("wxAuiNotebook")
+      local preview = ide.findReplace:IsPreview(nb:GetPage(nb:GetSelection()))
+      local flags = nb:GetWindowStyleFlag()
+      if preview and bit.band(flags, wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB) == 0 then
+        nb:SetWindowStyleFlag(flags + wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB)
+      elseif not preview and bit.band(flags, wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB) ~= 0 then
+        nb:SetWindowStyleFlag(flags - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB)
+      end
+    end)
+
   -- disallow tabs closing
   bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
-    function (event) event:Veto() end)
+    function (event)
+      local nb = event:GetEventObject():DynamicCast("wxAuiNotebook")
+      if ide.findReplace
+      and ide.findReplace:IsPreview(nb:GetPage(nb:GetSelection())) then
+        event:Skip()
+      else
+        event:Veto()
+      end
+    end)
 
   local errorlog = ide:CreateStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_NONE)

@@ -31,6 +31,7 @@ ide.findReplace = {
       Down = true, -- search downwards in doc
       Context = true, -- include context in search results
       SubDirs = true, -- search in subdirectories
+      MultiResults = false, -- show multiple result tabs
     },
     flist = {},
     rlist = {},
@@ -49,7 +50,7 @@ local replaceHintText = '<replace with>'
 local sep = ';'
 
 function findReplace:GetEditor(reset)
-  if reset then self.cureditor = nil end
+  if reset or not ide:IsValidCtrl(self.cureditor) then self.cureditor = nil end
   self.cureditor = ide:GetEditorWithLastFocus() or self.cureditor
   return self.oveditor or self.cureditor or GetEditor()
 end
@@ -97,9 +98,13 @@ local function setTargetAll(editor)
   return e
 end
 
-function findReplace:CanSave()
-  local reseditor = self.reseditor
-  return reseditor and reseditor:GetModify() and GetEditorWithFocus(reseditor)
+function findReplace:IsPreview(editor)
+  local ok, ispreview = pcall(function() return editor and editor.searchpreview end)
+  return ok and ispreview and true or false
+end
+
+function findReplace:CanSave(editor)
+  return editor and editor:GetModify() and self:IsPreview(editor) and editor or nil
 end
 
 function findReplace:HasText()
@@ -445,7 +450,7 @@ function findReplace:ProcInFiles(startdir,mask,subdirs)
           -- so check to make sure the manager is still active
           if not (ok and mgr:GetPane(searchpanel):IsShown())
           -- and check that the search results tab is still open
-          or not pcall(function() self.reseditor:GetId() end) then
+          or not ide:IsValidCtrl(self.reseditor) then
             return false
           end
         end
@@ -471,12 +476,16 @@ function findReplace:RunInFiles(replace)
 
   -- save focus to restore after adding a page with search results
   local ctrl = ide:GetMainFrame():FindFocus()
+  local findText = self.findCtrl:GetValue()
+  local flags = self:GetFlags()
   local showaseditor = ide.config.search.showaseditor
   local nb = ide:GetOutputNotebook()
   local reseditor = self.reseditor
-  if not reseditor or not pcall(function() reseditor:GetId() end) then
+  local previewText = TR("Search")..": "
+  local valid = self:IsPreview(reseditor)
+  if flags.MultiResults or not valid then
     if showaseditor then
-      reseditor = NewFile("Search Results")
+      reseditor = NewFile(previewText)
       -- set file path to avoid treating results as unsaved document
       ide:GetDocument(reseditor).filePath = "Search Results"
     else
@@ -506,7 +515,9 @@ function findReplace:RunInFiles(replace)
           end
         end)
 
-      nb:AddPage(reseditor, "Search Results", true)
+      -- mark as searchpreview to allow AddPage to add "close" button
+      reseditor.searchpreview = true
+      nb:AddPage(reseditor, previewText, true)
     end
     reseditor:SetWrapMode(wxstc.wxSTC_WRAP_NONE)
     reseditor:SetIndentationGuides(false)
@@ -574,8 +585,11 @@ function findReplace:RunInFiles(replace)
   reseditor.replace = replace -- keep track of the current status
   reseditor:SetReadOnly(false)
   reseditor:SetText('')
+  do -- update the preview name
+    local nb = showaseditor and ide:GetEditorNotebook() or nb
+    nb:SetPageText(nb:GetPageIndex(reseditor), previewText .. findText)
+  end
 
-  local findText = self.findCtrl:GetValue()
   self:SetStatus(TR("Searching for '%s'."):format(findText))
   wx.wxSafeYield() -- allow the status to update
 
@@ -585,10 +599,10 @@ function findReplace:RunInFiles(replace)
   or not showaseditor then ctrl:SetFocus() end
 
   local startdir, mask = self:GetScope()
-  local completed = self:ProcInFiles(startdir, mask or "*.*", self:GetFlags().SubDirs)
+  local completed = self:ProcInFiles(startdir, mask or "*.*", flags.SubDirs)
 
   -- reseditor may already be closed, so check if it's valid first
-  if pcall(function() reseditor:GetId() end) then
+  if ide:IsValidCtrl(reseditor) then
     reseditor:GotoPos(reseditor:GetLength())
     reseditor:AppendText(("Searched for '%s'. "):format(findText))
     if not completed then reseditor:AppendText("Cancelled by the user. ") end
@@ -610,6 +624,7 @@ function findReplace:RunInFiles(replace)
       reseditor:SetReadOnly(true)
     end
     reseditor:EnsureVisibleEnforcePolicy(reseditor:GetLineCount()-1)
+    reseditor.searchpreview = true
   end
 
   self:SetStatus(not completed and TR("Cancelled by the user.")
@@ -629,8 +644,8 @@ local icons = {
     },
     infiles = {
       ID_FINDNEXT, ID_SEPARATOR,
-      ID_FINDOPTCONTEXT, ID_FINDOPTWORD, ID_FINDOPTCASE, ID_FINDOPTREGEX,
-      ID_FINDOPTSUBDIR,
+      ID_FINDOPTCONTEXT, ID_FINDOPTMULTIRESULTS, ID_FINDOPTWORD,
+      ID_FINDOPTCASE, ID_FINDOPTREGEX, ID_FINDOPTSUBDIR,
       ID_FINDOPTSCOPE, ID_FINDSETDIR,
       ID_SEPARATOR, ID_FINDOPTSTATUS,
     },
@@ -644,8 +659,8 @@ local icons = {
     },
     infiles = {
       ID_FINDNEXT, ID_FINDREPLACEALL, ID_SEPARATOR,
-      ID_FINDOPTCONTEXT, ID_FINDOPTWORD, ID_FINDOPTCASE, ID_FINDOPTREGEX,
-      ID_FINDOPTSUBDIR,
+      ID_FINDOPTCONTEXT, ID_FINDOPTMULTIRESULTS, ID_FINDOPTWORD,
+      ID_FINDOPTCASE, ID_FINDOPTREGEX, ID_FINDOPTSUBDIR,
       ID_FINDOPTSCOPE, ID_FINDSETDIR,
       ID_SEPARATOR, ID_FINDOPTSTATUS,
     },
@@ -686,6 +701,7 @@ function findReplace:createToolbar()
     [ID_FINDOPTREGEX] = 'RegularExpr',
     [ID_FINDOPTSUBDIR] = 'SubDirs',
     [ID_FINDOPTCONTEXT] = 'Context',
+    [ID_FINDOPTMULTIRESULTS] = 'MultiResults',
   }
 
   for id, var in pairs(options) do
@@ -1072,7 +1088,7 @@ function findReplace:Hide(restorepos)
   mgr:GetPane(searchpanel):Hide()
   mgr:Update()
 
-  if self.reseditor then
+  if self:IsPreview(self.reseditor) then
     self.reseditor:SetFocus()
   elseif self.backfocus then
     local editor = self.backfocus.editor
@@ -1094,12 +1110,8 @@ local package = ide:AddPackage('core.findreplace', {
         or findReplace:SetScope(proj, mask))
     end,
 
-    onEditorClose = function(self, editor, filePath)
-      if editor == findReplace.reseditor then findReplace.reseditor = nil end
-    end,
-
     onEditorPreSave = function(self, editor, filePath)
-      if editor ~= findReplace.reseditor then return end
+      if not findReplace:IsPreview(editor) then return end
 
       local isModified = editor:GetModify()
       if editor.replace and isModified then

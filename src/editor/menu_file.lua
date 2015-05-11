@@ -185,13 +185,14 @@ frame:Connect(ID_NEW, wx.wxEVT_COMMAND_MENU_SELECTED, function() return NewFile(
 frame:Connect(ID_OPEN, wx.wxEVT_COMMAND_MENU_SELECTED, OpenFile)
 frame:Connect(ID_SAVE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
-    local editor = ide.findReplace:CanSave() or GetEditor()
+    local editor = ide.findReplace:CanSave(GetEditorWithFocus()) or GetEditor()
     local doc = ide:GetDocument(editor)
     SaveFile(editor, doc and doc:GetFilePath() or nil)
   end)
 frame:Connect(ID_SAVE, wx.wxEVT_UPDATE_UI,
   function (event)
-    event:Enable(ide.findReplace:CanSave() and true or EditorIsModified(GetEditor()))
+    event:Enable(ide.findReplace:CanSave(GetEditorWithFocus())
+      and true or EditorIsModified(GetEditor()))
   end)
 
 frame:Connect(ID_SAVEAS, wx.wxEVT_COMMAND_MENU_SELECTED,
