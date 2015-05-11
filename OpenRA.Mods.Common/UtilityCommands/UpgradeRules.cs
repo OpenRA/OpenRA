@@ -1045,6 +1045,27 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (rru != null)
 							rru.Key = "-WithFacingSpriteBody";
 					}
+
+					// For RenderUnitReload
+					var rur = node.Value.Nodes.Where(x => x.Key == "RenderUnitReload");
+					if (rur.Any())
+					{
+						rur.Do(x => x.Key = "RenderSprites");
+						node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+						node.Value.Nodes.Add(new MiniYamlNode("WithFacingSpriteBody", "", new List<MiniYamlNode>
+						{
+							new MiniYamlNode("Sequence", "idle")
+						}));
+						node.Value.Nodes.Add(new MiniYamlNode("WithAttackAnimation", "", new List<MiniYamlNode>
+						{
+							new MiniYamlNode("AimSequence", "aim"),
+							new MiniYamlNode("ReloadPrefix", "empty-")
+						}));
+
+						var rrur = node.Value.Nodes.FirstOrDefault(n => n.Key == "-RenderUnitReload");
+						if (rrur != null)
+							rrur.Key = "-WithFacingSpriteBody";
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

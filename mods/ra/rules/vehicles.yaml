@@ -20,11 +20,17 @@ V2RL:
 	Armament:
 		Weapon: SCUD
 	AttackFrontal:
-	RenderUnitReload:
+	RenderSprites:
 	AutoTarget:
 	Explodes:
 		Weapon: SCUD
 		EmptyWeapon: UnitExplodeSmall
+	AutoSelectionSize:
+	WithFacingSpriteBody:
+		Sequence: idle
+	WithAttackAnimation:
+		AimSequence: aim
+		ReloadPrefix: empty-
 
 1TNK:
 	Inherits: ^Tank
