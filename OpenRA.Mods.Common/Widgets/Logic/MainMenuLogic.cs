@@ -28,7 +28,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollPanelWidget newsPanel;
 		readonly Widget newsTemplate;
 		readonly LabelWidget newsStatus;
-		bool newsHighlighted = false;
 
 		[ObjectCreator.UseCtor]
 		public MainMenuLogic(Widget widget, World world)
@@ -161,19 +160,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (currentNews != null)
 					DisplayNews(currentNews);
 
+                var newsButton = newsBG.GetOrNull<DropDownButtonWidget>("NEWS_BUTTON");
+
 				// Only query for new stories once per day
 				var cacheValid = currentNews != null && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
 				if (!cacheValid)
-					new Download(Game.Settings.Game.NewsUrl, cacheFile, e => { }, (e, c) => NewsDownloadComplete(e, c, cacheFile, currentNews));
+					new Download(Game.Settings.Game.NewsUrl, cacheFile, e => { },
+                        (e, c) => NewsDownloadComplete(e, c, cacheFile, currentNews, () => newsButton.AttachPanel(newsPanel)));
 
-				var newsButton = newsBG.GetOrNull<DropDownButtonWidget>("NEWS_BUTTON");
-				newsButton.OnClick = () =>
-				{
-					newsButton.AttachPanel(newsPanel);
-					newsHighlighted = false;
-				};
-
-				newsButton.IsHighlighted = () => newsHighlighted && Game.LocalTick % 50 < 25;
+                newsButton.OnClick = () => newsButton.AttachPanel(newsPanel);
 			}
 
 			Game.OnRemoteDirectConnect += (host, port) =>
@@ -230,7 +225,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return null;
 		}
 
-		void NewsDownloadComplete(AsyncCompletedEventArgs e, bool cancelled, string cacheFile, NewsItem[] oldNews)
+		void NewsDownloadComplete(AsyncCompletedEventArgs e, bool cancelled, string cacheFile, NewsItem[] oldNews, Action onNewNewsDownloaded)
 		{
 			Game.RunAfterTick(() => // run on the main thread
 			{
@@ -246,8 +241,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				DisplayNews(newNews);
 
-				if (oldNews == null || newNews.Any(n => !oldNews.Select(c => c.DateTime).Contains(n.DateTime)))
-					newsHighlighted = true;
+                if (oldNews == null || newNews.Any(n => !oldNews.Select(c => c.DateTime).Contains(n.DateTime)))
+                    onNewNewsDownloaded.Invoke();
 
 				Game.Settings.Game.NewsFetchedDate = DateTime.Today.ToUniversalTime();
 				Game.Settings.Save();
