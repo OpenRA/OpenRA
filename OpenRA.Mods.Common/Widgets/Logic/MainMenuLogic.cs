@@ -14,7 +14,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -28,7 +27,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollPanelWidget newsPanel;
 		readonly Widget newsTemplate;
 		readonly LabelWidget newsStatus;
-		bool newsHighlighted = false;
 
 		[ObjectCreator.UseCtor]
 		public MainMenuLogic(Widget widget, World world)
@@ -200,21 +198,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (currentNews != null)
 					DisplayNews(currentNews);
 
-				// Only query for new stories once per day
-				var cacheValid = currentNews != null && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
-				if (!cacheValid)
-					new Download(Game.Settings.Game.NewsUrl, cacheFile, e => { }, (e, c) => NewsDownloadComplete(e, c, cacheFile, currentNews));
-
 				var newsButton = newsBG.GetOrNull<DropDownButtonWidget>("NEWS_BUTTON");
+
 				if (newsButton != null)
 				{
-					newsButton.OnClick = () =>
-					{
-						newsButton.AttachPanel(newsPanel);
-						newsHighlighted = false;
-					};
+					// Only query for news once per day.
+					var cacheValid = currentNews != null && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
+					if (!cacheValid)
+						new Download(Game.Settings.Game.NewsUrl, cacheFile, e => { },
+							(e, c) => NewsDownloadComplete(e, cacheFile, currentNews, () => newsButton.AttachPanel(newsPanel)));
 
-					newsButton.IsHighlighted = () => newsHighlighted && Game.LocalTick % 50 < 25;
+					newsButton.OnClick = () => newsButton.AttachPanel(newsPanel);
 				}
 			}
 
@@ -281,7 +275,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return null;
 		}
 
-		void NewsDownloadComplete(AsyncCompletedEventArgs e, bool cancelled, string cacheFile, NewsItem[] oldNews)
+		void NewsDownloadComplete(AsyncCompletedEventArgs e, string cacheFile, NewsItem[] oldNews, Action onNewsDownloaded)
 		{
 			Game.RunAfterTick(() => // run on the main thread
 			{
@@ -298,7 +292,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				DisplayNews(newNews);
 
 				if (oldNews == null || newNews.Any(n => !oldNews.Select(c => c.DateTime).Contains(n.DateTime)))
-					newsHighlighted = true;
+					onNewsDownloaded();
 
 				Game.Settings.Game.NewsFetchedDate = DateTime.Today.ToUniversalTime();
 				Game.Settings.Save();
