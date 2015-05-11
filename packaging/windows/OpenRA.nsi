@@ -89,7 +89,7 @@ Section "Game" GAME
 	File "${SRCDIR}\MaxMind.GeoIP2.dll"
 	File "${SRCDIR}\Newtonsoft.Json.dll"
 	File "${SRCDIR}\RestSharp.dll"
-	File "${SRCDIR}\GeoLite2-Country.mmdb"
+	File "${SRCDIR}\GeoLite2-Country.mmdb.gz"
 	File "${SRCDIR}\eluant.dll"
 	File "${DEPSDIR}\soft_oal.dll"
 	File "${DEPSDIR}\SDL2.dll"
@@ -205,7 +205,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\MaxMind.GeoIP2.dll
 	Delete $INSTDIR\Newtonsoft.Json.dll
 	Delete $INSTDIR\RestSharp.dll
-	Delete $INSTDIR\GeoLite2-Country.mmdb
+	Delete $INSTDIR\GeoLite2-Country.mmdb.gz
 	Delete $INSTDIR\KopiLua.dll
 	Delete $INSTDIR\soft_oal.dll
 	Delete $INSTDIR\SDL2.dll

@@ -318,6 +318,7 @@ osx-dependencies: cli-dependencies
 	@ $(CP_R) thirdparty/download/osx/*.dll.config .
 
 dependencies: $(os-dependencies)
+	@./thirdparty/fetch-geoip-db.sh
 
 all-dependencies: cli-dependencies windows-dependencies osx-dependencies
 
@@ -353,7 +354,7 @@ install-core: default
 	@$(CP_R) mods/modchooser "$(DATA_INSTALL_DIR)/mods/"
 
 	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
-	@$(INSTALL_DATA) "GeoLite2-Country.mmdb" "$(DATA_INSTALL_DIR)/GeoLite2-Country.mmdb"
+	@$(INSTALL_DATA) "GeoLite2-Country.mmdb.gz" "$(DATA_INSTALL_DIR)/GeoLite2-Country.mmdb.gz"
 	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
 	@$(INSTALL_DATA) COPYING "$(DATA_INSTALL_DIR)/COPYING"
 
