@@ -1187,9 +1187,14 @@ function CreateEditor(bare)
       if PackageEventHandle("onEditorKeyDown", editor, event) == false then
         -- this event has already been handled
       elseif keycode == wx.WXK_ESCAPE then
-        if editor:CallTipActive() or editor:AutoCompActive() then event:Skip()
-        elseif ide.findReplace:IsShown() then ide.findReplace:Hide()
-        elseif ide:GetMainFrame():IsFullScreen() then ShowFullScreen(false) end
+        if editor:CallTipActive() or editor:AutoCompActive() then
+          event:Skip()
+        elseif ide.findReplace:IsShown() then
+          ide.findReplace:Hide()
+          editor:SetFocus()
+        elseif ide:GetMainFrame():IsFullScreen() then
+          ShowFullScreen(false)
+        end
       -- Ctrl-Home and Ctrl-End don't work on OSX with 2.9.5+; fix it
       elseif ide.osname == 'Macintosh' and ide.wxver >= "2.9.5"
         and (mod == wx.wxMOD_RAW_CONTROL or mod == (wx.wxMOD_RAW_CONTROL + wx.wxMOD_SHIFT))
