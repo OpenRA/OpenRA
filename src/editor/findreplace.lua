@@ -483,7 +483,9 @@ function findReplace:RunInFiles(replace)
   local reseditor = self.reseditor
   local previewText = TR("Search")..": "
   local valid = self:IsPreview(reseditor)
-  if flags.MultiResults or not valid then
+  -- open new tab if the current one is not valid
+  -- or if multiple tabs are requested, but when searching for different text
+  if not valid or (flags.MultiResults and reseditor.searchpreview ~= findText) then
     if showaseditor then
       reseditor = NewFile(previewText)
       -- set file path to avoid treating results as unsaved document
@@ -516,7 +518,7 @@ function findReplace:RunInFiles(replace)
         end)
 
       -- mark as searchpreview to allow AddPage to add "close" button
-      reseditor.searchpreview = true
+      reseditor.searchpreview = findText
       nb:AddPage(reseditor, previewText, true)
     end
     reseditor:SetWrapMode(wxstc.wxSTC_WRAP_NONE)
@@ -624,7 +626,7 @@ function findReplace:RunInFiles(replace)
       reseditor:SetReadOnly(true)
     end
     reseditor:EnsureVisibleEnforcePolicy(reseditor:GetLineCount()-1)
-    reseditor.searchpreview = true
+    reseditor.searchpreview = findText
   end
 
   self:SetStatus(not completed and TR("Cancelled by the user.")
