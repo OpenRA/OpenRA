@@ -222,11 +222,18 @@ frame:Connect(ID_SAVEALL, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_CLOSE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    ClosePage() -- this will find the current editor tab
+    local editor = GetEditorWithFocus()
+    local nb = ide:GetOutputNotebook()
+    local index = editor and nb:GetPageIndex(editor)
+    if index and ide.findReplace:IsPreview(editor) and index >= 0 then
+      nb:DeletePage(index) -- close preview tab
+    else
+      ClosePage() -- this will find the current editor tab
+    end
   end)
 frame:Connect(ID_CLOSE, wx.wxEVT_UPDATE_UI,
   function (event)
-    event:Enable(GetEditor() ~= nil)
+    event:Enable(ide.findReplace:IsPreview(GetEditorWithFocus()) or GetEditor() ~= nil)
   end)
 
 frame:Connect(ID_EXIT, wx.wxEVT_COMMAND_MENU_SELECTED,
