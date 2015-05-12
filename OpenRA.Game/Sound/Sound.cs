@@ -364,32 +364,6 @@ namespace OpenRA
 			return true;
 		}
 
-		public static bool PlayVoice(string phrase, Actor voicedActor, string variant)
-		{
-			if (voicedActor == null || phrase == null)
-				return false;
-
-			var mi = voicedActor.TraitOrDefault<IVoiced>();
-			if (mi == null || mi.VoiceSet == null)
-				return false;
-
-			var type = mi.VoiceSet.ToLowerInvariant();
-			return PlayPredefined(voicedActor.World.Map.Rules, null, voicedActor, type, phrase, variant, true, WPos.Zero, 1f, true);
-		}
-
-		public static bool PlayVoiceLocal(string phrase, Actor voicedActor, string variant, WPos pos, float volume)
-		{
-			if (voicedActor == null || phrase == null)
-				return false;
-
-			var mi = voicedActor.TraitOrDefault<IVoiced>();
-			if (mi == null || mi.VoiceSet == null)
-				return false;
-
-			var type = mi.VoiceSet.ToLowerInvariant();
-			return PlayPredefined(voicedActor.World.Map.Rules, null, voicedActor, type, phrase, variant, false, pos, volume, true);
-		}
-
 		public static bool PlayNotification(Ruleset rules, Player player, string type, string notification, string variant)
 		{
 			if (rules == null)

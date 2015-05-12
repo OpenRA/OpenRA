@@ -42,28 +42,6 @@ namespace OpenRA
 			}
 		}
 
-		public static bool HasVoices(this Actor a)
-		{
-			var voice = a.TraitOrDefault<IVoiced>();
-			return voice != null && voice.VoiceSet != null;
-		}
-
-		public static bool HasVoice(this Actor a, string voice)
-		{
-			var v = GetVoices(a);
-			return v != null && v.Voices.ContainsKey(voice);
-		}
-
-		public static SoundInfo GetVoices(this Actor a)
-		{
-			var voiced = a.TraitOrDefault<IVoiced>();
-			if (voiced == null)
-				return null;
-
-			var v = voiced.VoiceSet;
-			return (v == null) ? null : a.World.Map.Rules.Voices[v.ToLowerInvariant()];
-		}
-
 		public static void PlayVoiceForOrders(this World w, Order[] orders)
 		{
 			// Find an actor with a phrase to say
@@ -75,13 +53,15 @@ namespace OpenRA
 				if (o.Subject.Destroyed)
 					continue;
 
-				if (!o.Subject.HasVoices())
+				var hasVoice = o.Subject.TraitsImplementing<IVoiced>();
+				if (hasVoice == null)
 					continue;
 
 				foreach (var v in o.Subject.TraitsImplementing<IOrderVoice>())
-					if (Sound.PlayVoice(v.VoicePhraseForOrder(o.Subject, o),
-						o.Subject, o.Subject.Owner.Country.Race))
-						return;
+					foreach (var voice in o.Subject.TraitsImplementing<IVoiced>())
+						if (voice.PlayVoice(v.VoicePhraseForOrder(o.Subject, o),
+							o.Subject, o.Subject.Owner.Country.Race))
+							return;
 			}
 		}
 

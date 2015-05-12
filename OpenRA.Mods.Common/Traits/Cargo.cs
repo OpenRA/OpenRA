@@ -207,7 +207,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "Unload" || IsEmpty(self))
 				return null;
 
-			return self.HasVoice("Unload") ? "Unload" : "Move";
+			return self.TraitsImplementing<IVoiced>().FirstOrDefault().HasVoice(self, "Unload") ? "Unload" : "Move";
 		}
 
 		public bool MoveDisabled(Actor self) { return reserves.Any(); }

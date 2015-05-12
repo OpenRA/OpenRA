@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -28,6 +29,54 @@ namespace OpenRA.Mods.Common.Traits
 		public Voiced(Actor self, VoicedInfo info)
 		{
 			Info = info;
+		}
+
+		public bool PlayVoice(string phrase, Actor voicedActor, string variant)
+		{
+			if (voicedActor == null || phrase == null)
+				return false;
+
+			var mi = voicedActor.TraitOrDefault<IVoiced>();
+			if (mi == null || mi.VoiceSet == null)
+				return false;
+
+			var type = mi.VoiceSet.ToLowerInvariant();
+			return Sound.PlayPredefined(voicedActor.World.Map.Rules, null, voicedActor, type, phrase, variant, true, WPos.Zero, 1f, true);
+		}
+
+		public bool PlayVoiceLocal(string phrase, Actor voicedActor, string variant, WPos pos, float volume)
+		{
+			if (voicedActor == null || phrase == null)
+				return false;
+
+			var mi = voicedActor.TraitOrDefault<IVoiced>();
+			if (mi == null || mi.VoiceSet == null)
+				return false;
+
+			var type = mi.VoiceSet.ToLowerInvariant();
+			return Sound.PlayPredefined(voicedActor.World.Map.Rules, null, voicedActor, type, phrase, variant, false, pos, volume, true);
+		}
+
+		public bool HasVoices(Actor actor)
+		{
+			var voice = actor.TraitsImplementing<IVoiced>().FirstOrDefault();
+			return voice != null && voice.VoiceSet != null;
+		}
+
+		public bool HasVoice(Actor actor, string voice)
+		{
+			var v = GetVoices(actor);
+			return v != null && v.Voices.ContainsKey(voice);
+		}
+
+		public SoundInfo GetVoices(Actor actor)
+		{
+			var voice = actor.TraitsImplementing<IVoiced>().FirstOrDefault();
+			if (voice == null)
+				return null;
+
+			var v = voice.VoiceSet;
+			return (v == null) ? null : actor.World.Map.Rules.Voices[v.ToLowerInvariant()];
 		}
 
 		public string VoiceSet { get { return Info.VoiceSet; } }
