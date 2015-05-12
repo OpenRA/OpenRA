@@ -1093,7 +1093,7 @@ function findReplace:Hide(restorepos)
 
   if self:IsPreview(self.reseditor) then
     self.reseditor:SetFocus()
-  elseif self.backfocus then
+  elseif self.backfocus and ide:IsValidCtrl(self.backfocus.editor) then
     local editor = self.backfocus.editor
     -- restore original position for Shift-Esc or failed search
     if restorepos or self.foundString == false then
