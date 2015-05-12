@@ -524,14 +524,14 @@ function findReplace:RunInFiles(replace)
     end
     reseditor:SetWrapMode(wxstc.wxSTC_WRAP_NONE)
     reseditor:SetIndentationGuides(false)
+    if tonumber(ide.config.search.zoom) then
+      reseditor:SetZoom(tonumber(ide.config.search.zoom))
+    end
     for m = 0, ide.MAXMARGIN do -- hide all margins except folding
       if reseditor:GetMarginWidth(m) > 0
       and reseditor:GetMarginMask(m) ~= wxstc.wxSTC_MASK_FOLDERS then
         reseditor:SetMarginWidth(m, 0)
       end
-    end
-    if tonumber(ide.config.search.zoom) then
-      reseditor:SetZoom(tonumber(ide.config.search.zoom))
     end
     reseditor:MarkerDefine(ide:GetMarker("searchmatchfile"))
     reseditor:Connect(wx.wxEVT_LEFT_DCLICK, function(event)
