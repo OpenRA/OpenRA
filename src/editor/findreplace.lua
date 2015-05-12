@@ -586,6 +586,7 @@ function findReplace:RunInFiles(replace)
     end
   end
   reseditor.replace = replace -- keep track of the current status
+  reseditor:ShowLines(0, reseditor:GetLineCount()-1)
   reseditor:SetReadOnly(false)
   reseditor:SetText('')
   do -- update the preview name
