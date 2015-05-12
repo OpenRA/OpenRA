@@ -1066,6 +1066,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (rrur != null)
 							rrur.Key = "-WithFacingSpriteBody";
 					}
+
+					// For RenderUnitFlying
+					var ruf = node.Value.Nodes.Where(x => x.Key == "RenderUnitFlying");
+					if (ruf.Any())
+					{
+						ruf.Do(x => x.Key = "RenderSprites");
+						node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+						node.Value.Nodes.Add(new MiniYamlNode("WithFacingSpriteBody", ""));
+						node.Value.Nodes.Add(new MiniYamlNode("WithMoveAnimation", "", new List<MiniYamlNode>
+						{
+							new MiniYamlNode("MoveSequence", "move")
+						}));
+
+						var rruf = node.Value.Nodes.FirstOrDefault(n => n.Key == "-RenderUnitFlying");
+						if (rruf != null)
+							rruf.Key = "-WithFacingSpriteBody";
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

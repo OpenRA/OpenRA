@@ -129,13 +129,16 @@ ORCA:
 		SelfReloads: true
 		ReloadCount: 2
 		SelfReloadTicks: 100
-	RenderUnitFlying:
+	RenderSprites:
 	LeavesHusk:
 		HuskActor: ORCA.Husk
 	AutoTarget:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
+	AutoSelectionSize:
+	WithMoveAnimation:
+		MoveSequence: move
 
 C17:
 	ParaDrop:

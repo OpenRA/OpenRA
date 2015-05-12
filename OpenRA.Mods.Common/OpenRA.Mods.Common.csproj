@@ -388,6 +388,7 @@
     <Compile Include="Traits\Render\WithBuildingExplosion.cs" />
     <Compile Include="Traits\Render\WithActiveAnimation.cs" />
     <Compile Include="Traits\Render\WithAttackAnimation.cs" />
+    <Compile Include="Traits\Render\WithMoveAnimation.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Traits\Render\WithMakeAnimation.cs" />
     <Compile Include="Traits\Render\WithChargeOverlay.cs" />
