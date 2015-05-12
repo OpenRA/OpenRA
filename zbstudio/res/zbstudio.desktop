@@ -9,5 +9,5 @@ Exec=zbstudio %F
 Icon=zbstudio
 Terminal=false
 Categories=GTK;Development;IDE;
-MimeType=text/plain;application/lua;
+MimeType=application/lua;application/x-lua;text/x-lua;
 StartupNotify=true
