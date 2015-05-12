@@ -487,6 +487,9 @@ function findReplace:RunInFiles(replace)
   -- open new tab if the current one is not valid
   -- or if multiple tabs are requested, but when searching for different text
   if not valid or (flags.MultiResults and reseditor.searchpreview ~= findText) then
+    -- enable folds in the preview even if disabled in the editor
+    local fold = ide.config.editor.fold
+    ide.config.editor.fold = true
     if showaseditor then
       reseditor = NewFile(resultsText)
       -- set file path to avoid treating results as unsaved document
@@ -576,6 +579,7 @@ function findReplace:RunInFiles(replace)
         event:Skip()
       end)
 
+    ide.config.editor.fold = fold
     self.reseditor = reseditor
   else
     if showaseditor then
