@@ -104,8 +104,8 @@ namespace OpenRA.Mods.Common.Graphics
 
 			public void Render(WorldRenderer wr)
 			{
-				// TODO: This is a temporary workaround until we have a proper ramp-aware height calculation
-				var groundPos = wr.World.Map.CenterOfCell(wr.World.Map.CellContaining(voxel.pos));
+				var terrainHeight = wr.World.Map.TerrainHeightAt(voxel.pos);
+				var groundPos = voxel.pos - new WVec(0, 0, voxel.pos.Z - terrainHeight.Range);
 
 				var ts = Game.ModData.Manifest.TileSize;
 				var groundZ = ts.Height * (groundPos.Z - voxel.pos.Z) / 1024f;

@@ -34,7 +34,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (requireSpace && !helicopter.CanLand(self.Location))
 				return this;
 
-			if (HeliFly.AdjustAltitude(self, helicopter, landAltitude))
+			var terrainHeight = self.World.Map.TerrainHeightAt(self.CenterPosition);
+			if (HeliFly.AdjustAltitude(self, helicopter, terrainHeight + landAltitude))
 				return this;
 
 			return NextActivity;

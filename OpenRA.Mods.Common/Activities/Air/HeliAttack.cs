@@ -48,7 +48,8 @@ namespace OpenRA.Mods.Common.Activities
 			var desiredFacing = Util.GetFacing(dist, helicopter.Facing);
 			helicopter.Facing = Util.TickFacing(helicopter.Facing, desiredFacing, helicopter.ROT);
 
-			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
+			var terrainHeight = self.World.Map.TerrainHeightAt(self.CenterPosition);
+			if (HeliFly.AdjustAltitude(self, helicopter, terrainHeight + helicopter.Info.CruiseAltitude))
 				return this;
 
 			// Fly towards the target

@@ -56,7 +56,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var cp = self.CenterPosition;
-			if ((cp.Z > 0 && !info.EjectInAir) || (cp.Z == 0 && !info.EjectOnGround))
+			var inAir = !self.IsAtGroundLevel();
+
+			if ((inAir && !info.EjectInAir) || (!inAir && !info.EjectOnGround))
 				return;
 
 			var pilot = self.World.CreateActor(false, info.PilotActor.ToLowerInvariant(),
@@ -64,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (info.AllowUnsuitableCell || IsSuitableCell(self, pilot))
 			{
-				if (cp.Z > 0)
+				if (inAir)
 				{
 					self.World.AddFrameEndTask(w => w.Add(new Parachute(pilot, cp)));
 					Sound.Play(info.ChuteSound, cp);

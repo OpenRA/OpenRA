@@ -71,10 +71,12 @@ namespace OpenRA.Mods.Common.Activities
 			var desiredFacing = Util.GetFacing(d, plane.Facing);
 
 			// Don't turn until we've reached the cruise altitude
-			if (plane.CenterPosition.Z < plane.Info.CruiseAltitude.Range)
+			var cp = self.CenterPosition;
+			var destAltitude = self.World.Map.TerrainHeightAt(cp) + plane.Info.CruiseAltitude;
+			if (cp.Z < destAltitude.Range)
 				desiredFacing = plane.Facing;
 
-			FlyToward(self, plane, desiredFacing, plane.Info.CruiseAltitude);
+			FlyToward(self, plane, desiredFacing, destAltitude);
 
 			return this;
 		}

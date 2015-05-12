@@ -28,7 +28,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled || !self.World.Map.Contains(self.Location))
 				return NextActivity;
 
-			Fly.FlyToward(self, plane, plane.Facing, plane.Info.CruiseAltitude);
+			var destAltitude = self.World.Map.TerrainHeightAt(self.CenterPosition) + plane.Info.CruiseAltitude;
+			Fly.FlyToward(self, plane, plane.Facing, destAltitude);
 			return this;
 		}
 	}

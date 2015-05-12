@@ -658,6 +658,12 @@ namespace OpenRA
 			return CenterOfCell(cell);
 		}
 
+		public WRange TerrainHeightAt(WPos pos)
+		{
+			// TODO: Account for ramps.
+			return new WRange(MapHeight.Value[CellContaining(pos)] * 512);
+		}
+
 		public CPos CellContaining(WPos pos)
 		{
 			if (TileShape == TileShape.Rectangle)

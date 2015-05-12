@@ -36,7 +36,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (target.IsInRange(self.CenterPosition, maxRange) && !target.IsInRange(self.CenterPosition, minRange))
 			{
-				Fly.FlyToward(self, plane, plane.Facing, plane.Info.CruiseAltitude);
+				var destAltitude = self.World.Map.TerrainHeightAt(self.CenterPosition) + plane.Info.CruiseAltitude;
+				Fly.FlyToward(self, plane, plane.Facing, destAltitude);
 				return this;
 			}
 
