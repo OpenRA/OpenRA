@@ -1159,6 +1159,10 @@ local package = ide:AddPackage('core.findreplace', {
                 lnum = tonumber(lnum)
                 if lmark == ':' then -- if the change line, then apply the change
                   local pos = oveditor:PositionFromLine(lnum-1)
+                  if pos == NOTFOUND then
+                    mismatch = lnum
+                    break
+                  end
                   oveditor:SetTargetStart(pos)
                   oveditor:SetTargetEnd(pos+#getRawLine(oveditor, lnum-1))
                   oveditor:ReplaceTarget(ltext)

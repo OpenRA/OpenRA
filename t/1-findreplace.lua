@@ -76,7 +76,20 @@ findReplace:Replace(true, editor)
 ok(editor:GetText():find("923") ~= nil, "Replace in preview replaces matched text.")
 ok(editor:GetText():find("^1:") ~= nil, "Replace in preview doesn't replace line numbers.")
 
+editor:SetText("")
+editor:AppendText([[
+t/1-findreplace.lua
+99999: some text
+]])
+editor.searchpreview = true
+editor.replace = true
+local FILE_MARKER = ide:GetMarker("searchmatchfile")
+editor:MarkerAdd(0, FILE_MARKER)
+ide:GetDocument(editor):Save()
+is(editor:GetText():match("Updated %d"), "Updated 0", "Replace fails on invalid line numbers.")
+
 -- cleanup
 findReplace.panel:Hide()
 while editor:CanUndo() do editor:Undo() end
+ide:GetDocument(editor):SetModified(false)
 ClosePage()
