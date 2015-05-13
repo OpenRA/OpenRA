@@ -47,6 +47,9 @@ namespace OpenRA.Mods.Common.Lint
 
 				if (multiPlayers > spawnCount)
 					emitError("The map allows {0} possible players, but defines only {1} spawn points".F(multiPlayers, spawnCount));
+
+				if (map.SpawnPoints.Value.Distinct().Count() != spawnCount)
+					emitError("Duplicate spawn point locations detected.");
 			}
 		}
 	}
