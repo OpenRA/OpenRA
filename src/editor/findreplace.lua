@@ -251,10 +251,9 @@ function findReplace:FindAll(inFileRegister)
   return found
 end
 
--- returns true if replacements were done
-
 local indicator = {SEARCHMATCH = 5}
 
+-- returns true if replacements were done
 function findReplace:Replace(fReplaceAll, resultsEditor)
   if not self.panel then self:createPanel() end
 
@@ -284,15 +283,22 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
         editor:BeginUndoAction()
         while posFind ~= NOTFOUND do
           local length = editor:GetLength()
-          -- if no replace-in-files or the match doesn't start with %d:
-          if not resultsEditor
-          or editor:GetLine(editor:LineFromPosition(posFind)):find("^%s*%d+:") then
+          -- if replace-in-files (resultsEditor) is being done,
+          -- then check that the match starts with %d+:
+          local match = true
+          if resultsEditor then
+            local line = editor:LineFromPosition(posFind)
+            local _, _, prefix = editor:GetLine(line):find("^(%s*%d+: )")
+            match = prefix and posFind >= editor:PositionFromLine(line)+#prefix
+          end
+          if match then
             local replaced = self:GetFlags().RegularExpr
               and editor:ReplaceTargetRE(replaceText)
               or editor:ReplaceTarget(replaceText)
 
             -- mark replaced text
             if resultsEditor then editor:IndicatorFillRange(posFind, replaced) end
+            occurrences = occurrences + 1
           end
 
           editor:SetTargetStart(editor:GetTargetEnd())
@@ -301,7 +307,6 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
           endTarget = endTarget + (editor:GetLength() - length)
           editor:SetTargetEnd(endTarget)
           posFind = editor:SearchInTarget(findText)
-          occurrences = occurrences + 1
         end
         editor:EndUndoAction()
         replaced = true

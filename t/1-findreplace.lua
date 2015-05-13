@@ -68,6 +68,14 @@ ok(not editor:GetText():find(search), "Replace All with Wrap Around replaces eve
 local expected = replace..replace.."\n"..replace..replace.."\n"..replace..replace
 is(editor:GetText(), expected, "Replace All without Wrap Around result is as expected.")
 
+-- check that the replacement only happens in the matched text in preview
+editor:SetText("1: 123")
+findReplace:SetFind("1")
+findReplace:SetReplace("9")
+findReplace:Replace(true, editor)
+ok(editor:GetText():find("923") ~= nil, "Replace in preview replaces matched text.")
+ok(editor:GetText():find("^1:") ~= nil, "Replace in preview doesn't replace line numbers.")
+
 -- cleanup
 findReplace.panel:Hide()
 while editor:CanUndo() do editor:Undo() end
