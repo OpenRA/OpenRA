@@ -1191,7 +1191,6 @@ function CreateEditor(bare)
           event:Skip()
         elseif ide.findReplace:IsShown() then
           ide.findReplace:Hide()
-          editor:SetFocus()
         elseif ide:GetMainFrame():IsFullScreen() then
           ShowFullScreen(false)
         end

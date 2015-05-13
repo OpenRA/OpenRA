@@ -1096,7 +1096,10 @@ function findReplace:Hide(restorepos)
   mgr:GetPane(searchpanel):Hide()
   mgr:Update()
 
-  if self:IsPreview(self.reseditor) then
+  local ctrl = self.panel:FindFocus()
+  if not ctrl or ctrl:GetParent():GetId() ~= self.panel:GetId() then
+    -- if focus outside of the search panel, do nothing
+  elseif self:IsPreview(self.reseditor) then -- there is a preview, go there
     self.reseditor:SetFocus()
   elseif self.backfocus and ide:IsValidCtrl(self.backfocus.editor) then
     local editor = self.backfocus.editor
