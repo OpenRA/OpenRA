@@ -162,13 +162,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
                 var newsButton = newsBG.GetOrNull<DropDownButtonWidget>("NEWS_BUTTON");
 
-				// Only query for new stories once per day
-				var cacheValid = currentNews != null && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
-				if (!cacheValid)
-					new Download(Game.Settings.Game.NewsUrl, cacheFile, e => { },
-                        (e, c) => NewsDownloadComplete(e, c, cacheFile, currentNews, () => newsButton.AttachPanel(newsPanel)));
+				if (newsButton != null)
+				{
+					// Only query for new stories once per day
+					var cacheValid = currentNews != null && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
+					if (!cacheValid)
+						new Download(Game.Settings.Game.NewsUrl, cacheFile, e => { },
+							(e, c) => NewsDownloadComplete(e, c, cacheFile, currentNews, () => newsButton.AttachPanel(newsPanel)));
 
-                newsButton.OnClick = () => newsButton.AttachPanel(newsPanel);
+					newsButton.OnClick = () => newsButton.AttachPanel(newsPanel);
+				}
 			}
 
 			Game.OnRemoteDirectConnect += (host, port) =>
