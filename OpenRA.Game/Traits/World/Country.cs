@@ -21,7 +21,7 @@ namespace OpenRA.Traits
 		[Desc("Pick a random race as the player's race out of this list.")]
 		public readonly string[] RandomRaceMembers = { };
 
-		[Desc("The side that the country belongs to. For example, England belongs to the 'Allies' side.")]
+		[Desc("The side that the country belongs to. For example, Britain belongs to the 'Allies' side.")]
 		public readonly string Side = null;
 
 		[Translate]

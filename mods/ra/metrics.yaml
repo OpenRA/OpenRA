@@ -26,7 +26,7 @@ Metrics:
 	SpawnContrastColor: 0,0,0
 	SpawnLabelOffset: 0,1
 	RaceSuffix-allies: allies
-	RaceSuffix-england: allies
+	RaceSuffix-britain: allies
 	RaceSuffix-france: allies
 	RaceSuffix-germany: allies
 	RaceSuffix-soviet: soviet

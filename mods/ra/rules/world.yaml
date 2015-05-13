@@ -30,10 +30,10 @@ World:
 		Side: Allies
 		Selectable: False
 	Country@1:
-		Name: England
-		Race: england
+		Name: Britain
+		Race: britain
 		Side: Allies
-		Description: England: Espionage\nSpecial Unit: British Spy\nSpecial Unit: Phase Transport
+		Description: Britain: Espionage\nSpecial Unit: British Spy\nSpecial Unit: Phase Transport
 	Country@2:
 		Name: France
 		Race: france
@@ -68,7 +68,7 @@ World:
 	Country@randomallies:
 		Name: Allies
 		Race: RandomAllies
-		RandomRaceMembers: england, france, germany
+		RandomRaceMembers: britain, france, germany
 		Side: Random
 		Description: A random Allied country.
 	Country@randomsoviet:
@@ -118,12 +118,12 @@ World:
 	MPStartUnits@mcvonly:
 		Class: none
 		ClassName: MCV Only
-		Races: allies, england, france, germany, soviet, russia, ukraine
+		Races: allies, britain, france, germany, soviet, russia, ukraine
 		BaseActor: mcv
 	MPStartUnits@lightallies:
 		Class: light
 		ClassName: Light Support
-		Races: allies, england, france, germany
+		Races: allies, britain, france, germany
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk
 		InnerSupportRadius: 3
@@ -139,7 +139,7 @@ World:
 	MPStartUnits@heavyallies:
 		Class: heavy
 		ClassName: Heavy Support
-		Races: allies, england, france, germany
+		Races: allies, britain, france, germany
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk,2tnk,2tnk,2tnk
 		InnerSupportRadius: 3

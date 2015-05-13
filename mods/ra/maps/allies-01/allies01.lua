@@ -38,7 +38,7 @@ LabGuardsKilled = function()
 	CreateEinstein()
 
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
-		Actor.Create(FlareType, true, { Owner = england, Location = ExtractionFlarePoint.Location })
+		Actor.Create(FlareType, true, { Owner = britain, Location = ExtractionFlarePoint.Location })
 		Media.PlaySpeechNotification(player, "SignalFlareNorth")
 		SendExtractionHelicopter()
 	end)
@@ -82,7 +82,7 @@ end
 SendCruisers = function()
 	local i = 1
 	Utils.Do(CruisersReinforcements, function(cruiser)
-		local ca = Actor.Create(cruiser, true, { Owner = england, Location = SouthReinforcementsPoint.Location + CVec.New(2 * i, 0) })
+		local ca = Actor.Create(cruiser, true, { Owner = britain, Location = SouthReinforcementsPoint.Location + CVec.New(2 * i, 0) })
 		ca.Move(Map.NamedActor("CruiserPoint" .. i).Location)
 		i = i + 1
 	end)
@@ -162,7 +162,7 @@ end
 
 WorldLoaded = function()
 	player = Player.GetPlayer("Greece")
-	england = Player.GetPlayer("England")
+	britain = Player.GetPlayer("Britain")
 	ussr = Player.GetPlayer("USSR")
 
 	Trigger.OnObjectiveAdded(player, function(p, id)

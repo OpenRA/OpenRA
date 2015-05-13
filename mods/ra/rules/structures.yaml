@@ -214,14 +214,14 @@ SYRD:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@allies:
-		Race: allies, england, france, germany
+		Race: allies, britain, france, germany
 		Prerequisite: ships.allies
 	ProvidesPrerequisite@alliesvanilla:
 		Race: allies
 		Prerequisite: ships.alliesvanilla
-	ProvidesPrerequisite@england:
-		Race: england
-		Prerequisite: ships.england
+	ProvidesPrerequisite@britain:
+		Race: britain
+		Prerequisite: ships.britain
 	ProvidesPrerequisite@france:
 		Race: france
 		Prerequisite: ships.france
@@ -235,8 +235,8 @@ SYRD:
 		RequiresPrerequisites: structures.alliesvanilla
 		Prerequisite: ships.alliesvanilla
 	ProvidesPrerequisite@englishstructure:
-		RequiresPrerequisites: structures.england
-		Prerequisite: ships.england
+		RequiresPrerequisites: structures.britain
+		Prerequisite: ships.britain
 	ProvidesPrerequisite@frenchstructure:
 		RequiresPrerequisites: structures.france
 		Prerequisite: ships.france
@@ -777,14 +777,14 @@ WEAP:
 	Production:
 		Produces: Vehicle
 	ProvidesPrerequisite@allies:
-		Race: allies, england, france, germany
+		Race: allies, britain, france, germany
 		Prerequisite: vehicles.allies
 	ProvidesPrerequisite@alliesvanilla:
 		Race: allies
 		Prerequisite: vehicles.alliesvanilla
-	ProvidesPrerequisite@england:
-		Race: england
-		Prerequisite: vehicles.england
+	ProvidesPrerequisite@britain:
+		Race: britain
+		Prerequisite: vehicles.britain
 	ProvidesPrerequisite@france:
 		Race: france
 		Prerequisite: vehicles.france
@@ -810,8 +810,8 @@ WEAP:
 		RequiresPrerequisites: structures.alliesvanilla
 		Prerequisite: vehicles.alliesvanilla
 	ProvidesPrerequisite@englishstructure:
-		RequiresPrerequisites: structures.england
-		Prerequisite: vehicles.england
+		RequiresPrerequisites: structures.britain
+		Prerequisite: vehicles.britain
 	ProvidesPrerequisite@frenchstructure:
 		RequiresPrerequisites: structures.france
 		Prerequisite: vehicles.france
@@ -846,14 +846,14 @@ FACT:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 	ProvidesPrerequisite@allies:
-		Race: allies, england, france, germany
+		Race: allies, britain, france, germany
 		Prerequisite: structures.allies
 	ProvidesPrerequisite@alliesvanilla:
 		Race: allies
 		Prerequisite: structures.alliesvanilla
-	ProvidesPrerequisite@england:
-		Race: england
-		Prerequisite: structures.england
+	ProvidesPrerequisite@britain:
+		Race: britain
+		Prerequisite: structures.britain
 	ProvidesPrerequisite@france:
 		Race: france
 		Prerequisite: structures.france
@@ -1026,14 +1026,14 @@ HPAD:
 	Power:
 		Amount: -10
 	ProvidesPrerequisite@allies:
-		Race: allies, england, france, germany
+		Race: allies, britain, france, germany
 		Prerequisite: aircraft.allies
 	ProvidesPrerequisite@alliesvanilla:
 		Race: allies
 		Prerequisite: aircraft.alliesvanilla
-	ProvidesPrerequisite@england:
-		Race: england
-		Prerequisite: aircraft.england
+	ProvidesPrerequisite@britain:
+		Race: britain
+		Prerequisite: aircraft.britain
 	ProvidesPrerequisite@france:
 		Race: france
 		Prerequisite: aircraft.france
@@ -1047,8 +1047,8 @@ HPAD:
 		RequiresPrerequisites: structures.alliesvanilla
 		Prerequisite: aircraft.alliesvanilla
 	ProvidesPrerequisite@englishstructure:
-		RequiresPrerequisites: structures.england
-		Prerequisite: aircraft.england
+		RequiresPrerequisites: structures.britain
+		Prerequisite: aircraft.britain
 	ProvidesPrerequisite@frenchstructure:
 		RequiresPrerequisites: structures.france
 		Prerequisite: aircraft.france
@@ -1395,14 +1395,14 @@ TENT:
 	ProvidesPrerequisite@barracks:
 		Prerequisite: barracks
 	ProvidesPrerequisite@allies:
-		Race: allies, england, france, germany
+		Race: allies, britain, france, germany
 		Prerequisite: infantry.allies
 	ProvidesPrerequisite@alliesvanilla:
 		Race: allies
 		Prerequisite: infantry.alliesvanilla
-	ProvidesPrerequisite@england:
-		Race: england
-		Prerequisite: infantry.england
+	ProvidesPrerequisite@britain:
+		Race: britain
+		Prerequisite: infantry.britain
 	ProvidesPrerequisite@france:
 		Race: france
 		Prerequisite: infantry.france
@@ -1416,8 +1416,8 @@ TENT:
 		RequiresPrerequisites: structures.alliesvanilla
 		Prerequisite: infantry.alliesvanilla
 	ProvidesPrerequisite@englishstructure:
-		RequiresPrerequisites: structures.england
-		Prerequisite: infantry.england
+		RequiresPrerequisites: structures.britain
+		Prerequisite: infantry.britain
 	ProvidesPrerequisite@frenchstructure:
 		RequiresPrerequisites: structures.france
 		Prerequisite: infantry.france

@@ -39,13 +39,13 @@ Players:
 		Name: USSR
 		Race: soviet
 		ColorRamp: 3,255,127
-		Enemies: Greece, England
+		Enemies: Greece, Britain
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
 		Race: allies
-		Enemies: USSR, Greece, England
+		Enemies: USSR, Greece, Britain
 	PlayerReference@Greece:
 		Name: Greece
 		Playable: True
@@ -57,10 +57,10 @@ Players:
 		ColorRamp: 161,134,200
 		LockSpawn: True
 		LockTeam: True
-		Allies: England
+		Allies: Britain
 		Enemies: Neutral, USSR
-	PlayerReference@England:
-		Name: England
+	PlayerReference@Britain:
+		Name: Britain
 		Race: allies
 		ColorRamp: 76,196,190
 		Allies: Greece
@@ -417,11 +417,11 @@ Actors:
 		SubCell: 4
 	Civilian1: c8
 		Location: 74,50
-		Owner: England
+		Owner: Britain
 		SubCell: 0
 	Civilian2: c7
 		Location: 76,48
-		Owner: England
+		Owner: Britain
 		SubCell: 3
 	EinsteinSpawnPoint: waypoint
 		Location: 62,61
