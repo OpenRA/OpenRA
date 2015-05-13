@@ -286,7 +286,7 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
           local length = editor:GetLength()
           -- if no replace-in-files or the match doesn't start with %d:
           if not resultsEditor
-          or editor:GetLine(editor:LineFromPosition(posFind)):find("^%s*%d:") then
+          or editor:GetLine(editor:LineFromPosition(posFind)):find("^%s*%d+:") then
             local replaced = self:GetFlags().RegularExpr
               and editor:ReplaceTargetRE(replaceText)
               or editor:ReplaceTarget(replaceText)
