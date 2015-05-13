@@ -1092,10 +1092,6 @@ function findReplace:IsShown()
 end
 
 function findReplace:Hide(restorepos)
-  local mgr = ide:GetUIManager()
-  mgr:GetPane(searchpanel):Hide()
-  mgr:Update()
-
   local ctrl = self.panel:FindFocus()
   if not ctrl or ctrl:GetParent():GetId() ~= self.panel:GetId() then
     -- if focus outside of the search panel, do nothing
@@ -1109,6 +1105,10 @@ function findReplace:Hide(restorepos)
     end
     editor:SetFocus()
   end
+
+  local mgr = ide:GetUIManager()
+  mgr:GetPane(searchpanel):Hide()
+  mgr:Update()
 end
 
 local package = ide:AddPackage('core.findreplace', {
