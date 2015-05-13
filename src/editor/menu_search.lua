@@ -142,13 +142,13 @@ local function navigateTo(default, selected)
       local ed = ide:GetEditor()
       if ed and origline then
         ed:MarkerDeleteAll(marker)
-        ed:EnsureVisibleEnforcePolicy(origline-1)
+        -- only restore original line if Escape was used (enter == false)
+        if enter == false then ed:EnsureVisibleEnforcePolicy(origline-1) end
       end
 
       local pindex = preview and nb:GetPageIndex(preview)
       if enter then
         local fline, sline, tabindex = unpack(t or {})
-        local ed = ide:GetEditor()
 
         -- jump to symbol; tabindex has the position of the symbol
         if text and text:find(special.SYMBOL) and tabindex then
@@ -193,6 +193,8 @@ local function navigateTo(default, selected)
             if pindex then ClosePage(pindex) end
           end
         end
+      elseif enter == nil then -- changed focus
+        -- do nothing; keep everything as is
       else
         -- close preview
         if pindex then ClosePage(pindex) end

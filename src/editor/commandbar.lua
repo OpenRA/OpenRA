@@ -85,7 +85,7 @@ function CommandBarShow(params)
   -- needed because KILL_FOCUS handler can be called after closing window
   local function onExit(index)
     onExit = function() end
-    onDone(index and lines[index], index ~= nil, search:GetValue())
+    onDone(index and lines[index], index, search:GetValue())
     frame:Close()
   end
 
@@ -202,7 +202,7 @@ function CommandBarShow(params)
         if linenow <= 0 then linenow = 1 end
       end
     elseif keycode == wx.WXK_ESCAPE then
-      onExit()
+      onExit(false)
       return
     else
       event:Skip()
