@@ -90,12 +90,12 @@ CRATE:
 	GiveUnitCrateAction@jeep:
 		SelectionShares: 7
 		Units: jeep
-		ValidRaces: allies, england, france, germany
+		ValidRaces: allies, britain, france, germany
 		Prerequisites: techlevel.low
 	GiveUnitCrateAction@arty:
 		SelectionShares: 6
 		Units: arty
-		ValidRaces: allies, england, france, germany
+		ValidRaces: allies, britain, france, germany
 		Prerequisites: techlevel.medium, dome
 	GiveUnitCrateAction@v2rl:
 		SelectionShares: 6
@@ -105,12 +105,12 @@ CRATE:
 	GiveUnitCrateAction@1tnk:
 		SelectionShares: 5
 		Units: 1tnk
-		ValidRaces: allies, england, france, germany
+		ValidRaces: allies, britain, france, germany
 		Prerequisites: techlevel.low
 	GiveUnitCrateAction@2tnk:
 		SelectionShares: 4
 		Units: 2tnk
-		ValidRaces: allies, england, france, germany
+		ValidRaces: allies, britain, france, germany
 		Prerequisites: techlevel.medium, fix
 	GiveUnitCrateAction@3tnk:
 		SelectionShares: 4
@@ -125,11 +125,11 @@ CRATE:
 	GiveUnitCrateAction@squadlight:
 		SelectionShares: 7
 		Units: e1,e1,e1,e3,e3
-		ValidRaces: allies, england, france, germany, soviet, russia, ukraine
+		ValidRaces: allies, britain, france, germany, soviet, russia, ukraine
 	GiveUnitCrateAction@squadheavyallies:
 		SelectionShares: 7
 		Units: e1,e1,e1,e1,e3,e3,e3,e6,medi
-		ValidRaces: allies, england, france, germany
+		ValidRaces: allies, britain, france, germany
 		TimeDelay: 4500
 	GiveUnitCrateAction@squadheavysoviet:
 		SelectionShares: 7

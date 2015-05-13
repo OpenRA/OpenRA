@@ -1,7 +1,7 @@
 GenericVoice:
 	Variants:
 		allies: .v01,.v03
-		england: .v01,.v03
+		britain: .v01,.v03
 		france: .v01,.v03
 		germany: .v01,.v03
 		soviet: .r01,.r03
@@ -18,7 +18,7 @@ GenericVoice:
 VehicleVoice:
 	Variants:
 		allies: .v00,.v02
-		england: .v00,.v02
+		britain: .v00,.v02
 		france: .v00,.v02
 		germany: .v00,.v02
 		soviet: .r00,.r02
