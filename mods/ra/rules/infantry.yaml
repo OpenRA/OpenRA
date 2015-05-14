@@ -22,6 +22,8 @@ DOG:
 	Armament:
 		Weapon: DogJaw
 	AttackLeap:
+	TargetableUnit:
+		TargetTypes: Ground, Infantry
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 	IgnoresDisguise:
@@ -620,6 +622,8 @@ Ant:
 	AttackFrontal:
 	Armament:
 		Weapon: mandible
+	TargetableUnit:
+		TargetTypes: Ground, Infantry
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false
 
