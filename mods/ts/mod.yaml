@@ -197,6 +197,7 @@ ContentInstaller:
 	PackageToExtractFromCD: INSTALL/TIBSUN.MIX:CRC32
 	ExtractFilesFromCD: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, tem.mix, temperat.mix
 	ShippedSoundtracks: 2
+	MusicPackageMirrorList: http://www.openra.net/packages/ts-music-mirrors.txt
 
 ServerTraits:
 	LobbyCommands
