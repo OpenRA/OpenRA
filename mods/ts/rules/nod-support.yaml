@@ -88,16 +88,24 @@ NAOBEL:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	RenderBuildingCharge:
-		ChargeAudio: obelpowr.aud
 	Armament:
 		Weapon: LaserFire
+<<<<<<< HEAD
 		LocalOffset: 200,0,725
 	AttackCharge:
 		ReloadTime: 5
+=======
+		LocalOffset: 1400,200,1250
+	AttackCharge:
+		ChargeAudio: obelpowr.aud
+		ReloadTime: 50
+>>>>>>> upstreamBleed
 		InitialChargeDelay: 50
+	WithChargeOverlay:
+		Sequence: active
+		Palette: player
+		IsPlayerPalette: true
 	AutoTarget:
-	-RenderBuilding:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	DetectCloaked:
@@ -255,7 +263,7 @@ NAMISL:
 	Tooltip:
 		Name: Nod Missile Silo
 		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.
-	ProvidesCustomPrerequisite:
+	ProvidesPrerequisite:
 		Prerequisite: tech
 	Building:
 		Footprint: xx xx

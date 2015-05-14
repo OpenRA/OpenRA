@@ -86,21 +86,6 @@ Player:
 				Attractiveness: -10
 				TargetMetric: None
 				CheckRadius: 10c0
-		SupportPowerDecision@armordrop:
-			OrderName: RussiaArmorDrop
-			MinimumAttractiveness: 5
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 10c0
-			Consideration@2:
-				Against: Enemy
-				Types: Vehicle, Tank, Infantry, Defense
-				Attractiveness: -10
-				TargetMetric: None
-				CheckRadius: 10c0
 		SupportPowerDecision@parabombs:
 			OrderName: UkraineParabombs
 			MinimumAttractiveness: 1
@@ -215,21 +200,6 @@ Player:
 				CheckRadius: 5c0
 		SupportPowerDecision@paratroopers:
 			OrderName: SovietParatroopers
-			MinimumAttractiveness: 5
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 10c0
-			Consideration@2:
-				Against: Enemy
-				Types: Vehicle, Tank, Infantry, Defense
-				Attractiveness: -10
-				TargetMetric: None
-				CheckRadius: 10c0
-		SupportPowerDecision@armordrop:
-			OrderName: RussiaArmorDrop
 			MinimumAttractiveness: 5
 			Consideration@1:
 				Against: Enemy
@@ -369,21 +339,6 @@ Player:
 				Attractiveness: -10
 				TargetMetric: None
 				CheckRadius: 10c0
-		SupportPowerDecision@armordrop:
-			OrderName: RussiaArmorDrop
-			MinimumAttractiveness: 5
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 10c0
-			Consideration@2:
-				Against: Enemy
-				Types: Vehicle, Tank, Infantry, Defense
-				Attractiveness: -10
-				TargetMetric: None
-				CheckRadius: 10c0
 		SupportPowerDecision@parabombs:
 			OrderName: UkraineParabombs
 			MinimumAttractiveness: 1
@@ -472,21 +427,6 @@ Player:
 				CheckRadius: 5c0
 		SupportPowerDecision@paratroopers:
 			OrderName: SovietParatroopers
-			MinimumAttractiveness: 5
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 10c0
-			Consideration@2:
-				Against: Enemy
-				Types: Vehicle, Tank, Infantry, Defense
-				Attractiveness: -10
-				TargetMetric: None
-				CheckRadius: 10c0
-		SupportPowerDecision@armordrop:
-			OrderName: RussiaArmorDrop
 			MinimumAttractiveness: 5
 			Consideration@1:
 				Against: Enemy

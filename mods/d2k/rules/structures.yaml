@@ -105,6 +105,7 @@ power:
 	Power:
 		Amount: 100
 	ScalePowerWithHealth:
+	ProvidesPrerequisite@buildingname:
 
 barracks:
 	Inherits: ^Building
@@ -141,16 +142,16 @@ barracks:
 		Produces: Infantry
 	PrimaryBuilding:
 	ProductionBar:
-	ProvidesCustomPrerequisite@atreides:
+	ProvidesPrerequisite@atreides:
 		Prerequisite: barracks.atreides
 		Race: atreides
-	ProvidesCustomPrerequisite@ordos:
+	ProvidesPrerequisite@ordos:
 		Prerequisite: barracks.ordos
 		Race: ordos
-	ProvidesCustomPrerequisite@harkonnen:
+	ProvidesPrerequisite@harkonnen:
 		Prerequisite: barracks.harkonnen
 		Race: harkonnen
-	ProvidesCustomPrerequisite@medics:
+	ProvidesPrerequisite@medics:
 		Prerequisite: barracks.medics
 		Race: atreides, ordos
 	Power:
@@ -160,6 +161,7 @@ barracks:
 		RaceImages:
 			atreides: barracks.atreides
 			ordos: barracks.ordos
+	ProvidesPrerequisite@buildingname:
 
 refinery:
 	Inherits: ^Building
@@ -211,6 +213,7 @@ refinery:
 		Amount: -30
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
+	ProvidesPrerequisite@buildingname:
 
 silo:
 	Inherits: ^Building
@@ -287,16 +290,16 @@ light:
 		Produces: Vehicle
 	PrimaryBuilding:
 	ProductionBar:
-	ProvidesCustomPrerequisite@atreides:
+	ProvidesPrerequisite@atreides:
 		Prerequisite: light.atreides
 		Race: atreides
-	ProvidesCustomPrerequisite@ordos:
+	ProvidesPrerequisite@ordos:
 		Prerequisite: light.ordos
 		Race: ordos
-	ProvidesCustomPrerequisite@harkonnen:
+	ProvidesPrerequisite@harkonnen:
 		Prerequisite: light.harkonnen
 		Race: harkonnen
-	ProvidesCustomPrerequisite@TRIKES:
+	ProvidesPrerequisite@TRIKES:
 		Prerequisite: light.regulartrikes
 		Race: atreides, harkonnen
 	WithProductionOverlay@WELDING:
@@ -338,13 +341,13 @@ heavy:
 		Produces: Armor
 	PrimaryBuilding:
 	ProductionBar:
-	ProvidesCustomPrerequisite@atreides:
+	ProvidesPrerequisite@atreides:
 		Prerequisite: heavy.atreides
 		Race: atreides
-	ProvidesCustomPrerequisite@ordos:
+	ProvidesPrerequisite@ordos:
 		Prerequisite: heavy.ordos
 		Race: ordos
-	ProvidesCustomPrerequisite@harkonnen:
+	ProvidesPrerequisite@harkonnen:
 		Prerequisite: heavy.harkonnen
 		Race: harkonnen
 	RenderBuilding:
@@ -359,6 +362,7 @@ heavy:
 		Sequence: idle-top
 	Power:
 		Amount: -30
+	ProvidesPrerequisite@buildingname:
 
 radar:
 	Inherits: ^Building
@@ -400,6 +404,7 @@ radar:
 		PauseOnLowPower: yes
 	Power:
 		Amount: -40
+	ProvidesPrerequisite@buildingname:
 
 starport:
 	Inherits: ^Building
@@ -447,17 +452,18 @@ starport:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
-	ProvidesCustomPrerequisite@atreides:
+	ProvidesPrerequisite@atreides:
 		Prerequisite: starport.atreides
 		Race: atreides
-	ProvidesCustomPrerequisite@ordos:
+	ProvidesPrerequisite@ordos:
 		Prerequisite: starport.ordos
 		Race: ordos
-	ProvidesCustomPrerequisite@harkonnen:
+	ProvidesPrerequisite@harkonnen:
 		Prerequisite: starport.harkonnen
 		Race: harkonnen
 	Power:
 		Amount: -40
+	ProvidesPrerequisite@buildingname:
 
 wall:
 	Buildable:
@@ -653,6 +659,7 @@ repair:
 		Palette: repairlights
 	Power:
 		Amount: -10
+	ProvidesPrerequisite@buildingname:
 
 hightech:
 	Inherits: ^Building
@@ -691,6 +698,7 @@ hightech:
 		Sequence: production-welding
 	Power:
 		Amount: -40
+	ProvidesPrerequisite@buildingname:
 
 research:
 	Inherits: ^Building
@@ -735,6 +743,7 @@ research:
 		Sequence: idle-lights
 	Power:
 		Amount: -40
+	ProvidesPrerequisite@buildingname:
 
 palace:
 	Inherits: ^Building
@@ -771,10 +780,10 @@ palace:
 		Range: 4
 	Power:
 		Amount: -50
-	ProvidesCustomPrerequisite@airstrike:
+	ProvidesPrerequisite@airstrike:
 		Prerequisite: palace.airstrike
 		Race: atreides, ordos
-	ProvidesCustomPrerequisite@nuke:
+	ProvidesPrerequisite@nuke:
 		Prerequisite: palace.nuke
 		Race: harkonnen
 	AirstrikePower:
@@ -808,6 +817,7 @@ palace:
 	DisabledOverlay:
 	RequiresPower:
 	SupportPowerChargeBar:
+	ProvidesPrerequisite@buildingname:
 
 conyard.atreides:
 	Inherits: conyard

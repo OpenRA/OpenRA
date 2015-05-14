@@ -38,6 +38,7 @@ Rules:
 	./mods/cnc/rules/ai.yaml
 	./mods/cnc/rules/player.yaml
 	./mods/cnc/rules/world.yaml
+	./mods/cnc/rules/palettes.yaml
 	./mods/cnc/rules/defaults.yaml
 	./mods/cnc/rules/structures.yaml
 	./mods/cnc/rules/infantry.yaml

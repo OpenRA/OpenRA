@@ -25,7 +25,7 @@ test -e Changelog.md && rm Changelog.md
 curl -s -L -O https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md
 
 curl -s -L -O http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip
-unzip Markdown_1.0.1.zip
+unzip -qq Markdown_1.0.1.zip
 rm -rf Markdown_1.0.1.zip
 ./Markdown_1.0.1/Markdown.pl Changelog.md > CHANGELOG.html
 ./Markdown_1.0.1/Markdown.pl README.md > README.html
@@ -47,28 +47,29 @@ for i in "${FILES[@]}"; do
 done
 
 # SharpZipLib for zip file support
-cp thirdparty/ICSharpCode.SharpZipLib.dll packaging/built
+cp thirdparty/download/ICSharpCode.SharpZipLib.dll packaging/built
 
 # FuzzyLogicLibrary for improved AI
-cp thirdparty/FuzzyLogicLibrary.dll packaging/built
+cp thirdparty/download/FuzzyLogicLibrary.dll packaging/built
 
 # SharpFont for FreeType support
-cp thirdparty/SharpFont* packaging/built
+cp thirdparty/download/SharpFont* packaging/built
 
 # SDL2-CS
+cp thirdparty/download/SDL2-CS* packaging/built
 cp thirdparty/SDL2-CS* packaging/built
 
 # Mono.NAT for UPnP support
-cp thirdparty/Mono.Nat.dll packaging/built
+cp thirdparty/download/Mono.Nat.dll packaging/built
 
 # Eluant (Lua integration)
-cp thirdparty/Eluant* packaging/built
+cp thirdparty/download/Eluant* packaging/built
 
 # GeoIP database access
-cp thirdparty/MaxMind.Db.dll packaging/built
-cp thirdparty/MaxMind.GeoIP2.dll packaging/built
-cp thirdparty/Newtonsoft.Json.dll packaging/built
-cp thirdparty/RestSharp.dll packaging/built
+cp thirdparty/download/MaxMind.Db.dll packaging/built
+cp thirdparty/download/MaxMind.GeoIP2.dll packaging/built
+cp thirdparty/download/Newtonsoft.Json.dll packaging/built
+cp thirdparty/download/RestSharp.dll packaging/built
 
 # Copy game icon for windows package
 cp OpenRA.Game/OpenRA.ico packaging/built
@@ -79,35 +80,28 @@ cp OpenRA.exe packaging/built
 cd packaging
 echo "Creating packages..."
 
-if [ -x /usr/bin/makensis ]; then
-    pushd windows
-    echo "Building Windows setup.exe"
-    makensis -V2 -DSRCDIR="$BUILTDIR" -DDEPSDIR="${SRCDIR}/thirdparty/windows" OpenRA.nsi
-    if [ $? -eq 0 ]; then
-        mv OpenRA.Setup.exe "$OUTPUTDIR"/OpenRA-$TAG.exe
-    else
-        echo "Windows package build failed."
-    fi
-    popd
-else
-    echo "Skipping Windows setup.exe build due to missing NSIS"
+pushd windows >/dev/null
+./buildpackage.sh "$TAG" "$BUILTDIR" "$SRCDIR" "$OUTPUTDIR"
+if [ $? -ne 0 ]; then
+    echo "Windows package build failed."
 fi
+popd >/dev/null
 
-pushd osx
+pushd osx >/dev/null
 echo "Zipping OS X package"
-bash buildpackage.sh "$TAG" "$BUILTDIR" "$OUTPUTDIR"
+./buildpackage.sh "$TAG" "$BUILTDIR" "$OUTPUTDIR"
 if [ $? -ne 0 ]; then
     echo "OS X package build failed."
 fi
-popd
+popd >/dev/null
 
-pushd linux
+pushd linux >/dev/null
 echo "Building Linux packages"
-bash buildpackage.sh "$TAG" "$BUILTDIR" "$OUTPUTDIR"
+./buildpackage.sh "$TAG" "$BUILTDIR" "$OUTPUTDIR"
 if [ $? -ne 0 ]; then
     echo "Linux package build failed."
 fi
-popd
+popd >/dev/null
 
 echo "Package build done."
 

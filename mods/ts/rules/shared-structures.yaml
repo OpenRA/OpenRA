@@ -43,10 +43,10 @@ GACNST:
 		Amount: 0
 	Selectable:
 		Bounds: 144, 80, 0, -12
-	ProvidesCustomPrerequisite@gdi:
+	ProvidesPrerequisite@gdi:
 		Race: gdi
 		Prerequisite: structures.gdi
-	ProvidesCustomPrerequisite@nod:
+	ProvidesPrerequisite@nod:
 		Race: nod
 		Prerequisite: structures.nod
 
@@ -93,6 +93,7 @@ PROC:
 		Palette: effect
 	Power:
 		Amount: -30
+	ProvidesPrerequisite@buildingname:
 
 GASILO:
 	Inherits: ^Building

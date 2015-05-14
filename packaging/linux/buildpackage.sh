@@ -23,17 +23,18 @@ make install-all prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 # Install startup scripts, desktop files and icons
 make install-linux-shortcuts prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 make install-linux-mime prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
+make install-linux-appdata prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 
 # Documentation
 mkdir -p $PWD/packaging/linux/$ROOTDIR/usr/share/doc/openra/
 cp *.html $PWD/packaging/linux/$ROOTDIR/usr/share/doc/openra/
 
-cd packaging/linux
-
-pushd deb
+pushd packaging/linux/deb >/dev/null
 echo "Building Debian package."
-bash buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR"
+./buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR"
 if [ $? -ne 0 ]; then
     echo "Debian package build failed."
 fi
-popd
+popd >/dev/null
+
+rm -rf $PWD/packaging/linux/$ROOTDIR/

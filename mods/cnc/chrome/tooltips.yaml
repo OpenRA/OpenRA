@@ -189,3 +189,21 @@ Background@CLIENT_TOOLTIP:
 			Height: 10
 			Font: TinyBold
 
+Background@FACTION_DESCRIPTION_TOOLTIP:
+	Logic: CountryTooltipLogic
+	Background: panel-black
+	Children:
+		Label@HEADER:
+			X: 7
+			Y: 6
+			Width: 8
+			Height: 12
+			Font: Bold
+			VAlign: Top
+		Label@DESCRIPTION:
+			X: 14
+			Y: 0
+			Width: 15
+			Height: 14
+			Font: TinyBold
+			VAlign: Top

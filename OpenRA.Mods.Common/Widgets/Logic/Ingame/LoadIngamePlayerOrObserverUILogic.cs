@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (world.ObserveAfterWinOrLose && world.LocalPlayer.WinState != WinState.Undefined)
 						Game.RunAfterTick(() =>
 						{
+							world.LocalPlayer.Spectating = true;
 							playerRoot.RemoveChildren();
 							Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
 						});

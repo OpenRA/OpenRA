@@ -110,6 +110,12 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
+		public void PickUpCompletedBuilding()
+		{
+			// This is called from ProductionTabsLogic
+			paletteWidget.Value.PickUpCompletedBuilding();
+		}
+
 		public string QueueGroup
 		{
 			get

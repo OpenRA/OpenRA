@@ -30,12 +30,27 @@ ScrollPanel@RACE_DROPDOWN_TEMPLATE:
 	Width: DROPDOWN_WIDTH
 	Background: panel-black
 	Children:
+		ScrollItem@HEADER:
+			BaseName: scrollheader
+			Width: PARENT_RIGHT-27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_RIGHT
+					Height: 10
+					Align: Center
 		ScrollItem@TEMPLATE:
 			Width: PARENT_RIGHT-27
 			Height: 25
 			X: 2
 			Y: 0
 			Visible: false
+			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: FACTION_DESCRIPTION_TOOLTIP
 			Children:
 				Image@FLAG:
 					X: 4

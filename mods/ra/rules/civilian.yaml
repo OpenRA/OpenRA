@@ -77,6 +77,7 @@ FCOM:
 	Bib:
 	Power:
 		Amount: -200
+	ProvidesPrerequisite@buildingname:
 
 HOSP:
 	Inherits: ^TechBuilding
@@ -101,6 +102,7 @@ HOSP:
 		UseDeathTypeSuffix: false
 	WithBuildingExplosion:
 		Delay: 1
+	ProvidesPrerequisite@buildingname:
 
 V01:
 	Inherits: ^CivBuilding
@@ -310,6 +312,7 @@ MISS:
 		UseDeathTypeSuffix: false
 	WithBuildingExplosion:
 		Delay: 1
+	ProvidesPrerequisite@buildingname:
 
 BIO:
 	Inherits: ^TechBuilding
@@ -326,6 +329,7 @@ BIO:
 		UseDeathTypeSuffix: false
 	WithBuildingExplosion:
 		Delay: 1
+	ProvidesPrerequisite@buildingname:
 
 OILB:
 	Inherits: ^TechBuilding

@@ -5553,4 +5553,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+	Template@1021:
+		Id: 1021
+		Images: BLOXTREE.R8
+		Frames: 345
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
 

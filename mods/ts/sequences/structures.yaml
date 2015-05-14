@@ -582,11 +582,9 @@ naobel:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
-	active: naobel #placeholder until Charge supports overlays
-		ShadowStart: 3
-#	active: ntobel_b
-#		Length: 12
-#		Tick: 240
+	active: ntobel_b
+		Length: 12
+		Tick: 200
 	idle-lights: ntobel_a
 		Length: 12
 		Tick: 80

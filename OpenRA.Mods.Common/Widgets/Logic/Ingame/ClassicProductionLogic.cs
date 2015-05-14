@@ -38,6 +38,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				// When a tab is selected, scroll to the top because the current row position may be invalid for the new tab
 				palette.ScrollToTop();
+
+				// Attempt to pick up a completed building (if there is one) so it can be placed
+				palette.PickUpCompletedBuilding();
 			};
 
 			Func<ButtonWidget, Hotkey> getKey = _ => Hotkey.Invalid;

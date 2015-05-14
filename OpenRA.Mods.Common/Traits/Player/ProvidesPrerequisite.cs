@@ -10,36 +10,40 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ProvidesCustomPrerequisiteInfo : ITraitInfo
+	public class ProvidesPrerequisiteInfo : ITraitInfo
 	{
-		[Desc("The prerequisite type that this provides")]
+		[Desc("The prerequisite type that this provides. If left empty it defaults to the actor's name.")]
 		public readonly string Prerequisite = null;
 
-		[Desc("Only grant this prerequisite when you have these prerequisites")]
+		[Desc("Only grant this prerequisite when you have these prerequisites.")]
 		public readonly string[] RequiresPrerequisites = { };
 
-		[Desc("Only grant this prerequisite for certain factions")]
+		[Desc("Only grant this prerequisite for certain factions.")]
 		public readonly string[] Race = { };
 
 		[Desc("Should it recheck everything when it is captured?")]
 		public readonly bool ResetOnOwnerChange = false;
-		public object Create(ActorInitializer init) { return new ProvidesCustomPrerequisite(init, this); }
+		public object Create(ActorInitializer init) { return new ProvidesPrerequisite(init, this); }
 	}
 
-	public class ProvidesCustomPrerequisite : ITechTreePrerequisite, INotifyOwnerChanged
+	public class ProvidesPrerequisite : ITechTreePrerequisite, INotifyOwnerChanged
 	{
-		readonly ProvidesCustomPrerequisiteInfo info;
+		readonly ProvidesPrerequisiteInfo info;
+		readonly string prerequisite;
 
 		bool enabled = true;
 
-		public ProvidesCustomPrerequisite(ActorInitializer init, ProvidesCustomPrerequisiteInfo info)
+		public ProvidesPrerequisite(ActorInitializer init, ProvidesPrerequisiteInfo info)
 		{
 			this.info = info;
+			prerequisite = info.Prerequisite;
+
+			if (string.IsNullOrEmpty(prerequisite))
+				prerequisite = init.Self.Info.Name;
 
 			var race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Country.Race;
 
@@ -53,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!enabled)
 					yield break;
 
-				yield return info.Prerequisite;
+				yield return prerequisite;
 			}
 		}
 

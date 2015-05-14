@@ -2254,15 +2254,15 @@ Rules:
 	WEAP:
 		Buildable:
 			Prerequisites: proc, ~techlevel.low, mainland
-		ProvidesCustomPrerequisite:
+		ProvidesPrerequisite:
 			Prerequisite: givefix
 	MAINLAND:
 		Tooltip:
 			Name: Reach the mainland
-		ProvidesCustomPrerequisite:
+		ProvidesPrerequisite:
 			Prerequisite: mainland
 	HPAD:
-		ProvidesCustomPrerequisite:
+		ProvidesPrerequisite:
 			Prerequisite: givefix
 	FIX:
 		Buildable:

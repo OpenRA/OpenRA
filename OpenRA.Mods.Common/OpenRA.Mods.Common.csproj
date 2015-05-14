@@ -32,39 +32,32 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FuzzyLogicLibrary">
-      <HintPath>..\thirdparty\FuzzyLogicLibrary.dll</HintPath>
+      <HintPath>..\thirdparty\download\FuzzyLogicLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Eluant">
-      <HintPath>..\thirdparty\Eluant.dll</HintPath>
+      <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="StyleCop.CSharp.Rules">
-      <HintPath>..\thirdparty\StyleCop.CSharp.Rules.dll</HintPath>
-    </Reference>
-    <Reference Include="StyleCop.CSharp">
-      <HintPath>..\thirdparty\StyleCop.CSharp.dll</HintPath>
-    </Reference>
     <Reference Include="StyleCop">
-      <HintPath>..\thirdparty\StyleCop.dll</HintPath>
+      <HintPath>..\thirdparty\download\StyleCop.dll</HintPath>
     </Reference>
     <Reference Include="MaxMind.GeoIP2">
-      <HintPath>..\thirdparty\MaxMind.GeoIP2.dll</HintPath>
+      <HintPath>..\thirdparty\download\MaxMind.GeoIP2.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mono.Nat">
-      <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
+      <HintPath>..\thirdparty\download\Mono.Nat.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>..\thirdparty\download\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -350,7 +343,7 @@
     <Compile Include="Traits\Player\PlaceBuilding.cs" />
     <Compile Include="Traits\Player\PlayerStatistics.cs" />
     <Compile Include="Traits\Player\ProductionQueue.cs" />
-    <Compile Include="Traits\Player\ProvidesCustomPrerequisite.cs" />
+    <Compile Include="Traits\Player\ProvidesPrerequisite.cs" />
     <Compile Include="Traits\Player\ProvidesTechPrerequisite.cs" />
     <Compile Include="Traits\Player\StrategicVictoryConditions.cs" />
     <Compile Include="Traits\Player\TechTree.cs" />
@@ -389,6 +382,7 @@
     <Compile Include="Traits\Render\WithActiveAnimation.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Traits\Render\WithMakeAnimation.cs" />
+    <Compile Include="Traits\Render\WithChargeOverlay.cs" />
     <Compile Include="Traits\Render\WithCrateBody.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
     <Compile Include="Traits\Render\WithDockingOverlay.cs" />
@@ -627,6 +621,7 @@
     <Compile Include="Traits\Plug.cs" />
     <Compile Include="Widgets\Logic\Ingame\MenuButtonsChromeLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LoadIngamePerfLogic.cs" />
+    <Compile Include="Traits\Render\WithDecoration.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

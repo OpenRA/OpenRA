@@ -1,4 +1,6 @@
-mkdir windows -Force >$null
+mkdir download/windows -Force >$null
+
+cd download
 
 if (!(Test-Path "nuget.exe"))
 {
@@ -127,3 +129,5 @@ if (!(Test-Path "Eluant.dll"))
 	$target = Join-Path $pwd.ToString() "Eluant.dll"
 	(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/Eluant/releases/download/20140425/Eluant.dll", $target)
 }
+
+cd ..

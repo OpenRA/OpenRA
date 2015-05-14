@@ -17,13 +17,14 @@ namespace OpenRA.Graphics
 	{
 		readonly IVertexBuffer<Vertex> vertexBuffer;
 		readonly Vertex[] updateCellVertices = new Vertex[4];
-		readonly float terrainPaletteIndex;
 		readonly int rowStride;
 
 		readonly WorldRenderer worldRenderer;
 		readonly Theater theater;
 		readonly CellLayer<TerrainTile> mapTiles;
 		readonly Map map;
+
+		float terrainPaletteIndex;
 
 		public TerrainRenderer(World world, WorldRenderer wr)
 		{
@@ -34,21 +35,18 @@ namespace OpenRA.Graphics
 
 			terrainPaletteIndex = wr.Palette("terrain").TextureIndex;
 			rowStride = 4 * map.Bounds.Width;
+			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(rowStride * map.Bounds.Height);
 
-			var vertices = new Vertex[rowStride * map.Bounds.Height];
-			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(vertices.Length);
-
-			var nv = 0;
-			foreach (var cell in map.Cells)
-			{
-				GenerateTileVertices(vertices, nv, cell);
-				nv += 4;
-			}
-
-			vertexBuffer.SetData(vertices, nv);
+			UpdateMap();
 
 			map.MapTiles.Value.CellEntryChanged += UpdateCell;
 			map.MapHeight.Value.CellEntryChanged += UpdateCell;
+
+			wr.PaletteInvalidated += () =>
+			{
+				terrainPaletteIndex = wr.Palette("terrain").TextureIndex;
+				UpdateMap();
+			};
 		}
 
 		void GenerateTileVertices(Vertex[] vertices, int offset, CPos cell)
@@ -56,6 +54,19 @@ namespace OpenRA.Graphics
 			var tile = theater.TileSprite(mapTiles[cell]);
 			var pos = worldRenderer.ScreenPosition(map.CenterOfCell(cell)) + tile.Offset - 0.5f * tile.Size;
 			Util.FastCreateQuad(vertices, pos, tile, terrainPaletteIndex, offset, tile.Size);
+		}
+
+		void UpdateMap()
+		{
+			var nv = 0;
+			var vertices = new Vertex[rowStride * map.Bounds.Height];
+			foreach (var cell in map.Cells)
+			{
+				GenerateTileVertices(vertices, nv, cell);
+				nv += 4;
+			}
+
+			vertexBuffer.SetData(vertices, nv);
 		}
 
 		public void UpdateCell(CPos cell)

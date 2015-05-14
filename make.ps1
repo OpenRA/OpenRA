@@ -74,10 +74,9 @@ elseif ($command -eq "clean")
 		rm *.dll
 		rm *.config
 		rm mods/*/*.dll
-		rm thirdparty/*.dll
-		if(Test-Path -Path thirdparty/windows/)
+		if (Test-Path -Path thirdparty/download/)
 		{
-			rmdir thirdparty/windows/ -Recurse
+			rmdir thirdparty/download -Recurse -Force
 		}
 		echo "Clean complete."
 	}
@@ -116,8 +115,8 @@ elseif ($command -eq "dependencies")
 {
 	cd thirdparty
 	./fetch-thirdparty-deps.ps1
-	cp *.dll ..
-	cp windows/*.dll ..
+	cp download/*.dll ..
+	cp download/windows/*.dll ..
 	cd ..
 	echo "Dependencies copied."
 }

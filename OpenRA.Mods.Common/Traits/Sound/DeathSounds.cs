@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class DeathSounds : INotifyKilled
 	{
-		DeathSoundsInfo info;
+		readonly DeathSoundsInfo info;
 
 		public DeathSounds(DeathSoundsInfo info) { this.info = info; }
 

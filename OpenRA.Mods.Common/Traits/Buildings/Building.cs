@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Building : IOccupySpace, INotifySold, INotifyTransform, ISync, ITechTreePrerequisite, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class Building : IOccupySpace, INotifySold, INotifyTransform, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly BuildingInfo Info;
 		public bool BuildComplete { get; private set; }
@@ -130,8 +130,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos TopLeft { get { return topLeft; } }
 		public WPos CenterPosition { get; private set; }
-
-		public IEnumerable<string> ProvidesPrerequisites { get { yield return self.Info.Name; } }
 
 		public Building(ActorInitializer init, BuildingInfo info)
 		{

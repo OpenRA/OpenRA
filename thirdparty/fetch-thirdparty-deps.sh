@@ -3,6 +3,11 @@
 # Die on any error for Travis CI to automatically retry:
 set -e
 
+download_dir="${0%/*}/download"
+
+mkdir -p "${download_dir}"
+cd "${download_dir}"
+
 if [ ! -f StyleCopPlus.dll ]; then
 	echo "Fetching StyleCopPlus from nuget"
 	nuget install StyleCopPlus.MSBuild -Version 4.7.49.5 -ExcludeVersion
