@@ -1,4 +1,4 @@
--- Copyright 2014 Paul Kulchenko, ZeroBrane LLC
+-- Copyright 2014-15 Paul Kulchenko, ZeroBrane LLC
 
 local ide = ide
 ide.outline = {

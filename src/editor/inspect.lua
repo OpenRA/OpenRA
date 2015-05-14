@@ -1,4 +1,4 @@
--- Copyright 2012-14 Paul Kulchenko, ZeroBrane LLC
+-- Copyright 2012-15 Paul Kulchenko, ZeroBrane LLC
 -- Integration with LuaInspect
 ---------------------------------------------------------
 
