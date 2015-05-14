@@ -374,6 +374,7 @@
     <Compile Include="Traits\Render\RenderBuildingWall.cs" />
     <Compile Include="Traits\Render\RenderDetectionCircle.cs" />
     <Compile Include="Traits\Render\RenderRangeCircle.cs" />
+    <Compile Include="Traits\Render\RenderVoxels.cs" />
     <Compile Include="Traits\Render\ProductionBar.cs" />
     <Compile Include="Traits\Render\SupportPowerChargeBar.cs" />
     <Compile Include="Traits\Render\TimedUpgradeBar.cs" />
@@ -385,6 +386,7 @@
     <Compile Include="Traits\Render\WithChargeOverlay.cs" />
     <Compile Include="Traits\Render\WithCrateBody.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
+    <Compile Include="Traits\Render\WithDecoration.cs" />
     <Compile Include="Traits\Render\WithDockingOverlay.cs" />
     <Compile Include="Traits\Render\WithHarvestAnimation.cs" />
     <Compile Include="Traits\Render\WithIdleOverlay.cs" />
@@ -401,6 +403,9 @@
     <Compile Include="Traits\Render\WithBuildingPlacedOverlay.cs" />
     <Compile Include="Traits\Render\WithProductionDoorOverlay.cs" />
     <Compile Include="Traits\Render\WithProductionOverlay.cs" />
+    <Compile Include="Traits\Render\WithVoxelBarrel.cs" />
+    <Compile Include="Traits\Render\WithVoxelBody.cs" />
+    <Compile Include="Traits\Render\WithVoxelTurret.cs" />
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\RepairableNear.cs" />
     <Compile Include="Traits\RepairsBridges.cs" />
@@ -449,6 +454,7 @@
     <Compile Include="Traits\World\PaletteFromCurrentTileset.cs" />
     <Compile Include="Traits\World\PaletteFromFile.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
+    <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
     <Compile Include="Pathfinder\CellInfoLayerManager.cs" />
     <Compile Include="Pathfinder\Constants.cs" />
     <Compile Include="Pathfinder\PathGraph.cs" />
@@ -621,7 +627,6 @@
     <Compile Include="Traits\Plug.cs" />
     <Compile Include="Widgets\Logic\Ingame\MenuButtonsChromeLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LoadIngamePerfLogic.cs" />
-    <Compile Include="Traits\Render\WithDecoration.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
