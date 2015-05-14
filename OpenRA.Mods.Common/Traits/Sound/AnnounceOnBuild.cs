@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void BuildingComplete(Actor self)
 		{
 			foreach (var voiced in self.TraitsImplementing<IVoiced>())
-				voiced.PlayVoice("Build", self, self.Owner.Country.Race);
+				voiced.PlayVoice(self, "Build", self.Owner.Country.Race);
 		}
 	}
 }

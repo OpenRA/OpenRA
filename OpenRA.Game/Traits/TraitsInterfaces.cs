@@ -111,11 +111,10 @@ namespace OpenRA.Traits
 
 	public interface IVoiced
 	{
-		bool PlayVoice(string phrase, Actor voicedActor, string variant);
-		bool PlayVoiceLocal(string phrase, Actor voicedActor, string variant, WPos pos, float volume);
-		bool HasVoices(Actor actor);
-		bool HasVoice(Actor actor, string voice);
 		string VoiceSet { get; }
+		bool PlayVoice(Actor self, string phrase, string variant);
+		bool PlayVoiceLocal(Actor self, string phrase, string variant, float volume);
+		bool HasVoice(Actor self, string voice);
 	}
 
 	public interface IDemolishableInfo { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }

@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (self.World.WorldTick - lastAnnounce > info.Interval * 25)
 					foreach (var voiced in self.TraitsImplementing<IVoiced>())
-						voiced.PlayVoice("Kill", self, self.Owner.Country.Race);
+						voiced.PlayVoice(self, "Kill", self.Owner.Country.Race);
 
 				lastAnnounce = self.World.WorldTick;
 			}

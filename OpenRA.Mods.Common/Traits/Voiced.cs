@@ -15,9 +15,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("This actor has a voice.")]
 	public class VoicedInfo : ITraitInfo
 	{
+		[Desc("Which voice set to use.")]
 		[VoiceReference] public readonly string VoiceSet = null;
+
+		[Desc("Multiply volume with this factor.")]
+		public readonly float Volume = 1f;
 
 		public object Create(ActorInitializer init) { return new Voiced(init.Self, this); }
 	}
@@ -31,54 +36,40 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 		}
 
-		public bool PlayVoice(string phrase, Actor voicedActor, string variant)
-		{
-			if (voicedActor == null || phrase == null)
-				return false;
-
-			var mi = voicedActor.TraitOrDefault<IVoiced>();
-			if (mi == null || mi.VoiceSet == null)
-				return false;
-
-			var type = mi.VoiceSet.ToLowerInvariant();
-			return Sound.PlayPredefined(voicedActor.World.Map.Rules, null, voicedActor, type, phrase, variant, true, WPos.Zero, 1f, true);
-		}
-
-		public bool PlayVoiceLocal(string phrase, Actor voicedActor, string variant, WPos pos, float volume)
-		{
-			if (voicedActor == null || phrase == null)
-				return false;
-
-			var mi = voicedActor.TraitOrDefault<IVoiced>();
-			if (mi == null || mi.VoiceSet == null)
-				return false;
-
-			var type = mi.VoiceSet.ToLowerInvariant();
-			return Sound.PlayPredefined(voicedActor.World.Map.Rules, null, voicedActor, type, phrase, variant, false, pos, volume, true);
-		}
-
-		public bool HasVoices(Actor actor)
-		{
-			var voice = actor.TraitsImplementing<IVoiced>().FirstOrDefault();
-			return voice != null && voice.VoiceSet != null;
-		}
-
-		public bool HasVoice(Actor actor, string voice)
-		{
-			var v = GetVoices(actor);
-			return v != null && v.Voices.ContainsKey(voice);
-		}
-
-		public SoundInfo GetVoices(Actor actor)
-		{
-			var voice = actor.TraitsImplementing<IVoiced>().FirstOrDefault();
-			if (voice == null)
-				return null;
-
-			var v = voice.VoiceSet;
-			return (v == null) ? null : actor.World.Map.Rules.Voices[v.ToLowerInvariant()];
-		}
-
 		public string VoiceSet { get { return Info.VoiceSet; } }
+
+		public bool PlayVoice(Actor self, string phrase, string variant)
+		{
+			if (phrase == null)
+				return false;
+
+			if (string.IsNullOrEmpty(Info.VoiceSet))
+				return false;
+
+			var type = Info.VoiceSet.ToLowerInvariant();
+			var volume = Info.Volume;
+			return Sound.PlayPredefined(self.World.Map.Rules, null, self, type, phrase, variant, true, WPos.Zero, volume, true);
+		}
+
+		public bool PlayVoiceLocal(Actor self, string phrase, string variant, float volume)
+		{
+			if (phrase == null)
+				return false;
+
+			if (string.IsNullOrEmpty(Info.VoiceSet))
+				return false;
+
+			var type = Info.VoiceSet.ToLowerInvariant();
+			return Sound.PlayPredefined(self.World.Map.Rules, null, self, type, phrase, variant, false, self.CenterPosition, volume, true);
+		}
+
+		public bool HasVoice(Actor self, string voice)
+		{
+			if (string.IsNullOrEmpty(Info.VoiceSet))
+				return false;
+
+			var voices = self.World.Map.Rules.Voices[Info.VoiceSet.ToLowerInvariant()];
+			return voices != null && voices.Voices.ContainsKey(voice);
+		}
 	}
 }

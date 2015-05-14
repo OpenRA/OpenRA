@@ -50,17 +50,14 @@ namespace OpenRA
 				if (o == null)
 					continue;
 
-				if (o.Subject.Destroyed)
+				var orderSubject = o.Subject;
+				if (orderSubject.Destroyed)
 					continue;
 
-				var hasVoice = o.Subject.TraitsImplementing<IVoiced>();
-				if (hasVoice == null)
-					continue;
-
-				foreach (var v in o.Subject.TraitsImplementing<IOrderVoice>())
-					foreach (var voice in o.Subject.TraitsImplementing<IVoiced>())
-						if (voice.PlayVoice(v.VoicePhraseForOrder(o.Subject, o),
-							o.Subject, o.Subject.Owner.Country.Race))
+				foreach (var voice in orderSubject.TraitsImplementing<IVoiced>())
+					foreach (var v in orderSubject.TraitsImplementing<IOrderVoice>())
+						if (voice.PlayVoice(orderSubject, v.VoicePhraseForOrder(orderSubject, o),
+							orderSubject.Owner.Country.Race))
 							return;
 			}
 		}
