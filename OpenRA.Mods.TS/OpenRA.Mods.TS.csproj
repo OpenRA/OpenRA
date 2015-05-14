@@ -52,14 +52,9 @@
     <Compile Include="Activities\VoxelHarvesterDockSequence.cs" />
     <Compile Include="SpriteLoaders\TmpTSLoader.cs" />
     <Compile Include="Traits\Buildings\TiberianSunRefinery.cs" />
-    <Compile Include="Traits\Render\RenderVoxels.cs" />
-    <Compile Include="Traits\Render\WithVoxelBarrel.cs" />
-    <Compile Include="Traits\Render\WithVoxelBody.cs" />
-    <Compile Include="Traits\Render\WithVoxelTurret.cs" />
     <Compile Include="Traits\Render\WithVoxelWalkerBody.cs" />
     <Compile Include="Traits\Render\WithVoxelUnloadBody.cs" />
     <Compile Include="Traits\Render\WithVoxelWaterBody.cs" />
-    <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
     <Compile Include="UtilityCommands\LegacyTilesetImporter.cs" />
     <Compile Include="Traits\World\TSShroudPalette.cs" />
   </ItemGroup>
