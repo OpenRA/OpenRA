@@ -1,5 +1,92 @@
 # ZeroBrane Studio Changelog
 
+## v1.10 (May 13 2015)
+
+### Highlights
+  - Redesigned search functionality; added incremental search and replace-in-files preview.
+  - Updated love2d API for v0.9.2.
+  - Upgraded Mobdebug (0.62) to add vararg processing.
+  - Added `excludelist`/`binarylist` to exclude files and folders.
+  - Added skipping binary files during find-in-files and fuzzy search.
+
+### Special thanks
+  - To [David Feng](https://github.com/DavidFeng) for fixing a broken symbolic link.
+  - To [Robert Machmer](https://github.com/rm-code) for updated German translation and fixes for love2d engine name/description.
+  - To [Derek Bailey](https://github.com/dbaileychess) for adding context menu item to update the contents of the tree.
+
+### Improvements
+  - Added closing search results with `Close Page` for consistency (#416).
+  - Added option to show search results in multipe tabs (#416).
+  - Added package `IsValidCtrl` method (#166).
+  - Added skipping binary files in commandbar (#31, #455).
+  - Added handling of `**` in exclusion masks (#455).
+  - Added `excludelist`/`binarylist` to exclude files and folders (closes #455).
+  - Added `search.autohide` option to hide search panel after search (#416).
+  - Added `debugger.requestattention` to configure focus switch (closes #449).
+  - Added closing search panel on `Escape` in the editor (closes #450, #416).
+  - Added `search.zoom` setting to zoom search results (#416).
+  - Added warning when interpreter can't be loaded and the default one is used.
+  - Added support for `wxImage` used in `imagemap` (#436).
+  - Added icon tint processing (`imagetint` option).
+  - Added `search.contextlinesbefore`/`search.contextlinesafter` settings (#416).
+  - Added `search.autocomplete` setting do configure search autocomplete (#416).
+  - Added auto-complete for find and replace fields (#416).
+  - Added saving search settings between restarts (#416).
+  - Added deleting of protected text in Cut/Paste operations (closes #412).
+  - Added refresh context menu item to update the contents of the tree (thanks to Derek Bailey).
+  - Added ignoring assignment in comments for auto-complete.
+  - Added preview screen to check changes in replace-in-files (#416).
+  - Added search toolbar button to set/unset context in search results (#416).
+  - Allowed for larger default size of docked panels (#424).
+  - Allowed closing `Search Results` tab while search is in progress (#416).
+  - Disabled refresh when `outlineinactivity=nil` and `showonefile=true` (#337).
+  - Improved incremental processing to avoid marking table fields as variables.
+  - Improved logic to skip binary files during search (#416).
+  - Moved cancelling auto-complete popup to idle event (fixed #447).
+  - Moved winapi dll to `clibs` folder to avoid conflict with other winapi versions.
+  - Optimized `Go To File` file traversal in commandbar (#31).
+  - Redesigned the search panel (closes #416; closes #398).
+  - Removed option to request attention from breakpoint activation (#449, closes #454).
+  - Removed warnings from loose parser to stop polluting stderr on Linux (#425).
+  - Removed hardcoded references to menu positions to simplify adding new items.
+  - Removed saving .bak files as it's replaced by replace-in-files preview (#416).
+  - Reorganized folding to allow more editor-like components to be foldable.
+  - Switched to using `wxFileSize` instead of `Length` (fixes #458).
+  - Updated event documentation.
+  - Upgraded Mobdebug (0.62) to add vararg processing.
+  - Updated build files to use release version of Lua 5.3 (#453).
+  - Updated Corona interpreter to allow debugging on Linux using Wine.
+  - Updated folder traversing logic to limit number of open folders (fixes #441).
+  - Update Readme.md to use correct name for the LOVE framework (thanks to Robert Machmer).
+  - Updated Linux build scripts to add `debug` option.
+  - Updated love2d interpreter to use proper engine name/description (closes #433) (thanks to Robert Machmer).
+  - Updated german translation (#432, #70).
+  - Updated love2d APU for v0.9.2 (#247).
+  - Update german translation (thanks to Robert Machmer).
+  - Updated `Select and Find` to capture selection for subsequent use (#416).
+  - Updated `Find Next/Prev` to continue search using the current find text (#416).
+  - Updated unfolding of folded lines before delete or overwrite.
+  - Updated folding to collapse only when clicked on the header.
+  - Updated config samples to use `ID.code` instead of obsolete `G.ID_code`.
+
+### Fixes
+  - Fixed crash on Windows by disabling events in Outline refresh (fixes #442).
+  - Fixed file traversing not to match `foo.bar!` for `*.bar' mask (#416).
+  - Fixed showing of not translated messages that require pluralization.
+  - fix broken symbolic link (thanks to David Feng).
+  - Fixed an empty popup (that could lead to a crash) when dynamic words is on.
+  - Fixed commandbar positioning on Linux affected by 5b665477 (#31).
+  - Fixed loose parser to handle multiple assignments (fixes #430).
+  - Fixed editor activation after dragging of inactive tab (fixes #427).
+  - Fixed indentation after comment with markdown markup (closes #428, #324).
+  - Fixed auto-complete issue causing looping warning (#143).
+  - Fix commandbar position with split editor tabs (#31).
+  - Fixed re-indenting of selection with comments at the top of the file (#324).
+  - Fixed restoring pane size after hide/show operations (fixes #424).
+
+### Incompatibilities
+  - Removed saving .bak files as it's replaced by replace-in-files preview.
+
 ## v1.00 (Mar 13 2015)
 
 ### Highlights
