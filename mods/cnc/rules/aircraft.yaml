@@ -24,7 +24,7 @@ TRAN:
 		Type: Light
 	RevealsShroud:
 		Range: 10c0
-	RenderUnit:
+	WithFacingSpriteBody:
 	WithRotor@PRIMARY:
 		Offset: -597,0,171
 		Sequence: rotor2
@@ -40,6 +40,8 @@ TRAN:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
+	AutoSelectionSize:
+	RenderSprites:
 
 HELI:
 	Inherits: ^Helicopter
@@ -81,7 +83,7 @@ HELI:
 		SelfReloads: true
 		ReloadCount: 10
 		SelfReloadTicks: 200
-	RenderUnit:
+	WithFacingSpriteBody:
 	WithRotor:
 		Offset: 0,0,85
 	WithMuzzleFlash:
@@ -91,6 +93,8 @@ HELI:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
+	AutoSelectionSize:
+	RenderSprites:
 
 ORCA:
 	Inherits: ^Helicopter
@@ -130,6 +134,7 @@ ORCA:
 		ReloadCount: 2
 		SelfReloadTicks: 100
 	RenderSprites:
+	WithFacingSpriteBody:
 	LeavesHusk:
 		HuskActor: ORCA.Husk
 	AutoTarget:
@@ -157,7 +162,7 @@ C17:
 		HP: 25
 	Armor:
 		Type: Heavy
-	RenderUnit:
+	WithFacingSpriteBody:
 	Cargo:
 		MaxWeight: 10
 		PipCount: 10
@@ -179,6 +184,8 @@ C17:
 	Contrail@4:
 		Offset: -261,650,0
 		TrailLength: 15
+	AutoSelectionSize:
+	RenderSprites:
 
 A10:
 	Inherits: ^Plane
@@ -195,7 +202,7 @@ A10:
 		HP: 150
 	Armor:
 		Type: Heavy
-	RenderUnit:
+	WithFacingSpriteBody:
 	AttackBomber:
 		Armaments: gun, bombs
 		Guns: gun
@@ -220,6 +227,8 @@ A10:
 	Contrail@2:
 		Offset: -640,-171,0
 		TrailLength: 15
+	AutoSelectionSize:
+	RenderSprites:
 
 TRAN.Husk:
 	Inherits: ^HelicopterHusk
@@ -234,7 +243,9 @@ TRAN.Husk:
 		Offset: -597,0,171
 	WithRotor@SECONDARY:
 		Offset: 597,0,85
-	RenderUnit:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 		Image: tran
 
 HELI.Husk:
@@ -248,7 +259,9 @@ HELI.Husk:
 		Range: 10c0
 	WithRotor:
 		Offset: 0,0,85
-	RenderUnit:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 		Image: heli
 
 ORCA.Husk:
@@ -260,6 +273,8 @@ ORCA.Husk:
 		Speed: 186
 	RevealsShroud:
 		Range: 10c0
-	RenderUnit:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 		Image: orca
 
