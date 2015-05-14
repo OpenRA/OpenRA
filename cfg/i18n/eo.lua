@@ -139,7 +139,7 @@ return {
   ["Find &In Files"] = "Traserĉi &en dosieroj", -- src\editor\menu_search.lua
   ["Find &Next"] = "&Pluserĉi", -- src\editor\menu_search.lua
   ["Find &Previous"] = "Traserĉi &antaŭanta", -- src\editor\menu_search.lua
-  ["Find In Files"] = "Traserĉi en dosieroj", -- src\editor\findreplace.lua
+  ["Find in files"] = "Traserĉi en dosieroj", -- src\editor\findreplace.lua
   ["Find and insert library function"] = nil, -- src\editor\menu_search.lua
   ["Find and replace text in files"] = "Traserĉi kaj anstataŭi tekston en dosieroj", -- src\editor\menu_search.lua
   ["Find and replace text"] = "Traserĉi kaj anstataŭi tekston", -- src\editor\menu_search.lua

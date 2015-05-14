@@ -137,7 +137,7 @@ return {
   ["Find &In Files"] = "在文档中查找", -- src\editor\menu_search.lua
   ["Find &Next"] = "查找下一个", -- src\editor\menu_search.lua
   ["Find &Previous"] = "查找上一个", -- src\editor\menu_search.lua
-  ["Find In Files"] = "在文档中查找", -- src\editor\findreplace.lua
+  ["Find in files"] = "在文档中查找", -- src\editor\findreplace.lua
   ["Find and insert library function"] = nil, -- src\editor\menu_search.lua
   ["Find and replace text in files"] = "在文档中查找text然后更换", -- src\editor\menu_search.lua
   ["Find and replace text"] = "查找text然后更换", -- src\editor\menu_search.lua

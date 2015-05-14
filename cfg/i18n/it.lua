@@ -138,7 +138,7 @@ return {
   ["Find &In Files"] = "Ricerca nei files", -- src\editor\menu_search.lua
   ["Find &Next"] = "Cerca il successivo", -- src\editor\menu_search.lua
   ["Find &Previous"] = "Cerca il precedente", -- src\editor\menu_search.lua
-  ["Find In Files"] = "Ricerca nei Files", -- src\editor\findreplace.lua
+  ["Find in files"] = "Ricerca nei files", -- src\editor\findreplace.lua
   ["Find and insert library function"] = "Trova e inserisci funzione di libreria", -- src\editor\menu_search.lua
   ["Find and replace text in files"] = "Cerca e sostituisci testo nei files", -- src\editor\menu_search.lua
   ["Find and replace text"] = "Cerca e sostituisci testo", -- src\editor\menu_search.lua
