@@ -829,8 +829,7 @@ Rules:
 			ROT: 900
 		RevealsShroud:
 			Range: 40c0
-		RenderUnit:
-			Image: MNLY
+		WithFacingSpriteBody:
 		MustBeDestroyed:
 			RequiredForShortGame: true
 		Transforms:
@@ -840,6 +839,9 @@ Rules:
 		CashTrickler:
 			Period: 150
 			Amount: 20
+		AutoSelectionSize:
+		RenderSprites:
+			Image: MNLY
 	FTUR:
 		Health:
 			HP: 1000

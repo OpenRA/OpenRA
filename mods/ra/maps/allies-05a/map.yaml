@@ -1656,10 +1656,12 @@ Rules:
 		Inherits: TRUK
 		Buildable:
 			Prerequisites: ~disabled
-		RenderUnit:
-			Image: TRUK
+		WithFacingSpriteBody:
 		-LeavesHusk:
 		-EjectOnDeath:
+		AutoSelectionSize:
+		RenderSprites:
+			Image: TRUK
 	SPY:
 		Infiltrates:
 			Types: Mission Objectives

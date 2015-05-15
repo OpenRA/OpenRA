@@ -480,8 +480,7 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 	TRAN.Extraction:
 		Inherits: TRAN
-		RenderUnit:
-			Image: tran
+		WithFacingSpriteBody:
 		RevealsShroud:
 			Range: 0c0
 		RejectsOrders:
@@ -489,12 +488,17 @@ Rules:
 		Cargo:
 			Types: Einstein
 			MaxWeight: 1
+		AutoSelectionSize:
+		RenderSprites:
+			Image: tran
 	TRAN.Insertion:
 		Inherits: TRAN.Extraction
-		RenderUnit:
-			Image: tran
+		WithFacingSpriteBody:
 		Cargo:
 			MaxWeight: 0
+		AutoSelectionSize:
+		RenderSprites:
+			Image: tran
 	EINSTEIN:
 		Passenger:
 			CargoType: Einstein

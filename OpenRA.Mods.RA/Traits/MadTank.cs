@@ -22,7 +22,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	class MadTankInfo : ITraitInfo, Requires<ExplodesInfo>, Requires<RenderUnitInfo>
+	class MadTankInfo : ITraitInfo, Requires<ExplodesInfo>, Requires<WithFacingSpriteBodyInfo>
 	{
 		public readonly string ThumpSequence = "piston";
 		public readonly int ThumpInterval = 8;
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		readonly Actor self;
 		readonly MadTankInfo info;
-		readonly RenderUnit renderUnit;
+		readonly WithFacingSpriteBody wfsb;
 		readonly ScreenShaker screenShaker;
 		bool deployed;
 		int tick;
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			this.self = self;
 			this.info = info;
-			renderUnit = self.Trait<RenderUnit>();
+			wfsb = self.Trait<WithFacingSpriteBody>();
 			screenShaker = self.World.WorldActor.Trait<ScreenShaker>();
 		}
 
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			self.World.AddFrameEndTask(w => EjectDriver());
 			if (info.ThumpSequence != null)
-				renderUnit.PlayCustomAnimationRepeating(self, info.ThumpSequence);
+				wfsb.PlayCustomAnimationRepeating(self, info.ThumpSequence);
 			deployed = true;
 			self.QueueActivity(new Wait(info.ChargeDelay, false));
 			self.QueueActivity(new CallFunc(() => Sound.Play(info.ChargeSound, self.CenterPosition)));

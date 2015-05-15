@@ -2,91 +2,106 @@
 	Inherits: ^Husk
 	Tooltip:
 		Name: Husk (Light Tank)
-	RenderUnit:
-		Image: 1tnk.destroyed
+	WithFacingSpriteBody:
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
 		IntoActor: 1tnk
+	AutoSelectionSize:
+	RenderSprites:
+		Image: 1tnk.destroyed
 
 2TNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Husk (Medium Tank)
-	RenderUnit:
-		Image: 2tnk.destroyed
+	WithFacingSpriteBody:
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
 		IntoActor: 2tnk
+	AutoSelectionSize:
+	RenderSprites:
+		Image: 2tnk.destroyed
 
 3TNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Husk (Heavy Tank)
-	RenderUnit:
-		Image: 3tnk.destroyed
+	WithFacingSpriteBody:
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
 		IntoActor: 3tnk
+	AutoSelectionSize:
+	RenderSprites:
+		Image: 3tnk.destroyed
 
 4TNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Husk (Mammoth Tank)
-	RenderUnit:
-		Image: 4tnk.destroyed
+	WithFacingSpriteBody:
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
 		IntoActor: 4tnk
+	AutoSelectionSize:
+	RenderSprites:
+		Image: 4tnk.destroyed
 
 HARV.FullHusk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Husk (Harvester)
-	RenderUnit:
-		Image: hhusk
+	WithFacingSpriteBody:
 	TransformOnCapture:
 		IntoActor: harv
+	AutoSelectionSize:
+	RenderSprites:
+		Image: hhusk
 
 HARV.EmptyHusk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Husk (Harvester)
-	RenderUnit:
-		Image: hhusk2
+	WithFacingSpriteBody:
 	TransformOnCapture:
 		IntoActor: harv
+	AutoSelectionSize:
+	RenderSprites:
+		Image: hhusk2
 
 MCV.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Husk (MCV)
-	RenderUnit:
-		Image: mcvhusk
+	WithFacingSpriteBody:
 	TransformOnCapture:
 		IntoActor: mcv
+	AutoSelectionSize:
+	RenderSprites:
+		Image: mcvhusk
 
 MGG.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Husk (Mobile Gap Generator)
-	RenderUnit:
-		Image: mgg.destroyed
+	WithFacingSpriteBody:
 	ThrowsParticle@spinner:
 		Anim: spinner-idle
 		Offset: -299,0,171
 	TransformOnCapture:
 		IntoActor: mgg
+	AutoSelectionSize:
+	RenderSprites:
+		Image: mgg.destroyed
 
 TRAN.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
 		Name: Transport Helicopter
-	RenderUnit:
-		Image: tran
+	WithFacingSpriteBody:
 	WithShadow:
 	Helicopter:
 		ROT: 4
@@ -97,33 +112,39 @@ TRAN.Husk:
 		Offset: 597,0,213
 	RevealsShroud:
 		Range: 12c0
+	AutoSelectionSize:
+	RenderSprites:
+		Image: tran
 
 TRAN.Husk1:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Husk (Transport Helicopter)
-	RenderUnit:
-		Image: tran1husk
+	WithFacingSpriteBody:
 	-TargetableUnit:
 	-Capturable:
 	-TransformOnCapture:
+	AutoSelectionSize:
+	RenderSprites:
+		Image: tran1husk
 
 TRAN.Husk2:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Husk (Transport Helicopter)
-	RenderUnit:
-		Image: tran2husk
+	WithFacingSpriteBody:
 	-TargetableUnit:
 	-Capturable:
 	-TransformOnCapture:
+	AutoSelectionSize:
+	RenderSprites:
+		Image: tran2husk
 
 BADR.Husk:
 	Inherits: ^PlaneHusk
 	Tooltip:
 		Name: Badger
-	RenderUnit:
-		Image: badr
+	WithFacingSpriteBody:
 	WithShadow:
 	Plane:
 		ROT: 5
@@ -136,14 +157,15 @@ BADR.Husk:
 		Offset: -432,-560,0
 		Interval: 2
 		MinDamage: Undamaged
+	AutoSelectionSize:
+	RenderSprites:
+		Image: badr
 
 MIG.Husk:
 	Inherits: ^PlaneHusk
 	Tooltip:
 		Name: Mig Attack Plane
-	RenderUnit:
-		CameraPitch: 99
-		Image: mig
+	WithFacingSpriteBody:
 	WithShadow:
 	Contrail@1:
 		Offset: -598,-683,0
@@ -158,14 +180,16 @@ MIG.Husk:
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 12c0
+	AutoSelectionSize:
+	RenderSprites:
+		CameraPitch: 99
+		Image: mig
 
 YAK.Husk:
 	Inherits: ^PlaneHusk
 	Tooltip:
 		Name: Yak Attack Plane
-	RenderUnit:
-		CameraPitch: 99
-		Image: yak
+	WithFacingSpriteBody:
 	WithShadow:
 	Contrail:
 		Offset: -853,0,0
@@ -178,13 +202,16 @@ YAK.Husk:
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 10c0
+	AutoSelectionSize:
+	RenderSprites:
+		CameraPitch: 99
+		Image: yak
 
 HELI.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
 		Name: Longbow
-	RenderUnit:
-		Image: heli
+	WithFacingSpriteBody:
 	WithShadow:
 	Helicopter:
 		ROT: 4
@@ -196,13 +223,15 @@ HELI.Husk:
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 12c0
+	AutoSelectionSize:
+	RenderSprites:
+		Image: heli
 
 HIND.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
 		Name: Hind
-	RenderUnit:
-		Image: hind
+	WithFacingSpriteBody:
 	WithShadow:
 	Helicopter:
 		ROT: 4
@@ -213,11 +242,13 @@ HIND.Husk:
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 10c0
+	AutoSelectionSize:
+	RenderSprites:
+		Image: hind
 
 U2.Husk:
 	Inherits: ^PlaneHusk
-	RenderUnit:
-		Image: u2
+	WithFacingSpriteBody:
 	WithShadow:
 	Plane:
 		ROT: 7
@@ -230,4 +261,7 @@ U2.Husk:
 		Offset: -1c43,0,0
 		Interval: 2
 		MinDamage: Undamaged
+	AutoSelectionSize:
+	RenderSprites:
+		Image: u2
 
