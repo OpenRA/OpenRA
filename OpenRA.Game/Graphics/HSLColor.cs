@@ -9,10 +9,11 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Scripting;
 
 namespace OpenRA.Graphics
 {
-	public struct HSLColor
+	public struct HSLColor : IScriptBindable
 	{
 		public readonly byte H;
 		public readonly byte S;
