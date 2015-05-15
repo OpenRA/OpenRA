@@ -233,6 +233,8 @@ VISSML:
 		WanderMoveRadius: 2
 		MinMoveDelayInTicks: 30
 		MaxMoveDelayInTicks: 60
+	WithFacingSpriteBody:
+	AutoSelectionSize:
 
 VISLRG:
 	Inherits: ^Viceroid
@@ -250,6 +252,8 @@ VISLRG:
 		MaxMoveDelayInTicks: 45
 	Mobile:
 		Crushes: crate, infantry
+	WithFacingSpriteBody:
+	AutoSelectionSize:
 
 CIV1:
 	Inherits: ^CivilianInfantry

@@ -129,8 +129,11 @@ GGHUNT:
 		Type: Light
 	RevealsShroud:
 		Range: 7c0
-	RenderUnit:
+	WithFacingSpriteBody:
 	DemoTruck:
 	Explodes:
 		Weapon: SuicideBomb
 		EmptyWeapon: SuicideBomb
+	AutoSelectionSize:
+	RenderSprites:
+
