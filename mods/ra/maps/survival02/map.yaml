@@ -1017,9 +1017,6 @@ Actors:
 	AlliesBase: waypoint
 		Location: 39,37
 		Owner: Neutral
-	Timer: MissionTimer
-		Location: 5,5
-		Owner: Soviets
 
 Smudges:
 
@@ -1070,11 +1067,6 @@ Rules:
 			DropItems: E1,E1,E2,E4,E4,E1,E1,E2,E4,E4
 			QuantizedFacings: 8
 			DisplayBeacon: false
-	MissionTimer:
-		ParatroopersPower:
-			ChargeTime: 600
-			Description: Soviet reinforcements arrive in
-			DisplayTimer: True
 	MINV:
 		Mine:
 			AvoidFriendly: yes

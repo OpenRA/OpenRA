@@ -62,6 +62,7 @@ GuardHarvester = function(unit, harvester)
 	end
 end
 
+ticked = TimerTicks
 Tick = function()
 	if soviets.HasNoRequiredUnits() then
 		if DestroyObj then
@@ -98,9 +99,17 @@ Tick = function()
 		end
 	end
 
-	if DateTime.Minutes(5) == TimerTicks - DateTime.GameTime then
+	if DateTime.Minutes(5) == ticked then
 		Media.PlaySpeechNotification(allies, "WarningFiveMinutesRemaining")
 		InitCountDown()
+	end
+
+	if 0 < ticked then
+		UserInterface.SetMissionText("Soviet reinforcements arrive in " .. Utils.FormatTime(ticked), TimerColor)
+		ticked = ticked - 1
+	elseif 0 == ticked then
+		FinishTimer()
+		ticked = ticked - 1
 	end
 end
 
@@ -195,6 +204,18 @@ FinalAttack = function()
 	end)
 end
 
+FinishTimer = function()
+	for i = 0, 9, 1 do
+		local c = TimerColor
+		if i % 2 == 0 then
+			c = HSLColor.New(255, 255, 255)
+		end
+
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Soviet reinforcements have arrived!", c) end)
+	end
+	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
+end
+
 wave = 1
 SendParadrops = function()
 	SendSovietParadrops(ParaWaves[wave][2])
@@ -277,6 +298,7 @@ end
 
 InitMission = function()
 	Camera.Position = AlliesBase.CenterPosition
+	TimerColor = HSLColor.New(0, 255, 128)
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionTimerInitialised") end)
 
@@ -286,7 +308,6 @@ InitMission = function()
 		SpawnSovietVehicle(NewSovietEntryPoints, NewSovietRallyPoints)
 		FinalAttack()
 		Producing = false
-		Timer.Destroy()
 	end)
 
 	Trigger.AfterDelay(AttackTicks, SendParadrops)
