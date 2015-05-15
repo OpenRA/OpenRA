@@ -192,6 +192,13 @@
 	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation:
+		DeathTypes:
+			BulletDeath: 1
+			SmallExplosionDeath: 2
+			ExplosionDeath: 3
+			InfantryExplodeDeath: 4 #not used by any warhead; TODO: check what should use this type and add it!
+			FireDeath: 5
+			EnergyDeath: 6
 	AutoTarget:
 	AttackMove:
 	Passenger:

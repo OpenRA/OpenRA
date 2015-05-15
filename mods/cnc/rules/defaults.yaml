@@ -190,6 +190,13 @@
 	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation:
+		DeathTypes:
+			DefaultDeath: 1
+			BulletDeath: 2
+			SmallExplosionDeath: 3
+			ExplosionDeath: 4
+			FireDeath: 5
+			TiberiumDeath: 6
 	AttackMove:
 	Passenger:
 		CargoType: Infantry

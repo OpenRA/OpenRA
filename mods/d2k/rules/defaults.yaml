@@ -201,6 +201,11 @@
 			Prone50Percent: 50
 		DamageTriggers: TriggerProne
 	WithDeathAnimation:
+		DeathTypes:
+			ExplosionDeath: 1
+			SoundDeath: 2
+			SmallExplosionDeath: 3
+			BulletDeath: 4
 	AutoTarget:
 	AttackMove:
 	Passenger:
