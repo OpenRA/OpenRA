@@ -210,13 +210,13 @@
 		Upgrades: hospitalheal
 		Prerequisites: hosp
 	DeathSounds@NORMAL:
-		DeathTypes: 1, 2, 3, 4
+		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@BURNED:
 		DeathSound: Burned
-		DeathTypes: 5
+		DeathTypes: FireDeath
 	DeathSounds@ZAPPED:
 		DeathSound: Zapped
-		DeathTypes: 6
+		DeathTypes: ElectricityDeath
 	Parachutable:
 		ParachuteOffset: 0,0,427
 		KilledOnImpassableTerrain: true

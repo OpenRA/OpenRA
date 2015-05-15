@@ -241,13 +241,13 @@
 	Huntable:
 	ScriptTriggers:
 	DeathSounds@NORMAL:
-		DeathTypes: 1, 2, 3
+		DeathTypes: BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@BURNED:
 		DeathSound: Burned
-		DeathTypes: 5
+		DeathTypes: FireDeath
 	DeathSounds@ZAPPED:
 		DeathSound: Zapped
-		DeathTypes: 6
+		DeathTypes: EnergyDeath
 	UpgradeManager:
 	Cloak@CLOAKGENERATOR:
 		UpgradeTypes: cloakgenerator

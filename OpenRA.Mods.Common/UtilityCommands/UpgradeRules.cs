@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -868,7 +867,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							var rearmSound = minelayerFields.FirstOrDefault(rs => rs.Key == "RearmSound");
 							var minelayerRearmSound = rearmSound != null ? FieldLoader.GetValue<string>("RearmSound", rearmSound.Value.Value) : "minelay1.aud";
 
-							limitedAmmoFields.Add(new MiniYamlNode("RearmSound", minelayerRearmSound.ToString()));
+							limitedAmmoFields.Add(new MiniYamlNode("RearmSound", minelayerRearmSound));
 							minelayerFields.Remove(rearmSound);
 						}
 					}
@@ -999,6 +998,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					if (node.Key.StartsWith("Selectable"))
 						node.Value.Nodes.RemoveAll(p => p.Key == "Voice");
+				}
+
+				if (engineVersion < 20150524)
+				{
+					// Replace numbers with strings for DeathSounds.DeathType
+					if (node.Key.StartsWith("DeathSounds"))
+					{
+						var deathTypes = node.Value.Nodes.FirstOrDefault(x => x.Key == "DeathTypes");
+						if (deathTypes != null)
+						{
+							var types = FieldLoader.GetValue<string[]>("DeathTypes", deathTypes.Value.Value);
+							deathTypes.Value.Value = string.Join(", ", types.Select(type => "DeathType" + type));
+
+							RenameDamageTypes(deathTypes);
+						}
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
@@ -1420,7 +1435,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20150517)
+				if (engineVersion < 20150524)
 				{
 					// Remove DeathType from DamageWarhead
 					if (node.Key.StartsWith("Warhead") && node.Value.Value == "SpreadDamage")
