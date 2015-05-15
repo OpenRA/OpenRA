@@ -8,14 +8,13 @@ Flamethrower:
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 40
-		DeathType: 5
 		InvalidTargets: Wall
 		Versus:
 			None: 100
 			Wood: 100
 			Light: 100
 			Heavy: 20
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -34,14 +33,13 @@ BigFlamer:
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 75
-		DeathType: 5
 		InvalidTargets: Wall
 		Versus:
 			None: 100
 			Wood: 100
 			Light: 67
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -57,13 +55,12 @@ Chemspray:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 80
-		DeathType: 6
 		Versus:
 			None: 100
 			Wood: 35
 			Light: 75
 			Heavy: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, TiberiumDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -83,13 +80,12 @@ Grenade:
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 50
-		DeathType: 3
 		Versus:
 			None: 100
 			Wood: 50
 			Light: 75
 			Heavy: 35
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -108,14 +104,13 @@ Napalm:
 		Spread: 341
 		Damage: 30
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 5
 		ValidTargets: Ground, Water
 		Versus:
 			None: 100
 			Wood: 100
 			Light: 100
 			Heavy: 80
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -133,10 +128,9 @@ Laser:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 360
-		DeathType: 5
 		Versus:
 			Wood: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 
@@ -145,19 +139,18 @@ Tiberium:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 2
-		DeathType: 6
+		DamageTypes: TiberiumDeath
 
 TiberiumExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
 		Damage: 10
-		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Res: CreateResource
 		AddsResourceType: Tiberium
 		Size: 1,1
@@ -180,14 +173,13 @@ Tail:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 180
-		DeathType: 1
 		Versus:
 			None: 90
 			Wood: 10
 			Light: 30
 			Heavy: 10
 			Concrete: 10
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 
 Horn:
 	ReloadDelay: 20
@@ -198,14 +190,13 @@ Horn:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 120
-		DeathType: 1
 		Versus:
 			None: 90
 			Wood: 10
 			Light: 30
 			Heavy: 10
 			Concrete: 10
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 
 Teeth:
 	ReloadDelay: 30
@@ -216,14 +207,13 @@ Teeth:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 180
-		DeathType: 1
 		Versus:
 			None: 90
 			Wood: 10
 			Light: 30
 			Heavy: 10
 			Concrete: 10
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 
 Claw:
 	ReloadDelay: 10
@@ -234,17 +224,17 @@ Claw:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 60
-		DeathType: 1
 		Versus:
 			None: 90
 			Wood: 10
 			Light: 30
 			Heavy: 10
 			Concrete: 10
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 
 Demolish:
 	Warhead@1Dam: SpreadDamage
+		DamageTypes: DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: xplobig6.aud

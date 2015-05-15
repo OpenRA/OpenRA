@@ -2375,14 +2375,13 @@ Weapons:
 		Warhead@1Dam: SpreadDamage
 			Spread: 128
 			Damage: 50
-			DeathType: 4
 			InvalidTargets: Air, Infantry
 			Versus:
 				None: 20
 				Wood: 75
 				Light: 75
 				Concrete: 50
-			DamageTypes: Prone50Percent, TriggerProne
+			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3EffGround: CreateEffect

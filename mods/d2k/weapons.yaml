@@ -11,13 +11,12 @@ LMG:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 15
-		DeathType: 4
 		Versus:
 			Wood: 25
 			Light: 40
 			Heavy: 10
 			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -39,7 +38,6 @@ Bazooka:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 50
-		DeathType: 3
 		ValidTargets: Ground
 		Versus:
 			None: 10
@@ -47,7 +45,7 @@ Bazooka:
 			Light: 60
 			Heavy: 90
 			Concrete: 40
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -67,14 +65,13 @@ Sniper:
 	Warhead@1Dam: SpreadDamage
 		Spread: 32
 		Damage: 60
-		DeathType: 4
 		Versus:
 			None: 100
 			Wood: 0
 			Light: 1
 			Heavy: 0
 			Concrete: 0
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 
 Vulcan:
 	ReloadDelay: 30
@@ -90,14 +87,13 @@ Vulcan:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 30
-		DeathType: 4
 		ValidTargets: Ground
 		Versus:
 			Wood: 0
 			Light: 60
 			Heavy: 10
 			Concrete: 0
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -117,7 +113,6 @@ Slung:
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Damage: 30
-		DeathType: 3
 		ValidTargets: Ground
 		Versus:
 			None: 0
@@ -125,7 +120,7 @@ Slung:
 			Light: 40
 			Heavy: 90
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: small_explosion
 		ImpactSound: EXPLLG5.WAV
@@ -145,13 +140,12 @@ HMG:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 30
-		DeathType: 4
 		Versus:
 			Wood: 15
 			Light: 45
 			Heavy: 20
 			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -170,13 +164,12 @@ HMGo:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 40
-		DeathType: 4
 		Versus:
 			Wood: 15
 			Light: 45
 			Heavy: 25
 			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -199,7 +192,6 @@ QuadRockets:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 25
-		DeathType: 3
 		ValidTargets: Ground, Air
 		Versus:
 			None: 35
@@ -207,7 +199,7 @@ QuadRockets:
 			Light: 100
 			Heavy: 100
 			Concrete: 35
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -227,13 +219,12 @@ TurretGun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 55
-		DeathType: 3
 		Versus:
 			None: 50
 			Wood: 75
 			Light: 100
 			Concrete: 65
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -260,7 +251,6 @@ TowerMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 384
 		Damage: 50
-		DeathType: 1
 		ValidTargets: Ground, Air
 		Versus:
 			None: 50
@@ -268,7 +258,7 @@ TowerMissile:
 			Light: 100
 			Heavy: 50
 			Concrete: 35
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -286,13 +276,12 @@ TowerMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 40
-		DeathType: 3
 		Versus:
 			None: 50
 			Wood: 50
 			Light: 100
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -310,13 +299,12 @@ TowerMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 40
-		DeathType: 3
 		Versus:
 			None: 50
 			Wood: 50
 			Light: 100
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -333,14 +321,13 @@ DevBullet:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 100
-		DeathType: 3
 		Versus:
 			None: 100
 			Wood: 50
 			Light: 100
 			Heavy: 100
 			Concrete: 80
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -366,7 +353,6 @@ DevBullet:
 	Warhead@1Dam: SpreadDamage
 		Spread: 384
 		Damage: 60
-		DeathType: 3
 		ValidTargets: Ground
 		Versus:
 			None: 20
@@ -374,7 +360,7 @@ DevBullet:
 			Light: 100
 			Heavy: 50
 			Concrete: 80
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -432,14 +418,13 @@ NerveGasMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 384
 		Damage: 100
-		DeathType: 1
 		Versus:
 			None: 100
 			Wood: 80
 			Light: 75
 			Heavy: 50
 			Concrete: 100
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -458,13 +443,12 @@ Sound:
 	Warhead@1Dam: SpreadDamage
 		Spread: 32
 		Damage: 150
-		DeathType: 2
 		Versus:
 			None: 60
 			Wood: 85
 			Light: 80
 			Concrete: 75
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 
 ChainGun:
 	ReloadDelay: 10
@@ -477,13 +461,12 @@ ChainGun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 20
-		DeathType: 4
 		Versus:
 			Wood: 50
 			Light: 60
 			Heavy: 25
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -496,7 +479,6 @@ Heal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Damage: -50
-		DeathType: 4
 		Versus:
 			Wood: 0
 			Light: 0
@@ -523,13 +505,12 @@ ParaBomb:
 		Spread: 192
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 3
 		Versus:
 			None: 30
 			Wood: 75
 			Light: 75
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -545,14 +526,13 @@ Napalm:
 		Spread: 640
 		Damage: 30
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 3
 		Versus:
 			None: 20
 			Wood: 100
 			Light: 30
 			Heavy: 20
 			Concrete: 70
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -562,11 +542,13 @@ Napalm:
 Crush:
 	Warhead@1Dam: SpreadDamage
 		Damage: 100
+		DamageTypes: ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		ImpactSound: CRUSH1.WAV
 
 Demolish:
 	Warhead@1Dam: SpreadDamage
+		DamageTypes: ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: EXPLLG2.WAV
@@ -576,14 +558,13 @@ Atomic:
 		Spread: 2c0
 		Damage: 180
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 2
 		Versus:
 			None: 100
 			Wood: 100
 			Light: 100
 			Heavy: 50
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: nuke
 		ImpactSound: EXPLLG2.WAV
@@ -593,7 +574,6 @@ CrateNuke:
 		Spread: 1c576
 		Damage: 80
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 2
 		Versus:
 			None: 20
 			Wood: 75
@@ -601,7 +581,7 @@ CrateNuke:
 			Heavy: 25
 			Concrete: 50
 		AffectsParent: true
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: nuke
 		ImpactSound: EXPLLG2.WAV
@@ -611,14 +591,13 @@ CrateExplosion:
 		Spread: 320
 		Damage: 40
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
 		AffectsParent: true
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: EXPLSML4.WAV
@@ -628,13 +607,12 @@ UnitExplode:
 		Spread: 320
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: EXPLMD1.WAV
@@ -643,13 +621,12 @@ UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Damage: 60
-		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: self_destruct
 		ImpactSound: EXPLHG1.WAV, EXPLLG1.WAV, EXPLMD1.WAV, EXPLSML4.WAV
@@ -658,13 +635,12 @@ UnitExplodeTiny:
 	Warhead@1Dam: SpreadDamage
 		Spread: 224
 		Damage: 30
-		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: med_explosion
 		ImpactSound: EXPLMD2.WAV, EXPLSML1.WAV, EXPLSML2.WAV, EXPLSML3.WAV
@@ -673,13 +649,12 @@ UnitExplodeScale:
 	Warhead@1Dam: SpreadDamage
 		Spread: 416
 		Damage: 90
-		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
@@ -697,13 +672,12 @@ Grenade:
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Damage: 60
-		DeathType: 1
 		Versus:
 			None: 50
 			Wood: 100
 			Light: 25
 			Heavy: 5
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
@@ -728,13 +702,12 @@ Shrapnel:
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Damage: 60
-		DeathType: 1
 		Versus:
 			None: 50
 			Wood: 100
 			Light: 25
 			Heavy: 5
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
@@ -745,13 +718,12 @@ SpiceExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
 		Damage: 10
-		DeathType: 1
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Res: CreateResource
 		AddsResourceType: Spice
 		Size: 2,2

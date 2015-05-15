@@ -232,6 +232,7 @@
 	PoisonedByTiberium:
 	SpawnViceroid:
 		ViceroidActor: vissml
+		DeathType: EnergyDeath # TODO: FIX ME! (Tiberium currently uses the wrong damage type!)
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	Guard:

@@ -11,14 +11,13 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 36
-		DeathType: 2
 		Versus:
 			None: 25
 			Wood: 65
 			Light: 75
 			Heavy: 100
 			Concrete: 60
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: medium_clsn
 		ImpactSound: expnew14.aud
@@ -39,14 +38,13 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 70
-		DeathType: 2
 		Versus:
 			None: 25
 			Wood: 65
 			Light: 75
 			Heavy: 100
 			Concrete: 60
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: large_clsn
 		ImpactSound: expnew14.aud
@@ -73,14 +71,13 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
-		DeathType: 2
 		Versus:
 			None: 25
 			Wood: 65
 			Light: 75
 			Heavy: 100
 			Concrete: 60
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: medium_clsn
 		ImpactSound: expnew14.aud
@@ -107,14 +104,13 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
 		Damage: 150
-		DeathType: 3
 		Versus:
 			None: 100
 			Wood: 85
 			Light: 68
 			Heavy: 35
 			Concrete: 35
-		DamageTypes: Prone100Percent, TriggerProne
+		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew06.aud

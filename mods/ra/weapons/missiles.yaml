@@ -18,14 +18,13 @@ Maverick:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 70
-		DeathType: 4
 		ValidTargets: Ground, Water
 		Versus:
 			None: 30
 			Wood: 75
 			Light: 75
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -56,14 +55,13 @@ Dragon:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
-		DeathType: 4
 		ValidTargets: Ground, Water
 		Versus:
 			None: 10
 			Wood: 75
 			Light: 35
 			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -95,14 +93,13 @@ HellfireAG:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
-		DeathType: 4
 		ValidTargets: Ground, Water
 		Versus:
 			None: 30
 			Wood: 75
 			Light: 75
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -134,14 +131,13 @@ HellfireAA:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		DeathType: 4
 		ValidTargets: Air
 		Versus:
 			None: 30
 			Wood: 75
 			Light: 75
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -171,14 +167,13 @@ MammothTusk:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 50
-		DeathType: 3
 		ValidTargets: Air, Infantry
 		Versus:
 			None: 100
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
@@ -210,7 +205,6 @@ Nike:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
-		DeathType: 3
 		ValidTargets: Air
 		Versus:
 			None: 90
@@ -218,7 +212,7 @@ Nike:
 			Light: 90
 			Heavy: 50
 			Concrete: 0
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -241,14 +235,13 @@ RedEye:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		DeathType: 3
 		ValidTargets: Air
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -272,12 +265,11 @@ SubMissile:
 		Spread: 426
 		Damage: 30
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 3
 		Versus:
 			None: 40
 			Light: 30
 			Heavy: 30
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -307,14 +299,13 @@ Stinger:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
-		DeathType: 4
 		ValidTargets: Air, Ground, Water
 		Versus:
 			None: 30
 			Wood: 75
 			Light: 75
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -348,14 +339,13 @@ StingerAA:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
-		DeathType: 4
 		ValidTargets: Air, Ground, Water
 		Versus:
 			None: 30
 			Wood: 75
 			Light: 75
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -390,14 +380,13 @@ TorpTube:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 180
-		DeathType: 4
 		ValidTargets: Water, Underwater, Bridge
 		Versus:
 			None: 30
 			Wood: 75
 			Light: 75
 			Concrete: 500
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -431,13 +420,12 @@ SCUD:
 		Spread: 341
 		Damage: 45
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 70
 			Heavy: 40
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -467,14 +455,13 @@ APTusk:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
-		DeathType: 4
 		ValidTargets: Ground, Water
 		Versus:
 			None: 25
 			Wood: 75
 			Light: 75
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect

@@ -8,13 +8,12 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 16
-		DeathType: 4
 		Versus:
 			None: 30
 			Wood: 40
 			Heavy: 40
 			Concrete: 30
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
@@ -34,13 +33,12 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		DeathType: 4
 		Versus:
 			None: 20
 			Wood: 75
 			Light: 75
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
@@ -64,13 +62,12 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		DeathType: 4
 		Versus:
 			None: 20
 			Wood: 75
 			Light: 75
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
@@ -94,14 +91,13 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
-		DeathType: 4
 		InvalidTargets: Air, Infantry
 		Versus:
 			None: 20
 			Wood: 75
 			Light: 75
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
@@ -123,13 +119,12 @@ TurretGun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
-		DeathType: 4
 		Versus:
 			None: 20
 			Wood: 50
 			Light: 75
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
@@ -156,14 +151,13 @@ TurretGun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 220
-		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -191,13 +185,12 @@ TurretGun:
 		Spread: 213
 		Damage: 25
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 3
 		Versus:
 			None: 60
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -219,13 +212,12 @@ TurretGun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 25
-		DeathType: 4
 		Versus:
 			None: 30
 			Wood: 75
 			Light: 75
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect

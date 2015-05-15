@@ -2,8 +2,7 @@ FlametankExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 1c0
 		Damage: 100
-		DeathType: 5
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: big_napalm
 		ImpactSound: xplobig6.aud
@@ -12,15 +11,14 @@ HeliCrash:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 40
-		DeathType: 4
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: poof
 		ImpactSound: xplos.aud
 
 HeliExplode:
 	Warhead@1Dam: SpreadDamage
-		DeathType: 4
+		DamageTypes: ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: small_building
 		ImpactSound: xplos.aud
@@ -30,13 +28,12 @@ UnitExplode:
 		Spread: 426
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 4
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: poof
 		ImpactSound: xplobig6.aud
@@ -45,13 +42,12 @@ UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 40
-		DeathType: 4
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: big_frag
 		ImpactSound: xplobig4.aud
@@ -60,13 +56,12 @@ GrenadierExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 10
-		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: poof
 		ImpactSound: xplosml2.aud
@@ -76,14 +71,13 @@ Napalm.Crate:
 		Spread: 170
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 5
 		Versus:
 			None: 90
 			Wood: 100
 			Light: 60
 			Heavy: 25
 		AffectsParent: true
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect

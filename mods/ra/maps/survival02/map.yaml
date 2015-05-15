@@ -1165,14 +1165,13 @@ Weapons:
 		Warhead@1Dam: SpreadDamage
 			Spread: 150
 			Damage: 3500
-			DeathType: 5
 			Versus:
 				None: 125
 				Wood: 100
 				Light: 60
 				Heavy: 50
 				Concrete: 25
-			DamageTypes: Prone50Percent, TriggerProne
+			DamageTypes: Prone50Percent, TriggerProne, FireDeath
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
