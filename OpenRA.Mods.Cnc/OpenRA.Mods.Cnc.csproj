@@ -70,6 +70,12 @@
     <Compile Include="Traits\Render\WithRoof.cs" />
     <Compile Include="Traits\SpawnViceroid.cs" />
     <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
+    <Compile Include="Widgets\Logic\CampaignLogic\CampaignCongratulationLogic.cs" />
+    <Compile Include="Widgets\Logic\CampaignLogic\CampaignFactionLogic.cs" />
+    <Compile Include="Widgets\Logic\CampaignLogic\CampaignMenuLogic.cs" />
+    <Compile Include="Widgets\Logic\CampaignLogic\CampaignMissionBrowserLogic.cs" />
+    <Compile Include="Widgets\Logic\CampaignLogic\CampaignMissionPreviewLogic.cs" />
+    <Compile Include="Widgets\Logic\CampaignLogic\CampaignWorldLogic.cs" />
     <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
     <Compile Include="Traits\RenderUnitFlying.cs" />

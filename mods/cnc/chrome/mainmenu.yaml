@@ -121,14 +121,20 @@ Container@MENU_BACKGROUND:
 							Align: Center
 							Font: Bold
 							Contrast: True
-						Button@SKIRMISH_BUTTON:
+						Button@CAMPAIGN_BUTTON:
 							X: 0
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Campaign
+						Button@SKIRMISH_BUTTON:
+							X: 150
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: Skirmish
 						Button@MISSIONS_BUTTON:
-							X: 150
+							X: 300
 							Y: 0
 							Width: 140
 							Height: 35

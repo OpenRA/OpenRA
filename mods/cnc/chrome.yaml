@@ -3,12 +3,19 @@ shellmap: reticle.png
 
 shellmapbits: chrome.png
 	record: 288,16,16,16
+	
+choosefaction: choose.png
+	choosetext: 0,0,1024,128
 
 logos: chrome.png
 	install:128,0,128,128
 	eva:256,64,128,64
 	nod-load:0,256,256,256
 	gdi-load:256,256,256,256
+	
+medals: medal.png
+	nod-medal:13,99,231,338
+	gdi-medal:262,99,243,320
 
 button: chrome.png
 	background: 2,194,60,60

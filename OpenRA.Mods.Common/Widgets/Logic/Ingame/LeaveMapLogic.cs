@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
@@ -32,6 +33,11 @@ namespace OpenRA.Mods.Common.Widgets
 		public LeaveMapLogic(Widget widget, World world, OrderManager orderManager)
 		{
 			this.orderManager = orderManager;
+
+			if (world.LocalPlayer.WinState == WinState.Won)
+			{
+				CampaignProgress.SaveProgress(world.LocalPlayer.Country.Name);
+			}
 
 			var mpe = world.WorldActor.TraitOrDefault<MenuPaletteEffect>();
 			if (mpe != null)
@@ -104,6 +110,29 @@ namespace OpenRA.Mods.Common.Widgets
 
 				Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave",
 					world.LocalPlayer == null ? null : world.LocalPlayer.Country.Race);
+
+				CampaignProgress.ResetSaveProgressFlag();
+
+				var exitDelay = 1200;
+				if (mpe != null)
+				{
+					Game.RunAfterDelay(exitDelay, () => mpe.Fade(MenuPaletteEffect.EffectType.Black));
+					exitDelay += 40 * mpe.Info.FadeLength;
+				}
+
+				Game.RunAfterDelay(exitDelay, () =>
+				{
+					Game.Disconnect();
+					Ui.ResetAll();
+					Game.LoadShellMap();
+				});
+			};
+
+			var continueButton = dialog.Get<ButtonWidget>("CONTINUE_BUTTON");
+			continueButton.IsVisible = () => CampaignProgress.GetSaveProgressFlag() && world.LocalPlayer.WinState == WinState.Won;
+			continueButton.OnClick = () =>
+			{
+				continueButton.Disabled = true;
 
 				var exitDelay = 1200;
 				if (mpe != null)

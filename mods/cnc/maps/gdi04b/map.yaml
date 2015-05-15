@@ -6,6 +6,10 @@ Title: Get the Rods back (b)
 
 Description: Nod has captured classified GDI property.\n\nYou must find and retrieve the stolen equipment.\n\nIt is being transported in a shipping crate.\n\nUse the new APC to strategically transport infantry through Nod forces.
 
+CountryDescription: Belarus:\n\n|\n\n|Population:\n|10,373,000\n|Geographic Area:\n|80,134 square miles\n|Capital:\n|Minsk\n|Government:\n|Republic\n|Gross Domestic Product:\n|Negligible\n|Point of Conflict:\n|Bobyrusk\n|Military Power:\n|State Militia 
+
+NextMission: gdi05a
+
 Author: Westwood Studios
 
 Tileset: TEMPERAT

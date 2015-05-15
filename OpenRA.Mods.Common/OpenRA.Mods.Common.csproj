@@ -127,6 +127,7 @@
     <Compile Include="AI\States\ProtectionStates.cs" />
     <Compile Include="AI\States\StateBase.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
+    <Compile Include="CampaignProgress.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Contrail.cs" />

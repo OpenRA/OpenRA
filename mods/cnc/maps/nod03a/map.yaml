@@ -6,6 +6,10 @@ Title: Sudanese Prison Break (a)
 
 Description: GDI has established a prison camp, where they are detaining some of the local political leaders.\n\nKane wishes to liberate these victims.\n\nDestroy the GDI forces and capture the prison, do not destroy it.
 
+CountryDescription: Sudan:\n\n|\n\n|Population:\n|28,305,000\n|Expendability:\n|50%\n|Capital:\n|Khartoum\n|Government:\n|Military\n|Government Corruptability:\n|52%\n|Net Worth:\n|$12,100,000,000\n|Point of Conflict:\n|Kafia-Kingi\n|Military Strength:\n|Respectable\n|Military Resistance:\n|72%
+
+NextMission: 
+
 Author: Westwood Studios
 
 Tileset: DESERT

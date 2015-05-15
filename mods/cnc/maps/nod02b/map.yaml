@@ -6,6 +6,10 @@ Title: Invasion of Egypt (b)
 
 Description: GDI has kept a stranglehold on Egypt for many years.  Set up a forward attack base in your area.  To do this you must select your Mobile Construction Vehicle (MCV) and right click on it.  From here you can begin to build a base. This area contains plenty of Tiberium, so establishing the base should be easy.
 
+CountryDescription: Egypt:\n\n|\n\n|Population:\n|56,386,000\n|Expendability:\n|75%\n|Capital:\n|Cairo\n|Government:\n|Republic\n|Government Corruptability:\n|18%\n|Net Worth:\n|$39,200,000,000\n|Point of Conflict:\n|Al-Kharijah\n|Military Strength:\n|Formidable\n|Military Resistance:\n|82%
+
+NextMission: nod03a, nod03b
+
 Author: Westwood Studios
 
 Tileset: DESERT

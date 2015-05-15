@@ -1,0 +1,85 @@
+Container@CAMPAIGN_MENU:
+	Logic: CampaignMenuLogic
+	X: WINDOW_RIGHT/6
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: WINDOW_RIGHT / 2 + WINDOW_RIGHT / 6
+	Height: WINDOW_BOTTOM / 2
+	Children:
+		Background:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: panel-black
+		Label@CAMPAIGN_MENU_TITLE:
+			Y: 0-30
+			Width: PARENT_RIGHT
+			Text: Campaign Menu
+			Align: Center
+			Contrast: true
+			Font: BigBold
+		Container@CAMPAIGN_MENU_PANEL:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Children:
+				Container@CAMPAIGN_GDI:
+					Width: PARENT_RIGHT / 2
+					Height: PARENT_BOTTOM
+					Children:
+						Background:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM - 2
+							Background: panel-allblack
+						Image@GDI_LOGO:
+							X: PARENT_RIGHT / 2 - 126
+							Y: PARENT_RIGHT / 8
+							ImageCollection: logos
+							ImageName: gdi-load
+						Button@CONTINUE_GDI_BUTTON:
+							X: PARENT_RIGHT / 2 - 70
+							Y: PARENT_BOTTOM - PARENT_BOTTOM / 5
+							Width: 140
+							Height: 35
+							Text: Continue GDI
+							Font: Bold
+							#Background: button-transparent
+							Key: g
+				Container@CAMPAIGN_NOD:
+					X: PARENT_RIGHT - PARENT_RIGHT / 2
+					Width: PARENT_RIGHT / 2
+					Height: PARENT_BOTTOM
+					Children:
+						Background:
+							Y: 1
+							Width: PARENT_RIGHT - 1
+							Height: PARENT_BOTTOM - 2
+							Background: panel-allblack
+						Image@NOD_LOGO:
+							X: PARENT_RIGHT / 2 - 126
+							Y: PARENT_RIGHT / 8
+							ImageCollection: logos
+							ImageName: nod-load
+						Button@CONTINUE_NOD_BUTTON:
+							X: PARENT_RIGHT / 2 - 70
+							Y: PARENT_BOTTOM - PARENT_BOTTOM / 5
+							Width: 140
+							Height: 35
+							Text: Continue Nod
+							Font: Bold
+							Key: n
+				Button@NEW_BUTTON:
+					X: PARENT_RIGHT - 140
+					Y: PARENT_BOTTOM - 1
+					Width: 140
+					Height: 35
+					Text: New
+					Font: Bold
+					Key: Return
+				Button@BACK_BUTTON:
+					X: PARENT_RIGHT - PARENT_RIGHT
+					Y: PARENT_BOTTOM - 1
+					Width: 140
+					Height: 35
+					Text: Back
+					Font: Bold
+					Key: Escape
