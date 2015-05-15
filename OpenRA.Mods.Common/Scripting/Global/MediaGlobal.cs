@@ -17,6 +17,7 @@ using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.GameRules;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Scripting;
 
@@ -168,24 +169,24 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Display a text message to the player.")]
-		public void DisplayMessage(string text, string prefix = "Mission")
+		public void DisplayMessage(string text, string prefix = "Mission", HSLColor? color = null)
 		{
 			if (string.IsNullOrEmpty(text))
 				return;
 
-			Color c = Color.White;
+			Color c = color.HasValue ? HSLColor.RGBFromHSL(color.Value.H / 255f, color.Value.S / 255f, color.Value.L / 255f) : Color.White;
 			Game.AddChatLine(c, prefix, text);
-		} // TODO: expose HSLColor to Lua and add as parameter
+		}
 
 		[Desc("Display a text message at the specified location.")]
-		public void FloatingText(string text, WPos position, int duration = 30)
+		public void FloatingText(string text, WPos position, int duration = 30, HSLColor? color = null)
 		{
 			if (string.IsNullOrEmpty(text) || !world.Map.Contains(world.Map.CellContaining(position)))
 				return;
 
-			Color c = Color.White;
+			Color c = color.HasValue ? HSLColor.RGBFromHSL(color.Value.H / 255f, color.Value.S / 255f, color.Value.L / 255f) : Color.White;
 			world.AddFrameEndTask(w => w.Add(new FloatingText(position, c, text, duration)));
-		} // TODO: expose HSLColor to Lua and add as parameter
+		}
 
 		public delegate VqaReader AsyncLoader(Stream s);
 	}
