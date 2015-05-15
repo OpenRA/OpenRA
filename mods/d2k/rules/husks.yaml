@@ -24,9 +24,11 @@ siegetank.husk:
 
 missiletank.husk:
 	Inherits: ^Husk
-	RenderUnit:
+	WithFacingSpriteBody:
 	TransformOnCapture:
 		IntoActor: missiletank
+	AutoSelectionSize:
+	RenderSprites:
 
 sonictank.husk:
 	Inherits: ^Husk

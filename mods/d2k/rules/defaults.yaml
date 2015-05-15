@@ -32,7 +32,7 @@
 	Guard:
 		Voice: Guard
 	Guardable:
-	RenderUnit:
+	WithFacingSpriteBody:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
@@ -58,6 +58,8 @@
 		Image: pips
 		Sequence: pickup-indicator
 		Offset: -12, -12
+	AutoSelectionSize:
+	RenderSprites:
 
 ^Tank:
 	AppearsOnRadar:
@@ -93,7 +95,7 @@
 	Guard:
 		Voice: Guard
 	Guardable:
-	RenderUnit:
+	WithFacingSpriteBody:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
@@ -119,6 +121,8 @@
 		Image: pips
 		Sequence: pickup-indicator
 		Offset: -12, -12
+	AutoSelectionSize:
+	RenderSprites:
 
 ^Husk:
 	Health:
@@ -147,7 +151,9 @@
 		ForceHealthPercentage: 25
 	DisabledOverlay:
 	ScriptTriggers:
-	RenderUnit:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 
 ^TowerHusk:
 	Health:
@@ -295,9 +301,11 @@
 	UpgradeManager:
 	AnnounceOnSeen:
 		Notification: EnemyUnitsDetected
-	RenderUnit:
 	Voiced:
 		VoiceSet: GenericVoice
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 
 ^Helicopter:
 	Inherits: ^Plane

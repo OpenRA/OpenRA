@@ -128,11 +128,13 @@ waypoint:
 
 ^carryall.colorpicker:
 	Inherits: carryall
-	RenderUnit:
-		Image: carryall
-		Palette: colorpicker
+	WithFacingSpriteBody:
 	Helicopter:
 		InitialFacing: 104
+	AutoSelectionSize:
+	RenderSprites:
+		Image: carryall
+		Palette: colorpicker
 
 camera:
 	Immobile:

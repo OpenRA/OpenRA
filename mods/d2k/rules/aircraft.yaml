@@ -20,8 +20,7 @@ carryall.reinforce:
 		Repulsable: False
 		LandAltitude: 100
 		LandWhenIdle: False
-	RenderUnit:
-		Image: carryall
+	WithFacingSpriteBody:
 	WithShadow:
 	LeavesHusk:
 		HuskActor: carryall.husk
@@ -29,6 +28,9 @@ carryall.reinforce:
 	-TargetableAircraft:
 	Carryall:
 		Automatic: False
+	AutoSelectionSize:
+	RenderSprites:
+		Image: carryall
 
 carryall:
 	Inherits: carryall.reinforce
@@ -55,8 +57,7 @@ carryall.infantry:
 		RepairBuildings: repair
 		RearmBuildings:
 		Repulsable: False
-	RenderUnit:
-		Image: carryall
+	WithFacingSpriteBody:
 	WithShadow:
 	Cargo:
 		MaxWeight: 5
@@ -69,6 +70,9 @@ carryall.infantry:
 	LeavesHusk:
 		HuskActor: carryall.infantry.husk
 	RejectsOrders:
+	AutoSelectionSize:
+	RenderSprites:
+		Image: carryall
 
 carryall.husk:
 	Inherits: ^AircraftHusk
@@ -79,9 +83,11 @@ carryall.husk:
 		Speed: 210
 		RepairBuildings: repair
 		RearmBuildings:
-	RenderUnit:
-		Image: carryall
+	WithFacingSpriteBody:
 	WithShadow:
+	AutoSelectionSize:
+	RenderSprites:
+		Image: carryall
 
 frigate:
 	Inherits: ^Plane
@@ -137,12 +143,14 @@ orni:
 		Speed: 280
 		RepairBuildings: repair
 		RearmBuildings:
-	RenderUnit:
+	WithFacingSpriteBody:
 	WithShadow:
 	Selectable:
 		Bounds: 38,32,0,0
 	LeavesHusk:
 		HuskActor: orni.husk
+	AutoSelectionSize:
+	RenderSprites:
 
 orni.bomber:
 	AttackBomber:
@@ -161,8 +169,7 @@ orni.bomber:
 		Repulsable: False
 	AmmoPool:
 		Ammo: 5
-	RenderUnit:
-		Image: orni
+	WithFacingSpriteBody:
 	WithShadow:
 	-Selectable:
 	-GainsExperience:
@@ -171,6 +178,9 @@ orni.bomber:
 	LeavesHusk:
 		HuskActor: orni.bomber.husk
 	RejectsOrders:
+	AutoSelectionSize:
+	RenderSprites:
+		Image: orni
 
 orni.husk:
 	Inherits: ^AircraftHusk
@@ -181,9 +191,11 @@ orni.husk:
 		Speed: 280
 		RepairBuildings: repair
 		RearmBuildings:
-	RenderUnit:
-		Image: orni
+	WithFacingSpriteBody:
 	WithShadow:
+	AutoSelectionSize:
+	RenderSprites:
+		Image: orni
 
 orni.bomber.husk:
 	Inherits: ^AircraftHusk
@@ -194,9 +206,11 @@ orni.bomber.husk:
 		Speed: 350
 		RepairBuildings: repair
 		RearmBuildings:
-	RenderUnit:
-		Image: orni
+	WithFacingSpriteBody:
 	WithShadow:
+	AutoSelectionSize:
+	RenderSprites:
+		Image: orni
 
 carryall.infantry.husk:
 	Inherits: ^AircraftHusk
@@ -207,6 +221,9 @@ carryall.infantry.husk:
 		Speed: 280
 		RepairBuildings: repair
 		RearmBuildings:
-	RenderUnit:
-		Image: carryall
+	WithFacingSpriteBody:
 	WithShadow:
+	AutoSelectionSize:
+	RenderSprites:
+		Image: carryall
+
