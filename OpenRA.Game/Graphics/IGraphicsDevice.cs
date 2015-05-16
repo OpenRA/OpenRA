@@ -41,8 +41,6 @@ namespace OpenRA
 		Additive,
 		Subtractive,
 		Multiply,
-		SoftAdditive,
-		Translucency,
 		Multiplicative,
 		DoubleMultiplicative
 	}
@@ -70,7 +68,7 @@ namespace OpenRA
 		void EnableDepthBuffer();
 		void DisableDepthBuffer();
 
-		void SetBlendMode(BlendMode mode, float alpha = 1f);
+		void SetBlendMode(BlendMode mode);
 
 		void GrabWindowMouseFocus();
 		void ReleaseWindowMouseFocus();

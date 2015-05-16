@@ -119,13 +119,12 @@ namespace OpenRA.Mods.Common.Graphics
 
 				var offset = LoadField<float2>(d, "Offset", float2.Zero);
 				var blendMode = LoadField<BlendMode>(d, "BlendMode", BlendMode.Alpha);
-				var alpha = LoadField<float>(d, "Alpha", 1f);
 
 				// Apply offset to each sprite in the sequence
 				// Different sequences may apply different offsets to the same frame
 				var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
 				sprites = cache[src].Select(
-					s => new Sprite(s.Sheet, s.Bounds, s.Offset + offset, s.Channel, blendMode, alpha)).ToArray();
+					s => new Sprite(s.Sheet, s.Bounds, s.Offset + offset, s.Channel, blendMode)).ToArray();
 
 				MiniYaml length;
 				if (d.TryGetValue("Length", out length) && length.Value == "*")
