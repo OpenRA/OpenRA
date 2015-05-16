@@ -72,6 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!initialized)
 				{
 					frozen[player] = frozenActor = new FrozenActor(self, footprint, footprintRegion, player.Shroud);
+					frozen[player].NeedRenderables = frozenActor.NeedRenderables = startsRevealed;
 					player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
 					isVisible = visible[player] |= startsRevealed;
 				}

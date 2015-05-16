@@ -38,8 +38,8 @@ namespace OpenRA.Traits
 		public int HP;
 		public DamageState DamageState;
 
-		public bool Visible;
-
+		public bool Visible = true;
+		public bool NeedRenderables;
 		public bool IsRendering { get; private set; }
 
 		public FrozenActor(Actor self, MPos[] footprint, CellRegion footprintRegion, Shroud shroud)
@@ -63,7 +63,6 @@ namespace OpenRA.Traits
 
 		int flashTicks;
 		IRenderable[] renderables = NoRenderables;
-		bool needRenderables;
 
 		public void Tick()
 		{
@@ -88,7 +87,7 @@ namespace OpenRA.Traits
 				}
 
 			if (Visible && !wasVisible)
-				needRenderables = true;
+				NeedRenderables = true;
 		}
 
 		public void Flash()
@@ -98,9 +97,9 @@ namespace OpenRA.Traits
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (needRenderables)
+			if (NeedRenderables)
 			{
-				needRenderables = false;
+				NeedRenderables = false;
 				if (!actor.Destroyed)
 				{
 					IsRendering = true;
