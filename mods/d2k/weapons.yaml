@@ -396,7 +396,7 @@ NerveGasMissile:
 		Inaccuracy: 1c96
 		Image: MISSILE
 		Trail: deviator_trail
-		TrailPalette: player
+		TrailPalette: deviatorgas
 		TrailUsePlayerPalette: true
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
@@ -411,7 +411,7 @@ NerveGasMissile:
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosion: deviator
-		ExplosionPalette: player
+		ExplosionPalette: deviatorgas
 		UsePlayerPalette: true
 		ImpactSound: EXPLSML2.WAV
 	Warhead@4OwnerChange: ChangeOwner

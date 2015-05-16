@@ -80,5 +80,10 @@
 	PlayerColorPalette:
 		BasePalette: d2k
 		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
+	PaletteFromPlayerPaletteWithAlpha@deviatorgas:
+		BaseName: deviatorgas
+		BasePalette: player
+		Alpha: 0.68
+		Premultiply: false
 	PlayerHighlightPalette:
 

@@ -52,7 +52,7 @@ explosion:
 	deviator: DATA.R8
 		Start: 3512
 		Length: 23
-		BlendMode: SoftAdditive
+		BlendMode: Alpha
 		Tick: 80
 	corpse: DATA.R8
 		Start: 430
@@ -95,7 +95,6 @@ deviator_trail:
 		Start: 3535
 		Length: 5
 		Tick: 80
-		BlendMode: SoftAdditive
 
 laserfire:
 	idle: DATA.R8
