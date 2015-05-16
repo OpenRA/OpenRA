@@ -275,10 +275,10 @@ Actors:
 		Owner: Neutral
 	Actor77: v31
 		Location: 10,52
-		Owner: Neutral	
+		Owner: Neutral
 	Actor87: v23
 		Location: 9,59
-		Owner: Neutral	
+		Owner: Neutral
 	Actor92: jeep
 		Location: 51,25
 		Owner: GDI
@@ -288,7 +288,7 @@ Actors:
 	Actor94: jeep
 		Location: 39,48
 		Owner: GDI
-		Facing: 96		
+		Facing: 96
 	Actor110: e1
 		Location: 40,49
 		Owner: GDI
@@ -311,7 +311,7 @@ Actors:
 	Actor114: e2
 		Location: 35,40
 		Owner: GDI
-		SubCell: 1	
+		SubCell: 1
 	waypoint27: waypoint
 		Location: 31,36
 		Owner: Neutral
@@ -492,7 +492,7 @@ Actors:
 	CameraPoint: waypoint
 		Location: 32,22
 		Owner: Neutral
-		
+
 Smudges:
 
 Rules:
@@ -508,7 +508,7 @@ Rules:
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 		LuaScript:
-			Scripts: nod04b.lua 
+			Scripts: nod04b.lua
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy
