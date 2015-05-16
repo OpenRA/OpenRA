@@ -34,6 +34,7 @@ Bazooka:
 		Image: RPG
 		RateOfTurn: 5
 		Trail: bazooka_trail
+		TrailPalette: effect75alpha
 		TrailInterval: 1
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
@@ -193,6 +194,7 @@ QuadRockets:
 		Image: RPG
 		RateOfTurn: 10
 		Trail: bazooka_trail2
+		TrailPalette: effect75alpha
 		TrailInterval: 1
 		Speed: 256
 		RangeLimit: 40

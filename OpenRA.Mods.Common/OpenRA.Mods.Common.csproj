@@ -643,6 +643,7 @@
     <Compile Include="Traits\World\EditorActorPreview.cs" />
     <Compile Include="Traits\World\EditorResourceLayer.cs" />
     <Compile Include="Widgets\EditorViewportControllerWidget.cs" />
+    <Compile Include="Traits\World\PaletteFromPaletteWithAlpha.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

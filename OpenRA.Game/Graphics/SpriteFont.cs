@@ -114,6 +114,7 @@ namespace OpenRA.Graphics
 
 			// A new bitmap is generated each time this property is accessed, so we do need to dispose it.
 			using (var bitmap = face.Glyph.Bitmap)
+			{
 				unsafe
 				{
 					var p = (byte*)bitmap.Buffer;
@@ -123,18 +124,23 @@ namespace OpenRA.Graphics
 					for (var j = 0; j < s.Size.Y; j++)
 					{
 						for (var i = 0; i < s.Size.X; i++)
+						{
 							if (p[i] != 0)
 							{
 								var q = destStride * (j + s.Bounds.Top) + 4 * (i + s.Bounds.Left);
-								dest[q] = c.Second.B;
-								dest[q + 1] = c.Second.G;
-								dest[q + 2] = c.Second.R;
-								dest[q + 3] = p[i];
+								var pmc = Util.PremultiplyAlpha(Color.FromArgb(p[i], c.Second));
+
+								dest[q] = pmc.B;
+								dest[q + 1] = pmc.G;
+								dest[q + 2] = pmc.R;
+								dest[q + 3] = pmc.A;
 							}
+						}
 
 						p += bitmap.Pitch;
 					}
 				}
+			}
 
 			s.Sheet.CommitBufferedData();
 

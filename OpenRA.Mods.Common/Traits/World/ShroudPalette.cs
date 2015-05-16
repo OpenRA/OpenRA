@@ -42,8 +42,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		static readonly Color[] Fog = new[]
 		{
-			Color.Transparent, Color.Green,
-			Color.Blue, Color.Yellow,
+			Color.FromArgb(0, 0, 0, 0),
+			Color.Green, Color.Blue, Color.Yellow,
 			Color.FromArgb(128, 0, 0, 0),
 			Color.FromArgb(96, 0, 0, 0),
 			Color.FromArgb(64, 0, 0, 0),
@@ -52,8 +52,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		static readonly Color[] Shroud = new[]
 		{
-			Color.Transparent, Color.Green,
-			Color.Blue, Color.Yellow,
+			Color.FromArgb(0, 0, 0, 0),
+			Color.Green, Color.Blue, Color.Yellow,
 			Color.Black,
 			Color.FromArgb(160, 0, 0, 0),
 			Color.FromArgb(128, 0, 0, 0),

@@ -259,7 +259,7 @@ namespace OpenRA.Renderer.Sdl2
 				case BlendMode.Alpha:
 					GL.Enable(EnableCap.Blend);
 					ErrorHandler.CheckGlError();
-					GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+					GL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcAlpha);
 					break;
 				case BlendMode.Additive:
 					GL.Enable(EnableCap.Blend);

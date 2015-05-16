@@ -49,6 +49,14 @@
 		G: 0
 		B: 0
 		A: 180
+	PaletteFromPaletteWithAlpha@effect75alpha:
+		Name: effect75alpha
+		BasePalette: effect
+		Alpha: 0.75
+	PaletteFromPaletteWithAlpha@effect50alpha:
+		Name: effect50alpha
+		BasePalette: effect
+		Alpha: 0.5
 	PaletteFromScaledPalette@starportlights:
 		Name: starportlights
 		BasePalette: d2k
