@@ -62,8 +62,8 @@ function AnalyzeFile(file)
   return warn, cleanError(err), line, pos
 end
 
-function AnalyzeString(src)
-  local warn, err, line, pos = M.warnings_from_string(src, "<string>")
+function AnalyzeString(src, file)
+  local warn, err, line, pos = M.warnings_from_string(src, file or "<string>")
   return warn, cleanError(err), line, pos
 end
 
