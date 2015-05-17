@@ -62,11 +62,6 @@
 		BasePalette: d2k
 		AllowModifiers: false
 		Offset: -64
-	PaletteFromScaledPalette@repairlights:
-		Name: repairlights
-		BasePalette: d2k
-		AllowModifiers: false
-		Offset: -128
 	PaletteFromR8@shroud:
 		Name: shroud
 		Filename: DATA.R8
