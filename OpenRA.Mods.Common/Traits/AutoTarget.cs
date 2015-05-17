@@ -24,8 +24,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Set to a value >1 to override weapons maximum range for this.")]
 		public readonly int ScanRadius = -1;
 
-		[Desc("Possible values are HoldFire, ReturnFire, Defend and AttackAnything.")]
-		public readonly UnitStance InitialStance = UnitStance.AttackAnything;
+		[Desc("Possible values are HoldFire, ReturnFire, Defend and AttackAnything.",
+			"Used for computer-controlled players, both Lua-scripted and regular Skirmish AI alike.")]
+		public readonly UnitStance InitialStanceAI = UnitStance.AttackAnything;
+
+		[Desc("Possible values are HoldFire, ReturnFire, Defend and AttackAnything. Used for human players.")]
+		public readonly UnitStance InitialStance = UnitStance.Defend;
 
 		[Desc("Allow the player to change the unit stance.")]
 		public readonly bool EnableStances = true;
@@ -63,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			attack = self.Trait<AttackBase>();
-			Stance = info.InitialStance;
+			Stance = self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance;
 			PredictedStance = Stance;
 			at = self.TraitOrDefault<AttackFollow>();
 		}

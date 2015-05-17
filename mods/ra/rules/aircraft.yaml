@@ -273,6 +273,7 @@ HELI:
 		CanHover: True
 	AutoTarget:
 		InitialStance: HoldFire
+		InitialStanceAI: HoldFire
 	WithSpriteRotorOverlay:
 		Offset: 0,0,85
 	AmmoPool:
@@ -326,6 +327,7 @@ HIND:
 		CanHover: True
 	AutoTarget:
 		InitialStance: HoldFire
+		InitialStanceAI: HoldFire
 	WithSpriteRotorOverlay:
 	AmmoPool:
 		Ammo: 24

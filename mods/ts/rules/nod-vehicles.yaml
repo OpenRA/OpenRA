@@ -272,5 +272,6 @@ STNK:
 		Voice: Attack
 	AutoTarget:
 		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
 	-MustBeDestroyed:
 

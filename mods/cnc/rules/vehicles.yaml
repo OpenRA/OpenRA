@@ -150,7 +150,7 @@ ARTY:
 	AttackFrontal:
 	WithMuzzleOverlay:
 	AutoTarget:
-		InitialStance: Defend
+		InitialStanceAI: Defend
 	SpawnActorOnDeath:
 		Actor: ARTY.Husk
 	Explodes:
@@ -488,7 +488,7 @@ MLRS:
 	WithReloadingTurret:
 		AmmoPoolName: primary
 	AutoTarget:
-		InitialStance: Defend
+		InitialStanceAI: Defend
 	RenderRangeCircle:
 	SpawnActorOnDeath:
 		Actor: MLRS.Husk
@@ -526,6 +526,7 @@ STNK:
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
 	Targetable:
 	SpawnActorOnDeath:
 		Actor: STNK.Husk

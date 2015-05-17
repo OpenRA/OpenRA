@@ -126,6 +126,8 @@ fremen:
 		Range: 4c768
 	AutoTarget:
 		ScanRadius: 7
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
 	Armament@PRIMARY:
 		Weapon: Fremen_S
 	Armament@SECONDARY:

@@ -2266,6 +2266,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Add InitialStance for bots
+				if (engineVersion < 20151025)
+				{
+					if (depth == 1 && node.Key == "AutoTarget")
+					{
+						var stance = node.Value.Nodes.FirstOrDefault(n => n.Key == "InitialStance");
+						if (stance != null)
+							node.Value.Nodes.Add(new MiniYamlNode("InitialStanceAI", stance.Value.Value));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
