@@ -35,6 +35,7 @@ namespace OpenRA
 
         public void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
         {
+            var classicmouse = Game.Settings.Game.UseClassicMouseStyle;
             if (isClick)
             {
                 var adjNewSelection = newSelection.Take(1);	/* TODO: select BEST, not FIRST */
@@ -42,13 +43,18 @@ namespace OpenRA
                     actors.SymmetricExceptWith(adjNewSelection);
                 else
                 {
-                    if (newSelection.Count() == 0)
-                        actors.UnionWith(adjNewSelection);
+                    if (classicmouse == true){  
+                        if (newSelection.Count() == 0){
+                            actors.UnionWith(adjNewSelection);
+                        }
+                            else
+                                actors.Clear();
+                                actors.UnionWith(newSelection);
+                    }
+                       
                     else
-                    {
                         actors.Clear();
                         actors.UnionWith(newSelection);
-                    }
                 }
             }
             else
@@ -68,8 +74,10 @@ namespace OpenRA
             }
 
             var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoices());
+            if (newSelection.Count() != 0) { 
             if (voicedUnit != null)
                 Sound.PlayVoice("Select", voicedUnit, voicedUnit.Owner.Country.Race);
+                                           }
 
             foreach (var a in newSelection)
                 foreach (var sel in a.TraitsImplementing<INotifySelected>())
