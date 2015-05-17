@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
-	public class AutoTargetInfo : ITraitInfo, Requires<AttackBaseInfo>
+	public class AutoTargetInfo : ITraitInfo, Requires<AttackBaseInfo>, UsesInit<StanceInit>
 	{
 		[Desc("It will try to hunt down the enemy if it is not set to defend.")]
 		public readonly bool AllowMovement = true;
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool TargetWhenDamaged = true;
 
-		public object Create(ActorInitializer init) { return new AutoTarget(init.Self, this); }
+		public object Create(ActorInitializer init) { return new AutoTarget(init, this); }
 	}
 
 	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
@@ -63,11 +63,17 @@ namespace OpenRA.Mods.Common.Traits
 		// NOT SYNCED: do not refer to this anywhere other than UI code
 		public UnitStance PredictedStance;
 
-		public AutoTarget(Actor self, AutoTargetInfo info)
+		public AutoTarget(ActorInitializer init, AutoTargetInfo info)
 		{
+			var self = init.Self;
 			this.info = info;
 			attack = self.Trait<AttackBase>();
-			Stance = self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance;
+
+			if (init.Contains<StanceInit>())
+				Stance = init.Get<StanceInit, UnitStance>();
+			else
+				Stance = self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance;
+
 			PredictedStance = Stance;
 			at = self.TraitOrDefault<AttackFollow>();
 		}
@@ -202,4 +208,12 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Will not get automatically targeted by enemy (like walls)")]
 	class AutoTargetIgnoreInfo : TraitInfo<AutoTargetIgnore> { }
 	class AutoTargetIgnore { }
+
+	public class StanceInit : IActorInit<UnitStance>
+	{
+		[FieldFromYamlKey] readonly UnitStance value = UnitStance.AttackAnything;
+		public StanceInit() { }
+		public StanceInit(UnitStance init) { value = init; }
+		public UnitStance Value(World world) { return value; }
+	}
 }
