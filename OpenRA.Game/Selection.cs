@@ -33,40 +33,50 @@ namespace OpenRA
 			return actors.Contains(a);
 		}
 
-		public void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
-		{
-			if (isClick)
-			{
-				var adjNewSelection = newSelection.Take(1);	/* TODO: select BEST, not FIRST */
-				if (isCombine)
-					actors.SymmetricExceptWith(adjNewSelection);
-				else
-				{
-					actors.Clear();
-					actors.UnionWith(adjNewSelection);
-				}
-			}
-			else
-			{
-				if (isCombine)
-					actors.UnionWith(newSelection);
-				else
-				{
-					actors.Clear();
-					actors.UnionWith(newSelection);
-				}
-			}
+        public void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
+        {
+            if (isClick)
+            {
+                var adjNewSelection = newSelection.Take(1);	/* TODO: select BEST, not FIRST */
+                if (isCombine)
+                    actors.SymmetricExceptWith(adjNewSelection);
+                else
+                {
+                    if (newSelection.Count() == 0)
+                        actors.UnionWith(adjNewSelection);
+                    else
+                    {
+                        actors.Clear();
+                        actors.UnionWith(newSelection);
+                    }
+                }
+            }
+            else
+            {
+                if (isCombine)
+                    actors.UnionWith(newSelection);
+                else
+                {
+                    if (newSelection.Count() == 0)
+                        actors.UnionWith(newSelection);
+                    else
+                    {
+                        actors.Clear();
+                        actors.UnionWith(newSelection);
+                    }
+                }
+            }
 
-			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoices());
-			if (voicedUnit != null)
-				Sound.PlayVoice("Select", voicedUnit, voicedUnit.Owner.Country.Race);
+            var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoices());
+            if (voicedUnit != null)
+                Sound.PlayVoice("Select", voicedUnit, voicedUnit.Owner.Country.Race);
 
-			foreach (var a in newSelection)
-				foreach (var sel in a.TraitsImplementing<INotifySelected>())
-					sel.Selected(a);
-			foreach (var ns in world.WorldActor.TraitsImplementing<INotifySelection>())
-				ns.SelectionChanged();
-		}
+            foreach (var a in newSelection)
+                foreach (var sel in a.TraitsImplementing<INotifySelected>())
+                    sel.Selected(a);
+            foreach (var ns in world.WorldActor.TraitsImplementing<INotifySelection>())
+                ns.SelectionChanged();
+        }
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
 		public void Clear() { actors.Clear(); }
