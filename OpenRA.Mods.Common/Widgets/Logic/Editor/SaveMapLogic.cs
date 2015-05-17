@@ -20,24 +20,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SaveMapLogic
 	{
 		[ObjectCreator.UseCtor]
-		public SaveMapLogic(Widget widget, Action onExit, World world)
+		public SaveMapLogic(Widget widget, Action onExit, Map map, EditorActorLayer editorActorLayer)
 		{
-			var newMap = world.Map;
+			var title = widget.Get<TextFieldWidget>("TITLE");
+			title.Text = map.Title;
 
-			var title = widget.GetOrNull<TextFieldWidget>("TITLE");
-			if (title != null)
-				title.Text = newMap.Title;
+			var author = widget.Get<TextFieldWidget>("AUTHOR");
+			author.Text = map.Author;
 
-			var description = widget.GetOrNull<TextFieldWidget>("DESCRIPTION");
-			if (description != null)
-				description.Text = newMap.Description;
+			// TODO: This should use a multi-line textfield once they exist
+			var description = widget.Get<TextFieldWidget>("DESCRIPTION");
+			description.Text = map.Description;
 
-			var author = widget.GetOrNull<TextFieldWidget>("AUTHOR");
-			if (author != null)
-				author.Text = newMap.Author;
-
-			var visibilityDropdown = widget.GetOrNull<DropDownButtonWidget>("CLASS_DROPDOWN");
-			if (visibilityDropdown != null)
+			// TODO: This should use a multi-selection dropdown once they exist
+			var visibilityDropdown = widget.Get<DropDownButtonWidget>("VISIBILITY_DROPDOWN");
 			{
 				var mapVisibility = new List<string>(Enum.GetNames(typeof(MapVisibility)));
 				Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
@@ -48,75 +44,98 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					item.Get<LabelWidget>("LABEL").GetText = () => option;
 					return item;
 				};
-				visibilityDropdown.Text = Enum.GetName(typeof(MapVisibility), newMap.Visibility);
+
+				visibilityDropdown.Text = Enum.GetName(typeof(MapVisibility), map.Visibility);
 				visibilityDropdown.OnClick = () =>
 					visibilityDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, mapVisibility, setupItem);
 			}
 
-			var pathDropdown = widget.GetOrNull<DropDownButtonWidget>("PATH_DROPDOWN");
-			if (pathDropdown != null)
+			var directoryDropdown = widget.Get<DropDownButtonWidget>("DIRECTORY_DROPDOWN");
 			{
-				var mapFolders = new List<string>();
-				foreach (var mapFolder in Game.ModData.Manifest.MapFolders.Keys)
+				var mapDirectories = Game.ModData.Manifest.MapFolders.Keys.Select(ff =>
 				{
-					var folder = mapFolder;
-					if (mapFolder.StartsWith("~"))
-						folder = mapFolder.Substring(1);
+					var f = Platform.UnresolvePath(ff);
+					if (f.StartsWith("~"))
+						f = f.Substring(1);
 
-					mapFolders.Add(Platform.ResolvePath(folder));
-				}
+					return f;
+				}).ToList();
 
 				Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 				{
 					var item = ScrollItemWidget.Setup(template,
-						() => pathDropdown.Text == Platform.UnresolvePath(option),
-						() => { pathDropdown.Text = Platform.UnresolvePath(option); });
+						() => directoryDropdown.Text == option,
+						() => directoryDropdown.Text = option);
 					item.Get<LabelWidget>("LABEL").GetText = () => option;
 					return item;
 				};
 
-				var userMapFolder = Game.ModData.Manifest.MapFolders.First(f => f.Value == "User").Key;
-				if (userMapFolder.StartsWith("~"))
-					userMapFolder = userMapFolder.Substring(1);
-				pathDropdown.Text = Platform.UnresolvePath(userMapFolder);
-				pathDropdown.OnClick = () =>
-					pathDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, mapFolders, setupItem);
+				var mapDirectory = Platform.UnresolvePath(Path.GetDirectoryName(map.Path));
+				var initialDirectory = mapDirectories.FirstOrDefault(f => f == mapDirectory);
+
+				if (initialDirectory == null)
+					initialDirectory = mapDirectories.First();
+
+				directoryDropdown.Text = initialDirectory;
+				directoryDropdown.OnClick = () =>
+					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, mapDirectories, setupItem);
 			}
 
-			var filename = widget.GetOrNull<TextFieldWidget>("FILENAME");
-			if (filename != null)
-				filename.Text = Path.GetFileName(world.Map.Path);
+			var filename = widget.Get<TextFieldWidget>("FILENAME");
+			filename.Text = Path.GetFileNameWithoutExtension(map.Path);
 
-			var close = widget.GetOrNull<ButtonWidget>("CLOSE");
-			if (close != null)
-				close.OnClick = () => { Ui.CloseWindow(); onExit(); };
-
-			var save = widget.GetOrNull<ButtonWidget>("SAVE");
-			if (save != null && !string.IsNullOrEmpty(filename.Text))
+			var fileTypes = new Dictionary<string, string>()
 			{
-				var editorLayer = world.WorldActor.Trait<EditorActorLayer>();
-				save.OnClick = () =>
+				{ ".oramap", ".oramap" },
+				{ "(unpacked)", "" }
+			};
+
+			var typeDropdown = widget.Get<DropDownButtonWidget>("TYPE_DROPDOWN");
+			{
+				Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 				{
-					newMap.Title = title.Text;
-					newMap.Description = description.Text;
-					newMap.Author = author.Text;
-					newMap.Visibility = (MapVisibility)Enum.Parse(typeof(MapVisibility), visibilityDropdown.Text);
-					newMap.ActorDefinitions = editorLayer.Save();
-					newMap.PlayerDefinitions = editorLayer.Players.ToMiniYaml();
-					newMap.RequiresMod = Game.ModData.Manifest.Mod.Id;
-
-					var combinedPath = Path.Combine(pathDropdown.Text, filename.Text);
-					var resolvedPath = Platform.ResolvePath(combinedPath);
-					newMap.Save(resolvedPath);
-
-					// Update the map cache so it can be loaded without restarting the game
-					Game.ModData.MapCache[newMap.Uid].UpdateFromMap(newMap, MapClassification.User);
-
-					Console.WriteLine("Saved current map at {0}", resolvedPath);
-					Ui.CloseWindow();
-					onExit();
+					var item = ScrollItemWidget.Setup(template,
+						() => typeDropdown.Text == option,
+						() => typeDropdown.Text = option);
+					item.Get<LabelWidget>("LABEL").GetText = () => option;
+					return item;
 				};
+
+				typeDropdown.Text = Path.GetExtension(map.Path);
+				if (string.IsNullOrEmpty(typeDropdown.Text))
+					typeDropdown.Text = fileTypes.First(t => t.Value == "").Key;
+
+				typeDropdown.OnClick = () =>
+					typeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, fileTypes.Keys, setupItem);
 			}
+
+			var close = widget.Get<ButtonWidget>("BACK_BUTTON");
+			close.OnClick = () => { Ui.CloseWindow(); onExit(); };
+
+			var save = widget.Get<ButtonWidget>("SAVE_BUTTON");
+			save.OnClick = () =>
+			{
+				if (string.IsNullOrEmpty(filename.Text))
+					return;
+
+				map.Title = title.Text;
+				map.Description = description.Text;
+				map.Author = author.Text;
+				map.Visibility = (MapVisibility)Enum.Parse(typeof(MapVisibility), visibilityDropdown.Text);
+				map.ActorDefinitions = editorActorLayer.Save();
+				map.PlayerDefinitions = editorActorLayer.Players.ToMiniYaml();
+				map.RequiresMod = Game.ModData.Manifest.Mod.Id;
+
+				var combinedPath = Platform.ResolvePath(Path.Combine(directoryDropdown.Text, filename.Text + fileTypes[typeDropdown.Text]));
+				map.Save(combinedPath);
+
+				// Update the map cache so it can be loaded without restarting the game
+				Game.ModData.MapCache[map.Uid].UpdateFromMap(map, MapClassification.User);
+
+				Console.WriteLine("Saved current map at {0}", combinedPath);
+				Ui.CloseWindow();
+				onExit();
+			};
 		}
 	}
 }

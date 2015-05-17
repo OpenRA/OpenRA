@@ -101,11 +101,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			saveMapButton.IsVisible = () => world.Type == WorldType.Editor;
 			saveMapButton.OnClick = () =>
 			{
+				hideMenu = true;
 				Ui.OpenWindow("SAVE_MAP_PANEL", new WidgetArgs()
-					{
-						{ "onExit", () => widget.Visible = true },
-						{ "world", world },
-					});
+				{
+					{ "onExit", () => hideMenu = false },
+					{ "map", world.Map },
+					{ "editorActorLayer", world.WorldActor.Trait<EditorActorLayer>() }
+				});
 			};
 
 			menu.Get<ButtonWidget>("MUSIC").OnClick = () =>
