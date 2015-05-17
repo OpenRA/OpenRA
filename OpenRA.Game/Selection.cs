@@ -63,14 +63,19 @@ namespace OpenRA
                     actors.UnionWith(newSelection);
                 else
                 {
-                    if (newSelection.Count() == 0)
-                        actors.UnionWith(newSelection);
-                    else
+                    if (classicmouse == true)
                     {
+                        if (newSelection.Count() == 0)
+                            actors.UnionWith(newSelection);
+                        else
+                            actors.Clear();
+                            actors.UnionWith(newSelection);
+                    }
+                    else
                         actors.Clear();
                         actors.UnionWith(newSelection);
-                    }
-                }
+
+               }
             }
 
             var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoices());
