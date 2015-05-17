@@ -75,7 +75,7 @@ Background@SAVE_MAP_PANEL:
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
 	Width: 350
-	Height: 350
+	Height: 335
 	Children:
 		Label@LABEL_TITLE:
 			X: (PARENT_RIGHT - WIDTH)/2
@@ -95,86 +95,91 @@ Background@SAVE_MAP_PANEL:
 		TextField@TITLE:
 			X: 110
 			Y: 60
-			Width: 210
-			MaxLength: 50
-			Height: 25
-		Label@DESCRIPTION_LABEL:
-			X: 10
-			Y: 99
-			Width: 95
-			Height: 25
-			Align: Right
-			Text: Description:
-		TextField@DESCRIPTION:
-			X: 110
-			Y: 100
-			Width: 210
+			Width: 220
 			MaxLength: 50
 			Height: 25
 		Label@AUTHOR_LABEL:
 			X: 10
-			Y: 139
+			Y: 94
 			Width: 95
 			Height: 25
 			Align: Right
 			Text: Author:
 		TextField@AUTHOR:
 			X: 110
-			Y: 140
-			Width: 210
+			Y: 95
+			Width: 220
 			MaxLength: 50
 			Height: 25
-		Label@CLASS_LABEL:
+		Label@DESCRIPTION_LABEL:
 			X: 10
-			Y: 180
+			Y: 129
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: Class:
-		DropDownButton@CLASS_DROPDOWN:
+			Text: Description:
+		TextField@DESCRIPTION:
 			X: 110
-			Y: 180
-			Width: 210
+			Y: 130
+			Width: 220
+			MaxLength: 50
 			Height: 25
-		Label@PATH_LABEL:
+		Label@VISIBILITY_LABEL:
 			X: 10
-			Y: 219
-			Width: 40
+			Y: 164
+			Width: 95
 			Height: 25
 			Align: Right
-			Text: Path:
-		DropDownButton@PATH_DROPDOWN:
-			X: 60
-			Y: 220
-			Width: 270
+			Text: Visibility:
+		DropDownButton@VISIBILITY_DROPDOWN:
+			X: 110
+			Y: 165
+			Width: 220
+			Height: 25
+		Label@DIRECTORY_LABEL:
+			X: 10
+			Y: 199
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: Directory:
+		DropDownButton@DIRECTORY_DROPDOWN:
+			X: 110
+			Y: 200
+			Width: 220
 			Height: 25
 		Label@FILENAME_LABEL:
 			X: 10
-			Y: 259
-			Width: 40
+			Y: 234
+			Width: 95
 			Height: 25
 			Align: Right
-			Text: File:
+			Text: Filename:
 		TextField@FILENAME:
-			X: 60
-			Y: 260
-			Width: 270
+			X: 110
+			Y: 235
+			Width: 105
 			Height: 25
-		Button@CLOSE:
-			X: 30
-			Y: 300
-			Width: 100
+		DropDownButton@TYPE_DROPDOWN:
+			X: 220
+			Y: 235
+			Width: 110
 			Height: 25
-			Text: Close
-			Font: Bold
-			Key: escape
-		Button@SAVE:
-			X: 210
-			Y: 300
-			Width: 100
+		Button@SAVE_BUTTON:
+			X: 80
+			Y: PARENT_BOTTOM - 45
+			Width: 120
 			Height: 25
 			Text: Save
 			Font: Bold
+		Button@BACK_BUTTON:
+			X: 210
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape
 
 Container@EDITOR_ROOT:
 	Logic: LoadMapEditorLogic
