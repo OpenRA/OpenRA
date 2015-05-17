@@ -150,4 +150,6 @@ World:
 	ScreenShaker:
 	RadarPings:
 	StartGameNotification:
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
 

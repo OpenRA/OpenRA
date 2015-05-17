@@ -227,6 +227,9 @@ Fonts:
 	Title:
 		Font:./mods/common/FreeSansBold.ttf
 		Size:32
+	MediumBold:
+		Font:./mods/common/FreeSansBold.ttf
+		Size:18
 	BigBold:
 		Font:./mods/common/FreeSansBold.ttf
 		Size:24
