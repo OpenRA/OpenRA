@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var keyhandler = widget.Get<LogicKeyListenerWidget>("CONTROLGROUP_KEYHANDLER");
 			keyhandler.OnKeyPress = e =>
 			{
-				if (e.Key >= Keycode.NUMBER_0 && e.Key <= Keycode.NUMBER_9)
+				if (e.Event == KeyInputEvent.Down && e.Key >= Keycode.NUMBER_0 && e.Key <= Keycode.NUMBER_9)
 				{
 					var group = (int)e.Key - (int)Keycode.NUMBER_0;
 					world.Selection.DoControlGroup(world, worldRenderer, group, e.Modifiers, e.MultiTapCount);
