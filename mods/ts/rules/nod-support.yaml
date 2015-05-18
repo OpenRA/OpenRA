@@ -90,16 +90,10 @@ NAOBEL:
 		Range: 8c0
 	Armament:
 		Weapon: LaserFire
-<<<<<<< HEAD
-		LocalOffset: 200,0,725
-	AttackCharge:
-		ReloadTime: 5
-=======
 		LocalOffset: 1400,200,1250
 	AttackCharge:
 		ChargeAudio: obelpowr.aud
 		ReloadTime: 50
->>>>>>> upstreamBleed
 		InitialChargeDelay: 50
 	WithChargeOverlay:
 		Sequence: active
