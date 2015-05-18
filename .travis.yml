@@ -4,8 +4,8 @@
 language: csharp
 mono: 3.12.0
 
-# Use the Docker-based infrastructure
-sudo: false
+# Don't use the container based infrastructure
+sudo: true
 
 cache:
   directories:
@@ -48,7 +48,7 @@ notifications:
     skip_join: true
 
 before_deploy:
- - apt-get download nsis nsis-common
+ - sudo apt-get install nsis nsis-common dpkg
  - export PATH=$PATH:$HOME/usr/bin
  - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
  - cd packaging
