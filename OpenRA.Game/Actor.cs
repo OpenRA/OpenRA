@@ -155,6 +155,11 @@ namespace OpenRA
 				currentActivity.Queue(nextActivity);
 		}
 
+		public bool IsAlliedWith(Actor actor)
+		{
+			return Owner.IsAlliedWith(actor.Owner);
+		}
+
 		public void CancelActivity()
 		{
 			if (currentActivity != null)
