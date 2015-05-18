@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The widget tree to open when a regular map is loaded (i.e. the ingame UI).")]
 		public readonly string IngameRoot = "INGAME_ROOT";
 
+		[Desc("The widget tree to open when the map editor is loaded.")]
+		public readonly string EditorRoot = "EDITOR_ROOT";
+
 		[Desc("Remove any existing UI when a map is loaded.")]
 		public readonly bool ClearRoot = true;
 
@@ -44,7 +47,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.ClearRoot)
 				Ui.ResetAll();
 
-			var widget = world.Type == WorldType.Shellmap ? info.ShellmapRoot : info.IngameRoot;
+			var widget = world.Type == WorldType.Shellmap ? info.ShellmapRoot :
+				world.Type == WorldType.Editor ? info.EditorRoot : info.IngameRoot;
+
 			Game.LoadWidget(world, widget, Ui.Root, new WidgetArgs());
 		}
 	}

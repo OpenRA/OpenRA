@@ -91,6 +91,27 @@ namespace OpenRA.Primitives
 				return new T[0];
 		}
 
+		public void Remove<T>(T val)
+		{
+			var t = val.GetType();
+
+			foreach (var i in t.GetInterfaces())
+				InnerRemove(i, val);
+			foreach (var tt in t.BaseTypes())
+				InnerRemove(tt, val);
+		}
+
+		void InnerRemove(Type t, object val)
+		{
+			List<object> objs;
+			object obj;
+
+			if (dataMultiple.TryGetValue(t, out objs))
+				objs.Remove(val);
+			else if (dataSingular.TryGetValue(t, out obj))
+				dataSingular.Remove(t);
+		}
+
 		public IEnumerator GetEnumerator()
 		{
 			return WithInterface<object>().GetEnumerator();

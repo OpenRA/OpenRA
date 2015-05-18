@@ -1,23 +1,8 @@
-World:
+^BaseWorld:
 	Inherits: ^Palettes
-	ChatCommands:
-	DevCommands:
-	PlayerCommands:
-	HelpCommand:
 	ScreenMap:
 	ActorMap:
-	LoadWidgetAtGameStart:
-	ScreenShaker:
-	BuildingInfluence:
-	ProductionQueueFromSelection:
-		ProductionPaletteWidget: PRODUCTION_PALETTE
-	WormManager:
-	CrateSpawner:
-		Minimum: 0
-		Maximum: 2
-		SpawnInterval: 60
-		WaterChance: 0
-		ValidGround: Sand, Dune, Rock
+	TerrainGeometryOverlay:
 	ShroudRenderer:
 		ShroudVariants: typea, typeb, typec, typed
 		FogVariants: typea, typeb, typec, typed
@@ -46,12 +31,6 @@ World:
 		Name: Corrino
 		Race: corrino
 		Selectable: false
-	DomainIndex:
-	PathfinderDebugOverlay:
-	BuildableTerrainLayer:
-	D2kResourceLayer:
-	TerrainGeometryOverlay:
-	ResourceClaimLayer:
 	ResourceType@Spice:
 		ResourceType: 1
 		Palette: d2k
@@ -64,6 +43,30 @@ World:
 		PipColor: green
 		AllowedTerrainTypes: Sand
 		AllowUnderActors: true
+	LoadWidgetAtGameStart:
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	PlayerCommands:
+	HelpCommand:
+	ScreenShaker:
+	BuildingInfluence:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
+	WormManager:
+	CrateSpawner:
+		Minimum: 0
+		Maximum: 2
+		SpawnInterval: 60
+		WaterChance: 0
+		ValidGround: Sand, Dune, Rock
+	DomainIndex:
+	PathfinderDebugOverlay:
+	BuildableTerrainLayer:
+	D2kResourceLayer:
+	ResourceClaimLayer:
 	SmudgeLayer@Rock:
 		Type: RockCrater
 		Sequence: rockcraters
@@ -135,3 +138,8 @@ World:
 	RadarPings:
 	ObjectivesPanel:
 		PanelName: SKIRMISH_STATS
+
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	D2kEditorResourceLayer:

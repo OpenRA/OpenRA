@@ -120,6 +120,7 @@ ChromeLayout:
 	./mods/cnc/chrome/tooltips.yaml
 	./mods/cnc/chrome/assetbrowser.yaml
 	./mods/cnc/chrome/missionbrowser.yaml
+	./mods/cnc/chrome/editor.yaml
 
 Voices:
 	./mods/cnc/audio/voices.yaml

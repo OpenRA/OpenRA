@@ -18,6 +18,16 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly bool OccupiesSpace = true;
 		public object Create(ActorInitializer init) { return new Immobile(init, this); }
+
+		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
+		{
+			var occupied = OccupiesSpace ? new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } } :
+				new Dictionary<CPos, SubCell>();
+
+			return new ReadOnlyDictionary<CPos, SubCell>(occupied);
+		}
+
+		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
 
 	class Immobile : IOccupySpace, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld

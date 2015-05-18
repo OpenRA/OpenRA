@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Renders a debug overlay showing the terrain cells. Attach this to the world actor.")]
 	public class TerrainGeometryOverlayInfo : TraitInfo<TerrainGeometryOverlay> { }
 
-	public class TerrainGeometryOverlay : IRenderOverlay, IWorldLoaded, IChatCommand
+	public class TerrainGeometryOverlay : IPostRender, IWorldLoaded, IChatCommand
 	{
 		const string CommandName = "terrainoverlay";
 		const string CommandDesc = "Toggles the terrain geometry overlay";
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 				Enabled ^= true;
 		}
 
-		public void Render(WorldRenderer wr)
+		public void RenderAfterWorld(WorldRenderer wr, Actor self)
 		{
 			if (!Enabled)
 				return;

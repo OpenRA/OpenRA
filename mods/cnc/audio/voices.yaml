@@ -41,14 +41,14 @@ CommandoVoice:
 	Voices:
 		Select: yeah1,yes1,yo1
 		Move: cmon1,onit1,gotit1
-		Attack: onit1,gotit1
+		Attack: onit1,gotit1,noprblm1
 		Demolish: bombit1
 		Die: ramyell1
 		Burned: ramyell1
 		Zapped: ramyell1
 		Poisoned: ramyell1
 		Build: rokroll1
-		Kill: keepem1,laugh1,lefty1
+		Kill: keepem1,laugh1,lefty1,tuffguy1
 
 DinoVoice:
 	Voices:

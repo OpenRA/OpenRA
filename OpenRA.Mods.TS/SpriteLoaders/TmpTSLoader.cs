@@ -172,7 +172,6 @@ namespace OpenRA.Mods.TS.SpriteLoaders
 					var k = j * templateWidth + i;
 					s.Position = offsets[k];
 
-					var tileStart = s.Position;
 					var frame = new TmpTSFrame(s, size, i, j);
 					tiles[k] = frame;
 					tiles[k + stride] = new TmpTSDepthFrame(frame);

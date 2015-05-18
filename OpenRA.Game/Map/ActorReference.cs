@@ -48,12 +48,15 @@ namespace OpenRA
 			return info;
 		}
 
-		public MiniYaml Save()
+		public MiniYaml Save(Func<object, bool> initFilter = null)
 		{
 			var ret = new MiniYaml(Type);
 			foreach (var init in InitDict)
 			{
 				if (init is ISuppressInitExport)
+					continue;
+
+				if (initFilter != null && !initFilter(init))
 					continue;
 
 				var initName = init.GetType().Name;

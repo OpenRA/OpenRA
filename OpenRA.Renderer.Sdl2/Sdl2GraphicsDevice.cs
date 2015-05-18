@@ -246,7 +246,7 @@ namespace OpenRA.Renderer.Sdl2
 			ErrorHandler.CheckGlError();
 		}
 
-		public void SetBlendMode(BlendMode mode)
+		public void SetBlendMode(BlendMode mode, float alpha = 1f)
 		{
 			GL.BlendEquation(BlendEquationMode.FuncAdd);
 			ErrorHandler.CheckGlError();
@@ -276,7 +276,7 @@ namespace OpenRA.Renderer.Sdl2
 				case BlendMode.Multiply:
 					GL.Enable(EnableCap.Blend);
 					ErrorHandler.CheckGlError();
-					GL.BlendFuncSeparate(BlendingFactorSrc.DstColor, BlendingFactorDest.Zero, BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcAlpha);
+					GL.BlendFunc(BlendingFactorSrc.DstColor, BlendingFactorDest.OneMinusSrcAlpha);
 					ErrorHandler.CheckGlError();
 					break;
 				case BlendMode.SoftAdditive:
@@ -284,26 +284,11 @@ namespace OpenRA.Renderer.Sdl2
 					ErrorHandler.CheckGlError();
 					GL.BlendFunc(BlendingFactorSrc.OneMinusDstColor, BlendingFactorDest.One);
 					break;
-				case BlendMode.Translucency25:
+				case BlendMode.Translucency:
 					GL.Enable(EnableCap.Blend);
 					ErrorHandler.CheckGlError();
 					GL.BlendFunc(BlendingFactorSrc.OneMinusConstantAlpha, BlendingFactorDest.One);
 					ErrorHandler.CheckGlError();
-					GL.BlendColor(1f, 1f, 1f, 0.25f);
-					break;
-				case BlendMode.Translucency50:
-					GL.Enable(EnableCap.Blend);
-					ErrorHandler.CheckGlError();
-					GL.BlendFunc(BlendingFactorSrc.OneMinusConstantAlpha, BlendingFactorDest.One);
-					ErrorHandler.CheckGlError();
-					GL.BlendColor(1f, 1f, 1f, 0.5f);
-					break;
-				case BlendMode.Translucency75:
-					GL.Enable(EnableCap.Blend);
-					ErrorHandler.CheckGlError();
-					GL.BlendFunc(BlendingFactorSrc.OneMinusConstantAlpha, BlendingFactorDest.One);
-					ErrorHandler.CheckGlError();
-					GL.BlendColor(1f, 1f, 1f, 0.75f);
 					break;
 				case BlendMode.Multiplicative:
 					GL.Enable(EnableCap.Blend);
@@ -316,6 +301,9 @@ namespace OpenRA.Renderer.Sdl2
 					GL.BlendFunc(BlendingFactorSrc.DstColor, BlendingFactorDest.SrcColor);
 					break;
 			}
+
+			if (alpha != 1f)
+				GL.BlendColor(1f, 1f, 1f, alpha);
 
 			ErrorHandler.CheckGlError();
 		}
