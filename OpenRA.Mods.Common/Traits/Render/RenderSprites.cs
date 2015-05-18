@@ -64,9 +64,15 @@ namespace OpenRA.Mods.Common.Traits
 			var facings = 0;
 			var body = init.Actor.Traits.GetOrDefault<BodyOrientationInfo>();
 			if (body != null)
-				facings = body.QuantizedFacings == -1 ?
-					init.Actor.Traits.Get<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(init.Actor, sequenceProvider, race) :
-					body.QuantizedFacings;
+			{
+				facings = body.QuantizedFacings;
+
+				if (facings == -1)
+				{
+					var qbo = init.Actor.Traits.GetOrDefault<IQuantizeBodyOrientationInfo>();
+					facings = qbo != null ? qbo.QuantizedBodyFacings(init.Actor, sequenceProvider, race) : 1;
+				}
+			}
 
 			foreach (var spi in init.Actor.Traits.WithInterface<IRenderActorPreviewSpritesInfo>())
 				foreach (var preview in spi.RenderPreviewSprites(init, this, image, facings, palette))

@@ -158,7 +158,12 @@ namespace OpenRA.Traits
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
 
-	public interface IOccupySpaceInfo : ITraitInfo { }
+	public interface IOccupySpaceInfo : ITraitInfo
+	{
+		IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any);
+		bool SharesCell { get; }
+	}
+
 	public interface IOccupySpace
 	{
 		WPos CenterPosition { get; }

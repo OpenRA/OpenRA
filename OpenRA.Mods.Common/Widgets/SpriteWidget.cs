@@ -16,6 +16,7 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class SpriteWidget : Widget
 	{
+		public Func<float> GetScale = () => 1f;
 		public string Palette = "chrome";
 		public Func<string> GetPalette;
 		public Func<Sprite> GetSprite;
@@ -44,6 +45,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		Sprite cachedSprite = null;
 		string cachedPalette = null;
+		float cachedScale;
 		PaletteReference pr;
 		float2 offset = float2.Zero;
 
@@ -51,6 +53,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var sprite = GetSprite();
 			var palette = GetPalette();
+			var scale = GetScale();
 
 			if (sprite == null || palette == null)
 				return;
@@ -67,7 +70,14 @@ namespace OpenRA.Mods.Common.Widgets
 				cachedPalette = palette;
 			}
 
-			Game.Renderer.SpriteRenderer.DrawSprite(sprite, RenderOrigin + offset, pr);
+			if (scale != cachedScale)
+			{
+				offset *= scale;
+				cachedScale = scale;
+			}
+
+			var size = new float2(sprite.Size.X * scale, sprite.Size.Y * scale);
+			Game.Renderer.SpriteRenderer.DrawSprite(sprite, RenderOrigin + offset, pr, size);
 		}
 	}
 }

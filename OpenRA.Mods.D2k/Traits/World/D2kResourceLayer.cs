@@ -21,7 +21,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 	public class D2kResourceLayer : ResourceLayer
 	{
-		[Flags] enum ClearSides : byte
+		[Flags] public enum ClearSides : byte
 		{
 			None = 0x0,
 			Left = 0x1,
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.D2k.Traits
 			All = 0xFF
 		}
 
-		static readonly Dictionary<string, int[]> Variants = new Dictionary<string, int[]>()
+		public static readonly Dictionary<string, int[]> Variants = new Dictionary<string, int[]>()
 		{
 			{ "cleara", new[] { 0, 50 } },
 			{ "clearb", new[] { 1, 51 } },
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.D2k.Traits
 			{ "cleard", new[] { 0, 53 } },
 		};
 
-		static readonly Dictionary<ClearSides, int> SpriteMap = new Dictionary<ClearSides, int>()
+		public static readonly Dictionary<ClearSides, int> SpriteMap = new Dictionary<ClearSides, int>()
 		{
 			{ ClearSides.None, 0 },
 			{ ClearSides.Left | ClearSides.Top | ClearSides.TopLeft | ClearSides.TopRight | ClearSides.BottomLeft | ClearSides.BottomRight, 2 },

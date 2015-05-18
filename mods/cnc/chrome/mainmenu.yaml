@@ -165,14 +165,21 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: Music
-						Button@ASSETBROWSER_BUTTON:
+						Button@MAP_EDITOR_BUTTON:
 							X: 300
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Map Editor
+							Font: Bold
+						Button@ASSETBROWSER_BUTTON:
+							X: 450
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: Asset Browser
 						Button@CREDITS_BUTTON:
-							X: 450
+							X: 600
 							Y: 0
 							Width: 140
 							Height: 35
@@ -184,6 +191,41 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: Back
+				Background@MAP_EDITOR_MENU:
+					Width: PARENT_RIGHT
+					Visible: False
+					Children:
+						Label@MAP_EDITOR_MENU_TITLE:
+							X: 0
+							Y: 0-30
+							Width: PARENT_RIGHT
+							Height: 20
+							Text: Map Editor
+							Align: Center
+							Font: Bold
+							Contrast: True
+						Button@NEW_MAP_BUTTON:
+							X: 0
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: New Map
+							Font: Bold
+						Button@LOAD_MAP_BUTTON:
+							X: 150
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Load Map
+							Font: Bold
+						Button@BACK_BUTTON:
+							X: 300
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Back
+							Font: Bold
+							Key: escape
 		Container@NEWS_BG:
 			Children:
 				DropDownButton@NEWS_BUTTON:

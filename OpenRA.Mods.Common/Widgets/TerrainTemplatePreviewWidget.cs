@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (tileInfo == null)
 						continue;
 
-					var sprite = worldRenderer.Theater.TileSprite(tile);
+					var sprite = worldRenderer.Theater.TileSprite(tile, 0);
 					var size = new float2(sprite.Size.X * scale, sprite.Size.Y * scale);
 
 					var u = shape == TileShape.Rectangle ? x : (x - y) / 2f;

@@ -82,7 +82,7 @@ namespace OpenRA.Graphics
 			Sheet.ReleaseBuffer();
 		}
 
-		public Sprite TileSprite(TerrainTile r)
+		public Sprite TileSprite(TerrainTile r, int? variant = null)
 		{
 			TheaterTemplate template;
 			if (!templates.TryGetValue(r.Type, out template))
@@ -91,7 +91,7 @@ namespace OpenRA.Graphics
 			if (r.Index >= template.Stride)
 				return missingTile;
 
-			var start = template.Variants > 1 ? random.Next(template.Variants) : 0;
+			var start = template.Variants > 1 ? variant.HasValue ? variant.Value : random.Next(template.Variants) : 0;
 			return template.Sprites[start * template.Stride + r.Index];
 		}
 
