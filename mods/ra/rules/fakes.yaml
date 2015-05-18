@@ -68,6 +68,8 @@ SYRF:
 		Image: SYRD
 	Valued:
 		Cost: 100
+	EditorTilesetFilter:
+		ExcludeTilesets: INTERIOR
 
 SPEF:
 	Inherits: ^FakeBuilding
@@ -93,6 +95,8 @@ SPEF:
 		Image: SPEN
 	Valued:
 		Cost: 100
+	EditorTilesetFilter:
+		ExcludeTilesets: INTERIOR
 
 DOMF:
 	Inherits: ^FakeBuilding
