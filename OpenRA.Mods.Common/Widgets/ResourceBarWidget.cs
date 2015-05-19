@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Widgets
 							top.Y -= 1;
 						}
 
-						Game.Renderer.LineRenderer.DrawLine(bottom, top, color, color);
+						Game.Renderer.LineRenderer.DrawLine(bottom, top, color);
 					}
 				}
 				else
@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Widgets
 							right.X -= 1;
 						}
 
-						Game.Renderer.LineRenderer.DrawLine(left, right, color, color);
+						Game.Renderer.LineRenderer.DrawLine(left, right, color);
 					}
 				}
 				else
