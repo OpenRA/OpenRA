@@ -44,3 +44,8 @@ Sounds:
 		ClickSound: button
 		ClickDisabledSound: scold2
 		Beacon: bleep2
+		SignalFlare: flare1
+		SignalFlareEast: flaree1
+		SignalFlareNorth: flaren1
+		SignalFlareSouth: flares1
+		SignalFlareWest: flarew1

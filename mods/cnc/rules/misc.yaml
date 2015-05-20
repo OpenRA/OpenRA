@@ -67,4 +67,17 @@ CAMERA.small:
 	RevealsShroud:
 		Range: 6c0
 	BodyOrientation:
-
+	
+FLARE:
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 3c0
+	RenderSprites:
+		Image: smokland
+	WithSpriteBody:
+		StartSequence: open
+	HiddenUnderFog:
+	Tooltip:
+		Name: Flare
+	BodyOrientation:
