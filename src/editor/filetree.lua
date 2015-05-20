@@ -263,9 +263,10 @@ local function treeSetConnectorsAndIcons(tree)
 
   local empty = ""
   local function renameItem(itemsrc, target)
-    local isdir = tree:IsDirectory(itemsrc)
-    local isnew = tree:GetItemText(itemsrc) == empty
-    local source = tree:GetItemFullName(itemsrc)
+    local cache = type(itemsrc) == 'table' and itemsrc or nil
+    local isdir = cache and cache.isdir == nil and tree:IsDirectory(itemsrc) or cache.isdir
+    local isnew = cache and cache.isnew == nil and tree:GetItemText(itemsrc) == empty or cache.isnew
+    local source = cache and cache.fullname or tree:GetItemFullName(itemsrc)
     local fn = wx.wxFileName(target)
 
     -- check if the target is the same as the source;
@@ -311,7 +312,7 @@ local function treeSetConnectorsAndIcons(tree)
       end
     end
 
-    refreshAncestors(tree:GetItemParent(itemsrc))
+    refreshAncestors(cache and cache.parent or tree:GetItemParent(itemsrc))
     -- load file(s) into the same editor (if any); will also refresh the tree
     if #docs > 0 then
       for _, doc in ipairs(docs) do
@@ -637,19 +638,36 @@ local function treeSetConnectorsAndIcons(tree)
       local label = event:GetLabel():gsub("^%s+$","") -- clean all spaces
 
       -- edited the root element; set the new project directory if needed
+      local cancelled = event:IsEditCancelled()
       if tree:IsRoot(itemsrc) then
-        if not event:IsEditCancelled() and wx.wxDirExists(label) then
+        if not cancelled and wx.wxDirExists(label) then
           ProjectUpdateProjectDir(label)
         end
         return
       end
 
       if not parent or not parent:IsOk() then return end
-      local sourcedir = tree:GetItemFullName(parent)
-      local target = MergeFullPath(sourcedir, label)
-      if event:IsEditCancelled() or label == empty
-      or target and not renameItem(itemsrc, target)
-      then refreshAncestors(parent) end
+      local target = MergeFullPath(tree:GetItemFullName(parent), label)
+      if cancelled or label == empty then refreshAncestors(parent)
+      elseif target then
+        -- normally, none of this caching would be needed as `renameItem`
+        -- would be called to check if the item can be renamed;
+        -- however, as it may open a dialog box, on Linux it's causing a crash
+        -- (caused by the same END_LABEL_EDIT even triggered one more time),
+        -- so to protect from that, `renameItem` is called from IDLE event.
+        -- Unfortunately, by that time, the filetree item (`itemsrc`) may
+        -- already have incorrect state (as it's removed from the tree),
+        -- so its properties need to be cached to be used from IDLE event.
+        local cache = {
+          isdir = tree:IsDirectory(itemsrc),
+          isnew = tree:GetItemText(itemsrc) == empty,
+          fullname = tree:GetItemFullName(itemsrc),
+          parent = parent,
+        }
+        ide:DoWhenIdle(function()
+            if not renameItem(cache, target) then refreshAncestors(parent) end
+          end)
+      end
     end)
 
   local itemsrc
