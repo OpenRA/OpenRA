@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new FrozenUnderFog(init, this); }
 	}
 
-	public class FrozenUnderFog : IRenderModifier, IVisibilityModifier, ITick, ISync
+	public class FrozenUnderFog : IRenderModifier, IFogCoverHandler, ITick, ISync
 	{
 		[Sync] public int VisibilityHash;
 

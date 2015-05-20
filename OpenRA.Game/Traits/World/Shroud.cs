@@ -383,7 +383,8 @@ namespace OpenRA.Traits
 
 		public bool IsTargetable(Actor a)
 		{
-			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, self.Owner)))
+			var h = a.TraitsImplementing<IFogCoverHandler>();
+			if (a.TraitsImplementing<IVisibilityModifier>().Where(t => h.All(f => f != t)).Any(t => !t.IsVisible(a, self.Owner)))
 				return false;
 
 			if (HasFogVisibility())

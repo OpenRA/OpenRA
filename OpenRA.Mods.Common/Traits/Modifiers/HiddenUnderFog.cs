@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("The actor stays invisible under fog of war.")]
 	public class HiddenUnderFogInfo : TraitInfo<HiddenUnderFog> { }
 
-	public class HiddenUnderFog : IRenderModifier, IVisibilityModifier
+	public class HiddenUnderFog : IRenderModifier, IFogCoverHandler
 	{
 		public bool IsVisible(Actor self, Player byPlayer)
 		{
