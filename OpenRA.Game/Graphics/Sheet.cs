@@ -155,16 +155,6 @@ namespace OpenRA.Graphics
 
 		public void CommitData()
 		{
-			CommitData(false);
-		}
-
-		public void ReleaseBuffer()
-		{
-			CommitData(true);
-		}
-
-		void CommitData(bool releaseBuffer)
-		{
 			lock (textureLock)
 			{
 				if (!Buffered)
@@ -174,8 +164,17 @@ namespace OpenRA.Graphics
 						"If you need to make only small changes to the texture data consider creating a buffered sheet instead.");
 
 				dirty = true;
-				if (releaseBuffer)
-					releaseBufferOnCommit = true;
+			}
+		}
+
+		public void ReleaseBuffer()
+		{
+			lock (textureLock)
+			{
+				if (!Buffered)
+					return;
+				dirty = true;
+				releaseBufferOnCommit = true;
 			}
 		}
 
