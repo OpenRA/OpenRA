@@ -16,10 +16,10 @@ using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Platforms.Default
 {
-	public sealed class FrameBuffer : IFrameBuffer
+	sealed class FrameBuffer : ThreadAffine, IFrameBuffer
 	{
-		Texture texture;
-		Size size;
+		readonly Texture texture;
+		readonly Size size;
 		int framebuffer, depth;
 		bool disposed;
 
@@ -83,6 +83,8 @@ namespace OpenRA.Platforms.Default
 		int[] cv = new int[4];
 		public void Bind()
 		{
+			VerifyThreadAffinity();
+
 			// Cache viewport rect to restore when unbinding
 			cv = ViewportRectangle();
 
@@ -100,6 +102,7 @@ namespace OpenRA.Platforms.Default
 
 		public void Unbind()
 		{
+			VerifyThreadAffinity();
 			GL.Flush();
 			ErrorHandler.CheckGlError();
 			GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, 0);
@@ -108,7 +111,14 @@ namespace OpenRA.Platforms.Default
 			ErrorHandler.CheckGlError();
 		}
 
-		public ITexture Texture { get { return texture; } }
+		public ITexture Texture
+		{
+			get
+			{
+				VerifyThreadAffinity();
+				return texture;
+			}
+		}
 
 		~FrameBuffer()
 		{

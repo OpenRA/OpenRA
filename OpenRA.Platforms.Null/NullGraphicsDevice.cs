@@ -16,7 +16,7 @@ namespace OpenRA.Platforms.Null
 {
 	public sealed class NullGraphicsDevice : IGraphicsDevice
 	{
-		public Size WindowSize { get; internal set; }
+		public Size WindowSize { get; private set; }
 
 		public NullGraphicsDevice(Size size, WindowMode window)
 		{

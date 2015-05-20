@@ -13,7 +13,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Platforms.Default
 {
-	public static class MultiTapDetection
+	static class MultiTapDetection
 	{
 		static Cache<Keycode, TapHistory> keyHistoryCache =
 			new Cache<Keycode, TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));

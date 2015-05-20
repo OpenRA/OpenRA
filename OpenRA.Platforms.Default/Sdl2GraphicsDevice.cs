@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using OpenRA;
 using OpenRA.Graphics;
 using OpenTK.Graphics;
@@ -20,20 +21,18 @@ using SDL2;
 
 namespace OpenRA.Platforms.Default
 {
-	public sealed class Sdl2GraphicsDevice : IGraphicsDevice
+	sealed class Sdl2GraphicsDevice : ThreadAffine, IGraphicsDevice
 	{
-		Size size;
-		Sdl2Input input;
+		readonly Sdl2Input input;
 		IntPtr context, window;
 		bool disposed;
 
-		public Size WindowSize { get { return size; } }
+		public Size WindowSize { get; private set; }
 
 		public Sdl2GraphicsDevice(Size windowSize, WindowMode windowMode)
 		{
 			Console.WriteLine("Using SDL 2 with OpenGL renderer");
-
-			size = windowSize;
+			WindowSize = windowSize;
 
 			SDL.SDL_Init(SDL.SDL_INIT_NOPARACHUTE | SDL.SDL_INIT_VIDEO);
 			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_DOUBLEBUFFER, 1);
@@ -46,15 +45,16 @@ namespace OpenRA.Platforms.Default
 			SDL.SDL_GetCurrentDisplayMode(0, out display);
 
 			Console.WriteLine("Desktop resolution: {0}x{1}", display.w, display.h);
-			if (size.Width == 0 && size.Height == 0)
+			if (WindowSize.Width == 0 && WindowSize.Height == 0)
 			{
 				Console.WriteLine("No custom resolution provided, using desktop resolution");
-				size = new Size(display.w, display.h);
+				WindowSize = new Size(display.w, display.h);
 			}
 
-			Console.WriteLine("Using resolution: {0}x{1}", size.Width, size.Height);
+			Console.WriteLine("Using resolution: {0}x{1}", WindowSize.Width, WindowSize.Height);
 
-			window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED, size.Width, size.Height, SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL);
+			window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED,
+				WindowSize.Width, WindowSize.Height, SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL);
 
 			if (Game.Settings.Game.LockMouseWindow)
 				GrabWindowMouseFocus();
@@ -100,6 +100,7 @@ namespace OpenRA.Platforms.Default
 
 		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot)
 		{
+			VerifyThreadAffinity();
 			try
 			{
 				return new SDL2HardwareCursor(size, data, hotspot);
@@ -112,6 +113,7 @@ namespace OpenRA.Platforms.Default
 
 		public void SetHardwareCursor(IHardwareCursor cursor)
 		{
+			VerifyThreadAffinity();
 			var c = cursor as SDL2HardwareCursor;
 			if (c == null)
 				SDL.SDL_ShowCursor((int)SDL.SDL_bool.SDL_FALSE);
@@ -214,12 +216,14 @@ namespace OpenRA.Platforms.Default
 
 		public void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices)
 		{
+			VerifyThreadAffinity();
 			GL.DrawArrays(ModeFromPrimitiveType(pt), firstVertex, numVertices);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void Clear()
 		{
+			VerifyThreadAffinity();
 			GL.ClearColor(0, 0, 0, 1);
 			ErrorHandler.CheckGlError();
 			GL.Clear(ClearBufferMask.ColorBufferBit);
@@ -228,6 +232,7 @@ namespace OpenRA.Platforms.Default
 
 		public void EnableDepthBuffer()
 		{
+			VerifyThreadAffinity();
 			GL.Clear(ClearBufferMask.DepthBufferBit);
 			ErrorHandler.CheckGlError();
 			GL.Enable(EnableCap.DepthTest);
@@ -236,12 +241,14 @@ namespace OpenRA.Platforms.Default
 
 		public void DisableDepthBuffer()
 		{
+			VerifyThreadAffinity();
 			GL.Disable(EnableCap.DepthTest);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void SetBlendMode(BlendMode mode)
 		{
+			VerifyThreadAffinity();
 			GL.BlendEquation(BlendEquationMode.FuncAdd);
 			ErrorHandler.CheckGlError();
 
@@ -290,23 +297,27 @@ namespace OpenRA.Platforms.Default
 
 		public void GrabWindowMouseFocus()
 		{
+			VerifyThreadAffinity();
 			SDL.SDL_SetWindowGrab(window, SDL.SDL_bool.SDL_TRUE);
 		}
 
 		public void ReleaseWindowMouseFocus()
 		{
+			VerifyThreadAffinity();
 			SDL.SDL_SetWindowGrab(window, SDL.SDL_bool.SDL_FALSE);
 		}
 
 		public void EnableScissor(int left, int top, int width, int height)
 		{
+			VerifyThreadAffinity();
+
 			if (width < 0)
 				width = 0;
 
 			if (height < 0)
 				height = 0;
 
-			GL.Scissor(left, size.Height - (top + height), width, height);
+			GL.Scissor(left, WindowSize.Height - (top + height), width, height);
 			ErrorHandler.CheckGlError();
 			GL.Enable(EnableCap.ScissorTest);
 			ErrorHandler.CheckGlError();
@@ -314,19 +325,21 @@ namespace OpenRA.Platforms.Default
 
 		public void DisableScissor()
 		{
+			VerifyThreadAffinity();
 			GL.Disable(EnableCap.ScissorTest);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void SetLineWidth(float width)
 		{
+			VerifyThreadAffinity();
 			GL.LineWidth(width);
 			ErrorHandler.CheckGlError();
 		}
 
 		public Bitmap TakeScreenshot()
 		{
-			var rect = new Rectangle(Point.Empty, size);
+			var rect = new Rectangle(Point.Empty, WindowSize);
 			var bitmap = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 			var data = bitmap.LockBits(rect,
 				System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
@@ -349,13 +362,52 @@ namespace OpenRA.Platforms.Default
 			return bitmap;
 		}
 
-		public void Present() { SDL.SDL_GL_SwapWindow(window); }
-		public void PumpInput(IInputHandler inputHandler) { input.PumpInput(inputHandler); }
-		public string GetClipboardText() { return input.GetClipboardText(); }
-		public IVertexBuffer<Vertex> CreateVertexBuffer(int size) { return new VertexBuffer<Vertex>(size); }
-		public ITexture CreateTexture() { return new Texture(); }
-		public ITexture CreateTexture(Bitmap bitmap) { return new Texture(bitmap); }
-		public IFrameBuffer CreateFrameBuffer(Size s) { return new FrameBuffer(s); }
-		public IShader CreateShader(string name) { return new Shader(name); }
+		public void Present()
+		{
+			VerifyThreadAffinity();
+			SDL.SDL_GL_SwapWindow(window);
+		}
+
+		public void PumpInput(IInputHandler inputHandler)
+		{
+			VerifyThreadAffinity();
+			input.PumpInput(inputHandler);
+		}
+
+		public string GetClipboardText()
+		{
+			VerifyThreadAffinity();
+			return input.GetClipboardText();
+		}
+
+		public IVertexBuffer<Vertex> CreateVertexBuffer(int size)
+		{
+			VerifyThreadAffinity();
+			return new VertexBuffer<Vertex>(size);
+		}
+
+		public ITexture CreateTexture()
+		{
+			VerifyThreadAffinity();
+			return new Texture();
+		}
+
+		public ITexture CreateTexture(Bitmap bitmap)
+		{
+			VerifyThreadAffinity();
+			return new Texture(bitmap);
+		}
+
+		public IFrameBuffer CreateFrameBuffer(Size s)
+		{
+			VerifyThreadAffinity();
+			return new FrameBuffer(s);
+		}
+
+		public IShader CreateShader(string name)
+		{
+			VerifyThreadAffinity();
+			return new Shader(name);
+		}
 	}
 }

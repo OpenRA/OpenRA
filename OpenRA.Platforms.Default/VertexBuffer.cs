@@ -14,7 +14,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Platforms.Default
 {
-	public sealed class VertexBuffer<T> : IVertexBuffer<T>
+	sealed class VertexBuffer<T> : ThreadAffine, IVertexBuffer<T>
 			where T : struct
 	{
 		static readonly int VertexSize = Marshal.SizeOf(typeof(T));
@@ -60,6 +60,7 @@ namespace OpenRA.Platforms.Default
 
 		public void Bind()
 		{
+			VerifyThreadAffinity();
 			GL.BindBuffer(BufferTarget.ArrayBuffer, buffer);
 			ErrorHandler.CheckGlError();
 			GL.VertexPointer(3, VertexPointerType.Float, VertexSize, IntPtr.Zero);
