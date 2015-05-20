@@ -37,6 +37,12 @@ namespace OpenRA.Scripting
 		{
 			object temp;
 
+			// Is t a nullable?
+			// If yes, get the underlying type
+			var nullable = Nullable.GetUnderlyingType(t);
+			if (nullable != null)
+				t = nullable;
+
 			// Value wraps a CLR object
 			if (value.TryGetClrObject(out temp))
 			{
