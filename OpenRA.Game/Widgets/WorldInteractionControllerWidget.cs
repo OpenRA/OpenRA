@@ -109,10 +109,13 @@ namespace OpenRA.Widgets
 						var unit = World.ScreenMap.ActorsAt(xy)
 							.WithHighestSelectionPriority();
 
-						var newSelection2 = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,
-							a => unit != null && a.Info.Name == unit.Info.Name && a.Owner == unit.Owner);
+						if (unit != null && unit.Owner == (World.RenderPlayer ?? World.LocalPlayer))
+						{
+							var newSelection2 = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,
+								a => a.Owner == unit.Owner && a.Info.Name == unit.Info.Name);
 
-						World.Selection.Combine(World, newSelection2, true, false);
+							World.Selection.Combine(World, newSelection2, true, false);
+						}
 					}
 					else if (dragStart.HasValue)
 					{
