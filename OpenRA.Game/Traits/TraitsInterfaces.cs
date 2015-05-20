@@ -154,6 +154,7 @@ namespace OpenRA.Traits
 	}
 
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
+	public interface IFogCoverHandler : IVisibilityModifier { }
 	public interface IFogVisibilityModifier { bool HasFogVisibility(Player byPlayer); }
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
