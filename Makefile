@@ -321,15 +321,14 @@ dependencies: $(os-dependencies)
 
 all-dependencies: cli-dependencies windows-dependencies osx-dependencies
 
-version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
+version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml mods/all/mod.yaml
 	@for i in $? ; do \
 		awk '{sub("Version:.*$$","Version: $(VERSION)"); print $0}' $${i} > $${i}.tmp && \
 		mv -f $${i}.tmp $${i} ; \
 	done
 
-# Documentation (d2k depends on all mod libraries)
 docs: utility mods version
-	@mono --debug OpenRA.Utility.exe d2k --docs > DOCUMENTATION.md
+	@mono --debug OpenRA.Utility.exe all --docs > DOCUMENTATION.md
 	@mono --debug OpenRA.Utility.exe ra --lua-docs > Lua-API.md
 
 install: install-core
