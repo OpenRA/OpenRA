@@ -383,13 +383,18 @@ namespace OpenRA.Traits
 
 		public bool IsTargetable(Actor a)
 		{
+			var vo = GetVisOrigins(a);
+			var vis = vo.Any(IsVisible);
+			if (!vis && vo.All(c => generatedShroudCount[c] > 0))
+				return false;
+
 			if (HasFogVisibility())
 				return true;
 
 			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, self.Owner)))
 				return false;
 
-			return GetVisOrigins(a).Any(IsVisible);
+			return vis;
 		}
 
 		public bool HasFogVisibility()
