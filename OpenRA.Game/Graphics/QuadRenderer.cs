@@ -32,12 +32,7 @@ namespace OpenRA.Graphics
 			if (nv > 0)
 			{
 				renderer.Device.SetBlendMode(BlendMode.Alpha);
-				shader.Render(() =>
-				{
-					var vb = renderer.GetTempVertexBuffer();
-					vb.SetData(vertices, nv);
-					renderer.DrawBatch(vb, 0, nv, PrimitiveType.QuadList);
-				});
+				shader.Render(() => renderer.DrawBatch(vertices, nv, PrimitiveType.QuadList));
 				renderer.Device.SetBlendMode(BlendMode.None);
 
 				nv = 0;
