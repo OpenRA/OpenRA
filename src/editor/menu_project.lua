@@ -442,13 +442,3 @@ frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_UPDATE_UI,
   function (event)
     event:Enable(ide.interpreter and ide.interpreter.takeparameters and true or false)
   end)
-
-frame:Connect(wx.wxEVT_IDLE,
-  function(event)
-    if (debugger.update) then debugger.update() end
-    if (debugger.scratchpad) then DebuggerRefreshScratchpad() end
-    if IndicateIfNeeded() then event:RequestMore(true) end
-    PackageEventHandleOnce("onIdleOnce", event)
-    PackageEventHandle("onIdle", event)
-    event:Skip() -- let other EVT_IDLE handlers to work on the event
-  end)

@@ -174,6 +174,7 @@ ide = {
   packages = {},
   apis = {},
   timers = {},
+  onidle = {},
 
   proto = {}, -- prototypes for various classes
 

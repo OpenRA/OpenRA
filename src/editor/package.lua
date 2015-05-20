@@ -104,6 +104,8 @@ function ide:GetKnownExtensions(ext)
   return knownexts
 end
 
+function ide:DoWhenIdle(func) table.insert(self.onidle, func) end
+
 function ide:FindTopMenu(item)
   local index = ide:GetMenuBar():FindMenu((TR)(item))
   return ide:GetMenuBar():GetMenu(index), index

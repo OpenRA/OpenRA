@@ -1003,3 +1003,18 @@ function PaneFloatToggle(window)
   end
   uimgr:Update()
 end
+
+frame:Connect(wx.wxEVT_IDLE,
+  function(event)
+    local debugger = ide.debugger
+    if (debugger.update) then debugger.update() end
+    if (debugger.scratchpad) then DebuggerRefreshScratchpad() end
+    if IndicateIfNeeded() then event:RequestMore(true) end
+    PackageEventHandleOnce("onIdleOnce", event)
+    PackageEventHandle("onIdle", event)
+
+    -- process onidle events if any
+    while #ide.onidle > 0 do table.remove(ide.onidle)() end
+
+    event:Skip() -- let other EVT_IDLE handlers to work on the event
+  end)
