@@ -33,64 +33,63 @@ namespace OpenRA
 			return actors.Contains(a);
 		}
 
-		public void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
-		{
-			var stickyselect = Game.Settings.Game.StickySelection;
-			if (isClick)
-			{
-				var adjNewSelection = newSelection.Take(1);	/* TODO: select BEST, not FIRST */
-				if (isCombine)
-					actors.SymmetricExceptWith(adjNewSelection);
-				else
-				{
-					if (stickyselect == true)
-					{
-						if (newSelection.Count() == 0)
-						{
-							actors.UnionWith(adjNewSelection);
-						}
-						else
-						actors.Clear();
-						actors.UnionWith(newSelection);
-					}
-					else
-					actors.Clear();
-					actors.UnionWith(newSelection);
-				}
-			}
-			else
-			{
-				if (isCombine)
-					actors.UnionWith(newSelection);
-				else
-				{
-					if (stickyselect == true)
-					{
-						if (newSelection.Count() == 0)
-							actors.UnionWith(newSelection);
-						else
-						actors.Clear();
-						actors.UnionWith(newSelection);
-					}
-					else
-					actors.Clear();
-					actors.UnionWith(newSelection);
-				}
-			}
+        public void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
+        {
+            var classicmouse = Game.Settings.Game.UseClassicMouseStyle;
+            if (isClick)
+            {
+                var adjNewSelection = newSelection.Take(1);	/* TODO: select BEST, not FIRST */
+                if (isCombine)
+                    actors.SymmetricExceptWith(adjNewSelection);
+                else
+                {
+                    if (classicmouse == true){  
+                        if (newSelection.Count() == 0){
+                            actors.UnionWith(adjNewSelection);
+                        }
+                            else
+                                actors.Clear();
+                                actors.UnionWith(newSelection);
+                    }
+                       
+                    else
+                        actors.Clear();
+                        actors.UnionWith(newSelection);
+                }
+            }
+            else
+            {
+                if (isCombine)
+                    actors.UnionWith(newSelection);
+                else
+                {
+                    if (classicmouse == true)
+                    {
+                        if (newSelection.Count() == 0)
+                            actors.UnionWith(newSelection);
+                        else
+                            actors.Clear();
+                            actors.UnionWith(newSelection);
+                    }
+                    else
+                        actors.Clear();
+                        actors.UnionWith(newSelection);
 
-			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoices());
-			if (newSelection.Count() != 0)
-			{
-				if (voicedUnit != null)
-					Sound.PlayVoice("Select", voicedUnit, voicedUnit.Owner.Country.Race);
-			}
+               }
+            }
 
-			foreach (var a in newSelection)
-				foreach (var sel in a.TraitsImplementing<INotifySelected>())
-					sel.Selected(a);
-			foreach (var ns in world.WorldActor.TraitsImplementing<INotifySelection>())
-				ns.SelectionChanged();
-		}
+            var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoices());
+            if (newSelection.Count() != 0) { 
+            if (voicedUnit != null)
+                Sound.PlayVoice("Select", voicedUnit, voicedUnit.Owner.Country.Race);
+                                           }
+
+            foreach (var a in newSelection)
+                foreach (var sel in a.TraitsImplementing<INotifySelected>())
+                    sel.Selected(a);
+            foreach (var ns in world.WorldActor.TraitsImplementing<INotifySelection>())
+                ns.SelectionChanged();
+        }
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
 		public void Clear() { actors.Clear(); }
@@ -105,6 +104,7 @@ namespace OpenRA
 				cg.RemoveAll(a => a.Destroyed || a.Owner != world.LocalPlayer);
 			}
 		}
+
 		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
 
 		public void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int multiTapCount)
