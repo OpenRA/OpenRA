@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var rules = map.Rules;
 			var tileset = rules.TileSets[map.Tileset];
 			var template = tileset.Templates[Template];
-			var baseHeight = map.Contains(cell) ? map.MapHeight.Value[cell] : 0;
+			var baseHeight = map.Contains(cell) ? map.MapHeight.Value[cell] : (byte)0;
 			if (mi.Event == MouseInputEvent.Move && PlacementOverlapsSameTemplate(template, cell))
 				return true;
 
