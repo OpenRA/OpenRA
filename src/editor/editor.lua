@@ -1027,14 +1027,14 @@ function CreateEditor(bare)
         editor:BeginUndoAction()
         for s = #positions, 1, -1 do
           local pos = positions[s]
-          local start_pos = editor:WordStartPosition(pos, true)
-          editor:SetSelection(start_pos, pos)
+          local startpos = editor:WordStartPosition(pos, true)
+          editor:SetSelection(startpos, pos)
           editor:ReplaceSelection(text)
           -- if this is the main position, save new cursor position to restore
           if pos == mainpos then mainpos = editor:GetCurrentPos()
           elseif pos < mainpos then
             -- adjust main position as earlier changes may affect it
-            mainpos = mainpos + #text - (pos - start_pos)
+            mainpos = mainpos + #text - (pos - startpos)
           end
         end
         editor:EndUndoAction()
@@ -1042,8 +1042,9 @@ function CreateEditor(bare)
         editor:GotoPos(mainpos)
       else
         local pos = editor:GetCurrentPos()
-        local start_pos = editor:WordStartPosition(pos, true)
-        editor:SetSelection(start_pos, pos)
+        local startpos = editor:WordStartPosition(pos, true)
+        local endpos = editor:WordEndPosition(pos, true)
+        editor:SetSelection(startpos, ide.config.acandtip.droprest and endpos or pos)
         editor:ReplaceSelection(event:GetText())
       end
     end)

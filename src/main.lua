@@ -131,6 +131,7 @@ ide = {
       nodynwords = true,
       ignorecase = false,
       symbols = true,
+      droprest = true,
       strategy = 2,
       width = 60,
       maxlength = 450,
