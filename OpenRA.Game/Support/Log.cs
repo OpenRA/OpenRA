@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -22,24 +22,15 @@ namespace OpenRA
 
 	public static class Log
 	{
-		static string LogPathPrefix = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar;
 		public static readonly Dictionary<string, ChannelInfo> Channels = new Dictionary<string, ChannelInfo>();
-
-		public static string LogPath
-		{
-			get { return LogPathPrefix; }
-			set
-			{
-				LogPathPrefix = value;
-				Directory.CreateDirectory(LogPathPrefix);
-			}
-		}
 
 		static IEnumerable<string> FilenamesForChannel(string channelName, string baseFilename)
 		{
-			for(var i = 0;; i++ )
-				yield return Path.Combine(LogPathPrefix,
-					i > 0 ? "{0}.{1}".F(baseFilename, i) : baseFilename);
+			var path = Platform.SupportDir + "Logs";
+			Directory.CreateDirectory(path);
+
+			for (var i = 0;; i++)
+				yield return Path.Combine(path, i > 0 ? "{0}.{1}".F(baseFilename, i) : baseFilename);
 		}
 
 		public static void AddChannel(string channelName, string baseFilename)

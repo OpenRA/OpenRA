@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,70 +8,34 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Move;
-using OpenRA.Mods.RA.Render;
-using OpenRA.Traits;
+using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.TS.Traits;
 
-namespace OpenRA.Mods.TS
+namespace OpenRA.Mods.TS.Activities
 {
-	public class VoxelHarvesterDockSequence : Activity
+	public class VoxelHarvesterDockSequence : HarvesterDockSequence
 	{
-		enum State { Turn, Dock, Loop, Undock }
-
-		readonly Actor proc;
-		readonly Harvester harv;
 		readonly WithVoxelUnloadBody body;
-		State state;
 
-		public VoxelHarvesterDockSequence(Actor self, Actor proc)
+		public VoxelHarvesterDockSequence(Actor self, Actor refinery, int dockAngle, bool isDragRequired, WVec dragOffset, int dragLength)
+			: base(self, refinery, dockAngle, isDragRequired, dragOffset, dragLength)
 		{
-			this.proc = proc;
-			state = State.Turn;
-			harv = self.Trait<Harvester>();
 			body = self.Trait<WithVoxelUnloadBody>();
 		}
 
-		public override Activity Tick(Actor self)
+		public override Activity OnStateDock(Actor self)
 		{
-			switch (state)
-			{
-				case State.Turn:
-					state = State.Dock;
-					return Util.SequenceActivities(new Turn(160), this);
-				case State.Dock:
-					if (proc.IsInWorld && !proc.IsDead())
-						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
-							nd.Docked(proc, self);
-					state = State.Loop;
-					body.Docked = true;
-					return this;
-				case State.Loop:
-					if (!proc.IsInWorld || proc.IsDead() || harv.TickUnload(self, proc))
-						state = State.Undock;
-					return this;
-				case State.Undock:
-					if (proc.IsInWorld && !proc.IsDead())
-						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
-							nd.Undocked(proc, self);
-					body.Docked = false;
-					return NextActivity;
-			}
-
-			throw new InvalidOperationException("Invalid harvester dock state");
+			body.Docked = true;
+			dockingState = State.Loop;
+			return this;
 		}
 
-		public override void Cancel(Actor self)
+		public override Activity OnStateUndock(Actor self)
 		{
-			state = State.Undock;
-		}
-
-		public override IEnumerable<Target> GetTargets(Actor self)
-		{
-			yield return Target.FromActor(proc);
+			body.Docked = false;
+			dockingState = State.Complete;
+			return this;
 		}
 	}
 }

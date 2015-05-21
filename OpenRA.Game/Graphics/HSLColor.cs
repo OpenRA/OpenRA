@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -52,10 +52,14 @@ namespace OpenRA.Graphics
 
 			for (var k = 0; k < 3; k++)
 			{
-				if (trgb[k] < 1 / 6.0f) { rgb[k] = p + ((q - p) * 6 * trgb[k]); }
-				else if (trgb[k] >= 1 / 6.0f && trgb[k] < 0.5) { rgb[k] = q; }
-				else if (trgb[k] >= 0.5f && trgb[k] < 2.0f / 3) { rgb[k] = p + ((q - p) * 6 * (2.0f / 3 - trgb[k])); }
-				else { rgb[k] = p; }
+				if (trgb[k] < 1 / 6.0f)
+					rgb[k] = p + ((q - p) * 6 * trgb[k]);
+				else if (trgb[k] >= 1 / 6.0f && trgb[k] < 0.5)
+					rgb[k] = q;
+				else if (trgb[k] >= 0.5f && trgb[k] < 2.0f / 3)
+					rgb[k] = p + ((q - p) * 6 * (2.0f / 3 - trgb[k]));
+				else
+					rgb[k] = p;
 			}
 
 			return Color.FromArgb((int)(rgb[0] * 255), (int)(rgb[1] * 255), (int)(rgb[2] * 255));

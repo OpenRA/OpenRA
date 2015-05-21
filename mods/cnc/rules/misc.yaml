@@ -1,9 +1,11 @@
+CRATE.plain:
+	Inherits: ^Crate
+	ScriptTriggers:
+
 CRATE:
-	Tooltip:
-		Name: Crate
+	Inherits: ^Crate
 	Crate:
 		Lifetime: 240
-		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 20
@@ -14,33 +16,39 @@ CRATE:
 	ExplodeCrateAction@fire:
 		Weapon: Napalm.Crate
 		SelectionShares: 5
-	CloakCrateAction:
+	GrantUpgradeCrateAction@cloak:
 		SelectionShares: 5
 		Effect: cloak
+		Upgrades: cloak
+	DuplicateUnitCrateAction:
+		SelectionShares: 10
+		MaxAmount: 5
+		MinAmount: 1
+		MaxDuplicateValue: 1250
 	GiveMcvCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 120
-		Unit: mcv
-	RenderSprites:
-		Palette: effect
-	WithCrateBody:
-		XmasImages: xcratea, xcrateb, xcratec, xcrated
-	Selectable:
-		Selectable: false
-		Bounds: 15,15,-1,-1
-	BodyOrientation:
+		Units: mcv
 
 mpspawn:
 	Immobile:
 		OccupiesSpace: false
 	RenderEditorOnly:
+		Palette: chrome
 	BodyOrientation:
 
 waypoint:
 	Immobile:
 		OccupiesSpace: false
 	RenderEditorOnly:
+		Palette: chrome
 	BodyOrientation:
+
+^fact.colorpicker:
+	Inherits: FACT
+	RenderBuilding:
+		Image: fact
+		Palette: colorpicker
 
 CAMERA:
 	Immobile:
@@ -59,4 +67,17 @@ CAMERA.small:
 	RevealsShroud:
 		Range: 6c0
 	BodyOrientation:
-
+	
+FLARE:
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 3c0
+	RenderSprites:
+		Image: smokland
+	WithSpriteBody:
+		StartSequence: open
+	HiddenUnderFog:
+	Tooltip:
+		Name: Flare
+	BodyOrientation:

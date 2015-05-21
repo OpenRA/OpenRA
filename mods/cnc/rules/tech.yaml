@@ -11,7 +11,10 @@ V19:
 
 V19.Husk:
 	Inherits: ^CivBuildingHusk
-	WithFire:
+	RenderSprites:
+	WithSpriteBody:
+		StartSequence: fire-start
+		Sequence: fire-loop
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -27,14 +30,13 @@ HOSP:
 		Dimensions: 2,2
 	Health:
 		HP: 1000
-	SelfHealingTech:
-		Type: InfantryHealing
 	Tooltip:
 		Name: Hospital
 	LeavesHusk:
 		HuskActor: HOSP.Husk
 	Bib:
 		HasMinibib: Yes
+	ProvidesPrerequisite@buildingname:
 
 HOSP.Husk:
 	Inherits: ^CivBuildingHusk
@@ -69,6 +71,7 @@ BIO:
 		RallyPoint: -1,-1
 	LeavesHusk:
 		HuskActor: BIO.Husk
+	ProvidesPrerequisite@buildingname:
 
 BIO.Husk:
 	Inherits: ^CivBuildingHusk
@@ -95,4 +98,5 @@ MISS:
 	Bib:
 		HasMinibib: Yes
 	WithMakeAnimation:
+	ProvidesPrerequisite@buildingname:
 

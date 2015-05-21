@@ -30,9 +30,7 @@ TRAN:
 		Sequence: rotor2
 		GroundSequence: slow-rotor2
 	WithRotor@SECONDARY:
-		Id: rotor_2
 		Offset: 597,0,85
-	WithShadow:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 10
@@ -77,17 +75,16 @@ HELI:
 		MuzzleSequence: muzzle
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 10
 		PipCount: 5
-	Reloads:
-		Count: 10
-		Period: 200
+		SelfReloads: true
+		ReloadCount: 10
+		SelfReloadTicks: 200
 	RenderUnit:
 	WithRotor:
 		Offset: 0,0,85
 	WithMuzzleFlash:
-	WithShadow:
 	LeavesHusk:
 		HuskActor: HELI.Husk
 	AutoTarget:
@@ -126,14 +123,13 @@ ORCA:
 		LocalOffset: 427,-171,-213, 427,171,-213
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 6
 		PipCount: 6
-	Reloads:
-		Count: 2
-		Period: 100
-	RenderUnit:
-	WithShadow:
+		SelfReloads: true
+		ReloadCount: 2
+		SelfReloadTicks: 100
+	RenderUnitFlying:
 	LeavesHusk:
 		HuskActor: ORCA.Husk
 	AutoTarget:
@@ -153,12 +149,12 @@ C17:
 	Plane:
 		ROT: 5
 		Speed: 326
+		Repulsable: False
 	Health:
 		HP: 25
 	Armor:
 		Type: Heavy
 	RenderUnit:
-	WithShadow:
 	Cargo:
 		MaxWeight: 10
 		PipCount: 10
@@ -191,12 +187,12 @@ A10:
 	Plane:
 		ROT: 4
 		Speed: 373
+		Repulsable: False
 	Health:
 		HP: 150
 	Armor:
 		Type: Heavy
 	RenderUnit:
-	WithShadow:
 	AttackBomber:
 		Armaments: gun, bombs
 		Guns: gun
@@ -234,11 +230,9 @@ TRAN.Husk:
 	WithRotor@PRIMARY:
 		Offset: -597,0,171
 	WithRotor@SECONDARY:
-		Id: rotor_2
 		Offset: 597,0,85
 	RenderUnit:
 		Image: tran
-	WithShadow:
 
 HELI.Husk:
 	Inherits: ^HelicopterHusk
@@ -253,7 +247,6 @@ HELI.Husk:
 		Offset: 0,0,85
 	RenderUnit:
 		Image: heli
-	WithShadow:
 
 ORCA.Husk:
 	Inherits: ^HelicopterHusk
@@ -266,5 +259,4 @@ ORCA.Husk:
 		Range: 10c0
 	RenderUnit:
 		Image: orca
-	WithShadow:
 

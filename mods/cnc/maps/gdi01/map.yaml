@@ -1,12 +1,10 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: cnc
 
 Title: Storm the Beachhead
 
-Description: Use the units provided to protect the Mobile Construction Vehicle. (MCV)\n\nYou should then deploy the MCV by double clicking on it.\n\nThen you can begin to build up a base. Start with a Power Plant.\n\nFinally, search out and destroy all enemy Nod units in the surrounding area.
+Description: Use the units provided to protect the Mobile Construction Vehicle. (MCV)\n\nYou should then deploy the MCV by selecting it with a left-click and then right-clicking on it.\n\nThen you can begin to build up a base. Start with a Power Plant.\n\nFinally, search out and destroy all enemy Nod units in the surrounding area.
 
 Author: Westwood Studios
 
@@ -16,18 +14,27 @@ MapSize: 64,64
 
 Bounds: 35,39,27,23
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Campaign
 
+Videos:
+	BackgroundInfo: intro2.vqa
+	Briefing: gdi1.vqa
+	GameStart: landing.vqa
+	GameWon: consyard.vqa
+	GameLost: gameover.vqa
+
 Options:
 	Crates: False
-	Fog: False
+	Creeps: False
+	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 5000
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@Nod:
@@ -35,7 +42,7 @@ Players:
 		Race: nod
 		ColorRamp: 3,255,127
 		Allies: Nod
-		Enemies: GDI,Creeps
+		Enemies: GDI, Creeps
 	PlayerReference@GDI:
 		Name: GDI
 		Playable: True
@@ -48,7 +55,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: GDI
-		Enemies: Nod,Creeps
+		Enemies: Nod, Creeps
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
@@ -58,7 +65,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: Random
-		Enemies: Nod,GDI
+		Enemies: Nod, GDI
 
 Actors:
 	Actor0: sbag
@@ -313,115 +320,72 @@ Actors:
 	Actor83: gun
 		Location: 46,55
 		Owner: Nod
-		Health: 0.5
+		Health: 50
 		Facing: 160
 	Actor84: gun
 		Location: 41,55
 		Owner: Nod
-		Health: 0.5
+		Health: 50
 		Facing: 160
 	Actor85: gun
 		Location: 49,55
 		Owner: Nod
-		Health: 0.1875
+		Health: 19
 		Facing: 160
-	mcv: mcv
-		Location: 56,53
-		Owner: GDI
-		Health: 1
-		Facing: 0
-	Gunboat: boat
-		Location: 53,59
-		Owner: GDI
-		Health: 1
-		Facing: 64
-	Actor88: e1
-		Location: 56,55
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 2
-	Actor89: e1
-		Location: 56,55
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 4
-	Actor90: e1
-		Location: 56,55
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 3
-	Actor91: e1
-		Location: 56,55
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 1
 	Actor92: e1
 		Location: 57,45
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 2
 	Actor93: e1
 		Location: 56,41
 		Owner: Nod
-		Health: 1
 		Facing: 192
 		SubCell: 2
 	Actor94: e1
 		Location: 48,41
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor95: e1
 		Location: 59,45
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor96: e1
 		Location: 46,50
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor97: e1
 		Location: 48,47
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 1
 	Actor98: e1
 		Location: 38,43
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor99: e1
 		Location: 38,43
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor100: e1
 		Location: 48,41
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 2
 	Actor101: e1
 		Location: 41,39
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 4
-	spawn27: waypoint
-		Location: 51,47
-		Owner: Neutral
+	Gunboat: boat
+		Location: 51,59
+		Owner: GDI
+		Facing: 64
 	nod0: waypoint
 		Location: 36,39
 		Owner: Neutral
@@ -444,7 +408,13 @@ Actors:
 		Location: 54,61
 		Owner: Neutral
 	lstEnd: waypoint
-		Location: 54,56
+		Location: 54,57
+		Owner: Neutral
+	mcvTarget: waypoint
+		Location: 56,53
+		Owner: Neutral
+	reinforcementsTarget: waypoint
+		Location: 54,53
 		Owner: Neutral
 
 Smudges:
@@ -454,15 +424,60 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
-		PlayMusicOnMapLoad:
-			Music: aoi
-			Loop: false
-		LuaScriptInterface:
-			LuaScripts: gdi01.lua
+		LuaScript:
+			Scripts: gdi01.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
+	^Vehicle:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Tank:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Helicopter:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
 	^Infantry:
-		MustBeDestroyed:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Plane:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Ship:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Building:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Wall:
+		Tooltip:
+			ShowOwnerRow: false
+	^Husk:
+		Tooltip:
+			GenericVisibility: Enemy, Ally, Neutral
+			GenericStancePrefix: false
+			ShowOwnerRow: false
+	NUKE:
+		-Sellable:
+		Buildable:
+			BuildLimit: 1
+	PYLE:
+		-Sellable:
+		Buildable:
+			BuildLimit: 1
+	FACT:
+		-Sellable:
 	PROC:
 		Buildable:
 			Prerequisites: ~disabled
@@ -490,11 +505,13 @@ Rules:
 	GUN:
 		Buildable:
 			Prerequisites: ~disabled
-		MustBeDestroyed:
 	GTWR:
 		Buildable:
 			Prerequisites: ~disabled
 	ATWR:
+		Buildable:
+			Prerequisites: ~disabled
+	BRIK:
 		Buildable:
 			Prerequisites: ~disabled
 	E2:
@@ -527,18 +544,17 @@ Sequences:
 		idle: lst
 			Start: 0
 			Facings: 1
-		unload: lst
-			Start: 0
-			Facings: 1
+			ZOffset: -1024
 
 VoxelSequences:
 
 Weapons:
 	BoatMissile:
-		Warhead:
+		Warhead: SpreadDamage
 			Versus:
-				Heavy: 50%
-		Damage: 50
+				Heavy: 50
+			Damage: 50
+			DamageTypes: Prone50Percent, TriggerProne
 
 Voices:
 

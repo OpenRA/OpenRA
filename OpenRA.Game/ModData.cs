@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,32 +18,61 @@ using OpenRA.Widgets;
 
 namespace OpenRA
 {
-	public class ModData
+	public sealed class ModData : IDisposable
 	{
 		public readonly Manifest Manifest;
 		public readonly ObjectCreator ObjectCreator;
 		public readonly WidgetLoader WidgetLoader;
 		public readonly MapCache MapCache;
-		public ILoadScreen LoadScreen = null;
-		public VoxelLoader VoxelLoader;
+		public readonly ISpriteLoader[] SpriteLoaders;
+		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
 		public readonly RulesetCache RulesetCache;
+		public ILoadScreen LoadScreen { get; private set; }
+		public VoxelLoader VoxelLoader { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
 
 		Lazy<Ruleset> defaultRules;
 		public Ruleset DefaultRules { get { return defaultRules.Value; } }
 
-		public ModData(string mod)
+		public ModData(string mod, bool useLoadScreen = false)
 		{
 			Languages = new string[0];
 			Manifest = new Manifest(mod);
 			ObjectCreator = new ObjectCreator(Manifest);
-			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
-			LoadScreen.Init(Manifest, Manifest.LoadScreen.ToDictionary(my => my.Value));
-			LoadScreen.Display();
+			Manifest.LoadCustomData(ObjectCreator);
+
+			if (useLoadScreen)
+			{
+				LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
+				LoadScreen.Init(Manifest, Manifest.LoadScreen.ToDictionary(my => my.Value));
+				LoadScreen.Display();
+			}
+
 			WidgetLoader = new WidgetLoader(this);
 			RulesetCache = new RulesetCache(this);
 			RulesetCache.LoadingProgress += HandleLoadingProgress;
 			MapCache = new MapCache(this);
+
+			var spriteLoaders = new List<ISpriteLoader>();
+			foreach (var format in Manifest.SpriteFormats)
+			{
+				var loader = ObjectCreator.FindType(format + "Loader");
+				if (loader == null || !loader.GetInterfaces().Contains(typeof(ISpriteLoader)))
+					throw new InvalidOperationException("Unable to find a sprite loader for type '{0}'.".F(format));
+
+				spriteLoaders.Add((ISpriteLoader)ObjectCreator.CreateBasic(loader));
+			}
+
+			SpriteLoaders = spriteLoaders.ToArray();
+
+			var sequenceFormat = Manifest.Get<SpriteSequenceFormat>();
+			var sequenceLoader = ObjectCreator.FindType(sequenceFormat.Type + "Loader");
+			var ctor = sequenceLoader != null ? sequenceLoader.GetConstructor(new[] { typeof(ModData) }) : null;
+			if (sequenceLoader == null || !sequenceLoader.GetInterfaces().Contains(typeof(ISpriteSequenceLoader)) || ctor == null)
+				throw new InvalidOperationException("Unable to find a sequence loader for type '{0}'.".F(sequenceFormat.Type));
+
+			SpriteSequenceLoader = (ISpriteSequenceLoader)ctor.Invoke(new[] { this });
+			SpriteSequenceLoader.OnMissingSpriteError = s => Log.Write("debug", s);
 
 			// HACK: Mount only local folders so we have a half-working environment for the asset installer
 			GlobalFileSystem.UnmountAll();
@@ -69,6 +98,9 @@ namespace OpenRA
 			// horribly when you use ModData in unexpected ways.
 			ChromeMetrics.Initialize(Manifest.ChromeMetrics);
 			ChromeProvider.Initialize(Manifest.Chrome);
+
+			if (VoxelLoader != null)
+				VoxelLoader.Dispose();
 			VoxelLoader = new VoxelLoader();
 
 			CursorProvider = new CursorProvider(this);
@@ -84,7 +116,6 @@ namespace OpenRA
 			if (!Manifest.Translations.Any())
 			{
 				Languages = new string[0];
-				FieldLoader.Translations = new Dictionary<string, string>();
 				return;
 			}
 
@@ -112,12 +143,13 @@ namespace OpenRA
 					translations.Add(tkv.Key, tkv.Value);
 			}
 
-			FieldLoader.Translations = translations;
+			FieldLoader.SetTranslations(translations);
 		}
 
 		public Map PrepareMap(string uid)
 		{
-			LoadScreen.Display();
+			if (LoadScreen != null)
+				LoadScreen.Display();
 
 			if (MapCache[uid].Status != MapStatus.Available)
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
@@ -144,12 +176,22 @@ namespace OpenRA
 
 			return map;
 		}
+
+		public void Dispose()
+		{
+			if (LoadScreen != null)
+				LoadScreen.Dispose();
+			RulesetCache.Dispose();
+			MapCache.Dispose();
+			if (VoxelLoader != null)
+				VoxelLoader.Dispose();
+		}
 	}
 
-	public interface ILoadScreen
+	public interface ILoadScreen : IDisposable
 	{
 		void Init(Manifest m, Dictionary<string, string> info);
 		void Display();
-		void StartGame();
+		void StartGame(Arguments args);
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using Eluant;
 using Eluant.ObjectBinding;
+using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Scripting;
@@ -26,16 +27,31 @@ namespace OpenRA
 		public readonly ActorInfo Info;
 
 		public readonly World World;
-		public readonly uint ActorID;
-		public Lazy<Rectangle> Bounds;
 
-		Lazy<IOccupySpace> occupySpace;
+		public readonly uint ActorID;
+
+		[Sync] public Player Owner { get; set; }
+
+		public bool IsInWorld { get; internal set; }
+		public bool Destroyed { get; private set; }
+
+		Activity currentActivity;
+
+		public Group Group;
+		public int Generation;
+
+		Lazy<Rectangle> bounds;
 		Lazy<IFacing> facing;
 		Lazy<Health> health;
+		Lazy<IOccupySpace> occupySpace;
 		Lazy<IEffectiveOwner> effectiveOwner;
 
+		public Rectangle Bounds { get { return bounds.Value; } }
 		public IOccupySpace OccupiesSpace { get { return occupySpace.Value; } }
 		public IEffectiveOwner EffectiveOwner { get { return effectiveOwner.Value; } }
+
+		public bool IsIdle { get { return currentActivity == null; } }
+		public bool IsDead { get { return Destroyed || (health.Value == null ? false : health.Value.IsDead); } }
 
 		public CPos Location { get { return occupySpace.Value.TopLeft; } }
 		public WPos CenterPosition { get { return occupySpace.Value.CenterPosition; } }
@@ -50,11 +66,9 @@ namespace OpenRA
 			}
 		}
 
-		[Sync] public Player Owner;
-
-		Activity currentActivity;
-		public Group Group;
-		public int Generation;
+		readonly IRenderModifier[] renderModifiers;
+		readonly IRender[] renders;
+		readonly IDisable[] disables;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -69,10 +83,12 @@ namespace OpenRA
 
 			if (name != null)
 			{
-				if (!world.Map.Rules.Actors.ContainsKey(name.ToLowerInvariant()))
-					throw new NotImplementedException("No rules definition for unit {0}".F(name.ToLowerInvariant()));
+				name = name.ToLowerInvariant();
 
-				Info = world.Map.Rules.Actors[name.ToLowerInvariant()];
+				if (!world.Map.Rules.Actors.ContainsKey(name))
+					throw new NotImplementedException("No rules definition for unit " + name);
+
+				Info = world.Map.Rules.Actors[name];
 				foreach (var trait in Info.TraitsInConstructOrder())
 					AddTrait(trait.Create(init));
 			}
@@ -81,7 +97,7 @@ namespace OpenRA
 			health = Exts.Lazy(() => TraitOrDefault<Health>());
 			effectiveOwner = Exts.Lazy(() => TraitOrDefault<IEffectiveOwner>());
 
-			Bounds = Exts.Lazy(() =>
+			bounds = Exts.Lazy(() =>
 			{
 				var si = Info.Traits.GetOrDefault<SelectableInfo>();
 				var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
@@ -93,38 +109,36 @@ namespace OpenRA
 
 				return new Rectangle(offset.X, offset.Y, size.X, size.Y);
 			});
+
+			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
+			renders = TraitsImplementing<IRender>().ToArray();
+			disables = TraitsImplementing<IDisable>().ToArray();
 		}
 
 		public void Tick()
 		{
 			var wasIdle = IsIdle;
 			currentActivity = Traits.Util.RunActivity(this, currentActivity);
+
 			if (!wasIdle && IsIdle)
 				foreach (var n in TraitsImplementing<INotifyBecomingIdle>())
 					n.OnBecomingIdle(this);
 		}
 
-		public bool IsIdle
-		{
-			get { return currentActivity == null; }
-		}
-
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			var renderables = Renderables(wr);
-			foreach (var modifier in TraitsImplementing<IRenderModifier>())
+			foreach (var modifier in renderModifiers)
 				renderables = modifier.ModifyRender(this, wr, renderables);
 			return renderables;
 		}
 
 		IEnumerable<IRenderable> Renderables(WorldRenderer wr)
 		{
-			foreach (var render in TraitsImplementing<IRender>())
+			foreach (var render in renders)
 				foreach (var renderable in render.Render(this, wr))
 					yield return renderable;
 		}
-
-		public bool IsInWorld { get; internal set; }
 
 		public void QueueActivity(bool queued, Activity nextActivity)
 		{
@@ -170,45 +184,52 @@ namespace OpenRA
 
 		public override string ToString()
 		{
-			return "{0} {1}{2}".F(Info.Name, ActorID, IsInWorld ? "" : " (not in world)");
+			var name = Info.Name + " " + ActorID;
+			if (!IsInWorld)
+				name += " (not in world)";
+			return name;
 		}
 
 		public T Trait<T>()
 		{
-			return World.traitDict.Get<T>(this);
+			return World.TraitDict.Get<T>(this);
 		}
 
 		public T TraitOrDefault<T>()
 		{
-			return World.traitDict.GetOrDefault<T>(this);
+			return World.TraitDict.GetOrDefault<T>(this);
 		}
 
 		public IEnumerable<T> TraitsImplementing<T>()
 		{
-			return World.traitDict.WithInterface<T>(this);
+			return World.TraitDict.WithInterface<T>(this);
 		}
 
 		public bool HasTrait<T>()
 		{
-			return World.traitDict.Contains<T>(this);
+			return World.TraitDict.Contains<T>(this);
 		}
 
 		public void AddTrait(object trait)
 		{
-			World.traitDict.AddTrait(this, trait);
+			World.TraitDict.AddTrait(this, trait);
 		}
-
-		public bool Destroyed { get; private set; }
 
 		public void Destroy()
 		{
 			World.AddFrameEndTask(w =>
 			{
-				if (Destroyed) return;
+				if (Destroyed)
+					return;
 
-				World.Remove(this);
-				World.traitDict.RemoveActor(this);
+				if (IsInWorld)
+					World.Remove(this);
+
+				World.TraitDict.RemoveActor(this);
 				Destroyed = true;
+
+				if (luaInterface != null)
+					luaInterface.Value.OnActorDestroyed();
 			});
 		}
 
@@ -217,7 +238,7 @@ namespace OpenRA
 		{
 			World.AddFrameEndTask(w =>
 			{
-				if (this.Destroyed)
+				if (Destroyed)
 					return;
 
 				var oldOwner = Owner;
@@ -233,19 +254,6 @@ namespace OpenRA
 			});
 		}
 
-		public bool IsDead()
-		{
-			if (Destroyed)
-				return true;
-
-			return (health.Value == null) ? false : health.Value.IsDead;
-		}
-
-		public bool IsDisguised()
-		{
-			return effectiveOwner.Value != null && effectiveOwner.Value.Disguised;
-		}
-
 		public void Kill(Actor attacker)
 		{
 			if (health.Value == null)
@@ -254,12 +262,21 @@ namespace OpenRA
 			health.Value.InflictDamage(this, attacker, health.Value.MaxHP, null, true);
 		}
 
+		public bool IsDisabled()
+		{
+			foreach (var disable in disables)
+				if (disable.Disabled)
+					return true;
+			return false;
+		}
+
 		#region Scripting interface
 
 		Lazy<ScriptActorInterface> luaInterface;
 		public void OnScriptBind(ScriptContext context)
 		{
-			luaInterface = Exts.Lazy(() => new ScriptActorInterface(context, this));
+			if (luaInterface == null)
+				luaInterface = Exts.Lazy(() => new ScriptActorInterface(context, this));
 		}
 
 		public LuaValue this[LuaRuntime runtime, LuaValue keyValue]

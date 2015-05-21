@@ -10,7 +10,7 @@ MCV:
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.GDI, Vehicle.Nod
 	Selectable:
-		Priority: 3
+		Priority: 4
 	Mobile:
 		Speed: 71
 		Crushes: crate, infantry
@@ -25,9 +25,10 @@ MCV:
 		Offset: -1,-1
 		Facing: 108
 		TransformSounds: constru2.aud, hvydoor1.aud
-		NoTransformSounds: deploy1.aud
+		NoTransformNotification: BuildingCannotPlaceAudio
 	RenderUnit:
 	MustBeDestroyed:
+		RequiredForShortGame: true
 	BaseBuilding:
 	LeavesHusk:
 		HuskActor: MCV.Husk
@@ -43,11 +44,13 @@ HARV:
 		Cost: 1000
 	Tooltip:
 		Name: Harvester
+		GenericName: Harvester
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Queue: Vehicle.GDI, Vehicle.Nod
+		InitialActivity: FindResources
 	Selectable:
 		Priority: 7
 		Bounds: 36,36
@@ -170,9 +173,9 @@ FTNK:
 		Queue: Vehicle.Nod
 	Mobile:
 		ROT: 7
-		Speed: 113
+		Speed: 99
 	Health:
-		HP: 300
+		HP: 270
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -231,7 +234,7 @@ BGGY:
 BIKE:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 500
+		Cost: 600
 	Tooltip:
 		Name: Recon Bike
 		Description: Fast scout vehicle, armed with \nrockets. \nCan attack Aircraft.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
@@ -492,7 +495,7 @@ MLRS:
 	Turreted:
 		ROT: 8
 		Offset: -128,0,128
-		AlignWhenIdle: true
+		RealignDelay: 0
 	Armament:
 		Weapon: Patriot
 		LocalOffset: 0,-171,0, 0,171,0
@@ -531,7 +534,7 @@ STNK:
 	RevealsShroud:
 		Range: 7c0
 	Cloak:
-		RequiresCrate: false
+		-UpgradeTypes:
 		InitialDelay: 90
 		CloakDelay: 90
 		CloakSound: trans1.aud
@@ -546,6 +549,7 @@ STNK:
 	TargetableUnit:
 	LeavesHusk:
 		HuskActor: STNK.Husk
+	-MustBeDestroyed:
 
 MHQ:
 	Inherits: ^Vehicle

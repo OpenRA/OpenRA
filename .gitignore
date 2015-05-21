@@ -12,6 +12,12 @@ obj
 *.lastcodeanalysissucceeded
 _ReSharper.*/
 
+# movies
+*.vqa
+
+# archives
+*.mix
+
 # binaries
 mods/*/*.dll
 mods/*/*.mdb
@@ -22,6 +28,7 @@ mods/*/*.mdb
 /*.pdb
 /*.mdb
 /*.exe
+thirdparty/download/*
 
 # backup files by various editors
 *~
@@ -57,6 +64,7 @@ Lua-API.md
 
 # StyleCop
 *.Cache
+StyleCopViolations.xml
 
 # SublimeText
 *.sublime-project

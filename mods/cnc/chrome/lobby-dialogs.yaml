@@ -98,7 +98,7 @@ Background@LOBBY_OPTIONS_BIN:
 	Children:
 		Label@TITLE:
 			X: 0
-			Y: 30
+			Y: 0 - 25
 			Width: PARENT_RIGHT
 			Height: 25
 			Font: Bold
@@ -106,7 +106,7 @@ Background@LOBBY_OPTIONS_BIN:
 			Text: Map Options
 		Container:
 			X: 30
-			Y: 65
+			Y: 30
 			Width: PARENT_RIGHT-60
 			Height: PARENT_BOTTOM-75
 			Children:
@@ -122,20 +122,27 @@ Background@LOBBY_OPTIONS_BIN:
 					Font: Regular
 					Text: Fog of War
 				Checkbox@CRATES_CHECKBOX:
-					X: 160
+					X: 140
 					Width: 230
 					Height: 20
 					Font: Regular
-					Text: Crates Appear
+					Text: Crates
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
-					X: 160
+					X: 140
 					Y: 35
 					Width: 230
 					Height: 20
 					Font: Regular
-					Text: Build off Ally ConYards
+					Text: Build off Allies' ConYards
+				Checkbox@SHORTGAME_CHECKBOX:
+					X: 365
+					Width: 230
+					Height: 20
+					Font: Regular
+					Text: Short Game
 				Checkbox@ALLOWCHEATS_CHECKBOX:
-					X: 325
+					X: 365
+					Y: 35
 					Width: 230
 					Height: 20
 					Font: Regular

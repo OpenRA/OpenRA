@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,7 +10,6 @@
 
 namespace OpenRA.FileFormats
 {
-
 	/// <summary>
 	/// Static class that uses a lookup table to calculates CRC32
 	/// checksums of input strings.
@@ -104,6 +103,7 @@ namespace OpenRA.FileFormats
 			crc ^= polynomial;
 			return crc;
 		}
+
 		public static uint Calculate(byte[] data)
 		{
 			return Calculate(data, 0xFFFFFFFF);
@@ -125,6 +125,7 @@ namespace OpenRA.FileFormats
 			crc ^= polynomial;
 			return crc;
 		}
+
 		public static unsafe uint Calculate(byte* data, uint len)
 		{
 			return Calculate(data, len, 0xFFFFFFFF);

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,11 +12,42 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
+	public class TerrainTileInfo
+	{
+		[FieldLoader.Ignore]
+		public readonly byte TerrainType = byte.MaxValue;
+		public readonly byte Height;
+		public readonly byte RampType;
+		public readonly Color LeftColor;
+		public readonly Color RightColor;
+
+		public MiniYaml Save(TileSet tileSet)
+		{
+			var root = new List<MiniYamlNode>();
+			if (Height != 0)
+				root.Add(FieldSaver.SaveField(this, "Height"));
+
+			if (RampType != 0)
+				root.Add(FieldSaver.SaveField(this, "RampType"));
+
+			if (LeftColor != tileSet.TerrainInfo[TerrainType].Color)
+				root.Add(FieldSaver.SaveField(this, "LeftColor"));
+
+			if (RightColor != tileSet.TerrainInfo[TerrainType].Color)
+				root.Add(FieldSaver.SaveField(this, "RightColor"));
+
+			return new MiniYaml(tileSet.TerrainInfo[TerrainType].Type, root);
+		}
+	}
+
 	public class TerrainTypeInfo
 	{
+		static readonly TerrainTypeInfo Default = new TerrainTypeInfo();
+
 		public readonly string Type;
 		public readonly string[] TargetTypes = { };
 		public readonly string[] AcceptsSmudgeType = { };
@@ -24,111 +55,112 @@ namespace OpenRA
 		public readonly Color Color;
 		public readonly string CustomCursor;
 
-		public TerrainTypeInfo() { }
+		// Private default ctor for serialization comparison
+		TerrainTypeInfo() { }
+
 		public TerrainTypeInfo(MiniYaml my) { FieldLoader.Load(this, my); }
 
-		public MiniYaml Save() { return FieldSaver.Save(this); }
+		public MiniYaml Save() { return FieldSaver.SaveDifferences(this, Default); }
 	}
 
-	public class TileTemplate
+	public class TerrainTemplateInfo
 	{
+		static readonly TerrainTemplateInfo Default = new TerrainTemplateInfo(0, new string[] { null }, int2.Zero, null);
+
 		public readonly ushort Id;
-		public readonly string Image;
+		public readonly string[] Images;
 		public readonly int[] Frames;
 		public readonly int2 Size;
 		public readonly bool PickAny;
 		public readonly string Category;
 
-		int[] tiles;
+		TerrainTileInfo[] tileInfo;
 
-		public TileTemplate(ushort id, string image, int2 size, int[] tiles)
+		public TerrainTemplateInfo(ushort id, string[] images, int2 size, byte[] tiles)
 		{
 			this.Id = id;
-			this.Image = image;
+			this.Images = images;
 			this.Size = size;
-			this.tiles = tiles;
 		}
 
-		public TileTemplate(TileSet tileSet, MiniYaml my)
+		public TerrainTemplateInfo(TileSet tileSet, MiniYaml my)
 		{
 			FieldLoader.Load(this, my);
 
-			tiles = LoadTiles(tileSet, my);
-		}
-
-		int[] LoadTiles(TileSet tileSet, MiniYaml y)
-		{
-			var nodes = y.ToDictionary()["Tiles"].Nodes;
+			var nodes = my.ToDictionary()["Tiles"].Nodes;
 
 			if (!PickAny)
 			{
-				var tiles = new int[Size.X * Size.Y];
-
-				for (var i = 0; i < tiles.Length; i++)
-					tiles[i] = -1;
-
+				tileInfo = new TerrainTileInfo[Size.X * Size.Y];
 				foreach (var node in nodes)
 				{
 					int key;
-					if (!int.TryParse(node.Key, out key) || key < 0 || key >= tiles.Length)
+					if (!int.TryParse(node.Key, out key) || key < 0 || key >= tileInfo.Length)
 						throw new InvalidDataException("Invalid tile key '{0}' on template '{1}' of tileset '{2}'.".F(node.Key, Id, tileSet.Id));
 
-					tiles[key] = tileSet.GetTerrainIndex(node.Value.Value);
+					tileInfo[key] = LoadTileInfo(tileSet, node.Value);
 				}
-
-				return tiles;
 			}
 			else
 			{
-				var tiles = new int[nodes.Count];
-				var i = 0;
+				tileInfo = new TerrainTileInfo[nodes.Count];
 
+				var i = 0;
 				foreach (var node in nodes)
 				{
 					int key;
 					if (!int.TryParse(node.Key, out key) || key != i++)
 						throw new InvalidDataException("Invalid tile key '{0}' on template '{1}' of tileset '{2}'.".F(node.Key, Id, tileSet.Id));
 
-					tiles[key] = tileSet.GetTerrainIndex(node.Value.Value);
+					tileInfo[key] = LoadTileInfo(tileSet, node.Value);
 				}
-
-				return tiles;
 			}
 		}
 
-		static readonly string[] Fields = { "Id", "Image", "Frames", "Size", "PickAny" };
-
-		public int this[int index]
+		static TerrainTileInfo LoadTileInfo(TileSet tileSet, MiniYaml my)
 		{
-			get { return tiles[index]; }
+			var tile = new TerrainTileInfo();
+			FieldLoader.Load(tile, my);
+
+			// Terrain type must be converted from a string to an index
+			tile.GetType().GetField("TerrainType").SetValue(tile, tileSet.GetTerrainIndex(my.Value));
+
+			// Fall back to the terrain-type color if necessary
+			var overrideColor = tileSet.TerrainInfo[tile.TerrainType].Color;
+			if (tile.LeftColor == default(Color))
+				tile.GetType().GetField("LeftColor").SetValue(tile, overrideColor);
+
+			if (tile.RightColor == default(Color))
+				tile.GetType().GetField("RightColor").SetValue(tile, overrideColor);
+
+			return tile;
 		}
+
+		public TerrainTileInfo this[int index] { get { return tileInfo[index]; } }
 
 		public bool Contains(int index)
 		{
-			return index >= 0 && index < tiles.Length;
+			return index >= 0 && index < tileInfo.Length;
 		}
 
 		public int TilesCount
 		{
-			get { return tiles.Length; }
+			get { return tileInfo.Length; }
 		}
 
 		public MiniYaml Save(TileSet tileSet)
 		{
-			var root = new List<MiniYamlNode>();
-			foreach (var field in Fields)
-			{
-				var f = this.GetType().GetField(field);
-				if (f.GetValue(this) == null)
-					continue;
+			var root = FieldSaver.SaveDifferences(this, Default);
 
-				root.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
-			}
+			var tileYaml = tileInfo
+				.Select((ti, i) => Pair.New(i.ToString(), ti))
+				.Where(t => t.Second != null)
+				.Select(t => new MiniYamlNode(t.First, t.Second.Save(tileSet)))
+				.ToList();
 
-			root.Add(new MiniYamlNode("Tiles", null,
-				tiles.Select((terrainTypeIndex, templateIndex) => new MiniYamlNode(templateIndex.ToString(), tileSet[terrainTypeIndex].Type)).ToList()));
+			root.Nodes.Add(new MiniYamlNode("Tiles", null, tileYaml));
 
-			return new MiniYaml(null, root);
+			return root;
 		}
 	}
 
@@ -139,16 +171,22 @@ namespace OpenRA
 		public readonly int SheetSize = 512;
 		public readonly string Palette;
 		public readonly string PlayerPalette;
-		public readonly string[] Extensions;
-		public readonly int WaterPaletteRotationBase = 0x60; 
-		public readonly Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
+		public readonly int WaterPaletteRotationBase = 0x60;
+		public readonly byte MaxGroundHeight = 0;
+		public readonly Color[] HeightDebugColors = new[] { Color.Red };
 		public readonly string[] EditorTemplateOrder;
+		public readonly bool IgnoreTileSpriteOffsets;
 
-		readonly TerrainTypeInfo[] terrainInfo;
-		readonly Dictionary<string, int> terrainIndexByType = new Dictionary<string, int>();
-		readonly int defaultWalkableTerrainIndex;
+		[FieldLoader.Ignore]
+		public readonly Dictionary<ushort, TerrainTemplateInfo> Templates = new Dictionary<ushort, TerrainTemplateInfo>();
 
-		static readonly string[] Fields = { "Name", "Id", "SheetSize", "Palette", "Extensions" };
+		[FieldLoader.Ignore]
+		public readonly TerrainTypeInfo[] TerrainInfo;
+		readonly Dictionary<string, byte> terrainIndexByType = new Dictionary<string, byte>();
+		readonly byte defaultWalkableTerrainIndex;
+
+		// Private default ctor for serialization comparison
+		TileSet() { }
 
 		public TileSet(ModData modData, string filepath)
 		{
@@ -158,13 +196,17 @@ namespace OpenRA
 			FieldLoader.Load(this, yaml["General"]);
 
 			// TerrainTypes
-			terrainInfo = yaml["Terrain"].ToDictionary().Values
+			TerrainInfo = yaml["Terrain"].ToDictionary().Values
 				.Select(y => new TerrainTypeInfo(y))
 				.OrderBy(tt => tt.Type)
 				.ToArray();
-			for (var i = 0; i < terrainInfo.Length; i++)
+
+			if (TerrainInfo.Length >= byte.MaxValue)
+				throw new InvalidDataException("Too many terrain types.");
+
+			for (byte i = 0; i < TerrainInfo.Length; i++)
 			{
-				var tt = terrainInfo[i].Type;
+				var tt = TerrainInfo[i].Type;
 
 				if (terrainIndexByType.ContainsKey(tt))
 					throw new InvalidDataException("Duplicate terrain type '{0}' in '{1}'.".F(tt, filepath));
@@ -176,94 +218,86 @@ namespace OpenRA
 
 			// Templates
 			Templates = yaml["Templates"].ToDictionary().Values
-				.Select(y => new TileTemplate(this, y)).ToDictionary(t => t.Id);
+				.Select(y => new TerrainTemplateInfo(this, y)).ToDictionary(t => t.Id);
 		}
 
-		public TileSet(string name, string id, string palette, string[] extensions, TerrainTypeInfo[] terrainInfo)
+		public TileSet(string name, string id, string palette, TerrainTypeInfo[] terrainInfo)
 		{
-			this.Name = name;
-			this.Id = id;
-			this.Palette = palette;
-			this.Extensions = extensions;
-			this.terrainInfo = terrainInfo;
+			Name = name;
+			Id = id;
+			Palette = palette;
+			TerrainInfo = terrainInfo;
 
-			for (var i = 0; i < terrainInfo.Length; i++)
+			if (TerrainInfo.Length >= byte.MaxValue)
+				throw new InvalidDataException("Too many terrain types.");
+
+			for (byte i = 0; i < terrainInfo.Length; i++)
 			{
 				var tt = terrainInfo[i].Type;
-
 				if (terrainIndexByType.ContainsKey(tt))
 					throw new InvalidDataException("Duplicate terrain type '{0}'.".F(tt));
 
 				terrainIndexByType.Add(tt, i);
 			}
+
 			defaultWalkableTerrainIndex = GetTerrainIndex("Clear");
 		}
 
-		public TerrainTypeInfo this[int index]
+		public TerrainTypeInfo this[byte index]
 		{
-			get { return terrainInfo[index]; }
+			get { return TerrainInfo[index]; }
 		}
 
-		public int TerrainsCount
-		{
-			get { return terrainInfo.Length; }
-		}
-
-		public bool TryGetTerrainIndex(string type, out int index)
+		public bool TryGetTerrainIndex(string type, out byte index)
 		{
 			return terrainIndexByType.TryGetValue(type, out index);
 		}
 
-		public int GetTerrainIndex(string type)
+		public byte GetTerrainIndex(string type)
 		{
-			int index;
+			byte index;
 			if (terrainIndexByType.TryGetValue(type, out index))
 				return index;
 
 			throw new InvalidDataException("Tileset '{0}' lacks terrain type '{1}'".F(Id, type));
 		}
 
-		public int GetTerrainIndex(TerrainTile r)
+		public byte GetTerrainIndex(TerrainTile r)
 		{
-			var tpl = Templates[r.Type];
+			TerrainTemplateInfo tpl;
+			if (!Templates.TryGetValue(r.Type, out tpl))
+				return defaultWalkableTerrainIndex;
 
 			if (tpl.Contains(r.Index))
 			{
-				var ti = tpl[r.Index];
-				if (ti != -1)
-					return ti;
+				var tile = tpl[r.Index];
+				if (tile != null && tile.TerrainType != byte.MaxValue)
+					return tile.TerrainType;
 			}
 
 			return defaultWalkableTerrainIndex;
 		}
 
+		public TerrainTileInfo GetTileInfo(TerrainTile r)
+		{
+			TerrainTemplateInfo tpl;
+			if (!Templates.TryGetValue(r.Type, out tpl))
+				return null;
+
+			return tpl.Contains(r.Index) ? tpl[r.Index] : null;
+		}
+
 		public void Save(string filepath)
 		{
 			var root = new List<MiniYamlNode>();
-			var gen = new List<MiniYamlNode>();
-
-			foreach (var field in Fields)
-			{
-				var f = this.GetType().GetField(field);
-				if (f.GetValue(this) == null)
-					continue;
-
-				gen.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
-			}
-
-			root.Add(new MiniYamlNode("General", null, gen));
+			root.Add(new MiniYamlNode("General", FieldSaver.SaveDifferences(this, new TileSet())));
 
 			root.Add(new MiniYamlNode("Terrain", null,
-				terrainInfo.Select(t => new MiniYamlNode("TerrainType@{0}".F(t.Type), t.Save())).ToList()));
+				TerrainInfo.Select(t => new MiniYamlNode("TerrainType@{0}".F(t.Type), t.Save())).ToList()));
 
 			root.Add(new MiniYamlNode("Templates", null,
 				Templates.Select(t => new MiniYamlNode("Template@{0}".F(t.Value.Id), t.Value.Save(this))).ToList()));
 			root.WriteToFile(filepath);
-		}
-
-		public TerrainTypeInfo GetTerrainInfo(TerrainTile r)
-		{
-			return terrainInfo[GetTerrainIndex(r)];
 		}
 	}
 }

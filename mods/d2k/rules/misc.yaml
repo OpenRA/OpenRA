@@ -1,4 +1,4 @@
-CRATE:
+crate:
 	Tooltip:
 		Name: Crate
 	Crate:
@@ -16,65 +16,96 @@ CRATE:
 		Amount: 1500
 		SelectionShares: 25
 		UseCashTick: yes
+	ExplodeCrateAction@1:
+		Weapon: CrateExplosion
+		SelectionShares: 5
+	HideMapCrateAction:
+		SelectionShares: 5
+		Effect: hide-map
 	LevelUpCrateAction:
 		SelectionShares: 40
+	RevealMapCrateAction:
+		SelectionShares: 2
+		Effect: reveal-map
 	GiveUnitCrateAction@Trike:
 		SelectionShares: 20
-		Unit: trike
+		Units: trike
+		Prerequisites: techlevel.low, Light
 	GiveUnitCrateAction@Raider:
 		SelectionShares: 15
-		Unit: raider
+		Units: raider
+		ValidRaces: ordos
+		Prerequisites: techlevel.low, Light
 	GiveUnitCrateAction@Quad:
 		SelectionShares: 40
-		Unit: quad
+		Units: quad
+		Prerequisites: techlevel.medium, Light, Outpost
 	GiveUnitCrateAction@CombatA:
 		SelectionShares: 10
-		Unit: combata
+		Units: combata
+		ValidRaces: atreides
+		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@CombatH:
 		SelectionShares: 10
-		Unit: combath
+		Units: combath
+		ValidRaces: harkonnen
+		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@CombatO:
 		SelectionShares: 10
-		Unit: combato
+		Units: combato
+		ValidRaces: ordos
+		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@SiegeTank:
 		SelectionShares: 10
-		Unit: siegetank
+		Units: siegetank
+		Prerequisites: techlevel.medium, Heavy, Outpost
 	GiveUnitCrateAction@MissileTank:
 		SelectionShares: 10
-		Unit: missiletank
+		Units: missiletank
+		Prerequisites: techlevel.high, Hitech
 	GiveUnitCrateAction@StealthRaider:
 		SelectionShares: 7
-		Unit: stealthraider
+		Units: stealthraider
+		ValidRaces: ordos
+		Prerequisites: techlevel.medium, Hitech
 	GiveUnitCrateAction@Fremen:
 		SelectionShares: 5
-		Unit: fremen
+		Units: fremen,fremen
+		ValidRaces: atreides
+		Prerequisites: techlevel.high, Palace
 	GiveUnitCrateAction@Sardaukar:
 		SelectionShares: 8
-		Unit: sardaukar
+		Units: sardaukar,sardaukar
+		ValidRaces: harkonnen
+		Prerequisites: techlevel.high, Palace
 	GiveUnitCrateAction@Saboteur:
 		SelectionShares: 3
-		Unit: saboteur
+		Units: saboteur,saboteur
+		ValidRaces: ordos
+		Prerequisites: techlevel.high, Palace
 	GiveUnitCrateAction@SonicTank:
 		SelectionShares: 5
-		Unit: sonictank
+		Units: sonictank
+		ValidRaces: atreides
+		Prerequisites: techlevel.high, Research
 	GiveUnitCrateAction@Devast:
 		SelectionShares: 2
-		Unit: devast
+		Units: devast
+		ValidRaces: harkonnen
+		Prerequisites: techlevel.high, Research
 	GiveUnitCrateAction@DeviatorTank:
 		SelectionShares: 5
-		Unit: deviatortank
-	GiveMcvCrateAction@Atreides:
+		Units: deviatortank
+		ValidRaces: ordos
+		Prerequisites: techlevel.high, Research
+	GiveMcvCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 9001
-		Unit: mcva
-	GiveMcvCrateAction@Harkonnen:
-		SelectionShares: 0
-		NoBaseSelectionShares: 9001
-		Unit: mcvh
-	GiveMcvCrateAction@Ordos:
-		SelectionShares: 0
-		NoBaseSelectionShares: 9001
-		Unit: mcvo
+		Units: mcv
+	GrantUpgradeCrateAction@cloak:
+		SelectionShares: 5
+		Effect: cloak
+		Upgrades: cloak
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:
@@ -98,28 +129,15 @@ waypoint:
 	RenderEditorOnly:
 	BodyOrientation:
 
-SPICEBLOOM:
-	RenderBuilding:
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	AppearsOnRadar:
-	EditorAppearance:
-		RelativeToTopLeft: yes
-	ProximityCaptor:
-		Types: Tree
-	Tooltip:
-		Name: Spice Bloom
-	SeedsResource:
-		ResourceType: Spice
-		Interval: 75
-	WithActiveAnimation:
-	RadarColorFromTerrain:
-		Terrain: Spice
-	BodyOrientation:
-	WithMakeAnimation:
+^carryall.colorpicker:
+	Inherits: carryall
+	RenderUnit:
+		Image: carryall
+		Palette: colorpicker
+	Helicopter:
+		InitialFacing: 104
 
-CAMERA:
+camera:
 	Immobile:
 		OccupiesSpace: false
 	Health:
@@ -128,3 +146,9 @@ CAMERA:
 		Range: 8c0
 	BodyOrientation:
 
+wormspawner:
+	Immobile:
+		OccupiesSpace: false
+	RenderEditorOnly:
+	BodyOrientation:
+	WormSpawner:

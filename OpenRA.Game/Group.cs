@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -15,8 +15,8 @@ namespace OpenRA
 {
 	public class Group
 	{
-		List<Actor> actors;
-		int id;
+		readonly Actor[] actors;
+		readonly int id;
 
 		static int nextGroup;
 
@@ -24,7 +24,7 @@ namespace OpenRA
 
 		public Group(IEnumerable<Actor> actors)
 		{
-			this.actors = actors.ToList();
+			this.actors = actors.ToArray();
 
 			foreach (var a in actors)
 				a.Group = this;

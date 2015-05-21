@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,39 +12,47 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using SharpFont;
 
 namespace OpenRA.Graphics
 {
 	public class SpriteFont
 	{
-		int size;
+		static readonly Library Library = new Library();
 
-		public SpriteFont(string name, int size)
+		readonly int size;
+		readonly SheetBuilder builder;
+		readonly Func<string, float> lineWidth;
+		readonly Face face;
+		readonly Cache<Pair<char, Color>, GlyphInfo> glyphs;
+
+		public SpriteFont(string name, int size, SheetBuilder builder)
 		{
-			this.size = size;
+			if (builder.Type != SheetType.BGRA)
+				throw new ArgumentException("The sheet builder must create BGRA sheets.", "builder");
 
-			face = library.NewFace(name, 0);
+			this.size = size;
+			this.builder = builder;
+
+			face = new Face(Library, name);
 			face.SetPixelSizes((uint)size, (uint)size);
 
-			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, 
-			         Pair<char,Color>.EqualityComparer);
+			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, Pair<char, Color>.EqualityComparer);
 
-			// setup a SheetBuilder for our private use
-			// TODO: SheetBuilder state is leaked between mod switches
-			if (builder == null)
-				builder = new SheetBuilder(SheetType.BGRA);
+			Func<char, float> characterWidth = character => glyphs[Pair.New(character, Color.White)].Advance;
+			lineWidth = line => line.Sum(characterWidth);
 
-			PrecacheColor(Color.White);
-			PrecacheColor(Color.Red);
+			PrecacheColor(Color.White, name);
+			PrecacheColor(Color.Red, name);
 		}
 
-		void PrecacheColor(Color c)
+		void PrecacheColor(Color c, string name)
 		{
-			// precache glyphs for U+0020 - U+007f
-			for (var n = (char)0x20; n < (char)0x7f; n++)
-				if (glyphs[Pair.New(n, c)] == null)
-					throw new InvalidOperationException();
+			using (new PerfTimer("PrecacheColor {0} {1}px {2}".F(name, size, c.Name)))
+				for (var n = (char)0x20; n < (char)0x7f; n++)
+					if (glyphs[Pair.New(n, c)] == null)
+						throw new InvalidOperationException();
 		}
 
 		public void DrawText(string text, float2 location, Color c)
@@ -86,26 +94,22 @@ namespace OpenRA.Graphics
 		public int2 Measure(string text)
 		{
 			var lines = text.Split('\n');
-			return new int2((int)Math.Ceiling(lines.Max(s => s.Sum(a => glyphs[Pair.New(a, Color.White)].Advance))), lines.Length * size);
+			return new int2((int)Math.Ceiling(lines.Max(lineWidth)), lines.Length * size);
 		}
-
-		Cache<Pair<char,Color>, GlyphInfo> glyphs;
-		Face face;
 
 		GlyphInfo CreateGlyph(Pair<char, Color> c)
 		{
-			var index = face.GetCharIndex(c.First);
-			face.LoadGlyph(index, LoadFlags.Default, LoadTarget.Normal);
+			face.LoadChar(c.First, LoadFlags.Default, LoadTarget.Normal);
 			face.Glyph.RenderGlyph(RenderMode.Normal);
 
-			var size = new Size((int)face.Glyph.Metrics.Width >> 6, (int)face.Glyph.Metrics.Height >> 6);
+			var size = new Size((int)face.Glyph.Metrics.Width, (int)face.Glyph.Metrics.Height);
 			var s = builder.Allocate(size);
 
 			var g = new GlyphInfo
 			{
 				Sprite = s,
-				Advance = (int)face.Glyph.Metrics.HorizontalAdvance / 64f,
-				Offset = { X = face.Glyph.BitmapLeft, Y = -face.Glyph.BitmapTop }
+				Advance = (float)face.Glyph.Metrics.HorizontalAdvance,
+				Offset = new int2(face.Glyph.BitmapLeft, -face.Glyph.BitmapTop)
 			};
 
 			// A new bitmap is generated each time this property is accessed, so we do need to dispose it.
@@ -113,15 +117,15 @@ namespace OpenRA.Graphics
 				unsafe
 				{
 					var p = (byte*)bitmap.Buffer;
-					var dest = s.sheet.Data;
-					var destStride = s.sheet.Size.Width * 4;
+					var dest = s.Sheet.GetData();
+					var destStride = s.Sheet.Size.Width * 4;
 
-					for (var j = 0; j < s.size.Y; j++)
+					for (var j = 0; j < s.Size.Y; j++)
 					{
-						for (var i = 0; i < s.size.X; i++)
+						for (var i = 0; i < s.Size.X; i++)
 							if (p[i] != 0)
 							{
-								var q = destStride * (j + s.bounds.Top) + 4 * (i + s.bounds.Left);
+								var q = destStride * (j + s.Bounds.Top) + 4 * (i + s.Bounds.Left);
 								dest[q] = c.Second.B;
 								dest[q + 1] = c.Second.G;
 								dest[q + 2] = c.Second.R;
@@ -131,13 +135,11 @@ namespace OpenRA.Graphics
 						p += bitmap.Pitch;
 					}
 				}
-			s.sheet.CommitData();
+
+			s.Sheet.CommitData();
 
 			return g;
 		}
-
-		static Library library = new Library();  
-		static SheetBuilder builder;
 	}
 
 	class GlyphInfo

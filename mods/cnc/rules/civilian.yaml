@@ -283,16 +283,28 @@ BARB:
 	Tooltip:
 		Name: Wire Fence
 		Icon: barbicnh
+	LineBuild:
+		NodeTypes: barbwire
+	LineBuildNode:
+		Types: barbwire
+	RenderBuildingWall:
+		Type: barbwire
 
 WOOD:
 	Inherits: ^Wall
 	Health:
 		HP: 100
-		Armor:
-			Type: Wood
-		Tooltip:
+	Armor:
+		Type: Wood
+	Tooltip:
 		Name: Wooden Fence
 		Icon: woodicnh
+	LineBuild:
+		NodeTypes: woodfence
+	LineBuildNode:
+		Types: woodfence
+	RenderBuildingWall:
+		Type: woodfence
 
 BRIDGE1:
 	Inherits: ^Bridge
@@ -446,6 +458,9 @@ VICE:
 		MuzzleSplitFacings: 8
 	AttackFrontal:
 	AttackWander:
+		WanderMoveRadius: 2
+		MinMoveDelayInTicks: 25
+		MaxMoveDelayInTicks: 45
 	RenderUnit:
 	WithMuzzleFlash:
 		SplitFacings: true

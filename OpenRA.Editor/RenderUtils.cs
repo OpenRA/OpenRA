@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,13 +14,15 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.SpriteLoaders;
 using OpenRA.Traits;
 
 namespace OpenRA.Editor
 {
 	static class RenderUtils
 	{
-		static Bitmap RenderShp(ISpriteSource shp, IPalette p)
+		static Bitmap RenderShp(ShpTDSprite shp, IPalette p)
 		{
 			var frame = shp.Frames.First();
 
@@ -45,27 +47,29 @@ namespace OpenRA.Editor
 			return bitmap;
 		}
 
-		public static ActorTemplate RenderActor(ActorInfo info, TileSet tileset, IPalette p)
+		static readonly string[] LegacyExtensions = new[] { ".shp", ".tem", "" };
+
+		static string ResolveFilename(string name, TileSet tileSet)
 		{
-			var image = RenderSprites.GetImage(info);
+			var ssl = Game.ModData.SpriteSequenceLoader as TilesetSpecificSpriteSequenceLoader;
+			var extensions = ssl != null ? new[] { ssl.TilesetExtensions[tileSet.Id], ssl.DefaultSpriteExtension }.Append(LegacyExtensions) :
+				LegacyExtensions.AsEnumerable();
 
-			using (var s = GlobalFileSystem.OpenWithExts(image, tileset.Extensions))
+			foreach (var e in extensions)
+				if (GlobalFileSystem.Exists(name + e))
+					return name + e;
+
+			return name;
+		}
+
+		public static ActorTemplate RenderActor(ActorInfo info, SequenceProvider sequenceProvider, TileSet tileset, IPalette p, string race)
+		{
+			var image = info.Traits.Get<ILegacyEditorRenderInfo>().EditorImage(info, sequenceProvider, race);
+			image = ResolveFilename(image, tileset);
+			using (var s = GlobalFileSystem.Open(image))
 			{
-				var shp = new ShpReader(s);
+				var shp = new ShpTDSprite(s);
 				var bitmap = RenderShp(shp, p);
-
-				try
-				{
-					using (var s2 = GlobalFileSystem.OpenWithExts(image + "2", tileset.Extensions))
-					{
-						var shp2 = new ShpReader(s2);
-						var roofBitmap = RenderShp(shp2, p);
-
-						using (var g = System.Drawing.Graphics.FromImage(bitmap))
-							g.DrawImage(roofBitmap, 0, 0);
-					}
-				}
-				catch { }
 
 				return new ActorTemplate
 				{
@@ -76,13 +80,13 @@ namespace OpenRA.Editor
 			}
 		}
 
-		public static ResourceTemplate RenderResourceType(ResourceTypeInfo info, string[] exts, IPalette p)
+		public static ResourceTemplate RenderResourceType(ResourceTypeInfo info, TileSet tileset, IPalette p)
 		{
-			var image = info.EditorSprite;
-			using (var s = GlobalFileSystem.OpenWithExts(image, exts))
+			var image = ResolveFilename(info.EditorSprite, tileset);
+			using (var s = GlobalFileSystem.Open(image))
 			{
 				// TODO: Do this properly
-				var shp = new ShpReader(s) as ISpriteSource;
+				var shp = new ShpTDSprite(s);
 				var frame = shp.Frames.Last();
 
 				var bitmap = new Bitmap(frame.Size.Width, frame.Size.Height, PixelFormat.Format8bppIndexed);

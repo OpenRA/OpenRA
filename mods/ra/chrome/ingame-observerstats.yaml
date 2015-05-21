@@ -1,15 +1,14 @@
-Container@OBSERVER_STATS:
+Background@INGAME_OBSERVERSTATS_BG:
 	Logic: ObserverStatsLogic
 	X: 25
 	Y: 50
 	Width: 950
 	Height: 500
-	Visible: false
+	Background: dialog
 	Children:
-		Background@BACKGROUND:
+		Container@BACKGROUND:
 			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
-			Background: dialog
+			Height: PARENT_BOTTOM - 35
 			Children:
 				Label@TITLE:
 					X: 0
@@ -75,8 +74,16 @@ Container@OBSERVER_STATS:
 							Font: Bold
 							Text: Deaths
 							Align: Right
+						Label@KD_RATIO_HEADER:
+							X: 625
+							Y: 40
+							Width: 80
+							Height: 25
+							Font: Bold
+							Text: Kills/Deaths
+							Align: Right
 						Label@ACTIONS_MIN_HEADER:
-							X: 665
+							X: 755
 							Y: 40
 							Width: 40
 							Height: 25
@@ -186,29 +193,22 @@ Container@OBSERVER_STATS:
 							Height: 25
 							Font: Bold
 							Text: Player
-						Label@CONTROL_HEADER:
-							X: 245
-							Y: 40
-							Width: 60
-							Height: 25
-							Font: Bold
-							Text: Control
 						Label@KILLS_COST_HEADER:
-							X: 325
+							X: 245
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
 							Text: Kills
 						Label@DEATHS_COST_HEADER:
-							X: 405
+							X: 325
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
 							Text: Deaths
 						Label@UNITS_KILLED_HEADER:
-							X: 505
+							X: 425
 							Y: 40
 							Width: 40
 							Height: 25
@@ -216,7 +216,7 @@ Container@OBSERVER_STATS:
 							Text: Units Killed
 							Align: Right
 						Label@UNITS_DEAD_HEADER:
-							X: 605
+							X: 525
 							Y: 40
 							Width: 40
 							Height: 25
@@ -224,7 +224,7 @@ Container@OBSERVER_STATS:
 							Text: Units Lost
 							Align: Right
 						Label@BUILDINGS_KILLED_HEADER:
-							X: 725
+							X: 645
 							Y: 40
 							Width: 40
 							Height: 25
@@ -232,7 +232,7 @@ Container@OBSERVER_STATS:
 							Text: Bldg Killed
 							Align: Right
 						Label@BUILDINGS_DEAD_HEADER:
-							X: 825
+							X: 745
 							Y: 40
 							Width: 40
 							Height: 25
@@ -318,8 +318,14 @@ Container@OBSERVER_STATS:
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
+								Label@KD_RATIO:
+									X: 595
+									Y: 0
+									Width: 80
+									Height: PARENT_BOTTOM
+									Align: Right
 								Label@ACTIONS_MIN:
-									X: 635
+									X: 725
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
@@ -427,41 +433,36 @@ Container@OBSERVER_STATS:
 									Width: 160
 									Height: PARENT_BOTTOM
 									Font: Bold
-								Label@CONTROL:
+								Label@KILLS_COST:
 									X: 215
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
-								Label@KILLS_COST:
+								Label@DEATHS_COST:
 									X: 295
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
-								Label@DEATHS_COST:
-									X: 375
-									Y: 0
-									Width: 60
-									Height: PARENT_BOTTOM
 								Label@UNITS_KILLED:
-									X: 475
+									X: 395
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
 								Label@UNITS_DEAD:
-									X: 575
+									X: 495
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
 								Label@BUILDINGS_KILLED:
-									X: 695
+									X: 615
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
 								Label@BUILDINGS_DEAD:
-									X: 795
+									X: 715
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
@@ -486,4 +487,11 @@ Container@OBSERVER_STATS:
 									YAxisLabel: $
 									LabelFont: TinyBold
 									AxisFont: Bold
-
+		Button@CLOSE:
+			X: PARENT_RIGHT - 145
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Close
+			Key: escape
+			Font: Bold

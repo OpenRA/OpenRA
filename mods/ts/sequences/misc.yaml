@@ -1,34 +1,21 @@
 overlay:
-	build-valid-interior: place
-		Start: 0
-	build-valid-snow: place
-		Start: 0
-	build-valid-temperat: place
-		Start: 0
-	build-invalid: place
+	Defaults: place
+		Offset: 0, -12
+		BlendMode: Translucency
+		Alpha: 0.75
+	build-valid-snow:
+	build-valid-temperat:
+	build-invalid:
 		Start: 1
-	target-select: place
-		Start: 1
-	target-valid-desert: place
-		Start: 1
-	target-valid-interior: place
-		Start: 1
-	target-valid-snow: place
-		Start: 1
-	target-valid-temperat: place
-		Start: 1
-	target-invalid: place
-		Start: 1
+	target-select:
 
 poweroff:
-	offline: poweroff
-		Start: 0
+	offline:
 		Length: *
 		Tick: 160
 
 allyrepair:
 	repair: wrench
-		Start: 0
 		Length: *
 		Tick: 160
 
@@ -40,7 +27,6 @@ rallypoint:
 		Offset: 5,-3
 		BlendMode: Additive
 	circles: ring
-		Start: 0
 		Length: 12
 		BlendMode: Additive
 
@@ -49,38 +35,27 @@ beacon:
 		Start: 6
 		Offset: 1,-12
 	circles: ring
-		Start: 0
 		Length: 12
 		BlendMode: Additive
 
+crate:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -10
+
 crate-effects:
+	Defaults:
+		Length: *
 	dollar: money
-		Start: 0
-		Length: *
 	reveal-map: reveal
-		Start: 0
-		Length: *
 	hide-map: shroudx
-		Start: 0
-		Length: *
-	fpower: firepowr
-		Start: 0
-		Length: *
+	firepower: firepowr
 	armor: armor
-		Start: 0
-		Length: *
 	stealth: cloak
-		Start: 0
-		Length: *
 	heal: healall
-		Start: 0
-		Length: *
 	nuke: mltimisl
-		Start: 0
-		Length: *
 	levelup: veteran
-		Start: 0
-		Length: *
 
 rank:
 	rank: pips
@@ -89,17 +64,14 @@ rank:
 
 mpspawn: # TODO: backfall to RA asset
 	idle:
-		Start: 0
 		Length: *
 
 waypoint: # TODO: backfall to RA asset
 	idle:
-		Start: 0
 		Length: *
 
 clock:
 	idle: gclock2
-		Start: 0
 		Length: *
 
 pips:
@@ -111,7 +83,6 @@ pips:
 	tag-primary: pipsra #TODO: backfall to RA asset
 		Start: 2
 	pip-empty: pips2
-		Start: 0
 	pip-green: pips2
 		Start: 1
 	pip-yellow: pips2
@@ -123,12 +94,10 @@ pips:
 	pip-blue: pips2
 		Start: 5
 	pip-ammo: ammopips
-		Start: 0
 	pip-ammoempty: ammopips
 		Start: 1
 # TODO:
 	pip-empty-building:
-		Start: 0
 	pip-green-building:
 		Start: 1
 	pip-yellow-building:
@@ -141,279 +110,276 @@ pips:
 		Start: 5
 
 explosion:
+	Defaults:
+		Length: *
 	building: twlt070
-		Start: 0
-		Length: *
 	ionring: ring1
-		Start: 0
-		Length: *
-		Tick: 160
+		BlendMode: SoftAdditive
+		Tick: 120
 	pulse_explosion: pulsefx2
-		Start: 0
-		Length: *
-		Tick: 160
-		BlendMode: Additive
+		BlendMode: SoftAdditive
+		Tick: 80
 	small_watersplash: h2o_exp2
-		Start: 0
-		Length: *
 	large_watersplash: h2o_exp1
-		Start: 0
-		Length: *
+	water_piff: w_piff
+	water_piffs: w_piffs
 	piff: piff
-		Start: 0
-		Length: *
-	piffpiff: piffpiff
-		Start: 0
-		Length: *
+	piffs: piffpiff
 	small_explosion: explosml
-		Start: 0
-		Length: *
 	medium_explosion: explomed
-		Start: 0
-		Length: *
 	large_explosion: explolrg
-		Start: 0
-		Length: *
 	tiny_bang: s_bang16
-		Start: 0
-		Length: *
 	small_bang: s_bang24
-		Start: 0
-		Length: *
 	medium_bang: s_bang34
-		Start: 0
-		Length: *
 	large_bang: s_bang48
-		Start: 0
-		Length: *
 	tiny_brnl: s_brnl20
-		Start: 0
-		Length: *
 	small_brnl: s_brnl30
-		Start: 0
-		Length: *
 	medium_brnl: s_brnl40
-		Start: 0
-		Length: *
 	large_brnl: s_brnl58
-		Start: 0
-		Length: *
 	tiny_tumu: s_tumu22
-		Start: 0
-		Length: *
 	small_tumu: s_tumu30
-		Start: 0
-		Length: *
 	medium_tumu: s_tumu42
-		Start: 0
-		Length: *
 	large_tumu: s_tumu60
-		Start: 0
-		Length: *
 	tiny_clsn: s_clsn16
-		Start: 0
-		Length: *
 	small_clsn: s_clsn22
-		Start: 0
-		Length: *
 	medium_clsn: s_clsn30
-		Start: 0
-		Length: *
 	large_clsn: s_clsn42
-		Start: 0
-		Length: *
 	verylarge_clsn: s_clsn58
-		Start: 0
-		Length: *
 	tiny_twlt: twlt026
-		Start: 0
-		Length: *
 	small_twlt: twlt036
-		Start: 0
-		Length: *
 	medium_twlt: twlt050
-		Start: 0
-		Length: *
 	large_twlt: twlt070
-		Start: 0
-		Length: *
 	verylarge_twlt: twlt100
-		Start: 0
-		Length: *
 	tiny_grey_explosion: xgrysml1
-		Start: 0
-		Length: *
 	small_grey_explosion: xgrysml2
-		Start: 0
-		Length: *
 	medium_grey_explosion: xgrymed1
-		Start: 0
-		Length: *
 	large_grey_explosion: xgrymed2
-		Start: 0
-		Length: *
 
 discus:
 	idle:
-		Start: 0
 		Length: *
 
 canister:
 	idle:
-		Start: 0
+		Length: *
+
+pulsball:
+	idle:
 		Length: *
 
 dragon:
 	idle:
-		Start: 0
 		Facings: 32
 
 crystal4:
 	idle:
-		Start: 0
 		Length: 15
 		ShadowStart: 15
+		UseTilesetExtension: true
 
 120mm:
 	idle:
-		Start: 0
 
 torpedo:
 	idle:
-		Start: 0
 		Length: *
 
 flameall:
 	idle:
-		Start: 0
 		Length: 19
 		Facings: -8
 		Tick: 160
 
-#TODO: placeholder to fix crashes related to smoke
-smoke_m:
+largesmoke:
+	idle: lgrysmk1
+		Length: *
+
+smallsmoke:
+	idle: sgrysmk1
+		Length: *
+
+large_smoke_trail:
+	idle: smokey
+		Length: *
+
+small_smoke_trail:
+	idle: smokey2
+		Length: *
+
+largefire:
+	idle: fire1
+		Length: *
+
+mediumfire:
+	idle: fire2
+		Length: *
+
+smallfire:
 	idle: fire3
-		Start: 0
+		Length: *
+
+tinyfire:
+	idle: fire4
 		Length: *
 
 moveflsh:
 	idle: ring
-		Start: 0
 		Length: *
 		Tick: 30
 
+wake:
+	idle: wake2
+		Length: *
+		Tick: 180
+
 resources:
+	Defaults:
+		UseTilesetExtension: true
+		Length: 12
+		ShadowStart: 12
+		Offset: 0, -12
 	tib01: tib01
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib02: tib02
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib03: tib03
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib04: tib04
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib05: tib05
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib06: tib06
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib07: tib07
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib08: tib08
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib09: tib09
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib10: tib10
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib11: tib11
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib12: tib12
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib13: tib13
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib14: tib14
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib15: tib15
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib16: tib16
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib17: tib17
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib18: tib18
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib19: tib19
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 	tib20: tib20
-		Start: 0
-		Length: 12
-		ShadowStart: 12
 
 shroud:
-	shroud: shroud
+	shroud:
 		Length: *
 	fog: fog
 		Length: *
 
-scorches: #TODO: make use of 07-12 as well
+smallscorches:
+	Defaults:
+		UseTilesetExtension: true
+		Offset: 0, -12
 	sc1: burnt01
-		Length: *
 	sc2: burnt02
-		Length: *
 	sc3: burnt03
-		Length: *
 	sc4: burnt04
-		Length: *
 	sc5: burnt05
-		Length: *
 	sc6: burnt06
-		Length: *
 
-craters: #TODO: make use of 07-12 as well
+mediumscorches:
+	Defaults:
+		UseTilesetExtension: true
+		Offset: 0, -18
+	sc7: burnt07
+	sc8: burnt08
+	sc9: burnt09
+	sc10: burnt10
+
+largescorches:
+	Defaults:
+		UseTilesetExtension: true
+		Offset: 0, -24
+	sc11: burnt11
+	sc12: burnt12
+
+smallcraters:
+	Defaults:
+		UseTilesetExtension: true
+		Offset: 0, -12
 	cr1: crater01
-		Length: *
 	cr2: crater02
-		Length: *
 	cr3: crater03
-		Length: *
 	cr4: crater04
-		Length: *
 	cr5: crater05
-		Length: *
 	cr6: crater06
+
+mediumcraters:
+	Defaults:
+		UseTilesetExtension: true
+		Offset: 0, -12
+	cr7: crater07
+	cr8: crater08
+	cr9: crater09
+	cr10: crater10
+
+largecraters:
+	Defaults:
+		UseTilesetExtension: true
+		Offset: 0, -24
+	cr11: crater11
+	cr12: crater12
+
+icon:
+	clustermissile: mltiicon
+	ioncannon: ioncicon
+
+clustermissile:
+	up: null # TODO
 		Length: *
+	down: null # TODO
+		Length: *
+ionbeam:
+	idle:
+		Length: *
+		Offset: 0, -78
+		ZOffset: 1
+
+trock01:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+
+trock02:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+
+trock03:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+
+trock04:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+
+trock05:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+
+srock01:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+
+srock02:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+
+srock03:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+
+srock04:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+
+srock05:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true

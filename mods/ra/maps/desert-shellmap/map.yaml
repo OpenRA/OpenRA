@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,9 +14,11 @@ MapSize: 128,128
 
 Bounds: 1,1,126,126
 
-UseAsShellmap: True
+Visibility: Shellmap
 
 Type: Shellmap
+
+Videos:
 
 Options:
 
@@ -76,7 +76,6 @@ Actors:
 	Actor78: 2tnk
 		Location: 77,68
 		Owner: Allies
-		Facing: 0
 	Actor23: v23
 		Location: 22,51
 		Owner: Neutral
@@ -140,7 +139,6 @@ Actors:
 	Actor10: gun
 		Location: 64,63
 		Owner: Allies
-		Facing: 0
 	Actor153: apwr
 		Location: 93,87
 		Owner: Allies
@@ -150,7 +148,6 @@ Actors:
 	Actor33: gun
 		Location: 85,69
 		Owner: Allies
-		Facing: 0
 	Actor40: dome
 		Location: 55,19
 		Owner: Soviets
@@ -166,13 +163,9 @@ Actors:
 	Actor28: gun
 		Location: 74,67
 		Owner: Allies
-		Facing: 0
 	Actor50: apwr
 		Location: 51,14
 		Owner: Soviets
-	Entry1: waypoint
-		Location: 1,50
-		Owner: Neutral
 	Actor63: tsla
 		Location: 48,31
 		Owner: Soviets
@@ -203,9 +196,6 @@ Actors:
 	Actor70: afld
 		Location: 47,24
 		Owner: Soviets
-	SovietBarracks3: barr
-		Location: 41,27
-		Owner: Soviets
 	Actor81: rock7
 		Location: 53,19
 		Owner: Neutral
@@ -233,7 +223,6 @@ Actors:
 	Actor303: mrj
 		Location: 61,60
 		Owner: Allies
-		Facing: 0
 	Actor87: tc01
 		Location: 92,50
 		Owner: Neutral
@@ -258,7 +247,6 @@ Actors:
 	Actor253: arty
 		Location: 44,68
 		Owner: Allies
-		Facing: 0
 	Actor64: brik
 		Location: 69,63
 		Owner: Allies
@@ -339,17 +327,8 @@ Actors:
 	Actor115: tsla
 		Location: 40,24
 		Owner: Soviets
-	IronCurtain: iron
-		Location: 110,40
-		Owner: Soviets
 	Actor117: fix
 		Location: 106,34
-		Owner: Soviets
-	SovietWarFactory1: weap
-		Location: 106,29
-		Owner: Soviets
-	SovietBarracks2: barr
-		Location: 102,30
 		Owner: Soviets
 	Actor136: v2rl
 		Location: 91,40
@@ -442,9 +421,6 @@ Actors:
 	Actor39: pbox
 		Location: 70,89
 		Owner: Allies
-	AlliedTechnologyCenter: miss
-		Location: 56,68
-		Owner: Neutral
 	Actor152: 1tnk
 		Location: 69,85
 		Owner: Allies
@@ -474,9 +450,6 @@ Actors:
 	Actor105: brik
 		Location: 94,70
 		Owner: Allies
-	SovietBarracks1: barr
-		Location: 109,48
-		Owner: Soviets
 	Actor170: kenn
 		Location: 104,41
 		Owner: Soviets
@@ -486,14 +459,8 @@ Actors:
 	Actor182: rock6
 		Location: 96,45
 		Owner: Neutral
-	Chronosphere: pdox
-		Location: 78,91
-		Owner: Allies
 	Actor298: brik
 		Location: 48,78
-		Owner: Allies
-	AlliedWarFactory1: weap
-		Location: 75,81
 		Owner: Allies
 	Actor156: pbox
 		Location: 52,71
@@ -617,7 +584,6 @@ Actors:
 	Actor228: mgg
 		Location: 49,63
 		Owner: Allies
-		Facing: 0
 	Actor255: e1
 		Location: 67,76
 		Owner: Allies
@@ -627,7 +593,6 @@ Actors:
 	Actor82: 2tnk
 		Location: 82,69
 		Owner: Allies
-		Facing: 0
 	Actor30: pbox
 		Location: 47,77
 		Owner: Allies
@@ -678,7 +643,6 @@ Actors:
 	Actor233: 2tnk
 		Location: 66,62
 		Owner: Allies
-		Facing: 0
 	Actor240: sbag
 		Location: 54,62
 		Owner: Allies
@@ -708,9 +672,6 @@ Actors:
 	Actor250: sbag
 		Location: 44,67
 		Owner: Allies
-	AlliedBarracks2: tent
-		Location: 50,66
-		Owner: Allies
 	Actor66: gap
 		Location: 62,70
 		Owner: Allies
@@ -737,9 +698,6 @@ Actors:
 		Owner: Neutral
 	Actor269: v26
 		Location: 21,54
-		Owner: Neutral
-	Entry2: waypoint
-		Location: 1,27
 		Owner: Neutral
 	Actor270: v28
 		Location: 18,49
@@ -774,9 +732,6 @@ Actors:
 	Actor280: c10
 		Location: 23,55
 		Owner: Neutral
-	AlliedBarracks1: tent
-		Location: 83,75
-		Owner: Allies
 	Actor282: e1
 		Location: 42,62
 		Owner: Allies
@@ -826,7 +781,6 @@ Actors:
 	Actor225: 2tnk
 		Location: 47,61
 		Owner: Allies
-		Facing: 0
 	Actor239: 1tnk
 		Location: 44,65
 		Owner: Allies
@@ -842,11 +796,9 @@ Actors:
 	Actor224: 2tnk
 		Location: 41,62
 		Owner: Allies
-		Facing: 0
 	Actor237: jeep
 		Location: 63,63
 		Owner: Allies
-		Facing: 0
 	Actor304: e1
 		Location: 57,72
 		Owner: Allies
@@ -907,7 +859,6 @@ Actors:
 	Actor257: arty
 		Location: 72,68
 		Owner: Allies
-		Facing: 0
 	Actor344: e1
 		Location: 78,69
 		Owner: Allies
@@ -947,9 +898,6 @@ Actors:
 	Actor329: mine
 		Location: 90,21
 		Owner: Neutral
-	Actor195: hpad
-		Location: 70,75
-		Owner: Allies
 	Actor341: dome
 		Location: 63,73
 		Owner: Allies
@@ -1004,9 +952,6 @@ Actors:
 	Actor361: pbox
 		Location: 71,96
 		Owner: Allies
-	Actor365: hpad
-		Location: 64,78
-		Owner: Allies
 	Actor221: fenc
 		Location: 92,97
 		Owner: Allies
@@ -1028,12 +973,6 @@ Actors:
 	Actor310: fenc
 		Location: 98,96
 		Owner: Allies
-	Entry7: waypoint
-		Location: 1,79
-		Owner: Neutral
-	AttackDest: waypoint
-		Location: 55,69
-		Owner: Neutral
 	Actor6: brik
 		Location: 73,67
 		Owner: Allies
@@ -1187,18 +1126,6 @@ Actors:
 	Actor194: powr
 		Location: 52,74
 		Owner: Allies
-	Entry3: waypoint
-		Location: 10,1
-		Owner: Neutral
-	Entry4: waypoint
-		Location: 84,1
-		Owner: Neutral
-	Entry5: waypoint
-		Location: 126,27
-		Owner: Neutral
-	Entry6: waypoint
-		Location: 46,1
-		Owner: Neutral
 	Actor171: wood
 		Location: 17,53
 		Owner: Neutral
@@ -1211,15 +1138,88 @@ Actors:
 	Actor177: wood
 		Location: 17,56
 		Owner: Neutral
+	Actor184: pbox
+		Location: 96,79
+		Owner: Allies
+	Actor79: agun
+		Location: 70,65
+		Owner: Allies
+	Actor118: agun
+		Location: 47,69
+		Owner: Allies
+		Facing: 64
+	SovietWarFactory1: weap
+		Location: 106,29
+		Owner: Soviets
+	SovietBarracks1: barr
+		Location: 109,48
+		Owner: Soviets
+	SovietBarracks2: barr
+		Location: 102,30
+		Owner: Soviets
+	SovietBarracks3: barr
+		Location: 41,27
+		Owner: Soviets
+	IronCurtain: iron
+		Location: 110,40
+		Owner: Soviets
+	AlliedTechnologyCenter: miss
+		Location: 56,68
+		Owner: Neutral
+	Chronosphere: pdox
+		Location: 78,91
+		Owner: Allies
+	AlliedWarFactory1: weap
+		Location: 75,81
+		Owner: Allies
+	AlliedBarracks1: tent
+		Location: 83,75
+		Owner: Allies
+	AlliedBarracks2: tent
+		Location: 50,66
+		Owner: Allies
+	HeliPad1: hpad
+		Location: 70,76
+		Owner: Allies
+	HeliPad2: hpad
+		Location: 64,78
+		Owner: Allies
+	Entry1: waypoint
+		Location: 1,50
+		Owner: Neutral
+	Entry2: waypoint
+		Location: 1,27
+		Owner: Neutral
+	Entry3: waypoint
+		Location: 10,1
+		Owner: Neutral
+	Entry4: waypoint
+		Location: 84,1
+		Owner: Neutral
+	Entry5: waypoint
+		Location: 126,27
+		Owner: Neutral
+	Entry6: waypoint
+		Location: 46,1
+		Owner: Neutral
+	Entry7: waypoint
+		Location: 1,79
+		Owner: Neutral
+	AttackDest: waypoint
+		Location: 55,69
+		Owner: Neutral
 	LstEntry: waypoint
 		Location: 33,126
 		Owner: Neutral
 	LstUnload: waypoint
 		Location: 60,93
 		Owner: Neutral
-	Actor184: pbox
-		Location: 96,79
-		Owner: Allies
+	Chinook1Entry: waypoint
+		Location: 44,126
+		Owner: Neutral
+	Chinook2Entry: waypoint
+		Location: 47,126
+		Owner: Neutral
 	Paradrop1: waypoint
 		Location: 70,50
 		Owner: Neutral
@@ -1247,13 +1247,6 @@ Actors:
 	ChronoshiftLocation: waypoint
 		Location: 80,65
 		Owner: Neutral
-	Actor79: agun
-		Location: 70,65
-		Owner: Allies
-	Actor118: agun
-		Location: 47,69
-		Owner: Allies
-		Facing: 64
 
 Smudges:
 
@@ -1268,9 +1261,57 @@ Rules:
 			ValuePerUnit: 0
 		LuaScript:
 			Scripts: desert-shellmap.lua
-		LoadWidgetAtGameStart:
-			Widget: MAINMENU
 		-StartGameNotification:
+	^Vehicle:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			Upgrades:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Tank:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			Upgrades:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Infantry:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			Upgrades:
+		DeathSounds@NORMAL:
+			VolumeMultiplier: 0.1
+		DeathSounds@BURNED:
+			VolumeMultiplier: 0.1
+		DeathSounds@ZAPPED:
+			VolumeMultiplier: 0.1
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Ship:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			Upgrades:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Plane:
+		GivesBounty:
+			Percentage: 0
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+	^Building:
+		GivesBounty:
+			Percentage: 0
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
 	OILB:
 		CashTrickler:
 			ShowTicks: false
@@ -1284,60 +1325,20 @@ Rules:
 			InitialUnits: e1, e1, e2, e3, e4
 	Ant:
 		Buildable:
-			Owner: soviet
 			Prerequisites: barr
 		Health:
 			HP: 200
-	^Vehicle:
-		ScriptInvulnerable:
-		GivesBounty:
-			Percentage: 0
-		GainsExperience:
-			CostThreshold:
-			FirepowerModifier:
-			ArmorModifier:
-			SpeedModifier:
-	^Tank:
-		ScriptInvulnerable:
-		GivesBounty:
-			Percentage: 0
-		GainsExperience:
-			CostThreshold:
-			FirepowerModifier:
-			ArmorModifier:
-			SpeedModifier:
-	^Infantry:
-		ScriptInvulnerable:
-		GivesBounty:
-			Percentage: 0
-		GainsExperience:
-			CostThreshold:
-			FirepowerModifier:
-			ArmorModifier:
-			SpeedModifier:
-		DeathSounds@NORMAL:
-			VolumeMultiplier: 0.1
-		DeathSounds@BURNED:
-			VolumeMultiplier: 0.1
-		DeathSounds@ZAPPED:
-			VolumeMultiplier: 0.1
-	^Ship:
-		ScriptInvulnerable:
-		GivesBounty:
-			Percentage: 0
-		GainsExperience:
-			CostThreshold:
-			FirepowerModifier:
-			ArmorModifier:
-			SpeedModifier:
-	^Plane:
-		ScriptInvulnerable:
-		GivesBounty:
-			Percentage: 0
-	^Building:
-		ScriptInvulnerable:
-		GivesBounty:
-			Percentage: 0
+	E7:
+		-AnnounceOnKill:
+	powerproxy.paratroopers:
+		ParatroopersPower:
+			DisplayBeacon: false
+			DropItems: E1,E1,E2,E3,E4
+	powerproxy.parazombies:
+		ParatroopersPower:
+			DropItems: ZOMBIE,ZOMBIE,ZOMBIE,ZOMBIE,ZOMBIE
+			QuantizedFacings: 8
+			DisplayBeacon: false
 
 Sequences:
 

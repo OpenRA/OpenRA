@@ -1,0 +1,75 @@
+E1:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Prerequisites: ~barracks
+	Valued:
+		Cost: 120
+	Tooltip:
+		Name: Light Infantry
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
+	Selectable:
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 125
+	Mobile:
+		Speed: 71
+	Armament@PRIMARY:
+		Weapon: Minigun
+		UpgradeTypes: eliteweapon
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
+	Armament@ELITE:
+		Weapon: M1Carbine
+		UpgradeTypes: eliteweapon
+		UpgradeMinEnabledLevel: 1
+	AttackFrontal:
+	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+
+ENGINEER:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Engineer
+		Description: Infiltrates and captures enemy structures.\n  Unarmed
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 30
+		Prerequisites: ~barracks
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: Engineer
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 500
+	Passenger:
+		PipType: Yellow
+	EngineerRepair:
+	RepairsBridges:
+	Captures:
+		CaptureTypes: building
+	-AutoTarget:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
+	-GainsExperience:
+

@@ -1,91 +1,8 @@
-World:
-	ChatCommands:
-	DevCommands:
-	PlayerCommands:
-	HelpCommand:
+^BaseWorld:
+	Inherits: ^Palettes
 	ScreenMap:
 	ActorMap:
-	LoadWidgetAtGameStart:
-		Widget: INGAME_ROOT
-	ScreenShaker:
-	BuildingInfluence:
-	ChooseBuildTabOnSelect:
-	CrateSpawner:
-		Minimum: 0
-		Maximum: 2
-		SpawnInterval: 60
-		WaterChance: 0
-		ValidGround: Sand, Dune, Rock
-	PaletteFromCurrentTileset:
-		Name: terrain
-	PaletteFromFile@d2k:
-		Name: d2k
-		Filename: d2k.pal
-		ShadowIndex: 1
-	PaletteFromFile@chrome:
-		Name: chrome
-		Filename: d2k.pal
-		ShadowIndex: 3
-		AllowModifiers: false
-	PaletteFromFile@effect:
-		Name: effect
-		Filename: d2k.pal
-		ShadowIndex: 4
-		AllowModifiers: false
-	PaletteFromFile@colorpicker:
-		Name: colorpicker
-		Filename: d2k.pal
-		ShadowIndex: 4
-		AllowModifiers: false
-	PaletteFromRGBA@shadow:
-		Name: shadow
-		R: 0
-		G: 0
-		B: 0
-		A: 140
-	PaletteFromRGBA@cloak:
-		Name: cloak
-		R: 0
-		G: 0
-		B: 0
-		A: 140
-	PaletteFromRGBA@highlight:
-		Name: highlight
-		R: 255
-		G: 255
-		B: 255
-		A: 128
-	PaletteFromR8@moveflash:
-		Name: moveflash
-		Filename: DATA.R8
-		Offset: 2572352
-		InvertColor: true
-	PaletteFromRGBA@disabled:
-		Name: disabled
-		R: 0
-		G: 0
-		B: 0
-		A: 180
-	PaletteFromScaledPalette@starportlights:
-		Name: starportlights
-		BasePalette: d2k
-		AllowModifiers: false
-		Offset: -64
-	PaletteFromScaledPalette@repairlights:
-		Name: repairlights
-		BasePalette: d2k
-		AllowModifiers: false
-		Offset: -128
-	PaletteFromR8@shroud:
-		Name: shroud
-		Filename: DATA.R8
-		Offset: 12007
-		InvertColor: true
-	FogPaletteFromR8@fog:
-		Name: fog
-		Filename: DATA.R8
-		Offset: 12007
-		InvertColor: true
+	TerrainGeometryOverlay:
 	ShroudRenderer:
 		ShroudVariants: typea, typeb, typec, typed
 		FogVariants: typea, typeb, typec, typed
@@ -93,32 +10,63 @@ World:
 		OverrideFullShroud: full
 		OverrideFullFog: full
 		ShroudBlend: Multiply
+	Country@Random:
+		Name: Any
+		Race: Random
+		RandomRaceMembers: atreides, harkonnen, ordos
+		Description: Select a random House.
 	Country@Atreides:
 		Name: Atreides
 		Race: atreides
+		Description: House Atreides\nThe noble Atreides, from the water world of Caladan,\nrely on their ornithopters to ensure air superiority.\nThey have allied themselves with the Fremen, the fearsome\nnative warriors of Dune that can move undetected in battle.
 	Country@Harkonnen:
 		Name: Harkonnen
 		Race: harkonnen
+		Description: House Harkonnen\nThe evil Harkonnen will stop at nothing to gain control of the spice.\nThey rely on brute force and atomic weapons to achieve their goals:\nwealth, and the destruction of House Atreides.
 	Country@Ordos:
 		Name: Ordos
 		Race: ordos
-	DomainIndex:
-	PathfinderDebugOverlay:
-	BuildableTerrainLayer:
-	D2kResourceLayer:
-	ResourceClaimLayer:
+		Description: House Ordos\nThe insidious Ordos of the icy planet Sigma Draconis IV\nare known for their wealth, greed and treachery.\nRelying heavily on mercenaries they often resort\nto sabotage and forbidden Ixian technologies.
+	Country@Corrino:
+		Name: Corrino
+		Race: corrino
+		Selectable: false
 	ResourceType@Spice:
 		ResourceType: 1
 		Palette: d2k
 		TerrainType: Spice
-		EditorSprite: spice0
+		EditorSprite: spice0.shp
 		Variants: spice
 		MaxDensity: 20
 		ValuePerUnit: 25
 		Name: Spice
 		PipColor: green
 		AllowedTerrainTypes: Sand
-		AllowUnderActors: false
+		AllowUnderActors: true
+	LoadWidgetAtGameStart:
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	PlayerCommands:
+	HelpCommand:
+	ScreenShaker:
+	BuildingInfluence:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
+	WormManager:
+	CrateSpawner:
+		Minimum: 0
+		Maximum: 2
+		SpawnInterval: 60
+		WaterChance: 0
+		ValidGround: Sand, Dune, Rock
+	DomainIndex:
+	PathfinderDebugOverlay:
+	BuildableTerrainLayer:
+	D2kResourceLayer:
+	ResourceClaimLayer:
 	SmudgeLayer@Rock:
 		Type: RockCrater
 		Sequence: rockcraters
@@ -130,58 +78,57 @@ World:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartLocations:
-	MPStartUnits@mcvatreides:
+	MPStartUnits@mcv:
 		Class: none
-		Races: atreides
-		BaseActor: mcva
-	MPStartUnits@mcvharkonnen:
-		Class: none
-		Races: harkonnen
-		BaseActor: mcvh
-	MPStartUnits@mcvordos:
-		Class: none
-		Races: ordos
-		BaseActor: mcvo
+		ClassName: MCV Only
+		BaseActor: mcv
+		Races: atreides, ordos, harkonnen
 	MPStartUnits@lightatreides:
 		Class: light
+		ClassName: Light Support
 		Races: atreides
-		BaseActor: mcva
-		SupportActors: rifle, rifle, bazooka, trike, quad
+		BaseActor: mcv
+		SupportActors: rifle, rifle, rifle, bazooka, grenadier, trike, quad
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@lightharkonnen:
 		Class: light
+		ClassName: Light Support
 		Races: harkonnen
-		BaseActor: mcvh
-		SupportActors: rifle, bazooka, bazooka, trike, quad
+		BaseActor: mcv
+		SupportActors: rifle, rifle, rifle, bazooka, bazooka, trike, quad
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@lightordos:
 		Class: light
+		ClassName: Light Support
 		Races: ordos
-		BaseActor: mcvo
-		SupportActors: rifle, rifle, engineer, raider, quad
+		BaseActor: mcv
+		SupportActors: rifle, rifle, rifle, bazooka, engineer, raider, quad
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@heavyatreides:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: atreides
-		BaseActor: mcva
-		SupportActors: rifle, bazooka, bazooka, trike, combata, missiletank
+		BaseActor: mcv
+		SupportActors: rifle, rifle, rifle, bazooka, grenadier, trike, combata, missiletank
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@heavyharkonnen:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: harkonnen
-		BaseActor: mcvh
-		SupportActors: rifle, bazooka, engineer, quad, combath, siegetank
+		BaseActor: mcv
+		SupportActors: rifle, rifle, rifle, bazooka, engineer, quad, combath, siegetank
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@heavyordos:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: ordos
-		BaseActor: mcvo
-		SupportActors: rifle, bazooka, engineer, raider, combato, missiletank
+		BaseActor: mcv
+		SupportActors: rifle, rifle, rifle, bazooka, engineer, raider, combato, missiletank
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	SpawnMPUnits:
@@ -189,4 +136,10 @@ World:
 	ValidateOrder:
 	DebugPauseState:
 	RadarPings:
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
 
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	D2kEditorResourceLayer:

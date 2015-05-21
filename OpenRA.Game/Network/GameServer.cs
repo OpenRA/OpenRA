@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -17,48 +17,40 @@ namespace OpenRA.Network
 		public readonly string Address = null;
 		public readonly int State = 0;
 		public readonly int Players = 0;
+		public readonly int MaxPlayers = 0;
+		public readonly int Bots = 0;
+		public readonly int Spectators = 0;
 		public readonly string Map = null;
-
-		// Retained name compatibility with the master server
 		public readonly string Mods = "";
 		public readonly int TTL = 0;
+		public readonly bool Protected = false;
+		public readonly string Started = null;
 
-		public bool CanJoin()
+		public readonly bool IsCompatible = false;
+		public readonly bool IsJoinable = false;
+
+		public readonly string ModLabel = "";
+		public readonly string ModId = "";
+		public readonly string ModVersion = "";
+
+		public GameServer(MiniYaml yaml)
 		{
-			// "waiting for players"
-			if (State != 1)
-				return false;
+			FieldLoader.Load(this, yaml);
 
-			if (!CompatibleVersion())
-				return false;
-
-			// Don't have the map locally
-			// TODO: We allow joining, then drop on game start if the map isn't available
-			if (Game.modData.MapCache[Map].Status != MapStatus.Available && !Game.Settings.Game.AllowDownloading)
-				return false;
-
-			return true;
-		}
-
-		public bool CompatibleVersion()
-		{
-			// Invalid game listing - we require one entry of id@version
+			ModMetadata mod;
 			var modVersion = Mods.Split('@');
-			if (modVersion.Length != 2)
-				return false;
+			if (modVersion.Length == 2 && ModMetadata.AllMods.TryGetValue(modVersion[0], out mod))
+			{
+				ModId = modVersion[0];
+				ModVersion = modVersion[1];
+				ModLabel = "{0} ({1})".F(mod.Title, modVersion[1]);
+				IsCompatible = Game.Settings.Debug.IgnoreVersionMismatch || ModVersion == mod.Version;
+			}
+			else
+				ModLabel = "Unknown mod: {0}".F(Mods);
 
-			var mod = Game.modData.Manifest.Mod;
-
-			// Different mod
-			// TODO: Allow mod switch when joining server
-			if (modVersion[0] != mod.Id)
-				return false;
-
-			// Same mod, but different version
-			if (modVersion[1] != mod.Version && !Game.Settings.Debug.IgnoreVersionMismatch)
-				return false;
-
-			return true;
+			var mapAvailable = Game.Settings.Game.AllowDownloading || Game.ModData.MapCache[Map].Status == MapStatus.Available;
+			IsJoinable = IsCompatible && State == 1 && mapAvailable;
 		}
 	}
 }

@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Primitives;
@@ -36,7 +35,7 @@ namespace OpenRA
 			// Namespaces from each mod assembly
 			foreach (var a in manifest.Assemblies)
 			{
-				var asm = Assembly.LoadFile(Path.GetFullPath(a));
+				var asm = Assembly.LoadFile(Platform.ResolvePath(a));
 				asms.AddRange(asm.GetNamespaces().Select(ns => Pair.New(asm, ns)));
 			}
 
@@ -78,15 +77,9 @@ namespace OpenRA
 		{
 			var flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
 			var ctors = type.GetConstructors(flags).Where(x => x.HasAttribute<UseCtorAttribute>());
-			using (var e = ctors.GetEnumerator())
-			{
-				if (!e.MoveNext())
-					return null;
-				var ctor = e.Current;
-				if (!e.MoveNext())
-					return ctor;
-			}
-			throw new InvalidOperationException("ObjectCreator: UseCtor on multiple constructors; invalid.");
+			if (ctors.Count() > 1)
+				throw new InvalidOperationException("ObjectCreator: UseCtor on multiple constructors; invalid.");
+			return ctors.FirstOrDefault();
 		}
 
 		public object CreateBasic(Type type)
@@ -113,7 +106,7 @@ namespace OpenRA
 			var it = typeof(T);
 			return GetTypes().Where(t => t != it && it.IsAssignableFrom(t));
 		}
-		
+
 		public IEnumerable<Type> GetTypes()
 		{
 			return assemblies.Select(ma => ma.First).Distinct()

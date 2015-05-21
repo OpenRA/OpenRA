@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -15,15 +15,15 @@ namespace OpenRA.Graphics
 {
 	class MappedImage
 	{
-		public readonly Rectangle rect = Rectangle.Empty;
-		public readonly string src;
+		readonly Rectangle rect = Rectangle.Empty;
+		public readonly string Src;
 
 		public MappedImage(string defaultSrc, MiniYaml info)
 		{
 			FieldLoader.LoadField(this, "rect", info.Value);
 			FieldLoader.Load(this, info);
-			if (src == null)
-				src = defaultSrc;
+			if (Src == null)
+				Src = defaultSrc;
 		}
 
 		public Sprite GetImage(Sheet s)
@@ -34,10 +34,10 @@ namespace OpenRA.Graphics
 		public MiniYaml Save(string defaultSrc)
 		{
 			var root = new List<MiniYamlNode>();
-			if (defaultSrc != src)
-				root.Add(new MiniYamlNode("src", src));
+			if (defaultSrc != Src)
+				root.Add(new MiniYamlNode("Src", Src));
 
-			return new MiniYaml(FieldSaver.FormatValue( this, this.GetType().GetField("rect") ), root);
+			return new MiniYaml(FieldSaver.FormatValue(this, this.GetType().GetField("rect")), root);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -15,7 +15,8 @@ namespace OpenRA.Graphics
 {
 	public class Animation
 	{
-		public Sequence CurrentSequence { get; private set; }
+		readonly int defaultTick = 40; // 25 fps == 40 ms
+		public ISpriteSequence CurrentSequence { get; private set; }
 		public bool IsDecoration = false;
 		public Func<bool> Paused;
 
@@ -26,7 +27,6 @@ namespace OpenRA.Graphics
 
 		string name;
 
-		readonly int defaultTick = 40; // 25 fps == 40 ms
 		bool tickAlways;
 
 		public string Name { get { return name; } }
@@ -43,11 +43,11 @@ namespace OpenRA.Graphics
 		{
 			this.sequenceProvider = sequenceProvider;
 			this.name = name.ToLowerInvariant();
-			this.tickFunc = () => {};
+			this.tickFunc = () => { };
 			this.facingFunc = facingFunc;
 		}
 
-		int CurrentFrame { get { return backwards ? CurrentSequence.Start + CurrentSequence.Length - frame - 1 : frame; } }
+		public int CurrentFrame { get { return backwards ? CurrentSequence.Start + CurrentSequence.Length - frame - 1 : frame; } }
 		public Sprite Image { get { return CurrentSequence.GetSprite(CurrentFrame, facingFunc()); } }
 
 		public IEnumerable<IRenderable> Render(WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale)
@@ -79,6 +79,8 @@ namespace OpenRA.Graphics
 			backwards = false;
 			tickAlways = false;
 			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
+			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+
 			frame = 0;
 			tickFunc = () =>
 			{
@@ -94,6 +96,8 @@ namespace OpenRA.Graphics
 				return false;
 
 			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
+			var tick = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+			timeUntilNextFrame = Math.Min(tick, timeUntilNextFrame);
 			frame %= CurrentSequence.Length;
 			return true;
 		}
@@ -103,6 +107,8 @@ namespace OpenRA.Graphics
 			backwards = false;
 			tickAlways = false;
 			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
+			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+
 			frame = 0;
 			tickFunc = () =>
 			{
@@ -127,8 +133,28 @@ namespace OpenRA.Graphics
 			backwards = false;
 			tickAlways = true;
 			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
+			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+
 			frame = func();
 			tickFunc = () => frame = func();
+		}
+
+		public void PlayFetchDirection(string sequenceName, Func<int> direction)
+		{
+			tickAlways = false;
+			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
+			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+
+			frame = 0;
+			tickFunc = () =>
+			{
+				var d = direction();
+				if (d > 0 && ++frame >= CurrentSequence.Length)
+					frame = 0;
+
+				if (d < 0 && --frame < 0)
+					frame = CurrentSequence.Length - 1;
+			};
 		}
 
 		int timeUntilNextFrame;
@@ -169,7 +195,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public Sequence GetSequence(string sequenceName)
+		public ISpriteSequence GetSequence(string sequenceName)
 		{
 			return sequenceProvider.GetSequence(name, sequenceName);
 		}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -21,31 +21,31 @@ namespace OpenRA.FileFormats
 				uint c = key[j++ % key.Length];
 				uint d = key[j++ % key.Length];
 
-				m_p[i] ^= a << 24 | b << 16 | c << 8 | d;
+				lookupMfromP[i] ^= a << 24 | b << 16 | c << 8 | d;
 			}
 
 			uint l = 0, r = 0;
 
-			for (var i = 0; i < 18; )
+			for (var i = 0; i < 18;)
 			{
 				Encrypt(ref l, ref r);
-				m_p[i++] = l;
-				m_p[i++] = r;
+				lookupMfromP[i++] = l;
+				lookupMfromP[i++] = r;
 			}
 
 			for (var i = 0; i < 4; ++i)
-				for (var j = 0; j < 256; )
+				for (var j = 0; j < 256;)
 				{
 					Encrypt(ref l, ref r);
-					m_s[i, j++] = l;
-					m_s[i, j++] = r;
+					lookupMfromS[i, j++] = l;
+					lookupMfromS[i, j++] = r;
 				}
 		}
 
 		public uint[] Encrypt(uint[] data) { return RunCipher(data, Encrypt); }
 		public uint[] Decrypt(uint[] data) { return RunCipher(data, Decrypt); }
 
-		delegate void CipherFunc( ref uint a, ref uint b );
+		delegate void CipherFunc(ref uint a, ref uint b);
 
 		static uint[] RunCipher(uint[] data, CipherFunc f)
 		{
@@ -56,7 +56,7 @@ namespace OpenRA.FileFormats
 			while (size-- > 0)
 			{
 				var a = SwapBytes(data[i]);
-				var b = SwapBytes(data[i+1]);
+				var b = SwapBytes(data[i + 1]);
 
 				f(ref a, ref b);
 
@@ -69,55 +69,57 @@ namespace OpenRA.FileFormats
 
 		void Encrypt(ref uint a, ref uint b)
 		{
-			uint _a = a, _b = b;
-			_a ^= m_p[0];
+			uint tempA = a, tempB = b;
+			tempA ^= lookupMfromP[0];
 
 			var x = false;
-			for( var i = 1; i <= 16; i++, x ^= true)
+			for (var i = 1; i <= 16; i++, x ^= true)
 			{
 				if (x)
-					Round(ref _a, _b, i);
+					Round(ref tempA, tempB, i);
 				else
-					Round(ref _b, _a, i);
+					Round(ref tempB, tempA, i);
 			}
-			_b ^= m_p[17];
 
-			a = _b;
-			b = _a;
+			tempB ^= lookupMfromP[17];
+
+			a = tempB;
+			b = tempA;
 		}
 
 		void Decrypt(ref uint a, ref uint b)
 		{
-			uint _a = a, _b = b;
-			_a ^= m_p[17];
+			uint tempA = a, tempB = b;
+			tempA ^= lookupMfromP[17];
 
 			var x = false;
 			for (var i = 16; i >= 1; i--, x ^= true)
 			{
 				if (x)
-					Round(ref _a, _b, i);
+					Round(ref tempA, tempB, i);
 				else
-					Round(ref _b, _a, i);
+					Round(ref tempB, tempA, i);
 			}
-			_b ^= m_p[0];
 
-			a = _b;
-			b = _a;
+			tempB ^= lookupMfromP[0];
+
+			a = tempB;
+			b = tempA;
 		}
 
 		uint S(uint x, int i)
 		{
-			return m_s[i, (x >> ((3 - i) << 3)) & 0xff];
+			return lookupMfromS[i, (x >> ((3 - i) << 3)) & 0xff];
 		}
 
-		uint bf_f(uint x)
+		uint ConvertBFtoF(uint x)
 		{
 			return ((S(x, 0) + S(x, 1)) ^ S(x, 2)) + S(x, 3);
 		}
 
 		void Round(ref uint a, uint b, int n)
 		{
-			a ^= bf_f(b) ^ m_p[n];
+			a ^= ConvertBFtoF(b) ^ lookupMfromP[n];
 		}
 
 		static uint SwapBytes(uint i)
@@ -127,7 +129,7 @@ namespace OpenRA.FileFormats
 			return i;
 		}
 
-		uint[] m_p = new uint[] {
+		uint[] lookupMfromP = new uint[] {
 			0x243f6a88, 0x85a308d3, 0x13198a2e, 0x03707344,
 			0xa4093822, 0x299f31d0, 0x082efa98, 0xec4e6c89,
 			0x452821e6, 0x38d01377, 0xbe5466cf, 0x34e90c6c,
@@ -135,7 +137,7 @@ namespace OpenRA.FileFormats
 			0x9216d5d9, 0x8979fb1b
 		};
 
-		uint[,] m_s = new uint[,] {
+		uint[,] lookupMfromS = new uint[,] {
 			{
 				0xd1310ba6, 0x98dfb5ac, 0x2ffd72db, 0xd01adfb7,
 				0xb8e1afed, 0x6a267e96, 0xba7c9045, 0xf12c7f99,
@@ -400,7 +402,6 @@ namespace OpenRA.FileFormats
 				0x90d4f869, 0xa65cdea0, 0x3f09252d, 0xc208e69f,
 				0xb74e6132, 0xce77e25b, 0x578fdfe3, 0x3ac372e6
 			}
-
 		};
 	}
 }

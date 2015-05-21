@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,6 +10,7 @@
 
 namespace OpenRA.Traits
 {
+	[Desc("Attach this to the player actor.")]
 	public class DeveloperModeInfo : ITraitInfo
 	{
 		public int Cash = 20000;
@@ -28,7 +29,7 @@ namespace OpenRA.Traits
 
 	public class DeveloperMode : IResolveOrder, ISync
 	{
-		DeveloperModeInfo Info;
+		DeveloperModeInfo info;
 		[Sync] public bool FastCharge;
 		[Sync] public bool AllTech;
 		[Sync] public bool FastBuild;
@@ -40,10 +41,11 @@ namespace OpenRA.Traits
 		// Client side only
 		public bool ShowCombatGeometry;
 		public bool ShowDebugGeometry;
+		public bool EnableAll;
 
 		public DeveloperMode(DeveloperModeInfo info)
 		{
-			Info = info;
+			this.info = info;
 			FastBuild = info.FastBuild;
 			FastCharge = info.FastCharge;
 			DisableShroud = info.DisableShroud;
@@ -59,8 +61,32 @@ namespace OpenRA.Traits
 			if (!self.World.AllowDevCommands)
 				return;
 
-			switch(order.OrderString)
+			switch (order.OrderString)
 			{
+				case "DevAll":
+					{
+						EnableAll ^= true;
+						AllTech = FastCharge = FastBuild = DisableShroud = UnlimitedPower = BuildAnywhere = EnableAll;
+
+						if (EnableAll)
+						{
+							self.Owner.Shroud.ExploreAll(self.World);
+
+							var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
+							self.Trait<PlayerResources>().GiveCash(amount);
+						}
+						else
+						{
+							self.Owner.Shroud.ResetExploration();
+						}
+
+						self.Owner.Shroud.Disabled = DisableShroud;
+						if (self.World.LocalPlayer == self.Owner)
+							self.World.RenderPlayer = DisableShroud ? null : self.Owner;
+
+						break;
+					}
+
 				case "DevEnableTech":
 					{
 						AllTech ^= true;
@@ -81,7 +107,7 @@ namespace OpenRA.Traits
 
 				case "DevGiveCash":
 					{
-						var amount = order.ExtraData != 0 ? (int)order.ExtraData : Info.Cash;
+						var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
 						self.Trait<PlayerResources>().GiveCash(amount);
 						break;
 					}
@@ -90,9 +116,10 @@ namespace OpenRA.Traits
 					{
 						foreach (var a in self.World.ActorsWithTrait<ISeedableResource>())
 						{
-							for (var i = 0; i < Info.ResourceGrowth; i++)
+							for (var i = 0; i < info.ResourceGrowth; i++)
 								a.Trait.Seed(a.Actor);
 						}
+
 						break;
 					}
 
@@ -139,7 +166,7 @@ namespace OpenRA.Traits
 					return;
 			}
 
-			Game.Debug("Cheat used: {0} by {1}".F(order.OrderString, self.Owner.PlayerName));
+			Game.Debug("Cheat used: {0} by {1}", order.OrderString, self.Owner.PlayerName);
 		}
 	}
 }

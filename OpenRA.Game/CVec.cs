@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -31,7 +31,7 @@ namespace OpenRA
 
 		public static CVec operator -(CVec a) { return new CVec(-a.X, -a.Y); }
 
-		public static bool operator ==(CVec me, CVec other) { return (me.X == other.X && me.Y == other.Y); }
+		public static bool operator ==(CVec me, CVec other) { return me.X == other.X && me.Y == other.Y; }
 		public static bool operator !=(CVec me, CVec other) { return !(me == other); }
 
 		public static CVec Max(CVec a, CVec b) { return new CVec(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }
@@ -48,8 +48,7 @@ namespace OpenRA
 		{
 			return new CVec(
 				Math.Min(r.Right, Math.Max(X, r.Left)),
-				Math.Min(r.Bottom, Math.Max(Y, r.Top))
-			);
+				Math.Min(r.Bottom, Math.Max(Y, r.Top)));
 		}
 
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
@@ -59,7 +58,7 @@ namespace OpenRA
 
 		public override string ToString() { return X + "," + Y; }
 
-		public static readonly CVec[] directions =
+		public static readonly CVec[] Directions =
 		{
 			new CVec(-1, -1),
 			new CVec(-1,  0),

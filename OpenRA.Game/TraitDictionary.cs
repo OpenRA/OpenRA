@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -29,6 +29,7 @@ namespace OpenRA
 				else
 					end = mid;
 			}
+
 			return start;
 		}
 	}
@@ -187,6 +188,7 @@ namespace OpenRA
 					this.actor = actor;
 					Reset();
 				}
+
 				public void Reset() { index = actors.BinarySearchMany(actor) - 1; }
 				public bool MoveNext() { return ++index < actors.Count && actors[index].ActorID == actor; }
 				public T Current { get { return traits[index]; } }
@@ -219,6 +221,7 @@ namespace OpenRA
 					traits = container.traits;
 					Reset();
 				}
+
 				public void Reset() { index = -1; }
 				public bool MoveNext() { return ++index < actors.Count; }
 				public TraitPair<T> Current { get { return new TraitPair<T> { Actor = actors[index], Trait = traits[index] }; } }
@@ -228,14 +231,15 @@ namespace OpenRA
 
 			public void RemoveActor(uint actor)
 			{
-				for (var i = actors.Count - 1; i >= 0; i--)
-				{
-					if (actors[i].ActorID == actor)
-					{
-						actors.RemoveAt(i);
-						traits.RemoveAt(i);
-					}
-				}
+				var startIndex = actors.BinarySearchMany(actor);
+				if (startIndex >= actors.Count || actors[startIndex].ActorID != actor)
+					return;
+				var endIndex = startIndex + 1;
+				while (endIndex < actors.Count && actors[endIndex].ActorID == actor)
+					endIndex++;
+				var count = endIndex - startIndex;
+				actors.RemoveRange(startIndex, count);
+				traits.RemoveRange(startIndex, count);
 			}
 		}
 	}

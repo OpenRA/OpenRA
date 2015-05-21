@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -44,7 +44,8 @@ namespace OpenRA.Network
 
 			if (NatDevice == null || NatDevice.GetType() != typeof(Mono.Nat.Upnp.UpnpNatDevice))
 			{
-				Log.Write("server", "No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Game.Settings.Server.NatDiscoveryTimeout));
+				Log.Write("server",
+					"No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Game.Settings.Server.NatDiscoveryTimeout));
 				Game.Settings.Server.NatDeviceAvailable = false;
 				Game.Settings.Server.AllowPortForward = false;
 			}
@@ -62,15 +63,15 @@ namespace OpenRA.Network
 				NatDevice = args.Device;
 				Log.Write("server", "Type: {0}", NatDevice.GetType());
 				Log.Write("server", "Your external IP is: {0}", NatDevice.GetExternalIP());
-				
+
 				foreach (var mp in NatDevice.GetAllMappings())
 					Log.Write("server", "Existing port mapping: protocol={0}, public={1}, private={2}",
-					          mp.Protocol, mp.PublicPort, mp.PrivatePort);
+						mp.Protocol, mp.PublicPort, mp.PrivatePort);
 			}
 			catch (Exception e)
 			{
 				Log.Write("server", "Can't fetch information from NAT device: {0}", e);
-				
+
 				Game.Settings.Server.NatDeviceAvailable = false;
 				Game.Settings.Server.AllowPortForward = false;
 			}

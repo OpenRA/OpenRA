@@ -9,6 +9,9 @@
 # to check the official mods for erroneous yaml files, run:
 #   make test
 #
+# to check the official mod dlls for StyleCop violations, run:
+#   make check
+#
 # to generate documentation aimed at modders, run:
 #   make docs
 #
@@ -37,7 +40,7 @@
 CSC         = dmcs
 CSFLAGS     = -nologo -warn:4 -debug:full -optimize- -codepage:utf8 -unsafe -warnaserror
 DEFINE      = DEBUG;TRACE
-COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll thirdparty/MaxMind.Db.dll thirdparty/MaxMind.GeoIP2.dll thirdparty/Eluant.dll
+COMMON_LIBS = System.dll System.Core.dll System.Data.dll System.Data.DataSetExtensions.dll System.Drawing.dll System.Xml.dll thirdparty/download/ICSharpCode.SharpZipLib.dll thirdparty/download/FuzzyLogicLibrary.dll thirdparty/download/Mono.Nat.dll thirdparty/download/MaxMind.Db.dll thirdparty/download/MaxMind.GeoIP2.dll thirdparty/download/Eluant.dll
 
 
 
@@ -67,10 +70,17 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = rsdl2 rnull game utility irc ralint
-TOOLS = editor tsbuild crashdialog
-
+CORE = rsdl2 rnull game utility
+TOOLS = editor crashdialog
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
+
+# dependencies
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+os-dependencies = linux-dependencies
+else ifeq ($(UNAME_S),Darwin)
+os-dependencies = osx-dependencies
+endif
 
 
 
@@ -81,25 +91,17 @@ VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev
 game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET = OpenRA.Game.exe
 game_KIND = winexe
-game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/SDL2-CS.dll thirdparty/SharpFont.dll
+game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/download/SDL2-CS.dll thirdparty/download/SharpFont.dll
 game_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
 PROGRAMS += game
 game: $(game_TARGET)
-
-irc_SRCS := $(shell find OpenRA.Irc/ -iname '*.cs')
-irc_TARGET = OpenRA.Irc.dll
-irc_KIND = library
-irc_DEPS = $(game_TARGET)
-irc_LIBS = $(COMMON_LIBS) $(irc_DEPS)
-PROGRAMS += irc
-irc: $(irc_TARGET)
 
 # Renderer dlls
 rsdl2_SRCS := $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
 rsdl2_TARGET = OpenRA.Renderer.Sdl2.dll
 rsdl2_KIND = library
 rsdl2_DEPS = $(game_TARGET)
-rsdl2_LIBS = $(COMMON_LIBS) thirdparty/SDL2-CS.dll $(rsdl2_DEPS)
+rsdl2_LIBS = $(COMMON_LIBS) thirdparty/download/SDL2-CS.dll $(rsdl2_DEPS)
 
 rnull_SRCS := $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
 rnull_TARGET = OpenRA.Renderer.Null.dll
@@ -109,17 +111,26 @@ rnull_LIBS = $(COMMON_LIBS) $(rnull_DEPS)
 PROGRAMS += rsdl2 rnull
 renderers: $(rsdl2_TARGET) $(rnull_TARGET)
 
+# Mods Common
+mod_common_SRCS := $(shell find OpenRA.Mods.Common/ -iname '*.cs')
+mod_common_TARGET = mods/common/OpenRA.Mods.Common.dll
+mod_common_KIND = library
+mod_common_DEPS = $(game_TARGET)
+mod_common_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) thirdparty/download/StyleCop.dll thirdparty/download/StyleCop.CSharp.dll thirdparty/download/StyleCop.CSharp.Rules.dll
+PROGRAMS += mod_common
+mod_common: $(mod_common_TARGET)
+
 ##### Official Mods #####
 
-STD_MOD_LIBS	= $(game_TARGET) thirdparty/KopiLua.dll thirdparty/NLua.dll
-STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
+STD_MOD_LIBS	= $(game_TARGET)
+STD_MOD_DEPS	= $(STD_MOD_LIBS)
 
 # Red Alert
 mod_ra_SRCS := $(shell find OpenRA.Mods.RA/ -iname '*.cs')
 mod_ra_TARGET = mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND = library
-mod_ra_DEPS = $(STD_MOD_DEPS) $(irc_TARGET)
-mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(irc_TARGET)
+mod_ra_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET)
+mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
 PROGRAMS += mod_ra
 mod_ra: $(mod_ra_TARGET)
 
@@ -127,8 +138,8 @@ mod_ra: $(mod_ra_TARGET)
 mod_cnc_SRCS := $(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
 mod_cnc_TARGET = mods/cnc/OpenRA.Mods.Cnc.dll
 mod_cnc_KIND = library
-mod_cnc_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET)
-mod_cnc_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+mod_cnc_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET) $(mod_ra_TARGET)
+mod_cnc_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET) $(mod_ra_TARGET)
 PROGRAMS += mod_cnc
 mod_cnc: $(mod_cnc_TARGET)
 
@@ -136,8 +147,8 @@ mod_cnc: $(mod_cnc_TARGET)
 mod_d2k_SRCS := $(shell find OpenRA.Mods.D2k/ -iname '*.cs')
 mod_d2k_TARGET = mods/d2k/OpenRA.Mods.D2k.dll
 mod_d2k_KIND = library
-mod_d2k_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET) $(mod_cnc_TARGET)
-mod_d2k_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+mod_d2k_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET) $(mod_ra_TARGET) $(mod_cnc_TARGET)
+mod_d2k_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET) $(mod_ra_TARGET)
 PROGRAMS += mod_d2k
 mod_d2k: $(mod_d2k_TARGET)
 
@@ -145,8 +156,8 @@ mod_d2k: $(mod_d2k_TARGET)
 mod_ts_SRCS := $(shell find OpenRA.Mods.TS/ -iname '*.cs')
 mod_ts_TARGET = mods/ts/OpenRA.Mods.TS.dll
 mod_ts_KIND = library
-mod_ts_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET)
-mod_ts_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+mod_ts_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET) $(mod_ra_TARGET)
+mod_ts_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET) $(mod_ra_TARGET)
 PROGRAMS += mod_ts
 mod_ts: $(mod_ts_TARGET)
 
@@ -156,8 +167,8 @@ mod_ts: $(mod_ts_TARGET)
 editor_SRCS := $(shell find OpenRA.Editor/ -iname '*.cs')
 editor_TARGET = OpenRA.Editor.exe
 editor_KIND = winexe
-editor_DEPS = $(game_TARGET)
-editor_LIBS = System.Windows.Forms.dll System.Data.dll System.Drawing.dll $(editor_DEPS) thirdparty/Eluant.dll
+editor_DEPS = $(game_TARGET) $(mod_common_TARGET)
+editor_LIBS = System.Windows.Forms.dll System.Data.dll System.Drawing.dll $(editor_DEPS) thirdparty/download/Eluant.dll
 editor_EXTRA = -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
 editor_FLAGS = -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico
 
@@ -168,62 +179,78 @@ OpenRA.Editor.Form1.resources:
 	resgen2 OpenRA.Editor/Form1.resx OpenRA.Editor.Form1.resources 1> /dev/null
 editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor_TARGET)
 
-# Analyses mod yaml for easy to detect errors
-ralint_SRCS := $(shell find OpenRA.Lint/ -iname '*.cs')
-ralint_TARGET = OpenRA.Lint.exe
-ralint_KIND = exe
-ralint_DEPS = $(game_TARGET)
-ralint_LIBS = $(COMMON_LIBS) $(ralint_DEPS)
-PROGRAMS += ralint
-ralint: $(ralint_TARGET)
+check: utility mods
+	@echo
+	@echo "Checking for code style violations in OpenRA.Game..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Game
+	@echo
+	@echo "Checking for code style violations in OpenRA.Renderer.Null..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Renderer.Null
+	@echo
+	@echo "Checking for code style violations in OpenRA.GameMonitor..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.GameMonitor
+	@echo
+	@echo "Checking for code style violations in OpenRA.Mods.Common..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Common
+	@echo
+	@echo "Checking for code style violations in OpenRA.Mods.RA..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.RA
+	@echo
+	@echo "Checking for code style violations in OpenRA.Mods.Cnc..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Cnc
+	@echo
+	@echo "Checking for code style violations in OpenRA.Mods.D2k..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.D2k
+	@echo
+	@echo "Checking for code style violations in OpenRA.Mods.TS..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.TS
+	@echo
+	@echo "Checking for code style violations in OpenRA.Editor..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Editor
+	@echo
+	@echo "Checking for code style violations in OpenRA.Renderer.Sdl2..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Renderer.Sdl2
+	@echo
+	@echo "Checking for code style violations in OpenRA.Utility..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Utility
+	@echo
+	@echo "Checking for code style violations in OpenRA.Test..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Test
 
-test:
-	@echo "OpenRA.Lint: checking Red Alert mod MiniYAML..."
-	@mono --debug OpenRA.Lint.exe --verbose ra
-	@echo "OpenRA.Lint: checking Tiberian Dawn mod MiniYAML..."
-	@mono --debug OpenRA.Lint.exe --verbose cnc
-	@echo "OpenRA.Lint: checking Dune 2000 mod MiniYAML..."
-	@mono --debug OpenRA.Lint.exe --verbose d2k
-	@echo "OpenRA.Lint: checking Tiberian Sun mod MiniYAML..."
-	@mono --debug OpenRA.Lint.exe --verbose ts
-
-# Builds and exports tilesets from a bitmap
-tsbuild_SRCS := $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
-tsbuild_TARGET = OpenRA.TilesetBuilder.exe
-tsbuild_KIND = winexe
-tsbuild_DEPS = $(game_TARGET)
-tsbuild_LIBS = $(COMMON_LIBS) $(tsbuild_DEPS) System.Windows.Forms.dll
-tsbuild_EXTRA = -resource:OpenRA.TilesetBuilder.FormBuilder.resources -resource:OpenRA.TilesetBuilder.FormNew.resources -resource:OpenRA.TilesetBuilder.Surface.resources
-PROGRAMS += tsbuild
-OpenRA.TilesetBuilder.FormBuilder.resources:
-	resgen2 OpenRA.TilesetBuilder/FormBuilder.resx OpenRA.TilesetBuilder.FormBuilder.resources 1> /dev/null
-OpenRA.TilesetBuilder.FormNew.resources:
-	resgen2 OpenRA.TilesetBuilder/frmNew.resx OpenRA.TilesetBuilder.FormNew.resources 1> /dev/null
-OpenRA.TilesetBuilder.Surface.resources:
-	resgen2 OpenRA.TilesetBuilder/Surface.resx OpenRA.TilesetBuilder.Surface.resources 1> /dev/null
-tsbuild: OpenRA.TilesetBuilder.FormBuilder.resources OpenRA.TilesetBuilder.FormNew.resources OpenRA.TilesetBuilder.Surface.resources $(tsbuild_TARGET)
+test: utility mods
+	@echo
+	@echo "Testing Tiberian Sun mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe ts --check-yaml
+	@echo
+	@echo "Testing Dune 2000 mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe d2k --check-yaml
+	@echo
+	@echo "Testing Tiberian Dawn mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe cnc --check-yaml
+	@echo
+	@echo "Testing Red Alert mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe ra --check-yaml
 
 
 ##### Launchers / Utilities #####
 
-crashdialog_SRCS := $(shell find OpenRA.CrashDialog/ -iname '*.cs')
-crashdialog_TARGET = OpenRA.CrashDialog.exe
-crashdialog_KIND = exe
-crashdialog_DEPS = $(game_TARGET)
-crashdialog_LIBS = $(COMMON_LIBS) $(crashdialog_DEPS) System.Windows.Forms.dll
-crashdialog_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
-PROGRAMS += crashdialog
-crashdialog: $(crashdialog_TARGET)
+gamemonitor_SRCS := $(shell find OpenRA.GameMonitor/ -iname '*.cs')
+gamemonitor_TARGET = OpenRA.exe
+gamemonitor_KIND = winexe
+gamemonitor_DEPS = $(game_TARGET)
+gamemonitor_LIBS = $(COMMON_LIBS) $(gamemonitor_DEPS) System.Windows.Forms.dll
+gamemonitor_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
+PROGRAMS += gamemonitor
+gamemonitor: $(gamemonitor_TARGET)
 
 # Backend for the launcher apps - queries game/mod info and applies actions to an install
 utility_SRCS := $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET = OpenRA.Utility.exe
 utility_KIND = exe
 utility_DEPS = $(game_TARGET)
-utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll
+utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/download/ICSharpCode.SharpZipLib.dll
 PROGRAMS += utility
 utility: $(utility_TARGET)
-
 
 # Patches binary headers to work around a mono bug
 fixheader.exe: packaging/fixheader.cs
@@ -252,48 +279,57 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 
 ########################## MAKE/INSTALL RULES ##########################
 #
-default: cli-dependencies core
+default: core
 
-core: game renderers mods utility ralint
+core: game renderers mods utility
 
-tools: editor tsbuild crashdialog
+tools: editor gamemonitor
 
-package: dependencies core editor crashdialog docs version
+package: all-dependencies core tools docs version
 
-mods: mod_ra mod_cnc mod_d2k mod_ts
+mods: mod_common mod_ra mod_cnc mod_d2k mod_ts
 
-all: cli-dependencies core tools
+all: dependencies core tools
 
 clean:
-	@-$(RM_F) *.exe *.dll ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
+	@-$(RM_F) *.exe *.dll *.dylib *.config ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 	@-$(RM_RF) ./*/bin ./*/obj
+	@-$(RM_RF) ./thirdparty/download
 
 distclean: clean
 
-platformdeps = "linux"
-ifeq ($(shell uname),Darwin)
-	platformdeps = "osx"
-endif
-
-dependencies: cli-dependencies native-dependencies
-
 cli-dependencies:
-	@ $(CP_R) thirdparty/*.dll .
-	@ $(CP_R) thirdparty/*.dll.config .
+	@./thirdparty/fetch-thirdparty-deps.sh
+	@ $(CP_R) thirdparty/download/*.dll .
+	@ $(CP_R) thirdparty/download/*.dll.config .
+	@ $(CP) thirdparty/SDL2-CS.dll.config .
 
-native-dependencies:
-	@ $(CP_R) thirdparty/${platformdeps}/* .
+linux-dependencies: cli-dependencies linux-native-dependencies
 
-version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
+linux-native-dependencies:
+	@./thirdparty/configure-linux-native-deps.sh
+
+windows-dependencies:
+	@./thirdparty/fetch-thirdparty-deps-windows.sh
+
+osx-dependencies: cli-dependencies
+	@./thirdparty/fetch-thirdparty-deps-osx.sh
+	@ $(CP_R) thirdparty/download/osx/*.dylib .
+	@ $(CP_R) thirdparty/download/osx/*.dll.config .
+
+dependencies: $(os-dependencies)
+
+all-dependencies: cli-dependencies windows-dependencies osx-dependencies
+
+version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml mods/all/mod.yaml
 	@for i in $? ; do \
 		awk '{sub("Version:.*$$","Version: $(VERSION)"); print $0}' $${i} > $${i}.tmp && \
 		mv -f $${i}.tmp $${i} ; \
 	done
 
-# Documentation (d2k depends on all mod libraries)
-docs: utility
-	@mono --debug OpenRA.Utility.exe --docs d2k > DOCUMENTATION.md
-	@mono --debug OpenRA.Utility.exe --lua-docs ra > Lua-API.md
+docs: utility mods version
+	@mono --debug OpenRA.Utility.exe all --docs > DOCUMENTATION.md
+	@mono --debug OpenRA.Utility.exe ra --lua-docs > Lua-API.md
 
 install: install-core
 
@@ -307,6 +343,7 @@ install-core: default
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
 	@$(CP_R) mods/common "$(DATA_INSTALL_DIR)/mods/"
+	@$(INSTALL_PROGRAM) $(mod_common_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
 	@$(CP_R) mods/cnc "$(DATA_INSTALL_DIR)/mods/"
 	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) "$(DATA_INSTALL_DIR)/mods/cnc"
 	@$(CP_R) mods/ra "$(DATA_INSTALL_DIR)/mods/"
@@ -322,7 +359,6 @@ install-core: default
 
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
-	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
 	@$(CP) SDL2-CS* "$(DATA_INSTALL_DIR)"
 	@$(CP) Eluant* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
@@ -330,8 +366,6 @@ install-core: default
 	@$(INSTALL_PROGRAM) SharpFont.dll "$(DATA_INSTALL_DIR)"
 	@$(CP) SharpFont.dll.config "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) Mono.Nat.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) KopiLua.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) NLua.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
@@ -355,10 +389,28 @@ install-linux-desktop:
 	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
 	@$(INSTALL_DATA) packaging/linux/openra-editor.desktop "$(DESTDIR)$(datadir)/applications"
 
+install-linux-mime:
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/mime/packages/"
+	@$(INSTALL_DATA) packaging/linux/openra-mimeinfo.xml "$(DESTDIR)$(datadir)/mime/packages/openra.xml"
+
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
+	@$(INSTALL_DATA) packaging/linux/openra-replays.desktop "$(DESTDIR)$(datadir)/applications"
+
+install-linux-appdata:
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/appdata/"
+	@$(INSTALL_DATA) packaging/linux/openra.appdata.xml "$(DESTDIR)$(datadir)/appdata/"
+
 install-linux-scripts:
 	@echo "#!/bin/sh" > openra
 	@echo 'cd "$(gameinstalldir)"' >> openra
-	@echo 'exec mono OpenRA.Game.exe "$$@"' >> openra
+	@echo 'mono OpenRA.Game.exe "$$@"' >> openra
+	@echo 'if [ $$? != 0 -a $$? != 1 ]' >> openra
+	@echo 'then' >> openra
+	@echo 'ZENITY=`which zenity` || echo "OpenRA needs zenity installed to display a graphical error dialog. See ~/.openra. for log files."' >> openra
+	@echo '$$ZENITY --question --title "OpenRA" --text "OpenRA has encountered a fatal error.\nLog Files are available in ~/.openra." --ok-label "Quit" --cancel-label "View FAQ" || xdg-open https://github.com/OpenRA/OpenRA/wiki/FAQ' >> openra
+	@echo 'exit 1' >> openra
+	@echo 'fi' >> openra
+
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra
@@ -383,6 +435,8 @@ uninstall:
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/openra-editor.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/64x64/apps/openra.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/128x128/apps/openra.png"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/mime/packages/openra.xml"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/appdata/openra.appdata.xml"
 
 help:
 	@echo to compile, run:

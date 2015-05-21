@@ -60,106 +60,137 @@ Packages:
 	~e01vox02.mix:CRC32
 	~ecache01.mix:CRC32
 
-PackageContents:
-
 Rules:
-	mods/ts/rules/misc.yaml
-	mods/ts/rules/ai.yaml
-	mods/ts/rules/player.yaml
-	mods/ts/rules/world.yaml
-	mods/ts/rules/aircraft.yaml
-	mods/ts/rules/defaults.yaml
-	mods/ts/rules/infantry.yaml
-	mods/ts/rules/structures.yaml
-	mods/ts/rules/vehicles.yaml
-	mods/ts/rules/trees.yaml
-
-Sequences:
-	mods/ts/sequences/aircraft.yaml
-	mods/ts/sequences/infantry.yaml
-	mods/ts/sequences/misc.yaml
-	mods/ts/sequences/structures.yaml
-	mods/ts/sequences/vehicles.yaml
-	mods/ts/sequences/trees.yaml
-
-VoxelSequences:
-	mods/ts/sequences/voxels.yaml
-
-Cursors:
-	mods/ts/cursors.yaml
-
-Chrome:
-	mods/ts/chrome.yaml
-
-Assemblies:
-	mods/ra/OpenRA.Mods.RA.dll
-	mods/d2k/OpenRA.Mods.D2k.dll
-	mods/cnc/OpenRA.Mods.Cnc.dll
-	mods/ts/OpenRA.Mods.TS.dll
-
-ChromeLayout:
-	mods/ts/chrome/install.yaml
-	mods/ra/chrome/ingame.yaml
-	mods/ra/chrome/ingame-chat.yaml
-	mods/ra/chrome/ingame-diplomacy.yaml
-	mods/ra/chrome/ingame-fmvplayer.yaml
-	mods/ra/chrome/ingame-menu.yaml
-	mods/ra/chrome/ingame-objectives.yaml
-	mods/ra/chrome/ingame-observer.yaml
-	mods/ra/chrome/ingame-observerstats.yaml
-	mods/ra/chrome/ingame-player.yaml
-	mods/ra/chrome/mainmenu.yaml
-	mods/ra/chrome/settings.yaml
-	mods/ra/chrome/credits.yaml
-	mods/ra/chrome/lobby.yaml
-	mods/ra/chrome/lobby-mappreview.yaml
-	mods/ra/chrome/lobby-playerbin.yaml
-	mods/ra/chrome/lobby-dialogs.yaml
-	mods/ts/chrome/color-picker.yaml
-	mods/ra/chrome/map-chooser.yaml
-	mods/ra/chrome/create-server.yaml
-	mods/ra/chrome/serverbrowser.yaml
-	mods/ra/chrome/connection.yaml
-	mods/ra/chrome/directconnect.yaml
-	mods/ra/chrome/replaybrowser.yaml
-	mods/ra/chrome/dropdowns.yaml
-	mods/ra/chrome/cheats.yaml
-	mods/ra/chrome/musicplayer.yaml
-	mods/ra/chrome/tooltips.yaml
-	mods/ra/chrome/assetbrowser.yaml
-	mods/ra/chrome/irc.yaml
-	mods/ra/chrome/missionbrowser.yaml
-	mods/ra/chrome/confirmation-dialogs.yaml
+	./mods/ts/rules/ai.yaml
+	./mods/ts/rules/misc.yaml
+	./mods/ts/rules/player.yaml
+	./mods/ts/rules/world.yaml
+	./mods/ts/rules/palettes.yaml
+	./mods/ts/rules/defaults.yaml
+	./mods/ts/rules/aircraft.yaml
+	./mods/ts/rules/civilian-infantry.yaml
+	./mods/ts/rules/civilian-structures.yaml
+	./mods/ts/rules/civilian-vehicles.yaml
+	./mods/ts/rules/gdi-infantry.yaml
+	./mods/ts/rules/gdi-structures.yaml
+	./mods/ts/rules/gdi-support.yaml
+	./mods/ts/rules/gdi-vehicles.yaml
+	./mods/ts/rules/nod-infantry.yaml
+	./mods/ts/rules/nod-structures.yaml
+	./mods/ts/rules/nod-support.yaml
+	./mods/ts/rules/nod-vehicles.yaml
+	./mods/ts/rules/shared-infantry.yaml
+	./mods/ts/rules/shared-structures.yaml
+	./mods/ts/rules/shared-support.yaml
+	./mods/ts/rules/shared-vehicles.yaml
+	./mods/ts/rules/trees.yaml
 
 Weapons:
-	mods/ts/weapons.yaml
+	./mods/ts/weapons/bombsandgrenades.yaml
+	./mods/ts/weapons/energyweapons.yaml
+	./mods/ts/weapons/explosions.yaml
+	./mods/ts/weapons/healweapons.yaml
+	./mods/ts/weapons/largeguns.yaml
+	./mods/ts/weapons/missiles.yaml
+	./mods/ts/weapons/otherweapons.yaml
+	./mods/ts/weapons/smallguns.yaml
+	./mods/ts/weapons/superweapons.yaml
 
-Voices:
-	mods/ts/voices.yaml
+Sequences:
+	./mods/ts/sequences/aircraft.yaml
+	./mods/ts/sequences/infantry.yaml
+	./mods/ts/sequences/misc.yaml
+	./mods/ts/sequences/civilian.yaml
+	./mods/ts/sequences/structures.yaml
+	./mods/ts/sequences/vehicles.yaml
+	./mods/ts/sequences/trees.yaml
 
-Notifications:
-	mods/ts/notifications.yaml
+VoxelSequences:
+	./mods/ts/sequences/voxels.yaml
 
 TileSets:
-	mods/ts/tilesets/temperat.yaml
+	./mods/ts/tilesets/temperat.yaml
+	./mods/ts/tilesets/snow.yaml
 
 TileSize: 48,24
 TileShape: Diamond
+SubCells:
+	Offsets: 0,0,0, -256,128,0, 0,-128,0, 256,128,0
+	DefaultIndex: 2
+
+Cursors:
+	./mods/ts/cursors.yaml
+
+Chrome:
+	./mods/ts/chrome.yaml
+
+Assemblies:
+	./mods/common/OpenRA.Mods.Common.dll
+	./mods/ra/OpenRA.Mods.RA.dll
+	./mods/cnc/OpenRA.Mods.Cnc.dll
+	./mods/ts/OpenRA.Mods.TS.dll
+
+ChromeLayout:
+	./mods/ts/chrome/install.yaml
+	./mods/ra/chrome/ingame.yaml
+	./mods/ra/chrome/ingame-chat.yaml
+	./mods/ra/chrome/ingame-diplomacy.yaml
+	./mods/ra/chrome/ingame-fmvplayer.yaml
+	./mods/ra/chrome/ingame-menu.yaml
+	./mods/ra/chrome/ingame-info.yaml
+	./mods/ra/chrome/ingame-infoscripterror.yaml
+	./mods/ra/chrome/ingame-infobriefing.yaml
+	./mods/ra/chrome/ingame-infoobjectives.yaml
+	./mods/ra/chrome/ingame-infostats.yaml
+	./mods/d2k/chrome/ingame-observer.yaml
+	./mods/ra/chrome/ingame-observerstats.yaml
+	./mods/ts/chrome/ingame-player.yaml
+	./mods/ra/chrome/ingame-perf.yaml
+	./mods/ra/chrome/ingame-debug.yaml
+	./mods/ra/chrome/ingame-leavemap.yaml
+	./mods/ra/chrome/mainmenu.yaml
+	./mods/ra/chrome/settings.yaml
+	./mods/ra/chrome/credits.yaml
+	./mods/ra/chrome/lobby.yaml
+	./mods/ra/chrome/lobby-mappreview.yaml
+	./mods/ra/chrome/lobby-playerbin.yaml
+	./mods/ra/chrome/lobby-dialogs.yaml
+	./mods/ts/chrome/color-picker.yaml
+	./mods/ra/chrome/map-chooser.yaml
+	./mods/ra/chrome/create-server.yaml
+	./mods/ra/chrome/serverbrowser.yaml
+	./mods/ra/chrome/connection.yaml
+	./mods/ra/chrome/directconnect.yaml
+	./mods/ra/chrome/replaybrowser.yaml
+	./mods/ts/chrome/dropdowns.yaml
+	./mods/ra/chrome/musicplayer.yaml
+	./mods/ra/chrome/tooltips.yaml
+	./mods/ra/chrome/assetbrowser.yaml
+	./mods/ra/chrome/missionbrowser.yaml
+	./mods/ra/chrome/confirmation-dialogs.yaml
+	./mods/ra/chrome/editor.yaml
+
+Voices:
+	./mods/ts/audio/voices.yaml
+
+Notifications:
+	./mods/ts/audio/speech-generic.yaml
+	./mods/ts/audio/speech-singleplayer.yaml
+	./mods/ts/audio/sounds-generic.yaml
 
 Music:
-	mods/ts/music.yaml
-
-Movies:
+	./mods/ts/audio/music.yaml
 
 Translations:
-	mods/ts/languages/english.yaml
+	./mods/ts/languages/english.yaml
 
-LoadScreen: DefaultLoadScreen
-	Image: mods/ts/uibits/loadscreen.png
+LoadScreen: LogoStripeLoadScreen
+	Image: ./mods/ts/uibits/loadscreen.png
 	Text: Updating EVA installation..., Changing perspective...
 
 ContentInstaller:
-	InstallerMenuWidget: INSTALL_PANEL
+	MenuWidget: INSTALL_PANEL
+	MusicMenuWidget: INSTALL_MUSIC_PANEL
 	TestFiles: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, tem.mix, temperat.mix
 	PackageMirrorList: http://www.openra.net/packages/ts-mirrors.txt
 	DiskTestFiles: MULTI.MIX, INSTALL/TIBSUN.MIX
@@ -167,11 +198,14 @@ ContentInstaller:
 	PackageToExtractFromCD: INSTALL/TIBSUN.MIX:CRC32
 	ExtractFilesFromCD: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, tem.mix, temperat.mix
 	ShippedSoundtracks: 2
+	MusicPackageMirrorList: http://www.openra.net/packages/ts-music-mirrors.txt
 
 ServerTraits:
 	LobbyCommands
 	PlayerPinger
 	MasterServerPinger
+	LobbySettingsNotification
+	ColorValidator
 
 LobbyDefaults:
 	AllowCheats: true
@@ -182,40 +216,42 @@ LobbyDefaults:
 	Fog: true
 
 ChromeMetrics:
-	mods/ts/metrics.yaml
+	./mods/ts/metrics.yaml
 
 Fonts:
 	Regular:
-		Font:FreeSans.ttf
+		Font:./mods/common/FreeSans.ttf
 		Size:14
 	Bold:
-		Font:FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:32
+	MediumBold:
+		Font:./mods/common/FreeSansBold.ttf
+		Size:18
 	BigBold:
-		Font:FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:24
+	Small:
+		Font:./mods/common/FreeSans.ttf
+		Size:12
 	Tiny:
-		Font:FreeSans.ttf
+		Font:./mods/common/FreeSans.ttf
 		Size:10
 	TinyBold:
-		Font:FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:10
 
-LuaScripts:
-	mods/common/lua/utils.lua
-	mods/common/lua/openra.lua
-	mods/common/lua/map.lua
-	mods/common/lua/actor.lua
-	mods/common/lua/team.lua
-	mods/common/lua/media.lua
-	mods/common/lua/mission.lua
-	mods/common/lua/reinforcements.lua
-	mods/common/lua/supportpowers.lua
-	mods/common/lua/rules.lua
-	mods/common/lua/production.lua
-	mods/common/lua/facing.lua
-
 SupportsMapsFrom: ts
+
+SpriteFormats: ShpTS, TmpTS, ShpTD
+
+SpriteSequenceFormat: TilesetSpecificSpriteSequence
+	TilesetExtensions:
+		TEMPERAT: .tem
+		SNOW: .sno
+	TilesetCodes:
+		TEMPERAT: t
+		SNOW: a

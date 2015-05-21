@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -17,7 +17,7 @@ using OpenRA.Support;
 
 namespace OpenRA
 {
-	public class RulesetCache
+	public sealed class RulesetCache : IDisposable
 	{
 		readonly ModData modData;
 
@@ -26,7 +26,6 @@ namespace OpenRA
 		readonly Dictionary<string, SoundInfo> voiceCache = new Dictionary<string, SoundInfo>();
 		readonly Dictionary<string, SoundInfo> notificationCache = new Dictionary<string, SoundInfo>();
 		readonly Dictionary<string, MusicInfo> musicCache = new Dictionary<string, MusicInfo>();
-		readonly Dictionary<string, string> movieCache = new Dictionary<string, string>();
 		readonly Dictionary<string, TileSet> tileSetCache = new Dictionary<string, TileSet>();
 		readonly Dictionary<string, SequenceCache> sequenceCaches = new Dictionary<string, SequenceCache>();
 
@@ -56,7 +55,6 @@ namespace OpenRA
 			Dictionary<string, SoundInfo> voices;
 			Dictionary<string, SoundInfo> notifications;
 			Dictionary<string, MusicInfo> music;
-			Dictionary<string, string> movies;
 			Dictionary<string, TileSet> tileSets;
 
 			using (new PerfTimer("Actors"))
@@ -69,14 +67,12 @@ namespace OpenRA
 				notifications = LoadYamlRules(notificationCache, m.Notifications, map.NotificationDefinitions, (k, _) => new SoundInfo(k.Value));
 			using (new PerfTimer("Music"))
 				music = LoadYamlRules(musicCache, m.Music, new List<MiniYamlNode>(), (k, _) => new MusicInfo(k.Key, k.Value));
-			using (new PerfTimer("Movies"))
-				movies = LoadYamlRules(movieCache, m.Movies, new List<MiniYamlNode>(), (k, v) => k.Value.Value);
 			using (new PerfTimer("TileSets"))
 				tileSets = LoadTileSets(tileSetCache, sequenceCaches, m.TileSets);
 
 			var sequences = sequenceCaches.ToDictionary(kvp => kvp.Key, kvp => new SequenceProvider(kvp.Value, map));
 
-			return new Ruleset(actors, weapons, voices, notifications, music, movies, tileSets, sequences);
+			return new Ruleset(actors, weapons, voices, notifications, music, tileSets, sequences);
 		}
 
 		Dictionary<string, T> LoadYamlRules<T>(
@@ -136,6 +132,13 @@ namespace OpenRA
 			}
 
 			return items;
+		}
+
+		public void Dispose()
+		{
+			foreach (var cache in sequenceCaches.Values)
+				cache.Dispose();
+			sequenceCaches.Clear();
 		}
 	}
 }

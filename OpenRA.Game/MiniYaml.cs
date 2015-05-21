@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -83,8 +83,9 @@ namespace OpenRA
 
 	public class MiniYaml
 	{
-		static Func<string, string> StringIdentity = s => s;
-		static Func<MiniYaml, MiniYaml> MiniYamlIdentity = my => my;
+		const int SpacesPerLevel = 4;
+		static readonly Func<string, string> StringIdentity = s => s;
+		static readonly Func<MiniYaml, MiniYaml> MiniYamlIdentity = my => my;
 		public string Value;
 		public List<MiniYamlNode> Nodes;
 
@@ -112,9 +113,10 @@ namespace OpenRA
 				}
 				catch (ArgumentException ex)
 				{
-					throw new InvalidDataException("Duplicate key `{0}' in {1}".F(y.Key, y.Location), ex);
+					throw new InvalidDataException("Duplicate key '{0}' in {1}".F(y.Key, y.Location), ex);
 				}
 			}
+
 			return ret;
 		}
 
@@ -142,7 +144,7 @@ namespace OpenRA
 			return nd.ContainsKey(s) ? nd[s].Nodes : new List<MiniYamlNode>();
 		}
 
-		static List<MiniYamlNode> FromLines(string[] lines, string filename)
+		static List<MiniYamlNode> FromLines(IEnumerable<string> lines, string filename)
 		{
 			var levels = new List<List<MiniYamlNode>>();
 			levels.Add(new List<MiniYamlNode>());
@@ -152,12 +154,45 @@ namespace OpenRA
 			{
 				var line = ll;
 				++lineNo;
-				if (line.Contains('#'))
-					line = line.Substring(0, line.IndexOf('#')).TrimEnd(' ', '\t');
-				var t = line.TrimStart(' ', '\t');
+
+				var commentIndex = line.IndexOf('#');
+				if (commentIndex != -1)
+					line = line.Substring(0, commentIndex).TrimEnd(' ', '\t');
+				if (line.Length == 0)
+					continue;
+				var cp = 0;
+				var level = 0;
+				var spaces = 0;
+				var textStart = false;
+				var c = line[cp];
+				while (!(c == '\n' || c == '\r') && cp < line.Length && !textStart)
+				{
+					c = line[cp];
+					switch (c)
+					{
+					    case ' ':
+							spaces++;
+							if (spaces >= SpacesPerLevel)
+							{
+								spaces = 0;
+								level++;
+							}
+
+							cp++;
+							break;
+						case '\t':
+							level++;
+							cp++;
+							break;
+						default:
+							textStart = true;
+							break;
+					}
+				}
+
+				var t = line.Substring(cp);
 				if (t.Length == 0)
 					continue;
-				var level = line.Length - t.Length;
 				var location = new MiniYamlNode.SourceLocation { Filename = filename, Line = lineNo };
 
 				if (levels.Count <= level)
@@ -189,12 +224,8 @@ namespace OpenRA
 
 		public static List<MiniYamlNode> FromFileInPackage(string path)
 		{
-			var lines = new List<string>();
 			using (var stream = GlobalFileSystem.Open(path))
-			using (var reader = new StreamReader(stream))
-				while (!reader.EndOfStream)
-					lines.Add(reader.ReadLine());
-			return FromLines(lines.ToArray(), path);
+				return FromLines(stream.ReadAllLines(), path);
 		}
 
 		public static Dictionary<string, MiniYaml> DictFromFile(string path)
@@ -212,28 +243,28 @@ namespace OpenRA
 			return FromLines(File.ReadAllLines(path), path);
 		}
 
-		public static List<MiniYamlNode> FromStream(Stream s)
+		public static List<MiniYamlNode> FromStream(Stream s, string fileName = "<no filename available>")
 		{
 			using (var reader = new StreamReader(s))
-				return FromString(reader.ReadToEnd());
+				return FromString(reader.ReadToEnd(), fileName);
 		}
 
-		public static List<MiniYamlNode> FromString(string text)
+		public static List<MiniYamlNode> FromString(string text, string fileName = "<no filename available>")
 		{
-			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), "<no filename available>");
-		}
-
-		public static List<MiniYamlNode> MergeLiberal(List<MiniYamlNode> a, List<MiniYamlNode> b)
-		{
-			return Merge(a, b, false);
+			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), fileName);
 		}
 
 		public static List<MiniYamlNode> MergeStrict(List<MiniYamlNode> a, List<MiniYamlNode> b)
 		{
+			return Merge(a, b, false);
+		}
+
+		public static List<MiniYamlNode> MergeLiberal(List<MiniYamlNode> a, List<MiniYamlNode> b)
+		{
 			return Merge(a, b, true);
 		}
 
-		static List<MiniYamlNode> Merge(List<MiniYamlNode> a, List<MiniYamlNode> b, bool throwErrors)
+		static List<MiniYamlNode> Merge(List<MiniYamlNode> a, List<MiniYamlNode> b, bool allowUnresolvedRemoves = false)
 		{
 			if (a.Count == 0)
 				return b;
@@ -244,10 +275,11 @@ namespace OpenRA
 
 			var dictA = a.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
 			var dictB = b.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
-			var keys = dictA.Keys.Union(dictB.Keys).ToList();
+			var allKeys = dictA.Keys.Union(dictB.Keys);
 
-			var noInherit = keys.Where(x => x.Length > 0 && x[0] == '-')
-				.ToDictionary(x => x.Substring(1), x => false);
+			var keys = allKeys.Where(x => x.Length == 0 || x[0] != '-').ToList();
+			var removeKeys = allKeys.Where(x => x.Length > 0 && x[0] == '-')
+				.Select(k => k.Substring(1)).ToHashSet();
 
 			foreach (var key in keys)
 			{
@@ -255,48 +287,55 @@ namespace OpenRA
 				dictA.TryGetValue(key, out aa);
 				dictB.TryGetValue(key, out bb);
 
-				if (noInherit.ContainsKey(key))
-				{
-					if (!throwErrors)
-						if (aa != null)
-							ret.Add(aa);
-
-					noInherit[key] = true;
-				}
+				if (removeKeys.Contains(key))
+					removeKeys.Remove(key);
 				else
 				{
 					var loc = aa == null ? default(MiniYamlNode.SourceLocation) : aa.Location;
-					var merged = (aa == null || bb == null) ? aa ?? bb : new MiniYamlNode(key, Merge(aa.Value, bb.Value, throwErrors), loc);
+					var merged = (aa == null || bb == null) ? aa ?? bb : new MiniYamlNode(key, Merge(aa.Value, bb.Value, allowUnresolvedRemoves), loc);
 					ret.Add(merged);
 				}
 			}
 
-			if (throwErrors)
-			if (noInherit.ContainsValue(false))
-				throw new YamlException("Bogus yaml removals: {0}".F(
-					noInherit.Where(x => !x.Value).JoinWith(", ")));
+			if (removeKeys.Any())
+			{
+				if (allowUnresolvedRemoves)
+				{
+					// Add the removal nodes back for the next pass to deal with
+					foreach (var k in removeKeys)
+					{
+						var key = "-" + k;
+						MiniYamlNode rem;
+						if (!dictA.TryGetValue(key, out rem))
+							rem = dictB[key];
+						ret.Add(rem);
+					}
+				}
+				else
+					throw new YamlException("Bogus yaml removals: {0}".F(removeKeys.JoinWith(", ")));
+			}
 
 			return ret;
 		}
 
 		public static MiniYaml MergeLiberal(MiniYaml a, MiniYaml b)
 		{
-			return Merge(a, b, false);
+			return Merge(a, b, true);
 		}
 
 		public static MiniYaml MergeStrict(MiniYaml a, MiniYaml b)
 		{
-			return Merge(a, b, true);
+			return Merge(a, b, false);
 		}
 
-		static MiniYaml Merge(MiniYaml a, MiniYaml b, bool throwErrors)
+		static MiniYaml Merge(MiniYaml a, MiniYaml b, bool allowUnresolvedRemoves)
 		{
 			if (a == null)
 				return b;
 			if (b == null)
 				return a;
 
-			return new MiniYaml(a.Value ?? b.Value, Merge(a.Nodes, b.Nodes, throwErrors));
+			return new MiniYaml(a.Value ?? b.Value, Merge(a.Nodes, b.Nodes, allowUnresolvedRemoves));
 		}
 
 		public IEnumerable<string> ToLines(string name)

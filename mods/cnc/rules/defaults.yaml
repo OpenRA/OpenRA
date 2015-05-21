@@ -16,10 +16,8 @@
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
-	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
-	IronCurtainable:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -31,16 +29,28 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Tooltip:
+		GenericName: Vehicle
 	UpdatesPlayerStatistics:
 	Cloak:
-		RequiresCrate: true
+		UpgradeTypes: cloak
+		UpgradeMinEnabledLevel: 1
 		InitialDelay: 15
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+	UpgradeManager:
+	MustBeDestroyed:
 
 ^Tank:
 	AppearsOnRadar:
@@ -60,10 +70,8 @@
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
-	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
-	IronCurtainable:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -78,16 +86,28 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Tooltip:
+		GenericName: Tank
 	UpdatesPlayerStatistics:
 	Cloak:
-		RequiresCrate: true
+		UpgradeTypes: cloak
+		UpgradeMinEnabledLevel: 1
 		InitialDelay: 15
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+	UpgradeManager:
+	MustBeDestroyed:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -117,8 +137,21 @@
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
+	Tooltip:
+		GenericName: Helicopter
+	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+	UpgradeManager:
+	WithShadow:
+	Hovers:
+	MustBeDestroyed:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -148,8 +181,13 @@
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	TakeCover:
-		ProneSpeed: 0.6
-	RenderInfantryProne:
+		SpeedModifier: 60
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
+	RenderSprites:
+	WithInfantryBody:
+	WithDeathAnimation:
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
@@ -161,38 +199,53 @@
 	ActorLostNotification:
 	SpawnViceroid:
 		Probability: 10
-	CrushableInfantry:
+	Crushable:
 		WarnProbability: 67
+		CrushSound: squish2.aud
 	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	BodyOrientation:
-	SelfHealing:
+	Tooltip:
+		GenericName: Soldier
+	SelfHealing@HOSPITAL:
 		Step: 5
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresTech: InfantryHealing
+		UpgradeTypes: hospitalheal
+		UpgradeMinEnabledLevel: 1
+	GlobalUpgradable:
+		Upgrades: hospitalheal
+		Prerequisites: hosp
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	DetectCloaked:
 		Range: 1
 	ScriptTriggers:
 	DeathSounds@NORMAL:
-		InfDeaths: 1, 2, 3, 4
+		DeathTypes: 1, 2, 3, 4
 	DeathSounds@BURNED:
 		DeathSound: Burned
-		InfDeaths: 5
+		DeathTypes: 5
 	DeathSounds@POISONED:
 		DeathSound: Poisoned
-		InfDeaths: 6
+		DeathTypes: 6
+	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+	UpgradeManager:
+	MustBeDestroyed:
 
 ^CivInfantry:
 	Inherits: ^Infantry
 	-AutoTarget:
 	-TakeCover:
-	-RenderInfantryProne:
 	AppearsOnRadar:
 	SelectionDecorations:
 	Selectable:
@@ -202,6 +255,7 @@
 		Cost: 70
 	Tooltip:
 		Name: Civilian
+		GenericVisibility: None
 	Mobile:
 		Speed: 56
 	Health:
@@ -215,8 +269,8 @@
 		Notification: CivilianKilled
 		NotifyAll: true
 	ScaredyCat:
-	RenderInfantryPanic:
-	CrushableInfantry:
+	Crushable:
+		CrushSound: squish2.aud
 
 ^DINO:
 	AppearsOnRadar:
@@ -250,8 +304,9 @@
 		TargetTypes: Ground, Infantry
 	HiddenUnderFog:
 	GivesExperience:
-	RenderInfantry:
-		Palette: terrain
+	WithInfantryBody:
+	WithDeathAnimation:
+		UseDeathTypeSuffix: false
 	EditorAppearance:
 		UseTerrainPalette: true
 	BodyOrientation:
@@ -262,9 +317,10 @@
 	AttackFrontal:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
 	DeathSounds:
+	RenderSprites:
+		Palette: terrain
 
 ^Plane:
 	AppearsOnRadar:
@@ -283,8 +339,17 @@
 	BodyOrientation:
 	Huntable:
 	AttackMove:
-	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+	UpgradeManager:
+	WithShadow:
 
 ^Ship:
 	AppearsOnRadar:
@@ -309,8 +374,16 @@
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+	UpgradeManager:
 
 ^Building:
 	AppearsOnRadar:
@@ -318,7 +391,7 @@
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
-		TargetTypes: Ground, C4
+		TargetTypes: Ground, C4, Structure
 	Armor:
 		Type: Wood
 	Building:
@@ -327,13 +400,13 @@
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: constru2.aud, hvydoor1.aud
-		SellSounds: cashturn.aud
 		TerrainTypes: Clear,Road
 	SoundOnDamageTransition:
-		DamagedSound: xplos.aud
-		DestroyedSound: crumble.aud
+		DamagedSounds: xplos.aud
+		DestroyedSounds: crumble.aud
 	RenderBuilding:
 	WithBuildingExplosion:
+		Delay: 1
 	EmitInfantryOnSell:
 		ActorTypes: e6,e1
 	GivesExperience:
@@ -349,10 +422,11 @@
 	Guardable:
 		Range: 3
 	BodyOrientation:
+	Tooltip:
+		GenericName: Structure
 	FrozenUnderFog:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
 	WithMakeAnimation:
@@ -360,13 +434,17 @@
 ^BaseBuilding:
 	Inherits: ^Building
 	MustBeDestroyed:
+		RequiredForShortGame: true
 	RepairableBuilding:
 		RepairPercent: 40
 		RepairStep: 14
-	DeadBuildingState:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
 	GivesBuildableArea:
 	EngineerRepairable:
 	Sellable:
+		SellSounds: cashturn.aud
 	Capturable:
 
 ^CivBuilding:
@@ -378,6 +456,7 @@
 	Building:
 	Tooltip:
 		Name: Civilian Building
+		GenericVisibility: None
 	FrozenUnderFog:
 		StartsRevealed: true
 
@@ -391,16 +470,18 @@
 		RelativeToTopLeft: yes
 	Tooltip:
 		Name: Civilian Building (Destroyed)
+		GenericVisibility: None
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 	ScriptTriggers:
 	WithMakeAnimation:
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
 	Capturable:
+	CaptureNotification:
+		Notification: CivilianBuildingCaptured
 	RepairableBuilding:
 		RepairPercent: 40
 		RepairStep: 14
@@ -431,13 +512,12 @@
 		RelativeToTopLeft: yes
 	Tooltip:
 		Name: Field (Destroyed)
-	BelowUnits:
+		GenericVisibility: None
 	BodyOrientation:
 	RenderBuilding:
 		Palette: terrain
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 	ScriptTriggers:
 	WithMakeAnimation:
 
@@ -451,9 +531,10 @@
 		TerrainTypes: Clear,Road
 	TargetableBuilding:
 		TargetTypes: Ground, Wall
-	Wall:
+	Crushable:
 		CrushClasses: wall
 		CrushSound: sandbag2.aud
+	BlocksProjectiles:
 	LineBuild:
 		Range: 8
 		NodeTypes: wall
@@ -466,10 +547,10 @@
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
 	Sellable:
+		SellSounds: cashturn.aud
 	Guardable:
 	BodyOrientation:
 	FrozenUnderFog:
-	LuaScriptEvents:
 	ScriptTriggers:
 
 ^Tree:
@@ -487,14 +568,12 @@
 		RelativeToTopLeft: yes
 	Health:
 		HP: 500
-	DeadBuildingState:
 	Armor:
 		Type: Wood
 	AutoTargetIgnore:
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 	ScriptTriggers:
 	WithMakeAnimation:
 
@@ -513,7 +592,6 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 	WithMakeAnimation:
 
 ^Rock:
@@ -532,9 +610,10 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 	ScriptTriggers:
 	WithMakeAnimation:
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
 
 ^Husk:
 	Health:
@@ -556,9 +635,9 @@
 		CaptureThreshold: 1.0
 	TransformOnCapture:
 		ForceHealthPercentage: 25
-	BelowUnits:
 	BodyOrientation:
-	LuaScriptEvents:
+	Tooltip:
+		GenericName: Destroyed Vehicle
 	DisabledOverlay:
 	ScriptTriggers:
 
@@ -570,7 +649,6 @@
 		Spins: True
 		Moves: False
 		Explosion: HeliCrash
-	-BelowUnits:
 	-Capturable:
 	-TransformOnCapture:
 	-TargetableUnit:
@@ -581,13 +659,26 @@
 	TargetableBuilding:
 		RequiresForceFire: yes
 		TargetTypes: Ground, Water
-	BelowUnits:
 	Health:
 		HP: 500
 	SoundOnDamageTransition:
-		DamagedSound: xplos.aud
-		DestroyedSound: xplobig4.aud
+		DamagedSounds: xplos.aud
+		DestroyedSounds: xplobig4.aud
 	BodyOrientation:
-	LuaScriptEvents:
 	ScriptTriggers:
+
+^Crate:
+	Tooltip:
+		Name: Crate
+		GenericName: Crate
+	Crate:
+		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
+	RenderSprites:
+		Palette: effect
+	WithCrateBody:
+		XmasImages: xcratea, xcrateb, xcratec, xcrated
+	Selectable:
+		Selectable: false
+		Bounds: 15,15,-1,-1
+	BodyOrientation:
 

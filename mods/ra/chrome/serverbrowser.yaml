@@ -15,7 +15,7 @@ Background@SERVERBROWSER_PANEL:
 			Font: Bold
 		Label@SHOW_LABEL_TITLE:
 			X: 20
-			Y: 45
+			Y: 48
 			Width: 20
 			Height: 25
 			Text: Show:
@@ -26,30 +26,53 @@ Background@SERVERBROWSER_PANEL:
 			Width: 100
 			Height: 20
 			Text: Waiting
+			TextColor: 50,205,50
 		Checkbox@EMPTY:
 			X: 180
 			Y: 50
 			Width: 100
 			Height: 20
 			Text: Empty
+		Checkbox@PASSWORD_PROTECTED:
+			X: 270
+			Y: 50
+			Width: 100
+			Height: 20
+			Text: Protected
+			TextColor: 255,0,0
 		Checkbox@ALREADY_STARTED:
-			X: 280
+			X: 385
 			Y: 50
 			Width: 100
 			Height: 20
 			Text: Started
+			TextColor: 255,165,0
 		Checkbox@INCOMPATIBLE_VERSION:
-			X: 380
+			X: 480
 			Y: 50
 			Width: 100
 			Height: 20
 			Text: Incompatible
+			TextColor: 190,190,190
 		ScrollPanel@SERVER_LIST:
 			X: 20
 			Y: 80
 			Width: 700
 			Height: 360
 			Children:
+				ScrollItem@HEADER_TEMPLATE:
+					BaseName: scrollheader
+					Width: PARENT_RIGHT-27
+					Height: 25
+					X: 2
+					Visible: false
+					Children:
+						Label@LABEL:
+							Y: 0-1
+							Font: Bold
+							Width: PARENT_RIGHT
+							Height: 25
+							Align: Center
 				ScrollItem@SERVER_TEMPLATE:
 					Width: PARENT_RIGHT-27
 					Height: 68
@@ -87,12 +110,6 @@ Background@SERVERBROWSER_PANEL:
 							Width: 140
 							X: PARENT_RIGHT-150
 							Y: 20
-							Align: Right
-							Height: 25
-						Label@VERSION:
-							Width: 140
-							X: PARENT_RIGHT-150
-							Y: 40
 							Align: Right
 							Height: 25
 						Label@LOCATION:

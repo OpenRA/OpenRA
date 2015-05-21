@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,6 +18,11 @@ namespace OpenRA.Support
 {
 	public sealed class PerfTimer : IDisposable
 	{
+		// Tree settings
+		const int Digits = 6;
+		const string IndentationString = "|   ";
+		const string FormatSeperation = " ms ";
+		static readonly string FormatString = "{0," + Digits + ":0}" + FormatSeperation + "{1}";
 		readonly string name;
 		readonly float thresholdMs;
 		readonly byte depth;
@@ -25,22 +30,16 @@ namespace OpenRA.Support
 		List<PerfTimer> children;
 		long ticks;
 
-		static ThreadLocal<PerfTimer> Parent = new ThreadLocal<PerfTimer>();
-
-		// Tree settings
-		const int Digits = 6;
-		const string IndentationString = "|   ";
-		const string FormatSeperation = " ms ";
-		static readonly string FormatString = "{0," + Digits + ":0}" + FormatSeperation + "{1}";
+		static ThreadLocal<PerfTimer> parentThreadLocal = new ThreadLocal<PerfTimer>();
 
 		public PerfTimer(string name, float thresholdMs = 0)
 		{
 			this.name = name;
 			this.thresholdMs = thresholdMs;
 
-			parent = Parent.Value;
+			parent = parentThreadLocal.Value;
 			depth = parent == null ? (byte)0 : (byte)(parent.depth + 1);
-			Parent.Value = this;
+			parentThreadLocal.Value = this;
 
 			ticks = Stopwatch.GetTimestamp();
 		}
@@ -49,7 +48,7 @@ namespace OpenRA.Support
 		{
 			ticks = Stopwatch.GetTimestamp() - ticks;
 
-			Parent.Value = parent;
+			parentThreadLocal.Value = parent;
 
 			if (parent == null)
 				Write();

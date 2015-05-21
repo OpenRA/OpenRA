@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,17 +18,18 @@ namespace OpenRA.Effects
 	{
 		Actor target;
 		Player player;
-		int remainingTicks = 4;
+		int remainingTicks;
 
-		public FlashTarget(Actor target)
-			: this(target, null) { }
-
-		public FlashTarget(Actor target, Player asPlayer)
+		public FlashTarget(Actor target, Player asPlayer = null, int ticks = 4)
 		{
 			this.target = target;
 			player = asPlayer;
-			foreach (var e in target.World.Effects.OfType<FlashTarget>().Where(a => a.target == target).ToArray())
-				target.World.Remove(e);
+			remainingTicks = ticks;
+			target.World.RemoveAll(effect =>
+			{
+				var flashTarget = effect as FlashTarget;
+				return flashTarget != null && flashTarget.target == target;
+			});
 		}
 
 		public void Tick(World world)

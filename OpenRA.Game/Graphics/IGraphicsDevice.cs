@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -32,7 +32,20 @@ namespace OpenRA
 		IGraphicsDevice Create(Size size, WindowMode windowMode);
 	}
 
-	public enum BlendMode { None, Alpha, Additive, Subtractive, Multiply }
+	public interface IHardwareCursor : IDisposable { }
+
+	public enum BlendMode : byte
+	{
+		None,
+		Alpha,
+		Additive,
+		Subtractive,
+		Multiply,
+		SoftAdditive,
+		Translucency,
+		Multiplicative,
+		DoubleMultiplicative
+	}
 
 	public interface IGraphicsDevice : IDisposable
 	{
@@ -47,7 +60,7 @@ namespace OpenRA
 		void Clear();
 		void Present();
 		void PumpInput(IInputHandler inputHandler);
-
+		string GetClipboardText();
 		void DrawPrimitives(PrimitiveType type, int firstVertex, int numVertices);
 
 		void SetLineWidth(float width);
@@ -57,16 +70,20 @@ namespace OpenRA
 		void EnableDepthBuffer();
 		void DisableDepthBuffer();
 
-		void SetBlendMode(BlendMode mode);
+		void SetBlendMode(BlendMode mode, float alpha = 1f);
 
 		void GrabWindowMouseFocus();
 		void ReleaseWindowMouseFocus();
+
+		IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot);
+		void SetHardwareCursor(IHardwareCursor cursor);
 	}
 
-	public interface IVertexBuffer<T>
+	public interface IVertexBuffer<T> : IDisposable
 	{
 		void Bind();
 		void SetData(T[] vertices, int length);
+		void SetData(T[] vertices, int start, int length);
 	}
 
 	public interface IShader
@@ -79,16 +96,19 @@ namespace OpenRA
 		void Render(Action a);
 	}
 
-	public interface ITexture
+	public enum TextureScaleFilter { Nearest, Linear }
+
+	public interface ITexture : IDisposable
 	{
 		void SetData(Bitmap bitmap);
 		void SetData(uint[,] colors);
 		void SetData(byte[] colors, int width, int height);
 		byte[] GetData();
 		Size Size { get; }
+		TextureScaleFilter ScaleFilter { get; set; }
 	}
 
-	public interface IFrameBuffer
+	public interface IFrameBuffer : IDisposable
 	{
 		void Bind();
 		void Unbind();

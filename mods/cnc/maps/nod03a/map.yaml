@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: cnc
 
@@ -16,18 +14,26 @@ MapSize: 64,64
 
 Bounds: 13,16,42,33
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Campaign
 
+Videos:
+	Briefing: nod3.vqa
+	GameStart: dessweep.vqa
+	GameWon: desflees.vqa
+	GameLost: flag.vqa
+
 Options:
 	Crates: False
-	Fog: False
+	Creeps: False
+	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 4000
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -56,6 +62,11 @@ Players:
 		LockTeam: True
 		Allies: Nod
 		Enemies: GDI
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: Random
+		Enemies: Nod, GDI
 
 Actors:
 	Actor0: sbag
@@ -229,332 +240,215 @@ Actors:
 	Actor56: pyle
 		Location: 25,20
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor57: fact
 		Location: 27,20
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor58: silo
 		Location: 23,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor59: silo
 		Location: 23,19
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor60: proc
 		Location: 20,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor61: nuke
 		Location: 25,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor62: nuke
 		Location: 27,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor63: gtwr
 		Location: 28,24
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor64: v24
 		Location: 20,41
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor65: v26
 		Location: 43,18
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor66: v24
 		Location: 37,16
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor67: v20
 		Location: 13,37
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor68: v21
 		Location: 13,39
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor69: v22
 		Location: 13,41
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor70: v24
 		Location: 15,36
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor71: v25
 		Location: 17,41
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor72: v26
 		Location: 16,38
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor73: v19
 		Location: 27,42
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor74: v19
 		Location: 29,42
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor75: v20
 		Location: 39,17
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor76: v21
 		Location: 43,16
 		Owner: Neutral
-		Health: 1
-		Facing: 0
-	TechCenter: miss
-		Location: 14,17
-		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor78: v22
 		Location: 39,16
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor79: v26
 		Location: 37,19
 		Owner: Neutral
-		Health: 1
-		Facing: 0
-	Actor80: bike
-		Location: 52,38
-		Owner: Nod
-		Health: 1
-		Facing: 128
 	Actor82: jeep
 		Location: 21,22
 		Owner: GDI
-		Health: 1
 		Facing: 128
 	Actor83: jeep
 		Location: 20,22
 		Owner: GDI
-		Health: 1
 		Facing: 128
 	Actor84: jeep
 		Location: 18,17
 		Owner: GDI
-		Health: 1
-		Facing: 128
-	Actor86: mcv
-		Location: 50,36
-		Owner: Nod
-		Health: 1
-		Facing: 128
-	Actor87: bike
-		Location: 51,38
-		Owner: Nod
-		Health: 1
 		Facing: 128
 	Actor89: jeep
 		Location: 29,34
 		Owner: GDI
-		Health: 1
 		Facing: 96
-	Actor90: bggy
-		Location: 48,38
-		Owner: Nod
-		Health: 1
-		Facing: 128
-	Actor92: bggy
-		Location: 49,38
-		Owner: Nod
-		Health: 1
-		Facing: 128
-	TibFieldHumvee01: jeep
-		Location: 52,19
-		Owner: GDI
 	Actor95: e1
 		Location: 33,20
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 2
 	Actor96: e1
 		Location: 34,19
 		Owner: GDI
-		Health: 1
 		Facing: 128
-		SubCell: 3
-	VillageGuard01: e1
-		Location: 38,22
-		Owner: GDI
-		Health: 1
-		Facing: 96
-		SubCell: 2
-	VillageGuard02: e1
-		Location: 38,22
-		Owner: GDI
-		Health: 1
-		Facing: 96
 		SubCell: 3
 	Actor99: e1
 		Location: 14,44
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 1
 	Actor100: e1
 		Location: 33,31
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor101: e1
 		Location: 34,23
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 2
 	Actor102: c1
 		Location: 19,40
 		Owner: Neutral
-		Health: 1
 		Facing: 96
 		SubCell: 1
 	Actor103: c3
 		Location: 19,39
 		Owner: Neutral
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor104: c5
 		Location: 15,42
 		Owner: Neutral
-		Health: 1
 		Facing: 32
 		SubCell: 2
 	Actor105: c6
 		Location: 14,37
 		Owner: Neutral
-		Health: 0.5976563
+		Health: 60
 		Facing: 96
 		SubCell: 1
 	Actor106: c7
 		Location: 15,41
 		Owner: Neutral
-		Health: 1
 		Facing: 224
 		SubCell: 0
-	VillageGuard03: e1
-		Location: 39,22
-		Owner: GDI
-		Health: 1
-		Facing: 160
-		SubCell: 3
 	Actor108: e1
 		Location: 34,31
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor109: e1
 		Location: 34,25
 		Owner: GDI
-		Health: 1
 		Facing: 160
 		SubCell: 2
-	Actor110: e1
-		Location: 48,39
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 4
 	Actor111: e1
 		Location: 39,31
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor112: e1
 		Location: 40,37
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 0
-	Actor113: e1
-		Location: 49,39
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 3
 	Actor116: e2
 		Location: 34,22
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor117: e2
 		Location: 34,23
 		Owner: GDI
-		Health: 1
 		Facing: 160
 		SubCell: 4
 	Actor118: e2
 		Location: 42,18
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor119: e2
 		Location: 33,19
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 0
-	Actor122: e3
-		Location: 51,39
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 4
-	Actor123: e3
-		Location: 52,39
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 1
-	AttackWaveSpawnA: waypoint
-		Location: 45,16
-		Owner: Neutral
+	TechCenter: miss
+		Location: 14,17
+		Owner: GDI
+	TibFieldHumvee01: jeep
+		Location: 52,19
+		Owner: GDI
+	VillageGuard01: e1
+		Location: 38,22
+		Owner: GDI
+		Facing: 96
+		SubCell: 2
+	VillageGuard02: e1
+		Location: 38,22
+		Owner: GDI
+		Facing: 96
+		SubCell: 3
+	VillageGuard03: e1
+		Location: 39,22
+		Owner: GDI
+		Facing: 160
+		SubCell: 3
 	PlayerBase: waypoint
 		Location: 50,38
 		Owner: Neutral
-	AttackWaveSpawnC: waypoint
-		Location: 33,16
+	NodEntry: waypoint
+		Location: 54,40
+		Owner: Neutral
+	NodRallyPoint: waypoint
+		Location: 45,42
+		Owner: Neutral
+	AttackWaveSpawnA: waypoint
+		Location: 45,16
 		Owner: Neutral
 	AttackWaveSpawnB: waypoint
 		Location: 44,48
+		Owner: Neutral
+	AttackWaveSpawnC: waypoint
+		Location: 33,16
 		Owner: Neutral
 	CellTrig: waypoint
 		Location: 32,47
@@ -565,12 +459,57 @@ Smudges:
 Rules:
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		LuaScriptInterface:
-			LuaScripts: nod03a.lua
+		LuaScript:
+			Scripts: nod03a.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
+	^Vehicle:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Tank:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Helicopter:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Infantry:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Plane:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Ship:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Building:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Wall:
+		Tooltip:
+			ShowOwnerRow: false
+	^Husk:
+		Tooltip:
+			GenericVisibility: Enemy, Ally, Neutral
+			GenericStancePrefix: false
+			ShowOwnerRow: false
+	HQ:
+		AirstrikePower:
+			Prerequisites: ~disabled
+		Tooltip:
+			Description: Provides an overview of the battlefield.\nRequires power to operate.
 	NUK2:
 		Buildable:
 			Prerequisites: ~disabled
@@ -610,9 +549,6 @@ Rules:
 	ATWR:
 		Buildable:
 			Prerequisites: ~disabled
-	HQ:
-		Buildable:
-			Prerequisites: ~disabled
 	E4:
 		Buildable:
 			Prerequisites: ~disabled
@@ -626,36 +562,7 @@ Rules:
 		Tooltip:
 			Name: Prison
 		Capturable:
-	HQ.NOAIRSTRIKE:
-		RequiresPower:
-		CanPowerDown:
-		Inherits: ^Building
-		Valued:
-			Cost: 1000
-		Tooltip:
-			Name: Communications Center
-			Description: Provides an overview of the battlefield.\n  Requires power to operate.
-		ProvidesCustomPrerequisite:
-			Prerequisite: anyhq
-		Buildable:
-			BuildPaletteOrder: 70
-			Prerequisites: proc
-			Queue: Building.GDI, Building.Nod
-		Building:
-			Power: -40
-			Footprint: x_ xx
-			Dimensions: 2,2
-		Health:
-			HP: 750
-		RevealsShroud:
-			Range: 10c0
-		Bib:
-		ProvidesRadar:
-		RenderDetectionCircle:
-		DetectCloaked:
-			Range: 8
-		RenderBuilding:
-			Image: hq
+			CaptureThreshold: 1
 
 Sequences:
 

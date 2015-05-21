@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -36,7 +36,7 @@ namespace OpenRA
 			{
 				// Target ranges are calculated in 2D, so ignore height differences
 				var vec = new WVec(r, r, WRange.Zero);
-				var rSq = r.Range*r.Range;
+				var rSq = r.Range * r.Range;
 				return world.ActorMap.ActorsInBox(origin - vec, origin + vec).Where(
 					a => (a.CenterPosition - origin).HorizontalLengthSquared <= rSq);
 			}
@@ -97,14 +97,12 @@ namespace OpenRA
 						start = Stopwatch.GetTimestamp();
 					}
 					else
-					{
 						start = current;
-					}
 				}
 			}
 		}
 
-		public static bool AreMutualAllies( Player a, Player b )
+		public static bool AreMutualAllies(Player a, Player b)
 		{
 			return a.Stances[b] == Stance.Ally &&
 				b.Stances[a] == Stance.Ally;

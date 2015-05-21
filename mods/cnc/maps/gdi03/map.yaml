@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: cnc
 
@@ -16,18 +14,26 @@ MapSize: 64,64
 
 Bounds: 1,25,45,37
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Campaign
 
+Videos:
+	Briefing: gdi3.vqa
+	GameStart: samdie.vqa
+	GameWon: bombaway.vqa
+	GameLost: gameover.vqa
+
 Options:
 	Crates: False
-	Fog: False
+	Creeps: False
+	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 5000
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@Nod:
@@ -55,6 +61,11 @@ Players:
 		LockTeam: True
 		Allies: GDI
 		Enemies: Nod
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: Random
+		Enemies: Nod, GDI
 
 Actors:
 	Actor0: wood
@@ -390,502 +401,323 @@ Actors:
 	Actor110: nuke
 		Location: 29,26
 		Owner: Nod
-		Health: 1
-		Facing: 0
 	NodBarracks: hand
 		Location: 24,26
 		Owner: Nod
-		Health: 1
-		Facing: 0
 	Actor112: silo
 		Location: 33,26
 		Owner: Nod
-		Health: 1
-		Facing: 0
 	Actor113: silo
 		Location: 31,26
 		Owner: Nod
-		Health: 1
-		Facing: 0
 	Actor114: proc
 		Location: 31,28
 		Owner: Nod
-		Health: 1
-		Facing: 0
 	Actor115: nuke
 		Location: 22,26
 		Owner: Nod
-		Health: 1
-		Facing: 0
 	Actor116: fact
 		Location: 26,26
 		Owner: Nod
-		Health: 1
-		Facing: 0
 	Actor117: gun
 		Location: 20,34
 		Owner: Nod
-		Health: 1
 		Facing: 160
 	Actor118: v07
 		Location: 40,55
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor119: v11
 		Location: 44,60
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor120: v08
 		Location: 40,56
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor121: v01
 		Location: 44,54
 		Owner: Neutral
-		Health: 1
-		Facing: 0
-	Sam1: sam
-		Location: 28,52
-		Owner: Nod
-		Health: 1
-		Facing: 0
-	Sam2: sam
-		Location: 22,46
-		Owner: Nod
-		Health: 1
-		Facing: 0
-	Sam3: sam
-		Location: 35,47
-		Owner: Nod
-		Health: 1
-		Facing: 0
 	Actor125: gun
 		Location: 36,30
 		Owner: Nod
-		Health: 1
 		Facing: 96
-	Sam4: sam
-		Location: 12,34
-		Owner: Nod
-		Health: 1
-		Facing: 0
 	Actor127: gun
 		Location: 29,34
 		Owner: Nod
-		Health: 1
 		Facing: 96
 	Actor129: bggy
 		Location: 22,29
 		Owner: Nod
-		Health: 1
 		Facing: 128
-	Actor130: mcv
-		Location: 9,60
-		Owner: GDI
-		Health: 1
-		Facing: 0
-	Actor131: jeep
-		Location: 8,58
-		Owner: GDI
-		Health: 1
-		Facing: 0
-	Actor132: jeep
-		Location: 10,58
-		Owner: GDI
-		Health: 1
-		Facing: 0
-	Actor133: jeep
-		Location: 9,58
-		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor134: bggy
 		Location: 21,29
 		Owner: Nod
-		Health: 1
 		Facing: 128
 	Actor135: bggy
 		Location: 28,50
 		Owner: Nod
-		Health: 1
 		Facing: 160
-	Actor136: bggy
-		Location: 6,25
-		Owner: Nod
-		Health: 1
-		Facing: 0
 	Actor137: bggy
 		Location: 21,30
 		Owner: Nod
-		Health: 1
 		Facing: 128
 	Actor138: bggy
 		Location: 22,30
 		Owner: Nod
-		Health: 1
 		Facing: 128
 	Actor139: e3
 		Location: 17,28
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 0
 	Actor140: e1
 		Location: 19,29
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 4
 	Actor141: e1
 		Location: 18,28
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 4
 	Actor142: e1
 		Location: 19,28
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 0
 	Actor143: e1
 		Location: 31,32
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor144: e1
 		Location: 34,32
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor145: e3
 		Location: 34,31
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor146: e3
 		Location: 34,32
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 1
 	Actor147: e3
 		Location: 18,29
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 3
 	Actor148: e3
 		Location: 30,51
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor149: e1
 		Location: 20,42
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor150: e1
 		Location: 23,44
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 4
 	Actor151: e1
 		Location: 24,33
 		Owner: Nod
-		Health: 1
 		Facing: 192
 		SubCell: 0
 	Actor152: e1
 		Location: 22,34
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor153: e1
 		Location: 27,33
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 2
 	Actor154: e1
 		Location: 30,34
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor155: e1
 		Location: 14,33
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor156: e1
 		Location: 34,45
 		Owner: Nod
-		Health: 1
 		Facing: 64
 		SubCell: 1
 	Actor157: e1
 		Location: 36,45
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor158: e3
 		Location: 30,32
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 3
 	Actor159: e3
 		Location: 21,32
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor160: e3
 		Location: 14,32
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 3
-	Actor161: e1
-		Location: 11,31
-		Owner: Nod
-		Health: 1
-		Facing: 96
-		SubCell: 4
-	Actor162: e1
-		Location: 10,31
-		Owner: Nod
-		Health: 1
-		Facing: 96
-		SubCell: 2
 	Actor163: c6
 		Location: 42,56
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 		SubCell: 1
 	Actor164: c3
 		Location: 43,56
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 		SubCell: 1
 	Actor165: c2
 		Location: 40,58
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 		SubCell: 1
 	Actor166: e3
 		Location: 40,43
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor167: e3
 		Location: 19,45
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 2
 	Actor168: e3
 		Location: 43,33
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 4
-	Actor169: e1
-		Location: 11,58
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 2
-	Actor170: e1
-		Location: 11,58
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 1
-	Actor171: e1
-		Location: 11,57
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 4
-	Actor172: e1
-		Location: 11,57
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 3
-	Actor173: e2
-		Location: 7,58
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 1
-	Actor174: e2
-		Location: 7,57
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 3
-	Actor175: e2
-		Location: 7,57
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 4
-	Actor176: e2
-		Location: 7,58
-		Owner: GDI
-		Health: 1
-		Facing: 0
-		SubCell: 2
 	Actor177: e3
 		Location: 14,32
 		Owner: Nod
-		Health: 1
-		Facing: 96
-		SubCell: 1
-	Actor178: e1
-		Location: 9,31
-		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 1
 	Actor179: e3
 		Location: 13,36
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 2
 	Actor180: e3
 		Location: 11,34
 		Owner: Nod
-		Health: 1
 		Facing: 64
 		SubCell: 4
 	Actor181: e3
 		Location: 20,45
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 3
 	Actor182: e1
 		Location: 25,51
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor183: e1
 		Location: 24,52
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor184: e3
 		Location: 33,46
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor185: e3
 		Location: 37,47
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 3
 	Actor186: e3
 		Location: 37,28
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor187: e3
 		Location: 38,28
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor188: e3
 		Location: 14,32
 		Owner: Nod
-		Health: 1
-		Facing: 0
-		SubCell: 4
-	Actor189: e1
-		Location: 10,31
-		Owner: Nod
-		Health: 1
-		Facing: 0
-		SubCell: 3
-	Actor190: e1
-		Location: 10,31
-		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 4
 	Actor191: e3
 		Location: 24,46
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 1
-	waypoint26: waypoint
-		Location: 2,54
+	Sam1: sam
+		Location: 28,52
+		Owner: Nod
+	Sam2: sam
+		Location: 22,46
+		Owner: Nod
+	Sam3: sam
+		Location: 35,47
+		Owner: Nod
+	Sam4: sam
+		Location: 12,34
+		Owner: Nod
+	HiddenBuggy: bggy
+		Location: 6,25
+		Owner: Nod
+		Facing: 0
+	Sam4Guard0: e1
+		Location: 9,31
+		Owner: Nod
+		Facing: 96
+		SubCell: 1
+	Sam4Guard1: e1
+		Location: 11,31
+		Owner: Nod
+		Facing: 96
+		SubCell: 4
+	Sam4Guard2: e1
+		Location: 10,31
+		Owner: Nod
+		Facing: 96
+		SubCell: 2
+	Sam4Guard3: e1
+		Location: 10,31
+		Owner: Nod
+		SubCell: 3
+	Sam4Guard4: e1
+		Location: 10,31
+		Owner: Nod
+		SubCell: 4
+	InfantryStart: waypoint
+		Location: 14,61
 		Owner: Neutral
-	waypoint12: waypoint
-		Location: 11,37
+	VehicleStart: waypoint
+		Location: 9,61
 		Owner: Neutral
-	waypoint11: waypoint
-		Location: 32,41
-		Owner: Neutral
-	waypoint10: waypoint
-		Location: 29,50
-		Owner: Neutral
-	waypoint9: waypoint
+	AttackWaypoint: waypoint
 		Location: 6,52
 		Owner: Neutral
-	waypoint8: waypoint
-		Location: 14,35
+	MCVwaypoint: waypoint
+		Location: 9,60
 		Owner: Neutral
-	waypoint7: waypoint
-		Location: 36,35
+	VehicleStop: waypoint
+		Location: 10,55
 		Owner: Neutral
-	waypoint6: waypoint
-		Location: 36,32
+	InfantryStop: waypoint
+		Location: 14,57
 		Owner: Neutral
-	waypoint5: waypoint
-		Location: 17,41
+	AttackRallypoint1: waypoint
+		Location: 43,36
 		Owner: Neutral
-	waypoint4: waypoint
-		Location: 24,54
-		Owner: Neutral
-	waypoint3: waypoint
-		Location: 42,51
-		Owner: Neutral
-	waypoint2: waypoint
-		Location: 43,37
-		Owner: Neutral
-	waypoint1: waypoint
-		Location: 34,37
-		Owner: Neutral
-	waypoint0: waypoint
-		Location: 26,37
+	AttackRallypoint2: waypoint
+		Location: 37,51
 		Owner: Neutral
 
 Smudges:
@@ -895,12 +727,52 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
-		LuaScriptInterface:
-			LuaScripts: gdi03.lua
+		LuaScript:
+			Scripts: gdi03.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
+	^Vehicle:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Tank:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Helicopter:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
 	^Infantry:
-		MustBeDestroyed:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Plane:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Ship:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Building:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Wall:
+		Tooltip:
+			ShowOwnerRow: false
+	SBAG:
+		-Crushable:
+	^Husk:
+		Tooltip:
+			GenericVisibility: Enemy, Ally, Neutral
+			GenericStancePrefix: false
+			ShowOwnerRow: false
 	WEAP:
 		Buildable:
 			Prerequisites: ~disabled
@@ -947,47 +819,25 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 		Building:
-			Power: -10
+		Power:
+			Amount: -10
+		-Capturable:
 	HQ:
-		Buildable:
-			Prerequisites: ~disabled
-	NOHQ:
-		RequiresPower:
-		CanPowerDown:
-		Inherits: ^BaseBuilding
-		Valued:
-			Cost: 1000
 		Tooltip:
-			Name: Communications Center
 			Description: Provides an overview of the battlefield.\n  Requires power to operate.
-		ProvidesCustomPrerequisite:
-			Prerequisite: anyhq
-		Buildable:
-			BuildPaletteOrder: 70
-			Prerequisites: proc
-			Queue: Building.GDI
-		Building:
-			Power: -40
-			Footprint: x_ xx
-			Dimensions: 2,2
-		Health:
-			HP: 750
-		RevealsShroud:
-			Range: 10
-		Bib:
-		ProvidesRadar:
-		RenderBuilding:
-			Image: hq
-	PowerProxy.AirSupport:
+		-AirstrikePower:
+	airstrike.proxy:
 		AirstrikePower:
 			Icon: airstrike
-			ChargeTime: 30
+			StartFullyCharged: True
+			ChargeTime: 120
 			SquadSize: 3
 			QuantizedFacings: 8
 			Description: Air Strike
 			LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
 			EndChargeSound: airredy1.aud
 			SelectTargetSound: select1.aud
+			InsufficientPowerSound: nopower1.aud
 			IncomingSound: enemya.aud
 			UnitType: a10
 			DisplayBeacon: True

@@ -1,4 +1,6 @@
 # Enforce LF normalization on Windows
+*.yaml eol=lf
+*.lua eol=lf
 * text=lf
 
 # Custom for Visual Studio

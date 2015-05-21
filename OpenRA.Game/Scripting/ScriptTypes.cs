@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -69,7 +69,7 @@ namespace OpenRA.Scripting
 			// TODO: Lua 5.3 will introduce an integer type, so this will be able to go away
 			if (value is LuaNumber && t.IsAssignableFrom(typeof(int)))
 			{
-				clrObject = (int)(value.ToNumber().Value);
+				clrObject = (int)value.ToNumber().Value;
 				return true;
 			}
 
@@ -88,6 +88,29 @@ namespace OpenRA.Scripting
 			if (value is LuaTable && t.IsAssignableFrom(typeof(LuaTable)))
 			{
 				clrObject = value;
+				return true;
+			}
+
+			// Translate LuaTable<int, object> -> object[]
+			if (value is LuaTable && t.IsArray)
+			{
+				var innerType = t.GetElementType();
+				var table = (LuaTable)value;
+				var array = Array.CreateInstance(innerType, table.Count);
+				var i = 0;
+
+				foreach (var kv in table)
+				{
+					object element;
+					if (innerType == typeof(LuaValue))
+						element = kv.Value;
+					else if (!kv.Value.TryGetClrValue(innerType, out element))
+						throw new LuaException("Unable to convert table value of type {0} to type {1}".F(kv.Value.WrappedClrType(), innerType));
+
+					array.SetValue(element, i++);
+				}
+
+				clrObject = array;
 				return true;
 			}
 
@@ -127,17 +150,19 @@ namespace OpenRA.Scripting
 
 				return new LuaCustomClrObject(obj);
 			}
-	
-			throw new InvalidOperationException("Cannot convert type '{0}' to Lua. Class must implement IScriptBindable.".F(obj.GetType()));
-		}
 
-		public static LuaTable ToLuaTable(this IEnumerable collection, ScriptContext context)
-		{
-			var i = 1;
-			var table = context.CreateTable();
-			foreach (var x in collection)
-				table.Add(i++, x.ToLuaValue(context));
-			return table;
+			if (obj is Array)
+			{
+				var array = obj as Array;
+				var i = 1;
+				var table = context.CreateTable();
+				foreach (var x in array)
+					table.Add(i++, x.ToLuaValue(context));
+
+				return table;
+			}
+
+			throw new InvalidOperationException("Cannot convert type '{0}' to Lua. Class must implement IScriptBindable.".F(obj.GetType()));
 		}
 	}
 }

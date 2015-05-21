@@ -1,0 +1,32 @@
+Container@MAP_PANEL:
+	Height:	PARENT_BOTTOM
+	Width: PARENT_RIGHT
+	Logic: GameInfoBriefingLogic
+	Children:
+		Background@PREVIEW_BG:
+			X: (PARENT_RIGHT - WIDTH) / 2
+			Y: 20
+			Width: 362
+			Height: 202
+			Background: dialog3
+			Children:
+				MapPreview@MAP_PREVIEW:
+					X: 1
+					Y: 1
+					Width: PARENT_RIGHT-2
+					Height: PARENT_BOTTOM-2
+					IgnoreMouseOver: True
+					IgnoreMouseInput: True
+					ShowSpawnPoints: False
+		ScrollPanel@MAP_DESCRIPTION_PANEL:
+			X: 20
+			Y: 232
+			Width: PARENT_RIGHT - 40
+			Height: 138
+			Children:
+				Label@MAP_DESCRIPTION:
+					X: 4
+					Y: 1
+					Width: PARENT_RIGHT - 32
+
+

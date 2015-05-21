@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -15,24 +15,30 @@ namespace OpenRA.Graphics
 {
 	public class LineRenderer : Renderer.IBatchRenderer
 	{
-		static float2 offset = new float2(0.5f, 0.5f);
-		float lineWidth = 1f;
-		Renderer renderer;
-		IShader shader;
+		static readonly float2 Offset = new float2(0.5f, 0.5f);
 
-		Vertex[] vertices = new Vertex[Renderer.TempBufferSize];
+		readonly Renderer renderer;
+		readonly IShader shader;
+
+		readonly Vertex[] vertices;
 		int nv = 0;
+
+		float lineWidth = 1f;
 
 		public LineRenderer(Renderer renderer, IShader shader)
 		{
 			this.renderer = renderer;
 			this.shader = shader;
+			vertices = new Vertex[renderer.TempBufferSize];
 		}
-
 
 		public float LineWidth
 		{
-			get { return lineWidth; }
+			get
+			{
+				return lineWidth;
+			}
+
 			set
 			{
 				if (LineWidth != value)
@@ -71,18 +77,18 @@ namespace OpenRA.Graphics
 
 		public void DrawLine(float2 start, float2 end, Color startColor, Color endColor)
 		{
-			Renderer.CurrentBatchRenderer = this;
+			renderer.CurrentBatchRenderer = this;
 
-			if (nv + 2 > Renderer.TempBufferSize)
+			if (nv + 2 > renderer.TempBufferSize)
 				Flush();
 
-			vertices[nv++] = new Vertex(start + offset,
-				new float2(startColor.R / 255.0f, startColor.G / 255.0f),
-				new float2(startColor.B / 255.0f, startColor.A / 255.0f));
+			vertices[nv++] = new Vertex(start + Offset,
+				startColor.R / 255.0f, startColor.G / 255.0f,
+				startColor.B / 255.0f, startColor.A / 255.0f);
 
-			vertices[nv++] = new Vertex(end + offset,
-				new float2(endColor.R / 255.0f, endColor.G / 255.0f),
-				new float2(endColor.B / 255.0f, endColor.A / 255.0f));
+			vertices[nv++] = new Vertex(end + Offset,
+				endColor.R / 255.0f, endColor.G / 255.0f,
+				endColor.B / 255.0f, endColor.A / 255.0f);
 		}
 
 		public void FillRect(RectangleF r, Color color)
@@ -99,7 +105,7 @@ namespace OpenRA.Graphics
 			var yc = (r.Bottom + r.Top) / 2;
 			for (var y = r.Top; y <= r.Bottom; y++)
 			{
-				var dx = a * (float)(Math.Sqrt(1 - (y - yc) * (y - yc) / b / b));
+				var dx = a * (float)Math.Sqrt(1 - (y - yc) * (y - yc) / b / b);
 				DrawLine(new float2(xc - dx, y), new float2(xc + dx, y), color, color);
 			}
 		}
@@ -107,7 +113,7 @@ namespace OpenRA.Graphics
 		public void SetViewportParams(Size screen, float zoom, int2 scroll)
 		{
 			shader.SetVec("Scroll", scroll.X, scroll.Y);
-			shader.SetVec("r1", zoom*2f/screen.Width, -zoom*2f/screen.Height);
+			shader.SetVec("r1", zoom * 2f / screen.Width, -zoom * 2f / screen.Height);
 			shader.SetVec("r2", -1, 1);
 		}
 	}

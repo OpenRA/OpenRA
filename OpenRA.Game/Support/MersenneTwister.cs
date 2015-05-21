@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -35,9 +35,9 @@ namespace OpenRA.Support
 			if (index == 0) Generate();
 
 			var y = mt[index];
-			y ^= (y >> 11);
-			y ^= ((y << 7) & 2636928640);
-			y ^= ((y << 15) & 4022730752);
+			y ^= y >> 11;
+			y ^= (y << 7) & 2636928640;
+			y ^= (y << 15) & 4022730752;
 			y ^= y >> 18;
 
 			index = (index + 1) % 624;
@@ -77,7 +77,7 @@ namespace OpenRA.Support
 					var y = (mt[i] & 0x80000000) | (mt[(i + 1) % 624] & 0x7fffffff);
 					mt[i] = mt[(i + 397u) % 624u] ^ (y >> 1);
 					if ((y & 1) == 1)
-						mt[i] = (mt[i] ^ 2567483615);
+						mt[i] = mt[i] ^ 2567483615;
 				}
 			}
 		}

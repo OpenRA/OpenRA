@@ -18,6 +18,7 @@ Background@BUTTON_TOOLTIP:
 			Height: 23
 			Font: Bold
 		Label@HOTKEY:
+			Visible: false
 			TextColor: 255,255,0
 			Height: 23
 			Font: Bold
@@ -44,6 +45,11 @@ Background@WORLD_TOOLTIP:
 			Y: 19
 			Height: 23
 			Font: Bold
+		Label@EXTRA:
+			X: 5
+			Y: 47
+			Height: 5
+			Font: Bold
 
 Background@PRODUCTION_TOOLTIP:
 	Logic: ProductionTooltipLogic
@@ -54,6 +60,11 @@ Background@PRODUCTION_TOOLTIP:
 		Label@NAME:
 			X: 5
 			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Height: 23
+			TextColor: 255,255,0
 			Font: Bold
 		Label@REQUIRES:
 			X: 5
@@ -67,18 +78,30 @@ Background@PRODUCTION_TOOLTIP:
 			Height: 23
 			Font: TinyBold
 			VAlign: Top
+		Image@COST_ICON:
+			Y: 5
+			Width: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-cost
 		Label@COST:
 			Height: 23
 			Font: Bold
+		Image@TIME_ICON:
+			X: 3
+			Y: 24
+			Width: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-time
 		Label@TIME:
 			Y: 19
 			Height: 23
 			Font: Bold
+		Image@POWER_ICON:
+			Y: 44
+			Width: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-power
 		Label@POWER:
-			Y: 39
-			Height: 23
-			Font: Bold
-		Label@TIME:
 			Y: 39
 			Height: 23
 			Font: Bold
@@ -93,8 +116,12 @@ Background@SUPPORT_POWER_TOOLTIP:
 			X: 5
 			Height: 20
 			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Height: 20
+			TextColor: 255,255,0
+			Font: Bold
 		Label@TIME:
-			X: 20
 			Y: 6
 			Font: TinyBold
 			VAlign: Top
@@ -162,3 +189,21 @@ Background@CLIENT_TOOLTIP:
 			Height: 10
 			Font: TinyBold
 
+Background@FACTION_DESCRIPTION_TOOLTIP:
+	Logic: CountryTooltipLogic
+	Background: panel-black
+	Children:
+		Label@HEADER:
+			X: 7
+			Y: 6
+			Width: 8
+			Height: 12
+			Font: Bold
+			VAlign: Top
+		Label@DESCRIPTION:
+			X: 14
+			Y: 0
+			Width: 15
+			Height: 14
+			Font: TinyBold
+			VAlign: Top

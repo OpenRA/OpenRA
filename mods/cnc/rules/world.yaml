@@ -1,92 +1,26 @@
-World:
-	ChatCommands:
-	DevCommands:
-	PlayerCommands:
-	HelpCommand:
+^BaseWorld:
+	Inherits: ^Palettes
 	ScreenMap:
 	ActorMap:
-	LoadWidgetAtGameStart:
-		Widget: INGAME_ROOT
-	MenuPaletteEffect:
-	CloakPaletteEffect:
-	ScreenShaker:
-	NukePaletteEffect:
-	WaterPaletteRotation:
-		ExcludePalettes: effect
-	BuildingInfluence:
-	BridgeLayer:
-		Bridges: bridge1, bridge2, bridge3, bridge4
-	PaletteFromCurrentTileset@terrain:
-		Name: terrain
-		ShadowIndex: 4
-	PaletteFromCurrentTileset@static:
-		Name: staticterrain
-		ShadowIndex: 4
-	PaletteFromFile@chrome:
-		Name: chrome
-		Filename: temperat.pal
-		ShadowIndex: 3
-		AllowModifiers: false
-	PaletteFromFile@effect:
-		Name: effect
-		Filename: temperat.pal
-		ShadowIndex: 4
-	PaletteFromFile@colorpicker:
-		Name: colorpicker
-		Filename: temperat.pal
-		ShadowIndex: 4
-		AllowModifiers: false
-	PaletteFromRGBA@shadow:
-		Name: shadow
-		R: 0
-		G: 0
-		B: 0
-		A: 140
-	PaletteFromRGBA@cloak:
-		Name: cloak
-		R: 0
-		G: 0
-		B: 0
-		A: 140
-	PaletteFromRGBA@highlight:
-		Name: highlight
-		R: 255
-		G: 255
-		B: 255
-		A: 128
-	PaletteFromRGBA@moveflash:
-		Name: moveflash
-		R: 255
-		G: 255
-		B: 255
-		A: 64
-	PaletteFromRGBA@disabled:
-		Name: disabled
-		R: 0
-		G: 0
-		B: 0
-		A: 180
-	ShroudPalette@shroud:
-		Type: Shroud
-	ShroudPalette@fog:
-		Name: fog
-		Fog: true
+	TerrainGeometryOverlay:
 	ShroudRenderer:
 		ShroudVariants: typea, typeb, typec, typed
 		FogVariants: typea, typeb, typec, typed
 		OverrideFullShroud: full
 		OverrideFullFog: full
+	Country@Random:
+		Name: Any
+		Race: Random
+		RandomRaceMembers: gdi, nod
+		Description: Select a random faction.
 	Country@gdi:
 		Name: GDI
 		Race: gdi
+		Description: Global Defense Initiative\nThe GDI is an international military branch of the United Nations tasked\nwith keeping world peace. Commanding the combined forces of the world's\nmost powerful nations, they possess an unmatched arsenal of high-tech weaponry.
 	Country@nod:
 		Name: Nod
 		Race: nod
-	ProductionQueueFromSelection:
-		ProductionTabsWidget: PRODUCTION_TABS
-	DomainIndex:
-	ResourceLayer:
-	ResourceClaimLayer:
+		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
 	ResourceType@green-tib:
 		ResourceType: 1
 		Palette: staticterrain
@@ -98,12 +32,7 @@ World:
 		Name: Tiberium
 		PipColor: Green
 		AllowedTerrainTypes: Clear,Road
-		AllowUnderActors: false
-	FixedColorPalette@BlueTiberium:
-		Base: terrain
-		Name: bluetiberium
-		Color: 152, 255, 196
-		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
+		AllowUnderActors: true
 	ResourceType@blue-tib:
 		ResourceType: 2
 		Palette: bluetiberium
@@ -115,7 +44,24 @@ World:
 		Name: BlueTiberium
 		PipColor: Blue
 		AllowedTerrainTypes: Clear,Road
-		AllowUnderActors: false
+		AllowUnderActors: true
+	LoadWidgetAtGameStart:
+		ShellmapRoot: MENU_BACKGROUND
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	PlayerCommands:
+	HelpCommand:
+	ScreenShaker:
+	NukePaletteEffect:
+	BuildingInfluence:
+	BridgeLayer:
+		Bridges: bridge1, bridge2, bridge3, bridge4
+	ProductionQueueFromSelection:
+		ProductionTabsWidget: PRODUCTION_TABS
+	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
 		Sequence: scorches
@@ -123,56 +69,68 @@ World:
 	SmudgeLayer@CRATER:
 		Type: Crater
 		Sequence: craters
+	ResourceLayer:
+	ResourceClaimLayer:
 	PathfinderDebugOverlay:
 	SpawnMapActors:
 	MPStartLocations:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
 		Class: none
+		ClassName: MCV Only
 		Races: gdi, nod
 		BaseActor: mcv
 	MPStartUnits@defaultgdia:
 		Class: light
+		ClassName: Light Support
 		Races: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,jeep
 	MPStartUnits@defaultgdib:
 		Class: light
+		ClassName: Light Support
 		Races: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e1,e3,apc
 	MPStartUnits@defaultnoda:
 		Class: light
+		ClassName: Light Support
 		Races: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,bggy,bike
 	MPStartUnits@defaultnodb:
 		Class: light
+		ClassName: Light Support
 		Races: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,e3,bggy
 	MPStartUnits@defaultnodc:
 		Class: light
+		ClassName: Light Support
 		Races: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e1,e1,e3,bike
 	MPStartUnits@heavynoda:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,e3,ltnk,ltnk,ftnk
 	MPStartUnits@heavynodb:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,e3,ftnk,ftnk
 	MPStartUnits@heavygdia:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,e3,jeep,mtnk,mtnk
 	MPStartUnits@heavygdib:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
@@ -185,7 +143,11 @@ World:
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:
-	ConquestObjectivesPanel:
-		ObjectivesPanel: CONQUEST_OBJECTIVES
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
 	RadarPings:
 
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorResourceLayer:

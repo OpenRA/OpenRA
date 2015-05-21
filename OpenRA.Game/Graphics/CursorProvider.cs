@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,24 +10,21 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public class CursorProvider
+	public sealed class CursorProvider
 	{
-		HardwarePalette palette;
-		Dictionary<string, CursorSequence> cursors;
-		Cache<string, PaletteReference> palettes;
+		public readonly IReadOnlyDictionary<string, CursorSequence> Cursors;
+		public readonly IReadOnlyDictionary<string, ImmutablePalette> Palettes;
 
 		public CursorProvider(ModData modData)
 		{
 			var sequenceFiles = modData.Manifest.Cursors;
-
-			cursors = new Dictionary<string, CursorSequence>();
-			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
 			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
 			var shadowIndex = new int[] { };
 
@@ -39,50 +36,31 @@ namespace OpenRA.Graphics
 					out shadowIndex[shadowIndex.Length - 1]);
 			}
 
-			palette = new HardwarePalette();
+			var palettes = new Dictionary<string, ImmutablePalette>();
 			foreach (var p in nodesDict["Palettes"].Nodes)
-				palette.AddPalette(p.Key, new ImmutablePalette(GlobalFileSystem.Open(p.Value.Value), shadowIndex), false);
+				palettes.Add(p.Key, new ImmutablePalette(GlobalFileSystem.Open(p.Value.Value), shadowIndex));
 
-			var spriteLoader = new SpriteLoader(new string[0], new SheetBuilder(SheetType.Indexed));
+			Palettes = palettes.AsReadOnly();
+
+			var frameCache = new FrameCache(modData.SpriteLoaders);
+			var cursors = new Dictionary<string, CursorSequence>();
 			foreach (var s in nodesDict["Cursors"].Nodes)
-				LoadSequencesForCursor(spriteLoader, s.Key, s.Value);
-			spriteLoader.SheetBuilder.Current.ReleaseBuffer();
+				foreach (var sequence in s.Value.Nodes)
+					cursors.Add(sequence.Key, new CursorSequence(frameCache, sequence.Key, s.Key, s.Value.Value, sequence.Value));
 
-			palette.Initialize();
+			Cursors = cursors.AsReadOnly();
 		}
 
-		PaletteReference CreatePaletteReference(string name)
-		{
-			var pal = palette.GetPalette(name);
-			return new PaletteReference(name, palette.GetPaletteIndex(name), pal);
-		}
-
-		void LoadSequencesForCursor(SpriteLoader loader, string cursorSrc, MiniYaml cursor)
-		{
-			foreach (var sequence in cursor.Nodes)
-				cursors.Add(sequence.Key, new CursorSequence(loader, cursorSrc, cursor.Value, sequence.Value));
-		}
+		public static bool CursorViewportZoomed { get { return Game.Settings.Graphics.CursorDouble && Game.Settings.Graphics.PixelDouble; } }
 
 		public bool HasCursorSequence(string cursor)
 		{
-			return cursors.ContainsKey(cursor);
-		}
-
-		public void DrawCursor(Renderer renderer, string cursorName, int2 lastMousePos, int cursorFrame)
-		{
-			var cursorSequence = GetCursorSequence(cursorName);
-			var cursorSprite = cursorSequence.GetSprite(cursorFrame);
-
-			renderer.SetPalette(palette);
-			renderer.SpriteRenderer.DrawSprite(cursorSprite,
-			                                   lastMousePos - cursorSequence.Hotspot - (0.5f * cursorSprite.size).ToInt2(),
-			                                   palettes[cursorSequence.Palette],
-			                                   cursorSprite.size);
+			return Cursors.ContainsKey(cursor);
 		}
 
 		public CursorSequence GetCursorSequence(string cursor)
 		{
-			try { return cursors[cursor]; }
+			try { return Cursors[cursor]; }
 			catch (KeyNotFoundException)
 			{
 				throw new InvalidOperationException("Cursor does not have a sequence `{0}`".F(cursor));

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -46,15 +46,16 @@ namespace OpenRA.Server
 		public List<Connection> PreConns = new List<Connection>();
 
 		TcpListener listener = null;
-		Dictionary<int, List<Connection>> inFlightFrames
-			= new Dictionary<int, List<Connection>>();
 
 		TypeDictionary serverTraits = new TypeDictionary();
 		public Session LobbyInfo;
 
 		public ServerSettings Settings;
 		public ModData ModData;
+
+		// Managed by LobbyCommands
 		public Map Map;
+		public MapPlayers MapPlayers;
 		XTimer gameTimeout;
 
 		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
@@ -66,11 +67,35 @@ namespace OpenRA.Server
 			else
 				c.Color = c.PreferredColor;
 			if (pr.LockRace)
-				c.Country = pr.Race;
+				c.Race = pr.Race;
 			if (pr.LockSpawn)
 				c.SpawnPoint = pr.Spawn;
 			if (pr.LockTeam)
 				c.Team = pr.Team;
+		}
+
+		static void SendData(Socket s, byte[] data)
+		{
+			var start = 0;
+			var length = data.Length;
+			SocketError error;
+
+			// Non-blocking sends are free to send only part of the data
+			while (start < length)
+			{
+				var sent = s.Send(data, start, length - start, SocketFlags.None, out error);
+				if (error == SocketError.WouldBlock)
+				{
+					Log.Write("server", "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
+					s.Blocking = true;
+					sent = s.Send(data, start, length - start, SocketFlags.None);
+					s.Blocking = false;
+				}
+				else if (error != SocketError.Success)
+					throw new SocketException((int)error);
+
+				start += sent;
+			}
 		}
 
 		protected volatile ServerState internalState = new ServerState();
@@ -134,11 +159,11 @@ namespace OpenRA.Server
 				for (;;)
 				{
 					var checkRead = new List<Socket>();
-					checkRead.Add(listener.Server);
-					foreach (var c in Conns) checkRead.Add(c.socket);
-					foreach (var c in PreConns) checkRead.Add(c.socket);
+					if (State == ServerState.WaitingPlayers) checkRead.Add(listener.Server);
+					foreach (var c in Conns) checkRead.Add(c.Socket);
+					foreach (var c in PreConns) checkRead.Add(c.Socket);
 
-					Socket.Select(checkRead, null, null, timeout);
+					if (checkRead.Count > 0) Socket.Select(checkRead, null, null, timeout);
 					if (State == ServerState.ShuttingDown)
 					{
 						EndGame();
@@ -149,12 +174,12 @@ namespace OpenRA.Server
 						if (s == listener.Server) AcceptConnection();
 						else if (PreConns.Count > 0)
 						{
-							var p = PreConns.SingleOrDefault(c => c.socket == s);
+							var p = PreConns.SingleOrDefault(c => c.Socket == s);
 							if (p != null) p.ReadData(this);
 						}
 						else if (Conns.Count > 0)
 						{
-							var conn = Conns.SingleOrDefault(c => c.socket == s);
+							var conn = Conns.SingleOrDefault(c => c.Socket == s);
 							if (conn != null) conn.ReadData(this);
 						}
 
@@ -206,16 +231,16 @@ namespace OpenRA.Server
 				return;
 			}
 
-			var newConn = new Connection { socket = newSocket };
+			var newConn = new Connection { Socket = newSocket };
 			try
 			{
-				newConn.socket.Blocking = false;
-				newConn.socket.NoDelay = true;
+				newConn.Socket.Blocking = false;
+				newConn.Socket.NoDelay = true;
 
 				// assign the player number.
 				newConn.PlayerIndex = ChooseFreePlayerIndex();
-				SendData(newConn.socket, BitConverter.GetBytes(ProtocolVersion.Version));
-				SendData(newConn.socket, BitConverter.GetBytes(newConn.PlayerIndex));
+				SendData(newConn.Socket, BitConverter.GetBytes(ProtocolVersion.Version));
+				SendData(newConn.Socket, BitConverter.GetBytes(newConn.PlayerIndex));
 				PreConns.Add(newConn);
 
 				// Dispatch a handshake order
@@ -242,7 +267,7 @@ namespace OpenRA.Server
 				if (State == ServerState.GameStarted)
 				{
 					Log.Write("server", "Rejected connection from {0}; game is already started.",
-						newConn.socket.RemoteEndPoint);
+						newConn.Socket.RemoteEndPoint);
 
 					SendOrderTo(newConn, "ServerError", "The game has already started");
 					DropClient(newConn);
@@ -262,12 +287,12 @@ namespace OpenRA.Server
 				var client = new Session.Client()
 				{
 					Name = handshake.Client.Name,
-					IpAddress = ((IPEndPoint)newConn.socket.RemoteEndPoint).Address.ToString(),
+					IpAddress = ((IPEndPoint)newConn.Socket.RemoteEndPoint).Address.ToString(),
 					Index = newConn.PlayerIndex,
 					Slot = LobbyInfo.FirstEmptySlot(),
 					PreferredColor = handshake.Client.Color,
 					Color = handshake.Client.Color,
-					Country = "random",
+					Race = "Random",
 					SpawnPoint = 0,
 					Team = 0,
 					State = Session.ClientState.Invalid,
@@ -282,14 +307,14 @@ namespace OpenRA.Server
 				}
 
 				if (client.Slot != null)
-					SyncClientToPlayerReference(client, Map.Players[client.Slot]);
+					SyncClientToPlayerReference(client, MapPlayers.Players[client.Slot]);
 				else
 					client.Color = HSLColor.FromRGB(255, 255, 255);
 
 				if (ModData.Manifest.Mod.Id != handshake.Mod)
 				{
 					Log.Write("server", "Rejected connection from {0}; mods do not match.",
-						newConn.socket.RemoteEndPoint);
+						newConn.Socket.RemoteEndPoint);
 
 					SendOrderTo(newConn, "ServerError", "Server is running an incompatible mod");
 					DropClient(newConn);
@@ -299,7 +324,7 @@ namespace OpenRA.Server
 				if (ModData.Manifest.Mod.Version != handshake.Version && !LobbyInfo.GlobalSettings.AllowVersionMismatch)
 				{
 					Log.Write("server", "Rejected connection from {0}; Not running the same version.",
-						newConn.socket.RemoteEndPoint);
+						newConn.Socket.RemoteEndPoint);
 
 					SendOrderTo(newConn, "ServerError", "Server is running an incompatible version");
 					DropClient(newConn);
@@ -310,7 +335,7 @@ namespace OpenRA.Server
 				var bans = Settings.Ban.Union(TempBans);
 				if (bans.Contains(client.IpAddress))
 				{
-					Log.Write("server", "Rejected connection from {0}; Banned.", newConn.socket.RemoteEndPoint);
+					Log.Write("server", "Rejected connection from {0}; Banned.", newConn.Socket.RemoteEndPoint);
 					SendOrderTo(newConn, "ServerError", "You have been {0} from the server".F(Settings.Ban.Contains(client.IpAddress) ? "banned" : "temporarily banned"));
 					DropClient(newConn);
 					return;
@@ -325,20 +350,20 @@ namespace OpenRA.Server
 				LobbyInfo.ClientPings.Add(clientPing);
 
 				Log.Write("server", "Client {0}: Accepted connection from {1}.",
-				          newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
+					newConn.PlayerIndex, newConn.Socket.RemoteEndPoint);
 
 				foreach (var t in serverTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
 
 				SyncLobbyInfo();
-				SendMessage("{0} has joined the server.".F(client.Name));
+				SendMessage("{0} has joined the game.".F(client.Name));
 
 				// Send initial ping
-				SendOrderTo(newConn, "Ping", Environment.TickCount.ToString());
+				SendOrderTo(newConn, "Ping", Game.RunTime.ToString());
 
 				if (Settings.Dedicated)
 				{
-					var motdFile = Path.Combine(Platform.SupportDir, "motd.txt");
+					var motdFile = Platform.ResolvePath("^", "motd.txt");
 					if (!File.Exists(motdFile))
 						System.IO.File.WriteAllText(motdFile, "Welcome, have fun and good luck!");
 					var motd = System.IO.File.ReadAllText(motdFile);
@@ -365,28 +390,14 @@ namespace OpenRA.Server
 			SyncLobbyGlobalSettings();
 		}
 
-		public void UpdateInFlightFrames(Connection conn)
-		{
-			if (conn.Frame == 0)
-				return;
-
-			if (!inFlightFrames.ContainsKey(conn.Frame))
-				inFlightFrames[conn.Frame] = new List<Connection> { conn };
-			else
-				inFlightFrames[conn.Frame].Add(conn);
-
-			if (Conns.All(c => inFlightFrames[conn.Frame].Contains(c)))
-				inFlightFrames.Remove(conn.Frame);
-		}
-
 		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
 		{
 			try
 			{
-				SendData(c.socket, BitConverter.GetBytes(data.Length + 4));
-				SendData(c.socket, BitConverter.GetBytes(client));
-				SendData(c.socket, BitConverter.GetBytes(frame));
-				SendData(c.socket, data);
+				SendData(c.Socket, BitConverter.GetBytes(data.Length + 4));
+				SendData(c.Socket, BitConverter.GetBytes(client));
+				SendData(c.Socket, BitConverter.GetBytes(frame));
+				SendData(c.Socket, data);
 			}
 			catch (Exception e)
 			{
@@ -398,7 +409,7 @@ namespace OpenRA.Server
 		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
 		{
 			var from = conn != null ? conn.PlayerIndex : 0;
-			foreach (var c in Conns.Except(conn).ToArray())
+			foreach (var c in Conns.Except(conn).ToList())
 				DispatchOrdersToClient(c, from, frame, data);
 		}
 
@@ -417,7 +428,7 @@ namespace OpenRA.Server
 
 			try
 			{
-				for (;;)
+				while (ms.Position < ms.Length)
 				{
 					var so = ServerOrder.Deserialize(br);
 					if (so == null) return;
@@ -443,20 +454,20 @@ namespace OpenRA.Server
 			switch (so.Name)
 			{
 				case "Command":
-				{
-					var handled = false;
-					foreach (var t in serverTraits.WithInterface<IInterpretCommand>())
-						if (handled = t.InterpretCommand(this, conn, GetClient(conn), so.Data))
-							break;
-
-					if (!handled)
 					{
-						Log.Write("server", "Unknown server command: {0}", so.Data);
-						SendOrderTo(conn, "Message", "Unknown server command: {0}".F(so.Data));
-					}
+						var handled = false;
+						foreach (var t in serverTraits.WithInterface<IInterpretCommand>())
+							if (handled = t.InterpretCommand(this, conn, GetClient(conn), so.Data))
+								break;
 
-					break;
-				}
+						if (!handled)
+						{
+							Log.Write("server", "Unknown server command: {0}", so.Data);
+							SendOrderTo(conn, "Message", "Unknown server command: {0}".F(so.Data));
+						}
+
+						break;
+					}
 
 				case "HandshakeResponse":
 					ValidateClient(conn, so.Data);
@@ -467,33 +478,33 @@ namespace OpenRA.Server
 					DispatchOrdersToClients(conn, 0, so.Serialize());
 					break;
 				case "Pong":
-				{
-					int pingSent;
-					if (!OpenRA.Exts.TryParseIntegerInvariant(so.Data, out pingSent))
 					{
-						Log.Write("server", "Invalid order pong payload: {0}", so.Data);
+						int pingSent;
+						if (!OpenRA.Exts.TryParseIntegerInvariant(so.Data, out pingSent))
+						{
+							Log.Write("server", "Invalid order pong payload: {0}", so.Data);
+							break;
+						}
+
+						var pingFromClient = LobbyInfo.PingFromClient(GetClient(conn));
+						if (pingFromClient == null)
+							return;
+
+						var history = pingFromClient.LatencyHistory.ToList();
+						history.Add(Game.RunTime - pingSent);
+
+						// Cap ping history at 5 values (25 seconds)
+						if (history.Count > 5)
+							history.RemoveRange(0, history.Count - 5);
+
+						pingFromClient.Latency = history.Sum() / history.Count;
+						pingFromClient.LatencyJitter = (history.Max() - history.Min()) / 2;
+						pingFromClient.LatencyHistory = history.ToArray();
+
+						SyncClientPing();
+
 						break;
 					}
-
-					var pingFromClient = LobbyInfo.PingFromClient(GetClient(conn));
-					if (pingFromClient == null)
-						return;
-
-					var history = pingFromClient.LatencyHistory.ToList();
-					history.Add(Environment.TickCount - pingSent);
-
-					// Cap ping history at 5 values (25 seconds)
-					if (history.Count > 5)
-						history.RemoveRange(0, history.Count - 5);
-
-					pingFromClient.Latency = history.Sum() / history.Count;
-					pingFromClient.LatencyJitter = (history.Max() - history.Min()) / 2;
-					pingFromClient.LatencyHistory = history.ToArray();
-
-					SyncClientPing();
-
-					break;
-				}
 			}
 		}
 
@@ -504,9 +515,12 @@ namespace OpenRA.Server
 
 		public void DropClient(Connection toDrop)
 		{
-			if (PreConns.Contains(toDrop))
-				PreConns.Remove(toDrop);
-			else
+			DropClient(toDrop, toDrop.MostRecentFrame);
+		}
+
+		public void DropClient(Connection toDrop, int frame)
+		{
+			if (!PreConns.Remove(toDrop))
 			{
 				Conns.Remove(toDrop);
 
@@ -541,7 +555,7 @@ namespace OpenRA.Server
 					}
 				}
 
-				DispatchOrders(toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf });
+				DispatchOrders(toDrop, frame, new byte[] { 0xbf });
 
 				if (!Conns.Any())
 				{
@@ -558,7 +572,7 @@ namespace OpenRA.Server
 
 			try
 			{
-				toDrop.socket.Disconnect(false);
+				toDrop.Socket.Disconnect(false);
 			}
 			catch { }
 
@@ -681,30 +695,6 @@ namespace OpenRA.Server
 					Environment.Exit(0);
 				};
 				gameTimeout.Enabled = true;
-			}
-		}
-
-		static void SendData(Socket s, byte[] data)
-		{
-			var start = 0;
-			var length = data.Length;
-			SocketError error;
-
-			// Non-blocking sends are free to send only part of the data
-			while (start < length)
-			{
-				var sent = s.Send(data, start, length - start, SocketFlags.None, out error);
-				if (error == SocketError.WouldBlock)
-				{
-					Log.Write("server", "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
-					s.Blocking = true;
-					sent = s.Send(data, start, length - start, SocketFlags.None);
-					s.Blocking = false;
-				}
-				else if (error != SocketError.Success)
-					throw new SocketException((int)error);
-
-				start += sent;
 			}
 		}
 	}

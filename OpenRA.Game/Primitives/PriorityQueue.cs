@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,15 +13,28 @@ using System.Collections.Generic;
 
 namespace OpenRA.Primitives
 {
-	public class PriorityQueue<T>
-			where T : IComparable<T>
+	public interface IPriorityQueue<T>
 	{
-		List<T[]> items = new List<T[]>();
+		void Add(T item);
+		bool Empty { get; }
+		T Peek();
+		T Pop();
+	}
+
+	public class PriorityQueue<T> : IPriorityQueue<T>
+	{
+		readonly List<T[]> items;
+		readonly IComparer<T> comparer;
 		int level, index;
 
-		public PriorityQueue()
+		public PriorityQueue() : this(Comparer<T>.Default)
 		{
-			items.Add(new T[1]);
+		}
+
+		public PriorityQueue(IComparer<T> comparer)
+		{
+			items = new List<T[]> { new T[1] };
+			this.comparer = comparer;
 		}
 
 		public void Add(T item)
@@ -29,7 +42,7 @@ namespace OpenRA.Primitives
 			var addLevel = level;
 			var addIndex = index;
 
-			while (addLevel >= 1 && Above(addLevel, addIndex).CompareTo(item) > 0)
+			while (addLevel >= 1 && comparer.Compare(Above(addLevel, addIndex), item) > 0)
 			{
 				items[addLevel][addIndex] = Above(addLevel, addIndex);
 				--addLevel;
@@ -46,7 +59,7 @@ namespace OpenRA.Primitives
 			}
 		}
 
-		public bool Empty { get { return (level == 0); } }
+		public bool Empty { get { return level == 0; } }
 
 		T At(int level, int index) { return items[level][index]; }
 		T Above(int level, int index) { return items[level - 1][index >> 1]; }
@@ -62,7 +75,7 @@ namespace OpenRA.Primitives
 			return At(lastLevel, lastIndex);
 		}
 
-		public T Peek() { return At(0,0); }
+		public T Peek() { return At(0, 0); }
 		public T Pop()
 		{
 			if (level == 0 && index == 0)
@@ -88,10 +101,10 @@ namespace OpenRA.Primitives
 			}
 
 			if (downLevel <= level && downIndex < index - 1 &&
-				At(downLevel, downIndex).CompareTo(At(downLevel, downIndex + 1)) >= 0)
+				comparer.Compare(At(downLevel, downIndex), At(downLevel, downIndex + 1)) >= 0)
 				++downIndex;
 
-			if (val.CompareTo(At(downLevel, downIndex)) <= 0)
+			if (comparer.Compare(val, At(downLevel, downIndex)) <= 0)
 			{
 				items[intoLevel][intoIndex] = val;
 				return;

@@ -6,40 +6,45 @@ Player:
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
+		SpeedUp: True
 	ClassicProductionQueue@Defense:
 		Type: Defense
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
+		SpeedUp: True
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		SpeedUp: True
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		SpeedUp: True
 	ClassicProductionQueue@Air:
 		Type: Air
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		SpeedUp: True
 	PlaceBuilding:
+		Palette: ra
 	SupportPowerManager:
+	ScriptTriggers:
+	MissionObjectives:
 	ConquestVictoryConditions:
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
 	ActorGroupProxy:
 	DeveloperMode:
-	PlayerColorPalette:
-		BasePalette: player
-		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
-	PlayerHighlightPalette:
 	GpsWatcher:
 	Shroud:
 	FrozenActorLayer:
 	BaseAttackNotifier:
+	HarvesterAttackNotifier:
 	PlayerStatistics:
 	PlaceBeacon:
 

@@ -34,6 +34,8 @@ Player:
 		BlockedAudio: NoRoom
 	PlaceBuilding:
 	SupportPowerManager:
+	ScriptTriggers:
+	MissionObjectives:
 	ConquestVictoryConditions:
 	PowerManager:
 		AdviceInterval: 650
@@ -42,10 +44,6 @@ Player:
 		AdviceInterval: 650
 	ActorGroupProxy:
 	DeveloperMode:
-	PlayerColorPalette:
-		BasePalette: d2k
-		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
-	PlayerHighlightPalette:
 	BaseAttackNotifier:
 	Shroud:
 	FrozenActorLayer:
@@ -64,3 +62,6 @@ Player:
 	ProvidesTechPrerequisite@all:
 		Name: Unrestricted
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
+	EnemyWatcher:
+	HarvesterInsurance:
+

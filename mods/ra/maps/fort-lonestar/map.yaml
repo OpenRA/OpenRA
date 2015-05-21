@@ -1,6 +1,4 @@
-Selectable: True
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,9 +14,11 @@ MapSize: 96,96
 
 Bounds: 8,8,48,48
 
-UseAsShellmap: False
+Visibility: Lobby
 
 Type: Minigame
+
+Videos:
 
 Options:
 	Fog: True
@@ -27,6 +27,7 @@ Options:
 	FragileAlliances: False
 	StartingCash: 50
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -39,34 +40,34 @@ Players:
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Allies: Multi1,Multi2,Multi3
+		Allies: Multi1, Multi2, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Allies: Multi0,Multi2,Multi3
+		Allies: Multi0, Multi2, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Allies: Multi0,Multi1,Multi3
+		Allies: Multi0, Multi1, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Allies: Multi0,Multi1,Multi2
+		Allies: Multi0, Multi1, Multi2
 		Enemies: Soviets
 	PlayerReference@Soviets:
 		Name: Soviets
 		Race: soviet
 		ColorRamp: 0,255,128
-		Enemies: Multi0,Multi1,Multi2,Multi3
+		Enemies: Multi0, Multi1, Multi2, Multi3
 
 Actors:
 	Actor76: t11
@@ -291,9 +292,6 @@ Actors:
 	Actor199: brik
 		Location: 27,39
 		Owner: Neutral
-	Spawn1: mpspawn
-		Location: 36,28
-		Owner: Neutral
 	Actor28: tc01
 		Location: 24,54
 		Owner: Neutral
@@ -336,9 +334,6 @@ Actors:
 	Actor90: brik
 		Location: 36,39
 		Owner: Neutral
-	OilDerrick1: oilb
-		Location: 32,30
-		Owner: Multi0
 	Actor237: brik
 		Location: 25,35
 		Owner: Neutral
@@ -362,6 +357,75 @@ Actors:
 		Owner: Neutral
 	Actor88: brik
 		Location: 25,29
+		Owner: Neutral
+	Actor100: barr
+		Location: 27,26
+		Owner: Multi3
+	Actor99: barr
+		Location: 27,36
+		Owner: Multi2
+	Actor31: barr
+		Location: 36,36
+		Owner: Multi1
+	Sniper1: sniper.soviets
+		Location: 9,26
+		Owner: Soviets
+	Sniper2: sniper.soviets
+		Location: 10,21
+		Owner: Soviets
+	Sniper3: sniper.soviets
+		Location: 26,9
+		Owner: Soviets
+	Sniper4: sniper.soviets
+		Location: 40,10
+		Owner: Soviets
+	Sniper5: sniper.soviets
+		Location: 53,21
+		Owner: Soviets
+	Sniper6: sniper.soviets
+		Location: 54,25
+		Owner: Soviets
+	Sniper7: sniper.soviets
+		Location: 53,40
+		Owner: Soviets
+	Sniper8: sniper.soviets
+		Location: 54,43
+		Owner: Soviets
+	Sniper9: sniper.soviets
+		Location: 54,46
+		Owner: Soviets
+	Sniper10: sniper.soviets
+		Location: 43,53
+		Owner: Soviets
+	Sniper11: sniper.soviets
+		Location: 8,36
+		Owner: Soviets
+	Sniper12: sniper.soviets
+		Location: 28,55
+		Owner: Soviets
+	OilDerrick1: oilb
+		Location: 32,30
+		Owner: Multi0
+	OilDerrick2: oilb
+		Location: 32,32
+		Owner: Multi1
+	OilDerrick3: oilb
+		Location: 30,32
+		Owner: Multi2
+	OilDerrick4: oilb
+		Location: 30,30
+		Owner: Multi3
+	Spawn1: mpspawn
+		Location: 36,28
+		Owner: Neutral
+	Spawn2: mpspawn
+		Location: 27,28
+		Owner: Neutral
+	Spawn3: mpspawn
+		Location: 27,38
+		Owner: Neutral
+	Spawn4: mpspawn
+		Location: 36,38
 		Owner: Neutral
 	Entry1: waypoint
 		Location: 8,8
@@ -399,80 +463,17 @@ Actors:
 	Paradrop4: waypoint
 		Location: 36,32
 		Owner: Neutral
+	Patrol1: waypoint
+		Location: 32,18
+		Owner: Neutral
+	Patrol2: waypoint
+		Location: 17,32
+		Owner: Neutral
 	Patrol3: waypoint
 		Location: 32,46
 		Owner: Neutral
 	Patrol4: waypoint
 		Location: 46,32
-		Owner: Neutral
-	Patrol2: waypoint
-		Location: 17,32
-		Owner: Neutral
-	Patrol1: waypoint
-		Location: 32,18
-		Owner: Neutral
-	Sniper1: sniper
-		Location: 9,26
-		Owner: Soviets
-	Sniper2: sniper
-		Location: 10,21
-		Owner: Soviets
-	Sniper3: sniper
-		Location: 26,9
-		Owner: Soviets
-	Sniper4: sniper
-		Location: 40,10
-		Owner: Soviets
-	Sniper5: sniper
-		Location: 53,21
-		Owner: Soviets
-	Sniper6: sniper
-		Location: 54,25
-		Owner: Soviets
-	Sniper7: sniper
-		Location: 53,40
-		Owner: Soviets
-	Sniper8: sniper
-		Location: 54,43
-		Owner: Soviets
-	Sniper9: sniper
-		Location: 54,46
-		Owner: Soviets
-	Sniper10: sniper
-		Location: 43,53
-		Owner: Soviets
-	Sniper11: sniper
-		Location: 8,36
-		Owner: Soviets
-	Sniper12: sniper
-		Location: 28,55
-		Owner: Soviets
-	Actor100: barr
-		Location: 27,26
-		Owner: Multi3
-	Actor99: barr
-		Location: 27,36
-		Owner: Multi2
-	Actor31: barr
-		Location: 36,36
-		Owner: Multi1
-	OilDerrick2: oilb
-		Location: 32,32
-		Owner: Multi1
-	OilDerrick3: oilb
-		Location: 30,32
-		Owner: Multi2
-	OilDerrick4: oilb
-		Location: 30,30
-		Owner: Multi3
-	Spawn2: mpspawn
-		Location: 27,28
-		Owner: Neutral
-	Spawn3: mpspawn
-		Location: 27,38
-		Owner: Neutral
-	Spawn4: mpspawn
-		Location: 36,38
 		Owner: Neutral
 
 Smudges:
@@ -482,53 +483,33 @@ Rules:
 		CrateSpawner:
 			Maximum: 1
 			SpawnInterval: 100
+			CrateActors: fortcrate
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScript:
 			Scripts: fort-lonestar.lua
-	CRATE:
-		-LevelUpCrateAction:
-		-GiveMcvCrateAction:
-		-RevealMapCrateAction:
-		-HideMapCrateAction:
-		-ExplodeCrateAction@nuke:
-		-ExplodeCrateAction@boom:
-		-ExplodeCrateAction@fire:
-		-GiveUnitCrateAction@jeep:
-		-GiveUnitCrateAction@arty:
-		-GiveUnitCrateAction@v2rl:
-		-GiveUnitCrateAction@1tnk:
-		-GiveUnitCrateAction@2tnk:
-		-GiveUnitCrateAction@3tnk:
-		-GiveUnitCrateAction@4tnk:
+	FORTCRATE:
+		Inherits: ^Crate
 		SupportPowerCrateAction@parabombs:
 			SelectionShares: 30
+			Proxy: powerproxy.parabombs
+			Effect: parabombs
 		HealUnitsCrateAction:
 			SelectionShares: 30
+			Notification: heal2.aud
+			Effect: heal
 		GiveCashCrateAction:
 			Amount: 400
-			UseCashTick: yes
+			UseCashTick: true
 			SelectionShares: 30
 		GiveUnitCrateAction@e7:
-			Unit: e7
+			Units: e7
 			SelectionShares: 10
 	Player:
 		PlayerResources:
 			InitialCash: 50
 		ClassicProductionQueue@Infantry:
-			Type: Infantry
 			BuildSpeed: 1
-			LowPowerSlowdown: 3
-		ClassicProductionQueue@Defense:
-			Type: Defense
-			BuildSpeed: .4
-			LowPowerSlowdown: 3
-	^Infantry:
-		MustBeDestroyed:
-	^Vehicle:
-		MustBeDestroyed:
-	^Tank:
-		MustBeDestroyed:
 	OILB:
 		Health:
 			HP: 3000
@@ -541,82 +522,46 @@ Rules:
 			Period: 250
 			Amount: 50
 	BARR:
-		Buildable:
-			Owner: allies,soviet
-		Building:
-			Power: 0
 		Health:
 			HP: 1000
 		Production:
-			Produces: Defense,Infantry
+			Produces: Defense, Infantry, Soldier, Dog
 		-Sellable:
 		BaseProvider:
 			Range: 12
+		Power:
+			Amount: 0
 	FTUR:
-		Building:
-			Power: 0
+		Buildable:
+			Prerequisites: barracks
 		Valued:
 			Cost: 400
+		Power:
+			Amount: 0
 	PBOX:
-		Building:
-			Power: 0
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 400
 		Health:
 			HP: 200
 		Armor:
 			Type: Heavy
-	HBOX:
-		Building:
-			Power: 0
-	GUN:
-		Buildable:
-			Prerequisites: ~disabled
-	SAM:
-		Buildable:
-			Prerequisites: ~disabled
-	SBAG:
-		Buildable:
-			Prerequisites: ~disabled
-	FENC:
-		Buildable:
-			Prerequisites: ~disabled
-	MSLO:
-		Buildable:
-			Prerequisites: ~disabled
-	GAP:
-		Buildable:
-			Prerequisites: ~disabled
-	IRON:
-		Buildable:
-			Prerequisites: ~disabled
-	PDOX:
-		Buildable:
-			Prerequisites: ~disabled
-	AGUN:
-		Buildable:
-			Prerequisites: ~disabled
-	TSLA:
-		Buildable:
-			Prerequisites: ~disabled
+		Power:
+			Amount: 0
 	DOG:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 20
 	E1:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 20
 	E2:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 40
 		Explodes:
@@ -624,26 +569,22 @@ Rules:
 			Chance: 20
 	E3:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 60
 	E4:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 100
 	E6:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr
+			Prerequisites: barracks
 		Valued:
 			Cost: 100
 	E7:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 750
 	3TNK:
@@ -653,42 +594,41 @@ Rules:
 			Recoil: 200
 			RecoilRecovery: 38
 			LocalOffset: 0,85,0, 0,-85,0
-	MECH:
-		Buildable:
-			Prerequisites: ~disabled
-	HIJACKER:
-		Buildable:
-			Prerequisites: ~disabled
 	MEDI:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 100
 	SHOK:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 150
 	SNIPER:
 		Valued:
 			Cost: 200
 		Buildable:
-			Owner: soviet, allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Health:
 			HP: 200
 		AutoTarget:
 			InitialStance: Defend
-		ScriptInvulnerable:
+	SNIPER.soviets:
+		Inherits: SNIPER
+		Buildable:
+			Prerequisites: ~disabled
+		MustBeDestroyed:
+		InvulnerabilityUpgrade@UNKILLABLE:
+			UpgradeTypes: unkillable
+			UpgradeMinEnabledLevel: 1
+		RenderSprites:
+			Image: SNIPER
 	SPY:
 		Inherits: ^Infantry
 		Buildable:
 			Queue: Infantry
 			BuildPaletteOrder: 60
-			Prerequisites: barr,oilb
-			Owner: allies, soviet
+			Prerequisites: barracks
 		Valued:
 			Cost: 300
 	ARTY:
@@ -729,9 +669,6 @@ Rules:
 			Ticks: 1
 			HealIfBelow: 40%
 			DamageCooldown: 150
-	BRIK:
-		Buildable:
-			Prerequisites: ~disabled
 	BADR.Bomber:
 		Inherits: ^Plane
 		AttackBomber:
@@ -744,7 +681,7 @@ Rules:
 		Plane:
 			ROT: 5
 			Speed: 280
-		LimitedAmmo:
+		AmmoPool:
 			Ammo: 30
 		RenderUnit:
 			Image: mig
@@ -754,6 +691,48 @@ Rules:
 		Tooltip:
 			Name: Mig Bomber
 		-EjectOnDeath:
+	BRIK:
+		Buildable:
+			Prerequisites: ~disabled
+	HBOX:
+		Buildable:
+			Prerequisites: ~disabled
+	GUN:
+		Buildable:
+			Prerequisites: ~disabled
+	SAM:
+		Buildable:
+			Prerequisites: ~disabled
+	SBAG:
+		Buildable:
+			Prerequisites: ~disabled
+	FENC:
+		Buildable:
+			Prerequisites: ~disabled
+	MSLO:
+		Buildable:
+			Prerequisites: ~disabled
+	GAP:
+		Buildable:
+			Prerequisites: ~disabled
+	IRON:
+		Buildable:
+			Prerequisites: ~disabled
+	PDOX:
+		Buildable:
+			Prerequisites: ~disabled
+	AGUN:
+		Buildable:
+			Prerequisites: ~disabled
+	TSLA:
+		Buildable:
+			Prerequisites: ~disabled
+	MECH:
+		Buildable:
+			Prerequisites: ~disabled
+	HIJACKER:
+		Buildable:
+			Prerequisites: ~disabled
 
 Sequences:
 
@@ -761,7 +740,7 @@ VoxelSequences:
 
 Weapons:
 	120mm:
-		ROF: 150
+		ReloadDelay: 150
 		Range: 10c0
 		Report: CANNON1.AUD
 		Burst: 6
@@ -771,20 +750,23 @@ Weapons:
 			Inaccuracy: 1c682
 			Image: 120MM
 			ContrailLength: 50
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 256
 			Versus:
-				None: 75%
-				Wood: 75%
-				Light: 75%
-				Concrete: 100%
+				None: 75
+				Wood: 75
+				Light: 75
+				Concrete: 100
+			DeathType: 4
+			Damage: 150
+			DamageTypes: Prone50Percent, TriggerProne
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Crater
+		Warhead@3Eff: CreateEffect
 			Explosion: self_destruct
 			WaterExplosion: self_destruct
-			InfDeath: 4
-			SmudgeType: Crater
-			Damage: 150
 	MammothTusk:
-		ROF: 300
+		ReloadDelay: 300
 		Range: 10c0
 		Report: MISSILE6.AUD
 		Burst: 2
@@ -801,21 +783,25 @@ Weapons:
 			Image: DRAGON
 			ROT: 10
 			RangeLimit: 80
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 640
+			ValidTargets: Ground, Air
 			Versus:
-				None: 125%
-				Wood: 110%
-				Light: 110%
-				Heavy: 100%
-				Concrete: 200%
+				None: 125
+				Wood: 110
+				Light: 110
+				Heavy: 100
+				Concrete: 200
+			DeathType: 3
+			Damage: 250
+			DamageTypes: Prone50Percent, TriggerProne
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Crater
+		Warhead@3Eff: CreateEffect
 			Explosion: nuke
 			WaterExplosion: nuke
-			InfDeath: 3
-			SmudgeType: Crater
-			Damage: 250
 	TankNapalm:
-		ROF: 40
+		ReloadDelay: 40
 		Range: 8c0
 		Report: AACANON3.AUD
 		ValidTargets: Ground
@@ -827,41 +813,48 @@ Weapons:
 			Inaccuracy: 2c512
 			Trail: smokey
 			ContrailLength: 2
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 341
+			ValidTargets: Ground
 			Versus:
-				None: 90%
-				Wood: 170%
-				Light: 100%
-				Heavy: 100%
-				Concrete: 100%
+				None: 90
+				Wood: 170
+				Light: 100
+				Heavy: 100
+				Concrete: 100
+			DeathType: 4
+			Damage: 15
+			DamageTypes: Prone50Percent, TriggerProne
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Scorch
+		Warhead@3Eff: CreateEffect
 			Explosion: small_explosion
 			WaterExplosion: small_explosion
-			InfDeath: 4
-			SmudgeType: Scorch
 			ImpactSound: firebl3.aud
-			Damage: 15
 	ParaBomb:
-		ROF: 5
+		ReloadDelay: 5
 		Range: 5c0
 		Report: CHUTE1.AUD
 		Projectile: GravityBomb
 			Image: BOMBLET
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 426
 			Versus:
-				None: 125%
-				Wood: 100%
-				Light: 60%
-				Concrete: 25%
+				None: 125
+				Wood: 100
+				Light: 60
+				Concrete: 25
+			DeathType: 5
+			Damage: 200
+			DamageTypes: Prone50Percent, TriggerProne
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Crater
+		Warhead@3Eff: CreateEffect
 			Explosion: napalm
 			ImpactSound: firebl3.aud
 			WaterExplosion: napalm
-			InfDeath: 5
-			SmudgeType: Crater
-			Damage: 200
 	155mm:
-		ROF: 10
+		ReloadDelay: 10
 		Range: 7c5
 		Burst: 20
 		MinRange: 3c0
@@ -874,40 +867,48 @@ Weapons:
 			Angle: 30
 			Inaccuracy: 1c682
 			ContrailLength: 2
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 426
 			Versus:
-				None: 80%
-				Wood: 100%
-				Light: 60%
-				Heavy: 75%
-				Concrete: 35%
+				None: 80
+				Wood: 100
+				Light: 60
+				Heavy: 75
+				Concrete: 35
+			DeathType: 5
+			Damage: 10
+			DamageTypes: Prone50Percent, TriggerProne
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Scorch
+		Warhead@3Eff: CreateEffect
 			Explosion: small_napalm
 			WaterExplosion: small_napalm
-			InfDeath: 5
-			SmudgeType: Scorch
 			ImpactSound: firebl3.aud
-			Damage: 10
 	FLAK-23:
-		ROF: 10
+		ReloadDelay: 10
 		Range: 8c0
 		Report: AACANON3.AUD
-		ValidTargets: Air,Ground
+		ValidTargets: Air, Ground
 		Projectile: Bullet
 			Speed: 1c682
 			High: true
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 213
+			ValidTargets: Air, Ground
 			Versus:
-				None: 35%
-				Wood: 30%
-				Light: 30%
-				Heavy: 40%
-				Concrete: 30%
-			Explosion: med_explosion
+				None: 35
+				Wood: 30
+				Light: 30
+				Heavy: 40
+				Concrete: 30
 			Damage: 25
+			DamageTypes: Prone50Percent, TriggerProne
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Scorch
+		Warhead@3Eff: CreateEffect
+			Explosion: med_explosion
 	SCUD:
-		ROF: 280
+		ReloadDelay: 280
 		Range: 7c0
 		MinRange: 3c0
 		Report: MISSILE1.AUD
@@ -921,36 +922,41 @@ Weapons:
 			Inaccuracy: 426
 			Image: V2
 			Angle: 216
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 853
 			Versus:
-				None: 100%
-				Wood: 90%
-				Light: 80%
-				Heavy: 70%
+				None: 100
+				Wood: 90
+				Light: 80
+				Heavy: 70
+			DeathType: 3
+			Damage: 500
+			DamageTypes: Prone50Percent, TriggerProne
+		Warhead@2Smu: LeaveSmudge
+			SmudgeType: Crater
+		Warhead@3Eff: CreateEffect
 			Explosion: nuke
 			WaterExplosion: large_splash
-			InfDeath: 3
-			SmudgeType: Crater
-			Damage: 500
 			ImpactSound: kaboom1.aud
 			WaterImpactSound: kaboom1.aud
 	SilencedPPK:
-		ROF: 80
+		ReloadDelay: 80
 		Range: 25c0
 		Report: silppk.aud
 		Projectile: Bullet
 			Speed: 1c682
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 128
 			Versus:
-				Wood: 0%
-				Light: 0%
-				Heavy: 50%
-				Concrete: 0%
-			Explosion: piffs
-			InfDeath: 2
+				Wood: 0
+				Light: 0
+				Heavy: 50
+				Concrete: 0
+			DeathType: 2
 			Damage: 150
+			DamageTypes: Prone50Percent, TriggerProne
+		Warhead@2Eff: CreateEffect
+			Explosion: piffs
 
 Voices:
 

@@ -2,6 +2,7 @@ Metadata:
 	Title: Mod Chooser
 	Version: {DEV_VERSION}
 	Author: The OpenRA Developers
+	Hidden: true
 
 Folders:
 	.
@@ -9,44 +10,48 @@ Folders:
 
 
 Cursors:
-	mods/modchooser/cursors.yaml
+	./mods/modchooser/cursors.yaml
 
 Chrome:
-	mods/modchooser/chrome.yaml
+	./mods/modchooser/chrome.yaml
 
 Assemblies:
-	mods/ra/OpenRA.Mods.RA.dll
+	./mods/common/OpenRA.Mods.Common.dll
 
 ChromeLayout:
-	mods/modchooser/modchooser.yaml
+	./mods/modchooser/modchooser.yaml
 
 Notifications:
-	mods/modchooser/notifications.yaml
+	./mods/modchooser/notifications.yaml
 
 LoadScreen: ModChooserLoadScreen
 	Image: mods/modchooser/chrome.png
 
 ChromeMetrics:
-	mods/modchooser/metrics.yaml
+	./mods/modchooser/metrics.yaml
 
 Fonts:
 	Regular:
-		Font:FreeSans.ttf
+		Font:./mods/common/FreeSans.ttf
 		Size:14
 	Bold:
-		Font:FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:14
 	BigBold:
-		Font:FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:24
 	MediumBold:
-		Font:FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:18
 	Tiny:
-		Font:FreeSans.ttf
+		Font:./mods/common/FreeSans.ttf
 		Size:10
 	TinyBold:
-		Font:FreeSansBold.ttf
+		Font:./mods/common/FreeSansBold.ttf
 		Size:10
 
 LobbyDefaults:
+
+SpriteFormats: ShpTD
+
+SpriteSequenceFormat: DefaultSpriteSequence

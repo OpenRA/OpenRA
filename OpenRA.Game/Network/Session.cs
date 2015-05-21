@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -59,10 +59,9 @@ namespace OpenRA.Network
 
 				return session;
 			}
-			catch (InvalidOperationException)
+			catch (InvalidOperationException e)
 			{
-				Log.Write("exception", "Session deserialized invalid MiniYaml:\n{0}".F(data));
-				throw;
+				throw new InvalidOperationException("Session deserialized invalid MiniYaml:\n{0}".F(data), e);
 			}
 		}
 
@@ -95,11 +94,15 @@ namespace OpenRA.Network
 
 		public class Client
 		{
+			public static Client Deserialize(MiniYaml data)
+			{
+				return FieldLoader.Load<Client>(data);
+			}
+
 			public int Index;
 			public HSLColor PreferredColor; // Color that the client normally uses from settings.yaml.
-			public HSLColor Color; // Actual color that the client is using.
-								   // Usually the same as PreferredColor but can be different on maps with locked colors.
-			public string Country;
+			public HSLColor Color; // Actual color that the client is using. Usually the same as PreferredColor but can be different on maps with locked colors.
+			public string Race;
 			public int SpawnPoint;
 			public string Name;
 			public string IpAddress;
@@ -117,11 +120,6 @@ namespace OpenRA.Network
 			{
 				return new MiniYamlNode("Client@{0}".F(this.Index), FieldSaver.Save(this));
 			}
-
-			public static Client Deserialize(MiniYaml data)
-			{
-				return FieldLoader.Load<Client>(data);
-			}
 		}
 
 		public ClientPing PingFromClient(Client client)
@@ -136,14 +134,14 @@ namespace OpenRA.Network
 			public int LatencyJitter = -1;
 			public int[] LatencyHistory = { };
 
-			public MiniYamlNode Serialize()
-			{
-				return new MiniYamlNode("ClientPing@{0}".F(this.Index), FieldSaver.Save(this));
-			}
-
 			public static ClientPing Deserialize(MiniYaml data)
 			{
 				return FieldLoader.Load<ClientPing>(data);
+			}
+
+			public MiniYamlNode Serialize()
+			{
+				return new MiniYamlNode("ClientPing@{0}".F(this.Index), FieldSaver.Save(this));
 			}
 		}
 
@@ -159,14 +157,14 @@ namespace OpenRA.Network
 			public bool LockSpawn;
 			public bool Required;
 
-			public MiniYamlNode Serialize()
-			{
-				return new MiniYamlNode("Slot@{0}".F(this.PlayerReference), FieldSaver.Save(this));
-			}
-
 			public static Slot Deserialize(MiniYaml data)
 			{
 				return FieldLoader.Load<Slot>(data);
+			}
+
+			public MiniYamlNode Serialize()
+			{
+				return new MiniYamlNode("Slot@{0}".F(this.PlayerReference), FieldSaver.Save(this));
 			}
 		}
 
@@ -182,23 +180,25 @@ namespace OpenRA.Network
 			public bool Dedicated;
 			public string Difficulty;
 			public bool Crates = true;
+			public bool Creeps = true;
 			public bool Shroud = true;
 			public bool Fog = true;
 			public bool AllyBuildRadius = true;
 			public int StartingCash = 5000;
-			public String TechLevel = "none";
+			public string TechLevel = "none";
 			public string StartingUnitsClass = "none";
+			public bool ShortGame = true;
 			public bool AllowVersionMismatch;
 			public string GameUid;
-
-			public MiniYamlNode Serialize()
-			{
-				return new MiniYamlNode("GlobalSettings", FieldSaver.Save(this));
-			}
 
 			public static Global Deserialize(MiniYaml data)
 			{
 				return FieldLoader.Load<Global>(data);
+			}
+
+			public MiniYamlNode Serialize()
+			{
+				return new MiniYamlNode("GlobalSettings", FieldSaver.Save(this));
 			}
 		}
 

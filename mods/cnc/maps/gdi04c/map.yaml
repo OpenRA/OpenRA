@@ -1,14 +1,12 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: cnc
 
 Title: Take Białystok
 
-Author: Westwood Studios
-
 Description: Nod is moving to capture and hold a civilian town.\n\nYour mission is to reach the town first and hold off invading Nod units until GDI reinforcements can arrive.\n\nAll invading Nod units must be destroyed.
+
+Author: Westwood Studios
 
 Tileset: TEMPERAT
 
@@ -16,18 +14,27 @@ MapSize: 64,64
 
 Bounds: 14,14,48,44
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Campaign
 
+Videos:
+	BackgroundInfo: bkground.vqa
+	Briefing: gdi4a.vqa
+	GameStart: nodsweep.vqa
+	GameWon: burdet1.vqa
+	GameLost: gameover.vqa
+
 Options:
 	Crates: False
-	Fog: False
+	Creeps: False
+	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 0
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -35,13 +42,13 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: gdi
-		Enemies: Nod,GDI
+		Enemies: Nod, GDI
 	PlayerReference@Nod:
 		Name: Nod
 		Race: nod
 		ColorRamp: 3,255,127
 		Allies: Nod
-		Enemies: GDI,Civillians
+		Enemies: GDI, Civillians
 	PlayerReference@GDI:
 		Name: GDI
 		Playable: True
@@ -57,9 +64,14 @@ Players:
 		Enemies: Nod
 	PlayerReference@Civillians:
 		Name: Civillians
+		NonCombatant: True
 		Race: gdi
 		Enemies: Nod
+	PlayerReference@Creeps:
+		Name: Creeps
 		NonCombatant: True
+		Race: Random
+		Enemies: Nod, GDI
 
 Actors:
 	Actor0: v17
@@ -431,448 +443,325 @@ Actors:
 	Actor124: v05
 		Location: 25,55
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	Actor125: v03
 		Location: 21,50
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	Actor128: v05
 		Location: 21,52
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	Actor130: v07
 		Location: 19,52
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 	Actor131: v06
 		Location: 17,52
 		Owner: Civillians
-		Health: 1
-		Facing: 0
-	TrigLos2Farm1: v04
-		Location: 25,53
-		Owner: Civillians
-		Health: 1
-		Facing: 0
-	TrigLos2Farm2: v06
-		Location: 24,50
-		Owner: Civillians
-		Health: 1
-		Facing: 0
-	TrigLos2Farm3: v07
-		Location: 19,46
-		Owner: Civillians
-		Health: 1
-		Facing: 0
-	TrigLos2Farm4: v01
-		Location: 18,44
-		Owner: Civillians
-		Health: 1
-		Facing: 0
-	TrigHuntFarm1: v06
-		Location: 45,43
-		Owner: Civillians
-		Health: 1
-		Facing: 0
-	TrigRNF1Farm1: v07
-		Location: 31,53
-		Owner: Civillians
-		Health: 1
-		Facing: 0
-	TrigRNF1Farm2: v09
-		Location: 31,50
-		Owner: Civillians
-		Health: 1
-		Facing: 0
-	TrigRNF2Farm1: v08
-		Location: 30,53
-		Owner: Civillians
-		Health: 1
-		Facing: 0
-	TrigRNF2Farm2: v11
-		Location: 29,50
-		Owner: Civillians
-		Health: 1
-		Facing: 0
 	Actor136: bggy
 		Location: 58,35
 		Owner: Nod
-		Health: 1
 		Facing: 224
 	Actor137: bggy
 		Location: 52,33
 		Owner: Nod
-		Health: 1
 		Facing: 224
 	Actor138: bggy
 		Location: 42,17
 		Owner: Nod
-		Health: 1
 		Facing: 224
 	Actor139: apc
 		Location: 27,15
 		Owner: GDI
-		Health: 1
 		Facing: 128
 	Actor140: apc
 		Location: 29,15
 		Owner: GDI
-		Health: 1
 		Facing: 128
 	Actor141: jeep
 		Location: 28,15
 		Owner: GDI
-		Health: 1
 		Facing: 128
 	Actor142: e3
 		Location: 55,22
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 0
 	Actor143: e1
 		Location: 50,21
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 4
 	Actor144: e1
 		Location: 51,23
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 1
 	Actor145: e1
 		Location: 51,22
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 4
 	Actor146: e1
 		Location: 50,22
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 1
 	Actor147: e3
 		Location: 49,30
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor148: e3
 		Location: 23,28
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor149: e1
 		Location: 24,28
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor150: e1
 		Location: 23,28
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 4
 	Actor151: e3
 		Location: 22,23
 		Owner: Nod
-		Health: 1
 		Facing: 64
 		SubCell: 0
-	civvie1: c8
-		Location: 26,22
-		Owner: Civillians
-		Health: 1
-		Facing: 0
-		SubCell: 4
-	civvie2: c3
-		Location: 26,22
-		Owner: Civillians
-		Health: 1
-		Facing: 0
-		SubCell: 3
 	Actor154: c2
 		Location: 23,56
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 		SubCell: 0
-	Actor155: e3
+	Actor155: e1
 		Location: 55,29
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor156: e1
 		Location: 50,32
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 3
 	Actor157: c4
 		Location: 24,48
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor158: c6
 		Location: 27,55
 		Owner: Civillians
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor159: c9
 		Location: 22,54
 		Owner: Civillians
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor160: e3
 		Location: 49,29
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor161: e1
 		Location: 43,55
 		Owner: Nod
-		Health: 1
 		Facing: 192
 		SubCell: 1
 	Actor162: e1
 		Location: 42,55
 		Owner: Nod
-		Health: 1
 		Facing: 192
 		SubCell: 3
 	Actor163: e1
 		Location: 50,32
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 4
 	Actor164: e1
 		Location: 51,33
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor165: e3
 		Location: 43,18
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 3
 	Actor166: e3
 		Location: 43,18
 		Owner: Nod
-		Health: 1
 		Facing: 224
 		SubCell: 2
 	Actor167: e1
 		Location: 27,18
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 2
 	Actor168: e1
 		Location: 27,17
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 3
 	Actor169: e1
 		Location: 27,17
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor170: e1
 		Location: 27,18
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor171: e2
 		Location: 29,17
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 3
 	Actor172: e2
 		Location: 29,17
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor173: e2
 		Location: 29,18
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 2
 	Actor174: e2
 		Location: 29,18
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor175: e1
 		Location: 26,24
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 2
 	Actor176: e1
 		Location: 27,24
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 1
 	Actor177: e1
 		Location: 27,24
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 2
 	Actor178: e3
 		Location: 26,24
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 4
 	Actor179: e3
 		Location: 27,24
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 4
-	Actor180: e3
-		Location: 27,24
-		Owner: Nod
-		Health: 1
-		Facing: 0
-		SubCell: 3
-	Actor181: e3
-		Location: 27,25
-		Owner: Nod
-		Health: 1
-		Facing: 0
-		SubCell: 2
 	Actor182: e3
 		Location: 26,25
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 2
-	Actor183: e3
-		Location: 50,28
-		Owner: Nod
-		Health: 1
-		Facing: 160
-		SubCell: 3
 	Actor184: e3
 		Location: 56,29
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 3
 	Actor185: e1
 		Location: 32,21
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor186: e1
 		Location: 33,21
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor187: e1
 		Location: 34,21
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 0
-	waypoint27: waypoint
-		Location: 27,46
-		Owner: Neutral
-	waypoint26: waypoint
-		Location: 22,14
-		Owner: Neutral
-	waypoint17: waypoint
-		Location: 43,19
-		Owner: Neutral
-	waypoint13: waypoint
-		Location: 16,47
-		Owner: Neutral
-	waypoint12: waypoint
-		Location: 16,51
-		Owner: Neutral
-	GDIUnloadWpt: waypoint
-		Location: 28,47
-		Owner: Neutral
-	waypoint10: waypoint
-		Location: 27,49
-		Owner: Neutral
-	waypoint9: waypoint
-		Location: 31,29
-		Owner: Neutral
-	waypoint8: waypoint
-		Location: 53,38
-		Owner: Neutral
-	waypoint7: waypoint
-		Location: 45,44
-		Owner: Neutral
-	waypoint6: waypoint
-		Location: 55,32
-		Owner: Neutral
-	waypoint5: waypoint
-		Location: 43,33
-		Owner: Neutral
-	waypoint4: waypoint
-		Location: 37,36
-		Owner: Neutral
-	waypoint3: waypoint
+	TrigHuntFarm1: v06
+		Location: 45,43
+		Owner: Civillians
+	TrigRNF1Farm1: v07
+		Location: 31,53
+		Owner: Civillians
+	TrigRNF1Farm2: v09
+		Location: 31,50
+		Owner: Civillians
+	TrigRNF2Farm1: v08
+		Location: 30,53
+		Owner: Civillians
+	TrigRNF2Farm2: v11
+		Location: 29,50
+		Owner: Civillians
+	TrigLos2Farm1: v04
+		Location: 25,53
+		Owner: Civillians
+	TrigLos2Farm2: v06
+		Location: 24,50
+		Owner: Civillians
+	TrigLos2Farm3: v07
+		Location: 19,46
+		Owner: Civillians
+	TrigLos2Farm4: v01
+		Location: 18,44
+		Owner: Civillians
+	civvie1: c8
+		Location: 26,22
+		Owner: Civillians
+		SubCell: 4
+	civvie2: c3
+		Location: 26,22
+		Owner: Civillians
+		SubCell: 3
+	CivvieWpts1: waypoint
 		Location: 32,14
 		Owner: Neutral
-	waypoint2: waypoint
-		Location: 27,52
+	CivvieWpts2: waypoint
+		Location: 43,19
 		Owner: Neutral
-	waypoint1: waypoint
+	CivvieWpts3: waypoint
+		Location: 22,14
+		Owner: Neutral
+	CivvieWpts4: waypoint
+		Location: 31,29
+		Owner: Neutral
+	CivvieWpts5: waypoint
+		Location: 37,36
+		Owner: Neutral
+	CivvieWpts6: waypoint
+		Location: 43,33
+		Owner: Neutral
+	CivvieWpts7: waypoint
+		Location: 55,32
+		Owner: Neutral
+	CivvieWpts8: waypoint
+		Location: 53,38
+		Owner: Neutral
+	CivvieWpts9: waypoint
+		Location: 45,44
+		Owner: Neutral
+	CivvieWpts10: waypoint
 		Location: 36,52
 		Owner: Neutral
-	waypoint0: waypoint
-		Location: 55,54
-		Owner: Neutral
-	TownAttackTrigger: waypoint
-#		Location: 46,44
-		Location: 56,38
-		Owner: Neutral
-	TownAttackWpt: waypoint
-		Location: 24,48
+	CivvieWpts11: waypoint
+		Location: 27,52
 		Owner: Neutral
 	NodReinfEntry: waypoint
 		Location: 61,55
 		Owner: Neutral
-	GDIReinfTrigger: waypoint
-		Location: 32,52
+	NodReinfRally: waypoint
+		Location: 55,54
+		Owner: Neutral
+	TownAttackWpt: waypoint
+		Location: 24,48
 		Owner: Neutral
 	GDIReinfEntry1: waypoint
 		Location: 14,51
 		Owner: Neutral
 	GDIReinfEntry2: waypoint
 		Location: 14,47
+		Owner: Neutral
+	GDIReinfRally1: waypoint
+		Location: 16,51
+		Owner: Neutral
+	GDIReinfRally2: waypoint
+		Location: 16,47
+		Owner: Neutral
+	GDIReinfRally3: waypoint
+		Location: 27,49
+		Owner: Neutral
+	GDIUnloadWpt: waypoint
+		Location: 28,47
 		Owner: Neutral
 
 Smudges:
@@ -893,19 +782,55 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
-		LuaScriptInterface:
-			LuaScripts: gdi04c.lua
+		LuaScript:
+			Scripts: gdi04c.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	Player:
 		-ConquestVictoryConditions:
-	^Infantry:
-		MustBeDestroyed:
+		MissionObjectives:
+			EarlyGameOver: true
 	^Vehicle:
-		MustBeDestroyed:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
 	^Tank:
-		MustBeDestroyed:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Helicopter:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Infantry:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Plane:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Ship:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Building:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Wall:
+		Tooltip:
+			ShowOwnerRow: false
+	^Husk:
+		Tooltip:
+			GenericVisibility: Enemy, Ally, Neutral
+			GenericStancePrefix: false
+			ShowOwnerRow: false
 	^CivInfantry:
 		Health:
 			HP: 125
+	^Bridge:
+		Invulnerable:
 
 Sequences:
 
@@ -913,9 +838,12 @@ VoxelSequences:
 
 Weapons:
 	Rockets:
-		Warhead:
+		Range: 5c0
+		Warhead: SpreadDamage
 			Versus:
-				None: 20%
+				None: 10
+				Light: 66
+				Heavy: 66
 
 Voices:
 

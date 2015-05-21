@@ -28,17 +28,30 @@
 		Types: Vehicle
 	GivesBounty:
 	Repairable:
-		RepairBuildings: repaira,repairo,repairh
+		RepairBuildings: repair
 	CombatDebugOverlay:
 	Guard:
+		Voice: Guard
 	Guardable:
 	RenderUnit:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
+	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+	UpgradeManager:
+	TemporaryOwnerManager:
+	MustBeDestroyed:
+	AnnounceOnSeen:
+		Notification: EnemyUnitsDetected
 
 ^Tank:
 	AppearsOnRadar:
@@ -70,17 +83,30 @@
 		Types: Tank
 	GivesBounty:
 	Repairable:
-		RepairBuildings: repaira,repairo,repairh
+		RepairBuildings: repair
 	CombatDebugOverlay:
 	Guard:
+		Voice: Guard
 	Guardable:
 	RenderUnit:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
+	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+	UpgradeManager:
+	TemporaryOwnerManager:
+	MustBeDestroyed:
+	AnnounceOnSeen:
+		Notification: EnemyUnitsDetected
 
 ^Husk:
 	Health:
@@ -97,7 +123,6 @@
 	Tooltip:
 		Name: Wreck
 	BodyOrientation:
-	LuaScriptEvents:
 	TargetableUnit:
 		TargetTypes: Ground
 		RequiresForceFire: yes
@@ -110,6 +135,7 @@
 		ForceHealthPercentage: 25
 	DisabledOverlay:
 	ScriptTriggers:
+	RenderUnit:
 
 ^TowerHusk:
 	Health:
@@ -128,7 +154,6 @@
 	ProximityCaptor:
 		Types: Husk
 	BodyOrientation:
-	LuaScriptEvents:
 	ScriptTriggers:
 
 ^AircraftHusk:
@@ -168,7 +193,13 @@
 		Voice: InfantryVoice
 	TargetableUnit:
 		TargetTypes: Ground
-	RenderInfantry:
+	RenderSprites:
+	WithInfantryBody:
+	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
+	WithDeathAnimation:
 	AutoTarget:
 	AttackMove:
 	Passenger:
@@ -182,22 +213,34 @@
 	ProximityCaptor:
 		Types: Infantry
 	GivesBounty:
-	CrushableInfantry:
+	Crushable:
 		CrushSound: CRUSH1.WAV
-	RepairableNear:
-		Buildings: barra, barro
-		CloseEnough: 1
 	CombatDebugOverlay:
 	Guard:
+		Voice: Guard
 	Guardable:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
-	LuaScriptEvents:
 	ScriptTriggers:
 	DeathSounds:
 	Parachutable:
 		FallRate: 130
+	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+	UpgradeManager:
+	MustBeDestroyed:
+	AnnounceOnSeen:
+		Notification: EnemyUnitsDetected
+	TerrainModifiesDamage:
+		TerrainModifier:
+			Rough: 80
 
 ^Plane:
 	AppearsOnRadar:
@@ -221,8 +264,19 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	AttackMove:
-	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+	UpgradeManager:
+	AnnounceOnSeen:
+		Notification: EnemyUnitsDetected
+	RenderUnit:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -233,26 +287,26 @@
 	Selectable:
 		Priority: 2
 	TargetableBuilding:
-		TargetTypes: Ground, C4
+		TargetTypes: Ground, C4, Structure
 	Building:
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Rock, Concrete
 		BuildSounds: BUILD1.WAV
-		SellSounds: BUILD1.WAV
 		Adjacent: 3
 	GivesBuildableArea:
 	ExternalCapturable:
 	ExternalCapturableBar:
 	SoundOnDamageTransition:
-		DamagedSound: EXPLSML1.WAV
-		DestroyedSound: EXPLHG1.WAV
+		DamagedSounds: EXPLSML1.WAV
+		DestroyedSounds: EXPLHG1.WAV
 	RenderBuilding:
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
 		ActorTypes: rifle,rifle,rifle,rifle,rifle,bazooka,bazooka,bazooka,engineer
 	MustBeDestroyed:
+		RequiredForShortGame: true
 	GivesExperience:
 	FrozenUnderFog:
 	CaptureNotification:
@@ -264,6 +318,7 @@
 	ProximityCaptor:
 		Types: Building
 	Sellable:
+		SellSounds: BUILD1.WAV
 	GivesBounty:
 	CombatDebugOverlay:
 	Guardable:
@@ -272,7 +327,6 @@
 	UpdatesPlayerStatistics:
 	WithCrumbleOverlay:
 	Huntable:
-	LuaScriptEvents:
 	Demolishable:
 	DamagedWithoutFoundation:
 	ThrowsShrapnel:

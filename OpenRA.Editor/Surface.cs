@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -26,7 +26,7 @@ namespace OpenRA.Editor
 	{
 		public static CPos Location(this ActorReference ar)
 		{
-			return (CPos)ar.InitDict.Get<LocationInit>().value;
+			return (CPos)ar.InitDict.Get<LocationInit>().Value(null);
 		}
 
 		public static void DrawStringContrast(this SGraphics g, Font f, string s, int x, int y, Brush fg, Brush bg)
@@ -43,6 +43,7 @@ namespace OpenRA.Editor
 	class Surface : Control
 	{
 		public Map Map { get; private set; }
+		public Dictionary<string, ActorReference> Actors { get; private set; }
 		public TileSet TileSet { get; private set; }
 		public TileSetRenderer TileSetRenderer { get; private set; }
 		public IPalette Palette { get; private set; }
@@ -84,6 +85,9 @@ namespace OpenRA.Editor
 		public void Bind(Map m, TileSet ts, TileSetRenderer tsr, IPalette p, IPalette pp)
 		{
 			Map = m;
+			if (m != null)
+				Actors = m.ActorDefinitions.ToDictionary(n => n.Key, n => new ActorReference(n.Value.Value, n.Value.ToDictionary()));
+
 			TileSet = ts;
 			TileSetRenderer = tsr;
 			Palette = p;
@@ -132,7 +136,7 @@ namespace OpenRA.Editor
 		{
 			base.OnDoubleClick(e);
 
-			var x = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
+			var x = Actors.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
 			if (x.Key != null)
 				ActorDoubleClicked(x);
 		}
@@ -203,8 +207,8 @@ namespace OpenRA.Editor
 
 			currentTool = null;
 
-			var key = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == brushLocation);
-			if (key.Key != null) Map.Actors.Value.Remove(key.Key);
+			var key = Actors.FirstOrDefault(a => a.Value.Location() == brushLocation);
+			if (key.Key != null) Actors.Remove(key.Key);
 
 			if (Map.MapResources.Value[brushLocation].Type != 0)
 			{
@@ -271,18 +275,24 @@ namespace OpenRA.Editor
 				for (var i = 0; i < ChunkSize; i++)
 					for (var j = 0; j < ChunkSize; j++)
 					{
-						var cell = new CPos(u * ChunkSize + i, v * ChunkSize + j);
-						var tr = Map.MapTiles.Value[cell];
+						var ui = u * ChunkSize + i;
+						var vj = v * ChunkSize + j;
+						var uv = new MPos(ui, vj);
+						var tr = Map.MapTiles.Value[uv];
 						var tile = TileSetRenderer.Data(tr.Type);
-						var index = (tr.Index < tile.Count) ? tr.Index : (byte)0;
+						if (tile == null)
+							continue;
+
+						var index = (tr.Index < tile.Length) ? tr.Index : (byte)0;
 						var rawImage = tile[index];
 						for (var x = 0; x < TileSetRenderer.TileSize; x++)
 							for (var y = 0; y < TileSetRenderer.TileSize; y++)
-								p[(j * TileSetRenderer.TileSize + y) * stride + i * TileSetRenderer.TileSize + x] = Palette.GetColor(rawImage[x + TileSetRenderer.TileSize * y]).ToArgb();
+								p[(j * TileSetRenderer.TileSize + y) * stride + i * TileSetRenderer.TileSize + x] =
+									Palette.GetColor(rawImage[x + TileSetRenderer.TileSize * y]).ToArgb();
 
-						if (Map.MapResources.Value[cell].Type != 0)
+						if (Map.MapResources.Value[uv].Type != 0)
 						{
-							var resourceImage = ResourceTemplates[Map.MapResources.Value[cell].Type].Bitmap;
+							var resourceImage = ResourceTemplates[Map.MapResources.Value[uv].Type].Bitmap;
 							var srcdata = resourceImage.LockBits(resourceImage.Bounds(),
 								ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
@@ -308,13 +318,14 @@ namespace OpenRA.Editor
 			{
 				using (var g = SGraphics.FromImage(bitmap))
 				{
-					var ts = Game.modData.Manifest.TileSize;
+					var ts = Game.ModData.Manifest.TileSize;
 					var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
 					ControlPaint.DrawGrid(g, rect, new Size(2, ts.Height), Color.DarkRed);
 					ControlPaint.DrawGrid(g, rect, new Size(ts.Width, 2), Color.DarkRed);
 					ControlPaint.DrawGrid(g, rect, new Size(ts.Width, ts.Height), Color.Red);
 				}
 			}
+
 			return bitmap;
 		}
 
@@ -329,8 +340,9 @@ namespace OpenRA.Editor
 		{
 			var vX = (int)Math.Floor((mousePos.X - Offset.X) / Zoom);
 			var vY = (int)Math.Floor((mousePos.Y - Offset.Y) / Zoom);
-			return new CPos((vX + TileSetRenderer.TileSize - 1) / TileSetRenderer.TileSize,
-			                (vY + TileSetRenderer.TileSize - 1) / TileSetRenderer.TileSize);
+			return new CPos(
+				(vX + TileSetRenderer.TileSize - 1) / TileSetRenderer.TileSize,
+				(vY + TileSetRenderer.TileSize - 1) / TileSetRenderer.TileSize);
 		}
 
 		public void DrawActor(SGraphics g, CPos p, ActorTemplate t, ColorPalette cp)
@@ -378,7 +390,7 @@ namespace OpenRA.Editor
 
 		ColorPalette GetPaletteForPlayerInner(string name)
 		{
-			var pr = Map.Players[name];
+			var pr = new MapPlayers(Map.PlayerDefinitions).Players[name];
 			var pcpi = Program.Rules.Actors["player"].Traits.Get<PlayerColorPaletteInfo>();
 			var remap = new PlayerColorRemap(pcpi.RemapIndex, pr.Color, pcpi.Ramp);
 			return new ImmutablePalette(PlayerPalette, remap).AsSystemPalette();
@@ -448,7 +460,7 @@ namespace OpenRA.Editor
 					height * (TileSetRenderer.TileSize * Zoom));
 			}
 
-			foreach (var ar in Map.Actors.Value)
+			foreach (var ar in Actors)
 			{
 				if (actorTemplates.ContainsKey(ar.Value.Type))
 					DrawActor(e.Graphics, ar.Value.Location(), actorTemplates[ar.Value.Type],
@@ -458,7 +470,7 @@ namespace OpenRA.Editor
 			}
 
 			if (ShowActorNames)
-				foreach (var ar in Map.Actors.Value)
+				foreach (var ar in Actors)
 					if (!ar.Key.StartsWith("Actor"))	// if it has a custom name
 						e.Graphics.DrawStringContrast(Font, ar.Key,
 							(int)(ar.Value.Location().X * TileSetRenderer.TileSize * Zoom + Offset.X),
@@ -492,7 +504,7 @@ namespace OpenRA.Editor
 
 			if (currentTool == null)
 			{
-				var x = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
+				var x = Actors.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
 				if (x.Key != null && actorTemplates.ContainsKey(x.Value.Type))
 					DrawActorBorder(e.Graphics, x.Value.Location(), actorTemplates[x.Value.Type]);
 			}

@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -41,7 +41,7 @@ namespace OpenRA.Editor
 					if (surface.Map.Contains(cell))
 					{
 						var z = u + v * template.Size.X;
-						if (tile[z].Length > 0)
+						if (tile != null && tile[z].Length > 0)
 						{
 							var index = template.PickAny ? (byte)((u + pos.X) % 4 + ((v + pos.Y) % 4) * 4) : (byte)z;
 							surface.Map.MapTiles.Value[cell] = new TerrainTile(brushTemplate.N, index);

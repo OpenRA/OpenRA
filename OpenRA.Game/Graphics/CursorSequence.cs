@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,47 +8,55 @@
  */
 #endregion
 
+using System.Linq;
+
 namespace OpenRA.Graphics
 {
 	public class CursorSequence
 	{
-		readonly int start, length;
-		readonly string palette;
-
-		public int Start { get { return start; } }
-		public int End { get { return start + length; } }
-		public int Length { get { return length; } }
-		public string Palette { get { return palette; } }
+		public readonly string Name;
+		public readonly int Start;
+		public readonly int Length;
+		public readonly string Palette;
 		public readonly int2 Hotspot;
 
-		Sprite[] sprites;
+		public readonly ISpriteFrame[] Frames;
 
-		public CursorSequence(SpriteLoader loader, string cursorSrc, string palette, MiniYaml info)
+		public CursorSequence(FrameCache cache, string name, string cursorSrc, string palette, MiniYaml info)
 		{
-			sprites = loader.LoadAllSprites(cursorSrc);
 			var d = info.ToDictionary();
 
-			start = Exts.ParseIntegerInvariant(d["start"].Value);
-			this.palette = palette;
+			Start = Exts.ParseIntegerInvariant(d["Start"].Value);
+			Palette = palette;
+			Name = name;
 
-			if ((d.ContainsKey("length") && d["length"].Value == "*") || (d.ContainsKey("end") && d["end"].Value == "*"))
-				length = sprites.Length - start;
-			else if (d.ContainsKey("length"))
-				length = Exts.ParseIntegerInvariant(d["length"].Value);
-			else if (d.ContainsKey("end"))
-				length = Exts.ParseIntegerInvariant(d["end"].Value) - start;
+			if ((d.ContainsKey("Length") && d["Length"].Value == "*") || (d.ContainsKey("End") && d["End"].Value == "*"))
+				Length = Frames.Length - Start;
+			else if (d.ContainsKey("Length"))
+				Length = Exts.ParseIntegerInvariant(d["Length"].Value);
+			else if (d.ContainsKey("End"))
+				Length = Exts.ParseIntegerInvariant(d["End"].Value) - Start;
 			else
-				length = 1;
+				Length = 1;
 
-			if (d.ContainsKey("x"))
-				Exts.TryParseIntegerInvariant(d["x"].Value, out Hotspot.X);
-			if (d.ContainsKey("y"))
-				Exts.TryParseIntegerInvariant(d["y"].Value, out Hotspot.Y);
-		}
+			Frames = cache[cursorSrc]
+				.Skip(Start)
+				.Take(Length)
+				.ToArray();
 
-		public Sprite GetSprite(int frame)
-		{
-			return sprites[(frame % length) + start];
+			if (d.ContainsKey("X"))
+			{
+				int x;
+				Exts.TryParseIntegerInvariant(d["X"].Value, out x);
+				Hotspot = Hotspot.WithX(x);
+			}
+
+			if (d.ContainsKey("Y"))
+			{
+				int y;
+				Exts.TryParseIntegerInvariant(d["Y"].Value, out y);
+				Hotspot = Hotspot.WithY(y);
+			}
 		}
 	}
 }

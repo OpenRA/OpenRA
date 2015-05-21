@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -16,7 +16,7 @@ using System.Text;
 
 namespace OpenRA
 {
-	enum RunStatus
+	public enum RunStatus
 	{
 		Error = -1,
 		Success = 0,
@@ -49,9 +49,9 @@ namespace OpenRA
 		{
 			Log.AddChannel("exception", "exception.log");
 
-			if (Game.modData != null)
+			if (Game.ModData != null)
 			{
-				var mod = Game.modData.Manifest.Mod;
+				var mod = Game.ModData.Manifest.Mod;
 				Log.Write("exception", "{0} Mod at Version {1}", mod.Title, mod.Version);
 			}
 
@@ -60,12 +60,6 @@ namespace OpenRA
 			var rpt = BuildExceptionReport(e).ToString();
 			Log.Write("exception", "{0}", rpt);
 			Console.Error.WriteLine(rpt);
-
-			if (Game.Settings.Debug.ShowFatalErrorDialog && !Game.Settings.Server.Dedicated)
-			{
-				Game.Renderer.Device.Dispose();
-				Platform.ShowFatalErrorDialog();
-			}
 		}
 
 		static StringBuilder BuildExceptionReport(Exception e)
@@ -92,8 +86,9 @@ namespace OpenRA
 				Indent(sb, d);
 				sb.AppendFormat("TypeName=`{0}`", tle.TypeName);
 			}
-			else // TODO: more exception types
+			else
 			{
+				// TODO: more exception types
 			}
 
 			if (e.InnerException != null)

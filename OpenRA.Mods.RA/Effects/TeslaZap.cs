@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
@@ -21,13 +23,13 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly string Palette = "effect";
 		public readonly int BrightZaps = 1;
 		public readonly int DimZaps = 2;
-		public IEffect Create(ProjectileArgs args) { return new TeslaZap( this, args ); }
+		public IEffect Create(ProjectileArgs args) { return new TeslaZap(this, args); }
 	}
 
 	class TeslaZap : IEffect
 	{
-		readonly ProjectileArgs Args;
-		readonly TeslaZapInfo Info;
+		readonly ProjectileArgs args;
+		readonly TeslaZapInfo info;
 		TeslaZapRenderable zap;
 		int timeUntilRemove = 2; // # of frames
 		bool doneDamage = false;
@@ -35,8 +37,8 @@ namespace OpenRA.Mods.RA.Effects
 
 		public TeslaZap(TeslaZapInfo info, ProjectileArgs args)
 		{
-			Args = args;
-			Info = info;
+			this.args = args;
+			this.info = info;
 		}
 
 		public void Tick(World world)
@@ -46,8 +48,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (!doneDamage)
 			{
-				var pos = Args.GuidedTarget.IsValidFor(Args.SourceActor) ? Args.GuidedTarget.CenterPosition : Args.PassiveTarget;
-				Combat.DoImpacts(pos, Args.SourceActor, Args.Weapon, Args.FirepowerModifier);
+				var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
+				args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
 				doneDamage = true;
 			}
 		}
@@ -56,9 +58,10 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			if (!initialized)
 			{
-				var pos = Args.GuidedTarget.IsValidFor(Args.SourceActor) ? Args.GuidedTarget.CenterPosition : Args.PassiveTarget;
-				zap = new TeslaZapRenderable(Args.Source, 0, pos - Args.Source, Info.Image, Info.BrightZaps, Info.DimZaps, Info.Palette);
+				var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
+				zap = new TeslaZapRenderable(args.Source, 0, pos - args.Source, info.Image, info.BrightZaps, info.DimZaps, info.Palette);
 			}
+
 			yield return zap;
 		}
 	}

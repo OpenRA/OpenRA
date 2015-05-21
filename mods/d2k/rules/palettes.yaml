@@ -1,0 +1,76 @@
+^Palettes:
+	PaletteFromCurrentTileset:
+		Name: terrain
+	PaletteFromFile@d2k:
+		Name: d2k
+		Filename: d2k.pal
+		ShadowIndex: 1
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: d2k.pal
+		ShadowIndex: 3
+		AllowModifiers: false
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: d2k.pal
+		ShadowIndex: 4
+		AllowModifiers: false
+	PaletteFromFile@colorpicker:
+		Name: colorpicker
+		Filename: d2k.pal
+		ShadowIndex: 4
+		AllowModifiers: false
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@cloak:
+		Name: cloak
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromR8@moveflash:
+		Name: moveflash
+		Filename: DATA.R8
+		Offset: 2572352
+		InvertColor: true
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	PaletteFromScaledPalette@starportlights:
+		Name: starportlights
+		BasePalette: d2k
+		AllowModifiers: false
+		Offset: -64
+	PaletteFromScaledPalette@repairlights:
+		Name: repairlights
+		BasePalette: d2k
+		AllowModifiers: false
+		Offset: -128
+	PaletteFromR8@shroud:
+		Name: shroud
+		Filename: DATA.R8
+		Offset: 12007
+		InvertColor: true
+	FogPaletteFromR8@fog:
+		Name: fog
+		Filename: DATA.R8
+		Offset: 12007
+		InvertColor: true
+	PlayerColorPalette:
+		BasePalette: d2k
+		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
+	PlayerHighlightPalette:
+

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,21 +14,25 @@ using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
-	public class HardwarePalette
+	public sealed class HardwarePalette : IDisposable
 	{
-		public const int MaxPalettes = 256;
-
 		public ITexture Texture { get; private set; }
+		public int Height { get; private set; }
 		readonly Dictionary<string, ImmutablePalette> palettes = new Dictionary<string, ImmutablePalette>();
 		readonly Dictionary<string, MutablePalette> modifiablePalettes = new Dictionary<string, MutablePalette>();
 		readonly IReadOnlyDictionary<string, MutablePalette> readOnlyModifiablePalettes;
 		readonly Dictionary<string, int> indices = new Dictionary<string, int>();
-		readonly uint[,] buffer = new uint[Palette.Size, MaxPalettes];
+		byte[] buffer = new byte[0];
 
 		public HardwarePalette()
 		{
 			Texture = Game.Renderer.Device.CreateTexture();
 			readOnlyModifiablePalettes = modifiablePalettes.AsReadOnly();
+		}
+
+		public bool Contains(string name)
+		{
+			return modifiablePalettes.ContainsKey(name) || palettes.ContainsKey(name);
 		}
 
 		public IPalette GetPalette(string name)
@@ -52,14 +56,19 @@ namespace OpenRA.Graphics
 
 		public void AddPalette(string name, ImmutablePalette p, bool allowModifiers)
 		{
-			if (palettes.Count >= MaxPalettes)
-				throw new InvalidOperationException("Limit of {0} palettes reached. Cannot add {1}.".F(MaxPalettes, name));
 			if (palettes.ContainsKey(name))
 				throw new InvalidOperationException("Palette {0} has already been defined".F(name));
 
 			int index = palettes.Count;
 			indices.Add(name, index);
 			palettes.Add(name, p);
+
+			if (palettes.Count > Height)
+			{
+				Height = Exts.NextPowerOf2(palettes.Count);
+				Array.Resize(ref buffer, Height * Palette.Size * 4);
+			}
+
 			if (allowModifiers)
 				modifiablePalettes.Add(name, new MutablePalette(p));
 			else
@@ -74,25 +83,29 @@ namespace OpenRA.Graphics
 				CopyPaletteToBuffer(indices[name], palettes[name] = new ImmutablePalette(p));
 			else
 				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
-			Texture.SetData(buffer);
+			CopyBufferToTexture();
 		}
 
 		public void Initialize()
 		{
 			CopyModifiablePalettesToBuffer();
-			Texture.SetData(buffer);
+			CopyBufferToTexture();
 		}
 
 		void CopyPaletteToBuffer(int index, IPalette p)
 		{
-			for (var i = 0; i < Palette.Size; i++)
-				buffer[i, index] = p[i];
+			p.CopyToArray(buffer, index * Palette.Size);
 		}
 
 		void CopyModifiablePalettesToBuffer()
 		{
 			foreach (var kvp in modifiablePalettes)
 				CopyPaletteToBuffer(indices[kvp.Key], kvp.Value);
+		}
+
+		void CopyBufferToTexture()
+		{
+			Texture.SetData(buffer, Palette.Size, Height);
 		}
 
 		public void ApplyModifiers(IEnumerable<IPaletteModifier> paletteMods)
@@ -102,16 +115,20 @@ namespace OpenRA.Graphics
 
 			// Update our texture with the changes.
 			CopyModifiablePalettesToBuffer();
-			Texture.SetData(buffer);
+			CopyBufferToTexture();
 
 			// Reset modified palettes back to their original colors, ready for next time.
 			foreach (var kvp in modifiablePalettes)
 			{
 				var originalPalette = palettes[kvp.Key];
 				var modifiedPalette = kvp.Value;
-				for (var i = 0; i < Palette.Size; i++)
-					modifiedPalette[i] = originalPalette[i];
+				modifiedPalette.SetFromPalette(originalPalette);
 			}
+		}
+
+		public void Dispose()
+		{
+			Texture.Dispose();
 		}
 	}
 }

@@ -1,0 +1,108 @@
+Container@SKIRMISH_STATS:
+	Height: PARENT_BOTTOM
+	Width: PARENT_RIGHT
+	Logic: GameInfoStatsLogic
+	Children:
+		Label@MISSION:
+			X: 20
+			Y: 20
+			Width: 482
+			Height: 25
+			Font: MediumBold
+			Text: Mission:
+		Label@STATS_STATUS:
+			X: 100
+			Y: 20
+			Width: PARENT_RIGHT - 10
+			Height: 25
+			Font: MediumBold
+		Checkbox@STATS_CHECKBOX:
+			X: 20
+			Y: 55
+			Width: 482
+			Height: 20
+			Font: Bold
+			Text: Destroy all opposition!
+			Disabled: yes
+			TextColorDisabled: 255,255,255
+		Container@STATS_HEADERS:
+			X: 22
+			Y: 80
+			Width: 393
+			Children:
+				Label@NAME:
+					X: 10
+					Width: 150
+					Height: 25
+					Text: Player
+					Font: Bold
+				Label@RACE:
+					X: 150
+					Width: 80
+					Height: 25
+					Text: Faction
+					Font: Bold
+					Align: Center
+				Label@STANCE:
+					X: 260
+					Width: 50
+					Height: 25
+					Text: Team
+					Font: Bold
+					Align: Center
+				Label@KILLS:
+					X: 310
+					Width: 70
+					Height: 25
+					Text: Kills
+					Font: Bold
+					Align: Center
+				Label@DEATHS:
+					X: 380
+					Width: 70
+					Height: 25
+					Text: Deaths
+					Font: Bold
+					Align: Center
+		ScrollPanel@PLAYER_LIST:
+			X: 20
+			Y: 105
+			Width: 482
+			Height: 265
+			ItemSpacing: 5
+			Children:
+				Container@PLAYER_TEMPLATE:
+					Width: PARENT_RIGHT-27
+					Height: 25
+					X: 2
+					Y: 0
+					Children:
+						Label@NAME:
+							X: 10
+							Width: 150
+							Height: 25
+						Image@FACTIONFLAG:
+							X: 159
+							Y: 6
+							Width: 32
+							Height: 16
+						Label@FACTION:
+							X: 195
+							Width: 65
+							Height: 25
+						Label@TEAM:
+							X: 260
+							Width: 50
+							Height: 25
+							Align: Center
+						Label@KILLS:
+							X: 310
+							Width: 70
+							Height: 25
+							Align: Center
+						Label@DEATHS:
+							X: 380
+							Width: 70
+							Height: 25
+							Align: Center
+

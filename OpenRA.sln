@@ -9,10 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.Cnc", "OpenRA.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Editor", "OpenRA.Editor\OpenRA.Editor.csproj", "{00038B75-405B-44F5-8691-BD2546DBE224}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.TilesetBuilder", "OpenRA.TilesetBuilder\OpenRA.TilesetBuilder.csproj", "{1A8E50CC-EE32-4E57-8842-0C39C8EA7541}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Lint", "OpenRA.Lint\OpenRA.Lint.csproj", "{F9FA4D9F-2302-470A-8A07-6E37F488C124}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Utility", "OpenRA.Utility\OpenRA.Utility.csproj", "{F33337BE-CB69-4B24-850F-07D23E408DDF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Renderer.Null", "OpenRA.Renderer.Null\OpenRA.Renderer.Null.csproj", "{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}"
@@ -21,25 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.D2k", "OpenRA.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.TS", "OpenRA.Mods.TS\OpenRA.Mods.TS.csproj", "{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Irc", "OpenRA.Irc\OpenRA.Irc.csproj", "{85B48234-8B31-4BE6-AF9C-665CC6866841}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Renderer.Sdl2", "OpenRA.Renderer.Sdl2\OpenRA.Renderer.Sdl2.csproj", "{33D03738-C154-4028-8EA8-63A3C488A651}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common Lua scripts", "Common Lua scripts", "{FCA943AB-E622-415E-8A61-639D97F62EEC}"
-	ProjectSection(SolutionItems) = preProject
-		mods\common\lua\actor.lua = mods\common\lua\actor.lua
-		mods\common\lua\facing.lua = mods\common\lua\facing.lua
-		mods\common\lua\map.lua = mods\common\lua\map.lua
-		mods\common\lua\media.lua = mods\common\lua\media.lua
-		mods\common\lua\mission.lua = mods\common\lua\mission.lua
-		mods\common\lua\openra.lua = mods\common\lua\openra.lua
-		mods\common\lua\production.lua = mods\common\lua\production.lua
-		mods\common\lua\reinforcements.lua = mods\common\lua\reinforcements.lua
-		mods\common\lua\rules.lua = mods\common\lua\rules.lua
-		mods\common\lua\supportpowers.lua = mods\common\lua\supportpowers.lua
-		mods\common\lua\team.lua = mods\common\lua\team.lua
-		mods\common\lua\utils.lua = mods\common\lua\utils.lua
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.Common", "OpenRA.Mods.Common\OpenRA.Mods.Common.csproj", "{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts", "Tiberian Dawn Lua scripts", "{62FCD0D0-6D24-435D-9DD8-3CCADCF7ECAB}"
 	ProjectSection(SolutionItems) = preProject
@@ -49,18 +29,36 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts",
 		mods\cnc\maps\gdi04a\gdi04a.lua = mods\cnc\maps\gdi04a\gdi04a.lua
 		mods\cnc\maps\gdi04b\gdi04b.lua = mods\cnc\maps\gdi04b\gdi04b.lua
 		mods\cnc\maps\gdi04c\gdi04c.lua = mods\cnc\maps\gdi04c\gdi04c.lua
+		mods\cnc\maps\gdi05a\gdi05a.lua = mods\cnc\maps\gdi05a\gdi05a.lua
+		mods\cnc\maps\gdi05b\gdi05b.lua = mods\cnc\maps\gdi05b\gdi05b.lua
 		mods\cnc\maps\nod01\nod01.lua = mods\cnc\maps\nod01\nod01.lua
+		mods\cnc\maps\nod02a\nod02a.lua = mods\cnc\maps\nod02a\nod02a.lua
+		mods\cnc\maps\nod02b\nod02b.lua = mods\cnc\maps\nod02b\nod02b.lua
 		mods\cnc\maps\nod03a\nod03a.lua = mods\cnc\maps\nod03a\nod03a.lua
 		mods\cnc\maps\nod03b\nod03b.lua = mods\cnc\maps\nod03b\nod03b.lua
+		mods\cnc\maps\nod04a\nod04a.lua = mods\cnc\maps\nod04a\nod04a.lua
+		mods\cnc\maps\nod04b\nod04b.lua = mods\cnc\maps\nod04b\nod04b.lua
+		mods\cnc\maps\nod05\nod05.lua = mods\cnc\maps\nod05\nod05.lua
+		mods\cnc\maps\funpark01\scj01ea.lua = mods\cnc\maps\funpark01\scj01ea.lua
+		mods\cnc\maps\nod06a\nod06a.lua = mods\cnc\maps\nod06a\nod06a.lua
 		mods\cnc\maps\shellmap\shellmap.lua = mods\cnc\maps\shellmap\shellmap.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Red Alert Lua scripts", "{B35D533F-BEB6-4674-A466-324EEFD97259}"
 	ProjectSection(SolutionItems) = preProject
-		mods\ra\maps\allies-01-classic\allies01.lua = mods\ra\maps\allies-01-classic\allies01.lua
-		mods\ra\maps\allies-02-classic\allies02.lua = mods\ra\maps\allies-02-classic\allies02.lua
+		mods\ra\maps\allies-01\allies01.lua = mods\ra\maps\allies-01\allies01.lua
+		mods\ra\maps\allies-02\allies02.lua = mods\ra\maps\allies-02\allies02.lua
+		mods\ra\maps\allies-03a\allies03a.lua = mods\ra\maps\allies-03a\allies03a.lua
+		mods\ra\maps\allies-03b\allies03b.lua = mods\ra\maps\allies-03b\allies03b.lua
+		mods\ra\maps\allies-05a\AI.lua = mods\ra\maps\allies-05a\AI.lua
+		mods\ra\maps\allies-05a\allies05a.lua = mods\ra\maps\allies-05a\allies05a.lua
+		mods\ra\maps\soviet-01\soviet01.lua = mods\ra\maps\soviet-01\soviet01.lua
 		mods\ra\maps\desert-shellmap\desert-shellmap.lua = mods\ra\maps\desert-shellmap\desert-shellmap.lua
+		mods\ra\maps\intervention\intervention.lua = mods\ra\maps\intervention\intervention.lua
 		mods\ra\maps\fort-lonestar\fort-lonestar.lua = mods\ra\maps\fort-lonestar\fort-lonestar.lua
+		mods\ra\maps\monster-tank-madness\monster-tank-madness.lua = mods\ra\maps\monster-tank-madness\monster-tank-madness.lua
+		mods\ra\maps\survival01\survival01.lua = mods\ra\maps\survival01\survival01.lua
+		mods\ra\maps\survival02\survival02.lua = mods\ra\maps\survival02\survival02.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "System Lua scripts", "{A4D6AEA4-8009-4256-903B-8D227E50452B}"
@@ -70,7 +68,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "Syste
 		lua\stacktraceplus.lua = lua\stacktraceplus.lua
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.CrashDialog", "OpenRA.CrashDialog\OpenRA.CrashDialog.csproj", "{47F1B0EE-EB35-47F2-93E4-273C70909157}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.GameMonitor", "OpenRA.GameMonitor\OpenRA.GameMonitor.csproj", "{68295755-7902-4602-AC2C-9A8AC36D5EF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Test", "OpenRA.Test\OpenRA.Test.csproj", "{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,16 +79,14 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Debug|x86.ActiveCfg = Debug|x86
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Debug|x86.Build.0 = Debug|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Debug|x86.ActiveCfg = Debug|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Debug|x86.Build.0 = Debug|x86
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Debug|x86.ActiveCfg = Debug|x86
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Debug|x86.Build.0 = Debug|x86
 		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Debug|x86.ActiveCfg = Debug|x86
 		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Debug|x86.Build.0 = Debug|x86
 		{00038B75-405B-44F5-8691-BD2546DBE224}.Debug|x86.ActiveCfg = Debug|x86
 		{00038B75-405B-44F5-8691-BD2546DBE224}.Debug|x86.Build.0 = Debug|x86
-		{1A8E50CC-EE32-4E57-8842-0C39C8EA7541}.Debug|x86.ActiveCfg = Debug|x86
-		{1A8E50CC-EE32-4E57-8842-0C39C8EA7541}.Debug|x86.Build.0 = Debug|x86
-		{F9FA4D9F-2302-470A-8A07-6E37F488C124}.Debug|x86.ActiveCfg = Debug|x86
-		{F9FA4D9F-2302-470A-8A07-6E37F488C124}.Debug|x86.Build.0 = Debug|x86
 		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Debug|x86.ActiveCfg = Debug|x86
 		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Debug|x86.Build.0 = Debug|x86
 		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Debug|x86.ActiveCfg = Debug|x86
@@ -97,12 +95,12 @@ Global
 		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Debug|x86.Build.0 = Debug|x86
 		{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}.Debug|x86.ActiveCfg = Debug|x86
 		{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}.Debug|x86.Build.0 = Debug|x86
-		{85B48234-8B31-4BE6-AF9C-665CC6866841}.Debug|x86.ActiveCfg = Debug|x86
-		{85B48234-8B31-4BE6-AF9C-665CC6866841}.Debug|x86.Build.0 = Debug|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.ActiveCfg = Debug|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.Build.0 = Debug|x86
-		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Debug|x86.ActiveCfg = Debug|x86
-		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Debug|x86.Build.0 = Debug|x86
+		{68295755-7902-4602-AC2C-9A8AC36D5EF7}.Debug|x86.ActiveCfg = Debug|x86
+		{68295755-7902-4602-AC2C-9A8AC36D5EF7}.Debug|x86.Build.0 = Debug|x86
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Debug|x86.ActiveCfg = Debug|x86
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Debug|x86.Build.0 = Debug|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

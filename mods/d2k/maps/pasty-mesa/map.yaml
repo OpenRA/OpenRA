@@ -1,0 +1,104 @@
+MapFormat: 7
+
+RequiresMod: d2k
+
+Title: Pasty Mesa
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 56,56
+
+Bounds: 4,4,48,48
+
+Visibility: Lobby
+
+Type: Conquest
+
+Videos:
+
+Options:
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: atreides
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: atreides
+		Enemies: Multi0, Multi1
+
+Actors:
+	Actor2: spicebloom
+		Location: 7,18
+		Owner: Neutral
+	Actor4: spicebloom
+		Location: 27,6
+		Owner: Neutral
+	Actor8: spicebloom
+		Location: 34,38
+		Owner: Neutral
+	Actor5: spicebloom
+		Location: 49,26
+		Owner: Neutral
+	Actor1: mpspawn
+		Location: 18,34
+		Owner: Neutral
+	Actor0: mpspawn
+		Location: 45,12
+		Owner: Neutral
+	Actor6: spicebloom
+		Location: 6,42
+		Owner: Neutral
+	Actor7: spicebloom
+		Location: 25,49
+		Owner: Neutral
+	Actor3: spicebloom
+		Location: 30,15
+		Owner: Neutral
+	Actor9: wormspawner
+		Location: 36,51
+		Owner: Creeps
+	Actor10: wormspawner
+		Location: 4,51
+		Owner: Creeps
+	Actor11: wormspawner
+		Location: 21,4
+		Owner: Creeps
+	Actor12: wormspawner
+		Location: 4,4
+		Owner: Creeps
+
+Smudges:
+
+Rules:
+	World:
+		WormManager:
+			Minimum: 1
+			Maximum: 2
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:

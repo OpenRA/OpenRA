@@ -2,9 +2,9 @@ SS:
 	Inherits: ^Ship
 	Buildable:
 		Queue: Ship
-		BuildPaletteOrder: 50
+		BuildAtProductionType: Submarine
+		BuildPaletteOrder: 30
 		Prerequisites: ~spen, ~techlevel.medium
-		Hotkey: u
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -38,7 +38,6 @@ SS:
 	Selectable:
 		Bounds: 38,38
 	Chronoshiftable:
-	IronCurtainable:
 	RepairableNear:
 	AutoTarget:
 		InitialStance: ReturnFire
@@ -49,14 +48,15 @@ SS:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
+	-MustBeDestroyed:
 
 MSUB:
 	Inherits: ^Ship
 	Buildable:
 		Queue: Ship
+		BuildAtProductionType: Submarine
 		BuildPaletteOrder: 60
 		Prerequisites: ~spen, stek, ~techlevel.unrestricted
-		Hotkey: m
 	Valued:
 		Cost: 2400
 	Tooltip:
@@ -90,7 +90,6 @@ MSUB:
 	Selectable:
 		Bounds: 44,44
 	Chronoshiftable:
-	IronCurtainable:
 	RepairableNear:
 	AutoTarget:
 		InitialStance: ReturnFire
@@ -101,14 +100,15 @@ MSUB:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
+	-MustBeDestroyed:
 
 DD:
 	Inherits: ^Ship
 	Buildable:
 		Queue: Ship
-		BuildPaletteOrder: 70
+		BuildAtProductionType: Boat
+		BuildPaletteOrder: 40
 		Prerequisites: ~syrd, dome, ~techlevel.medium
-		Hotkey: r
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -134,6 +134,10 @@ DD:
 		Weapon: DepthCharge
 		LocalOffset: 0,-100,0, 0,100,0
 		LocalYaw: 80, -80
+	Armament@TERTIARY:
+		Weapon: StingerAA
+		LocalOffset: 0,-100,0, 0,100,0
+		LocalYaw: 64, -64
 	AttackTurreted:
 	Selectable:
 		Bounds: 38,38
@@ -141,7 +145,6 @@ DD:
 	WithTurret:
 	AutoTarget:
 	Chronoshiftable:
-	IronCurtainable:
 	RepairableNear:
 	DetectCloaked:
 		CloakTypes: Underwater
@@ -155,9 +158,9 @@ CA:
 	Inherits: ^Ship
 	Buildable:
 		Queue: Ship
-		BuildPaletteOrder: 100
+		BuildAtProductionType: Boat
+		BuildPaletteOrder: 50
 		Prerequisites: ~syrd, atek, ~techlevel.unrestricted
-		Hotkey: c
 	Valued:
 		Cost: 2400
 	Tooltip:
@@ -206,7 +209,6 @@ CA:
 		Turret: secondary
 	AutoTarget:
 	Chronoshiftable:
-	IronCurtainable:
 	RepairableNear:
 	Explodes:
 		Weapon: UnitExplodeShip
@@ -216,9 +218,8 @@ LST:
 	Inherits: ^Ship
 	Buildable:
 		Queue: Ship
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 10
 		Prerequisites: ~techlevel.low
-		Hotkey: t
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -239,7 +240,7 @@ LST:
 		Types: Infantry, Vehicle
 		MaxWeight: 5
 		PipCount: 5
-	IronCurtainable:
+		PassengerFacing: 0
 	RepairableNear:
 	Explodes:
 		Weapon: UnitExplodeShip
@@ -249,9 +250,9 @@ PT:
 	Inherits: ^Ship
 	Buildable:
 		Queue: Ship
-		BuildPaletteOrder: 50
+		BuildAtProductionType: Boat
+		BuildPaletteOrder: 20
 		Prerequisites: ~syrd, ~techlevel.medium
-		Hotkey: b
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -285,7 +286,6 @@ PT:
 	WithTurret:
 	AutoTarget:
 	Chronoshiftable:
-	IronCurtainable:
 	RepairableNear:
 	DetectCloaked:
 		CloakTypes: Underwater

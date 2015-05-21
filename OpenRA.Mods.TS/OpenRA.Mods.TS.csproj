@@ -19,6 +19,7 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="AfterBuild" command="cp ${TargetFile} ../mods/ts" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp ${TargetFile}.mdb ../mods/ts" workingdir="${ProjectDir}" />
       </CustomCommands>
     </CustomCommands>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -27,11 +28,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="Eluant">
-      <HintPath>..\thirdparty\Eluant.dll</HintPath>
+      <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -39,18 +40,23 @@
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
       <Name>OpenRA.Game</Name>
+      <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\OpenRA.Mods.RA\OpenRA.Mods.RA.csproj">
-      <Project>{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}</Project>
-      <Name>OpenRA.Mods.RA</Name>
+    <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
+      <Project>{fe6c8cc0-2f07-442a-b29f-17617b3b7fc6}</Project>
+      <Name>OpenRA.Mods.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ShroudPalette.cs" />
     <Compile Include="Activities\VoxelHarvesterDockSequence.cs" />
-    <Compile Include="TiberianSunRefinery.cs" />
-    <Compile Include="Render\WithVoxelWalkerBody.cs" />
-    <Compile Include="Render\WithVoxelUnloadBody.cs" />
+    <Compile Include="SpriteLoaders\TmpTSLoader.cs" />
+    <Compile Include="Traits\Buildings\TiberianSunRefinery.cs" />
+    <Compile Include="Traits\Render\WithVoxelWalkerBody.cs" />
+    <Compile Include="Traits\Render\WithVoxelUnloadBody.cs" />
+    <Compile Include="Traits\Render\WithVoxelWaterBody.cs" />
+    <Compile Include="UtilityCommands\LegacyTilesetImporter.cs" />
+    <Compile Include="Traits\World\TSShroudPalette.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,7 +1,7 @@
 BADR:
+	Inherits: ^Plane
 	ParaDrop:
 		DropRange: 4c0
-	Inherits: ^Plane
 	Health:
 		HP: 300
 	Armor:
@@ -9,9 +9,8 @@ BADR:
 	Plane:
 		ROT: 5
 		Speed: 149
+		Repulsable: False
 	RenderUnit:
-	WithShadow:
-	IronCurtainable:
 	Cargo:
 		MaxWeight: 10
 	-Selectable:
@@ -33,12 +32,13 @@ BADR:
 	-EjectOnDeath:
 	-GpsDot:
 	RejectsOrders:
+	-AnnounceOnSeen:
 
 BADR.Bomber:
+	Inherits: ^Plane
 	AttackBomber:
 	Armament:
 		Weapon: ParaBomb
-	Inherits: ^Plane
 	Health:
 		HP: 300
 	Armor:
@@ -46,12 +46,11 @@ BADR.Bomber:
 	Plane:
 		ROT: 5
 		Speed: 149
-	LimitedAmmo:
+		Repulsable: False
+	AmmoPool:
 		Ammo: 7
 	RenderUnit:
 		Image: badr
-	WithShadow:
-	IronCurtainable:
 	-Selectable:
 	-GainsExperience:
 	Tooltip:
@@ -75,10 +74,10 @@ BADR.Bomber:
 MIG:
 	Inherits: ^Plane
 	Buildable:
-		Queue: Plane
-		BuildPaletteOrder: 100
-		Prerequisites: afld, stek, ~techlevel.unrestricted
-		Hotkey: m
+		Queue: Aircraft
+		BuildAtProductionType: Plane
+		BuildPaletteOrder: 50
+		Prerequisites: ~afld, stek, ~techlevel.unrestricted
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -98,19 +97,18 @@ MIG:
 		FacingTolerance: 20
 	Plane:
 		InitialFacing: 192
-		ROT: 5
-		Speed: 186
+		ROT: 4
+		Speed: 223
 		RearmBuildings: afld
+		RepulsionSpeed: 40
 	AutoTarget:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
 		EnableStances: false
 	RenderUnit:
 		CameraPitch: 99
-	WithShadow:
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 8
-	IronCurtainable:
 	ReturnOnIdle:
 	Selectable:
 		Bounds: 40,29,0,1
@@ -127,12 +125,12 @@ MIG:
 YAK:
 	Inherits: ^Plane
 	Buildable:
-		Queue: Plane
-		BuildPaletteOrder: 50
-		Prerequisites: afld, ~techlevel.medium
-		Hotkey: y
+		Queue: Aircraft
+		BuildAtProductionType: Plane
+		BuildPaletteOrder: 30
+		Prerequisites: ~afld, ~techlevel.medium
 	Valued:
-		Cost: 1000
+		Cost: 1350
 	Tooltip:
 		Name: Yak Attack Plane
 		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings
@@ -156,20 +154,19 @@ YAK:
 	Plane:
 		RearmBuildings: afld
 		InitialFacing: 192
-		ROT: 5
-		Speed: 149
+		ROT: 4
+		Speed: 178
+		RepulsionSpeed: 40
 	AutoTarget:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
 		EnableStances: false
 	RenderUnit:
 		CameraPitch: 99
-	WithShadow:
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 18
 		PipCount: 6
 		ReloadTicks: 11
-	IronCurtainable:
 	ReturnOnIdle:
 	Selectable:
 		Bounds: 30,28,0,2
@@ -185,10 +182,10 @@ YAK:
 TRAN:
 	Inherits: ^Helicopter
 	Buildable:
-		Queue: Helicopter
-		BuildPaletteOrder: 80
-		Prerequisites: hpad, ~techlevel.medium
-		Hotkey: t
+		Queue: Aircraft
+		BuildAtProductionType: Helicopter
+		BuildPaletteOrder: 10
+		Prerequisites: ~hpad, ~techlevel.medium
 	Valued:
 		Cost: 900
 	Tooltip:
@@ -201,6 +198,7 @@ TRAN:
 	RevealsShroud:
 		Range: 12c0
 	Helicopter:
+		CruiseAltitude: 1024
 		RearmBuildings: hpad
 		InitialFacing: 0
 		ROT: 5
@@ -213,31 +211,28 @@ TRAN:
 		Sequence: rotor2
 		GroundSequence: slow-rotor2
 	WithRotor@SECONDARY:
-		Id: rotor_2
 		Offset: 597,0,213
-	WithShadow:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 8
 		PipCount: 8
-	IronCurtainable:
 	LeavesHusk:
 		HuskActor: TRAN.Husk
 
 HELI:
 	Inherits: ^Helicopter
 	Buildable:
-		Queue: Helicopter
-		BuildPaletteOrder: 90
-		Prerequisites: hpad, atek, ~techlevel.unrestricted
-		Hotkey: l
+		Queue: Aircraft
+		BuildAtProductionType: Helicopter
+		BuildPaletteOrder: 40
+		Prerequisites: ~hpad, atek, ~techlevel.unrestricted
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Longbow
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Tanks\n  Weak vs Infantry
 	Health:
-		HP: 150
+		HP: 120
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -251,22 +246,19 @@ HELI:
 	AttackHeli:
 		FacingTolerance: 20
 	Helicopter:
+		CruiseAltitude: 1024
 		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
 		Speed: 149
 	AutoTarget:
-		TargetWhenIdle: false
-		TargetWhenDamaged: false
-		EnableStances: false
+		InitialStance: HoldFire
 	RenderUnit:
 	WithRotor:
 		Offset: 0,0,85
-	WithShadow:
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 8
-	IronCurtainable:
 	Selectable:
 		Bounds: 36,28,0,0
 	LeavesHusk:
@@ -277,17 +269,17 @@ HELI:
 HIND:
 	Inherits: ^Helicopter
 	Buildable:
-		Queue: Helicopter
-		BuildPaletteOrder: 90
-		Prerequisites: hpad, ~techlevel.medium
-		Hotkey: h
+		Queue: Aircraft
+		BuildAtProductionType: Helicopter
+		BuildPaletteOrder: 20
+		Prerequisites: ~hpad, ~techlevel.medium
 	Valued:
-		Cost: 1000
+		Cost: 1350
 	Tooltip:
 		Name: Hind
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
 	Health:
-		HP: 150
+		HP: 100
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -304,23 +296,20 @@ HIND:
 	AttackHeli:
 		FacingTolerance: 20
 	Helicopter:
+		CruiseAltitude: 1024
 		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
 		Speed: 112
 	AutoTarget:
-		TargetWhenIdle: false
-		TargetWhenDamaged: false
-		EnableStances: false
+		InitialStance: HoldFire
 	RenderUnit:
 	WithRotor:
-	WithShadow:
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 24
 		PipCount: 6
 		ReloadTicks: 8
-	IronCurtainable:
 	Selectable:
 		Bounds: 38,32,0,0
 	WithMuzzleFlash:
@@ -338,11 +327,12 @@ U2:
 	Plane:
 		ROT: 7
 		Speed: 373
+		Repulsable: False
+		MaximumPitch: 56
 	RenderUnit:
-	WithShadow:
-	IronCurtainable:
 	AttackBomber:
 	-Selectable:
+	-TargetableAircraft:
 	-GainsExperience:
 	Contrail@1:
 		Offset: -725,683,0
@@ -354,4 +344,5 @@ U2:
 		Offset: -1c43,0,0
 		Interval: 2
 	RejectsOrders:
+	-AnnounceOnSeen:
 

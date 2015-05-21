@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -16,13 +16,34 @@ using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Renderer.Sdl2
 {
-	public class Texture : ITexture
+	public sealed class Texture : ITexture
 	{
 		int texture;
+		TextureScaleFilter scaleFilter;
+		Size size;
+
 		public int ID { get { return texture; } }
 
-		Size size;
 		public Size Size { get { return size; } }
+
+		bool disposed;
+
+		public TextureScaleFilter ScaleFilter
+		{
+			get
+			{
+				return scaleFilter;
+			}
+
+			set
+			{
+				if (scaleFilter == value)
+					return;
+
+				scaleFilter = value;
+				PrepareTexture();
+			}
+		}
 
 		public Texture()
 		{
@@ -37,17 +58,16 @@ namespace OpenRA.Renderer.Sdl2
 			SetData(bitmap);
 		}
 
-		void FinalizeInner() { GL.DeleteTextures(1, ref texture); }
-		~Texture() { Game.RunAfterTick(FinalizeInner); }
-
 		void PrepareTexture()
 		{
 			ErrorHandler.CheckGlError();
 			GL.BindTexture(TextureTarget.Texture2D, texture);
 			ErrorHandler.CheckGlError();
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMinFilter.Nearest);
+
+			var filter = scaleFilter == TextureScaleFilter.Linear ? (int)TextureMinFilter.Linear : (int)TextureMinFilter.Nearest;
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, filter);
 			ErrorHandler.CheckGlError();
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, filter);
 			ErrorHandler.CheckGlError();
 
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (float)TextureWrapMode.ClampToEdge);
@@ -111,6 +131,7 @@ namespace OpenRA.Renderer.Sdl2
 				bitmap = new Bitmap(bitmap, bitmap.Size.NextPowerOf2());
 				allocatedBitmap = true;
 			}
+
 			try
 			{
 				size = new Size(bitmap.Width, bitmap.Height);
@@ -159,6 +180,25 @@ namespace OpenRA.Renderer.Sdl2
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, width, height,
 				0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);
 			ErrorHandler.CheckGlError();
+		}
+
+		~Texture()
+		{
+			Game.RunAfterTick(() => Dispose(false));
+		}
+
+		public void Dispose()
+		{
+			Game.RunAfterTick(() => Dispose(true));
+			GC.SuppressFinalize(this);
+		}
+
+		void Dispose(bool disposing)
+		{
+			if (disposed)
+				return;
+			disposed = true;
+			GL.DeleteTextures(1, ref texture);
 		}
 	}
 }

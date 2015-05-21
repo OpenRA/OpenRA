@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -26,12 +26,12 @@ namespace OpenRA.Editor
 
 		public void Apply(Surface surface)
 		{
-			if (surface.Map.Actors.Value.Any(a => a.Value.Location() == surface.GetBrushLocation()))
+			if (surface.Actors.Any(a => a.Value.Location() == surface.GetBrushLocation()))
 				return;
 
 			var owner = surface.NewActorOwner;
 			var id = NextActorName(surface);
-			surface.Map.Actors.Value[id] = new ActorReference(actorTemplate.Info.Name.ToLowerInvariant())
+			surface.Actors[id] = new ActorReference(actorTemplate.Info.Name.ToLowerInvariant())
 			{
 				new LocationInit(surface.GetBrushLocation()),
 				new OwnerInit(owner)
@@ -44,7 +44,7 @@ namespace OpenRA.Editor
 			for (;;)
 			{
 				var possible = "Actor{0}".F(id++);
-				if (!surface.Map.Actors.Value.ContainsKey(possible)) return possible;
+				if (!surface.Actors.ContainsKey(possible)) return possible;
 			}
 		}
 	}

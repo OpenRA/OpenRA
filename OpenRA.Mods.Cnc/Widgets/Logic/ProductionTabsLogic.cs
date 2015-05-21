@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,13 +9,14 @@
 #endregion
 
 using System;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
 	public class ProductionTabsLogic
 	{
-		ProductionTabsWidget tabs;
+		readonly ProductionTabsWidget tabs;
 		readonly World world;
 
 		void SetupProductionGroupButton(ProductionTypeButtonWidget button)
@@ -28,13 +29,25 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				if (tabs.QueueGroup == button.ProductionGroup)
 					tabs.SelectNextTab(reverse);
 				else
-				tabs.QueueGroup = button.ProductionGroup;
+					tabs.QueueGroup = button.ProductionGroup;
+
+				tabs.PickUpCompletedBuilding();
 			};
+
+			Func<ButtonWidget, Hotkey> getKey = _ => Hotkey.Invalid;
+			if (!string.IsNullOrEmpty(button.HotkeyName))
+			{
+				var ks = Game.Settings.Keys;
+				var field = ks.GetType().GetField(button.HotkeyName);
+				if (field != null)
+					getKey = _ => (Hotkey)field.GetValue(ks);
+			}
 
 			button.IsDisabled = () => tabs.Groups[button.ProductionGroup].Tabs.Count == 0;
 			button.OnMouseUp = mi => selectTab(mi.Modifiers.HasModifier(Modifiers.Shift));
 			button.OnKeyPress = e => selectTab(e.Modifiers.HasModifier(Modifiers.Shift));
 			button.IsHighlighted = () => tabs.QueueGroup == button.ProductionGroup;
+			button.GetKey = getKey;
 
 			var chromeName = button.ProductionGroup.ToLowerInvariant();
 			var icon = button.Get<ImageWidget>("ICON");
@@ -54,6 +67,34 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var typesContainer = Ui.Root.Get(tabs.TypesContainer);
 			foreach (var i in typesContainer.Children)
 				SetupProductionGroupButton(i as ProductionTypeButtonWidget);
+
+			var background = Ui.Root.GetOrNull(tabs.BackgroundContainer);
+			if (background != null)
+			{
+				var palette = tabs.Parent.Get<ProductionPaletteWidget>(tabs.PaletteWidget);
+				var icontemplate = background.Get("ICON_TEMPLATE");
+
+				Action<int, int> updateBackground = (oldCount, newCount) =>
+				{
+					background.RemoveChildren();
+
+					for (var i = 0; i < newCount; i++)
+					{
+						var x = i % palette.Columns;
+						var y = i / palette.Columns;
+
+						var bg = icontemplate.Clone();
+						bg.Bounds.X = palette.IconSize.X * x;
+						bg.Bounds.Y = palette.IconSize.Y * y;
+						background.AddChild(bg);
+					}
+				};
+
+				palette.OnIconCountChanged += updateBackground;
+
+				// Set the initial palette state
+				updateBackground(0, 0);
+			}
 		}
 
 		void UnregisterEvents()

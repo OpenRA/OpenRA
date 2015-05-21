@@ -4,8 +4,11 @@ hard work of many contributors.
 The OpenRA developers are:
     * Chris Forbes (chrisf)
     * Curtis Shmyr (hamb)
+    * Igor Popov (ihptru)
     * Matthias Mailänder (Mailaender)
+    * Oliver Brakmann (obrakmann)
     * Paul Chote (pchote)
+    * ScottNZ
 
 Previous developers included:
     * Alli Witheford (alzeih)
@@ -14,33 +17,48 @@ Previous developers included:
     * Megan Bowra-Dean (beedee)
     * Mike Bundy (kehaar)
     * Robert Pepperell (ytinasni)
-    * ScottNZ
 
 Also thanks to:
     * Adam Valy (Tschokky)
     * Akseli Virtanen (RAGEQUIT)
+    * Alexander Fast (mizipzor)
     * Allen262
     * Andrew Aldridge (i80and)
     * Andrew Perkins
     * Andrew Riedi
     * Andreas Beck (baxtor)
+    * Ang Soon Li (asl97)
+    * Arik Lirette (Angusm3)
     * Barnaby Smith (mvi)
     * Bellator
     * Braxton Williams (Buddytex)
     * Bugra Cuhadaroglu (BugraC)
     * Christer Ulfsparre (Holloweye)
+    * Chris Grant (Unit158)
     * Cody Brittain (Generalcamo)
     * D2k Sardaukar
     * Daniel Derejvanik (Harisson)
     * Danny Keary (Dan9550)
+    * David Jiménez (Rydra)
+    * David Russell (DavidARussell)
+    * DeadlySurprise
     * Erasmus Schroder (rasco)
+    * Eric Bajumpaa (SteelPhase)
     * Fahrradkette
     * Frank Razenberg (zzattack)
     * Gareth Needham (Ripley`)
+    * Glen Anderson (GlenAnderson)
+    * Glenn Martin Jensen (Baxxster)
     * Gordon Martin (Happy0)
-    * Igor Popov (ihptru)
+    * Guido Lipke (LipkeGu)
+    * Huw Pascoe
+    * Ian T. Jacobsen (Smilex)
+    * Imago
     * Iran
+    * Jacob Dufault (jacobdufault)
     * James Dunne (jsd)
+    * Jan-Willem Buurlage (jwbuurlage)
+    * Jason (atlimit8)
     * Jeff Harris (jeff_1amstudios)
     * Jes
     * Joakim Lindberg (booom3)
@@ -50,20 +68,25 @@ Also thanks to:
     * Kyrre Soerensen (zypres)
     * Lawrence Wang
     * Lesueur Benjamin (Valkirie)
+    * Lukas Franke (abcdefg30)
     * Maarten Meuris (Nyerguds)
     * Mark Olson (markolson)
     * Matija Hustic (matija-hustic)
     * Matthew Gatland (mgatland)
     * Matthew Uzzell (MUzzell)
+    * Matthijs Benschop (Nerdie)
     * Max621
     * Max Ugrumov (katzsmile)
+    * Michael Sztolcman (s1w_)
     * Mustafa Alperen Seki (MustaphaTR)
+    * Neil Shivkar (havok13888)
+    * Nooze
     * Nukem
     * Okunev Yu Dmitry (xaionaro)
     * Olaf van der Spek
-    * Oliver Brakmann
     * Paolo Chiodi (paolochiodi)
     * Paul Dovydaitis (pdovy)
+    * Pavel Penev (penev92)
     * Pavlos Touboulidis (pav)
     * Pizzaoverhead
     * Psydev
@@ -74,6 +97,7 @@ Also thanks to:
     * Rikhardur Bjarni Einarsson (WolfGaming)
     * Sascha Biedermann (bidifx)
     * Sebastien Kerguen (xanax)
+    * Shawn Collins (UberWaffe)
     * Simon Verbeke (Saticmotion)
     * Taryn Hill (Phrohdoh)
     * Teemu Nieminen (Temeez)
@@ -84,7 +108,9 @@ Also thanks to:
     * Tristan Mühlbacher (MicroBit)
     * Vladimir Komarov (VrKomarov)
     * Wuschel
-    * Ian T. Jacobsen (Smilex)
+
+Using GNU FreeFont distributed under the GNU GPL
+terms.
 
 Using Simple DirectMedia Layer distributed under
 the terms of the zlib license.
@@ -100,13 +126,6 @@ the Apache 2.0 license.
 Using GeoLite2 data created by MaxMind and
 distributed under the CC BY-SA 3.0 license.
 
-Using KopiLua created by Mark Feldman and
-maintained by Vinicius Jarina and distributed
-under the MIT license.
-
-Using NLua created by Vinicius Jarina and
-distributed under the MIT license.
-
 Using SharpFont created by Robert Rouhani and
 distributed under the MIT license.
 
@@ -115,6 +134,9 @@ MIT license.
 
 Using SDL2# created by Ethan Lee and released
 under the zlib license.
+
+Using Eluant created by Chris Howie and released
+under the MIT license.
 
 Using FuzzyLogicLibrary (fuzzynet) by Dmitry
 Kaluzhny and released under the GNU GPL terms.

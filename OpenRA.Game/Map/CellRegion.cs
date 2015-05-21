@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,8 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using OpenRA.Graphics;
+using System.Linq;
 
 namespace OpenRA
 {
@@ -27,8 +26,8 @@ namespace OpenRA
 
 		// Corners in map coordinates
 		// These will only equal TopLeft and BottomRight for TileShape.Rectangular
-		readonly CPos mapTopLeft;
-		readonly CPos mapBottomRight;
+		readonly MPos mapTopLeft;
+		readonly MPos mapBottomRight;
 
 		public CellRegion(TileShape shape, CPos topLeft, CPos bottomRight)
 		{
@@ -36,29 +35,69 @@ namespace OpenRA
 			TopLeft = topLeft;
 			BottomRight = bottomRight;
 
-			mapTopLeft = Map.CellToMap(shape, TopLeft);
-			mapBottomRight = Map.CellToMap(shape, BottomRight);
+			mapTopLeft = TopLeft.ToMPos(shape);
+			mapBottomRight = BottomRight.ToMPos(shape);
 		}
 
 		/// <summary>Expand the specified region with an additional cordon. This may expand the region outside the map borders.</summary>
 		public static CellRegion Expand(CellRegion region, int cordon)
 		{
-			var offset = new CVec(cordon, cordon);
-			var tl = Map.MapToCell(region.shape, Map.CellToMap(region.shape, region.TopLeft) - offset);
-			var br = Map.MapToCell(region.shape, Map.CellToMap(region.shape, region.BottomRight) + offset);
-
+			var tl = new MPos(region.mapTopLeft.U - cordon, region.mapTopLeft.V - cordon).ToCPos(region.shape);
+			var br = new MPos(region.mapBottomRight.U + cordon, region.mapBottomRight.V + cordon).ToCPos(region.shape);
 			return new CellRegion(region.shape, tl, br);
+		}
+
+		/// <summary>Returns the minimal region that covers at least the specified cells.</summary>
+		public static CellRegion BoundingRegion(TileShape shape, IEnumerable<CPos> cells)
+		{
+			if (cells == null || !cells.Any())
+				throw new ArgumentException("cells must not be null or empty.", "cells");
+
+			var minX = int.MaxValue;
+			var minY = int.MaxValue;
+			var maxX = int.MinValue;
+			var maxY = int.MinValue;
+			foreach (var cell in cells)
+			{
+				if (minX > cell.X)
+					minX = cell.X;
+				if (maxX < cell.X)
+					maxX = cell.X;
+				if (minY > cell.Y)
+					minY = cell.Y;
+				if (maxY < cell.Y)
+					maxY = cell.Y;
+			}
+
+			return new CellRegion(shape, new CPos(minX, minY), new CPos(maxX, maxY));
+		}
+
+		public bool Contains(CellRegion region)
+		{
+			return
+				TopLeft.X <= region.TopLeft.X && TopLeft.Y <= region.TopLeft.Y &&
+				BottomRight.X >= region.BottomRight.X && BottomRight.Y >= region.BottomRight.Y;
 		}
 
 		public bool Contains(CPos cell)
 		{
-			var uv = Map.CellToMap(shape, cell);
-			return uv.X >= mapTopLeft.X && uv.X <= mapBottomRight.X && uv.Y >= mapTopLeft.Y && uv.Y <= mapBottomRight.Y;
+			var uv = cell.ToMPos(shape);
+			return uv.U >= mapTopLeft.U && uv.U <= mapBottomRight.U && uv.V >= mapTopLeft.V && uv.V <= mapBottomRight.V;
 		}
 
-		public IEnumerator<CPos> GetEnumerator()
+		public MapCoordsRegion MapCoords
+		{
+			get { return new MapCoordsRegion(this); }
+		}
+
+		public CellRegionEnumerator GetEnumerator()
 		{
 			return new CellRegionEnumerator(this);
+		}
+
+		IEnumerator<CPos> IEnumerable<CPos>.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
@@ -66,12 +105,15 @@ namespace OpenRA
 			return GetEnumerator();
 		}
 
-		class CellRegionEnumerator : IEnumerator<CPos>
+		public sealed class CellRegionEnumerator : IEnumerator<CPos>
 		{
 			readonly CellRegion r;
 
 			// Current position, in map coordinates
 			int u, v;
+
+			// Current position, in cell coordinates
+			CPos current;
 
 			public CellRegionEnumerator(CellRegion region)
 			{
@@ -84,29 +126,97 @@ namespace OpenRA
 				u += 1;
 
 				// Check for column overflow
-				if (u > r.mapBottomRight.X)
+				if (u > r.mapBottomRight.U)
 				{
 					v += 1;
-					u = r.mapTopLeft.X;
+					u = r.mapTopLeft.U;
 
 					// Check for row overflow
-					if (v > r.mapBottomRight.Y)
+					if (v > r.mapBottomRight.V)
 						return false;
 				}
 
+				current = new MPos(u, v).ToCPos(r.shape);
 				return true;
 			}
 
 			public void Reset()
 			{
 				// Enumerator starts *before* the first element in the sequence.
-				u = r.mapTopLeft.X - 1;
-				v = r.mapTopLeft.Y;
+				u = r.mapTopLeft.U - 1;
+				v = r.mapTopLeft.V;
 			}
 
-			public CPos Current { get { return Map.MapToCell(r.shape, new CPos(u, v)); } }
+			public CPos Current { get { return current; } }
 			object IEnumerator.Current { get { return Current; } }
 			public void Dispose() { }
+		}
+
+		public struct MapCoordsRegion : IEnumerable<MPos>
+		{
+			public struct MapCoordsEnumerator : IEnumerator<MPos>
+			{
+				readonly CellRegion r;
+				MPos current;
+
+				public MapCoordsEnumerator(CellRegion region)
+					: this()
+				{
+					r = region;
+					Reset();
+				}
+
+				public bool MoveNext()
+				{
+					var u = current.U + 1;
+					var v = current.V;
+
+					// Check for column overflow
+					if (u > r.mapBottomRight.U)
+					{
+						v += 1;
+						u = r.mapTopLeft.U;
+
+						// Check for row overflow
+						if (v > r.mapBottomRight.V)
+							return false;
+					}
+
+					current = new MPos(u, v);
+					return true;
+				}
+
+				public void Reset()
+				{
+					current = new MPos(r.mapTopLeft.U - 1, r.mapTopLeft.V);
+				}
+
+				public MPos Current { get { return current; } }
+				object IEnumerator.Current { get { return Current; } }
+				public void Dispose() { }
+			}
+
+			readonly CellRegion r;
+
+			public MapCoordsRegion(CellRegion region)
+			{
+				r = region;
+			}
+
+			public MapCoordsEnumerator GetEnumerator()
+			{
+				return new MapCoordsEnumerator(r);
+			}
+
+			IEnumerator<MPos> IEnumerable<MPos>.GetEnumerator()
+			{
+				return GetEnumerator();
+			}
+
+			IEnumerator IEnumerable.GetEnumerator()
+			{
+				return GetEnumerator();
+			}
 		}
 	}
 }

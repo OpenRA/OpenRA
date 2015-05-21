@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,6 +10,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -38,18 +40,31 @@ namespace OpenRA.Scripting
 		public ScriptPropertyGroupAttribute(string category) { Category = category; }
 	}
 
+	// For property groups that are safe to initialize invoke on destroyed actors
+	public sealed class ExposedForDestroyedActors : Attribute { }
+
 	public sealed class ScriptActorPropertyActivityAttribute : Attribute { }
 
 	public abstract class ScriptActorProperties
 	{
-		protected readonly Actor self;
-		public ScriptActorProperties(Actor self) { this.self = self; }
+		protected readonly Actor Self;
+		protected readonly ScriptContext Context;
+		public ScriptActorProperties(ScriptContext context, Actor self)
+		{
+			Self = self;
+			Context = context;
+		}
 	}
 
 	public abstract class ScriptPlayerProperties
 	{
-		protected readonly Player player;
-		public ScriptPlayerProperties(Player player) { this.player = player; }
+		protected readonly Player Player;
+		protected readonly ScriptContext Context;
+		public ScriptPlayerProperties(ScriptContext context, Player player)
+		{
+			Player = player;
+			Context = context;
+		}
 	}
 
 	// For global-level bindings
@@ -65,7 +80,7 @@ namespace OpenRA.Scripting
 			// The 'this.' resolves the actual (subclass) type
 			var type = this.GetType();
 			var names = type.GetCustomAttributes<ScriptGlobalAttribute>(true);
-			if (names.Count() != 1)
+			if (names.Length != 1)
 				throw new InvalidOperationException("[LuaGlobal] attribute not found for global table '{0}'".F(type));
 
 			Name = names.First().Name;
@@ -104,18 +119,21 @@ namespace OpenRA.Scripting
 		{
 			runtime = new MemoryConstrainedLuaRuntime();
 
+			Log.AddChannel("lua", "lua.log");
+
 			World = world;
 			WorldRenderer = worldRenderer;
-			knownActorCommands = Game.modData.ObjectCreator
+			knownActorCommands = Game.ModData.ObjectCreator
 				.GetTypesImplementing<ScriptActorProperties>()
 				.ToArray();
 
 			ActorCommands = new Cache<ActorInfo, Type[]>(FilterActorCommands);
-			PlayerCommands = Game.modData.ObjectCreator
+			PlayerCommands = Game.ModData.ObjectCreator
 				.GetTypesImplementing<ScriptPlayerProperties>()
 				.ToArray();
 
-			runtime.DoBuffer(GlobalFileSystem.Open(Path.Combine("lua", "scriptwrapper.lua")).ReadAllText(), "scriptwrapper.lua").Dispose();
+			runtime.Globals["GameDir"] = Platform.GameDir;
+			runtime.DoBuffer(GlobalFileSystem.Open(Platform.ResolvePath(".", "lua", "scriptwrapper.lua")).ReadAllText(), "scriptwrapper.lua").Dispose();
 			tick = (LuaFunction)runtime.Globals["Tick"];
 
 			// Register globals
@@ -126,11 +144,11 @@ namespace OpenRA.Scripting
 
 			using (var registerGlobal = (LuaFunction)runtime.Globals["RegisterSandboxedGlobal"])
 			{
-				using (var fn = runtime.CreateFunctionFromDelegate((Action<string>)Console.WriteLine))
+				using (var fn = runtime.CreateFunctionFromDelegate((Action<string>)LogDebugMessage))
 					registerGlobal.Call("print", fn).Dispose();
 
 				// Register global tables
-				var bindings = Game.modData.ObjectCreator.GetTypesImplementing<ScriptGlobal>();
+				var bindings = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>();
 				foreach (var b in bindings)
 				{
 					var ctor = b.GetConstructors(BindingFlags.Public | BindingFlags.Instance).FirstOrDefault(c =>
@@ -158,11 +176,30 @@ namespace OpenRA.Scripting
 			}
 		}
 
-		bool error;
+		void LogDebugMessage(string message)
+		{
+			Console.WriteLine("Lua debug: {0}", message);
+			Log.Write("lua", message);
+		}
+
+		public bool FatalErrorOccurred { get; private set; }
 		public void FatalError(string message)
 		{
+			var stacktrace = new StackTrace().ToString();
 			Console.WriteLine("Fatal Lua Error: {0}", message);
-			error = true;
+			Console.WriteLine(stacktrace);
+
+			Log.Write("lua", "Fatal Lua Error: {0}", message);
+			Log.Write("lua", stacktrace);
+
+			FatalErrorOccurred = true;
+
+			World.AddFrameEndTask(w =>
+			{
+				World.EndGame();
+				World.SetPauseState(true);
+				World.PauseStateLocked = true;
+			});
 		}
 
 		public void RegisterMapActor(string name, Actor a)
@@ -179,7 +216,7 @@ namespace OpenRA.Scripting
 
 		public void WorldLoaded()
 		{
-			if (error)
+			if (FatalErrorOccurred)
 				return;
 
 			using (var worldLoaded = (LuaFunction)runtime.Globals["WorldLoaded"])
@@ -188,7 +225,7 @@ namespace OpenRA.Scripting
 
 		public void Tick(Actor self)
 		{
-			if (error || disposed)
+			if (FatalErrorOccurred || disposed)
 				return;
 
 			using (new PerfSample("tick_lua"))
@@ -199,18 +236,19 @@ namespace OpenRA.Scripting
 		{
 			if (disposed)
 				return;
+
 			disposed = true;
 			if (runtime != null)
 				runtime.Dispose();
 		}
 
-		static Type[] ExtractRequiredTypes(Type t)
+		static IEnumerable<Type> ExtractRequiredTypes(Type t)
 		{
 			// Returns the inner types of all the Requires<T> interfaces on this type
 			var outer = t.GetInterfaces()
 				.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(Requires<>));
 
-			return outer.SelectMany(i => i.GetGenericArguments()).ToArray();
+			return outer.SelectMany(i => i.GetGenericArguments());
 		}
 
 		static readonly object[] NoArguments = new object[0];

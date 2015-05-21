@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -39,7 +39,7 @@ namespace OpenRA.FileSystem
 
 		public Stream GetContent(string filename)
 		{
-			try { return File.OpenRead( Path.Combine( path, filename ) ); }
+			try { return File.OpenRead(Path.Combine(path, filename)); }
 			catch { return null; }
 		}
 
@@ -75,8 +75,8 @@ namespace OpenRA.FileSystem
 
 			foreach (var file in contents)
 				using (var dataStream = File.Create(Path.Combine(path, file.Key)))
-					using (var writer = new BinaryWriter(dataStream))
-					   writer.Write(file.Value);
+				using (var writer = new BinaryWriter(dataStream))
+					writer.Write(file.Value);
 		}
 	}
 }

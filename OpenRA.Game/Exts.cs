@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,10 +11,12 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Support;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -86,11 +88,33 @@ namespace OpenRA
 			return r.Contains(p.ToPointF());
 		}
 
+		static int WindingDirectionTest(int2 v0, int2 v1, int2 p)
+		{
+			return (v1.X - v0.X) * (p.Y - v0.Y) - (p.X - v0.X) * (v1.Y - v0.Y);
+		}
+
+		public static bool PolygonContains(this int2[] polygon, int2 p)
+		{
+			var windingNumber = 0;
+
+			for (var i = 0; i < polygon.Length; i++)
+			{
+				var tv = polygon[i];
+				var nv = polygon[(i + 1) % polygon.Length];
+
+				if (tv.Y <= p.Y && nv.Y > p.Y && WindingDirectionTest(tv, nv, p) > 0)
+					windingNumber++;
+				else if (tv.Y > p.Y && nv.Y <= p.Y && WindingDirectionTest(tv, nv, p) < 0)
+					windingNumber--;
+			}
+
+			return windingNumber != 0;
+		}
+
 		public static bool HasModifier(this Modifiers k, Modifiers mod)
 		{
 			return (k & mod) == mod;
 		}
-
 
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k)
 			where V : new()
@@ -106,18 +130,34 @@ namespace OpenRA
 			return ret;
 		}
 
+		public static int IndexOf<T>(this T[] array, T value)
+		{
+			return Array.IndexOf(array, value);
+		}
+
 		public static T Random<T>(this IEnumerable<T> ts, MersenneTwister r)
 		{
-			var xs = ts.ToArray();
-			return xs[r.Next(xs.Length)];
+			return Random(ts, r, true);
 		}
 
 		public static T RandomOrDefault<T>(this IEnumerable<T> ts, MersenneTwister r)
 		{
-			if (!ts.Any())
-				return default(T);
+			return Random(ts, r, false);
+		}
 
-			return ts.Random(r);
+		static T Random<T>(IEnumerable<T> ts, MersenneTwister r, bool throws)
+		{
+			var xs = ts as ICollection<T>;
+			xs = xs ?? ts.ToList();
+			if (xs.Count == 0)
+			{
+				if (throws)
+					throw new ArgumentException("Collection must not be empty.", "ts");
+				else
+					return default(T);
+			}
+			else
+				return xs.ElementAt(r.Next(xs.Count));
 		}
 
 		public static float Product(this IEnumerable<float> xs)
@@ -180,6 +220,7 @@ namespace OpenRA
 						u = nextU;
 					}
 				}
+
 				return t;
 			}
 		}
@@ -238,7 +279,6 @@ namespace OpenRA
 			// Adjust for other rounding modes
 			if (round == ISqrtRoundMode.Nearest && remainder > root)
 				root += 1;
-
 			else if (round == ISqrtRoundMode.Ceiling && root * root < number)
 				root += 1;
 
@@ -280,7 +320,6 @@ namespace OpenRA
 			// Adjust for other rounding modes
 			if (round == ISqrtRoundMode.Nearest && remainder > root)
 				root += 1;
-
 			else if (round == ISqrtRoundMode.Ceiling && root * root < number)
 				root += 1;
 
@@ -297,12 +336,21 @@ namespace OpenRA
 			return ts.Concat(moreTs);
 		}
 
-		public static Dictionary<TKey, TSource> ToDictionaryWithConflictLog<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, string debugName, Func<TKey, string> logKey, Func<TSource, string> logValue)
+		public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source)
+		{
+			return new HashSet<T>(source);
+		}
+
+		public static Dictionary<TKey, TSource> ToDictionaryWithConflictLog<TSource, TKey>(
+			this IEnumerable<TSource> source, Func<TSource, TKey> keySelector,
+			string debugName, Func<TKey, string> logKey, Func<TSource, string> logValue)
 		{
 			return ToDictionaryWithConflictLog(source, keySelector, x => x, debugName, logKey, logValue);
 		}
 
-		public static Dictionary<TKey, TElement> ToDictionaryWithConflictLog<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, string debugName, Func<TKey, string> logKey, Func<TElement, string> logValue)
+		public static Dictionary<TKey, TElement> ToDictionaryWithConflictLog<TSource, TKey, TElement>(
+			this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector,
+			string debugName, Func<TKey, string> logKey, Func<TElement, string> logValue)
 		{
 			// Fall back on ToString() if null functions are provided:
 			logKey = logKey ?? (s => s.ToString());
@@ -339,7 +387,7 @@ namespace OpenRA
 			// If any duplicates were found, throw a descriptive error
 			if (dupKeys.Count > 0)
 			{
-				var badKeysFormatted = string.Join(", ", dupKeys.Select(p => "{0}: [{1}]".F(logKey(p.Key), string.Join(",", p.Value.ToArray()))).ToArray());
+				var badKeysFormatted = string.Join(", ", dupKeys.Select(p => "{0}: [{1}]".F(logKey(p.Key), string.Join(",", p.Value))));
 				var msg = "{0}, duplicate values found for the following keys: {1}".F(debugName, badKeysFormatted);
 				throw new ArgumentException(msg);
 			}
@@ -370,13 +418,41 @@ namespace OpenRA
 		{
 			var result = new T[width, height];
 			for (var i = 0; i < width; i++)
+			{
 				for (var j = 0; j < height; j++)
-					result[i, j] = i <= ts.GetUpperBound(0) && j <= ts.GetUpperBound(1)
-						? ts[i, j] : t;
+				{
+					// Workaround for broken ternary operators in certain versions of mono
+					// (3.10 and certain versions of the 3.8 series): https://bugzilla.xamarin.com/show_bug.cgi?id=23319
+					if (i <= ts.GetUpperBound(0) && j <= ts.GetUpperBound(1))
+						result[i, j] = ts[i, j];
+					else
+						result[i, j] = t;
+				}
+			}
+
 			return result;
 		}
 
 		public static Rectangle Bounds(this Bitmap b) { return new Rectangle(0, 0, b.Width, b.Height); }
+
+		public static Bitmap CloneWith32bbpArgbPixelFormat(this Bitmap original)
+		{
+			// Note: We would use original.Clone(original.Bounds(), PixelFormat.Format32bppArgb)
+			// but this doesn't work on mono.
+			var clone = new Bitmap(original.Width, original.Height, PixelFormat.Format32bppArgb);
+			try
+			{
+				using (var g = System.Drawing.Graphics.FromImage(clone))
+					g.DrawImage(original, original.Bounds());
+			}
+			catch (Exception)
+			{
+				clone.Dispose();
+				throw;
+			}
+
+			return clone;
+		}
 
 		public static int ToBits(this IEnumerable<bool> bits)
 		{
@@ -400,6 +476,16 @@ namespace OpenRA
 		public static bool TryParseIntegerInvariant(string s, out int i)
 		{
 			return int.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
+		}
+
+		public static bool IsTraitEnabled(this object trait)
+		{
+			return trait as IDisabledTrait == null || !(trait as IDisabledTrait).IsTraitDisabled;
+		}
+
+		public static bool IsTraitEnabled<T>(T t)
+		{
+			return IsTraitEnabled(t as object);
 		}
 	}
 

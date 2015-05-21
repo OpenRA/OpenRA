@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -25,14 +25,15 @@ namespace OpenRA
 			if (Angle < 0)
 				Angle += 1024;
 		}
+
 		public static readonly WAngle Zero = new WAngle(0);
-		public static WAngle FromFacing(int facing) { return new WAngle(facing*4); }
-		public static WAngle FromDegrees(int degrees) { return new WAngle(degrees*1024/360); }
+		public static WAngle FromFacing(int facing) { return new WAngle(facing * 4); }
+		public static WAngle FromDegrees(int degrees) { return new WAngle(degrees * 1024 / 360); }
 		public static WAngle operator +(WAngle a, WAngle b) { return new WAngle(a.Angle + b.Angle); }
 		public static WAngle operator -(WAngle a, WAngle b) { return new WAngle(a.Angle - b.Angle); }
 		public static WAngle operator -(WAngle a) { return new WAngle(-a.Angle); }
 
-		public static bool operator ==(WAngle me, WAngle other) { return (me.Angle == other.Angle); }
+		public static bool operator ==(WAngle me, WAngle other) { return me.Angle == other.Angle; }
 		public static bool operator !=(WAngle me, WAngle other) { return !(me == other); }
 
 		public override int GetHashCode() { return Angle.GetHashCode(); }
@@ -67,7 +68,7 @@ namespace OpenRA
 				return new WAngle(x >= 0 ? 0 : 512);
 
 			if (x == 0)
-				return new WAngle(Math.Sign(y)*256);
+				return new WAngle(Math.Sign(y) * 256);
 
 			var ay = Math.Abs(y);
 			var ax = Math.Abs(x);
@@ -75,9 +76,9 @@ namespace OpenRA
 			// Find the closest angle that satisfies y = x*tan(theta)
 			var bestVal = int.MaxValue;
 			var bestAngle = 0;
-			for (var i = 0; i < 256; i+= stride)
+			for (var i = 0; i < 256; i += stride)
 			{
-				var val = Math.Abs(1024*ay - ax*TanTable[i]);
+				var val = Math.Abs(1024 * ay - ax * TanTable[i]);
 				if (val < bestVal)
 				{
 					bestVal = val;
@@ -102,7 +103,7 @@ namespace OpenRA
 
 		public override string ToString() { return Angle.ToString(); }
 
-		static int[] CosineTable =
+		static readonly int[] CosineTable =
 		{
 			1024, 1023, 1023, 1023, 1023, 1023, 1023, 1023, 1022, 1022, 1022, 1021,
 			1021, 1020, 1020, 1019, 1019, 1018, 1017, 1017, 1016, 1015, 1014, 1013,
@@ -125,7 +126,7 @@ namespace OpenRA
 			56, 50, 43, 37, 31, 25, 18, 12, 6, 0
 		};
 
-		static int[] TanTable =
+		static readonly int[] TanTable =
 		{
 			0, 6, 12, 18, 25, 31, 37, 44, 50, 56, 62, 69, 75, 81, 88, 94, 100, 107,
 			113, 119, 126, 132, 139, 145, 151, 158, 164, 171, 177, 184, 190, 197,

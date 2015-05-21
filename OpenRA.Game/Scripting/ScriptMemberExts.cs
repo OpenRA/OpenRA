@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -37,7 +37,7 @@ namespace OpenRA.Scripting
 		{
 			var ret = "{0} {1}".F(pi.ParameterType.LuaDocString(), pi.Name);
 			if (pi.IsOptional)
-				ret += " = {0}".F(pi.DefaultValue);
+				ret += " = {0}".F(pi.DefaultValue != null ? pi.DefaultValue : "nil");
 
 			return ret;
 		}

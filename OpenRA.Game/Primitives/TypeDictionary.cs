@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -20,30 +20,30 @@ namespace OpenRA.Primitives
 		Dictionary<Type, object> dataSingular = new Dictionary<Type, object>();
 		Dictionary<Type, List<object>> dataMultiple = new Dictionary<Type, List<object>>();
 
-		public void Add( object val )
+		public void Add(object val)
 		{
 			var t = val.GetType();
 
-			foreach( var i in t.GetInterfaces() )
-				InnerAdd( i, val );
-			foreach( var tt in t.BaseTypes() )
-				InnerAdd( tt, val );
+			foreach (var i in t.GetInterfaces())
+				InnerAdd(i, val);
+			foreach (var tt in t.BaseTypes())
+				InnerAdd(tt, val);
 		}
 
-		void InnerAdd( Type t, object val )
+		void InnerAdd(Type t, object val)
 		{
 			List<object> objs;
 			object obj;
 
-			if( dataMultiple.TryGetValue( t, out objs ) )
-				objs.Add( val );
-			else if( dataSingular.TryGetValue( t, out obj ) )
+			if (dataMultiple.TryGetValue(t, out objs))
+				objs.Add(val);
+			else if (dataSingular.TryGetValue(t, out obj))
 			{
-				dataSingular.Remove( t );
-				dataMultiple.Add( t, new List<object> { obj, val } );
+				dataSingular.Remove(t);
+				dataMultiple.Add(t, new List<object> { obj, val });
 			}
 			else
-				dataSingular.Add( t, val );
+				dataSingular.Add(t, val);
 		}
 
 		public bool Contains<T>()
@@ -83,12 +83,33 @@ namespace OpenRA.Primitives
 			List<object> objs;
 			object obj;
 
-			if( dataMultiple.TryGetValue( typeof( T ), out objs ) )
+			if (dataMultiple.TryGetValue(typeof(T), out objs))
 				return objs.Cast<T>();
-			else if( dataSingular.TryGetValue( typeof( T ), out obj ) )
+			else if (dataSingular.TryGetValue(typeof(T), out obj))
 				return new T[] { (T)obj };
 			else
-				return new T[ 0 ];
+				return new T[0];
+		}
+
+		public void Remove<T>(T val)
+		{
+			var t = val.GetType();
+
+			foreach (var i in t.GetInterfaces())
+				InnerRemove(i, val);
+			foreach (var tt in t.BaseTypes())
+				InnerRemove(tt, val);
+		}
+
+		void InnerRemove(Type t, object val)
+		{
+			List<object> objs;
+			object obj;
+
+			if (dataMultiple.TryGetValue(t, out objs))
+				objs.Remove(val);
+			else if (dataSingular.TryGetValue(t, out obj))
+				dataSingular.Remove(t);
 		}
 
 		public IEnumerator GetEnumerator()
@@ -99,9 +120,9 @@ namespace OpenRA.Primitives
 
 	public static class TypeExts
 	{
-		public static IEnumerable<Type> BaseTypes( this Type t )
+		public static IEnumerable<Type> BaseTypes(this Type t)
 		{
-			while( t != null )
+			while (t != null)
 			{
 				yield return t;
 				t = t.BaseType;

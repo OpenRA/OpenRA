@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -24,15 +26,15 @@ namespace OpenRA.Mods.RA.Effects
 
 		public object Create(ActorInitializer init)
 		{
-			return new GpsDot(init.self, this);
+			return new GpsDot(init.Self, this);
 		}
 	}
 
 	class GpsDot : IEffect
 	{
-		Actor self;
-		GpsDotInfo info;
-		Animation anim;
+		readonly Actor self;
+		readonly GpsDotInfo info;
+		readonly Animation anim;
 
 		Lazy<HiddenUnderFog> huf;
 		Lazy<FrozenUnderFog> fuf;
@@ -88,7 +90,7 @@ namespace OpenRA.Mods.RA.Effects
 				world.AddFrameEndTask(w => w.Remove(this));
 
 			show = false;
-			if (!self.IsInWorld || self.IsDead() || self.World.RenderPlayer == null)
+			if (!self.IsInWorld || self.IsDead || self.World.RenderPlayer == null)
 				return;
 
 			var gps = watcher[self.World.RenderPlayer];

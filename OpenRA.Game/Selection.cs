@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,7 +18,7 @@ namespace OpenRA
 {
 	public class Selection
 	{
-		List<Actor> actors = new List<Actor>();
+		readonly HashSet<Actor> actors = new HashSet<Actor>();
 		public void Add(World w, Actor a)
 		{
 			actors.Add(a);
@@ -30,20 +30,32 @@ namespace OpenRA
 
 		public bool Contains(Actor a)
 		{
-			return actors.AsEnumerable().Contains(a);
+			return actors.Contains(a);
 		}
 
 		public void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
 		{
-			var oldSelection = actors.AsEnumerable();
-
 			if (isClick)
 			{
 				var adjNewSelection = newSelection.Take(1);	/* TODO: select BEST, not FIRST */
-				actors = (isCombine ? oldSelection.SymmetricDifference(adjNewSelection) : adjNewSelection).ToList();
+				if (isCombine)
+					actors.SymmetricExceptWith(adjNewSelection);
+				else
+				{
+					actors.Clear();
+					actors.UnionWith(adjNewSelection);
+				}
 			}
 			else
-				actors = (isCombine ? oldSelection.Union(newSelection) : newSelection).ToList();
+			{
+				if (isCombine)
+					actors.UnionWith(newSelection);
+				else
+				{
+					actors.Clear();
+					actors.UnionWith(newSelection);
+				}
+			}
 
 			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoices());
 			if (voicedUnit != null)
@@ -57,20 +69,22 @@ namespace OpenRA
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
-		public void Clear() { actors = new List<Actor>(); }
+		public void Clear() { actors.Clear(); }
 
 		public void Tick(World world)
 		{
-			actors.RemoveAll(a => !a.IsInWorld || (a.Owner != world.LocalPlayer && world.FogObscures(a)));
+			actors.RemoveWhere(a => !a.IsInWorld || (!a.Owner.IsAlliedWith(world.RenderPlayer) && world.FogObscures(a)));
 
 			foreach (var cg in controlGroups.Values)
+			{
 				// note: NOT `!a.IsInWorld`, since that would remove things that are in transports.
-				cg.RemoveAll(a => a.Destroyed);
+				cg.RemoveAll(a => a.Destroyed || a.Owner != world.LocalPlayer);
+			}
 		}
 
 		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
 
-		public void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int MultiTapCount)
+		public void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int multiTapCount)
 		{
 			var addModifier = Platform.CurrentPlatform == PlatformType.OSX ? Modifiers.Meta : Modifiers.Ctrl;
 			if (mods.HasModifier(addModifier))
@@ -88,15 +102,21 @@ namespace OpenRA
 				return;
 			}
 
-			var groupActors = controlGroups[group].Where(a => !a.IsDead());
+			var groupActors = controlGroups[group].Where(a => !a.IsDead);
 
-			if (mods.HasModifier(Modifiers.Alt) || MultiTapCount >= 2)
+			if (mods.HasModifier(Modifiers.Alt) || multiTapCount >= 2)
 			{
 				worldRenderer.Viewport.Center(groupActors);
 				return;
 			}
 
 			Combine(world, groupActors, mods.HasModifier(Modifiers.Shift), false);
+		}
+
+		public void AddToControlGroup(Actor a, int group)
+		{
+			if (!controlGroups[group].Contains(a))
+				controlGroups[group].Add(a);
 		}
 
 		public int? GetControlGroupForActor(Actor a)

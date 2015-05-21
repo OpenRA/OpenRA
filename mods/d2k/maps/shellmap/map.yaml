@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: d2k
 
@@ -16,9 +14,11 @@ MapSize: 128,128
 
 Bounds: 16,16,80,80
 
-UseAsShellmap: True
+Visibility: Shellmap
 
 Type: Shellmap
+
+Videos:
 
 Options:
 
@@ -33,13 +33,12 @@ Players:
 		Name: Atreides
 		Race: atreides
 		ColorRamp: 161,134,200
-		Allies: Neutral
-		Enemies: Harkonnen
-	PlayerReference@Harkonnen:
-		Name: Harkonnen
-		Race: harkonnen
-		ColorRamp: 3,255,127
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: atreides
 		Enemies: Atreides
+		ColorRamp: 210,255,127
 
 Actors:
 	Actor4: spicebloom
@@ -57,30 +56,28 @@ Actors:
 	Actor26: concreteb
 		Location: 57,58
 		Owner: Neutral
-	Actor27: refa
-		Location: 57,58
-		Owner: Atreides
 	Actor28: concretea
 		Location: 54,58
 		Owner: Neutral
 	Actor29: concretea
 		Location: 54,59
 		Owner: Neutral
-	Actor30: pwra
+	Actor30: power
 		Location: 54,58
 		Owner: Atreides
 	Actor31: concretea
 		Location: 54,62
 		Owner: Neutral
-	Actor32: siloa
+	Actor32: silo
 		Location: 54,62
 		Owner: Atreides
-	Actor33: guntowera
+	Actor33: guntower
 		Location: 54,63
 		Owner: Atreides
 	Actor34: siegetank
 		Location: 54,56
 		Owner: Atreides
+		Facing: 24
 	Actor35: concretea
 		Location: 46,39
 		Owner: Neutral
@@ -90,30 +87,48 @@ Actors:
 	Actor37: concreteb
 		Location: 50,37
 		Owner: Neutral
-	Actor38: refh
+	Actor38: palace
 		Location: 50,37
-		Owner: Harkonnen
-	Actor39: pwrh
+		Owner: Creeps
+	Actor39: barracks
 		Location: 48,37
-		Owner: Harkonnen
-	Actor40: siloh
-		Location: 47,39
-		Owner: Harkonnen
-	Actor41: guntowera
+		Owner: Creeps
+	Actor40: rockettower
 		Location: 46,39
-		Owner: Harkonnen
+		Owner: Creeps
+	Actor41: sardaukar
+		Location: 50,40
+		Owner: Creeps
+	Actor42: sardaukar
+		Location: 52,40
+		Owner: Creeps
+	WormSpawner: wormspawner
+		Location: 46,64
+		Owner: Creeps
+	Entry: waypoint
+		Location: 80, 8
+		Owner: Neutral
+	AtreidesSpiceRefinery: refinery
+		Location: 57,58
+		Owner: Atreides
 
 Smudges:
 
 Rules:
 	World:
-		LoadWidgetAtGameStart:
-			Widget: MAINMENU
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		ResourceType@Spice:
 			ValuePerUnit: 0
+		WormManager:
+			Minimum: 1
+			Maximum: 1
+		LuaScript:
+			Scripts: shellmap.lua
+	rockettower:
+		Power:
+			Amount: 100
 
 Sequences:
 

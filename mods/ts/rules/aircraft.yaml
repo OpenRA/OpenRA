@@ -4,10 +4,6 @@ DPOD:
 		Cost: 10
 	Tooltip:
 		Name: Drop Pod
-	Buildable:
-		Queue: Air
-		BuildPaletteOrder: 10
-		Owner: gdi
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -19,15 +15,15 @@ DPOD:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 0c0
+		Range: 5c0
 	Cargo:
 		Types: Infantry
-		MaxWeight: 5
-		PipCount: 5
+		MaxWeight: 1
+		PipCount: 1
 	Armament:
 		Weapon: Vulcan2
 	AttackHeli:
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 5
 		PipCount: 5
 		PipType: Ammo
@@ -43,11 +39,6 @@ DSHP:
 		Cost: 1000
 	Tooltip:
 		Name: Dropship
-	Buildable:
-		Queue: Air
-		BuildPaletteOrder: 10
-		Owner: gdi
-		Prerequisites: gaweap
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -67,6 +58,7 @@ DSHP:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	Hovers:
 
 ORCA:
 	Inherits: ^Helicopter
@@ -74,16 +66,15 @@ ORCA:
 		Cost: 1000
 	Tooltip:
 		Name: Orca Fighter
-		Description: Helicopter Gunship with Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+		Description: Fast assault gunship with\ndual missile launchers.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: gahpad
-		Owner: gdi
+		Prerequisites: ~gahpad
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
-		RearmBuildings: gahpad
+		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 186
 	Health:
@@ -96,7 +87,7 @@ ORCA:
 		Weapon: Hellfire
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 5
 		PipCount: 5
 		PipType: Ammo
@@ -105,24 +96,26 @@ ORCA:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	Hovers:
 
 ORCAB:
-	Inherits: ^Helicopter
+	Inherits: ^Plane
 	Valued:
 		Cost: 1600
 	Tooltip:
 		Name: Orca Bomber
+		Description: Heavy bomber.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: gahpad
-		Owner: gdi
+		Prerequisites: ~gahpad, gatech
 	Selectable:
 		Bounds: 30,24
-	Helicopter:
-		RearmBuildings: gahpad
-		ROT: 5
-		Speed: 112
+	Plane:
+		CruiseAltitude: 3072
+		MaximumPitch: 120
+		ROT: 3
+		Speed: 96
 	Health:
 		HP: 260
 	Armor:
@@ -131,17 +124,20 @@ ORCAB:
 		Range: 2c0
 	Armament:
 		Weapon: Bomb
-	AttackHeli:
+	AttackPlane:
 		FacingTolerance: 20
-	LimitedAmmo:
-		Ammo: 2
+	AmmoPool:
+		Ammo: 10
 		PipCount: 2
+		ReloadCount: 5
+		ReloadTicks: 200
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	Hovers:
 
 ORCATRAN:
 	Inherits: ^Helicopter
@@ -149,11 +145,6 @@ ORCATRAN:
 		Cost: 1200
 	Tooltip:
 		Name: Orca Transport
-	Buildable:
-		Queue: Air
-		BuildPaletteOrder: 10
-		Owner: gdi
-		Prerequisites: gahpad
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -173,6 +164,7 @@ ORCATRAN:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	Hovers:
 
 TRNSPORT:
 	Inherits: ^Helicopter
@@ -180,11 +172,11 @@ TRNSPORT:
 		Cost: 750
 	Tooltip:
 		Name: Carryall
+		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
-		Owner: gdi
-		Prerequisites: gahpad
+		Prerequisites: ~gahpad, gadept
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -200,22 +192,24 @@ TRNSPORT:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	Hovers:
 
 SCRIN:
-	Inherits: ^Helicopter
+	Inherits: ^Plane
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Banshee Fighter
+		Description: Advanced fighter-bomber craft\nwith twin plasma cannons.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: nahpad
-		Owner: nod
+		Prerequisites: ~nahpad, natech
 	Selectable:
 		Bounds: 30,24
-	Helicopter:
-		RearmBuildings: nahpad
+		Voice: Scrin
+	Plane:
+		MaximumPitch: 90
 		ROT: 3
 		Speed: 168
 	Health:
@@ -226,11 +220,12 @@ SCRIN:
 		Range: 2c0
 	Armament:
 		Weapon: Proton
-	AttackHeli:
+	AttackPlane:
 		FacingTolerance: 20
-	LimitedAmmo:
-		Ammo: 3
+	AmmoPool:
+		Ammo: 15
 		PipCount: 3
+		ReloadCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
@@ -244,15 +239,15 @@ APACHE:
 		Cost: 1000
 	Tooltip:
 		Name: Harpy
+		Description: Anti-personnel support gunship\narmed with dual chain guns.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Vehicles
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: nahpad
-		Owner: nod
+		Prerequisites: ~nahpad
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
-		RearmBuildings: nahpad
+		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 130
 	Health:
@@ -265,7 +260,7 @@ APACHE:
 		Weapon: HarpyClaw
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
+	AmmoPool:
 		Ammo: 12
 		PipCount: 4
 		PipType: Ammo
@@ -276,4 +271,4 @@ APACHE:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
-
+	Hovers:

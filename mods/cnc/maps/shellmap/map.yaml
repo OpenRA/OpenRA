@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: cnc
 
@@ -16,9 +14,11 @@ MapSize: 96,48
 
 Bounds: 8,1,80,45
 
-UseAsShellmap: True
+Visibility: Shellmap
 
 Type: Shellmap
+
+Videos:
 
 Options:
 
@@ -28,13 +28,13 @@ Players:
 		Race: nod
 		ColorRamp: 3,255,127
 		Allies: Nod
-		Enemies: GDI,Creeps
+		Enemies: GDI, Creeps
 	PlayerReference@GDI:
 		Name: GDI
 		Race: gdi
 		ColorRamp: 31,222,183
 		Allies: GDI
-		Enemies: Nod,Creeps
+		Enemies: Nod, Creeps
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
@@ -74,21 +74,9 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: Random
-		Enemies: Nod,GDI,Multi0,Multi1,Multi2,Multi3,Multi4,Multi5
+		Enemies: Nod, GDI, Multi0, Multi1, Multi2, Multi3, Multi4, Multi5
 
 Actors:
-	boat1: boat
-		Location: 45,33
-		Owner: GDI
-	boat2: boat
-		Location: 39,37
-		Owner: GDI
-	boat3: boat
-		Location: 70,33
-		Owner: GDI
-	boat4: boat
-		Location: 79,37
-		Owner: GDI
 	Actor4: fix
 		Location: 59,44
 		Owner: GDI
@@ -962,6 +950,18 @@ Actors:
 	Actor221: jeep
 		Location: 57,45
 		Owner: GDI
+	boat1: boat
+		Location: 45,33
+		Owner: GDI
+	boat2: boat
+		Location: 39,37
+		Owner: GDI
+	boat3: boat
+		Location: 70,33
+		Owner: GDI
+	boat4: boat
+		Location: 79,37
+		Owner: GDI
 	lst1: lst
 		Location: 53,35
 		Owner: GDI
@@ -992,13 +992,8 @@ Rules:
 		-CrateSpawner:
 		MenuPaletteEffect:
 			Effect: Desaturated
-		PlayMusicOnMapLoad:
-			Music: map1
-			Loop: true
 		LuaScript:
 			Scripts: shellmap.lua
-		LoadWidgetAtGameStart:
-			Widget: MENU_BACKGROUND
 	LST:
 		Mobile:
 			Speed: 42

@@ -1,180 +1,179 @@
-﻿Palettes:
+Palettes:
 	cursor: cursor.pal
 
 Cursors:
 	mouse.shp: cursor
 		scroll-t:
-			start:1
+			Start: 1
 		scroll-tr:
-			start:2
+			Start: 2
 		scroll-r:
-			start:3
+			Start: 3
 		scroll-br:
-			start:4
+			Start: 4
 		scroll-b:
-			start:5
+			Start: 5
 		scroll-bl:
-			start:6
+			Start: 6
 		scroll-l:
-			start:7
+			Start: 7
 		scroll-tl:
-			start:8
+			Start: 8
 		scroll-t-blocked:
-			start:124
+			Start: 124
 		scroll-tr-blocked:
-			start:125
+			Start: 125
 		scroll-r-blocked:
-			start:126
+			Start: 126
 		scroll-br-blocked:
-			start:127
+			Start: 127
 		scroll-b-blocked:
-			start:128
+			Start: 128
 		scroll-bl-blocked:
-			start:129
+			Start: 129
 		scroll-l-blocked:
-			start:130
+			Start: 130
 		scroll-tl-blocked:
-			start:131
+			Start: 131
 		select:
-			start:15
-			length: 6
-	
+			Start: 15
+			Length: 6
 		default:
-			start:0
-			x: -16
-			y: -12
+			Start: 0
+			X: -16
+			Y: -12
 		default-minimap:
-			start:80
-			x: -16
-			y: -12
+			Start: 80
+			X: -16
+			Y: -12
 		generic-blocked:
-			start:9
+			Start: 9
 		generic-blocked-minimap:
-			start:33
+			Start: 33
 		move:
-			start:10
-			length: 4
+			Start: 10
+			Length: 4
 		move-minimap:
-			start:29
-			length: 4
+			Start: 29
+			Length: 4
 		move-rough:
-			start:10
-			length: 4
+			Start: 10
+			Length: 4
 		move-blocked:
-			start:14
+			Start: 14
 		move-blocked-minimap:
-			start:33
+			Start: 33
 		attack:
-			start:195
-			length: 8
+			Start: 195
+			Length: 8
 		attack-minimap:
-			start:203
-			length: 8
+			Start: 203
+			Length: 8
 		attackoutsiderange:
-			start:21
-			length: 8
+			Start: 21
+			Length: 8
 		attackoutsiderange-minimap:
-			start:134
-			length: 8
+			Start: 134
+			Length: 8
 		harvest:
-			start:21
-			length: 8
+			Start: 21
+			Length: 8
 		harvest-minimap:
-			start:134
-			length: 8
+			Start: 134
+			Length: 8
 		enter:
-			start:113
-			length: 3
+			Start: 113
+			Length: 3
 		enter-minimap:
-			start:139
-			length: 3
+			Start: 139
+			Length: 3
 		enter-blocked:
-			start:212
-			length: 1
+			Start: 212
+			Length: 1
 		enter-blocked-minimap:
-			start:33
+			Start: 33
 		c4:
-			start:116
-			length: 3
+			Start: 116
+			Length: 3
 		c4-minimap:
-			start:121
-			length: 3
+			Start: 121
+			Length: 3
 		guard:
-			start:147
-			length: 1
+			Start: 147
+			Length: 1
 		guard-minimap:
-			start:146
-			length: 1
+			Start: 146
+			Length: 1
 		capture:
-			start:164
-			length: 3
+			Start: 164
+			Length: 3
 		capture-minimap:
-			start:167
-			length: 3
+			Start: 167
+			Length: 3
 		heal:
-			start:160
-			length: 4
+			Start: 160
+			Length: 4
 		heal-minimap:
-			start:194
-			length: 1
+			Start: 194
+			Length: 1
 		ability:
-			start:82
-			length: 8
+			Start: 82
+			Length: 8
 		ability-minimap:
-			start:214
-			length: 8
+			Start: 214
+			Length: 8
 
 # Cursors that need minimap variants
 		deploy:
-			start:59
-			length: 9
+			Start: 59
+			Length: 9
 		deploy-blocked:
-			start:211
-			length: 1
+			Start: 211
+			Length: 1
 		goldwrench:
-			start:170
-			length: 24
+			Start: 170
+			Length: 24
 		goldwrench-blocked:
-			start:213
-			length: 1
+			Start: 213
+			Length: 1
 		nuke:
-			start:90
-			length: 7
+			Start: 90
+			Length: 7
 		chrono-select:
-			start:97
-			length: 8
+			Start: 97
+			Length: 8
 		chrono-target:
-			start:105
-			length: 8
-
+			Start: 105
+			Length: 8
 		sell:
-			start:68
-			length: 12
+			Start: 68
+			Length: 12
 		sell-blocked:
-			start:119
-			length: 1
+			Start: 119
+			Length: 1
 		repair:
-			start:35
-			length: 24
+			Start: 35
+			Length: 24
 		repair-blocked:
-			start:120
-			length: 1
+			Start: 120
+			Length: 1
 		sell2:
-			start:148
-			length: 12
+			Start: 148
+			Length: 12
 
 	nopower.shp: cursor
 		powerdown-blocked:
-			start:0
-			length: 1
+			Start: 0
+			Length: 1
 		powerdown:
-			start:1
-			length: 3
+			Start: 1
+			Length: 3
 
 	attackmove.shp: cursor
 		attackmove:
-			start:0
-			length: 4
+			Start: 0
+			Length: 4
 		attackmove-minimap:
-			start:4
-			length: 4
+			Start: 4
+			Length: 4
+

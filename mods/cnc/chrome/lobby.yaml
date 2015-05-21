@@ -20,7 +20,7 @@ Container@SERVER_LOBBY:
 				Container@MAP_PREVIEW_ROOT:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
-				Container@LOBBY_LABEL_CONTAINER:
+				Container@LABEL_CONTAINER:
 					X: 20
 					Y: 5
 					Children:
@@ -94,7 +94,7 @@ Container@SERVER_LOBBY:
 					Y: 285
 					Width: PARENT_RIGHT - 30
 					Height: PARENT_BOTTOM - 324
-					ItemSpacing: 1
+					ItemSpacing: 2
 					Children:
 						Container@CHAT_TEMPLATE:
 							Width: PARENT_RIGHT-27
@@ -149,5 +149,6 @@ Container@SERVER_LOBBY:
 			Width: 140
 			Height: 35
 			Text: Music
+		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 

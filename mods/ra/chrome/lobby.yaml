@@ -8,7 +8,7 @@ Background@SERVER_LOBBY:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
 			X: 0
-			Y: 17
+			Y: 15
 			Align: Center
 			Width: PARENT_RIGHT
 			Height: 20
@@ -48,7 +48,7 @@ Background@SERVER_LOBBY:
 					Text: Team
 					Align: Center
 					Font: Bold
-				Label@LABEL_LOBBY_TEAM:
+				Label@LABEL_LOBBY_SPAWN:
 					X: 478
 					Width: 48
 					Height: 25
@@ -96,7 +96,7 @@ Background@SERVER_LOBBY:
 			Y: PARENT_BOTTOM - HEIGHT - 52
 			Width: 818
 			Height: 210
-			ItemSpacing: 1
+			ItemSpacing: 2
 			Children:
 				Container@CHAT_TEMPLATE:
 					Width: PARENT_RIGHT-27
@@ -141,5 +141,5 @@ Background@SERVER_LOBBY:
 			Text: Disconnect
 			Font: Bold
 			Key: escape
+		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
-

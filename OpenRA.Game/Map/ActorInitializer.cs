@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -16,20 +16,20 @@ namespace OpenRA
 {
 	public class ActorInitializer
 	{
-		public readonly Actor self;
-		public World world { get { return self.World; } }
+		public readonly Actor Self;
+		public World World { get { return Self.World; } }
 
-		internal TypeDictionary dict;
+		internal TypeDictionary Dict;
 
 		public ActorInitializer(Actor actor, TypeDictionary dict)
 		{
-			this.self = actor;
-			this.dict = dict;
+			Self = actor;
+			Dict = dict;
 		}
 
-		public T Get<T>() where T : IActorInit { return dict.Get<T>(); }
-		public U Get<T, U>() where T : IActorInit<U> { return dict.Get<T>().Value(world); }
-		public bool Contains<T>() where T : IActorInit { return dict.Contains<T>(); }
+		public T Get<T>() where T : IActorInit { return Dict.Get<T>(); }
+		public U Get<T, U>() where T : IActorInit<U> { return Dict.Get<T>().Value(World); }
+		public bool Contains<T>() where T : IActorInit { return Dict.Contains<T>(); }
 	}
 
 	public interface IActorInit { }
@@ -41,7 +41,7 @@ namespace OpenRA
 
 	public class FacingInit : IActorInit<int>
 	{
-		[FieldFromYamlKey] public readonly int value = 128;
+		[FieldFromYamlKey] readonly int value = 128;
 		public FacingInit() { }
 		public FacingInit(int init) { value = init; }
 		public int Value(World world) { return value; }
@@ -49,7 +49,7 @@ namespace OpenRA
 
 	public class TurretFacingInit : IActorInit<int>
 	{
-		[FieldFromYamlKey] public readonly int value = 128;
+		[FieldFromYamlKey] readonly int value = 128;
 		public TurretFacingInit() { }
 		public TurretFacingInit(int init) { value = init; }
 		public int Value(World world) { return value; }
@@ -57,7 +57,7 @@ namespace OpenRA
 
 	public class LocationInit : IActorInit<CPos>
 	{
-		[FieldFromYamlKey] public readonly CPos value = CPos.Zero;
+		[FieldFromYamlKey] readonly CPos value = CPos.Zero;
 		public LocationInit() { }
 		public LocationInit(CPos init) { value = init; }
 		public CPos Value(World world) { return value; }
@@ -65,7 +65,7 @@ namespace OpenRA
 
 	public class SubCellInit : IActorInit<SubCell>
 	{
-		[FieldFromYamlKey] public readonly int value = 0;
+		[FieldFromYamlKey] readonly int value = (int)SubCell.FullCell;
 		public SubCellInit() { }
 		public SubCellInit(int init) { value = init; }
 		public SubCellInit(SubCell init) { value = (int)init; }
@@ -74,7 +74,7 @@ namespace OpenRA
 
 	public class CenterPositionInit : IActorInit<WPos>
 	{
-		[FieldFromYamlKey] public readonly WPos value = WPos.Zero;
+		[FieldFromYamlKey] readonly WPos value = WPos.Zero;
 		public CenterPositionInit() { }
 		public CenterPositionInit(WPos init) { value = init; }
 		public WPos Value(World world) { return value; }
@@ -101,5 +101,15 @@ namespace OpenRA
 
 			return world.Players.First(x => x.InternalName == PlayerName);
 		}
+	}
+
+	// Allows maps / transformations to specify the race variant of an actor.
+	public class RaceInit : IActorInit<string>
+	{
+		[FieldFromYamlKey] public readonly string Race;
+
+		public RaceInit() { }
+		public RaceInit(string race) { Race = race; }
+		public string Value(World world) { return Race; }
 	}
 }

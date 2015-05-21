@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,26 +11,28 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.LoadScreens;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc
 {
-	public class CncLoadScreen : ILoadScreen
+	public sealed class CncLoadScreen : BlankLoadScreen
 	{
+		readonly NullInputHandler nih = new NullInputHandler();
+
 		Dictionary<string, string> loadInfo;
 		Stopwatch loadTimer = Stopwatch.StartNew();
-		Sprite[] ss;
+		Sheet sheet;
+		Sprite borderTop, borderBottom, borderLeft, borderRight,
+			cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight;
 		int loadTick;
 		float2 nodPos, gdiPos, evaPos;
 		Sprite nodLogo, gdiLogo, evaLogo, brightBlock, dimBlock;
 		Rectangle bounds;
 		Renderer r;
-		NullInputHandler nih = new NullInputHandler();
 
-		public void Init(Manifest m, Dictionary<string, string> info)
+		public override void Init(Manifest m, Dictionary<string, string> info)
 		{
 			loadInfo = info;
 
@@ -39,31 +41,28 @@ namespace OpenRA.Mods.Cnc
 			r = Game.Renderer;
 			if (r == null) return;
 
-			var s = new Sheet(loadInfo["Image"]);
+			sheet = new Sheet(Platform.ResolvePath(loadInfo["Image"]));
 			var res = r.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);
 
-			ss = new[]
-			{
-				new Sprite(s, new Rectangle(161, 128, 62, 33), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(161, 223, 62, 33), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(128, 161, 33, 62), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(223, 161, 33, 62), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(128, 128, 33, 33), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(223, 128, 33, 33), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(128, 223, 33, 33), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(223, 223, 33, 33), TextureChannel.Alpha)
-			};
+			borderTop = new Sprite(sheet, new Rectangle(161, 128, 62, 33), TextureChannel.Alpha);
+			borderBottom = new Sprite(sheet, new Rectangle(161, 223, 62, 33), TextureChannel.Alpha);
+			borderLeft = new Sprite(sheet, new Rectangle(128, 161, 33, 62), TextureChannel.Alpha);
+			borderRight = new Sprite(sheet, new Rectangle(223, 161, 33, 62), TextureChannel.Alpha);
+			cornerTopLeft = new Sprite(sheet, new Rectangle(128, 128, 33, 33), TextureChannel.Alpha);
+			cornerTopRight = new Sprite(sheet, new Rectangle(223, 128, 33, 33), TextureChannel.Alpha);
+			cornerBottomLeft = new Sprite(sheet, new Rectangle(128, 223, 33, 33), TextureChannel.Alpha);
+			cornerBottomRight = new Sprite(sheet, new Rectangle(223, 223, 33, 33), TextureChannel.Alpha);
 
-			nodLogo = new Sprite(s, new Rectangle(0, 256, 256, 256), TextureChannel.Alpha);
-			gdiLogo = new Sprite(s, new Rectangle(256, 256, 256, 256), TextureChannel.Alpha);
-			evaLogo = new Sprite(s, new Rectangle(256, 64, 128, 64), TextureChannel.Alpha);
+			nodLogo = new Sprite(sheet, new Rectangle(0, 256, 256, 256), TextureChannel.Alpha);
+			gdiLogo = new Sprite(sheet, new Rectangle(256, 256, 256, 256), TextureChannel.Alpha);
+			evaLogo = new Sprite(sheet, new Rectangle(256, 64, 128, 64), TextureChannel.Alpha);
 			nodPos = new float2(bounds.Width / 2 - 384, bounds.Height / 2 - 128);
 			gdiPos = new float2(bounds.Width / 2 + 128, bounds.Height / 2 - 128);
 			evaPos = new float2(bounds.Width - 43 - 128, 43);
 
-			brightBlock = new Sprite(s, new Rectangle(320, 0, 16, 35), TextureChannel.Alpha);
-			dimBlock = new Sprite(s, new Rectangle(336, 0, 16, 35), TextureChannel.Alpha);
+			brightBlock = new Sprite(sheet, new Rectangle(320, 0, 16, 35), TextureChannel.Alpha);
+			dimBlock = new Sprite(sheet, new Rectangle(336, 0, 16, 35), TextureChannel.Alpha);
 
 			versionText = m.Mod.Version;
 		}
@@ -73,7 +72,7 @@ namespace OpenRA.Mods.Cnc
 		string loadingText, versionText;
 		float2 loadingPos, versionPos;
 
-		public void Display()
+		public override void Display()
 		{
 			if (r == null || loadTimer.Elapsed.TotalSeconds < 0.25)
 				return;
@@ -86,7 +85,10 @@ namespace OpenRA.Mods.Cnc
 			r.RgbaSpriteRenderer.DrawSprite(nodLogo, nodPos);
 			r.RgbaSpriteRenderer.DrawSprite(evaLogo, evaPos);
 
-			WidgetUtils.DrawPanelPartial(ss, bounds, PanelSides.Edges);
+			WidgetUtils.DrawPanelPartial(bounds, PanelSides.Edges,
+				borderTop, borderBottom, borderLeft, borderRight,
+				cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight,
+				null);
 			var barY = bounds.Height - 78;
 
 			if (!setup && r.Fonts != null)
@@ -119,9 +121,10 @@ namespace OpenRA.Mods.Cnc
 			r.EndFrame(nih);
 		}
 
-		public void StartGame()
+		public override void Dispose()
 		{
-			Game.TestAndContinue();
+			if (sheet != null)
+				sheet.Dispose();
 		}
 	}
 }

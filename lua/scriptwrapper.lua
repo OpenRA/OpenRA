@@ -1,7 +1,7 @@
 environment = {}
 
 -- Reset package path
-package.path = "./lua/?.lua;./mods/common/lua/?.lua"
+package.path = GameDir .. "/lua/?.lua"
 
 -- Note: sandbox has been customized to remove math.random
 local sandbox = require('sandbox')
@@ -31,9 +31,9 @@ Tick = function()
 end
 
 ExecuteSandboxedScript = function(file, contents)
-	local script = loadstring(contents, file)
+	local script, err = loadstring(contents, file)
 	if (script == nil) then
-		FatalError("Error parsing " .. file)
+		FatalError("Error parsing " .. file .. ". Reason: " .. err)
 	else
 		TryRunSandboxed(script)
 	end

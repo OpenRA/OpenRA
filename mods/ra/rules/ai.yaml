@@ -15,6 +15,7 @@ Player:
 			proc: 4
 			barr: 1
 			tent: 1
+			kenn: 1
 			dome: 1
 			weap: 1
 			spen: 1
@@ -29,6 +30,7 @@ Player:
 			powr: 35%
 			barr: 1%
 			tent: 1%
+			kenn: 0.5%
 			weap: 1%
 			pbox: 7%
 			gun: 7%
@@ -42,7 +44,12 @@ Player:
 			dome: 10%
 		UnitsToBuild:
 			e1: 50%
+			e2: 20%
 			e3: 10%
+			e4: 2%
+			dog: 2%
+			shok: 2%
+			sniper: 1%
 			apc: 30%
 			jeep: 40%
 			arty: 15%
@@ -51,7 +58,58 @@ Player:
 			1tnk: 70%
 			2tnk: 25%
 			3tnk: 50%
+			4tnk: 10%
+			ttnk: 10%
+			stnk: 5%
 		SquadSize: 20
+		SupportPowerDecision@spyplane:
+			OrderName: SovietSpyPlane
+			MinimumAttractiveness: 1
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 5c0
+		SupportPowerDecision@paratroopers:
+			OrderName: SovietParatroopers
+			MinimumAttractiveness: 5
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 10c0
+			Consideration@2:
+				Against: Enemy
+				Types: Vehicle, Tank, Infantry, Defense
+				Attractiveness: -10
+				TargetMetric: None
+				CheckRadius: 10c0
+		SupportPowerDecision@parabombs:
+			OrderName: UkraineParabombs
+			MinimumAttractiveness: 1
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 5c0
+		SupportPowerDecision@nukepower:
+			OrderName: NukePowerInfoOrder
+			MinimumAttractiveness: 3000
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 5c0
+			Consideration@2:
+				Against: Ally
+				Types: Air, Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 7c0
 	HackyAI@NormalAI:
 		Name: Normal AI
 		BuildingCommonNames:
@@ -68,6 +126,7 @@ Player:
 			proc: 4
 			barr: 1
 			tent: 1
+			kenn: 1
 			dome: 1
 			weap: 1
 			spen: 1
@@ -83,6 +142,7 @@ Player:
 			apwr: 30%
 			tent: 1%
 			barr: 1%
+			kenn: 0.5%
 			dome: 1%
 			weap: 6%
 			hpad: 4%
@@ -101,14 +161,24 @@ Player:
 			mslo: 1%
 		UnitsToBuild:
 			e1: 50%
+			e2: 10%
 			e3: 10%
+			e4: 5%
+			dog: 3%
+			shok: 5%
+			sniper: 2%
 			harv: 10%
 			apc: 30%
 			jeep: 40%
+			arty: 15%
+			v2rl: 40%
 			ftrk: 50%
 			1tnk: 70%
 			2tnk: 25%
 			3tnk: 50%
+			4tnk: 15%
+			ttnk: 15%
+			stnk: 10%
 			heli: 30%
 			hind: 30%
 			mig: 30%
@@ -119,6 +189,54 @@ Player:
 			ca: 10%
 			pt: 10%
 		SquadSize: 40
+		SupportPowerDecision@spyplane:
+			OrderName: SovietSpyPlane
+			MinimumAttractiveness: 1
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 5c0
+		SupportPowerDecision@paratroopers:
+			OrderName: SovietParatroopers
+			MinimumAttractiveness: 5
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 10c0
+			Consideration@2:
+				Against: Enemy
+				Types: Vehicle, Tank, Infantry, Defense
+				Attractiveness: -10
+				TargetMetric: None
+				CheckRadius: 10c0
+		SupportPowerDecision@parabombs:
+			OrderName: UkraineParabombs
+			MinimumAttractiveness: 1
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 5c0
+		SupportPowerDecision@nukepower:
+			OrderName: NukePowerInfoOrder
+			MinimumAttractiveness: 3000
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 5c0
+			Consideration@2:
+				Against: Ally
+				Types: Air, Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 7c0
 	HackyAI@TurtleAI:
 		Name: Turtle AI
 		BuildingCommonNames:
@@ -135,6 +253,7 @@ Player:
 			proc: 4
 			barr: 1
 			tent: 1
+			kenn: 1
 			dome: 1
 			weap: 1
 			spen: 1
@@ -150,6 +269,7 @@ Player:
 			apwr: 30%
 			tent: 1%
 			barr: 1%
+			kenn: 0.5%
 			weap: 3%
 			hpad: 2%
 			spen: 1%
@@ -167,14 +287,24 @@ Player:
 			mslo: 1%
 		UnitsToBuild:
 			e1: 50%
+			e2: 10%
 			e3: 10%
+			e4: 8%
+			dog: 4%
+			shok: 8%
+			sniper: 5%
 			harv: 10%
 			apc: 30%
 			jeep: 40%
+			arty: 15%
+			v2rl: 40%
 			ftrk: 50%
 			1tnk: 70%
 			2tnk: 25%
 			3tnk: 50%
+			4tnk: 20%
+			ttnk: 20%
+			stnk: 15%
 			heli: 30%
 			hind: 30%
 			mig: 30%
@@ -185,6 +315,54 @@ Player:
 			ca: 10%
 			pt: 10%
 		SquadSize: 10
+		SupportPowerDecision@spyplane:
+			OrderName: SovietSpyPlane
+			MinimumAttractiveness: 1
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 5c0
+		SupportPowerDecision@paratroopers:
+			OrderName: SovietParatroopers
+			MinimumAttractiveness: 5
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 10c0
+			Consideration@2:
+				Against: Enemy
+				Types: Vehicle, Tank, Infantry, Defense
+				Attractiveness: -10
+				TargetMetric: None
+				CheckRadius: 10c0
+		SupportPowerDecision@parabombs:
+			OrderName: UkraineParabombs
+			MinimumAttractiveness: 1
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 5c0
+		SupportPowerDecision@nukepower:
+			OrderName: NukePowerInfoOrder
+			MinimumAttractiveness: 3000
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 5c0
+			Consideration@2:
+				Against: Ally
+				Types: Air, Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 7c0
 	HackyAI@NavalAI:
 		Name: Naval AI
 		BuildingCommonNames:
@@ -238,4 +416,52 @@ Player:
 			ca: 20%
 			pt: 10%
 		SquadSize: 1
+		SupportPowerDecision@spyplane:
+			OrderName: SovietSpyPlane
+			MinimumAttractiveness: 1
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 5c0
+		SupportPowerDecision@paratroopers:
+			OrderName: SovietParatroopers
+			MinimumAttractiveness: 5
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 10c0
+			Consideration@2:
+				Against: Enemy
+				Types: Vehicle, Tank, Infantry, Defense
+				Attractiveness: -10
+				TargetMetric: None
+				CheckRadius: 10c0
+		SupportPowerDecision@parabombs:
+			OrderName: UkraineParabombs
+			MinimumAttractiveness: 1
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: None
+				CheckRadius: 5c0
+		SupportPowerDecision@nukepower:
+			OrderName: NukePowerInfoOrder
+			MinimumAttractiveness: 3000
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 5c0
+			Consideration@2:
+				Against: Ally
+				Types: Air, Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 7c0
 

@@ -1,6 +1,4 @@
-Selectable: True
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,9 +14,11 @@ MapSize: 56,56
 
 Bounds: 16,16,24,24
 
-UseAsShellmap: False
+Visibility: Lobby
 
 Type: Minigame
+
+Videos:
 
 Options:
 	Crates: False
@@ -39,63 +39,63 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: allies
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi2,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi2, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi5, Multi6, Multi7
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi1,Multi6,Multi7
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi1, Multi6, Multi7
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi1,Multi7
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi1, Multi7
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi1
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi6, Multi1
 
 Actors:
 	Actor69: ftur
@@ -813,7 +813,6 @@ Rules:
 			Queue: Vehicle
 			BuildPaletteOrder: 30
 			Prerequisites: fix
-			Owner: allies
 		Valued:
 			Cost: 800
 		Tooltip:
@@ -833,6 +832,7 @@ Rules:
 		RenderUnit:
 			Image: MNLY
 		MustBeDestroyed:
+			RequiredForShortGame: true
 		Transforms:
 			IntoActor: ftur
 			Offset: 0,0
@@ -848,8 +848,7 @@ Rules:
 			Offset: 0,0
 			Facing: 96
 		MustBeDestroyed:
-		Building:
-			Power: 0
+			RequiredForShortGame: true
 		CashTrickler:
 			Period: 150
 			Amount: 30
@@ -864,27 +863,28 @@ Rules:
 			Duration: 999999
 			KillCargo: yes
 			Range: 3
-		IronCurtainPower:
+		GrantUpgradePower@IRONCURTAIN:
 			Icon: invuln
 			ChargeTime: 30
 			Description: Invulnerability
 			LongDesc: Makes a unit invulnerable\nfor 3 seconds.
-			Duration: 3
+			Duration: 75
 			SelectTargetSound: slcttgt1.aud
 			BeginChargeSound: ironchg1.aud
 			EndChargeSound: ironrdy1.aud
 			Range: 1
+			Upgrades: invulnerability
+		Power:
+			Amount: 0
 	MINVV:
 		Building:
 			Adjacent: 99
 			TerrainTypes: Clear,Road
-		ProvidesCustomPrerequisite:
+		ProvidesPrerequisite:
 			Prerequisite: MNLYVV
 		Buildable:
 			Queue: Building
 			BuildPaletteOrder: 30
-			Owner: allies, soviet
-			Hotkey: b
 		Valued:
 			Cost: 30
 		Health:
@@ -892,7 +892,6 @@ Rules:
 		RenderBuilding:
 			Image: miner
 			HasMakeAnimation: false
-		BelowUnits:
 		Tooltip:
 			Name: Bomb
 			Description: Bomb (Hotkey B)
@@ -929,28 +928,32 @@ Rules:
 			Duration: 999999
 			KillCargo: yes
 			Range: 3
-		IronCurtainPower:
+		GrantUpgradePower@IRONCURTAIN:
 			Icon: invuln
 			ChargeTime: 30
 			Description: Invulnerability
 			LongDesc: Makes a unit invulnerable\nfor 3 seconds.
-			Duration: 3
+			Duration: 75
 			SelectTargetSound: slcttgt1.aud
 			BeginChargeSound: ironchg1.aud
 			EndChargeSound: ironrdy1.aud
 			Range: 1
+			Upgrades: invulnerability
 
 Sequences:
 	miner:
 		idle:
 			Start: 0
 			Length: 1
+			ZOffset: -512
 		damaged-idle:
 			Start: 1
 			Length: *
+			ZOffset: -512
 		damaged-build:
 			Start: 1
 			Length: *
+			ZOffset: -512
 		icon: jmin
 			Start: 0
 	mnlyr:

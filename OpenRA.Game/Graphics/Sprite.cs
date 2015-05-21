@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,49 +14,39 @@ namespace OpenRA.Graphics
 {
 	public class Sprite
 	{
-		public readonly Rectangle bounds;
-		public readonly Sheet sheet;
-		public readonly BlendMode blendMode;
-		public readonly TextureChannel channel;
-		public readonly float2 size;
-		public readonly float2 offset;
-		readonly float2[] textureCoords;
+		public readonly Rectangle Bounds;
+		public readonly Sheet Sheet;
+		public readonly BlendMode BlendMode;
+		public readonly float Alpha;
+		public readonly TextureChannel Channel;
+		public readonly float2 Size;
+		public readonly float2 Offset;
+		public readonly float2 FractionalOffset;
+		public readonly float Top, Left, Bottom, Right;
 
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
-			: this(sheet, bounds, float2.Zero, channel, BlendMode.Alpha) {}
+			: this(sheet, bounds, float2.Zero, channel) { }
 
-		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel, BlendMode blendMode)
-			: this(sheet, bounds, float2.Zero, channel, blendMode) {}
-
-		public Sprite(Sheet sheet, Rectangle bounds, float2 offset, TextureChannel channel, BlendMode blendMode)
+		public Sprite(Sheet sheet, Rectangle bounds, float2 offset, TextureChannel channel, BlendMode blendMode = BlendMode.Alpha, float alpha = 1f)
 		{
-			this.sheet = sheet;
-			this.bounds = bounds;
-			this.offset = offset;
-			this.channel = channel;
-			this.size = new float2(bounds.Size);
-			this.blendMode = blendMode;
+			Sheet = sheet;
+			Bounds = bounds;
+			Offset = offset;
+			Channel = channel;
+			Size = new float2(bounds.Size);
+			BlendMode = blendMode;
+			Alpha = alpha;
 
-			var left = (float)(bounds.Left) / sheet.Size.Width;
-			var top = (float)(bounds.Top) / sheet.Size.Height;
-			var right = (float)(bounds.Right) / sheet.Size.Width;
-			var bottom = (float)(bounds.Bottom) / sheet.Size.Height;
-			textureCoords = new float2[]
-			{
-				new float2(left, top),
-				new float2(right, top),
-				new float2(left, bottom),
-				new float2(right, bottom),
-			};
-		}
+			FractionalOffset = offset / Size;
 
-		public float2 FastMapTextureCoords(int k)
-		{
-			return textureCoords[k];
+			Left = (float)bounds.Left / sheet.Size.Width;
+			Top = (float)bounds.Top / sheet.Size.Height;
+			Right = (float)bounds.Right / sheet.Size.Width;
+			Bottom = (float)bounds.Bottom / sheet.Size.Height;
 		}
 	}
 
-	public enum TextureChannel
+	public enum TextureChannel : byte
 	{
 		Red = 0,
 		Green = 1,

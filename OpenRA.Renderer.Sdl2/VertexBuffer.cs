@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,11 +14,12 @@ using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Renderer.Sdl2
 {
-	public class VertexBuffer<T> : IVertexBuffer<T>
+	public sealed class VertexBuffer<T> : IVertexBuffer<T>
 			where T : struct
 	{
 		static readonly int VertexSize = Marshal.SizeOf(typeof(T));
 		int buffer;
+		bool disposed;
 
 		public VertexBuffer(int size)
 		{
@@ -34,9 +35,14 @@ namespace OpenRA.Renderer.Sdl2
 
 		public void SetData(T[] data, int length)
 		{
+			SetData(data, 0, length);
+		}
+
+		public void SetData(T[] data, int start, int length)
+		{
 			Bind();
 			GL.BufferSubData(BufferTarget.ArrayBuffer,
-				IntPtr.Zero,
+				new IntPtr(VertexSize * start),
 				new IntPtr(VertexSize * length),
 				data);
 			ErrorHandler.CheckGlError();
@@ -52,7 +58,23 @@ namespace OpenRA.Renderer.Sdl2
 			ErrorHandler.CheckGlError();
 		}
 
-		void FinalizeInner() { GL.DeleteBuffers(1, ref buffer); }
-		~VertexBuffer() { Game.RunAfterTick(FinalizeInner); }
+		~VertexBuffer()
+		{
+			Game.RunAfterTick(() => Dispose(false));
+		}
+
+		public void Dispose()
+		{
+			Game.RunAfterTick(() => Dispose(true));
+			GC.SuppressFinalize(this);
+		}
+
+		void Dispose(bool disposing)
+		{
+			if (disposed)
+				return;
+			disposed = true;
+			GL.DeleteBuffers(1, ref buffer);
+		}
 	}
 }

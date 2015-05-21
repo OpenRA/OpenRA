@@ -1,6 +1,4 @@
-Selectable: True
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,9 +14,11 @@ MapSize: 64,64
 
 Bounds: 16,16,32,32
 
-UseAsShellmap: False
+Visibility: Lobby
 
 Type: Drop Zone
+
+Videos:
 
 Options:
 	Crates: True
@@ -45,56 +45,56 @@ Players:
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi2,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi2, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi5, Multi6, Multi7
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi1,Multi6,Multi7
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi1, Multi6, Multi7
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi1,Multi7
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi1, Multi7
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi1
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi6, Multi1
 
 Actors:
 	Actor0: apc
@@ -294,33 +294,28 @@ Rules:
 		CrateSpawner:
 			Maximum: 3
 			SpawnInterval: 5
+			CrateActors: unitcrate
 		-SpawnMPUnits:
 		-MPStartLocations:
-	CRATE:
-		-LevelUpCrateAction:
-		-GiveMcvCrateAction:
-		-RevealMapCrateAction:
-		-HideMapCrateAction:
-		-ExplodeCrateAction@nuke:
-		-ExplodeCrateAction@boom:
-		-ExplodeCrateAction@fire:
-		-SupportPowerCrateAction@parabombs:
-		-GiveCashCrateAction:
+	UNITCRATE:
+		Inherits: ^Crate
 		GiveUnitCrateAction@ttnk:
 			SelectionShares: 4
-			Unit: ttnk
+			Units: ttnk
 		GiveUnitCrateAction@ftrk:
 			SelectionShares: 6
-			Unit: ftrk
+			Units: ftrk
 		GiveUnitCrateAction@harv:
 			SelectionShares: 1
-			Unit: harv
+			Units: harv
 		GiveUnitCrateAction@shok:
 			SelectionShares: 1
-			Unit: shok
+			Units: shok
 		GiveUnitCrateAction@dog:
 			SelectionShares: 1
-			Unit: dog
+			Units: dog
+		Crate:
+			TerrainTypes: Clear, Road, Ore, Beach
 	^Infantry:
 		GivesBounty:
 			Percentage: 0
@@ -336,6 +331,7 @@ Rules:
 		RevealsShroud:
 			Range: 40c0
 		MustBeDestroyed:
+			RequiredForShortGame: true
 		-AttackMove:
 	HARV:
 		Tooltip:
@@ -362,12 +358,13 @@ VoxelSequences:
 
 Weapons:
 	PortaTesla:
-		ROF: 20
+		ReloadDelay: 20
 		Range: 10c0
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 42
-			InfDeath: 5
+			DeathType: 5
 			Damage: 80
+			DamageTypes: Prone50Percent, TriggerProne
 
 Voices:
 

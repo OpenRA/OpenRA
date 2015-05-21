@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -26,7 +26,8 @@ namespace OpenRA.Widgets
 
 		protected readonly World World;
 		readonly WorldRenderer worldRenderer;
-		int2 dragStart, dragEnd;
+		int2? dragStart, dragEnd;
+		int2 lastMousePosition;
 
 		[ObjectCreator.UseCtor]
 		public WorldInteractionControllerWidget(World world, WorldRenderer worldRenderer)
@@ -37,17 +38,17 @@ namespace OpenRA.Widgets
 
 		public override void Draw()
 		{
-			var selbox = SelectionBox;
-			if (selbox == null)
+			if (!IsDragging)
 			{
-				foreach (var u in SelectActorsInBox(World, dragStart, dragStart, _ => true))
+				foreach (var u in SelectActorsInBoxWithDeadzone(World, lastMousePosition, lastMousePosition, _ => true))
 					worldRenderer.DrawRollover(u);
 
 				return;
 			}
 
+			var selbox = SelectionBox;
 			Game.Renderer.WorldLineRenderer.DrawRect(selbox.Value.First.ToFloat2(), selbox.Value.Second.ToFloat2(), Color.White);
-			foreach (var u in SelectActorsInBox(World, selbox.Value.First, selbox.Value.Second, _ => true))
+			foreach (var u in SelectActorsInBoxWithDeadzone(World, selbox.Value.First, selbox.Value.Second, _ => true))
 				worldRenderer.DrawRollover(u);
 		}
 
@@ -65,83 +66,106 @@ namespace OpenRA.Widgets
 				if (!TakeMouseFocus(mi))
 					return false;
 
-				dragStart = dragEnd = xy;
+				dragStart = xy;
 
-				// place buildings
-				if (!useClassicMouseStyle || !World.Selection.Actors.Any())
-					ApplyOrders(World, xy, mi);
+				// Place buildings, use support powers, and other non-unit things
+				if (!(World.OrderGenerator is UnitOrderGenerator))
+				{
+					ApplyOrders(World, mi);
+					dragStart = dragEnd = null;
+					YieldMouseFocus(mi);
+					lastMousePosition = xy;
+					return true;
+				}
 			}
 
-			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move)
+			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move && dragStart.HasValue)
 				dragEnd = xy;
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-				if (useClassicMouseStyle && HasMouseFocus)
-				{
-					// order units around
-					if (!hasBox && World.Selection.Actors.Any() && !multiClick)
-					{
-						ApplyOrders(World, xy, mi);
-						YieldMouseFocus(mi);
-						return true;
-					}
-				}
-
 				if (World.OrderGenerator is UnitOrderGenerator)
 				{
+					if (useClassicMouseStyle && HasMouseFocus)
+					{
+						if (!hasBox && World.Selection.Actors.Any() && !multiClick)
+						{
+							if (!(World.ScreenMap.ActorsAt(xy).Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable &&
+								(x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x))).Any() && !mi.Modifiers.HasModifier(Modifiers.Ctrl) &&
+								!mi.Modifiers.HasModifier(Modifiers.Alt) && UnitOrderGenerator.InputOverridesSelection(World, xy, mi)))
+							{
+								// Order units instead of selecting
+								ApplyOrders(World, mi);
+								dragStart = dragEnd = null;
+								YieldMouseFocus(mi);
+								lastMousePosition = xy;
+								return true;
+							}
+						}
+					}
+
 					if (multiClick)
 					{
 						var unit = World.ScreenMap.ActorsAt(xy)
 							.WithHighestSelectionPriority();
 
-						var newSelection2 = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight, 
+						var newSelection2 = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,
 							a => unit != null && a.Info.Name == unit.Info.Name && a.Owner == unit.Owner);
 
 						World.Selection.Combine(World, newSelection2, true, false);
 					}
-					else
+					else if (dragStart.HasValue)
 					{
-						var newSelection = SelectActorsInBox(World, dragStart, xy, _ => true);
+						var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart.Value, xy, _ => true);
 						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 					}
 				}
 
-				dragStart = dragEnd = xy;
+				dragStart = dragEnd = null;
 				YieldMouseFocus(mi);
 			}
 
-			if (mi.Button == MouseButton.None && mi.Event == MouseInputEvent.Move)
-				dragStart = dragEnd = xy;
-
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
 			{
-				if (useClassicMouseStyle)
-					World.Selection.Clear();
+				// Don't do anything while selecting
+				if (!hasBox)
+				{
+					if (useClassicMouseStyle)
+						World.Selection.Clear();
 
-				if (!hasBox) // don't issue orders while selecting
-					ApplyOrders(World, xy, mi);
+					ApplyOrders(World, mi);
+				}
 			}
 
+			lastMousePosition = xy;
+
 			return true;
+		}
+
+		bool IsDragging
+		{
+			get
+			{
+				return dragStart.HasValue && dragEnd.HasValue && (dragStart.Value - dragEnd.Value).Length > Game.Settings.Game.SelectionDeadzone;
+			}
 		}
 
 		public Pair<int2, int2>? SelectionBox
 		{
 			get
 			{
-				if (dragStart == dragEnd) return null;
-				return Pair.New(dragStart, dragEnd);
+				if (!IsDragging) return null;
+				return Pair.New(dragStart.Value, dragEnd.Value);
 			}
 		}
 
-		void ApplyOrders(World world, int2 xy, MouseInput mi)
+		void ApplyOrders(World world, MouseInput mi)
 		{
 			if (world.OrderGenerator == null)
 				return;
 
-			var pos = worldRenderer.Position(xy);
-			var orders = world.OrderGenerator.Order(world, world.Map.CellContaining(pos), mi).ToArray();
+			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
+			var orders = world.OrderGenerator.Order(world, cell, mi).ToArray();
 			world.PlayVoiceForOrders(orders);
 
 			var flashed = false;
@@ -160,7 +184,8 @@ namespace OpenRA.Widgets
 					}
 					else if (o.TargetLocation != CPos.Zero)
 					{
-						world.AddFrameEndTask(w => w.Add(new SpriteEffect(worldRenderer.Position(worldRenderer.Viewport.ViewToWorldPx(mi.Location)), world, "moveflsh", "moveflash")));
+						var pos = world.Map.CenterOfCell(cell);
+						world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, world, "moveflsh", "moveflash")));
 						flashed = true;
 					}
 				}
@@ -177,14 +202,12 @@ namespace OpenRA.Widgets
 				if (SelectionBox != null)
 					return null;
 
-				var xy = worldRenderer.Viewport.ViewToWorldPx(screenPos);
-				var pos = worldRenderer.Position(xy);
-				var cell = World.Map.CellContaining(pos);
+				var cell = worldRenderer.Viewport.ViewToWorld(screenPos);
 
 				var mi = new MouseInput
 				{
 					Location = screenPos,
-					Button = Game.mouseButtonPreference.Action,
+					Button = Game.Settings.Game.MouseButtonPreference.Action,
 					Modifiers = Game.GetModifierKeys()
 				};
 
@@ -200,19 +223,19 @@ namespace OpenRA.Widgets
 
 				if (key == Game.Settings.Keys.PauseKey && World.LocalPlayer != null) // Disable pausing for spectators
 					World.SetPauseState(!World.Paused);
-				else if (key == Game.Settings.Keys.SelectAllUnitsKey)
+				else if (key == Game.Settings.Keys.SelectAllUnitsKey && World.LocalPlayer != null)
 				{
 					var ownUnitsOnScreen = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,
-						a => a.Owner == World.RenderPlayer);
+						a => a.Owner == World.LocalPlayer);
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
 				}
-				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey)
+				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey && World.LocalPlayer != null)
 				{
 					var selectedTypes = World.Selection.Actors
-						.Where(x => x.Owner == World.RenderPlayer)
+						.Where(x => x.Owner == World.LocalPlayer)
 						.Select(a => a.Info);
 
-					Func<Actor, bool> cond = a => a.Owner == World.RenderPlayer && selectedTypes.Contains(a.Info);
+					Func<Actor, bool> cond = a => a.Owner == World.LocalPlayer && selectedTypes.Contains(a.Info);
 					var tl = worldRenderer.Viewport.TopLeft;
 					var br = worldRenderer.Viewport.BottomRight;
 					var newSelection = SelectActorsInBox(World, tl, br, cond);
@@ -236,10 +259,18 @@ namespace OpenRA.Widgets
 			return false;
 		}
 
+		static IEnumerable<Actor> SelectActorsInBoxWithDeadzone(World world, int2 a, int2 b, Func<Actor, bool> cond)
+		{
+			if (a == b || (a - b).Length > Game.Settings.Game.SelectionDeadzone)
+				return SelectActorsInBox(world, a, b, cond);
+			else
+				return SelectActorsInBox(world, b, b, cond);
+		}
+
 		static IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b, Func<Actor, bool> cond)
 		{
 			return world.ScreenMap.ActorsInBox(a, b)
-				.Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable && !world.FogObscures(x) && cond(x))
+				.Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)) && cond(x))
 				.GroupBy(x => x.GetSelectionPriority())
 				.OrderByDescending(g => g.Key)
 				.Select(g => g.AsEnumerable())

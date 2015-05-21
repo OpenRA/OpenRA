@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -15,34 +15,37 @@ namespace OpenRA.Traits
 	public class CreatesShroudInfo : ITraitInfo
 	{
 		public readonly WRange Range = WRange.Zero;
-		public object Create(ActorInitializer init) { return new CreatesShroud(this); }
+
+		public object Create(ActorInitializer init) { return new CreatesShroud(init.Self, this); }
 	}
 
 	public class CreatesShroud : ITick, ISync
 	{
-		CreatesShroudInfo Info;
+		readonly CreatesShroudInfo info;
+		readonly bool lobbyShroudFogDisabled;
 		[Sync] CPos cachedLocation;
 		[Sync] bool cachedDisabled;
 
-		public CreatesShroud(CreatesShroudInfo info)
+		public CreatesShroud(Actor self, CreatesShroudInfo info)
 		{
-			Info = info;
+			this.info = info;
+			lobbyShroudFogDisabled = !self.World.LobbyInfo.GlobalSettings.Shroud && !self.World.LobbyInfo.GlobalSettings.Fog;
 		}
 
 		public void Tick(Actor self)
 		{
-			var disabled = self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
+			if (lobbyShroudFogDisabled)
+				return;
+
+			var disabled = self.IsDisabled();
 			if (cachedLocation != self.Location || cachedDisabled != disabled)
 			{
 				cachedLocation = self.Location;
 				cachedDisabled = disabled;
-
-				var shroud = self.World.Players.Select(p => p.Shroud);
-				foreach (var s in shroud)
-					s.UpdateShroudGeneration(self);
+				Shroud.UpdateShroudGeneration(self.World.Players.Select(p => p.Shroud), self);
 			}
 		}
 
-		public WRange Range { get { return cachedDisabled ? WRange.Zero : Info.Range; } }
+		public WRange Range { get { return cachedDisabled ? WRange.Zero : info.Range; } }
 	}
 }

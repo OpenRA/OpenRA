@@ -1,59 +1,98 @@
+nodInBaseTeam = { RushBuggy, RushRifle1, RushRifle2, RushRifle3 }
 MobileConstructionVehicle = { "mcv" }
 EngineerReinforcements = { "e6", "e6", "e6" }
 VehicleReinforcements = { "jeep" }
 
 AttackerSquadSize = 3
 
-MissionAccomplished = function()
-	Mission.MissionOver({ player }, nil, false)
-	Media.PlayMovieFullscreen("flag.vqa")
+ReinforceWithLandingCraft = function(units, transportStart, transportUnload, rallypoint)
+	local transport = Actor.Create("oldlst", true, { Owner = player, Facing = 0, Location = transportStart })
+	local subcell = 0
+	Utils.Do(units, function(a)
+		transport.LoadPassenger(Actor.Create(a, false, { Owner = transport.Owner, Facing = transport.Facing, Location = transportUnload, SubCell = subcell }))
+		subcell = subcell + 1
+	end)
+
+	transport.ScriptedMove(transportUnload)
+
+	transport.CallFunc(function()
+		Utils.Do(units, function()
+			local a = transport.UnloadPassenger()
+			a.IsInWorld = true
+			a.MoveIntoWorld(transport.Location - CVec.New(0, 1))
+
+			if rallypoint ~= nil then
+				a.Move(rallypoint)
+			end
+		end)
+	end)
+
+	transport.Wait(5)
+	transport.ScriptedMove(transportStart)
+	transport.Destroy()
 end
 
-MissionFailed = function()
-	Mission.MissionOver(nil, { player }, false)
-	Media.PlayMovieFullscreen("gameover.vqa")
-end
-
-ReinforceFromSea = function(passengers)
-	local hovercraft, troops = Reinforcements.Insert(player, "oldlst", passengers, { lstStart.Location, lstEnd.Location  }, { lstStart.Location })
-	Media.PlaySpeechNotification("Reinforce")
+Reinforce = function(units)
+	Media.PlaySpeechNotification(player, "Reinforce")
+	ReinforceWithLandingCraft(units, lstStart.Location, lstEnd.Location)
 end
 
 BridgeheadSecured = function()
-	ReinforceFromSea(MobileConstructionVehicle)
-	OpenRA.RunAfterDelay(25 * 15, NodAttack)
-	OpenRA.RunAfterDelay(25 * 30, function() ReinforceFromSea(EngineerReinforcements) end)
-	OpenRA.RunAfterDelay(25 * 60, function() ReinforceFromSea(VehicleReinforcements) end)
+	Reinforce(MobileConstructionVehicle)
+	Trigger.AfterDelay(DateTime.Seconds(15), NodAttack)
+	Trigger.AfterDelay(DateTime.Seconds(30), function() Reinforce(EngineerReinforcements) end)
+	Trigger.AfterDelay(DateTime.Seconds(120), function() Reinforce(VehicleReinforcements) end)
 end
 
 NodAttack = function()
-	local nodUnits = Mission.GetGroundAttackersOf(enemy)
+	local nodUnits = enemy.GetGroundAttackers()
 	if #nodUnits > AttackerSquadSize * 2 then
-		attackers = Utils.Skip(nodUnits, #nodUnits - AttackerSquadSize)
-		local attackSquad = Team.New(attackers)
-		Team.Do(attackSquad, function(unit)
-			Actor.AttackMove(unit, waypoint2.location)
-			Actor.Hunt(unit)
+		local attackers = Utils.Skip(nodUnits, #nodUnits - AttackerSquadSize)
+		Utils.Do(attackers, function(unit)
+			unit.AttackMove(NodAttackWaypoint.Location)
+			Trigger.OnIdle(unit, unit.Hunt)
 		end)
-		Team.AddEventHandler(attackSquad.OnAllKilled, OpenRA.RunAfterDelay(25 * 15, NodAttack))
+		Trigger.OnAllKilled(attackers, function() Trigger.AfterDelay(DateTime.Seconds(15), NodAttack) end)
 	end
 end
 
 WorldLoaded = function()
-	player = OpenRA.GetPlayer("GDI")
-	enemy = OpenRA.GetPlayer("Nod")
+	player = Player.GetPlayer("GDI")
+	enemy = Player.GetPlayer("Nod")
 
-	Media.PlayMovieFullscreen("gdi2.vqa")
+	Trigger.OnObjectiveAdded(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
+	end)
+	Trigger.OnObjectiveCompleted(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
+	end)
+	Trigger.OnObjectiveFailed(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
+	end)
 
-	nodInBaseTeam = Team.New({ RushBuggy, RushRifle1, RushRifle2, RushRifle3 })
-	Team.AddEventHandler(nodInBaseTeam.OnAllKilled, BridgeheadSecured)
+	Trigger.OnPlayerWon(player, function()
+		Media.PlaySpeechNotification(player, "Win")
+	end)
+
+	Trigger.OnPlayerLost(player, function()
+		Media.PlaySpeechNotification(player, "Lose")
+	end)
+
+	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops")
+	gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
+	gdiObjective2 = player.AddSecondaryObjective("Capture the Tiberium Refinery")
+
+	Trigger.OnCapture(NodRefinery, function() player.MarkCompletedObjective(gdiObjective2) end)
+	Trigger.OnKilled(NodRefinery, function() player.MarkFailedObjective(gdiObjective2) end)
+
+	Trigger.OnAllKilled(nodInBaseTeam, BridgeheadSecured)
 end
 
 Tick = function()
-	if Mission.RequiredUnitsAreDestroyed(player) then
-		MissionFailed()
+	if player.HasNoRequiredUnits() then
+		enemy.MarkCompletedObjective(nodObjective)
 	end
-	if Mission.RequiredUnitsAreDestroyed(enemy) then
-		MissionAccomplished()
+	if enemy.HasNoRequiredUnits() then
+		player.MarkCompletedObjective(gdiObjective1)
 	end
 end

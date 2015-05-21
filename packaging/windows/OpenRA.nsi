@@ -1,4 +1,4 @@
-; Copyright 2007-2014 OpenRA developers (see AUTHORS)
+; Copyright 2007-2015 OpenRA developers (see AUTHORS)
 ; This file is part of OpenRA.
 ;
 ;  OpenRA is free software: you can redistribute it and/or modify
@@ -18,9 +18,10 @@
 !include "MUI2.nsh"
 !include "FileFunc.nsh"
 !include "WordFunc.nsh"
+!include "nsProcess.nsh"
 
 Name "OpenRA"
-OutFile "OpenRA.exe"
+OutFile "OpenRA.Setup.exe"
 
 InstallDir $PROGRAMFILES\OpenRA
 InstallDirRegKey HKLM "Software\OpenRA" "InstallDir"
@@ -65,12 +66,12 @@ Section "Game" GAME
 	File /r "${SRCDIR}\mods\modchooser"
 
 	SetOutPath "$INSTDIR"
+	File "${SRCDIR}\OpenRA.exe"
 	File "${SRCDIR}\OpenRA.Game.exe"
+	File "${SRCDIR}\OpenRA.Game.exe.config"
 	File "${SRCDIR}\OpenRA.Utility.exe"
-	File "${SRCDIR}\OpenRA.CrashDialog.exe"
 	File "${SRCDIR}\OpenRA.Renderer.Null.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Sdl2.dll"
-	File "${SRCDIR}\OpenRA.Irc.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
 	File "${SRCDIR}\Mono.Nat.dll"
@@ -80,7 +81,6 @@ Section "Game" GAME
 	File "${SRCDIR}\CHANGELOG.html"
 	File "${SRCDIR}\CONTRIBUTING.html"
 	File "${SRCDIR}\DOCUMENTATION.html"
-	File "${SRCDIR}\*.ttf"
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\SDL2-CS.dll"
@@ -90,19 +90,16 @@ Section "Game" GAME
 	File "${SRCDIR}\Newtonsoft.Json.dll"
 	File "${SRCDIR}\RestSharp.dll"
 	File "${SRCDIR}\GeoLite2-Country.mmdb"
-	File "${SRCDIR}\KopiLua.dll"
-	File "${SRCDIR}\NLua.dll"
 	File "${SRCDIR}\eluant.dll"
 	File "${DEPSDIR}\soft_oal.dll"
 	File "${DEPSDIR}\SDL2.dll"
 	File "${DEPSDIR}\freetype6.dll"
-	File "${DEPSDIR}\zlib1.dll"
 	File "${DEPSDIR}\lua51.dll"
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA.lnk" $OUTDIR\OpenRA.Game.exe "" \
-			"$OUTDIR\OpenRA.Game.exe" "" "" "" ""
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA.lnk" $OUTDIR\OpenRA.exe "" \
+			"$OUTDIR\OpenRA.exe" "" "" "" ""
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\README.lnk" $OUTDIR\README.html "" \
 			"$OUTDIR\README.html" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
@@ -129,8 +126,8 @@ SectionEnd
 SectionGroup /e "Settings"
 	Section "Desktop Shortcut" DESKTOPSHORTCUT
 		SetOutPath "$INSTDIR"
-		CreateShortCut "$DESKTOP\OpenRA.lnk" $INSTDIR\OpenRA.Game.exe "" \
-			"$INSTDIR\OpenRA.Game.exe" "" "" "" ""
+		CreateShortCut "$DESKTOP\OpenRA.lnk" $INSTDIR\OpenRA.exe "" \
+			"$INSTDIR\OpenRA.exe" "" "" "" ""
 	SectionEnd
 SectionGroupEnd
 
@@ -185,14 +182,13 @@ Function ${UN}Clean
 	RMDir /r $INSTDIR\maps
 	RMDir /r $INSTDIR\glsl
 	RMDir /r $INSTDIR\lua
-	Delete $INSTDIR\OpenRA.Launcher.exe
+	Delete $INSTDIR\OpenRA.exe
 	Delete $INSTDIR\OpenRA.Game.exe
+	Delete $INSTDIR\OpenRA.Game.exe.config
 	Delete $INSTDIR\OpenRA.Utility.exe
-	Delete $INSTDIR\OpenRA.CrashDialog.exe
 	Delete $INSTDIR\OpenRA.Editor.exe
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll
 	Delete $INSTDIR\OpenRA.Renderer.Sdl2.dll
-	Delete $INSTDIR\OpenRA.Irc.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
 	Delete $INSTDIR\Mono.Nat.dll
@@ -204,7 +200,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\CONTRIBUTING.html
 	Delete $INSTDIR\DOCUMENTATION.html
 	Delete $INSTDIR\OpenRA.ico
-	Delete $INSTDIR\*.ttf
 	Delete "$INSTDIR\global mix database.dat"
 	Delete $INSTDIR\MaxMind.Db.dll
 	Delete $INSTDIR\MaxMind.GeoIP2.dll
@@ -212,14 +207,12 @@ Function ${UN}Clean
 	Delete $INSTDIR\RestSharp.dll
 	Delete $INSTDIR\GeoLite2-Country.mmdb
 	Delete $INSTDIR\KopiLua.dll
-	Delete $INSTDIR\NLua.dll
-	Delete $INSTDIR\SDL2-CS.dll
 	Delete $INSTDIR\soft_oal.dll
 	Delete $INSTDIR\SDL2.dll
 	Delete $INSTDIR\lua51.dll
 	Delete $INSTDIR\eluant.dll
 	Delete $INSTDIR\freetype6.dll
-	Delete $INSTDIR\zlib1.dll
+	Delete $INSTDIR\SDL2-CS.dll
 	RMDir /r $INSTDIR\Support
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"
 	Delete $INSTDIR\uninstaller.exe
@@ -236,7 +229,19 @@ FunctionEnd
 !insertmacro Clean "un."
 
 Section "Uninstall"
+	${nsProcess::FindProcess} "OpenRA.Game.exe" $R0
+	IntCmp $R0 0 gameRunning
+	${nsProcess::FindProcess} "OpenRA.exe" $R0
+	IntCmp $R0 0 gameRunning
+	${nsProcess::FindProcess} "OpenRA.Editor.exe" $R0
+	IntCmp $R0 0 gameRunning
+	${nsProcess::Unload}
 	Call un.Clean
+	Goto end
+	gameRunning:
+		MessageBox MB_OK|MB_ICONEXCLAMATION "OpenRA is running. Please close it first" /SD IDOK
+		abort
+	end:
 SectionEnd
 
 ;***************************

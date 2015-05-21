@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,7 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -28,7 +30,15 @@ namespace OpenRA
 	// Used for verifying map availability in the lobby
 	public enum MapRuleStatus { Unknown, Cached, Invalid }
 
-	// Fields names must match the with the remote API
+	[SuppressMessage("StyleCop.CSharp.NamingRules",
+		"SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
+		Justification = "Fields names must match the with the remote API.")]
+	[SuppressMessage("StyleCop.CSharp.NamingRules",
+		"SA1304:NonPrivateReadonlyFieldsMustBeginWithUpperCaseLetter",
+		Justification = "Fields names must match the with the remote API.")]
+	[SuppressMessage("StyleCop.CSharp.NamingRules",
+		"SA1310:FieldNamesMustNotContainUnderscore",
+		Justification = "Fields names must match the with the remote API.")]
 	public class RemoteMapData
 	{
 		public readonly string title;
@@ -36,14 +46,14 @@ namespace OpenRA
 		public readonly string map_type;
 		public readonly int players;
 		public readonly Rectangle bounds;
-		public readonly int[] spawnpoints = {};
+		public readonly int[] spawnpoints = { };
 		public readonly string minimap;
 		public readonly bool downloading;
 	}
 
 	public class MapPreview
 	{
-		static readonly List<CPos> NoSpawns = new List<CPos>();
+		static readonly CPos[] NoSpawns = new CPos[] { };
 		MapCache cache;
 
 		public readonly string Uid;
@@ -51,12 +61,13 @@ namespace OpenRA
 		public string Type { get; private set; }
 		public string Author { get; private set; }
 		public int PlayerCount { get; private set; }
-		public List<CPos> SpawnPoints { get; private set; }
+		public CPos[] SpawnPoints { get; private set; }
 		public Rectangle Bounds { get; private set; }
 		public Bitmap CustomPreview { get; private set; }
 		public Map Map { get; private set; }
 		public MapStatus Status { get; private set; }
 		public MapClassification Class { get; private set; }
+		public bool SuitableForInitialMap { get; private set; }
 
 		public MapRuleStatus RuleStatus { get; private set; }
 
@@ -107,12 +118,36 @@ namespace OpenRA
 			Type = m.Type;
 			Type = m.Type;
 			Author = m.Author;
-			PlayerCount = m.Players.Count(x => x.Value.Playable);
 			Bounds = m.Bounds;
-			SpawnPoints = m.GetSpawnPoints().ToList();
+			SpawnPoints = m.SpawnPoints.Value;
 			CustomPreview = m.CustomPreview;
 			Status = MapStatus.Available;
 			Class = classification;
+
+			var players = new MapPlayers(m.PlayerDefinitions).Players;
+			PlayerCount = players.Count(x => x.Value.Playable);
+
+			SuitableForInitialMap = EvaluateUserFriendliness(players);
+		}
+
+		bool EvaluateUserFriendliness(Dictionary<string, PlayerReference> players)
+		{
+			if (Status != MapStatus.Available || !Map.Visibility.HasFlag(MapVisibility.Lobby))
+				return false;
+
+			// Other map types may have confusing settings or gameplay
+			if (Type != "Conquest")
+				return false;
+
+			// Maps with bots disabled confuse new players
+			if (players.Any(x => !x.Value.AllowBots))
+				return false;
+
+			// Large maps expose unfortunate performance problems
+			if (Bounds.Width > 128 || Bounds.Height > 128)
+				return false;
+
+			return true;
 		}
 
 		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml)
@@ -140,14 +175,14 @@ namespace OpenRA
 						PlayerCount = r.players;
 						Bounds = r.bounds;
 
-						var spawns = new List<CPos>();
+						var spawns = new CPos[r.spawnpoints.Length / 2];
 						for (var j = 0; j < r.spawnpoints.Length; j += 2)
-							spawns.Add(new CPos(r.spawnpoints[j], r.spawnpoints[j+1]));
+							spawns[j / 2] = new CPos(r.spawnpoints[j], r.spawnpoints[j + 1]);
 						SpawnPoints = spawns;
 
 						CustomPreview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
 					}
-					catch (Exception) {}
+					catch (Exception) { }
 
 					if (CustomPreview != null)
 						cache.CacheMinimap(this);
@@ -164,7 +199,7 @@ namespace OpenRA
 				return;
 
 			Status = MapStatus.Downloading;
-			var baseMapPath = new[] { Platform.SupportDir, "maps", Game.modData.Manifest.Mod.Id }.Aggregate(Path.Combine);
+			var baseMapPath = Platform.ResolvePath("^", "maps", Game.ModData.Manifest.Mod.Id);
 
 			// Create the map directory if it doesn't exist
 			if (!Directory.Exists(baseMapPath))
@@ -177,7 +212,6 @@ namespace OpenRA
 				var mapUrl = Game.Settings.Game.MapRepository + Uid;
 				try
 				{
-
 					var request = WebRequest.Create(mapUrl);
 					request.Method = "HEAD";
 					var res = request.GetResponse();
@@ -237,16 +271,8 @@ namespace OpenRA
 			if (RuleStatus != MapRuleStatus.Unknown)
 				return;
 
-			try
-			{
-				Map.PreloadRules();
-				RuleStatus = MapRuleStatus.Cached;
-			}
-			catch (Exception e)
-			{
-				Log.Write("debug", "Map {0} failed validation with an exception:\n{1}", Uid, e.Message);
-				RuleStatus = MapRuleStatus.Invalid;
-			}
+			Map.PreloadRules();
+			RuleStatus = Map.InvalidCustomRules ? MapRuleStatus.Invalid : MapRuleStatus.Cached;
 		}
 	}
 }

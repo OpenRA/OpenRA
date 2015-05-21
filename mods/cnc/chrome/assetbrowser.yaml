@@ -100,6 +100,10 @@ Container@ASSETBROWSER_PANEL:
 						Sprite@SPRITE:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
+						VqaPlayer@PLAYER:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							AspectRatio: 1
 				Container@FRAME_SELECTOR:
 					X: 190
 					Y: 395
