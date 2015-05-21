@@ -612,6 +612,8 @@
 		StartsRevealed: true
 	ScriptTriggers:
 	WithMakeAnimation:
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
 
 ^Husk:
 	Health:

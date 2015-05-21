@@ -252,6 +252,8 @@
 	MustBeDestroyed:
 	AnnounceOnSeen:
 		Notification: EnemyDetected
+	EditorTilesetFilter:
+		ExcludeTilesets: INTERIOR
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -471,6 +473,8 @@
 		Palette: terrain
 	EditorAppearance:
 		UseTerrainPalette: true
+	EditorTilesetFilter:
+		ExcludeTilesets: INTERIOR
 
 ^CivField:
 	Inherits: ^CivBuilding
@@ -481,6 +485,8 @@
 	-Demolishable:
 	ProximityCaptor:
 		Types: CivilianField
+	EditorTilesetFilter:
+		ExcludeTilesets: INTERIOR
 
 ^Tree:
 	Tooltip:
@@ -507,6 +513,8 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
+	EditorTilesetFilter:
+		ExcludeTilesets: INTERIOR
 
 ^Husk:
 	Husk:
@@ -599,11 +607,15 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
 
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding
 	RenderBuilding:
 		Palette: terrain
+	EditorTilesetFilter:
+		RequireTilesets: DESERT
 
 ^Crate:
 	Tooltip:
