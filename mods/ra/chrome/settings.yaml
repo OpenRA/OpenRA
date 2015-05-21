@@ -331,6 +331,13 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Left-Click Orders
+				Checkbox@STICKYSELECTION_CHECKBOX:
+					X: 175
+					Y: 40
+					Width: 250
+					Height: 20
+					Font: Regular
+					Text: Sticky Selection
 				Label@MOUSE_SCROLL_LABEL:
 					X: PARENT_RIGHT - WIDTH - 120
 					Y: 39
