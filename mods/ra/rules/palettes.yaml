@@ -10,6 +10,10 @@
 		Filename: temperat.pal
 		ShadowIndex: 3
 		AllowModifiers: false
+	PaletteFromFile@cameo-chevron:
+		Name: cameo-chevron
+		Filename: cameo-chevron.pal
+		AllowModifiers: false
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: temperat.pal

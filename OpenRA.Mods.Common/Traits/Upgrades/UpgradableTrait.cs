@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 	/// Abstract base for enabling and disabling trait using upgrades.
 	/// Requires basing *Info on UpgradableTraitInfo and using base(info) constructor.
 	/// Note that EnabledByUpgrade is not called at creation even if this starts as enabled.
-	/// </summary>,
+	/// </summary>
 	public abstract class UpgradableTrait<InfoType> : IUpgradable, IDisabledTrait, ISync where InfoType : UpgradableTraitInfo
 	{
 		public readonly InfoType Info;

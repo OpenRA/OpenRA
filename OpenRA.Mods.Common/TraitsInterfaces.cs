@@ -73,6 +73,15 @@ namespace OpenRA.Mods.Common.Traits
 		void PrerequisitesItemVisible(string key);
 	}
 
+	public interface IProductionIconOverlay
+	{
+		Sprite Sprite();
+		string Palette();
+		float Scale();
+		float2 Offset(float2 iconSize);
+		bool IsOverlayActive(ActorInfo ai);
+	}
+
 	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
 
 	public interface IAcceptResources

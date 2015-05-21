@@ -351,10 +351,17 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var buildableItems = CurrentQueue.BuildableItems();
 
+			var pio = currentQueue.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>().FirstOrDefault();
+			var pioOffset = pio != null ? pio.Offset(IconSize) : new float2(0, 0);
+
 			// Icons
 			foreach (var icon in icons.Values)
 			{
 				WidgetUtils.DrawSHPCentered(icon.Sprite, icon.Pos + iconOffset, icon.Palette);
+
+				// Draw the ProductionIconOverlay's sprite
+				if (pio != null && pio.IsOverlayActive(icon.Actor))
+					WidgetUtils.DrawSHPCentered(pio.Sprite(), icon.Pos + iconOffset + pioOffset, worldRenderer.Palette(pio.Palette()), pio.Scale());
 
 				// Build progress
 				if (icon.Queued.Count > 0)
