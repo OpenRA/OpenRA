@@ -621,7 +621,8 @@ local function remapkey(event)
   local keycode = event:GetKeyCode()
   local mod = event:GetModifiers()
   for id, obj in pairs(remap) do
-    if obj:FindFocus():GetId() == obj:GetId() then
+    local focus = obj:FindFocus()
+    if focus and focus:GetId() == obj:GetId() then
       local ae = wx.wxAcceleratorEntry(); ae:FromString(KSC(id))
       if ae:GetFlags() == mod and ae:GetKeyCode() == keycode then
         rerouteMenuCommand(obj, id)
