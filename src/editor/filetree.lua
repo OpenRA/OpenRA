@@ -288,9 +288,9 @@ local function treeSetConnectorsAndIcons(tree)
     end
 
     -- check if existing file/dir is going to be overwritten
-    if (wx.wxFileExists(target) or wx.wxDirExists(target))
-    and not wx.wxFileName(source):SameAs(fn)
-    and not ApproveFileOverwrite() then return false end
+    local overwrite = ((wx.wxFileExists(target) or wx.wxDirExists(target))
+      and not wx.wxFileName(source):SameAs(fn))
+    if overwrite and not ApproveFileOverwrite() then return false end
 
     if not fn:Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL) then
       ReportError(TR("Unable to create directory '%s'."):format(target))
@@ -334,6 +334,13 @@ local function treeSetConnectorsAndIcons(tree)
         tree:SetScrollPos(wx.wxHORIZONTAL, 0, true)
       end
     end
+
+    -- refresh the target if it's open and has been overwritten
+    if overwrite and not isdir then
+      local doc = ide:FindDocument(target)
+      if doc then LoadFile(doc:GetFilePath(), doc:GetEditor()) end
+    end
+
     return true
   end
   local function deleteItem(item_id)
