@@ -161,6 +161,7 @@ Vehicle:
 		Select: 25-I000, 25-I002, 25-I004, 25-I006
 		Move: 25-I012, 25-I014, 25-I016, 25-I018, 25-I022
 		Attack: 25-I014, 25-I022, 25-I024, 25-I026
+		Unload: 25-I018
 
 Mech:
 	Voices:

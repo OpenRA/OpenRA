@@ -18,6 +18,7 @@ VehicleVoice:
 	Voices:
 		Select: vehic1,yessir1,report1,await1,unit1
 		Move: ackno,affirm1,movout1
+		Unload: movout1
 
 CivilianMaleVoice:
 	Voices:

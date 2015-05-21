@@ -27,6 +27,7 @@ VehicleVoice:
 	Voices:
 		Select: vehic1,yessir1,report1,await1
 		Move: ackno,affirm1
+		Unload: ackno,affirm1
 
 EngineerVoice:
 	Voices:
