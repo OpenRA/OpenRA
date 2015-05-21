@@ -42,8 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (info.DeathTypes.Contains(e.Warhead.DeathType) || (!info.DeathTypes.Any() &&
 				!self.Info.Traits.WithInterface<DeathSoundsInfo>().Any(dsi => dsi.DeathTypes.Contains(e.Warhead.DeathType))))
-				foreach (var voiced in self.TraitsImplementing<IVoiced>())
-					voiced.PlayVoiceLocal(self, info.DeathSound, self.Owner.Country.Race, info.VolumeMultiplier);
+				self.PlayVoiceLocal(self, info.DeathSound, self.Owner.Country.Race, info.VolumeMultiplier);
 		}
 	}
 }

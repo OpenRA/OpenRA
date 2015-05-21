@@ -39,6 +39,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Terrain types that this actor is allowed to eject actors onto. Leave empty for all terrain types.")]
 		public readonly string[] UnloadTerrainTypes = { };
 
+		[Desc("Voice to play when ordered to unload the passengers.")]
+		public readonly string UnloadVoice = "Unload";
+
 		[Desc("Which direction the passenger will face (relative to the transport) when unloading.")]
 		public readonly int PassengerFacing = 128;
 
@@ -204,10 +207,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "Unload" || IsEmpty(self))
+			if (order.OrderString != "Unload" || IsEmpty(self) || !self.HasVoice(Info.UnloadVoice))
 				return null;
 
-			return self.TraitsImplementing<IVoiced>().Any(x => x.HasVoice(self, "Unload")) ? "Unload" : "Move";
+			return Info.UnloadVoice;
 		}
 
 		public bool MoveDisabled(Actor self) { return reserves.Any(); }

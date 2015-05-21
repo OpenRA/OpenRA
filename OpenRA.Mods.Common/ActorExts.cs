@@ -80,6 +80,39 @@ namespace OpenRA.Mods.Common
 			return Target.Invalid;
 		}
 
+		public static void PlayVoice(this Actor self, Actor actor, string phrase, string variant)
+		{
+			foreach (var voiced in self.TraitsImplementing<IVoiced>())
+			{
+				if (phrase == null)
+					return;
+
+				if (string.IsNullOrEmpty(voiced.VoiceSet))
+					return;
+
+				voiced.PlayVoice(self, phrase, variant);
+			}
+		}
+
+		public static void PlayVoiceLocal(this Actor self, Actor actor, string phrase, string variant, float volume)
+		{
+			foreach (var voiced in self.TraitsImplementing<IVoiced>())
+			{
+				if (phrase == null)
+					return;
+
+				if (string.IsNullOrEmpty(voiced.VoiceSet))
+					return;
+
+				voiced.PlayVoiceLocal(self, phrase, variant, volume);
+			}
+		}
+
+		public static bool HasVoice(this Actor self, string voice)
+		{
+			return self.TraitsImplementing<IVoiced>().Any(x => x.HasVoice(self, voice));
+		}
+
 		public static void NotifyBlocker(this Actor self, IEnumerable<Actor> blockers)
 		{
 			foreach (var blocker in blockers)

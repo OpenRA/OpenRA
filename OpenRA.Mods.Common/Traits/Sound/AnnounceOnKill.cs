@@ -39,8 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (e.DamageState == DamageState.Dead && damaged != e.Attacker)
 			{
 				if (self.World.WorldTick - lastAnnounce > info.Interval * 25)
-					foreach (var voiced in self.TraitsImplementing<IVoiced>())
-						voiced.PlayVoice(self, "Kill", self.Owner.Country.Race);
+					self.PlayVoice(self, "Kill", self.Owner.Country.Race);
 
 				lastAnnounce = self.World.WorldTick;
 			}
