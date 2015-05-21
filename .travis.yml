@@ -48,7 +48,7 @@ notifications:
     skip_join: true
 
 before_deploy:
- - sudo apt-get install nsis nsis-common dpkg
+ - sudo apt-get install nsis nsis-common dpkg markdown
  - export PATH=$PATH:$HOME/usr/bin
  - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
  - cd packaging
