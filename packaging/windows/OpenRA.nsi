@@ -53,7 +53,21 @@ Var StartMenuFolder
 ;Section Definitions
 ;***************************
 Section "-Reg" Reg
+
+	; Installation directory
 	WriteRegStr HKLM "Software\OpenRA" "InstallDir" $INSTDIR
+	
+	; Replay file association
+	WriteRegStr HKLM "Software\Classes\.orarep" "" "OpenRA_replay"
+	WriteRegStr HKLM "Software\Classes\OpenRA_replay\DefaultIcon" "" "$INSTDIR\OpenRA.ico,0"
+	WriteRegStr HKLM "Software\Classes\OpenRA_replay\Shell\Open\Command" "" "$INSTDIR\OpenRA.exe Launch.Replay=%1"
+	
+	; OpenRA URL Scheme
+	WriteRegStr HKLM "Software\Classes\openra" "" "URL:OpenRA scheme"
+	WriteRegStr HKLM "Software\Classes\openra" "URL Protocol" ""
+	WriteRegStr HKLM "Software\Classes\openra\DefaultIcon" "" "$INSTDIR\OpenRA.ico,0"
+	WriteRegStr HKLM "Software\Classes\openra\Shell\Open\Command" "" "$INSTDIR\OpenRA.exe Launch.URI=%1"
+	
 SectionEnd
 
 Section "Game" GAME
