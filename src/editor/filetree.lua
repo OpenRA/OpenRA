@@ -322,8 +322,12 @@ local function treeSetConnectorsAndIcons(tree)
         -- /foo/baz/bar/file.lua, so change /foo/bar to /foo/baz/bar
         local path = (not iscaseinsensitive and fullpath:gsub(q(source), target)
           or fullpath:lower():gsub(q(source:lower()), target))
-        LoadFile(path, doc.editor)
-        if not isdir then PackageEventHandle("onEditorSave", doc.editor) end
+        local editor = LoadFile(path)
+        -- check if the file was loaded into another editor;
+        -- this is possible is "foo" is renamed to "bar" and both are opened;
+        -- if this happens, then "bar" is refreshed and "foo" can be closed.
+        if doc.editor:GetId() ~= editor:GetId() then ClosePage(doc.index) end
+        if not isdir and editor then PackageEventHandle("onEditorSave", editor) end
       end
     else -- refresh the tree and select the new item
       local itemdst = tree:FindItem(target)
