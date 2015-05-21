@@ -59,8 +59,7 @@ namespace OpenRA
 
 			var voicedActor = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasTrait<IVoiced>());
 			if (voicedActor != null)
-				foreach (var voice in voicedActor.TraitsImplementing<IVoiced>())
-					voice.PlayVoice(voicedActor, "Select", voicedActor.Owner.Country.Race);
+				voicedActor.PlayVoice("Select");
 
 			foreach (var a in newSelection)
 				foreach (var sel in a.TraitsImplementing<INotifySelected>())

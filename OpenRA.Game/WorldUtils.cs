@@ -42,26 +42,6 @@ namespace OpenRA
 			}
 		}
 
-		public static void PlayVoiceForOrders(this World w, Order[] orders)
-		{
-			// Find an actor with a phrase to say
-			foreach (var o in orders)
-			{
-				if (o == null)
-					continue;
-
-				var orderSubject = o.Subject;
-				if (orderSubject.Destroyed)
-					continue;
-
-				foreach (var voice in orderSubject.TraitsImplementing<IVoiced>())
-					foreach (var v in orderSubject.TraitsImplementing<IOrderVoice>())
-						if (voice.PlayVoice(orderSubject, v.VoicePhraseForOrder(orderSubject, o),
-							orderSubject.Owner.Country.Race))
-							return;
-			}
-		}
-
 		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text)
 		{
 			// Note - manual enumeration here for performance due to high call volume.
