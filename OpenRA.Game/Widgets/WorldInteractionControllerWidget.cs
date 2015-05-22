@@ -109,10 +109,13 @@ namespace OpenRA.Widgets
 						var unit = World.ScreenMap.ActorsAt(xy)
 							.WithHighestSelectionPriority();
 
-						var newSelection2 = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,
-							a => unit != null && a.Info.Name == unit.Info.Name && a.Owner == unit.Owner);
+						if (unit != null && unit.Owner == (World.RenderPlayer ?? World.LocalPlayer))
+						{
+							var newSelection2 = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,
+								a => a.Owner == unit.Owner && a.Info.Name == unit.Info.Name);
 
-						World.Selection.Combine(World, newSelection2, true, false);
+							World.Selection.Combine(World, newSelection2, true, false);
+						}
 					}
 					else if (dragStart.HasValue)
 					{
@@ -217,25 +220,27 @@ namespace OpenRA.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
+			var player = World.RenderPlayer ?? World.LocalPlayer;
+
 			if (e.Event == KeyInputEvent.Down)
 			{
 				var key = Hotkey.FromKeyInput(e);
 
 				if (key == Game.Settings.Keys.PauseKey && World.LocalPlayer != null) // Disable pausing for spectators
 					World.SetPauseState(!World.Paused);
-				else if (key == Game.Settings.Keys.SelectAllUnitsKey && World.LocalPlayer != null)
+				else if (key == Game.Settings.Keys.SelectAllUnitsKey)
 				{
 					var ownUnitsOnScreen = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,
-						a => a.Owner == World.LocalPlayer);
+						a => a.Owner == player);
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
 				}
-				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey && World.LocalPlayer != null)
+				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey)
 				{
 					var selectedTypes = World.Selection.Actors
-						.Where(x => x.Owner == World.LocalPlayer)
+						.Where(x => x.Owner == player)
 						.Select(a => a.Info);
 
-					Func<Actor, bool> cond = a => a.Owner == World.LocalPlayer && selectedTypes.Contains(a.Info);
+					Func<Actor, bool> cond = a => a.Owner == player && selectedTypes.Contains(a.Info);
 					var tl = worldRenderer.Viewport.TopLeft;
 					var br = worldRenderer.Viewport.BottomRight;
 					var newSelection = SelectActorsInBox(World, tl, br, cond);
