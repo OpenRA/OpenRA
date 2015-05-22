@@ -112,10 +112,22 @@ namespace OpenRA.Mods.RA.Traits
 
 			if (target != null)
 			{
-				var tooltip = target.TraitsImplementing<IToolTip>().FirstOrDefault();
-				AsTooltipInfo = tooltip.TooltipInfo;
-				AsPlayer = tooltip.Owner;
-				AsSprite = target.Trait<RenderSprites>().GetImage(target);
+				// Take the image of the target's disguise, if it exist.
+				// E.g., SpyA is disguised as a dog. SpyB then targets SpyA. We should use the dog image.
+				var targetDisguise = target.TraitOrDefault<Disguise>();
+				if (targetDisguise != null && targetDisguise.Disguised)
+				{
+					AsSprite = targetDisguise.AsSprite;
+					AsPlayer = targetDisguise.AsPlayer;
+					AsTooltipInfo = targetDisguise.AsTooltipInfo;
+				}
+				else
+				{
+					AsSprite = target.Trait<RenderSprites>().GetImage(target);
+					var tooltip = target.TraitsImplementing<IToolTip>().FirstOrDefault();
+					AsPlayer = tooltip.Owner;
+					AsTooltipInfo = tooltip.TooltipInfo;
+				}
 			}
 			else
 			{
