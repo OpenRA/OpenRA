@@ -221,7 +221,7 @@ function FileSysGetRecursive(path, recursive, spec, opts)
     local found, file = dir:GetFirst("*", wx.wxDIR_DIRS)
     while found do
       local fname = wx.wxFileName(path, file):GetFullPath()
-      if optfolder and ismatch(fname..sep, nil, exmasks) then
+      if optfolder and ismatch(fname..sep, inmasks, exmasks) then
         report((optpath and fname or fname:gsub(pathpatt, ""))..sep)
       end
 

@@ -13,7 +13,10 @@ ClosePage() -- close activated file
 local luas = FileSysGetRecursive('.', true, '*.lua')
 local more = FileSysGetRecursive('.', true, '*.lua; *.more')
 cmp_ok(#luas, '>', 0, "List of files is returned for '.lua' extension")
-is(#luas, #more, "List of files is returned for '.lua' and '.lua; .more' is the same")
+is(#luas, #more, "List of files is returned for '.lua' and '.lua; .more' is the same.")
+
+local luasnodir = FileSysGetRecursive('.', true, '*.lua', {folder = false})
+is(#luas, #luasnodir, "List of files is returned for '.lua' does not include folders.")
 
 local fcopy = "t/copy.lua!"
 ok(FileCopy("t/test.lua", fcopy), "File copied successfully.")
