@@ -51,13 +51,6 @@ namespace OpenRA.Mods.Common.Traits
 			var fi = actorToProduce.Traits.GetOrDefault<IFacingInfo>();
 			var initialFacing = exitInfo.Facing < 0 ? Util.GetFacing(to - spawn, fi == null ? 0 : fi.GetInitialFacing()) : exitInfo.Facing;
 
-			var exitLocation = RallyPoint.Value != null ? RallyPoint.Value.Location : exit;
-			var target = Target.FromCell(self.World, exitLocation);
-
-			var bi = actorToProduce.Traits.GetOrDefault<BuildableInfo>();
-			if (bi != null && bi.ForceRace != null)
-				raceVariant = bi.ForceRace;
-
 			var td = new TypeDictionary
 			{
 				new OwnerInit(self.Owner),
@@ -69,43 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!string.IsNullOrEmpty(raceVariant))
 				td.Add(new RaceInit(raceVariant));
 
-			var newUnit = self.World.CreateActor(false, actorToProduce.Name, td);
-
-			self.World.AddFrameEndTask(w =>
-			{
-				self.World.Add(newUnit);
-				var move = newUnit.TraitOrDefault<IMove>();
-				if (move != null)
-				{
-					if (exitInfo.MoveIntoWorld)
-					{
-						if (exitInfo.ExitDelay > 0)
-							newUnit.QueueActivity(new Wait(exitInfo.ExitDelay));
-
-						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
-						newUnit.QueueActivity(new AttackMoveActivity(
-							newUnit, move.MoveTo(exitLocation, 1)));
-					}
-				}
-
-				newUnit.SetTargetLine(target, RallyPoint.Value != null ? Color.Red : Color.Green, false);
-
-				if (!self.IsDead)
-					foreach (var t in self.TraitsImplementing<INotifyProduction>())
-						t.UnitProduced(self, newUnit, exit);
-
-				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
-				foreach (var notify in notifyOthers)
-					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
-
-				if (bi != null && bi.InitialActivity != null)
-					newUnit.QueueActivity(Game.CreateObject<Activity>(bi.InitialActivity));
-
-				foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
-					t.BuildingComplete(newUnit);
-			});
-
-			return newUnit;
+			return self.World.CreateActor(false, actorToProduce.Name, td);
 		}
 
 		public virtual bool Produce(Actor self, IEnumerable<ActorInfo> actorsToProduce, string raceVariant)
@@ -117,10 +74,21 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var actorInfo in actorsToProduce)
 			{
-				// pick a spawn/exit point pair
+				// Pick a spawn/exit point pair
 				var exit = GetAvailableExit(self, actorInfo);
 				if (exit != null)
-					DoProduction(self, actorInfo, exit, raceVariant);
+				{
+					var newUnit = DoProduction(self, actorInfo, exit, raceVariant);
+
+					var exitLocation = self.Location + exit.ExitCell;
+					var targetLocation = RallyPoint.Value != null ? RallyPoint.Value.Location : exitLocation;
+
+					self.World.AddFrameEndTask(w =>
+					{
+						MoveIntoWorld(w, newUnit, exit, exitLocation, targetLocation);
+						NotifyProduction(self, newUnit, exitLocation);
+					});
+				}
 				else
 					allProduced = false;
 			}
@@ -142,6 +110,39 @@ namespace OpenRA.Mods.Common.Traits
 
 			return mobileInfo == null ||
 				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCell, self);
+		}
+
+		public void MoveIntoWorld(World world, Actor newActor, ExitInfo chosenExit, CPos exitLocation, CPos targetLocation)
+		{
+			world.Add(newActor);
+
+			var move = newActor.TraitOrDefault<IMove>();
+			if (move != null && chosenExit.MoveIntoWorld)
+			{
+				newActor.QueueActivity(move.MoveIntoWorld(newActor, exitLocation));
+				newActor.QueueActivity(new AttackMoveActivity(newActor, move.MoveTo(targetLocation, 1)));
+			}
+
+			var target = Target.FromCell(world, targetLocation);
+			newActor.SetTargetLine(target, RallyPoint.Value != null ? Color.Red : Color.Green, false);
+
+			var bi = newActor.Info.Traits.GetOrDefault<BuildableInfo>();
+			if (bi != null && bi.InitialActivity != null)
+				newActor.QueueActivity(Game.CreateObject<Activity>(bi.InitialActivity));
+		}
+
+		public static void NotifyProduction(Actor self, Actor newActor, CPos exitLocation)
+		{
+			if (!self.IsDead)
+				foreach (var t in self.TraitsImplementing<INotifyProduction>())
+					t.UnitProduced(self, newActor, exitLocation);
+
+			var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
+			foreach (var notify in notifyOthers)
+				notify.Trait.UnitProducedByOther(notify.Actor, self, newActor);
+
+			foreach (var t in newActor.TraitsImplementing<INotifyBuildComplete>())
+				t.BuildingComplete(newActor);
 		}
 	}
 }

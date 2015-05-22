@@ -56,24 +56,6 @@ namespace OpenRA.Mods.Common.Traits
 			isPlane = aircraft is PlaneInfo;
 		}
 
-		public override Actor DoProduction(Actor self, ActorInfo actorToProduce, ExitInfo exitInfo, string raceVariant)
-		{
-			var exit = self.Location + exitInfo.ExitCell;
-			var spawn = self.CenterPosition + exitInfo.SpawnOffset;
-
-			var td = new TypeDictionary
-			{
-				new OwnerInit(self.Owner),
-				new LocationInit(exit),
-				new CenterPositionInit(spawn)
-			};
-
-			if (!string.IsNullOrEmpty(raceVariant))
-				td.Add(new RaceInit(raceVariant));
-
-			return self.World.CreateActor(false, actorToProduce.Name, td);
-		}
-
 		public override bool Produce(Actor self, IEnumerable<ActorInfo> actorsToProduce, string raceVariant)
 		{
 			var deliveringActorType = info.DeliveryActor;
@@ -141,7 +123,10 @@ namespace OpenRA.Mods.Common.Traits
 			deliveringActor.QueueActivity(new CallFunc(() => MakeDelivery(actorsToProduce.ToList(), deliveringActor, deliveringActor.World)));
 		}
 
-		void MakeDelivery(ICollection<ActorInfo> actorInfos, Actor deliveringActor, World world)
+		/// <summary>
+		/// Drop off any actors that the delivering actor is carrying.
+		/// </summary>
+		void MakeDelivery(List<ActorInfo> actorInfos, Actor deliveringActor, World world)
 		{
 			if (!actorInfos.Any())
 			{
@@ -159,7 +144,8 @@ namespace OpenRA.Mods.Common.Traits
 				var chosenExit = GetAvailableExit(self, actorInfo);
 				if (chosenExit == null)
 				{
-					WaitAndRetry(deliveringActor, world, actorInfos);
+					deliveringActor.QueueActivity(new Wait(10));
+					deliveringActor.QueueActivity(new CallFunc(() => MakeDelivery(actorInfos, deliveringActor, world)));
 					return;
 				}
 
@@ -173,51 +159,12 @@ namespace OpenRA.Mods.Common.Traits
 				world.AddFrameEndTask(w =>
 				{
 					MoveIntoWorld(w, newActor, chosenExit, exitLocation, targetLocation);
-					IssueNotifications(self, newActor, exitLocation);
+					NotifyProduction(self, newActor, exitLocation);
 
 					deliveringActor.QueueActivity(new CallFunc(() => MakeDelivery(actorInfos, deliveringActor, world)));
 					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Country.Race);
 				});
 			}
-		}
-
-		void WaitAndRetry(Actor actor, World world, ICollection<ActorInfo> actorInfos)
-		{
-			actor.QueueActivity(new Wait(10));
-			actor.QueueActivity(new CallFunc(() => MakeDelivery(actorInfos, actor, world)));
-		}
-
-		static void IssueNotifications(Actor self, Actor newActor, CPos exitLocation)
-		{
-			if (!self.IsDead)
-				foreach (var t in self.TraitsImplementing<INotifyProduction>())
-					t.UnitProduced(self, newActor, exitLocation);
-
-			var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
-			foreach (var notify in notifyOthers)
-				notify.Trait.UnitProducedByOther(notify.Actor, self, newActor);
-
-			var bi = newActor.Info.Traits.GetOrDefault<BuildableInfo>();
-			if (bi != null && bi.InitialActivity != null)
-				newActor.QueueActivity(Game.CreateObject<Activity>(bi.InitialActivity));
-
-			foreach (var t in newActor.TraitsImplementing<INotifyBuildComplete>())
-				t.BuildingComplete(newActor);
-		}
-
-		void MoveIntoWorld(World world, Actor newActor, ExitInfo chosenExit, CPos exitLocation, CPos targetLocation)
-		{
-			world.Add(newActor);
-
-			var move = newActor.TraitOrDefault<IMove>();
-			if (move != null && chosenExit.MoveIntoWorld)
-			{
-				newActor.QueueActivity(move.MoveIntoWorld(newActor, exitLocation));
-				newActor.QueueActivity(new AttackMoveActivity(newActor, move.MoveTo(targetLocation, 1)));
-			}
-
-			var target = Target.FromCell(world, targetLocation);
-			newActor.SetTargetLine(target, RallyPoint.Value != null ? Color.Red : Color.Green, false);
 		}
 	}
 }

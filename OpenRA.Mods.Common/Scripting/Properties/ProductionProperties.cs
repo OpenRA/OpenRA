@@ -39,7 +39,9 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!Self.World.Map.Rules.Actors.TryGetValue(actorType, out actorInfo))
 				throw new LuaException("Unknown actor type '{0}'".F(actorType));
 
-			Self.QueueActivity(new WaitFor(() => p.Produce(Self, new[] { actorInfo }, raceVariant)));
+			var production = new[] { actorInfo };
+
+			Self.QueueActivity(new WaitFor(() => p.Produce(Self, production, raceVariant)));
 		}
 	}
 
