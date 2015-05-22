@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		int timeLeft;
 		string factionVariant;
-		List<ActorInfo> production = new List<ActorInfo>(); 
+		List<ActorInfo> production = new List<ActorInfo>();
 
 		public ProductionByDelivery(ActorInitializer init, ProductionByDeliveryInfo info)
 			: base(init, info)
