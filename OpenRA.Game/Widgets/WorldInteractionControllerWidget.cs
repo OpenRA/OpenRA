@@ -40,8 +40,9 @@ namespace OpenRA.Widgets
 		{
 			if (!IsDragging)
 			{
-				foreach (var u in SelectActorsInBoxWithDeadzone(World, lastMousePosition, lastMousePosition, _ => true))
-					worldRenderer.DrawRollover(u);
+				var act = SelectActorAt(World, lastMousePosition);
+				if (act != null)
+					worldRenderer.DrawRollover(act);
 
 				return;
 			}
@@ -261,7 +262,7 @@ namespace OpenRA.Widgets
 
 		static IEnumerable<Actor> SelectActorsInBoxWithDeadzone(World world, int2 a, int2 b, Func<Actor, bool> cond)
 		{
-			if (a == b || (a - b).Length > Game.Settings.Game.SelectionDeadzone)
+			if ((a - b).Length > Game.Settings.Game.SelectionDeadzone)
 				return SelectActorsInBox(world, a, b, cond);
 			else
 				return SelectActorsInBox(world, b, b, cond);
@@ -276,6 +277,23 @@ namespace OpenRA.Widgets
 				.Select(g => g.AsEnumerable())
 				.DefaultIfEmpty(NoActors)
 				.FirstOrDefault();
+		}
+
+		static Actor SelectActorAt(World world, int2 pos)
+		{
+			var act = world.ScreenMap.ActorsAt(pos).Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable
+				&& (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x))).FirstOrDefault();
+			var frz = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, pos).FirstOrDefault();
+			if (act == null)
+				return null;
+
+			if (frz == null)
+				return act;
+
+			if (world.ScreenMap.ActorCloserToCursorThanFrozen(act, frz, pos))
+				return act;
+
+			return null;
 		}
 
 		bool ToggleStatusBars()

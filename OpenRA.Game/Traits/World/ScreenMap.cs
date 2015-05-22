@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 
 		public void WorldLoaded(World w, WorldRenderer wr) { worldRenderer = wr; }
 
-		Rectangle FrozenActorBounds(FrozenActor fa)
+		public Rectangle FrozenActorBounds(FrozenActor fa)
 		{
 			var pos = worldRenderer.ScreenPxPosition(fa.CenterPosition);
 			var bounds = fa.Bounds;
@@ -54,7 +54,7 @@ namespace OpenRA.Traits
 			return bounds;
 		}
 
-		Rectangle ActorBounds(Actor a)
+		public Rectangle ActorBounds(Actor a)
 		{
 			var pos = worldRenderer.ScreenPxPosition(a.CenterPosition);
 			var bounds = a.Bounds;
@@ -91,7 +91,12 @@ namespace OpenRA.Traits
 		{
 			if (viewer == null)
 				return NoFrozenActors;
-			return partitionedFrozenActors[viewer].At(worldPx).Where(frozenActorIsValid);
+			return partitionedFrozenActors[viewer].At(worldPx).Where(frozenActorIsValid).OrderBy(f =>
+				{
+					var bounds = FrozenActorBounds(f);
+					var dist = new int2(bounds.Location) + new int2(bounds.Size) / 2 - worldPx;
+					return dist.LengthSquared;
+				});
 		}
 
 		public IEnumerable<FrozenActor> FrozenActorsAt(Player viewer, MouseInput mi)
@@ -101,12 +106,29 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> ActorsAt(int2 worldPx)
 		{
-			return partitionedActors.At(worldPx).Where(actorIsInWorld);
+			return partitionedActors.At(worldPx).Where(actorIsInWorld).OrderBy(a =>
+				{
+					var bounds = ActorBounds(a);
+					var dist = new int2(bounds.Location) + new int2(bounds.Size) / 2 - worldPx;
+					return dist.LengthSquared;
+				});
 		}
 
 		public IEnumerable<Actor> ActorsAt(MouseInput mi)
 		{
 			return ActorsAt(worldRenderer.Viewport.ViewToWorldPx(mi.Location));
+		}
+
+		public bool ActorCloserToCursorThanFrozen(Actor act, FrozenActor frz, int2 worldPx)
+		{
+			var boundsAct = ActorBounds(act);
+			var boundsFrz = FrozenActorBounds(frz);
+			var distAct = new int2(boundsAct.Location) + new int2(boundsAct.Size) / 2 - worldPx;
+			var distFrz = new int2(boundsFrz.Location) + new int2(boundsFrz.Size) / 2 - worldPx;
+			if (distAct.LengthSquared > distFrz.LengthSquared)
+				return false;
+
+			return true;
 		}
 
 		static Rectangle RectWithCorners(int2 a, int2 b)
@@ -116,6 +138,9 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> ActorsInBox(int2 a, int2 b)
 		{
+			if (a == b)
+				return ActorsAt(a);
+
 			return ActorsInBox(RectWithCorners(a, b));
 		}
 
@@ -126,6 +151,9 @@ namespace OpenRA.Traits
 
 		public IEnumerable<FrozenActor> FrozenActorsInBox(Player p, int2 a, int2 b)
 		{
+			if (a == b)
+				return FrozenActorsAt(p, a);
+
 			return FrozenActorsInBox(p, RectWithCorners(a, b));
 		}
 
