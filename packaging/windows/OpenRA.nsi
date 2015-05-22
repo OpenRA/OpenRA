@@ -228,7 +228,12 @@ Function ${UN}Clean
 	Delete $INSTDIR\freetype6.dll
 	Delete $INSTDIR\SDL2-CS.dll
 	RMDir /r $INSTDIR\Support
+	
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"
+	DeleteRegKey HKLM "Software\Classes\.orarep"
+	DeleteRegKey HKLM "Software\Classes\OpenRA_replay"
+	DeleteRegKey HKLM "Software\Classes\openra"
+	
 	Delete $INSTDIR\uninstaller.exe
 	RMDir $INSTDIR
 	
