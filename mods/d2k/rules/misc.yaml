@@ -112,10 +112,7 @@ crate:
 	Selectable:
 		Selectable: false
 		Bounds: 15,15,-1,-1
-	ProximityCaptor:
-		Types: Crate
 	Passenger:
-	BodyOrientation:
 
 mpspawn:
 	Immobile:
