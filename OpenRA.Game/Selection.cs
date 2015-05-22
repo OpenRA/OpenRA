@@ -35,6 +35,7 @@ namespace OpenRA
 
 		public void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
 		{
+			var stickyselect = Game.Settings.Game.StickySelection;
 			if (isClick)
 			{
 				var adjNewSelection = newSelection.Take(1);	/* TODO: select BEST, not FIRST */
@@ -42,8 +43,23 @@ namespace OpenRA
 					actors.SymmetricExceptWith(adjNewSelection);
 				else
 				{
-					actors.Clear();
-					actors.UnionWith(adjNewSelection);
+					if (stickyselect == true)
+					{
+						if (newSelection.Count() == 0)
+						{
+							actors.UnionWith(adjNewSelection);
+						}
+						else
+						{
+							actors.Clear();
+							actors.UnionWith(newSelection);
+						}
+					}
+					else
+					{
+						actors.Clear();
+						actors.UnionWith(newSelection);
+					}
 				}
 			}
 			else
@@ -52,14 +68,30 @@ namespace OpenRA
 					actors.UnionWith(newSelection);
 				else
 				{
-					actors.Clear();
-					actors.UnionWith(newSelection);
+					if (stickyselect == true)
+					{
+						if (newSelection.Count() == 0)
+							actors.UnionWith(newSelection);
+						else
+						{
+							actors.Clear();
+							actors.UnionWith(newSelection);
+						}
+					}
+					else
+					{
+						actors.Clear();
+						actors.UnionWith(newSelection);
+					}
 				}
 			}
 
 			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoices());
-			if (voicedUnit != null)
-				Sound.PlayVoice("Select", voicedUnit, voicedUnit.Owner.Country.Race);
+			if (newSelection.Count() != 0)
+			{
+				if (voicedUnit != null)
+					Sound.PlayVoice("Select", voicedUnit, voicedUnit.Owner.Country.Race);
+			}
 
 			foreach (var a in newSelection)
 				foreach (var sel in a.TraitsImplementing<INotifySelected>())
