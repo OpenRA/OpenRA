@@ -2,21 +2,21 @@ MapFormat: 7
 
 RequiresMod: d2k
 
-Title: Tuck's Sietch
+Title: Mix Tuck's Sietch
 
-Description: Static Shellmap
+Description: Mix's Dynamic Shellmap
 
-Author: Westwood Studios
+Author: Westwood Studios & Mix
 
 Tileset: ARRAKIS
 
 MapSize: 128,128
 
-Bounds: 16,16,80,80
+Bounds: 1,1,126,100
 
 Visibility: Shellmap
 
-Type: Shellmap
+Type: Conquest
 
 Videos:
 
@@ -33,102 +33,1571 @@ Players:
 		Name: Atreides
 		Race: atreides
 		ColorRamp: 161,134,200
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Race: atreides
+		Allies: Neutral
+		Enemies: Harkonnen
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		Race: harkonnen
+		ColorRamp: 3,255,127
 		Enemies: Atreides
-		ColorRamp: 210,255,127
+	PlayerReference@Imperial:
+		Name: Imperial
+		Race: corrino
+		ColorRamp: 161,134,200
+		Allies: Atreides
+		Enemies: Harkonnen
 
 Actors:
+	Actor0: spicebloom
+		Location: 27,42
+		Owner: Neutral
+		SkipMakeAnims:
 	Actor4: spicebloom
 		Location: 50,53
 		Owner: Neutral
-	Actor5: spicebloom
-		Location: 50,65
-		Owner: Neutral
+		SkipMakeAnims:
 	Actor7: spicebloom
 		Location: 64,52
 		Owner: Neutral
-	Actor8: spicebloom
-		Location: 65,64
+		SkipMakeAnims:
+	Actor9: spicebloom
+		Location: 65,20
 		Owner: Neutral
-	Actor26: concreteb
-		Location: 57,58
+		SkipMakeAnims:
+	Actor12: spicebloom
+		Location: 85,42
 		Owner: Neutral
-	Actor28: concretea
-		Location: 54,58
+		SkipMakeAnims:
+	Actor13: spicebloom
+		Location: 40,45
 		Owner: Neutral
-	Actor29: concretea
-		Location: 54,59
+		SkipMakeAnims:
+	Actor14: spicebloom
+		Location: 52,37
 		Owner: Neutral
-	Actor30: power
-		Location: 54,58
+		SkipMakeAnims:
+	Actor15: spicebloom
+		Location: 67,34
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor16: spicebloom
+		Location: 76,43
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor17: spicebloom
+		Location: 26,75
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor18: spicebloom
+		Location: 48,91
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor19: spicebloom
+		Location: 29,61
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor342: guntower
+		Location: 85,69
 		Owner: Atreides
-	Actor31: concretea
-		Location: 54,62
+		SkipMakeAnims:
+	Actor24: spicebloom
+		Location: 62,92
 		Owner: Neutral
-	Actor32: silo
+		SkipMakeAnims:
+	Actor25: spicebloom
+		Location: 82,65
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor307: wall
+		Location: 40,74
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor78: combata
+		Location: 77,68
+		Owner: Atreides
+		Facing: 0
+		SkipMakeAnims:
+	AtreidesLight1: light
+		Location: 80,85
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor53: wall
+		Location: 70,63
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor254: wall
+		Location: 96,97
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor90: wall
+		Location: 92,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor252: wall
+		Location: 95,97
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor10: guntower
+		Location: 64,63
+		Owner: Atreides
+		Facing: 0
+		SkipMakeAnims:
+	Actor153: power
+		Location: 93,87
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor49: wall
+		Location: 71,63
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor40: radar
+		Location: 55,19
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor71: wall
+		Location: 70,64
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor325: bazooka
+		Location: 76,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor28: guntower
+		Location: 74,67
+		Owner: Atreides
+		Facing: 0
+		SkipMakeAnims:
+	Actor50: power
+		Location: 51,14
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Entry1: waypoint
+		Location: 1,50
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor63: guntower
+		Location: 48,31
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor61: power
+		Location: 36,19
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor60: starport
+		Location: 46,28
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor69: rockettower
+		Location: 43,29
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor68: rockettower
+		Location: 34,23
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor70: repair
+		Location: 47,24
+		Owner: Harkonnen
+		SkipMakeAnims:
+	HarkonnenBarracks3: barracks
+		Location: 41,27
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor48: wall
+		Location: 72,63
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor85: power
+		Location: 49,14
+		Owner: Harkonnen
+		SkipMakeAnims:
+	AtreidesLight2: light
+		Location: 42,18
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor52: power
+		Location: 54,14
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor74: wall
+		Location: 89,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor65: wall
+		Location: 69,64
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor303: sonictank
+		Location: 61,60
+		Owner: Atreides
+		Facing: 0
+		SkipMakeAnims:
+	Actor306: wall
+		Location: 40,75
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor163: carryall.husk
+		Location: 14,55
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor62: power
+		Location: 38,17
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor72: wall
+		Location: 87,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor253: siegetank
+		Location: 44,68
+		Owner: Atreides
+		Facing: 0
+		SkipMakeAnims:
+	Actor64: wall
+		Location: 69,63
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor47: wall
+		Location: 73,63
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor93: missiletank
+		Location: 20,86
+		Owner: Atreides
+		Facing: 64
+		SkipMakeAnims:
+	Actor94: missiletank
+		Location: 40,90
+		Owner: Atreides
+		Facing: 64
+		SkipMakeAnims:
+	Actor73: wall
+		Location: 88,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor51: wall
+		Location: 86,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor176: wall
+		Location: 85,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor175: wall
+		Location: 85,71
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor109: hightech
+		Location: 113,32
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor102: refinery
+		Location: 94,28
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor103: power
+		Location: 118,36
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor101: power
+		Location: 115,38
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor110: palace
+		Location: 106,44
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor106: conyard
+		Location: 114,43
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor104: power
+		Location: 115,35
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor91: power
+		Location: 118,39
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor108: rockettower
+		Location: 95,33
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor112: guntower
+		Location: 93,29
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor113: guntower
+		Location: 90,33
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor114: guntower
+		Location: 37,28
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor115: rockettower
+		Location: 40,24
+		Owner: Harkonnen
+		SkipMakeAnims:
+	HarkonnenBarracks4: barracks
+		Location: 110,40
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor117: repair
+		Location: 106,34
+		Owner: Harkonnen
+		SkipMakeAnims:
+	HarkonnenHeavy1: heavy
+		Location: 106,30
+		Owner: Harkonnen
+		SkipMakeAnims:
+	HarkonnenBarracks2: barracks
+		Location: 102,30
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor136: missiletank
+		Location: 91,40
+		Owner: Harkonnen
+		Facing: 90
+		SkipMakeAnims:
+	Actor122: starport
+		Location: 116,49
+		Owner: Harkonnen
+		SkipMakeAnims:
+	HarkonnenBarracks5: barracks
+		Location: 112,49
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor126: rockettower
+		Location: 110,27
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor124: radar
+		Location: 118,46
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor125: rockettower
+		Location: 111,43
+		Owner: Harkonnen
+		SkipMakeAnims:
+	HarkonnenBarracks6: barracks
+		Location: 99,28
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor130: power
+		Location: 119,33
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor132: power
+		Location: 116,32
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor134: rifle
+		Location: 74,37
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor135: rifle
+		Location: 77,39
+		Owner: Harkonnen
+		SkipMakeAnims:
+	HarkonnenLight1: light
+		Location: 119,49
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor138: devast
+		Location: 112,46
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor139: combath
+		Location: 89,32
+		Owner: Harkonnen
+		Facing: 64
+		SkipMakeAnims:
+	Actor140: combath
+		Location: 92,29
+		Owner: Harkonnen
+		Facing: 20
+		SkipMakeAnims:
+	Actor141: combath
+		Location: 36,23
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor142: rifle
+		Location: 40,27
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor143: rifle
+		Location: 49,17
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor144: rifle
+		Location: 113,40
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor145: rifle
+		Location: 102,33
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor333: power
+		Location: 50,74
+		Owner: Imperial
+		SkipMakeAnims:
+	Actor39: guntower
+		Location: 70,89
+		Owner: Atreides
+		SkipMakeAnims:
+	AtreidesWeakspot: palace
+		Location: 56,68
+		Owner: Imperial
+		SkipMakeAnims:
+	Actor152: quad
+		Location: 69,85
+		Owner: Atreides
+		Facing: 110
+		SkipMakeAnims:
+	Actor150: power
+		Location: 94,90
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor35: guntower
+		Location: 68,85
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor178: guntower
+		Location: 77,76
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor300: wall
+		Location: 48,77
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor186: combath
+		Location: 107,50
+		Owner: Harkonnen
+		Facing: 80
+		SkipMakeAnims:
+	Actor26: conyard
+		Location: 86,84
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor105: wall
+		Location: 94,70
+		Owner: Atreides
+		SkipMakeAnims:
+	HarkonnenBarracks1: barracks
+		Location: 109,48
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor170: guntower
+		Location: 104,41
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor162: rifle
+		Location: 82,74
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor298: wall
+		Location: 48,78
+		Owner: Atreides
+		SkipMakeAnims:
+	AtreidesHeavy1: heavy
+		Location: 75,81
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor383: guntower
+		Location: 52,71
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor343: wall
+		Location: 82,93
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor187: guntower
+		Location: 104,47
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor86: wall
+		Location: 91,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor216: wall
+		Location: 57,80
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor188: guntower
+		Location: 107,52
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor54: rockettower
+		Location: 76,92
+		Owner: Atreides
+		Facing: 150
+		SkipMakeAnims:
+	Actor155: power
+		Location: 90,87
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor213: wall
+		Location: 60,80
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor185: combath
+		Location: 105,47
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor199: rifle
+		Location: 72,83
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor89: power
+		Location: 93,84
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor161: power
+		Location: 89,90
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor84: power
+		Location: 38,9
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor96: power
+		Location: 38,12
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor98: power
+		Location: 34,12
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor99: power
+		Location: 34,9
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor100: power
+		Location: 30,12
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor189: power
+		Location: 30,9
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor190: power
+		Location: 26,12
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor191: power
+		Location: 26,9
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor339: wall
+		Location: 95,71
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor27: wall
+		Location: 94,71
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor340: wall
+		Location: 90,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor251: wall
+		Location: 94,97
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor92: wall
+		Location: 93,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor214: wall
+		Location: 59,80
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor149: power
+		Location: 92,93
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor38: wall
+		Location: 72,67
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor208: fremen
+		Location: 39,81
+		Owner: Atreides
+		Facing: 64
+		SkipMakeAnims:
+	Actor209: rifle
+		Location: 41,79
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor210: rifle
+		Location: 46,80
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor211: trike
+		Location: 41,82
+		Owner: Atreides
+		Facing: 90
+		SkipMakeAnims:
+	Actor36: wall
+		Location: 72,66
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor228: sonictank
+		Location: 49,63
+		Owner: Atreides
+		Facing: 0
+		SkipMakeAnims:
+	Actor255: rifle
+		Location: 67,76
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor77: rifle
+		Location: 78,74
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor82: combata
+		Location: 82,69
+		Owner: Atreides
+		Facing: 0
+		SkipMakeAnims:
+	Actor30: guntower
+		Location: 47,77
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor329: guntower
+		Location: 42,75
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor217: wall
+		Location: 43,67
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor299: rifle
+		Location: 50,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor297: wall
+		Location: 49,78
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor234: wall
+		Location: 53,63
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor223: wall
+		Location: 53,62
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor151: power
+		Location: 91,90
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor311: wall
+		Location: 41,74
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor302: wall
+		Location: 41,75
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor295: trike
+		Location: 37,67
+		Owner: Atreides
+		Facing: 64
+		SkipMakeAnims:
+	Actor296: quad
+		Location: 58,65
+		Owner: Atreides
+		Facing: 192
+		SkipMakeAnims:
+	Actor215: wall
+		Location: 58,80
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor233: combata
+		Location: 66,62
+		Owner: Atreides
+		Facing: 0
+		SkipMakeAnims:
+	Actor240: wall
 		Location: 54,62
 		Owner: Atreides
-	Actor33: guntower
+		SkipMakeAnims:
+	Actor241: wall
+		Location: 55,62
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor242: wall
+		Location: 56,62
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor243: wall
+		Location: 57,62
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor244: wall
+		Location: 58,62
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor245: wall
+		Location: 58,63
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor249: siegetank
+		Location: 57,63
+		Owner: Atreides
+		Facing: 240
+		SkipMakeAnims:
+	Actor248: siegetank
 		Location: 54,63
 		Owner: Atreides
-	Actor34: siegetank
-		Location: 54,56
+		Facing: 16
+		SkipMakeAnims:
+	Actor250: wall
+		Location: 44,67
 		Owner: Atreides
-		Facing: 24
-	Actor35: concretea
-		Location: 46,39
-		Owner: Neutral
-	Actor36: concreteb
-		Location: 48,37
-		Owner: Neutral
-	Actor37: concreteb
-		Location: 50,37
-		Owner: Neutral
-	Actor38: palace
-		Location: 50,37
-		Owner: Creeps
-	Actor39: barracks
-		Location: 48,37
-		Owner: Creeps
-	Actor40: rockettower
-		Location: 46,39
-		Owner: Creeps
-	Actor41: sardaukar
-		Location: 50,40
-		Owner: Creeps
-	Actor42: sardaukar
-		Location: 52,40
-		Owner: Creeps
-	WormSpawner: wormspawner
-		Location: 46,64
-		Owner: Creeps
-	Entry: waypoint
-		Location: 80, 8
-		Owner: Neutral
-	AtreidesSpiceRefinery: refinery
-		Location: 57,58
+		SkipMakeAnims:
+	AtreidesBarracks4: barracks
+		Location: 50,66
 		Owner: Atreides
+		SkipMakeAnims:
+	Actor66: guntower
+		Location: 62,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor218: wall
+		Location: 43,68
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor229: wall
+		Location: 93,97
+		Owner: Atreides
+		SkipMakeAnims:
+	Entry2: waypoint
+		Location: 1,27
+		Owner: Neutral
+		SkipMakeAnims:
+	AtreidesBarracks1: barracks
+		Location: 83,75
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor282: rifle
+		Location: 42,62
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor283: rifle
+		Location: 47,63
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor284: rifle
+		Location: 61,63
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor285: rifle
+		Location: 67,65
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor286: rifle
+		Location: 39,67
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor287: wall
+		Location: 50,62
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor289: wall
+		Location: 60,60
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor291: wall
+		Location: 59,61
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor290: wall
+		Location: 60,61
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor292: bazooka
+		Location: 68,64
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor293: bazooka
+		Location: 36,69
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor219: wall
+		Location: 57,79
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor45: wall
+		Location: 73,64
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor226: combata
+		Location: 62,60
+		Owner: Atreides
+		Facing: 240
+		SkipMakeAnims:
+	Actor225: combata
+		Location: 47,61
+		Owner: Atreides
+		Facing: 0
+		SkipMakeAnims:
+	Actor239: quad
+		Location: 44,65
+		Owner: Atreides
+		Facing: 30
+		SkipMakeAnims:
+	Actor236: trike
+		Location: 45,62
+		Owner: Atreides
+		Facing: 16
+		SkipMakeAnims:
+	Actor238: combata
+		Location: 36,65
+		Owner: Atreides
+		Facing: 40
+		SkipMakeAnims:
+	Actor224: combata
+		Location: 41,62
+		Owner: Atreides
+		Facing: 0
+		SkipMakeAnims:
+	Actor237: trike
+		Location: 63,63
+		Owner: Atreides
+		Facing: 0
+		SkipMakeAnims:
+	Actor304: rifle
+		Location: 57,72
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor305: rifle
+		Location: 61,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor43: wall
+		Location: 73,65
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor294: rifle
+		Location: 58,76
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor34: wall
+		Location: 73,66
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor220: wall
+		Location: 57,78
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor222: wall
+		Location: 57,77
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor230: wall
+		Location: 56,77
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor231: wall
+		Location: 55,77
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor232: wall
+		Location: 54,77
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor246: wall
+		Location: 52,77
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor160: wall
+		Location: 86,71
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor179: wall
+		Location: 68,84
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor180: wall
+		Location: 69,84
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor181: wall
+		Location: 69,83
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor192: wall
+		Location: 68,83
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor198: wall
+		Location: 68,82
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor321: rifle
+		Location: 45,76
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor335: power
+		Location: 54,74
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor257: siegetank
+		Location: 72,68
+		Owner: Atreides
+		Facing: 0
+		SkipMakeAnims:
+	Actor344: rifle
+		Location: 78,69
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor301: wall
+		Location: 49,77
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor384: guntower
+		Location: 74,73
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor313: wall
+		Location: 37,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor258: wall
+		Location: 76,94
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor32: refinery
+		Location: 90,72
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor338: wall
+		Location: 95,70
+		Owner: Atreides
+		SkipMakeAnims:
+	AtreidesBarracks2: barracks
+		Location: 70,75
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor341: radar
+		Location: 63,73
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor281: wall
+		Location: 50,78
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor235: wall
+		Location: 53,77
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor200: wall
+		Location: 68,81
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor201: wall
+		Location: 67,81
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor202: wall
+		Location: 66,81
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor203: wall
+		Location: 65,81
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor204: wall
+		Location: 64,81
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor205: wall
+		Location: 63,81
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor148: power
+		Location: 95,93
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor324: bazooka
+		Location: 73,68
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor206: wall
+		Location: 63,80
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor207: wall
+		Location: 62,80
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor263: wall
+		Location: 51,78
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor247: wall
+		Location: 51,77
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor212: wall
+		Location: 61,80
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor361: guntower
+		Location: 71,96
+		Owner: Atreides
+		SkipMakeAnims:
+	AtreidesBarracks3: barracks
+		Location: 64,78
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor221: wall
+		Location: 92,97
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor345: rifle
+		Location: 80,69
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor336: repair
+		Location: 69,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor42: guntower
+		Location: 67,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor262: wall
+		Location: 97,97
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor309: wall
+		Location: 98,97
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor310: wall
+		Location: 98,96
+		Owner: Atreides
+		SkipMakeAnims:
+	Entry7: waypoint
+		Location: 1,79
+		Owner: Neutral
+		SkipMakeAnims:
+	AttackDest: waypoint
+		Location: 55,69
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor31: wall
+		Location: 73,67
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor312: wall
+		Location: 40,73
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor314: wall
+		Location: 37,69
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor319: wall
+		Location: 38,69
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor316: wall
+		Location: 38,73
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor315: wall
+		Location: 39,73
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor317: wall
+		Location: 37,73
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor318: wall
+		Location: 37,72
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor44: wall
+		Location: 37,71
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor320: wall
+		Location: 38,70
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor330: wall
+		Location: 79,94
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor328: wall
+		Location: 78,94
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor327: wall
+		Location: 77,94
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor331: wall
+		Location: 80,94
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor332: wall
+		Location: 80,93
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor157: wall
+		Location: 81,93
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor346: wall
+		Location: 75,94
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor347: wall
+		Location: 75,93
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor348: wall
+		Location: 75,92
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor349: wall
+		Location: 75,91
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor350: wall
+		Location: 75,90
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor351: wall
+		Location: 74,90
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor352: wall
+		Location: 73,90
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor353: wall
+		Location: 72,90
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor354: wall
+		Location: 72,89
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor355: wall
+		Location: 71,89
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor356: wall
+		Location: 72,88
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor357: wall
+		Location: 71,88
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor358: wall
+		Location: 82,92
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor359: wall
+		Location: 82,91
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor360: wall
+		Location: 82,90
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor362: wall
+		Location: 81,90
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor363: wall
+		Location: 81,91
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor364: guntower
+		Location: 77,90
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor366: wall
+		Location: 59,60
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor367: wall
+		Location: 58,60
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor368: wall
+		Location: 57,60
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor369: wall
+		Location: 56,60
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor370: wall
+		Location: 55,60
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor371: wall
+		Location: 54,60
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor372: wall
+		Location: 53,60
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor373: wall
+		Location: 52,60
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor374: wall
+		Location: 52,61
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor375: wall
+		Location: 51,61
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor376: wall
+		Location: 50,61
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor377: wall
+		Location: 49,61
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor378: wall
+		Location: 49,62
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor379: guntower
+		Location: 37,68
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor380: guntower
+		Location: 48,61
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor381: hightech
+		Location: 76,87
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor334: power
+		Location: 52,74
+		Owner: Atreides
+		SkipMakeAnims:
+	Entry3: waypoint
+		Location: 10,1
+		Owner: Neutral
+		SkipMakeAnims:
+	Entry4: waypoint
+		Location: 84,1
+		Owner: Neutral
+		SkipMakeAnims:
+	Entry5: waypoint
+		Location: 126,27
+		Owner: Neutral
+		SkipMakeAnims:
+	Entry6: waypoint
+		Location: 46,1
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor184: guntower
+		Location: 96,79
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor79: rockettower
+		Location: 70,65
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor118: rockettower
+		Location: 47,69
+		Owner: Atreides
+		Facing: 64
+		SkipMakeAnims:
+	Actor322: guntower
+		Location: 110,52
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor323: guntower
+		Location: 104,50
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor337: spicebloom
+		Location: 105,66
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor365: spicebloom
+		Location: 110,93
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor382: spicebloom
+		Location: 117,88
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor385: spicebloom
+		Location: 111,80
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor386: spicebloom
+		Location: 106,73
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor387: spicebloom
+		Location: 121,69
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor388: spicebloom
+		Location: 107,21
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor389: spicebloom
+		Location: 93,16
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor390: spicebloom
+		Location: 103,14
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor391: spicebloom
+		Location: 117,17
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor392: spicebloom
+		Location: 8,11
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor393: spicebloom
+		Location: 12,23
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor394: spicebloom
+		Location: 9,42
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor395: spicebloom
+		Location: 20,49
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor396: spicebloom
+		Location: 8,64
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor397: spicebloom
+		Location: 11,80
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor398: spicebloom
+		Location: 16,69
+		Owner: Neutral
+		SkipMakeAnims:
+	Actor399: silo
+		Location: 24,92
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor405: power
+		Location: 27,96
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor404: silo
+		Location: 24,93
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor403: silo
+		Location: 25,93
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor402: silo
+		Location: 26,93
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor401: silo
+		Location: 26,92
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor400: silo
+		Location: 25,92
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor406: wall
+		Location: 24,91
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor407: wall
+		Location: 25,91
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor408: wall
+		Location: 26,91
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor409: wall
+		Location: 27,91
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor410: wall
+		Location: 27,92
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor411: wall
+		Location: 27,93
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor412: wall
+		Location: 27,94
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor413: wall
+		Location: 26,94
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor414: wall
+		Location: 25,94
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor415: wall
+		Location: 24,94
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor416: wall
+		Location: 23,94
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor417: wall
+		Location: 23,93
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor418: wall
+		Location: 23,92
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor419: wall
+		Location: 23,91
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor420: refinery
+		Location: 5,87
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor421: barracks
+		Location: 18,89
+		Owner: Atreides
+		SkipMakeAnims:
+	Actor422: refinery
+		Location: 25,19
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor423: refinery
+		Location: 89,20
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor424: guntower
+		Location: 94,19
+		Owner: Harkonnen
+		SkipMakeAnims:
+	Actor425: rockettower
+		Location: 84,23
+		Owner: Harkonnen
+		SkipMakeAnims:
 
 Smudges:
 
 Rules:
+	Player:
+		-ConquestVictoryConditions:
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		ResourceType@Spice:
 			ValuePerUnit: 0
-		WormManager:
-			Minimum: 1
-			Maximum: 1
+		LoadWidgetAtGameStart:
+			Widget: MAINMENU
+		-StartGameNotification:
 		LuaScript:
 			Scripts: shellmap.lua
-	rockettower:
-		Power:
-			Amount: 100
+	^Vehicle:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			CostThreshold:
+			FirepowerModifier:
+			ArmorModifier:
+			SpeedModifier:
+	^Tank:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			CostThreshold:
+			FirepowerModifier:
+			ArmorModifier:
+			SpeedModifier:
+	^harvester:
+		Invulnerable:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			CostThreshold:
+			FirepowerModifier:
+			ArmorModifier:
+			SpeedModifier:
+	^combata:
+		Invulnerable:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			CostThreshold:
+			FirepowerModifier:
+			ArmorModifier:
+			SpeedModifier:
+	^siegetank:
+		Invulnerable:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			CostThreshold:
+			FirepowerModifier:
+			ArmorModifier:
+			SpeedModifier:
+	^sonictank:
+		Invulnerable:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			CostThreshold:
+			FirepowerModifier:
+			ArmorModifier:
+			SpeedModifier:
+	^Infantry:
+		GivesBounty:
+			Percentage: 0
+		GainsExperience:
+			CostThreshold:
+			FirepowerModifier:
+			ArmorModifier:
+			SpeedModifier:
+		DeathSounds@NORMAL:
+			VolumeMultiplier: 0.1
+		DeathSounds@BURNED:
+			VolumeMultiplier: 0.1
+		DeathSounds@ZAPPED:
+			VolumeMultiplier: 0.1
+	^Building:
+		Invulnerable:
+		GivesBounty:
+			Percentage: 0
+	^wall:
+		Invulnerable:
+		GivesBounty:
+			Percentage: 0
 
 Sequences:
 
