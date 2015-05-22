@@ -25,12 +25,15 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference]
 		public readonly string DeliveryActor = "c17";
 
+		[Desc("Minimal interval (in ticks) between spawning new delivery actors.")]
+		public readonly int MinimumInterval = 75;
+
 		public readonly string ReadyAudio = "Reinforce";
 
 		public override object Create(ActorInitializer init) { return new ProductionByDelivery(init, this); }
 	}
 
-	class ProductionByDelivery : Production
+	class ProductionByDelivery : Production, ITick
 	{
 		readonly Actor self;
 		readonly CPos startPos;
@@ -39,7 +42,9 @@ namespace OpenRA.Mods.Common.Traits
 		readonly AircraftInfo aircraft;
 		readonly bool isPlane;
 
+		int timeLeft;
 		string factionVariant;
+		List<ActorInfo> production = new List<ActorInfo>(); 
 
 		public ProductionByDelivery(ActorInitializer init, ProductionByDeliveryInfo info)
 			: base(init, info)
@@ -56,17 +61,33 @@ namespace OpenRA.Mods.Common.Traits
 			isPlane = aircraft is PlaneInfo;
 		}
 
+		public void Tick(Actor self)
+		{
+			if (timeLeft-- > 0 || !production.Any())
+				return;
+
+			StartDelivery();
+			timeLeft = info.MinimumInterval;
+		}
+
 		public override bool Produce(Actor self, IEnumerable<ActorInfo> actorsToProduce, string raceVariant)
+		{
+			production.AddRange(actorsToProduce);
+			factionVariant = raceVariant;
+			return true;
+		}
+
+		void StartDelivery()
 		{
 			var deliveringActorType = info.DeliveryActor;
 			var owner = self.Owner;
-
-			factionVariant = raceVariant;
+			var actorsToProduce = new List<ActorInfo>(production);
+			production = new List<ActorInfo>();
 
 			// Check if there is a valid drop-off point before sending the transport
 			var exit = GetAvailableExit(self, actorsToProduce.First());
 			if (exit == null)
-				return false;
+				return;
 
 			foreach (var trait in self.TraitsImplementing<INotifyDelivery>())
 				trait.IncomingDelivery(self);
@@ -87,8 +108,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				deliveringActor.QueueActivity(new CallFunc(() => TryToLand(deliveringActor, actorsToProduce)));
 			});
-
-			return true;
 		}
 
 		void TryToLand(Actor deliveringActor, IEnumerable<ActorInfo> actorsToProduce)
@@ -136,6 +155,7 @@ namespace OpenRA.Mods.Common.Traits
 					deliveringActor.QueueActivity(new HeliFly(deliveringActor, Target.FromCell(world, endPos)));
 
 				deliveringActor.QueueActivity(new RemoveSelf());
+				production = new List<ActorInfo>();
 			}
 			else
 			{
