@@ -216,7 +216,7 @@ namespace OpenRA.Mods.Common.Widgets
 				dirtyShroudCells.Clear();
 			}
 
-			radarSheet.CommitData();
+			radarSheet.CommitBufferedData();
 
 			var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight) / 2);
 			var s = new float2(mapRect.Size.Width, mapRect.Size.Height * radarMinimapHeight);

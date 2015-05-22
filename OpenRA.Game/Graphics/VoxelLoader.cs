@@ -86,7 +86,7 @@ namespace OpenRA.Graphics
 			var s = sheetBuilder.Allocate(new Size(su, sv));
 			Util.FastCopyIntoChannel(s, 0, colors);
 			Util.FastCopyIntoChannel(s, 1, normals);
-			s.Sheet.CommitData();
+			s.Sheet.CommitBufferedData();
 
 			var channelP = ChannelSelect[(int)s.Channel];
 			var channelC = ChannelSelect[(int)s.Channel + 1];
