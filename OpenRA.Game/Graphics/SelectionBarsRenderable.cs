@@ -65,13 +65,13 @@ namespace OpenRA.Graphics
 
 			var z = float2.Lerp(start, end, value);
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(start + p, end + p, c, c);
-			wlr.DrawLine(start + q, end + q, c2, c2);
-			wlr.DrawLine(start + r, end + r, c, c);
+			wlr.DrawLine(start + p, end + p, c);
+			wlr.DrawLine(start + q, end + q, c2);
+			wlr.DrawLine(start + r, end + r, c);
 
-			wlr.DrawLine(start + p, z + p, barColor2, barColor2);
-			wlr.DrawLine(start + q, z + q, barColor, barColor);
-			wlr.DrawLine(start + r, z + r, barColor2, barColor2);
+			wlr.DrawLine(start + p, z + p, barColor2);
+			wlr.DrawLine(start + q, z + q, barColor);
+			wlr.DrawLine(start + r, z + r, barColor2);
 		}
 
 		Color GetHealthColor(Health health)
@@ -125,13 +125,13 @@ namespace OpenRA.Graphics
 			var z = float2.Lerp(start, end, (float)health.HP / health.MaxHP);
 
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(start + p, end + p, c, c);
-			wlr.DrawLine(start + q, end + q, c2, c2);
-			wlr.DrawLine(start + r, end + r, c, c);
+			wlr.DrawLine(start + p, end + p, c);
+			wlr.DrawLine(start + q, end + q, c2);
+			wlr.DrawLine(start + r, end + r, c);
 
-			wlr.DrawLine(start + p, z + p, healthColor2, healthColor2);
-			wlr.DrawLine(start + q, z + q, healthColor, healthColor);
-			wlr.DrawLine(start + r, z + r, healthColor2, healthColor2);
+			wlr.DrawLine(start + p, z + p, healthColor2);
+			wlr.DrawLine(start + q, z + q, healthColor);
+			wlr.DrawLine(start + r, z + r, healthColor2);
 
 			if (health.DisplayHp != health.HP)
 			{
@@ -143,9 +143,9 @@ namespace OpenRA.Graphics
 					deltaColor.B / 2);
 				var zz = float2.Lerp(start, end, (float)health.DisplayHp / health.MaxHP);
 
-				wlr.DrawLine(z + p, zz + p, deltaColor2, deltaColor2);
-				wlr.DrawLine(z + q, zz + q, deltaColor, deltaColor);
-				wlr.DrawLine(z + r, zz + r, deltaColor2, deltaColor2);
+				wlr.DrawLine(z + p, zz + p, deltaColor2);
+				wlr.DrawLine(z + q, zz + q, deltaColor);
+				wlr.DrawLine(z + r, zz + r, deltaColor2);
 			}
 		}
 

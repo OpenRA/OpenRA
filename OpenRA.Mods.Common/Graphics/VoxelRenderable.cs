@@ -135,10 +135,10 @@ namespace OpenRA.Mods.Common.Graphics
 				// Draw transformed shadow sprite rect
 				var c = Color.Purple;
 				var psb = renderProxy.ProjectedShadowBounds;
-				Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[1], shadowOrigin + psb[3], c, c);
-				Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[3], shadowOrigin + psb[0], c, c);
-				Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[0], shadowOrigin + psb[2], c, c);
-				Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[2], shadowOrigin + psb[1], c, c);
+				Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[1], shadowOrigin + psb[3], c);
+				Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[3], shadowOrigin + psb[0], c);
+				Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[0], shadowOrigin + psb[2], c);
+				Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[2], shadowOrigin + psb[1], c);
 
 				// Draw voxel bounding box
 				var draw = voxel.voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
@@ -171,20 +171,20 @@ namespace OpenRA.Mods.Common.Graphics
 					corners[i] = pxPos + new float2(screen[0], screen[1]);
 				}
 
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[0], corners[1], c, c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[1], corners[3], c, c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[3], corners[2], c, c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[2], corners[0], c, c);
+				Game.Renderer.WorldLineRenderer.DrawLine(corners[0], corners[1], c);
+				Game.Renderer.WorldLineRenderer.DrawLine(corners[1], corners[3], c);
+				Game.Renderer.WorldLineRenderer.DrawLine(corners[3], corners[2], c);
+				Game.Renderer.WorldLineRenderer.DrawLine(corners[2], corners[0], c);
 
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[4], corners[5], c, c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[5], corners[7], c, c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[7], corners[6], c, c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[6], corners[4], c, c);
+				Game.Renderer.WorldLineRenderer.DrawLine(corners[4], corners[5], c);
+				Game.Renderer.WorldLineRenderer.DrawLine(corners[5], corners[7], c);
+				Game.Renderer.WorldLineRenderer.DrawLine(corners[7], corners[6], c);
+				Game.Renderer.WorldLineRenderer.DrawLine(corners[6], corners[4], c);
 
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[0], corners[4], c, c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[1], corners[5], c, c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[2], corners[6], c, c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[3], corners[7], c, c);
+				Game.Renderer.WorldLineRenderer.DrawLine(corners[0], corners[4], c);
+				Game.Renderer.WorldLineRenderer.DrawLine(corners[1], corners[5], c);
+				Game.Renderer.WorldLineRenderer.DrawLine(corners[2], corners[6], c);
+				Game.Renderer.WorldLineRenderer.DrawLine(corners[3], corners[7], c);
 			}
 
 			public Rectangle ScreenBounds(WorldRenderer wr)

@@ -47,7 +47,7 @@ namespace OpenRA.Graphics
 			var a = first;
 			foreach (var b in waypoints.Skip(1).Select(pos => wr.ScreenPxPosition(pos)))
 			{
-				Game.Renderer.WorldLineRenderer.DrawLine(a, b, color, color);
+				Game.Renderer.WorldLineRenderer.DrawLine(a, b, color);
 				wr.DrawTargetMarker(color, b);
 				a = b;
 			}

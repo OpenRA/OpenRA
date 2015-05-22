@@ -23,34 +23,26 @@ namespace OpenRA.Mods.Common.Widgets
 			var origin = new float2(rect.Right, rect.Bottom);
 			var basis = new float2(-rect.Width / 100, -rect.Height / 100);
 
-			Game.Renderer.LineRenderer.DrawLine(origin, origin + new float2(100, 0) * basis, Color.White, Color.White);
-			Game.Renderer.LineRenderer.DrawLine(origin + new float2(100, 0) * basis, origin + new float2(100, 100) * basis, Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(origin, origin + new float2(100, 0) * basis, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(origin + new float2(100, 0) * basis, origin + new float2(100, 100) * basis, Color.White);
 
 			var k = 0;
 			foreach (var item in PerfHistory.Items.Values)
 			{
-				var n = 0;
-				item.Samples().Aggregate((a, b) =>
-				{
-					Game.Renderer.LineRenderer.DrawLine(
-						origin + new float2(n, (float)a) * basis,
-						origin + new float2(n + 1, (float)b) * basis,
-						item.C, item.C);
-					++n;
-					return b;
-				});
+				Game.Renderer.LineRenderer.DrawLineStrip(
+					item.Samples().Select((sample, i) => origin + new float2(i, (float)sample) * basis), item.C);
 
 				var u = new float2(rect.Left, rect.Top);
 
 				Game.Renderer.LineRenderer.DrawLine(
 					u + new float2(10, 10 * k + 5),
 					u + new float2(12, 10 * k + 5),
-					item.C, item.C);
+					item.C);
 
 				Game.Renderer.LineRenderer.DrawLine(
 					u + new float2(10, 10 * k + 4),
 					u + new float2(12, 10 * k + 4),
-					item.C, item.C);
+					item.C);
 
 				++k;
 			}

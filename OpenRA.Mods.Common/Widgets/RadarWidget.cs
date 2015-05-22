@@ -256,9 +256,9 @@ namespace OpenRA.Mods.Common.Widgets
 				var pingCell = world.Map.CellContaining(radarPing.Position);
 				var points = radarPing.Points(CellToMinimapPixel(pingCell)).ToArray();
 
-				lr.DrawLine(points[0], points[1], c, c);
-				lr.DrawLine(points[1], points[2], c, c);
-				lr.DrawLine(points[2], points[0], c, c);
+				lr.DrawLine(points[0], points[1], c);
+				lr.DrawLine(points[1], points[2], c);
+				lr.DrawLine(points[2], points[0], c);
 			}
 
 			lr.LineWidth = oldWidth;
