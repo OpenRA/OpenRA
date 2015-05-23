@@ -394,6 +394,7 @@ install-linux-mime:
 	@$(INSTALL_DATA) packaging/linux/openra-mimeinfo.xml "$(DESTDIR)$(datadir)/mime/packages/openra.xml"
 
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
+	@$(INSTALL_DATA) packaging/linux/openra-join-servers.desktop "$(DESTDIR)$(datadir)/applications"
 	@$(INSTALL_DATA) packaging/linux/openra-replays.desktop "$(DESTDIR)$(datadir)/applications"
 
 install-linux-appdata:
