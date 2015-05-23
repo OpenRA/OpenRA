@@ -1162,6 +1162,7 @@ Weapons:
 		Report: CHUTE1.AUD
 		Projectile: GravityBomb
 			Image: BOMBLET
+			-OpenSequence:
 		Warhead@1Dam: SpreadDamage
 			Spread: 150
 			Damage: 3500
