@@ -632,9 +632,6 @@
 	Selectable:
 		Selectable: false
 		Bounds: 15,15,-1,-1
-	ProximityCaptor:
-		Types: Crate
-	BodyOrientation:
 	Parachutable:
 		KilledOnImpassableTerrain: false
 		ParachuteSequence: parach
