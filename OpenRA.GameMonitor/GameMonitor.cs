@@ -9,9 +9,9 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Media;
 using System.Reflection;
 using System.Windows.Forms;
@@ -20,12 +20,14 @@ namespace OpenRA
 {
 	class GameMonitor
 	{
-		static string processName = "OpenRA.Game.exe";
 		static Process gameProcess;
 
 		[STAThread]
 		static void Main(string[] args)
 		{
+			var executableDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			var processName = Path.Combine(executableDirectory, "OpenRA.Game.exe");
+
 			var psi = new ProcessStartInfo(processName, string.Join(" ", args));
 
 			try

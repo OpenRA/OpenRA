@@ -53,7 +53,21 @@ Var StartMenuFolder
 ;Section Definitions
 ;***************************
 Section "-Reg" Reg
+
+	; Installation directory
 	WriteRegStr HKLM "Software\OpenRA" "InstallDir" $INSTDIR
+	
+	; Replay file association
+	WriteRegStr HKLM "Software\Classes\.orarep" "" "OpenRA_replay"
+	WriteRegStr HKLM "Software\Classes\OpenRA_replay\DefaultIcon" "" "$INSTDIR\OpenRA.ico,0"
+	WriteRegStr HKLM "Software\Classes\OpenRA_replay\Shell\Open\Command" "" "$INSTDIR\OpenRA.exe Launch.Replay=%1"
+	
+	; OpenRA URL Scheme
+	WriteRegStr HKLM "Software\Classes\openra" "" "URL:OpenRA scheme"
+	WriteRegStr HKLM "Software\Classes\openra" "URL Protocol" ""
+	WriteRegStr HKLM "Software\Classes\openra\DefaultIcon" "" "$INSTDIR\OpenRA.ico,0"
+	WriteRegStr HKLM "Software\Classes\openra\Shell\Open\Command" "" "$INSTDIR\OpenRA.exe Launch.URI=%1"
+	
 SectionEnd
 
 Section "Game" GAME
@@ -214,7 +228,12 @@ Function ${UN}Clean
 	Delete $INSTDIR\freetype6.dll
 	Delete $INSTDIR\SDL2-CS.dll
 	RMDir /r $INSTDIR\Support
+	
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"
+	DeleteRegKey HKLM "Software\Classes\.orarep"
+	DeleteRegKey HKLM "Software\Classes\OpenRA_replay"
+	DeleteRegKey HKLM "Software\Classes\openra"
+	
 	Delete $INSTDIR\uninstaller.exe
 	RMDir $INSTDIR
 	
