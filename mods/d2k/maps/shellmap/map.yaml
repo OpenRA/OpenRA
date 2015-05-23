@@ -1507,6 +1507,9 @@ Actors:
 		Location: 84,23
 		Owner: Harkonnen
 		SkipMakeAnims:
+	WormSpawner: wormspawner
+		Location: 52,37
+		Owner: Neutral
 
 Smudges:
 
@@ -1519,9 +1522,9 @@ Rules:
 		-MPStartLocations:
 		ResourceType@Spice:
 			ValuePerUnit: 0
-		LoadWidgetAtGameStart:
-			Widget: MAINMENU
-		-StartGameNotification:
+		WormManager:
+			Minimum: 1
+			Maximum: 3
 		LuaScript:
 			Scripts: shellmap.lua
 	^Vehicle:
