@@ -82,6 +82,7 @@ namespace OpenRA
 		void Bind();
 		void SetData(T[] vertices, int length);
 		void SetData(T[] vertices, int start, int length);
+		void SetData(IntPtr data, int start, int length);
 	}
 
 	public interface IShader

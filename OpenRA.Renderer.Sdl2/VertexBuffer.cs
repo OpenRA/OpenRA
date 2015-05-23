@@ -48,6 +48,16 @@ namespace OpenRA.Renderer.Sdl2
 			ErrorHandler.CheckGlError();
 		}
 
+		public void SetData(IntPtr data, int start, int length)
+		{
+			Bind();
+			GL.BufferSubData(BufferTarget.ArrayBuffer,
+				new IntPtr(VertexSize * start),
+				new IntPtr(VertexSize * length),
+				data);
+			ErrorHandler.CheckGlError();
+		}
+
 		public void Bind()
 		{
 			GL.BindBuffer(BufferTarget.ArrayBuffer, buffer);
