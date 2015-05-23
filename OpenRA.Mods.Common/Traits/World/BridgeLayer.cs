@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				new LocationInit(new CPos(ni, nj)),
 				new OwnerInit(w.WorldActor.Owner),
-				new HealthInit(bridgeTypes[tile].Second),
+				new HealthInit(bridgeTypes[tile].Second, true),
 			}).Trait<Bridge>();
 
 			var subTiles = new Dictionary<CPos, byte>();
