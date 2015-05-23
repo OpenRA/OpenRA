@@ -257,9 +257,8 @@ Weapons:
 		Range: 10c0
 		Warhead: SpreadDamage
 			Spread: 42
-			DeathType: 5
 			Damage: 80
-			DamageTypes: Prone50Percent, TriggerProne
+			DamageTypes: Prone50Percent, TriggerProne, FireDeath
 
 Voices:
 

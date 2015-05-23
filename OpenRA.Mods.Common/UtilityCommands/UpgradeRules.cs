@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -73,6 +72,42 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var ts = Game.ModData.Manifest.TileSize;
 			var world = new WVec(offset.X * 1024 / ts.Width, offset.Y * 1024 / ts.Height, 0);
 			input = world.ToString();
+		}
+
+		internal static void RenameDamageTypes(MiniYamlNode damageTypes)
+		{
+			var mod = Game.ModData.Manifest.Mod.Id;
+			if (mod == "cnc" || mod == "ra")
+			{
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType1", "DefaultDeath");
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType2", "BulletDeath");
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType3", "SmallExplosionDeath");
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType4", "ExplosionDeath");
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType5", "FireDeath");
+			}
+
+			if (mod == "cnc")
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType6", "TiberiumDeath");
+
+			if (mod == "ra")
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType6", "ElectricityDeath");
+
+			if (mod == "d2k")
+			{
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType1", "ExplosionDeath");
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType2", "SoundDeath");
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType3", "SmallExplosionDeath");
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType4", "BulletDeath");
+			}
+
+			if (mod == "ts")
+			{
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType1", "BulletDeath");
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType2", "SmallExplosionDeath");
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType3", "ExplosionDeath");
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType5", "FireDeath");
+				damageTypes.Value.Value = damageTypes.Value.Value.Replace("DeathType6", "EnergyDeath");
+			}
 		}
 
 		internal static void UpgradeActorRules(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
@@ -832,7 +867,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							var rearmSound = minelayerFields.FirstOrDefault(rs => rs.Key == "RearmSound");
 							var minelayerRearmSound = rearmSound != null ? FieldLoader.GetValue<string>("RearmSound", rearmSound.Value.Value) : "minelay1.aud";
 
-							limitedAmmoFields.Add(new MiniYamlNode("RearmSound", minelayerRearmSound.ToString()));
+							limitedAmmoFields.Add(new MiniYamlNode("RearmSound", minelayerRearmSound));
 							minelayerFields.Remove(rearmSound);
 						}
 					}
@@ -963,6 +998,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					if (node.Key.StartsWith("Selectable"))
 						node.Value.Nodes.RemoveAll(p => p.Key == "Voice");
+				}
+
+				if (engineVersion < 20150524)
+				{
+					// Replace numbers with strings for DeathSounds.DeathType
+					if (node.Key.StartsWith("DeathSounds"))
+					{
+						var deathTypes = node.Value.Nodes.FirstOrDefault(x => x.Key == "DeathTypes");
+						if (deathTypes != null)
+						{
+							var types = FieldLoader.GetValue<string[]>("DeathTypes", deathTypes.Value.Value);
+							deathTypes.Value.Value = string.Join(", ", types.Select(type => "DeathType" + type));
+
+							RenameDamageTypes(deathTypes);
+						}
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
@@ -1381,6 +1432,31 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						// Remove obsolete PreventProne and ProneModifier
 						node.Value.Nodes.RemoveAll(x => x.Key == "PreventProne");
 						node.Value.Nodes.RemoveAll(x => x.Key == "ProneModifier");
+					}
+				}
+
+				if (engineVersion < 20150524)
+				{
+					// Remove DeathType from DamageWarhead
+					if (node.Key.StartsWith("Warhead") && node.Value.Value == "SpreadDamage")
+					{
+						var deathTypeNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "DeathType");
+						var deathType = deathTypeNode == null ? "1" : FieldLoader.GetValue<string>("DeathType", deathTypeNode.Value.Value);
+						var damageTypes = node.Value.Nodes.FirstOrDefault(x => x.Key == "DamageTypes");
+						if (damageTypes != null)
+							damageTypes.Value.Value += ", DeathType" + deathType;
+						else
+							node.Value.Nodes.Add(new MiniYamlNode("DamageTypes", "DeathType" + deathType));
+
+						node.Value.Nodes.RemoveAll(x => x.Key == "DeathType");
+					}
+
+					// Replace "DeathTypeX" damage types with proper words
+					if (node.Key.StartsWith("Warhead") && node.Value.Value == "SpreadDamage")
+					{
+						var damageTypes = node.Value.Nodes.FirstOrDefault(x => x.Key == "DamageTypes");
+						if (damageTypes != null)
+							RenameDamageTypes(damageTypes);
 					}
 				}
 

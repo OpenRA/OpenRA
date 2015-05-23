@@ -16,7 +16,6 @@ MultiCluster:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 65
-		DeathType: 3
 		ValidTargets: Ground
 		Versus:
 			None: 25
@@ -24,7 +23,7 @@ MultiCluster:
 			Light: 75
 			Heavy: 100
 			Concrete: 60
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
@@ -44,13 +43,12 @@ SuicideBomb:
 		Spread: 256
 		Damage: 110
 		Falloff: 10000, 3680, 1350, 500, 180, 70, 0
-		DeathType: 5
 		Versus:
 			None: 90
 			Light: 60
 			Heavy: 25
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Res: DestroyResource
 
 IonCannon:
@@ -59,9 +57,8 @@ IonCannon:
 		Spread: 1c0
 		Damage: 100
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 5
 		ValidTargets: Ground, Air
-		DamageTypes: Prone100Percent, TriggerProne
+		DamageTypes: Prone100Percent, TriggerProne, EnergyDeath
 	Warhead@2Eff_impact: CreateEffect
 		Explosion: ionring
 		ImpactSound: ion1.aud
@@ -69,10 +66,9 @@ IonCannon:
 		Spread: 1c0
 		Damage: 250
 		Falloff: 100, 50, 25, 0
-		DeathType: 5
 		Delay: 3
 		ValidTargets: Ground, Air
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, EnergyDeath
 	Warhead@4Smu_area: LeaveSmudge
 		SmudgeType: SmallScorch
 		Size: 2,1
@@ -107,11 +103,10 @@ ClusterMissile:
 		Spread: 1c0
 		Damage: 150
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 5
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@SoundEffect0: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew19.aud
@@ -124,12 +119,11 @@ ClusterMissile:
 		Spread: 2c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 5
 		Delay: 5
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@ResourceDestruction1: DestroyResource
 		Size: 2
 		Delay: 5
@@ -141,12 +135,11 @@ ClusterMissile:
 		Spread: 3c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 5
 		Delay: 10
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@ResourceDestruction2: DestroyResource
 		Size: 3
 		Delay: 10
@@ -158,12 +151,11 @@ ClusterMissile:
 		Spread: 4c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 5
 		Delay: 15
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@ResourceDestruction3: DestroyResource
 		Size: 4
 		Delay: 15
@@ -175,12 +167,11 @@ ClusterMissile:
 		Spread: 5c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		DeathType: 5
 		Delay: 20
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@ResourceDestruction4: DestroyResource
 		Size: 5
 		Delay: 20

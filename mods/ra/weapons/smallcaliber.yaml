@@ -7,14 +7,13 @@ Colt45:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 50
-		DeathType: 2
 		Versus:
 			None: 100
 			Wood: 0
 			Light: 0
 			Heavy: 0
 			Concrete: 0
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piff
 		InvalidImpactTypes: Water
@@ -41,7 +40,7 @@ ZSU-23:
 			Wood: 75
 			Light: 75
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: small_explosion_air
 
@@ -54,14 +53,13 @@ Vulcan:
 	Warhead@1Dam_1: SpreadDamage
 		Spread: 128
 		Damage: 10
-		DeathType: 2
 		Versus:
 			None: 200
 			Wood: 50
 			Light: 60
 			Heavy: 25
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff_1: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -71,7 +69,6 @@ Vulcan:
 	Warhead@3Dam_2: SpreadDamage
 		Spread: 128
 		Damage: 10
-		DeathType: 2
 		Delay: 2
 		Versus:
 			None: 200
@@ -79,7 +76,7 @@ Vulcan:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@4Eff_2: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -91,7 +88,6 @@ Vulcan:
 	Warhead@5Dam_3: SpreadDamage
 		Spread: 128
 		Damage: 10
-		DeathType: 2
 		Delay: 4
 		Versus:
 			None: 200
@@ -99,7 +95,7 @@ Vulcan:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@6Eff_3: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -111,7 +107,6 @@ Vulcan:
 	Warhead@7Dam_4: SpreadDamage
 		Spread: 128
 		Damage: 10
-		DeathType: 2
 		Delay: 6
 		Versus:
 			None: 200
@@ -119,7 +114,7 @@ Vulcan:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@8Eff_4: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -131,7 +126,6 @@ Vulcan:
 	Warhead@9Dam_5: SpreadDamage
 		Spread: 128
 		Damage: 10
-		DeathType: 2
 		Delay: 8
 		Versus:
 			None: 200
@@ -139,7 +133,7 @@ Vulcan:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@10Eff_5: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -151,7 +145,6 @@ Vulcan:
 	Warhead@11Dam_6: SpreadDamage
 		Spread: 128
 		Damage: 10
-		DeathType: 2
 		Delay: 10
 		Versus:
 			None: 200
@@ -159,7 +152,7 @@ Vulcan:
 			Light: 60
 			Heavy: 25
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@12Eff_6: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -180,14 +173,13 @@ ChainGun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
-		DeathType: 2
 		Versus:
 			None: 120
 			Wood: 50
 			Light: 60
 			Heavy: 25
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -206,13 +198,12 @@ ChainGun.Yak:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		DeathType: 2
 		Versus:
 			Wood: 50
 			Light: 60
 			Heavy: 25
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -229,13 +220,12 @@ Pistol:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 1
-		DeathType: 2
 		Versus:
 			Wood: 50
 			Light: 60
 			Heavy: 25
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piff
 		InvalidImpactTypes: Water
@@ -252,13 +242,12 @@ M1Carbine:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 15
-		DeathType: 2
 		Versus:
 			Wood: 25
 			Light: 30
 			Heavy: 10
 			Concrete: 10
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -276,13 +265,12 @@ M60mg:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 15
-		DeathType: 2
 		Versus:
 			Wood: 10
 			Light: 30
 			Heavy: 10
 			Concrete: 10
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -299,13 +287,12 @@ SilencedPPK:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 150
-		DeathType: 2
 		Versus:
 			Wood: 0
 			Light: 0
 			Heavy: 0
 			Concrete: 0
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -331,7 +318,7 @@ FLAK-23:
 			Light: 60
 			Heavy: 10
 			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: small_explosion
 		InvalidImpactTypes: Air, AirHit, Water
@@ -351,12 +338,11 @@ Sniper:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 140
-		DeathType: 2
 		Versus:
 			None: 100
 			Wood: 0
 			Light: 0
 			Heavy: 0
 			Concrete: 0
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 

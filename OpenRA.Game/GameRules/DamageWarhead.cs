@@ -8,10 +8,7 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.GameRules
@@ -23,9 +20,6 @@ namespace OpenRA.GameRules
 
 		[Desc("Types of damage that this warhead causes. Leave empty for no damage.")]
 		public readonly string[] DamageTypes = new string[0];
-
-		[Desc("Infantry death animation to use.")]
-		public readonly string DeathType = "1";
 
 		[FieldLoader.LoadUsing("LoadVersus")]
 		[Desc("Damage percentage versus each armortype. 0% = can't target.")]

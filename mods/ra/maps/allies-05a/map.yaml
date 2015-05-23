@@ -1805,14 +1805,13 @@ Weapons:
 		Warhead@1Dam: SpreadDamage
 			Spread: 42
 			Damage: 50
-			DeathType: 2
 			Versus:
 				None: 0
 				Wood: 10
 				Light: 0
 				Heavy: 0
 				Concrete: 0
-			DamageTypes: Prone50Percent, TriggerProne
+			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 		Warhead@2Eff: CreateEffect
 			Explosion: piffs
 			InvalidImpactTypes: Water

@@ -10,14 +10,13 @@ FireballLauncher:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 150
-		DeathType: 5
 		Versus:
 			None: 90
 			Wood: 50
 			Light: 60
 			Heavy: 25
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -38,14 +37,13 @@ Flamer:
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 8
-		DeathType: 5
 		Versus:
 			None: 90
 			Wood: 100
 			Light: 60
 			Heavy: 25
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -62,13 +60,12 @@ Napalm:
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
 		Damage: 100
-		DeathType: 5
 		Versus:
 			None: 90
 			Light: 60
 			Heavy: 25
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -93,13 +90,12 @@ Grenade:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 60
-		DeathType: 3
 		Versus:
 			None: 50
 			Wood: 100
 			Light: 25
 			Heavy: 5
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -124,13 +120,13 @@ DepthCharge:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 80
-		DeathType: 4
 		ValidTargets: Underwater
 		Versus:
 			None: 30
 			Wood: 75
 			Light: 75
 			Concrete: 50
+		DamageTypes: ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -150,11 +146,10 @@ TeslaZap:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 100
-		DeathType: 6
 		Versus:
 			None: 1000
 			Wood: 60
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
 
 PortaTesla:
 	ReloadDelay: 70
@@ -165,10 +160,9 @@ PortaTesla:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 45
-		DeathType: 6
 		Versus:
 			None: 1000
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
 
 TTankZap:
 	ReloadDelay: 120
@@ -179,10 +173,9 @@ TTankZap:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 100
-		DeathType: 6
 		Versus:
 			None: 1000
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
 
 DogJaw:
 	ValidTargets: Infantry
@@ -192,13 +185,13 @@ DogJaw:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 100
-		DeathType: 1
 		ValidTargets: Infantry
 		Versus:
 			Wood: 0
 			Light: 0
 			Heavy: 0
 			Concrete: 0
+		DamageTypes: DefaultDeath
 
 Heal:
 	ReloadDelay: 80
@@ -209,7 +202,6 @@ Heal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: -50
-		DeathType: 1
 		Versus:
 			Wood: 0
 			Light: 0
@@ -226,7 +218,6 @@ Repair:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: -20
-		DeathType: 1
 		ValidTargets: Repair
 		Versus:
 			None: 0
@@ -238,12 +229,13 @@ Repair:
 Crush:
 	Warhead@1Dam: SpreadDamage
 		Damage: 100
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		ImpactSound: squishy2.aud
 
 Demolish:
 	Warhead@1Dam: SpreadDamage
+		DamageTypes: DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: kaboom25.aud
@@ -256,14 +248,13 @@ Claw:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 33
-		DeathType: 1
 		Versus:
 			None: 90
 			Wood: 10
 			Light: 30
 			Heavy: 10
 			Concrete: 10
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 
 Mandible:
 	ReloadDelay: 10
@@ -273,14 +264,13 @@ Mandible:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 60
-		DeathType: 1
 		Versus:
 			None: 90
 			Wood: 10
 			Light: 30
 			Heavy: 10
 			Concrete: 10
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 
 MADTankThump:
 	InvalidTargets: MADTank

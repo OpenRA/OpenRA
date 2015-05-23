@@ -190,6 +190,13 @@
 	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation:
+		DeathTypes:
+			DefaultDeath: 1
+			BulletDeath: 2
+			SmallExplosionDeath: 3
+			ExplosionDeath: 4
+			FireDeath: 5
+			TiberiumDeath: 6
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
@@ -226,13 +233,13 @@
 		Range: 1
 	ScriptTriggers:
 	DeathSounds@NORMAL:
-		DeathTypes: 1, 2, 3, 4
+		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@BURNED:
 		DeathSound: Burned
-		DeathTypes: 5
+		DeathTypes: FireDeath
 	DeathSounds@POISONED:
 		DeathSound: Poisoned
-		DeathTypes: 6
+		DeathTypes: TiberiumDeath
 	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2

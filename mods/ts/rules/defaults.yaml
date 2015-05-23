@@ -192,6 +192,13 @@
 	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation:
+		DeathTypes:
+			BulletDeath: 1
+			SmallExplosionDeath: 2
+			ExplosionDeath: 3
+			InfantryExplodeDeath: 4 #not used by any warhead; TODO: check what should use this type and add it!
+			FireDeath: 5
+			EnergyDeath: 6
 	AutoTarget:
 	AttackMove:
 	Passenger:
@@ -225,6 +232,7 @@
 	PoisonedByTiberium:
 	SpawnViceroid:
 		ViceroidActor: vissml
+		DeathType: EnergyDeath # TODO: FIX ME! (Tiberium currently uses the wrong damage type!)
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	Guard:
@@ -233,13 +241,13 @@
 	Huntable:
 	ScriptTriggers:
 	DeathSounds@NORMAL:
-		DeathTypes: 1, 2, 3
+		DeathTypes: BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@BURNED:
 		DeathSound: Burned
-		DeathTypes: 5
+		DeathTypes: FireDeath
 	DeathSounds@ZAPPED:
 		DeathSound: Zapped
-		DeathTypes: 6
+		DeathTypes: EnergyDeath
 	UpgradeManager:
 	Cloak@CLOAKGENERATOR:
 		UpgradeTypes: cloakgenerator

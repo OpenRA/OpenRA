@@ -22,7 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Multiply volume with this factor.")]
 		public readonly float VolumeMultiplier = 1f;
 
-		[Desc("DeathTypes that this should be used for. If empty, this will be used as the default sound.")]
+		[Desc("Damage types that this should be used for (defined on the warheads).",
+			"If empty, this will be used as the default sound for all death types.")]
 		public readonly string[] DeathTypes = { };
 
 		public object Create(ActorInitializer init) { return new DeathSounds(this); }
@@ -40,8 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (e.Warhead == null)
 				return;
 
-			if (info.DeathTypes.Contains(e.Warhead.DeathType) || (!info.DeathTypes.Any() &&
-				!self.Info.Traits.WithInterface<DeathSoundsInfo>().Any(dsi => dsi.DeathTypes.Contains(e.Warhead.DeathType))))
+			if (info.DeathTypes.Intersect(e.Warhead.DamageTypes).Any())
 				self.PlayVoiceLocal(info.DeathSound, info.VolumeMultiplier);
 		}
 	}

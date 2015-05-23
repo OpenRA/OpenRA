@@ -7,7 +7,6 @@ Heal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: -50
-		DeathType: 1
 		Versus:
 			Wood: 0
 			Light: 0
@@ -23,7 +22,6 @@ Repair:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: -50
-		DeathType: 1
 		Versus:
 			None: 0
 			Wood: 0
@@ -36,5 +34,4 @@ TiberiumHeal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: -2
-		DeathType: 6
 
