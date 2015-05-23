@@ -142,4 +142,6 @@
 copy "$(TargetPath)" "$(SolutionDir)mods/ra/"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup />
+</Project>
 </Project>

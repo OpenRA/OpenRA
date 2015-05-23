@@ -87,4 +87,8 @@ namespace OpenRA.Mods.RA.Traits
 			}
 		}
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/bleed
