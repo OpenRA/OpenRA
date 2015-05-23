@@ -225,6 +225,9 @@ namespace OpenRA
 				if (IsInWorld)
 					World.Remove(this);
 
+				foreach (var t in TraitsImplementing<INotifyActorDisposing>())
+					t.Disposing(this);
+
 				World.TraitDict.RemoveActor(this);
 				Disposed = true;
 

@@ -34,7 +34,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public override object Create(ActorInitializer init) { return new Sandworm(init.Self, this); }
 	}
 
-	class Sandworm : Wanders, ITick, INotifyKilled
+	class Sandworm : Wanders, ITick, INotifyActorDisposing
 	{
 		public readonly SandwormInfo Info;
 
@@ -151,9 +151,14 @@ namespace OpenRA.Mods.D2k.Traits
 			IsMovingTowardTarget = true;
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		bool disposed;
+		public void Disposing(Actor self)
 		{
+			if (disposed)
+				return;
+
 			manager.DecreaseWormCount();
+			disposed = true;
 		}
 	}
 }

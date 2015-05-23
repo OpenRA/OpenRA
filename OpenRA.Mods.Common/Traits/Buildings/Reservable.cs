@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Reserve landing places for aircraft.")]
 	class ReservableInfo : TraitInfo<Reservable> { }
 
-	public class Reservable : ITick, INotifyKilled, INotifyOwnerChanged, INotifySold
+	public class Reservable : ITick, INotifyOwnerChanged, INotifySold, INotifyActorDisposing
 	{
 		Actor reservedFor;
 		Aircraft reservedForAircraft;
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			return res != null && res.reservedFor != null;
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		public void Disposing(Actor self)
 		{
 			if (reservedForAircraft != null)
 				reservedForAircraft.UnReserve();

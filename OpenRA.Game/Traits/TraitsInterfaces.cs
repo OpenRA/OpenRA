@@ -94,6 +94,7 @@ namespace OpenRA.Traits
 	public interface INotifyDamageStateChanged { void DamageStateChanged(Actor self, AttackInfo e); }
 	public interface INotifyRepair { void Repairing(Actor self, Actor host); }
 	public interface INotifyKilled { void Killed(Actor self, AttackInfo e); }
+	public interface INotifyActorDisposing { void Disposing(Actor self); }
 	public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
 	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }

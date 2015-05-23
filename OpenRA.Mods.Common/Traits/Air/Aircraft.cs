@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
 
-	public class Aircraft : IFacing, IPositionable, ISync, INotifyKilled, IIssueOrder, IOrderVoice, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class Aircraft : IFacing, IPositionable, ISync, IIssueOrder, IOrderVoice, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		public void Disposing(Actor self)
 		{
 			UnReserve();
 		}
