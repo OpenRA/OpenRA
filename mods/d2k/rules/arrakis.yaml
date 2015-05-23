@@ -76,5 +76,6 @@ sietch:
 	Power:
 		Amount: 0
 	ProvidesPrerequisite@buildingname:
+	-WithMakeAnimation:
 	-WithCrumbleOverlay:
 
