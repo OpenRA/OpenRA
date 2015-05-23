@@ -943,6 +943,28 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = node.Key.Replace("ProvidesCustomPrerequisite", "ProvidesPrerequisite");
 				}
 
+				if (engineVersion < 20150509)
+				{
+					if (depth == 0 && node.Value.Nodes.Exists(n => n.Key == "Selectable"))
+					{
+						var selectable = node.Value.Nodes.FirstOrDefault(n => n.Key == "Selectable");
+						var selectableNodes = selectable.Value.Nodes;
+						var voice = selectableNodes.FirstOrDefault(n => n.Key == "Voice");
+						var selectableVoice = voice != null ? FieldLoader.GetValue<string>("Voice", voice.Value.Value) : "";
+
+						if (voice != null)
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("Voiced", "", new List<MiniYamlNode>
+							{
+								new MiniYamlNode("VoiceSet", selectableVoice),
+							}));
+						}
+					}
+
+					if (node.Key.StartsWith("Selectable"))
+						node.Value.Nodes.RemoveAll(p => p.Key == "Voice");
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

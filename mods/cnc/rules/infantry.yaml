@@ -185,7 +185,6 @@ RMBO:
 		Queue: Infantry.GDI
 	Selectable:
 		Bounds: 12,17,0,-6
-		Voice: CommandoVoice
 	Mobile:
 		Speed: 71
 	Health:
@@ -206,6 +205,8 @@ RMBO:
 		StandSequences: stand, stand2
 	AnnounceOnBuild:
 	AnnounceOnKill:
+	Voiced:
+		VoiceSet: CommandoVoice
 
 PVICE:
 	Inherits: VICE

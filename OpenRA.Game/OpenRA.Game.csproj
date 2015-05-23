@@ -179,6 +179,7 @@
     <Compile Include="Traits\World\Shroud.cs" />
     <Compile Include="World.cs" />
     <Compile Include="WorldUtils.cs" />
+    <Compile Include="VoiceExts.cs" />
     <Compile Include="Network\ReplayRecorderConnection.cs" />
     <Compile Include="Traits\DebugPauseState.cs" />
     <Compile Include="Network\UPnP.cs" />

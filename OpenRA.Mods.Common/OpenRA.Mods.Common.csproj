@@ -443,6 +443,7 @@
     <Compile Include="Traits\Upgrades\UpgradeActorsNear.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
     <Compile Include="Traits\Valued.cs" />
+    <Compile Include="Traits\Voiced.cs" />
     <Compile Include="Traits\Wanders.cs" />
     <Compile Include="Traits\World\BridgeLayer.cs" />
     <Compile Include="Traits\World\CrateSpawner.cs" />

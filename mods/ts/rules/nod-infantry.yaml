@@ -11,7 +11,8 @@ E3:
 		Description: Anti-tank infantry.\n  Strong vs Vehicles, Aircraft, Buildings\n  Weak vs Infantry
 	Selectable:
 		Bounds: 12,17,0,-9
-		Voice: Rocket
+	Voiced:
+		VoiceSet: Rocket
 	Health:
 		HP: 100
 	Mobile:
@@ -47,7 +48,8 @@ CYBORG:
 	-Crushable:
 	Selectable:
 		Bounds: 14,30,0,-7
-		Voice: Cyborg
+	Voiced:
+		VoiceSet: Cyborg
 	Mobile:
 		Speed: 56
 	Health:
@@ -88,7 +90,8 @@ CYC2:
 	-Crushable:
 	Selectable:
 		Bounds: 14,30,0,-7
-		Voice: CyborgCommando
+	Voiced:
+		VoiceSet: CyborgCommando
 	Mobile:
 		Speed: 56
 	Health:
@@ -126,7 +129,8 @@ MHIJACK:
 		Description: Hijacks enemy vehicles.\n  Unarmed
 	Selectable:
 		Bounds: 12,17,0,-9
-		Voice: Hijacker
+	Voiced:
+		VoiceSet: Hijacker
 	Health:
 		HP: 300
 	PoisonedByTiberium:

@@ -20,7 +20,6 @@ namespace OpenRA.Traits
 		public readonly bool Selectable = true;
 		public readonly int Priority = 10;
 		public readonly int[] Bounds = null;
-		[VoiceReference] public readonly string Voice = null;
 
 		public object Create(ActorInitializer init) { return new Selectable(init.Self, this); }
 	}

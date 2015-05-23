@@ -37,7 +37,6 @@ engineer:
 		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
 	Selectable:
 		Bounds: 12,17,0,0
-		Voice: EngineerVoice
 	Health:
 		HP: 25
 	Mobile:
@@ -52,6 +51,8 @@ engineer:
 	-AutoTarget:
 	AttractsWorms:
 		Intensity: 180
+	Voiced:
+		VoiceSet: EngineerVoice
 
 bazooka:
 	Inherits: ^Infantry
@@ -94,7 +95,6 @@ medic:
 		Description: Heals nearby infantry\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
 		Bounds: 12,17,0,0
-		Voice: EngineerVoice
 	Health:
 		HP: 60
 	Mobile:
@@ -112,6 +112,8 @@ medic:
 	-AutoTarget:
 	AttractsWorms:
 		Intensity: 180
+	Voiced:
+		VoiceSet: EngineerVoice
 
 fremen:
 	Inherits: ^Infantry
@@ -126,7 +128,6 @@ fremen:
 		Prerequisites: ~barracks.atreides, palace, ~techlevel.high
 	Selectable:
 		Bounds: 12,17,0,0
-		Voice: FremenVoice
 	Mobile:
 		Speed: 53
 	Health:
@@ -151,6 +152,8 @@ fremen:
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
 	-MustBeDestroyed:
+	Voiced:
+		VoiceSet: FremenVoice
 
 grenadier:
 	Inherits: ^Infantry
@@ -199,7 +202,6 @@ sardaukar:
 		Description: Elite asssault infantry\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
 	Selectable:
 		Bounds: 12,17,0,0
-		Voice: GenericVoice
 	Health:
 		HP: 100
 	Mobile:
@@ -217,6 +219,8 @@ sardaukar:
 	AttackFrontal:
 	AttractsWorms:
 		Intensity: 180
+	Voiced:
+		VoiceSet: GenericVoice
 
 saboteur:
 	Inherits: ^Infantry
@@ -230,7 +234,6 @@ saboteur:
 		Name: Saboteur
 		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 	Selectable:
-		Voice: SaboteurVoice
 		Bounds: 12,17,0,0
 	Health:
 		HP: 100
@@ -243,4 +246,6 @@ saboteur:
 	-AutoTarget:
 	AttractsWorms:
 		Intensity: 120
+	Voiced:
+		VoiceSet: SaboteurVoice
 

@@ -40,11 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (e.Warhead == null)
 				return;
 
-			var cp = self.CenterPosition;
-
-			if (info.DeathTypes.Contains(e.Warhead.DeathType) ||
-				(!info.DeathTypes.Any() && !self.Info.Traits.WithInterface<DeathSoundsInfo>().Any(dsi => dsi.DeathTypes.Contains(e.Warhead.DeathType))))
-				Sound.PlayVoiceLocal(info.DeathSound, self, self.Owner.Country.Race, cp, info.VolumeMultiplier);
+			if (info.DeathTypes.Contains(e.Warhead.DeathType) || (!info.DeathTypes.Any() &&
+				!self.Info.Traits.WithInterface<DeathSoundsInfo>().Any(dsi => dsi.DeathTypes.Contains(e.Warhead.DeathType))))
+				self.PlayVoiceLocal(info.DeathSound, info.VolumeMultiplier);
 		}
 	}
 }

@@ -300,7 +300,7 @@ namespace OpenRA
 		}
 
 		// Returns true if played successfully
-		public static bool PlayPredefined(Ruleset ruleset, Player p, Actor voicedUnit, string type, string definition, string variant,
+		public static bool PlayPredefined(Ruleset ruleset, Player p, Actor voicedActor, string type, string definition, string variant,
 			bool relative, WPos pos, float volumeModifier, bool attenuateVolume)
 		{
 			if (ruleset == null)
@@ -312,17 +312,17 @@ namespace OpenRA
 			if (ruleset.Voices == null || ruleset.Notifications == null)
 				return false;
 
-			var rules = (voicedUnit != null) ? ruleset.Voices[type] : ruleset.Notifications[type];
+			var rules = (voicedActor != null) ? ruleset.Voices[type] : ruleset.Notifications[type];
 			if (rules == null)
 				return false;
 
-			var id = voicedUnit != null ? voicedUnit.ActorID : 0;
+			var id = voicedActor != null ? voicedActor.ActorID : 0;
 
 			string clip;
 			var suffix = rules.DefaultVariant;
 			var prefix = rules.DefaultPrefix;
 
-			if (voicedUnit != null)
+			if (voicedActor != null)
 			{
 				if (!rules.VoicePools.Value.ContainsKey("Attack"))
 					rules.VoicePools.Value.Add("Attack", rules.VoicePools.Value["Move"]);
@@ -362,32 +362,6 @@ namespace OpenRA
 					InternalSoundVolume * volumeModifier, attenuateVolume);
 
 			return true;
-		}
-
-		public static bool PlayVoice(string phrase, Actor voicedUnit, string variant)
-		{
-			if (voicedUnit == null || phrase == null)
-				return false;
-
-			var mi = voicedUnit.Info.Traits.GetOrDefault<SelectableInfo>();
-			if (mi == null || mi.Voice == null)
-				return false;
-
-			var type = mi.Voice.ToLowerInvariant();
-			return PlayPredefined(voicedUnit.World.Map.Rules, null, voicedUnit, type, phrase, variant, true, WPos.Zero, 1f, true);
-		}
-
-		public static bool PlayVoiceLocal(string phrase, Actor voicedUnit, string variant, WPos pos, float volume)
-		{
-			if (voicedUnit == null || phrase == null)
-				return false;
-
-			var mi = voicedUnit.Info.Traits.GetOrDefault<SelectableInfo>();
-			if (mi == null || mi.Voice == null)
-				return false;
-
-			var type = mi.Voice.ToLowerInvariant();
-			return PlayPredefined(voicedUnit.World.Map.Rules, null, voicedUnit, type, phrase, variant, false, pos, volume, true);
 		}
 
 		public static bool PlayNotification(Ruleset rules, Player player, string type, string notification, string variant)

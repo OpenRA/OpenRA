@@ -18,6 +18,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Minimum duration (in seconds) between sound events.")]
 		public readonly int Interval = 5;
 
+		[Desc("Voice to use when killing something.")]
+		public readonly string KillVoice = "Kill";
+
 		public object Create(ActorInitializer init) { return new AnnounceOnKill(init.Self, this); }
 	}
 
@@ -39,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (e.DamageState == DamageState.Dead && damaged != e.Attacker)
 			{
 				if (self.World.WorldTick - lastAnnounce > info.Interval * 25)
-					Sound.PlayVoice("Kill", self, self.Owner.Country.Race);
+					self.PlayVoice(info.KillVoice);
 
 				lastAnnounce = self.World.WorldTick;
 			}

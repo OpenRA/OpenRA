@@ -57,9 +57,9 @@ namespace OpenRA
 				}
 			}
 
-			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoices());
-			if (voicedUnit != null)
-				Sound.PlayVoice("Select", voicedUnit, voicedUnit.Owner.Country.Race);
+			var voicedActor = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasTrait<IVoiced>());
+			if (voicedActor != null)
+				voicedActor.PlayVoice("Select");
 
 			foreach (var a in newSelection)
 				foreach (var sel in a.TraitsImplementing<INotifySelected>())
