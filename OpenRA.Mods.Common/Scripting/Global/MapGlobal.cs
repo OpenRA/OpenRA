@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!sma.Actors.TryGetValue(actorName, out ret))
 				return null;
 
-			if (ret.Destroyed)
+			if (ret.Disposed)
 				return null;
 
 			return ret;

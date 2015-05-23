@@ -140,7 +140,7 @@ namespace OpenRA.Graphics
 
 			// added for contrails
 			foreach (var a in World.ActorsWithTrait<IPostRender>())
-				if (a.Actor.IsInWorld && !a.Actor.Destroyed)
+				if (a.Actor.IsInWorld && !a.Actor.Disposed)
 					a.Trait.RenderAfterWorld(this, a.Actor);
 
 			var renderShroud = World.RenderPlayer != null ? World.RenderPlayer.Shroud : null;
@@ -154,7 +154,7 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.DisableScissor();
 
-			var overlayRenderables = World.Selection.Actors.Where(a => !a.Destroyed)
+			var overlayRenderables = World.Selection.Actors.Where(a => !a.Disposed)
 				.SelectMany(a => a.TraitsImplementing<IPostRenderSelection>())
 				.SelectMany(t => t.RenderAfterWorld(this));
 
@@ -174,7 +174,7 @@ namespace OpenRA.Graphics
 
 			if (World.Type == WorldType.Regular && Game.Settings.Game.AlwaysShowStatusBars)
 			{
-				foreach (var g in World.Actors.Where(a => !a.Destroyed
+				foreach (var g in World.Actors.Where(a => !a.Disposed
 					&& a.HasTrait<Selectable>()
 					&& !World.FogObscures(a)
 					&& !World.Selection.Actors.Contains(a)))

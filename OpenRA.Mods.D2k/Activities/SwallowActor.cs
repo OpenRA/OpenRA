@@ -76,7 +76,7 @@ namespace OpenRA.Mods.D2k.Activities
 
 				actor.World.AddFrameEndTask(_ =>
 					{
-						actor1.Destroy();
+						actor1.Dispose();
 
 						// Harvester insurance
 						if (!actor1.HasTrait<Harvester>())

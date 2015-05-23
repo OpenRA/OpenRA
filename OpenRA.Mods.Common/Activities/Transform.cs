@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 				var selected = w.Selection.Contains(self);
 				var controlgroup = w.Selection.GetControlGroupForActor(self);
 
-				self.Destroy();
+				self.Dispose();
 				foreach (var s in Sounds)
 					Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
 

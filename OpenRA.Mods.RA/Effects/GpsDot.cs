@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick(World world)
 		{
-			if (self.Destroyed)
+			if (self.Disposed)
 				world.AddFrameEndTask(w => w.Remove(this));
 
 			show = false;
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (!show || self.Destroyed)
+			if (!show || self.Disposed)
 				return SpriteRenderable.None;
 
 			var palette = wr.Palette(info.IndicatorPalettePrefix + self.Owner.InternalName);

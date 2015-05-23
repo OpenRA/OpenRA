@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Activities
 						capturable.EndCapture();
 
 						if (capturesInfo != null && capturesInfo.ConsumeActor)
-							self.Destroy();
+							self.Dispose();
 					});
 				}
 			}

@@ -155,7 +155,7 @@ namespace OpenRA.Traits
 					nd.Killed(self, ai);
 
 				if (RemoveOnDeath)
-					self.Destroy();
+					self.Dispose();
 
 				Log.Write("debug", "{0} #{1} killed by {2} #{3}", self.Info.Name, self.ActorID, attacker.Info.Name, attacker.ActorID);
 			}
@@ -195,7 +195,7 @@ namespace OpenRA.Traits
 	{
 		public static DamageState GetDamageState(this Actor self)
 		{
-			if (self.Destroyed)
+			if (self.Disposed)
 				return DamageState.Dead;
 
 			var health = self.TraitOrDefault<Health>();
@@ -204,7 +204,7 @@ namespace OpenRA.Traits
 
 		public static void InflictDamage(this Actor self, Actor attacker, int damage, DamageWarhead warhead)
 		{
-			if (self.Destroyed) return;
+			if (self.Disposed) return;
 			var health = self.TraitOrDefault<Health>();
 			if (health == null) return;
 			health.InflictDamage(self, attacker, damage, warhead, false);

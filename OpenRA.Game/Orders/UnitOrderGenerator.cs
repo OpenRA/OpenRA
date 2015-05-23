@@ -107,7 +107,7 @@ namespace OpenRA.Orders
 			if (self.Owner != self.World.LocalPlayer)
 				return null;
 
-			if (self.Destroyed || !target.IsValidFor(self))
+			if (self.Disposed || !target.IsValidFor(self))
 				return null;
 
 			if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action)

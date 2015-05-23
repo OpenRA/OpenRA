@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 					weapon.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
 				}
 
-				self.Destroy();
+				self.Dispose();
 				return null;
 			}
 

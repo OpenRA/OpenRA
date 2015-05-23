@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (refund > 0 && self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, self.Owner.Color.RGB, FloatingText.FormatCashTick(refund), 30)));
 
-			self.Destroy();
+			self.Dispose();
 			return this;
 		}
 

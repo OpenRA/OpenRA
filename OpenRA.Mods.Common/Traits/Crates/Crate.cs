@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var crateActions = self.TraitsImplementing<CrateAction>();
 
-			self.Destroy();
+			self.Dispose();
 			collected = true;
 
 			if (crateActions.Any())
@@ -112,13 +112,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (collector != null)
 				OnCrush(collector);
 			else
-				self.Destroy();
+				self.Dispose();
 		}
 
 		public void Tick(Actor self)
 		{
 			if (info.Lifetime != 0 && ++ticks >= info.Lifetime * 25)
-				self.Destroy();
+				self.Dispose();
 		}
 
 		public CPos TopLeft { get { return Location; } }

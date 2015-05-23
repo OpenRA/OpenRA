@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				if (!self.Destroyed)
+				if (!self.Disposed)
 					w.Add(new Corpse(w, self.CenterPosition, rs.GetImage(self), sequence, palette));
 			});
 		}

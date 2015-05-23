@@ -41,7 +41,7 @@ namespace OpenRA.Scripting
 			var commandClasses = Context.ActorCommands[actor.Info].AsEnumerable();
 
 			// Destroyed actors cannot have their traits queried
-			if (actor.Destroyed)
+			if (actor.Disposed)
 				commandClasses = commandClasses.Where(c => c.HasAttribute<ExposedForDestroyedActors>());
 
 			var args = new object[] { Context, actor };

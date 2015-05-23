@@ -104,7 +104,7 @@ namespace OpenRA.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.Destroyed)
+				if (self.Disposed)
 					return;
 
 				var line = self.TraitOrDefault<DrawLineToTarget>();
@@ -120,7 +120,7 @@ namespace OpenRA.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.Destroyed)
+				if (self.Disposed)
 					return;
 
 				target.Flash();

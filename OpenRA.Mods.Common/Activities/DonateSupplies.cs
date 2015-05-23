@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 				return;
 
 			target.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);
-			self.Destroy();
+			self.Dispose();
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				self.World.AddFrameEndTask(w => w.Add(new FloatingText(target.CenterPosition, target.Owner.Color.RGB, FloatingText.FormatCashTick(payload), 30)));
