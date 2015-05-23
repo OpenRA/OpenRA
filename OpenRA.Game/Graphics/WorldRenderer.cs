@@ -123,6 +123,9 @@ namespace OpenRA.Graphics
 
 		public void Draw()
 		{
+			if (World.WorldActor.Disposed)
+				return;
+
 			RefreshPalette();
 
 			if (World.Type == WorldType.Shellmap && !Game.Settings.Game.ShowShellmap)
@@ -273,6 +276,12 @@ namespace OpenRA.Graphics
 
 		public void Dispose()
 		{
+			// HACK: Disposing the world from here violates ownership
+			// but the WorldRenderer lifetime matches the disposal
+			// behavior we want for the world, and the root object setup
+			// is so horrible that doing it properly would be a giant mess.
+			World.Dispose();
+
 			palette.Dispose();
 			Theater.Dispose();
 			terrainRenderer.Dispose();

@@ -24,7 +24,7 @@ namespace OpenRA
 {
 	public enum WorldType { Regular, Shellmap, Editor }
 
-	public class World
+	public sealed class World : IDisposable
 	{
 		class ActorIDComparer : IComparer<Actor>
 		{
@@ -368,6 +368,19 @@ namespace OpenRA
 				pi.Outcome = player.WinState;
 				pi.OutcomeTimestampUtc = DateTime.UtcNow;
 			}
+		}
+
+		public void Dispose()
+		{
+			frameEndActions.Clear();
+
+			// Dispose newer actors first, and the world actor last
+			foreach (var a in actors.Reverse())
+				a.Dispose();
+
+			// Actor disposals are done in a FrameEndTask
+			while (frameEndActions.Count != 0)
+				frameEndActions.Dequeue()(this);
 		}
 	}
 
