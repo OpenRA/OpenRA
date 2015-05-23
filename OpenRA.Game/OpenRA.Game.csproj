@@ -128,6 +128,7 @@
     <Compile Include="Network\Connection.cs" />
     <Compile Include="Network\FrameData.cs" />
     <Compile Include="Network\GameServer.cs" />
+    <Compile Include="Network\GeoIP.cs" />
     <Compile Include="Network\Handshake.cs" />
     <Compile Include="Network\Order.cs" />
     <Compile Include="Network\OrderIO.cs" />
