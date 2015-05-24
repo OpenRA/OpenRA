@@ -319,6 +319,7 @@ osx-dependencies: cli-dependencies
 
 dependencies: $(os-dependencies)
 	@./thirdparty/fetch-geoip-db.sh
+	@ $(CP) thirdparty/download/GeoLite2-Country.mmdb.gz .
 
 all-dependencies: cli-dependencies windows-dependencies osx-dependencies
 

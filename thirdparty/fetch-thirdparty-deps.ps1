@@ -135,7 +135,6 @@ if (!(Test-Path "GeoLite2-Country.mmdb.gz") -Or (((get-date) - (get-item "GeoLit
 	echo "Updating GeoIP country database from MaxMind."
 	$target = Join-Path $pwd.ToString() "GeoLite2-Country.mmdb.gz"
 	(New-Object System.Net.WebClient).DownloadFile("http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz", $target)
-	cp GeoLite2-Country.mmdb.gz ..\..
 }
 
 cd ..

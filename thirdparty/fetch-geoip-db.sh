@@ -14,6 +14,5 @@ if [[ ! -e $filename ]] || [[ -n $(find . -name $filename -mtime +30 -print) ]];
 	rm -f $filename
 	echo "Updating GeoIP country database from MaxMind."
 	curl -s -L -O http://geolite.maxmind.com/download/geoip/database/$filename
-	cp $filename ../..
 fi
 
