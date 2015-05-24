@@ -41,11 +41,9 @@ namespace OpenRA.Traits
 		public Health(ActorInitializer init, HealthInfo info)
 		{
 			Info = info;
-			MaxHP = info.HP;
+			MaxHP = info.HP > 0 ? info.HP : 1;
 
 			hp = init.Contains<HealthInit>() ? init.Get<HealthInit, int>() * MaxHP / 100 : MaxHP;
-			if (hp <= 0)
-				hp = Math.Max(MaxHP / 100, 1);
 
 			DisplayHp = hp;
 		}
@@ -176,9 +174,21 @@ namespace OpenRA.Traits
 	public class HealthInit : IActorInit<int>
 	{
 		[FieldFromYamlKey] readonly int value = 100;
+		readonly bool allowZero = false;
 		public HealthInit() { }
-		public HealthInit(int init) { value = init; }
-		public int Value(World world) { return value; }
+		public HealthInit(int init, bool allowZero = false)
+		{
+			this.allowZero = allowZero;
+			value = init;
+		}
+
+		public int Value(World world)
+		{
+			if (value < 0 || (value == 0 && !allowZero))
+				return 1;
+
+			return value;
+		}
 	}
 
 	public static class HealthExts
