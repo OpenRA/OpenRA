@@ -273,7 +273,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var path = Game.ModData.MapCache[map].Map.Path;
 			try
 			{
-				File.Delete(path);
+				if (File.Exists(path))
+					File.Delete(path);
+				else if (Directory.Exists(path))
+					Directory.Delete(path, true);
+
 				Game.ModData.MapCache[map].Invalidate();
 
 				if (selectedUid == map)
@@ -281,7 +285,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				Game.Debug("Failed to delete map file '{0}'. See the logs for details.", path);
+				Game.Debug("Failed to delete map '{0}'. See the debug.log file for details.", path);
 				Log.Write("debug", ex.ToString());
 			}
 
