@@ -292,7 +292,7 @@ mods: mod_common mod_ra mod_cnc mod_d2k mod_ts
 all: dependencies core tools
 
 clean:
-	@-$(RM_F) *.exe *.dll *.dylib *.config ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
+	@-$(RM_F) *.exe *.dll *.dylib *.dll.config ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 	@-$(RM_RF) ./*/bin ./*/obj
 	@-$(RM_RF) ./thirdparty/download
 
