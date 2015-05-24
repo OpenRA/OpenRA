@@ -118,6 +118,18 @@ namespace OpenRA.Graphics
 			return Color.FromArgb(c.A, (byte)(c.R * a + 0.5f), (byte)(c.G * a + 0.5f), (byte)(c.B * a + 0.5f));
 		}
 
+		public static Color PremultipliedColorLerp(float t, Color c1, Color c2)
+		{
+			// Colors must be lerped in a non-multiplied color space
+			var a1 = 255f / c1.A;
+			var a2 = 255f / c2.A;
+			return PremultiplyAlpha(Color.FromArgb(
+				(int)(t * c2.A + (1 - t) * c1.A),
+				(int)((byte)(t * a2 * c2.R + 0.5f) + (1 - t) * (byte)(a1 * c1.R + 0.5f)),
+				(int)((byte)(t * a2 * c2.G + 0.5f) + (1 - t) * (byte)(a1 * c1.G + 0.5f)),
+				(int)((byte)(t * a2 * c2.B + 0.5f) + (1 - t) * (byte)(a1 * c1.B + 0.5f))));
+		}
+
 		public static float[] IdentityMatrix()
 		{
 			return Exts.MakeArray(16, j => (j % 5 == 0) ? 1.0f : 0);
