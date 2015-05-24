@@ -264,8 +264,8 @@ local function treeSetConnectorsAndIcons(tree)
   local empty = ""
   local function renameItem(itemsrc, target)
     local cache = type(itemsrc) == 'table' and itemsrc or nil
-    local isdir = cache and cache.isdir == nil and tree:IsDirectory(itemsrc) or cache.isdir
-    local isnew = cache and cache.isnew == nil and tree:GetItemText(itemsrc) == empty or cache.isnew
+    local isdir = not cache and tree:IsDirectory(itemsrc) or cache and cache.isdir or false
+    local isnew = not cache and tree:GetItemText(itemsrc) == empty or cache and cache.isnew or false
     local source = cache and cache.fullname or tree:GetItemFullName(itemsrc)
     local fn = wx.wxFileName(target)
 
