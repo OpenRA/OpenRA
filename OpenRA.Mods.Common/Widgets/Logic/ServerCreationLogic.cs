@@ -44,6 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
 						{ "initialMap", preview.Uid },
+						{ "initialTab", MapClassification.System },
 						{ "onExit", () => { } },
 						{ "onSelect", (Action<string>)(uid => preview = Game.ModData.MapCache[uid]) },
 						{ "filter", MapVisibility.Lobby },
