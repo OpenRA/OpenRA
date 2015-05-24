@@ -8,30 +8,42 @@ download_dir="${0%/*}/download"
 mkdir -p "${download_dir}"
 cd "${download_dir}"
 
+function get()
+{
+	if which nuget >/dev/null; then
+		nuget install $1 -Version $2 -ExcludeVersion
+	else
+		../noget.sh $1 $2
+	fi
+}
+
 if [ ! -f StyleCopPlus.dll ]; then
 	echo "Fetching StyleCopPlus from nuget"
-	nuget install StyleCopPlus.MSBuild -Version 4.7.49.5 -ExcludeVersion
+	get StyleCopPlus.MSBuild 4.7.49.5
 	cp ./StyleCopPlus.MSBuild/tools/StyleCopPlus.dll .
 	rm -rf StyleCopPlus.MSBuild
 fi
 
 if [ ! -f StyleCop.dll ]; then
 	echo "Fetching StyleCop files from nuget"
-	nuget install StyleCop.MSBuild -Version 4.7.49.0 -ExcludeVersion
+	get StyleCop.MSBuild 4.7.49.0
 	cp ./StyleCop.MSBuild/tools/StyleCop*.dll .
 	rm -rf StyleCop.MSBuild
 fi
 
 if [ ! -f ICSharpCode.SharpZipLib.dll ]; then
 	echo "Fetching ICSharpCode.SharpZipLib from nuget"
-	nuget install SharpZipLib -Version 0.86.0 -ExcludeVersion
+	get SharpZipLib 0.86.0
 	cp ./SharpZipLib/lib/20/ICSharpCode.SharpZipLib.dll .
 	rm -rf SharpZipLib
 fi
 
 if [ ! -f MaxMind.GeoIP2.dll ]; then
 	echo "Fetching MaxMind.GeoIP2 from nuget"
-	nuget install MaxMind.GeoIP2 -Version 2.1.0 -ExcludeVersion
+	get MaxMind.Db 1.0.0.0
+	get Newtonsoft.Json 6.0.5
+	get RestSharp 105.0.1
+	get MaxMind.GeoIP2 2.1.0
 	cp ./MaxMind.Db/lib/net40/MaxMind.Db.* .
 	rm -rf MaxMind.Db
 	cp ./MaxMind.GeoIP2/lib/net40/MaxMind.GeoIP2* .
@@ -44,7 +56,7 @@ fi
 
 if [ ! -f SharpFont.dll ]; then
 	echo "Fetching SharpFont from nuget"
-	nuget install SharpFont -Version 3.0.1 -ExcludeVersion
+	get SharpFont 3.0.1
 	cp ./SharpFont/lib/net20/SharpFont* .
 	cp ./SharpFont/config/SharpFont.dll.config .
 	rm -rf SharpFont SharpFont.Dependencies
@@ -52,21 +64,21 @@ fi
 
 if [ ! -f nunit.framework.dll ]; then
 	echo "Fetching NUnit from nuget"
-	nuget install NUnit -Version 2.6.4 -ExcludeVersion
+	get NUnit 2.6.4
 	cp ./NUnit/lib/nunit.framework* .
 	rm -rf NUnit
 fi
 
 if [ ! -f Mono.Nat.dll ]; then
 	echo "Fetching Mono.Nat from nuget"
-	nuget install Mono.Nat -Version 1.2.21 -ExcludeVersion
+	get Mono.Nat 1.2.21
 	cp ./Mono.Nat/lib/net40/Mono.Nat.dll .
 	rm -rf Mono.Nat
 fi
 
 if [ ! -f FuzzyLogicLibrary.dll ]; then
 	echo "Fetching FuzzyLogicLibrary from NuGet."
-	nuget install FuzzyLogicLibrary -Version 1.2.0 -ExcludeVersion
+	get FuzzyLogicLibrary 1.2.0
 	cp ./FuzzyLogicLibrary/bin/Release/FuzzyLogicLibrary.dll .
 	rm -rf FuzzyLogicLibrary
 fi
