@@ -274,5 +274,11 @@ namespace OpenRA
 			Map.PreloadRules();
 			RuleStatus = Map.InvalidCustomRules ? MapRuleStatus.Invalid : MapRuleStatus.Cached;
 		}
+
+		public void Invalidate()
+		{
+			Status = MapStatus.Unavailable;
+			RuleStatus = MapRuleStatus.Unknown;
+		}
 	}
 }

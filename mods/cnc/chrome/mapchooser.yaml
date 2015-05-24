@@ -43,49 +43,75 @@ Container@MAPCHOOSER_PANEL:
 					Y: 10
 					Width: 200
 					Height: 25
-				ScrollPanel@MAP_LIST:
+				Button@SYSTEM_MAPS_TAB_BUTTON:
+					X: 15
+					Y: 10
+					Height: 35
+					Width: 140
+					Text: Official Maps
+				Button@USER_MAPS_TAB_BUTTON:
+					X: 15
+					Y: 10
+					Height: 35
+					Width: 140
+					Text: Custom Maps
+				Container@SYSTEM_MAPS_TAB:
 					X: 15
 					Y: 45
 					Width: PARENT_RIGHT - 30
 					Height: 440
 					Children:
-						ScrollItem@MAP_TEMPLATE:
-							Width: 183
-							Height: 232
-							X: 2
-							Y: 0
-							Visible: false
+						ScrollPanel@MAP_LIST:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
 							Children:
-								MapPreview@PREVIEW:
-									X: (PARENT_RIGHT - WIDTH)/2
-									Y: 4
-									Width: 173
-									Height: 173
-									IgnoreMouseOver: true
-									IgnoreMouseInput: true
-								Label@TITLE:
-									X: 2
-									Y: PARENT_BOTTOM-48
-									Width: PARENT_RIGHT-4
-									Align: Center
-								Label@DETAILS:
-									Width: PARENT_RIGHT-4
-									X: 2
-									Y: PARENT_BOTTOM-34
-									Align: Center
-									Font: Tiny
-								Label@AUTHOR:
-									Width: PARENT_RIGHT-4
-									X: 2
-									Y: PARENT_BOTTOM-22
-									Align: Center
-									Font: Tiny
-								Label@SIZE:
-									Width: PARENT_RIGHT-4
-									X: 2
-									Y: PARENT_BOTTOM-10
-									Align: Center
-									Font: Tiny
+				Container@USER_MAPS_TAB:
+					X: 15
+					Y: 45
+					Width: PARENT_RIGHT - 30
+					Height: 440
+					Children:
+						ScrollPanel@MAP_LIST:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Children:
+				ScrollItem@MAP_TEMPLATE:
+					Width: 183
+					Height: 232
+					X: 2
+					Y: 0
+					Visible: false
+					Children:
+						MapPreview@PREVIEW:
+							X: (PARENT_RIGHT - WIDTH)/2
+							Y: 4
+							Width: 173
+							Height: 173
+							IgnoreMouseOver: true
+							IgnoreMouseInput: true
+						Label@TITLE:
+							X: 2
+							Y: PARENT_BOTTOM-48
+							Width: PARENT_RIGHT-4
+							Align: Center
+						Label@DETAILS:
+							Width: PARENT_RIGHT-4
+							X: 2
+							Y: PARENT_BOTTOM-34
+							Align: Center
+							Font: Tiny
+						Label@AUTHOR:
+							Width: PARENT_RIGHT-4
+							X: 2
+							Y: PARENT_BOTTOM-22
+							Align: Center
+							Font: Tiny
+						Label@SIZE:
+							Width: PARENT_RIGHT-4
+							X: 2
+							Y: PARENT_BOTTOM-10
+							Align: Center
+							Font: Tiny
 				Button@BUTTON_CANCEL:
 					Key: escape
 					X: 0
@@ -100,6 +126,18 @@ Container@MAPCHOOSER_PANEL:
 					Width: 140
 					Height: 35
 					Text: Random
+				Button@DELETE_MAP_BUTTON:
+					X: PARENT_RIGHT - 300 - WIDTH
+					Y: 499
+					Width: 140
+					Height: 35
+					Text: Delete Map
+				Button@DELETE_ALL_MAPS_BUTTON:
+					X: PARENT_RIGHT - 450 - WIDTH
+					Y: 499
+					Width: 140
+					Height: 35
+					Text: Delete All Maps
 				Button@BUTTON_OK:
 					Key: return
 					X: PARENT_RIGHT - WIDTH

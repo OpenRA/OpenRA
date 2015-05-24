@@ -155,7 +155,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
 			if (mapButton != null)
 			{
-				mapButton.IsDisabled = configurationDisabled;
+				mapButton.IsDisabled = () => gameStarting || panel == PanelType.Kick || panel == PanelType.ForceStart ||
+					orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 				mapButton.OnClick = () =>
 				{
 					var onSelect = new Action<string>(uid =>
@@ -172,8 +173,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
 						{ "initialMap", Map.Uid },
+						{ "initialTab", MapClassification.System },
 						{ "onExit", DoNothing },
-						{ "onSelect", onSelect },
+						{ "onSelect", Game.IsHost ? onSelect : null },
 						{ "filter", MapVisibility.Lobby },
 					});
 				};
