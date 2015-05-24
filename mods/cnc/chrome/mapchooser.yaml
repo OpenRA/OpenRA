@@ -50,7 +50,7 @@ Container@MAPCHOOSER_PANEL:
 					Width: 140
 					Text: Official Maps
 				Button@USER_MAPS_TAB_BUTTON:
-					X: 15
+					X: 155
 					Y: 10
 					Height: 35
 					Width: 140
