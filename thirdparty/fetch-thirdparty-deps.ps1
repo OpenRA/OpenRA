@@ -130,7 +130,7 @@ if (!(Test-Path "Eluant.dll"))
 	(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/Eluant/releases/download/20140425/Eluant.dll", $target)
 }
 
-if (!(Test-Path "GeoLite2-Country.mmdb.gz") -Or (((get-date) - (get-item "GeoLite2-Country.mmdb").LastWriteTime) -gt (new-timespan -days 30)))
+if (!(Test-Path "GeoLite2-Country.mmdb.gz") -Or (((get-date) - (get-item "GeoLite2-Country.mmdb.gz").LastWriteTime) -gt (new-timespan -days 30)))
 {
 	echo "Updating GeoIP country database from MaxMind."
 	$target = Join-Path $pwd.ToString() "GeoLite2-Country.mmdb.gz"
