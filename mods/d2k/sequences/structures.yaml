@@ -122,14 +122,12 @@ repair.atreides:
 		Length: 14
 		Offset: -48,48
 		ZOffset: -1c511
-		BlendMode: Additive
 	damaged-active: DATA.R8
 		Start: 4746
 		Length: 14
 		Tick: 60
 		Offset: -48,48
 		ZOffset: -1c511
-		BlendMode: Additive
 	icon: DATA.R8
 		Start: 4096
 		Offset: -30,-24
@@ -157,14 +155,12 @@ repair.harkonnen:
 		Length: 14
 		Offset: -48,48
 		ZOffset: -1c511
-		BlendMode: Additive
 	damaged-active: DATA.R8
 		Start: 4746
 		Length: 14
 		Tick: 60
 		Offset: -48,48
 		ZOffset: -1c511
-		BlendMode: Additive
 	icon: DATA.R8
 		Start: 4097
 		Offset: -30,-24
@@ -192,14 +188,12 @@ repair.ordos:
 		Length: 14
 		Offset: -48,48
 		ZOffset: -1c511
-		BlendMode: Additive
 	damaged-active: DATA.R8
 		Start: 4746
 		Length: 14
 		Tick: 60
 		Offset: -48,48
 		ZOffset: -1c511
-		BlendMode: Additive
 	icon: DATA.R8
 		Start: 4098
 		Offset: -30,-24

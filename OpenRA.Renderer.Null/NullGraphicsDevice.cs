@@ -43,7 +43,7 @@ namespace OpenRA.Renderer.Null
 		public void EnableDepthBuffer() { }
 		public void DisableDepthBuffer() { }
 
-		public void SetBlendMode(BlendMode mode, float alpha = 1f) { }
+		public void SetBlendMode(BlendMode mode) { }
 
 		public void GrabWindowMouseFocus() { }
 		public void ReleaseWindowMouseFocus() { }

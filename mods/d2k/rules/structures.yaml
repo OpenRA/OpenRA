@@ -664,7 +664,7 @@ repair:
 			atreides: repair.atreides
 			ordos: repair.ordos
 	WithRepairOverlay:
-		Palette: repairlights
+		Palette: effect75alpha
 	Power:
 		Amount: -10
 	ProvidesPrerequisite@buildingname:

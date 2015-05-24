@@ -52,7 +52,7 @@ explosion:
 	deviator: DATA.R8
 		Start: 3512
 		Length: 23
-		BlendMode: SoftAdditive
+		BlendMode: Alpha
 		Tick: 80
 	corpse: DATA.R8
 		Start: 430
@@ -71,37 +71,30 @@ small_trail:
 		Start: 3735
 		Length: 4
 		Tick: 80
-		BlendMode: SoftAdditive
 
 small_trail2:
 	idle: DATA.R8
 		Start: 3540
 		Length: 4
 		Tick: 80
-		BlendMode: SoftAdditive
 
 bazooka_trail:
 	idle: DATA.R8
 		Start: 3381
 		Length: 4
 		Tick: 80
-		BlendMode: Translucency
-		Alpha: 0.75
 
 bazooka_trail2:
 	idle: DATA.R8
 		Start: 3544
 		Length: 4
 		Tick: 80
-		BlendMode: Translucency
-		Alpha: 0.75
 
 deviator_trail:
 	idle: DATA.R8
 		Start: 3535
 		Length: 5
 		Tick: 80
-		BlendMode: SoftAdditive
 
 laserfire:
 	idle: DATA.R8

@@ -49,16 +49,19 @@
 		G: 0
 		B: 0
 		A: 180
+	PaletteFromPaletteWithAlpha@effect75alpha:
+		Name: effect75alpha
+		BasePalette: effect
+		Alpha: 0.75
+	PaletteFromPaletteWithAlpha@effect50alpha:
+		Name: effect50alpha
+		BasePalette: effect
+		Alpha: 0.5
 	PaletteFromScaledPalette@starportlights:
 		Name: starportlights
 		BasePalette: d2k
 		AllowModifiers: false
 		Offset: -64
-	PaletteFromScaledPalette@repairlights:
-		Name: repairlights
-		BasePalette: d2k
-		AllowModifiers: false
-		Offset: -128
 	PaletteFromR8@shroud:
 		Name: shroud
 		Filename: DATA.R8
@@ -72,5 +75,10 @@
 	PlayerColorPalette:
 		BasePalette: d2k
 		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
+	PaletteFromPlayerPaletteWithAlpha@deviatorgas:
+		BaseName: deviatorgas
+		BasePalette: player
+		Alpha: 0.68
+		Premultiply: false
 	PlayerHighlightPalette:
 

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -50,7 +51,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.Tileset != null && info.Tileset.ToLowerInvariant() != world.Map.Tileset.ToLowerInvariant())
 				return;
 
-			var c = (uint)((info.A << 24) | (info.R << 16) | (info.G << 8) | info.B);
+			var a = info.A / 255f;
+			var r = (int)(a * info.R + 0.5f).Clamp(0, 255);
+			var g = (int)(a * info.G + 0.5f).Clamp(0, 255);
+			var b = (int)(a * info.B + 0.5f).Clamp(0, 255);
+			var c = (uint)Color.FromArgb(info.A, r, g, b).ToArgb();
 			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => (i == 0) ? 0 : c)), info.AllowModifiers);
 		}
 	}

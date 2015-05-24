@@ -49,15 +49,9 @@ namespace OpenRA.Graphics
 			using (var bitmap = (Bitmap)Image.FromStream(stream))
 			{
 				Size = bitmap.Size;
+				data = new byte[4 * Size.Width * Size.Height];
 
-				var dataStride = 4 * Size.Width;
-				data = new byte[dataStride * Size.Height];
-
-				var bd = bitmap.LockBits(bitmap.Bounds(),
-					ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-				for (var y = 0; y < Size.Height; y++)
-					Marshal.Copy(IntPtr.Add(bd.Scan0, y * bd.Stride), data, y * dataStride, dataStride);
-				bitmap.UnlockBits(bd);
+				Util.FastCopyIntoSprite(new Sprite(this, bitmap.Bounds(), TextureChannel.Red), bitmap);
 			}
 
 			ReleaseBuffer();

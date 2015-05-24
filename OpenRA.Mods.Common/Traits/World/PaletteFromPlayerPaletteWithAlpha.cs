@@ -1,0 +1,53 @@
+#region Copyright & License Information
+/*
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
+#endregion
+
+using System.Collections.Generic;
+using System.Drawing;
+using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.D2k.Traits
+{
+	[Desc("Create player palettes by applying alpha transparency to another player palette.")]
+	class PaletteFromPlayerPaletteWithAlphaInfo : ITraitInfo
+	{
+		[Desc("The prefix for the resulting player palettes")]
+		public readonly string BaseName = null;
+
+		[Desc("The name of the player palette to base off.")]
+		public readonly string BasePalette = null;
+
+		[Desc("Allow palette modifiers to change the palette.")]
+		public readonly bool AllowModifiers = true;
+
+		[Desc("Alpha component that is applied to the base palette.")]
+		public readonly float Alpha = 1.0f;
+
+		[Desc("Premultiply color by the alpha component.")]
+		public readonly bool Premultiply = true;
+
+		public object Create(ActorInitializer init) { return new PaletteFromPlayerPaletteWithAlpha(this); }
+	}
+
+	class PaletteFromPlayerPaletteWithAlpha : ILoadsPlayerPalettes
+	{
+		readonly PaletteFromPlayerPaletteWithAlphaInfo info;
+
+		public PaletteFromPlayerPaletteWithAlpha(PaletteFromPlayerPaletteWithAlphaInfo info) { this.info = info; }
+
+		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor color, bool replaceExisting)
+		{
+			var remap = new AlphaPaletteRemap(info.Alpha, info.Premultiply);
+			var pal = new ImmutablePalette(wr.Palette(info.BasePalette + playerName).Palette, remap);
+			wr.AddPalette(info.BaseName + playerName, pal, info.AllowModifiers, replaceExisting);
+		}
+	}
+}

@@ -73,24 +73,49 @@ namespace OpenRA.Graphics
 
 			try
 			{
-				var data = dest.Sheet.GetData();
-				var dataStride = dest.Sheet.Size.Width * 4;
-				var x = dest.Bounds.Left * 4;
-				var width = dest.Bounds.Width * 4;
-				var y = dest.Bounds.Top;
+				var destData = dest.Sheet.GetData();
+				var destStride = dest.Sheet.Size.Width;
+				var width = dest.Bounds.Width;
 				var height = dest.Bounds.Height;
 
-				var bd = src.LockBits(src.Bounds(),
-					ImageLockMode.ReadWrite, src.PixelFormat);
-				for (var row = 0; row < height; row++)
-					Marshal.Copy(IntPtr.Add(bd.Scan0, row * bd.Stride), data, (y + row) * dataStride + x, width);
-				src.UnlockBits(bd);
+				var srcData = src.LockBits(src.Bounds(),
+					ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+				unsafe
+				{
+					var c = (int*)srcData.Scan0;
+
+					// Cast the data to an int array so we can copy the src data directly
+					fixed (byte* bd = &destData[0])
+					{
+						var data = (int*)bd;
+						var x = dest.Bounds.Left;
+						var y = dest.Bounds.Top;
+
+						for (var j = 0; j < height; j++)
+						{
+							for (var i = 0; i < width; i++)
+							{
+								var cc = Color.FromArgb(*(c + (j * srcData.Stride >> 2) + i));
+								data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();
+							}
+						}
+					}
+				}
+
+				src.UnlockBits(srcData);
 			}
 			finally
 			{
 				if (createdTempBitmap)
 					src.Dispose();
 			}
+		}
+
+		public static Color PremultiplyAlpha(Color c)
+		{
+			var a = c.A / 255f;
+			return Color.FromArgb(c.A, (byte)(c.R * a + 0.5f), (byte)(c.G * a + 0.5f), (byte)(c.B * a + 0.5f));
 		}
 
 		public static float[] IdentityMatrix()

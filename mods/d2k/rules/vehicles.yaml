@@ -81,6 +81,7 @@ harvester:
 	LeavesHusk:
 		HuskActor: Harvester.Husk
 	WithHarvestAnimation:
+		Palette: effect50alpha
 	AttractsWorms:
 		Intensity: 700
 
