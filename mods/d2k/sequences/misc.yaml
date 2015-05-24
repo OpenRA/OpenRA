@@ -306,10 +306,6 @@ crate:
 		Start: 102
 		ZOffset: -511
 		Offset: -16,-16
-	land: DATA.R8
-		Start: 102
-		ZOffset: -511
-		Offset: -16,-16
 
 # TODO: keep the redundant spicebloom.shp for now for the awful WinForms maps editor
 spicebloom:

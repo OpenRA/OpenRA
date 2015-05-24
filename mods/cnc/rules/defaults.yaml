@@ -474,6 +474,7 @@
 		GenericVisibility: None
 	FrozenUnderFog:
 		StartsRevealed: true
+	-WithMakeAnimation:
 
 ^CivBuildingHusk:
 	AppearsOnRadar:
@@ -490,7 +491,6 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
-	WithMakeAnimation:
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
@@ -516,7 +516,6 @@
 		Palette: terrain
 	EditorAppearance:
 		UseTerrainPalette: true
-	WithMakeAnimation:
 
 ^CivFieldHusk:
 	AppearsOnRadar:
@@ -534,7 +533,6 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
-	WithMakeAnimation:
 
 ^Wall:
 	AppearsOnRadar:
@@ -590,7 +588,6 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
-	WithMakeAnimation:
 
 ^TibTree:
 	Tooltip:
@@ -626,7 +623,6 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
-	WithMakeAnimation:
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
 
