@@ -150,6 +150,8 @@
 		ParachuteOffset: 0,0,200
 		KilledOnImpassableTerrain: true
 		ParachuteSequence: parach
+		ParachuteOpenSequence: open
+		ParachuteIdleSequence: idle
 		ShadowSequence:
 		GroundCorpseSequence:
 		GroundCorpsePalette:
@@ -199,6 +201,7 @@
 			ExplosionDeath: 4
 			FireDeath: 5
 			ElectricityDeath: 6
+		CrushedSequence: die-crushed
 	AutoTarget:
 	AttackMove:
 	Passenger:
@@ -238,9 +241,12 @@
 		ParachuteOffset: 0,0,427
 		KilledOnImpassableTerrain: true
 		ParachuteSequence: parach
+		ParachuteOpenSequence: open
+		ParachuteIdleSequence: idle
 		ShadowSequence: parach-shadow
 		GroundImpactSound: squishy2.aud
 		WaterImpactSound: splash9.aud
+		WaterCorpseSequence: small_splash
 	Cloneable:
 		Types: Infantry
 	MustBeDestroyed:
@@ -666,9 +672,16 @@
 		Image: scrate
 	WithCrateBody:
 		XmasImages: xcratea, xcrateb, xcratec, xcrated
+		LandSequence: land
+		WaterSequence: water
+	Selectable:
+		Selectable: false
+		Bounds: 15,15,-1,-1
 	Parachutable:
 		KilledOnImpassableTerrain: false
 		ParachuteSequence: parach
+		ParachuteOpenSequence: open
+		ParachuteIdleSequence: idle
 	Passenger:
 	CustomSelectionSize:
 		CustomBounds: 16,16

@@ -8,7 +8,7 @@ steg:
 		Start: 16
 		Length: 8
 		Facings: 8
-	shoot:
+	attack:
 		Start: 80
 		Length: 12
 		Facings: 8
@@ -27,7 +27,7 @@ trex:
 		Start: 16
 		Length: 8
 		Facings: 8
-	shoot:
+	attack:
 		Start: 80
 		Length: 8
 		Facings: 8
@@ -46,7 +46,7 @@ tric:
 		Start: 16
 		Length: 8
 		Facings: 8
-	shoot:
+	attack:
 		Start: 80
 		Length: 12
 		Facings: 8
@@ -65,7 +65,7 @@ rapt:
 		Start: 16
 		Length: 8
 		Facings: 8
-	shoot:
+	attack:
 		Start: 80
 		Length: 8
 		Facings: 8

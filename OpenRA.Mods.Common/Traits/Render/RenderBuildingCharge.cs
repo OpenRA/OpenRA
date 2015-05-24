@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class RenderBuildingChargeInfo : RenderBuildingInfo
 	{
 		[Desc("Sequence to use for building charge animation.")]
-		public readonly string ChargeSequence = "active";
+		[SequenceReference] public readonly string ChargeSequence = "active";
 
 		public override object Create(ActorInitializer init) { return new RenderBuildingCharge(init, this); }
 	}

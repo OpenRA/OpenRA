@@ -111,12 +111,13 @@ e2:
 		ShadowStart: 451
 		Tick: 800
 		ZOffset: -511
-	shoot:
+	throw:
 		Start: 164
 		Length: 6
 		Facings: 8
 		ShadowStart: 456
-	prone-shoot:
+	prone-throw:
+		Tick: 80
 		Start: 212
 		Length: 6
 		Facings: 8

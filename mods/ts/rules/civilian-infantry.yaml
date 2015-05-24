@@ -43,6 +43,7 @@ UMAGON:
 		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 
 CHAMSPY:
@@ -91,6 +92,7 @@ MUTANT:
 		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 
 MWMN:
@@ -115,6 +117,7 @@ MWMN:
 		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 
 MUTANT3:
@@ -139,6 +142,7 @@ MUTANT3:
 		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 
 TRATOS:
@@ -160,6 +164,7 @@ TRATOS:
 	TakeCover:
 	-AutoTarget:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 
 OXANNA:
@@ -179,6 +184,7 @@ OXANNA:
 	TakeCover:
 	-AutoTarget:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 
 SLAV:
@@ -198,6 +204,7 @@ SLAV:
 	TakeCover:
 	-AutoTarget:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 
 DOGGIE:
@@ -228,6 +235,7 @@ DOGGIE:
 		WanderMoveRadius: 2
 		MinMoveDelayInTicks: 25
 		MaxMoveDelayInTicks: 45
+	-TakeCover:
 
 VISSML:
 	Inherits: ^Viceroid
@@ -264,6 +272,8 @@ VISLRG:
 
 CIV1:
 	Inherits: ^CivilianInfantry
+	WithInfantryBody:
+		AttackSequence: shoot
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:
@@ -275,6 +285,8 @@ CIV2:
 
 CIV3:
 	Inherits: ^CivilianInfantry
+	WithInfantryBody:
+		AttackSequence: shoot
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:

@@ -231,6 +231,7 @@
 			SoundDeath: 2
 			SmallExplosionDeath: 3
 			BulletDeath: 4
+		CrushedSequence: die-crushed
 	AutoTarget:
 	AttackMove:
 	Passenger:

@@ -301,6 +301,8 @@
 		Types: CivilianInfantry
 	-TakeCover:
 	WithInfantryBody:
+	WithDeathAnimation:
+		CrushedSequence: die-crushed
 	ScaredyCat:
 	-MustBeDestroyed:
 

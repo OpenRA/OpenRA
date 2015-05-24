@@ -21,10 +21,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly int MinIdleWaitTicks = 30;
 		public readonly int MaxIdleWaitTicks = 110;
-		public readonly string MoveSequence = "run";
-		public readonly string AttackSequence = "shoot";
-		public readonly string[] IdleSequences = { };
-		public readonly string[] StandSequences = { "stand" };
+
+		[SequenceReference] public readonly string MoveSequence = "run";
+		[SequenceReference] public readonly string AttackSequence = null;
+		[SequenceReference] public readonly string[] IdleSequences = { };
+		[SequenceReference] public readonly string[] StandSequences = { "stand" };
 
 		public virtual object Create(ActorInitializer init) { return new WithInfantryBody(init, this); }
 
@@ -93,9 +94,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Attacking(Actor self, Target target)
 		{
-			state = AnimationState.Attacking;
-			if (DefaultAnimation.HasSequence(NormalizeInfantrySequence(self, Info.AttackSequence)))
+			if (!string.IsNullOrEmpty(Info.AttackSequence) && DefaultAnimation.HasSequence(NormalizeInfantrySequence(self, Info.AttackSequence)))
+			{
+				state = AnimationState.Attacking;
 				DefaultAnimation.PlayThen(NormalizeInfantrySequence(self, Info.AttackSequence), () => state = AnimationState.Idle);
+			}
 		}
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)

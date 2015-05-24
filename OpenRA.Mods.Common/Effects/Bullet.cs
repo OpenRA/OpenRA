@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Maximum offset at the maximum range.")]
 		public readonly WRange Inaccuracy = WRange.Zero;
 		public readonly string Image = null;
+		[SequenceReference("Image")] public readonly string Sequence = "idle";
 		public readonly string Palette = "effect";
 		public readonly bool Shadow = false;
 		[Desc("Trail animation.")]
@@ -138,7 +139,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!string.IsNullOrEmpty(info.Trail) && --smokeTicks < 0)
 			{
 				var delayedPos = WPos.LerpQuadratic(args.Source, target, angle, ticks - info.TrailDelay, length);
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, info.Trail, trailPalette)));
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, info.Trail, trailPalette, info.Sequence)));
 				smokeTicks = info.TrailInterval;
 			}
 

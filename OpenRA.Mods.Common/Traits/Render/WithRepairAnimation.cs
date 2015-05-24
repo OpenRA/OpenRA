@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class WithRepairAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>
 	{
 		[Desc("Sequence name to use")]
-		public readonly string Sequence = "active";
+		[SequenceReference] public readonly string Sequence = "active";
 
 		public readonly bool PauseOnLowPower = false;
 

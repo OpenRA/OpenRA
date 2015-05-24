@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class WithActiveAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>
 	{
 		[Desc("Sequence name to use")]
-		public readonly string Sequence = "active";
+		[SequenceReference] public readonly string Sequence = "active";
 
 		public readonly int Interval = 750;
 

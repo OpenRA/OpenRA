@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	class WithResourcesInfo : ITraitInfo, Requires<RenderSimpleInfo>
 	{
 		[Desc("Sequence name to use")]
-		public readonly string Sequence = "resources";
+		[SequenceReference] public readonly string Sequence = "resources";
 
 		public object Create(ActorInitializer init) { return new WithResources(init.Self, this); }
 	}

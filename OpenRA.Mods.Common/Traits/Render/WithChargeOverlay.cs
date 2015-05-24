@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class WithChargeOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Sequence name to use")]
-		public readonly string Sequence = "active";
+		[SequenceReference] public readonly string Sequence = "active";
 
 		[Desc("Custom palette name")]
 		public readonly string Palette = null;

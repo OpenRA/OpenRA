@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Sprite sequence name")]
 		public readonly string SmokeType = "smoke_m";
+		[SequenceReference("SmokeType")] public readonly string SmokeSequence = "idle";
 
 		public readonly string SmokePalette = "effect";
 
@@ -99,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void AddSmudge(CPos loc)
 		{
 			if (Game.CosmeticRandom.Next(0, 100) <= Info.SmokePercentage)
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, world.Map.CenterOfCell(loc), Info.SmokeType, Info.SmokePalette)));
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, world.Map.CenterOfCell(loc), Info.SmokeType, Info.SmokePalette, Info.SmokeSequence)));
 
 			if (!dirty.ContainsKey(loc) && !tiles.ContainsKey(loc))
 			{

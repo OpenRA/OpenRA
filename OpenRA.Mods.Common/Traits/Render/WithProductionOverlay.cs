@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class WithProductionOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
-		public readonly string Sequence = "production-overlay";
+		[SequenceReference] public readonly string Sequence = "production-overlay";
 
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;

@@ -18,7 +18,7 @@ namespace OpenRA.Mods.D2k.Traits
 	public class WithAttackOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Sequence name to use")]
-		public readonly string Sequence = null;
+		[SequenceReference] public readonly string Sequence = null;
 
 		[Desc("Custom palette name")]
 		public readonly string Palette = null;

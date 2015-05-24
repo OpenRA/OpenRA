@@ -17,8 +17,8 @@ namespace OpenRA.Mods.RA.Traits
 	public class RenderLandingCraftInfo : RenderUnitInfo, Requires<IMoveInfo>, Requires<CargoInfo>
 	{
 		public readonly string[] OpenTerrainTypes = { "Clear" };
-		public readonly string OpenAnim = "open";
-		public readonly string UnloadAnim = "unload";
+		[SequenceReference] public readonly string OpenAnim = "open";
+		[SequenceReference] public readonly string UnloadAnim = "unload";
 
 		public override object Create(ActorInitializer init) { return new RenderLandingCraft(init, this); }
 	}

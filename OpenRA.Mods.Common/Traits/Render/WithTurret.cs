@@ -21,10 +21,10 @@ namespace OpenRA.Mods.Common.Traits
 		Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
-		public readonly string Sequence = "turret";
+		[SequenceReference] public readonly string Sequence = "turret";
 
 		[Desc("Sequence name to use when prepared to fire")]
-		public readonly string AimSequence = null;
+		[SequenceReference] public readonly string AimSequence = null;
 
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";

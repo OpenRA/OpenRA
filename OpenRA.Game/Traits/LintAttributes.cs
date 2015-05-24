@@ -25,4 +25,16 @@ namespace OpenRA.Traits
 
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class VoiceReferenceAttribute : Attribute { }
+
+	[AttributeUsage(AttributeTargets.Field)]
+	public sealed class SequenceReferenceAttribute : Attribute
+	{
+		public readonly string ImageReference; // the field name in the same trait info that contains the image name
+		public readonly bool Prefix;
+		public SequenceReferenceAttribute(string imageReference = null, bool prefix = false)
+		{
+			ImageReference = imageReference;
+			Prefix = prefix;
+		}
+	}
 }

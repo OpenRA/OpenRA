@@ -83,6 +83,7 @@ JUMPJET:
 		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 
 GHOST:
 	Inherits: ^Infantry
@@ -119,5 +120,6 @@ GHOST:
 		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 

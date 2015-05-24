@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Traits
 {
 	class MadTankInfo : ITraitInfo, Requires<ExplodesInfo>, Requires<WithFacingSpriteBodyInfo>
 	{
-		public readonly string ThumpSequence = "piston";
+		[SequenceReference] public readonly string ThumpSequence = "piston";
 		public readonly int ThumpInterval = 8;
 		[WeaponReference]
 		public readonly string ThumpDamageWeapon = "MADTankThump";

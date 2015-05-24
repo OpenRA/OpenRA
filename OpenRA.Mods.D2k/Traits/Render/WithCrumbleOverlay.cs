@@ -18,7 +18,7 @@ namespace OpenRA.Mods.D2k.Traits
 	public class WithCrumbleOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Sequence name to use")]
-		public readonly string Sequence = "crumble-overlay";
+		[SequenceReference] public readonly string Sequence = "crumble-overlay";
 
 		[Desc("Custom palette name")]
 		public readonly string Palette = null;

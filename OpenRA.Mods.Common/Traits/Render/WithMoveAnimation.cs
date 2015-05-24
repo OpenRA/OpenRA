@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class WithMoveAnimationInfo : ITraitInfo, Requires<WithFacingSpriteBodyInfo>, Requires<IMoveInfo>
 	{
 		[Desc("Displayed while moving.")]
-		public readonly string MoveSequence = "move";
+		[SequenceReference] public readonly string MoveSequence = "move";
 
 		public object Create(ActorInitializer init) { return new WithMoveAnimation(init, this); }
 	}

@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string GetImage(ActorInfo actor, SequenceProvider sequenceProvider, string race)
 		{
-			if (RaceImages != null)
+			if (RaceImages != null && !string.IsNullOrEmpty(race))
 			{
 				string raceImage = null;
 				if (RaceImages.TryGetValue(race, out raceImage) && sequenceProvider.HasSequence(raceImage))

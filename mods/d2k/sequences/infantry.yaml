@@ -427,7 +427,7 @@ grenadier: # 2502 - 2749 in 1.06 DATA.R8
 		Length: 6
 		Facings: 8
 		Tick: 120
-	shoot: grenadier.shp
+	throw: grenadier.shp
 		Start: 56
 		Length: 6
 		Facings: 8
@@ -458,7 +458,7 @@ grenadier: # 2502 - 2749 in 1.06 DATA.R8
 		Length: 4
 		Facings: 8
 		Tick: 120
-	prone-shoot: grenadier.shp
+	prone-throw: grenadier.shp
 		Start: 136
 		Length: 5
 		Facings: 8

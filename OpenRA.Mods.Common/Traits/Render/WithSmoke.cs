@@ -16,19 +16,26 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Renders an overlay when the actor is taking heavy damage.")]
 	public class WithSmokeInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
-		[Desc("Needs to define \"idle\", \"loop\" and \"end\" sub-sequences.")]
 		public readonly string Sequence = "smoke_m";
+
+		[SequenceReference("Sequence")] public readonly string IdleSequence = "idle";
+		[SequenceReference("Sequence")] public readonly string LoopSequence = "loop";
+		[SequenceReference("Sequence")] public readonly string EndSequence = "end";
 
 		public object Create(ActorInitializer init) { return new WithSmoke(init.Self, this); }
 	}
 
 	public class WithSmoke : INotifyDamage
 	{
+		readonly WithSmokeInfo info;
+		readonly Animation anim;
+
 		bool isSmoking;
-		Animation anim;
 
 		public WithSmoke(Actor self, WithSmokeInfo info)
 		{
+			this.info = info;
+
 			var rs = self.Trait<RenderSprites>();
 
 			anim = new Animation(self.World, info.Sequence);
@@ -42,9 +49,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (e.DamageState < DamageState.Heavy) return;
 
 			isSmoking = true;
-			anim.PlayThen("idle",
-				() => anim.PlayThen("loop",
-					() => anim.PlayBackwardsThen("end",
+			anim.PlayThen(info.IdleSequence,
+				() => anim.PlayThen(info.LoopSequence,
+					() => anim.PlayBackwardsThen(info.EndSequence,
 						() => isSmoking = false)));
 		}
 	}

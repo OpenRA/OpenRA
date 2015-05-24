@@ -19,16 +19,20 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If we land on invalid terrain for my actor type should we be killed?")]
 		public readonly bool KilledOnImpassableTerrain = true;
 
+		[Desc("Group where Ground/WaterCorpseSequence is looked up.")]
+		public readonly string CorpseSequenceCollection = "explosion";
+
 		public readonly string GroundImpactSound = null;
-		public readonly string GroundCorpseSequence = "corpse";
+		[SequenceReference("CorpseSequenceCollection")] public readonly string GroundCorpseSequence = "corpse";
 		public readonly string GroundCorpsePalette = "effect";
 
 		public readonly string WaterImpactSound = null;
-		public readonly string WaterCorpseSequence = "small_splash";
+		[SequenceReference("CorpseSequenceCollection")] public readonly string WaterCorpseSequence = null;
 		public readonly string WaterCorpsePalette = "effect";
 
-		[Desc("Requires the sub-sequences \"open\" and \"idle\".")]
 		public readonly string ParachuteSequence = null;
+		[SequenceReference("ParachuteSequence")] public readonly string ParachuteOpenSequence = null;
+		[SequenceReference("ParachuteSequence")] public readonly string ParachuteIdleSequence = null;
 
 		[Desc("Optional, otherwise defaults to the palette the actor is using.")]
 		public readonly string ParachutePalette = null;
