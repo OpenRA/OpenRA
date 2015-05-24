@@ -149,3 +149,91 @@ wormspawner:
 	RenderEditorOnly:
 	BodyOrientation:
 	WormSpawner:
+
+upgrade.conyard:
+	Tooltip:
+		Name: Construction Yard Upgrade
+		Description: Unlocks new construction options
+	Buildable:
+		BuildPaletteOrder: 50
+		Queue: Upgrade
+		BuildLimit: 1
+	Valued:
+		Cost: 1000
+	RenderSprites:
+		Image: conyard.harkonnen
+		RaceImages:
+			atreides: conyard.atreides
+			ordos: conyard.ordos
+			corrino: conyard.corrino
+	ProvidesPrerequisite@upgradename:
+
+upgrade.barracks:
+	Tooltip:
+		Name: Barracks Upgrade
+		Description: Unlocks additional infantry
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: barracks
+		Queue: Upgrade
+		BuildLimit: 1
+	Valued:
+		Cost: 500
+	RenderSprites:
+		Image: barracks.harkonnen
+		RaceImages:
+			atreides: barracks.atreides
+			ordos: barracks.ordos
+	ProvidesPrerequisite@upgradename:
+
+upgrade.light:
+	Tooltip:
+		Name: Light Factory Upgrade
+		Description: Unlocks additional light units
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: light
+		Queue: Upgrade
+		BuildLimit: 1
+	Valued:
+		Cost: 400
+	RenderSprites:
+		Image: light.harkonnen
+		RaceImages:
+			atreides: light.atreides
+			ordos: light.ordos
+	ProvidesPrerequisite@upgradename:
+
+upgrade.heavy:
+	Tooltip:
+		Name: Heavy Factory Upgrade
+		Description: Unlocks advanced technology and heavy weapons
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: heavy
+		Queue: Upgrade
+		BuildLimit: 1
+	Valued:
+		Cost: 800
+	RenderSprites:
+		Image: heavy.harkonnen
+		RaceImages:
+			atreides: heavy.atreides
+			ordos: heavy.ordos
+			corrino: heavy.corrino
+	ProvidesPrerequisite@upgradename:
+
+upgrade.hightech:
+	Tooltip:
+		Name: High Tech Factory Upgrade
+		Description: Unlocks the Air Strike superweapon
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~hightech.atreides, ~techlevel.superweapons
+		Queue: Upgrade
+		BuildLimit: 1
+	Valued:
+		Cost: 1500
+	RenderSprites:
+		Image: hightech.atreides
+	ProvidesPrerequisite@upgradename:

@@ -1,7 +1,7 @@
 mcv:
 	Inherits: ^Vehicle
 	Buildable:
-		Prerequisites: repair, ~techlevel.medium
+		Prerequisites: repair, upgrade.heavy, ~techlevel.medium
 		Queue: Armor
 		BuildPaletteOrder: 110
 	Valued:
@@ -124,7 +124,7 @@ quad:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		Prerequisites: radar, ~techlevel.medium
+		Prerequisites: upgrade.light, ~techlevel.medium
 		BuildPaletteOrder: 20
 	Valued:
 		Cost: 400
@@ -157,7 +157,7 @@ siegetank:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
-		Prerequisites: radar, ~techlevel.medium
+		Prerequisites: upgrade.heavy, ~techlevel.medium
 		BuildPaletteOrder: 50
 	Valued:
 		Cost: 850
@@ -209,7 +209,7 @@ missiletank:
 		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Armor
-		Prerequisites: hightech, ~techlevel.high
+		Prerequisites: ~heavy.missiletank, upgrade.heavy, research, ~techlevel.high
 		BuildPaletteOrder: 60
 	Mobile:
 		Speed: 64
@@ -350,7 +350,7 @@ raider:
 stealthraider:
 	Inherits: raider
 	Buildable:
-		Prerequisites: ~light.ordos, hightech, ~techlevel.medium
+		Prerequisites: ~light.ordos, upgrade.light, ~techlevel.medium
 		BuildPaletteOrder: 30
 	Valued:
 		Cost: 400
