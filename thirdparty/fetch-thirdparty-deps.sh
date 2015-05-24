@@ -18,28 +18,28 @@ function get()
 }
 
 if [ ! -f StyleCopPlus.dll ]; then
-	echo "Fetching StyleCopPlus from nuget"
+	echo "Fetching StyleCopPlus from NuGet"
 	get StyleCopPlus.MSBuild 4.7.49.5
 	cp ./StyleCopPlus.MSBuild/tools/StyleCopPlus.dll .
 	rm -rf StyleCopPlus.MSBuild
 fi
 
 if [ ! -f StyleCop.dll ]; then
-	echo "Fetching StyleCop files from nuget"
+	echo "Fetching StyleCop files from NuGet"
 	get StyleCop.MSBuild 4.7.49.0
 	cp ./StyleCop.MSBuild/tools/StyleCop*.dll .
 	rm -rf StyleCop.MSBuild
 fi
 
 if [ ! -f ICSharpCode.SharpZipLib.dll ]; then
-	echo "Fetching ICSharpCode.SharpZipLib from nuget"
+	echo "Fetching ICSharpCode.SharpZipLib from NuGet"
 	get SharpZipLib 0.86.0
 	cp ./SharpZipLib/lib/20/ICSharpCode.SharpZipLib.dll .
 	rm -rf SharpZipLib
 fi
 
 if [ ! -f MaxMind.GeoIP2.dll ]; then
-	echo "Fetching MaxMind.GeoIP2 from nuget"
+	echo "Fetching MaxMind.GeoIP2 from NuGet"
 	get MaxMind.Db 1.0.0.0
 	get Newtonsoft.Json 6.0.5
 	get RestSharp 105.0.1
@@ -55,7 +55,7 @@ if [ ! -f MaxMind.GeoIP2.dll ]; then
 fi
 
 if [ ! -f SharpFont.dll ]; then
-	echo "Fetching SharpFont from nuget"
+	echo "Fetching SharpFont from NuGet"
 	get SharpFont 3.0.1
 	cp ./SharpFont/lib/net20/SharpFont* .
 	cp ./SharpFont/config/SharpFont.dll.config .
@@ -63,14 +63,14 @@ if [ ! -f SharpFont.dll ]; then
 fi
 
 if [ ! -f nunit.framework.dll ]; then
-	echo "Fetching NUnit from nuget"
+	echo "Fetching NUnit from NuGet"
 	get NUnit 2.6.4
 	cp ./NUnit/lib/nunit.framework* .
 	rm -rf NUnit
 fi
 
 if [ ! -f Mono.Nat.dll ]; then
-	echo "Fetching Mono.Nat from nuget"
+	echo "Fetching Mono.Nat from NuGet"
 	get Mono.Nat 1.2.21
 	cp ./Mono.Nat/lib/net40/Mono.Nat.dll .
 	rm -rf Mono.Nat
