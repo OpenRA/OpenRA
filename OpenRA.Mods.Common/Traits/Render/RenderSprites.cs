@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p);
 	}
 
+	[Desc("Render trait fundament that won't work without additional With* render traits.")]
 	public class RenderSpritesInfo : IRenderActorPreviewInfo, ITraitInfo, ILegacyEditorRenderInfo
 	{
 		[Desc("The sequence name that defines the actor sprites. Defaults to the actor name.")]

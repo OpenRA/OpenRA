@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Render trait for buildings that change the sprite according to the remaining resource storage capacity across all depots.")]
 	class RenderBuildingSiloInfo : RenderBuildingInfo
 	{
 		public override object Create(ActorInitializer init) { return new RenderBuildingSilo(init, this); }
