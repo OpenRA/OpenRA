@@ -213,6 +213,7 @@ refinery:
 			ordos: refinery.ordos
 	WithDockingOverlay@SMOKE:
 		Sequence: smoke
+		Palette: effectAdditive
 	Power:
 		Amount: -30
 	WithIdleOverlay@TOP:
