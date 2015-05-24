@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Effects
 			facing = OpenRA.Traits.Util.GetFacing(target - pos, 0);
 			length = Math.Max((target - pos).Length / speed.Range, 1);
 
-			if (info.Image != null)
+			if (!string.IsNullOrEmpty(info.Image))
 			{
 				anim = new Animation(world, info.Image, GetEffectiveFacing);
 				anim.PlayRepeating("idle");
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			pos = WPos.LerpQuadratic(args.Source, target, angle, ticks, length);
 
-			if (info.Trail != null && --smokeTicks < 0)
+			if (!string.IsNullOrEmpty(info.Trail) && --smokeTicks < 0)
 			{
 				var delayedPos = WPos.LerpQuadratic(args.Source, target, angle, ticks - info.TrailDelay, length);
 				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, info.Trail, trailPalette)));

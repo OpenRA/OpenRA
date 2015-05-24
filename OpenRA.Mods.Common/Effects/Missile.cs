@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Effects
 				offset = WVec.FromPDF(world.SharedRandom, 2) * inaccuracy / 1024;
 			}
 
-			if (info.Image != null)
+			if (!string.IsNullOrEmpty(info.Image))
 			{
 				anim = new Animation(world, info.Image, () => facing);
 				anim.PlayRepeating("idle");
@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			pos += move;
 
-			if (info.Trail != null && --ticksToNextSmoke < 0)
+			if (!string.IsNullOrEmpty(info.Trail) && --ticksToNextSmoke < 0)
 			{
 				world.AddFrameEndTask(w => w.Add(new Smoke(w, pos - 3 * move / 2, info.Trail, trailPalette)));
 				ticksToNextSmoke = info.TrailInterval;
