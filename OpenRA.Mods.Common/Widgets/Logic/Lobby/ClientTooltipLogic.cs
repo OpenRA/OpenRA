@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				address = UPnP.NatDevice.GetExternalIP().ToString();
 			var cachedDescriptiveIP = LobbyUtils.DescriptiveIpAddress(address);
 			ip.GetText = () => cachedDescriptiveIP;
-			var cachedCountryLookup = LobbyUtils.LookupCountry(address);
+			var cachedCountryLookup = GeoIP.LookupCountry(address);
 			location.GetText = () => cachedCountryLookup;
 		}
 	}

@@ -15,7 +15,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using MaxMind.GeoIP2;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
@@ -43,8 +42,6 @@ namespace OpenRA
 
 		public static Renderer Renderer;
 		public static bool HasInputFocus = false;
-
-		public static DatabaseReader GeoIpDatabase;
 
 		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
 		{
@@ -216,14 +213,7 @@ namespace OpenRA
 				Settings.Server.AllowPortForward = false;
 			}
 
-			try
-			{
-				GeoIpDatabase = new DatabaseReader("GeoLite2-Country.mmdb");
-			}
-			catch (Exception e)
-			{
-				Log.Write("geoip", "DatabaseReader failed: {0}", e);
-			}
+			GeoIP.Initialize();
 
 			GlobalFileSystem.Mount(Platform.GameDir); // Needed to access shaders
 			var renderers = new[] { Settings.Graphics.Renderer, "Sdl2", null };

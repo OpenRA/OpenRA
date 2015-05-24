@@ -35,7 +35,7 @@ FILES=('OpenRA.Game.exe' 'OpenRA.Game.exe.config' 'OpenRA.Editor.exe' 'OpenRA.Ut
 'OpenRA.Renderer.Sdl2.dll' 'OpenRA.Renderer.Null.dll' \
  'lua' 'glsl' 'mods/common' 'mods/ra' 'mods/cnc' 'mods/d2k' 'mods/modchooser' \
 'AUTHORS' 'COPYING' 'README.html' 'CONTRIBUTING.html' 'DOCUMENTATION.html' 'CHANGELOG.html' \
-'global mix database.dat' 'GeoLite2-Country.mmdb')
+'global mix database.dat' 'GeoLite2-Country.mmdb.gz')
 
 echo "Copying files..."
 for i in "${FILES[@]}"; do
