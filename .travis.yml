@@ -20,6 +20,7 @@ env:
 # Check source code with StyleCop
 # call OpenRA to check for YAML errors
 script:
+ - sudo apt-get remove nuget # https://github.com/travis-ci/travis-ci/issues/3940
  - travis_retry make all-dependencies
  - make all
  - make check
