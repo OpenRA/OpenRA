@@ -295,9 +295,9 @@ checkProduction = function(player)
 			end
 		end
 		if #UnitsType > 0 then
-			if (type == 'jeep' or type == 'mtnk') and not Factory.IsDead then
+			if (type == 'jeep' or type == 'mtnk') and not Factory.IsDead and Factory.Owner == gdi then
 				Factory.Build(UnitsType)
-			elseif (type == 'e1' or type == 'e2') and not Barracks.IsDead then
+			elseif (type == 'e1' or type == 'e2') and not Barracks.IsDead and Barracks.Owner == gdi then
 				Barracks.Build(UnitsType)
 			end
 		end

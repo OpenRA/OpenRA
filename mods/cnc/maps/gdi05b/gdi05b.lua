@@ -101,7 +101,7 @@ Atk5TriggerFunction = function()
 end
 
 StartProduction = function(type)
-	if Hand1.IsInWorld then
+	if Hand1.IsInWorld and Hand1.Owner == nod then
 		Hand1.Build(type)
 		Trigger.AfterDelay(DateTime.Seconds(30), function() StartProduction(type) end)
 	end
