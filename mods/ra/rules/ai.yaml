@@ -82,7 +82,7 @@ Player:
 				CheckRadius: 10c0
 			Consideration@2:
 				Against: Enemy
-				Types: Vehicle, Tank, Infantry, Defense
+				Types: Vehicle, Tank, Infantry, Defense, Water
 				Attractiveness: -10
 				TargetMetric: None
 				CheckRadius: 10c0
@@ -209,7 +209,7 @@ Player:
 				CheckRadius: 10c0
 			Consideration@2:
 				Against: Enemy
-				Types: Vehicle, Tank, Infantry, Defense
+				Types: Vehicle, Tank, Infantry, Defense, Water
 				Attractiveness: -10
 				TargetMetric: None
 				CheckRadius: 10c0
@@ -335,7 +335,7 @@ Player:
 				CheckRadius: 10c0
 			Consideration@2:
 				Against: Enemy
-				Types: Vehicle, Tank, Infantry, Defense
+				Types: Vehicle, Tank, Infantry, Defense, Water
 				Attractiveness: -10
 				TargetMetric: None
 				CheckRadius: 10c0
@@ -436,7 +436,7 @@ Player:
 				CheckRadius: 10c0
 			Consideration@2:
 				Against: Enemy
-				Types: Vehicle, Tank, Infantry, Defense
+				Types: Vehicle, Tank, Infantry, Defense, Water
 				Attractiveness: -10
 				TargetMetric: None
 				CheckRadius: 10c0
