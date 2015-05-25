@@ -53,7 +53,7 @@ NALASR:
 	Turreted:
 		ROT: 10
 		InitialFacing: 300
-		Offset: 298,-171,0
+		Offset: 298,-171,300
 	AttackTurreted:
 	Armament:
 		Weapon: LaserFire2
