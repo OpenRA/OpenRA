@@ -83,6 +83,7 @@ namespace OpenRA.Graphics
 			if (nv + 2 > renderer.TempBufferSize)
 				Flush();
 
+			color = Util.PremultiplyAlpha(color);
 			var r = color.R / 255.0f;
 			var g = color.G / 255.0f;
 			var b = color.B / 255.0f;
@@ -98,12 +99,14 @@ namespace OpenRA.Graphics
 			if (nv + 2 > renderer.TempBufferSize)
 				Flush();
 
+			startColor = Util.PremultiplyAlpha(startColor);
 			var r = startColor.R / 255.0f;
 			var g = startColor.G / 255.0f;
 			var b = startColor.B / 255.0f;
 			var a = startColor.A / 255.0f;
 			vertices[nv++] = new Vertex(start + Offset, r, g, b, a);
 
+			endColor = Util.PremultiplyAlpha(endColor);
 			r = endColor.R / 255.0f;
 			g = endColor.G / 255.0f;
 			b = endColor.B / 255.0f;
@@ -115,6 +118,7 @@ namespace OpenRA.Graphics
 		{
 			renderer.CurrentBatchRenderer = this;
 
+			color = Util.PremultiplyAlpha(color);
 			var r = color.R / 255.0f;
 			var g = color.G / 255.0f;
 			var b = color.B / 255.0f;
