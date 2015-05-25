@@ -132,87 +132,90 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		public void ConvertIniMap(string iniFile)
 		{
-			var file = new IniFile(GlobalFileSystem.Open(iniFile));
-			var basic = file.GetSection("Basic");
-			var mapSection = file.GetSection("Map");
-			var legacyMapFormat = (IniMapFormat)Exts.ParseIntegerInvariant(basic.GetValue("NewINIFormat", "0"));
-			var offsetX = Exts.ParseIntegerInvariant(mapSection.GetValue("X", "0"));
-			var offsetY = Exts.ParseIntegerInvariant(mapSection.GetValue("Y", "0"));
-			var width = Exts.ParseIntegerInvariant(mapSection.GetValue("Width", "0"));
-			var height = Exts.ParseIntegerInvariant(mapSection.GetValue("Height", "0"));
-			mapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 64;
-			var size = new Size(mapSize, mapSize);
-
-			var tileset = Truncate(mapSection.GetValue("Theater", "TEMPERAT"), 8);
-			map = Map.FromTileset(rules.TileSets[tileset]);
-			map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(iniFile));
-			map.Author = "Westwood Studios";
-			map.MapSize = new int2(mapSize, mapSize);
-			map.Bounds = Rectangle.FromLTRB(offsetX, offsetY, offsetX + width, offsetY + height);
-
-			map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(TileShape.Rectangle, size));
-			map.MapTiles = Exts.Lazy(() => new CellLayer<TerrainTile>(TileShape.Rectangle, size));
-
-			map.Videos = new MapVideos();
-
-			map.Options = new MapOptions();
-
-			if (legacyMapFormat == IniMapFormat.RedAlert)
+			using (var stream = GlobalFileSystem.Open(iniFile))
 			{
-				UnpackRATileData(ReadPackedSection(file.GetSection("MapPack")));
-				UnpackRAOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
-				ReadRATrees(file);
-			}
-			else
-			{
-				// CnC
-				using (var s = GlobalFileSystem.Open(iniFile.Substring(0, iniFile.Length - 4) + ".bin"))
-					UnpackCncTileData(s);
-				ReadCncOverlay(file);
-				ReadCncTrees(file);
-			}
+				var file = new IniFile(stream);
+				var basic = file.GetSection("Basic");
+				var mapSection = file.GetSection("Map");
+				var legacyMapFormat = (IniMapFormat)Exts.ParseIntegerInvariant(basic.GetValue("NewINIFormat", "0"));
+				var offsetX = Exts.ParseIntegerInvariant(mapSection.GetValue("X", "0"));
+				var offsetY = Exts.ParseIntegerInvariant(mapSection.GetValue("Y", "0"));
+				var width = Exts.ParseIntegerInvariant(mapSection.GetValue("Width", "0"));
+				var height = Exts.ParseIntegerInvariant(mapSection.GetValue("Height", "0"));
+				mapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 64;
+				var size = new Size(mapSize, mapSize);
 
-			LoadVideos(file, "BASIC");
-			LoadActors(file, "STRUCTURES");
-			LoadActors(file, "UNITS");
-			LoadActors(file, "INFANTRY");
-			LoadSmudges(file, "SMUDGE");
+				var tileset = Truncate(mapSection.GetValue("Theater", "TEMPERAT"), 8);
+				map = Map.FromTileset(rules.TileSets[tileset]);
+				map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(iniFile));
+				map.Author = "Westwood Studios";
+				map.MapSize = new int2(mapSize, mapSize);
+				map.Bounds = Rectangle.FromLTRB(offsetX, offsetY, offsetX + width, offsetY + height);
 
-			var wps = file.GetSection("Waypoints")
-					.Where(kv => Exts.ParseIntegerInvariant(kv.Value) > 0)
-					.Select(kv => Pair.New(Exts.ParseIntegerInvariant(kv.Key),
-						LocationFromMapOffset(Exts.ParseIntegerInvariant(kv.Value), mapSize)));
+				map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(TileShape.Rectangle, size));
+				map.MapTiles = Exts.Lazy(() => new CellLayer<TerrainTile>(TileShape.Rectangle, size));
 
-			// Add waypoint actors
-			foreach (var kv in wps)
-			{
-				if (kv.First <= 7)
+				map.Videos = new MapVideos();
+
+				map.Options = new MapOptions();
+
+				if (legacyMapFormat == IniMapFormat.RedAlert)
 				{
-					var ar = new ActorReference("mpspawn")
-					{
-						new LocationInit((CPos)kv.Second),
-						new OwnerInit("Neutral")
-					};
-
-					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
+					UnpackRATileData(ReadPackedSection(file.GetSection("MapPack")));
+					UnpackRAOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
+					ReadRATrees(file);
 				}
 				else
 				{
-					var ar = new ActorReference("waypoint")
-					{
-						new LocationInit((CPos)kv.Second),
-						new OwnerInit("Neutral")
-					};
-
-					map.ActorDefinitions.Add(new MiniYamlNode("waypoint" + kv.First, ar.Save()));
+					// CnC
+					using (var s = GlobalFileSystem.Open(iniFile.Substring(0, iniFile.Length - 4) + ".bin"))
+						UnpackCncTileData(s);
+					ReadCncOverlay(file);
+					ReadCncTrees(file);
 				}
-			}
 
-			// Create default player definitions only if there are no players to import
-			mapPlayers = new MapPlayers(map.Rules, (players.Count == 0) ? map.SpawnPoints.Value.Length : 0);
-			foreach (var p in players)
-				LoadPlayer(file, p, legacyMapFormat == IniMapFormat.RedAlert);
-			map.PlayerDefinitions = mapPlayers.ToMiniYaml();
+				LoadVideos(file, "BASIC");
+				LoadActors(file, "STRUCTURES");
+				LoadActors(file, "UNITS");
+				LoadActors(file, "INFANTRY");
+				LoadSmudges(file, "SMUDGE");
+
+				var wps = file.GetSection("Waypoints")
+						.Where(kv => Exts.ParseIntegerInvariant(kv.Value) > 0)
+						.Select(kv => Pair.New(Exts.ParseIntegerInvariant(kv.Key),
+							LocationFromMapOffset(Exts.ParseIntegerInvariant(kv.Value), mapSize)));
+
+				// Add waypoint actors
+				foreach (var kv in wps)
+				{
+					if (kv.First <= 7)
+					{
+						var ar = new ActorReference("mpspawn")
+						{
+							new LocationInit((CPos)kv.Second),
+							new OwnerInit("Neutral")
+						};
+
+						map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
+					}
+					else
+					{
+						var ar = new ActorReference("waypoint")
+						{
+							new LocationInit((CPos)kv.Second),
+							new OwnerInit("Neutral")
+						};
+
+						map.ActorDefinitions.Add(new MiniYamlNode("waypoint" + kv.First, ar.Save()));
+					}
+				}
+
+				// Create default player definitions only if there are no players to import
+				mapPlayers = new MapPlayers(map.Rules, (players.Count == 0) ? map.SpawnPoints.Value.Length : 0);
+				foreach (var p in players)
+					LoadPlayer(file, p, legacyMapFormat == IniMapFormat.RedAlert);
+				map.PlayerDefinitions = mapPlayers.ToMiniYaml();
+			}
 		}
 
 		static int2 LocationFromMapOffset(int offset, int mapSize)
