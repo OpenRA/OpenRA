@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		Dictionary<Player, CellLayer<int>> layers;
 		int refreshTick;
 		World world;
+
 		public bool Visible;
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -41,6 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (maxWeight == 0) return;
 
 			CellLayer<int> layer;
+
 			if (!layers.TryGetValue(pl, out layer))
 			{
 				layer = new CellLayer<int>(world.Map);
@@ -58,7 +60,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			var qr = Game.Renderer.WorldQuadRenderer;
 			var doDim = refreshTick - world.WorldTick <= 0;
-			if (doDim) refreshTick = world.WorldTick + 20;
+
+			if (doDim)
+                refreshTick = world.WorldTick + 20;
 
 			foreach (var pair in layers)
 			{
@@ -72,14 +76,20 @@ namespace OpenRA.Mods.Common.Traits
 						continue;
 
 					var w = Math.Max(0, Math.Min(layer[cell], 128));
+
 					if (doDim)
-						layer[cell] = layer[cell] * 5 / 6;
+                        layer[cell] = layer[cell] * 5 / 6;
 
 					// TODO: This doesn't make sense for isometric terrain
 					var pos = wr.World.Map.CenterOfCell(cell);
 					var tl = wr.ScreenPxPosition(pos - new WVec(512, 512, 0));
 					var br = wr.ScreenPxPosition(pos + new WVec(511, 511, 0));
-					qr.FillRect(RectangleF.FromLTRB(tl.X, tl.Y, br.X, br.Y), Color.FromArgb(w, c));
+
+                    // Premultiplied Alpha Color Values:
+                    // Scaling Color Values by (w / 255)
+                    var c1 = Color.FromArgb((int)((w / 255f) * c.R), (int)((w / 255f) * c.G), (int)((w / 255f) * c.B));
+
+					qr.FillRect(RectangleF.FromLTRB(tl.X, tl.Y, br.X, br.Y), Color.FromArgb(w, c1));
 				}
 			}
 		}
