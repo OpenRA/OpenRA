@@ -618,25 +618,23 @@ function CreateAutoCompList(editor,key,pos)
       local strategy = ide.config.acandtip.strategy
 
       if (strategy == 2 and #apilist < 128) then
+        local num, max = 0, #rest
         local pat = rest:gsub(".",function(c)
+            num = num + 1
             local l = c:lower()..c:upper()
-            return "["..l.."]([^"..l.." ]*)"
+            -- don't include trailing characters
+            return "["..l.."]" .. (num < max and "([^"..l.." ]*)" or "")
           end)
 
-        local g = string.gsub
         table.sort(apilist,function(a,b)
             local ma,mb = 0,0
-            g(a,pat,function(...)
+            a:gsub(pat,function(...)
                 local l = {...}
-                for _, v in ipairs(l) do
-                  ma = ma + ((v=="") and 0 or 1)
-                end
+                for _, v in ipairs(l) do ma = ma + #v end
               end)
-            g(b,pat,function(...)
+            b:gsub(pat,function(...)
                 local l = {...}
-                for _, v in ipairs(l) do
-                  mb = mb + ((v=="") and 0 or 1)
-                end
+                for _, v in ipairs(l) do mb = mb + #v end
               end)
 
             if (ma == mb) then return a:lower()<b:lower() end

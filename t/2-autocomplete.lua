@@ -96,6 +96,15 @@ ok(c == 1,
   ("Auto-complete doesn't offer duplicates with the same name ('%s').")
     :format(ac))
 
+for k, v in pairs({
+    ree = "repeat require",
+    ret = "return rawget rawset repeat",
+}) do
+  local ac = CreateAutoCompList(editor, k)
+  is(ac, v,
+    ("Auto-complete for '%s' offers results in the expected order."):format(k))
+end
+
 ProjectSetInterpreter(interpreter)
 
 editor:SetText('')
