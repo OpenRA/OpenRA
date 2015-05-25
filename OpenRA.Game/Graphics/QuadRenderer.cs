@@ -51,6 +51,7 @@ namespace OpenRA.Graphics
 			if (nv + 4 > renderer.TempBufferSize)
 				Flush();
 
+			color = Util.PremultiplyAlpha(color);
 			var r = color.R / 255.0f;
 			var g = color.G / 255.0f;
 			var b = color.B / 255.0f;
