@@ -46,3 +46,11 @@ Container@INGAME_ROOT:
 							Contrast: true
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
+		Label@MISSION_TEXT:
+			X: WINDOW_RIGHT/2 - 256
+			Y: 22
+			Width: 512
+			Height: 25
+			Font: Bold
+			Align: Center
+			Contrast: true
