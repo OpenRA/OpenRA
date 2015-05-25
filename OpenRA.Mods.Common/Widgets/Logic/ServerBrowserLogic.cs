@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					var maptitle = item.GetOrNull<LabelWidget>("MAP");
-					if (title != null)
+					if (maptitle != null)
 					{
 						maptitle.GetText = () => map.Title;
 						maptitle.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : maptitle.TextColor;
