@@ -206,13 +206,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					new Download(Game.Settings.Game.NewsUrl, cacheFile, e => { }, (e, c) => NewsDownloadComplete(e, c, cacheFile, currentNews));
 
 				var newsButton = newsBG.GetOrNull<DropDownButtonWidget>("NEWS_BUTTON");
-				newsButton.OnClick = () =>
+				if (newsButton != null)
 				{
-					newsButton.AttachPanel(newsPanel);
-					newsHighlighted = false;
-				};
+					newsButton.OnClick = () =>
+					{
+						newsButton.AttachPanel(newsPanel);
+						newsHighlighted = false;
+					};
 
-				newsButton.IsHighlighted = () => newsHighlighted && Game.LocalTick % 50 < 25;
+					newsButton.IsHighlighted = () => newsHighlighted && Game.LocalTick % 50 < 25;
+				}
 			}
 
 			Game.OnRemoteDirectConnect += (host, port) =>
