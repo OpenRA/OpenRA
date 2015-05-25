@@ -7,13 +7,12 @@ Minigun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 8
-		DeathType: 1
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne
+		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -30,13 +29,12 @@ M1Carbine:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 15
-		DeathType: 1
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne
+		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -53,13 +51,12 @@ Vulcan:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 20
-		DeathType: 1
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne
+		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -77,14 +74,13 @@ Vulcan2:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
-		DeathType: 1
 		Versus:
 			None: 100
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne
+		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -102,13 +98,12 @@ Vulcan3:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 10
-		DeathType: 1
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne
+		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -125,13 +120,12 @@ VulcanTower:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 18
-		DeathType: 1
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -149,13 +143,12 @@ JumpCannon:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 15
-		DeathType: 1
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne
+		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -172,13 +165,12 @@ AssaultCannon:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		DeathType: 1
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne
+		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -197,13 +189,12 @@ RaiderCannon:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		DeathType: 1
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne
+		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -221,14 +212,13 @@ HarpyClaw:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
-		DeathType: 1
 		ValidTargets: Ground, Air
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne
+		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -245,13 +235,12 @@ Pistola:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 2
-		DeathType: 1
 		Versus:
 			Wood: 60
 			Light: 40
 			Heavy: 25
 			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne
+		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piff
 		InvalidImpactTypes: Water
@@ -268,12 +257,11 @@ Sniper:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 150
-		DeathType: 1
 		Versus:
 			None: 100
 			Wood: 5
 			Light: 5
 			Heavy: 5
 			Concrete: 5
-		DamageTypes: Prone100Percent, TriggerProne
+		DamageTypes: Prone100Percent, TriggerProne, BulletDeath
 

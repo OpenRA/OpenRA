@@ -6,7 +6,8 @@ WEEDGUY:
 		Name: Chem Spray Infantry
 	Selectable:
 		Bounds: 12,17,0,-6
-		Voice: Weed
+	Voiced:
+		VoiceSet: Weed
 	Mobile:
 		Speed: 42
 	Health:
@@ -35,7 +36,8 @@ UMAGON:
 		Name: Umagon
 	Selectable:
 		Bounds: 12,17,0,-6
-		Voice: Umagon
+	Voiced:
+		VoiceSet: Umagon
 	Mobile:
 		Speed: 71
 	Health:
@@ -65,8 +67,9 @@ CHAMSPY:
 		Cost: 700
 	DisguiseToolTip:
 		Name: Chameleon Spy
+	Voiced:
+		VoiceSet: Spy
 	Selectable:
-		Voice: Spy
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 120
@@ -99,7 +102,8 @@ MUTANT:
 		Name: Mutant
 	Selectable:
 		Bounds: 12,17,0,-9
-		Voice: Mutant
+	Voiced:
+		VoiceSet: Mutant
 	Health:
 		HP: 50
 	PoisonedByTiberium:
@@ -130,7 +134,8 @@ MWMN:
 		Name: Mutant Soldier
 	Selectable:
 		Bounds: 12,17,0,-9
-		Voice: CivilianFemale
+	Voiced:
+		VoiceSet: CivilianFemale
 	Health:
 		HP: 50
 	PoisonedByTiberium:
@@ -161,7 +166,8 @@ MUTANT3:
 		Name: Mutant Sergeant
 	Selectable:
 		Bounds: 12,17,0,-9
-		Voice: Mutant
+	Voiced:
+		VoiceSet: Mutant
 	Health:
 		HP: 50
 	PoisonedByTiberium:
@@ -192,7 +198,8 @@ TRATOS:
 		Name: Tratos
 	Selectable:
 		Bounds: 12,17,0,-9
-		Voice: Tratos
+	Voiced:
+		VoiceSet: Tratos
 	Health:
 		HP: 200
 	PoisonedByTiberium:
@@ -221,7 +228,8 @@ OXANNA:
 		Name: Oxanna
 	Selectable:
 		Bounds: 12,17,0,-9
-		Voice: Oxanna
+	Voiced:
+		VoiceSet: Oxanna
 	Health:
 		HP: 50
 	Mobile:
@@ -248,7 +256,8 @@ SLAV:
 		Name: Slavick
 	Selectable:
 		Bounds: 12,17,0,-9
-		Voice: Slavick
+	Voiced:
+		VoiceSet: Slavick
 	Health:
 		HP: 300
 	Mobile:
@@ -284,8 +293,8 @@ DOGGIE:
 		Range: 4c0
 	Mobile:
 		Speed: 113
-	Selectable:
-		Voice: Fiend
+	Voiced:
+		VoiceSet: Fiend
 	TargetableUnit:
 		TargetTypes: Ground
 	Armament:
@@ -314,8 +323,8 @@ VISSML:
 		Speed: 113
 		ROT: 16
 	-Crushable:
-	Selectable:
-		Voice: Fiend
+	Voiced:
+		VoiceSet: Fiend
 	TargetableUnit:
 		TargetTypes: Ground
 	-AutoTarget:
@@ -342,8 +351,8 @@ VISLRG:
 		Speed: 113
 		ROT: 16
 	-Crushable:
-	Selectable:
-		Voice: Fiend
+	Voiced:
+		VoiceSet: Fiend
 	TargetableUnit:
 		TargetTypes: Ground
 	Armament:

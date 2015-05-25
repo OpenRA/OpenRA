@@ -11,7 +11,6 @@ DOG:
 		Name: Attack Dog
 		Description: Anti-infantry unit.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Selectable:
-		Voice: DogVoice
 		Bounds: 12,17,-1,-4
 	Health:
 		HP: 12
@@ -29,6 +28,8 @@ DOG:
 	IgnoresDisguise:
 	DetectCloaked:
 		Range: 5
+	Voiced:
+		VoiceSet: DogVoice
 
 E1:
 	Inherits: ^Infantry
@@ -184,7 +185,6 @@ E6:
 		Name: Engineer
 		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
-		Voice: EngineerVoice
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 25
@@ -204,6 +204,8 @@ E6:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
+	Voiced:
+		VoiceSet: EngineerVoice
 
 SPY:
 	Inherits: ^Infantry
@@ -220,7 +222,6 @@ SPY:
 		GenericName: Soldier
 		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
 	Selectable:
-		Voice: SpyVoice
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 25
@@ -245,6 +246,8 @@ SPY:
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
+	Voiced:
+		VoiceSet: SpyVoice
 
 SPY.England:
 	Inherits: SPY
@@ -272,7 +275,6 @@ E7:
 		Name: Tanya
 		Description: Elite commando infantry. Armed with\ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
 	Selectable:
-		Voice: TanyaVoice
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 100
@@ -302,6 +304,8 @@ E7:
 		IdleSequences: idle1,idle2
 	AnnounceOnBuild:
 	AnnounceOnKill:
+	Voiced:
+		VoiceSet: TanyaVoice
 
 MEDI:
 	Inherits: ^Infantry
@@ -316,7 +320,6 @@ MEDI:
 		Name: Medic
 		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
-		Voice: MedicVoice
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 80
@@ -340,6 +343,8 @@ MEDI:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		AttackSequence: heal
+	Voiced:
+		VoiceSet: MedicVoice
 
 MECH:
 	Inherits: ^Infantry
@@ -354,7 +359,6 @@ MECH:
 		Name: Mechanic
 		Description: Repairs nearby vehicles and restores\nhusks to working condition.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
-		Voice: MechanicVoice
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 80
@@ -380,11 +384,12 @@ MECH:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		AttackSequence: heal
+	Voiced:
+		VoiceSet: MechanicVoice
 
 EINSTEIN:
 	Inherits: ^Infantry
 	Selectable:
-		Voice: EinsteinVoice
 		Bounds: 12,17,0,-9
 	Valued:
 		Cost: 10
@@ -401,11 +406,12 @@ EINSTEIN:
 		Types: CivilianInfantry
 	WithInfantryBody:
 	ScaredyCat:
+	Voiced:
+		VoiceSet: EinsteinVoice
 
 DELPHI:
 	Inherits: ^Infantry
 	Selectable:
-		Voice: CivilianMaleVoice
 		Bounds: 12,17,0,-9
 	Valued:
 		Cost: 10
@@ -422,6 +428,8 @@ DELPHI:
 		Types: CivilianInfantry
 	WithInfantryBody:
 	ScaredyCat:
+	Voiced:
+		VoiceSet: CivilianMaleVoice
 
 CHAN:
 	Inherits: ^CivInfantry
@@ -433,7 +441,8 @@ GNRL:
 	Tooltip:
 		Name: General
 	Selectable:
-		Voice: StavrosVoice
+	Voiced:
+		VoiceSet: StavrosVoice
 
 THF:
 	Inherits: ^Infantry
@@ -443,7 +452,6 @@ THF:
 		Name: Thief
 		Description: Steals enemy credits.\n  Strong vs Nothing\n  Weak vs Everything\n
 	Selectable:
-		Voice: ThiefVoice
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 25
@@ -460,6 +468,8 @@ THF:
 			Prone50Percent: 50
 		DamageTriggers: TriggerProne
 	-AutoTarget:
+	Voiced:
+		VoiceSet: ThiefVoice
 
 HIJACKER:
 	Inherits: ^Infantry
@@ -474,7 +484,6 @@ HIJACKER:
 		Name: Hijacker
 		Description: Hijacks enemy vehicles. Unarmed\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Selectable:
-		Voice: ThiefVoice
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 50
@@ -487,6 +496,8 @@ HIJACKER:
 	Captures:
 		CaptureTypes: vehicle
 	-AutoTarget:
+	Voiced:
+		VoiceSet: ThiefVoice
 
 SHOK:
 	Inherits: ^Infantry
@@ -501,7 +512,6 @@ SHOK:
 		Name: Shock Trooper
 		Description: Elite infantry with portable tesla coils.\n Strong vs Infantry\n Weak vs Aircraft
 	Selectable:
-		Voice: ShokVoice
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 100
@@ -523,6 +533,8 @@ SHOK:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
+	Voiced:
+		VoiceSet: ShokVoice
 
 SNIPER:
 	Inherits: ^Infantry
@@ -584,7 +596,6 @@ Zombie:
 		BuildPaletteOrder: 200
 		Prerequisites: ~bio
 	Selectable:
-		Voice: AntVoice
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 250
@@ -595,6 +606,8 @@ Zombie:
 	AttackFrontal:
 	Armament:
 		Weapon: claw
+	Voiced:
+		VoiceSet: AntVoice
 
 Ant:
 	Inherits: ^Infantry
@@ -608,7 +621,6 @@ Ant:
 		BuildPaletteOrder: 1954
 		Prerequisites: ~bio
 	Selectable:
-		Voice: AntVoice
 		Bounds: 30,30,0,-2
 	Health:
 		HP: 750
@@ -626,4 +638,6 @@ Ant:
 		TargetTypes: Ground, Infantry
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false
+	Voiced:
+		VoiceSet: AntVoice
 

@@ -11,14 +11,13 @@ FireballLauncher:
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 25
-		DeathType: 5
 		Versus:
 			None: 600
 			Wood: 148
 			Light: 59
 			Heavy: 6
 			Concrete: 2
-		DamageTypes: Prone100Percent, TriggerProne
+		DamageTypes: Prone100Percent, TriggerProne, FireDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SmallScorch
 
@@ -36,12 +35,11 @@ FiendShard:
 		Palette: greentiberium
 	Warhead@1Dam: SpreadDamage
 		Damage: 35
-		DeathType: 1
 		Versus:
 			Light: 60
 			Heavy: 40
 			Concrete: 20
-		DamageTypes: Prone100Percent, TriggerProne
+		DamageTypes: Prone100Percent, TriggerProne, BulletDeath
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
 		ImpactSound: ssplash3.aud
@@ -55,17 +53,16 @@ SlimeAttack:
 		Speed: 426
 	Warhead@1Dam: SpreadDamage
 		Damage: 100
-		DeathType: 2
 		Versus:
 			Light: 60
 			Heavy: 40
 			Concrete: 20
-		DamageTypes: Prone100Percent, TriggerProne
+		DamageTypes: Prone100Percent, TriggerProne, SmallExplosionDeath
 
 Tiberium:
 	ReloadDelay: 16
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 2
-		DeathType: 6
+		DamageTypes: EnergyDeath # TODO: FIX ME!
 

@@ -4,7 +4,7 @@ T01:
 		Footprint: __ x_
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 T02:
 	Inherits: ^Tree
@@ -12,7 +12,7 @@ T02:
 		Footprint: __ x_
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 T03:
 	Inherits: ^Tree
@@ -20,13 +20,15 @@ T03:
 		Footprint: __ x_
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 T04:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: INTERIOR
 
 T05:
 	Inherits: ^Tree
@@ -34,7 +36,7 @@ T05:
 		Footprint: __ x_
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 T06:
 	Inherits: ^Tree
@@ -42,7 +44,7 @@ T06:
 		Footprint: __ x_
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 T07:
 	Inherits: ^Tree
@@ -50,7 +52,7 @@ T07:
 		Footprint: __ x_
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 T08:
 	Inherits: ^Tree
@@ -64,7 +66,7 @@ T10:
 		Footprint: __ xx
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 T11:
 	Inherits: ^Tree
@@ -72,7 +74,7 @@ T11:
 		Footprint: __ xx
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 T12:
 	Inherits: ^Tree
@@ -80,7 +82,7 @@ T12:
 		Footprint: __ x_
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 T13:
 	Inherits: ^Tree
@@ -88,7 +90,7 @@ T13:
 		Footprint: __ x_
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 T14:
 	Inherits: ^Tree
@@ -96,7 +98,7 @@ T14:
 		Footprint: ___ xx_
 		Dimensions: 3,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 T15:
 	Inherits: ^Tree
@@ -104,7 +106,7 @@ T15:
 		Footprint: ___ xx_
 		Dimensions: 3,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 T16:
 	Inherits: ^Tree
@@ -112,7 +114,7 @@ T16:
 		Footprint: __ x_
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 T17:
 	Inherits: ^Tree
@@ -120,13 +122,15 @@ T17:
 		Footprint: __ x_
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 TC01:
 	Inherits: ^Tree
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: INTERIOR
 
 TC02:
 	Inherits: ^Tree
@@ -134,7 +138,7 @@ TC02:
 		Footprint: _x_ xx_
 		Dimensions: 3,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 TC03:
 	Inherits: ^Tree
@@ -142,7 +146,7 @@ TC03:
 		Footprint: xx_ xx_
 		Dimensions: 3,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 TC04:
 	Inherits: ^Tree
@@ -150,7 +154,7 @@ TC04:
 		Footprint: ____ xxx_ x___
 		Dimensions: 4,3
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 TC05:
 	Inherits: ^Tree
@@ -158,52 +162,70 @@ TC05:
 		Footprint: __x_ xxx_ _xx_
 		Dimensions: 4,3
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 BOXES01:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES02:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES03:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES04:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES05:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES06:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES07:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES08:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BOXES09:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 ICE01:
 	Inherits: ^Tree
@@ -213,7 +235,7 @@ ICE01:
 	Tooltip:
 		Name: Ice Floe
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 ICE02:
 	Inherits: ^Tree
@@ -223,7 +245,7 @@ ICE02:
 	Tooltip:
 		Name: Ice Floe
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 ICE03:
 	Inherits: ^Tree
@@ -233,21 +255,21 @@ ICE03:
 	Tooltip:
 		Name: Ice Floe
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 ICE04:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Ice Floe
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 ICE05:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Ice Floe
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 ROCK1:
 	Inherits: ^Rock

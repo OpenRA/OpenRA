@@ -202,7 +202,7 @@ namespace OpenRA.Graphics
 			{
 				var pa = pos + offset.Rotate(WRot.FromFacing(8 * i));
 				var pb = pos + offset.Rotate(WRot.FromFacing(8 * i + 6));
-				Game.Renderer.WorldLineRenderer.DrawLine(ScreenPosition(pa), ScreenPosition(pb), c, c);
+				Game.Renderer.WorldLineRenderer.DrawLine(ScreenPosition(pa), ScreenPosition(pb), c);
 			}
 		}
 
@@ -214,10 +214,10 @@ namespace OpenRA.Graphics
 			var tr = new float2(br.X, tl.Y);
 
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(location + tl, location + tr, c, c);
-			wlr.DrawLine(location + tr, location + br, c, c);
-			wlr.DrawLine(location + br, location + bl, c, c);
-			wlr.DrawLine(location + bl, location + tl, c, c);
+			wlr.DrawLine(location + tl, location + tr, c);
+			wlr.DrawLine(location + tr, location + br, c);
+			wlr.DrawLine(location + br, location + bl, c);
+			wlr.DrawLine(location + bl, location + tl, c);
 		}
 
 		public void RefreshPalette()

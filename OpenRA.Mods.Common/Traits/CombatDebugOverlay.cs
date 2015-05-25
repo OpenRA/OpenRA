@@ -69,8 +69,8 @@ namespace OpenRA.Mods.Common.Traits
 					var o = wr.ScreenPosition(pos);
 					var a = wr.ScreenPosition(pos + da * 224 / da.Length);
 					var b = wr.ScreenPosition(pos + db * 224 / db.Length);
-					wlr.DrawLine(o, a, c, c);
-					wlr.DrawLine(o, b, c, c);
+					wlr.DrawLine(o, a, c);
+					wlr.DrawLine(o, b, c);
 				}
 
 				return;
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var sm = wr.ScreenPosition(muzzle);
 					var sd = wr.ScreenPosition(muzzle + dirOffset);
-					wlr.DrawLine(sm, sd, c, c);
+					wlr.DrawLine(sm, sd, c);
 					wr.DrawTargetMarker(c, sm);
 				}
 			}

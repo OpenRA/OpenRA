@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class RenderDetectionCircleInfo : ITraitInfo
+	class RenderDetectionCircleInfo : ITraitInfo, Requires<DetectCloakedInfo>
 	{
 		public object Create(ActorInitializer init) { return new RenderDetectionCircle(init.Self); }
 	}

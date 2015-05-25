@@ -24,22 +24,18 @@ find . -path "*.mdb" -delete
 test -e Changelog.md && rm Changelog.md
 curl -s -L -O https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md
 
-curl -s -L -O http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip
-unzip -qq Markdown_1.0.1.zip
-rm -rf Markdown_1.0.1.zip
-./Markdown_1.0.1/Markdown.pl Changelog.md > CHANGELOG.html
-./Markdown_1.0.1/Markdown.pl README.md > README.html
-./Markdown_1.0.1/Markdown.pl CONTRIBUTING.md > CONTRIBUTING.html
-./Markdown_1.0.1/Markdown.pl DOCUMENTATION.md > DOCUMENTATION.html
-./Markdown_1.0.1/Markdown.pl Lua-API.md > Lua-API.html
-rm -rf Markdown_1.0.1
+markdown Changelog.md > CHANGELOG.html
+markdown README.md > README.html
+markdown CONTRIBUTING.md > CONTRIBUTING.html
+markdown DOCUMENTATION.md > DOCUMENTATION.html
+markdown Lua-API.md > Lua-API.html
 
 # List of files that are packaged on all platforms
-FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' \
+FILES=('OpenRA.Game.exe' 'OpenRA.Game.exe.config' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' \
 'OpenRA.Renderer.Sdl2.dll' 'OpenRA.Renderer.Null.dll' \
  'lua' 'glsl' 'mods/common' 'mods/ra' 'mods/cnc' 'mods/d2k' 'mods/modchooser' \
 'AUTHORS' 'COPYING' 'README.html' 'CONTRIBUTING.html' 'DOCUMENTATION.html' 'CHANGELOG.html' \
-'global mix database.dat' 'GeoLite2-Country.mmdb')
+'global mix database.dat' 'GeoLite2-Country.mmdb.gz')
 
 echo "Copying files..."
 for i in "${FILES[@]}"; do

@@ -2,6 +2,7 @@ Metadata:
 	Title: Mod Chooser
 	Version: {DEV_VERSION}
 	Author: The OpenRA Developers
+	Hidden: true
 
 Folders:
 	.

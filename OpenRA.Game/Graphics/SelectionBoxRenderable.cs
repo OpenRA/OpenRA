@@ -55,15 +55,15 @@ namespace OpenRA.Graphics
 			var v = new float2(0, 4f / wr.Viewport.Zoom);
 
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(tl + u, tl, color, color);
-			wlr.DrawLine(tl, tl + v, color, color);
-			wlr.DrawLine(tr, tr - u, color, color);
-			wlr.DrawLine(tr, tr + v, color, color);
+			wlr.DrawLine(tl + u, tl, color);
+			wlr.DrawLine(tl, tl + v, color);
+			wlr.DrawLine(tr, tr - u, color);
+			wlr.DrawLine(tr, tr + v, color);
 
-			wlr.DrawLine(bl, bl + u, color, color);
-			wlr.DrawLine(bl, bl - v, color, color);
-			wlr.DrawLine(br, br - u, color, color);
-			wlr.DrawLine(br, br - v, color, color);
+			wlr.DrawLine(bl, bl + u, color);
+			wlr.DrawLine(bl, bl - v, color);
+			wlr.DrawLine(br, br - u, color);
+			wlr.DrawLine(br, br - v, color);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }

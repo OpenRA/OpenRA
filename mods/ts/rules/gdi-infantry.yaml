@@ -44,7 +44,8 @@ MEDIC:
 		Prerequisites: ~gapile
 	Selectable:
 		Bounds: 12,17,0,-6
-		Voice: Medic
+	Voiced:
+		VoiceSet: Medic
 	Mobile:
 		Speed: 56
 	Health:

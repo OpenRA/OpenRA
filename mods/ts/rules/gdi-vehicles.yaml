@@ -106,8 +106,9 @@ SMECH:
 		Weapon: AssaultCannon
 	RenderSprites:
 	WithInfantryBody:
+	Voiced:
+		VoiceSet: Mech
 	Selectable:
-		Voices: Mech
 		Bounds: 20, 32, 0, -8
 
 MMCH:

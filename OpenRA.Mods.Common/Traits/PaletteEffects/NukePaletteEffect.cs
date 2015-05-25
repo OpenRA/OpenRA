@@ -15,6 +15,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	using GUtil = OpenRA.Graphics.Util;
+
 	[Desc("Apply palette full screen rotations during atom bomb explosions. Add this to the world actor.")]
 	class NukePaletteEffectInfo : TraitInfo<NukePaletteEffect> { }
 
@@ -46,8 +48,8 @@ namespace OpenRA.Mods.Common.Traits
 				for (var x = 0; x < Palette.Size; x++)
 				{
 					var orig = pal.Value.GetColor(x);
-					var white = Color.FromArgb(orig.A, 255, 255, 255);
-					pal.Value.SetColor(x, Exts.ColorLerp(frac, orig, white));
+					var final = GUtil.PremultipliedColorLerp(frac, orig, GUtil.PremultiplyAlpha(Color.FromArgb(orig.A, Color.White)));
+					pal.Value.SetColor(x, final);
 				}
 			}
 		}

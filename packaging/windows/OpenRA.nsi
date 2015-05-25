@@ -53,7 +53,21 @@ Var StartMenuFolder
 ;Section Definitions
 ;***************************
 Section "-Reg" Reg
+
+	; Installation directory
 	WriteRegStr HKLM "Software\OpenRA" "InstallDir" $INSTDIR
+	
+	; Replay file association
+	WriteRegStr HKLM "Software\Classes\.orarep" "" "OpenRA_replay"
+	WriteRegStr HKLM "Software\Classes\OpenRA_replay\DefaultIcon" "" "$INSTDIR\OpenRA.ico,0"
+	WriteRegStr HKLM "Software\Classes\OpenRA_replay\Shell\Open\Command" "" "$INSTDIR\OpenRA.exe Launch.Replay=%1"
+	
+	; OpenRA URL Scheme
+	WriteRegStr HKLM "Software\Classes\openra" "" "URL:OpenRA scheme"
+	WriteRegStr HKLM "Software\Classes\openra" "URL Protocol" ""
+	WriteRegStr HKLM "Software\Classes\openra\DefaultIcon" "" "$INSTDIR\OpenRA.ico,0"
+	WriteRegStr HKLM "Software\Classes\openra\Shell\Open\Command" "" "$INSTDIR\OpenRA.exe Launch.URI=%1"
+	
 SectionEnd
 
 Section "Game" GAME
@@ -68,6 +82,7 @@ Section "Game" GAME
 	SetOutPath "$INSTDIR"
 	File "${SRCDIR}\OpenRA.exe"
 	File "${SRCDIR}\OpenRA.Game.exe"
+	File "${SRCDIR}\OpenRA.Game.exe.config"
 	File "${SRCDIR}\OpenRA.Utility.exe"
 	File "${SRCDIR}\OpenRA.Renderer.Null.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Sdl2.dll"
@@ -88,7 +103,7 @@ Section "Game" GAME
 	File "${SRCDIR}\MaxMind.GeoIP2.dll"
 	File "${SRCDIR}\Newtonsoft.Json.dll"
 	File "${SRCDIR}\RestSharp.dll"
-	File "${SRCDIR}\GeoLite2-Country.mmdb"
+	File "${SRCDIR}\GeoLite2-Country.mmdb.gz"
 	File "${SRCDIR}\eluant.dll"
 	File "${DEPSDIR}\soft_oal.dll"
 	File "${DEPSDIR}\SDL2.dll"
@@ -183,6 +198,7 @@ Function ${UN}Clean
 	RMDir /r $INSTDIR\lua
 	Delete $INSTDIR\OpenRA.exe
 	Delete $INSTDIR\OpenRA.Game.exe
+	Delete $INSTDIR\OpenRA.Game.exe.config
 	Delete $INSTDIR\OpenRA.Utility.exe
 	Delete $INSTDIR\OpenRA.Editor.exe
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll
@@ -203,7 +219,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\MaxMind.GeoIP2.dll
 	Delete $INSTDIR\Newtonsoft.Json.dll
 	Delete $INSTDIR\RestSharp.dll
-	Delete $INSTDIR\GeoLite2-Country.mmdb
+	Delete $INSTDIR\GeoLite2-Country.mmdb.gz
 	Delete $INSTDIR\KopiLua.dll
 	Delete $INSTDIR\soft_oal.dll
 	Delete $INSTDIR\SDL2.dll
@@ -212,7 +228,12 @@ Function ${UN}Clean
 	Delete $INSTDIR\freetype6.dll
 	Delete $INSTDIR\SDL2-CS.dll
 	RMDir /r $INSTDIR\Support
+	
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"
+	DeleteRegKey HKLM "Software\Classes\.orarep"
+	DeleteRegKey HKLM "Software\Classes\OpenRA_replay"
+	DeleteRegKey HKLM "Software\Classes\openra"
+	
 	Delete $INSTDIR\uninstaller.exe
 	RMDir $INSTDIR
 	

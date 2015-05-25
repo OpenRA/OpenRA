@@ -116,6 +116,7 @@ elseif ($command -eq "dependencies")
 	cd thirdparty
 	./fetch-thirdparty-deps.ps1
 	cp download/*.dll ..
+	cp download/GeoLite2-Country.mmdb.gz ..
 	cp download/windows/*.dll ..
 	cd ..
 	echo "Dependencies copied."
@@ -162,7 +163,7 @@ elseif ($command -eq "check")
 elseif ($command -eq "docs")
 {
 	./make.ps1 version
-	./OpenRA.Utility.exe d2k --docs | Out-File -Encoding "UTF8" DOCUMENTATION.md
+	./OpenRA.Utility.exe all --docs | Out-File -Encoding "UTF8" DOCUMENTATION.md
 	./OpenRA.Utility.exe ra --lua-docs | Out-File -Encoding "UTF8" Lua-API.md
 }
 else

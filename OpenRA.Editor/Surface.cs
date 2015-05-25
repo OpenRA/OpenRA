@@ -278,6 +278,15 @@ namespace OpenRA.Editor
 						var ui = u * ChunkSize + i;
 						var vj = v * ChunkSize + j;
 						var uv = new MPos(ui, vj);
+						if (uv.U >= Map.MapSize.X || uv.V >= Map.MapSize.Y)
+						{
+							for (var x = 0; x < TileSetRenderer.TileSize; x++)
+								for (var y = 0; y < TileSetRenderer.TileSize; y++)
+									p[(j * TileSetRenderer.TileSize + y) * stride + i * TileSetRenderer.TileSize + x] = 0;
+
+							continue;
+						}
+
 						var tr = Map.MapTiles.Value[uv];
 						var tile = TileSetRenderer.Data(tr.Type);
 						if (tile == null)
@@ -391,7 +400,7 @@ namespace OpenRA.Editor
 		ColorPalette GetPaletteForPlayerInner(string name)
 		{
 			var pr = new MapPlayers(Map.PlayerDefinitions).Players[name];
-			var pcpi = Program.Rules.Actors["player"].Traits.Get<PlayerColorPaletteInfo>();
+			var pcpi = Program.Rules.Actors["world"].Traits.Get<PlayerColorPaletteInfo>();
 			var remap = new PlayerColorRemap(pcpi.RemapIndex, pr.Color, pcpi.Ramp);
 			return new ImmutablePalette(PlayerPalette, remap).AsSystemPalette();
 		}

@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace OpenRA.Graphics
@@ -69,10 +70,25 @@ namespace OpenRA.Graphics
 		{
 			var tr = new float2(br.X, tl.Y);
 			var bl = new float2(tl.X, br.Y);
-			DrawLine(tl, tr, c, c);
-			DrawLine(tl, bl, c, c);
-			DrawLine(tr, br, c, c);
-			DrawLine(bl, br, c, c);
+			DrawLine(tl, tr, c);
+			DrawLine(tl, bl, c);
+			DrawLine(tr, br, c);
+			DrawLine(bl, br, c);
+		}
+
+		public void DrawLine(float2 start, float2 end, Color color)
+		{
+			renderer.CurrentBatchRenderer = this;
+
+			if (nv + 2 > renderer.TempBufferSize)
+				Flush();
+
+			var r = color.R / 255.0f;
+			var g = color.G / 255.0f;
+			var b = color.B / 255.0f;
+			var a = color.A / 255.0f;
+			vertices[nv++] = new Vertex(start + Offset, r, g, b, a);
+			vertices[nv++] = new Vertex(end + Offset, r, g, b, a);
 		}
 
 		public void DrawLine(float2 start, float2 end, Color startColor, Color endColor)
@@ -82,19 +98,52 @@ namespace OpenRA.Graphics
 			if (nv + 2 > renderer.TempBufferSize)
 				Flush();
 
-			vertices[nv++] = new Vertex(start + Offset,
-				startColor.R / 255.0f, startColor.G / 255.0f,
-				startColor.B / 255.0f, startColor.A / 255.0f);
+			var r = startColor.R / 255.0f;
+			var g = startColor.G / 255.0f;
+			var b = startColor.B / 255.0f;
+			var a = startColor.A / 255.0f;
+			vertices[nv++] = new Vertex(start + Offset, r, g, b, a);
 
-			vertices[nv++] = new Vertex(end + Offset,
-				endColor.R / 255.0f, endColor.G / 255.0f,
-				endColor.B / 255.0f, endColor.A / 255.0f);
+			r = endColor.R / 255.0f;
+			g = endColor.G / 255.0f;
+			b = endColor.B / 255.0f;
+			a = endColor.A / 255.0f;
+			vertices[nv++] = new Vertex(end + Offset, r, g, b, a);
+		}
+
+		public void DrawLineStrip(IEnumerable<float2> points, Color color)
+		{
+			renderer.CurrentBatchRenderer = this;
+
+			var r = color.R / 255.0f;
+			var g = color.G / 255.0f;
+			var b = color.B / 255.0f;
+			var a = color.A / 255.0f;
+
+			var first = true;
+			var prev = new Vertex();
+			foreach (var point in points)
+			{
+				if (first)
+				{
+					first = false;
+					prev = new Vertex(point + Offset, r, g, b, a);
+					continue;
+				}
+
+				if (nv + 2 > renderer.TempBufferSize)
+					Flush();
+
+				vertices[nv++] = prev;
+				prev = new Vertex(point + Offset, r, g, b, a);
+				vertices[nv++] = prev;
+			}
 		}
 
 		public void FillRect(RectangleF r, Color color)
 		{
 			for (var y = r.Top; y < r.Bottom; y++)
-				DrawLine(new float2(r.Left, y), new float2(r.Right, y), color, color);
+				DrawLine(new float2(r.Left, y), new float2(r.Right, y), color);
 		}
 
 		public void FillEllipse(RectangleF r, Color color)
@@ -106,7 +155,7 @@ namespace OpenRA.Graphics
 			for (var y = r.Top; y <= r.Bottom; y++)
 			{
 				var dx = a * (float)Math.Sqrt(1 - (y - yc) * (y - yc) / b / b);
-				DrawLine(new float2(xc - dx, y), new float2(xc + dx, y), color, color);
+				DrawLine(new float2(xc - dx, y), new float2(xc + dx, y), color);
 			}
 		}
 

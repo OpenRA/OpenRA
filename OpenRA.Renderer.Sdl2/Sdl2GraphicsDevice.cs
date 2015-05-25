@@ -246,7 +246,7 @@ namespace OpenRA.Renderer.Sdl2
 			ErrorHandler.CheckGlError();
 		}
 
-		public void SetBlendMode(BlendMode mode, float alpha = 1f)
+		public void SetBlendMode(BlendMode mode)
 		{
 			GL.BlendEquation(BlendEquationMode.FuncAdd);
 			ErrorHandler.CheckGlError();
@@ -259,35 +259,24 @@ namespace OpenRA.Renderer.Sdl2
 				case BlendMode.Alpha:
 					GL.Enable(EnableCap.Blend);
 					ErrorHandler.CheckGlError();
-					GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+					GL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcAlpha);
 					break;
 				case BlendMode.Additive:
-					GL.Enable(EnableCap.Blend);
-					ErrorHandler.CheckGlError();
-					GL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.One);
-					break;
 				case BlendMode.Subtractive:
 					GL.Enable(EnableCap.Blend);
 					ErrorHandler.CheckGlError();
 					GL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.One);
-					ErrorHandler.CheckGlError();
-					GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
+					if (mode == BlendMode.Subtractive)
+					{
+						ErrorHandler.CheckGlError();
+						GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
+					}
+
 					break;
 				case BlendMode.Multiply:
 					GL.Enable(EnableCap.Blend);
 					ErrorHandler.CheckGlError();
 					GL.BlendFunc(BlendingFactorSrc.DstColor, BlendingFactorDest.OneMinusSrcAlpha);
-					ErrorHandler.CheckGlError();
-					break;
-				case BlendMode.SoftAdditive:
-					GL.Enable(EnableCap.Blend);
-					ErrorHandler.CheckGlError();
-					GL.BlendFunc(BlendingFactorSrc.OneMinusDstColor, BlendingFactorDest.One);
-					break;
-				case BlendMode.Translucency:
-					GL.Enable(EnableCap.Blend);
-					ErrorHandler.CheckGlError();
-					GL.BlendFunc(BlendingFactorSrc.OneMinusConstantAlpha, BlendingFactorDest.One);
 					ErrorHandler.CheckGlError();
 					break;
 				case BlendMode.Multiplicative:
@@ -301,9 +290,6 @@ namespace OpenRA.Renderer.Sdl2
 					GL.BlendFunc(BlendingFactorSrc.DstColor, BlendingFactorDest.SrcColor);
 					break;
 			}
-
-			if (alpha != 1f)
-				GL.BlendColor(1f, 1f, 1f, alpha);
 
 			ErrorHandler.CheckGlError();
 		}

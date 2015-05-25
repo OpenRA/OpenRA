@@ -41,11 +41,3 @@ after_test:
 artifacts:
   - path: OpenRA-$(APPVEYOR_REPO_TAG_NAME).exe
     name: Installer
-
-deploy:
-  - provider: GitHub
-    auth_token:
-      secure: Z7RC+ckfvf7Kxf2EdWZCP7bgGjRnhgbMeieQP6VVhiZprwvbEzGXI2Wma+FGAq65
-    artifact: Installer
-    on:
-      appveyor_repo_tag: true

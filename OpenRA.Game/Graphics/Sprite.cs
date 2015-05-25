@@ -17,7 +17,6 @@ namespace OpenRA.Graphics
 		public readonly Rectangle Bounds;
 		public readonly Sheet Sheet;
 		public readonly BlendMode BlendMode;
-		public readonly float Alpha;
 		public readonly TextureChannel Channel;
 		public readonly float2 Size;
 		public readonly float2 Offset;
@@ -27,7 +26,7 @@ namespace OpenRA.Graphics
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
 			: this(sheet, bounds, float2.Zero, channel) { }
 
-		public Sprite(Sheet sheet, Rectangle bounds, float2 offset, TextureChannel channel, BlendMode blendMode = BlendMode.Alpha, float alpha = 1f)
+		public Sprite(Sheet sheet, Rectangle bounds, float2 offset, TextureChannel channel, BlendMode blendMode = BlendMode.Alpha)
 		{
 			Sheet = sheet;
 			Bounds = bounds;
@@ -35,7 +34,6 @@ namespace OpenRA.Graphics
 			Channel = channel;
 			Size = new float2(bounds.Size);
 			BlendMode = blendMode;
-			Alpha = alpha;
 
 			FractionalOffset = offset / Size;
 

@@ -1,8 +1,6 @@
 overlay:
 	Defaults: place
 		Offset: 0, -12
-		BlendMode: Translucency
-		Alpha: 0.75
 	build-valid-snow:
 	build-valid-temperat:
 	build-invalid:
@@ -114,10 +112,10 @@ explosion:
 		Length: *
 	building: twlt070
 	ionring: ring1
-		BlendMode: SoftAdditive
+		BlendMode: Additive
 		Tick: 120
 	pulse_explosion: pulsefx2
-		BlendMode: SoftAdditive
+		BlendMode: Additive
 		Tick: 80
 	small_watersplash: h2o_exp2
 	large_watersplash: h2o_exp1

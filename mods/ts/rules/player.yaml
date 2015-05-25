@@ -30,7 +30,7 @@ Player:
 		LowPowerSlowdown: 3
 		SpeedUp: True
 	PlaceBuilding:
-		Palette: ra
+		Palette: placebuilding
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:

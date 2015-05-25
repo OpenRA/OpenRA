@@ -381,12 +381,14 @@ BRIDGEHUT:
 C1:
 	Inherits: ^CivInfantry
 	Selectable:
-		Voice: CivilianMaleVoice
+	Voiced:
+		VoiceSet: CivilianMaleVoice
 
 C2:
 	Inherits: ^CivInfantry
 	Selectable:
-		Voice: CivilianFemaleVoice
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 C3:
 	Inherits: ^CivInfantry
@@ -394,7 +396,8 @@ C3:
 C4:
 	Inherits: ^CivInfantry
 	Selectable:
-		Voice: CivilianFemaleVoice
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 C5:
 	Inherits: ^CivInfantry
@@ -402,7 +405,8 @@ C5:
 C6:
 	Inherits: ^CivInfantry
 	Selectable:
-		Voice: CivilianFemaleVoice
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 C7:
 	Inherits: ^CivInfantry
@@ -410,7 +414,8 @@ C7:
 C8:
 	Inherits: ^CivInfantry
 	Selectable:
-		Voice: CivilianFemaleVoice
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 C9:
 	Inherits: ^CivInfantry
@@ -418,7 +423,8 @@ C9:
 C10:
 	Inherits: ^CivInfantry
 	Selectable:
-		Voice: CivilianFemaleVoice
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 VICE:
 	AppearsOnRadar:
@@ -439,7 +445,6 @@ VICE:
 			BlueTiberium: 100
 			Beach: 60
 	Selectable:
-		Voice: DinoVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	AutoTarget:
@@ -472,4 +477,6 @@ VICE:
 		QuantizedFacings: 8
 	PoisonedByTiberium:
 		Weapon: Heal
+	Voiced:
+		VoiceSet: DinoVoice
 

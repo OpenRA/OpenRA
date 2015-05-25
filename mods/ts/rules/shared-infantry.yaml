@@ -49,7 +49,8 @@ ENGINEER:
 		Prerequisites: ~barracks
 	Selectable:
 		Bounds: 12,17,0,-6
-		Voice: Engineer
+	Voiced:
+		VoiceSet: Engineer
 	Mobile:
 		Speed: 56
 	Health:

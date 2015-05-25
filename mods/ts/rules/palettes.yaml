@@ -73,6 +73,10 @@
 		G: 0
 		B: 0
 		A: 180
+	PaletteFromPaletteWithAlpha@placebuilding:
+		Name: placebuilding
+		BasePalette: ra
+		Alpha: 0.75
 	TSShroudPalette@shroud:
 		Type: Shroud
 	VoxelNormalsPalette@normals:

@@ -29,6 +29,7 @@ mods/*/*.mdb
 /*.mdb
 /*.exe
 thirdparty/download/*
+*.mmdb.gz
 
 # backup files by various editors
 *~

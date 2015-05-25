@@ -11,14 +11,13 @@ Grenade:
 	Warhead@1Dam: SpreadDamage
 		Spread: 171
 		Damage: 40
-		DeathType: 3
 		Versus:
 			None: 100
 			Wood: 85
 			Light: 70
 			Heavy: 35
 			Concrete: 28
-		DamageTypes: Prone70Percent, TriggerProne
+		DamageTypes: Prone70Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: large_grey_explosion
 		ImpactSound: expnew13.aud
@@ -43,14 +42,13 @@ Bomb:
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
 		Damage: 160
-		DeathType: 3
 		Versus:
 			None: 200
 			Wood: 90
 			Light: 75
 			Heavy: 32
 			Concrete: 100
-		DamageTypes: Prone100Percent, TriggerProne
+		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
@@ -76,14 +74,13 @@ RPGTower:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 110
-		DeathType: 2
 		Versus:
 			None: 30
 			Wood: 75
 			Light: 90
 			Heavy: 100
 			Concrete: 70
-		DamageTypes: Prone70Percent, TriggerProne
+		DamageTypes: Prone70Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: large_clsn
 		ImpactSound: expnew14.aud

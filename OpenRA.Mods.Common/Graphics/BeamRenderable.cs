@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 			var oldWidth = wlr.LineWidth;
 			wlr.LineWidth = wr.Viewport.Zoom * width;
-			wlr.DrawLine(src, dest, color, color);
+			wlr.DrawLine(src, dest, color);
 			wlr.LineWidth = oldWidth;
 		}
 

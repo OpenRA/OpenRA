@@ -19,36 +19,36 @@ namespace OpenRA.Mods.Cnc.Traits
 		[ActorReference] public readonly string ViceroidActor = "vice";
 		public readonly int Probability = 10;
 		public readonly string Owner = "Creeps";
-		public readonly string DeathType = "6";
+		public readonly string DeathType = "TiberiumDeath";
 
 		public object Create(ActorInitializer init) { return new SpawnViceroid(this); }
 	}
 
 	class SpawnViceroid : INotifyKilled
 	{
-		readonly SpawnViceroidInfo spawnViceroidInfo;
+		readonly SpawnViceroidInfo info;
 
-		public SpawnViceroid(SpawnViceroidInfo info) { spawnViceroidInfo = info; }
+		public SpawnViceroid(SpawnViceroidInfo info) { this.info = info; }
 
 		public void Killed(Actor self, AttackInfo e)
 		{
 			if (!self.World.LobbyInfo.GlobalSettings.Creeps) return;
-			if (e.Warhead == null || e.Warhead.DeathType != spawnViceroidInfo.DeathType) return;
-			if (self.World.SharedRandom.Next(100) > spawnViceroidInfo.Probability) return;
+			if (e.Warhead == null || !e.Warhead.DamageTypes.Contains(info.DeathType)) return;
+			if (self.World.SharedRandom.Next(100) > info.Probability) return;
 
 			self.World.AddFrameEndTask(w =>
 			{
 				var td = new TypeDictionary
 				{
 					new LocationInit(self.Location),
-					new OwnerInit(self.World.Players.First(p => p.InternalName == spawnViceroidInfo.Owner))
+					new OwnerInit(self.World.Players.First(p => p.InternalName == info.Owner))
 				};
 
 				var facing = self.TraitOrDefault<IFacing>();
 				if (facing != null)
 					td.Add(new FacingInit(facing.Facing));
 
-				w.CreateActor(spawnViceroidInfo.ViceroidActor, td);
+				w.CreateActor(info.ViceroidActor, td);
 			});
 		}
 	}

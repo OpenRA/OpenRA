@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly string Image = null;
 		[Desc("Sequence to loop while falling.")]
 		public readonly string Sequence = "idle";
-		[Desc("Sequence to play when launched. Skipped if null.")]
+		[Desc("Sequence to play when launched. Skipped if null or empty.")]
 		public readonly string OpenSequence = null;
 		public readonly string Palette = "effect";
 		public readonly bool Shadow = false;
@@ -51,9 +51,9 @@ namespace OpenRA.Mods.Common.Effects
 
 			anim = new Animation(args.SourceActor.World, info.Image);
 
-			if (info.Image != null)
+			if (!string.IsNullOrEmpty(info.Image))
 			{
-				if (info.OpenSequence != null)
+				if (!string.IsNullOrEmpty(info.OpenSequence))
 					anim.PlayThen(info.OpenSequence, () => anim.PlayRepeating(info.Sequence));
 				else
 					anim.PlayRepeating(info.Sequence);

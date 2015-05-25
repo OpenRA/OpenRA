@@ -235,21 +235,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return ip;
 		}
 
-		public static string LookupCountry(string ip)
-		{
-			const string Unknown = "Unknown Location";
-
-			try
-			{
-				return Game.GeoIpDatabase.Country(ip).Country.Name ?? Unknown;
-			}
-			catch (Exception e)
-			{
-				Log.Write("geoip", "LookupCountry failed: {0}", e);
-				return Unknown;
-			}
-		}
-
 		public static void SetupClientWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, bool visible)
 		{
 			parent.Get("ADMIN_INDICATOR").IsVisible = () => c.IsAdmin;

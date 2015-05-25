@@ -165,6 +165,8 @@ GATICK:
 		Type: Concrete
 	RevealsShroud:
 		Range: 5c0
+	Voiced:
+		VoiceSet: Vehicle
 	Turreted:
 		ROT: 6
 		InitialFacing: 128
@@ -215,8 +217,8 @@ GAARTY:
 		Type: Light
 	RevealsShroud:
 		Range: 9c0
-	Selectable:
-		Voice: Vehicle
+	Voiced:
+		VoiceSet: Vehicle
 	Turreted:
 		ROT: 5
 		InitialFacing: 128

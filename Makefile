@@ -292,7 +292,7 @@ mods: mod_common mod_ra mod_cnc mod_d2k mod_ts
 all: dependencies core tools
 
 clean:
-	@-$(RM_F) *.exe *.dll *.dylib *.config ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
+	@-$(RM_F) *.exe *.dll *.dylib *.dll.config ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 	@-$(RM_RF) ./*/bin ./*/obj
 	@-$(RM_RF) ./thirdparty/download
 
@@ -318,18 +318,19 @@ osx-dependencies: cli-dependencies
 	@ $(CP_R) thirdparty/download/osx/*.dll.config .
 
 dependencies: $(os-dependencies)
+	@./thirdparty/fetch-geoip-db.sh
+	@ $(CP) thirdparty/download/GeoLite2-Country.mmdb.gz .
 
 all-dependencies: cli-dependencies windows-dependencies osx-dependencies
 
-version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
+version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml mods/all/mod.yaml
 	@for i in $? ; do \
 		awk '{sub("Version:.*$$","Version: $(VERSION)"); print $0}' $${i} > $${i}.tmp && \
 		mv -f $${i}.tmp $${i} ; \
 	done
 
-# Documentation (d2k depends on all mod libraries)
 docs: utility mods version
-	@mono --debug OpenRA.Utility.exe d2k --docs > DOCUMENTATION.md
+	@mono --debug OpenRA.Utility.exe all --docs > DOCUMENTATION.md
 	@mono --debug OpenRA.Utility.exe ra --lua-docs > Lua-API.md
 
 install: install-core
@@ -354,7 +355,7 @@ install-core: default
 	@$(CP_R) mods/modchooser "$(DATA_INSTALL_DIR)/mods/"
 
 	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
-	@$(INSTALL_DATA) "GeoLite2-Country.mmdb" "$(DATA_INSTALL_DIR)/GeoLite2-Country.mmdb"
+	@$(INSTALL_DATA) "GeoLite2-Country.mmdb.gz" "$(DATA_INSTALL_DIR)/GeoLite2-Country.mmdb.gz"
 	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
 	@$(INSTALL_DATA) COPYING "$(DATA_INSTALL_DIR)/COPYING"
 
@@ -395,6 +396,7 @@ install-linux-mime:
 	@$(INSTALL_DATA) packaging/linux/openra-mimeinfo.xml "$(DESTDIR)$(datadir)/mime/packages/openra.xml"
 
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
+	@$(INSTALL_DATA) packaging/linux/openra-join-servers.desktop "$(DESTDIR)$(datadir)/applications"
 	@$(INSTALL_DATA) packaging/linux/openra-replays.desktop "$(DESTDIR)$(datadir)/applications"
 
 install-linux-appdata:

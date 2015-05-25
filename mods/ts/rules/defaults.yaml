@@ -111,9 +111,6 @@
 	Selectable:
 		Selectable: false
 		Bounds: 25,25,-1,-1
-	ProximityCaptor:
-		Types: Crate
-	BodyOrientation:
 
 ^Wall:
 	AppearsOnRadar:
@@ -188,12 +185,20 @@
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
-		Voice: Infantry
+	Voiced:
+		VoiceSet: Infantry
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation:
+		DeathTypes:
+			BulletDeath: 1
+			SmallExplosionDeath: 2
+			ExplosionDeath: 3
+			InfantryExplodeDeath: 4 #not used by any warhead; TODO: check what should use this type and add it!
+			FireDeath: 5
+			EnergyDeath: 6
 	AutoTarget:
 	AttackMove:
 	Passenger:
@@ -227,6 +232,7 @@
 	PoisonedByTiberium:
 	SpawnViceroid:
 		ViceroidActor: vissml
+		DeathType: EnergyDeath # TODO: FIX ME! (Tiberium currently uses the wrong damage type!)
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	Guard:
@@ -235,13 +241,13 @@
 	Huntable:
 	ScriptTriggers:
 	DeathSounds@NORMAL:
-		DeathTypes: 1, 2, 3
+		DeathTypes: BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@BURNED:
 		DeathSound: Burned
-		DeathTypes: 5
+		DeathTypes: FireDeath
 	DeathSounds@ZAPPED:
 		DeathSound: Zapped
-		DeathTypes: 6
+		DeathTypes: EnergyDeath
 	UpgradeManager:
 	Cloak@CLOAKGENERATOR:
 		UpgradeTypes: cloakgenerator
@@ -253,8 +259,9 @@
 ^CivilianInfantry:
 	Inherits: ^Infantry
 	Selectable:
-		Voice: Civilian
 		Bounds: 12,17,0,-9
+	Voiced:
+		VoiceSet: Civilian
 	Valued:
 		Cost: 10
 	Tooltip:
@@ -284,10 +291,11 @@
 			Tiberium: 80
 			BlueTiberium: 80
 		ROT: 5
+	Selectable:
 	SelectionDecorations:
 		Palette: pips
-	Selectable:
-		Voice: Vehicle
+	Voiced:
+		VoiceSet: Vehicle
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
@@ -368,10 +376,11 @@
 			Tiberium: 80
 			BlueTiberium: 80
 		ROT: 5
+	Selectable:
 	SelectionDecorations:
 		Palette: pips
-	Selectable:
-		Voice: Vehicle
+	Voiced:
+		VoiceSet: Vehicle
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
@@ -445,10 +454,11 @@
 	TargetableAircraft:
 		TargetTypes: Air
 		GroundedTargetTypes: Ground
+	Selectable:
 	SelectionDecorations:
 		Palette: pips
-	Selectable:
-		Voice: Heli
+	Voiced:
+		VoiceSet: Heli
 	Helicopter:
 		RepairBuildings: gadept
 		RearmBuildings:

@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Render trait for actors that change sprites if neighbors with the same trait are present.")]
 	class RenderBuildingWallInfo : RenderBuildingInfo
 	{
 		public readonly string Type = "wall";

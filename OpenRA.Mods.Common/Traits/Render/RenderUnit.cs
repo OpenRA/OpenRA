@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Render trait for non-animated actors that have sprites facing into each direction.")]
 	public class RenderUnitInfo : RenderSimpleInfo, Requires<IFacingInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderUnit(init, this); }

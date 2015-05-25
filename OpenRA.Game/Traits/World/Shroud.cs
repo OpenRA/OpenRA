@@ -383,11 +383,11 @@ namespace OpenRA.Traits
 
 		public bool IsTargetable(Actor a)
 		{
-			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, self.Owner)))
-				return false;
-
 			if (HasFogVisibility())
 				return true;
+
+			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, self.Owner)))
+				return false;
 
 			return GetVisOrigins(a).Any(IsVisible);
 		}

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Effects
 			this.color = color;
 			this.target = args.PassiveTarget;
 
-			if (info.HitAnim != null)
+			if (!string.IsNullOrEmpty(info.HitAnim))
 				this.hitanim = new Animation(args.SourceActor.World, info.HitAnim);
 		}
 

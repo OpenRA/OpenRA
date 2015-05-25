@@ -10,14 +10,13 @@ LtRail:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 150
-		DeathType: 2
 		Versus:
 			None: 100
 			Wood: 130
 			Light: 150
 			Heavy: 110
 			Concrete: 5
-		DamageTypes: Prone100Percent, TriggerProne
+		DamageTypes: Prone100Percent, TriggerProne, SmallExplosionDeath
 
 MechRailgun:
 	ReloadDelay: 60
@@ -31,14 +30,13 @@ MechRailgun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 200
-		DeathType: 5
 		Versus:
 			None: 200
 			Wood: 175
 			Light: 160
 			Heavy: 100
 			Concrete: 25
-		DamageTypes: Prone100Percent, TriggerProne
+		DamageTypes: Prone100Percent, TriggerProne, FireDeath
 
 SonicZap:
 	ReloadDelay: 120
@@ -52,11 +50,10 @@ SonicZap:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 100
-		DeathType: 5
 		Versus:
 			Heavy: 80
 			Concrete: 60
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 
 CyCannon:
 	ReloadDelay: 50
@@ -72,7 +69,6 @@ CyCannon:
 	Warhead@1Dam: SpreadDamage
 		Spread: 43
 		Damage: 120
-		DeathType: 6
 		ValidTargets: Ground
 		Versus:
 			None: 350
@@ -80,7 +76,7 @@ CyCannon:
 			Light: 205
 			Heavy: 150
 			Concrete: 80
-		DamageTypes: Prone350Percent, TriggerProne
+		DamageTypes: Prone350Percent, TriggerProne, EnergyDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: large_bang
 		ImpactSound: expnew12.aud
@@ -109,7 +105,6 @@ Proton:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 20
-		DeathType: 3
 		ValidTargets: Ground
 		Versus:
 			None: 25
@@ -117,7 +112,7 @@ Proton:
 			Light: 75
 			Heavy: 100
 			Concrete: 60
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: small_bang
 		ImpactSound: expnew12.aud
@@ -138,8 +133,7 @@ LaserFire:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 250
-		DeathType: 5
-		DamageTypes: Prone60Percent, TriggerProne
+		DamageTypes: Prone60Percent, TriggerProne, EnergyDeath
 
 # Laser turret
 LaserFire2:
@@ -152,6 +146,5 @@ LaserFire2:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 30
-		DeathType: 5
-		DamageTypes: Prone60Percent, TriggerProne
+		DamageTypes: Prone60Percent, TriggerProne, EnergyDeath
 

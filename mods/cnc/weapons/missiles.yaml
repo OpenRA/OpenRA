@@ -17,7 +17,6 @@ Rockets:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
-		DeathType: 4
 		ValidTargets: Ground, Air
 		Versus:
 			None: 50
@@ -25,7 +24,7 @@ Rockets:
 			Light: 100
 			Heavy: 100
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -52,7 +51,6 @@ BikeRockets:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
-		DeathType: 4
 		ValidTargets: Ground, Air
 		Versus:
 			None: 25
@@ -60,7 +58,7 @@ BikeRockets:
 			Light: 100
 			Heavy: 100
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -88,14 +86,13 @@ OrcaAGMissiles:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 25
-		DeathType: 4
 		ValidTargets: Ground
 		Versus:
 			None: 50
 			Wood: 100
 			Light: 100
 			Heavy: 75
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -123,12 +120,11 @@ OrcaAAMissiles:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 25
-		DeathType: 4
 		ValidTargets: Air
 		Versus:
 			Light: 75
 			Heavy: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -155,14 +151,13 @@ MammothMissiles:
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
 		Damage: 45
-		DeathType: 4
 		ValidTargets: Ground, Air
 		Versus:
 			None: 50
 			Wood: 75
 			Light: 100
 			Heavy: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -196,14 +191,13 @@ MammothMissiles:
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
 		Damage: 25
-		DeathType: 4
 		ValidTargets: Ground
 		Versus:
 			None: 35
 			Wood: 60
 			Light: 100
 			Heavy: 50
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -230,14 +224,13 @@ MammothMissiles:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
-		DeathType: 4
 		ValidTargets: Ground, Air
 		Versus:
 			None: 25
 			Wood: 75
 			Light: 100
 			Heavy: 90
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -263,13 +256,12 @@ BoatMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 60
-		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -299,14 +291,13 @@ TowerMissle:
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
 		Damage: 25
-		DeathType: 3
 		ValidTargets: Ground
 		Versus:
 			None: 50
 			Wood: 25
 			Light: 100
 			Heavy: 100
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -335,9 +326,8 @@ SAMMissile:
 			Wood: 100
 			Light: 100
 			Heavy: 75
-		DeathType: 4
 		Damage: 30
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -361,13 +351,12 @@ HonestJohn:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 100
-		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -397,9 +386,8 @@ Patriot:
 			Wood: 100
 			Light: 100
 			Heavy: 75
-		DeathType: 4
 		Damage: 32
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect

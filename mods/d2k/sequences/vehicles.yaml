@@ -23,7 +23,6 @@ harvester:
 		Tick: 80
 		ZOffset: 1
 		BlendMode: Multiply
-		Alpha: 0.5
 	dock: DATA.R8
 		Start: 3370
 		Length: 10
