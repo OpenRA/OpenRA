@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 		public List<CPos> FindPath(IPathSearch search)
 		{
 			var dbg = world.WorldActor.TraitOrDefault<PathfinderDebugOverlay>();
-			if (dbg != null && dbg.visible)
+			if (dbg != null && dbg.Visible)
 				search.Debug = true;
 
 			List<CPos> path = null;
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			if (dbg != null && dbg.visible)
+			if (dbg != null && dbg.Visible)
 				dbg.AddLayer(search.Considered, search.MaxCost, search.Owner);
 
 			search.Graph.Dispose();
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 			List<CPos> path = null;
 
 			var dbg = world.WorldActor.TraitOrDefault<PathfinderDebugOverlay>();
-			if (dbg != null && dbg.visible)
+			if (dbg != null && dbg.Visible)
 			{
 				fromSrc.Debug = true;
 				fromDest.Debug = true;
@@ -180,7 +180,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			if (dbg != null && dbg.visible)
+			if (dbg != null && dbg.Visible)
 			{
 				dbg.AddLayer(fromSrc.Considered, fromSrc.MaxCost, fromSrc.Owner);
 				dbg.AddLayer(fromDest.Considered, fromDest.MaxCost, fromDest.Owner);

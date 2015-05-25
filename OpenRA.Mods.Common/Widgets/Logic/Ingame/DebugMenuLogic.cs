@@ -118,8 +118,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var showAstarCostCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_ASTAR");
 			if (showAstarCostCheckbox != null)
 			{
-				showAstarCostCheckbox.IsChecked = () => dbgOverlay != null ? dbgOverlay.visible : false;
-				showAstarCostCheckbox.OnClick = () => { if (dbgOverlay != null) dbgOverlay.visible ^= true; };
+				showAstarCostCheckbox.IsChecked = () => dbgOverlay != null ? dbgOverlay.Visible : false;
+				showAstarCostCheckbox.OnClick = () => { if (dbgOverlay != null) dbgOverlay.Visible ^= true; };
 			}
 		}
 

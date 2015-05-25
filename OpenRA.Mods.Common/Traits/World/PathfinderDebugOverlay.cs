@@ -24,7 +24,8 @@ namespace OpenRA.Mods.Common.Traits
 		Dictionary<Player, CellLayer<int>> layers;
 		int refreshTick;
 		World world;
-		public bool visible;
+
+		public bool Visible;
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 			layers = new Dictionary<Player, CellLayer<int>>(8);
 
 			// Enabled via Cheats menu
-			visible = false;
+			Visible = false;
 		}
 
 		public void AddLayer(IEnumerable<Pair<CPos, int>> cellWeights, int maxWeight, Player pl)
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Render(WorldRenderer wr)
 		{
-			if (!visible)
+			if (!Visible)
 				return;
 
 			var qr = Game.Renderer.WorldQuadRenderer;
