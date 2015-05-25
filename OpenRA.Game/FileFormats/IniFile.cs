@@ -22,7 +22,8 @@ namespace OpenRA.FileFormats
 
 		public IniFile(Stream s)
 		{
-			Load(s);
+			using (s)
+				Load(s);
 		}
 
 		public IniFile(params Stream[] streams)
