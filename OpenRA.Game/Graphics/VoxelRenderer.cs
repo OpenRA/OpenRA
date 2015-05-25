@@ -315,7 +315,8 @@ namespace OpenRA.Graphics
 				v.Second();
 			}
 
-			DisableFrameBuffer(fbo);
+			if (fbo != null)
+				DisableFrameBuffer(fbo);
 		}
 
 		public Sheet AllocateSheet()
