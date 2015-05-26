@@ -144,6 +144,7 @@ SuperTankDomeInfiltrated = function()
 
 	player.MarkCompletedObjective(InfiltrateRadarDome)
 	Trigger.AfterDelay(DateTime.Minutes(3), SuperTanksDestruction)
+	ticked = DateTime.Minutes(3)
 
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		Media.PlaySpeechNotification(player, "ControlCenterDeactivated")
@@ -210,6 +211,7 @@ CreateDemitri = function()
 	end)
 end
 
+ticked = -1
 Tick = function()
 	ussr.Resources = ussr.Resources - (0.01 * ussr.ResourceCapacity / 25)
 
@@ -220,11 +222,32 @@ Tick = function()
 			end
 		end
 	end
+
+	if ticked > 0 then
+		UserInterface.SetMissionText("The super tanks self-destruct in " .. Utils.FormatTime(ticked), TimerColor)
+		ticked = ticked - 1
+	elseif ticked == 0 then
+		FinishTimer()
+		ticked = ticked - 1
+	end
+end
+
+FinishTimer = function()
+	for i = 0, 9, 1 do
+		local c = TimerColor
+		if i % 2 == 0 then
+			c = HSLColor.White
+		end
+
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("The super tanks are destroyed!", c) end)
+	end
+	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
 end
 
 SetupMission = function()
 	TestCamera = Actor.Create("camera" ,true , { Owner = player, Location = ProvingGroundsCameraPoint.Location })
 	Camera.Position = ProvingGroundsCameraPoint.CenterPosition
+	TimerColor = player.Color
 
 	Trigger.AfterDelay(DateTime.Seconds(12), function()
 		Media.PlaySpeechNotification(player, "StartGame")

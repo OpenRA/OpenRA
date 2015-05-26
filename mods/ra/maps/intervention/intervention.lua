@@ -197,6 +197,31 @@ SetupWorld = function()
 	SubPen.IsPrimaryBuilding = true
 end
 
+SetupMissionText = function()
+	TextColorNormal = HSLColor.White
+	TextColorDamaged = HSLColor.Yellow
+	TextColorCritical = HSLColor.Red
+
+	CurrentColor = TextColorNormal
+	local villageHousesLeft = #Village
+	VillagePercentage = 100 - villageHousesLeft * 10
+
+	Utils.Do(Village, function(house)
+		Trigger.OnKilled(house, function()
+			villageHousesLeft = villageHousesLeft - 1
+			VillagePercentage = 100 - villageHousesLeft * 10
+
+			if VillagePercentage > 69 then
+				CurrentColor = TextColorCritical
+			elseif VillagePercentage > 49 then
+				CurrentColor = TextColorDamaged
+			else
+				CurrentColor = TextColorNormal
+			end
+		end)
+	end)
+end
+
 Tick = function()
 	if DateTime.GameTime > 2 then
 		if soviets.Resources > soviets.ResourceCapacity * 0.75 then
@@ -206,6 +231,8 @@ Tick = function()
 		if player.HasNoRequiredUnits() then
 			player.MarkFailedObjective(villageObjective)
 		end
+
+		UserInterface.SetMissionText(VillagePercentage .. "% of the village destroyed.", CurrentColor)
 	end
 end
 
@@ -286,6 +313,7 @@ WorldLoaded = function()
 	Trigger.OnAllKilled(Village, function() player.MarkFailedObjective(villageObjective) end)
 
 	SetupWorld()
+	SetupMissionText()
 
 	Trigger.AfterDelay(VillageRaidInterval, VillageRaid)
 

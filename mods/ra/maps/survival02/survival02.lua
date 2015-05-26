@@ -104,10 +104,10 @@ Tick = function()
 		InitCountDown()
 	end
 
-	if 0 < ticked then
+	if ticked > 0 then
 		UserInterface.SetMissionText("Soviet reinforcements arrive in " .. Utils.FormatTime(ticked), TimerColor)
 		ticked = ticked - 1
-	elseif 0 == ticked then
+	elseif ticked == 0 then
 		FinishTimer()
 		ticked = ticked - 1
 	end
@@ -208,7 +208,7 @@ FinishTimer = function()
 	for i = 0, 9, 1 do
 		local c = TimerColor
 		if i % 2 == 0 then
-			c = HSLColor.New(255, 255, 255)
+			c = HSLColor.White
 		end
 
 		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Soviet reinforcements have arrived!", c) end)
@@ -298,7 +298,7 @@ end
 
 InitMission = function()
 	Camera.Position = AlliesBase.CenterPosition
-	TimerColor = HSLColor.New(0, 255, 128)
+	TimerColor = HSLColor.Red
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionTimerInitialised") end)
 
