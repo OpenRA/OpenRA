@@ -41,7 +41,7 @@ Players:
 		Name: Nod
 		Race: nod
 		ColorRamp: 3,255,127
-		Enemies: GDI, Neutral, AbandonedBase
+		Enemies: GDI, AbandonedBase
 	PlayerReference@GDI:
 		Name: GDI
 		Playable: True
@@ -60,10 +60,8 @@ Players:
 		NonCombatant: True
 		Race: gdi
 		ColorRamp: 31,222,183
-		Enemies: Nod
 	PlayerReference@AbandonedBase:
 		Name: AbandonedBase
-		OwnsWorld: True
 		NonCombatant: True
 		Race: gdi
 		ColorRamp: 31,222,183
