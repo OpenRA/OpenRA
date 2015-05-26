@@ -103,6 +103,9 @@ namespace OpenRA.Mods.D2k.Traits
 					if (!trait.WantsTransport)
 						return false;
 
+					if (actor.IsIdle)
+						return false;
+
 					return true;
 				})
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);

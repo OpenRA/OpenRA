@@ -18,13 +18,13 @@ namespace OpenRA.Mods.D2k.Traits
 	[Desc("Can be carried by units with the trait `Carryall`.")]
 	public class CarryableInfo : ITraitInfo
 	{
-		[Desc("Required distance away from destination before requesting a pickup.")]
-		public int MinDistance = 6;
+		[Desc("Required distance away from destination before requesting a pickup. Default is 6 cells.")]
+		public WRange MinDistance = WRange.FromCells(6);
 
 		public object Create(ActorInitializer init) { return new Carryable(init.Self, this); }
 	}
 
-	public class Carryable : IDisableMove, INotifyHarvesterAction
+	public class Carryable : IDisableMove, INotifyHarvesterAction, ICallForTransport
 	{
 		readonly CarryableInfo info;
 		readonly Actor self;
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.D2k.Traits
 		// If we're locked there isn't much we can do. We'll have to wait for the carrier to finish with us. We should not move or get new orders!
 		bool locked;
 
-		public bool WantsTransport { get; private set; }
+		public bool WantsTransport { get; set; }
 		public CPos Destination;
 		Activity afterLandActivity;
 
@@ -51,9 +51,12 @@ namespace OpenRA.Mods.D2k.Traits
 		public void MovingToResources(Actor self, CPos targetCell, Activity next) { RequestTransport(targetCell, next); }
 		public void MovingToRefinery(Actor self, CPos targetCell, Activity next) { RequestTransport(targetCell, next); }
 
-		void RequestTransport(CPos destination, Activity afterLandActivity)
+		public WRange MinimumDistance { get { return info.MinDistance; } }
+
+		public void RequestTransport(CPos destination, Activity afterLandActivity)
 		{
-			if (destination == CPos.Zero || (self.Location - destination).Length < info.MinDistance)
+			var destPos = self.World.Map.CenterOfCell(destination);
+			if (destination == CPos.Zero || (self.CenterPosition - destPos).LengthSquared < info.MinDistance.Range * info.MinDistance.Range)
 			{
 				WantsTransport = false; // Be sure to cancel any pending transports
 				return;
@@ -71,12 +74,9 @@ namespace OpenRA.Mods.D2k.Traits
 				.Where(c => !c.Trait.IsBusy && !c.Actor.IsDead && c.Actor.Owner == self.Owner && c.Actor.IsInWorld)
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
-			foreach (var carrier in carriers)
-			{
-				// Notify the carrier and see if he's willing to transport us..
-				if (carrier.Trait.RequestTransportNotify(self))
-					break; // If true then we're done
-			}
+			// Is any carrier able to transport the actor?
+			// Any will return once it finds a carrier that returns true.
+			carriers.Any(carrier => carrier.Trait.RequestTransportNotify(self));
 		}
 
 		// No longer want to be carried
@@ -119,7 +119,8 @@ namespace OpenRA.Mods.D2k.Traits
 			if (Reserved)
 				return false;
 
-			if ((self.Location - Destination).Length < info.MinDistance)
+			var destPos = self.World.Map.CenterOfCell(Destination);
+			if ((self.CenterPosition - destPos).LengthSquared < info.MinDistance.Range * info.MinDistance.Range)
 			{
 				MovementCancelled(self);
 				return false;
@@ -146,7 +147,8 @@ namespace OpenRA.Mods.D2k.Traits
 				return false;
 
 			// Last change to change our mind...
-			if ((self.Location - Destination).Length < info.MinDistance)
+			var destPos = self.World.Map.CenterOfCell(Destination);
+			if ((self.CenterPosition - destPos).LengthSquared < info.MinDistance.Range * info.MinDistance.Range)
 			{
 				MovementCancelled(self);
 				return false;
