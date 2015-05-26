@@ -31,7 +31,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly float RatioRequired = 0.5f;
 
 		[Desc("Delay for the end game notification in milliseconds.")]
-		public int NotificationDelay = 1500;
+		public readonly int NotificationDelay = 1500;
+
+		[Desc("Description of the objective")]
+		[Translate] public readonly string Objective = "Hold all the strategic positions!";
 
 		public object Create(ActorInitializer init) { return new StrategicVictoryConditions(init.Self, this); }
 	}
@@ -68,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (player.WinState != WinState.Undefined || player.NonCombatant) return;
 
 			if (objectiveID < 0)
-				objectiveID = mo.Add(player, "Hold all the strategic positions for a specified time!", ObjectiveType.Primary, true);
+				objectiveID = mo.Add(player, info.Objective, ObjectiveType.Primary, true);
 
 			if (!self.Owner.NonCombatant && self.Owner.HasNoRequiredUnits())
 				mo.MarkFailed(self.Owner, objectiveID);

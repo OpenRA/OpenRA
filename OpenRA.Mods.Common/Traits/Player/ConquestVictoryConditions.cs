@@ -16,7 +16,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class ConquestVictoryConditionsInfo : ITraitInfo, Requires<MissionObjectivesInfo>
 	{
 		[Desc("Delay for the end game notification in milliseconds.")]
-		public int NotificationDelay = 1500;
+		public readonly int NotificationDelay = 1500;
+
+		[Desc("Description of the objective.")]
+		[Translate] public readonly string Objective = "Destroy all opposition!";
 
 		public object Create(ActorInitializer init) { return new ConquestVictoryConditions(init.Self, this); }
 	}
@@ -38,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.Owner.WinState != WinState.Undefined || self.Owner.NonCombatant) return;
 
 			if (objectiveID < 0)
-				objectiveID = mo.Add(self.Owner, "Destroy all opposition!", ObjectiveType.Primary, true);
+				objectiveID = mo.Add(self.Owner, info.Objective, ObjectiveType.Primary, true);
 
 			if (!self.Owner.NonCombatant && self.Owner.HasNoRequiredUnits())
 				mo.MarkFailed(self.Owner, objectiveID);
