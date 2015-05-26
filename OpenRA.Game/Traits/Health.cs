@@ -202,6 +202,15 @@ namespace OpenRA.Traits
 			return (health == null) ? DamageState.Undamaged : health.DamageState;
 		}
 
+		public static bool IsDamaged(this Actor self)
+		{
+			if (self.Destroyed || self.IsDead)
+				return false;
+
+			var health = self.TraitOrDefault<Health>();
+			return health != null && health.HP < health.MaxHP;
+		}
+
 		public static void InflictDamage(this Actor self, Actor attacker, int damage, DamageWarhead warhead)
 		{
 			if (self.Destroyed) return;

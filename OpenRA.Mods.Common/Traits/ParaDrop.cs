@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!inDropRange || cargo.IsEmpty(self))
 				return;
 
-			if (droppedAt.Contains(self.Location) || (checkForSuitableCell && !IsSuitableCell(cargo.Peek(self), self.Location)))
+			if (droppedAt.Contains(self.Location) || (checkForSuitableCell && !IsSuitableCell(cargo.GetLastEntered(self), self.Location)))
 				return;
 
 			if (!self.World.Map.Contains(self.Location))
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			// unload a dude here
 			droppedAt.Add(self.Location);
 
-			var a = cargo.Unload(self);
+			var a = cargo.UnloadLastEntered(self);
 			self.World.AddFrameEndTask(w => w.Add(new Parachute(a, self.CenterPosition)));
 			Sound.Play(info.ChuteSound, self.CenterPosition);
 		}
