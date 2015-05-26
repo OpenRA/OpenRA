@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void TickIdle(Actor self)
 		{
-			if (state != AnimationState.Idle && state != AnimationState.IdleAnimating)
+			if (state != AnimationState.Idle && state != AnimationState.IdleAnimating && state != AnimationState.Attacking)
 			{
 				DefaultAnimation.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandSequences.Random(Game.CosmeticRandom)), () => 0);
 				state = AnimationState.Idle;
