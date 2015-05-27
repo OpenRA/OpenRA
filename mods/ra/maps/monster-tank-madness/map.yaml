@@ -2342,6 +2342,9 @@ Rules:
 	SHOK:
 		Buildable:
 			Prerequisites: ~disabled
+	HIJACKER:
+		Buildable:
+			Prerequisites: ~disabled
 	STNK:
 		Buildable:
 			Prerequisites: ~disabled
