@@ -9,7 +9,7 @@ DOG:
 		Cost: 200
 	Tooltip:
 		Name: Attack Dog
-		Description: Anti-infantry unit.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Description: Anti-infantry unit.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 		GenericName: Dog
 	Selectable:
 		Bounds: 12,17,-1,-4
@@ -43,7 +43,7 @@ E1:
 		Cost: 100
 	Tooltip:
 		Name: Rifle Infantry
-		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 50
 	Mobile:
@@ -71,7 +71,7 @@ E2:
 		Cost: 160
 	Tooltip:
 		Name: Grenadier
-		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+		Description: Infantry armed with grenades.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 50
 	Mobile:
@@ -104,7 +104,7 @@ E3:
 		Cost: 300
 	Tooltip:
 		Name: Rocket Soldier
-		Description: Anti-tank/Anti-aircraft infantry.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+		Description: Anti-tank/Anti-aircraft infantry.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Health:
 		HP: 45
 	Mobile:
@@ -135,7 +135,7 @@ E4:
 		Cost: 300
 	Tooltip:
 		Name: Flamethrower
-		Description: Advanced anti-structure unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+		Description: Advanced anti-structure unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 40
 	Mobile:
@@ -164,7 +164,7 @@ E6:
 		Cost: 500
 	Tooltip:
 		Name: Engineer
-		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
+		Description: Infiltrates and captures\nenemy structures.\n  Unarmed
 	Health:
 		HP: 25
 	Mobile:
@@ -196,7 +196,7 @@ SPY:
 	DisguiseToolTip:
 		Name: Spy
 		GenericName: Soldier
-		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
+		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\nLoses disguise when attacking.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft\n  Special Ability: Disguised
 	Health:
 		HP: 25
 	Mobile:
@@ -245,7 +245,7 @@ E7:
 		Cost: 1200
 	Tooltip:
 		Name: Tanya
-		Description: Elite commando infantry. Armed with\ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
+		Description: Elite commando infantry. Armed with\ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.
 	Health:
 		HP: 100
 	Mobile:
@@ -285,7 +285,7 @@ MEDI:
 		Cost: 200
 	Tooltip:
 		Name: Medic
-		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
+		Description: Heals nearby infantry.\n  Unarmed
 	Health:
 		HP: 80
 	Mobile:
@@ -319,7 +319,7 @@ MECH:
 		Cost: 500
 	Tooltip:
 		Name: Mechanic
-		Description: Repairs nearby vehicles and restores\nhusks to working condition.\n  Strong vs Nothing\n  Weak vs Everything
+		Description: Repairs nearby vehicles and restores\nhusks to working condition by capturing them.\n  Unarmed
 	Health:
 		HP: 80
 	Mobile:
@@ -405,7 +405,7 @@ THF:
 		Cost: 400
 	Tooltip:
 		Name: Thief
-		Description: Steals enemy credits.\n  Strong vs Nothing\n  Weak vs Everything\n
+		Description: Steals enemy credits.\n  Unarmed
 	Health:
 		HP: 25
 	Mobile:
@@ -432,7 +432,7 @@ HIJACKER:
 		Cost: 500
 	Tooltip:
 		Name: Hijacker
-		Description: Hijacks enemy vehicles. Unarmed\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+		Description: Hijacks enemy vehicles.\n  Unarmed
 	Health:
 		HP: 50
 	Mobile:
@@ -459,7 +459,7 @@ SHOK:
 		Cost: 400
 	Tooltip:
 		Name: Shock Trooper
-		Description: Elite infantry with portable tesla coils.\n Strong vs Infantry\n Weak vs Aircraft
+		Description: Elite infantry with portable tesla coils.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
 	Health:
 		HP: 100
 	Mobile:
@@ -486,7 +486,7 @@ SNIPER:
 		Cost: 700
 	Tooltip:
 		Name: Sniper
-		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier

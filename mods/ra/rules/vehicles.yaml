@@ -8,7 +8,7 @@ V2RL:
 		Cost: 900
 	Tooltip:
 		Name: V2 Rocket
-		Description: Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+		Description: Long-range rocket artillery.\n  Strong vs Infantry, Light armor, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 200
 	Armor:
@@ -42,7 +42,7 @@ V2RL:
 		Cost: 700
 	Tooltip:
 		Name: Light Tank
-		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
+		Description: Light Tank, good for scouting.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Health:
 		HP: 220
 	Armor:
@@ -83,7 +83,7 @@ V2RL:
 		Cost: 850
 	Tooltip:
 		Name: Medium Tank
-		Description: Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+		Description: Allied Main Battle Tank.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
 		HP: 450
 	Armor:
@@ -126,7 +126,7 @@ V2RL:
 		Cost: 1150
 	Tooltip:
 		Name: Heavy Tank
-		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
 		HP: 550
 	Armor:
@@ -171,7 +171,7 @@ V2RL:
 		Value: 2500
 	Tooltip:
 		Name: Mammoth Tank
-		Description: Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+		Description: Big and slow tank, with anti-air capability.\n  Strong vs Vehicles, Infantry, Aircraft\n  Weak vs Nothing
 	Health:
 		HP: 900
 	Armor:
@@ -226,7 +226,7 @@ ARTY:
 		Cost: 800
 	Tooltip:
 		Name: Artillery
-		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 100
 	Armor:
@@ -347,7 +347,7 @@ JEEP:
 		Cost: 500
 	Tooltip:
 		Name: Ranger
-		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 150
 	Armor:
@@ -388,7 +388,7 @@ APC:
 		Cost: 850
 	Tooltip:
 		Name: Armored Personnel Carrier
-		Description: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+		Description: Tough infantry transport.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 300
 	Armor:
@@ -426,7 +426,7 @@ MNLY.AP:
 		Cost: 800
 	Tooltip:
 		Name: Minelayer
-		Description: Lays mines to destroy unwary enemy units.\nCan detect mines.\n  Unarmed
+		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
 	Health:
 		HP: 100
 	Armor:
@@ -463,7 +463,7 @@ MNLY.AT:
 		Cost: 800
 	Tooltip:
 		Name: Minelayer
-		Description: Lays mines to destroy unwary enemy units.\nCan detect mines.\n  Unarmed
+		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
 	Health:
 		HP: 100
 	Armor:
@@ -601,7 +601,7 @@ TTNK:
 		Cost: 1350
 	Tooltip:
 		Name: Tesla Tank
-		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Vehicles\n  and Buildings  \n  Weak vs Aircraft
+		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
 	Health:
 		HP: 400
 	Armor:
@@ -637,7 +637,7 @@ FTRK:
 		Cost: 600
 	Tooltip:
 		Name: Mobile Flak
-		Description: Mobile unit with mounted Flak Cannon.\n  Strong vs Light Vehicles, Aircraft  \n  Weak vs Tanks
+		Description: Mobile unit with mounted Flak Cannon.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Tanks
 	Health:
 		HP: 150
 	Armor:
@@ -678,7 +678,7 @@ DTRK:
 		Cost: 2500
 	Tooltip:
 		Name: Demolition Truck
-		Description: Demolition Truck, actively armed with explosives.\n  Strong vs Everything\n  Weak vs Everything
+		Description: Demolition Truck, actively armed with\nnuclear explosives. Has very weak armor.
 	Health:
 		HP: 50
 	Armor:
@@ -711,7 +711,7 @@ CTNK:
 		Cost: 1350
 	Tooltip:
 		Name: Chrono Tank
-		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Aircraft
+		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
 	Selectable:
 		Bounds: 28,28
 	Health:
@@ -751,7 +751,7 @@ QTNK:
 		Cost: 2000
 	Tooltip:
 		Name: MAD Tank
-		Description: Deals seismic damage to nearby vehicles\nand structures.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry
+		Description: Deals seismic damage to nearby vehicles\nand structures.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
 	Health:
 		HP: 900
 	Armor:
@@ -783,7 +783,7 @@ STNK:
 		Cost: 1350
 	Tooltip:
 		Name: Phase Transport
-		Description: Lightly armored infantry transport\nwhich can cloak. Can detect cloaked units.\n  Strong vs Light Vehicles\n  Weak vs Aircraft
+		Description: Lightly armored infantry transport\nwhich can cloak. Can detect cloaked units.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Selectable:
 		Bounds: 28,28
 	Health:
