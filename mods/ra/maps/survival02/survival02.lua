@@ -149,14 +149,18 @@ SpawnAndAttack = function(types, entry)
 	return units
 end
 
+SendFrenchReinforcements = function()
+	local camera = Actor.Create("camera", true, { Owner = allies, Location = SovietRally1.Location })
+	Media.PlaySpeechNotification(allies, "AlliedReinforcementsArrived")
+	Reinforcements.Reinforce(allies, FrenchSquad, { FranceEntry.Location, FranceRally.Location })
+	Trigger.AfterDelay(DateTime.Seconds(3), function() camera.Destroy() end)
+end
+
 FrenchReinforcements = function()
 	Camera.Position = SovietRally1.CenterPosition
-	local camera = Actor.Create("camera", true, { Owner = allies, Location = SovietRally1.Location })
 
 	if drum1.IsDead or drum2.IsDead or drum3.IsDead then
-		Media.PlaySpeechNotification(allies, "AlliedReinforcementsArrived")
-		Reinforcements.Reinforce(allies, FrenchSquad, { FranceEntry.Location, FranceRally.Location })
-		Trigger.AfterDelay(DateTime.Seconds(3), function() camera.Destroy() end)
+		SendFrenchReinforcements()
 		return
 	end
 
@@ -167,9 +171,7 @@ FrenchReinforcements = function()
 	powerproxy.Destroy()
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.PlaySpeechNotification(allies, "AlliedReinforcementsArrived")
-		Reinforcements.Reinforce(allies, FrenchSquad, { FranceEntry.Location, FranceRally.Location })
-		Trigger.AfterDelay(DateTime.Seconds(3), function() camera.Destroy() end)
+		SendFrenchReinforcements()
 	end)
 end
 
