@@ -149,27 +149,29 @@ SpawnAndAttack = function(types, entry)
 	return units
 end
 
+SendFrenchReinforcements = function()
+	local camera = Actor.Create("camera", true, { Owner = allies, Location = SovietRally1.Location })
+	Media.PlaySpeechNotification(allies, "AlliedReinforcementsArrived")
+	Reinforcements.Reinforce(allies, FrenchSquad, { FranceEntry.Location, FranceRally.Location })
+	Trigger.AfterDelay(DateTime.Seconds(3), function() camera.Destroy() end)
+end
+
 FrenchReinforcements = function()
 	Camera.Position = SovietRally1.CenterPosition
-	local camera = Actor.Create("camera", true, { Owner = allies, Location = SovietRally1.Location })
 
 	if drum1.IsDead or drum2.IsDead or drum3.IsDead then
-		Media.PlaySpeechNotification(allies, "AlliedReinforcementsArrived")
-		Reinforcements.Reinforce(allies, FrenchSquad, { FranceEntry.Location, FranceRally.Location })
-		Trigger.AfterDelay(DateTime.Seconds(3), function() camera.Destroy() end)
+		SendFrenchReinforcements()
 		return
 	end
 
 	powerproxy = Actor.Create("powerproxy.parabombs", false, { Owner = allies })
-	powerproxy.SendAirstrike(drum1.CenterPosition, false, 256 - 28)
-	powerproxy.SendAirstrike(drum2.CenterPosition, false, 256 - 32)
-	powerproxy.SendAirstrike(drum3.CenterPosition, false, 256 - 36)
+	powerproxy.SendAirstrike(drum1.CenterPosition, false, Facing.NorthEast + 4)
+	powerproxy.SendAirstrike(drum2.CenterPosition, false, Facing.NorthEast)
+	powerproxy.SendAirstrike(drum3.CenterPosition, false, Facing.NorthEast - 4)
 	powerproxy.Destroy()
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.PlaySpeechNotification(allies, "AlliedReinforcementsArrived")
-		Reinforcements.Reinforce(allies, FrenchSquad, { FranceEntry.Location, FranceRally.Location })
-		Trigger.AfterDelay(DateTime.Seconds(3), function() camera.Destroy() end)
+		SendFrenchReinforcements()
 	end)
 end
 

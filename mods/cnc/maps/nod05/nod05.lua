@@ -46,7 +46,7 @@ SendGDIAirstrike = function()
 		local target = getAirstrikeTarget()
 
 		if target then
-			Radar.SendAirstrike(target, false, 256 - 28)
+			Radar.SendAirstrike(target, false, Facing.NorthEast + 4)
 			Trigger.AfterDelay(AirstrikeDelay, SendGDIAirstrike)
 		else
 			Trigger.AfterDelay(AirstrikeDelay/4, SendGDIAirstrike)
