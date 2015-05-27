@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Eluant;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 
@@ -25,6 +26,21 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[Desc("The player's name.")]
 		public string Name { get { return Player.PlayerName; } }
+
+		[Desc("The player's color.")]
+		public HSLColor Color { get { return Player.Color; } }
+
+		[Desc("The player's race.")]
+		public string Race { get { return Player.PlayerReference.Race; } }
+
+		[Desc("The player's spawnpoint ID.")]
+		public int Spawn { get { return Player.SpawnPoint; } }
+
+		[Desc("The player's team ID.")]
+		public int Team { get { return Player.PlayerReference.Team; } }
+
+		[Desc("Returns true if the player is a bot.")]
+		public bool IsBot { get { return Player.IsBot; } }
 
 		[Desc("Returns an array of actors representing all ground attack units of this player.")]
 		public Actor[] GetGroundAttackers()
