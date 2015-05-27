@@ -103,10 +103,6 @@ crate:
 		SelectionShares: 0
 		NoBaseSelectionShares: 9001
 		Units: mcv
-	GrantUpgradeCrateAction@cloak:
-		SelectionShares: 5
-		Effect: cloak
-		Upgrades: cloak
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:
