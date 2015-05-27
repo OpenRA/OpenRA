@@ -242,12 +242,17 @@ namespace OpenRA
 					return;
 
 				var oldOwner = Owner;
+				var wasInWorld = IsInWorld;
 
 				// momentarily remove from world so the ownership queries don't get confused
-				w.Remove(this);
+				if (wasInWorld)
+					w.Remove(this);
+
 				Owner = newOwner;
 				Generation++;
-				w.Add(this);
+
+				if (wasInWorld)
+					w.Add(this);
 
 				foreach (var t in this.TraitsImplementing<INotifyOwnerChanged>())
 					t.OnOwnerChanged(this, oldOwner, newOwner);
