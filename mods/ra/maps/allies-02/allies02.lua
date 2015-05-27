@@ -7,6 +7,8 @@ JeepPath = { ReinforcementsEntryPoint.Location, ReinforcementsRallyPoint.Locatio
 TruckReinforcements = { "truk", "truk", "truk" }
 TruckPath = { TruckEntryPoint.Location, TruckRallyPoint.Location }
 
+TimerTicks = DateTime.Minutes(10)
+
 SendConstructionVehicleReinforcements = function()
 	local mcv = Reinforcements.Reinforce(player, ConstructionVehicleReinforcements, ConstructionVehiclePath)[1]
 end
@@ -28,6 +30,7 @@ MissionFailed = function()
 	Media.PlaySpeechNotification(player, "MissionFailed")
 end
 
+ticked = TimerTicks
 Tick = function()
 	ussr.Resources = ussr.Resources - (0.01 * ussr.ResourceCapacity / 25)
 
@@ -39,6 +42,27 @@ Tick = function()
 	if player.HasNoRequiredUnits() then
 		player.MarkFailedObjective(ConquestObjective)
 	end
+
+	if ticked > 0 then
+		UserInterface.SetMissionText("The convoy arrives in " .. Utils.FormatTime(ticked), TimerColor)
+		ticked = ticked - 1
+	elseif ticked == 0 then
+		FinishTimer()
+		SendTrucks()
+		ticked = ticked - 1
+	end
+end
+
+FinishTimer = function()
+	for i = 0, 5, 1 do
+		local c = TimerColor
+		if i % 2 == 0 then
+			c = HSLColor.White
+		end
+
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("The convoy arrived!", c) end)
+	end
+	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
 end
 
 ConvoyOnSite = false
@@ -113,9 +137,8 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Seconds(5), SendJeepReinforcements)
 	Trigger.AfterDelay(DateTime.Seconds(10), SendJeepReinforcements)
 
-	Trigger.AfterDelay(DateTime.Minutes(10), SendTrucks)
-
 	Camera.Position = ReinforcementsEntryPoint.CenterPosition
+	TimerColor = player.Color
 
 	ConvoyTimer(DateTime.Seconds(3), "TenMinutesRemaining")
 	ConvoyTimer(DateTime.Minutes(5), "WarningFiveMinutesRemaining")

@@ -109,6 +109,7 @@ IdleTrigger = function(units, dest)
 	end)
 end
 
+ticked = TimerTicks
 Tick = function()
 	if KillObj and soviets.HasNoRequiredUnits() then
 		allies.MarkCompletedObjective(KillObj)
@@ -122,14 +123,63 @@ Tick = function()
 		soviets.Resources = soviets.ResourceCapacity / 2
 	end
 
-	if DateTime.Minutes(20) == TimerTicks - DateTime.GameTime then
-		Media.PlaySpeechNotification(allies, "TwentyMinutesRemaining")
-	elseif DateTime.Minutes(10) == TimerTicks - DateTime.GameTime then
-		Media.PlaySpeechNotification(allies, "TenMinutesRemaining")
-	elseif DateTime.Minutes(5) == TimerTicks - DateTime.GameTime then
-		Media.PlaySpeechNotification(allies, "WarningFiveMinutesRemaining")
-		InitTimer()
+	if ticked > 0 then
+		if DateTime.Minutes(20) == ticked then
+			Media.PlaySpeechNotification(allies, "TwentyMinutesRemaining")
+
+		elseif DateTime.Minutes(10) == ticked then
+			Media.PlaySpeechNotification(allies, "TenMinutesRemaining")
+
+		elseif DateTime.Minutes(5) == ticked then
+			Media.PlaySpeechNotification(allies, "WarningFiveMinutesRemaining")
+
+		elseif DateTime.Minutes(4) == ticked then
+			Media.PlaySpeechNotification(allies, "WarningFourMinutesRemaining")
+
+			Trigger.AfterDelay(ParadropTicks, function()
+				SendSovietParadrops(ParadropWaypoints[3])
+				SendSovietParadrops(ParadropWaypoints[2])
+			end)
+			Trigger.AfterDelay(ParadropTicks * 2, function()
+				SendSovietParadrops(ParadropWaypoints[4])
+				SendSovietParadrops(ParadropWaypoints[1])
+			end)
+
+		elseif DateTime.Minutes(3) == ticked then
+			Media.PlaySpeechNotification(allies, "WarningThreeMinutesRemaining")
+
+		elseif DateTime.Minutes(2) == ticked then
+			Media.PlaySpeechNotification(allies, "WarningTwoMinutesRemaining")
+
+			AttackAtFrameIncrement = DateTime.Seconds(4)
+			AttackAtFrameIncrementInf = DateTime.Seconds(4)
+
+		elseif DateTime.Minutes(1) == ticked then
+			Media.PlaySpeechNotification(allies, "WarningOneMinuteRemaining")
+
+		elseif DateTime.Seconds(45) == ticked then
+			Media.PlaySpeechNotification(allies, "AlliedForcesApproaching")
+		end
+
+		UserInterface.SetMissionText("French reinforcements arrive in " .. Utils.FormatTime(ticked), TimerColor)
+		ticked = ticked - 1
+	elseif ticked == 0 then
+		FinishTimer()
+		TimerExpired()
+		ticked = ticked - 1
 	end
+end
+
+FinishTimer = function()
+	for i = 0, 9, 1 do
+		local c = TimerColor
+		if i % 2 == 0 then
+			c = HSLColor.White
+		end
+
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Our french allies have arrived!", c) end)
+	end
+	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
 end
 
 SendSovietParadrops = function(table)
@@ -206,33 +256,6 @@ SendVehicleWave = function()
 
 		Trigger.AfterDelay(AttackAtFrame + AttackAtFrameIncrement, SendVehicleWave)
 	end
-end
-
-InitTimer = function()
-	Trigger.AfterDelay(DateTime.Minutes(1), function()
-		Media.PlaySpeechNotification(allies, "WarningFourMinutesRemaining")
-
-		Trigger.AfterDelay(ParadropTicks, function()
-			SendSovietParadrops(ParadropWaypoints[3])
-			SendSovietParadrops(ParadropWaypoints[2])
-		end)
-		Trigger.AfterDelay(ParadropTicks * 2, function()
-			SendSovietParadrops(ParadropWaypoints[4])
-			SendSovietParadrops(ParadropWaypoints[1])
-		end)
-	end)
-
-	Trigger.AfterDelay(DateTime.Minutes(2), function() Media.PlaySpeechNotification(allies, "WarningThreeMinutesRemaining") end)
-	Trigger.AfterDelay(DateTime.Minutes(3), function()
-		Media.PlaySpeechNotification(allies, "WarningTwoMinutesRemaining")
-
-		AttackAtFrameIncrement = DateTime.Seconds(4)
-		AttackAtFrameIncrementInf = DateTime.Seconds(4)
-	end)
-
-	Trigger.AfterDelay(DateTime.Minutes(4), function() Media.PlaySpeechNotification(allies, "WarningOneMinuteRemaining") end)
-	Trigger.AfterDelay(DateTime.Minutes(4) + DateTime.Seconds(45), function() Media.PlaySpeechNotification(allies, "AlliedForcesApproaching") end)
-	Trigger.AfterDelay(DateTime.Minutes(5), TimerExpired)
 end
 
 TimerExpired = function()
@@ -345,6 +368,7 @@ InitMission = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionTimerInitialised") end)
+	TimerColor = allies.Color
 end
 
 SetupSoviets = function()
