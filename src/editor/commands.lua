@@ -970,12 +970,6 @@ ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
       local active = event:GetActive()
       -- save auto-recovery record when making the app inactive
       if not active then saveAutoRecovery(true) end
-      -- also collect all the garbage on switching *from* the app,
-      -- but on Linux, do it on switching *to* the app, as this event is
-      -- called in too many places and collectgarbage call leads to a crash
-      -- on mouse right click in edited element in the file tree.
-      local linux = ide.osname == 'Unix'
-      if (linux and active) or (not linux and not active) then collectgarbage() end
 
       -- disable UI refresh when app is inactive, but only when not running
       wx.wxUpdateUIEvent.SetUpdateInterval(
