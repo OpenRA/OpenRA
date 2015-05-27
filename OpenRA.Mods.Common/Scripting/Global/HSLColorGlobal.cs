@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Scripting;
 
@@ -28,5 +29,12 @@ namespace OpenRA.Mods.Common.Scripting.Global
 
 			return new HSLColor(h, s, l);
 		}
+
+		public HSLColor White { get { return HSLColor.FromRGB(Color.White.R, Color.White.G, Color.White.B); } }
+		public HSLColor Black { get { return HSLColor.FromRGB(Color.Black.R, Color.Black.G, Color.Black.B); } }
+		public HSLColor Blue { get { return HSLColor.FromRGB(Color.Blue.R, Color.Blue.G, Color.Blue.B); } }
+		public HSLColor Red { get { return HSLColor.FromRGB(Color.Red.R, Color.Red.G, Color.Red.B); } }
+		public HSLColor Yellow { get { return HSLColor.FromRGB(Color.Yellow.R, Color.Yellow.G, Color.Yellow.B); } }
+		public HSLColor Green { get { return HSLColor.FromRGB(Color.Green.R, Color.Green.G, Color.Green.B); } }
 	}
 }
