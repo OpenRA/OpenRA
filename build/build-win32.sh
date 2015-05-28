@@ -132,11 +132,13 @@ fi
 mkdir -p "$INSTALL_DIR" || { echo "Error: cannot create directory $INSTALL_DIR"; exit 1; }
 
 LUAV="51"
+LUAD="5.1"
 LUAS=""
 LUA_BASENAME="lua-5.1.5"
 
 if [ $BUILD_52 ]; then
   LUAV="52"
+  LUAD="5.2"
   LUAS=$LUAV
   LUA_BASENAME="lua-5.2.2"
 fi
@@ -146,6 +148,7 @@ LUA_URL="http://www.lua.org/ftp/$LUA_FILENAME"
 
 if [ $BUILD_53 ]; then
   LUAV="53"
+  LUAD="5.3"
   LUAS=$LUAV
   LUA_BASENAME="lua-5.3.0"
   LUA_FILENAME="$LUA_BASENAME.tar.gz"
@@ -238,17 +241,17 @@ if [ $BUILD_LUASOCKET ]; then
   wget --no-check-certificate -c "$LUASOCKET_URL" -O "$LUASOCKET_FILENAME" || { echo "Error: failed to download LuaSocket"; exit 1; }
   unzip "$LUASOCKET_FILENAME"
   cd "$LUASOCKET_BASENAME"
-  mkdir -p "$INSTALL_DIR/lib/lua/$LUAV/"{mime,socket}
-  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAV/mime/core.dll" src/mime.c -llua$LUAV \
+  mkdir -p "$INSTALL_DIR/lib/lua/$LUAD/"{mime,socket}
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAD/mime/core.dll" src/mime.c -llua$LUAV \
     || { echo "Error: failed to build LuaSocket"; exit 1; }
-  gcc $BUILD_FLAGS -DLUASOCKET_INET_PTON -D_WIN32_WINNT=0x0501 -o "$INSTALL_DIR/lib/lua/$LUAV/socket/core.dll" \
+  gcc $BUILD_FLAGS -DLUASOCKET_INET_PTON -D_WIN32_WINNT=0x0501 -o "$INSTALL_DIR/lib/lua/$LUAD/socket/core.dll" \
     src/{auxiliar.c,buffer.c,except.c,inet.c,io.c,luasocket.c,options.c,select.c,tcp.c,timeout.c,udp.c,wsocket.c} -lwsock32 -lws2_32 -llua$LUAV \
     || { echo "Error: failed to build LuaSocket"; exit 1; }
-  mkdir -p "$INSTALL_DIR/share/lua/$LUAV/socket"
-  cp src/{ftp.lua,http.lua,smtp.lua,tp.lua,url.lua} "$INSTALL_DIR/share/lua/$LUAV/socket"
-  cp src/{ltn12.lua,mime.lua,socket.lua} "$INSTALL_DIR/share/lua/$LUAV"
-  [ -f "$INSTALL_DIR/lib/lua/$LUAV/mime/core.dll" ] || { echo "Error: mime/core.dll isn't found"; exit 1; }
-  [ -f "$INSTALL_DIR/lib/lua/$LUAV/socket/core.dll" ] || { echo "Error: socket/core.dll isn't found"; exit 1; }
+  mkdir -p "$INSTALL_DIR/share/lua/$LUAD/socket"
+  cp src/{ftp.lua,http.lua,smtp.lua,tp.lua,url.lua} "$INSTALL_DIR/share/lua/$LUAD/socket"
+  cp src/{ltn12.lua,mime.lua,socket.lua} "$INSTALL_DIR/share/lua/$LUAD"
+  [ -f "$INSTALL_DIR/lib/lua/$LUAD/mime/core.dll" ] || { echo "Error: mime/core.dll isn't found"; exit 1; }
+  [ -f "$INSTALL_DIR/lib/lua/$LUAD/socket/core.dll" ] || { echo "Error: socket/core.dll isn't found"; exit 1; }
   cd ..
   rm -rf "$LUASOCKET_FILENAME" "$LUASOCKET_BASENAME"
 fi
@@ -309,8 +312,8 @@ mkdir -p "$BIN_DIR" || { echo "Error: cannot create directory $BIN_DIR"; exit 1;
 
 if [ $BUILD_LUASOCKET ]; then
   mkdir -p "$BIN_DIR/clibs$LUAS/"{mime,socket}
-  cp "$INSTALL_DIR/lib/lua/$LUAV/mime/core.dll" "$BIN_DIR/clibs$LUAS/mime"
-  cp "$INSTALL_DIR/lib/lua/$LUAV/socket/core.dll" "$BIN_DIR/clibs$LUAS/socket"
+  cp "$INSTALL_DIR/lib/lua/$LUAD/mime/core.dll" "$BIN_DIR/clibs$LUAS/mime"
+  cp "$INSTALL_DIR/lib/lua/$LUAD/socket/core.dll" "$BIN_DIR/clibs$LUAS/socket"
 fi
 
 # To build lua5.1.dll proxy:
