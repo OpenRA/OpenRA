@@ -23,11 +23,13 @@ namespace OpenRA.Mods.Common.Scripting
 	public class CombatProperties : ScriptActorProperties, Requires<AttackBaseInfo>, Requires<IMoveInfo>
 	{
 		readonly IMove move;
+		readonly AttackBase attackBase;
 
 		public CombatProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
 			move = self.Trait<IMove>();
+			attackBase = self.Trait<AttackBase>();
 		}
 
 		[ScriptActorPropertyActivity]
@@ -72,6 +74,19 @@ namespace OpenRA.Mods.Common.Scripting
 			if (repeat)
 				using (var f = func.CopyReference() as LuaFunction)
 					Self.QueueActivity(new CallFunc(() => PatrolUntil(waypoints, f, wait)));
+		}
+
+		[Desc("Attack the target actor. The target actor needs to be visible.")]
+		public void Attack(Actor targetActor, bool allowMove = true)
+		{
+			var target = Target.FromActor(targetActor);
+			if (!target.IsValidFor(Self) || target.Type == TargetType.FrozenActor)
+				Log.Write("lua", "{1} is an invalid target for {0}!", Self, targetActor);
+
+			if (!targetActor.HasTrait<FrozenUnderFog>() && !Self.Owner.CanTargetActor(targetActor))
+				Log.Write("lua", "{1} is not revealed for player {0}!", Self.Owner, targetActor);
+
+			attackBase.AttackTarget(target, true, allowMove);
 		}
 	}
 }
