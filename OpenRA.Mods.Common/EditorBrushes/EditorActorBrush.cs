@@ -24,7 +24,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class EditorActorBrush : IEditorBrush
+	public sealed class EditorActorBrush : IEditorBrush
 	{
 		public readonly ActorInfo Actor;
 
@@ -148,5 +148,7 @@ namespace OpenRA.Mods.Common.Widgets
 			preview.Bounds.Width = (int)(zoom * s.X);
 			preview.Bounds.Height = (int)(zoom * s.Y);
 		}
+
+		public void Dispose() { }
 	}
 }
