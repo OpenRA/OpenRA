@@ -430,6 +430,11 @@ end
 function ClosePage(selection)
   local editor = GetEditor(selection)
   local id = editor:GetId()
+
+  if PackageEventHandle("onEditorPreClose", editor) == false then
+    return false
+  end
+
   if SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL then
     DynamicWordsRemoveAll(editor)
     local debugger = ide.debugger
@@ -449,7 +454,9 @@ function ClosePage(selection)
 
     -- disable full screen if the last tab is closed
     if not (notebook:GetSelection() >= 0) then ShowFullScreen(false) end
+    return true
   end
+  return false
 end
 
 function CloseAllPagesExcept(selection)

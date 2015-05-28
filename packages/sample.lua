@@ -10,6 +10,7 @@ local P = {
 -- Events that are marked with "return false" can return `false` to
 -- abort further processing.
 -- For `onEditorPreSave` event it means that file saving will be aborted.
+-- For `onEditorPreClose` event it means that closing an editor tab will be aborted.
 -- For `onEditorKeyDown` event it means that the key will be "eaten".
 -- For `onEditorAction` event it means that the action will not be executed.
 -- For `onFiletreeActivate` event it means that no further processing is done.
@@ -20,6 +21,7 @@ local events = {
   onRegister =         function(self) end,
   onUnRegister =       function(self) end,
   onEditorLoad =       function(self, editor) end,
+  onEditorPreClose =   function(self, editor) end, -- return false
   onEditorClose =      function(self, editor) end,
   onEditorNew =        function(self, editor) end,
   onEditorPreSave =    function(self, editor, filepath) end, -- return false
