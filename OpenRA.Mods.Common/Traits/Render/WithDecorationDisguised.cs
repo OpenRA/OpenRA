@@ -9,10 +9,9 @@
 #endregion
 
 using System;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	public class WithDecorationDisguisedInfo : WithDecorationInfo, Requires<DisguiseInfo>
 	{
