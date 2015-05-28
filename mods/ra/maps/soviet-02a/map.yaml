@@ -163,17 +163,17 @@ Actors:
 	Actor34: fact
 		Location: 72,52
 		Owner: USSR
-		Health: 0.9882813
+		Health: 99
 		Facing: 0
 	Actor35: weap
 		Location: 41,50
 		Owner: Germany
-		Health: 0.9765625
+		Health: 98
 		Facing: 0
 	Actor36: dome
 		Location: 45,50
 		Owner: Germany
-		Health: 0.9765625
+		Health: 98
 		Facing: 0
 	Actor37: fact
 		Location: 39,54
@@ -183,7 +183,7 @@ Actors:
 	Actor38: proc
 		Location: 43,53
 		Owner: Germany
-		Health: 0.9921875
+		Health: 99
 		Facing: 0
 	Actor39: powr
 		Location: 36,55
@@ -193,7 +193,7 @@ Actors:
 	Actor40: powr
 		Location: 36,52
 		Owner: Germany
-		Health: 0.9921875
+		Health: 99
 		Facing: 0
 	Actor41: tent
 		Location: 41,58
@@ -208,7 +208,7 @@ Actors:
 	Actor43: fcom
 		Location: 76,52
 		Owner: USSR
-		Health: 0.9921875
+		Health: 99
 		Facing: 0
 	Actor44: powr
 		Location: 36,49
