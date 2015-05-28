@@ -25,7 +25,6 @@
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Vehicle
-	GivesBounty:
 	Repairable:
 		RepairBuildings: repair
 	CombatDebugOverlay:
@@ -86,7 +85,6 @@
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Tank
-	GivesBounty:
 	Repairable:
 		RepairBuildings: repair
 	CombatDebugOverlay:
@@ -228,7 +226,6 @@
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Infantry
-	GivesBounty:
 	Crushable:
 		CrushSound: CRUSH1.WAV
 	CombatDebugOverlay:
@@ -276,7 +273,6 @@
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Plane
-	GivesBounty:
 	CombatDebugOverlay:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
@@ -339,7 +335,6 @@
 		Types: Building
 	Sellable:
 		SellSounds: BUILD1.WAV
-	GivesBounty:
 	CombatDebugOverlay:
 	Guardable:
 		Range: 3
