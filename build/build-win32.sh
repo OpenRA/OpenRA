@@ -23,11 +23,11 @@ LUASOCKET_BASENAME="luasocket-3.0-rc1"
 LUASOCKET_FILENAME="v3.0-rc1.zip"
 LUASOCKET_URL="https://github.com/diegonehab/luasocket/archive/$LUASOCKET_FILENAME"
 
-OPENSSL_BASENAME="openssl-1.0.1e"
+OPENSSL_BASENAME="openssl-1.0.2a"
 OPENSSL_FILENAME="$OPENSSL_BASENAME.tar.gz"
 OPENSSL_URL="http://www.openssl.org/source/$OPENSSL_FILENAME"
 
-LUASEC_BASENAME="luasec-0.4.1"
+LUASEC_BASENAME="luasec-0.5"
 LUASEC_FILENAME="$LUASEC_BASENAME.zip"
 LUASEC_URL="https://github.com/brunoos/luasec/archive/$LUASEC_FILENAME"
 
@@ -274,11 +274,13 @@ if [ $BUILD_LUASEC ]; then
   # the folder in the archive is "luasec-luasec-....", so need to fix
   mv "luasec-$LUASEC_BASENAME" $LUASEC_BASENAME
   cd "$LUASEC_BASENAME"
-  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/5.1/ssl.dll" \
-    src/{timeout.c,buffer.c,io.c,context.c,ssl.c,wsocket.c} -lssl -lcrypto -lws2_32 -lgdi32 -llua51 \
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAD/ssl.dll" \
+    src/luasocket/{timeout.c,buffer.c,io.c,wsocket.c} src/{context.c,x509.c,ssl.c} -Isrc -lssl -lcrypto -lws2_32 -lgdi32 -llua$LUAV \
     || { echo "Error: failed to build LuaSec"; exit 1; }
-  cp src/{ssl.lua,https.lua} "$INSTALL_DIR/share/lua/5.1"
-  [ -f "$INSTALL_DIR/lib/lua/5.1/ssl.dll" ] || { echo "Error: luasec.dll isn't found"; exit 1; }
+  cp src/ssl.lua "$INSTALL_DIR/share/lua/$LUAD"
+  mkdir -p "$INSTALL_DIR/share/lua/$LUAD/ssl"
+  cp src/https.lua "$INSTALL_DIR/share/lua/$LUAD/ssl"
+  [ -f "$INSTALL_DIR/lib/lua/$LUAD/ssl.dll" ] || { echo "Error: luasec.dll isn't found"; exit 1; }
   cd ..
   rm -rf "$LUASEC_FILENAME" "$LUASEC_BASENAME"
 fi
@@ -308,7 +310,7 @@ mkdir -p "$BIN_DIR" || { echo "Error: cannot create directory $BIN_DIR"; exit 1;
 [ $BUILD_LUA ] && cp "$INSTALL_DIR/bin/lua$LUAS.exe" "$INSTALL_DIR/lib/lua$LUAV.dll" "$BIN_DIR"
 [ $BUILD_WXLUA ] && cp "$INSTALL_DIR/bin/libwx.dll" "$BIN_DIR/wx.dll"
 [ $BUILD_WINAPI ] && cp "$INSTALL_DIR/lib/lua/$LUAD/winapi.dll" "$BIN_DIR/clibs$LUAS"
-[ $BUILD_LUASEC ] && cp "$INSTALL_DIR/lib/lua/5.1/ssl.dll" "$BIN_DIR"
+[ $BUILD_LUASEC ] && cp "$INSTALL_DIR/lib/lua/$LUAD/ssl.dll" "$BIN_DIR/clibs$LUAS"
 
 if [ $BUILD_LUASOCKET ]; then
   mkdir -p "$BIN_DIR/clibs$LUAS/"{mime,socket}
