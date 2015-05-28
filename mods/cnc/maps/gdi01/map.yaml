@@ -554,7 +554,7 @@ Weapons:
 			Versus:
 				Heavy: 50
 			Damage: 50
-			DamageTypes: Prone50Percent, TriggerProne
+			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 
 Voices:
 
