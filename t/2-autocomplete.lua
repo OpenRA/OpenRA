@@ -98,7 +98,7 @@ ok(c == 1,
 
 for k, v in pairs({
     ree = "repeat require",
-    ret = "return rawget rawset repeat",
+    ret = "return repeat rawget rawset",
 }) do
   local ac = CreateAutoCompList(editor, k)
   is(ac, v,
