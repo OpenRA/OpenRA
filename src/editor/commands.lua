@@ -927,7 +927,9 @@ ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
     local class = win:GetClassInfo():GetClassName()
     -- don't set focus on the main frame or toolbar
     if ide.infocus and (class == 'wxAuiToolBar' or class == 'wxFrame') then
-      pcall(function() ide.infocus:SetFocus() end)
+      -- check if the window is shown before returning focus to it,
+      -- as it may lead to a recursion in event handlers on OSX (wxwidgets 2.9.5).
+      pcall(function() if ide:IsWindowShown(ide.infocus) then ide.infocus:SetFocus() end end)
       return
     end
 
@@ -971,7 +973,7 @@ ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
         -- restore focus to the last element that received it;
         -- wrap into pcall in case the element has disappeared
         -- while the application was out of focus
-        pcall(function() ide.infocus:SetFocus() end)
+        pcall(function() if ide:IsWindowShown(ide.infocus) then ide.infocus:SetFocus() end end)
       end
 
       local active = event:GetActive()
