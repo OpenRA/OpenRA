@@ -546,6 +546,7 @@ EYE:
 	IonCannonPower:
 		Prerequisites: ~techlevel.superweapons
 		Icon: ioncannon
+		Cursor: ioncannon
 		ChargeTime: 180
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
@@ -588,6 +589,7 @@ TMPL:
 	NukePower:
 		Prerequisites: ~techlevel.superweapons
 		Icon: abomb
+		Cursor: nuke
 		ChargeTime: 300
 		Description: Nuclear Strike
 		LongDesc: Launch a tactical nuke.\nApplies heavy damage over a large area.

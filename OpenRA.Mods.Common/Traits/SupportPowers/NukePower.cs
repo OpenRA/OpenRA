@@ -45,26 +45,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount of time after detonation to remove the camera")]
 		public readonly int CameraRemoveDelay = 25;
 
-		public readonly string Cursor = "nuke";
-
 		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
 	}
 
 	class NukePower : SupportPower
 	{
+		readonly NukePowerInfo info;
 		IBodyOrientation body;
 
 		public NukePower(Actor self, NukePowerInfo info)
 			: base(self, info)
 		{
 			body = self.Trait<IBodyOrientation>();
-		}
-
-		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
-		{
-			Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
-			var info = Info as NukePowerInfo;
-			return new SelectGenericPowerTarget(order, manager, info.Cursor, MouseButton.Left);
+			this.info = info;
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -76,31 +69,30 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				Sound.Play(Info.IncomingSound);
 
-			var npi = Info as NukePowerInfo;
 			var rb = self.Trait<RenderSimple>();
 			rb.PlayCustomAnim(self, "active");
 
 			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
-			var missile = new NukeLaunch(self.Owner, npi.MissileWeapon,
-				self.CenterPosition + body.LocalToWorld(npi.SpawnOffset),
+			var missile = new NukeLaunch(self.Owner, info.MissileWeapon,
+				self.CenterPosition + body.LocalToWorld(info.SpawnOffset),
 				targetPosition,
-				npi.FlightVelocity, npi.FlightDelay, npi.SkipAscent);
+				info.FlightVelocity, info.FlightDelay, info.SkipAscent);
 
 			self.World.AddFrameEndTask(w => w.Add(missile));
 
-			if (npi.CameraActor != null)
+			if (info.CameraActor != null)
 			{
-				var camera = self.World.CreateActor(false, npi.CameraActor, new TypeDictionary
+				var camera = self.World.CreateActor(false, info.CameraActor, new TypeDictionary
 				{
 					new LocationInit(order.TargetLocation),
 					new OwnerInit(self.Owner),
 				});
 
-				camera.QueueActivity(new Wait(npi.CameraSpawnAdvance + npi.CameraRemoveDelay));
+				camera.QueueActivity(new Wait(info.CameraSpawnAdvance + info.CameraRemoveDelay));
 				camera.QueueActivity(new RemoveSelf());
 
 				Action addCamera = () => self.World.AddFrameEndTask(w => w.Add(camera));
-				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(npi.FlightDelay - npi.CameraSpawnAdvance, addCamera)));
+				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(info.FlightDelay - info.CameraSpawnAdvance, addCamera)));
 			}
 
 			if (Info.DisplayBeacon)
@@ -122,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.World.AddFrameEndTask(w =>
 				{
 					w.Add(beacon);
-					w.Add(new DelayedAction(npi.FlightDelay - npi.BeaconRemoveAdvance, removeBeacon));
+					w.Add(new DelayedAction(info.FlightDelay - info.BeaconRemoveAdvance, removeBeacon));
 				});
 			}
 		}

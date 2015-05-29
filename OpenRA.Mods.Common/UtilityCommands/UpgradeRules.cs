@@ -1460,6 +1460,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150526)
+				{
+					var isNukePower = node.Key == "NukePower";
+					var isIonCannonPower = node.Key == "IonCannonPower";
+
+					if ((isNukePower || isIonCannonPower) && !node.Value.Nodes.Any(n => n.Key == "Cursor"))
+					{
+						var cursor = isIonCannonPower ? "ioncannon" : "nuke";
+						node.Value.Nodes.Add(new MiniYamlNode("Cursor", cursor));
+					}
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

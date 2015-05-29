@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool AllowMultiple = false;
 		public readonly bool OneShot = false;
 
+		[Desc("Cursor to display for using this support power.")]
+		public readonly string Cursor = "ability";
+
 		[Desc("If set to true, the support power will be fully charged when it becomes available. " +
 			"Normal rules apply for subsequent charges.")]
 		public readonly bool StartFullyCharged = false;
@@ -56,12 +59,14 @@ namespace OpenRA.Mods.Common.Traits
 	public class SupportPower : UpgradableTrait<SupportPowerInfo>
 	{
 		public readonly Actor Self;
+		readonly SupportPowerInfo info;
 		protected RadarPing ping;
 
 		public SupportPower(Actor self, SupportPowerInfo info)
 			: base(info)
 		{
 			Self = self;
+			this.info = info;
 		}
 
 		public virtual void Charging(Actor self, string key)
@@ -89,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
-			return new SelectGenericPowerTarget(order, manager, "ability", MouseButton.Left);
+			return new SelectGenericPowerTarget(order, manager, info.Cursor, MouseButton.Left);
 		}
 	}
 }
