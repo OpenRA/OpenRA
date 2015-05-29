@@ -392,7 +392,7 @@ NerveGasMissile:
 			None: 0
 			Wood: 0
 			Concrete: 0
-		DamageTypes: Prone50Percent, TriggerProne
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
