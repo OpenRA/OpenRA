@@ -2403,7 +2403,7 @@ Weapons:
 	Maverick:
 		Warhead@1Dam: SpreadDamage
 			Damage: 175
-			DamageTypes: Prone50Percent, TriggerProne
+			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 
 Voices:
 

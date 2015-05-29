@@ -323,7 +323,7 @@ Weapons:
 				Light: 30
 				Heavy: 30
 			Damage: 400
-			DamageTypes: Prone50Percent, TriggerProne, Explosion
+			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 		Warhead@1Eff: CreateEffect
 			Explosion: large_explosion
 			WaterExplosion: large_splash
