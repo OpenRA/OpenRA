@@ -524,6 +524,14 @@ function ide:IsValidCtrl(ctrl)
   return ctrl and pcall(function() ctrl:GetId() end)
 end
 
+function ide:IsWindowShown(win)
+  while win do
+    if not win:IsShown() then return false end
+    win = win:GetParent()
+  end
+  return true
+end
+
 function ide:RestorePanelByLabel(name)
   if not panels[name] then return end
   return ide:AddPanel(unpack(panels[name]))
