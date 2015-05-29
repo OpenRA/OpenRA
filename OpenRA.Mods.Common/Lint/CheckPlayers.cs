@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
@@ -31,10 +32,25 @@ namespace OpenRA.Mods.Common.Lint
 					if (!playerNames.Contains(enemy))
 						emitError("Enemies contains player {0} that is not in list.".F(enemy));
 
-			var races = map.Rules.Actors["world"].Traits.WithInterface<CountryInfo>().Select(c => c.Race);
+			var worldActor = map.Rules.Actors["world"];
+
+			var races = worldActor.Traits.WithInterface<CountryInfo>().Select(c => c.Race);
 			foreach (var player in players)
 				if (!string.IsNullOrWhiteSpace(player.Value.Race) && player.Value.Race != "Random" && !races.Contains(player.Value.Race))
 					emitError("Invalid race {0} chosen for player {1}.".F(player.Value.Race, player.Value.Name));
+
+			if (worldActor.Traits.Contains<MPStartLocationsInfo>())
+			{
+				var multiPlayers = players.Where(p => p.Value.Playable).Count();
+				var spawns = map.ActorDefinitions.Where(a => a.Value.Value == "mpspawn");
+				var spawnCount = spawns.Count();
+
+				if (multiPlayers > spawnCount)
+					emitError("The map allows {0} possible players, but defines only {1} spawn points".F(multiPlayers, spawnCount));
+
+				if (map.SpawnPoints.Value.Distinct().Count() != spawnCount)
+					emitError("Duplicate spawn point locations detected.");
+			}
 		}
 	}
 }
