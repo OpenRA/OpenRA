@@ -1,0 +1,179 @@
+MapFormat: 7
+
+RequiresMod: d2k
+
+Title: Atreides 01a
+
+Description: Harvest Spice from the Imperial Basin. Construct a Spice Refinery and defend it against the Harkonnen troops scattered throughout the basin. You have been assigned only limited offensive forces - use them wisely.\n\nYou will have to learn the subtleties of mining as you go, but remember to build Silos to store the Spice. When you run out of storage space you can not gather more Spice. Also, any building without adequate concrete foundation will need immediate repair and be vulnerable to erosive damage from the harsh environment. Your greatest adversary may be the elements. Good luck.\n
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 32,28
+
+Bounds: 2,2,28,24
+
+Visibility: MissionSelector
+
+Type: Campaign
+
+Videos:
+	Briefing: a_br01_e.vqa
+
+Options:
+	Crates: False
+	Creeps: True
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
+	StartingCash: 2300
+	ConfigurableStartingUnits: False
+	ShortGame: False
+	TechLevel: Low
+	Difficulties: Easy, Normal, Hard
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: Random
+	PlayerReference@Atreides:
+		Name: Atreides
+		Playable: true
+		Race: atreides
+		LockRace: true
+		ColorRamp: 170,255,127
+		LockColor: true
+		Enemies: Harkonnen
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		Race: harkonnen
+		LockRace: true
+		ColorRamp: 0,255,127
+		LockColor: true
+		Enemies: Atreides
+
+Actors:
+	Actor0: trike
+		Location: 15,8
+		Owner: Atreides
+	Actor1: rifle
+		Location: 13,9
+		Owner: Atreides
+	Actor2: rifle
+		Location: 25,9
+		Owner: Harkonnen
+	Actor3: rifle
+		Location: 16,10
+		Owner: Atreides
+	Actor4: trike
+		Location: 9,11
+		Owner: Atreides
+	Actor6: rifle
+		Location: 15,11
+		Owner: Atreides
+	Actor7: trike
+		Location: 9,13
+		Owner: Atreides
+	Actor8: rifle
+		Location: 15,13
+		Owner: Atreides
+	Actor9: rifle
+		Location: 14,14
+		Owner: Atreides
+		Facing: 128
+	Actor10: rifle
+		Location: 12,19
+		Owner: Harkonnen
+	Actor11: rifle
+		Location: 29,19
+		Owner: Harkonnen
+	Actor12: rifle
+		Location: 19,20
+		Owner: Harkonnen
+	Actor13: spicebloom
+		Location: 24,20
+		Owner: Neutral
+	Actor14: wormspawner
+		Location: 7,23
+		Owner: Creeps
+	AtreidesConyard: conyard
+		Location: 11,11
+		Owner: Atreides
+	HarkonnenWaypoint1: waypoint
+		Location: 20,2
+		Owner: Neutral
+	HarkonnenWaypoint2: waypoint
+		Location: 29,10
+		Owner: Neutral
+	HarkonnenWaypoint3: waypoint
+		Location: 24,25
+		Owner: Neutral
+	HarkonnenWaypoint4: waypoint
+		Location: 2,20
+		Owner: Neutral
+	AtreidesWaypoint: waypoint
+		Location: 2,8
+		Owner: Neutral
+	AtreidesRally: waypoint
+		Location: 13,13
+		Owner: Neutral
+
+Smudges:
+
+Rules:
+	Player:
+		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
+	World:
+		-CrateSpawner:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		LuaScript:
+			Scripts: atreides01a.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
+		WormManager:
+			Minimum: 1
+			Maximum: 1
+	conyard:
+		Production:
+			Produces: Building
+	concreteb:
+		Buildable:
+			Prerequisites: ~disabled
+	barracks:
+		Buildable:
+			Prerequisites: ~disabled
+	light:
+		Buildable:
+			Prerequisites: ~disabled
+	heavy:
+		Buildable:
+			Prerequisites: ~disabled
+	guntower:
+		Buildable:
+			Prerequisites: ~disabled
+	wall:
+		Buildable:
+			Prerequisites: ~disabled
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:

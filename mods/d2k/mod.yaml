@@ -178,6 +178,9 @@ Fonts:
 		Font:./mods/common/FreeSansBold.ttf
 		Size:10
 
+Missions:
+	./mods/d2k/missions.yaml
+
 SupportsMapsFrom: d2k
 
 SpriteFormats: R8, ShpTD, TmpRA
