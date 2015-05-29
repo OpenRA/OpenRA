@@ -114,6 +114,8 @@ namespace OpenRA.Graphics
 
 		public static Color PremultiplyAlpha(Color c)
 		{
+			if (c.A == byte.MaxValue)
+				return c;
 			var a = c.A / 255f;
 			return Color.FromArgb(c.A, (byte)(c.R * a + 0.5f), (byte)(c.G * a + 0.5f), (byte)(c.B * a + 0.5f));
 		}
