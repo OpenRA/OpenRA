@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			var ret = new Dictionary<string, TerrainInfo>();
 			foreach (var t in y.ToDictionary()["TerrainSpeeds"].Nodes)
 			{
-				var speed = FieldLoader.GetValue<decimal>("speed", t.Value.Value);
+				var speed = FieldLoader.GetValue<int>("speed", t.Value.Value);
 				var nodesDict = t.Value.ToDictionary();
 				var cost = nodesDict.ContainsKey("PathingCost")
 					? FieldLoader.GetValue<int>("cost", nodesDict["PathingCost"].Value)
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 			public static readonly TerrainInfo Impassable = new TerrainInfo();
 
 			public readonly int Cost;
-			public readonly decimal Speed;
+			public readonly int Speed;
 
 			public TerrainInfo()
 			{
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 				Speed = 0;
 			}
 
-			public TerrainInfo(decimal speed, int cost)
+			public TerrainInfo(int speed, int cost)
 			{
 				Speed = speed;
 				Cost = cost;
@@ -311,7 +311,7 @@ namespace OpenRA.Mods.Common.Traits
 		internal int TicksBeforePathing = 0;
 
 		readonly Actor self;
-		readonly ISpeedModifier[] speedModifiers;
+		readonly Lazy<ISpeedModifier[]> speedModifiers;
 		public readonly MobileInfo Info;
 		public bool IsMoving { get; set; }
 
@@ -351,7 +351,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			Info = info;
 
-			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray();
+			speedModifiers = Exts.Lazy(() => self.TraitsImplementing<ISpeedModifier>().ToArray());
 
 			ToSubCell = FromSubCell = info.SharesCell ? init.World.Map.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
@@ -593,16 +593,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (index == byte.MaxValue)
 				return 0;
 
-			// TODO: Convert to integers
-			var speed = Info.TilesetTerrainInfo[self.World.TileSet][index].Speed;
-			if (speed == decimal.Zero)
+			var terrainSpeed = Info.TilesetTerrainInfo[self.World.TileSet][index].Speed;
+			if (terrainSpeed == 0)
 				return 0;
 
-			speed *= Info.Speed;
-			foreach (var t in speedModifiers)
-				speed *= t.GetSpeedModifier() / 100m;
+			var modifiers = speedModifiers.Value.Select(x => x.GetSpeedModifier()).Append(terrainSpeed);
 
-			return (int)(speed / 100);
+			return Util.ApplyPercentageModifiers(Info.Speed, modifiers);
 		}
 
 		public void AddInfluence()
