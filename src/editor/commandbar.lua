@@ -259,6 +259,8 @@ function CommandBarShow(params)
   search:Connect(wx.wxEVT_KILL_FOCUS, function() onExit() end)
 
   frame:Show(true)
+  frame:Update()
+  frame:Refresh()
 
   search:SetValue((defaultText or "")..(selectedText or ""))
   search:SetSelection(#(defaultText or ""), -1)
