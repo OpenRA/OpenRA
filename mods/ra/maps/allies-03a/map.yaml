@@ -1422,7 +1422,8 @@ Rules:
 		Tooltip:
 			Name: Crate
 		WithCrateBody:
-			Images: scrate
+		RenderSprites:
+			Image: scrate
 	E1.Autotarget:
 		Inherits: E1
 		Buildable:

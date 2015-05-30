@@ -20,8 +20,6 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Renders crates with both water and land variants.")]
 	class WithCrateBodyInfo : ITraitInfo, Requires<RenderSpritesInfo>, IQuantizeBodyOrientationInfo, IRenderActorPreviewSpritesInfo
 	{
-		public readonly string[] Images = { "crate" };
-
 		[Desc("Easteregg sequences to use in december.")]
 		public readonly string[] XmasImages = { };
 
@@ -29,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
-			var anim = new Animation(init.World, Images.First(), () => 0);
+			var anim = new Animation(init.World, rs.Image, () => 0);
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), "idle"));
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
@@ -46,7 +44,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			var rs = self.Trait<RenderSprites>();
-			var images = info.XmasImages.Any() && DateTime.Today.Month == 12 ? info.XmasImages : info.Images;
+			var image = rs.GetImage(self);
+			var images = info.XmasImages.Any() && DateTime.Today.Month == 12 ? info.XmasImages : new[] { image };
 			anim = new Animation(self.World, images.Random(Game.CosmeticRandom));
 			anim.Play("idle");
 			rs.Add(anim);

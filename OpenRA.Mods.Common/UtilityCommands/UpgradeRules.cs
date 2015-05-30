@@ -1119,6 +1119,36 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Images from WithCrateBody was moved into RenderSprites
+				if (engineVersion < 20150530)
+				{
+					if (depth == 0)
+					{
+						var actorTraits = node.Value.Nodes;
+						var withCrateBody = actorTraits.FirstOrDefault(t => t.Key == "WithCrateBody");
+						if (withCrateBody != null)
+						{
+							var withCrateBodyFields = withCrateBody.Value.Nodes;
+							var images = withCrateBodyFields.FirstOrDefault(n => n.Key == "Images");
+							if (images == null)
+								images = new MiniYamlNode("Images", "crate");
+							else
+								withCrateBodyFields.Remove(images);
+
+							images.Key = "Image";
+
+							var renderSprites = actorTraits.FirstOrDefault(t => t.Key == "RenderSprites");
+							if (renderSprites != null)
+								renderSprites.Value.Nodes.Add(images);
+							else
+							{
+								Console.WriteLine("Warning: Adding RenderSprites trait to {0} in {1}".F(node.Key, node.Location.Filename));
+								actorTraits.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", new List<MiniYamlNode> { images })));
+							}
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

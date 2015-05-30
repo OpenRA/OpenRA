@@ -20,14 +20,21 @@ namespace OpenRA.Mods.Common.Lint
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
 			var sequences = MiniYaml.MergeLiberal(map.SequenceDefinitions, Game.ModData.Manifest.Sequences.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
+			var races = map.Rules.Actors["world"].Traits.WithInterface<CountryInfo>().Select(c => c.Race);
 
 			foreach (var actorInfo in map.Rules.Actors)
-				foreach (var renderInfo in actorInfo.Value.Traits.WithInterface<RenderSimpleInfo>())
+			{
+				foreach (var renderInfo in actorInfo.Value.Traits.WithInterface<RenderSpritesInfo>())
 				{
-					var image = renderInfo.Image ?? actorInfo.Value.Name;
-					if (!sequences.Any(s => s.Key == image.ToLowerInvariant()) && !actorInfo.Value.Name.Contains("^"))
-						emitWarning("Sprite image {0} from actor {1} has no sequence definition.".F(image, actorInfo.Value.Name));
+					foreach (var race in races)
+					{
+						var image = renderInfo.GetImage(actorInfo.Value, map.Rules.Sequences[map.Tileset], race);
+						if (!sequences.Any(s => s.Key == image.ToLowerInvariant()) && !actorInfo.Value.Name.Contains("^"))
+							emitWarning("Sprite image {0} from actor {1} on tileset {2} using race {3} has no sequence definition."
+								.F(image, actorInfo.Value.Name, map.Tileset, race));
+					}
 				}
+			}
 		}
 	}
 }
