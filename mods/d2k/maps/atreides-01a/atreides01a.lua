@@ -70,14 +70,12 @@ Tick = function()
 		Media.DisplayMessage(Messages[4], "")
 	end
 
-	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. ToHarvest, color)
+	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. ToHarvest, player.Color)
 end
 
 WorldLoaded = function()
 	player = Player.GetPlayer("Atreides")
 	harkonnen = Player.GetPlayer("Harkonnen")
-
-	color = HSLColor.New(170, 255, 200)
 
 	if Map.Difficulty == "Normal" then
 		HarkonnenAttackWaves = 5

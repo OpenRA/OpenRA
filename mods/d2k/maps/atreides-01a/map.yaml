@@ -49,7 +49,7 @@ Players:
 		Playable: true
 		Race: atreides
 		LockRace: true
-		ColorRamp: 170,255,127
+		ColorRamp: 170,255,200
 		LockColor: true
 		Enemies: Harkonnen
 	PlayerReference@Harkonnen:
