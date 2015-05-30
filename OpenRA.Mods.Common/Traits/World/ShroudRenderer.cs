@@ -162,8 +162,8 @@ namespace OpenRA.Mods.Common.Traits
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			// Initialize tile cache
-			// Adds a 1-cell border around the border to cover any sprites peeking outside the map
-			foreach (var uv in CellRegion.Expand(w.Map.Cells, 1).MapCoords)
+			// This includes the region outside the visible area to cover any sprites peeking outside the map
+			foreach (var uv in w.Map.AllCells.MapCoords)
 			{
 				var screen = wr.ScreenPosition(w.Map.CenterOfCell(uv.ToCPos(map)));
 				var variant = (byte)Game.CosmeticRandom.Next(info.ShroudVariants.Length);
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 			wr.PaletteInvalidated += () =>
 			{
 				mapBorderShroudIsCached = false;
-				MarkCellsDirty(CellRegion.Expand(map.Cells, 1));
+				MarkCellsDirty(map.AllCells);
 			};
 		}
 
@@ -278,7 +278,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Cache the whole of the map border shroud ahead of time, since it never changes.
 			Func<MPos, bool> mapContains = map.Contains;
-			foreach (var uv in CellRegion.Expand(map.Cells, 1).MapCoords)
+			foreach (var uv in map.AllCells.MapCoords)
 			{
 				var offset = VertexArrayOffset(uv);
 				var edges = GetEdges(uv, mapContains);
@@ -304,7 +304,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// The map border shroud only affects the map border. If none of the visible cells are on the border, then
 			// we don't need to render anything and can bail early for performance.
-			if (CellRegion.Expand(map.Cells, -1).Contains(visibleRegion))
+			if (CellRegion.Expand(map.CellsInsideBounds, -1).Contains(visibleRegion))
 				return;
 
 			// Render the shroud that just encroaches at the map border. This shroud is always fully cached, so we can
