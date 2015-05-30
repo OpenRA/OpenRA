@@ -47,7 +47,7 @@ BigFlamer:
 		ImpactSound: flamer2.aud
 
 Chemspray:
-	ReloadDelay: 70
+	ReloadDelay: 65
 	Range: 3c0
 	Report: FLAMER2.AUD
 	Projectile: Bullet
@@ -72,7 +72,7 @@ Grenade:
 	Range: 4c0
 	Report: toss1.aud
 	Projectile: Bullet
-		Speed: 119
+		Speed: 140
 		Blockable: false
 		Angle: 62
 		Inaccuracy: 213

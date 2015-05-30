@@ -154,7 +154,7 @@ ARTY:
 	Explodes:
 		Weapon: UnitExplode
 		EmptyWeapon: UnitExplode
-		Chance: 75
+		Chance: 0
 	AutoTarget:
 		InitialStance: Defend
 	LeavesHusk:
@@ -234,7 +234,7 @@ BGGY:
 BIKE:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 600
+		Cost: 500
 	Tooltip:
 		Name: Recon Bike
 		Description: Fast scout vehicle, armed with \nrockets. \nCan attack Aircraft.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
@@ -318,7 +318,7 @@ LTNK:
 		ROT: 7
 		Speed: 113
 	Health:
-		HP: 360
+		HP: 350
 	Armor:
 		Type: Heavy
 	RevealsShroud:

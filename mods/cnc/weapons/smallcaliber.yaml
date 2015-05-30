@@ -133,7 +133,7 @@ MachineGun:
 			None: 100
 			Wood: 20
 			Light: 50
-			Heavy: 20
+			Heavy: 15
 			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
