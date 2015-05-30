@@ -143,7 +143,6 @@
     <Compile Include="Effects\Parachute.cs" />
     <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
-    <Compile Include="Effects\Rank.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Commands\ChatCommands.cs" />
@@ -400,6 +399,7 @@
     <Compile Include="Traits\Render\WithIdleOverlay.cs" />
     <Compile Include="Traits\Render\WithMuzzleFlash.cs" />
     <Compile Include="Traits\Render\WithRangeCircle.cs" />
+    <Compile Include="Traits\Render\WithRankDecoration.cs" />
     <Compile Include="Traits\Render\WithRepairAnimation.cs" />
     <Compile Include="Traits\Render\WithRepairOverlay.cs" />
     <Compile Include="Traits\Render\WithResources.cs" />

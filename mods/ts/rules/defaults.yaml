@@ -1,3 +1,31 @@
+^GainsExperience:
+	GainsExperience:
+		Upgrades:
+			500: rank, firepower, damage, speed, reload
+			1000: rank, firepower, damage, speed, reload, selfheal, eliteweapon
+	GainsStatUpgrades:
+		FirepowerModifier: 110, 130
+		DamageModifier: 83, 66
+		SpeedModifier: 120, 150
+		ReloadModifier: 90, 75
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+	WithRankDecoration:
+		Image: rank
+		Sequence: rank
+		Palette: ra
+		ReferencePoint: Bottom, Right
+		Offset: 2, 2
+		UpgradeTypes: rank
+		ZOffset: 256
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
+
 ^Building:
 	AppearsOnRadar:
 	SelectionDecorations:
@@ -164,6 +192,7 @@
 	RenderSprites:
 
 ^Infantry:
+	Inherits: ^GainsExperience
 	AppearsOnRadar:
 	Health:
 		Radius: 128
@@ -213,23 +242,6 @@
 	Passenger:
 		CargoType: Infantry
 	HiddenUnderFog:
-	GainsExperience:
-		ChevronPalette: ra
-		Upgrades:
-			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload, selfheal, eliteweapon
-	GainsStatUpgrades:
-		FirepowerModifier: 110, 130
-		DamageModifier: 83, 66
-		SpeedModifier: 120, 150
-		ReloadModifier: 90, 75
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -289,6 +301,7 @@
 	-MustBeDestroyed:
 
 ^Vehicle:
+	Inherits: ^GainsExperience
 	AppearsOnRadar:
 	Mobile:
 		Crushes: crate
@@ -314,23 +327,6 @@
 		CargoType: Vehicle
 	AttackMove:
 	HiddenUnderFog:
-	GainsExperience:
-		ChevronPalette: ra
-		Upgrades:
-			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload, selfheal, eliteweapon
-	GainsStatUpgrades:
-		FirepowerModifier: 110, 130
-		DamageModifier: 83, 66
-		SpeedModifier: 120, 150
-		ReloadModifier: 90, 75
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -374,6 +370,7 @@
 	MustBeDestroyed:
 
 ^Tank:
+	Inherits: ^GainsExperience
 	AppearsOnRadar:
 	Mobile:
 		Crushes: wall, crate
@@ -399,23 +396,6 @@
 		CargoType: Vehicle
 	AttackMove:
 	HiddenUnderFog:
-	GainsExperience:
-		ChevronPalette: ra
-		Upgrades:
-			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload, selfheal, eliteweapon
-	GainsStatUpgrades:
-		FirepowerModifier: 110, 130
-		DamageModifier: 83, 66
-		SpeedModifier: 120, 150
-		ReloadModifier: 90, 75
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -459,6 +439,7 @@
 	MustBeDestroyed:
 
 ^Helicopter:
+	Inherits: ^GainsExperience
 	AppearsOnRadar:
 		UseLocation: yes
 	TargetableAircraft:
@@ -476,23 +457,6 @@
 		CruiseAltitude: 2048
 	HiddenUnderFog:
 	AttackMove:
-	GainsExperience:
-		ChevronPalette: ra
-		Upgrades:
-			500: firepower, damage, speed, reload
-			1000: firepower, damage, speed, reload, selfheal, eliteweapon
-	GainsStatUpgrades:
-		FirepowerModifier: 110, 130
-		DamageModifier: 83, 66
-		SpeedModifier: 120, 150
-		ReloadModifier: 90, 75
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:

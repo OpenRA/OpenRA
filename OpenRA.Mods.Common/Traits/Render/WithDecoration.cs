@@ -15,6 +15,18 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Flags]
+	public enum ReferencePoints
+	{
+		Top = 0,
+		VCenter = 1,
+		Bottom = 2,
+
+		Left = 0 << 2,
+		HCenter = 1 << 2,
+		Right = 2 << 2,
+	}
+
 	[Desc("Displays a custom animation if conditions are satisfied.")]
 	public class WithDecorationInfo : UpgradableTraitInfo, ITraitInfo
 	{
@@ -27,7 +39,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette to render the sprite in. Reference the world actor's PaletteFrom* traits.")]
 		public readonly string Palette = "chrome";
 
-		[Desc("Pixel offset relative to the top-left point of the actor's bounds.")]
+		[Desc("Point in the actor's bounding box used as reference for offsetting the decoration image." +
+			"Possible values are any combination of Top, VCenter, Bottom and Left, HCenter, Right separated by a comma.")]
+		public readonly ReferencePoints ReferencePoint = ReferencePoints.Top | ReferencePoints.Left;
+
+		[Desc("Pixel offset relative to the actor's bounding box' reference point.")]
 		public readonly int2 Offset = int2.Zero;
 
 		[Desc("The Z offset to apply when rendering this decoration.")]
@@ -61,6 +77,11 @@ namespace OpenRA.Mods.Common.Traits
 			anim.PlayRepeating(info.Sequence);
 		}
 
+		public void PlaySingleFrame(int frame)
+		{
+			anim.PlayFetchIndex(info.Sequence, () => frame);
+		}
+
 		public virtual bool ShouldRender(Actor self) { return true; }
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
@@ -91,11 +112,35 @@ namespace OpenRA.Mods.Common.Traits
 			var pxPos = wr.ScreenPxPosition(self.CenterPosition);
 			var actorBounds = self.Bounds;
 			actorBounds.Offset(pxPos.X, pxPos.Y);
-			pxPos = new int2(actorBounds.Left, actorBounds.Top);
 
 			var img = anim.Image;
 			var imgSize = img.Size.ToInt2();
-			pxPos = pxPos.WithX(pxPos.X + imgSize.X / 2).WithY(pxPos.Y + imgSize.Y / 2);
+
+			switch (info.ReferencePoint & (ReferencePoints)3)
+			{
+				case ReferencePoints.Top:
+					pxPos = pxPos.WithY(actorBounds.Top + imgSize.Y / 2);
+					break;
+				case ReferencePoints.VCenter:
+					pxPos = pxPos.WithY((actorBounds.Top + actorBounds.Bottom) / 2);
+					break;
+				case ReferencePoints.Bottom:
+					pxPos = pxPos.WithY(actorBounds.Bottom - imgSize.Y / 2);
+					break;
+			}
+
+			switch (info.ReferencePoint & (ReferencePoints)(3 << 2))
+			{
+				case ReferencePoints.Left:
+					pxPos = pxPos.WithX(actorBounds.Left + imgSize.X / 2);
+					break;
+				case ReferencePoints.HCenter:
+					pxPos = pxPos.WithX((actorBounds.Left + actorBounds.Right) / 2);
+					break;
+				case ReferencePoints.Right:
+					pxPos = pxPos.WithX(actorBounds.Right - imgSize.X / 2);
+					break;
+			}
 
 			pxPos += info.Offset;
 			var renderPos = wr.Position(pxPos);

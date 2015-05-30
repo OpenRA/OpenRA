@@ -1,4 +1,26 @@
+^GainsExperience:
+	GainsExperience:
+	GainsStatUpgrades:
+	SelfHealing@ELITE:
+		Step: 2
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+	WithRankDecoration:
+		Image: rank
+		Sequence: rank
+		Palette: effect
+		ReferencePoint: Bottom, Right
+		Offset: 2, 2
+		UpgradeTypes: rank
+		ZOffset: 256
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 4
+
 ^Vehicle:
+	Inherits: ^GainsExperience
 	AppearsOnRadar:
 	Mobile:
 		Crushes: crate
@@ -18,7 +40,6 @@
 	Passenger:
 		CargoType: Vehicle
 	HiddenUnderFog:
-	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -40,20 +61,13 @@
 		UncloakSound: trans1.aud
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
 
 ^Tank:
+	Inherits: ^GainsExperience
 	AppearsOnRadar:
 	Mobile:
 		Crushes: wall, crate, infantry
@@ -73,7 +87,6 @@
 	Passenger:
 		CargoType: Vehicle
 	HiddenUnderFog:
-	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -98,20 +111,13 @@
 		UncloakSound: trans1.aud
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
 
 ^Helicopter:
+	Inherits: ^GainsExperience
 	AppearsOnRadar:
 		UseLocation: yes
 	TargetableAircraft:
@@ -124,7 +130,6 @@
 		RearmBuildings:
 		LandWhenIdle: false
 	HiddenUnderFog:
-	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -141,14 +146,6 @@
 	ScriptTriggers:
 	Tooltip:
 		GenericName: Helicopter
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	WithShadow:
 	Hovers:
@@ -157,6 +154,7 @@
 		VoiceSet: VehicleVoice
 
 ^Infantry:
+	Inherits: ^GainsExperience
 	AppearsOnRadar:
 	Health:
 		Radius: 128
@@ -203,7 +201,6 @@
 		CargoType: Infantry
 	HiddenUnderFog:
 	PoisonedByTiberium:
-	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -241,14 +238,6 @@
 	DeathSounds@POISONED:
 		DeathSound: Poisoned
 		DeathTypes: TiberiumDeath
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	MustBeDestroyed:
 	Voiced:
@@ -335,6 +324,7 @@
 		VoiceSet: DinoVoice
 
 ^Plane:
+	Inherits: ^GainsExperience
 	AppearsOnRadar:
 		UseLocation: yes
 	SelectionDecorations:
@@ -342,7 +332,6 @@
 	TargetableUnit:
 		TargetTypes: Air
 	HiddenUnderFog:
-	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -351,20 +340,13 @@
 	Huntable:
 	AttackMove:
 	ScriptTriggers:
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	WithShadow:
 	Voiced:
 		VoiceSet: GenericVoice
 
 ^Ship:
+	Inherits: ^GainsExperience
 	AppearsOnRadar:
 	Mobile:
 		Crushes: crate
@@ -375,7 +357,6 @@
 	TargetableUnit:
 		TargetTypes: Ground, Water
 	HiddenUnderFog:
-	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -387,14 +368,6 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
 	UpgradeManager:
 	Voiced:
 		VoiceSet: VehicleVoice

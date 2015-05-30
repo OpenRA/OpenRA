@@ -1085,6 +1085,40 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150607)
+				{
+					// Add WithRankDecoration to all actors using GainsExperience
+					var ge = node.Value.Nodes.FirstOrDefault(n => n.Key == "GainsExperience");
+					if (ge != null)
+					{
+						var nodeUpgrades = ge.Value.Nodes.FirstOrDefault(n => n.Key == "Upgrades");
+						var upgrades = nodeUpgrades != null ? nodeUpgrades.Value.Nodes.Count() : 4;
+
+						var nodeChPal = ge.Value.Nodes.FirstOrDefault(n => n.Key == "ChevronPalette");
+						var chPal = nodeChPal != null && !string.IsNullOrEmpty(nodeChPal.Value.Value) ? nodeChPal.Value.Value : "effect";
+						ge.Value.Nodes.Remove(nodeChPal);
+
+						if (upgrades != 0)
+						{
+							foreach (var nodeUpgrade in nodeUpgrades.Value.Nodes)
+								nodeUpgrade.Value.Value = "rank" + (string.IsNullOrEmpty(nodeUpgrade.Value.Value) ? null : ", ") + nodeUpgrade.Value.Value;
+
+							node.Value.Nodes.Add(new MiniYamlNode("WithRankDecoration", null, new List<MiniYamlNode>
+							{
+								new MiniYamlNode("Image", "rank"),
+								new MiniYamlNode("Sequence", "rank"),
+								new MiniYamlNode("Palette", chPal),
+								new MiniYamlNode("ReferencePoint", "Bottom, Right"),
+								new MiniYamlNode("Offset", "2, 2"),
+								new MiniYamlNode("UpgradeTypes", "rank"),
+								new MiniYamlNode("ZOffset", "256"),
+								new MiniYamlNode("UpgradeMinEnabledLevel", "1"),
+								new MiniYamlNode("UpgradeMaxAcceptedLevel", upgrades.ToString())
+							}));
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

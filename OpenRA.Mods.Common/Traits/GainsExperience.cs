@@ -26,9 +26,6 @@ namespace OpenRA.Mods.Common.Traits
 			"Value is a list of the upgrade types to grant")]
 		public readonly Dictionary<int, string[]> Upgrades = null;
 
-		[Desc("Palette for the chevron glyph rendered in the selection box.")]
-		public readonly string ChevronPalette = "effect";
-
 		[Desc("Palette for the level up sprite.")]
 		public readonly string LevelUpPalette = "effect";
 
@@ -42,10 +39,10 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				return new Dictionary<int, string[]>()
 				{
-					{ 200, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
-					{ 400, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
-					{ 800, new[] { "firepower", "damage", "speed", "reload", "inaccuracy" } },
-					{ 1600, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "eliteweapon", "selfheal" } }
+					{ 200, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "rank" } },
+					{ 400, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "rank" } },
+					{ 800, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "rank" } },
+					{ 1600, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "rank", "eliteweapon", "selfheal" } }
 				};
 			}
 
@@ -108,15 +105,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "LevelUp", self.Owner.Country.Race);
 				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", info.LevelUpPalette)));
-
-				if (Level == 1)
-				{
-					self.World.AddFrameEndTask(w =>
-					{
-						if (!self.IsDead)
-							w.Add(new Rank(self, info.ChevronPalette));
-					});
-				}
 			}
 		}
 
