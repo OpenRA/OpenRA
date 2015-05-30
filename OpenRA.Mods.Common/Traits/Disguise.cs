@@ -12,18 +12,17 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Overrides the default ToolTip when this actor is disguised (aids in deceiving enemy players).")]
-	class DisguiseToolTipInfo : TooltipInfo, Requires<DisguiseInfo>
+	public class DisguiseToolTipInfo : TooltipInfo, Requires<DisguiseInfo>
 	{
 		public override object Create(ActorInitializer init) { return new DisguiseToolTip(init.Self, this); }
 	}
 
-	class DisguiseToolTip : IToolTip
+	public class DisguiseToolTip : IToolTip
 	{
 		readonly Actor self;
 		readonly Disguise disguise;
@@ -48,18 +47,24 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			get
 			{
-				if (disguise.Disguised)
-					return self.Owner == self.World.LocalPlayer ? self.Owner : disguise.AsPlayer;
+				if (!disguise.Disguised)
+					return self.Owner;
 
-				return self.Owner;
+				Player p = null;
+				if (self.World.LocalPlayer != null && self.World.LocalPlayer.WinState == WinState.Undefined)
+					p = self.World.LocalPlayer;
+				else
+					p = self.World.RenderPlayer;
+
+				return self.Owner.IsAlliedWith(p) ? self.Owner : disguise.AsPlayer;
 			}
 		}
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
-	class DisguiseInfo : TraitInfo<Disguise> { }
+	public class DisguiseInfo : TraitInfo<Disguise> { }
 
-	class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
+	public class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
 	{
 		public Player AsPlayer { get; private set; }
 		public string AsSprite { get; private set; }
@@ -100,7 +105,16 @@ namespace OpenRA.Mods.RA.Traits
 
 		public Color RadarColorOverride(Actor self)
 		{
-			if (!Disguised || self.Owner.IsAlliedWith(self.World.RenderPlayer))
+			if (!Disguised)
+				return self.Owner.Color.RGB;
+
+			Player p = null;
+			if (self.World.LocalPlayer != null && self.World.LocalPlayer.WinState == WinState.Undefined)
+				p = self.World.LocalPlayer;
+			else
+				p = self.World.RenderPlayer;
+
+			if (self.Owner.IsAlliedWith(p))
 				return self.Owner.Color.RGB;
 
 			return AsPlayer.Color.RGB;
@@ -112,8 +126,8 @@ namespace OpenRA.Mods.RA.Traits
 
 			if (target != null)
 			{
-				// Take the image of the target's disguise, if it exist.
-				// E.g., SpyA is disguised as a dog. SpyB then targets SpyA. We should use the dog image.
+				// Take the image of the target's disguise, if it exists.
+				// E.g., SpyA is disguised as a rifle infantry. SpyB then targets SpyA. We should use the rifle infantry image.
 				var targetDisguise = target.TraitOrDefault<Disguise>();
 				if (targetDisguise != null && targetDisguise.Disguised)
 				{

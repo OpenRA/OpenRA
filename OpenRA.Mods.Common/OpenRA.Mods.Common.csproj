@@ -294,6 +294,7 @@
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
+    <Compile Include="Traits\Disguise.cs" />
     <Compile Include="Traits\EjectOnDeath.cs" />
     <Compile Include="Traits\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\EngineerRepair.cs" />
@@ -387,6 +388,8 @@
     <Compile Include="Traits\Render\WithBuildingExplosion.cs" />
     <Compile Include="Traits\Render\WithActiveAnimation.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
+    <Compile Include="Traits\Render\WithDecorationDisguised.cs" />
+    <Compile Include="Traits\Render\WithDisguisingInfantryBody.cs" />
     <Compile Include="Traits\Render\WithMakeAnimation.cs" />
     <Compile Include="Traits\Render\WithChargeOverlay.cs" />
     <Compile Include="Traits\Render\WithCrateBody.cs" />

@@ -72,7 +72,6 @@
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="Traits\Cloneable.cs" />
     <Compile Include="Traits\DemoTruck.cs" />
-    <Compile Include="Traits\Disguise.cs" />
     <Compile Include="Traits\HarvesterHuskModifier.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForCash.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForExploration.cs" />
@@ -97,8 +96,6 @@
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
     <Compile Include="Scripting\Properties\ParadropProperties.cs" />
     <Compile Include="Scripting\Properties\ParatroopersProperties.cs" />
-    <Compile Include="Traits\Render\WithDisguisingInfantryBody.cs" />
-    <Compile Include="Traits\Render\WithDecorationDisguised.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
