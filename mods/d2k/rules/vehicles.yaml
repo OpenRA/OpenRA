@@ -346,7 +346,7 @@ raider:
 stealthraider:
 	Inherits: raider
 	Buildable:
-		Prerequisites: ~light.ordos, upgrade.light, ~techlevel.medium
+		Prerequisites: ~light.ordos, upgrade.light, hightech, ~techlevel.medium
 		BuildPaletteOrder: 30
 	Valued:
 		Cost: 400
