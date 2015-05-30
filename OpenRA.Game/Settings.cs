@@ -11,7 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -299,6 +301,46 @@ namespace OpenRA
 				root.Add(new MiniYamlNode(kv.Key, FieldSaver.SaveDifferences(kv.Value, Activator.CreateInstance(kv.Value.GetType()))));
 
 			root.WriteToFile(settingsFile);
+		}
+
+		static string SanitizedName(string dirty)
+		{
+			if (string.IsNullOrEmpty(dirty))
+				return null;
+
+			var clean = dirty;
+
+			// reserved characters for MiniYAML and JSON
+			var disallowedChars = new char[] { '#', '@', ':', '\n', '\t', '[', ']', '{', '}', '"', '`' };
+			foreach (var disallowedChar in disallowedChars)
+				clean = clean.Replace(disallowedChar.ToString(), string.Empty);
+
+			// avoid UI glitches
+			if (clean.Length > 16)
+				clean = clean.Substring(0, 16);
+
+			return clean;
+		}
+
+		public static string SanitizedServerName(string dirty)
+		{
+			var clean = SanitizedName(dirty);
+			if (string.IsNullOrWhiteSpace(clean))
+				return new ServerSettings().Name;
+			else
+				return clean;
+		}
+
+		public static string SanitizedPlayerName(string dirty)
+		{
+			var forbiddenNames = new string[] { "Open", "Closed" };
+			var botNames = OpenRA.Game.ModData.DefaultRules.Actors["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name);
+
+			var clean = SanitizedName(dirty);
+			if (string.IsNullOrWhiteSpace(clean) || forbiddenNames.Contains(clean) || botNames.Contains(clean))
+				clean = new PlayerSettings().Name;
+
+			return clean;
 		}
 
 		static void LoadSectionYaml(MiniYaml yaml, object section)

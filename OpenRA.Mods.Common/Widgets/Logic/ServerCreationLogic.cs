@@ -56,8 +56,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel.Get<LabelWidget>("MAP_NAME").GetText = () => preview.Title;
 			}
 
-			panel.Get<TextFieldWidget>("SERVER_NAME").Text = settings.Server.Name ?? "";
+			var serverName = panel.Get<TextFieldWidget>("SERVER_NAME");
+			serverName.Text = Settings.SanitizedServerName(settings.Server.Name);
+			serverName.OnEnterKey = () => { serverName.YieldKeyboardFocus(); return true; };
+			serverName.OnLoseFocus = () =>
+			{
+				serverName.Text = Settings.SanitizedServerName(serverName.Text);
+				settings.Server.Name = serverName.Text;
+			};
+
 			panel.Get<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
+
 			advertiseOnline = Game.Settings.Server.AdvertiseOnline;
 
 			var externalPort = panel.Get<TextFieldWidget>("EXTERNAL_PORT");
@@ -81,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateAndJoin()
 		{
-			var name = panel.Get<TextFieldWidget>("SERVER_NAME").Text;
+			var name = Settings.SanitizedServerName(panel.Get<TextFieldWidget>("SERVER_NAME").Text);
 			int listenPort, externalPort;
 			if (!Exts.TryParseIntegerInvariant(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, out listenPort))
 				listenPort = 1234;

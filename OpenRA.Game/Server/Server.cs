@@ -130,6 +130,9 @@ namespace OpenRA.Server
 			Port = localEndpoint.Port;
 
 			Settings = settings;
+
+			Settings.Name = OpenRA.Settings.SanitizedServerName(Settings.Name);
+
 			ModData = modData;
 
 			randomSeed = (int)DateTime.Now.ToBinary();
@@ -286,7 +289,7 @@ namespace OpenRA.Server
 
 				var client = new Session.Client()
 				{
-					Name = handshake.Client.Name,
+					Name = OpenRA.Settings.SanitizedPlayerName(handshake.Client.Name),
 					IpAddress = ((IPEndPoint)newConn.Socket.RemoteEndPoint).Address.ToString(),
 					Index = newConn.PlayerIndex,
 					Slot = LobbyInfo.FirstEmptySlot(),

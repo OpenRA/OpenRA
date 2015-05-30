@@ -266,6 +266,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (name.Text == c.Name)
 					return;
 
+				name.Text = Settings.SanitizedPlayerName(name.Text);
+
 				orderManager.IssueOrder(Order.Command("name " + name.Text));
 				Game.Settings.Player.Name = name.Text;
 				Game.Settings.Save();
