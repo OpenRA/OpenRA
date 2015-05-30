@@ -2,19 +2,30 @@ if Map.Difficulty == "Easy" then
 	TanyaType = "e7"
 	ReinforceCash = 5000
 	HoldAITime = DateTime.Minutes(3)
+	SpecialCameras = true
+elseif Map.Difficulty == "Normal" then
+	TanyaType = "e7.noautotarget"
+	ChangeStance = true
+	ReinforceCash = 2250
+	HoldAITime = DateTime.Minutes(2)
+	SpecialCameras = true
 else
 	TanyaType = "e7.noautotarget"
 	ChangeStance = true
-	ReinforceCash = 2500
-	HoldAITime = DateTime.Minutes(2)
+	ReinforceCash = 1500
+	HoldAITime = DateTime.Minutes(1) + DateTime.Seconds(30)
+	SendWaterTransports = true
 end
 
 SpyType = { "spy" }
 SpyEntryPath = { SpyEntry.Location, SpyLoadout.Location }
-InsertionTransport = "lst"
+InsertionTransport = "lst.in"
+ExtractionTransport = "lst"
 TrukPath = { TrukWaypoint1, TrukWaypoint2, TrukWaypoint3, TrukWaypoint4, TrukWaypoint5, TrukWaypoint6 }
 ExtractionHeliType = "tran"
+InsertionHeliType = "tran.in"
 ExtractionPath = { ExtractionEntry.Location, ExtractionLZ.Location }
+HeliReinforcements = { "medi", "mech", "mech" }
 
 GreeceReinforcements =
 {
@@ -32,6 +43,7 @@ PatrolAPath = { PatrolRally.Location, PatrolARally1.Location, PatrolARally2.Loca
 PatrolBPath = { PatrolBRally1.Location, PatrolBRally2.Location, PatrolBRally3.Location, PatrolRally.Location }
 
 TanyaVoices = { "tuffguy", "bombit", "laugh", "gotit", "lefty", "keepem" }
+SpyVoice = "sking"
 SamSites = { Sam1, Sam2, Sam3, Sam4 }
 
 GroupPatrol = function(units, waypoints, delay)
@@ -71,11 +83,19 @@ Tick = function()
 	end
 
 	if ussr.HasNoRequiredUnits() then
+		if not greece.IsObjectiveCompleted(KillAll) and Map.Difficulty == "Real tough guy" then
+			SendWaterExtraction()
+		end
 		greece.MarkCompletedObjective(KillAll)
 	end
 
 	if GreeceReinforcementsArrived and greece.HasNoRequiredUnits() then
 		ussr.MarkCompletedObjective(ussrObj)
+	end
+
+	if ussr.Resources >= ussr.ResourceCapacity * 0.75 then
+		ussr.Cash = ussr.Cash + ussr.Resources - ussr.ResourceCapacity * 0.25
+		ussr.Resources = ussr.ResourceCapacity * 0.25
 	end
 end
 
@@ -93,18 +113,32 @@ SendReinforcements = function()
 	ActivateAI()
 end
 
-ExtractTanya = function()
-	if ExtractionHeli.IsDead or not ExtractionHeli.HasPassengers then
+ExtractUnits = function(extractionUnit, pos, after)
+	if extractionUnit.IsDead or not extractionUnit.HasPassengers then
 		return
 	end
 
-	ExtractionHeli.Move(CPos.New(ExtractionPath[1].X, ExtractionHeli.Location.Y))
-	ExtractionHeli.Destroy()
+	extractionUnit.Move(pos)
+	extractionUnit.Destroy()
 
-	Trigger.OnRemovedFromWorld(ExtractionHeli, function()
-		greece.MarkCompletedObjective(mainObj)
-		SendReinforcements()
-		PrisonCamera.Destroy()
+	Trigger.OnRemovedFromWorld(extractionUnit, after)
+end
+
+SendWaterExtraction = function()
+	local flare = Actor.Create("flare", true, { Owner = greece, Location = SpyEntryPath[2] + CVec.New(2, 0) })
+	Trigger.AfterDelay(DateTime.Seconds(5), flare.Destroy)
+	Media.PlaySpeechNotification(greece, "SignalFlareNorth")
+	Camera.Position = flare.CenterPosition
+
+	WaterExtractionTran = Reinforcements.ReinforceWithTransport(greece, ExtractionTransport, nil, SpyEntryPath)[1]
+	ExtractObj = greece.AddPrimaryObjective("Get all your forces into the transport.")
+
+	Trigger.OnKilled(WaterExtractionTran, function() ussr.MarkCompletedObjective(ussrObj) end)
+	Trigger.OnAllRemovedFromWorld(greece.GetGroundAttackers(), function()
+		ExtractUnits(WaterExtractionTran, SpyEntryPath[1], function()
+			greece.MarkCompletedObjective(ExtractObj)
+			greece.MarkCompletedObjective(surviveObj)
+		end)
 	end)
 end
 
@@ -117,10 +151,12 @@ WarfactoryInfiltrated = function()
 		Truk.Move(waypoint.Location)
 	end)
 
-	Trigger.AfterDelay(DateTime.Seconds(2), function()
-		SpyCameraA.Destroy()
-		SpyCameraB.Destroy()
-	end)
+	if SpecialCameras then
+		Trigger.AfterDelay(DateTime.Seconds(2), function()
+			SpyCameraA.Destroy()
+			SpyCameraB.Destroy()
+		end)
+	end
 end
 
 MissInfiltrated = function()
@@ -152,7 +188,21 @@ FreeTanya = function()
 
 	Trigger.OnKilled(Tanya, function() ussr.MarkCompletedObjective(ussrObj) end)
 
-	KillSams = greece.AddPrimaryObjective("Destroy all four SAM sites that block\nthe extraction helicopter.")
+	if Map.Difficulty == "Real tough guy" then
+		KillSams = greece.AddPrimaryObjective("Destroy all four SAM Sites that block\nour reinforcements' helicopter.")
+
+		greece.MarkCompletedObjective(mainObj)
+		surviveObj = greece.AddPrimaryObjective("Tanya must not die!")
+		Media.PlaySpeechNotification(greece, "TanyaRescued")
+	else
+		KillSams = greece.AddPrimaryObjective("Destroy all four SAM sites that block\nthe extraction helicopter.")
+
+		Media.PlaySpeechNotification(greece, "TargetFreed")
+	end
+
+	if not SpecialCameras then
+		PrisonCamera.Destroy()
+	end
 end
 
 SendSpy = function()
@@ -161,8 +211,10 @@ SendSpy = function()
 
 	Trigger.OnKilled(Spy, function() ussr.MarkCompletedObjective(ussrObj) end)
 
-	SpyCameraA = Actor.Create("camera", true, { Owner = greece, Location = SpyCamera1.Location })
-	SpyCameraB = Actor.Create("camera", true, { Owner = greece, Location = SpyCamera2.Location })
+	if SpecialCameras then
+		SpyCameraA = Actor.Create("camera", true, { Owner = greece, Location = SpyCamera1.Location })
+		SpyCameraB = Actor.Create("camera", true, { Owner = greece, Location = SpyCamera2.Location })
+	end
 end
 
 ActivatePatrols = function()
@@ -200,10 +252,16 @@ InitTriggers = function()
 			Spy = Actor.Create("spy", true, { Owner = greece, Location = TrukWaypoint5.Location })
 			Spy.Move(SpyWaypoint.Location)
 			Spy.Infiltrate(Prison)
+			Media.PlaySoundNotification(greece, SpyVoice)
 
 			FollowTruk = false
 			TrukCamera.Destroy()
-			PrisonCamera = Actor.Create("camera", true, { Owner = greece, Location = TrukWaypoint5.Location })
+
+			if SpecialCameras then
+				PrisonCamera = Actor.Create("camera", true, { Owner = greece, Location = TrukWaypoint5.Location })
+			else
+				PrisonCamera = Actor.Create("camera.truk", true, { Owner = greece, Location = Prison.Location + CVec.New(1, 1) })
+			end
 
 			Trigger.OnKilled(Spy, function() ussr.MarkCompletedObjective(ussrObj) end)
 		end
@@ -218,10 +276,12 @@ InitTriggers = function()
 		end
 	end)
 
-	Trigger.OnKilled(Mammoth, function()
-		Trigger.AfterDelay(HoldAITime - DateTime.Seconds(45), function() HoldProduction = false end)
-		Trigger.AfterDelay(HoldAITime, function() Attacking = true end)
-	end)
+	if Map.Difficulty ~= "Real tough guy" then
+		Trigger.OnKilled(Mammoth, function()
+			Trigger.AfterDelay(HoldAITime - DateTime.Seconds(45), function() HoldProduction = false end)
+			Trigger.AfterDelay(HoldAITime, function() Attacking = true end)
+		end)
+	end
 
 	Trigger.OnKilled(FlameBarrel, function()
 		if not FlameTower.IsDead then
@@ -237,10 +297,31 @@ InitTriggers = function()
 		local flare = Actor.Create("flare", true, { Owner = greece, Location = ExtractionPath[2] + CVec.New(0, -1) })
 		Trigger.AfterDelay(DateTime.Seconds(7), flare.Destroy)
 		Media.PlaySpeechNotification(greece, "SignalFlare")
-		ExtractionHeli = Reinforcements.ReinforceWithTransport(greece, ExtractionHeliType, nil, ExtractionPath)[1]
 
-		Trigger.OnKilled(ExtractionHeli, function() ussr.MarkCompletedObjective(ussrObj) end)
-		Trigger.OnRemovedFromWorld(Tanya, ExtractTanya)
+		if Map.Difficulty == "Real tough guy" then
+			Reinforcements.ReinforceWithTransport(greece, InsertionHeliType, HeliReinforcements, ExtractionPath, { ExtractionPath[1] })
+			if not Harvester.IsDead then
+				Harvester.FindResources()
+			end
+
+		else
+			ExtractionHeli = Reinforcements.ReinforceWithTransport(greece, ExtractionHeliType, nil, ExtractionPath)[1]
+			local exitPos = CPos.New(ExtractionPath[1].X, ExtractionPath[2].Y)
+
+			Trigger.OnKilled(ExtractionHeli, function() ussr.MarkCompletedObjective(ussrObj) end)
+			Trigger.OnRemovedFromWorld(Tanya, function()
+				ExtractUnits(ExtractionHeli, exitPos, function()
+
+					Media.PlaySpeechNotification(greece, "TanyaRescued")
+					greece.MarkCompletedObjective(mainObj)
+					SendReinforcements()
+
+					if SpecialCameras then
+						PrisonCamera.Destroy()
+					end
+				end)
+			end)
+		end
 	end)
 end
 
