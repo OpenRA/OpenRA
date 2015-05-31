@@ -802,9 +802,6 @@ Rules:
 	E7:
 		Buildable:
 			Prerequisites: ~disabled
-	HIJACKER:
-		Buildable:
-			Prerequisites: ~disabled
 	FACF:
 		Buildable:
 			Prerequisites: ~disabled
