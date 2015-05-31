@@ -2,7 +2,7 @@ E2:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 20
 		Prerequisites: ~gapile
 	Valued:
 		Cost: 200
@@ -40,7 +40,7 @@ MEDIC:
 		Description: Heals nearby infantry.\n  Unarmed
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 70
 		Prerequisites: ~gapile
 	Selectable:
 		Bounds: 12,17,0,-6
@@ -79,7 +79,7 @@ JUMPJET:
 		Description: Airborne soldier.\n  Strong vs Infantry, Aircraft\n  Weak vs Vehicles
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 40
 		Prerequisites: ~gapile, garadr
 	Selectable:
 		Bounds: 12,17,0,-6

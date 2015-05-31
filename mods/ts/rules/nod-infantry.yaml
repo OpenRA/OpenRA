@@ -43,7 +43,7 @@ CYBORG:
 		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 40
 		Prerequisites: ~nahand
 	-Crushable:
 	Selectable:
@@ -120,7 +120,7 @@ MHIJACK:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 60
 		Prerequisites: ~nahand, natech # natech must be natmpl
 	Valued:
 		Cost: 100
