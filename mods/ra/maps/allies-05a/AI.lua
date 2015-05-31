@@ -61,8 +61,8 @@ ProtectHarvester = function(unit)
 
 		local Guards = SetupAttackGroup()
 		Utils.Do(Guards, function(unit)
-			if attacker.Location then
-				unit.AttackMove(attacker.Location)
+			if not self.IsDead then
+				unit.AttackMove(self.Location)
 			end
 			IdleHunt(unit)
 		end)
