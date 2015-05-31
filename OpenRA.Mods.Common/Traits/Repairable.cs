@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var targetCell = self.World.Map.CellContaining(target.CenterPosition);
-			if ((self.CenterPosition - target.CenterPosition).LengthSquared < transport.MinimumDistance.Range * transport.MinimumDistance.Range)
+			if ((self.CenterPosition - target.CenterPosition).LengthSquared < transport.MinimumDistance.RangeSquared)
 				return;
 
 			transport.RequestTransport(targetCell, nextActivity);

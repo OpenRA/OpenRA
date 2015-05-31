@@ -23,6 +23,7 @@ namespace OpenRA
 	public struct WRange : IComparable, IComparable<WRange>, IEquatable<WRange>, IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding
 	{
 		public readonly int Range;
+		public long RangeSquared { get { return (long)Range * (long)Range; } }
 
 		public WRange(int r) { Range = r; }
 		public static readonly WRange Zero = new WRange(0);

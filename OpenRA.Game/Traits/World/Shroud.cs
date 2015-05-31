@@ -109,7 +109,7 @@ namespace OpenRA.Traits
 		{
 			var map = world.Map;
 			var r = (radius.Range + 1023) / 1024;
-			var limit = radius.Range * radius.Range;
+			var limit = radius.RangeSquared;
 			var pos = map.CenterOfCell(position);
 
 			foreach (var cell in map.FindTilesInCircle(position, r))

@@ -85,7 +85,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var mi = self.Info.Traits.Get<MobileInfo>();
 			var targetCell = world.Map.CellContaining(target);
-			var rangeSquared = range.Range * range.Range;
 
 			// Correct for SubCell offset
 			target -= world.Map.OffsetOfSubCell(srcSub);
@@ -93,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Select only the tiles that are within range from the requested SubCell
 			// This assumes that the SubCell does not change during the path traversal
 			var tilesInRange = world.Map.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
-				.Where(t => (world.Map.CenterOfCell(t) - target).LengthSquared <= rangeSquared
+				.Where(t => (world.Map.CenterOfCell(t) - target).LengthSquared <= range.RangeSquared
 							&& mi.CanEnterCell(self.World as World, self as Actor, t));
 
 			// See if there is any cell within range that does not involve a cross-domain request

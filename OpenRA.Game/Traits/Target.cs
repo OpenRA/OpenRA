@@ -146,8 +146,7 @@ namespace OpenRA.Traits
 				return false;
 
 			// Target ranges are calculated in 2D, so ignore height differences
-			var rangeSquared = range.Range * range.Range;
-			return Positions.Any(t => (t - origin).HorizontalLengthSquared <= rangeSquared);
+			return Positions.Any(t => (t - origin).HorizontalLengthSquared <= range.RangeSquared);
 		}
 
 		public override string ToString()
