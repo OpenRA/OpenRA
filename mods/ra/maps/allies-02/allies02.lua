@@ -7,11 +7,9 @@ JeepPath = { ReinforcementsEntryPoint.Location, ReinforcementsRallyPoint.Locatio
 TruckReinforcements = { "truk", "truk", "truk" }
 TruckPath = { TruckEntryPoint.Location, TruckRallyPoint.Location }
 
-TimerTicks = DateTime.Minutes(10)
+PathGuards = { PathGuard1, PathGuard2, PathGuard3, PathGuard4, PathGuard5, PathGuard6, PathGuard7, PathGuard8, PathGuard9, PathGuard10, PathGuard11, PathGuard12, PathGuard13, PathGuard14, PathGuard15 }
 
-SendConstructionVehicleReinforcements = function()
-	local mcv = Reinforcements.Reinforce(player, ConstructionVehicleReinforcements, ConstructionVehiclePath)[1]
-end
+TimerTicks = DateTime.Minutes(10)
 
 SendJeepReinforcements = function()
 	Media.PlaySpeechNotification(player, "ReinforcementsArrived")
@@ -20,14 +18,8 @@ end
 
 RunInitialActivities = function()
 	Harvester.FindResources()
-end
 
-MissionAccomplished = function()
-	Media.PlaySpeechNotification(player, "MissionAccomplished")
-end
-
-MissionFailed = function()
-	Media.PlaySpeechNotification(player, "MissionFailed")
+	Trigger.OnAllKilled(PathGuards, SendTrucks)
 end
 
 ticked = TimerTicks
@@ -35,12 +27,11 @@ Tick = function()
 	ussr.Resources = ussr.Resources - (0.01 * ussr.ResourceCapacity / 25)
 
 	if ussr.HasNoRequiredUnits() then
-		SendTrucks()
 		player.MarkCompletedObjective(ConquestObjective)
 	end
 
 	if player.HasNoRequiredUnits() then
-		player.MarkFailedObjective(ConquestObjective)
+		ussr.MarkCompletedObjective(ussrObj)
 	end
 
 	if ticked > 0 then
@@ -69,8 +60,11 @@ ConvoyOnSite = false
 SendTrucks = function()
 	if not ConvoyOnSite then
 		ConvoyOnSite = true
+
 		ticked = 0
 		ConvoyObjective = player.AddPrimaryObjective("Escort the convoy.")
+		player.MarkCompletedObjective(SecureObjective)
+
 		Media.PlaySpeechNotification(player, "ConvoyApproaching")
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
 			ConvoyUnharmed = true
@@ -124,16 +118,23 @@ WorldLoaded = function()
 	Trigger.OnObjectiveFailed(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
-	Trigger.OnPlayerLost(player, MissionFailed)
-	Trigger.OnPlayerWon(player, MissionAccomplished)
+	Trigger.OnPlayerLost(player, function()
+		Media.PlaySpeechNotification(player, "MissionFailed")
+	end)
+	Trigger.OnPlayerWon(player, function()
+		Media.PlaySpeechNotification(player, "MissionAccomplished")
+	end)
 
-	ConquestObjective = player.AddPrimaryObjective("Secure the area.")
+	ussrObj = ussr.AddPrimaryObjective("Deny the allies!")
+
+	SecureObjective = player.AddPrimaryObjective("Secure the convoy's path.")
+	ConquestObjective = player.AddPrimaryObjective("Eliminate the entire soviet presence in this area.")
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionTimerInitialised") end)
 
 	RunInitialActivities()
 
-	SendConstructionVehicleReinforcements()
+	Reinforcements.Reinforce(player, ConstructionVehicleReinforcements, ConstructionVehiclePath)
 	Trigger.AfterDelay(DateTime.Seconds(5), SendJeepReinforcements)
 	Trigger.AfterDelay(DateTime.Seconds(10), SendJeepReinforcements)
 
