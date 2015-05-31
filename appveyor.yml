@@ -2,6 +2,10 @@ version: 1.0.{build}
 
 environment:
   NSIS_ROOT: C:\nsis
+  CoverityProjectToken:
+    secure: BYP5qnptMazSCwTwgiFHlfqZd7BM3bwTRq2Cbs++ofg=
+  CoverityNotificationEmail:
+    secure: BRYcOAGiOqBV406Oh9C/F/bp+OrowEvljq0/CeOddww=
 
 install:
 
@@ -16,6 +20,23 @@ before_build:
 build:
   project: OpenRA.sln
   verbosity: minimal
+
+after_build:
+- ps: |
+    if ($env:APPVEYOR_SCHEDULED_BUILD -eq "True")
+    {
+        cov-build.exe --dir cov-int make all
+        nuget.exe install PublishCoverity -ExcludeVersion
+        PublishCoverity\PublishCoverity.exe compress -o coverity.zip -i cov-int
+        $version = Get-Date -format s
+        PublishCoverity\PublishCoverity.exe publish `
+          -t "$env:CoverityProjectToken" `
+          -e "$env:CoverityNotificationEmail" `
+          -r "$env:APPVEYOR_REPO_NAME" `
+          -z coverity.zip `
+          -d "AppVeyor scheduled build ($env:APPVEYOR_BUILD_VERSION)." `
+          --codeVersion "$version"
+    }
 
 test_script:
   - nunit-console-x86.exe OpenRA.Test.dll
@@ -41,3 +62,5 @@ after_test:
 artifacts:
   - path: OpenRA-$(APPVEYOR_REPO_TAG_NAME).exe
     name: Installer
+  - path: coverity.zip
+    name: Coverity Build
