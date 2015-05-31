@@ -40,7 +40,6 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: gdi
-		Enemies: GDI, Nod
 	PlayerReference@GDI:
 		Name: GDI
 		Playable: False
