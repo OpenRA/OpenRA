@@ -45,7 +45,6 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: allies
-		Enemies: USSR, Greece, England
 	PlayerReference@Greece:
 		Name: Greece
 		Playable: True
@@ -58,7 +57,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: England
-		Enemies: Neutral, USSR
+		Enemies: USSR
 	PlayerReference@England:
 		Name: England
 		Race: allies

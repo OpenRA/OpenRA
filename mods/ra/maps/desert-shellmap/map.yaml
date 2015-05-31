@@ -28,7 +28,6 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: allies
-		Allies: Allies
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
@@ -37,7 +36,6 @@ Players:
 		Name: Allies
 		Race: allies
 		ColorRamp: 161,134,200
-		Allies: Neutral
 		Enemies: Soviets
 	PlayerReference@Soviets:
 		Name: Soviets

@@ -32,6 +32,8 @@ namespace OpenRA.Mods.Common.Lint
 					if (!playerNames.Contains(enemy))
 						emitError("Enemies contains player {0} that is not in list.".F(enemy));
 
+				if (player.OwnsWorld && (player.Enemies.Any() || player.Allies.Any()))
+					emitWarning("The player {0} owning the world should not have any allies or enemies.".F(player.Name));
 			}
 
 			var worldActor = map.Rules.Actors["world"];

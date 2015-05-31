@@ -40,8 +40,6 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: gdi
-		Allies: Nod
-		Enemies: GDI
 	PlayerReference@NodSupporter:
 		Name: NodSupporter
 		NonCombatant: True

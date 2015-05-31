@@ -28,7 +28,6 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: atreides
-		Allies: Atreides
 	PlayerReference@Atreides:
 		Name: Atreides
 		Race: atreides
