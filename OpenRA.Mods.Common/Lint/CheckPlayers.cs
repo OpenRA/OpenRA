@@ -51,6 +51,14 @@ namespace OpenRA.Mods.Common.Lint
 				if (map.SpawnPoints.Value.Distinct().Count() != spawnCount)
 					emitError("Duplicate spawn point locations detected.");
 			}
+
+			foreach (var kv in map.ActorDefinitions)
+			{
+				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+				var ownerName = actorReference.InitDict.Get<OwnerInit>().PlayerName;
+				if (!playerNames.Contains(ownerName))
+					emitError("Actor {0} is owned by unknown player {1}.".F(actorReference.Type, ownerName));
+			}
 		}
 	}
 }
