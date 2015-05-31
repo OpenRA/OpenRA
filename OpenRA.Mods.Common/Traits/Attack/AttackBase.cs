@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
 				{
-					var maxRange = ab.GetMaximumRange().Range;
+					var maxRange = (long)ab.GetMaximumRange().Range;
 					var targetRange = (self.World.Map.CenterOfCell(location) - self.CenterPosition).HorizontalLengthSquared;
 					if (targetRange > maxRange * maxRange)
 						cursor = ab.Info.OutsideRangeCursor;
