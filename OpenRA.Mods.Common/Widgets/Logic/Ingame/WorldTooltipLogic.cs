@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					case WorldTooltipType.Actor:
 						{
 							o = viewport.ActorTooltip.Owner;
-							showOwner = !o.NonCombatant && viewport.ActorTooltip.TooltipInfo.IsOwnerRowVisible;
+							showOwner = o != null && !o.NonCombatant && viewport.ActorTooltip.TooltipInfo.IsOwnerRowVisible;
 
 							var stance = o == null || world.RenderPlayer == null ? Stance.None : o.Stances[world.RenderPlayer];
 							labelText = viewport.ActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					case WorldTooltipType.FrozenActor:
 						{
 							o = viewport.FrozenActorTooltip.TooltipOwner;
-							showOwner = !o.NonCombatant && viewport.FrozenActorTooltip.TooltipInfo.IsOwnerRowVisible;
+							showOwner = o != null && !o.NonCombatant && viewport.FrozenActorTooltip.TooltipInfo.IsOwnerRowVisible;
 
 							var stance = o == null || world.RenderPlayer == null ? Stance.None : o.Stances[world.RenderPlayer];
 							labelText = viewport.FrozenActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
