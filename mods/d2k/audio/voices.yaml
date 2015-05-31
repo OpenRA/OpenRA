@@ -13,10 +13,11 @@ GenericVoice:
 	Voices:
 		Select: G_SSEL1,G_SSEL2,G_SSEL3
 		Move: G_SCONF1,G_SCONF2,G_SCONF3
+		Attack: G_SCONF1,G_SCONF2,G_SCONF3
 		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
 		Guard: I_GUARD
-	DisablePrefixes: Select, Move, Die
-	DisableVariants: Select, Move, Guard
+	DisablePrefixes: Select, Move, Attack, Die
+	DisableVariants: Select, Move, Attack, Guard
 
 VehicleVoice:
 	DefaultVariant: .AUD
@@ -27,6 +28,7 @@ VehicleVoice:
 	Voices:
 		Select: _VSEL1,_VSEL2,_VSEL3
 		Move: _VCONF1,_VCONF2,_VCONF3
+		Attack: _VCONF1,_VCONF2,_VCONF3
 		Guard: I_GUARD
 
 InfantryVoice:
@@ -42,10 +44,11 @@ InfantryVoice:
 	Voices:
 		Select: _ISEL1,_ISEL2,_ISEL3
 		Move: _ICONF1,_ICONF2,_ICONF3
+		Attack: _ICONF1,_ICONF2,_ICONF3
 		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
 		Guard: I_GUARD
 	DisablePrefixes: Die
-	DisableVariants: Select, Move, Guard
+	DisableVariants: Select, Move, Attack, Guard
 
 EngineerVoice:
 	DefaultVariant: .AUD
@@ -76,12 +79,13 @@ FremenVoice:
 		ordos: O
 		harkonnen: H
 	Voices:
-		Select: A_FSEL1,A_FSEL2,A_FSEL3
-		Move: A_FCONF1,A_FCONF2,A_FCONF3
+		Select: A_FSEL1,A_FSEL2,A_FSEL3, A_SEL4
+		Move: A_FCONF1,A_FCONF2,A_FCONF3, A_FCONF4
+		Attack: A_FCONF1,A_FCONF2,A_FCONF3, A_FCONF4
 		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
 		Guard: I_GUARD
-	DisablePrefixes: Select, Move, Die
-	DisableVariants: Select, Move, Guard
+	DisablePrefixes: Select, Move, Attack, Die
+	DisableVariants: Select, Move, Attack, Guard
 
 SaboteurVoice:
 	DefaultVariant: .AUD
