@@ -25,12 +25,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		public string Name { get { return "--shp"; } }
 
+		IEnumerable<Bitmap> frames;
+
 		[Desc("PNGFILE [PNGFILE ...]", "Combine a list of PNG images into a SHP")]
 		public void Run(ModData modData, string[] args)
 		{
 			var inputFiles = GlobArgs(args).OrderBy(a => a).ToList();
 			var dest = inputFiles[0].Split('-').First() + ".shp";
-			var frames = inputFiles.Select(a => PngLoader.Load(a));
+
+			foreach (var inputFile in inputFiles)
+			{
+				var bitmap = PngLoader.Load(inputFile);
+				frames.Append(bitmap);
+				bitmap.Dispose();
+			}
 
 			var size = frames.First().Size;
 			if (frames.Any(f => f.Size != size))
