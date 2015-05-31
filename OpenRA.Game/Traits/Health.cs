@@ -157,7 +157,10 @@ namespace OpenRA.Traits
 				if (RemoveOnDeath)
 					self.Destroy();
 
-				Log.Write("debug", "{0} #{1} killed by {2} #{3}", self.Info.Name, self.ActorID, attacker.Info.Name, attacker.ActorID);
+				if (attacker == null)
+					Log.Write("debug", "{0} #{1} was killed.", self.Info.Name, self.ActorID);
+				else
+					Log.Write("debug", "{0} #{1} killed by {2} #{3}", self.Info.Name, self.ActorID, attacker.Info.Name, attacker.ActorID);
 			}
 		}
 
