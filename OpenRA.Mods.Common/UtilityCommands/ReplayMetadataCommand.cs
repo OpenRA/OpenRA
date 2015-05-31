@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.IO;
 using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -21,6 +22,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public void Run(ModData modData, string[] args)
 		{
 			var replay = ReplayMetadata.Read(args[1]);
+			if (replay == null)
+				throw new InvalidDataException("Failed to read replay meta data");
+
 			var info = replay.GameInfo;
 
 			var lines = FieldSaver.Save(info).ToLines(replay.FilePath);
