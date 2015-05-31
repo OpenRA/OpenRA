@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
 		{
 			// Work around for actors produced within the region not triggering until the second tick
-			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= info.Range.Range * info.Range.Range)
+			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= info.Range.RangeSquared)
 			{
 				var stance = self.Owner.Stances[produced.Owner];
 				if (!info.ValidStances.HasFlag(stance))
