@@ -33,6 +33,7 @@ Options:
 	StartingCash: 5700
 	ConfigurableStartingUnits: False
 	ShortGame: False
+	Difficulties: Easy, Normal, Hard, Real tough guy
 
 Players:
 	PlayerReference@USSR:
@@ -248,16 +249,9 @@ Actors:
 	Actor60: powr
 		Location: 57,62
 		Owner: USSR
-	Actor61: barr
-		Location: 56,66
-		Owner: USSR
 	Actor62: powr
 		Location: 59,62
 		Owner: USSR
-	Actor63: kenn
-		Location: 58,68
-		Owner: USSR
-		Health: 99
 	Actor64: brl3
 		Location: 65,59
 		Owner: USSR
@@ -587,6 +581,13 @@ Actors:
 	Actor170: fenc
 		Location: 50,51
 		Owner: USSR
+	SovietKennel: kenn
+		Location: 58,68
+		Owner: USSR
+		Health: 99
+	SovietBarracks: barr
+		Location: 56,66
+		Owner: USSR
 	SovietWarfactory: weap
 		Location: 60,66
 		Owner: USSR
@@ -741,6 +742,9 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
+	HARV:
+		Buildable:
+			Prerequisites: weap
 	APWR:
 		Buildable:
 			Prerequisites: ~disabled
