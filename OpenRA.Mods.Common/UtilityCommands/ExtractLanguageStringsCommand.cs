@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var node in nodes)
 			{
 				var alreadyTranslated = node.Value.Value != null && node.Value.Value.Contains('@');
-				if (translatables.Contains(node.Key) && !alreadyTranslated)
+				if (translatables.Contains(node.Key) && !alreadyTranslated && parentLabel != null)
 				{
 					var translationKey = "{0}-{1}-{2}".F(container.Replace('_', '-'), parentLabel.Replace('_', '-'), node.Key.ToUpper());
 					Console.WriteLine("\t{0}: {1}", translationKey, node.Value.Value);
