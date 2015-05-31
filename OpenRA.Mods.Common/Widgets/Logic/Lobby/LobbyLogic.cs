@@ -468,7 +468,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var techTraits = modRules.Actors["player"].Traits.WithInterface<ProvidesTechPrerequisiteInfo>().ToList();
 				techLevel.IsVisible = () => techTraits.Count > 0;
-				optionsBin.GetOrNull<LabelWidget>("TECHLEVEL_DESC").IsVisible = () => techTraits.Count > 0;
+
+				var techLevelDescription = optionsBin.GetOrNull<LabelWidget>("TECHLEVEL_DESC");
+				if (techLevelDescription != null)
+					techLevelDescription.IsVisible = () => techTraits.Count > 0;
+
 				techLevel.IsDisabled = () => Map.Status != MapStatus.Available ||
 					Map.Map.Options.TechLevel != null || configurationDisabled() || techTraits.Count <= 1;
 				techLevel.GetText = () => Map.Status != MapStatus.Available ||
