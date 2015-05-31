@@ -17,7 +17,8 @@ namespace OpenRA.Mods.Common.AI
 
 		public void Update(Squad squad)
 		{
-			currentState.Tick(squad);
+			if (currentState != null)
+				currentState.Tick(squad);
 		}
 
 		public void ChangeState(Squad squad, IState newState, bool rememberPrevious)
@@ -31,7 +32,8 @@ namespace OpenRA.Mods.Common.AI
 			if (newState != null)
 				currentState = newState;
 
-			currentState.Activate(squad);
+			if (currentState != null)
+				currentState.Activate(squad);
 		}
 
 		public void RevertToPreviousState(Squad squad, bool saveCurrentState)
