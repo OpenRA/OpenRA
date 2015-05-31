@@ -926,7 +926,7 @@ namespace OpenRA.Mods.Common.AI
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (!enabled)
+			if (!enabled || e.Attacker == null)
 				return;
 
 			if (e.Attacker.Owner.Stances[self.Owner] == Stance.Neutral)
@@ -950,7 +950,7 @@ namespace OpenRA.Mods.Common.AI
 			if (!e.Attacker.HasTrait<ITargetable>())
 				return;
 
-			if (e.Attacker != null && e.Damage > 0)
+			if (e.Damage > 0)
 				aggro[e.Attacker.Owner].Aggro += e.Damage;
 
 			// Protected harvesters or building
