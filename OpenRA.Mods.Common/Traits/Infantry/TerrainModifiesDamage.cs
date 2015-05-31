@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)
 		{
 			var percent = 100;
-			if (attacker.Owner.IsAlliedWith(self.Owner) && warhead.Damage < 0 && !Info.ModifyHealing)
+			if (attacker.Owner.IsAlliedWith(self.Owner) && (warhead != null && warhead.Damage < 0) && !Info.ModifyHealing)
 				return percent;
 
 			var world = self.World;
