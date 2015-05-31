@@ -34,7 +34,7 @@ ticked = TimerTicks
 Tick = function()
 	ussr.Resources = ussr.Resources - (0.01 * ussr.ResourceCapacity / 25)
 
-	if ukraine.HasNoRequiredUnits() then
+	if ussr.HasNoRequiredUnits() then
 		SendTrucks()
 		player.MarkCompletedObjective(ConquestObjective)
 	end
@@ -114,7 +114,6 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Greece")
 	france = Player.GetPlayer("France")
 	ussr = Player.GetPlayer("USSR")
-	ukraine = Player.GetPlayer("Ukraine")
 
 	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")

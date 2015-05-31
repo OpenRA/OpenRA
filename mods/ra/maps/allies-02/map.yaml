@@ -39,26 +39,19 @@ Players:
 		Name: USSR
 		Faction: soviet
 		ColorRamp: 3,255,127
-		Allies: Ukraine
 		Enemies: Greece, France
 	PlayerReference@France:
 		Name: France
 		NonCombatant: True
 		Faction: allies
 		ColorRamp: 115,115,143
-		Allies: Greece, France
-		Enemies: USSR, Ukraine
+		Allies: Greece
+		Enemies: USSR
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: allies
-	PlayerReference@Ukraine:
-		Name: Ukraine
-		Faction: soviet
-		ColorRamp: 3,255,127
-		Allies: USSR
-		Enemies: Greece, France
 	PlayerReference@Greece:
 		Name: Greece
 		Playable: True
@@ -71,7 +64,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: France
-		Enemies: USSR, Ukraine
+		Enemies: USSR
 
 Actors:
 	EntryPoint: t06
@@ -395,7 +388,7 @@ Actors:
 		SubCell: 0
 	Actor103: e1
 		Location: 77,74
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 128
 		SubCell: 2
 	Actor104: e1
@@ -505,56 +498,56 @@ Actors:
 		SubCell: 1
 	Actor125: dog
 		Location: 78,75
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 160
 		SubCell: 1
 	Actor126: e1
 		Location: 71,61
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 160
 		SubCell: 0
 	Actor127: dog
 		Location: 70,61
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 96
 		SubCell: 4
 	Actor128: e1
 		Location: 50,46
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 32
 		SubCell: 1
 	Actor129: e1
 		Location: 49,47
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 64
 		SubCell: 0
 	Actor130: e2
 		Location: 49,49
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 160
 		SubCell: 1
 	Actor131: e2
 		Location: 47,46
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 96
 		SubCell: 3
 	Actor132: e2
 		Location: 48,63
-		Owner: Ukraine
+		Owner: USSR
 		SubCell: 1
 	Actor133: e1
 		Location: 49,63
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 96
 		SubCell: 2
 	Actor134: e1
 		Location: 74,81
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 64
 		SubCell: 3
 	Actor135: e2
 		Location: 75,83
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 96
 		SubCell: 0
 	Actor136: e2
