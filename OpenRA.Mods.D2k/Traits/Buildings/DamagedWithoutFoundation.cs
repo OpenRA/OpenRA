@@ -52,7 +52,10 @@ namespace OpenRA.Mods.D2k.Traits
 					safeTiles++;
 			}
 
-			damageThreshold = (info.DamageThreshold * health.MaxHP + (100 - info.DamageThreshold) * safeTiles * health.MaxHP / totalTiles) / 100;
+			if (totalTiles > 0)
+				damageThreshold = (info.DamageThreshold * health.MaxHP + (100 - info.DamageThreshold) * safeTiles * health.MaxHP / totalTiles) / 100;
+			else
+				damageThreshold = health.HP;
 
 			// Actors start with maximum damage applied
 			var delta = health.HP - damageThreshold;
