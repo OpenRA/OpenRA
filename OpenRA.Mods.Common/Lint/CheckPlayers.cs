@@ -22,22 +22,24 @@ namespace OpenRA.Mods.Common.Lint
 			var players = new MapPlayers(map.PlayerDefinitions).Players;
 
 			var playerNames = players.Values.Select(p => p.Name);
-			foreach (var player in players)
-				foreach (var ally in player.Value.Allies)
+			foreach (var player in players.Values)
+			{
+				foreach (var ally in player.Allies)
 					if (!playerNames.Contains(ally))
 						emitError("Allies contains player {0} that is not in list.".F(ally));
 
-			foreach (var player in players)
-				foreach (var enemy in player.Value.Enemies)
+				foreach (var enemy in player.Enemies)
 					if (!playerNames.Contains(enemy))
 						emitError("Enemies contains player {0} that is not in list.".F(enemy));
+
+			}
 
 			var worldActor = map.Rules.Actors["world"];
 
 			var races = worldActor.Traits.WithInterface<CountryInfo>().Select(c => c.Race);
-			foreach (var player in players)
-				if (!string.IsNullOrWhiteSpace(player.Value.Race) && player.Value.Race != "Random" && !races.Contains(player.Value.Race))
-					emitError("Invalid race {0} chosen for player {1}.".F(player.Value.Race, player.Value.Name));
+			foreach (var player in players.Values)
+				if (!string.IsNullOrWhiteSpace(player.Race) && player.Race != "Random" && !races.Contains(player.Race))
+					emitError("Invalid race {0} chosen for player {1}.".F(player.Race, player.Name));
 
 			if (worldActor.Traits.Contains<MPStartLocationsInfo>())
 			{
