@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Activities
 					return NextActivity;
 
 				// TODO: This should fire each weapon at its maximum range
-				if (target.IsInRange(self.CenterPosition, attackPlane.Armaments.Select(a => a.Weapon.MinRange).Min()))
+				if (attackPlane != null && target.IsInRange(self.CenterPosition, attackPlane.Armaments.Select(a => a.Weapon.MinRange).Min()))
 					inner = Util.SequenceActivities(new FlyTimed(ticksUntilTurn, self), new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
 				else
 					inner = Util.SequenceActivities(new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
