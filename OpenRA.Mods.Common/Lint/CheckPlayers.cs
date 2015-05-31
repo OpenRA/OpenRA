@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			var races = worldActor.Traits.WithInterface<CountryInfo>().Select(c => c.Race);
 			foreach (var player in players.Values)
-				if (!string.IsNullOrWhiteSpace(player.Race) && player.Race != "Random" && !races.Contains(player.Race))
+				if (!string.IsNullOrWhiteSpace(player.Race) && !races.Contains(player.Race))
 					emitError("Invalid race {0} chosen for player {1}.".F(player.Race, player.Name));
 
 			if (worldActor.Traits.Contains<MPStartLocationsInfo>())
