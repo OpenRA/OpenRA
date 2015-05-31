@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var connection = orderManager.Connection as ReplayConnection;
 				if (connection != null && connection.TickCount != 0)
 					percentage.GetText = () => "({0}%)".F(orderManager.NetFrameNumber * 100 / connection.TickCount);
-				else
+				else if (timer != null)
 					timer.Bounds.Width += percentage.Bounds.Width;
 			}
 		}
