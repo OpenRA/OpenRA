@@ -10,6 +10,7 @@ DOG:
 	Tooltip:
 		Name: Attack Dog
 		Description: Anti-infantry unit.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles
+		GenericName: Dog
 	Selectable:
 		Bounds: 12,17,-1,-4
 	Health:
