@@ -517,6 +517,8 @@ namespace OpenRA.Editor
 				if (x.Key != null && actorTemplates.ContainsKey(x.Value.Type))
 					DrawActorBorder(e.Graphics, x.Value.Location(), actorTemplates[x.Value.Type]);
 			}
+
+			base.OnPaint(e);
 		}
 
 		public void CopySelection()
