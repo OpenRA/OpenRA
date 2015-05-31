@@ -130,6 +130,9 @@ namespace OpenRA.FileFormats
 
 									bitmap.UnlockBits(bits);
 
+									if (palette == null)
+										throw new InvalidDataException("Non-Palette indexed PNG are not supported.");
+
 									using (var temp = new Bitmap(1, 1, PixelFormat.Format8bppIndexed))
 									{
 										var cp = temp.Palette;
