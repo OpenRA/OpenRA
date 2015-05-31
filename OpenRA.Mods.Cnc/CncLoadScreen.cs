@@ -125,6 +125,8 @@ namespace OpenRA.Mods.Cnc
 		{
 			if (sheet != null)
 				sheet.Dispose();
+
+			base.Dispose();
 		}
 	}
 }
