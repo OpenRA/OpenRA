@@ -70,6 +70,8 @@ namespace OpenRA.Mods.Common.LoadScreens
 		{
 			if (sheet != null)
 				sheet.Dispose();
+
+			base.Dispose();
 		}
 	}
 }
