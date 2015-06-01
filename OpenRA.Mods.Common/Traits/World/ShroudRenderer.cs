@@ -241,14 +241,16 @@ namespace OpenRA.Mods.Common.Traits
 				// We need to mark newly dirtied areas of the shroud.
 				// Expand the dirty area to cover the neighboring cells, since shroud is affected by neighboring cells.
 				foreach (var cell in cellsDirty)
-				{
-					cellsAndNeighborsDirty.Add(cell);
-					foreach (var direction in CVec.Directions)
-						cellsAndNeighborsDirty.Add(cell + direction);
-				}
+					if (map.Contains(cell))
+					{
+						cellsAndNeighborsDirty.Add(cell);
+						foreach (var direction in CVec.Directions)
+							cellsAndNeighborsDirty.Add(cell + direction);
+					}
 
 				foreach (var cell in cellsAndNeighborsDirty)
-					shroudDirty[cell] = true;
+					if (map.Contains(cell))
+						shroudDirty[cell] = true;
 
 				cellsDirty.Clear();
 				cellsAndNeighborsDirty.Clear();
