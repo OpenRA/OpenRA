@@ -151,10 +151,6 @@ ARTY:
 	AttackFrontal:
 	WithMuzzleFlash:
 	RenderUnit:
-	Explodes:
-		Weapon: UnitExplode
-		EmptyWeapon: UnitExplode
-		Chance: 0
 	AutoTarget:
 		InitialStance: Defend
 	LeavesHusk:
