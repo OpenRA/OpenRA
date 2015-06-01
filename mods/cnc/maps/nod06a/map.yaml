@@ -508,17 +508,17 @@ Actors:
 		Owner: GDI
 		SubCell: 4
 	Actor158: e2
-		Location: 32,58
+		Location: 32,57
 		Owner: GDI
-		SubCell: 1
+		SubCell: 4
 	Actor159: e2
 		Location: 39,52
 		Owner: GDI
 		SubCell: 0
 	Actor160: e2
-		Location: 40,51
+		Location: 40,50
 		Owner: GDI
-		SubCell: 1
+		SubCell: 4
 	waypoint27: waypoint
 		Location: 54,58
 		Owner: Neutral
