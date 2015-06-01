@@ -1749,6 +1749,8 @@ Rules:
 			Prerequisites: ~disabled
 		ParatroopersPower@paratroopers:
 			Prerequisites: ~disabled
+	FCOM:
+		MustBeDestroyed:
 	4TNK:
 		Buildable:
 			Prerequisites: ~disabled
