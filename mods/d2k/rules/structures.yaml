@@ -448,6 +448,7 @@ starport:
 	ProductionByDelivery:
 		Produces: Starport
 		DeliveryActor: frigate
+		DeliveryActorLives: True
 	RenderBuilding:
 		Image: starport.harkonnen
 		RaceImages:

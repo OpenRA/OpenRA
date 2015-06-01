@@ -28,12 +28,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Minimal interval (in ticks) between spawning new delivery actors.")]
 		public readonly int MinimumInterval = 75;
 
+		[Desc("Can the delivering actor fly away if this actor is destroyed during drop-off?")]
+		public readonly bool DeliveryActorLives = false;
+
 		public readonly string ReadyAudio = "Reinforce";
 
 		public override object Create(ActorInitializer init) { return new ProductionByDelivery(init, this); }
 	}
 
-	class ProductionByDelivery : Production, ITick
+	class ProductionByDelivery : Production, ITick, INotifyKilled, INotifySold
 	{
 		readonly Actor self;
 		readonly CPos startPos;
@@ -43,6 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly bool isPlane;
 
 		int timeLeft;
+		Actor landedActor;
 		List<Pair<ActorInfo, string>> production = new List<Pair<ActorInfo, string>>();
 
 		public ProductionByDelivery(ActorInitializer init, ProductionByDeliveryInfo info)
@@ -145,15 +149,12 @@ namespace OpenRA.Mods.Common.Traits
 		/// </summary>
 		void MakeDelivery(List<Pair<ActorInfo, string>> actorInfos, Actor deliveringActor, World world)
 		{
+			landedActor = deliveringActor;
+
 			if (!actorInfos.Any())
 			{
-				if (isPlane)
-					deliveringActor.QueueActivity(new Fly(deliveringActor, Target.FromCell(world, endPos)));
-				else
-					deliveringActor.QueueActivity(new HeliFly(deliveringActor, Target.FromCell(world, endPos)));
-
-				deliveringActor.QueueActivity(new RemoveSelf());
-				production = new List<Pair<ActorInfo, string>>();
+				TakeOff(deliveringActor, world);
+				landedActor = null;
 			}
 			else
 			{
@@ -184,5 +185,39 @@ namespace OpenRA.Mods.Common.Traits
 				});
 			}
 		}
+
+		void TakeOff(Actor deliveringActor, World world)
+		{
+			if (isPlane)
+				deliveringActor.QueueActivity(new Fly(deliveringActor, Target.FromCell(world, endPos)));
+			else
+				deliveringActor.QueueActivity(new HeliFly(deliveringActor, Target.FromCell(world, endPos)));
+
+			deliveringActor.QueueActivity(new RemoveSelf());
+			production = new List<Pair<ActorInfo, string>>();
+		}
+
+		public void Killed(Actor self, AttackInfo e)
+		{
+			if (landedActor == null)
+				return;
+
+			if (info.DeliveryActorLives)
+			{
+				TakeOff(landedActor, self.World);
+			}
+			else
+			{
+				landedActor.Kill(e.Attacker);
+			}
+		}
+
+		public void Selling(Actor self)
+		{
+			if (landedActor != null)
+				TakeOff(landedActor, self.World);
+		}
+
+		public void Sold(Actor self) { }
 	}
 }
