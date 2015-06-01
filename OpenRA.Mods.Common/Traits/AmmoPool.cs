@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (a.Info.AmmoPoolName == Info.Name)
+			if (a != null && a.Info.AmmoPoolName == Info.Name)
 				TakeAmmo();
 		}
 
