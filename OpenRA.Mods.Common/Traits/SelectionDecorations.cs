@@ -9,21 +9,30 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	public class SelectionDecorationsInfo : ITraitInfo
+	public class SelectionDecorationsInfo : ITraitInfo, ISelectionDecorationsInfo
 	{
 		public readonly string Palette = "chrome";
-		[Desc("Visual bounds for the selection box. If null, it matches Bounds.")]
+		[Desc("Visual bounds for selection box. If null, it uses AutoSelectionSize.")]
 		public readonly int[] VisualBounds = null;
+		[Desc("Health bar, production progress bar etc.")]
+		public readonly bool RenderSelectionBars = true;
+		public readonly bool RenderSelectionBox = true;
+		public readonly Color SelectionBoxColor = Color.White;
 
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
+
+		public int[] SelectionBoxBounds { get { return VisualBounds; } }
 	}
 
-	public class SelectionDecorations : IPostRenderSelection
+	public class SelectionDecorations : ISelectionDecorations, IPostRenderSelection
 	{
 		// depends on the order of pips in TraitsInterfaces.cs!
 		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
@@ -31,6 +40,8 @@ namespace OpenRA.Traits
 
 		public SelectionDecorationsInfo Info;
 		readonly Actor self;
+
+		public ISelectionDecorationsInfo SelectionDecorationsInfo { get { return Info; } }
 
 		public SelectionDecorations(Actor self, SelectionDecorationsInfo info)
 		{
@@ -42,6 +53,12 @@ namespace OpenRA.Traits
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer) || self.World.FogObscures(self))
 				yield break;
+
+			if (Info.RenderSelectionBox)
+				yield return new SelectionBoxRenderable(self, Info.SelectionBoxColor);
+
+			if (Info.RenderSelectionBars)
+				yield return new SelectionBarsRenderable(self);
 
 			var b = self.VisualBounds;
 			var pos = wr.ScreenPxPosition(self.CenterPosition);

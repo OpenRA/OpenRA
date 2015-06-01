@@ -12,7 +12,7 @@ using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Graphics
+namespace OpenRA.Mods.Common.Graphics
 {
 	public struct SelectionBoxRenderable : IRenderable, IFinalizedRenderable
 	{

@@ -180,7 +180,6 @@
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Selectable.cs" />
-    <Compile Include="Traits\SelectionDecorations.cs" />
     <Compile Include="Traits\Target.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Util.cs" />
@@ -235,7 +234,6 @@
     <Compile Include="Sound\OpenAlSound.cs" />
     <Compile Include="Sound\NullSound.cs" />
     <Compile Include="Effects\SpriteEffect.cs" />
-    <Compile Include="Graphics\SelectionBoxRenderable.cs" />
     <Compile Include="Graphics\SelectionBarsRenderable.cs" />
     <Compile Include="Graphics\TargetLineRenderable.cs" />
     <Compile Include="Graphics\UISpriteRenderable.cs" />

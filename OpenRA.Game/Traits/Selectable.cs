@@ -61,12 +61,6 @@ namespace OpenRA.Traits
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			if (!Info.Selectable)
-				yield break;
-
-			yield return new SelectionBoxRenderable(self, Color.White);
-			yield return new SelectionBarsRenderable(self);
-
 			if (self.World.LocalPlayer != null && self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
 				yield return new TargetLineRenderable(ActivityTargetPath(), Color.Green);
 		}
