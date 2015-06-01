@@ -243,6 +243,7 @@ saboteur:
 		Range: 7c0
 	C4Demolition:
 		C4Delay: 45
+		Voice: Move
 	-AutoTarget:
 	AttractsWorms:
 		Intensity: 120
