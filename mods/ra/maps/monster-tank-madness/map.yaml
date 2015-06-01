@@ -2119,14 +2119,17 @@ Rules:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+		-AnnounceOnSeen:
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+		-AnnounceOnSeen:
 	^Tank:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+		-AnnounceOnSeen:
 	^Ship:
 		Tooltip:
 			GenericVisibility: Enemy

@@ -510,6 +510,7 @@ Rules:
 			InitialCash: 50
 		ClassicProductionQueue@Infantry:
 			BuildSpeed: 1
+		-EnemyWatcher:
 	OILB:
 		Health:
 			HP: 3000
