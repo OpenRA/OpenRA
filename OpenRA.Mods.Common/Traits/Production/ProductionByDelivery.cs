@@ -43,8 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly bool isPlane;
 
 		int timeLeft;
-		string factionVariant;
-		List<ActorInfo> production = new List<ActorInfo>();
+		List<Pair<ActorInfo, string>> production = new List<Pair<ActorInfo, string>>();
 
 		public ProductionByDelivery(ActorInitializer init, ProductionByDeliveryInfo info)
 			: base(init, info)
@@ -70,10 +69,9 @@ namespace OpenRA.Mods.Common.Traits
 			timeLeft = info.MinimumInterval;
 		}
 
-		public override bool Produce(Actor self, IEnumerable<ActorInfo> actorsToProduce, string raceVariant)
+		public override bool Produce(Actor self, IEnumerable<Pair<ActorInfo, string>> actorsToProduce)
 		{
 			production.AddRange(actorsToProduce);
-			factionVariant = raceVariant;
 			return true;
 		}
 
@@ -81,11 +79,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var deliveringActorType = info.DeliveryActor;
 			var owner = self.Owner;
-			var actorsToProduce = new List<ActorInfo>(production);
-			production = new List<ActorInfo>();
+			var actorsToProduce = new List<Pair<ActorInfo, string>>(production);
+			production = new List<Pair<ActorInfo, string>>();
 
 			// Check if there is a valid drop-off point before sending the transport
-			var exit = GetAvailableExit(self, actorsToProduce.First());
+			var exit = GetAvailableExit(self, actorsToProduce.First().First);
 			if (exit == null)
 				return;
 
@@ -110,15 +108,15 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		void TryToLand(Actor deliveringActor, IEnumerable<ActorInfo> actorsToProduce)
+		void TryToLand(Actor deliveringActor, List<Pair<ActorInfo, string>> actorsToProduce)
 		{
 			// Check if there is a valid drop-off point before beginning to descend
-			var exit = GetAvailableExit(self, actorsToProduce.First());
+			var exit = GetAvailableExit(self, actorsToProduce.First().First);
 
 			// Abort the landing and refund the player
 			if (exit == null || self.IsDead || !self.IsInWorld)
 			{
-				var value = actorsToProduce.Sum(actor => actor.Traits.Get<ValuedInfo>().Cost);
+				var value = actorsToProduce.Sum(actor => actor.First.Traits.Get<ValuedInfo>().Cost);
 				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(value);
 
 				if (isPlane)
@@ -145,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>
 		/// Drop off any actors that the delivering actor is carrying.
 		/// </summary>
-		void MakeDelivery(List<ActorInfo> actorInfos, Actor deliveringActor, World world)
+		void MakeDelivery(List<Pair<ActorInfo, string>> actorInfos, Actor deliveringActor, World world)
 		{
 			if (!actorInfos.Any())
 			{
@@ -155,13 +153,13 @@ namespace OpenRA.Mods.Common.Traits
 					deliveringActor.QueueActivity(new HeliFly(deliveringActor, Target.FromCell(world, endPos)));
 
 				deliveringActor.QueueActivity(new RemoveSelf());
-				production = new List<ActorInfo>();
+				production = new List<Pair<ActorInfo, string>>();
 			}
 			else
 			{
 				var actorInfo = actorInfos.First();
 
-				var chosenExit = GetAvailableExit(self, actorInfo);
+				var chosenExit = GetAvailableExit(self, actorInfo.First);
 				if (chosenExit == null)
 				{
 					deliveringActor.QueueActivity(new Wait(10));
@@ -172,7 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 				var exitLocation = self.Location + chosenExit.ExitCell;
 				var targetLocation = RallyPoint.Value != null ? RallyPoint.Value.Location : exitLocation;
 
-				var newActor = DoProduction(self, actorInfo, chosenExit, factionVariant);
+				var newActor = DoProduction(self, actorInfo.First, chosenExit, actorInfo.Second);
 
 				actorInfos.Remove(actorInfo);
 

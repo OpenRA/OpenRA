@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			return self.World.CreateActor(false, actorToProduce.Name, td);
 		}
 
-		public virtual bool Produce(Actor self, IEnumerable<ActorInfo> actorsToProduce, string raceVariant)
+		public virtual bool Produce(Actor self, IEnumerable<Pair<ActorInfo, string>> actorsToProduce)
 		{
 			if (Reservable.IsReserved(self))
 				return false;
@@ -75,10 +75,10 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var actorInfo in actorsToProduce)
 			{
 				// Pick a spawn/exit point pair
-				var exit = GetAvailableExit(self, actorInfo);
+				var exit = GetAvailableExit(self, actorInfo.First);
 				if (exit != null)
 				{
-					var newUnit = DoProduction(self, actorInfo, exit, raceVariant);
+					var newUnit = DoProduction(self, actorInfo.First, exit, actorInfo.Second);
 
 					var exitLocation = self.Location + exit.ExitCell;
 					var targetLocation = RallyPoint.Value != null ? RallyPoint.Value.Location : exitLocation;

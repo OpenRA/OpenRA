@@ -31,13 +31,13 @@ namespace OpenRA.Mods.D2k.Traits
 		public ProductionFromMapEdge(ActorInitializer init, ProductionInfo info)
 			: base(init, info) { }
 
-		public override bool Produce(Actor self, IEnumerable<ActorInfo> actorsToProduce, string raceVariant)
+		public override bool Produce(Actor self, IEnumerable<Pair<ActorInfo, string>> actorsToProduce)
 		{
 			closestEdgeCell = self.World.Map.ChooseClosestEdgeCell(self.Location);
 			closestEdgeCellCenter = self.World.Map.CenterOfCell(closestEdgeCell);
 
 			foreach (var actorInfo in actorsToProduce)
-				DoProduction(self, actorInfo, null, raceVariant);
+				DoProduction(self, actorInfo.First, null, actorInfo.Second);
 
 			return true;
 		}

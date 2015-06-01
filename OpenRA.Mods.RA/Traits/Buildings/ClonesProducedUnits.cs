@@ -10,6 +10,7 @@
 
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
@@ -46,7 +47,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (ci == null || !info.CloneableTypes.Intersect(ci.Types).Any())
 				return;
 
-			production.Produce(self, new[] { produced.Info }, race);
+			production.Produce(self, new[] { new Pair<ActorInfo, string>(produced.Info, race) });
 		}
 	}
 }
