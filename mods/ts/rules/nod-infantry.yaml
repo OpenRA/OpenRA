@@ -62,16 +62,9 @@ CYBORG:
 	Armament:
 		Weapon: Vulcan3
 	AttackFrontal:
-	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-			Prone60Percent: 60
-			Prone70Percent: 70
-			Prone100Percent: 100
-			Prone350Percent: 350
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
+	WithPermanentInjury:
 
 CYC2:
 	Inherits: ^Infantry
@@ -105,16 +98,9 @@ CYC2:
 		Weapon: CyCannon
 		LocalOffset: 170,85,683
 	AttackFrontal:
-	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-			Prone60Percent: 60
-			Prone70Percent: 70
-			Prone100Percent: 100
-			Prone350Percent: 350
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
+	WithPermanentInjury:
 
 MHIJACK:
 	Inherits: ^Infantry

@@ -761,12 +761,12 @@ cyc2:
 		Start: 95
 		Length: 15
 		ShadowStart: 403
-	prone-run:
+	crippled-run:
 		Start: 110
 		Length: 9
 		Facings: 8
 		ShadowStart: 418
-	prone-stand:
+	crippled-stand:
 		Start: 110
 		Facings: 8
 		Stride: 9
@@ -786,14 +786,9 @@ cyc2:
 		Length: 6
 		Facings: 8
 		ShadowStart: 520
-	prone-shoot:
+	crippled-shoot:
 		Start: 260
 		Length: 6
-		Facings: 8
-		ShadowStart: 568
-	standup-0: # TODO: N/A as they only crawl when severly damaged
-		Start: 260
-		Length: 2
 		Facings: 8
 		ShadowStart: 568
 	die5: flameguy # TODO: walking animation unused
@@ -823,12 +818,12 @@ cyborg:
 		Start: 71
 		Length: 15
 		ShadowStart: 441
-	prone-run:
+	crippled-run:
 		Start: 86
 		Length: 6
 		Facings: 8
 		ShadowStart: 456
-	prone-stand:
+	crippled-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
@@ -846,16 +841,11 @@ cyborg:
 		Length: 6
 		Facings: 8
 		ShadowStart: 534
-	prone-shoot:
+	crippled-shoot:
 		Start: 212
 		Length: 6
 		Facings: 8
 		ShadowStart: 582
-	standup-0: # TODO: N/A as they don't do that
-		Start: 260
-		Length: 2
-		Facings: 8
-		ShadowStart: 630
 	die5: # TODO: unused running frame 322 and following
 		Start: 292
 		Length: 14
