@@ -189,7 +189,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(Win2CellTriggerActivator, function(a, id)
-		if a.Owner == Nod and NodObjective1 then
+		if a.Owner == Nod and NodObjective3 then
 			Nod.MarkCompletedObjective(NodObjective3)
 			Trigger.RemoveFootprintTrigger(id)
 		end
