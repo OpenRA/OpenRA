@@ -15,89 +15,38 @@ namespace OpenRA.Graphics
 {
 	sealed class TerrainRenderer : IDisposable
 	{
-		readonly IVertexBuffer<Vertex> vertexBuffer;
-		readonly Vertex[] updateCellVertices = new Vertex[4];
-		readonly int rowStride;
-
-		readonly WorldRenderer worldRenderer;
+		readonly TerrainSpriteLayer terrain;
 		readonly Theater theater;
 		readonly CellLayer<TerrainTile> mapTiles;
-		readonly Map map;
-
-		float terrainPaletteIndex;
 
 		public TerrainRenderer(World world, WorldRenderer wr)
 		{
-			worldRenderer = wr;
 			theater = wr.Theater;
-			map = world.Map;
-			mapTiles = map.MapTiles.Value;
+			mapTiles = world.Map.MapTiles.Value;
 
-			terrainPaletteIndex = wr.Palette("terrain").TextureIndex;
-			rowStride = 4 * map.Bounds.Width;
-			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(rowStride * map.Bounds.Height);
+			terrain = new TerrainSpriteLayer(world, wr, theater.Sheet, BlendMode.Alpha, wr.Palette("terrain"));
+			foreach (var cell in world.Map.Cells)
+				UpdateCell(cell);
 
-			UpdateMap();
-
-			map.MapTiles.Value.CellEntryChanged += UpdateCell;
-			map.MapHeight.Value.CellEntryChanged += UpdateCell;
-
-			wr.PaletteInvalidated += () =>
-			{
-				terrainPaletteIndex = wr.Palette("terrain").TextureIndex;
-				UpdateMap();
-			};
-		}
-
-		void GenerateTileVertices(Vertex[] vertices, int offset, CPos cell)
-		{
-			var tile = theater.TileSprite(mapTiles[cell]);
-			var pos = worldRenderer.ScreenPosition(map.CenterOfCell(cell)) + tile.Offset - 0.5f * tile.Size;
-			Util.FastCreateQuad(vertices, pos, tile, terrainPaletteIndex, offset, tile.Size);
-		}
-
-		void UpdateMap()
-		{
-			var nv = 0;
-			var vertices = new Vertex[rowStride * map.Bounds.Height];
-			foreach (var cell in map.Cells)
-			{
-				GenerateTileVertices(vertices, nv, cell);
-				nv += 4;
-			}
-
-			vertexBuffer.SetData(vertices, nv);
+			world.Map.MapTiles.Value.CellEntryChanged += UpdateCell;
+			world.Map.MapHeight.Value.CellEntryChanged += UpdateCell;
 		}
 
 		public void UpdateCell(CPos cell)
 		{
-			var uv = cell.ToMPos(map.TileShape);
-			var offset = rowStride * (uv.V - map.Bounds.Top) + 4 * (uv.U - map.Bounds.Left);
-
-			GenerateTileVertices(updateCellVertices, 0, cell);
-			vertexBuffer.SetData(updateCellVertices, offset, 4);
+			terrain.Update(cell, theater.TileSprite(mapTiles[cell]));
 		}
 
 		public void Draw(WorldRenderer wr, Viewport viewport)
 		{
-			var cells = viewport.VisibleCells;
-
-			// Only draw the rows that are visible.
-			// VisibleCells is clamped to the map, so additional checks are unnecessary
-			var firstRow = cells.TopLeft.ToMPos(map).V - map.Bounds.Top;
-			var lastRow = cells.BottomRight.ToMPos(map).V - map.Bounds.Top + 1;
-
-			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
-				vertexBuffer, rowStride * firstRow, rowStride * (lastRow - firstRow),
-				PrimitiveType.QuadList, wr.Theater.Sheet);
-
+			terrain.Draw(viewport);
 			foreach (var r in wr.World.WorldActor.TraitsImplementing<IRenderOverlay>())
 				r.Render(wr);
 		}
 
 		public void Dispose()
 		{
-			vertexBuffer.Dispose();
+			terrain.Dispose();
 		}
 	}
 }

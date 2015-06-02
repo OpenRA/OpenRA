@@ -105,6 +105,7 @@ namespace OpenRA.Renderer.Null
 		public void Bind() { }
 		public void SetData(T[] vertices, int length) { }
 		public void SetData(T[] vertices, int start, int length) { }
+		public void SetData(IntPtr data, int start, int length) { }
 		public void Dispose() { }
 	}
 }

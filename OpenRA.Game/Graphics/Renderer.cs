@@ -202,6 +202,11 @@ namespace OpenRA.Graphics
 			}
 		}
 
+		public IVertexBuffer<Vertex> CreateVertexBuffer(int length)
+		{
+			return Device.CreateVertexBuffer(length);
+		}
+
 		public void EnableScissor(Rectangle rect)
 		{
 			// Must remain inside the current scissor rect

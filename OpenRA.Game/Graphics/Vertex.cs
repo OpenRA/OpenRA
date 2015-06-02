@@ -15,24 +15,19 @@ namespace OpenRA.Graphics
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Vertex
 	{
-		// TODO Workaround for unused field warnings in mono 2.10
-		#pragma warning disable 414
-		float x, y, z, u, v;
-		float p, c;
-		#pragma warning restore
+		public readonly float X, Y, Z, U, V, P, C;
 
 		public Vertex(float2 xy, float u, float v, float p, float c)
-		{
-			this.x = xy.X; this.y = xy.Y; this.z = 0;
-			this.u = u; this.v = v;
-			this.p = p; this.c = c;
-		}
+			: this(xy.X, xy.Y, 0, u, v, p, c) { }
 
 		public Vertex(float[] xyz, float u, float v, float p, float c)
+			: this(xyz[0], xyz[1], xyz[2], u, v, p, c) { }
+
+		public Vertex(float x, float y, float z, float u, float v, float p, float c)
 		{
-			this.x = xyz[0]; this.y = xyz[1]; this.z = xyz[2];
-			this.u = u; this.v = v;
-			this.p = p; this.c = c;
+			X = x; Y = y; Z = z;
+			U = u; V = v;
+			P = p; C = c;
 		}
 	}
 }
