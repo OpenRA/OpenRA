@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (claimByActor.Remove(claim.Claimer) & claimByCell.Remove(claim.Cell))
 			{
-				if (claim.Claimer.Destroyed) return;
+				if (claim.Claimer.Disposed) return;
 				if (!claim.Claimer.IsInWorld) return;
 				if (claim.Claimer.IsDead) return;
 

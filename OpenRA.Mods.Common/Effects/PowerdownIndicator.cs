@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (a.Destroyed || wr.World.FogObscures(a))
+			if (a.Disposed || wr.World.FogObscures(a))
 				return SpriteRenderable.None;
 
 			return anim.Render(a.CenterPosition, wr.Palette(canPowerDown.Info.IndicatorPalette));

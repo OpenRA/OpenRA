@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets
 		void PerformKeyboardOrderOnSelection(Func<Actor, Order> f)
 		{
 			var orders = world.Selection.Actors
-				.Where(a => a.Owner == world.LocalPlayer && !a.Destroyed)
+				.Where(a => a.Owner == world.LocalPlayer && !a.Disposed)
 				.Select(f)
 				.ToArray();
 
@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool PerformStanceCycle()
 		{
 			var actor = world.Selection.Actors
-				.Where(a => a.Owner == world.LocalPlayer && !a.Destroyed)
+				.Where(a => a.Owner == world.LocalPlayer && !a.Disposed)
 				.Select(a => Pair.New(a, a.TraitOrDefault<AutoTarget>()))
 				.FirstOrDefault(a => a.Second != null);
 
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool PerformGuard()
 		{
 			var actors = world.Selection.Actors
-				.Where(a => !a.Destroyed && a.Owner == world.LocalPlayer && a.HasTrait<Guard>());
+				.Where(a => !a.Disposed && a.Owner == world.LocalPlayer && a.HasTrait<Guard>());
 
 			if (actors.Any())
 				world.OrderGenerator = new GuardOrderGenerator(actors);

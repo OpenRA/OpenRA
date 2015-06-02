@@ -54,7 +54,8 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, INotifyKilled, INotifyOwnerChanged, INotifyAddedToWorld, ITick, INotifySold, IDisableMove
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, INotifyKilled,
+		INotifyOwnerChanged, INotifyAddedToWorld, ITick, INotifySold, IDisableMove, INotifyActorDisposing
 	{
 		public readonly CargoInfo Info;
 		readonly Actor self;
@@ -301,6 +302,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var c in cargo)
 				c.Kill(e.Attacker);
+
+			cargo.Clear();
+		}
+
+		public void Disposing(Actor self)
+		{
+			foreach (var c in cargo)
+				c.Dispose();
 
 			cargo.Clear();
 		}

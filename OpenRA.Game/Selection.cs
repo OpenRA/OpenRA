@@ -78,7 +78,7 @@ namespace OpenRA
 			foreach (var cg in controlGroups.Values)
 			{
 				// note: NOT `!a.IsInWorld`, since that would remove things that are in transports.
-				cg.RemoveAll(a => a.Destroyed || a.Owner != world.LocalPlayer);
+				cg.RemoveAll(a => a.Disposed || a.Owner != world.LocalPlayer);
 			}
 		}
 

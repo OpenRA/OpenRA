@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA.Traits
 				self.World.AddFrameEndTask(w =>
 				{
 					// damage is inflicted by the chronosphere
-					if (!self.Destroyed)
+					if (!self.Disposed)
 						self.InflictDamage(chronosphere, int.MaxValue, null);
 				});
 				return true;

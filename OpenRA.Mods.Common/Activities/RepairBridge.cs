@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.GetHut(0) == null || hut.Bridge.GetHut(1) == null)
 				return;
 			hut.Repair(self);
-			self.Destroy();
+			self.Dispose();
 		}
 	}
 }

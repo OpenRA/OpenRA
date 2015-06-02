@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (Info.RemoveInstead || !self.HasTrait<Health>())
-				self.Destroy();
+				self.Dispose();
 			else
 				self.Kill(self);
 		}

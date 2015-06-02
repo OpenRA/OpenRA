@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Activities
 					actor.InflictDamage(self, damage, null);
 				}
 
-				self.Destroy();
+				self.Dispose();
 			});
 		}
 	}

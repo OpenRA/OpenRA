@@ -100,7 +100,7 @@ namespace OpenRA.Traits
 			if (NeedRenderables)
 			{
 				NeedRenderables = false;
-				if (!actor.Destroyed)
+				if (!actor.Disposed)
 				{
 					IsRendering = true;
 					renderables = actor.Render(wr).ToArray();

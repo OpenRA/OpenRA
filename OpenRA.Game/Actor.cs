@@ -22,7 +22,7 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>
+	public sealed class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>, IDisposable
 	{
 		public readonly ActorInfo Info;
 
@@ -33,7 +33,7 @@ namespace OpenRA
 		[Sync] public Player Owner { get; set; }
 
 		public bool IsInWorld { get; internal set; }
-		public bool Destroyed { get; private set; }
+		public bool Disposed { get; private set; }
 
 		Activity currentActivity;
 
@@ -51,7 +51,7 @@ namespace OpenRA
 		public IEffectiveOwner EffectiveOwner { get { return effectiveOwner.Value; } }
 
 		public bool IsIdle { get { return currentActivity == null; } }
-		public bool IsDead { get { return Destroyed || (health.Value == null ? false : health.Value.IsDead); } }
+		public bool IsDead { get { return Disposed || (health.Value == null ? false : health.Value.IsDead); } }
 
 		public CPos Location { get { return occupySpace.Value.TopLeft; } }
 		public WPos CenterPosition { get { return occupySpace.Value.CenterPosition; } }
@@ -215,18 +215,21 @@ namespace OpenRA
 			World.TraitDict.AddTrait(this, trait);
 		}
 
-		public void Destroy()
+		public void Dispose()
 		{
 			World.AddFrameEndTask(w =>
 			{
-				if (Destroyed)
+				if (Disposed)
 					return;
 
 				if (IsInWorld)
 					World.Remove(this);
 
+				foreach (var t in TraitsImplementing<INotifyActorDisposing>())
+					t.Disposing(this);
+
 				World.TraitDict.RemoveActor(this);
-				Destroyed = true;
+				Disposed = true;
 
 				if (luaInterface != null)
 					luaInterface.Value.OnActorDestroyed();
@@ -238,7 +241,7 @@ namespace OpenRA
 		{
 			World.AddFrameEndTask(w =>
 			{
-				if (Destroyed)
+				if (Disposed)
 					return;
 
 				var oldOwner = Owner;

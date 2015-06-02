@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Activities
 			foreach (var t in target.TraitsImplementing<INotifyInfiltrated>())
 				t.Infiltrated(target, self);
 
-			self.Destroy();
+			self.Dispose();
 
 			if (target.HasTrait<Building>())
 				Sound.PlayToPlayer(self.Owner, "bldginf1.aud");

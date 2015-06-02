@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA.Activities
 				foreach (var a in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())
 					a.Trait.Enable();
 
-			if (teleporter != null && self != teleporter && !teleporter.Destroyed)
+			if (teleporter != null && self != teleporter && !teleporter.Disposed)
 			{
 				var building = teleporter.TraitOrDefault<RenderBuilding>();
 				if (building != null)

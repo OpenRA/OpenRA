@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 			else
-				pilot.Destroy();
+				pilot.Dispose();
 		}
 
 		static bool IsSuitableCell(Actor self, Actor actorToDrop)

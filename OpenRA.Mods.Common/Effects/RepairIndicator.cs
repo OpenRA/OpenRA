@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (building.Destroyed || wr.World.FogObscures(building) || rb.Repairers.Count == 0)
+			if (building.Disposed || wr.World.FogObscures(building) || rb.Repairers.Count == 0)
 				return SpriteRenderable.None;
 
 			PaletteReference palette;

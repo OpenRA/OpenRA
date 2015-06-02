@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Activities
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
-			self.Destroy();
+			self.Dispose();
 			return null;
 		}
 	}

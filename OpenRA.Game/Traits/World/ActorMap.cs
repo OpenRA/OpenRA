@@ -198,7 +198,7 @@ namespace OpenRA.Traits
 				yield break;
 
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (!i.Actor.Destroyed)
+				if (!i.Actor.Disposed)
 					yield return i.Actor;
 		}
 
@@ -208,7 +208,7 @@ namespace OpenRA.Traits
 				yield break;
 
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (!i.Actor.Destroyed && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
+				if (!i.Actor.Disposed && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
 					yield return i.Actor;
 		}
 
@@ -285,7 +285,7 @@ namespace OpenRA.Traits
 
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
 			for (var i = influence[a]; i != null; i = i.Next)
-				if ((always || i.SubCell == sub || i.SubCell == SubCell.FullCell) && !i.Actor.Destroyed && withCondition(i.Actor))
+				if ((always || i.SubCell == sub || i.SubCell == SubCell.FullCell) && !i.Actor.Disposed && withCondition(i.Actor))
 					return true;
 
 			return false;

@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.Destroyed || captor.Destroyed) return;
+				if (self.Disposed || captor.Disposed) return;
 
 				var previousOwner = self.Owner;
 
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<Actor> UnitsInRange()
 		{
 			return Self.World.FindActorsInCircle(Self.CenterPosition, WRange.FromCells(Info.Range))
-				.Where(a => a.IsInWorld && a != Self && !a.Destroyed && !a.Owner.NonCombatant);
+				.Where(a => a.IsInWorld && a != Self && !a.Disposed && !a.Owner.NonCombatant);
 		}
 
 		bool IsClear(Actor self, Player currentOwner, Player originalOwner)

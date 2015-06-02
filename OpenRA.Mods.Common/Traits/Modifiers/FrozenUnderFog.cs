@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(Actor self)
 		{
-			if (self.Destroyed)
+			if (self.Disposed)
 				return;
 
 			VisibilityHash = 0;
