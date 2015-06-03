@@ -204,6 +204,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ps = Game.Settings.Player;
 
 			var nameTextfield = panel.Get<TextFieldWidget>("PLAYERNAME");
+			nameTextfield.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
 			nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
 			nameTextfield.OnEnterKey = () => { nameTextfield.YieldKeyboardFocus(); return true; };
 			nameTextfield.OnLoseFocus = () =>
@@ -216,6 +217,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			colorPreview.Color = ps.Color;
 
 			var colorDropdown = panel.Get<DropDownButtonWidget>("PLAYERCOLOR");
+			colorDropdown.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
 			colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorPreview, worldRenderer.World);
 			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => ps.Color.RGB;
 
