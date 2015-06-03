@@ -239,7 +239,8 @@ namespace OpenRA
 		public SequenceProvider SequenceProvider { get { return Rules.Sequences[Tileset]; } }
 
 		public WVec[][] CellCorners { get; private set; }
-		[FieldLoader.Ignore] public CellRegion Cells;
+		[FieldLoader.Ignore] public CellRegion CellsInsideBounds;
+		[FieldLoader.Ignore] public CellRegion AllCells;
 
 		public static Map FromTileset(TileSet tileset)
 		{
@@ -392,12 +393,16 @@ namespace OpenRA
 
 			cachedTileSet = Exts.Lazy(() => Rules.TileSets[Tileset]);
 
-			var tl = new MPos(Bounds.Left, Bounds.Top).ToCPos(this);
-			var br = new MPos(Bounds.Right - 1, Bounds.Bottom - 1).ToCPos(this);
-			Cells = new CellRegion(TileShape, tl, br);
+			var tl = new MPos(0, 0).ToCPos(this);
+			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
+			AllCells = new CellRegion(TileShape, tl, br);
+
+			var btl = new MPos(Bounds.Left, Bounds.Top).ToCPos(this);
+			var bbr = new MPos(Bounds.Right - 1, Bounds.Bottom - 1).ToCPos(this);
+			CellsInsideBounds = new CellRegion(TileShape, btl, bbr);
 
 			CustomTerrain = new CellLayer<byte>(this);
-			foreach (var uv in Cells.MapCoords)
+			foreach (var uv in AllCells.MapCoords)
 				CustomTerrain[uv] = byte.MaxValue;
 
 			var leftDelta = TileShape == TileShape.Diamond ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
@@ -689,6 +694,10 @@ namespace OpenRA
 			MapResources = Exts.Lazy(() => CellLayer.Resize(oldMapResources, newSize, oldMapResources[MPos.Zero]));
 			MapHeight = Exts.Lazy(() => CellLayer.Resize(oldMapHeight, newSize, oldMapHeight[MPos.Zero]));
 			MapSize = new int2(newSize);
+
+			var tl = new MPos(0, 0).ToCPos(this);
+			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
+			AllCells = new CellRegion(TileShape, tl, br);
 		}
 
 		public void ResizeCordon(int left, int top, int right, int bottom)
@@ -697,7 +706,7 @@ namespace OpenRA
 
 			var tl = new MPos(Bounds.Left, Bounds.Top).ToCPos(this);
 			var br = new MPos(Bounds.Right - 1, Bounds.Bottom - 1).ToCPos(this);
-			Cells = new CellRegion(TileShape, tl, br);
+			CellsInsideBounds = new CellRegion(TileShape, tl, br);
 		}
 
 		string ComputeHash()
@@ -797,8 +806,8 @@ namespace OpenRA
 
 		public WRange DistanceToEdge(WPos pos, WVec dir)
 		{
-			var tl = CenterOfCell(Cells.TopLeft) - new WVec(512, 512, 0);
-			var br = CenterOfCell(Cells.BottomRight) + new WVec(511, 511, 0);
+			var tl = CenterOfCell(CellsInsideBounds.TopLeft) - new WVec(512, 512, 0);
+			var br = CenterOfCell(CellsInsideBounds.BottomRight) + new WVec(511, 511, 0);
 			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? tl.X : br.X) - pos.X) / dir.X;
 			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? tl.Y : br.Y) - pos.Y) / dir.Y;
 			return new WRange(Math.Min(x, y) * dir.Length);

@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			var resources = w.WorldActor.TraitsImplementing<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 
-			foreach (var cell in w.Map.Cells)
+			foreach (var cell in w.Map.AllCells)
 			{
 				ResourceType t;
 				if (!resources.TryGetValue(w.Map.MapResources.Value[cell].Type, out t))
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Set initial density based on the number of neighboring resources
-			foreach (var cell in w.Map.Cells)
+			foreach (var cell in w.Map.AllCells)
 			{
 				var type = content[cell].Type;
 				if (type != null)

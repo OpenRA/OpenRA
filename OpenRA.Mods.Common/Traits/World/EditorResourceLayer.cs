@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (w.Type != WorldType.Editor)
 				return;
 
-			foreach (var cell in Map.Cells)
+			foreach (var cell in Map.AllCells)
 				UpdateCell(cell);
 		}
 

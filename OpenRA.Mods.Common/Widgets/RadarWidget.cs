@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Widgets
 			actorSprite = new Sprite(radarSheet, new Rectangle(0, height, width, height), TextureChannel.Alpha);
 
 			// Set initial terrain data
-			foreach (var cell in world.Map.Cells)
+			foreach (var cell in world.Map.CellsInsideBounds)
 				UpdateTerrainCell(cell);
 
 			world.Map.MapTiles.Value.CellEntryChanged += UpdateTerrainCell;
@@ -91,6 +91,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void UpdateTerrainCell(CPos cell)
 		{
+			if (!world.Map.Contains(cell))
+				return;
+
 			var stride = radarSheet.Size.Width;
 			var uv = cell.ToMPos(world.Map);
 

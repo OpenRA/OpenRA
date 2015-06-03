@@ -249,7 +249,7 @@ namespace OpenRA.Traits
 				throw new ArgumentException("The map bounds of these shrouds do not match.", "s");
 
 			var changed = new List<CPos>();
-			foreach (var uv in map.Cells.MapCoords)
+			foreach (var uv in map.CellsInsideBounds.MapCoords)
 			{
 				if (!explored[uv] && s.explored[uv])
 				{
@@ -264,7 +264,7 @@ namespace OpenRA.Traits
 		public void ExploreAll(World world)
 		{
 			var changed = new List<CPos>();
-			foreach (var uv in map.Cells.MapCoords)
+			foreach (var uv in map.CellsInsideBounds.MapCoords)
 			{
 				if (!explored[uv])
 				{
@@ -279,7 +279,7 @@ namespace OpenRA.Traits
 		public void ResetExploration()
 		{
 			var changed = new List<CPos>();
-			foreach (var uv in map.Cells.MapCoords)
+			foreach (var uv in map.CellsInsideBounds.MapCoords)
 			{
 				var visible = visibleCount[uv] > 0;
 				if (explored[uv] != visible)
@@ -318,7 +318,7 @@ namespace OpenRA.Traits
 		public Func<MPos, bool> IsExploredTest(CellRegion region)
 		{
 			// If the region to test extends outside the map we must use the slow test that checks the map boundary every time.
-			if (!map.Cells.Contains(region))
+			if (!map.CellsInsideBounds.Contains(region))
 				return slowExploredTest;
 
 			// If shroud isn't enabled, then we can see everything inside the map.
@@ -361,7 +361,7 @@ namespace OpenRA.Traits
 		public Func<MPos, bool> IsVisibleTest(CellRegion region)
 		{
 			// If the region to test extends outside the map we must use the slow test that checks the map boundary every time.
-			if (!map.Cells.Contains(region))
+			if (!map.CellsInsideBounds.Contains(region))
 				return slowVisibleTest;
 
 			// If fog isn't enabled, then we can see everything.
