@@ -275,9 +275,10 @@ frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_COMPILE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
-    local editor = GetEditor()
     ActivateOutput()
-    CompileProgram(editor)
+    CompileProgram(GetEditor(), {
+        keepoutput = ide:GetLaunchedProcess() ~= nil or ide:GetDebugger():IsConnected()
+    })
   end)
 frame:Connect(ID_COMPILE, wx.wxEVT_UPDATE_UI,
   function (event) event:Enable(GetEditor() ~= nil) end)

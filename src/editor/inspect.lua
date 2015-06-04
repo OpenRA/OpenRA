@@ -206,7 +206,7 @@ end
 local debugger = ide.debugger
 
 local function analyzeProgram(editor)
-  ClearOutput()
+  if ide:GetLaunchedProcess() == nil and not ide:GetDebugger():IsConnected() then ClearOutput() end
   DisplayOutput("Analyzing the source code")
   frame:Update()
 
