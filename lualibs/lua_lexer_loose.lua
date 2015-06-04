@@ -57,17 +57,27 @@ local function match_comment(s, pos)
   return '--' .. part, pos
 end
 
--- note: matches invalid numbers too
+-- note: matches invalid numbers too (for example, 0x)
 local function match_numberlike(s, pos)
-  local tok = s:match('^0[xX][0-9A-Fa-f]*', pos)
-  if tok then return tok end
-  local tok = s:match('^[0-9%.]+', pos)
-  if tok then
-    local tok2 = s:match('^[eE][+-]?[0-9]*', pos + #tok)
-    if tok2 then tok = tok .. tok2 end
-    return tok
+  local hex = s:match('^0[xX]', pos)
+  if hex then pos = pos + #hex end
+
+  local longint = (hex and '^%x+' or '^%d+') .. '[uU]?[lL][lL]'
+  local mantissa1 = hex and '^%x+%.?%x*' or '^%d+%.?%d*'
+  local mantissa2 = hex and '^%.%x+' or '^%.%d+'
+  local exponent = hex and '^[pP][+%-]?%x*' or '^[eE][+%-]?%d*'
+  local imaginary = '^[iI]'
+  local tok = s:match(longint, pos)
+  if not tok then
+    tok = s:match(mantissa1, pos) or s:match(mantissa2, pos)
+    if tok then
+      local tok2 = s:match(exponent, pos + #tok)
+      if tok2 then tok = tok..tok2 end
+      tok2 = s:match(imaginary, pos + #tok)
+      if tok2 then tok = tok..tok2 end
+    end
   end
-  return nil 
+  return tok and (hex or '') .. tok or hex
 end
 
 local function newset(s)
