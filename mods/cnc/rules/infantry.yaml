@@ -8,8 +8,6 @@ E1:
 	Buildable:
 		BuildPaletteOrder: 10
 		Queue: Infantry.GDI, Infantry.Nod
-	Selectable:
-		Bounds: 12,17,0,-6
 	Mobile:
 		Speed: 56
 	Health:
@@ -17,6 +15,7 @@ E1:
 	Armament:
 		Weapon: M16
 	AttackFrontal:
+	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2,idle3,idle4
 		StandSequences: stand, stand2
@@ -32,8 +31,6 @@ E2:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Infantry.GDI
-	Selectable:
-		Bounds: 12,17,0,-6
 	Mobile:
 		Speed: 71
 	Health:
@@ -43,6 +40,7 @@ E2:
 		LocalOffset: 0,0,427
 		FireDelay: 15
 	AttackFrontal:
+	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand, stand2
@@ -61,8 +59,6 @@ E3:
 	Buildable:
 		BuildPaletteOrder: 20
 		Queue: Infantry.GDI, Infantry.Nod
-	Selectable:
-		Bounds: 12,17,0,-6
 	Mobile:
 		Speed: 42
 	Health:
@@ -74,6 +70,7 @@ E3:
 		LocalOffset: 256,43,341
 		FireDelay: 5
 	AttackFrontal:
+	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand, stand2
@@ -89,8 +86,6 @@ E4:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Infantry.Nod
-	Selectable:
-		Bounds: 12,17,0,-6
 	Mobile:
 		Speed: 56
 	Health:
@@ -104,6 +99,7 @@ E4:
 	AttackFrontal:
 	WithMuzzleFlash:
 		SplitFacings: true
+	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand, stand2
@@ -119,8 +115,6 @@ E5:
 		BuildPaletteOrder: 50
 		Prerequisites: tmpl, ~techlevel.high
 		Queue: Infantry.Nod
-	Selectable:
-		Bounds: 12,17,0,-6
 	Mobile:
 		Speed: 56
 		TerrainSpeeds:
@@ -140,6 +134,7 @@ E5:
 	WithMuzzleFlash:
 		SplitFacings: true
 	-PoisonedByTiberium:
+	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand, stand2
@@ -154,8 +149,6 @@ E6:
 	Buildable:
 		BuildPaletteOrder: 30
 		Queue: Infantry.GDI, Infantry.Nod
-	Selectable:
-		Bounds: 12,17,0,-6
 	Mobile:
 		Speed: 56
 	Health:
@@ -167,6 +160,7 @@ E6:
 	Captures:
 		CaptureTypes: building, husk
 	-AutoTarget:
+	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand, stand2
@@ -183,8 +177,6 @@ RMBO:
 		BuildPaletteOrder: 50
 		Prerequisites: eye, ~techlevel.high
 		Queue: Infantry.GDI
-	Selectable:
-		Bounds: 12,17,0,-6
 	Mobile:
 		Speed: 71
 	Health:
@@ -200,6 +192,7 @@ RMBO:
 	Armament:
 		Weapon: Sniper
 	AttackFrontal:
+	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2,idle3
 		StandSequences: stand, stand2

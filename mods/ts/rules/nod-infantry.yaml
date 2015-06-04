@@ -9,8 +9,6 @@ E3:
 	Tooltip:
 		Name: Rocket Infantry
 		Description: Anti-tank infantry.\n  Strong vs Vehicles, Aircraft, Buildings\n  Weak vs Infantry
-	Selectable:
-		Bounds: 12,17,0,-9
 	Voiced:
 		VoiceSet: Rocket
 	Health:
@@ -22,13 +20,6 @@ E3:
 		LocalOffset: 128,0,640
 	AttackFrontal:
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-			Prone60Percent: 60
-			Prone70Percent: 70
-			Prone100Percent: 100
-			Prone350Percent: 350
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 
@@ -47,7 +38,7 @@ CYBORG:
 		Prerequisites: ~nahand
 	-Crushable:
 	Selectable:
-		Bounds: 14,30,0,-7
+		Bounds: 16,31,0,-10
 	Voiced:
 		VoiceSet: Cyborg
 	Mobile:
@@ -82,7 +73,7 @@ CYC2:
 		BuildLimit: 1
 	-Crushable:
 	Selectable:
-		Bounds: 14,30,0,-7
+		Bounds: 16,32,-1,-12
 	Voiced:
 		VoiceSet: CyborgCommando
 	Mobile:
@@ -109,12 +100,10 @@ MHIJACK:
 		BuildPaletteOrder: 60
 		Prerequisites: ~nahand, natech # natech must be natmpl
 	Valued:
-		Cost: 100
+		Cost: 1850
 	Tooltip:
 		Name: Mutant Hijacker
 		Description: Hijacks enemy vehicles.\n  Unarmed
-	Selectable:
-		Bounds: 12,17,0,-9
 	Voiced:
 		VoiceSet: Hijacker
 	Health:
@@ -129,13 +118,6 @@ MHIJACK:
 		Range: 6c0
 	-AutoTarget:
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-			Prone60Percent: 60
-			Prone70Percent: 70
-			Prone100Percent: 100
-			Prone350Percent: 350
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 

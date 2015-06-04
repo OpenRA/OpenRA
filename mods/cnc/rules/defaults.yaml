@@ -180,6 +180,7 @@
 			Beach: 80
 	SelectionDecorations:
 	Selectable:
+		Bounds: 12,17,0,-6
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	TakeCover:
@@ -259,8 +260,6 @@
 	-TakeCover:
 	AppearsOnRadar:
 	SelectionDecorations:
-	Selectable:
-		Bounds: 12,17,0,-9
 	Valued:
 		Cost: 70
 	Tooltip:

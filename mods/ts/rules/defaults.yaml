@@ -185,10 +185,19 @@
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
+		Bounds: 14,23,-1,-9
 	Voiced:
 		VoiceSet: Infantry
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
+	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
 	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation:
@@ -274,6 +283,7 @@
 		Range: 2c0
 	ProximityCaptor:
 		Types: CivilianInfantry
+	-TakeCover:
 	WithInfantryBody:
 	ScaredyCat:
 	-MustBeDestroyed:
@@ -505,6 +515,43 @@
 		LandWhenIdle: no
 		CruiseAltitude: 2560
 	ReturnOnIdle:
+
+^Viceroid:
+	RenderUnit:
+	AppearsOnRadar:
+	Health:
+		Radius: 256
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 113
+		ROT: 16
+		Crushes: crate
+		SharesCell: no
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Rail: 80
+			DirtRoad: 90
+			Rough: 70
+			Tiberium: 100
+			BlueTiberium: 100
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+		Bounds: 26,26,0,-3
+	TargetableUnit:
+		TargetTypes: Ground
+	AttackMove:
+	HiddenUnderFog:
+	DrawLineToTarget:
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	CombatDebugOverlay:
+	Guardable:
+	BodyOrientation:
+	Huntable:
+	ScriptTriggers:
 
 ^BlossomTree:
 	Tooltip:

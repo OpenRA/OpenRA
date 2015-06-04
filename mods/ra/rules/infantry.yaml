@@ -44,8 +44,6 @@ E1:
 	Tooltip:
 		Name: Rifle Infantry
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 50
 	Mobile:
@@ -58,9 +56,6 @@ E1:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
@@ -77,8 +72,6 @@ E2:
 	Tooltip:
 		Name: Grenadier
 		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 50
 	Mobile:
@@ -93,9 +86,6 @@ E2:
 		FireDelay: 15
 	AttackFrontal:
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
@@ -115,8 +105,6 @@ E3:
 	Tooltip:
 		Name: Rocket Soldier
 		Description: Anti-tank/Anti-aircraft infantry.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 45
 	Mobile:
@@ -132,9 +120,6 @@ E3:
 		Weapon: Dragon
 	AttackFrontal:
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
@@ -151,8 +136,6 @@ E4:
 	Tooltip:
 		Name: Flamethrower
 		Description: Advanced anti-structure unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 40
 	Mobile:
@@ -166,9 +149,6 @@ E4:
 		Weapon: Flamer
 	AttackFrontal:
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
@@ -185,8 +165,6 @@ E6:
 	Tooltip:
 		Name: Engineer
 		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 25
 	Mobile:
@@ -197,11 +175,8 @@ E6:
 	RepairsBridges:
 	ExternalCaptures:
 		Type: building
-	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	-AutoTarget:
+	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
@@ -222,8 +197,6 @@ SPY:
 		Name: Spy
 		GenericName: Soldier
 		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 25
 	Mobile:
@@ -233,9 +206,6 @@ SPY:
 	Passenger:
 		PipType: Yellow
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	Disguise:
 	Infiltrates:
 		Types: SpyInfiltrate
@@ -252,6 +222,7 @@ SPY:
 
 SPY.England:
 	Inherits: SPY
+	TakeCover:
 	WithDisguisingInfantryBody:
 	Buildable:
 		Prerequisites: ~infantry.england, dome, ~tent, ~techlevel.medium
@@ -275,8 +246,6 @@ E7:
 	Tooltip:
 		Name: Tanya
 		Description: Elite commando infantry. Armed with\ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 100
 	Mobile:
@@ -298,9 +267,6 @@ E7:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 	AnnounceOnBuild:
@@ -320,8 +286,6 @@ MEDI:
 	Tooltip:
 		Name: Medic
 		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 80
 	Mobile:
@@ -337,9 +301,6 @@ MEDI:
 		Cursor: heal
 		OutsideRangeCursor: heal
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	-AutoTarget:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -359,8 +320,6 @@ MECH:
 	Tooltip:
 		Name: Mechanic
 		Description: Repairs nearby vehicles and restores\nhusks to working condition.\n  Strong vs Nothing\n  Weak vs Everything
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 80
 	Mobile:
@@ -378,9 +337,6 @@ MECH:
 	Captures:
 		CaptureTypes: husk
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	-AutoTarget:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -390,8 +346,6 @@ MECH:
 
 EINSTEIN:
 	Inherits: ^Infantry
-	Selectable:
-		Bounds: 12,17,0,-9
 	Valued:
 		Cost: 10
 	Tooltip:
@@ -403,6 +357,7 @@ EINSTEIN:
 	RevealsShroud:
 		Range: 2c0
 	-AutoTarget:
+	-TakeCover:
 	ProximityCaptor:
 		Types: CivilianInfantry
 	WithInfantryBody:
@@ -412,8 +367,6 @@ EINSTEIN:
 
 DELPHI:
 	Inherits: ^Infantry
-	Selectable:
-		Bounds: 12,17,0,-9
 	Valued:
 		Cost: 10
 	Tooltip:
@@ -425,6 +378,7 @@ DELPHI:
 	RevealsShroud:
 		Range: 2c0
 	-AutoTarget:
+	-TakeCover:
 	ProximityCaptor:
 		Types: CivilianInfantry
 	WithInfantryBody:
@@ -452,8 +406,6 @@ THF:
 	Tooltip:
 		Name: Thief
 		Description: Steals enemy credits.\n  Strong vs Nothing\n  Weak vs Everything\n
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 25
 	Mobile:
@@ -465,9 +417,6 @@ THF:
 	Infiltrates:
 		InfiltrateTypes: Cash
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	-AutoTarget:
 	Voiced:
 		VoiceSet: ThiefVoice
@@ -484,8 +433,6 @@ HIJACKER:
 	Tooltip:
 		Name: Hijacker
 		Description: Hijacks enemy vehicles. Unarmed\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 50
 	Mobile:
@@ -499,6 +446,7 @@ HIJACKER:
 	-AutoTarget:
 	Voiced:
 		VoiceSet: ThiefVoice
+	-TakeCover:
 
 SHOK:
 	Inherits: ^Infantry
@@ -512,8 +460,6 @@ SHOK:
 	Tooltip:
 		Name: Shock Trooper
 		Description: Elite infantry with portable tesla coils.\n Strong vs Infantry\n Weak vs Aircraft
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 100
 	Mobile:
@@ -528,9 +474,6 @@ SHOK:
 		Weapon: PortaTesla
 	AttackFrontal:
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
@@ -549,8 +492,6 @@ SNIPER:
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 80
 		Prerequisites: ~disabled
-	Selectable:
-		Bounds: 12,17,0,-6
 	Mobile:
 		Speed: 56
 	Health:
@@ -569,9 +510,6 @@ SNIPER:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
@@ -596,8 +534,6 @@ Zombie:
 		Queue: Infantry
 		BuildPaletteOrder: 200
 		Prerequisites: ~bio
-	Selectable:
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 250
 	Mobile:
