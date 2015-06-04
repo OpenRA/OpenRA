@@ -235,7 +235,4 @@ frame:Connect(ID_ANALYZE, wx.wxEVT_COMMAND_MENU_SELECTED,
     end
   end)
 frame:Connect(ID_ANALYZE, wx.wxEVT_UPDATE_UI,
-  function (event)
-    local editor = GetEditor()
-    event:Enable((debugger.server == nil and debugger.pid == nil) and (editor ~= nil))
-  end)
+  function (event) event:Enable(GetEditor() ~= nil) end)
