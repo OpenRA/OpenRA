@@ -202,12 +202,15 @@ lexer.patterns = {
    --final_short_comment = "^%-%-([^\n]*)()$",
    long_comment        = "^%-%-%[(=*)%[\n?(.-)%]%1%]()",
    long_string         = "^%[(=*)%[\n?(.-)%]%1%]()",
+   number_longint      = "^%d+[uU]?[lL][lL]()",
+   number_longint_hex  = "^%x+[uU]?[lL][lL]()",
    number_mantissa     = { "^%d+%.?%d*()", "^%d*%.%d+()" },
    number_mantissa_hex = { "^%x+%.?%x*()", "^%x*%.%x+()" }, --Lua5.1 and Lua5.2
-   number_exponant     = "^[eE][%+%-]?%d+()",
-   number_exponant_hex = "^[pP][%+%-]?%d+()", --Lua5.2
+   number_exponent     = "^[eE][%+%-]?%d+()",
+   number_exponent_hex = "^[pP][%+%-]?%d+()", --Lua5.2
    number_hex          = "^0[xX]()",
-   word                = "^([%a_][%w_]*)()"
+   number_imaginary    = "^[iI]()",
+   word                = "^([%a_][%w_]*)()",
 }
 
 ----------------------------------------------------------------------
@@ -411,28 +414,31 @@ end
 -- Extract Number.
 ----------------------------------------------------------------------
 function lexer :extract_number()
-   local j = self.src:match(self.patterns.number_hex, self.i)
-   if j then
-      j = self.src:match (self.patterns.number_mantissa_hex[1], j) or
-          self.src:match (self.patterns.number_mantissa_hex[2], j)
-      if j then
-         j = self.src:match (self.patterns.number_exponant_hex, j) or j
-      end
+   local patt = self.patterns
+   local s = self.src
+   local j = s:match(patt.number_hex, self.i)
+   local hex = j ~= nil
+   local longint = hex and patt.number_longint_hex or patt.number_longint
+   local mantissa1 = hex and patt.number_mantissa_hex[1] or patt.number_mantissa[1]
+   local mantissa2 = hex and patt.number_mantissa_hex[2] or patt.number_mantissa[2]
+   local exponent = hex and patt.number_exponent_hex or patt.number_exponent
+   if not hex then j = self.i end
+
+   local t = s:match(longint, j)
+   if t then
+     j = t
    else
-      j = self.src:match (self.patterns.number_mantissa[1], self.i) or
-          self.src:match (self.patterns.number_mantissa[2], self.i)
-      if j then
-         j = self.src:match (self.patterns.number_exponant, j) or j
-      end
+     j = s:match(mantissa1, j) or s:match(mantissa2, j)
+     if not j then return end
+     j = s:match(exponent, j) or j
+     j = s:match(patt.number_imaginary, j) or j
    end
-   if not j then return end
-   -- Number found, interpret with tonumber() and return it
+
    local str = self.src:sub (self.i, j-1)
-   -- :TODO: tonumber on Lua5.2 floating hex may or may not work on Lua5.1
-   local n = tonumber (str)
-   if not n then error(str.." is not a valid number according to tonumber()") end
    self.i = j
-   return 'Number', n
+   -- Number found, interpret with tonumber() and return it
+   -- return str as the fallback when processing formats not supported by the current interpreter
+   return 'Number', (tonumber (str) or str)
 end
 
 ----------------------------------------------------------------------
