@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -91,42 +92,27 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			targetCountdown = Info.TargetRescanInterval;
 
-			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, Info.MaxSearchRadius);
-			var noiseDirection = WVec.Zero;
-
-			foreach (var actor in actorsInRange)
+			// If close enough, we don't care about other actors.
+			var target = self.World.FindActorsInCircle(self.CenterPosition, Info.IgnoreNoiseAttackRange).FirstOrDefault(x => x.HasTrait<AttractsWorms>());
+			if (target != null)
 			{
-				if (!actor.IsInWorld)
-					continue;
-
-				// TODO: Test if we really want to ignore actors that are on rock
-				if (!mobile.Value.CanEnterCell(actor.Location, null, false))
-					continue;
-
-				var noise = actor.TraitOrDefault<AttractsWorms>();
-				if (noise == null)
-					continue;
-
-				var distance = actor.CenterPosition - self.CenterPosition;
-				var length = distance.Length;
-
-				// Actor is too far to be heard
-				if (noise.Info.Range[noise.Info.Range.Length - 1].Range < length)
-					continue;
-
-				// If close enough, we don't care about other actors
-				if (length <= Info.IgnoreNoiseAttackRange.Range)
-				{
-					self.CancelActivity();
-					attackTrait.Value.ResolveOrder(self, new Order("Attack", actor, true) { TargetActor = actor });
-					return;
-				}
-
-				var direction = 1024 * distance / length;
-				var percentage = noise.GetNoisePercentageAtDistance(length);
-
-				noiseDirection += direction * noise.Info.Intensity * percentage / 100;
+				self.CancelActivity();
+				attackTrait.Value.ResolveOrder(self, new Order("Attack", target, true) { TargetActor = target });
+				return;
 			}
+
+			Func<Actor, bool> isValidTarget = a =>
+			{
+				if (!a.HasTrait<AttractsWorms>())
+					return false;
+
+				return mobile.Value.CanEnterCell(a.Location, null, false);
+			};
+
+			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, Info.MaxSearchRadius)
+				.Where(isValidTarget).SelectMany(a => a.TraitsImplementing<AttractsWorms>());
+
+			var noiseDirection = actorsInRange.Aggregate(WVec.Zero, (a, b) => a + b.AttractionAtPosition(self.CenterPosition));
 
 			// No target was found
 			if (noiseDirection == WVec.Zero)
