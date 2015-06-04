@@ -78,9 +78,9 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(player, "Lose")
 	end)
 
-	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops")
-	gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
-	gdiObjective2 = player.AddSecondaryObjective("Capture the Tiberium Refinery")
+	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops.")
+	gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area.")
+	gdiObjective2 = player.AddSecondaryObjective("Capture the Tiberium Refinery.")
 
 	Trigger.OnCapture(NodRefinery, function() player.MarkCompletedObjective(gdiObjective2) end)
 	Trigger.OnKilled(NodRefinery, function() player.MarkFailedObjective(gdiObjective2) end)

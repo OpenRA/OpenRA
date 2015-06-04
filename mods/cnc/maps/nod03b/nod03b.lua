@@ -53,9 +53,9 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(player, "Lose")
 	end)
 
-	gdiObjective = enemy.AddPrimaryObjective("Eliminate all Nod forces in the area")
-	nodObjective1 = player.AddPrimaryObjective("Capture the prison")
-	nodObjective2 = player.AddSecondaryObjective("Destroy all GDI forces")
+	gdiObjective = enemy.AddPrimaryObjective("Eliminate all Nod forces in the area.")
+	nodObjective1 = player.AddPrimaryObjective("Capture the prison.")
+	nodObjective2 = player.AddSecondaryObjective("Destroy all GDI forces.")
 
 	Trigger.OnKilled(TechCenter, function() player.MarkFailedObjective(nodObjective1) end)
 	Trigger.OnCapture(TechCenter, function()

@@ -120,9 +120,9 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(Nod, "Lose")
 	end)
 
-	GDIObjective = GDI.AddPrimaryObjective("Kill all enemies!")
-	NodObjective1 = Nod.AddPrimaryObjective("Build a base!")
-	NodObjective2 = Nod.AddPrimaryObjective("Destroy all GDI units!")
+	GDIObjective = GDI.AddPrimaryObjective("Kill all enemies.")
+	NodObjective1 = Nod.AddPrimaryObjective("Build a base.")
+	NodObjective2 = Nod.AddPrimaryObjective("Destroy all GDI units.")
 
 	OnAnyDamaged(Grd2ActorTriggerActivator, Grd2TriggerFunction)
 	Trigger.AfterDelay(Atk8TriggerFunctionTime, Atk8TriggerFunction)

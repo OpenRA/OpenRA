@@ -137,8 +137,8 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(Nod, "Lose")
 	end)
 
-	GDIObjective = GDI.AddPrimaryObjective("Kill all enemies!")
-	NodObjective1 = Nod.AddPrimaryObjective("Destroy the village and kill all civilians!")
+	GDIObjective = GDI.AddPrimaryObjective("Kill all enemies.")
+	NodObjective1 = Nod.AddPrimaryObjective("Destroy the village and kill all civilians.")
 	NodObjective2 = Nod.AddSecondaryObjective("Kill all GDI units in the area.")
 
 	InsertNodUnits()

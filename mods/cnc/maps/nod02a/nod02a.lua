@@ -182,9 +182,9 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(Nod, "Lose")
 	end)
 
-	NodObjective1 = Nod.AddPrimaryObjective("Build a base")
-	NodObjective2 = Nod.AddPrimaryObjective("Destroy the GDI base")
-	GDIObjective = GDI.AddPrimaryObjective("Kill all enemies!")
+	NodObjective1 = Nod.AddPrimaryObjective("Build a base.")
+	NodObjective2 = Nod.AddPrimaryObjective("Destroy the GDI base.")
+	GDIObjective = GDI.AddPrimaryObjective("Kill all enemies.")
 
 	OnAnyDamaged(Atk3ActorTriggerActivator, Atk3TriggerFunction)
 	Trigger.OnAllRemovedFromWorld(DfndActorTriggerActivator, DfndTriggerFunction)
