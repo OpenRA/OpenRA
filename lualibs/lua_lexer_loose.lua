@@ -105,7 +105,7 @@ function M.lex(code, f, pos)
   local tok = code:match('^#![^\n]*\n', pos) -- shebang
   if tok then f('Shebang', tok, 1) pos = pos + #tok end
   while pos <= #code do
-    local p2, n2, n1 = code:match('^%s*()((%S)%S?)', pos)
+    local p2, n2, n1, n3 = code:match('^%s*()((%S)(%S?))', pos)
     if not p2 then assert(code:sub(pos):match('^%s*$')); break end
     pos = p2
     
@@ -141,7 +141,7 @@ function M.lex(code, f, pos)
         f('Unknown', code:sub(pos), pos) -- unterminated string
         pos = #code + 1
       end
-    elseif dig[n1] then
+    elseif dig[n1] or (n1 == '.' and dig[n3]) then
       local tok = match_numberlike(code, pos)
       assert(tok)
       f('Number', tok, pos)
