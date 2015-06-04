@@ -848,7 +848,13 @@ function CreateEditor(bare)
         SetAutoRecoveryMark()
 
         local linesChanged = inserted and event:GetLinesAdded() or 0
-        table.insert(editor.ev, {pos, linesChanged})
+        -- collate events if they are for the same line
+        local events = #editor.ev
+        if events == 0 or editor.ev[events][1] ~= firstLine then
+          editor.ev[events+1] = {firstLine, linesChanged}
+        elseif events > 0 and editor.ev[events][1] == firstLine then
+          editor.ev[events][2] = math.max(editor.ev[events][2], linesChanged)
+        end
         DynamicWordsAdd(editor, nil, firstLine, linesChanged)
       end
 
@@ -1114,11 +1120,13 @@ function CreateEditor(bare)
       updateBraceMatch(editor)
       local minupdated
       for _,iv in ipairs(editor.ev) do
-        local line = editor:LineFromPosition(iv[1])
+        local line = iv[1]
         if not minupdated or line < minupdated then minupdated = line end
-        local ok, res = pcall(IndicateAll, editor, line)
-        if not ok then DisplayOutputLn("Internal error: ",res,line,line+iv[2]) end
         IndicateFunctionsOnly(editor,line,line+iv[2])
+      end
+      if minupdated then
+        local ok, res = pcall(IndicateAll, editor, minupdated)
+        if not ok then DisplayOutputLn("Internal error: ",res,minupdated) end
       end
       local firstvisible = editor:DocLineFromVisible(editor:GetFirstVisibleLine())
       local lastline = math.min(editor:GetLineCount(),
