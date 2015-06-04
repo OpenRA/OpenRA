@@ -12,7 +12,7 @@
 			None: 25
 			Wood: 75
 			Light: 100
-			Heavy: 100
+			Heavy: 90
 			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
