@@ -258,7 +258,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var cell in cellsAndNeighborsDirty)
 			{
 				var uv = cell.ToMPos(map.TileShape);
-				if (!map.Contains(uv))
+				if (!tileInfos.Contains(uv))
 					continue;
 
 				var tileInfo = tileInfos[uv];
