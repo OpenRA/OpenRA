@@ -15,9 +15,9 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
+	[Desc("This actor is selectable. Defines bounds of selectable area and selection priority.")]
 	public class SelectableInfo : ITraitInfo
 	{
-		public readonly bool Selectable = true;
 		public readonly int Priority = 10;
 		[Desc("Bounds for the selectable area.")]
 		public readonly int[] Bounds = null;

@@ -545,8 +545,7 @@ Rules:
 			ShowOwnerRow: false
 	TRAN:
 		RejectsOrders:
-		Selectable:
-			Selectable: false
+		-Selectable:
 		RevealsShroud:
 			Range: 5c0
 

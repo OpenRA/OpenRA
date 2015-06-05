@@ -109,12 +109,7 @@ crate:
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:
-	Selectable:
-		Selectable: false
-		Bounds: 15,15,-1,-1
 	Passenger:
-	SelectionDecorations:
-		VisualBounds: 15,15,-1,-1
 
 mpspawn:
 	Immobile:

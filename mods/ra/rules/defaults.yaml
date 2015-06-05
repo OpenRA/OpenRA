@@ -665,9 +665,6 @@
 		Image: scrate
 	WithCrateBody:
 		XmasImages: xcratea, xcrateb, xcratec, xcrated
-	Selectable:
-		Selectable: false
-		Bounds: 15,15,-1,-1
 	Parachutable:
 		KilledOnImpassableTerrain: false
 		ParachuteSequence: parach

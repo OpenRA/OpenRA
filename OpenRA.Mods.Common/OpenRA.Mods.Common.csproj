@@ -310,6 +310,7 @@
     <Compile Include="Traits\Crushable.cs" />
     <Compile Include="Traits\CustomBuildTimeValue.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
+    <Compile Include="Traits\CustomSelectionSize.cs" />
     <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
     <Compile Include="Traits\EjectOnDeath.cs" />
