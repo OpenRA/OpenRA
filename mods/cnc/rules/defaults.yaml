@@ -33,7 +33,9 @@
 			Beach: 50
 		ROT: 5
 	SelectionDecorations:
+		VisualBounds: 24,24
 	Selectable:
+		Bounds: 24,24
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
@@ -80,7 +82,9 @@
 			Beach: 70
 		ROT: 5
 	SelectionDecorations:
+		VisualBounds: 24,24
 	Selectable:
+		Bounds: 24,24
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
@@ -124,7 +128,9 @@
 		TargetTypes: Air
 		GroundedTargetTypes: Ground
 	SelectionDecorations:
+		VisualBounds: 24,24
 	Selectable:
+		Bounds: 24,24
 	Helicopter:
 		RepairBuildings: hpad
 		RearmBuildings:
@@ -177,6 +183,7 @@
 				PathingCost: 300
 			Beach: 80
 	SelectionDecorations:
+		VisualBounds: 12,17,0,-6
 	Selectable:
 		Bounds: 12,17,0,-6
 	TargetableUnit:
@@ -248,7 +255,6 @@
 	-AutoTarget:
 	-TakeCover:
 	AppearsOnRadar:
-	SelectionDecorations:
 	Valued:
 		Cost: 70
 	Tooltip:
@@ -298,7 +304,10 @@
 			Tiberium: 70
 			BlueTiberium: 70
 			Beach: 80
+	SelectionDecorations:
+		VisualBounds: 24,24
 	Selectable:
+		Bounds: 24,24
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	HiddenUnderFog:
@@ -328,7 +337,9 @@
 	AppearsOnRadar:
 		UseLocation: yes
 	SelectionDecorations:
+		VisualBounds: 24,24
 	Selectable:
+		Bounds: 24,24
 	TargetableUnit:
 		TargetTypes: Air
 	HiddenUnderFog:
@@ -664,4 +675,6 @@
 	Selectable:
 		Selectable: false
 		Bounds: 15,15,-1,-1
+	SelectionDecorations:
+		VisualBounds: 15,15,-1,-1
 

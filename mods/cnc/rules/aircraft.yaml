@@ -9,8 +9,6 @@ TRAN:
 		BuildPaletteOrder: 10
 		Prerequisites: hpad
 		Queue: Aircraft.GDI, Aircraft.Nod
-	Selectable:
-		Bounds: 41,41
 	Helicopter:
 		LandWhenIdle: true
 		ROT: 5
@@ -42,6 +40,8 @@ TRAN:
 		EmptyWeapon: HeliExplode
 	AutoSelectionSize:
 	RenderSprites:
+	SelectionDecorations:
+		VisualBounds: 41,41
 
 HELI:
 	Inherits: ^Helicopter
@@ -54,8 +54,6 @@ HELI:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.Nod
-	Selectable:
-		Bounds: 30,24
 	Helicopter:
 		RearmBuildings: hpad
 		ROT: 4
@@ -95,6 +93,8 @@ HELI:
 		EmptyWeapon: HeliExplode
 	AutoSelectionSize:
 	RenderSprites:
+	SelectionDecorations:
+		VisualBounds: 30,24
 
 ORCA:
 	Inherits: ^Helicopter
@@ -107,8 +107,6 @@ ORCA:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.GDI
-	Selectable:
-		Bounds: 30,24
 	Helicopter:
 		RearmBuildings: hpad
 		ROT: 4
@@ -144,6 +142,8 @@ ORCA:
 	AutoSelectionSize:
 	WithMoveAnimation:
 		MoveSequence: move
+	SelectionDecorations:
+		VisualBounds: 30,24
 
 C17:
 	ParaDrop:

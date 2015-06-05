@@ -167,7 +167,7 @@ PROC:
 		DockAngle: 112
 		DockOffset: 0,2
 		IsDragRequired: True
-		DragOffset: -640,341,0
+		DragOffset: -554,512,0
 		DragLength: 12
 		TickRate: 15
 	StoresResources:
@@ -175,7 +175,7 @@ PROC:
 		PipCount: 10
 		Capacity: 2000
 	Selectable:
-		Bounds: 73,72
+		Bounds: 72,56,0,12
 	CustomSellValue:
 		Value: 500
 	FreeActor:
@@ -187,6 +187,8 @@ PROC:
 	Power:
 		Amount: -50
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 73,72
 
 SILO:
 	Inherits: ^BaseBuilding
@@ -214,14 +216,14 @@ SILO:
 		PipCount: 10
 		PipColor: Green
 		Capacity: 2000
-	Selectable:
-		Bounds: 49,30
 	-RenderBuilding:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	SelectionDecorations:
+		VisualBounds: 49,30
 
 PYLE:
 	Inherits: ^BaseBuilding
@@ -301,6 +303,8 @@ HAND:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
+	Selectable:
+		Bounds: 48,48,0,10
 
 AFLD:
 	Inherits: ^BaseBuilding
@@ -361,6 +365,8 @@ WEAP:
 	Building:
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
+	Selectable:
+		Bounds: 72,48,0,12
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -449,6 +455,8 @@ HQ:
 	Building:
 		Footprint: x_ xx
 		Dimensions: 2,2
+	Selectable:
+		Bounds: 48,36,0,12
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
@@ -499,6 +507,10 @@ FIX:
 	Building:
 		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
+	Selectable:
+		Bounds: 64,34,0,3
+	SelectionDecorations:
+		VisualBounds: 72,48
 	Health:
 		HP: 400
 	RevealsShroud:
@@ -529,6 +541,8 @@ EYE:
 	Building:
 		Footprint: x_ xx
 		Dimensions: 2,2
+	Selectable:
+		Bounds: 48,36,0,12
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
@@ -578,6 +592,8 @@ TMPL:
 	Building:
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
+	Selectable:
+		Bounds: 72,48,0,16
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
@@ -713,6 +729,8 @@ OBLI:
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
+	Selectable:
+		Bounds: 24,24,0,12
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -802,6 +820,8 @@ ATWR:
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
+	Selectable:
+		Bounds: 24,24,0,12
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:

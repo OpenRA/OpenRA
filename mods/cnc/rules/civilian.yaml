@@ -438,7 +438,10 @@ VICE:
 			Tiberium: 100
 			BlueTiberium: 100
 			Beach: 60
+	SelectionDecorations:
+		VisualBounds: 24,24
 	Selectable:
+		Bounds: 24,24
 	TargetableUnit:
 		TargetTypes: Ground
 	AutoTarget:

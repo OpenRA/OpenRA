@@ -39,6 +39,8 @@ MCV:
 		EmptyWeapon: UnitExplodeSmall
 	AutoSelectionSize:
 	RenderSprites:
+	SelectionDecorations:
+		VisualBounds: 36,36
 
 HARV:
 	Inherits: ^Tank
@@ -55,7 +57,6 @@ HARV:
 		InitialActivity: FindResources
 	Selectable:
 		Priority: 7
-		Bounds: 36,36
 	Harvester:
 		Resources: Tiberium, BlueTiberium
 		PipCount: 7
@@ -78,6 +79,8 @@ HARV:
 	RenderHarvester:
 	Explodes:
 		Weapon: TiberiumExplosion
+	SelectionDecorations:
+		VisualBounds: 36,36
 
 APC:
 	Inherits: ^Tank
@@ -391,10 +394,10 @@ MTNK:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	Selectable:
-		Bounds: 28,28
 	AutoSelectionSize:
 	RenderSprites:
+	SelectionDecorations:
+		VisualBounds: 28,28
 
 HTNK:
 	Inherits: ^Tank
@@ -446,10 +449,10 @@ HTNK:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	Selectable:
-		Bounds: 34,34,0,-3
 	AutoSelectionSize:
 	RenderSprites:
+	SelectionDecorations:
+		VisualBounds: 34,34,0,-3
 
 MSAM:
 	Inherits: ^Tank
