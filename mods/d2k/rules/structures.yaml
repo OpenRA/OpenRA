@@ -129,7 +129,7 @@ barracks:
 		Name: Barracks
 		Description: Trains infantry
 	Building:
-		Footprint: =x xx
+		Footprint: xx xx
 		Dimensions: 2,2
 	Bib:
 	Health:
