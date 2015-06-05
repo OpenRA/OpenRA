@@ -283,7 +283,7 @@ local function navigateTo(default, selected)
             end
           end
         end
-      elseif text and text:find(special.LINE..'(%d+)%s*$') then
+      elseif text and text:find(special.LINE..'(%d*)%s*$') then
         local toline = tonumber(text:match(special.LINE..'(%d+)'))
         if toline and ed then markLine(ed, toline) end
       elseif text and #text > 0 and projdir and #projdir > 0 then
