@@ -11,6 +11,20 @@ if (!(Test-Path "nuget.exe"))
 	(New-Object System.Net.WebClient).DownloadFile("http://nuget.org/nuget.exe", $target)
 }
 
+if (!(Test-Path "vcredist_x86.exe"))
+{
+	echo "Fetching Visual C 2010 SP1 libaries..."
+	$target = Join-Path $pwd.ToString() "vcredist_x86.exe"
+	(New-Object System.Net.WebClient).DownloadFile("http://download.microsoft.com/download/C/6/D/C6D0FD4E-9E53-4897-9B91-836EBA2AACD3/vcredist_x86.exe", $target)
+}
+
+if (Test-Path "vcredist_x86.exe")
+{
+	echo "Installing Visual C 2010 SP1 libaries..."
+	Start-Process -wait -FilePath vcredist_x86.exe -WorkingDirectory ./ -ArgumentList /Q
+	rm ./vcredist_x86.exe
+}
+
 if (!(Test-Path "StyleCopPlus.dll"))
 {
 	echo "Fetching StyleCopPlus from NuGet."
