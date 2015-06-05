@@ -1302,7 +1302,7 @@ GASPOT:
 		Footprint: x
 		Dimensions: 1, 1
 	Selectable:
-		Bounds: 48, 82, 0, -25
+		Bounds: 48, 30, 0, -4
 	Power:
 		Amount: -10
 	Armor:
@@ -1313,6 +1313,8 @@ GASPOT:
 		Range: 6c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	SelectionDecorations:
+		VisualBounds: 48, 82, 0, -25
 
 GALITE:
 	Inherits: ^Building
@@ -1336,10 +1338,12 @@ GALITE:
 		Sequence: lighting
 		Palette: alpha
 	Selectable:
-		Bounds: 25, 35, 0, -12
+		Bounds: 24, 24, 0, -4
 	Buildable:
 		Queue: Defense
 		Prerequisites: ~disabled
+	SelectionDecorations:
+		VisualBounds: 25, 35, 0, -12
 
 GAICBM:
 	Inherits: ^Building
@@ -1410,3 +1414,6 @@ UFO:
 		Type: Heavy
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERAT
+	SelectionDecorations:
+		VisualBounds: 144, 72, 0, 0
+

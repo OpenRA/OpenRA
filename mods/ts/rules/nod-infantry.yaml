@@ -56,6 +56,8 @@ CYBORG:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 	WithPermanentInjury:
+	SelectionDecorations:
+		VisualBounds: 16,31,0,-10
 
 CYC2:
 	Inherits: ^Infantry
@@ -92,6 +94,8 @@ CYC2:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 	WithPermanentInjury:
+	SelectionDecorations:
+		VisualBounds: 16,32,-1,-12
 
 MHIJACK:
 	Inherits: ^Infantry

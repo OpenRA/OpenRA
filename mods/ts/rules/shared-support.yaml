@@ -62,3 +62,6 @@ NAPULS:
 		Sequence: turret
 	Power:
 		Amount: -150
+	SelectionDecorations:
+		VisualBounds: 78, 54, 0, -12
+

@@ -25,7 +25,7 @@ GAPOWR:
 	WithIdleOverlay@PLUG:
 		Sequence: idle-plug
 	Selectable:
-		Bounds: 90, 84, 0, -12
+		Bounds: 90, 48, 0, -6
 	Power:
 		Amount: 100
 	InfiltrateForPowerOutage:
@@ -59,6 +59,8 @@ GAPOWR:
 		UpgradeMinEnabledLevel: 1
 		Amount: 50
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 90, 84, 0, -12
 
 GAPILE:
 	Inherits: ^Building
@@ -77,7 +79,7 @@ GAPILE:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 88, 56, 0, -8
+		Bounds: 88, 48, 0, -8
 	Health:
 		HP: 800
 	Armor:
@@ -102,6 +104,8 @@ GAPILE:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 88, 56, 0, -8
 
 GAWEAP:
 	Inherits: ^Building
@@ -120,7 +124,7 @@ GAWEAP:
 		Footprint: xxx= xxx= xxx=
 		Dimensions: 4,3
 	Selectable:
-		Bounds: 154, 100, -2, -12
+		Bounds: 154, 96, -2, -12
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -149,6 +153,8 @@ GAWEAP:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 154, 100, -2, -12
 
 GAHPAD:
 	Inherits: ^Building
@@ -189,6 +195,8 @@ GAHPAD:
 	Selectable:
 		Bounds: 88, 66, 0, -5
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 88, 66, 0, -5
 
 GADEPT:
 	Inherits: ^Building
@@ -205,7 +213,7 @@ GADEPT:
 		Footprint: =x= xxx =x=
 		Dimensions: 3,3
 	Selectable:
-		Bounds: 98, 68, -6, -6
+		Bounds: 96, 64, -6, -6
 	Health:
 		HP: 1100
 	RevealsShroud:
@@ -229,6 +237,8 @@ GADEPT:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 98, 68, -6, -6
 
 GARADR:
 	Inherits: ^Building
@@ -247,7 +257,7 @@ GARADR:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 96, 118, 0, -38
+		Bounds: 96, 48, 0, -6
 	Health:
 		HP: 800
 	Armor:
@@ -270,6 +280,8 @@ GARADR:
 	Power:
 		Amount: -50
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 96, 118, 0, -38
 
 GATECH:
 	Inherits: ^Building
@@ -300,6 +312,8 @@ GATECH:
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 110, 60, 3, -4
 
 GAPLUG:
 	Inherits: ^Building
@@ -309,7 +323,7 @@ GAPLUG:
 		Name: GDI Upgrade Center
 		Description: Can be upgraded for additional technology.
 	Selectable:
-		Bounds: 115,104,0,-24
+		Bounds: 115,72,0,-12
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: proc, gatech
@@ -373,3 +387,6 @@ GAPLUG:
 		UpgradeMinEnabledLevel: 1
 		Sequence: idle-ioncannonb
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 115,104,0,-24
+

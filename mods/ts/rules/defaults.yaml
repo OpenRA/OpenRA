@@ -139,6 +139,8 @@
 	Selectable:
 		Selectable: false
 		Bounds: 25,25,-1,-1
+	SelectionDecorations:
+		VisualBounds: 25,25,-1,-1
 
 ^Wall:
 	AppearsOnRadar:
@@ -213,6 +215,7 @@
 			BlueTiberium: 80
 	SelectionDecorations:
 		Palette: pips
+		VisualBounds: 14,23,-1,-9
 	Selectable:
 		Bounds: 14,23,-1,-9
 	Voiced:
@@ -279,8 +282,6 @@
 
 ^CivilianInfantry:
 	Inherits: ^Infantry
-	Selectable:
-		Bounds: 12,17,0,-9
 	Voiced:
 		VoiceSet: Civilian
 	Valued:
@@ -502,6 +503,7 @@
 			BlueTiberium: 100
 	SelectionDecorations:
 		Palette: pips
+		VisualBounds: 26,26,0,-3
 	Selectable:
 		Bounds: 26,26,0,-3
 	TargetableUnit:

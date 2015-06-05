@@ -15,7 +15,7 @@ NAPOWR:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 88, 80, 2, -12
+		Bounds: 88, 48, 2, -6
 	Health:
 		HP: 750
 	Armor:
@@ -32,6 +32,8 @@ NAPOWR:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
+	SelectionDecorations:
+		VisualBounds: 88, 80, 2, -12
 
 NAAPWR:
 	Inherits: ^Building
@@ -50,7 +52,7 @@ NAAPWR:
 		Footprint: xxx xxx
 		Dimensions: 2,3
 	Selectable:
-		Bounds: 100, 74, 0, -12
+		Bounds: 100, 54, 0, -4
 	Health:
 		HP: 900
 	Armor:
@@ -67,6 +69,8 @@ NAAPWR:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
+	SelectionDecorations:
+		VisualBounds: 100, 74, 0, -12
 
 NAHAND:
 	Inherits: ^Building
@@ -85,7 +89,7 @@ NAHAND:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Selectable:
-		Bounds: 116, 78, 3, -8
+		Bounds: 116, 60, 3, -6
 	Health:
 		HP: 800
 	Armor:
@@ -108,6 +112,8 @@ NAHAND:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 116, 78, 3, -8
 
 NAWEAP:
 	Inherits: ^Building
@@ -126,7 +132,7 @@ NAWEAP:
 		Footprint: xxx= xxx= xxx=
 		Dimensions: 4,3
 	Selectable:
-		Bounds: 149, 116, -3, -20
+		Bounds: 149, 80, -3, -10
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -151,6 +157,8 @@ NAWEAP:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 149, 116, -3, -20
 
 NAHPAD:
 	Inherits: ^Building
@@ -189,8 +197,10 @@ NAHPAD:
 	Power:
 		Amount: -10
 	Selectable:
-		Bounds: 78, 54, 0, -8
+		Bounds: 78, 48, 0, -6
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 78, 54, 0, -8
 
 NARADR:
 	Inherits: ^Building
@@ -209,7 +219,7 @@ NARADR:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 96, 82, 0, -17
+		Bounds: 96, 48, 0, -6
 	Health:
 		HP: 800
 	Armor:
@@ -232,6 +242,8 @@ NARADR:
 	Power:
 		Amount: -50
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 96, 72, 0, -12
 
 NATECH:
 	Inherits: ^Building
@@ -250,7 +262,7 @@ NATECH:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 86, 58, 0, -4
+		Bounds: 86, 48, 0, -4
 	Health:
 		HP: 500
 	Armor:
@@ -262,6 +274,8 @@ NATECH:
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 86, 58, 0, -4
 
 NASTLH:
 	Inherits: ^Building
@@ -301,4 +315,7 @@ NASTLH:
 		DisableSound: cloak5.aud
 		AffectsParent: true
 	Selectable:
-		Bounds: 106, 60, 8, -15
+		Bounds: 106, 48, 8, -6
+	SelectionDecorations:
+		VisualBounds: 106, 60, 8, -15
+
