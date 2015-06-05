@@ -18,8 +18,12 @@ local layoutlabel = {
 -- ----------------------------------------------------------------------------
 -- Initialize the wxConfig for loading/saving the preferences
 
-local settings = wx.wxFileConfig(GetIDEString("settingsapp"),
-  GetIDEString("settingsvendor"), ide.config.ini or "")
+local ini = ide.config.ini
+-- if ini path is relative and includes a directory name, make it relative to the IDE location
+ini = ini and (not wx.wxIsAbsolutePath(ini) and wx.wxFileName(ini):GetDirCount() > 0
+  and MergeFullPath(GetPathWithSep(ide.editorFilename), ini) or ini)
+
+local settings = wx.wxFileConfig(GetIDEString("settingsapp"), GetIDEString("settingsvendor"), ini or "")
 ide.settings = settings
 
 local function settingsReadSafe(settings,what,default)
