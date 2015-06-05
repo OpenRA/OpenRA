@@ -20,6 +20,7 @@ debugger.stackCtrl = nil -- the stack ctrl that shows stack information
 debugger.toggleview = {
   bottomnotebook = true, -- output/console is "on" by default
   stackpanel = false, watchpanel = false, toolbar = false }
+debugger.needrefresh = {} -- track components that may need a refresh
 debugger.hostname = ide.config.debugger.hostname or (function()
   local hostname = socket.dns.gethostname()
   return hostname and socket.dns.toip(hostname) and hostname or "localhost"
@@ -124,8 +125,8 @@ local function updateStackSync()
   local stackCtrl = debugger.stackCtrl
   local pane = ide.frame.uimgr:GetPane("stackpanel")
   local shown = stackCtrl and (pane:IsOk() and pane:IsShown() or not pane:IsOk() and stackCtrl:IsShown())
-  if shown and debugger.server and not debugger.running
-  and not debugger.scratchpad then
+  local canupdate = debugger.server and not debugger.running and not debugger.scratchpad
+  if shown and canupdate then
     local stack, _, err = debugger.stack()
     if not stack or #stack == 0 then
       stackCtrl:DeleteAll()
@@ -196,6 +197,8 @@ local function updateStackSync()
     stackCtrl:EnsureVisible(stackCtrl:GetFirstChild(root))
     stackCtrl:SetScrollPos(wx.wxHORIZONTAL, 0, true)
     stackCtrl:Thaw()
+  elseif not shown and canupdate then
+    debugger.needrefresh.stack = true
   end
 end
 
@@ -214,6 +217,15 @@ local function updateWatches(item)
   if debugger.running then debugger.update() end
   if debugger.server and not debugger.running then
     copas.addthread(function() updateWatchesSync(item) end)
+  end
+end
+
+local function updateStack()
+  -- check if the debugger is running and may be waiting for a response.
+  -- allow that request to finish, otherwise this function does nothing.
+  if debugger.running then debugger.update() end
+  if debugger.server and not debugger.running then
+    copas.addthread(function() updateStackSync() end)
   end
 end
 
@@ -1066,6 +1078,13 @@ local function debuggerCreateStackWindow()
         if num > stackmaxnum then break end
       end
       return true
+    end)
+
+  stackCtrl:Connect(wx.wxEVT_SET_FOCUS, function(event)
+      if debugger.needrefresh.stack then
+        updateStack()
+        debugger.needrefresh.stack = false
+      end
     end)
 
   -- register navigation callback
