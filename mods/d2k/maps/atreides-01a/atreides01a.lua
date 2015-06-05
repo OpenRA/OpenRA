@@ -56,18 +56,18 @@ Tick = function()
 	-- player has no Wind Trap
 	if (player.PowerProvided <= 20 or player.PowerState ~= "Normal") and DateTime.GameTime % DateTime.Seconds(32) == 0 then
 		HasPower = false
-		Media.DisplayMessage(Messages[2], "")
+		Media.DisplayMessage(Messages[2], "Mentat")
 	else
 		HasPower = true
 	end
 
 	-- player has no Refinery and no Silos
 	if HasPower and player.ResourceCapacity == 0 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
-		Media.DisplayMessage(Messages[3], "")
+		Media.DisplayMessage(Messages[3], "Mentat")
 	end
 
 	if HasPower and player.Resources > player.ResourceCapacity * 0.8 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
-		Media.DisplayMessage(Messages[4], "")
+		Media.DisplayMessage(Messages[4], "Mentat")
 	end
 
 	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. ToHarvest, player.Color)
@@ -101,7 +101,7 @@ WorldLoaded = function()
 		end
 	end)
 
-	Media.DisplayMessage(Messages[1], "")
+	Media.DisplayMessage(Messages[1], "Mentat")
 
 	Trigger.AfterDelay(DateTime.Seconds(25), function()
 		Media.PlaySpeechNotification(player, "Reinforce")
