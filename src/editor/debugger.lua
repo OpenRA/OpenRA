@@ -66,8 +66,9 @@ local function updateWatchesSync(onlyitem)
   local watchCtrl = debugger.watchCtrl
   local pane = ide.frame.uimgr:GetPane("watchpanel")
   local shown = watchCtrl and (pane:IsOk() and pane:IsShown() or not pane:IsOk() and watchCtrl:IsShown())
-  if shown and debugger.server and not debugger.running
-  and not debugger.scratchpad and not (debugger.options or {}).noeval then
+  local canupdate = (debugger.server and not debugger.running and not debugger.scratchpad
+    and not (debugger.options or {}).noeval)
+  if shown and canupdate then
     local bgcl = watchCtrl:GetBackgroundColour()
     local hicl = wx.wxColour(math.floor(bgcl:Red()*.9),
       math.floor(bgcl:Green()*.9), math.floor(bgcl:Blue()*.9))
@@ -115,6 +116,8 @@ local function updateWatchesSync(onlyitem)
       if onlyitem then break end
       item = watchCtrl:GetNextSibling(item)
     end
+  elseif not shown and canupdate then
+    debugger.needrefresh.watches = true
   end
 end
 
@@ -1246,6 +1249,14 @@ local function debuggerCreateWatchWindow()
       valuecache[value] = nil
       names[value] = nil
     end)
+
+  watchCtrl:Connect(wx.wxEVT_SET_FOCUS, function(event)
+      if debugger.needrefresh.watches then
+        updateWatches()
+        debugger.needrefresh.watches = false
+      end
+    end)
+
 
   local item
   -- wx.wxEVT_CONTEXT_MENU is only triggered over tree items on OSX,
