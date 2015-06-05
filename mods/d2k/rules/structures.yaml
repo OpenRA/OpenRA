@@ -76,6 +76,8 @@ conyard:
 	WithBuildingPlacedOverlay:
 		Palette: d2k
 	PrimaryBuilding:
+	SelectionDecorations:
+		VisualBounds: 96,64
 
 power:
 	Inherits: ^Building
@@ -110,6 +112,8 @@ power:
 		Amount: 100
 	ScalePowerWithHealth:
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 64,64
 
 barracks:
 	Inherits: ^Building
@@ -166,6 +170,8 @@ barracks:
 			atreides: barracks.atreides
 			ordos: barracks.ordos
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 64,64
 
 refinery:
 	Inherits: ^Building
@@ -219,6 +225,8 @@ refinery:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 96,64
 
 silo:
 	Inherits: ^Building
@@ -257,6 +265,8 @@ silo:
 		Amount: -5
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	SelectionDecorations:
+		VisualBounds: 32,32
 
 light:
 	Inherits: ^Building
@@ -314,6 +324,8 @@ light:
 		Sequence: idle-top
 	Power:
 		Amount: -20
+	SelectionDecorations:
+		VisualBounds: 96,64
 
 heavy:
 	Inherits: ^Building
@@ -322,7 +334,7 @@ heavy:
 		Queue: Building
 		BuildPaletteOrder: 100
 	Selectable:
-		Bounds: 96,96
+		Bounds: 96,68,0,12
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -372,6 +384,8 @@ heavy:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 96,96
 
 radar:
 	Inherits: ^Building
@@ -414,6 +428,8 @@ radar:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 96,64
 
 starport:
 	Inherits: ^Building
@@ -473,6 +489,8 @@ starport:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 96,64
 
 wall:
 	Buildable:
@@ -540,7 +558,7 @@ guntower:
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Selectable:
-		Bounds: 32,40,0,-8
+		Bounds: 32,32
 		Priority: 3
 	-GivesBuildableArea:
 	Health:
@@ -576,6 +594,8 @@ guntower:
 		Amount: -20
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	SelectionDecorations:
+		VisualBounds: 32,40,0,-8
 
 rockettower:
 	Inherits: ^Building
@@ -594,7 +614,7 @@ rockettower:
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Selectable:
-		Bounds: 32,40,0,-8
+		Bounds: 32,32
 		Priority: 3
 	-GivesBuildableArea:
 	Health:
@@ -631,6 +651,8 @@ rockettower:
 		Amount: -30
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	SelectionDecorations:
+		VisualBounds: 32,40,0,-8
 
 repair:
 	Inherits: ^Building
@@ -652,6 +674,10 @@ repair:
 		Type: Concrete
 	RevealsShroud:
 		Range: 5c0
+	Selectable:
+		Bounds: 96,64
+	SelectionDecorations:
+		VisualBounds: 96,80
 	Reservable:
 	RepairsUnits:
 		Interval: 15
@@ -677,7 +703,7 @@ hightech:
 		Queue: Building
 		BuildPaletteOrder: 110
 	Selectable:
-		Bounds: 96,96
+		Bounds: 96,68,0,12
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -722,6 +748,8 @@ hightech:
 		Sequence: production-welding
 	Power:
 		Amount: -40
+	SelectionDecorations:
+		VisualBounds: 96,96
 
 research:
 	Inherits: ^Building
@@ -730,7 +758,7 @@ research:
 		Prerequisites: radar, heavy, upgrade.heavy, ~techlevel.high
 		BuildPaletteOrder: 140
 	Selectable:
-		Bounds: 96,64
+		Bounds: 96,64,0,16
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -767,6 +795,8 @@ research:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 96,80
 
 palace:
 	Inherits: ^Building
@@ -828,6 +858,8 @@ palace:
 	RequiresPower:
 	SupportPowerChargeBar:
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 96,96
 
 conyard.atreides:
 	Inherits: conyard

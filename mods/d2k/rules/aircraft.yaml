@@ -145,12 +145,12 @@ orni:
 		RearmBuildings:
 	WithFacingSpriteBody:
 	WithShadow:
-	Selectable:
-		Bounds: 38,32,0,0
 	LeavesHusk:
 		HuskActor: orni.husk
 	AutoSelectionSize:
 	RenderSprites:
+	SelectionDecorations:
+		VisualBounds: 38,32,0,0
 
 orni.bomber:
 	AttackBomber:

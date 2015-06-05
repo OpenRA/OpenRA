@@ -34,7 +34,9 @@
 			Dune: 60
 		ROT: 5
 	SelectionDecorations:
+		VisualBounds: 32,32
 	Selectable:
+		Bounds: 32,32
 	TargetableUnit:
 		TargetTypes: Ground, C4
 	Passenger:
@@ -89,7 +91,9 @@
 			Dune: 70
 		ROT: 5
 	SelectionDecorations:
+		VisualBounds: 32,32
 	Selectable:
+		Bounds: 32,32
 	TargetableUnit:
 		TargetTypes: Ground, C4
 	Passenger:
@@ -213,6 +217,7 @@
 			Dune: 60
 			Rough: 70
 	SelectionDecorations:
+		VisualBounds: 12,18,0,-6
 	Selectable:
 		Bounds: 12,18,0,-6
 	TargetableUnit:
@@ -270,7 +275,9 @@
 	AppearsOnRadar:
 		UseLocation: yes
 	SelectionDecorations:
+		VisualBounds: 32,32
 	Selectable:
+		Bounds: 32,32
 	TargetableAircraft:
 		TargetTypes: Air
 		GroundedTargetTypes: Ground
