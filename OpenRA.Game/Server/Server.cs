@@ -489,7 +489,11 @@ namespace OpenRA.Server
 							break;
 						}
 
-						var pingFromClient = LobbyInfo.PingFromClient(GetClient(conn));
+						var client = GetClient(conn);
+						if (client == null)
+							return;
+
+						var pingFromClient = LobbyInfo.PingFromClient(client);
 						if (pingFromClient == null)
 							return;
 
