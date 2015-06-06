@@ -28,6 +28,12 @@ if ini and (wx.wxFileName(ini):IsDir() or wx.wxIsAbsolutePath(ini) and wx.wxDirE
     :format(adjusted or ini))
   ini = nil
 end
+-- check that the directory is writable
+if ini and wx.wxIsAbsolutePath(ini) and not wx.wxFileName(ini):IsDirWritable() then
+  print(("Can't use 'ini' configuration setting '%s' that points to a non-writable directory; ignored.")
+    :format(adjusted or ini))
+  ini = nil
+end
 
 local settings = wx.wxFileConfig(GetIDEString("settingsapp"), GetIDEString("settingsvendor"), ini or "")
 ide.settings = settings
