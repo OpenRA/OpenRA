@@ -21,20 +21,28 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new WithBuildingPlacedAnimation(init.Self, this); }
 	}
 
-	public class WithBuildingPlacedAnimation : INotifyBuildingPlaced
+	public class WithBuildingPlacedAnimation : INotifyBuildingPlaced, INotifyBuildComplete
 	{
 		WithBuildingPlacedAnimationInfo info;
 		RenderSimple renderSimple;
+		bool buildComplete;
 
 		public WithBuildingPlacedAnimation(Actor self, WithBuildingPlacedAnimationInfo info)
 		{
 			this.info = info;
 			renderSimple = self.Trait<RenderSimple>();
+			buildComplete = !self.HasTrait<Building>();
+		}
+
+		public void BuildingComplete(Actor self)
+		{
+			buildComplete = true;
 		}
 
 		public void BuildingPlaced(Actor self)
 		{
-			renderSimple.PlayCustomAnim(self, info.Sequence);
+			if (buildComplete)
+				renderSimple.PlayCustomAnim(self, info.Sequence);
 		}
 	}
 }
