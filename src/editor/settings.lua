@@ -22,6 +22,12 @@ local ini = ide.config.ini
 -- if ini path is relative and includes a directory name, make it relative to the IDE location
 ini = ini and (not wx.wxIsAbsolutePath(ini) and wx.wxFileName(ini):GetDirCount() > 0
   and MergeFullPath(GetPathWithSep(ide.editorFilename), ini) or ini)
+-- check that the ini file doesn't point to a directory
+if ini and (wx.wxFileName(ini):IsDir() or wx.wxIsAbsolutePath(ini) and wx.wxDirExists(ini)) then
+  print(("Can't use 'ini' configuration setting '%s' that points to a directory instead of a file; ignored.")
+    :format(adjusted or ini))
+  ini = nil
+end
 
 local settings = wx.wxFileConfig(GetIDEString("settingsapp"), GetIDEString("settingsvendor"), ini or "")
 ide.settings = settings
