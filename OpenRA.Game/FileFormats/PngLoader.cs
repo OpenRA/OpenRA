@@ -99,6 +99,9 @@ namespace OpenRA.FileFormats
 
 							case "IEND":
 								{
+									if (bitmap == null)
+										throw new InvalidDataException("Image header not found.");
+
 									var bits = bitmap.LockBits(bitmap.Bounds(),
 										ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
