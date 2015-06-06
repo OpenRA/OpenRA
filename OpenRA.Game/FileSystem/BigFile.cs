@@ -26,26 +26,27 @@ namespace OpenRA.FileSystem
 			Name = filename;
 			Priority = priority;
 
-			var s = GlobalFileSystem.Open(filename);
-
-			if (s.ReadASCII(4) != "BIGF")
-				throw new InvalidDataException("Header is not BIGF");
-
-			// Total archive size.
-			s.ReadUInt32();
-
-			var entryCount = s.ReadUInt32();
-			if (BitConverter.IsLittleEndian)
-				entryCount = int2.Swap(entryCount);
-
-			// First entry offset? This is apparently bogus for EA's .big files
-			// and we don't have to try seeking there since the entries typically start next in EA's .big files.
-			s.ReadUInt32();
-
-			for (var i = 0; i < entryCount; i++)
+			using (var s = GlobalFileSystem.Open(filename))
 			{
-				var entry = new Entry(s);
-				entries.Add(entry.Path, entry);
+				if (s.ReadASCII(4) != "BIGF")
+					throw new InvalidDataException("Header is not BIGF");
+
+				// Total archive size.
+				s.ReadUInt32();
+
+				var entryCount = s.ReadUInt32();
+				if (BitConverter.IsLittleEndian)
+					entryCount = int2.Swap(entryCount);
+
+				// First entry offset? This is apparently bogus for EA's .big files
+				// and we don't have to try seeking there since the entries typically start next in EA's .big files.
+				s.ReadUInt32();
+
+				for (var i = 0; i < entryCount; i++)
+				{
+					var entry = new Entry(s);
+					entries.Add(entry.Path, entry);
+				}
 			}
 		}
 
