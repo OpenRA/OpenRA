@@ -1409,7 +1409,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 									var modifier = trait.Value.Nodes.FirstOrDefault(n => n.Key == type + "Modifier");
 
 									if (upgradeTypes == null || !string.IsNullOrEmpty(upgradeTypes.Value.Value) || modifier == null ||
-									    !string.IsNullOrEmpty(modifier.Value.Value))
+										!string.IsNullOrEmpty(modifier.Value.Value))
 									{
 										var yaml = new MiniYaml(null);
 										if (modifier == null)
@@ -1599,11 +1599,48 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 						// If actor does not have nor inherits an UpgradeManager, add one
 						if (!has("UpgradeManager") && !inherits("UpgradeManager"))
-								node.Value.Nodes.Add(new MiniYamlNode("UpgradeManager", ""));
+							node.Value.Nodes.Add(new MiniYamlNode("UpgradeManager", ""));
 
 						// If actor does not have nor inherits a BodyOrientation, add one
 						if (!has("BodyOrientation") && !inherits("BodyOrientation"))
 							node.Value.Nodes.Add(new MiniYamlNode("BodyOrientation", ""));
+					}
+				}
+
+				// Detonates replaces DemoTruck and changes MadTank
+				if (engineVersion < 20150718)
+				{
+					if (node.Key.StartsWith("DemoTruck"))
+					{
+						node.Key = "Detonates";
+						var voice = node.Value.Nodes.FirstOrDefault(w => w.Key == "Voice");
+
+						if (voice != null)
+							voice.Key = "OrderVoice";
+					}
+
+					if (node.Key.StartsWith("MadTank"))
+					{
+						node.Value.Nodes.RemoveAll(n =>
+							n.Key == "DetonationDelay" ||
+							n.Key == "DetonationSound" ||
+							n.Key == "DetonationWeapon" ||
+							n.Key == "ChargeDelay" ||
+							n.Key == "ChargeSound" ||
+							n.Key == "Voice");
+					}
+
+					if (node.Value.Nodes.Any(n => n.Key == "MadTank"))
+					{
+						node.Value.Nodes.Add(new MiniYamlNode("Detonates", "", new List<MiniYamlNode>
+						{
+							new MiniYamlNode("ChargeDelay", "96"),
+							new MiniYamlNode("ChargeSound", "madchrg2.aud"),
+							new MiniYamlNode("DetonationDelay", "42"),
+							new MiniYamlNode("DetonationSound", "MadExplo.aud"),
+							new MiniYamlNode("DetonationWeapon", "MADTankDetonate"),
+							new MiniYamlNode("OrderVoice", "Action")
+						}));
 					}
 				}
 

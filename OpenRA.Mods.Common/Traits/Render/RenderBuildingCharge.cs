@@ -35,5 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			PlayCustomAnim(self, info.ChargeSequence);
 		}
+
+		public void FinishedCharging(Actor self) { }
 	}
 }

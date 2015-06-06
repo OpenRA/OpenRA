@@ -25,6 +25,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
+		[Desc("Should the animation repeat after it has finished?")]
+		public readonly bool Repeating = false;
+
 		public object Create(ActorInitializer init) { return new WithChargeOverlay(init, this); }
 	}
 
@@ -44,14 +47,25 @@ namespace OpenRA.Mods.Common.Traits
 
 			overlay = new Animation(init.World, renderSprites.GetImage(init.Self));
 
-			renderSprites.Add(new AnimationWithOffset(overlay, null, () => !charging),
+			renderSprites.Add(new AnimationWithOffset(overlay, null, () => !charging, 1),
 				info.Palette, info.IsPlayerPalette);
 		}
 
 		public void Charging(Actor self, Target target)
 		{
 			charging = true;
-			overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence), () => charging = false);
+
+			var normalSeq = RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence);
+
+			if (info.Repeating)
+				overlay.PlayRepeating(info.Sequence);
+			else
+				overlay.PlayThen(normalSeq, () => charging = false);
+		}
+
+		public void FinishedCharging(Actor self)
+		{
+			charging = false;
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
@@ -60,6 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public void Sold(Actor self) { }
+
 		public void Selling(Actor self)
 		{
 			charging = false;

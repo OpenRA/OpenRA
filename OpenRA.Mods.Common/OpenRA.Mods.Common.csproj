@@ -326,6 +326,7 @@
     <Compile Include="Traits\EjectOnDeath.cs" />
     <Compile Include="Traits\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\EngineerRepair.cs" />
+    <Compile Include="Traits\Detonates.cs" />
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\ExternalCapturable.cs" />
     <Compile Include="Traits\ExternalCapturableBar.cs" />

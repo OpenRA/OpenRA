@@ -308,6 +308,11 @@ devast:
 		Intensity: 700
 	SelectionDecorations:
 		VisualBounds: 44,38,0,0
+	Detonates:
+		ChargeDelay: 125
+		DetonationWeapon: PlasmaExplosion
+	WithChargeOverlay:
+		Repeating: yes
 
 raider:
 	Inherits: ^Vehicle
