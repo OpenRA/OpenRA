@@ -12,7 +12,7 @@ for location in $locations ; do
 	for soname in $sonames ; do
 		if [ -f "$location/$soname" ]; then
 			liblua51=$soname
-			echo "Detected Lua 5.1 library at "$location/$soname
+			echo "Detected Lua 5.1 library at $location/$soname"
 			break 2
 		fi
 	done
