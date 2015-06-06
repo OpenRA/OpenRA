@@ -186,6 +186,7 @@
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
     <Compile Include="Lint\CheckDeathTypes.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
+    <Compile Include="Lint\LintExts.cs" />
     <Compile Include="LoadScreens\ModChooserLoadScreen.cs" />
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />

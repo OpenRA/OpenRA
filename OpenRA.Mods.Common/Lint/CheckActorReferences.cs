@@ -41,24 +41,10 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		string[] GetFieldValues(ITraitInfo traitInfo, FieldInfo fieldInfo)
-		{
-			var type = fieldInfo.FieldType;
-			if (type == typeof(string))
-				return new string[] { (string)fieldInfo.GetValue(traitInfo) };
-			if (type == typeof(string[]))
-				return (string[])fieldInfo.GetValue(traitInfo);
-
-			emitError("Bad type for reference on {0}.{1}. Supported types: string, string[]"
-				.F(traitInfo.GetType().Name, fieldInfo.Name));
-
-			return new string[] { };
-		}
-
 		void CheckReference<T>(ActorInfo actorInfo, ITraitInfo traitInfo, FieldInfo fieldInfo,
 			IReadOnlyDictionary<string, T> dict, string type)
 		{
-			var values = GetFieldValues(traitInfo, fieldInfo);
+			var values = LintExts.GetFieldValues(traitInfo, fieldInfo, emitError);
 			foreach (var v in values)
 				if (v != null && !dict.ContainsKey(v.ToLowerInvariant()))
 					emitError("{0}.{1}.{2}: Missing {3} `{4}`."
