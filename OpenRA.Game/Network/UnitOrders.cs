@@ -117,7 +117,7 @@ namespace OpenRA.Network
 						if (client != null)
 						{
 							var pause = order.TargetString == "Pause";
-							if (orderManager.World.Paused != pause && !world.LobbyInfo.IsSinglePlayer)
+							if (orderManager.World.Paused != pause && world != null && !world.LobbyInfo.IsSinglePlayer)
 							{
 								var pausetext = "The game is {0} by {1}".F(pause ? "paused" : "un-paused", client.Name);
 								Game.AddChatLine(Color.White, "", pausetext);
