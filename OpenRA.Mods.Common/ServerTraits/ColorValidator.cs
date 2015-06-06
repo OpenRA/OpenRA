@@ -160,17 +160,11 @@ namespace OpenRA.Mods.Common.Server
 			}
 
 			// Validate color against other clients
-			var playerColors = server.LobbyInfo.Clients
-				.Where(c => c.Index != playerIndex)
-				.ToDictionary(c => c.Color.RGB, c => c.Name);
-
-			if (!ValidateColorAgainstForbidden(askedColor, playerColors.Keys, out forbiddenColor))
+			var playerColors = server.LobbyInfo.Clients.Where(c => c.Index != playerIndex).Select(c => c.Color.RGB);
+			if (!ValidateColorAgainstForbidden(askedColor, playerColors, out forbiddenColor))
 			{
 				if (connectionToEcho != null)
-				{
-					var client = playerColors[forbiddenColor];
-					server.SendOrderTo(connectionToEcho, "Message", "Color was too similar to {0}, and has been adjusted.".F(client));
-				}
+					server.SendOrderTo(connectionToEcho, "Message", "Color was too similar to another player's color, and has been adjusted.");
 
 				return false;
 			}
