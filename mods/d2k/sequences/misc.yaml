@@ -261,6 +261,11 @@ bombs:
 		Start: 3280
 		Length: 4
 
+shrapnel:
+	idle: DATA.R8
+		Start: 3290
+		Length: 14
+		
 mpspawn:
 	idle: mpspawn.shp
 		Length: *

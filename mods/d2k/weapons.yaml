@@ -700,7 +700,7 @@ Shrapnel:
 		Blockable: false
 		Angle: 91, 264
 		Inaccuracy: 416
-		Image: bombs
+		Image: shrapnel
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Damage: 60
