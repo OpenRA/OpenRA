@@ -105,9 +105,9 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(Nod, "Lose")
 	end)
 
-	NodObjective1 = Nod.AddPrimaryObjective("Steal the GDI Nuclear detonator")
-	NodObjective3 = Nod.AddSecondaryObjective("Infiltrate the barracks, weapon factory and \nthe construction yard")
-	GDIObjective = GDI.AddPrimaryObjective("Stop the Nod taskforce from escaping with the detonator")
+	NodObjective1 = Nod.AddPrimaryObjective("Steal the GDI nuclear detonator.")
+	NodObjective3 = Nod.AddSecondaryObjective("Infiltrate the barracks, weapon factory and \nthe construction yard.")
+	GDIObjective = GDI.AddPrimaryObjective("Stop the Nod taskforce from escaping with the detonator.")
 
 	InsertNodUnits()
 
@@ -131,7 +131,7 @@ WorldLoaded = function()
 
 	Trigger.OnEnteredFootprint(Win1CellTriggerActivator, function(a, id)
 		if a.Owner == Nod then
-			NodObjective2 = Nod.AddPrimaryObjective("Move to the evacuation point")
+			NodObjective2 = Nod.AddPrimaryObjective("Move to the evacuation point.")
 			Nod.MarkCompletedObjective(NodObjective1)
 			Trigger.RemoveFootprintTrigger(id)
 		end

@@ -43,7 +43,7 @@ WorldLoaded = function()
 	dinosaur = Player.GetPlayer("Dinosaur")
 	civilian = Player.GetPlayer("Civilian")
 
-	InvestigateObj = nod.AddPrimaryObjective("Investigate the nearby village for reports of \nstrange activity")
+	InvestigateObj = nod.AddPrimaryObjective("Investigate the nearby village for reports of \nstrange activity.")
 
 	Trigger.OnObjectiveAdded(nod, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")

@@ -188,9 +188,9 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(Nod, "Lose")
 	end)
 
-	NodObjective1 = Nod.AddPrimaryObjective("Build 3 SAMs")
-	NodObjective2 = Nod.AddPrimaryObjective("Destroy the GDI base")
-	GDIObjective = GDI.AddPrimaryObjective("Kill all enemies!")
+	NodObjective1 = Nod.AddPrimaryObjective("Build 3 SAMs.")
+	NodObjective2 = Nod.AddPrimaryObjective("Destroy the GDI base.")
+	GDIObjective = GDI.AddPrimaryObjective("Kill all enemies.")
 
 	Trigger.AfterDelay(AirstrikeDelay, SendGDIAirstrike)
 	Trigger.AfterDelay(YyyyTriggerFunctionTime, YyyyTriggerFunction)

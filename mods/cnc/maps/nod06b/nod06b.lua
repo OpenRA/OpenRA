@@ -27,7 +27,7 @@ HuntTriggerFunction = function()
 end
 
 Win1TriggerFunction = function()
-	NodObjective2 = Nod.AddPrimaryObjective("Move to the evacuation point")
+	NodObjective2 = Nod.AddPrimaryObjective("Move to the evacuation point.")
 	Nod.MarkCompletedObjective(NodObjective1)
 end
 
@@ -119,8 +119,8 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(Nod, "Lose")
 	end)
 
-	NodObjective1 = Nod.AddPrimaryObjective("Steal the GDI nuclear detonator")
-	GDIObjective = GDI.AddPrimaryObjective("Stop the Nod taskforce from escaping with the detonator")
+	NodObjective1 = Nod.AddPrimaryObjective("Steal the GDI nuclear detonator.")
+	GDIObjective = GDI.AddPrimaryObjective("Stop the Nod taskforce from escaping with the detonator.")
 
 	InsertNodUnits()
 
