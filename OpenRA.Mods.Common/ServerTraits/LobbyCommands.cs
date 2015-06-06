@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Server
 
 		public bool InterpretCommand(S server, Connection conn, Session.Client client, string cmd)
 		{
-			if (!ValidateCommand(server, conn, client, cmd))
+			if (server == null || conn == null || client == null || !ValidateCommand(server, conn, client, cmd))
 				return false;
 
 			var dict = new Dictionary<string, Func<string, bool>>
