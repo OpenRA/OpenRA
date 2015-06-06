@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # fallback without dependency resolution if nuget is not present on the system
 
 archive="$1"

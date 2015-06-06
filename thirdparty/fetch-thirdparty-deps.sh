@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Die on any error for Travis CI to automatically retry:
 set -e
@@ -8,7 +8,7 @@ download_dir="${0%/*}/download"
 mkdir -p "${download_dir}"
 cd "${download_dir}"
 
-function get()
+get()
 {
 	if which nuget >/dev/null; then
 		nuget install $1 -Version $2 -ExcludeVersion

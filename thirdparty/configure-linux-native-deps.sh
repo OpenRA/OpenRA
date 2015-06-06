@@ -1,18 +1,18 @@
-#!/bin/bash
+#!/bin/sh
 # Use Linux system dependencies where possible, but take into account different .so names.
 
-os=`uname`
-if [ "$os" == 'Linux' ]; then
-	locations=(/lib /lib64 /usr/lib /usr/lib64 /usr/lib/i386-linux-gnu /usr/lib/x86_64-linux-gnu /usr/local/lib /opt/lib)
-	sonames=(liblua.so.5.1.5 liblua5.1.so.5.1 liblua5.1.so.0 liblua.so.5.1 liblua-5.1.so liblua5.1.so)
+os="$(uname -s)"
+if [ "$os" = 'Linux' ] || [ "$os" = 'FreeBSD' ]; then
+	locations="/lib /lib64 /usr/lib /usr/lib64 /usr/lib/i386-linux-gnu /usr/lib/x86_64-linux-gnu /usr/local/lib /opt/lib"
+	sonames="liblua.so.5.1.5 liblua5.1.so.5.1 liblua5.1.so.0 liblua.so.5.1 liblua-5.1.so liblua5.1.so"
 
 	if [ -f Eluant.dll.config ]; then
 		exit 0
 	fi
 
-	for location in "${locations[@]}" ; do
-		for soname in ${sonames[@]} ; do
-			if [ -f $location/$soname ]; then
+	for location in $locations ; do
+		for soname in $sonames ; do
+			if [ -f "$location/$soname" ]; then
 				liblua51=$soname
 				echo "Detected Lua 5.1 library at "$location/$soname
 				break 2
