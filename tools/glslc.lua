@@ -431,7 +431,7 @@ return binpath and {
         return str,postfunc
       end
       
-      local wdir = filename:GetPath()
+      local wdir = filename:GetPath(wx.wxPATH_GET_VOLUME)
 
       -- run compiler process
       CommandLineRun(cmdline,wdir,true,nil,compilecallback)
