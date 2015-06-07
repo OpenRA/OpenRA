@@ -178,6 +178,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				LoadActors(file, "STRUCTURES");
 				LoadActors(file, "UNITS");
 				LoadActors(file, "INFANTRY");
+				LoadActors(file, "SHIPS");
 				LoadSmudges(file, "SMUDGE");
 
 				var wps = file.GetSection("Waypoints")
