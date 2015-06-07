@@ -121,7 +121,7 @@ elseif ($command -eq "dependencies")
 	cd ..
 	echo "Dependencies copied."
 	
-	$dep = "Microsoft Visual C++ 2010"
+	$dep = "Microsoft Visual C++ 201"
 	$results = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | select DisplayName | Where-Object {$_.DisplayName -like $("$dep*")}
 	if (!($results -is [array]) -and !$results.DisplayName)
 	{
