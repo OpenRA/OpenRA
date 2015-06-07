@@ -8,14 +8,17 @@ download_dir="${0%/*}/download"
 mkdir -p "${download_dir}"
 cd "${download_dir}"
 
-get()
-{
-	if which nuget >/dev/null; then
+if which nuget >/dev/null 2>&1; then
+	get()
+	{
 		nuget install $1 -Version $2 -ExcludeVersion
-	else
+	}
+else
+	get()
+	{
 		../noget.sh $1 $2
-	fi
-}
+	}
+fi
 
 if [ ! -f StyleCopPlus.dll ]; then
 	echo "Fetching StyleCopPlus from NuGet"
