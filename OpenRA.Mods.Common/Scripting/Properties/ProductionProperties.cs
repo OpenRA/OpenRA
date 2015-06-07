@@ -15,6 +15,7 @@ using Eluant;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -39,7 +40,9 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!Self.World.Map.Rules.Actors.TryGetValue(actorType, out actorInfo))
 				throw new LuaException("Unknown actor type '{0}'".F(actorType));
 
-			Self.QueueActivity(new WaitFor(() => p.Produce(Self, actorInfo, raceVariant)));
+			var production = new[] { new Pair<ActorInfo, string>(actorInfo, raceVariant) };
+
+			Self.QueueActivity(new WaitFor(() => p.Produce(Self, production)));
 		}
 	}
 

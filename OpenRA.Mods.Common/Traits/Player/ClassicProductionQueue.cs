@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -107,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var p in producers.Where(p => !p.Actor.IsDisabled()))
 			{
-				if (p.Trait.Produce(p.Actor, ai, p.Trait.Race))
+				if (p.Trait.Produce(p.Actor, new[] { new Pair<ActorInfo, string>(ai, p.Trait.Race) }))
 				{
 					FinishProduction();
 					return true;

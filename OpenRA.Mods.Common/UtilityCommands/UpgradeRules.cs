@@ -1016,6 +1016,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Rename ProductionAirdrop delivering ActorType and rename the trait
+				if (engineVersion < 20150601)
+				{
+					if (node.Key == "ProductionAirdrop")
+					{
+						var child = node.Value.Nodes.FirstOrDefault(n => n.Key == "ActorType");
+						if (child != null)
+							node.Value.Nodes.Add(new MiniYamlNode("DeliveryActor", child.Value.Value));
+
+						node.Value.Nodes.RemoveAll(n => n.Key == "ActorType");
+
+						node.Key = "ProductionByDelivery";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
