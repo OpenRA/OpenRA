@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
 		static readonly string[] TagStrings = { "", "tag-fake", "tag-primary" };
 
-		public SelectionDecorationsInfo Info;
+		public readonly SelectionDecorationsInfo Info;
 		readonly Actor self;
 
 		public ISelectionDecorationsInfo SelectionDecorationsInfo { get { return Info; } }
@@ -47,6 +47,22 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			Info = info;
+		}
+
+		IEnumerable<WPos> ActivityTargetPath()
+		{
+			if (!self.IsInWorld || self.IsDead)
+				yield break;
+
+			var activity = self.GetCurrentActivity();
+			if (activity != null)
+			{
+				var targets = activity.GetTargets(self);
+				yield return self.CenterPosition;
+
+				foreach (var t in targets.Where(t => t.Type != TargetType.Invalid))
+					yield return t.CenterPosition;
+			}
 		}
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
@@ -59,6 +75,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Info.RenderSelectionBars)
 				yield return new SelectionBarsRenderable(self);
+
+			if (self.World.LocalPlayer != null && self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
+				yield return new TargetLineRenderable(ActivityTargetPath(), Color.Green);
 
 			var b = self.VisualBounds;
 			var pos = wr.ScreenPxPosition(self.CenterPosition);

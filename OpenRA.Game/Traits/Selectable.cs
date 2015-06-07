@@ -9,9 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
@@ -19,6 +17,7 @@ namespace OpenRA.Traits
 	public class SelectableInfo : ITraitInfo
 	{
 		public readonly int Priority = 10;
+
 		[Desc("Bounds for the selectable area.")]
 		public readonly int[] Bounds = null;
 
@@ -29,40 +28,16 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Selectable(init.Self, this); }
 	}
 
-	public class Selectable : IPostRenderSelection
+	public class Selectable
 	{
 		public readonly string Class = null;
 
-		public SelectableInfo Info;
-		readonly Actor self;
+		public readonly SelectableInfo Info;
 
 		public Selectable(Actor self, SelectableInfo info)
 		{
-			this.self = self;
 			Info = info;
 			Class = string.IsNullOrEmpty(info.Class) ? self.Info.Name : info.Class;
-		}
-
-		IEnumerable<WPos> ActivityTargetPath()
-		{
-			if (!self.IsInWorld || self.IsDead)
-				yield break;
-
-			var activity = self.GetCurrentActivity();
-			if (activity != null)
-			{
-				var targets = activity.GetTargets(self);
-				yield return self.CenterPosition;
-
-				foreach (var t in targets.Where(t => t.Type != TargetType.Invalid))
-					yield return t.CenterPosition;
-			}
-		}
-
-		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
-		{
-			if (self.World.LocalPlayer != null && self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
-				yield return new TargetLineRenderable(ActivityTargetPath(), Color.Green);
 		}
 	}
 }
