@@ -91,12 +91,12 @@ namespace OpenRA.Graphics
 		{
 			worldRenderer = wr;
 
-			// Calculate map bounds in world-px
-			var b = map.Bounds;
+			var cells = wr.World.Type == WorldType.Editor ?
+				map.AllCells : map.CellsInsideBounds;
 
-			// Expand to corners of cells
-			var tl = wr.ScreenPxPosition(map.CenterOfCell(new MPos(b.Left, b.Top).ToCPos(map)) - new WVec(512, 512, 0));
-			var br = wr.ScreenPxPosition(map.CenterOfCell(new MPos(b.Right, b.Bottom).ToCPos(map)) + new WVec(511, 511, 0));
+			// Calculate map bounds in world-px
+			var tl = wr.ScreenPxPosition(map.CenterOfCell(cells.TopLeft) - new WVec(512, 512, 0));
+			var br = wr.ScreenPxPosition(map.CenterOfCell(cells.BottomRight) + new WVec(511, 511, 0));
 			mapBounds = Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
 
 			maxGroundHeight = wr.World.TileSet.MaxGroundHeight;
