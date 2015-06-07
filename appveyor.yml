@@ -38,6 +38,17 @@ after_build:
           --codeVersion "$version"
     }
 
+before_test:
+- ps: |
+    if ($env:APPVEYOR_SCHEDULED_BUILD -eq "True")
+    {
+         choco install resharper-clt -y
+         dupFinder /output=dupReport.xml /show-text OpenRA.sln
+         choco install xmlstarlet -y
+         xml transform dupFinder.xslt dupReport.xml > dupReport.html
+         choco install pandoc -y
+    }
+
 test_script:
   - nunit-console-x86.exe OpenRA.Test.dll
 
@@ -64,3 +75,5 @@ artifacts:
     name: Installer
   - path: coverity.zip
     name: Coverity Build
+  - path: dupReport.html
+    name: dupFinder Report
