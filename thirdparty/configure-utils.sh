@@ -7,17 +7,17 @@
 
 # We configure the default download agent.
 if hash curl >/dev/null 2>&1; then
-    curl()
+    download()
     {
         command curl --silent --location --output "$1" "$2"
     }
 elif hash fetch >/dev/null 2>&1; then
-    curl()
+    download()
     {
         command fetch --quiet --output "$1" "$2"
     }
 else
-    curl()
+    download()
     {
         echo "Can't download: didn't find curl(1), nor fetch(1)"
     }

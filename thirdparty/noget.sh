@@ -5,6 +5,6 @@
 
 archive="$1"
 version="$2"
-curl "$archive.zip" https://nuget.org/api/v2/package/"$archive"/"$version"
+download "$archive.zip" https://nuget.org/api/v2/package/"$archive"/"$version"
 mkdir -p "$archive"
 unzip -o -qq "$archive.zip" -d "$archive" && rm "$archive.zip"

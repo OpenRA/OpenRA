@@ -87,10 +87,10 @@ fi
 
 if [ ! -f SDL2-CS.dll ]; then
 	echo "Fetching SDL2-CS from GitHub."
-	curl SDL2-CS.dll https://github.com/OpenRA/SDL2-CS/releases/download/20140407/SDL2-CS.dll
+	download SDL2-CS.dll https://github.com/OpenRA/SDL2-CS/releases/download/20140407/SDL2-CS.dll
 fi
 
 if [ ! -f Eluant.dll ]; then
 	echo "Fetching Eluant from GitHub."
-	curl Eluant.dll https://github.com/OpenRA/Eluant/releases/download/20140425/Eluant.dll
+	download Eluant.dll https://github.com/OpenRA/Eluant/releases/download/20140425/Eluant.dll
 fi

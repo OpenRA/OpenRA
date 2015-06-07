@@ -15,6 +15,6 @@ filename="GeoLite2-Country.mmdb.gz"
 if [ ! -e $filename ] || [ -n "$(find . -name $filename -mtime +30 -print)" ]; then
 	rm -f $filename
 	echo "Updating GeoIP country database from MaxMind."
-	curl $filename http://geolite.maxmind.com/download/geoip/database/$filename
+	download $filename http://geolite.maxmind.com/download/geoip/database/$filename
 fi
 
