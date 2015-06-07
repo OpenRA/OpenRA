@@ -95,9 +95,8 @@ namespace OpenRA.Graphics
 			var cells = viewport.VisibleCells;
 
 			// Only draw the rows that are visible.
-			// VisibleCells is clamped to the map, so additional checks are unnecessary
-			var firstRow = cells.TopLeft.ToMPos(map).V;
-			var lastRow = cells.BottomRight.ToMPos(map).V + 1;
+			var firstRow = cells.MapCoords.TopLeft.V;
+			var lastRow = Math.Min(cells.MapCoords.BottomRight.V + 1, map.MapSize.Y);
 
 			Game.Renderer.Flush();
 
