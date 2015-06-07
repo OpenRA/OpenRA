@@ -36,10 +36,10 @@ namespace OpenRA
 				psi.RedirectStandardOutput = true;
 				var p = Process.Start(psi);
 				var kernelName = p.StandardOutput.ReadToEnd();
-				if (kernelName.Contains("Linux") || kernelName.Contains("BSD"))
-					return PlatformType.Linux;
 				if (kernelName.Contains("Darwin"))
 					return PlatformType.OSX;
+				else
+					return PlatformType.Linux;
 			}
 			catch { }
 
