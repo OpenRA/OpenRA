@@ -16,7 +16,7 @@
 # openra_Mod="<Mod>" (default: ra)
 # openra_ListenPort="<number>" (default: 1234)
 # openra_ExternalPort="<number>" (default: 1234)
-# openra_AdvertiseOnline="<True|False>" (default: False)
+# openra_AdvertiseOnline="<True|False>" (default: True)
 # openra_extraflags="<set as needed>"
 #
 
@@ -44,7 +44,7 @@ status_cmd="${name}_status"
 : ${openra_Mod="ra"}
 : ${openra_ListenPort="1234"}
 : ${openra_ExternalPort="1234"}
-: ${openra_AdvertiseOnline="False"}
+: ${openra_AdvertiseOnline="True"}
 
 openra_Dedicated="True"
 openra_DedicatedLoop="True"
