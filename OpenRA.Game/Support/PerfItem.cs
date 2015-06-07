@@ -62,7 +62,7 @@ namespace OpenRA.Support
 				i++;
 			}
 
-			return sum / i;
+			return i == 0 ? sum : sum / i;
 		}
 
 		public double LastValue
