@@ -75,6 +75,10 @@ harvester:
 		EmptyWeapon: UnitExplodeScale
 	LeavesHusk:
 		HuskActor: Harvester.Husk
+	RenderUnit:
+	-RenderSprites:
+	-WithFacingSpriteBody:
+	-AutoSelectionSize:
 	WithHarvestAnimation:
 		Palette: effect50alpha
 	AttractsWorms:
@@ -102,7 +106,7 @@ trike:
 		Speed: 128
 	RevealsShroud:
 		Range: 7c0
-	RenderUnit:
+	WithFacingSpriteBody:
 	WithMuzzleFlash:
 	Armament:
 		Weapon: HMG
@@ -115,6 +119,8 @@ trike:
 		EmptyWeapon: UnitExplodeTiny
 	AttractsWorms:
 		Intensity: 420
+	AutoSelectionSize:
+	RenderSprites:
 
 quad:
 	Inherits: ^Vehicle
@@ -181,8 +187,7 @@ siegetank:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 	WithMuzzleFlash:
-	RenderUnit:
-		Image: SIEGETANK
+	WithFacingSpriteBody:
 	WithTurret:
 	Explodes:
 		Weapon: UnitExplodeScale
@@ -195,6 +200,9 @@ siegetank:
 		HuskActor: siegetank.husk
 	AttractsWorms:
 		Intensity: 600
+	AutoSelectionSize:
+	RenderSprites:
+		Image: SIEGETANK
 
 missiletank:
 	Inherits: ^Tank
@@ -289,7 +297,7 @@ devast:
 		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 7c0
-	RenderUnit:
+	WithFacingSpriteBody:
 	Armament:
 		Weapon: DevBullet
 		LocalOffset: 640,0,32
@@ -307,6 +315,8 @@ devast:
 		HuskActor: devast.husk
 	AttractsWorms:
 		Intensity: 700
+	AutoSelectionSize:
+	RenderSprites:
 
 raider:
 	Inherits: ^Vehicle
@@ -382,7 +392,7 @@ deviatortank:
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
-	RenderUnit:
+	WithFacingSpriteBody:
 	Armament:
 		Weapon: NerveGasMissile
 		LocalOffset: -299,0,85
@@ -398,6 +408,8 @@ deviatortank:
 		HuskActor: deviatortank.husk
 	AttractsWorms:
 		Intensity: 600
+	AutoSelectionSize:
+	RenderSprites:
 
 ^combat:
 	Inherits: ^Tank
@@ -430,7 +442,7 @@ deviatortank:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	RenderUnit:
+	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	Explodes:
@@ -440,6 +452,8 @@ deviatortank:
 		Bounds: 30,30
 	AttractsWorms:
 		Intensity: 520
+	AutoSelectionSize:
+	RenderSprites:
 
 combata:
 	Inherits: ^combat

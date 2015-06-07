@@ -460,7 +460,7 @@ VICE:
 		WanderMoveRadius: 2
 		MinMoveDelayInTicks: 25
 		MaxMoveDelayInTicks: 45
-	RenderUnit:
+	WithFacingSpriteBody:
 	WithMuzzleFlash:
 		SplitFacings: true
 	CombatDebugOverlay:
@@ -473,4 +473,6 @@ VICE:
 		Weapon: Heal
 	Voiced:
 		VoiceSet: DinoVoice
+	AutoSelectionSize:
+	RenderSprites:
 

@@ -8,47 +8,47 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Traits;
+using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	class RenderUnitFlyingInfo : RenderUnitInfo, Requires<IMoveInfo>
+	public class WithMoveAnimationInfo : ITraitInfo, Requires<WithFacingSpriteBodyInfo>, Requires<IMoveInfo>
 	{
+		[Desc("Displayed while moving.")]
 		public readonly string MoveSequence = "move";
 
-		public override object Create(ActorInitializer init) { return new RenderUnitFlying(init, this); }
+		public object Create(ActorInitializer init) { return new WithMoveAnimation(init, this); }
 	}
 
-	class RenderUnitFlying : RenderUnit, ITick
+	public class WithMoveAnimation : ITick
 	{
-		readonly RenderUnitFlyingInfo info;
+		readonly WithMoveAnimationInfo info;
 		readonly IMove movement;
+		readonly WithFacingSpriteBody wfsb;
 
 		WPos cachedPosition;
 
-		public RenderUnitFlying(ActorInitializer init, RenderUnitFlyingInfo info)
-			: base(init, info)
+		public WithMoveAnimation(ActorInitializer init, WithMoveAnimationInfo info)
 		{
 			this.info = info;
 			movement = init.Self.Trait<IMove>();
+			wfsb = init.Self.Trait<WithFacingSpriteBody>();
 
 			cachedPosition = init.Self.CenterPosition;
 		}
 
-		public override void Tick(Actor self)
+		public void Tick(Actor self)
 		{
-			base.Tick(self);
-
 			var oldCachedPosition = cachedPosition;
 			cachedPosition = self.CenterPosition;
 
 			// Flying units set IsMoving whenever they are airborne, which isn't enough for our purposes
 			var isMoving = movement.IsMoving && !self.IsDead && (oldCachedPosition - cachedPosition).HorizontalLengthSquared != 0;
-			if (isMoving ^ (DefaultAnimation.CurrentSequence.Name != info.MoveSequence))
+			if (isMoving ^ (wfsb.DefaultAnimation.CurrentSequence.Name != info.MoveSequence))
 				return;
 
-			DefaultAnimation.ReplaceAnim(isMoving ? info.MoveSequence : info.Sequence);
+			wfsb.DefaultAnimation.ReplaceAnim(isMoving ? info.MoveSequence : wfsb.Info.Sequence);
 		}
 	}
 }

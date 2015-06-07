@@ -5,7 +5,9 @@ mcv.starport:
 		Queue: Starport
 	Valued:
 		Cost: 2500
-	RenderUnit:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 		Image: mcv
 
 harvester.starport:
@@ -24,7 +26,9 @@ trike.starport:
 		Prerequisites: starport
 	Valued:
 		Cost: 315
-	RenderUnit:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 		Image: trike
 
 quad.starport:
@@ -33,7 +37,9 @@ quad.starport:
 		Queue: Starport
 	Valued:
 		Cost: 500
-	RenderUnit:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 		Image: quad
 
 siegetank.starport:
@@ -42,7 +48,9 @@ siegetank.starport:
 		Queue: Starport
 	Valued:
 		Cost: 1075
-	RenderUnit:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 		Image: siegetank
 
 missiletank.starport:
@@ -51,7 +59,9 @@ missiletank.starport:
 		Queue: Starport
 	Valued:
 		Cost: 1250
-	RenderUnit:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 		Image: missiletank
 
 combata.starport:
@@ -61,7 +71,9 @@ combata.starport:
 		Queue: Starport
 	Valued:
 		Cost: 875
-	RenderUnit:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 		Image: combata
 
 combath.starport:
@@ -71,7 +83,9 @@ combath.starport:
 		Queue: Starport
 	Valued:
 		Cost: 875
-	RenderUnit:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 		Image: combath
 
 combato.starport:
@@ -81,7 +95,9 @@ combato.starport:
 		Queue: Starport
 	Valued:
 		Cost: 875
-	RenderUnit:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 		Image: combato
 
 carryall.starport:

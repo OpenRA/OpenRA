@@ -10,7 +10,7 @@ BADR:
 		ROT: 5
 		Speed: 149
 		Repulsable: False
-	RenderUnit:
+	WithFacingSpriteBody:
 	Cargo:
 		MaxWeight: 10
 	-Selectable:
@@ -33,6 +33,8 @@ BADR:
 	-GpsDot:
 	RejectsOrders:
 	-AnnounceOnSeen:
+	AutoSelectionSize:
+	RenderSprites:
 
 BADR.Bomber:
 	Inherits: ^Plane
@@ -49,8 +51,7 @@ BADR.Bomber:
 		Repulsable: False
 	AmmoPool:
 		Ammo: 7
-	RenderUnit:
-		Image: badr
+	WithFacingSpriteBody:
 	-Selectable:
 	-GainsExperience:
 	Tooltip:
@@ -70,6 +71,9 @@ BADR.Bomber:
 	-EjectOnDeath:
 	-GpsDot:
 	RejectsOrders:
+	AutoSelectionSize:
+	RenderSprites:
+		Image: badr
 
 MIG:
 	Inherits: ^Plane
@@ -105,8 +109,7 @@ MIG:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
 		EnableStances: false
-	RenderUnit:
-		CameraPitch: 99
+	WithFacingSpriteBody:
 	AmmoPool:
 		Ammo: 8
 	ReturnOnIdle:
@@ -121,6 +124,9 @@ MIG:
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,171
 		Interval: 2
+	AutoSelectionSize:
+	RenderSprites:
+		CameraPitch: 99
 
 YAK:
 	Inherits: ^Plane
@@ -161,8 +167,7 @@ YAK:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
 		EnableStances: false
-	RenderUnit:
-		CameraPitch: 99
+	WithFacingSpriteBody:
 	AmmoPool:
 		Ammo: 18
 		PipCount: 6
@@ -178,6 +183,9 @@ YAK:
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,0
 		Interval: 2
+	AutoSelectionSize:
+	RenderSprites:
+		CameraPitch: 99
 
 TRAN:
 	Inherits: ^Helicopter
@@ -205,7 +213,7 @@ TRAN:
 		Speed: 112
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
 		AltitudeVelocity: 0c100
-	RenderUnit:
+	WithFacingSpriteBody:
 	WithRotor@PRIMARY:
 		Offset: -597,0,341
 		Sequence: rotor2
@@ -218,6 +226,8 @@ TRAN:
 		PipCount: 8
 	LeavesHusk:
 		HuskActor: TRAN.Husk
+	AutoSelectionSize:
+	RenderSprites:
 
 HELI:
 	Inherits: ^Helicopter
@@ -254,7 +264,7 @@ HELI:
 		Speed: 149
 	AutoTarget:
 		InitialStance: HoldFire
-	RenderUnit:
+	WithFacingSpriteBody:
 	WithRotor:
 		Offset: 0,0,85
 	AmmoPool:
@@ -265,6 +275,8 @@ HELI:
 		HuskActor: HELI.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
+	AutoSelectionSize:
+	RenderSprites:
 
 HIND:
 	Inherits: ^Helicopter
@@ -304,7 +316,7 @@ HIND:
 		Speed: 112
 	AutoTarget:
 		InitialStance: HoldFire
-	RenderUnit:
+	WithFacingSpriteBody:
 	WithRotor:
 	AmmoPool:
 		Ammo: 24
@@ -317,6 +329,8 @@ HIND:
 		HuskActor: HIND.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
+	AutoSelectionSize:
+	RenderSprites:
 
 U2:
 	Inherits: ^Plane
@@ -329,7 +343,7 @@ U2:
 		Speed: 373
 		Repulsable: False
 		MaximumPitch: 56
-	RenderUnit:
+	WithFacingSpriteBody:
 	AttackBomber:
 	-Selectable:
 	-TargetableAircraft:
@@ -345,4 +359,6 @@ U2:
 		Interval: 2
 	RejectsOrders:
 	-AnnounceOnSeen:
+	AutoSelectionSize:
+	RenderSprites:
 

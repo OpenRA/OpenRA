@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<IBodyOrientation>();
 
-			anim = new Animation(self.World, rs.GetImage(self), RenderSimple.MakeFacingFunc(self));
+			anim = new Animation(self.World, rs.GetImage(self), RenderSprites.MakeFacingFunc(self));
 			anim.IsDecoration = true;
 			anim.Play(info.Sequence);
 			rs.Add(new AnimationWithOffset(anim,

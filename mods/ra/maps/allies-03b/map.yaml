@@ -1377,8 +1377,7 @@ Rules:
 			ShowOwnerRow: false
 	JEEP.mission:
 		Inherits: JEEP
-		RenderUnit:
-			Image: JEEP
+		WithFacingSpriteBody:
 		-Selectable:
 		-Demolishable:
 		-Huntable:
@@ -1389,6 +1388,9 @@ Rules:
 			Types: ~disabled
 		RevealsShroud:
 			Range: 0c0
+		AutoSelectionSize:
+		RenderSprites:
+			Image: JEEP
 	E3:
 		Buildable:
 			Prerequisites: ~disabled

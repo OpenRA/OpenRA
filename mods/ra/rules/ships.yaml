@@ -23,7 +23,7 @@ SS:
 	TargetableSubmarine:
 		TargetTypes: Ground, Water, Repair
 		CloakedTargetTypes: Underwater, Repair
-	RenderUnit:
+	WithFacingSpriteBody:
 	Cloak:
 		CloakTypes: Underwater
 		InitialDelay: 0
@@ -49,6 +49,8 @@ SS:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
 	-MustBeDestroyed:
+	AutoSelectionSize:
+	RenderSprites:
 
 MSUB:
 	Inherits: ^Ship
@@ -71,7 +73,7 @@ MSUB:
 		Speed: 42
 	RevealsShroud:
 		Range: 6c0
-	RenderUnit:
+	WithFacingSpriteBody:
 	-TargetableUnit:
 	TargetableSubmarine:
 		TargetTypes: Ground, Water, Repair
@@ -101,6 +103,8 @@ MSUB:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
 	-MustBeDestroyed:
+	AutoSelectionSize:
+	RenderSprites:
 
 DD:
 	Inherits: ^Ship
@@ -141,7 +145,7 @@ DD:
 	AttackTurreted:
 	Selectable:
 		Bounds: 38,38
-	RenderUnit:
+	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	Chronoshiftable:
@@ -153,6 +157,8 @@ DD:
 	Explodes:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip
+	AutoSelectionSize:
+	RenderSprites:
 
 CA:
 	Inherits: ^Ship
@@ -202,7 +208,7 @@ CA:
 	WithMuzzleFlash:
 	Selectable:
 		Bounds: 44,44
-	RenderUnit:
+	WithFacingSpriteBody:
 	WithTurret@PRIMARY:
 		Turret: primary
 	WithTurret@SECONDARY:
@@ -213,6 +219,8 @@ CA:
 	Explodes:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip
+	AutoSelectionSize:
+	RenderSprites:
 
 LST:
 	Inherits: ^Ship
@@ -282,7 +290,7 @@ PT:
 	WithMuzzleFlash:
 	Selectable:
 		Bounds: 32,32
-	RenderUnit:
+	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	Chronoshiftable:
@@ -294,4 +302,6 @@ PT:
 	Explodes:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip
+	AutoSelectionSize:
+	RenderSprites:
 

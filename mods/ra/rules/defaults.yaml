@@ -536,7 +536,7 @@
 ^Husk:
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
-	RenderUnit:
+	WithFacingSpriteBody:
 	Health:
 		HP: 280
 	Armor:
@@ -562,6 +562,8 @@
 		ForceHealthPercentage: 25
 	DisabledOverlay:
 	ScriptTriggers:
+	AutoSelectionSize:
+	RenderSprites:
 
 ^HelicopterHusk:
 	Inherits: ^Husk

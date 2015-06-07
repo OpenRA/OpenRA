@@ -684,14 +684,16 @@ Rules:
 			Speed: 280
 		AmmoPool:
 			Ammo: 30
-		RenderUnit:
-			Image: mig
+		WithFacingSpriteBody:
 		WithShadow:
 		-Selectable:
 		-GainsExperience:
 		Tooltip:
 			Name: Mig Bomber
 		-EjectOnDeath:
+		AutoSelectionSize:
+		RenderSprites:
+			Image: mig
 	BRIK:
 		Buildable:
 			Prerequisites: ~disabled

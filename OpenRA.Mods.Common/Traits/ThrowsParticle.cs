@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class ThrowsParticleInfo : ITraitInfo, Requires<RenderSimpleInfo>, Requires<IBodyOrientationInfo>
+	class ThrowsParticleInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<IBodyOrientationInfo>
 	{
 		public readonly string Anim = null;
 
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public ThrowsParticle(ActorInitializer init, ThrowsParticleInfo info)
 		{
 			var self = init.Self;
-			var rs = self.Trait<RenderSimple>();
+			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<IBodyOrientation>();
 
 			// TODO: Carry orientation over from the parent instead of just facing
