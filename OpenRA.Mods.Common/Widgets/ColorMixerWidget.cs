@@ -31,7 +31,8 @@ namespace OpenRA.Mods.Common.Widgets
 		bool isMoving;
 
 		bool update;
-		object syncWorker = new object();
+		readonly object syncWorker = new object();
+		readonly object bufferSync = new object();
 		Thread workerThread;
 		bool workerAlive;
 
@@ -111,7 +112,7 @@ namespace OpenRA.Mods.Common.Widgets
 						}
 					}
 
-					lock (front)
+					lock (bufferSync)
 					{
 						var swap = front;
 						front = back;
@@ -123,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			if (Monitor.TryEnter(front))
+			if (Monitor.TryEnter(bufferSync))
 			{
 				try
 				{
@@ -131,7 +132,7 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 				finally
 				{
-					Monitor.Exit(front);
+					Monitor.Exit(bufferSync);
 				}
 			}
 
