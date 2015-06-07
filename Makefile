@@ -391,7 +391,7 @@ install-tools: tools
 
 install-linux-icons:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
-	@$(CP_R) packaging/linux/hicolor/ "$(DESTDIR)$(datadir)/icons"
+	@$(CP_R) packaging/linux/hicolor "$(DESTDIR)$(datadir)/icons/"
 
 install-linux-desktop:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
