@@ -160,8 +160,6 @@ WarfactoryInfiltrated = function()
 end
 
 MissInfiltrated = function()
-	CloakProvider.Destroy()
-
 	for i = 0, 5, 1 do
 		local sound = Utils.Random(TanyaVoices)
 		Trigger.AfterDelay(DateTime.Seconds(i), function()
@@ -247,9 +245,8 @@ InitTriggers = function()
 		if a == Truk then
 			Trigger.RemoveFootprintTrigger(id)
 
-			CloakProvider = Actor.Create("CloakUpgrade", true, { Owner = greece, Location = Prison.Location })
-
 			Spy = Actor.Create("spy", true, { Owner = greece, Location = TrukWaypoint5.Location })
+			Spy.DisguiseAsType("e1", ussr)
 			Spy.Move(SpyWaypoint.Location)
 			Spy.Infiltrate(Prison)
 			Media.PlaySoundNotification(greece, SpyVoice)

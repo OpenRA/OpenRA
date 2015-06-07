@@ -1694,20 +1694,6 @@ Rules:
 			Types: Mission Objectives
 		DisguiseToolTip:
 			ShowOwnerRow: false
-		Cloak@MISS:
-			UpgradeTypes: miss
-			UpgradeMinEnabledLevel: 1
-			InitialDelay: 0
-			CloakDelay: 0
-			Palette:
-	CloakUpgrade:
-		AlwaysVisible:
-		Immobile:
-			OccupiesSpace: false
-		BodyOrientation:
-		UpgradeActorsNear:
-			Upgrades: miss
-			Range: 5c512
 	WEAP:
 		TargetableBuilding:
 			TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
