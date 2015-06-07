@@ -18,7 +18,6 @@ namespace OpenRA.Mods.Common.Effects
 	{
 		readonly World world;
 		readonly WPos pos;
-		readonly CPos cell;
 		readonly Animation anim;
 		readonly string palette;
 
@@ -26,7 +25,6 @@ namespace OpenRA.Mods.Common.Effects
 		{
 			this.world = world;
 			this.pos = pos;
-			this.cell = world.Map.CellContaining(pos);
 			this.palette = palette;
 
 			anim = new Animation(world, trail);
@@ -38,7 +36,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (world.FogObscures(cell))
+			if (world.FogObscures(pos))
 				return SpriteRenderable.None;
 
 			return anim.Render(pos, wr.Palette(palette));

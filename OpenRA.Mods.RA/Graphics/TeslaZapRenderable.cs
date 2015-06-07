@@ -70,8 +70,8 @@ namespace OpenRA.Mods.RA.Graphics
 		public void RenderDebugGeometry(WorldRenderer wr) { }
 		public void Render(WorldRenderer wr)
 		{
-			if (wr.World.FogObscures(wr.World.Map.CellContaining(pos)) &&
-				wr.World.FogObscures(wr.World.Map.CellContaining(pos + length)))
+			if (wr.World.FogObscures(pos) &&
+				wr.World.FogObscures(pos + length))
 				return;
 
 			if (!cache.Any() || length != cachedLength || pos != cachedPos)

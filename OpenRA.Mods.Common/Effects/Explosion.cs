@@ -20,13 +20,11 @@ namespace OpenRA.Mods.Common.Effects
 		readonly string palette;
 		readonly Animation anim;
 		WPos pos;
-		CPos cell;
 
 		public Explosion(World world, WPos pos, string sequence, string palette)
 		{
 			this.world = world;
 			this.pos = pos;
-			this.cell = world.Map.CellContaining(pos);
 			this.palette = palette;
 			anim = new Animation(world, "explosion");
 			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
@@ -36,7 +34,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (world.FogObscures(cell))
+			if (world.FogObscures(pos))
 				return SpriteRenderable.None;
 
 			return anim.Render(pos, wr.Palette(palette));

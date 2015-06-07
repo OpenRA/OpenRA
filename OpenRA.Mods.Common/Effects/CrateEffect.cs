@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (!a.IsInWorld || a.World.FogObscures(a.Location))
+			if (!a.IsInWorld || a.World.FogObscures(a.CenterPosition))
 				return SpriteRenderable.None;
 
 			return anim.Render(a.CenterPosition, wr.Palette(palette));

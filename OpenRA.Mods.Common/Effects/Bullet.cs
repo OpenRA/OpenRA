@@ -158,8 +158,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (anim == null || ticks >= length)
 				yield break;
 
-			var cell = wr.World.Map.CellContaining(pos);
-			if (!args.SourceActor.World.FogObscures(cell))
+			if (!args.SourceActor.World.FogObscures(pos))
 			{
 				if (info.Shadow)
 				{
