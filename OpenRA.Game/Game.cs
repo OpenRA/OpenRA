@@ -204,6 +204,7 @@ namespace OpenRA
 			Log.AddChannel("sound", "sound.log");
 			Log.AddChannel("graphics", "graphics.log");
 			Log.AddChannel("geoip", "geoip.log");
+			Log.AddChannel("chat", "chat.log");
 
 			if (Settings.Server.DiscoverNatDevices)
 				UPnP.TryNatDiscovery();
@@ -665,6 +666,9 @@ namespace OpenRA
 
 		public static void AddChatLine(Color color, string name, string text)
 		{
+			var t = DateTime.Now;
+			var time = "{0:D4}-{1:D2}-{2:D2} {3:D2}:{4:D2}:{5:D2}".F(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second);
+			Log.Write("chat", time + " <" + name + "> " + text);
 			OrderManager.AddChatLine(color, name, text);
 		}
 
