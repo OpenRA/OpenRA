@@ -772,6 +772,12 @@ namespace OpenRA
 			return cell.ToMPos(this).Clamp(bounds).ToCPos(this);
 		}
 
+		public MPos Clamp(MPos uv)
+		{
+			var bounds = new Rectangle(Bounds.X, Bounds.Y, Bounds.Width - 1, Bounds.Height - 1);
+			return uv.Clamp(bounds);
+		}
+
 		public CPos ChooseRandomCell(MersenneTwister rand)
 		{
 			var x = rand.Next(Bounds.Left, Bounds.Right);

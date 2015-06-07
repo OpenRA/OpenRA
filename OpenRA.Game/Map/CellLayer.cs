@@ -125,9 +125,24 @@ namespace OpenRA
 			return GetEnumerator();
 		}
 
+		public bool Contains(CPos cell)
+		{
+			return Contains(cell.ToMPos(Shape));
+		}
+
 		public bool Contains(MPos uv)
 		{
 			return bounds.Contains(uv.U, uv.V);
+		}
+
+		public CPos Clamp(CPos uv)
+		{
+			return Clamp(uv.ToMPos(Shape)).ToCPos(Shape);
+		}
+
+		public MPos Clamp(MPos uv)
+		{
+			return uv.Clamp(new Rectangle(0, 0, Size.Width - 1, Size.Height - 1));
 		}
 	}
 
