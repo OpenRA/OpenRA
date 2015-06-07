@@ -128,7 +128,7 @@ namespace OpenRA.Mods.RA.Traits
 			return AsPlayer.Color.RGB;
 		}
 
-		void DisguiseAs(Actor target)
+		public void DisguiseAs(Actor target)
 		{
 			var oldDisguiseSetting = Disguised;
 			var oldEffectiveOwner = AsPlayer;
@@ -159,6 +159,24 @@ namespace OpenRA.Mods.RA.Traits
 				AsSprite = null;
 			}
 
+			HandleDisguise(oldEffectiveOwner, oldDisguiseSetting);
+		}
+
+		public void DisguiseAs(ActorInfo actorInfo, Player newOwner)
+		{
+			var oldDisguiseSetting = Disguised;
+			var oldEffectiveOwner = AsPlayer;
+
+			var renderSprites = actorInfo.Traits.GetOrDefault<RenderSpritesInfo>();
+			AsSprite = renderSprites == null ? null : renderSprites.GetImage(actorInfo, self.World.Map.SequenceProvider, newOwner.Country.Race);
+			AsPlayer = newOwner;
+			AsTooltipInfo = actorInfo.Traits.WithInterface<TooltipInfo>().FirstOrDefault();
+
+			HandleDisguise(oldEffectiveOwner, oldDisguiseSetting);
+		}
+
+		void HandleDisguise(Player oldEffectiveOwner, bool oldDisguiseSetting)
+		{
 			foreach (var t in self.TraitsImplementing<INotifyEffectiveOwnerChanged>())
 				t.OnEffectiveOwnerChanged(self, oldEffectiveOwner, AsPlayer);
 
