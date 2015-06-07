@@ -1,5 +1,10 @@
 #!/bin/sh
 
+####
+# This file must stay /bin/sh and POSIX compliant for BSD portability.
+# Copy-paste the entire script into http://shellcheck.net to check.
+####
+
 # Die on any error for Travis CI to automatically retry:
 set -e
 
