@@ -292,6 +292,11 @@ namespace OpenRA.Traits
 			Invalidate(changed);
 		}
 
+		public bool IsExplored(WPos pos)
+		{
+			return IsExplored(map.CellContaining(pos));
+		}
+
 		public bool IsExplored(CPos cell)
 		{
 			return IsExplored(cell.ToMPos(map));
@@ -332,6 +337,11 @@ namespace OpenRA.Traits
 		public bool IsExplored(Actor a)
 		{
 			return GetVisOrigins(a).Any(IsExplored);
+		}
+
+		public bool IsVisible(WPos pos)
+		{
+			return IsVisible(map.CellContaining(pos));
 		}
 
 		public bool IsVisible(CPos cell)

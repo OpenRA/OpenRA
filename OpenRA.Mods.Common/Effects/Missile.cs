@@ -210,7 +210,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 				yield return contrail;
 
-			if (!args.SourceActor.World.FogObscures(wr.World.Map.CellContaining(pos)))
+			if (!args.SourceActor.World.FogObscures(pos))
 			{
 				if (info.Shadow)
 				{
