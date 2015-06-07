@@ -164,7 +164,13 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			DirtyCells(map.AllCells);
-			visibleUnderShroud = map.Contains;
+
+			// All tiles are visible in the editor
+			if (w.Type == WorldType.Editor)
+				visibleUnderShroud = _ => true;
+			else
+				visibleUnderShroud = map.Contains;
+
 			visibleUnderFog = map.Contains;
 
 			var shroudSheet = shroudSprites[0].Sheet;
