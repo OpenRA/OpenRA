@@ -36,6 +36,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly CVec locationOffset;
 		readonly WVec previewOffset;
 		readonly PlayerReference owner;
+		readonly CVec[] footprint;
 
 		int facing = 92;
 
@@ -67,6 +68,14 @@ namespace OpenRA.Mods.Common.Widgets
 			td.Add(new RaceInit(owner.Race));
 			preview.SetPreview(actor, td);
 
+			var ios = actor.Traits.GetOrDefault<IOccupySpaceInfo>();
+			if (ios != null)
+				footprint = ios.OccupiedCells(actor, CPos.Zero)
+					.Select(c => c.Key - CPos.Zero)
+					.ToArray();
+			else
+				footprint = new CVec[0];
+
 			// The preview widget may be rendered by the higher-level code before it is ticked.
 			// Force a manual tick to ensure the bounds are set correctly for this first draw.
 			Tick();
@@ -85,8 +94,12 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
-			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down && world.Map.Contains(cell))
+			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
+				// Check the actor is inside the map
+				if (!footprint.All(c => world.Map.MapTiles.Value.Contains(cell + locationOffset + c)))
+					return true;
+
 				var newActorReference = new ActorReference(Actor.Name);
 				newActorReference.Add(new OwnerInit(owner.Name));
 
