@@ -23,7 +23,16 @@ HarkonnenReinforcements["Hard"] =
 
 HarkonnenEntryWaypoints = { HarkonnenWaypoint1.Location, HarkonnenWaypoint2.Location, HarkonnenWaypoint3.Location, HarkonnenWaypoint4.Location }
 HarkonnenAttackDelay = DateTime.Seconds(30)
-HarkonnenAttackWaves = 1
+
+HarkonnenAttackWaves = { }
+HarkonnenAttackWaves["Easy"] = 1
+HarkonnenAttackWaves["Normal"] = 5
+HarkonnenAttackWaves["Hard"] = 12
+
+ToHarvest = { }
+ToHarvest["Easy"] = 2500
+ToHarvest["Normal"] = 3000
+ToHarvest["Hard"] = 3500
 
 AtreidesReinforcements = { "rifle", "rifle", "rifle" }
 AtreidesEntryPath = { AtreidesWaypoint.Location, AtreidesRally.Location }
@@ -36,7 +45,6 @@ Messages =
 	"Build a Silo to store additional Spice."
 }
 
-ToHarvest = 2500
 
 IdleHunt = function(actor)
 	if not actor.IsDead then
@@ -49,7 +57,7 @@ Tick = function()
 		player.MarkCompletedObjective(KillHarkonnen)
 	end
 
-	if player.Resources > ToHarvest - 1 then
+	if player.Resources > ToHarvest[Map.Difficulty] - 1 then
 		player.MarkCompletedObjective(GatherSpice)
 	end
 
@@ -70,20 +78,12 @@ Tick = function()
 		Media.DisplayMessage(Messages[4], "Mentat")
 	end
 
-	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. ToHarvest, player.Color)
+	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. ToHarvest[Map.Difficulty], player.Color)
 end
 
 WorldLoaded = function()
 	player = Player.GetPlayer("Atreides")
 	harkonnen = Player.GetPlayer("Harkonnen")
-
-	if Map.Difficulty == "Normal" then
-		HarkonnenAttackWaves = 5
-		ToHarvest = 3000
-	elseif Map.Difficulty == "Hard" then
-		HarkonnenAttackWaves = 12
-		ToHarvest = 3500
-	end
 
 	InitObjectives()
 
@@ -108,20 +108,21 @@ WorldLoaded = function()
 		Reinforcements.Reinforce(player, AtreidesReinforcements, AtreidesEntryPath)
 	end)
 
+	WavesLeft = HarkonnenAttackWaves[Map.Difficulty]
 	SendReinforcements()
 end
 
 SendReinforcements = function()
 	local units = HarkonnenReinforcements[Map.Difficulty]
 	local delay = Utils.RandomInteger(HarkonnenAttackDelay - DateTime.Seconds(2), HarkonnenAttackDelay)
-	HarkonnenAttackDelay = HarkonnenAttackDelay - (#units * 3 - 3 - HarkonnenAttackWaves) * DateTime.Seconds(1)
+	HarkonnenAttackDelay = HarkonnenAttackDelay - (#units * 3 - 3 - WavesLeft) * DateTime.Seconds(1)
 	if HarkonnenAttackDelay < 0 then HarkonnenAttackDelay = 0 end
 
 	Trigger.AfterDelay(delay, function()
 		Reinforcements.Reinforce(harkonnen, Utils.Random(units), { Utils.Random(HarkonnenEntryWaypoints) }, 10, IdleHunt)
 
-		HarkonnenAttackWaves = HarkonnenAttackWaves - 1
-		if HarkonnenAttackWaves == 0 then
+		WavesLeft = WavesLeft - 1
+		if WavesLeft == 0 then
 			Trigger.AfterDelay(DateTime.Seconds(1), function() HarkonnenArrived = true end)
 		else
 			SendReinforcements()
@@ -135,7 +136,7 @@ InitObjectives = function()
 	end)
 
 	KillAtreides = harkonnen.AddPrimaryObjective("Kill all Atreides units.")
-	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(ToHarvest) .. " Solaris worth of Spice.")
+	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(ToHarvest[Map.Difficulty]) .. " Solaris worth of Spice.")
 	KillHarkonnen = player.AddSecondaryObjective("Eliminate all Harkonnen units and reinforcements\nin the area.")
 
 	Trigger.OnObjectiveCompleted(player, function(p, id)
