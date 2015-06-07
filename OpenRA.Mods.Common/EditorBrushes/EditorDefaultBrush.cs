@@ -65,10 +65,11 @@ namespace OpenRA.Mods.Common.Widgets
 			var underCursor = editorLayer.PreviewsAt(worldRenderer.Viewport.ViewToWorldPx(mi.Location))
 				.FirstOrDefault();
 
+			var mapResources = world.Map.MapResources.Value;
 			ResourceType type;
 			if (underCursor != null)
 				editorWidget.SetTooltip(underCursor.Tooltip);
-			else if (world.Map.Contains(cell) && resources.TryGetValue(world.Map.MapResources.Value[cell].Type, out type))
+			else if (mapResources.Contains(cell) && resources.TryGetValue(mapResources[cell].Type, out type))
 				editorWidget.SetTooltip(type.Info.Name);
 			else
 				editorWidget.SetTooltip(null);
@@ -84,8 +85,8 @@ namespace OpenRA.Mods.Common.Widgets
 				if (underCursor != null)
 					editorLayer.Remove(underCursor);
 
-				if (world.Map.MapResources.Value[cell].Type != 0)
-					world.Map.MapResources.Value[cell] = new ResourceTile();
+				if (mapResources.Contains(cell) && mapResources[cell].Type != 0)
+					mapResources[cell] = new ResourceTile();
 			}
 			else if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{

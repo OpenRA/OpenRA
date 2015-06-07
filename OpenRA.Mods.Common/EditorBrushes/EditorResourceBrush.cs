@@ -82,7 +82,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public bool AllowResourceAt(CPos cell)
 		{
-			if (!world.Map.Contains(cell))
+			var mapResources = world.Map.MapResources.Value;
+			if (!mapResources.Contains(cell))
 				return false;
 
 			var tile = world.Map.MapTiles.Value[cell];
@@ -92,7 +93,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var terrainType = world.TileSet.TerrainInfo[tileInfo.TerrainType];
 
-			if (world.Map.MapResources.Value[cell].Type == ResourceType.ResourceType)
+			if (mapResources[cell].Type == ResourceType.ResourceType)
 				return false;
 
 			if (!ResourceType.AllowedTerrainTypes.Contains(terrainType.Type))

@@ -96,31 +96,36 @@ namespace OpenRA.Mods.D2k.Traits
 			{ ClearSides.Bottom | ClearSides.TopLeft | ClearSides.BottomLeft | ClearSides.BottomRight, 49 },
 		};
 
+		bool CellContains(CPos c, ResourceType t)
+		{
+			return render.Contains(c) && render[c].Type == t;
+		}
+
 		ClearSides FindClearSides(ResourceType t, CPos p)
 		{
 			var ret = ClearSides.None;
-			if (render[p + new CVec(0, -1)].Type != t)
+			if (!CellContains(p + new CVec(0, -1), t))
 				ret |= ClearSides.Top | ClearSides.TopLeft | ClearSides.TopRight;
 
-			if (render[p + new CVec(-1, 0)].Type != t)
+			if (!CellContains(p + new CVec(-1, 0), t))
 				ret |= ClearSides.Left | ClearSides.TopLeft | ClearSides.BottomLeft;
 
-			if (render[p + new CVec(1, 0)].Type != t)
+			if (!CellContains(p + new CVec(1, 0), t))
 				ret |= ClearSides.Right | ClearSides.TopRight | ClearSides.BottomRight;
 
-			if (render[p + new CVec(0, 1)].Type != t)
+			if (!CellContains(p + new CVec(0, 1), t))
 				ret |= ClearSides.Bottom | ClearSides.BottomLeft | ClearSides.BottomRight;
 
-			if (render[p + new CVec(-1, -1)].Type != t)
+			if (!CellContains(p + new CVec(-1, -1), t))
 				ret |= ClearSides.TopLeft;
 
-			if (render[p + new CVec(1, -1)].Type != t)
+			if (!CellContains(p + new CVec(1, -1), t))
 				ret |= ClearSides.TopRight;
 
-			if (render[p + new CVec(-1, 1)].Type != t)
+			if (!CellContains(p + new CVec(-1, 1), t))
 				ret |= ClearSides.BottomLeft;
 
-			if (render[p + new CVec(1, 1)].Type != t)
+			if (!CellContains(p + new CVec(1, 1), t))
 				ret |= ClearSides.BottomRight;
 
 			return ret;
@@ -128,6 +133,9 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void UpdateRenderedTileInner(CPos p)
 		{
+			if (!render.Contains(p))
+				return;
+
 			var t = render[p];
 			if (t.Density > 0)
 			{
