@@ -3,6 +3,8 @@
 # Die on any error for Travis CI to automatically retry:
 set -e
 
+. ./thirdparty/configure-utils.sh
+
 download_dir="${0%/*}/download"
 
 mkdir -p "${download_dir}"
@@ -85,10 +87,10 @@ fi
 
 if [ ! -f SDL2-CS.dll ]; then
 	echo "Fetching SDL2-CS from GitHub."
-	curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20140407/SDL2-CS.dll
+	curl SDL2-CS.dll https://github.com/OpenRA/SDL2-CS/releases/download/20140407/SDL2-CS.dll
 fi
 
 if [ ! -f Eluant.dll ]; then
 	echo "Fetching Eluant from GitHub."
-	curl -s -L -O https://github.com/OpenRA/Eluant/releases/download/20140425/Eluant.dll
+	curl Eluant.dll https://github.com/OpenRA/Eluant/releases/download/20140425/Eluant.dll
 fi
