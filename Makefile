@@ -78,6 +78,8 @@ VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
 os-dependencies = linux-dependencies
+else ifneq (,$(findstring BSD,$(UNAME_S)))
+os-dependencies = bsd-dependencies
 else ifeq ($(UNAME_S),Darwin)
 os-dependencies = osx-dependencies
 endif
@@ -307,7 +309,12 @@ cli-dependencies:
 linux-dependencies: cli-dependencies linux-native-dependencies
 
 linux-native-dependencies:
-	@./thirdparty/configure-linux-native-deps.sh
+	@./thirdparty/configure-native-deps.sh
+
+bsd-dependencies: cli-dependencies bsd-native-dependencies
+
+bsd-native-dependencies:
+	@./thirdparty/configure-native-deps.sh
 
 windows-dependencies:
 	@./thirdparty/fetch-thirdparty-deps-windows.sh
