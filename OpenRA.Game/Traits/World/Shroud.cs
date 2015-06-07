@@ -340,7 +340,7 @@ namespace OpenRA.Traits
 			return IsVisible(uv);
 		}
 
-		bool IsVisible(MPos uv)
+		public bool IsVisible(MPos uv)
 		{
 			if (!map.Contains(uv))
 				return false;

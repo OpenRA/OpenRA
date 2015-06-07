@@ -19,6 +19,7 @@ namespace OpenRA
 	public class CellLayer<T> : IEnumerable<T>
 	{
 		public readonly Size Size;
+		readonly Rectangle bounds;
 		public readonly TileShape Shape;
 		public event Action<CPos> CellEntryChanged = null;
 
@@ -30,6 +31,7 @@ namespace OpenRA
 		public CellLayer(TileShape shape, Size size)
 		{
 			Size = size;
+			bounds = new Rectangle(0, 0, Size.Width, Size.Height);
 			Shape = shape;
 			entries = new T[size.Width * size.Height];
 		}
@@ -121,6 +123,11 @@ namespace OpenRA
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
+		}
+
+		public bool Contains(MPos uv)
+		{
+			return bounds.Contains(uv.U, uv.V);
 		}
 	}
 
