@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class WithVoxelTurretInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<TurretedInfo>
+	public class WithVoxelTurretInfo : UpgradableTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<TurretedInfo>
 	{
 		[Desc("Voxel sequence name to use")]
 		public readonly string Sequence = "turret";
@@ -24,10 +24,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
 
-		public object Create(ActorInitializer init) { return new WithVoxelTurret(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithVoxelTurret(init.Self, this); }
 
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
 		{
+			if (UpgradeMinEnabledLevel > 0)
+				yield break;
+
 			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
 			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
 				.First(tt => tt.Turret == Turret);
@@ -42,23 +45,24 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class WithVoxelTurret
+	public class WithVoxelTurret : UpgradableTrait<WithVoxelTurretInfo>
 	{
 		readonly Actor self;
 		readonly Turreted turreted;
 		readonly IBodyOrientation body;
 
 		public WithVoxelTurret(Actor self, WithVoxelTurretInfo info)
+			: base(info)
 		{
 			this.self = self;
 			body = self.Trait<IBodyOrientation>();
 			turreted = self.TraitsImplementing<Turreted>()
-				.First(tt => tt.Name == info.Turret);
+				.First(tt => tt.Name == Info.Turret);
 
 			var rv = self.Trait<RenderVoxels>();
-			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, info.Sequence),
+			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, Info.Sequence),
 				() => turreted.Position(self), TurretRotation,
-				() => false, () => 0));
+				() => IsTraitDisabled, () => 0));
 		}
 
 		IEnumerable<WRot> TurretRotation()
