@@ -18,16 +18,19 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Also returns a default selection size that is calculated automatically from the voxel dimensions.")]
-	public class WithVoxelBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelBodyInfo : UpgradableTraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<IBodyOrientationInfo>
 	{
-		public readonly string Sequence = "idle";
+		[SequenceReference] public readonly string Sequence = "idle";
 
-		public object Create(ActorInitializer init) { return new WithVoxelBody(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithVoxelBody(init.Self, this); }
 
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
 		{
+			if (UpgradeMinEnabledLevel > 0)
+				yield break;
+
 			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
-			var voxel = VoxelProvider.GetVoxel(image, "idle");
+			var voxel = VoxelProvider.GetVoxel(image, Sequence);
 			var bodyOrientation = new[] { body.QuantizeOrientation(orientation, facings) };
 			yield return new VoxelAnimation(voxel, () => WVec.Zero,
 				() => bodyOrientation,
@@ -37,19 +40,22 @@ namespace OpenRA.Mods.Common.Traits
 		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race) { return 0; }
 	}
 
-	public class WithVoxelBody : IAutoSelectionSize
+	public class WithVoxelBody : UpgradableTrait<WithVoxelBodyInfo>, IAutoSelectionSize
 	{
+		readonly IBodyOrientation body;
+		readonly RenderVoxels rv;
 		int2 size;
 
 		public WithVoxelBody(Actor self, WithVoxelBodyInfo info)
+			: base(info)
 		{
-			var body = self.Trait<IBodyOrientation>();
-			var rv = self.Trait<RenderVoxels>();
+			body = self.Trait<IBodyOrientation>();
+			rv = self.Trait<RenderVoxels>();
 
-			var voxel = VoxelProvider.GetVoxel(rv.Image, info.Sequence);
+			var voxel = VoxelProvider.GetVoxel(rv.Image, Info.Sequence);
 			rv.Add(new VoxelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
-				() => false, () => 0));
+				() => IsTraitDisabled, () => 0));
 
 			// Selection size
 			var rvi = self.Info.Traits.Get<RenderVoxelsInfo>();
