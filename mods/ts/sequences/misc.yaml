@@ -258,6 +258,8 @@ resources:
 	tib20: tib20
 
 shroud:
+	Defaults:
+		Offset: 0, -1
 	shroud:
 		Length: *
 	fog: fog
