@@ -150,7 +150,7 @@ CA:
 		BuildPaletteOrder: 50
 		Prerequisites: ~syrd, atek, ~techlevel.unrestricted
 	Valued:
-		Cost: 2400
+		Cost: 500#2400
 	Tooltip:
 		Name: Cruiser
 		Description: Very slow long-range ship.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft
@@ -192,8 +192,68 @@ CA:
 		VisualBounds: 44,44
 	WithTurret@PRIMARY:
 		Turret: primary
+		UpgradeTypes: rank
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
 	WithTurret@SECONDARY:
 		Turret: secondary
+		UpgradeTypes: rank
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
+	WithTurret@PRIMARYV:
+		Turret: primary
+		Sequence: turret-veteran
+		UpgradeTypes: rank
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
+	WithTurret@SECONDARYV:
+		Turret: secondary
+		Sequence: turret-veteran
+		UpgradeTypes: rank
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
+	WithTurret@PRIMARYE:
+		Turret: primary
+		Sequence: turret-elite
+		UpgradeTypes: rank
+		UpgradeMinEnabledLevel: 2
+		UpgradeMaxEnabledLevel: 2
+		UpgradeMaxAcceptedLevel: 2
+	WithTurret@SECONDARYE:
+		Turret: secondary
+		Sequence: turret-elite
+		UpgradeTypes: rank
+		UpgradeMinEnabledLevel: 2
+		UpgradeMaxEnabledLevel: 2
+		UpgradeMaxAcceptedLevel: 2
+	WithBarrel@DEFAULT:
+		Sequence: barrel
+		LocalOffset: 0,-768,0
+	WithBarrel@VET:
+		Sequence: elitebarrel
+		LocalOffset: 0,768,0
+		UpgradeTypes: rank
+		UpgradeMinEnabledLevel: 2
+		UpgradeMaxEnabledLevel: 2
+		UpgradeMaxAcceptedLevel: 2
+	WithFacingSpriteBody:
+		UpgradeTypes: rank
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
+	WithFacingSpriteBody@VET:
+		Sequence: idle-veteran
+		UpgradeTypes: rank
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
+	WithFacingSpriteBody@EL:
+		Sequence: idle-elite
+		UpgradeTypes: rank
+		UpgradeMinEnabledLevel: 2
+		UpgradeMaxEnabledLevel: 2
+		UpgradeMaxAcceptedLevel: 2
 	AutoTarget:
 
 LST:
