@@ -350,6 +350,8 @@ install-core: default
 	@-echo "Installing OpenRA to $(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_DATA) $(game_TARGET).config "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_DATA) $(utility_TARGET).config "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
 	@$(CP_R) mods/common "$(DATA_INSTALL_DIR)/mods/"
 	@$(INSTALL_PROGRAM) $(mod_common_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
