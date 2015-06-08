@@ -46,10 +46,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					currentNamespace = t.Namespace;
 					doc.AppendLine();
 					doc.AppendLine("## {0}".F(currentNamespace));
+					toc.AppendLine("* [{0}](#{1})".F(currentNamespace, currentNamespace.Replace(".", "").ToLowerInvariant()));
 				}
 
 				var traitName = t.Name.EndsWith("Info") ? t.Name.Substring(0, t.Name.Length - 4) : t.Name;
-				toc.AppendLine("* [{0}](#{1})".F(traitName, traitName.ToLowerInvariant()));
+				toc.AppendLine(" * [{0}](#{1})".F(traitName, traitName.ToLowerInvariant()));
 				var traitDescLines = t.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
 				doc.AppendLine();
 				doc.AppendLine("### {0}".F(traitName));
