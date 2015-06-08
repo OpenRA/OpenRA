@@ -127,6 +127,12 @@ namespace OpenRA
 
 		public bool Contains(CPos cell)
 		{
+			// .ToMPos() returns the same result if the X and Y coordinates
+			// are switched. X < Y is invalid in the Diamond coordinate system,
+			// so we pre-filter these to avoid returning the wrong result
+			if (Shape == TileShape.Diamond && cell.X < cell.Y)
+				return false;
+
 			return Contains(cell.ToMPos(Shape));
 		}
 
