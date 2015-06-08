@@ -224,3 +224,89 @@ SONIC:
 	AutoTarget:
 	WithVoxelTurret:
 
+2TNK:
+	Inherits: ^VoxelTank
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Medium Tank
+		Description: Transforms when gaining veterancy!\nTotally awesome!
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 90
+		Prerequisites: ~factory
+	Mobile:
+		ROT: 4
+		Speed: 56
+		Crushes: wall, crate, infantry
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 7c0
+	Armament@PRIMARY:
+		Weapon: 90mm
+		UpgradeTypes: veteranweapon
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
+		LocalOffset: 512,0,384
+	Armament@VETERAN:
+		Weapon: 120mmx
+		UpgradeTypes: veteranweapon
+		UpgradeMinEnabledLevel: 1
+		LocalOffset: 512,256,384, 512,-256,384
+	Armament@ELITE:
+		Weapon: HoverMissile
+		UpgradeTypes: eliteweapon
+		UpgradeMinEnabledLevel: 1
+		LocalOffset: 0,512,384, 0,-512,384
+	AttackTurreted:
+		Voice: Attack
+	Turreted:
+		ROT: 5
+		Offset: -170,0,0
+	AutoTarget:
+	WithVoxelBody@DEFAULT:
+		UpgradeTypes: veteranvoxel
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
+	WithVoxelTurret@DEFAULT:
+		UpgradeTypes: veteranvoxel
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
+	WithVoxelBarrel@DEFAULT:
+		UpgradeTypes: veteranvoxel
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
+	WithVoxelBody@VET:
+		Sequence: idle-veteran
+		UpgradeTypes: veteranvoxel
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
+	WithVoxelTurret@VET:
+		Sequence: turret-veteran
+		UpgradeTypes: veteranvoxel
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
+	WithVoxelBarrel@VET:
+		Sequence: barrel-veteran
+		UpgradeTypes: veteranvoxel
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
+	WithVoxelBody@EL:
+		Sequence: idle-elite
+		UpgradeTypes: elitevoxel
+		UpgradeMinEnabledLevel: 1
+	WithVoxelTurret@EL:
+		Sequence: turret-elite
+		UpgradeTypes: elitevoxel
+		UpgradeMinEnabledLevel: 1
+	WithVoxelBarrel@EL:
+		Sequence: barrel-elite
+		UpgradeTypes: elitevoxel
+		UpgradeMinEnabledLevel: 1
+

@@ -77,6 +77,17 @@ dshp:
 	turret: 4tnktur
 	barrel: 4tnkbarl
 
+2tnk:
+	idle:
+	turret: 2tnktur
+	barrel: 2tnkbarl
+	idle-veteran: 3tnk
+	turret-veteran: 3tnktur
+	barrel-veteran: 3tnkbarl
+	idle-elite: 4tnk
+	turret-elite: 4tnktur
+	barrel-elite: 4tnkbarl
+
 trucka:
 	idle:
 
