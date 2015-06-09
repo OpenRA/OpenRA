@@ -315,10 +315,6 @@ namespace OpenRA
 			foreach (var disallowedChar in disallowedChars)
 				clean = clean.Replace(disallowedChar.ToString(), string.Empty);
 
-			// avoid UI glitches
-			if (clean.Length > 16)
-				clean = clean.Substring(0, 16);
-
 			return clean;
 		}
 
@@ -337,6 +333,11 @@ namespace OpenRA
 			var botNames = OpenRA.Game.ModData.DefaultRules.Actors["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name);
 
 			var clean = SanitizedName(dirty);
+
+			// avoid UI glitches
+			if (clean.Length > 16)
+				clean = clean.Substring(0, 16);
+
 			if (string.IsNullOrWhiteSpace(clean) || forbiddenNames.Contains(clean) || botNames.Contains(clean))
 				clean = new PlayerSettings().Name;
 
