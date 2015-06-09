@@ -30,6 +30,7 @@ Container@CHAT_PANEL:
 					Y: PARENT_BOTTOM - HEIGHT
 					Width: 466
 					Height: 25
+					FocusPriorityDefault: 10
 				Button@CHAT_CLOSE:
 					X: 526
 					Y: PARENT_BOTTOM - HEIGHT

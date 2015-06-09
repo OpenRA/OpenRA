@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (isDisabled != wasDisabled)
 			{
 				wasDisabled = isDisabled;
-				if (isDisabled && Ui.KeyboardFocusWidget == this)
+				if (isDisabled && Ui.GetKeyboardFocus() == this)
 					YieldKeyboardFocus();
 			}
 

@@ -159,7 +159,6 @@ namespace OpenRA
 				return;
 
 			Ui.MouseFocusWidget = null;
-			Ui.KeyboardFocusWidget = null;
 
 			OrderManager.LocalFrameNumber = 0;
 			OrderManager.LastTickTime = RunTime;

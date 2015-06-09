@@ -26,7 +26,6 @@ namespace OpenRA.Widgets
 		static readonly Stack<Widget> WindowList = new Stack<Widget>();
 
 		public static Widget MouseFocusWidget;
-		public static Widget KeyboardFocusWidget;
 		public static Widget MouseOverWidget;
 
 		public static void CloseWindow()
@@ -108,18 +107,50 @@ namespace OpenRA.Widgets
 			return handled;
 		}
 
+		static Widget GetHighestFocusPriority(Widget w)
+		{
+			if (w == null || !w.IsVisible())
+				return null;
+
+			var focus = w;
+			foreach (var child in w.Children)
+			{
+				if (!child.IsVisible())
+					continue;
+
+				if (child.FocusPriority > focus.FocusPriority)
+					focus = child;
+
+				var r = GetHighestFocusPriority(child);
+				if (r != null && r.FocusPriority > focus.FocusPriority)
+					focus = r;
+			}
+
+			if (focus.FocusPriority < 1)
+				return null;
+
+			return focus;
+		}
+
+		public static Widget GetKeyboardFocus()
+		{
+			return GetHighestFocusPriority(Root);
+		}
+
 		public static bool HandleKeyPress(KeyInput e)
 		{
-			if (KeyboardFocusWidget != null)
-				return KeyboardFocusWidget.HandleKeyPressOuter(e);
+			var f = GetKeyboardFocus();
+			if (f != null)
+				return f.HandleKeyPressOuter(e);
 
 			return Root.HandleKeyPressOuter(e);
 		}
 
 		public static bool HandleTextInput(string text)
 		{
-			if (KeyboardFocusWidget != null)
-				return KeyboardFocusWidget.HandleTextInputOuter(text);
+			var f = GetKeyboardFocus();
+			if (f != null)
+				return f.HandleTextInputOuter(text);
 
 			return Root.HandleTextInputOuter(text);
 		}
@@ -138,6 +169,7 @@ namespace OpenRA.Widgets
 		public readonly List<Widget> Children = new List<Widget>();
 
 		// Info defined in YAML
+		public readonly int FocusPriorityDefault;
 		public string Id = null;
 		public string X = "0";
 		public string Y = "0";
@@ -150,6 +182,7 @@ namespace OpenRA.Widgets
 		public bool IgnoreChildMouseOver;
 
 		// Calculated internally
+		public int FocusPriority;
 		public Rectangle Bounds;
 		public Widget Parent = null;
 		public Func<bool> IsVisible;
@@ -203,6 +236,8 @@ namespace OpenRA.Widgets
 
 		public virtual void Initialize(WidgetArgs args)
 		{
+			FocusPriority = FocusPriorityDefault;
+
 			// Parse the YAML equations to find the widget bounds
 			var parentBounds = (Parent == null)
 				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
@@ -255,7 +290,7 @@ namespace OpenRA.Widgets
 		}
 
 		public bool HasMouseFocus { get { return Ui.MouseFocusWidget == this; } }
-		public bool HasKeyboardFocus { get { return Ui.KeyboardFocusWidget == this; } }
+		public bool HasKeyboardFocus { get { return Ui.GetKeyboardFocus() == this; } }
 
 		public virtual bool TakeMouseFocus(MouseInput mi)
 		{
@@ -289,25 +324,39 @@ namespace OpenRA.Widgets
 			if (HasKeyboardFocus)
 				return true;
 
-			if (Ui.KeyboardFocusWidget != null && !Ui.KeyboardFocusWidget.YieldKeyboardFocus())
-				return false;
+			var topPriority = 100;
 
-			Ui.KeyboardFocusWidget = this;
+			var f = Ui.GetKeyboardFocus();
+			if (f != null)
+			{
+				if (!f.TryYieldKeyboardFocus())
+					return false;
+
+				if (f.FocusPriority == topPriority)
+					f.FocusPriority = f.FocusPriorityDefault;
+			}
+
+			FocusPriority = topPriority;
+			return true;
+		}
+
+		public virtual bool TryYieldKeyboardFocus()
+		{
 			return true;
 		}
 
 		public virtual bool YieldKeyboardFocus()
 		{
-			if (Ui.KeyboardFocusWidget == this)
-				Ui.KeyboardFocusWidget = null;
+			if (!TryYieldKeyboardFocus())
+				return false;
 
+			FocusPriority = FocusPriorityDefault;
 			return true;
 		}
 
 		void ForceYieldKeyboardFocus()
 		{
-			if (Ui.KeyboardFocusWidget == this && !YieldKeyboardFocus())
-				Ui.KeyboardFocusWidget = null;
+			FocusPriority = FocusPriorityDefault;
 		}
 
 		public virtual string GetCursor(int2 pos) { return "default"; }

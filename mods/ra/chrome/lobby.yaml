@@ -126,6 +126,7 @@ Background@SERVER_LOBBY:
 			Width: PARENT_RIGHT - 167
 			Height: 25
 			LeftMargin: 50
+			FocusPriorityDefault: 10
 			Children:
 				Label@LABEL_CHATTYPE:
 					Y: 0-1

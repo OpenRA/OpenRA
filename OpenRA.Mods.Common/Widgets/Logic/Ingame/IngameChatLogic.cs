@@ -156,7 +156,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatText.Text = "";
 			chatChrome.Visible = true;
 			chatScrollPanel.ScrollToBottom();
-			chatText.TakeKeyboardFocus();
 			if (!inDialog)
 				chatOverlay.Visible = false;
 		}

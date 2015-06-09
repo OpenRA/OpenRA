@@ -257,23 +257,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			name.IsDisabled = () => orderManager.LocalClient.IsReady;
 
 			name.Text = c.Name;
-			name.OnLoseFocus = () =>
+			name.OnEscKey = () =>
+			{
+				name.Text = c.Name;
+				name.YieldKeyboardFocus();
+				return true;
+			};
+			name.OnEnterKey = () =>
 			{
 				name.Text = name.Text.Trim();
 				if (name.Text.Length == 0)
 					name.Text = c.Name;
+				else if (name.Text != c.Name)
+				{
+					name.Text = Settings.SanitizedPlayerName(name.Text);
+					orderManager.IssueOrder(Order.Command("name " + name.Text));
+					Game.Settings.Player.Name = name.Text;
+					Game.Settings.Save();
+				}
 
-				if (name.Text == c.Name)
-					return;
-
-				name.Text = Settings.SanitizedPlayerName(name.Text);
-
-				orderManager.IssueOrder(Order.Command("name " + name.Text));
-				Game.Settings.Player.Name = name.Text;
-				Game.Settings.Save();
+				name.YieldKeyboardFocus();
+				return true;
 			};
-
-			name.OnEnterKey = () => { name.YieldKeyboardFocus(); return true; };
 		}
 
 		public static void SetupNameWidget(Widget parent, Session.Slot s, Session.Client c)
