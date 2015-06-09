@@ -20,11 +20,15 @@ namespace OpenRA.Mods.Common.Traits
 	public class SelectionDecorationsInfo : ITraitInfo, ISelectionDecorationsInfo
 	{
 		public readonly string Palette = "chrome";
+
 		[Desc("Visual bounds for selection box. If null, it uses AutoSelectionSize.")]
 		public readonly int[] VisualBounds = null;
+
 		[Desc("Health bar, production progress bar etc.")]
 		public readonly bool RenderSelectionBars = true;
+
 		public readonly bool RenderSelectionBox = true;
+
 		public readonly Color SelectionBoxColor = Color.White;
 
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
