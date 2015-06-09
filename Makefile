@@ -71,17 +71,15 @@ INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
 CORE = rsdl2 rnull game utility
-TOOLS = editor crashdialog
+TOOLS = editor gamemonitor
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
 # dependencies
 UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Linux)
-os-dependencies = linux-dependencies
-else ifneq (,$(findstring BSD,$(UNAME_S)))
-os-dependencies = bsd-dependencies
-else ifeq ($(UNAME_S),Darwin)
+ifeq ($(UNAME_S),Darwin)
 os-dependencies = osx-dependencies
+else
+os-dependencies = linux-dependencies
 endif
 
 
@@ -311,11 +309,6 @@ linux-dependencies: cli-dependencies linux-native-dependencies
 linux-native-dependencies:
 	@./thirdparty/configure-native-deps.sh
 
-bsd-dependencies: cli-dependencies bsd-native-dependencies
-
-bsd-native-dependencies:
-	@./thirdparty/configure-native-deps.sh
-
 windows-dependencies:
 	@./thirdparty/fetch-thirdparty-deps-windows.sh
 
@@ -380,7 +373,7 @@ install-core: default
 	@$(INSTALL_PROGRAM) Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) RestSharp.dll "$(DATA_INSTALL_DIR)"
 
-ifeq ($(shell uname),Linux)
+ifneq ($(UNAME_S),Darwin)
 	@$(CP) *.sh "$(DATA_INSTALL_DIR)"
 endif
 
@@ -391,7 +384,7 @@ install-tools: tools
 
 install-linux-icons:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
-	@$(CP_R) packaging/linux/hicolor/ "$(DESTDIR)$(datadir)/icons"
+	@$(CP_R) packaging/linux/hicolor "$(DESTDIR)$(datadir)/icons/"
 
 install-linux-desktop:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
