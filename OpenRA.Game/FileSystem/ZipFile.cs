@@ -58,7 +58,11 @@ namespace OpenRA.FileSystem
 
 		public Stream GetContent(string filename)
 		{
-			using (var z = pkg.GetInputStream(pkg.GetEntry(filename)))
+			var entry = pkg.GetEntry(filename);
+			if (entry == null)
+				return null;
+
+			using (var z = pkg.GetInputStream(entry))
 			{
 				var ms = new MemoryStream();
 				z.CopyTo(ms);
