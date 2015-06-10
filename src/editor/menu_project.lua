@@ -361,8 +361,7 @@ frame:Connect(ID_DETACHDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   function () debugger.detach() end)
 frame:Connect(ID_DETACHDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
-    event:Enable((debugger.server ~= nil) and (not debugger.running)
-      and (not debugger.scratchpad))
+    event:Enable((debugger.server ~= nil) and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_RUNTO, wx.wxEVT_COMMAND_MENU_SELECTED,
