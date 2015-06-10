@@ -144,6 +144,9 @@ namespace OpenRA
 					return (int)(t.Actor.ActorID << 16) * 0x567;
 
 				case TargetType.FrozenActor:
+					if (t.FrozenActor.Actor == null)
+						return 0;
+
 					return (int)(t.FrozenActor.Actor.ActorID << 16) * 0x567;
 
 				case TargetType.Terrain:
