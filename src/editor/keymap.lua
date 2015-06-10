@@ -84,6 +84,7 @@ ide.config.keymap = {
   [ID.ANALYZE]          = "Shift-F7",
   [ID.STARTDEBUG]       = "F5",
   [ID.ATTACHDEBUG]      = "",
+  [ID.DETACHDEBUG]      = "",
   [ID.STOPDEBUG]        = "Shift-F5",
   [ID.STEP]             = "F10",
   [ID.STEPOVER]         = "Shift-F10",
