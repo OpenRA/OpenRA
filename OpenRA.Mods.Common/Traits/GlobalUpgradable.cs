@@ -13,9 +13,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Grants upgrades to the actor this is attached to when prerequisites are available.")]
 	public class GlobalUpgradableInfo : ITraitInfo, Requires<UpgradeManagerInfo>
 	{
+		[Desc("List of upgrades to apply.")]
 		public readonly string[] Upgrades = { };
+
+		[Desc("List of required prerequisites.")]
 		public readonly string[] Prerequisites = { };
 
 		public object Create(ActorInitializer init) { return new GlobalUpgradable(init.Self, this); }
