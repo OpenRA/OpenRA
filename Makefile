@@ -392,7 +392,11 @@ install-linux-appdata:
 install-linux-scripts:
 	@echo "#!/bin/sh" > openra
 	@echo 'cd "$(gameinstalldir)"' >> openra
+ifeq ($(DEBUG), $(filter $(DEBUG),false no n off 0))
 	@echo 'mono OpenRA.Game.exe "$$@"' >> openra
+else
+	@echo 'mono --debug OpenRA.Game.exe "$$@"' >> openra
+endif
 	@echo 'if [ $$? != 0 -a $$? != 1 ]' >> openra
 	@echo 'then' >> openra
 	@echo 'ZENITY=`which zenity` || echo "OpenRA needs zenity installed to display a graphical error dialog. See ~/.openra. for log files."' >> openra
