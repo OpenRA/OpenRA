@@ -870,7 +870,7 @@ namespace OpenRA
 		// it rounds the actual distance up to the next integer so that this call
 		// will return any cells that intersect with the requested range circle.
 		// The returned positions are sorted by distance from the center.
-		public IEnumerable<CPos> FindTilesInAnnulus(CPos center, int minRange, int maxRange)
+		public IEnumerable<CPos> FindTilesInAnnulus(CPos center, int minRange, int maxRange, bool allowOutsideBounds = false)
 		{
 			if (maxRange < minRange)
 				throw new ArgumentOutOfRangeException("maxRange", "Maximum range is less than the minimum range.");
@@ -878,20 +878,24 @@ namespace OpenRA
 			if (maxRange > TilesByDistance.Length)
 				throw new ArgumentOutOfRangeException("maxRange", "The requested range ({0}) exceeds the maximum allowed ({1})".F(maxRange, MaxTilesInCircleRange));
 
+			Func<CPos, bool> valid = Contains;
+			if (allowOutsideBounds)
+				valid = MapTiles.Value.Contains;
+
 			for (var i = minRange; i <= maxRange; i++)
 			{
 				foreach (var offset in TilesByDistance[i])
 				{
 					var t = offset + center;
-					if (Contains(t))
+					if (valid(t))
 						yield return t;
 				}
 			}
 		}
 
-		public IEnumerable<CPos> FindTilesInCircle(CPos center, int maxRange)
+		public IEnumerable<CPos> FindTilesInCircle(CPos center, int maxRange, bool allowOutsideBounds = false)
 		{
-			return FindTilesInAnnulus(center, 0, maxRange);
+			return FindTilesInAnnulus(center, 0, maxRange, allowOutsideBounds);
 		}
 	}
 }

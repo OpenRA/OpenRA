@@ -112,7 +112,7 @@ namespace OpenRA.Traits
 			var limit = radius.RangeSquared;
 			var pos = map.CenterOfCell(position);
 
-			foreach (var cell in map.FindTilesInCircle(position, r))
+			foreach (var cell in map.FindTilesInCircle(position, r, true))
 				if ((map.CenterOfCell(cell) - pos).HorizontalLengthSquared <= limit)
 					yield return cell;
 		}
@@ -129,6 +129,11 @@ namespace OpenRA.Traits
 			foreach (var c in visible)
 			{
 				var uv = c.ToMPos(map);
+
+				// Force cells outside the visible bounds invisible
+				if (!map.Contains(uv))
+					continue;
+
 				visibleCount[uv]++;
 				explored[uv] = true;
 			}
@@ -147,7 +152,11 @@ namespace OpenRA.Traits
 				return;
 
 			foreach (var c in visible)
-				visibleCount[c.ToMPos(map)]--;
+			{
+				// Cells outside the visible bounds don't increment visibleCount
+				if (map.Contains(c))
+					visibleCount[c.ToMPos(map)]--;
+			}
 
 			visibility.Remove(a);
 			Invalidate(visible);
