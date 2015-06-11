@@ -15,6 +15,7 @@ namespace OpenRA.Mods.Common.Scripting
 	[Desc("Allows granting upgrades to actors from Lua scripts.")]
 	public class ScriptUpgradesCacheInfo : ITraitInfo
 	{
+		[UpgradeGrantedReference]
 		[Desc("Upgrades that can be granted from the scripts.")]
 		public readonly string[] Upgrades = { };
 

@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Applies an upgrade to actors within a specified range.")]
 	public class UpgradeActorsNearInfo : ITraitInfo
 	{
+		[UpgradeGrantedReference]
 		[Desc("The upgrades to grant.")]
 		public readonly string[] Upgrades = { };
 

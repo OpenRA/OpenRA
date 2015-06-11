@@ -9,12 +9,14 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grants an upgrade to the collector.")]
 	public class GrantUpgradeCrateActionInfo : CrateActionInfo
 	{
+		[UpgradeGrantedReference]
 		[Desc("The upgrades to apply.")]
 		public readonly string[] Upgrades = { };
 

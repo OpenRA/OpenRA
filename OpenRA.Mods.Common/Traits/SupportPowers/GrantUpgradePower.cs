@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class GrantUpgradePowerInfo : SupportPowerInfo
 	{
+		[UpgradeGrantedReference]
 		[Desc("The upgrades to apply.")]
 		public readonly string[] Upgrades = { };
 
