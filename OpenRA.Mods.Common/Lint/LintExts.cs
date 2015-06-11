@@ -10,7 +10,6 @@
 
 using System;
 using System.Reflection;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
@@ -20,7 +19,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			var type = fieldInfo.FieldType;
 			if (type == typeof(string))
-				return new string[] { (string)fieldInfo.GetValue(ruleInfo) };
+				return new[] { (string)fieldInfo.GetValue(ruleInfo) };
 			if (type == typeof(string[]))
 				return (string[])fieldInfo.GetValue(ruleInfo);
 
