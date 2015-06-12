@@ -21,6 +21,7 @@ namespace OpenRA.FileFormats
 		public const int MetaEndMarker = -2;
 		public const int MetaVersion = 0x00000001;
 
+		public readonly long MetaStartMarkerPosition;
 		public readonly GameInformation GameInfo;
 		public string FilePath { get; private set; }
 
@@ -35,6 +36,7 @@ namespace OpenRA.FileFormats
 		ReplayMetadata(FileStream fs, string path)
 		{
 			FilePath = path;
+			MetaStartMarkerPosition = fs.Position;
 
 			// Read start marker
 			if (fs.ReadInt32() != MetaStartMarker)
@@ -78,7 +80,7 @@ namespace OpenRA.FileFormats
 
 		public static ReplayMetadata Read(string path)
 		{
-			using (var fs = new FileStream(path, FileMode.Open))
+			using (var fs = File.OpenRead(path))
 				return Read(fs, path);
 		}
 
