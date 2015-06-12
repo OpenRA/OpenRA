@@ -152,7 +152,8 @@ MONEYCRATE:
 		SelectionShares: 1
 		UseCashTick: true
 	WithCrateBody:
-		Images: wcrate
+	RenderSprites:
+		Image: wcrate
 
 HEALCRATE:
 	Inherits: ^Crate

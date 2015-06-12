@@ -67,7 +67,7 @@ CAMERA.small:
 	RevealsShroud:
 		Range: 6c0
 	BodyOrientation:
-	
+
 FLARE:
 	Immobile:
 		OccupiesSpace: false
@@ -81,3 +81,4 @@ FLARE:
 	Tooltip:
 		Name: Flare
 	BodyOrientation:
+

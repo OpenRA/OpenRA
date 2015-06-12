@@ -29,7 +29,6 @@ DPOD:
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
-	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
 
@@ -55,7 +54,6 @@ DSHP:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
 	Hovers:
@@ -161,7 +159,6 @@ ORCATRAN:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
 	Hovers:

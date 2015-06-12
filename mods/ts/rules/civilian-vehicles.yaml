@@ -50,7 +50,6 @@ TRUCKB:
 		Speed: 56
 	RevealsShroud:
 		Range: 5c0
-	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
 
@@ -69,7 +68,6 @@ ICBM:
 		ROT: 5
 	RevealsShroud:
 		Range: 7c0
-	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
 	Transforms:
@@ -98,7 +96,6 @@ BUS:
 		Types: Infantry
 		MaxWeight: 20
 		PipCount: 5
-	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
 
@@ -121,7 +118,6 @@ PICK:
 		Types: Infantry
 		MaxWeight: 2
 		PipCount: 5
-	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
 
@@ -144,7 +140,6 @@ CAR:
 		Types: Infantry
 		MaxWeight: 4
 		PipCount: 5
-	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
 
@@ -167,6 +162,5 @@ WINI:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
