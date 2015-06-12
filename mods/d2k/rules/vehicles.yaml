@@ -10,6 +10,7 @@ mcv:
 		Name: Mobile Construction Vehicle
 		Description: Deploys into another Construction Yard\n  Unarmed
 	Selectable:
+		Class: mcv
 		Priority: 3
 		Bounds: 42,42
 	Health:
@@ -51,6 +52,7 @@ harvester:
 		Name: Spice Harvester
 		Description: Collects Spice for processing\n  Unarmed
 	Selectable:
+		Class: harvester
 		Priority: 7
 		Bounds: 42,42
 	Harvester:
@@ -96,6 +98,7 @@ trike:
 		Name: Scout Trike
 		Description: Fast Scout\n Strong vs Infantry\n Weak vs Tanks, Aircraft
 	Selectable:
+		Class: trike
 		Bounds: 24,24
 	Health:
 		HP: 100
@@ -151,6 +154,7 @@ quad:
 		Weapon: UnitExplodeTiny
 		EmptyWeapon: UnitExplodeTiny
 	Selectable:
+		Class: quad
 		Bounds: 24,24
 	AttractsWorms:
 		Intensity: 470
@@ -195,6 +199,7 @@ siegetank:
 	AutoTarget:
 		InitialStance: Defend
 	Selectable:
+		Class: siegetank
 		Bounds: 30,30
 	LeavesHusk:
 		HuskActor: siegetank.husk
@@ -235,6 +240,7 @@ missiletank:
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale
 	Selectable:
+		Class: missiletank
 		Bounds: 30,30
 	LeavesHusk:
 		HuskActor: missiletank.husk
@@ -449,6 +455,7 @@ deviatortank:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	Selectable:
+		Class: combat
 		Bounds: 30,30
 	AttractsWorms:
 		Intensity: 520

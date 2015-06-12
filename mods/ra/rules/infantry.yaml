@@ -388,6 +388,8 @@ DELPHI:
 
 CHAN:
 	Inherits: ^CivInfantry
+	Selectable:
+		Class: CHAN
 	Tooltip:
 		Name: Agent Chan
 
@@ -396,6 +398,7 @@ GNRL:
 	Tooltip:
 		Name: General
 	Selectable:
+		Class: GNRL
 	Voiced:
 		VoiceSet: StavrosVoice
 

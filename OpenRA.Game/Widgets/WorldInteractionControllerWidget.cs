@@ -40,15 +40,17 @@ namespace OpenRA.Widgets
 		{
 			if (!IsDragging)
 			{
-				foreach (var u in SelectActorsInBoxWithDeadzone(World, lastMousePosition, lastMousePosition, _ => true))
+				// Render actors under the mouse pointer
+				foreach (var u in SelectActorsInBoxWithDeadzone(World, lastMousePosition, lastMousePosition))
 					worldRenderer.DrawRollover(u);
 
 				return;
 			}
 
+			// Render actors in the dragbox
 			var selbox = SelectionBox;
 			Game.Renderer.WorldLineRenderer.DrawRect(selbox.Value.First.ToFloat2(), selbox.Value.Second.ToFloat2(), Color.White);
-			foreach (var u in SelectActorsInBoxWithDeadzone(World, selbox.Value.First, selbox.Value.Second, _ => true))
+			foreach (var u in SelectActorsInBoxWithDeadzone(World, selbox.Value.First, selbox.Value.Second))
 				worldRenderer.DrawRollover(u);
 		}
 
@@ -111,15 +113,20 @@ namespace OpenRA.Widgets
 
 						if (unit != null && unit.Owner == (World.RenderPlayer ?? World.LocalPlayer))
 						{
-							var newSelection2 = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,
-								a => a.Owner == unit.Owner && a.Info.Name == unit.Info.Name);
+							var s = unit.TraitOrDefault<Selectable>();
+							if (s != null)
+							{
+								// Select actors on the screen that have the same selection class as the actor under the mouse cursor
+								var newSelection = SelectActorsOnScreen(World, worldRenderer, new HashSet<string> { s.Class }, unit.Owner);
 
-							World.Selection.Combine(World, newSelection2, true, false);
+								World.Selection.Combine(World, newSelection, true, false);
+							}
 						}
 					}
 					else if (dragStart.HasValue)
 					{
-						var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart.Value, xy, _ => true);
+						// Select actors in the dragbox
+						var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart.Value, xy);
 						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 					}
 				}
@@ -230,26 +237,28 @@ namespace OpenRA.Widgets
 					World.SetPauseState(!World.Paused);
 				else if (key == Game.Settings.Keys.SelectAllUnitsKey)
 				{
-					var ownUnitsOnScreen = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,
-						a => a.Owner == player);
+					// Select actors on the screen which belong to the current player
+					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player);
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
 				}
 				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey)
 				{
-					var selectedTypes = World.Selection.Actors
+					// Get all the selected actors' selection classes
+					var selectedClasses = World.Selection.Actors
 						.Where(x => x.Owner == player)
-						.Select(a => a.Info);
+						.Select(a => a.Trait<Selectable>().Class)
+						.ToHashSet();
 
-					Func<Actor, bool> cond = a => a.Owner == player && selectedTypes.Contains(a.Info);
-					var tl = worldRenderer.Viewport.TopLeft;
-					var br = worldRenderer.Viewport.BottomRight;
-					var newSelection = SelectActorsInBox(World, tl, br, cond);
+					// Select actors on the screen that have the same selection class as one of the already selected actors
+					var newSelection = SelectActorsOnScreen(World, worldRenderer, selectedClasses, player).ToList();
 
-					if (newSelection.Count() > selectedTypes.Count())
+					// Check if selecting actors on the screen has selected new units
+					if (newSelection.Count() > World.Selection.Actors.Count())
 						Game.Debug("Selected across screen");
 					else
 					{
-						newSelection = World.ActorMap.ActorsInWorld().Where(cond);
+						// Select actors in the world that have the same selection class as one of the already selected actors
+						newSelection = SelectActorsInWorld(World, selectedClasses, player).ToList();
 						Game.Debug("Selected across map");
 					}
 
@@ -264,18 +273,41 @@ namespace OpenRA.Widgets
 			return false;
 		}
 
-		static IEnumerable<Actor> SelectActorsInBoxWithDeadzone(World world, int2 a, int2 b, Func<Actor, bool> cond)
+		static IEnumerable<Actor> SelectActorsOnScreen(World world, WorldRenderer wr, IEnumerable<string> selectionClasses, Player player)
 		{
-			if (a == b || (a - b).Length > Game.Settings.Game.SelectionDeadzone)
-				return SelectActorsInBox(world, a, b, cond);
-			else
-				return SelectActorsInBox(world, b, b, cond);
+			return SelectActorsByPlayerByClass(world.ScreenMap.ActorsInBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight), selectionClasses, player);
 		}
 
-		static IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b, Func<Actor, bool> cond)
+		static IEnumerable<Actor> SelectActorsInWorld(World world, IEnumerable<string> selectionClasses, Player player)
 		{
+			return SelectActorsByPlayerByClass(world.ActorMap.ActorsInWorld(), selectionClasses, player);
+		}
+
+		static IEnumerable<Actor> SelectActorsByPlayerByClass(IEnumerable<Actor> actors, IEnumerable<string> selectionClasses, Player player)
+		{
+			return actors.Where(a =>
+			{
+				if (a.Owner != player)
+					return false;
+				var s = a.TraitOrDefault<Selectable>();
+
+				// sc == null means that units, that meet all other criteria, get selected
+				return s != null && s.Info.Selectable && (selectionClasses == null || selectionClasses.Contains(s.Class));
+			});
+		}
+
+		static IEnumerable<Actor> SelectActorsInBoxWithDeadzone(World world, int2 a, int2 b)
+		{
+			// For dragboxes that are too small, shrink the dragbox to a single point (point b)
+			if ((a - b).Length <= Game.Settings.Game.SelectionDeadzone)
+				a = b;
+
 			return world.ScreenMap.ActorsInBox(a, b)
-				.Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)) && cond(x))
+				.Where(x =>
+				{
+					var s = x.TraitOrDefault<Selectable>();
+					return s != null && s.Info.Selectable && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x));
+				})
 				.GroupBy(x => x.GetSelectionPriority())
 				.OrderByDescending(g => g.Key)
 				.Select(g => g.AsEnumerable())

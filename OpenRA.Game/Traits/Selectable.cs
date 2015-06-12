@@ -21,11 +21,17 @@ namespace OpenRA.Traits
 		public readonly int Priority = 10;
 		public readonly int[] Bounds = null;
 
+		[Desc("All units having the same selection class specified will be selected with select-by-type commands (e.g. double-click). "
+		+ "Defaults to the actor name when not defined or inherited.")]
+		public readonly string Class = null;
+
 		public object Create(ActorInitializer init) { return new Selectable(init.Self, this); }
 	}
 
 	public class Selectable : IPostRenderSelection
 	{
+		public readonly string Class = null;
+
 		public SelectableInfo Info;
 		readonly Actor self;
 
@@ -33,6 +39,7 @@ namespace OpenRA.Traits
 		{
 			this.self = self;
 			Info = info;
+			Class = string.IsNullOrEmpty(info.Class) ? self.Info.Name : info.Class;
 		}
 
 		IEnumerable<WPos> ActivityTargetPath()

@@ -23,7 +23,6 @@ trike.starport:
 	Inherits: trike
 	Buildable:
 		Queue: Starport
-		Prerequisites: starport
 	Valued:
 		Cost: 315
 	WithFacingSpriteBody:

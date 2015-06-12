@@ -472,6 +472,8 @@
 
 ^CivInfantry:
 	Inherits: ^Infantry
+	Selectable:
+		Class: CivInfantry
 	Valued:
 		Cost: 70
 	Tooltip:
