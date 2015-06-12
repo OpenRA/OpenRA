@@ -40,4 +40,7 @@ namespace OpenRA.Traits
 
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class UpgradeGrantedReferenceAttribute : Attribute { }
+
+	[AttributeUsage(AttributeTargets.Field)]
+	public sealed class UpgradeUsedReferenceAttribute : Attribute { }
 }

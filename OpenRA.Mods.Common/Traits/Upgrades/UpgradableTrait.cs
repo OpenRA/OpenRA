@@ -7,6 +7,7 @@
  * see COPYING.
  */
 #endregion
+
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -16,6 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	/// <summary>Use as base class for *Info to subclass of UpgradableTrait. (See UpgradableTrait.)</summary>
 	public abstract class UpgradableTraitInfo
 	{
+		[UpgradeUsedReference]
 		[Desc("The upgrade types which can enable or disable this trait.")]
 		public readonly string[] UpgradeTypes = { };
 
