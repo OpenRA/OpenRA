@@ -974,7 +974,7 @@ function findReplace:createPanel()
     function(event)
       event:Skip()
       local ed = self:GetEditor()
-      if ed then
+      if ed and ed ~= self.oveditor then
         self.backfocus = {
           editor = ed,
           position = (ed:GetSelectionStart() == ed:GetSelectionEnd()
@@ -1100,8 +1100,6 @@ function findReplace:Hide(restorepos)
   local ctrl = self.panel:FindFocus()
   if not ctrl or ctrl:GetParent():GetId() ~= self.panel:GetId() then
     -- if focus outside of the search panel, do nothing
-  elseif self:IsPreview(self.reseditor) then -- there is a preview, go there
-    self.reseditor:SetFocus()
   elseif self.backfocus and ide:IsValidCtrl(self.backfocus.editor) then
     local editor = self.backfocus.editor
     -- restore original position for Shift-Esc or failed search
@@ -1109,6 +1107,8 @@ function findReplace:Hide(restorepos)
       editor:GotoPos(self.backfocus.position)
     end
     editor:SetFocus()
+  elseif self:IsPreview(self.reseditor) then -- there is a preview, go there
+    self.reseditor:SetFocus()
   end
 
   local mgr = ide:GetUIManager()
