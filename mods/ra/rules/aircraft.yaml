@@ -86,7 +86,7 @@ MIG:
 		Cost: 2000
 	Tooltip:
 		Name: Mig Attack Plane
-		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles
+		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry, Light armor, Aircraft
 	Health:
 		HP: 70
 	Armor:
@@ -139,7 +139,7 @@ YAK:
 		Cost: 1350
 	Tooltip:
 		Name: Yak Attack Plane
-		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings
+		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
 	Health:
 		HP: 60
 	Armor:
@@ -240,7 +240,7 @@ HELI:
 		Cost: 2000
 	Tooltip:
 		Name: Longbow
-		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Tanks\n  Weak vs Infantry
+		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Health:
 		HP: 120
 	Armor:
@@ -289,7 +289,7 @@ HIND:
 		Cost: 1350
 	Tooltip:
 		Name: Hind
-		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
+		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor.\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 100
 	Armor:

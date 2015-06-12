@@ -4,7 +4,7 @@ MSLO:
 		Cost: 2500
 	Tooltip:
 		Name: Missile Silo
-		Description: Provides an atomic bomb.\nRequires power to operate.\n  Special Ability: Atom Bomb\n\nMaximum 1 can be built
+		Description: Provides an atomic bomb.\nRequires power to operate.\n  Special Ability: Atom Bomb\nMaximum 1 can be built.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 140
@@ -90,7 +90,7 @@ SPEN:
 		Cost: 800
 	Tooltip:
 		Name: Sub Pen
-		Description: Produces and repairs submarines and\ntransports.
+		Description: Produces and repairs\nsubmarines and transports.
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
@@ -261,7 +261,7 @@ IRON:
 		Cost: 1500
 	Tooltip:
 		Name: Iron Curtain
-		Description: Makes a group of units invulnerable\nfor a short time. Requires power to operate.\n  Special Ability: Invulnerability\n\nMaximum 1 can be built
+		Description: Makes a group of units invulnerable\nfor a short time.\nRequires power to operate.\n  Special Ability: Invulnerability\nMaximum 1 can be built.
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -307,7 +307,7 @@ PDOX:
 		Cost: 1500
 	Tooltip:
 		Name: Chronosphere
-		Description: Teleports a group of units across the\nmap for a short time. Requires power to operate.\n  Special Ability: Chronoshift\n\nMaximum 1 can be built
+		Description: Teleports a group of units across the\nmap for a short time.\nRequires power to operate.\n  Special Ability: Chronoshift\nMaximum 1 can be built.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -375,7 +375,7 @@ TSLA:
 		Cost: 1200
 	Tooltip:
 		Name: Tesla Coil
-		Description: Advanced base defense. Requires power\nto operate. Can detect cloaked units.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+		Description: Advanced base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
@@ -420,7 +420,7 @@ AGUN:
 		Cost: 800
 	Tooltip:
 		Name: AA Gun
-		Description: Anti-Air base defense. Requires power\nto operate. Can detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
@@ -467,7 +467,7 @@ DOME:
 		Cost: 1800
 	Tooltip:
 		Name: Radar Dome
-		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\n  Requires power to operate.
+		Description: Provides an overview\nof the battlefield.\nCan detect cloaked units.\n  Requires power to operate.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -496,7 +496,7 @@ PBOX:
 	Inherits: ^Defense
 	Tooltip:
 		Name: Pillbox
-		Description: Static defense with a fireport for a\ngarrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+		Description: Static defense with a fireport for a\ngarrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Building:
 	Buildable:
 		Queue: Defense
@@ -542,7 +542,7 @@ HBOX:
 	Inherits: ^Defense
 	Tooltip:
 		Name: Camo Pillbox
-		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Building:
 	Buildable:
 		Queue: Defense
@@ -596,7 +596,7 @@ GUN:
 		Cost: 600
 	Tooltip:
 		Name: Turret
-		Description: Anti-Armor base defense.\nCan detect cloaked units.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+		Description: Anti-Armor base defense.\nCan detect cloaked units.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Building:
 	-GivesBuildableArea:
 	Health:
@@ -637,7 +637,7 @@ FTUR:
 		Cost: 600
 	Tooltip:
 		Name: Flame Tower
-		Description: Anti-Infantry base defense.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Aircraft
+		Description: Anti-Infantry base defense.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Building:
 	-GivesBuildableArea:
 	Health:
@@ -677,7 +677,7 @@ SAM:
 		Cost: 750
 	Tooltip:
 		Name: SAM Site
-		Description: Anti-Air base defense. Requires power\nto operate. Can detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -925,7 +925,7 @@ PROC:
 		Cost: 1400
 	Tooltip:
 		Name: Ore Refinery
-		Description: Refines Ore and Gems into credits.
+		Description: Refines Ore and Gems\ninto credits.
 	Building:
 		Footprint: _x_ xxx x==
 		Dimensions: 3,3
@@ -977,7 +977,7 @@ SILO:
 		Cost: 150
 	Tooltip:
 		Name: Silo
-		Description: Stores excess refined Ore and gems.
+		Description: Stores excess refined\nOre and Gems.
 	Building:
 	-GivesBuildableArea:
 	Health:
@@ -1007,7 +1007,7 @@ HPAD:
 		Cost: 500
 	Tooltip:
 		Name: Helipad
-		Description: Produces and reloads helicopters.
+		Description: Produces and reloads\nhelicopters.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
