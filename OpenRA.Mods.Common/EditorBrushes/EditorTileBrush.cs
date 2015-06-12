@@ -79,6 +79,8 @@ namespace OpenRA.Mods.Common.Widgets
 				return true;
 
 			var map = world.Map;
+			var mapTiles = map.MapTiles.Value;
+			var mapHeight = map.MapHeight.Value;
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 
 			if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Move)
@@ -87,7 +89,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var rules = map.Rules;
 			var tileset = rules.TileSets[map.Tileset];
 			var template = tileset.Templates[Template];
-			var baseHeight = map.Contains(cell) ? map.MapHeight.Value[cell] : (byte)0;
+			var baseHeight = mapHeight.Contains(cell) ? mapHeight[cell] : (byte)0;
 			if (mi.Event == MouseInputEvent.Move && PlacementOverlapsSameTemplate(template, cell))
 				return true;
 
@@ -100,11 +102,11 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						var index = template.PickAny ? (byte)Game.CosmeticRandom.Next(0, template.TilesCount) : (byte)i;
 						var c = cell + new CVec(x, y);
-						if (!map.Contains(c))
+						if (!mapTiles.Contains(c))
 							continue;
 
-						map.MapTiles.Value[c] = new TerrainTile(Template, index);
-						map.MapHeight.Value[c] = (byte)(baseHeight + template[index].Height).Clamp(0, world.TileSet.MaxGroundHeight);
+						mapTiles[c] = new TerrainTile(Template, index);
+						mapHeight[c] = (byte)(baseHeight + template[index].Height).Clamp(0, world.TileSet.MaxGroundHeight);
 					}
 				}
 			}
@@ -115,6 +117,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool PlacementOverlapsSameTemplate(TerrainTemplateInfo template, CPos cell)
 		{
 			var map = world.Map;
+			var mapTiles = map.MapTiles.Value;
 			var i = 0;
 			for (var y = 0; y < template.Size.Y; y++)
 			{
@@ -123,7 +126,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (template.Contains(i) && template[i] != null)
 					{
 						var c = cell + new CVec(x, y);
-						if (map.Contains(c) && map.MapTiles.Value[c].Type == template.Id)
+						if (mapTiles.Contains(c) && mapTiles[c].Type == template.Id)
 							return true;
 					}
 				}

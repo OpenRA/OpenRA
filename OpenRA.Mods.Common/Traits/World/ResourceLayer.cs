@@ -50,9 +50,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var sum = 0;
 			for (var u = -1; u < 2; u++)
+			{
 				for (var v = -1; v < 2; v++)
-					if (content[cell + new CVec(u, v)].Type == t)
+				{
+					var c = cell + new CVec(u, v);
+					if (content.Contains(c) && content[c].Type == t)
 						++sum;
+				}
+			}
 
 			return sum;
 		}

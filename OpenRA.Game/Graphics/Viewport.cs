@@ -40,6 +40,7 @@ namespace OpenRA.Graphics
 		readonly Rectangle mapBounds;
 
 		readonly int maxGroundHeight;
+		readonly Size tileSize;
 
 		// Viewport geometry (world-px)
 		public int2 CenterLocation { get; private set; }
@@ -90,17 +91,18 @@ namespace OpenRA.Graphics
 		{
 			worldRenderer = wr;
 
-			// Calculate map bounds in world-px
-			var b = map.Bounds;
+			var cells = wr.World.Type == WorldType.Editor ?
+				map.AllCells : map.CellsInsideBounds;
 
-			// Expand to corners of cells
-			var tl = wr.ScreenPxPosition(map.CenterOfCell(new MPos(b.Left, b.Top).ToCPos(map)) - new WVec(512, 512, 0));
-			var br = wr.ScreenPxPosition(map.CenterOfCell(new MPos(b.Right, b.Bottom).ToCPos(map)) + new WVec(511, 511, 0));
+			// Calculate map bounds in world-px
+			var tl = wr.ScreenPxPosition(map.CenterOfCell(cells.TopLeft) - new WVec(512, 512, 0));
+			var br = wr.ScreenPxPosition(map.CenterOfCell(cells.BottomRight) + new WVec(511, 511, 0));
 			mapBounds = Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
 
 			maxGroundHeight = wr.World.TileSet.MaxGroundHeight;
 			CenterLocation = (tl + br) / 2;
 			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
+			tileSize = Game.ModData.Manifest.TileSize;
 		}
 
 		public CPos ViewToWorld(int2 view)
@@ -211,7 +213,10 @@ namespace OpenRA.Graphics
 				// Convert to screen coordinates
 				var tl = WorldToViewPx(worldRenderer.ScreenPxPosition(ctl - new WVec(0, 0, ctl.Z))).Clamp(ScreenClip);
 				var br = WorldToViewPx(worldRenderer.ScreenPxPosition(cbr - new WVec(0, 0, cbr.Z))).Clamp(ScreenClip);
-				return Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
+
+				// Add an extra one cell fudge in each direction for safety
+				return Rectangle.FromLTRB(tl.X - tileSize.Width, tl.Y - tileSize.Height,
+					br.X + tileSize.Width, br.Y + tileSize.Height);
 			}
 		}
 
@@ -225,6 +230,11 @@ namespace OpenRA.Graphics
 					var wtl = worldRenderer.Position(TopLeft);
 					var wbr = worldRenderer.Position(BottomRight);
 
+					// Map editor shows the full map (including the area outside the regular bounds)
+					Func<MPos, MPos> clamp = map.Clamp;
+					if (worldRenderer.World.Type == WorldType.Editor)
+						clamp = map.MapTiles.Value.Clamp;
+
 					// Due to diamond tile staggering, we need to adjust the top-left bounds outwards by half a cell.
 					if (map.TileShape == TileShape.Diamond)
 						wtl -= new WVec(512, 512, 0);
@@ -234,11 +244,11 @@ namespace OpenRA.Graphics
 					var ctl = new MPos(wtl.X / 1024, wtl.Y / dy);
 					var cbr = new MPos(wbr.X / 1024, wbr.Y / dy);
 
-					var tl = map.Clamp(ctl.ToCPos(map));
+					var tl = clamp(ctl).ToCPos(map.TileShape);
 
 					// Also need to account for height of cells in rows below the bottom.
-					var heightPadding = map.TileShape == TileShape.Diamond ? 2 : 0;
-					var br = map.Clamp(new MPos(cbr.U, cbr.V + heightPadding + maxGroundHeight / 2).ToCPos(map));
+					var heightPadding = map.TileShape == TileShape.Diamond ? 3 : 0;
+					var br = clamp(new MPos(cbr.U, cbr.V + heightPadding + maxGroundHeight / 2 + 1)).ToCPos(map.TileShape);
 
 					cells = new CellRegion(map.TileShape, tl, br);
 					cellsDirty = false;

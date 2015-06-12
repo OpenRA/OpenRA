@@ -630,6 +630,12 @@ namespace OpenRA
 
 		public bool Contains(CPos cell)
 		{
+			// .ToMPos() returns the same result if the X and Y coordinates
+			// are switched. X < Y is invalid in the Diamond coordinate system,
+			// so we pre-filter these to avoid returning the wrong result
+			if (TileShape == TileShape.Diamond && cell.X < cell.Y)
+				return false;
+
 			return Contains(cell.ToMPos(this));
 		}
 
@@ -770,6 +776,12 @@ namespace OpenRA
 		{
 			var bounds = new Rectangle(Bounds.X, Bounds.Y, Bounds.Width - 1, Bounds.Height - 1);
 			return cell.ToMPos(this).Clamp(bounds).ToCPos(this);
+		}
+
+		public MPos Clamp(MPos uv)
+		{
+			var bounds = new Rectangle(Bounds.X, Bounds.Y, Bounds.Width - 1, Bounds.Height - 1);
+			return uv.Clamp(bounds);
 		}
 
 		public CPos ChooseRandomCell(MersenneTwister rand)

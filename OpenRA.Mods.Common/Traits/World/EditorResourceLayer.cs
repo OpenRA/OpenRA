@@ -86,11 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 			// so we must also touch all the neighbouring tiles
 			Dirty.Add(cell);
 			foreach (var d in CVec.Directions)
-			{
-				var c = cell + d;
-				if (Map.Contains(c))
-					Dirty.Add(c);
-			}
+				Dirty.Add(cell + d);
 		}
 
 		protected virtual string ChooseRandomVariant(ResourceType t)
@@ -103,10 +99,16 @@ namespace OpenRA.Mods.Common.Traits
 			// Set density based on the number of neighboring resources
 			var adjacent = 0;
 			var type = Tiles[c].Type;
+			var resources = Map.MapResources.Value;
 			for (var u = -1; u < 2; u++)
+			{
 				for (var v = -1; v < 2; v++)
-					if (Map.MapResources.Value[c + new CVec(u, v)].Type == type.Info.ResourceType)
+				{
+					var cell = c + new CVec(u, v);
+					if (resources.Contains(cell) && resources[cell].Type == type.Info.ResourceType)
 						adjacent++;
+				}
+			}
 
 			return Math.Max(int2.Lerp(0, type.Info.MaxDensity, adjacent, 9), 1);
 		}
@@ -139,7 +141,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			foreach (var c in Dirty)
-				Tiles[c] = UpdateDirtyTile(c);
+				if (Tiles.Contains(c))
+					Tiles[c] = UpdateDirtyTile(c);
 
 			Dirty.Clear();
 

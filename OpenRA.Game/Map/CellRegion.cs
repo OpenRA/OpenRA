@@ -217,6 +217,9 @@ namespace OpenRA
 			{
 				return GetEnumerator();
 			}
+
+			public MPos TopLeft { get { return r.mapTopLeft; } }
+			public MPos BottomRight { get { return r.mapBottomRight; } }
 		}
 	}
 }

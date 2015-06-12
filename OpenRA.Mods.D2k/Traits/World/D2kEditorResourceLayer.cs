@@ -65,31 +65,36 @@ namespace OpenRA.Mods.D2k.Traits
 			return D2kResourceLayer.Variants.Keys.Random(Game.CosmeticRandom);
 		}
 
+		bool CellContains(CPos c, ResourceType t)
+		{
+			return Tiles.Contains(c) && Tiles[c].Type == t;
+		}
+
 		ClearSides FindClearSides(ResourceType t, CPos p)
 		{
 			var ret = ClearSides.None;
-			if (Tiles[p + new CVec(0, -1)].Type != t)
+			if (!CellContains(p + new CVec(0, -1), t))
 				ret |= ClearSides.Top | ClearSides.TopLeft | ClearSides.TopRight;
 
-			if (Tiles[p + new CVec(-1, 0)].Type != t)
+			if (!CellContains(p + new CVec(-1, 0), t))
 				ret |= ClearSides.Left | ClearSides.TopLeft | ClearSides.BottomLeft;
 
-			if (Tiles[p + new CVec(1, 0)].Type != t)
+			if (!CellContains(p + new CVec(1, 0), t))
 				ret |= ClearSides.Right | ClearSides.TopRight | ClearSides.BottomRight;
 
-			if (Tiles[p + new CVec(0, 1)].Type != t)
+			if (!CellContains(p + new CVec(0, 1), t))
 				ret |= ClearSides.Bottom | ClearSides.BottomLeft | ClearSides.BottomRight;
 
-			if (Tiles[p + new CVec(-1, -1)].Type != t)
+			if (!CellContains(p + new CVec(-1, -1), t))
 				ret |= ClearSides.TopLeft;
 
-			if (Tiles[p + new CVec(1, -1)].Type != t)
+			if (!CellContains(p + new CVec(1, -1), t))
 				ret |= ClearSides.TopRight;
 
-			if (Tiles[p + new CVec(-1, 1)].Type != t)
+			if (!CellContains(p + new CVec(-1, 1), t))
 				ret |= ClearSides.BottomLeft;
 
-			if (Tiles[p + new CVec(1, 1)].Type != t)
+			if (!CellContains(p + new CVec(1, 1), t))
 				ret |= ClearSides.BottomRight;
 
 			return ret;
