@@ -75,15 +75,16 @@ namespace OpenRA.Mods.Common.Widgets
 				var rsi = actor.Traits.Get<RenderSpritesInfo>();
 				var icon = new Animation(world, rsi.GetImage(actor, world.Map.SequenceProvider, race));
 				icon.Play(actor.Traits.Get<TooltipInfo>().Icon);
+				var bi = actor.Traits.Get<BuildableInfo>();
 				var location = new float2(RenderBounds.Location) + new float2(queue.i * (IconWidth + IconSpacing), 0);
-				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer, 0.5f);
+				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer.Palette(bi.IconPalette), 0.5f);
 
 				var clock = clocks[queue.Trait];
 				clock.PlayFetchIndex("idle",
 					() => current.TotalTime == 0 ? 0 : ((current.TotalTime - current.RemainingTime)
 					* (clock.CurrentSequence.Length - 1) / current.TotalTime));
 				clock.Tick();
-				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer, 0.5f);
+				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer.Palette(bi.IconPalette), 0.5f);
 
 				var tiny = Game.Renderer.Fonts["Tiny"];
 				var text = GetOverlayForItem(current);

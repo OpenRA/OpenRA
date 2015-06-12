@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Name;
 		public Hotkey Hotkey;
 		public Sprite Sprite;
+		public PaletteReference Palette;
 		public float2 Pos;
 		public List<ProductionItem> Queued;
 	}
@@ -312,12 +313,15 @@ namespace OpenRA.Mods.Common.Widgets
 				var icon = new Animation(World, rsi.GetImage(item, World.Map.SequenceProvider, race));
 				icon.Play(item.Traits.Get<TooltipInfo>().Icon);
 
+				var bi = item.Traits.Get<BuildableInfo>();
+
 				var pi = new ProductionIcon()
 				{
 					Actor = item,
 					Name = item.Name,
 					Hotkey = ks.GetProductionHotkey(DisplayedIconCount),
 					Sprite = icon.Image,
+					Palette = worldRenderer.Palette(bi.IconPalette),
 					Pos = new float2(rect.Location),
 					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList()
 				};
@@ -350,7 +354,7 @@ namespace OpenRA.Mods.Common.Widgets
 			// Icons
 			foreach (var icon in icons.Values)
 			{
-				WidgetUtils.DrawSHPCentered(icon.Sprite, icon.Pos + iconOffset, worldRenderer);
+				WidgetUtils.DrawSHPCentered(icon.Sprite, icon.Pos + iconOffset, icon.Palette);
 
 				// Build progress
 				if (icon.Queued.Count > 0)
@@ -361,10 +365,10 @@ namespace OpenRA.Mods.Common.Widgets
 							* (clock.CurrentSequence.Length - 1) / first.TotalTime);
 					clock.Tick();
 
-					WidgetUtils.DrawSHPCentered(clock.Image, icon.Pos + iconOffset, worldRenderer);
+					WidgetUtils.DrawSHPCentered(clock.Image, icon.Pos + iconOffset, icon.Palette);
 				}
 				else if (!buildableItems.Any(a => a.Name == icon.Name))
-					WidgetUtils.DrawSHPCentered(cantBuild.Image, icon.Pos + iconOffset, worldRenderer);
+					WidgetUtils.DrawSHPCentered(cantBuild.Image, icon.Pos + iconOffset, icon.Palette);
 			}
 
 			// Overlays
