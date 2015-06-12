@@ -65,6 +65,7 @@ namespace OpenRA.Mods.Common.Widgets
 			public SupportPowerInstance Power;
 			public float2 Pos;
 			public Sprite Sprite;
+			public PaletteReference Palette;
 			public Hotkey Hotkey;
 		}
 
@@ -89,6 +90,7 @@ namespace OpenRA.Mods.Common.Widgets
 					Power = p,
 					Pos = new float2(rect.Location),
 					Sprite = icon.Image,
+					Palette = worldRenderer.Palette(p.Info.IconPalette),
 					Hotkey = ks.GetSupportPowerHotkey(IconCount)
 				};
 
@@ -139,7 +141,7 @@ namespace OpenRA.Mods.Common.Widgets
 			// Icons
 			foreach (var p in icons.Values)
 			{
-				WidgetUtils.DrawSHPCentered(p.Sprite, p.Pos + iconOffset, worldRenderer);
+				WidgetUtils.DrawSHPCentered(p.Sprite, p.Pos + iconOffset, p.Palette);
 
 				// Charge progress
 				var sp = p.Power;
@@ -148,7 +150,7 @@ namespace OpenRA.Mods.Common.Widgets
 					* (clock.CurrentSequence.Length - 1) / sp.TotalTime);
 
 				clock.Tick();
-				WidgetUtils.DrawSHPCentered(clock.Image, p.Pos + iconOffset, worldRenderer);
+				WidgetUtils.DrawSHPCentered(clock.Image, p.Pos + iconOffset, p.Palette);
 			}
 
 			// Overlay

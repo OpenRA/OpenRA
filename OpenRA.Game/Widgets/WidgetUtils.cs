@@ -27,14 +27,14 @@ namespace OpenRA.Widgets
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos);
 		}
 
-		public static void DrawSHPCentered(Sprite s, float2 pos, WorldRenderer wr)
+		public static void DrawSHPCentered(Sprite s, float2 pos, PaletteReference p)
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite(s, pos - 0.5f * s.Size, wr.Palette("chrome"));
+			Game.Renderer.SpriteRenderer.DrawSprite(s, pos - 0.5f * s.Size, p);
 		}
 
-		public static void DrawSHPCentered(Sprite s, float2 pos, WorldRenderer wr, float scale)
+		public static void DrawSHPCentered(Sprite s, float2 pos, PaletteReference p, float scale)
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite(s, pos - 0.5f * scale * s.Size, wr.Palette("chrome"), scale * s.Size);
+			Game.Renderer.SpriteRenderer.DrawSprite(s, pos - 0.5f * scale * s.Size, p, scale * s.Size);
 		}
 
 		public static void DrawPanel(string collection, Rectangle bounds)

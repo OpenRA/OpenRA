@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Force a specific race variant, overriding the race of the producing actor.")]
 		public readonly string ForceRace = null;
 
+		[Desc("Palette used for the production icon.")]
+		public readonly string IconPalette = "chrome";
+
 		// TODO: UI fluff; doesn't belong here
 		public readonly int BuildPaletteOrder = 9999;
 	}
