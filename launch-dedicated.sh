@@ -6,7 +6,7 @@ Dedicated="True"
 DedicatedLoop="True"
 ListenPort="${ListenPort:-"1234"}"
 ExternalPort="${ExternalPort:-"1234"}"
-AdvertiseOnline="${AdvertiseOnline:-"False"}"
+AdvertiseOnline="${AdvertiseOnline:-"True"}"
 AllowPortForward="${AllowPortForward:-"False"}"
 
 while true; do
