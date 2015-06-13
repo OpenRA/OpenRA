@@ -803,3 +803,6 @@ mainmenu-border: dialog.png
 	corner-tr: 728,387,40,40
 	corner-bl: 648,467,40,40
 	corner-br: 728,467,40,40
+
+dropdown: dialog.png
+    separator: 512,1,1,19
