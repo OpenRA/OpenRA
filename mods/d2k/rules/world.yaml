@@ -1,5 +1,6 @@
 ^BaseWorld:
 	Inherits: ^Palettes
+	AlwaysVisible:
 	ScreenMap:
 	ActorMap:
 	TerrainGeometryOverlay:

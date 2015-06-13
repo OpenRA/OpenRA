@@ -1,4 +1,5 @@
 crate:
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Crate
 	Crate:
@@ -114,12 +115,14 @@ crate:
 		CustomBounds: 16,16
 
 mpspawn:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	RenderEditorOnly:
 	BodyOrientation:
 
 waypoint:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	RenderEditorOnly:
@@ -136,6 +139,7 @@ waypoint:
 		Palette: colorpicker
 
 camera:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	Health:
@@ -145,6 +149,7 @@ camera:
 	BodyOrientation:
 
 wormspawner:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	RenderEditorOnly:
@@ -152,6 +157,7 @@ wormspawner:
 	WormSpawner:
 
 upgrade.conyard:
+	AlwaysVisible:
 	Tooltip:
 		Name: Construction Yard Upgrade
 		Description: Unlocks new construction options
@@ -170,6 +176,7 @@ upgrade.conyard:
 	ProvidesPrerequisite@upgradename:
 
 upgrade.barracks:
+	AlwaysVisible:
 	Tooltip:
 		Name: Barracks Upgrade
 		Description: Unlocks additional infantry
@@ -188,6 +195,7 @@ upgrade.barracks:
 	ProvidesPrerequisite@upgradename:
 
 upgrade.light:
+	AlwaysVisible:
 	Tooltip:
 		Name: Light Factory Upgrade
 		Description: Unlocks additional light units
@@ -206,6 +214,7 @@ upgrade.light:
 	ProvidesPrerequisite@upgradename:
 
 upgrade.heavy:
+	AlwaysVisible:
 	Tooltip:
 		Name: Heavy Factory Upgrade
 		Description: Unlocks advanced technology and heavy weapons
@@ -225,6 +234,7 @@ upgrade.heavy:
 	ProvidesPrerequisite@upgradename:
 
 upgrade.hightech:
+	AlwaysVisible:
 	Tooltip:
 		Name: High Tech Factory Upgrade
 		Description: Unlocks the Air Strike superweapon
