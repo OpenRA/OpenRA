@@ -10,66 +10,19 @@
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class CreatesShroudInfo : ITraitInfo
+	public class CreatesShroudInfo : RevealsShroudInfo
 	{
-		public readonly WRange Range = WRange.Zero;
-
-		public object Create(ActorInitializer init) { return new CreatesShroud(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new CreatesShroud(init.Self, this); }
 	}
 
-	public class CreatesShroud : ITick, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class CreatesShroud : RevealsShroud
 	{
-		readonly CreatesShroudInfo info;
-		readonly bool lobbyShroudFogDisabled;
-		[Sync] CPos cachedLocation;
-		[Sync] bool cachedDisabled;
-
 		public CreatesShroud(Actor self, CreatesShroudInfo info)
+			: base(self, info)
 		{
-			this.info = info;
-			lobbyShroudFogDisabled = !self.World.LobbyInfo.GlobalSettings.Shroud && !self.World.LobbyInfo.GlobalSettings.Fog;
+			addCellsToPlayerShroud = (p, c) => p.Shroud.AddShroudGeneration(self, c);
+			removeCellsFromPlayerShroud = p => p.Shroud.RemoveShroudGeneration(self);
+			isDisabled = () => self.IsDisabled();
 		}
-
-		CPos[] ShroudedTiles(Actor self)
-		{
-			return Shroud.GetVisOrigins(self)
-				.SelectMany(o => Shroud.FindVisibleTiles(self.World, o, Range))
-				.Distinct().ToArray();
-		}
-
-		public void Tick(Actor self)
-		{
-			if (lobbyShroudFogDisabled)
-				return;
-
-			var disabled = self.IsDisabled();
-			if (cachedLocation != self.Location || cachedDisabled != disabled)
-			{
-				cachedLocation = self.Location;
-				cachedDisabled = disabled;
-
-				var shrouded = ShroudedTiles(self);
-				foreach (var p in self.World.Players)
-				{
-					p.Shroud.RemoveShroudGeneration(self);
-					p.Shroud.AddShroudGeneration(self, shrouded);
-				}
-			}
-		}
-
-		public void AddedToWorld(Actor self)
-		{
-			var shrouded = ShroudedTiles(self);
-			foreach (var p in self.World.Players)
-				p.Shroud.AddShroudGeneration(self, shrouded);
-		}
-
-		public void RemovedFromWorld(Actor self)
-		{
-			foreach (var p in self.World.Players)
-				p.Shroud.RemoveShroudGeneration(self);
-		}
-
-		public WRange Range { get { return cachedDisabled ? WRange.Zero : info.Range; } }
 	}
 }

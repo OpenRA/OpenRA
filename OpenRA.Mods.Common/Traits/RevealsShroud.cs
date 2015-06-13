@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -17,59 +18,80 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly WRange Range = WRange.Zero;
 
-		public object Create(ActorInitializer init) { return new RevealsShroud(init.Self, this); }
+		public virtual object Create(ActorInitializer init) { return new RevealsShroud(init.Self, this); }
 	}
 
 	public class RevealsShroud : ITick, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
+		static readonly CPos[] NoCells = { };
+
 		readonly RevealsShroudInfo info;
 		readonly bool lobbyShroudFogDisabled;
 		[Sync] CPos cachedLocation;
+		[Sync] bool cachedDisabled;
+
+		protected Action<Player, CPos[]> addCellsToPlayerShroud;
+		protected Action<Player> removeCellsFromPlayerShroud;
+		protected Func<bool> isDisabled;
 
 		public RevealsShroud(Actor self, RevealsShroudInfo info)
 		{
 			this.info = info;
 			lobbyShroudFogDisabled = !self.World.LobbyInfo.GlobalSettings.Shroud && !self.World.LobbyInfo.GlobalSettings.Fog;
+
+			addCellsToPlayerShroud = (p, c) => p.Shroud.AddVisibility(self, c);
+			removeCellsFromPlayerShroud = p => p.Shroud.RemoveVisibility(self);
+			isDisabled = () => false;
 		}
 
-		CPos[] VisibleTiles(Actor self)
+		CPos[] Cells(Actor self)
 		{
+			var range = Range;
+			if (range == WRange.Zero)
+				return NoCells;
+
 			return Shroud.GetVisOrigins(self)
-				.SelectMany(o => Shroud.FindVisibleTiles(self.World, o, Range))
+				.SelectMany(o => Shroud.FindVisibleTiles(self.World, o, range))
 				.Distinct().ToArray();
 		}
 
 		public void Tick(Actor self)
 		{
-			if (lobbyShroudFogDisabled)
+			if (lobbyShroudFogDisabled || !self.IsInWorld)
 				return;
 
-			if (cachedLocation != self.Location)
-			{
-				cachedLocation = self.Location;
+			var location = self.Location;
+			var disabled = isDisabled();
+			if (cachedLocation == location && cachedDisabled == disabled)
+				return;
 
-				var visible = VisibleTiles(self);
-				foreach (var p in self.World.Players)
-				{
-					p.Shroud.RemoveVisibility(self);
-					p.Shroud.AddVisibility(self, visible);
-				}
+			cachedLocation = location;
+			cachedDisabled = disabled;
+
+			var cells = Cells(self);
+			foreach (var p in self.World.Players)
+			{
+				removeCellsFromPlayerShroud(p);
+				addCellsToPlayerShroud(p, cells);
 			}
 		}
 
 		public void AddedToWorld(Actor self)
 		{
-			var visible = VisibleTiles(self);
+			cachedLocation = self.Location;
+			cachedDisabled = isDisabled();
+
+			var cells = Cells(self);
 			foreach (var p in self.World.Players)
-				p.Shroud.AddVisibility(self, visible);
+				addCellsToPlayerShroud(p, cells);
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
 			foreach (var p in self.World.Players)
-				p.Shroud.RemoveVisibility(self);
+				removeCellsFromPlayerShroud(p);
 		}
 
-		public WRange Range { get { return info.Range; } }
+		public WRange Range { get { return cachedDisabled ? WRange.Zero : info.Range; } }
 	}
 }
