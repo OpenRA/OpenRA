@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				gridButton.IsHighlighted = () => terrainGeometryTrait.Enabled;
 			}
 
-			var zoomDropdown = widget.Get<DropDownButtonWidget>("ZOOM_BUTTON");
+			var zoomDropdown = widget.GetOrNull<DropDownButtonWidget>("ZOOM_BUTTON");
 			if (zoomDropdown != null)
 			{
 				var selectedZoom = Game.Settings.Graphics.PixelDouble ? 2f : 1f;
