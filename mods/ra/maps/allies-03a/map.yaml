@@ -1405,6 +1405,7 @@ Rules:
 		RenderSprites:
 			Image: E7
 	PRISON:
+		HiddenUnderShroud:
 		Immobile:
 			OccupiesSpace: false
 		BodyOrientation:

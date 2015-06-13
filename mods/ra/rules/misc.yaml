@@ -1,4 +1,5 @@
 MINP:
+	HiddenUnderShroud:
 	Mine:
 		CrushClasses: mine
 		DetonateClasses: mine
@@ -27,6 +28,7 @@ MINP:
 		OccupiesSpace: true
 
 MINV:
+	HiddenUnderShroud:
 	Mine:
 		CrushClasses: mine
 		DetonateClasses: mine
@@ -165,6 +167,7 @@ HEALCRATE:
 		Effect: heal
 
 CAMERA:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	Health:
@@ -180,6 +183,7 @@ CAMERA:
 		Image: camera
 
 camera.paradrop:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	Health:
@@ -191,6 +195,7 @@ camera.paradrop:
 	BodyOrientation:
 
 SONAR:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	Health:
@@ -220,6 +225,7 @@ FLARE:
 	BodyOrientation:
 
 MINE:
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Ore Mine
 	RenderBuilding:
@@ -238,6 +244,7 @@ MINE:
 	SeedsResource:
 
 GMINE:
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Gem Mine
 	RenderBuilding:
@@ -257,6 +264,7 @@ GMINE:
 		ResourceType: Gems
 
 RAILMINE:
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Abandoned Mine
 	RenderBuilding:
@@ -273,6 +281,7 @@ RAILMINE:
 		ExcludeTilesets: INTERIOR
 
 QUEE:
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Queen Ant
 	Building:
@@ -288,6 +297,7 @@ QUEE:
 		UseTerrainPalette: true
 
 LAR1:
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Ant Larva
 	Building:
@@ -304,6 +314,7 @@ LAR1:
 		UseTerrainPalette: true
 
 LAR2:
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Ant Larvae
 	Building:
@@ -320,6 +331,7 @@ LAR2:
 		UseTerrainPalette: true
 
 powerproxy.parabombs:
+	AlwaysVisible:
 	AirstrikePower:
 		Icon: parabombs
 		Description: Parabombs (Single Use)
@@ -334,6 +346,7 @@ powerproxy.parabombs:
 		CameraActor: camera
 
 powerproxy.sonarpulse:
+	AlwaysVisible:
 	SpawnActorPower:
 		Icon: sonar
 		Description: Sonar Pulse
@@ -348,6 +361,7 @@ powerproxy.sonarpulse:
 		EffectPalette: moveflash
 
 powerproxy.paratroopers:
+	AlwaysVisible:
 	ParatroopersPower:
 		Icon: paratroopers
 		Description: Paratroopers
@@ -361,12 +375,14 @@ powerproxy.paratroopers:
 		BeaconPoster: pinficon
 
 mpspawn:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	RenderEditorOnly:
 	BodyOrientation:
 
 waypoint:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	RenderEditorOnly:

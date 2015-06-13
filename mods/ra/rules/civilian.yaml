@@ -487,6 +487,7 @@ SBRIDGE4:
 		SpawnOffset: 2,1
 
 BRIDGEHUT:
+	HiddenUnderShroud:
 	Building:
 		Footprint: __ __
 		Dimensions: 2,2
@@ -497,6 +498,7 @@ BRIDGEHUT:
 		TargetTypes: BridgeHut, C4
 
 BRIDGEHUT.small:
+	HiddenUnderShroud:
 	Building:
 		Footprint: _
 		Dimensions: 1,1

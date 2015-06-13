@@ -1617,16 +1617,19 @@ WOOD:
 		Type: woodfence
 
 BARRACKS:
+	AlwaysVisible:
 	Tooltip:
 		Name: Infantry Production
 		Description: Infantry Production
 
 TECHCENTER:
+	AlwaysVisible:
 	Tooltip:
 		Name: Tech Center
 		Description: Tech Center
 
 ANYPOWER:
+	AlwaysVisible:
 	Tooltip:
 		Name: Power Plant
 		Description: Power Plant

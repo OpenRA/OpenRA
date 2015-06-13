@@ -1301,6 +1301,7 @@ Rules:
 		RenderSprites:
 			Image: E7
 	PRISON:
+		HiddenUnderShroud:
 		Immobile:
 			OccupiesSpace: false
 		BodyOrientation:
@@ -1321,6 +1322,7 @@ Rules:
 		RevealsShroud:
 			Range: 40c0
 	CAMERA.Jeep:
+		AlwaysVisible:
 		Mobile:
 			TerrainSpeeds:
 		RevealsShroud:
