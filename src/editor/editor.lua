@@ -412,8 +412,13 @@ function EditorIsModified(editor)
 end
 
 -- Indicator handling for functions and local/global variables
--- indicator.MASKED is handled separately, so don't include in MAX
-local indicator = {FNCALL = 0, LOCAL = 1, GLOBAL = 2, MASKING = 3, MASKED = 4, MAX = 3}
+local indicator = {
+  FNCALL = ide:GetIndicator("core.fncall"),
+  LOCAL = ide:GetIndicator("core.varlocal"),
+  GLOBAL = ide:GetIndicator("core.varglobal"),
+  MASKING = ide:GetIndicator("core.varmasking"),
+  MASKED = ide:GetIndicator("core.varmasked"),
+}
 
 function IndicateFunctionsOnly(editor, lines, linee)
   local sindic = styles.indicator
@@ -573,7 +578,9 @@ function IndicateAll(editor, lines)
   end
 
   local cleared = {}
-  for indic = 0, indicator.MAX do cleared[indic] = pos end
+  for _, indic in ipairs {indicator.FNCALL, indicator.LOCAL, indicator.GLOBAL, indicator.MASKING} do
+    cleared[indic] = pos
+  end
 
   local function IndicateOne(indic, pos, length)
     editor:SetIndicatorCurrent(indic)
@@ -634,11 +641,11 @@ function IndicateAll(editor, lines)
   -- don't clear "masked" indicators as those can be set out of order (so
   -- last updated fragment is not always the last in terms of its position);
   -- these indicators should be up-to-date to the end of the code fragment.
-  -- also don't clear "funccall" indicators as those can be set based on
-  -- IndicateFunctionsOnly processing, which is dealt with separately
   local funconly = ide.config.editor.showfncall and editor.spec.isfncall
-  for indic = funconly and indicator.LOCAL or indicator.FNCALL, indicator.MAX do
-    IndicateOne(indic, pos, 0)
+  for _, indic in ipairs {indicator.FNCALL, indicator.LOCAL, indicator.GLOBAL, indicator.MASKING} do
+    -- don't clear "funccall" indicators as those can be set based on
+    -- IndicateFunctionsOnly processing, which is dealt with separately
+    if indic ~= indicator.FNCALL or not funconly then IndicateOne(indic, pos, 0) end
   end
 
   local needmore = delayed[editor] ~= nil

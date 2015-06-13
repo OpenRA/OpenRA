@@ -14,13 +14,13 @@ local MD_MARK_BOXD = '|' -- highlight
 local MD_MARK_MARK = ' ' -- separator
 local MD_LINK_NEWWINDOW = '+' -- indicator to open a new window for links
 local markup = {
-  [MD_MARK_BOXD] = {st=25, fg={127,0,127}, b=true},
-  [MD_MARK_CODE] = {st=26, fg={127,127,127}, fs=10},
-  [MD_MARK_HEAD] = {st=27, fn="Lucida Console", b=true},
-  [MD_MARK_LINK] = {st=28, u=true, hs={32,32,127}},
-  [MD_MARK_BOLD] = {st=29, b=true},
-  [MD_MARK_ITAL] = {st=30, i=true},
-  [MD_MARK_MARK] = {st=31, v=false},
+  [MD_MARK_BOXD] = {st=ide:AddIndicator("markup.boxd", 25), fg={127,0,127}, b=true},
+  [MD_MARK_CODE] = {st=ide:AddIndicator("markup.code", 26), fg={127,127,127}, fs=10},
+  [MD_MARK_HEAD] = {st=ide:AddIndicator("markup.head", 27), fn="Lucida Console", b=true},
+  [MD_MARK_LINK] = {st=ide:AddIndicator("markup.link", 28), u=true, hs={32,32,127}},
+  [MD_MARK_BOLD] = {st=ide:AddIndicator("markup.bold", 29), b=true},
+  [MD_MARK_ITAL] = {st=ide:AddIndicator("markup.ital", 30), i=true},
+  [MD_MARK_MARK] = {st=ide:AddIndicator("markup.mark", 31), v=false},
 }
 
 -- allow other editor features to recognize this special markup

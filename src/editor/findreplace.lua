@@ -251,7 +251,9 @@ function findReplace:FindAll(inFileRegister)
   return found
 end
 
-local indicator = {SEARCHMATCH = 5}
+local indicator = {
+  SEARCHMATCH = ide:GetIndicator("core.searchmatch"),
+}
 
 -- returns true if replacements were done
 function findReplace:Replace(fReplaceAll, resultsEditor)
