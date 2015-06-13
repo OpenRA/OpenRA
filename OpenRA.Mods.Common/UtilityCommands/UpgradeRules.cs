@@ -1123,7 +1123,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Images from WithCrateBody was moved into RenderSprites
-				if (engineVersion < 20150530)
+				if (engineVersion < 20150608)
 				{
 					if (depth == 0)
 					{
