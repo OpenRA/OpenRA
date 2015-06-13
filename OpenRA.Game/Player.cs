@@ -154,12 +154,7 @@ namespace OpenRA
 			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, this)))
 				return false;
 
-			if (a.Owner.IsAlliedWith(this))
-				return true;
-
-			// Actors are hidden under shroud, but not under fog by default
-			// TODO: Shroud exploration should be implemented as an IVisibility modifier!
-			return Shroud.GetVisOrigins(a).Any(Shroud.IsExplored);
+			return a.Trait<IDefaultVisibility>().IsVisible(a, this);
 		}
 
 		#region Scripting interface

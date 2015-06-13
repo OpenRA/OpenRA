@@ -16,18 +16,22 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The actor stays invisible under fog of war.")]
-	public class HiddenUnderFogInfo : TraitInfo<HiddenUnderFog> { }
-
-	public class HiddenUnderFog : IRenderModifier, IVisibilityModifier
+	public class HiddenUnderFogInfo : HiddenUnderShroudInfo
 	{
-		public bool IsVisible(Actor self, Player byPlayer)
-		{
-			return byPlayer == null || Shroud.GetVisOrigins(self).Any(byPlayer.Shroud.IsVisible);
-		}
+		public override object Create(ActorInitializer init) { return new HiddenUnderFog(this); }
+	}
 
-		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
+	public class HiddenUnderFog : HiddenUnderShroud
+	{
+		public HiddenUnderFog(HiddenUnderFogInfo info)
+			: base(info) { }
+
+		protected override bool IsVisibleInner(Actor self, Player byPlayer)
 		{
-			return IsVisible(self, self.World.RenderPlayer) ? r : SpriteRenderable.None;
+			if (!VisibilityFootprint(self).Any(byPlayer.Shroud.IsVisible))
+				return false;
+
+			return base.IsVisibleInner(self, byPlayer);
 		}
 	}
 }
