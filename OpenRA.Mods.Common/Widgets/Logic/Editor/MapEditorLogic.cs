@@ -9,12 +9,8 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -33,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				gridButton.IsHighlighted = () => terrainGeometryTrait.Enabled;
 			}
 
-			var zoomDropdown = widget.Get<DropDownButtonWidget>("ZOOM_BUTTON");
+			var zoomDropdown = widget.GetOrNull<DropDownButtonWidget>("ZOOM_BUTTON");
 			if (zoomDropdown != null)
 			{
 				var selectedZoom = Game.Settings.Graphics.PixelDouble ? 2f : 1f;
