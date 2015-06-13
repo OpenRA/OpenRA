@@ -342,11 +342,6 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public bool IsExplored(Actor a)
-		{
-			return GetVisOrigins(a).Any(IsExplored);
-		}
-
 		public bool IsVisible(WPos pos)
 		{
 			return IsVisible(map.CellContaining(pos));
@@ -392,15 +387,6 @@ namespace OpenRA.Traits
 				// If fog is enabled, we can use the fast test that just does the core check.
 				return isVisibleTest;
 			}
-		}
-
-		// Actors are hidden under shroud, but not under fog by default
-		public bool IsVisible(Actor a)
-		{
-			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, self.Owner)))
-				return false;
-
-			return a.Owner.IsAlliedWith(self.Owner) || IsExplored(a);
 		}
 
 		public bool IsTargetable(Actor a)
