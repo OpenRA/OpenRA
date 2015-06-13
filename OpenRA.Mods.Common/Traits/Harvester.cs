@@ -117,7 +117,8 @@ namespace OpenRA.Mods.Common.Traits
 				from r in self.World.ActorsWithTrait<IAcceptResources>()
 				where r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor)
 				let linkedHarvs = self.World.ActorsWithTrait<Harvester>().Count(a => a.Trait.LinkedProc == r.Actor)
-				select new { Location = r.Actor.Location + r.Trait.DeliveryOffset, Actor = r.Actor, Occupancy = linkedHarvs }).ToDictionary(r => r.Location);
+				select new { Location = r.Actor.Location + r.Trait.DeliveryOffset, Actor = r.Actor, Occupancy = linkedHarvs })
+				.Distinct().ToDictionary(r => r.Location);
 
 			// Start a search from each refinery's delivery location:
 			var mi = self.Info.Traits.Get<MobileInfo>();
