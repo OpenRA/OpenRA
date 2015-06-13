@@ -921,6 +921,7 @@ Rules:
 			Amount: 500
 			UseCashTick: yes
 	airstrike.proxy:
+		AlwaysVisible:
 		AirstrikePower:
 			Icon: airstrike
 			StartFullyCharged: True
