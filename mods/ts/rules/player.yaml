@@ -1,4 +1,5 @@
 Player:
+	AlwaysVisible:
 	TechTree:
 	ClassicProductionQueue@Building:
 		Type: Building
