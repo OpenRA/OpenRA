@@ -94,7 +94,7 @@ namespace OpenRA.Graphics
 		public int2 Measure(string text)
 		{
 			if (string.IsNullOrEmpty(text))
-				return int2.Zero;
+				return new int2(0, size);
 
 			var lines = text.Split('\n');
 			return new int2((int)Math.Ceiling(lines.Max(lineWidth)), lines.Length * size);
