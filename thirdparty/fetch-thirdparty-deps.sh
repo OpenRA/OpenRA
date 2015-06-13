@@ -100,3 +100,10 @@ if [ ! -f Eluant.dll ]; then
 	echo "Fetching Eluant from GitHub."
 	curl -s -L -O https://github.com/OpenRA/Eluant/releases/download/20140425/Eluant.dll
 fi
+
+if [ ! -f IrcDotNet.dll ]; then
+	echo "Fetching IrcDotNet from NuGet."
+	get IrcDotNet 0.5.0
+	cp ./IrcDotNet/lib/net40/IrcDotNet.* .
+	rm -rf IrcDotNet
+fi
