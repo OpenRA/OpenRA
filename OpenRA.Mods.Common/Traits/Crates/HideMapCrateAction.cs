@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override int GetSelectionShares(Actor collector)
 		{
 			// don't ever hide the map for people who have GPS.
-			if (collector.Owner.Shroud.HasFogVisibility())
+			if (collector.Owner.HasFogVisibility)
 				return 0;
 
 			return base.GetSelectionShares(collector);

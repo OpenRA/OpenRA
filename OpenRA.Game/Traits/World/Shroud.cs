@@ -33,8 +33,6 @@ namespace OpenRA.Traits
 		readonly CellLayer<short> generatedShroudCount;
 		readonly CellLayer<bool> explored;
 
-		readonly Lazy<IFogVisibilityModifier[]> fogVisibilities;
-
 		// Cache of visibility that was added, so no matter what crazy trait code does, it
 		// can't make us invalid.
 		readonly Dictionary<Actor, CPos[]> visibility = new Dictionary<Actor, CPos[]>();
@@ -61,8 +59,6 @@ namespace OpenRA.Traits
 
 			self.World.ActorAdded += a => { CPos[] shrouded = null; AddShroudGeneration(a, ref shrouded); };
 			self.World.ActorRemoved += RemoveShroudGeneration;
-
-			fogVisibilities = Exts.Lazy(() => self.TraitsImplementing<IFogVisibilityModifier>().ToArray());
 
 			shroudEdgeTest = map.Contains;
 			isExploredTest = IsExploredCore;
@@ -387,22 +383,6 @@ namespace OpenRA.Traits
 				// If fog is enabled, we can use the fast test that just does the core check.
 				return isVisibleTest;
 			}
-		}
-
-		public bool IsTargetable(Actor a)
-		{
-			if (HasFogVisibility())
-				return true;
-
-			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, self.Owner)))
-				return false;
-
-			return GetVisOrigins(a).Any(IsVisible);
-		}
-
-		public bool HasFogVisibility()
-		{
-			return fogVisibilities.Value.Any(f => f.HasFogVisibility(self.Owner));
 		}
 
 		public bool Contains(MPos uv)

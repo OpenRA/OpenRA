@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 					a.AppearsHostileTo(self) &&
 					!a.HasTrait<AutoTargetIgnore>() &&
 					attack.HasAnyValidWeapons(Target.FromActor(a)) &&
-					self.Owner.Shroud.IsTargetable(a))
+					self.Owner.CanTargetActor(a))
 				.ClosestTo(self);
 		}
 	}

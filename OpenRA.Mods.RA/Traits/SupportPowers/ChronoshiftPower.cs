@@ -137,7 +137,7 @@ namespace OpenRA.Mods.RA.Traits
 				var targetUnits = power.UnitsInRange(xy).Where(a => !world.FogObscures(a));
 
 				foreach (var unit in targetUnits)
-					if (manager.Self.Owner.Shroud.IsTargetable(unit))
+					if (manager.Self.Owner.CanTargetActor(unit))
 						yield return new SelectionBoxRenderable(unit, Color.Red);
 			}
 
@@ -217,7 +217,7 @@ namespace OpenRA.Mods.RA.Traits
 			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				foreach (var unit in power.UnitsInRange(sourceLocation))
-					if (manager.Self.Owner.Shroud.IsTargetable(unit))
+					if (manager.Self.Owner.CanTargetActor(unit))
 						yield return new SelectionBoxRenderable(unit, Color.Red);
 			}
 
@@ -238,7 +238,7 @@ namespace OpenRA.Mods.RA.Traits
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
 					var offset = world.Map.CenterOfCell(xy) - world.Map.CenterOfCell(sourceLocation);
-					if (manager.Self.Owner.Shroud.IsTargetable(unit))
+					if (manager.Self.Owner.CanTargetActor(unit))
 						foreach (var r in unit.Render(wr))
 							yield return r.OffsetBy(offset);
 				}
@@ -246,7 +246,7 @@ namespace OpenRA.Mods.RA.Traits
 				// Unit tiles
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
-					if (manager.Self.Owner.Shroud.IsTargetable(unit))
+					if (manager.Self.Owner.CanTargetActor(unit))
 					{
 						var targetCell = unit.Location + (xy - sourceLocation);
 						var canEnter = manager.Self.Owner.Shroud.IsExplored(targetCell) &&
