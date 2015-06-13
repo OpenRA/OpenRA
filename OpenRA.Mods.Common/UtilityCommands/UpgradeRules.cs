@@ -1101,7 +1101,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						var chPal = nodeChPal != null && !string.IsNullOrEmpty(nodeChPal.Value.Value) ? nodeChPal.Value.Value : "effect";
 						ge.Value.Nodes.Remove(nodeChPal);
 
-						if (upgrades != 0)
+						if (upgrades != 0 && nodeUpgrades != null)
 						{
 							foreach (var nodeUpgrade in nodeUpgrades.Value.Nodes)
 								nodeUpgrade.Value.Value = "rank" + (string.IsNullOrEmpty(nodeUpgrade.Value.Value) ? null : ", ") + nodeUpgrade.Value.Value;
