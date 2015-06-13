@@ -77,7 +77,7 @@ elseif ($command -eq "clean")
 	{
 		$proc = Start-Process $msBuild $msBuildArguments -NoNewWindow -PassThru -Wait
 		rm *.dll
-		rm *.config
+		rm *.dll.config
 		rm mods/*/*.dll
 		if (Test-Path thirdparty/download/)
 		{
