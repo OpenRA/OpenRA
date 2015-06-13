@@ -54,12 +54,6 @@ namespace OpenRA.Traits
 			generatedShroudCount = new CellLayer<short>(map);
 			explored = new CellLayer<bool>(map);
 
-			self.World.ActorAdded += a => { CPos[] visible = null; AddVisibility(a, ref visible); };
-			self.World.ActorRemoved += RemoveVisibility;
-
-			self.World.ActorAdded += a => { CPos[] shrouded = null; AddShroudGeneration(a, ref shrouded); };
-			self.World.ActorRemoved += RemoveShroudGeneration;
-
 			shroudEdgeTest = map.Contains;
 			isExploredTest = IsExploredCore;
 			isVisibleTest = IsVisibleCore;
@@ -76,20 +70,6 @@ namespace OpenRA.Traits
 			// Invalidate may be called multiple times in one world tick, which is decoupled from rendering.
 			if (oldHash == Hash)
 				Hash += 1;
-		}
-
-		public static void UpdateVisibility(IEnumerable<Shroud> shrouds, Actor actor)
-		{
-			CPos[] visbility = null;
-			foreach (var shroud in shrouds)
-				shroud.UpdateVisibility(actor, ref visbility);
-		}
-
-		public static void UpdateShroudGeneration(IEnumerable<Shroud> shrouds, Actor actor)
-		{
-			CPos[] shrouded = null;
-			foreach (var shroud in shrouds)
-				shroud.UpdateShroudGeneration(actor, ref shrouded);
 		}
 
 		static CPos[] FindVisibleTiles(Actor actor, WRange range)
@@ -109,7 +89,7 @@ namespace OpenRA.Traits
 					yield return cell;
 		}
 
-		void AddVisibility(Actor a, ref CPos[] visible)
+		public void AddVisibility(Actor a, ref CPos[] visible)
 		{
 			var rs = a.TraitOrDefault<RevealsShroud>();
 			if (rs == null || !a.Owner.IsAlliedWith(self.Owner) || rs.Range == WRange.Zero)
@@ -137,7 +117,7 @@ namespace OpenRA.Traits
 			Invalidate(visible);
 		}
 
-		void RemoveVisibility(Actor a)
+		public void RemoveVisibility(Actor a)
 		{
 			CPos[] visible;
 			if (!visibility.TryGetValue(a, out visible))
@@ -154,17 +134,7 @@ namespace OpenRA.Traits
 			Invalidate(visible);
 		}
 
-		void UpdateVisibility(Actor a, ref CPos[] visible)
-		{
-			// Actors outside the world don't have any vis
-			if (!a.IsInWorld)
-				return;
-
-			RemoveVisibility(a);
-			AddVisibility(a, ref visible);
-		}
-
-		void AddShroudGeneration(Actor a, ref CPos[] shrouded)
+		public void AddShroudGeneration(Actor a, ref CPos[] shrouded)
 		{
 			var cs = a.TraitOrDefault<CreatesShroud>();
 			if (cs == null || a.Owner.IsAlliedWith(self.Owner) || cs.Range == WRange.Zero)
@@ -183,7 +153,7 @@ namespace OpenRA.Traits
 			Invalidate(shrouded);
 		}
 
-		void RemoveShroudGeneration(Actor a)
+		public void RemoveShroudGeneration(Actor a)
 		{
 			CPos[] shrouded;
 			if (!generation.TryGetValue(a, out shrouded))
@@ -196,12 +166,6 @@ namespace OpenRA.Traits
 			Invalidate(shrouded);
 		}
 
-		void UpdateShroudGeneration(Actor a, ref CPos[] shrouded)
-		{
-			RemoveShroudGeneration(a);
-			AddShroudGeneration(a, ref shrouded);
-		}
-
 		public void UpdatePlayerStance(World w, Player player, Stance oldStance, Stance newStance)
 		{
 			if (oldStance == newStance)
@@ -210,9 +174,14 @@ namespace OpenRA.Traits
 			foreach (var a in w.Actors.Where(a => a.Owner == player))
 			{
 				CPos[] visible = null;
-				UpdateVisibility(a, ref visible);
 				CPos[] shrouded = null;
-				UpdateShroudGeneration(a, ref shrouded);
+				foreach (var p in self.World.Players)
+				{
+					p.Shroud.RemoveVisibility(self);
+					p.Shroud.AddVisibility(self, ref visible);
+					p.Shroud.RemoveShroudGeneration(self);
+					p.Shroud.AddShroudGeneration(self, ref shrouded);
+				}
 			}
 		}
 

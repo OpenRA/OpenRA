@@ -19,7 +19,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new RevealsShroud(init.Self, this); }
 	}
 
-	public class RevealsShroud : ITick, ISync
+	public class RevealsShroud : ITick, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly RevealsShroudInfo info;
 		readonly bool lobbyShroudFogDisabled;
@@ -39,8 +39,27 @@ namespace OpenRA.Traits
 			if (cachedLocation != self.Location)
 			{
 				cachedLocation = self.Location;
-				Shroud.UpdateVisibility(self.World.Players.Select(p => p.Shroud), self);
+
+				CPos[] visible = null;
+				foreach (var p in self.World.Players)
+				{
+					p.Shroud.RemoveVisibility(self);
+					p.Shroud.AddVisibility(self, ref visible);
+				}
 			}
+		}
+
+		public void AddedToWorld(Actor self)
+		{
+			CPos[] visible = null;
+			foreach (var p in self.World.Players)
+				p.Shroud.AddVisibility(self, ref visible);
+		}
+
+		public void RemovedFromWorld(Actor self)
+		{
+			foreach (var p in self.World.Players)
+				p.Shroud.RemoveVisibility(self);
 		}
 
 		public WRange Range { get { return info.Range; } }
