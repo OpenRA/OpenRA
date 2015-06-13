@@ -369,13 +369,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// GiveUnitCrateAction and GiveMcvCrateAction were updated to allow multiple units
 				if (engineVersion < 20140723)
 				{
-					if (depth == 2 && parentKey.Contains("GiveMcvCrateAction"))
-						if (node.Key == "Unit")
-							node.Key = "Units";
+					if (depth == 2 && !string.IsNullOrEmpty(parentKey))
+					{
+						if (parentKey.Contains("GiveMcvCrateAction"))
+							if (node.Key == "Unit")
+								node.Key = "Units";
 
-					if (depth == 2 && parentKey.Contains("GiveUnitCrateAction"))
-						if (node.Key == "Unit")
-							node.Key = "Units";
+						if (parentKey.Contains("GiveUnitCrateAction"))
+							if (node.Key == "Unit")
+								node.Key = "Units";
+					}
 				}
 
 				// Power from Building was moved out into Power and ScalePowerWithHealth traits
