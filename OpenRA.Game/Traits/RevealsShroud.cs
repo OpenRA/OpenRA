@@ -31,6 +31,13 @@ namespace OpenRA.Traits
 			lobbyShroudFogDisabled = !self.World.LobbyInfo.GlobalSettings.Shroud && !self.World.LobbyInfo.GlobalSettings.Fog;
 		}
 
+		CPos[] VisibleTiles(Actor self)
+		{
+			return Shroud.GetVisOrigins(self)
+				.SelectMany(o => Shroud.FindVisibleTiles(self.World, o, Range))
+				.Distinct().ToArray();
+		}
+
 		public void Tick(Actor self)
 		{
 			if (lobbyShroudFogDisabled)
@@ -40,20 +47,20 @@ namespace OpenRA.Traits
 			{
 				cachedLocation = self.Location;
 
-				CPos[] visible = null;
+				var visible = VisibleTiles(self);
 				foreach (var p in self.World.Players)
 				{
 					p.Shroud.RemoveVisibility(self);
-					p.Shroud.AddVisibility(self, ref visible);
+					p.Shroud.AddVisibility(self, visible);
 				}
 			}
 		}
 
 		public void AddedToWorld(Actor self)
 		{
-			CPos[] visible = null;
+			var visible = VisibleTiles(self);
 			foreach (var p in self.World.Players)
-				p.Shroud.AddVisibility(self, ref visible);
+				p.Shroud.AddVisibility(self, visible);
 		}
 
 		public void RemovedFromWorld(Actor self)

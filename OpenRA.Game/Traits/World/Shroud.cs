@@ -77,7 +77,7 @@ namespace OpenRA.Traits
 			return GetVisOrigins(actor).SelectMany(o => FindVisibleTiles(actor.World, o, range)).Distinct().ToArray();
 		}
 
-		static IEnumerable<CPos> FindVisibleTiles(World world, CPos position, WRange radius)
+		public static IEnumerable<CPos> FindVisibleTiles(World world, CPos position, WRange radius)
 		{
 			var map = world.Map;
 			var r = (radius.Range + 1023) / 1024;
@@ -89,14 +89,10 @@ namespace OpenRA.Traits
 					yield return cell;
 		}
 
-		public void AddVisibility(Actor a, ref CPos[] visible)
+		public void AddVisibility(Actor a, CPos[] visible)
 		{
-			var rs = a.TraitOrDefault<RevealsShroud>();
-			if (rs == null || !a.Owner.IsAlliedWith(self.Owner) || rs.Range == WRange.Zero)
+			if (!a.Owner.IsAlliedWith(self.Owner))
 				return;
-
-			// Lazily generate the visible tiles, allowing the caller to re-use them if desired.
-			visible = visible ?? FindVisibleTiles(a, rs.Range);
 
 			foreach (var c in visible)
 			{
@@ -134,14 +130,10 @@ namespace OpenRA.Traits
 			Invalidate(visible);
 		}
 
-		public void AddShroudGeneration(Actor a, ref CPos[] shrouded)
+		public void AddShroudGeneration(Actor a, CPos[] shrouded)
 		{
-			var cs = a.TraitOrDefault<CreatesShroud>();
-			if (cs == null || a.Owner.IsAlliedWith(self.Owner) || cs.Range == WRange.Zero)
+			if (a.Owner.IsAlliedWith(self.Owner))
 				return;
-
-			// Lazily generate the shrouded tiles, allowing the caller to re-use them if desired.
-			shrouded = shrouded ?? FindVisibleTiles(a, cs.Range);
 
 			foreach (var c in shrouded)
 				generatedShroudCount[c]++;
@@ -177,10 +169,17 @@ namespace OpenRA.Traits
 				CPos[] shrouded = null;
 				foreach (var p in self.World.Players)
 				{
-					p.Shroud.RemoveVisibility(self);
-					p.Shroud.AddVisibility(self, ref visible);
-					p.Shroud.RemoveShroudGeneration(self);
-					p.Shroud.AddShroudGeneration(self, ref shrouded);
+					if (p.Shroud.visibility.TryGetValue(self, out visible))
+					{
+						p.Shroud.RemoveVisibility(self);
+						p.Shroud.AddVisibility(self, visible);
+					}
+
+					if (p.Shroud.generation.TryGetValue(self, out shrouded))
+					{
+						p.Shroud.RemoveShroudGeneration(self);
+						p.Shroud.AddShroudGeneration(self, shrouded);
+					}
 				}
 			}
 		}
