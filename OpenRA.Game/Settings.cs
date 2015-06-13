@@ -334,12 +334,12 @@ namespace OpenRA
 
 			var clean = SanitizedName(dirty);
 
+			if (string.IsNullOrWhiteSpace(clean) || forbiddenNames.Contains(clean) || botNames.Contains(clean))
+				clean = new PlayerSettings().Name;
+
 			// avoid UI glitches
 			if (clean.Length > 16)
 				clean = clean.Substring(0, 16);
-
-			if (string.IsNullOrWhiteSpace(clean) || forbiddenNames.Contains(clean) || botNames.Contains(clean))
-				clean = new PlayerSettings().Name;
 
 			return clean;
 		}
