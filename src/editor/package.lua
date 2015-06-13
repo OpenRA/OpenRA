@@ -465,6 +465,25 @@ function ide:AddMarker(...) return StylesAddMarker(...) end
 function ide:GetMarker(marker) return StylesGetMarker(marker) end
 function ide:RemoveMarker(marker) StylesRemoveMarker(marker) end
 
+local indicators = {}
+function ide:AddIndicator(indic, num)
+  num = num or indicators[indic]
+  if not num then -- new indicator; find the smallest available number
+    local nums = {}
+    for _, indicator in pairs(indicators) do
+      if indicator >= wxstc.wxSTC_INDIC_CONTAINER then
+        nums[indicator-wxstc.wxSTC_INDIC_CONTAINER+1] = true
+      end
+    end
+    num = #nums + wxstc.wxSTC_INDIC_CONTAINER
+    if num > wxstc.wxSTC_INDIC_MAX then return end
+  end
+  indicators[indic] = num
+  return num
+end
+function ide:GetIndicator(indic) return indicators[indic] end
+function ide:RemoveIndicator(indic) indicators[indic] = nil end
+
 -- this provides a simple stack for saving/restoring current configuration
 local configcache = {}
 function ide:AddConfig(name, files)
