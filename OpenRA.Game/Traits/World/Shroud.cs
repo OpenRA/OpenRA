@@ -72,21 +72,20 @@ namespace OpenRA.Traits
 				Hash += 1;
 		}
 
-		static CPos[] FindVisibleTiles(Actor actor, WRange range)
+		public static IEnumerable<CPos> CellsInRange(Map map, WPos pos, WRange range)
 		{
-			return GetVisOrigins(actor).SelectMany(o => FindVisibleTiles(actor.World, o, range)).Distinct().ToArray();
+			var r = (range.Range + 1023) / 1024;
+			var limit = range.RangeSquared;
+			var cell = map.CellContaining(pos);
+
+			foreach (var c in map.FindTilesInCircle(cell, r, true))
+				if ((map.CenterOfCell(c) - pos).HorizontalLengthSquared <= limit)
+					yield return c;
 		}
 
-		public static IEnumerable<CPos> FindVisibleTiles(World world, CPos position, WRange radius)
+		public static IEnumerable<CPos> CellsInRange(Map map, CPos cell, WRange range)
 		{
-			var map = world.Map;
-			var r = (radius.Range + 1023) / 1024;
-			var limit = radius.RangeSquared;
-			var pos = map.CenterOfCell(position);
-
-			foreach (var cell in map.FindTilesInCircle(position, r, true))
-				if ((map.CenterOfCell(cell) - pos).HorizontalLengthSquared <= limit)
-					yield return cell;
+			return CellsInRange(map, map.CenterOfCell(cell), range);
 		}
 
 		public void AddVisibility(Actor a, CPos[] visible)
@@ -184,6 +183,8 @@ namespace OpenRA.Traits
 			}
 		}
 
+		// TODO: Actor vis will be split into separate cases for
+		// "cells that I reveal from" and "cells that reveal me"
 		public static IEnumerable<CPos> GetVisOrigins(Actor a)
 		{
 			var ios = a.OccupiesSpace;
@@ -197,10 +198,10 @@ namespace OpenRA.Traits
 			return new[] { a.World.Map.CellContaining(a.CenterPosition) };
 		}
 
-		public void Explore(World world, CPos center, WRange range)
+		public void Explore(World world, IEnumerable<CPos> cells)
 		{
-			var changed = new List<CPos>();
-			foreach (var c in FindVisibleTiles(world, center, range))
+			var changed = new HashSet<CPos>();
+			foreach (var c in cells)
 			{
 				if (!explored[c])
 				{

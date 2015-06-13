@@ -46,12 +46,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		CPos[] Cells(Actor self)
 		{
+			var map = self.World.Map;
 			var range = Range;
 			if (range == WRange.Zero)
 				return NoCells;
 
 			return Shroud.GetVisOrigins(self)
-				.SelectMany(o => Shroud.FindVisibleTiles(self.World, o, range))
+				.SelectMany(c => Shroud.CellsInRange(map, c, range))
 				.Distinct().ToArray();
 		}
 
