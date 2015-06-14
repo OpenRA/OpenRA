@@ -162,23 +162,4 @@ namespace OpenRA.Orders
 			}
 		}
 	}
-
-	public static class SelectableExts
-	{
-		public static int SelectionPriority(this ActorInfo a)
-		{
-			var selectableInfo = a.Traits.GetOrDefault<SelectableInfo>();
-			return selectableInfo != null ? selectableInfo.Priority : int.MinValue;
-		}
-
-		public static Actor WithHighestSelectionPriority(this IEnumerable<Actor> actors)
-		{
-			return actors.MaxByOrDefault(a => a.Info.SelectionPriority());
-		}
-
-		public static FrozenActor WithHighestSelectionPriority(this IEnumerable<FrozenActor> actors)
-		{
-			return actors.MaxByOrDefault(a => a.Info.SelectionPriority());
-		}
-	}
 }

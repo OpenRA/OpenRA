@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -22,8 +21,6 @@ namespace OpenRA.Widgets
 {
 	public class WorldInteractionControllerWidget : Widget
 	{
-		static readonly Actor[] NoActors = { };
-
 		protected readonly World World;
 		readonly WorldRenderer worldRenderer;
 		int2? dragStart, dragEnd;
@@ -238,7 +235,7 @@ namespace OpenRA.Widgets
 				else if (key == Game.Settings.Keys.SelectAllUnitsKey)
 				{
 					// Select actors on the screen which belong to the current player
-					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player);
+					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player).SubsetWithHighestSelectionPriority();
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
 				}
 				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey)
@@ -275,23 +272,24 @@ namespace OpenRA.Widgets
 
 		static IEnumerable<Actor> SelectActorsOnScreen(World world, WorldRenderer wr, IEnumerable<string> selectionClasses, Player player)
 		{
-			return SelectActorsByPlayerByClass(world.ScreenMap.ActorsInBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight), selectionClasses, player);
+			return SelectActorsByOwnerAndSelectionClass(world.ScreenMap.ActorsInBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight), player, selectionClasses);
 		}
 
 		static IEnumerable<Actor> SelectActorsInWorld(World world, IEnumerable<string> selectionClasses, Player player)
 		{
-			return SelectActorsByPlayerByClass(world.ActorMap.ActorsInWorld(), selectionClasses, player);
+			return SelectActorsByOwnerAndSelectionClass(world.ActorMap.ActorsInWorld(), player, selectionClasses);
 		}
 
-		static IEnumerable<Actor> SelectActorsByPlayerByClass(IEnumerable<Actor> actors, IEnumerable<string> selectionClasses, Player player)
+		static IEnumerable<Actor> SelectActorsByOwnerAndSelectionClass(IEnumerable<Actor> actors, Player owner, IEnumerable<string> selectionClasses)
 		{
 			return actors.Where(a =>
 			{
-				if (a.Owner != player)
+				if (a.Owner != owner)
 					return false;
+
 				var s = a.TraitOrDefault<Selectable>();
 
-				// sc == null means that units, that meet all other criteria, get selected
+				// selectionClasses == null means that units, that meet all other criteria, get selected
 				return s != null && (selectionClasses == null || selectionClasses.Contains(s.Class));
 			});
 		}
@@ -304,11 +302,7 @@ namespace OpenRA.Widgets
 
 			return world.ScreenMap.ActorsInBox(a, b)
 				.Where(x => x.HasTrait<Selectable>() && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)))
-				.GroupBy(x => x.GetSelectionPriority())
-				.OrderByDescending(g => g.Key)
-				.Select(g => g.AsEnumerable())
-				.DefaultIfEmpty(NoActors)
-				.FirstOrDefault();
+				.SubsetWithHighestSelectionPriority();
 		}
 
 		bool ToggleStatusBars()
@@ -322,30 +316,6 @@ namespace OpenRA.Widgets
 			Game.Settings.Graphics.PixelDouble ^= true;
 			worldRenderer.Viewport.Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 			return true;
-		}
-	}
-
-	static class PriorityExts
-	{
-		const int PriorityRange = 30;
-
-		public static int GetSelectionPriority(this Actor a)
-		{
-			var basePriority = a.Info.Traits.Get<SelectableInfo>().Priority;
-			var lp = a.World.LocalPlayer;
-
-			if (a.Owner == lp || lp == null)
-				return basePriority;
-
-			switch (lp.Stances[a.Owner])
-			{
-				case Stance.Ally: return basePriority - PriorityRange;
-				case Stance.Neutral: return basePriority - 2 * PriorityRange;
-				case Stance.Enemy: return basePriority - 3 * PriorityRange;
-
-				default:
-					throw new InvalidOperationException();
-			}
 		}
 	}
 }
