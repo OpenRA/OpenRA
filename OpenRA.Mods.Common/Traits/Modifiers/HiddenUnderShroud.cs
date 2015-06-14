@@ -15,32 +15,37 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum VisibilityType { Footprint, CenterPosition }
+
 	[Desc("The actor stays invisible under the shroud.")]
 	public class HiddenUnderShroudInfo : ITraitInfo, IDefaultVisibilityInfo
 	{
 		[Desc("Players with these stances can always see the actor.")]
 		public readonly Stance AlwaysVisibleStances = Stance.Ally;
 
+		[Desc("Possible values are CenterPosition (reveal when the center is visible) and ",
+			"Footprint (reveal when any footprint cell is visible).")]
+		public readonly VisibilityType Type = VisibilityType.Footprint;
+
 		public virtual object Create(ActorInitializer init) { return new HiddenUnderShroud(this); }
 	}
 
 	public class HiddenUnderShroud : IDefaultVisibility, IRenderModifier
 	{
-		readonly HiddenUnderShroudInfo info;
+		protected readonly HiddenUnderShroudInfo Info;
 
 		public HiddenUnderShroud(HiddenUnderShroudInfo info)
 		{
-			this.info = info;
-		}
-
-		protected IEnumerable<CPos> VisibilityFootprint(Actor self)
-		{
-			return Shroud.GetVisOrigins(self);
+			Info = info;
 		}
 
 		protected virtual bool IsVisibleInner(Actor self, Player byPlayer)
 		{
-			return VisibilityFootprint(self).Any(byPlayer.Shroud.IsExplored);
+			if (Info.Type == VisibilityType.Footprint)
+				return self.OccupiesSpace.OccupiedCells()
+					.Any(o => byPlayer.Shroud.IsExplored(o.First));
+
+			return byPlayer.Shroud.IsExplored(self.CenterPosition);
 		}
 
 		public bool IsVisible(Actor self, Player byPlayer)
@@ -49,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			var stance = self.Owner.Stances[byPlayer];
-			return info.AlwaysVisibleStances.HasFlag(stance) || IsVisibleInner(self, byPlayer);
+			return Info.AlwaysVisibleStances.HasFlag(stance) || IsVisibleInner(self, byPlayer);
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
