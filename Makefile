@@ -44,9 +44,9 @@ COMMON_LIBS = System.dll System.Core.dll System.Data.dll System.Data.DataSetExte
 
 DEBUG = true
 ifeq ($(DEBUG), $(filter $(DEBUG),false no n off 0))
-CSCFLAGS  += -debug:pdbonly -optimize+
+CSFLAGS   += -debug:pdbonly -optimize+
 else
-CSCFLAGS  += -debug:full -optimize-
+CSFLAGS   += -debug:full -optimize-
 DEFINE    := DEBUG;$(DEFINE)
 endif
 
