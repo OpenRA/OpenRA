@@ -115,7 +115,7 @@ Background@CLIENT_TOOLTIP:
 
 Background@PRODUCTION_TOOLTIP:
 	Logic: ProductionTooltipLogic
-	Background: dialog4
+	Background: dialog3
 	Width: 200
 	Height: 65
 	Children:
@@ -172,40 +172,40 @@ Background@PRODUCTION_TOOLTIP:
 
 Background@SUPPORT_POWER_TOOLTIP:
 	Logic: SupportPowerTooltipLogic
-	Background: dialog4
+	Background: dialog3
 	Width: 200
-	Height: 29
+	Height: 36
 	Children:
 		Label@NAME:
 			X: 7
 			Y: 2
-			Height: 20
+			Height: 23
 			Font: Bold
 		Label@HOTKEY:
 			Visible: false
 			Y: 2
-			Height: 20
+			Height: 23
 			TextColor: 255,255,0
 			Font: Bold
 		Label@TIME:
-			Y: 8
+			Y: 9
 			Font: TinyBold
 			VAlign: Top
 		Label@DESC:
 			X: 7
-			Y: 22
+			Y: 28
 			Font: TinyBold
 			VAlign: Top
 
 Background@FACTION_DESCRIPTION_TOOLTIP:
 	Logic: CountryTooltipLogic
-	Background: dialog4
+	Background: dialog3
 	Children:
 		Label@HEADER:
 			X: 7
-			Y: 6
+			Y: 7
 			Width: 8
-			Height: 12
+			Height: 10
 			Font: Bold
 			VAlign: Top
 		Label@DESCRIPTION:
