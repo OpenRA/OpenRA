@@ -18,6 +18,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly WRange Range = WRange.Zero;
 
+		[Desc("Possible values are CenterPosition (measure range from the center) and ",
+			"Footprint (measure range from the footprint)")]
+		public readonly VisibilityType Type = VisibilityType.Footprint;
+
 		public virtual object Create(ActorInitializer init) { return new RevealsShroud(init.Self, this); }
 	}
 
@@ -51,9 +55,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (range == WRange.Zero)
 				return NoCells;
 
-			return Shroud.GetVisOrigins(self)
-				.SelectMany(c => Shroud.CellsInRange(map, c, range))
-				.Distinct().ToArray();
+			if (info.Type == VisibilityType.Footprint)
+				return self.OccupiesSpace.OccupiedCells()
+					.SelectMany(kv => Shroud.CellsInRange(map, kv.First, range))
+						.Distinct().ToArray();
+
+			return Shroud.CellsInRange(map, self.CenterPosition, range)
+				.ToArray();
 		}
 
 		public void Tick(Actor self)

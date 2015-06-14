@@ -183,21 +183,6 @@ namespace OpenRA.Traits
 			}
 		}
 
-		// TODO: Actor vis will be split into separate cases for
-		// "cells that I reveal from" and "cells that reveal me"
-		public static IEnumerable<CPos> GetVisOrigins(Actor a)
-		{
-			var ios = a.OccupiesSpace;
-			if (ios != null)
-			{
-				var cells = ios.OccupiedCells();
-				if (cells.Any())
-					return cells.Select(c => c.First);
-			}
-
-			return new[] { a.World.Map.CellContaining(a.CenterPosition) };
-		}
-
 		public void Explore(World world, IEnumerable<CPos> cells)
 		{
 			var changed = new HashSet<CPos>();
