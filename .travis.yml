@@ -36,6 +36,7 @@ branches:
    - /^release-.*$/
    - /^playtest-.*$/
    - /^pkgtest-.*$/
+   - /^prep-.*$/
    - bleed
 
 # Notify developers when build passed/failed.
