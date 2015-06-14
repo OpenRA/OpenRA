@@ -8,30 +8,29 @@
  */
 #endregion
 
-using System.Linq;
-
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	public class RevealsShroudInfo : ITraitInfo
+	public class CreatesShroudInfo : ITraitInfo
 	{
 		public readonly WRange Range = WRange.Zero;
 
-		public object Create(ActorInitializer init) { return new RevealsShroud(init.Self, this); }
+		public object Create(ActorInitializer init) { return new CreatesShroud(init.Self, this); }
 	}
 
-	public class RevealsShroud : ITick, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class CreatesShroud : ITick, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		readonly RevealsShroudInfo info;
+		readonly CreatesShroudInfo info;
 		readonly bool lobbyShroudFogDisabled;
 		[Sync] CPos cachedLocation;
+		[Sync] bool cachedDisabled;
 
-		public RevealsShroud(Actor self, RevealsShroudInfo info)
+		public CreatesShroud(Actor self, CreatesShroudInfo info)
 		{
 			this.info = info;
 			lobbyShroudFogDisabled = !self.World.LobbyInfo.GlobalSettings.Shroud && !self.World.LobbyInfo.GlobalSettings.Fog;
 		}
 
-		CPos[] VisibleTiles(Actor self)
+		CPos[] ShroudedTiles(Actor self)
 		{
 			return Shroud.GetVisOrigins(self)
 				.SelectMany(o => Shroud.FindVisibleTiles(self.World, o, Range))
@@ -43,32 +42,34 @@ namespace OpenRA.Traits
 			if (lobbyShroudFogDisabled)
 				return;
 
-			if (cachedLocation != self.Location)
+			var disabled = self.IsDisabled();
+			if (cachedLocation != self.Location || cachedDisabled != disabled)
 			{
 				cachedLocation = self.Location;
+				cachedDisabled = disabled;
 
-				var visible = VisibleTiles(self);
+				var shrouded = ShroudedTiles(self);
 				foreach (var p in self.World.Players)
 				{
-					p.Shroud.RemoveVisibility(self);
-					p.Shroud.AddVisibility(self, visible);
+					p.Shroud.RemoveShroudGeneration(self);
+					p.Shroud.AddShroudGeneration(self, shrouded);
 				}
 			}
 		}
 
 		public void AddedToWorld(Actor self)
 		{
-			var visible = VisibleTiles(self);
+			var shrouded = ShroudedTiles(self);
 			foreach (var p in self.World.Players)
-				p.Shroud.AddVisibility(self, visible);
+				p.Shroud.AddShroudGeneration(self, shrouded);
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
 			foreach (var p in self.World.Players)
-				p.Shroud.RemoveVisibility(self);
+				p.Shroud.RemoveShroudGeneration(self);
 		}
 
-		public WRange Range { get { return info.Range; } }
+		public WRange Range { get { return cachedDisabled ? WRange.Zero : info.Range; } }
 	}
 }
