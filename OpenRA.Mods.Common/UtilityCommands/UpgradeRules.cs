@@ -369,13 +369,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// GiveUnitCrateAction and GiveMcvCrateAction were updated to allow multiple units
 				if (engineVersion < 20140723)
 				{
-					if (depth == 2 && parentKey.Contains("GiveMcvCrateAction"))
-						if (node.Key == "Unit")
-							node.Key = "Units";
+					if (depth == 2 && !string.IsNullOrEmpty(parentKey))
+					{
+						if (parentKey.Contains("GiveMcvCrateAction"))
+							if (node.Key == "Unit")
+								node.Key = "Units";
 
-					if (depth == 2 && parentKey.Contains("GiveUnitCrateAction"))
-						if (node.Key == "Unit")
-							node.Key = "Units";
+						if (parentKey.Contains("GiveUnitCrateAction"))
+							if (node.Key == "Unit")
+								node.Key = "Units";
+					}
 				}
 
 				// Power from Building was moved out into Power and ScalePowerWithHealth traits
@@ -1098,7 +1101,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						var chPal = nodeChPal != null && !string.IsNullOrEmpty(nodeChPal.Value.Value) ? nodeChPal.Value.Value : "effect";
 						ge.Value.Nodes.Remove(nodeChPal);
 
-						if (upgrades != 0)
+						if (upgrades != 0 && nodeUpgrades != null)
 						{
 							foreach (var nodeUpgrade in nodeUpgrades.Value.Nodes)
 								nodeUpgrade.Value.Value = "rank" + (string.IsNullOrEmpty(nodeUpgrade.Value.Value) ? null : ", ") + nodeUpgrade.Value.Value;
@@ -1120,7 +1123,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Images from WithCrateBody was moved into RenderSprites
-				if (engineVersion < 20150530)
+				if (engineVersion < 20150608)
 				{
 					if (depth == 0)
 					{
