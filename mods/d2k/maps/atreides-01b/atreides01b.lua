@@ -34,7 +34,7 @@ ToHarvest["Easy"] = 2500
 ToHarvest["Normal"] = 3000
 ToHarvest["Hard"] = 3500
 
-AtreidesReinforcements = { "rifle", "rifle", "rifle" }
+AtreidesReinforcements = { "rifle", "rifle", "rifle", "rifle" }
 AtreidesEntryPath = { AtreidesWaypoint.Location, AtreidesRally.Location }
 
 Messages =
