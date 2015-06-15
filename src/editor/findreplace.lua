@@ -118,6 +118,7 @@ function findReplace:SetStatus(msg)
 end
 
 function findReplace:SetFind(text)
+  if not self.panel then self:createPanel() end
   local ctrl = self.findCtrl
   if text and ctrl then
     if ctrl:GetValue() ~= text then ctrl:ChangeValue(text) end
@@ -131,8 +132,10 @@ function findReplace:GetFind(...) return self:HasText() end
 function findReplace:GetFlags() return self.settings.flags end
 
 function findReplace:SetReplace(text)
-  if text and self.replaceCtrl then
-    self.replaceCtrl:ChangeValue(text)
+  if not self.panel then self:createPanel() end
+  local ctrl = self.replaceCtrl
+  if text and ctrl then
+    if ctrl:GetValue() ~= text then ctrl:ChangeValue(text) end
     return text
   end
   return
