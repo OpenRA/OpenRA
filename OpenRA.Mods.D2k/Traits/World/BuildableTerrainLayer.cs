@@ -64,7 +64,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			foreach (var kv in tiles)
 			{
-				if (!wr.Viewport.VisibleCells.Contains(kv.Key))
+				if (!wr.Viewport.VisibleCellsInsideBounds.Contains(kv.Key))
 					continue;
 
 				if (wr.World.ShroudObscures(kv.Key))

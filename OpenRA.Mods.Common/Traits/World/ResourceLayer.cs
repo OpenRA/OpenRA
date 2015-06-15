@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Render(WorldRenderer wr)
 		{
 			var shroudObscured = world.ShroudObscuresTest;
-			foreach (var uv in wr.Viewport.VisibleCells.MapCoords)
+			foreach (var uv in wr.Viewport.VisibleCellsInsideBounds.MapCoords)
 			{
 				if (shroudObscured(uv))
 					continue;

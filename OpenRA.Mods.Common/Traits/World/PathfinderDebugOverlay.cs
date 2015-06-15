@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 				var layer = pair.Value;
 
 				// Only render quads in viewing range:
-				foreach (var cell in wr.Viewport.VisibleCells)
+				foreach (var cell in wr.Viewport.VisibleCellsInsideBounds)
 				{
 					if (layer[cell] <= 0)
 						continue;
