@@ -325,6 +325,11 @@ namespace OpenRA.Traits
 			return explored[uv] && (generatedShroudCount[uv] == 0 || visibleCount[uv] > 0);
 		}
 
+		/// <summary>
+		/// Returns a fast exploration lookup that skips the usual validation.
+		/// The return value should not be cached across ticks, and should not
+		/// be called with cells outside the map bounds.
+		/// </summary>
 		public Func<MPos, bool> IsExploredTest
 		{
 			get
@@ -371,6 +376,11 @@ namespace OpenRA.Traits
 			return visibleCount[uv] > 0;
 		}
 
+		/// <summary>
+		/// Returns a fast visibility lookup that skips the usual validation.
+		/// The return value should not be cached across ticks, and should not
+		/// be called with cells outside the map bounds.
+		/// </summary>
 		public Func<MPos, bool> IsVisibleTest
 		{
 			get

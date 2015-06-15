@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
 		readonly Actor actor;
-		readonly Func<MPos, bool> isVisibleTest;
+		readonly Shroud shroud;
 
 		public Player Owner;
 
@@ -45,7 +45,7 @@ namespace OpenRA.Traits
 		public FrozenActor(Actor self, MPos[] footprint, Shroud shroud)
 		{
 			actor = self;
-			isVisibleTest = shroud.IsVisibleTest;
+			this.shroud = shroud;
 
 			// Consider all cells inside the map area (ignoring the current map bounds)
 			Footprint = footprint
@@ -79,6 +79,7 @@ namespace OpenRA.Traits
 		void UpdateVisibility()
 		{
 			var wasVisible = Visible;
+			var isVisibleTest = shroud.IsVisibleTest;
 
 			// We are doing the following LINQ manually for performance since this is a hot path.
 			// Visible = !Footprint.Any(isVisibleTest);
