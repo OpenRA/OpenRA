@@ -19,10 +19,6 @@ Container@INGAME_ROOT:
 				StrategicProgress@STRATEGIC_PROGRESS:
 					X: WINDOW_RIGHT/2
 					Y: 40
-				SupportPowerTimer@SUPPORT_POWER_TIMER:
-					X: 80
-					Y: 10
-					Order: Descending
 				Container@PLAYER_ROOT:
 				Container@PERF_ROOT:
 		Container@MENU_ROOT:

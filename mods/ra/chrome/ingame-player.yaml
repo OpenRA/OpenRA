@@ -25,6 +25,9 @@ Container@PLAYER_WIDGETS:
 							IgnoreMouseOver: true
 							ImageCollection: sidebar
 							ImageName: background-supportoverlay
+		SupportPowerTimer@SUPPORT_POWER_TIMER:
+			X: 80
+			Y: 10
 		Image@SIDEBAR_BACKGROUND_TOP:
 			Logic: AddRaceSuffixLogic
 			X: WINDOW_RIGHT - 250
