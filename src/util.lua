@@ -292,9 +292,9 @@ function FileWrite(file, content)
   local file = wx.wxFile(file, wx.wxFile.write)
   if not file:IsOpened() then return nil, wx.wxSysErrorMsg() end
 
-  file:Write(content, #content)
+  local ok = file:Write(content, #content) == #content
   file:Close()
-  return true
+  return ok, not ok and wx.wxSysErrorMsg() or nil
 end
 
 function FileRead(fname, length)
