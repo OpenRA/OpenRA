@@ -261,7 +261,7 @@ namespace OpenRA.Graphics
 			{
 				if (cellsDirty)
 				{
-					cells = CalculateVisibleCells(worldRenderer.World.Type != WorldType.Editor);
+					cells = CalculateVisibleCells(false);
 					cellsDirty = false;
 				}
 

@@ -24,7 +24,9 @@ namespace OpenRA.Graphics
 			theater = wr.Theater;
 			mapTiles = world.Map.MapTiles.Value;
 
-			terrain = new TerrainSpriteLayer(world, wr, theater.Sheet, BlendMode.Alpha, wr.Palette("terrain"), true);
+			terrain = new TerrainSpriteLayer(world, wr, theater.Sheet, BlendMode.Alpha,
+				wr.Palette("terrain"), wr.World.Type != WorldType.Editor);
+
 			foreach (var cell in world.Map.AllCells)
 				UpdateCell(cell);
 
