@@ -73,7 +73,11 @@ e1:
 		Facings: 8
 	prone-stand:
 		Start: 144
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 144
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 144
@@ -181,7 +185,11 @@ e2:
 		Facings: 8
 	prone-stand:
 		Start: 240
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 240
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 240
@@ -270,7 +278,11 @@ e3:
 		Facings: 8
 	prone-stand:
 		Start: 144
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 144
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 144
@@ -359,7 +371,11 @@ e4:
 		Facings: 8
 	prone-stand:
 		Start: 208
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 208
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 208
@@ -472,7 +488,11 @@ e5:
 		Facings: 8
 	prone-stand:
 		Start: 208
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 208
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 208
@@ -581,7 +601,11 @@ e6:
 		Facings: 8
 	prone-stand:
 		Start: 82
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 82
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 82
@@ -666,7 +690,11 @@ rmbo:
 		Facings: 8
 	prone-stand:
 		Start: 112
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 112
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 112
