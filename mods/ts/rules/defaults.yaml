@@ -136,6 +136,8 @@
 		Palette: terrain
 	WithCrateBody:
 		Images: crate
+	CustomSelectionSize:
+		CustomBounds: 24,24
 
 ^Wall:
 	AppearsOnRadar:

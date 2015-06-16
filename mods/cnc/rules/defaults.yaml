@@ -672,4 +672,6 @@
 		Image: crate
 	WithCrateBody:
 		XmasImages: xcratea, xcrateb, xcratec, xcrated
+	CustomSelectionSize:
+		CustomBounds: 16,16
 

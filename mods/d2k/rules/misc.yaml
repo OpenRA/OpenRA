@@ -110,6 +110,8 @@ crate:
 		Palette: effect
 	WithCrateBody:
 	Passenger:
+	CustomSelectionSize:
+		CustomBounds: 16,16
 
 mpspawn:
 	Immobile:

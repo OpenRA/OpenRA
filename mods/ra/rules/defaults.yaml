@@ -669,4 +669,6 @@
 		KilledOnImpassableTerrain: false
 		ParachuteSequence: parach
 	Passenger:
+	CustomSelectionSize:
+		CustomBounds: 16,16
 
