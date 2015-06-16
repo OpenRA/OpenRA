@@ -73,27 +73,37 @@ namespace OpenRA
 		public bool FogObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(a); }
 		public bool FogObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(p); }
 		public bool FogObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(pos); }
+		public bool FogObscures(MPos uv) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(uv); }
+
 		public bool ShroudObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(a); }
 		public bool ShroudObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(p); }
 		public bool ShroudObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(pos); }
 		public bool ShroudObscures(MPos uv) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(uv); }
 
-		public Func<MPos, bool> FogObscuresTest(CellRegion region)
+		public Func<MPos, bool> FogObscuresTest
 		{
-			var rp = RenderPlayer;
-			if (rp == null)
-				return FalsePredicate;
-			var predicate = rp.Shroud.IsVisibleTest(region);
-			return uv => !predicate(uv);
+			get
+			{
+				var rp = RenderPlayer;
+				if (rp == null)
+					return FalsePredicate;
+
+				var predicate = rp.Shroud.IsVisibleTest;
+				return uv => !predicate(uv);
+			}
 		}
 
-		public Func<MPos, bool> ShroudObscuresTest(CellRegion region)
+		public Func<MPos, bool> ShroudObscuresTest
 		{
-			var rp = RenderPlayer;
-			if (rp == null)
-				return FalsePredicate;
-			var predicate = rp.Shroud.IsExploredTest(region);
-			return uv => !predicate(uv);
+			get
+			{
+				var rp = RenderPlayer;
+				if (rp == null)
+					return FalsePredicate;
+
+				var predicate = rp.Shroud.IsExploredTest;
+				return uv => !predicate(uv);
+			}
 		}
 
 		public bool IsReplay

@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			Dirty.Clear();
 
-			foreach (var uv in wr.Viewport.VisibleCells.MapCoords)
+			foreach (var uv in wr.Viewport.AllVisibleCells.MapCoords)
 			{
 				var t = Tiles[uv];
 				if (t.Sprite != null)

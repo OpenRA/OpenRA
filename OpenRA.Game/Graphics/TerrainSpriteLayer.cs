@@ -25,6 +25,7 @@ namespace OpenRA.Graphics
 		readonly Vertex[] vertices;
 		readonly HashSet<int> dirtyRows = new HashSet<int>();
 		readonly int rowStride;
+		readonly bool restrictToBounds;
 
 		readonly WorldRenderer worldRenderer;
 		readonly Map map;
@@ -34,9 +35,10 @@ namespace OpenRA.Graphics
 
 		float paletteIndex;
 
-		public TerrainSpriteLayer(World world, WorldRenderer wr, Sheet sheet, BlendMode blendMode, PaletteReference palette)
+		public TerrainSpriteLayer(World world, WorldRenderer wr, Sheet sheet, BlendMode blendMode, PaletteReference palette, bool restrictToBounds)
 		{
 			worldRenderer = wr;
+			this.restrictToBounds = restrictToBounds;
 			this.sheet = sheet;
 			this.blendMode = blendMode;
 			paletteIndex = palette.TextureIndex;
@@ -92,7 +94,7 @@ namespace OpenRA.Graphics
 
 		public void Draw(Viewport viewport)
 		{
-			var cells = viewport.VisibleCells;
+			var cells = restrictToBounds ? viewport.VisibleCellsInsideBounds : viewport.AllVisibleCells;
 
 			// Only draw the rows that are visible.
 			var firstRow = cells.MapCoords.TopLeft.V;

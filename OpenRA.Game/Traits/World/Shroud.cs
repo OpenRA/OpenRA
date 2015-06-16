@@ -44,10 +44,8 @@ namespace OpenRA.Traits
 
 		static readonly Func<MPos, bool> TruthPredicate = _ => true;
 		readonly Func<MPos, bool> shroudEdgeTest;
-		readonly Func<MPos, bool> fastExploredTest;
-		readonly Func<MPos, bool> slowExploredTest;
-		readonly Func<MPos, bool> fastVisibleTest;
-		readonly Func<MPos, bool> slowVisibleTest;
+		readonly Func<MPos, bool> isExploredTest;
+		readonly Func<MPos, bool> isVisibleTest;
 
 		public Shroud(Actor self)
 		{
@@ -67,10 +65,8 @@ namespace OpenRA.Traits
 			fogVisibilities = Exts.Lazy(() => self.TraitsImplementing<IFogVisibilityModifier>().ToArray());
 
 			shroudEdgeTest = map.Contains;
-			fastExploredTest = IsExploredCore;
-			slowExploredTest = IsExplored;
-			fastVisibleTest = IsVisibleCore;
-			slowVisibleTest = IsVisible;
+			isExploredTest = IsExploredCore;
+			isVisibleTest = IsVisibleCore;
 		}
 
 		void Invalidate(IEnumerable<CPos> changed)
@@ -112,7 +108,7 @@ namespace OpenRA.Traits
 			var limit = radius.RangeSquared;
 			var pos = map.CenterOfCell(position);
 
-			foreach (var cell in map.FindTilesInCircle(position, r))
+			foreach (var cell in map.FindTilesInCircle(position, r, true))
 				if ((map.CenterOfCell(cell) - pos).HorizontalLengthSquared <= limit)
 					yield return cell;
 		}
@@ -129,6 +125,11 @@ namespace OpenRA.Traits
 			foreach (var c in visible)
 			{
 				var uv = c.ToMPos(map);
+
+				// Force cells outside the visible bounds invisible
+				if (!map.Contains(uv))
+					continue;
+
 				visibleCount[uv]++;
 				explored[uv] = true;
 			}
@@ -147,7 +148,11 @@ namespace OpenRA.Traits
 				return;
 
 			foreach (var c in visible)
-				visibleCount[c.ToMPos(map)]--;
+			{
+				// Cells outside the visible bounds don't increment visibleCount
+				if (map.Contains(c))
+					visibleCount[c.ToMPos(map)]--;
+			}
 
 			visibility.Remove(a);
 			Invalidate(visible);
@@ -320,18 +325,21 @@ namespace OpenRA.Traits
 			return explored[uv] && (generatedShroudCount[uv] == 0 || visibleCount[uv] > 0);
 		}
 
-		public Func<MPos, bool> IsExploredTest(CellRegion region)
+		/// <summary>
+		/// Returns a fast exploration lookup that skips the usual validation.
+		/// The return value should not be cached across ticks, and should not
+		/// be called with cells outside the map bounds.
+		/// </summary>
+		public Func<MPos, bool> IsExploredTest
 		{
-			// If the region to test extends outside the map we must use the slow test that checks the map boundary every time.
-			if (!map.CellsInsideBounds.Contains(region))
-				return slowExploredTest;
+			get
+			{
+				// If shroud isn't enabled, then we can see everything inside the map.
+				if (!ShroudEnabled)
+					return shroudEdgeTest;
 
-			// If shroud isn't enabled, then we can see everything inside the map.
-			if (!ShroudEnabled)
-				return shroudEdgeTest;
-
-			// If shroud is enabled, we can use the fast test that just does the core check.
-			return fastExploredTest;
+				return isExploredTest;
+			}
 		}
 
 		public bool IsExplored(Actor a)
@@ -368,18 +376,22 @@ namespace OpenRA.Traits
 			return visibleCount[uv] > 0;
 		}
 
-		public Func<MPos, bool> IsVisibleTest(CellRegion region)
+		/// <summary>
+		/// Returns a fast visibility lookup that skips the usual validation.
+		/// The return value should not be cached across ticks, and should not
+		/// be called with cells outside the map bounds.
+		/// </summary>
+		public Func<MPos, bool> IsVisibleTest
 		{
-			// If the region to test extends outside the map we must use the slow test that checks the map boundary every time.
-			if (!map.CellsInsideBounds.Contains(region))
-				return slowVisibleTest;
+			get
+			{
+				// If fog isn't enabled, then we can see everything.
+				if (!FogEnabled)
+					return TruthPredicate;
 
-			// If fog isn't enabled, then we can see everything.
-			if (!FogEnabled)
-				return TruthPredicate;
-
-			// If fog is enabled, we can use the fast test that just does the core check.
-			return fastVisibleTest;
+				// If fog is enabled, we can use the fast test that just does the core check.
+				return isVisibleTest;
+			}
 		}
 
 		// Actors are hidden under shroud, but not under fog by default
@@ -405,6 +417,13 @@ namespace OpenRA.Traits
 		public bool HasFogVisibility()
 		{
 			return fogVisibilities.Value.Any(f => f.HasFogVisibility(self.Owner));
+		}
+
+		public bool Contains(MPos uv)
+		{
+			// Check that uv is inside the map area. There is nothing special
+			// about explored here: any of the CellLayers would have been suitable.
+			return explored.Contains(uv);
 		}
 	}
 }

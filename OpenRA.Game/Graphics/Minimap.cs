@@ -180,8 +180,8 @@ namespace OpenRA.Graphics
 			{
 				var colors = (int*)bitmapData.Scan0;
 				var stride = bitmapData.Stride / 4;
-				var shroudObscured = world.ShroudObscuresTest(map.CellsInsideBounds);
-				var fogObscured = world.FogObscuresTest(map.CellsInsideBounds);
+				var shroudObscured = world.ShroudObscuresTest;
+				var fogObscured = world.FogObscuresTest;
 				foreach (var uv in map.CellsInsideBounds.MapCoords)
 				{
 					var bitmapXy = new int2(uv.U - b.Left, uv.V - b.Top);
