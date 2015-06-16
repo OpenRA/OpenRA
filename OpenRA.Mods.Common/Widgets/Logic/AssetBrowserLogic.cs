@@ -304,7 +304,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!GlobalFileSystem.Exists(filename))
 				return false;
 
-			if (Path.GetExtension(filename).ToLower() == ".vqa")
+			if (Path.GetExtension(filename.ToLowerInvariant()) == ".vqa")
 			{
 				player = panel.Get<VqaPlayerWidget>("PLAYER");
 				currentFilename = filename;

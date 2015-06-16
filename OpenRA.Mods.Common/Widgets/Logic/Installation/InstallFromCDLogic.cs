@@ -80,8 +80,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var extractFiles = installData.ExtractFilesFromCD;
 
+			var overwrite = installData.OverwriteFiles;
 			var installCounter = 0;
-			var installTotal = copyFiles.Length + extractFiles.Length;
+			var installTotal = copyFiles.SelectMany(x => x.Value).Count() + extractFiles.SelectMany(x => x.Value).Count();
 			var onProgress = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
 				progressBar.Percentage = installCounter * 100 / installTotal;
@@ -101,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				try
 				{
-					if (!InstallUtils.CopyFiles(source, copyFiles, dest, onProgress, onError))
+					if (!InstallUtils.CopyFiles(source, copyFiles, dest, overwrite, onProgress, onError))
 					{
 						onError("Copying files from CD failed.");
 						return;
@@ -109,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					if (!string.IsNullOrEmpty(extractPackage))
 					{
-						if (!InstallUtils.ExtractFromPackage(source, extractPackage, annotation, extractFiles, dest, onProgress, onError))
+						if (!InstallUtils.ExtractFromPackage(source, extractPackage, annotation, extractFiles, dest, overwrite, onProgress, onError))
 						{
 							onError("Extracting files from CD failed.");
 							return;

@@ -74,6 +74,9 @@ namespace OpenRA.FileFormats
 					var count = ((i & 0x70) >> 4) + 3;
 					var rpos = ((i & 0xf) << 8) + secondByte;
 
+					if (destIndex + count > dest.Length)
+						return destIndex;
+
 					ReplicatePrevious(dest, destIndex, destIndex - rpos, count);
 					destIndex += count;
 				}

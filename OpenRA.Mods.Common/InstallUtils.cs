@@ -26,13 +26,36 @@ namespace OpenRA.Mods.Common
 		public readonly string[] TestFiles = { };
 		public readonly string[] DiskTestFiles = { };
 		public readonly string PackageToExtractFromCD = null;
-		public readonly string[] ExtractFilesFromCD = { };
-		public readonly string[] CopyFilesFromCD = { };
+		public readonly bool OverwriteFiles = true;
+
+		[FieldLoader.LoadUsing("LoadFilesToExtract")]
+		public readonly Dictionary<string, string[]> ExtractFilesFromCD = new Dictionary<string, string[]>();
+
+		[FieldLoader.LoadUsing("LoadFilesToCopy")]
+		public readonly Dictionary<string, string[]> CopyFilesFromCD = new Dictionary<string, string[]>();
 
 		public readonly string PackageMirrorList = null;
 
 		public readonly string MusicPackageMirrorList = null;
 		public readonly int ShippedSoundtracks = 0;
+
+		public static Dictionary<string, string[]> LoadFilesToExtract(MiniYaml yaml)
+		{
+			var md = yaml.ToDictionary();
+
+			return md.ContainsKey("ExtractFilesFromCD")
+				? md["ExtractFilesFromCD"].ToDictionary(my => FieldLoader.GetValue<string[]>("(value)", my.Value))
+				: new Dictionary<string, string[]>();
+		}
+
+		public static Dictionary<string, string[]> LoadFilesToCopy(MiniYaml yaml)
+		{
+			var md = yaml.ToDictionary();
+
+			return md.ContainsKey("CopyFilesFromCD")
+				? md["CopyFilesFromCD"].ToDictionary(my => FieldLoader.GetValue<string[]>("(value)", my.Value))
+				: new Dictionary<string, string[]>();
+		}
 	}
 
 	public static class InstallUtils
@@ -52,11 +75,12 @@ namespace OpenRA.Mods.Common
 				.Where(v => v.DriveType == DriveType.CDRom && v.IsReady)
 				.Select(v => v.RootDirectory.FullName);
 
-			return volumes.FirstOrDefault(v => isValidDisk(v));
+			return volumes.FirstOrDefault(isValidDisk);
 		}
 
 		// TODO: The package should be mounted into its own context to avoid name collisions with installed files
-		public static bool ExtractFromPackage(string srcPath, string package, string annotation, string[] files, string destPath, Action<string> onProgress, Action<string> onError)
+		public static bool ExtractFromPackage(string srcPath, string package, string annotation, Dictionary<string, string[]> filesByDirectory,
+			string destPath, bool overwrite, Action<string> onProgress, Action<string> onError)
 		{
 			if (!Directory.Exists(destPath))
 				Directory.CreateDirectory(destPath);
@@ -66,41 +90,65 @@ namespace OpenRA.Mods.Common
 			Log.Write("debug", "Mounting {0}".F(package));
 			GlobalFileSystem.Mount(package, annotation);
 
-			foreach (var file in files)
+			foreach (var directory in filesByDirectory)
 			{
-				var dest = Path.Combine(destPath, file);
-				if (File.Exists(dest))
-					File.Delete(dest);
-				using (var sourceStream = GlobalFileSystem.Open(file))
-				using (var destStream = File.Create(dest))
+				var targetDir = directory.Key;
+
+				foreach (var file in directory.Value)
 				{
-					Log.Write("debug", "Extracting {0} to {1}".F(file, dest));
-					onProgress("Extracting " + file);
-					destStream.Write(sourceStream.ReadAllBytes());
+					var dest = Path.Combine(destPath, targetDir, file);
+					if (File.Exists(dest))
+					{
+						if (overwrite)
+							File.Delete(dest);
+						else
+						{
+							Log.Write("debug", "Skipping {0}".F(dest));
+							continue;
+						}
+					}
+
+					using (var sourceStream = GlobalFileSystem.Open(file))
+					using (var destStream = File.Create(dest))
+					{
+						Log.Write("debug", "Extracting {0} to {1}".F(file, dest));
+						onProgress("Extracting " + file);
+						destStream.Write(sourceStream.ReadAllBytes());
+					}
 				}
 			}
 
 			return true;
 		}
 
-		public static bool CopyFiles(string srcPath, string[] files, string destPath, Action<string> onProgress, Action<string> onError)
+		public static bool CopyFiles(string srcPath, Dictionary<string, string[]> files, string destPath,
+			bool overwrite, Action<string> onProgress, Action<string> onError)
 		{
-			foreach (var file in files)
+			foreach (var folder in files)
 			{
-				var fromPath = Path.Combine(srcPath, file);
-				if (!File.Exists(fromPath))
-				{
-					onError("Cannot find " + file);
-					return false;
-				}
+				var targetDir = folder.Key;
 
-				var destFile = Path.GetFileName(file).ToLowerInvariant();
-				var dest = Path.Combine(destPath, destFile);
-				if (File.Exists(dest))
-					File.Delete(dest);
-				onProgress("Copying " + destFile);
-				Log.Write("debug", "Copy {0} to {1}".F(fromPath, dest));
-				File.Copy(fromPath, dest, true);
+				foreach (var file in folder.Value)
+				{
+					var sourcePath = Path.Combine(srcPath, file);
+					if (!File.Exists(sourcePath))
+					{
+						onError("Cannot find " + file);
+						return false;
+					}
+
+					var destFile = Path.GetFileName(file);
+					var dest = Path.Combine(destPath, targetDir, destFile);
+					if (File.Exists(dest) && !overwrite)
+					{
+						Log.Write("debug", "Skipping {0}".F(dest));
+						continue;
+					}
+
+					onProgress("Copying " + destFile);
+					Log.Write("debug", "Copy {0} to {1}".F(sourcePath, dest));
+					File.Copy(sourcePath, dest, true);
+				}
 			}
 
 			return true;
