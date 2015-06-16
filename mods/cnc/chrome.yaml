@@ -512,3 +512,6 @@ order-icons: chrome.png
 	stats: 480,96,16,16
 	stats-disabled: 480,112,16,16
 	stats-active: 480,128,16,16
+
+dropdown: chrome.png
+    separator: 64,1,1,19
