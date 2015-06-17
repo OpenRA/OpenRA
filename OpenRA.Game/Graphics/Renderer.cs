@@ -32,9 +32,8 @@ namespace OpenRA.Graphics
 		internal IGraphicsDevice Device { get; private set; }
 		internal int SheetSize { get; private set; }
 		internal int TempBufferSize { get; private set; }
-		internal int TempBufferCount { get; private set; }
 
-		readonly Queue<IVertexBuffer<Vertex>> tempBuffers = new Queue<IVertexBuffer<Vertex>>();
+		readonly IVertexBuffer<Vertex> tempBuffer;
 		readonly Stack<Rectangle> scissorState = new Stack<Rectangle>();
 
 		SheetBuilder fontSheetBuilder;
@@ -57,7 +56,6 @@ namespace OpenRA.Graphics
 			if (!serverSettings.Dedicated)
 			{
 				TempBufferSize = graphicSettings.BatchSize;
-				TempBufferCount = graphicSettings.NumTempBuffers;
 				SheetSize = graphicSettings.SheetSize;
 			}
 
@@ -70,8 +68,7 @@ namespace OpenRA.Graphics
 			RgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
 			SpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
 
-			for (var i = 0; i < TempBufferCount; i++)
-				tempBuffers.Enqueue(Device.CreateVertexBuffer(TempBufferSize));
+			tempBuffer = Device.CreateVertexBuffer(TempBufferSize);
 		}
 
 		static Size GetResolution(GraphicSettings graphicsSettings)
@@ -157,6 +154,12 @@ namespace OpenRA.Graphics
 			Device.Present();
 		}
 
+		public void DrawBatch(Vertex[] vertices, int numVertices, PrimitiveType type)
+		{
+			tempBuffer.SetData(vertices, numVertices);
+			DrawBatch(tempBuffer, 0, numVertices, type);
+		}
+
 		public void DrawBatch<T>(IVertexBuffer<T> vertices,
 			int firstVertex, int numVertices, PrimitiveType type)
 			where T : struct
@@ -177,11 +180,6 @@ namespace OpenRA.Graphics
 		}
 
 		public Size Resolution { get { return Device.WindowSize; } }
-
-		internal IVertexBuffer<Vertex> GetTempVertexBuffer()
-		{
-			return tempBuffers.Peek();
-		}
 
 		public interface IBatchRenderer { void Flush();	}
 
@@ -259,9 +257,7 @@ namespace OpenRA.Graphics
 		{
 			Device.Dispose();
 			WorldVoxelRenderer.Dispose();
-			foreach (var buffer in tempBuffers)
-				buffer.Dispose();
-			tempBuffers.Clear();
+			tempBuffer.Dispose();
 			if (fontSheetBuilder != null)
 				fontSheetBuilder.Dispose();
 		}
