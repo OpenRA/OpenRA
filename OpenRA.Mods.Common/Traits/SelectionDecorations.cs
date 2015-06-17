@@ -21,7 +21,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string Palette = "chrome";
 
-		[Desc("Visual bounds for selection box. If null, it uses AutoSelectionSize.")]
+		[Desc("Visual bounds for selection box. If null, it uses AutoSelectionSize.",
+		"The first two values define the bounds' size, the optional third and fourth",
+		"values specify the position relative to the actors' center. Defaults to selectable bounds.")]
 		public readonly int[] VisualBounds = null;
 
 		[Desc("Health bar, production progress bar etc.")]
@@ -36,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int[] SelectionBoxBounds { get { return VisualBounds; } }
 	}
 
-	public class SelectionDecorations : ISelectionDecorations, IPostRenderSelection
+	public class SelectionDecorations : IPostRenderSelection
 	{
 		// depends on the order of pips in TraitsInterfaces.cs!
 		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
@@ -44,8 +46,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly SelectionDecorationsInfo Info;
 		readonly Actor self;
-
-		public ISelectionDecorationsInfo SelectionDecorationsInfo { get { return Info; } }
 
 		public SelectionDecorations(Actor self, SelectionDecorationsInfo info)
 		{
