@@ -1152,30 +1152,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20150603)
-				{
-					if (depth == 0 && node.Value.Nodes.Exists(n => n.Key == "Selectable"))
-					{
-						var selectable = node.Value.Nodes.FirstOrDefault(n => n.Key == "Selectable");
-						var selDecor = node.Value.Nodes.FirstOrDefault(n => n.Key == "SelectionDecorations");
-						var selectableNodes = selectable.Value.Nodes;
-						var bounds = selectableNodes.FirstOrDefault(n => n.Key == "Bounds");
-
-						if (bounds != null)
-						{
-							var visualBounds = FieldLoader.GetValue<string>("Bounds", bounds.Value.Value);
-							if (selDecor != null)
-								selDecor.Value.Nodes.Add(new MiniYamlNode("VisualBounds", visualBounds.ToString()));
-							else
-								node.Value.Nodes.Add(new MiniYamlNode("SelectionDecorations", "", new List<MiniYamlNode>
-								{
-									new MiniYamlNode("VisualBounds", visualBounds),
-								}));
-						}
-					}
-				}
-
-				if (engineVersion < 20150604)
+				// 'Selectable' boolean was removed from selectable trait.
+				if (engineVersion < 20150619)
 				{
 					if (depth == 1 && node.Value.Nodes.Exists(n => n.Key == "Selectable"))
 					{
@@ -1194,7 +1172,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						Console.WriteLine("If you just want to disable an inherited Selectable trait, use -Selectable instead.");
 						Console.WriteLine("For special cases like bridge huts, which need bounds to be targetable by C4 and engineers,");
 						Console.WriteLine("give them the CustomSelectionSize trait with CustomBounds.");
-						Console.WriteLine("See RA and C&C bridge huts for reference.");
+						Console.WriteLine("See RA and C&C bridge huts or crates for reference.");
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
