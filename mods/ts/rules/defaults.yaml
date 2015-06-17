@@ -212,7 +212,6 @@
 			BlueTiberium: 80
 	SelectionDecorations:
 		Palette: pips
-		VisualBounds: 14,23,-1,-9
 	Selectable:
 		Bounds: 14,23,-1,-9
 	Voiced:
@@ -500,7 +499,6 @@
 			BlueTiberium: 100
 	SelectionDecorations:
 		Palette: pips
-		VisualBounds: 26,26,0,-3
 	Selectable:
 		Bounds: 26,26,0,-3
 	TargetableUnit:

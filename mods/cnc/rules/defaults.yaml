@@ -33,7 +33,6 @@
 			Beach: 50
 		ROT: 5
 	SelectionDecorations:
-		VisualBounds: 24,24
 	Selectable:
 		Bounds: 24,24
 	TargetableUnit:
@@ -82,7 +81,6 @@
 			Beach: 70
 		ROT: 5
 	SelectionDecorations:
-		VisualBounds: 24,24
 	Selectable:
 		Bounds: 24,24
 	TargetableUnit:
@@ -128,7 +126,6 @@
 		TargetTypes: Air
 		GroundedTargetTypes: Ground
 	SelectionDecorations:
-		VisualBounds: 24,24
 	Selectable:
 		Bounds: 24,24
 	Helicopter:
@@ -183,7 +180,6 @@
 				PathingCost: 300
 			Beach: 80
 	SelectionDecorations:
-		VisualBounds: 12,17,0,-6
 	Selectable:
 		Bounds: 12,17,0,-6
 	TargetableUnit:
@@ -305,7 +301,6 @@
 			BlueTiberium: 70
 			Beach: 80
 	SelectionDecorations:
-		VisualBounds: 24,24
 	Selectable:
 		Bounds: 24,24
 	TargetableUnit:
@@ -337,7 +332,6 @@
 	AppearsOnRadar:
 		UseLocation: yes
 	SelectionDecorations:
-		VisualBounds: 24,24
 	Selectable:
 		Bounds: 24,24
 	TargetableUnit:

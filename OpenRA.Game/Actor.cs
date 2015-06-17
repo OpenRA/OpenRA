@@ -115,11 +115,13 @@ namespace OpenRA
 			visualBounds = Exts.Lazy(() =>
 			{
 				var sd = Info.Traits.GetOrDefault<ISelectionDecorationsInfo>();
-				var size = (sd != null && sd.SelectionBoxBounds != null) ? new int2(sd.SelectionBoxBounds[0], sd.SelectionBoxBounds[1]) :
-					TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
+				if (sd == null || sd.SelectionBoxBounds == null)
+					return bounds.Value;
+
+				var size = new int2(sd.SelectionBoxBounds[0], sd.SelectionBoxBounds[1]);
 
 				var offset = -size / 2;
-				if (sd != null && sd.SelectionBoxBounds != null && sd.SelectionBoxBounds.Length > 2)
+				if (sd.SelectionBoxBounds.Length > 2)
 					offset += new int2(sd.SelectionBoxBounds[2], sd.SelectionBoxBounds[3]);
 
 				return new Rectangle(offset.X, offset.Y, size.X, size.Y);

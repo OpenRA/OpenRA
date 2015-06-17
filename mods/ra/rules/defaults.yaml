@@ -181,7 +181,6 @@
 			Gems: 80
 			Beach: 80
 	SelectionDecorations:
-		VisualBounds: 12,18,0,-8
 	Selectable:
 		Bounds: 12,18,0,-8
 	TargetableUnit:
