@@ -87,10 +87,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				installButton.IsDisabled = () => world == null || world.Type != WorldType.Shellmap;
 				var args = new string[] { "Install.Music=true" };
 				installButton.OnClick = () =>
-				{
-					Game.ModData.LoadScreen.Display(); // HACK: prevent a flicker when transitioning to the installation dialog
-					Game.InitializeMod(Game.Settings.Game.Mod, new Arguments(args));
-				};
+					Game.RunAfterTick(() =>
+						Game.InitializeMod(Game.Settings.Game.Mod, new Arguments(args)));
 
 				var installData = Game.ModData.Manifest.Get<ContentInstaller>();
 				installButton.IsVisible = () => modRules.InstalledMusic.ToArray().Length <= installData.ShippedSoundtracks;
