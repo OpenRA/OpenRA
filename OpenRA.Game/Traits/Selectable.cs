@@ -8,12 +8,9 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-
 namespace OpenRA.Traits
 {
-	[Desc("This actor is selectable. Defines bounds of selectable area and selection priority.")]
+	[Desc("This actor is selectable. Defines bounds of selectable area, selection class and selection priority.")]
 	public class SelectableInfo : ITraitInfo
 	{
 		public readonly int Priority = 10;
@@ -32,11 +29,8 @@ namespace OpenRA.Traits
 	{
 		public readonly string Class = null;
 
-		public readonly SelectableInfo Info;
-
 		public Selectable(Actor self, SelectableInfo info)
 		{
-			Info = info;
 			Class = string.IsNullOrEmpty(info.Class) ? self.Info.Name : info.Class;
 		}
 	}
