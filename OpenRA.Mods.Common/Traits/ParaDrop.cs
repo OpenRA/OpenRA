@@ -10,7 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -82,7 +82,11 @@ namespace OpenRA.Mods.Common.Traits
 			droppedAt.Add(self.Location);
 
 			var a = cargo.Unload(self);
-			self.World.AddFrameEndTask(w => w.Add(new Parachute(a, self.CenterPosition)));
+			self.World.AddFrameEndTask(w =>
+			{
+				w.Add(a);
+				a.QueueActivity(new Parachute(a, self.CenterPosition));
+			});
 			Sound.Play(info.ChuteSound, self.CenterPosition);
 		}
 

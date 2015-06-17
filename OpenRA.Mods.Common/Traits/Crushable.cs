@@ -64,6 +64,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CrushableBy(string[] crushClasses, Player crushOwner)
 		{
+			// Only make actor crushable if it is on the ground
+			if (self.CenterPosition.Z != 0)
+				return false;
+
 			if (!info.CrushedByFriendlies && crushOwner.IsAlliedWith(self.Owner))
 				return false;
 

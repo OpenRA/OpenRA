@@ -1524,6 +1524,89 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150714)
+				{
+					// Move certain properties from Parachutable to new WithParachute trait
+					// Add dependency traits to actors implementing Parachutable
+					// Make otherwise targetable parachuting actors untargetable
+					var par = node.Value.Nodes.FirstOrDefault(n => n.Key == "Parachutable");
+					if (par != null)
+					{
+						var withParachute = new MiniYamlNode("WithParachute", null, new List<MiniYamlNode>
+						{
+							new MiniYamlNode("UpgradeTypes", "parachute"),
+							new MiniYamlNode("UpgradeMinEnabledLevel", "1")
+						});
+
+						var copyProp = new Action<string, string, string>((srcName, dstName, defValue) =>
+						{
+							var prop = par.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith(srcName));
+							if (prop != null && prop.Value.Value != defValue)
+								withParachute.Value.Nodes.Add(new MiniYamlNode(dstName, prop.Value.Value));
+						});
+
+						var moveProp = new Action<string, string, string>((srcName, dstName, defValue) =>
+						{
+							copyProp(srcName, dstName, defValue);
+							par.Value.Nodes.RemoveAll(n => n.Key.StartsWith(srcName));
+						});
+
+						if (par.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("ShadowSequence")) != null)
+						{
+							moveProp("ShadowSequence", "ShadowImage", null);
+							copyProp("ParachuteIdleSequence", "ShadowSequence", null);
+						}
+
+						moveProp("ParachuteSequence", "Image", null);
+						moveProp("ParachuteIdleSequence", "Sequence", null);
+
+						moveProp("ParachuteOpenSequence", "OpeningSequence", null);
+
+						moveProp("ParachutePalette", "Palette", "player");
+						moveProp("ShadowPalette", "ShadowPalette", "player");
+
+						moveProp("ParachuteOffset", "Offset", "player");
+
+						par.Value.Nodes.RemoveAll(n => n.Key.StartsWith("ParachuteShadowPalette"));
+
+						node.Value.Nodes.Add(withParachute);
+
+						var otherNodes = nodes;
+						var inherits = new Func<string, bool>(traitName => node.Value.Nodes.Where(n => n.Key.StartsWith("Inherits"))
+								.Any(inh => otherNodes.First(n => n.Key.StartsWith(inh.Value.Value)).Value.Nodes.Any(n => n.Key.StartsWith(traitName))));
+
+						// For actors that have or inherit a TargetableUnit, disable the trait while parachuting
+						var tu = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("TargetableUnit"));
+						if (tu != null)
+						{
+							tu.Value.Nodes.Add(new MiniYamlNode("UpgradeTypes", "parachute"));
+							tu.Value.Nodes.Add(new MiniYamlNode("UpgradeMaxEnabledLevel", "0"));
+						}
+						else
+						{
+							if (inherits("TargetableUnit"))
+							{
+								node.Value.Nodes.Add(new MiniYamlNode("TargetableUnit", null, new List<MiniYamlNode>
+								{
+									new MiniYamlNode("UpgradeTypes", "parachute"),
+									new MiniYamlNode("UpgradeMaxEnabledLevel", "0")
+								}));
+								break;
+							}
+						}
+
+						var has = new Func<string, bool>(traitName => node.Value.Nodes.Any(n => n.Key.StartsWith(traitName)));
+
+						// If actor does not have nor inherits an UpgradeManager, add one
+						if (!has("UpgradeManager") && !inherits("UpgradeManager"))
+								node.Value.Nodes.Add(new MiniYamlNode("UpgradeManager", ""));
+
+						// If actor does not have nor inherits a BodyOrientation, add one
+						if (!has("BodyOrientation") && !inherits("BodyOrientation"))
+							node.Value.Nodes.Add(new MiniYamlNode("BodyOrientation", ""));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

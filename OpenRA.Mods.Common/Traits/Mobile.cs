@@ -308,6 +308,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Sync] public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
 
+		// Sets only the location (fromCell, toCell, FromSubCell, ToSubCell)
 		public void SetLocation(CPos from, SubCell fromSub, CPos to, SubCell toSub)
 		{
 			if (FromCell == from && ToCell == to && FromSubCell == fromSub && ToSubCell == toSub)
@@ -368,6 +369,7 @@ namespace OpenRA.Mods.Common.Traits
 			return preferred;
 		}
 
+		// Sets the location (fromCell, toCell, FromSubCell, ToSubCell) and visual position (CenterPosition)
 		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
 			subCell = GetValidSubCell(subCell);
@@ -376,14 +378,16 @@ namespace OpenRA.Mods.Common.Traits
 			FinishedMoving(self);
 		}
 
+		// Sets the location (fromCell, toCell, FromSubCell, ToSubCell) and visual position (CenterPosition)
 		public void SetPosition(Actor self, WPos pos)
 		{
 			var cell = self.World.Map.CellContaining(pos);
 			SetLocation(cell, FromSubCell, cell, FromSubCell);
-			SetVisualPosition(self, pos);
+			SetVisualPosition(self, self.World.Map.CenterOfSubCell(cell, FromSubCell) + new WVec(0, 0, pos.Z));
 			FinishedMoving(self);
 		}
 
+		// Sets only the visual position (CenterPosition)
 		public void SetVisualPosition(Actor self, WPos pos)
 		{
 			CenterPosition = pos;
@@ -548,6 +552,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void EnteringCell(Actor self)
 		{
+			// Only make actor crush if it is on the ground
+			if (self.CenterPosition.Z != 0)
+				return;
+
 			var crushables = self.World.ActorMap.GetUnitsAt(ToCell).Where(a => a != self)
 				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(b => b.CrushableBy(Info.Crushes, self.Owner)));
 			foreach (var crushable in crushables)
@@ -556,6 +564,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void FinishedMoving(Actor self)
 		{
+			// Only make actor crush if it is on the ground
+			if (self.CenterPosition.Z != 0)
+				return;
+
 			var crushables = self.World.ActorMap.GetUnitsAt(ToCell).Where(a => a != self)
 				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(c => c.CrushableBy(Info.Crushes, self.Owner)));
 			foreach (var crushable in crushables)

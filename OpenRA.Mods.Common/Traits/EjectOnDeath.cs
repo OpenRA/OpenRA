@@ -8,7 +8,7 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -18,10 +18,19 @@ namespace OpenRA.Mods.Common.Traits
 	public class EjectOnDeathInfo : ITraitInfo
 	{
 		[ActorReference]
+		[Desc("Name of the unit to eject. This actor type needs to have the Parachutable trait defined.")]
 		public readonly string PilotActor = "E1";
+
+		[Desc("Probability that the aircraft's pilot gets ejected once the aircraft is destroyed.")]
 		public readonly int SuccessRate = 50;
+
+		[Desc("Sound to play when ejecting the pilot from the aircraft.")]
 		public readonly string ChuteSound = "chute1.aud";
+
+		[Desc("Can a destroyed aircraft eject its pilot while it has not yet fallen to ground level?")]
 		public readonly bool EjectInAir = false;
+
+		[Desc("Can a destroyed aircraft eject its pilot when it falls to ground level?")]
 		public readonly bool EjectOnGround = false;
 
 		[Desc("Risks stuck units when they don't have the Paratrooper trait.")]
@@ -66,7 +75,11 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (cp.Z > 0)
 				{
-					self.World.AddFrameEndTask(w => w.Add(new Parachute(pilot, cp)));
+					self.World.AddFrameEndTask(w =>
+					{
+						w.Add(pilot);
+						pilot.QueueActivity(new Parachute(pilot, cp));
+					});
 					Sound.Play(info.ChuteSound, cp);
 				}
 				else
