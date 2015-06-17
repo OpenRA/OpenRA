@@ -13,9 +13,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Special case trait for invisible, unselectable actors like bridge huts.",
-	"Gives actor targetable area for special cases like C4 and engineer repair.",
-	"This trait conflicts with AutoSelectionSize so you cannot use both, and doesn't support custom offsets.")]
+	[Desc("Special case trait for unselectable actors that need to define targetable area bounds",
+	"for special cases like C4, engineer repair and tooltips.",
+	"Examples: bridge huts and crates.")]
 	public class CustomSelectionSizeInfo : ITraitInfo
 	{
 		public readonly int[] CustomBounds = null;
