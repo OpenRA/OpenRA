@@ -440,7 +440,7 @@
     <Compile Include="Traits\RepairsBridges.cs" />
     <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Traits\StoresResources.cs" />
-    <Compile Include="Traits\SelectionDecorations.cs" />
+    <Compile Include="Traits\Render\SelectionDecorations.cs" />
     <Compile Include="Traits\SelfHealing.cs" />
     <Compile Include="Traits\Sellable.cs" />
     <Compile Include="Traits\ShakeOnDeath.cs" />
