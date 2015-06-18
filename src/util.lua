@@ -297,6 +297,8 @@ function FileWrite(file, content)
   return ok, not ok and wx.wxSysErrorMsg() or nil
 end
 
+function FileSize(fname) return wx.wxFileExists(fname) and wx.wxFileSize(fname) or nil end
+
 function FileRead(fname, length)
   -- on OSX "Open" dialog allows to open applications, which are folders
   if wx.wxDirExists(fname) then return nil, "Can't read directory as file." end
