@@ -132,9 +132,9 @@ Actors:
 	Actor9: apc
 		Location: 47,17
 		Owner: Multi9
-	Actor10: tc02
-		Location: 22,43
+	Actor32: t08
 		Owner: Neutral
+		Location: 21,43
 	Actor11: v20
 		Location: 44,38
 		Owner: Neutral
@@ -153,18 +153,18 @@ Actors:
 	Actor16: v27
 		Location: 22,28
 		Owner: Neutral
-	Actor17: t02
-		Location: 26,26
+	Actor31: t18
 		Owner: Neutral
-	Actor18: t07
 		Location: 26,27
+	Actor35: rock7
 		Owner: Neutral
-	Actor19: tc04
-		Location: 25,16
+		Location: 28,16
+	Actor34: t04
 		Owner: Neutral
-	Actor20: tc03
 		Location: 26,17
+	Actor33: rock3
 		Owner: Neutral
+		Location: 26,17
 	Actor21: mpspawn
 		Location: 40,18
 		Owner: Neutral
