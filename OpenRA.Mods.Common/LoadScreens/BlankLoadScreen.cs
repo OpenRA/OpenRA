@@ -48,7 +48,8 @@ namespace OpenRA.Mods.Common.LoadScreens
 			{
 				var widgetArgs = new WidgetArgs()
 				{
-					{ "continueLoading", () => Game.InitializeMod(Game.Settings.Game.Mod, args) },
+					{ "continueLoading", () => Game.RunAfterTick(() =>
+						Game.InitializeMod(Game.Settings.Game.Mod, args)) },
 				};
 
 				if (installData.BackgroundWidget != null)
