@@ -70,6 +70,7 @@ HARV:
 			Beach: 70
 			Tiberium: 80
 			BlueTiberium: 80
+			Veins: 80
 	Health:
 		HP: 1000
 	SelfHealing:

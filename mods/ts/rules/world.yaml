@@ -41,6 +41,17 @@
 		AllowedTerrainTypes: Clear, Rough, DirtRoad
 		AllowUnderActors: true
 		TerrainType: BlueTiberium
+	ResourceType@Veins:
+		ResourceType: 3
+		Palette: player
+		Variants: veins
+		MaxDensity: 1
+		ValuePerUnit: 0
+		Name: Veins
+		PipColor: Red
+		AllowedTerrainTypes: Clear
+		AllowUnderActors: true
+		TerrainType: Veins
 	TerrainGeometryOverlay:
 
 World:

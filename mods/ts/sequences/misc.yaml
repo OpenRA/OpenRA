@@ -256,6 +256,10 @@ resources:
 	tib18: tib18
 	tib19: tib19
 	tib20: tib20
+	veins: veins
+		Length: 1
+		Start: 52
+		ShadowStart: -1
 
 shroud:
 	Defaults:

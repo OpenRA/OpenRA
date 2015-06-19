@@ -94,6 +94,20 @@ TREE24:
 TREE25:
 	Inherits: ^Tree
 
+VEINHOLEDUMMY:
+	HiddenUnderShroud:
+	RadarColorFromTerrain:
+		Terrain: Veins
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	BodyOrientation:
+
 VEINHOLE:
-	Inherits: ^Veinhole
+	Inherits: VEINHOLEDUMMY
+	AppearsOnRadar:
+	Tooltip:
+		Name: Veinhole
+	RenderBuilding:
+		Palette: player
 

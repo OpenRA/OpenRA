@@ -57,6 +57,7 @@ HVR:
 			Water: 100
 			Tiberium: 100
 			BlueTiberium: 100
+			Veins: 100
 	Health:
 		HP: 230
 	Armor:
