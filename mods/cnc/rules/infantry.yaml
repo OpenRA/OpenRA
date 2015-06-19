@@ -1,5 +1,5 @@
 E1:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -15,14 +15,12 @@ E1:
 	Armament:
 		Weapon: M16
 	AttackFrontal:
-	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2,idle3,idle4
-		StandSequences: stand, stand2
 		AttackSequence: shoot
 
 E2:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 160
 	Tooltip:
@@ -41,18 +39,15 @@ E2:
 		LocalOffset: 0,0,427
 		FireDelay: 15
 	AttackFrontal:
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: throw
-		IdleSequences: idle1,idle2
-		StandSequences: stand, stand2
 	Explodes:
 		Weapon: GrenadierExplode
 		EmptyWeapon: GrenadierExplode
 		Chance: 50
 
 E3:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -72,14 +67,11 @@ E3:
 		LocalOffset: 256,43,341
 		FireDelay: 5
 	AttackFrontal:
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
-		StandSequences: stand, stand2
 
 E4:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -102,14 +94,11 @@ E4:
 	AttackFrontal:
 	WithMuzzleFlash:
 		SplitFacings: true
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
-		StandSequences: stand, stand2
 
 E5:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -138,14 +127,11 @@ E5:
 	WithMuzzleFlash:
 		SplitFacings: true
 	-PoisonedByTiberium:
-	TakeCover:
 	WithInfantryBody:
-		IdleSequences: idle1,idle2
-		StandSequences: stand, stand2
 		AttackSequence: shoot
 
 E6:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -165,14 +151,10 @@ E6:
 	Captures:
 		CaptureTypes: building, husk
 	-AutoTarget:
-	TakeCover:
-	WithInfantryBody:
-		IdleSequences: idle1,idle2
-		StandSequences: stand, stand2
 	-GainsExperience:
 
 RMBO:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -205,19 +187,16 @@ RMBO:
 		Voice: Attack
 	AttackMove:
 		Voice: Attack
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
 		IdleSequences: idle1,idle2,idle3
-		StandSequences: stand, stand2
 	AnnounceOnBuild:
 	AnnounceOnKill:
 	Voiced:
 		VoiceSet: CommandoVoice
 
 PVICE:
-	Inherits: VICE
-	-AttackWander:
+	Inherits: ^Viceroid
 	Mobile:
 		Crushes: crate
 	Buildable:
@@ -225,8 +204,6 @@ PVICE:
 		BuildPaletteOrder: 40
 	Tooltip:
 		Description: Mutated abomination that spits liquid tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
-	DrawLineToTarget:
-	SelectionDecorations:
 	ActorLostNotification:
 
 STEG:

@@ -420,65 +420,9 @@ C10:
 		VoiceSet: CivilianFemaleVoice
 
 VICE:
-	AppearsOnRadar:
-	Health:
-		Radius: 427
-		HP: 300
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 6c0
-	Mobile:
-		Speed: 71
-		TerrainSpeeds:
-			Clear: 70
-			Rough: 60
-			Road: 70
-			Tiberium: 100
-			BlueTiberium: 100
-			Beach: 60
-		Voice: Move
-	SelectionDecorations:
-		VisualBounds: 24,24
-	Selectable:
-		Bounds: 24,24
-	TargetableUnit:
-		TargetTypes: Ground
-	AutoTarget:
-		ScanRadius: 5
-	AttackMove:
-		Voice: Attack
-	HiddenUnderFog:
-	GivesExperience:
-	Valued:
-		Cost: 1000
-	Tooltip:
-		Name: Visceroid
-	Armament:
-		Weapon: Chemspray
-		LocalOffset: 384,0,0
-		MuzzleSequence: muzzle
-		MuzzleSplitFacings: 8
-	AttackFrontal:
-		Voice: Attack
+	Inherits: ^Viceroid
 	AttackWander:
 		WanderMoveRadius: 2
 		MinMoveDelayInTicks: 25
 		MaxMoveDelayInTicks: 45
-	WithFacingSpriteBody:
-	WithMuzzleFlash:
-		SplitFacings: true
-	CombatDebugOverlay:
-	Guard:
-		Voice: Move
-	Guardable:
-	UpdatesPlayerStatistics:
-	BodyOrientation:
-		QuantizedFacings: 8
-	PoisonedByTiberium:
-		Weapon: Heal
-	Voiced:
-		VoiceSet: DinoVoice
-	AutoSelectionSize:
-	RenderSprites:
 
