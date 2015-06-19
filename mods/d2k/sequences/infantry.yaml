@@ -15,7 +15,7 @@ rifle:
 		Facings: -8
 		Transpose: true
 	prone-stand: DATA.R8
-		Start: 302
+		Start: 310
 		Facings: -8
 		Transpose: true
 	prone-run: DATA.R8
