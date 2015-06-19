@@ -162,6 +162,8 @@ C17:
 		HP: 25
 	Armor:
 		Type: Heavy
+	HiddenUnderFog:
+		AlwaysVisibleStances: None
 	WithFacingSpriteBody:
 	Cargo:
 		MaxWeight: 10

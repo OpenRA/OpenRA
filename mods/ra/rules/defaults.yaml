@@ -604,6 +604,7 @@
 	-TransformOnCapture:
 
 ^Bridge:
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Bridge
 	TargetableBuilding:
@@ -653,6 +654,7 @@
 		RequireTilesets: DESERT
 
 ^Crate:
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Crate
 		GenericName: Crate

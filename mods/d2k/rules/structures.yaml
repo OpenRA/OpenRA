@@ -1,4 +1,5 @@
 ^concrete:
+	AlwaysVisible:
 	Building:
 		Adjacent: 4
 		TerrainTypes: Rock
@@ -493,6 +494,7 @@ starport:
 		VisualBounds: 96,64
 
 wall:
+	HiddenUnderShroud:
 	Buildable:
 		Queue: Building
 		Prerequisites: barracks

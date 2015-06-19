@@ -31,6 +31,7 @@ CRATE:
 		Units: mcv
 
 mpspawn:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	RenderEditorOnly:
@@ -38,6 +39,7 @@ mpspawn:
 	BodyOrientation:
 
 waypoint:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	RenderEditorOnly:
@@ -51,6 +53,7 @@ waypoint:
 		Palette: colorpicker
 
 CAMERA:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	Health:
@@ -60,6 +63,7 @@ CAMERA:
 	BodyOrientation:
 
 CAMERA.small:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	Health:

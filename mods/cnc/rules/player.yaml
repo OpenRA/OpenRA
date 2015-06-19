@@ -1,4 +1,5 @@
 Player:
+	AlwaysVisible:
 	PlaceBuilding:
 	TechTree:
 	SupportPowerManager:

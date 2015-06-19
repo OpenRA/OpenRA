@@ -49,6 +49,8 @@ namespace OpenRA
 		public Shroud Shroud;
 		public World World { get; private set; }
 
+		readonly IFogVisibilityModifier[] fogVisibilities;
+
 		CountryInfo ChooseCountry(World world, string name, bool requireSelectable = true)
 		{
 			var selectableCountries = world.Map.Rules.Actors["world"].Traits
@@ -113,6 +115,9 @@ namespace OpenRA
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
 			Shroud = PlayerActor.Trait<Shroud>();
 
+			fogVisibilities = PlayerActor.TraitsImplementing<IFogVisibilityModifier>()
+				.ToArray();
+
 			// Enable the bot logic on the host
 			IsBot = botType != null;
 			if (IsBot && Game.IsHost)
@@ -148,6 +153,27 @@ namespace OpenRA
 			foreach (var nsc in World.ActorsWithTrait<INotifyStanceChanged>())
 				nsc.Trait.StanceChanged(nsc.Actor, this, target, oldStance, s);
 		}
+
+		public bool CanViewActor(Actor a)
+		{
+			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, this)))
+				return false;
+
+			return a.Trait<IDefaultVisibility>().IsVisible(a, this);
+		}
+
+		public bool CanTargetActor(Actor a)
+		{
+			if (HasFogVisibility)
+				return true;
+
+			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, this)))
+				return false;
+
+			return a.Trait<IDefaultVisibility>().IsVisible(a, this);
+		}
+
+		public bool HasFogVisibility { get { return fogVisibilities.Any(f => f.HasFogVisibility(this)); } }
 
 		#region Scripting interface
 

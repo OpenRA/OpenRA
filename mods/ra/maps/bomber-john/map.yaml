@@ -879,6 +879,7 @@ Rules:
 		Power:
 			Amount: 0
 	MINVV:
+		HiddenUnderFog:
 		Building:
 			Adjacent: 99
 			TerrainTypes: Clear,Road

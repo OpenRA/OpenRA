@@ -1059,11 +1059,13 @@ Rules:
 			GenericStancePrefix: false
 			ShowOwnerRow: false
 	SovietSquad:
+		AlwaysVisible:
 		ParatroopersPower:
 			DropItems: E1,E1,E2,E4,E4
 			QuantizedFacings: 8
 			DisplayBeacon: false
 	SovietPlatoonUnits:
+		AlwaysVisible:
 		ParatroopersPower:
 			DropItems: E1,E1,E2,E4,E4,E1,E1,E2,E4,E4
 			QuantizedFacings: 8

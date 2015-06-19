@@ -167,6 +167,8 @@ namespace OpenRA.Traits
 		IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self);
 	}
 
+	public interface IDefaultVisibilityInfo { }
+	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IFogVisibilityModifier { bool HasFogVisibility(Player byPlayer); }
 

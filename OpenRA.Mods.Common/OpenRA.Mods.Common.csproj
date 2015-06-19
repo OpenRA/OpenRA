@@ -676,6 +676,9 @@
     <Compile Include="Widgets\EditorViewportControllerWidget.cs" />
     <Compile Include="Traits\World\PaletteFromPaletteWithAlpha.cs" />
     <Compile Include="Traits\World\PaletteFromPlayerPaletteWithAlpha.cs" />
+    <Compile Include="Traits\Modifiers\HiddenUnderShroud.cs" />
+    <Compile Include="Lint\CheckDefaultVisibility.cs" />
+    <Compile Include="Traits\Modifiers\AlwaysVisible.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

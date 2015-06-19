@@ -1622,6 +1622,7 @@ Rules:
 		Tooltip:
 			ShowOwnerRow: false
 	Camera.Truk:
+		AlwaysVisible:
 		Mobile:
 			TerrainSpeeds:
 		RevealsShroud:
@@ -1674,6 +1675,7 @@ Rules:
 			CloakDelay: 0
 			Palette:
 	CloakUpgrade:
+		AlwaysVisible:
 		Immobile:
 			OccupiesSpace: false
 		BodyOrientation:

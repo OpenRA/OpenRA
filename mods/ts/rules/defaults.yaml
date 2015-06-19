@@ -127,6 +127,7 @@
 		RequireTilesets: TEMPERAT
 
 ^Crate:
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Crate
 	Crate:
@@ -140,6 +141,7 @@
 		CustomBounds: 24,24
 
 ^Wall:
+	HiddenUnderShroud:
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
@@ -184,6 +186,7 @@
 	MustBeDestroyed:
 
 ^BuildingPlug:
+	AlwaysVisible:
 	Building:
 		BuildSounds: place2.aud
 	KillsSelf:
@@ -534,6 +537,7 @@
 	WithActiveAnimation:
 
 ^Tree:
+	HiddenUnderShroud:
 	RenderBuilding:
 		Palette: terrain
 	Building:
@@ -545,6 +549,7 @@
 		Name: Tree
 
 ^Rock:
+	HiddenUnderShroud:
 	RenderBuilding:
 		Palette: terrain
 	Building:
@@ -556,6 +561,7 @@
 		Name: Rock
 
 ^Veinhole:
+	HiddenUnderShroud:
 	RadarColorFromTerrain:
 		Terrain: Tiberium
 	RenderBuilding:

@@ -642,6 +642,7 @@
 	-TargetableUnit:
 
 ^Bridge:
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Bridge
 	TargetableBuilding:
@@ -656,6 +657,7 @@
 	ScriptTriggers:
 
 ^Crate:
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Crate
 		GenericName: Crate

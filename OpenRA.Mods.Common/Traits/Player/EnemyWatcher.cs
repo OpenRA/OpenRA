@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				// The actor is not currently visible
-				if (!self.Owner.Shroud.IsVisible(actor.Actor))
+				if (!self.Owner.CanViewActor(actor.Actor))
 					continue;
 
 				visibleActorIds.Add(actor.Actor.ActorID);

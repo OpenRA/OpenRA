@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Traits
 		public void Infiltrated(Actor self, Actor infiltrator)
 		{
 			infiltrator.Owner.Shroud.Explore(self.Owner.Shroud);
-			if (!self.Owner.Shroud.HasFogVisibility())
+			if (!self.Owner.HasFogVisibility)
 				self.Owner.Shroud.ResetExploration();
 		}
 	}

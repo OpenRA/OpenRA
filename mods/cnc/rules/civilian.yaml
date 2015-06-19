@@ -367,6 +367,7 @@ BRIDGE4:
 		SpawnOffset: 3,2
 
 BRIDGEHUT:
+	HiddenUnderShroud:
 	Building:
 		Footprint: __ __
 		Dimensions: 2,2
