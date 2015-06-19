@@ -56,14 +56,14 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class WithTurret : UpgradableTrait<WithTurretInfo>, ITick
+	public class WithTurret : UpgradableTrait<WithTurretInfo>, ITick, INotifyDamageStateChanged
 	{
 		RenderSprites rs;
 		IBodyOrientation body;
 		AttackBase ab;
 		Turreted t;
 		Armament[] arms;
-		Animation anim;
+		public readonly Animation DefaultAnimation;
 
 		public WithTurret(Actor self, WithTurretInfo info)
 			: base(info)
@@ -77,13 +77,13 @@ namespace OpenRA.Mods.Common.Traits
 			arms = self.TraitsImplementing<Armament>()
 				.Where(w => w.Info.Turret == info.Turret).ToArray();
 
-			anim = new Animation(self.World, rs.GetImage(self), () => t.TurretFacing);
-			anim.Play(info.Sequence);
+			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => t.TurretFacing);
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, info.Sequence));
 			rs.Add(new AnimationWithOffset(
-				anim, () => TurretOffset(self), () => IsTraitDisabled, () => false, p => ZOffsetFromCenter(self, p, 1)));
+				DefaultAnimation, () => TurretOffset(self), () => IsTraitDisabled, () => false, p => ZOffsetFromCenter(self, p, 1)));
 
 			// Restrict turret facings to match the sprite
-			t.QuantizedFacings = anim.CurrentSequence.Facings;
+			t.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 
 		WVec TurretOffset(Actor self)
@@ -98,13 +98,24 @@ namespace OpenRA.Mods.Common.Traits
 			return t.Position(self) + body.LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
 		}
 
+		public string NormalizeSequence(Actor self, string sequence)
+		{
+			return RenderSprites.NormalizeSequence(DefaultAnimation, self.GetDamageState(), sequence);
+		}
+
+		public virtual void DamageStateChanged(Actor self, AttackInfo e)
+		{
+			if (DefaultAnimation.CurrentSequence != null)
+				DefaultAnimation.ReplaceAnim(NormalizeSequence(self, DefaultAnimation.CurrentSequence.Name));
+		}
+
 		public void Tick(Actor self)
 		{
 			if (Info.AimSequence == null)
 				return;
 
 			var sequence = ab.IsAttacking ? Info.AimSequence : Info.Sequence;
-			anim.ReplaceAnim(sequence);
+			DefaultAnimation.ReplaceAnim(sequence);
 		}
 
 		public static int ZOffsetFromCenter(Actor self, WPos pos, int offset)
