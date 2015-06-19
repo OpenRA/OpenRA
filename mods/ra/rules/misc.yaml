@@ -217,9 +217,6 @@ FLARE:
 	Tooltip:
 		Name: Flare
 		ShowOwnerRow: false
-	Selectable:
-		Selectable: false
-		Bounds: 25,25
 	BodyOrientation:
 
 MINE:

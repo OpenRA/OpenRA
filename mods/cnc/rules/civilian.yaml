@@ -370,10 +370,8 @@ BRIDGEHUT:
 	Building:
 		Footprint: __ __
 		Dimensions: 2,2
-	Selectable:
-		Selectable: false
-		Bounds: 48,48
-		Priority: 2
+	CustomSelectionSize:
+		CustomBounds: 48,48
 	BridgeHut:
 	TargetableBuilding:
 		TargetTypes: BridgeHut, C4
@@ -438,7 +436,10 @@ VICE:
 			Tiberium: 100
 			BlueTiberium: 100
 			Beach: 60
+	SelectionDecorations:
+		VisualBounds: 24,24
 	Selectable:
+		Bounds: 24,24
 	TargetableUnit:
 		TargetTypes: Ground
 	AutoTarget:

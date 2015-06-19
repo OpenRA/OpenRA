@@ -34,6 +34,7 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable:
+		Bounds: 24,24
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
@@ -81,6 +82,7 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable:
+		Bounds: 24,24
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
 	Repairable:
@@ -125,6 +127,7 @@
 		GroundedTargetTypes: Ground
 	SelectionDecorations:
 	Selectable:
+		Bounds: 24,24
 	Helicopter:
 		RepairBuildings: hpad
 		RearmBuildings:
@@ -248,7 +251,6 @@
 	-AutoTarget:
 	-TakeCover:
 	AppearsOnRadar:
-	SelectionDecorations:
 	Valued:
 		Cost: 70
 	Tooltip:
@@ -298,7 +300,9 @@
 			Tiberium: 70
 			BlueTiberium: 70
 			Beach: 80
+	SelectionDecorations:
 	Selectable:
+		Bounds: 24,24
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	HiddenUnderFog:
@@ -329,6 +333,7 @@
 		UseLocation: yes
 	SelectionDecorations:
 	Selectable:
+		Bounds: 24,24
 	TargetableUnit:
 		TargetTypes: Air
 	HiddenUnderFog:
@@ -661,7 +666,6 @@
 		Image: crate
 	WithCrateBody:
 		XmasImages: xcratea, xcrateb, xcratec, xcrated
-	Selectable:
-		Selectable: false
-		Bounds: 15,15,-1,-1
+	CustomSelectionSize:
+		CustomBounds: 16,16
 

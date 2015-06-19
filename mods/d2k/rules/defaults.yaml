@@ -35,6 +35,7 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable:
+		Bounds: 32,32
 	TargetableUnit:
 		TargetTypes: Ground, C4
 	Passenger:
@@ -90,6 +91,7 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable:
+		Bounds: 32,32
 	TargetableUnit:
 		TargetTypes: Ground, C4
 	Passenger:
@@ -271,6 +273,7 @@
 		UseLocation: yes
 	SelectionDecorations:
 	Selectable:
+		Bounds: 32,32
 	TargetableAircraft:
 		TargetTypes: Air
 		GroundedTargetTypes: Ground

@@ -136,9 +136,8 @@
 		Palette: terrain
 	WithCrateBody:
 		Images: crate
-	Selectable:
-		Selectable: false
-		Bounds: 25,25,-1,-1
+	CustomSelectionSize:
+		CustomBounds: 24,24
 
 ^Wall:
 	AppearsOnRadar:
@@ -279,8 +278,6 @@
 
 ^CivilianInfantry:
 	Inherits: ^Infantry
-	Selectable:
-		Bounds: 12,17,0,-9
 	Voiced:
 		VoiceSet: Civilian
 	Valued:

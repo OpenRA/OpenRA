@@ -92,7 +92,7 @@ namespace OpenRA.Widgets
 					{
 						if (!hasBox && World.Selection.Actors.Any() && !multiClick)
 						{
-							if (!(World.ScreenMap.ActorsAt(xy).Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable &&
+							if (!(World.ScreenMap.ActorsAt(xy).Where(x => x.HasTrait<Selectable>() &&
 								(x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x))).Any() && !mi.Modifiers.HasModifier(Modifiers.Ctrl) &&
 								!mi.Modifiers.HasModifier(Modifiers.Alt) && UnitOrderGenerator.InputOverridesSelection(World, xy, mi)))
 							{
@@ -292,7 +292,7 @@ namespace OpenRA.Widgets
 				var s = a.TraitOrDefault<Selectable>();
 
 				// sc == null means that units, that meet all other criteria, get selected
-				return s != null && s.Info.Selectable && (selectionClasses == null || selectionClasses.Contains(s.Class));
+				return s != null && (selectionClasses == null || selectionClasses.Contains(s.Class));
 			});
 		}
 
@@ -303,11 +303,7 @@ namespace OpenRA.Widgets
 				a = b;
 
 			return world.ScreenMap.ActorsInBox(a, b)
-				.Where(x =>
-				{
-					var s = x.TraitOrDefault<Selectable>();
-					return s != null && s.Info.Selectable && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x));
-				})
+				.Where(x => x.HasTrait<Selectable>() && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)))
 				.GroupBy(x => x.GetSelectionPriority())
 				.OrderByDescending(g => g.Key)
 				.Select(g => g.AsEnumerable())

@@ -158,7 +158,7 @@ namespace OpenRA.Graphics
 			var health = actor.TraitOrDefault<Health>();
 
 			var screenPos = wr.ScreenPxPosition(pos);
-			var bounds = actor.Bounds;
+			var bounds = actor.VisualBounds;
 			bounds.Offset(screenPos.X, screenPos.Y);
 
 			var start = new float2(bounds.Left + 1, bounds.Top);

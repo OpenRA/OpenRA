@@ -225,8 +225,6 @@ STEG:
 	WithDeathAnimation:
 		DeathSequencePalette: terrain
 		DeathPaletteIsPlayerPalette: false
-	Selectable:
-		Bounds: 24,20,0,4
 
 TREX:
 	Inherits: ^DINO
@@ -236,7 +234,9 @@ TREX:
 	Armament:
 		Weapon: teeth
 	Selectable:
-		Bounds: 52,38
+		Bounds: 48,36,2,1
+	SelectionDecorations:
+		VisualBounds: 52,38
 
 TRIC:
 	Inherits: ^DINO
@@ -245,8 +245,8 @@ TRIC:
 		Description: Quadruped with large bony frill and three horns
 	Armament:
 		Weapon: horn
-	Selectable:
-		Bounds: 34,24,0,2
+	SelectionDecorations:
+		VisualBounds: 34,24,0,2
 
 RAPT:
 	Inherits: ^DINO
@@ -255,6 +255,4 @@ RAPT:
 		Description: Bipedal with enlarged sickle-shaped claw on each hindfoot
 	Armament:
 		Weapon: claw
-	Selectable:
-		Bounds: 20,20
 

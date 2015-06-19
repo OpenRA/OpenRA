@@ -12,22 +12,22 @@ using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Graphics
+namespace OpenRA.Mods.Common.Graphics
 {
 	public struct SelectionBoxRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly float scale;
-		readonly Rectangle bounds;
+		readonly Rectangle visualBounds;
 		readonly Color color;
 
 		public SelectionBoxRenderable(Actor actor, Color color)
-			: this(actor.CenterPosition, actor.Bounds, 1f, color) { }
+			: this(actor.CenterPosition, actor.VisualBounds, 1f, color) { }
 
-		public SelectionBoxRenderable(WPos pos, Rectangle bounds, float scale, Color color)
+		public SelectionBoxRenderable(WPos pos, Rectangle visualBounds, float scale, Color color)
 		{
 			this.pos = pos;
-			this.bounds = bounds;
+			this.visualBounds = visualBounds;
 			this.scale = scale;
 			this.color = color;
 		}
@@ -40,15 +40,15 @@ namespace OpenRA.Graphics
 
 		public IRenderable WithPalette(PaletteReference newPalette) { return this; }
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(WVec vec) { return new SelectionBoxRenderable(pos + vec, bounds, scale, color); }
+		public IRenderable OffsetBy(WVec vec) { return new SelectionBoxRenderable(pos + vec, visualBounds, scale, color); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			var screenPos = wr.ScreenPxPosition(pos);
-			var tl = screenPos + scale * new float2(bounds.Left, bounds.Top);
-			var br = screenPos + scale * new float2(bounds.Right, bounds.Bottom);
+			var tl = screenPos + scale * new float2(visualBounds.Left, visualBounds.Top);
+			var br = screenPos + scale * new float2(visualBounds.Right, visualBounds.Bottom);
 			var tr = new float2(br.X, tl.Y);
 			var bl = new float2(tl.X, br.Y);
 			var u = new float2(4f / wr.Viewport.Zoom, 0);

@@ -63,8 +63,7 @@ namespace OpenRA.Orders
 
 			if (underCursor != null && (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any()))
 			{
-				var selectable = underCursor.TraitOrDefault<Selectable>();
-				if (selectable != null && selectable.Info.Selectable)
+				if (underCursor.HasTrait<Selectable>())
 					useSelect = true;
 			}
 

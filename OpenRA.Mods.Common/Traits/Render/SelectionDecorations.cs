@@ -9,16 +9,33 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	public class SelectionDecorationsInfo : ITraitInfo
+	public class SelectionDecorationsInfo : ITraitInfo, ISelectionDecorationsInfo
 	{
 		public readonly string Palette = "chrome";
 
+		[Desc("Visual bounds for selection box. If null, it uses AutoSelectionSize.",
+		"The first two values define the bounds' size, the optional third and fourth",
+		"values specify the position relative to the actors' center. Defaults to selectable bounds.")]
+		public readonly int[] VisualBounds = null;
+
+		[Desc("Health bar, production progress bar etc.")]
+		public readonly bool RenderSelectionBars = true;
+
+		public readonly bool RenderSelectionBox = true;
+
+		public readonly Color SelectionBoxColor = Color.White;
+
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
+
+		public int[] SelectionBoxBounds { get { return VisualBounds; } }
 	}
 
 	public class SelectionDecorations : IPostRenderSelection
@@ -27,7 +44,7 @@ namespace OpenRA.Traits
 		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
 		static readonly string[] TagStrings = { "", "tag-fake", "tag-primary" };
 
-		public SelectionDecorationsInfo Info;
+		public readonly SelectionDecorationsInfo Info;
 		readonly Actor self;
 
 		public SelectionDecorations(Actor self, SelectionDecorationsInfo info)
@@ -36,12 +53,37 @@ namespace OpenRA.Traits
 			Info = info;
 		}
 
+		IEnumerable<WPos> ActivityTargetPath()
+		{
+			if (!self.IsInWorld || self.IsDead)
+				yield break;
+
+			var activity = self.GetCurrentActivity();
+			if (activity != null)
+			{
+				var targets = activity.GetTargets(self);
+				yield return self.CenterPosition;
+
+				foreach (var t in targets.Where(t => t.Type != TargetType.Invalid))
+					yield return t.CenterPosition;
+			}
+		}
+
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer) || self.World.FogObscures(self))
 				yield break;
 
-			var b = self.Bounds;
+			if (Info.RenderSelectionBox)
+				yield return new SelectionBoxRenderable(self, Info.SelectionBoxColor);
+
+			if (Info.RenderSelectionBars)
+				yield return new SelectionBarsRenderable(self);
+
+			if (self.World.LocalPlayer != null && self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
+				yield return new TargetLineRenderable(ActivityTargetPath(), Color.Green);
+
+			var b = self.VisualBounds;
 			var pos = wr.ScreenPxPosition(self.CenterPosition);
 			var tl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Top));
 			var bl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Bottom));
@@ -85,7 +127,7 @@ namespace OpenRA.Traits
 			var pipxyBase = basePosition + new int2(1 - pipSize.X / 2, -(3 + pipSize.Y / 2));
 			var pipxyOffset = new int2(0, 0);
 			var pal = wr.Palette(Info.Palette);
-			var width = self.Bounds.Width;
+			var width = self.VisualBounds.Width;
 
 			foreach (var pips in pipSources)
 			{

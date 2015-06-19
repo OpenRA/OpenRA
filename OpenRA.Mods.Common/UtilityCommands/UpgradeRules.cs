@@ -1152,6 +1152,29 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// 'Selectable' boolean was removed from selectable trait.
+				if (engineVersion < 20150619)
+				{
+					if (depth == 1 && node.Value.Nodes.Exists(n => n.Key == "Selectable"))
+					{
+						var selectable = node.Value.Nodes.FirstOrDefault(n => n.Key == "Selectable");
+						if (node.Key == "Selectable" && selectable.Value.Value == "false")
+							node.Key = "SelectableRemoveMe";
+
+						// To cover rare cases where the boolean was 'true'
+						if (node.Key == "Selectable" && selectable.Value.Value == "true")
+							node.Value.Nodes.Remove(selectable);
+					}
+
+					if (depth == 0 && node.Value.Nodes.Exists(n => n.Key == "SelectableRemoveMe"))
+						node.Value.Nodes.RemoveAll(n => n.Key == "SelectableRemoveMe");
+						Console.WriteLine("The 'Selectable' boolean has been removed from the Selectable trait.");
+						Console.WriteLine("If you just want to disable an inherited Selectable trait, use -Selectable instead.");
+						Console.WriteLine("For special cases like bridge huts, which need bounds to be targetable by C4 and engineers,");
+						Console.WriteLine("give them the CustomSelectionSize trait with CustomBounds.");
+						Console.WriteLine("See RA and C&C bridge huts or crates for reference.");
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

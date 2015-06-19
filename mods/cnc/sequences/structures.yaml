@@ -49,23 +49,27 @@ proc:
 	idle:
 		Length: 6
 		Tick: 120
+		Offset: 2,4
 	damaged-idle:
 		Start: 30
 		Length: 6
 		Tick: 120
+		Offset: 2,4
 	dead:
 		Start: 60
 		Tick: 800
+		Offset: 2,4
 	make: procmake
 		Length: *
 		Tick: 80
+		Offset: 2,4
 	resources: proctwr
 		Length: 6
-		Offset: -32,-21
+		Offset: -30,-17
 	damaged-resources: proctwr
 		Start: 6
 		Length: 6
-		Offset: -32,-21
+		Offset: -30,-17
 	bib: bib2
 		UseTilesetExtension: true
 		Length: *

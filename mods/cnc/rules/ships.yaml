@@ -29,6 +29,8 @@ BOAT:
 		AllowMovement: false
 	WithSmoke:
 	RejectsOrders:
+	SelectionDecorations:
+		VisualBounds: 42,24
 
 LST:
 	Inherits: ^Ship

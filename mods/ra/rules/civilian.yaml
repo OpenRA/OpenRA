@@ -3,7 +3,6 @@ C1:
 
 C2:
 	Inherits: ^CivInfantry
-	Selectable:
 	Voiced:
 		VoiceSet: CivilianFemaleVoice
 
@@ -12,7 +11,6 @@ C3:
 
 C4:
 	Inherits: ^CivInfantry
-	Selectable:
 	WithInfantryBody:
 	RenderSprites:
 		Image: C2
@@ -27,7 +25,6 @@ C5:
 
 C6:
 	Inherits: ^CivInfantry
-	Selectable:
 	WithInfantryBody:
 	RenderSprites:
 		Image: C2
@@ -42,7 +39,6 @@ C7:
 
 C8:
 	Inherits: ^CivInfantry
-	Selectable:
 	WithInfantryBody:
 	RenderSprites:
 		Image: C2
@@ -57,7 +53,6 @@ C9:
 
 C10:
 	Inherits: ^CivInfantry
-	Selectable:
 	WithInfantryBody:
 	RenderSprites:
 		Image: C2
@@ -495,10 +490,8 @@ BRIDGEHUT:
 	Building:
 		Footprint: __ __
 		Dimensions: 2,2
-	Selectable:
-		Selectable: false
-		Bounds: 48,48
-		Priority: 2
+	CustomSelectionSize:
+		CustomBounds: 48,48
 	BridgeHut:
 	TargetableBuilding:
 		TargetTypes: BridgeHut, C4
@@ -507,10 +500,8 @@ BRIDGEHUT.small:
 	Building:
 		Footprint: _
 		Dimensions: 1,1
-	Selectable:
-		Selectable: false
-		Bounds: 24,24
-		Priority: 2
+	CustomSelectionSize:
+		CustomBounds: 24,24
 	BridgeHut:
 	TargetableBuilding:
 		TargetTypes: BridgeHut, C4
@@ -639,22 +630,26 @@ LHUS:
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERAT
 	Selectable:
-		Bounds: 24,48
+		Bounds: 24,24,0,16
+	SelectionDecorations:
+		VisualBounds: 24,48
 	Tooltip:
 		Name: Lighthouse
 	Building:
-		Footprint: _ x
-		Dimensions: 1,2
+		Footprint: x
+		Dimensions: 1,1
 
 WINDMILL:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERAT
 	Selectable:
-		Bounds: 36,36
+		Bounds: 24,24,0,8
+	SelectionDecorations:
+		VisualBounds: 36,36
 	Tooltip:
 		Name: Windmill
 	Building:
-		Footprint: _ x
-		Dimensions: 1,2
+		Footprint: x
+		Dimensions: 1,1
 

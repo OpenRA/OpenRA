@@ -20,6 +20,8 @@ V2RL:
 	Armament:
 		Weapon: SCUD
 	AttackFrontal:
+	SelectionDecorations:
+		VisualBounds: 28,28
 	RenderSprites:
 	AutoTarget:
 	Explodes:
@@ -111,10 +113,10 @@ V2RL:
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 2TNK.Husk
-	Selectable:
-		Bounds: 30,30
 	AutoSelectionSize:
 	RenderSprites:
+	SelectionDecorations:
+		VisualBounds: 28,28
 
 3TNK:
 	Inherits: ^Tank
@@ -154,10 +156,10 @@ V2RL:
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 3TNK.Husk
-	Selectable:
-		Bounds: 30,30
 	AutoSelectionSize:
 	RenderSprites:
+	SelectionDecorations:
+		VisualBounds: 28,28
 
 4TNK:
 	Inherits: ^Tank
@@ -211,10 +213,10 @@ V2RL:
 		Ticks: 3
 		HealIfBelow: 50%
 		DamageCooldown: 150
-	Selectable:
-		Bounds: 44,38,0,-4
 	AutoSelectionSize:
 	RenderSprites:
+	SelectionDecorations:
+		VisualBounds: 44,38,0,-4
 
 ARTY:
 	Inherits: ^Tank
@@ -265,7 +267,8 @@ HARV:
 		Description: Collects Ore and Gems for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
-		Bounds: 42,42
+	SelectionDecorations:
+		VisualBounds: 42,42
 	Harvester:
 		Capacity: 20
 		Resources: Ore,Gems
@@ -309,7 +312,8 @@ MCV:
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 4
-		Bounds: 42,42
+	SelectionDecorations:
+		VisualBounds: 42,42
 	Health:
 		HP: 600
 	Armor:
@@ -618,8 +622,8 @@ TTNK:
 	WithFacingSpriteBody:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
-	Selectable:
-		Bounds: 28,28,0,0
+	SelectionDecorations:
+		VisualBounds: 30,30
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -663,10 +667,10 @@ FTRK:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	Selectable:
-		Bounds: 28,28,0,0
 	AutoSelectionSize:
 	RenderSprites:
+	SelectionDecorations:
+		VisualBounds: 28,28
 
 DTRK:
 	Inherits: ^Vehicle
@@ -712,8 +716,8 @@ CTNK:
 	Tooltip:
 		Name: Chrono Tank
 		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
-	Selectable:
-		Bounds: 28,28
+	SelectionDecorations:
+		VisualBounds: 30,30
 	Health:
 		HP: 400
 	Armor:
@@ -761,9 +765,9 @@ QTNK:
 		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 6c0
-	Selectable:
-		Bounds: 44,38,0,-4
 	WithFacingSpriteBody:
+	SelectionDecorations:
+		VisualBounds: 44,38,0,-4
 	Explodes:
 		Weapon: UnitExplodeSmall
 	MadTank:
@@ -784,8 +788,8 @@ STNK:
 	Tooltip:
 		Name: Phase Transport
 		Description: Lightly armored infantry transport\nwhich can cloak. Can detect cloaked units.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
-	Selectable:
-		Bounds: 28,28
+	SelectionDecorations:
+		VisualBounds: 26,26
 	Health:
 		HP: 300
 	Armor:

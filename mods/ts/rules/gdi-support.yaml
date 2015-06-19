@@ -36,7 +36,7 @@ GACTWR:
 		Prerequisites: gapile, ~structures.gdi
 	Building:
 	Selectable:
-		Bounds: 48, 48, 0, -12
+		Bounds: 48, 36, 0, -6
 	DisabledOverlay:
 	-GivesBuildableArea:
 	Health:
@@ -128,6 +128,8 @@ GACTWR:
 			tower.rocket: tower, tower.rocket
 			tower.sam: tower, tower.sam
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 48, 48, 0, -12
 
 GAVULC:
 	Inherits: ^BuildingPlug

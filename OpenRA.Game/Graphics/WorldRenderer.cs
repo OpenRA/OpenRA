@@ -190,12 +190,8 @@ namespace OpenRA.Graphics
 
 		public void DrawRollover(Actor unit)
 		{
-			var selectable = unit.TraitOrDefault<Selectable>();
-			if (selectable != null)
-			{
-				if (selectable.Info.Selectable)
-					new SelectionBarsRenderable(unit).Render(this);
-			}
+			if (unit.HasTrait<Selectable>())
+				new SelectionBarsRenderable(unit).Render(this);
 		}
 
 		public void DrawRangeCircle(WPos pos, WRange range, Color c)

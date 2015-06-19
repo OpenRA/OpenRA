@@ -38,6 +38,8 @@ mcv:
 		HuskActor: mcv.husk
 	AttractsWorms:
 		Intensity: 700
+	SelectionDecorations:
+		VisualBounds: 42,42
 
 harvester:
 	Inherits: ^Vehicle
@@ -85,6 +87,8 @@ harvester:
 		Palette: effect50alpha
 	AttractsWorms:
 		Intensity: 700
+	SelectionDecorations:
+		VisualBounds: 42,42
 
 trike:
 	Inherits: ^Vehicle
@@ -99,7 +103,6 @@ trike:
 		Description: Fast Scout\n Strong vs Infantry\n Weak vs Tanks, Aircraft
 	Selectable:
 		Class: trike
-		Bounds: 24,24
 	Health:
 		HP: 100
 	Armor:
@@ -155,7 +158,6 @@ quad:
 		EmptyWeapon: UnitExplodeTiny
 	Selectable:
 		Class: quad
-		Bounds: 24,24
 	AttractsWorms:
 		Intensity: 470
 
@@ -200,7 +202,6 @@ siegetank:
 		InitialStance: Defend
 	Selectable:
 		Class: siegetank
-		Bounds: 30,30
 	LeavesHusk:
 		HuskActor: siegetank.husk
 	AttractsWorms:
@@ -241,7 +242,6 @@ missiletank:
 		EmptyWeapon: UnitExplodeScale
 	Selectable:
 		Class: missiletank
-		Bounds: 30,30
 	LeavesHusk:
 		HuskActor: missiletank.husk
 	AttractsWorms:
@@ -258,8 +258,6 @@ sonictank:
 	Tooltip:
 		Name: Sonic Tank
 		Description: Fires sonic shocks\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery, Aircraft
-	Selectable:
-		Bounds: 30,30
 	Health:
 		HP: 130
 	Armor:
@@ -315,14 +313,14 @@ devast:
 	Explodes:
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale
-	Selectable:
-		Bounds: 44,38,0,0
 	LeavesHusk:
 		HuskActor: devast.husk
 	AttractsWorms:
 		Intensity: 700
 	AutoSelectionSize:
 	RenderSprites:
+	SelectionDecorations:
+		VisualBounds: 44,38,0,0
 
 raider:
 	Inherits: ^Vehicle
@@ -335,8 +333,6 @@ raider:
 	Tooltip:
 		Name: Raider Trike
 		Description: Improved Scout\n Strong vs Infantry, Light Vehicles
-	Selectable:
-		Bounds: 24,24
 	Health:
 		HP: 110
 	Armor:
@@ -408,8 +404,6 @@ deviatortank:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	Selectable:
-		Bounds: 30,30
 	LeavesHusk:
 		HuskActor: deviatortank.husk
 	AttractsWorms:
@@ -456,7 +450,6 @@ deviatortank:
 		EmptyWeapon: UnitExplodeSmall
 	Selectable:
 		Class: combat
-		Bounds: 30,30
 	AttractsWorms:
 		Intensity: 520
 	AutoSelectionSize:

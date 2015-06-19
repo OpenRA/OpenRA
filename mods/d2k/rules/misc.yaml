@@ -109,10 +109,9 @@ crate:
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:
-	Selectable:
-		Selectable: false
-		Bounds: 15,15,-1,-1
 	Passenger:
+	CustomSelectionSize:
+		CustomBounds: 16,16
 
 mpspawn:
 	Immobile:

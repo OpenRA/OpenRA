@@ -95,6 +95,8 @@ ORCA:
 	RenderVoxels:
 	WithVoxelBody:
 	Hovers:
+	SelectionDecorations:
+		VisualBounds: 30,24
 
 ORCAB:
 	Inherits: ^Plane
@@ -136,6 +138,8 @@ ORCAB:
 	RenderVoxels:
 	WithVoxelBody:
 	Hovers:
+	SelectionDecorations:
+		VisualBounds: 30,24
 
 ORCATRAN:
 	Inherits: ^Helicopter
@@ -230,6 +234,8 @@ SCRIN:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	SelectionDecorations:
+		VisualBounds: 30,24
 
 APACHE:
 	Inherits: ^Helicopter
@@ -270,3 +276,6 @@ APACHE:
 	RenderVoxels:
 	WithVoxelBody:
 	Hovers:
+	SelectionDecorations:
+		VisualBounds: 30,24
+

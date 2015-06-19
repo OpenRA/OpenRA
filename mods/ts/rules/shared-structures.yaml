@@ -42,13 +42,15 @@ GACNST:
 	Power:
 		Amount: 0
 	Selectable:
-		Bounds: 144, 80, 0, -12
+		Bounds: 144, 60, 0, -6
 	ProvidesPrerequisite@gdi:
 		Race: gdi
 		Prerequisite: structures.gdi
 	ProvidesPrerequisite@nod:
 		Race: nod
 		Prerequisite: structures.nod
+	SelectionDecorations:
+		VisualBounds: 144, 80, 0, -12
 
 PROC:
 	Inherits: ^Building
@@ -65,7 +67,7 @@ PROC:
 		Footprint: xxx= xx== xxx=
 		Dimensions: 4,3
 	Selectable:
-		Bounds: 134, 122, 0, -18
+		Bounds: 134, 96, 0, -12
 	Health:
 		HP: 900
 	RevealsShroud:
@@ -94,6 +96,8 @@ PROC:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 134, 122, 0, -18
 
 GASILO:
 	Inherits: ^Building
@@ -129,6 +133,8 @@ GASILO:
 		Capacity: 1500
 	Power:
 		Amount: -10
+	SelectionDecorations:
+		VisualBounds: 80, 48, -5, 0
 
 ANYPOWER:
 	Tooltip:
