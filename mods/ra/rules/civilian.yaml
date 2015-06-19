@@ -1,5 +1,7 @@
 C1:
-	Inherits: ^CivInfantry
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
+	AutoTarget:
 
 C2:
 	Inherits: ^CivInfantry
@@ -11,7 +13,6 @@ C3:
 
 C4:
 	Inherits: ^CivInfantry
-	WithInfantryBody:
 	RenderSprites:
 		Image: C2
 	Voiced:
@@ -19,27 +20,25 @@ C4:
 
 C5:
 	Inherits: ^CivInfantry
-	WithInfantryBody:
 	RenderSprites:
 		Image: C1
 
 C6:
 	Inherits: ^CivInfantry
-	WithInfantryBody:
 	RenderSprites:
 		Image: C2
 	Voiced:
 		VoiceSet: CivilianFemaleVoice
 
 C7:
-	Inherits: ^CivInfantry
-	WithInfantryBody:
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
+	AutoTarget:
 	RenderSprites:
 		Image: C1
 
 C8:
 	Inherits: ^CivInfantry
-	WithInfantryBody:
 	RenderSprites:
 		Image: C2
 	Voiced:
@@ -47,13 +46,11 @@ C8:
 
 C9:
 	Inherits: ^CivInfantry
-	WithInfantryBody:
 	RenderSprites:
 		Image: C1
 
 C10:
 	Inherits: ^CivInfantry
-	WithInfantryBody:
 	RenderSprites:
 		Image: C2
 	Voiced:

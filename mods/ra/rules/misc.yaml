@@ -153,7 +153,6 @@ MONEYCRATE:
 		Amount: 500
 		SelectionShares: 1
 		UseCashTick: true
-	WithCrateBody:
 	RenderSprites:
 		Image: wcrate
 

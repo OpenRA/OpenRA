@@ -93,11 +93,24 @@
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
+	Parachutable:
+		ParachuteOffset: 0,0,200
+		KilledOnImpassableTerrain: true
+		ParachuteSequence: parach
+		ShadowSequence:
+		GroundCorpseSequence:
+		GroundCorpsePalette:
+		WaterCorpseSequence:
+		WaterCorpsePalette:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 
 ^Tank:
-	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
-	Inherits@3: ^IronCurtainable
+	Inherits: ^Vehicle
 	Mobile:
 		Crushes: wall, mine, crate
 		TerrainSpeeds:
@@ -108,66 +121,25 @@
 			Ore: 70
 			Gems: 70
 			Beach: 70
-		ROT: 5
-	SelectionDecorations:
-	Selectable:
-		Bounds: 24, 24
 	TargetableUnit:
 		TargetTypes: Ground, C4, Repair, Tank
-	Repairable:
-	Chronoshiftable:
-	Passenger:
-		CargoType: Vehicle
-	AttackMove:
-	HiddenUnderFog:
-	ActorLostNotification:
 	ProximityCaptor:
 		Types: Tank
-	GivesBounty:
-	GpsDot:
-		String: Vehicle
-	WithSmoke:
-	Guard:
-	Guardable:
 	Tooltip:
 		GenericName: Tank
-	EjectOnDeath:
-		PilotActor: e1
-		SuccessRate: 20
-		EjectOnGround: true
-		EjectInAir: false
-		AllowUnsuitableCell: false
-	Capturable:
-		Type: vehicle
-		CaptureThreshold: 1
-		CancelActivity: True
-	CaptureNotification:
-		Notification: UnitStolen
-	MustBeDestroyed:
-	Parachutable:
-		ParachuteOffset: 0,0,200
-		KilledOnImpassableTerrain: true
-		ParachuteSequence: parach
-		ParachuteOpenSequence: open
-		ParachuteIdleSequence: idle
-		ShadowSequence:
-		GroundCorpseSequence:
-		GroundCorpsePalette:
-		WaterCorpseSequence:
-		WaterCorpsePalette:
-	Voiced:
-		VoiceSet: VehicleVoice
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Health:
 		Radius: 128
+		HP: 25
 	Armor:
 		Type: None
 	RevealsShroud:
 		Range: 4c0
 	Mobile:
+		Speed: 56
 		Crushes: mine, crate
 		SharesCell: true
 		TerrainSpeeds:
@@ -183,10 +155,6 @@
 		Bounds: 12,18,0,-8
 	TargetableUnit:
 		TargetTypes: Ground, Infantry, Disguise
-	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation:
@@ -198,14 +166,11 @@
 			FireDeath: 5
 			ElectricityDeath: 6
 		CrushedSequence: die-crushed
-	AutoTarget:
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
 	HiddenUnderFog:
 	ActorLostNotification:
-	ProximityCaptor:
-		Types: Infantry
 	GivesBounty:
 	GpsDot:
 		String: Infantry
@@ -245,9 +210,44 @@
 		WaterCorpseSequence: small_splash
 	Cloneable:
 		Types: Infantry
-	MustBeDestroyed:
 	Voiced:
 		VoiceSet: GenericVoice
+
+^Soldier:
+	Inherits: ^Infantry
+	MustBeDestroyed:
+	AutoTarget:
+	ProximityCaptor:
+		Types: Infantry
+	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand,stand2
+
+^CivInfantry:
+	Inherits: ^Infantry
+	Selectable:
+		Class: CivInfantry
+	Valued:
+		Cost: 10
+	Tooltip:
+		Name: Civilian
+		GenericVisibility: None
+	RevealsShroud:
+		Range: 2c0
+	ProximityCaptor:
+		Types: CivilianInfantry
+	ScaredyCat:
+	Voiced:
+		VoiceSet: CivilianMaleVoice
+
+^ArmedCivilian:
+	Armament:
+		Weapon: Pistol
+	AttackFrontal:
 
 ^Ship:
 	Inherits@1: ^ExistsInWorld
@@ -269,9 +269,14 @@
 	ProximityCaptor:
 		Types: Ship
 	GivesBounty:
+	Chronoshiftable:
+	RepairableNear:
 	GpsDot:
 		String: Ship
 	WithSmoke:
+	Explodes:
+		Weapon: UnitExplodeShip
+		EmptyWeapon: UnitExplodeShip
 	Guard:
 	Guardable:
 	Tooltip:
@@ -281,6 +286,9 @@
 		ExcludeTilesets: INTERIOR
 	Voiced:
 		VoiceSet: VehicleVoice
+	AutoSelectionSize:
+	RenderSprites:
+	WithFacingSpriteBody:
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -314,6 +322,9 @@
 	Tooltip:
 		GenericName: Plane
 	WithShadow:
+	RenderSprites:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: GenericVoice
@@ -326,7 +337,7 @@
 		String: Helicopter
 	Hovers:
 
-^Building:
+^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^IronCurtainable
 	SelectionDecorations:
@@ -339,37 +350,40 @@
 		Footprint: x
 		TerrainTypes: Clear,Road
 		RequiresBaseProvider: True
-	GivesBuildableArea:
-	ExternalCapturable:
-	ExternalCapturableBar:
 	SoundOnDamageTransition:
 		DamagedSounds: kaboom1.aud
 		DestroyedSounds: kaboom22.aud
 	RenderBuilding:
-	WithMakeAnimation:
 	WithBuildingExplosion:
-	RepairableBuilding:
-	EngineerRepairable:
-	EmitInfantryOnSell:
-		ActorTypes: e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,e6,e6,e6,e6,e6
-	MustBeDestroyed:
-		RequiredForShortGame: true
 	CaptureNotification:
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types: Building
-	Sellable:
-		SellSounds: cashturn.aud
-	AcceptsSupplies:
 	GivesBounty:
 	Guardable:
 		Range: 3
 	FrozenUnderFog:
 	Tooltip:
 		GenericName: Structure
+	Demolishable:
+
+^Building:
+	Inherits: ^BasicBuilding
+	GivesBuildableArea:
+	RepairableBuilding:
+	EngineerRepairable:
+	AcceptsSupplies:
+	WithMakeAnimation:
+	ExternalCapturable:
+	ExternalCapturableBar:
+	EmitInfantryOnSell:
+		ActorTypes: e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,e6,e6,e6,e6,e6
+	MustBeDestroyed:
+		RequiredForShortGame: true
 	GpsDot:
 		String: Structure
-	Demolishable:
+	Sellable:
+		SellSounds: cashturn.aud
 
 ^Defense:
 	Inherits: ^Building
@@ -413,9 +427,7 @@
 	ScriptTriggers:
 
 ^TechBuilding:
-	Inherits: ^Building
-	-RepairableBuilding:
-	-EngineerRepairable:
+	Inherits: ^BasicBuilding
 	Health:
 		HP: 400
 	Armor:
@@ -425,16 +437,8 @@
 		GenericVisibility: None
 	ProximityCaptor:
 		Types: CivilianBuilding
-	-WithMakeAnimation:
-	-AcceptsSupplies:
-	-GivesBuildableArea:
-	-Sellable:
-	-ExternalCapturable:
-	-ExternalCapturableBar:
 	FrozenUnderFog:
 		StartsRevealed: true
-	-GpsDot:
-	-MustBeDestroyed:
 
 ^FakeBuilding:
 	Inherits: ^Building
@@ -462,32 +466,6 @@
 		Type: Light
 	TargetableBuilding:
 		TargetTypes: Ground, DetonateAttack
-
-^CivInfantry:
-	Inherits: ^Infantry
-	Selectable:
-		Class: CivInfantry
-	Valued:
-		Cost: 70
-	Tooltip:
-		Name: Civilian
-		GenericVisibility: None
-	Health:
-		HP: 20
-	Mobile:
-		Speed: 56
-	RevealsShroud:
-		Range: 2c0
-	Armament:
-		Weapon: Pistol
-	AttackFrontal:
-	ProximityCaptor:
-		Types: CivilianInfantry
-	WithInfantryBody:
-	ScaredyCat:
-	Voiced:
-		VoiceSet: CivilianMaleVoice
-	-TakeCover:
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
@@ -533,27 +511,27 @@
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 
-^Husk:
-	Husk:
-		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
-	WithFacingSpriteBody:
+^BasicHusk:
 	Health:
 		HP: 280
 	Armor:
 		Type: Heavy
 	HiddenUnderFog:
+	BodyOrientation:
+	AutoTargetIgnore:
+	ScriptTriggers:
+	RenderSprites:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+
+^Husk:
+	Inherits: ^BasicHusk
+	Husk:
+		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
 	Burns:
 		Damage: 2
 	ProximityCaptor:
 		Types: Husk
-	BodyOrientation:
-	Chronoshiftable:
-	TargetableUnit:
-		TargetTypes: Ground
-		RequiresForceFire: true
-	Tooltip:
-		GenericName: Destroyed Vehicle
-	AutoTargetIgnore:
 	Capturable:
 		Type: husk
 		AllowAllies: true
@@ -561,31 +539,28 @@
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	DisabledOverlay:
-	ScriptTriggers:
-	AutoSelectionSize:
-	RenderSprites:
-
-^HelicopterHusk:
-	Inherits: ^Husk
-	-Husk:
-	-Burns:
-	FallsToEarth:
-		Spins: True
-		Moves: False
-	-TargetableUnit:
-	-Capturable:
-	-TransformOnCapture:
+	TargetableUnit:
+		TargetTypes: Ground
+		RequiresForceFire: true
+	Chronoshiftable:
+	Tooltip:
+		GenericName: Destroyed Vehicle
 
 ^PlaneHusk:
-	Inherits: ^Husk
-	-Husk:
-	-Burns:
+	Inherits: ^BasicHusk
+	WithShadow:
+	Tooltip:
+		GenericName: Destroyed Plane
 	FallsToEarth:
 		Spins: False
 		Moves: True
-	-TargetableUnit:
-	-Capturable:
-	-TransformOnCapture:
+
+^HelicopterHusk:
+	Inherits: ^BasicHusk
+	WithShadow:
+	Tooltip:
+		GenericName: Destroyed Helicopter
+	FallsToEarth:
 
 ^Bridge:
 	HiddenUnderShroud:
