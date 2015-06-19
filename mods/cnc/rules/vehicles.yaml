@@ -404,6 +404,7 @@ HTNK:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
+	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	SelfHealing:
