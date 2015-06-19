@@ -12,7 +12,6 @@ mcv:
 	Selectable:
 		Class: mcv
 		Priority: 3
-		Bounds: 42,42
 	Health:
 		HP: 800
 	Armor:
@@ -56,7 +55,6 @@ harvester:
 	Selectable:
 		Class: harvester
 		Priority: 7
-		Bounds: 42,42
 	Harvester:
 		PipCount: 10
 		Capacity: 40
@@ -112,7 +110,6 @@ trike:
 		Speed: 128
 	RevealsShroud:
 		Range: 7c0
-	WithFacingSpriteBody:
 	WithMuzzleFlash:
 	Armament:
 		Weapon: HMG
@@ -125,8 +122,6 @@ trike:
 		EmptyWeapon: UnitExplodeTiny
 	AttractsWorms:
 		Intensity: 420
-	AutoSelectionSize:
-	RenderSprites:
 
 quad:
 	Inherits: ^Vehicle
@@ -193,7 +188,6 @@ siegetank:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	WithTurret:
 	Explodes:
 		Weapon: UnitExplodeScale
@@ -206,7 +200,6 @@ siegetank:
 		HuskActor: siegetank.husk
 	AttractsWorms:
 		Intensity: 600
-	AutoSelectionSize:
 	RenderSprites:
 		Image: SIEGETANK
 
@@ -301,7 +294,6 @@ devast:
 		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 7c0
-	WithFacingSpriteBody:
 	Armament:
 		Weapon: DevBullet
 		LocalOffset: 640,0,32
@@ -317,8 +309,6 @@ devast:
 		HuskActor: devast.husk
 	AttractsWorms:
 		Intensity: 700
-	AutoSelectionSize:
-	RenderSprites:
 	SelectionDecorations:
 		VisualBounds: 44,38,0,0
 
@@ -394,7 +384,6 @@ deviatortank:
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
-	WithFacingSpriteBody:
 	Armament:
 		Weapon: NerveGasMissile
 		LocalOffset: -299,0,85
@@ -408,8 +397,6 @@ deviatortank:
 		HuskActor: deviatortank.husk
 	AttractsWorms:
 		Intensity: 600
-	AutoSelectionSize:
-	RenderSprites:
 
 ^combat:
 	Inherits: ^Tank
@@ -442,7 +429,6 @@ deviatortank:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	Explodes:
@@ -452,8 +438,6 @@ deviatortank:
 		Class: combat
 	AttractsWorms:
 		Intensity: 520
-	AutoSelectionSize:
-	RenderSprites:
 
 combata:
 	Inherits: ^combat

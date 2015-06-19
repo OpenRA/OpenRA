@@ -5,8 +5,6 @@ mcv.starport:
 		Queue: Starport
 	Valued:
 		Cost: 2500
-	WithFacingSpriteBody:
-	AutoSelectionSize:
 	RenderSprites:
 		Image: mcv
 
@@ -25,8 +23,6 @@ trike.starport:
 		Queue: Starport
 	Valued:
 		Cost: 315
-	WithFacingSpriteBody:
-	AutoSelectionSize:
 	RenderSprites:
 		Image: trike
 
@@ -36,8 +32,6 @@ quad.starport:
 		Queue: Starport
 	Valued:
 		Cost: 500
-	WithFacingSpriteBody:
-	AutoSelectionSize:
 	RenderSprites:
 		Image: quad
 
@@ -47,8 +41,6 @@ siegetank.starport:
 		Queue: Starport
 	Valued:
 		Cost: 1075
-	WithFacingSpriteBody:
-	AutoSelectionSize:
 	RenderSprites:
 		Image: siegetank
 
@@ -58,8 +50,6 @@ missiletank.starport:
 		Queue: Starport
 	Valued:
 		Cost: 1250
-	WithFacingSpriteBody:
-	AutoSelectionSize:
 	RenderSprites:
 		Image: missiletank
 
@@ -70,8 +60,6 @@ combata.starport:
 		Queue: Starport
 	Valued:
 		Cost: 875
-	WithFacingSpriteBody:
-	AutoSelectionSize:
 	RenderSprites:
 		Image: combata
 
@@ -82,8 +70,6 @@ combath.starport:
 		Queue: Starport
 	Valued:
 		Cost: 875
-	WithFacingSpriteBody:
-	AutoSelectionSize:
 	RenderSprites:
 		Image: combath
 
@@ -94,8 +80,6 @@ combato.starport:
 		Queue: Starport
 	Valued:
 		Cost: 875
-	WithFacingSpriteBody:
-	AutoSelectionSize:
 	RenderSprites:
 		Image: combato
 

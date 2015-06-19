@@ -1,5 +1,5 @@
 carryall.reinforce:
-	Inherits: ^Helicopter
+	Inherits: ^Plane
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -20,15 +20,10 @@ carryall.reinforce:
 		Repulsable: False
 		LandAltitude: 100
 		LandWhenIdle: False
-	WithFacingSpriteBody:
-	WithShadow:
 	LeavesHusk:
 		HuskActor: carryall.husk
-	-Selectable:
-	-TargetableAircraft:
 	Carryall:
 		Automatic: False
-	AutoSelectionSize:
 	RenderSprites:
 		Image: carryall
 
@@ -57,36 +52,14 @@ carryall.infantry:
 		RepairBuildings: repair
 		RearmBuildings:
 		Repulsable: False
-	WithFacingSpriteBody:
-	WithShadow:
 	Cargo:
 		MaxWeight: 5
 		Types: Infantry
-	-Selectable:
-	-Voiced:
-	-TargetableAircraft:
-	-GainsExperience:
 	Tooltip:
 		Name: Carryall
 	LeavesHusk:
 		HuskActor: carryall.infantry.husk
 	RejectsOrders:
-	AutoSelectionSize:
-	RenderSprites:
-		Image: carryall
-
-carryall.husk:
-	Inherits: ^AircraftHusk
-	Tooltip:
-		Name: Carryall
-	Helicopter:
-		ROT: 4
-		Speed: 210
-		RepairBuildings: repair
-		RearmBuildings:
-	WithFacingSpriteBody:
-	WithShadow:
-	AutoSelectionSize:
 	RenderSprites:
 		Image: carryall
 
@@ -105,23 +78,18 @@ frigate:
 		Repulsable: False
 	Health:
 		HP: 500
-	-TargetableAircraft:
 	-AppearsOnRadar:
 	Armor:
 		Type: Heavy
-	WithShadow:
 	Cargo:
 		MaxWeight: 20
 		PipCount: 10
 	Invulnerable:
-	-Selectable:
-	-GainsExperience:
 	FlyAwayOnIdle:
 	RejectsOrders:
-	-Voiced:
 
 orni:
-	Inherits: ^Helicopter
+	Inherits: ^Plane
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -145,20 +113,22 @@ orni:
 		Speed: 280
 		RepairBuildings: repair
 		RearmBuildings:
-	WithFacingSpriteBody:
-	WithShadow:
 	LeavesHusk:
 		HuskActor: orni.husk
-	AutoSelectionSize:
-	RenderSprites:
 	SelectionDecorations:
-		VisualBounds: 38,32,0,0
+	Selectable:
+		Bounds: 32,32
+	TargetableAircraft:
+		TargetTypes: Air
+		GroundedTargetTypes: Ground
+	Voiced:
+		VoiceSet: GenericVoice
 
 orni.bomber:
+	Inherits: ^Plane
 	AttackBomber:
 	Armament:
 		Weapon: Napalm
-	Inherits: ^Plane
 	Health:
 		HP: 100
 	Armor:
@@ -171,17 +141,11 @@ orni.bomber:
 		Repulsable: False
 	AmmoPool:
 		Ammo: 5
-	WithFacingSpriteBody:
-	WithShadow:
-	-Selectable:
-	-Voiced:
-	-GainsExperience:
 	Tooltip:
 		Name: Ornithopter
 	LeavesHusk:
 		HuskActor: orni.bomber.husk
 	RejectsOrders:
-	AutoSelectionSize:
 	RenderSprites:
 		Image: orni
 
@@ -192,11 +156,8 @@ orni.husk:
 	Helicopter:
 		ROT: 6
 		Speed: 280
-		RepairBuildings: repair
+		RepairBuildings:
 		RearmBuildings:
-	WithFacingSpriteBody:
-	WithShadow:
-	AutoSelectionSize:
 	RenderSprites:
 		Image: orni
 
@@ -207,13 +168,22 @@ orni.bomber.husk:
 	Plane:
 		ROT: 5
 		Speed: 350
-		RepairBuildings: repair
+		RepairBuildings:
 		RearmBuildings:
-	WithFacingSpriteBody:
-	WithShadow:
-	AutoSelectionSize:
 	RenderSprites:
 		Image: orni
+
+carryall.husk:
+	Inherits: ^AircraftHusk
+	Tooltip:
+		Name: Carryall
+	Helicopter:
+		ROT: 4
+		Speed: 210
+		RepairBuildings:
+		RearmBuildings:
+	RenderSprites:
+		Image: carryall
 
 carryall.infantry.husk:
 	Inherits: ^AircraftHusk
@@ -222,11 +192,8 @@ carryall.infantry.husk:
 	Plane:
 		ROT: 4
 		Speed: 280
-		RepairBuildings: repair
+		RepairBuildings:
 		RearmBuildings:
-	WithFacingSpriteBody:
-	WithShadow:
-	AutoSelectionSize:
 	RenderSprites:
 		Image: carryall
 
