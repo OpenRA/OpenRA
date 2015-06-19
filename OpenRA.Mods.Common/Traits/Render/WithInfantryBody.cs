@@ -48,16 +48,16 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class WithInfantryBody : UpgradableTrait<WithInfantryBodyInfo>, ITick, INotifyAttack, INotifyIdle
+	public class WithInfantryBody : UpgradableTrait<WithInfantryBodyInfo>, ITick, INotifyAttack, INotifyIdle, INotifyCreated
 	{
 		readonly IMove move;
-		readonly IRenderInfantrySequenceModifier rsm;
 		protected readonly Animation DefaultAnimation;
 
 		bool dirty;
 		string idleSequence;
 		int idleDelay;
 		AnimationState state;
+		IRenderInfantrySequenceModifier rsm;
 
 		bool IsModifyingSequence { get { return rsm != null && rsm.IsModifyingSequence; } }
 		bool wasModifying;
@@ -74,7 +74,11 @@ namespace OpenRA.Mods.Common.Traits
 			DefaultAnimation.PlayFetchIndex(NormalizeInfantrySequence(init.Self, info.StandSequences.Random(Game.CosmeticRandom)), () => 0);
 			state = AnimationState.Waiting;
 			move = init.Self.Trait<IMove>();
-			rsm = init.Self.TraitOrDefault<IRenderInfantrySequenceModifier>();
+		}
+
+		public void Created(Actor self)
+		{
+			rsm = self.TraitOrDefault<IRenderInfantrySequenceModifier>();
 		}
 
 		protected virtual string NormalizeInfantrySequence(Actor self, string baseSequence)
