@@ -15,7 +15,6 @@ rifle:
 	Armament:
 		Weapon: LMG
 	AttackFrontal:
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
 	AttractsWorms:
@@ -39,8 +38,6 @@ engineer:
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
-	TakeCover:
-	WithInfantryBody:
 	ExternalCaptures:
 		Type: building
 	Captures:
@@ -70,7 +67,6 @@ bazooka:
 		Weapon: Bazooka
 		LocalOffset: 0,0,555
 	AttackFrontal:
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
 	AttractsWorms:
@@ -97,7 +93,6 @@ medic:
 	AttackMedic:
 		Cursor: ability
 		OutsideRangeCursor: ability
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: heal
 	Passenger:
@@ -133,7 +128,6 @@ fremen:
 	Armament@SECONDARY:
 		Weapon: Slung
 	AttackFrontal:
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
 	Cloak:
@@ -165,7 +159,6 @@ grenadier:
 		LocalOffset: 0,0,555
 		FireDelay: 15
 	AttackFrontal:
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: throw
 		IdleSequences: idle
@@ -192,7 +185,6 @@ sardaukar:
 		Speed: 42
 	RevealsShroud:
 		Range: 6c0
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
 	Armament@PRIMARY:
@@ -222,8 +214,6 @@ saboteur:
 		Speed: 64
 	RevealsShroud:
 		Range: 7c0
-	TakeCover:
-	WithInfantryBody:
 	C4Demolition:
 		C4Delay: 45
 	-AutoTarget:
