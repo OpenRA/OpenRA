@@ -248,3 +248,4 @@ upgrade.hightech:
 	RenderSprites:
 		Image: hightech.atreides
 	ProvidesPrerequisite@upgradename:
+

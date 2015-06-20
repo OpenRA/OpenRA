@@ -68,3 +68,4 @@ combato.husk:
 	Inherits: ^combat.husk
 	TransformOnCapture:
 		IntoActor: combato
+

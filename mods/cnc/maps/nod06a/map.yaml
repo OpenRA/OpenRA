@@ -377,7 +377,7 @@ Actors:
 		Owner: Neutral
 	Actor114: v20
 		Location: 45,21
-		Owner: Neutral	
+		Owner: Neutral
 	Actor117: fact
 		Location: 50,32
 		Owner: GDI
@@ -658,7 +658,7 @@ Actors:
 	Radar: hq
 		Location: 57,32
 		Owner: GDI
-		
+
 Smudges:
 
 Rules:
@@ -682,7 +682,7 @@ Rules:
 	^Tank:
 		Tooltip:
 			GenericVisibility: Enemy
-			ShowOwnerRow: false		
+			ShowOwnerRow: false
 	^Infantry:
 		Tooltip:
 			GenericVisibility: Enemy
