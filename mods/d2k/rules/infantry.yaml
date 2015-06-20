@@ -17,6 +17,7 @@ rifle:
 	AttackFrontal:
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 	AttractsWorms:
 		Intensity: 120
 
@@ -71,6 +72,7 @@ bazooka:
 	AttackFrontal:
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 	AttractsWorms:
 		Intensity: 180
 
@@ -133,6 +135,7 @@ fremen:
 	AttackFrontal:
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 250
@@ -164,6 +167,7 @@ grenadier:
 	AttackFrontal:
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: throw
 		IdleSequences: idle
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -190,6 +194,7 @@ sardaukar:
 		Range: 6c0
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 	Armament@PRIMARY:
 		Weapon: Vulcan
 	Armament@SECONDARY:

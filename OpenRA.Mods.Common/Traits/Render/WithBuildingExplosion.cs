@@ -18,8 +18,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Display explosions over the building footprint when it is destroyed.")]
 	class WithBuildingExplosionInfo : ITraitInfo, Requires<BuildingInfo>
 	{
+		[Desc("Group where Sequence is looked up.")]
+		public readonly string SequenceCollection = "explosion";
+
 		[Desc("Explosion sequence name to use")]
-		public readonly string Sequence = "building";
+		[SequenceReference("SequenceCollection")] public readonly string Sequence = "building";
 
 		[Desc("Delay the explosions by this many ticks.")]
 		public readonly int Delay = 0;

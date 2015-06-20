@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string[] ImagesByFullness = { "harv" };
 
-		public readonly string HarvestSequence = "harvest";
+		[SequenceReference("ImagesByFullness")] public readonly string HarvestSequence = "harvest";
 
 		public override object Create(ActorInitializer init) { return new RenderHarvester(init, this); }
 	}

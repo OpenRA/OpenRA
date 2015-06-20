@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class WithRepairOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
-		public readonly string Sequence = "active";
+		[SequenceReference] public readonly string Sequence = "active";
 
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;

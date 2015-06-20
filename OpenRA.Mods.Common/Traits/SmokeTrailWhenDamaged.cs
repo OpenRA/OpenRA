@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WVec Offset = WVec.Zero;
 		public readonly int Interval = 3;
 		public readonly string Sprite = "smokey";
+		[SequenceReference("Sprite")] public readonly string Sequence = "idle";
 		public readonly string Palette = "effect";
 		public readonly DamageState MinDamage = DamageState.Heavy;
 
@@ -46,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var offset = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
 					var pos = position + body.LocalToWorld(offset);
-					self.World.AddFrameEndTask(w => w.Add(new Smoke(w, pos, info.Sprite, info.Palette)));
+					self.World.AddFrameEndTask(w => w.Add(new Smoke(w, pos, info.Sprite, info.Palette, info.Sequence)));
 				}
 
 				ticks = info.Interval;

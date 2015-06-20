@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	class WithBarrelInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
-		public readonly string Sequence = "barrel";
+		[SequenceReference] public readonly string Sequence = "barrel";
 
 		[Desc("Armament to use for recoil")]
 		public readonly string Armament = "primary";

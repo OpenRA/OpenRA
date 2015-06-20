@@ -20,13 +20,13 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly string Armament = "primary";
 
 		[Desc("Displayed while attacking.")]
-		public readonly string AttackSequence = null;
+		[SequenceReference] public readonly string AttackSequence = null;
 
 		[Desc("Displayed while targeting.")]
-		public readonly string AimSequence = null;
+		[SequenceReference] public readonly string AimSequence = null;
 
 		[Desc("Shown while reloading.")]
-		public readonly string ReloadPrefix = null;
+		[SequenceReference(null, true)] public readonly string ReloadPrefix = null;
 
 		public object Create(ActorInitializer init) { return new WithAttackAnimation(init, this); }
 	}

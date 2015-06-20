@@ -26,6 +26,7 @@ E1:
 		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 
 ENGINEER:

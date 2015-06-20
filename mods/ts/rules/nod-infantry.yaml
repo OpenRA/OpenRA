@@ -22,6 +22,7 @@ E3:
 		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 
 CYBORG:
@@ -56,10 +57,12 @@ CYBORG:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 	WithPermanentInjury:
 	SelectionDecorations:
 		VisualBounds: 16,31,0,-10
+	-TakeCover:
 
 CYC2:
 	Inherits: ^Infantry
@@ -95,10 +98,12 @@ CYC2:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 	WithPermanentInjury:
 	SelectionDecorations:
 		VisualBounds: 16,32,-1,-12
+	-TakeCover:
 
 MHIJACK:
 	Inherits: ^Infantry
@@ -126,5 +131,6 @@ MHIJACK:
 	-AutoTarget:
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 

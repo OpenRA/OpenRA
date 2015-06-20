@@ -21,10 +21,10 @@ namespace OpenRA.Mods.Common.Traits
 		Requires<RenderSpritesInfo>
 	{
 		[Desc("Animation to play when the actor is created.")]
-		public readonly string StartSequence = null;
+		[SequenceReference] public readonly string StartSequence = null;
 
 		[Desc("Animation to play when the actor is idle.")]
-		public readonly string Sequence = "idle";
+		[SequenceReference] public readonly string Sequence = "idle";
 
 		public virtual object Create(ActorInitializer init) { return new WithSpriteBody(init, this); }
 

@@ -20,10 +20,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class WithRotorInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use when flying")]
-		public readonly string Sequence = "rotor";
+		[SequenceReference] public readonly string Sequence = "rotor";
 
 		[Desc("Sequence name to use when landed")]
-		public readonly string GroundSequence = "slow-rotor";
+		[SequenceReference] public readonly string GroundSequence = "slow-rotor";
 
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;

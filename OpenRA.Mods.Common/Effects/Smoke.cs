@@ -21,14 +21,14 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Animation anim;
 		readonly string palette;
 
-		public Smoke(World world, WPos pos, string trail, string palette)
+		public Smoke(World world, WPos pos, string trail, string palette, string sequence)
 		{
 			this.world = world;
 			this.pos = pos;
 			this.palette = palette;
 
 			anim = new Animation(world, trail);
-			anim.PlayThen("idle",
+			anim.PlayThen(sequence,
 				() => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 

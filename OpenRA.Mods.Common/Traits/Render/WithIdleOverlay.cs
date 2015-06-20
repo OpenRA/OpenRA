@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class WithIdleOverlayInfo : UpgradableTraitInfo, ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
-		public readonly string Sequence = "idle-overlay";
+		[SequenceReference] public readonly string Sequence = "idle-overlay";
 
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;

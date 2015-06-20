@@ -10,6 +10,7 @@
 
 namespace OpenRA.Traits
 {
+	[Desc("Attach this to the `World` actor.")]
 	public class CountryInfo : TraitInfo<Country>
 	{
 		[Desc("This is the name exposed to the players.")]

@@ -24,6 +24,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Chance (out of 100) the unit has to enter panic mode when attacked.")]
 		public readonly int AttackPanicChance = 20;
 
+		[SequenceReference(null, true)] public readonly string PanicSequencePrefix = "panic-";
+
 		public object Create(ActorInitializer init) { return new ScaredyCat(init.Self, this); }
 	}
 
@@ -36,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool Panicking { get { return panicStartedTick > 0; } }
 
 		public bool IsModifyingSequence { get { return Panicking; } }
-		public string SequencePrefix { get { return "panic-"; } }
+		public string SequencePrefix { get { return info.PanicSequencePrefix; } }
 
 		public ScaredyCat(Actor self, ScaredyCatInfo info)
 		{

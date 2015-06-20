@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Effects
 	class MissileInfo : IProjectileInfo
 	{
 		public readonly string Image = null;
+		[SequenceReference("Image")] public readonly string Sequence = "idle";
 		public readonly string Palette = "effect";
 		public readonly bool Shadow = false;
 		[Desc("Projectile speed in WRange / tick")]
@@ -171,7 +172,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			if (!string.IsNullOrEmpty(info.Trail) && --ticksToNextSmoke < 0)
 			{
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, pos - 3 * move / 2, info.Trail, trailPalette)));
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, pos - 3 * move / 2, info.Trail, trailPalette, info.Sequence)));
 				ticksToNextSmoke = info.TrailInterval;
 			}
 

@@ -23,12 +23,16 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Easteregg sequences to use in december.")]
 		public readonly string[] XmasImages = { };
 
+		[SequenceReference] public readonly string IdleSequence = "idle";
+		public readonly string WaterSequence = null;
+		public readonly string LandSequence = null;
+
 		public object Create(ActorInitializer init) { return new WithCrateBody(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
 			var anim = new Animation(init.World, rs.Image, () => 0);
-			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), "idle"));
+			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), IdleSequence));
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
 
@@ -39,22 +43,27 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly Animation anim;
+		readonly WithCrateBodyInfo info;
 
 		public WithCrateBody(Actor self, WithCrateBodyInfo info)
 		{
 			this.self = self;
+			this.info = info;
+
 			var rs = self.Trait<RenderSprites>();
 			var image = rs.GetImage(self);
 			var images = info.XmasImages.Any() && DateTime.Today.Month == 12 ? info.XmasImages : new[] { image };
+
 			anim = new Animation(self.World, images.Random(Game.CosmeticRandom));
-			anim.Play("idle");
+			anim.Play(info.IdleSequence);
 			rs.Add(anim);
 		}
 
 		public void OnLanded()
 		{
-			var seq = self.World.Map.GetTerrainInfo(self.Location).IsWater ? "water" : "land";
-			anim.PlayRepeating(seq);
+			var sequence = self.World.Map.GetTerrainInfo(self.Location).IsWater ? info.WaterSequence : info.LandSequence;
+			if (!string.IsNullOrEmpty(sequence))
+				anim.PlayRepeating(sequence);
 		}
 	}
 }

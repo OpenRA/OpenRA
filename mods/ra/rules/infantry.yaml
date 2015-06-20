@@ -35,12 +35,14 @@ DOG:
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 	IgnoresDisguise:
 	DetectCloaked:
 		Range: 5
 	Voiced:
 		VoiceSet: DogVoice
+	-TakeCover:
 
 E1:
 	Inherits: ^Infantry
@@ -67,6 +69,7 @@ E1:
 	AttackFrontal:
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
 
@@ -97,6 +100,7 @@ E2:
 	AttackFrontal:
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: throw
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
 	Explodes:
@@ -131,6 +135,7 @@ E3:
 	AttackFrontal:
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
 
@@ -160,6 +165,7 @@ E4:
 	AttackFrontal:
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
 
@@ -226,6 +232,7 @@ SPY:
 	-AutoTarget:
 	-WithInfantryBody:
 	WithDisguisingInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
 	Armament:
@@ -288,6 +295,7 @@ E7:
 	AttackFrontal:
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 	AnnounceOnBuild:
 	AnnounceOnKill:
@@ -363,7 +371,7 @@ MECH:
 	-AutoTarget:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
-		AttackSequence: heal
+		AttackSequence: repair
 	Voiced:
 		VoiceSet: MechanicVoice
 
@@ -434,6 +442,7 @@ GNRL:
 		Voice: Move
 	Voiced:
 		VoiceSet: StavrosVoice
+	-ScaredyCat:
 
 THF:
 	Inherits: ^Infantry
@@ -519,6 +528,7 @@ SHOK:
 		Voice: Move
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
 	Voiced:
@@ -555,6 +565,7 @@ SNIPER:
 	AttackFrontal:
 	TakeCover:
 	WithInfantryBody:
+		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
 	Cloak:
@@ -585,10 +596,13 @@ Zombie:
 	AutoTarget:
 		ScanRadius: 5
 	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: bite
 	Armament:
 		Weapon: claw
 	Voiced:
 		VoiceSet: AntVoice
+	-TakeCover:
 
 Ant:
 	Inherits: ^Infantry
@@ -615,6 +629,8 @@ Ant:
 	AutoTarget:
 		ScanRadius: 5
 	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: bite
 	Armament:
 		Weapon: mandible
 	TargetableUnit:
@@ -623,4 +639,5 @@ Ant:
 		UseDeathTypeSuffix: false
 	Voiced:
 		VoiceSet: AntVoice
+	-TakeCover:
 

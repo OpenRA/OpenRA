@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	class WithHarvestAnimationInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
-		public readonly string Sequence = "harvest";
+		[SequenceReference] public readonly string Sequence = "harvest";
 
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;

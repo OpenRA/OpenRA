@@ -40,14 +40,14 @@ namespace OpenRA.Mods.Common.Effects
 			if (parachuteSprite != null)
 			{
 				parachute = new Animation(cargo.World, parachuteSprite);
-				parachute.PlayThen("open", () => parachute.PlayRepeating("idle"));
+				parachute.PlayThen(parachutableInfo.ParachuteOpenSequence, () => parachute.PlayRepeating(parachutableInfo.ParachuteIdleSequence));
 			}
 
 			var shadowSprite = parachutableInfo != null ? parachutableInfo.ShadowSequence : null;
 			if (shadowSprite != null)
 			{
 				shadow = new Animation(cargo.World, shadowSprite);
-				shadow.PlayRepeating("idle");
+				shadow.PlayRepeating(parachutableInfo.ParachuteIdleSequence);
 			}
 
 			if (parachutableInfo != null)

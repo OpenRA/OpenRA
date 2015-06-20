@@ -355,7 +355,7 @@ mech:
 		Length: 6
 		Facings: 8
 		Tick: 100
-	heal:
+	repair:
 		Start: 56
 		Length: 58
 		Tick: 120
@@ -422,7 +422,7 @@ e2:
 		Length: 6
 		Facings: 8
 		Tick: 80
-	shoot:
+	throw:
 		Start: 64
 		Length: 20
 		Facings: 8
@@ -472,7 +472,7 @@ e2:
 		Length: 4
 		Facings: 8
 		Tick: 80
-	prone-shoot:
+	prone-throw:
 		Start: 288
 		Length: 12
 		Facings: 8
@@ -1278,7 +1278,7 @@ zombie:
 		Start: 16
 		Length: 6
 		Facings: 8
-	shoot:
+	bite:
 		Start: 64
 		Length: 4
 		Facings: 8
@@ -1327,7 +1327,7 @@ ant:
 		Start: 8
 		Length: 8
 		Facings: 8
-	shoot:
+	bite:
 		Start: 72
 		Length: 4
 		Facings: 8
