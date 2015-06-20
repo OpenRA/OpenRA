@@ -50,17 +50,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					visibilityDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, mapVisibility, setupItem);
 			}
 
+			Func<string, string> makeMapDirectory = dir =>
+			{
+				var f = Platform.UnresolvePath(dir);
+				if (f.StartsWith("~"))
+					f = f.Substring(1);
+
+				return f;
+			};
+
+			var mapDirectories = Game.ModData.Manifest.MapFolders
+				.ToDictionary(kv => makeMapDirectory(kv.Key), kv => Enum<MapClassification>.Parse(kv.Value));
+
 			var directoryDropdown = widget.Get<DropDownButtonWidget>("DIRECTORY_DROPDOWN");
 			{
-				var mapDirectories = Game.ModData.Manifest.MapFolders.Keys.Select(ff =>
-				{
-					var f = Platform.UnresolvePath(ff);
-					if (f.StartsWith("~"))
-						f = f.Substring(1);
-
-					return f;
-				}).ToList();
-
 				Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 				{
 					var item = ScrollItemWidget.Setup(template,
@@ -71,14 +74,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				var mapDirectory = Platform.UnresolvePath(Path.GetDirectoryName(map.Path));
-				var initialDirectory = mapDirectories.FirstOrDefault(f => f == mapDirectory);
+				var initialDirectory = mapDirectories.Keys.FirstOrDefault(f => f == mapDirectory);
 
 				if (initialDirectory == null)
-					initialDirectory = mapDirectories.First();
+					initialDirectory = mapDirectories.Keys.First();
 
 				directoryDropdown.Text = initialDirectory;
 				directoryDropdown.OnClick = () =>
-					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, mapDirectories, setupItem);
+					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, mapDirectories.Keys, setupItem);
 			}
 
 			var filename = widget.Get<TextFieldWidget>("FILENAME");
@@ -130,7 +133,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				map.Save(combinedPath);
 
 				// Update the map cache so it can be loaded without restarting the game
-				Game.ModData.MapCache[map.Uid].UpdateFromMap(map, MapClassification.User);
+				var classification = mapDirectories[directoryDropdown.Text];
+				Game.ModData.MapCache[map.Uid].UpdateFromMap(map, classification);
 
 				Console.WriteLine("Saved current map at {0}", combinedPath);
 				Ui.CloseWindow();
