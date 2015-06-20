@@ -300,6 +300,7 @@
 			Tiberium: 70
 			BlueTiberium: 70
 			Beach: 80
+		Voice: Move
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24,24
@@ -317,7 +318,9 @@
 	AutoTarget:
 		ScanRadius: 4
 	AttackMove:
+		Voice: Attack
 	AttackFrontal:
+		Voice: Attack
 	UpdatesPlayerStatistics:
 	Huntable:
 	ScriptTriggers:

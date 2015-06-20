@@ -14,6 +14,7 @@ BADR:
 	Cargo:
 		MaxWeight: 10
 	-Selectable:
+	-Voiced:
 	-GainsExperience:
 	Tooltip:
 		Name: Badger
@@ -53,6 +54,7 @@ BADR.Bomber:
 		Ammo: 7
 	WithFacingSpriteBody:
 	-Selectable:
+	-Voiced:
 	-GainsExperience:
 	Tooltip:
 		Name: Badger
@@ -348,6 +350,7 @@ U2:
 	WithFacingSpriteBody:
 	AttackBomber:
 	-Selectable:
+	-Voiced:
 	-TargetableAircraft:
 	-GainsExperience:
 	Contrail@1:

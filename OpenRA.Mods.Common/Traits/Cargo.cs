@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] UnloadTerrainTypes = { };
 
 		[Desc("Voice to play when ordered to unload the passengers.")]
-		public readonly string UnloadVoice = "Unload";
+		[VoiceReference] public readonly string UnloadVoice = "Action";
 
 		[Desc("Which direction the passenger will face (relative to the transport) when unloading.")]
 		public readonly int PassengerFacing = 128;

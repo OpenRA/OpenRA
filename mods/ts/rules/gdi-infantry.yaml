@@ -18,6 +18,7 @@ E2:
 		LocalOffset: 0,0,555
 		FireDelay: 5
 	AttackFrontal:
+		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -43,7 +44,7 @@ MEDIC:
 		CrushSound: squishy2.aud
 	Armament:
 		Weapon: Heal
-	AttackFrontal:
+	AttackMedic:
 	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -79,6 +80,7 @@ JUMPJET:
 		Weapon: JumpCannon
 	-Crushable:
 	AttackFrontal:
+		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
 
@@ -111,8 +113,10 @@ GHOST:
 	Crushable:
 		CrushSound: squishy2.aud
 	AttackFrontal:
+		Voice: Attack
 	C4Demolition:
 		C4Delay: 45
+		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2

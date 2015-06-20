@@ -23,6 +23,7 @@ E1:
 		UpgradeTypes: eliteweapon
 		UpgradeMinEnabledLevel: 1
 	AttackFrontal:
+		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2

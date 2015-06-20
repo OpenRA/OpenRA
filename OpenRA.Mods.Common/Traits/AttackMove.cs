@@ -18,6 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Provides access to the attack-move command, which will make the actor automatically engage viable targets while moving to the destination.")]
 	class AttackMoveInfo : ITraitInfo
 	{
+		[VoiceReference] public readonly string Voice = "Action";
+
 		public object Create(ActorInitializer init) { return new AttackMove(init.Self, this); }
 	}
 
@@ -27,16 +29,18 @@ namespace OpenRA.Mods.Common.Traits
 		public CPos? TargetLocation = null;
 
 		readonly IMove move;
+		readonly AttackMoveInfo info;
 
 		public AttackMove(Actor self, AttackMoveInfo info)
 		{
 			move = self.Trait<IMove>();
+			this.info = info;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "AttackMove")
-				return "AttackMove";
+				return info.Voice;
 
 			return null;
 		}

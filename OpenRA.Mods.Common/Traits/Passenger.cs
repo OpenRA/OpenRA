@@ -103,6 +103,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Upgrade types to grant to transport.")]
 		public readonly string[] GrantUpgrades = { };
 
+		[VoiceReference] public readonly string Voice = "Action";
+
 		public object Create(ActorInitializer init) { return new Passenger(this); }
 	}
 
@@ -154,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if ((order.OrderString != "EnterTransport" && order.OrderString != "EnterTransports") ||
 				!CanEnter(order.TargetActor)) return null;
-			return "Move";
+			return Info.Voice;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

@@ -41,6 +41,8 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Cursor to display when unable to deploy the actor.")]
 		public readonly string DeployBlockedCursor = "deploy-blocked";
 
+		[VoiceReference] public readonly string Voice = "Action";
+
 		public object Create(ActorInitializer init) { return new PortableChrono(this); }
 	}
 
@@ -93,7 +95,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "PortableChronoTeleport" && CanTeleport ? "Move" : null;
+			return order.OrderString == "PortableChronoTeleport" && CanTeleport ? Info.Voice : null;
 		}
 
 		public void ResetChargeTime()

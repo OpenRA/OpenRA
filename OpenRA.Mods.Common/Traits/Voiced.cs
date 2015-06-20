@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class VoicedInfo : ITraitInfo
 	{
 		[Desc("Which voice set to use.")]
-		[VoiceReference] public readonly string VoiceSet = null;
+		[VoiceSetReference] public readonly string VoiceSet = null;
 
 		[Desc("Multiply volume with this factor.")]
 		public readonly float Volume = 1f;

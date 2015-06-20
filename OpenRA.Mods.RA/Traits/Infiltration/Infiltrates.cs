@@ -22,6 +22,8 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		public readonly string[] Types = { };
 
+		[VoiceReference] public readonly string Voice = "Action";
+
 		public object Create(ActorInitializer init) { return new Infiltrates(this); }
 	}
 
@@ -81,7 +83,7 @@ namespace OpenRA.Mods.RA.Traits
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "Infiltrate" && IsValidOrder(self, order)
-				? "Attack" : null;
+				? info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

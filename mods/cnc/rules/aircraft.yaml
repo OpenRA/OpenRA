@@ -170,6 +170,7 @@ C17:
 		PipCount: 10
 	Invulnerable:
 	-Selectable:
+	-Voiced:
 	-TargetableUnit:
 	-GainsExperience:
 	FlyAwayOnIdle:
@@ -219,6 +220,7 @@ A10:
 		Weapon: Napalm
 		LocalOffset: 0,-256,-43, 0,256,-43
 	-Selectable:
+	-Voiced:
 	-TargetableUnit:
 	-GainsExperience:
 	FlyAwayOnIdle:

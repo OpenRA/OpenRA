@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Lint
 					CheckReference(actorInfo, traitInfo, field, map.Rules.Actors, "actor");
 				if (field.HasAttribute<WeaponReferenceAttribute>())
 					CheckReference(actorInfo, traitInfo, field, map.Rules.Weapons, "weapon");
-				if (field.HasAttribute<VoiceReferenceAttribute>())
+				if (field.HasAttribute<VoiceSetReferenceAttribute>())
 					CheckReference(actorInfo, traitInfo, field, map.Rules.Voices, "voice");
 			}
 		}

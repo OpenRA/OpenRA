@@ -57,9 +57,21 @@ namespace OpenRA
 				}
 			}
 
-			var voicedActor = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasTrait<IVoiced>());
-			if (voicedActor != null)
-				voicedActor.PlayVoice("Select");
+			// Play the selection voice from one of the selected actors
+			// TODO: This probably should only be considering the newly selected actors
+			// TODO: Ship this into an INotifySelection trait to remove the engine dependency on Selectable
+			foreach (var actor in actors)
+			{
+				if (actor.Owner != world.LocalPlayer || !actor.IsInWorld)
+					continue;
+
+				var selectable = actor.Info.Traits.GetOrDefault<SelectableInfo>();
+				if (selectable == null || !actor.HasVoice(selectable.Voice))
+					continue;
+
+				actor.PlayVoice(selectable.Voice);
+				break;
+			}
 
 			foreach (var a in newSelection)
 				foreach (var sel in a.TraitsImplementing<INotifySelected>())

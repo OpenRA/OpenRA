@@ -179,19 +179,27 @@ RMBO:
 		Queue: Infantry.GDI
 	Mobile:
 		Speed: 71
+		Voice: Move
+	Guard:
+		Voice: Move
 	Health:
 		HP: 150
 	Passenger:
 		PipType: Red
+		Voice: Move
 	RevealsShroud:
 		Range: 6c0
 	AutoTarget:
 		ScanRadius: 6
 	C4Demolition:
 		C4Delay: 45
+		Voice: Demolish
 	Armament:
 		Weapon: Sniper
 	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2,idle3

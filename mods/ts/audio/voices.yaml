@@ -40,7 +40,7 @@ Medic:
 	Voices:
 		Select: 20-I000, 20-I004, 20-I006
 		Move: 20-I008, 20-I010, 20-I012
-		Attack: 20-I016, 20-I018, 20-I020
+		Action: 20-I016, 20-I018, 20-I020
 		Die: DEDMAN1, DEDMAN3, DEDMAN4, DEDMAN5, DEDMAN6
 		Burned: DEDMAN2
 		Zapped: ELECTRO1
@@ -49,7 +49,7 @@ Engineer:
 	Voices:
 		Select: 19-I000, 19-I002, 19-I006
 		Move: 19-I010, 19-I016
-		Attack: 19-I018, 19-I016
+		Action: 19-I018, 19-I016
 		Die: DEDMAN1, DEDMAN3, DEDMAN4, DEDMAN5, DEDMAN6
 		Burned: DEDMAN2
 		Zapped: ELECTRO1
@@ -78,7 +78,7 @@ Spy:
 	Voices:
 		Select: 21-I000, 21-I002, 21-I004
 		Move: 21-I010, 21-I012, 21-I016
-		Attack: 21-I010, 21-I012, 21-I022
+		Action: 21-I010, 21-I012, 21-I022
 #		Feedback: 21-I000, 21-I002 # TODO
 		Die: DEDMAN1, DEDMAN3, DEDMAN4, DEDMAN5, DEDMAN6
 		Burned: DEDMAN2
@@ -88,7 +88,7 @@ Hijacker:
 	Voices:
 		Select: 24-I000, 24-I002, 24-I004, 24-I006
 		Move: 24-I008, 24-I010, 24-I012, 24-I014
-		Attack: 24-I016, 24-I018, 24-I020, 24-I022, 24-I024
+		Action: 24-I016, 24-I018, 24-I020, 24-I022, 24-I024
 		Die: DEDMAN1, DEDMAN3, DEDMAN4, DEDMAN5, DEDMAN6
 		Burned: DEDMAN2
 		Zapped: ELECTRO1
@@ -149,9 +149,9 @@ Slavick:
 
 Fiend:
 	Voices:
-		Select:
-		Move:
-		Attack:
+		Select: FIEND1
+		Attack: FIEND1
+		Move: FIEND1
 		Die: FIEND1
 		Burned: FIEND1
 		Zapped: FIEND1

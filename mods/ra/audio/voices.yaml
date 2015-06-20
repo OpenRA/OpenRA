@@ -9,7 +9,7 @@ GenericVoice:
 		ukraine: .r01,.r03
 	Voices:
 		Select: await1,ready,report1,yessir1
-		Move: ackno,affirm1,noprob,overout,ritaway,roger,ugotit
+		Action: ackno,affirm1,noprob,overout,ritaway,roger,ugotit
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 		Burned: dedman10
 		Zapped: dedman6
@@ -26,13 +26,12 @@ VehicleVoice:
 		ukraine: .r00,.r02
 	Voices:
 		Select: vehic1,yessir1,report1,await1
-		Move: ackno,affirm1
-		Unload: ackno,affirm1
+		Action: ackno,affirm1
 
 EngineerVoice:
 	Voices:
 		Select: eengin1,eyessir1
-		Move: eaffirm1,emovout1
+		Action: eaffirm1,emovout1
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 		Burned: dedman10
 		Zapped: dedman6
@@ -40,7 +39,7 @@ EngineerVoice:
 MedicVoice:
 	Voices:
 		Select: mrespon1,myessir1
-		Move: maffirm1,mmovout1
+		Action: maffirm1,mmovout1
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 		Burned: dedman10
 		Zapped: dedman6
@@ -49,7 +48,7 @@ MechanicVoice:
 	Voices:
 		Select: mhuh1,mhowdy1,myes1,mrise1
 		Move: mboss1,mhear1
-		Attack: mhotdig1,mwrench1
+		Action: mhotdig1,mwrench1
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 		Burned: dedman10
 		Zapped: dedman6
@@ -58,7 +57,7 @@ TanyaVoice:
 	Voices:
 		Select: yo1,yes1,yeah1
 		Move: onit1,cmon1,rokroll1
-		Attack: tuffguy1,bombit1
+		Action: tuffguy1,bombit1
 		Die: tandeth1
 		Burned: tandeth1
 		Zapped: tandeth1
@@ -79,7 +78,7 @@ SpyVoice:
 	Voices:
 		Select: syessir1,scomnd1
 		Move: sonway1,sindeed1
-		Attack: sking1
+		Action: sking1
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 		Burned: dedman10
 		Zapped: dedman6
@@ -87,7 +86,7 @@ SpyVoice:
 ThiefVoice:
 	Voices:
 		Select: swhat1,syeah1
-		Move: saffirm1,smout1,sokay1
+		Action: saffirm1,smout1,sokay1
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 		Burned: dedman10
 		Zapped: dedman6
@@ -95,7 +94,7 @@ ThiefVoice:
 CivilianMaleVoice:
 	Voices:
 		Select: guyyeah1
-		Move: guyokay1
+		Action: guyokay1
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 		Burned: dedman10
 		Zapped: dedman6
@@ -103,7 +102,7 @@ CivilianMaleVoice:
 CivilianFemaleVoice:
 	Voices:
 		Select: girlyeah
-		Move: girlokay
+		Action: girlokay
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 		Burned: dedman10
 		Zapped: dedman6
@@ -111,7 +110,7 @@ CivilianFemaleVoice:
 EinsteinVoice:
 	Voices:
 		Select: einah1
-		Move: einok1,einyes1
+		Action: einok1,einyes1
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 		Burned: dedman10
 		Zapped: dedman6
@@ -128,8 +127,7 @@ ShokVoice:
 AntVoice:
 	Voices:
 		Select: antbite
-		Move: antbite
-		Attack: antbite
+		Action: antbite
 		Die: antdie
 		Burned: antdie
 		Zapped: antdie

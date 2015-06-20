@@ -213,6 +213,7 @@
 			Rough: 70
 			Tiberium: 80
 			BlueTiberium: 80
+		Voice: Move
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -241,8 +242,10 @@
 			EnergyDeath: 6
 	AutoTarget:
 	AttackMove:
+		Voice: Move
 	Passenger:
 		CargoType: Infantry
+		Voice: Move
 	HiddenUnderFog:
 	GivesExperience:
 	DrawLineToTarget:
@@ -259,6 +262,7 @@
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	Guard:
+		Voice: Move
 	Guardable:
 	BodyOrientation:
 	Huntable:
@@ -314,6 +318,7 @@
 			Tiberium: 80
 			BlueTiberium: 80
 		ROT: 5
+		Voice: Move
 	Selectable:
 	SelectionDecorations:
 		Palette: pips
@@ -323,9 +328,12 @@
 		TargetTypes: Ground, Vehicle
 	Repairable:
 		RepairBuildings: gadept
+		Voice: Move
 	Passenger:
 		CargoType: Vehicle
+		Voice: Move
 	AttackMove:
+		Voice: Move
 	HiddenUnderFog:
 	GivesExperience:
 	DrawLineToTarget:
@@ -340,6 +348,7 @@
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	Guard:
+		Voice: Move
 	Guardable:
 	BodyOrientation:
 		CameraPitch: 90
@@ -383,6 +392,7 @@
 			Tiberium: 80
 			BlueTiberium: 80
 		ROT: 5
+		Voice: Move
 	Selectable:
 	SelectionDecorations:
 		Palette: pips
@@ -392,9 +402,12 @@
 		TargetTypes: Ground, Vehicle
 	Repairable:
 		RepairBuildings: gadept
+		Voice: Move
 	Passenger:
 		CargoType: Vehicle
+		Voice: Move
 	AttackMove:
+		Voice: Move
 	HiddenUnderFog:
 	GivesExperience:
 	DrawLineToTarget:
@@ -409,6 +422,7 @@
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	Guard:
+		Voice: Move
 	Guardable:
 	BodyOrientation:
 		CameraPitch: 90
@@ -455,8 +469,10 @@
 		RearmBuildings:
 		LandWhenIdle: no
 		CruiseAltitude: 2048
+		Voice: Move
 	HiddenUnderFog:
 	AttackMove:
+		Voice: Move
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -466,6 +482,7 @@
 	Huntable:
 	ScriptTriggers:
 	Guard:
+		Voice: Move
 	Guardable:
 	UpgradeManager:
 	MustBeDestroyed:
@@ -478,6 +495,7 @@
 		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: no
 		CruiseAltitude: 2560
+		Voice: Move
 	ReturnOnIdle:
 
 ^Viceroid:

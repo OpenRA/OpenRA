@@ -32,6 +32,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does not care about shroud or fog. Enables the actor to launch an attack against a target even if he has no visibility of it.")]
 		public readonly bool IgnoresVisibility = false;
 
+		[VoiceReference] public readonly string Voice = "Action";
+
 		public abstract object Create(ActorInitializer init);
 	}
 
@@ -141,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "Attack" ? "Attack" : null;
+			return order.OrderString == "Attack" ? Info.Voice : null;
 		}
 
 		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove);

@@ -26,6 +26,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Only used if Sabotage=true. Sabotage damage expressed as a percentage of enemy health removed.")]
 		public readonly float SabotageHPRemoval = 0.5f;
 
+		[VoiceReference] public readonly string Voice = "Action";
+
 		public object Create(ActorInitializer init) { return new Captures(init.Self, this); }
 	}
 
@@ -59,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "CaptureActor" ? "Attack" : null;
+			return order.OrderString == "CaptureActor" ? Info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

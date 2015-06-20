@@ -221,7 +221,6 @@ saboteur:
 	WithInfantryBody:
 	C4Demolition:
 		C4Delay: 45
-		Voice: Move
 	-AutoTarget:
 	AttractsWorms:
 		Intensity: 120

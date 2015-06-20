@@ -45,6 +45,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to (un)deploy the actor.")]
 		public readonly string DeployBlockedCursor = "deploy-blocked";
 
+		[VoiceReference] public readonly string Voice = "Action";
+
 		public virtual object Create(ActorInitializer init) { return new Transforms(init, this); }
 	}
 
@@ -65,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "DeployTransform") ? "Move" : null;
+			return (order.OrderString == "DeployTransform") ? info.Voice : null;
 		}
 
 		bool CanDeploy()

@@ -30,6 +30,7 @@ MCV:
 		Facing: 96
 		TransformSounds: facbld1.aud
 		NoTransformSounds:
+		Voice: Move
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -57,6 +58,8 @@ HARV:
 		UnloadTicksPerBale: 1
 		SearchFromProcRadius: 24
 		SearchFromOrderRadius: 12
+		HarvestVoice: Attack
+		DeliverVoice: Move
 	Mobile:
 		Speed: 71
 		Crushes: wall, crate
@@ -117,6 +120,7 @@ LPST:
 		Facing: 159
 		TransformSounds:
 		NoTransformSounds:
+		Voice: Move
 
 GGHUNT:
 	Inherits: ^Vehicle
@@ -135,6 +139,7 @@ GGHUNT:
 		Range: 7c0
 	WithFacingSpriteBody:
 	DemoTruck:
+		Voice: Attack
 	Explodes:
 		Weapon: SuicideBomb
 		EmptyWeapon: SuicideBomb

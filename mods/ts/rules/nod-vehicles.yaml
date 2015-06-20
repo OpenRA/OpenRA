@@ -24,6 +24,7 @@ BGGY:
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	AttackFrontal:
+		Voice: Attack
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
@@ -62,6 +63,7 @@ BIKE:
 		UpgradeMinEnabledLevel: 1
 		LocalOffset: -128,-170,213, -128,170,213
 	AttackFrontal:
+		Voice: Attack
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
@@ -87,6 +89,7 @@ TTNK:
 	Armor:
 		Type: Light
 	AttackFrontal:
+		Voice: Attack
 	Armament@PRIMARY:
 		Weapon: 90mm
 		LocalOffset: 256,0,256
@@ -111,6 +114,7 @@ TTNK:
 		Facing: 159
 		TransformSounds: place2.aud
 		NoTransformSounds:
+		Voice: Move
 
 ART2:
 	Inherits: ^Tank
@@ -141,6 +145,7 @@ ART2:
 		Facing: 96
 		TransformSounds:
 		NoTransformSounds:
+		Voice: Move
 
 REPAIR:
 	Inherits: ^Tank
@@ -165,6 +170,7 @@ REPAIR:
 	AttackMedic:
 		Cursor: repair
 		OutsideRangeCursor: repair
+		Voice: Attack
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -218,6 +224,7 @@ SAPC:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
+		UnloadVoice: Unload
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -246,6 +253,7 @@ SUBTANK:
 	Armament:
 		Weapon: FireballLauncher
 	AttackFrontal:
+		Voice: Attack
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
@@ -281,6 +289,7 @@ STNK:
 		Weapon: Dragon
 		LocalOffset: 213,43,128, 213,-43,128
 	AttackFrontal:
+		Voice: Attack
 	AutoTarget:
 		InitialStance: HoldFire
 	RenderSprites:

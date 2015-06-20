@@ -185,6 +185,7 @@
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
     <Compile Include="Lint\CheckDeathTypes.cs" />
+    <Compile Include="Lint\CheckVoiceReferences.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
     <Compile Include="Lint\LintExts.cs" />
     <Compile Include="LoadScreens\ModChooserLoadScreen.cs" />

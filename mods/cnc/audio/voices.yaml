@@ -4,7 +4,7 @@ GenericVoice:
 		gdi: .v01,.v03
 	Voices:
 		Select: await1,ready,report1,yessir1
-		Move: ackno,affirm1,noprob,ritaway,roger,ugotit
+		Action: ackno,affirm1,noprob,ritaway,roger,ugotit
 		Die: nuyell1,nuyell4,nuyell5,nuyell6
 		Burned: yell1
 		Zapped: nuyell3
@@ -17,13 +17,13 @@ VehicleVoice:
 		gdi: .v00,.v02
 	Voices:
 		Select: vehic1,yessir1,report1,await1,unit1
-		Move: ackno,affirm1,movout1
+		Action: ackno,affirm1,movout1
 		Unload: movout1
 
 CivilianMaleVoice:
 	Voices:
 		Select: guyyeah1
-		Move: guyokay1
+		Action: guyokay1
 		Die: nuyell1,nuyell4,nuyell5,nuyell6
 		Burned: yell1
 		Zapped: nuyell3
@@ -32,7 +32,7 @@ CivilianMaleVoice:
 CivilianFemaleVoice:
 	Voices:
 		Select: girlyeah
-		Move: girlokay
+		Action: girlokay
 		Die: nuyell1,nuyell4,nuyell5,nuyell6
 		Burned: yell1
 		Zapped: nuyell3

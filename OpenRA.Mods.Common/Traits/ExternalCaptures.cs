@@ -21,8 +21,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Types of actors that it can capture, as long as the type also exists in the ExternalCapturable Type: trait.")]
 		public readonly string[] CaptureTypes = { "building" };
+
 		[Desc("Destroy the unit after capturing.")]
 		public readonly bool ConsumeActor = false;
+
+		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new ExternalCaptures(init.Self, this); }
 	}
@@ -83,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "ExternalCaptureActor" && IsValidOrder(self, order)
-				? "Attack" : null;
+				? Info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

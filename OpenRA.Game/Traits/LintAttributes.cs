@@ -21,5 +21,8 @@ namespace OpenRA.Traits
 	public sealed class WeaponReferenceAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Field)]
+	public sealed class VoiceSetReferenceAttribute : Attribute { }
+
+	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class VoiceReferenceAttribute : Attribute { }
 }
