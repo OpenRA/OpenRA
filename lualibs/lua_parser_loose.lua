@@ -173,17 +173,17 @@ function PARSE.parse_scope(lx, f, level)
         scopes[#scopes].inside_table = newval
       end
     elseif c.tag == 'Id' then
+      local scope = #scopes
+      local inside_local = scopes[scope].inside_local ~= nil
+      local inside_table = scopes[scope].inside_table
       local cnext = lx:peek()
       if cnext.tag == 'Keyword' and (cnext[1] == '(' or cnext[1] == '{')
       or cnext.tag == 'String' then
-        f('FunctionCall', c[1], c.lineinfo, scopes[#scopes].inside_local ~= nil)
+        f('FunctionCall', c[1], c.lineinfo, inside_local)
       end
-      local scope = #scopes
-      local inside_local = scopes[scope].inside_local ~= nil
       -- either this is inside a table or it continues from a comma,
       -- which may be a field assignment, so assume it's in a table
-      if (scopes[scope].inside_table or cprev[1] == ',')
-      and cnext.tag == 'Keyword' and cnext[1] == '=' then
+      if (inside_table or cprev[1] == ',') and cnext.tag == 'Keyword' and cnext[1] == '=' then
         -- table field; table fields are tricky to handle during incremental
         -- processing as "a = 1" may be either an assignment (in which case
         -- 'a' is Id) or a field initialization (in which case it's a String).
@@ -199,7 +199,8 @@ function PARSE.parse_scope(lx, f, level)
       else
         f('Id', c[1], c.lineinfo, true)
         -- this looks like the left side of (multi-variable) assignment
-        while lx:peek().tag == 'Keyword' and lx:peek()[1] == ',' do
+        -- unless it's a part of `= var, field = value`, so skip if inside a table
+        while not inside_table and lx:peek().tag == 'Keyword' and lx:peek()[1] == ',' do
           local c = lx:next(); if lx:peek().tag ~= 'Id' then break end
           c = lx:next()
           f('Id', c[1], c.lineinfo, true)
