@@ -12,7 +12,7 @@ Tileset: SNOW
 
 MapSize: 165,240
 
-Bounds: 2,4,161,216
+Bounds: 2,4,161,224
 
 Visibility: Lobby
 
@@ -28,6 +28,11 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: Random
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
@@ -68,11 +73,6 @@ Players:
 		Playable: True
 		Race: Random
 		Enemies: Creeps
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Race: Random
-		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 
 Actors:
 	Actor0: aban01
