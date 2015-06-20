@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return item;
 				};
 
-				typeDropdown.Text = Path.GetExtension(map.Path);
+				typeDropdown.Text = map.Path != null ? Path.GetExtension(map.Path) : ".oramap";
 				if (string.IsNullOrEmpty(typeDropdown.Text))
 					typeDropdown.Text = fileTypes.First(t => t.Value == "").Key;
 
@@ -137,7 +137,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var combinedPath = Platform.ResolvePath(Path.Combine(directoryDropdown.Text, filename.Text + fileTypes[typeDropdown.Text]));
 
 				// Invalidate the old map metadata
-				Game.ModData.MapCache[map.Uid].Invalidate();
+				if (map.Uid != null)
+					Game.ModData.MapCache[map.Uid].Invalidate();
 
 				map.Save(combinedPath);
 
