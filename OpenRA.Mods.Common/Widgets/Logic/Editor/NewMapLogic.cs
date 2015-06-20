@@ -82,12 +82,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var newMap = new Map(tempLocation);
 				Game.ModData.MapCache[newMap.Uid].UpdateFromMap(newMap, MapClassification.User);
 
-				ConnectionLogic.Connect(System.Net.IPAddress.Loopback.ToString(),
-					Game.CreateLocalServer(newMap.Uid),
-					"",
-					() => { Game.LoadEditor(newMap.Uid); },
-					() => { Game.CloseServer(); onExit(); });
-				onSelect(newMap.Uid);
+				Game.RunAfterTick(() =>
+				{
+					ConnectionLogic.Connect(System.Net.IPAddress.Loopback.ToString(),
+						Game.CreateLocalServer(newMap.Uid),
+						"",
+						() => { Game.LoadEditor(newMap.Uid); },
+						() => { Game.CloseServer(); onExit(); });
+						onSelect(newMap.Uid);
+				});
 			};
 		}
 	}
