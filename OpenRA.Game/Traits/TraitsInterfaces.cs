@@ -350,10 +350,4 @@ namespace OpenRA.Traits
 		void OnObjectiveCompleted(Player player, int objectiveID);
 		void OnObjectiveFailed(Player player, int objectiveID);
 	}
-
-	public interface ILegacyEditorRenderInfo
-	{
-		string EditorPalette { get; }
-		string EditorImage(ActorInfo actor, SequenceProvider sequenceProvider, string race);
-	}
 }

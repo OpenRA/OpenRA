@@ -15,9 +15,6 @@ namespace OpenRA.Traits
 {
 	public class ResourceTypeInfo : ITraitInfo
 	{
-		// HACK: The editor is getting really unmaintanable...
-		public readonly string EditorSprite;
-
 		public readonly string[] Variants = { };
 		public readonly string Palette = "terrain";
 		public readonly string Sequence = "resources";

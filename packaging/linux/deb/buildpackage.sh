@@ -28,9 +28,6 @@ mv "${DEB_BUILD_ROOT}/usr/bin/" "${DEB_BUILD_ROOT}/usr/games/"
 sed "s|/usr/bin|/usr/games|g" "${DEB_BUILD_ROOT}/usr/games/openra" > temp
 mv -f temp "${DEB_BUILD_ROOT}/usr/games/openra"
 chmod +x "${DEB_BUILD_ROOT}/usr/games/openra"
-sed "s|/usr/bin|/usr/games|g" "${DEB_BUILD_ROOT}/usr/games/openra-editor" > temp
-mv -f temp "${DEB_BUILD_ROOT}/usr/games/openra-editor"
-chmod +x "${DEB_BUILD_ROOT}/usr/games/openra-editor"
 
 # Put the copyright and changelog in /usr/share/doc/openra/
 mkdir -p "${DEB_BUILD_ROOT}/${DOCDIR}"

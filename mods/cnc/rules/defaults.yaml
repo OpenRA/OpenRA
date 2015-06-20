@@ -310,8 +310,6 @@
 	WithInfantryBody:
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false
-	EditorAppearance:
-		UseTerrainPalette: true
 	BodyOrientation:
 	DrawLineToTarget:
 	AutoTarget:
@@ -407,8 +405,6 @@
 		NewOwnerVoice: no
 	ActorLostNotification:
 		Notification: BuildingLost
-	EditorAppearance:
-		RelativeToTopLeft: yes
 	ShakeOnDeath:
 	CombatDebugOverlay:
 	Guardable:
@@ -459,8 +455,6 @@
 		Dimensions: 1,1
 		Footprint: x
 	RenderBuilding:
-	EditorAppearance:
-		RelativeToTopLeft: yes
 	Tooltip:
 		Name: Civilian Building (Destroyed)
 		GenericVisibility: None
@@ -491,16 +485,12 @@
 	-Demolishable:
 	RenderBuilding:
 		Palette: terrain
-	EditorAppearance:
-		UseTerrainPalette: true
 
 ^CivFieldHusk:
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
 		Footprint: _
-	EditorAppearance:
-		RelativeToTopLeft: yes
 	Tooltip:
 		Name: Field (Destroyed)
 		GenericVisibility: None
@@ -533,8 +523,6 @@
 	RenderBuildingWall:
 		Palette: staticterrain
 	GivesExperience:
-	EditorAppearance:
-		RelativeToTopLeft: yes
 	AutoTargetIgnore:
 	Sellable:
 		SellSounds: cashturn.aud
@@ -554,8 +542,6 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
-	EditorAppearance:
-		RelativeToTopLeft: yes
 	Health:
 		HP: 500
 	Armor:
@@ -577,7 +563,6 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tiberium
-	EditorAppearance:
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
@@ -594,8 +579,6 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
-	EditorAppearance:
-		RelativeToTopLeft: yes
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true

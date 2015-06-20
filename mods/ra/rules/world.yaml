@@ -65,7 +65,6 @@
 	ResourceType@ore:
 		ResourceType: 1
 		Palette: player
-		EditorSprite: gold01
 		Variants: gold01,gold02,gold03,gold04
 		MaxDensity: 12
 		ValuePerUnit: 25
@@ -77,7 +76,6 @@
 	ResourceType@gem:
 		ResourceType: 2
 		Palette: player
-		EditorSprite: gem01
 		Variants: gem01,gem02,gem03,gem04
 		MaxDensity: 3
 		ValuePerUnit: 50
