@@ -1167,12 +1167,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 
 					if (depth == 0 && node.Value.Nodes.Exists(n => n.Key == "SelectableRemoveMe"))
+					{
 						node.Value.Nodes.RemoveAll(n => n.Key == "SelectableRemoveMe");
 						Console.WriteLine("The 'Selectable' boolean has been removed from the Selectable trait.");
 						Console.WriteLine("If you just want to disable an inherited Selectable trait, use -Selectable instead.");
 						Console.WriteLine("For special cases like bridge huts, which need bounds to be targetable by C4 and engineers,");
 						Console.WriteLine("give them the CustomSelectionSize trait with CustomBounds.");
 						Console.WriteLine("See RA and C&C bridge huts or crates for reference.");
+					}
 				}
 
 				if (engineVersion < 20150620)
