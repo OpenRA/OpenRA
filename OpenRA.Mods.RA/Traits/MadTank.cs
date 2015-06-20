@@ -45,6 +45,8 @@ namespace OpenRA.Mods.RA.Traits
 		[ActorReference]
 		public readonly string DriverActor = "e1";
 
+		[VoiceReference] public readonly string Voice = "Action";
+
 		public object Create(ActorInitializer init) { return new MadTank(init.Self, this); }
 	}
 
@@ -107,7 +109,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return "Attack";
+			return info.Voice;
 		}
 
 		void Detonate()

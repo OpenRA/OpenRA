@@ -61,6 +61,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Cursor = "move";
 		public readonly string BlockedCursor = "move-blocked";
 
+		[VoiceReference] public readonly string Voice = "Action";
+
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 
 		static object LoadSpeeds(MiniYaml y)
@@ -533,7 +535,7 @@ namespace OpenRA.Mods.Common.Traits
 				case "Move":
 				case "Scatter":
 				case "Stop":
-					return "Move";
+					return Info.Voice;
 				default:
 					return null;
 			}

@@ -324,12 +324,6 @@ namespace OpenRA
 
 			if (voicedActor != null)
 			{
-				if (!rules.VoicePools.Value.ContainsKey("Attack"))
-					rules.VoicePools.Value.Add("Attack", rules.VoicePools.Value["Move"]);
-
-				if (!rules.VoicePools.Value.ContainsKey("AttackMove"))
-					rules.VoicePools.Value.Add("AttackMove", rules.VoicePools.Value["Move"]);
-
 				if (!rules.VoicePools.Value.ContainsKey(definition))
 					throw new InvalidOperationException("Can't find {0} in voice pool.".F(definition));
 

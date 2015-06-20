@@ -20,9 +20,11 @@ DPOD:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
+		UnloadVoice: Move
 	Armament:
 		Weapon: Vulcan2
 	AttackHeli:
+		Voice: Attack
 	AmmoPool:
 		Ammo: 5
 		PipCount: 5
@@ -54,6 +56,7 @@ DSHP:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
+		UnloadVoice: Move
 	RenderVoxels:
 	WithVoxelBody:
 	Hovers:
@@ -85,6 +88,7 @@ ORCA:
 		Weapon: Hellfire
 	AttackHeli:
 		FacingTolerance: 20
+		Voice: Attack
 	AmmoPool:
 		Ammo: 5
 		PipCount: 5
@@ -125,6 +129,7 @@ ORCAB:
 	Armament:
 		Weapon: Bomb
 	AttackPlane:
+		Voice: Attack
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 10
@@ -163,6 +168,7 @@ ORCATRAN:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
+		UnloadVoice: Move
 	RenderVoxels:
 	WithVoxelBody:
 	Hovers:
@@ -223,6 +229,7 @@ SCRIN:
 	Armament:
 		Weapon: Proton
 	AttackPlane:
+		Voice: Attack
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 15
@@ -264,6 +271,7 @@ APACHE:
 		Weapon: HarpyClaw
 	AttackHeli:
 		FacingTolerance: 20
+		Voice: Attack
 	AmmoPool:
 		Ammo: 12
 		PipCount: 4

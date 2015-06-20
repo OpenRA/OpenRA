@@ -58,7 +58,7 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: gdi
-	
+
 Actors:
 	Actor0: brik
 		Location: 31,33

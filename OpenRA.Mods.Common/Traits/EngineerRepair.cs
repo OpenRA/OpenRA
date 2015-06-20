@@ -17,10 +17,22 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can instantly repair other actors, but gets consumed afterwards.")]
-	class EngineerRepairInfo : TraitInfo<EngineerRepair> { }
+	class EngineerRepairInfo : ITraitInfo
+	{
+		[VoiceReference] public readonly string Voice = "Action";
+
+		public object Create(ActorInitializer init) { return new EngineerRepair(init, this); }
+	}
 
 	class EngineerRepair : IIssueOrder, IResolveOrder, IOrderVoice
 	{
+		readonly EngineerRepairInfo info;
+
+		public EngineerRepair(ActorInitializer init, EngineerRepairInfo info)
+		{
+			this.info = info;
+		}
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new EngineerRepairOrderTargeter(); }
@@ -63,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "EngineerRepair" && IsValidOrder(self, order)
-				? "Attack" : null;
+				? info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

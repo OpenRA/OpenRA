@@ -44,6 +44,8 @@ namespace OpenRA.Mods.Common.Traits
 		public int GetInitialFacing() { return InitialFacing; }
 		public WRange GetCruiseAltitude() { return CruiseAltitude; }
 
+		[VoiceReference] public readonly string Voice = "Action";
+
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
@@ -300,7 +302,7 @@ namespace OpenRA.Mods.Common.Traits
 				case "Enter":
 				case "ReturnToBase":
 				case "Stop":
-					return "Move";
+					return info.Voice;
 				default: return null;
 			}
 		}

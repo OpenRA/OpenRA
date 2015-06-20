@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits
 	class RepairableInfo : ITraitInfo, Requires<HealthInfo>
 	{
 		public readonly string[] RepairBuildings = { "fix" };
+
+		[VoiceReference] public readonly string Voice = "Action";
+
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
@@ -76,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Repair" && CanRepair()) ? "Move" : null;
+			return (order.OrderString == "Repair" && CanRepair()) ? info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

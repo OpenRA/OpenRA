@@ -492,3 +492,4 @@ combato:
 		Crushes: crate, infantry
 	LeavesHusk:
 		HuskActor: combato.husk
+

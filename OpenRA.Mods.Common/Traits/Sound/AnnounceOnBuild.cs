@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AnnounceOnBuildInfo : ITraitInfo
 	{
 		[Desc("Voice to use when built/trained.")]
-		public readonly string BuildVoice = "Build";
+		[VoiceReference] public readonly string Voice = "Build";
 
 		public object Create(ActorInitializer init) { return new AnnounceOnBuild(init.Self, this); }
 	}
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void BuildingComplete(Actor self)
 		{
-			self.PlayVoice(info.BuildVoice);
+			self.PlayVoice(info.Voice);
 		}
 	}
 }

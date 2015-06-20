@@ -22,22 +22,34 @@ namespace OpenRA.Mods.Common.Traits
 	public class HarvesterInfo : ITraitInfo
 	{
 		public readonly string[] DeliveryBuildings = { };
+
 		[Desc("How much resources it can carry.")]
 		public readonly int Capacity = 28;
+
 		public readonly int LoadTicksPerBale = 4;
+
 		[Desc("How fast it can dump it's carryage.")]
 		public readonly int UnloadTicksPerBale = 4;
+
 		[Desc("How many squares to show the fill level.")]
 		public readonly int PipCount = 7;
+
 		public readonly int HarvestFacings = 0;
+
 		[Desc("Which resources it can harvest.")]
 		public readonly string[] Resources = { };
+
 		[Desc("Percentage of maximum speed when fully loaded.")]
 		public readonly int FullyLoadedSpeed = 85;
+
 		[Desc("Initial search radius (in cells) from the refinery that created us.")]
 		public readonly int SearchFromProcRadius = 24;
+
 		[Desc("Search radius (in cells) from the last harvest order location to find more resources.")]
 		public readonly int SearchFromOrderRadius = 12;
+
+		[VoiceReference] public readonly string HarvestVoice = "Action";
+		[VoiceReference] public readonly string DeliverVoice = "Action";
 
 		public object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
@@ -270,7 +282,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Harvest" || (order.OrderString == "Deliver" && !IsEmpty)) ? "Move" : null;
+			if (order.OrderString == "Harvest")
+				return info.HarvestVoice;
+
+			if (order.OrderString == "Deliver" && !IsEmpty)
+				return info.DeliverVoice;
+
+			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

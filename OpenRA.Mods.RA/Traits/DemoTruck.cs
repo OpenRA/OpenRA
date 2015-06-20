@@ -19,10 +19,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	class DemoTruckInfo : TraitInfo<DemoTruck>, Requires<ExplodesInfo> { }
+	class DemoTruckInfo : ITraitInfo, Requires<ExplodesInfo>
+	{
+		[VoiceReference] public readonly string Voice = "Action";
+
+		public object Create(ActorInitializer init) { return new DemoTruck(init.Self, this); }
+	}
 
 	class DemoTruck : IIssueOrder, IResolveOrder, IOrderVoice
 	{
+		readonly DemoTruckInfo info;
+
+		public DemoTruck(Actor self, DemoTruckInfo info)
+		{
+			this.info = info;
+		}
+
 		static void Explode(Actor self)
 		{
 			self.World.AddFrameEndTask(w => self.InflictDamage(self, int.MaxValue, null));
@@ -50,7 +62,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return "Attack";
+			return info.Voice;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

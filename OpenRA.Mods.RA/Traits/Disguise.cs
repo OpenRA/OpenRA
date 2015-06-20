@@ -57,10 +57,22 @@ namespace OpenRA.Mods.RA.Traits
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
-	class DisguiseInfo : TraitInfo<Disguise> { }
+	class DisguiseInfo : ITraitInfo
+	{
+		[VoiceReference] public readonly string Voice = "Action";
+
+		public object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
+	}
 
 	class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
 	{
+		readonly DisguiseInfo info;
+
+		public Disguise(Actor self, DisguiseInfo info)
+		{
+			this.info = info;
+		}
+
 		public Player AsPlayer { get; private set; }
 		public string AsSprite { get; private set; }
 		public ITooltipInfo AsTooltipInfo { get; private set; }
@@ -95,7 +107,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "Disguise" ? "Attack" : null;
+			return order.OrderString == "Disguise" ? info.Voice : null;
 		}
 
 		public Color RadarColorOverride(Actor self)

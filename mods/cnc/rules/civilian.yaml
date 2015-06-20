@@ -437,6 +437,7 @@ VICE:
 			Tiberium: 100
 			BlueTiberium: 100
 			Beach: 60
+		Voice: Move
 	SelectionDecorations:
 		VisualBounds: 24,24
 	Selectable:
@@ -446,6 +447,7 @@ VICE:
 	AutoTarget:
 		ScanRadius: 5
 	AttackMove:
+		Voice: Attack
 	HiddenUnderFog:
 	GivesExperience:
 	Valued:
@@ -458,6 +460,7 @@ VICE:
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	AttackFrontal:
+		Voice: Attack
 	AttackWander:
 		WanderMoveRadius: 2
 		MinMoveDelayInTicks: 25
@@ -467,6 +470,7 @@ VICE:
 		SplitFacings: true
 	CombatDebugOverlay:
 	Guard:
+		Voice: Move
 	Guardable:
 	UpdatesPlayerStatistics:
 	BodyOrientation:

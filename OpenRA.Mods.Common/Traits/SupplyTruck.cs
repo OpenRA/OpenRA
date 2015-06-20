@@ -21,6 +21,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("The amount of cash the owner recieves.")]
 		public readonly int Payload = 500;
+
+		[VoiceReference] public readonly string Voice = "Action";
+
 		public object Create(ActorInitializer init) { return new SupplyTruck(this); }
 	}
 
@@ -51,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return "Move";
+			return info.Voice;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

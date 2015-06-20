@@ -17,10 +17,22 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can enter a BridgeHut to trigger a repair.")]
-	class RepairsBridgesInfo : TraitInfo<RepairsBridges> { }
+	class RepairsBridgesInfo : ITraitInfo
+	{
+		[VoiceReference] public readonly string Voice = "Action";
+
+		public object Create(ActorInitializer init) { return new RepairsBridges(this); }
+	}
 
 	class RepairsBridges : IIssueOrder, IResolveOrder, IOrderVoice
 	{
+		readonly RepairsBridgesInfo info;
+
+		public RepairsBridges(RepairsBridgesInfo info)
+		{
+			this.info = info;
+		}
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new RepairBridgeOrderTargeter(); }
@@ -43,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (hut == null)
 				return null;
 
-			return hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.IsDangling ? null : "Attack";
+			return hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.IsDangling ? null : info.Voice;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

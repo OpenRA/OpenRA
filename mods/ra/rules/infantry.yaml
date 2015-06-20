@@ -19,11 +19,19 @@ DOG:
 		HP: 12
 	Mobile:
 		Speed: 99
+		Voice: Move
+	Guard:
+		Voice: Move
+	Passenger:
+		Voice: Move
 	RevealsShroud:
 		Range: 5c0
 	Armament:
 		Weapon: DogJaw
 	AttackLeap:
+		Voice: Attack
+	AttackMove:
+		Voice: Move
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	WithInfantryBody:
@@ -203,12 +211,16 @@ SPY:
 		HP: 25
 	Mobile:
 		Speed: 56
+		Voice: Move
+	-Guard:
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
 		PipType: Yellow
+		Voice: Move
 	TakeCover:
 	Disguise:
+		Voice: Move
 	Infiltrates:
 		Types: SpyInfiltrate
 	-AutoTarget:
@@ -219,6 +231,8 @@ SPY:
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
+	AttackMove:
+		Voice: Move
 	Voiced:
 		VoiceSet: SpyVoice
 
@@ -252,6 +266,9 @@ E7:
 		HP: 100
 	Mobile:
 		Speed: 71
+		Voice: Move
+	Guard:
+		Voice: Move
 	RevealsShroud:
 		Range: 6c0
 	C4Demolition:
@@ -259,6 +276,7 @@ E7:
 		Voice: Demolish
 	Passenger:
 		PipType: Red
+		Voice: Move
 	Armament@PRIMARY:
 		Weapon: Colt45
 	Armament@SECONDARY:
@@ -326,16 +344,19 @@ MECH:
 		HP: 80
 	Mobile:
 		Speed: 56
+		Voice: Move
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
 		PipType: Yellow
+		Voice: Move
 	AutoHeal:
 	Armament:
 		Weapon: Repair
 	AttackMedic:
 		Cursor: repair
 		OutsideRangeCursor: repair
+		Voice: Move
 	Captures:
 		CaptureTypes: husk
 	TakeCover:
@@ -401,6 +422,16 @@ GNRL:
 		Name: General
 	Selectable:
 		Class: GNRL
+	Mobile:
+		Voice: Move
+	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Move
+	Passenger:
+		Voice: Move
+	Guard:
+		Voice: Move
 	Voiced:
 		VoiceSet: StavrosVoice
 
@@ -469,6 +500,7 @@ SHOK:
 		HP: 100
 	Mobile:
 		Speed: 56
+		Voice: Move
 	RevealsShroud:
 		Range: 5c0
 	Armament@PRIMARY:
@@ -478,6 +510,13 @@ SHOK:
 		Name: garrisoned
 		Weapon: PortaTesla
 	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Move
+	Passenger:
+		Voice: Move
+	Guard:
+		Voice: Move
 	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2

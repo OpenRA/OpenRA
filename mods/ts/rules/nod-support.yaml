@@ -191,6 +191,7 @@ GATICK:
 		UpgradeMinEnabledLevel: 1
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		Voice: Attack
 	BodyOrientation:
 		QuantizedFacings: 32
 	AutoTarget:
@@ -206,6 +207,7 @@ GATICK:
 		Facing: 159
 		TransformSounds: place2.aud
 		NoTransformSounds:
+		Voice: Move
 	WithMuzzleFlash:
 	-WithDeathAnimation:
 
@@ -234,6 +236,7 @@ GAARTY:
 		LocalOffset: 811,0,0
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		Voice: Attack
 	BodyOrientation:
 		QuantizedFacings: 32
 	AutoTarget:
@@ -250,6 +253,7 @@ GAARTY:
 		Facing: 96
 		TransformSounds: place2.aud
 		NoTransformSounds:
+		Voice: Move
 	WithMuzzleFlash:
 	-WithDeathAnimation:
 

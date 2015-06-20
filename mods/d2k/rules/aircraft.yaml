@@ -63,6 +63,7 @@ carryall.infantry:
 		MaxWeight: 5
 		Types: Infantry
 	-Selectable:
+	-Voiced:
 	-TargetableAircraft:
 	-GainsExperience:
 	Tooltip:
@@ -117,6 +118,7 @@ frigate:
 	-GainsExperience:
 	FlyAwayOnIdle:
 	RejectsOrders:
+	-Voiced:
 
 orni:
 	Inherits: ^Helicopter
@@ -172,6 +174,7 @@ orni.bomber:
 	WithFacingSpriteBody:
 	WithShadow:
 	-Selectable:
+	-Voiced:
 	-GainsExperience:
 	Tooltip:
 		Name: Ornithopter

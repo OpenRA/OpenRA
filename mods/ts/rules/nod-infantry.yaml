@@ -19,6 +19,7 @@ E3:
 		Weapon: Bazooka
 		LocalOffset: 128,0,640
 	AttackFrontal:
+		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -53,6 +54,7 @@ CYBORG:
 	Armament:
 		Weapon: Vulcan3
 	AttackFrontal:
+		Voice: Attack
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 	WithPermanentInjury:
@@ -91,6 +93,7 @@ CYC2:
 		Weapon: CyCannon
 		LocalOffset: 170,85,683
 	AttackFrontal:
+		Voice: Attack
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 	WithPermanentInjury:

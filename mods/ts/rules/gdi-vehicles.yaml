@@ -26,6 +26,7 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
+		UnloadVoice: Unload
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelWaterBody:
@@ -69,6 +70,7 @@ HVR:
 		ROT: 7
 		Offset: -128,0,85
 	AttackTurreted:
+		Voice: Attack
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
@@ -101,6 +103,7 @@ SMECH:
 	RevealsShroud:
 		Range: 6c0
 	AttackFrontal:
+		Voice: Attack
 	AutoTarget:
 	Armament:
 		Weapon: AssaultCannon
@@ -144,6 +147,7 @@ MMCH:
 	Turreted:
 		ROT: 5
 	AttackTurreted:
+		Voice: Attack
 	WithTurret:
 		Recoils: no
 	Armament:
@@ -184,6 +188,7 @@ HMEC:
 		Range: 8c0
 	RenderSprites:
 	AttackFrontal:
+		Voice: Attack
 	AutoTarget:
 	Armament@MISSILES:
 		Weapon: MammothTusk
@@ -220,6 +225,7 @@ SONIC:
 		Weapon: SonicZap
 		LocalOffset: -50,0,410
 	AttackTurreted:
+		Voice: Attack
 	Turreted:
 		ROT: 5
 		Offset: -170,0,0
@@ -228,3 +234,4 @@ SONIC:
 	RenderVoxels:
 	WithVoxelBody:
 	WithVoxelTurret:
+

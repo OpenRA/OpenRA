@@ -24,6 +24,7 @@
 		Weapon: MammothTusk
 		LocalOffset: 0,256,426, 0,-256,426
 	AttackTurreted:
+		Voice: Attack
 	AutoTarget:
 	SelfHealing:
 		Ticks: 10
@@ -76,6 +77,7 @@ ICBM:
 		Facing: 96
 		TransformSounds:
 		NoTransformSounds:
+		Voice: Move
 
 BUS:
 	Inherits: ^Vehicle
@@ -96,6 +98,7 @@ BUS:
 		Types: Infantry
 		MaxWeight: 20
 		PipCount: 5
+		UnloadVoice: Unload
 	RenderVoxels:
 	WithVoxelBody:
 
@@ -118,6 +121,7 @@ PICK:
 		Types: Infantry
 		MaxWeight: 2
 		PipCount: 5
+		UnloadVoice: Unload
 	RenderVoxels:
 	WithVoxelBody:
 
@@ -140,6 +144,7 @@ CAR:
 		Types: Infantry
 		MaxWeight: 4
 		PipCount: 5
+		UnloadVoice: Unload
 	RenderVoxels:
 	WithVoxelBody:
 
@@ -162,5 +167,7 @@ WINI:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
+		UnloadVoice: Unload
 	RenderVoxels:
 	WithVoxelBody:
+

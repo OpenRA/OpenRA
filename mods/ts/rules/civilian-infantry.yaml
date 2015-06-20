@@ -16,6 +16,7 @@ WEEDGUY:
 		Weapon: FireballLauncher
 		LocalOffset: 85,0,384
 	AttackFrontal:
+		Voice: Attack
 	WithInfantryBody:
 	TakeCover:
 
@@ -39,6 +40,7 @@ UMAGON:
 	Armament:
 		Weapon: Sniper
 	AttackFrontal:
+		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -86,6 +88,7 @@ MUTANT:
 	Armament:
 		Weapon: Vulcan
 	AttackFrontal:
+		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -109,6 +112,7 @@ MWMN:
 	Armament:
 		Weapon: Vulcan
 	AttackFrontal:
+		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -132,6 +136,7 @@ MUTANT3:
 	Armament:
 		Weapon: Vulcan
 	AttackFrontal:
+		Voice: Attack
 	TakeCover:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
@@ -218,6 +223,7 @@ DOGGIE:
 	Armament:
 		Weapon: FiendShard
 	AttackFrontal:
+		Voice: Attack
 	AttackWander:
 		WanderMoveRadius: 2
 		MinMoveDelayInTicks: 25
@@ -246,6 +252,7 @@ VISLRG:
 		Weapon: SlimeAttack
 	AutoTarget:
 	AttackFrontal:
+		Voice: Attack
 	AttackWander:
 		WanderMoveRadius: 2
 		MinMoveDelayInTicks: 25
@@ -260,6 +267,7 @@ CIV1:
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:
+		Voice: Attack
 
 CIV2:
 	Inherits: ^CivilianInfantry
@@ -270,4 +278,5 @@ CIV3:
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:
+		Voice: Attack
 
