@@ -68,26 +68,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				map.PlayerDefinitions = new MapPlayers(map.Rules, map.SpawnPoints.Value.Length).ToMiniYaml();
 				map.FixOpenAreas(modRules);
 
-				var userMapFolder = Game.ModData.Manifest.MapFolders.First(f => f.Value == "User").Key;
+				Action<string> afterSave = uid =>
+				{
+					ConnectionLogic.Connect(System.Net.IPAddress.Loopback.ToString(),
+						Game.CreateLocalServer(uid), "",
+						() => Game.LoadEditor(uid),
+						() => { Game.CloseServer(); onExit(); });
 
-				// Ignore optional flag
-				if (userMapFolder.StartsWith("~"))
-					userMapFolder = userMapFolder.Substring(1);
+					Ui.CloseWindow();
+					onSelect(uid);
+				};
 
-				var mapDir = Platform.ResolvePath(userMapFolder);
-				Directory.CreateDirectory(mapDir);
-				var tempLocation = Path.Combine(mapDir, "temp") + ".oramap";
-				map.Save(tempLocation); // TODO: load it right away and save later properly
-
-				var newMap = new Map(tempLocation);
-				Game.ModData.MapCache[newMap.Uid].UpdateFromMap(newMap, MapClassification.User);
-
-				ConnectionLogic.Connect(System.Net.IPAddress.Loopback.ToString(),
-					Game.CreateLocalServer(newMap.Uid),
-					"",
-					() => { Game.LoadEditor(newMap.Uid); },
-					() => { Game.CloseServer(); onExit(); });
-				onSelect(newMap.Uid);
+				Ui.OpenWindow("SAVE_MAP_PANEL", new WidgetArgs()
+				{
+					{ "onSave", afterSave },
+					{ "onExit", () => { Ui.CloseWindow(); onExit(); } },
+					{ "map", map },
+					{ "playerDefinitions", map.PlayerDefinitions },
+					{ "actorDefinitions", map.ActorDefinitions }
+				});
 			};
 		}
 	}

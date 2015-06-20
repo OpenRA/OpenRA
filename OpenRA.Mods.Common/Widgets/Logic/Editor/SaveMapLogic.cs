@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SaveMapLogic
 	{
 		[ObjectCreator.UseCtor]
-		public SaveMapLogic(Widget widget, Action onExit, Map map, EditorActorLayer editorActorLayer)
+		public SaveMapLogic(Widget widget, Action<string> onSave, Action onExit, Map map, List<MiniYamlNode> playerDefinitions, List<MiniYamlNode> actorDefinitions)
 		{
 			var title = widget.Get<TextFieldWidget>("TITLE");
 			title.Text = map.Title;
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return item;
 				};
 
-				var mapDirectory = Platform.UnresolvePath(Path.GetDirectoryName(map.Path));
+				var mapDirectory = map.Path != null ? Platform.UnresolvePath(Path.GetDirectoryName(map.Path)) : null;
 				var initialDirectory = mapDirectories.Keys.FirstOrDefault(f => f == mapDirectory);
 
 				if (initialDirectory == null)
@@ -125,8 +125,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				map.Description = description.Text;
 				map.Author = author.Text;
 				map.Visibility = (MapVisibility)Enum.Parse(typeof(MapVisibility), visibilityDropdown.Text);
-				map.ActorDefinitions = editorActorLayer.Save();
-				map.PlayerDefinitions = editorActorLayer.Players.ToMiniYaml();
+
+				if (actorDefinitions != null)
+					map.ActorDefinitions = actorDefinitions;
+
+				if (playerDefinitions != null)
+					map.PlayerDefinitions = playerDefinitions;
+
 				map.RequiresMod = Game.ModData.Manifest.Mod.Id;
 
 				var combinedPath = Platform.ResolvePath(Path.Combine(directoryDropdown.Text, filename.Text + fileTypes[typeDropdown.Text]));
@@ -145,7 +150,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Console.WriteLine("Saved current map at {0}", combinedPath);
 				Ui.CloseWindow();
-				onExit();
+
+				onSave(map.Uid);
 			};
 		}
 	}
