@@ -270,10 +270,10 @@
 	DeathSounds@NORMAL:
 		DeathTypes: BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@BURNED:
-		DeathSound: Burned
+		Voice: Burned
 		DeathTypes: FireDeath
 	DeathSounds@ZAPPED:
-		DeathSound: Zapped
+		Voice: Zapped
 		DeathTypes: EnergyDeath
 	UpgradeManager:
 	Cloak@CLOAKGENERATOR:

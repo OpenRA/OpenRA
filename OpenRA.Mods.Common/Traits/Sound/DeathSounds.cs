@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class DeathSoundsInfo : ITraitInfo
 	{
 		[Desc("Death notification voice.")]
-		public readonly string DeathSound = "Die";
+		[VoiceReference] public readonly string Voice = "Die";
 
 		[Desc("Multiply volume with this factor.")]
 		public readonly float VolumeMultiplier = 1f;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (info.DeathTypes.Intersect(e.Warhead.DamageTypes).Any())
-				self.PlayVoiceLocal(info.DeathSound, info.VolumeMultiplier);
+				self.PlayVoiceLocal(info.Voice, info.VolumeMultiplier);
 		}
 	}
 }

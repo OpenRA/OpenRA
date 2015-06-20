@@ -236,10 +236,10 @@
 	DeathSounds@NORMAL:
 		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@BURNED:
-		DeathSound: Burned
+		Voice: Burned
 		DeathTypes: FireDeath
 	DeathSounds@POISONED:
-		DeathSound: Poisoned
+		Voice: Poisoned
 		DeathTypes: TiberiumDeath
 	UpgradeManager:
 	MustBeDestroyed:

@@ -1175,6 +1175,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						Console.WriteLine("See RA and C&C bridge huts or crates for reference.");
 				}
 
+				if (engineVersion < 20150620)
+				{
+					if (depth == 2)
+					{
+						if (node.Key == "DeathSound")
+							node.Key = "Voice";
+
+						if (node.Key == "KillVoice")
+							node.Key = "Voice";
+
+						if (node.Key == "BuildVoice")
+							node.Key = "Voice";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
