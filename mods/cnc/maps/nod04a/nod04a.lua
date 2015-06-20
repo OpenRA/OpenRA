@@ -281,7 +281,7 @@ WorldLoaded = function()
 	end)
 
 	GDIObjective = GDI.AddPrimaryObjective("Eliminate all Nod forces in the area.")
-	NodObjective1 = Nod.AddPrimaryObjective("Kill all civilian which support the GDI.")
+	NodObjective1 = Nod.AddPrimaryObjective("Kill all civilian GDI supporters.")
 
 	InsertNodUnits()
 end

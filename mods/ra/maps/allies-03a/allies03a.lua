@@ -104,7 +104,7 @@ InitObjectives = function()
 
 	KillBridges = player.AddPrimaryObjective("Destroy all bridges.")
 	TanyaSurvive = player.AddPrimaryObjective("Tanya must survive.")
-	KillUSSR = player.AddSecondaryObjective("Destroy all soviet Oil Pumps.")
+	KillUSSR = player.AddSecondaryObjective("Destroy all Soviet oil pumps.")
 	FreePrisoners = player.AddSecondaryObjective("Free all Allied soldiers and keep them alive.")
 	ussr.AddPrimaryObjective("Bridges must not be destroyed.")
 
