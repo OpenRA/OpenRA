@@ -271,7 +271,7 @@ namespace OpenRA.Graphics
 			{
 				if (cellsDirty)
 				{
-					cells = CalculateVisibleCells(false);
+					cells = CalculateVisibleCells(true);
 					cellsDirty = false;
 				}
 
