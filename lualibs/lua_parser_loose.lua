@@ -200,10 +200,12 @@ function PARSE.parse_scope(lx, f, level)
         f('Id', c[1], c.lineinfo, true)
         -- this looks like the left side of (multi-variable) assignment
         -- unless it's a part of `= var, field = value`, so skip if inside a table
-        while not inside_table and lx:peek().tag == 'Keyword' and lx:peek()[1] == ',' do
-          local c = lx:next(); if lx:peek().tag ~= 'Id' then break end
-          c = lx:next()
-          f('Id', c[1], c.lineinfo, true)
+        if not inside_table and not (cprev and cprev.tag == 'Keyword' and cprev[1] == '=') then
+          while lx:peek().tag == 'Keyword' and lx:peek()[1] == ',' do
+            local c = lx:next(); if lx:peek().tag ~= 'Id' then break end
+            c = lx:next()
+            f('Id', c[1], c.lineinfo, true)
+          end
         end
       end
     end
