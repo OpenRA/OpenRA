@@ -484,7 +484,7 @@ namespace OpenRA
 			}
 
 			// Saving the map to a new location
-			if (toPath != Path)
+			if (toPath != Path || Container == null)
 			{
 				Path = toPath;
 
