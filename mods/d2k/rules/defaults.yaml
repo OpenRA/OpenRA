@@ -172,8 +172,6 @@
 	HiddenUnderFog:
 	Burns:
 		Interval: 2
-	EditorAppearance:
-		RelativeToTopLeft: yes
 	Tooltip:
 		Name: Destroyed Tower
 	ProximityCaptor:
@@ -335,8 +333,6 @@
 	CaptureNotification:
 	ActorLostNotification:
 		Notification: BuildingLost
-	EditorAppearance:
-		RelativeToTopLeft: yes
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types: Building

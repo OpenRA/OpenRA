@@ -79,7 +79,7 @@ INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
 CORE = rsdl2 rnull game utility
-TOOLS = editor gamemonitor
+TOOLS = gamemonitor
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
 # dependencies
@@ -169,24 +169,6 @@ mod_ts_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
 PROGRAMS += mod_ts
 mod_ts: $(mod_ts_TARGET)
 
-##### Tools #####
-
-# Map Editor
-editor_SRCS := $(shell find OpenRA.Editor/ -iname '*.cs')
-editor_TARGET = OpenRA.Editor.exe
-editor_KIND = winexe
-editor_DEPS = $(game_TARGET) $(mod_common_TARGET)
-editor_LIBS = System.Windows.Forms.dll System.Data.dll System.Drawing.dll $(editor_DEPS) thirdparty/download/Eluant.dll
-editor_EXTRA = -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
-editor_FLAGS = -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico
-
-PROGRAMS += editor
-OpenRA.Editor.MapSelect.resources:
-	resgen2 OpenRA.Editor/MapSelect.resx OpenRA.Editor.MapSelect.resources 1> /dev/null
-OpenRA.Editor.Form1.resources:
-	resgen2 OpenRA.Editor/Form1.resx OpenRA.Editor.Form1.resources 1> /dev/null
-editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor_TARGET)
-
 check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Game..."
@@ -212,9 +194,6 @@ check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.TS..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.TS
-	@echo
-	@echo "Checking for code style violations in OpenRA.Editor..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Editor
 	@echo
 	@echo "Checking for code style violations in OpenRA.Renderer.Sdl2..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Renderer.Sdl2
@@ -291,7 +270,7 @@ default: core
 
 core: game renderers mods utility
 
-tools: editor gamemonitor
+tools: gamemonitor
 
 package: all-dependencies core tools docs version
 
@@ -397,7 +376,6 @@ install-linux-icons:
 install-linux-desktop:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
 	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
-	@$(INSTALL_DATA) packaging/linux/openra-editor.desktop "$(DESTDIR)$(datadir)/applications"
 
 install-linux-mime:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/mime/packages/"
@@ -426,24 +404,13 @@ install-linux-scripts:
 	@$(INSTALL_PROGRAM) -m +rx openra "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra
 
-	@echo "#!/bin/sh" >  openra-editor
-	@echo 'cd "$(gameinstalldir)"' >> openra-editor
-	@echo 'exec mono OpenRA.Editor.exe "$$@"' >> openra-editor
-	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) -m +rx openra-editor "$(BIN_INSTALL_DIR)"
-	@-$(RM) openra-editor
-
 uninstall:
 	@-$(RM_R) "$(DATA_INSTALL_DIR)"
 	@-$(RM_F) "$(BIN_INSTALL_DIR)/openra"
-	@-$(RM_F) "$(BIN_INSTALL_DIR)/openra-editor"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/applications/openra.desktop"
-	@-$(RM_F) "$(DESTDIR)$(datadir)/applications/openra-editor.desktop"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/16x16/apps/openra.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/openra.png"
-	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/openra-editor.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/openra.png"
-	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/openra-editor.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/64x64/apps/openra.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/128x128/apps/openra.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/mime/packages/openra.xml"

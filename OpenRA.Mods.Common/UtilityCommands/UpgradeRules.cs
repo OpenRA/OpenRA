@@ -1192,6 +1192,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// WinForms editor was removed
+				if (engineVersion < 20150620)
+				{
+					if (depth == 0 && node.Value.Nodes.Exists(n => n.Key == "EditorAppearance"))
+						node.Value.Nodes.RemoveAll(n => n.Key == "EditorAppearance");
+
+					if (depth == 1 && node.Value.Nodes.Exists(n => n.Key == "ResourceType"))
+					{
+						var editorSprite = node.Value.Nodes.FirstOrDefault(n => n.Key == "EditorSprite");
+						if (editorSprite != null)
+							node.Value.Nodes.Remove(editorSprite);
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

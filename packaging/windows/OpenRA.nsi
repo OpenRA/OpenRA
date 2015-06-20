@@ -126,17 +126,6 @@ Section "Game" GAME
 	File "${SRCDIR}\glsl\*.vert"
 SectionEnd
 
-Section "Editor" EDITOR
-	SetOutPath "$INSTDIR"
-	File "${SRCDIR}\OpenRA.Editor.exe"
-
-	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA Editor.lnk" $OUTDIR\OpenRA.Editor.exe "" \
-			"$OUTDIR\OpenRA.Editor.exe" "" "" "" ""
-	!insertmacro MUI_STARTMENU_WRITE_END
-SectionEnd
-
 SectionGroup /e "Settings"
 	Section "Desktop Shortcut" DESKTOPSHORTCUT
 		SetOutPath "$INSTDIR"
@@ -200,7 +189,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Game.exe
 	Delete $INSTDIR\OpenRA.Game.exe.config
 	Delete $INSTDIR\OpenRA.Utility.exe
-	Delete $INSTDIR\OpenRA.Editor.exe
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll
 	Delete $INSTDIR\OpenRA.Renderer.Sdl2.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
@@ -252,8 +240,6 @@ Section "Uninstall"
 	IntCmp $R0 0 gameRunning
 	${nsProcess::FindProcess} "OpenRA.exe" $R0
 	IntCmp $R0 0 gameRunning
-	${nsProcess::FindProcess} "OpenRA.Editor.exe" $R0
-	IntCmp $R0 0 gameRunning
 	${nsProcess::Unload}
 	Call un.Clean
 	Goto end
@@ -267,12 +253,10 @@ SectionEnd
 ;Section Descriptions
 ;***************************
 LangString DESC_GAME ${LANG_ENGLISH} "OpenRA engine, official mods and dependencies"
-LangString DESC_EDITOR ${LANG_ENGLISH} "OpenRA map editor"
 LangString DESC_DESKTOPSHORTCUT ${LANG_ENGLISH} "Place shortcut on the Desktop."
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 	!insertmacro MUI_DESCRIPTION_TEXT ${GAME} $(DESC_GAME)
-	!insertmacro MUI_DESCRIPTION_TEXT ${EDITOR} $(DESC_EDITOR)
 	!insertmacro MUI_DESCRIPTION_TEXT ${DESKTOPSHORTCUT} $(DESC_DESKTOPSHORTCUT)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 

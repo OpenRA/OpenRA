@@ -64,8 +64,6 @@
 		RequiredForShortGame: true
 	GivesExperience:
 	CaptureNotification:
-	EditorAppearance:
-		RelativeToTopLeft: yes
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types: Building
@@ -165,9 +163,6 @@
 	RenderBuildingWall:
 		Type: wall
 	GivesExperience:
-	EditorAppearance:
-		RelativeToTopLeft: yes
-		UseTerrainPalette: yes
 	AutoTargetIgnore:
 	ProximityCaptor:
 		Types: Wall

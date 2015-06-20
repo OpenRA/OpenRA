@@ -24,9 +24,8 @@ cp -r $2/* "OpenRA.app/Contents/Resources/" || exit 3
 # Remove unused icon
 rm OpenRA.app/Contents/Resources/OpenRA.ico
 
-# Remove broken WinForms applications
+# Remove WinForms applications
 rm OpenRA.app/Contents/Resources/OpenRA.exe
-rm OpenRA.app/Contents/Resources/OpenRA.Editor.exe
 
 # Set version string
 sed "s/{DEV_VERSION}/${1}/" OpenRA.app/Contents/Info.plist > OpenRA.app/Contents/Info.plist.tmp

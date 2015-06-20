@@ -529,8 +529,6 @@ wall:
 	TargetableBuilding:
 		TargetTypes: Ground
 	RenderBuildingWall:
-	EditorAppearance:
-		RelativeToTopLeft: yes
 	AutoTargetIgnore:
 	ProximityCaptor:
 		Types: Wall

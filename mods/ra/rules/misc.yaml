@@ -236,9 +236,6 @@ MINE:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Ore
-	EditorAppearance:
-		RelativeToTopLeft: true
-		UseTerrainPalette: true
 	AutoTargetIgnore:
 	BodyOrientation:
 	SeedsResource:
@@ -255,9 +252,6 @@ GMINE:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Gems
-	EditorAppearance:
-		RelativeToTopLeft: true
-		UseTerrainPalette: false
 	AutoTargetIgnore:
 	BodyOrientation:
 	SeedsResource:
@@ -272,9 +266,6 @@ RAILMINE:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	EditorAppearance:
-		RelativeToTopLeft: true
-		UseTerrainPalette: false
 	AutoTargetIgnore:
 	BodyOrientation:
 	EditorTilesetFilter:
@@ -292,9 +283,6 @@ QUEE:
 	BodyOrientation:
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
-	EditorAppearance:
-		RelativeToTopLeft: true
-		UseTerrainPalette: true
 
 LAR1:
 	HiddenUnderShroud:
@@ -309,9 +297,6 @@ LAR1:
 	BodyOrientation:
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
-	EditorAppearance:
-		RelativeToTopLeft: true
-		UseTerrainPalette: true
 
 LAR2:
 	HiddenUnderShroud:
@@ -326,9 +311,6 @@ LAR2:
 	BodyOrientation:
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
-	EditorAppearance:
-		RelativeToTopLeft: true
-		UseTerrainPalette: true
 
 powerproxy.parabombs:
 	AlwaysVisible:

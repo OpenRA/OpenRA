@@ -367,8 +367,6 @@
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	CaptureNotification:
-	EditorAppearance:
-		RelativeToTopLeft: true
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types: Building
@@ -416,9 +414,6 @@
 	RenderBuildingWall:
 		Palette: effect
 	GivesExperience:
-	EditorAppearance:
-		RelativeToTopLeft: true
-		UseTerrainPalette: false
 	AutoTargetIgnore:
 	ProximityCaptor:
 		Types: Wall
@@ -510,8 +505,6 @@
 	Inherits: ^TechBuilding
 	RenderBuilding:
 		Palette: terrain
-	EditorAppearance:
-		UseTerrainPalette: true
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 
@@ -538,9 +531,6 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
-	EditorAppearance:
-		RelativeToTopLeft: true
-		UseTerrainPalette: true
 	ProximityCaptor:
 		Types: Tree
 	Health:
@@ -640,9 +630,6 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
-	EditorAppearance:
-		RelativeToTopLeft: true
-		UseTerrainPalette: true
 	ProximityCaptor:
 		Types: Tree
 	BodyOrientation:
