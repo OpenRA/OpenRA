@@ -70,10 +70,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Action<string> afterSave = uid =>
 				{
-					ConnectionLogic.Connect(System.Net.IPAddress.Loopback.ToString(),
-						Game.CreateLocalServer(uid), "",
-						() => Game.LoadEditor(uid),
-						() => { Game.CloseServer(); onExit(); });
+					// HACK: Work around a synced-code change check.
+					// It's not clear why this is needed here, but not in the other places that load maps.
+					Game.RunAfterTick(() =>
+					{
+						ConnectionLogic.Connect(System.Net.IPAddress.Loopback.ToString(),
+							Game.CreateLocalServer(uid), "",
+							() => Game.LoadEditor(uid),
+							() => { Game.CloseServer(); onExit(); });
+					});
 
 					Ui.CloseWindow();
 					onSelect(uid);
