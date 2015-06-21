@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var combinedPath = Platform.ResolvePath(Path.Combine(directoryDropdown.Text, filename.Text + fileTypes[typeDropdown.Text]));
 
 				// Invalidate the old map metadata
-				if (map.Uid != null)
+				if (map.Uid != null && combinedPath == map.Path)
 					Game.ModData.MapCache[map.Uid].Invalidate();
 
 				map.Save(combinedPath);
