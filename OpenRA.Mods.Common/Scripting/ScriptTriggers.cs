@@ -59,6 +59,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void TickIdle(Actor self)
 		{
+			if (world.Disposing)
+				return;
+
 			foreach (var f in Triggers[Trigger.OnIdle])
 			{
 				try
@@ -76,6 +79,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
+			if (world.Disposing)
+				return;
+
 			foreach (var f in Triggers[Trigger.OnDamaged])
 			{
 				try
@@ -94,6 +100,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void Killed(Actor self, AttackInfo e)
 		{
+			if (world.Disposing)
+				return;
+
 			// Run Lua callbacks
 			foreach (var f in Triggers[Trigger.OnKilled])
 			{
@@ -116,6 +125,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void UnitProduced(Actor self, Actor other, CPos exit)
 		{
+			if (world.Disposing)
+				return;
+
 			// Run Lua callbacks
 			foreach (var f in Triggers[Trigger.OnProduction])
 			{
@@ -138,6 +150,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void OnPlayerWon(Player player)
 		{
+			if (world.Disposing)
+				return;
+
 			foreach (var f in Triggers[Trigger.OnPlayerWon])
 			{
 				try
@@ -155,6 +170,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void OnPlayerLost(Player player)
 		{
+			if (world.Disposing)
+				return;
+
 			foreach (var f in Triggers[Trigger.OnPlayerLost])
 			{
 				try
@@ -172,6 +190,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void OnObjectiveAdded(Player player, int id)
 		{
+			if (world.Disposing)
+				return;
+
 			foreach (var f in Triggers[Trigger.OnObjectiveAdded])
 			{
 				try
@@ -190,6 +211,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void OnObjectiveCompleted(Player player, int id)
 		{
+			if (world.Disposing)
+				return;
+
 			foreach (var f in Triggers[Trigger.OnObjectiveCompleted])
 			{
 				try
@@ -208,6 +232,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void OnObjectiveFailed(Player player, int id)
 		{
+			if (world.Disposing)
+				return;
+
 			foreach (var f in Triggers[Trigger.OnObjectiveFailed])
 			{
 				try
@@ -226,6 +253,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
+			if (world.Disposing)
+				return;
+
 			foreach (var f in Triggers[Trigger.OnCapture])
 			{
 				try
@@ -249,6 +279,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void Infiltrated(Actor self, Actor infiltrator)
 		{
+			if (world.Disposing)
+				return;
+
 			foreach (var f in Triggers[Trigger.OnInfiltrated])
 			{
 				try
@@ -267,6 +300,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void AddedToWorld(Actor self)
 		{
+			if (world.Disposing)
+				return;
+
 			foreach (var f in Triggers[Trigger.OnAddedToWorld])
 			{
 				try
@@ -284,6 +320,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void RemovedFromWorld(Actor self)
 		{
+			if (world.Disposing)
+				return;
+
 			// Run Lua callbacks
 			foreach (var f in Triggers[Trigger.OnRemovedFromWorld])
 			{
@@ -305,6 +344,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void UnitProducedByOther(Actor self, Actor producee, Actor produced)
 		{
+			if (world.Disposing)
+				return;
+
 			// Run Lua callbacks
 			foreach (var f in Triggers[Trigger.OnOtherProduction])
 			{
@@ -327,6 +369,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void OnDiscovered(Actor self, Player discoverer, bool playNotification)
 		{
+			if (world.Disposing)
+				return;
+
 			foreach (var f in Triggers[Trigger.OnDiscovered])
 			{
 				try
