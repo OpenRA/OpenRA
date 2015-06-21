@@ -17,14 +17,23 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class MPStartLocationsInfo : TraitInfo<MPStartLocations>
+	public class MPStartLocationsInfo : ITraitInfo
 	{
 		public readonly WRange InitialExploreRange = WRange.FromCells(5);
+
+		public virtual object Create(ActorInitializer init) { return new MPStartLocations(this); }
 	}
 
 	public class MPStartLocations : IWorldLoaded
 	{
-		public Dictionary<Player, CPos> Start = new Dictionary<Player, CPos>();
+		readonly MPStartLocationsInfo info;
+
+		public readonly Dictionary<Player, CPos> Start = new Dictionary<Player, CPos>();
+
+		public MPStartLocations(MPStartLocationsInfo info)
+		{
+			this.info = info;
+		}
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
@@ -52,15 +61,18 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Explore allied shroud
-			var explore = world.WorldActor.Info.Traits.Get<MPStartLocationsInfo>().InitialExploreRange;
+			var map = world.Map;
 			foreach (var p in Start.Keys)
+			{
+				var cells = Shroud.CellsInRange(map, Start[p], info.InitialExploreRange);
 				foreach (var q in world.Players)
 					if (p.IsAlliedWith(q))
-						q.Shroud.Explore(world, Start[p], explore);
+						q.Shroud.Explore(world, cells);
+			}
 
 			// Set viewport
 			if (world.LocalPlayer != null && Start.ContainsKey(world.LocalPlayer))
-				wr.Viewport.Center(world.Map.CenterOfCell(Start[world.LocalPlayer]));
+				wr.Viewport.Center(map.CenterOfCell(Start[world.LocalPlayer]));
 		}
 
 		static Player FindPlayerInSlot(World world, string pr)
