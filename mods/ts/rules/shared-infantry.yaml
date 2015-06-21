@@ -1,5 +1,5 @@
 E1:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
@@ -24,13 +24,11 @@ E1:
 		UpgradeMinEnabledLevel: 1
 	AttackFrontal:
 		Voice: Attack
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
 
 ENGINEER:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -53,8 +51,5 @@ ENGINEER:
 	Captures:
 		CaptureTypes: building
 	-AutoTarget:
-	TakeCover:
-	WithInfantryBody:
-		IdleSequences: idle1,idle2
 	-GainsExperience:
 

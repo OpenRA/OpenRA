@@ -1,5 +1,5 @@
 APC:
-	Inherits: ^Vehicle
+	Inherits: ^VoxelVehicle
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -27,8 +27,7 @@ APC:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Unload
-	RenderSprites:
-	RenderVoxels:
+	-WithVoxelBody:
 	WithVoxelWaterBody:
 	LeavesTrails:
 		Image: wake
@@ -36,7 +35,7 @@ APC:
 		TerrainTypes: Water
 
 HVR:
-	Inherits: ^Vehicle
+	Inherits: ^VoxelVehicle
 	Valued:
 		Cost: 900
 	Tooltip:
@@ -73,9 +72,6 @@ HVR:
 	AttackTurreted:
 		Voice: Attack
 	AutoTarget:
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 	WithVoxelTurret:
 	Hovers:
 	LeavesTrails:
@@ -108,7 +104,6 @@ SMECH:
 	AutoTarget:
 	Armament:
 		Weapon: AssaultCannon
-	RenderSprites:
 	Voiced:
 		VoiceSet: Mech
 	WithFacingSpriteBody:
@@ -143,7 +138,6 @@ MMCH:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	RenderSprites:
 	WithInfantryBody:
 	Turreted:
 		ROT: 5
@@ -165,7 +159,7 @@ MMCH:
 		VisualBounds: 30, 42, 0, -8
 
 HMEC:
-	Inherits: ^Tank
+	Inherits: ^VoxelTank
 	Valued:
 		Cost: 3000
 	Tooltip:
@@ -187,7 +181,6 @@ HMEC:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	RenderSprites:
 	AttackFrontal:
 		Voice: Attack
 	AutoTarget:
@@ -197,12 +190,12 @@ HMEC:
 	Armament@RAILGUN:
 		Weapon: MechRailgun
 		LocalOffset: 640,-384,980, 640,384,980
-	RenderVoxels:
+	-WithVoxelBody:
 	WithVoxelWalkerBody:
 		TickRate: 1
 
 SONIC:
-	Inherits: ^Tank
+	Inherits: ^VoxelTank
 	Valued:
 		Cost: 1300
 	Tooltip:
@@ -231,8 +224,5 @@ SONIC:
 		ROT: 5
 		Offset: -170,0,0
 	AutoTarget:
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 	WithVoxelTurret:
 

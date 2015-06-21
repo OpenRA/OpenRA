@@ -1,5 +1,5 @@
 BGGY:
-	Inherits: ^Vehicle
+	Inherits: ^VoxelVehicle
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -26,13 +26,10 @@ BGGY:
 	AttackFrontal:
 		Voice: Attack
 	AutoTarget:
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 	WithMuzzleFlash:
 
 BIKE:
-	Inherits: ^Vehicle
+	Inherits: ^VoxelVehicle
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -65,12 +62,9 @@ BIKE:
 	AttackFrontal:
 		Voice: Attack
 	AutoTarget:
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 
 TTNK:
-	Inherits: ^Tank
+	Inherits: ^VoxelTank
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -106,9 +100,6 @@ TTNK:
 	WithMuzzleFlash:
 	RevealsShroud:
 		Range: 5c0
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 	Transforms:
 		IntoActor: gatick
 		Facing: 159
@@ -117,7 +108,7 @@ TTNK:
 		Voice: Move
 
 ART2:
-	Inherits: ^Tank
+	Inherits: ^VoxelTank
 	Valued:
 		Cost: 975
 	Tooltip:
@@ -136,10 +127,8 @@ ART2:
 		ROT: 2
 	RevealsShroud:
 		Range: 9c0
-	RenderSprites:
 	RenderVoxels:
 		LightAmbientColor: 0.4, 0.4, 0.4
-	WithVoxelBody:
 	Transforms:
 		IntoActor: gaarty
 		Facing: 96
@@ -148,7 +137,7 @@ ART2:
 		Voice: Move
 
 REPAIR:
-	Inherits: ^Tank
+	Inherits: ^VoxelTank
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
@@ -171,12 +160,9 @@ REPAIR:
 		Cursor: repair
 		OutsideRangeCursor: repair
 		Voice: Attack
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 
 WEED:
-	Inherits: ^Vehicle
+	Inherits: ^VoxelVehicle
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -196,12 +182,9 @@ WEED:
 	RevealsShroud:
 		Range: 4c0
 	-GainsExperience:
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 
 SAPC:
-	Inherits: ^Tank
+	Inherits: ^VoxelTank
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -225,12 +208,9 @@ SAPC:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Unload
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 
 SUBTANK:
-	Inherits: ^Tank
+	Inherits: ^VoxelTank
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -255,12 +235,9 @@ SUBTANK:
 	AttackFrontal:
 		Voice: Attack
 	AutoTarget:
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 
 STNK:
-	Inherits: ^Tank
+	Inherits: ^VoxelTank
 	Valued:
 		Cost: 1100
 	Tooltip:
@@ -292,8 +269,5 @@ STNK:
 		Voice: Attack
 	AutoTarget:
 		InitialStance: HoldFire
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 	-MustBeDestroyed:
 
