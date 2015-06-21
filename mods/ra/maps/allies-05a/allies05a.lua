@@ -152,7 +152,7 @@ FreeTanya = function()
 
 	Trigger.OnKilled(Tanya, function() ussr.MarkCompletedObjective(ussrObj) end)
 
-	KillSams = greece.AddPrimaryObjective("Destroy all four SAM Sites that block\nthe extraction helicopter.")
+	KillSams = greece.AddPrimaryObjective("Destroy all four SAM sites that block\nthe extraction helicopter.")
 end
 
 SendSpy = function()
@@ -249,10 +249,10 @@ InitObjectives = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	ussrObj = ussr.AddPrimaryObjective("Deny the allies.")
+	ussrObj = ussr.AddPrimaryObjective("Deny the Allies.")
 	mainObj = greece.AddPrimaryObjective("Rescue Tanya.")
-	KillAll = greece.AddPrimaryObjective("Eliminate all soviet units in this area.")
-	infWarfactory = greece.AddPrimaryObjective("Infiltrate the soviet warfactory")
+	KillAll = greece.AddPrimaryObjective("Eliminate all Soviet units in this area.")
+	infWarfactory = greece.AddPrimaryObjective("Infiltrate the Soviet warfactory.")
 
 	Trigger.OnObjectiveCompleted(greece, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")

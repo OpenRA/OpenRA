@@ -267,7 +267,7 @@ TimerExpired = function()
 	Reinforcements.Reinforce(allies, FrenchReinforcements, { SovietEntryPoint7.Location, Alliesbase.Location })
 
 	if DestroyObj then
-		KillObj = allies.AddPrimaryObjective("Take control of French reinforcements and\nkill all remaining soviet forces.")
+		KillObj = allies.AddPrimaryObjective("Take control of French reinforcements and\nkill all remaining Soviet forces.")
 	else
 		DestroyObj = allies.AddPrimaryObjective("Take control of French reinforcements and\ndismantle the nearby Soviet base.")
 	end
@@ -302,9 +302,9 @@ InitObjectives = function()
 	end)
 
 	SurviveObj = allies.AddPrimaryObjective("Enforce your position and hold-out the onslaught\nuntil reinforcements arrive.")
-	KillSams = allies.AddSecondaryObjective("Destroy the two SAM Sites before reinforcements\narrive.")
-	Media.DisplayMessage("The soviets are blocking our GPS. We need to investigate their new technology.")
-	CaptureAirfields = allies.AddSecondaryObjective("Capture and hold the soviet airbase\nin the north east.")
+	KillSams = allies.AddSecondaryObjective("Destroy the two SAM sites before reinforcements\narrive.")
+	Media.DisplayMessage("The Soviets are blocking our GPS. We need to investigate their new technology.")
+	CaptureAirfields = allies.AddSecondaryObjective("Capture and hold the Soviet airbase\nin the northeast.")
 	SovietObj = soviets.AddPrimaryObjective("Eliminate all Allied forces.")
 
 	Trigger.OnObjectiveCompleted(allies, function(p, id)
@@ -319,7 +319,7 @@ InitObjectives = function()
 	end)
 	Trigger.OnPlayerWon(allies, function()
 		Media.PlaySpeechNotification(allies, "MissionAccomplished")
-		Media.DisplayMessage("The French forces have survived and dismantled the soviet presence in the area!")
+		Media.DisplayMessage("The French forces have survived and dismantled the Soviet presence in the area!")
 	end)
 end
 
@@ -358,7 +358,7 @@ InitMission = function()
 	Trigger.OnAllKilledOrCaptured(SovietBuildings, function()
 		if DestroyObj then
 			if not soviets.HasNoRequiredUnits() then
-				KillObj = allies.AddPrimaryObjective("Kill all remaining soviet forces.")
+				KillObj = allies.AddPrimaryObjective("Kill all remaining Soviet forces.")
 			end
 			allies.MarkCompletedObjective(DestroyObj)
 		else

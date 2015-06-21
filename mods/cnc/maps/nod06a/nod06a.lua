@@ -142,7 +142,7 @@ WorldLoaded = function()
 	end)
 
 	NodObjective1 = Nod.AddPrimaryObjective("Steal the GDI nuclear detonator.")
-	NodObjective2 = Nod.AddSecondaryObjective("Destroy the houses of the GDI supporter \nin the village.")
+	NodObjective2 = Nod.AddSecondaryObjective("Destroy the houses of the GDI supporters\nin the village.")
 
 	GDIObjective = GDI.AddPrimaryObjective("Stop the Nod taskforce from escaping with the detonator.")
 

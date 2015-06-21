@@ -70,7 +70,7 @@ SendTrucks = function()
 	if not ConvoyOnSite then
 		ConvoyOnSite = true
 		ticked = 0
-		ConvoyObjective = player.AddPrimaryObjective("Escort the convoy")
+		ConvoyObjective = player.AddPrimaryObjective("Escort the convoy.")
 		Media.PlaySpeechNotification(player, "ConvoyApproaching")
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
 			ConvoyUnharmed = true

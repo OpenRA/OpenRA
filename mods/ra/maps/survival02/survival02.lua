@@ -68,7 +68,7 @@ Tick = function()
 		if DestroyObj then
 			allies.MarkCompletedObjective(DestroyObj)
 		else
-			DestroyObj = allies.AddPrimaryObjective("Destroy all Soviet forces in the area!")
+			DestroyObj = allies.AddPrimaryObjective("Destroy all Soviet forces in the area.")
 			allies.MarkCompletedObjective(DestroyObj)
 		end
 	end
@@ -200,7 +200,7 @@ FinalAttack = function()
 	Trigger.OnAllKilledOrCaptured(units, function()
 		if not DestroyObj then
 			Media.DisplayMessage("Excellent work Commander! We have reinforced our position enough to initiate a counter-attack.", "Incoming Report")
-			DestroyObj = allies.AddPrimaryObjective("Destroy the remaining Soviet forces in the area!")
+			DestroyObj = allies.AddPrimaryObjective("Destroy the remaining Soviet forces in the area.")
 		end
 		allies.MarkCompletedObjective(SurviveObj)
 	end)
@@ -239,8 +239,8 @@ SetupBridges = function()
 		end
 	end
 
-	Media.DisplayMessage("Commander! The Soviets destroyed the brigdes to disable our reinforcements. Repair them for additional reinforcements.", "Incoming Report")
-	RepairBridges = allies.AddSecondaryObjective("Repair the two southern brigdes.")
+	Media.DisplayMessage("Commander! The Soviets destroyed the bridges to disable our reinforcements. Repair them for additional reinforcements.", "Incoming Report")
+	RepairBridges = allies.AddSecondaryObjective("Repair the two southern bridges.")
 
 	local bridgeA = Map.ActorsInCircle(BrokenBridge1.CenterPosition, WRange.FromCells(1), function(self) return self.Type == "bridge1" end)
 	local bridgeB = Map.ActorsInCircle(BrokenBridge2.CenterPosition, WRange.FromCells(1), function(self) return self.Type == "bridge1" end)
