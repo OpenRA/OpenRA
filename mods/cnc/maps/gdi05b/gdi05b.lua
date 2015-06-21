@@ -133,11 +133,11 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnPlayerWon(gdi, function()
-		Media.PlaySpeechNotification(nod, "Win")
+		Media.PlaySpeechNotification(gdi, "Win")
 	end)
 
 	Trigger.OnPlayerLost(gdi, function()
-		Media.PlaySpeechNotification(nod, "Lose")
+		Media.PlaySpeechNotification(gdi, "Lose")
 	end)
 	
 	Utils.Do(Map.NamedActors, function(actor)

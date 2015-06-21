@@ -651,6 +651,8 @@ Rules:
 	FLARE:
 		Tooltip:
 			ShowOwnerRow: false
+	TRAN:
+		-Selectable:
 
 Sequences:
 
