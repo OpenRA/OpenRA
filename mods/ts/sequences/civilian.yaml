@@ -3,331 +3,373 @@ ammocrat:
 		ShadowStart: 2
 
 aban01:
-	idle: aban01
+	idle:
 		ShadowStart: 2
 
 aban02:
-	idle: aban02
+	idle:
 		ShadowStart: 2
 
 aban03:
-	idle: aban03
+	idle:
 		ShadowStart: 2
 
 aban04:
-	idle: aban04
+	idle:
 		ShadowStart: 2
 
 aban05:
-	idle: aban05
+	idle:
 		ShadowStart: 2
 
 aban06:
-	idle: aban06
+	idle:
 		ShadowStart: 2
 
 aban07:
-	idle: aban07
+	idle:
 		ShadowStart: 2
 
 aban08:
-	idle: aban08
+	idle:
 		ShadowStart: 2
 
 aban09:
-	idle: aban09
+	idle:
 		ShadowStart: 2
 
 aban10:
-	idle: aban10
+	idle:
 		ShadowStart: 2
 
 aban11:
-	idle: aban11
+	idle:
 		ShadowStart: 2
 
 aban12:
-	idle: aban12
+	idle:
 		ShadowStart: 2
 
 aban13:
-	idle: aban13
+	idle:
 		ShadowStart: 2
 
 aban14:
-	idle: aban14
+	idle:
 		ShadowStart: 2
 
 aban15:
-	idle: aban15
+	idle:
 		ShadowStart: 2
 
 aban16:
-	idle: aban16
+	idle:
 		ShadowStart: 2
 
 aban17:
-	idle: aban17
+	idle:
 		ShadowStart: 2
 
 aban18:
-	idle: aban18
+	idle:
 		ShadowStart: 2
 
 bboard01:
-	idle: bboard01
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard02:
-	idle: bboard02
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard03:
-	idle: bboard03
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard04:
-	idle: bboard04
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard05:
-	idle: bboard05
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard06:
-	idle: bboard06
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard07:
-	idle: bboard07
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard08:
-	idle: bboard08
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard09:
-	idle: bboard09
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard10:
-	idle: bboard10
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard11:
-	idle: bboard11
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard12:
-	idle: bboard12
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard13:
-	idle: bboard13
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard14:
-	idle: bboard14
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard15:
-	idle: bboard15
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 bboard16:
-	idle: bboard16
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0001:
-	idle: ct0001
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0002:
-	idle: ct0002
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0003:
-	idle: ct0003
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0004:
-	idle: ct0004
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0005:
-	idle: ct0005
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0006:
-	idle: ct0006
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0007:
-	idle: ct0007
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0008:
-	idle: ct0008
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0009:
-	idle: ct0009
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0010:
-	idle: ct0010
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0011:
-	idle: ct0011
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0012:
-	idle: ct0012
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0013:
-	idle: ct0013
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0014:
-	idle: ct0014
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0015:
-	idle: ct0015
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0016:
-	idle: ct0016
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0017:
-	idle: ct0017
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0018:
-	idle: ct0018
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0019:
-	idle: ct0019
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0020:
-	idle: ct0020
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
 
 ca0021:
-	idle: ct0021
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
@@ -354,26 +396,37 @@ caaray:
 		ShadowStart: 5
 
 cabhut:
-	idle: cabhut
+	idle:
+		UseTilesetCode: true
 
 cacrsh01:
-	idle: ctcrsh01
+	idle:
+		UseTilesetCode: true
 
 cacrsh02:
-	idle: ctcrsh02
+	idle:
+		UseTilesetCode: true
 
 cacrsh03:
-	idle: ctcrsh03
+	idle:
+		UseTilesetCode: true
 
 cacrsh04:
-	idle: ctcrsh04
+	idle:
+		UseTilesetCode: true
 
 cacrsh05:
-	idle: ctcrsh05
+	idle:
+		UseTilesetCode: true
 
 cahosp:
-	idle: cthosp
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 2
+	damaged-idle:
+		Start: 1
+		ShadowStart: 3
 
 capyr01:
 	idle: ctpyr01
@@ -388,269 +441,277 @@ capyr03:
 		ShadowStart: 1
 
 city01:
-	idle: city01
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city01
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city02:
-	idle: city02
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city02
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city03:
-	idle: city03
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city03
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city04:
-	idle: city04
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city04
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city05:
-	idle: city05
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city05
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city06:
-	idle: city06
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city06
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city07:
-	idle: city07
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city07
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city08:
-	idle: city08
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city08
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city09:
-	idle: city09
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city09
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city10:
-	idle: city10
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city10
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city11:
-	idle: city11
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city11
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city12:
-	idle: city12
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city12
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city13:
-	idle: city13
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city13
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city14:
-	idle: city14
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city14
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city15:
-	idle: city15
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city15
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city16:
-	idle: city16
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city16
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city17:
-	idle: city17
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city17
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city18:
-	idle: city18
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city18
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city19:
-	idle: city19
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city19
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city20:
-	idle: city20
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city20
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city21:
-	idle: city21
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city21
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 city22:
-	idle: city22
+	idle:
 		ShadowStart: 2
 	damaged-idle:
 		Start: 1
 		ShadowStart: 3
-	make: city22
+	make:
 		ShadowStart: 2
 		Tick: 80
 
 ctdam:
-	idle: ctdam
+	idle:
 
 ctvega:
-	idle: ctvega
+	idle:
 		ShadowStart: 3
-	damaged-idle: ctvega
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	critical-idle: ctvega
+	critical-idle:
 		Start: 2
 		ShadowStart: 5
 
 gaoldcc1:
-	idle: gtoldcc1
+	idle:
 		ShadowStart: 2
+		UseTilesetCode: true
 
 gaoldcc2:
-	idle: gtoldcc2
+	idle:
 		ShadowStart: 2
+		UseTilesetCode: true
 
 gaoldcc3:
 	idle: gtoldcc3
 		ShadowStart: 2
+		UseTilesetCode: true
 
 gaoldcc4:
-	idle: gtoldcc4
+	idle:
 		ShadowStart: 2
+		UseTilesetCode: true
 
 gaoldcc5:
-	idle: gtoldcc5
+	idle:
 		ShadowStart: 2
+		UseTilesetCode: true
 
 gaoldcc6:
-	idle: gtoldcc6
+	idle:
 		ShadowStart: 2
+		UseTilesetCode: true
 
 gakodk:
-	idle: gtkodk
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 3
-	damaged-idle: gtkodk
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	critical-idle: gtkodk
+	critical-idle:
 		Start: 2
 		ShadowStart: 5
 
@@ -698,22 +759,24 @@ galite:
 		UseTilesetCode: false
 
 namntk:
-	idle: ntmntk
+	Defaults:
+		UseTilesetCode: true
+	idle:
 		ShadowStart: 3
-	damaged-idle: ntmntk
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	critical-idle: ntmntk
+	critical-idle:
 		Start: 2
 		ShadowStart: 5
 
 ntpyra:
-	idle: ntpyra
+	idle:
 		ShadowStart: 3
-	damaged-idle: ntpyra
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	critical-idle: ntpyra
+	critical-idle:
 		Start: 2
 		ShadowStart: 5
 
