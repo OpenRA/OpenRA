@@ -379,8 +379,12 @@ namespace OpenRA
 			}
 		}
 
+		public bool Disposing;
+
 		public void Dispose()
 		{
+			Disposing = true;
+
 			frameEndActions.Clear();
 
 			// Dispose newer actors first, and the world actor last
