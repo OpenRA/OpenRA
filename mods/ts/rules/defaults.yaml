@@ -122,7 +122,7 @@
 	Health:
 		HP: 400
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT
+		RequireTilesets: TEMPERATE
 
 ^Crate:
 	HiddenUnderShroud:
@@ -130,7 +130,7 @@
 		Name: Crate
 	Crate:
 		Lifetime: 180
-		TerrainTypes: Clear, Rough, Road, DirtRoad, Tiberium, BlueTiberium
+		TerrainTypes: Clear, Rough, Road, DirtRoad, Tiberium, BlueTiberium, Veins
 	RenderSprites:
 		Palette: terrain
 	WithCrateBody:
@@ -208,6 +208,7 @@
 			Rough: 70
 			Tiberium: 80
 			BlueTiberium: 80
+			Veins: 80
 		Voice: Move
 	SelectionDecorations:
 		Palette: pips
@@ -314,6 +315,7 @@
 			Rough: 70
 			Tiberium: 80
 			BlueTiberium: 80
+			Veins: 80
 		ROT: 5
 		Voice: Move
 	Selectable:
@@ -388,6 +390,7 @@
 			Rough: 70
 			Tiberium: 80
 			BlueTiberium: 80
+			Veins: 80
 		ROT: 5
 		Voice: Move
 	Selectable:
@@ -515,6 +518,7 @@
 			Rough: 70
 			Tiberium: 100
 			BlueTiberium: 100
+			Veins: 100
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -574,18 +578,4 @@
 	BodyOrientation:
 	Tooltip:
 		Name: Rock
-
-^Veinhole:
-	HiddenUnderShroud:
-	RadarColorFromTerrain:
-		Terrain: Tiberium
-	RenderBuilding:
-		Palette: player
-	AppearsOnRadar:
-	Tooltip:
-		Name: Veinhole
-	Building:
-		Footprint: x
-		Dimensions: 1, 1
-	BodyOrientation:
 

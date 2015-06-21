@@ -52,6 +52,10 @@ Terrain:
 		AcceptsSmudgeType: SmallCrater, MediumCrater, LargeCrater, SmallScorch, MediumScorch, LargeScorch
 		Color: 28, 64, 248
 		TargetTypes: Ground
+	TerrainType@Veins:
+		Type: Veins
+		Color: 226, 103, 0
+		TargetTypes: Ground
 
 # Automatically generated. DO NOT EDIT!
 Templates:

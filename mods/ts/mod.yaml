@@ -109,7 +109,7 @@ VoxelSequences:
 	./mods/ts/sequences/voxels.yaml
 
 TileSets:
-	./mods/ts/tilesets/temperat.yaml
+	./mods/ts/tilesets/temperate.yaml
 	./mods/ts/tilesets/snow.yaml
 
 TileSize: 48,24
@@ -252,8 +252,8 @@ SpriteFormats: ShpTS, TmpTS, ShpTD
 
 SpriteSequenceFormat: TilesetSpecificSpriteSequence
 	TilesetExtensions:
-		TEMPERAT: .tem
+		TEMPERATE: .tem
 		SNOW: .sno
 	TilesetCodes:
-		TEMPERAT: t
+		TEMPERATE: t
 		SNOW: a
