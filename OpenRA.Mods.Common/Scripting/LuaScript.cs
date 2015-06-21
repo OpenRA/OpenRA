@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public object Create(ActorInitializer init) { return new LuaScript(this); }
 	}
 
-	public sealed class LuaScript : ITick, IWorldLoaded, IDisposable
+	public class LuaScript : ITick, IWorldLoaded, INotifyActorDisposing
 	{
 		readonly LuaScriptInfo info;
 		ScriptContext context;
@@ -46,10 +46,16 @@ namespace OpenRA.Mods.Common.Scripting
 			context.Tick(self);
 		}
 
-		public void Dispose()
+		bool disposed;
+		public void Disposing(Actor self)
 		{
+			if (disposed)
+				return;
+
 			if (context != null)
 				context.Dispose();
+
+			disposed = true;
 		}
 
 		public bool FatalErrorOccurred { get { return context.FatalErrorOccurred; } }
