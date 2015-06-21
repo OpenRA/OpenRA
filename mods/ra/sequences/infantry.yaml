@@ -18,7 +18,11 @@ e1:
 		Facings: 8
 	prone-stand:
 		Start: 144
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 144
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 144
@@ -95,7 +99,11 @@ sniper:
 		Length: 16
 	prone-stand:
 		Start: 208
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 208
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 208
@@ -207,7 +215,11 @@ e3:
 			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 144
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 144
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 144
@@ -270,7 +282,11 @@ e6:
 			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 82
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 82
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 82
@@ -281,8 +297,6 @@ e6:
 
 medi:
 	stand:
-		Facings: 8
-	stand2:
 		Facings: 8
 	run:
 		Start: 8
@@ -336,7 +350,7 @@ medi:
 			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 130
-		Length: 4
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 130
@@ -347,8 +361,6 @@ medi:
 		
 mech:
 	stand:
-		Facings: 8
-	stand2:
 		Facings: 8
 	run:
 		Start: 8
@@ -402,7 +414,7 @@ mech:
 			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 130
-		Length: 4
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 130
@@ -464,8 +476,12 @@ e2:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	prone-stand:
-		Start: 240
-		Length: 4
+		Start: 144
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 144
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 240
@@ -480,8 +496,6 @@ e2:
 
 dog:
 	stand:
-		Facings: 8
-	stand2:
 		Facings: 8
 	run:
 		Start: 8
@@ -580,7 +594,11 @@ spy:
 			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 144
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 144
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 144
@@ -595,8 +613,6 @@ spy:
 
 thf:
 	stand:
-		Facings: 8
-	stand2:
 		Facings: 8
 	run:
 		Start: 8
@@ -634,7 +650,7 @@ thf:
 			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 72
-		Length: 4
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 72
@@ -645,8 +661,6 @@ thf:
 
 hijacker:
 	stand: thf
-		Facings: 8
-	stand2: thf
 		Facings: 8
 	run: thf
 		Start: 8
@@ -684,7 +698,7 @@ hijacker:
 			INTERIOR: TEMPERAT
 	prone-stand: thf
 		Start: 72
-		Length: 4
+		Stride: 4
 		Facings: 8
 	prone-run: thf
 		Start: 72
@@ -695,8 +709,6 @@ hijacker:
 
 e7:
 	stand:
-		Facings: 8
-	stand2:
 		Facings: 8
 	run:
 		Start: 8
@@ -746,7 +758,7 @@ e7:
 			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 128
-		Length: 4
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 128
@@ -817,7 +829,11 @@ e4:
 			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 208
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 208
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 208
@@ -833,8 +849,6 @@ e4:
 gnrl:
 	stand:
 		Facings: 8
-	stand2:
-		Facings: 8
 	run:
 		Start: 8
 		Length: 5
@@ -846,7 +860,7 @@ gnrl:
 		Facings: 8
 	prone-stand:
 		Start: 88
-		Length: 2
+		Stride: 2
 		Facings: 8
 	prone-run:
 		Start: 104
@@ -914,7 +928,11 @@ shok:
 		Length: 16
 	prone-stand:
 		Start: 208
-		Length: 4
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 208
+		Stride: 4
 		Facings: 8
 	prone-run:
 		Start: 208
@@ -971,11 +989,9 @@ shok:
 c1:
 	stand:
 		Facings: 8
-	stand2:
-		Facings: 8
 	panic-stand:
 		Start: 8
-		Length: 6
+		Stride: 6
 		Facings: 8
 	panic-run:
 		Start: 8
@@ -1023,11 +1039,9 @@ c1:
 c2:
 	stand:
 		Facings: 8
-	stand2:
-		Facings: 8
 	panic-stand:
 		Start: 8
-		Length: 6
+		Stride: 6
 		Facings: 8
 	panic-run:
 		Start: 8
@@ -1075,11 +1089,9 @@ c2:
 c3:
 	stand:
 		Facings: 8
-	stand2:
-		Facings: 8
 	panic-stand:
 		Start: 8
-		Length: 6
+		Stride: 6
 		Facings: 8
 	panic-run:
 		Start: 8
@@ -1127,15 +1139,13 @@ c3:
 einstein:
 	stand:
 		Facings: 8
-	stand2:
-		Facings: 8
 	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
 	panic-stand:
 		Start: 8
-		Length: 6
+		Stride: 6
 		Facings: 8
 	run:
 		Start: 56
@@ -1175,15 +1185,13 @@ einstein:
 delphi:
 	stand:
 		Facings: 8
-	stand2:
-		Facings: 8
 	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
 	panic-stand:
 		Start: 8
-		Length: 6
+		Stride: 6
 		Facings: 8
 	run:
 		Start: 56
@@ -1223,15 +1231,13 @@ delphi:
 chan:
 	stand:
 		Facings: 8
-	stand2:
-		Facings: 8
 	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
 	panic-stand:
 		Start: 8
-		Length: 6
+		Stride: 6
 		Facings: 8
 	run:
 		Start: 56
