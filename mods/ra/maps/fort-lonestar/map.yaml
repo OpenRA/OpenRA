@@ -627,7 +627,6 @@ Rules:
 		RenderSprites:
 			Image: SNIPER
 	SPY:
-		Inherits: ^Infantry
 		Buildable:
 			Queue: Infantry
 			BuildPaletteOrder: 60
