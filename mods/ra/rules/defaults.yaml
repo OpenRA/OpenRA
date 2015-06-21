@@ -91,8 +91,6 @@
 	CaptureNotification:
 		Notification: UnitStolen
 	MustBeDestroyed:
-	AnnounceOnSeen:
-		Notification: EnemyDetected
 	Voiced:
 		VoiceSet: VehicleVoice
 
@@ -155,8 +153,6 @@
 		GroundCorpsePalette:
 		WaterCorpseSequence:
 		WaterCorpsePalette:
-	AnnounceOnSeen:
-		Notification: EnemyDetected
 	Voiced:
 		VoiceSet: VehicleVoice
 
@@ -244,8 +240,6 @@
 	Cloneable:
 		Types: Infantry
 	MustBeDestroyed:
-	AnnounceOnSeen:
-		Notification: EnemyDetected
 	Voiced:
 		VoiceSet: GenericVoice
 
@@ -277,8 +271,6 @@
 	Tooltip:
 		GenericName: Ship
 	MustBeDestroyed:
-	AnnounceOnSeen:
-		Notification: EnemyDetected
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 	Voiced:
@@ -317,8 +309,6 @@
 		GenericName: Plane
 	WithShadow:
 	MustBeDestroyed:
-	AnnounceOnSeen:
-		Notification: EnemyDetected
 	Voiced:
 		VoiceSet: GenericVoice
 
@@ -329,8 +319,6 @@
 	GpsDot:
 		String: Helicopter
 	Hovers:
-	AnnounceOnSeen:
-		Notification: EnemyDetected
 
 ^Building:
 	Inherits@1: ^ExistsInWorld
