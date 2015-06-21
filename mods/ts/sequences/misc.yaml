@@ -342,48 +342,58 @@ trock01:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 trock02:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 trock03:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 trock04:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 trock05:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 srock01:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 srock02:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 srock03:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 srock04:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 srock05:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12

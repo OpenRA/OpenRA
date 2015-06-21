@@ -49,126 +49,151 @@ tree01:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree02:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree03:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree04:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree05:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree06:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree07:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree08:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree09:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree10:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree11:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree12:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree13:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree14:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree15:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree16:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree17:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree18:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree19:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree20:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree21:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree22:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree23:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree24:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree25:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0, -12
 
 veinhole:
 	idle:
