@@ -132,7 +132,7 @@ namespace OpenRA.Graphics
 				return;
 
 			var renderables = GenerateRenderables();
-			var bounds = Viewport.ScissorBounds;
+			var bounds = Viewport.GetScissorBounds(World.Type != WorldType.Editor);
 			Game.Renderer.EnableScissor(bounds);
 
 			terrainRenderer.Draw(this, Viewport);

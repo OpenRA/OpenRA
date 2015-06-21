@@ -207,23 +207,21 @@ namespace OpenRA.Graphics
 
 		// Rectangle (in viewport coords) that contains things to be drawn
 		static readonly Rectangle ScreenClip = Rectangle.FromLTRB(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height);
-		public Rectangle ScissorBounds
+		public Rectangle GetScissorBounds(bool insideBounds)
 		{
-			get
-			{
-				// Visible rectangle in world coordinates (expanded to the corners of the cells)
-				var map = worldRenderer.World.Map;
-				var ctl = map.CenterOfCell(VisibleCellsInsideBounds.TopLeft) - new WVec(512, 512, 0);
-				var cbr = map.CenterOfCell(VisibleCellsInsideBounds.BottomRight) + new WVec(512, 512, 0);
+			// Visible rectangle in world coordinates (expanded to the corners of the cells)
+			var bounds = insideBounds ? VisibleCellsInsideBounds : AllVisibleCells;
+			var map = worldRenderer.World.Map;
+			var ctl = map.CenterOfCell(bounds.TopLeft) - new WVec(512, 512, 0);
+			var cbr = map.CenterOfCell(bounds.BottomRight) + new WVec(512, 512, 0);
 
-				// Convert to screen coordinates
-				var tl = WorldToViewPx(worldRenderer.ScreenPxPosition(ctl - new WVec(0, 0, ctl.Z))).Clamp(ScreenClip);
-				var br = WorldToViewPx(worldRenderer.ScreenPxPosition(cbr - new WVec(0, 0, cbr.Z))).Clamp(ScreenClip);
+			// Convert to screen coordinates
+			var tl = WorldToViewPx(worldRenderer.ScreenPxPosition(ctl - new WVec(0, 0, ctl.Z))).Clamp(ScreenClip);
+			var br = WorldToViewPx(worldRenderer.ScreenPxPosition(cbr - new WVec(0, 0, cbr.Z))).Clamp(ScreenClip);
 
-				// Add an extra one cell fudge in each direction for safety
-				return Rectangle.FromLTRB(tl.X - tileSize.Width, tl.Y - tileSize.Height,
-					br.X + tileSize.Width, br.Y + tileSize.Height);
-			}
+			// Add an extra one cell fudge in each direction for safety
+			return Rectangle.FromLTRB(tl.X - tileSize.Width, tl.Y - tileSize.Height,
+				br.X + tileSize.Width, br.Y + tileSize.Height);
 		}
 
 		CellRegion CalculateVisibleCells(bool insideBounds)
