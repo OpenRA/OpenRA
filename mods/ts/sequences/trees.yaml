@@ -174,3 +174,4 @@ veinhole:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
+		Offset: 0,-60
