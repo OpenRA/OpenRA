@@ -63,8 +63,6 @@
 	UpgradeManager:
 	TemporaryOwnerManager:
 	MustBeDestroyed:
-	AnnounceOnSeen:
-		Notification: EnemyUnitsDetected
 	Voiced:
 		VoiceSet: VehicleVoice
 	Carryable:
@@ -119,8 +117,6 @@
 	UpgradeManager:
 	TemporaryOwnerManager:
 	MustBeDestroyed:
-	AnnounceOnSeen:
-		Notification: EnemyUnitsDetected
 	Voiced:
 		VoiceSet: VehicleVoice
 	Carryable:
@@ -258,8 +254,6 @@
 		FallRate: 130
 	UpgradeManager:
 	MustBeDestroyed:
-	AnnounceOnSeen:
-		Notification: EnemyUnitsDetected
 	TerrainModifiesDamage:
 		TerrainModifier:
 			Rough: 80
@@ -291,8 +285,6 @@
 	AttackMove:
 	ScriptTriggers:
 	UpgradeManager:
-	AnnounceOnSeen:
-		Notification: EnemyUnitsDetected
 	Voiced:
 		VoiceSet: GenericVoice
 	WithFacingSpriteBody:
