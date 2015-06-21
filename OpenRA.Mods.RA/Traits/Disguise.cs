@@ -166,7 +166,7 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				foreach (var u in info.Upgrades)
 				{
-					if (!um.Value.AcceptsUpgrade(self, u))
+					if (!um.Value.AcknowledgesUpgrade(self, u))
 						continue;
 
 					if (Disguised)
