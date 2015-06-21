@@ -113,8 +113,15 @@ end
 InsertNodUnits = function()
 	Camera.Position = UnitsRallyRight.CenterPosition
 
+	Media.PlaySpeechNotification(Nod, "Reinforce")
 	Reinforcements.Reinforce(Nod, NodStartUnitsLeft, { UnitsEntryLeft.Location, UnitsRallyLeft.Location }, 15)
 	Reinforcements.Reinforce(Nod, NodStartUnitsRight, { UnitsEntryRight.Location, UnitsRallyRight.Location }, 15)
+end
+
+initialSong = "rout"
+PlayMusic = function()
+	Media.PlayMusic(initialSong, PlayMusic)
+	initialSong = nil
 end
 
 WorldLoaded = function()
@@ -146,6 +153,8 @@ WorldLoaded = function()
 
 	GDIObjective = GDI.AddPrimaryObjective("Stop the Nod taskforce from escaping with the detonator.")
 
+	PlayMusic()
+
 	InsertNodUnits()
 
 	Trigger.AfterDelay(Grd1TriggerFunctionTime, Grd1TriggerFunction)
@@ -166,7 +175,8 @@ WorldLoaded = function()
 
 	Trigger.OnEnteredFootprint(Chn3CellTriggerActivator, function(a, id)
 		if a.Owner == Nod then
-			Reinforcements.Reinforce(Nod, { 'tran' }, { ChnEntry.Location, waypoint17.Location }, 11)
+			Media.PlaySpeechNotification(Nod, "Reinforce")
+			Reinforcements.ReinforceWithTransport(Nod, 'tran', nil, { ChnEntry.Location, waypoint17.Location }, nil, nil, nil)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)

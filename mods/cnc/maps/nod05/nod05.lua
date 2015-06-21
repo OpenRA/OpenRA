@@ -154,12 +154,19 @@ end
 InsertNodUnits = function()
 	Camera.Position = UnitsEntry.CenterPosition
 
+	Media.PlaySpeechNotification(Nod, "Reinforce")
 	Reinforcements.Reinforce(Nod, NodUnitsVehicle, { UnitsEntry.Location, UnitsRallyVehicle.Location }, 1)
 	Reinforcements.Reinforce(Nod, NodUnitsRocket, { UnitsEntry.Location, UnitsRallyRocket.Location }, 50)
 	Reinforcements.Reinforce(Nod, NodUnitsGunner, { UnitsEntry.Location, UnitsRallyGunner.Location }, 50)
 	Trigger.AfterDelay(DateTime.Seconds(6), function()
 		Reinforcements.Reinforce(Nod, { 'mcv' }, { UnitsEntry.Location, UnitsRallyMCV.Location })
 	end)
+end
+
+initialSong = "airstrik"
+PlayMusic = function()
+	Media.PlayMusic(initialSong, PlayMusic)
+	initialSong = nil
 end
 
 WorldLoaded = function()
@@ -240,6 +247,9 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(0, getStartUnits)
+
+	PlayMusic()
+
 end
 
 Tick = function()
