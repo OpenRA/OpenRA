@@ -213,6 +213,7 @@
     <Compile Include="Scripting\Media.cs" />
     <Compile Include="Scripting\ScriptTriggers.cs" />
     <Compile Include="Scripting\Global\ActorGlobal.cs" />
+    <Compile Include="Scripting\Global\BeaconGlobal.cs" />
     <Compile Include="Scripting\Global\CameraGlobal.cs" />
     <Compile Include="Scripting\Global\CoordinateGlobals.cs" />
     <Compile Include="Scripting\Global\DateTimeGlobal.cs" />
