@@ -95,8 +95,7 @@ Expand = function()
 			return
 		end
 
-		mcvGG.IsInWorld = false
-		mcvtransport.LoadPassenger(mcvGG)
+		mcvGG.EnterTransport(mcvtransport)
 		mcvtransport.Move(GGUnloadPoint.Location)
 		mcvtransport.UnloadPassengers()
 		Trigger.AfterDelay(DateTime.Seconds(12), function()
@@ -151,7 +150,7 @@ Tick = function()
 		Greece.Cash = Greece.Cash + Greece.Resources - Greece.ResourceCapacity * 0.25
 		Greece.Resources = Greece.ResourceCapacity * 0.25
 	end
- 
+
 	if GoodGuy.Resources >= GoodGuy.ResourceCapacity * 0.75 then
 		GoodGuy.Cash = GoodGuy.Cash + GoodGuy.Resources - GoodGuy.ResourceCapacity * 0.25
 		GoodGuy.Resources = GoodGuy.ResourceCapacity * 0.25
