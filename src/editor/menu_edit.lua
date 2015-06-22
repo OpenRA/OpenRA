@@ -139,7 +139,7 @@ frame:Connect(ID_COMMENT, wx.wxEVT_UPDATE_UI,
 
 local function generateConfigMessage(type)
   return ([==[--[[--
-  Use this file to specify %s preferences.
+  Use this file to specify **%s** preferences.
   Review [examples](+%s) or check [online documentation](%s) for details.
 --]]--
 ]==])
