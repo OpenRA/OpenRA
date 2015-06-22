@@ -61,7 +61,7 @@ local function outlineRefresh(editor, force)
       end
       if name or outcfg.showanonymous then
         funcs[#funcs+1] = {
-          name = (name or outcfg.showanonymous)..params,
+          name = (name or outcfg.showanonymous)..params:gsub("%s+", " "),
           depth = depth,
           image = ftype,
           pos = name and pos or token.fpos,
