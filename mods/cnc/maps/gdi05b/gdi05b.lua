@@ -108,6 +108,7 @@ StartProduction = function(type)
 end
 
 InsertGdiUnits = function()
+	Media.PlaySpeechNotification(gdi, "Reinforce")
 	Reinforcements.Reinforce(gdi, GdiUnits, { UnitsEntry.Location, UnitsRally.Location }, 15)
 end
 

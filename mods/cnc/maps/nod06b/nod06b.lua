@@ -162,6 +162,7 @@ WorldLoaded = function()
 
 	Trigger.OnEnteredFootprint(ChnCellTriggerActivator, function(a, id)
 		if a.Owner == Nod then
+			Media.PlaySpeechNotification(Nod, "Reinforce")
 			Reinforcements.Reinforce(Nod, { 'tran' }, { ChnEntry.Location, waypoint17.Location }, 11)
 			Trigger.RemoveFootprintTrigger(id)
 		end

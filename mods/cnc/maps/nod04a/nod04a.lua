@@ -145,6 +145,7 @@ Atk4Movement = function(unit)
 end
 
 InsertNodUnits = function()
+	Media.PlaySpeechNotification(Nod, "Reinforce")
 	Reinforcements.Reinforce(Nod, NodUnitsBuggy, { UnitsEntryBuggy.Location, UnitsRallyBuggy.Location }, 11)
 	Reinforcements.Reinforce(Nod, NodUnitsBikes, { UnitsEntryBikes.Location, UnitsRallyBikes.Location }, 15)
 	Reinforcements.Reinforce(Nod, NodUnitsGunner, { UnitsEntryGunner.Location, UnitsRallyGunner.Location }, 15)
@@ -284,6 +285,7 @@ WorldLoaded = function()
 	NodObjective1 = Nod.AddPrimaryObjective("Kill all civilian GDI supporters.")
 
 	InsertNodUnits()
+	Camera.Position = waypoint6.CenterPosition
 end
 
 Tick = function()

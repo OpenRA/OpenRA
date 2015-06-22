@@ -154,6 +154,7 @@ end
 InsertNodUnits = function()
 	Camera.Position = UnitsEntry.CenterPosition
 
+	Media.PlaySpeechNotification(Nod, "Reinforce")
 	Reinforcements.Reinforce(Nod, NodUnitsVehicle, { UnitsEntry.Location, UnitsRallyVehicle.Location }, 1)
 	Reinforcements.Reinforce(Nod, NodUnitsRocket, { UnitsEntry.Location, UnitsRallyRocket.Location }, 50)
 	Reinforcements.Reinforce(Nod, NodUnitsGunner, { UnitsEntry.Location, UnitsRallyGunner.Location }, 50)

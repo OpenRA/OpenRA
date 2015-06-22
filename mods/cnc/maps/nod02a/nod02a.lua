@@ -42,6 +42,7 @@ getActors = function(owner, units)
 end
 
 InsertNodUnits = function()
+	Media.PlaySpeechNotification(Nod, "Reinforce")
 	Reinforcements.Reinforce(Nod, NodUnits, { UnitsEntry.Location, UnitsRally.Location }, 15)
 	Reinforcements.Reinforce(Nod, { "mcv" }, { McvEntry.Location, McvRally.Location })
 end

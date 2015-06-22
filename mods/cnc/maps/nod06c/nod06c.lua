@@ -75,6 +75,7 @@ end
 InsertNodUnits = function()
 	Camera.Position = UnitsRallyRight.CenterPosition
 	
+	Media.PlaySpeechNotification(Nod, "Reinforce")
 	Reinforcements.Reinforce(Nod, NodStartUnitsVehicle, { UnitsEntryMiddle.Location, UnitsRallyMiddle.Location }, 30)
 	Reinforcements.Reinforce(Nod, NodStartUnitsMiddle, { UnitsEntryMiddle.Location, UnitsRallyMiddle.Location }, 15)
 	Reinforcements.Reinforce(Nod, NodStartUnitsLeft, { UnitsEntryLeft.Location, UnitsRallyLeft.Location }, 15)
@@ -117,6 +118,7 @@ WorldLoaded = function()
 
 	Trigger.OnEnteredFootprint(ChinCellTriggerActivator, function(a, id)
 		if a.Owner == Nod then
+			Media.PlaySpeechNotification(Nod, "Reinforce")
 			Reinforcements.Reinforce(Nod, { 'tran' }, { ChnEntry.Location, waypoint10.Location }, 11)
 			Trigger.RemoveFootprintTrigger(id)
 		end

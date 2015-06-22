@@ -143,6 +143,7 @@ SetupWorld = function()
 		unit.Destroy()
 	end)
 
+	Media.PlaySpeechNotification(gdi, "Reinforce")
 	Reinforcements.Reinforce(gdi, GdiTanks, { GdiTankEntry.Location, GdiTankRallyPoint.Location }, DateTime.Seconds(1), function(actor) actor.Stance = "Defend" end)
 	Reinforcements.Reinforce(gdi, GdiApc, { GdiApcEntry.Location, GdiApcRallyPoint.Location }, DateTime.Seconds(1), function(actor) actor.Stance = "Defend" end)
 	Reinforcements.Reinforce(gdi, GdiInfantry, { GdiInfantryEntry.Location, GdiInfantryRallyPoint.Location }, 15, function(actor) actor.Stance = "Defend" end)

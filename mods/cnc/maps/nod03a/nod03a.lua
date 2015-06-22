@@ -9,6 +9,7 @@ SendAttackWave = function(units, spawnPoint)
 end
 
 InsertNodUnits = function()
+	Media.PlaySpeechNotification(player, "Reinforce")
 	Reinforcements.Reinforce(player, NodUnits, { NodEntry.Location, NodRallyPoint.Location })
 	Trigger.AfterDelay(DateTime.Seconds(9), function()
 		Reinforcements.Reinforce(player, { "mcv" }, { NodEntry.Location, PlayerBase.Location })

@@ -24,9 +24,11 @@ SecondAttackWave = function(soldier)
 end
 
 InsertNodUnits = function()
+	Media.PlaySpeechNotification(player, "Reinforce")
 	Reinforcements.Reinforce(player, { "mcv" }, { McvEntry.Location, McvDeploy.Location })
 	Reinforcements.Reinforce(player, NodUnits, { NodEntry.Location, NodRallypoint.Location })
 	Trigger.AfterDelay(DateTime.Seconds(15), function()
+		Media.PlaySpeechNotification(player, "Reinforce")
 		Reinforcements.Reinforce(player, Engineers, { McvEntry.Location, PlayerBase.Location })
 	end)
 end
