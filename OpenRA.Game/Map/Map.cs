@@ -207,6 +207,18 @@ namespace OpenRA
 
 		public Rectangle Bounds;
 
+		/// <summary>
+		/// The top-left of the playable area in projected world coordinates
+		/// This is a hacky workaround for legacy functionality.  Do not use for new code.
+		/// </summary>
+		public WPos ProjectedTopLeft;
+
+		/// <summary>
+		/// The bottom-right of the playable area in projected world coordinates
+		/// This is a hacky workaround for legacy functionality.  Do not use for new code.
+		/// </summary>
+		public WPos ProjectedBottomRight;
+
 		public Lazy<CPos[]> SpawnPoints;
 
 		// Yaml map data
@@ -397,9 +409,9 @@ namespace OpenRA
 			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
 			AllCells = new CellRegion(TileShape, tl, br);
 
-			var btl = new MPos(Bounds.Left, Bounds.Top).ToCPos(this);
-			var bbr = new MPos(Bounds.Right - 1, Bounds.Bottom - 1).ToCPos(this);
-			CellsInsideBounds = new CellRegion(TileShape, btl, bbr);
+			var btl = new MPos(Bounds.Left, Bounds.Top);
+			var bbr = new MPos(Bounds.Right - 1, Bounds.Bottom - 1);
+			SetBounds(btl, bbr);
 
 			CustomTerrain = new CellLayer<byte>(this);
 			foreach (var uv in AllCells.MapCoords)
@@ -706,13 +718,27 @@ namespace OpenRA
 			AllCells = new CellRegion(TileShape, tl, br);
 		}
 
-		public void ResizeCordon(int left, int top, int right, int bottom)
+		public void SetBounds(MPos tl, MPos br)
 		{
-			Bounds = Rectangle.FromLTRB(left, top, right, bottom);
+			// The tl and br coordinates are inclusive, but the Rectangle
+			// is exclusive.  Pad the right and bottom edges to match.
+			Bounds = Rectangle.FromLTRB(tl.U, tl.V, br.U + 1, br.V + 1);
+			CellsInsideBounds = new CellRegion(TileShape, tl.ToCPos(this), br.ToCPos(this));
 
-			var tl = new MPos(Bounds.Left, Bounds.Top).ToCPos(this);
-			var br = new MPos(Bounds.Right - 1, Bounds.Bottom - 1).ToCPos(this);
-			CellsInsideBounds = new CellRegion(TileShape, tl, br);
+			// Directly calculate the projected map corners in world units avoiding unnecessary
+			// conversions.  This abuses the definition that the width of the cell is always
+			// 1024 units, and that the height of two rows is 2048 for classic cells and 1024
+			// for diamond cells.
+			var wtop = tl.V * 1024;
+			var wbottom = (br.V + 1) * 1024;
+			if (TileShape == TileShape.Diamond)
+			{
+				wtop /= 2;
+				wbottom /= 2;
+			}
+
+			ProjectedTopLeft = new WPos(tl.U * 1024, wtop, 0);
+			ProjectedBottomRight = new WPos(br.U * 1024 - 1, wbottom - 1, 0);
 		}
 
 		string ComputeHash()
