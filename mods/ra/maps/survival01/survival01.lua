@@ -263,6 +263,7 @@ TimerExpired = function()
 	SpawningInfantry = false
 	SpawnNavalUnits = false
 
+	Beacon.New(allies, SovietEntryPoint7.CenterPosition - WVec.New(3 * 1024, 0, 0))
 	Media.PlaySpeechNotification(allies, "AlliedReinforcementsArrived")
 	Reinforcements.Reinforce(allies, FrenchReinforcements, { SovietEntryPoint7.Location, Alliesbase.Location })
 
