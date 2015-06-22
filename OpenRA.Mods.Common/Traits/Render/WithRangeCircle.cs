@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 				Color.FromArgb(96, Color.Black));
 
 			foreach (var a in w.ActorsWithTrait<WithRangeCircle>())
-				if (a.Actor.Owner == a.Actor.World.LocalPlayer && a.Trait.Info.Type == Type)
+				if (a.Actor.Owner.IsAlliedWith(w.RenderPlayer) && a.Trait.Info.Type == Type)
 					foreach (var r in a.Trait.RenderAfterWorld(wr))
 						yield return r;
 		}
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			if (self.Owner != self.World.LocalPlayer)
+			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 
 			yield return new RangeCircleRenderable(
