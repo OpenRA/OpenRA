@@ -23,12 +23,12 @@ end
 local function outlineRefresh(editor, force)
   if not editor then return end
   local tokens = editor:GetTokenList()
-  local text = editor:GetText()
   local sep = editor.spec.sep
   local varname = "([%w_][%w_"..q(sep:sub(1,1)).."]*)"
   local funcs = {}
   local var = {}
   local outcfg = ide.config.outline or {}
+  local text
   for _, token in ipairs(tokens) do
     local op = token[1]
     if op == 'Var' or op == 'Id' then
@@ -36,6 +36,7 @@ local function outlineRefresh(editor, force)
     elseif op == 'Function' then
       local depth = token.context['function'] or 1
       local name, pos = token.name, token.fpos
+      text = text or editor:GetText()
       local _, _, rname, params = text:find('([^%(]*)(%b())', pos)
       if name and rname:find(token.name, 1, true) ~= 1 then
         name = rname:gsub("%s+$","")
