@@ -92,7 +92,7 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   -- check the editor as it can be empty if the file has malformed UTF8;
   -- skip binary files with unknown extensions as they may have any sequences;
   -- can't show them anyway.
-  if file_text and #file_text > 0 and #(editor:GetText()) == 0
+  if file_text and #file_text > 0 and editor:GetLength() == 0
   and (editor.spec ~= ide.specs.none or not IsBinary(file_text)) then
     local replacement, invalid = "\022"
     file_text, invalid = FixUTF8(file_text, replacement)
@@ -270,8 +270,8 @@ function SaveFile(editor, filePath)
       end
     end
 
-    local st = (editor:GetCodePage() == wxstc.wxSTC_CP_UTF8 and editor.bom or "")
-      .. editor:GetText()
+    local st = ((editor:GetCodePage() == wxstc.wxSTC_CP_UTF8 and editor.bom or "")
+      .. editor:GetText())
     if GetConfigIOFilter("output") then
       st = GetConfigIOFilter("output")(filePath,st)
     end

@@ -150,14 +150,14 @@ end
 frame:Connect(ID_PREFERENCESSYSTEM, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
     local editor = LoadFile(ide.configs.system)
-    if editor and #editor:GetText() == 0 then
+    if editor and editor:GetLength() == 0 then
       editor:AddText(generateConfigMessage("System")) end
   end)
 
 frame:Connect(ID_PREFERENCESUSER, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
     local editor = LoadFile(ide.configs.user)
-    if editor and #editor:GetText() == 0 then
+    if editor and editor:GetLength() == 0 then
       editor:AddText(generateConfigMessage("User")) end
   end)
 frame:Connect(ID_PREFERENCESUSER, wx.wxEVT_UPDATE_UI,
