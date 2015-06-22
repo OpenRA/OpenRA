@@ -114,8 +114,6 @@ SMECH:
 		MoveSequence: run
 	Selectable:
 		Bounds: 20, 32, 0, -8
-	SelectionDecorations:
-		VisualBounds: 20, 32, 0, -8
 
 MMCH:
 	Inherits: ^Tank
@@ -155,8 +153,6 @@ MMCH:
 	AutoTarget:
 	Selectable:
 		Bounds: 30, 42, 0, -8
-	SelectionDecorations:
-		VisualBounds: 30, 42, 0, -8
 
 HMEC:
 	Inherits: ^VoxelTank
@@ -193,6 +189,8 @@ HMEC:
 	-WithVoxelBody:
 	WithVoxelWalkerBody:
 		TickRate: 1
+	Selectable:
+		Bounds: 40, 40, 0, -8
 
 SONIC:
 	Inherits: ^VoxelTank

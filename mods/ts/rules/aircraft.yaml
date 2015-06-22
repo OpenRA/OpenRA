@@ -184,6 +184,8 @@ TRNSPORT:
 		Range: 2c0
 	RenderSprites:
 	Hovers:
+	Selectable:
+		Bounds: 44,32,0,-8
 
 SCRIN:
 	Inherits: ^Plane
