@@ -249,7 +249,9 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				currentShroud = shroud;
-				DirtyCells(map.CellsInsideBounds);
+				var dirty = map.ProjectedCellBounds
+					.SelectMany(puv => map.Unproject(puv).Select(uv => uv.ToCPos(map)));
+				DirtyCells(dirty);
 			}
 
 			// We need to update newly dirtied areas of the shroud.

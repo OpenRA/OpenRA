@@ -151,8 +151,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Author = "Westwood Studios"
 				};
 
-				var tl = new MPos(offsetX, offsetY);
-				var br = new MPos(offsetX + width - 1, offsetY + height - 1);
+				var tl = new PPos(offsetX, offsetY);
+				var br = new PPos(offsetX + width - 1, offsetY + height - 1);
 				map.SetBounds(tl, br);
 
 				if (legacyMapFormat == IniMapFormat.RedAlert)

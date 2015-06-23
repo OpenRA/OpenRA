@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Widgets
 			actorSprite = new Sprite(radarSheet, new Rectangle(0, height, width, height), TextureChannel.Alpha);
 
 			// Set initial terrain data
-			foreach (var cell in world.Map.CellsInsideBounds)
+			foreach (var cell in world.Map.AllCells)
 				UpdateTerrainCell(cell);
 
 			world.Map.MapTiles.Value.CellEntryChanged += UpdateTerrainCell;
@@ -290,7 +290,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (newRenderShroud != null)
 					{
 						// Redraw the full shroud sprite
-						MarkShroudDirty(world.Map.CellsInsideBounds);
+						MarkShroudDirty(world.Map.AllCells);
 
 						// Update the notification binding
 						newRenderShroud.CellsChanged += MarkShroudDirty;

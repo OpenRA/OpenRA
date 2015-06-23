@@ -98,8 +98,8 @@ namespace OpenRA.Graphics
 			var cells = restrictToBounds ? viewport.VisibleCellsInsideBounds : viewport.AllVisibleCells;
 
 			// Only draw the rows that are visible.
-			var firstRow = cells.MapCoords.TopLeft.V;
-			var lastRow = Math.Min(cells.MapCoords.BottomRight.V + 1, map.MapSize.Y);
+			var firstRow = cells.CandidateMapCoords.TopLeft.V.Clamp(0, map.MapSize.Y);
+			var lastRow = (cells.CandidateMapCoords.BottomRight.V + 1).Clamp(firstRow, map.MapSize.Y);
 
 			Game.Renderer.Flush();
 

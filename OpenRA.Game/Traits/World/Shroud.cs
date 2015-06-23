@@ -204,7 +204,7 @@ namespace OpenRA.Traits
 				throw new ArgumentException("The map bounds of these shrouds do not match.", "s");
 
 			var changed = new List<CPos>();
-			foreach (var uv in map.CellsInsideBounds.MapCoords)
+			foreach (var uv in map.ProjectedCellBounds.CandidateMapCoords)
 			{
 				if (!explored[uv] && s.explored[uv])
 				{
@@ -219,7 +219,7 @@ namespace OpenRA.Traits
 		public void ExploreAll(World world)
 		{
 			var changed = new List<CPos>();
-			foreach (var uv in map.CellsInsideBounds.MapCoords)
+			foreach (var uv in map.ProjectedCellBounds.CandidateMapCoords)
 			{
 				if (!explored[uv])
 				{
@@ -234,7 +234,7 @@ namespace OpenRA.Traits
 		public void ResetExploration()
 		{
 			var changed = new List<CPos>();
-			foreach (var uv in map.CellsInsideBounds.MapCoords)
+			foreach (var uv in map.ProjectedCellBounds.CandidateMapCoords)
 			{
 				var visible = visibleCount[uv] > 0;
 				if (explored[uv] != visible)

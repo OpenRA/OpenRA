@@ -60,23 +60,24 @@ namespace OpenRA.Mods.Common.Traits
 			var doDim = refreshTick - world.WorldTick <= 0;
 			if (doDim) refreshTick = world.WorldTick + 20;
 
+			var map = wr.World.Map;
 			foreach (var pair in layers)
 			{
 				var c = (pair.Key != null) ? pair.Key.Color.RGB : Color.PaleTurquoise;
 				var layer = pair.Value;
 
 				// Only render quads in viewing range:
-				foreach (var cell in wr.Viewport.VisibleCellsInsideBounds)
+				foreach (var uv in wr.Viewport.VisibleCellsInsideBounds.CandidateMapCoords)
 				{
-					if (layer[cell] <= 0)
+					if (layer[uv] <= 0)
 						continue;
 
-					var w = Math.Max(0, Math.Min(layer[cell], 128));
+					var w = Math.Max(0, Math.Min(layer[uv], 128));
 					if (doDim)
-						layer[cell] = layer[cell] * 5 / 6;
+						layer[uv] = layer[uv] * 5 / 6;
 
 					// TODO: This doesn't make sense for isometric terrain
-					var pos = wr.World.Map.CenterOfCell(cell);
+					var pos = wr.World.Map.CenterOfCell(uv.ToCPos(map));
 					var tl = wr.ScreenPxPosition(pos - new WVec(512, 512, 0));
 					var br = wr.ScreenPxPosition(pos + new WVec(511, 511, 0));
 					qr.FillRect(RectangleF.FromLTRB(tl.X, tl.Y, br.X, br.Y), Color.FromArgb(w, c));

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			var colors = wr.World.TileSet.HeightDebugColors;
 			var mouseCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos).ToMPos(wr.World.Map);
 
-			foreach (var uv in wr.Viewport.AllVisibleCells.MapCoords)
+			foreach (var uv in wr.Viewport.AllVisibleCells.CandidateMapCoords)
 			{
 				var height = (int)map.MapHeight.Value[uv];
 				var tile = map.MapTiles.Value[uv];
@@ -80,6 +80,22 @@ namespace OpenRA.Mods.Common.Traits
 
 				lr.LineWidth = 1;
 			}
+
+			// Projected cell coordinates for the current cell
+			var projectedCorners = map.CellCorners[0];
+			lr.LineWidth = 3;
+			foreach (var puv in map.ProjectedCellsCovering(mouseCell))
+			{
+				var pos = map.CenterOfCell(((MPos)puv).ToCPos(map));
+				var screen = projectedCorners.Select(c => wr.ScreenPxPosition(pos + c - new WVec(0, 0, pos.Z)).ToFloat2()).ToArray();
+				for (var i = 0; i < 4; i++)
+				{
+					var j = (i + 1) % 4;
+					lr.DrawLine(screen[i], screen[j], Color.Navy);
+				}
+			}
+
+			lr.LineWidth = 1;
 		}
 	}
 }
