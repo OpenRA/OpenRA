@@ -400,7 +400,6 @@
     <Compile Include="Traits\Render\RenderNameTag.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />
-    <Compile Include="Traits\Render\RenderUnit.cs" />
     <Compile Include="Traits\Render\RenderBuildingSilo.cs" />
     <Compile Include="Traits\Render\RenderBuildingWall.cs" />
     <Compile Include="Traits\Render\RenderDetectionCircle.cs" />

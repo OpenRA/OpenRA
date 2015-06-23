@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	class SandwormInfo : WandersInfo, Requires<MobileInfo>, Requires<RenderUnitInfo>, Requires<AttackBaseInfo>
+	class SandwormInfo : WandersInfo, Requires<MobileInfo>, Requires<WithSpriteBodyInfo>, Requires<AttackBaseInfo>
 	{
 		[Desc("Time between rescanning for targets (in ticks).")]
 		public readonly int TargetRescanInterval = 32;
@@ -30,7 +30,13 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly int ChanceToDisappear = 80;
 
 		[Desc("Name of the sequence that is used when the actor is idle or moving (not attacking).")]
-		public readonly string IdleSequence = "idle";
+		[SequenceReference] public readonly string IdleSequence = "idle";
+
+		[Desc("Name of the sequence that is used when the actor is attacking.")]
+		[SequenceReference] public readonly string MouthSequence = "mouth";
+
+		[Desc("Name of the sequence that is used when the actor is burrowed.")]
+		[SequenceReference] public readonly string BurrowedSequence = "burrowed";
 
 		public override object Create(ActorInitializer init) { return new Sandworm(init.Self, this); }
 	}
@@ -41,7 +47,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		readonly WormManager manager;
 		readonly Lazy<Mobile> mobile;
-		readonly Lazy<RenderUnit> renderUnit;
+		readonly Lazy<WithSpriteBody> withSpriteBody;
 		readonly Lazy<AttackBase> attackTrait;
 
 		public bool IsMovingTowardTarget { get; private set; }
@@ -55,15 +61,15 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			Info = info;
 			mobile = Exts.Lazy(self.Trait<Mobile>);
-			renderUnit = Exts.Lazy(self.Trait<RenderUnit>);
+			withSpriteBody = Exts.Lazy(self.Trait<WithSpriteBody>);
 			attackTrait = Exts.Lazy(self.Trait<AttackBase>);
 			manager = self.World.WorldActor.Trait<WormManager>();
 		}
 
 		public override void OnBecomingIdle(Actor self)
 		{
-			if (renderUnit.Value.DefaultAnimation.CurrentSequence.Name != Info.IdleSequence)
-				renderUnit.Value.DefaultAnimation.PlayRepeating("idle");
+			if (withSpriteBody.Value.DefaultAnimation.CurrentSequence.Name != Info.IdleSequence)
+				withSpriteBody.Value.DefaultAnimation.PlayRepeating(Info.IdleSequence);
 
 			base.OnBecomingIdle(self);
 		}

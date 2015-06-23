@@ -1317,6 +1317,38 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (rrh != null)
 							rrh.Key = "-WithHarvestAnimation";
 					}
+
+					// Replace RenderUnit with RenderSprites + WithFacingSpriteBody + AutoSelectionSize.
+					// Normally this should have been removed by previous upgrade rules, but let's run this again
+					// to make sure to get rid of potential left-over cases like D2k sandworms and harvesters.
+					if (depth == 0)
+					{
+						var childKeys = new[] { "Sequence" };
+
+						var ru = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderUnit"));
+						if (ru != null)
+						{
+							ru.Key = "WithFacingSpriteBody";
+
+							var rsNodes = ru.Value.Nodes.Where(n => !childKeys.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							ru.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+
+							Console.WriteLine("RenderUnit has now been removed from code.");
+							Console.WriteLine("Use RenderSprites + WithFacingSpriteBody (+ AutoSelectionSize, if necessary) instead.");
+						}
+
+						var rru = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderUnit"));
+						if (rru != null)
+							rru.Key = "-WithFacingSpriteBody";
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
