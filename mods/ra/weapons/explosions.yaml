@@ -91,6 +91,7 @@ MiniNuke:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@5Res_areanuke1: DestroyResource
 		Size: 2
@@ -106,6 +107,7 @@ MiniNuke:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@8Res_areanuke2: DestroyResource
 		Size: 3
@@ -118,6 +120,7 @@ MiniNuke:
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
+		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@10Res_areanuke3: DestroyResource
 		Size: 4
