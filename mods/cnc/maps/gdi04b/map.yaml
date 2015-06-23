@@ -70,31 +70,31 @@ Players:
 Actors:
 	Actor0: sbag
 		Location: 10,18
-		Owner: Neutral
+		Owner: Nod
 	Actor1: sbag
 		Location: 9,18
-		Owner: Neutral
+		Owner: Nod
 	Actor2: sbag
 		Location: 8,18
-		Owner: Neutral
+		Owner: Nod
 	Actor3: sbag
 		Location: 7,18
-		Owner: Neutral
+		Owner: Nod
 	Actor4: sbag
 		Location: 7,17
-		Owner: Neutral
+		Owner: Nod
 	Actor5: sbag
 		Location: 6,17
-		Owner: Neutral
+		Owner: Nod
 	Actor6: sbag
 		Location: 6,16
-		Owner: Neutral
+		Owner: Nod
 	Actor7: sbag
 		Location: 6,15
-		Owner: Neutral
+		Owner: Nod
 	Actor8: sbag
 		Location: 6,14
-		Owner: Neutral
+		Owner: Nod
 	Actor9: cycl
 		Location: 15,13
 		Owner: Neutral
@@ -103,7 +103,7 @@ Actors:
 		Owner: Neutral
 	Actor11: sbag
 		Location: 6,13
-		Owner: Neutral
+		Owner: Nod
 	Actor12: cycl
 		Location: 15,12
 		Owner: Neutral
@@ -115,37 +115,37 @@ Actors:
 		Owner: Neutral
 	Actor15: sbag
 		Location: 6,12
-		Owner: Neutral
+		Owner: Nod
 	Actor16: sbag
 		Location: 15,11
-		Owner: Neutral
+		Owner: Nod
 	Actor17: sbag
 		Location: 14,11
-		Owner: Neutral
+		Owner: Nod
 	Actor18: sbag
 		Location: 13,11
-		Owner: Neutral
+		Owner: Nod
 	Actor19: sbag
 		Location: 12,11
-		Owner: Neutral
+		Owner: Nod
 	Actor20: sbag
 		Location: 11,11
-		Owner: Neutral
+		Owner: Nod
 	Actor21: sbag
 		Location: 10,11
-		Owner: Neutral
+		Owner: Nod
 	Actor22: sbag
 		Location: 9,11
-		Owner: Neutral
+		Owner: Nod
 	Actor23: sbag
 		Location: 8,11
-		Owner: Neutral
+		Owner: Nod
 	Actor24: sbag
 		Location: 7,11
-		Owner: Neutral
+		Owner: Nod
 	Actor25: sbag
 		Location: 6,11
-		Owner: Neutral
+		Owner: Nod
 	Actor26: t05
 		Location: 18,42
 		Owner: Neutral
