@@ -206,8 +206,8 @@ end
 function ActivateOutput()
   if not ide.config.activateoutput then return end
   -- show output/errorlog pane
-  if not uimgr:GetPane("bottomnotebook"):IsShown() then
-    uimgr:GetPane("bottomnotebook"):Show(true)
+  if not uimgr:GetPane(bottomnotebook):IsShown() then
+    uimgr:GetPane(bottomnotebook):Show(true)
     uimgr:Update()
   end
   -- activate output/errorlog window

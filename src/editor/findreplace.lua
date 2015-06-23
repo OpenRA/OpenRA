@@ -607,6 +607,13 @@ function findReplace:RunInFiles(replace)
     local nb = showaseditor and ide:GetEditorNotebook() or nb
     nb:SetPageText(nb:GetPageIndex(reseditor), previewText .. findText)
   end
+  if not showaseditor and nb then -- show the bottom notebook if hidden
+    local uimgr = ide:GetUIManager()
+    if not uimgr:GetPane(nb):IsShown() then
+      uimgr:GetPane(nb):Show(true)
+      uimgr:Update()
+    end
+  end
 
   self:SetStatus(TR("Searching for '%s'."):format(findText))
   wx.wxSafeYield() -- allow the status to update
