@@ -109,13 +109,10 @@ namespace OpenRA.Widgets
 
 		static Widget GetHighestFocusPriority(Widget w)
 		{
-			if (w == null || !w.IsVisible())
-				return null;
-
 			var focus = w;
 			foreach (var child in w.Children)
 			{
-				if (!child.IsVisible())
+				if (child == null || !child.IsVisible())
 					continue;
 
 				if (child.FocusPriority > focus.FocusPriority)
