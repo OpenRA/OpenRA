@@ -265,11 +265,9 @@ HARV:
 		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 4c0
-	-WithFacingSpriteBody:
-	-AutoSelectionSize:
-	-RenderSprites:
-	RenderHarvester:
-		ImagesByFullness: harvempty, harvhalf, harv
+	WithHarvestAnimation:
+		PrefixByFullness: empty-, half-, full-
+	WithDockingAnimation:
 	GpsDot:
 		String: Harvester
 	LeavesHusk:

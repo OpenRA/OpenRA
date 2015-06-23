@@ -83,6 +83,7 @@ harvester:
 	-AutoSelectionSize:
 	WithHarvestOverlay:
 		Palette: effect50alpha
+	WithDockingAnimation:
 	AttractsWorms:
 		Intensity: 700
 	SelectionDecorations:

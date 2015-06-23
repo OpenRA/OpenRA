@@ -62,6 +62,8 @@ namespace OpenRA.Mods.Common.Traits
 		public void MovingToResources(Actor self, CPos targetCell, Activity next) { }
 		public void MovingToRefinery(Actor self, CPos targetCell, Activity next) { }
 		public void MovementCancelled(Actor self) { }
+		public void Docked() { }
+		public void Undocked() { }
 
 		public static int ZOffsetFromCenter(Actor self, WPos pos, int offset)
 		{
