@@ -81,7 +81,7 @@ harvester:
 	-RenderSprites:
 	-WithFacingSpriteBody:
 	-AutoSelectionSize:
-	WithHarvestAnimation:
+	WithHarvestOverlay:
 		Palette: effect50alpha
 	AttractsWorms:
 		Intensity: 700

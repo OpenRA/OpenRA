@@ -422,7 +422,7 @@
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
     <Compile Include="Traits\Render\WithDecoration.cs" />
     <Compile Include="Traits\Render\WithDockingOverlay.cs" />
-    <Compile Include="Traits\Render\WithHarvestAnimation.cs" />
+    <Compile Include="Traits\Render\WithHarvestOverlay.cs" />
     <Compile Include="Traits\Render\WithIdleOverlay.cs" />
     <Compile Include="Traits\Render\WithMuzzleFlash.cs" />
     <Compile Include="Traits\Render\WithRangeCircle.cs" />

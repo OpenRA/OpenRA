@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Displays an overlay whenever resources are harvested by the actor.")]
-	class WithHarvestAnimationInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	class WithHarvestOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "harvest";
@@ -25,16 +25,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string Palette = "effect";
 
-		public object Create(ActorInitializer init) { return new WithHarvestAnimation(init.Self, this); }
+		public object Create(ActorInitializer init) { return new WithHarvestOverlay(init.Self, this); }
 	}
 
-	class WithHarvestAnimation : INotifyHarvesterAction
+	class WithHarvestOverlay : INotifyHarvesterAction
 	{
-		WithHarvestAnimationInfo info;
+		WithHarvestOverlayInfo info;
 		Animation anim;
 		bool visible;
 
-		public WithHarvestAnimation(Actor self, WithHarvestAnimationInfo info)
+		public WithHarvestOverlay(Actor self, WithHarvestOverlayInfo info)
 		{
 			this.info = info;
 			var rs = self.Trait<RenderSprites>();
