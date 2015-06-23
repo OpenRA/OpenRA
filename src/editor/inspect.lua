@@ -58,7 +58,10 @@ local function cleanError(err)
 end
 
 function AnalyzeFile(file)
-  local warn, err, line, pos = M.warnings_from_string(FileRead(file), file)
+  local src, err = FileRead(file)
+  if not src and err then return nil, TR("Can't open file '%s': %s"):format(file, err) end
+
+  local warn, err, line, pos = M.warnings_from_string(src, file)
   return warn, cleanError(err), line, pos
 end
 
