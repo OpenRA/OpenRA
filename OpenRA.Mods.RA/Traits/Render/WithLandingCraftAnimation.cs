@@ -14,30 +14,31 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	public class RenderLandingCraftInfo : RenderUnitInfo, Requires<IMoveInfo>, Requires<CargoInfo>
+	public class WithLandingCraftAnimationInfo : ITraitInfo, Requires<IMoveInfo>, Requires<WithSpriteBodyInfo>, Requires<CargoInfo>
 	{
 		public readonly string[] OpenTerrainTypes = { "Clear" };
-		[SequenceReference] public readonly string OpenAnim = "open";
-		[SequenceReference] public readonly string UnloadAnim = "unload";
+		[SequenceReference] public readonly string OpenSequence = "open";
+		[SequenceReference] public readonly string UnloadSequence = "unload";
 
-		public override object Create(ActorInitializer init) { return new RenderLandingCraft(init, this); }
+		public object Create(ActorInitializer init) { return new WithLandingCraftAnimation(init, this); }
 	}
 
-	public class RenderLandingCraft : RenderUnit
+	public class WithLandingCraftAnimation : ITick
 	{
-		readonly RenderLandingCraftInfo info;
+		readonly WithLandingCraftAnimationInfo info;
 		readonly Actor self;
 		readonly Cargo cargo;
 		readonly IMove move;
+		readonly WithSpriteBody wsb;
 		bool open;
 
-		public RenderLandingCraft(ActorInitializer init, RenderLandingCraftInfo info)
-			: base(init, info)
+		public WithLandingCraftAnimation(ActorInitializer init, WithLandingCraftAnimationInfo info)
 		{
 			this.info = info;
 			self = init.Self;
 			cargo = self.Trait<Cargo>();
 			move = self.Trait<IMove>();
+			wsb = init.Self.Trait<WithSpriteBody>();
 		}
 
 		public bool ShouldBeOpen()
@@ -51,34 +52,32 @@ namespace OpenRA.Mods.RA.Traits
 
 		void Open()
 		{
-			if (open || !DefaultAnimation.HasSequence(info.OpenAnim))
+			if (open || !wsb.DefaultAnimation.HasSequence(info.OpenSequence))
 				return;
 
 			open = true;
-			PlayCustomAnimation(self, info.OpenAnim, () =>
+			wsb.PlayCustomAnimation(self, info.OpenSequence, () =>
 			{
-				if (DefaultAnimation.HasSequence(info.UnloadAnim))
-					PlayCustomAnimationRepeating(self, info.UnloadAnim);
+				if (wsb.DefaultAnimation.HasSequence(info.UnloadSequence))
+					wsb.PlayCustomAnimationRepeating(self, info.UnloadSequence);
 			});
 		}
 
 		void Close()
 		{
-			if (!open || !DefaultAnimation.HasSequence(info.OpenAnim))
+			if (!open || !wsb.DefaultAnimation.HasSequence(info.OpenSequence))
 				return;
 
 			open = false;
-			PlayCustomAnimationBackwards(self, info.OpenAnim, null);
+			wsb.PlayCustomAnimationBackwards(self, info.OpenSequence, null);
 		}
 
-		public override void Tick(Actor self)
+		public void Tick(Actor self)
 		{
 			if (ShouldBeOpen())
 				Open();
 			else
 				Close();
-
-			base.Tick(self);
 		}
 	}
 }

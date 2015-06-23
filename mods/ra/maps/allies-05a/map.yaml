@@ -1658,7 +1658,7 @@ Rules:
 			ShowOwnerRow: false
 	LST.IN:
 		Inherits: LST
-		RenderLandingCraft:
+		RenderSprites:
 			Image: LST
 		Cargo:
 			Types: disabled

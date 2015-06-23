@@ -1227,6 +1227,47 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					// Renamed WithHarvestAnimation to WithHarvestOverlay
 					if (node.Key == "WithHarvestAnimation")
 						node.Key = "WithHarvestOverlay";
+
+					// Replaced RenderLandingCraft with WithFacingSpriteBody + WithLandingCraftAnimation.
+					// Note: These rules are set up to do approximately the right thing for maps, but
+					// mods might need additional manual tweaks. This is the best we can do without having
+					// much smarter rules parsing, because we currently can't reason about inherited traits.
+					if (depth == 0)
+					{
+						var childKeySequence = new[] { "Sequence" };
+						var childKeysExcludeFromRS = new[] { "Sequence", "OpenTerrainTypes", "OpenSequence", "UnloadSequence" };
+
+						var rlc = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderLandingCraft"));
+						if (rlc != null)
+						{
+							rlc.Key = "WithLandingCraftAnimation";
+
+							var rsNodes = rlc.Value.Nodes.Where(n => !childKeysExcludeFromRS.Contains(n.Key)).ToList();
+							var wfsbNodes = rlc.Value.Nodes.Where(n => childKeySequence.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							// Note: For the RA landing craft WithSpriteBody would be sufficient since it has no facings,
+							// but WithFacingSpriteBody works as well and covers the potential case where a third-party mod
+							// might have given their landing craft multiple facings.
+							if (wfsbNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("WithFacingSpriteBody", new MiniYaml("", wfsbNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("WithFacingSpriteBody", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							rlc.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+							rlc.Value.Nodes.RemoveAll(n => wfsbNodes.Contains(n));
+						}
+
+						var rrlc = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderLandingCraft"));
+						if (rrlc != null)
+							rrlc.Key = "-WithLandingCraftAnimation";
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
