@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool wasDisabled;
 		public override void Tick()
 		{
-			// Remove the blicking cursor when disabled
+			// Remove the blinking cursor when disabled
 			var isDisabled = IsDisabled();
 			if (isDisabled != wasDisabled)
 			{

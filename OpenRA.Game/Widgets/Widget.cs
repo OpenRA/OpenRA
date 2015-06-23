@@ -498,9 +498,8 @@ namespace OpenRA.Widgets
 
 		public virtual void Removed()
 		{
-			// Using the forced versions because the widgets
+			// Using the forced version because the widgets
 			// have been removed
-			ForceYieldKeyboardFocus();
 			ForceYieldMouseFocus();
 
 			foreach (var c in Children.OfType<Widget>().Reverse())
