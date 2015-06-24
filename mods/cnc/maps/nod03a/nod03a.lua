@@ -9,10 +9,17 @@ SendAttackWave = function(units, spawnPoint)
 end
 
 InsertNodUnits = function()
+	Media.PlaySpeechNotification(player, "Reinforce")
 	Reinforcements.Reinforce(player, NodUnits, { NodEntry.Location, NodRallyPoint.Location })
 	Trigger.AfterDelay(DateTime.Seconds(9), function()
 		Reinforcements.Reinforce(player, { "mcv" }, { NodEntry.Location, PlayerBase.Location })
 	end)
+end
+
+initialSong = "chrg226m"
+PlayMusic = function()
+	Media.PlayMusic(initialSong, PlayMusic)
+	initialSong = nil
 end
 
 WorldLoaded = function()
@@ -50,6 +57,8 @@ WorldLoaded = function()
 	Trigger.OnKilled(TechCenter, function()
 		player.MarkFailedObjective(nodObjective1)
 	end)
+
+	PlayMusic()
 
 	InsertNodUnits()
 	Trigger.AfterDelay(DateTime.Seconds(20), function() SendAttackWave(FirstAttackWave, AttackWaveSpawnA.Location) end)

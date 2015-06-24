@@ -108,6 +108,7 @@ StartProduction = function(type)
 end
 
 InsertGdiUnits = function()
+	Media.PlaySpeechNotification(gdi, "Reinforce")
 	Reinforcements.Reinforce(gdi, GdiUnits, { UnitsEntry.Location, UnitsRally.Location }, 15)
 end
 
@@ -115,6 +116,12 @@ IdleHunt = function(unit)
 	if not unit.IsDead then
 		Trigger.OnIdle(unit, unit.Hunt)
 	end
+end
+
+initialSong = "rain"
+PlayMusic = function()
+	Media.PlayMusic(initialSong, PlayMusic)
+	initialSong = nil
 end
 
 WorldLoaded = function()
@@ -133,11 +140,11 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnPlayerWon(gdi, function()
-		Media.PlaySpeechNotification(nod, "Win")
+		Media.PlaySpeechNotification(gdi, "Win")
 	end)
 
 	Trigger.OnPlayerLost(gdi, function()
-		Media.PlaySpeechNotification(nod, "Lose")
+		Media.PlaySpeechNotification(gdi, "Lose")
 	end)
 	
 	Utils.Do(Map.NamedActors, function(actor)
@@ -178,6 +185,8 @@ WorldLoaded = function()
 	end)
 	
 	Camera.Position = UnitsRally.CenterPosition
+
+	PlayMusic()
 	
 	InsertGdiUnits()
 end
