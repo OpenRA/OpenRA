@@ -2,7 +2,6 @@
 	AppearsOnRadar:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
-	DrawLineToTarget:
 	GivesExperience:
 	BodyOrientation:
 	ScriptTriggers:
@@ -57,11 +56,8 @@
 		DestroyedSounds: crmble2.aud
 	RenderBuilding:
 	WithBuildingExplosion:
-	RepairableBuilding:
-		IndicatorPalette: mouse
+	EngineerRepairable:
 	ShakeOnDeath:
-	ProximityCaptor:
-		Types: Building
 	AcceptsSupplies:
 	Guardable:
 		Range: 3
@@ -76,10 +72,11 @@
 	Inherits: ^BasicBuilding
 	GivesBuildableArea:
 	Capturable:
+	RepairableBuilding:
+		IndicatorPalette: mouse
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
-	EngineerRepairable:
 	EmitInfantryOnSell@gdi:
 		ActorTypes: e1, e1, e2, medic
 		Races: gdi
@@ -160,8 +157,6 @@
 		Type: wall
 	GivesExperience:
 	AutoTargetIgnore:
-	ProximityCaptor:
-		Types: Wall
 	Sellable:
 		SellSounds: cashturn.aud
 	UpdatesPlayerStatistics:
@@ -187,6 +182,7 @@
 ^Infantry:
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
+	DrawLineToTarget:
 	Health:
 		Radius: 128
 		HP: 50
@@ -236,8 +232,6 @@
 		Voice: Move
 	HiddenUnderFog:
 	ActorLostNotification:
-	ProximityCaptor:
-		Types: Infantry
 	GivesBounty:
 	Crushable:
 		CrushSound: squish6.aud
@@ -299,8 +293,6 @@
 		VoiceSet: Civilian
 	Tooltip:
 		Name: Civilian
-	ProximityCaptor:
-		Types: CivilianInfantry
 	ScaredyCat:
 	WithDeathAnimation:
 		CrushedSequence: die-crushed
@@ -308,6 +300,7 @@
 ^Vehicle:
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
+	DrawLineToTarget:
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
@@ -339,8 +332,6 @@
 		Voice: Move
 	HiddenUnderFog:
 	ActorLostNotification:
-	ProximityCaptor:
-		Types: Vehicle
 	Capturable:
 		Type: Vehicle
 		CaptureThreshold: 1
@@ -401,12 +392,13 @@
 
 ^CivilianVoxelVehicle:
 	Inherits: ^VoxelVehicle
-	-RenderSprites: # They don't have icons so this is needed to satisfy --check-yaml
+	-RenderSprites:
 	-MustBeDestroyed:
 
-^Helicopter:
+^Aircraft:
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
+	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: yes
 	TargetableAircraft:
@@ -417,12 +409,6 @@
 		Palette: pips
 	Voiced:
 		VoiceSet: Heli
-	Helicopter:
-		RepairBuildings: gadept
-		RearmBuildings:
-		LandWhenIdle: no
-		CruiseAltitude: 2048
-		Voice: Move
 	HiddenUnderFog:
 	AttackMove:
 		Voice: Move
@@ -436,9 +422,17 @@
 	RenderVoxels:
 	WithVoxelBody:
 
+^Helicopter:
+	Inherits: ^Aircraft
+	Helicopter:
+		RepairBuildings: gadept
+		RearmBuildings:
+		LandWhenIdle: no
+		CruiseAltitude: 2048
+		Voice: Move
+
 ^Plane:
-	Inherits: ^Helicopter
-	-Helicopter:
+	Inherits: ^Aircraft
 	Plane:
 		RepairBuildings: gadept
 		RearmBuildings: gahpad, nahpad
@@ -449,7 +443,7 @@
 
 ^Viceroid:
 	Inherits: ^ExistsInWorld
-	RenderUnit:
+	DrawLineToTarget:
 	Health:
 		Radius: 256
 	Armor:
