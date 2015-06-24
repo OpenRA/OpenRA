@@ -39,6 +39,7 @@ namespace OpenRA
 		public bool DedicatedLoop = true;
 		public bool LockBots = false;
 		public bool AllowVersionMismatch = false;
+		public string TimestampFormat = "HH:mm";
 
 		public ServerSettings() { }
 

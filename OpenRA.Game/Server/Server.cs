@@ -450,6 +450,9 @@ namespace OpenRA.Server
 		public void SendMessage(string text)
 		{
 			DispatchOrdersToClients(null, 0, new ServerOrder("Message", text).Serialize());
+
+			if (Settings.Dedicated)
+				Console.WriteLine("[{0}] {1}".F(DateTime.Now.ToString(Settings.TimestampFormat), text));
 		}
 
 		void InterpretServerOrder(Connection conn, ServerOrder so)
