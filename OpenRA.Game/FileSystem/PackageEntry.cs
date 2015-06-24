@@ -65,16 +65,16 @@ namespace OpenRA.FileSystem
 						if (name.Length % 4 != 0)
 							name = name.PadRight(name.Length + (4 - name.Length % 4), '\0');
 
-						var ms = new MemoryStream(Encoding.ASCII.GetBytes(name));
-						var reader = new BinaryReader(ms);
+						using (var ms = new MemoryStream(Encoding.ASCII.GetBytes(name)))
+						{
+							var len = name.Length >> 2;
+							uint result = 0;
 
-						var len = name.Length >> 2;
-						uint result = 0;
+							while (len-- != 0)
+								result = ((result << 1) | (result >> 31)) + ms.ReadUInt32();
 
-						while (len-- != 0)
-							result = ((result << 1) | (result >> 31)) + reader.ReadUInt32();
-
-						return result;
+							return result;
+						}
 					}
 
 				case PackageHashType.CRC32:
