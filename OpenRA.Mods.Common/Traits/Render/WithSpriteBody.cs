@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class WithSpriteBody : UpgradableTrait<WithSpriteBodyInfo>, ISpriteBody
+	public class WithSpriteBody : UpgradableTrait<WithSpriteBodyInfo>, ISpriteBody, INotifyDamageStateChanged
 	{
 		public readonly Animation DefaultAnimation;
 
@@ -93,6 +93,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (after != null)
 					after();
 			});
+		}
+
+		public virtual void DamageStateChanged(Actor self, AttackInfo e)
+		{
+			if (DefaultAnimation.CurrentSequence != null)
+				DefaultAnimation.ReplaceAnim(NormalizeSequence(self, DefaultAnimation.CurrentSequence.Name));
 		}
 	}
 }
