@@ -110,6 +110,12 @@ SetupWorld = function()
 	Trigger.OnRemovedFromWorld(crate, function() gdi.MarkCompletedObjective(gdiObjective) end)
 end
 
+initialSong = "fist226m"
+PlayMusic = function()
+	Media.PlayMusic(initialSong, PlayMusic)
+	initialSong = nil
+end
+
 WorldLoaded = function()
 	gdi = Player.GetPlayer("GDI")
 	nod = Player.GetPlayer("Nod")
@@ -137,6 +143,8 @@ WorldLoaded = function()
 	nod.AddPrimaryObjective("Defend against the GDI forces.")
 
 	SetupWorld()
+
+	PlayMusic()
 
 	bhndTrigger = false
 	Trigger.OnExitedFootprint(BhndTrigger, function(a, id)
