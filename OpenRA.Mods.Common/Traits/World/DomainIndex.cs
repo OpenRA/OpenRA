@@ -159,6 +159,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanTraverseTile(World world, CPos p)
 		{
+			if (!map.Contains(p))
+				return false;
+
 			var terrainOffset = world.Map.GetTerrainIndex(p);
 			return (movementClass & (1 << terrainOffset)) > 0;
 		}
@@ -172,7 +175,7 @@ namespace OpenRA.Mods.Common.Traits
 			var visited = new CellLayer<bool>(map);
 
 			var toProcess = new Queue<CPos>();
-			toProcess.Enqueue(new CPos(map.Bounds.Left, map.Bounds.Top));
+			toProcess.Enqueue(MPos.Zero.ToCPos(map));
 
 			// Flood-fill over each domain
 			while (toProcess.Count != 0)
@@ -209,7 +212,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Don't crawl off the map, or add already-visited cells
 					var neighbors = CVec.Directions.Select(d => n + d)
-						.Where(p => map.Contains(p) && !visited[p]);
+						.Where(p => visited.Contains(p) && !visited[p]);
 
 					foreach (var neighbor in neighbors)
 						domainQueue.Enqueue(neighbor);
