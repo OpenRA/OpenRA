@@ -84,13 +84,8 @@ EMPulseCannon:
 		Shadow: true
 		Angle: 62
 		Image: pulsball
-	Warhead@2Eff: CreateEffect
+	Warhead@1Eff: CreateEffect
 		Explosion: pulse_explosion
-# Dummy warhead to allow targeting
-	Warhead@target: SpreadDamage
-		Spread: 0
-		Damage: 0
-		ValidTargets: Vehicle
 	Warhead@emp: GrantUpgrade
 		Range: 3c0
 		Duration: 250
