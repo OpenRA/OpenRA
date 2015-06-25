@@ -37,12 +37,12 @@ Gdi12Waypoints = { waypoint0, waypoint1, waypoint3, waypoint11, waypoint12 }
 
 AllWaypoints = { Gdi1Waypoints, Gdi2Waypoints, Gdi3Waypoints, Gdi5Waypoints, Gdi11Waypoints, Gdi12Waypoints }
 
-HuntActorTriggerActivator = { Tower1, Tower2, Radar, Silo1, Silo2, Silo3, Refinery, Barracks, Plant1, Plant2, Yard, Factory }
+PrimaryTargets = { Tower1, Tower2, Radar, Silo1, Silo2, Silo3, Refinery, Barracks, Plant1, Plant2, Yard, Factory }
 
 GDIStartUnits = { }
 
 SendGDIAirstrike = function()
-	if not Radar.IsDead then
+	if not Radar.IsDead and Radar.Owner == GDI then
 		local target = getAirstrikeTarget()
 
 		if target then
@@ -234,7 +234,10 @@ WorldLoaded = function()
 	Trigger.OnDiscovered(Tower1, AutoTriggerFunction)
 	Trigger.OnDiscovered(Tower2, AutoTriggerFunction)
 
-	Trigger.OnAllRemovedFromWorld(HuntActorTriggerActivator, HuntTriggerFunction)
+	Trigger.OnAllKilledOrCaptured(PrimaryTargets, function()
+		Nod.MarkCompletedObjective(NodObjective2)
+		HuntTriggerFunction()
+	end)
 
 	Trigger.AfterDelay(0, getStartUnits)
 end
@@ -248,10 +251,6 @@ Tick = function()
 
 	if not Nod.IsObjectiveCompleted(NodObjective1) and CheckForSams(Nod) then
 		Nod.MarkCompletedObjective(NodObjective1)
-	end
-
-	if GDI.HasNoRequiredUnits() then
-		Nod.MarkCompletedObjective(NodObjective2)
 	end
 
 	if DateTime.GameTime % DateTime.Seconds(3) == 0 then
