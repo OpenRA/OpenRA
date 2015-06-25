@@ -28,6 +28,10 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public readonly WRange Range = WRange.FromCells(1);
 
+		// TODO: This can be removed after the legacy and redundant 0% = not targetable
+		// assumption has been removed from the yaml definitions
+		public override bool CanTargetActor(ActorInfo victim, Actor firedBy) { return true; }
+
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var actors = target.Type == TargetType.Actor ? new[] { target.Actor } :
@@ -35,6 +39,9 @@ namespace OpenRA.Mods.Common.Warheads
 
 			foreach (var a in actors)
 			{
+				if (!IsValidAgainst(a, firedBy))
+					continue;
+
 				var um = a.TraitOrDefault<UpgradeManager>();
 				if (um == null)
 					continue;
