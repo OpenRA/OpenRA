@@ -245,8 +245,10 @@ function EditorAutoComplete(editor)
       :gsub("^ +",""):gsub(" +$",""):gsub("  +"," "))
   end
 
-  -- don't show the list if it only suggests what's already typed
-  if userList and #userList > 0 and not lt:find(userList.."$") then
+  -- don't show the list if it only suggests what's already typed;
+  -- don't show if what's typed so far matches one of the options
+  if userList and #userList > 0 and not lt:find(userList.."$")
+  and not userList:find("%f[%w_]"..lt..(right or "").."%f[%W]") then
     editor:UserListShow(1, userList)
   elseif editor:AutoCompActive() then
     editor:AutoCompCancel()

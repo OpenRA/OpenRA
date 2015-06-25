@@ -599,7 +599,9 @@ function CreateAutoCompList(editor,key,pos)
       if token.fpos and pos and token.fpos > pos then break end
       if token[1] == 'Id' or token[1] == 'Var' then
         local var = token.name
-        if var ~= key and var:find(key, 1, true) == 1 then
+        if var:find(key, 1, true) == 1
+        -- skip the variable formed by what's being typed
+        and (not token.fpos or not pos or token.fpos < pos-#key) then
           -- if it's a global variable, store in the auto-complete list,
           -- but if it's local, store separately as it needs to be checked
           table.insert(token.context[var] and vars or apilist, var)

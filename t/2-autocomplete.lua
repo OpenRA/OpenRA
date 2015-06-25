@@ -122,6 +122,15 @@ ok(not (CreateAutoCompList(editor, "pri.") or ""):match('print'),
   "Auto-complete doesn't offer 'print' after 'pri.'.")
 
 editor:SetText('')
+editor:AddText('local name = "abc"; local namelen = #name')
+IndicateAll(editor)
+EditorAutoComplete(editor)
+local isactive = editor:AutoCompActive()
+editor:AutoCompCancel() -- cleanup
+
+ok(not isactive, "Auto-complete is not shown if typed sequence matches one of the options.")
+
+editor:SetText('')
 editor:AddText(' -- a = io\na:')
 editor:Colourise(0, -1) -- set proper styles
 editor.assignscache = false
