@@ -68,6 +68,9 @@ namespace OpenRA.Mods.Common.Scripting
 				var f = func.CopyReference() as LuaFunction;
 				onComplete = () =>
 				{
+					if (world.Disposing)
+						return;
+
 					try
 					{
 						using (f)
