@@ -664,7 +664,7 @@ namespace OpenRA
 			// (b) Therefore:
 			//  - ax + by adds (a - b) * 512 + 512 to u
 			//  - ax + by adds (a + b) * 512 + 512 to v
-			var z = Contains(cell) ? 512 * MapHeight.Value[cell] : 0;
+			var z = MapHeight.Value.Contains(cell) ? 512 * MapHeight.Value[cell] : 0;
 			return new WPos(512 * (cell.X - cell.Y), 512 * (cell.X + cell.Y + 1), z);
 		}
 
