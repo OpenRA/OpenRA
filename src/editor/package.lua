@@ -169,6 +169,7 @@ function ide:GetProjectTree() return ide.filetree.projtreeCtrl end
 function ide:GetOutlineTree() return ide.outline.outlineCtrl end
 function ide:GetWatch() return self.debugger and self.debugger.watchCtrl end
 function ide:GetStack() return self.debugger and self.debugger.stackCtrl end
+function ide:SetStatus(text, field) self:GetStatusBar():SetStatusText(text, field or 0) end
 function ide:Yield() wx.wxYield() end
 function ide:CreateBareEditor() return CreateEditor(true) end
 function ide:CreateStyledTextCtrl(...)
