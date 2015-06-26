@@ -286,7 +286,6 @@ namespace OpenRA
 			Console.WriteLine("Loading mod: {0}", mod);
 			Settings.Game.Mod = mod;
 
-			Sound.StopMusic();
 			Sound.StopVideo();
 			Sound.Initialize();
 

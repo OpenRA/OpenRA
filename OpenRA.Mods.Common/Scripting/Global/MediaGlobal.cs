@@ -11,26 +11,28 @@
 using System;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using Eluant;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
-using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Scripting;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptGlobal("Media")]
 	public class MediaGlobal : ScriptGlobal
 	{
-		World world;
+		readonly World world;
+		readonly MusicPlaylist playlist;
+
 		public MediaGlobal(ScriptContext context)
 			: base(context)
 		{
 			world = context.World;
+			playlist = world.WorldActor.Trait<MusicPlaylist>();
 		}
 
 		[Desc("Play an announcer voice listed in notifications.yaml")]
@@ -51,23 +53,15 @@ namespace OpenRA.Mods.Common.Scripting
 			Sound.Play(file);
 		}
 
-		MusicInfo previousMusic;
 		Action onComplete;
 		[Desc("Play track defined in music.yaml or keep it empty for a random song.")]
 		public void PlayMusic(string track = null, LuaFunction func = null)
 		{
-			if (!Game.Settings.Sound.MapMusic)
-				return;
-
-			var music = world.Map.Rules.InstalledMusic.Select(a => a.Value).ToArray();
-			if (!music.Any())
+			if (!Game.Settings.Sound.MapMusic || !playlist.IsMusicAvailable)
 				return;
 
 			var musicInfo = !string.IsNullOrEmpty(track) ? world.Map.Rules.Music[track]
-			: Game.Settings.Sound.Repeat && previousMusic != null ? previousMusic
-			: Game.Settings.Sound.Shuffle ? music.Random(Game.CosmeticRandom)
-			: previousMusic == null ? music.First()
-			: music.SkipWhile(s => s != previousMusic).Skip(1).First();
+			: playlist.GetNextSong();
 
 			if (func != null)
 			{
@@ -84,19 +78,17 @@ namespace OpenRA.Mods.Common.Scripting
 						Context.FatalError(e.Message);
 					}
 				};
+
+				playlist.Play(musicInfo, onComplete);
 			}
 			else
-				onComplete = () => { };
-
-			Sound.PlayMusicThen(musicInfo, onComplete);
-
-			previousMusic = Sound.CurrentMusic;
+				playlist.Play(musicInfo);
 		}
 
 		[Desc("Stop the current song.")]
 		public void StopMusic()
 		{
-			Sound.StopMusic();
+			playlist.Stop();
 		}
 
 		Action onCompleteFullscreen;
