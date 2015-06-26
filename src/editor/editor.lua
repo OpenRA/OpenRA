@@ -1022,11 +1022,30 @@ function CreateEditor(bare)
       event:Skip()
     end)
 
+  local eol = {
+    [wxstc.wxSTC_EOL_CRLF] = "\r\n",
+    [wxstc.wxSTC_EOL_LF] = "\n",
+    [wxstc.wxSTC_EOL_CR] = "\r",
+  }
+  local function addOneLine(editor, adj)
+    local pos = editor:GetLineEndPosition(editor:LineFromPosition(editor:GetCurrentPos())+(adj or 0))
+    local added = eol[editor:GetEOLMode()] or "\n"
+    editor:InsertText(pos, added)
+    editor:SetCurrentPos(pos+#added)
+
+    local ev = wxstc.wxStyledTextEvent(wxstc.wxEVT_STC_CHARADDED)
+    ev:SetKey(string.byte("\n"))
+    editor:AddPendingEvent(ev)
+  end
+
   editor:Connect(wxstc.wxEVT_STC_USERLISTSELECTION,
     function (event)
       if PackageEventHandle("onEditorUserlistSelection", editor, event) == false then
         return
       end
+
+      -- if used Shift-Enter, then skip auto complete and just do Enter
+      if wx.wxGetKeyState(wx.WXK_SHIFT) then return addOneLine(editor) end
 
       if ide.wxver >= "2.9.5" and editor:GetSelections() > 1 then
         local text = event:GetText()
