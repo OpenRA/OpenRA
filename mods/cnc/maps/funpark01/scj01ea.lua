@@ -32,12 +32,6 @@ ReinforceWithLandingCraft = function(units, transportStart, transportUnload, ral
 	Media.PlaySpeechNotification(player, "Reinforce")
 end
 
-initialSong = "j1"
-PlayMusic = function()
-	Media.PlayMusic(initialSong, PlayMusic)
-	initialSong = nil
-end
-
 WorldLoaded = function()
 	nod = Player.GetPlayer("Nod")
 	dinosaur = Player.GetPlayer("Dinosaur")
@@ -91,7 +85,6 @@ WorldLoaded = function()
 	end
 
 	Camera.Position = CameraStart.CenterPosition
-	PlayMusic()
 end
 
 Tick = function()

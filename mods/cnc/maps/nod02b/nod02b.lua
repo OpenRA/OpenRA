@@ -96,12 +96,6 @@ Gdi3Movement = function(unit)
 	IdleHunt(unit)
 end
 
-initialSong = "ind2"
-PlayMusic = function()
-	Media.PlayMusic(initialSong, PlayMusic)
-	initialSong = nil
-end
-
 WorldLoaded = function()
 	GDI = Player.GetPlayer("GDI")
 	Nod = Player.GetPlayer("Nod")
@@ -140,8 +134,6 @@ WorldLoaded = function()
 
 	Trigger.AfterDelay(0, getStartUnits)
 	Harvester.FindResources()
-
-	PlayMusic()
 
 	InsertNodUnits()
 end

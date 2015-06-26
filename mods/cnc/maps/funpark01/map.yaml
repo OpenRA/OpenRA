@@ -441,6 +441,8 @@ Rules:
 			Scripts: scj01ea.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MusicPlaylist:
+			StartingMusic: j1
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

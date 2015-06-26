@@ -428,6 +428,8 @@ Rules:
 			Scripts: gdi01.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MusicPlaylist:
+			StartingMusic: aoi
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:

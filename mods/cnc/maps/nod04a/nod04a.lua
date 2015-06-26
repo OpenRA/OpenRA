@@ -171,12 +171,6 @@ CreateCivilians = function(actor, discoverer)
 	end)
 end
 
-initialSong = "valkyrie"
-PlayMusic = function()
-	Media.PlayMusic(initialSong, PlayMusic)
-	initialSong = nil
-end
-
 WorldLoaded = function()
 	NodSupporter = Player.GetPlayer("NodSupporter")
 	Nod = Player.GetPlayer("Nod")
@@ -289,8 +283,6 @@ WorldLoaded = function()
 
 	GDIObjective = GDI.AddPrimaryObjective("Eliminate all Nod forces in the area.")
 	NodObjective1 = Nod.AddPrimaryObjective("Kill all civilian GDI supporters.")
-
-	PlayMusic()
 
 	InsertNodUnits()
 	Camera.Position = waypoint6.CenterPosition

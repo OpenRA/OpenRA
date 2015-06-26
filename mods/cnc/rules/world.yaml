@@ -3,6 +3,7 @@
 	Inherits: ^Palettes
 	ScreenMap:
 	ActorMap:
+	MusicPlaylist:
 	TerrainGeometryOverlay:
 	ShroudRenderer:
 		ShroudVariants: typea, typeb, typec, typed

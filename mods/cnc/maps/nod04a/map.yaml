@@ -568,6 +568,8 @@ Rules:
 			Scripts: nod04a.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MusicPlaylist:
+			StartingMusic: valkyrie
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

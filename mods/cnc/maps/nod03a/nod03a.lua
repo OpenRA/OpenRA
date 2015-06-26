@@ -16,12 +16,6 @@ InsertNodUnits = function()
 	end)
 end
 
-initialSong = "chrg226m"
-PlayMusic = function()
-	Media.PlayMusic(initialSong, PlayMusic)
-	initialSong = nil
-end
-
 WorldLoaded = function()
 	player = Player.GetPlayer("Nod")
 	enemy = Player.GetPlayer("GDI")
@@ -57,8 +51,6 @@ WorldLoaded = function()
 	Trigger.OnKilled(TechCenter, function()
 		player.MarkFailedObjective(nodObjective1)
 	end)
-
-	PlayMusic()
 
 	InsertNodUnits()
 	Trigger.AfterDelay(DateTime.Seconds(20), function() SendAttackWave(FirstAttackWave, AttackWaveSpawnA.Location) end)

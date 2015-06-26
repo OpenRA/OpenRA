@@ -159,12 +159,6 @@ Pat1Movement = function(unit)
 	IdleHunt(unit)
 end
 
-initialSong = "ind2"
-PlayMusic = function()
-	Media.PlayMusic(initialSong, PlayMusic)
-	initialSong = nil
-end
-
 WorldLoaded = function()
 	GDI = Player.GetPlayer("GDI")
 	Nod = Player.GetPlayer("Nod")
@@ -221,8 +215,6 @@ WorldLoaded = function()
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
-
-	PlayMusic()
 
 	Trigger.AfterDelay(0, getStartUnits)
 	InsertNodUnits()

@@ -503,6 +503,8 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 		LuaScript:
 			Scripts: nod06c.lua
+		MusicPlaylist:
+			StartingMusic: rout
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

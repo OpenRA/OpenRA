@@ -163,12 +163,6 @@ InsertNodUnits = function()
 	end)
 end
 
-initialSong = "airstrik"
-PlayMusic = function()
-	Media.PlayMusic(initialSong, PlayMusic)
-	initialSong = nil
-end
-
 WorldLoaded = function()
 	GDI = Player.GetPlayer("GDI")
 	Nod = Player.GetPlayer("Nod")
@@ -247,9 +241,6 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(0, getStartUnits)
-
-	PlayMusic()
-
 end
 
 Tick = function()

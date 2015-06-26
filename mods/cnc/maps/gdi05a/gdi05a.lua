@@ -183,12 +183,6 @@ SetupWorld = function()
 	Grd3Action()
 end
 
-initialSong = "rain"
-PlayMusic = function()
-	Media.PlayMusic(initialSong, PlayMusic)
-	initialSong = nil
-end
-
 WorldLoaded = function()
 	gdiBase = Player.GetPlayer("AbandonedBase")
 	gdi = Player.GetPlayer("GDI")
@@ -219,9 +213,6 @@ WorldLoaded = function()
 	SetupWorld()
 
 	Camera.Position = GdiTankRallyPoint.CenterPosition
-
-	PlayMusic()
-
 end
 
 Tick = function()
