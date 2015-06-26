@@ -132,7 +132,7 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
       DisplayOutputLn(("%s: %s")
         :format(filePath, TR("Mixed end-of-line encodings detected.")..' '..
           TR("Use '%s' to show line endings and '%s' to convert them.")
-        :format("GetEditor():SetViewEOL(1)", "GetEditor():ConvertEOLs(GetEditor():GetEOLMode())")))
+        :format("ide:GetEditor():SetViewEOL(1)", "ide:GetEditor():ConvertEOLs(ide:GetEditor():GetEOLMode())")))
     elseif foundcrlf then
       editor:SetEOLMode(wxstc.wxSTC_EOL_CRLF)
     elseif foundlf then
