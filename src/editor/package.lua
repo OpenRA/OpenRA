@@ -126,7 +126,7 @@ end
 
 function ide:FindDocument(path)
   local fileName = wx.wxFileName(path)
-  for _, doc in pairs(self.openDocuments) do
+  for _, doc in pairs(self:GetDocuments()) do
     if doc.filePath and fileName:SameAs(wx.wxFileName(doc.filePath)) then
       return doc
     end
@@ -141,7 +141,7 @@ function ide:FindDocumentsByPartialPath(path)
   local lpattern = pattern:lower()
 
   local docs = {}
-  for _, doc in pairs(self.openDocuments) do
+  for _, doc in pairs(self:GetDocuments()) do
     if doc.filePath
     and (doc.filePath:find(pattern)
          or iscaseinsensitive and doc.filePath:lower():find(lpattern)) then
