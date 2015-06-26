@@ -6,7 +6,6 @@
 local editorID = 100 -- window id to create editor pages with, incremented for new editors
 
 local openDocuments = ide.openDocuments
-local statusBar = ide.frame.statusBar
 local notebook = ide.frame.notebook
 local edcfg = ide.config.editor
 local styles = ide.config.styles
@@ -57,7 +56,7 @@ local function updateStatusText(editor)
   if ide.frame then
     for n in ipairs(texts) do
       if (texts[n] ~= statusTextTable[n]) then
-        statusBar:SetStatusText(texts[n], n+1)
+        ide:SetStatus(texts[n], n)
         statusTextTable[n] = texts[n]
       end
     end
@@ -168,7 +167,6 @@ end
 function SetEditorSelection(selection)
   local editor = GetEditor(selection)
   updateStatusText(editor) -- update even if nil
-  statusBar:SetStatusText("",1)
   ide.frame:SetTitle(ExpandPlaceholders(ide.config.format.apptitle))
 
   if editor then

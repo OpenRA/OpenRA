@@ -780,8 +780,7 @@ local function saveAutoRecovery(force)
     ide.settings:Flush()
   end
   ide.session.lastsaved = now
-  ide.frame.statusBar:SetStatusText(
-    TR("Saved auto-recover at %s."):format(os.date("%H:%M:%S")), 1)
+  ide:SetStatus(TR("Saved auto-recover at %s."):format(os.date("%H:%M:%S")))
 end
 
 local function fastWrap(func, ...)

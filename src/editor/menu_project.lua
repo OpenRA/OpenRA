@@ -71,7 +71,7 @@ local function selectInterpreter(id)
 
   DebuggerShutdown()
 
-  ide.frame.statusBar:SetStatusText(ide.interpreter.name or "", 5)
+  ide:SetStatus(ide.interpreter.name or "", 4)
   if changed then ReloadLuaAPI() end
 end
 
@@ -137,7 +137,7 @@ function ProjectUpdateProjectDir(projdir,skiptree)
   projdir = dir:GetPath(wx.wxPATH_GET_VOLUME) -- no trailing slash
 
   ide.config.path.projectdir = projdir ~= "" and projdir or nil
-  frame:SetStatusText(projdir)
+  ide:SetStatus(projdir)
   frame:SetTitle(ExpandPlaceholders(ide.config.format.apptitle))
   if (not skiptree) then ide.filetree:updateProjectDir(projdir) end
   return true
