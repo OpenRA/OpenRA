@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (a == null)
 				return null;
 
-			return new Activities.Heal(self, newTarget, a.Weapon.MinRange, a.Weapon.Range, allowMove);
+			return new Activities.Heal(self, newTarget, a, allowMove);
 		}
 	}
 }

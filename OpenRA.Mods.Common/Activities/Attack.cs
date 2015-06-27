@@ -25,11 +25,11 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist maxRange;
 		readonly IPositionable positionable;
 
-		public Attack(Actor self, Target target, WDist minRange, WDist maxRange, bool allowMovement)
+		public Attack(Actor self, Target target, Armament armament, bool allowMovement)
 		{
 			Target = target;
-			this.minRange = minRange;
-			this.maxRange = maxRange;
+			this.minRange = armament.Weapon.MinRange;
+			this.maxRange = armament.Weapon.Range;
 
 			attack = self.Trait<AttackBase>();
 			facing = self.Trait<IFacing>();
