@@ -830,7 +830,8 @@ Rules:
 		Health:
 			HP: 125
 	^Bridge:
-		Invulnerable:
+		DamageMultiplier@INVULNERABLE:
+			Modifier: 0
 
 Sequences:
 

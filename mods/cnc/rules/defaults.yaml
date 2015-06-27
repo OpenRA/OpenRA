@@ -40,7 +40,16 @@
 		UncloakSound: trans1.aud
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+	ReloadTimeMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+	InaccuracyMultiplier@EXPERIENCE:
+		UpgradeTypes: inaccuracy
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -98,7 +107,16 @@
 		UncloakSound: trans1.aud
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+	ReloadTimeMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+	InaccuracyMultiplier@EXPERIENCE:
+		UpgradeTypes: inaccuracy
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -141,7 +159,16 @@
 	ScriptTriggers:
 	Tooltip:
 		GenericName: Helicopter
-	GainsStatUpgrades:
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+	ReloadTimeMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+	InaccuracyMultiplier@EXPERIENCE:
+		UpgradeTypes: inaccuracy
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -240,7 +267,16 @@
 	DeathSounds@POISONED:
 		DeathSound: Poisoned
 		DeathTypes: TiberiumDeath
-	GainsStatUpgrades:
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+	ReloadTimeMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+	InaccuracyMultiplier@EXPERIENCE:
+		UpgradeTypes: inaccuracy
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -352,7 +388,16 @@
 	Huntable:
 	AttackMove:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+	ReloadTimeMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+	InaccuracyMultiplier@EXPERIENCE:
+		UpgradeTypes: inaccuracy
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -388,7 +433,6 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	ScriptTriggers:
-	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -399,6 +443,16 @@
 	UpgradeManager:
 	Voiced:
 		VoiceSet: VehicleVoice
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+	ReloadTimeMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+	InaccuracyMultiplier@EXPERIENCE:
+		UpgradeTypes: inaccuracy
 
 ^Building:
 	AppearsOnRadar:
