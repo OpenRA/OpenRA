@@ -656,7 +656,7 @@ DTRK:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
 	DemoTruck:
-	-InvulnerabilityUpgrade@IRONCURTAIN:
+	-DamageMultiplier@IRONCURTAIN:
 	KillsSelf:
 		UpgradeTypes: invulnerability
 		UpgradeMinEnabledLevel: 1
