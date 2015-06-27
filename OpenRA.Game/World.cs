@@ -387,6 +387,9 @@ namespace OpenRA
 
 			frameEndActions.Clear();
 
+			Sound.StopMusic();
+			Sound.StopVideo();
+
 			// Dispose newer actors first, and the world actor last
 			foreach (var a in actors.Reverse())
 				a.Dispose();
