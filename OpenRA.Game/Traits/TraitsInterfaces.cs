@@ -218,6 +218,8 @@ namespace OpenRA.Traits
 	public interface IFirepowerModifier { int GetFirepowerModifier(); }
 	public interface IReloadModifier { int GetReloadModifier(); }
 	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
+	public interface IRangeModifier { int GetRangeModifier(); }
+	public interface IRangeModifierInfo : ITraitInfo { int GetRangeModifierDefault(); }
 	public interface IPowerModifier { int GetPowerModifier(); }
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
 	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor playerColor, bool replaceExisting); }

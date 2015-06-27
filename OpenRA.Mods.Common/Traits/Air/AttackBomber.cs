@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Bombs drop anywhere in range
 			foreach (var a in Armaments.Where(a => a.Info.Name == info.Bombs))
 			{
-				if (!target.IsInRange(self.CenterPosition, a.Weapon.Range))
+				if (!target.IsInRange(self.CenterPosition, a.MaxRange()))
 					continue;
 
 				inAttackRange = true;
@@ -72,10 +72,10 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				foreach (var a in Armaments.Where(a => a.Info.Name == info.Guns))
 				{
-					if (!target.IsInRange(self.CenterPosition, a.Weapon.Range))
+					if (!target.IsInRange(self.CenterPosition, a.MaxRange()))
 						continue;
 
-					var t = Target.FromPos(cp - new WVec(0, a.Weapon.Range.Length / 2, cp.Z).Rotate(WRot.FromFacing(f)));
+					var t = Target.FromPos(cp - new WVec(0, a.MaxRange().Length / 2, cp.Z).Rotate(WRot.FromFacing(f)));
 					inAttackRange = true;
 					a.CheckFire(self, facing.Value, t);
 				}

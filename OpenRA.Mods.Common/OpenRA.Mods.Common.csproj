@@ -365,6 +365,7 @@
     <Compile Include="Traits\Multipliers\ReloadDelayMultiplier.cs" />
     <Compile Include="Traits\Multipliers\SpeedMultiplier.cs" />
     <Compile Include="Traits\Multipliers\PowerMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\RangeMultiplier.cs" />
     <Compile Include="Traits\PaletteEffects\CloakPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\GlobalLightingPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\FlashPaletteEffect.cs" />

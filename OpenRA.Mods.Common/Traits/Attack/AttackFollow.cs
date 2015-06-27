@@ -85,8 +85,9 @@ namespace OpenRA.Mods.Common.Traits
 						|| (target.Type == TargetType.FrozenActor && target.FrozenActor.Info.HasTraitInfo<IMoveInfo>());
 
 					// Try and sit at least one cell closer than the max range to give some leeway if the target starts moving.
-					var maxRange = targetIsMobile ? new WDist(Math.Max(weapon.Weapon.MinRange.Length, weapon.Weapon.Range.Length - 1024))
-						: weapon.Weapon.Range;
+					var modifiedRange = weapon.MaxRange();
+					var maxRange = targetIsMobile ? new WDist(Math.Max(weapon.Weapon.MinRange.Length, modifiedRange.Length - 1024))
+						: modifiedRange;
 
 					attack.Target = target;
 
