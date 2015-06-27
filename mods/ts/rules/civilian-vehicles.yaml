@@ -1,5 +1,5 @@
 4TNK:
-	Inherits: ^Tank
+	Inherits: ^VoxelTank
 	Valued:
 		Cost: 1700
 	Tooltip:
@@ -30,32 +30,27 @@
 		Ticks: 10
 		HealIfBelow: 50%
 		DamageCooldown: 200
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 	WithVoxelTurret:
 	WithVoxelBarrel:
 	WithMuzzleFlash:
 
 TRUCKB:
-	Inherits: ^Vehicle
+	Inherits: ^CivilianVoxelVehicle
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Truck
 	Health:
-		HP: 2000
+		HP: 200
 	Armor:
 		Type: Light
 	Mobile:
 		Speed: 56
 	RevealsShroud:
 		Range: 5c0
-	RenderVoxels:
-	WithVoxelBody:
 
 ICBM:
-	Inherits: ^Vehicle
+	Inherits: ^CivilianVoxelVehicle
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -69,8 +64,6 @@ ICBM:
 		ROT: 5
 	RevealsShroud:
 		Range: 7c0
-	RenderVoxels:
-	WithVoxelBody:
 	Transforms:
 		IntoActor: gaicbm
 		Offset: -1,-1
@@ -80,7 +73,7 @@ ICBM:
 		Voice: Move
 
 BUS:
-	Inherits: ^Vehicle
+	Inherits: ^CivilianVoxelVehicle
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -99,11 +92,9 @@ BUS:
 		MaxWeight: 20
 		PipCount: 5
 		UnloadVoice: Unload
-	RenderVoxels:
-	WithVoxelBody:
 
 PICK:
-	Inherits: ^Vehicle
+	Inherits: ^CivilianVoxelVehicle
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -122,11 +113,9 @@ PICK:
 		MaxWeight: 2
 		PipCount: 5
 		UnloadVoice: Unload
-	RenderVoxels:
-	WithVoxelBody:
 
 CAR:
-	Inherits: ^Vehicle
+	Inherits: ^CivilianVoxelVehicle
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -145,11 +134,9 @@ CAR:
 		MaxWeight: 4
 		PipCount: 5
 		UnloadVoice: Unload
-	RenderVoxels:
-	WithVoxelBody:
 
 WINI:
-	Inherits: ^Vehicle
+	Inherits: ^CivilianVoxelVehicle
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -168,6 +155,4 @@ WINI:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Unload
-	RenderVoxels:
-	WithVoxelBody:
 

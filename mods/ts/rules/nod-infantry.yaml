@@ -1,5 +1,5 @@
 E3:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
@@ -20,13 +20,11 @@ E3:
 		LocalOffset: 128,0,640
 	AttackFrontal:
 		Voice: Attack
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
 
 CYBORG:
-	Inherits: ^Infantry
+	Inherits: ^Cyborg
 	Armor:
 		Type: Light
 	Valued:
@@ -38,7 +36,6 @@ CYBORG:
 		Queue: Infantry
 		BuildPaletteOrder: 40
 		Prerequisites: ~nahand
-	-Crushable:
 	Selectable:
 		Bounds: 16,31,0,-10
 	Voiced:
@@ -47,8 +44,6 @@ CYBORG:
 		Speed: 56
 	Health:
 		HP: 300
-	PoisonedByTiberium:
-		Weapon: TiberiumHeal
 	Passenger:
 	RevealsShroud:
 		Range: 5c0
@@ -56,16 +51,11 @@ CYBORG:
 		Weapon: Vulcan3
 	AttackFrontal:
 		Voice: Attack
-	WithInfantryBody:
-		AttackSequence: shoot
-		IdleSequences: idle1,idle2
-	WithPermanentInjury:
 	SelectionDecorations:
 		VisualBounds: 16,31,0,-10
-	-TakeCover:
 
 CYC2:
-	Inherits: ^Infantry
+	Inherits: ^Cyborg
 	Armor:
 		Type: Heavy
 	Valued:
@@ -78,7 +68,6 @@ CYC2:
 		BuildPaletteOrder: 50
 		Prerequisites: ~nahand, natech
 		BuildLimit: 1
-	-Crushable:
 	Selectable:
 		Bounds: 16,32,-1,-12
 	Voiced:
@@ -86,9 +75,7 @@ CYC2:
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 500
-	PoisonedByTiberium:
-		Weapon: TiberiumHeal
+		HP: 500	
 	Passenger:
 	RevealsShroud:
 		Range: 7c0
@@ -97,16 +84,11 @@ CYC2:
 		LocalOffset: 170,85,683
 	AttackFrontal:
 		Voice: Attack
-	WithInfantryBody:
-		AttackSequence: shoot
-		IdleSequences: idle1,idle2
-	WithPermanentInjury:
 	SelectionDecorations:
 		VisualBounds: 16,32,-1,-12
-	-TakeCover:
 
 MHIJACK:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
@@ -129,8 +111,6 @@ MHIJACK:
 	RevealsShroud:
 		Range: 6c0
 	-AutoTarget:
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
 

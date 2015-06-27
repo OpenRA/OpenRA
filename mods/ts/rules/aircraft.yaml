@@ -31,8 +31,6 @@ DPOD:
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
-	RenderVoxels:
-	WithVoxelBody:
 
 DSHP:
 	Inherits: ^Helicopter
@@ -57,8 +55,6 @@ DSHP:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Move
-	RenderVoxels:
-	WithVoxelBody:
 	Hovers:
 
 ORCA:
@@ -96,11 +92,7 @@ ORCA:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 	Hovers:
-	SelectionDecorations:
-		VisualBounds: 30,24
 
 ORCAB:
 	Inherits: ^Plane
@@ -140,11 +132,7 @@ ORCAB:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 	Hovers:
-	SelectionDecorations:
-		VisualBounds: 30,24
 
 ORCATRAN:
 	Inherits: ^Helicopter
@@ -169,8 +157,6 @@ ORCATRAN:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Move
-	RenderVoxels:
-	WithVoxelBody:
 	Hovers:
 
 TRNSPORT:
@@ -197,9 +183,9 @@ TRNSPORT:
 	RevealsShroud:
 		Range: 2c0
 	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 	Hovers:
+	Selectable:
+		Bounds: 44,32,0,-8
 
 SCRIN:
 	Inherits: ^Plane
@@ -239,10 +225,6 @@ SCRIN:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
-	SelectionDecorations:
-		VisualBounds: 30,24
 
 APACHE:
 	Inherits: ^Helicopter
@@ -281,9 +263,5 @@ APACHE:
 	WithRotor:
 		Offset: 85,0,384
 	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 	Hovers:
-	SelectionDecorations:
-		VisualBounds: 30,24
 

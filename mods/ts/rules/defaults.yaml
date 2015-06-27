@@ -1,3 +1,13 @@
+^ExistsInWorld:
+	AppearsOnRadar:
+	UpdatesPlayerStatistics:
+	CombatDebugOverlay:
+	GivesExperience:
+	BodyOrientation:
+	ScriptTriggers:
+	UpgradeManager:
+	Huntable:
+
 ^GainsExperience:
 	GainsExperience:
 		Upgrades:
@@ -26,8 +36,8 @@
 		UpgradeMinEnabledLevel: 1
 		UpgradeMaxAcceptedLevel: 2
 
-^Building:
-	AppearsOnRadar:
+^BasicBuilding:
+	Inherits: ^ExistsInWorld
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -41,19 +51,32 @@
 		TerrainTypes: Clear, Road, DirtRoad, Rough
 		Adjacent: 4
 	FrozenUnderFog:
-	GivesBuildableArea:
-	Capturable:
 	SoundOnDamageTransition:
 		DamagedSounds: expnew01.aud
 		DestroyedSounds: crmble2.aud
 	RenderBuilding:
 	WithBuildingExplosion:
+	EngineerRepairable:
+	ShakeOnDeath:
+	AcceptsSupplies:
+	Guardable:
+		Range: 3
+	Demolishable:
+	Cloak@CLOAKGENERATOR:
+		UpgradeTypes: cloakgenerator
+		UpgradeMinEnabledLevel: 1
+		InitialDelay: 0
+		CloakDelay: 90
+
+^Building:
+	Inherits: ^BasicBuilding
+	GivesBuildableArea:
+	Capturable:
+	RepairableBuilding:
+		IndicatorPalette: mouse
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
-	RepairableBuilding:
-		IndicatorPalette: mouse
-	EngineerRepairable:
 	EmitInfantryOnSell@gdi:
 		ActorTypes: e1, e1, e2, medic
 		Races: gdi
@@ -62,45 +85,15 @@
 		Races: nod
 	MustBeDestroyed:
 		RequiredForShortGame: true
-	GivesExperience:
 	CaptureNotification:
-	ShakeOnDeath:
-	ProximityCaptor:
-		Types: Building
 	Sellable:
 		SellSounds: cashturn.aud
-	AcceptsSupplies:
 	GivesBounty:
-	UpdatesPlayerStatistics:
-	CombatDebugOverlay:
-	Guardable:
-		Range: 3
-	BodyOrientation:
-	Huntable:
-	Demolishable:
-	ScriptTriggers:
 	WithMakeAnimation:
-	UpgradeManager:
-	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		InitialDelay: 0
-		CloakDelay: 90
 
 ^CivBuilding:
-	Inherits: ^Building
-	-GivesBuildableArea:
-	-Capturable:
-	-EngineerRepairable:
-	-MustBeDestroyed:
-	-GivesExperience:
-	-CaptureNotification:
-	-Sellable:
-	-GivesBounty:
+	Inherits: ^BasicBuilding
 	-UpdatesPlayerStatistics:
-	-CombatDebugOverlay:
-	-WithMakeAnimation:
-	-WithDeathAnimation:
 	Health:
 		HP: 900
 	Armor:
@@ -164,8 +157,6 @@
 		Type: wall
 	GivesExperience:
 	AutoTargetIgnore:
-	ProximityCaptor:
-		Types: Wall
 	Sellable:
 		SellSounds: cashturn.aud
 	UpdatesPlayerStatistics:
@@ -189,27 +180,32 @@
 	RenderSprites:
 
 ^Infantry:
-	Inherits: ^GainsExperience
-	AppearsOnRadar:
+	Inherits@1: ^GainsExperience
+	Inherits@2: ^ExistsInWorld
+	DrawLineToTarget:
 	Health:
 		Radius: 128
+		HP: 50
 	Armor:
 		Type: None
+	Valued:
+		Cost: 10
 	RevealsShroud:
-		Range: 4c0
+		Range: 2c0
 	Mobile:
+		Voice: Move
+		Speed: 71
 		Crushes: crate
-		SharesCell: yes
+		SharesCell: true
 		TerrainSpeeds:
 			Clear: 90
 			Road: 100
-			Rail: 80
-			DirtRoad: 90
-			Rough: 70
-			Tiberium: 80
-			BlueTiberium: 80
-			Veins: 80
-		Voice: Move
+			Rail: 90
+			DirtRoad: 100
+			Rough: 80
+			Tiberium: 90
+			BlueTiberium: 90
+			Veins: 50
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -218,14 +214,6 @@
 		VoiceSet: Infantry
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
-	TakeCover:
-		DamageModifiers:
-			Prone50Percent: 50
-			Prone60Percent: 60
-			Prone70Percent: 70
-			Prone100Percent: 100
-			Prone350Percent: 350
-		DamageTriggers: TriggerProne
 	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation:
@@ -243,11 +231,7 @@
 		CargoType: Infantry
 		Voice: Move
 	HiddenUnderFog:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
-	ProximityCaptor:
-		Types: Infantry
 	GivesBounty:
 	Crushable:
 		CrushSound: squish6.aud
@@ -255,14 +239,9 @@
 	SpawnViceroid:
 		ViceroidActor: vissml
 		DeathType: EnergyDeath # TODO: FIX ME! (Tiberium currently uses the wrong damage type!)
-	UpdatesPlayerStatistics:
-	CombatDebugOverlay:
 	Guard:
 		Voice: Move
 	Guardable:
-	BodyOrientation:
-	Huntable:
-	ScriptTriggers:
 	DeathSounds@NORMAL:
 		DeathTypes: BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@BURNED:
@@ -271,54 +250,72 @@
 	DeathSounds@ZAPPED:
 		Voice: Zapped
 		DeathTypes: EnergyDeath
-	UpgradeManager:
 	Cloak@CLOAKGENERATOR:
 		UpgradeTypes: cloakgenerator
 		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
+
+^Soldier:
+	Inherits: ^Infantry
+	RevealsShroud:
+		Range: 4c0
 	MustBeDestroyed:
+	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		DamageTriggers: TriggerProne
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+	WithDeathAnimation:
+		CrushedSequence: die-crushed
+
+^Cyborg:
+	Inherits: ^Infantry
+	RevealsShroud:
+		Range: 4c0
+	MustBeDestroyed:
+	-Crushable:
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	WithPermanentInjury:
+	WithInfantryBody:
+		AttackSequence: shoot
+		IdleSequences: idle1,idle2
 
 ^CivilianInfantry:
 	Inherits: ^Infantry
 	Voiced:
 		VoiceSet: Civilian
-	Valued:
-		Cost: 10
 	Tooltip:
 		Name: Civilian
-	Health:
-		HP: 50
-	Mobile:
-		Speed: 71
-	RevealsShroud:
-		Range: 2c0
-	ProximityCaptor:
-		Types: CivilianInfantry
-	-TakeCover:
-	WithInfantryBody:
+	ScaredyCat:
 	WithDeathAnimation:
 		CrushedSequence: die-crushed
-	ScaredyCat:
-	-MustBeDestroyed:
 
 ^Vehicle:
-	Inherits: ^GainsExperience
-	AppearsOnRadar:
+	Inherits@1: ^GainsExperience
+	Inherits@2: ^ExistsInWorld
+	DrawLineToTarget:
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Clear: 90
+			Clear: 70
 			Road: 100
-			Rail: 80
+			Rail: 50
 			DirtRoad: 90
-			Rough: 70
-			Tiberium: 80
-			BlueTiberium: 80
-			Veins: 80
+			Rough: 40
+			Tiberium: 50
+			BlueTiberium: 50
+			Veins: 50
 		ROT: 5
 		Voice: Move
 	Selectable:
+		Bounds: 40,24
 	SelectionDecorations:
 		Palette: pips
 	Voiced:
@@ -334,29 +331,20 @@
 	AttackMove:
 		Voice: Move
 	HiddenUnderFog:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
-	ProximityCaptor:
-		Types: Vehicle
 	Capturable:
 		Type: Vehicle
 		CaptureThreshold: 1
 		CancelActivity: True
 	GivesBounty:
-	UpdatesPlayerStatistics:
-	CombatDebugOverlay:
 	Guard:
 		Voice: Move
 	Guardable:
 	BodyOrientation:
 		CameraPitch: 90
-	Huntable:
-	ScriptTriggers:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	UpgradeManager:
 	UpgradeOverlay@EMPDISABLE:
 		UpgradeTypes: empdisable
 		UpgradeMinEnabledLevel: 1
@@ -376,84 +364,41 @@
 		InitialDelay: 0
 		CloakDelay: 90
 	MustBeDestroyed:
+	RenderSprites:
 
 ^Tank:
-	Inherits: ^GainsExperience
-	AppearsOnRadar:
+	Inherits: ^Vehicle
 	Mobile:
-		Crushes: wall, crate
+		Crushes: wall, crate, infantry
 		TerrainSpeeds:
-			Clear: 90
+			Clear: 70
 			Road: 100
-			Rail: 80
+			Rail: 100
 			DirtRoad: 90
-			Rough: 70
-			Tiberium: 80
-			BlueTiberium: 80
-			Veins: 80
-		ROT: 5
-		Voice: Move
-	Selectable:
-	SelectionDecorations:
-		Palette: pips
-	Voiced:
-		VoiceSet: Vehicle
-	TargetableUnit:
-		TargetTypes: Ground, Vehicle
-	Repairable:
-		RepairBuildings: gadept
-		Voice: Move
-	Passenger:
-		CargoType: Vehicle
-		Voice: Move
-	AttackMove:
-		Voice: Move
-	HiddenUnderFog:
-	GivesExperience:
-	DrawLineToTarget:
-	ActorLostNotification:
-	ProximityCaptor:
-		Types: Vehicle
-	Capturable:
-		Type: Vehicle
-		CaptureThreshold: 1
-		CancelActivity: True
-	GivesBounty:
-	UpdatesPlayerStatistics:
-	CombatDebugOverlay:
-	Guard:
-		Voice: Move
-	Guardable:
-	BodyOrientation:
-		CameraPitch: 90
-	Huntable:
-	ScriptTriggers:
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
-	UpgradeManager:
-	UpgradeOverlay@EMPDISABLE:
-		UpgradeTypes: empdisable
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-		Palette: disabled
-	DisableUpgrade@EMPDISABLE:
-		UpgradeTypes: empdisable
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-	TimedUpgradeBar@EMPDISABLE:
-		Upgrade: empdisable
-		Color: 255,255,255
-	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
-		InitialDelay: 0
-		CloakDelay: 90
-	MustBeDestroyed:
+			Rough: 60
+			Tiberium: 70
+			BlueTiberium: 70
+			Veins: 70
 
-^Helicopter:
-	Inherits: ^GainsExperience
+^VoxelVehicle:
+	Inherits: ^Vehicle
+	RenderVoxels:
+	WithVoxelBody:
+
+^VoxelTank:
+	Inherits: ^Tank
+	RenderVoxels:
+	WithVoxelBody:
+
+^CivilianVoxelVehicle:
+	Inherits: ^VoxelVehicle
+	-RenderSprites:
+	-MustBeDestroyed:
+
+^Aircraft:
+	Inherits@1: ^GainsExperience
+	Inherits@2: ^ExistsInWorld
+	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: yes
 	TargetableAircraft:
@@ -464,32 +409,30 @@
 		Palette: pips
 	Voiced:
 		VoiceSet: Heli
+	HiddenUnderFog:
+	AttackMove:
+		Voice: Move
+	ActorLostNotification:
+	BodyOrientation:
+		CameraPitch: 90
+	Guard:
+		Voice: Move
+	Guardable:
+	MustBeDestroyed:
+	RenderVoxels:
+	WithVoxelBody:
+
+^Helicopter:
+	Inherits: ^Aircraft
 	Helicopter:
 		RepairBuildings: gadept
 		RearmBuildings:
 		LandWhenIdle: no
 		CruiseAltitude: 2048
 		Voice: Move
-	HiddenUnderFog:
-	AttackMove:
-		Voice: Move
-	GivesExperience:
-	DrawLineToTarget:
-	ActorLostNotification:
-	CombatDebugOverlay:
-	BodyOrientation:
-		CameraPitch: 90
-	Huntable:
-	ScriptTriggers:
-	Guard:
-		Voice: Move
-	Guardable:
-	UpgradeManager:
-	MustBeDestroyed:
 
 ^Plane:
-	Inherits: ^Helicopter
-	-Helicopter:
+	Inherits: ^Aircraft
 	Plane:
 		RepairBuildings: gadept
 		RearmBuildings: gahpad, nahpad
@@ -499,8 +442,8 @@
 	ReturnOnIdle:
 
 ^Viceroid:
-	RenderUnit:
-	AppearsOnRadar:
+	Inherits: ^ExistsInWorld
+	DrawLineToTarget:
 	Health:
 		Radius: 256
 	Armor:
@@ -527,14 +470,12 @@
 		TargetTypes: Ground
 	AttackMove:
 	HiddenUnderFog:
-	DrawLineToTarget:
 	PoisonedByTiberium:
 		Weapon: TiberiumHeal
-	CombatDebugOverlay:
 	Guardable:
-	BodyOrientation:
-	Huntable:
-	ScriptTriggers:
+	RenderSprites:
+	WithSpriteBody:
+	AutoSelectionSize:
 
 ^BlossomTree:
 	Tooltip:

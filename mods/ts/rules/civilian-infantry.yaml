@@ -1,5 +1,5 @@
 WEEDGUY:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -17,11 +17,9 @@ WEEDGUY:
 		LocalOffset: 85,0,384
 	AttackFrontal:
 		Voice: Attack
-	WithInfantryBody:
-	TakeCover:
 
 UMAGON:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -41,13 +39,11 @@ UMAGON:
 		Weapon: Sniper
 	AttackFrontal:
 		Voice: Attack
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
 
 CHAMSPY:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 700
 	DisguiseToolTip:
@@ -61,7 +57,6 @@ CHAMSPY:
 	RevealsShroud:
 		Range: 9c0
 	Passenger:
-	TakeCover:
 	Disguise:
 	Infiltrates:
 		Types: SpyInfiltrate
@@ -71,7 +66,7 @@ CHAMSPY:
 		IdleSequences: idle1,idle2
 
 MUTANT:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -90,13 +85,11 @@ MUTANT:
 		Weapon: Vulcan
 	AttackFrontal:
 		Voice: Attack
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
 
 MWMN:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -115,13 +108,11 @@ MWMN:
 		Weapon: Vulcan
 	AttackFrontal:
 		Voice: Attack
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
 
 MUTANT3:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -140,13 +131,11 @@ MUTANT3:
 		Weapon: Vulcan
 	AttackFrontal:
 		Voice: Attack
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
 
 TRATOS:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -161,14 +150,12 @@ TRATOS:
 		Speed: 71
 	RevealsShroud:
 		Range: 4c0
-	TakeCover:
 	-AutoTarget:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
 
 OXANNA:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -181,14 +168,12 @@ OXANNA:
 		Speed: 56
 	RevealsShroud:
 		Range: 4c0
-	TakeCover:
 	-AutoTarget:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
 
 SLAV:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -201,11 +186,9 @@ SLAV:
 		Speed: 56
 	RevealsShroud:
 		Range: 4c0
-	TakeCover:
 	-AutoTarget:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
 
 DOGGIE:
 	Inherits: ^Infantry
@@ -235,7 +218,6 @@ DOGGIE:
 		WanderMoveRadius: 2
 		MinMoveDelayInTicks: 25
 		MaxMoveDelayInTicks: 45
-	-TakeCover:
 
 VISSML:
 	Inherits: ^Viceroid
@@ -247,8 +229,6 @@ VISSML:
 		WanderMoveRadius: 2
 		MinMoveDelayInTicks: 30
 		MaxMoveDelayInTicks: 60
-	WithFacingSpriteBody:
-	AutoSelectionSize:
 
 VISLRG:
 	Inherits: ^Viceroid
@@ -267,8 +247,6 @@ VISLRG:
 		MaxMoveDelayInTicks: 45
 	Mobile:
 		Crushes: crate, infantry
-	WithFacingSpriteBody:
-	AutoSelectionSize:
 
 CIV1:
 	Inherits: ^CivilianInfantry

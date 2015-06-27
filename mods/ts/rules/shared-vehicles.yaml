@@ -1,5 +1,5 @@
 MCV:
-	Inherits: ^Vehicle
+	Inherits: ^VoxelVehicle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
@@ -11,7 +11,6 @@ MCV:
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 3
-		Bounds: 42,42
 	Health:
 		HP: 600
 	Armor:
@@ -31,14 +30,11 @@ MCV:
 		TransformSounds: facbld1.aud
 		NoTransformSounds:
 		Voice: Move
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 	SelectionDecorations:
 		VisualBounds: 42,42
 
 HARV:
-	Inherits: ^Vehicle
+	Inherits: ^VoxelTank
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -82,8 +78,7 @@ HARV:
 	RevealsShroud:
 		Range: 4c0
 	-GainsExperience:
-	RenderSprites:
-	RenderVoxels:
+	-WithVoxelBody:
 	WithVoxelUnloadBody:
 	Explodes:
 		Weapon: TiberiumExplosion
@@ -94,7 +89,7 @@ HARV:
 		VisualBounds: 36,36
 
 LPST:
-	Inherits: ^Vehicle
+	Inherits: ^VoxelVehicle
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -113,9 +108,6 @@ LPST:
 		ROT: 5
 	RevealsShroud:
 		Range: 10c0
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 	Transforms:
 		IntoActor: gadpsa
 		Facing: 159
@@ -145,5 +137,4 @@ GGHUNT:
 		Weapon: SuicideBomb
 		EmptyWeapon: SuicideBomb
 	AutoSelectionSize:
-	RenderSprites:
 

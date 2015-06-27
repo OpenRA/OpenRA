@@ -1,5 +1,5 @@
 E2:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
@@ -19,12 +19,11 @@ E2:
 		FireDelay: 5
 	AttackFrontal:
 		Voice: Attack
-	TakeCover:
 	WithInfantryBody:
-		IdleSequences: idle1,idle2
+		AttackSequence: throw
 
 MEDIC:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -45,16 +44,14 @@ MEDIC:
 	Armament:
 		Weapon: Heal
 	AttackMedic:
-	TakeCover:
 	WithInfantryBody:
-		IdleSequences: idle1,idle2
 		AttackSequence: heal
 	SelfHealing:
 	Passenger:
 		PipType: Red
 
 JUMPJET:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -81,12 +78,12 @@ JUMPJET:
 	-Crushable:
 	AttackFrontal:
 		Voice: Attack
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
+	-TakeCover:
 
 GHOST:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 1750
 	Tooltip:
@@ -118,8 +115,6 @@ GHOST:
 	C4Demolition:
 		C4Delay: 45
 		Voice: Attack
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
 
