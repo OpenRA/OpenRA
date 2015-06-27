@@ -645,9 +645,9 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 		MustBeDestroyed:
-		InvulnerabilityUpgrade@UNKILLABLE:
+		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
-			UpgradeMinEnabledLevel: 1
+			Modifier: 0, 0
 		RenderSprites:
 			Image: SNIPER
 	SPY:

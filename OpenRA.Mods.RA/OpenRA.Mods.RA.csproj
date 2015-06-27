@@ -98,7 +98,6 @@
     <Compile Include="Traits\Infiltration\InfiltrateForPowerOutage.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForSupportPower.cs" />
     <Compile Include="Traits\Infiltration\Infiltrates.cs" />
-    <Compile Include="Traits\InvulnerabilityUpgrade.cs" />
     <Compile Include="Traits\MadTank.cs" />
     <Compile Include="Traits\Mine.cs" />
     <Compile Include="Traits\Minelayer.cs" />

@@ -344,7 +344,6 @@
     <Compile Include="Traits\Infantry\ScaredyCat.cs" />
     <Compile Include="Traits\Infantry\TakeCover.cs" />
     <Compile Include="Traits\Infantry\TerrainModifiesDamage.cs" />
-    <Compile Include="Traits\Invulnerable.cs" />
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\KillsSelf.cs" />
     <Compile Include="Traits\AmmoPool.cs" />
@@ -357,6 +356,13 @@
     <Compile Include="Traits\Parachutable.cs" />
     <Compile Include="Traits\ParaDrop.cs" />
     <Compile Include="Traits\Passenger.cs" />
+    <Compile Include="Traits\Multipliers\UpgradableMultiplierTrait.cs" />
+    <Compile Include="Traits\Multipliers\DamageMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\FirepowerMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\InaccuracyMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\ReloadDelayMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\SpeedMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\PowerMultiplier.cs" />
     <Compile Include="Traits\PaletteEffects\CloakPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\GlobalLightingPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\FlashPaletteEffect.cs" />
@@ -477,7 +483,6 @@
     <Compile Include="Traits\ProduceableWithLevel.cs" />
     <Compile Include="Traits\Upgrades\DeployToUpgrade.cs" />
     <Compile Include="Traits\Upgrades\DisableUpgrade.cs" />
-    <Compile Include="Traits\Upgrades\GainsStatUpgrades.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\UpgradeActorsNear.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
