@@ -488,6 +488,8 @@ Rules:
 		-MPStartLocations:
 		LuaScript:
 			Scripts: fort-lonestar.lua
+		ScriptUpgradesCache:
+			Upgrades: unkillable
 	FORTCRATE:
 		Inherits: ^Crate
 		SupportPowerCrateAction@parabombs:

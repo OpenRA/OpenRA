@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Warheads
 {
 	public class GrantUpgradeWarhead : Warhead
 	{
+		[UpgradeGrantedReference]
 		[Desc("The upgrades to apply.")]
 		public readonly string[] Upgrades = { };
 
