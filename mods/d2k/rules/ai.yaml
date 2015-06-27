@@ -1,6 +1,7 @@
 Player:
 	HackyAI@Omnius:
 		Name: Omnius
+		MinimumExcessPower: 60
 		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport
 		BuildingCommonNames:
@@ -127,6 +128,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@Vidius:
 		Name: Vidious
+		MinimumExcessPower: 60
 		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport
 		BuildingCommonNames:
@@ -253,6 +255,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@Gladius:
 		Name: Gladius
+		MinimumExcessPower: 60
 		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport
 		BuildingCommonNames:

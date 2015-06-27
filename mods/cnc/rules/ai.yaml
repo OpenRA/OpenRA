@@ -1,6 +1,7 @@
 Player:
 	HackyAI@Cabal:
 		Name: Cabal
+		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -119,6 +120,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@Watson:
 		Name: Watson
+		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -237,6 +239,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@HAL9001:
 		Name: HAL 9001
+		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc

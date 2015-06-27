@@ -1,6 +1,7 @@
 Player:
 	HackyAI@RushAI:
 		Name: Rush AI
+		MinimumExcessPower: 40
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -25,7 +26,8 @@ Player:
 			fix: 1
 		BuildingFractions:
 			proc: 30%
-			powr: 35%
+			powr: 15%
+			apwr: 20%
 			barr: 1%
 			tent: 1%
 			kenn: 0.5%
@@ -109,6 +111,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@NormalAI:
 		Name: Normal AI
+		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -235,6 +238,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@TurtleAI:
 		Name: Turtle AI
+		MinimumExcessPower: 100
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
