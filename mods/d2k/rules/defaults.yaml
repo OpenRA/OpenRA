@@ -38,7 +38,16 @@
 	Huntable:
 	Demolishable:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+	ReloadTimeMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+	InaccuracyMultiplier@EXPERIENCE:
+		UpgradeTypes: inaccuarcy
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -94,7 +103,16 @@
 	Huntable:
 	Demolishable:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+	ReloadTimeMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+	InaccuracyMultiplier@EXPERIENCE:
+		UpgradeTypes: inaccuarcy
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -233,7 +251,16 @@
 		DeathTypes: ExplosionDeath, SoundDeath, SmallExplosionDeath, BulletDeath
 	Parachutable:
 		FallRate: 130
-	GainsStatUpgrades:
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+	ReloadTimeMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+	InaccuracyMultiplier@EXPERIENCE:
+		UpgradeTypes: inaccuarcy
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -273,7 +300,16 @@
 	Huntable:
 	AttackMove:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+	ReloadTimeMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+	InaccuracyMultiplier@EXPERIENCE:
+		UpgradeTypes: inaccuarcy
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
