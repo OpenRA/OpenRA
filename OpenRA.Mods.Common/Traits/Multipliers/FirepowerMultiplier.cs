@@ -13,9 +13,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The firepower of this actor is multiplied based on upgrade level if specified.")]
-	public class FirepowerMultiplierInfo : UpgradeMultiplierTraitInfo, ITraitInfo
+	public class FirepowerMultiplierInfo : UpgradeMultiplierTraitInfo
 	{
-		public object Create(ActorInitializer init) { return new FirepowerMultiplier(this, init.Self.Info.Name); }
+		public override object Create(ActorInitializer init) { return new FirepowerMultiplier(this, init.Self.Info.Name); }
 	}
 
 	public class FirepowerMultiplier : UpgradeMultiplierTrait, IFirepowerModifier

@@ -13,9 +13,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The reloading time of this actor is multiplied based on upgrade level if specified.")]
-	public class ReloadDelayMultiplierInfo : UpgradeMultiplierTraitInfo, ITraitInfo
+	public class ReloadDelayMultiplierInfo : UpgradeMultiplierTraitInfo
 	{
-		public object Create(ActorInitializer init) { return new ReloadDelayMultiplier(this, init.Self.Info.Name); }
+		public override object Create(ActorInitializer init) { return new ReloadDelayMultiplier(this, init.Self.Info.Name); }
 	}
 
 	public class ReloadDelayMultiplier : UpgradeMultiplierTrait, IReloadModifier

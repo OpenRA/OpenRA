@@ -14,9 +14,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common
 {
 	[Desc("The power usage/output of this actor is multiplied based on upgrade level if specified.")]
-	public class PowerMultiplierInfo : UpgradeMultiplierTraitInfo, ITraitInfo
+	public class PowerMultiplierInfo : UpgradeMultiplierTraitInfo
 	{
-		public object Create(ActorInitializer init) { return new PowerMultiplier(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new PowerMultiplier(init.Self, this); }
 	}
 
 	public class PowerMultiplier : UpgradeMultiplierTrait, IPowerModifier, INotifyOwnerChanged

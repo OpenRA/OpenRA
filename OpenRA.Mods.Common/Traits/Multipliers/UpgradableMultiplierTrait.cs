@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public abstract class UpgradeMultiplierTraitInfo
+	public abstract class UpgradeMultiplierTraitInfo : ITraitInfo
 	{
 		[UpgradeUsedReference]
 		[Desc("Accepted upgrade types.")]
@@ -29,6 +29,8 @@ namespace OpenRA.Mods.Common.Traits
 			"Repeat last entry to accept time extensions.",
 			"If no upgrade types are specified, then the first/only modifier is always applied.")]
 		public readonly int[] Modifier = { };
+
+		public abstract object Create(ActorInitializer init);
 	}
 
 	public abstract class UpgradeMultiplierTrait : IUpgradable, IDisabledTrait, ISync

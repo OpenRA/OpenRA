@@ -16,9 +16,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Damage taken by this actor is multiplied based on upgrade level.",
 		"Decrease to increase actor's apparent strength.",
 		"Use 0 to make actor invulnerable.")]
-	public class DamageMultiplierInfo : UpgradeMultiplierTraitInfo, ITraitInfo
+	public class DamageMultiplierInfo : UpgradeMultiplierTraitInfo
 	{
-		public object Create(ActorInitializer init) { return new DamageMultiplier(this, init.Self.Info.Name); }
+		public override object Create(ActorInitializer init) { return new DamageMultiplier(this, init.Self.Info.Name); }
 	}
 
 	public class DamageMultiplier : UpgradeMultiplierTrait, IDamageModifier
