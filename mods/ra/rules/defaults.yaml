@@ -11,7 +11,16 @@
 
 ^GainsExperience:
 	GainsExperience:
-	GainsStatUpgrades:
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+	ReloadTimeMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+	InaccuracyMultiplier@EXPERIENCE:
+		UpgradeTypes: inaccuracy
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -34,10 +43,9 @@
 	UpgradeOverlay@IRONCURTAIN:
 		UpgradeTypes: invulnerability
 		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
+	DamageMultiplier@IRONCURTAIN:
 		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
+		Modifier: 0, 0
 	TimedUpgradeBar:
 		Upgrade: invulnerability
 
