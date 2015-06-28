@@ -20,6 +20,20 @@ namespace OpenRA.Mods.Common.LoadScreens
 {
 	public class BlankLoadScreen : ILoadScreen
 	{
+		public class LaunchArgs
+		{
+			[Desc("Connect to the following server given as IP:PORT on startup.")]
+			public string Connect;
+
+			[Desc("Connect to the unified resource identifier openra://IP:PORT on startup.")]
+			public string URI;
+
+			[Desc("Automatically start playing the given replay file.")]
+			public string Replay;
+		}
+
+		public LaunchArgs Launch = new LaunchArgs();
+
 		public virtual void Init(Manifest m, Dictionary<string, string> info) { }
 
 		public virtual void Display()
@@ -34,6 +48,10 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 		public void StartGame(Arguments args)
 		{
+			foreach (var f in Launch.GetType().GetFields())
+				if (args.Contains("Launch" + "." + f.Name))
+					FieldLoader.LoadField(Launch, f.Name, args.GetValue("Launch" + "." + f.Name, ""));
+
 			Ui.ResetAll();
 			Game.Settings.Save();
 
@@ -63,21 +81,12 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 			// Join a server directly
 			var connect = string.Empty;
-			if (args != null)
-			{
-				if (args.Contains("Launch.Connect"))
-					connect = args.GetValue("Launch.Connect", null);
 
-				if (args.Contains("Launch.URI"))
-				{
-					connect = args.GetValue("Launch.URI", null);
-					if (connect != null)
-					{
-						connect = connect.Replace("openra://", "");
-						connect = connect.TrimEnd('/');
-					}
-				}
-			}
+			if (!string.IsNullOrEmpty(Launch.Connect))
+				connect = Launch.Connect;
+
+			if (!string.IsNullOrEmpty(Launch.URI))
+				connect = Launch.URI.Replace("openra://", "").TrimEnd('/');
 
 			if (!string.IsNullOrEmpty(connect))
 			{
@@ -94,12 +103,11 @@ namespace OpenRA.Mods.Common.LoadScreens
 			}
 
 			// Load a replay directly
-			var replayFilename = args != null ? args.GetValue("Launch.Replay", null) : null;
-			if (!string.IsNullOrEmpty(replayFilename))
+			if (!string.IsNullOrEmpty(Launch.Replay))
 			{
-				var replayMeta = ReplayMetadata.Read(replayFilename);
+				var replayMeta = ReplayMetadata.Read(Launch.Replay);
 				if (ReplayUtils.PromptConfirmReplayCompatibility(replayMeta, Game.LoadShellMap))
-					Game.JoinReplay(replayFilename);
+					Game.JoinReplay(Launch.Replay);
 
 				if (replayMeta != null)
 				{
