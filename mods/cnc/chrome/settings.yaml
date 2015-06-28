@@ -451,6 +451,20 @@ Container@SETTINGS_PANEL:
 											X: PARENT_RIGHT-WIDTH+1
 											Width: 80
 											Height: 25
+								Container@DEVELOPER_TEMPLATE:
+									Width: 262
+									Height: 25
+									Visible: false
+									Children:
+										Label@FUNCTION:
+											Y: 0-1
+											Width: PARENT_RIGHT - 115
+											Height: 25
+											Align: Right
+										HotkeyEntry@HOTKEY:
+											X: PARENT_RIGHT-WIDTH
+											Width: 110
+											Height: 25
 				Container@ADVANCED_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
