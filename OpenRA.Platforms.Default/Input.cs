@@ -13,9 +13,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using SDL2;
 
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Platforms.Default
 {
-	public class Sdl2Input
+	public class Input
 	{
 		MouseButton lastButtonBits = (MouseButton)0;
 
@@ -161,6 +161,7 @@ namespace OpenRA.Renderer.Sdl2
 								Game.Exit();
 							else
 								inputHandler.OnKeyInput(keyEvent);
+
 							break;
 						}
 				}

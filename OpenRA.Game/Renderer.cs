@@ -13,9 +13,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using OpenRA.Graphics;
 using OpenRA.Support;
 
-namespace OpenRA.Graphics
+namespace OpenRA
 {
 	public sealed class Renderer : IDisposable
 	{
@@ -49,7 +50,7 @@ namespace OpenRA.Graphics
 			var resolution = GetResolution(graphicSettings);
 
 			var rendererName = serverSettings.Dedicated ? "Null" : graphicSettings.Renderer;
-			var rendererPath = Platform.ResolvePath(".", "OpenRA.Renderer." + rendererName + ".dll");
+			var rendererPath = Platform.ResolvePath(".", "OpenRA.Platforms." + rendererName + ".dll");
 
 			Device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, graphicSettings.Mode);
 
@@ -84,6 +85,7 @@ namespace OpenRA.Graphics
 			foreach (RendererAttribute r in rendererDll.GetCustomAttributes(typeof(RendererAttribute), false))
 			{
 				var factory = (IDeviceFactory)r.Type.GetConstructor(Type.EmptyTypes).Invoke(null);
+				Sound.Engine = factory.Initialize();
 				return factory.Create(new Size(width, height), window);
 			}
 
@@ -158,11 +160,6 @@ namespace OpenRA.Graphics
 		{
 			tempBuffer.SetData(vertices, numVertices);
 			DrawBatch(tempBuffer, 0, numVertices, type);
-		}
-
-		public Bitmap TakeScreenshot()
-		{
-			return Device.TakeScreenshot();
 		}
 
 		public void DrawBatch<T>(IVertexBuffer<T> vertices,

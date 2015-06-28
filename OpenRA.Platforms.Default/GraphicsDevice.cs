@@ -1,11 +1,11 @@
 #region Copyright & License Information
 /*
-* Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
-* This file is part of OpenRA, which is free software. It is made
-* available to you under the terms of the GNU General Public License
-* as published by the Free Software Foundation. For more information,
-* see COPYING.
-*/
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
 #endregion
 
 using System;
@@ -14,12 +14,13 @@ using System.IO;
 using System.Runtime.InteropServices;
 using OpenRA;
 using OpenRA.Graphics;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using SDL2;
 
-[assembly: Renderer(typeof(OpenRA.Renderer.Sdl2.DeviceFactory))]
+[assembly: Renderer(typeof(OpenRA.Platforms.Default.DeviceFactory))]
 
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Platforms.Default
 {
 	public class DeviceFactory : IDeviceFactory
 	{
@@ -28,12 +29,17 @@ namespace OpenRA.Renderer.Sdl2
 			Console.WriteLine("Using SDL 2 with OpenGL renderer");
 			return new Sdl2GraphicsDevice(size, windowMode);
 		}
+
+		public ISoundEngine Initialize()
+		{
+			return new OpenAlSoundEngine();
+		}
 	}
 
 	public sealed class Sdl2GraphicsDevice : IGraphicsDevice
 	{
 		Size size;
-		Sdl2Input input;
+		Input input;
 		IntPtr context, window;
 		bool disposed;
 
@@ -84,6 +90,8 @@ namespace OpenRA.Renderer.Sdl2
 
 			context = SDL.SDL_GL_CreateContext(window);
 			SDL.SDL_GL_MakeCurrent(window, context);
+
+			GraphicsContext.CurrentContext = context;
 			GL.LoadAll();
 			ErrorHandler.CheckGlVersion();
 			ErrorHandler.CheckGlError();
@@ -101,7 +109,7 @@ namespace OpenRA.Renderer.Sdl2
 			ErrorHandler.CheckGlError();
 
 			SDL.SDL_SetModState(0);
-			input = new Sdl2Input();
+			input = new Input();
 		}
 
 		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot)
@@ -120,10 +128,10 @@ namespace OpenRA.Renderer.Sdl2
 		{
 			var c = cursor as SDL2HardwareCursor;
 			if (c == null)
-				SDL.SDL_ShowCursor(0);
+				SDL.SDL_ShowCursor((int)SDL.SDL_bool.SDL_FALSE);
 			else
 			{
-				SDL.SDL_ShowCursor(1);
+				SDL.SDL_ShowCursor((int)SDL.SDL_bool.SDL_TRUE);
 				SDL.SDL_SetCursor(c.Cursor);
 			}
 		}
@@ -141,7 +149,7 @@ namespace OpenRA.Renderer.Sdl2
 					if (surface == IntPtr.Zero)
 						throw new InvalidDataException("Failed to create surface: {0}".F(SDL.SDL_GetError()));
 
-					var sur = (SDL2.SDL.SDL_Surface)Marshal.PtrToStructure(surface, typeof(SDL2.SDL.SDL_Surface));
+					var sur = (SDL.SDL_Surface)Marshal.PtrToStructure(surface, typeof(SDL.SDL_Surface));
 					Marshal.Copy(data, 0, sur.pixels, data.Length);
 
 					// This call very occasionally fails on Windows, but often works when retried.

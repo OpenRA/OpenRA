@@ -8,10 +8,31 @@
  */
 #endregion
 
+using System;
+
 namespace OpenRA
 {
-	interface ISoundEngine
+	[AttributeUsage(AttributeTargets.Assembly)]
+	public sealed class SoundEngineAttribute : Attribute
 	{
+		public readonly Type Type;
+
+		public SoundEngineAttribute(Type soundEngineType)
+		{
+			if (!typeof(IEngineFactory).IsAssignableFrom(soundEngineType))
+				throw new InvalidOperationException("Incorrect type in SoundEngineAttribute");
+			Type = soundEngineType;
+		}
+	}
+
+	public interface IEngineFactory
+	{
+		ISoundEngine Create();
+	}
+
+	public interface ISoundEngine
+	{
+		SoundDevice[] AvailableDevices();
 		ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate);
 		ISound Play2D(ISoundSource sound, bool loop, bool relative, WPos pos, float volume, bool attenuateVolume);
 		float Volume { get; set; }
@@ -41,7 +62,7 @@ namespace OpenRA
 		}
 	}
 
-	interface ISoundSource { }
+	public interface ISoundSource { }
 
 	public interface ISound
 	{

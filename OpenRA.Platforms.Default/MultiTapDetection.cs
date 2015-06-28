@@ -11,7 +11,7 @@
 using System;
 using OpenRA.Primitives;
 
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Platforms.Default
 {
 	public static class MultiTapDetection
 	{
