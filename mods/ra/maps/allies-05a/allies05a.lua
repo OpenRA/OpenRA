@@ -140,8 +140,8 @@ end
 FreeTanya = function()
 	TanyasColt.Destroy()
 	Tanya = Actor.Create(TanyaType, true, { Owner = greece, Location = Prison.Location + CVec.New(1, 1) })
-	Prison.Kill()
 	Tanya.Scatter()
+	Tanya.Demolish(Prison)
 
 	if ChangeStance then
 		Tanya.Stance = "HoldFire"
