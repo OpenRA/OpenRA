@@ -466,6 +466,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var hotkeys = new Dictionary<string, string>()
 				{
 					{ "DevReloadChromeKey", "Reload Chrome" },
+					{ "HideUserInterfaceKey", "Hide UI" },
 					{ "TakeScreenshotKey", "Take screenshot" }
 				};
 

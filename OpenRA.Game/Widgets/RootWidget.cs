@@ -31,6 +31,14 @@ namespace OpenRA.Widgets
 					return true;
 				}
 
+				if (hk == Game.Settings.Keys.HideUserInterfaceKey)
+				{
+					foreach (var child in this.Children)
+						child.Visible ^= true;
+
+					return true;
+				}
+
 				if (hk == Game.Settings.Keys.TakeScreenshotKey)
 				{
 					if (e.Event == KeyInputEvent.Down)
