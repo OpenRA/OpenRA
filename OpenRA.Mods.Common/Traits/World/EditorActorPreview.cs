@@ -69,8 +69,8 @@ namespace OpenRA.Mods.Common.Traits
 				Footprint = new ReadOnlyDictionary<CPos, SubCell>(footprint);
 			}
 
-			var tooltipInfo = Info.Traits.GetOrDefault<ITooltipInfo>();
-			Tooltip = "{0} ({1})".F(tooltipInfo != null ? tooltipInfo.TooltipForPlayerStance(Stance.None) : Info.Name, ID);
+			var tooltip = Info.Traits.GetOrDefault<TooltipInfo>();
+			Tooltip = tooltip == null ? Info.Name + " - " + ID : tooltip.Name + " (" + Info.Name + ") - " + ID;
 
 			GeneratePreviews();
 

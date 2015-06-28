@@ -135,7 +135,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					item.Bounds.Width = preview.Bounds.Width + 2 * preview.Bounds.X;
 					item.Bounds.Height = preview.Bounds.Height + 2 * preview.Bounds.Y;
 					item.IsVisible = () => true;
-					item.GetTooltipText = () => actor.Name;
+
+					var tooltip = actor.Traits.GetOrDefault<TooltipInfo>();
+					item.GetTooltipText = () => tooltip == null ? actor.Name : tooltip.Name + " (" + actor.Name + ")";
+
 					panel.AddChild(item);
 				}
 				catch
