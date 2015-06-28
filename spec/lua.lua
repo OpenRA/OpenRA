@@ -78,8 +78,11 @@ return {
       str, num = str:gsub(sep..".-\\"..sep,sep):gsub(sep..".-"..sep,"")
       if num == 0 then break end
     end
-    -- strip comments after strings are processed and remove all function calls
-    str = str:gsub('%-%-.*',''):gsub("%b()","()")
+    str = (str
+      :gsub('%[=*%[.-%]=*%]','') -- remove long strings
+      :gsub('%-%-.*','') -- strip comments after strings are processed
+      :gsub("%b()","()") -- remove all function calls
+    )
 
     local term = str:match("^%s*(%w+)%W*")
     local terminc = term and incindent[term] and 1 or 0
