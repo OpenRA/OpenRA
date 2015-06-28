@@ -75,7 +75,7 @@ namespace OpenRA.Renderer.Sdl2
 			{
 				// Work around a visual glitch in OSX: the window is offset
 				// partially offscreen if the dock is at the left of the screen
-				if (Platform.CurrentPlatform == PlatformType.OSX)
+				if (Platform.Current == PlatformType.OSX)
 					SDL.SDL_SetWindowPosition(window, 0, 0);
 
 				SDL.SDL_SetWindowFullscreen(window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP);

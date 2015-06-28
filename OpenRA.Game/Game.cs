@@ -192,7 +192,7 @@ namespace OpenRA
 
 		internal static void Initialize(Arguments args)
 		{
-			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
+			Console.WriteLine("Platform is {0}", Platform.Current);
 
 			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 

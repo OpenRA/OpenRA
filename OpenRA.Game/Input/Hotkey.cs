@@ -92,7 +92,7 @@ namespace OpenRA
 				ret = "Ctrl + " + ret;
 
 			if (Modifiers.HasModifier(Modifiers.Meta))
-				ret = (Platform.CurrentPlatform == PlatformType.OSX ? "Cmd + " : "Meta + ") + ret;
+				ret = (Platform.Current == PlatformType.OSX ? "Cmd + " : "Meta + ") + ret;
 
 			return ret;
 		}
