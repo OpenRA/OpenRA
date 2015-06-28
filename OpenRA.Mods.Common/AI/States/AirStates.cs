@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.AI
 			if (!owner.IsValid)
 				return;
 
-			if (!owner.TargetIsValid)
+			if (!owner.IsTargetValid)
 			{
 				var a = owner.Units.Random(owner.Random);
 				var closestEnemy = owner.Bot.FindClosestEnemy(a.CenterPosition);

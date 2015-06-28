@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Target target;
 		readonly AttackPlane attackPlane;
 		readonly AmmoPool[] ammoPools;
+
 		Activity inner;
 		int ticksUntilTurn;
 

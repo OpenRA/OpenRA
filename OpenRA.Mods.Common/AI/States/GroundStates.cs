@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.AI
 			if (!owner.IsValid)
 				return;
 
-			if (!owner.TargetIsValid)
+			if (!owner.IsTargetValid)
 			{
 				var t = owner.Bot.FindClosestEnemy(owner.Units.FirstOrDefault().CenterPosition);
 				if (t == null) return;
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.AI
 			if (!owner.IsValid)
 				return;
 
-			if (!owner.TargetIsValid)
+			if (!owner.IsTargetValid)
 			{
 				var closestEnemy = owner.Bot.FindClosestEnemy(owner.Units.Random(owner.Random).CenterPosition);
 				if (closestEnemy != null)
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.AI
 			if (!owner.IsValid)
 				return;
 
-			if (!owner.TargetIsValid)
+			if (!owner.IsTargetValid)
 			{
 				var closestEnemy = owner.Bot.FindClosestEnemy(owner.Units.Random(owner.Random).CenterPosition);
 				if (closestEnemy != null)

@@ -72,9 +72,14 @@ namespace OpenRA.Mods.Common.AI
 			set { Target = Target.FromActor(value); }
 		}
 
-		public bool TargetIsValid
+		public bool IsTargetValid
 		{
 			get { return Target.IsValidFor(Units.FirstOrDefault()) && !Target.Actor.HasTrait<Husk>(); }
+		}
+
+		public bool IsTargetVisible
+		{
+			get { return Bot.Player.PlayerActor.Owner.CanTargetActor(TargetActor); }
 		}
 
 		public WPos CenterPosition { get { return Units.Select(u => u.CenterPosition).Average(); } }
