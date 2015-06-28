@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HarvesterInfo : ITraitInfo
+	public class HarvesterInfo : ITraitInfo, Requires<MobileInfo>
 	{
 		public readonly string[] DeliveryBuildings = { };
 
@@ -62,6 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyResourceClaimLost, INotifyIdle, INotifyBlockingMove, INotifyBuildComplete
 	{
 		readonly HarvesterInfo info;
+		readonly Mobile mobile;
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 
 		[Sync] public Actor OwnerLinkedProc = null;
@@ -76,6 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Harvester(Actor self, HarvesterInfo info)
 		{
 			this.info = info;
+			mobile = self.Trait<Mobile>();
 			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
 		}
 
@@ -189,10 +191,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.Location == deliveryLoc)
 				{
 					// Get out of the way:
-					var mobile = self.Trait<Mobile>();
-					var harv = self.Trait<Harvester>();
-
-					var moveTo = harv.LastHarvestedCell ?? (deliveryLoc + new CVec(0, 4));
+					var moveTo = LastHarvestedCell ?? (deliveryLoc + new CVec(0, 4));
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
 					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 
@@ -219,7 +218,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (act is Wait)
 			{
 				self.CancelActivity();
-				var mobile = self.Trait<Mobile>();
 
 				var cell = self.Location;
 				var moveTo = mobile.NearestMoveableCell(cell, 2, 5);
@@ -316,7 +314,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.CancelActivity();
 
-				var mobile = self.Trait<Mobile>();
 				if (order.TargetLocation != CPos.Zero)
 				{
 					var loc = order.TargetLocation;
