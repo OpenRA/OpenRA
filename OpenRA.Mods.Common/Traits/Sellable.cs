@@ -17,12 +17,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can be sold")]
-	public class SellableInfo : UpgradableTraitInfo, ITraitInfo
+	public class SellableInfo : UpgradableTraitInfo
 	{
 		public readonly int RefundPercent = 50;
 		public readonly string[] SellSounds = { };
 
-		public object Create(ActorInitializer init) { return new Sellable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Sellable(init.Self, this); }
 	}
 
 	public class Sellable : UpgradableTrait<SellableInfo>, IResolveOrder, IProvideTooltipInfo

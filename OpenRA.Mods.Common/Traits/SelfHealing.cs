@@ -15,14 +15,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to actors which should be able to regenerate their health points.")]
-	class SelfHealingInfo : UpgradableTraitInfo, ITraitInfo, Requires<HealthInfo>
+	class SelfHealingInfo : UpgradableTraitInfo, Requires<HealthInfo>
 	{
 		public readonly int Step = 5;
 		public readonly int Ticks = 5;
 		public readonly float HealIfBelow = .5f;
 		public readonly int DamageCooldown = 0;
 
-		public virtual object Create(ActorInitializer init) { return new SelfHealing(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new SelfHealing(init.Self, this); }
 	}
 
 	class SelfHealing : UpgradableTrait<SelfHealingInfo>, ITick, INotifyDamage

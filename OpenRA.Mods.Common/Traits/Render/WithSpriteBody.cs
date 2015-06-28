@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Default trait for rendering sprite-based actors.")]
-	public class WithSpriteBodyInfo : UpgradableTraitInfo, ITraitInfo, IRenderActorPreviewSpritesInfo, IQuantizeBodyOrientationInfo,
+	public class WithSpriteBodyInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, IQuantizeBodyOrientationInfo,
 		Requires<RenderSpritesInfo>
 	{
 		[Desc("Animation to play when the actor is created.")]
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Animation to play when the actor is idle.")]
 		[SequenceReference] public readonly string Sequence = "idle";
 
-		public virtual object Create(ActorInitializer init) { return new WithSpriteBody(init, this); }
+		public override object Create(ActorInitializer init) { return new WithSpriteBody(init, this); }
 
 		public virtual IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{

@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to a unit to enable dynamic upgrades by warheads, experience, crates, support powers, etc.")]
-	public class UpgradeManagerInfo : ITraitInfo
+	public class UpgradeManagerInfo : ITraitInfo, Requires<IUpgradableInfo>
 	{
 		public object Create(ActorInitializer init) { return new UpgradeManager(init); }
 	}

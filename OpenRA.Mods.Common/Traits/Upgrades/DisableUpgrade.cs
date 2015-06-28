@@ -15,9 +15,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class DisableUpgradeInfo : UpgradableTraitInfo, ITraitInfo
+	public class DisableUpgradeInfo : UpgradableTraitInfo
 	{
-		public object Create(ActorInitializer init) { return new DisableUpgrade(this); }
+		public override object Create(ActorInitializer init) { return new DisableUpgrade(this); }
 	}
 
 	public class DisableUpgrade : UpgradableTrait<DisableUpgradeInfo>, IDisable, IDisableMove

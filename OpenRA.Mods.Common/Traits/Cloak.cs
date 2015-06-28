@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This unit can cloak and uncloak in specific situations.")]
-	public class CloakInfo : UpgradableTraitInfo, ITraitInfo
+	public class CloakInfo : UpgradableTraitInfo
 	{
 		[Desc("Measured in game ticks.")]
 		public readonly int InitialDelay = 10;
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string[] CloakTypes = { "Cloak" };
 
-		public object Create(ActorInitializer init) { return new Cloak(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Cloak(init.Self, this); }
 	}
 
 	public class Cloak : UpgradableTrait<CloakInfo>, IRenderModifier, INotifyDamageStateChanged, INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier

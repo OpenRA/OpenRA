@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
-		public abstract object Create(ActorInitializer init);
+		public override abstract object Create(ActorInitializer init);
 	}
 
 	public abstract class AttackBase : UpgradableTrait<AttackBaseInfo>, IIssueOrder, IResolveOrder, IOrderVoice, ISync

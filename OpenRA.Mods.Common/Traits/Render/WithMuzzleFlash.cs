@@ -17,12 +17,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders the MuzzleSequence from the Armament trait.")]
-	class WithMuzzleFlashInfo : UpgradableTraitInfo, ITraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>, Requires<ArmamentInfo>
+	class WithMuzzleFlashInfo : UpgradableTraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>, Requires<ArmamentInfo>
 	{
 		[Desc("Ignore the weapon position, and always draw relative to the center of the actor")]
 		public readonly bool IgnoreOffset = false;
 
-		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithMuzzleFlash(init.Self, this); }
 	}
 
 	class WithMuzzleFlash : UpgradableTrait<WithMuzzleFlashInfo>, INotifyAttack, IRender, ITick

@@ -13,7 +13,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can reveal Cloak actors in a specified range.")]
-	public class DetectCloakedInfo : UpgradableTraitInfo, ITraitInfo
+	public class DetectCloakedInfo : UpgradableTraitInfo
 	{
 		[Desc("Specific cloak classifications I can reveal.")]
 		public readonly string[] CloakTypes = { "Cloak" };
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Measured in cells.")]
 		public readonly int Range = 5;
 
-		public object Create(ActorInitializer init) { return new DetectCloaked(this); }
+		public override object Create(ActorInitializer init) { return new DetectCloaked(this); }
 	}
 
 	public class DetectCloaked : UpgradableTrait<DetectCloakedInfo>

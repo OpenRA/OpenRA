@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders a decorative animation on units and buildings.")]
-	public class WithIdleOverlayInfo : UpgradableTraitInfo, ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	public class WithIdleOverlayInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "idle-overlay";
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool PauseOnLowPower = false;
 
-		public object Create(ActorInitializer init) { return new WithIdleOverlay(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithIdleOverlay(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{

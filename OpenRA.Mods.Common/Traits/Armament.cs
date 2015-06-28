@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Allows you to attach weapons to the unit (use @IdentifierSuffix for > 1)")]
-	public class ArmamentInfo : UpgradableTraitInfo, ITraitInfo, Requires<AttackBaseInfo>
+	public class ArmamentInfo : UpgradableTraitInfo, Requires<AttackBaseInfo>
 	{
 		public readonly string Name = "primary";
 
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Use multiple muzzle images if non-zero")]
 		public readonly int MuzzleSplitFacings = 0;
 
-		public object Create(ActorInitializer init) { return new Armament(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Armament(init.Self, this); }
 	}
 
 	public class Armament : UpgradableTrait<ArmamentInfo>, ITick, IExplodeModifier

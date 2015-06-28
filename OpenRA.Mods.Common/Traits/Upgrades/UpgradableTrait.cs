@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	/// <summary>Use as base class for *Info to subclass of UpgradableTrait. (See UpgradableTrait.)</summary>
-	public abstract class UpgradableTraitInfo
+	public abstract class UpgradableTraitInfo : IUpgradableInfo
 	{
 		[UpgradeUsedReference]
 		[Desc("The upgrade types which can enable or disable this trait.")]
@@ -32,6 +32,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("The maximum upgrade level that this trait will accept.")]
 		public readonly int UpgradeMaxAcceptedLevel = 1;
+
+		public abstract object Create(ActorInitializer init);
 	}
 
 	/// <summary>

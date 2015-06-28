@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Building can be repaired by the repair button.")]
-	public class RepairableBuildingInfo : UpgradableTraitInfo, ITraitInfo, Requires<HealthInfo>
+	public class RepairableBuildingInfo : UpgradableTraitInfo, Requires<HealthInfo>
 	{
 		public readonly int RepairPercent = 20;
 		public readonly int RepairInterval = 24;
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Suffixed by the interal repairing player name.")]
 		public readonly string IndicatorPalettePrefix = "player";
 
-		public object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
 	}
 
 	public class RepairableBuilding : UpgradableTrait<RepairableBuildingInfo>, ITick

@@ -49,6 +49,9 @@ namespace OpenRA.Mods.Common.Traits
 		void UpgradeLevelChanged(Actor self, string type, int oldLevel, int newLevel);
 	}
 
+	// Implement to construct before UpgradeManager
+	public interface IUpgradableInfo : ITraitInfo { }
+
 	public interface INotifyHarvesterAction
 	{
 		void MovingToResources(Actor self, CPos targetCell, Activity next);

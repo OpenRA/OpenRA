@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new TimedUpgradeBar(init.Self, this); }
 	}
 
-	class TimedUpgradeBar : ISelectionBar
+	class TimedUpgradeBar : ISelectionBar, INotifyCreated
 	{
 		readonly TimedUpgradeBarInfo info;
 		readonly Actor self;
@@ -36,7 +36,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			this.info = info;
+		}
 
+		public void Created(Actor self)
+		{
 			self.Trait<UpgradeManager>().RegisterWatcher(info.Upgrade, Update);
 		}
 
