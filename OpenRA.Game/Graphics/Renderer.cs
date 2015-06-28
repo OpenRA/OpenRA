@@ -160,6 +160,11 @@ namespace OpenRA.Graphics
 			DrawBatch(tempBuffer, 0, numVertices, type);
 		}
 
+		public Bitmap TakeScreenshot()
+		{
+			return Device.TakeScreenshot();
+		}
+
 		public void DrawBatch<T>(IVertexBuffer<T> vertices,
 			int firstVertex, int numVertices, PrimitiveType type)
 			where T : struct

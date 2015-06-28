@@ -464,7 +464,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var hotkeys = new Dictionary<string, string>()
 				{
-					{ "DevReloadChromeKey", "Reload Chrome" }
+					{ "DevReloadChromeKey", "Reload Chrome" },
+					{ "TakeScreenshotKey", "Take screenshot" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);

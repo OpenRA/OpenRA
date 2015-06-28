@@ -330,6 +330,31 @@ namespace OpenRA.Renderer.Sdl2
 			ErrorHandler.CheckGlError();
 		}
 
+		public Bitmap TakeScreenshot()
+		{
+			var rect = new Rectangle(Point.Empty, size);
+			var bitmap = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			var data = bitmap.LockBits(rect,
+				System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+			GL.PushClientAttrib(ClientAttribMask.ClientPixelStoreBit);
+
+			GL.PixelStore(PixelStoreParameter.PackRowLength, data.Stride / 4f);
+			GL.PixelStore(PixelStoreParameter.PackAlignment, 1);
+
+			GL.ReadPixels(rect.X, rect.Y, rect.Width, rect.Height, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+			GL.Finish();
+
+			GL.PopClientAttrib();
+
+			bitmap.UnlockBits(data);
+
+			// OpenGL standard defines the origin in the bottom left corner which is why this is upside-down by default.
+			bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
+
+			return bitmap;
+		}
+
 		public void Present() { SDL.SDL_GL_SwapWindow(window); }
 		public void PumpInput(IInputHandler inputHandler) { input.PumpInput(inputHandler); }
 		public string GetClipboardText() { return input.GetClipboardText(); }

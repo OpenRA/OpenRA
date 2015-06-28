@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -76,6 +77,11 @@ namespace OpenRA
 				return ((decimal)v).ToString(CultureInfo.InvariantCulture);
 			if (t == typeof(double))
 				return ((double)v).ToString(CultureInfo.InvariantCulture);
+
+			if (t == typeof(ImageFormat))
+			{
+				return ((ImageFormat)v).ToString();
+			}
 
 			if (t == typeof(Rectangle))
 			{

@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -94,6 +95,8 @@ namespace OpenRA
 
 		public string Language = "english";
 		public string DefaultLanguage = "english";
+
+		public ImageFormat ScreenshotFormat = ImageFormat.Png;
 	}
 
 	public class SoundSettings
@@ -178,6 +181,7 @@ namespace OpenRA
 		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
 
 		public Hotkey DevReloadChromeKey = new Hotkey(Keycode.C, Modifiers.Ctrl | Modifiers.Shift);
+		public Hotkey TakeScreenshotKey = new Hotkey(Keycode.P, Modifiers.Ctrl);
 
 		public Hotkey Production01Key = new Hotkey(Keycode.F1, Modifiers.None);
 		public Hotkey Production02Key = new Hotkey(Keycode.F2, Modifiers.None);

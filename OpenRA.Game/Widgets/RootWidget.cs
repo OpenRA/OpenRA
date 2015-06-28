@@ -30,6 +30,14 @@ namespace OpenRA.Widgets
 					ChromeProvider.Initialize(Game.ModData.Manifest.Chrome);
 					return true;
 				}
+
+				if (hk == Game.Settings.Keys.TakeScreenshotKey)
+				{
+					if (e.Event == KeyInputEvent.Down)
+						Game.TakeScreenshot = true;
+
+					return true;
+				}
 			}
 
 			return base.HandleKeyPress(e);
