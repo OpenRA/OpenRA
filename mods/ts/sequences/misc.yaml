@@ -94,6 +94,9 @@ pips:
 	pip-ammo: ammopips
 	pip-ammoempty: ammopips
 		Start: 1
+	pip-disguise: pip-disguise
+		Length: *
+		Tick: 300
 # TODO:
 	pip-empty-building:
 	pip-green-building:

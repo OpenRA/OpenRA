@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -61,24 +62,33 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		[VoiceReference] public readonly string Voice = "Action";
 
+		[UpgradeGrantedReference]
+		[Desc("Upgrades to grant when disguised.")]
+		public readonly string[] Upgrades = { "disguise" };
+
 		public object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
 
 	class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
 	{
-		readonly DisguiseInfo info;
-
-		public Disguise(Actor self, DisguiseInfo info)
-		{
-			this.info = info;
-		}
-
 		public Player AsPlayer { get; private set; }
 		public string AsSprite { get; private set; }
 		public ITooltipInfo AsTooltipInfo { get; private set; }
 
 		public bool Disguised { get { return AsPlayer != null; } }
 		public Player Owner { get { return AsPlayer; } }
+
+		readonly Actor self;
+		readonly DisguiseInfo info;
+		readonly Lazy<UpgradeManager> um;
+
+		public Disguise(Actor self, DisguiseInfo info)
+		{
+			this.self = self;
+			this.info = info;
+
+			um = Exts.Lazy(() => self.TraitOrDefault<UpgradeManager>());
+		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -101,7 +111,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (order.OrderString == "Disguise")
 			{
 				var target = order.TargetActor != self && order.TargetActor.IsInWorld ? order.TargetActor : null;
-				DisguiseAs(self, target);
+				DisguiseAs(target);
 			}
 		}
 
@@ -118,8 +128,9 @@ namespace OpenRA.Mods.RA.Traits
 			return AsPlayer.Color.RGB;
 		}
 
-		void DisguiseAs(Actor self, Actor target)
+		void DisguiseAs(Actor target)
 		{
+			var oldDisguiseSetting = Disguised;
 			var oldEffectiveOwner = AsPlayer;
 
 			if (target != null)
@@ -150,8 +161,22 @@ namespace OpenRA.Mods.RA.Traits
 
 			foreach (var t in self.TraitsImplementing<INotifyEffectiveOwnerChanged>())
 				t.OnEffectiveOwnerChanged(self, oldEffectiveOwner, AsPlayer);
+
+			if (Disguised != oldDisguiseSetting && um.Value != null)
+			{
+				foreach (var u in info.Upgrades)
+				{
+					if (!um.Value.AcknowledgesUpgrade(self, u))
+						continue;
+
+					if (Disguised)
+						um.Value.GrantUpgrade(self, u, this);
+					else
+						um.Value.RevokeUpgrade(self, u, this);
+				}
+			}
 		}
 
-		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { DisguiseAs(self, null); }
+		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { DisguiseAs(null); }
 	}
 }

@@ -235,6 +235,15 @@ SPY:
 		AttackSequence: shoot
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
+	WithDecoration@disguise:
+		Image: pips
+		Sequence: pip-disguise
+		Palette: effect
+		ReferencePoint: Top, Right
+		Offset: 4, -2
+		ZOffset: 256
+		UpgradeTypes: disguise
+		UpgradeMinEnabledLevel: 1
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:

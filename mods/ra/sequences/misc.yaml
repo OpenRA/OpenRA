@@ -84,6 +84,9 @@ pips:
 		Start: 4
 	pip-blue: pips2
 		Start: 5
+	pip-disguise: pip-disguise
+		Length: *
+		Tick: 300
 
 v2:
 	idle:

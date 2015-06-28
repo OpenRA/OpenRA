@@ -58,6 +58,15 @@ CHAMSPY:
 		Range: 9c0
 	Passenger:
 	Disguise:
+	WithDecoration@disguise:
+		Image: pips
+		Sequence: pip-disguise
+		Palette: pips
+		ReferencePoint: Top, Right
+		Offset: 4, -2
+		ZOffset: 256
+		UpgradeTypes: disguise
+		UpgradeMinEnabledLevel: 1
 	Infiltrates:
 		Types: SpyInfiltrate
 	-AutoTarget:
