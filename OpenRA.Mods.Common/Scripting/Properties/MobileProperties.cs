@@ -54,5 +54,12 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			Self.Trait<Mobile>().Nudge(Self, Self, true);
 		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Move to and enter the transport.")]
+		public void EnterTransport(Actor transport)
+		{
+			Self.QueueActivity(new EnterTransport(Self, transport, 1, true));
+		}
 	}
 }

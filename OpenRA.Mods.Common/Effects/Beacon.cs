@@ -12,10 +12,11 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Graphics;
+using OpenRA.Scripting;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	public class Beacon : IEffect
+	public class Beacon : IEffect, IScriptBindable
 	{
 		static readonly int MaxArrowHeight = 512;
 

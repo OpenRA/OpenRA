@@ -151,6 +151,7 @@ end
 
 SendFrenchReinforcements = function()
 	local camera = Actor.Create("camera", true, { Owner = allies, Location = SovietRally1.Location })
+	Beacon.New(allies, FranceEntry.CenterPosition - WVec.New(0, 3 * 1024, 0))
 	Media.PlaySpeechNotification(allies, "AlliedReinforcementsArrived")
 	Reinforcements.Reinforce(allies, FrenchSquad, { FranceEntry.Location, FranceRally.Location })
 	Trigger.AfterDelay(DateTime.Seconds(3), function() camera.Destroy() end)
