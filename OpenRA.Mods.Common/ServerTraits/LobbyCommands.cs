@@ -186,8 +186,11 @@ namespace OpenRA.Mods.Common.Server
 								server.LobbyInfo.Clients.Remove(occupant);
 								server.SyncLobbyClients();
 								var ping = server.LobbyInfo.PingFromClient(occupant);
-								server.LobbyInfo.ClientPings.Remove(ping);
-								server.SyncClientPing();
+								if (ping != null)
+								{
+									server.LobbyInfo.ClientPings.Remove(ping);
+									server.SyncClientPing();
+								}
 							}
 							else
 							{
@@ -221,7 +224,11 @@ namespace OpenRA.Mods.Common.Server
 						{
 							server.LobbyInfo.Clients.Remove(occupant);
 							var ping = server.LobbyInfo.PingFromClient(occupant);
-							server.LobbyInfo.ClientPings.Remove(ping);
+							if (ping != null)
+							{
+								server.LobbyInfo.ClientPings.Remove(ping);
+								server.SyncClientPing();
+							}
 						}
 
 						server.SyncLobbyClients();
