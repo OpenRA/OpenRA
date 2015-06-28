@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Displays a custom animation if conditions are satisfied.")]
-	public class WithDecorationInfo : UpgradableTraitInfo, ITraitInfo
+	public class WithDecorationInfo : UpgradableTraitInfo
 	{
 		[Desc("Image used for this decoration. Defaults to the actor's type.")]
 		public readonly string Image = null;
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should this be visible to enemy players?")]
 		public readonly bool ShowToEnemies = false;
 
-		public virtual object Create(ActorInitializer init) { return new WithDecoration(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithDecoration(init.Self, this); }
 	}
 
 	public class WithDecoration : UpgradableTrait<WithDecorationInfo>, IRender

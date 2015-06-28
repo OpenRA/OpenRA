@@ -15,12 +15,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Display a colored overlay when a timed upgrade is active.")]
-	public class UpgradeOverlayInfo : UpgradableTraitInfo, ITraitInfo
+	public class UpgradeOverlayInfo : UpgradableTraitInfo
 	{
 		[Desc("Palette to use when rendering the overlay")]
 		public readonly string Palette = "invuln";
 
-		public object Create(ActorInitializer init) { return new UpgradeOverlay(this); }
+		public override object Create(ActorInitializer init) { return new UpgradeOverlay(this); }
 	}
 
 	public class UpgradeOverlay : UpgradableTrait<UpgradeOverlayInfo>, IRenderModifier

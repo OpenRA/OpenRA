@@ -15,12 +15,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class PoisonedByTiberiumInfo : UpgradableTraitInfo, ITraitInfo
+	class PoisonedByTiberiumInfo : UpgradableTraitInfo
 	{
 		[WeaponReference] public readonly string Weapon = "Tiberium";
 		public readonly string[] Resources = { "Tiberium", "BlueTiberium" };
 
-		public object Create(ActorInitializer init) { return new PoisonedByTiberium(this); }
+		public override object Create(ActorInitializer init) { return new PoisonedByTiberium(this); }
 	}
 
 	class PoisonedByTiberium : UpgradableTrait<PoisonedByTiberiumInfo>, ITick, ISync

@@ -14,12 +14,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class PowerInfo : UpgradableTraitInfo, ITraitInfo
+	public class PowerInfo : UpgradableTraitInfo
 	{
 		[Desc("If negative, it will drain power. If positive, it will provide power.")]
 		public readonly int Amount = 0;
 
-		public object Create(ActorInitializer init) { return new Power(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Power(init.Self, this); }
 	}
 
 	public class Power : UpgradableTrait<PowerInfo>, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOwnerChanged

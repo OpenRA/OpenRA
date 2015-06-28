@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders turrets for units with the Turreted trait.")]
-	public class WithTurretInfo : UpgradableTraitInfo, ITraitInfo, IRenderActorPreviewSpritesInfo,
+	public class WithTurretInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo,
 		Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Render recoil")]
 		public readonly bool Recoils = true;
 
-		public object Create(ActorInitializer init) { return new WithTurret(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithTurret(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{

@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class WithInfantryBodyInfo : UpgradableTraitInfo, ITraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewSpritesInfo,
+	public class WithInfantryBodyInfo : UpgradableTraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewSpritesInfo,
 		Requires<IMoveInfo>, Requires<RenderSpritesInfo>
 	{
 		public readonly int MinIdleWaitTicks = 30;
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference] public readonly string[] IdleSequences = { };
 		[SequenceReference] public readonly string[] StandSequences = { "stand" };
 
-		public virtual object Create(ActorInitializer init) { return new WithInfantryBody(init, this); }
+		public override object Create(ActorInitializer init) { return new WithInfantryBody(init, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{

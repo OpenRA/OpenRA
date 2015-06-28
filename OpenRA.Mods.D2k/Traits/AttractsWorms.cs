@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("This actor makes noise, which causes them to be targeted by actors with the Sandworm trait.")]
-	public class AttractsWormsInfo : UpgradableTraitInfo, ITraitInfo
+	public class AttractsWormsInfo : UpgradableTraitInfo
 	{
 		[Desc("How much noise this actor produces.")]
 		public readonly int Intensity = 0;
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
 		public WRange[] Range = null;
 
-		public object Create(ActorInitializer init) { return new AttractsWorms(init, this); }
+		public override object Create(ActorInitializer init) { return new AttractsWorms(init, this); }
 	}
 
 	public class AttractsWorms : UpgradableTrait<AttractsWormsInfo>
