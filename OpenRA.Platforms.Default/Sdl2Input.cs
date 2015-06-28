@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using SDL2;
 
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Platforms.Default
 {
 	public class Sdl2Input
 	{

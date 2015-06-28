@@ -10,10 +10,15 @@
 
 using System;
 
-namespace OpenRA
+namespace OpenRA.Platforms.Null
 {
 	class NullSoundEngine : ISoundEngine
 	{
+		public SoundDevice[] AvailableDevices()
+		{
+			return new[] { new SoundDevice("Null", null, "Output Disabled") };
+		}
+
 		public NullSoundEngine()
 		{
 			Console.WriteLine("Using Null sound engine which disables SFX completely");

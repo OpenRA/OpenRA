@@ -150,8 +150,10 @@ elseif ($command -eq "check")
 {
 	if (Test-Path OpenRA.Utility.exe)
 	{
-		echo "Checking for code style violations in OpenRA.Renderer.Null..."
-		./OpenRA.Utility.exe ra --check-code-style OpenRA.Renderer.Null
+		echo "Checking for code style violations in OpenRA.Platforms.Default..."
+		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Platforms.Default
+		echo "Checking for code style violations in OpenRA.Platforms.Null..."
+		./OpenRA.Utility.exe ra --check-code-style OpenRA.Platforms.Null
 		echo "Checking for code style violations in OpenRA.GameMonitor..."
 		./OpenRA.Utility.exe ra --check-code-style OpenRA.GameMonitor
 		echo "Checking for code style violations in OpenRA.Game..."
@@ -166,8 +168,6 @@ elseif ($command -eq "check")
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.D2k
 		echo "Checking for code style violations in OpenRA.Mods.TS..."
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.TS
-		echo "Checking for code style violations in OpenRA.Renderer.Sdl2..."
-		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Renderer.Sdl2
 		echo "Checking for code style violations in OpenRA.Utility..."
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Utility
 		echo "Checking for code style violations in OpenRA.Test..."

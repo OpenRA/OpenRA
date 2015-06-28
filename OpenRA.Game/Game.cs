@@ -215,7 +215,7 @@ namespace OpenRA
 			GeoIP.Initialize();
 
 			GlobalFileSystem.Mount(Platform.GameDir); // Needed to access shaders
-			var renderers = new[] { Settings.Graphics.Renderer, "Sdl2", null };
+			var renderers = new[] { Settings.Graphics.Renderer, "Default", null };
 			foreach (var r in renderers)
 			{
 				if (r == null)
@@ -232,18 +232,6 @@ namespace OpenRA
 					Log.Write("graphics", "{0}", e);
 					Console.WriteLine("Renderer initialization failed. Fallback in place. Check graphics.log for details.");
 				}
-			}
-
-			try
-			{
-				Sound.Create(Settings.Sound.Engine);
-			}
-			catch (Exception e)
-			{
-				Log.Write("sound", "{0}", e);
-				Console.WriteLine("Creating the sound engine failed. Fallback in place. Check sound.log for details.");
-				Settings.Sound.Engine = "Null";
-				Sound.Create(Settings.Sound.Engine);
 			}
 
 			Console.WriteLine("Available mods:");
@@ -287,7 +275,7 @@ namespace OpenRA
 			Settings.Game.Mod = mod;
 
 			Sound.StopVideo();
-			Sound.Initialize();
+			Sound.Initialize(Settings.Sound, Settings.Server);
 
 			ModData = new ModData(mod, !Settings.Server.Dedicated);
 			ModData.InitializeLoaders();

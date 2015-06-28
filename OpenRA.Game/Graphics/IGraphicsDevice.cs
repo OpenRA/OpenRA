@@ -15,11 +15,11 @@ using OpenRA.Graphics;
 namespace OpenRA
 {
 	[AttributeUsage(AttributeTargets.Assembly)]
-	public sealed class RendererAttribute : Attribute
+	public sealed class PlatformAttribute : Attribute
 	{
 		public readonly Type Type;
 
-		public RendererAttribute(Type graphicsDeviceType)
+		public PlatformAttribute(Type graphicsDeviceType)
 		{
 			if (!typeof(IDeviceFactory).IsAssignableFrom(graphicsDeviceType))
 				throw new InvalidOperationException("Incorrect type in RendererAttribute");
@@ -29,7 +29,8 @@ namespace OpenRA
 
 	public interface IDeviceFactory
 	{
-		IGraphicsDevice Create(Size size, WindowMode windowMode);
+		IGraphicsDevice CreateGraphics(Size size, WindowMode windowMode);
+		ISoundEngine CreateSound();
 	}
 
 	public interface IHardwareCursor : IDisposable { }

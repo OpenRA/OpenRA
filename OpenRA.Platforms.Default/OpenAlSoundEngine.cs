@@ -19,10 +19,22 @@ using OpenRA.Traits;
 using OpenTK;
 using OpenTK.Audio.OpenAL;
 
-namespace OpenRA
+namespace OpenRA.Platforms.Default
 {
 	class OpenAlSoundEngine : ISoundEngine
 	{
+		public SoundDevice[] AvailableDevices()
+		{
+			var defaultDevices = new[]
+			{
+				new SoundDevice("Default", null, "Default Output"),
+				new SoundDevice("Null", null, "Output Disabled")
+			};
+
+			var physicalDevices = PhysicalDevices().Select(d => new SoundDevice("Default", d, d));
+			return defaultDevices.Concat(physicalDevices).ToArray();
+		}
+
 		class PoolSlot
 		{
 			public bool IsActive;
@@ -55,7 +67,7 @@ namespace OpenRA
 			return devices;
 		}
 
-		public static string[] AvailableDevices()
+		static string[] PhysicalDevices()
 		{
 			// Returns all devices under Windows Vista and newer
 			if (Alc.IsExtensionPresent(IntPtr.Zero, "ALC_ENUMERATE_ALL_EXT"))
@@ -148,7 +160,7 @@ namespace OpenRA
 				return null;
 			}
 
-			var currFrame = Game.OrderManager.LocalFrameNumber;
+			var currFrame = Game.LocalTick;
 			var atten = 1f;
 
 			// Check if max # of instances-per-location reached:

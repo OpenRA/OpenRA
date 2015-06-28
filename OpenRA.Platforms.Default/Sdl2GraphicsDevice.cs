@@ -1,11 +1,11 @@
 #region Copyright & License Information
 /*
-* Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
-* This file is part of OpenRA, which is free software. It is made
-* available to you under the terms of the GNU General Public License
-* as published by the Free Software Foundation. For more information,
-* see COPYING.
-*/
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
 #endregion
 
 using System;
@@ -14,22 +14,12 @@ using System.IO;
 using System.Runtime.InteropServices;
 using OpenRA;
 using OpenRA.Graphics;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using SDL2;
 
-[assembly: Renderer(typeof(OpenRA.Renderer.Sdl2.DeviceFactory))]
-
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Platforms.Default
 {
-	public class DeviceFactory : IDeviceFactory
-	{
-		public IGraphicsDevice Create(Size size, WindowMode windowMode)
-		{
-			Console.WriteLine("Using SDL 2 with OpenGL renderer");
-			return new Sdl2GraphicsDevice(size, windowMode);
-		}
-	}
-
 	public sealed class Sdl2GraphicsDevice : IGraphicsDevice
 	{
 		Size size;
@@ -41,6 +31,8 @@ namespace OpenRA.Renderer.Sdl2
 
 		public Sdl2GraphicsDevice(Size windowSize, WindowMode windowMode)
 		{
+			Console.WriteLine("Using SDL 2 with OpenGL renderer");
+
 			size = windowSize;
 
 			SDL.SDL_Init(SDL.SDL_INIT_NOPARACHUTE | SDL.SDL_INIT_VIDEO);
@@ -84,6 +76,7 @@ namespace OpenRA.Renderer.Sdl2
 
 			context = SDL.SDL_GL_CreateContext(window);
 			SDL.SDL_GL_MakeCurrent(window, context);
+
 			GL.LoadAll();
 			ErrorHandler.CheckGlVersion();
 			ErrorHandler.CheckGlError();

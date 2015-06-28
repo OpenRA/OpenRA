@@ -13,9 +13,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using OpenRA.Graphics;
 using OpenRA.Support;
 
-namespace OpenRA.Graphics
+namespace OpenRA
 {
 	public sealed class Renderer : IDisposable
 	{
@@ -49,7 +50,7 @@ namespace OpenRA.Graphics
 			var resolution = GetResolution(graphicSettings);
 
 			var rendererName = serverSettings.Dedicated ? "Null" : graphicSettings.Renderer;
-			var rendererPath = Platform.ResolvePath(".", "OpenRA.Renderer." + rendererName + ".dll");
+			var rendererPath = Platform.ResolvePath(".", "OpenRA.Platforms." + rendererName + ".dll");
 
 			Device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, graphicSettings.Mode);
 
@@ -79,12 +80,12 @@ namespace OpenRA.Graphics
 			return new Size(size.X, size.Y);
 		}
 
-		static IGraphicsDevice CreateDevice(Assembly rendererDll, int width, int height, WindowMode window)
+		static IGraphicsDevice CreateDevice(Assembly platformDll, int width, int height, WindowMode window)
 		{
-			foreach (RendererAttribute r in rendererDll.GetCustomAttributes(typeof(RendererAttribute), false))
+			foreach (PlatformAttribute r in platformDll.GetCustomAttributes(typeof(PlatformAttribute), false))
 			{
 				var factory = (IDeviceFactory)r.Type.GetConstructor(Type.EmptyTypes).Invoke(null);
-				return factory.Create(new Size(width, height), window);
+				return factory.CreateGraphics(new Size(width, height), window);
 			}
 
 			throw new InvalidOperationException("Renderer DLL is missing RendererAttribute to tell us what type to use!");
