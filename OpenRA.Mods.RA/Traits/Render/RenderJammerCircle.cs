@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Traits
 			}
 
 			foreach (var a in w.ActorsWithTrait<RenderJammerCircle>())
-				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
+				if (a.Actor.Owner.IsAlliedWith(w.RenderPlayer))
 					foreach (var r in a.Trait.RenderAfterWorld(wr))
 						yield return r;
 		}
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			if (self.Owner != self.World.LocalPlayer)
+			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 
 			var jamsMissiles = self.Info.Traits.GetOrDefault<JamsMissilesInfo>();

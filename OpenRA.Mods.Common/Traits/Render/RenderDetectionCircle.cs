@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			if (self.Owner != self.World.LocalPlayer)
+			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 
 			var range = self.TraitsImplementing<DetectCloaked>()

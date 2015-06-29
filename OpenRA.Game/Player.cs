@@ -140,7 +140,7 @@ namespace OpenRA
 		public bool IsAlliedWith(Player p)
 		{
 			// Observers are considered as allies
-			return p == null || Stances[p] == Stance.Ally;
+			return p == null || Stances[p] == Stance.Ally || p.Spectating;
 		}
 
 		public void SetStance(Player target, Stance s)

@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 				Color.FromArgb(96, Color.Black));
 
 			foreach (var a in w.ActorsWithTrait<RenderRangeCircle>())
-				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
+				if (a.Actor.Owner.IsAlliedWith(w.RenderPlayer))
 					if (a.Actor.Info.Traits.Get<RenderRangeCircleInfo>().RangeCircleType == RangeCircleType)
 						foreach (var r in a.Trait.RenderAfterWorld(wr))
 							yield return r;
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			if (self.Owner != self.World.LocalPlayer)
+			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 
 			var range = attack.GetMaximumRange();
