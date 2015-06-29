@@ -1,12 +1,12 @@
 mcv.husk:
-	Inherits: ^Husk
+	Inherits: ^VehicleHusk
 	Health:
 		HP: 175
 	Tooltip:
 		Name: Destroyed Mobile Construction Vehicle
 
 harvester.husk:
-	Inherits: ^Husk
+	Inherits: ^VehicleHusk
 	Health:
 		HP: 150
 	Tooltip:
@@ -15,40 +15,36 @@ harvester.husk:
 		IntoActor: harvester
 
 siegetank.husk:
-	Inherits: ^Husk
-	Tooltip:
+	Inherits: ^VehicleHusk
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
 		IntoActor: siegetank
 
 missiletank.husk:
-	Inherits: ^Husk
-	WithFacingSpriteBody:
+	Inherits: ^VehicleHusk
 	TransformOnCapture:
 		IntoActor: missiletank
-	AutoSelectionSize:
-	RenderSprites:
 
 sonictank.husk:
-	Inherits: ^Husk
+	Inherits: ^VehicleHusk
 	TransformOnCapture:
 		IntoActor: sonictank
 
 devast.husk:
-	Inherits: ^Husk
+	Inherits: ^VehicleHusk
 	Health:
 		HP: 125
 	TransformOnCapture:
 		IntoActor: devast
 
 deviatortank.husk:
-	Inherits: ^Husk
+	Inherits: ^VehicleHusk
 	TransformOnCapture:
 		IntoActor: deviatortank
 
 ^combat.husk:
-	Inherits: ^Husk
+	Inherits: ^VehicleHusk
 	Health:
 		HP: 100
 	ThrowsParticle@turret:

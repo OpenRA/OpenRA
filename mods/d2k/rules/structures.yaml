@@ -77,8 +77,6 @@ conyard:
 	WithBuildingPlacedOverlay:
 		Palette: d2k
 	PrimaryBuilding:
-	SelectionDecorations:
-		VisualBounds: 96,64
 
 power:
 	Inherits: ^Building
@@ -113,8 +111,6 @@ power:
 		Amount: 100
 	ScalePowerWithHealth:
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-		VisualBounds: 64,64
 
 barracks:
 	Inherits: ^Building
@@ -171,8 +167,6 @@ barracks:
 			atreides: barracks.atreides
 			ordos: barracks.ordos
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-		VisualBounds: 64,64
 
 refinery:
 	Inherits: ^Building
@@ -226,8 +220,6 @@ refinery:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-		VisualBounds: 96,64
 
 silo:
 	Inherits: ^Building
@@ -266,8 +258,6 @@ silo:
 		Amount: -5
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	SelectionDecorations:
-		VisualBounds: 32,32
 
 light:
 	Inherits: ^Building
@@ -325,8 +315,6 @@ light:
 		Sequence: idle-top
 	Power:
 		Amount: -20
-	SelectionDecorations:
-		VisualBounds: 96,64
 
 heavy:
 	Inherits: ^Building
@@ -429,8 +417,6 @@ radar:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-		VisualBounds: 96,64
 
 starport:
 	Inherits: ^Building
@@ -490,8 +476,6 @@ starport:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-		VisualBounds: 96,64
 
 wall:
 	HiddenUnderShroud:
@@ -530,8 +514,6 @@ wall:
 		TargetTypes: Ground
 	RenderBuildingWall:
 	AutoTargetIgnore:
-	ProximityCaptor:
-		Types: Wall
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Guardable:
@@ -858,8 +840,6 @@ palace:
 	RequiresPower:
 	SupportPowerChargeBar:
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-		VisualBounds: 96,96
 
 conyard.atreides:
 	Inherits: conyard
