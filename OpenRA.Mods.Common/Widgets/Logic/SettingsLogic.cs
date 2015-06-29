@@ -346,6 +346,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var globalTemplate = hotkeyList.Get("GLOBAL_TEMPLATE");
 			var unitTemplate = hotkeyList.Get("UNIT_TEMPLATE");
 			var productionTemplate = hotkeyList.Get("PRODUCTION_TEMPLATE");
+			var developerTemplate = hotkeyList.Get("DEVELOPER_TEMPLATE");
 			hotkeyList.RemoveChildren();
 
 			Func<bool> returnTrue = () => true;
@@ -465,6 +466,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var hotkeys = new Dictionary<string, string>()
 				{
 					{ "DevReloadChromeKey", "Reload Chrome" },
+					{ "HideUserInterfaceKey", "Hide UI" },
 					{ "TakeScreenshotKey", "Take screenshot" }
 				};
 
@@ -473,7 +475,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				hotkeyList.AddChild(header);
 
 				foreach (var kv in hotkeys)
-					BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
+					BindHotkeyPref(kv, ks, developerTemplate, hotkeyList);
 			}
 
 			return () =>
