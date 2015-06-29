@@ -2207,7 +2207,6 @@ Rules:
 			MuzzleSequence: muzzle
 		AttackTurreted:
 		WithMuzzleFlash:
-		WithFacingSpriteBody:
 		WithTurret:
 		AutoTarget:
 		Explodes:
@@ -2223,19 +2222,16 @@ Rules:
 		Selectable:
 			Bounds: 44,38,0,-4
 		-EjectOnDeath:
-		AutoSelectionSize:
 		RenderSprites:
 			Image: 4TNK
 	5TNK.Husk:
 		Inherits: ^Husk
 		Tooltip:
 			Name: Husk (Super Tank)
-		WithFacingSpriteBody:
 		ThrowsParticle@turret:
 			Anim: turret
 		Health:
 			HP: 2000
-		AutoSelectionSize:
 		RenderSprites:
 			Image: 4TNK
 	DOME.NoInfiltrate:
@@ -2254,18 +2250,14 @@ Rules:
 		Inherits: 3TNK
 		Buildable:
 			Prerequisites: ~disabled
-		WithFacingSpriteBody:
 		-EjectOnDeath:
-		AutoSelectionSize:
 		RenderSprites:
 			Image: 3TNK
 	BADTRUK:
 		Inherits: TRUK
 		Buildable:
 			Prerequisites: ~disabled
-		WithFacingSpriteBody:
 		-EjectOnDeath:
-		AutoSelectionSize:
 		RenderSprites:
 			Image: TRUK
 	SS:
@@ -2369,10 +2361,10 @@ VoxelSequences:
 Weapons:
 	FireballLauncher:
 		Projectile:
-			High: True
+			Blockable: false
 	TurretGun:
 		Projectile:
-			High: True
+			Blockable: false
 	SuperTankPrimary:
 		ROF: 70
 		Range: 4c768

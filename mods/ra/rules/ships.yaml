@@ -23,7 +23,6 @@ SS:
 	TargetableSubmarine:
 		TargetTypes: Ground, Water, Repair
 		CloakedTargetTypes: Underwater, Repair
-	WithFacingSpriteBody:
 	Cloak:
 		CloakTypes: Underwater
 		InitialDelay: 0
@@ -37,8 +36,6 @@ SS:
 	AttackFrontal:
 	SelectionDecorations:
 		VisualBounds: 38,38
-	Chronoshiftable:
-	RepairableNear:
 	AutoTarget:
 		InitialStance: ReturnFire
 	DetectCloaked:
@@ -49,8 +46,6 @@ SS:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
 	-MustBeDestroyed:
-	AutoSelectionSize:
-	RenderSprites:
 
 MSUB:
 	Inherits: ^Ship
@@ -73,7 +68,6 @@ MSUB:
 		Speed: 42
 	RevealsShroud:
 		Range: 6c0
-	WithFacingSpriteBody:
 	-TargetableUnit:
 	TargetableSubmarine:
 		TargetTypes: Ground, Water, Repair
@@ -91,8 +85,6 @@ MSUB:
 	AttackFrontal:
 	SelectionDecorations:
 		VisualBounds: 44,44
-	Chronoshiftable:
-	RepairableNear:
 	AutoTarget:
 		InitialStance: ReturnFire
 	DetectCloaked:
@@ -103,8 +95,6 @@ MSUB:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
 	-MustBeDestroyed:
-	AutoSelectionSize:
-	RenderSprites:
 
 DD:
 	Inherits: ^Ship
@@ -143,24 +133,14 @@ DD:
 		LocalOffset: 0,-100,0, 0,100,0
 		LocalYaw: 64, -64
 	AttackTurreted:
-	Selectable:
-		Bounds: 38,38
 	SelectionDecorations:
 		VisualBounds: 38,38
-	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
-	Chronoshiftable:
-	RepairableNear:
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4
 	RenderDetectionCircle:
-	Explodes:
-		Weapon: UnitExplodeShip
-		EmptyWeapon: UnitExplodeShip
-	AutoSelectionSize:
-	RenderSprites:
 
 CA:
 	Inherits: ^Ship
@@ -208,23 +188,13 @@ CA:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	Selectable:
-		Bounds: 44,44
 	SelectionDecorations:
 		VisualBounds: 44,44
-	WithFacingSpriteBody:
 	WithTurret@PRIMARY:
 		Turret: primary
 	WithTurret@SECONDARY:
 		Turret: secondary
 	AutoTarget:
-	Chronoshiftable:
-	RepairableNear:
-	Explodes:
-		Weapon: UnitExplodeShip
-		EmptyWeapon: UnitExplodeShip
-	AutoSelectionSize:
-	RenderSprites:
 
 LST:
 	Inherits: ^Ship
@@ -248,6 +218,9 @@ LST:
 		Range: 6c0
 	SelectionDecorations:
 		VisualBounds: 36,36
+	-AutoSelectionSize:
+	-RenderSprites:
+	-WithFacingSpriteBody:
 	RenderLandingCraft:
 		OpenTerrainTypes: Clear, Rough, Road, Ore, Gems, Beach
 	Cargo:
@@ -255,10 +228,7 @@ LST:
 		MaxWeight: 5
 		PipCount: 5
 		PassengerFacing: 0
-	RepairableNear:
-	Explodes:
-		Weapon: UnitExplodeShip
-		EmptyWeapon: UnitExplodeShip
+	-Chronoshiftable:
 
 PT:
 	Inherits: ^Ship
@@ -294,22 +264,12 @@ PT:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	Selectable:
-		Bounds: 32,32
 	SelectionDecorations:
-		VisualBounds: 32,32
-	WithFacingSpriteBody:
+		VisualBounds: 36,36
 	WithTurret:
 	AutoTarget:
-	Chronoshiftable:
-	RepairableNear:
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4
 	RenderDetectionCircle:
-	Explodes:
-		Weapon: UnitExplodeShip
-		EmptyWeapon: UnitExplodeShip
-	AutoSelectionSize:
-	RenderSprites:
 

@@ -1,5 +1,5 @@
 DOG:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Dog
@@ -36,7 +36,7 @@ DOG:
 		TargetTypes: Ground, Infantry
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
+		StandSequences: stand
 	IgnoresDisguise:
 	DetectCloaked:
 		Range: 5
@@ -45,7 +45,7 @@ DOG:
 	-TakeCover:
 
 E1:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -58,8 +58,6 @@ E1:
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 50
-	Mobile:
-		Speed: 56
 	Armament@PRIMARY:
 		Weapon: M1Carbine
 	Armament@GARRISONED:
@@ -67,14 +65,11 @@ E1:
 		Weapon: Vulcan
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
-		StandSequences: stand,stand2
 
 E2:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -98,17 +93,14 @@ E2:
 		Weapon: Grenade
 		FireDelay: 15
 	AttackFrontal:
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: throw
-		IdleSequences: idle1,idle2
-		StandSequences: stand,stand2
 	Explodes:
 		Weapon: UnitExplodeSmall
 		Chance: 50
 
 E3:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -121,8 +113,6 @@ E3:
 		Description: Anti-tank/Anti-aircraft infantry.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Health:
 		HP: 45
-	Mobile:
-		Speed: 56
 	Armament@PRIMARY:
 		Weapon: RedEye
 		LocalOffset: 0,0,555
@@ -133,14 +123,11 @@ E3:
 		Name: garrisoned
 		Weapon: Dragon
 	AttackFrontal:
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
-		StandSequences: stand,stand2
 
 E4:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -153,8 +140,6 @@ E4:
 		Description: Advanced anti-structure unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 40
-	Mobile:
-		Speed: 56
 	Armament@PRIMARY:
 		Weapon: Flamer
 		LocalOffset: 427,0,341
@@ -163,14 +148,11 @@ E4:
 		Name: garrisoned
 		Weapon: Flamer
 	AttackFrontal:
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
-		StandSequences: stand,stand2
 
 E6:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -181,10 +163,6 @@ E6:
 	Tooltip:
 		Name: Engineer
 		Description: Infiltrates and captures\nenemy structures.\n  Unarmed
-	Health:
-		HP: 25
-	Mobile:
-		Speed: 56
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
@@ -192,15 +170,11 @@ E6:
 	ExternalCaptures:
 		Type: building
 	-AutoTarget:
-	TakeCover:
-	WithInfantryBody:
-		IdleSequences: idle1,idle2
-		StandSequences: stand,stand2
 	Voiced:
 		VoiceSet: EngineerVoice
 
 SPY:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -213,18 +187,12 @@ SPY:
 		Name: Spy
 		GenericName: Soldier
 		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\nLoses disguise when attacking.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft\n  Special Ability: Disguised
-	Health:
-		HP: 25
-	Mobile:
-		Speed: 56
-		Voice: Move
 	-Guard:
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
 		PipType: Yellow
 		Voice: Move
-	TakeCover:
 	Disguise:
 		Voice: Move
 	Infiltrates:
@@ -254,8 +222,6 @@ SPY:
 
 SPY.England:
 	Inherits: SPY
-	TakeCover:
-	WithDisguisingInfantryBody:
 	Buildable:
 		Prerequisites: ~infantry.england, dome, ~tent, ~techlevel.medium
 	Valued:
@@ -266,7 +232,7 @@ SPY.England:
 		Image: spy
 
 E7:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -302,17 +268,16 @@ E7:
 		Weapon: Colt45
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
+		StandSequences: stand
 	AnnounceOnBuild:
 	AnnounceOnKill:
 	Voiced:
 		VoiceSet: TanyaVoice
 
 MEDI:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -325,8 +290,6 @@ MEDI:
 		Description: Heals nearby infantry.\n  Unarmed
 	Health:
 		HP: 80
-	Mobile:
-		Speed: 56
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
@@ -337,16 +300,15 @@ MEDI:
 	AttackMedic:
 		Cursor: heal
 		OutsideRangeCursor: heal
-	TakeCover:
 	-AutoTarget:
 	WithInfantryBody:
-		IdleSequences: idle1,idle2
+		StandSequences: stand
 		AttackSequence: heal
 	Voiced:
 		VoiceSet: MedicVoice
 
 MECH:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -360,7 +322,6 @@ MECH:
 	Health:
 		HP: 80
 	Mobile:
-		Speed: 56
 		Voice: Move
 	RevealsShroud:
 		Range: 3c0
@@ -376,55 +337,29 @@ MECH:
 		Voice: Move
 	Captures:
 		CaptureTypes: husk
-	TakeCover:
 	-AutoTarget:
 	WithInfantryBody:
-		IdleSequences: idle1,idle2
 		AttackSequence: repair
+		StandSequences: stand
 	Voiced:
 		VoiceSet: MechanicVoice
 
 EINSTEIN:
-	Inherits: ^Infantry
-	Valued:
-		Cost: 10
+	Inherits: ^CivInfantry
 	Tooltip:
 		Name: Prof. Einstein
-	Health:
-		HP: 25
 	Mobile:
 		Speed: 71
-	RevealsShroud:
-		Range: 2c0
-	-AutoTarget:
-	-TakeCover:
-	ProximityCaptor:
-		Types: CivilianInfantry
-	WithInfantryBody:
-	ScaredyCat:
 	Voiced:
 		VoiceSet: EinsteinVoice
 
 DELPHI:
-	Inherits: ^Infantry
-	Valued:
-		Cost: 10
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
 	Tooltip:
 		Name: Agent Delphi
-	Health:
-		HP: 25
 	Mobile:
 		Speed: 71
-	RevealsShroud:
-		Range: 2c0
-	-AutoTarget:
-	-TakeCover:
-	ProximityCaptor:
-		Types: CivilianInfantry
-	WithInfantryBody:
-	ScaredyCat:
-	Voiced:
-		VoiceSet: CivilianMaleVoice
 
 CHAN:
 	Inherits: ^CivInfantry
@@ -434,7 +369,8 @@ CHAN:
 		Name: Agent Chan
 
 GNRL:
-	Inherits: ^CivInfantry
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
 	Tooltip:
 		Name: General
 	Selectable:
@@ -452,31 +388,31 @@ GNRL:
 	Voiced:
 		VoiceSet: StavrosVoice
 	-ScaredyCat:
+	WithInfantryBody:
+		IdleSequences: idle1
 
 THF:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 400
 	Tooltip:
 		Name: Thief
 		Description: Steals enemy credits.\n  Unarmed
-	Health:
-		HP: 25
-	Mobile:
-		Speed: 56
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
 		PipType: Yellow
 	Infiltrates:
 		InfiltrateTypes: Cash
-	TakeCover:
 	-AutoTarget:
 	Voiced:
 		VoiceSet: ThiefVoice
+	WithInfantryBody:
+		-IdleSequences:
+		StandSequences: stand
 
 HIJACKER:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -489,8 +425,6 @@ HIJACKER:
 		Description: Hijacks enemy vehicles.\n  Unarmed
 	Health:
 		HP: 50
-	Mobile:
-		Speed: 56
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
@@ -501,9 +435,12 @@ HIJACKER:
 	Voiced:
 		VoiceSet: ThiefVoice
 	-TakeCover:
+	WithInfantryBody:
+		-IdleSequences:
+		StandSequences: stand
 
 SHOK:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -517,7 +454,6 @@ SHOK:
 	Health:
 		HP: 100
 	Mobile:
-		Speed: 56
 		Voice: Move
 	RevealsShroud:
 		Range: 5c0
@@ -535,16 +471,13 @@ SHOK:
 		Voice: Move
 	Guard:
 		Voice: Move
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
-		StandSequences: stand,stand2
 	Voiced:
 		VoiceSet: ShokVoice
 
 SNIPER:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -555,8 +488,6 @@ SNIPER:
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 80
 		Prerequisites: ~disabled
-	Mobile:
-		Speed: 56
 	Health:
 		HP: 80
 	Passenger:
@@ -572,11 +503,8 @@ SNIPER:
 		Weapon: Sniper
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
-	TakeCover:
 	WithInfantryBody:
 		AttackSequence: shoot
-		IdleSequences: idle1,idle2
-		StandSequences: stand,stand2
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 120
@@ -588,7 +516,7 @@ SNIPER:
 	-MustBeDestroyed:
 
 Zombie:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -607,6 +535,7 @@ Zombie:
 	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: bite
+		IdleSequences: idle1
 	Armament:
 		Weapon: claw
 	Voiced:
@@ -648,5 +577,4 @@ Ant:
 		UseDeathTypeSuffix: false
 	Voiced:
 		VoiceSet: AntVoice
-	-TakeCover:
 

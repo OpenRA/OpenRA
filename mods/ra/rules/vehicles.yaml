@@ -22,14 +22,10 @@ V2RL:
 	AttackFrontal:
 	SelectionDecorations:
 		VisualBounds: 28,28
-	RenderSprites:
 	AutoTarget:
 	Explodes:
 		Weapon: SCUD
 		EmptyWeapon: UnitExplodeSmall
-	AutoSelectionSize:
-	WithFacingSpriteBody:
-		Sequence: idle
 	WithAttackAnimation:
 		AimSequence: aim
 		ReloadPrefix: empty-
@@ -64,7 +60,6 @@ V2RL:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	Explodes:
@@ -72,8 +67,6 @@ V2RL:
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 1TNK.Husk
-	AutoSelectionSize:
-	RenderSprites:
 
 2TNK:
 	Inherits: ^Tank
@@ -105,7 +98,6 @@ V2RL:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	Explodes:
@@ -113,8 +105,6 @@ V2RL:
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 2TNK.Husk
-	AutoSelectionSize:
-	RenderSprites:
 	SelectionDecorations:
 		VisualBounds: 28,28
 
@@ -148,7 +138,6 @@ V2RL:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	Explodes:
@@ -156,8 +145,6 @@ V2RL:
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 3TNK.Husk
-	AutoSelectionSize:
-	RenderSprites:
 	SelectionDecorations:
 		VisualBounds: 28,28
 
@@ -200,7 +187,6 @@ V2RL:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	Explodes:
@@ -213,8 +199,6 @@ V2RL:
 		Ticks: 3
 		HealIfBelow: 50%
 		DamageCooldown: 150
-	AutoSelectionSize:
-	RenderSprites:
 	SelectionDecorations:
 		VisualBounds: 44,38,0,-4
 
@@ -244,13 +228,10 @@ ARTY:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	Explodes:
 		Weapon: UnitExplode
 		Chance: 75
 	AutoTarget:
-	AutoSelectionSize:
-	RenderSprites:
 
 HARV:
 	Inherits: ^Vehicle
@@ -284,6 +265,9 @@ HARV:
 		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 4c0
+	-WithFacingSpriteBody:
+	-AutoSelectionSize:
+	-RenderSprites:
 	RenderHarvester:
 		ImagesByFullness: harvempty, harvhalf, harv
 	GpsDot:
@@ -329,7 +313,6 @@ MCV:
 		Facing: 96
 		TransformSounds: placbldg.aud, build5.aud
 		NoTransformNotification: BuildingCannotPlaceAudio
-	WithFacingSpriteBody:
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	BaseBuilding:
@@ -338,8 +321,6 @@ MCV:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	AutoSelectionSize:
-	RenderSprites:
 
 JEEP:
 	Inherits: ^Vehicle
@@ -369,18 +350,12 @@ JEEP:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
-	AutoSelectionSize:
-	RenderSprites:
 
 APC:
 	Inherits: ^Tank
@@ -407,18 +382,12 @@ APC:
 		LocalOffset: 0,0,171
 		MuzzleSequence: muzzle
 	AttackFrontal:
-	WithFacingSpriteBody:
 	WithMuzzleFlash:
 	AutoTarget:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
-	AutoSelectionSize:
-	RenderSprites:
 
 MNLY.AP:
 	Inherits: ^Tank
@@ -440,7 +409,6 @@ MNLY.AP:
 		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 5c0
-	WithFacingSpriteBody:
 	Minelayer:
 		Mine: MINP
 	MineImmune:
@@ -453,7 +421,6 @@ MNLY.AP:
 	RenderDetectionCircle:
 	Explodes:
 		Weapon: APMine
-	AutoSelectionSize:
 	RenderSprites:
 		Image: MNLY
 
@@ -477,7 +444,6 @@ MNLY.AT:
 		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 5c0
-	WithFacingSpriteBody:
 	Minelayer:
 		Mine: MINV
 	MineImmune:
@@ -490,7 +456,6 @@ MNLY.AT:
 	RenderDetectionCircle:
 	Explodes:
 		Weapon: ATMine
-	AutoSelectionSize:
 	RenderSprites:
 		Image: MNLY
 
@@ -513,16 +478,10 @@ TRUK:
 		Speed: 128
 	RevealsShroud:
 		Range: 3c0
-	WithFacingSpriteBody:
 	SupplyTruck:
 		Payload: 500
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: moneycrate
-	AutoSelectionSize:
-	RenderSprites:
 
 MGG:
 	Inherits: ^Vehicle
@@ -541,7 +500,6 @@ MGG:
 		Type: Heavy
 	Mobile:
 		Speed: 85
-	WithFacingSpriteBody:
 	WithIdleOverlay@SPINNER:
 		Offset: -299,0,171
 		Sequence: spinner
@@ -550,13 +508,8 @@ MGG:
 	CreatesShroud:
 		Range: 6c0
 	RenderShroudCircle:
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: MGG.Husk
-	AutoSelectionSize:
-	RenderSprites:
 
 MRJ:
 	Inherits: ^Vehicle
@@ -577,13 +530,9 @@ MRJ:
 		Speed: 85
 	RevealsShroud:
 		Range: 6c0
-	WithFacingSpriteBody:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 		Offset: -256,0,256
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	JamsRadar:
 		Range: 15
 	JamsMissiles:
@@ -592,8 +541,6 @@ MRJ:
 	RenderJammerCircle:
 	DetectCloaked:
 		Range: 6
-	AutoSelectionSize:
-	RenderSprites:
 
 TTNK:
 	Inherits: ^Tank
@@ -619,17 +566,11 @@ TTNK:
 		Weapon: TTankZap
 		LocalOffset: 0,0,213
 	AttackFrontal:
-	WithFacingSpriteBody:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 	SelectionDecorations:
 		VisualBounds: 30,30
 	AutoTarget:
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
-	AutoSelectionSize:
-	RenderSprites:
 
 FTRK:
 	Inherits: ^Vehicle
@@ -661,14 +602,8 @@ FTRK:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
-	AutoSelectionSize:
-	RenderSprites:
 	SelectionDecorations:
 		VisualBounds: 28,28
 
@@ -691,7 +626,6 @@ DTRK:
 		Speed: 85
 	RevealsShroud:
 		Range: 3c0
-	WithFacingSpriteBody:
 	Explodes:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
@@ -702,8 +636,6 @@ DTRK:
 		UpgradeMinEnabledLevel: 1
 	Chronoshiftable:
 		ExplodeInstead: yes
-	AutoSelectionSize:
-	RenderSprites:
 
 CTNK:
 	Inherits: ^Vehicle
@@ -727,7 +659,6 @@ CTNK:
 		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 6c0
-	WithFacingSpriteBody:
 	AutoTarget:
 	Armament@PRIMARY:
 		Weapon: APTusk
@@ -739,11 +670,6 @@ CTNK:
 		LocalYaw: -100
 	AttackFrontal:
 	PortableChrono:
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
-	AutoSelectionSize:
-	RenderSprites:
 
 QTNK:
 	Inherits: ^Tank
@@ -765,17 +691,12 @@ QTNK:
 		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 6c0
-	WithFacingSpriteBody:
 	SelectionDecorations:
 		VisualBounds: 44,38,0,-4
-	Explodes:
-		Weapon: UnitExplodeSmall
 	MadTank:
 	-EjectOnDeath:
 	TargetableUnit:
 		TargetTypes: Ground, MADTank, Repair
-	AutoSelectionSize:
-	RenderSprites:
 
 STNK:
 	Inherits: ^Vehicle
@@ -788,8 +709,6 @@ STNK:
 	Tooltip:
 		Name: Phase Transport
 		Description: Lightly armored infantry transport\nwhich can cloak. Can detect cloaked units.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
-	SelectionDecorations:
-		VisualBounds: 26,26
 	Health:
 		HP: 300
 	Armor:
@@ -799,7 +718,6 @@ STNK:
 		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 6c0
-	WithFacingSpriteBody:
 	AutoTarget:
 		InitialStance: ReturnFire
 	Armament:
@@ -820,10 +738,5 @@ STNK:
 		UncloakSound: appear1.aud
 	DetectCloaked:
 		Range: 6
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	-MustBeDestroyed:
-	AutoSelectionSize:
-	RenderSprites:
 
