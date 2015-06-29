@@ -191,15 +191,27 @@ namespace OpenRA.Mods.Common.Widgets
 				.Select(b => b.Actor)
 				.ToList();
 
-			if (!bases.Any())
-				return true;
+            var noBase = false;
+
+            // If no base found the first nondestroyed building is selected.
+            if (!bases.Any())
+            {
+                bases = world.ActorsWithTrait<TargetableBuilding>()
+                .Where(a => a.Actor.Owner == world.LocalPlayer)
+                .Select(b => b.Actor)
+                .ToList();
+                noBase = true;
+            }
+
+            if (!bases.Any())
+                return true;
 
 			var next = bases
 				.SkipWhile(b => !world.Selection.Actors.Contains(b))
 				.Skip(1)
 				.FirstOrDefault();
 
-			if (next == null)
+			if (next == null || noBase)
 				next = bases.First();
 
 			world.Selection.Combine(world, new Actor[] { next }, false, true);
