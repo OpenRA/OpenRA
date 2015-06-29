@@ -25,7 +25,7 @@ Notifications:
 	./mods/modchooser/notifications.yaml
 
 LoadScreen: ModChooserLoadScreen
-	Image: mods/modchooser/chrome.png
+	Image: ./mods/modchooser/chrome.png
 
 ChromeMetrics:
 	./mods/modchooser/metrics.yaml
