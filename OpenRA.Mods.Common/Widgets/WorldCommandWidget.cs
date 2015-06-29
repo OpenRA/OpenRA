@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Widgets
 
             var noBase = false;
 
-            // If no base found the first nondestroyed building is selected.
+            // If no base found the nondestroyed buildings are selected.
             if (!bases.Any())
             {
                 bases = world.ActorsWithTrait<TargetableBuilding>()
@@ -211,6 +211,7 @@ namespace OpenRA.Mods.Common.Widgets
 				.Skip(1)
 				.FirstOrDefault();
 
+            // If no construction yard exists then next is set to only the oldest non-destroyed building
 			if (next == null || noBase)
 				next = bases.First();
 
