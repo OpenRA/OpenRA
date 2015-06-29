@@ -72,13 +72,13 @@ namespace OpenRA.Mods.Common.Traits
 			world.ObserveAfterWinOrLose = !info.EarlyGameOver;
 		}
 
-		public int Add(Player player, string description, ObjectiveType type = ObjectiveType.Primary)
+		public int Add(Player player, string description, ObjectiveType type = ObjectiveType.Primary, bool inhibitAnnouncement = false)
 		{
 			var newID = objectives.Count;
 
 			objectives.Insert(newID, new MissionObjective(type, description));
 
-			ObjectiveAdded(player);
+			ObjectiveAdded(player, inhibitAnnouncement);
 			foreach (var inou in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
 				inou.OnObjectiveAdded(player, newID);
 
@@ -231,7 +231,7 @@ namespace OpenRA.Mods.Common.Traits
 					MarkFailed(player, id);
 		}
 
-		public event Action<Player> ObjectiveAdded = player => { player.HasObjectives = true; };
+		public event Action<Player, bool> ObjectiveAdded = (player, inhibitAnnouncement) => { player.HasObjectives = true; };
 
 		public void OnObjectiveAdded(Player player, int id) { }
 		public void OnObjectiveCompleted(Player player, int id) { }

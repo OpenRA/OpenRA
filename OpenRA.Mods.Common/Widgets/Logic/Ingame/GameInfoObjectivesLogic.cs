@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			PopulateObjectivesList(mo, objectivesPanel, template);
 
-			Action<Player> redrawObjectives = player =>
+			Action<Player, bool> redrawObjectives = (player, _) =>
 			{
 				if (player == lp)
 					PopulateObjectivesList(mo, objectivesPanel, template);

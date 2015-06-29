@@ -27,6 +27,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			checkbox.IsChecked = () => lp.WinState != WinState.Undefined;
 			checkbox.GetCheckType = () => lp.WinState == WinState.Won ?
 				"checked" : "crossed";
+			if (lp.HasObjectives)
+			{
+				var mo = lp.PlayerActor.Trait<MissionObjectives>();
+				checkbox.GetText = () => mo.Objectives.First().Description;
+			}
 
 			var statusLabel = widget.Get<LabelWidget>("STATS_STATUS");
 
