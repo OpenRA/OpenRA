@@ -15,6 +15,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Orders;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -191,8 +192,20 @@ namespace OpenRA.Mods.Common.Widgets
 				.Select(b => b.Actor)
 				.ToList();
 
+			// If no BaseBuilding exist pick the first selectable Building.
 			if (!bases.Any())
-				return true;
+			{
+				var building = world.ActorsWithTrait<Building>()
+					.Select(b => b.Actor)
+					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.HasTrait<Selectable>());
+
+				// No buildings left
+				if (building == null)
+					return true;
+
+				world.Selection.Combine(world, new Actor[] { building }, false, true);
+				return ToSelection();
+			}
 
 			var next = bases
 				.SkipWhile(b => !world.Selection.Actors.Contains(b))
