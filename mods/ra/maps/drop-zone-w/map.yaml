@@ -28,6 +28,7 @@ Options:
 	FragileAlliances: False
 	StartingCash: 5000
 	ConfigurableStartingUnits: False
+	TechLevel: Unrestricted
 
 Players:
 	PlayerReference@Neutral:
@@ -46,7 +47,6 @@ Players:
 		AllowBots: False
 		LockRace: True
 		Race: allies
-		LockSpawn: True
 		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
@@ -54,7 +54,6 @@ Players:
 		AllowBots: False
 		LockRace: True
 		Race: allies
-		LockSpawn: True
 		Enemies: Creeps
 	PlayerReference@Multi2:
 		Name: Multi2
@@ -62,7 +61,6 @@ Players:
 		AllowBots: False
 		LockRace: True
 		Race: allies
-		LockSpawn: True
 		Enemies: Creeps
 	PlayerReference@Multi3:
 		Name: Multi3
@@ -70,7 +68,6 @@ Players:
 		AllowBots: False
 		LockRace: True
 		Race: allies
-		LockSpawn: True
 		Enemies: Creeps
 	PlayerReference@Multi4:
 		Name: Multi4
@@ -78,7 +75,6 @@ Players:
 		AllowBots: False
 		LockRace: True
 		Race: allies
-		LockSpawn: True
 		Enemies: Creeps
 	PlayerReference@Multi5:
 		Name: Multi5
@@ -86,7 +82,6 @@ Players:
 		AllowBots: False
 		LockRace: True
 		Race: allies
-		LockSpawn: True
 		Enemies: Creeps
 	PlayerReference@Multi6:
 		Name: Multi6
@@ -94,7 +89,6 @@ Players:
 		AllowBots: False
 		LockRace: True
 		Race: allies
-		LockSpawn: True
 		Enemies: Creeps
 	PlayerReference@Multi7:
 		Name: Multi7
@@ -102,7 +96,6 @@ Players:
 		AllowBots: False
 		LockRace: True
 		Race: allies
-		LockSpawn: True
 		Enemies: Creeps
 
 Actors:
