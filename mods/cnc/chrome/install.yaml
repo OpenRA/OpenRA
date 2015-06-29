@@ -37,7 +37,7 @@ Container@INSTALL_PANEL:
 			Font: BigBold
 			Contrast: true
 			Align: Center
-			Text: Install Game Content
+			Text: Install Required
 		Background@bg:
 			Width: 640
 			Height: 150
@@ -50,10 +50,10 @@ Container@INSTALL_PANEL:
 					ImageName: install
 				Label@INFO:
 					X: 170
-					Y: 35
+					Y: 50
 					Width: PARENT_RIGHT-30
 					Height: 25
-					Text: OpenRA requires the original C&C content files.
+					Text: OpenRA requires the original Command & Conquer game content.
 					Font: Bold
 				Label@INFO2:
 					X: 170
@@ -61,7 +61,7 @@ Container@INSTALL_PANEL:
 					Width: PARENT_RIGHT-185
 					Height: 25
 					WordWrap: true
-					Text: OpenRA can download these files (excluding music and videos) from the internet, or you can install from the original C&C CDs.
+					Text: Content can be downloaded, or copied from the install CD.
 					Font: Bold
 		Button@BACK_BUTTON:
 			Y: 149
@@ -128,10 +128,10 @@ Container@INSTALL_FROMCD_PANEL:
 					Children:
 						Label@INFO:
 							X: 170
-							Y: 35
+							Y: 50
 							Width: PARENT_RIGHT-30
 							Height: 25
-							Text: Disk not found
+							Text: Disk not found.
 							Font: Bold
 						Label@INFO2:
 							X: 170
@@ -168,7 +168,7 @@ Container@INSTALL_DOWNLOAD_PANEL:
 			Font: BigBold
 			Contrast: true
 			Align: Center
-			Text: Downloading Content
+			Text: Downloading Command & Conquer Content
 		Background@bg:
 			Width: 640
 			Height: 150
