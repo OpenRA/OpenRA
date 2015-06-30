@@ -667,6 +667,8 @@
 		Image: parach
 		Sequence: idle
 		OpeningSequence: open
+		ShadowImage: parach-shadow
+		ShadowSequence: idle
 	UpgradeManager:
 	BodyOrientation:
 

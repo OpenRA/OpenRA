@@ -230,6 +230,8 @@
 	WithParachute:
 		UpgradeTypes: parachute
 		UpgradeMinEnabledLevel: 1
+		ShadowImage: parach-shadow
+		ShadowSequence: idle
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
