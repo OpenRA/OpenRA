@@ -26,7 +26,6 @@ MCV:
 		Facing: 108
 		TransformSounds: constru2.aud, hvydoor1.aud
 		NoTransformNotification: BuildingCannotPlaceAudio
-	WithFacingSpriteBody:
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	BaseBuilding:
@@ -34,11 +33,6 @@ MCV:
 		HuskActor: MCV.Husk
 	-GainsExperience:
 	-Cloak:
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
-	AutoSelectionSize:
-	RenderSprites:
 	SelectionDecorations:
 		VisualBounds: 36,36
 
@@ -76,6 +70,9 @@ HARV:
 	LeavesHusk:
 		HuskActor: HARV.Husk
 	-GainsExperience:
+	-RenderSprites:
+	-WithFacingSpriteBody:
+	-AutoSelectionSize:
 	RenderHarvester:
 	Explodes:
 		Weapon: TiberiumExplosion
@@ -119,7 +116,6 @@ APC:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	Cargo:
@@ -128,8 +124,6 @@ APC:
 		PipCount: 5
 	LeavesHusk:
 		HuskActor: APC.Husk
-	AutoSelectionSize:
-	RenderSprites:
 
 ARTY:
 	Inherits: ^Tank
@@ -157,13 +151,10 @@ ARTY:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	AutoTarget:
 		InitialStance: Defend
 	LeavesHusk:
 		HuskActor: ARTY.Husk
-	AutoSelectionSize:
-	RenderSprites:
 
 FTNK:
 	Inherits: ^Tank
@@ -191,7 +182,6 @@ FTNK:
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	AttackFrontal:
-	WithFacingSpriteBody:
 	AutoTarget:
 	WithMuzzleFlash:
 		SplitFacings: true
@@ -200,8 +190,6 @@ FTNK:
 		EmptyWeapon: FlametankExplode
 	LeavesHusk:
 		HuskActor: FTNK.Husk
-	AutoSelectionSize:
-	RenderSprites:
 
 BGGY:
 	Inherits: ^Vehicle
@@ -232,13 +220,10 @@ BGGY:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: BGGY.Husk
-	AutoSelectionSize:
-	RenderSprites:
 
 BIKE:
 	Inherits: ^Vehicle
@@ -272,12 +257,9 @@ BIKE:
 		LocalOffset: -128, -170, 170, -128, 170, 170
 		LocalYaw: 100, -100
 	AttackFrontal:
-	WithFacingSpriteBody:
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: BIKE.Husk
-	AutoSelectionSize:
-	RenderSprites:
 
 JEEP:
 	Inherits: ^Vehicle
@@ -308,13 +290,10 @@ JEEP:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: JEEP.Husk
-	AutoSelectionSize:
-	RenderSprites:
 
 LTNK:
 	Inherits: ^Tank
@@ -346,16 +325,10 @@ LTNK:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: LTNK.Husk
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
-	AutoSelectionSize:
-	RenderSprites:
 
 MTNK:
 	Inherits: ^Tank
@@ -386,16 +359,10 @@ MTNK:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	WithFacingSpriteBody:
 	WithTurret:
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: MTNK.Husk
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
-	AutoSelectionSize:
-	RenderSprites:
 	SelectionDecorations:
 		VisualBounds: 28,28
 
@@ -446,11 +413,6 @@ HTNK:
 		DamageCooldown: 200
 	LeavesHusk:
 		HuskActor: HTNK.Husk
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
-	AutoSelectionSize:
-	RenderSprites:
 	SelectionDecorations:
 		VisualBounds: 34,34,0,-3
 
@@ -484,14 +446,11 @@ MSAM:
 		Weapon: 227mm
 		LocalOffset: 213,-128,0, 213,128,0
 	AttackFrontal:
-	WithFacingSpriteBody:
 	WithTurret:
 		AimSequence: aim
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: MSAM.Husk
-	AutoSelectionSize:
-	RenderSprites:
 
 MLRS:
 	Inherits: ^Tank
@@ -521,19 +480,13 @@ MLRS:
 		Weapon: Patriot
 		LocalOffset: 0,-171,0, 0,171,0
 	AttackTurreted:
-	WithFacingSpriteBody:
 	WithTurret:
 		AimSequence: aim
 	AutoTarget:
 		InitialStance: Defend
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	RenderRangeCircle:
 	LeavesHusk:
 		HuskActor: MLRS.Husk
-	AutoSelectionSize:
-	RenderSprites:
 
 STNK:
 	Inherits: ^Vehicle
@@ -566,15 +519,12 @@ STNK:
 		Weapon: 227mm.stnk
 		LocalOffset: 213,43,128, 213,-43,128
 	AttackFrontal:
-	WithFacingSpriteBody:
 	AutoTarget:
 		InitialStance: HoldFire
 	TargetableUnit:
 	LeavesHusk:
 		HuskActor: STNK.Husk
 	-MustBeDestroyed:
-	AutoSelectionSize:
-	RenderSprites:
 
 MHQ:
 	Inherits: ^Vehicle
@@ -582,7 +532,7 @@ MHQ:
 		Cost: 1000
 	Tooltip:
 		Name: Mobile HQ
-		Description: Base of operations
+		Description: Mobile base of operations
 	Health:
 		HP: 200
 	Armor:
@@ -591,13 +541,7 @@ MHQ:
 		Speed: 85
 	RevealsShroud:
 		Range: 6c0
-	WithFacingSpriteBody:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 		Offset: -256,0,256
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
-	AutoSelectionSize:
-	RenderSprites:
 

@@ -1,3 +1,13 @@
+^ExistsInWorld:
+	AppearsOnRadar:
+	UpdatesPlayerStatistics:
+	CombatDebugOverlay:
+	GivesExperience:
+	BodyOrientation:
+	ScriptTriggers:
+	UpgradeManager:
+	Huntable:
+
 ^GainsExperience:
 	GainsExperience:
 	GainsStatUpgrades:
@@ -20,8 +30,8 @@
 		UpgradeMaxAcceptedLevel: 4
 
 ^Vehicle:
-	Inherits: ^GainsExperience
-	AppearsOnRadar:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^GainsExperience
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
@@ -40,19 +50,21 @@
 	Repairable:
 	Passenger:
 		CargoType: Vehicle
-	HiddenUnderFog:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
+	HiddenUnderFog:
 	AttackMove:
+	DrawLineToTarget:
 	WithSmoke:
-	CombatDebugOverlay:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 	Guard:
 	Guardable:
-	BodyOrientation:
 	Tooltip:
 		GenericName: Vehicle
-	UpdatesPlayerStatistics:
 	Cloak:
 		UpgradeTypes: cloak
 		UpgradeMinEnabledLevel: 1
@@ -60,16 +72,12 @@
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
-	Huntable:
-	ScriptTriggers:
-	UpgradeManager:
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
 
 ^Tank:
-	Inherits: ^GainsExperience
-	AppearsOnRadar:
+	Inherits: ^Vehicle
 	Mobile:
 		Crushes: wall, crate, infantry
 		TerrainSpeeds:
@@ -80,46 +88,12 @@
 			BlueTiberium: 70
 			Beach: 70
 		ROT: 5
-	SelectionDecorations:
-	Selectable:
-		Bounds: 24,24
-	TargetableUnit:
-		TargetTypes: Ground, Vehicle
-	Repairable:
-	Passenger:
-		CargoType: Vehicle
-	HiddenUnderFog:
-	GivesExperience:
-	DrawLineToTarget:
-	ActorLostNotification:
-	AttackMove:
-	WithSmoke:
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
-	CombatDebugOverlay:
-	Guard:
-	Guardable:
-	BodyOrientation:
 	Tooltip:
 		GenericName: Tank
-	UpdatesPlayerStatistics:
-	Cloak:
-		UpgradeTypes: cloak
-		UpgradeMinEnabledLevel: 1
-		InitialDelay: 15
-		CloakDelay: 90
-		CloakSound: trans1.aud
-		UncloakSound: trans1.aud
-	Huntable:
-	ScriptTriggers:
-	UpgradeManager:
-	MustBeDestroyed:
-	Voiced:
-		VoiceSet: VehicleVoice
 
 ^Helicopter:
-	Inherits: ^GainsExperience
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^GainsExperience
 	AppearsOnRadar:
 		UseLocation: yes
 	TargetableAircraft:
@@ -133,23 +107,19 @@
 		RearmBuildings:
 		LandWhenIdle: false
 	HiddenUnderFog:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
-	CombatDebugOverlay:
 	AttackMove:
+	DrawLineToTarget:
 	Guard:
 	Guardable:
-	BodyOrientation:
-	UpdatesPlayerStatistics:
-	Huntable:
-	ScriptTriggers:
 	Tooltip:
 		GenericName: Helicopter
-	UpgradeManager:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
 	WithShadow:
 	Hovers:
 	MustBeDestroyed:
@@ -157,16 +127,14 @@
 		VoiceSet: VehicleVoice
 
 ^Infantry:
-	Inherits: ^GainsExperience
-	AppearsOnRadar:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^GainsExperience
 	Health:
 		Radius: 128
 	Armor:
 		Type: None
 	RevealsShroud:
 		Range: 5c0
-	AutoTarget:
-		ScanRadius: 4
 	Mobile:
 		Crushes: crate
 		SharesCell: true
@@ -184,11 +152,6 @@
 		Bounds: 12,17,0,-6
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
-	TakeCover:
-		SpeedModifier: 60
-		DamageModifiers:
-			Prone50Percent: 50
-		DamageTriggers: TriggerProne
 	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation:
@@ -201,24 +164,18 @@
 			TiberiumDeath: 6
 		CrushedSequence: die-crushed
 	AttackMove:
+	DrawLineToTarget:
 	Passenger:
 		CargoType: Infantry
 	HiddenUnderFog:
 	PoisonedByTiberium:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 	SpawnViceroid:
 		Probability: 10
 	Crushable:
 		WarnProbability: 67
 		CrushSound: squish2.aud
-	CombatDebugOverlay:
-	Guard:
 	Guardable:
-	BodyOrientation:
-	Tooltip:
-		GenericName: Soldier
 	SelfHealing@HOSPITAL:
 		Step: 5
 		Ticks: 100
@@ -229,11 +186,8 @@
 	GlobalUpgradable:
 		Upgrades: hospitalheal
 		Prerequisites: hosp
-	UpdatesPlayerStatistics:
-	Huntable:
 	DetectCloaked:
 		Range: 1
-	ScriptTriggers:
 	DeathSounds@NORMAL:
 		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@BURNED:
@@ -242,16 +196,28 @@
 	DeathSounds@POISONED:
 		Voice: Poisoned
 		DeathTypes: TiberiumDeath
-	UpgradeManager:
-	MustBeDestroyed:
 	Voiced:
 		VoiceSet: GenericVoice
 
+^Soldier:
+	Inherits: ^Infantry
+	MustBeDestroyed:
+	Tooltip:
+		GenericName: Soldier
+	Guard:
+	AutoTarget:
+		ScanRadius: 4
+	TakeCover:
+		SpeedModifier: 60
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
+	WithInfantryBody:
+		IdleSequences: idle1, idle2
+		StandSequences: stand, stand2
+
 ^CivInfantry:
 	Inherits: ^Infantry
-	-AutoTarget:
-	-TakeCover:
-	AppearsOnRadar:
 	Valued:
 		Cost: 70
 	Tooltip:
@@ -278,7 +244,7 @@
 		AttackSequence: shoot
 
 ^DINO:
-	AppearsOnRadar:
+	Inherits: ^ExistsInWorld
 	Health:
 		Radius: 128
 		HP: 1000
@@ -310,54 +276,96 @@
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	HiddenUnderFog:
-	GivesExperience:
 	WithInfantryBody:
 		AttackSequence: attack
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false
-	BodyOrientation:
-	DrawLineToTarget:
 	AutoTarget:
 		ScanRadius: 4
 	AttackMove:
 		Voice: Attack
 	AttackFrontal:
 		Voice: Attack
-	UpdatesPlayerStatistics:
-	Huntable:
-	ScriptTriggers:
+	DrawLineToTarget:
 	DeathSounds:
 	RenderSprites:
 		Palette: terrain
 	Voiced:
 		VoiceSet: DinoVoice
 
-^Plane:
-	Inherits: ^GainsExperience
-	AppearsOnRadar:
-		UseLocation: yes
+^Viceroid:
+	Inherits: ^ExistsInWorld
+	Health:
+		Radius: 427
+		HP: 300
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 6c0
+	Mobile:
+		Voice: Move
+		Speed: 71
+		TerrainSpeeds:
+			Clear: 70
+			Rough: 60
+			Road: 70
+			Tiberium: 100
+			BlueTiberium: 100
+			Beach: 60
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24,24
 	TargetableUnit:
-		TargetTypes: Air
-	HiddenUnderFog:
-	GivesExperience:
-	DrawLineToTarget:
-	ActorLostNotification:
-	CombatDebugOverlay:
-	BodyOrientation:
-	Huntable:
+		TargetTypes: Ground
+	AutoTarget:
+		ScanRadius: 5
 	AttackMove:
-	ScriptTriggers:
-	UpgradeManager:
-	WithShadow:
+		Voice: Attack
+	DrawLineToTarget:
+	HiddenUnderFog:
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Visceroid
+	Armament:
+		Weapon: Chemspray
+		LocalOffset: 384,0,0
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
+	AttackFrontal:
+		Voice: Attack
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
+	WithMuzzleFlash:
+		SplitFacings: true
+	Guard:
+		Voice: Move
+	Guardable:
+	BodyOrientation:
+		QuantizedFacings: 8
+	PoisonedByTiberium:
+		Weapon: Heal
 	Voiced:
-		VoiceSet: GenericVoice
+		VoiceSet: DinoVoice
+
+^Plane:
+	Inherits: ^ExistsInWorld
+	AppearsOnRadar:
+		UseLocation: yes
+	HiddenUnderFog:
+	ActorLostNotification:
+	AttackMove:
+	WithShadow:
+	WithFacingSpriteBody:
+	RenderSprites:
+	AutoSelectionSize:
+	FlyAwayOnIdle:
+	RejectsOrders:
 
 ^Ship:
-	Inherits: ^GainsExperience
-	AppearsOnRadar:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^GainsExperience
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
@@ -367,23 +375,16 @@
 	TargetableUnit:
 		TargetTypes: Ground, Water
 	HiddenUnderFog:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 	AttackMove:
-	CombatDebugOverlay:
+	DrawLineToTarget:
 	Guard:
 	Guardable:
-	BodyOrientation:
-	UpdatesPlayerStatistics:
-	Huntable:
-	ScriptTriggers:
-	UpgradeManager:
 	Voiced:
 		VoiceSet: VehicleVoice
 
 ^Building:
-	AppearsOnRadar:
+	Inherits: ^ExistsInWorld
 	SelectionDecorations:
 	Selectable:
 		Priority: 3
@@ -392,42 +393,34 @@
 	Armor:
 		Type: Wood
 	Building:
-		Adjacent: 4
-		RequiresBaseProvider: true
 		Dimensions: 1,1
 		Footprint: x
-		BuildSounds: constru2.aud, hvydoor1.aud
-		TerrainTypes: Clear,Road
 	SoundOnDamageTransition:
 		DamagedSounds: xplos.aud
 		DestroyedSounds: crumble.aud
 	RenderBuilding:
 	WithBuildingExplosion:
 		Delay: 1
-	EmitInfantryOnSell:
-		ActorTypes: e6,e1
-	GivesExperience:
 	CaptureNotification:
 		Notification: BuildingCaptured
 		NewOwnerVoice: no
 	ActorLostNotification:
 		Notification: BuildingLost
 	ShakeOnDeath:
-	CombatDebugOverlay:
 	Guardable:
 		Range: 3
-	BodyOrientation:
 	Tooltip:
 		GenericName: Structure
 	FrozenUnderFog:
-	UpdatesPlayerStatistics:
-	Huntable:
 	Demolishable:
-	ScriptTriggers:
-	WithMakeAnimation:
 
 ^BaseBuilding:
 	Inherits: ^Building
+	Building:
+		Adjacent: 4
+		RequiresBaseProvider: true
+		BuildSounds: constru2.aud, hvydoor1.aud
+		TerrainTypes: Clear,Road
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	RepairableBuilding:
@@ -437,24 +430,24 @@
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
 	GivesBuildableArea:
+	EmitInfantryOnSell:
+		ActorTypes: e6,e1,e1,e1
 	EngineerRepairable:
 	Sellable:
 		SellSounds: cashturn.aud
 	Capturable:
+	WithMakeAnimation:
 
 ^CivBuilding:
 	Inherits: ^Building
+	-UpgradeManager:
 	Health:
 		HP: 400
-	Armor:
-		Type: Wood
-	Building:
 	Tooltip:
 		Name: Civilian Building
 		GenericVisibility: None
 	FrozenUnderFog:
 		StartsRevealed: true
-	-WithMakeAnimation:
 
 ^CivBuildingHusk:
 	AppearsOnRadar:
@@ -593,43 +586,49 @@
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
 
-^Husk:
+^CommonHuskDefaults:
 	Health:
 		HP: 140
 	Armor:
 		Type: Light
+	HiddenUnderFog:
+	AutoTargetIgnore:
+	BodyOrientation:
+	WithFacingSpriteBody:
+	AutoSelectionSize:
+	RenderSprites:
+
+^Husk:
+	Inherits: ^CommonHuskDefaults
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
-	HiddenUnderFog:
 	Burns:
 		Interval: 2
 	TargetableUnit:
 		RequiresForceFire: yes
 		TargetTypes: Ground
-	AutoTargetIgnore:
 	Capturable:
 		Type: husk
 		AllowAllies: yes
 		CaptureThreshold: 1.0
 	TransformOnCapture:
 		ForceHealthPercentage: 25
-	BodyOrientation:
 	Tooltip:
 		GenericName: Destroyed Vehicle
 	DisabledOverlay:
 	ScriptTriggers:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 ^HelicopterHusk:
-	Inherits: ^Husk
-	-Husk:
-	-Burns:
+	Inherits: ^CommonHuskDefaults
 	FallsToEarth:
 		Spins: True
 		Moves: False
 		Explosion: HeliCrash
-	-Capturable:
-	-TransformOnCapture:
-	-TargetableUnit:
+	Tooltip:
+		GenericName: Destroyed Helicopter
 
 ^Bridge:
 	HiddenUnderShroud:
