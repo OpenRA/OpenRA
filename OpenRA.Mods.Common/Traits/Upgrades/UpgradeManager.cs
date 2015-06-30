@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly List<TimedUpgrade> timedUpgrades = new List<TimedUpgrade>();
 		readonly Lazy<Dictionary<string, UpgradeState>> upgrades;
-		readonly Dictionary<IUpgradable, int> levels = new Dictionary<IUpgradable, int>();
+		readonly Dictionary<IUpgradable, Dictionary<string, int>> levels = new Dictionary<IUpgradable,Dictionary<string,int>>();
 
 		public UpgradeManager(ActorInitializer init)
 		{
@@ -87,18 +87,19 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var up in traits)
 			{
-				var oldLevel = levels.GetOrAdd(up);
-				var newLevel = levels[up] = oldLevel + levelAdjust;
+				var oldLevel = levels.GetOrAdd(up).GetOrAdd(upgrade);
+				var newLevel = levels[up][upgrade] = oldLevel + levelAdjust;
 
 				// This will internally clamp the levels to its own restricted range
 				up.UpgradeLevelChanged(self, upgrade, oldLevel, newLevel);
 			}
 		}
 
-		int GetOverallLevel(IUpgradable upgradable)
+		int GetOverallLevel(IUpgradable upgradable, string upgrade)
 		{
 			int level;
-			return levels.TryGetValue(upgradable, out level) ? level : 0;
+			Dictionary<string, int> upgrades;
+			return levels.TryGetValue(upgradable, out upgrades) && upgrades.TryGetValue(upgrade, out level) ? level : 0;
 		}
 
 		public void GrantUpgrade(Actor self, string upgrade, object source)
@@ -138,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!upgrades.Value.TryGetValue(upgrade, out s))
 				return false;
 
-			return s.Traits.Any(up => up.AcceptsUpgradeLevel(self, upgrade, GetOverallLevel(up) + 1));
+			return s.Traits.Any(up => up.AcceptsUpgradeLevel(self, upgrade, GetOverallLevel(up, upgrade) + 1));
 		}
 
 		public void RegisterWatcher(string upgrade, Action<int, int> action)
