@@ -77,12 +77,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
+			if (a == null)
+				return;
+
 			var sequence = a.Info.MuzzleSequence;
 			if (sequence == null)
 				return;
 
 			if (a.Info.MuzzleSplitFacings > 0)
 				sequence += OpenRA.Traits.Util.QuantizeFacing(getFacing(), a.Info.MuzzleSplitFacings).ToString();
+
+			if (barrel == null)
+				return;
 
 			visible[barrel] = true;
 			anims[barrel].Animation.PlayThen(sequence, () => visible[barrel] = false);
