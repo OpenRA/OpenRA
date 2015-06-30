@@ -98,26 +98,23 @@ namespace OpenRA.Mods.Common.Widgets
 					hue = H;
 				}
 
-				lock (back)
+				unsafe
 				{
-					unsafe
+					// Generate palette in HSV
+					fixed (byte* cc = &back[0])
 					{
-						// Generate palette in HSV
-						fixed (byte* cc = &back[0])
-						{
-							var c = (int*)cc;
-							for (var v = 0; v < 256; v++)
-								for (var s = 0; s < 256; s++)
-									*(c + (v * 256) + s) = HSLColor.FromHSV(hue, s / 255f, (255 - v) / 255f).RGB.ToArgb();
-						}
+						var c = (int*)cc;
+						for (var v = 0; v < 256; v++)
+							for (var s = 0; s < 256; s++)
+								*(c + (v * 256) + s) = HSLColor.FromHSV(hue, s / 255f, (255 - v) / 255f).RGB.ToArgb();
 					}
+				}
 
-					lock (bufferSync)
-					{
-						var swap = front;
-						front = back;
-						back = swap;
-					}
+				lock (bufferSync)
+				{
+					var swap = front;
+					front = back;
+					back = swap;
 				}
 			}
 		}
