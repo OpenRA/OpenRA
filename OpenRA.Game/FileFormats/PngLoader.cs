@@ -84,6 +84,9 @@ namespace OpenRA.FileFormats
 
 							case "tRNS":
 								{
+									if (palette == null)
+										throw new InvalidDataException("Non-Palette indexed PNG are not supported.");
+
 									for (var i = 0; i < length; i++)
 										palette[i] = Color.FromArgb(cr.ReadByte(), palette[i]);
 								}
