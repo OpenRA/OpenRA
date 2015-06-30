@@ -135,6 +135,10 @@ namespace OpenRA
 		public static event Action BeforeGameStart = () => { };
 		internal static void StartGame(string mapUID, WorldType type)
 		{
+			// Dispose of the old world before creating a new one.
+			if (worldRenderer != null)
+				worldRenderer.Dispose();
+
 			Cursor.SetCursor(null);
 			BeforeGameStart();
 
@@ -143,13 +147,7 @@ namespace OpenRA
 			using (new PerfTimer("PrepareMap"))
 				map = ModData.PrepareMap(mapUID);
 			using (new PerfTimer("NewWorld"))
-			{
-				OrderManager.World = new World(map, OrderManager, type);
-				OrderManager.World.Timestep = Timestep;
-			}
-
-			if (worldRenderer != null)
-				worldRenderer.Dispose();
+				OrderManager.World = new World(map, OrderManager, type) { Timestep = Timestep };
 
 			worldRenderer = new WorldRenderer(OrderManager.World);
 
