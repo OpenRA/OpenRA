@@ -199,7 +199,7 @@ InitTriggers = function()
 
 			Spy = Actor.Create("spy", true, { Owner = greece, Location = TrukWaypoint5.Location })
 			Spy.Move(SpyWaypoint.Location)
-			Spy.Move(Prison.Location, 3)
+			Spy.Infiltrate(Prison)
 
 			FollowTruk = false
 			TrukCamera.Destroy()
