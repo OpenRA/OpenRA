@@ -33,7 +33,7 @@ Options:
 	StartingCash: 0
 	TechLevel: Medium
 	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal
+	Difficulties: Easy, Normal, Hard, Real tough guy
 	ShortGame: False
 
 Players:
@@ -1569,6 +1569,15 @@ Actors:
 	VehicleRallypoint5: waypoint
 		Location: 47,84
 		Owner: Neutral
+	WaterTransportSpawn: waypoint
+		Owner: Neutral
+		Location: 71,48
+	WaterLZ1: waypoint
+		Owner: Neutral
+		Location: 52,53
+	WaterLZ2: waypoint
+		Owner: Neutral
+		Location: 63,63
 
 Smudges:
 
@@ -1608,8 +1617,6 @@ Rules:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
-		MustBeDestroyed:
-			RequiredForShortGame: false
 	^Wall:
 		Tooltip:
 			ShowOwnerRow: false
@@ -1644,12 +1651,31 @@ Rules:
 			Prerequisites: ~disabled
 	LST:
 		-Selectable:
+		TargetableUnit:
+			TargetTypes: Ground, Water
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	LST.IN:
+		Inherits: LST
+		RenderLandingCraft:
+			Image: LST
+		Cargo:
+			Types: disabled
 	TRAN:
 		-Selectable:
 		RevealsShroud:
-			Range: 0c0
+			Range: 4c0
 		Tooltip:
 			ShowOwnerRow: false
+		TargetableAircraft:
+			GroundedTargetTypes: Ground
+	TRAN.IN:
+		Inherits: TRAN
+		RenderSprites:
+			Image: TRAN
+		Cargo:
+			Types: disabled
 	FLARE:
 		Tooltip:
 			ShowOwnerRow: false
@@ -1749,6 +1775,8 @@ Rules:
 			Prerequisites: ~disabled
 		ParatroopersPower@paratroopers:
 			Prerequisites: ~disabled
+	FCOM:
+		MustBeDestroyed:
 	4TNK:
 		Buildable:
 			Prerequisites: ~disabled
@@ -1832,5 +1860,6 @@ Notifications:
 			lefty: lefty1
 			keepem: keepem1
 			tuffguy: tuffguy1
+			sking: sking1
 
 Translations:

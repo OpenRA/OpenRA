@@ -5,6 +5,7 @@ AttackGroupSize = 6
 Barracks = { Barracks2, Barracks3 }
 
 Rallypoints = { VehicleRallypoint1, VehicleRallypoint2, VehicleRallypoint3, VehicleRallypoint4, VehicleRallypoint5 }
+WaterLZs = { WaterLZ1, WaterLZ2 }
 
 Airfields = { Airfield1, Airfield2 }
 Yaks = { }
@@ -23,6 +24,10 @@ SetupAttackGroup = function()
 	local units = { }
 
 	for i = 0, AttackGroupSize, 1 do
+		if #IdlingUnits == 0 then
+			return units
+		end
+
 		local number = Utils.RandomInteger(1, #IdlingUnits)
 
 		if IdlingUnits[number] and not IdlingUnits[number].IsDead then
@@ -35,19 +40,45 @@ SetupAttackGroup = function()
 end
 
 SendAttack = function()
-	if not Attacking then
+	if Attacking then
 		return
 	end
-	Attacking = false
-	HoldProduction = false
+	Attacking = true
+	HoldProduction = true
 
-	local units = SetupAttackGroup()
-	Utils.Do(units, function(unit)
-		IdleHunt(unit)
-	end)
+	local units = { }
+	if SendWaterTransports and Utils.RandomInteger(0,2) == 1 then
+		units = WaterAttack()
 
-	Trigger.AfterDelay(DateTime.Minutes(1), function() Attacking = true end)
-	Trigger.AfterDelay(DateTime.Minutes(2), function() HoldProduction = true end)
+		Utils.Do(units, function(unit)
+			Trigger.OnAddedToWorld(unit, function()
+				Trigger.OnIdle(unit, unit.Hunt)
+			end)
+		end)
+
+		Trigger.AfterDelay(DateTime.Seconds(20), function()
+			Attacking = false
+			HoldProduction = false
+		end)
+	else
+		units = SetupAttackGroup()
+
+		Utils.Do(units, function(unit)
+			IdleHunt(unit)
+		end)
+
+		Trigger.AfterDelay(DateTime.Minutes(1), function() Attacking = false end)
+		Trigger.AfterDelay(DateTime.Minutes(2), function() HoldProduction = false end)
+	end
+end
+
+WaterAttack = function()
+	local types = { }
+	for i = 1, 5, 1 do
+		types[i] = Utils.Random(SovietInfantryTypes)
+	end
+
+	return Reinforcements.ReinforceWithTransport(ussr, InsertionTransport, types, { WaterTransportSpawn.Location, Utils.Random(WaterLZs).Location }, { WaterTransportSpawn.Location })[2]
 end
 
 ProtectHarvester = function(unit)
@@ -113,17 +144,21 @@ InitProductionBuildings = function()
 				TrainInfantry = false
 			end
 		end)
-	end
-
-	if not Barracks3.IsDead then
-		Trigger.OnKilled(Barracks3, function() if Barracks2.IsDead then TrainInfantry = false end end)
-	end
-
-	if Barracks2.IsDead and Barracks3.IsDead then
+	elseif not Barracks3.IsDead then
+		Barracks3.IsPrimaryBuilding = true
+	else
 		TrainInfantry = false
 	end
 
-	if Map.Difficulty == "Normal" then
+	if not Barracks3.IsDead then
+		Trigger.OnKilled(Barracks3, function()
+			if Barracks2.IsDead then
+				TrainInfantry = false
+			end
+		end)
+	end
+
+	if Map.Difficulty ~= "Easy" then
 
 		if not Airfield1.IsDead then
 			Trigger.OnKilled(Airfield1, function()
