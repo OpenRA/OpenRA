@@ -562,6 +562,7 @@ function CompileProgram(editor, params)
         :format(compileOk/compileTotal*100, compileOk, compileTotal))
     end
   else
+    ActivateOutput()
     DisplayOutputLn(TR("Compilation error").." "..TR("on line %d"):format(line)..":")
     DisplayOutputLn((err:gsub("\n$", "")))
     -- check for escapes invalid in LuaJIT/Lua 5.2 that are allowed in Lua 5.1
