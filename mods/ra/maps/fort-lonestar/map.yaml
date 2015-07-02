@@ -28,6 +28,7 @@ Options:
 	StartingCash: 50
 	ConfigurableStartingUnits: False
 	ShortGame: False
+	TechLevel: Unrestricted
 
 Players:
 	PlayerReference@Neutral:
@@ -40,6 +41,9 @@ Players:
 		Playable: True
 		AllowBots: False
 		LockTeam: True
+		Team: 0
+		LockRace: True
+		Race: allies
 		Allies: Multi1, Multi2, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi1:
@@ -47,6 +51,9 @@ Players:
 		Playable: True
 		AllowBots: False
 		LockTeam: True
+		Team: 0
+		LockRace: True
+		Race: allies
 		Allies: Multi0, Multi2, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi2:
@@ -54,6 +61,9 @@ Players:
 		Playable: True
 		AllowBots: False
 		LockTeam: True
+		Team: 0
+		LockRace: True
+		Race: allies
 		Allies: Multi0, Multi1, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi3:
@@ -61,6 +71,9 @@ Players:
 		Playable: True
 		AllowBots: False
 		LockTeam: True
+		Team: 0
+		LockRace: True
+		Race: allies
 		Allies: Multi0, Multi1, Multi2
 		Enemies: Soviets
 	PlayerReference@Soviets:
@@ -136,7 +149,7 @@ Actors:
 	Actor73: tc05
 		Location: 16,34
 		Owner: Neutral
-	Actor30: barr
+	Actor30: tent
 		Location: 36,26
 		Owner: Multi0
 	Actor84: brik
@@ -358,13 +371,13 @@ Actors:
 	Actor88: brik
 		Location: 25,29
 		Owner: Neutral
-	Actor100: barr
+	Actor100: tent
 		Location: 27,26
 		Owner: Multi3
-	Actor99: barr
+	Actor99: tent
 		Location: 27,36
 		Owner: Multi2
-	Actor31: barr
+	Actor31: tent
 		Location: 36,36
 		Owner: Multi1
 	Sniper1: sniper.soviets
@@ -524,7 +537,7 @@ Rules:
 		CashTrickler:
 			Period: 250
 			Amount: 50
-	BARR:
+	TENT:
 		Health:
 			HP: 1000
 		Production:
@@ -695,6 +708,9 @@ Rules:
 		AutoSelectionSize:
 		RenderSprites:
 			Image: mig
+	SILO:
+		Buildable:
+			Prerequisites: ~disabled
 	BRIK:
 		Buildable:
 			Prerequisites: ~disabled
