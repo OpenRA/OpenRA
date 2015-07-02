@@ -251,6 +251,8 @@ local function outlineCreateOutlineWindow()
       }
       menu:Check(ID_OUTLINESORT, ide.config.outline.sort)
 
+      PackageEventHandle("onMenuOutline", menu, ctrl, event)
+
       ctrl:PopupMenu(menu)
     end)
 

@@ -41,6 +41,7 @@ local events = {
   onMenuEditor =       function(self, menu, editor, event) end,
   onMenuEditorTab =    function(self, menu, notebook, event, index) end,
   onMenuFiletree =     function(self, menu, tree, event) end,
+  onMenuOutline =      function(self, menu, tree, event) end,
   onProjectPreLoad =   function(self, project) end, -- before project is changed
   onProjectLoad =      function(self, project) end, -- after project is changed
   onProjectClose =     function(self, project) end,
