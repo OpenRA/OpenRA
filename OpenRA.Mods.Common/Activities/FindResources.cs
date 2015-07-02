@@ -38,8 +38,10 @@ namespace OpenRA.Mods.Common.Activities
 
 			var harv = self.Trait<Harvester>();
 
+			var deliver = new DeliverResources(self);
+
 			if (harv.IsFull)
-				return Util.SequenceActivities(new DeliverResources(), NextActivity);
+				return Util.SequenceActivities(deliver, NextActivity);
 
 			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
 			var mobile = self.Trait<Mobile>();
@@ -90,7 +92,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (path.Count == 0)
 			{
 				if (!harv.IsEmpty)
-					return new DeliverResources();
+					return deliver;
 				else
 				{
 					// Get out of the way if we are:

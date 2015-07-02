@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Are we not empty? Deliver resources:
 			if (!IsEmpty)
 			{
-				self.QueueActivity(new DeliverResources());
+				self.QueueActivity(new DeliverResources(self));
 				return;
 			}
 
@@ -378,10 +378,11 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Green);
 
 				self.CancelActivity();
-				self.QueueActivity(new DeliverResources());
+
+				var next = new DeliverResources(self);
+				self.QueueActivity(next);
 
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-				var next = new DeliverResources();
 				foreach (var n in notify)
 					n.MovingToRefinery(self, order.TargetLocation, next);
 			}
