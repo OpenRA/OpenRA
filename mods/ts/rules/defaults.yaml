@@ -357,6 +357,16 @@
 	TimedUpgradeBar@EMPDISABLE:
 		Upgrade: empdisable
 		Color: 255,255,255
+	WithDecoration@EMPDISABLE:
+		Image: emp
+		Sequence: idle
+		ReferencePoint: HCenter, VCenter
+		Palette: effect
+		UpgradeTypes: empdisable
+		ShowToEnemies: true
+		ZOffset: 512
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
 	Cloak@CLOAKGENERATOR:
 		UpgradeTypes: cloakgenerator
 		UpgradeMinEnabledLevel: 1
