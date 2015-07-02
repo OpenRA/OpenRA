@@ -235,8 +235,7 @@ namespace OpenRA.Mods.Common.Activities
 				// Wait a bit to see if they leave
 				if (!hasWaited)
 				{
-					var info = self.Info.Traits.Get<MobileInfo>();
-					waitTicksRemaining = info.WaitAverage + self.World.SharedRandom.Next(-info.WaitSpread, info.WaitSpread);
+					waitTicksRemaining = mobile.Info.WaitAverage + self.World.SharedRandom.Next(-mobile.Info.WaitSpread, mobile.Info.WaitSpread);
 					hasWaited = true;
 				}
 
