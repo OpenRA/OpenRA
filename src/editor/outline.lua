@@ -232,6 +232,29 @@ local function outlineCreateOutlineWindow()
       ctrl:ActivateItem(event:GetItem())
     end)
 
+  ctrl:Connect(ID_OUTLINESORT, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function()
+      ide.config.outline.sort = not ide.config.outline.sort
+      for editor, cache in pairs(caches) do
+        ide:SetStatus(("Refreshing '%s'..."):format(ide:GetDocument(editor):GetFileName()))
+        local isexpanded = ctrl:IsExpanded(cache.fileitem)
+        outlineRefresh(editor, true)
+        if not isexpanded then ctrl:Collapse(cache.fileitem) end
+      end
+      ide:SetStatus('')
+    end)
+
+  ctrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_MENU,
+    function (event)
+      local menu = wx.wxMenu {
+        { ID_OUTLINESORT, TR("Sort By Name"), "", wx.wxITEM_CHECK },
+      }
+      menu:Check(ID_OUTLINESORT, ide.config.outline.sort)
+
+      ctrl:PopupMenu(menu)
+    end)
+
+
   local function reconfigure(pane)
     pane:TopDockable(false):BottomDockable(false)
         :MinSize(150,-1):BestSize(300,-1):FloatingSize(200,300)

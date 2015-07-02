@@ -143,6 +143,8 @@ ID_REPLACEALLSELECTIONS = NewID()
 ID_QUICKADDWATCH    = NewID()
 ID_QUICKEVAL        = NewID()
 ID_ADDTOSCRATCHPAD  = NewID()
+-- outline menu
+ID_OUTLINESORT      = NewID()
 -- search toolbar
 ID_FINDALL          = NewID()
 ID_FINDREPLACENEXT  = NewID()
