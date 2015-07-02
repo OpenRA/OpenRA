@@ -95,7 +95,7 @@ IslandTroops2 = function()
 	elseif Map.Difficulty == "Easy" then
 		return
 	else
-		Trigger.OnAllKilled(unit, function()
+		Trigger.OnAllKilled(units, function()
 			if Map.Difficulty == "Hard" then
 				Trigger.AfterDelay(DateTime.Minutes(3), IslandTroops2)
 			else
