@@ -186,7 +186,7 @@ SPY:
 	DisguiseToolTip:
 		Name: Spy
 		GenericName: Soldier
-		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\nLoses disguise when attacking.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft\n  Special Ability: Disguised
+		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\nLoses disguise when attacking.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft\n  Special Ability: Disguised
 	-Guard:
 	RevealsShroud:
 		Range: 5c0
@@ -212,6 +212,9 @@ SPY:
 		ZOffset: 256
 		UpgradeTypes: disguise
 		UpgradeMinEnabledLevel: 1
+	IgnoresDisguise:
+	DetectCloaked:
+		Range: 5
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
