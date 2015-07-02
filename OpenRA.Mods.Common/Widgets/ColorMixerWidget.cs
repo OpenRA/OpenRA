@@ -58,6 +58,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var mixerSheet = new Sheet(new Size(256, 256));
 			mixerSheet.GetTexture().SetData(front, 256, 256);
 			mixerSprite = new Sprite(mixerSheet, rect, TextureChannel.Alpha);
+			GenerateBitmap();
 		}
 
 		void GenerateBitmap()
