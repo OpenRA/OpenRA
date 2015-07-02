@@ -61,8 +61,8 @@ harvester:
 		HarvestFacings: 8
 		Resources: Spice
 		UnloadTicksPerBale: 5
-		SearchFromProcRadius: 24
-		SearchFromOrderRadius: 12
+		SearchFromProcRadius: 30
+		SearchFromOrderRadius: 15
 	Health:
 		HP: 1000
 	Armor:
