@@ -380,7 +380,12 @@ namespace OpenRA.Server
 
 				SetOrderLag();
 			}
-			catch (Exception) { DropClient(newConn); }
+			catch (Exception ex)
+			{
+				Log.Write("server", "Dropping connection {0} because an error occurred:", newConn.Socket.RemoteEndPoint);
+				Log.Write("server", ex.ToString());
+				DropClient(newConn);
+			}
 		}
 
 		void SetOrderLag()
