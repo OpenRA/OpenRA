@@ -167,6 +167,7 @@ canister:
 pulsball:
 	idle:
 		Length: *
+		BlendMode: Additive
 
 dragon:
 	idle:
@@ -232,6 +233,11 @@ wake:
 	idle: wake2
 		Length: *
 		Tick: 180
+
+emp:
+	idle: emp_fx01
+		Length: *
+		BlendMode: Additive
 
 resources:
 	Defaults:
