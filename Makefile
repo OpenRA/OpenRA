@@ -1,10 +1,10 @@
 ############################# INSTRUCTIONS #############################
 #
 # to compile, run:
-#   make
+#   make [DEBUG=false]
 #
 # to compile with development tools, run:
-#   make all
+#   make all [DEBUG=false]
 #
 # to check the official mods for erroneous yaml files, run:
 #   make test
@@ -22,7 +22,7 @@
 #   make [prefix=/foo] [bindir=/bar/bin] install-all
 #
 # to install Linux startup scripts, desktop files and icons:
-#   make install-linux-shortcuts
+#   make install-linux-shortcuts [DEBUG=false]
 #
 # to uninstall, run:
 #   make uninstall
@@ -392,7 +392,11 @@ install-linux-appdata:
 install-linux-scripts:
 	@echo "#!/bin/sh" > openra
 	@echo 'cd "$(gameinstalldir)"' >> openra
+ifeq ($(DEBUG), $(filter $(DEBUG),false no n off 0))
 	@echo 'mono OpenRA.Game.exe "$$@"' >> openra
+else
+	@echo 'mono --debug OpenRA.Game.exe "$$@"' >> openra
+endif
 	@echo 'if [ $$? != 0 -a $$? != 1 ]' >> openra
 	@echo 'then' >> openra
 	@echo 'ZENITY=`which zenity` || echo "OpenRA needs zenity installed to display a graphical error dialog. See ~/.openra. for log files."' >> openra
@@ -418,10 +422,10 @@ uninstall:
 
 help:
 	@echo to compile, run:
-	@echo \ \ make
+	@echo \ \ make [DEBUG=false]
 	@echo
 	@echo to compile with development tools, run:
-	@echo \ \ make all
+	@echo \ \ make all [DEBUG=false]
 	@echo
 	@echo to check the official mods for erroneous yaml files, run:
 	@echo \ \ make test
@@ -436,7 +440,7 @@ help:
 	@echo \ \ make \[prefix=/foo\] \[bindir=/bar/bin\] install-all
 	@echo
 	@echo to install Linux startup scripts, desktop files and icons
-	@echo \ \ make install-linux-shortcuts
+	@echo \ \ make install-linux-shortcuts [DEBUG=false]
 	@echo
 	@echo to uninstall, run:
 	@echo \ \ make uninstall
