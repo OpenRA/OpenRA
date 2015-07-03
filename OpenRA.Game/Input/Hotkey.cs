@@ -24,6 +24,9 @@ namespace OpenRA
 		public static bool TryParse(string s, out Hotkey result)
 		{
 			result = Invalid;
+			if (string.IsNullOrWhiteSpace(s))
+				return false;
+
 			var parts = s.Split(' ');
 
 			Keycode key;
