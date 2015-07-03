@@ -191,23 +191,23 @@ namespace OpenRA.Mods.Common.Widgets
 				.Select(b => b.Actor)
 				.ToList();
 
-            // If no base is found all existing buildings are selected.
-            if (!bases.Any())
-            {
+			// If no base is found all existing buildings are selected.
+			if (!bases.Any())
+			{
 				bases = world.ActorsWithTrait<TargetableBuilding>()
-                .Where(a => a.Actor.Owner == world.LocalPlayer)
-                .Select(b => b.Actor)
-                .ToList();
-                if (!bases.Any())
+				.Where(a => a.Actor.Owner == world.LocalPlayer)
+				.Select(b => b.Actor)
+				.ToList();
+				if (!bases.Any())
 					return true;
-            }   
+			}
 
 			var next = bases
 				.SkipWhile(b => !world.Selection.Actors.Contains(b))
 				.Skip(1)
 				.FirstOrDefault();
 
-            // If no construction yard exists then next is set to only the oldest existing building
+			// If no construction yard exists then next is set to only the oldest existing building
 			if (next == null || !next.HasTrait<BaseBuilding>())
 				next = bases.First();
 
