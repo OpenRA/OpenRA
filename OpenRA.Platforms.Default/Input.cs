@@ -13,9 +13,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using SDL2;
 
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Platforms.Default
 {
-	public class Sdl2Input
+	public class Input
 	{
 		MouseButton lastButtonBits = (MouseButton)0;
 
@@ -157,8 +157,7 @@ namespace OpenRA.Renderer.Sdl2
 							};
 
 							// Special case workaround for windows users
-							if (e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F4 && mods.HasModifier(Modifiers.Alt) &&
-								Platform.CurrentPlatform == PlatformType.Windows)
+							if (e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F4 && mods.HasModifier(Modifiers.Alt) && Platform.Current == PlatformType.Windows)
 								Game.Exit();
 							else
 								inputHandler.OnKeyInput(keyEvent);

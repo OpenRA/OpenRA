@@ -190,7 +190,7 @@ namespace OpenRA
 
 		internal static void Initialize(Arguments args)
 		{
-			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
+			Console.WriteLine("Platform is {0}", Platform.Current);
 
 			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
@@ -215,7 +215,7 @@ namespace OpenRA
 			GeoIP.Initialize();
 
 			GlobalFileSystem.Mount(Platform.GameDir); // Needed to access shaders
-			var renderers = new[] { Settings.Graphics.Renderer, "Sdl2", null };
+			var renderers = new[] { Settings.Graphics.Renderer, "Graphical", null };
 			foreach (var r in renderers)
 			{
 				if (r == null)
@@ -232,18 +232,6 @@ namespace OpenRA
 					Log.Write("graphics", "{0}", e);
 					Console.WriteLine("Renderer initialization failed. Fallback in place. Check graphics.log for details.");
 				}
-			}
-
-			try
-			{
-				Sound.Create(Settings.Sound.Engine);
-			}
-			catch (Exception e)
-			{
-				Log.Write("sound", "{0}", e);
-				Console.WriteLine("Creating the sound engine failed. Fallback in place. Check sound.log for details.");
-				Settings.Sound.Engine = "Null";
-				Sound.Create(Settings.Sound.Engine);
 			}
 
 			Console.WriteLine("Available mods:");
@@ -404,7 +392,7 @@ namespace OpenRA
 
 			Bitmap bitmap;
 			using (new PerfTimer("Renderer.TakeScreenshot"))
-				bitmap = Renderer.TakeScreenshot();
+				bitmap = Renderer.Device.TakeScreenshot();
 
 			ThreadPool.QueueUserWorkItem(_ =>
 			{

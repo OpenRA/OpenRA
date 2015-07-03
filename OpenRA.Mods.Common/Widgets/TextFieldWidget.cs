@@ -175,8 +175,8 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			if (e.Key == Keycode.V &&
-				((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
-				 (Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))))
+				((Platform.Current != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
+				 (Platform.Current == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))))
 			{
 				var clipboardText = Game.Renderer.GetClipboardText();
 

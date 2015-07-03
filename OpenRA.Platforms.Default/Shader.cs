@@ -15,7 +15,7 @@ using System.Text;
 using OpenRA.FileSystem;
 using OpenTK.Graphics.OpenGL;
 
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Platforms.Default
 {
 	public class Shader : IShader
 	{
@@ -40,7 +40,7 @@ namespace OpenRA.Renderer.Sdl2
 			int success;
 			GL.GetShader(shader, ShaderParameter.CompileStatus, out success);
 			ErrorHandler.CheckGlError();
-			if (success == (int)All.False)
+			if (success == 0)
 			{
 				int len;
 				GL.GetShader(shader, ShaderParameter.InfoLogLength, out len);
@@ -75,7 +75,7 @@ namespace OpenRA.Renderer.Sdl2
 			int success;
 			GL.GetProgram(program, ProgramParameter.LinkStatus, out success);
 			ErrorHandler.CheckGlError();
-			if (success == (int)All.False)
+			if (success == 0)
 			{
 				int len;
 				GL.GetProgram(program, ProgramParameter.InfoLogLength, out len);

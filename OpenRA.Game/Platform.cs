@@ -20,11 +20,11 @@ namespace OpenRA
 
 	public static class Platform
 	{
-		public static PlatformType CurrentPlatform { get { return currentPlatform.Value; } }
+		public static PlatformType Current { get { return current.Value; } }
 
-		static Lazy<PlatformType> currentPlatform = Exts.Lazy(GetCurrentPlatform);
+		static Lazy<PlatformType> current = Exts.Lazy(GetCurrent);
 
-		static PlatformType GetCurrentPlatform()
+		static PlatformType GetCurrent()
 		{
 			if (Environment.OSVersion.Platform == PlatformID.Win32NT)
 				return PlatformType.Windows;
@@ -73,7 +73,7 @@ namespace OpenRA
 
 			var dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 
-			switch (CurrentPlatform)
+			switch (Current)
 			{
 				case PlatformType.Windows:
 					dir += Path.DirectorySeparatorChar + "OpenRA";

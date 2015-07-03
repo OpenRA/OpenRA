@@ -30,6 +30,7 @@ namespace OpenRA
 	public interface IDeviceFactory
 	{
 		IGraphicsDevice Create(Size size, WindowMode windowMode);
+		ISoundEngine Initialize();
 	}
 
 	public interface IHardwareCursor : IDisposable { }
