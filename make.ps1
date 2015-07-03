@@ -172,8 +172,6 @@ elseif ($command -eq "check")
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.D2k
 		echo "Checking for code style violations in OpenRA.Mods.TS..."
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.TS
-		echo "Checking for code style violations in OpenRA.Editor..."
-		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Editor
 		echo "Checking for code style violations in OpenRA.Renderer.Sdl2..."
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Renderer.Sdl2
 		echo "Checking for code style violations in OpenRA.Utility..."
