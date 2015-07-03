@@ -151,8 +151,9 @@ namespace OpenRA.Mods.Common.Graphics
 					var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
 						(x, y) => Util.MatrixMultiply(x, Util.MakeFloatMatrix(y.AsMatrix())));
 
-					var pxOffset = wr.ScreenVector(v.OffsetFunc());
-					var pxPos = pxOrigin + new float2(pxOffset[0], pxOffset[1]);
+					float sx, sy, sz;
+					wr.ScreenVectorComponents(v.OffsetFunc(), out sx, out sy, out sz);
+					var pxPos = pxOrigin + new float2(sx, sy);
 					var screenTransform = Util.MatrixMultiply(cameraTransform, worldTransform);
 					DrawBoundsBox(pxPos, screenTransform, bounds, Color.Yellow);
 				}
@@ -204,8 +205,9 @@ namespace OpenRA.Mods.Common.Graphics
 					var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
 						(x, y) => Util.MatrixMultiply(x, Util.MakeFloatMatrix(y.AsMatrix())));
 
-					var pxOffset = wr.ScreenVector(v.OffsetFunc());
-					var pxPos = pxOrigin + new float2(pxOffset[0], pxOffset[1]);
+					float sx, sy, sz;
+					wr.ScreenVectorComponents(v.OffsetFunc(), out sx, out sy, out sz);
+					var pxPos = pxOrigin + new float2(sx, sy);
 					var screenTransform = Util.MatrixMultiply(cameraTransform, worldTransform);
 
 					for (var i = 0; i < 8; i++)
