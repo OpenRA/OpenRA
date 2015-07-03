@@ -17,8 +17,8 @@ namespace OpenRA.Primitives
 {
 	public class TypeDictionary : IEnumerable
 	{
-		Dictionary<Type, object> dataSingular = new Dictionary<Type, object>();
-		Dictionary<Type, List<object>> dataMultiple = new Dictionary<Type, List<object>>();
+		static readonly Func<Type, List<object>> CreateList = type => new List<object>();
+		readonly Dictionary<Type, List<object>> data = new Dictionary<Type, List<object>>();
 
 		public void Add(object val)
 		{
@@ -32,63 +32,48 @@ namespace OpenRA.Primitives
 
 		void InnerAdd(Type t, object val)
 		{
-			List<object> objs;
-			object obj;
-
-			if (dataMultiple.TryGetValue(t, out objs))
-				objs.Add(val);
-			else if (dataSingular.TryGetValue(t, out obj))
-			{
-				dataSingular.Remove(t);
-				dataMultiple.Add(t, new List<object> { obj, val });
-			}
-			else
-				dataSingular.Add(t, val);
+			data.GetOrAdd(t, CreateList).Add(val);
 		}
 
 		public bool Contains<T>()
 		{
-			return dataSingular.ContainsKey(typeof(T)) || dataMultiple.ContainsKey(typeof(T));
+			return data.ContainsKey(typeof(T));
 		}
 
 		public T Get<T>()
 		{
-			if (dataMultiple.ContainsKey(typeof(T)))
-				throw new InvalidOperationException("TypeDictionary contains multiple instance of type `{0}`".F(typeof(T)));
-
-			object ret;
-			if (!dataSingular.TryGetValue(typeof(T), out ret))
-				throw new InvalidOperationException("TypeDictionary does not contain instance of type `{0}`".F(typeof(T)));
-			return (T)ret;
+			return (T)Get(typeof(T), true);
 		}
 
 		public T GetOrDefault<T>()
 		{
-			return (T)GetOrDefault(typeof(T));
+			var result = Get(typeof(T), false);
+			if (result == null)
+				return default(T);
+			return (T)result;
 		}
 
-		public object GetOrDefault(Type t)
+		object Get(Type t, bool throwsIfMissing)
 		{
-			if (dataMultiple.ContainsKey(t))
-				throw new InvalidOperationException("TypeDictionary contains multiple instances of type `{0}`".F(t));
-
-			object ret;
-			if (!dataSingular.TryGetValue(t, out ret))
+			List<object> ret;
+			if (!data.TryGetValue(t, out ret))
+			{
+				if (throwsIfMissing)
+					throw new InvalidOperationException("TypeDictionary does not contain instance of type `{0}`".F(t));
 				return null;
-			return ret;
+			}
+
+			if (ret.Count > 1)
+				throw new InvalidOperationException("TypeDictionary contains multiple instances of type `{0}`".F(t));
+			return ret[0];
 		}
 
 		public IEnumerable<T> WithInterface<T>()
 		{
 			List<object> objs;
-			object obj;
-
-			if (dataMultiple.TryGetValue(typeof(T), out objs))
+			if (data.TryGetValue(typeof(T), out objs))
 				return objs.Cast<T>();
-			else if (dataSingular.TryGetValue(typeof(T), out obj))
-				return new T[] { (T)obj };
-			else
-				return new T[0];
+			return new T[0];
 		}
 
 		public void Remove<T>(T val)
@@ -104,12 +89,11 @@ namespace OpenRA.Primitives
 		void InnerRemove(Type t, object val)
 		{
 			List<object> objs;
-			object obj;
-
-			if (dataMultiple.TryGetValue(t, out objs))
-				objs.Remove(val);
-			else if (dataSingular.TryGetValue(t, out obj))
-				dataSingular.Remove(t);
+			if (!data.TryGetValue(t, out objs))
+				return;
+			objs.Remove(val);
+			if (objs.Count == 0)
+				data.Remove(t);
 		}
 
 		public IEnumerator GetEnumerator()
