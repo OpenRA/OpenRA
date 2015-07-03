@@ -355,6 +355,18 @@ powerproxy.paratroopers:
 		DisplayBeacon: true
 		BeaconPoster: pinficon
 
+barracks.upgraded:
+	AlwaysVisible:
+	ProvidesPrerequisite:
+
+vehicles.upgraded:
+	AlwaysVisible:
+	ProvidesPrerequisite:
+
+aircraft.upgraded:
+	AlwaysVisible:
+	ProvidesPrerequisite:
+
 mpspawn:
 	AlwaysVisible:
 	Immobile:

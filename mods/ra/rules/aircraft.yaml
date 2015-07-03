@@ -121,6 +121,8 @@ MIG:
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,171
 		Interval: 2
+	ProduceableWithLevel:
+		Prerequisites: aircraft.upgraded
 
 YAK:
 	Inherits: ^Plane
@@ -176,6 +178,8 @@ YAK:
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,0
 		Interval: 2
+	ProduceableWithLevel:
+		Prerequisites: aircraft.upgraded
 
 TRAN:
 	Inherits: ^Helicopter
@@ -261,6 +265,8 @@ HELI:
 		HuskActor: HELI.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
+	ProduceableWithLevel:
+		Prerequisites: aircraft.upgraded
 
 HIND:
 	Inherits: ^Helicopter
@@ -312,6 +318,8 @@ HIND:
 		HuskActor: HIND.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
+	ProduceableWithLevel:
+		Prerequisites: aircraft.upgraded
 
 U2:
 	Inherits: ^Plane

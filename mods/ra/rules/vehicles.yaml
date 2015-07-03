@@ -29,6 +29,8 @@ V2RL:
 	WithAttackAnimation:
 		AimSequence: aim
 		ReloadPrefix: empty-
+	ProduceableWithLevel:
+		Prerequisites: vehicles.upgraded
 
 1TNK:
 	Inherits: ^Tank
@@ -67,6 +69,8 @@ V2RL:
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 1TNK.Husk
+	ProduceableWithLevel:
+		Prerequisites: vehicles.upgraded
 
 2TNK:
 	Inherits: ^Tank
@@ -107,6 +111,8 @@ V2RL:
 		HuskActor: 2TNK.Husk
 	SelectionDecorations:
 		VisualBounds: 28,28
+	ProduceableWithLevel:
+		Prerequisites: vehicles.upgraded
 
 3TNK:
 	Inherits: ^Tank
@@ -147,6 +153,8 @@ V2RL:
 		HuskActor: 3TNK.Husk
 	SelectionDecorations:
 		VisualBounds: 28,28
+	ProduceableWithLevel:
+		Prerequisites: vehicles.upgraded
 
 4TNK:
 	Inherits: ^Tank
@@ -201,6 +209,8 @@ V2RL:
 		DamageCooldown: 150
 	SelectionDecorations:
 		VisualBounds: 44,38,0,-4
+	ProduceableWithLevel:
+		Prerequisites: vehicles.upgraded
 
 ARTY:
 	Inherits: ^Tank
@@ -232,6 +242,8 @@ ARTY:
 		Weapon: UnitExplode
 		Chance: 75
 	AutoTarget:
+	ProduceableWithLevel:
+		Prerequisites: vehicles.upgraded
 
 HARV:
 	Inherits: ^Vehicle
@@ -356,6 +368,8 @@ JEEP:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
+	ProduceableWithLevel:
+		Prerequisites: vehicles.upgraded
 
 APC:
 	Inherits: ^Tank
@@ -388,6 +402,8 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
+	ProduceableWithLevel:
+		Prerequisites: vehicles.upgraded
 
 MNLY.AP:
 	Inherits: ^Tank
@@ -571,6 +587,8 @@ TTNK:
 	SelectionDecorations:
 		VisualBounds: 30,30
 	AutoTarget:
+	ProduceableWithLevel:
+		Prerequisites: vehicles.upgraded
 
 FTRK:
 	Inherits: ^Vehicle
@@ -606,6 +624,8 @@ FTRK:
 	AutoTarget:
 	SelectionDecorations:
 		VisualBounds: 28,28
+	ProduceableWithLevel:
+		Prerequisites: vehicles.upgraded
 
 DTRK:
 	Inherits: ^Vehicle
@@ -670,6 +690,8 @@ CTNK:
 		LocalYaw: -100
 	AttackFrontal:
 	PortableChrono:
+	ProduceableWithLevel:
+		Prerequisites: vehicles.upgraded
 
 QTNK:
 	Inherits: ^Tank
@@ -739,4 +761,6 @@ STNK:
 	DetectCloaked:
 		Range: 6
 	-MustBeDestroyed:
+	ProduceableWithLevel:
+		Prerequisites: vehicles.upgraded
 

@@ -854,6 +854,10 @@ WEAP:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
+	InfiltrateForSupportPower:
+		Proxy: vehicles.upgraded
 
 FACT:
 	Inherits: ^Building
@@ -1079,6 +1083,10 @@ HPAD:
 		RequiresPrerequisites: structures.germany
 		Prerequisite: aircraft.germany
 	ProvidesPrerequisite@buildingname:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
+	InfiltrateForSupportPower:
+		Proxy: aircraft.upgraded
 
 AFLD:
 	Inherits: ^Building
@@ -1184,6 +1192,10 @@ AFLD:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
+	InfiltrateForSupportPower:
+		Proxy: aircraft.upgraded
 
 POWR:
 	Inherits: ^Building
@@ -1351,6 +1363,10 @@ BARR:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
+	InfiltrateForSupportPower:
+		Proxy: barracks.upgraded
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 
 KENN:
 	Inherits: ^Building
@@ -1454,6 +1470,10 @@ TENT:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
+	InfiltrateForSupportPower:
+		Proxy: barracks.upgraded
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 
 FIX:
 	Inherits: ^Building
