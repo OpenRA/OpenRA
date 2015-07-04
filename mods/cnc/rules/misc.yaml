@@ -60,6 +60,7 @@ CAMERA:
 		HP: 1000
 	RevealsShroud:
 		Range: 10c0
+		Type: CenterPosition
 	BodyOrientation:
 
 CAMERA.small:
@@ -70,6 +71,7 @@ CAMERA.small:
 		HP: 1000
 	RevealsShroud:
 		Range: 6c0
+		Type: CenterPosition
 	BodyOrientation:
 
 FLARE:
@@ -77,11 +79,13 @@ FLARE:
 		OccupiesSpace: false
 	RevealsShroud:
 		Range: 3c0
+		Type: CenterPosition
 	RenderSprites:
 		Image: smokland
 	WithSpriteBody:
 		StartSequence: open
 	HiddenUnderFog:
+		Type: CenterPosition
 	Tooltip:
 		Name: Flare
 	BodyOrientation:

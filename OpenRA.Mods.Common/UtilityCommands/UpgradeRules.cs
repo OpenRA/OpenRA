@@ -1206,6 +1206,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// VisibilityType was introduced
+				if (engineVersion < 20150704)
+				{
+					if (depth == 0 && node.Value.Nodes.Exists(n => n.Key == "Helicopter" || n.Key == "Plane" || n.Key == "Immobile"))
+					{
+						var visibility = node.Value.Nodes.FirstOrDefault(n => n.Key == "HiddenUnderShroud" || n.Key == "HiddenUnderFog");
+						if (visibility != null)
+							visibility.Value.Nodes.Add(new MiniYamlNode("Type", "CenterPosition"));
+
+						var reveals = node.Value.Nodes.FirstOrDefault(n => n.Key == "RevealsShroud");
+						if (reveals != null)
+							reveals.Value.Nodes.Add(new MiniYamlNode("Type", "CenterPosition"));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

@@ -1,5 +1,6 @@
 MINP:
 	HiddenUnderShroud:
+		Type: CenterPosition
 	Mine:
 		CrushClasses: mine
 		DetonateClasses: mine
@@ -29,6 +30,7 @@ MINP:
 
 MINV:
 	HiddenUnderShroud:
+		Type: CenterPosition
 	Mine:
 		CrushClasses: mine
 		DetonateClasses: mine
@@ -173,6 +175,7 @@ CAMERA:
 		HP: 1000
 	RevealsShroud:
 		Range: 10c0
+		Type: CenterPosition
 	ProximityCaptor:
 		Types: Camera
 	BodyOrientation:
@@ -189,6 +192,7 @@ camera.paradrop:
 		HP: 1000
 	RevealsShroud:
 		Range: 6c0
+		Type: CenterPosition
 	ProximityCaptor:
 		Types: Camera
 	BodyOrientation:
@@ -201,6 +205,7 @@ SONAR:
 		HP: 1000
 	RevealsShroud:
 		Range: 10c0
+		Type: CenterPosition
 	ProximityCaptor:
 		Types: Sonar
 	BodyOrientation:
@@ -213,11 +218,13 @@ FLARE:
 		OccupiesSpace: false
 	RevealsShroud:
 		Range: 3c0
+		Type: CenterPosition
 	RenderSprites:
 		Image: smokland
 	WithSpriteBody:
 		StartSequence: open
 	HiddenUnderFog:
+		Type: CenterPosition
 	Tooltip:
 		Name: Flare
 		ShowOwnerRow: false

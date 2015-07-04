@@ -28,10 +28,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override bool IsVisibleInner(Actor self, Player byPlayer)
 		{
-			if (!VisibilityFootprint(self).Any(byPlayer.Shroud.IsVisible))
-				return false;
+			if (Info.Type == VisibilityType.Footprint)
+				return self.OccupiesSpace.OccupiedCells()
+					.Any(o => byPlayer.Shroud.IsVisible(o.First));
 
-			return base.IsVisibleInner(self, byPlayer);
+			return byPlayer.Shroud.IsVisible(self.CenterPosition);
 		}
 	}
 }

@@ -305,6 +305,7 @@
 		TargetTypes: Air
 		GroundedTargetTypes: Ground, Repair
 	HiddenUnderFog:
+		Type: CenterPosition
 	AttackMove:
 	Guard:
 	Guardable:
@@ -519,6 +520,7 @@
 	Armor:
 		Type: Heavy
 	HiddenUnderFog:
+		Type: CenterPosition
 	BodyOrientation:
 	AutoTargetIgnore:
 	ScriptTriggers:
@@ -565,7 +567,7 @@
 	FallsToEarth:
 
 ^Bridge:
-	HiddenUnderShroud:
+	AlwaysVisible:
 	Tooltip:
 		Name: Bridge
 	TargetableBuilding:

@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
@@ -30,6 +31,18 @@ namespace OpenRA.Mods.Common.Lint
 					emitError("Actor type `{0}` does not define a default visibility type!".F(actorInfo.Key));
 				else if (count > 1)
 					emitError("Actor type `{0}` defines multiple default visibility types!".F(actorInfo.Key));
+				else
+				{
+					var vis = actorInfo.Value.Traits.GetOrDefault<HiddenUnderShroudInfo>();
+					if (vis != null && vis.Type == VisibilityType.Footprint)
+					{
+						var ios = actorInfo.Value.Traits.GetOrDefault<IOccupySpaceInfo>();
+						if (ios == null)
+							emitError("Actor type `{0}` defines VisibilityType.Footprint in `{1}` but has no IOccupySpace traits!".F(actorInfo.Key, vis.GetType()));
+						else if (!ios.OccupiedCells(actorInfo.Value, CPos.Zero).Any())
+							emitError("Actor type `{0}` defines VisibilityType.Footprint in `{1}` but does not have any footprint cells!".F(actorInfo.Key, vis.GetType()));
+					}
+				}
 			}
 		}
 	}

@@ -420,6 +420,7 @@
 	Voiced:
 		VoiceSet: Heli
 	HiddenUnderFog:
+		Type: CenterPosition
 	AttackMove:
 		Voice: Move
 	ActorLostNotification:

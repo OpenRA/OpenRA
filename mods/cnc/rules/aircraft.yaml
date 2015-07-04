@@ -22,6 +22,7 @@ TRAN:
 		Type: Light
 	RevealsShroud:
 		Range: 10c0
+		Type: CenterPosition
 	WithRotor@PRIMARY:
 		Offset: -597,0,171
 		Sequence: rotor2
@@ -61,6 +62,7 @@ HELI:
 		Type: Light
 	RevealsShroud:
 		Range: 10c0
+		Type: CenterPosition
 	Armament@PRIMARY:
 		Weapon: HeliAGGun
 		LocalOffset: 128,-213,-85, 128,213,-85
@@ -111,6 +113,7 @@ ORCA:
 		Type: Light
 	RevealsShroud:
 		Range: 10c0
+		Type: CenterPosition
 	Armament@PRIMARY:
 		Weapon: OrcaAGMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
@@ -155,6 +158,7 @@ C17:
 		Type: Heavy
 	HiddenUnderFog:
 		AlwaysVisibleStances: None
+		Type: CenterPosition
 	Cargo:
 		MaxWeight: 10
 		PipCount: 10
@@ -216,6 +220,7 @@ TRAN.Husk:
 		Speed: 140
 	RevealsShroud:
 		Range: 8c0
+		Type: CenterPosition
 	WithRotor@PRIMARY:
 		Offset: -597,0,171
 	WithRotor@SECONDARY:
@@ -232,6 +237,7 @@ HELI.Husk:
 		Speed: 186
 	RevealsShroud:
 		Range: 10c0
+		Type: CenterPosition
 	WithRotor:
 		Offset: 0,0,85
 	RenderSprites:
@@ -246,6 +252,7 @@ ORCA.Husk:
 		Speed: 186
 	RevealsShroud:
 		Range: 10c0
+		Type: CenterPosition
 	RenderSprites:
 		Image: orca
 

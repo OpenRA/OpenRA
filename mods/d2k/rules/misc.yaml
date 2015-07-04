@@ -142,6 +142,7 @@ camera:
 		HP: 1000
 	RevealsShroud:
 		Range: 8c0
+		Type: CenterPosition
 	BodyOrientation:
 
 wormspawner:
