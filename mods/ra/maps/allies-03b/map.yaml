@@ -1302,6 +1302,7 @@ Rules:
 			Image: E7
 	PRISON:
 		HiddenUnderShroud:
+			Type: CenterPosition
 		Immobile:
 			OccupiesSpace: false
 		BodyOrientation:

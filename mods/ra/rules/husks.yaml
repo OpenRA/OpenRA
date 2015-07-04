@@ -94,6 +94,7 @@ TRAN.Husk:
 		Offset: 597,0,213
 	RevealsShroud:
 		Range: 12c0
+		Type: CenterPosition
 	RenderSprites:
 		Image: tran
 
@@ -146,6 +147,7 @@ MIG.Husk:
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 12c0
+		Type: CenterPosition
 	RenderSprites:
 		Image: mig
 
@@ -164,6 +166,7 @@ YAK.Husk:
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 10c0
+		Type: CenterPosition
 	RenderSprites:
 		Image: yak
 
@@ -181,6 +184,7 @@ HELI.Husk:
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 12c0
+		Type: CenterPosition
 	RenderSprites:
 		Image: heli
 
@@ -197,6 +201,7 @@ HIND.Husk:
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 10c0
+		Type: CenterPosition
 	RenderSprites:
 		Image: hind
 
