@@ -93,6 +93,7 @@
 	Armor:
 		Type: Light
 	HiddenUnderFog:
+		Type: CenterPosition
 	Tooltip:
 		Name: Wreck
 	BodyOrientation:
@@ -211,6 +212,7 @@
 	AppearsOnRadar:
 		UseLocation: yes
 	HiddenUnderFog:
+		Type: CenterPosition
 		AlwaysVisibleStances: None
 	ActorLostNotification:
 	AttackMove:
