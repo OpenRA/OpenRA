@@ -18,6 +18,7 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		public readonly string[] OpenTerrainTypes = { "Clear" };
 		[SequenceReference] public readonly string OpenSequence = "open";
+		[SequenceReference] public readonly string CloseSequence = "close";
 		[SequenceReference] public readonly string UnloadSequence = "unload";
 
 		public object Create(ActorInitializer init) { return new WithLandingCraftAnimation(init, this); }
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public bool ShouldBeOpen()
 		{
-			if (self.CenterPosition.Z > 0 || move.IsMoving)
+			if (move.IsMoving || self.CenterPosition.Z > 0)
 				return false;
 
 			return cargo.CurrentAdjacentCells.Any(c => self.World.Map.Contains(c)
@@ -65,11 +66,11 @@ namespace OpenRA.Mods.RA.Traits
 
 		void Close()
 		{
-			if (!open || !wsb.DefaultAnimation.HasSequence(info.OpenSequence))
+			if (!open || !wsb.DefaultAnimation.HasSequence(info.CloseSequence))
 				return;
 
 			open = false;
-			wsb.PlayCustomAnimationBackwards(self, info.OpenSequence, null);
+			wsb.PlayCustomAnimation(self, info.CloseSequence);
 		}
 
 		public void Tick(Actor self)
