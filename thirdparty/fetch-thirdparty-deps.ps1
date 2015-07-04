@@ -137,4 +137,12 @@ if (!(Test-Path "GeoLite2-Country.mmdb.gz") -Or (((get-date) - (get-item "GeoLit
 	(New-Object System.Net.WebClient).DownloadFile("http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz", $target)
 }
 
+if (!(Test-Path "IrcDotNet.dll"))
+{
+	echo "Fetching IrcDotNet from NuGet."
+	./nuget.exe install IrcDotNet -Version 0.5.0 -ExcludeVersion
+	cp IrcDotNet/lib/net40/IrcDotNet.* .
+	rmdir IrcDotNet -Recurse
+}
+
 cd ..

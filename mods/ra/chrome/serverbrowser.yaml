@@ -3,7 +3,7 @@ Background@SERVERBROWSER_PANEL:
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
 	Width: 740
-	Height: 500
+	Height: 645
 	Children:
 		Label@MULTIPLAYER_LABEL_TITLE:
 			X: 0
@@ -58,7 +58,7 @@ Background@SERVERBROWSER_PANEL:
 			X: 20
 			Y: 80
 			Width: 700
-			Height: 360
+			Height: 240
 			Children:
 				ScrollItem@HEADER_TEMPLATE:
 					BaseName: scrollheader
@@ -118,6 +118,10 @@ Background@SERVERBROWSER_PANEL:
 							Y: 40
 							Align: Right
 							Height: 25
+		Container@IRC_ROOT:
+			X: 20
+			Y: 370
+			Width: 260
 		Label@PROGRESS_LABEL:
 			X: (PARENT_RIGHT - WIDTH) / 2
 			Y: PARENT_BOTTOM / 2 - HEIGHT
@@ -127,28 +131,28 @@ Background@SERVERBROWSER_PANEL:
 			Align: Center
 		Button@REFRESH_BUTTON:
 			X: 20
-			Y: PARENT_BOTTOM - 45
+			Y: 325
 			Width: 100
 			Height: 25
 			Text: Refresh
 			Font: Bold
 		Button@CREATE_BUTTON:
 			X: PARENT_RIGHT - 120 - 120 - 120 - 120
-			Y: PARENT_BOTTOM - 45
+			Y: 325
 			Width: 100
 			Height: 25
 			Text: Create
 			Font: Bold
 		Button@DIRECTCONNECT_BUTTON:
 			X: PARENT_RIGHT - 120 - 120 - 120
-			Y: PARENT_BOTTOM - 45
+			Y: 325
 			Width: 100
 			Height: 25
 			Text: Direct IP
 			Font: Bold
 		Button@JOIN_BUTTON:
 			X: PARENT_RIGHT - 120 - 120
-			Y: PARENT_BOTTOM - 45
+			Y: 325
 			Width: 100
 			Height: 25
 			Text: Join
@@ -156,7 +160,7 @@ Background@SERVERBROWSER_PANEL:
 			Key: return
 		Button@BACK_BUTTON:
 			X: PARENT_RIGHT - 120
-			Y: PARENT_BOTTOM - 45
+			Y: 325
 			Width: 100
 			Height: 25
 			Text: Cancel
