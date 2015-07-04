@@ -254,47 +254,6 @@ namespace OpenRA
 		[FieldLoader.Ignore] public CellRegion CellsInsideBounds;
 		[FieldLoader.Ignore] public CellRegion AllCells;
 
-		public static Map FromTileset(TileSet tileset)
-		{
-			var size = new Size(1, 1);
-			var tileShape = Game.ModData.Manifest.TileShape;
-			var tileRef = new TerrainTile(tileset.Templates.First().Key, (byte)0);
-
-			var makeMapTiles = Exts.Lazy(() =>
-			{
-				var ret = new CellLayer<TerrainTile>(tileShape, size);
-				ret.Clear(tileRef);
-				return ret;
-			});
-
-			var makeMapHeight = Exts.Lazy(() =>
-			{
-				var ret = new CellLayer<byte>(tileShape, size);
-				ret.Clear(0);
-				return ret;
-			});
-
-			var map = new Map()
-			{
-				Title = "Name your map here",
-				Description = "Describe your map here",
-				Author = "Your name here",
-				MapSize = new int2(size),
-				Tileset = tileset.Id,
-				Videos = new MapVideos(),
-				Options = new MapOptions(),
-				MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(tileShape, size)),
-				MapTiles = makeMapTiles,
-				MapHeight = makeMapHeight,
-
-				SpawnPoints = Exts.Lazy(() => new CPos[0])
-			};
-
-			map.PostInit();
-
-			return map;
-		}
-
 		void AssertExists(string filename)
 		{
 			using (var s = Container.GetContent(filename))
@@ -302,11 +261,50 @@ namespace OpenRA
 					throw new InvalidOperationException("Required file {0} not present in this map".F(filename));
 		}
 
-		// Stub constructor that doesn't produce a valid map, but is
-		// sufficient for loading a mod to the content-install panel
+		/// <summary>A stub constructor that doesn't produce a valid map. Do not use.</summary>
 		public Map() { }
 
-		// The standard constructor for most purposes
+		/// <summary>
+		/// Initializes a new map created by the editor or importer.
+		/// The map will not recieve a valid UID until after it has been saved and reloaded.
+		/// </summary>
+		public Map(TileSet tileset, int width, int height)
+		{
+			var size = new Size(width, height);
+			var tileShape = Game.ModData.Manifest.TileShape;
+			var tileRef = new TerrainTile(tileset.Templates.First().Key, (byte)0);
+
+			Title = "Name your map here";
+			Description = "Describe your map here";
+			Author = "Your name here";
+
+			MapSize = new int2(size);
+			Tileset = tileset.Id;
+			Videos = new MapVideos();
+			Options = new MapOptions();
+
+			MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(tileShape, size));
+
+			MapTiles = Exts.Lazy(() =>
+			{
+				var ret = new CellLayer<TerrainTile>(tileShape, size);
+				ret.Clear(tileRef);
+				return ret;
+			});
+
+			MapHeight = Exts.Lazy(() =>
+			{
+				var ret = new CellLayer<byte>(tileShape, size);
+				ret.Clear(0);
+				return ret;
+			});
+
+			SpawnPoints = Exts.Lazy(() => new CPos[0]);
+
+			PostInit();
+		}
+
+		/// <summary>Initializes a map loaded from disk.</summary>
 		public Map(string path)
 		{
 			Path = path;

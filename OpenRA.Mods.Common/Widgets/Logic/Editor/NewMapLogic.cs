@@ -51,9 +51,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = () =>
 			{
-				var tileset = modRules.TileSets[tilesetDropDown.Text];
-				var map = Map.FromTileset(tileset);
-
 				int width, height;
 				int.TryParse(widthTextField.Text, out width);
 				int.TryParse(heightTextField.Text, out height);
@@ -63,7 +60,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				width = Math.Max(2, width);
 				height = Math.Max(2, height);
 
-				map.Resize(width + 2, height + tileset.MaxGroundHeight + 2);
+				var tileset = modRules.TileSets[tilesetDropDown.Text];
+				var map = new Map(tileset, width + 2, height + tileset.MaxGroundHeight + 2);
 
 				var tl = new MPos(1, 1);
 				var br = new MPos(width, height + tileset.MaxGroundHeight);
