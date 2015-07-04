@@ -187,9 +187,7 @@ namespace OpenRA.FileFormats
 			}
 			catch (Exception ex)
 			{
-				// OutOfMemoryException can be thrown if the replay file is corrupt.
-				if (ex is ArgumentException || ex is NotSupportedException || ex is IOException
-					|| ex is UnauthorizedAccessException || ex is OutOfMemoryException)
+				if (ex is ArgumentException || ex is NotSupportedException || ex is IOException || ex is UnauthorizedAccessException)
 				{
 					Log.Write("debug", ex.ToString());
 					return null;
