@@ -108,7 +108,7 @@ crate:
 	WithCrateBody:
 	Passenger:
 	CustomSelectionSize:
-		CustomBounds: 16,16
+		CustomBounds: 20,20
 
 mpspawn:
 	AlwaysVisible:
