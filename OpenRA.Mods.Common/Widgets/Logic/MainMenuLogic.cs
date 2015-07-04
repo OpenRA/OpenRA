@@ -380,7 +380,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void StartSkirmishGame()
 		{
-			var map = WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
+			var map = Game.ModData.MapCache.ChooseInitialMap(Game.Settings.Server.Map);
 			Game.Settings.Server.Map = map;
 			Game.Settings.Save();
 

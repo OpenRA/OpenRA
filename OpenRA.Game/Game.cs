@@ -402,7 +402,7 @@ namespace OpenRA
 		{
 			while (true)
 			{
-				Settings.Server.Map = WidgetUtils.ChooseInitialMap(Settings.Server.Map);
+				Settings.Server.Map = ModData.MapCache.ChooseInitialMap(Settings.Server.Map);
 				Settings.Save();
 				CreateServer(Settings.Server.Clone());
 

@@ -237,6 +237,18 @@ namespace OpenRA
 				});
 		}
 
+		public string ChooseInitialMap(string initialUid)
+		{
+			if (string.IsNullOrEmpty(initialUid) || previews[initialUid].Status != MapStatus.Available)
+			{
+				var selected = previews.Values.Where(x => x.SuitableForInitialMap).RandomOrDefault(Game.CosmeticRandom) ??
+					previews.Values.First(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Lobby));
+				return selected.Uid;
+			}
+
+			return initialUid;
+		}
+
 		public MapPreview this[string key]
 		{
 			get { return previews[key]; }

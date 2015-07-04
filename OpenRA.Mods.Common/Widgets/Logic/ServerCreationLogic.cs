@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.onExit = onExit;
 
 			var settings = Game.Settings;
-			preview = modData.MapCache[WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map)];
+			preview = modData.MapCache[modData.MapCache.ChooseInitialMap(Game.Settings.Server.Map)];
 
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
 
