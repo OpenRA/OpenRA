@@ -107,6 +107,7 @@
 		RearmBuildings:
 		LandWhenIdle: false
 	HiddenUnderFog:
+		Type: CenterPosition
 	ActorLostNotification:
 	Explodes:
 		Weapon: HeliExplode
@@ -354,6 +355,7 @@
 	AppearsOnRadar:
 		UseLocation: yes
 	HiddenUnderFog:
+		Type: CenterPosition
 	ActorLostNotification:
 	AttackMove:
 	WithShadow:
@@ -592,6 +594,7 @@
 	Armor:
 		Type: Light
 	HiddenUnderFog:
+		Type: CenterPosition
 	AutoTargetIgnore:
 	BodyOrientation:
 	WithFacingSpriteBody:
@@ -631,7 +634,7 @@
 		GenericName: Destroyed Helicopter
 
 ^Bridge:
-	HiddenUnderShroud:
+	AlwaysVisible:
 	Tooltip:
 		Name: Bridge
 	TargetableBuilding:
