@@ -74,13 +74,13 @@ namespace OpenRA.Utility
 			foreach (var a in actions)
 			{
 				var descParts = a.Value.Method.GetCustomAttributes<DescAttribute>(true)
-					.SelectMany(d => d.Lines);
+					.SelectMany(d => d.Lines).ToArray();
 
-				if (!descParts.Any())
+				if (descParts.Length == 0)
 					continue;
 
-				var args = descParts.Take(descParts.Count() - 1).JoinWith(" ");
-				var desc = descParts.Last();
+				var args = descParts.Take(descParts.Length - 1).JoinWith(" ");
+				var desc = descParts[descParts.Length - 1];
 
 				Console.WriteLine("  {0} {1}    ({2})", a.Key, args, desc);
 			}
