@@ -23,10 +23,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Game.ModData = modData;
 			var table = ActorStatsExport.GenerateTable();
 			var filename = "{0}-mod-dps.csv".F(Game.ModData.Manifest.Mod.Id);
-			using (var outfile = new StreamWriter(filename))
-				outfile.Write(table.ToCharacterSeparatedValues(";", true));
-			Console.WriteLine("{0} has been saved.".F(filename));
-			Console.WriteLine("Open as values separated by semicolon.");
+
+			try
+			{
+				using (var outfile = new StreamWriter(filename))
+					outfile.Write(table.ToCharacterSeparatedValues(";", true));
+				Console.WriteLine("{0} has been saved.".F(filename));
+				Console.WriteLine("Open as values separated by semicolon.");
+			}
+			catch (UnauthorizedAccessException e)
+			{
+				Console.WriteLine(e.Message);
+			}
 		}
 	}
 }
