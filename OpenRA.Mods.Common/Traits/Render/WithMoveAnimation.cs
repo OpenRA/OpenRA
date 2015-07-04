@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class WithMoveAnimationInfo : ITraitInfo, Requires<WithFacingSpriteBodyInfo>, Requires<IMoveInfo>
+	public class WithMoveAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<IMoveInfo>
 	{
 		[Desc("Displayed while moving.")]
 		[SequenceReference] public readonly string MoveSequence = "move";
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly WithMoveAnimationInfo info;
 		readonly IMove movement;
-		readonly WithFacingSpriteBody wfsb;
+		readonly WithSpriteBody wsb;
 
 		WPos cachedPosition;
 
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			movement = init.Self.Trait<IMove>();
-			wfsb = init.Self.Trait<WithFacingSpriteBody>();
+			wsb = init.Self.Trait<WithSpriteBody>();
 
 			cachedPosition = init.Self.CenterPosition;
 		}
@@ -45,10 +45,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Flying units set IsMoving whenever they are airborne, which isn't enough for our purposes
 			var isMoving = movement.IsMoving && !self.IsDead && (oldCachedPosition - cachedPosition).HorizontalLengthSquared != 0;
-			if (isMoving ^ (wfsb.DefaultAnimation.CurrentSequence.Name != info.MoveSequence))
+			if (isMoving ^ (wsb.DefaultAnimation.CurrentSequence.Name != info.MoveSequence))
 				return;
 
-			wfsb.DefaultAnimation.ReplaceAnim(isMoving ? info.MoveSequence : wfsb.Info.Sequence);
+			wsb.DefaultAnimation.ReplaceAnim(isMoving ? info.MoveSequence : wsb.Info.Sequence);
 		}
 	}
 }
