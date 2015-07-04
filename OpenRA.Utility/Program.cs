@@ -71,9 +71,12 @@ namespace OpenRA.Utility
 
 			if (actions == null)
 				return;
-			foreach (var a in actions)
+
+			var keys = actions.Keys.OrderBy(x => x);
+
+			foreach (var key in keys)
 			{
-				var descParts = a.Value.Method.GetCustomAttributes<DescAttribute>(true)
+				var descParts = actions[key].Method.GetCustomAttributes<DescAttribute>(true)
 					.SelectMany(d => d.Lines).ToArray();
 
 				if (descParts.Length == 0)
