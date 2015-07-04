@@ -63,7 +63,6 @@ namespace OpenRA.FileFormats
 						text.AppendLine("Start Time UTC: " + gameInfo.StartTimeUtc.ToString("yyyy-MM-dd HH:mm:ss"));
 						text.AppendLine();
 
-						GeoIP.Initialize();
 						foreach (var team in playersByTeam)
 						{
 							var teamLabel = team.Key == 0 ? "No Team:" : "Team " + team.Key + ":";
@@ -74,17 +73,17 @@ namespace OpenRA.FileFormats
 								text.AppendLine(player.Name);
 								var client = session.ClientWithIndex(player.ClientIndex);
 								if (client.IsAdmin && !gameInfo.IsSinglePlayer)
-									text.AppendLine("\t[Admin]");
+									text.AppendLine("[Admin]");
 
-								text.AppendLine("\tHuman: " + player.IsHuman);
-								text.AppendLine("\tFaction: " + player.FactionName);
-								text.AppendLine("\tRandom faction: " + player.IsRandomFaction);
-								text.AppendLine("\tSpawn point: " + player.SpawnPoint);
-								text.AppendLine("\tRandom spawn point: " + player.IsRandomSpawnPoint);
+								text.AppendLine("Human: " + player.IsHuman);
+								text.AppendLine("Faction: " + player.FactionName);
+								text.AppendLine("Random faction: " + player.IsRandomFaction);
+								text.AppendLine("Spawn point: " + player.SpawnPoint);
+								text.AppendLine("Random spawn point: " + player.IsRandomSpawnPoint);
 
 								if (player.IsHuman && !gameInfo.IsSinglePlayer)
 									foreach (var line in NetworkInfo(session, client))
-										text.AppendLine("\t" + line);
+										text.AppendLine(line);
 
 								text.AppendLine();
 							}
@@ -102,10 +101,10 @@ namespace OpenRA.FileFormats
 								if (!gameInfo.IsSinglePlayer)
 								{
 									if (spec.IsAdmin)
-										text.AppendLine("\t[Admin]");
+										text.AppendLine("[Admin]");
 
 									foreach (var line in NetworkInfo(session, spec))
-										text.AppendLine("\t" + line);
+										text.AppendLine(line);
 								}
 
 								text.AppendLine();
@@ -156,6 +155,8 @@ namespace OpenRA.FileFormats
 				using (var fs = File.OpenRead(metadata.FilePath))
 				{
 					var networkTickCount = 0;
+					if (!gameInfo.IsSinglePlayer)
+						GeoIP.Initialize();
 
 					while (fs.Position < metadata.MetaStartMarkerPosition)
 					{
