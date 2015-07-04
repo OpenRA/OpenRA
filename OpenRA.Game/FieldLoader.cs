@@ -438,11 +438,15 @@ namespace OpenRA
 
 		static object ParseYesNo(string p, Type fieldType, string field)
 		{
+			if (string.IsNullOrEmpty(p))
+				return InvalidValueAction(p, fieldType, field);
+
 			p = p.ToLowerInvariant();
 			if (p == "yes") return true;
 			if (p == "true") return true;
 			if (p == "no") return false;
 			if (p == "false") return false;
+
 			return InvalidValueAction(p, fieldType, field);
 		}
 
