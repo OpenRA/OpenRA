@@ -49,10 +49,12 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new ExternalCapturable(init.Self, this); }
 	}
 
-	public class ExternalCapturable : ITick
+	public class ExternalCapturable : ITick, IPreventsAutoTarget
 	{
-		[Sync] public int CaptureProgressTime = 0;
-		[Sync] public Actor Captor;
+		[Sync]
+		public int CaptureProgressTime = 0;
+		[Sync]
+		public Actor Captor;
 		private Actor self;
 		public ExternalCapturableInfo Info;
 		public bool CaptureInProgress { get { return Captor != null; } }
@@ -65,6 +67,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void BeginCapture(Actor captor)
 		{
+			// Stops actors currently targeting this actor from targeting it.
+			self.Generation++;
 			var building = self.TraitOrDefault<Building>();
 			if (building != null)
 				building.Lock();
@@ -91,5 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				CaptureProgressTime++;
 		}
+
+		public bool CanAutoTarget(Actor self, Actor attacker) { return !CaptureInProgress; }
 	}
 }

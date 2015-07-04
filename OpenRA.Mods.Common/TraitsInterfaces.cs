@@ -96,4 +96,6 @@ namespace OpenRA.Mods.Common.Traits
 		void MovementCancelled(Actor self);
 		void RequestTransport(CPos destination, Activity afterLandActivity);
 	}
+
+	public interface IPreventsAutoTarget { bool CanAutoTarget(Actor self, Actor attacker); }
 }

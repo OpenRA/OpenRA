@@ -45,11 +45,14 @@ namespace OpenRA.Mods.Common.Traits
 		readonly AutoTargetInfo info;
 		readonly AttackBase attack;
 		readonly AttackFollow at;
-		[Sync] int nextScanTime = 0;
+		[Sync]
+		int nextScanTime = 0;
 
 		public UnitStance Stance;
-		[Sync] public Actor Aggressor;
-		[Sync] public Actor TargetedActor;
+		[Sync]
+		public Actor Aggressor;
+		[Sync]
+		public Actor TargetedActor;
 
 		// NOT SYNCED: do not refer to this anywhere other than UI code
 		public UnitStance PredictedStance;
@@ -153,15 +156,19 @@ namespace OpenRA.Mods.Common.Traits
 
 			return inRange
 				.Where(a =>
+				{
+					var target = Target.FromActor(a);
+					return target.IsValidFor(self) &&
 					a.AppearsHostileTo(self) &&
-					!a.HasTrait<AutoTargetIgnore>() &&
 					attack.HasAnyValidWeapons(Target.FromActor(a)) &&
-					self.Owner.CanTargetActor(a))
+					self.Owner.CanTargetActor(a) &&
+					a.TraitsImplementing<IPreventsAutoTarget>().Any(t => t.CanAutoTarget(a, self));
+				})
 				.ClosestTo(self);
 		}
 	}
 
 	[Desc("Will not get automatically targeted by enemy (like walls)")]
 	class AutoTargetIgnoreInfo : TraitInfo<AutoTargetIgnore> { }
-	class AutoTargetIgnore { }
+	class AutoTargetIgnore : IPreventsAutoTarget { public bool CanAutoTarget(Actor self, Actor target) { return false; } }
 }
