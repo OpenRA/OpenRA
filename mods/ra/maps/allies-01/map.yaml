@@ -542,6 +542,9 @@ Rules:
 	^CivInfantry:
 		RevealsShroud:
 			Range: 0c0
+	C8:
+		Inherits@2: ^ArmedCivilian
+		AutoTarget:
 	JEEP:
 		Cargo:
 			Types: Infantry, Einstein

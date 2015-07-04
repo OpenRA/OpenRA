@@ -248,6 +248,8 @@
 	Armament:
 		Weapon: Pistol
 	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: shoot
 
 ^Ship:
 	Inherits@1: ^ExistsInWorld
