@@ -63,28 +63,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Seed(Actor self)
 		{
-			var cell = RandomWalk(self.Location, self.World.SharedRandom)
+			var cell = Util.RandomWalk(self.Location, self.World.SharedRandom)
 				.Take(info.MaxRange)
 				.SkipWhile(p => resLayer.GetResource(p) == resourceType && resLayer.IsFull(p))
 				.Cast<CPos?>().FirstOrDefault();
 
 			if (cell != null && resLayer.CanSpawnResourceAt(resourceType, cell.Value))
 				resLayer.AddResource(resourceType, cell.Value, 1);
-		}
-
-		static IEnumerable<CPos> RandomWalk(CPos p, MersenneTwister r)
-		{
-			for (;;)
-			{
-				var dx = r.Next(-1, 2);
-				var dy = r.Next(-1, 2);
-
-				if (dx == 0 && dy == 0)
-					continue;
-
-				p += new CVec(dx, dy);
-				yield return p;
-			}
 		}
 	}
 }
