@@ -86,17 +86,5 @@ namespace OpenRA.Utility
 				Console.WriteLine("  {0} {1}    ({2})", a.Key, args, desc);
 			}
 		}
-
-		static string GetNamedArg(string[] args, string arg)
-		{
-			if (args.Length < 2)
-				return null;
-
-			var i = Array.IndexOf(args, arg);
-			if (i < 0 || i == args.Length - 1)  // doesnt exist, or doesnt have a value.
-				return null;
-
-			return args[i + 1];
-		}
 	}
 }
