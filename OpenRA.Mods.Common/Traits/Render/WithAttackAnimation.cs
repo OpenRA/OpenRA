@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class WithAttackAnimationInfo : ITraitInfo, Requires<WithFacingSpriteBodyInfo>, Requires<ArmamentInfo>, Requires<AttackBaseInfo>
+	public class WithAttackAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<ArmamentInfo>, Requires<AttackBaseInfo>
 	{
 		[Desc("Armament name")]
 		public readonly string Armament = "primary";
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly WithAttackAnimationInfo info;
 		readonly AttackBase attack;
 		readonly Armament armament;
-		readonly WithFacingSpriteBody wfsb;
+		readonly WithSpriteBody wsb;
 
 		public WithAttackAnimation(ActorInitializer init, WithAttackAnimationInfo info)
 		{
@@ -43,13 +43,13 @@ namespace OpenRA.Mods.Common.Traits
 			attack = init.Self.Trait<AttackBase>();
 			armament = init.Self.TraitsImplementing<Armament>()
 				.Single(a => a.Info.Name == info.Armament);
-			wfsb = init.Self.Trait<WithFacingSpriteBody>();
+			wsb = init.Self.Trait<WithSpriteBody>();
 		}
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			if (!string.IsNullOrEmpty(info.AttackSequence))
-				wfsb.PlayCustomAnimation(self, info.AttackSequence);
+				wsb.PlayCustomAnimation(self, info.AttackSequence);
 		}
 
 		public void Tick(Actor self)
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (string.IsNullOrEmpty(info.AimSequence) && string.IsNullOrEmpty(info.ReloadPrefix))
 				return;
 
-			var sequence = wfsb.Info.Sequence;
+			var sequence = wsb.Info.Sequence;
 			if (!string.IsNullOrEmpty(info.AimSequence) && attack.IsAttacking)
 				sequence = info.AimSequence;
 
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!string.IsNullOrEmpty(prefix) && sequence != (prefix + sequence))
 				sequence = prefix + sequence;
 
-			wfsb.DefaultAnimation.ReplaceAnim(sequence);
+			wsb.DefaultAnimation.ReplaceAnim(sequence);
 		}
 	}
 }
