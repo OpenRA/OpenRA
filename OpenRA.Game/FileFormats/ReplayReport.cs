@@ -155,8 +155,6 @@ namespace OpenRA.FileFormats
 				using (var fs = File.OpenRead(metadata.FilePath))
 				{
 					var networkTickCount = 0;
-					if (!gameInfo.IsSinglePlayer)
-						GeoIP.Initialize();
 
 					while (fs.Position < metadata.MetaStartMarkerPosition)
 					{

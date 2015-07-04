@@ -11,6 +11,7 @@
 using System;
 using System.IO;
 using OpenRA.FileFormats;
+using OpenRA.Network;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -73,6 +74,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			Log.AddChannel("debug", "debug.log");
 			Log.AddChannel("geoip", "geoip.log");
+			GeoIP.Initialize();
 
 			if (outputPath == null)
 			{
