@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -40,7 +41,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.World.SharedRandom.Next(100) > info.Chance)
 				return;
 
-			if (info.DeathType != null && e.Warhead != null && !info.DeathType.Intersect(e.Warhead.DamageTypes).Any())
+			var warhead = e.Warhead as DamageWarhead;
+			if (info.DeathType != null && warhead != null && !info.DeathType.Intersect(warhead.DamageTypes).Any())
 				return;
 
 			var weaponName = ChooseWeaponForExplosion(self);

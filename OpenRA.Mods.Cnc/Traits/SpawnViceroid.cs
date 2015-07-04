@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.Common.Warheads;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -33,8 +34,11 @@ namespace OpenRA.Mods.Cnc.Traits
 		public void Killed(Actor self, AttackInfo e)
 		{
 			if (!self.World.LobbyInfo.GlobalSettings.Creeps) return;
-			if (e.Warhead == null || !e.Warhead.DamageTypes.Contains(info.DeathType)) return;
 			if (self.World.SharedRandom.Next(100) > info.Probability) return;
+
+			var warhead = e.Warhead as DamageWarhead;
+			if (warhead == null || !warhead.DamageTypes.Contains(info.DeathType))
+				return;
 
 			self.World.AddFrameEndTask(w =>
 			{
