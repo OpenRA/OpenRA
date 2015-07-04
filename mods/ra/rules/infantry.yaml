@@ -357,8 +357,7 @@ EINSTEIN:
 		VoiceSet: EinsteinVoice
 
 DELPHI:
-	Inherits@1: ^CivInfantry
-	Inherits@2: ^ArmedCivilian
+	Inherits: ^CivInfantry
 	Tooltip:
 		Name: Agent Delphi
 	Mobile:
