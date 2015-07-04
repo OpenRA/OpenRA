@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 				inaccuracyLevel = newLevel.Clamp(0, info.InaccuracyModifier.Length);
 		}
 
-		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)
+		public int GetDamageModifier(Actor attacker, IWarhead warhead)
 		{
 			return damageLevel > 0 ? info.DamageModifier[damageLevel - 1] : 100;
 		}

@@ -9,7 +9,6 @@
 #endregion
 
 using System.Linq;
-using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -101,7 +100,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)
+		public int GetDamageModifier(Actor attacker, IWarhead warhead)
 		{
 			return state == PopupState.Closed ? info.ClosedDamageMultiplier : 100;
 		}

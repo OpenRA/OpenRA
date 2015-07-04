@@ -8,10 +8,9 @@
   */
  #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.GameRules;
+using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -42,6 +41,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class TerrainModifiesDamage : IDamageModifier
 	{
+		const int FullDamage = 100;
+
 		public readonly TerrainModifiesDamageInfo Info;
 
 		readonly Actor self;
@@ -52,11 +53,11 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 		}
 
-		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)
+		public int GetDamageModifier(Actor attacker, IWarhead warhead)
 		{
-			var percent = 100;
-			if (attacker.Owner.IsAlliedWith(self.Owner) && (warhead != null && warhead.Damage < 0) && !Info.ModifyHealing)
-				return percent;
+			var damageWh = warhead as DamageWarhead;
+			if (attacker.Owner.IsAlliedWith(self.Owner) && (damageWh != null && damageWh.Damage < 0) && !Info.ModifyHealing)
+				return FullDamage;
 
 			var world = self.World;
 			var map = world.Map;
@@ -67,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			var terrainType = tileSet[tileSet.GetTerrainIndex(tiles[pos])].Type;
 
 			if (!Info.TerrainModifier.ContainsKey(terrainType))
-				return percent;
+				return FullDamage;
 
 			return Info.TerrainModifier[terrainType];
 		}
