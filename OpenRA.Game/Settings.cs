@@ -40,7 +40,6 @@ namespace OpenRA
 		public bool Dedicated = false;
 		public bool DedicatedLoop = true;
 		public bool LockBots = false;
-		public bool AllowVersionMismatch = false;
 		public string TimestampFormat = "HH:mm";
 
 		public ServerSettings() { }
@@ -64,7 +63,6 @@ namespace OpenRA
 			Dedicated = other.Dedicated;
 			DedicatedLoop = other.DedicatedLoop;
 			LockBots = other.LockBots;
-			AllowVersionMismatch = other.AllowVersionMismatch;
 		}
 	}
 
