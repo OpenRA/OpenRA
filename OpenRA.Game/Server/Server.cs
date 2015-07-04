@@ -38,6 +38,7 @@ namespace OpenRA.Server
 		public readonly IPAddress Ip;
 		public readonly int Port;
 		public readonly MersenneTwister Random = new MersenneTwister();
+		public readonly bool Dedicated;
 
 		// Valid player connections
 		public List<Connection> Conns = new List<Connection>();
@@ -117,7 +118,7 @@ namespace OpenRA.Server
 				t.GameEnded(this);
 		}
 
-		public Server(IPEndPoint endpoint, ServerSettings settings, ModData modData)
+		public Server(IPEndPoint endpoint, ServerSettings settings, ModData modData, bool dedicated)
 		{
 			Log.AddChannel("server", "server.log");
 
@@ -126,7 +127,7 @@ namespace OpenRA.Server
 			var localEndpoint = (IPEndPoint)listener.LocalEndpoint;
 			Ip = localEndpoint.Address;
 			Port = localEndpoint.Port;
-
+			Dedicated = dedicated;
 			Settings = settings;
 
 			Settings.Name = OpenRA.Settings.SanitizedServerName(Settings.Name);
@@ -148,7 +149,7 @@ namespace OpenRA.Server
 					RandomSeed = randomSeed,
 					Map = settings.Map,
 					ServerName = settings.Name,
-					Dedicated = settings.Dedicated,
+					Dedicated = dedicated,
 					DisableSingleplayer = settings.DisableSinglePlayer,
 				}
 			};
@@ -380,7 +381,7 @@ namespace OpenRA.Server
 				// Send initial ping
 				SendOrderTo(newConn, "Ping", Game.RunTime.ToString(CultureInfo.InvariantCulture));
 
-				if (Settings.Dedicated)
+				if (Dedicated)
 				{
 					var motdFile = Platform.ResolvePath("^", "motd.txt");
 					if (!File.Exists(motdFile))
@@ -490,7 +491,7 @@ namespace OpenRA.Server
 		{
 			DispatchOrdersToClients(null, 0, new ServerOrder("Message", text).Serialize());
 
-			if (Settings.Dedicated)
+			if (Dedicated)
 				Console.WriteLine("[{0}] {1}".F(DateTime.Now.ToString(Settings.TimestampFormat), text));
 		}
 
@@ -587,7 +588,7 @@ namespace OpenRA.Server
 
 				// Client was the server admin
 				// TODO: Reassign admin for game in progress via an order
-				if (LobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
+				if (Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
 				{
 					// Remove any bots controlled by the admin
 					LobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
@@ -607,10 +608,10 @@ namespace OpenRA.Server
 				if (!Conns.Any())
 					TempBans.Clear();
 
-				if (Conns.Any() || LobbyInfo.GlobalSettings.Dedicated)
+				if (Conns.Any() || Dedicated)
 					SyncLobbyClients();
 
-				if (!LobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin)
+				if (!Dedicated && dropClient.IsAdmin)
 					Shutdown();
 			}
 

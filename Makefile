@@ -87,7 +87,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = pdefault pnull game utility
+CORE = pdefault pnull game utility server
 TOOLS = gamemonitor
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
@@ -231,6 +231,9 @@ check: utility mods
 	@echo
 	@echo "Checking for explicit interface violations..."
 	@mono --debug OpenRA.Utility.exe all --check-explicit-interfaces
+	@echo
+	@echo "Checking for code style violations in OpenRA.Server..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Server
 
 NUNIT_CONSOLE := $(shell test -f thirdparty/download/nunit3-console.exe && echo mono thirdparty/download/nunit3-console.exe || \
 	which nunit3-console 2>/dev/null || which nunit2-console 2>/dev/null || which nunit-console 2>/dev/null)
@@ -286,6 +289,15 @@ utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/download/ICSharpCode.Sh
 PROGRAMS += utility
 utility: $(utility_TARGET)
 
+# Dedicated server
+server_SRCS := $(shell find OpenRA.Server/ -iname '*.cs')
+server_TARGET = OpenRA.Server.exe
+server_KIND = exe
+server_DEPS = $(game_TARGET)
+server_LIBS = $(COMMON_LIBS) $(server_DEPS)
+PROGRAMS += server
+server: $(server_TARGET)
+
 # Patches binary headers to work around a mono bug
 fixheader.exe: packaging/fixheader.cs
 	@echo CSC fixheader.exe
@@ -315,7 +327,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 #
 default: core
 
-core: game platforms mods utility
+core: game platforms mods utility server
 
 tools: gamemonitor
 
@@ -465,9 +477,22 @@ endif
 	@$(INSTALL_PROGRAM) -m +rx openra "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra
 
+	@echo "#!/bin/sh" > openra-server
+	@echo 'cd "$(gameinstalldir)"' >> openra-server
+ifeq ($(DEBUG), $(filter $(DEBUG),false no n off 0))
+	@echo 'mono OpenRA.Server.exe "$$@"' >> openra-server
+else
+	@echo 'mono --debug OpenRA.Server.exe "$$@"' >> openra-server
+endif
+
+	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) -m +rx openra-server "$(BIN_INSTALL_DIR)"
+	@-$(RM) openra-server
+
 uninstall:
 	@-$(RM_R) "$(DATA_INSTALL_DIR)"
 	@-$(RM_F) "$(BIN_INSTALL_DIR)/openra"
+	@-$(RM_F) "$(BIN_INSTALL_DIR)/openra-server"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/applications/openra.desktop"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/16x16/apps/openra.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/openra.png"

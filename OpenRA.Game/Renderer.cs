@@ -50,16 +50,12 @@ namespace OpenRA
 		{
 			var resolution = GetResolution(graphicSettings);
 
-			var rendererName = serverSettings.Dedicated ? "Null" : graphicSettings.Renderer;
+			var rendererName = graphicSettings.Renderer;
 			var rendererPath = Platform.ResolvePath(Path.Combine(".", "OpenRA.Platforms." + rendererName + ".dll"));
 
 			Device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, graphicSettings.Mode);
-
-			if (!serverSettings.Dedicated)
-			{
-				TempBufferSize = graphicSettings.BatchSize;
-				SheetSize = graphicSettings.SheetSize;
-			}
+			TempBufferSize = graphicSettings.BatchSize;
+			SheetSize = graphicSettings.SheetSize;
 
 			WorldSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
 			WorldRgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
