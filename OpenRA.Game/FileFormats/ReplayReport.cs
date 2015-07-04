@@ -73,17 +73,17 @@ namespace OpenRA.FileFormats
 								text.AppendLine(player.Name);
 								var client = session.ClientWithIndex(player.ClientIndex);
 								if (client.IsAdmin && !gameInfo.IsSinglePlayer)
-									text.AppendLine("[Admin]");
+									text.AppendLine("\t[Admin]");
 
-								text.AppendLine("Human: " + player.IsHuman);
-								text.AppendLine("Faction: " + player.FactionName);
-								text.AppendLine("Random faction: " + player.IsRandomFaction);
-								text.AppendLine("Spawn point: " + player.SpawnPoint);
-								text.AppendLine("Random spawn point: " + player.IsRandomSpawnPoint);
+								text.AppendLine("\tHuman: " + player.IsHuman);
+								text.AppendLine("\tFaction: " + player.FactionName);
+								text.AppendLine("\tRandom faction: " + player.IsRandomFaction);
+								text.AppendLine("\tSpawn point: " + player.SpawnPoint);
+								text.AppendLine("\tRandom spawn point: " + player.IsRandomSpawnPoint);
 
 								if (player.IsHuman && !gameInfo.IsSinglePlayer)
 									foreach (var line in NetworkInfo(session, client))
-										text.AppendLine(line);
+										text.AppendLine("\t" + line);
 
 								text.AppendLine();
 							}
@@ -101,10 +101,10 @@ namespace OpenRA.FileFormats
 								if (!gameInfo.IsSinglePlayer)
 								{
 									if (spec.IsAdmin)
-										text.AppendLine("[Admin]");
+										text.AppendLine("\t[Admin]");
 
 									foreach (var line in NetworkInfo(session, spec))
-										text.AppendLine(line);
+										text.AppendLine("\t" + line);
 								}
 
 								text.AppendLine();
@@ -201,7 +201,6 @@ namespace OpenRA.FileFormats
 			text.AppendLine();
 			text.AppendLine("Results:");
 
-			// Generate results table
 			var maxPlayerLength = gameInfo.Players.Max(p => p.Name.Length);
 			var maxOutcomeLength = gameInfo.Players.Max(p => p.Outcome.ToString().Length);
 			var paddingLength = 2;
