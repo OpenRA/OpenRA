@@ -62,7 +62,7 @@ namespace OpenRA.GameRules
 		public readonly IProjectileInfo Projectile;
 
 		[FieldLoader.LoadUsing("LoadWarheads")]
-		public readonly List<Warhead> Warheads = new List<Warhead>();
+		public readonly List<IWarhead> Warheads = new List<IWarhead>();
 
 		readonly HashSet<string> validTargetSet;
 		readonly HashSet<string> invalidTargetSet;
@@ -86,10 +86,10 @@ namespace OpenRA.GameRules
 
 		static object LoadWarheads(MiniYaml yaml)
 		{
-			var retList = new List<Warhead>();
+			var retList = new List<IWarhead>();
 			foreach (var node in yaml.Nodes.Where(n => n.Key.StartsWith("Warhead")))
 			{
-				var ret = Game.CreateObject<Warhead>(node.Value.Value + "Warhead");
+				var ret = Game.CreateObject<IWarhead>(node.Value.Value + "Warhead");
 				FieldLoader.Load(ret, node.Value);
 				retList.Add(ret);
 			}

@@ -9,14 +9,12 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.GameRules
+namespace OpenRA.Mods.Common.Warheads
 {
 	[Desc("Base warhead class. This can be used to derive other warheads from.")]
-	public abstract class Warhead
+	public abstract class Warhead : IWarhead
 	{
 		[Desc("What types of targets are affected.")]
 		public readonly string[] ValidTargets = { "Ground", "Water" };
@@ -32,6 +30,7 @@ namespace OpenRA.GameRules
 
 		[Desc("Delay in ticks before applying the warhead effect.", "0 = instant (old model).")]
 		public readonly int Delay = 0;
+		int IWarhead.Delay { get { return Delay; } }
 
 		HashSet<string> validTargetSet;
 		HashSet<string> invalidTargetSet;
