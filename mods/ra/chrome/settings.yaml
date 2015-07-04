@@ -203,6 +203,13 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Always Show Status Bars
+				Checkbox@DISPLAY_TARGET_LINES_CHECKBOX:
+					X: 310
+					Y: 265
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Display Target Lines
 				Label@LOCALIZATION_TITLE:
 					Y: 270
 					Width: PARENT_RIGHT
