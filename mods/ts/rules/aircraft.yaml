@@ -16,6 +16,7 @@ DPOD:
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
+		Type: CenterPosition
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
@@ -50,6 +51,7 @@ DSHP:
 		Type: Heavy
 	RevealsShroud:
 		Range: 3c0
+		Type: CenterPosition
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -80,6 +82,7 @@ ORCA:
 		Type: Light
 	RevealsShroud:
 		Range: 10c0
+		Type: CenterPosition
 	Armament:
 		Weapon: Hellfire
 	AttackHeli:
@@ -118,6 +121,7 @@ ORCAB:
 		Type: Light
 	RevealsShroud:
 		Range: 2c0
+		Type: CenterPosition
 	Armament:
 		Weapon: Bomb
 	AttackPlane:
@@ -152,6 +156,7 @@ ORCATRAN:
 		Type: Light
 	RevealsShroud:
 		Range: 2c0
+		Type: CenterPosition
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -182,6 +187,7 @@ TRNSPORT:
 		Type: Light
 	RevealsShroud:
 		Range: 2c0
+		Type: CenterPosition
 	RenderSprites:
 	Hovers:
 	Selectable:
@@ -212,6 +218,7 @@ SCRIN:
 		Type: Light
 	RevealsShroud:
 		Range: 2c0
+		Type: CenterPosition
 	Armament:
 		Weapon: Proton
 	AttackPlane:
@@ -249,6 +256,7 @@ APACHE:
 		Type: Light
 	RevealsShroud:
 		Range: 2c0
+		Type: CenterPosition
 	Armament:
 		Weapon: HarpyClaw
 	AttackHeli:
