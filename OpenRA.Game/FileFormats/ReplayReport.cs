@@ -205,6 +205,11 @@ namespace OpenRA.FileFormats
 			text.AppendLine();
 			text.AppendLine("Results:");
 
+			// Generate results table
+			var maxPlayerLength = gameInfo.Players.Max(p => p.Name.Length);
+			var maxOutcomeLength = gameInfo.Players.Max(p => p.Outcome.ToString().Length);
+			var paddingLength = 2;
+
 			foreach (var team in playersByTeam)
 			{
 				text.AppendLine();
@@ -212,7 +217,16 @@ namespace OpenRA.FileFormats
 				text.AppendLine(teamLabel);
 				text.AppendLine(new string('-', teamLabel.Length));
 				foreach (var player in team)
-					text.AppendLine(player.Name + " - " + player.Outcome);
+				{
+					var result = player.Outcome.ToString();
+					if (player.Outcome != WinState.Undefined)
+					{
+						var timeDiff = player.OutcomeTimestampUtc.Subtract(gameInfo.StartTimeUtc);
+						result += new string(' ', maxOutcomeLength - result.Length + paddingLength) + timeDiff;
+					}
+
+					text.AppendLine(player.Name + new string(' ', maxPlayerLength - player.Name.Length + paddingLength) + result);
+				}
 			}
 
 			text.AppendLine();
