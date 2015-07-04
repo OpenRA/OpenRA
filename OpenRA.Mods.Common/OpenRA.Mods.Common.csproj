@@ -397,11 +397,9 @@
     <Compile Include="Traits\Render\RenderBuildingCharge.cs" />
     <Compile Include="Traits\Render\RenderBuildingTurreted.cs" />
     <Compile Include="Traits\Render\RenderEditorOnly.cs" />
-    <Compile Include="Traits\Render\RenderHarvester.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />
-    <Compile Include="Traits\Render\RenderUnit.cs" />
     <Compile Include="Traits\Render\RenderBuildingSilo.cs" />
     <Compile Include="Traits\Render\RenderBuildingWall.cs" />
     <Compile Include="Traits\Render\RenderDetectionCircle.cs" />
@@ -421,8 +419,10 @@
     <Compile Include="Traits\Render\WithCrateBody.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
     <Compile Include="Traits\Render\WithDecoration.cs" />
+    <Compile Include="Traits\Render\WithDockingAnimation.cs" />
     <Compile Include="Traits\Render\WithDockingOverlay.cs" />
     <Compile Include="Traits\Render\WithHarvestAnimation.cs" />
+    <Compile Include="Traits\Render\WithHarvestOverlay.cs" />
     <Compile Include="Traits\Render\WithIdleOverlay.cs" />
     <Compile Include="Traits\Render\WithMuzzleFlash.cs" />
     <Compile Include="Traits\Render\WithRangeCircle.cs" />

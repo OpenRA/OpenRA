@@ -82,7 +82,7 @@ HARV:
 	WithVoxelUnloadBody:
 	Explodes:
 		Weapon: TiberiumExplosion
-	WithHarvestAnimation:
+	WithHarvestOverlay:
 		Offset: 384,0,0
 		Palette: effect
 	SelectionDecorations:

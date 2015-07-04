@@ -58,6 +58,8 @@ namespace OpenRA.Mods.Common.Traits
 		void MovingToRefinery(Actor self, CPos targetCell, Activity next);
 		void MovementCancelled(Actor self);
 		void Harvested(Actor self, ResourceType resource);
+		void Docked();
+		void Undocked();
 	}
 
 	public interface ITechTreePrerequisite

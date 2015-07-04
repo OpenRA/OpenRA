@@ -9,64 +9,79 @@
 #endregion
 
 using OpenRA.Activities;
-using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Displays an overlay whenever resources are harvested by the actor.")]
-	class WithHarvestAnimationInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	public class WithHarvestAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<HarvesterInfo>
 	{
-		[Desc("Sequence name to use")]
-		[SequenceReference] public readonly string Sequence = "harvest";
+		[Desc("Prefix added to idle and harvest sequences depending on fullness of harvester.")]
+		[SequenceReference(null, true)] public readonly string[] PrefixByFullness = { "" };
 
-		[Desc("Position relative to body")]
-		public readonly WVec Offset = WVec.Zero;
+		[Desc("Displayed while harvesting.")]
+		[SequenceReference] public readonly string HarvestSequence = "harvest";
 
-		public readonly string Palette = "effect";
-
-		public object Create(ActorInitializer init) { return new WithHarvestAnimation(init.Self, this); }
+		public object Create(ActorInitializer init) { return new WithHarvestAnimation(init, this); }
 	}
 
-	class WithHarvestAnimation : INotifyHarvesterAction
+	public class WithHarvestAnimation : ITick, INotifyHarvesterAction
 	{
-		WithHarvestAnimationInfo info;
-		Animation anim;
-		bool visible;
+		public readonly WithHarvestAnimationInfo Info;
+		readonly WithSpriteBody wsb;
+		readonly Harvester harv;
 
-		public WithHarvestAnimation(Actor self, WithHarvestAnimationInfo info)
+		public bool IsModifying;
+
+		public WithHarvestAnimation(ActorInitializer init, WithHarvestAnimationInfo info)
 		{
-			this.info = info;
-			var rs = self.Trait<RenderSprites>();
-			var body = self.Trait<IBodyOrientation>();
+			Info = info;
+			harv = init.Self.Trait<Harvester>();
+			wsb = init.Self.Trait<WithSpriteBody>();
+		}
 
-			anim = new Animation(self.World, rs.GetImage(self), RenderSprites.MakeFacingFunc(self));
-			anim.IsDecoration = true;
-			anim.Play(info.Sequence);
-			rs.Add(new AnimationWithOffset(anim,
-				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-				() => !visible,
-				() => false,
-				p => ZOffsetFromCenter(self, p, 0)), info.Palette);
+		protected virtual string NormalizeHarvesterSequence(Actor self, string baseSequence)
+		{
+			var desiredState = harv.Fullness * (Info.PrefixByFullness.Length - 1) / 100;
+			var desiredPrefix = Info.PrefixByFullness[desiredState];
+
+			if (wsb.DefaultAnimation.HasSequence(desiredPrefix + baseSequence))
+				return desiredPrefix + baseSequence;
+			else
+				return baseSequence;
+		}
+
+		public void Tick(Actor self)
+		{
+			if (!IsModifying && !string.IsNullOrEmpty(wsb.Info.Sequence) && wsb.DefaultAnimation.HasSequence(NormalizeHarvesterSequence(self, wsb.Info.Sequence)))
+			{
+				if (wsb.DefaultAnimation.CurrentSequence.Name != NormalizeHarvesterSequence(self, wsb.Info.Sequence))
+					wsb.DefaultAnimation.ReplaceAnim(NormalizeHarvesterSequence(self, wsb.Info.Sequence));
+			}
 		}
 
 		public void Harvested(Actor self, ResourceType resource)
 		{
-			if (visible)
-				return;
+			if (!IsModifying && !string.IsNullOrEmpty(Info.HarvestSequence) && wsb.DefaultAnimation.HasSequence(NormalizeHarvesterSequence(self, Info.HarvestSequence)))
+			{
+				IsModifying = true;
+				wsb.PlayCustomAnimation(self, NormalizeHarvesterSequence(self, Info.HarvestSequence), () => IsModifying = false);
+			}
+		}
 
-			visible = true;
-			anim.PlayThen(info.Sequence, () => visible = false);
+		// If IsModifying isn't set to true, the docking animation
+		// will be overridden by the WithHarvestAnimation fullness modifier.
+		public void Docked()
+		{
+			IsModifying = true;
+		}
+
+		public void Undocked()
+		{
+			IsModifying = false;
 		}
 
 		public void MovingToResources(Actor self, CPos targetCell, Activity next) { }
 		public void MovingToRefinery(Actor self, CPos targetCell, Activity next) { }
 		public void MovementCancelled(Actor self) { }
-
-		public static int ZOffsetFromCenter(Actor self, WPos pos, int offset)
-		{
-			var delta = self.CenterPosition - pos;
-			return delta.Y + delta.Z + offset;
-		}
 	}
 }

@@ -70,10 +70,8 @@ HARV:
 	LeavesHusk:
 		HuskActor: HARV.Husk
 	-GainsExperience:
-	-RenderSprites:
-	-WithFacingSpriteBody:
-	-AutoSelectionSize:
-	RenderHarvester:
+	WithHarvestAnimation:
+	WithDockingAnimation:
 	Explodes:
 		Weapon: TiberiumExplosion
 	SelectionDecorations:

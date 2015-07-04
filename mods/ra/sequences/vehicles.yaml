@@ -14,9 +14,27 @@ truk:
 	icon: trukicon
 
 harv:
-	idle:
+	idle: harvempty
 		Facings: 32
-	harvest:
+	harvest: harvempty
+		Start: 32
+		Length: 8
+		Facings: 8
+	empty-idle: harvempty
+		Facings: 32
+	empty-harvest: harvempty
+		Start: 32
+		Length: 8
+		Facings: 8
+	half-idle: harvhalf
+		Facings: 32
+	half-harvest: harvhalf
+		Start: 32
+		Length: 8
+		Facings: 8
+	full-idle:
+		Facings: 32
+	full-harvest:
 		Start: 32
 		Length: 8
 		Facings: 8
@@ -28,34 +46,6 @@ harv:
 		Length: 7
 	icon: harvicon
 		Start: 0
-
-harvhalf:
-	idle:
-		Facings: 32
-	harvest:
-		Start: 32
-		Length: 8
-		Facings: 8
-	dock: harv
-		Start: 96
-		Length: 8
-	dock-loop: harv
-		Start: 104
-		Length: 7
-
-harvempty:
-	idle:
-		Facings: 32
-	harvest:
-		Start: 32
-		Length: 8
-		Facings: 8
-	dock: harv
-		Start: 96
-		Length: 8
-	dock-loop: harv
-		Start: 104
-		Length: 7
 
 hhusk:
 	idle:

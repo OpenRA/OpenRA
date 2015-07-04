@@ -1221,6 +1221,136 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Removed RenderUnit
+				if (engineVersion < 20150704)
+				{
+					// Renamed WithHarvestAnimation to WithHarvestOverlay
+					if (node.Key == "WithHarvestAnimation")
+						node.Key = "WithHarvestOverlay";
+
+					// Replaced RenderLandingCraft with WithFacingSpriteBody + WithLandingCraftAnimation.
+					// Note: These rules are set up to do approximately the right thing for maps, but
+					// mods might need additional manual tweaks. This is the best we can do without having
+					// much smarter rules parsing, because we currently can't reason about inherited traits.
+					if (depth == 0)
+					{
+						var childKeySequence = new[] { "Sequence" };
+						var childKeysExcludeFromRS = new[] { "Sequence", "OpenTerrainTypes", "OpenSequence", "UnloadSequence" };
+
+						var rlc = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderLandingCraft"));
+						if (rlc != null)
+						{
+							rlc.Key = "WithLandingCraftAnimation";
+
+							var rsNodes = rlc.Value.Nodes.Where(n => !childKeysExcludeFromRS.Contains(n.Key)).ToList();
+							var wfsbNodes = rlc.Value.Nodes.Where(n => childKeySequence.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							// Note: For the RA landing craft WithSpriteBody would be sufficient since it has no facings,
+							// but WithFacingSpriteBody works as well and covers the potential case where a third-party mod
+							// might have given their landing craft multiple facings.
+							if (wfsbNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("WithFacingSpriteBody", new MiniYaml("", wfsbNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("WithFacingSpriteBody", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							rlc.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+							rlc.Value.Nodes.RemoveAll(n => wfsbNodes.Contains(n));
+						}
+
+						var rrlc = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderLandingCraft"));
+						if (rrlc != null)
+							rrlc.Key = "-WithLandingCraftAnimation";
+					}
+
+					// Replaced RenderHarvester with WithFacingSpriteBody + WithHarvestAnimation + WithDockingAnimation.
+					// Note: These rules are set up to do approximately the right thing for maps, but
+					// mods might need additional manual tweaks. This is the best we can do without having
+					// much smarter rules parsing, because we currently can't reason about inherited traits.
+					if (depth == 0)
+					{
+						var childKeySequence = new[] { "Sequence" };
+						var childKeyIBF = new[] { "ImagesByFullness" };
+						var childKeysExcludeFromRS = new[] { "Sequence", "ImagesByFullness", "HarvestSequence" };
+
+						var rh = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderHarvester"));
+						if (rh != null)
+						{
+							rh.Key = "WithHarvestAnimation";
+
+							var rsNodes = rh.Value.Nodes.Where(n => !childKeysExcludeFromRS.Contains(n.Key)).ToList();
+							var wfsbNodes = rh.Value.Nodes.Where(n => childKeySequence.Contains(n.Key)).ToList();
+							var ibfNode = rh.Value.Nodes.Where(n => childKeyIBF.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							if (wfsbNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("WithFacingSpriteBody", new MiniYaml("", wfsbNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("WithFacingSpriteBody", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+							node.Value.Nodes.Add(new MiniYamlNode("WithDockingAnimation", ""));
+
+							rh.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+							rh.Value.Nodes.RemoveAll(n => wfsbNodes.Contains(n));
+
+							if (ibfNode.Any())
+								rh.Value.Nodes.RemoveAll(n => ibfNode.Contains(n));
+								Console.WriteLine("The 'ImagesByFullness' property from the removed RenderHarvester trait has been");
+								Console.WriteLine("replaced with a 'PrefixByFullness' property on the new WithHarvestAnimation trait.");
+								Console.WriteLine("This cannot be reliably upgraded, as the actor sequences need to be adapted as well.");
+								Console.WriteLine("Therefore, WithHarvestAnimation will use the default (no prefix) after upgrading.");
+								Console.WriteLine("See RA's harvester for reference on how to re-implement this feature using the new trait.");
+						}
+
+						var rrh = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderHarvester"));
+						if (rrh != null)
+							rrh.Key = "-WithHarvestAnimation";
+					}
+
+					// Replace RenderUnit with RenderSprites + WithFacingSpriteBody + AutoSelectionSize.
+					// Normally this should have been removed by previous upgrade rules, but let's run this again
+					// to make sure to get rid of potential left-over cases like D2k sandworms and harvesters.
+					if (depth == 0)
+					{
+						var childKeys = new[] { "Sequence" };
+
+						var ru = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderUnit"));
+						if (ru != null)
+						{
+							ru.Key = "WithFacingSpriteBody";
+
+							var rsNodes = ru.Value.Nodes.Where(n => !childKeys.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							ru.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+
+							Console.WriteLine("RenderUnit has now been removed from code.");
+							Console.WriteLine("Use RenderSprites + WithFacingSpriteBody (+ AutoSelectionSize, if necessary) instead.");
+						}
+
+						var rru = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderUnit"));
+						if (rru != null)
+							rru.Key = "-WithFacingSpriteBody";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

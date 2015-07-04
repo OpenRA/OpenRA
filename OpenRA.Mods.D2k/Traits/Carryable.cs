@@ -93,6 +93,8 @@ namespace OpenRA.Mods.D2k.Traits
 
 		// We do not handle Harvested notification
 		public void Harvested(Actor self, ResourceType resource) { }
+		public void Docked() { }
+		public void Undocked() { }
 
 		public Actor GetClosestIdleCarrier()
 		{

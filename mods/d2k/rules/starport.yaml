@@ -14,7 +14,7 @@ harvester.starport:
 		Queue: Starport
 	Valued:
 		Cost: 1500
-	RenderUnit:
+	RenderSprites:
 		Image: harvester
 
 trike.starport:

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.D2k.Activities
 		readonly Target target;
 		readonly Sandworm sandworm;
 		readonly WeaponInfo weapon;
-		readonly RenderUnit renderUnit;
+		readonly WithSpriteBody withSpriteBody;
 		readonly RadarPings radarPings;
 		readonly AttackSwallow swallow;
 		readonly IPositionable positionable;
@@ -44,11 +44,11 @@ namespace OpenRA.Mods.D2k.Activities
 			sandworm = self.Trait<Sandworm>();
 			positionable = self.Trait<Mobile>();
 			swallow = self.Trait<AttackSwallow>();
-			renderUnit = self.Trait<RenderUnit>();
+			withSpriteBody = self.Trait<WithSpriteBody>();
 			radarPings = self.World.WorldActor.TraitOrDefault<RadarPings>();
 			countdown = swallow.Info.AttackTime;
 
-			renderUnit.DefaultAnimation.ReplaceAnim("burrowed");
+			withSpriteBody.DefaultAnimation.ReplaceAnim(sandworm.Info.BurrowedSequence);
 			stance = AttackState.Burrowed;
 			location = target.Actor.Location;
 		}
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.D2k.Activities
 		// List because IEnumerable gets evaluated too late.
 		void PlayAttack(Actor self, WPos attackPosition, List<Player> affectedPlayers)
 		{
-			renderUnit.PlayCustomAnim(self, "mouth");
+			withSpriteBody.PlayCustomAnimation(self, sandworm.Info.MouthSequence);
 			Sound.Play(swallow.Info.WormAttackSound, self.CenterPosition);
 
 			Game.RunAfterDelay(1000, () =>
@@ -142,7 +142,7 @@ namespace OpenRA.Mods.D2k.Activities
 					self.World.AddFrameEndTask(w => self.Kill(self));
 				}
 				else
-					renderUnit.DefaultAnimation.ReplaceAnim("idle");
+					withSpriteBody.DefaultAnimation.ReplaceAnim(sandworm.Info.IdleSequence);
 
 				return NextActivity;
 			}
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.D2k.Activities
 
 				if (!WormAttack(self))
 				{
-					renderUnit.DefaultAnimation.ReplaceAnim("idle");
+					withSpriteBody.DefaultAnimation.ReplaceAnim(sandworm.Info.IdleSequence);
 					return NextActivity;
 				}
 
