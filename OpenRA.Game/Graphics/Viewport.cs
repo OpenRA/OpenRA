@@ -45,7 +45,7 @@ namespace OpenRA.Graphics
 		// Viewport geometry (world-px)
 		public int2 CenterLocation { get; private set; }
 
-		public WPos CenterPosition { get { return worldRenderer.Position(CenterLocation); } }
+		public WPos CenterPosition { get { return worldRenderer.ProjectedPosition(CenterLocation); } }
 
 		public int2 TopLeft { get { return CenterLocation - viewportSize / 2; } }
 		public int2 BottomRight { get { return CenterLocation + viewportSize / 2; } }
@@ -158,14 +158,14 @@ namespace OpenRA.Graphics
 			}
 
 			// Something is very wrong, but lets return something that isn't completely bogus and hope the caller can recover
-			return worldRenderer.World.Map.CellContaining(worldRenderer.Position(ViewToWorldPx(view)));
+			return worldRenderer.World.Map.CellContaining(worldRenderer.ProjectedPosition(ViewToWorldPx(view)));
 		}
 
 		/// <summary> Returns an unfiltered list of all cells that could potentially contain the mouse cursor</summary>
 		IEnumerable<MPos> CandidateMouseoverCells(int2 world)
 		{
 			var map = worldRenderer.World.Map;
-			var minPos = worldRenderer.Position(world);
+			var minPos = worldRenderer.ProjectedPosition(world);
 
 			// Find all the cells that could potentially have been clicked
 			var a = map.CellContaining(minPos - new WVec(1024, 0, 0)).ToMPos(map.TileShape);
@@ -230,8 +230,8 @@ namespace OpenRA.Graphics
 
 			// Calculate the viewport corners in "projected wpos" (at ground level), and
 			// this to an equivalent projected cell for the two corners
-			var tl = map.CellContaining(worldRenderer.Position(TopLeft)).ToMPos(map);
-			var br = map.CellContaining(worldRenderer.Position(BottomRight)).ToMPos(map);
+			var tl = map.CellContaining(worldRenderer.ProjectedPosition(TopLeft)).ToMPos(map);
+			var br = map.CellContaining(worldRenderer.ProjectedPosition(BottomRight)).ToMPos(map);
 
 			// Diamond tile shapes don't have straight edges, and so we need
 			// an additional cell margin to include the cells that are half

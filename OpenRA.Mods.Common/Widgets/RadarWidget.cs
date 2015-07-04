@@ -237,8 +237,8 @@ namespace OpenRA.Mods.Common.Widgets
 			// Draw viewport rect
 			if (hasRadar)
 			{
-				var tl = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.Position(worldRenderer.Viewport.TopLeft)));
-				var br = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.Position(worldRenderer.Viewport.BottomRight)));
+				var tl = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.TopLeft)));
+				var br = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.BottomRight)));
 
 				Game.Renderer.EnableScissor(mapRect);
 				DrawRadarPings();
