@@ -1861,7 +1861,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		internal static void UpgradePlayers(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			foreach (var node in nodes)
+			{
+				// Rename PlayerReference.Race and LockRace to Faction and LockFaction
+				if (engineVersion < 20150706)
+				{
+					var race = node.Value.Nodes.FirstOrDefault(x => x.Key == "Race");
+					if (race != null)
+						race.Key = "Faction";
+
+					var lockRace = node.Value.Nodes.FirstOrDefault(x => x.Key == "LockRace");
+					if (lockRace != null)
+						lockRace.Key = "LockFaction";
+				}
+
 				UpgradePlayers(engineVersion, ref node.Value.Nodes, node, depth + 1);
+			}
 		}
 
 		internal static void UpgradeActors(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
