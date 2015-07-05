@@ -172,7 +172,6 @@ namespace OpenRA
 		public readonly string Palette;
 		public readonly string PlayerPalette;
 		public readonly int WaterPaletteRotationBase = 0x60;
-		public readonly byte MaxGroundHeight = 0;
 		public readonly Color[] HeightDebugColors = new[] { Color.Red };
 		public readonly string[] EditorTemplateOrder;
 		public readonly bool IgnoreTileSpriteOffsets;

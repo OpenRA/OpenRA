@@ -38,8 +38,6 @@ namespace OpenRA.Graphics
 
 		// Map bounds (world-px)
 		readonly Rectangle mapBounds;
-
-		readonly int maxGroundHeight;
 		readonly Size tileSize;
 
 		// Viewport geometry (world-px)
@@ -103,7 +101,6 @@ namespace OpenRA.Graphics
 			var br = wr.ScreenPxPosition(map.CenterOfCell(cells.BottomRight) + new WVec(511, 511, 0));
 			mapBounds = Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
 
-			maxGroundHeight = wr.World.TileSet.MaxGroundHeight;
 			CenterLocation = (tl + br) / 2;
 			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 			tileSize = Game.ModData.Manifest.TileSize;
@@ -169,7 +166,7 @@ namespace OpenRA.Graphics
 
 			// Find all the cells that could potentially have been clicked
 			var a = map.CellContaining(minPos - new WVec(1024, 0, 0)).ToMPos(map.TileShape);
-			var b = map.CellContaining(minPos + new WVec(512, 512 * maxGroundHeight, 0)).ToMPos(map.TileShape);
+			var b = map.CellContaining(minPos + new WVec(512, 512 * map.MaximumTerrainHeight, 0)).ToMPos(map.TileShape);
 
 			for (var v = b.V; v >= a.V; v--)
 				for (var u = b.U; u >= a.U; u--)
@@ -253,7 +250,7 @@ namespace OpenRA.Graphics
 			// Each height step is equivalent to 512 WRange units, which is
 			// one MPos step for diamond cells, but only half a MPos step
 			// for classic cells. Doh!
-			var heightOffset = map.TileShape == TileShape.Diamond ? maxGroundHeight : maxGroundHeight / 2;
+			var heightOffset = map.TileShape == TileShape.Diamond ? map.MaximumTerrainHeight : map.MaximumTerrainHeight / 2;
 			br = new MPos(br.U, br.V + heightOffset);
 
 			// Finally, make sure that this region doesn't extend outside the map area.

@@ -49,6 +49,7 @@ namespace OpenRA
 		public readonly Dictionary<string, Pair<string, int>> Fonts;
 		public readonly Size TileSize = new Size(24, 24);
 		public readonly TileShape TileShape = TileShape.Rectangle;
+		public readonly byte MaximumTerrainHeight = 0;
 
 		public readonly string[] SpriteFormats = { };
 
@@ -69,7 +70,7 @@ namespace OpenRA
 		readonly string[] reservedModuleNames = { "Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "VoxelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions",
-			"ServerTraits", "LoadScreen", "LobbyDefaults", "Fonts", "TileSize",
+			"ServerTraits", "LoadScreen", "LobbyDefaults", "Fonts", "TileSize", "MaximumTerrainHeight",
 			"TileShape", "SubCells", "SupportsMapsFrom", "SpriteFormats" };
 
 		readonly TypeDictionary modules = new TypeDictionary();
@@ -122,6 +123,9 @@ namespace OpenRA
 
 			if (yaml.ContainsKey("TileShape"))
 				TileShape = FieldLoader.GetValue<TileShape>("TileShape", yaml["TileShape"].Value);
+
+			if (yaml.ContainsKey("MaximumTerrainHeight"))
+				MaximumTerrainHeight = FieldLoader.GetValue<byte>("MaximumTerrainHeight", yaml["MaximumTerrainHeight"].Value);
 
 			if (yaml.ContainsKey("SubCells"))
 			{

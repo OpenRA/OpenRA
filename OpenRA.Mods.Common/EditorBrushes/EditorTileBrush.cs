@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets
 							continue;
 
 						mapTiles[c] = new TerrainTile(Template, index);
-						mapHeight[c] = (byte)(baseHeight + template[index].Height).Clamp(0, world.TileSet.MaxGroundHeight);
+						mapHeight[c] = (byte)(baseHeight + template[index].Height).Clamp(0, map.MaximumTerrainHeight);
 					}
 				}
 			}
