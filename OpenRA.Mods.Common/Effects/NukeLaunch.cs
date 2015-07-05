@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Player firedBy;
 		readonly Animation anim;
 		readonly string weapon;
+		readonly string flashType;
 
 		readonly WPos ascendSource;
 		readonly WPos ascendTarget;
@@ -34,12 +35,13 @@ namespace OpenRA.Mods.Common.Effects
 		WPos pos;
 		int ticks;
 
-		public NukeLaunch(Player firedBy, string weapon, WPos launchPos, WPos targetPos, WRange velocity, int delay, bool skipAscent)
+		public NukeLaunch(Player firedBy, string weapon, WPos launchPos, WPos targetPos, WRange velocity, int delay, bool skipAscent, string flashType)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
 			this.delay = delay;
 			this.turn = delay / 2;
+			this.flashType = flashType;
 
 			var offset = new WVec(WRange.Zero, WRange.Zero, velocity * turn);
 			ascendSource = launchPos;
@@ -84,8 +86,9 @@ namespace OpenRA.Mods.Common.Effects
 			weapon.Impact(Target.FromPos(pos), firedBy.PlayerActor, Enumerable.Empty<int>());
 			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 
-			foreach (var a in world.ActorsWithTrait<NukePaletteEffect>())
-				a.Trait.Enable();
+			foreach (var flash in world.WorldActor.TraitsImplementing<FlashPaletteEffect>())
+				if (flash.Info.Type == flashType)
+					flash.Enable(-1);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

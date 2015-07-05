@@ -70,5 +70,6 @@
 	LightPaletteRotator:
 		ExcludePalettes: terrain, effect
 	ChronoshiftPaletteEffect:
-	NukePaletteEffect:
+	FlashPaletteEffect@NUKE:
+		Type: Nuke
 

@@ -9,8 +9,10 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -41,7 +43,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				resumeDisabled = true;
 
-				var exitDelay = 1200;
+				var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
+				var exitDelay = iop != null ? iop.ExitDelay : 0;
 				if (mpe != null)
 				{
 					Game.RunAfterDelay(exitDelay, () => mpe.Fade(MenuPaletteEffect.EffectType.Black));

@@ -38,6 +38,7 @@ MSLO:
 		DisplayRadarPing: True
 		BeaconPoster: atomicon
 		CameraActor: camera
+		FlashType: Nuke
 	CanPowerDown:
 	RequiresPower:
 	DisabledOverlay:

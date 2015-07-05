@@ -387,6 +387,7 @@ namespace OpenRA
 
 			frameEndActions.Clear();
 
+			Sound.StopAudio();
 			Sound.StopMusic();
 			Sound.StopVideo();
 

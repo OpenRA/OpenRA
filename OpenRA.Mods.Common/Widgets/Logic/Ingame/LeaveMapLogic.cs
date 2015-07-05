@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets
 					Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave",
 						world.LocalPlayer == null ? null : world.LocalPlayer.Country.Race);
 
-				var exitDelay = 1200;
+				var exitDelay = iop != null ? iop.ExitDelay : 0;
 				if (mpe != null)
 				{
 					Game.RunAfterDelay(exitDelay, () => mpe.Fade(MenuPaletteEffect.EffectType.Black));
