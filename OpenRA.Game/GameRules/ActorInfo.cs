@@ -18,7 +18,6 @@ namespace OpenRA
 {
 	/// <summary>
 	/// A unit/building inside the game. Every rules starts with one and adds trait to it.
-	/// Special actors like world or player are usually defined in system.yaml and affect everything.
 	/// </summary>
 	public class ActorInfo
 	{
