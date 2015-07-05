@@ -1607,6 +1607,36 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150715)
+				{
+					// Replaced RenderGunboat with RenderSprites + WithGunboatBody.
+					if (depth == 0)
+					{
+						var childKeysGunboat = new[] { "Turret", "LeftSequence", "RightSequence", "WakeLeftSequence", "WakeRightSequence" };
+
+						var rgb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderGunboat"));
+						if (rgb != null)
+						{
+							rgb.Key = "WithGunboatBody";
+
+							var rsNodes = rgb.Value.Nodes.Where(n => !childKeysGunboat.Contains(n.Key)).ToList();
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							rgb.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+							rgb.Value.Nodes.Add(new MiniYamlNode("Sequence", "left"));
+						}
+
+						var rrgb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderGunboat"));
+						if (rrgb != null)
+							rrgb.Key = "-WithGunboatBody";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

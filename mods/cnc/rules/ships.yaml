@@ -22,7 +22,9 @@ BOAT:
 		Weapon: BoatMissile
 		LocalOffset: 85,-85,0, 85,85,0
 	AttackTurreted:
-	RenderGunboat:
+	RenderSprites:
+	WithGunboatBody:
+		Sequence: left # Just a work-around to avoid crash
 	Selectable:
 		Bounds: 42,24
 	AutoTarget:
