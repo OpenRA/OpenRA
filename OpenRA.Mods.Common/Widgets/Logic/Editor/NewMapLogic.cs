@@ -60,11 +60,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				width = Math.Max(2, width);
 				height = Math.Max(2, height);
 
+				var maxTerrainHeight = Game.ModData.Manifest.MaximumTerrainHeight;
 				var tileset = modRules.TileSets[tilesetDropDown.Text];
-				var map = new Map(tileset, width + 2, height + tileset.MaxGroundHeight + 2);
+				var map = new Map(tileset, width + 2, height + maxTerrainHeight + 2);
 
 				var tl = new MPos(1, 1);
-				var br = new MPos(width, height + tileset.MaxGroundHeight);
+				var br = new MPos(width, height + maxTerrainHeight);
 				map.SetBounds(tl, br);
 
 				map.PlayerDefinitions = new MapPlayers(map.Rules, map.SpawnPoints.Value.Length).ToMiniYaml();

@@ -151,6 +151,7 @@ namespace OpenRA
 
 		public const int MaxTilesInCircleRange = 50;
 		public readonly TileShape TileShape;
+		public readonly byte MaximumTerrainHeight;
 
 		[FieldLoader.Ignore] public readonly WVec[] SubCellOffsets;
 		public readonly SubCell DefaultSubCell;
@@ -297,6 +298,8 @@ namespace OpenRA
 			});
 
 			SpawnPoints = Exts.Lazy(() => new CPos[0]);
+			TileShape = tileShape;
+			MaximumTerrainHeight = Game.ModData.Manifest.MaximumTerrainHeight;
 
 			PostInit();
 		}
@@ -362,6 +365,8 @@ namespace OpenRA
 			MapHeight = Exts.Lazy(LoadMapHeight);
 
 			TileShape = Game.ModData.Manifest.TileShape;
+			MaximumTerrainHeight = Game.ModData.Manifest.MaximumTerrainHeight;
+
 			SubCellOffsets = Game.ModData.Manifest.SubCellOffsets;
 			LastSubCell = (SubCell)(SubCellOffsets.Length - 1);
 			DefaultSubCell = (SubCell)Game.ModData.Manifest.SubCellDefaultIndex;
@@ -534,7 +539,6 @@ namespace OpenRA
 
 		public CellLayer<byte> LoadMapHeight()
 		{
-			var maxHeight = cachedTileSet.Value.MaxGroundHeight;
 			var tiles = new CellLayer<byte>(this);
 			using (var s = Container.GetContent("map.bin"))
 			{
@@ -544,7 +548,7 @@ namespace OpenRA
 					s.Position = header.HeightsOffset;
 					for (var i = 0; i < MapSize.X; i++)
 						for (var j = 0; j < MapSize.Y; j++)
-							tiles[new MPos(i, j)] = s.ReadUInt8().Clamp((byte)0, maxHeight);
+							tiles[new MPos(i, j)] = s.ReadUInt8().Clamp((byte)0, MaximumTerrainHeight);
 				}
 			}
 
@@ -590,8 +594,8 @@ namespace OpenRA
 
 				// Data offsets
 				var tilesOffset = 17;
-				var heightsOffset = cachedTileSet.Value.MaxGroundHeight > 0 ? 3 * MapSize.X * MapSize.Y + 17 : 0;
-				var resourcesOffset = (cachedTileSet.Value.MaxGroundHeight > 0 ? 4 : 3) * MapSize.X * MapSize.Y + 17;
+				var heightsOffset = MaximumTerrainHeight > 0 ? 3 * MapSize.X * MapSize.Y + 17 : 0;
+				var resourcesOffset = (MaximumTerrainHeight > 0 ? 4 : 3) * MapSize.X * MapSize.Y + 17;
 
 				writer.Write((uint)tilesOffset);
 				writer.Write((uint)heightsOffset);
