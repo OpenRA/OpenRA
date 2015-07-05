@@ -69,7 +69,8 @@ namespace OpenRA.Graphics
 
 		public void Update(CPos cell, Sprite sprite)
 		{
-			var pos = worldRenderer.ScreenPosition(map.CenterOfCell(cell)) + sprite.Offset - 0.5f * sprite.Size;
+			var pos = sprite == null ? float2.Zero :
+				worldRenderer.ScreenPosition(map.CenterOfCell(cell)) + sprite.Offset - 0.5f * sprite.Size;
 			Update(cell.ToMPos(map.TileShape), sprite, pos);
 		}
 
