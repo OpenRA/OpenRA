@@ -120,7 +120,7 @@ namespace OpenRA.Graphics
 		public Sequences LoadSequences(Map map)
 		{
 			using (new Support.PerfTimer("LoadSequences"))
-				return Load(map.SequenceDefinitions);
+				return Load(map != null ? map.SequenceDefinitions : new List<MiniYamlNode>());
 		}
 
 		Sequences Load(List<MiniYamlNode> sequenceNodes)

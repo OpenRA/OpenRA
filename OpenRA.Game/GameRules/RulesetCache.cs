@@ -19,6 +19,8 @@ namespace OpenRA
 {
 	public sealed class RulesetCache : IDisposable
 	{
+		static readonly List<MiniYamlNode> NoMapRules = new List<MiniYamlNode>();
+
 		readonly ModData modData;
 
 		readonly Dictionary<string, ActorInfo> actorCache = new Dictionary<string, ActorInfo>();
@@ -43,7 +45,7 @@ namespace OpenRA
 
 		public Ruleset LoadDefaultRules()
 		{
-			return LoadMapRules(new Map());
+			return LoadMapRules(null);
 		}
 
 		public Ruleset LoadMapRules(Map map)
@@ -58,20 +60,34 @@ namespace OpenRA
 			Dictionary<string, TileSet> tileSets;
 
 			using (new PerfTimer("Actors"))
-				actors = LoadYamlRules(actorCache, m.Rules, map.RuleDefinitions, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
+				actors = LoadYamlRules(actorCache, m.Rules,
+					map != null ? map.RuleDefinitions : NoMapRules,
+					(k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
+
 			using (new PerfTimer("Weapons"))
-				weapons = LoadYamlRules(weaponCache, m.Weapons, map.WeaponDefinitions, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
+				weapons = LoadYamlRules(weaponCache, m.Weapons,
+					map != null ? map.WeaponDefinitions : NoMapRules,
+					(k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
+
 			using (new PerfTimer("Voices"))
-				voices = LoadYamlRules(voiceCache, m.Voices, map.VoiceDefinitions, (k, _) => new SoundInfo(k.Value));
+				voices = LoadYamlRules(voiceCache, m.Voices,
+					map != null ? map.VoiceDefinitions : NoMapRules,
+					(k, _) => new SoundInfo(k.Value));
+
 			using (new PerfTimer("Notifications"))
-				notifications = LoadYamlRules(notificationCache, m.Notifications, map.NotificationDefinitions, (k, _) => new SoundInfo(k.Value));
+				notifications = LoadYamlRules(notificationCache, m.Notifications,
+					map != null ? map.NotificationDefinitions : NoMapRules,
+					(k, _) => new SoundInfo(k.Value));
+
 			using (new PerfTimer("Music"))
-				music = LoadYamlRules(musicCache, m.Music, new List<MiniYamlNode>(), (k, _) => new MusicInfo(k.Key, k.Value));
+				music = LoadYamlRules(musicCache, m.Music,
+					NoMapRules,
+					(k, _) => new MusicInfo(k.Key, k.Value));
+
 			using (new PerfTimer("TileSets"))
 				tileSets = LoadTileSets(tileSetCache, sequenceCaches, m.TileSets);
 
 			var sequences = sequenceCaches.ToDictionary(kvp => kvp.Key, kvp => new SequenceProvider(kvp.Value, map));
-
 			return new Ruleset(actors, weapons, voices, notifications, music, tileSets, sequences);
 		}
 

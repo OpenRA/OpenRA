@@ -261,9 +261,6 @@ namespace OpenRA
 					throw new InvalidOperationException("Required file {0} not present in this map".F(filename));
 		}
 
-		/// <summary>A stub constructor that doesn't produce a valid map. Do not use.</summary>
-		public Map() { }
-
 		/// <summary>
 		/// Initializes a new map created by the editor or importer.
 		/// The map will not recieve a valid UID until after it has been saved and reloaded.
