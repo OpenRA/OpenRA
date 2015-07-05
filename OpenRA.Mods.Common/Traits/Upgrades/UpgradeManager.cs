@@ -28,18 +28,37 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		class TimedUpgrade
 		{
+			public class UpgradeSource
+			{
+				public readonly object Source;
+				public int Remaining;
+
+				public UpgradeSource(int duration, object source)
+				{
+					Remaining = duration;
+					Source = source;
+				}
+			}
+
 			public readonly string Upgrade;
 			public readonly int Duration;
-			public int Remaining;
+			public readonly HashSet<UpgradeSource> Sources;
+			public int Remaining; // Equal to maximum of all Sources.Remaining
 
-			public TimedUpgrade(string upgrade, int duration)
+			public TimedUpgrade(string upgrade, int duration, object source)
 			{
 				Upgrade = upgrade;
 				Duration = duration;
 				Remaining = duration;
+				Sources = new HashSet<UpgradeSource> { new UpgradeSource(duration, source) };
 			}
 
-			public void Tick() { Remaining--; }
+			public void Tick()
+			{
+				Remaining--;
+				foreach (var source in Sources)
+					source.Remaining--;
+			}
 		}
 
 		class UpgradeState
@@ -66,17 +85,36 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		public void GrantTimedUpgrade(Actor self, string upgrade, int duration)
+		/// <summary>Upgrade level increments are limited to one per source, i.e., if a single source
+		/// attempts granting multiple upgrades, they will not accumulate. They will replace each other
+		/// instead, leaving only the last granted upgrade active. An upgrade from each new distinct
+		/// source will increment the upgrade's level until AcceptsUpgrade starts returning false. Then,
+		/// when no new levels are accepted, the upgrade source with the shortest remaining upgrade
+		/// duration will be replaced by the new source.</summary>
+		public void GrantTimedUpgrade(Actor self, string upgrade, int duration, object source = null)
 		{
 			var timed = timedUpgrades.FirstOrDefault(u => u.Upgrade == upgrade);
 			if (timed == null)
 			{
-				timed = new TimedUpgrade(upgrade, duration);
+				timed = new TimedUpgrade(upgrade, duration, source);
 				timedUpgrades.Add(timed);
 				GrantUpgrade(self, upgrade, timed);
+				return;
+			}
+
+			var src = timed.Sources.FirstOrDefault(s => s.Source == source);
+			if (src == null)
+			{
+				timed.Sources.Add(new TimedUpgrade.UpgradeSource(duration, source));
+				if (AcceptsUpgrade(self, upgrade))
+					GrantUpgrade(self, upgrade, timed);
+				else
+					timed.Sources.Remove(timed.Sources.OrderByDescending(s => s.Remaining).Last());
 			}
 			else
-				timed.Remaining = Math.Max(duration, timed.Remaining);
+				src.Remaining = duration;
+
+			timed.Remaining = Math.Max(duration, timed.Remaining);
 		}
 
 		// Different upgradeable traits may define (a) different level ranges for the same upgrade type,
@@ -150,13 +188,20 @@ namespace OpenRA.Mods.Common.Traits
 			s.Watchers.Add(action);
 		}
 
+		/// <summary>Watchers will be receiving notifications while the upgrade's level is nonzero.
+		/// They will also be provided with the number of ticks before the level returns to zero,
+		/// as well as the duration in ticks of the timed upgrade (provided in the first call to
+		/// GrantTimedUpgrade).</summary>
 		public void Tick(Actor self)
 		{
 			foreach (var u in timedUpgrades)
 			{
 				u.Tick();
-				if (u.Remaining <= 0)
-					RevokeUpgrade(self, u.Upgrade, u);
+				foreach (var source in u.Sources)
+					if (source.Remaining <= 0)
+						RevokeUpgrade(self, u.Upgrade, u);
+
+				u.Sources.RemoveWhere(source => source.Remaining <= 0);
 
 				foreach (var a in upgrades.Value[u.Upgrade].Watchers)
 					a(u.Duration, u.Remaining);
