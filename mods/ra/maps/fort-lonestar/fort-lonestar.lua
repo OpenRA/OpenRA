@@ -147,6 +147,16 @@ SovietsRetreating = function()
 	end)
 end
 
+Tick = function()
+	if (Utils.RandomInteger(1, 200) == 10) then
+		local delay = Utils.RandomInteger(1, 10)
+		Effect.Flash("LightningStrike", delay)
+		Trigger.AfterDelay(delay, function()
+			Media.PlaySound("thunder.aud")
+		end)
+	end
+end
+
 WorldLoaded = function()
 	soviets = Player.GetPlayer("Soviets")
 	players = { }
