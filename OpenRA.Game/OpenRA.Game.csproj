@@ -181,8 +181,8 @@
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Util.cs" />
     <Compile Include="Traits\ValidateOrder.cs" />
-    <Compile Include="Traits\World\Country.cs" />
     <Compile Include="Traits\World\MusicPlaylist.cs" />
+    <Compile Include="Traits\World\Faction.cs" />
     <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\World\ScreenShaker.cs" />
     <Compile Include="Traits\World\Shroud.cs" />

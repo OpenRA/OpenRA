@@ -11,7 +11,7 @@
 namespace OpenRA.Traits
 {
 	[Desc("Attach this to the `World` actor.")]
-	public class CountryInfo : TraitInfo<Country>
+	public class FactionInfo : TraitInfo<Faction>
 	{
 		[Desc("This is the name exposed to the players.")]
 		public readonly string Name = null;
@@ -31,5 +31,5 @@ namespace OpenRA.Traits
 		public readonly bool Selectable = true;
 	}
 
-	public class Country { /* we're only interested in the Info */ }
+	public class Faction { /* we're only interested in the Info */ }
 }

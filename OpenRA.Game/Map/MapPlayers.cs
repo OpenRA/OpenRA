@@ -29,7 +29,7 @@ namespace OpenRA
 		public MapPlayers(Ruleset rules, int playerCount)
 		{
 			var firstRace = rules.Actors["world"].Traits
-				.WithInterface<CountryInfo>().First(c => c.Selectable).Race;
+				.WithInterface<FactionInfo>().First(f => f.Selectable).Race;
 
 			Players = new Dictionary<string, PlayerReference>
 			{
