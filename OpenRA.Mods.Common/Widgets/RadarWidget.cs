@@ -290,14 +290,11 @@ namespace OpenRA.Mods.Common.Widgets
 					if (newRenderShroud != null)
 					{
 						// Redraw the full shroud sprite
-						using (var bitmap = Minimap.ShroudBitmap(world))
-							OpenRA.Graphics.Util.FastCopyIntoSprite(shroudSprite, bitmap);
+						MarkShroudDirty(world.Map.CellsInsideBounds);
 
 						// Update the notification binding
 						newRenderShroud.CellsChanged += MarkShroudDirty;
 					}
-
-					dirtyShroudCells.Clear();
 
 					renderShroud = newRenderShroud;
 				}
