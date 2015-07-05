@@ -339,7 +339,11 @@ namespace OpenRA.Traits
 
 	public interface ILintPass { void Run(Action<string> emitError, Action<string> emitWarning, Map map); }
 
-	public interface IObjectivesPanel { string PanelName { get; } }
+	public interface IObjectivesPanel
+	{
+		string PanelName { get; }
+		int ExitDelay { get; }
+	}
 
 	public interface INotifyObjectivesUpdated
 	{

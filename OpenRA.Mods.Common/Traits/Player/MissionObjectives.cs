@@ -250,13 +250,18 @@ namespace OpenRA.Mods.Common.Traits
 	public class ObjectivesPanelInfo : ITraitInfo
 	{
 		public string PanelName = null;
+
+		[Desc("in ms")]
+		public int ExitDelay = 1400;
+
 		public object Create(ActorInitializer init) { return new ObjectivesPanel(this); }
 	}
 
 	public class ObjectivesPanel : IObjectivesPanel
 	{
-		ObjectivesPanelInfo info;
+		readonly ObjectivesPanelInfo info;
 		public ObjectivesPanel(ObjectivesPanelInfo info) { this.info = info; }
 		public string PanelName { get { return info.PanelName; } }
+		public int ExitDelay { get { return info.ExitDelay; } }
 	}
 }
