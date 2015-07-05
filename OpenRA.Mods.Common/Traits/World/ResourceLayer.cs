@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -22,13 +23,14 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new ResourceLayer(init.Self); }
 	}
 
-	public class ResourceLayer : IRenderOverlay, IWorldLoaded, ITickRender
+	public class ResourceLayer : IRenderOverlay, IWorldLoaded, ITickRender, INotifyActorDisposing
 	{
 		static readonly CellContents EmptyCell = new CellContents();
 
 		readonly World world;
 		readonly BuildingInfluence buildingInfluence;
 		readonly HashSet<CPos> dirty = new HashSet<CPos>();
+		readonly Dictionary<PaletteReference, TerrainSpriteLayer> spriteLayers = new Dictionary<PaletteReference, TerrainSpriteLayer>();
 
 		protected readonly CellLayer<CellContents> Content;
 		protected readonly CellLayer<CellContents> RenderContent;
@@ -40,21 +42,27 @@ namespace OpenRA.Mods.Common.Traits
 
 			Content = new CellLayer<CellContents>(world.Map);
 			RenderContent = new CellLayer<CellContents>(world.Map);
+
+			RenderContent.CellEntryChanged += UpdateSpriteLayers;
+		}
+
+		void UpdateSpriteLayers(CPos cell)
+		{
+			var resource = RenderContent[cell];
+			foreach (var kv in spriteLayers)
+			{
+				// resource.Type is meaningless (and may be null) if resource.Sprite is null
+				if (resource.Sprite != null && resource.Type.Palette == kv.Key)
+					kv.Value.Update(cell, resource.Sprite);
+				else
+					kv.Value.Update(cell, null);
+			}
 		}
 
 		public void Render(WorldRenderer wr)
 		{
-			var shroudObscured = world.ShroudObscuresTest;
-			foreach (var uv in wr.Viewport.VisibleCellsInsideBounds.MapCoords)
-			{
-				if (shroudObscured(uv))
-					continue;
-
-				var c = RenderContent[uv];
-				if (c.Sprite != null)
-					new SpriteRenderable(c.Sprite, wr.World.Map.CenterOfCell(uv.ToCPos(world.Map)),
-						WVec.Zero, -511, c.Type.Palette, 1f, true).Render(wr); // TODO ZOffset is ignored
-			}
+			foreach (var kv in spriteLayers.Values)
+				kv.Draw(wr.Viewport);
 		}
 
 		int GetAdjacentCellsWith(ResourceType t, CPos cell)
@@ -105,6 +113,27 @@ namespace OpenRA.Mods.Common.Traits
 					Content[cell] = temp;
 					dirty.Add(cell);
 				}
+			}
+
+			// Build the sprite layer dictionary for rendering resources
+			// All resources that have the same palette must also share a sheet and blend mode
+			foreach (var r in resources)
+			{
+				var layer = spriteLayers.GetOrAdd(r.Value.Palette, pal =>
+				{
+					var first = r.Value.Variants.First().Value.First();
+					return new TerrainSpriteLayer(w, wr, first.Sheet, first.BlendMode, pal, wr.World.Type != WorldType.Editor);
+				});
+
+				// Validate that sprites are compatible with this layer
+				var sheet = layer.Sheet;
+				if (r.Value.Variants.Any(kv => kv.Value.Any(s => s.Sheet != sheet)))
+					throw new InvalidDataException("Resource sprites span multiple sheets. Try loading their sequences earlier.");
+
+				var blendMode = layer.BlendMode;
+				if (r.Value.Variants.Any(kv => kv.Value.Any(s => s.BlendMode != blendMode)))
+					throw new InvalidDataException("Resource sprites specify different blend modes. "
+						+ "Try using different palettes for resource types that use different blend modes.");
 			}
 		}
 
@@ -249,6 +278,18 @@ namespace OpenRA.Mods.Common.Traits
 				return 0;
 
 			return Content[cell].Type.Info.MaxDensity;
+		}
+
+		bool disposed;
+		public void Disposing(Actor self)
+		{
+			if (disposed)
+				return;
+
+			foreach (var kv in spriteLayers.Values)
+				kv.Dispose();
+
+			disposed = true;
 		}
 
 		public struct CellContents
