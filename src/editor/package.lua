@@ -170,6 +170,9 @@ function ide:GetOutlineTree() return self.outline.outlineCtrl end
 function ide:GetWatch() return self.debugger and self.debugger.watchCtrl end
 function ide:GetStack() return self.debugger and self.debugger.stackCtrl end
 function ide:SetStatus(text, field) self:GetStatusBar():SetStatusText(text, field or 0) end
+function ide:GetStatus(field) return self:GetStatusBar():GetStatusText(field or 0) end
+function ide:PushStatus(text, field) self:GetStatusBar():PushStatusText(text, field or 0) end
+function ide:PopStatus(field) self:GetStatusBar():PopStatusText(field or 0) end
 function ide:Yield() wx.wxYield() end
 function ide:CreateBareEditor() return CreateEditor(true) end
 function ide:CreateStyledTextCtrl(...)
