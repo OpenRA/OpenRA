@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
 
@@ -72,31 +71,22 @@ namespace OpenRA.Utility
 
 			if (actions == null)
 				return;
-			foreach (var a in actions)
-			{
-				var descParts = a.Value.Method.GetCustomAttributes<DescAttribute>(true)
-					.SelectMany(d => d.Lines);
 
-				if (!descParts.Any())
+			var keys = actions.Keys.OrderBy(x => x);
+
+			foreach (var key in keys)
+			{
+				var descParts = actions[key].Method.GetCustomAttributes<DescAttribute>(true)
+					.SelectMany(d => d.Lines).ToArray();
+
+				if (descParts.Length == 0)
 					continue;
 
-				var args = descParts.Take(descParts.Count() - 1).JoinWith(" ");
-				var desc = descParts.Last();
+				var args = descParts.Take(descParts.Length - 1).JoinWith(" ");
+				var desc = descParts[descParts.Length - 1];
 
-				Console.WriteLine("  {0} {1}    ({2})", a.Key, args, desc);
+				Console.WriteLine("  {0} {1}{3}  {2}{3}", key, args, desc, Environment.NewLine);
 			}
-		}
-
-		static string GetNamedArg(string[] args, string arg)
-		{
-			if (args.Length < 2)
-				return null;
-
-			var i = Array.IndexOf(args, arg);
-			if (i < 0 || i == args.Length - 1)  // doesnt exist, or doesnt have a value.
-				return null;
-
-			return args[i + 1];
 		}
 	}
 }
