@@ -387,7 +387,7 @@ namespace OpenRA
 			{
 				try
 				{
-					return Game.ModData.RulesetCache.LoadMapRules(this);
+					return Game.ModData.RulesetCache.Load(this);
 				}
 				catch (Exception e)
 				{

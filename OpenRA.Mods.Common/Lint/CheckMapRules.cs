@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			try
 			{
-				Game.ModData.RulesetCache.LoadMapRules(map);
+				Game.ModData.RulesetCache.Load(map);
 			}
 			catch (Exception e)
 			{

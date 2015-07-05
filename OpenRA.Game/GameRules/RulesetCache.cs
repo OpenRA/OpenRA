@@ -43,12 +43,11 @@ namespace OpenRA
 			this.modData = modData;
 		}
 
-		public Ruleset LoadDefaultRules()
-		{
-			return LoadMapRules(null);
-		}
-
-		public Ruleset LoadMapRules(Map map)
+		/// <summary>
+		/// Cache and return the Ruleset for a given map.
+		/// If a map isn't specified then return the default mod Ruleset.
+		/// </summary>
+		public Ruleset Load(Map map = null)
 		{
 			var m = modData.Manifest;
 

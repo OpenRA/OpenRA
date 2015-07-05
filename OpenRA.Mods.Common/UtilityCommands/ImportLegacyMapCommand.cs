@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
 
-			var rules = Game.ModData.RulesetCache.LoadDefaultRules();
+			var rules = Game.ModData.RulesetCache.Load();
 			var map = LegacyMapImporter.Import(args[1], modData.Manifest.Mod.Id, rules, Console.WriteLine);
 
 			var fileName = Path.GetFileNameWithoutExtension(args[1]);
