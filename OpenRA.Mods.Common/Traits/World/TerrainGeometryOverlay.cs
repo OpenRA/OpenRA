@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			var colors = wr.World.TileSet.HeightDebugColors;
 			var mouseCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos).ToMPos(wr.World.Map);
 
-			foreach (var uv in wr.Viewport.VisibleCellsInsideBounds.MapCoords)
+			foreach (var uv in wr.Viewport.AllVisibleCells.MapCoords)
 			{
 				var height = (int)map.MapHeight.Value[uv];
 				var tile = map.MapTiles.Value[uv];
