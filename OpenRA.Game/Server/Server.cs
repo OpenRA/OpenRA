@@ -374,6 +374,9 @@ namespace OpenRA.Server
 						SendOrderTo(newConn, "Message", motd);
 				}
 
+				if (Map.RuleDefinitions.Any() && !LobbyInfo.IsSinglePlayer)
+					SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
+
 				if (handshake.Mod == "{DEV_VERSION}")
 					SendMessage("{0} is running an unversioned development build, ".F(client.Name) +
 					"and may desynchronize the game state if they have incompatible rules.");
