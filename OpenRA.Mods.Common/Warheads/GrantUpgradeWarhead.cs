@@ -49,13 +49,16 @@ namespace OpenRA.Mods.Common.Warheads
 
 				foreach (var u in Upgrades)
 				{
-					if (!um.AcceptsUpgrade(a, u))
-						continue;
-
 					if (Duration > 0)
-						um.GrantTimedUpgrade(a, u, Duration);
+					{
+						if (um.AcknowledgesUpgrade(a, u))
+							um.GrantTimedUpgrade(a, u, Duration, firedBy);
+					}
 					else
-						um.GrantUpgrade(a, u, this);
+					{
+						if (um.AcceptsUpgrade(a, u))
+							um.GrantUpgrade(a, u, this);
+					}
 				}
 			}
 		}
