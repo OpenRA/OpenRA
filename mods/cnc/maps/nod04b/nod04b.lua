@@ -74,6 +74,12 @@ InsertNodUnits = function()
 	Reinforcements.ReinforceWithTransport(Nod, 'tran', NodUnitsGunner, { EntryPointGunner.Location, RallyPointGunner.Location }, { EntryPointGunner.Location }, nil, nil)
 end
 
+initialSong = "warfare"
+PlayMusic = function()
+	Media.PlayMusic(initialSong, PlayMusic)
+	initialSong = nil
+end
+
 WorldLoaded = function()
 	GDI = Player.GetPlayer("GDI")
 	Nod = Player.GetPlayer("Nod")
@@ -140,6 +146,8 @@ WorldLoaded = function()
 	GDIObjective = GDI.AddPrimaryObjective("Kill all enemies.")
 	NodObjective1 = Nod.AddPrimaryObjective("Destroy the village and kill all civilians.")
 	NodObjective2 = Nod.AddSecondaryObjective("Kill all GDI units in the area.")
+
+	PlayMusic()
 
 	InsertNodUnits()
 end

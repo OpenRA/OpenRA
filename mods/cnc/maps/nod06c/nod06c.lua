@@ -75,10 +75,17 @@ end
 InsertNodUnits = function()
 	Camera.Position = UnitsRallyRight.CenterPosition
 	
+	Media.PlaySpeechNotification(Nod, "Reinforce")
 	Reinforcements.Reinforce(Nod, NodStartUnitsVehicle, { UnitsEntryMiddle.Location, UnitsRallyMiddle.Location }, 30)
 	Reinforcements.Reinforce(Nod, NodStartUnitsMiddle, { UnitsEntryMiddle.Location, UnitsRallyMiddle.Location }, 15)
 	Reinforcements.Reinforce(Nod, NodStartUnitsLeft, { UnitsEntryLeft.Location, UnitsRallyLeft.Location }, 15)
 	Reinforcements.Reinforce(Nod, NodStartUnitsRight, { UnitsEntryRight.Location, UnitsRallyRight.Location }, 15)
+end
+
+initialSong = "rout"
+PlayMusic = function()
+	Media.PlayMusic(initialSong, PlayMusic)
+	initialSong = nil
 end
 
 WorldLoaded = function()
@@ -109,6 +116,8 @@ WorldLoaded = function()
 	NodObjective3 = Nod.AddSecondaryObjective("Infiltrate the barracks, weapon factory and \nthe construction yard.")
 	GDIObjective = GDI.AddPrimaryObjective("Stop the Nod taskforce from escaping with the detonator.")
 
+	PlayMusic()
+
 	InsertNodUnits()
 
 	Trigger.AfterDelay(Atk1TriggerFunctionTime, Atk1TriggerFunction)
@@ -117,7 +126,8 @@ WorldLoaded = function()
 
 	Trigger.OnEnteredFootprint(ChinCellTriggerActivator, function(a, id)
 		if a.Owner == Nod then
-			Reinforcements.Reinforce(Nod, { 'tran' }, { ChnEntry.Location, waypoint10.Location }, 11)
+			Media.PlaySpeechNotification(Nod, "Reinforce")
+			Reinforcements.ReinforceWithTransport(Nod, 'tran', nil, { ChnEntry.Location, waypoint10.Location }, nil, nil, nil)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
@@ -138,7 +148,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(Win2CellTriggerActivator, function(a, id)
-		if a.Owner == Nod and NodObjective1 then
+		if a.Owner == Nod and NodObjective2 then
 			Nod.MarkCompletedObjective(NodObjective2)
 			Trigger.RemoveFootprintTrigger(id)
 		end

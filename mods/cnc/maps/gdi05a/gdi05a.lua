@@ -143,6 +143,7 @@ SetupWorld = function()
 		unit.Destroy()
 	end)
 
+	Media.PlaySpeechNotification(gdi, "Reinforce")
 	Reinforcements.Reinforce(gdi, GdiTanks, { GdiTankEntry.Location, GdiTankRallyPoint.Location }, DateTime.Seconds(1), function(actor) actor.Stance = "Defend" end)
 	Reinforcements.Reinforce(gdi, GdiApc, { GdiApcEntry.Location, GdiApcRallyPoint.Location }, DateTime.Seconds(1), function(actor) actor.Stance = "Defend" end)
 	Reinforcements.Reinforce(gdi, GdiInfantry, { GdiInfantryEntry.Location, GdiInfantryRallyPoint.Location }, 15, function(actor) actor.Stance = "Defend" end)
@@ -182,6 +183,12 @@ SetupWorld = function()
 	Grd3Action()
 end
 
+initialSong = "rain"
+PlayMusic = function()
+	Media.PlayMusic(initialSong, PlayMusic)
+	initialSong = nil
+end
+
 WorldLoaded = function()
 	gdiBase = Player.GetPlayer("AbandonedBase")
 	gdi = Player.GetPlayer("GDI")
@@ -213,7 +220,8 @@ WorldLoaded = function()
 
 	Camera.Position = GdiTankRallyPoint.CenterPosition
 
-	Media.PlayMusic()
+	PlayMusic()
+
 end
 
 Tick = function()

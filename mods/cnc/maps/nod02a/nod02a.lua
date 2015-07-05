@@ -42,6 +42,7 @@ getActors = function(owner, units)
 end
 
 InsertNodUnits = function()
+	Media.PlaySpeechNotification(Nod, "Reinforce")
 	Reinforcements.Reinforce(Nod, NodUnits, { UnitsEntry.Location, UnitsRally.Location }, 15)
 	Reinforcements.Reinforce(Nod, { "mcv" }, { McvEntry.Location, McvRally.Location })
 end
@@ -158,6 +159,12 @@ Pat1Movement = function(unit)
 	IdleHunt(unit)
 end
 
+initialSong = "ind2"
+PlayMusic = function()
+	Media.PlayMusic(initialSong, PlayMusic)
+	initialSong = nil
+end
+
 WorldLoaded = function()
 	GDI = Player.GetPlayer("GDI")
 	Nod = Player.GetPlayer("Nod")
@@ -214,6 +221,8 @@ WorldLoaded = function()
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
+
+	PlayMusic()
 
 	Trigger.AfterDelay(0, getStartUnits)
 	InsertNodUnits()

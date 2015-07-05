@@ -45,9 +45,17 @@ SendReinforcements = function()
 	Media.PlaySpeechNotification(player, "Reinforce")
 end
 
+initialSong = "crep226m"
+PlayMusic = function()
+	Media.PlayMusic(initialSong, PlayMusic)
+	initialSong = nil
+end
+
 WorldLoaded = function()
 	player = Player.GetPlayer("GDI")
 	enemy = Player.GetPlayer("Nod")
+
+	PlayMusic()
 
 	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")

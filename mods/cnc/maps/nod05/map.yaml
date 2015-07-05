@@ -65,94 +65,94 @@ Players:
 Actors:
 	Actor0: sbag
 		Location: 30,22
-		Owner: Neutral
+		Owner: GDI
 	Actor1: sbag
 		Location: 29,22
-		Owner: Neutral
+		Owner: GDI
 	Actor2: sbag
 		Location: 28,22
-		Owner: Neutral
+		Owner: GDI
 	Actor3: sbag
 		Location: 23,22
-		Owner: Neutral
+		Owner: GDI
 	Actor4: sbag
 		Location: 22,22
-		Owner: Neutral
+		Owner: GDI
 	Actor5: sbag
 		Location: 21,22
-		Owner: Neutral
+		Owner: GDI
 	Actor6: sbag
 		Location: 20,22
-		Owner: Neutral
+		Owner: GDI
 	Actor7: sbag
 		Location: 19,22
-		Owner: Neutral
+		Owner: GDI
 	Actor8: sbag
 		Location: 30,21
-		Owner: Neutral
+		Owner: GDI
 	Actor9: sbag
 		Location: 19,21
-		Owner: Neutral
+		Owner: GDI
 	Actor10: sbag
 		Location: 18,21
-		Owner: Neutral
+		Owner: GDI
 	Actor11: sbag
 		Location: 30,20
-		Owner: Neutral
+		Owner: GDI
 	Actor12: sbag
 		Location: 30,19
-		Owner: Neutral
+		Owner: GDI
 	Actor13: sbag
 		Location: 30,18
-		Owner: Neutral
+		Owner: GDI
 	Actor14: sbag
 		Location: 30,17
-		Owner: Neutral
+		Owner: GDI
 	Actor15: sbag
 		Location: 16,15
-		Owner: Neutral
+		Owner: GDI
 	Actor16: sbag
 		Location: 16,14
-		Owner: Neutral
+		Owner: GDI
 	Actor17: sbag
 		Location: 28,13
-		Owner: Neutral
+		Owner: GDI
 	Actor18: sbag
 		Location: 27,13
-		Owner: Neutral
+		Owner: GDI
 	Actor19: sbag
 		Location: 26,13
-		Owner: Neutral
+		Owner: GDI
 	Actor20: sbag
 		Location: 25,13
-		Owner: Neutral
+		Owner: GDI
 	Actor21: sbag
 		Location: 24,13
-		Owner: Neutral
+		Owner: GDI
 	Actor22: sbag
 		Location: 23,13
-		Owner: Neutral
+		Owner: GDI
 	Actor23: sbag
 		Location: 22,13
-		Owner: Neutral
+		Owner: GDI
 	Actor24: sbag
 		Location: 21,13
-		Owner: Neutral
+		Owner: GDI
 	Actor25: sbag
 		Location: 20,13
-		Owner: Neutral
+		Owner: GDI
 	Actor26: sbag
 		Location: 19,13
-		Owner: Neutral
+		Owner: GDI
 	Actor27: sbag
 		Location: 18,13
-		Owner: Neutral
+		Owner: GDI
 	Actor28: sbag
 		Location: 17,13
-		Owner: Neutral
+		Owner: GDI
 	Actor29: sbag
 		Location: 16,13
-		Owner: Neutral
+		Owner: GDI
 	Actor30: t18
 		Location: 52,25
 		Owner: Neutral
