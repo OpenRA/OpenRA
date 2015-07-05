@@ -16,17 +16,17 @@ namespace OpenRA
 	{
 		public string Name;
 		public string Palette;
-		public bool OwnsWorld = false;
-		public bool NonCombatant = false;
-		public bool Playable = false;
-		public bool Spectating = false;
 		public string Bot = null;
 		public string StartingUnitsClass = null;
 		public bool AllowBots = true;
+		public bool Playable = false;
 		public bool Required = false;
+		public bool OwnsWorld = false;
+		public bool Spectating = false;
+		public bool NonCombatant = false;
 
-		public bool LockRace = false;
-		public string Race;
+		public bool LockFaction = false;
+		public string Faction;
 
 		// ColorRamp naming retained for backward compatibility
 		public bool LockColor = false;

@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public HSLColor Color { get { return Player.Color; } }
 
 		[Desc("The player's race.")]
-		public string Race { get { return Player.PlayerReference.Race; } }
+		public string Race { get { return Player.PlayerReference.Faction; } }
 
 		[Desc("The player's spawnpoint ID.")]
 		public int Spawn { get { return Player.SpawnPoint; } }

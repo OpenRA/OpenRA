@@ -500,7 +500,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Name = section,
 				OwnsWorld = section == "Neutral",
 				NonCombatant = section == "Neutral",
-				Race = race,
+				Faction = race,
 				Color = namedColorMapping[c]
 			};
 

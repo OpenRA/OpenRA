@@ -37,7 +37,7 @@ namespace OpenRA
 					"Neutral", new PlayerReference
 					{
 						Name = "Neutral",
-						Race = firstRace,
+						Faction = firstRace,
 						OwnsWorld = true,
 						NonCombatant = true
 					}
@@ -46,7 +46,7 @@ namespace OpenRA
 					"Creeps", new PlayerReference
 					{
 						Name = "Creeps",
-						Race = firstRace,
+						Faction = firstRace,
 						NonCombatant = true,
 						Enemies = Exts.MakeArray(playerCount, i => "Multi{0}".F(i))
 					}
@@ -58,7 +58,7 @@ namespace OpenRA
 				var p = new PlayerReference
 				{
 					Name = "Multi{0}".F(index),
-					Race = "Random",
+					Faction = "Random",
 					Playable = true,
 					Enemies = new[] { "Creeps" }
 				};

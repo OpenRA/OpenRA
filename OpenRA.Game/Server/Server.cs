@@ -72,8 +72,8 @@ namespace OpenRA.Server
 			if (pr == null)
 				return;
 
-			if (pr.LockRace)
-				c.Race = pr.Race;
+			if (pr.LockFaction)
+				c.Race = pr.Faction;
 			if (pr.LockSpawn)
 				c.SpawnPoint = pr.Spawn;
 			if (pr.LockTeam)

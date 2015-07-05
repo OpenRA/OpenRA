@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Traits
 				var pr = new PlayerReference
 				{
 					Name = "Multi{0}".F(index),
-					Race = "Random",
+					Faction = "Random",
 					Playable = true,
 					Enemies = new[] { "Creeps" }
 				};
