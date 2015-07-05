@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			isPrimary = true;
 
-			Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", "PrimaryBuildingSelected", self.Owner.Country.Race);
+			Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", "PrimaryBuildingSelected", self.Owner.Country.InternalName);
 		}
 	}
 }

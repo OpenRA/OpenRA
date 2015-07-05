@@ -57,14 +57,14 @@ namespace OpenRA
 				.WithInterface<FactionInfo>().Where(f => !requireSelectable || f.Selectable)
 				.ToList();
 
-			var selected = selectableCountries.FirstOrDefault(f => f.Race == name)
+			var selected = selectableCountries.FirstOrDefault(f => f.InternalName == name)
 				?? selectableCountries.Random(world.SharedRandom);
 
 			// Don't loop infinite
-			for (var i = 0; i <= 10 && selected.RandomRaceMembers.Any(); i++)
+			for (var i = 0; i <= 10 && selected.RandomFactionMembers.Any(); i++)
 			{
-				var race = selected.RandomRaceMembers.Random(world.SharedRandom);
-				selected = selectableCountries.FirstOrDefault(f => f.Race == race);
+				var race = selected.RandomFactionMembers.Random(world.SharedRandom);
+				selected = selectableCountries.FirstOrDefault(f => f.InternalName == race);
 
 				if (selected == null)
 					throw new YamlException("Unknown race: {0}".F(race));
@@ -78,7 +78,7 @@ namespace OpenRA
 			var countries = world.Map.Rules.Actors["world"].Traits
 				.WithInterface<FactionInfo>().ToArray();
 
-			return countries.FirstOrDefault(f => f.Race == race) ?? countries.First();
+			return countries.FirstOrDefault(f => f.InternalName == race) ?? countries.First();
 		}
 
 		public Player(World world, Session.Client client, Session.Slot slot, PlayerReference pr)

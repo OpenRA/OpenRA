@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Action onQuit = () =>
 			{
 				if (world.Type == WorldType.Regular)
-					Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave", world.LocalPlayer == null ? null : world.LocalPlayer.Country.Race);
+					Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave", world.LocalPlayer == null ? null : world.LocalPlayer.Country.InternalName);
 
 				resumeDisabled = true;
 

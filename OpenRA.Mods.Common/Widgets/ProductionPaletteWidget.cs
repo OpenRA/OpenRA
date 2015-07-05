@@ -226,7 +226,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				// Queue a new item
 				Sound.Play(TabClick);
-				Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, World.LocalPlayer.Country.Race);
+				Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, World.LocalPlayer.Country.InternalName);
 				World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name,
 					handleMultiple ? 5 : 1));
 				return true;
@@ -245,14 +245,14 @@ namespace OpenRA.Mods.Common.Widgets
 			if (item.Paused || item.Done || item.TotalCost == item.RemainingCost)
 			{
 				// Instant cancel of things we have not started yet and things that are finished
-				Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Country.Race);
+				Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Country.InternalName);
 				World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, icon.Name,
 					handleMultiple ? 5 : 1));
 			}
 			else
 			{
 				// Pause an existing item
-				Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, World.LocalPlayer.Country.Race);
+				Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, World.LocalPlayer.Country.InternalName);
 				World.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, icon.Name, true));
 			}
 

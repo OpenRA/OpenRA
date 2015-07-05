@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Cnc.Traits
 						cargo.Delivered(self);
 
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, raceVariant));
-					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Country.Race);
+					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Country.InternalName);
 				}));
 
 				actor.QueueActivity(new Fly(actor, Target.FromCell(w, endPos)));

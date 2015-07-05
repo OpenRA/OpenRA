@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Lint
 			sequenceDefinitions = MiniYaml.MergeLiberal(map.SequenceDefinitions,
 				Game.ModData.Manifest.Sequences.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
 
-			var races = map.Rules.Actors["world"].Traits.WithInterface<FactionInfo>().Select(c => c.Race);
+			var races = map.Rules.Actors["world"].Traits.WithInterface<FactionInfo>().Select(c => c.InternalName);
 
 			foreach (var actorInfo in map.Rules.Actors)
 			{

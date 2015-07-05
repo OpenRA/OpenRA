@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (string.IsNullOrEmpty(prerequisite))
 				prerequisite = init.Self.Info.Name;
 
-			var race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Country.Race;
+			var race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Country.InternalName;
 
 			Update(init.Self.Owner, race);
 		}
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			if (info.ResetOnOwnerChange)
-				Update(newOwner, newOwner.Country.Race);
+				Update(newOwner, newOwner.Country.InternalName);
 		}
 
 		void Update(Player owner, string race)

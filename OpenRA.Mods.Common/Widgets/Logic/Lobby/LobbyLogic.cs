@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			colorPreview.Color = Game.Settings.Player.Color;
 
 			foreach (var f in modRules.Actors["world"].Traits.WithInterface<FactionInfo>())
-				countries.Add(f.Race, new LobbyCountry { Selectable = f.Selectable, Name = f.Name, Side = f.Side, Description = f.Description });
+				countries.Add(f.InternalName, new LobbyCountry { Selectable = f.Selectable, Name = f.Name, Side = f.Side, Description = f.Description });
 
 			var gameStarting = false;
 			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting ||

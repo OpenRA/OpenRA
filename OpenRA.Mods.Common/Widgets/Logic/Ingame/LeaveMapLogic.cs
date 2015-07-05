@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (world.Type == WorldType.Regular)
 					Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave",
-						world.LocalPlayer == null ? null : world.LocalPlayer.Country.Race);
+						world.LocalPlayer == null ? null : world.LocalPlayer.Country.InternalName);
 
 				var exitDelay = iop != null ? iop.ExitDelay : 0;
 				if (mpe != null)

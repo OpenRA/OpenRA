@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			var worldActor = map.Rules.Actors["world"];
 
-			var races = worldActor.Traits.WithInterface<FactionInfo>().Select(c => c.Race);
+			var races = worldActor.Traits.WithInterface<FactionInfo>().Select(f => f.InternalName);
 			foreach (var player in players.Values)
 				if (!string.IsNullOrWhiteSpace(player.Race) && !races.Contains(player.Race))
 					emitError("Invalid race {0} chosen for player {1}.".F(player.Race, player.Name));
