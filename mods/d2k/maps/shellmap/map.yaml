@@ -27,15 +27,15 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: atreides
+		Faction: atreides
 	PlayerReference@Atreides:
 		Name: Atreides
-		Race: atreides
+		Faction: atreides
 		ColorRamp: 161,134,200
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: atreides
+		Faction: atreides
 		Enemies: Atreides
 		ColorRamp: 210,255,127
 

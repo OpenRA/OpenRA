@@ -25,21 +25,21 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: atreides
+		Faction: atreides
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
-		Race: Random
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
-		Race: Random
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: atreides
+		Faction: atreides
 		Enemies: Multi0, Multi1
 
 Actors:
