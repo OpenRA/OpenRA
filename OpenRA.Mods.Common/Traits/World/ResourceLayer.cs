@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly World world;
 		readonly BuildingInfluence buildingInfluence;
-		readonly List<CPos> dirty = new List<CPos>();
+		readonly HashSet<CPos> dirty = new HashSet<CPos>();
 
 		protected readonly CellLayer<CellContents> Content;
 		protected readonly CellLayer<CellContents> RenderContent;
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public ResourceLayer(Actor self)
 		{
 			world = self.World;
-			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
+			buildingInfluence = self.Trait<BuildingInfluence>();
 
 			Content = new CellLayer<CellContents>(world.Map);
 			RenderContent = new CellLayer<CellContents>(world.Map);
@@ -102,8 +102,8 @@ namespace OpenRA.Mods.Common.Traits
 					var temp = Content[cell];
 					temp.Density = Math.Max(density, 1);
 
-					RenderContent[cell] = Content[cell] = temp;
-					UpdateRenderedSprite(cell);
+					Content[cell] = temp;
+					dirty.Add(cell);
 				}
 			}
 		}
@@ -200,8 +200,7 @@ namespace OpenRA.Mods.Common.Traits
 			cell.Density = Math.Min(cell.Type.Info.MaxDensity, cell.Density + n);
 			Content[p] = cell;
 
-			if (!dirty.Contains(p))
-				dirty.Add(p);
+			dirty.Add(p);
 		}
 
 		public bool IsFull(CPos cell)
@@ -223,8 +222,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				Content[cell] = c;
 
-			if (!dirty.Contains(cell))
-				dirty.Add(cell);
+			dirty.Add(cell);
 
 			return c.Type;
 		}
@@ -239,8 +237,7 @@ namespace OpenRA.Mods.Common.Traits
 			Content[cell] = EmptyCell;
 			world.Map.CustomTerrain[cell] = byte.MaxValue;
 
-			if (!dirty.Contains(cell))
-				dirty.Add(cell);
+			dirty.Add(cell);
 		}
 
 		public ResourceType GetResource(CPos cell) { return Content[cell].Type; }
