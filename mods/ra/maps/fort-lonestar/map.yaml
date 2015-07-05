@@ -41,7 +41,7 @@ Players:
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Team: 0
+		Team: 1
 		LockRace: True
 		Race: allies
 		Allies: Multi1, Multi2, Multi3
@@ -51,7 +51,7 @@ Players:
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Team: 0
+		Team: 1
 		LockRace: True
 		Race: allies
 		Allies: Multi0, Multi2, Multi3
@@ -61,7 +61,7 @@ Players:
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Team: 0
+		Team: 1
 		LockRace: True
 		Race: allies
 		Allies: Multi0, Multi1, Multi3
@@ -71,7 +71,7 @@ Players:
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Team: 0
+		Team: 1
 		LockRace: True
 		Race: allies
 		Allies: Multi0, Multi1, Multi2
@@ -79,6 +79,8 @@ Players:
 	PlayerReference@Soviets:
 		Name: Soviets
 		Race: soviet
+		LockTeam: True
+		Team: 2
 		ColorRamp: 0,255,128
 		Enemies: Multi0, Multi1, Multi2, Multi3
 
