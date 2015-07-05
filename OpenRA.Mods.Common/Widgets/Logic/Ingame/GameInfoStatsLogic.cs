@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				var team = item.Get<LabelWidget>("TEAM");
-				var teamNumber = (client == null) ? 0 : client.Team;
+				var teamNumber = pp.PlayerReference.Playable ? ((client == null) ? 0 : client.Team) : pp.PlayerReference.Team;
 				team.GetText = () => (teamNumber == 0) ? "-" : teamNumber.ToString();
 				playerPanel.AddChild(item);
 
