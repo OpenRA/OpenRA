@@ -371,7 +371,9 @@ namespace OpenRA.Server
 					t.ClientJoined(this, newConn);
 
 				SyncLobbyInfo();
-				SendMessage("{0} has joined the game.".F(client.Name));
+
+				if (!LobbyInfo.IsSinglePlayer)
+					SendMessage("{0} has joined the game.".F(client.Name));
 
 				// Send initial ping
 				SendOrderTo(newConn, "Ping", Game.RunTime.ToString(CultureInfo.InvariantCulture));
@@ -386,6 +388,9 @@ namespace OpenRA.Server
 					if (!string.IsNullOrEmpty(motd))
 						SendOrderTo(newConn, "Message", motd);
 				}
+
+				if (Map.RuleDefinitions.Any() && !LobbyInfo.IsSinglePlayer)
+					SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
 
 				if (handshake.Mod == "{DEV_VERSION}")
 					SendMessage("{0} is running an unversioned development build, ".F(client.Name) +
