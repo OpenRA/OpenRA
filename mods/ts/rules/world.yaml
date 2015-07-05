@@ -12,16 +12,16 @@
 		UseExtendedIndex: true
 		ShroudPalette: shroud
 		FogPalette: shroud
-	Country@Random:
+	Faction@Random:
 		Name: Any
-		Race: Random
-		RandomRaceMembers: gdi, nod
-	Country@0:
+		InternalName: Random
+		RandomFactionMembers: gdi, nod
+	Faction@0:
 		Name: GDI
-		Race: gdi
-	Country@1:
+		InternalName: gdi
+	Faction@1:
 		Name: Nod
-		Race: nod
+		InternalName: nod
 	ResourceType@Tiberium:
 		ResourceType: 1
 		Palette: greentiberium

@@ -1404,28 +1404,29 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						{
 							// Common code for making each trait
 							Action<string, string, string> addTrait = (type, newType, values) =>
-							{
-								var upgradeTypes = trait.Value.Nodes.FirstOrDefault(n => n.Key == type + "Upgrade");
-								var modifier = trait.Value.Nodes.FirstOrDefault(n => n.Key == type + "Modifier");
-
-								if (upgradeTypes == null || !string.IsNullOrEmpty(upgradeTypes.Value.Value) || modifier == null || !string.IsNullOrEmpty(modifier.Value.Value))
 								{
-									var yaml = new MiniYaml(null);
-									if (modifier == null)
-										modifier = new MiniYamlNode("Modifier", new MiniYaml(values));
-									else
-										modifier.Key = "Modifier";
-									yaml.Nodes.Add(modifier);
+									var upgradeTypes = trait.Value.Nodes.FirstOrDefault(n => n.Key == type + "Upgrade");
+									var modifier = trait.Value.Nodes.FirstOrDefault(n => n.Key == type + "Modifier");
 
-									if (upgradeTypes == null)
-										upgradeTypes = new MiniYamlNode("UpgradeTypes", new MiniYaml(type.ToLowerInvariant()));
-									else
-										upgradeTypes.Key = "UpgradeTypes";
-									yaml.Nodes.Add(upgradeTypes);
+									if (upgradeTypes == null || !string.IsNullOrEmpty(upgradeTypes.Value.Value) || modifier == null ||
+									    !string.IsNullOrEmpty(modifier.Value.Value))
+									{
+										var yaml = new MiniYaml(null);
+										if (modifier == null)
+											modifier = new MiniYamlNode("Modifier", new MiniYaml(values));
+										else
+											modifier.Key = "Modifier";
+										yaml.Nodes.Add(modifier);
 
-									node.Value.Nodes.Add(new MiniYamlNode((newType ?? type) + "Multiplier@EXPERIENCE", yaml));
-								}
-							};
+										if (upgradeTypes == null)
+											upgradeTypes = new MiniYamlNode("UpgradeTypes", new MiniYaml(type.ToLowerInvariant()));
+										else
+											upgradeTypes.Key = "UpgradeTypes";
+										yaml.Nodes.Add(upgradeTypes);
+
+										node.Value.Nodes.Add(new MiniYamlNode((newType ?? type) + "Multiplier@EXPERIENCE", yaml));
+									}
+								};
 
 							// Execute common code for each trait
 							addTrait("Firepower", null, "110, 115, 120, 130");
@@ -1502,6 +1503,24 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							trait.Key = "DamageMultiplier@INVULNERABLE";
 							trait.Value.Nodes.Add(new MiniYamlNode("Modifier", "0"));
 						}
+					}
+				}
+
+				// Rename the `Country` trait to `Faction`
+				if (engineVersion < 20150714)
+				{
+					var split = node.Key.Split('@');
+					if (split.Any() && split[0] == "Country")
+					{
+						node.Key = node.Key.Replace("Country", "Faction");
+
+						var race = node.Value.Nodes.FirstOrDefault(x => x.Key == "Race");
+						if (race != null)
+							race.Key = "InternalName";
+
+						var randomRace = node.Value.Nodes.FirstOrDefault(x => x.Key == "RandomRaceMembers");
+						if (randomRace != null)
+							randomRace.Key = "RandomFactionMembers";
 					}
 				}
 
