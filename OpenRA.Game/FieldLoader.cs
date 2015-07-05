@@ -157,69 +157,81 @@ namespace OpenRA
 			else if (fieldType == typeof(float))
 			{
 				float res;
-				if (float.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
+				if (value != null && float.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
 					return res * (value.Contains('%') ? 0.01f : 1f);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(decimal))
 			{
 				decimal res;
-				if (decimal.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
+				if (value != null && decimal.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
 					return res * (value.Contains('%') ? 0.01m : 1m);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(string))
 			{
-				if (field != null && MemberHasTranslateAttribute[field])
+				if (field != null && MemberHasTranslateAttribute[field] && value != null)
 					return Regex.Replace(value, "@[^@]+@", m => Translate(m.Value.Substring(1, m.Value.Length - 2)), RegexOptions.Compiled);
 				return value;
 			}
 			else if (fieldType == typeof(Color))
 			{
-				var parts = value.Split(',');
-				if (parts.Length == 3)
-					return Color.FromArgb(
-						Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
-						Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
-						Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255));
-				if (parts.Length == 4)
-					return Color.FromArgb(
-						Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
-						Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
-						Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255),
-						Exts.ParseIntegerInvariant(parts[3]).Clamp(0, 255));
+				if (value != null)
+				{
+					var parts = value.Split(',');
+					if (parts.Length == 3)
+						return Color.FromArgb(
+							Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
+							Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
+							Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255));
+					if (parts.Length == 4)
+						return Color.FromArgb(
+							Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
+							Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
+							Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255),
+							Exts.ParseIntegerInvariant(parts[3]).Clamp(0, 255));
+				}
+
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(Color[]))
 			{
-				var parts = value.Split(',');
-
-				if (parts.Length % 4 != 0)
-					return InvalidValueAction(value, fieldType, fieldName);
-
-				var colors = new Color[parts.Length / 4];
-
-				for (var i = 0; i < colors.Length; i++)
+				if (value != null)
 				{
-					colors[i] = Color.FromArgb(
-						Exts.ParseIntegerInvariant(parts[4 * i]).Clamp(0, 255),
-						Exts.ParseIntegerInvariant(parts[4 * i + 1]).Clamp(0, 255),
-						Exts.ParseIntegerInvariant(parts[4 * i + 2]).Clamp(0, 255),
-						Exts.ParseIntegerInvariant(parts[4 * i + 3]).Clamp(0, 255));
+					var parts = value.Split(',');
+
+					if (parts.Length % 4 != 0)
+						return InvalidValueAction(value, fieldType, fieldName);
+
+					var colors = new Color[parts.Length / 4];
+
+					for (var i = 0; i < colors.Length; i++)
+					{
+						colors[i] = Color.FromArgb(
+							Exts.ParseIntegerInvariant(parts[4 * i]).Clamp(0, 255),
+							Exts.ParseIntegerInvariant(parts[4 * i + 1]).Clamp(0, 255),
+							Exts.ParseIntegerInvariant(parts[4 * i + 2]).Clamp(0, 255),
+							Exts.ParseIntegerInvariant(parts[4 * i + 3]).Clamp(0, 255));
+					}
+
+					return colors;
 				}
 
-				return colors;
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(HSLColor))
 			{
-				var parts = value.Split(',');
+				if (value != null)
+				{
+					var parts = value.Split(',');
 
-				// Allow old ColorRamp format to be parsed as HSLColor
-				if (parts.Length == 3 || parts.Length == 4)
-					return new HSLColor(
-						(byte)Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
-						(byte)Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
-						(byte)Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255));
+					// Allow old ColorRamp format to be parsed as HSLColor
+					if (parts.Length == 3 || parts.Length == 4)
+						return new HSLColor(
+							(byte)Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
+							(byte)Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
+							(byte)Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255));
+				}
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -241,44 +253,53 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(WVec))
 			{
-				var parts = value.Split(',');
-				if (parts.Length == 3)
+				if (value != null)
 				{
-					WRange rx, ry, rz;
-					if (WRange.TryParse(parts[0], out rx) && WRange.TryParse(parts[1], out ry) && WRange.TryParse(parts[2], out rz))
-						return new WVec(rx, ry, rz);
+					var parts = value.Split(',');
+					if (parts.Length == 3)
+					{
+						WRange rx, ry, rz;
+						if (WRange.TryParse(parts[0], out rx) && WRange.TryParse(parts[1], out ry) && WRange.TryParse(parts[2], out rz))
+							return new WVec(rx, ry, rz);
+					}
 				}
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(WVec[]))
 			{
-				var parts = value.Split(',');
-
-				if (parts.Length % 3 != 0)
-					return InvalidValueAction(value, fieldType, fieldName);
-
-				var vecs = new WVec[parts.Length / 3];
-
-				for (var i = 0; i < vecs.Length; ++i)
+				if (value != null)
 				{
-					WRange rx, ry, rz;
-					if (WRange.TryParse(parts[3 * i], out rx)
-							&& WRange.TryParse(parts[3 * i + 1], out ry)
-							&& WRange.TryParse(parts[3 * i + 2], out rz))
-						vecs[i] = new WVec(rx, ry, rz);
+					var parts = value.Split(',');
+
+					if (parts.Length % 3 != 0)
+						return InvalidValueAction(value, fieldType, fieldName);
+
+					var vecs = new WVec[parts.Length / 3];
+
+					for (var i = 0; i < vecs.Length; ++i)
+					{
+						WRange rx, ry, rz;
+						if (WRange.TryParse(parts[3 * i], out rx) && WRange.TryParse(parts[3 * i + 1], out ry) && WRange.TryParse(parts[3 * i + 2], out rz))
+							vecs[i] = new WVec(rx, ry, rz);
+					}
+
+					return vecs;
 				}
 
-				return vecs;
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(WPos))
 			{
-				var parts = value.Split(',');
-				if (parts.Length == 3)
+				if (value != null)
 				{
-					WRange rx, ry, rz;
-					if (WRange.TryParse(parts[0], out rx) && WRange.TryParse(parts[1], out ry) && WRange.TryParse(parts[2], out rz))
-						return new WPos(rx, ry, rz);
+					var parts = value.Split(',');
+					if (parts.Length == 3)
+					{
+						WRange rx, ry, rz;
+						if (WRange.TryParse(parts[0], out rx) && WRange.TryParse(parts[1], out ry) && WRange.TryParse(parts[2], out rz))
+							return new WPos(rx, ry, rz);
+					}
 				}
 
 				return InvalidValueAction(value, fieldType, fieldName);
@@ -292,31 +313,38 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(WRot))
 			{
-				var parts = value.Split(',');
-				if (parts.Length == 3)
+				if (value != null)
 				{
-					int rr, rp, ry;
-					if (Exts.TryParseIntegerInvariant(value, out rr)
-						&& Exts.TryParseIntegerInvariant(value, out rp)
-						&& Exts.TryParseIntegerInvariant(value, out ry))
-						return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
+					var parts = value.Split(',');
+					if (parts.Length == 3)
+					{
+						int rr, rp, ry;
+						if (Exts.TryParseIntegerInvariant(value, out rr) && Exts.TryParseIntegerInvariant(value, out rp) && Exts.TryParseIntegerInvariant(value, out ry))
+							return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
+					}
 				}
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(CPos))
 			{
-				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				return new CPos(
-					Exts.ParseIntegerInvariant(parts[0]),
-					Exts.ParseIntegerInvariant(parts[1]));
+				if (value != null)
+				{
+					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+					return new CPos(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(CVec))
 			{
-				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				return new CVec(
-					Exts.ParseIntegerInvariant(parts[0]),
-					Exts.ParseIntegerInvariant(parts[1]));
+				if (value != null)
+				{
+					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+					return new CVec(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType.IsEnum)
 			{
@@ -331,8 +359,10 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(ImageFormat))
 			{
-				switch (value.ToLowerInvariant())
+				if (value != null)
 				{
+					switch (value.ToLowerInvariant())
+					{
 					case "bmp":
 						return ImageFormat.Bmp;
 					case "gif":
@@ -345,7 +375,10 @@ namespace OpenRA
 						return ImageFormat.Tiff;
 					default:
 						return ImageFormat.Png;
+					}
 				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(bool))
 				return ParseYesNo(value, fieldType, fieldName);
@@ -363,45 +396,66 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(Size))
 			{
-				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				return new Size(
-					Exts.ParseIntegerInvariant(parts[0]),
-					Exts.ParseIntegerInvariant(parts[1]));
+				if (value != null)
+				{
+					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+					return new Size(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(int2))
 			{
-				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				return new int2(
-					Exts.ParseIntegerInvariant(parts[0]),
-					Exts.ParseIntegerInvariant(parts[1]));
+				if (value != null)
+				{
+					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+					return new int2(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(float2))
 			{
-				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				float xx = 0;
-				float yy = 0;
-				float res;
-				if (float.TryParse(parts[0].Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
-					xx = res * (parts[0].Contains('%') ? 0.01f : 1f);
-				if (float.TryParse(parts[1].Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
-					yy = res * (parts[1].Contains('%') ? 0.01f : 1f);
-				return new float2(xx, yy);
+				if (value != null)
+				{
+					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+					float xx = 0;
+					float yy = 0;
+					float res;
+					if (float.TryParse(parts[0].Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
+						xx = res * (parts[0].Contains('%') ? 0.01f : 1f);
+					if (float.TryParse(parts[1].Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
+						yy = res * (parts[1].Contains('%') ? 0.01f : 1f);
+					return new float2(xx, yy);
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(Rectangle))
 			{
-				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				return new Rectangle(
-					Exts.ParseIntegerInvariant(parts[0]),
-					Exts.ParseIntegerInvariant(parts[1]),
-					Exts.ParseIntegerInvariant(parts[2]),
-					Exts.ParseIntegerInvariant(parts[3]));
+				if (value != null)
+				{
+					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+					return new Rectangle(
+						Exts.ParseIntegerInvariant(parts[0]),
+						Exts.ParseIntegerInvariant(parts[1]),
+						Exts.ParseIntegerInvariant(parts[2]),
+						Exts.ParseIntegerInvariant(parts[3]));
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Bits<>))
 			{
-				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				var argTypes = new Type[] { typeof(string[]) };
-				var argValues = new object[] { parts };
-				return fieldType.GetConstructor(argTypes).Invoke(argValues);
+				if (value != null)
+				{
+					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+					var argTypes = new Type[] { typeof(string[]) };
+					var argValues = new object[] { parts };
+					return fieldType.GetConstructor(argTypes).Invoke(argValues);
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Nullable<>))
 			{
