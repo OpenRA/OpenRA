@@ -61,15 +61,8 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
     end
   end
 
-  -- if not opened yet, try open now
-  local file_text = FileRead(filePath)
-  if file_text then
-    if GetConfigIOFilter("input") then
-      file_text = GetConfigIOFilter("input")(filePath,file_text)
-    end
-  elseif file_must_exist then
-    return nil
-  end
+  local filesize = FileSize(filePath)
+  if not filesize and file_must_exist then return nil end
 
   local current = editor and editor:GetCurrentPos()
   editor = editor or findUnusedEditor() or CreateEditor()
@@ -78,16 +71,25 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   editor:SetupKeywords(GetFileExt(filePath))
   editor:MarkerDeleteAll(-1)
 
-  -- remove BOM from UTF-8 encoded files; store BOM to add back when saving
+  -- if not opened yet, try open now
+  local inputfilter = GetConfigIOFilter("input")
+  local file_text
+  editor:Allocate(filesize)
+  editor:SetText("")
   editor.bom = string.char(0xEF,0xBB,0xBF)
-  if file_text and editor:GetCodePage() == wxstc.wxSTC_CP_UTF8
-  and file_text:find("^"..editor.bom) then
-    file_text = file_text:gsub("^"..editor.bom, "")
-  else
-    -- set to 'false' as checks for nil on wxlua objects may fail at run-time
-    editor.bom = false
-  end
-  editor:SetText(file_text or "")
+  FileRead(filePath, 1024*1024, function(s)
+      if not file_text then
+        -- remove BOM from UTF-8 encoded files; store BOM to add back when saving
+        if s and editor:GetCodePage() == wxstc.wxSTC_CP_UTF8 and s:find("^"..editor.bom) then
+          s = s:gsub("^"..editor.bom, "")
+        else
+          -- set to 'false' as checks for nil on wxlua objects may fail at run-time
+          editor.bom = false
+        end
+        file_text = s
+      end
+      editor:AppendText(inputfilter and inputfilter(filePath, s) or s)
+    end)
 
   -- check the editor as it can be empty if the file has malformed UTF8;
   -- skip binary files with unknown extensions as they may have any sequences;

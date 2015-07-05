@@ -299,13 +299,26 @@ end
 
 function FileSize(fname) return wx.wxFileExists(fname) and wx.wxFileSize(fname) or nil end
 
-function FileRead(fname, length)
+function FileRead(fname, length, callback)
   -- on OSX "Open" dialog allows to open applications, which are folders
   if wx.wxDirExists(fname) then return nil, "Can't read directory as file." end
 
   local _ = wx.wxLogNull() -- disable error reporting; will report as needed
   local file = wx.wxFile(fname, wx.wxFile.read)
   if not file:IsOpened() then return nil, wx.wxSysErrorMsg() end
+
+  if type(callback) == 'function' then
+    length = length or 8192
+    local pos = 0
+    while true do
+      local len, content = file:Read(length)
+      callback(content)
+      if len < length then break end
+      pos = pos + len
+      file:Seek(pos)
+    end
+    return true, wx.wxSysErrorMsg()
+  end
 
   local _, content = file:Read(length or wx.wxFileSize(fname))
   file:Close()
