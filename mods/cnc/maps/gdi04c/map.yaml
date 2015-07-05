@@ -41,10 +41,10 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 	PlayerReference@Nod:
 		Name: Nod
-		Race: nod
+		Faction: nod
 		ColorRamp: 3,255,127
 		Allies: Nod
 		Enemies: GDI, Civillians
@@ -53,8 +53,8 @@ Players:
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: gdi
+		LockFaction: True
+		Faction: gdi
 		LockColor: True
 		ColorRamp: 31,222,183
 		LockSpawn: True
@@ -64,12 +64,12 @@ Players:
 	PlayerReference@Civillians:
 		Name: Civillians
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 		Enemies: Nod
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: Random
+		Faction: Random
 		Enemies: Nod, GDI
 
 Actors:
