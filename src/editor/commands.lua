@@ -66,17 +66,16 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
 
   local current = editor and editor:GetCurrentPos()
   editor = editor or findUnusedEditor() or CreateEditor()
-
   editor:Freeze()
   editor:SetupKeywords(GetFileExt(filePath))
   editor:MarkerDeleteAll(-1)
-
-  -- if not opened yet, try open now
-  local inputfilter = GetConfigIOFilter("input")
-  local file_text
   editor:Allocate(filesize)
   editor:SetText("")
   editor.bom = string.char(0xEF,0xBB,0xBF)
+
+  local inputfilter = GetConfigIOFilter("input")
+  local file_text
+  ide:PushStatus("")
   FileRead(filePath, 1024*1024, function(s)
       if not file_text then
         -- remove BOM from UTF-8 encoded files; store BOM to add back when saving
@@ -89,7 +88,10 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
         file_text = s
       end
       editor:AppendText(inputfilter and inputfilter(filePath, s) or s)
+      ide:PopStatus()
+      ide:PushStatus(TR("%s%% loaded..."):format(math.floor(100*editor:GetLength()/filesize)))
     end)
+  ide:PopStatus()
 
   -- check the editor as it can be empty if the file has malformed UTF8;
   -- skip binary files with unknown extensions as they may have any sequences;
