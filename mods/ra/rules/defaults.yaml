@@ -628,9 +628,6 @@
 		XmasImages: xcratea, xcrateb, xcratec, xcrated
 		LandSequence: land
 		WaterSequence: water
-	Selectable:
-		Selectable: false
-		Bounds: 15,15,-1,-1
 	Parachutable:
 		KilledOnImpassableTerrain: false
 		ParachuteSequence: parach
@@ -638,5 +635,5 @@
 		ParachuteIdleSequence: idle
 	Passenger:
 	CustomSelectionSize:
-		CustomBounds: 16,16
+		CustomBounds: 20,20
 
