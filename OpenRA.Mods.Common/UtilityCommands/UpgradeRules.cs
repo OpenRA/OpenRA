@@ -1305,12 +1305,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							rh.Value.Nodes.RemoveAll(n => wfsbNodes.Contains(n));
 
 							if (ibfNode.Any())
+							{
 								rh.Value.Nodes.RemoveAll(n => ibfNode.Contains(n));
 								Console.WriteLine("The 'ImagesByFullness' property from the removed RenderHarvester trait has been");
 								Console.WriteLine("replaced with a 'PrefixByFullness' property on the new WithHarvestAnimation trait.");
 								Console.WriteLine("This cannot be reliably upgraded, as the actor sequences need to be adapted as well.");
 								Console.WriteLine("Therefore, WithHarvestAnimation will use the default (no prefix) after upgrading.");
 								Console.WriteLine("See RA's harvester for reference on how to re-implement this feature using the new trait.");
+							}
 						}
 
 						var rrh = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderHarvester"));
