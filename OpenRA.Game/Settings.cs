@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -227,22 +228,32 @@ namespace OpenRA
 		public Hotkey SupportPower05Key = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
 		public Hotkey SupportPower06Key = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
 
+		static readonly Func<KeySettings, Hotkey>[] ProductionKeys = GetKeys(24, "Production");
+		static readonly Func<KeySettings, Hotkey>[] SupportPowerKeys = GetKeys(6, "SupportPower");
+
+		static Func<KeySettings, Hotkey>[] GetKeys(int count, string prefix)
+		{
+			var keySettings = Expression.Parameter(typeof(KeySettings), "keySettings");
+			return Exts.MakeArray(count, i => Expression.Lambda<Func<KeySettings, Hotkey>>(
+				Expression.Field(keySettings, "{0}{1:D2}Key".F(prefix, i + 1)), keySettings).Compile());
+		}
+
 		public Hotkey GetProductionHotkey(int index)
 		{
-			var field = GetType().GetField("Production{0:D2}Key".F(index + 1));
-			if (field == null)
-				return Hotkey.Invalid;
-
-			return (Hotkey)field.GetValue(this);
+			return GetKey(ProductionKeys, index);
 		}
 
 		public Hotkey GetSupportPowerHotkey(int index)
 		{
-			var field = GetType().GetField("SupportPower{0:D2}Key".F(index + 1));
-			if (field == null)
+			return GetKey(SupportPowerKeys, index);
+		}
+
+		Hotkey GetKey(Func<KeySettings, Hotkey>[] keys, int index)
+		{
+			if (index < 0 || index >= keys.Length)
 				return Hotkey.Invalid;
 
-			return (Hotkey)field.GetValue(this);
+			return keys[index](this);
 		}
 	}
 
