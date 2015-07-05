@@ -5,7 +5,7 @@ environment:
   CoverityProjectToken:
     secure: BYP5qnptMazSCwTwgiFHlfqZd7BM3bwTRq2Cbs++ofg=
   CoverityNotificationEmail:
-    secure: BRYcOAGiOqBV406Oh9C/F/bp+OrowEvljq0/CeOddww=
+    secure: 0kyu0t8QwQYUQzqguVJP3N+VpEDfET2ArP+JNnOsUELJQvH8qbeQzPTM0ga0ek5G
 
 install:
 
