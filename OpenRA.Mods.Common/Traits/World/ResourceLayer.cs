@@ -17,19 +17,30 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
-	public class ResourceLayerInfo : TraitInfo<ResourceLayer>, Requires<ResourceTypeInfo> { }
+	public class ResourceLayerInfo : ITraitInfo, Requires<ResourceTypeInfo>, Requires<BuildingInfluenceInfo>
+	{
+		public virtual object Create(ActorInitializer init) { return new ResourceLayer(init.Self); }
+	}
 
 	public class ResourceLayer : IRenderOverlay, IWorldLoaded, ITickRender
 	{
 		static readonly CellContents EmptyCell = new CellContents();
 
-		World world;
+		readonly World world;
+		readonly BuildingInfluence buildingInfluence;
+		readonly List<CPos> dirty = new List<CPos>();
 
-		BuildingInfluence buildingInfluence;
+		protected readonly CellLayer<CellContents> Content;
+		protected readonly CellLayer<CellContents> RenderContent;
 
-		protected CellLayer<CellContents> content;
-		protected CellLayer<CellContents> render;
-		List<CPos> dirty;
+		public ResourceLayer(Actor self)
+		{
+			world = self.World;
+			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
+
+			Content = new CellLayer<CellContents>(world.Map);
+			RenderContent = new CellLayer<CellContents>(world.Map);
+		}
 
 		public void Render(WorldRenderer wr)
 		{
@@ -39,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (shroudObscured(uv))
 					continue;
 
-				var c = render[uv];
+				var c = RenderContent[uv];
 				if (c.Sprite != null)
 					new SpriteRenderable(c.Sprite, wr.World.Map.CenterOfCell(uv.ToCPos(world.Map)),
 						WVec.Zero, -511, c.Type.Palette, 1f, true).Render(wr); // TODO ZOffset is ignored
@@ -54,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 				for (var v = -1; v < 2; v++)
 				{
 					var c = cell + new CVec(u, v);
-					if (content.Contains(c) && content[c].Type == t)
+					if (Content.Contains(c) && Content[c].Type == t)
 						++sum;
 				}
 			}
@@ -64,14 +75,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			this.world = w;
-
-			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
-
-			content = new CellLayer<CellContents>(w.Map);
-			render = new CellLayer<CellContents>(w.Map);
-			dirty = new List<CPos>();
-
 			var resources = w.WorldActor.TraitsImplementing<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 
@@ -84,22 +87,22 @@ namespace OpenRA.Mods.Common.Traits
 				if (!AllowResourceAt(t, cell))
 					continue;
 
-				content[cell] = CreateResourceCell(t, cell);
+				Content[cell] = CreateResourceCell(t, cell);
 			}
 
 			// Set initial density based on the number of neighboring resources
 			foreach (var cell in w.Map.AllCells)
 			{
-				var type = content[cell].Type;
+				var type = Content[cell].Type;
 				if (type != null)
 				{
 					// Adjacent includes the current cell, so is always >= 1
 					var adjacent = GetAdjacentCellsWith(type, cell);
 					var density = int2.Lerp(0, type.Info.MaxDensity, adjacent, 9);
-					var temp = content[cell];
+					var temp = Content[cell];
 					temp.Density = Math.Max(density, 1);
 
-					render[cell] = content[cell] = temp;
+					RenderContent[cell] = Content[cell] = temp;
 					UpdateRenderedSprite(cell);
 				}
 			}
@@ -107,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void UpdateRenderedSprite(CPos cell)
 		{
-			var t = render[cell];
+			var t = RenderContent[cell];
 			if (t.Density > 0)
 			{
 				var sprites = t.Type.Variants[t.Variant];
@@ -117,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				t.Sprite = null;
 
-			render[cell] = t;
+			RenderContent[cell] = t;
 		}
 
 		protected virtual string ChooseRandomVariant(ResourceType t)
@@ -132,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (!self.World.FogObscures(c))
 				{
-					render[c] = content[c];
+					RenderContent[c] = Content[c];
 					UpdateRenderedSprite(c);
 					remove.Add(c);
 				}
@@ -187,7 +190,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AddResource(ResourceType t, CPos p, int n)
 		{
-			var cell = content[p];
+			var cell = Content[p];
 			if (cell.Type == null)
 				cell = CreateResourceCell(t, p);
 
@@ -195,7 +198,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			cell.Density = Math.Min(cell.Type.Info.MaxDensity, cell.Density + n);
-			content[p] = cell;
+			Content[p] = cell;
 
 			if (!dirty.Contains(p))
 				dirty.Add(p);
@@ -203,22 +206,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsFull(CPos cell)
 		{
-			return content[cell].Density == content[cell].Type.Info.MaxDensity;
+			return Content[cell].Density == Content[cell].Type.Info.MaxDensity;
 		}
 
 		public ResourceType Harvest(CPos cell)
 		{
-			var c = content[cell];
+			var c = Content[cell];
 			if (c.Type == null)
 				return null;
 
 			if (--c.Density < 0)
 			{
-				content[cell] = EmptyCell;
+				Content[cell] = EmptyCell;
 				world.Map.CustomTerrain[cell] = byte.MaxValue;
 			}
 			else
-				content[cell] = c;
+				Content[cell] = c;
 
 			if (!dirty.Contains(cell))
 				dirty.Add(cell);
@@ -229,26 +232,26 @@ namespace OpenRA.Mods.Common.Traits
 		public void Destroy(CPos cell)
 		{
 			// Don't break other users of CustomTerrain if there are no resources
-			if (content[cell].Type == null)
+			if (Content[cell].Type == null)
 				return;
 
 			// Clear cell
-			content[cell] = EmptyCell;
+			Content[cell] = EmptyCell;
 			world.Map.CustomTerrain[cell] = byte.MaxValue;
 
 			if (!dirty.Contains(cell))
 				dirty.Add(cell);
 		}
 
-		public ResourceType GetResource(CPos cell) { return content[cell].Type; }
-		public ResourceType GetRenderedResource(CPos cell) { return render[cell].Type; }
-		public int GetResourceDensity(CPos cell) { return content[cell].Density; }
+		public ResourceType GetResource(CPos cell) { return Content[cell].Type; }
+		public ResourceType GetRenderedResource(CPos cell) { return RenderContent[cell].Type; }
+		public int GetResourceDensity(CPos cell) { return Content[cell].Density; }
 		public int GetMaxResourceDensity(CPos cell)
 		{
-			if (content[cell].Type == null)
+			if (Content[cell].Type == null)
 				return 0;
 
-			return content[cell].Type.Info.MaxDensity;
+			return Content[cell].Type.Info.MaxDensity;
 		}
 
 		public struct CellContents

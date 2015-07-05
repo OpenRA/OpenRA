@@ -17,7 +17,10 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Used to render spice with round borders.")]
-	public class D2kResourceLayerInfo : TraitInfo<D2kResourceLayer> { }
+	public class D2kResourceLayerInfo : ResourceLayerInfo
+	{
+		public override object Create(ActorInitializer init) { return new D2kResourceLayer(init.Self); }
+	}
 
 	public class D2kResourceLayer : ResourceLayer
 	{
@@ -96,9 +99,12 @@ namespace OpenRA.Mods.D2k.Traits
 			{ ClearSides.Bottom | ClearSides.TopLeft | ClearSides.BottomLeft | ClearSides.BottomRight, 49 },
 		};
 
+		public D2kResourceLayer(Actor self)
+			: base(self) { }
+
 		bool CellContains(CPos c, ResourceType t)
 		{
-			return render.Contains(c) && render[c].Type == t;
+			return RenderContent.Contains(c) && RenderContent[c].Type == t;
 		}
 
 		ClearSides FindClearSides(ResourceType t, CPos p)
@@ -133,10 +139,10 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void UpdateRenderedTileInner(CPos p)
 		{
-			if (!render.Contains(p))
+			if (!RenderContent.Contains(p))
 				return;
 
-			var t = render[p];
+			var t = RenderContent[p];
 			if (t.Density > 0)
 			{
 				var clear = FindClearSides(t.Type, p);
@@ -156,7 +162,7 @@ namespace OpenRA.Mods.D2k.Traits
 			else
 				t.Sprite = null;
 
-			render[p] = t;
+			RenderContent[p] = t;
 		}
 
 		protected override void UpdateRenderedSprite(CPos p)
