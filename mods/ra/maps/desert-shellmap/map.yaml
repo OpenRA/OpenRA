@@ -27,19 +27,19 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 	PlayerReference@Allies:
 		Name: Allies
-		Race: allies
+		Faction: allies
 		ColorRamp: 161,134,200
 		Enemies: Soviets
 	PlayerReference@Soviets:
 		Name: Soviets
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 3,255,127
 		Enemies: Allies
 

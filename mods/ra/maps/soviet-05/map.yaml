@@ -41,24 +41,24 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: england
+		Faction: england
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: england
+		Faction: england
 	PlayerReference@Greece:
 		Name: Greece
-		Race: allies
+		Faction: allies
 		ColorRamp: 161,134,236
 		Allies: GoodGuy
 		Enemies: USSR
 	PlayerReference@USSR:
 		Name: USSR
-		Race: soviet
+		Faction: soviet
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
+		LockFaction: True
 		LockColor: True
 		ColorRamp: 3,255,127
 		LockSpawn: True
@@ -66,7 +66,7 @@ Players:
 		Enemies: Greece, GoodGuy
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
-		Race: allies
+		Faction: allies
 		ColorRamp: 161,134,236
 		Allies: Greece
 		Enemies: USSR
@@ -620,6 +620,7 @@ Actors:
 	StartCamPoint: waypoint
 		Location: 21,80
 		Owner: Neutral
+
 Smudges:
 
 Rules:

@@ -40,8 +40,8 @@ Players:
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: soviet
+		LockFaction: True
+		Faction: soviet
 		LockColor: True
 		ColorRamp: 3,255,127
 		LockSpawn: True
@@ -49,14 +49,14 @@ Players:
 		Enemies: Germany
 	PlayerReference@Germany:
 		Name: Germany
-		Race: allies
+		Faction: allies
 		ColorRamp: 161,134,236
 		Enemies: USSR
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 
 Actors:
 	Actor0: t02

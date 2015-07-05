@@ -39,18 +39,18 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 	PlayerReference@USSR:
 		Name: USSR
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 3,255,127
 		Enemies: Greece
 	PlayerReference@Greece:
 		Name: Greece
 		Playable: True
 		Required: True
-		LockRace: True
-		Race: allies
+		LockFaction: True
+		Faction: allies
 		LockColor: True
 		ColorRamp: 161,134,236
 		Enemies: USSR

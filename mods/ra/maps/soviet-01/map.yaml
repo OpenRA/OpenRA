@@ -38,14 +38,14 @@ Options:
 Players:
 	PlayerReference@France:
 		Name: France
-		Race: allies
+		Faction: allies
 		ColorRamp: 115,115,143
 		Allies: Germany
 		Enemies: USSR
 	PlayerReference@Germany:
 		Name: Germany
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 		ColorRamp: 0,0,80
 		Allies: France
 		Enemies: USSR
@@ -54,8 +54,8 @@ Players:
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: soviet
+		LockFaction: True
+		Faction: soviet
 		LockColor: True
 		ColorRamp: 3,255,127
 		LockSpawn: True
@@ -65,7 +65,7 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 
 Actors:
 	Actor0: wood
