@@ -207,6 +207,18 @@ namespace OpenRA
 
 		public Rectangle Bounds;
 
+		/// <summary>
+		/// The top-left of the playable area in projected world coordinates
+		/// This is a hacky workaround for legacy functionality.  Do not use for new code.
+		/// </summary>
+		public WPos ProjectedTopLeft;
+
+		/// <summary>
+		/// The bottom-right of the playable area in projected world coordinates
+		/// This is a hacky workaround for legacy functionality.  Do not use for new code.
+		/// </summary>
+		public WPos ProjectedBottomRight;
+
 		public Lazy<CPos[]> SpawnPoints;
 
 		// Yaml map data
@@ -242,47 +254,6 @@ namespace OpenRA
 		[FieldLoader.Ignore] public CellRegion CellsInsideBounds;
 		[FieldLoader.Ignore] public CellRegion AllCells;
 
-		public static Map FromTileset(TileSet tileset)
-		{
-			var size = new Size(1, 1);
-			var tileShape = Game.ModData.Manifest.TileShape;
-			var tileRef = new TerrainTile(tileset.Templates.First().Key, (byte)0);
-
-			var makeMapTiles = Exts.Lazy(() =>
-			{
-				var ret = new CellLayer<TerrainTile>(tileShape, size);
-				ret.Clear(tileRef);
-				return ret;
-			});
-
-			var makeMapHeight = Exts.Lazy(() =>
-			{
-				var ret = new CellLayer<byte>(tileShape, size);
-				ret.Clear(0);
-				return ret;
-			});
-
-			var map = new Map()
-			{
-				Title = "Name your map here",
-				Description = "Describe your map here",
-				Author = "Your name here",
-				MapSize = new int2(size),
-				Tileset = tileset.Id,
-				Videos = new MapVideos(),
-				Options = new MapOptions(),
-				MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(tileShape, size)),
-				MapTiles = makeMapTiles,
-				MapHeight = makeMapHeight,
-
-				SpawnPoints = Exts.Lazy(() => new CPos[0])
-			};
-
-			map.PostInit();
-
-			return map;
-		}
-
 		void AssertExists(string filename)
 		{
 			using (var s = Container.GetContent(filename))
@@ -290,11 +261,47 @@ namespace OpenRA
 					throw new InvalidOperationException("Required file {0} not present in this map".F(filename));
 		}
 
-		// Stub constructor that doesn't produce a valid map, but is
-		// sufficient for loading a mod to the content-install panel
-		public Map() { }
+		/// <summary>
+		/// Initializes a new map created by the editor or importer.
+		/// The map will not recieve a valid UID until after it has been saved and reloaded.
+		/// </summary>
+		public Map(TileSet tileset, int width, int height)
+		{
+			var size = new Size(width, height);
+			var tileShape = Game.ModData.Manifest.TileShape;
+			var tileRef = new TerrainTile(tileset.Templates.First().Key, (byte)0);
 
-		// The standard constructor for most purposes
+			Title = "Name your map here";
+			Description = "Describe your map here";
+			Author = "Your name here";
+
+			MapSize = new int2(size);
+			Tileset = tileset.Id;
+			Videos = new MapVideos();
+			Options = new MapOptions();
+
+			MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(tileShape, size));
+
+			MapTiles = Exts.Lazy(() =>
+			{
+				var ret = new CellLayer<TerrainTile>(tileShape, size);
+				ret.Clear(tileRef);
+				return ret;
+			});
+
+			MapHeight = Exts.Lazy(() =>
+			{
+				var ret = new CellLayer<byte>(tileShape, size);
+				ret.Clear(0);
+				return ret;
+			});
+
+			SpawnPoints = Exts.Lazy(() => new CPos[0]);
+
+			PostInit();
+		}
+
+		/// <summary>Initializes a map loaded from disk.</summary>
 		public Map(string path)
 		{
 			Path = path;
@@ -380,7 +387,7 @@ namespace OpenRA
 			{
 				try
 				{
-					return Game.ModData.RulesetCache.LoadMapRules(this);
+					return Game.ModData.RulesetCache.Load(this);
 				}
 				catch (Exception e)
 				{
@@ -397,9 +404,9 @@ namespace OpenRA
 			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
 			AllCells = new CellRegion(TileShape, tl, br);
 
-			var btl = new MPos(Bounds.Left, Bounds.Top).ToCPos(this);
-			var bbr = new MPos(Bounds.Right - 1, Bounds.Bottom - 1).ToCPos(this);
-			CellsInsideBounds = new CellRegion(TileShape, btl, bbr);
+			var btl = new MPos(Bounds.Left, Bounds.Top);
+			var bbr = new MPos(Bounds.Right - 1, Bounds.Bottom - 1);
+			SetBounds(btl, bbr);
 
 			CustomTerrain = new CellLayer<byte>(this);
 			foreach (var uv in AllCells.MapCoords)
@@ -657,7 +664,7 @@ namespace OpenRA
 			// (b) Therefore:
 			//  - ax + by adds (a - b) * 512 + 512 to u
 			//  - ax + by adds (a + b) * 512 + 512 to v
-			var z = Contains(cell) ? 512 * MapHeight.Value[cell] : 0;
+			var z = MapHeight.Value.Contains(cell) ? 512 * MapHeight.Value[cell] : 0;
 			return new WPos(512 * (cell.X - cell.Y), 512 * (cell.X + cell.Y + 1), z);
 		}
 
@@ -706,13 +713,27 @@ namespace OpenRA
 			AllCells = new CellRegion(TileShape, tl, br);
 		}
 
-		public void ResizeCordon(int left, int top, int right, int bottom)
+		public void SetBounds(MPos tl, MPos br)
 		{
-			Bounds = Rectangle.FromLTRB(left, top, right, bottom);
+			// The tl and br coordinates are inclusive, but the Rectangle
+			// is exclusive.  Pad the right and bottom edges to match.
+			Bounds = Rectangle.FromLTRB(tl.U, tl.V, br.U + 1, br.V + 1);
+			CellsInsideBounds = new CellRegion(TileShape, tl.ToCPos(this), br.ToCPos(this));
 
-			var tl = new MPos(Bounds.Left, Bounds.Top).ToCPos(this);
-			var br = new MPos(Bounds.Right - 1, Bounds.Bottom - 1).ToCPos(this);
-			CellsInsideBounds = new CellRegion(TileShape, tl, br);
+			// Directly calculate the projected map corners in world units avoiding unnecessary
+			// conversions.  This abuses the definition that the width of the cell is always
+			// 1024 units, and that the height of two rows is 2048 for classic cells and 1024
+			// for diamond cells.
+			var wtop = tl.V * 1024;
+			var wbottom = (br.V + 1) * 1024;
+			if (TileShape == TileShape.Diamond)
+			{
+				wtop /= 2;
+				wbottom /= 2;
+			}
+
+			ProjectedTopLeft = new WPos(tl.U * 1024, wtop, 0);
+			ProjectedBottomRight = new WPos(br.U * 1024 - 1, wbottom - 1, 0);
 		}
 
 		string ComputeHash()

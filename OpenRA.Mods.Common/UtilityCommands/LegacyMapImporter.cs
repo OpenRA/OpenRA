@@ -143,21 +143,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var width = Exts.ParseIntegerInvariant(mapSection.GetValue("Width", "0"));
 				var height = Exts.ParseIntegerInvariant(mapSection.GetValue("Height", "0"));
 				mapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 64;
-				var size = new Size(mapSize, mapSize);
 
 				var tileset = Truncate(mapSection.GetValue("Theater", "TEMPERAT"), 8);
-				map = Map.FromTileset(rules.TileSets[tileset]);
-				map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(iniFile));
-				map.Author = "Westwood Studios";
-				map.MapSize = new int2(mapSize, mapSize);
-				map.Bounds = Rectangle.FromLTRB(offsetX, offsetY, offsetX + width, offsetY + height);
+				map = new Map(rules.TileSets[tileset], mapSize, mapSize)
+				{
+					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(iniFile)),
+					Author = "Westwood Studios"
+				};
 
-				map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(TileShape.Rectangle, size));
-				map.MapTiles = Exts.Lazy(() => new CellLayer<TerrainTile>(TileShape.Rectangle, size));
-
-				map.Videos = new MapVideos();
-
-				map.Options = new MapOptions();
+				var tl = new MPos(offsetX, offsetY);
+				var br = new MPos(offsetX + width - 1, offsetY + height - 1);
+				map.SetBounds(tl, br);
 
 				if (legacyMapFormat == IniMapFormat.RedAlert)
 				{

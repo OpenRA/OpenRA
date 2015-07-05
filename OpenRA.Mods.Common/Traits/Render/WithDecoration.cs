@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 			pxPos += info.Offset;
 
 			// HACK: Because WorldRenderer.Position() does not care about terrain height at the location
-			var renderPos = wr.Position(pxPos);
+			var renderPos = wr.ProjectedPosition(pxPos);
 			renderPos = new WPos(renderPos.X, renderPos.Y + self.CenterPosition.Z, self.CenterPosition.Z);
 
 			anim.Tick();

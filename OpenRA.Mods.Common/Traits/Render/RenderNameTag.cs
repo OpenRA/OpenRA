@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 			var bounds = self.Bounds;
 			bounds.Offset(pos.X, pos.Y);
 			var spaceBuffer = (int)(10 / wr.Viewport.Zoom);
-			var effectPos = wr.Position(new int2(pos.X, bounds.Y - spaceBuffer));
+			var effectPos = wr.ProjectedPosition(new int2(pos.X, bounds.Y - spaceBuffer));
 
 			yield return new TextRenderable(font, effectPos, 0, color, name);
 		}

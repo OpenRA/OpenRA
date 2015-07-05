@@ -264,7 +264,11 @@ namespace OpenRA.Graphics
 			return pos.Y + pos.Z + offset;
 		}
 
-		public WPos Position(int2 screenPx)
+		/// <summary>
+		/// Returns a position in the world that is projected to the given screen position.
+		/// There are many possible world positions, and the returned value chooses the value with no elevation.
+		/// </summary>
+		public WPos ProjectedPosition(int2 screenPx)
 		{
 			var ts = Game.ModData.Manifest.TileSize;
 			return new WPos(1024 * screenPx.X / ts.Width, 1024 * screenPx.Y / ts.Height, 0);

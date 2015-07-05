@@ -64,16 +64,26 @@ namespace OpenRA.Mods.Common.Scripting
 			return actors.ToArray();
 		}
 
-		[Desc("Returns the location of the top-left corner of the map.")]
+		[Desc("Returns the location of the top-left corner of the map (assuming zero terrain height).")]
 		public WPos TopLeft
 		{
-			get { return new WPos(Context.World.Map.Bounds.Left * 1024, Context.World.Map.Bounds.Top * 1024, 0); }
+			get
+			{
+				// HACK: This api method abuses the coordinate system, and should be removed
+				// in favour of proper actor queries.  See #8549.
+				return Context.World.Map.ProjectedTopLeft;
+			}
 		}
 
-		[Desc("Returns the location of the bottom-right corner of the map.")]
+		[Desc("Returns the location of the bottom-right corner of the map (assuming zero terrain height).")]
 		public WPos BottomRight
 		{
-			get { return new WPos(Context.World.Map.Bounds.Right * 1024, Context.World.Map.Bounds.Bottom * 1024, 0); }
+			get
+			{
+				// HACK: This api method abuses the coordinate system, and should be removed
+				// in favour of proper actor queries.  See #8549.
+				return Context.World.Map.ProjectedBottomRight;
+			}
 		}
 
 		[Desc("Returns a random cell inside the visible region of the map.")]

@@ -79,7 +79,7 @@ namespace OpenRA
 			foreach (var dir in Manifest.Folders)
 				GlobalFileSystem.Mount(dir);
 
-			defaultRules = Exts.Lazy(() => RulesetCache.LoadDefaultRules());
+			defaultRules = Exts.Lazy(() => RulesetCache.Load());
 
 			initialThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
 		}

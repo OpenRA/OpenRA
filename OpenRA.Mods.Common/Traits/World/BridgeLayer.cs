@@ -50,15 +50,9 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Loop through the map looking for templates to overlay
-			for (var i = w.Map.Bounds.Left; i < w.Map.Bounds.Right; i++)
-			{
-				for (var j = w.Map.Bounds.Top; j < w.Map.Bounds.Bottom; j++)
-				{
-					var cell = new CPos(i, j);
-					if (bridgeTypes.ContainsKey(w.Map.MapTiles.Value[cell].Type))
-						ConvertBridgeToActor(w, cell);
-				}
-			}
+			foreach (var cell in w.Map.AllCells)
+				if (bridgeTypes.ContainsKey(w.Map.MapTiles.Value[cell].Type))
+					ConvertBridgeToActor(w, cell);
 
 			// Link adjacent (long)-bridges so that artwork is updated correctly
 			foreach (var b in w.Actors.SelectMany(a => a.TraitsImplementing<Bridge>()))

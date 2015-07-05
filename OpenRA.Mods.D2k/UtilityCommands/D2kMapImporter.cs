@@ -308,16 +308,16 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			mapSize = new Size(stream.ReadUInt16(), stream.ReadUInt16());
 
 			tileSet = rules.TileSets["ARRAKIS"];
-			map = Map.FromTileset(tileSet);
-			map.Title = Path.GetFileNameWithoutExtension(mapFile);
-			map.Author = "Westwood Studios";
-			map.MapSize = new int2(mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth);
-			map.Bounds = new Rectangle(MapCordonWidth, MapCordonWidth, mapSize.Width, mapSize.Height);
 
-			map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(TileShape.Rectangle, new Size(map.MapSize.X, map.MapSize.Y)));
-			map.MapTiles = Exts.Lazy(() => new CellLayer<TerrainTile>(TileShape.Rectangle, new Size(map.MapSize.X, map.MapSize.Y)));
+			map = new Map(tileSet, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
+			{
+				Title = Path.GetFileNameWithoutExtension(mapFile),
+				Author = "Westwood Studios"
+			};
 
-			map.Options = new MapOptions();
+			var tl = new MPos(MapCordonWidth, MapCordonWidth);
+			var br = new MPos(MapCordonWidth + mapSize.Width - 1, MapCordonWidth + mapSize.Height - 1);
+			map.SetBounds(tl, br);
 
 			// Get all templates from the tileset YAML file that have at least one frame and an Image property corresponding to the requested tileset
 			// Each frame is a tile from the Dune 2000 tileset files, with the Frame ID being the index of the tile in the original file
