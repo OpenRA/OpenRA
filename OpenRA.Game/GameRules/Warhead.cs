@@ -48,31 +48,6 @@ namespace OpenRA.GameRules
 		/// <summary>Applies the warhead's effect against the target.</summary>
 		public abstract void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
 
-		/// <summary>Checks if the warhead is valid against (can do something to) the target.</summary>
-		public bool IsValidAgainst(Target target, World world, Actor firedBy)
-		{
-			if (target.Type == TargetType.Actor)
-				return IsValidAgainst(target.Actor, firedBy);
-
-			if (target.Type == TargetType.FrozenActor)
-				return IsValidAgainst(target.FrozenActor, firedBy);
-
-			if (target.Type == TargetType.Terrain)
-			{
-				var cell = world.Map.CellContaining(target.CenterPosition);
-				if (!world.Map.Contains(cell))
-					return false;
-
-				var cellInfo = world.Map.GetTerrainInfo(cell);
-				if (!IsValidTarget(cellInfo.TargetTypes))
-					return false;
-
-				return true;
-			}
-
-			return false;
-		}
-
 		// TODO: This can be removed after the legacy and redundant 0% = not targetable
 		// assumption has been removed from the yaml definitions
 		public virtual bool CanTargetActor(ActorInfo victim, Actor firedBy) { return false; }
