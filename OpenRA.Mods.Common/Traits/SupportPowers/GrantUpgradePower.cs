@@ -65,13 +65,16 @@ namespace OpenRA.Mods.Common.Traits
 
 				foreach (var u in info.Upgrades)
 				{
-					if (!um.AcceptsUpgrade(a, u))
-						continue;
-
 					if (info.Duration > 0)
-						um.GrantTimedUpgrade(a, u, info.Duration);
+					{
+						if (um.AcknowledgesUpgrade(a, u))
+							um.GrantTimedUpgrade(a, u, info.Duration);
+					}
 					else
-						um.GrantUpgrade(a, u, this);
+					{
+						if (um.AcceptsUpgrade(a, u))
+							um.GrantUpgrade(a, u, this);
+					}
 				}
 			}
 		}
@@ -90,7 +93,8 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				var um = a.TraitOrDefault<UpgradeManager>();
-				return um != null && info.Upgrades.Any(u => um.AcceptsUpgrade(a, u));
+				return um != null && (info.Duration > 0 ?
+					info.Upgrades.Any(u => um.AcknowledgesUpgrade(a, u)) : info.Upgrades.Any(u => um.AcceptsUpgrade(a, u)));
 			});
 		}
 

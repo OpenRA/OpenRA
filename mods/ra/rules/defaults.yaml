@@ -55,7 +55,7 @@
 		UpgradeMinEnabledLevel: 1
 	DamageMultiplier@IRONCURTAIN:
 		UpgradeTypes: invulnerability
-		Modifier: 0, 0
+		Modifier: 0
 	TimedUpgradeBar:
 		Upgrade: invulnerability
 
