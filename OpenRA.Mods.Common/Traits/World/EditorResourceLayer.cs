@@ -28,13 +28,15 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new EditorResourceLayer(init.Self); }
 	}
 
-	public class EditorResourceLayer : IWorldLoaded, IRenderOverlay
+	public class EditorResourceLayer : IWorldLoaded, IRenderOverlay, INotifyActorDisposing
 	{
 		protected readonly Map Map;
 		protected readonly TileSet Tileset;
 		protected readonly Dictionary<int, ResourceType> Resources;
 		protected readonly CellLayer<CellContents> Tiles;
 		protected readonly HashSet<CPos> Dirty = new HashSet<CPos>();
+
+		readonly Dictionary<PaletteReference, TerrainSpriteLayer> spriteLayers = new Dictionary<PaletteReference, TerrainSpriteLayer>();
 
 		public EditorResourceLayer(Actor self)
 		{
@@ -58,6 +60,28 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var cell in Map.AllCells)
 				UpdateCell(cell);
+
+			// Build the sprite layer dictionary for rendering resources
+			// All resources that have the same palette must also share a sheet and blend mode
+			foreach (var r in Resources)
+			{
+				var res = r;
+				var layer = spriteLayers.GetOrAdd(r.Value.Palette, pal =>
+				{
+					var first = res.Value.Variants.First().Value.First();
+					return new TerrainSpriteLayer(w, wr, first.Sheet, first.BlendMode, pal, false);
+				});
+
+				// Validate that sprites are compatible with this layer
+				var sheet = layer.Sheet;
+				if (res.Value.Variants.Any(kv => kv.Value.Any(s => s.Sheet != sheet)))
+					throw new InvalidDataException("Resource sprites span multiple sheets. Try loading their sequences earlier.");
+
+				var blendMode = layer.BlendMode;
+				if (res.Value.Variants.Any(kv => kv.Value.Any(s => s.BlendMode != blendMode)))
+					throw new InvalidDataException("Resource sprites specify different blend modes. "
+						+ "Try using different palettes for resource types that use different blend modes.");
+			}
 		}
 
 		public void UpdateCell(CPos cell)
@@ -141,18 +165,39 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			foreach (var c in Dirty)
+			{
 				if (Tiles.Contains(c))
-					Tiles[c] = UpdateDirtyTile(c);
+				{
+					var resource = UpdateDirtyTile(c);
+					Tiles[c] = resource;
+
+					foreach (var kv in spriteLayers)
+					{
+						// resource.Type is meaningless (and may be null) if resource.Sprite is null
+						if (resource.Sprite != null && resource.Type.Palette == kv.Key)
+							kv.Value.Update(c, resource.Sprite);
+						else
+							kv.Value.Update(c, null);
+					}
+				}
+			}
 
 			Dirty.Clear();
 
-			foreach (var uv in wr.Viewport.AllVisibleCells.MapCoords)
-			{
-				var t = Tiles[uv];
-				if (t.Sprite != null)
-					new SpriteRenderable(t.Sprite, wr.World.Map.CenterOfCell(uv.ToCPos(Map)),
-						WVec.Zero, -511, t.Type.Palette, 1f, true).Render(wr);
-			}
+			foreach (var l in spriteLayers.Values)
+				l.Draw(wr.Viewport);
+		}
+
+		bool disposed;
+		public void Disposing(Actor self)
+		{
+			if (disposed)
+				return;
+
+			foreach (var kv in spriteLayers.Values)
+				kv.Dispose();
+
+			disposed = true;
 		}
 	}
 }
