@@ -413,6 +413,7 @@ function DynamicWordsRem(editor,content,line,numlines)
 end
 
 function DynamicWordsRemoveAll(editor)
+  if ide.config.acandtip.nodynwords then return end
   DynamicWordsRem(editor,editor:GetText())
 end
 
