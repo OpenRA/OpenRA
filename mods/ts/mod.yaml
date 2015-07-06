@@ -168,6 +168,7 @@ ChromeLayout:
 	./mods/ra/chrome/missionbrowser.yaml
 	./mods/ra/chrome/confirmation-dialogs.yaml
 	./mods/ra/chrome/editor.yaml
+	./mods/ra/chrome/irc.yaml
 
 Voices:
 	./mods/ts/audio/voices.yaml

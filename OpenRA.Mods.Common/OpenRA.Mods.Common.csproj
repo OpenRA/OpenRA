@@ -78,6 +78,9 @@
       <HintPath>..\thirdparty\download\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SmarIrc4net">
+      <HintPath>..\thirdparty\download\SmarIrc4net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
@@ -604,6 +607,8 @@
     <Compile Include="Widgets\Logic\Installation\DownloadPackagesLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\InstallLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\InstallMusicLogic.cs" />
+    <Compile Include="Widgets\Logic\IrcLogic.cs" />
+    <Compile Include="Irc.cs" />
     <Compile Include="Widgets\Logic\Lobby\ClientTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\KickClientLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\KickSpectatorsLogic.cs" />
