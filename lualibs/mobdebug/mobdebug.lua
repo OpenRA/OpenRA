@@ -19,7 +19,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.624,
+  _VERSION = 0.627,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -126,7 +126,7 @@ local debugee = function ()
   for _ = 1, 10 do a = a + 1 end
   error(deferror)
 end
-local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
+local function q(s) return string.gsub(s, '([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
 local serpent = (function() ---- include Serpent module for serialization
 local n, v = "serpent", 0.284 -- (C) 2012-15 Paul Kulchenko; MIT License
@@ -654,7 +654,7 @@ local function debug_hook(event, line)
     -- need to recheck once more as resume after 'stack' command may
     -- return something else (for example, 'exit'), which needs to be handled
     if status and res and res ~= 'stack' then
-      if not abort and res == "exit" then os.exit(1, true); return end
+      if not abort and res == "exit" then mobdebug.onexit(1, true); return end
       if not abort and res == "done" then mobdebug.done(); return end
       abort = res
       -- only abort if safe; if not, there is another (earlier) check inside
@@ -1086,7 +1086,7 @@ local function controller(controller_host, controller_port, scratchpad)
       else
         if status then -- normal execution is done
           break
-        elseif err and not tostring(err):find(deferror) then
+        elseif err and not string.find(tostring(err), deferror) then
           -- report the error back
           -- err is not necessarily a string, so convert to string to report
           report(debug.traceback(coro_debugee), tostring(err))
@@ -1179,8 +1179,7 @@ local function handle(params, client, options)
       local breakpoint = client:receive()
       if not breakpoint then
         print("Program finished")
-        os.exit(0, true)
-        return -- use return here for those cases where os.exit() is not wanted
+        return
       end
       local _, _, status = string.find(breakpoint, "^(%d+)")
       if status == "200" then
@@ -1209,13 +1208,10 @@ local function handle(params, client, options)
         if size then
           local msg = client:receive(tonumber(size))
           print("Error in remote application: " .. msg)
-          os.exit(1, true)
-          return nil, nil, msg -- use return here for those cases where os.exit() is not wanted
+          return nil, nil, msg
         end
       else
         print("Unknown error")
-        os.exit(1, true)
-        -- use return here for those cases where os.exit() is not wanted
         return nil, nil, "Debugger error: unexpected response '" .. breakpoint .. "'"
       end
       if done then break end
@@ -1509,7 +1505,9 @@ local function handle(params, client, options)
     print("exit                  -- exits debugger and the application")
   else
     local _, _, spaces = string.find(params, "^(%s*)$")
-    if not spaces then
+    if spaces then
+      return nil, nil, "Empty command"
+    else
       print("Invalid command")
       return nil, nil, "Invalid command"
     end
@@ -1548,9 +1546,11 @@ local function listen(host, port)
 
   while true do
     io.write("> ")
-    local line = io.read("*line")
-    handle(line, client)
+    local file, line, err = handle(io.read("*line"), client)
+    if not file and not err then break end -- completed debugging
   end
+
+  client:close()
 end
 
 local cocreate
@@ -1602,10 +1602,7 @@ mobdebug.coro = coro
 mobdebug.done = done
 mobdebug.pause = function() step_into = true end
 mobdebug.yield = nil -- callback
+mobdebug.onexit = os and os.exit or done
 mobdebug.basedir = function(b) if b then basedir = b end return basedir end
-
--- this is needed to make "require 'modebug'" to work when mobdebug
--- module is loaded manually
-package.loaded.mobdebug = mobdebug
 
 return mobdebug

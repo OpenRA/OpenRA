@@ -762,11 +762,8 @@ end
 
 debugger.handle = function(command, server, options)
   local verbose = ide.config.debugger.verbose
-  local osexit, gprint
-  osexit, os.exit = os.exit, function () end
-  gprint, _G.print = _G.print, function (...)
-    if verbose then DisplayOutputLn(...) end
-  end
+  local gprint = _G.print
+  _G.print = function (...) if verbose then DisplayOutputLn(...) end end
 
   nameOutputTab(TR("Output (running)"))
   debugger.running = true
@@ -777,7 +774,6 @@ debugger.handle = function(command, server, options)
   -- only set suspended if the debugging hasn't been terminated
   if debugger.server then nameOutputTab(TR("Output (suspended)")) end
 
-  os.exit = osexit
   _G.print = gprint
   return file, line, err
 end
