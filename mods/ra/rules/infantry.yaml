@@ -67,6 +67,8 @@ E1:
 	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: shoot
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 E2:
 	Inherits: ^Soldier
@@ -98,6 +100,8 @@ E2:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		Chance: 50
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 E3:
 	Inherits: ^Soldier
@@ -125,6 +129,8 @@ E3:
 	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: shoot
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 E4:
 	Inherits: ^Soldier
@@ -150,6 +156,8 @@ E4:
 	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: shoot
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 E6:
 	Inherits: ^Soldier
@@ -278,6 +286,8 @@ E7:
 	AnnounceOnKill:
 	Voiced:
 		VoiceSet: TanyaVoice
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 MEDI:
 	Inherits: ^Soldier
@@ -477,6 +487,8 @@ SHOK:
 		AttackSequence: shoot
 	Voiced:
 		VoiceSet: ShokVoice
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 SNIPER:
 	Inherits: ^Soldier
@@ -516,6 +528,8 @@ SNIPER:
 	DetectCloaked:
 		Range: 6
 	-MustBeDestroyed:
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 Zombie:
 	Inherits: ^Soldier

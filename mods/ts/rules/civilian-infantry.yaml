@@ -41,6 +41,8 @@ UMAGON:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: shoot
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 CHAMSPY:
 	Inherits: ^Soldier
@@ -96,6 +98,8 @@ MUTANT:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: shoot
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 MWMN:
 	Inherits: ^Soldier
@@ -119,6 +123,8 @@ MWMN:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: shoot
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 MUTANT3:
 	Inherits: ^Soldier
@@ -142,6 +148,8 @@ MUTANT3:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: shoot
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 TRATOS:
 	Inherits: ^Soldier

@@ -26,6 +26,8 @@ E1:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: shoot
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 ENGINEER:
 	Inherits: ^Soldier

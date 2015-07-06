@@ -641,6 +641,9 @@ CAARMR:
 		HP: 800
 	RenderBuilding:
 		Palette: player
+	ProvidesPrerequisite:
+		Prerequisite: barracks.upgraded
+	Capturable:
 
 CABHUT:
 	Inherits: ^CivBuilding

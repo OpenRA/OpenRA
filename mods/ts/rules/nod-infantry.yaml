@@ -22,6 +22,8 @@ E3:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: shoot
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 CYBORG:
 	Inherits: ^Cyborg
@@ -53,6 +55,8 @@ CYBORG:
 		Voice: Attack
 	SelectionDecorations:
 		VisualBounds: 16,31,0,-10
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 CYC2:
 	Inherits: ^Cyborg
@@ -86,6 +90,8 @@ CYC2:
 		Voice: Attack
 	SelectionDecorations:
 		VisualBounds: 16,32,-1,-12
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 MHIJACK:
 	Inherits: ^Soldier

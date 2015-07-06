@@ -382,6 +382,11 @@ rank:
 	rank:
 		Length: *
 
+cameo-chevron:
+	idle:
+		Length: *
+		BlendMode: Additive
+
 atomic:
 	up: atomicup
 		Length: *

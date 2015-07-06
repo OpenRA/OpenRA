@@ -21,6 +21,8 @@ E2:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: throw
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 MEDIC:
 	Inherits: ^Soldier
@@ -81,6 +83,8 @@ JUMPJET:
 	WithInfantryBody:
 		AttackSequence: shoot
 	-TakeCover:
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
 GHOST:
 	Inherits: ^Soldier
@@ -117,4 +121,6 @@ GHOST:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: shoot
+	ProduceableWithLevel:
+		Prerequisites: barracks.upgraded
 
