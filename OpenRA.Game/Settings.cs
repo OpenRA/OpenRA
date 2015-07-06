@@ -288,26 +288,30 @@ namespace OpenRA
 			// Override fieldloader to ignore invalid entries
 			var err1 = FieldLoader.UnknownFieldAction;
 			var err2 = FieldLoader.InvalidValueAction;
-
-			FieldLoader.UnknownFieldAction = (s, f) => Console.WriteLine("Ignoring unknown field `{0}` on `{1}`".F(s, f.Name));
-
-			if (File.Exists(settingsFile))
+			try
 			{
-				var yaml = MiniYaml.DictFromFile(settingsFile);
+				FieldLoader.UnknownFieldAction = (s, f) => Console.WriteLine("Ignoring unknown field `{0}` on `{1}`".F(s, f.Name));
 
+				if (File.Exists(settingsFile))
+				{
+					var yaml = MiniYaml.DictFromFile(settingsFile);
+
+					foreach (var kv in Sections)
+						if (yaml.ContainsKey(kv.Key))
+							LoadSectionYaml(yaml[kv.Key], kv.Value);
+				}
+
+				// Override with commandline args
 				foreach (var kv in Sections)
-					if (yaml.ContainsKey(kv.Key))
-						LoadSectionYaml(yaml[kv.Key], kv.Value);
+					foreach (var f in kv.Value.GetType().GetFields())
+						if (args.Contains(kv.Key + "." + f.Name))
+							FieldLoader.LoadField(kv.Value, f.Name, args.GetValue(kv.Key + "." + f.Name, ""));
 			}
-
-			// Override with commandline args
-			foreach (var kv in Sections)
-				foreach (var f in kv.Value.GetType().GetFields())
-					if (args.Contains(kv.Key + "." + f.Name))
-						FieldLoader.LoadField(kv.Value, f.Name, args.GetValue(kv.Key + "." + f.Name, ""));
-
-			FieldLoader.UnknownFieldAction = err1;
-			FieldLoader.InvalidValueAction = err2;
+			finally
+			{
+				FieldLoader.UnknownFieldAction = err1;
+				FieldLoader.InvalidValueAction = err2;
+			}
 		}
 
 		public void Save()
