@@ -221,34 +221,7 @@ namespace OpenRA.Mods.Common.Traits
 			if ((movementCost = MovementCostForCell(world, cell)) == int.MaxValue)
 				return false;
 
-			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
-				return true;
-
-			if (check.HasFlag(CellConditions.TransientActors))
-			{
-				var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
-				var needsCellExclusively = self == null || Crushes == null || !Crushes.Any();
-				foreach (var a in world.ActorMap.GetUnitsAt(cell))
-				{
-					if (a == ignoreActor)
-						continue;
-
-					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
-					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a)) continue;
-
-					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
-					if (needsCellExclusively)
-						return false;
-					var crushables = a.TraitsImplementing<ICrushable>();
-					if (!crushables.Any())
-						return false;
-					foreach (var crushable in crushables)
-						if (!crushable.CrushableBy(Crushes, self.Owner))
-							return false;
-				}
-			}
-
-			return true;
+			return CanMoveFreelyInto(world, self, cell, ignoreActor, check);
 		}
 
 		public SubCell GetAvailableSubCell(
