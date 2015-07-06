@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new SmudgeLayer(init.Self, this); }
 	}
 
-	public class SmudgeLayer : IRenderOverlay, IWorldLoaded, ITickRender
+	public class SmudgeLayer : IRenderOverlay, IWorldLoaded, ITickRender, INotifyActorDisposing
 	{
 		struct Smudge
 		{
@@ -51,6 +52,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dictionary<CPos, Smudge> dirty = new Dictionary<CPos, Smudge>();
 		readonly Dictionary<string, Sprite[]> smudges = new Dictionary<string, Sprite[]>();
 		readonly World world;
+
+		TerrainSpriteLayer render;
 
 		public SmudgeLayer(Actor self, SmudgeLayerInfo info)
 		{
@@ -68,6 +71,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
+			var first = smudges.First().Value.First();
+			var sheet = first.Sheet;
+			if (smudges.Values.Any(sprites => sprites.Any(s => s.Sheet != sheet)))
+				throw new InvalidDataException("Resource sprites span multiple sheets. Try loading their sequences earlier.");
+
+			var blendMode = first.BlendMode;
+			if (smudges.Values.Any(sprites => sprites.Any(s => s.BlendMode != blendMode)))
+				throw new InvalidDataException("Smudges specify different blend modes. "
+					+ "Try using different smudge types for smudges that use different blend modes.");
+
+			render = new TerrainSpriteLayer(w, wr, sheet, blendMode, wr.Palette(Info.Palette), wr.World.Type != WorldType.Editor);
+
 			// Add map smudges
 			foreach (var s in w.Map.SmudgeDefinitions)
 			{
@@ -90,6 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 				};
 
 				tiles.Add(cell, smudge);
+				render.Update(cell, smudge.Sprite);
 			}
 		}
 
@@ -127,6 +143,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (!self.World.FogObscures(kv.Key))
 				{
 					tiles[kv.Key] = kv.Value;
+					render.Update(kv.Key, kv.Value.Sprite);
+
 					remove.Add(kv.Key);
 				}
 			}
@@ -137,19 +155,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Render(WorldRenderer wr)
 		{
-			var pal = wr.Palette(Info.Palette);
+			render.Draw(wr.Viewport);
+		}
 
-			foreach (var kv in tiles)
-			{
-				if (!wr.Viewport.VisibleCellsInsideBounds.Contains(kv.Key))
-					continue;
+		bool disposed;
+		public void Disposing(Actor self)
+		{
+			if (disposed)
+				return;
 
-				if (world.ShroudObscures(kv.Key))
-					continue;
-
-				new SpriteRenderable(kv.Value.Sprite, world.Map.CenterOfCell(kv.Key),
-					WVec.Zero, -511, pal, 1f, true).Render(wr); // TODO ZOffset is ignored
-			}
+			render.Dispose();
+			disposed = true;
 		}
 	}
 }
