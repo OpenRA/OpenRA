@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string Palette = "terrain";
 
-		public object Create(ActorInitializer init) { return new SmudgeLayer(this); }
+		public object Create(ActorInitializer init) { return new SmudgeLayer(init.Self, this); }
 	}
 
 	public class SmudgeLayer : IRenderOverlay, IWorldLoaded, ITickRender
@@ -46,23 +46,16 @@ namespace OpenRA.Mods.Common.Traits
 			public Sprite Sprite;
 		}
 
-		public SmudgeLayerInfo Info;
-		Dictionary<CPos, Smudge> tiles;
-		Dictionary<CPos, Smudge> dirty;
-		Dictionary<string, Sprite[]> smudges;
-		World world;
+		public readonly SmudgeLayerInfo Info;
+		readonly Dictionary<CPos, Smudge> tiles = new Dictionary<CPos, Smudge>();
+		readonly Dictionary<CPos, Smudge> dirty = new Dictionary<CPos, Smudge>();
+		readonly Dictionary<string, Sprite[]> smudges = new Dictionary<string, Sprite[]>();
+		readonly World world;
 
-		public SmudgeLayer(SmudgeLayerInfo info)
+		public SmudgeLayer(Actor self, SmudgeLayerInfo info)
 		{
-			this.Info = info;
-		}
-
-		public void WorldLoaded(World w, WorldRenderer wr)
-		{
-			world = w;
-			tiles = new Dictionary<CPos, Smudge>();
-			dirty = new Dictionary<CPos, Smudge>();
-			smudges = new Dictionary<string, Sprite[]>();
+			Info = info;
+			world = self.World;
 
 			var types = world.Map.SequenceProvider.Sequences(Info.Sequence);
 			foreach (var t in types)
@@ -71,7 +64,10 @@ namespace OpenRA.Mods.Common.Traits
 				var sprites = Exts.MakeArray(seq.Length, x => seq.GetSprite(x));
 				smudges.Add(t, sprites);
 			}
+		}
 
+		public void WorldLoaded(World w, WorldRenderer wr)
+		{
 			// Add map smudges
 			foreach (var s in w.Map.SmudgeDefinitions)
 			{
