@@ -27,10 +27,10 @@ namespace OpenRA.FileFormats
 				return null;
 
 			var text = new StringBuilder();
+			var session = new Session();
 
 			var gameInfo = metadata.GameInfo;
 			var playersByTeam = gameInfo.Players.GroupBy(p => p.Team).OrderBy(g => g.Key);
-			var session = new Session();
 
 			var packetClientIndex = 0;
 			var gameStarted = false;
@@ -58,32 +58,32 @@ namespace OpenRA.FileFormats
 						text.AppendLine();
 						text.AppendLine("#### Game Started ####");
 						text.AppendLine();
-						text.AppendLine("Map Title: " + gameInfo.MapTitle);
-						text.AppendLine("Map UID: " + gameInfo.MapUid);
+						text.AppendLine("Map Title:      " + gameInfo.MapTitle);
+						text.AppendLine("Map UID:        " + gameInfo.MapUid);
 						text.AppendLine("Start Time UTC: " + gameInfo.StartTimeUtc.ToString("yyyy-MM-dd HH:mm:ss"));
 						text.AppendLine();
 
 						foreach (var team in playersByTeam)
 						{
-							var teamLabel = team.Key == 0 ? "No Team:" : "Team " + team.Key + ":";
+							var teamLabel = team.Key == 0 ? "No Team:" : string.Format("Team {0}:", team.Key);
 							text.AppendLine(teamLabel);
-							text.AppendLine(new string('-', teamLabel.Length));
+							text.AppendLine("--------");
 							foreach (var player in team)
 							{
 								text.AppendLine(player.Name);
 								var client = session.ClientWithIndex(player.ClientIndex);
-								if (client.IsAdmin && !gameInfo.IsSinglePlayer)
+								if (client.IsAdmin)
 									text.AppendLine("\t[Admin]");
 
-								text.AppendLine("\tHuman: " + player.IsHuman);
-								text.AppendLine("\tFaction: " + player.FactionName);
-								text.AppendLine("\tRandom faction: " + player.IsRandomFaction);
-								text.AppendLine("\tSpawn point: " + player.SpawnPoint);
-								text.AppendLine("\tRandom spawn point: " + player.IsRandomSpawnPoint);
+								if (player.IsBot)
+									text.AppendLine("\t[Computer]");
 
+								var factionRnd = player.IsRandomFaction ? " (Random)" : "";
+								text.AppendLine("\tFaction:     " + player.FactionName + factionRnd);
+								var spawnRnd = player.IsRandomSpawnPoint ? " (Random)" : "";
+								text.AppendLine("\tSpawn point: " + player.SpawnPoint + spawnRnd);
 								if (player.IsHuman && !gameInfo.IsSinglePlayer)
-									foreach (var line in NetworkInfo(session, client))
-										text.AppendLine("\t" + line);
+									AddNetworkInfo(session, client, text);
 
 								text.AppendLine();
 							}
@@ -92,60 +92,42 @@ namespace OpenRA.FileFormats
 						var spectators = session.Clients.Where(c => c.IsObserver);
 						if (spectators.Any())
 						{
-							var specLabel = "Spectators:";
-							text.AppendLine(specLabel);
-							text.AppendLine(new string('-', specLabel.Length));
+							text.AppendLine("Spectators:");
+							text.AppendLine("-----------");
 							foreach (var spec in spectators)
 							{
 								text.AppendLine(spec.Name);
-								if (!gameInfo.IsSinglePlayer)
-								{
-									if (spec.IsAdmin)
-										text.AppendLine("\t[Admin]");
+								if (spec.IsAdmin)
+									text.AppendLine("\t[Admin]");
 
-									foreach (var line in NetworkInfo(session, spec))
-										text.AppendLine("\t" + line);
-								}
+								if (!gameInfo.IsSinglePlayer)
+									AddNetworkInfo(session, spec, text);
 
 								text.AppendLine();
 							}
 						}
 
-						foreach (var line in SettingsDisplay(session.GlobalSettings))
-							text.AppendLine(line);
-
+						AddSettingsDisplay(session.GlobalSettings, text);
 						text.AppendLine();
 						gameStarted = true;
 					}
 				},
 				{ "Chat", s =>
 					{
-						if (gameStarted)
-							text.Append(time);
-
 						var client = session.ClientWithIndex(packetClientIndex);
-						text.Append(client.Name);
-						text.Append(client.IsObserver ? " (Spectator): " : ": ");
-						text.AppendLine(s);
+						var specTag = client.IsObserver ? " (Spectator)" : "";
+						text.AppendLine(time + client.Name + specTag + ": " + s);
 					}
 				},
 				{ "TeamChat", s =>
 					{
-						if (gameStarted)
-							text.Append(time);
-
-						text.AppendLine(session.ClientWithIndex(packetClientIndex).Name + " (Team): " + s);
+						text.AppendLine(time + session.ClientWithIndex(packetClientIndex).Name + " (Team): " + s);
 					}
 				},
 				{ "Message", s =>
 					{
 						foreach (var line in s.Split('\n'))
-						{
-							if (gameStarted)
-								text.Append(time);
-
-							text.AppendLine("Server: " + line);
-						}
+							text.AppendLine(time + "Server: " + line);
 					}
 				}
 			};
@@ -173,7 +155,8 @@ namespace OpenRA.FileFormats
 						var orders = packet.ToOrderList(null);
 
 						// Time stamps are in game time.
-						time = new TimeSpan(0, 0, networkTickCount * networkTickDuration / 1000) + " ";
+						if (gameStarted)
+							time = new TimeSpan(0, 0, networkTickCount * networkTickDuration / 1000) + " ";
 
 						foreach (var o in orders)
 						{
@@ -201,60 +184,45 @@ namespace OpenRA.FileFormats
 			text.AppendLine();
 			text.AppendLine("Results:");
 
-			var maxPlayerLength = gameInfo.Players.Max(p => p.Name.Length);
-			var maxOutcomeLength = gameInfo.Players.Max(p => p.Outcome.ToString().Length);
-			var paddingLength = 2;
-
 			foreach (var team in playersByTeam)
 			{
 				text.AppendLine();
-				var teamLabel = team.Key == 0 ? "No Team:" : "Team " + team.Key + ":";
+				var teamLabel = team.Key == 0 ? "No Team:" : string.Format("Team {0}:", team.Key);
 				text.AppendLine(teamLabel);
-				text.AppendLine(new string('-', teamLabel.Length));
+				text.AppendLine("--------");
 				foreach (var player in team)
 				{
-					var result = player.Outcome.ToString();
+					var timeDiff = "";
 					if (player.Outcome != WinState.Undefined)
-					{
-						var timeDiff = player.OutcomeTimestampUtc.Subtract(gameInfo.StartTimeUtc);
-						result += new string(' ', maxOutcomeLength - result.Length + paddingLength) + timeDiff;
-					}
+						timeDiff = "  " + player.OutcomeTimestampUtc.Subtract(gameInfo.StartTimeUtc);
 
-					text.AppendLine(player.Name + new string(' ', maxPlayerLength - player.Name.Length + paddingLength) + result);
+					text.AppendLine(string.Format("{0,-16}  {1,-9}{2}", player.Name, player.Outcome, timeDiff));
 				}
 			}
 
 			text.AppendLine();
 			text.AppendLine("Game Duration: " + gameInfo.Duration);
-			text.AppendLine("End Time UTC: " + gameInfo.EndTimeUtc.ToString("yyyy-MM-dd HH:mm:ss"));
+			text.AppendLine("End Time UTC:  " + gameInfo.EndTimeUtc.ToString("yyyy-MM-dd HH:mm:ss"));
 
 			var header = new StringBuilder();
 
-			if (gameInfo.IsSinglePlayer)
-				header.AppendLine("Single player");
-			else
-				header.AppendLine("Server name: " + session.GlobalSettings.ServerName);
-
-			header.AppendLine("Mod: " + gameInfo.Mod);
-			header.AppendLine("Version: " + gameInfo.Version);
+			var title = gameInfo.IsSinglePlayer ? "Single player" : "Server name: " + session.GlobalSettings.ServerName;
+			header.AppendLine(title);
+			header.AppendLine("Mod:         " + gameInfo.Mod);
+			header.AppendLine("Version:     " + gameInfo.Version);
 			header.AppendLine();
 
 			return header.ToString() + text.ToString();
 		}
 
-		static string[] NetworkInfo(Session session, Session.Client client)
+		static void AddNetworkInfo(Session session, Session.Client client, StringBuilder text)
 		{
-			var netInf = new string[3];
-			var ping = session.PingFromClient(client);
-
-			netInf[0] = "Latency: " + ping.Latency + " ms  Jitter: " + ping.LatencyJitter + " ms";
-			netInf[1] = "IP Address: " + client.IpAddress;
-			netInf[2] = "Location: " + GeoIP.LookupCountry(client.IpAddress);
-
-			return netInf;
+			text.AppendLine("\tLatency:     " + session.PingFromClient(client).Latency + " ms");
+			text.AppendLine("\tIP Address:  " + client.IpAddress);
+			text.AppendLine("\tLocation:    " + GeoIP.LookupCountry(client.IpAddress));
 		}
 
-		static string[] SettingsDisplay(Session.Global settings)
+		static void AddSettingsDisplay(Session.Global settings, StringBuilder text)
 		{
 			var setDisp = new List<string>();
 			var defaultSettings = new Session.Global();
@@ -294,7 +262,8 @@ namespace OpenRA.FileFormats
 			if (setDisp.Count > 1)
 				setDisp[0] = "Custom game settings:";
 
-			return setDisp.ToArray();
+			foreach (var line in setDisp)
+				text.AppendLine(line);
 		}
 	}
 }
