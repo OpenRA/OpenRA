@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				yield return new RangeCircleRenderable(
 					centerPosition,
-					WRange.FromCells(jamsMissiles.Range),
+					WDist.FromCells(jamsMissiles.Range),
 					0,
 					Color.FromArgb(128, Color.Red),
 					Color.FromArgb(96, Color.Black));
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				yield return new RangeCircleRenderable(
 					centerPosition,
-					WRange.FromCells(jamsRadar.Range),
+					WDist.FromCells(jamsRadar.Range),
 					0,
 					Color.FromArgb(128, Color.Blue),
 					Color.FromArgb(96, Color.Black));
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				yield return new RangeCircleRenderable(
 					self.CenterPosition,
-					WRange.FromCells(jamsMissiles.Range),
+					WDist.FromCells(jamsMissiles.Range),
 					0,
 					Color.FromArgb(128, Color.Red),
 					Color.FromArgb(96, Color.Black));
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				yield return new RangeCircleRenderable(
 					self.CenterPosition,
-					WRange.FromCells(jamsRadar.Range),
+					WDist.FromCells(jamsRadar.Range),
 					0,
 					Color.FromArgb(128, Color.Blue),
 					Color.FromArgb(96, Color.Black));

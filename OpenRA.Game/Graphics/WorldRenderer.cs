@@ -194,7 +194,7 @@ namespace OpenRA.Graphics
 				new SelectionBarsRenderable(unit).Render(this);
 		}
 
-		public void DrawRangeCircle(WPos pos, WRange range, Color c)
+		public void DrawRangeCircle(WPos pos, WDist range, Color c)
 		{
 			var offset = new WVec(range.Range, 0, 0);
 			for (var i = 0; i < 32; i++)

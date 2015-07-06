@@ -52,9 +52,9 @@ namespace OpenRA.Mods.Common.Activities
 		protected virtual void OnInside(Actor self) { }
 
 		protected bool TryGetAlternateTargetInCircle(
-			Actor self, WRange radius, Action<Target> update, Func<Actor, bool> primaryFilter, Func<Actor, bool>[] preferenceFilters = null)
+			Actor self, WDist radius, Action<Target> update, Func<Actor, bool> primaryFilter, Func<Actor, bool>[] preferenceFilters = null)
 		{
-			var diff = new WVec(radius, radius, WRange.Zero);
+			var diff = new WVec(radius, radius, WDist.Zero);
 			var candidates = self.World.ActorMap.ActorsInBox(self.CenterPosition - diff, self.CenterPosition + diff)
 				.Where(primaryFilter).Select(a => new { Actor = a, Ls = (self.CenterPosition - a.CenterPosition).HorizontalLengthSquared })
 				.Where(p => p.Ls <= radius.RangeSquared).OrderBy(p => p.Ls).Select(p => p.Actor);

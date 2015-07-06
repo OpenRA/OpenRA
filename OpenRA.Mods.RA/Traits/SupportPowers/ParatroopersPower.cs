@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly int QuantizedFacings = 32;
 
 		[Desc("Spawn and remove the plane this far outside the map.")]
-		public readonly WRange Cordon = new WRange(5120);
+		public readonly WDist Cordon = new WDist(5120);
 
 		[ActorReference]
 		[Desc("Troops to be delivered.  They will be distributed between the planes if SquadSize > 1.")]
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly int CameraRemoveDelay = 85;
 
 		[Desc("Weapon range offset to apply during the beacon clock calculation.")]
-		public readonly WRange BeaconDistanceOffset = WRange.FromCells(4);
+		public readonly WDist BeaconDistanceOffset = WDist.FromCells(4);
 
 		public override object Create(ActorInitializer init) { return new ParatroopersPower(init.Self, this); }
 	}

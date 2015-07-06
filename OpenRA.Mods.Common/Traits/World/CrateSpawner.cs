@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int QuantizedFacings = 32;
 
 		[Desc("Spawn and remove the plane this far outside the map.")]
-		public readonly WRange Cordon = new WRange(5120);
+		public readonly WDist Cordon = new WDist(5120);
 
 		public object Create(ActorInitializer init) { return new CrateSpawner(this, init.Self); }
 	}

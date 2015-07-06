@@ -35,10 +35,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			var range = self.TraitsImplementing<DetectCloaked>()
 				.Where(a => !a.IsTraitDisabled)
-				.Select(a => WRange.FromCells(a.Info.Range))
-				.Append(WRange.Zero).Max();
+				.Select(a => WDist.FromCells(a.Info.Range))
+				.Append(WDist.Zero).Max();
 
-			if (range == WRange.Zero)
+			if (range == WDist.Zero)
 				yield break;
 
 			yield return new RangeCircleRenderable(

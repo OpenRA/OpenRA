@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"(in cells) that will be considered close enough to complete the activity.")]
 		public void Move(CPos cell, int closeEnough = 0)
 		{
-			Self.QueueActivity(new Move(Self, cell, WRange.FromCells(closeEnough)));
+			Self.QueueActivity(new Move(Self, cell, WDist.FromCells(closeEnough)));
 		}
 
 		[ScriptActorPropertyActivity]

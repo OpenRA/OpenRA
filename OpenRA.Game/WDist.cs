@@ -20,43 +20,43 @@ namespace OpenRA
 	/// <summary>
 	/// 1d world distance - 1024 units = 1 cell.
 	/// </summary>
-	public struct WRange : IComparable, IComparable<WRange>, IEquatable<WRange>, IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding
+	public struct WDist : IComparable, IComparable<WDist>, IEquatable<WDist>, IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding
 	{
 		public readonly int Range;
 		public long RangeSquared { get { return (long)Range * (long)Range; } }
 
-		public WRange(int r) { Range = r; }
-		public static readonly WRange Zero = new WRange(0);
-		public static WRange FromCells(int cells) { return new WRange(1024 * cells); }
+		public WDist(int r) { Range = r; }
+		public static readonly WDist Zero = new WDist(0);
+		public static WDist FromCells(int cells) { return new WDist(1024 * cells); }
 
-		public static WRange operator +(WRange a, WRange b) { return new WRange(a.Range + b.Range); }
-		public static WRange operator -(WRange a, WRange b) { return new WRange(a.Range - b.Range); }
-		public static WRange operator -(WRange a) { return new WRange(-a.Range); }
-		public static WRange operator /(WRange a, int b) { return new WRange(a.Range / b); }
-		public static WRange operator *(WRange a, int b) { return new WRange(a.Range * b); }
-		public static WRange operator *(int a, WRange b) { return new WRange(a * b.Range); }
-		public static bool operator <(WRange a, WRange b) { return a.Range < b.Range; }
-		public static bool operator >(WRange a, WRange b) { return a.Range > b.Range; }
-		public static bool operator <=(WRange a, WRange b) { return a.Range <= b.Range; }
-		public static bool operator >=(WRange a, WRange b) { return a.Range >= b.Range; }
+		public static WDist operator +(WDist a, WDist b) { return new WDist(a.Range + b.Range); }
+		public static WDist operator -(WDist a, WDist b) { return new WDist(a.Range - b.Range); }
+		public static WDist operator -(WDist a) { return new WDist(-a.Range); }
+		public static WDist operator /(WDist a, int b) { return new WDist(a.Range / b); }
+		public static WDist operator *(WDist a, int b) { return new WDist(a.Range * b); }
+		public static WDist operator *(int a, WDist b) { return new WDist(a * b.Range); }
+		public static bool operator <(WDist a, WDist b) { return a.Range < b.Range; }
+		public static bool operator >(WDist a, WDist b) { return a.Range > b.Range; }
+		public static bool operator <=(WDist a, WDist b) { return a.Range <= b.Range; }
+		public static bool operator >=(WDist a, WDist b) { return a.Range >= b.Range; }
 
-		public static bool operator ==(WRange me, WRange other) { return me.Range == other.Range; }
-		public static bool operator !=(WRange me, WRange other) { return !(me == other); }
+		public static bool operator ==(WDist me, WDist other) { return me.Range == other.Range; }
+		public static bool operator !=(WDist me, WDist other) { return !(me == other); }
 
 		// Sampled a N-sample probability density function in the range [-1024..1024]
 		// 1 sample produces a rectangular probability
 		// 2 samples produces a triangular probability
 		// ...
 		// N samples approximates a true gaussian
-		public static WRange FromPDF(MersenneTwister r, int samples)
+		public static WDist FromPDF(MersenneTwister r, int samples)
 		{
-			return new WRange(Exts.MakeArray(samples, _ => r.Next(-1024, 1024))
+			return new WDist(Exts.MakeArray(samples, _ => r.Next(-1024, 1024))
 				.Sum() / samples);
 		}
 
-		public static bool TryParse(string s, out WRange result)
+		public static bool TryParse(string s, out WDist result)
 		{
-			result = WRange.Zero;
+			result = WDist.Zero;
 
 			if (string.IsNullOrEmpty(s))
 				return false;
@@ -84,32 +84,32 @@ namespace OpenRA
 			if (cell < 0)
 				subcell = -subcell;
 
-			result = new WRange(1024 * cell + subcell);
+			result = new WDist(1024 * cell + subcell);
 			return true;
 		}
 
 		public override int GetHashCode() { return Range.GetHashCode(); }
 
-		public bool Equals(WRange other) { return other == this; }
-		public override bool Equals(object obj) { return obj is WRange && Equals((WRange)obj); }
+		public bool Equals(WDist other) { return other == this; }
+		public override bool Equals(object obj) { return obj is WDist && Equals((WDist)obj); }
 
 		public int CompareTo(object obj)
 		{
-			if (!(obj is WRange))
+			if (!(obj is WDist))
 				return 1;
-			return Range.CompareTo(((WRange)obj).Range);
+			return Range.CompareTo(((WDist)obj).Range);
 		}
 
-		public int CompareTo(WRange other) { return Range.CompareTo(other.Range); }
+		public int CompareTo(WDist other) { return Range.CompareTo(other.Range); }
 
 		public override string ToString() { return Range.ToString(); }
 
 		#region Scripting interface
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WRange a;
-			WRange b;
-			if (!left.TryGetClrValue<WRange>(out a) || !right.TryGetClrValue<WRange>(out b))
+			WDist a;
+			WDist b;
+			if (!left.TryGetClrValue<WDist>(out a) || !right.TryGetClrValue<WDist>(out b))
 				throw new LuaException("Attempted to call WRange.Add(WRange, WRange) with invalid arguments.");
 
 			return new LuaCustomClrObject(a + b);
@@ -117,9 +117,9 @@ namespace OpenRA
 
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WRange a;
-			WRange b;
-			if (!left.TryGetClrValue<WRange>(out a) || !right.TryGetClrValue<WRange>(out b))
+			WDist a;
+			WDist b;
+			if (!left.TryGetClrValue<WDist>(out a) || !right.TryGetClrValue<WDist>(out b))
 				throw new LuaException("Attempted to call WRange.Subtract(WRange, WRange) with invalid arguments.");
 
 			return new LuaCustomClrObject(a - b);
@@ -127,9 +127,9 @@ namespace OpenRA
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WRange a;
-			WRange b;
-			if (!left.TryGetClrValue<WRange>(out a) || !right.TryGetClrValue<WRange>(out b))
+			WDist a;
+			WDist b;
+			if (!left.TryGetClrValue<WDist>(out a) || !right.TryGetClrValue<WDist>(out b))
 				throw new LuaException("Attempted to call WRange.Equals(WRange, WRange) with invalid arguments.");
 
 			return a == b;

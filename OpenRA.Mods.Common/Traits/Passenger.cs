@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MaxAlternateTransportAttempts = 1;
 
 		[Desc("Range from self for looking for an alternate transport (default: 5.5 cells).")]
-		public readonly WRange AlternateTransportScanRange = WRange.FromCells(11) / 2;
+		public readonly WDist AlternateTransportScanRange = WDist.FromCells(11) / 2;
 
 		[Desc("Upgrade types to grant to transport.")]
 		public readonly string[] GrantUpgrades = { };

@@ -344,7 +344,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Call a function when an actor enters this range." +
 			"Returns the trigger id for later removal using RemoveProximityTrigger(int id)." +
 			"The callback function will be called as func(Actor a, int id).")]
-		public int OnEnteredProximityTrigger(WPos pos, WRange range, LuaFunction func)
+		public int OnEnteredProximityTrigger(WPos pos, WDist range, LuaFunction func)
 		{
 			var triggerId = 0;
 			var onEntry = (LuaFunction)func.CopyReference();
@@ -370,7 +370,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Call a function when an actor leaves this range." +
 			"Returns the trigger id for later removal using RemoveProximityTrigger(int id)." +
 			"The callback function will be called as func(Actor a, int id).")]
-		public int OnExitedProximityTrigger(WPos pos, WRange range, LuaFunction func)
+		public int OnExitedProximityTrigger(WPos pos, WDist range, LuaFunction func)
 		{
 			var triggerId = 0;
 			var onExit = (LuaFunction)func.CopyReference();

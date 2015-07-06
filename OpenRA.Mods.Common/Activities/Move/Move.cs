@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		readonly Mobile mobile;
 		readonly IDisableMove[] moveDisablers;
-		readonly WRange nearEnough;
+		readonly WDist nearEnough;
 		readonly Func<List<CPos>> getPath;
 		readonly Actor ignoredActor;
 
@@ -50,14 +50,14 @@ namespace OpenRA.Mods.Common.Activities
 					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.ToCell, destination, false)
 					.WithoutLaneBias());
 			this.destination = destination;
-			this.nearEnough = WRange.Zero;
+			this.nearEnough = WDist.Zero;
 		}
 
 		// HACK: for legacy code
 		public Move(Actor self, CPos destination, int nearEnough)
-			: this(self, destination, WRange.FromCells(nearEnough)) { }
+			: this(self, destination, WDist.FromCells(nearEnough)) { }
 
-		public Move(Actor self, CPos destination, WRange nearEnough)
+		public Move(Actor self, CPos destination, WDist nearEnough)
 		{
 			mobile = self.Trait<Mobile>();
 			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.nearEnough = nearEnough;
 		}
 
-		public Move(Actor self, CPos destination, SubCell subCell, WRange nearEnough)
+		public Move(Actor self, CPos destination, SubCell subCell, WDist nearEnough)
 		{
 			mobile = self.Trait<Mobile>();
 			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
@@ -90,11 +90,11 @@ namespace OpenRA.Mods.Common.Activities
 					.WithIgnoredActor(ignoredActor));
 
 			this.destination = destination;
-			this.nearEnough = WRange.Zero;
+			this.nearEnough = WDist.Zero;
 			this.ignoredActor = ignoredActor;
 		}
 
-		public Move(Actor self, Target target, WRange range)
+		public Move(Actor self, Target target, WDist range)
 		{
 			mobile = self.Trait<Mobile>();
 			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.getPath = getPath;
 
 			destination = null;
-			nearEnough = WRange.Zero;
+			nearEnough = WDist.Zero;
 		}
 
 		static int HashList<T>(List<T> xs)

@@ -54,7 +54,7 @@ namespace OpenRA.Mods.D2k.Activities
 			{
 				case State.Intercept:
 					state = State.LockCarryable;
-					return Util.SequenceActivities(movement.MoveWithinRange(Target.FromActor(cargo), WRange.FromCells(4)), this);
+					return Util.SequenceActivities(movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4)), this);
 
 				case State.LockCarryable:
 					// Last check

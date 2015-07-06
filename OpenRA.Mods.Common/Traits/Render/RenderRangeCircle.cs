@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string RangeCircleType = null;
 
 		[Desc("Range to draw if no armaments are available")]
-		public readonly WRange FallbackRange = WRange.Zero;
+		public readonly WDist FallbackRange = WDist.Zero;
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (armaments.Any())
 				range = armaments.Select(a => w.Map.Rules.Weapons[a.Weapon.ToLowerInvariant()].Range).Max();
 
-			if (range == WRange.Zero)
+			if (range == WDist.Zero)
 				yield break;
 
 			yield return new RangeCircleRenderable(
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 				yield break;
 
 			var range = attack.GetMaximumRange();
-			if (range == WRange.Zero)
+			if (range == WDist.Zero)
 				yield break;
 
 			yield return new RangeCircleRenderable(

@@ -23,9 +23,9 @@ namespace OpenRA.Mods.Common.Effects
 	public class BulletInfo : IProjectileInfo
 	{
 		[Desc("Projectile speed in WRange / tick, two values indicate variable velocity.")]
-		public readonly WRange[] Speed = { new WRange(17) };
+		public readonly WDist[] Speed = { new WDist(17) };
 		[Desc("Maximum offset at the maximum range.")]
-		public readonly WRange Inaccuracy = WRange.Zero;
+		public readonly WDist Inaccuracy = WDist.Zero;
 		public readonly string Image = null;
 		[SequenceReference("Image")] public readonly string Sequence = "idle";
 		public readonly string Palette = "effect";
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly ProjectileArgs args;
 		readonly Animation anim;
 		[Sync] readonly WAngle angle;
-		[Sync] readonly WRange speed;
+		[Sync] readonly WDist speed;
 
 		ContrailRenderable contrail;
 		string trailPalette;
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Effects
 				angle = info.Angle[0];
 
 			if (info.Speed.Length > 1)
-				speed = new WRange(world.SharedRandom.Next(info.Speed[0].Range, info.Speed[1].Range));
+				speed = new WDist(world.SharedRandom.Next(info.Speed[0].Range, info.Speed[1].Range));
 			else
 				speed = info.Speed[0];
 

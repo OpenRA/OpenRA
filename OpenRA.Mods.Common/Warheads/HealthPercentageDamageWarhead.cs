@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Warheads
 	public class HealthPercentageDamageWarhead : DamageWarhead
 	{
 		[Desc("Size of the area. Damage will be applied to this area.", "If two spreads are defined, the area of effect is a ring, where the second value is the inner radius.")]
-		public readonly WRange[] Spread = { new WRange(43) };
+		public readonly WDist[] Spread = { new WDist(43) };
 
 		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
 		{

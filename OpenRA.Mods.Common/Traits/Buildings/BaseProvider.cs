@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			yield return new RangeCircleRenderable(
 				self.CenterPosition,
-				WRange.FromCells(Info.Range),
+				WDist.FromCells(Info.Range),
 				0,
 				Color.FromArgb(128, Ready() ? Color.White : Color.Red),
 				Color.FromArgb(96, Color.Black));

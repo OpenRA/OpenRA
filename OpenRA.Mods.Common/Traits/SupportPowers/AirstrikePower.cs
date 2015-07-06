@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
 
 		public readonly int QuantizedFacings = 32;
-		public readonly WRange Cordon = new WRange(5120);
+		public readonly WDist Cordon = new WDist(5120);
 
 		[ActorReference]
 		[Desc("Actor to spawn when the aircraft start attacking")]
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int CameraRemoveDelay = 25;
 
 		[Desc("Weapon range offset to apply during the beacon clock calculation")]
-		public readonly WRange BeaconDistanceOffset = WRange.FromCells(6);
+		public readonly WDist BeaconDistanceOffset = WDist.FromCells(6);
 
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.Self, this); }
 	}

@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var consideration in Considerations)
 			{
-				var radiusToUse = new WRange(consideration.CheckRadius.Range);
+				var radiusToUse = new WDist(consideration.CheckRadius.Range);
 
 				var checkActors = world.FindActorsInCircle(pos, radiusToUse);
 				foreach (var scrutinized in checkActors)
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.AI
 			public readonly DecisionMetric TargetMetric = DecisionMetric.None;
 
 			[Desc("What is the check radius of this decision?")]
-			public readonly WRange CheckRadius = WRange.FromCells(5);
+			public readonly WDist CheckRadius = WDist.FromCells(5);
 
 			public Consideration(MiniYaml yaml)
 			{

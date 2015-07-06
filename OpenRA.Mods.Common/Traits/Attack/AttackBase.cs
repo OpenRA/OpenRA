@@ -162,23 +162,23 @@ namespace OpenRA.Mods.Common.Traits
 			return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World, self));
 		}
 
-		public WRange GetMinimumRange()
+		public WDist GetMinimumRange()
 		{
 			if (IsTraitDisabled)
-				return WRange.Zero;
+				return WDist.Zero;
 
 			return Armaments.Where(a => !a.IsTraitDisabled)
 				.Select(a => a.Weapon.MinRange).Min();
 		}
 
-		public WRange GetMaximumRange()
+		public WDist GetMaximumRange()
 		{
 			if (IsTraitDisabled)
-				return WRange.Zero;
+				return WDist.Zero;
 
 			return Armaments.Where(a => !a.IsTraitDisabled)
 				.Select(a => a.Weapon.Range)
-				.Append(WRange.Zero).Max();
+				.Append(WDist.Zero).Max();
 		}
 
 		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.Weapon.IsValidAgainst(t, self.World, self)); }

@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Heal : Attack
 	{
-		public Heal(Actor self, Target target, WRange minRange, WRange maxRange, bool allowMovement)
+		public Heal(Actor self, Target target, WDist minRange, WDist maxRange, bool allowMovement)
 			: base(self, target, minRange, maxRange, allowMovement) { }
 
 		protected override Activity InnerTick(Actor self, AttackBase attack)

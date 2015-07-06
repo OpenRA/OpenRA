@@ -21,7 +21,7 @@ namespace OpenRA.Mods.D2k.Warheads
 		[Desc("Duration of the owner change (in ticks). Set to 0 to make it permanent.")]
 		public readonly int Duration = 0;
 
-		public readonly WRange Range = WRange.FromCells(1);
+		public readonly WDist Range = WDist.FromCells(1);
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{

@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 				var target = Target.FromOrder(self.World, order);
 
 				self.CancelActivity();
-				self.QueueActivity(movement.MoveWithinRange(target, new WRange(1024 * info.CloseEnough)));
+				self.QueueActivity(movement.MoveWithinRange(target, new WDist(1024 * info.CloseEnough)));
 				self.QueueActivity(new Repair(order.TargetActor));
 
 				self.SetTargetLine(target, Color.Green, false);

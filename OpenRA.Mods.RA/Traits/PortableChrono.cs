@@ -198,7 +198,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			yield return new RangeCircleRenderable(
 				self.CenterPosition,
-				WRange.FromCells(self.Trait<PortableChrono>().Info.MaxDistance),
+				WDist.FromCells(self.Trait<PortableChrono>().Info.MaxDistance),
 				0,
 				Color.FromArgb(128, Color.LawnGreen),
 				Color.FromArgb(96, Color.Black));

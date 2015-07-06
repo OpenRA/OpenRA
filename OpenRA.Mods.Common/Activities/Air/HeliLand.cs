@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Activities
 	public class HeliLand : Activity
 	{
 		readonly Helicopter helicopter;
-		readonly WRange landAltitude;
+		readonly WDist landAltitude;
 		bool requireSpace;
 
 		public HeliLand(Actor self, bool requireSpace)

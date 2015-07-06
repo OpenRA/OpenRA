@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// <returns>A path from start to target</returns>
 		List<CPos> FindUnitPath(CPos source, CPos target, Actor self);
 
-		List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WRange range, Actor self);
+		List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self);
 
 		/// <summary>
 		/// Calculates a path given a search specification
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			return pb;
 		}
 
-		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WRange range, Actor self)
+		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self)
 		{
 			var mi = self.Info.Traits.Get<MobileInfo>();
 			var targetCell = world.Map.CellContaining(target);

@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class RevealsShroudInfo : ITraitInfo
 	{
-		public readonly WRange Range = WRange.Zero;
+		public readonly WDist Range = WDist.Zero;
 
 		[Desc("Possible values are CenterPosition (measure range from the center) and ",
 			"Footprint (measure range from the footprint)")]
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var map = self.World.Map;
 			var range = Range;
-			if (range == WRange.Zero)
+			if (range == WDist.Zero)
 				return NoCells;
 
 			if (info.Type == VisibilityType.Footprint)
@@ -101,6 +101,6 @@ namespace OpenRA.Mods.Common.Traits
 				removeCellsFromPlayerShroud(p);
 		}
 
-		public WRange Range { get { return cachedDisabled ? WRange.Zero : info.Range; } }
+		public WDist Range { get { return cachedDisabled ? WDist.Zero : info.Range; } }
 	}
 }

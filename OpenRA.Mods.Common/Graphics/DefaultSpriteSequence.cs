@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 	public class DefaultSpriteSequence : ISpriteSequence
 	{
-		static readonly WRange DefaultShadowSpriteZOffset = new WRange(-5);
+		static readonly WDist DefaultShadowSpriteZOffset = new WDist(-5);
 		readonly Sprite[] sprites;
 		readonly bool reverseFacings, transpose;
 
@@ -104,8 +104,8 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				Start = LoadField<int>(d, "Start", 0);
 				ShadowStart = LoadField<int>(d, "ShadowStart", -1);
-				ShadowZOffset = LoadField<WRange>(d, "ShadowZOffset", DefaultShadowSpriteZOffset).Range;
-				ZOffset = LoadField<WRange>(d, "ZOffset", WRange.Zero).Range;
+				ShadowZOffset = LoadField<WDist>(d, "ShadowZOffset", DefaultShadowSpriteZOffset).Range;
+				ZOffset = LoadField<WDist>(d, "ZOffset", WDist.Zero).Range;
 				Tick = LoadField<int>(d, "Tick", 40);
 				transpose = LoadField<bool>(d, "Transpose", false);
 				Frames = LoadField<int[]>(d, "Frames", null);

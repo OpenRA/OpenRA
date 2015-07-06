@@ -91,8 +91,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.Recoils)
 				return t.Position(self);
 
-			var recoil = arms.Aggregate(WRange.Zero, (a, b) => a + b.Recoil);
-			var localOffset = new WVec(-recoil, WRange.Zero, WRange.Zero);
+			var recoil = arms.Aggregate(WDist.Zero, (a, b) => a + b.Recoil);
+			var localOffset = new WVec(-recoil, WDist.Zero, WDist.Zero);
 			var bodyOrientation = body.QuantizeOrientation(self, self.Orientation);
 			var turretOrientation = body.QuantizeOrientation(self, t.LocalOrientation(self));
 			return t.Position(self) + body.LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));

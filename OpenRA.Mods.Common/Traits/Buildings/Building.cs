@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Range is counted from the center of the actor, not from each cell.
 				var target = Target.FromPos(bp.Actor.CenterPosition);
-				if (target.IsInRange(center, WRange.FromCells(bp.Trait.Info.Range)))
+				if (target.IsInRange(center, WDist.FromCells(bp.Trait.Info.Range)))
 					return bp.Actor;
 			}
 

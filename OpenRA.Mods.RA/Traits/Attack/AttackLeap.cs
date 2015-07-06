@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Traits
 	class AttackLeapInfo : AttackFrontalInfo
 	{
 		[Desc("Leap speed (in units/tick).")]
-		public readonly WRange Speed = new WRange(426);
+		public readonly WDist Speed = new WDist(426);
 		public readonly WAngle Angle = WAngle.FromDegrees(20);
 
 		public override object Create(ActorInitializer init) { return new AttackLeap(init.Self, this); }

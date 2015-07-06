@@ -33,7 +33,7 @@ namespace OpenRA.GameRules
 	public sealed class WeaponInfo
 	{
 		[Desc("The maximum range the weapon can fire.")]
-		public readonly WRange Range = WRange.Zero;
+		public readonly WDist Range = WDist.Zero;
 
 		[Desc("The sound played when the weapon is fired.")]
 		public readonly string[] Report = null;
@@ -56,7 +56,7 @@ namespace OpenRA.GameRules
 		public readonly int BurstDelay = 5;
 
 		[Desc("The minimum range the weapon can fire.")]
-		public readonly WRange MinRange = WRange.Zero;
+		public readonly WDist MinRange = WDist.Zero;
 
 		[FieldLoader.LoadUsing("LoadProjectile")]
 		public readonly IProjectileInfo Projectile;

@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class MoveWithinRange : MoveAdjacentTo
 	{
-		readonly WRange maxRange;
-		readonly WRange minRange;
+		readonly WDist maxRange;
+		readonly WDist minRange;
 
-		public MoveWithinRange(Actor self, Target target, WRange minRange, WRange maxRange)
+		public MoveWithinRange(Actor self, Target target, WDist minRange, WDist maxRange)
 			: base(self, target)
 		{
 			this.minRange = minRange;

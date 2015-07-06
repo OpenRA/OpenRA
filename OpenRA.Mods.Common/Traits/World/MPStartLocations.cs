@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class MPStartLocationsInfo : ITraitInfo
 	{
-		public readonly WRange InitialExploreRange = WRange.FromCells(5);
+		public readonly WDist InitialExploreRange = WDist.FromCells(5);
 
 		public virtual object Create(ActorInitializer init) { return new MPStartLocations(this); }
 	}

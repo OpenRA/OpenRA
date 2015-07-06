@@ -23,10 +23,10 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly int[] Falloff = { 100, 100, 25, 11, 6, 4, 3, 2, 1, 0 };
 
 		[Desc("Range between falloff steps.")]
-		public readonly WRange Spread = new WRange(3072);
+		public readonly WDist Spread = new WDist(3072);
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
-		public WRange[] Range = null;
+		public WDist[] Range = null;
 
 		public override object Create(ActorInitializer init) { return new AttractsWorms(init, this); }
 	}

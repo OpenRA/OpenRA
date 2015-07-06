@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.AI
 				owner.TargetActor = t;
 			}
 
-			var enemyUnits = owner.World.FindActorsInCircle(owner.TargetActor.CenterPosition, WRange.FromCells(10))
+			var enemyUnits = owner.World.FindActorsInCircle(owner.TargetActor.CenterPosition, WDist.FromCells(10))
 				.Where(unit => owner.Bot.Player.Stances[unit.Owner] == Stance.Enemy).ToList();
 
 			if (enemyUnits.Any())
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.AI
 			var leader = owner.Units.ClosestTo(owner.TargetActor.CenterPosition);
 			if (leader == null)
 				return;
-			var ownUnits = owner.World.FindActorsInCircle(leader.CenterPosition, WRange.FromCells(owner.Units.Count) / 3)
+			var ownUnits = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.Units.Count) / 3)
 				.Where(a => a.Owner == owner.Units.FirstOrDefault().Owner && owner.Units.Contains(a)).ToHashSet();
 			if (ownUnits.Count < owner.Units.Count)
 			{
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.AI
 			}
 			else
 			{
-				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WRange.FromCells(12))
+				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(12))
 					.Where(a1 => !a1.Disposed && !a1.IsDead);
 				var enemynearby = enemies.Where(a1 => a1.HasTrait<ITargetable>() && leader.Owner.Stances[a1.Owner] == Stance.Enemy);
 				var target = enemynearby.ClosestTo(leader.CenterPosition);

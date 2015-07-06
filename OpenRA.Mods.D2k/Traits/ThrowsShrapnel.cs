@@ -20,7 +20,7 @@ namespace OpenRA.Mods.D2k.Traits
 		[WeaponReference]
 		public string[] Weapons = { };
 		public int[] Pieces = { 3, 10 };
-		public WRange[] Range = { WRange.FromCells(2), WRange.FromCells(5) };
+		public WDist[] Range = { WDist.FromCells(2), WDist.FromCells(5) };
 		public object Create(ActorInitializer actor) { return new ThrowsShrapnel(this); }
 	}
 

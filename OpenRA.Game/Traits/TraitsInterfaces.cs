@@ -234,9 +234,9 @@ namespace OpenRA.Traits
 	{
 		Activity MoveTo(CPos cell, int nearEnough);
 		Activity MoveTo(CPos cell, Actor ignoredActor);
-		Activity MoveWithinRange(Target target, WRange range);
-		Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange);
-		Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange);
+		Activity MoveWithinRange(Target target, WDist range);
+		Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange);
+		Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange);
 		Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any);
 		Activity MoveToTarget(Actor self, Target target);
 		Activity MoveIntoTarget(Actor self, Target target);

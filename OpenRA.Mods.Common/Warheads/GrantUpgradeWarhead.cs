@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Duration of the upgrade (in ticks). Set to 0 for a permanent upgrade.")]
 		public readonly int Duration = 0;
 
-		public readonly WRange Range = WRange.FromCells(1);
+		public readonly WDist Range = WDist.FromCells(1);
 
 		// TODO: This can be removed after the legacy and redundant 0% = not targetable
 		// assumption has been removed from the yaml definitions

@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (nextScanTime <= 0)
 			{
-				var range = info.ScanRadius > 0 ? WRange.FromCells(info.ScanRadius) : attack.GetMaximumRange();
+				var range = info.ScanRadius > 0 ? WDist.FromCells(info.ScanRadius) : attack.GetMaximumRange();
 				if (self.IsIdle || currentTarget == null || !Target.FromActor(currentTarget).IsInRange(self.CenterPosition, range))
 					return ChooseTarget(self, range);
 			}
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 			attack.AttackTarget(target, false, info.AllowMovement && Stance != UnitStance.Defend);
 		}
 
-		Actor ChooseTarget(Actor self, WRange range)
+		Actor ChooseTarget(Actor self, WDist range)
 		{
 			nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
 			var inRange = self.World.FindActorsInCircle(self.CenterPosition, range);

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ParaDropInfo : ITraitInfo, Requires<CargoInfo>
 	{
 		[Desc("Distance around the drop-point to unload troops.")]
-		public readonly WRange DropRange = WRange.FromCells(4);
+		public readonly WDist DropRange = WDist.FromCells(4);
 
 		[Desc("Sound to play when dropping.")]
 		public readonly string ChuteSound = "chute1.aud";

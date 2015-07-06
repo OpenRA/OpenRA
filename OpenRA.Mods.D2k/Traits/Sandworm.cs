@@ -21,10 +21,10 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly int TargetRescanInterval = 32;
 
 		[Desc("The radius in which the worm \"searches\" for targets.")]
-		public readonly WRange MaxSearchRadius = WRange.FromCells(27);
+		public readonly WDist MaxSearchRadius = WDist.FromCells(27);
 
 		[Desc("The range at which the worm launches an attack regardless of noise levels.")]
-		public readonly WRange IgnoreNoiseAttackRange = WRange.FromCells(3);
+		public readonly WDist IgnoreNoiseAttackRange = WDist.FromCells(3);
 
 		[Desc("The chance this actor has of disappearing after it attacks (in %).")]
 		public readonly int ChanceToDisappear = 80;
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (IsMovingTowardTarget)
 				return;
 
-			self.QueueActivity(mobile.Value.MoveWithinRange(Target.FromCell(self.World, targetCell, SubCell.Any), WRange.FromCells(1)));
+			self.QueueActivity(mobile.Value.MoveWithinRange(Target.FromCell(self.World, targetCell, SubCell.Any), WDist.FromCells(1)));
 		}
 
 		public void Tick(Actor self)

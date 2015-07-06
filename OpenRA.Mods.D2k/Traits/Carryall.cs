@@ -31,7 +31,7 @@ namespace OpenRA.Mods.D2k.Traits
 	public class Carryall : INotifyBecomingIdle, INotifyKilled, ISync, IRender, INotifyActorDisposing
 	{
 		readonly Actor self;
-		readonly WRange carryHeight;
+		readonly WDist carryHeight;
 		readonly CarryallInfo info;
 
 		// The actor we are currently carrying.
