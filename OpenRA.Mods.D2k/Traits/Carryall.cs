@@ -204,7 +204,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (anim != null && !self.World.FogObscures(self))
 			{
 				anim.Tick();
-				var renderables = anim.Render(self.CenterPosition + new WVec(0, 0, -carryHeight.Range),
+				var renderables = anim.Render(self.CenterPosition + new WVec(0, 0, -carryHeight.Length),
 					wr.Palette("player" + Carrying.Owner.InternalName));
 
 				foreach (var rr in renderables)

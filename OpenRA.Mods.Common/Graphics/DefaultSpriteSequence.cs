@@ -104,8 +104,8 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				Start = LoadField<int>(d, "Start", 0);
 				ShadowStart = LoadField<int>(d, "ShadowStart", -1);
-				ShadowZOffset = LoadField<WDist>(d, "ShadowZOffset", DefaultShadowSpriteZOffset).Range;
-				ZOffset = LoadField<WDist>(d, "ZOffset", WDist.Zero).Range;
+				ShadowZOffset = LoadField<WDist>(d, "ShadowZOffset", DefaultShadowSpriteZOffset).Length;
+				ZOffset = LoadField<WDist>(d, "ZOffset", WDist.Zero).Length;
 				Tick = LoadField<int>(d, "Tick", 40);
 				transpose = LoadField<bool>(d, "Transpose", false);
 				Frames = LoadField<int[]>(d, "Frames", null);

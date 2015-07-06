@@ -22,25 +22,25 @@ namespace OpenRA
 	/// </summary>
 	public struct WDist : IComparable, IComparable<WDist>, IEquatable<WDist>, IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding
 	{
-		public readonly int Range;
-		public long RangeSquared { get { return (long)Range * (long)Range; } }
+		public readonly int Length;
+		public long RangeSquared { get { return (long)Length * (long)Length; } }
 
-		public WDist(int r) { Range = r; }
+		public WDist(int r) { Length = r; }
 		public static readonly WDist Zero = new WDist(0);
 		public static WDist FromCells(int cells) { return new WDist(1024 * cells); }
 
-		public static WDist operator +(WDist a, WDist b) { return new WDist(a.Range + b.Range); }
-		public static WDist operator -(WDist a, WDist b) { return new WDist(a.Range - b.Range); }
-		public static WDist operator -(WDist a) { return new WDist(-a.Range); }
-		public static WDist operator /(WDist a, int b) { return new WDist(a.Range / b); }
-		public static WDist operator *(WDist a, int b) { return new WDist(a.Range * b); }
-		public static WDist operator *(int a, WDist b) { return new WDist(a * b.Range); }
-		public static bool operator <(WDist a, WDist b) { return a.Range < b.Range; }
-		public static bool operator >(WDist a, WDist b) { return a.Range > b.Range; }
-		public static bool operator <=(WDist a, WDist b) { return a.Range <= b.Range; }
-		public static bool operator >=(WDist a, WDist b) { return a.Range >= b.Range; }
+		public static WDist operator +(WDist a, WDist b) { return new WDist(a.Length + b.Length); }
+		public static WDist operator -(WDist a, WDist b) { return new WDist(a.Length - b.Length); }
+		public static WDist operator -(WDist a) { return new WDist(-a.Length); }
+		public static WDist operator /(WDist a, int b) { return new WDist(a.Length / b); }
+		public static WDist operator *(WDist a, int b) { return new WDist(a.Length * b); }
+		public static WDist operator *(int a, WDist b) { return new WDist(a * b.Length); }
+		public static bool operator <(WDist a, WDist b) { return a.Length < b.Length; }
+		public static bool operator >(WDist a, WDist b) { return a.Length > b.Length; }
+		public static bool operator <=(WDist a, WDist b) { return a.Length <= b.Length; }
+		public static bool operator >=(WDist a, WDist b) { return a.Length >= b.Length; }
 
-		public static bool operator ==(WDist me, WDist other) { return me.Range == other.Range; }
+		public static bool operator ==(WDist me, WDist other) { return me.Length == other.Length; }
 		public static bool operator !=(WDist me, WDist other) { return !(me == other); }
 
 		// Sampled a N-sample probability density function in the range [-1024..1024]
@@ -88,7 +88,7 @@ namespace OpenRA
 			return true;
 		}
 
-		public override int GetHashCode() { return Range.GetHashCode(); }
+		public override int GetHashCode() { return Length.GetHashCode(); }
 
 		public bool Equals(WDist other) { return other == this; }
 		public override bool Equals(object obj) { return obj is WDist && Equals((WDist)obj); }
@@ -97,12 +97,12 @@ namespace OpenRA
 		{
 			if (!(obj is WDist))
 				return 1;
-			return Range.CompareTo(((WDist)obj).Range);
+			return Length.CompareTo(((WDist)obj).Length);
 		}
 
-		public int CompareTo(WDist other) { return Range.CompareTo(other.Range); }
+		public int CompareTo(WDist other) { return Length.CompareTo(other.Length); }
 
-		public override string ToString() { return Range.ToString(); }
+		public override string ToString() { return Length.ToString(); }
 
 		#region Scripting interface
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
@@ -141,7 +141,7 @@ namespace OpenRA
 			{
 				switch (key.ToString())
 				{
-					case "Range": return Range;
+					case "Range": return Length;
 					default: throw new LuaException("WPos does not define a member '{0}'".F(key));
 				}
 			}

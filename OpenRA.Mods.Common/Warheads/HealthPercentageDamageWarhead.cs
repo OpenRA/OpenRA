@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Warheads
 			var world = firedBy.World;
 			var range = Spread[0];
 			var hitActors = world.FindActorsInCircle(pos, range);
-			if (Spread.Length > 1 && Spread[1].Range > 0)
+			if (Spread.Length > 1 && Spread[1].Length > 0)
 				hitActors = hitActors.Except(world.FindActorsInCircle(pos, Spread[1]));
 
 			foreach (var victim in hitActors)

@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Calculate final position
 			var throwRotation = WRot.FromFacing(Game.CosmeticRandom.Next(1024));
-			var throwDistance = Game.CosmeticRandom.Next(info.MinThrowRange.Range, info.MaxThrowRange.Range);
+			var throwDistance = Game.CosmeticRandom.Next(info.MinThrowRange.Length, info.MaxThrowRange.Length);
 
 			initialPos = pos = info.Offset.Rotate(body.QuantizeOrientation(self, WRot.FromFacing(bodyFacing)));
 			finalPos = initialPos + new WVec(throwDistance, 0, 0).Rotate(throwRotation);
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 			length = (finalPos - initialPos).Length / info.Velocity;
 
 			// Facing rotation
-			rotation = WDist.FromPDF(Game.CosmeticRandom, 2).Range * info.ROT / 1024;
+			rotation = WDist.FromPDF(Game.CosmeticRandom, 2).Length * info.ROT / 1024;
 
 			var anim = new Animation(init.World, rs.GetImage(self), () => (int)facing);
 			anim.PlayRepeating(info.Anim);

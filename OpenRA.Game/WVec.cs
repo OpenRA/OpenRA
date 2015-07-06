@@ -21,7 +21,7 @@ namespace OpenRA
 		public readonly int X, Y, Z;
 
 		public WVec(int x, int y, int z) { X = x; Y = y; Z = z; }
-		public WVec(WDist x, WDist y, WDist z) { X = x.Range; Y = y.Range; Z = z.Range; }
+		public WVec(WDist x, WDist y, WDist z) { X = x.Length; Y = y.Length; Z = z.Length; }
 
 		public static readonly WVec Zero = new WVec(0, 0, 0);
 

@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Repulsion only applies when we're flying!
 			var altitude = CenterPosition.Z;
-			if (altitude != info.CruiseAltitude.Range)
+			if (altitude != info.CruiseAltitude.Length)
 				return WVec.Zero;
 
 			return self.World.FindActorsInCircle(self.CenterPosition, info.IdealSeparation)

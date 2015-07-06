@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var consideration in Considerations)
 			{
-				var radiusToUse = new WDist(consideration.CheckRadius.Range);
+				var radiusToUse = new WDist(consideration.CheckRadius.Length);
 
 				var checkActors = world.FindActorsInCircle(pos, radiusToUse);
 				foreach (var scrutinized in checkActors)

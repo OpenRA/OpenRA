@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Warheads
 				var healthInfo = victim.Info.Traits.GetOrDefault<HealthInfo>();
 				if (healthInfo != null)
 				{
-					var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Range);
+					var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Length);
 					localModifiers = localModifiers.Append(GetDamageFalloff(distance));
 				}
 
@@ -67,10 +67,10 @@ namespace OpenRA.Mods.Common.Warheads
 
 		int GetDamageFalloff(int distance)
 		{
-			var inner = Range[0].Range;
+			var inner = Range[0].Length;
 			for (var i = 1; i < Range.Length; i++)
 			{
-				var outer = Range[i].Range;
+				var outer = Range[i].Length;
 				if (outer > distance)
 					return int2.Lerp(Falloff[i - 1], Falloff[i], distance - inner, outer - inner);
 

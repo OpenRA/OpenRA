@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (!target.IsInRange(self.CenterPosition, a.Weapon.Range))
 						continue;
 
-					var t = Target.FromPos(cp - new WVec(0, a.Weapon.Range.Range / 2, cp.Z).Rotate(WRot.FromFacing(f)));
+					var t = Target.FromPos(cp - new WVec(0, a.Weapon.Range.Length / 2, cp.Z).Rotate(WRot.FromFacing(f)));
 					inAttackRange = true;
 					a.CheckFire(self, facing.Value, t);
 				}

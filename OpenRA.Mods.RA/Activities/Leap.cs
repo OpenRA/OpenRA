@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			from = self.CenterPosition;
 			to = self.World.Map.CenterOfSubCell(targetMobile.FromCell, targetMobile.FromSubCell);
-			length = Math.Max((to - from).Length / speed.Range, 1);
+			length = Math.Max((to - from).Length / speed.Length, 1);
 
 			// HACK: why isn't this using the interface?
 			self.Trait<WithInfantryBody>().Attacking(self, Target.FromActor(target));

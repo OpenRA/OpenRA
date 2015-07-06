@@ -74,7 +74,7 @@ namespace OpenRA.Traits
 
 		public static IEnumerable<CPos> CellsInRange(Map map, WPos pos, WDist range)
 		{
-			var r = (range.Range + 1023) / 1024;
+			var r = (range.Length + 1023) / 1024;
 			var limit = range.RangeSquared;
 			var cell = map.CellContaining(pos);
 

@@ -82,20 +82,20 @@ namespace OpenRA.Mods.Common.Effects
 				angle = info.Angle[0];
 
 			if (info.Speed.Length > 1)
-				speed = new WDist(world.SharedRandom.Next(info.Speed[0].Range, info.Speed[1].Range));
+				speed = new WDist(world.SharedRandom.Next(info.Speed[0].Length, info.Speed[1].Length));
 			else
 				speed = info.Speed[0];
 
 			target = args.PassiveTarget;
-			if (info.Inaccuracy.Range > 0)
+			if (info.Inaccuracy.Length > 0)
 			{
-				var inaccuracy = OpenRA.Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, args.InaccuracyModifiers);
-				var maxOffset = inaccuracy * (target - pos).Length / args.Weapon.Range.Range;
+				var inaccuracy = OpenRA.Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
+				var maxOffset = inaccuracy * (target - pos).Length / args.Weapon.Range.Length;
 				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}
 
 			facing = OpenRA.Traits.Util.GetFacing(target - pos, 0);
-			length = Math.Max((target - pos).Length / speed.Range, 1);
+			length = Math.Max((target - pos).Length / speed.Length, 1);
 
 			if (!string.IsNullOrEmpty(info.Image))
 			{

@@ -218,7 +218,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!mobile.CanMoveFreelyInto(nextCell, ignoredActor, true))
 			{
 				// Are we close enough?
-				var cellRange = nearEnough.Range / 1024;
+				var cellRange = nearEnough.Length / 1024;
 				if ((mobile.ToCell - destination.Value).LengthSquared <= cellRange * cellRange)
 				{
 					path.Clear();

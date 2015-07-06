@@ -101,9 +101,9 @@ namespace OpenRA.Mods.Common.Effects
 			if (world.SharedRandom.Next(100) <= info.LockOnProbability)
 				lockOn = true;
 
-			if (info.Inaccuracy.Range > 0)
+			if (info.Inaccuracy.Length > 0)
 			{
-				var inaccuracy = OpenRA.Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, args.InaccuracyModifiers);
+				var inaccuracy = OpenRA.Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
 				offset = WVec.FromPDF(world.SharedRandom, 2) * inaccuracy / 1024;
 			}
 
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Effects
 				desiredFacing = facing;
 
 			facing = OpenRA.Traits.Util.TickFacing(facing, desiredFacing, info.RateOfTurn);
-			var move = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing)) * info.Speed.Range / 1024;
+			var move = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing)) * info.Speed.Length / 1024;
 
 			if (pos.Z != desiredAltitude)
 			{

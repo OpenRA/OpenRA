@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			var landPos = dest.CenterPosition;
-			var altitude = planeInfo.CruiseAltitude.Range;
+			var altitude = planeInfo.CruiseAltitude.Length;
 
 			// Distance required for descent.
 			var landDistance = altitude * 1024 / planeInfo.MaximumPitch.Tan();

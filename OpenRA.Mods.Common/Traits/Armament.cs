@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (FireDelay > 0)
 				--FireDelay;
 
-			Recoil = new WDist(Math.Max(0, Recoil.Range - Info.RecoilRecovery.Range));
+			Recoil = new WDist(Math.Max(0, Recoil.Length - Info.RecoilRecovery.Length));
 
 			for (var i = 0; i < delayedActions.Count; i++)
 			{

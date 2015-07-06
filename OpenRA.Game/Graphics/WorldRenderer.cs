@@ -196,7 +196,7 @@ namespace OpenRA.Graphics
 
 		public void DrawRangeCircle(WPos pos, WDist range, Color c)
 		{
-			var offset = new WVec(range.Range, 0, 0);
+			var offset = new WVec(range.Length, 0, 0);
 			for (var i = 0; i < 32; i++)
 			{
 				var pa = pos + offset.Rotate(WRot.FromFacing(8 * i));

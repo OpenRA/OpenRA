@@ -35,7 +35,7 @@ namespace OpenRA.Mods.D2k.Traits
 			// If aircraft, spawn at cruise altitude
 			var aircraftInfo = producee.Traits.GetOrDefault<AircraftInfo>();
 			if (aircraftInfo != null)
-				pos += new WVec(0, 0, aircraftInfo.CruiseAltitude.Range);
+				pos += new WVec(0, 0, aircraftInfo.CruiseAltitude.Length);
 
 			var initialFacing = self.World.Map.FacingBetween(location, self.Location, 0);
 
