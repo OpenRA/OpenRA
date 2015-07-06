@@ -10,6 +10,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Support;
 
 namespace OpenRA.Graphics
 {
@@ -198,6 +200,11 @@ namespace OpenRA.Graphics
 		public ISpriteSequence GetSequence(string sequenceName)
 		{
 			return sequenceProvider.GetSequence(name, sequenceName);
+		}
+
+		public string GetRandomExistingSequence(string[] sequences, MersenneTwister random)
+		{
+			return sequences.Where(s => HasSequence(s)).RandomOrDefault(random);
 		}
 	}
 }

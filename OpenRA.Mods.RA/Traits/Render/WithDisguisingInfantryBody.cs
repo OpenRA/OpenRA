@@ -39,7 +39,9 @@ namespace OpenRA.Mods.RA.Traits
 			if (disguise.AsSprite != intendedSprite)
 			{
 				intendedSprite = disguise.AsSprite;
-				DefaultAnimation.ChangeImage(intendedSprite ?? rs.GetImage(self), info.StandSequences.Random(Game.CosmeticRandom));
+				var sequence = DefaultAnimation.GetRandomExistingSequence(info.StandSequences, Game.CosmeticRandom);
+				if (sequence != null)
+					DefaultAnimation.ChangeImage(intendedSprite ?? rs.GetImage(self), sequence);
 				rs.UpdatePalette();
 			}
 
