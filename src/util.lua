@@ -312,7 +312,8 @@ function FileRead(fname, length, callback)
     local pos = 0
     while true do
       local len, content = file:Read(length)
-      callback(content)
+      local res, msg = callback(content) -- may return `false` to signal to stop
+      if res == false then return false, msg or "Unknown error" end
       if len < length then break end
       pos = pos + len
       file:Seek(pos)
