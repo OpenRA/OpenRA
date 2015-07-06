@@ -679,7 +679,7 @@ namespace OpenRA.Server
 				DropClient(c);
 
 			// Drop any players who are not ready
-			foreach (var c in Conns.Where(c => GetClient(c).IsInvalid))
+			foreach (var c in Conns.Where(c => GetClient(c).IsInvalid).ToArray())
 			{
 				SendOrderTo(c, "ServerError", "You have been kicked from the server!");
 				DropClient(c);
