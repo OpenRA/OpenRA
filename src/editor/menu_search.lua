@@ -188,8 +188,11 @@ local function navigateTo(default, selected)
           -- 3. otherwise use "text"
           local file = (wx.wxGetKeyState(wx.WXK_CONTROL) and text) or sline or text
           local fullPath = MergeFullPath(ide:GetProject(), file)
-          if not LoadFile(fullPath, preview or nil)
-          and not ProjectUpdateProjectDir(fullPath) then
+          local doc = ide:FindDocument(fullPath)
+          -- if the document is already opened (not in the preview)
+          -- or can't be opened as a file or folder, then close the preview
+          if doc and doc.index ~= pindex
+          or not LoadFile(fullPath, preview or nil) and not ProjectUpdateProjectDir(fullPath) then
             if pindex then ClosePage(pindex) end
           end
         end
