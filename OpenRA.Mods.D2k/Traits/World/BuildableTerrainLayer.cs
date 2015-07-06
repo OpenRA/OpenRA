@@ -15,22 +15,30 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Attach this to the world actor. Required for LaysTerrain to work.")]
-	public class BuildableTerrainLayerInfo : TraitInfo<BuildableTerrainLayer> { }
-	public class BuildableTerrainLayer : IRenderOverlay, IWorldLoaded, ITickRender
+	public class BuildableTerrainLayerInfo : ITraitInfo
 	{
-		Dictionary<CPos, Sprite> tiles;
-		Dictionary<CPos, Sprite> dirty;
+		public object Create(ActorInitializer init) { return new BuildableTerrainLayer(init.Self); }
+	}
+
+	public class BuildableTerrainLayer : IRenderOverlay, IWorldLoaded, ITickRender, INotifyActorDisposing
+	{
+		readonly Dictionary<CPos, Sprite> dirty = new Dictionary<CPos, Sprite>();
+		readonly TileSet tileset;
+		readonly Map map;
+
+		TerrainSpriteLayer render;
 		Theater theater;
-		TileSet tileset;
-		Map map;
+
+		public BuildableTerrainLayer(Actor self)
+		{
+			tileset = self.World.TileSet;
+			map = self.World.Map;
+		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			theater = wr.Theater;
-			tileset = w.TileSet;
-			map = w.Map;
-			tiles = new Dictionary<CPos, Sprite>();
-			dirty = new Dictionary<CPos, Sprite>();
+			render = new TerrainSpriteLayer(w, wr, theater.Sheet, BlendMode.Alpha, wr.Palette("terrain"), wr.World.Type != WorldType.Editor);
 		}
 
 		public void AddTile(CPos cell, TerrainTile tile)
@@ -49,7 +57,7 @@ namespace OpenRA.Mods.D2k.Traits
 			{
 				if (!self.World.FogObscures(kv.Key))
 				{
-					tiles[kv.Key] = kv.Value;
+					render.Update(kv.Key, kv.Value);
 					remove.Add(kv.Key);
 				}
 			}
@@ -60,19 +68,17 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void Render(WorldRenderer wr)
 		{
-			var pal = wr.Palette("terrain");
+			render.Draw(wr.Viewport);
+		}
 
-			foreach (var kv in tiles)
-			{
-				if (!wr.Viewport.VisibleCellsInsideBounds.Contains(kv.Key))
-					continue;
+		bool disposed;
+		public void Disposing(Actor self)
+		{
+			if (disposed)
+				return;
 
-				if (wr.World.ShroudObscures(kv.Key))
-					continue;
-
-				new SpriteRenderable(kv.Value, wr.World.Map.CenterOfCell(kv.Key),
-					WVec.Zero, -511, pal, 1f, true).Render(wr);
-			}
+			render.Dispose();
+			disposed = true;
 		}
 	}
 }
