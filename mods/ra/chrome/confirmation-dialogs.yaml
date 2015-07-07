@@ -21,7 +21,7 @@ Background@CONFIRM_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Confirm
+			Text: @CONFIRM-PROMPT-CONFIRM-BUTTON-TEXT@
 			Font: Bold
 			Key: return
 		Button@CANCEL_BUTTON:
@@ -29,7 +29,7 @@ Background@CONFIRM_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Cancel
+			Text: @CONFIRM-PROMPT-CANCEL-BUTTON-TEXT@
 			Font: Bold
 			Key: escape
 
@@ -56,9 +56,9 @@ Background@CANCEL_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Cancel
+			Text: @CANCEL-PROMPT-CANCEL-BUTTON-TEXT@
 			Font: Bold
-			Key: escape 
+			Key: escape
 
 Background@TEXT_INPUT_PROMPT:
 	X: (WINDOW_RIGHT - WIDTH)/2
@@ -88,7 +88,7 @@ Background@TEXT_INPUT_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: OK
+			Text: @TEXT-INPUT-PROMPT-ACCEPT-BUTTON-TEXT@
 			Font: Bold
 			Key: return
 		Button@CANCEL_BUTTON:
@@ -96,6 +96,7 @@ Background@TEXT_INPUT_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Cancel
+			Text: @TEXT-INPUT-PROMPT-CANCEL-BUTTON-TEXT@
 			Font: Bold
 			Key: escape
+

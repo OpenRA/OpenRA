@@ -10,7 +10,7 @@ Background@INGAME_DIPLOMACY_BG:
 			Y: 17
 			Width: 250
 			Height: 20
-			Text: Diplomacy
+			Text: @INGAME-DIPLOMACY-BG-LABEL-TITLE-TEXT@
 			Align: Center
 			Font: Bold
 		Container@DIPLOMACY_HEADERS:
@@ -24,20 +24,20 @@ Background@INGAME_DIPLOMACY_BG:
 					Width: 160
 					Height: 25
 					Font: Bold
-					Text: Player
+					Text: @DIPLOMACY-HEADERS-PLAYER-HEADER-TEXT@
 				Label@THEIR_STANCE_HEADER:
 					X: 210
 					Width: 80
 					Height: 25
 					Font: Bold
-					Text: Their Stance
+					Text: @DIPLOMACY-HEADERS-THEIR-STANCE-HEADER-TEXT@
 					Align: Center
 				Label@MY_STANCE_HEADER:
 					X: 307
 					Width: 100
 					Height: 25
 					Font: Bold
-					Text: My Stance
+					Text: @DIPLOMACY-HEADERS-MY-STANCE-HEADER-TEXT@
 					Align: Center
 		ScrollPanel@DIPLOMACY_PANEL:
 			X: 20
@@ -80,12 +80,12 @@ Background@INGAME_DIPLOMACY_BG:
 							X: 307
 							Width: 100
 							Height: PARENT_BOTTOM
-
 		Button@CLOSE:
 			X: PARENT_RIGHT-145
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Close
+			Text: @INGAME-DIPLOMACY-BG-CLOSE-TEXT@
 			Key: escape
 			Font: Bold
+

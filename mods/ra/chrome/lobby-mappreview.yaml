@@ -60,19 +60,19 @@ Container@LOBBY_MAP_PREVIEW:
 					Font: Bold
 					Align: Center
 				Label@MAP_STATUS_A:
-					Y:232
+					Y: 232
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: This map is not compatible
+					Text: @MAP-INVALID-MAP-STATUS-A-TEXT@
 				Label@MAP_STATUS_B:
-					Y:245
+					Y: 245
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: with this version of OpenRA
+					Text: @MAP-INVALID-MAP-STATUS-B-TEXT@
 		Container@MAP_DOWNLOADABLE:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
@@ -111,7 +111,7 @@ Container@LOBBY_MAP_PREVIEW:
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Bold
-					Text: Install Map
+					Text: @MAP-DOWNLOADABLE-MAP-INSTALL-TEXT@
 		Container@MAP_PROGRESS:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
@@ -139,7 +139,7 @@ Container@LOBBY_MAP_PREVIEW:
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: Searching OpenRA Resource Center...
+					Text: @MAP-PROGRESS-MAP-STATUS-SEARCHING-TEXT@
 				Container@MAP_STATUS_UNAVAILABLE:
 					Width: PARENT_RIGHT
 					Children:
@@ -149,21 +149,21 @@ Container@LOBBY_MAP_PREVIEW:
 							Height: 25
 							Font: Tiny
 							Align: Center
-							Text: This map was not found on the
+							Text: @MAP-STATUS-UNAVAILABLE-a-TEXT@
 						Label@b:
 							Y: 215
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Tiny
 							Align: Center
-							Text: OpenRA Resource Center
+							Text: @MAP-STATUS-UNAVAILABLE-b-TEXT@
 				Label@MAP_STATUS_ERROR:
 					Y: 215
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: An error occurred during installation
+					Text: @MAP-PROGRESS-MAP-STATUS-ERROR-TEXT@
 				Label@MAP_STATUS_DOWNLOADING:
 					Y: 215
 					Width: PARENT_RIGHT

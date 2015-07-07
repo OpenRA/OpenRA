@@ -17,7 +17,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 					Height: 25
 					Font: Bold
 					Align: Center
-					Text: Statistics
+					Text: @BACKGROUND-TITLE-TEXT@
 				DropDownButton@STATS_DROPDOWN:
 					X: PARENT_RIGHT-200
 					Y: 15
@@ -36,35 +36,35 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Width: 160
 							Height: 25
 							Font: Bold
-							Text: Player
+							Text: @BASIC-STATS-HEADERS-PLAYER-HEADER-TEXT@
 						Label@CASH_HEADER:
 							X: 245
 							Y: 40
 							Width: 80
 							Height: 25
 							Font: Bold
-							Text: Cash
+							Text: @BASIC-STATS-HEADERS-CASH-HEADER-TEXT@
 						Label@EARNED_MIN_HEADER:
 							X: 325
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
-							Text: Earned/min
+							Text: @BASIC-STATS-HEADERS-EARNED-MIN-HEADER-TEXT@
 						Label@POWER_HEADER:
 							X: 425
 							Y: 40
 							Width: 80
 							Height: 25
 							Font: Bold
-							Text: Power
+							Text: @BASIC-STATS-HEADERS-POWER-HEADER-TEXT@
 						Label@KILLS_HEADER:
 							X: 505
 							Y: 40
 							Width: 40
 							Height: 25
 							Font: Bold
-							Text: Kills
+							Text: @BASIC-STATS-HEADERS-KILLS-HEADER-TEXT@
 							Align: Right
 						Label@DEATHS_HEADER:
 							X: 565
@@ -72,7 +72,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Width: 40
 							Height: 25
 							Font: Bold
-							Text: Deaths
+							Text: @BASIC-STATS-HEADERS-DEATHS-HEADER-TEXT@
 							Align: Right
 						Label@KD_RATIO_HEADER:
 							X: 625
@@ -80,7 +80,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Width: 80
 							Height: 25
 							Font: Bold
-							Text: Kills/Deaths
+							Text: @BASIC-STATS-HEADERS-KD-RATIO-HEADER-TEXT@
 							Align: Right
 						Label@ACTIONS_MIN_HEADER:
 							X: 755
@@ -88,7 +88,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Width: 40
 							Height: 25
 							Font: Bold
-							Text: Actions/min
+							Text: @BASIC-STATS-HEADERS-ACTIONS-MIN-HEADER-TEXT@
 							Align: Right
 				Container@ECONOMY_STATS_HEADERS:
 					X: 0
@@ -102,56 +102,56 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Width: 160
 							Height: 25
 							Font: Bold
-							Text: Player
+							Text: @ECONOMY-STATS-HEADERS-PLAYER-HEADER-TEXT@
 						Label@CASH_HEADER:
 							X: 245
 							Y: 40
 							Width: 80
 							Height: 25
 							Font: Bold
-							Text: Cash
+							Text: @ECONOMY-STATS-HEADERS-CASH-HEADER-TEXT@
 						Label@EARNED_MIN_HEADER:
 							X: 325
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
-							Text: Earned/min
+							Text: @ECONOMY-STATS-HEADERS-EARNED-MIN-HEADER-TEXT@
 						Label@EARNED_THIS_MIN_HEADER:
 							X: 425
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
-							Text: Earned this min
+							Text: @ECONOMY-STATS-HEADERS-EARNED-THIS-MIN-HEADER-TEXT@
 						Label@ASSETS_HEADER:
 							X: 565
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
-							Text: Assets
+							Text: @ECONOMY-STATS-HEADERS-ASSETS-HEADER-TEXT@
 						Label@EARNED_HEADER:
 							X: 645
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
-							Text: Earned
+							Text: @ECONOMY-STATS-HEADERS-EARNED-HEADER-TEXT@
 						Label@SPENT_HEADER:
 							X: 725
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
-							Text: Spent
+							Text: @ECONOMY-STATS-HEADERS-SPENT-HEADER-TEXT@
 						Label@HARVESTERS_HEADER:
 							X: 805
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
-							Text: Harvesters
+							Text: @ECONOMY-STATS-HEADERS-HARVESTERS-HEADER-TEXT@
 							Align: Right
 				Container@PRODUCTION_STATS_HEADERS:
 					X: 0
@@ -165,21 +165,21 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Width: 160
 							Height: 25
 							Font: Bold
-							Text: Player
+							Text: @PRODUCTION-STATS-HEADERS-PLAYER-HEADER-TEXT@
 						Label@PRODUCTION_HEADER:
 							X: 245
 							Y: 40
 							Width: 320
 							Height: 25
 							Font: Bold
-							Text: Production
+							Text: @PRODUCTION-STATS-HEADERS-PRODUCTION-HEADER-TEXT@
 						Label@SUPPORT_POWERS_HEADER:
 							X: 565
 							Y: 40
 							Width: 320
 							Height: 25
 							Font: Bold
-							Text: Support Powers
+							Text: @PRODUCTION-STATS-HEADERS-SUPPORT-POWERS-HEADER-TEXT@
 				Container@COMBAT_STATS_HEADERS:
 					X: 0
 					Y: 0
@@ -192,28 +192,28 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Width: 160
 							Height: 25
 							Font: Bold
-							Text: Player
+							Text: @COMBAT-STATS-HEADERS-PLAYER-HEADER-TEXT@
 						Label@KILLS_COST_HEADER:
 							X: 245
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
-							Text: Kills
+							Text: @COMBAT-STATS-HEADERS-KILLS-COST-HEADER-TEXT@
 						Label@DEATHS_COST_HEADER:
 							X: 325
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
-							Text: Deaths
+							Text: @COMBAT-STATS-HEADERS-DEATHS-COST-HEADER-TEXT@
 						Label@UNITS_KILLED_HEADER:
 							X: 425
 							Y: 40
 							Width: 40
 							Height: 25
 							Font: Bold
-							Text: Units Killed
+							Text: @COMBAT-STATS-HEADERS-UNITS-KILLED-HEADER-TEXT@
 							Align: Right
 						Label@UNITS_DEAD_HEADER:
 							X: 525
@@ -221,7 +221,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Width: 40
 							Height: 25
 							Font: Bold
-							Text: Units Lost
+							Text: @COMBAT-STATS-HEADERS-UNITS-DEAD-HEADER-TEXT@
 							Align: Right
 						Label@BUILDINGS_KILLED_HEADER:
 							X: 645
@@ -229,7 +229,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Width: 40
 							Height: 25
 							Font: Bold
-							Text: Bldg Killed
+							Text: @COMBAT-STATS-HEADERS-BUILDINGS-KILLED-HEADER-TEXT@
 							Align: Right
 						Label@BUILDINGS_DEAD_HEADER:
 							X: 745
@@ -237,7 +237,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Width: 40
 							Height: 25
 							Font: Bold
-							Text: Bldg Lost
+							Text: @COMBAT-STATS-HEADERS-BUILDINGS-DEAD-HEADER-TEXT@
 							Align: Right
 				Container@EARNED_THIS_MIN_GRAPH_HEADERS:
 					X: 0
@@ -251,7 +251,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Bold
-							Text: Earnings received each minute
+							Text: @EARNED-THIS-MIN-GRAPH-HEADERS-EARNED-THIS-MIN-HEADER-TEXT@
 							Align: Center
 				ScrollPanel@PLAYER_STATS_PANEL:
 					X: 25
@@ -492,6 +492,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Close
+			Text: @INGAME-OBSERVERSTATS-BG-CLOSE-TEXT@
 			Key: escape
 			Font: Bold
+

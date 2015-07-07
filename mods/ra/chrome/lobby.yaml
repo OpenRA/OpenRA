@@ -24,42 +24,42 @@ Background@SERVER_LOBBY:
 					X: 0
 					Width: 180
 					Height: 25
-					Text: Name
+					Text: @LABEL-CONTAINER-LABEL-LOBBY-NAME-TEXT@
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_COLOR:
 					X: 190
 					Width: 80
 					Height: 25
-					Text: Color
+					Text: @LABEL-CONTAINER-LABEL-LOBBY-COLOR-TEXT@
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_FACTION:
 					X: 280
 					Width: 130
 					Height: 25
-					Text: Faction
+					Text: @LABEL-CONTAINER-LABEL-LOBBY-FACTION-TEXT@
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_TEAM:
 					X: 420
 					Width: 48
 					Height: 25
-					Text: Team
+					Text: @LABEL-CONTAINER-LABEL-LOBBY-TEAM-TEXT@
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_SPAWN:
 					X: 478
 					Width: 48
 					Height: 25
-					Text: Spawn
+					Text: @LABEL-CONTAINER-LABEL-LOBBY-SPAWN-TEXT@
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_STATUS:
 					X: 535
 					Width: 20
 					Height: 25
-					Text: Ready
+					Text: @LABEL-CONTAINER-LABEL-LOBBY-STATUS-TEXT@
 					Align: Left
 					Font: Bold
 		Container@PLAYER_BIN_ROOT:
@@ -69,27 +69,27 @@ Background@SERVER_LOBBY:
 			Width: 167
 			Height: 25
 			Font: Bold
-			Text: Slot Admin
+			Text: @SERVER-LOBBY-SLOTS-DROPDOWNBUTTON-TEXT@
 		Button@OPTIONS_BUTTON:
 			X: 194
 			Y: PARENT_BOTTOM - 291
 			Width: 135
 			Height: 25
 			Font: Bold
-			Text: Game Options
+			Text: @SERVER-LOBBY-OPTIONS-BUTTON-TEXT@
 		Button@CHANGEMAP_BUTTON:
 			X: 336
 			Y: PARENT_BOTTOM - 291
 			Width: 135
 			Height: 25
-			Text: Change Map
+			Text: @SERVER-LOBBY-CHANGEMAP-BUTTON-TEXT@
 			Font: Bold
 		Button@START_GAME_BUTTON:
 			X: 478
 			Y: PARENT_BOTTOM - 291
 			Width: 135
 			Height: 25
-			Text: Start Game
+			Text: @SERVER-LOBBY-START-GAME-BUTTON-TEXT@
 			Font: Bold
 		ScrollPanel@CHAT_DISPLAY:
 			X: 20
@@ -132,14 +132,15 @@ Background@SERVER_LOBBY:
 					Width: 45
 					Height: 25
 					Align: Right
-					Text: Chat:
+					Text: @SERVER-LOBBY-LABEL-CHATTYPE-TEXT@
 		Button@DISCONNECT_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 20
 			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 120
 			Height: 25
-			Text: Disconnect
+			Text: @SERVER-LOBBY-DISCONNECT-BUTTON-TEXT@
 			Font: Bold
 			Key: escape
 		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
+

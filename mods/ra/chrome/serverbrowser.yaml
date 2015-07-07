@@ -10,7 +10,7 @@ Background@SERVERBROWSER_PANEL:
 			Y: 15
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: Multiplayer
+			Text: @SERVERBROWSER-PANEL-MULTIPLAYER-LABEL-TITLE-TEXT@
 			Align: Center
 			Font: Bold
 		Label@SHOW_LABEL_TITLE:
@@ -18,41 +18,41 @@ Background@SERVERBROWSER_PANEL:
 			Y: 48
 			Width: 20
 			Height: 25
-			Text: Show:
+			Text: @SERVERBROWSER-PANEL-SHOW-LABEL-TITLE-TEXT@
 			Font: Bold
 		Checkbox@WAITING_FOR_PLAYERS:
 			X: 80
 			Y: 50
 			Width: 100
 			Height: 20
-			Text: Waiting
+			Text: @SERVERBROWSER-PANEL-WAITING-FOR-PLAYERS-TEXT@
 			TextColor: 50,205,50
 		Checkbox@EMPTY:
 			X: 180
 			Y: 50
 			Width: 100
 			Height: 20
-			Text: Empty
+			Text: @SERVERBROWSER-PANEL-EMPTY-TEXT@
 		Checkbox@PASSWORD_PROTECTED:
 			X: 270
 			Y: 50
 			Width: 100
 			Height: 20
-			Text: Protected
+			Text: @SERVERBROWSER-PANEL-PASSWORD-PROTECTED-TEXT@
 			TextColor: 255,0,0
 		Checkbox@ALREADY_STARTED:
 			X: 385
 			Y: 50
 			Width: 100
 			Height: 20
-			Text: Started
+			Text: @SERVERBROWSER-PANEL-ALREADY-STARTED-TEXT@
 			TextColor: 255,165,0
 		Checkbox@INCOMPATIBLE_VERSION:
 			X: 480
 			Y: 50
 			Width: 100
 			Height: 20
-			Text: Incompatible
+			Text: @SERVERBROWSER-PANEL-INCOMPATIBLE-VERSION-TEXT@
 			TextColor: 190,190,190
 		ScrollPanel@SERVER_LIST:
 			X: 20
@@ -123,35 +123,35 @@ Background@SERVERBROWSER_PANEL:
 			Y: PARENT_BOTTOM / 2 - HEIGHT
 			Width: 150
 			Height: 30
-			Text: Fetching games...
+			Text: @SERVERBROWSER-PANEL-PROGRESS-LABEL-TEXT@
 			Align: Center
 		Button@REFRESH_BUTTON:
 			X: 20
 			Y: PARENT_BOTTOM - 45
 			Width: 100
 			Height: 25
-			Text: Refresh
+			Text: @SERVERBROWSER-PANEL-REFRESH-BUTTON-TEXT@
 			Font: Bold
 		Button@CREATE_BUTTON:
 			X: PARENT_RIGHT - 120 - 120 - 120 - 120
 			Y: PARENT_BOTTOM - 45
 			Width: 100
 			Height: 25
-			Text: Create
+			Text: @SERVERBROWSER-PANEL-CREATE-BUTTON-TEXT@
 			Font: Bold
 		Button@DIRECTCONNECT_BUTTON:
 			X: PARENT_RIGHT - 120 - 120 - 120
 			Y: PARENT_BOTTOM - 45
 			Width: 100
 			Height: 25
-			Text: Direct IP
+			Text: @SERVERBROWSER-PANEL-DIRECTCONNECT-BUTTON-TEXT@
 			Font: Bold
 		Button@JOIN_BUTTON:
 			X: PARENT_RIGHT - 120 - 120
 			Y: PARENT_BOTTOM - 45
 			Width: 100
 			Height: 25
-			Text: Join
+			Text: @SERVERBROWSER-PANEL-JOIN-BUTTON-TEXT@
 			Font: Bold
 			Key: return
 		Button@BACK_BUTTON:
@@ -159,7 +159,7 @@ Background@SERVERBROWSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 100
 			Height: 25
-			Text: Cancel
+			Text: @SERVERBROWSER-PANEL-BACK-BUTTON-TEXT@
 			Font: Bold
 			Key: escape
 
