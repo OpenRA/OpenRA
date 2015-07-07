@@ -11,11 +11,15 @@ return {
     busted = busted or ide.config.path.busted -- check if the path is configured
     if not busted then
       local sep = win and ';' or ':'
-      local path = (os.getenv('PATH') or '')..sep
+      local default =
+           win and GenerateProgramFilesPath('LuaRocks\\systree\\bin', sep)..sep
+        or ''
+      local path = default
+                 ..(os.getenv('PATH') or '')..sep
                  ..(os.getenv('HOME') and os.getenv('HOME') .. '/bin' or '')
       local paths = {}
       for p in path:gmatch("[^"..sep.."]+") do
-        busted = busted or GetFullPathIfExists(p, win and 'busted.exe' or 'busted')
+        busted = busted or GetFullPathIfExists(p, win and 'busted.bat' or 'busted')
         table.insert(paths, p)
       end
       if not busted then
