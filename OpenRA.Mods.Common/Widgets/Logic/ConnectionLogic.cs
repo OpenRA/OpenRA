@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () =>
-				"Could not connect to {0}:{1}".F(orderManager.Host, orderManager.Port);
+				FieldLoader.Translate("CONNECTION-COULD-NOT-CONNECT").F(orderManager.Host, orderManager.Port);
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
 			connectionError.GetText = () => orderManager.ServerError;

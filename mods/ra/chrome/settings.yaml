@@ -93,7 +93,7 @@ Background@SETTINGS_PANEL:
 							Height: 25
 							MaxLength: 5
 						Label@X:
-							Text: @WINDOW-RESOLUTION-X-TEXT@
+							Text: x
 							Font: Bold
 							X: 70
 							Y: 0-1
