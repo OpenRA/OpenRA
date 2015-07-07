@@ -18,8 +18,6 @@ Player:
 			kenn: 1
 			dome: 1
 			weap: 1
-			spen: 1
-			syrd: 1
 			hpad: 4
 			afld: 4
 			atek: 1
@@ -49,7 +47,6 @@ Player:
 			e4: 2%
 			dog: 2%
 			shok: 2%
-			sniper: 1%
 			apc: 30%
 			jeep: 40%
 			arty: 15%
@@ -166,7 +163,6 @@ Player:
 			e4: 5%
 			dog: 3%
 			shok: 5%
-			sniper: 2%
 			harv: 10%
 			apc: 30%
 			jeep: 40%
