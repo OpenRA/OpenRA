@@ -83,7 +83,6 @@ PROC:
 		Value: 600
 	FreeActor:
 		Actor: HARV
-		InitialActivity: FindResources
 		SpawnOffset: 3,1
 		Facing: 160
 	WithIdleOverlay@REDLIGHTS:

@@ -972,7 +972,6 @@ PROC:
 		Value: 600
 	FreeActor:
 		Actor: HARV
-		InitialActivity: FindResources
 		SpawnOffset: 1,2
 		Facing: 64
 	InfiltrateForCash:

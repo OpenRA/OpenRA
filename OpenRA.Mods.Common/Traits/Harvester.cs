@@ -42,6 +42,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Percentage of maximum speed when fully loaded.")]
 		public readonly int FullyLoadedSpeed = 85;
 
+		[Desc("Automatically scan for resources when created.")]
+		public readonly bool SearchOnCreation = true;
+
 		[Desc("Initial search radius (in cells) from the refinery that created us.")]
 		public readonly int SearchFromProcRadius = 24;
 
@@ -55,8 +58,8 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips,
-		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync,
-		INotifyResourceClaimLost, INotifyIdle, INotifyBlockingMove
+		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync, INotifyCreated,
+		INotifyResourceClaimLost, INotifyIdle, INotifyBlockingMove, INotifyBuildComplete
 	{
 		readonly HarvesterInfo info;
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
@@ -74,6 +77,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
+		}
+
+		public void Created(Actor self)
+		{
+			if (info.SearchOnCreation)
+				self.QueueActivity(new FindResources());
+		}
+
+		public void BuildingComplete(Actor self)
+		{
+			if (info.SearchOnCreation)
+				self.QueueActivity(new FindResources());
 		}
 
 		public void SetProcLines(Actor proc)

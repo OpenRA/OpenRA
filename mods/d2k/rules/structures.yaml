@@ -203,7 +203,6 @@ refinery:
 		Value: 500
 	FreeActorWithDelivery:
 		Actor: harvester
-		InitialActivity: FindResources
 		DeliveryOffset: 2,2
 		DeliveringActor: carryall.reinforce
 		Facing: 160

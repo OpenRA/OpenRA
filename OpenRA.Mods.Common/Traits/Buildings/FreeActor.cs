@@ -8,22 +8,18 @@
  */
 #endregion
 
-using OpenRA.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Player recives a unit for free once the building is placed. This also works for structures.",
+	[Desc("Player receives a unit for free once the building is placed. This also works for structures.",
 		"If you want more than one unit to appear copy this section and assign IDs like FreeActor@2, ...")]
 	public class FreeActorInfo : ITraitInfo
 	{
 		[ActorReference]
 		[Desc("Name of the actor.")]
 		public readonly string Actor = null;
-
-		[Desc("What the unit should start doing. Warning: If this is not a harvester", "it will break if you use FindResources.")]
-		public readonly string InitialActivity = null;
 
 		[Desc("Offset relative to the top-left cell of the building.")]
 		public readonly CVec SpawnOffset = CVec.Zero;
@@ -43,16 +39,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			init.Self.World.AddFrameEndTask(w =>
 			{
-				var a = w.CreateActor(info.Actor, new TypeDictionary
+				w.CreateActor(info.Actor, new TypeDictionary
 				{
 					new ParentActorInit(init.Self),
 					new LocationInit(init.Self.Location + info.SpawnOffset),
 					new OwnerInit(init.Self.Owner),
 					new FacingInit(info.Facing),
 				});
-
-				if (info.InitialActivity != null)
-					a.QueueActivity(Game.CreateObject<Activity>(info.InitialActivity));
 			});
 		}
 	}
