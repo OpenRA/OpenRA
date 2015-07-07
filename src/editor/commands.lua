@@ -87,32 +87,41 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
         end
         file_text = s
       end
-      editor:AppendText(inputfilter and inputfilter(filePath, s) or s)
+      if inputfilter then s = inputfilter(filePath, s) end
+      local expected = editor:GetLength() + #s
+      editor:AppendText(s)
+      -- if the length is not as expected, then either it's a binary file or invalid UTF8
+      if editor:GetLength() ~= expected then
+        -- skip binary files with unknown extensions as they may have any sequences
+        if editor.spec == ide.specs.none and IsBinary(s) then
+          DisplayOutputLn(("%s: %s"):format(filePath,
+              TR("Binary file is shown as read-only as it is only partially loaded.")))
+          file_text = ''
+          editor:SetReadOnly(true)
+          return false
+        end
+
+        -- handle invalid UTF8 characters
+        -- fix: doesn't handle characters split by callback buffer
+        local replacement, invalid = "\022"
+        s, invalid = FixUTF8(s, replacement)
+        if #invalid > 0 then
+          editor:AppendText(s)
+          local lastline = nil
+          for _, n in ipairs(invalid) do
+            local line = editor:LineFromPosition(n)
+            if line ~= lastline then
+              DisplayOutputLn(("%s:%d: %s"):format(filePath, line+1,
+                  TR("Replaced an invalid UTF8 character with %s."):format(replacement)))
+              lastline = line
+            end
+          end
+        end
+      end
       ide:PopStatus()
       ide:PushStatus(TR("%s%% loaded..."):format(math.floor(100*editor:GetLength()/filesize)))
     end)
   ide:PopStatus()
-
-  -- check the editor as it can be empty if the file has malformed UTF8;
-  -- skip binary files with unknown extensions as they may have any sequences;
-  -- can't show them anyway.
-  if file_text and #file_text > 0 and editor:GetLength() == 0
-  and (editor.spec ~= ide.specs.none or not IsBinary(file_text)) then
-    local replacement, invalid = "\022"
-    file_text, invalid = FixUTF8(file_text, replacement)
-    if #invalid > 0 then
-      editor:AppendText(file_text)
-      local lastline = nil
-      for _, n in ipairs(invalid) do
-        local line = editor:LineFromPosition(n)
-        if line ~= lastline then
-          DisplayOutputLn(("%s:%d: %s")
-            :format(filePath, line+1, TR("Replaced an invalid UTF8 character with %s."):format(replacement)))
-          lastline = line
-        end
-      end
-    end
-  end
 
   editor:Colourise(0, -1)
   editor:ResetTokenList() -- reset list of tokens if this is a reused editor
