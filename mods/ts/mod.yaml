@@ -183,7 +183,7 @@ Music:
 	./mods/ts/audio/music.yaml
 
 Translations:
-	./mods/ts/languages/english.yaml
+	./mods/ra/languages/english.yaml
 
 LoadScreen: LogoStripeLoadScreen
 	Image: ./mods/ts/uibits/loadscreen.png

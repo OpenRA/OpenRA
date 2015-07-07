@@ -209,7 +209,6 @@ Background@SETTINGS_PANEL:
 					Font: Bold
 					Text: @DISPLAY-PANEL-LOCALIZATION-TITLE-TEXT@
 					Align: Center
-					Visible: false
 				Label@LANGUAGE_LABEL:
 					X: 230 - WIDTH - 5
 					Y: 289
@@ -217,13 +216,11 @@ Background@SETTINGS_PANEL:
 					Height: 25
 					Align: Right
 					Text: @DISPLAY-PANEL-LANGUAGE-LABEL-TEXT@
-					Visible: false
 				DropDownButton@LANGUAGE_DROPDOWNBUTTON:
 					X: 230
 					Y: 290
 					Width: 200
 					Height: 25
-					Visible: false
 				Label@LANGUAGE_DESC_A:
 					Y: 310
 					Width: PARENT_RIGHT
@@ -231,7 +228,6 @@ Background@SETTINGS_PANEL:
 					Font: Tiny
 					Align: Center
 					Text: @DISPLAY-PANEL-LANGUAGE-DESC-A-TEXT@
-					Visible: false
 				Label@LANGUAGE_DESC_B:
 					Y: 325
 					Width: PARENT_RIGHT
@@ -239,7 +235,6 @@ Background@SETTINGS_PANEL:
 					Font: Tiny
 					Align: Center
 					Text: @DISPLAY-PANEL-LANGUAGE-DESC-B-TEXT@
-					Visible: false
 		Container@AUDIO_PANEL:
 			X: 5
 			Y: 50

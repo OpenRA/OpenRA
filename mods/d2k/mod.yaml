@@ -117,7 +117,7 @@ Music:
 	./mods/d2k/audio/music.yaml
 
 Translations:
-	./mods/d2k/languages/english.yaml
+	./mods/ra/languages/english.yaml
 
 LoadScreen: LogoStripeLoadScreen
 	Image: ./mods/d2k/uibits/loadscreen.png
