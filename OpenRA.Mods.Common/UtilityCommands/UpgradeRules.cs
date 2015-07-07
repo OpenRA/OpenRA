@@ -1360,6 +1360,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "FlashPaletteEffect";
 				}
 
+				// InitialActivity on FreeActor and Buildable was removed (due to being too hacky)
+				if (engineVersion < 20150707)
+				{
+					if (depth == 1)
+						node.Value.Nodes.RemoveAll(n => n.Key == "InitialActivity");
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
