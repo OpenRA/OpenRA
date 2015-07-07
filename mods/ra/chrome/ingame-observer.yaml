@@ -30,7 +30,7 @@ Container@OBSERVER_WIDGETS:
 							Height: PARENT_BOTTOM
 							Align: Right
 							Font: TinyBold
-				Container@TOP_BUTTONS:
+				Container@TOP_OBSERVER_BUTTONS:
 					Logic: MenuButtonsChromeLogic
 					X: 9
 					Y: 7

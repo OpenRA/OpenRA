@@ -135,7 +135,7 @@ Container@LEAVE_MAP_WIDGET:
 					Logic: IngameChatLogic
 					Visible: False
 					Children:
-						Container@CHAT_CHROME:
+						Container@LEAVEMAP_CHAT_CHROME:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
 							Children:
