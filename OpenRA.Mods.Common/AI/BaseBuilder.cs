@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.AI
 			var buildableThings = queue.BuildableItems();
 
 			// First priority is to get out of a low power situation
-			if (playerPower.ExcessPower < 0)
+			if (playerPower.ExcessPower < ai.Info.MinimumExcessPower)
 			{
 				var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(p => p.Amount));
 				if (power != null && power.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(p => p.Amount) > 0)
@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Common.AI
 				// Will this put us into low power?
 				var actor = world.Map.Rules.Actors[frac.Key];
 				var pis = actor.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1);
-				if (playerPower.ExcessPower < 0 || playerPower.ExcessPower < pis.Sum(pi => pi.Amount))
+				if (playerPower.ExcessPower < ai.Info.MinimumExcessPower || playerPower.ExcessPower < pis.Sum(pi => pi.Amount))
 				{
 					// Try building a power plant instead
 					var power = GetProducibleBuilding("Power",

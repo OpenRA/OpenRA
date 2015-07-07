@@ -49,6 +49,9 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Minimum delay (in ticks) between creating squads.")]
 		public readonly int MinimumAttackForceDelay = 0;
 
+		[Desc("Minimum excess power the AI should try to maintain.")]
+		public readonly int MinimumExcessPower = 0;
+
 		[Desc("How long to wait (in ticks) between structure production checks when there is no active production.")]
 		public readonly int StructureProductionInactiveDelay = 125;
 
