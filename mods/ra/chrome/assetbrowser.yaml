@@ -60,6 +60,7 @@ Background@ASSETBROWSER_PANEL:
 			Y: 395
 			Width: 160
 			Height: 25
+			FocusPriorityDefault: 10
 		Label@PALETTE_DESC:
 			X: PARENT_RIGHT-WIDTH-270
 			Y: 60

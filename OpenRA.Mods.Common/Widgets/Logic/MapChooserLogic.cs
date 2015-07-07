@@ -58,7 +58,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mapFilterInput = widget.GetOrNull<TextFieldWidget>("MAPFILTER_INPUT");
 			if (mapFilterInput != null)
 			{
-				mapFilterInput.TakeKeyboardFocus();
 				mapFilterInput.OnEscKey = () =>
 				{
 					if (mapFilterInput.Text.Length == 0)

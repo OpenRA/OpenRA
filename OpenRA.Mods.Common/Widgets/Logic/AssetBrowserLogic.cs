@@ -52,6 +52,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel = widget;
 			assetSource = GlobalFileSystem.MountedFolders.First();
 
+			var closeButton = panel.GetOrNull<ButtonWidget>("CLOSE_BUTTON");
+			if (closeButton != null)
+				closeButton.OnClick = () =>
+				{
+					if (isVideoLoaded)
+						player.Stop();
+					Ui.CloseWindow();
+					onExit();
+				};
+
 			var ticker = panel.GetOrNull<LogicTickerWidget>("ANIMATION_TICKER");
 			if (ticker != null)
 			{
@@ -110,8 +120,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
 			filenameInput.OnTextEdited = () => ApplyFilter(filenameInput.Text);
-			filenameInput.OnEscKey = filenameInput.YieldKeyboardFocus;
+			filenameInput.OnEscKey = () =>
+			{
+				if (filenameInput.Text.Length == 0)
+					closeButton.OnClick();
+				else
+				{
+					filenameInput.Text = null;
+					filenameInput.OnTextEdited();
+				}
 
+				return true;
+			};
 			var frameContainer = panel.GetOrNull("FRAME_SELECTOR");
 			if (frameContainer != null)
 				frameContainer.IsVisible = () => (currentSprites != null && currentSprites.Length > 1) ||
@@ -215,16 +235,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			assetList = panel.Get<ScrollPanelWidget>("ASSET_LIST");
 			template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
 			PopulateAssetList();
-
-			var closeButton = panel.GetOrNull<ButtonWidget>("CLOSE_BUTTON");
-			if (closeButton != null)
-				closeButton.OnClick = () =>
-				{
-					if (isVideoLoaded)
-						player.Stop();
-					Ui.CloseWindow();
-					onExit();
-				};
 		}
 
 		void SelectNextFrame()

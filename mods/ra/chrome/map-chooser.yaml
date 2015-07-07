@@ -97,6 +97,7 @@ Background@MAPCHOOSER_PANEL:
 			Y: 40
 			Width: 150
 			Height: 25
+			FocusPriorityDefault: 10
 		Label@FILTER_DESC_JOINER:
 			X: PARENT_RIGHT - 250
 			Y: 40

@@ -523,9 +523,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
-
-			chatTextField.TakeKeyboardFocus();
-
 			chatTextField.OnEnterKey = () =>
 			{
 				if (chatTextField.Text.Length == 0)
@@ -548,6 +545,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return SwitchTeamChat();
 				else
 					return true;
+			};
+			chatTextField.OnEscKey = () =>
+			{
+				if (chatTextField.Text.Length == 0)
+					disconnectButton.OnClick();
+				else
+					chatTextField.Text = null;
+
+				return true;
 			};
 
 			chatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");

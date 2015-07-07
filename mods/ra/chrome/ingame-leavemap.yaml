@@ -150,6 +150,7 @@ Container@LEAVE_MAP_WIDGET:
 									Y: PARENT_BOTTOM - HEIGHT
 									Width: 427
 									Height: 25
+									FocusPriorityDefault: 10
 								ScrollPanel@CHAT_SCROLLPANEL:
 									Y: PARENT_BOTTOM - HEIGHT - 30
 									Width: 482
