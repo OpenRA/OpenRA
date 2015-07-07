@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Traits;
 
-namespace OpenRA.GameRules
+namespace OpenRA.Mods.Common.Warheads
 {
 	public abstract class DamageWarhead : Warhead
 	{

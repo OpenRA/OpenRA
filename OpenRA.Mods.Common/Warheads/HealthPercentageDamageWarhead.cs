@@ -8,11 +8,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Effects;
-using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads

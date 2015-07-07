@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.GameRules;
+using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -64,7 +64,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.Damage <= 0 || e.Warhead == null || !e.Warhead.DamageTypes.Any(x => info.DamageTriggers.Contains(x)))
+			var warhead = e.Warhead as DamageWarhead;
+			if (e.Damage <= 0 || warhead == null || !warhead.DamageTypes.Any(x => info.DamageTriggers.Contains(x)))
 				return;
 
 			if (!IsProne)
@@ -81,12 +82,16 @@ namespace OpenRA.Mods.Common.Traits
 				localOffset = WVec.Zero;
 		}
 
-		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)
+		public int GetDamageModifier(Actor attacker, IWarhead warhead)
 		{
 			if (!IsProne)
 				return 100;
 
-			var modifierPercentages = info.DamageModifiers.Where(x => warhead.DamageTypes.Contains(x.Key)).Select(x => x.Value);
+			var damageWh = warhead as DamageWarhead;
+			if (damageWh == null)
+				return 100;
+
+			var modifierPercentages = info.DamageModifiers.Where(x => damageWh.DamageTypes.Contains(x.Key)).Select(x => x.Value);
 			return Util.ApplyPercentageModifiers(100, modifierPercentages);
 		}
 

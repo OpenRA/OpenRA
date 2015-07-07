@@ -8,9 +8,7 @@
  */
 #endregion
 
-using System;
 using System.Linq;
-using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
@@ -88,7 +86,7 @@ namespace OpenRA.Traits
 			{
 				Attacker = repairer,
 				Damage = -MaxHP,
-				DamageState = this.DamageState,
+				DamageState = DamageState,
 				PreviousDamageState = DamageState.Dead,
 				Warhead = null,
 			};
@@ -106,9 +104,9 @@ namespace OpenRA.Traits
 					nd.AppliedDamage(repairer, self, ai);
 		}
 
-		public void InflictDamage(Actor self, Actor attacker, int damage, DamageWarhead warhead, bool ignoreModifiers)
+		public void InflictDamage(Actor self, Actor attacker, int damage, IWarhead warhead, bool ignoreModifiers)
 		{
-			// Overkill! don't count extra hits as more kills!
+			// Overkill! Don't count extra hits as more kills!
 			if (IsDead)
 				return;
 
@@ -177,7 +175,7 @@ namespace OpenRA.Traits
 	public class HealthInit : IActorInit<int>
 	{
 		[FieldFromYamlKey] readonly int value = 100;
-		readonly bool allowZero = false;
+		readonly bool allowZero;
 		public HealthInit() { }
 		public HealthInit(int init, bool allowZero = false)
 		{
@@ -205,7 +203,7 @@ namespace OpenRA.Traits
 			return (health == null) ? DamageState.Undamaged : health.DamageState;
 		}
 
-		public static void InflictDamage(this Actor self, Actor attacker, int damage, DamageWarhead warhead)
+		public static void InflictDamage(this Actor self, Actor attacker, int damage, IWarhead warhead)
 		{
 			if (self.Disposed) return;
 			var health = self.TraitOrDefault<Health>();

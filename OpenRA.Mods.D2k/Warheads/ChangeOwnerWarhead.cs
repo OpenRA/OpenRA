@@ -9,7 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.GameRules;
+using OpenRA.Mods.Common.Warheads;
 using OpenRA.Mods.D2k.Traits;
 using OpenRA.Traits;
 
@@ -30,11 +30,12 @@ namespace OpenRA.Mods.D2k.Warheads
 
 			foreach (var a in actors)
 			{
-				if (a.Owner == firedBy.Owner) // don't do anything on friendly fire
+				// Don't do anything on friendly fire
+				if (a.Owner == firedBy.Owner)
 					continue;
 
 				if (Duration == 0)
-					a.ChangeOwner(firedBy.Owner); // permanent
+					a.ChangeOwner(firedBy.Owner); // Permanent
 				else
 				{
 					var tempOwnerManager = a.TraitOrDefault<TemporaryOwnerManager>();
@@ -44,7 +45,8 @@ namespace OpenRA.Mods.D2k.Warheads
 					tempOwnerManager.ChangeOwner(a, firedBy.Owner, Duration);
 				}
 
-				a.CancelActivity(); // stop shooting, you have got new enemies
+				// Stop shooting, you have new enemies
+				a.CancelActivity();
 			}
 		}
 	}

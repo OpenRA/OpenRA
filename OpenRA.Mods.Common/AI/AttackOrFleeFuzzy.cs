@@ -12,8 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AI.Fuzzy.Library;
-using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.AI
@@ -191,13 +191,13 @@ namespace OpenRA.Mods.Common.AI
 
 		protected float RelativePower(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
 		{
-			return RelativeValue(own, enemy, 100, SumOfValues<AttackBase>, (Actor a) =>
+			return RelativeValue(own, enemy, 100, SumOfValues<AttackBase>, a =>
 			{
 				var sumOfDamage = 0;
 				var arms = a.TraitsImplementing<Armament>();
 				foreach (var arm in arms)
 				{
-					var warhead = arm.Weapon.Warheads.Select(w => w as DamageWarhead).FirstOrDefault(w => w != null);
+					var warhead = arm.Weapon.Warheads.OfType<DamageWarhead>().FirstOrDefault();
 					if (warhead != null)
 						sumOfDamage += warhead.Damage;
 				}

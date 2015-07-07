@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -72,16 +73,17 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Killed by some non-standard means. This includes being crushed
 			// by a vehicle (Actors with Crushable trait will spawn CrushedSequence instead).
-			if (e.Warhead == null)
+			if (e.Warhead == null || !(e.Warhead is DamageWarhead))
 				return;
 
 			var sequence = Info.DeathSequence;
 			if (Info.UseDeathTypeSuffix)
 			{
-				var damageType = e.Warhead.DamageTypes.Intersect(Info.DeathTypes.Keys).FirstOrDefault();
+				var warhead = e.Warhead as DamageWarhead;
+				var damageType = warhead.DamageTypes.Intersect(Info.DeathTypes.Keys).FirstOrDefault();
 				if (damageType == null)
 					throw new Exception("Actor type `{0}` does not define a death animation for weapon with damage types `{1}`!"
-						.F(self.Info.Name, string.Join(", ", e.Warhead.DamageTypes)));
+						.F(self.Info.Name, string.Join(", ", warhead.DamageTypes)));
 
 				sequence += Info.DeathTypes[damageType];
 			}

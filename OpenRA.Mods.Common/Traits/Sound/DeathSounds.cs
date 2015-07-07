@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -37,11 +38,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Killed(Actor self, AttackInfo e)
 		{
+			var warhead = e.Warhead as DamageWarhead;
+
 			// Killed by some non-standard means
-			if (e.Warhead == null)
+			if (warhead == null)
 				return;
 
-			if (info.DeathTypes.Intersect(e.Warhead.DamageTypes).Any())
+			if (info.DeathTypes.Intersect(warhead.DamageTypes).Any())
 				self.PlayVoiceLocal(info.Voice, info.VolumeMultiplier);
 		}
 	}

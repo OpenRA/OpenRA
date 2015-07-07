@@ -8,7 +8,6 @@
  */
 #endregion
 
-using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -18,6 +17,6 @@ namespace OpenRA.Mods.Common.Traits
 
 	class Invulnerable : IDamageModifier
 	{
-		public int GetDamageModifier(Actor attacker, DamageWarhead warhead) { return 0; }
+		public int GetDamageModifier(Actor attacker, IWarhead warhead) { return 0; }
 	}
 }

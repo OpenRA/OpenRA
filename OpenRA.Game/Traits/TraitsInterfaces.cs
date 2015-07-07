@@ -12,9 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using System.Linq;
 using OpenRA.Activities;
-using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -48,9 +46,9 @@ namespace OpenRA.Traits
 
 	public class AttackInfo
 	{
-		public Actor Attacker;
-		public DamageWarhead Warhead;
 		public int Damage;
+		public Actor Attacker;
+		public IWarhead Warhead;
 		public DamageState DamageState;
 		public DamageState PreviousDamageState;
 	}
@@ -207,7 +205,7 @@ namespace OpenRA.Traits
 	}
 
 	public interface IRenderModifier { IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r); }
-	public interface IDamageModifier { int GetDamageModifier(Actor attacker, DamageWarhead warhead); }
+	public interface IDamageModifier { int GetDamageModifier(Actor attacker, IWarhead warhead); }
 	public interface ISpeedModifier { int GetSpeedModifier(); }
 	public interface IFirepowerModifier { int GetFirepowerModifier(); }
 	public interface IReloadModifier { int GetReloadModifier(); }
@@ -352,5 +350,13 @@ namespace OpenRA.Traits
 		void OnObjectiveAdded(Player player, int objectiveID);
 		void OnObjectiveCompleted(Player player, int objectiveID);
 		void OnObjectiveFailed(Player player, int objectiveID);
+	}
+
+	public interface IWarhead
+	{
+		int Delay { get; }
+		bool IsValidAgainst(Actor victim, Actor firedBy);
+		bool IsValidAgainst(FrozenActor victim, Actor firedBy);
+		void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
 	}
 }
