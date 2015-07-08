@@ -326,7 +326,7 @@ GAPLUG:
 		Bounds: 115,72,0,-12
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: proc, gatech
+		Prerequisites: proc, gatech, ~structures.gdi
 		Queue: Building
 	Building:
 		Footprint: xxx xxx
