@@ -115,8 +115,8 @@ namespace OpenRA.FileFormats
 				{ "Chat", s =>
 					{
 						var client = session.ClientWithIndex(packetClientIndex);
-						var specTag = client.IsObserver ? " (Spectator)" : "";
-						text.AppendLine(time + client.Name + specTag + ": " + s);
+						var specTag = client.IsObserver ? " (Spectator): " : ": ";
+						text.AppendLine(time + client.Name + specTag + s);
 					}
 				},
 				{ "TeamChat", s =>
