@@ -406,3 +406,83 @@ srock05:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+
+dbris1sm:
+	idle:
+		Length:*
+
+dbris2sm:
+	idle:
+		Length:*
+
+dbris3sm:
+	idle:
+		Length:*
+
+dbris4sm:
+	idle:
+		Length:*
+
+dbris5sm:
+	idle:
+		Length:*
+
+dbris6sm:
+	idle:
+		Length:*
+
+dbris7sm:
+	idle:
+		Length:*
+
+dbris8sm:
+	idle:
+		Length:*
+
+dbris9sm:
+	idle:
+		Length:*
+
+dbris10sm:
+	idle:
+		Length:*
+
+dbris1lg:
+	idle:
+		Length:*
+
+dbris2lg:
+	idle:
+		Length:*
+
+dbris3lg:
+	idle:
+		Length:*
+
+dbris4lg:
+	idle:
+		Length:*
+
+dbris5lg:
+	idle:
+		Length:*
+
+dbris6lg:
+	idle:
+		Length:*
+
+dbris7lg:
+	idle:
+		Length:*
+
+dbris8lg:
+	idle:
+		Length:*
+
+dbris9lg:
+	idle:
+		Length:*
+
+dbris10lg:
+	idle:
+		Length:*
